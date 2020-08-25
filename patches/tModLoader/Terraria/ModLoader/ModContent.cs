@@ -519,7 +519,6 @@ namespace Terraria.ModLoader
 		}
 
 		private static void ResizeArrays(bool unloading = false) {
-			ContentTags.Initialize();
 			ItemLoader.ResizeArrays(unloading);
 			EquipLoader.ResizeAndFillArrays();
 			ModPrefix.ResizeArrays();

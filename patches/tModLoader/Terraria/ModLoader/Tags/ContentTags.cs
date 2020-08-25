@@ -1,44 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Terraria.ModLoader.Tags
 {
 	public static class ContentTags
 	{
-		internal static readonly List<TagShortcut> TagShortcuts = new List<TagShortcut>();
 		internal static readonly Dictionary<Type,TagGroup> TagGroupsByType = new Dictionary<Type, TagGroup>();
 
-		/// <summary> Sets whether or not the content piece with the provided Id has the provided tag. </summary>
-		/// <param name="tagName">The name of the tag.</param>
-		/// <param name="id">The content id.</param>
-		/// <param name="value">Whether or not the tag should be present for the provided content id.</param>
-		public static void SetTag<TTagGroup>(string tag, int id, bool value = true) where TTagGroup : TagGroup
-			=> ModContent.GetInstance<TTagGroup>().SetTag(tag, id, value);
+		/// <summary> Returns a TagData instance, which can be used to modify and check for tags. <para/> <b>Be sure to cache the return value whenever possible!</b> </summary>
+		/// <typeparam name="TTagGroup"> The tag group that the tag comes from. </typeparam>
+		/// <param name="tagName"> The name of the tag. </param>
+		public static TagData Get<TTagGroup>(string tagName) where TTagGroup : TagGroup
+			=> GetGroup<TTagGroup>().GetTag(tagName);
 
-		/// <summary> Returns whether or not the content piece with the Id has the provided tag. </summary>
-		/// <param name="tagName">The name of the tag.</param>
-		/// <param name="id">The content id.</param>
-		public static bool HasTag<TTagGroup>(string tag, int id) where TTagGroup : TagGroup
-			=> ModContent.GetInstance<TTagGroup>().HasTag(tag, id);
-
-		/// <summary> Sets whether or not the content piece with the provided Id has the tag that the provided shortcut points to. </summary>
-		/// <param name="id">The content id.</param>
-		/// <param name="value">Whether or not the tag should be present for the provided content id.</param>
-		public static void SetTag<TTagShortcut>(int id, bool value = true) where TTagShortcut : TagShortcut
-			=> ModContent.GetInstance<TTagShortcut>().SetTag(id, value);
-
-		/// <summary> Returns whether or not the content piece with the Id has the tag that the provided shortcut points to. </summary>
-		/// <param name="id">The content id.</param>
-		public static bool HasTag<TTagShortcut>(int id) where TTagShortcut : TagShortcut
-			=> ModContent.GetInstance<TTagShortcut>().HasTag(id);
-
-		internal static void Initialize() {
-			//The following associates TagShortcuts with TagData instances.
-
-			foreach (TagShortcut shortcut in TagShortcuts) {
-				shortcut.UpdateData();
-			}
-		}
+		/// <summary> Returns an instance of the specified TagGroup. This is just a shorthand for ModContent.GetInstance. </summary>
+		/// <typeparam name="TTagGroup"> The tag group that the tag comes from. </typeparam>
+		/// <param name="tag"> The name of the tag. </param>
+		public static TTagGroup GetGroup<TTagGroup>() where TTagGroup : TagGroup
+			=> ModContent.GetInstance<TTagGroup>();
 	}
 }

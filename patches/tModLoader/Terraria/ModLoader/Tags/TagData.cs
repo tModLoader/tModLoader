@@ -2,18 +2,29 @@
 
 namespace Terraria.ModLoader.Tags
 {
-	internal class TagData
+	/// <summary> This class stores lists of content Ids associated with the tag that it represents. </summary>
+	public sealed class TagData
 	{
-		public bool[] idToValue; //Accessed for quick HasTag checks.
-		public List<int> entryList;
-		public IReadOnlyList<int> readonlyEntryList; //Accessed for GetEntriesWithTag.
+		private readonly bool[] idToValue; //Accessed for quick HasTag checks.
+		private readonly List<int> entryList;
+		private readonly IReadOnlyList<int> readonlyEntryList; //Accessed for GetEntriesWithTag.
 
-		public TagData(int maxEntries) {
+		internal TagData(int maxEntries) {
 			idToValue = new bool[maxEntries];
 			entryList = new List<int>();
 			readonlyEntryList = entryList.AsReadOnly();
 		}
 
+		/// <summary> Returns whether or not the content piece with the Id has this tag. </summary>
+		/// <param name="id"> The content id. </param>
+		public bool Has(int id) => idToValue[id];
+
+		/// <summary> Returns a list of content Ids that have this tag. </summary>
+		public IReadOnlyList<int> GetEntries() => readonlyEntryList;
+
+		/// <summary> Sets whether or not the content piece with the provided Id has this tag. </summary>
+		/// <param name="id"> The content id. </param>
+		/// <param name="value"> Whether or not the tag should be present for the provided content id. </param>
 		public void Set(int id, bool value) {
 			idToValue[id] = value;
 
@@ -24,7 +35,5 @@ namespace Terraria.ModLoader.Tags
 				entryList.Add(id);
 			}
 		}
-
-		public bool Has(int id) => idToValue[id];
 	}
 }
