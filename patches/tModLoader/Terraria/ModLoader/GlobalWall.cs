@@ -8,9 +8,12 @@ namespace Terraria.ModLoader
 	public class GlobalWall:ModType
 	{
 		protected sealed override void Register() {
-			Mod.globalWalls[Name] = this;
+			ModTypeLookup<GlobalWall>.Register(this);
 			WallLoader.globalWalls.Add(this);
-			ContentInstance.Register(this);
+		}
+
+		public override void SetupContent() {
+			SetDefaults();
 		}
 
 		/// <summary>

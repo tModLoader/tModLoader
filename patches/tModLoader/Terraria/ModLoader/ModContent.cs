@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using ReLogic.Content.Readers;
-using ReLogic.Reflection;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +9,6 @@ using System.Threading;
 using Terraria.GameContent.UI;
 using Terraria.GameInput;
 using Terraria.ID;
-using Terraria.Initializers;
 using Terraria.Localization;
 using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Core;
@@ -21,7 +18,6 @@ using Terraria.ModLoader.IO;
 using Terraria.ModLoader.Tags;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
-using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
@@ -33,8 +29,15 @@ namespace Terraria.ModLoader
 	{
 		public static T GetInstance<T>() where T : class => ContentInstance<T>.Instance;
 
+		public static T Get<T>(string fullname) where T : IModType => ModTypeLookup<T>.Get(fullname);
+		public static T Get<T>(string modName, string name) where T : IModType => ModTypeLookup<T>.Get(modName, name);
+
+		public static bool TryGet<T>(string fullname, out T value) where T : IModType => ModTypeLookup<T>.TryGetValue(fullname, out value);
+		public static bool TryGet<T>(string modName, string name, out T value) where T : IModType => ModTypeLookup<T>.TryGetValue(modName, name, out value);
+
+		private static readonly char[] nameSplitters = new char[] { '/', ' ', ':' };
 		public static void SplitName(string name, out string domain, out string subName) {
-			int slash = name.IndexOf('/');
+			int slash = name.IndexOfAny(nameSplitters); // slash is the canonical splitter, but we'll accept space and colon for backwards compatability, just in case
 			if (slash < 0)
 				throw new MissingResourceException("Missing mod qualifier: " + name);
 
@@ -294,12 +297,17 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Get the id (type) of a ModItem by class. Assumes one instance per class.
 		/// </summary>
-		public static int ItemType<T>() where T : ModItem => GetInstance<T>()?.item.type ?? 0;
+		public static int ItemType<T>() where T : ModItem => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
 		/// Get the id (type) of a ModPrefix by class. Assumes one instance per class.
 		/// </summary>
 		public static byte PrefixType<T>() where T : ModPrefix => GetInstance<T>()?.Type ?? 0;
+
+		/// <summary>
+		/// Get the id (type) of a ModRarity by class. Assumes one instance per class.
+		/// </summary>
+		public static int RarityType<T>() where T : ModRarity => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
 		/// Get the id (type) of a ModDust by class. Assumes one instance per class.
@@ -324,12 +332,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Get the id (type) of a ModProjectile by class. Assumes one instance per class.
 		/// </summary>
-		public static int ProjectileType<T>() where T : ModProjectile => GetInstance<T>()?.projectile.type ?? 0;
+		public static int ProjectileType<T>() where T : ModProjectile => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
 		/// Get the id (type) of a ModNPC by class. Assumes one instance per class.
 		/// </summary>
-		public static int NPCType<T>() where T : ModNPC => GetInstance<T>()?.npc.type ?? 0;
+		public static int NPCType<T>() where T : ModNPC => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
 		/// Get the id (type) of a ModBuff by class. Assumes one instance per class.
@@ -385,10 +393,12 @@ namespace Terraria.ModLoader
 			RefreshModLanguage(Language.ActiveCulture);
 			MapLoader.SetupModMap();
 			ItemSorting.SetupWhiteLists();
+			RarityLoader.Initialize();
 			PlayerInput.reinitialize = true;
 			SetupRecipes(token);
 			
 			ContentSamples.Initialize();
+			MenuLoader.GotoSavedModMenu();
 		}
 		
 		private static void CacheVanillaState() {
@@ -430,6 +440,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void UnloadModContent() {
+			MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
 			int i = 0;
 			foreach (var mod in ModLoader.Mods.Reverse()) {
 				try {
@@ -452,6 +463,7 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			ContentInstance.Clear();
+			ModTypeLookup.Clear();
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			ModPrefix.Unload();
@@ -465,6 +477,7 @@ namespace Terraria.ModLoader
 			PlayerHooks.Unload();
 			BuffLoader.Unload();
 			MountLoader.Unload();
+			RarityLoader.Unload();
 			ModGore.Unload();
 			SoundLoader.Unload();
 			DisposeMusic();

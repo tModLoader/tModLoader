@@ -22,6 +22,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to determine what music should currently play.
+		/// </summary>
+		/// <param name="music">The music.</param>
+		/// <param name="priority">The music priority.</param>
+		public virtual void UpdateMusic(ref int music, ref MusicPriority priority) {
+		}
+
+		/// <summary>
 		/// Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.)
 		/// </summary>
 		public virtual void ModifyTransformMatrix(ref SpriteViewMatrix Transform) {

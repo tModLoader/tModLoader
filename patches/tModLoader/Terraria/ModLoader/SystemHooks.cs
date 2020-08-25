@@ -16,11 +16,13 @@ namespace Terraria.ModLoader
 
 		internal static void Add(ModSystem modSystem) => systems.Add(modSystem);
 
-		internal static void ResizeArrays() {
-			
-		}
-
 		internal static void Unload() => systems.Clear();
+
+		public static void UpdateMusic(ref int music, ref MusicPriority priority) {
+			foreach (ModSystem system in systems) {
+				system.UpdateMusic(ref music, ref priority);
+			}
+		}
 
 		public static void ModifyTransformMatrix(ref SpriteViewMatrix Transform) {
 			foreach (ModSystem system in systems) {

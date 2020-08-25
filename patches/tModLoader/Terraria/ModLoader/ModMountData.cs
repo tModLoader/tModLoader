@@ -37,9 +37,8 @@ namespace Terraria.ModLoader
 
 			Type = MountLoader.ReserveMountID();
 
-			Mod.mountDatas[Name] = this;
+			ModTypeLookup<ModMountData>.Register(this);
 			MountLoader.mountDatas[Type] = this;
-			ContentInstance.Register(this);
 
 			foreach (MountTextureType textureType in Enum.GetValues(typeof(MountTextureType))) {
 				string extraTexture = GetExtraTexture(textureType);
@@ -76,7 +75,13 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
-		
+
+		public override void SetupContent() {
+			mountData.modMountData = this;
+			MountLoader.SetupMount(mountData);
+			Mount.mounts[Type] = mountData;
+		}
+
 		protected virtual string GetExtraTexture(MountTextureType textureType) => Texture + "_" + textureType;
 
 		internal void SetupMount(Mount.MountData mountData) {

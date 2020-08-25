@@ -34,6 +34,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public string Name => GetType().Name;
 
+		public string FullName => $"{Mod.Name}/{Name}";
+
 		/// <summary>
 		/// The numeric type used to identify this kind of tile entity.
 		/// </summary>
@@ -195,13 +197,13 @@ namespace Terraria.ModLoader
 			if (!Mod.loading)
 				throw new Exception("AddTileEntity can only be called from Mod.Load or Mod.Autoload");
 
-			int id = ModTileEntity.ReserveTileEntityID();
+			//TODO: TileENtityLoader??
+			int id = ReserveTileEntityID();
 			Type = id;
 			type = (byte)id;
 
-			Mod.tileEntities[Name] = this;
-			ModTileEntity.tileEntities.Add(this);
-			ContentInstance.Register(this);
+			ModTypeLookup<ModTileEntity>.Register(this);
+			tileEntities.Add(this);
 		}
 
 		public virtual void Unload(){}

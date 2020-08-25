@@ -6,10 +6,8 @@
 	public abstract partial class ModSystem : ModType
 	{
 		protected override void Register() {
-			Mod.systems[Name] = this;
-
 			SystemHooks.Add(this);
-			ContentInstance.Register(this);
+			ModTypeLookup<ModSystem>.Register(this);
 		}
 	}
 }
