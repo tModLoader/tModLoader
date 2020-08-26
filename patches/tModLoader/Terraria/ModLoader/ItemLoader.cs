@@ -159,14 +159,6 @@ namespace Terraria.ModLoader
 				g.Instance(item).SetDefaults(item);
 		}
 
-		internal static GlobalItem GetGlobalItem(Item item, Mod mod, string name) {
-			return globalIndexes.TryGetValue(mod.Name + ':' + name, out int index) ? globalItems[index].Instance(item) : null;
-		}
-
-		internal static GlobalItem GetGlobalItem(Item item, Type type) {
-			return globalIndexesByType.TryGetValue(type, out int index) ? (index > -1 ? globalItems[index].Instance(item) : null) : null;
-		}
-
 		//near end of Terraria.Main.DrawItem before default drawing call
 		//  if(ItemLoader.animations.Contains(item.type))
 		//  { ItemLoader.DrawAnimatedItem(item, whoAmI, color, alpha, rotation, scale); return; }
