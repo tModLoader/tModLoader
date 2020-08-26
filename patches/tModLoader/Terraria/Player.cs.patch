@@ -3595,7 +3595,7 @@
  				}
  
  				return playerFileData;
-@@ -37381,7 +_,45 @@
+@@ -37381,7 +_,49 @@
  			return -1;
  		}
  
@@ -3605,10 +3605,14 @@
 +
 +		private ModPlayer GetModPlayer(int? index) => index.HasValue ? modPlayers[index.Value] : null;
 +
-+		public ModPlayer GetModPlayer(Mod mod, string name) => GetModPlayer(mod.GetPlayer(name)?.index);
++		public ModPlayer GetModPlayer(Mod mod, string name) => GetModPlayer(mod.Name, name);
 +
-+		public T GetModPlayer<T>() where T : ModPlayer => (T)GetModPlayer(ModContent.GetInstance<T>()?.index);
-+		
++		public ModPlayer GetModPlayer(string modName, string name) => ModContent.TryGet<ModPlayer>(modName, name, out var modPlayer) ? GetModPlayerInstance(modPlayer) : null;
++
++		public T GetModPlayer<T>() where T : ModPlayer => GetModPlayerInstance(ModContent.GetInstance<T>());
++
++		public T GetModPlayerInstance<T>(T baseModPlayerInst) where T : ModPlayer => (T)GetModPlayer(baseModPlayerInst.index);
++
 +		//TODO needs to be renamed together with the class if fully OOPed
 +		internal ModExtraJump[] modExtraJumps = new ModExtraJump[0];
 +
