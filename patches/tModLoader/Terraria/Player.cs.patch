@@ -3472,7 +3472,7 @@
  				}
  
  				return playerFileData;
-@@ -37381,7 +_,32 @@
+@@ -37381,7 +_,57 @@
  			return -1;
  		}
  
@@ -3480,15 +3480,40 @@
 +		internal IList<string> usedMods;
 +		internal ModPlayer[] modPlayers = new ModPlayer[0];
 +
-+		private ModPlayer GetModPlayer(int? index) => index.HasValue ? modPlayers[index.Value] : null;
++		// Get
 +
-+		public ModPlayer GetModPlayer(Mod mod, string name) => GetModPlayer(mod.Name, name);
++		/// <summary> Gets the instance of the specified ModPlayer type. This will throw exceptions on failure. </summary>
++		/// <exception cref="KeyNotFoundException"/>
++		/// <exception cref="IndexOutOfRangeException"/>
++		public T GetModPlayer<T>() where T : ModPlayer
++			=> GetModPlayerInstance(ModContent.GetInstance<T>());
 +
-+		public ModPlayer GetModPlayer(string modName, string name) => ModContent.TryGet<ModPlayer>(modName, name, out var modPlayer) ? GetModPlayerInstance(modPlayer) : null;
++		/// <summary> Gets the local instance of the specified ModPlayer instance. This will throw exceptions on failure. </summary>
++		/// <exception cref="KeyNotFoundException"/>
++		/// <exception cref="IndexOutOfRangeException"/>
++		/// <exception cref="NullReferenceException"/>
++		public T GetModPlayerInstance<T>(T baseInstance) where T : ModPlayer
++			=> modPlayers[baseInstance.index] as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current player.");
 +
-+		public T GetModPlayer<T>() where T : ModPlayer => GetModPlayerInstance(ModContent.GetInstance<T>());
++		// TryGet
 +
-+		public T GetModPlayerInstance<T>(T baseModPlayerInst) where T : ModPlayer => (T)GetModPlayer(baseModPlayerInst.index);
++		/// <summary> Gets the instance of the specified ModPlayer type. </summary>
++		public bool TryGetModPlayer<T>(out T result) where T : ModPlayer
++			=> TryGetModPlayerInstance(ModContent.GetInstance<T>(), out result);
++
++		/// <summary> Safely attempts to get the local instance of the specified ModPlayer instance. </summary>
++		/// <returns> Whether or not the requested instance has been found. </returns>
++		public bool TryGetModPlayerInstance<T>(T baseInstance, out T result) where T : ModPlayer {
++			if (baseInstance == null || baseInstance.index < 0 || baseInstance.index >= modPlayers.Length) {
++				result = default;
++
++				return false;
++			}
++
++			result = modPlayers[baseInstance.index] as T;
++
++			return result != null;
++		}
 +
 +		public Player(bool startupInventory = true) {
 +			buffType = new int[MaxBuffs];
