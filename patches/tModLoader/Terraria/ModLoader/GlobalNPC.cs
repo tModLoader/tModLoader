@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.GameContent.Bestiary;
 
 namespace Terraria.ModLoader
 {
@@ -81,6 +82,15 @@ namespace Terraria.ModLoader
 		/// <param name="numPlayers"></param>
 		/// <param name="bossLifeScale"></param>
 		public virtual void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale) {
+		}
+
+		/// <summary>
+		/// Allows you to set an NPC's information in the Bestiary.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="database"></param>
+		/// <param name="bestiaryEntry"></param>
+		public virtual void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 		}
 
 		/// <summary>

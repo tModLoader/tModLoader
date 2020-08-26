@@ -1,6 +1,8 @@
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent.Bestiary;
 
 namespace ExampleMod.Content.NPCS
 {
@@ -11,6 +13,13 @@ namespace ExampleMod.Content.NPCS
 			DisplayName.SetDefault("Zombie");
 
 			Main.npcFrameCount[npc.type] = Main.npcFrameCount[NPCID.Zombie];
+
+			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
+				Position = new Vector2(25f, -30f),
+				Rotation = 0.7f,
+				Frame = 4
+			};
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, value);
 		}
 
 		public override void SetDefaults() {
@@ -33,6 +42,15 @@ namespace ExampleMod.Content.NPCS
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
 			return SpawnCondition.OverworldNightMonster.Chance * 0.5f;
+		}
+
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[1] { //Sets the spawning conditions of this NPC that is listed in the bestiary.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime
+			});
+			bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement( //Sets the description of this NPC that is listed in the bestiary.
+				"This type of zombie for some reason really likes to spread confetti around. Otherwise, it behaves just like a normal zombie."
+			));
 		}
 
 		public override void HitEffect(int hitDirection, double damage) {

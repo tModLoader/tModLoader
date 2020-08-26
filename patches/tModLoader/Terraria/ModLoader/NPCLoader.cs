@@ -9,6 +9,7 @@ using System.Reflection;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -186,6 +187,15 @@ namespace Terraria.ModLoader
 
 			foreach (GlobalNPC g in HookScaleExpertStats.arr) {
 				g.Instance(npc).ScaleExpertStats(npc, numPlayers, bossLifeScale);
+			}
+		}
+
+		private static HookList HookSetBestiary = AddHook<Action<NPC, BestiaryDatabase, BestiaryEntry>>(g => g.SetBestiary);
+		public static void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+			npc.modNPC?.SetBestiary(database, bestiaryEntry);
+
+			foreach (GlobalNPC g in HookSetBestiary.arr) {
+				g.Instance(npc).SetBestiary(npc, database, bestiaryEntry);
 			}
 		}
 

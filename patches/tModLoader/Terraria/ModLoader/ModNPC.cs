@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.Localization;
 
@@ -208,6 +209,14 @@ namespace Terraria.ModLoader
 		/// <param name="numPlayers"></param>
 		/// <param name="bossLifeScale"></param>
 		public virtual void ScaleExpertStats(int numPlayers, float bossLifeScale) {
+		}
+
+		/// <summary>
+		/// Allows you to set an NPC's information in the Bestiary.
+		/// </summary>
+		/// <param name="database"></param>
+		/// <param name="bestiaryEntry"></param>
+		public virtual void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 		}
 
 		/// <summary>

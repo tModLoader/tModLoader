@@ -13,6 +13,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
+using Terraria.GameContent.Bestiary;
 using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.NPCs
@@ -33,6 +34,11 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.AttackTime[npc.type] = 90; // The amount of time it takes for the NPC's attack animation to be over once it starts.
 			NPCID.Sets.AttackAverageChance[npc.type] = 30;
 			NPCID.Sets.HatOffsetY[npc.type] = 4; // For when a party is active, the party hat spawns at a Y offset.
+
+			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
+				Velocity = 1f
+			}; 
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, value);
 		}
 
 		public override void SetDefaults() {
@@ -48,6 +54,15 @@ namespace ExampleMod.Content.NPCs
 			npc.DeathSound = SoundID.NPCDeath1;
 			npc.knockBackResist = 0.5f;
 			animationType = NPCID.Guide;
+		}
+
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[1] { //Sets the preferred biomes of this town NPC listed in the bestiary.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
+			});
+			bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement( //Sets the description of this NPC listed in the bestiary.
+				"Hailing from a mysterious greyscale cube world, the Example Person is here to help you understand everything about tModLoader."
+			));
 		}
 
 		public override void HitEffect(int hitDirection, double damage) {
