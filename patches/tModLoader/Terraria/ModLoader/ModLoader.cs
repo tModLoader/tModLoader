@@ -83,6 +83,8 @@ namespace Terraria.ModLoader
 		internal static ModAssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
 		internal static AssemblyResourcesContentSource ManifestContentSource { get; set; }
 
+		// Get
+
 		/// <summary> Gets the instance of the Mod with the specified name. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		public static Mod GetMod(string name) => modsByName[name];
@@ -91,12 +93,14 @@ namespace Terraria.ModLoader
 		/// <exception cref="IndexOutOfRangeException"/>
 		public static Mod GetMod(int index) => Mods[index];
 
+		// TryGet
+
 		/// <summary> Safely attempts to get the instance of the Mod with the specified name. </summary>
-		/// <returns> Whether or not the requested instace was found. </returns>
+		/// <returns> Whether or not the requested instance has been found. </returns>
 		public static bool TryGetMod(string name, out Mod result) => modsByName.TryGetValue(name, out result);
 
 		/// <summary> Safely attempts to get the instance of the Mod with the specified index. </summary>
-		/// <returns> Whether or not the requested instace was found. </returns>
+		/// <returns> Whether or not the requested instance has been found. </returns>
 		public static bool TryGetMod(int index, out Mod result) {
 			if (index >= 0 && index < Mods.Length) {
 				result = Mods[index];
