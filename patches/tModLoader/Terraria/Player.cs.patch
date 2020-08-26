@@ -3595,7 +3595,7 @@
  				}
  
  				return playerFileData;
-@@ -37381,7 +_,49 @@
+@@ -37381,7 +_,53 @@
  			return -1;
  		}
  
@@ -3623,9 +3623,13 @@
 +
 +		private ModExtraJump GetModExtraJump(int? index) => index.HasValue ? modExtraJumps[index.Value] : null;
 +
-+		public ModExtraJump GetModExtraJump(Mod mod, string name) => GetModExtraJump(mod.GetExtraJump(name)?.index);
++		public ModExtraJump GetModExtraJump(Mod mod, string name) => GetModExtraJump(mod.Name, name);
 +
-+		public T GetModExtraJump<T>() where T : ModExtraJump => (T)GetModExtraJump(ModContent.GetInstance<T>()?.index);
++		public ModExtraJump GetModExtraJump(string modName, string name) => ModContent.TryGet<ModExtraJump>(modName, name, out var modExtraJump) ? GetModExtraJumpInstance(modExtraJump) : null;
++
++		public T GetModExtraJump<T>() where T : ModExtraJump => GetModExtraJumpInstance(ModContent.GetInstance<T>());
++
++		public T GetModExtraJumpInstance<T>(T baseModExtraJumpInst) where T : ModExtraJump => (T)GetModExtraJump(baseModExtraJumpInst.index);
 +
 +		public void EnableExtraJump<T>() where T : ModExtraJump => GetModExtraJump<T>().hasJumpOption = true;
 +

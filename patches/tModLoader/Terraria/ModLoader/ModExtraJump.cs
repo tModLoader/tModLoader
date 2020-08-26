@@ -60,9 +60,8 @@ namespace Terraria.ModLoader
 		}
 
 		protected sealed override void Register() {
-			Mod.extraJumps[Name] = this;
+			ModTypeLookup<ModExtraJump>.Register(this);
 			ModExtraJumpLoader.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		public bool TypeEquals(ModExtraJump other) => Mod == other.Mod && Name == other.Name;
