@@ -1,0 +1,31 @@
+--- src/Terraria/Terraria/DataStructures/PlayerMovementAccsCache.cs
++++ src/tModLoader/Terraria/DataStructures/PlayerMovementAccsCache.cs
+@@ -15,6 +_,7 @@
+ 		private bool jumpAgainFart;
+ 		private bool jumpAgainSail;
+ 		private bool jumpAgainUnicorn;
++		private bool[] jumpAgain;
+ 
+ 		public void CopyFrom(Player player) {
+ 			if (!_readyToPaste) {
+@@ -31,6 +_,10 @@
+ 				jumpAgainFart = player.canJumpAgain_Fart;
+ 				jumpAgainSail = player.canJumpAgain_Sail;
+ 				jumpAgainUnicorn = player.canJumpAgain_Unicorn;
++				jumpAgain = new bool[player.modExtraJumps.Length]; // No Linq Select here because it would require a using which would increase patch count
++				for (int i = 0; i < jumpAgain.Length; i++) {
++					jumpAgain[i] = player.modExtraJumps[i].canJumpAgain;
++				}
+ 			}
+ 		}
+ 
+@@ -51,6 +_,9 @@
+ 					player.canJumpAgain_Fart = jumpAgainFart;
+ 					player.canJumpAgain_Sail = jumpAgainSail;
+ 					player.canJumpAgain_Unicorn = jumpAgainUnicorn;
++					for (int i = 0; i < player.modExtraJumps.Length; i++) {
++						player.modExtraJumps[i].canJumpAgain = jumpAgain[i];
++					}
+ 				}
+ 			}
+ 		}
