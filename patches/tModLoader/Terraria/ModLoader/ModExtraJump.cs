@@ -51,12 +51,6 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
-		/// <summary>
-		/// Return a <see cref="VanillaExtraJump"/> so that your jump will be performed after it.
-		/// Jumps with the same parent and from the same mod will be performed in reverse alphabetic order
-		/// </summary>
-		public virtual VanillaExtraJump JumpAfter => VanillaExtraJump.Cloud;
-
 		internal ModExtraJump CreateFor(Player newPlayer) {
 			var ModExtraJump = (ModExtraJump)Activator.CreateInstance(GetType());
 			ModExtraJump.Mod = Mod;
@@ -72,6 +66,14 @@ namespace Terraria.ModLoader
 		}
 
 		public bool TypeEquals(ModExtraJump other) => Mod == other.Mod && Name == other.Name;
+
+		public override string ToString() => $"{nameof(hasJumpOption)}: {hasJumpOption}, {nameof(canJumpAgain)}: {canJumpAgain}, {GetType().Name}";
+
+		/// <summary>
+		/// Return a <see cref="VanillaExtraJump"/> so that your jump will be performed after it.
+		/// Jumps with the same parent and from the same mod will be performed in reverse alphabetic order.
+		/// </summary>
+		public virtual VanillaExtraJump JumpAfter => VanillaExtraJump.Cloud;
 
 		/// <summary>
 		/// Allows you to set the jump height multiplier, disable default double jump sound, and add visuals when this jump is initiated.
