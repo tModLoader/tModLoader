@@ -1748,7 +1748,7 @@
  				if (!hasJumpOption_Basilisk)
  					canJumpAgain_Basilisk = false;
 +
-+				ModExtraJumpLoader.ToggleJumpState(this);
++				ModExtraJumpLoader.DisableLostJumps(this);
  			}
  
  			if (!carpet) {

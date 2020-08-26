@@ -131,7 +131,9 @@ namespace Terraria.ModLoader
 			if (jump != null && jump.hasJumpOption && jump.IsPerformingJump) {
 				float runAccelerationMult = 1f;
 				float maxRunSpeedMult = 1f;
+
 				jump.HorizontalJumpSpeed(ref runAccelerationMult, ref maxRunSpeedMult);
+
 				player.runAcceleration *= runAccelerationMult;
 				player.maxRunSpeed *= maxRunSpeedMult;
 			}
@@ -144,12 +146,14 @@ namespace Terraria.ModLoader
 		internal static void Jump(Player player) {
 			bool playSound = true;
 			float jumpHeight = 1f;
+
 			ModExtraJump jump = player.activeJump;
 			jump.IsPerformingJump = true;
 			jump.Jump(ref jumpHeight, ref playSound);
-			if (playSound) {
+
+			if (playSound)
 				SoundEngine.PlaySound(SoundID.DoubleJump, (int)player.position.X, (int)player.position.Y);
-			}
+
 			player.velocity.Y = -Player.jumpSpeed * player.gravDir;
 			player.jump = (int)(Player.jumpHeight * jumpHeight);
 		}
@@ -197,21 +201,19 @@ namespace Terraria.ModLoader
 		/// <param name="player">Jumping player</param>
 		internal static void SetJumpState(Player player) {
 			foreach (ModExtraJump extraJump in player.modExtraJumps.Where(j => !(j is VanillaExtraJump))) {
-				if (extraJump.hasJumpOption) {
+				if (extraJump.hasJumpOption)
 					extraJump.canJumpAgain = true;
-				}
 			}
 		}
 
 		/// <summary>
-		/// Toggles the ability to double jump if it's active, otherwise forbid it.
+		/// Disables the ability to double jump if it's not enabled anymore.
 		/// </summary>
 		/// <param name="player">Jumping player</param>
-		internal static void ToggleJumpState(Player player) {
+		internal static void DisableLostJumps(Player player) {
 			foreach (ModExtraJump extraJump in player.modExtraJumps.Where(j => !(j is VanillaExtraJump))) {
-				if (!extraJump.hasJumpOption) {
+				if (!extraJump.hasJumpOption)
 					extraJump.canJumpAgain = false;
-				}
 			}
 		}
 	}
