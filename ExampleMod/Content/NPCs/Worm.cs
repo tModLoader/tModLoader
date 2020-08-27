@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -11,11 +13,32 @@ namespace ExampleMod.NPCs
 	{
 		public override string Texture => "Terraria/NPC_" + NPCID.DiggerHead;
 
+		//TODO: Actually get CustomTexturePath working once we figure out all this texture stuff
+		public override void SetStaticDefaults() { 
+			//NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
+			//	CustomTexturePath = "ExampleMod/Content/NPCs/ExampleWorm_Bestiary", //If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
+			//	Position = new Vector2(40f, 24f),
+			//	PortraitPositionXOverride = 0f,
+			//	PortraitPositionYOverride = 12f
+			//};
+			//NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, value);
+		}
+
 		public override void SetDefaults() {
 			// Head is 10 defence, body 20, tail 30.
 			npc.CloneDefaults(NPCID.DiggerHead);
 			npc.aiStyle = -1;
 			npc.color = Color.Aqua;
+		}
+
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[2] { //Sets the spawning conditions of this NPC that is listed in the bestiary.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Underground,
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Caverns
+			});
+			bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement( //Sets the description of this NPC that is listed in the bestiary.
+				"Looks like a Digger fell into some aqua-colored paint. Oh well."
+			));
 		}
 
 		public override void Init() {
@@ -56,6 +79,13 @@ namespace ExampleMod.NPCs
 	{
 		public override string Texture => "Terraria/NPC_" + NPCID.DiggerBody;
 
+		public override void SetStaticDefaults() {
+			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+				Hide = true //Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
+			};
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, value);
+		}
+
 		public override void SetDefaults() {
 			npc.CloneDefaults(NPCID.DiggerBody);
 			npc.aiStyle = -1;
@@ -66,6 +96,13 @@ namespace ExampleMod.NPCs
 	internal class ExampleWormTail : ExampleWorm
 	{
 		public override string Texture => "Terraria/NPC_" + NPCID.DiggerTail;
+
+		public override void SetStaticDefaults() {
+			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+				Hide = true //Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
+			};
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, value);
+		}
 
 		public override void SetDefaults() {
 			npc.CloneDefaults(NPCID.DiggerTail);
@@ -84,6 +121,7 @@ namespace ExampleMod.NPCs
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Worm");
+
 		}
 
 		public override void Init() {
@@ -166,7 +204,7 @@ namespace ExampleMod.NPCs
 					npc.active = false;
 				}
 				if (!npc.active && Main.netMode == NetmodeID.Server) {
-					NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+					NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
 				}
 			}
 			int num180 = (int)(npc.position.X / 16f) - 1;

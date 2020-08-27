@@ -15,9 +15,7 @@ namespace ExampleMod.Content.NPCS
 			Main.npcFrameCount[npc.type] = Main.npcFrameCount[NPCID.Zombie];
 
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
-				Position = new Vector2(25f, -30f),
-				Rotation = 0.7f,
-				Frame = 4
+				Velocity = 1f
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, value);
 		}
