@@ -1,4 +1,5 @@
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
@@ -8,6 +9,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded platform.");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 200;
 		}
 
 		public override void SetDefaults() {

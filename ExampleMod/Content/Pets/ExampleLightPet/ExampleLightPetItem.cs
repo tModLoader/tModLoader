@@ -2,6 +2,7 @@
 using ExampleMod.Content.Tiles.Furniture;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
@@ -12,6 +13,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Annoying Light");
 			Tooltip.SetDefault("Summons an annoying light");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 1;
 		}
 
 		public override void SetDefaults() {

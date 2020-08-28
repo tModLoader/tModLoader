@@ -6,10 +6,11 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Content
+namespace ExampleMod.Content.Items.Ammo
 {
 	public class ExampleSolutionItem : ModItem
 	{
@@ -18,6 +19,7 @@ namespace ExampleMod.Content
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Monochromatic Solution");
 			Tooltip.SetDefault("Used by the Clentaminator\nSpreads the example");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 99;
 		}
 
 		public override void SetDefaults() {

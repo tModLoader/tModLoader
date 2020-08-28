@@ -2,6 +2,7 @@
 using System;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using static Mono.Cecil.Cil.OpCodes;
 
@@ -42,6 +43,7 @@ namespace ExampleMod.Content.Items.Accessories
 		public override void SetStaticDefaults() {
 			// We can use vanilla language keys to copy the tooltip from HiveBackpack
 			Tooltip.SetDefault("{$ItemTooltip.HiveBackpack}");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 1;
 		}
 
 		public override void SetDefaults() {
