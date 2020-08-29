@@ -106,7 +106,7 @@ namespace Terraria.ModLoader.IO
 				return;
 
 			// no mystery hair dye at this stage
-			if (ModContent.TryGet<ModItem>(hairDyeItemName, out var modItem))
+			if (ModContent.TryFind<ModItem>(hairDyeItemName, out var modItem))
 				player.hairDye = (byte)GameShaders.Hair.GetShaderIdFromItemId(modItem.Type);
 		}
 
@@ -131,7 +131,7 @@ namespace Terraria.ModLoader.IO
 				string modName = tag.GetString("mod");
 				string modPlayerName = tag.GetString("name");
 
-				if (ModLoader.TryGetMod(modName, out var mod) && ModContent.TryGet<ModPlayer>(mod.Name, modPlayerName, out var modPlayerBase) && player.TryGetModPlayer(modPlayerBase, out var modPlayer)) {
+				if (ModLoader.TryGetMod(modName, out var mod) && ModContent.TryFind<ModPlayer>(mod.Name, modPlayerName, out var modPlayerBase) && player.TryGetModPlayer(modPlayerBase, out var modPlayer)) {
 					try {
 						modPlayer.Load(tag.GetCompound("data"));
 					}
@@ -185,7 +185,7 @@ namespace Terraria.ModLoader.IO
 						return;
 
 					var modName = tag.GetString("mod");
-					int type = modName == "Terraria" ? tag.GetInt("id") : ModContent.TryGet(modName, tag.GetString("name"), out ModBuff buff) ? buff.Type : 0;
+					int type = modName == "Terraria" ? tag.GetInt("id") : ModContent.TryFind(modName, tag.GetString("name"), out ModBuff buff) ? buff.Type : 0;
 					if (type > 0) {
 						player.buffType[buffCount] = type;
 						player.buffTime[buffCount] = tag.GetInt("time");
@@ -198,7 +198,7 @@ namespace Terraria.ModLoader.IO
 			//legacy code path
 			//iterate the list in reverse, insert each buff at its index and push the buffs after it up a slot
 			foreach (var tag in list.Reverse()) {
-				if (!ModContent.TryGet(tag.GetString("mod"), tag.GetString("name"), out ModBuff buff))
+				if (!ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModBuff buff))
 					continue;
 
 				int index = Math.Min(tag.GetByte("index"), buffCount);
