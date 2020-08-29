@@ -243,7 +243,10 @@ namespace Terraria.ModLoader.UI
 				UIModBrowser.LogModBrowserException(e.Error);
 				return;
 			}
-			ModLoader.GetMod(theTModFile.name)?.Close();
+
+			if (ModLoader.TryGetMod(theTModFile.name, out var mod))
+				mod.Close();
+
 			var result = e.Result;
 			int responseLength = result.Length;
 			if (result.Length > 256 && result[result.Length - 256 - 1] == '~') {
