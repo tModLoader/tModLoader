@@ -85,11 +85,11 @@ namespace Terraria.ModLoader
 
 		// Get
 
-		/// <summary> Gets the instance of the Mod with the specified name. </summary>
+		/// <summary> Gets the instance of the Mod with the specified name. This will throw an exception if the mod cannot be found. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		public static Mod GetMod(string name) => modsByName[name];
 
-		/// <summary> Gets the instance of the Mod with the specified index. </summary>
+		/// <summary> Gets the instance of the Mod with the specified index. This will throw an exception if the mod cannot be found. </summary>
 		/// <exception cref="IndexOutOfRangeException"/>
 		public static Mod GetMod(int index) => Mods[index];
 
