@@ -28,11 +28,17 @@ namespace Terraria.ModLoader
 	{
 		public static T GetInstance<T>() where T : class => ContentInstance<T>.Instance;
 
-		public static T Get<T>(string fullname) where T : IModType => ModTypeLookup<T>.Get(fullname);
-		public static T Get<T>(string modName, string name) where T : IModType => ModTypeLookup<T>.Get(modName, name);
+		/// <summary> Attempts to find the content instance with the specified full name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
+		public static T Find<T>(string fullname) where T : IModType => ModTypeLookup<T>.Get(fullname);
+		/// <summary> Attempts to find the content instance with the specified name and mod name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
+		public static T Find<T>(string modName, string name) where T : IModType => ModTypeLookup<T>.Get(modName, name);
 
-		public static bool TryGet<T>(string fullname, out T value) where T : IModType => ModTypeLookup<T>.TryGetValue(fullname, out value);
-		public static bool TryGet<T>(string modName, string name, out T value) where T : IModType => ModTypeLookup<T>.TryGetValue(modName, name, out value);
+		/// <summary> Safely attempts to find the content instance with the specified full name. Caching the result is recommended. </summary>
+		/// <returns> Whether or not the requested instance has been found. </returns>
+		public static bool TryFind<T>(string fullname, out T value) where T : IModType => ModTypeLookup<T>.TryGetValue(fullname, out value);
+		/// <summary> Safely attempts to find the content instance with the specified name and mod name. Caching the result is recommended. </summary>
+		/// <returns> Whether or not the requested instance has been found. </returns>
+		public static bool TryFind<T>(string modName, string name, out T value) where T : IModType => ModTypeLookup<T>.TryGetValue(modName, name, out value);
 
 		private static readonly char[] nameSplitters = new char[] { '/', ' ', ':' };
 		public static void SplitName(string name, out string domain, out string subName) {
