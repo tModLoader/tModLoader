@@ -26,17 +26,19 @@ namespace Terraria
 		public T GetGlobalItem<T>() where T : GlobalItem
 			=> GetGlobalItem(ModContent.GetInstance<T>());
 
-		/// <summary> Gets the global item. </summary>
+		/// <summary> Gets the local instance of the type of the specified GlobalItem instance. This will throw exceptions on failure. </summary>
+		/// <exception cref="KeyNotFoundException"/>
+		/// <exception cref="NullReferenceException"/>
 		public T GetGlobalItem<T>(T baseInstance) where T : GlobalItem
 			=> baseInstance.Instance(this) as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current item.");
 
 		// TryGet
 
-		/// <summary> Gets the instance of the specified ModPlayer type. </summary>
+		/// <summary> Gets the instance of the specified GlobalItem type. </summary>
 		public bool TryGetGlobalItem<T>(out T result) where T : GlobalItem
 			=> TryGetGlobalItem(ModContent.GetInstance<T>(), out result);
 
-		/// <summary> Safely attempts to get the local instance of the type of the specified ModPlayer instance. </summary>
+		/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem {
 			if (baseInstance == null || baseInstance.index < 0 || baseInstance.index >= globalItems.Length) {
