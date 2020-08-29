@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Projectile.cs
 +++ src/tModLoader/Terraria/Projectile.cs
-@@ -20,6 +_,7 @@
+@@ -20,12 +_,13 @@
  using Terraria.ID;
  using Terraria.Localization;
  using Terraria.Physics;
@@ -8,23 +8,13 @@
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
  
-@@ -27,6 +_,16 @@
+ namespace Terraria
  {
- 	public class Projectile : Entity
+-	public class Projectile : Entity
++	public partial class Projectile : Entity
  	{
-+		public ModProjectile modProjectile {get; internal set;}
-+
-+		internal GlobalProjectile[] globalProjectiles = new GlobalProjectile[0];
-+
-+		/// <summary>Gets the global projectile. Use this overload when you dynamically add GlobalProjectile manually.</summary>
-+		public GlobalProjectile GetGlobalProjectile(Mod mod, string name) => ProjectileLoader.GetGlobalProjectile(this, mod, name).Instance(this);
-+
-+		/// <summary>Gets the global projectile. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
-+		public T GetGlobalProjectile<T>() where T : GlobalProjectile => (T)ModContent.GetInstance<T>().Instance(this);
-+
  		private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  		{
- 			public int Compare(Tuple<int, float> npcIndex1, Tuple<int, float> npcIndex2) => npcIndex1.Item2.CompareTo(npcIndex2.Item2);
 @@ -88,9 +_,9 @@
  		public float knockBack;
  		public bool friendly;
