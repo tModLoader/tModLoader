@@ -211,8 +211,8 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public sbyte GetAccessorySlot(string name, EquipType type) => (sbyte)GetEquipSlot(name, type);
 
-		public T Get<T>(string name) where T : IModType => ModContent.Get<T>(Name, name);
-		public bool TryGet<T>(string name, out T value) where T : IModType => ModContent.TryGet(Name, name, out value);
+		public T Get<T>(string name) where T : IModType => ModContent.Find<T>(Name, name);
+		public bool TryGet<T>(string name, out T value) where T : IModType => ModContent.TryFind(Name, name, out value);
 
 		/// <summary>
 		/// Assigns a head texture to the given town NPC type.

@@ -29,7 +29,7 @@ namespace Terraria.ModLoader
 		/// <summary>Whether or not it is always safe to call Player.DelBuff on this buff. Setting this to false will prevent the nurse from being able to remove this debuff. Defaults to true.</summary>
 		public bool canBeCleared = true;
 
-		protected override void Register() {
+		protected override sealed void Register() {
 			ModTypeLookup<ModBuff>.Register(this);
 
 			Type = BuffLoader.ReserveBuffID();

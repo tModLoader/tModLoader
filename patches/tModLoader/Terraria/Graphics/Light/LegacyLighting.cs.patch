@@ -34,15 +34,6 @@
  				for (int n = num3; n < num4; n++) {
  					LightingState lightingState2 = array3[n - _expandedRectTop];
  					Tile tile = Main.tile[m, n];
-@@ -587,6 +_,8 @@
- 					}
- 
- 					_lightMap.GetLight(m - num, n - num3, out Vector3 color);
-+					WallLoader.ModifyLight(m, n, tile.wall, ref color.X, ref color.Y, ref color.Z); //TODO: Test. Is this the correct place?
-+					TileLoader.ModifyLight(m, n, tile.type, ref color.X, ref color.Y, ref color.Z);
- 					if (_rgb) {
- 						lightingState2.R2 = color.X;
- 						lightingState2.G2 = color.Y;
 @@ -746,6 +_,8 @@
  							_wetLightB = 0f;
  							break;

@@ -99,7 +99,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		protected override void Register() {
+		protected override sealed void Register() {
 			Type = (ushort)WallLoader.ReserveWallID();
 
 			ModTypeLookup<ModWall>.Register(this);

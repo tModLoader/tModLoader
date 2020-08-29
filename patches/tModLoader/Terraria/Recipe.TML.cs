@@ -139,7 +139,7 @@ namespace Terraria
 		public Recipe AddIngredient(Mod mod, string itemName, int stack = 1) {
 			mod ??= this.Mod;
 
-			if (!ModContent.TryGet(mod.Name, itemName, out ModItem item))
+			if (!ModContent.TryFind(mod.Name, itemName, out ModItem item))
 				throw new RecipeException($"The item {itemName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla item, try removing the first argument.");
 
 			return AddIngredient(item, stack);
@@ -234,7 +234,7 @@ namespace Terraria
 		public Recipe AddTile(Mod mod, string tileName) {
 			mod ??= this.Mod;
 			
-			if (!ModContent.TryGet(mod.Name, tileName, out ModTile tile))
+			if (!ModContent.TryFind(mod.Name, tileName, out ModTile tile))
 				throw new RecipeException($"The tile {tileName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla tile, try using Recipe.AddTile(tileID).");
 
 			return AddTile(tile);
