@@ -132,7 +132,7 @@ namespace Terraria.ModLoader.IO
 				string modPlayerName = tag.GetString("name");
 
 				if (ModLoader.TryGetMod(modName, out var mod) && ModContent.TryGet<ModPlayer>(mod.Name, modPlayerName, out var modPlayerBase) && player.TryGetModPlayer(modPlayerBase, out var modPlayer)) {
-						try {
+					try {
 						modPlayer.Load(tag.GetCompound("data"));
 					}
 					catch (Exception e) {
