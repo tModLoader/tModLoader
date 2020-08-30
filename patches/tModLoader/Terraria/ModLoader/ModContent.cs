@@ -29,8 +29,10 @@ namespace Terraria.ModLoader
 		public static T GetInstance<T>() where T : class => ContentInstance<T>.Instance;
 
 		/// <summary> Attempts to find the content instance with the specified full name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
+		/// <exception cref="KeyNotFoundException"/>
 		public static T Find<T>(string fullname) where T : IModType => ModTypeLookup<T>.Get(fullname);
 		/// <summary> Attempts to find the content instance with the specified name and mod name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
+		/// <exception cref="KeyNotFoundException"/>
 		public static T Find<T>(string modName, string name) where T : IModType => ModTypeLookup<T>.Get(modName, name);
 
 		/// <summary> Safely attempts to find the content instance with the specified full name. Caching the result is recommended. </summary>
