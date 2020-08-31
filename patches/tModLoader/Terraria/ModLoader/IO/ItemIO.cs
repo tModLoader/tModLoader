@@ -64,7 +64,7 @@ namespace Terraria.ModLoader.IO
 				item.netDefaults(tag.GetInt("id"));
 			}
 			else {
-				if (ModContent.TryGet(modName, tag.GetString("name"), out ModItem modItem)) {
+				if (ModContent.TryFind(modName, tag.GetString("name"), out ModItem modItem)) {
 					item.SetDefaults(modItem.Type);
 					item.modItem.Load(tag.GetCompound("data"));
 				}
@@ -75,7 +75,7 @@ namespace Terraria.ModLoader.IO
 			}
 
 			if (tag.ContainsKey("modPrefixMod") && tag.ContainsKey("modPrefixName")) {
-				item.Prefix(ModContent.TryGet(tag.GetString("modPrefixMod"), tag.GetString("modPrefixName"), out ModPrefix prefix) ? prefix.Type : 0);
+				item.Prefix(ModContent.TryFind(tag.GetString("modPrefixMod"), tag.GetString("modPrefixName"), out ModPrefix prefix) ? prefix.Type : 0);
 			}
 			else if (tag.ContainsKey("prefix")) {
 				item.Prefix(tag.GetByte("prefix"));
@@ -114,7 +114,7 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadGlobals(Item item, IList<TagCompound> list) {
 			foreach (var tag in list) {
-				if (ModContent.TryGet(tag.GetString("mod"), tag.GetString("name"), out GlobalItem globalItem)) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out GlobalItem globalItem)) {
 					var globalItemInstance = globalItem.Instance(item);
 					try {
 						globalItemInstance.Load(item, tag.GetCompound("data"));

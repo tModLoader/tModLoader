@@ -3484,7 +3484,7 @@
 +
 +		public ModPlayer GetModPlayer(Mod mod, string name) => GetModPlayer(mod.Name, name);
 +
-+		public ModPlayer GetModPlayer(string modName, string name) => ModContent.TryGet<ModPlayer>(modName, name, out var modPlayer) ? GetModPlayerInstance(modPlayer) : null;
++		public ModPlayer GetModPlayer(string modName, string name) => ModContent.TryFind<ModPlayer>(modName, name, out var modPlayer) ? GetModPlayerInstance(modPlayer) : null;
 +
 +		public T GetModPlayer<T>() where T : ModPlayer => GetModPlayerInstance(ModContent.GetInstance<T>());
 +

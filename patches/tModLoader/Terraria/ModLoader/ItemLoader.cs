@@ -1704,7 +1704,7 @@ namespace Terraria.ModLoader
 			short n = r.ReadInt16();
 			NetGlobals = new GlobalItem[n];
 			for (short i = 0; i < n; i++)
-				NetGlobals[i] = ModContent.Get<GlobalItem>(ModNet.GetMod(r.ReadInt16()).Name, r.ReadString());
+				NetGlobals[i] = ModContent.Find<GlobalItem>(ModNet.GetMod(r.ReadInt16()).Name, r.ReadString());
 		}
 
 		private static bool HasMethod(Type t, string method, params Type[] args) {
