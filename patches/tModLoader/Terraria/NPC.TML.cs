@@ -27,6 +27,7 @@ namespace Terraria
 		public T GetGlobalNPC<T>(T baseInstance) where T : GlobalNPC
 			=> baseInstance.Instance(this) as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current npc.");
 
+		/*
 		// TryGet
 
 		/// <summary> Gets the instance of the specified GlobalNPC type. </summary>
@@ -46,5 +47,6 @@ namespace Terraria
 
 			return result != null;
 		}
+		*/
 	}
 }
