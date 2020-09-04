@@ -242,7 +242,9 @@ namespace Terraria.ModLoader
 				string name = reader.ReadString();
 				byte[] data = reader.ReadBytes(reader.ReadByte());
 
-				if (ModLoader.TryGetMod(modName, out var mod) && ModContent.TryFind<ModPlayer>(mod.Name, name, out var modPlayerBase) && player.TryGetModPlayer(modPlayerBase, out var modPlayer)) {
+				if (ModContent.TryFind<ModPlayer>(modName, name, out var modPlayerBase)) {
+					var modPlayer = player.GetModPlayer(modPlayerBase);
+
 					using MemoryStream stream = new MemoryStream(data);
 					using BinaryReader customReader = new BinaryReader(stream);
 
