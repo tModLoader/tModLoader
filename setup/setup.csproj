@@ -13,6 +13,10 @@
     <Compile Remove="PatchReviewer\**" />
     <EmbeddedResource Remove="PatchReviewer\**" />
     <None Remove="PatchReviewer\**" />
+    <Page Remove="SyntaxRewriterTestProgram\**" />
+    <Compile Remove="SyntaxRewriterTestProgram\**" />
+    <EmbeddedResource Remove="SyntaxRewriterTestProgram\**" />
+    <None Remove="SyntaxRewriterTestProgram\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Humanizer.Core" Version="2.7.9" />

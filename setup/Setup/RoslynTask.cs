@@ -2,8 +2,14 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,7 +18,7 @@ namespace Terraria.ModLoader.Setup
 {
 	public abstract class RoslynTask : SetupOperation
 	{
-		private string projectPath;
+		protected string projectPath;
 
 		protected abstract string Status { get; }
 		protected virtual int MaxDegreeOfParallelism => 0;
@@ -39,21 +45,29 @@ namespace Terraria.ModLoader.Setup
 				// todo proper error log
 				workspace.WorkspaceFailed += (o, e) => Console.Error.WriteLine(e.Diagnostic.Message);
 
+				taskInterface.SetStatus($"Loading project '{projectPath}'");
 				Console.WriteLine($"Loading project '{projectPath}'");
 
 				// Attach progress reporter so we print projects as they are loaded.
 				var project = await workspace.OpenProjectAsync(projectPath);
+				StartUp(workspace, project);
 				var workItems = project.Documents.Select(doc => new WorkItem(Status+" "+doc.Name, async () => {
 					var newDoc = await Process(doc);
 
 					var before = await doc.GetTextAsync();
 					var after = await newDoc.GetTextAsync();
-					if (before != after)
+					if (before != after) {
+#if DEBUG
+						newDoc = newDoc.WithFilePath(Path.ChangeExtension(newDoc.FilePath, ".cs2"));
+#endif
+						Directory.CreateDirectory(Path.GetDirectoryName(newDoc.FilePath));
 						await File.WriteAllTextAsync(newDoc.FilePath, after.ToString());
+					}
 				}));
 
 				ExecuteParallel(workItems.ToList(), maxDegree: MaxDegreeOfParallelism);
 			}
+			FinalSteps();
 		}
 
 		//protected virtual bool RequiresCodeAnalysis { get; }
@@ -71,10 +85,14 @@ namespace Terraria.ModLoader.Setup
 				MSBuildFound = true;
 			}
 
-			return MSBuildWorkspace.Create();
+			return MSBuildWorkspace.Create(new Dictionary<string, string>() { { "Configuration", "WindowsDebug" }, { "Platform", "AnyCPU" } });
+			//return MSBuildWorkspace.Create();
 		}
 
 		protected abstract Task<Document> Process(Document doc);
+
+		protected virtual void StartUp(MSBuildWorkspace workspace, Project project) { }
+		protected virtual void FinalSteps() { }
 
 		private static Project adhocCSharpProject = new AdhocWorkspace().AddProject("", LanguageNames.CSharp);
 		public static async Task<string> TransformSource(string source, CancellationToken cancel, Func<Document, CancellationToken, Task<Document>> transform) {

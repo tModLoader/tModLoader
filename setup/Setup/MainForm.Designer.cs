@@ -55,6 +55,7 @@ namespace Terraria.ModLoader.Setup
             this.offsetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fuzzyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonSetupDebugging = new System.Windows.Forms.Button();
+            this.buttonTransformations = new System.Windows.Forms.Button();
             this.mainMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -150,7 +151,7 @@ namespace Terraria.ModLoader.Setup
             // 
             this.buttonPatchModLoader.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.buttonPatchModLoader.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonPatchModLoader.Location = new System.Drawing.Point(180, 100);
+            this.buttonPatchModLoader.Location = new System.Drawing.Point(180, 129);
             this.buttonPatchModLoader.Name = "buttonPatchModLoader";
             this.buttonPatchModLoader.Size = new System.Drawing.Size(129, 23);
             this.buttonPatchModLoader.TabIndex = 3;
@@ -164,7 +165,7 @@ namespace Terraria.ModLoader.Setup
             // 
             this.buttonDiffModLoader.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.buttonDiffModLoader.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonDiffModLoader.Location = new System.Drawing.Point(45, 100);
+            this.buttonDiffModLoader.Location = new System.Drawing.Point(45, 129);
             this.buttonDiffModLoader.Name = "buttonDiffModLoader";
             this.buttonDiffModLoader.Size = new System.Drawing.Size(129, 23);
             this.buttonDiffModLoader.TabIndex = 5;
@@ -184,7 +185,7 @@ namespace Terraria.ModLoader.Setup
             // 
             this.buttonRegenSource.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.buttonRegenSource.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonRegenSource.Location = new System.Drawing.Point(180, 129);
+            this.buttonRegenSource.Location = new System.Drawing.Point(180, 158);
             this.buttonRegenSource.Name = "buttonRegenSource";
             this.buttonRegenSource.Size = new System.Drawing.Size(129, 23);
             this.buttonRegenSource.TabIndex = 3;
@@ -311,7 +312,7 @@ namespace Terraria.ModLoader.Setup
             // 
             this.buttonSetupDebugging.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.buttonSetupDebugging.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonSetupDebugging.Location = new System.Drawing.Point(45, 129);
+            this.buttonSetupDebugging.Location = new System.Drawing.Point(45, 158);
             this.buttonSetupDebugging.Name = "buttonSetupDebugging";
             this.buttonSetupDebugging.Size = new System.Drawing.Size(129, 23);
             this.buttonSetupDebugging.TabIndex = 3;
@@ -319,11 +320,25 @@ namespace Terraria.ModLoader.Setup
             this.buttonSetupDebugging.UseVisualStyleBackColor = true;
             this.buttonSetupDebugging.Click += new System.EventHandler(this.buttonTask_Click);
             // 
+            // buttonTransformations
+            // 
+            this.buttonTransformations.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.buttonTransformations.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonTransformations.Location = new System.Drawing.Point(180, 100);
+            this.buttonTransformations.Name = "buttonTransformations";
+            this.buttonTransformations.Size = new System.Drawing.Size(129, 23);
+            this.buttonTransformations.TabIndex = 10;
+            this.buttonTransformations.Text = "Transformations";
+            this.toolTipButtons.SetToolTip(this.buttonTransformations, "Applies roslyn transformations on src/Terraria ");
+            this.buttonTransformations.UseVisualStyleBackColor = true;
+            this.buttonTransformations.Click += new System.EventHandler(this.buttonTask_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(349, 371);
+            this.Controls.Add(this.buttonTransformations);
             this.Controls.Add(this.buttonDiffModLoader);
             this.Controls.Add(this.labelStatus);
             this.Controls.Add(this.buttonDiffTerraria);
@@ -375,6 +390,7 @@ namespace Terraria.ModLoader.Setup
 		private System.Windows.Forms.ToolStripMenuItem fuzzyToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem simplifierToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem formatDecompiledOutputToolStripMenuItem;
+		private System.Windows.Forms.Button buttonTransformations;
 	}
 }
 
