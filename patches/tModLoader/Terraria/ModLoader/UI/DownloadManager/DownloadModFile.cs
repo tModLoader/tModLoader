@@ -12,7 +12,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		private void ProcessDownloadedMod() {
-			bool modEnabled = ModLoader.GetMod(ModBrowserItem.ModName) != null;
+			bool modEnabled = ModLoader.TryGetMod(ModBrowserItem.ModName, out _);
 			bool newMod = !ModBrowserItem.HasUpdate;
 
 			if (modEnabled)
@@ -29,8 +29,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		internal override void PreCopy() {
-			var modInstance = ModLoader.GetMod(ModBrowserItem.ModName);
-			if (modInstance != null) {
+			if (ModLoader.TryGetMod(ModBrowserItem.ModName, out var modInstance)) {
 				Logging.tML.Info(Language.GetTextValue("tModLoader.MBReleaseFileHandle", $"{modInstance.Name}: {modInstance.DisplayName}"));
 				modInstance?.Close(); // if the mod is currently loaded, the file-handle needs to be released
 			}

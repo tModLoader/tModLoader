@@ -128,13 +128,18 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadModData(Player player, IList<TagCompound> list) {
 			foreach (var tag in list) {
-				var mod = ModLoader.GetMod(tag.GetString("mod"));
-				var modPlayer = mod == null ? null : player.GetModPlayer(mod, tag.GetString("name"));
-				if (modPlayer != null) {
+				string modName = tag.GetString("mod");
+				string modPlayerName = tag.GetString("name");
+
+				if (ModContent.TryFind<ModPlayer>(modName, modPlayerName, out var modPlayerBase)) {
+					var modPlayer = player.GetModPlayer(modPlayerBase);
+
 					try {
 						modPlayer.Load(tag.GetCompound("data"));
 					}
 					catch (Exception e) {
+						var mod = modPlayer.Mod;
+
 						throw new CustomModDataException(mod,
 							"Error in reading custom player data for " + mod.Name, e);
 					}
