@@ -294,33 +294,12 @@ namespace Terraria.ModLoader
 		public int GetGoreSlot<T>() where T : ModGore => GetGoreSlot(typeof(T).Name);
 
 		/// <summary>
-		/// Adds the given sound file to the game as the given type of sound and with the given custom sound playing. If no ModSound instance is provided, the custom sound will play in a similar manner as the default vanilla ones.
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="soundPath">The sound path.</param>
-		/// <param name="modSound">The mod sound.</param>
-		public void AddSound(SoundType type, string soundPath, ModSound modSound = null) {
-			if (!loading)
-				throw new Exception("AddSound can only be called from Mod.Load or Mod.Autoload");
-
-			int id = SoundLoader.ReserveSoundID(type);
-			
-			SoundLoader.sounds[type][soundPath] = id;
-
-			if (modSound != null) {
-				SoundLoader.modSounds[type][id] = modSound;
-
-				modSound.Sound = ModContent.GetSound(soundPath);
-			}
-		}
-
-		/// <summary>
 		/// Shorthand for calling SoundLoader.GetSoundSlot(type, this.Name + '/' + name).
 		/// </summary>
 		/// <param name="type">The type.</param>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public int GetSoundSlot(SoundType type, string name) => SoundLoader.GetSoundSlot(type, Name + '/' + name);
+		public int GetSoundSlot(string name) => SoundLoader.GetSoundSlot(Name + '/' + name);
 
 		/// <summary>
 		/// Shorthand for calling SoundLoader.GetLegacySoundSlot(type, this.Name + '/' + name).
@@ -328,7 +307,7 @@ namespace Terraria.ModLoader
 		/// <param name="type">The type.</param>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public LegacySoundStyle GetLegacySoundSlot(SoundType type, string name) => SoundLoader.GetLegacySoundSlot(type, Name + '/' + name);
+		public LegacySoundStyle GetLegacySoundSlot(string name) => SoundLoader.GetLegacySoundSlot(Name + '/' + name);
 
 		/// <summary>
 		/// Adds a texture to the list of background textures and assigns it a background texture slot.

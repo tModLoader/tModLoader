@@ -16,7 +16,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Override this hook to customize how this sound is played. If this sound is already currently playing, you have the option to call soundInstance.Stop(). You must eventually assign the result of sound.CreateInstance() to soundInstace. Afterwards, you can modify soundInstance.Volume, soundInstance.Pan, and soundInstance.Pitch to your liking. The default volume and pan have been passed as parameters. Volume measures loudness, pan measures how far to the left or right the sound is, and pitch measures the octave. Finally, call Main.PlaySoundInstance(soundInstance).
 		/// </summary>
-		public virtual SoundEffectInstance PlaySound(ref SoundEffectInstance soundInstance, float volume, float pan, SoundType type)
+		public virtual SoundEffectInstance PlaySound(ref SoundEffectInstance soundInstance, float volume, float pan)
 			=> soundInstance;
 	}
 }
