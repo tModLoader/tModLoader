@@ -162,6 +162,16 @@ namespace Terraria.ModLoader.UI
 			}
 			SoundEngine.PlaySound(10);
 			try {
+				if (ModLoader.GetMod(_builtMod.Name) == null) {
+					if (!_builtMod.Enabled)
+						_builtMod.Enabled = true;
+					Main.menuMode = Interface.reloadModsID;
+					ModLoader.OnSuccessfulLoad += () => {
+						PublishMod(null, null);
+					};
+					return;
+				}
+
 				var modFile = _builtMod.modFile;
 				var bp = _builtMod.properties;
 
