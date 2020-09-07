@@ -106,8 +106,7 @@ namespace Terraria.ModLoader.UI
 			_moreInfoButton.OnClick += ShowMoreInfo;
 			Append(_moreInfoButton);
 
-			Mod loadedMod = ModLoader.GetMod(ModName);
-			if (loadedMod != null && ConfigManager.Configs.ContainsKey(loadedMod)) {
+			if (ModLoader.TryGetMod(ModName, out var loadedMod) && ConfigManager.Configs.ContainsKey(loadedMod)) {
 				_configButton = new UIImage(UICommon.ButtonModConfigTexture) {
 					Width = { Pixels = 36 },
 					Height = { Pixels = 36f },

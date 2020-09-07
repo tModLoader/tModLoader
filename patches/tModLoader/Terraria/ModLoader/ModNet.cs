@@ -272,7 +272,9 @@ namespace Terraria.ModLoader
 				if (downloadingFile == null) {
 					Interface.progress.Show(displayText: reader.ReadString(), cancel: CancelDownload);
 
-					ModLoader.GetMod(downloadingMod.name)?.Close();
+					if (ModLoader.TryGetMod(downloadingMod.name, out var mod))
+						mod.Close();
+
 					downloadingLength = reader.ReadInt64();
 					downloadingFile = new FileStream(downloadingMod.path, FileMode.Create);
 					return;

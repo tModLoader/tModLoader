@@ -32,7 +32,7 @@ namespace Terraria.ModLoader.Default
 		}
 
 		internal void TryRestore(ref ModTileEntity newEntity) {
-			if (ModContent.TryGet(modName, tileEntityName, out ModTileEntity tileEntity)) {
+			if (ModContent.TryFind(modName, tileEntityName, out ModTileEntity tileEntity)) {
 				newEntity = ModTileEntity.ConstructFromBase(tileEntity);
 				newEntity.type = (byte)tileEntity.Type;
 				newEntity.Position = Position;

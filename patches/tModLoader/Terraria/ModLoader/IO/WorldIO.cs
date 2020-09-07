@@ -146,7 +146,7 @@ namespace Terraria.ModLoader.IO
 			}
 			int nextFreeNPC = 0;
 			foreach (TagCompound tag in list) {
-				if (ModContent.TryGet(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
 					while (nextFreeNPC < 200 && Main.npc[nextFreeNPC].active) {
 						nextFreeNPC++;
 					}
@@ -187,7 +187,7 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadNPCKillCounts(IList<TagCompound> list) {
 			foreach (var tag in list) {
-				if (ModContent.TryGet(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
 					NPC.killCount[modNpc.Type] = tag.GetInt("count");
 				}
 				else {
@@ -214,7 +214,7 @@ namespace Terraria.ModLoader.IO
 			if (!tag.ContainsKey("mod")) {
 				return;
 			}
-			if (ModContent.TryGet(tag.GetString("mod"), tag.GetString("itemName"), out ModItem modItem)) {
+			if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("itemName"), out ModItem modItem)) {
 				for (int k = 0; k < Main.anglerQuestItemNetIDs.Length; k++) {
 					if (Main.anglerQuestItemNetIDs[k] == modItem.Type) {
 						Main.anglerQuest = k;
@@ -247,7 +247,7 @@ namespace Terraria.ModLoader.IO
 				return;
 			}
 			foreach (TagCompound tag in list) {
-				if (ModContent.TryGet(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
 					Point location = new Point(tag.GetInt("x"), tag.GetInt("y"));
 					WorldGen.TownManager._roomLocationPairs.Add(Tuple.Create(modNpc.Type, location));
 					WorldGen.TownManager._hasRoom[modNpc.Type] = true;
@@ -273,7 +273,7 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadModData(IList<TagCompound> list) {
 			foreach (var tag in list) {
-				if (ModContent.TryGet(tag.GetString("mod"), tag.GetString("name"), out ModWorld modWorld)) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModWorld modWorld)) {
 					try {
 						modWorld.Load(tag.GetCompound("data"));
 					}

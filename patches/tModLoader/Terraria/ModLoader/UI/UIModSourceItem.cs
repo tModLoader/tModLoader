@@ -162,6 +162,16 @@ namespace Terraria.ModLoader.UI
 			}
 			SoundEngine.PlaySound(10);
 			try {
+				if (ModLoader.GetMod(_builtMod.Name) == null) {
+					if (!_builtMod.Enabled)
+						_builtMod.Enabled = true;
+					Main.menuMode = Interface.reloadModsID;
+					ModLoader.OnSuccessfulLoad += () => {
+						PublishMod(null, null);
+					};
+					return;
+				}
+
 				var modFile = _builtMod.modFile;
 				var bp = _builtMod.properties;
 
@@ -243,7 +253,10 @@ namespace Terraria.ModLoader.UI
 				UIModBrowser.LogModBrowserException(e.Error);
 				return;
 			}
-			ModLoader.GetMod(theTModFile.name)?.Close();
+
+			if (ModLoader.TryGetMod(theTModFile.name, out var mod))
+				mod.Close();
+
 			var result = e.Result;
 			int responseLength = result.Length;
 			if (result.Length > 256 && result[result.Length - 256 - 1] == '~') {
