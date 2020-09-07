@@ -14,10 +14,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using System.Linq;
 using Terraria.ModLoader.Config;
-using Terraria.ModLoader.UI;
-using Terraria.GameContent;
 using ReLogic.Content;
-using ReLogic.Content.Sources;
 using Terraria.ModLoader.Assets;
 
 namespace Terraria.ModLoader
@@ -111,38 +108,15 @@ namespace Terraria.ModLoader
 
 		public void AddContent(ILoadable instance){
 			if (!loading)
-				throw new Exception("AddContent can only be called from Mod.Load");
+				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 			instance.Load(this);
-			loadables.Add(instance);
+			content.Add(instance);
+			ContentInstance.Register(instance);
 		}
 
-		/// <summary>
-		/// Gets the ModItem instance corresponding to the name. Because this method is in the Mod class, conflicts between mods are avoided. Returns null if no ModItem with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModItem GetItem(string name) => items.TryGetValue(name, out var item) ? item : null;
+		public IEnumerable<ILoadable> GetContent() => content;
 
-		/// <summary>
-		/// Gets the internal ID / type of the ModItem corresponding to the name. Returns 0 if no ModItem with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int ItemType(string name) => GetItem(name)?.item.type ?? 0;
-
-		/// <summary>
-		/// Gets the GlobalItem instance with the given name from this mod.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public GlobalItem GetGlobalItem(string name) => globalItems.TryGetValue(name, out var globalItem) ? globalItem : null;
-
-		/// <summary>
-		/// Same as the other GetGlobalItem, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		public T GetGlobalItem<T>() where T : GlobalItem => (T)GetGlobalItem(typeof(T).Name);
+		public IEnumerable<T> GetContent<T>() where T : ILoadable => content.OfType<T>();
 
 		/// <summary>
 		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod. 
@@ -201,14 +175,14 @@ namespace Terraria.ModLoader
 				ModContent.GetTexture(item.ArmTexture); //ensure texture exists
 				EquipLoader.armTextures[slot] = item.ArmTexture;
 			}
-			if (item != null) {
-				if (!EquipLoader.idToSlot.TryGetValue(item.item.type, out IDictionary<EquipType, int> slots))
-					EquipLoader.idToSlot[item.item.type] = slots = new Dictionary<EquipType, int>();
 
-				slots[type] = slot;
-				if (type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs)
-					EquipLoader.slotToId[type][slot] = item.item.type;
-			}
+			if (!EquipLoader.idToSlot.TryGetValue(item.Type, out IDictionary<EquipType, int> slots))
+				EquipLoader.idToSlot[item.Type] = slots = new Dictionary<EquipType, int>();
+
+			slots[type] = slot;
+			if (type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs)
+				EquipLoader.slotToId[type][slot] = item.Type;
+
 			return slot;
 		}
 
@@ -237,153 +211,13 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public sbyte GetAccessorySlot(string name, EquipType type) => (sbyte)GetEquipSlot(name, type);
 
-		/// <summary>
-		/// Gets the ModPrefix instance corresponding to the name. Because this method is in the Mod class, conflicts between mods are avoided. Returns null if no ModPrefix with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModPrefix GetPrefix(string name) => prefixes.TryGetValue(name, out var prefix) ? prefix : null;
+		/// <summary> Attempts to find the content instance from this mod with the specified name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
+		/// <exception cref="KeyNotFoundException"/>
+		public T Find<T>(string name) where T : IModType => ModContent.Find<T>(Name, name);
 
-		/// <summary>
-		/// Gets the internal ID / type of the ModPrefix corresponding to the name. Returns 0 if no ModPrefix with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public byte PrefixType(string name) => GetPrefix(name)?.Type ?? 0;
-
-		/// <summary>
-		/// Same as the other PrefixType, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		public byte PrefixType<T>() where T : ModPrefix => ModContent.PrefixType<T>();
-
-		/// <summary>
-		/// Gets the ModRarity instance corresponding to the name. Because this method is in the Mod class, conflicts between mods are avoided. Returns null if no ModRarity with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModRarity GetRarity(string name) => rarities.TryGetValue(name, out var rarity) ? rarity : null;
-
-		/// <summary>
-		/// Gets the internal ID / type of the ModRarity corresponding to the name. Returns 0 if no ModRarity with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int RarityType(string name) => GetRarity(name)?.Type ?? 0;
-
-		/// <summary>
-		/// Gets the ModDust of this mod corresponding to the given name. Returns null if no ModDust with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModDust GetDust(string name) => dusts.TryGetValue(name, out var dust) ? dust : null;
-
-		/// <summary>
-		/// Gets the type of the ModDust of this mod with the given name. Returns 0 if no ModDust with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int DustType(string name) => GetDust(name)?.Type ?? 0;
-
-		/// <summary>
-		/// Gets the ModTile of this mod corresponding to the given name. Returns null if no ModTile with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModTile GetTile(string name) => tiles.TryGetValue(name, out var tile) ? tile : null;
-
-		/// <summary>
-		/// Gets the type of the ModTile of this mod with the given name. Returns 0 if no ModTile with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int TileType(string name) => GetTile(name)?.Type ?? 0;
-
-		/// <summary>
-		/// Gets the GlobalTile instance with the given name from this mod.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public GlobalTile GetGlobalTile(string name) => globalTiles.TryGetValue(name, out var globalTile) ? globalTile : null;
-
-		/// <summary>
-		/// Gets the ModTileEntity of this mod corresponding to the given name. Returns null if no ModTileEntity with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModTileEntity GetTileEntity(string name) =>
-			tileEntities.TryGetValue(name, out var tileEntity) ? tileEntity : null;
-
-		/// <summary>
-		/// Gets the type of the ModTileEntity of this mod with the given name. Returns -1 if no ModTileEntity with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int TileEntityType(string name) => GetTileEntity(name)?.Type ?? -1;
-
-		/// <summary>
-		/// Gets the ModWall of this mod corresponding to the given name. Returns null if no ModWall with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModWall GetWall(string name) => walls.TryGetValue(name, out var wall) ? wall : null;
-
-		/// <summary>
-		/// Gets the type of the ModWall of this mod with the given name. Returns 0 if no ModWall with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int WallType(string name) => GetWall(name)?.Type ?? 0;
-
-		/// <summary>
-		/// Gets the GlobalWall instance with the given name from this mod.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public GlobalWall GetGlobalWall(string name) => globalWalls.TryGetValue(name, out var globalWall) ? globalWall : null;
-
-		/// <summary>
-		/// Gets the ModProjectile of this mod corresponding to the given name. Returns null if no ModProjectile with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModProjectile GetProjectile(string name) => projectiles.TryGetValue(name, out var proj) ? proj : null;
-
-		/// <summary>
-		/// Gets the type of the ModProjectile of this mod with the given name. Returns 0 if no ModProjectile with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int ProjectileType(string name) => GetProjectile(name)?.projectile.type ?? 0;
-
-		/// <summary>
-		/// Gets the GlobalProjectile instance with the given name from this mod.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public GlobalProjectile GetGlobalProjectile(string name) => globalProjectiles.TryGetValue(name, out var globalProj) ? globalProj : null;
-
-		/// <summary>
-		/// Gets the ModNPC of this mod corresponding to the given name. Returns null if no ModNPC with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModNPC GetNPC(string name) => npcs.TryGetValue(name, out var npc) ? npc : null;
-
-		/// <summary>
-		/// Gets the type of the ModNPC of this mod with the given name. Returns 0 if no ModNPC with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int NPCType(string name) => GetNPC(name)?.npc.type ?? 0;
-
-		/// <summary>
-		/// Gets the GlobalNPC instance with the given name from this mod.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public GlobalNPC GetGlobalNPC(string name) => globalNPCs.TryGetValue(name, out var globalNPC) ? globalNPC : null;
+		/// <summary> Safely attempts to find the content instance from this mod with the specified name. Caching the result is recommended. </summary>
+		/// <returns> Whether or not the requested instance has been found. </returns>
+		public bool TryFind<T>(string name, out T value) where T : IModType => ModContent.TryFind(Name, name, out value);
 
 		/// <summary>
 		/// Assigns a head texture to the given town NPC type.
@@ -427,108 +261,6 @@ namespace Terraria.ModLoader
 				NPCHeadLoader.npcToBossHead[npcType] = slot;
 			}
 		}
-
-		/// <summary>
-		/// Gets the ModPlayer of this mod corresponding to the given name. Returns null if no ModPlayer with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModPlayer GetPlayer(string name) => players.TryGetValue(name, out var player) ? player : null;
-
-		/// <summary>
-		/// Gets the ModBuff of this mod corresponding to the given name. Returns null if no ModBuff with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModBuff GetBuff(string name) => buffs.TryGetValue(name, out var buff) ? buff : null;
-
-		/// <summary>
-		/// Gets the type of the ModBuff of this mod corresponding to the given name. Returns 0 if no ModBuff with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int BuffType(string name) => GetBuff(name)?.Type ?? 0;
-
-		/// <summary>
-		/// Gets the GlobalBuff with the given name from this mod.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public GlobalBuff GetGlobalBuff(string name) => globalBuffs.TryGetValue(name, out var globalBuff) ? globalBuff : null;
-
-		/// <summary>
-		/// Gets the ModMountData instance of this mod corresponding to the given name. Returns null if no ModMountData has the given name.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModMountData GetMount(string name) => mountDatas.TryGetValue(name, out var modMountData) ? modMountData : null;
-
-		/// <summary>
-		/// Gets the ID of the ModMountData instance corresponding to the given name. Returns 0 if no ModMountData has the given name.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int MountType(string name) => GetMount(name)?.Type ?? 0;
-
-		/// <summary>
-		/// Gets the ModWorld instance with the given name from this mod.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModWorld GetModWorld(string name) => worlds.TryGetValue(name, out var world) ? world : null;
-
-		/// <summary>
-		/// Returns the underground background style corresponding to the given name.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModUgBgStyle GetUgBgStyle(string name) => ugBgStyles.TryGetValue(name, out var bgStyle) ? bgStyle : null;
-
-		/// <summary>
-		/// Returns the surface background style corresponding to the given name.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModSurfaceBgStyle GetSurfaceBgStyle(string name) => surfaceBgStyles.TryGetValue(name, out var bgStyle) ? bgStyle : null;
-
-		/// <summary>
-		/// Returns the Slot of the surface background style corresponding to the given name.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int GetSurfaceBgStyleSlot(string name) => GetSurfaceBgStyle(name)?.Slot ?? -1;
-
-		public int GetSurfaceBgStyleSlot<T>() where T : ModSurfaceBgStyle => GetSurfaceBgStyleSlot(typeof(T).Name);
-
-		/// <summary>
-		/// Returns the global background style corresponding to the given name.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public GlobalBgStyle GetGlobalBgStyle(string name) => globalBgStyles.TryGetValue(name, out var bgStyle) ? bgStyle : null;
-
-		/// <summary>
-		/// Returns the water style with the given name from this mod.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModWaterStyle GetWaterStyle(string name) => waterStyles.TryGetValue(name, out var waterStyle) ? waterStyle : null;
-
-		/// <summary>
-		/// Returns the waterfall style with the given name from this mod.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public ModWaterfallStyle GetWaterfallStyle(string name) => waterfallStyles.TryGetValue(name, out var waterfallStyle) ? waterfallStyle : null;
-
-		/// <summary>
-		/// Returns the waterfall style corresponding to the given name.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int GetWaterfallStyleSlot(string name) => GetWaterfallStyle(name)?.Type ?? -1;
-
-		public int GetWaterfallStyleSlot<T>() where T : ModWaterfallStyle => GetWaterfallStyleSlot(typeof(T).Name);
 
 		/// <summary>
 		/// Adds the given texture to the game as a custom gore, with the given custom gore behavior. If no custom gore behavior is provided, the custom gore will have the default vanilla behavior.
@@ -616,13 +348,6 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public int GetBackgroundSlot(string name) => BackgroundTextureLoader.GetBackgroundSlot(Name + '/' + name);
-
-		/// <summary>
-		/// Gets the global recipe corresponding to the specified name.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public GlobalRecipe GetGlobalRecipe(string name) => globalRecipes.TryGetValue(name, out var globalRecipe) ? globalRecipe : null;
 
 		/// <summary>
 		/// Allows you to tie a music ID, and item ID, and a tile ID together to form a music box. When music with the given ID is playing, equipped music boxes have a chance to change their ID to the given item type. When an item with the given item type is equipped, it will play the music that has musicSlot as its ID. When a tile with the given type and Y-frame is nearby, if its X-frame is >= 36, it will play the music that has musicSlot as its ID.

@@ -138,13 +138,11 @@ namespace Terraria
 		/// <exception cref="RecipeException">The item " + itemName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla item, try removing the first argument.</exception>
 		public Recipe AddIngredient(Mod mod, string itemName, int stack = 1) {
 			mod ??= this.Mod;
-			
-			int type = mod.ItemType(itemName);
 
-			if (type == 0)
+			if (!ModContent.TryFind(mod.Name, itemName, out ModItem item))
 				throw new RecipeException($"The item {itemName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla item, try removing the first argument.");
 
-			return AddIngredient(type, stack);
+			return AddIngredient(item, stack);
 		}
 
 		/// <summary>
@@ -152,7 +150,7 @@ namespace Terraria
 		/// </summary>
 		/// <param name="item">The item.</param>
 		/// <param name="stack">The stack.</param>
-		public Recipe AddIngredient(ModItem item, int stack = 1) => AddIngredient(item.item.type, stack);
+		public Recipe AddIngredient(ModItem item, int stack = 1) => AddIngredient(item.Type, stack);
 
 		/// <summary>
 		/// Adds an ingredient to this recipe of the given type of item and stack size.
@@ -235,13 +233,11 @@ namespace Terraria
 		/// <exception cref="RecipeException">The tile " + tileName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla tile, try using Recipe.AddTile(tileID).</exception>
 		public Recipe AddTile(Mod mod, string tileName) {
 			mod ??= this.Mod;
-
-			int type = mod.TileType(tileName);
 			
-			if (type == 0)
+			if (!ModContent.TryFind(mod.Name, tileName, out ModTile tile))
 				throw new RecipeException($"The tile {tileName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla tile, try using Recipe.AddTile(tileID).");
 
-			return AddTile(type);
+			return AddTile(tile);
 		}
 
 		/// <summary>
@@ -305,7 +301,8 @@ namespace Terraria
 			if (createItem == null || createItem.type == 0)
 				throw new RecipeException("A recipe without any result has been added.");
 
-			if (requiredTile.Contains(TileID.Bottles)) AddConsumeItemCallback(ConsumptionRules.Alchemy);
+			if (requiredTile.Contains(TileID.Bottles))
+				AddConsumeItemCallback(ConsumptionRules.Alchemy);
 
 			if (numRecipes >= maxRecipes) {
 				maxRecipes += 500;
@@ -320,12 +317,8 @@ namespace Terraria
 				}
 			}
 			
-			Main.recipe[numRecipes] = this;
-			
+			Main.recipe[numRecipes] = this;			
 			RecipeIndex = numRecipes;
-			
-			Mod.recipes.Add(this);
-
 			numRecipes++;
 		}
 

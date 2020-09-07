@@ -39,7 +39,7 @@ namespace Terraria.ModLoader.Default
 					new UnloadedTileInfo(modName, name);
 				infos.Add(info);
 
-				int type = ModLoader.GetMod(modName)?.TileType(name) ?? 0;
+				int type = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : 0;
 				canRestore.Add((ushort)type);
 				if (type != 0)
 					canRestoreFlag = true;
@@ -58,7 +58,7 @@ namespace Terraria.ModLoader.Default
 		}
 
 		private void RestoreTiles(List<ushort> canRestore) {
-			ushort unloadedType = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("UnloadedTile");
+			ushort unloadedType = ModContent.Find<ModTile>("ModLoader/UnloadedTile").Type;
 			for (int x = 0; x < Main.maxTilesX; x++) {
 				for (int y = 0; y < Main.maxTilesY; y++) {
 					if (Main.tile[x, y].type == unloadedType) {
@@ -91,8 +91,8 @@ namespace Terraria.ModLoader.Default
 				}
 				truePendingID.Add(nextID);
 			}
-			ushort pendingType = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("PendingUnloadedTile");
-			ushort unloadedType = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("UnloadedTile");
+			ushort pendingType = ModContent.Find<ModTile>("ModLoader/PendingUnloadedTile").Type;
+			ushort unloadedType = ModContent.Find<ModTile>("ModLoader/UnloadedTile").Type;
 			for (int x = 0; x < Main.maxTilesX; x++) {
 				for (int y = 0; y < Main.maxTilesY; y++) {
 					if (Main.tile[x, y].type == pendingType) {

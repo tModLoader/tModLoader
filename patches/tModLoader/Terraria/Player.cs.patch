@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Player.cs
 +++ src/tModLoader/Terraria/Player.cs
-@@ -34,6 +_,10 @@
+@@ -34,10 +_,14 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -11,6 +11,11 @@
  
  namespace Terraria
  {
+-	public class Player : Entity
++	public partial class Player : Entity
+ 	{
+ 		public static class BuilderAccToggleIDs
+ 		{
 @@ -184,15 +_,21 @@
  
  			public static void PlayerConnect(int playerIndex) {
@@ -3472,20 +3477,11 @@
  				}
  
  				return playerFileData;
-@@ -37381,7 +_,28 @@
+@@ -37381,7 +_,19 @@
  			return -1;
  		}
  
 -		public Player() {
-+		internal IList<string> usedMods;
-+		internal ModPlayer[] modPlayers = new ModPlayer[0];
-+
-+		private ModPlayer GetModPlayer(int? index) => index.HasValue ? modPlayers[index.Value] : null;
-+
-+		public ModPlayer GetModPlayer(Mod mod, string name) => GetModPlayer(mod.GetPlayer(name)?.index);
-+
-+		public T GetModPlayer<T>() where T : ModPlayer => (T)GetModPlayer(ModContent.GetInstance<T>()?.index);
-+
 +		public Player(bool startupInventory = true) {
 +			buffType = new int[MaxBuffs];
 +			buffTime = new int[MaxBuffs];

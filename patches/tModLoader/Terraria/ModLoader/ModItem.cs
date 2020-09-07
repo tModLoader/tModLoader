@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
@@ -29,6 +30,11 @@ namespace Terraria.ModLoader
 		public Item item {get;internal set;}
 
 		/// <summary>
+		/// Shorthand for item.type;
+		/// </summary>
+		public int Type => item.type;
+
+		/// <summary>
 		/// The translations for the display name of this item.
 		/// </summary>
 		public ModTranslation DisplayName {get;internal set;}
@@ -47,8 +53,7 @@ namespace Terraria.ModLoader
 		}
 
 		protected sealed override void Register() {
-			if (Mod.items.ContainsKey(Name))
-				throw new Exception(Language.GetTextValue("tModLoader.LoadError2ModItemSameName", Name));
+			ModTypeLookup<ModItem>.Register(this);
 
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemName.{Name}");
 			Tooltip = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemTooltip.{Name}", true);
@@ -56,9 +61,7 @@ namespace Terraria.ModLoader
 			item.ResetStats(ItemLoader.ReserveItemID());
 			item.modItem = this;
 
-			Mod.items[Name] = this;
 			ItemLoader.items.Add(this);
-			ContentInstance.Register(this);
 
 			var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
 			if (autoloadEquip != null) {
@@ -66,6 +69,13 @@ namespace Terraria.ModLoader
 					Mod.AddEquipTexture(this, equip, Texture + '_' + equip);
 				}
 			}
+		}
+
+		public override void SetupContent() {
+			ItemLoader.SetDefaults(item, false);
+			AutoStaticDefaults();
+			SetStaticDefaults();
+			ItemID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>

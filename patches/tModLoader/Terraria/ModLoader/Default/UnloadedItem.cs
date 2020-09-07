@@ -47,9 +47,8 @@ namespace Terraria.ModLoader.Default
 
 		public override void Load(TagCompound tag) {
 			Setup(tag);
-			int type = ModLoader.GetMod(modName)?.ItemType(itemName) ?? 0;
-			if (type > 0) {
-				item.netDefaults(type);
+			if (ModContent.TryFind(modName, itemName, out ModItem modItem)) {
+				item.SetDefaults(modItem.Type);
 				item.modItem.Load(tag.GetCompound("data"));
 				ItemIO.LoadGlobals(item, tag.GetList<TagCompound>("globalData"));
 			}
@@ -60,9 +59,7 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void NetRecieve(BinaryReader reader) {
-			data = TagIO.Read(reader);
-			modName = data.GetString("mod");
-			itemName = data.GetString("name");
+			Setup(TagIO.Read(reader));
 		}
 
 		public override bool CloneNewInstances => true;

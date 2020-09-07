@@ -236,21 +236,22 @@ namespace Terraria.ModLoader
 
 		public static void ReceiveCustomBiomes(Player player, BinaryReader reader) {
 			int count = reader.ReadUInt16();
+
 			for (int k = 0; k < count; k++) {
 				string modName = reader.ReadString();
 				string name = reader.ReadString();
 				byte[] data = reader.ReadBytes(reader.ReadByte());
-				Mod mod = ModLoader.GetMod(modName);
-				ModPlayer modPlayer = mod == null ? null : player.GetModPlayer(mod, name);
-				if (modPlayer != null) {
-					using (MemoryStream stream = new MemoryStream(data)) {
-						using (BinaryReader customReader = new BinaryReader(stream)) {
-							try {
-								modPlayer.ReceiveCustomBiomes(customReader);
-							}
-							catch {
-							}
-						}
+
+				if (ModContent.TryFind<ModPlayer>(modName, name, out var modPlayerBase)) {
+					var modPlayer = player.GetModPlayer(modPlayerBase);
+
+					using MemoryStream stream = new MemoryStream(data);
+					using BinaryReader customReader = new BinaryReader(stream);
+
+					try {
+						modPlayer.ReceiveCustomBiomes(customReader);
+					}
+					catch {
 					}
 				}
 			}

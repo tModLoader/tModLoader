@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/NPC.cs
 +++ src/tModLoader/Terraria/NPC.cs
-@@ -21,11 +_,22 @@
+@@ -21,10 +_,11 @@
  using Terraria.Localization;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -8,21 +8,11 @@
  
  namespace Terraria
  {
- 	public class NPC : Entity
+-	public class NPC : Entity
++	public partial class NPC : Entity
  	{
-+		public ModNPC modNPC { get; internal set; }
-+
-+		internal GlobalNPC[] globalNPCs = new GlobalNPC[0];
-+
-+		/// <summary>Gets the global NPC. Use this overload when you dynamically add GlobalNPC manually.</summary>
-+		public GlobalNPC GetGlobalNPC(Mod mod, string name) => NPCLoader.GetGlobalNPC(this, mod, name);
-+
-+		/// <summary>Gets the global NPC. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
-+		public T GetGlobalNPC<T>() where T : GlobalNPC => (T)ModContent.GetInstance<T>().Instance(this);
-+
  		private const int NPC_TARGETS_START = 300;
  		public bool IsABestiaryIconDummy;
- 		public bool ForcePartyHatOn;
 @@ -103,14 +_,14 @@
  		private static int townRangeY = sHeight;
  		public float npcSlots = 1f;

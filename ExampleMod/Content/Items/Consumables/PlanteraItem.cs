@@ -1,16 +1,18 @@
+﻿using ExampleMod.Content.Tiles.Furniture;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Items
+namespace ExampleMod.Content.Items.Consumables
 {
 	public class PlanteraItem : ModItem
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Plantera");
 			Tooltip.SetDefault("The wrath of the jungle");
-			ItemID.Sets.SortingPriorityBossSpawns[item.type] = 12; // This helps sort inventory know this is a boss summoning item.
+
+			ItemID.Sets.SortingPriorityBossSpawns[item.type] = 12; // This helps sort inventory know that this is a boss summoning item.
 		}
 
 		public override void SetDefaults() {
@@ -21,7 +23,7 @@ namespace ExampleMod.Items
 			item.rare = ItemRarityID.Blue;
 			item.useAnimation = 30;
 			item.useTime = 30;
-			item.useStyle = ItemUseStyleID.HoldingUp;
+			item.useStyle = ItemUseStyleID.HoldUp;
 			item.consumable = true;
 		}
 
@@ -31,16 +33,20 @@ namespace ExampleMod.Items
 
 		public override bool UseItem(Player player) {
 			NPC.SpawnOnPlayer(player.whoAmI, NPCID.Plantera);
-			SoundEngine.PlaySound(SoundID.Roar, player.position, 0);
+
+			// Avoid trying to call sounds on dedicated servers.
+			if (!Main.dedServ) {
+				SoundEngine.PlaySound(SoundID.Roar, player.position, 0);
+			}
+
 			return true;
 		}
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<BossItem>(), 10);
-			recipe.AddTile(TileType<Tiles.ExampleWorkbench>());
-			recipe.SetResult(this, 20);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient<BossItem>(10)
+				.AddTile<ExampleWorkbench>()
+				.Register();
 		}
 	}
 }

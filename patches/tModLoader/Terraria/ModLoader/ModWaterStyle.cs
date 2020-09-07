@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Terraria.GameContent;
+using Terraria.GameContent.Liquid;
 
 namespace Terraria.ModLoader
 {
@@ -16,10 +18,14 @@ namespace Terraria.ModLoader
 
 		protected sealed override void Register() {
 			Type = WaterStyleLoader.ReserveStyle();
-			
-			Mod.waterStyles[Name] = this;
+
+			ModTypeLookup<ModWaterStyle>.Register(this);
 			WaterStyleLoader.waterStyles.Add(this);
-			ContentInstance.Register(this);
+		}
+
+		public override void SetupContent() {
+			LiquidRenderer.Instance._liquidTextures[Type] = ModContent.GetTexture(Texture);
+			TextureAssets.Liquid[Type] = ModContent.GetTexture(BlockTexture);
 		}
 
 		/// <summary>
@@ -74,9 +80,12 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			Type = WaterfallStyleLoader.ReserveStyle();
 
-			Mod.waterfallStyles[Name] = this;
+			ModTypeLookup<ModWaterfallStyle>.Register(this);
 			WaterfallStyleLoader.waterfallStyles.Add(this);
-			ContentInstance.Register(this);
+		}
+
+		public override void SetupContent() {
+			Main.instance.waterfallManager.waterfallTexture[Type] = ModContent.GetTexture(Texture);
 		}
 
 		/// <summary>

@@ -2,7 +2,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ObjectData;
 
 namespace Terraria.ModLoader
 {
@@ -200,18 +203,43 @@ namespace Terraria.ModLoader
 		}
 
 		protected sealed override void Register() {
-			if (Mod.tiles.ContainsKey(Name))
-				throw new Exception("You tried to add 2 ModTile with the same name: " + Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddTile with 2 tiles of the same name.");
+			ModTypeLookup<ModTile>.Register(this);
 
 			Type = (ushort)TileLoader.ReserveTileID();
 
-			Mod.tiles[Name] = this;
 			TileLoader.tiles.Add(this);
-			ContentInstance.Register(this);
+		}
+
+		public override void SetupContent() {
+			TextureAssets.Tile[Type] = ModContent.GetTexture(Texture);
+
+			SetDefaults();
+
+			//in Terraria.ObjectData.TileObject data make the following public:
+			//  newTile, newSubTile, newAlternate, addTile, addSubTile, addAlternate
+			if (TileObjectData.newTile.Width > 1 || TileObjectData.newTile.Height > 1) {
+				TileObjectData.FixNewTile();
+				throw new Exception("It appears that you have an error surrounding TileObjectData.AddTile in " + GetType().FullName) { HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#tileobjectdataaddtile-issues" };
+			}
+			if (Main.tileLavaDeath[Type])
+				Main.tileObsidianKill[Type] = true;
+
+			if (Main.tileSolid[Type])
+				Main.tileNoSunLight[Type] = true;
+
+			PostSetDefaults();
+
+			if (TileID.Sets.HasOutlines[Type])
+				TextureAssets.HighlightMask[Type] = ModContent.GetTexture(HighlightTexture);
+
+			if (!string.IsNullOrEmpty(chest))
+				TileID.Sets.BasicChest[Type] = true;
+
+			TileID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>
-		/// Allows you to set the properties of this tile. Many properties are stored as arrays throughout Terraria's code.
+		/// Allows you to set the properties of ttile.his titile.le. Many properties are stored as arrays throughout Terraria's code.
 		/// </summary>
 		public virtual void SetDefaults() {
 		}

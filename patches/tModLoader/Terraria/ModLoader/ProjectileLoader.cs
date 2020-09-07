@@ -23,8 +23,6 @@ namespace Terraria.ModLoader
 		internal static readonly IList<ModProjectile> projectiles = new List<ModProjectile>();
 		internal static readonly IList<GlobalProjectile> globalProjectiles = new List<GlobalProjectile>();
 		internal static GlobalProjectile[] InstancedGlobals = new GlobalProjectile[0];
-		internal static readonly IDictionary<string, int> globalIndexes = new Dictionary<string, int>();
-		internal static readonly IDictionary<Type, int> globalIndexesByType = new Dictionary<Type, int>();
 
 		private class HookList
 		{
@@ -103,8 +101,6 @@ namespace Terraria.ModLoader
 			projectiles.Clear();
 			nextProjectile = ProjectileID.Count;
 			globalProjectiles.Clear();
-			globalIndexes.Clear();
-			globalIndexesByType.Clear();
 		}
 
 		internal static bool IsModProjectile(Projectile projectile) {
@@ -124,13 +120,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static GlobalProjectile GetGlobalProjectile(Projectile projectile, Mod mod, string name) {
-			return globalIndexes.TryGetValue(mod.Name + ':' + name, out int index) ? globalProjectiles[index].Instance(projectile) : null;
-		}
-
-		internal static GlobalProjectile GetGlobalProjectile(Projectile projectile, Type type) {
-			return globalIndexesByType.TryGetValue(type, out int index) ? (index > -1 ? globalProjectiles[index].Instance(projectile) : null) : null;
-		}
 		//in Terraria.Projectile rename AI to VanillaAI then make AI call ProjectileLoader.ProjectileAI(this)
 		public static void ProjectileAI(Projectile projectile) {
 			if (PreAI(projectile)) {
