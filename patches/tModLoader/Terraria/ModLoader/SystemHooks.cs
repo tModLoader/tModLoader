@@ -10,6 +10,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This is where all <see cref="ModSystem"/> hooks are gathered and called.
 	/// </summary>
+	//TODO: Use combined delegates whenever possible.
 	public static class SystemHooks
 	{
 		internal static readonly IList<ModSystem> systems = new List<ModSystem>();
@@ -17,6 +18,18 @@ namespace Terraria.ModLoader
 		internal static void Add(ModSystem modSystem) => systems.Add(modSystem);
 
 		internal static void Unload() => systems.Clear();
+
+		internal static void Load() {
+			foreach (ModSystem system in systems) {
+				system.Load();
+			}
+		}
+
+		internal static void PostSetupContent() {
+			foreach (ModSystem system in systems) {
+				system.PostSetupContent();
+			}
+		}
 
 		public static void UpdateMusic(ref int music, ref MusicPriority priority) {
 			foreach (ModSystem system in systems) {
