@@ -10,7 +10,7 @@ namespace Terraria.ModLoader
 	//TODO: Load asynchronously and on demand.
 	public static class SoundLoader
 	{
-		private struct SoundData
+		private class SoundData
 		{
 			public Asset<SoundEffect> soundEffect;
 			public SoundEffectInstance soundEffectInstance;
@@ -111,11 +111,8 @@ namespace Terraria.ModLoader
 			}
 
 			var soundData = Sounds[style];
-			ref var soundInstance = ref soundData.soundEffectInstance;
 
-			if (soundInstance == null) {
-				soundInstance = soundData.soundEffect.Value.CreateInstance();
-			}
+			soundEffectInstance = soundData.soundEffectInstance ??= soundData.soundEffect.Value.CreateInstance();
 
 			soundEffectInstance.Volume = volume;
 			soundEffectInstance.Pan = pan;
