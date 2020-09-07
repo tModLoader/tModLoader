@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework.Audio;
 using ReLogic.Content;
 using System.Collections.Generic;
+using System.IO;
 using Terraria.Audio;
 
 namespace Terraria.ModLoader
@@ -59,7 +60,8 @@ namespace Terraria.ModLoader
 		internal static void Autoload(Mod mod) {
 			string modName = mod.Name;
 
-			foreach (string soundPath in mod.Assets.EnumeratePaths<SoundEffect>()) {
+			foreach (string soundPathWithExtension in mod.Assets.EnumeratePaths<SoundEffect>()) {
+				string soundPath = Path.ChangeExtension(soundPathWithExtension, null);
 				var style = new LegacySoundStyle(CustomSoundType, SoundCount);
 
 				if (!SoundSlotByModAndPath.TryGetValue(modName, out var modSoundSlots)) {
@@ -67,10 +69,12 @@ namespace Terraria.ModLoader
 				}
 
 				modSoundSlots[soundPath] = style;
+				modSoundSlots[soundPathWithExtension] = style;
 				SoundSlotByFullPath[modName + '/' + soundPath] = style;
+				SoundSlotByFullPath[modName + '/' + soundPathWithExtension] = style;
 
 				Sounds.Add(new SoundData {
-					soundEffect = mod.Assets.Request<SoundEffect>(soundPath, AssetRequestMode.ImmediateLoad)
+					soundEffect = mod.Assets.Request<SoundEffect>(soundPathWithExtension, AssetRequestMode.ImmediateLoad)
 				});
 			}
 
