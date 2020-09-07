@@ -93,7 +93,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		protected override void Register() {
+		protected override sealed void Register() {
 			Type = ModDust.ReserveDustID();
 
 			ModTypeLookup<ModDust>.Register(this);

@@ -100,7 +100,7 @@ namespace Terraria.ModLoader.IO
 				ushort option = reader.ReadUInt16();
 				ushort newType = 0;
 				if (isTile) {
-					if (ModContent.TryGet(modName, name, out ModTile tile)) {
+					if (ModContent.TryFind(modName, name, out ModTile tile)) {
 						if (option >= MapLoader.modTileOptions(tile.Type)) {
 							option = 0;
 						}
@@ -108,7 +108,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				else {
-					if (ModContent.TryGet(modName, name, out ModWall wall)) {
+					if (ModContent.TryFind(modName, name, out ModWall wall)) {
 						if (option >= MapLoader.modWallOptions(wall.Type)) {
 							option = 0;
 						}
