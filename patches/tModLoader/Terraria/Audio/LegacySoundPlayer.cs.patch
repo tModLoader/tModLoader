@@ -1,5 +1,13 @@
 --- src/Terraria/Terraria/Audio/LegacySoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/LegacySoundPlayer.cs
+@@ -5,6 +_,7 @@
+ using System;
+ using System.IO;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.Audio
+ {
 @@ -38,12 +_,12 @@
  		private SoundEffectInstance _soundInstanceGrab;
  		private Asset<SoundEffect> _soundPixie;
@@ -19,3 +27,12 @@
  		private SoundEffectInstance _soundInstanceMoonlordCry;
  		private Asset<SoundEffect> _soundDoorOpen;
  		private SoundEffectInstance _soundInstanceDoorOpen;
+@@ -319,6 +_,8 @@
+ 
+ 					SoundEffectInstance soundEffectInstance = null;
+ 					switch (type) {
++						case int _ when SoundLoader.PlayModSound(type, num, num2, num3, ref soundEffectInstance):
++							break;
+ 						case 0: {
+ 								int num15 = Main.rand.Next(3);
+ 								if (_soundInstanceDig[num15] != null)

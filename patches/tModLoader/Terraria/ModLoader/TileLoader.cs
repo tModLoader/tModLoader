@@ -391,8 +391,8 @@ namespace Terraria.ModLoader
 		public static bool IsSapling(int type) => GetTile(type)?.sapling ?? type == TileID.Saplings;
 
 		public static bool IsModMusicBox(Tile tile) {
-			return SoundLoader.tileToMusic.ContainsKey(tile.type)
-			&& SoundLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
+			return SoundLoader.TileToMusic.ContainsKey(tile.type)
+			&& SoundLoader.TileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
 		}
 
 		public static bool HasSmartInteract(int type) {

@@ -1075,8 +1075,8 @@
 +				//minionDamage += 0.1f;
  				minionKB += 0.5f;
 +
-+				if (SoundLoader.itemToMusic.ContainsKey(armor[l].type))
-+					Main.musicBox2 = SoundLoader.itemToMusic[armor[l].type];
++				if (SoundLoader.ItemToMusic.ContainsKey(armor[l].type))
++					Main.musicBox2 = SoundLoader.ItemToMusic[armor[l].type];
 +			}
 +
 +			if (armor[l].wingSlot > 0) {
@@ -1227,8 +1227,8 @@
 +					;//Silence
 +				else if (Main.curMusic < Main.maxMusic)
  					currentItem.SetDefaults(num3 + 562);
-+				else if (SoundLoader.musicToItem.ContainsKey(Main.curMusic))
-+					currentItem.SetDefaults(SoundLoader.musicToItem[Main.curMusic]);
++				else if (SoundLoader.MusicToItem.ContainsKey(Main.curMusic))
++					currentItem.SetDefaults(SoundLoader.MusicToItem[Main.curMusic]);
  			}
  
  			ApplyMusicBox(currentItem);

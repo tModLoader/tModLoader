@@ -2,62 +2,88 @@ using Microsoft.Xna.Framework.Audio;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.Audio;
 using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
-	/// <summary>
-	/// This class is used to keep track of and support the existence of custom sounds that have been added to the game.
-	/// </summary>
+	/// <summary> This class is used to keep track of and support the existence of custom sounds that have been added to the game. </summary>
+	//TODO: Load asynchronously and on demand.
 	public static class SoundLoader
 	{
+		private struct SoundData
+		{
+			public Asset<SoundEffect> soundEffect;
+			public SoundEffectInstance soundEffectInstance;
+		}
+
 		/// <summary> This value should be passed as the first parameter to Main.PlaySound whenever you want to play a custom sound. </summary>
-		public const int CustomSoundType = 50;
+		public const int CustomSoundType = 66;
 
-		internal static readonly IDictionary<string, int> sounds = new Dictionary<string, int>();
-		internal static readonly IDictionary<int, ModSound> modSounds = new Dictionary<int, ModSound>();
 		//Music boxes
-		internal static readonly IDictionary<int, int> musicToItem = new Dictionary<int, int>();
-		internal static readonly IDictionary<int, int> itemToMusic = new Dictionary<int, int>();
-		internal static readonly IDictionary<int, IDictionary<int, int>> tileToMusic = new Dictionary<int, IDictionary<int, int>>();
+		//TODO: Move to MusicLoader?
+		internal static readonly IDictionary<int, int> MusicToItem = new Dictionary<int, int>();
+		internal static readonly IDictionary<int, int> ItemToMusic = new Dictionary<int, int>();
+		internal static readonly IDictionary<int, IDictionary<int, int>> TileToMusic = new Dictionary<int, IDictionary<int, int>>();
 
-		internal static Asset<SoundEffect>[] customSounds = new Asset<SoundEffect>[0];
-		internal static SoundEffectInstance[] customSoundInstances = new SoundEffectInstance[0];
+		private static readonly List<SoundData> Sounds = new List<SoundData>();
+		private static readonly Dictionary<string, LegacySoundStyle> SoundSlotByFullPath = new Dictionary<string, LegacySoundStyle>();
+		private static readonly Dictionary<string, Dictionary<string, LegacySoundStyle>> SoundSlotByModAndPath = new Dictionary<string, Dictionary<string, LegacySoundStyle>>();
 
-		public static int SoundCount { get; private set; }
-
-		internal static int ReserveSoundID() => SoundCount++;
+		public static int SoundCount => Sounds.Count;
 
 		//Get
 
-		/// <summary> Gets the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given sound file path. This throws exceptions on failure. </summary>
-		public static int GetSoundSlot(string soundPath) => sounds[soundPath];
+		/// <summary> Gets a LegacySoundStyle object which encapsulates both the custom sound type and this sound's id as style. This throws exceptions on failure. </summary>
+		/// <exception cref="KeyNotFoundException"/>
+		public static LegacySoundStyle GetSoundSlot(string soundPath) => SoundSlotByFullPath[soundPath];
 
 		/// <summary> Gets a LegacySoundStyle object which encapsulates both the custom sound type and this sound's id as style. This throws exceptions on failure. </summary>
-		internal static LegacySoundStyle GetLegacySoundSlot(string soundPath) => new LegacySoundStyle(CustomSoundType, sounds[soundPath]);
+		/// <exception cref="KeyNotFoundException"/>
+		public static LegacySoundStyle GetSoundSlot(string modName, string soundPath) => SoundSlotByModAndPath[modName][soundPath];
 
 		//TryGet
 
-		/// <summary> Safely attempts to get the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given sound file path. This throws exceptions on failure. </summary>
-		public static bool TryGetSoundSlot(string soundPath, out int result) => sounds.TryGetValue(soundPath, out result);
+		/// <summary> Gets a LegacySoundStyle object which encapsulates both the custom sound type and this sound's id as style. </summary>
+		internal static bool TryGetSoundSlot(string soundPath, out LegacySoundStyle result) => SoundSlotByFullPath.TryGetValue(soundPath, out result);
 
-		/// <summary> Gets a LegacySoundStyle object which encapsulates both the custom sound type and this sound's id as style. This throws exceptions on failure. </summary>
-		internal static bool TryGetLegacySoundSlot(string soundPath, out LegacySoundStyle result) {
-			if(sounds.TryGetValue(soundPath, out int id)) {
-				result = new LegacySoundStyle(CustomSoundType, id);
+		/// <summary> Gets a LegacySoundStyle object which encapsulates both the custom sound type and this sound's id as style. </summary>
+		internal static bool TryGetSoundSlot(string modName, string soundPath, out LegacySoundStyle result) {
+			if (!SoundSlotByModAndPath.TryGetValue(modName, out var subDict)) {
+				result = default;
 
-				return true;
+				return false;
 			}
 
-			result = default;
+			return subDict.TryGetValue(soundPath, out result);
+		}
 
-			return false;
+		/*internal static void Add(ModSound modSound) {
+			modSound.Style = SoundCount;
+			modSound.LegacyStyle = new LegacySoundStyle(CustomSoundType, modSound.Style);
+
+			sounds.Add(new SoundData {
+				modSound = modSound
+			});
+		}*/
+
+		private static void Add(string path,SoundData soundData) {
+			SoundSlotByFullPath[path] = new LegacySoundStyle(CustomSoundType, SoundCount);
+
+			Sounds.Add(soundData);
+		}
+
+		internal static void Autoload(Mod mod) {
+			foreach (string soundPath in mod.Assets.EnumeratePaths<SoundEffect>()) {
+				Add(soundPath,new SoundData {
+					soundEffect = mod.Assets.Request<SoundEffect>(soundPath, AssetRequestMode.ImmediateLoad)
+				});
+			}
 		}
 
 		internal static void ResizeAndFillArrays() {
-			customSounds = new Asset<SoundEffect>[SoundCount];
-			customSoundInstances = new SoundEffectInstance[SoundCount];
+			/*sounds = new Asset<SoundEffect>[SoundCount];
 			
 			//Array.Resize(ref Main.music, SoundCount[SoundType.Music]);
 			//Array.Resize(ref Main.musicFade, SoundCount[SoundType.Music]);
@@ -66,9 +92,9 @@ namespace Terraria.ModLoader
 				string soundPath = pair.Key;
 				int slot = pair.Value;
 
-				customSounds[slot] = ModContent.GetSound(soundPath);
-				customSoundInstances[slot] = customSounds[slot]?.Value.CreateInstance() ?? null;
-			}
+				sounds[slot] = ModContent.GetSound(soundPath);
+				soundInstances[slot] = sounds[slot]?.Value.CreateInstance() ?? null;
+			}*/
 		}
 
 		internal static void Unload() {
@@ -76,25 +102,31 @@ namespace Terraria.ModLoader
 				Main.music[i].Stop(AudioStopOptions.Immediate);
 			}*/
 
-			SoundCount = 0;
-			sounds.Clear();
-			modSounds.Clear();
+			Sounds.Clear();
+			SoundSlotByFullPath.Clear();
 
-			musicToItem.Clear();
-			itemToMusic.Clear();
-			tileToMusic.Clear();
+			MusicToItem.Clear();
+			ItemToMusic.Clear();
+			TileToMusic.Clear();
 		}
+
 		internal static bool PlayModSound(int type, int style, float volume, float pan, ref SoundEffectInstance soundEffectInstance) {
-			if (type != CustomSoundType) {
+			if (type != CustomSoundType || style < 0 || style >= SoundCount) {
 				return false;
 			}
 
-			if (!modSounds.TryGetValue(style, out var modSound)) {
-				return false;
+			var soundData = Sounds[style];
+			ref var soundInstance = ref soundData.soundEffectInstance;
+
+			if (soundInstance == null) {
+				soundInstance = soundData.soundEffect.Value.CreateInstance();
 			}
 
-			soundEffectInstance = modSound.PlaySound(ref customSoundInstances[style], volume, pan);
-			
+			soundEffectInstance.Volume = volume;
+			soundEffectInstance.Pan = pan;
+			soundEffectInstance.Pitch = 0f;
+			soundEffectInstance.IsLooped = false;
+
 			return true;
 		}
 	}

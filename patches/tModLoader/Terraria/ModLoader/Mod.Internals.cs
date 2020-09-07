@@ -111,7 +111,7 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
-			
+
 			if (Properties.AutoloadGores) {
 				AutoloadGores(modGores);
 			}
@@ -190,7 +190,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private void AutoloadSounds(IList<Type> modSounds) {
+		/*private void AutoloadSounds(IList<Type> modSounds) {
 			var modSoundNames = modSounds.ToDictionary(t => t.FullName);
 
 			const string SoundFolder = "Sounds/";
@@ -223,7 +223,7 @@ namespace Terraria.ModLoader
 					AddSound(SoundType.Music, Name + '/' + music);
 				}
 			}
-		}
+		}*/
 
 		/// <summary>
 		/// Loads .lang files
