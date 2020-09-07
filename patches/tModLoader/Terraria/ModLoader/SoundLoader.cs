@@ -1,10 +1,7 @@
 using Microsoft.Xna.Framework.Audio;
 using ReLogic.Content;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria.Audio;
-using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -59,15 +56,6 @@ namespace Terraria.ModLoader
 			return subDict.TryGetValue(soundPath, out result);
 		}
 
-		/*internal static void Add(ModSound modSound) {
-			modSound.Style = SoundCount;
-			modSound.LegacyStyle = new LegacySoundStyle(CustomSoundType, modSound.Style);
-
-			sounds.Add(new SoundData {
-				modSound = modSound
-			});
-		}*/
-
 		private static void Add(string path,SoundData soundData) {
 			SoundSlotByFullPath[path] = new LegacySoundStyle(CustomSoundType, SoundCount);
 
@@ -80,21 +68,19 @@ namespace Terraria.ModLoader
 					soundEffect = mod.Assets.Request<SoundEffect>(soundPath, AssetRequestMode.ImmediateLoad)
 				});
 			}
+
+			/*foreach (string music in musics.Keys.Where(t => t.StartsWith("Sounds/"))) {
+				string substring = music.Substring("Sounds/".Length);
+
+				if (substring.StartsWith("Music/")) {
+					AddSound(SoundType.Music, Name + '/' + music);
+				}
+			}*/
 		}
 
 		internal static void ResizeAndFillArrays() {
-			/*sounds = new Asset<SoundEffect>[SoundCount];
-			
 			//Array.Resize(ref Main.music, SoundCount[SoundType.Music]);
 			//Array.Resize(ref Main.musicFade, SoundCount[SoundType.Music]);
-
-			foreach (var pair in sounds) {
-				string soundPath = pair.Key;
-				int slot = pair.Value;
-
-				sounds[slot] = ModContent.GetSound(soundPath);
-				soundInstances[slot] = sounds[slot]?.Value.CreateInstance() ?? null;
-			}*/
 		}
 
 		internal static void Unload() {

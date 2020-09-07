@@ -112,6 +112,10 @@ namespace Terraria.ModLoader
 				}
 			}
 
+			if (Properties.AutoloadSounds) {
+				SoundLoader.Autoload(this);
+			}
+
 			if (Properties.AutoloadGores) {
 				AutoloadGores(modGores);
 			}
@@ -189,41 +193,6 @@ namespace Terraria.ModLoader
 				AddGore($"{Name}/{texturePath}", modGore);
 			}
 		}
-
-		/*private void AutoloadSounds(IList<Type> modSounds) {
-			var modSoundNames = modSounds.ToDictionary(t => t.FullName);
-
-			const string SoundFolder = "Sounds/";
-
-			foreach (string soundPath in Assets.EnumeratePaths<SoundEffect>().Where(t => t.StartsWith(SoundFolder))) {
-				string substring = soundPath.Substring(SoundFolder.Length);
-				SoundType soundType = SoundType.Custom;
-
-				if (substring.StartsWith("Item/")) {
-					soundType = SoundType.Item;
-				}
-				else if (substring.StartsWith("NPCHit/")) {
-					soundType = SoundType.NPCHit;
-				}
-				else if (substring.StartsWith("NPCKilled/")) {
-					soundType = SoundType.NPCKilled;
-				}
-
-				ModSound modSound = null;
-				if (modSoundNames.TryGetValue($"{Name}/{soundPath}".Replace('/', '.'), out Type t))
-					modSound = (ModSound)Activator.CreateInstance(t);
-
-				AddSound(soundType, $"{Name}/{soundPath}", modSound);
-			}
-
-			foreach (string music in musics.Keys.Where(t => t.StartsWith("Sounds/"))) {
-				string substring = music.Substring("Sounds/".Length);
-
-				if (substring.StartsWith("Music/")) {
-					AddSound(SoundType.Music, Name + '/' + music);
-				}
-			}
-		}*/
 
 		/// <summary>
 		/// Loads .lang files
