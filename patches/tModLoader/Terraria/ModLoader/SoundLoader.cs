@@ -43,10 +43,10 @@ namespace Terraria.ModLoader
 		//TryGet
 
 		/// <summary> Gets a LegacySoundStyle object which encapsulates both the custom sound type and this sound's id as style. </summary>
-		internal static bool TryGetSoundSlot(string soundPath, out LegacySoundStyle result) => SoundSlotByFullPath.TryGetValue(soundPath, out result);
+		public static bool TryGetSoundSlot(string soundPath, out LegacySoundStyle result) => SoundSlotByFullPath.TryGetValue(soundPath, out result);
 
 		/// <summary> Gets a LegacySoundStyle object which encapsulates both the custom sound type and this sound's id as style. </summary>
-		internal static bool TryGetSoundSlot(string modName, string soundPath, out LegacySoundStyle result) {
+		public static bool TryGetSoundSlot(string modName, string soundPath, out LegacySoundStyle result) {
 			if (!SoundSlotByModAndPath.TryGetValue(modName, out var subDict)) {
 				result = default;
 
