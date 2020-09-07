@@ -10,6 +10,7 @@ using Terraria.ModLoader.Assets;
 using Terraria.ModLoader.Default.Developer;
 using Terraria.ModLoader.Default.Developer.Jofairden;
 using Terraria.ModLoader.Default.Patreon;
+using Terraria.ModLoader.Tags;
 
 namespace Terraria.ModLoader.Default
 {
@@ -48,6 +49,8 @@ namespace Terraria.ModLoader.Default
 				AddTexture("UnloadedTile", ReadTexture("UnloadedTile"));
 			}*/
 			
+			//TODO: Can we get internal mod autoloading?
+			
 			AddContent<UnloadedItem>();
 			AddContent<UnloadedGlobalItem>();
 			AddContent<StartBag>();
@@ -60,6 +63,12 @@ namespace Terraria.ModLoader.Default
 			AddContent<UnloadedTilesWorld>();
 			AddContent<HelpCommand>();
 			AddContent<ModlistCommand>();
+			//Tags
+			AddContent<ItemTags>();
+			AddContent<NPCTags>();
+			AddContent<ProjectileTags>();
+			AddContent<TileTags>();
+			AddContent<WallTags>();
 
 			AddPatronSets();
 			AddContent<PatronModPlayer>();
