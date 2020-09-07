@@ -56,15 +56,20 @@ namespace Terraria.ModLoader
 			return subDict.TryGetValue(soundPath, out result);
 		}
 
-		private static void Add(string path,SoundData soundData) {
-			SoundSlotByFullPath[path] = new LegacySoundStyle(CustomSoundType, SoundCount);
-
-			Sounds.Add(soundData);
-		}
-
 		internal static void Autoload(Mod mod) {
+			string modName = mod.Name;
+
 			foreach (string soundPath in mod.Assets.EnumeratePaths<SoundEffect>()) {
-				Add(soundPath,new SoundData {
+				var style = new LegacySoundStyle(CustomSoundType, SoundCount);
+
+				if (!SoundSlotByModAndPath.TryGetValue(modName, out var modSoundSlots)) {
+					SoundSlotByModAndPath[modName] = modSoundSlots = new Dictionary<string, LegacySoundStyle>();
+				}
+
+				modSoundSlots[soundPath] = style;
+				SoundSlotByFullPath[modName + '/' + soundPath] = style;
+
+				Sounds.Add(new SoundData {
 					soundEffect = mod.Assets.Request<SoundEffect>(soundPath, AssetRequestMode.ImmediateLoad)
 				});
 			}
