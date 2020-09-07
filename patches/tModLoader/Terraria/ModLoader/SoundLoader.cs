@@ -114,6 +114,8 @@ namespace Terraria.ModLoader
 
 			soundEffectInstance = soundData.soundEffectInstance ??= soundData.soundEffect.Value.CreateInstance();
 
+			soundEffectInstance.Stop();
+
 			soundEffectInstance.Volume = volume;
 			soundEffectInstance.Pan = pan;
 			soundEffectInstance.Pitch = 0f;
