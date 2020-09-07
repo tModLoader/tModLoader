@@ -117,7 +117,6 @@ namespace Terraria.ModLoader
 			soundEffectInstance.Volume = volume;
 			soundEffectInstance.Pan = pan;
 			soundEffectInstance.Pitch = 0f;
-			soundEffectInstance.IsLooped = false;
 
 			return true;
 		}
