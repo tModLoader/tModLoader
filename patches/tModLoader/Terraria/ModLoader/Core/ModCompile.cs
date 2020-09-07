@@ -410,7 +410,10 @@ namespace Terraria.ModLoader.Core
 
 				PackageMod(mod);
 
-				ModLoader.GetMod(mod.Name)?.Close();
+				if (ModLoader.TryGetMod(mod.Name, out var loadedMod)) {
+					loadedMod.Close();
+				}
+
 				mod.modFile.Save();
 				ModLoader.EnableMod(mod.Name);
 			}
