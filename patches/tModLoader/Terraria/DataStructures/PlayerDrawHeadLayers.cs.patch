@@ -1,0 +1,28 @@
+--- src/Terraria/Terraria/DataStructures/PlayerDrawHeadLayers.cs
++++ src/tModLoader/Terraria/DataStructures/PlayerDrawHeadLayers.cs
+@@ -8,13 +_,14 @@
+ 
+ namespace Terraria.DataStructures
+ {
++	//Made this internal for less confusion. 'Head-only' draw layers are no longer used, even internally. There are still some fix patches below, though, just in case some modder messes with this via reflection. --Mirsario.
+-	public static class PlayerDrawHeadLayers
++	internal static class PlayerDrawHeadLayers
+ 	{
+ 		public static void DrawPlayer_0_(ref PlayerDrawHeadSet drawinfo) {
+ 		}
+ 
+ 		public static void DrawPlayer_00_BackHelmet(ref PlayerDrawHeadSet drawinfo) {
+-			if (drawinfo.drawPlayer.head >= 0 && drawinfo.drawPlayer.head < 266) {
++			if (drawinfo.drawPlayer.head >= 0) {
+ 				int num = ArmorIDs.Head.Sets.FrontToBackID[drawinfo.drawPlayer.head];
+ 				if (num >= 0) {
+ 					Rectangle hairFrame = drawinfo.HairFrame;
+@@ -214,7 +_,7 @@
+ 		}
+ 
+ 		public static void DrawPlayer_08_FaceAcc(ref PlayerDrawHeadSet drawinfo) {
+-			if (drawinfo.drawPlayer.face > 0 && drawinfo.drawPlayer.face < 16 && drawinfo.drawPlayer.face != 5) {
++			if (drawinfo.drawPlayer.face > 0 && drawinfo.drawPlayer.face != 5) {
+ 				if (drawinfo.drawPlayer.face == 7) {
+ 					new Color(200, 200, 200, 150);
+ 					QuickCDD(drawinfo.DrawData, drawinfo.cFace, TextureAssets.AccFace[drawinfo.drawPlayer.face].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.bodyFrameMemory.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.bodyFrameMemory.Height + 4f) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.bodyFrameMemory, new Color(200, 200, 200, 200), drawinfo.drawPlayer.headRotation, drawinfo.headVect, drawinfo.scale, drawinfo.playerEffect, 0f);
