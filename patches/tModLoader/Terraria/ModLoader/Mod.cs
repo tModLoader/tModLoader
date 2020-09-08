@@ -294,14 +294,6 @@ namespace Terraria.ModLoader
 		public int GetGoreSlot<T>() where T : ModGore => GetGoreSlot(typeof(T).Name);
 
 		/// <summary>
-		/// Shorthand for calling SoundLoader.GetSoundSlot(type, this.Name, name).
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public LegacySoundStyle GetSoundSlot(string name) => SoundLoader.GetSoundSlot(Name, name);
-
-		/// <summary>
 		/// Adds a texture to the list of background textures and assigns it a background texture slot.
 		/// </summary>
 		/// <param name="texture">The texture.</param>
