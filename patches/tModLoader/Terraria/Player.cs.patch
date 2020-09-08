@@ -422,6 +422,15 @@
  					return inventory[i];
  			}
  
+@@ -2700,7 +_,7 @@
+ 			if (cursed || CCed || dead)
+ 				return;
+ 
+-			LegacySoundStyle legacySoundStyle = null;
++			SoundStyle legacySoundStyle = null;
+ 			if (CountBuffs() == 22)
+ 				return;
+ 
 @@ -2719,15 +_,19 @@
  				}
  			}

@@ -30,6 +30,15 @@
  		public bool isAShopItem;
  		public short hairDye = -1;
  		public byte paint;
+@@ -95,7 +_,7 @@
+ 		public int alpha;
+ 		public short glowMask;
+ 		public float scale = 1f;
+-		public LegacySoundStyle UseSound;
++		public SoundStyle UseSound;
+ 		public int defense;
+ 		public int headSlot = -1;
+ 		public int bodySlot = -1;
 @@ -156,6 +_,12 @@
  		public const int WALL_PLACEMENT_USETIME = 7;
  		public static int numberOfNewItems = 0;
