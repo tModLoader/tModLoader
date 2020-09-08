@@ -31,6 +31,14 @@ namespace Terraria.ModLoader
 
 		public static int SoundCount => Sounds.Count;
 
+		/// <summary> Gets a SoundEffect Asset object. This throws exceptions on failure. </summary>
+		/// <exception cref="KeyNotFoundException"/>
+		public static Asset<SoundEffect> GetSound(string soundPath) => SoundsByFullPath[soundPath].soundEffect;
+
+		/// <summary> Gets a SoundEffect Asset object. This throws exceptions on failure. </summary>
+		/// <exception cref="KeyNotFoundException"/>
+		public static Asset<SoundEffect> GetSound(string modName, string soundPath) => SoundsByModAndPath[modName][soundPath].soundEffect;
+
 		internal static void Autoload(Mod mod) {
 			string modName = mod.Name;
 
