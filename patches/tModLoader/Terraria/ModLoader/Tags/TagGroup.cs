@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.Tags
 
 		internal Dictionary<string, TagData> TagNameToData = new Dictionary<string, TagData>(StringComparer.InvariantCultureIgnoreCase);
 
-		protected sealed override void Register() => ContentInstance.Register(this);
+		protected sealed override void Register() => ModTypeLookup<TagGroup>.Register(this);
 
 		public sealed override void Unload() {
 			TagNameToData.Clear();
