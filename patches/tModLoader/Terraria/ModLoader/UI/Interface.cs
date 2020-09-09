@@ -367,7 +367,10 @@ namespace Terraria.ModLoader.UI
 							else {
 								string tempFile = ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload" + DownloadFile.TEMP_EXTENSION;
 								client.DownloadFile(downloadURL, tempFile);
-								ModLoader.GetMod(modname)?.Close();
+
+								if (ModLoader.TryGetMod(modname, out var mod))
+									mod.Close();
+
 								File.Copy(tempFile, ModLoader.ModPath + Path.DirectorySeparatorChar + downloadURL.Substring(downloadURL.LastIndexOf("/")), true);
 								File.Delete(tempFile);
 							}
