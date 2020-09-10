@@ -16,11 +16,6 @@ namespace ExampleMod.Common.Players
 		// 
 		// If you know what 'yield return' is, you can also use that here, if you prefer so.
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
-			var testItem = new Item(ItemType<ExampleItem>());
-			var otherItem = new Item(ItemID.GoldOre) {
-				stack = 256
-			};
-
 			if (mediumCoreDeath) {
 				return new[] {
 					new Item(ItemID.HealingPotion)
@@ -28,8 +23,10 @@ namespace ExampleMod.Common.Players
 			}
 
 			return new[] {
-				testItem,
-				otherItem
+				new Item(ItemType<ExampleItem>()),
+				new Item(ItemID.GoldOre) {
+					stack = 256
+				}
 			};
 		}
 
