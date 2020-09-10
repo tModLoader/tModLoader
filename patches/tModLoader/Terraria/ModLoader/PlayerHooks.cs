@@ -1144,10 +1144,10 @@ namespace Terraria.ModLoader
 		private static HookList HookAddStartingItems = AddHook<Func<bool, IEnumerable<Item>>>(p => p.AddStartingItems);
 		private static HookList HookModifyStartingInventory = AddHook<Action<IReadOnlyDictionary<string, List<Item>>, bool>>(p => p.ModifyStartingInventory);
 
-		public static List<Item> GetStartingItems(Player player, bool mediumCoreDeath = false) {
+		public static List<Item> GetStartingItems(Player player, IEnumerable<Item> vanillaItems, bool mediumCoreDeath = false) {
 			var itemsByMod = new Dictionary<string, List<Item>>();
 
-			itemsByMod["Terraria"] = mediumCoreDeath ? new List<Item>() : player.inventory.Where(item => !item.IsAir).ToList();
+			itemsByMod["Terraria"] = vanillaItems.ToList();
 
 			foreach (int index in HookAddStartingItems.arr) {
 				ModPlayer modPlayer = player.modPlayers[index];
