@@ -1,14 +1,31 @@
 --- src/Terraria/Terraria/SceneMetrics.cs
 +++ src/tModLoader/Terraria/SceneMetrics.cs
+@@ -2,6 +_,7 @@
+ using System;
+ using System.Collections.Generic;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.WorldBuilding;
+ 
+ namespace Terraria
 @@ -27,7 +_,7 @@
  		public static int GraveyardTileThreshold = 24;
  		public bool[] NPCBannerBuff = new bool[289];
  		public bool hasBanner;
 -		private readonly int[] _tileCounts = new int[623];
-+		internal int[] _tileCounts = new int[623];
++		internal int[] _tileCounts = new int[TileLoader.TileCount];
  		private readonly World _world;
  		private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  		public int bestOre;
+@@ -262,7 +_,7 @@
+ 						if (tile2 == null || !tile2.active())
+ 							continue;
+ 
+-						if (tile2.type == 104)
++						if (tile2.type == TileID.GrandfatherClocks || (ModContent.GetModTile(tile2.type)?.clock ?? false))
+ 							HasClock = true;
+ 
+ 						switch (tile2.type) {
 @@ -417,6 +_,8 @@
  			MoonLordMonolith = false;
  			Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);

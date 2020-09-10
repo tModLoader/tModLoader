@@ -56,7 +56,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Override this method to add recipes to the game. It is recommended that you do so through instances of ModRecipe, since it provides methods that simplify recipe creation.
+		/// Override this method to add recipes to the game. It is recommended that you do so through instances of Recipe, since it provides methods that simplify recipe creation.
 		/// </summary>
 		public virtual void AddRecipes()
 		{
@@ -88,15 +88,6 @@ namespace Terraria.ModLoader
 		/// <param name="music">The music.</param>
 		/// <param name="priority">The music priority.</param>
 		public virtual void UpdateMusic(ref int music, ref MusicPriority priority) {
-			UpdateMusic(ref music);
-		}
-
-		/// <summary>
-		/// A legacy hook that you should no longer use. Use the version with two parameters instead.
-		/// </summary>
-		/// <param name="music"></param>
-		[Obsolete("This UpdateMusic method now obsolete, use the UpdateMusic with the MusicPriority parameter.")]
-		public virtual void UpdateMusic(ref int music) {
 		}
 
 		/// <summary>

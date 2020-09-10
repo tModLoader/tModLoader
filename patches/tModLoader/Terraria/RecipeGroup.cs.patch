@@ -1,6 +1,10 @@
 --- src/Terraria/Terraria/RecipeGroup.cs
 +++ src/tModLoader/Terraria/RecipeGroup.cs
-@@ -8,6 +_,7 @@
+@@ -5,13 +_,15 @@
+ {
+ 	public class RecipeGroup
+ 	{
++		public int ID;
  		public Func<string> GetText;
  		public HashSet<int> ValidItems;
  		public int IconicItemId;
@@ -8,17 +12,22 @@
  		public static Dictionary<int, RecipeGroup> recipeGroups = new Dictionary<int, RecipeGroup>();
  		public static Dictionary<string, int> recipeGroupIDs = new Dictionary<string, int>();
  		public static int nextRecipeGroupIndex;
-@@ -23,6 +_,13 @@
+-
++		
+ 		public RecipeGroup(Func<string> getName, params int[] validItems) {
+ 			GetText = getName;
+ 			ValidItems = new HashSet<int>(validItems);
+@@ -19,10 +_,12 @@
+ 		}
+ 
+ 		public static int RegisterGroup(string name, RecipeGroup rec) {
+-			int num = nextRecipeGroupIndex++;
++			int num = rec.ID = nextRecipeGroupIndex++;
  			recipeGroups.Add(num, rec);
  			recipeGroupIDs.Add(name, num);
  			return num;
-+		}
-+
-+		public bool ContainsItem(int type) {
-+			if (ValidItemsLookup == null)
-+				return ValidItems.Contains(type);
-+
-+			return ValidItemsLookup[type];
  		}
++
++		public bool ContainsItem(int type) => ValidItemsLookup?[type] ?? ValidItems.Contains(type);
  	}
  }

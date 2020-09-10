@@ -8,34 +8,19 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this.
 	/// </summary>
-	public class GlobalProjectile
+	public class GlobalProjectile:ModType
 	{
-		/// <summary>
-		/// The mod to which this GlobalProjectile belongs.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The name of this GlobalProjectile instance.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		internal int index;
 		internal int instanceIndex;
 
-		/// <summary>
-		/// Allows you to automatically load a GlobalProjectile instead of using Mod.AddGlobalProjectile. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name.
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns></returns>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		protected sealed override void Register() {
+			ProjectileLoader.VerifyGlobalProjectile(this);
+
+			ModTypeLookup<GlobalProjectile>.Register(this);
+
+			index = ProjectileLoader.globalProjectiles.Count;
+
+			ProjectileLoader.globalProjectiles.Add(this);
 		}
 
 		/// <summary>
@@ -71,8 +56,7 @@ namespace Terraria.ModLoader
 				return Clone();
 			}
 			GlobalProjectile copy = (GlobalProjectile)Activator.CreateInstance(GetType());
-			copy.mod = mod;
-			copy.Name = Name;
+			copy.Mod = Mod;
 			copy.index = index;
 			copy.instanceIndex = instanceIndex;
 			return copy;

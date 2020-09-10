@@ -7,24 +7,8 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify the behavior of any tile in the game. Create an instance of an overriding class then call Mod.AddGlobalTile to use this.
 	/// </summary>
-	public class GlobalTile
+	public class GlobalTile:ModType
 	{
-		/// <summary>
-		/// The mod to which this GlobalTile belongs to.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The name of this GlobalTile instance.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		/// <summary>
 		/// A convenient method for adding an integer to the end of an array. This can be used with the arrays in TileID.Sets.RoomNeeds.
 		/// </summary>
@@ -62,13 +46,13 @@ namespace Terraria.ModLoader
 			TileLoader.cacti[soilType] = cactus;
 		}
 
-		/// <summary>
-		/// Allows you to automatically load a GlobalTile instead of using Mod.AddGlobalTile. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name.
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns></returns>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		protected sealed override void Register() {
+			ModTypeLookup<GlobalTile>.Register(this);
+			TileLoader.globalTiles.Add(this);
+		}
+
+		public override void SetupContent() {
+			SetDefaults();
 		}
 
 		/// <summary>

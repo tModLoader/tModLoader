@@ -38,7 +38,7 @@ namespace Terraria.ModLoader
 
 		internal static void ResizeArrays() {
 			//Sets
-			LoaderUtils.ReloadSets(typeof(MountID.Sets));
+			LoaderUtils.ResetStaticMembers(typeof(MountID), true);
 
 			//Etc
 			Array.Resize(ref Mount.mounts, MountCount);
@@ -61,14 +61,12 @@ namespace Terraria.ModLoader
 
 		public static void JumpHeight(Player mountedPlayer, Mount.MountData mount, ref int jumpHeight, float xVelocity) {
 			if (IsModMountData(mount)) {
-				mount.modMountData.JumpHeight(ref jumpHeight, xVelocity);
 				mount.modMountData.JumpHeight(mountedPlayer, ref jumpHeight, xVelocity);
 			}
 		}
 
 		public static void JumpSpeed(Player mountedPlayer, Mount.MountData mount, ref float jumpSpeed, float xVelocity) {
 			if (IsModMountData(mount)) {
-				mount.modMountData.JumpSpeed(ref jumpSpeed, xVelocity);
 				mount.modMountData.JumpSpeed(mountedPlayer, ref jumpSpeed, xVelocity);
 			}
 		}

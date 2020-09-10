@@ -9,12 +9,6 @@ namespace Terraria.ModLoader
 			PlayerHooks.ModifyWeaponDamage(player, item, ref add, ref mult, ref flat);
 		}
 
-		[Obsolete]
-		public static void GetWeaponDamage(Player player, Item item, ref int damage) {
-			ItemLoader.GetWeaponDamage(item, player, ref damage);
-			PlayerHooks.GetWeaponDamage(player, item, ref damage);
-		}
-
 		public static void ModifyManaCost(Player player, Item item, ref float reduce, ref float mult) {
 			ItemLoader.ModifyManaCost(item, player, ref reduce, ref mult);
 			PlayerHooks.ModifyManaCost(player, item, ref reduce, ref mult);

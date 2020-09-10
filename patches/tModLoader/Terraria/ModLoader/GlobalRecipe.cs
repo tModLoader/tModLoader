@@ -3,29 +3,11 @@
 	/// <summary>
 	/// This class provides hooks that control all recipes in the game.
 	/// </summary>
-	public class GlobalRecipe
+	public class GlobalRecipe:ModType
 	{
-		/// <summary>
-		/// The mod which added this GlobalRecipe.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The name of this GlobaRecipe.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// Allows you to automatically load a GlobalRecipe instead of using Mod.AddGlobalRecipe. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload, and to change the default internal name.
-		/// </summary>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		protected sealed override void Register() {
+			ModTypeLookup<GlobalRecipe>.Register(this);
+			RecipeHooks.Add(this);
 		}
 
 		/// <summary>

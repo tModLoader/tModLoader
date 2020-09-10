@@ -77,7 +77,7 @@ namespace Terraria.ModLoader.Config.UI
 
 			Texture2D colorBarTexture = TextureAssets.ColorBar.Value;
 			Vector2 vector = new Vector2((float)colorBarTexture.Width, (float)colorBarTexture.Height) * scale;
-			IngameOptions.valuePosition.X = IngameOptions.valuePosition.X - (float)((int)vector.X);
+			IngameOptions.valuePosition.X -= (float)((int)vector.X);
 			Rectangle rectangle = new Rectangle((int)IngameOptions.valuePosition.X, (int)IngameOptions.valuePosition.Y - (int)vector.Y / 2, (int)vector.X, (int)vector.Y);
 			Rectangle destinationRectangle = rectangle;
 			int num = 167;

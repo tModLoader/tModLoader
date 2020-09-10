@@ -1,61 +1,48 @@
+using System;
+using Terraria.GameContent;
+using Terraria.ID;
+
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class serves as a place for you to define a new buff and how that buff behaves.
 	/// </summary>
-	public class ModBuff
+	public class ModBuff:ModTexturedType
 	{
-		/// <summary>
-		/// The mod that added this ModBuff.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The internal name of this type of buff.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		/// <summary>
 		/// The buff id of this buff.
 		/// </summary>
-		public int Type {
-			get;
-			internal set;
-		}
+		public int Type {get;internal set;}
 
 		/// <summary>
 		/// The translations of this buff's display name.
 		/// </summary>
-		public ModTranslation DisplayName {
-			get;
-			internal set;
-		}
+		public ModTranslation DisplayName {get;internal set;}
 
 		/// <summary>
 		/// The translations of this buff's description.
 		/// </summary>
-		public ModTranslation Description {
-			get;
-			internal set;
-		}
+		public ModTranslation Description {get;internal set;}
 
-		internal string texture;
 		/// <summary>If this buff is a debuff, setting this to true will make this buff last twice as long on players in expert mode. Defaults to false.</summary>
 		public bool longerExpertDebuff = false;
 		/// <summary>Whether or not it is always safe to call Player.DelBuff on this buff. Setting this to false will prevent the nurse from being able to remove this debuff. Defaults to true.</summary>
 		public bool canBeCleared = true;
 
-		/// <summary>
-		/// Allows you to automatically load a buff instead of using Mod.AddBuff. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name and texture is initialized to the namespace and overriding class name with periods replaced with slashes. Use this method to either force or stop an autoload, and to change the default display name and texture path.
-		/// </summary>
-		public virtual bool Autoload(ref string name, ref string texture) {
-			return mod.Properties.Autoload;
+		protected override sealed void Register() {
+			ModTypeLookup<ModBuff>.Register(this);
+
+			Type = BuffLoader.ReserveBuffID();
+			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BuffName.{Name}");
+			Description = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BuffDescription.{Name}");
+
+			BuffLoader.buffs.Add(this);
+		}
+
+		public override void SetupContent() {
+			TextureAssets.Buff[Type] = ModContent.GetTexture(Texture);
+			SetDefaults();
+			BuffID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>

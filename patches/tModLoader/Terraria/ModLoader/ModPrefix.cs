@@ -7,7 +7,7 @@ using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
-	public abstract class ModPrefix
+	public abstract class ModPrefix:ModType
 	{
 		private static byte nextPrefix = PrefixID.Count;
 
@@ -79,25 +79,9 @@ namespace Terraria.ModLoader
 			prefix = wr.Get();
 		}
 
-		public Mod mod {
-			get;
-			internal set;
-		}
+		public byte Type {get;internal set;}
 
-		public string Name {
-			get;
-			internal set;
-		}
-
-		public byte Type {
-			get;
-			internal set;
-		}
-
-		public ModTranslation DisplayName {
-			get;
-			internal set;
-		}
+		public ModTranslation DisplayName {get;internal set;}
 
 		/// <summary>
 		/// The roll chance of your prefix relative to a vanilla prefix, 1f by default. 
@@ -123,8 +107,19 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual PrefixCategory Category => PrefixCategory.Custom;
 
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		protected sealed override void Register() {
+			ModTypeLookup<ModPrefix>.Register(this);
+
+			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.Prefix.{Name}");
+			Type = ModPrefix.ReservePrefixID();
+
+			ModPrefix.prefixes.Add(this);
+			ModPrefix.categoryPrefixes[Category].Add(this);
+		}
+
+		public override void SetupContent() {
+			AutoDefaults();
+			SetDefaults();
 		}
 
 		public virtual void AutoDefaults() {

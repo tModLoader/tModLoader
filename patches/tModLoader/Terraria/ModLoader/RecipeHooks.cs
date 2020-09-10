@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// This is where all ModRecipe and GlobalRecipe hooks are gathered and called.
+	/// This is where all Recipe and GlobalRecipe hooks are gathered and called.
 	/// </summary>
 	public static class RecipeHooks
 	{
@@ -22,9 +23,9 @@ namespace Terraria.ModLoader
 			foreach (Mod mod in ModLoader.Mods) {
 				try {
 					mod.AddRecipes();
-					foreach (ModItem item in mod.items.Values)
+					foreach (ModItem item in mod.GetContent<ModItem>())
 						item.AddRecipes();
-					foreach (GlobalItem globalItem in mod.globalItems.Values)
+					foreach (GlobalItem globalItem in mod.GetContent<GlobalItem>())
 						globalItem.AddRecipes();
 				}
 				catch (Exception e) {
@@ -52,16 +53,7 @@ namespace Terraria.ModLoader
 		/// <param name="recipe">The recipe to check.</param>
 		/// <returns>Whether or not the conditions are met for this recipe.</returns>
 		public static bool RecipeAvailable(Recipe recipe) {
-			ModRecipe modRecipe = recipe as ModRecipe;
-			if (modRecipe != null && !modRecipe.RecipeAvailable()) {
-				return false;
-			}
-			foreach (GlobalRecipe globalRecipe in globalRecipes) {
-				if (!globalRecipe.RecipeAvailable(recipe)) {
-					return false;
-				}
-			}
-			return true;
+			return recipe.Conditions.All(c => c.RecipeAvailable(recipe)) && globalRecipes.All(globalRecipe => globalRecipe.RecipeAvailable(recipe));
 		}
 
 		/// <summary>
@@ -70,10 +62,8 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item crafted.</param>
 		/// <param name="recipe">The recipe used to craft the item.</param>
 		public static void OnCraft(Item item, Recipe recipe) {
-			ModRecipe modRecipe = recipe as ModRecipe;
-			if (modRecipe != null) {
-				modRecipe.OnCraft(item);
-			}
+			recipe.OnCraftHooks?.Invoke(recipe, item);
+
 			foreach (GlobalRecipe globalRecipe in globalRecipes) {
 				globalRecipe.OnCraft(item, recipe);
 			}

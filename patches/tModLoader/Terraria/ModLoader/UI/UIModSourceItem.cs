@@ -4,6 +4,7 @@ using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -28,6 +29,7 @@ namespace Terraria.ModLoader.UI
 		private readonly UIText _modName;
 		private readonly LocalMod _builtMod;
 		private bool _upgradePotentialChecked;
+		private Stopwatch uploadTimer;
 
 		public UIModSourceItem(string mod, LocalMod builtMod) {
 			_mod = mod;
@@ -160,6 +162,16 @@ namespace Terraria.ModLoader.UI
 			}
 			SoundEngine.PlaySound(10);
 			try {
+				if (ModLoader.GetMod(_builtMod.Name) == null) {
+					if (!_builtMod.Enabled)
+						_builtMod.Enabled = true;
+					Main.menuMode = Interface.reloadModsID;
+					ModLoader.OnSuccessfulLoad += () => {
+						PublishMod(null, null);
+					};
+					return;
+				}
+
 				var modFile = _builtMod.modFile;
 				var bp = _builtMod.properties;
 
@@ -204,10 +216,20 @@ namespace Terraria.ModLoader.UI
 					throw new WebException($"You need to specify an author in build.txt");
 				ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/publishmod.php";
+				uploadTimer = new Stopwatch();
+				uploadTimer.Start();
 				using (PatientWebClient client = new PatientWebClient()) {
 					ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => true;
 					Interface.progress.Show(displayText: $"Uploading: {modFile.name}", gotoMenu: Interface.modSourcesID, cancel: client.CancelAsync);
-					client.UploadProgressChanged += (s, e) => Interface.progress.Progress = (float)e.BytesSent / e.TotalBytesToSend;
+					client.UploadProgressChanged += (s, e) => {
+						double elapsedSeconds = uploadTimer.Elapsed.TotalSeconds;
+						double speed = elapsedSeconds > 0.0 ? e.BytesSent / elapsedSeconds : 0.0;
+
+						Interface.progress.SubProgressText = $"{UIMemoryBar.SizeSuffix(e.BytesSent, 2)} / {UIMemoryBar.SizeSuffix(e.TotalBytesToSend, 2)} " + 
+						$"({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
+
+						Interface.progress.Progress = (float)e.BytesSent / e.TotalBytesToSend;
+					};
 					client.UploadDataCompleted += (s, e) => PublishUploadDataComplete(s, e, modFile);
 
 					var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", System.Globalization.NumberFormatInfo.InvariantInfo);
@@ -231,7 +253,10 @@ namespace Terraria.ModLoader.UI
 				UIModBrowser.LogModBrowserException(e.Error);
 				return;
 			}
-			ModLoader.GetMod(theTModFile.name)?.Close();
+
+			if (ModLoader.TryGetMod(theTModFile.name, out var mod))
+				mod.Close();
+
 			var result = e.Result;
 			int responseLength = result.Length;
 			if (result.Length > 256 && result[result.Length - 256 - 1] == '~') {

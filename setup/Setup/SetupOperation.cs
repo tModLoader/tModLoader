@@ -70,6 +70,9 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
+		public static string PreparePath(string path)
+			=> path.Replace('/', Path.DirectorySeparatorChar);
+
 		public static string RelPath(string basePath, string path) {
 			if (path.Last() == Path.DirectorySeparatorChar)
 				path = path.Substring(0, path.Length - 1);

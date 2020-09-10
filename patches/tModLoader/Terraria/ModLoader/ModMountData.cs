@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria.DataStructures;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -11,41 +12,17 @@ namespace Terraria.ModLoader
 	/// Only one instance of ModMountData will exist for each mount, so storing player specific data on the ModMountData is not good. 
 	/// Modders can use player.mount._mountSpecificData or a ModPlayer class to store player specific data relating to a mount. Use SetMount to assign these fields.
 	/// </summary>
-	public class ModMountData
+	public class ModMountData:ModTexturedType
 	{
-		internal string texture;
-
 		/// <summary>
 		/// The vanilla MountData object that is controlled by this ModMountData.
 		/// </summary>
-		public Mount.MountData mountData {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The mod which has added this ModMountData.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
+		public Mount.MountData mountData {get;internal set;}
 
 		/// <summary>
 		/// The index of this ModMountData in the Mount.mounts array.
 		/// </summary>
-		public int Type {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The name of this type of mount.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
+		public int Type {get;internal set;}
 
 		/// <summary>
 		/// Constructor
@@ -54,22 +31,64 @@ namespace Terraria.ModLoader
 			mountData = new Mount.MountData();
 		}
 
-		/// <summary>
-		/// Allows you to automatically load a mount instead of using Mod.AddMount. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name, texture is initialized to the namespace and overriding class name with periods replaced with slashes, and extraTextures is initialized to a dictionary containing all MountTextureTypes as keys, with texture + "_" + the texture type name as values. Use this method to either force or stop an autoload, change the default display name and texture path, and to modify the extra mount textures.
-		/// </summary>
-		/// <param name="name"></param>
-		/// <param name="texture"></param>
-		/// <param name="extraTextures"></param>
-		/// <returns></returns>
-		public virtual bool Autoload(ref string name, ref string texture, IDictionary<MountTextureType, string> extraTextures) {
-			return mod.Properties.Autoload;
+		protected sealed override void Register() {
+			if (Mount.mounts == null || Mount.mounts.Length == MountID.Count)
+				Mount.Initialize();
+
+			Type = MountLoader.ReserveMountID();
+
+			ModTypeLookup<ModMountData>.Register(this);
+			MountLoader.mountDatas[Type] = this;
+
+			foreach (MountTextureType textureType in Enum.GetValues(typeof(MountTextureType))) {
+				string extraTexture = GetExtraTexture(textureType);
+				
+				if(string.IsNullOrEmpty(extraTexture) || !ModContent.TryGetTexture(extraTexture, out var textureAsset)) {
+					continue;
+				}
+
+				switch (textureType) {
+					case MountTextureType.Back:
+						mountData.backTexture = textureAsset;
+						break;
+					case MountTextureType.BackGlow:
+						mountData.backTextureGlow = textureAsset;
+						break;
+					case MountTextureType.BackExtra:
+						mountData.backTextureExtra = textureAsset;
+						break;
+					case MountTextureType.BackExtraGlow:
+						mountData.backTextureExtraGlow = textureAsset;
+						break;
+					case MountTextureType.Front:
+						mountData.frontTexture = textureAsset;
+						break;
+					case MountTextureType.FrontGlow:
+						mountData.frontTextureGlow = textureAsset;
+						break;
+					case MountTextureType.FrontExtra:
+						mountData.frontTextureExtra = textureAsset;
+						break;
+					case MountTextureType.FrontExtraGlow:
+						mountData.frontTextureExtraGlow = textureAsset;
+						break;
+				}
+			}
 		}
+
+		public override void SetupContent() {
+			mountData.modMountData = this;
+			MountLoader.SetupMount(mountData);
+			Mount.mounts[Type] = mountData;
+		}
+
+		protected virtual string GetExtraTexture(MountTextureType textureType) => Texture + "_" + textureType;
 
 		internal void SetupMount(Mount.MountData mountData) {
 			ModMountData newMountData = (ModMountData)MemberwiseClone();
 			newMountData.mountData = mountData;
 			mountData.modMountData = newMountData;
-			newMountData.mod = mod;
+			newMountData.Mod = Mod;
 			newMountData.SetDefaults();
 		}
 
@@ -79,10 +98,6 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaults() {
 		}
 
-		[Obsolete("JumpHeight now has a Player parameter.")]
-		public virtual void JumpHeight(ref int jumpHeight, float xVelocity) {
-		}
-
 		/// <summary>
 		/// Allows you to modify the mount's jump height based on its state.
 		/// </summary>
@@ -90,10 +105,6 @@ namespace Terraria.ModLoader
 		/// <param name="jumpHeight"></param>
 		/// <param name="xVelocity"></param>
 		public virtual void JumpHeight(Player mountedPlayer, ref int jumpHeight, float xVelocity) {
-		}
-
-		[Obsolete("JumpSpeed now has a Player parameter.")]
-		public virtual void JumpSpeed(ref float jumpSeed, float xVelocity) {
 		}
 
 		/// <summary>

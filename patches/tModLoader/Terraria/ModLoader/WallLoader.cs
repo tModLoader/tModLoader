@@ -71,7 +71,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.Wall, nextWall);
 
 			//Sets
-			LoaderUtils.ReloadSets(typeof(WallID.Sets));
+			LoaderUtils.ResetStaticMembers(typeof(WallID), true);
 
 			//Etc
 			Array.Resize(ref Main.wallHouse, nextWall);

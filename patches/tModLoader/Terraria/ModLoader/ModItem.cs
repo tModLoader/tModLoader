@@ -1,12 +1,14 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
 using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
@@ -15,7 +17,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each item. Create instances of ModItem (preferably overriding this class) to pass as parameters to Mod.AddItem.
 	/// </summary>
-	public class ModItem
+	public class ModItem:ModTexturedType
 	{
 		//add modItem property to Terraria.Item (internal set)
 		//set modItem to null at beginning of Terraria.Item.ResetStats		
@@ -25,81 +27,55 @@ namespace Terraria.ModLoader
 		/// <value>
 		/// The item.
 		/// </value>
-		public Item item {
-			get;
-			internal set;
-		}
+		public Item item {get;internal set;}
 
 		/// <summary>
-		/// Gets the mod.
+		/// Shorthand for item.type;
 		/// </summary>
-		/// <value>
-		/// The mod that added this ModItem.
-		/// </value>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The internal name of this ModItem.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
+		public int Type => item.type;
 
 		/// <summary>
 		/// The translations for the display name of this item.
 		/// </summary>
-		public ModTranslation DisplayName {
-			get;
-			internal set;
-		}
+		public ModTranslation DisplayName {get;internal set;}
 
 		/// <summary>
 		/// The translations for the display name of this tooltip.
 		/// </summary>
-		public ModTranslation Tooltip {
-			get;
-			internal set;
-		}
+		public ModTranslation Tooltip {get;internal set;}
 
-		/// <summary>
-		/// The file name of this item's texture file in the mod loader's file space.
-		/// </summary>
-		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
+		public virtual string ArmTexture => Texture + "_Arms";
 
-		[Obsolete("override ModItem.OnlyShootOnSwing property", true)]
-		public bool projOnSwing;
-
-		[Obsolete("override ModItem.BossBagNPC property", true)]
-		public int bossBagNPC;
-
-		[Obsolete]
-		private bool ProjOnSwing_Obsolete {
-			get => projOnSwing;
-			set => projOnSwing = value;
-		}
-
-		[Obsolete]
-		private int BossBagNPC_Obsolete {
-			get => bossBagNPC;
-			set => bossBagNPC = value;
-		}
+		public virtual string FemaleTexture => Texture + "_FemaleBody";
 
 		public ModItem() {
 			item = new Item { modItem = this };
 		}
 
-		/// <summary>
-		/// Allows you to automatically load an item instead of using Mod.AddItem. 
-		/// Return true to allow autoloading; by default returns the mod's autoload property. 
-		/// Use this method to force or stop an autoload or change the internal name.
-		/// </summary>
-		/// <param name="name">The name, initialized to the name of this type.</param>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		protected sealed override void Register() {
+			ModTypeLookup<ModItem>.Register(this);
+
+			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemName.{Name}");
+			Tooltip = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemTooltip.{Name}", true);
+
+			item.ResetStats(ItemLoader.ReserveItemID());
+			item.modItem = this;
+
+			ItemLoader.items.Add(this);
+
+			var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
+			if (autoloadEquip != null) {
+				foreach (var equip in autoloadEquip.equipTypes) {
+					Mod.AddEquipTexture(this, equip, Texture + '_' + equip);
+				}
+			}
+		}
+
+		public override void SetupContent() {
+			ItemLoader.SetDefaults(item, false);
+			AutoStaticDefaults();
+			SetStaticDefaults();
+			ItemID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>
@@ -143,10 +119,7 @@ namespace Terraria.ModLoader
 
 			var copy = (ModItem)Activator.CreateInstance(GetType());
 			copy.item = itemClone;
-			copy.mod = mod;
-			copy.Name = Name;
-			copy.ProjOnSwing_Obsolete = ProjOnSwing_Obsolete;
-			copy.BossBagNPC_Obsolete = BossBagNPC_Obsolete;
+			copy.Mod = Mod;
 			return copy;
 		}
 
@@ -307,29 +280,6 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
-		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
-		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
-		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, summon
-		/// So if you set both melee class and another class to true, only the melee damage will actually be used.
-		/// </summary>
-		/// <param name="player">The player using the item</param>
-		/// <param name="damage">The damage.</param>
-		[Obsolete("Use ModifyWeaponDamage", true)]
-		public virtual void GetWeaponDamage(Player player, ref int damage) {
-		}
-
-		/// <summary>
-		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
-		/// </summary>
-		/// <param name="player">The player using the item</param>
-		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field.</param>
-		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
-		[Obsolete("Use ModifyWeaponDamage overload with the additional flat parameter")]
-		public virtual void ModifyWeaponDamage(Player player, ref float add, ref float mult) {
-		}
-
-		/// <summary>
-		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// </summary>
 		/// <param name="player">The player using the item</param>
 		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05`</param>
@@ -375,10 +325,6 @@ namespace Terraria.ModLoader
 		public virtual void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 		}
 		
-		[Obsolete("PickAmmo now has a weapon parameter that represents the item using the ammo.")]
-		public virtual void PickAmmo(Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
-		}
-
 		/// <summary>
 		/// Whether or not ammo will be consumed upon usage. Called both by the gun and by the ammo; if at least one returns false then the ammo will not be used. By default returns true.
 		/// If false is returned, the OnConsumeAmmo hook is never called.
@@ -685,14 +631,8 @@ namespace Terraria.ModLoader
 		/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
 		/// Reforging preserves modded data on the item. 
 		/// </summary>
-		public virtual bool NewPreReforge() {
+		public virtual bool PreReforge() {
 			return true;
-		}
-
-		// @todo: PreReforge marked obsolete until v0.11
-		[method: Obsolete("PreReforge now returns a bool to control whether the reforge takes place. For now, use NewPreReforge")]
-		public virtual void PreReforge() {
-			item.modItem?.NewPreReforge();
 		}
 
 		/// <summary>
@@ -999,12 +939,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Setting this to true makes it so that this weapon can shoot projectiles only at the beginning of its animation. Set this to true if you want a sword and its projectile creation to be in sync (for example, the Terra Blade). Defaults to false.
 		/// </summary>
-		public virtual bool OnlyShootOnSwing => ProjOnSwing_Obsolete;
+		public virtual bool OnlyShootOnSwing => false;
 
 		/// <summary>
 		/// The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains. Defaults to 0, which means this isn't a boss bag.
 		/// </summary>
-		public virtual int BossBagNPC => BossBagNPC_Obsolete;
+		public virtual int BossBagNPC => 0;
 
 		/// <summary>
 		/// Set this to true to prevent this weapon or ammo item from being adjusted by damage modifiers.
@@ -1094,5 +1034,7 @@ namespace Terraria.ModLoader
 		/// <param name="tooltips">The tooltips.</param>
 		public virtual void ModifyTooltips(List<TooltipLine> tooltips) {
 		}
+
+		public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Mod, item.type, amount);
 	}
 }

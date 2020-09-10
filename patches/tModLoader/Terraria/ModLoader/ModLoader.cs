@@ -36,7 +36,6 @@ namespace Terraria.ModLoader
 		public static Version LastLaunchedTModLoaderVersion;
 		// public static bool ShowWhatsNew;
 		public static bool ShowFirstLaunchWelcomeMessage;
-		public static bool ShowTMLLogo = true; //Temporary. There won't be a need for this when menu themes are implemented.
 
 		public static readonly string branchName = "1.4";
 		// beta > 0 cannot publish to mod browser
@@ -51,16 +50,6 @@ namespace Terraria.ModLoader
 		public static readonly string versionTag = $"v{version}" +
 													(branchName.Length == 0 ? "" : $"-{branchName.ToLower()}") +
 													(beta == 0 ? "" : $"-beta{beta}");
-
-		[Obsolete("Use Platform.IsWindows")]
-		public static readonly bool windows = Platform.IsWindows;
-		[Obsolete("Use Platform.IsLinux")]
-		public static readonly bool linux = Platform.IsLinux;
-		[Obsolete("Use Platform.IsOSX")]
-		public static readonly bool mac = Platform.IsOSX;
-
-		[Obsolete("Use CompressedPlatformRepresentation instead")]
-		public static readonly string compressedPlatformRepresentation = Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m");
 
 		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (GoGVerifier.IsGoG ? "g" : "s") + (FrameworkVersion.Framework == Framework.NetFramework ? "n" : (FrameworkVersion.Framework == Framework.Mono ? "o" : "u"));
 
@@ -83,6 +72,7 @@ namespace Terraria.ModLoader
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static bool removeForcedMinimumZoom;
 		internal static bool showMemoryEstimates;
+		internal static bool notifyNewMainMenuThemes = true;
 
 		internal static bool skipLoad;
 
@@ -93,25 +83,17 @@ namespace Terraria.ModLoader
 		internal static ModAssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
 		internal static AssemblyResourcesContentSource ManifestContentSource { get; set; }
 
-		/// <summary>
-		/// Gets the instance of the Mod with the specified name.
-		/// </summary>
-		public static Mod GetMod(string name)
-		{
-			modsByName.TryGetValue(name, out Mod m);
-			return m;
-		}
+		// Get
 
-		public static Mod GetMod(int index) => index >= 0 && index < Mods.Length ? Mods[index] : null;
+		/// <summary> Gets the instance of the Mod with the specified name. This will throw an exception if the mod cannot be found. </summary>
+		/// <exception cref="KeyNotFoundException"/>
+		public static Mod GetMod(string name) => modsByName[name];
 
-		[Obsolete("Use ModLoader.Mods", true)]
-		public static Mod[] LoadedMods => Mods;
+		// TryGet
 
-		[Obsolete("Use ModLoader.Mods.Length", true)]
-		public static int ModCount => Mods.Length;
-
-		[Obsolete("Use ModLoader.Mods.Select(m => m.Name)", true)]
-		public static string[] GetLoadedMods() => Mods.Reverse().Select(m => m.Name).ToArray();
+		/// <summary> Safely attempts to get the instance of the Mod with the specified name. </summary>
+		/// <returns> Whether or not the requested instance has been found. </returns>
+		public static bool TryGetMod(string name, out Mod result) => modsByName.TryGetValue(name, out result);
 
 		internal static void EngineInit()
 		{
@@ -388,6 +370,9 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", version.ToString());
+			Main.Configuration.Put("ShowModMenuNotifications", notifyNewMainMenuThemes);
+			Main.Configuration.Put("LastSelectedModMenu", MenuLoader.LastSelectedModMenu);
+			Main.Configuration.Put("KnownMenuThemes", MenuLoader.KnownMenuSaveString);
 		}
 
 		internal static void LoadConfiguration()
@@ -404,6 +389,9 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
 			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
+			Main.Configuration.Get("ShowModMenuNotifications", ref notifyNewMainMenuThemes);
+			Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
+			Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
 		}
 
 		internal static void MigrateSettings()

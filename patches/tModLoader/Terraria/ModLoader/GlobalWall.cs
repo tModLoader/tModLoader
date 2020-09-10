@@ -5,29 +5,15 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify the behavior of any wall in the game (although admittedly walls don't have much behavior). Create an instance of an overriding class then call Mod.AddGlobalWall to use this.
 	/// </summary>
-	public class GlobalWall
+	public class GlobalWall:ModType
 	{
-		/// <summary>
-		/// The mod to which this GlobalWall belongs.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
+		protected sealed override void Register() {
+			ModTypeLookup<GlobalWall>.Register(this);
+			WallLoader.globalWalls.Add(this);
 		}
 
-		/// <summary>
-		/// The name of this GlobalWall instance.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// Allows you to automatically load a GlobalWall instead of using Mod.AddGlobalWall. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name.
-		/// </summary>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		public override void SetupContent() {
+			SetDefaults();
 		}
 
 		/// <summary>

@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Tiles.Furniture;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -50,11 +50,12 @@ namespace ExampleMod.Content.Items.Consumables
 			return true;
 		}
 
+		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>());
-			recipe.SetResult(this, 10);
-			recipe.AddRecipe();
+			CreateRecipe(10)
+				.AddIngredient<ExampleItem>(1000)
+				.AddTile<ExampleWorkbench>()
+				.Register();
 		}
 	}
 
@@ -67,7 +68,7 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-			ModPacket packet = mod.GetPacket();
+			ModPacket packet = Mod.GetPacket();
 			packet.Write((byte)ExampleModMessageType.ExamplePlayerSyncPlayer);
 			packet.Write((byte)player.whoAmI);
 			packet.Write(exampleLifeFruits);

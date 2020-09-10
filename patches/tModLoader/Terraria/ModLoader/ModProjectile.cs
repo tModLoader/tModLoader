@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using Terraria.GameContent;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of ModProjectile (preferably overriding this class) to pass as parameters to Mod.AddProjectile.
 	/// </summary>
-	public class ModProjectile
+	public class ModProjectile : ModTexturedType
 	{
 		//add modProjectile property to Terraria.Projectile (internal set)
 		//set modProjectile to null at beginning of Terraria.Projectile.SetDefaults
@@ -21,45 +22,18 @@ namespace Terraria.ModLoader
 		/// <value>
 		/// The projectile.
 		/// </value>
-		public Projectile projectile {
-			get;
-			internal set;
-		}
+		public Projectile projectile { get; internal set; }
 
 		/// <summary>
-		/// The mod object that this ModProjectile originates from.
+		/// Shorthand for projectile.type;
 		/// </summary>
-		/// <value>
-		/// The mod.
-		/// </value>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The internal name of this ModProjectile.
-		/// </summary>
-		/// <value>
-		/// The name.
-		/// </value>
-		public string Name {
-			get;
-			internal set;
-		}
+		public int Type => projectile.type;
 
 		/// <summary>
 		/// The translations for the display name of this projectile.
 		/// </summary>
-		public ModTranslation DisplayName {
-			get;
-			internal set;
-		}
+		public ModTranslation DisplayName { get; internal set; }
 
-		/// <summary>
-		/// The file name of this projectile's texture file in the mod loader's file space.
-		/// </summary>
-		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 		/// <summary>
 		/// The file name of this projectile's glow texture file in the mod loader's file space. If it does not exist it is ignored.
 		/// </summary>
@@ -90,16 +64,24 @@ namespace Terraria.ModLoader
 		public bool drawHeldProjInFrontOfHeldItemAndArms = false;
 
 		public ModProjectile() {
-			projectile = new Projectile();
-			projectile.modProjectile = this;
+			projectile = new Projectile { modProjectile = this };
 		}
-		/// <summary>
-		/// Allows you to automatically load a projectile instead of using Mod.AddProjectile. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload, or to change the default internal name.
-		/// </summary>
-		/// <param name="name">The internal name.</param>
-		/// <returns>Whether or not to autoload.</returns>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+
+		protected sealed override void Register() {
+			ModTypeLookup<ModProjectile>.Register(this);
+
+			projectile.type = ProjectileLoader.ReserveProjectileID();
+			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ProjectileName.{Name}");
+
+			ProjectileLoader.projectiles.Add(this);
+		}
+
+		public override void SetupContent() {
+			ProjectileLoader.SetDefaults(projectile, false);
+			AutoStaticDefaults();
+			SetStaticDefaults();
+
+			ProjectileID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>
@@ -130,8 +112,7 @@ namespace Terraria.ModLoader
 
 			ModProjectile copy = (ModProjectile)Activator.CreateInstance(GetType());
 			copy.projectile = projectileClone;
-			copy.mod = mod;
-			copy.Name = Name;
+			copy.Mod = Mod;
 			copy.aiType = aiType;
 			copy.cooldownSlot = cooldownSlot;
 			copy.drawOffsetX = drawOffsetX;

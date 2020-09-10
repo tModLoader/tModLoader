@@ -261,6 +261,13 @@ namespace Terraria.ModLoader.UI
 				}
 
 				buttonIndex++;
+				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.ShowModMenuNotifications{(ModLoader.notifyNewMainMenuThemes ? "Yes" : "No")}");
+				if (selectedMenu == buttonIndex) {
+					SoundEngine.PlaySound(SoundID.MenuTick);
+					ModLoader.notifyNewMainMenuThemes = !ModLoader.notifyNewMainMenuThemes;
+				}
+
+				buttonIndex++;
 				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.ClearMBCredentials");
 				if (selectedMenu == buttonIndex) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
@@ -360,7 +367,10 @@ namespace Terraria.ModLoader.UI
 							else {
 								string tempFile = ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload" + DownloadFile.TEMP_EXTENSION;
 								client.DownloadFile(downloadURL, tempFile);
-								ModLoader.GetMod(modname)?.Close();
+
+								if (ModLoader.TryGetMod(modname, out var mod))
+									mod.Close();
+
 								File.Copy(tempFile, ModLoader.ModPath + Path.DirectorySeparatorChar + downloadURL.Substring(downloadURL.LastIndexOf("/")), true);
 								File.Delete(tempFile);
 							}
@@ -378,7 +388,7 @@ namespace Terraria.ModLoader.UI
 
 		internal static void MessageBoxShow(string text, string caption = null) {
 			// MessageBox.Show fails on Mac, this method will open a text file to show a message.
-			caption = caption ?? "Terraria: Error" + $" ({ModLoader.versionedName})";
+			caption ??= "Terraria: Error" + $" ({ModLoader.versionedName})";
 #if !MAC
 			System.Windows.Forms.MessageBox.Show(text, caption);
 #else

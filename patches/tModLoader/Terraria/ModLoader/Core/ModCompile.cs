@@ -410,7 +410,10 @@ namespace Terraria.ModLoader.Core
 
 				PackageMod(mod);
 
-				ModLoader.GetMod(mod.Name)?.Close();
+				if (ModLoader.TryGetMod(mod.Name, out var loadedMod)) {
+					loadedMod.Close();
+				}
+
 				mod.modFile.Save();
 				ModLoader.EnableMod(mod.Name);
 			}
@@ -700,19 +703,8 @@ namespace Terraria.ModLoader.Core
 				GetTerrariaReference(xna)
 			};
 
-			string[] xnaAndFnaLibs = new[] {
-				"Microsoft.Xna.Framework.dll",
-				"Microsoft.Xna.Framework.Game.dll",
-				"Microsoft.Xna.Framework.Graphics.dll",
-				"Microsoft.Xna.Framework.Xact.dll",
-				"FNA.dll"
-			};
-
 			if (xna == PlatformUtilities.IsXNA) {
 				var executingAssembly = Assembly.GetExecutingAssembly();
-
-				// find xna/fna in the currently referenced assemblies (eg, via GAC)
-				refs.AddRange(executingAssembly.GetReferencedAssemblies().Select(refName => Assembly.Load(refName).Location).Where(loc => xnaAndFnaLibs.Contains(Path.GetFileName(loc))));
 
 				// avoid a double extract of the embedded dlls
 				if (referencesUpdated) {
@@ -731,9 +723,6 @@ namespace Terraria.ModLoader.Core
 				}
 			}
 			else {
-				// find xna/fna in the ModCompile folder
-				refs.AddRange(xnaAndFnaLibs.Select(f => Path.Combine(modCompileDir, f)).Where(File.Exists));
-
 				//extract embedded resource dlls to a temporary folder
 				var terrariaModule = AssemblyDefinition.ReadAssembly(refs[0]).MainModule;
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using ReLogic.Content.Readers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using Terraria.GameContent.UI;
 using Terraria.GameInput;
-using Terraria.Initializers;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Core;
@@ -29,8 +28,23 @@ namespace Terraria.ModLoader
 	{
 		public static T GetInstance<T>() where T : class => ContentInstance<T>.Instance;
 
+		/// <summary> Attempts to find the content instance with the specified full name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
+		/// <exception cref="KeyNotFoundException"/>
+		public static T Find<T>(string fullname) where T : IModType => ModTypeLookup<T>.Get(fullname);
+		/// <summary> Attempts to find the content instance with the specified name and mod name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
+		/// <exception cref="KeyNotFoundException"/>
+		public static T Find<T>(string modName, string name) where T : IModType => ModTypeLookup<T>.Get(modName, name);
+
+		/// <summary> Safely attempts to find the content instance with the specified full name. Caching the result is recommended. </summary>
+		/// <returns> Whether or not the requested instance has been found. </returns>
+		public static bool TryFind<T>(string fullname, out T value) where T : IModType => ModTypeLookup<T>.TryGetValue(fullname, out value);
+		/// <summary> Safely attempts to find the content instance with the specified name and mod name. Caching the result is recommended. </summary>
+		/// <returns> Whether or not the requested instance has been found. </returns>
+		public static bool TryFind<T>(string modName, string name, out T value) where T : IModType => ModTypeLookup<T>.TryGetValue(modName, name, out value);
+
+		private static readonly char[] nameSplitters = new char[] { '/', ' ', ':' };
 		public static void SplitName(string name, out string domain, out string subName) {
-			int slash = name.IndexOf('/');
+			int slash = name.IndexOfAny(nameSplitters); // slash is the canonical splitter, but we'll accept space and colon for backwards compatability, just in case
 			if (slash < 0)
 				throw new MissingResourceException("Missing mod qualifier: " + name);
 
@@ -45,8 +59,7 @@ namespace Terraria.ModLoader
 		public static byte[] GetFileBytes(string name) {
 			SplitName(name, out string modName, out string subName);
 
-			Mod mod = ModLoader.GetMod(modName);
-			if (mod == null)
+			if (!ModLoader.TryGetMod(modName, out var mod))
 				throw new MissingResourceException("Missing mod: " + name);
 
 			return mod.GetFileBytes(subName);
@@ -61,8 +74,7 @@ namespace Terraria.ModLoader
 
 			SplitName(name, out string modName, out string subName);
 
-			Mod mod = ModLoader.GetMod(modName);
-			return mod != null && mod.FileExists(subName);
+			return ModLoader.TryGetMod(modName, out var mod) && mod.FileExists(subName);
 		}
 
 		/// <summary>
@@ -78,9 +90,7 @@ namespace Terraria.ModLoader
 			if(modName == "Terraria")
 				return Main.Assets.Request<Texture2D>(Path.Combine("Images", subName));
 
-			Mod mod = ModLoader.GetMod(modName);
-
-			if (mod == null)
+			if (!ModLoader.TryGetMod(modName, out var mod))
 				throw new MissingResourceException($"Missing mod: {name}");
 
 			return mod.GetTexture(subName);
@@ -98,9 +108,7 @@ namespace Terraria.ModLoader
 			if (modName == "Terraria")
 				return !Main.dedServ && (Main.instance.Content as TMLContentManager).ImageExists(subName);
 
-			Mod mod = ModLoader.GetMod(modName);
-
-			return mod != null && mod.TextureExists(subName);
+			return ModLoader.TryGetMod(modName, out var mod) && mod.TextureExists(subName);
 		}
 
 		/// <summary>
@@ -129,9 +137,7 @@ namespace Terraria.ModLoader
 				return false;
 			}
 
-			Mod mod = ModLoader.GetMod(modName);
-
-			if (mod!=null && mod.TextureExists(subName)) {
+			if (ModLoader.TryGetMod(modName, out var mod) && mod.TextureExists(subName)) {
 				texture = mod.GetTexture(subName);
 
 				return true;
@@ -150,8 +156,7 @@ namespace Terraria.ModLoader
 
 			SplitName(name, out string modName, out string subName);
 
-			Mod mod = ModLoader.GetMod(modName);
-			if (mod == null)
+			if (!ModLoader.TryGetMod(modName, out var mod))
 				throw new MissingResourceException("Missing mod: " + name);
 
 			return mod.GetSound(subName);
@@ -166,8 +171,7 @@ namespace Terraria.ModLoader
 
 			SplitName(name, out string modName, out string subName);
 
-			Mod mod = ModLoader.GetMod(modName);
-			return mod != null && mod.SoundExists(subName);
+			return ModLoader.TryGetMod(modName, out var mod) && mod.SoundExists(subName);
 		}
 
 		/// <summary>
@@ -175,10 +179,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
 		public static Music GetMusic(string name) {
-			if (Main.dedServ) { return null; }
+			if (Main.dedServ)
+				return null;
+
 			SplitName(name, out string modName, out string subName);
-			Mod mod = ModLoader.GetMod(modName);
-			if (mod == null) { throw new MissingResourceException("Missing mod: " + name); }
+
+			if (!ModLoader.TryGetMod(modName, out var mod))
+				throw new MissingResourceException("Missing mod: " + name);
+
 			return mod.GetMusic(subName);
 		}
 
@@ -186,10 +194,12 @@ namespace Terraria.ModLoader
 		/// Returns whether or not a sound with the specified name exists.
 		/// </summary>
 		public static bool MusicExists(string name) {
-			if (!name.Contains('/')) { return false; }
+			if (!name.Contains('/'))
+				return false;
+
 			SplitName(name, out string modName, out string subName);
-			Mod mod = ModLoader.GetMod(modName);
-			return mod != null && mod.MusicExists(subName);
+
+			return ModLoader.TryGetMod(modName, out var mod) && mod.MusicExists(subName);
 		}
 
 		/// <summary>
@@ -290,12 +300,17 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Get the id (type) of a ModItem by class. Assumes one instance per class.
 		/// </summary>
-		public static int ItemType<T>() where T : ModItem => GetInstance<T>()?.item.type ?? 0;
+		public static int ItemType<T>() where T : ModItem => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
 		/// Get the id (type) of a ModPrefix by class. Assumes one instance per class.
 		/// </summary>
 		public static byte PrefixType<T>() where T : ModPrefix => GetInstance<T>()?.Type ?? 0;
+
+		/// <summary>
+		/// Get the id (type) of a ModRarity by class. Assumes one instance per class.
+		/// </summary>
+		public static int RarityType<T>() where T : ModRarity => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
 		/// Get the id (type) of a ModDust by class. Assumes one instance per class.
@@ -320,12 +335,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Get the id (type) of a ModProjectile by class. Assumes one instance per class.
 		/// </summary>
-		public static int ProjectileType<T>() where T : ModProjectile => GetInstance<T>()?.projectile.type ?? 0;
+		public static int ProjectileType<T>() where T : ModProjectile => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
 		/// Get the id (type) of a ModNPC by class. Assumes one instance per class.
 		/// </summary>
-		public static int NPCType<T>() where T : ModNPC => GetInstance<T>()?.npc.type ?? 0;
+		public static int NPCType<T>() where T : ModNPC => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
 		/// Get the id (type) of a ModBuff by class. Assumes one instance per class.
@@ -381,10 +396,14 @@ namespace Terraria.ModLoader
 			RefreshModLanguage(Language.ActiveCulture);
 			MapLoader.SetupModMap();
 			ItemSorting.SetupWhiteLists();
+			RarityLoader.Initialize();
 			PlayerInput.reinitialize = true;
 			SetupRecipes(token);
+			
+			ContentSamples.Initialize();
+			MenuLoader.GotoSavedModMenu();
 		}
-
+		
 		private static void CacheVanillaState() {
 			EffectsTracker.CacheVanillaState();
 		}
@@ -424,6 +443,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void UnloadModContent() {
+			MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
 			int i = 0;
 			foreach (var mod in ModLoader.Mods.Reverse()) {
 				try {
@@ -446,12 +466,13 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			ContentInstance.Clear();
+			ModTypeLookup.Clear();
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			ModPrefix.Unload();
 			ModDust.Unload();
 			TileLoader.Unload();
-			ModTileEntity.Unload();
+			ModTileEntity.UnloadAll();
 			WallLoader.Unload();
 			ProjectileLoader.Unload();
 			NPCLoader.Unload();
@@ -459,6 +480,7 @@ namespace Terraria.ModLoader
 			PlayerHooks.Unload();
 			BuffLoader.Unload();
 			MountLoader.Unload();
+			RarityLoader.Unload();
 			ModGore.Unload();
 			SoundLoader.Unload();
 			DisposeMusic();
@@ -486,7 +508,16 @@ namespace Terraria.ModLoader
 			Config.ConfigManager.Unload();
 			CustomCurrencyManager.Initialize();
 			EffectsTracker.RemoveModEffects();
-
+			
+			// ItemID.Search = IdDictionary.Create<ItemID, short>();
+			// NPCID.Search = IdDictionary.Create<NPCID, short>();
+			// ProjectileID.Search = IdDictionary.Create<ProjectileID, short>();
+			// TileID.Search = IdDictionary.Create<TileID, ushort>();
+			// WallID.Search = IdDictionary.Create<WallID, ushort>();
+			// BuffID.Search = IdDictionary.Create<BuffID, int>();
+			
+			ContentSamples.Initialize();
+			
 			CleanupModReferences();
 		}
 

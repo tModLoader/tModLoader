@@ -55,11 +55,6 @@ namespace Terraria.ModLoader.IO
 		public bool ContainsKey(string key) => dict.ContainsKey(key);
 		public bool Remove(string key) => dict.Remove(key);
 
-		[Obsolete] public T GetTag<T>(string key) => Get<T>(key);
-		[Obsolete] public void SetTag(string key, object value) => Set(key, value);
-		[Obsolete] public bool HasTag(string key) => ContainsKey(key);
-		[Obsolete] public bool RemoveTag(string key) => Remove(key);
-
 		//NBT spec getters
 		public byte GetByte(string key) => Get<byte>(key);
 		public short GetShort(string key) => Get<short>(key);

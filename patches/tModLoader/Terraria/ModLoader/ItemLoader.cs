@@ -28,8 +28,6 @@ namespace Terraria.ModLoader
 		internal static readonly IList<GlobalItem> globalItems = new List<GlobalItem>();
 		internal static GlobalItem[] InstancedGlobals = new GlobalItem[0];
 		internal static GlobalItem[] NetGlobals;
-		internal static readonly IDictionary<string, int> globalIndexes = new Dictionary<string, int>();
-		internal static readonly IDictionary<Type, int> globalIndexesByType = new Dictionary<Type, int>();
 		internal static readonly ISet<int> animations = new HashSet<int>();
 		internal static readonly int vanillaQuestFishCount = 41;
 		internal static readonly int[] vanillaWings = new int[Main.maxWings];
@@ -88,8 +86,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.ItemFlame, nextItem);
 
 			//Sets
-			LoaderUtils.ReloadSets(typeof(ItemID.Sets));
-
+			LoaderUtils.ResetStaticMembers(typeof(ItemID), true);
+			
 			//Etc
 			Array.Resize(ref Main.itemAnimations, nextItem);
 			Array.Resize(ref Item.cachedItemSpawnsByType, nextItem);
@@ -108,7 +106,7 @@ namespace Terraria.ModLoader
 				Array.Resize(ref Main.anglerQuestItemNetIDs, vanillaQuestFishCount);
 			else
 				Main.anglerQuestItemNetIDs = Main.anglerQuestItemNetIDs
-					.Concat(items.Where(modItem => modItem.IsQuestFish()).Select(modItem => modItem.item.type))
+					.Concat(items.Where(modItem => modItem.IsQuestFish()).Select(modItem => modItem.Type))
 					.ToArray();
 
 			FindVanillaWings();
@@ -129,8 +127,6 @@ namespace Terraria.ModLoader
 			items.Clear();
 			nextItem = ItemID.Count;
 			globalItems.Clear();
-			globalIndexes.Clear();
-			globalIndexesByType.Clear();
 			animations.Clear();
 		}
 
@@ -157,14 +153,6 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookSetDefaults.arr)
 				g.Instance(item).SetDefaults(item);
-		}
-
-		internal static GlobalItem GetGlobalItem(Item item, Mod mod, string name) {
-			return globalIndexes.TryGetValue(mod.Name + ':' + name, out int index) ? globalItems[index].Instance(item) : null;
-		}
-
-		internal static GlobalItem GetGlobalItem(Item item, Type type) {
-			return globalIndexesByType.TryGetValue(type, out int index) ? (index > -1 ? globalItems[index].Instance(item) : null) : null;
 		}
 
 		//near end of Terraria.Main.DrawItem before default drawing call
@@ -425,25 +413,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateGetWeaponDamage(Item item, Player player, ref int damage);
-		[Obsolete]
-		private static HookList HookGetWeaponDamage = AddHook<DelegateGetWeaponDamage>(g => g.GetWeaponDamage);
-		/// <summary>
-		/// Calls ModItem.GetWeaponDamage, then all GlobalItem.GetWeaponDamage hooks.
-		/// </summary>
-		[Obsolete]
-		public static void GetWeaponDamage(Item item, Player player, ref int damage) {
-			if (item.IsAir)
-				return;
-
-			item.modItem?.GetWeaponDamage(player, ref damage);
-
-			foreach (var g in HookGetWeaponDamage.arr)
-				g.Instance(item).GetWeaponDamage(item, player, ref damage);
-		}
-
-		private delegate void DelegateModifyWeaponDamageOld(Item item, Player player, ref float add, ref float mult);
-		private static HookList HookModifyWeaponDamageOld = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 		/// <summary>
@@ -453,11 +422,8 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return;
 
-			item.modItem?.ModifyWeaponDamage(player, ref add, ref mult);
 			item.modItem?.ModifyWeaponDamage(player, ref add, ref mult, ref flat);
 
-			foreach (var g in HookModifyWeaponDamageOld.arr)
-				g.Instance(item).ModifyWeaponDamage(item, player, ref add, ref mult);
 			foreach (var g in HookModifyWeaponDamage.arr)
 				g.Instance(item).ModifyWeaponDamage(item, player, ref add, ref mult, ref flat);
 		}
@@ -500,9 +466,6 @@ namespace Terraria.ModLoader
 			return item.modItem == null || !item.modItem.OnlyShootOnSwing || player.itemAnimation == player.itemAnimationMax - 1;
 		}
 
-		private delegate void DelegateOldPickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback); // deprecated
-		private static HookList HookOldPickAmmo = AddHook<DelegateOldPickAmmo>(g => g.PickAmmo); // deprecated
-
 		private delegate void DelegatePickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback);
 		private static HookList HookPickAmmo = AddHook<DelegatePickAmmo>(g => g.PickAmmo);
 		/// <summary>
@@ -510,13 +473,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 			ammo.modItem?.PickAmmo(weapon, player, ref type, ref speed, ref damage, ref knockback);
-			ammo.modItem?.PickAmmo(player, ref type, ref speed, ref damage, ref knockback); // deprecated
 
 			foreach (var g in HookPickAmmo.arr) {
 				g.Instance(ammo).PickAmmo(weapon, ammo, player, ref type, ref speed, ref damage, ref knockback);
-			}
-			foreach (var g in HookOldPickAmmo.arr) {
-				g.Instance(ammo).PickAmmo(ammo, player, ref type, ref speed, ref damage, ref knockback); // deprecated
 			}
 		}
 
@@ -1108,14 +1067,16 @@ namespace Terraria.ModLoader
 		}
 
 		// @todo: PreReforge marked obsolete until v0.11
-		private static HookList HookPreReforge = AddHook<Func<Item, bool>>(g => g.NewPreReforge);
+		private static HookList HookPreReforge = AddHook<Func<Item, bool>>(g => g.PreReforge);
 		/// <summary>
 		/// Calls ModItem.PreReforge, then all GlobalItem.PreReforge hooks.
 		/// </summary>
 		public static bool PreReforge(Item item) {
-			bool b = item.modItem?.NewPreReforge() ?? true;
+			bool b = item.modItem?.PreReforge() ?? true;
+
 			foreach (var g in HookPreReforge.arr)
-				b &= g.Instance(item).NewPreReforge(item);
+				b &= g.Instance(item).PreReforge(item);
+
 			return b;
 		}
 
@@ -1722,7 +1683,7 @@ namespace Terraria.ModLoader
 		internal static void WriteNetGlobalOrder(BinaryWriter w) {
 			w.Write((short)NetGlobals.Length);
 			foreach (var globalItem in NetGlobals) {
-				w.Write(globalItem.mod.netID);
+				w.Write(globalItem.Mod.netID);
 				w.Write(globalItem.Name);
 			}
 		}
@@ -1731,7 +1692,7 @@ namespace Terraria.ModLoader
 			short n = r.ReadInt16();
 			NetGlobals = new GlobalItem[n];
 			for (short i = 0; i < n; i++)
-				NetGlobals[i] = ModNet.GetMod(r.ReadInt16()).GetGlobalItem(r.ReadString());
+				NetGlobals[i] = ModContent.Find<GlobalItem>(ModNet.GetMod(r.ReadInt16()).Name, r.ReadString());
 		}
 
 		private static bool HasMethod(Type t, string method, params Type[] args) {

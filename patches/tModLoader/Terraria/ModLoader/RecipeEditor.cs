@@ -83,7 +83,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Adds the recipe group with the given name to the recipe. Note that, unlike ModRecipe and RecipeFinder, this won't actually add an ingredient; it will only allow existing ingredients to be interchangeable with other items. Returns true if the operation was successful. Returns false if the recipe already accepts the given recipe group. Can also throw a RecipeException.
+		/// Adds the recipe group with the given name to the recipe. Note that, unlike Recipe and RecipeFinder, this won't actually add an ingredient; it will only allow existing ingredients to be interchangeable with other items. Returns true if the operation was successful. Returns false if the recipe already accepts the given recipe group. Can also throw a RecipeException.
 		/// </summary>
 		/// <param name="groupName">The recipegroup name to accept.</param>
 		/// <returns>Whether adding the recipegroup was successful.</returns>
@@ -179,30 +179,6 @@ namespace Terraria.ModLoader
 				}
 			}
 			return false;
-		}
-
-		/// <summary>
-		/// A convenience method for setting recipe.needWater.
-		/// </summary>
-		/// <param name="needWater">Whether the recipe needs water.</param>
-		public void SetNeedWater(bool needWater) {
-			recipe.needWater = needWater;
-		}
-
-		/// <summary>
-		/// A convenience method for setting recipe.needLava.
-		/// </summary>
-		/// <param name="needLava">Whether the recipe needs lava.</param>
-		public void SetNeedLava(bool needLava) {
-			recipe.needLava = needLava;
-		}
-
-		/// <summary>
-		/// A convenience method for setting recipe.needHoney.
-		/// </summary>
-		/// <param name="needHoney">Whether the recipe needs honey.</param>
-		public void SetNeedHoney(bool needHoney) {
-			recipe.needHoney = needHoney;
 		}
 
 		/// <summary>

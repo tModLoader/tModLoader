@@ -1,0 +1,19 @@
+--- src/Terraria/Terraria/Framing.cs
++++ src/tModLoader/Terraria/Framing.cs
+@@ -1,6 +_,7 @@
+ using Microsoft.Xna.Framework;
+ using Terraria.DataStructures;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria
+ {
+@@ -312,7 +_,7 @@
+ 			if (WorldGen.SkipFramingBecauseOfGen || i <= 0 || j <= 0 || i >= Main.maxTilesX - 1 || j >= Main.maxTilesY - 1 || Main.tile[i, j] == null)
+ 				return;
+ 
+-			if (Main.tile[i, j].wall >= 316)
++			if (Main.tile[i, j].wall >= WallLoader.WallCount)
+ 				Main.tile[i, j].wall = 0;
+ 
+ 			WorldGen.UpdateMapTile(i, j);

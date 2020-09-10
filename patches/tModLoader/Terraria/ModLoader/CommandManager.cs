@@ -56,12 +56,11 @@ namespace Terraria.ModLoader
 				return false;
 
 			if (modName != null) {
-				Mod mod = ModLoader.GetMod(modName);
-				if (mod == null) {
+				if (!ModLoader.TryGetMod(modName, out var mod)) {
 					caller.Reply("Unknown Mod: " + modName, Color.Red);
 				}
 				else {
-					mc = cmdList.SingleOrDefault(c => c.mod == mod);
+					mc = cmdList.SingleOrDefault(c => c.Mod == mod);
 					if (mc == null)
 						caller.Reply("Mod: " + modName + " does not have a " + name + " command.", Color.Red);
 				}
@@ -69,7 +68,7 @@ namespace Terraria.ModLoader
 			else if (cmdList.Count > 1) {
 				caller.Reply("Multiple definitions of command /" + name + ". Try:", Color.Red);
 				foreach (var c in cmdList)
-					caller.Reply(c.mod.Name + ":" + c.Command, Color.LawnGreen);
+					caller.Reply(c.Mod.Name + ":" + c.Command, Color.LawnGreen);
 			}
 			else {
 				mc = cmdList[0];
@@ -115,7 +114,7 @@ namespace Terraria.ModLoader
 				foreach (var mc in cmdList) {
 					string cmd = mc.Command;
 					if (cmdList.Count > 1)
-						cmd = mc.mod.Name + ":" + cmd;
+						cmd = mc.Mod.Name + ":" + cmd;
 
 					list.Add(Tuple.Create(cmd, mc.Description));
 				}

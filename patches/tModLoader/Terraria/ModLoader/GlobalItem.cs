@@ -12,32 +12,19 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this.
 	/// </summary>
-	public class GlobalItem
+	public class GlobalItem:ModType
 	{
-		/// <summary>
-		/// The mod to which this GlobalItem belongs.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The name of this GlobalItem instance.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		internal int index;
 		internal int instanceIndex;
 
-		/// <summary>
-		/// Allows you to automatically load a GlobalItem instead of using Mod.AddGlobalItem. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name.
-		/// </summary>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		protected sealed override void Register() {
+			ItemLoader.VerifyGlobalItem(this);
+
+			ModTypeLookup<GlobalItem>.Register(this);
+			
+			index = ItemLoader.globalItems.Count;
+
+			ItemLoader.globalItems.Add(this);
 		}
 
 		/// <summary>
@@ -81,8 +68,7 @@ namespace Terraria.ModLoader
 				return Clone();
 
 			var copy = (GlobalItem)Activator.CreateInstance(GetType());
-			copy.mod = mod;
-			copy.Name = Name;
+			copy.Mod = Mod;
 			copy.index = index; //not necessary, but consistency
 			copy.instanceIndex = instanceIndex;//shouldn't be used, but someone might
 			return copy;
@@ -213,31 +199,6 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
-		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
-		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
-		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, summon
-		/// So if you set both melee class and another class to true, only the melee damage will actually be used.
-		/// </summary>
-		/// <param name="item">The item being used</param>
-		/// <param name="player">The player using the item</param>
-		/// <param name="damage">The damage</param>
-		[Obsolete("Use ModifyWeaponDamage", true)]
-		public virtual void GetWeaponDamage(Item item, Player player, ref int damage) {
-		}
-
-		/// <summary>
-		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
-		/// </summary>
-		/// <param name="item">The item being used</param>
-		/// <param name="player">The player using the item</param>
-		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field.</param>
-		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
-		[Obsolete("Use ModifyWeaponDamage overload with the additional flat parameter")]
-		public virtual void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult) {
-		}
-
-		/// <summary>
-		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// </summary>
 		/// <param name="item">The item being used</param>
 		/// <param name="player">The player using the item</param>
@@ -285,10 +246,6 @@ namespace Terraria.ModLoader
 		/// <param name="damage">The damage of the projectile shot</param>
 		/// <param name="knockback">The speed of the projectile shot</param>
 		public virtual void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
-		}
-
-		[Obsolete("PickAmmo now has a weapon parameter that represents the item using the ammo.")]
-		public virtual void PickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 		}
 
 		/// <summary>
@@ -569,14 +526,8 @@ namespace Terraria.ModLoader
 		/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
 		/// Reforging preserves modded data on the item. 
 		/// </summary>
-		public virtual bool NewPreReforge(Item item) {
+		public virtual bool PreReforge(Item item) {
 			return true;
-		}
-
-		// @todo: PreReforge marked obsolete until v0.11
-		[method: Obsolete("PreReforge now returns a bool to control whether the reforge takes place. For now, use NewPreReforge")]
-		public virtual void PreReforge(Item item) {
-			NewPreReforge(item);
 		}
 
 		/// <summary>

@@ -67,14 +67,14 @@ namespace Terraria.ModLoader.IO
 				if (MapLoader.entryToTile.ContainsKey(type)) {
 					ModTile tile = TileLoader.GetTile(MapLoader.entryToTile[type]);
 					writer.Write(true);
-					writer.Write(tile.mod.Name);
+					writer.Write(tile.Mod.Name);
 					writer.Write(tile.Name);
 					writer.Write((ushort)(type - MapHelper.tileLookup[tile.Type]));
 				}
 				else if (MapLoader.entryToWall.ContainsKey(type)) {
 					ModWall wall = WallLoader.GetWall(MapLoader.entryToWall[type]);
 					writer.Write(false);
-					writer.Write(wall.mod.Name);
+					writer.Write(wall.Mod.Name);
 					writer.Write(wall.Name);
 					writer.Write((ushort)(type - MapHelper.wallLookup[wall.Type]));
 				}
@@ -98,26 +98,21 @@ namespace Terraria.ModLoader.IO
 				string modName = reader.ReadString();
 				string name = reader.ReadString();
 				ushort option = reader.ReadUInt16();
-				Mod mod = ModLoader.GetMod(modName);
 				ushort newType = 0;
-				if (mod != null) {
-					if (isTile) {
-						ushort tileType = (ushort)mod.TileType(name);
-						if (tileType != 0) {
-							if (option >= MapLoader.modTileOptions(tileType)) {
-								option = 0;
-							}
-							newType = (ushort)MapHelper.TileToLookup(tileType, option);
+				if (isTile) {
+					if (ModContent.TryFind(modName, name, out ModTile tile)) {
+						if (option >= MapLoader.modTileOptions(tile.Type)) {
+							option = 0;
 						}
+						newType = (ushort)MapHelper.TileToLookup(tile.Type, option);
 					}
-					else {
-						ushort wallType = (ushort)mod.WallType(name);
-						if (wallType != 0) {
-							if (option >= MapLoader.modWallOptions(wallType)) {
-								option = 0;
-							}
-							newType = (ushort)(MapHelper.wallLookup[wallType] + option);
+				}
+				else {
+					if (ModContent.TryFind(modName, name, out ModWall wall)) {
+						if (option >= MapLoader.modWallOptions(wall.Type)) {
+							option = 0;
 						}
+						newType = (ushort)(MapHelper.wallLookup[wall.Type] + option);
 					}
 				}
 				table[type] = newType;

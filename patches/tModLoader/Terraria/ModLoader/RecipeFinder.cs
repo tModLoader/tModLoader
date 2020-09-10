@@ -180,15 +180,6 @@ namespace Terraria.ModLoader
 				if (checkTiles.Count > 0) {
 					matches = false;
 				}
-				if (needWater != recipe.needWater) {
-					matches = false;
-				}
-				else if (needLava != recipe.needLava) {
-					matches = false;
-				}
-				else if (needHoney != recipe.needHoney) {
-					matches = false;
-				}
 				if (matches) {
 					return recipe;
 				}
@@ -259,15 +250,6 @@ namespace Terraria.ModLoader
 				if (checkTiles.Count > 0) {
 					matches = false;
 				}
-				if (needWater && !recipe.needWater) {
-					matches = false;
-				}
-				else if (needLava && !recipe.needLava) {
-					matches = false;
-				}
-				else if (needHoney && !recipe.needHoney) {
-					matches = false;
-				}
 				if (matches) {
 					recipes.Add(recipe);
 				}
@@ -277,21 +259,7 @@ namespace Terraria.ModLoader
 
 		private static List<int> GetAcceptedGroups(Recipe recipe) {
 			List<int> acceptedGroups = new List<int>(recipe.acceptedGroups);
-			if (recipe.anyWood) {
-				acceptedGroups.Add(RecipeGroupID.Wood);
-			}
-			if (recipe.anyIronBar) {
-				acceptedGroups.Add(RecipeGroupID.IronBar);
-			}
-			if (recipe.anySand) {
-				acceptedGroups.Add(RecipeGroupID.Sand);
-			}
-			if (recipe.anyPressurePlate) {
-				acceptedGroups.Add(RecipeGroupID.PressurePlate);
-			}
-			if (recipe.anyFragment) {
-				acceptedGroups.Add(RecipeGroupID.Fragment);
-			}
+			// todo: fix this
 			return acceptedGroups;
 		}
 	}

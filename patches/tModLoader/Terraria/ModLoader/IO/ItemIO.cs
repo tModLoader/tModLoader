@@ -25,7 +25,7 @@ namespace Terraria.ModLoader.IO
 				tag.Set("id", item.netID);
 			}
 			else {
-				tag.Set("mod", item.modItem.mod.Name);
+				tag.Set("mod", item.modItem.Mod.Name);
 				tag.Set("name", item.modItem.Name);
 				tag.Set("data", item.modItem.Save());
 			}
@@ -36,7 +36,7 @@ namespace Terraria.ModLoader.IO
 			if (item.prefix >= PrefixID.Count) {
 				ModPrefix modPrefix = ModPrefix.GetPrefix(item.prefix);
 				if (modPrefix != null) {
-					tag.Set("modPrefixMod", modPrefix.mod.Name);
+					tag.Set("modPrefixMod", modPrefix.Mod.Name);
 					tag.Set("modPrefixName", modPrefix.Name);
 				}
 			}
@@ -64,22 +64,18 @@ namespace Terraria.ModLoader.IO
 				item.netDefaults(tag.GetInt("id"));
 			}
 			else {
-				int type = ModLoader.GetMod(modName)?.ItemType(tag.GetString("name")) ?? 0;
-				if (type > 0) {
-					item.netDefaults(type);
-
+				if (ModContent.TryFind(modName, tag.GetString("name"), out ModItem modItem)) {
+					item.SetDefaults(modItem.Type);
 					item.modItem.Load(tag.GetCompound("data"));
 				}
 				else {
-					item.netDefaults(ModContent.ItemType<MysteryItem>());
-					((MysteryItem)item.modItem).Setup(tag);
+					item.SetDefaults(ModContent.ItemType<UnloadedItem>());
+					((UnloadedItem)item.modItem).Setup(tag);
 				}
 			}
 
 			if (tag.ContainsKey("modPrefixMod") && tag.ContainsKey("modPrefixName")) {
-				string prefixMod = tag.GetString("modPrefixMod");
-				string prefixName = tag.GetString("modPrefixName");
-				item.Prefix(ModLoader.GetMod(prefixMod)?.PrefixType(prefixName) ?? 0);
+				item.Prefix(ModContent.TryFind(tag.GetString("modPrefixMod"), tag.GetString("modPrefixName"), out ModPrefix prefix) ? prefix.Type : 0);
 			}
 			else if (tag.ContainsKey("prefix")) {
 				item.Prefix(tag.GetByte("prefix"));
@@ -87,7 +83,7 @@ namespace Terraria.ModLoader.IO
 			item.stack = tag.Get<int?>("stack") ?? 1;
 			item.favorited = tag.GetBool("fav");
 
-			if (!(item.modItem is MysteryItem))
+			if (!(item.modItem is UnloadedItem))
 				LoadGlobals(item, tag.GetList<TagCompound>("globalData"));
 		}
 
@@ -98,8 +94,8 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal static List<TagCompound> SaveGlobals(Item item) {
-			if (item.modItem is MysteryItem)
-				return null; //MysteryItems cannot have global data
+			if (item.modItem is UnloadedItem)
+				return null; // UnloadedItems cannot have global data
 
 			var list = new List<TagCompound>();
 			foreach (var globalItem in ItemLoader.globalItems) {
@@ -108,7 +104,7 @@ namespace Terraria.ModLoader.IO
 					continue;
 
 				list.Add(new TagCompound {
-					["mod"] = globalItemInstance.mod.Name,
+					["mod"] = globalItemInstance.Mod.Name,
 					["name"] = globalItemInstance.Name,
 					["data"] = globalItemInstance.Save(item)
 				});
@@ -118,20 +114,17 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadGlobals(Item item, IList<TagCompound> list) {
 			foreach (var tag in list) {
-				var mod = ModLoader.GetMod(tag.GetString("mod"));
-				var globalItem = mod?.GetGlobalItem(tag.GetString("name"));
-				if (globalItem != null) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out GlobalItem globalItem)) {
 					var globalItemInstance = globalItem.Instance(item);
 					try {
 						globalItemInstance.Load(item, tag.GetCompound("data"));
 					}
 					catch (Exception e) {
-						throw new CustomModDataException(mod,
-							"Error in reading custom player data for " + mod.Name, e);
+						throw new CustomModDataException(globalItem.Mod, $"Error in reading custom player data for {globalItem.FullName}", e);
 					}
 				}
 				else {
-					item.GetGlobalItem<MysteryGlobalItem>().data.Add(tag);
+					item.GetGlobalItem<UnloadedGlobalItem>().data.Add(tag);
 				}
 			}
 		}
@@ -171,7 +164,7 @@ namespace Terraria.ModLoader.IO
 				reader.SafeRead(r => item.modItem?.NetRecieve(r));
 			}
 			catch (IOException) {
-				Logging.tML.Error($"Above IOException error caused by {item.modItem.Name} from the {item.modItem.mod.Name} mod.");
+				Logging.tML.Error($"Above IOException error caused by {item.modItem.Name} from the {item.modItem.Mod.Name} mod.");
 			}
 
 			foreach (var globalItem in ItemLoader.NetGlobals) {
@@ -179,7 +172,7 @@ namespace Terraria.ModLoader.IO
 					reader.SafeRead(r => globalItem.Instance(item).NetReceive(item, r));
 				}
 				catch (IOException) {
-					Logging.tML.Error($"Above IOException error caused by {globalItem.Name} from the {globalItem.mod.Name} mod while reading {item.Name}.");
+					Logging.tML.Error($"Above IOException error caused by {globalItem.Name} from the {globalItem.Mod.Name} mod while reading {item.Name}.");
 				}
 			}
 		}

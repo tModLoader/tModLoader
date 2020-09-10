@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
-@@ -3,6 +_,7 @@
+@@ -3,10 +_,11 @@
  using Terraria.GameContent.Achievements;
  using Terraria.ID;
  using Terraria.Localization;
@@ -8,7 +8,62 @@
  
  namespace Terraria
  {
-@@ -72,7 +_,7 @@
+-	public class Recipe
++	public sealed partial class Recipe
+ 	{
+ 		public static int maxRequirements = 15;
+ 		public static int maxRecipes = 3000;
+@@ -16,20 +_,21 @@
+ 		public Item[] requiredItem = new Item[maxRequirements];
+ 		public int[] requiredTile = new int[maxRequirements];
+ 		public int[] acceptedGroups = new int[maxRequirements];
++		
+-		public bool needHoney;
++		internal bool needHoney;
+-		public bool needWater;
++		internal bool needWater;
+-		public bool needLava;
++		internal bool needLava;
+-		public bool anyWood;
++		internal bool anyWood;
+-		public bool anyIronBar;
++		internal bool anyIronBar;
+-		public bool anyPressurePlate;
++		internal bool anyPressurePlate;
+-		public bool anySand;
++		internal bool anySand;
+-		public bool anyFragment;
++		internal bool anyFragment;
+-		public bool alchemy;
++		internal bool alchemy;
+-		public bool needSnowBiome;
++		internal bool needSnowBiome;
+-		public bool needGraveyardBiome;
++		internal bool needGraveyardBiome;
+ 		private static bool _hasDelayedFindRecipes;
+ 
+-		public void RequireGroup(string name) {
++		internal void RequireGroup(string name) {
+ 			if (!RecipeGroup.recipeGroupIDs.TryGetValue(name, out int value))
+ 				return;
+ 
+@@ -49,7 +_,7 @@
+ 			acceptedGroups[num] = value;
+ 		}
+ 
+-		public void RequireGroup(int id) {
++		internal void RequireGroup(int id) {
+ 			int num = 0;
+ 			while (true) {
+ 				if (num < maxRequirements) {
+@@ -66,13 +_,13 @@
+ 			acceptedGroups[num] = id;
+ 		}
+ 
+-		public bool ProcessGroupsForText(int type, out string theText) {
++		internal bool ProcessGroupsForText(int type, out string theText) {
+ 			for (int i = 0; i < maxRequirements; i++) {
+ 				int num = acceptedGroups[i];
  				if (num == -1)
  					break;
  
@@ -17,7 +72,14 @@
  					theText = RecipeGroup.recipeGroups[num].GetText();
  					return true;
  				}
-@@ -88,7 +_,7 @@
+@@ -82,20 +_,22 @@
+ 			return false;
+ 		}
+ 
+-		public bool AcceptedByItemGroups(int invType, int reqType) {
++		internal bool AcceptedByItemGroups(int invType, int reqType) {
+ 			for (int i = 0; i < maxRequirements; i++) {
+ 				int num = acceptedGroups[i];
  				if (num == -1)
  					break;
  
@@ -26,91 +88,70 @@
  					return true;
  			}
  
-@@ -113,6 +_,10 @@
- 					break;
- 
- 				int num = item2.stack;
-+				ModRecipe modRecipe = this as ModRecipe;
-+				if (modRecipe != null)
-+					num = modRecipe.ConsumeItem(item2.type, item2.stack);
-+
- 				if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
- 					if (num > 1) {
- 						int num2 = 0;
-@@ -193,6 +_,9 @@
+ 			return false;
  		}
  
- 		public bool useWood(int invType, int reqType) {
-+			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.Wood];
-+			return anyWood && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
-+			/*
+-		public Recipe() {
++		internal Recipe(Mod mod = null) {
++			Mod = mod;
++
+ 			for (int i = 0; i < maxRequirements; i++) {
+ 				requiredItem[i] = new Item();
+ 				requiredTile[i] = -1;
+@@ -128,6 +_,8 @@
+ 					}
+ 				}
+ 
++				ConsumeItemHooks?.Invoke(this, item2.type, ref num);
++
+ 				if (num <= 0)
+ 					continue;
+ 
+@@ -192,7 +_,7 @@
+ 			FindRecipes();
+ 		}
+ 
+-		public bool useWood(int invType, int reqType) {
++		private bool useWood(int invType, int reqType) {
  			if (!anyWood)
  				return false;
  
-@@ -221,9 +_,13 @@
- 							return true;
- 					}
+@@ -223,7 +_,7 @@
  			}
-+			*/
  		}
  
- 		public bool useIronBar(int invType, int reqType) {
-+			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.IronBar];
-+			return this.anyIronBar && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
-+			/*
+-		public bool useIronBar(int invType, int reqType) {
++		private bool useIronBar(int invType, int reqType) {
  			if (!anyIronBar)
  				return false;
  
-@@ -234,9 +_,13 @@
- 				return false;
- 
+@@ -236,7 +_,7 @@
  			return true;
-+			*/
  		}
  
- 		public bool useSand(int invType, int reqType) {
-+			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.Sand];
-+			return this.anySand && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
-+			/*
+-		public bool useSand(int invType, int reqType) {
++		private bool useSand(int invType, int reqType) {
  			if (reqType != 169 && reqType != 408 && reqType != 1246 && reqType != 370 && reqType != 3272 && reqType != 3338 && reqType != 3274 && reqType != 3275)
  				return false;
  
-@@ -244,9 +_,13 @@
- 				return true;
- 
+@@ -246,7 +_,7 @@
  			return false;
-+			*/
  		}
  
- 		public bool useFragment(int invType, int reqType) {
-+			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.Fragment];
-+			return this.anyFragment && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
-+			/*
+-		public bool useFragment(int invType, int reqType) {
++		private bool useFragment(int invType, int reqType) {
  			if (reqType != 3458 && reqType != 3456 && reqType != 3457 && reqType != 3459)
  				return false;
  
-@@ -254,9 +_,13 @@
- 				return true;
- 
+@@ -256,7 +_,7 @@
  			return false;
-+			*/
  		}
  
- 		public bool usePressurePlate(int invType, int reqType) {
-+			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.PressurePlate];
-+			return anyPressurePlate && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
-+			/*
+-		public bool usePressurePlate(int invType, int reqType) {
++		private bool usePressurePlate(int invType, int reqType) {
  			if (!anyPressurePlate)
  				return false;
  
-@@ -285,6 +_,7 @@
- 							return true;
- 					}
- 			}
-+			*/
- 		}
- 
- 		public static void GetThroughDelayedFindRecipes() {
 @@ -402,7 +_,7 @@
  							flag = false;
  					}
@@ -140,3 +181,67 @@
  			UpdateMaterialFieldForAllRecipes();
  		}
  
+@@ -13067,7 +_,7 @@
+ 		}
+ 
+ 		public static void UpdateWhichItemsAreMaterials() {
+-			for (int i = 0; i < 5045; i++) {
++			for (int i = 0; i < ItemLoader.ItemCount; i++) {
+ 				Item item = new Item();
+ 				item.SetDefaults(i, noMatCheck: true);
+ 				item.checkMat();
+@@ -13962,8 +_,9 @@
+ 				}
+ 			}
+ 		}
+-
+-		public void SetIngridients(params int[] ingridients) {
++		
++		// meme man: i cn spek engrish
++		private void SetIngridients(params int[] ingridients) {
+ 			if (ingridients.Length == 1) {
+ 				ingridients = new int[2] {
+ 					ingridients[0],
+@@ -13981,15 +_,39 @@
+ 			}
+ 		}
+ 
+-		public void SetCraftingStation(params int[] tileIDs) {
++		private void SetCraftingStation(params int[] tileIDs) {
+ 			for (int i = 0; i < tileIDs.Length; i++) {
+ 				requiredTile[i] = tileIDs[i];
+ 			}
+ 		}
+ 
+ 		private static void AddRecipe() {
+-			if (currentRecipe.requiredTile[0] == 13)
+-				currentRecipe.alchemy = true;
++			if (currentRecipe.requiredTile[0] == TileID.Bottles)
++				currentRecipe.AddConsumeItemCallback(ConsumptionRules.Alchemy);
++
++			void ReplaceCondition(ref bool field, Recipe.Condition cond) {
++				if (field)
++					currentRecipe.AddCondition(cond);
++
++				field = false;
++			}
++			ReplaceCondition(ref currentRecipe.needGraveyardBiome, Condition.InGraveyardBiome);
++			ReplaceCondition(ref currentRecipe.needSnowBiome, Condition.InSnow);
++			ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
++			ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);
++			ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);
++
++			void ReplaceGroup(ref bool field, int group) {
++				if (field)
++					currentRecipe.RequireGroup(group);
++
++				field = false;
++			}
++			ReplaceGroup(ref currentRecipe.anyFragment, RecipeGroupID.Fragment);
++			ReplaceGroup(ref currentRecipe.anySand, RecipeGroupID.Sand);
++			ReplaceGroup(ref currentRecipe.anyWood, RecipeGroupID.Wood);
++			ReplaceGroup(ref currentRecipe.anyIronBar, RecipeGroupID.IronBar);
++			ReplaceGroup(ref currentRecipe.anyPressurePlate, RecipeGroupID.PressurePlate);
+ 
+ 			Main.recipe[numRecipes] = currentRecipe;
+ 			currentRecipe = new Recipe();

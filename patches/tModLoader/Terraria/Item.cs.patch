@@ -8,7 +8,7 @@
  using Terraria.Audio;
  using Terraria.Enums;
  using Terraria.GameContent;
-@@ -10,11 +_,29 @@
+@@ -10,10 +_,11 @@
  using Terraria.ID;
  using Terraria.UI;
  using Terraria.Utilities;
@@ -19,26 +19,8 @@
 -	public class Item : Entity
 +	public partial class Item : Entity
  	{
-+		public ModItem modItem {
-+			get;
-+			internal set;
-+		}
-+
-+		internal GlobalItem[] globalItems = new GlobalItem[0];
-+
-+		/// <summary>Gets the global item. Use this overload when you dynamically add GlobalItems manually.</summary>
-+		public GlobalItem GetGlobalItem(Mod mod, string name) => ItemLoader.GetGlobalItem(this, mod, name).Instance(this);
-+
-+		/// <summary>Gets the global item. Use this overload when you know only 1 instance will ever be added by this particular mod.</summary>
-+		[Obsolete("Use GetGlobalItem<T>() instead", true)]
-+		public T GetGlobalItem<T>(Mod mod) where T : GlobalItem => (T)GetGlobalItem(mod, typeof(T).Name);
-+
-+		/// <summary>Gets the global item. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
-+		public T GetGlobalItem<T>() where T : GlobalItem => (T)ModContent.GetInstance<T>().Instance(this);
-+
  		private string _nameOverride;
  		public const int luckPotionDuration1 = 10800;
- 		public const int luckPotionDuration2 = 18000;
 @@ -59,6 +_,8 @@
  		public short makeNPC;
  		public bool expertOnly;
@@ -48,6 +30,19 @@
  		public bool isAShopItem;
  		public short hairDye = -1;
  		public byte paint;
+@@ -156,6 +_,12 @@
+ 		public const int WALL_PLACEMENT_USETIME = 7;
+ 		public static int numberOfNewItems = 0;
+ 
++		public Item() { } // EntryFilter complains if item doesn't have a parameterless constructor (even when the parameter is optional).
++
++		public Item(int setDefaultsToType) {
++			SetDefaults(setDefaultsToType);
++		}
++
+ 		public string Name => _nameOverride ?? Lang.GetItemNameValue(type);
+ 
+ 		public string HoverName {
 @@ -177,11 +_,11 @@
  			}
  		}
@@ -220,16 +215,35 @@
  			float num14 = 1f * num2 * (2f - num4) * (2f - num7) * num5 * num3 * num6 * (1f + (float)num8 * 0.02f);
  			if (num == 62 || num == 69 || num == 73 || num == 77)
  				num14 *= 1.05f;
-@@ -1064,6 +_,9 @@
+@@ -1064,6 +_,10 @@
  			if (num == 65 || num == 72 || num == 76 || num == 80 || num == 68)
  				num14 *= 1.2f;
  
 +			if (num >= PrefixID.Count)
 +				ModPrefix.GetPrefix((byte)num)?.ModifyValue(ref num14);
 +
++			int baseRarity = rare;
  			if ((double)num14 >= 1.2)
  				rare += 2;
  			else if ((double)num14 >= 1.05)
+@@ -1073,12 +_,15 @@
+ 			else if ((double)num14 <= 0.95)
+ 				rare--;
+ 
++			if (baseRarity >= ItemRarityID.Count)
++				rare = RarityLoader.GetRarity(baseRarity).GetPrefixedRarity(rare - baseRarity, num14);
++
+ 			if (rare > -11) {
+ 				if (rare < -1)
+ 					rare = -1;
+ 
+-				if (rare > 11)
+-					rare = 11;
++				if (rare > RarityLoader.RarityCount - 1)
++					rare = RarityLoader.RarityCount - 1;
+ 			}
+ 
+ 			num14 *= num14;
 @@ -1116,6 +_,8 @@
  		public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
  

@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Player.cs
 +++ src/tModLoader/Terraria/Player.cs
-@@ -34,6 +_,11 @@
+@@ -34,10 +_,14 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -12,6 +12,11 @@
  
  namespace Terraria
  {
+-	public class Player : Entity
++	public partial class Player : Entity
+ 	{
+ 		public static class BuilderAccToggleIDs
+ 		{
 @@ -184,15 +_,21 @@
  
  			public static void PlayerConnect(int playerIndex) {
@@ -1050,7 +1055,7 @@
 +			//equippedAnyTileRangeAcc = false;
 +		}
 +		public void VanillaUpdateAccessory(int i, Item item, bool hideVisual, ref bool flag, ref bool flag2, ref bool flag3) {
-+			// for (int l = 3; l < 8 + this.extraAccessorySlots; l++)
++			// for (int l = 3; l < 10 + extraAccessorySlots; l++)
 +			// fake array and loop to keep patches small
 +			var armor = new[] { item }; int l = 0;
 +			{
@@ -1108,14 +1113,14 @@
 +				VanillaUpdateInventory(inventory[j]);
 +			}
 +
-+			for (int k = 0; k < 8 + extraAccessorySlots; k++) {
++			for (int k = 0; k < 10 + extraAccessorySlots; k++) {
 +				VanillaUpdateEquip(armor[k]);
 +			}
 +
 +			bool flag = false;
 +			bool flag2 = false;
 +			bool flag3 = false;
-+			for (int l = 3; l < 8 + extraAccessorySlots; l++) {
++			for (int l = 3; l < 10 + extraAccessorySlots; l++) {
 +				VanillaUpdateAccessory(i, armor[l], hideVisibleAccessory[l], ref flag, ref flag2, ref flag3);
  			}
  
@@ -1927,7 +1932,7 @@
  												if (inventory[num76].stack <= 0)
  													inventory[num76] = new Item();
  											}
-@@ -22204,6 +_,10 @@
+@@ -22204,13 +_,17 @@
  					if (flag14)
  						LaunchMinecartHook(myX, myY);
  				}
@@ -1938,6 +1943,14 @@
  			}
  
  			if (flag2)
+ 				tileInteractionHappened = true;
+ 		}
+ 
+-		private static bool IsHoveringOverABottomSideOfABed(int myX, int myY) {
++		public static bool IsHoveringOverABottomSideOfABed(int myX, int myY) {
+ 			short frameX = Main.tile[myX, myY].frameX;
+ 			bool flag = frameX / 72 == 1;
+ 			bool flag2 = frameX % 72 < 36;
 @@ -23149,7 +_,7 @@
  				cursorItemIconID = 3747;
  			}
@@ -2392,19 +2405,18 @@
  			if (num5 > 0) {
  				Vector2 vector = Main.ReverseGravitySupport(Main.MouseScreen) + Main.screenPosition;
  				if (Main.SmartCursorEnabled || PlayerInput.UsingGamepad)
-@@ -28740,21 +_,21 @@
+@@ -28740,8 +_,8 @@
  
  		public PlayerFishingConditions GetFishingConditions() {
  			PlayerFishingConditions result = default(PlayerFishingConditions);
 -			Fishing_GetBestFishingPole(out result.PolePower, out result.PoleItemType);
 -			Fishing_GetBait(out result.BaitPower, out result.BaitItemType);
--			if (result.BaitItemType == 2673)
 +			Fishing_GetBestFishingPole(out result.Pole);
 +			Fishing_GetBait(out result.Bait);
-+			if (result.Bait?.type == ItemID.TruffleWorm)
+ 			if (result.BaitItemType == 2673)
  				return result;
  
- 			if (result.BaitPower == 0 || result.PolePower == 0)
+@@ -28749,12 +_,12 @@
  				return result;
  
  			int num = result.BaitPower + result.PolePower + fishingSkill;
@@ -2913,7 +2925,7 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -35546,48 +_,69 @@
+@@ -35546,48 +_,68 @@
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
  
@@ -3007,7 +3019,6 @@
 +			float flat = 0f;
 +			CombinedHooks.ModifyWeaponDamage(this, sItem, ref add, ref mult, ref flat);
 +			int damage = (int)(sItem.damage * add * mult + 5E-06f + flat);
-+			CombinedHooks.GetWeaponDamage(this, sItem, ref damage);
 +			return Math.Max(0, damage);
  		}
  
@@ -3477,23 +3488,11 @@
  				}
  
  				return playerFileData;
-@@ -37381,7 +_,31 @@
+@@ -37381,7 +_,19 @@
  			return -1;
  		}
  
 -		public Player() {
-+		internal IList<string> usedMods;
-+		internal ModPlayer[] modPlayers = new ModPlayer[0];
-+
-+		private ModPlayer GetModPlayer(int? index) => index.HasValue ? modPlayers[index.Value] : null;
-+
-+		public ModPlayer GetModPlayer(Mod mod, string name) => GetModPlayer(mod.GetPlayer(name)?.index);
-+
-+		[Obsolete("Use GetModPlayer<T>() instead", true)]
-+		public T GetModPlayer<T>(Mod mod) where T : ModPlayer => (T)GetModPlayer(mod, typeof(T).Name);
-+
-+		public T GetModPlayer<T>() where T : ModPlayer => (T)GetModPlayer(ModContent.GetInstance<T>()?.index);
-+
 +		public Player(bool startupInventory = true) {
 +			buffType = new int[MaxBuffs];
 +			buffTime = new int[MaxBuffs];

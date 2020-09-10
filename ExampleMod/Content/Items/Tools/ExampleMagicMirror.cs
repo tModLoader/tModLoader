@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Tiles.Furniture;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Tools
 {
@@ -11,18 +11,18 @@ namespace ExampleMod.Content.Items.Tools
 	// It may prove a useful guide for ModItems with similar behaviors.
 	internal class ExampleMagicMirror : ExampleItem
 	{
-		public override string Texture => $"Terraria/Item_{ItemID.IceMirror}";
+		public override string Texture => $"Terraria/Item_{ItemID.IceMirror}"; // Copies the texture for the Ice Mirror, make your own texture if need be.
 
 		public override void SetDefaults() {
-			item.CloneDefaults(ItemID.IceMirror);
-			item.color = Color.Violet;
+			item.CloneDefaults(ItemID.IceMirror); // Copies the defaults from the Ice Mirror.
+			item.color = Color.Violet; // Sets the item color
 		}
 
 		// UseStyle is called each frame that the item is being actively used.
 		public override void UseStyle(Player player) {
 			// Each frame, make some dust
 			if (Main.rand.NextBool()) {
-				Dust.NewDust(player.position, player.width, player.height, 15, 0f, 0f, 150, Color.White, 1.1f);
+				Dust.NewDust(player.position, player.width, player.height, 15, 0f, 0f, 150, Color.White, 1.1f); // Makes dust from the player's position and copies the hitbox of which the dust may spawn. Change these arguments if needed.
 			}
 
 			// This sets up the itemTime correctly.
@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Items.Tools
 					Dust.NewDust(player.position, player.width, player.height, 15, player.velocity.X * 0.5f, player.velocity.Y * 0.5f, 150, default, 1.5f);
 				}
 
-				// This code releases all grappling hooks and kills them.
+				// This code releases all grappling hooks and kills/despawns them.
 				player.grappling[0] = -1;
 				player.grapCount = 0;
 				for (int p = 0; p < 1000; p++) {
@@ -68,11 +68,12 @@ namespace ExampleMod.Content.Items.Tools
 			}
 		}
 
+		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>());
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient<ExampleItem>(100)
+				.AddTile<ExampleWorkbench>()
+				.Register();
 		}
 	}
 }

@@ -2,6 +2,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
@@ -9,33 +11,13 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a type of wall that can be added by a mod. Only one instance of this class will ever exist for each type of wall that is added. Any hooks that are called will be called by the instance corresponding to the wall type.
 	/// </summary>
-	public class ModWall
+	public class ModWall:ModTexturedType
 	{
-		/// <summary>
-		/// The mod which has added this type of ModWall.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The name of this type of wall.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		/// <summary>
 		/// The internal ID of this type of wall.
 		/// </summary>
-		public ushort Type {
-			get;
-			internal set;
-		}
+		public ushort Type {get;internal set;}
 
-		internal string texture;
 		/// <summary>
 		/// The default type of sound made when this wall is hit. Defaults to 0.
 		/// </summary>
@@ -75,7 +57,7 @@ namespace Terraria.ModLoader
 			if (string.IsNullOrEmpty(key)) {
 				key = Name;
 			}
-			return mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", mod.Name, key));
+			return Mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", Mod.Name, key));
 		}
 
 		/// <summary>
@@ -117,11 +99,17 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		/// <summary>
-		/// Allows you to modify the name and texture path of this wall when it is autoloaded. Return true to autoload this wall. When a wall is autoloaded, that means you do not need to manually call Mod.AddWall. By default returns the mod's autoload property.
-		/// </summary>
-		public virtual bool Autoload(ref string name, ref string texture) {
-			return mod.Properties.Autoload;
+		protected override sealed void Register() {
+			Type = (ushort)WallLoader.ReserveWallID();
+
+			ModTypeLookup<ModWall>.Register(this);
+			WallLoader.walls.Add(this);
+		}
+
+		public override void SetupContent() {
+			TextureAssets.Wall[Type] = ModContent.GetTexture(Texture);
+			SetDefaults();
+			WallID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>

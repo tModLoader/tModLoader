@@ -36,7 +36,7 @@ namespace Terraria.ModLoader.Config.UI
 					continue;
 				string modname = option.definition.mod;
 				if (option.type > ProjectileID.Count) {
-					modname = ProjectileLoader.GetProjectile(option.type).mod.DisplayName; // or internal name?
+					modname = ProjectileLoader.GetProjectile(option.type).Mod.DisplayName; // or internal name?
 				}
 				if (modname.IndexOf(chooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;

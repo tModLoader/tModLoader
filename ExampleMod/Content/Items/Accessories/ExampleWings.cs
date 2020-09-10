@@ -3,7 +3,6 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Accessories
 {
@@ -30,19 +29,19 @@ namespace ExampleMod.Content.Items.Accessories
 
 		public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
 			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend) {
-			ascentWhenFalling = 0.85f;
-			ascentWhenRising = 0.15f;
+			ascentWhenFalling = 0.85f; // Falling glide speed
+			ascentWhenRising = 0.15f; // Rising speed
 			maxCanAscendMultiplier = 1f;
 			maxAscentMultiplier = 3f;
 			constantAscend = 0.135f;
 		}
 
+		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>(), 60);
-			recipe.AddTile(TileType<ExampleWorkbench>());
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient<ExampleItem>(60)
+				.AddTile<ExampleWorkbench>()
+				.Register();
 		}
 	}
 }

@@ -165,7 +165,7 @@ root = true
 
 # Wrapping preferences
 	csharp_preserve_single_line_blocks = true
-	csharp_preserve_single_line_statements = true
+	csharp_preserve_single_line_statements = false
 
 #### Naming styles ####
 

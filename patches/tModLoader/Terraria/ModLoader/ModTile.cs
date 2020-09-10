@@ -2,44 +2,27 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ObjectData;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.
 	/// </summary>
-	public class ModTile
+	public class ModTile:ModTexturedType
 	{
-		/// <summary>
-		/// The mod which has added this type of ModTile.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The name of this type of tile.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		/// <summary>
 		/// The internal ID of this type of tile.
 		/// </summary>
-		public ushort Type {
-			get;
-			internal set;
-		}
+		public ushort Type {get;internal set;}
 
-		internal string texture;
 		/// <summary>
 		/// The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture.
 		/// </summary>
-		public virtual string HighlightTexture => texture + "_Highlight";
+		public virtual string HighlightTexture => Texture + "_Highlight";
 		/// <summary>
 		/// The default type of sound made when this tile is hit. Defaults to 0.
 		/// </summary>
@@ -116,7 +99,13 @@ namespace Terraria.ModLoader
 		/// Whether or not this tile is a sapling, which can grow into a modded tree or palm tree.
 		/// </summary>
 		public bool sapling = false;
-
+		/// <summary>
+		/// Whether or not this tile is a clock.
+		/// </summary>
+		public bool clock = false;
+		
+		public bool IsDoor => openDoorID != -1 || closeDoorID != -1;
+		
 		/// <summary>
 		/// A convenient method for adding this tile's Type to the given array. This can be used with the arrays in TileID.Sets.RoomNeeds.
 		/// </summary>
@@ -147,7 +136,7 @@ namespace Terraria.ModLoader
 			if (string.IsNullOrEmpty(key)) {
 				key = Name;
 			}
-			return mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", mod.Name, key));
+			return Mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", Mod.Name, key));
 		}
 
 		/// <summary>
@@ -213,18 +202,44 @@ namespace Terraria.ModLoader
 			TileLoader.cacti[Type] = cactus;
 		}
 
-		/// <summary>
-		/// Allows you to modify the name and texture path of this tile when it is autoloaded. Return true to autoload this tile. When a tile is autoloaded, that means you do not need to manually call Mod.AddTile. By default returns the mod's autoload property.
-		/// </summary>
-		/// <param name="name">The internal name.</param>
-		/// <param name="texture">The texture path.</param>
-		/// <returns>Whether or not to autoload this tile.</returns>
-		public virtual bool Autoload(ref string name, ref string texture) {
-			return mod.Properties.Autoload;
+		protected sealed override void Register() {
+			ModTypeLookup<ModTile>.Register(this);
+
+			Type = (ushort)TileLoader.ReserveTileID();
+
+			TileLoader.tiles.Add(this);
+		}
+
+		public override void SetupContent() {
+			TextureAssets.Tile[Type] = ModContent.GetTexture(Texture);
+
+			SetDefaults();
+
+			//in Terraria.ObjectData.TileObject data make the following public:
+			//  newTile, newSubTile, newAlternate, addTile, addSubTile, addAlternate
+			if (TileObjectData.newTile.Width > 1 || TileObjectData.newTile.Height > 1) {
+				TileObjectData.FixNewTile();
+				throw new Exception("It appears that you have an error surrounding TileObjectData.AddTile in " + GetType().FullName) { HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#tileobjectdataaddtile-issues" };
+			}
+			if (Main.tileLavaDeath[Type])
+				Main.tileObsidianKill[Type] = true;
+
+			if (Main.tileSolid[Type])
+				Main.tileNoSunLight[Type] = true;
+
+			PostSetDefaults();
+
+			if (TileID.Sets.HasOutlines[Type])
+				TextureAssets.HighlightMask[Type] = ModContent.GetTexture(HighlightTexture);
+
+			if (!string.IsNullOrEmpty(chest))
+				TileID.Sets.BasicChest[Type] = true;
+
+			TileID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>
-		/// Allows you to set the properties of this tile. Many properties are stored as arrays throughout Terraria's code.
+		/// Allows you to set the properties of ttile.his titile.le. Many properties are stored as arrays throughout Terraria's code.
 		/// </summary>
 		public virtual void SetDefaults() {
 		}
@@ -460,21 +475,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make something happen when this tile is right-clicked by the player.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		[Obsolete("ModTile.RightClick will return a bool value later. This version is deprecated since v0.11.5, please use ModTile.NewRightClick instead and return true if a tile interaction has occurred.")]
-		public virtual void RightClick(int i, int j) {
-		}
-
-		/// <summary>
 		/// Allows you to make something happen when this tile is right-clicked by the player. Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targetting from happening. Returns false by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
 		/// <returns>Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targetting from happening. Returns false by default.</returns>
-		public virtual bool NewRightClick(int i, int j) {
+		public virtual bool RightClick(int i, int j) {
 			return false;
 		}
 

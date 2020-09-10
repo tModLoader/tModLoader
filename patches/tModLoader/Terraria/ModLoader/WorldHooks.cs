@@ -35,7 +35,7 @@ namespace Terraria.ModLoader
 		internal static void WriteNetWorldOrder(BinaryWriter w) {
 			w.Write((short)NetWorlds.Length);
 			foreach (var netWorld in NetWorlds) {
-				w.Write(netWorld.mod.netID);
+				w.Write(netWorld.Mod.netID);
 				w.Write(netWorld.Name);
 			}
 		}
@@ -44,7 +44,7 @@ namespace Terraria.ModLoader
 			short n = r.ReadInt16();
 			NetWorlds = new ModWorld[n];
 			for (short i = 0; i < n; i++)
-				NetWorlds[i] = ModNet.GetMod(r.ReadInt16()).GetModWorld(r.ReadString());
+				NetWorlds[i] = ModContent.Find<ModWorld>(ModNet.GetMod(r.ReadInt16()).Name, r.ReadString());
 		}
 
 		public static void PreWorldGen() {

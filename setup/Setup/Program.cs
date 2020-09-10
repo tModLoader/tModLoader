@@ -13,10 +13,7 @@ namespace Terraria.ModLoader.Setup
 	static class Program
 	{
 		public static readonly string appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-		public static readonly string libDir = Path.Combine(appDir, "..", "lib");
-		public static readonly string toolsDir = Path.Combine(appDir, "..", "tools");
 		public static readonly string logsDir = Path.Combine("setup", "logs");
-		public static readonly string referencesDir = "references";
 
 		public static string SteamDir => Settings.Default.SteamDir;
 		public static string TerrariaPath => Path.Combine(SteamDir, "Terraria.exe");
@@ -30,15 +27,6 @@ namespace Terraria.ModLoader.Setup
 		static void Main(string[] args) {
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-
-			AppDomain.CurrentDomain.AssemblyResolve += (sender, resArgs) => {
-				var assemblyName = new AssemblyName(resArgs.Name);
-				var name = assemblyName.Name;
-				if (name == "Mono.Cecil" && assemblyName.Version < new Version(0, 10)) //multiple cecil versions need to be loaded separately
-					name += "_0.9.6.0";
-
-				return ResolveAssemblyFrom(libDir, name) ?? ResolveAssemblyFrom(referencesDir, name);
-			};
 
 			/*if (args.Length == 1 && args[0] == "--steamdir") {
 				Console.WriteLine(SteamDir);

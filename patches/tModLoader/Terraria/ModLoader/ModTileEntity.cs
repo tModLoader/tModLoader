@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using Terraria.DataStructures;
 using Terraria.ModLoader.IO;
 
@@ -10,36 +12,34 @@ namespace Terraria.ModLoader
 	/// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntity.Update is called in SP and on Server, not on Clients.
 	/// </summary>
 	/// <seealso cref="Terraria.DataStructures.TileEntity" />
-	public abstract class ModTileEntity : TileEntity
+	public abstract class ModTileEntity : TileEntity, IModType
 	{
-		public const int numVanilla = 3;
-		private static int nextTileEntity = numVanilla;
+		public static readonly int NumVanilla = Assembly.GetExecutingAssembly()
+			.GetTypes()
+			.Where(t => !t.IsAbstract && t.IsSubclassOf(typeof(TileEntity)) && !typeof(ModTileEntity).IsAssignableFrom(t))
+			.Count();
+
+		private static int nextTileEntity = NumVanilla;
+
 		internal static readonly List<ModTileEntity> tileEntities = new List<ModTileEntity>();
 		// TODO: public bool netUpdate;
 
 		/// <summary>
 		/// The mod that added this ModTileEntity.
 		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
+		public Mod Mod {get;internal set;}
 
 		/// <summary>
 		/// The internal name of this ModTileEntity.
 		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
+		public string Name => GetType().Name;
+
+		public string FullName => $"{Mod.Name}/{Name}";
 
 		/// <summary>
 		/// The numeric type used to identify this kind of tile entity.
 		/// </summary>
-		public int Type {
-			get;
-			internal set;
-		}
+		public int Type {get;internal set;}
 
 		internal static int ReserveTileEntityID() {
 			if (ModNet.AllowVanillaClients) throw new Exception("Adding tile entities breaks vanilla client compatibility");
@@ -56,11 +56,11 @@ namespace Terraria.ModLoader
 		/// Gets the base ModTileEntity object with the given type.
 		/// </summary>
 		public static ModTileEntity GetTileEntity(int type) {
-			return type >= numVanilla && type < nextTileEntity ? tileEntities[type - numVanilla] : null;
+			return type >= NumVanilla && type < nextTileEntity ? tileEntities[type - NumVanilla] : null;
 		}
 
-		internal static void Unload() {
-			nextTileEntity = numVanilla;
+		internal static void UnloadAll() {
+			nextTileEntity = NumVanilla;
 			tileEntities.Clear();
 		}
 
@@ -70,7 +70,7 @@ namespace Terraria.ModLoader
 		public static int CountInWorld() {
 			int count = 0;
 			foreach (KeyValuePair<int, TileEntity> pair in ByID) {
-				if (pair.Value.type >= numVanilla) {
+				if (pair.Value.type >= NumVanilla) {
 					count++;
 				}
 			}
@@ -130,8 +130,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static ModTileEntity ConstructFromBase(ModTileEntity tileEntity) {
 			ModTileEntity newEntity = (ModTileEntity)Activator.CreateInstance(tileEntity.GetType());
-			newEntity.mod = tileEntity.mod;
-			newEntity.Name = tileEntity.Name;
+			newEntity.Mod = tileEntity.Mod;
 			newEntity.Type = tileEntity.Type;
 			return newEntity;
 		}
@@ -192,12 +191,22 @@ namespace Terraria.ModLoader
 			NetReceive(reader, networkSend);
 		}
 
-		/// <summary>
-		/// Allows you to automatically load a tile entity instead of using Mod.AddTileEntity. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload, or change the default display name.
-		/// </summary>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		public virtual void Load(Mod mod) {
+			Mod = mod;
+
+			if (!Mod.loading)
+				throw new Exception("AddTileEntity can only be called from Mod.Load or Mod.Autoload");
+
+			//TODO: TileENtityLoader??
+			int id = ReserveTileEntityID();
+			Type = id;
+			type = (byte)id;
+
+			ModTypeLookup<ModTileEntity>.Register(this);
+			tileEntities.Add(this);
 		}
+
+		public virtual void Unload(){}
 
 		/// <summary>
 		/// Allows you to save custom data for this tile entity.

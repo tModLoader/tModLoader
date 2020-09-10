@@ -166,7 +166,7 @@ namespace Terraria.ModLoader
 				}
 			}
 			if (data.Length > 0) {
-				writer.Write(modPlayer.mod.Name);
+				writer.Write(modPlayer.Mod.Name);
 				writer.Write(modPlayer.Name);
 				writer.Write((byte)data.Length);
 				writer.Write(data);
@@ -177,21 +177,22 @@ namespace Terraria.ModLoader
 
 		public static void ReceiveCustomBiomes(Player player, BinaryReader reader) {
 			int count = reader.ReadUInt16();
+
 			for (int k = 0; k < count; k++) {
 				string modName = reader.ReadString();
 				string name = reader.ReadString();
 				byte[] data = reader.ReadBytes(reader.ReadByte());
-				Mod mod = ModLoader.GetMod(modName);
-				ModPlayer modPlayer = mod == null ? null : player.GetModPlayer(mod, name);
-				if (modPlayer != null) {
-					using (MemoryStream stream = new MemoryStream(data)) {
-						using (BinaryReader customReader = new BinaryReader(stream)) {
-							try {
-								modPlayer.ReceiveCustomBiomes(customReader);
-							}
-							catch {
-							}
-						}
+
+				if (ModContent.TryFind<ModPlayer>(modName, name, out var modPlayerBase)) {
+					var modPlayer = player.GetModPlayer(modPlayerBase);
+
+					using MemoryStream stream = new MemoryStream(data);
+					using BinaryReader customReader = new BinaryReader(stream);
+
+					try {
+						modPlayer.ReceiveCustomBiomes(customReader);
+					}
+					catch {
 					}
 				}
 			}
@@ -542,21 +543,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateGetWeaponDamage(Item item, ref int damage);
-		[Obsolete]
-		private static HookList HookGetWeaponDamage = AddHook<DelegateGetWeaponDamage>(p => p.GetWeaponDamage);
-		[Obsolete]
-		public static void GetWeaponDamage(Player player, Item item, ref int damage) {
-			if (item.IsAir)
-				return;
-
-			foreach (int index in HookGetWeaponDamage.arr) {
-				player.modPlayers[index].GetWeaponDamage(item, ref damage);
-			}
-		}
-
-		private delegate void DelegateModifyWeaponDamageOld(Item item, ref float add, ref float mult);
-		private static HookList HookModifyWeaponDamageOld = AddHook<DelegateModifyWeaponDamage>(p => p.ModifyWeaponDamage);
 		private delegate void DelegateModifyWeaponDamage(Item item, ref float add, ref float mult, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(p => p.ModifyWeaponDamage);
 		/// <summary>
@@ -566,9 +552,6 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return;
 
-			foreach (int index in HookModifyWeaponDamageOld.arr) {
-				player.modPlayers[index].ModifyWeaponDamage(item, ref add, ref mult);
-			}
 			foreach (int index in HookModifyWeaponDamage.arr) {
 				player.modPlayers[index].ModifyWeaponDamage(item, ref add, ref mult, ref flat);
 			}

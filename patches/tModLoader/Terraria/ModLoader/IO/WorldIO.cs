@@ -115,7 +115,7 @@ namespace Terraria.ModLoader.IO
 				if (npc.active && NPCLoader.IsModNPC(npc)) {
 					if (npc.townNPC) {
 						TagCompound tag = new TagCompound {
-							["mod"] = npc.modNPC.mod.Name,
+							["mod"] = npc.modNPC.Mod.Name,
 							["name"] = npc.modNPC.Name,
 							["displayName"] = npc.GivenName,
 							["x"] = npc.position.X,
@@ -128,7 +128,7 @@ namespace Terraria.ModLoader.IO
 					}
 					else if (NPCID.Sets.SavesAndLoads[npc.type]) {
 						TagCompound tag = new TagCompound {
-							["mod"] = npc.modNPC.mod.Name,
+							["mod"] = npc.modNPC.Mod.Name,
 							["name"] = npc.modNPC.Name,
 							["x"] = npc.position.X,
 							["y"] = npc.position.Y
@@ -146,9 +146,7 @@ namespace Terraria.ModLoader.IO
 			}
 			int nextFreeNPC = 0;
 			foreach (TagCompound tag in list) {
-				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
-				int type = mod?.NPCType(tag.GetString("name")) ?? 0;
-				if (type > 0) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
 					while (nextFreeNPC < 200 && Main.npc[nextFreeNPC].active) {
 						nextFreeNPC++;
 					}
@@ -156,7 +154,7 @@ namespace Terraria.ModLoader.IO
 						break;
 					}
 					NPC npc = Main.npc[nextFreeNPC];
-					npc.SetDefaults(type);
+					npc.SetDefaults(modNpc.Type);
 					npc.position.X = tag.GetFloat("x");
 					npc.position.Y = tag.GetFloat("y");
 					if (npc.townNPC) {
@@ -167,7 +165,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				else {
-					ModContent.GetInstance<MysteryWorld>().mysteryNPCs.Add(tag);
+					ModContent.GetInstance<UnloadedWorld>().unloadedNPCs.Add(tag);
 				}
 			}
 		}
@@ -179,7 +177,7 @@ namespace Terraria.ModLoader.IO
 					continue;
 
 				list.Add(new TagCompound {
-					["mod"] = NPCLoader.GetNPC(type).mod.Name,
+					["mod"] = NPCLoader.GetNPC(type).Mod.Name,
 					["name"] = NPCLoader.GetNPC(type).Name,
 					["count"] = NPC.killCount[type]
 				});
@@ -189,13 +187,11 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadNPCKillCounts(IList<TagCompound> list) {
 			foreach (var tag in list) {
-				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
-				int type = mod?.NPCType(tag.GetString("name")) ?? 0;
-				if (type > 0) {
-					NPC.killCount[type] = tag.GetInt("count");
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
+					NPC.killCount[modNpc.Type] = tag.GetInt("count");
 				}
 				else {
-					ModContent.GetInstance<MysteryWorld>().mysteryKillCounts.Add(tag);
+					ModContent.GetInstance<UnloadedWorld>().unloadedKillCounts.Add(tag);
 				}
 			}
 		}
@@ -208,7 +204,7 @@ namespace Terraria.ModLoader.IO
 			var modItem = ItemLoader.GetItem(type);
 
 			return new TagCompound {
-				["mod"] = modItem.mod.Name,
+				["mod"] = modItem.Mod.Name,
 				["itemName"] = modItem.Name
 			};
 		}
@@ -218,11 +214,9 @@ namespace Terraria.ModLoader.IO
 			if (!tag.ContainsKey("mod")) {
 				return;
 			}
-			var mod = ModLoader.GetMod(tag.GetString("mod"));
-			int type = mod?.ItemType(tag.GetString("itemName")) ?? 0;
-			if (type > 0) {
+			if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("itemName"), out ModItem modItem)) {
 				for (int k = 0; k < Main.anglerQuestItemNetIDs.Length; k++) {
-					if (Main.anglerQuestItemNetIDs[k] == type) {
+					if (Main.anglerQuestItemNetIDs[k] == modItem.Type) {
 						Main.anglerQuest = k;
 						return;
 					}
@@ -237,7 +231,7 @@ namespace Terraria.ModLoader.IO
 				if (pair.Item1 >= NPCID.Count) {
 					ModNPC npc = NPCLoader.GetNPC(pair.Item1);
 					TagCompound tag = new TagCompound {
-						["mod"] = npc.mod.Name,
+						["mod"] = npc.Mod.Name,
 						["name"] = npc.Name,
 						["x"] = pair.Item2.X,
 						["y"] = pair.Item2.Y
@@ -253,12 +247,10 @@ namespace Terraria.ModLoader.IO
 				return;
 			}
 			foreach (TagCompound tag in list) {
-				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
-				int type = mod?.NPCType(tag.GetString("name")) ?? 0;
-				if (type > 0) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
 					Point location = new Point(tag.GetInt("x"), tag.GetInt("y"));
-					WorldGen.TownManager._roomLocationPairs.Add(Tuple.Create(type, location));
-					WorldGen.TownManager._hasRoom[type] = true;
+					WorldGen.TownManager._roomLocationPairs.Add(Tuple.Create(modNpc.Type, location));
+					WorldGen.TownManager._hasRoom[modNpc.Type] = true;
 				}
 			}
 		}
@@ -271,7 +263,7 @@ namespace Terraria.ModLoader.IO
 					continue;
 
 				list.Add(new TagCompound {
-					["mod"] = modWorld.mod.Name,
+					["mod"] = modWorld.Mod.Name,
 					["name"] = modWorld.Name,
 					["data"] = data
 				});
@@ -281,20 +273,17 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadModData(IList<TagCompound> list) {
 			foreach (var tag in list) {
-				var mod = ModLoader.GetMod(tag.GetString("mod"));
-				var modWorld = mod?.GetModWorld(tag.GetString("name"));
-
-				if (modWorld != null) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModWorld modWorld)) {
 					try {
 						modWorld.Load(tag.GetCompound("data"));
 					}
 					catch (Exception e) {
-						throw new CustomModDataException(mod,
-							"Error in reading custom world data for " + mod.Name, e);
+						throw new CustomModDataException(modWorld.Mod,
+							"Error in reading custom world data for " + modWorld.Mod.Name, e);
 					}
 				}
 				else {
-					ModContent.GetInstance<MysteryWorld>().data.Add(tag);
+					ModContent.GetInstance<UnloadedWorld>().data.Add(tag);
 				}
 			}
 		}
@@ -310,7 +299,7 @@ namespace Terraria.ModLoader.IO
 					reader.SafeRead(r => modWorld.NetReceive(r));
 				}
 				catch (IOException) {
-					Logging.tML.Error($"Above IOException error caused by {modWorld.Name} from the {modWorld.mod.Name} mod.");
+					Logging.tML.Error($"Above IOException error caused by {modWorld.Name} from the {modWorld.Mod.Name} mod.");
 				}
 			}
 		}

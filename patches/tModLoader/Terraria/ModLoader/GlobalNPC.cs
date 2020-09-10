@@ -8,34 +8,19 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.
 	/// </summary>
-	public class GlobalNPC
+	public class GlobalNPC:ModType
 	{
-		/// <summary>
-		/// The mod to which this GlobalNPC belongs.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The name of this GlobalNPC instance.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		internal int index;
 		internal int instanceIndex;
 
-		/// <summary>
-		/// Allows you to automatically load a GlobalNPC instead of using Mod.AddGlobalNPC. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name.
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns></returns>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		protected sealed override void Register() {
+			NPCLoader.VerifyGlobalNPC(this);
+
+			ModTypeLookup<GlobalNPC>.Register(this);
+			
+			index = NPCLoader.globalNPCs.Count;
+
+			NPCLoader.globalNPCs.Add(this);
 		}
 
 		/// <summary>
@@ -71,8 +56,7 @@ namespace Terraria.ModLoader
 				return Clone();
 			}
 			GlobalNPC copy = (GlobalNPC)Activator.CreateInstance(GetType());
-			copy.mod = mod;
-			copy.Name = Name;
+			copy.Mod = Mod;
 			copy.index = index;
 			copy.instanceIndex = instanceIndex;
 			return copy;

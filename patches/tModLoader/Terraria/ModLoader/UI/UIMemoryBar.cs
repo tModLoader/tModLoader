@@ -162,7 +162,7 @@ namespace Terraria.ModLoader.UI
 
 		private static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
-		private static string SizeSuffix(long value, int decimalPlaces = 1) {
+		internal static string SizeSuffix(long value, int decimalPlaces = 1) {
 			if (value < 0) { return "-" + SizeSuffix(-value); }
 			if (value == 0) { return "0.0 bytes"; }
 

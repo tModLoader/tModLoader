@@ -4,12 +4,13 @@ namespace Terraria.ModLoader.Core
 {
 	internal static class LoaderUtils
 	{
-		public static void ReloadSets(Type setsType) {
-			setsType.TypeInitializer.Invoke(null, null);
+		/// <summary> Calls static constructors on the provided type and, optionally, its nested types. </summary>
+		public static void ResetStaticMembers(Type type, bool recursive) {
+			type.TypeInitializer?.Invoke(null, null);
 
-			foreach (var type in setsType.GetNestedTypes()) {
-				if (type.IsAbstract && type.IsSealed) { //IsStatic
-					type.TypeInitializer?.Invoke(null, null);
+			if (recursive) {
+				foreach (var nestedType in type.GetNestedTypes()) {
+					ResetStaticMembers(nestedType, recursive);
 				}
 			}
 		}

@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Weapons
 {
@@ -39,23 +38,14 @@ namespace ExampleMod.Content.Items.Weapons
 			item.shoot = ProjectileID.StarWrath; // ID of the projectiles the sword will shoot
 			item.shootSpeed = 8f; // Speed of the projectiles the sword will shoot
 		}
-
-		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>(), 100);
-			recipe.AddIngredient(ItemID.Wood);
-			recipe.AddTile(TileType<ExampleWorkbench>());
-			recipe.SetResult(this);
-			recipe.AddRecipe();
-		}
-
+		// This method gets called when firing your weapon/sword.
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
 			Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
 			float ceilingLimit = target.Y;
 			if (ceilingLimit > player.Center.Y - 200f) {
 				ceilingLimit = player.Center.Y - 200f;
 			}
-
+			// Loop these functions 3 times.
 			for (int i = 0; i < 3; i++) {
 				position = player.Center - new Vector2(Main.rand.NextFloat(401) * player.direction, 600f);
 				position.Y -= 100 * i;
@@ -77,6 +67,15 @@ namespace ExampleMod.Content.Items.Weapons
 			}
 
 			return false;
+		}
+
+		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient<ExampleItem>(100)
+				.AddRecipeGroup(RecipeGroupID.Wood, 10)
+				.AddTile<ExampleWorkbench>()
+				.Register();
 		}
 	}
 }

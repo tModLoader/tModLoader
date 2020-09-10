@@ -48,7 +48,7 @@ namespace Terraria.ModLoader.IO
 					var modTile = TileLoader.GetTile(type);
 					tileList.Add(new TagCompound {
 						["value"] = (short)type,
-						["mod"] = modTile.mod.Name,
+						["mod"] = modTile.Mod.Name,
 						["name"] = modTile.Name,
 						["framed"] = Main.tileFrameImportant[type],
 					});
@@ -61,7 +61,7 @@ namespace Terraria.ModLoader.IO
 					var modWall = WallLoader.GetWall(wall);
 					wallList.Add(new TagCompound {
 						["value"] = (short)wall,
-						["mod"] = modWall.mod.Name,
+						["mod"] = modWall.Mod.Name,
 						["name"] = modWall.Name,
 					});
 				}
@@ -85,21 +85,19 @@ namespace Terraria.ModLoader.IO
 				ushort type = (ushort)tileTag.GetShort("value");
 				string modName = tileTag.GetString("mod");
 				string name = tileTag.GetString("name");
-				Mod mod = ModLoader.GetMod(modName);
-				tables.tiles[type] = mod == null ? (ushort)0 : (ushort)mod.TileType(name);
+				tables.tiles[type] = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : (ushort)0;
 				if (tables.tiles[type] == 0) {
-					tables.tiles[type] = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("PendingMysteryTile");
+					tables.tiles[type] = ModContent.Find<ModTile>("ModLoader/PendingUnloadedTile").Type;
 					tables.tileModNames[type] = modName;
 					tables.tileNames[type] = name;
 				}
 				tables.frameImportant[type] = tileTag.GetBool("framed");
 			}
 			foreach (var wallTag in tag.GetList<TagCompound>("wallMap")) {
-				ushort wall = (ushort)wallTag.GetShort("value");
+				ushort type = (ushort)wallTag.GetShort("value");
 				string modName = wallTag.GetString("mod");
 				string name = wallTag.GetString("name");
-				Mod mod = ModLoader.GetMod(modName);
-				tables.walls[wall] = mod == null ? (ushort)0 : (ushort)mod.WallType(name);
+				tables.walls[type] = ModContent.TryFind(modName, name, out ModWall wall) ? wall.Type : (ushort)0;
 			}
 			using (var memoryStream = new MemoryStream(tag.GetByteArray("data")))
 			using (var reader = new BinaryReader(memoryStream))
@@ -267,23 +265,23 @@ namespace Terraria.ModLoader.IO
 					tile.frameX = -1;
 					tile.frameY = -1;
 				}
-				if (tile.type == ModContent.GetInstance<ModLoaderMod>().TileType("PendingMysteryTile")
+				if (tile.type == ModContent.Find<ModTile>("ModLoader/PendingUnloadedTile").Type
 					&& tables.tileNames.ContainsKey(saveType)) {
-					MysteryTileInfo info;
+					UnloadedTileInfo info;
 					if (tables.frameImportant[saveType]) {
-						info = new MysteryTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],
+						info = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],
 							tile.frameX, tile.frameY);
 					}
 					else {
-						info = new MysteryTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
+						info = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
 					}
-					MysteryTilesWorld modWorld = ModContent.GetInstance<MysteryTilesWorld>();
+					UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
 					int pendingFrameID = modWorld.pendingInfos.IndexOf(info);
 					if (pendingFrameID < 0) {
 						pendingFrameID = modWorld.pendingInfos.Count;
 						modWorld.pendingInfos.Add(info);
 					}
-					MysteryTileFrame pendingFrame = new MysteryTileFrame(pendingFrameID);
+					UnloadedTileFrame pendingFrame = new UnloadedTileFrame(pendingFrameID);
 					tile.frameX = pendingFrame.FrameX;
 					tile.frameY = pendingFrame.FrameY;
 				}
@@ -408,21 +406,21 @@ namespace Terraria.ModLoader.IO
 				foreach (int slot in headSlots) {
 					writer.Write((ushort)slot);
 					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Head][slot]);
-					writer.Write(item.mod.Name);
+					writer.Write(item.Mod.Name);
 					writer.Write(item.Name);
 				}
 				writer.Write((ushort)bodySlots.Count);
 				foreach (int slot in bodySlots) {
 					writer.Write((ushort)slot);
 					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Body][slot]);
-					writer.Write(item.mod.Name);
+					writer.Write(item.Mod.Name);
 					writer.Write(item.Name);
 				}
 				writer.Write((ushort)legSlots.Count);
 				foreach (int slot in legSlots) {
 					writer.Write((ushort)slot);
 					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Legs][slot]);
-					writer.Write(item.mod.Name);
+					writer.Write(item.Mod.Name);
 					writer.Write(item.Name);
 				}
 				WriteContainerData(writer);
@@ -463,34 +461,19 @@ namespace Terraria.ModLoader.IO
 				int count = reader.ReadUInt16();
 
 				for (int k = 0; k < count; k++) {
-					int slot = reader.ReadUInt16();
-					string modName = reader.ReadString();
-					string name = reader.ReadString();
-					Mod mod = ModLoader.GetMod(modName);
-
-					tables.headSlots[slot] = mod?.GetItem(name).item.headSlot ?? 0;
+					tables.headSlots[reader.ReadUInt16()] = ModContent.TryFind(reader.ReadString(), reader.ReadString(), out ModItem item) ? item.item.headSlot : 0;
 				}
 
 				count = reader.ReadUInt16();
 
 				for (int k = 0; k < count; k++) {
-					int slot = reader.ReadUInt16();
-					string modName = reader.ReadString();
-					string name = reader.ReadString();
-					Mod mod = ModLoader.GetMod(modName);
-
-					tables.bodySlots[slot] = mod?.GetItem(name).item.bodySlot ?? 0;
+					tables.bodySlots[reader.ReadUInt16()] = ModContent.TryFind(reader.ReadString(), reader.ReadString(), out ModItem item) ? item.item.bodySlot : 0;
 				}
 
 				count = reader.ReadUInt16();
 
 				for (int k = 0; k < count; k++) {
-					int slot = reader.ReadUInt16();
-					string modName = reader.ReadString();
-					string name = reader.ReadString();
-					Mod mod = ModLoader.GetMod(modName);
-
-					tables.legSlots[slot] = mod?.GetItem(name).item.legSlot ?? 0;
+					tables.legSlots[reader.ReadUInt16()] = ModContent.TryFind(reader.ReadString(), reader.ReadString(), out ModItem item) ? item.item.legSlot : 0;
 				}
 
 				ReadContainerData(reader, tables);
@@ -569,10 +552,10 @@ namespace Terraria.ModLoader.IO
 		internal static List<TagCompound> SaveTileEntities() {
 			List<TagCompound> list = new List<TagCompound>();
 			foreach (KeyValuePair<int, TileEntity> pair in TileEntity.ByID) {
-				if (pair.Value.type >= ModTileEntity.numVanilla) {
+				if (pair.Value.type >= ModTileEntity.NumVanilla) {
 					ModTileEntity tileEntity = (ModTileEntity)pair.Value;
 					list.Add(new TagCompound {
-						["mod"] = tileEntity.mod.Name,
+						["mod"] = tileEntity.Mod.Name,
 						["name"] = tileEntity.Name,
 						["X"] = tileEntity.Position.X,
 						["Y"] = tileEntity.Position.Y,
@@ -585,32 +568,30 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadTileEntities(IList<TagCompound> list) {
 			foreach (TagCompound tag in list) {
-				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
-				ModTileEntity tileEntity = mod?.GetTileEntity(tag.GetString("name"));
 				ModTileEntity newEntity;
-				if (tileEntity != null) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModTileEntity tileEntity)) {
 					newEntity = ModTileEntity.ConstructFromBase(tileEntity);
 					newEntity.type = (byte)tileEntity.Type;
 					newEntity.Position = new Point16(tag.GetShort("X"), tag.GetShort("Y"));
 					if (tag.ContainsKey("data")) {
 						try {
 							newEntity.Load(tag.GetCompound("data"));
-							if (newEntity is MysteryTileEntity) {
-								((MysteryTileEntity)newEntity).TryRestore(ref newEntity);
+							if (newEntity is UnloadedTileEntity) {
+								((UnloadedTileEntity)newEntity).TryRestore(ref newEntity);
 							}
 						}
 						catch (Exception e) {
-							throw new CustomModDataException(mod,
-							"Error in reading " + tileEntity.Name + " tile entity data for " + mod.Name, e);
+							throw new CustomModDataException(tileEntity.Mod,
+							"Error in reading " + tileEntity.Name + " tile entity data for " + tileEntity.Mod.Name, e);
 						}
 					}
 				}
 				else {
-					tileEntity = ModContent.GetInstance<ModLoaderMod>().GetTileEntity("MysteryTileEntity");
+					tileEntity = ModContent.GetInstance<UnloadedTileEntity>();
 					newEntity = ModTileEntity.ConstructFromBase(tileEntity);
 					newEntity.type = (byte)tileEntity.Type;
 					newEntity.Position = new Point16(tag.GetShort("X"), tag.GetShort("Y"));
-					((MysteryTileEntity)newEntity).SetData(tag);
+					((UnloadedTileEntity)newEntity).SetData(tag);
 				}
 				if (tileEntity.ValidTile(newEntity.Position.X, newEntity.Position.Y)) {
 					newEntity.ID = TileEntity.AssignNewID();

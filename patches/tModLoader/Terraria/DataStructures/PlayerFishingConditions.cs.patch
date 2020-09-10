@@ -8,10 +8,10 @@
 -		public int PoleItemType;
 -		public int BaitPower;
 -		public int BaitItemType;
-+		public int PolePower => Pole.fishingPole;
-+		public int PoleItemType => Pole.type;
-+		public int BaitPower => Bait.bait;
-+		public int BaitItemType => Bait.type;
++		public int PolePower	=> Pole?.fishingPole??0;
++		public int PoleItemType	=> Pole?.type??0;
++		public int BaitPower	=> Bait?.bait??0;
++		public int BaitItemType	=> Bait?.type??0;
  		public float LevelMultipliers;
  		public int FinalFishingLevel;
 +

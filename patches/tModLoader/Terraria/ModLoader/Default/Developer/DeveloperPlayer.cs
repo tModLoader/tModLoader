@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Terraria.ModLoader.Default.Developer.Jofairden;
 
 namespace Terraria.ModLoader.Default.Developer
 {
@@ -32,7 +33,7 @@ namespace Terraria.ModLoader.Default.Developer
 		}
 
 		public override void ModifyDrawLayers(List<PlayerLayer> layers) {
-			AndromedonEffect?.ModifyDrawLayers(mod, player, layers);
+			AndromedonEffect?.ModifyDrawLayers(Mod, player, layers);
 		}
 	}
 }
