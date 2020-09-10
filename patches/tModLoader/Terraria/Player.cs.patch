@@ -3145,12 +3145,11 @@
  
  			if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  				num += pickPower;
-@@ -36245,24 +_,48 @@
+@@ -36245,24 +_,47 @@
  		}
  
  		public void DropItems() {
-+			// issue: this has to be moved to after vanilla adds its items, or by moving the vanilla code before
-+			List<Item> startInventory = PlayerHooks.GetStartingItems(this, inventory.Where(item => !item.IsAir), true);
++			List<Item> startInventory = PlayerHooks.GetStartingItems(this, DropItems_GetDefaults().Where(item => item != null && !item.IsAir), true);
 +			IDictionary<int, int> startCounts = new Dictionary<int, int>();
 +			foreach (Item item in startInventory) {
 +				if (!startCounts.ContainsKey(item.netID))
@@ -3232,11 +3231,25 @@
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, num5);
  				}
-@@ -36342,6 +_,8 @@
+@@ -36336,12 +_,22 @@
+ 				miscDyes[i].TurnToAir();
+ 			}
+ 
++			DropItems_End();
++		}
++		private IEnumerable<Item> DropItems_GetDefaults() { //Split by tML.
++			var inventory = new Item[this.inventory.Length];
++
+ 			inventory[0].SetDefaults(3507);
+ 			inventory[0].Prefix(-1);
+ 			inventory[1].SetDefaults(3509);
  			inventory[1].Prefix(-1);
  			inventory[2].SetDefaults(3506);
  			inventory[2].Prefix(-1);
 +
++			return inventory;
++		}
++		private void DropItems_End() {
 +			PlayerHooks.SetStartInventory(this, startInventory);
  			Main.mouseItem.TurnToAir();
  		}
