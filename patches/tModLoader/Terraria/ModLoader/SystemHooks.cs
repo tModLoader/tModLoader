@@ -13,27 +13,27 @@ namespace Terraria.ModLoader
 	//TODO: Use combined delegates whenever possible.
 	public static class SystemHooks
 	{
-		internal static readonly List<ModSystem> systems = new List<ModSystem>();
-		internal static readonly Dictionary<string, List<ModSystem>> systemsByMod = new Dictionary<string, List<ModSystem>>();
+		internal static readonly List<ModSystem> Systems = new List<ModSystem>();
+		internal static readonly Dictionary<string, List<ModSystem>> SystemsByMod = new Dictionary<string, List<ModSystem>>();
 
 		internal static void Add(ModSystem modSystem) {
 			string modName = modSystem.Mod.Name;
 
-			if (!systemsByMod.TryGetValue(modName, out var list)) {
-				systemsByMod[modName] = list = new List<ModSystem>();
+			if (!SystemsByMod.TryGetValue(modName, out var list)) {
+				SystemsByMod[modName] = list = new List<ModSystem>();
 			}
 
 			list.Add(modSystem);
-			systems.Add(modSystem);
+			Systems.Add(modSystem);
 		}
 
 		internal static void Unload() {
-			systems.Clear();
-			systemsByMod.Clear();
+			Systems.Clear();
+			SystemsByMod.Clear();
 		}
 
 		internal static void Load(Mod mod) {
-			if (!systemsByMod.TryGetValue(mod.Name, out var list)) {
+			if (!SystemsByMod.TryGetValue(mod.Name, out var list)) {
 				return;
 			}
 
@@ -43,7 +43,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void PostSetupContent(Mod mod) {
-			if (!systemsByMod.TryGetValue(mod.Name, out var list)) {
+			if (!SystemsByMod.TryGetValue(mod.Name, out var list)) {
 				return;
 			}
 
@@ -53,13 +53,13 @@ namespace Terraria.ModLoader
 		}
 
 		public static void UpdateMusic(ref int music, ref MusicPriority priority) {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.UpdateMusic(ref music, ref priority);
 			}
 		}
 
 		public static void ModifyTransformMatrix(ref SpriteViewMatrix Transform) {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.ModifyTransformMatrix(ref Transform);
 			}
 		}
@@ -68,7 +68,7 @@ namespace Terraria.ModLoader
 			if (Main.gameMenu)
 				return;
 
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.ModifySunLightColor(ref tileColor, ref backgroundColor);
 			}
 		}
@@ -76,7 +76,7 @@ namespace Terraria.ModLoader
 		public static void ModifyLightingBrightness(ref float negLight, ref float negLight2) {
 			float scale = 1f;
 
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.ModifyLightingBrightness(ref scale);
 			}
 
@@ -94,7 +94,7 @@ namespace Terraria.ModLoader
 		}
 
 		public static void PostDrawFullscreenMap(ref string mouseText) {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.PostDrawFullscreenMap(ref mouseText);
 			}
 		}
@@ -103,67 +103,67 @@ namespace Terraria.ModLoader
 			if (Main.gameMenu)
 				return;
 
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.UpdateUI(gameTime);
 			}
 		}
 
 		public static void PreUpdateEntities() {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.PreUpdateEntities();
 			}
 		}
 
 		public static void MidUpdatePlayerNPC() {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.MidUpdatePlayerNPC();
 			}
 		}
 
 		public static void MidUpdateNPCGore() {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.MidUpdateNPCGore();
 			}
 		}
 
 		public static void MidUpdateGoreProjectile() {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.MidUpdateGoreProjectile();
 			}
 		}
 
 		public static void MidUpdateProjectileItem() {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.MidUpdateProjectileItem();
 			}
 		}
 
 		public static void MidUpdateItemDust() {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.MidUpdateItemDust();
 			}
 		}
 
 		public static void MidUpdateDustTime() {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.MidUpdateDustTime();
 			}
 		}
 
 		public static void MidUpdateTimeWorld() {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.MidUpdateTimeWorld();
 			}
 		}
 
 		public static void MidUpdateInvasionNet() {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.MidUpdateInvasionNet();
 			}
 		}
 
 		public static void PostUpdateEverything() {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.PostUpdateEverything();
 			}
 		}
@@ -173,25 +173,25 @@ namespace Terraria.ModLoader
 				layer.Active = true;
 			}
 
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.ModifyInterfaceLayers(layers);
 			}
 		}
 
 		public static void PostDrawInterface(SpriteBatch spriteBatch) {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.PostDrawInterface(spriteBatch);
 			}
 		}
 
 		public static void PostUpdateInput() {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.PostUpdateInput();
 			}
 		}
 
 		public static void PreSaveAndQuit() {
-			foreach (ModSystem system in systems) {
+			foreach (var system in Systems) {
 				system.PreSaveAndQuit();
 			}
 		}
