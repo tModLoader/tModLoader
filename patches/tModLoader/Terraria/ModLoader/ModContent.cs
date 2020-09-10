@@ -401,7 +401,6 @@ namespace Terraria.ModLoader
 			SetupRecipes(token);
 			
 			ContentSamples.Initialize();
-			ContentSamples.RebuildBestiarySortingIDsByBestiaryDatabaseContents(Main.BestiaryDB); //Reconstruct NpcBestiarySortingId
 			MenuLoader.GotoSavedModMenu();
 		}
 		
@@ -518,8 +517,7 @@ namespace Terraria.ModLoader
 			// BuffID.Search = IdDictionary.Create<BuffID, int>();
 			
 			ContentSamples.Initialize();
-			ContentSamples.RebuildBestiarySortingIDsByBestiaryDatabaseContents(Main.BestiaryDB); //Reconstruct NpcBestiarySortingId
-
+			
 			CleanupModReferences();
 		}
 
