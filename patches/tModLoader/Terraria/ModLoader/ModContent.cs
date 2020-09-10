@@ -373,7 +373,7 @@ namespace Terraria.ModLoader
 				mod.PrepareAssets();
 				mod.Autoload();
 				mod.Load();
-				SystemHooks.Load();
+				SystemHooks.Load(mod);
 				mod.loading = false;
 			});
 
@@ -385,7 +385,7 @@ namespace Terraria.ModLoader
 			LoadModContent(token, mod => {
 				mod.SetupContent();
 				mod.PostSetupContent();
-				SystemHooks.PostSetupContent();
+				SystemHooks.PostSetupContent(mod);
 			});
 
 			MemoryTracking.Finish();
