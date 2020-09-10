@@ -1,12 +1,11 @@
 ﻿using ExampleMod.Content.Items;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod
+namespace ExampleMod.Common.Players
 {
 	public class ExampleInventoryPlayer : ModPlayer
 	{
@@ -14,23 +13,24 @@ namespace ExampleMod
 		// It is also called when the player dies a mediumcore death
 		// Return an enumerable with the items you want to add to the inventory.
 		// This method adds an ExampleItem and 256 gold ore to the player's inventory.
+		// 
+		// If you know what 'yield return' is, you can also use that here, if you prefer so.
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
-			// TODO: someone make this use the new item constructor
-			Item testItem = new Item();
-			testItem.SetDefaults(ItemType<ExampleItem>());
-
-			Item otherItem = new Item();
-			otherItem.SetDefaults(ItemID.GoldOre);
-			otherItem.stack = 256;
+			var testItem = new Item(ItemType<ExampleItem>());
+			var otherItem = new Item(ItemID.GoldOre) {
+				stack = 256
+			};
 
 			if (mediumCoreDeath) {
-				Item potionItem = new Item();
-				potionItem.SetDefaults(ItemID.HealingPotion);
-
-				return new[] { potionItem };
+				return new[] {
+					new Item(ItemID.HealingPotion)
+				};
 			}
 
-			return new[] { testItem, otherItem };
+			return new[] {
+				testItem,
+				otherItem
+			};
 		}
 
 		// ModifyStartingItems is a more elaborate version of AddStartingItems, which lets you remove items
