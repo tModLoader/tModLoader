@@ -493,6 +493,7 @@ namespace Terraria.ModLoader
 			WaterStyleLoader.Unload();
 			WaterfallStyleLoader.Unload();
 			WorldHooks.Unload();
+			SystemHooks.Unload();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
 				Main.recipe[k] = new Recipe();
