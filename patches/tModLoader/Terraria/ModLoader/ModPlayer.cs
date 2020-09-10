@@ -843,6 +843,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Return false to prevent an item from being used. By default returns true.
+		/// </summary>
+		/// <param name="item">The item the player is attempting to use.</param>
+		public virtual bool CanUseItem(Item item) {
+			return true;
+		}
+
+		/// <summary>
 		/// Called on the Client while the nurse chat is displayed. Return false to prevent the player from healing. If you return false, you need to set chatText so the user knows why they can't heal.
 		/// </summary>
 		/// <param name="nurse">The Nurse NPC instance.</param>

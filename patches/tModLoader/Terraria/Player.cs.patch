@@ -360,7 +360,7 @@
  				if (item.stack <= 0 || item.type <= 0 || !item.potion || item.healLife <= 0)
 +					continue;				
 +				
-+				if(!ItemLoader.CanUseItem(item, this))
++				if(!CombinedHooks.CanUseItem(this, item))
  					continue;
  
 -				int num3 = item.healLife - num;
@@ -373,7 +373,7 @@
  			while (true) {
  				if (num < 58) {
 -					if (inventory[num].stack > 0 && inventory[num].type > 0 && inventory[num].healMana > 0 && (potionDelay == 0 || !inventory[num].potion))
-+					if (inventory[num].stack > 0 && inventory[num].type > 0 && inventory[num].healMana > 0 && (potionDelay == 0 || !inventory[num].potion) && ItemLoader.CanUseItem(inventory[num], this))
++					if (inventory[num].stack > 0 && inventory[num].type > 0 && inventory[num].healMana > 0 && (potionDelay == 0 || !inventory[num].potion) && CombinedHooks.CanUseItem(this, inventory[num]))
  						break;
  
  					num++;
@@ -419,7 +419,7 @@
  		public Item QuickMana_GetItemToUse() {
  			for (int i = 0; i < 58; i++) {
 -				if (inventory[i].stack > 0 && inventory[i].type > 0 && inventory[i].healMana > 0 && (potionDelay == 0 || !inventory[i].potion))
-+				if (inventory[i].stack > 0 && inventory[i].type > 0 && inventory[i].healMana > 0 && (potionDelay == 0 || !inventory[i].potion) && ItemLoader.CanUseItem(inventory[i], this))
++				if (inventory[i].stack > 0 && inventory[i].type > 0 && inventory[i].healMana > 0 && (potionDelay == 0 || !inventory[i].potion) && CombinedHooks.CombinedHooks(this, inventory[i]))
  					return inventory[i];
  			}
  
@@ -436,7 +436,7 @@
  
  					int num2 = item2.buffType;
 -					bool flag = QuickBuff_ShouldBotherUsingThisBuff(num2);
-+					bool flag = ItemLoader.CanUseItem(item2, this) && QuickBuff_ShouldBotherUsingThisBuff(num2);
++					bool flag = CombinedHooks.CanUseItem(this, item2) && QuickBuff_ShouldBotherUsingThisBuff(num2);
  					if (item2.mana > 0 && flag) {
 +						if (CheckMana(item2, -1, true, true))
 +							manaRegenDelay = (int)maxRegenDelay;
@@ -485,13 +485,13 @@
  		public Item QuickMount_GetItemToUse() {
  			Item item = null;
 -			if (item == null && miscEquips[3].mountType != -1 && !MountID.Sets.Cart[miscEquips[3].mountType])
-+			if (item == null && miscEquips[3].mountType != -1 && !MountID.Sets.Cart[miscEquips[3].mountType] && ItemLoader.CanUseItem(miscEquips[3], this))
++			if (item == null && miscEquips[3].mountType != -1 && !MountID.Sets.Cart[miscEquips[3].mountType] && CombinedHooks.CanUseItem(this, miscEquips[3]))
  				item = miscEquips[3];
  
  			if (item == null) {
  				for (int i = 0; i < 58; i++) {
 -					if (inventory[i].mountType != -1 && !MountID.Sets.Cart[inventory[i].mountType]) {
-+					if (inventory[i].mountType != -1 && !MountID.Sets.Cart[inventory[i].mountType] && ItemLoader.CanUseItem(inventory[i], this)) {
++					if (inventory[i].mountType != -1 && !MountID.Sets.Cart[inventory[i].mountType] && CombinedHooks.CanUseItem(this, inventory[i])) {
  						item = inventory[i];
  						break;
  					}
@@ -2892,7 +2892,7 @@
  		}
  
  		private bool ItemCheck_CheckCanUse(Item sItem) {
-+			if(!ItemLoader.CanUseItem(sItem, this))
++			if(!CombinedHooks.CanUseItem(this, sItem))
 +				return false;
  			int whoAmI = base.whoAmI;
  			bool flag = true;
