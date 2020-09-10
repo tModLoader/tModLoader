@@ -12,7 +12,7 @@ namespace Terraria.ModLoader
 		/// Override this method to initialize your system. This is guaranteed to be called after all content has been autoloaded.
 		/// </summary>
 		public new virtual void Load() {
-			//TODO: The 'new' modifier is temporary, as removal of ModType.Load is being considered for being quite useless. 
+			
 		}
 
 		/// <summary>

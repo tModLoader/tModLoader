@@ -13,20 +13,41 @@ namespace Terraria.ModLoader
 	//TODO: Use combined delegates whenever possible.
 	public static class SystemHooks
 	{
-		internal static readonly IList<ModSystem> systems = new List<ModSystem>();
+		internal static readonly List<ModSystem> systems = new List<ModSystem>();
+		internal static readonly Dictionary<string, List<ModSystem>> systemsByMod = new Dictionary<string, List<ModSystem>>();
 
-		internal static void Add(ModSystem modSystem) => systems.Add(modSystem);
+		internal static void Add(ModSystem modSystem) {
+			string modName = modSystem.Mod.Name;
 
-		internal static void Unload() => systems.Clear();
+			if (!systemsByMod.TryGetValue(modName, out var list)) {
+				systemsByMod[modName] = list = new List<ModSystem>();
+			}
 
-		internal static void Load() {
-			foreach (ModSystem system in systems) {
+			list.Add(modSystem);
+			systems.Add(modSystem);
+		}
+
+		internal static void Unload() {
+			systems.Clear();
+			systemsByMod.Clear();
+		}
+
+		internal static void Load(Mod mod) {
+			if (!systemsByMod.TryGetValue(mod.Name, out var list)) {
+				return;
+			}
+
+			foreach (var system in list) {
 				system.Load();
 			}
 		}
 
-		internal static void PostSetupContent() {
-			foreach (ModSystem system in systems) {
+		internal static void PostSetupContent(Mod mod) {
+			if (!systemsByMod.TryGetValue(mod.Name, out var list)) {
+				return;
+			}
+
+			foreach (var system in list) {
 				system.PostSetupContent();
 			}
 		}
