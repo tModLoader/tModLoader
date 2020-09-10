@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Player.cs
 +++ src/tModLoader/Terraria/Player.cs
-@@ -34,10 +_,14 @@
+@@ -34,10 +_,15 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -3160,8 +3160,9 @@
  		}
  
  		public void DropItems() {
-+			List<Item> startInventory = PlayerHooks.GetStartingItems(this, DropItems_GetDefaults().Where(item => item != null && !item.IsAir), true);
++			List<Item> startInventory = PlayerHooks.GetStartingItems(this, DropItems_GetDefaults().Where(item => !item.IsAir), true);
 +			IDictionary<int, int> startCounts = new Dictionary<int, int>();
++
 +			foreach (Item item in startInventory) {
 +				if (!startCounts.ContainsKey(item.netID))
 +					startCounts[item.netID] = 0;
@@ -3170,7 +3171,6 @@
 +			}
 +
 +			startCounts[ModContent.ItemType<ModLoader.Default.StartBag>()] = 1;
-+
  			for (int i = 0; i < 59; i++) {
  				if (inventory[i].stack > 0) {
 +					Item item = inventory[i];
@@ -3242,14 +3242,18 @@
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, num5);
  				}
-@@ -36336,12 +_,22 @@
+@@ -36336,12 +_,26 @@
  				miscDyes[i].TurnToAir();
  			}
  
-+			DropItems_End();
++			DropItems_End(startInventory);
 +		}
 +		private IEnumerable<Item> DropItems_GetDefaults() { //Split by tML.
 +			var inventory = new Item[this.inventory.Length];
++
++			for (int i = 0; i < inventory.Length; i++) {
++				inventory[i] = new Item();
++			}
 +
  			inventory[0].SetDefaults(3507);
  			inventory[0].Prefix(-1);
@@ -3260,7 +3264,7 @@
 +
 +			return inventory;
 +		}
-+		private void DropItems_End() {
++		private void DropItems_End(IList<Item> startInventory) { //Split by tML.
 +			PlayerHooks.SetStartInventory(this, startInventory);
  			Main.mouseItem.TurnToAir();
  		}

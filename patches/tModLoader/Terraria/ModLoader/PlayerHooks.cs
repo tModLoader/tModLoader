@@ -1134,7 +1134,7 @@ namespace Terraria.ModLoader
 
 			foreach (int index in HookAddStartingItems.arr) {
 				ModPlayer modPlayer = player.modPlayers[index];
-				itemsByMod[modPlayer.mod.Name] = modPlayer.AddStartingItems(mediumCoreDeath).ToList();
+				itemsByMod[modPlayer.Mod.Name] = modPlayer.AddStartingItems(mediumCoreDeath).ToList();
 			}
 
 			foreach (int index in HookModifyStartingInventory.arr) {

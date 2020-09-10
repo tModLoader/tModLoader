@@ -23,9 +23,7 @@ namespace Terraria.ModLoader.Default
 
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			if (AprilFools.CheckAprilFools()) {
-				Item item = new Item();
-				item.SetDefaults(mod.ItemType("AprilFools"));
-				return new List<Item> { item };
+				return new List<Item> { new Item(ModContent.ItemType<AprilFools>()) };
 			}
 
 			return Enumerable.Empty<Item>();
