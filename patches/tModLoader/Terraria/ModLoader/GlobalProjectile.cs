@@ -16,17 +16,11 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ProjectileLoader.VerifyGlobalProjectile(this);
 
-			Mod.globalProjectiles[Name] = this;
+			ModTypeLookup<GlobalProjectile>.Register(this);
+
 			index = ProjectileLoader.globalProjectiles.Count;
-			ProjectileLoader.globalIndexes[Name + ':' + Name] = ProjectileLoader.globalProjectiles.Count;
-			if (ProjectileLoader.globalIndexesByType.ContainsKey(GetType())) {
-				ProjectileLoader.globalIndexesByType[GetType()] = -1;
-			}
-			else {
-				ProjectileLoader.globalIndexesByType[GetType()] = ProjectileLoader.globalProjectiles.Count;
-			}
+
 			ProjectileLoader.globalProjectiles.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>

@@ -8,7 +8,7 @@
  using Terraria.Audio;
  using Terraria.Enums;
  using Terraria.GameContent;
-@@ -10,11 +_,25 @@
+@@ -10,10 +_,11 @@
  using Terraria.ID;
  using Terraria.UI;
  using Terraria.Utilities;
@@ -19,22 +19,8 @@
 -	public class Item : Entity
 +	public partial class Item : Entity
  	{
-+		public ModItem modItem {
-+			get;
-+			internal set;
-+		}
-+
-+		internal GlobalItem[] globalItems = new GlobalItem[0];
-+
-+		/// <summary>Gets the global item. Use this overload when you dynamically add GlobalItems manually.</summary>
-+		public GlobalItem GetGlobalItem(Mod mod, string name) => ItemLoader.GetGlobalItem(this, mod, name).Instance(this);
-+
-+		/// <summary>Gets the global item. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
-+		public T GetGlobalItem<T>() where T : GlobalItem => (T)ModContent.GetInstance<T>().Instance(this);
-+
  		private string _nameOverride;
  		public const int luckPotionDuration1 = 10800;
- 		public const int luckPotionDuration2 = 18000;
 @@ -59,6 +_,8 @@
  		public short makeNPC;
  		public bool expertOnly;

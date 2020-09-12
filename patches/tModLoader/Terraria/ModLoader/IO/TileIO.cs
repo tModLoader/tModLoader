@@ -85,21 +85,19 @@ namespace Terraria.ModLoader.IO
 				ushort type = (ushort)tileTag.GetShort("value");
 				string modName = tileTag.GetString("mod");
 				string name = tileTag.GetString("name");
-				Mod mod = ModLoader.GetMod(modName);
-				tables.tiles[type] = mod == null ? (ushort)0 : (ushort)mod.TileType(name);
+				tables.tiles[type] = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : (ushort)0;
 				if (tables.tiles[type] == 0) {
-					tables.tiles[type] = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("PendingUnloadedTile");
+					tables.tiles[type] = ModContent.Find<ModTile>("ModLoader/PendingUnloadedTile").Type;
 					tables.tileModNames[type] = modName;
 					tables.tileNames[type] = name;
 				}
 				tables.frameImportant[type] = tileTag.GetBool("framed");
 			}
 			foreach (var wallTag in tag.GetList<TagCompound>("wallMap")) {
-				ushort wall = (ushort)wallTag.GetShort("value");
+				ushort type = (ushort)wallTag.GetShort("value");
 				string modName = wallTag.GetString("mod");
 				string name = wallTag.GetString("name");
-				Mod mod = ModLoader.GetMod(modName);
-				tables.walls[wall] = mod == null ? (ushort)0 : (ushort)mod.WallType(name);
+				tables.walls[type] = ModContent.TryFind(modName, name, out ModWall wall) ? wall.Type : (ushort)0;
 			}
 			using (var memoryStream = new MemoryStream(tag.GetByteArray("data")))
 			using (var reader = new BinaryReader(memoryStream))
@@ -267,7 +265,7 @@ namespace Terraria.ModLoader.IO
 					tile.frameX = -1;
 					tile.frameY = -1;
 				}
-				if (tile.type == ModContent.GetInstance<ModLoaderMod>().TileType("PendingUnloadedTile")
+				if (tile.type == ModContent.Find<ModTile>("ModLoader/PendingUnloadedTile").Type
 					&& tables.tileNames.ContainsKey(saveType)) {
 					UnloadedTileInfo info;
 					if (tables.frameImportant[saveType]) {
@@ -463,34 +461,19 @@ namespace Terraria.ModLoader.IO
 				int count = reader.ReadUInt16();
 
 				for (int k = 0; k < count; k++) {
-					int slot = reader.ReadUInt16();
-					string modName = reader.ReadString();
-					string name = reader.ReadString();
-					Mod mod = ModLoader.GetMod(modName);
-
-					tables.headSlots[slot] = mod?.GetItem(name).item.headSlot ?? 0;
+					tables.headSlots[reader.ReadUInt16()] = ModContent.TryFind(reader.ReadString(), reader.ReadString(), out ModItem item) ? item.item.headSlot : 0;
 				}
 
 				count = reader.ReadUInt16();
 
 				for (int k = 0; k < count; k++) {
-					int slot = reader.ReadUInt16();
-					string modName = reader.ReadString();
-					string name = reader.ReadString();
-					Mod mod = ModLoader.GetMod(modName);
-
-					tables.bodySlots[slot] = mod?.GetItem(name).item.bodySlot ?? 0;
+					tables.bodySlots[reader.ReadUInt16()] = ModContent.TryFind(reader.ReadString(), reader.ReadString(), out ModItem item) ? item.item.bodySlot : 0;
 				}
 
 				count = reader.ReadUInt16();
 
 				for (int k = 0; k < count; k++) {
-					int slot = reader.ReadUInt16();
-					string modName = reader.ReadString();
-					string name = reader.ReadString();
-					Mod mod = ModLoader.GetMod(modName);
-
-					tables.legSlots[slot] = mod?.GetItem(name).item.legSlot ?? 0;
+					tables.legSlots[reader.ReadUInt16()] = ModContent.TryFind(reader.ReadString(), reader.ReadString(), out ModItem item) ? item.item.legSlot : 0;
 				}
 
 				ReadContainerData(reader, tables);
@@ -585,10 +568,8 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadTileEntities(IList<TagCompound> list) {
 			foreach (TagCompound tag in list) {
-				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
-				ModTileEntity tileEntity = mod?.GetTileEntity(tag.GetString("name"));
 				ModTileEntity newEntity;
-				if (tileEntity != null) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModTileEntity tileEntity)) {
 					newEntity = ModTileEntity.ConstructFromBase(tileEntity);
 					newEntity.type = (byte)tileEntity.Type;
 					newEntity.Position = new Point16(tag.GetShort("X"), tag.GetShort("Y"));
@@ -600,13 +581,13 @@ namespace Terraria.ModLoader.IO
 							}
 						}
 						catch (Exception e) {
-							throw new CustomModDataException(mod,
-							"Error in reading " + tileEntity.Name + " tile entity data for " + mod.Name, e);
+							throw new CustomModDataException(tileEntity.Mod,
+							"Error in reading " + tileEntity.Name + " tile entity data for " + tileEntity.Mod.Name, e);
 						}
 					}
 				}
 				else {
-					tileEntity = ModContent.GetInstance<ModLoaderMod>().GetTileEntity("UnloadedTileEntity");
+					tileEntity = ModContent.GetInstance<UnloadedTileEntity>();
 					newEntity = ModTileEntity.ConstructFromBase(tileEntity);
 					newEntity.type = (byte)tileEntity.Type;
 					newEntity.Position = new Point16(tag.GetShort("X"), tag.GetShort("Y"));

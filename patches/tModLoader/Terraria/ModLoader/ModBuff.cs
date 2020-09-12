@@ -1,4 +1,6 @@
 using System;
+using Terraria.GameContent;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -27,17 +29,20 @@ namespace Terraria.ModLoader
 		/// <summary>Whether or not it is always safe to call Player.DelBuff on this buff. Setting this to false will prevent the nurse from being able to remove this debuff. Defaults to true.</summary>
 		public bool canBeCleared = true;
 
-		protected override void Register() {
-			if (Mod.buffs.ContainsKey(Name))
-				throw new Exception("You tried to add 2 ModBuff with the same name: " + Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddBuff with 2 buffs of the same name.");
+		protected override sealed void Register() {
+			ModTypeLookup<ModBuff>.Register(this);
 
 			Type = BuffLoader.ReserveBuffID();
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BuffName.{Name}");
 			Description = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BuffDescription.{Name}");
 
-			Mod.buffs[Name] = this;
 			BuffLoader.buffs.Add(this);
-			ContentInstance.Register(this);
+		}
+
+		public override void SetupContent() {
+			TextureAssets.Buff[Type] = ModContent.GetTexture(Texture);
+			SetDefaults();
+			BuffID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>

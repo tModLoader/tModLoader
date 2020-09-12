@@ -98,26 +98,21 @@ namespace Terraria.ModLoader.IO
 				string modName = reader.ReadString();
 				string name = reader.ReadString();
 				ushort option = reader.ReadUInt16();
-				Mod mod = ModLoader.GetMod(modName);
 				ushort newType = 0;
-				if (mod != null) {
-					if (isTile) {
-						ushort tileType = (ushort)mod.TileType(name);
-						if (tileType != 0) {
-							if (option >= MapLoader.modTileOptions(tileType)) {
-								option = 0;
-							}
-							newType = (ushort)MapHelper.TileToLookup(tileType, option);
+				if (isTile) {
+					if (ModContent.TryFind(modName, name, out ModTile tile)) {
+						if (option >= MapLoader.modTileOptions(tile.Type)) {
+							option = 0;
 						}
+						newType = (ushort)MapHelper.TileToLookup(tile.Type, option);
 					}
-					else {
-						ushort wallType = (ushort)mod.WallType(name);
-						if (wallType != 0) {
-							if (option >= MapLoader.modWallOptions(wallType)) {
-								option = 0;
-							}
-							newType = (ushort)(MapHelper.wallLookup[wallType] + option);
+				}
+				else {
+					if (ModContent.TryFind(modName, name, out ModWall wall)) {
+						if (option >= MapLoader.modWallOptions(wall.Type)) {
+							option = 0;
 						}
+						newType = (ushort)(MapHelper.wallLookup[wall.Type] + option);
 					}
 				}
 				table[type] = newType;

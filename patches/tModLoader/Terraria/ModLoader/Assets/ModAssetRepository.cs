@@ -47,7 +47,8 @@ namespace Terraria.ModLoader.Assets
 			return base.Request<T>(assetName, mode);
 		}
 
-		public bool HasAsset<T>(string assetName) where T : class => PerContentTypeInfo.TryGetValue(typeof(T), out var info) && info.FilePaths.Contains(assetName);
+		public bool HasAsset<T>(string assetName) where T : class
+			=> PerContentTypeInfo.TryGetValue(typeof(T), out var info) && (info.PathAssociations.ContainsKey(assetName) || info.FilePaths.Contains(assetName));
 		public IEnumerable<string> EnumeratePaths<T>() where T : class {
 			if (PerContentTypeInfo.TryGetValue(typeof(T), out var info)) {
 				return info.FilePaths;

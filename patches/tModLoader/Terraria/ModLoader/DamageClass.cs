@@ -10,9 +10,9 @@
 		public virtual string ClassName => Name;
 
 		protected override void Register() {
-			Mod.damageClasses[Name] = this;
 			index = DamageClassLoader.Add(this);
-			ContentInstance.Register(this);
+
+			ModTypeLookup<DamageClass>.Register(this);
 		}
 
 		public static Melee Melee { get; private set; } = new Melee();

@@ -3,8 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -40,9 +42,8 @@ namespace Terraria.ModLoader
 		public virtual bool CloneNewInstances => true;
 		
 		protected sealed override void Register() {
-			Mod.players[Name] = this;
+			ModTypeLookup<ModPlayer>.Register(this);
 			PlayerHooks.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>
@@ -82,14 +83,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="tag"></param>
 		public virtual void Load(TagCompound tag) {
-		}
-
-		/// <summary>
-		/// Allows you to modify the inventory newly created players or killed mediumcore players will start with. To add items to the player's inventory, create a new Item, call its SetDefaults method for whatever ID you want, call its Prefix method with a parameter of -1 if you want to give it a random prefix, then add it to the items list parameter.
-		/// </summary>
-		/// <param name="items"></param>
-		/// <param name="mediumcoreDeath">If true, the inventory is being setup for a character that dies in mediumcore rather than a newly created player.</param>
-		public virtual void SetupStartInventory(IList<Item> items, bool mediumcoreDeath) {
 		}
 
 		/// <summary>
@@ -850,6 +843,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Return false to prevent an item from being used. By default returns true.
+		/// </summary>
+		/// <param name="item">The item the player is attempting to use.</param>
+		public virtual bool CanUseItem(Item item) {
+			return true;
+		}
+
+		/// <summary>
 		/// Called on the Client while the nurse chat is displayed. Return false to prevent the player from healing. If you return false, you need to set chatText so the user knows why they can't heal.
 		/// </summary>
 		/// <param name="nurse">The Nurse NPC instance.</param>
@@ -879,6 +880,25 @@ namespace Terraria.ModLoader
 		/// /// <param name="removeDebuffs">Whether or not debuffs were healed.</param>
 		/// <param name="price">The price the player paid in copper coins.</param>
 		public virtual void PostNurseHeal(NPC nurse, int health, bool removeDebuffs, int price) {
+		}
+
+		/// <summary>
+		/// Called when the player is created in the menu.
+		/// You can use this method to add items to the player's starting inventory, as well as their inventory when they respawn in mediumcore.
+		/// </summary>
+		/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
+		/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty<Item>().</returns>
+		public virtual IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
+			return Enumerable.Empty<Item>();
+		}
+
+		/// <summary>
+		/// Allows you to modify the items that will be added to the player's inventory. Useful if you want to stop vanilla or other mods from adding an item.
+		/// You can access a mod's items by using the mod's internal name as the indexer, such as: additions["ModName"]. To access vanilla items you can use "Terraria" as the index.
+		/// </summary>
+		/// <param name="itemsByMod">The items that will be added. Each key is the internal mod name of the mod adding the items. Vanilla items use the "Terraria" key.</param>
+		/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
+		public virtual void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
 		}
 	}
 }

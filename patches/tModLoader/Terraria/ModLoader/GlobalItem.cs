@@ -20,17 +20,11 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ItemLoader.VerifyGlobalItem(this);
 
-			Mod.globalItems[Name] = this;
+			ModTypeLookup<GlobalItem>.Register(this);
+			
 			index = ItemLoader.globalItems.Count;
-			ItemLoader.globalIndexes[Mod.Name + ':' + Name] = ItemLoader.globalItems.Count;
-			if (ItemLoader.globalIndexesByType.ContainsKey(GetType())) {
-				ItemLoader.globalIndexesByType[GetType()] = -1;
-			}
-			else {
-				ItemLoader.globalIndexesByType[GetType()] = ItemLoader.globalItems.Count;
-			}
+
 			ItemLoader.globalItems.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>
