@@ -55,6 +55,7 @@ namespace Terraria
 
 		internal void ResetDamageClassDictionaries() {
 			damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
+
 			for (int i = 0; i < damageData.Length; i++) {
 				damageData[i] = new DamageClassData(4, DamageModifier.One); // Default values from vanilla - 4 crit, 0 add, 1x mult.
 			}
@@ -63,8 +64,7 @@ namespace Terraria
 		public void AddDamageModifier<T>(DamageModifier changeAmount) where T : DamageClass => AddDamageModifier(ModContent.GetInstance<T>(), changeAmount);
 
 		public void AddDamageModifier(DamageClass damageClass, DamageModifier changeAmount) {
-			ref var data = ref damageData[damageClass.index];
-			data.damage &= changeAmount;
+			damageData[damageClass.index].damage &= changeAmount;
 		}
 
 		/// <summary>
@@ -90,11 +90,9 @@ namespace Terraria
 		/// </summary>
 		/// <param name="changeAmount">The amount that should be added to the crit. Can be negative too.</param>
 		public void AddCrit(DamageClass damageClass, int changeAmount) {
-			if (damageClass is Summon) {
-				return;
+			if (!(damageClass is Summon)) {
+				damageData[damageClass.index].crit += changeAmount;
 			}
-			ref var data = ref damageData[damageClass.index];
-			data.crit += changeAmount;
 		}
 
 		/// <summary>
@@ -102,8 +100,7 @@ namespace Terraria
 		/// </summary>
 		/// <param name="changeAmount">The amount that should be added to the damage for this class.</param>
 		public void AddDamage(DamageClass damageClass, float changeAmount) {
-			ref var data = ref damageData[damageClass.index];
-			data.damage += changeAmount;
+			damageData[damageClass.index].damage += changeAmount;
 		}
 
 		/// <summary>
@@ -111,8 +108,7 @@ namespace Terraria
 		/// </summary>
 		/// <param name="changeAmount">The amount that should be added to the damage multiplier for this class.</param>
 		public void AddDamageMult(DamageClass damageClass, float changeAmount) {
-			ref var data = ref damageData[damageClass.index];
-			data.damage *= changeAmount;
+			damageData[damageClass.index].damage *= changeAmount;
 		}
 
 		/// <summary>
