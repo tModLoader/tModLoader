@@ -54,15 +54,23 @@
  				DrawData item = new DrawData(TextureAssets.AccHandsOff[drawinfo.drawPlayer.handoff].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect, 0);
  				item.shader = drawinfo.cHandOff;
  				drawinfo.DrawDataCache.Add(item);
-@@ -1308,7 +_,7 @@
+@@ -1308,10 +_,13 @@
  		}
  
  		public static void DrawPlayer_19_WaistAcc(ref PlayerDrawSet drawinfo) {
 -			if (drawinfo.drawPlayer.waist > 0 && drawinfo.drawPlayer.waist < 17) {
 +			if (drawinfo.drawPlayer.waist > 0 && drawinfo.drawPlayer.waist < TextureAssets.AccWaist.Length) {
  				Rectangle value = drawinfo.drawPlayer.legFrame;
- 				if (ArmorIDs.Waist.Sets.UsesTorsoFraming[drawinfo.drawPlayer.waist])
- 					value = drawinfo.drawPlayer.bodyFrame;
++				if (drawinfo.drawPlayer.waist < ArmorIDs.Waist.Sets.UsesTorsoFraming.Length) //UsesTorsoFraming is only available to Vanilla items
++				{
+-				if (ArmorIDs.Waist.Sets.UsesTorsoFraming[drawinfo.drawPlayer.waist])
++					if (ArmorIDs.Waist.Sets.UsesTorsoFraming[drawinfo.drawPlayer.waist])
+-					value = drawinfo.drawPlayer.bodyFrame;
++						value = drawinfo.drawPlayer.bodyFrame;
++				}
+ 
+ 				DrawData item = new DrawData(TextureAssets.AccWaist[drawinfo.drawPlayer.waist].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.legFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.legFrame.Height + 4f)) + drawinfo.drawPlayer.legPosition + drawinfo.legVect, value, drawinfo.colorArmorLegs, drawinfo.drawPlayer.legRotation, drawinfo.legVect, 1f, drawinfo.playerEffect, 0);
+ 				item.shader = drawinfo.cWaist;
 @@ -1320,7 +_,7 @@
  		}
  
