@@ -10,6 +10,15 @@
  	{
  		public static void DrawPlayer_extra_TorsoPlus(ref PlayerDrawSet drawinfo) {
  			drawinfo.Position.Y += drawinfo.torsoOffset;
+@@ -386,7 +_,7 @@
+ 		}
+ 
+ 		public static void DrawPlayer_09_BackAc(ref PlayerDrawSet drawinfo) {
+-			if (drawinfo.backPack || drawinfo.drawPlayer.back <= 0 || drawinfo.drawPlayer.back >= 30 || drawinfo.drawPlayer.mount.Active)
++			if (drawinfo.backPack || drawinfo.drawPlayer.back <= 0 || drawinfo.drawPlayer.mount.Active)
+ 				return;
+ 
+ 			if (drawinfo.drawPlayer.front >= 1 && drawinfo.drawPlayer.front <= 4) {
 @@ -886,7 +_,7 @@
  			float rotation = bodyRotation + drawinfo.compositeBackArmRotation;
  			bool flag = !drawinfo.drawPlayer.invis;
@@ -123,7 +132,7 @@
  
  		public static void DrawPlayer_25_Shield(ref PlayerDrawSet drawinfo) {
 -			if (drawinfo.drawPlayer.shield <= 0 || drawinfo.drawPlayer.shield >= 10)
-+			if (drawinfo.drawPlayer.shield <= 0 || drawinfo.drawPlayer.shield >= TextureAssets.AccShield.Length)
++			if (drawinfo.drawPlayer.shield <= 0)
  				return;
  
  			Vector2 zero = Vector2.Zero;
