@@ -1394,7 +1394,7 @@
 -			if (extraAccessory && (Main.expertMode || Main.gameMenu))
 +			if (extraAccessory && Main.masterMode)
 +				extraAccessorySlots = 2;
-+			else if (Main.masterMode || (extraAccessory && (Main.expertMode || Main.gameMenu))
++			else if (Main.masterMode || (extraAccessory && (Main.expertMode || Main.gameMenu)))
  				extraAccessorySlots = 1;
  			else
  				extraAccessorySlots = 0;
