@@ -1113,14 +1113,14 @@
 +				VanillaUpdateInventory(inventory[j]);
 +			}
 +
-+			for (int k = 0; k < 10 + extraAccessorySlots; k++) {
++			for (int k = 0; k < 8 + extraAccessorySlots; k++) {
 +				VanillaUpdateEquip(armor[k]);
 +			}
 +
 +			bool flag = false;
 +			bool flag2 = false;
 +			bool flag3 = false;
-+			for (int l = 3; l < 10 + extraAccessorySlots; l++) {
++			for (int l = 3; l < 8 + extraAccessorySlots; l++) {
 +				VanillaUpdateAccessory(i, armor[l], hideVisibleAccessory[l], ref flag, ref flag2, ref flag3);
  			}
  
@@ -1387,6 +1387,17 @@
  								SmartSelect_SelectItem(i);
  								return;
  						}
+@@ -12322,7 +_,9 @@
+ 		public static float GetClosestRollLuck(int x, int y, int range) => Main.player[FindClosest(new Vector2(x * 16, y * 16), 1, 1)].RollLuck(range);
+ 
+ 		public void ResetEffects() {
+-			if (extraAccessory && (Main.expertMode || Main.gameMenu))
++			if (extraAccessory && Main.masterMode)
++				extraAccessorySlots = 2;
++			else if (Main.masterMode || (extraAccessory && (Main.expertMode || Main.gameMenu))
+ 				extraAccessorySlots = 1;
+ 			else
+ 				extraAccessorySlots = 0;
 @@ -12344,10 +_,16 @@
  			lifeRegen = 0;
  			manaCost = 1f;
