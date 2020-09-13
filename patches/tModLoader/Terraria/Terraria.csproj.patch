@@ -10,14 +10,18 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -18,15 +_,23 @@
+@@ -18,15 +_,27 @@
    </PropertyGroup>
    <PropertyGroup>
      <PdbFile>bin\$(OutputName)</PdbFile>
++    <TargetName>$(OutputName)</TargetName>
 -    <ApplicationIcon>Icon.ico</ApplicationIcon>
 +    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
    </PropertyGroup>
    <ItemGroup>
++    <!--Reference WindowsDesktop for use with Forms and Dispatcher. Referencing this on linux/mono may throw a reference-not-found exception.-->
++    <!--FNA should NOT reference this, ever. At all. It should use SDL2 instead of Forms and [anything else] insteaad of Dispatcher.-->
++    <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
      <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))" />
 -    <Reference Include="Ionic.Zip.CF" />
 +    <Reference Include="Ionic.Zip.Reduced" />
@@ -36,7 +40,7 @@
      <Reference Include="Newtonsoft.Json" />
      <Reference Include="RailSDK.Net">
        <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/RailSDK.Net.dll</HintPath>
-@@ -35,8 +_,8 @@
+@@ -35,38 +_,43 @@
      </Reference>
      <ProjectReference Include="../ReLogic/ReLogic.csproj" />
      <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
@@ -47,15 +51,17 @@
      </EmbeddedResource>
      <Reference Include="Steamworks.NET">
        <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/Steamworks.NET.dll</HintPath>
-@@ -47,23 +_,27 @@
-     <Reference Include="System.Core" />
-     <Reference Include="System.Drawing" />
-     <Reference Include="System.Runtime.Serialization" />
-+    <Reference Include="System.XML" />
-     <Reference Include="System.Windows.Forms">
-       <HintPath Condition="$(DefineConstants.Contains('Mono'))">Libraries/Mono/System.Windows.Forms.dll</HintPath>
+       <HintPath Condition="$(DefineConstants.Contains('MAC'))">Libraries/Mac/Steamworks.NET.dll</HintPath>
+       <HintPath Condition="$(DefineConstants.Contains('LINUX'))">Libraries/Linux/Steamworks.NET.dll</HintPath>
      </Reference>
-     <Reference Include="WindowsBase" />
+-    <Reference Include="System" />
+-    <Reference Include="System.Core" />
+-    <Reference Include="System.Drawing" />
+-    <Reference Include="System.Runtime.Serialization" />
+-    <Reference Include="System.Windows.Forms">
+-      <HintPath Condition="$(DefineConstants.Contains('Mono'))">Libraries/Mono/System.Windows.Forms.dll</HintPath>
+-    </Reference>
+-    <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
 +    <EmbeddedResource Include="**\*.png" />
@@ -78,14 +84,30 @@
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
-@@ -82,7 +_,11 @@
++  <ItemGroup>
++    <!--These are redundant when Microsoft.WindowsDesktop.App is referenced. When we port to FNA and stop using WindowsDesktop for Forms access we'll need to re-add them though.-->
++    <!--PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" /-->
++    <!--PackageReference Include="Microsoft.Win32.Registry" Version="4.7.0" /-->
++    <PackageReference Include="System.CodeDom" Version="4.7.0" />
++    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
++    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="4.7.0" />
++    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
++    <PackageReference Include="System.Reflection" Version="4.3.0" />
++  </ItemGroup>
+   <Target Name="EditBin" AfterTargets="Build">
+     <PropertyGroup>
+         <EditBinOpts>/largeaddressaware</EditBinOpts>
+@@ -81,8 +_,14 @@
+ 	<Exec Command="..\largeaddresstool\dumpbin $(DumpBin) &quot;$(TargetPath)&quot; | findstr &quot;large&quot;" />
    </Target>
    <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
++    <ItemGroup>
++      <BinFiles Include="$(TargetDir)/**;Libraries/**" />
++    </ItemGroup>
      <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
 -    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\$(OutputName).exe" />
-+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(tModLoaderSteamPath)\$(OutputName).exe" />
 -    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(TerrariaSteamPath)" />
-+    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(tModLoaderSteamPath)" />
++    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)" />
 +  </Target>
 +  <Target Name="CopyToModCompile" AfterTargets="EditBin" Condition="$(Configuration)==MacRelease">
 +    <Message Text="Copying tModLoaderMac to ModCompile..." Importance="high" />

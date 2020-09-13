@@ -4,7 +4,7 @@
  <Project>
    <PropertyGroup>
 -    <TargetFramework>net40</TargetFramework>
-+    <TargetFramework>net45</TargetFramework>
++    <TargetFramework>netcoreapp3.1</TargetFramework>
      <Configurations>WindowsDebug;WindowsRelease;WindowsServerDebug;WindowsServerRelease;LinuxRelease;LinuxServerRelease;MacRelease;MacServerRelease</Configurations>
      <PlatformTarget>x86</PlatformTarget>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
