@@ -16,6 +16,11 @@ namespace Terraria.ModLoader.Core
 	{
 		private const int MAX_LOGS = 20;
 
+		// Register support for encodings not present on .NET Core (necessary to port from .NET Framework)
+		static LogArchiver() {
+			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+		}
+
 		/// <summary>
 		/// Attempt archiving logs.
 		/// </summary>
