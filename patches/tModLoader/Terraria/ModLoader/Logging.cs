@@ -46,7 +46,7 @@ namespace Terraria.ModLoader
 			ConfigureAppenders();
 
 			tML.InfoFormat("Starting {0} {1} {2} ({3})", ModLoader.versionedName, ReLogic.OS.Platform.Current.Type, side, DateTime.Now.ToString("d"));
-			tML.InfoFormat("Running on {0} {1}", FrameworkVersion.Framework, FrameworkVersion.Version);
+			tML.InfoFormat("Running on {0} {1}", ".NET Core", FrameworkVersion.Version);
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
 			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
 			tML.InfoFormat("Launch Parameters: {0}", string.Join(" ", Program.LaunchParameters.Select(p => (p.Key + " " + p.Value).Trim())));
@@ -135,9 +135,6 @@ namespace Terraria.ModLoader
 		}
 
 		private static void LogFirstChanceExceptions() {
-			if (FrameworkVersion.Framework == Framework.Mono)
-				tML.Warn("First-chance exception reporting is not implemented on Mono");
-
 			AppDomain.CurrentDomain.FirstChanceException += FirstChanceExceptionHandler;
 		}
 

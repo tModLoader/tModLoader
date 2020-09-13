@@ -125,51 +125,18 @@ namespace Terraria.ModLoader.Core
 			return false;
 		}
 
-		private static readonly Version minDotNetVersion = new Version(4, 6);
-		private static readonly Version minMonoVersion = new Version(5, 20);
+		internal static readonly Version minDotNetVersion = new Version(3, 1);
 		internal static bool RoslynCompatibleFrameworkCheck(out string msg)
 		{
-			// mono 5.20 is required due to https://github.com/mono/mono/issues/12362
-			if (FrameworkVersion.Framework == Framework.NetFramework && FrameworkVersion.Version >= minDotNetVersion ||
-				FrameworkVersion.Framework == Framework.Mono && FrameworkVersion.Version >= minMonoVersion) {
-
-				msg = Language.GetTextValue("tModLoader.DMDotNetSatisfied", $"{FrameworkVersion.Framework} {FrameworkVersion.Version}");
+			if (FrameworkVersion.Version >= minDotNetVersion) {
+				// TODO update for .NET 5
+				msg = Language.GetTextValue("tModLoader.DMDotNetSatisfied", $".NET Core {FrameworkVersion.Version}");
 				return true;
 			}
 
-			if (FrameworkVersion.Framework == Framework.NetFramework)
-				msg = Language.GetTextValue("tModLoader.DMDotNetUpdateRequired", minDotNetVersion);
-			else if (SystemMonoCheck())
-				msg = Language.GetTextValue("tModLoader.DMMonoRuntimeRequired", minMonoVersion);
-			else
-				msg = Language.GetTextValue("tModLoader.DMMonoUpdateRequired", minMonoVersion);
+			msg = Language.GetTextValue("tModLoader.DMDotNetUpdateRequired", minDotNetVersion);
 
 			return false;
-		}
-
-		internal static bool systemMonoSuitable;
-		private static bool SystemMonoCheck()
-		{
-			try {
-				var monoPath = "mono";
-				if (Platform.IsOSX) //mono installs on OSX don't resolve properly outside of terminal
-					monoPath = "/Library/Frameworks/Mono.framework/Versions/Current/Commands/mono";
-
-				string output = Process.Start(new ProcessStartInfo {
-					FileName = monoPath,
-					Arguments = "--version",
-					UseShellExecute = false,
-					RedirectStandardOutput = true
-				}).StandardOutput.ReadToEnd();
-
-				var monoVersion = new Version(new Regex("version (.+?) ").Match(output).Groups[1].Value);
-				return systemMonoSuitable = monoVersion >= minMonoVersion;
-
-			}
-			catch (Exception e) {
-				Logging.tML.Debug("System mono check failed: ", e);
-				return false;
-			}
 		}
 
 		internal static bool PlatformSupportsVisualStudio => !Platform.IsLinux;
@@ -183,10 +150,10 @@ namespace Terraria.ModLoader.Core
 
 			if (Platform.IsWindows)
 				referenceAssembliesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + @"\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
-			else if (Platform.IsOSX)
-				referenceAssembliesPath = "/Library/Frameworks/Mono.framework/Versions/Current/lib/mono/4.5-api";
-			else if (Platform.IsLinux)
-				referenceAssembliesPath = "/usr/lib/mono/4.5-api";
+			//else if (Platform.IsOSX)
+			//	referenceAssembliesPath = "/Library/Frameworks/Mono.framework/Versions/Current/lib/mono/4.5-api";
+			//else if (Platform.IsLinux)
+			//	referenceAssembliesPath = "/usr/lib/mono/4.5-api";
 
 			if (Directory.Exists(referenceAssembliesPath))
 				return true;
@@ -195,10 +162,7 @@ namespace Terraria.ModLoader.Core
 			if (Directory.Exists(referenceAssembliesPath) && Directory.EnumerateFiles(referenceAssembliesPath).Any(x => Path.GetExtension(x) != ".tmp"))
 				return true;
 
-			if (FrameworkVersion.Framework == Framework.Mono)
-				msg = Language.GetTextValue("tModLoader.DMReferenceAssembliesMissingMono", "lib/mono/4.5-api");
-			else
-				msg = Language.GetTextValue("tModLoader.DMReferenceAssembliesMissing");
+			msg = Language.GetTextValue("tModLoader.DMReferenceAssembliesMissing");
 
 			referenceAssembliesPath = null;
 			return false;
@@ -252,9 +216,6 @@ namespace Terraria.ModLoader.Core
 				tMLPath = Path.Combine(tMLDir, "Terraria.exe");
 #endif
 			string tMLBuildServerPath = tMLServerPath;
-
-			if (FrameworkVersion.Framework == Framework.Mono)
-				tMLBuildServerPath = tMLServerPath.Substring(0, tMLServerPath.Length - 4);
 
 			string MakeRef(string path, string name = null)
 			{
@@ -570,10 +531,9 @@ namespace Terraria.ModLoader.Core
 					// write out the pdb file using cecil because doing it at runtime is difficult
 					var tempDllPath = Path.Combine(tempDir, dllName); //use the temp dir to avoid overwriting a precompiled dll
 
-					// force the native pdb writer when possible, to support stack traces on older .NET frameworks
 					asm.Write(tempDllPath, new WriterParameters {
 						WriteSymbols = true,
-						SymbolWriterProvider = FrameworkVersion.Framework == Framework.NetFramework ? new NativePdbWriterProvider() : null
+						SymbolWriterProvider = new NativePdbWriterProvider()
 					});
 
 					mod.modFile.AddFile(Path.ChangeExtension(dllName, "pdb"), File.ReadAllBytes(Path.ChangeExtension(tempDllPath, "pdb")));
@@ -584,12 +544,6 @@ namespace Terraria.ModLoader.Core
 					else { // with a pre-loaded dll, the symbols won't match cecil symbols unless we splice in the cecil debug header
 						using (var cecilAsmDef = AssemblyDefinition.ReadAssembly(tempDllPath))
 							mod.modFile.AddFile(dllName + ".cecildebugheader", cecilAsmDef.MainModule.GetDebugHeader().GetBytes());
-					}
-
-					// make an mdb for FNA
-					if (!xna) {
-						asm.Write(tempDllPath, new WriterParameters { WriteSymbols = true, SymbolWriterProvider = new MdbWriterProvider() });
-						mod.modFile.AddFile(dllName + ".mdb", File.ReadAllBytes(tempDllPath + ".mdb"));
 					}
 				}
 			}

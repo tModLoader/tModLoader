@@ -54,7 +54,7 @@ namespace Terraria.ModLoader
 													(branchName.Length == 0 ? "" : $"-{branchName.ToLower()}") +
 													(beta == 0 ? "" : $"-beta{beta}");
 
-		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (GoGVerifier.IsGoG ? "g" : "s") + (FrameworkVersion.Framework == Framework.NetFramework ? "n" : (FrameworkVersion.Framework == Framework.Mono ? "o" : "u"));
+		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (GoGVerifier.IsGoG ? "g" : "s") + "c";
 
 		public static string ModPath => ModOrganizer.modPath;
 
@@ -103,7 +103,7 @@ namespace Terraria.ModLoader
 
 		internal static void EngineInit()
 		{
-			DotNet45Check();
+			DotNetCheck();
 			FileAssociationSupport.UpdateFileAssociation();
 			GLCallLocker.Init();
 			HiDefGraphicsIssues.Init();
@@ -209,15 +209,17 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void DotNet45Check()
+		private static void DotNetCheck()
 		{
-			if (FrameworkVersion.Framework != Framework.NetFramework || FrameworkVersion.Version >= new Version(4, 5))
+			if (FrameworkVersion.Version >= ModCompile.minDotNetVersion)
 				return;
 
+			// TODO CORE language update
+			// TODO will need updated for .NET 5
 			var msg = Language.GetTextValue("tModLoader.LoadErrorDotNet45Required");
 #if CLIENT
 			Interface.MessageBoxShow(msg);
-			Process.Start("https://dotnet.microsoft.com/download/dotnet-framework");
+			Process.Start("https://dotnet.microsoft.com/download/dotnet-core/current/runtime");
 #else
 			Console.ForegroundColor = ConsoleColor.Red;
 			Console.WriteLine(msg);
