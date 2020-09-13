@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Threading;
 using Terraria.ModLoader.UI;
 using Terraria.Utilities;
@@ -195,7 +196,10 @@ namespace Terraria.ModLoader.Core
 			}
 
 			private Assembly LoadAssembly(byte[] code, byte[] pdb = null) {
-				var asm = Assembly.Load(code, pdb);
+				Assembly asm;
+				using (var codeStrm = new MemoryStream(code, false))
+				using (var pdbStrm = new MemoryStream(pdb, false))
+					asm = ModLoader.modContext.LoadFromStream(codeStrm, pdbStrm);
 				assemblies.Add(asm);
 				loadedAssemblies[asm.GetName().Name] = asm;
 				assemblyBinaries[asm.GetName().Name] = code;
@@ -221,6 +225,13 @@ namespace Terraria.ModLoader.Core
 		private static readonly IDictionary<string, byte[]> assemblyBinaries = new ConcurrentDictionary<string, byte[]>();
 		private static readonly IDictionary<Assembly, LoadedMod> hostModForAssembly = new ConcurrentDictionary<Assembly, LoadedMod>();
 
+		internal static void Unload() {
+			// Have to unload these to get rid of all assembly references at unload
+			loadedMods.Clear();
+			loadedAssemblies.Clear();
+			hostModForAssembly.Clear();
+		}
+
 		private static CecilAssemblyResolver cecilAssemblyResolver = new CecilAssemblyResolver();
 
 		private static bool assemblyResolverAdded;
@@ -232,7 +243,7 @@ namespace Terraria.ModLoader.Core
 			AppDomain.CurrentDomain.AssemblyResolve += (_, args) => {
 				string name = new AssemblyName(args.Name).Name;
 
-				if (name == "Terraria")
+				if (name == "Terraria" || name.Contains("tModLoader"))
 					return Assembly.GetExecutingAssembly();
 
 				loadedAssemblies.TryGetValue(name, out Assembly a);

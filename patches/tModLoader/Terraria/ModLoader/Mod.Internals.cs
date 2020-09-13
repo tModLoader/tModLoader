@@ -52,33 +52,37 @@ namespace Terraria.ModLoader
 		}
 
 		internal void UnloadContent() {
-			Unload();
-			foreach(var loadable in content.Reverse()) {
-				loadable.Unload();
+			try {
+				Unload();
 			}
-			content.Clear();
-
-			equipTextures.Clear();
-			translations.Clear();
-
-			if (!Main.dedServ) {
-				// TODO: restore this
-				// Manually Dispose IDisposables to free up unmanaged memory immediately
-				/* Skip this for now, too many mods don't unload properly and run into exceptions.
-				foreach (var sound in sounds)
-				{
-					sound.Value.Dispose();
+			finally {
+				foreach (var loadable in content.Reverse()) {
+					loadable.Unload();
 				}
-				foreach (var texture in textures)
-				{
-					texture.Value.Dispose();
+				content.Clear();
+
+				equipTextures.Clear();
+				translations.Clear();
+
+				if (!Main.dedServ) {
+					// TODO: restore this
+					// Manually Dispose IDisposables to free up unmanaged memory immediately
+					/* Skip this for now, too many mods don't unload properly and run into exceptions.
+					foreach (var sound in sounds)
+					{
+						sound.Value.Dispose();
+					}
+					foreach (var texture in textures)
+					{
+						texture.Value.Dispose();
+					}
+					*/
 				}
-				*/
+
+				musics.Clear();
+
+				Assets?.Dispose();
 			}
-
-			musics.Clear();
-
-			Assets?.Dispose();
 		} 
 
 		internal void Autoload() {
