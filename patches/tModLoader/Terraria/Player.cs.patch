@@ -961,7 +961,7 @@
 +			Item[] armor = {item};
 +			int k = 0;
 +			{
-+				if (!IsAValidEquipmentSlotForIteration(k) || (armor[k].expertOnly && !Main.expertMode) || (armor[k].masterOnly && !Main.masterMode))
++				if (armor[k].expertOnly && !Main.expertMode || armor[k].masterOnly && !Main.masterMode)
 +					return;
  
  				int type2 = armor[k].type;
@@ -1038,7 +1038,7 @@
  				}
  
  				if (armor[k].prefix == 73)
-@@ -8990,12 +_,19 @@
+@@ -8990,13 +_,20 @@
  
  				if (armor[k].prefix == 80)
  					meleeSpeed += 0.04f;
@@ -1050,6 +1050,7 @@
 -			equippedAnyTileSpeedAcc = false;
 -			equippedAnyTileRangeAcc = false;
 -			for (int l = 3; l < 10; l++) {
+-				if (IsAValidEquipmentSlotForIteration(l))
 +			//equippedAnyWallSpeedAcc = false;
 +			//equippedAnyTileSpeedAcc = false;
 +			//equippedAnyTileRangeAcc = false;
@@ -1059,10 +1060,11 @@
 +			// fake array and loop to keep patches small
 +			var armor = new[] { item }; int l = 0;
 +			{
- 				if (IsAValidEquipmentSlotForIteration(l))
++				if (IsAValidEquipmentSlotForIteration(i))
  					ApplyEquipFunctional(l, armor[l]);
  			}
-@@ -9004,15 +_,58 @@
+ 
+@@ -9004,15 +_,60 @@
  				lifeRegen += 2;
  				statDefense += 4;
  				meleeSpeed += 0.1f;
@@ -1085,15 +1087,16 @@
 +					Main.musicBox2 = SoundLoader.itemToMusic[armor[l].type];
 +			}
 +
-+			if (armor[l].wingSlot > 0) {
++			if (armor[l].wingSlot > 0 && IsAValidEquipmentSlotForIteration(i)) {
 +				if (!hideVisual || velocity.Y != 0f && !mount.Active)
 +					wings = armor[l].wingSlot;
 +
 +				wingsLogic = armor[l].wingSlot;
 +			}
-+
-+			ApplyEquipVanity(l, armor[l]);
-+			ItemLoader.UpdateAccessory(armor[l], this, hideVisual);
++			if (IsAValidEquipmentSlotForIteration(i)) {
++				ApplyEquipVanity(l, armor[l]);
++				ItemLoader.UpdateAccessory(armor[l], this, hideVisual);
++			}
 +		}
 +
 +		public void VanillaUpdateVanityAccessory(Item item) {
@@ -1113,14 +1116,15 @@
 +				VanillaUpdateInventory(inventory[j]);
 +			}
 +
-+			for (int k = 0; k < 8 + extraAccessorySlots; k++) {
-+				VanillaUpdateEquip(armor[k]);
++			for (int k = 0; k < 10; k++) {
++				if(!IsAValidEquipmentSlotForIteration(k))
++					VanillaUpdateEquip(armor[k]);
 +			}
 +
 +			bool flag = false;
 +			bool flag2 = false;
 +			bool flag3 = false;
-+			for (int l = 3; l < 8 + extraAccessorySlots; l++) {
++			for (int l = 3; l < 10; l++) {
 +				VanillaUpdateAccessory(i, armor[l], hideVisibleAccessory[l], ref flag, ref flag2, ref flag3);
  			}
  
