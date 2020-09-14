@@ -13,14 +13,12 @@
     <OutputType>Exe</OutputType>
     <OutputName>$(OutputName)Server</OutputName>
   </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
-    <OutputName>$(OutputName)Debug</OutputName>
-  </PropertyGroup>
   <PropertyGroup>
     <PdbFile>bin\$(OutputName)</PdbFile>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
     <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))" />
     <Reference Include="Ionic.Zip.CF" />
     <Reference Include="Newtonsoft.Json" />
@@ -29,10 +27,10 @@
       <HintPath Condition="$(DefineConstants.Contains('MAC'))">Libraries/Mac/RailSDK.Net.dll</HintPath>
       <HintPath Condition="$(DefineConstants.Contains('LINUX'))">Libraries/Linux/RailSDK.Net.dll</HintPath>
     </Reference>
-    <ProjectReference Include="../ReLogic/ReLogicNetCore.csproj" />
-    <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
-	  <Link>Libraries/ReLogic/ReLogic.dll</Link>
-      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
+    <Reference Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogicNetCore.dll" />
+    <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogicNetCore.dll">
+	  <Link>Libraries/ReLogic/ReLogicNetCore.dll</Link>
+      <LogicalName>Terraria.Libraries.ReLogic.ReLogicNetCore.dll</LogicalName>
     </EmbeddedResource>
     <Reference Include="Steamworks.NET">
       <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/Steamworks.NET.dll</HintPath>
