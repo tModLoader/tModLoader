@@ -10,7 +10,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -18,15 +_,28 @@
+@@ -18,55 +_,73 @@
    </PropertyGroup>
    <PropertyGroup>
      <PdbFile>bin\$(OutputName)</PdbFile>
@@ -40,8 +40,13 @@
 +    <Reference Include="MonoMod.Utils" />
      <Reference Include="Newtonsoft.Json" />
      <Reference Include="RailSDK.Net">
-       <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/RailSDK.Net.dll</HintPath>
-@@ -35,38 +_,43 @@
+-      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/RailSDK.Net.dll</HintPath>
+-      <HintPath Condition="$(DefineConstants.Contains('MAC'))">Libraries/Mac/RailSDK.Net.dll</HintPath>
+-      <HintPath Condition="$(DefineConstants.Contains('LINUX'))">Libraries/Linux/RailSDK.Net.dll</HintPath>
++      <Link>Libraries/RailSDK.Net.dll</Link>
++    </Reference>
++    <Reference Include="Steamworks.NET">
++      <HintPath>Libraries/Steamworks.NET.dll</HintPath>
      </Reference>
      <ProjectReference Include="../ReLogic/ReLogic.csproj" />
      <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
@@ -50,11 +55,11 @@
 -      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
 +      <LogicalName>ReLogic.dll</LogicalName>
      </EmbeddedResource>
-     <Reference Include="Steamworks.NET">
-       <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/Steamworks.NET.dll</HintPath>
-       <HintPath Condition="$(DefineConstants.Contains('MAC'))">Libraries/Mac/Steamworks.NET.dll</HintPath>
-       <HintPath Condition="$(DefineConstants.Contains('LINUX'))">Libraries/Linux/Steamworks.NET.dll</HintPath>
-     </Reference>
+-    <Reference Include="Steamworks.NET">
+-      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/Steamworks.NET.dll</HintPath>
+-      <HintPath Condition="$(DefineConstants.Contains('MAC'))">Libraries/Mac/Steamworks.NET.dll</HintPath>
+-      <HintPath Condition="$(DefineConstants.Contains('LINUX'))">Libraries/Linux/Steamworks.NET.dll</HintPath>
+-    </Reference>
 -    <Reference Include="System" />
 -    <Reference Include="System.Core" />
 -    <Reference Include="System.Drawing" />
@@ -85,6 +90,10 @@
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
++  <ItemGroup>
++    <EmbeddedResource Remove="Libraries\Windows\RailSDK.Net.dll" />
++    <EmbeddedResource Remove="Libraries\Windows\Steamworks.NET.dll" />
++  </ItemGroup>
 +  <ItemGroup>
 +    <!--These are redundant when Microsoft.WindowsDesktop.App is referenced. When we port to FNA and stop using WindowsDesktop for Forms access we'll need to re-add them though.-->
 +    <!--PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" /-->

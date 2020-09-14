@@ -9,7 +9,7 @@
      <PlatformTarget>x64</PlatformTarget>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 @@ -10,10 +_,10 @@
-     <DefineConstants>$(DefineConstants);WINDOWS;XNA</DefineConstants>
+     <DefineConstants>$(DefineConstants);WINDOWS;FNA</DefineConstants>
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
 -    <DefineConstants>$(DefineConstants);LINUX;FNA;MONO</DefineConstants>

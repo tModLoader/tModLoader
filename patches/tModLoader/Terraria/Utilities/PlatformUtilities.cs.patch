@@ -1,0 +1,19 @@
+--- src/Terraria/Terraria/Utilities/PlatformUtilities.cs
++++ src/tModLoader/Terraria/Utilities/PlatformUtilities.cs
+@@ -75,12 +_,13 @@
+ 				intPtr = intPtr2;
+ 			}
+ 
+-			byte[] array = new byte[width * height * 4 + 41 + 57 + 256];
+-			IntPtr intPtr3 = SDL.SDL_RWFromMem(array, array.Length);
++			int arrayLength = width * height * 4 + 41 + 57 + 256;
++			byte* array = stackalloc byte[arrayLength];
++			IntPtr intPtr3 = SDL.SDL_RWFromMem((IntPtr)array, arrayLength);
+ 			SDL_image.IMG_SavePNG_RW(intPtr, intPtr3, 1);
+ 			SDL.SDL_FreeSurface(intPtr);
+ 			int count = ((int)array[33] << 24 | (int)array[34] << 16 | (int)array[35] << 8 | (int)array[36]) + 41 + 57;
+-			stream.Write(array, 0, count);
++			stream.Write(new Span<byte>(array,count));
+ #endif
+ 		}
+ #endif
