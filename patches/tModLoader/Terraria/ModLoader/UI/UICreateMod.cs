@@ -235,12 +235,12 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PlatformTarget>x86</PlatformTarget>
     <LangVersion>latest</LangVersion>
-    <!--Uncomment the following two lines to enable nullable reference types. This is suggested!-->
-    <!--<Nullable>enable</Nullable>-->
-    <!--<WarningsAsErrors>nullable</WarningsAsErrors>-->
+    <!--Nullable reference types are greatly encouraged, but not necessary. You can disable them by removing the following two lines.-->
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
   </PropertyGroup>
   <Target Name=""BuildMod"" AfterTargets=""Build"">
-    <Exec Command=""&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)"" />
+    <Exec Command=""dotnet &quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)"" />
   </Target>
   <ItemGroup>
     <PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />

@@ -178,11 +178,14 @@ namespace Terraria.ModLoader.Core
 			if (!Directory.Exists(modReferencesPath))
 				Directory.CreateDirectory(modReferencesPath);
 
-			string tMLPath = Assembly.GetExecutingAssembly().Location;
+			// Get the directory to tModLoader[Debug] without the extension
+			string tMLDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar;
+
+			// Version checking
+			string tMLPath = tMLDir + "tModLoader";
 			string touchStamp = $"{tMLPath} @ {File.GetLastWriteTime(tMLPath)}";
 			string touchFile = Path.Combine(modReferencesPath, "touch");
 			string lastTouch = File.Exists(touchFile) ? File.ReadAllText(touchFile) : null;
-
 			if (touchStamp == lastTouch) {
 				referencesUpdated = true;
 				return;
@@ -199,24 +202,6 @@ namespace Terraria.ModLoader.Core
 			// replace tML lib with inferred paths based on names 
 			libs.RemoveAt(0);
 
-			string tMLDir = Path.GetDirectoryName(tMLPath);
-
-#if CLIENT
-			string tMLServerName = Path.GetFileName(tMLPath).Replace("tModLoader", "tModLoaderServer");
-
-			if (tMLServerName == "Terraria.exe")
-				tMLServerName = "tModLoaderServer.exe";
-
-			string tMLServerPath = Path.Combine(tMLDir, tMLServerName);
-#else
-			var tMLServerPath = tMLPath;
-			var tMLClientName = Path.GetFileName(tMLPath).Replace("tModLoaderServer", "tModLoader");
-			tMLPath = Path.Combine(tMLDir, tMLClientName);
-			if (!File.Exists(tMLPath))
-				tMLPath = Path.Combine(tMLDir, "Terraria.exe");
-#endif
-			string tMLBuildServerPath = tMLServerPath;
-
 			string MakeRef(string path, string name = null)
 			{
 				if (name == null)
@@ -232,13 +217,14 @@ namespace Terraria.ModLoader.Core
 
 			referencesXMLList.Insert(0, MakeRef("$(tMLPath)", "Terraria"));
 
+			char s = Path.DirectorySeparatorChar;
 			string tModLoaderTargets = $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <PropertyGroup>
     <TerrariaSteamPath>{System.Security.SecurityElement.Escape(tMLDir)}</TerrariaSteamPath>
-    <tMLPath>{System.Security.SecurityElement.Escape(tMLPath)}</tMLPath>
-    <tMLServerPath>{System.Security.SecurityElement.Escape(tMLServerPath)}</tMLServerPath>
-    <tMLBuildServerPath>{System.Security.SecurityElement.Escape(tMLBuildServerPath)}</tMLBuildServerPath>
+    <tMLPath>$(TerrariaSteamPath){s}tModLoader.exe</tMLPath>
+    <tMLServerPath>$(TerrariaSteamPath){s}tModLoaderServer.exe</tMLServerPath>
+    <tMLBuildServerPath>$(TerrariaSteamPath){s}tModLoaderServer.dll</tMLBuildServerPath>
   </PropertyGroup>
   <ItemGroup>
 {string.Join("\n", referencesXMLList)}
