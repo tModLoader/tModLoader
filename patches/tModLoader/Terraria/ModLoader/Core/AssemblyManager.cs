@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Threading;
 using Terraria.ModLoader.UI;
 using Terraria.Utilities;
@@ -144,10 +145,7 @@ namespace Terraria.ModLoader.Core
 				else
 					header = null;
 
-				if (FrameworkVersion.Framework == Framework.Mono)
-					fileName += ".mdb";
-				else
-					fileName = Path.ChangeExtension(fileName, "pdb");
+				fileName = Path.ChangeExtension(fileName, "pdb");
 
 				return modFile.GetBytes(fileName);
 			}
@@ -160,8 +158,7 @@ namespace Terraria.ModLoader.Core
 				asm.Name.Name = EncapsulateName(asm.Name.Name);
 
 				//randomize the module version id so that the debugger can detect it as a different module (even if it has the same content)
-				if (FrameworkVersion.Framework == Framework.NetFramework)
-					asm.MainModule.Mvid = Guid.NewGuid();
+				asm.MainModule.Mvid = Guid.NewGuid();
 
 				foreach (var mod in asm.Modules)
 					foreach (var asmRef in mod.AssemblyReferences)
@@ -195,14 +192,15 @@ namespace Terraria.ModLoader.Core
 			}
 
 			private Assembly LoadAssembly(byte[] code, byte[] pdb = null) {
-				var asm = Assembly.Load(code, pdb);
+				Assembly asm;
+				using (var codeStrm = new MemoryStream(code, false))
+				using (var pdbStrm = new MemoryStream(pdb, false))
+					asm = ModLoader.modContext.LoadFromStream(codeStrm, pdbStrm);
 				assemblies.Add(asm);
 				loadedAssemblies[asm.GetName().Name] = asm;
 				assemblyBinaries[asm.GetName().Name] = code;
 				hostModForAssembly[asm] = this;
 				bytesLoaded += code.LongLength + (pdb?.LongLength ?? 0);
-				if (pdb != null && FrameworkVersion.Framework == Framework.Mono)
-					MdbManager.RegisterMdb(GetMainModule(asm.GetName()), pdb);
 
 				if (Program.LaunchParameters.ContainsKey("-dumpasm")) {
 					var dumpdir = Path.Combine(Main.SavePath, "asmdump");
@@ -221,6 +219,13 @@ namespace Terraria.ModLoader.Core
 		private static readonly IDictionary<string, byte[]> assemblyBinaries = new ConcurrentDictionary<string, byte[]>();
 		private static readonly IDictionary<Assembly, LoadedMod> hostModForAssembly = new ConcurrentDictionary<Assembly, LoadedMod>();
 
+		internal static void Unload() {
+			// Have to unload these to get rid of all assembly references at unload
+			loadedMods.Clear();
+			loadedAssemblies.Clear();
+			hostModForAssembly.Clear();
+		}
+
 		private static CecilAssemblyResolver cecilAssemblyResolver = new CecilAssemblyResolver();
 
 		private static bool assemblyResolverAdded;
@@ -232,7 +237,7 @@ namespace Terraria.ModLoader.Core
 			AppDomain.CurrentDomain.AssemblyResolve += (_, args) => {
 				string name = new AssemblyName(args.Name).Name;
 
-				if (name == "Terraria")
+				if (name == "Terraria" || name.Contains("tModLoader"))
 					return Assembly.GetExecutingAssembly();
 
 				loadedAssemblies.TryGetValue(name, out Assembly a);
@@ -297,8 +302,7 @@ namespace Terraria.ModLoader.Core
 
 			RecalculateReferences();
 
-			//as far as we know, mono doesn't support edit and continue anyway
-			if (Debugger.IsAttached && FrameworkVersion.Framework == Framework.NetFramework) {
+			if (Debugger.IsAttached) {
 				ModCompile.activelyModding = true;
 				foreach (var mod in modList.Where(mod => mod.HasEaC && mod.CanEaC))
 					mod.EnableEaC();
@@ -332,8 +336,6 @@ namespace Terraria.ModLoader.Core
 		private static string GetModAssemblyFileName(this TmodFile modFile, bool? xna = null) {
 			var variant = modFile.HasFile($"{modFile.name}.All.dll") ? "All" : (xna ?? PlatformUtilities.IsXNA) ? "XNA" : "FNA";
 			var fileName = $"{modFile.name}.{variant}.dll";
-			if (!modFile.HasFile(fileName)) // legacy compatibility
-				fileName = modFile.HasFile("All.dll") ? "All.dll" : (xna ?? FrameworkVersion.Framework == Framework.NetFramework) ? "Windows.dll" : "Mono.dll";
 
 			return fileName;
 		}

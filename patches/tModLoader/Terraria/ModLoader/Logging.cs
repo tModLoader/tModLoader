@@ -46,7 +46,7 @@ namespace Terraria.ModLoader
 			ConfigureAppenders();
 
 			tML.InfoFormat("Starting {0} {1} {2} ({3})", ModLoader.versionedName, ReLogic.OS.Platform.Current.Type, side, DateTime.Now.ToString("d"));
-			tML.InfoFormat("Running on {0} {1}", FrameworkVersion.Framework, FrameworkVersion.Version);
+			tML.InfoFormat("Running on {0} {1}", ".NET Core", FrameworkVersion.Version);
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
 			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
 			tML.InfoFormat("Launch Parameters: {0}", string.Join(" ", Program.LaunchParameters.Select(p => (p.Key + " " + p.Value).Trim())));
@@ -59,7 +59,6 @@ namespace Terraria.ModLoader
 
 				AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
 			LogFirstChanceExceptions();
-			EnablePortablePDBTraces();
 			AssemblyResolving.Init();
 			LoggingHooks.Init();
 			LogArchiver.ArchiveLogs();
@@ -136,9 +135,6 @@ namespace Terraria.ModLoader
 		}
 
 		private static void LogFirstChanceExceptions() {
-			if (FrameworkVersion.Framework == Framework.Mono)
-				tML.Warn("First-chance exception reporting is not implemented on Mono");
-
 			AppDomain.CurrentDomain.FirstChanceException += FirstChanceExceptionHandler;
 		}
 
@@ -286,8 +282,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static readonly FieldInfo f_fileName =
-			typeof(StackFrame).GetField("strFileName", BindingFlags.Instance | BindingFlags.NonPublic) ??
-			typeof(StackFrame).GetField("fileName", BindingFlags.Instance | BindingFlags.NonPublic);
+			typeof(StackFrame).GetField("_fileName", BindingFlags.Instance | BindingFlags.NonPublic);
 
 		private static readonly Assembly TerrariaAssembly = Assembly.GetExecutingAssembly();
 
@@ -315,11 +310,6 @@ namespace Terraria.ModLoader
 					f_fileName.SetValue(frame, filename);
 				}
 			}
-		}
-
-		private static void EnablePortablePDBTraces() {
-			if (FrameworkVersion.Framework == Framework.NetFramework && FrameworkVersion.Version >= new Version(4, 7, 2))
-				Type.GetType("System.AppContextSwitches").GetField("_ignorePortablePDBsInStackTraces", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, -1);
 		}
 	}
 }

@@ -715,6 +715,15 @@
  			}
  
  			for (int n = 0; n < 1001; n++) {
+@@ -8244,7 +_,7 @@
+ 			GameViewMatrix = new SpriteViewMatrix(base.GraphicsDevice);
+ 			BackgroundViewMatrix = new SpriteViewMatrix(base.GraphicsDevice);
+ 			AssetSourceController = new AssetSourceController(Assets, new IContentSource[1] {
+-				new XnaContentSource(base.Content.RootDirectory)
++				new XnaDirectContentSource(base.Content.RootDirectory)
+ 			});
+ 
+ 			VanillaContentValidator.Instance = new VanillaContentValidator("Terraria.IO.Data.ResourcePacksDefaultInfo.tsv");
 @@ -8252,6 +_,8 @@
  			AssetInitializer.LoadSplashAssets(asyncLoadForSounds: true);
  			ChromaInitializer.Load();

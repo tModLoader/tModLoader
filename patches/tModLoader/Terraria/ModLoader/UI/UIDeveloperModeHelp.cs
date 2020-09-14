@@ -96,17 +96,10 @@ namespace Terraria.ModLoader.UI
 			}
 
 			bool frameworkCheck = ModCompile.RoslynCompatibleFrameworkCheck(out var dotNetMsg);
-			if (monoStartScriptsUpdated)
-				dotNetMsg = Language.GetTextValue("tModLoader.DMScriptsRequireRestart");
 
 			var dotNetMsgBox = AddMessageBox(dotNetMsg);
-			if (!frameworkCheck && !monoStartScriptsUpdated) {
-				if (ModCompile.systemMonoSuitable)
-					AddButton(dotNetMsgBox, Language.GetTextValue("tModLoader.DMUpdateScripts"), UpdateMonoStartScripts);
-				else if (FrameworkVersion.Framework == Framework.Mono)
-					AddButton(dotNetMsgBox, Language.GetTextValue("tModLoader.MBDownload"), DownloadMono);
-				else
-					AddButton(dotNetMsgBox, Language.GetTextValue("tModLoader.MBDownload"), DownloadDotNet);
+			if (!frameworkCheck) {
+				AddButton(dotNetMsgBox, Language.GetTextValue("tModLoader.MBDownload"), DownloadDotNet);
 			}
 
 			bool modCompileCheck = ModCompile.ModCompileVersionCheck(out var modCompileMsg);
@@ -151,35 +144,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void DownloadDotNet() {
-			Process.Start("https://www.microsoft.com/net/download/thank-you/net472");
-		}
-
-		private void DownloadMono() {
-			Process.Start("https://www.mono-project.com/download/stable/");
-		}
-
-		private static bool monoStartScriptsUpdated;
-		private void UpdateMonoStartScripts() {
-			try {
-				// upgrade start scripts to system mono
-				foreach (var monoPath in new[] { "tModLoader", "tModLoaderServer" })
-					File.Copy("tModLoader-mono", monoPath, true);
-
-				// vanilla start scripts need to be upgraded to copy back the sys/ folder
-				var kickPaths = new List<string> { "TerrariaServer" };
-				if (!File.ReadAllText("Terraria").Contains("forwarder"))
-					kickPaths.Add("Terraria");
-
-				foreach (var kickPath in kickPaths)
-					File.Copy("tModLoader-kick", kickPath, true);
-
-				monoStartScriptsUpdated = true;
-				_updateRequired = true;
-			}
-			catch (Exception e) {
-				Logging.tML.Error(e);
-				Interface.errorMessage.Show("Failed to copy mono start scripts\n" + e, Interface.developerModeHelpID);
-			}
+			Process.Start("https://dotnet.microsoft.com/download/dotnet-core/current/runtime");
 		}
 
 		private void DownloadModCompile() {

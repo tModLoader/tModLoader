@@ -23,6 +23,9 @@ using Terraria.Initializers;
 using Terraria.ModLoader.Assets;
 using ReLogic.Content;
 using ReLogic.Graphics;
+using System.Runtime.Loader;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Terraria.ModLoader
 {
@@ -51,7 +54,7 @@ namespace Terraria.ModLoader
 													(branchName.Length == 0 ? "" : $"-{branchName.ToLower()}") +
 													(beta == 0 ? "" : $"-beta{beta}");
 
-		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (GoGVerifier.IsGoG ? "g" : "s") + (FrameworkVersion.Framework == Framework.NetFramework ? "n" : (FrameworkVersion.Framework == Framework.Mono ? "o" : "u"));
+		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (GoGVerifier.IsGoG ? "g" : "s") + "c";
 
 		public static string ModPath => ModOrganizer.modPath;
 
@@ -76,10 +79,13 @@ namespace Terraria.ModLoader
 
 		internal static bool skipLoad;
 
+		public static event Action PreUnload;
+
 		internal static Action OnSuccessfulLoad;
 
 		public static Mod[] Mods { get; private set; } = new Mod[0];
 
+		internal static AssemblyLoadContext modContext;
 		internal static ModAssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
 		internal static AssemblyResourcesContentSource ManifestContentSource { get; set; }
 
@@ -97,7 +103,7 @@ namespace Terraria.ModLoader
 
 		internal static void EngineInit()
 		{
-			DotNet45Check();
+			DotNetCheck();
 			FileAssociationSupport.UpdateFileAssociation();
 			GLCallLocker.Init();
 			HiDefGraphicsIssues.Init();
@@ -203,15 +209,17 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void DotNet45Check()
+		private static void DotNetCheck()
 		{
-			if (FrameworkVersion.Framework != Framework.NetFramework || FrameworkVersion.Version >= new Version(4, 5))
+			if (FrameworkVersion.Version >= ModCompile.minDotNetVersion)
 				return;
 
+			// TODO CORE language update
+			// TODO will need updated for .NET 5
 			var msg = Language.GetTextValue("tModLoader.LoadErrorDotNet45Required");
 #if CLIENT
 			Interface.MessageBoxShow(msg);
-			Process.Start("https://dotnet.microsoft.com/download/dotnet-framework");
+			Process.Start("https://dotnet.microsoft.com/download/dotnet-core/current/runtime");
 #else
 			Console.ForegroundColor = ConsoleColor.Red;
 			Console.WriteLine(msg);
@@ -233,8 +241,8 @@ namespace Terraria.ModLoader
 		private static bool Unload()
 		{
 			try {
-				// have to move unload logic to a separate method so the stack frame is cleared. Otherwise unloading can capture mod instances in local variables, even with memory barriers (thanks compiler weirdness)
-				do_Unload();
+				Do_Unload();
+				Asms_Unload();
 				WarnModsStillLoaded();
 				return true;
 			}
@@ -251,7 +259,53 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void do_Unload()
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static void Do_Unload() {
+			// Initialize a list of errors
+			var excs = new List<Exception>();
+
+			// Unload content last
+			PreUnload += Mods_Unload;
+
+			foreach (var item in PreUnload.GetInvocationList()) {
+				// Try-catch each unload individually to prevent exception cascades
+				try {
+					item.DynamicInvoke(null);
+				}
+				catch (Exception e) {
+					excs.Add(e);
+				}
+			}
+
+			// Reset event
+			PreUnload = null;
+
+			// When done, throw exceptions or return success
+			if (excs.Count == 1)
+				throw excs[0];
+			if (excs.Count > 1)
+				throw new AggregateException(excs);
+		}
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static void Asms_Unload() 
+		{
+			var asmRef = new WeakReference(modContext, true);
+			modContext = new AssemblyLoadContext("tModLoader Mod Context", true);
+
+			for (int i = 0; asmRef.IsAlive; i++) {
+				if (i > 10) {
+					Logging.tML.Warn($"ModContext refused to finalize");
+					break;
+				}
+				// Beg the assemblies to finalize and cleanup
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
+			}
+		}
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static void Mods_Unload()
 		{
 			Logging.tML.Info("Unloading mods");
 			if (Main.dedServ) {
@@ -262,13 +316,13 @@ namespace Terraria.ModLoader
 			}
 
 			ModContent.UnloadModContent();
-			Mods = new Mod[0];
+			Mods = Array.Empty<Mod>();
 			modsByName.Clear();
 			ModContent.Unload();
+			AssemblyManager.Unload();
 
 			MemoryTracking.Clear();
 			Thread.MemoryBarrier();
-			GC.Collect();
 		}
 
 		internal static List<string> badUnloaders = new List<string>();

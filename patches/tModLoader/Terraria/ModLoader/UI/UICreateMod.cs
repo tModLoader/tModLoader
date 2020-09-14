@@ -232,12 +232,15 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
   <Import Project=""..\..\references\tModLoader.targets"" />
   <PropertyGroup>
     <AssemblyName>{modNameTrimmed}</AssemblyName>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <!--Nullable reference types are greatly encouraged, but not necessary. You can disable them by removing the following two lines.-->
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
   </PropertyGroup>
   <Target Name=""BuildMod"" AfterTargets=""Build"">
-    <Exec Command=""&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)"" />
+    <Exec Command=""dotnet &quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)"" />
   </Target>
   <ItemGroup>
     <PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />
@@ -249,7 +252,9 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 		{
 			if (!fileContents.Contains("tModLoader.targets"))
 				return true;
-			if (fileContents.Contains("<LangVersion>latest</LangVersion>"))
+			if (!fileContents.Contains("<TargetFramework>netcoreapp3.1</TargetFramework>"))
+				return true;
+			if (!fileContents.Contains("<LangVersion>latest</LangVersion>") && !fileContents.Contains("<LangVersion>preview</LangVersion>"))
 				return true;
 			if (!fileContents.Contains(@"<PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />"))
 				return true;
@@ -279,7 +284,8 @@ $@"{{
 		internal string GetBasicSword(string modNameTrimmed, string basicSwordName)
 		{
 			return
-$@"using Terraria.ID;
+$@"using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace {modNameTrimmed}.Items
@@ -300,21 +306,20 @@ namespace {modNameTrimmed}.Items
 			item.height = 40;
 			item.useTime = 20;
 			item.useAnimation = 20;
-			item.useStyle = 1;
+			item.useStyle = ItemUseStyleID.Swing;
 			item.knockBack = 6;
-			item.value = 10000;
-			item.rare = 2;
+			item.value = Item.sellPrice(platinum: 0, gold: 0, silver: 10, copper: 0); // Equivalent to Item.buyPrice(platinum: 0, gold: 0, silver: 50, copper: 0)
+			item.rare = ItemRarityID.Green;
 			item.UseSound = SoundID.Item1;
 			item.autoReuse = true;
 		}}
 
 		public override void AddRecipes() 
 		{{
-			Recipe recipe = new Recipe(mod);
-			recipe.AddIngredient(ItemID.DirtBlock, 10);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient(ItemID.DirtBlock, 10)
+				.AddTile(TileID.WorkBenches)
+				.Register();
 		}}
 	}}
 }}";
