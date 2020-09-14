@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/TerrariaNetCore.csproj
++++ src/tModLoader/Terraria/TerrariaNetCore.csproj
+@@ -19,7 +_,7 @@
+   </PropertyGroup>
+   <ItemGroup>
+     <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
+-    <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))" />
++    <Reference Include="FNA" />
+     <Reference Include="Ionic.Zip.CF" />
+     <Reference Include="Newtonsoft.Json" />
+     <Reference Include="RailSDK.Net">
