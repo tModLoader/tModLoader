@@ -8,10 +8,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
 using System.Threading;
 using Terraria.ModLoader.UI;
 using Terraria.Utilities;
+#if NETCORE
+using System.Runtime.Loader;
+#endif
 
 namespace Terraria.ModLoader.Core
 {
@@ -192,10 +194,14 @@ namespace Terraria.ModLoader.Core
 			}
 
 			private Assembly LoadAssembly(byte[] code, byte[] pdb = null) {
+#if NETCORE
 				Assembly asm;
 				using (var codeStrm = new MemoryStream(code, false))
 				using (var pdbStrm = new MemoryStream(pdb, false))
 					asm = ModLoader.modContext.LoadFromStream(codeStrm, pdbStrm);
+#else
+				Assembly asm = Assembly.Load(code, pdb);
+#endif
 				assemblies.Add(asm);
 				loadedAssemblies[asm.GetName().Name] = asm;
 				assemblyBinaries[asm.GetName().Name] = code;

@@ -23,7 +23,6 @@ using Terraria.Initializers;
 using Terraria.ModLoader.Assets;
 using ReLogic.Content;
 using ReLogic.Graphics;
-using System.Runtime.Loader;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -85,7 +84,9 @@ namespace Terraria.ModLoader
 
 		public static Mod[] Mods { get; private set; } = new Mod[0];
 
+#if NETCORE
 		internal static AssemblyLoadContext modContext;
+#endif
 		internal static ModAssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
 		internal static AssemblyResourcesContentSource ManifestContentSource { get; set; }
 
@@ -242,7 +243,9 @@ namespace Terraria.ModLoader
 		{
 			try {
 				Do_Unload();
+#if NETCORE
 				Asms_Unload();
+#endif
 				WarnModsStillLoaded();
 				return true;
 			}
@@ -287,6 +290,7 @@ namespace Terraria.ModLoader
 				throw new AggregateException(excs);
 		}
 
+#if NETCORE
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		private static void Asms_Unload() 
 		{
@@ -303,6 +307,7 @@ namespace Terraria.ModLoader
 				GC.WaitForPendingFinalizers();
 			}
 		}
+#endif
 
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		private static void Mods_Unload()
@@ -316,7 +321,7 @@ namespace Terraria.ModLoader
 			}
 
 			ModContent.UnloadModContent();
-			Mods = Array.Empty<Mod>();
+			Mods = new Mod[0];
 			modsByName.Clear();
 			ModContent.Unload();
 			AssemblyManager.Unload();

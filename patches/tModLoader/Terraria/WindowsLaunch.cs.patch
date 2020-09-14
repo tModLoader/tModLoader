@@ -24,10 +24,11 @@
  				if (text == null)
  					return null;
  
-@@ -64,12 +_,31 @@
+@@ -64,12 +_,33 @@
  				}
  			};
  
++#if NETCORE
 +			NativeLibrary.SetDllImportResolver(typeof(Game).Assembly, (name, assembly, searchPath) => {
 +				try {
 +					if (assemblies.TryGetValue(name, out var handle)) {
@@ -44,6 +45,7 @@
 +					throw new DirectoryNotFoundException("A needed library file was missing from the tModLoader directory. " + e.Message, e);
 +				}
 +			});
++#endif
 +
  #if SERVER
  			WindowsLaunch._handleRoutine = new WindowsLaunch.HandlerRoutine(WindowsLaunch.ConsoleCtrlCheck);

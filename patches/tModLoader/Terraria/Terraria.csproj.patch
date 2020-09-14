@@ -10,7 +10,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -18,15 +_,28 @@
+@@ -18,15 +_,30 @@
    </PropertyGroup>
    <PropertyGroup>
      <PdbFile>bin\$(OutputName)</PdbFile>
@@ -20,9 +20,11 @@
 +    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
    </PropertyGroup>
    <ItemGroup>
-+    <!--Reference WindowsDesktop for use with Forms and Dispatcher. Referencing this on linux/mono may throw a reference-not-found exception.-->
-+    <!--FNA should NOT reference this, ever. At all. It should use SDL2 instead of Forms and [anything else] insteaad of Dispatcher.-->
-+    <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
++    <Reference Include="System" />
++    <Reference Include="System.Core" />
++    <Reference Include="System.Drawing" />
++    <Reference Include="System.Windows.Forms" />
++    <Reference Include="WindowsBase" />
      <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))" />
 -    <Reference Include="Ionic.Zip.CF" />
 +    <Reference Include="Ionic.Zip.Reduced" />
@@ -41,7 +43,7 @@
      <Reference Include="Newtonsoft.Json" />
      <Reference Include="RailSDK.Net">
        <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/RailSDK.Net.dll</HintPath>
-@@ -35,38 +_,43 @@
+@@ -35,35 +_,30 @@
      </Reference>
      <ProjectReference Include="../ReLogic/ReLogic.csproj" />
      <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
@@ -85,19 +87,6 @@
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
-+  <ItemGroup>
-+    <!--These are redundant when Microsoft.WindowsDesktop.App is referenced. When we port to FNA and stop using WindowsDesktop for Forms access we'll need to re-add them though.-->
-+    <!--PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" /-->
-+    <!--PackageReference Include="Microsoft.Win32.Registry" Version="4.7.0" /-->
-+    <PackageReference Include="System.CodeDom" Version="4.7.0" />
-+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
-+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="4.7.0" />
-+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
-+    <PackageReference Include="System.Reflection" Version="4.3.0" />
-+  </ItemGroup>
-   <Target Name="EditBin" AfterTargets="Build">
-     <PropertyGroup>
-         <EditBinOpts>/largeaddressaware</EditBinOpts>
 @@ -81,8 +_,14 @@
  	<Exec Command="..\largeaddresstool\dumpbin $(DumpBin) &quot;$(TargetPath)&quot; | findstr &quot;large&quot;" />
    </Target>
