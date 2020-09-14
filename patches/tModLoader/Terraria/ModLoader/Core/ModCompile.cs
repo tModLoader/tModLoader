@@ -632,8 +632,8 @@ namespace Terraria.ModLoader.Core
 
 		private static string GetTerrariaReference(bool xna)
 		{
-			if (xna == PlatformUtilities.IsXNA)
-				return Assembly.GetExecutingAssembly().Location;
+			//if (xna == PlatformUtilities.IsXNA)
+			return Assembly.GetExecutingAssembly().Location;
 
 			return Path.Combine(modCompileDir, xna ? "tModLoader.XNA.exe" : "tModLoader.FNA.exe");
 		}
@@ -643,6 +643,7 @@ namespace Terraria.ModLoader.Core
 				GetTerrariaReference(xna)
 			};
 
+			// TODO remove redundant blocks like this.
 			if (xna == PlatformUtilities.IsXNA) {
 				var executingAssembly = Assembly.GetExecutingAssembly();
 

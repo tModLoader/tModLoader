@@ -37,10 +37,11 @@ namespace Terraria.ModLoader.Engine
 		internal static void Init() {
 			mainThreadId = Thread.CurrentThread.ManagedThreadId;
 #if FNA
-			var t_OpenGLDevice = typeof(GraphicsDevice).Assembly.GetType("Microsoft.Xna.Framework.Graphics.OpenGLDevice");
-			var m_ForceToMainThread = t_OpenGLDevice.GetMethod("ForceToMainThread", BindingFlags.Instance | BindingFlags.NonPublic);
+			// TODO reimplement for new fna?
+			//var t_OpenGLDevice = typeof(GraphicsDevice).Assembly.GetType("Microsoft.Xna.Framework.Graphics.OpenGLDevice");
+			//var m_ForceToMainThread = t_OpenGLDevice.GetMethod("ForceToMainThread", BindingFlags.Instance | BindingFlags.NonPublic);
 
-			new Hook(m_ForceToMainThread, new hook_ForceToMainThread(HookForceToMainThread));
+			//new Hook(m_ForceToMainThread, new hook_ForceToMainThread(HookForceToMainThread));
 #endif
 		}
 
