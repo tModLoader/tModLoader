@@ -1207,8 +1207,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static Item GetWing(Player player) {
 			Item item = null;
-			for (int k = 3; k < 8 + player.extraAccessorySlots; k++) {
-				if (player.armor[k].wingSlot == player.wingsLogic) {
+			for (int k = 3; k < 10; k++) {
+				if (player.armor[k].wingSlot == player.wingsLogic && player.IsAValidEquipmentSlotForIteration(k)) {
 					item = player.armor[k];
 				}
 			}
