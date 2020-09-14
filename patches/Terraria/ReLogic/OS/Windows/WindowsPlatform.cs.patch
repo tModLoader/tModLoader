@@ -1,0 +1,12 @@
+--- src/decompiled/ReLogic/OS/Windows/WindowsPlatform.cs
++++ src/Terraria/ReLogic/OS/Windows/WindowsPlatform.cs
+@@ -20,7 +_,8 @@
+ 			if (_wndProcHook == null)
+ 				_wndProcHook = new WindowsMessageHook(windowHandle);
+ 
+-			RegisterService((IImeService)new WindowsIme(_wndProcHook, windowHandle));
++			//RegisterService((IImeService)new WindowsIme(_wndProcHook, windowHandle));
++			RegisterService((IImeService)new FnaIme());
+ 		}
+ 
+ 		protected override void Dispose(bool disposing) {

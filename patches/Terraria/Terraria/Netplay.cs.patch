@@ -4,7 +4,7 @@
  using System.Linq;
  using System.Net;
  using System.Net.Sockets;
-+#if !WINDOWS
++#if !XNA
 +using System.Runtime.CompilerServices;
 +#endif
  using System.Threading;
@@ -14,10 +14,10 @@
  using Terraria.Net.Sockets;
  using Terraria.Social;
  using Terraria.Utilities;
-+#if !WINDOWS
++#if !XNA
 +using Terraria.Social.Base;
 +#endif
-+#if SERVER && WINDOWS
++#if SERVER && XNA
 +using NATUPNPLib;
 +#endif
  
@@ -27,7 +27,7 @@
  		public static bool SpamCheck = false;
  		public static bool HasClients;
  		private static Thread _serverThread;
-+#if SERVER && WINDOWS
++#if SERVER && XNA
 +		public static UPnPNAT _upnpnat;
 +		public static IStaticPortMappingCollection _mappings;
 +#endif
@@ -38,7 +38,7 @@
  		}
  
  		private static void OpenPort(int port) {
-+#if SERVER && WINDOWS
++#if SERVER && XNA
 +			string localIPAddress = GetLocalIPAddress();
 +			if (_upnpnat == null) {
 +				_upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
@@ -60,7 +60,7 @@
  		}
  
  		private static void ClosePort(int port) {
-+#if SERVER && WINDOWS
++#if SERVER && XNA
 +			string localIPAddress = GetLocalIPAddress();
 +			bool flag = false;
 +			if (_mappings == null)
