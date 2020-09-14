@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../ConfigurationNetCore.targets" />
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <Version>1.0.0.0</Version>
+    <Company>Re-Logic</Company>
+    <Copyright>Copyright © Re-Logic 2017</Copyright>
+    <RootNamespace>ReLogic</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
+    <Reference Include="../Terraria/Libraries/DotNetZip/Ionic.Zip.CF.dll" />
+    <Reference Include="../Terraria/Libraries/FNA/FNA.dll" />
+    <Reference Include="../Terraria/Libraries/JSON.NET/Newtonsoft.Json.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Microsoft/**" />
+  </ItemGroup>
+</Project>
