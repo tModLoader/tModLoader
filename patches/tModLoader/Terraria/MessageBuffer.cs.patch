@@ -107,7 +107,7 @@
  							Main.StopSlimeRain();
  
  						Main.invasionType = reader.ReadSByte();
-+						if (!ModNet.AllowVanillaClients)
++						if (!ModNet.AllowVanillaClients && Netplay.Connection.State > 4) //Only run after World has been initialized
 +							WorldIO.ReceiveModData(reader);
 +
  						Main.LobbyId = reader.ReadUInt64();
