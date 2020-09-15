@@ -41,9 +41,6 @@
 	//Needs checking:
 		//WaterStyleLoader.WaterStyleCount
 	
-	//Todo later:
-		//Add TileID.Set for allowing right click to drop, like for torches. See "Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90"
-	
 	//Main
 		//Add IsAValidEquipmentSlotForIteration to VanillaUpdateAccessory check.
 		//Move to Main.ApplyMusicBox
