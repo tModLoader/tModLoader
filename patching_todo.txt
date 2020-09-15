@@ -41,9 +41,6 @@
 	//Needs checking:
 		//WaterStyleLoader.WaterStyleCount
 	
-	//Todo later:
-		//Add TileID.Set for allowing right click to drop, like for torches. See "Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90"
-	
 	//Main
 		//Add IsAValidEquipmentSlotForIteration to VanillaUpdateAccessory check.
 		//Move to Main.ApplyMusicBox
@@ -238,11 +235,6 @@
 			this.OpenSettings();
 			#endif
 			
-		//Add this to the end of ClearVisualPostProcessEffects:
-			//Added by tML.
-			Filters.Scene.DeactivateAll();
-			SkyManager.Instance.DeactivateAll();
-			
 		//Put this somewhere it fits. Was in Main.LoadTextures():
 			UICommon.LoadTextures();
 		
@@ -268,11 +260,6 @@
 		//Add this after DoUpdate_WhilePaused() call:
 			PlayerHooks.UpdateAutopause(player[myPlayer]);
 			
-		//Add this to the top of Main.DrawItem:
-			if (!ItemLoader.PreDrawInWorld(item, spriteBatch, color, currentColor, ref num4, ref scale, whoami)) {
-				goto PostDraw;
-			}
-			
 		//Add this to the middle of DrawBG() after definition of the used variable.
 			SurfaceBgStyleLoader.ChooseStyle(ref preferredBGStyleForPlayer);
 			
@@ -280,10 +267,6 @@
 			if(ItemLoader.animations.Contains(item.type))
 				ItemLoader.DrawAnimatedItem(item, whoAmI, color, alpha, rotation, scale);
 				goto PostDraw;
-		
-		//Add this to the end of Main.DrawItem:
-			PostDraw:
-			ItemLoader.PostDrawInWorld(item, spriteBatch, color, currentColor, num4, scale, whoami);
 			
 		//Add this to the end of DrawSurfaceBG_BackMountainsStep2:
 			SurfaceBgStyleLoader.DrawMiddleTexture();

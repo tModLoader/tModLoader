@@ -2089,6 +2089,16 @@
  			}
  		}
  
+@@ -27688,6 +_,9 @@
+ 			Microsoft.Xna.Framework.Color color = Lighting.GetColor(item.Center.ToTileCoordinates());
+ 			Microsoft.Xna.Framework.Color currentColor = item.GetAlpha(color);
+ 			ItemSlot.GetItemLight(ref currentColor, ref scale, item);
++			if (!ItemLoader.PreDrawInWorld(item, spriteBatch, color, currentColor, ref num, ref scale, whoami)) {
++				goto PostDraw;
++			}
+ 			int num2 = item.glowMask;
+ 			if (!gamePaused && base.IsActive && ((item.type >= 71 && item.type <= 74) || item.type == 58 || item.type == 109) && color.R > 60 && (float)rand.Next(500) - (Math.Abs(item.velocity.X) + Math.Abs(item.velocity.Y)) * 10f < (float)((int)color.R / 50)) {
+ 				int num3 = Dust.NewDust(item.position, item.width, item.height, 43, 0f, 0f, 254, Microsoft.Xna.Framework.Color.White, 0.5f);
 @@ -27763,11 +_,15 @@
  			if (num2 != -1)
  				spriteBatch.Draw(TextureAssets.GlowMask[num2].Value, vector2, frame, new Microsoft.Xna.Framework.Color(250, 250, 250, item.alpha), num, vector, scale, SpriteEffects.None, 0f);
@@ -2775,6 +2785,17 @@
  			if (menuMode == num)
  				GamepadMainMenuHandler.LastDrew = num;
  		}
+@@ -38981,6 +_,10 @@
+ 			Sandstorm.WorldClear();
+ 			maxRaining = 0f;
+ 			raining = false;
++
++			//Added by tML.
++			Graphics.Effects.Filters.Scene.DeactivateAll();
++			SkyManager.Instance.DeactivateAll();
+ 		}
+ 
+ 		private static void PostDrawMenu(Microsoft.Xna.Framework.Point screenSizeCache, Microsoft.Xna.Framework.Point screenSizeCacheAfterScaling) {
 @@ -39476,6 +_,7 @@
  			if (SceneMetrics.MushroomTileCount > SceneMetrics.MushroomTileMax)
  				num8 = 2;

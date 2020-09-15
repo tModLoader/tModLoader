@@ -195,6 +195,15 @@
  				if (buffTime[i] >= 1 && buffType[i] == type)
  					return i;
  			}
+@@ -2417,7 +_,7 @@
+ 				return;
+ 
+ 			if (BuffID.Sets.IsWellFed[type]) {
+-				for (int i = 0; i < 22; i++) {
++				for (int i = 0; i < MaxBuffs; i++) {
+ 					if (BuffID.Sets.IsWellFed[buffType[i]])
+ 						DelBuff(i);
+ 				}
 @@ -2438,7 +_,7 @@
  			int num = -1;
  			while (num == -1) {
@@ -213,6 +222,24 @@
  					if (buffType[j] == 0) {
  						num = j;
  						break;
+@@ -2468,7 +_,7 @@
+ 			if (!Main.meleeBuff[type])
+ 				return;
+ 
+-			for (int i = 0; i < 22; i++) {
++			for (int i = 0; i < MaxBuffs; i++) {
+ 				if (buffType[i] != type && Main.meleeBuff[buffType[i]]) {
+ 					DelBuff(i);
+ 					i--;
+@@ -2478,7 +_,7 @@
+ 
+ 		private void AddBuff_RemoveOldPetBuffsOfMatchingType(int type) {
+ 			if (Main.lightPet[type]) {
+-				for (int i = 0; i < 22; i++) {
++				for (int i = 0; i < MaxBuffs; i++) {
+ 					if (Main.lightPet[buffType[i]])
+ 						DelBuff(i);
+ 				}
 @@ -2487,7 +_,7 @@
  			if (!Main.vanityPet[type])
  				return;
@@ -423,6 +450,15 @@
  					return inventory[i];
  			}
  
+@@ -2701,7 +_,7 @@
+ 				return;
+ 
+ 			LegacySoundStyle legacySoundStyle = null;
+-			if (CountBuffs() == 22)
++			if (CountBuffs() == MaxBuffs)
+ 				return;
+ 
+ 			Item item = QuickBuff_PickBestFoodItem();
 @@ -2719,15 +_,19 @@
  				}
  			}
@@ -461,7 +497,7 @@
  					legacySoundStyle = item2.UseSound;
  					int num3 = item2.buffTime;
  					if (num3 == 0)
-@@ -2762,7 +_,9 @@
+@@ -2762,12 +_,14 @@
  
  					AddBuff(num2, num3);
  					if (item2.consumable) {
@@ -472,6 +508,39 @@
  						if (item2.stack <= 0)
  							item2.TurnToAir();
  					}
+ 
+-					if (CountBuffs() == 22)
++					if (CountBuffs() == MaxBuffs)
+ 						break;
+ 				}
+ 			}
+@@ -2781,7 +_,7 @@
+ 		private Item QuickBuff_PickBestFoodItem() {
+ 			int num = 0;
+ 			Item item = null;
+-			for (int i = 0; i < 22; i++) {
++			for (int i = 0; i < MaxBuffs; i++) {
+ 				if (buffTime[i] >= 1) {
+ 					int num2 = QuickBuff_FindFoodPriority(buffType[i]);
+ 					if (num <= num2)
+@@ -2818,7 +_,7 @@
+ 
+ 		private bool QuickBuff_ShouldBotherUsingThisBuff(int attemptedType) {
+ 			bool result = true;
+-			for (int i = 0; i < 22; i++) {
++			for (int i = 0; i < MaxBuffs; i++) {
+ 				if (attemptedType == 27 && (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102)) {
+ 					result = false;
+ 					break;
+@@ -2841,7 +_,7 @@
+ 			}
+ 
+ 			if (Main.lightPet[attemptedType] || Main.vanityPet[attemptedType]) {
+-				for (int j = 0; j < 22; j++) {
++				for (int j = 0; j < MaxBuffs; j++) {
+ 					if (Main.lightPet[buffType[j]] && Main.lightPet[attemptedType])
+ 						result = false;
+ 
 @@ -2865,6 +_,7 @@
  				if (item != null && item.mountType != -1 && mount.CanMount(item.mountType, this)) {
  					if (!QuickMinecartSnap()) {
@@ -1855,7 +1924,7 @@
  					GamepadEnableGrappleCooldown();
  				}
 -				else if (Main.tile[myX, myY].type == 4 || Main.tile[myX, myY].type == 13 || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90)) {
-+				else if (TileLoader.IsTorch(Main.tile[myX, myY].type) || Main.tile[myX, myY].type == 13 || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90)) {
++				else if (TileLoader.IsTorch(Main.tile[myX, myY].type) || Main.tile[myX, myY].type == 13 || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90) || TileID.Sets.CanDropFromRightClick[Main.tile[myX, myY].type]) {
  					WorldGen.KillTile(myX, myY);
  					if (Main.netMode == 1)
  						NetMessage.SendData(17, -1, -1, null, 0, myX, myY);

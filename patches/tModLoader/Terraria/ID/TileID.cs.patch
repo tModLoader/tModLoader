@@ -1,11 +1,19 @@
 --- src/Terraria/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
-@@ -1,4 +_,5 @@
+@@ -1,10 +_,11 @@
  using ReLogic.Reflection;
 +using Terraria.ModLoader;
  
  namespace Terraria.ID
  {
+-	public class TileID
++	public partial class TileID
+ 	{
+-		public static class Sets
++		public static partial class Sets
+ 		{
+ 			public static class Conversion
+ 			{
 @@ -91,7 +_,7 @@
  				};
  			}
