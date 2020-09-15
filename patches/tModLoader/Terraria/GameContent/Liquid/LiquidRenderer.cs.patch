@@ -5,7 +5,7 @@
  		public const float MIN_LIQUID_SIZE = 0.25f;
  		public static LiquidRenderer Instance;
 -		private readonly Asset<Texture2D>[] _liquidTextures = new Asset<Texture2D>[13];
-+		public Asset<Texture2D>[] _liquidTextures = new Asset<Texture2D>[12];
++		public Asset<Texture2D>[] _liquidTextures = new Asset<Texture2D>[13];
  		private LiquidCache[] _cache = new LiquidCache[1];
  		private LiquidDrawCache[] _drawCache = new LiquidDrawCache[1];
  		private int _animationFrame;
