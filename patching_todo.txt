@@ -238,11 +238,6 @@
 			this.OpenSettings();
 			#endif
 			
-		//Add this to the end of ClearVisualPostProcessEffects:
-			//Added by tML.
-			Filters.Scene.DeactivateAll();
-			SkyManager.Instance.DeactivateAll();
-			
 		//Put this somewhere it fits. Was in Main.LoadTextures():
 			UICommon.LoadTextures();
 		

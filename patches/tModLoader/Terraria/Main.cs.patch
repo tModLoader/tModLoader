@@ -2775,6 +2775,17 @@
  			if (menuMode == num)
  				GamepadMainMenuHandler.LastDrew = num;
  		}
+@@ -38981,6 +_,10 @@
+ 			Sandstorm.WorldClear();
+ 			maxRaining = 0f;
+ 			raining = false;
++
++			//Added by tML.
++			Graphics.Effects.Filters.Scene.DeactivateAll();
++			SkyManager.Instance.DeactivateAll();
+ 		}
+ 
+ 		private static void PostDrawMenu(Microsoft.Xna.Framework.Point screenSizeCache, Microsoft.Xna.Framework.Point screenSizeCacheAfterScaling) {
 @@ -39476,6 +_,7 @@
  			if (SceneMetrics.MushroomTileCount > SceneMetrics.MushroomTileMax)
  				num8 = 2;
