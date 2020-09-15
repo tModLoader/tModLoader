@@ -1,11 +1,19 @@
 --- src/Terraria/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
-@@ -1,4 +_,5 @@
+@@ -1,10 +_,11 @@
  using ReLogic.Reflection;
 +using Terraria.ModLoader;
  
  namespace Terraria.ID
  {
+-	public class TileID
++	public partial class TileID
+ 	{
+-		public static class Sets
++		public static partial class Sets
+ 		{
+ 			public static class Conversion
+ 			{
 @@ -91,7 +_,7 @@
  				};
  			}
@@ -32,14 +40,6 @@
  			public static bool[] Corrupt = Factory.CreateBoolSet(23, 25, 112, 163, 398, 400);
  			public static bool[] Hallow = Factory.CreateBoolSet(109, 117, 116, 164, 402, 403, 115);
  			public static bool[] Crimson = Factory.CreateBoolSet(199, 203, 234, 200, 399, 401, 205);
-@@ -195,6 +_,7 @@
- 			public static bool[] IgnoredInHouseScore = Factory.CreateBoolSet(4, 3, 73, 82, 83, 84);
- 			public static bool[] SpreadOverground = Factory.CreateBoolSet(2, 23, 32, 60, 70, 109, 199, 352, 477, 492);
- 			public static bool[] SpreadUnderground = Factory.CreateBoolSet(23, 109, 199, 60, 70);
-+			public static bool[] CanDropFromRightClick = Factory.CreateBoolSet(4);
- 		}
- 
- 		public static readonly IdDictionary Search = IdDictionary.Create<TileID, ushort>();
 @@ -824,3 +_,4 @@
  		public const ushort Count = 623;
  	}

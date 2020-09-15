@@ -1926,7 +1926,7 @@
  					GamepadEnableGrappleCooldown();
  				}
 -				else if (Main.tile[myX, myY].type == 4 || Main.tile[myX, myY].type == 13 || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90)) {
-+				else if (TileLoader.IsTorch(Main.tile[myX, myY].type) || Main.tile[myX, myY].type == 13 || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90) || TileID.Sets.CanDropFromRightClick[Main.tile[myX, myY].type] == true) {
++				else if (TileLoader.IsTorch(Main.tile[myX, myY].type) || Main.tile[myX, myY].type == 13 || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90) || TileID.Sets.CanDropFromRightClick[Main.tile[myX, myY].type]) {
  					WorldGen.KillTile(myX, myY);
  					if (Main.netMode == 1)
  						NetMessage.SendData(17, -1, -1, null, 0, myX, myY);
