@@ -263,11 +263,6 @@
 		//Add this after DoUpdate_WhilePaused() call:
 			PlayerHooks.UpdateAutopause(player[myPlayer]);
 			
-		//Add this to the top of Main.DrawItem:
-			if (!ItemLoader.PreDrawInWorld(item, spriteBatch, color, currentColor, ref num4, ref scale, whoami)) {
-				goto PostDraw;
-			}
-			
 		//Add this to the middle of DrawBG() after definition of the used variable.
 			SurfaceBgStyleLoader.ChooseStyle(ref preferredBGStyleForPlayer);
 			
