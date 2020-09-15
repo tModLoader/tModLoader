@@ -270,10 +270,6 @@
 			if(ItemLoader.animations.Contains(item.type))
 				ItemLoader.DrawAnimatedItem(item, whoAmI, color, alpha, rotation, scale);
 				goto PostDraw;
-		
-		//Add this to the end of Main.DrawItem:
-			PostDraw:
-			ItemLoader.PostDrawInWorld(item, spriteBatch, color, currentColor, num4, scale, whoami);
 			
 		//Add this to the end of DrawSurfaceBG_BackMountainsStep2:
 			SurfaceBgStyleLoader.DrawMiddleTexture();
