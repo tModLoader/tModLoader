@@ -280,8 +280,9 @@
  
  										return;
  									}
- 								case 1:
+-								case 1:
 -									if (Main.tile[num19, num20].type == 21) {
++								case byte _ when b2 % 100 == 1:
 +									if (Main.tile[num19, num20].type == 21 || b2 == 101 && TileID.Sets.BasicChest[Main.tile[num19, num20].type]) {
  										Tile tile = Main.tile[num19, num20];
  										if (tile.frameX % 36 != 0)
@@ -312,8 +313,9 @@
  
  										return;
  									}
- 								case 3:
+-								case 3:
 -									if (Main.tile[num19, num20].type == 88) {
++								case byte _ when b2 % 100 == 3:
 +									if (Main.tile[num19, num20].type == 88 || b2 == 103 && TileLoader.IsDresser(Main.tile[num19, num20].type)) {
  										Tile tile2 = Main.tile[num19, num20];
  										num19 -= tile2.frameX % 54 / 18;

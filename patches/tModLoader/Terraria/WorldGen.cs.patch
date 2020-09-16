@@ -1331,7 +1331,11 @@
  			if (j >= 1)
  				tile2 = Main.tile[i, j - 1];
  
-@@ -28755,6 +_,7 @@
+@@ -28752,9 +_,11 @@
+ 							return false;
+ 						break;
+ 					case 21:
++					case int _ when TileID.Sets.BasicChest[type]:
  					case 26:
  					case 72:
  					case 88:
@@ -1339,7 +1343,11 @@
  						if (tile.type != type)
  							return false;
  						break;
-@@ -28789,6 +_,7 @@
+@@ -28786,9 +_,11 @@
+ 						break;
+ 					}
+ 				case 21:
++				case ushort _ when TileID.Sets.BasicChest[tile.type]:
  					if (!Chest.CanDestroyChest(i - tile.frameX / 18 % 2, j - tile.frameY / 18))
  						return false;
  					break;

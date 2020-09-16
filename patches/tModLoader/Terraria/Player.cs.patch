@@ -3963,19 +3963,9 @@
  
  			if (tile.type == 147 || tile.type == 0 || tile.type == 40 || tile.type == 53 || tile.type == 57 || tile.type == 59 || tile.type == 123 || tile.type == 224 || tile.type == 397)
  				num += pickPower;
-@@ -30102,14 +_,20 @@
- 				if (Main.netMode == 1 && Main.tileContainer[Main.tile[x, y].type]) {
- 					WorldGen.KillTile(x, y, fail: true);
- 					NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
--					if (Main.tile[x, y].type == 21)
-+					if (Main.tile[x, y].type == 21 || Main.tile[x, y].type >= TileID.Count && TileID.Sets.BasicChest[Main.tile[x, y].type])
- 						NetMessage.SendData(34, -1, -1, null, 1, x, y);
+@@ -30110,6 +_,12 @@
  
- 					if (Main.tile[x, y].type == 467)
- 						NetMessage.SendData(34, -1, -1, null, 5, x, y);
- 
--					if (Main.tile[x, y].type == 88)
-+					if (TileLoader.IsDresser(Main.tile[x, y].type))
+ 					if (Main.tile[x, y].type == 88)
  						NetMessage.SendData(34, -1, -1, null, 3, x, y);
 +
 +					if (Main.tile[x, y].type >= TileID.Count && TileID.Sets.BasicChest[Main.tile[x, y].type])
