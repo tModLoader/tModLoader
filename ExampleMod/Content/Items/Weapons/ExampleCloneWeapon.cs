@@ -6,10 +6,9 @@ using static Terraria.ModLoader.ModContent;
 namespace ExampleMod.Content.Items.Weapons
 {
 	/// <summary>
-	///		This weapon and its corresponding projectile showcase the CloneDefaults() method, which allows for cloning of other items.
-	///		For this example, we shall copy the Meowmere and it's projectiles with the CloneDefaults() method, while also changing
-	///		them slightly.
-	///		For a more detailed description of each item field used here, check out <see cref="ExampleSword" />.
+	/// This weapon and its corresponding projectile showcase the CloneDefaults() method, which allows for cloning of other items.
+	/// For this example, we shall copy the Meowmere and its projectiles with the CloneDefaults() method, while also changing them slightly.
+	/// For a more detailed description of each item field used here, check out <see cref="ExampleSword" />.
 	/// </summary>
 	public class ExampleCloneWeapon : ModItem
 	{
