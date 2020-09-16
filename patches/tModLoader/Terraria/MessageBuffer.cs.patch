@@ -103,12 +103,11 @@
  							}
  
  							if (Main.netMode == 2 && num239 == whoAmI && num240 <= 58 + player13.armor.Length + player13.dye.Length + player13.miscEquips.Length + player13.miscDyes.Length)
-@@ -559,6 +_,10 @@
+@@ -559,6 +_,9 @@
  							Main.StopSlimeRain();
  
  						Main.invasionType = reader.ReadSByte();
-+						bool modworldSent = reader.ReadBoolean();
-+						if (!ModNet.AllowVanillaClients && modworldSent) //Only run after World has been initialized
++						if (!ModNet.AllowVanillaClients && Netplay.Connection.State > 4) //Only run after World has been initialized
 +							WorldIO.ReceiveModData(reader);
 +
  						Main.LobbyId = reader.ReadUInt64();
