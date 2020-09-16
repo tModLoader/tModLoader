@@ -1,8 +1,6 @@
 --- src/Terraria/ReLogic/ReLogicNetCore.csproj
 +++ src/tModLoader/ReLogic/ReLogicNetCore.csproj
-@@ -6,14 +_,22 @@
-     <Company>Re-Logic</Company>
-     <Copyright>Copyright © Re-Logic 2017</Copyright>
+@@ -8,12 +_,20 @@
      <RootNamespace>ReLogic</RootNamespace>
 +    <AssemblyName>ReLogic</AssemblyName>
 +    <TargetName>ReLogic</TargetName>

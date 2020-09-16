@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/MonoLaunch.cs
 +++ src/tModLoader/Terraria/MonoLaunch.cs
-@@ -3,13 +_,20 @@
+@@ -3,13 +_,25 @@
  using System.IO;
  using System.Reflection;
  using Terraria;
@@ -18,6 +18,11 @@
 +			string name = new AssemblyName(sargs.Name).Name;
 +			if (name == "Terraria" || name.Contains("tModLoader"))
 +				return Assembly.GetExecutingAssembly();
++
++			Assembly existingAsm = Array.Find(AppDomain.CurrentDomain.GetAssemblies(), (Assembly asm) => asm.GetName().Name == name);
++			if (existingAsm != null) {
++				return existingAsm;
++			}
 +
 +			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(name + ".dll"));
  			if (text == null)

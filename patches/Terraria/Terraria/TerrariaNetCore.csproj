@@ -27,10 +27,10 @@
       <HintPath Condition="$(DefineConstants.Contains('MAC'))">Libraries/Mac/RailSDK.Net.dll</HintPath>
       <HintPath Condition="$(DefineConstants.Contains('LINUX'))">Libraries/Linux/RailSDK.Net.dll</HintPath>
     </Reference>
-    <Reference Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogicNetCore.dll" />
-    <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogicNetCore.dll">
-	  <Link>Libraries/ReLogic/ReLogicNetCore.dll</Link>
-      <LogicalName>Terraria.Libraries.ReLogic.ReLogicNetCore.dll</LogicalName>
+    <ProjectReference Include="../ReLogic/ReLogicNetCore.csproj" />
+    <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
+	  <Link>Libraries/ReLogic/ReLogic.dll</Link>
+      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
     </EmbeddedResource>
     <Reference Include="Steamworks.NET">
       <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/Steamworks.NET.dll</HintPath>
@@ -66,9 +66,8 @@
 	<Message Text="Checking headers with dumpbin." Importance="high" />
 	<Exec Command="..\largeaddresstool\dumpbin $(DumpBin) &quot;$(TargetPath)&quot; | findstr &quot;large&quot;" />
   </Target>
-  <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
+  <Target Name="CopyToStreamDir" AfterTargets="EditBin">
     <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\$(OutputName).exe" />
-    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(TerrariaSteamPath)" />
+    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)" />
   </Target>
 </Project>

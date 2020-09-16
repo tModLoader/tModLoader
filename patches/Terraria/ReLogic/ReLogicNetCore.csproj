@@ -6,6 +6,8 @@
     <Company>Re-Logic</Company>
     <Copyright>Copyright © Re-Logic 2017</Copyright>
     <RootNamespace>ReLogic</RootNamespace>
+    <AssemblyName>ReLogic</AssemblyName>
+    <TargetName>ReLogic</TargetName>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.WindowsDesktop.App" />

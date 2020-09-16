@@ -25,6 +25,9 @@ using ReLogic.Content;
 using ReLogic.Graphics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+#if NETCORE
+using System.Runtime.Loader;
+#endif
 
 namespace Terraria.ModLoader
 {
