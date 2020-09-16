@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Items.Weapons
 			//After CloneDefaults has been called, we can now modify the stats to our wishes, or keep them as they are.
 			//For the sake of example, let's swap the vanilla Meowmere projectile shot from our item for our own projectile by changing item.shoot:
 			
-			item.shoot = ProjectileType<ExampleCloneProjectile>(); //Remember we must used ProjectileType<>() since it is a modded projectile!
+			item.shoot = ProjectileType<ExampleCloneProjectile>(); //Remember that we must use ProjectileType<>() since it is a modded projectile!
 			//Check out ExampleCloneProjectile to see how this projectile is different from the Vanilla Meowmere projectile.
 			
 			//While we're at it, let's make our weapon's stats a bit stronger than the Meowmere, which can be done
