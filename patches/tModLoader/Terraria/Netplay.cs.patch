@@ -20,7 +20,7 @@
  using Terraria.Net.Sockets;
  using Terraria.Social;
 @@ -21,7 +_,6 @@
- #if SERVER && WINDOWS
+ #if SERVER && XNA
  using NATUPNPLib;
  #endif
 -
@@ -53,7 +53,7 @@
 +		}
 +
  		private static void OpenPort(int port) {
- #if SERVER && WINDOWS
+ #if SERVER && XNA
  			string localIPAddress = GetLocalIPAddress();
 @@ -421,6 +_,7 @@
  		}

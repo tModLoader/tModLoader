@@ -25,7 +25,7 @@
  using System.Text;
  using System.Threading;
  using System.Threading.Tasks;
-+#if WINDOWS
++#if XNA
  using System.Windows.Forms;
 +#endif
  using Terraria.Achievements;
@@ -105,7 +105,7 @@
  				base.InactiveSleepTime = TimeSpan.FromMilliseconds(flag2 ? 20 : 0);
  			}
  
-+#if CLIENT && WINDOWS
++#if CLIENT && XNA
  			Form form = (Form)Control.FromHandle(instance.Window.Handle);
  			if (screenBorderless) {
  				SetBorderlessFormStyle(form);
@@ -125,7 +125,7 @@
  
 -							if (num >= 91 && binaryReader.ReadBoolean())
 +							if (num >= 91 && binaryReader.ReadBoolean()) {
-+#if CLIENT && WINDOWS
++#if CLIENT && XNA
  								((Form)Control.FromHandle(base.Window.Handle)).WindowState = FormWindowState.Maximized;
 +#endif
 +							}
@@ -167,7 +167,7 @@
  			rand = new UnifiedRandom();
  			if (autoShutdown) {
  				string lpWindowName = Console.Title = "terraria" + rand.Next(int.MaxValue);
-+#if WINDOWS
++#if XNA
  				IntPtr intPtr = FindWindow(null, lpWindowName);
  				if (intPtr != IntPtr.Zero)
  					ShowWindow(intPtr, 0);
@@ -345,7 +345,7 @@
  
  				UpdateOldNPCShop();
  				hasFocus = base.IsActive;
-+#if WINDOWS
++#if XNA
  				hasFocus |= (Form.ActiveForm == Control.FromHandle(base.Window.Handle) as Form);
 +#endif
  				if (!base.IsActive && netMode == 0) {
@@ -417,7 +417,7 @@
  			_uiScaleWanted = uiScaleWanted;
  		}
  
-+#if !WINDOWS
++#if !XNA
 +		private static bool IsBorderlessDisplayAvailable() => false;
 +#else
  		private static bool IsBorderlessDisplayAvailable() => true;
@@ -503,7 +503,7 @@
  
  		public static void SetDisplayMode(int width, int height, bool fullscreen) {
  			bool flag = false;
-+#if WINDOWS
++#if XNA
  			Form form = null;
  			screenMaximized = (((Form)Control.FromHandle(instance.Window.Handle)).WindowState == FormWindowState.Maximized);
  			if (screenBorderless && screenMaximized && !graphics.IsFullScreen) {
@@ -514,7 +514,7 @@
 +			Main.screenMaximized = false;
 +#endif
  
-+#if WINDOWS
++#if XNA
  			form = (Form)Control.FromHandle(instance.Window.Handle);
  			flag = (form.FormBorderStyle == FormBorderStyle.None);
 +#endif
@@ -522,7 +522,7 @@
  			int num3;
  			int num4;
  			if (screenBorderless || screenMaximized || graphics.IsFullScreen || fullscreen) {
-+#if WINDOWS
++#if XNA
 -				form.MinimumSize = new Size(0, 0);
 +				form.MinimumSize = new System.Drawing.Size(0, 0);
  				if (!fullscreen)
@@ -538,7 +538,7 @@
  			}
  			else {
  				PlayerInput.RawMouseScale = Vector2.One;
-+#if WINDOWS
++#if XNA
 -				form.MinimumSize = new Size(minScreenW, minScreenH);
 +				form.MinimumSize = new System.Drawing.Size(minScreenW, minScreenH);
  				if (flag) {
@@ -553,7 +553,7 @@
  				flag2 = (graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height);
  			}
  
-+#if WINDOWS
++#if XNA
  			if (!fullscreen && !flag2) {
  				if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  					width = form.ClientSize.Width;
@@ -569,7 +569,7 @@
  				PendingResolutionWidth = screenWidth;
  				PendingResolutionHeight = screenHeight;
  				PlayerInput.CacheOriginalScreenDimensions();
-+#if WINDOWS
++#if XNA
  				if (!fullscreen) {
  					if (screenBorderless) {
  						ApplyBorderlessResolution(form);

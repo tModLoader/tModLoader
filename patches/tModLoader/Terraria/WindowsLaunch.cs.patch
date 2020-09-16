@@ -10,21 +10,27 @@
  using System.Reflection;
  using System.Runtime.InteropServices;
  using Terraria.Social;
-@@ -52,8 +_,11 @@
+@@ -52,14 +_,15 @@
  		[STAThread]
  		private static void Main(string[] args) {
  			AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
--				string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
--				string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
+-				string resourceName = new AssemblyName(sargs.Name).Name;
 +				string name = new AssemblyName(sargs.Name).Name;
 +				if (name == "Terraria" || name.Contains("tModLoader"))
 +					return Assembly.GetExecutingAssembly();
-+
-+				string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(name + ".dll"));
+ 
+-				Assembly existingAsm = Array.Find(AppDomain.CurrentDomain.GetAssemblies(), (Assembly asm) => asm.GetName().Name == resourceName);
++				Assembly existingAsm = Array.Find(AppDomain.CurrentDomain.GetAssemblies(), (Assembly asm) => asm.GetName().Name == name);
+ 				if(existingAsm != null) {
+ 					return existingAsm;
+ 				}
+-				resourceName += ".dll";
+-				string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
++				string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(name));
  				if (text == null)
  					return null;
  
-@@ -64,12 +_,33 @@
+@@ -70,12 +_,33 @@
  				}
  			};
  

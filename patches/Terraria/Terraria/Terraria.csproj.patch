@@ -71,8 +71,8 @@
 +    <EmbeddedResource Remove="Libraries/Mac/**" Condition="!$(DefineConstants.Contains('MAC'))" />
 +    <EmbeddedResource Remove="Libraries/Linux/**" Condition="!$(DefineConstants.Contains('LINUX'))" />
 +    <EmbeddedResource Remove="Libraries/Mono/**" Condition="!$(DefineConstants.Contains('MONO'))" />
-+    <EmbeddedResource Remove="Libraries/XNA/**"/>
-+    <EmbeddedResource Remove="Libraries/FNA/**"/>
++    <EmbeddedResource Remove="Libraries/XNA/**" />
++    <EmbeddedResource Remove="Libraries/FNA/**" />
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>

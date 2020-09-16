@@ -1,7 +1,11 @@
 --- src/Terraria/Terraria/Utilities/PlatformUtilities.cs
 +++ src/tModLoader/Terraria/Utilities/PlatformUtilities.cs
-@@ -61,25 +_,26 @@
- #if !WINDOWS
+@@ -59,28 +_,29 @@
+ 		public const bool IsLinux = false;
+ #endif
+ 
+-#if !XNA
++#if !XNA
  		public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data) {
  #if CLIENT
 +			throw new NotImplementedException("TODO");

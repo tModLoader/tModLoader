@@ -48,7 +48,7 @@
 +#endif
  				foreach (MethodInfo methodInfo in methods) {
  					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
-+#if WINDOWS
++#if XNA
  						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
 +#else
 +						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();

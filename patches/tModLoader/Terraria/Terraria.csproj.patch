@@ -10,13 +10,13 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -18,15 +_,30 @@
+@@ -18,15 +_,31 @@
    </PropertyGroup>
    <PropertyGroup>
      <PdbFile>bin\$(OutputName)</PdbFile>
+-    <ApplicationIcon>Icon.ico</ApplicationIcon>
 +    <TargetName>$(OutputName)</TargetName>
 +    <AssemblyName>$(OutputName)</AssemblyName>
--    <ApplicationIcon>Icon.ico</ApplicationIcon>
 +    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
    </PropertyGroup>
    <ItemGroup>
@@ -28,6 +28,7 @@
      <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))" />
 -    <Reference Include="Ionic.Zip.CF" />
 +    <Reference Include="Ionic.Zip.Reduced" />
++    <!--Obsolete: remove when confident-->
      <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
      <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))" />
      <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
@@ -48,8 +49,8 @@
      <ProjectReference Include="../ReLogic/ReLogic.csproj" />
      <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
 -	  <Link>Libraries/ReLogic/ReLogic.dll</Link>
-+      <Link>Libraries/ReLogic/ReLogic.dll</Link>
 -      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
++      <Link>Libraries/ReLogic/ReLogic.dll</Link>
 +      <LogicalName>ReLogic.dll</LogicalName>
      </EmbeddedResource>
      <Reference Include="Steamworks.NET">
@@ -80,8 +81,8 @@
      <EmbeddedResource Remove="Libraries/Mac/**" Condition="!$(DefineConstants.Contains('MAC'))" />
      <EmbeddedResource Remove="Libraries/Linux/**" Condition="!$(DefineConstants.Contains('LINUX'))" />
      <EmbeddedResource Remove="Libraries/Mono/**" Condition="!$(DefineConstants.Contains('MONO'))" />
--    <EmbeddedResource Remove="Libraries/XNA/**"/>
--    <EmbeddedResource Remove="Libraries/FNA/**"/>
+-    <EmbeddedResource Remove="Libraries/XNA/**" />
+-    <EmbeddedResource Remove="Libraries/FNA/**" />
 +    <EmbeddedResource Remove="Libraries/XNA/**" Condition="!$(DefineConstants.Contains('XNA'))" />
 +    <EmbeddedResource Remove="Libraries/FNA/**" Condition="!$(DefineConstants.Contains('FNA'))" />
      <EmbeddedResource Include="Localization/Content/**" />

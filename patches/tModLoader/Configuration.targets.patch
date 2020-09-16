@@ -6,10 +6,10 @@
 -    <TargetFramework>net40</TargetFramework>
 +    <TargetFramework>net45</TargetFramework>
      <Configurations>WindowsDebug;WindowsRelease;WindowsServerDebug;WindowsServerRelease;LinuxRelease;LinuxServerRelease;MacRelease;MacServerRelease</Configurations>
-     <PlatformTarget>x86</PlatformTarget>
+     <PlatformTarget>x64</PlatformTarget>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 @@ -10,10 +_,10 @@
-     <DefineConstants>$(DefineConstants);WINDOWS;XNA</DefineConstants>
+     <DefineConstants>$(DefineConstants);WINDOWS;FNA</DefineConstants>
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
 -    <DefineConstants>$(DefineConstants);LINUX;FNA;MONO</DefineConstants>

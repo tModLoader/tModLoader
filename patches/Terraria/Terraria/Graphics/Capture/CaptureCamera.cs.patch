@@ -10,7 +10,7 @@
  using System.Threading;
  using Terraria.Graphics.Effects;
  using Terraria.Localization;
-+#if !WINDOWS
++#if !XNA
 +using Terraria.Utilities;
 +#endif
  
@@ -20,7 +20,7 @@
  					byte* ptr4 = ptr3 + (destinationBufferWidth * area.Y + area.X << 2);
  					for (int i = 0; i < area.Height; i++) {
  						for (int j = 0; j < area.Width; j++) {
-+#if WINDOWS
++#if XNA
 -							ptr4[2] = *ptr2;
 +							ptr4[2] = ptr2[0];
  							ptr4[1] = ptr2[1];
@@ -40,7 +40,7 @@
  				return false;
  
  			try {
-+#if WINDOWS
++#if XNA
  				using (Bitmap bitmap = new Bitmap(width, height)) {
  					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
  					BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
@@ -60,7 +60,7 @@
  			if (!Utils.TryCreatingDirectory(text))
  				return;
  
-+#if WINDOWS
++#if XNA
  			using (Bitmap bitmap = new Bitmap(width, height)) {
  				System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
 +#else
@@ -72,7 +72,7 @@
  				int num2 = 0;
  				for (int i = 0; i < height; i++) {
  					for (int j = 0; j < width; j++) {
-+#if WINDOWS
++#if XNA
  						byte b = _outputData[num + 2];
  						_outputData[num2 + 2] = _outputData[num];
  						_outputData[num2] = b;
@@ -91,7 +91,7 @@
  					num += texture.Width - width << 2;
  				}
  
-+#if WINDOWS
++#if XNA
  				BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
  				IntPtr scan = bitmapData.Scan0;
  				Marshal.Copy(_outputData, 0, scan, width * height * 4);

@@ -1,7 +1,7 @@
 --- src/Terraria/Terraria/Main.cs
 +++ src/tModLoader/Terraria/Main.cs
 @@ -32,6 +_,7 @@
- #if WINDOWS
+ #if XNA
  using System.Windows.Forms;
  #endif
 +using Steamworks;
@@ -448,7 +448,7 @@
 -			if (autoShutdown) {
 +			if (autoShutdown && !showServerConsole) {
  				string lpWindowName = Console.Title = "terraria" + rand.Next(int.MaxValue);
- #if WINDOWS
+ #if XNA
  				IntPtr intPtr = FindWindow(null, lpWindowName);
 @@ -3965,17 +_,18 @@
  #endif
@@ -3216,7 +3216,7 @@
 @@ -50171,7 +_,9 @@
  			}
  
- #if WINDOWS
+ #if XNA
 +			// appears redundant. Just causes the window to fight the user when attempting to resize too small
 +			// with this disabled, the window will just snap back to minimum size when released
 -			if (!fullscreen && !flag2) {
