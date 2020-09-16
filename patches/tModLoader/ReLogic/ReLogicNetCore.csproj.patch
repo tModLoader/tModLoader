@@ -1,7 +1,9 @@
 --- src/Terraria/ReLogic/ReLogicNetCore.csproj
 +++ src/tModLoader/ReLogic/ReLogicNetCore.csproj
-@@ -8,12 +_,20 @@
+@@ -8,14 +_,22 @@
      <RootNamespace>ReLogic</RootNamespace>
+     <AssemblyName>ReLogic</AssemblyName>
+     <TargetName>ReLogic</TargetName>
 +    <AssemblyName>ReLogic</AssemblyName>
 +    <TargetName>ReLogic</TargetName>
    </PropertyGroup>
