@@ -57,12 +57,22 @@
  							break;
  						}
  					case 7: {
-@@ -298,6 +_,9 @@
+@@ -298,6 +_,19 @@
  							writer.Write((short)WorldGen.SavedOreTiers.Mythril);
  							writer.Write((short)WorldGen.SavedOreTiers.Adamantite);
  							writer.Write((sbyte)Main.invasionType);
-+							if (!ModNet.AllowVanillaClients)
++							if (!ModNet.AllowVanillaClients && (remoteClient == -1 || Netplay.Clients[remoteClient].State >= 3))
++								//Relies on short circuiting to avoid error
++								//So the client doesnt tell the server what state its reached, the server just keeps track of which states it expects the client to be
++								//Furthermore it only tracks 1,2,3 and 10; if using netmode a netmode beside 2, 10 is never reached
++								//Therefore instead of checking for state 4 to be complete, we have to check for state 3
++								//Ideally state 4 has been run before this packet is sent
++							{
++								writer.Write(true);//Waste a whole byte
 +								WorldIO.SendModData(writer);
++							}
++							else
++								writer.Write(false);
 +
  							if (SocialAPI.Network != null)
  								writer.Write(SocialAPI.Network.GetLobbyId());
