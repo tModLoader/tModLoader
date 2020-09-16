@@ -112,7 +112,7 @@
  							Main.StopSlimeRain();
  
  						Main.invasionType = reader.ReadSByte();
-+						if (!ModNet.AllowVanillaClients)
++						if (!ModNet.AllowVanillaClients && Netplay.Connection.State > 4)
 +							WorldIO.ReceiveModData(reader);
 +
  						Main.LobbyId = reader.ReadUInt64();
