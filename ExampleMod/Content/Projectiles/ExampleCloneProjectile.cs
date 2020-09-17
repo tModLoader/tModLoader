@@ -62,6 +62,8 @@ namespace ExampleMod.Content.Projectiles
 			//a single line. If Main.rand.NextBool() reurns true, it plays SoundID.Item57. If it returns false, then it
 			//will play SoundID.Item58. The condition goes before the ? and the two possibilities follow, separated by a :
 
+			//This line calls the base (empty) implementation of this hook method to return its default value, which in its case is always 'true'.
+			//Hover on the method below in VS to see its summary.
 			return base.OnTileCollide(oldVelocity);
 		}
 	}
