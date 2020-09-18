@@ -136,6 +136,14 @@
  				inventory[selectedItem].stack--;
  			}
  			else {
+@@ -1544,6 +_,7 @@
+ 			else {
+ 				itemAnimation = 10;
+ 				itemAnimationMax = 10;
++				itemTime = 10; // Bandaid fix for #976, does not need to be merged in 1.4
+ 			}
+ 
+ 			Recipe.FindRecipes();
 @@ -1551,11 +_,13 @@
  				NetMessage.SendData(21, -1, -1, null, num);
  		}
