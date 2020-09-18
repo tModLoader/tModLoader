@@ -17,6 +17,17 @@
  		private static bool[] canFavoriteAt;
  		private static float[] inventoryGlowHue;
  		private static int[] inventoryGlowTime;
+@@ -189,6 +_,10 @@
+ 
+ 		private static bool OverrideLeftClick(Item[] inv, int context = 0, int slot = 0) {
+ 			Item item = inv[slot];
++			// TODO: Make this more generalized.
++			if (ShiftInUse && PlayerHooks.ShiftClickSlot(Main.player[Main.myPlayer], inv, context, slot)) {
++				return true;
++			}
+ 			if (Main.cursorOverride == 2) {
+ 				if (ChatManager.AddChatText(Main.fontMouseText, ItemTagHandler.GenerateTag(item), Vector2.One))
+ 					Main.PlaySound(12);
 @@ -449,9 +_,13 @@
  						}
  						break;
@@ -61,14 +72,9 @@
  							}
  
  							Recipe.FindRecipes();
-@@ -491,20 +_,24 @@
- 			if (inv[slot].type <= 0)
- 				return;
+@@ -493,18 +_,20 @@
  
-+			if (PlayerHooks.ShiftClickSlot(player, inv, context, slot)) {
-+			}
--			if (Main.npcShop > 0 && !inv[slot].favorited) {
-+			else if (Main.npcShop > 0 && !inv[slot].favorited) {
+ 			if (Main.npcShop > 0 && !inv[slot].favorited) {
  				Chest chest = Main.instance.shop[Main.npcShop];
 -				if (inv[slot].type < 71 || inv[slot].type > 74) {
 +				if (inv[slot].type < 71 || inv[slot].type > 74 && PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot])) {					
