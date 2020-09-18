@@ -405,7 +405,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad9466b9a46dd19aa9edbc3656ea09691"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ad9466b9a46dd19aa9edbc3656ea09691">SetupStartInventory</a> (IList&lt; <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> &gt; items)</td></tr>
 <tr class="separator:ad9466b9a46dd19aa9edbc3656ea09691"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26549f10f21d323affac563dda8cfe11"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a26549f10f21d323affac563dda8cfe11">ShiftClickSlot</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>[] inventory, int context, int slot)</td></tr>
-<tr class="memdesc:a26549f10f21d323affac563dda8cfe11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the player shift-clicks an item slot. This can be used to override default clicking behavior (ie. selling or trashing items).  <a href="#a26549f10f21d323affac563dda8cfe11">More...</a><br /></td></tr>
+<tr class="memdesc:a26549f10f21d323affac563dda8cfe11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the player shift-clicks an item slot. This can be used to override default clicking behavior (ie. selling, trashing, moving items).  <a href="#a26549f10f21d323affac563dda8cfe11">More...</a><br /></td></tr>
 <tr class="separator:a26549f10f21d323affac563dda8cfe11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f06ebdab0af3b5f825c6a706599a38b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a3f06ebdab0af3b5f825c6a706599a38b">Shoot</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)</td></tr>
 <tr class="memdesc:a3f06ebdab0af3b5f825c6a706599a38b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is called before this player's weapon creates a projectile. You can use it to create special effects, such as changing the speed, changing the initial position, and/or firing multiple projectiles. Return false to stop the game from shooting the default projectile (do this if you manually spawn your own projectile). Returns true by default.  <a href="#a3f06ebdab0af3b5f825c6a706599a38b">More...</a><br /></td></tr>
@@ -4642,7 +4642,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Called whenever the player shift-clicks an item slot. This can be used to override default clicking behavior (ie. selling or trashing items). </p>
+<p>Called whenever the player shift-clicks an item slot. This can be used to override default clicking behavior (ie. selling, trashing, moving items). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">inventory</td><td>The array of items the slot is part of.</td></tr>
@@ -4651,7 +4651,7 @@ Properties</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Whether or not to block the default code (sell and trash) from running. Returns false by default.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Whether or not to block the default code (sell, trash, move, etc) from running. Returns false by default.</dd></dl>
 
 <p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00863">863</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;                                                                                    {</div><div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;        }</div></div><!-- fragment -->
