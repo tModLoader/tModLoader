@@ -50,11 +50,11 @@ namespace ExampleMod.Content.Items.Consumables
 			return true;
 		}
 
-		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
-			CreateRecipe(10)
-				.AddIngredient<ExampleItem>(1000)
-				.AddTile<ExampleWorkbench>()
+			CreateRecipe()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

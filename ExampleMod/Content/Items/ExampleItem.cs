@@ -19,12 +19,11 @@ namespace ExampleMod.Content.Items
 			item.rare = ItemRarityID.Blue; // The rarity of the weapon.
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
-			//This creates a new ModRecipe, associated with the mod that this content piece comes from.
-			CreateRecipe(999)
-				//This adds a requirement of 10 dirt blocks to the recipe.
+			CreateRecipe()
 				.AddIngredient(ItemID.DirtBlock, 10)
-				//When you're done, call this to register the recipe.
+				.AddTile(TileID.WorkBenches)
 				.Register();
 		}
 	}

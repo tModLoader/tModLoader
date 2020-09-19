@@ -29,11 +29,11 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 			item.buffType = BuffType<ExampleLightPetBuff>();
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<ExampleItem>(10)
-				.AddRecipeGroup(RecipeGroupID.Fireflies, 10)
-				.AddTile<ExampleWorkbench>()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 

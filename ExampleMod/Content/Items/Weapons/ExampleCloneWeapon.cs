@@ -37,11 +37,11 @@ namespace ExampleMod.Content.Items.Weapons
 			item.shootSpeed *= 1.25f; //Makes this weapon's projectiles shoot 25% faster than the Meowmere's projectiles.
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ItemID.Meowmere)
-				.AddIngredient(ItemType<ExampleItem>(), 5)
-				.AddTile(TileID.LunarCraftingStation)
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}
