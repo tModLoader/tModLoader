@@ -16,16 +16,34 @@ namespace ExampleMod.Content.Tiles.Furniture
 	public class ExampleChest : ModTile
 	{
 		public override void SetDefaults() {
+			// Properties
 			Main.tileSpelunker[Type] = true;
 			Main.tileContainer[Type] = true;
 			Main.tileShine2[Type] = true;
 			Main.tileShine[Type] = 1200;
 			Main.tileFrameImportant[Type] = true;
 			Main.tileNoAttach[Type] = true;
-
 			Main.tileOreFinderPriority[Type] = 500;
-
 			TileID.Sets.HasOutlines[Type] = true;
+			TileID.Sets.BasicChest[Type] = true;
+			TileID.Sets.DisableSmartCursor[Type] = true;
+
+			dustType = DustType<Sparkle>();
+			adjTiles = new int[] { TileID.Containers };
+			chestDrop = ItemType<Items.Placeable.Furniture.ExampleChest>();
+
+			// Names
+			ContainerName.SetDefault("Example Chest");
+
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Example Chest");
+			AddMapEntry(new Color(200, 200, 200), name, MapChestName);
+
+			name = CreateMapEntryName(Name + "_Locked"); // With multiple map entries, you need unique translation keys.
+			name.SetDefault("Locked Example Chest");
+			AddMapEntry(new Color(0, 141, 63), name, MapChestName);
+
+			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
 			TileObjectData.newTile.Origin = new Point16(0, 1);
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
@@ -36,17 +54,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
 			TileObjectData.addTile(Type);
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Example Chest");
-			AddMapEntry(new Color(200, 200, 200), name, MapChestName);
-			name = CreateMapEntryName(Name + "_Locked"); // With multiple map entries, you need unique translation keys.
-			name.SetDefault("Locked Example Chest");
-			AddMapEntry(new Color(0, 141, 63), name, MapChestName);
-			dustType = DustType<Sparkle>();
-			disableSmartCursor = true;
-			adjTiles = new int[] { TileID.Containers };
-			chest = "Example Chest";
-			chestDrop = ItemType<Items.Placeable.Furniture.ExampleChest>();
 		}
 
 		public override ushort GetMapOption(int i, int j) => (ushort)(Main.tile[i, j].frameX / 36);

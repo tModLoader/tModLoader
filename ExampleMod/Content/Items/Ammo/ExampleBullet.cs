@@ -25,10 +25,10 @@ namespace ExampleMod.Content.Items.Ammo
 			item.shootSpeed = 16f; // The speed of the projectile.
 			item.ammo = AmmoID.Bullet; // The ammo class this ammo belongs to.
 		}
-		// Refer to ExampleItem.cs for how to create recipes.
+
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
-			CreateRecipe(50)
-				.AddIngredient(ItemID.MusketBall, 50)
+			CreateRecipe()
 				.AddIngredient<ExampleItem>()
 				.AddTile<ExampleWorkbench>()
 				.Register();
