@@ -21,6 +21,9 @@
 
 			/// <summary> Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to true is necessary in order for tile placement, tile framing, and the item's smart selection to work properly. </summary>
 			public static bool[] Torches = Factory.CreateBoolSet(TileID.Torches);
+
+			/// <summary> Whether or not this tile is a clock. </summary>
+			public static bool[] Clocks = Factory.CreateBoolSet(GrandfatherClocks);
 		}
 	}
 }
