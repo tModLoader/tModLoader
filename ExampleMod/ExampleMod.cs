@@ -1,13 +1,8 @@
 using ExampleMod.Content;
-using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.NPCs;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Terraria;
-using Terraria.GameContent.Dyes;
-using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
 namespace ExampleMod

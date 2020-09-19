@@ -15,6 +15,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 	public class ExampleDoorClosed : ModTile
 	{
 		public override void SetDefaults() {
+			// Properties
 			Main.tileFrameImportant[Type] = true;
 			Main.tileBlockLight[Type] = true;
 			Main.tileSolid[Type] = true;
@@ -23,6 +24,20 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.NotReallySolid[Type] = true;
 			TileID.Sets.DrawsWalls[Type] = true;
 			TileID.Sets.HasOutlines[Type] = true;
+			TileID.Sets.DisableSmartCursor[Type] = true;
+
+			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
+
+			dustType = DustType<Sparkle>();
+			adjTiles = new int[] { TileID.ClosedDoor };
+			openDoorID = TileType<ExampleDoorOpen>();
+
+			// Names
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Example Door");
+			AddMapEntry(new Color(200, 200, 200), name);
+
+			// Placement
 			TileObjectData.newTile.Width = 1;
 			TileObjectData.newTile.Height = 3;
 			TileObjectData.newTile.Origin = new Point16(0, 0);
@@ -40,14 +55,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newAlternate.Origin = new Point16(0, 2);
 			TileObjectData.addAlternate(0);
 			TileObjectData.addTile(Type);
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Example Door");
-			AddMapEntry(new Color(200, 200, 200), name);
-			dustType = DustType<Sparkle>();
-			disableSmartCursor = true;
-			adjTiles = new int[] { TileID.ClosedDoor };
-			openDoorID = TileType<ExampleDoorOpen>();
 		}
 
 		public override bool HasSmartInteract() => true;

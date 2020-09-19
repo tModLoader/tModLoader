@@ -161,7 +161,7 @@ namespace Terraria.ModLoader.IO
 		public static void ReceiveModData(Item item, BinaryReader reader) {
 			if (item.IsAir) return;
 			try {
-				reader.SafeRead(r => item.modItem?.NetRecieve(r));
+				reader.SafeRead(r => item.modItem?.NetReceive(r));
 			}
 			catch (IOException) {
 				Logging.tML.Error($"Above IOException error caused by {item.modItem.Name} from the {item.modItem.Mod.Name} mod.");

@@ -25,12 +25,12 @@ namespace ExampleMod.Content.Tiles
 			Main.tileNoFail[Type] = true;
 			Main.tileWaterDeath[Type] = true;
 			TileID.Sets.FramesOnKillWall[Type] = true;
+			TileID.Sets.DisableSmartCursor[Type] = true;
+			TileID.Sets.Torch[Type] = true;
 
 			drop = ItemType<Items.Placeable.ExampleTorch>();
 			dustType = DustType<Sparkle>();
 			adjTiles = new int[] { TileID.Torches };
-			disableSmartCursor = true;
-			torch = true;
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorch);
 

@@ -23,5 +23,10 @@ namespace Terraria.ModLoader
 			ItemLoader.OnMissingMana(item, player, neededMana);
 			PlayerHooks.OnMissingMana(player, item, neededMana);
 		}
+
+		//TODO: Fix various inconsistencies with calls of UseItem, and then make this and its inner methods use short-circuiting.
+		public static bool CanUseItem(Player player, Item item) {
+			return PlayerHooks.CanUseItem(player, item) & ItemLoader.CanUseItem(item, player);
+		}
 	}
 }

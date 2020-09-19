@@ -1417,8 +1417,7 @@ namespace Terraria.ModLoader
 
 		private delegate bool DelegatePreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI);
 		private static HookList HookPreDrawInWorld = AddHook<DelegatePreDrawInWorld>(g => g.PreDrawInWorld);
-		//in Terraria.Main.DrawItem after ItemSlot.GetItemLight call
-		//  if(!ItemLoader.PreDrawInWorld(item, Main.spriteBatch, color, alpha, ref rotation, ref scale)) { return; }
+
 		/// <summary>
 		/// Returns the "and" operator on the results of ModItem.PreDrawInWorld and all GlobalItem.PreDrawInWorld hooks.
 		/// </summary>
@@ -1546,19 +1545,6 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookExtractinatorUse.arr)
 				g.ExtractinatorUse(extractType, ref resultType, ref resultStack);
-		}
-
-		public static void AutoLightSelect(Item item, ref bool dryTorch, ref bool wetTorch, ref bool glowstick) {
-			if (item.modItem != null) {
-				item.modItem.AutoLightSelect(ref dryTorch, ref wetTorch, ref glowstick);
-				if (wetTorch) {
-					dryTorch = false;
-					glowstick = false;
-				}
-				if (dryTorch) {
-					glowstick = false;
-				}
-			}
 		}
 
 		private delegate void DelegateCaughtFishStack(int type, ref int stack);
