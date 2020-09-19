@@ -268,7 +268,7 @@
  									}
  								case 3:
 -									if (Main.tile[num15, num16].type == 88) {
-+									if (Main.tile[num15, num16].type == 88 || b3 == 103 && TileLoader.IsDresser(Main.tile[num15, num16].type)) {
++									if (Main.tile[num15, num16].type == 88 || b3 == 103 && TileID.Sets.BasicDresser[Main.tile[num15, num16].type]) {
  										Tile tile2 = Main.tile[num15, num16];
  										num15 -= tile2.frameX % 54 / 18;
  										if (tile2.frameY % 36 != 0)

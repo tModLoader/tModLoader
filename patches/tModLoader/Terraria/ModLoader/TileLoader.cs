@@ -6,6 +6,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.Biomes.CaveHouse;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ObjectData;
 
@@ -359,12 +360,7 @@ namespace Terraria.ModLoader
 			return tile.type == TileID.ClosedDoor;
 		}
 
-		//in Terraria.UI.ChestUI add this to Lang lookups
-		public static string ModChestName(int type) => GetTile(type)?.chest ?? string.Empty;
-
-		public static bool IsDresser(int type) => type == TileID.Dressers || ModDresserName(type).Length > 0;
-
-		public static string ModDresserName(int type) => GetTile(type)?.dresser ?? string.Empty;
+		public static string ContainerName(int type) => GetTile(type)?.ContainerName?.GetTranslation(Language.ActiveCulture) ?? string.Empty;
 
 		public static bool IsModMusicBox(Tile tile) {
 			return SoundLoader.tileToMusic.ContainsKey(tile.type)

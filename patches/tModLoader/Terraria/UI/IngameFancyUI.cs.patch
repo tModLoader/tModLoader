@@ -10,16 +10,13 @@
  using Terraria.UI.Gamepad;
  
  namespace Terraria.UI
-@@ -85,6 +_,12 @@
+@@ -85,6 +_,9 @@
  							Main.defaultChestName = Lang.chestType2[tile.frameX / 36].Value;
  						else if (tile.type == 88)
  							Main.defaultChestName = Lang.dresserType[tile.frameX / 54].Value;
 +
-+						if (TileID.Sets.BasicChest[Main.tile[player.chestX, player.chestY].type] && Main.tile[player.chestX, player.chestY].type >= TileID.Count)
-+							Main.defaultChestName = TileLoader.ModChestName(Main.tile[player.chestX, player.chestY].type);
-+
-+						if (TileLoader.IsDresser(Main.tile[player.chestX, player.chestY].type))
-+							Main.defaultChestName = TileLoader.ModDresserName(Main.tile[player.chestX, player.chestY].type);
++						if (tile.type >= TileID.Count && (TileID.Sets.BasicChest[tile.type] || TileID.Sets.BasicDresser[tile.type]))
++							Main.defaultChestName = TileLoader.ContainerName(Main.tile[player.chestX, player.chestY].type);
  
  						if (Main.npcChatText == "")
  							Main.npcChatText = Main.defaultChestName;

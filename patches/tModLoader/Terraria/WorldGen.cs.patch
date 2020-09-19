@@ -800,7 +800,7 @@
  						ushort type4 = Main.tile[num2, num6 - 1].type;
  						ushort type5 = Main.tile[num2 + 1, num6 - 1].type;
 -						if (!TileID.Sets.BasicChest[type4] && !TileID.Sets.BasicChest[type5] && type4 != 88 && type5 != 88 && !TileID.Sets.BasicChestFake[type4] && !TileID.Sets.BasicChestFake[type5] && type4 != 470 && type5 != 470 && type4 != 475 && type5 != 475 && !SolidTileAllowBottomSlope(num2, num6 + 2) && !SolidTileAllowBottomSlope(num2 + 1, num6 + 2))
-+						if (!TileID.Sets.BasicChest[type4] && !TileID.Sets.BasicChest[type5] && !TileLoader.IsDresser(type4) && !TileLoader.IsDresser(type5) && !TileID.Sets.BasicChestFake[type4] && !TileID.Sets.BasicChestFake[type5] && type4 != 470 && type5 != 470 && type4 != 475 && type5 != 475 && !SolidTileAllowBottomSlope(num2, num6 + 2) && !SolidTileAllowBottomSlope(num2 + 1, num6 + 2))
++						if (!TileID.Sets.BasicChest[type4] && !TileID.Sets.BasicChest[type5] && !TileID.Sets.BasicDresser[type4] && !TileID.Sets.BasicDresser[type5] && !TileID.Sets.BasicChestFake[type4] && !TileID.Sets.BasicChestFake[type5] && type4 != 470 && type5 != 470 && type4 != 475 && type5 != 475 && !SolidTileAllowBottomSlope(num2, num6 + 2) && !SolidTileAllowBottomSlope(num2 + 1, num6 + 2))
  							flag = true;
  
  						break;
@@ -817,7 +817,7 @@
  		}
  
  		public static bool IsAContainer(Tile t) {
-+			if (TileLoader.IsDresser(t.type))
++			if (TileID.Sets.BasicDresser[t.type])
 +				return true;
 +
  			if (t.type != 88 && t.type != 470 && t.type != 475 && !TileID.Sets.BasicChest[t.type])
@@ -837,7 +837,7 @@
  					flag = true;
  
 -				if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || Main.tile[k, j - 1].type == 88 || Main.tile[k, j - 1].type == 470 || Main.tile[k, j - 1].type == 475 || Main.tile[k, j - 1].type == 597))
-+				if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || TileLoader.IsDresser(Main.tile[k, j - 1].type)  || Main.tile[k, j - 1].type == 470 || Main.tile[k, j - 1].type == 475 || Main.tile[k, j - 1].type == 597))
++				if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || TileID.Sets.BasicDresser[Main.tile[k, j - 1].type]  || Main.tile[k, j - 1].type == 470 || Main.tile[k, j - 1].type == 475 || Main.tile[k, j - 1].type == 597))
  					return;
  
  				if (!SolidTileAllowBottomSlope(k, j + 1))
@@ -1005,7 +1005,7 @@
  			}
  
 -			if (type == 88) {
-+			if (TileLoader.IsDresser(type)) {
++			if (TileID.Sets.BasicDresser[type]) {
  				if (Chest.CreateChest(x - 1, y - 1) == -1)
  					flag2 = false;
  				else if (Main.netMode == 1)
@@ -1217,7 +1217,7 @@
  							case 86:
  							case 87:
 -							case 88:
-+							case int _ when TileLoader.IsDresser(num):
++							case int _ when TileID.Sets.BasicDresser[num]:
  							case 89:
  							case 114:
  							case 186:
@@ -1326,7 +1326,7 @@
  						if (tile.type != type && (tile2.frameX == 66 || tile2.frameX == 220))
  							return false;
  						break;
-+					case int _ when TileLoader.IsDresser(type):
++					case int _ when TileID.Sets.BasicDresser[type]:
  					case 21:
  					case 26:
  					case 72:
@@ -1334,7 +1334,7 @@
  					if (!Chest.CanDestroyChest(i - tile.frameX / 18 % 2, j - tile.frameY / 18))
  						return false;
  					break;
-+				case ushort _ when TileLoader.IsDresser(tile.type):
++				case ushort _ when TileID.Sets.BasicDresser[tile.type]:
  				case 88:
  					if (!Chest.CanDestroyChest(i - tile.frameX / 18 % 3, j - tile.frameY / 18))
  						return false;
@@ -1343,7 +1343,7 @@
  			}
  
 -			if (tile.type == 88) {
-+			if (TileLoader.IsDresser(tile.type)) {
++			if (TileID.Sets.BasicDresser[tile.type]) {
  				int num2 = tile.frameX / 18;
  				int y3 = y - tile.frameY / 18;
  				num2 %= 3;
@@ -1786,7 +1786,7 @@
  		public static bool AllowsSandfall(Tile tileTopCache) {
  			bool result = true;
 -			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || tileTopCache.type == 323 || tileTopCache.type == 88 || tileTopCache.type == 80 || tileTopCache.type == 77 || tileTopCache.type == 26 || tileTopCache.type == 475 || tileTopCache.type == 470 || tileTopCache.type == 597))
-+			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || tileTopCache.type == 323 || TileLoader.IsDresser(tileTopCache.type) || tileTopCache.type == 80 || tileTopCache.type == 77 || tileTopCache.type == 26 || tileTopCache.type == 475 || tileTopCache.type == 470 || tileTopCache.type == 597))
++			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || tileTopCache.type == 323 || TileID.Sets.BasicDresser[tileTopCache.type] || tileTopCache.type == 80 || tileTopCache.type == 77 || tileTopCache.type == 26 || tileTopCache.type == 475 || tileTopCache.type == 470 || tileTopCache.type == 597))
  				result = false;
  
  			return result;

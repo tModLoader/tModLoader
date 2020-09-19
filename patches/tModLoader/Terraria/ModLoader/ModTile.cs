@@ -64,22 +64,17 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int openDoorID = -1;
 		/// <summary>
-		/// The default name of this chest that is displayed when this 2x2 chest is open. Defaults to the empty string, which means that this tile isn't a chest. Setting this field will make the tile behave like a chest (meteors will avoid it, tiles underneath cannot be mined, etc.), but you will have to manually give it storage capabilities yourself. (See the ExampleMod for something you can copy/paste.)
-		/// </summary>
-		public string chest = "";
-		/// <summary>
 		/// The ID of the item that drops when this chest is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server.
 		/// </summary>
 		public int chestDrop = 0;
 		/// <summary>
-		/// Same as chest, except use this if your block is a dresser (has a size of 3x2 instead of 2x2).
-		/// </summary>
-		public string dresser = "";
-		/// <summary>
 		/// The ID of the item that drops when this dresser is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server.
 		/// </summary>
 		public int dresserDrop = 0;
-		
+
+		/// <summary> The translations for the name that is displayed when this tile is opened as a chest or dresser. This won't be used, unless <see cref="TileID.Sets.BasicChest"/> or <see cref="TileID.Sets.BasicDresser"/> </summary>
+		public ModTranslation ContainerName { get; internal set; }
+
 		public bool IsDoor => openDoorID != -1 || closeDoorID != -1;
 		
 		/// <summary>
@@ -207,9 +202,6 @@ namespace Terraria.ModLoader
 
 			if (TileID.Sets.HasOutlines[Type])
 				TextureAssets.HighlightMask[Type] = ModContent.GetTexture(HighlightTexture);
-
-			if (!string.IsNullOrEmpty(chest))
-				TileID.Sets.BasicChest[Type] = true;
 
 			TileID.Search.Add(FullName, Type);
 		}

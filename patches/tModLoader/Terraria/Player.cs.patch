@@ -3157,26 +3157,28 @@
  				item.stack--;
  				if (item.stack <= 0) {
  					item.active = false;
-@@ -35818,21 +_,29 @@
+@@ -35818,21 +_,31 @@
  						NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
  					}
  
 -					if (Main.tile[x, y].type == 21)
-+					if (Main.tile[x, y].type == 21 || Main.tile[x, y].type >= TileID.Count && TileID.Sets.BasicChest[Main.tile[x, y].type])
++					if (Main.tile[x, y].type == 21 || Main.tile[x, y].type < TileID.Count && TileID.Sets.BasicChest[Main.tile[x, y].type])
  						NetMessage.SendData(34, -1, -1, null, 1, x, y);
  
  					if (Main.tile[x, y].type == 467)
  						NetMessage.SendData(34, -1, -1, null, 5, x, y);
  
 -					if (Main.tile[x, y].type == 88)
-+					if (TileLoader.IsDresser(Main.tile[x, y].type))
++					if (TileID.Sets.BasicDresser[Main.tile[x, y].type] || Main.tile[x, y].type < TileID.Count && TileID.Sets.BasicDresser[Main.tile[x, y].type])
  						NetMessage.SendData(34, -1, -1, null, 3, x, y);
 +
-+					if (Main.tile[x, y].type >= TileID.Count && TileID.Sets.BasicChest[Main.tile[x, y].type])
-+						NetMessage.SendData(34, -1, -1, null, 101, x, y, 0f, 0, Main.tile[x, y].type, 0);
++					if (Main.tile[x, y].type >= TileID.Count) {
++						if (TileID.Sets.BasicChest[Main.tile[x, y].type])
++							NetMessage.SendData(34, -1, -1, null, 101, x, y, 0f, 0, Main.tile[x, y].type, 0);
 +
-+					if (Main.tile[x, y].type >= TileID.Count && TileLoader.IsDresser(Main.tile[x, y].type))
-+						NetMessage.SendData(34, -1, -1, null, 103, x, y, 0f, 0, Main.tile[x, y].type, 0);
++						if (TileID.Sets.BasicDresser[Main.tile[x, y].type])
++							NetMessage.SendData(34, -1, -1, null, 103, x, y, 0f, 0, Main.tile[x, y].type, 0);
++					}
  				}
  				else {
  					bool num2 = Main.tile[x, y].active();
