@@ -72,7 +72,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int dresserDrop = 0;
 
-		/// <summary> The translations for the name that is displayed when this tile is opened as a chest or dresser. This won't be used, unless <see cref="TileID.Sets.BasicChest"/> or <see cref="TileID.Sets.BasicDresser"/> </summary>
+		/// <summary> The translations for the name that is displayed when this tile is opened as a chest or dresser. This won't be used if you don't add your tile to <see cref="TileID.Sets.BasicChest"/> or <see cref="TileID.Sets.BasicDresser"/>. </summary>
 		public ModTranslation ContainerName { get; internal set; }
 
 		public bool IsDoor => openDoorID != -1 || closeDoorID != -1;
