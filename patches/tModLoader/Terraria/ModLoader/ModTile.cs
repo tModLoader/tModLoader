@@ -79,10 +79,6 @@ namespace Terraria.ModLoader
 		/// The ID of the item that drops when this dresser is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server.
 		/// </summary>
 		public int dresserDrop = 0;
-		/// <summary>
-		/// Whether or not this tile is a sapling, which can grow into a modded tree or palm tree.
-		/// </summary>
-		public bool sapling = false;
 		
 		public bool IsDoor => openDoorID != -1 || closeDoorID != -1;
 		

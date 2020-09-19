@@ -331,7 +331,7 @@
  		public static bool GrowEpicTree(int i, int y) {
  			int j;
 -			for (j = y; Main.tile[i, j].type == 20; j++) {
-+			for (j = y; TileLoader.IsSapling(Main.tile[i, j].type); j++) {
++			for (j = y; TileID.Sets.TreeSapling[Main.tile[i, j].type]; j++) {
  			}
  
 -			if (Main.tile[i, j].active() && !Main.tile[i, j].halfBrick() && Main.tile[i, j].slope() == 0 && Main.tile[i, j].type == 2 && Main.tile[i, j - 1].wall == 0 && Main.tile[i, j - 1].liquid == 0 && ((Main.tile[i - 1, j].active() && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109)) || (Main.tile[i + 1, j].active() && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109)))) {
@@ -379,7 +379,7 @@
  		public static bool GrowTree(int i, int y) {
  			int j;
 -			for (j = y; Main.tile[i, j].type == 20; j++) {
-+			for (j = y; TileLoader.IsSapling(Main.tile[i, j].type); j++) {
++			for (j = y; TileID.Sets.TreeSapling[Main.tile[i, j].type]; j++) {
  			}
  
  			if ((Main.tile[i - 1, j - 1].liquid != 0 || Main.tile[i, j - 1].liquid != 0 || Main.tile[i + 1, j - 1].liquid != 0) && !notTheBees)
@@ -396,24 +396,6 @@
  				flag4 = true;
  
  			if (!flag3) {
-@@ -16114,7 +_,7 @@
- 				return false;
- 
- 			bool flag = false;
--			if (ignoreID != -1 && TileID.Sets.CommonSapling[ignoreID])
-+			if (ignoreID != -1 && (TileID.Sets.CommonSapling[ignoreID] || TileLoader.IsSapling(ignoreID)))
- 				flag = true;
- 
- 			for (int i = startX; i < endX + 1; i++) {
-@@ -16142,7 +_,7 @@
- 					}
- 
- 					if (flag) {
--						if (TileID.Sets.CommonSapling[Main.tile[i, j].type])
-+						if (TileID.Sets.CommonSapling[Main.tile[i, j].type] || TileLoader.IsSapling(Main.tile[i,j].type))
- 							break;
- 
- 						switch (Main.tile[i, j].type) {
 @@ -16185,6 +_,7 @@
  		}
  
@@ -613,7 +595,7 @@
  				flag = true;
  
 -			if (Main.tile[x, num].type == 20) {
-+			if (TileLoader.IsSapling(Main.tile[x, num].type)) {
++			if (TileID.Sets.TreeSapling[Main.tile[x, num].type]) {
 +				int originalType = Main.tile[x, num].type;
 +				int newType = TileID.Saplings;
  				int num5 = Main.tile[x, num].frameX / 54;
@@ -728,7 +710,7 @@
  		public static void Place1x2(int x, int y, ushort type, int style) {
  			short frameX = 0;
 -			if (type == 20)
-+			if (TileLoader.IsSapling(type))
++			if (TileID.Sets.TreeSapling[type])
  				frameX = (short)(genRand.Next(3) * 18);
  
  			if (Main.tile[x, y - 1] == null)
@@ -1217,7 +1199,7 @@
  								break;
  							case 3:
 -							case 20:
-+							case int _ when TileLoader.IsSapling(num):
++							case int _ when TileID.Sets.TreeSapling[num]:
  							case 24:
  							case 27:
  							case 32:
@@ -1244,7 +1226,7 @@
  								SquareTileFrame(i, j);
  								break;
 -							case 20: {
-+							case int _ when TileLoader.IsSapling(num): {
++							case int _ when TileID.Sets.TreeSapling[num]: {
  									if (Main.tile[i, j + 1] == null)
  										Main.tile[i, j + 1] = new Tile();
  
@@ -1620,7 +1602,7 @@
  																switch (num) {
  																	case 15:
 -																	case 20:
-+																	case int _ when TileLoader.IsSapling(num):
++																	case int _ when TileID.Sets.TreeSapling[num]:
  																	case 216:
  																	case 338:
  																	case 390:

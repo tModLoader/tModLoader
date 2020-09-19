@@ -24,6 +24,9 @@
 
 			/// <summary> Whether or not this tile is a clock. </summary>
 			public static bool[] Clocks = Factory.CreateBoolSet(GrandfatherClocks);
+
+			/// <summary> Whether or not this tile is a sapling, which can grow into a tree based on the soil it's placed on. Be sure to set <see cref="CommonSapling"/> with this too. </summary>
+			public static bool[] TreeSapling = Factory.CreateBoolSet(Saplings);
 		}
 	}
 }

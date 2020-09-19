@@ -366,8 +366,6 @@ namespace Terraria.ModLoader
 
 		public static string ModDresserName(int type) => GetTile(type)?.dresser ?? string.Empty;
 
-		public static bool IsSapling(int type) => GetTile(type)?.sapling ?? type == TileID.Saplings;
-
 		public static bool IsModMusicBox(Tile tile) {
 			return SoundLoader.tileToMusic.ContainsKey(tile.type)
 			&& SoundLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
@@ -819,7 +817,7 @@ namespace Terraria.ModLoader
 			ModTile modTile = GetTile(type);
 			if (modTile != null) {
 				saplingType = modTile.SaplingGrowthType(ref style);
-				if (IsSapling(saplingType)) {
+				if (TileID.Sets.TreeSapling[saplingType]) {
 					originalType = saplingType;
 					originalStyle = style;
 					flag = true;
@@ -831,7 +829,7 @@ namespace Terraria.ModLoader
 			}
 			foreach (var hook in HookSaplingGrowthType) {
 				saplingType = hook(type, ref style);
-				if (IsSapling(saplingType)) {
+				if (TileID.Sets.TreeSapling[saplingType]) {
 					originalType = saplingType;
 					originalStyle = style;
 					flag = true;
