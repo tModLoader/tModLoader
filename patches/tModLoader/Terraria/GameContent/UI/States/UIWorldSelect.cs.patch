@@ -60,8 +60,8 @@
 +					noWorldsMessage.Height.Set(300, 0);
 +					noWorldsMessage.MarginTop = 20f;
 +					noWorldsMessage.OnClick += (a, b) => {
-+						System.Diagnostics.Process.Start(Main.WorldPath);
-+						System.Diagnostics.Process.Start(vanillaWorldsPath);
++						Utils.OpenFolder(Main.WorldPath);
++						Utils.OpenFolder(vanillaWorldsPath);
 +					};
 +
 +					_worldList.Add(noWorldsMessage);

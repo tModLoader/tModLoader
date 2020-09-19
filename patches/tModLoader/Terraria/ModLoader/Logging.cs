@@ -40,8 +40,8 @@ namespace Terraria.ModLoader
 			if (Program.LaunchParameters.ContainsKey("-build"))
 				return;
 
-			if (!Directory.Exists(LogDir))
-				Directory.CreateDirectory(LogDir);
+			// This is the first file we attempt to use.
+			Utils.TryCreatingDirectory(LogDir);
 
 			ConfigureAppenders();
 

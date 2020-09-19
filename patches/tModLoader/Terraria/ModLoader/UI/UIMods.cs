@@ -249,7 +249,7 @@ namespace Terraria.ModLoader.UI
 		private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10, -1, -1, 1);
 			Directory.CreateDirectory(ModLoader.ModPath);
-			Process.Start(ModLoader.ModPath);
+			Utils.OpenFolder(ModLoader.ModPath);
 		}
 
 		private static void GotoModPacksMenu(UIMouseEvent evt, UIElement listeningElement) {
