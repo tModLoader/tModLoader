@@ -52,14 +52,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int minPick = 0;
 		/// <summary>
-		/// Whether or not the smart cursor function is disabled when the cursor hovers above this tile. Defaults to false.
-		/// </summary>
-		public bool disableSmartCursor = false;
-		/// <summary>
-		/// Whether or not the smart tile interaction function is disabled when the cursor hovers above this tile. Defaults to false.
-		/// </summary>
-		public bool disableSmartInteract = false;
-		/// <summary>
 		/// An array of the IDs of tiles that this tile can be considered as when looking for crafting stations.
 		/// </summary>
 		public int[] adjTiles = new int[0];

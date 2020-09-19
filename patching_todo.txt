@@ -20,14 +20,11 @@
 		//VanillaUpdateVanityAccessory --> ApplyEquipVanity
 
 	//Need reimplementing:
-		//TileLoader.DisableSmartInteract
 		//TileLoader.HasSmartInteract
 		//NPCLoader.CanChat
 			//Add to NPCSmartInteractCandidateProvider.ProvideCandidate's npc loop checks.
 		//TileLoader.FixSmartInteractCoords
 			//Add to TileSmartInteractCandidateProvider.ProvideCandidate, right before the if with two Collision.InTileBounds calls.
-		//TileLoader.DisableSmartCursor
-			//Add after to SmartCursorHelper after IsHoveringOverAnInteractibleTileThatBlocksSmartCursor using its return value.
 
 	//TileLoader
 		//Multiply item.axe by 1.2f before adding into the damage.
