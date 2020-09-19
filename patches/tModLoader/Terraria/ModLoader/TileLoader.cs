@@ -366,11 +366,6 @@ namespace Terraria.ModLoader
 
 		public static string ModDresserName(int type) => GetTile(type)?.dresser ?? string.Empty;
 
-		//in Terraria.Player.CheckSpawn add this to bed type check
-		public static bool IsModBed(int type) => GetTile(type)?.bed ?? false;
-
-		public static bool IsTorch(int type) => GetTile(type)?.torch ?? type == TileID.Torches;
-
 		public static bool IsSapling(int type) => GetTile(type)?.sapling ?? type == TileID.Saplings;
 
 		public static bool IsModMusicBox(Tile tile) {

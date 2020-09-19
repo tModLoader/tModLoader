@@ -1429,7 +1429,7 @@
  								nonTorch = selectedItem;
  
 -							if (inventory[selectedItem].createTile != 4)
-+							if (!TileLoader.IsTorch(inventory[selectedItem].createTile))
++							if (!TileID.Sets.Torches[inventory[selectedItem].createTile])
  								selectedItem = i;
  
  							break;
@@ -1444,7 +1444,7 @@
  								nonTorch = selectedItem;
  
 -							if (inventory[selectedItem].createTile != 4)
-+							if (!TileLoader.IsTorch(inventory[selectedItem].createTile))
++							if (!TileID.Sets.Torches[inventory[selectedItem].createTile])
  								selectedItem = i;
  
  							break;
@@ -1924,7 +1924,7 @@
  					GamepadEnableGrappleCooldown();
  				}
 -				else if (Main.tile[myX, myY].type == 4 || Main.tile[myX, myY].type == 13 || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90)) {
-+				else if (TileLoader.IsTorch(Main.tile[myX, myY].type) || Main.tile[myX, myY].type == 13 || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90) || TileID.Sets.CanDropFromRightClick[Main.tile[myX, myY].type]) {
++				else if (TileID.Sets.Torches[Main.tile[myX, myY].type] || Main.tile[myX, myY].type == 13 || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90) || TileID.Sets.CanDropFromRightClick[Main.tile[myX, myY].type]) {
  					WorldGen.KillTile(myX, myY);
  					if (Main.netMode == 1)
  						NetMessage.SendData(17, -1, -1, null, 0, myX, myY);
@@ -2433,7 +2433,7 @@
  					canPlace = true;
  			}
 -			else if (inventory[selectedItem].createTile == 4 || inventory[selectedItem].createTile == 136) {
-+			else if (TileLoader.IsTorch(inventory[selectedItem].createTile) || inventory[selectedItem].createTile == 136) {
++			else if (TileID.Sets.Torches[inventory[selectedItem].createTile] || inventory[selectedItem].createTile == 136) {
  				if (Main.tile[tileTargetX, tileTargetY].wall > 0) {
  					canPlace = true;
  				}
@@ -3375,7 +3375,7 @@
  				return false;
  
 -			if (!Main.tile[x, y - 1].active() || Main.tile[x, y - 1].type != 79)
-+			if (!Main.tile[x, y - 1].active() || Main.tile[x, y - 1].type != 79 && !TileLoader.IsModBed(Main.tile[x, y - 1].type))
++			if (!Main.tile[x, y - 1].active() || !TileID.Sets.IsValidSpawnPoint[Main.tile[x, y - 1].type])
  				return false;
  
  			for (int i = x - 1; i <= x + 1; i++) {

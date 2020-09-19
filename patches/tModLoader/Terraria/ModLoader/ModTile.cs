@@ -80,14 +80,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int dresserDrop = 0;
 		/// <summary>
-		/// Whether or not this tile is a valid spawn point. Defaults to false. If you set this to true, you will still have to manually set the spawn yourself in the RightClick hook.
-		/// </summary>
-		public bool bed = false;
-		/// <summary>
-		/// Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to true is necessary in order for tile placement, tile framing, and the item's smart selection to work properly.
-		/// </summary>
-		public bool torch = false;
-		/// <summary>
 		/// Whether or not this tile is a sapling, which can grow into a modded tree or palm tree.
 		/// </summary>
 		public bool sapling = false;

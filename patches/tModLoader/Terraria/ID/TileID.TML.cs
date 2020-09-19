@@ -15,6 +15,12 @@
 
 			/// <summary> Whether or not the smart tile interaction function is disabled when the cursor hovers above this tile. </summary>
 			public static bool[] DisableSmartInteract = Factory.CreateBoolSet(4, 33, 334, 395, 410, 455, 471, 480, 509, 520);
+
+			/// <summary> Whether or not this tile is a valid spawn point. </summary>
+			public static bool[] IsValidSpawnPoint = Factory.CreateBoolSet(Beds);
+
+			/// <summary> Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to true is necessary in order for tile placement, tile framing, and the item's smart selection to work properly. </summary>
+			public static bool[] Torches = Factory.CreateBoolSet(TileID.Torches);
 		}
 	}
 }
