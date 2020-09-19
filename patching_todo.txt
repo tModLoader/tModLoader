@@ -17,9 +17,6 @@
 		//Fishing submethods will need to use Item instead of values.
 		//Ensure all ItemLoader.ConsumeItems have been added.
 		//Change all CheckMana() to use version with item passed in
-		//Replace ItemLoader.AutoLightSelect with data sets.
-			There are sets for Torches and Water Torches already.
-			Add ItemID.Sets.Glowsticks and implement it in SmartSelect_PickToolForStrategy (both places).
 		//VanillaUpdateVanityAccessory --> ApplyEquipVanity
 
 	//Need reimplementing:

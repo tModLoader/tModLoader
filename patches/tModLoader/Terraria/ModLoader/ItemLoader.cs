@@ -1547,19 +1547,6 @@ namespace Terraria.ModLoader
 				g.ExtractinatorUse(extractType, ref resultType, ref resultStack);
 		}
 
-		public static void AutoLightSelect(Item item, ref bool dryTorch, ref bool wetTorch, ref bool glowstick) {
-			if (item.modItem != null) {
-				item.modItem.AutoLightSelect(ref dryTorch, ref wetTorch, ref glowstick);
-				if (wetTorch) {
-					dryTorch = false;
-					glowstick = false;
-				}
-				if (dryTorch) {
-					glowstick = false;
-				}
-			}
-		}
-
 		private delegate void DelegateCaughtFishStack(int type, ref int stack);
 		private static HookList HookCaughtFishStack = AddHook<DelegateCaughtFishStack>(g => g.CaughtFishStack);
 		public static void CaughtFishStack(Item item) {
