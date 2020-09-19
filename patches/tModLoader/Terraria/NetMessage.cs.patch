@@ -184,7 +184,7 @@
  						}
  
 -						if (tile2.type == 88 && tile2.frameX % 54 == 0 && tile2.frameY % 36 == 0) {
-+						if (TileLoader.IsDresser(tile2.type) && tile2.frameX % 54 == 0 && tile2.frameY % 36 == 0) {
++						if (TileID.Sets.BasicDresser[tile2.type] && tile2.frameX % 54 == 0 && tile2.frameY % 36 == 0) {
  							short num8 = (short)Chest.FindChest(j, i);
  							if (num8 != -1) {
  								array[num] = num8;

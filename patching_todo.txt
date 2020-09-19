@@ -17,20 +17,14 @@
 		//Fishing submethods will need to use Item instead of values.
 		//Ensure all ItemLoader.ConsumeItems have been added.
 		//Change all CheckMana() to use version with item passed in
-		//Replace ItemLoader.AutoLightSelect with data sets.
-			There are sets for Torches and Water Torches already.
-			Add ItemID.Sets.Glowsticks and implement it in SmartSelect_PickToolForStrategy (both places).
 		//VanillaUpdateVanityAccessory --> ApplyEquipVanity
 
 	//Need reimplementing:
-		//TileLoader.DisableSmartInteract
 		//TileLoader.HasSmartInteract
 		//NPCLoader.CanChat
 			//Add to NPCSmartInteractCandidateProvider.ProvideCandidate's npc loop checks.
 		//TileLoader.FixSmartInteractCoords
 			//Add to TileSmartInteractCandidateProvider.ProvideCandidate, right before the if with two Collision.InTileBounds calls.
-		//TileLoader.DisableSmartCursor
-			//Add after to SmartCursorHelper after IsHoveringOverAnInteractibleTileThatBlocksSmartCursor using its return value.
 
 	//TileLoader
 		//Multiply item.axe by 1.2f before adding into the damage.
