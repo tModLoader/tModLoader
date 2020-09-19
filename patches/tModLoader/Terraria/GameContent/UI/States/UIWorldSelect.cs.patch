@@ -25,7 +25,7 @@
  				_worldList.Add(new UIWorldListItem(item, num++, CanWorldBePlayed(item)));
 +			}
 +
-+			if (orderedEnumerable.Any()) {
++			if (!orderedEnumerable.Any()) {
 +				string vanillaWorldsPath = Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "Worlds");
 +				if (Directory.Exists(vanillaWorldsPath) && Directory.GetFiles(vanillaWorldsPath, "*.wld").Any()) {
 +					var autoMigrateButton = new UIPanel();
