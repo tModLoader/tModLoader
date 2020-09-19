@@ -20,10 +20,10 @@
 			public static bool[] IsValidSpawnPoint = Factory.CreateBoolSet(Beds);
 
 			/// <summary> Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to true is necessary in order for tile placement, tile framing, and the item's smart selection to work properly. </summary>
-			public static bool[] Torches = Factory.CreateBoolSet(TileID.Torches);
+			public static bool[] Torch = Factory.CreateBoolSet(TileID.Torches);
 
 			/// <summary> Whether or not this tile is a clock. </summary>
-			public static bool[] Clocks = Factory.CreateBoolSet(GrandfatherClocks);
+			public static bool[] Clock = Factory.CreateBoolSet(GrandfatherClocks);
 
 			/// <summary> Whether or not this tile is a sapling, which can grow into a tree based on the soil it's placed on. Be sure to set <see cref="CommonSapling"/> with this too. </summary>
 			public static bool[] TreeSapling = Factory.CreateBoolSet(Saplings);
