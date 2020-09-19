@@ -34,6 +34,7 @@ namespace ExampleMod.Projectiles
 			//projectile.bobber = true;
 			//projectile.penetrate = -1;
 			projectile.CloneDefaults(ProjectileID.BobberWooden);
+			drawOriginOffsetY = -8; // adjusts the draw position
 		}
 
 		//What if we want to randomize the line color
@@ -57,41 +58,41 @@ namespace ExampleMod.Projectiles
 			if (!projectile.bobber || player.inventory[player.selectedItem].holdStyle <= 0)
 				return false;
 
-			float originX = player.MountedCenter.X;
-			float originY = player.MountedCenter.Y;
-			originY += player.gfxOffY;
+			Vector2 lineOrigin = player.MountedCenter;
+			lineOrigin.Y += player.gfxOffY;
 			int type = player.inventory[player.selectedItem].type;
 			//This variable is used to account for Gravitation Potions
 			float gravity = player.gravDir;
 
 			if (type == ItemType<ExampleFishingRod>()) {
-				originX += (float)(xPositionAdditive * player.direction);
+				lineOrigin.X += xPositionAdditive * player.direction;
 				if (player.direction < 0) {
-					originX -= 13f;
+					lineOrigin.X -= 13f;
 				}
-				originY -= yPositionAdditive * gravity;
+				lineOrigin.Y -= yPositionAdditive * gravity;
 			}
 
 			if (gravity == -1f) {
-				originY -= 12f;
+				lineOrigin.Y -= 12f;
 			}
-			Vector2 mountedCenter = new Vector2(originX, originY);
-			mountedCenter = player.RotatedRelativePoint(mountedCenter + new Vector2(8f), true) - new Vector2(8f);
-			Vector2 lineOrigin = projectile.Center - mountedCenter;
+			// RotatedRelativePoint adjusts lineOrigin to account for player rotation.
+			lineOrigin = player.RotatedRelativePoint(lineOrigin + new Vector2(8f), true) - new Vector2(8f);
+			Vector2 playerToProjectile = projectile.Center - lineOrigin;
 			bool canDraw = true;
-			if (lineOrigin.X == 0f && lineOrigin.Y == 0f)
+			if (playerToProjectile.X == 0f && playerToProjectile.Y == 0f)
 				return false;
 
-			float projPosMagnitude = lineOrigin.Length();
-			projPosMagnitude = 12f / projPosMagnitude;
-			lineOrigin.X *= projPosMagnitude;
-			lineOrigin.Y *= projPosMagnitude;
-			mountedCenter -= lineOrigin;
-			lineOrigin = projectile.Center - mountedCenter;
+			float playerToProjectileMagnitude = playerToProjectile.Length();
+			playerToProjectileMagnitude = 12f / playerToProjectileMagnitude;
+			playerToProjectile *= playerToProjectileMagnitude;
+			lineOrigin -= playerToProjectile;
+			playerToProjectile.X = projectile.position.X + projectile.width * 0.5f - lineOrigin.X;
+			playerToProjectile.Y = projectile.position.Y + projectile.height * 0.1f - lineOrigin.Y;
 
+			// This math draws the line, while allowing the line to sag.
 			while (canDraw) {
 				float height = 12f;
-				float positionMagnitude = lineOrigin.Length();
+				float positionMagnitude = playerToProjectile.Length();
 				if (float.IsNaN(positionMagnitude) || float.IsNaN(positionMagnitude))
 					break;
 
@@ -99,11 +100,9 @@ namespace ExampleMod.Projectiles
 					height = positionMagnitude - 8f;
 					canDraw = false;
 				}
-				positionMagnitude = 12f / positionMagnitude;
-				lineOrigin.X *= positionMagnitude;
-				lineOrigin.Y *= positionMagnitude;
-				mountedCenter += lineOrigin;
-				lineOrigin = projectile.Center - mountedCenter;
+				playerToProjectile *= 12f / positionMagnitude;
+				lineOrigin += playerToProjectile;
+				playerToProjectile = projectile.Center - lineOrigin;
 				if (positionMagnitude > 12f) {
 					float positionInverseMultiplier = 0.3f;
 					float absVelocitySum = Math.Abs(projectile.velocity.X) + Math.Abs(projectile.velocity.Y);
@@ -122,9 +121,9 @@ namespace ExampleMod.Projectiles
 					}
 					absVelocitySum = 1f - projectile.localAI[0] / 100f;
 					positionInverseMultiplier *= absVelocitySum;
-					if (lineOrigin.Y > 0f) {
-						lineOrigin.Y *= 1f + positionInverseMultiplier;
-						lineOrigin.X *= 1f - positionInverseMultiplier;
+					if (playerToProjectile.Y > 0f) {
+						playerToProjectile.Y *= 1f + positionInverseMultiplier;
+						playerToProjectile.X *= 1f - positionInverseMultiplier;
 					}
 					else {
 						absVelocitySum = Math.Abs(projectile.velocity.X) / 3f;
@@ -136,15 +135,14 @@ namespace ExampleMod.Projectiles
 						if (positionInverseMultiplier > 0f) {
 							positionInverseMultiplier *= 2f;
 						}
-						lineOrigin.Y *= 1f + positionInverseMultiplier;
-						lineOrigin.X *= 1f - positionInverseMultiplier;
+						playerToProjectile.Y *= 1f + positionInverseMultiplier;
+						playerToProjectile.X *= 1f - positionInverseMultiplier;
 					}
 				}
 				//This color decides the color of the fishing line. The color is randomized as decided in the AI.
-				Color lineColor = Lighting.GetColor((int)mountedCenter.X / 16, (int)(mountedCenter.Y / 16f), fishingLineColor);
-				float rotation = (float)Math.Atan2((double)lineOrigin.Y, (double)lineOrigin.X) - MathHelper.PiOver2;
-
-				Main.spriteBatch.Draw(Main.fishingLineTexture, new Vector2(mountedCenter.X - Main.screenPosition.X + (float)Main.fishingLineTexture.Width * 0.5f, mountedCenter.Y - Main.screenPosition.Y + (float)Main.fishingLineTexture.Height * 0.5f), new Rectangle?(new Rectangle(0, 0, Main.fishingLineTexture.Width, (int)height)), lineColor, rotation, new Vector2((float)Main.fishingLineTexture.Width * 0.5f, 0f), 1f, SpriteEffects.None, 0f);
+				Color lineColor = Lighting.GetColor((int)lineOrigin.X / 16, (int)(lineOrigin.Y / 16f), fishingLineColor);
+				float rotation = playerToProjectile.ToRotation() - MathHelper.PiOver2;
+				Main.spriteBatch.Draw(Main.fishingLineTexture, new Vector2(lineOrigin.X - Main.screenPosition.X + Main.fishingLineTexture.Width * 0.5f, lineOrigin.Y - Main.screenPosition.Y + Main.fishingLineTexture.Height * 0.5f), new Rectangle(0, 0, Main.fishingLineTexture.Width, (int)height), lineColor, rotation, new Vector2(Main.fishingLineTexture.Width * 0.5f, 0f), 1f, SpriteEffects.None, 0f);
 			}
 			return false;
 		}
