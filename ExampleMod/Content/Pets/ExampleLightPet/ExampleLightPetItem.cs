@@ -1,5 +1,4 @@
 ﻿using ExampleMod.Content.Items;
-using ExampleMod.Content.Tiles.Furniture;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
