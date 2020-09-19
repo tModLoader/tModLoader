@@ -44,7 +44,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<BossItem>(10)
+				.AddIngredient<ExampleItem>(10)
 				.AddTile<ExampleWorkbench>()
 				.Register();
 		}
