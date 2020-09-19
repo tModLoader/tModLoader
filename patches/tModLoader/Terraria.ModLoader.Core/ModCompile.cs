@@ -82,22 +82,26 @@ namespace Terraria.ModLoader.Core
 
 		private static Version GetModCompileVersion()
 		{
-			string modCompileVersion;
+			string modCompileVersionText;
+
 			try {
-				if (!File.Exists(modCompileVersionPath)) return new Version();
-				modCompileVersion = File.ReadAllText(modCompileVersionPath);
+				if (!File.Exists(modCompileVersionPath))
+					return new Version();
+
+				modCompileVersionText = File.ReadAllText(modCompileVersionPath);
 			}
 			catch (Exception e) {
 				Logging.tML.Error(e);
+
 				return new Version();
 			}
-			var mCvSplit = new string(modCompileVersion.Skip(1).ToArray()).Split('.');
-			int mCvMajor = 0, mCvMinor = 0, mCvBuild = 0, mCvRevision = 0;
-			if (mCvSplit.Length >= 1) mCvMajor = int.Parse(mCvSplit[0]);
-			if (mCvSplit.Length >= 2) mCvMinor = int.Parse(mCvSplit[1]);
-			if (mCvSplit.Length >= 3) mCvBuild = int.Parse(mCvSplit[2]);
-			if (mCvSplit.Length >= 4) mCvRevision = int.Parse(mCvSplit[3]);
-			return new Version(mCvMajor, mCvMinor, mCvBuild, mCvRevision);
+
+			var match = Regex.Match(modCompileVersionText, @"v([\d.]+)");
+
+			if (!match.Success)
+				return new Version();
+
+			return new Version(match.Groups[1].Value);
 		}
 
 		internal static bool ModCompileVersionCheck(out string msg)
