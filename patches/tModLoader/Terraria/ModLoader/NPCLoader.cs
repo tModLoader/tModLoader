@@ -160,10 +160,15 @@ namespace Terraria.ModLoader
 					Array.Resize(ref npc.buffImmune, BuffLoader.BuffCount);
 				}
 			}
-			npc.globalNPCs = InstancedGlobals.Select(g => g.NewInstance(npc)).ToArray();
+
+			npc.globalNPCs = InstancedGlobals
+				.Select(g => (g.InstancePerEntity && g.InstanceForEntity(npc)) ? g.NewInstance(npc) : null)
+				.ToArray();
+
 			npc.modNPC?.SetDefaults();
+
 			foreach (GlobalNPC g in HookSetDefaults.arr) {
-				g.Instance(npc).SetDefaults(npc);
+				g.Instance(npc)?.SetDefaults(npc);
 			}
 		}
 
@@ -173,7 +178,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.ScaleExpertStats(numPlayers, bossLifeScale);
 
 			foreach (GlobalNPC g in HookScaleExpertStats.arr) {
-				g.Instance(npc).ScaleExpertStats(npc, numPlayers, bossLifeScale);
+				g.Instance(npc)?.ScaleExpertStats(npc, numPlayers, bossLifeScale);
 			}
 		}
 
@@ -183,7 +188,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.ResetEffects();
 
 			foreach (GlobalNPC g in HookResetEffects.arr) {
-				g.Instance(npc).ResetEffects(npc);
+				g.Instance(npc)?.ResetEffects(npc);
 			}
 		}
 
@@ -208,7 +213,7 @@ namespace Terraria.ModLoader
 		public static bool PreAI(NPC npc) {
 			bool result = true;
 			foreach (GlobalNPC g in HookPreAI.arr) {
-				result &= g.Instance(npc).PreAI(npc);
+				result &= g.Instance(npc)?.PreAI(npc);
 			}
 			if (result && npc.modNPC != null) {
 				return npc.modNPC.PreAI();
@@ -222,7 +227,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.AI();
 
 			foreach (GlobalNPC g in HookAI.arr) {
-				g.Instance(npc).AI(npc);
+				g.Instance(npc)?.AI(npc);
 			}
 		}
 
@@ -232,7 +237,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.PostAI();
 
 			foreach (GlobalNPC g in HookPostAI.arr) {
-				g.Instance(npc).PostAI(npc);
+				g.Instance(npc)?.PostAI(npc);
 			}
 		}
 
@@ -278,7 +283,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.FindFrame(frameHeight);
 
 			foreach (GlobalNPC g in HookFindFrame.arr) {
-				g.Instance(npc).FindFrame(npc, frameHeight);
+				g.Instance(npc)?.FindFrame(npc, frameHeight);
 			}
 		}
 
@@ -289,7 +294,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.HitEffect(hitDirection, damage);
 
 			foreach (GlobalNPC g in HookHitEffect.arr) {
-				g.Instance(npc).HitEffect(npc, hitDirection, damage);
+				g.Instance(npc)?.HitEffect(npc, hitDirection, damage);
 			}
 		}
 
@@ -300,7 +305,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.UpdateLifeRegen(ref damage);
 
 			foreach (GlobalNPC g in HookUpdateLifeRegen.arr) {
-				g.Instance(npc).UpdateLifeRegen(npc, ref damage);
+				g.Instance(npc)?.UpdateLifeRegen(npc, ref damage);
 			}
 		}
 
@@ -311,7 +316,7 @@ namespace Terraria.ModLoader
 				return false;
 			}
 			foreach (GlobalNPC g in HookCheckActive.arr) {
-				if (!g.Instance(npc).CheckActive(npc)) {
+				if (!g.Instance(npc)?.CheckActive(npc)) {
 					return false;
 				}
 			}
@@ -328,7 +333,7 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (GlobalNPC g in HookCheckDead.arr) {
-				result &= g.Instance(npc).CheckDead(npc);
+				result &= g.Instance(npc)?.CheckDead(npc);
 			}
 
 			return result;
@@ -338,7 +343,7 @@ namespace Terraria.ModLoader
 
 		public static bool SpecialNPCLoot(NPC npc) {
 			foreach (GlobalNPC g in HookSpecialNPCLoot.arr) {
-				if (g.Instance(npc).SpecialNPCLoot(npc)) {
+				if (g.Instance(npc)?.SpecialNPCLoot(npc)) {
 					return true;
 				}
 			}
@@ -353,7 +358,7 @@ namespace Terraria.ModLoader
 		public static bool PreNPCLoot(NPC npc) {
 			bool result = true;
 			foreach (GlobalNPC g in HookPreNPCLoot.arr) {
-				result &= g.Instance(npc).PreNPCLoot(npc);
+				result &= g.Instance(npc)?.PreNPCLoot(npc);
 			}
 
 			if (result && npc.modNPC != null) {
@@ -374,7 +379,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.NPCLoot();
 
 			foreach (GlobalNPC g in HookNPCLoot.arr) {
-				g.Instance(npc).NPCLoot(npc);
+				g.Instance(npc)?.NPCLoot(npc);
 			}
 			blockLoot.Clear();
 		}
@@ -395,7 +400,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.OnCatchNPC(player, item);
 
 			foreach (GlobalNPC g in HookOnCatchNPC.arr) {
-				g.Instance(npc).OnCatchNPC(npc, player, item);
+				g.Instance(npc)?.OnCatchNPC(npc, player, item);
 			}
 		}
 
@@ -404,7 +409,7 @@ namespace Terraria.ModLoader
 
 		public static bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot) {
 			foreach (GlobalNPC g in HookCanHitPlayer.arr) {
-				if (!g.Instance(npc).CanHitPlayer(npc, target, ref cooldownSlot)) {
+				if (!g.Instance(npc)?.CanHitPlayer(npc, target, ref cooldownSlot)) {
 					return false;
 				}
 			}
@@ -421,7 +426,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.ModifyHitPlayer(target, ref damage, ref crit);
 
 			foreach (GlobalNPC g in HookModifyHitPlayer.arr) {
-				g.Instance(npc).ModifyHitPlayer(npc, target, ref damage, ref crit);
+				g.Instance(npc)?.ModifyHitPlayer(npc, target, ref damage, ref crit);
 			}
 		}
 
@@ -431,7 +436,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.OnHitPlayer(target, damage, crit);
 
 			foreach (GlobalNPC g in HookOnHitPlayer.arr) {
-				g.Instance(npc).OnHitPlayer(npc, target, damage, crit);
+				g.Instance(npc)?.OnHitPlayer(npc, target, damage, crit);
 			}
 		}
 
@@ -440,7 +445,7 @@ namespace Terraria.ModLoader
 		public static bool? CanHitNPC(NPC npc, NPC target) {
 			bool? flag = null;
 			foreach (GlobalNPC g in HookCanHitNPC.arr) {
-				bool? canHit = g.Instance(npc).CanHitNPC(npc, target);
+				bool? canHit = g.Instance(npc)?.CanHitNPC(npc, target);
 				if (canHit.HasValue && !canHit.Value) {
 					return false;
 				}
@@ -467,7 +472,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.ModifyHitNPC(target, ref damage, ref knockback, ref crit);
 
 			foreach (GlobalNPC g in HookModifyHitNPC.arr) {
-				g.Instance(npc).ModifyHitNPC(npc, target, ref damage, ref knockback, ref crit);
+				g.Instance(npc)?.ModifyHitNPC(npc, target, ref damage, ref knockback, ref crit);
 			}
 		}
 
@@ -476,7 +481,7 @@ namespace Terraria.ModLoader
 		public static void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit) {
 			npc.modNPC?.OnHitNPC(target, damage, knockback, crit);
 			foreach (GlobalNPC g in HookOnHitNPC.arr) {
-				g.Instance(npc).OnHitNPC(npc, target, damage, knockback, crit);
+				g.Instance(npc)?.OnHitNPC(npc, target, damage, knockback, crit);
 			}
 		}
 
@@ -485,7 +490,7 @@ namespace Terraria.ModLoader
 		public static bool? CanBeHitByItem(NPC npc, Player player, Item item) {
 			bool? flag = null;
 			foreach (GlobalNPC g in HookCanBeHitByItem.arr) {
-				bool? canHit = g.Instance(npc).CanBeHitByItem(npc, player, item);
+				bool? canHit = g.Instance(npc)?.CanBeHitByItem(npc, player, item);
 				if (canHit.HasValue && !canHit.Value) {
 					return false;
 				}
@@ -512,7 +517,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.ModifyHitByItem(player, item, ref damage, ref knockback, ref crit);
 
 			foreach (GlobalNPC g in HookModifyHitByItem.arr) {
-				g.Instance(npc).ModifyHitByItem(npc, player, item, ref damage, ref knockback, ref crit);
+				g.Instance(npc)?.ModifyHitByItem(npc, player, item, ref damage, ref knockback, ref crit);
 			}
 		}
 
@@ -522,7 +527,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.OnHitByItem(player, item, damage, knockback, crit);
 
 			foreach (GlobalNPC g in HookOnHitByItem.arr) {
-				g.Instance(npc).OnHitByItem(npc, player, item, damage, knockback, crit);
+				g.Instance(npc)?.OnHitByItem(npc, player, item, damage, knockback, crit);
 			}
 		}
 
@@ -531,7 +536,7 @@ namespace Terraria.ModLoader
 		public static bool? CanBeHitByProjectile(NPC npc, Projectile projectile) {
 			bool? flag = null;
 			foreach (GlobalNPC g in HookCanBeHitByProjectile.arr) {
-				bool? canHit = g.Instance(npc).CanBeHitByProjectile(npc, projectile);
+				bool? canHit = g.Instance(npc)?.CanBeHitByProjectile(npc, projectile);
 				if (canHit.HasValue && !canHit.Value) {
 					return false;
 				}
@@ -558,7 +563,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.ModifyHitByProjectile(projectile, ref damage, ref knockback, ref crit, ref hitDirection);
 
 			foreach (GlobalNPC g in HookModifyHitByProjectile.arr) {
-				g.Instance(npc).ModifyHitByProjectile(npc, projectile, ref damage, ref knockback, ref crit, ref hitDirection);
+				g.Instance(npc)?.ModifyHitByProjectile(npc, projectile, ref damage, ref knockback, ref crit, ref hitDirection);
 			}
 		}
 
@@ -568,7 +573,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.OnHitByProjectile(projectile, damage, knockback, crit);
 
 			foreach (GlobalNPC g in HookOnHitByProjectile.arr) {
-				g.Instance(npc).OnHitByProjectile(npc, projectile, damage, knockback, crit);
+				g.Instance(npc)?.OnHitByProjectile(npc, projectile, damage, knockback, crit);
 			}
 		}
 
@@ -581,7 +586,7 @@ namespace Terraria.ModLoader
 				flag = npc.modNPC.StrikeNPC(ref damage, defense, ref knockback, hitDirection, ref crit);
 			}
 			foreach (GlobalNPC g in HookStrikeNPC.arr) {
-				if (!g.Instance(npc).StrikeNPC(npc, ref damage, defense, ref knockback, hitDirection, ref crit)) {
+				if (!g.Instance(npc)?.StrikeNPC(npc, ref damage, defense, ref knockback, hitDirection, ref crit)) {
 					flag = false;
 				}
 			}
@@ -595,7 +600,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.BossHeadSlot(ref index);
 
 			foreach (GlobalNPC g in HookBossHeadSlot.arr) {
-				g.Instance(npc).BossHeadSlot(npc, ref index);
+				g.Instance(npc)?.BossHeadSlot(npc, ref index);
 			}
 		}
 
@@ -606,7 +611,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.BossHeadRotation(ref rotation);
 
 			foreach (GlobalNPC g in HookBossHeadRotation.arr) {
-				g.Instance(npc).BossHeadRotation(npc, ref rotation);
+				g.Instance(npc)?.BossHeadRotation(npc, ref rotation);
 			}
 		}
 
@@ -617,7 +622,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.BossHeadSpriteEffects(ref spriteEffects);
 
 			foreach (GlobalNPC g in HookBossHeadSpriteEffects.arr) {
-				g.Instance(npc).BossHeadSpriteEffects(npc, ref spriteEffects);
+				g.Instance(npc)?.BossHeadSpriteEffects(npc, ref spriteEffects);
 			}
 		}
 
@@ -625,7 +630,7 @@ namespace Terraria.ModLoader
 
 		public static Color? GetAlpha(NPC npc, Color lightColor) {
 			foreach (GlobalNPC g in HookGetAlpha.arr) {
-				Color? color = g.Instance(npc).GetAlpha(npc, lightColor);
+				Color? color = g.Instance(npc)?.GetAlpha(npc, lightColor);
 				if (color.HasValue) {
 					return color.Value;
 				}
@@ -640,7 +645,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.DrawEffects(ref drawColor);
 
 			foreach (GlobalNPC g in HookDrawEffects.arr) {
-				g.Instance(npc).DrawEffects(npc, ref drawColor);
+				g.Instance(npc)?.DrawEffects(npc, ref drawColor);
 			}
 		}
 
@@ -649,7 +654,7 @@ namespace Terraria.ModLoader
 		public static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
 			bool result = true;
 			foreach (GlobalNPC g in HookPreDraw.arr) {
-				result &= g.Instance(npc).PreDraw(npc, spriteBatch, drawColor);
+				result &= g.Instance(npc)?.PreDraw(npc, spriteBatch, drawColor);
 			}
 			if (result && npc.modNPC != null) {
 				return npc.modNPC.PreDraw(spriteBatch, drawColor);
@@ -663,7 +668,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.PostDraw(spriteBatch, drawColor);
 
 			foreach (GlobalNPC g in HookPostDraw.arr) {
-				g.Instance(npc).PostDraw(npc, spriteBatch, drawColor);
+				g.Instance(npc)?.PostDraw(npc, spriteBatch, drawColor);
 			}
 		}
 
@@ -674,7 +679,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.DrawBehind(index);
 
 			foreach (GlobalNPC g in HookDrawBehind.arr) {
-				g.Instance(npc).DrawBehind(npc, index);
+				g.Instance(npc)?.DrawBehind(npc, index);
 			}
 		}
 
@@ -690,7 +695,7 @@ namespace Terraria.ModLoader
 				position.Y -= 24f + Main.NPCAddHeight(npc) / 2f;
 			}
 			foreach (GlobalNPC g in HookDrawHealthBar.arr) {
-				bool? result = g.Instance(npc).DrawHealthBar(npc, Main.HealthBarDrawSettings, ref scale, ref position);
+				bool? result = g.Instance(npc)?.DrawHealthBar(npc, Main.HealthBarDrawSettings, ref scale, ref position);
 				if (result.HasValue) {
 					if (result.Value) {
 						DrawHealthBar(npc, position, scale);
@@ -817,7 +822,7 @@ namespace Terraria.ModLoader
 			bool defaultCanChat = npc.modNPC?.CanChat() ?? vanillaCanChat;
 
 			foreach (GlobalNPC g in HookCanChat.arr) {
-				bool? canChat = g.Instance(npc).CanChat(npc);
+				bool? canChat = g.Instance(npc)?.CanChat(npc);
 				if (canChat.HasValue) {
 					if (!canChat.Value) {
 						return false;
@@ -840,7 +845,7 @@ namespace Terraria.ModLoader
 				chat = Language.GetTextValue("tModLoader.DefaultTownNPCChat");
 			}
 			foreach (GlobalNPC g in HookGetChat.arr) {
-				g.Instance(npc).GetChat(npc, ref chat);
+				g.Instance(npc)?.GetChat(npc, ref chat);
 			}
 		}
 
@@ -858,7 +863,7 @@ namespace Terraria.ModLoader
 
 			bool result = true;
 			foreach (GlobalNPC g in HookPreChatButtonClicked.arr) {
-				result &= g.Instance(npc).PreChatButtonClicked(npc, firstButton);
+				result &= g.Instance(npc)?.PreChatButtonClicked(npc, firstButton);
 			}
 
 			if (!result) {
@@ -889,7 +894,7 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (GlobalNPC g in HookOnChatButtonClicked.arr) {
-				g.Instance(npc).OnChatButtonClicked(npc, firstButton);
+				g.Instance(npc)?.OnChatButtonClicked(npc, firstButton);
 			}
 		}
 
@@ -923,7 +928,7 @@ namespace Terraria.ModLoader
 			bool defaultCanGo = npc.modNPC?.CanGoToStatue(toKingStatue) ?? vanillaCanGo;
 
 			foreach (GlobalNPC g in HookCanGoToStatue.arr) {
-				bool? canGo = g.Instance(npc).CanGoToStatue(npc, toKingStatue);
+				bool? canGo = g.Instance(npc)?.CanGoToStatue(npc, toKingStatue);
 				if (canGo.HasValue) {
 					if (!canGo.Value) {
 						return false;
@@ -976,7 +981,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.TownNPCAttackStrength(ref damage, ref knockback);
 
 			foreach (GlobalNPC g in HookTownNPCAttackStrength.arr) {
-				g.Instance(npc).TownNPCAttackStrength(npc, ref damage, ref knockback);
+				g.Instance(npc)?.TownNPCAttackStrength(npc, ref damage, ref knockback);
 			}
 		}
 
@@ -987,7 +992,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.TownNPCAttackCooldown(ref cooldown, ref randExtraCooldown);
 
 			foreach (GlobalNPC g in HookTownNPCAttackCooldown.arr) {
-				g.Instance(npc).TownNPCAttackCooldown(npc, ref cooldown, ref randExtraCooldown);
+				g.Instance(npc)?.TownNPCAttackCooldown(npc, ref cooldown, ref randExtraCooldown);
 			}
 		}
 
@@ -998,7 +1003,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.TownNPCAttackProj(ref projType, ref attackDelay);
 
 			foreach (GlobalNPC g in HookTownNPCAttackProj.arr) {
-				g.Instance(npc).TownNPCAttackProj(npc, ref projType, ref attackDelay);
+				g.Instance(npc)?.TownNPCAttackProj(npc, ref projType, ref attackDelay);
 			}
 		}
 
@@ -1011,7 +1016,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.TownNPCAttackProjSpeed(ref multiplier, ref gravityCorrection, ref randomOffset);
 
 			foreach (GlobalNPC g in HookTownNPCAttackProjSpeed.arr) {
-				g.Instance(npc).TownNPCAttackProjSpeed(npc, ref multiplier, ref gravityCorrection, ref randomOffset);
+				g.Instance(npc)?.TownNPCAttackProjSpeed(npc, ref multiplier, ref gravityCorrection, ref randomOffset);
 			}
 		}
 
@@ -1022,7 +1027,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.TownNPCAttackShoot(ref inBetweenShots);
 
 			foreach (GlobalNPC g in HookTownNPCAttackShoot.arr) {
-				g.Instance(npc).TownNPCAttackShoot(npc, ref inBetweenShots);
+				g.Instance(npc)?.TownNPCAttackShoot(npc, ref inBetweenShots);
 			}
 		}
 
@@ -1033,7 +1038,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.TownNPCAttackMagic(ref auraLightMultiplier);
 
 			foreach (GlobalNPC g in HookTownNPCAttackMagic.arr) {
-				g.Instance(npc).TownNPCAttackMagic(npc, ref auraLightMultiplier);
+				g.Instance(npc)?.TownNPCAttackMagic(npc, ref auraLightMultiplier);
 			}
 		}
 
@@ -1044,7 +1049,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.TownNPCAttackSwing(ref itemWidth, ref itemHeight);
 
 			foreach (GlobalNPC g in HookTownNPCAttackSwing.arr) {
-				g.Instance(npc).TownNPCAttackSwing(npc, ref itemWidth, ref itemHeight);
+				g.Instance(npc)?.TownNPCAttackSwing(npc, ref itemWidth, ref itemHeight);
 			}
 		}
 
@@ -1055,7 +1060,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.DrawTownAttackGun(ref scale, ref item, ref closeness);
 
 			foreach (GlobalNPC g in HookDrawTownAttackGun.arr) {
-				g.Instance(npc).DrawTownAttackGun(npc, ref scale, ref item, ref closeness);
+				g.Instance(npc)?.DrawTownAttackGun(npc, ref scale, ref item, ref closeness);
 			}
 		}
 
@@ -1066,7 +1071,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.DrawTownAttackSwing(ref item, ref itemSize, ref scale, ref offset);
 
 			foreach (GlobalNPC g in HookDrawTownAttackSwing.arr) {
-				g.Instance(npc).DrawTownAttackSwing(npc, ref item, ref itemSize, ref scale, ref offset);
+				g.Instance(npc)?.DrawTownAttackSwing(npc, ref item, ref itemSize, ref scale, ref offset);
 			}
 		}
 

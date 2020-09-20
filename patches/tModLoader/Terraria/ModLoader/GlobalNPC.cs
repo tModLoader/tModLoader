@@ -30,6 +30,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool InstancePerEntity => false;
 
+		/// <summary> Return whether to create a GlobalNPC instance for the provided NPC instance. </summary>
+		public virtual bool InstanceForEntity(NPC npc) => true;
+
 		public GlobalNPC Instance(NPC npc) => InstancePerEntity ? npc.globalNPCs[instanceIndex] : this;
 
 		/// <summary>
