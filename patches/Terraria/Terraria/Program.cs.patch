@@ -37,7 +37,7 @@
  		public const bool IsDebug = false;
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  		private static int ThingsToLoad;
-@@ -56,10 +_,18 @@
+@@ -56,10 +_,25 @@
  		private static void ForceJITOnAssembly(Assembly assembly) {
  			Type[] types = assembly.GetTypes();
  			for (int i = 0; i < types.Length; i++) {
@@ -47,12 +47,20 @@
 +				MethodInfo[] methods = types[i].GetMethods();
 +#endif
  				foreach (MethodInfo methodInfo in methods) {
- 					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
++
++					try {
+-					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
++						if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
 +#if XNA
  						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
 +#else
-+						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
++							JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
 +#endif
++					}
++					catch (BadImageFormatException e) 
++					{
++						Debug.Write(e);
++					}
  				}
  
  				ThingsLoaded++;

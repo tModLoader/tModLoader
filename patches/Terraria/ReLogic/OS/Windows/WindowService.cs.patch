@@ -1,0 +1,17 @@
+--- src/decompiled/ReLogic/OS/Windows/WindowService.cs
++++ src/Terraria/ReLogic/OS/Windows/WindowService.cs
+@@ -27,10 +_,14 @@
+ 		}
+ 
+ 		public void SetUnicodeTitle(GameWindow window, string title) {
++#if NETCORE
++			SDL2.SDL.SDL_SetWindowTitle(window.Handle, title);
++#else
+ 			NativeMethods.WndProcCallback d = NativeMethods.DefWindowProc;
+ 			int dwNewLong = NativeMethods.SetWindowLong(window.Handle, -4, (int)Marshal.GetFunctionPointerForDelegate((Delegate)d));
+ 			window.Title = title;
+ 			NativeMethods.SetWindowLong(window.Handle, -4, dwNewLong);
++#endif
+ 		}
+ 
+ 		public void StartFlashingIcon(GameWindow window) {
