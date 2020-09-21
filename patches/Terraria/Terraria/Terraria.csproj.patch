@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Terraria.csproj
 +++ src/Terraria/Terraria/Terraria.csproj
-@@ -1,34 +_,55 @@
+@@ -1,35 +_,56 @@
  <Project Sdk="Microsoft.NET.Sdk">
    <Import Project="../Configuration.targets" />
 +  <Import Project="../../TerrariaSteamPath.targets" />
@@ -16,9 +16,6 @@
      <OutputType>Exe</OutputType>
      <OutputName>$(OutputName)Server</OutputName>
    </PropertyGroup>
-+  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
-+    <OutputName>$(OutputName)Debug</OutputName>
-+  </PropertyGroup>
 +  <PropertyGroup>
 +    <PdbFile>bin\$(OutputName)</PdbFile>
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
@@ -61,18 +58,18 @@
 +      <HintPath Condition="$(DefineConstants.Contains('Mono'))">Libraries/Mono/System.Windows.Forms.dll</HintPath>
 +    </Reference>
      <Reference Include="WindowsBase" />
++    <Reference Update="@(Reference)">
++      <Private>True</Private>
++    </Reference>
    </ItemGroup>
    <ItemGroup>
-@@ -37,7 +_,31 @@
+     <EmbeddedResource Include="GameContent/Creative/Content/*" />
+@@ -37,7 +_,37 @@
      <EmbeddedResource Include="GameContent/WorldBuilding/*" />
      <EmbeddedResource Include="IO/Data/*" />
      <EmbeddedResource Include="Libraries/**" />
-+    <EmbeddedResource Remove="Libraries/Windows/**" Condition="!$(DefineConstants.Contains('WINDOWS'))" />
-+    <EmbeddedResource Remove="Libraries/Mac/**" Condition="!$(DefineConstants.Contains('MAC'))" />
-+    <EmbeddedResource Remove="Libraries/Linux/**" Condition="!$(DefineConstants.Contains('LINUX'))" />
++    <EmbeddedResource Remove="Libraries/Native/**" />
 +    <EmbeddedResource Remove="Libraries/Mono/**" Condition="!$(DefineConstants.Contains('MONO'))" />
-+    <EmbeddedResource Remove="Libraries/XNA/**" />
-+    <EmbeddedResource Remove="Libraries/FNA/**" />
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
@@ -89,9 +86,19 @@
 +	<Message Text="Checking headers with dumpbin." Importance="high" />
 +	<Exec Command="..\largeaddresstool\dumpbin $(DumpBin) &quot;$(TargetPath)&quot; | findstr &quot;large&quot;" />
 +  </Target>
-+  <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
++  <Target Name="CopyToSteamDir" AfterTargets="EditBin">
++    <ItemGroup>
++      <SteamFiles Include="Libraries/Native/Windows32/steam*;Libraries/Native/Windows32/Steam*" Condition="$(DefineConstants.Contains('WINDOWS'))" />
++      <SteamFiles Include="Libraries/Native/Linux/**/*steam*;Libraries/Native/Linux/**/Steam*" Condition="!$(DefineConstants.Contains('WINDOWS'))" />
++      <LibFolder Include="Libraries/Native/OSX/**" Exclude="**/*steam*;**/Steam*" Condition="$(DefineConstants.Contains('MAC'))" />
++      <LibFolder Include="Libraries/Native/Linux/**" Condition="$(DefineConstants.Contains('LINUX'))" />
++      <BinFiles Include="$(TargetDir)**" />
++    </ItemGroup>
 +    <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
-+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\$(OutputName).exe" />
-+    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(TerrariaSteamPath)" />
++    <!--Move important assembly refs to bin-->
++    <Copy SourceFiles="@(LibFolder)" DestinationFolder="$(TargetDir)" />
++    <Copy SourceFiles="@(SteamFiles)" DestinationFolder="$(TargetDir)" />
++    <!--Move bin to steam-->
++    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)" />
 +  </Target>
  </Project>

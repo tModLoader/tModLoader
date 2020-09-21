@@ -5,21 +5,6 @@
  using System;
  using System.IO;
  using System.Reflection;
-@@ -51,7 +_,13 @@
- 		[STAThread]
- 		private static void Main(string[] args) {
- 			AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
--				string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
-+				string resourceName = new AssemblyName(sargs.Name).Name;
-+
-+				Assembly existingAsm = Array.Find(AppDomain.CurrentDomain.GetAssemblies(), (Assembly asm) => asm.GetName().Name == resourceName);
-+				if(existingAsm != null) {
-+					return existingAsm;
-+				}
-+				resourceName += ".dll";
- 				string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
- 				if (text == null)
- 					return null;
 @@ -63,7 +_,12 @@
  				}
  			};
