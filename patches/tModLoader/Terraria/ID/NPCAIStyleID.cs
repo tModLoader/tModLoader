@@ -13,7 +13,7 @@
 		public const short Flying = 5;
 		public const short Worm = 6;
 		/// <summary>
-		/// Includes Town NPCs and some ambient creatures
+		/// Includes Town NPCs and some ambient creatures, only Town NPCs will have defense with this AI, due to type-based hardcode
 		/// </summary>
 		public const short Passive = 7;
 		public const short Caster = 8;
