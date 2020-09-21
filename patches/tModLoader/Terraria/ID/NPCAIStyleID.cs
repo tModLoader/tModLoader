@@ -12,7 +12,10 @@
 		/// </summary>
 		public const short Flying = 5;
 		public const short Worm = 6;
-		public const short TownNPC = 7;
+		/// <summary>
+		/// Includes Town NPCs and some ambient creatures
+		/// </summary>
+		public const short Passive = 7;
 		public const short Caster = 8;
 		public const short Spell = 9;
 		public const short CursedSkull = 10;
