@@ -1,28 +1,11 @@
 --- src/Terraria/ReLogic/ReLogicNetCore.csproj
 +++ src/tModLoader/ReLogic/ReLogicNetCore.csproj
-@@ -8,14 +_,22 @@
-     <RootNamespace>ReLogic</RootNamespace>
-     <AssemblyName>ReLogic</AssemblyName>
-     <TargetName>ReLogic</TargetName>
-+    <AssemblyName>ReLogic</AssemblyName>
-+    <TargetName>ReLogic</TargetName>
+@@ -11,7 +_,7 @@
    </PropertyGroup>
    <ItemGroup>
      <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
 -    <Reference Include="../Terraria/Libraries/DotNetZip/Ionic.Zip.CF.dll" />
--    <Reference Include="../Terraria/Libraries/FNA/FNA.dll" />
--    <Reference Include="../Terraria/Libraries/JSON.NET/Newtonsoft.Json.dll" />
 +    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.Reduced.dll" />
-+    <Reference Include="../Terraria/Libraries/FNA/FNA.dll" Condition="$(DefineConstants.Contains('FNA'))" />
-+    <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.dll" Condition="$(DefineConstants.Contains('XNA'))" />
-+    <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.Game.dll" Condition="$(DefineConstants.Contains('XNA'))" />
-+    <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.Graphics.dll" Condition="$(DefineConstants.Contains('XNA'))" />
-+    <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
+     <Reference Include="../Terraria/Libraries/Native/FNA.dll" />
+     <Reference Include="../Terraria/Libraries/JSON.NET/Newtonsoft.Json.dll" />
    </ItemGroup>
-   <ItemGroup>
-     <EmbeddedResource Include="Microsoft/**" />
-+  </ItemGroup>
-+  <ItemGroup>
-+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
-   </ItemGroup>
- </Project>

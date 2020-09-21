@@ -32,15 +32,10 @@
  
  		public static float LoadedPercentage {
  			get {
-@@ -64,27 +_,68 @@
+@@ -64,29 +_,68 @@
  		public static void ForceLoadThread(object threadContext) {
  			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
  			LoadedEverything = true;
--		}
--
--		private static void ForceJITOnAssembly(Assembly assembly) {
--			Type[] types = assembly.GetTypes();
--			for (int i = 0; i < types.Length; i++) {
 +			Logging.Terraria.Info("JIT loading finished");
 +		}
 +
@@ -64,8 +59,11 @@
 +				if (!type.IsGenericType)
 +					RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 +			}
-+		}
-+
+ 		}
+ 
+-		private static void ForceJITOnAssembly(Assembly assembly) {
+-			Type[] types = assembly.GetTypes();
+-			for (int i = 0; i < types.Length; i++) {
 +		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers)
 +		{
 +			var types = assembly.GetTypes();
@@ -106,20 +104,22 @@
 +			return type.GetMethods();
  #endif
 -				foreach (MethodInfo methodInfo in methods) {
--					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
+-
+-					try {
+-						if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
 -#if XNA
 -						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
 -#else
--						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
+-							JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
 -#endif
--				}
--
--				ThingsLoaded++;
--			}
- 		}
+-					}
+-					catch (BadImageFormatException e) 
+-					{
+-						Debug.Write(e);
+ 					}
+ 				}
  
- 		private static void ForceStaticInitializers(Assembly assembly) {
-@@ -95,13 +_,6 @@
+@@ -102,13 +_,6 @@
  			}
  		}
  
@@ -133,7 +133,7 @@
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
  			Assembly assembly = null;
  			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-@@ -151,27 +_,49 @@
+@@ -158,27 +_,49 @@
  			}
  		}
  
@@ -187,7 +187,7 @@
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
  #if CLIENT
-@@ -180,9 +_,10 @@
+@@ -187,9 +_,10 @@
  					main.DedServ();
  #endif
  				}
@@ -201,15 +201,12 @@
  			}
  		}
  
-@@ -204,9 +_,18 @@
+@@ -211,9 +_,15 @@
  				}
  
  #if CLIENT
 -				MessageBox.Show(text, "Terraria: Error");
 +				ModLoader.UI.Interface.MessageBoxShow(text);
-+
-+				if (e.Message.Contains("CSteamworks"))
-+					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
 +
 +				if (e.StackTrace.Contains("LaunchLocalServer")) {
 +					ModLoader.UI.Interface.MessageBoxShow("Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.");

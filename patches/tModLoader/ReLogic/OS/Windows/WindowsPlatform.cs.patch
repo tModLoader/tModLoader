@@ -1,6 +1,6 @@
 --- src/Terraria/ReLogic/OS/Windows/WindowsPlatform.cs
 +++ src/tModLoader/ReLogic/OS/Windows/WindowsPlatform.cs
-@@ -5,35 +_,35 @@
+@@ -5,32 +_,34 @@
  {
  	internal class WindowsPlatform : Platform
  	{
@@ -19,11 +19,8 @@
  		}
  
  		public override void InitializeClientServices(IntPtr windowHandle) {
--			if (_wndProcHook == null)
 +			//if (_wndProcHook == null)
--				_wndProcHook = new WindowsMessageHook(windowHandle);
 +			//	_wndProcHook = new WindowsMessageHook(windowHandle);
- 
  			//RegisterService((IImeService)new WindowsIme(_wndProcHook, windowHandle));
  			RegisterService((IImeService)new FnaIme());
  		}

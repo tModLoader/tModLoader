@@ -14,16 +14,16 @@
   <ItemGroup>
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.1" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.1" />
-    <Reference Include="../src/tModLoader/Terraria/Libraries/XNA/Microsoft.Xna.Framework.dll">
+    <Reference Include="../src/tModLoader/Terraria/Libraries/Native/Windows32/Microsoft.Xna.Framework.dll">
       <Private>true</Private>
     </Reference>
-    <Reference Include="../src/tModLoader/Terraria/Libraries/XNA/Microsoft.Xna.Framework.Game.dll">
+    <Reference Include="../src/tModLoader/Terraria/Libraries/Native/Windows32/Microsoft.Xna.Framework.Game.dll">
       <Private>true</Private>
     </Reference>
-    <Reference Include="../src/tModLoader/Terraria/Libraries/XNA/Microsoft.Xna.Framework.Graphics.dll">
+    <Reference Include="../src/tModLoader/Terraria/Libraries/Native/Windows32/Microsoft.Xna.Framework.Graphics.dll">
       <Private>true</Private>
     </Reference>
-    <Reference Include="../src/tModLoader/Terraria/Libraries/XNA/Microsoft.Xna.Framework.Xact.dll">
+    <Reference Include="../src/tModLoader/Terraria/Libraries/Native/Windows32/Microsoft.Xna.Framework.Xact.dll">
       <Private>true</Private>
     </Reference>
   </ItemGroup>
