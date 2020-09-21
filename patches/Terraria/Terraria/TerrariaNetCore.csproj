@@ -7,7 +7,7 @@
     <Company>Re-Logic</Company>
     <Copyright>Copyright © 2020 Re-Logic</Copyright>
     <RootNamespace>Terraria</RootNamespace>
-	  <OutputName>Terraria</OutputName>
+    <OutputName>Terraria</OutputName>
     <EffectivePlatform>Linux</EffectivePlatform>
   </PropertyGroup>
   <PropertyGroup Condition="$(Configuration.Contains('Server'))">
@@ -31,7 +31,7 @@
     </Reference>
     <ProjectReference Include="../ReLogic/ReLogicNetCore.csproj" />
     <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
-	    <Link>Libraries/ReLogic/ReLogic.dll</Link>
+      <Link>Libraries/ReLogic/ReLogic.dll</Link>
       <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
     </EmbeddedResource>
     <Reference Include="Steamworks.NET">
