@@ -32,10 +32,15 @@
  
  		public static float LoadedPercentage {
  			get {
-@@ -64,29 +_,68 @@
+@@ -64,34 +_,68 @@
  		public static void ForceLoadThread(object threadContext) {
  			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
  			LoadedEverything = true;
+-		}
+-
+-		private static void ForceJITOnAssembly(Assembly assembly) {
+-			Type[] types = assembly.GetTypes();
+-			for (int i = 0; i < types.Length; i++) {
 +			Logging.Terraria.Info("JIT loading finished");
 +		}
 +
@@ -59,11 +64,8 @@
 +				if (!type.IsGenericType)
 +					RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 +			}
- 		}
- 
--		private static void ForceJITOnAssembly(Assembly assembly) {
--			Type[] types = assembly.GetTypes();
--			for (int i = 0; i < types.Length; i++) {
++		}
++
 +		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers)
 +		{
 +			var types = assembly.GetTypes();
@@ -116,9 +118,14 @@
 -					catch (BadImageFormatException e) 
 -					{
 -						Debug.Write(e);
- 					}
- 				}
+-					}
+-				}
+-
+-				ThingsLoaded++;
+-			}
+ 		}
  
+ 		private static void ForceStaticInitializers(Assembly assembly) {
 @@ -102,13 +_,6 @@
  			}
  		}
