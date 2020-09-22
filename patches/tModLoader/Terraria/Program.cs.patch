@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -2,19 +_,23 @@
+@@ -2,19 +_,24 @@
  using ReLogic.OS;
  using System;
  using System.Collections.Generic;
@@ -14,6 +14,7 @@
  using System.Runtime.CompilerServices;
  using System.Text;
  using System.Threading;
++using System.Threading.Tasks;
 +
  #if CLIENT
  using System.Windows.Forms;
@@ -32,29 +33,28 @@
  
  		public static float LoadedPercentage {
  			get {
-@@ -64,34 +_,68 @@
+@@ -64,34 +_,73 @@
  		public static void ForceLoadThread(object threadContext) {
  			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
  			LoadedEverything = true;
--		}
--
--		private static void ForceJITOnAssembly(Assembly assembly) {
--			Type[] types = assembly.GetTypes();
--			for (int i = 0; i < types.Length; i++) {
 +			Logging.Terraria.Info("JIT loading finished");
 +		}
 +
-+		private static void ForceJITOnAssembly(IEnumerable<Type> types)
-+		{
-+			var methodsToJIT = CollectMethodsToJIT(types);
++		private static void ForceJITOnAssembly(IEnumerable<Type> types) {
++			try {
++				var methodsToJIT = CollectMethodsToJIT(types);
 +
-+			if (Environment.ProcessorCount > 1) {
-+				methodsToJIT.AsParallel().AsUnordered().ForAll(ForceJITOnMethod);
-+			}
-+			else {
-+				foreach (var method in methodsToJIT) {
-+					ForceJITOnMethod(method);
++				if (Environment.ProcessorCount > 1) {
++					Parallel.ForEach(methodsToJIT, ForceJITOnMethod);
 +				}
++				else {
++					foreach (var method in methodsToJIT) {
++						ForceJITOnMethod(method);
++					}
++				}
++			}
++			catch (Exception e) {
++				Debug.WriteLine(e);
 +			}
 +		}
 +
@@ -64,11 +64,13 @@
 +				if (!type.IsGenericType)
 +					RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 +			}
-+		}
-+
-+		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers)
-+		{
+ 		}
+ 
+-		private static void ForceJITOnAssembly(Assembly assembly) {
++		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
+-			Type[] types = assembly.GetTypes();
 +			var types = assembly.GetTypes();
+-			for (int i = 0; i < types.Length; i++) {
 +			ThingsToLoad = types.Select(type => GetMethodsCrossPlatform(type).Count()).Sum();
 +
 +			ForceJITOnAssembly(types);
@@ -83,16 +85,18 @@
 +			where !method.IsAbstract && !method.ContainsGenericParameters && method.GetMethodBody() != null
 +			select method;
 +
-+		private static void ForceJITOnMethod(MethodInfo method)
-+		{
-+#if XNA
-+			RuntimeHelpers.PrepareMethod(method.MethodHandle);
++		private static void ForceJITOnMethod(MethodInfo method) {
++			try {
++#if XNA || NETCORE
++				RuntimeHelpers.PrepareMethod(method.MethodHandle);
 +#else
 +			// We don't synchronize access to JitForcedMethodCache because no one ever needs to read its value.
 +			var methodPointer = method.MethodHandle.GetFunctionPointer();
 +			JitForcedMethodCache = methodPointer;
 +#endif
-+
++			}catch (Exception e) {
++				Debug.Write(e);
++			}
 +			Interlocked.Increment(ref ThingsLoaded);
 +		}
 +

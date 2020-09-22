@@ -9,12 +9,20 @@
      <EffectivePlatform>Linux</EffectivePlatform>
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
-@@ -23,7 +_,7 @@
+@@ -23,7 +_,15 @@
    <ItemGroup>
      <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
      <Reference Include="FNA" />
 -    <Reference Include="Ionic.Zip.CF" />
 +    <Reference Include="Ionic.Zip.Reduced" />
++    <Reference Include="Mono.Cecil" />
++    <Reference Include="Mono.Cecil.Pdb" />
++    <Reference Include="Mono.Cecil.Mdb" />
++    <Reference Include="MP3Sharp" />
++    <Reference Include="NVorbis" />
++    <Reference Include="log4net" />
++    <Reference Include="MonoMod.RuntimeDetour" />
++    <Reference Include="MonoMod.Utils" />
      <Reference Include="Newtonsoft.Json" />
      <Reference Include="RailSDK.Net">
        <HintPath>Libraries/Native/$(EffectivePlatform)/RailSDK.Net.dll</HintPath>
@@ -37,7 +45,7 @@
      <EmbeddedResource Include="GameContent/WorldBuilding/*" />
      <EmbeddedResource Include="IO/Data/*" />
 -    <EmbeddedResource Include="Libraries/DotNetZip/**" />
-+    <EmbeddedResource Include="Libraries/Common/**" />
++    <EmbeddedResource Include="Libraries/**" />
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
