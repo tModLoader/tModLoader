@@ -235,9 +235,6 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PlatformTarget>x86</PlatformTarget>
     <LangVersion>latest</LangVersion>
-    <!--Nullable reference types are greatly encouraged, but not necessary. You can disable them by removing the following two lines.-->
-    <Nullable>enable</Nullable>
-    <WarningsAsErrors>nullable</WarningsAsErrors>
   </PropertyGroup>
   <Target Name=""BuildMod"" AfterTargets=""Build"">
     <Exec Command=""dotnet &quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)"" />
