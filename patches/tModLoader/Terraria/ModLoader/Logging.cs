@@ -282,7 +282,8 @@ namespace Terraria.ModLoader
 		}
 
 		internal static readonly FieldInfo f_fileName =
-			typeof(StackFrame).GetField("_fileName", BindingFlags.Instance | BindingFlags.NonPublic);
+			typeof(StackFrame).GetField("_fileName", BindingFlags.Instance | BindingFlags.NonPublic) ??
+			typeof(StackFrame).GetField("strFileName", BindingFlags.Instance | BindingFlags.NonPublic);
 
 		private static readonly Assembly TerrariaAssembly = Assembly.GetExecutingAssembly();
 
