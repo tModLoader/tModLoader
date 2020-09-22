@@ -48,12 +48,13 @@
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
-@@ -62,7 +_,7 @@
-       <LibFiles Include="Libraries/Native/**" />
-     </ItemGroup>
-     <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
+@@ -65,8 +_,8 @@
+     <!--Move important assembly refs to bin-->
+     <Copy SourceFiles="@(SteamFiles)" DestinationFolder="$(TargetDir)" />
+     <!--Move bin to steam-->
 -    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)" />
 +    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)" />
+     <!--Move lib folder to steam-->
 -    <Copy SourceFiles="@(LibFiles)" DestinationFolder="$(TerrariaSteamPath)/Libraries/Native/%(RecursiveDir)" />
 +    <Copy SourceFiles="@(LibFiles)" DestinationFolder="$(tModLoaderSteamPath)/Libraries/Native/%(RecursiveDir)" />
    </Target>

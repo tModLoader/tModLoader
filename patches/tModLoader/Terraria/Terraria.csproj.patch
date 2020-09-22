@@ -53,16 +53,8 @@
      <EmbeddedResource Remove="Libraries/Mono/**" Condition="!$(DefineConstants.Contains('MONO'))" />
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
-@@ -78,6 +_,7 @@
-       <SteamFiles Include="Libraries/Native/Linux/**/*steam*;Libraries/Native/Linux/**/Steam*" Condition="!$(DefineConstants.Contains('WINDOWS'))" />
-       <LibFolder Include="Libraries/Native/OSX/**" Exclude="**/*steam*;**/Steam*" Condition="$(DefineConstants.Contains('MAC'))" />
-       <LibFolder Include="Libraries/Native/Linux/**" Condition="$(DefineConstants.Contains('LINUX'))" />
-+      <LibFolder Include="Libraries/Native/*.*;" Condition="!$(DefineConstants.Contains('WINDOWS'))" />
-       <BinFiles Include="$(TargetDir)**" />
-     </ItemGroup>
-     <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
-@@ -85,6 +_,6 @@
-     <Copy SourceFiles="@(LibFolder)" DestinationFolder="$(TargetDir)" />
+@@ -86,6 +_,6 @@
+     <Copy SourceFiles="@(LibFiles)" DestinationFolder="$(TargetDir)" />
      <Copy SourceFiles="@(SteamFiles)" DestinationFolder="$(TargetDir)" />
      <!--Move bin to steam-->
 -    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)" />

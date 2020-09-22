@@ -54,15 +54,19 @@
     <None Remove="Libraries/Mono/**" />
     <None Remove="Libraries/Windows/**" />
     <None Remove="Libraries/XNA/**" />
-    <None Remove="Libraries/FNA/**" />
   </ItemGroup>
   <Target Name="CopyToSteamDir" AfterTargets="Build">
     <ItemGroup>
       <BinFiles Include="$(TargetDir)**" />
       <LibFiles Include="Libraries/Native/**" />
+      <SteamFiles Include="Libraries/Common/steam_appid.txt" />
     </ItemGroup>
     <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
+    <!--Move important assembly refs to bin-->
+    <Copy SourceFiles="@(SteamFiles)" DestinationFolder="$(TargetDir)" />
+    <!--Move bin to steam-->
     <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)" />
+    <!--Move lib folder to steam-->
     <Copy SourceFiles="@(LibFiles)" DestinationFolder="$(TerrariaSteamPath)/Libraries/Native/%(RecursiveDir)" />
   </Target>
 </Project>
