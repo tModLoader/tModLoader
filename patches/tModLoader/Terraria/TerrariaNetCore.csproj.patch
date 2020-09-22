@@ -9,10 +9,10 @@
      <EffectivePlatform>Linux</EffectivePlatform>
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
-@@ -23,7 +_,15 @@
-   <ItemGroup>
-     <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
-     <Reference Include="FNA" />
+@@ -25,7 +_,15 @@
+     <Reference Include="FNA">
+       <HintPath>Libraries/FNA/FNA.dll</HintPath>
+     </Reference>
 -    <Reference Include="Ionic.Zip.CF" />
 +    <Reference Include="Ionic.Zip.Reduced" />
 +    <Reference Include="Mono.Cecil" />
@@ -25,8 +25,8 @@
 +    <Reference Include="MonoMod.Utils" />
      <Reference Include="Newtonsoft.Json" />
      <Reference Include="RailSDK.Net">
-       <HintPath>Libraries/RailSDK/RailSDK.Net.dll</HintPath>
-@@ -31,7 +_,7 @@
+       <HintPath>Libraries/Common/RailSDK.Net.dll</HintPath>
+@@ -33,18 +_,19 @@
      <ProjectReference Include="../ReLogic/ReLogicNetCore.csproj" />
      <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
        <Link>Libraries/ReLogic/ReLogic.dll</Link>
@@ -34,8 +34,7 @@
 +      <LogicalName>ReLogic.dll</LogicalName>
      </EmbeddedResource>
      <Reference Include="Steamworks.NET">
-       <HintPath>Libraries/Native/$(EffectivePlatform)/Steamworks.NET.dll</HintPath>
-@@ -39,11 +_,12 @@
+       <HintPath>Libraries/Common/Steamworks.NET.dll</HintPath>
      </Reference>
    </ItemGroup>
    <ItemGroup>
@@ -49,7 +48,7 @@
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
-@@ -61,7 +_,7 @@
+@@ -62,7 +_,7 @@
        <LibFiles Include="Libraries/Native/**" />
      </ItemGroup>
      <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
