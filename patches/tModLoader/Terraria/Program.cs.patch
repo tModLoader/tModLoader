@@ -33,7 +33,7 @@
  
  		public static float LoadedPercentage {
  			get {
-@@ -64,34 +_,73 @@
+@@ -64,33 +_,72 @@
  		public static void ForceLoadThread(object threadContext) {
  			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
  			LoadedEverything = true;
@@ -58,8 +58,7 @@
 +			}
 +		}
 +
-+		private static void ForceStaticInitializers(Type[] types)
-+		{
++		private static void ForceStaticInitializers(Type[] types) {
 +			foreach (Type type in types) {
 +				if (!type.IsGenericType)
 +					RuntimeHelpers.RunClassConstructor(type.TypeHandle);
@@ -94,14 +93,14 @@
 +			var methodPointer = method.MethodHandle.GetFunctionPointer();
 +			JitForcedMethodCache = methodPointer;
 +#endif
-+			}catch (Exception e) {
++			}
++			catch (Exception e) {
 +				Debug.Write(e);
 +			}
 +			Interlocked.Increment(ref ThingsLoaded);
 +		}
 +
-+		private static IEnumerable<MethodInfo> GetMethodsCrossPlatform(Type type)
-+		{
++		private static IEnumerable<MethodInfo> GetMethodsCrossPlatform(Type type) {
  #if WINDOWS
 -				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 +			return type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
@@ -110,11 +109,10 @@
 +			return type.GetMethods();
  #endif
 -				foreach (MethodInfo methodInfo in methods) {
--
 -					try {
 -						if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
 -#if XNA
--						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
+-							RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
 -#else
 -							JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
 -#endif
@@ -130,7 +128,7 @@
  		}
  
  		private static void ForceStaticInitializers(Assembly assembly) {
-@@ -102,13 +_,6 @@
+@@ -101,13 +_,6 @@
  			}
  		}
  
@@ -144,7 +142,7 @@
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
  			Assembly assembly = null;
  			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-@@ -158,27 +_,49 @@
+@@ -157,27 +_,52 @@
  			}
  		}
  
@@ -161,6 +159,9 @@
 +				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
 +				LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
 +				Platform.Get<IPathService>().GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader{(ModLoader.ModLoader.IsBeta ? Path.DirectorySeparatorChar + "Beta" : "")}");
++
++			if (File.Exists("savehere.txt"))
++				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
 +
 +			try {
 +				Logging.Init();
@@ -198,7 +199,7 @@
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
  #if CLIENT
-@@ -187,9 +_,10 @@
+@@ -186,9 +_,10 @@
  					main.DedServ();
  #endif
  				}
@@ -212,7 +213,7 @@
  			}
  		}
  
-@@ -211,9 +_,15 @@
+@@ -210,9 +_,15 @@
  				}
  
  #if CLIENT

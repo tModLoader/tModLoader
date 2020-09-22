@@ -258,6 +258,8 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 				return true;
 			if (!fileContents.Contains(@"<PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />"))
 				return true;
+			if (!fileContents.Contains(@"-define &quot;$(DefineConstants)&quot;") && !ReLogic.OS.Platform.IsWindows)
+				return true;
 
 			return false;
 		}

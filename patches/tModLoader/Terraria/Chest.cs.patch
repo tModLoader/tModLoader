@@ -70,7 +70,7 @@
 +					case int _ when TileID.Sets.BasicChest[type]:
 +						NetMessage.SendData(34, -1, -1, null, 100, x, y, style, 0, type, 0);
 +						break;
-+					case int _ when TileLoader.IsDresser(type):
++					case int _ when TileID.Sets.BasicDresser[type]:
 +						NetMessage.SendData(34, -1, -1, null, 102, x, y, style, 0, type, 0);
 +						break;
  				}

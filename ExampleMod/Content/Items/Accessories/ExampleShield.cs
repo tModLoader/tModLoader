@@ -81,10 +81,10 @@ namespace ExampleMod.Content.Items.Accessories
 			}
 		}
 
-		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		//Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<ExampleItem>(60)
+				.AddIngredient<ExampleItem>()
 				.AddTile<ExampleWorkbench>()
 				.Register();
 		}
