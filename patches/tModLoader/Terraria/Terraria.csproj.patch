@@ -37,8 +37,8 @@
 +    <Reference Include="MonoMod.Utils" />
      <Reference Include="Newtonsoft.Json" />
      <Reference Include="RailSDK.Net">
-       <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/RailSDK.Net.dll</HintPath>
-@@ -53,12 +_,13 @@
+       <HintPath>Libraries/RailSDK/RailSDK.Net.dll</HintPath>
+@@ -51,12 +_,13 @@
      </Reference>
    </ItemGroup>
    <ItemGroup>
@@ -53,7 +53,7 @@
      <EmbeddedResource Remove="Libraries/Mono/**" Condition="!$(DefineConstants.Contains('MONO'))" />
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
-@@ -82,6 +_,7 @@
+@@ -80,6 +_,7 @@
        <SteamFiles Include="Libraries/Native/Linux/**/*steam*;Libraries/Native/Linux/**/Steam*" Condition="!$(DefineConstants.Contains('WINDOWS'))" />
        <LibFolder Include="Libraries/Native/OSX/**" Exclude="**/*steam*;**/Steam*" Condition="$(DefineConstants.Contains('MAC'))" />
        <LibFolder Include="Libraries/Native/Linux/**" Condition="$(DefineConstants.Contains('LINUX'))" />
@@ -61,7 +61,7 @@
        <BinFiles Include="$(TargetDir)**" />
      </ItemGroup>
      <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
-@@ -89,6 +_,6 @@
+@@ -87,6 +_,6 @@
      <Copy SourceFiles="@(LibFolder)" DestinationFolder="$(TargetDir)" />
      <Copy SourceFiles="@(SteamFiles)" DestinationFolder="$(TargetDir)" />
      <!--Move bin to steam-->

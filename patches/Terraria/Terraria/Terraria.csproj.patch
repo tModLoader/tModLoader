@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Terraria.csproj
 +++ src/Terraria/Terraria/Terraria.csproj
-@@ -1,35 +_,56 @@
+@@ -1,35 +_,54 @@
  <Project Sdk="Microsoft.NET.Sdk">
    <Import Project="../Configuration.targets" />
 +  <Import Project="../../TerrariaSteamPath.targets" />
@@ -34,9 +34,7 @@
      <Reference Include="Newtonsoft.Json" />
 -    <Reference Include="RailSDK.Net" />
 +    <Reference Include="RailSDK.Net">
-+      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/RailSDK.Net.dll</HintPath>
-+      <HintPath Condition="$(DefineConstants.Contains('MAC'))">Libraries/Mac/RailSDK.Net.dll</HintPath>
-+      <HintPath Condition="$(DefineConstants.Contains('LINUX'))">Libraries/Linux/RailSDK.Net.dll</HintPath>
++      <HintPath>Libraries/RailSDK/RailSDK.Net.dll</HintPath>
 +    </Reference>
      <ProjectReference Include="../ReLogic/ReLogic.csproj" />
      <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">

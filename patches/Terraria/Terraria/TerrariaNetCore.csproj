@@ -26,8 +26,7 @@
     <Reference Include="Ionic.Zip.CF" />
     <Reference Include="Newtonsoft.Json" />
     <Reference Include="RailSDK.Net">
-      <HintPath>Libraries/Native/$(EffectivePlatform)/RailSDK.Net.dll</HintPath>
-      <!--May need updated for mac?-->
+      <HintPath>Libraries/RailSDK/RailSDK.Net.dll</HintPath>
     </Reference>
     <ProjectReference Include="../ReLogic/ReLogicNetCore.csproj" />
     <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
