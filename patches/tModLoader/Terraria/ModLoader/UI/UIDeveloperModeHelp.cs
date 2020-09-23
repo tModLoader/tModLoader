@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader.Core;
 using Terraria.Audio;
+using ReLogic.OS;
 
 namespace Terraria.ModLoader.UI
 {
@@ -115,7 +116,7 @@ namespace Terraria.ModLoader.UI
 			var refAssemMsgBox = AddMessageBox(refAssemMsg);
 
 			if (!refAssemCheck) {
-				if (ModCompile.PlatformSupportsVisualStudio)
+				if (!Platform.IsLinux)
 					AddButton(refAssemMsgBox, Language.GetTextValue("tModLoader.DMVisualStudio"), DevelopingWithVisualStudio);
 
 				var icon = UICommon.ButtonExclamationTexture;

@@ -38,7 +38,7 @@
      <Reference Include="Newtonsoft.Json" />
      <Reference Include="RailSDK.Net">
        <HintPath>Libraries/Common/RailSDK.Net.dll</HintPath>
-@@ -49,12 +_,13 @@
+@@ -49,12 +_,11 @@
      </Reference>
    </ItemGroup>
    <ItemGroup>
@@ -47,9 +47,8 @@
      <EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
      <EmbeddedResource Include="GameContent/WorldBuilding/*" />
      <EmbeddedResource Include="IO/Data/*" />
-     <EmbeddedResource Include="Libraries/**" />
+-    <EmbeddedResource Include="Libraries/**" />
 -    <EmbeddedResource Remove="Libraries/Native/**" />
-+    <!--<EmbeddedResource Remove="Libraries/Native/**" />-->
      <EmbeddedResource Remove="Libraries/Mono/**" Condition="!$(DefineConstants.Contains('MONO'))" />
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
