@@ -10,10 +10,12 @@ namespace Terraria.ModLoader
 		public static readonly Version Version = GetVersion();
 
 		private static Version GetVersion() {
-			//const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
-			//using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
-			//	if (ndpKey != null && ndpKey.GetValue("Release") is int releaseKey)
-			//		return CheckFor45PlusVersion(releaseKey);
+#if !NETCORE
+			const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
+			using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
+				if (ndpKey != null && ndpKey.GetValue("Release") is int releaseKey)
+					return CheckFor45PlusVersion(releaseKey);
+#endif
 			return Environment.Version;
 		}
 
