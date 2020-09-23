@@ -235,9 +235,6 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PlatformTarget>x86</PlatformTarget>
     <LangVersion>latest</LangVersion>
-    <!--Nullable reference types are greatly encouraged, but not necessary. You can disable them by removing the following two lines.-->
-    <Nullable>enable</Nullable>
-    <WarningsAsErrors>nullable</WarningsAsErrors>
   </PropertyGroup>
   <Target Name=""BuildMod"" AfterTargets=""Build"">
     <Exec Command=""dotnet &quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)"" />
@@ -257,6 +254,8 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 			if (!fileContents.Contains("<LangVersion>latest</LangVersion>") && !fileContents.Contains("<LangVersion>preview</LangVersion>"))
 				return true;
 			if (!fileContents.Contains(@"<PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />"))
+				return true;
+			if (!fileContents.Contains(@"-define &quot;$(DefineConstants)&quot;") && !ReLogic.OS.Platform.IsWindows)
 				return true;
 
 			return false;
