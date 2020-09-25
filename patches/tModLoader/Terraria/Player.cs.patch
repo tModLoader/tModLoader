@@ -1152,7 +1152,7 @@
 +				//minionDamage += 0.1f;
  				minionKB += 0.5f;
 +
-+				if (SoundLoader.ItemToMusic.TryGetValue(armor[l].type, out int musicId))
++				if (SoundLoader.itemToMusic.TryGetValue(armor[l].type, out int musicId))
 +					Main.musicBox2 = musicId;
 +			}
 +
@@ -1304,7 +1304,7 @@
 +					;//Silence
 +				else if (Main.curMusic < Main.maxMusic)
  					currentItem.SetDefaults(num3 + 562);
-+				else if (SoundLoader.MusicToItem.TryGetValue(Main.curMusic, out int itemId))
++				else if (SoundLoader.musicToItem.TryGetValue(Main.curMusic, out int itemId))
 +					currentItem.SetDefaults(itemId);
  			}
  

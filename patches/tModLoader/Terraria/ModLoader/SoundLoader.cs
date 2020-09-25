@@ -21,9 +21,9 @@ namespace Terraria.ModLoader
 
 		//Music boxes
 		//TODO: Move to MusicLoader?
-		internal static readonly IDictionary<int, int> MusicToItem = new Dictionary<int, int>();
-		internal static readonly IDictionary<int, int> ItemToMusic = new Dictionary<int, int>();
-		internal static readonly IDictionary<int, IDictionary<int, int>> TileToMusic = new Dictionary<int, IDictionary<int, int>>();
+		internal static readonly IDictionary<int, int> musicToItem = new Dictionary<int, int>();
+		internal static readonly IDictionary<int, int> itemToMusic = new Dictionary<int, int>();
+		internal static readonly IDictionary<int, IDictionary<int, int>> tileToMusic = new Dictionary<int, IDictionary<int, int>>();
 
 		private static readonly List<SoundData> Sounds = new List<SoundData>();
 		private static readonly Dictionary<string, SoundData> SoundsByFullPath = new Dictionary<string, SoundData>();
@@ -82,9 +82,9 @@ namespace Terraria.ModLoader
 			Sounds.Clear();
 			SoundsByFullPath.Clear();
 
-			MusicToItem.Clear();
-			ItemToMusic.Clear();
-			TileToMusic.Clear();
+			musicToItem.Clear();
+			itemToMusic.Clear();
+			tileToMusic.Clear();
 		}
 
 		internal static bool PlayModSound(int type, int style, float volume, float pan, ref SoundEffectInstance soundEffectInstance) {
