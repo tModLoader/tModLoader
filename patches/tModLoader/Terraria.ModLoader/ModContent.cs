@@ -89,16 +89,16 @@ namespace Terraria.ModLoader
 		/// Returns whether or not a texture with the specified name exists.
 		/// </summary>
 		public static bool TextureExists(string name) {
-			if (!name.Contains('/'))
+			if (Main.dedServ || string.IsNullOrWhiteSpace(name) || !name.Contains('/'))
 				return false;
 
-			string modName, subName;
-			SplitName(name, out modName, out subName);
+			SplitName(name, out string modName, out string subName);
 
 			if (modName == "Terraria")
-				return !Main.dedServ && (Main.instance.Content as TMLContentManager).ImageExists(subName);
+				return (Main.instance.Content as TMLContentManager).ImageExists(subName);
 
 			Mod mod = ModLoader.GetMod(modName);
+
 			return mod != null && mod.TextureExists(subName);
 		}
 
@@ -109,25 +109,31 @@ namespace Terraria.ModLoader
 		/// <param name="texture">The texture itself will be output to this</param>
 		/// <returns>True if the texture is found, false otherwise.</returns>
 		internal static bool TryGetTexture(string name, out Texture2D texture) {
-			if (Main.dedServ) {
+			if (Main.dedServ || string.IsNullOrWhiteSpace(name) || !name.Contains('/')) {
 				texture = null;
+
 				return false;
 			}
 
-			string modName, subName;
-			SplitName(name, out modName, out subName);
+			SplitName(name, out string modName, out string subName);
+
 			if (modName == "Terraria") {
-				if((Main.instance.Content as TMLContentManager).ImageExists(subName)) { 
+				if ((Main.instance.Content as TMLContentManager).ImageExists(subName)) {
 					texture = Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + subName);
+
 					return true;
 				}
+
 				texture = null;
+
 				return false;
 			}
 
 			Mod mod = ModLoader.GetMod(modName);
+
 			if (mod == null) {
 				texture = null;
+
 				return false;
 			}
 
