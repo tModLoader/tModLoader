@@ -70,6 +70,9 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
+		public static string PreparePath(string path)
+			=> path.Replace('/', Path.DirectorySeparatorChar);
+
 		public static string RelPath(string basePath, string path) {
 			if (path.Last() == Path.DirectorySeparatorChar)
 				path = path.Substring(0, path.Length - 1);
@@ -120,12 +123,10 @@ namespace Terraria.ModLoader.Setup
 			Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories)
 			.Select(path => (file: path, relPath: RelPath(dir, path)));
 
-		public static void EmptyDirectoryRecursive(string dir) {
-			foreach (string directory in Directory.EnumerateDirectories(dir,"*",new EnumerationOptions { RecurseSubdirectories = true })) {
-				foreach (string file in Directory.GetFiles(dir)) {
-					File.SetAttributes(file,FileAttributes.Normal);
-					File.Delete(file);
-				}
+		public static void DeleteAllFiles(string dir) {
+			foreach (string file in Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories)) {
+				File.SetAttributes(file,FileAttributes.Normal);
+				File.Delete(file);
 			}
 		}
 
