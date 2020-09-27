@@ -2100,7 +2100,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_8cs_source.html#l01362">1362</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
 
-<p>References <a class="el" href="_mod_content_8cs_source.html#l00141">Terraria.ModLoader.ModContent.GetSound()</a>, and <a class="el" href="_sound_loader_8cs_source.html#l00047">Terraria.ModLoader.SoundLoader.GetSoundSlot()</a>.</p>
+<p>References <a class="el" href="_mod_content_8cs_source.html#l00147">Terraria.ModLoader.ModContent.GetSound()</a>, and <a class="el" href="_sound_loader_8cs_source.html#l00047">Terraria.ModLoader.SoundLoader.GetSoundSlot()</a>.</p>
 <div class="fragment"><div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;                                                                                         {</div><div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;            <span class="keywordflow">if</span> (!loading)</div><div class="line"><a name="l01364"></a><span class="lineno"> 1364</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code" href="class_exception.html">Exception</a>(<span class="stringliteral">&quot;AddSound can only be called from Mod.Load or Mod.Autoload&quot;</span>);</div><div class="line"><a name="l01365"></a><span class="lineno"> 1365</span>&#160;            <span class="keywordtype">int</span> <span class="keywordtype">id</span> = SoundLoader.ReserveSoundID(type);</div><div class="line"><a name="l01366"></a><span class="lineno"> 1366</span>&#160;            SoundLoader.sounds[type][soundPath] = id;</div><div class="line"><a name="l01367"></a><span class="lineno"> 1367</span>&#160;            <span class="keywordflow">if</span> (modSound != null) {</div><div class="line"><a name="l01368"></a><span class="lineno"> 1368</span>&#160;                SoundLoader.modSounds[type][id] = modSound;</div><div class="line"><a name="l01369"></a><span class="lineno"> 1369</span>&#160;                modSound.sound = ModContent.GetSound(soundPath);</div><div class="line"><a name="l01370"></a><span class="lineno"> 1370</span>&#160;            }</div><div class="line"><a name="l01371"></a><span class="lineno"> 1371</span>&#160;        }</div><div class="ttc" id="class_exception_html"><div class="ttname"><a href="class_exception.html">Exception</a></div></div>
 </div><!-- fragment -->
 <p><div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -4288,7 +4288,7 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Referenced by <a class="el" href="_mod_content_8cs_source.html#l00621">Terraria.ModLoader.ModContent.OpenRead()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_content_8cs_source.html#l00627">Terraria.ModLoader.ModContent.OpenRead()</a>.</p>
 
 <p><div id="dynsection-36" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-36-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -5054,7 +5054,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_8cs_source.html#l01634">1634</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_content_8cs_source.html#l00173">Terraria.ModLoader.ModContent.GetMusic()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_content_8cs_source.html#l00179">Terraria.ModLoader.ModContent.GetMusic()</a>.</p>
 <div class="fragment"><div class="line"><a name="l01634"></a><span class="lineno"> 1634</span>&#160;                                           {</div><div class="line"><a name="l01635"></a><span class="lineno"> 1635</span>&#160;            <span class="keywordflow">if</span> (!musics.TryGetValue(name, out var music))</div><div class="line"><a name="l01636"></a><span class="lineno"> 1636</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html">MissingResourceException</a>(name);</div><div class="line"><a name="l01637"></a><span class="lineno"> 1637</span>&#160;</div><div class="line"><a name="l01638"></a><span class="lineno"> 1638</span>&#160;            <span class="keywordflow">return</span> music;</div><div class="line"><a name="l01639"></a><span class="lineno"> 1639</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception_html"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html">Terraria.ModLoader.Exceptions.MissingResourceException</a></div><div class="ttdef"><b>Definition:</b> <a href="_missing_resource_exception_8cs_source.html#l00008">MissingResourceException.cs:8</a></div></div>
 </div><!-- fragment -->
 <p><div id="dynsection-38" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -5346,7 +5346,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_8cs_source.html#l01614">1614</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_content_8cs_source.html#l00141">Terraria.ModLoader.ModContent.GetSound()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_content_8cs_source.html#l00147">Terraria.ModLoader.ModContent.GetSound()</a>.</p>
 <div class="fragment"><div class="line"><a name="l01614"></a><span class="lineno"> 1614</span>&#160;                                                 {</div><div class="line"><a name="l01615"></a><span class="lineno"> 1615</span>&#160;            <span class="keywordflow">if</span> (!sounds.TryGetValue(name, out var sound))</div><div class="line"><a name="l01616"></a><span class="lineno"> 1616</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html">MissingResourceException</a>(name);</div><div class="line"><a name="l01617"></a><span class="lineno"> 1617</span>&#160;</div><div class="line"><a name="l01618"></a><span class="lineno"> 1618</span>&#160;            <span class="keywordflow">return</span> sound;</div><div class="line"><a name="l01619"></a><span class="lineno"> 1619</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception_html"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html">Terraria.ModLoader.Exceptions.MissingResourceException</a></div><div class="ttdef"><b>Definition:</b> <a href="_missing_resource_exception_8cs_source.html#l00008">MissingResourceException.cs:8</a></div></div>
 </div><!-- fragment -->
 <p><div id="dynsection-39" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -7054,7 +7054,7 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Referenced by <a class="el" href="_mod_content_8cs_source.html#l00185">Terraria.ModLoader.ModContent.MusicExists()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_content_8cs_source.html#l00191">Terraria.ModLoader.ModContent.MusicExists()</a>.</p>
 
 <p><div id="dynsection-45" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-45-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -7557,7 +7557,7 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Referenced by <a class="el" href="_mod_content_8cs_source.html#l00158">Terraria.ModLoader.ModContent.SoundExists()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_content_8cs_source.html#l00164">Terraria.ModLoader.ModContent.SoundExists()</a>.</p>
 
 <p><div id="dynsection-47" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-47-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
