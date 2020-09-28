@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/Tile_Entities/TEHatRack.cs
++++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEHatRack.cs
+@@ -8,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.Tile_Entities
+ {
+-	public class TEHatRack : TileEntity
++	public sealed class TEHatRack : TileEntity
+ 	{
+ 		private static byte _myEntityID;
+ 		private const int MyTileID = 475;

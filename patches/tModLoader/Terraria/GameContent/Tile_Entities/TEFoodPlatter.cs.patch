@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/Tile_Entities/TEFoodPlatter.cs
++++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEFoodPlatter.cs
+@@ -4,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.Tile_Entities
+ {
+-	public class TEFoodPlatter : TileEntity
++	public sealed class TEFoodPlatter : TileEntity
+ 	{
+ 		private static byte _myEntityID;
+ 		public Item item;
