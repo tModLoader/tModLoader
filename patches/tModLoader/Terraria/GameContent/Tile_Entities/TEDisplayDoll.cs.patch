@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
++++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
+@@ -8,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.Tile_Entities
+ {
+-	public class TEDisplayDoll : TileEntity
++	public sealed partial class TEDisplayDoll : TileEntity
+ 	{
+ 		private static byte _myEntityID;
+ 		private const int MyTileID = 470;
