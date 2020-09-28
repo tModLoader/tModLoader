@@ -1,10 +1,8 @@
 using ExampleMod.Content;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.NPCs;
-using Steamworks;
 using System.IO;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod
@@ -40,22 +38,11 @@ namespace ExampleMod
 					break;
 			}
 		}
-
-		public override void AddResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
-		//Lets you add your own sorting methods in Journey mode's Duplication menu, or change the sorting methods of existing items.
-		//This is useful for items with custom damage classes, as well as specific themed items.
-			if (item.modItem?.Mod == this) { 
-				itemGroup = (ContentSamples.CreativeHelper.ItemGroup)1337; //This number is where the item sort is in relation to any other sorts added by vanilla or mods. To see the vanilla sorting numbers, refer to (insert wiki page here).
-			};
-			if (item.type == ModContent.ItemType<Content.Items.Placeable.ExampleTorch>()) {
-				itemGroup = ContentSamples.CreativeHelper.ItemGroup.Torches; //Vanilla usually matches sorting methods with the right type of item, but sometimes, like with torches, it doesn't. Make sure to set whichever items manually if need be. 
-			}
-		}
 	}
-}
 
-internal enum ExampleModMessageType : byte
-{
-	ExamplePlayerSyncPlayer,
-	ExampleTeleportToStatue
+	internal enum ExampleModMessageType : byte
+	{
+		ExamplePlayerSyncPlayer,
+		ExampleTeleportToStatue
+	}
 }

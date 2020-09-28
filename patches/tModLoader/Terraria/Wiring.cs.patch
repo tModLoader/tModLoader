@@ -100,7 +100,7 @@
  						break;
  					}
 -				case 4:
-+				case int _ when TileLoader.IsTorch(type):
++				case int _ when TileID.Sets.Torch[type]:
  					if (tile.frameX < 66)
  						tile.frameX += 66;
  					else

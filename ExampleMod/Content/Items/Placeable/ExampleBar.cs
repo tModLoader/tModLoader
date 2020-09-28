@@ -26,7 +26,7 @@ namespace ExampleMod.Content.Items.Placeable
 			item.createTile = TileType<Tiles.ExampleBar>(); // The ID of the wall that this item should place when used. ModContent.TileType<T>() method returns an integer ID of the wall provided to it through its generic type argument (the type in angle brackets)..
 			item.placeStyle = 0;
 		}
-		// Check ExampleItem.cs to see how recipes work.
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient<ExampleOre>(4)

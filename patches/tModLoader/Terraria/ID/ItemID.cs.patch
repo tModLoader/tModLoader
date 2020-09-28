@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/ID/ItemID.cs
 +++ src/tModLoader/Terraria/ID/ItemID.cs
-@@ -2,6 +_,7 @@
+@@ -2,10 +_,11 @@
  using ReLogic.Reflection;
  using System.Collections.Generic;
  using Terraria.DataStructures;
@@ -8,9 +8,17 @@
  
  namespace Terraria.ID
  {
-@@ -35,7 +_,7 @@
+-	public class ItemID
++	public partial class ItemID
+ 	{
+ 		public struct BannerEffect
+ 		{
+@@ -33,9 +_,9 @@
+ 			}
+ 		}
  
- 		public class Sets
+-		public class Sets
++		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(5045);
 +			public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
@@ -27,11 +35,3 @@
  			public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1);
  			public static bool[] ExoticPlantsForDyeTrade = Factory.CreateBoolSet(3385, 3386, 3387, 3388);
  			public static bool[] NebulaPickup = Factory.CreateBoolSet(3453, 3454, 3455);
-@@ -891,6 +_,7 @@
- 			public static bool[] SingleUseInGamepad = Factory.CreateBoolSet(8, 427, 3004, 523, 433, 429, 974, 1333, 1245, 3114, 430, 3045, 428, 2274, 431, 432, 4383, 4384, 4385, 4386, 4387, 4388);
- 			public static bool[] Torches = Factory.CreateBoolSet(8, 427, 3004, 523, 433, 429, 974, 1333, 1245, 3114, 430, 3045, 428, 2274, 431, 432, 4383, 4384, 4385, 4386, 4387, 4388);
- 			public static bool[] WaterTorches = Factory.CreateBoolSet(523, 1333, 4384);
-+			public static bool[] Glowsticks = Factory.CreateBoolSet(282, 286, 3002, 3112, 4776);
- 			public static short[] Workbenches = new short[41] {
- 				36,
- 				635,

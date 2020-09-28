@@ -1,5 +1,4 @@
-﻿using ExampleMod.Content.Tiles.Furniture;
-using Terraria;
+﻿using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
@@ -44,10 +43,11 @@ namespace ExampleMod.Content.Items.Consumables
 			return true;
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<BossItem>(10)
-				.AddTile<ExampleWorkbench>()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

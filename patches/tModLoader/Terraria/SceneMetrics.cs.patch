@@ -22,7 +22,7 @@
  							continue;
  
 -						if (tile2.type == 104)
-+						if (tile2.type == TileID.GrandfatherClocks || (ModContent.GetModTile(tile2.type)?.clock ?? false))
++						if (TileID.Sets.Clock[tile2.type])
  							HasClock = true;
  
  						switch (tile2.type) {

@@ -54,12 +54,12 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void AutoLightSelect(ref bool dryTorch, ref bool wetTorch, ref bool glowstick) {
 			dryTorch = true; // This makes our item eligible for being selected with smart select at a short distance when not underwater.
 		}
-		
+
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ItemID.Torch, 3)
-				.AddIngredient<ExampleBlock>()
-				.AddTile(TileID.Furnaces)
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

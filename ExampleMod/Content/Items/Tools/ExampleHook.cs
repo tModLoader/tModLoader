@@ -1,5 +1,4 @@
-﻿using ExampleMod.Content.Tiles.Furniture;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
@@ -24,10 +23,11 @@ namespace ExampleMod.Content.Items.Tools
 			item.shoot = ProjectileType<ExampleHookProjectile>(); // Makes the item shoot the hook's projectile when used.
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<ExampleItem>(100)
-				.AddTile<ExampleWorkbench>()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

@@ -26,10 +26,10 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			item.createTile = TileType<Tiles.Furniture.ExampleChest>();
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ItemID.Chest)
-				.AddIngredient<ExampleBlock>(10)
+				.AddIngredient<ExampleItem>()
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}

@@ -48,6 +48,7 @@ namespace ExampleMod.Content.Items.Placeable
 			item.createTile = TileType<Tiles.ExampleBlock>();
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe(10)
 				.AddIngredient<ExampleItem>()

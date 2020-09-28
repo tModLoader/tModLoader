@@ -1,5 +1,4 @@
 using ExampleMod.Content.Rarities;
-using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -48,12 +47,11 @@ namespace ExampleMod.Content.Items.Weapons
 			target.AddBuff(BuffID.OnFire, 60);
 		}
 
-		// Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<ExampleItem>(10)
-				.AddIngredient(ItemID.Wood)
-				.AddTile<ExampleWorkbench>()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

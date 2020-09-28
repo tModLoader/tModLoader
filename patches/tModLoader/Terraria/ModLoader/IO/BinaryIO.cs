@@ -5,12 +5,6 @@ namespace Terraria.ModLoader.IO
 {
 	public static class BinaryIO
 	{
-		public static void WriteItem(this BinaryWriter writer, Item item, bool readStack = false, bool readFavorite = false) =>
-			ItemIO.Send(item, writer, readStack, readFavorite);
-
-		public static Item ReadItem(this BinaryReader reader, bool readStack = false, bool readFavorite = false) =>
-			ItemIO.Receive(reader, readStack, readFavorite);
-
 		//copied from BinaryWriter.Read7BitEncodedInt
 		public static void WriteVarInt(this BinaryWriter writer, int value) {
 			// Write out an int 7 bits at a time.  The high bit of the byte,

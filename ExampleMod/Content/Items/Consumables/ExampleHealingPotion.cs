@@ -46,10 +46,10 @@ namespace ExampleMod.Content.Items.Consumables
 			healValue = player.statLifeMax2 / (quickHeal ? 4 : 2);
 		}
 
-		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<ExampleItem>(10)
+				.AddIngredient<ExampleItem>()
 				.AddTile(TileID.Bottles) //Making this recipe be crafted at bottles will automatically make Alchemy Table's effect apply to its ingredients.
 				.Register();
 		}
