@@ -135,7 +135,7 @@ namespace Terraria.ModLoader.IO
 		public static void Receive(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false)
 			=> Read(item, reader, ModNet.AllowVanillaClients, readStack, readFavorite);
 
-		public static Item Receive(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false)
+		public static Item Receive(BinaryReader reader, bool readStack = false, bool readFavorite = false)
 			=> Read(reader, ModNet.AllowVanillaClients, readStack, readFavorite);
 
 		public static void Write(Item item, BinaryWriter writer, bool vanillaCompatible, bool writeStack = false, bool writeFavorite = false) {
