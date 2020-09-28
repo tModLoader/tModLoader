@@ -129,25 +129,49 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		public static void Send(Item item, BinaryWriter writer, bool writeStack = false, bool writeFavourite = false) {
-			writer.Write((short)item.netID);
-			writer.Write(item.prefix);
-			if (writeStack) writer.Write((short)item.stack);
-			if (writeFavourite) writer.Write(item.favorited);
-			SendModData(item, writer);
+		public static void Send(Item item, BinaryWriter writer, bool writeStack = false, bool writeFavorite = false) {
+			if (!ModNet.AllowVanillaClients) {
+				writer.WriteVarInt(item.netID);
+			}
+			else {
+				writer.Write((short)item.netID);
+			}
+
+			writer.Write(item.prefix); //TODO: Turn prefix into Int32.
+
+			if (writeStack) {
+				if (!ModNet.AllowVanillaClients)
+					writer.WriteVarInt(item.stack);
+				else
+					writer.Write((short)item.stack);
+			}
+
+			if (writeFavorite)
+				writer.Write(item.favorited);
+
+			if (!ModNet.AllowVanillaClients)
+				SendModData(item, writer);
 		}
 
 		public static void Receive(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false) {
-			item.netDefaults(reader.ReadInt16());
+			item.netDefaults(ModNet.AllowVanillaClients ? reader.ReadInt16() : reader.ReadVarInt());
 			item.Prefix(reader.ReadByte());
-			if (readStack) item.stack = reader.ReadInt16();
-			if (readFavorite) item.favorited = reader.ReadBoolean();
-			ReceiveModData(item, reader);
+
+			if (readStack)
+				item.stack = ModNet.AllowVanillaClients ? reader.ReadInt16() : reader.ReadVarInt();
+
+			if (readFavorite)
+				item.favorited = reader.ReadBoolean();
+
+			if (!ModNet.AllowVanillaClients)
+				ReceiveModData(item, reader);
 		}
 
 		public static Item Receive(BinaryReader reader, bool readStack = false, bool readFavorite = false) {
 			var item = new Item();
+
 			Receive(item, reader, readStack, readFavorite);
+
 			return item;
 		}
 
