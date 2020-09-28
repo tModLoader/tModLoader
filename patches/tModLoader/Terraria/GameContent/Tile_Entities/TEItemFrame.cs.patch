@@ -14,37 +14,22 @@
  	{
  		private static byte _myEntityID;
  		public Item item;
-@@ -71,13 +_,30 @@
+@@ -71,16 +_,11 @@
  		}
  
  		public override void WriteExtraData(BinaryWriter writer, bool networkSend) {
 -			writer.Write((short)item.netID);
 -			writer.Write(item.prefix);
 -			writer.Write((short)item.stack);
-+			if (networkSend && !ModNet.AllowVanillaClients) {
-+				writer.WriteVarInt(item.netID);
-+				writer.Write(item.prefix);
-+				writer.WriteVarInt(item.stack);
-+
-+				return;
-+			}
-+
-+			writer.Write((short)(item.netID >= ItemID.Count ? 0 : item.netID));
-+			writer.Write((byte)(item.prefix >= PrefixID.Count ? 0 : item.prefix));
-+			writer.Write((short)(item.stack >= short.MaxValue ? short.MaxValue : item.stack));
++			ItemIO.Write(item, writer, !networkSend || ModNet.AllowVanillaClients, writeStack: true);
  		}
  
  		public override void ReadExtraData(BinaryReader reader, bool networkSend) {
- 			item = new Item();
-+
-+			if (networkSend && !ModNet.AllowVanillaClients) {
-+				item.netDefaults(reader.ReadVarInt());
-+				item.Prefix(reader.ReadByte());
-+				item.stack = reader.ReadVarInt();
-+
-+				return;
-+			}
-+
- 			item.netDefaults(reader.ReadInt16());
- 			item.Prefix(reader.ReadByte());
- 			item.stack = reader.ReadInt16();
+-			item = new Item();
+-			item.netDefaults(reader.ReadInt16());
+-			item.Prefix(reader.ReadByte());
+-			item.stack = reader.ReadInt16();
++			item = ItemIO.Read(reader, !networkSend || ModNet.AllowVanillaClients, readStack: true);
+ 		}
+ 
+ 		public override string ToString() => Position.X + "x  " + Position.Y + "y item: " + item;
