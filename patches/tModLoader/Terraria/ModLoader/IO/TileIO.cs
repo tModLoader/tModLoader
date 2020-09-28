@@ -550,56 +550,68 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal static List<TagCompound> SaveTileEntities() {
-			List<TagCompound> list = new List<TagCompound>();
+			var list = new List<TagCompound>();
+
 			foreach (KeyValuePair<int, TileEntity> pair in TileEntity.ByID) {
-				if (pair.Value.type >= ModTileEntity.NumVanilla) {
-					ModTileEntity tileEntity = (ModTileEntity)pair.Value;
-					list.Add(new TagCompound {
-						["mod"] = tileEntity.Mod.Name,
-						["name"] = tileEntity.Name,
-						["X"] = tileEntity.Position.X,
-						["Y"] = tileEntity.Position.Y,
-						["data"] = tileEntity.Save()
-					});
-				}
+				var tileEntity = pair.Value;
+				var modTileEntity = tileEntity as ModTileEntity;
+
+				list.Add(new TagCompound {
+					["mod"] = modTileEntity?.Mod.Name ?? "Terraria",
+					["name"] = modTileEntity?.Name ?? tileEntity.GetType().Name,
+					["X"] = tileEntity.Position.X,
+					["Y"] = tileEntity.Position.Y,
+					["data"] = tileEntity.Save()
+				});
 			}
+
 			return list;
 		}
 
 		internal static void LoadTileEntities(IList<TagCompound> list) {
 			foreach (TagCompound tag in list) {
-				ModTileEntity newEntity;
-				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModTileEntity tileEntity)) {
-					newEntity = ModTileEntity.ConstructFromBase(tileEntity);
-					newEntity.type = (byte)tileEntity.Type;
-					newEntity.Position = new Point16(tag.GetShort("X"), tag.GetShort("Y"));
-					if (tag.ContainsKey("data")) {
-						try {
-							newEntity.Load(tag.GetCompound("data"));
-							if (newEntity is UnloadedTileEntity) {
-								((UnloadedTileEntity)newEntity).TryRestore(ref newEntity);
-							}
-						}
-						catch (Exception e) {
-							throw new CustomModDataException(tileEntity.Mod,
-							"Error in reading " + tileEntity.Name + " tile entity data for " + tileEntity.Mod.Name, e);
+				string modName = tag.GetString("mod");
+				string name = tag.GetString("name");
+				var point = new Point16(tag.GetShort("X"), tag.GetShort("Y"));
+
+				ModTileEntity baseModTileEntity = null;
+
+				if (modName != "Terraria" || !TileEntity.ByPosition.TryGetValue(point, out var tileEntity)) {
+					if (!ModContent.TryFind(modName, name, out baseModTileEntity)) {
+						baseModTileEntity = ModContent.GetInstance<UnloadedTileEntity>();
+					}
+
+					tileEntity = ModTileEntity.ConstructFromBase(baseModTileEntity);
+					tileEntity.type = (byte)baseModTileEntity.Type;
+					tileEntity.Position = point;
+
+					(tileEntity as UnloadedTileEntity)?.SetData(tag);
+				}
+
+				if (tag.ContainsKey("data")) {
+					try {
+						tileEntity.Load(tag.GetCompound("data"));
+
+						if (tileEntity is ModTileEntity modTileEntity) {
+							(tileEntity as UnloadedTileEntity)?.TryRestore(ref modTileEntity);
+
+							tileEntity = modTileEntity;
 						}
 					}
+					catch (Exception e) {
+						throw new CustomModDataException((tileEntity as ModTileEntity)?.Mod, $"Error in reading {name} tile entity data for {modName}", e);
+					}
 				}
-				else {
-					tileEntity = ModContent.GetInstance<UnloadedTileEntity>();
-					newEntity = ModTileEntity.ConstructFromBase(tileEntity);
-					newEntity.type = (byte)tileEntity.Type;
-					newEntity.Position = new Point16(tag.GetShort("X"), tag.GetShort("Y"));
-					((UnloadedTileEntity)newEntity).SetData(tag);
-				}
-				if (tileEntity.ValidTile(newEntity.Position.X, newEntity.Position.Y)) {
-					newEntity.ID = TileEntity.AssignNewID();
-					TileEntity.ByID[newEntity.ID] = newEntity;
-					if (TileEntity.ByPosition.TryGetValue(newEntity.Position, out TileEntity other)) {
+
+				if (baseModTileEntity != null && baseModTileEntity.ValidTile(tileEntity.Position.X, tileEntity.Position.Y)) {
+					tileEntity.ID = TileEntity.AssignNewID();
+					TileEntity.ByID[tileEntity.ID] = tileEntity;
+
+					if (TileEntity.ByPosition.TryGetValue(tileEntity.Position, out TileEntity other)) {
 						TileEntity.ByID.Remove(other.ID);
 					}
-					TileEntity.ByPosition[newEntity.Position] = newEntity;
+
+					TileEntity.ByPosition[tileEntity.Position] = tileEntity;
 				}
 			}
 		}

@@ -1,0 +1,60 @@
+--- src/Terraria/Terraria/GameContent/Tile_Entities/TEHatRack.cs
++++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEHatRack.cs
+@@ -4,11 +_,13 @@
+ using Terraria.Audio;
+ using Terraria.DataStructures;
+ using Terraria.GameInput;
++using Terraria.ModLoader;
++using Terraria.ModLoader.IO;
+ using Terraria.UI;
+ 
+ namespace Terraria.GameContent.Tile_Entities
+ {
+-	public class TEHatRack : TileEntity
++	public sealed partial class TEHatRack : TileEntity
+ 	{
+ 		private static byte _myEntityID;
+ 		private const int MyTileID = 475;
+@@ -91,18 +_,14 @@
+ 			for (int i = 0; i < 2; i++) {
+ 				Item item = _items[i];
+ 				if (!item.IsAir) {
+-					writer.Write((short)item.netID);
+-					writer.Write(item.prefix);
+-					writer.Write((short)item.stack);
++					ItemIO.Write(item, writer, !networkSend || ModNet.AllowVanillaClients, writeStack: true);
+ 				}
+ 			}
+ 
+ 			for (int j = 0; j < 2; j++) {
+ 				Item item2 = _dyes[j];
+ 				if (!item2.IsAir) {
+-					writer.Write((short)item2.netID);
+-					writer.Write(item2.prefix);
+-					writer.Write((short)item2.stack);
++					ItemIO.Write(item2, writer, !networkSend || ModNet.AllowVanillaClients, writeStack: true);
+ 				}
+ 			}
+ 		}
+@@ -113,9 +_,7 @@
+ 				_items[i] = new Item();
+ 				Item item = _items[i];
+ 				if (bitsByte[i]) {
+-					item.netDefaults(reader.ReadInt16());
+-					item.Prefix(reader.ReadByte());
+-					item.stack = reader.ReadInt16();
++					ItemIO.Read(item, reader, !networkSend || ModNet.AllowVanillaClients, readStack: true);
+ 				}
+ 			}
+ 
+@@ -123,9 +_,7 @@
+ 				_dyes[j] = new Item();
+ 				Item item2 = _dyes[j];
+ 				if (bitsByte[j + 2]) {
+-					item2.netDefaults(reader.ReadInt16());
+-					item2.Prefix(reader.ReadByte());
+-					item2.stack = reader.ReadInt16();
++					ItemIO.Read(item2, reader, !networkSend || ModNet.AllowVanillaClients, readStack: true);
+ 				}
+ 			}
+ 		}
