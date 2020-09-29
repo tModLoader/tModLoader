@@ -11,6 +11,7 @@ namespace ExampleMod.Content.Items
 		public override void SetStaticDefaults() {
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
+		
 		public override void SetDefaults() {
 			item.shoot = ModContent.ProjectileType<ExampleGolfBallProjectile>(); // Determines what projectile is placed on the golf tee.
 			item.useStyle = ItemUseStyleID.Swing;
