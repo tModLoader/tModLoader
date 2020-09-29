@@ -11,6 +11,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 	public class ExamplePlatform : ModTile
 	{
 		public override void SetDefaults() {
+			// Properties
 			Main.tileLighted[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 			Main.tileSolidTop[Type] = true;
@@ -19,6 +20,16 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileTable[Type] = true;
 			Main.tileLavaDeath[Type] = true;
 			TileID.Sets.Platforms[Type] = true;
+			TileID.Sets.DisableSmartCursor[Type] = true;
+
+			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
+			AddMapEntry(new Color(200, 200, 200));
+
+			dustType = DustType<Sparkle>();
+			drop = ItemType<Items.Placeable.Furniture.ExamplePlatform>();
+			adjTiles = new int[] { TileID.Platforms };
+
+			// Placement
 			TileObjectData.newTile.CoordinateHeights = new[] { 16 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
@@ -28,12 +39,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.UsesCustomCanPlace = false;
 			TileObjectData.newTile.LavaDeath = true;
 			TileObjectData.addTile(Type);
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
-			AddMapEntry(new Color(200, 200, 200));
-			dustType = DustType<Sparkle>();
-			drop = ItemType<Items.Placeable.Furniture.ExamplePlatform>();
-			disableSmartCursor = true;
-			adjTiles = new int[] { TileID.Platforms };
 		}
 
 		public override void PostSetDefaults() => Main.tileNoSunLight[Type] = false;

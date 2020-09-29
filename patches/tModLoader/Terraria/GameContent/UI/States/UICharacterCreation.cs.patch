@@ -1,0 +1,19 @@
+--- src/Terraria/Terraria/GameContent/UI/States/UICharacterCreation.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UICharacterCreation.cs
+@@ -13,6 +_,7 @@
+ using Terraria.Initializers;
+ using Terraria.IO;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ using Terraria.UI.Gamepad;
+ 
+@@ -1053,6 +_,8 @@
+ 
+ 			_player.savedPerPlayerFieldsThatArentInThePlayerClass = new Player.SavedPlayerDataWithAnnoyingRules();
+ 			CreativePowerManager.Instance.ResetDataForNewPlayer(_player);
++
++			PlayerHooks.SetStartInventory(_player, PlayerHooks.GetStartingItems(_player, _player.inventory.Where(item => !item.IsAir)));
+ 		}
+ 
+ 		private bool GetHexColor(string hexString, out Vector3 hsl) {

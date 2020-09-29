@@ -28,8 +28,6 @@ namespace Terraria.ModLoader
 		internal static readonly IList<GlobalItem> globalItems = new List<GlobalItem>();
 		internal static GlobalItem[] InstancedGlobals = new GlobalItem[0];
 		internal static GlobalItem[] NetGlobals;
-		internal static readonly IDictionary<string, int> globalIndexes = new Dictionary<string, int>();
-		internal static readonly IDictionary<Type, int> globalIndexesByType = new Dictionary<Type, int>();
 		internal static readonly ISet<int> animations = new HashSet<int>();
 		internal static readonly int vanillaQuestFishCount = 41;
 		internal static readonly int[] vanillaWings = new int[Main.maxWings];
@@ -129,8 +127,6 @@ namespace Terraria.ModLoader
 			items.Clear();
 			nextItem = ItemID.Count;
 			globalItems.Clear();
-			globalIndexes.Clear();
-			globalIndexesByType.Clear();
 			animations.Clear();
 		}
 
@@ -157,14 +153,6 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookSetDefaults.arr)
 				g.Instance(item).SetDefaults(item);
-		}
-
-		internal static GlobalItem GetGlobalItem(Item item, Mod mod, string name) {
-			return globalIndexes.TryGetValue(mod.Name + ':' + name, out int index) ? globalItems[index].Instance(item) : null;
-		}
-
-		internal static GlobalItem GetGlobalItem(Item item, Type type) {
-			return globalIndexesByType.TryGetValue(type, out int index) ? (index > -1 ? globalItems[index].Instance(item) : null) : null;
 		}
 
 		//near end of Terraria.Main.DrawItem before default drawing call
@@ -1429,8 +1417,7 @@ namespace Terraria.ModLoader
 
 		private delegate bool DelegatePreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI);
 		private static HookList HookPreDrawInWorld = AddHook<DelegatePreDrawInWorld>(g => g.PreDrawInWorld);
-		//in Terraria.Main.DrawItem after ItemSlot.GetItemLight call
-		//  if(!ItemLoader.PreDrawInWorld(item, Main.spriteBatch, color, alpha, ref rotation, ref scale)) { return; }
+
 		/// <summary>
 		/// Returns the "and" operator on the results of ModItem.PreDrawInWorld and all GlobalItem.PreDrawInWorld hooks.
 		/// </summary>
@@ -1558,19 +1545,6 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookExtractinatorUse.arr)
 				g.ExtractinatorUse(extractType, ref resultType, ref resultStack);
-		}
-
-		public static void AutoLightSelect(Item item, ref bool dryTorch, ref bool wetTorch, ref bool glowstick) {
-			if (item.modItem != null) {
-				item.modItem.AutoLightSelect(ref dryTorch, ref wetTorch, ref glowstick);
-				if (wetTorch) {
-					dryTorch = false;
-					glowstick = false;
-				}
-				if (dryTorch) {
-					glowstick = false;
-				}
-			}
 		}
 
 		private delegate void DelegateCaughtFishStack(int type, ref int stack);
@@ -1704,7 +1678,7 @@ namespace Terraria.ModLoader
 			short n = r.ReadInt16();
 			NetGlobals = new GlobalItem[n];
 			for (short i = 0; i < n; i++)
-				NetGlobals[i] = ModContent.Get<GlobalItem>(ModNet.GetMod(r.ReadInt16()).Name, r.ReadString());
+				NetGlobals[i] = ModContent.Find<GlobalItem>(ModNet.GetMod(r.ReadInt16()).Name, r.ReadString());
 		}
 
 		private static bool HasMethod(Type t, string method, params Type[] args) {

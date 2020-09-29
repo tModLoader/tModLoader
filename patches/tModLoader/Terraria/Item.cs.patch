@@ -8,7 +8,7 @@
  using Terraria.Audio;
  using Terraria.Enums;
  using Terraria.GameContent;
-@@ -10,11 +_,25 @@
+@@ -10,10 +_,11 @@
  using Terraria.ID;
  using Terraria.UI;
  using Terraria.Utilities;
@@ -19,22 +19,8 @@
 -	public class Item : Entity
 +	public partial class Item : Entity
  	{
-+		public ModItem modItem {
-+			get;
-+			internal set;
-+		}
-+
-+		internal GlobalItem[] globalItems = new GlobalItem[0];
-+
-+		/// <summary>Gets the global item. Use this overload when you dynamically add GlobalItems manually.</summary>
-+		public GlobalItem GetGlobalItem(Mod mod, string name) => ItemLoader.GetGlobalItem(this, mod, name).Instance(this);
-+
-+		/// <summary>Gets the global item. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
-+		public T GetGlobalItem<T>() where T : GlobalItem => (T)ModContent.GetInstance<T>().Instance(this);
-+
  		private string _nameOverride;
  		public const int luckPotionDuration1 = 10800;
- 		public const int luckPotionDuration2 = 18000;
 @@ -59,6 +_,8 @@
  		public short makeNPC;
  		public bool expertOnly;
@@ -468,11 +454,12 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -45777,7 +_,22 @@
+@@ -45777,8 +_,23 @@
  			}
  		}
  
 -		public Item Clone() => (Item)MemberwiseClone();
+-		public Item DeepClone() => (Item)MemberwiseClone();
 +		public Item Clone() {
 +			Item newItem = (Item)MemberwiseClone();
 +			newItem.modItem = modItem?.Clone(newItem);
@@ -489,9 +476,10 @@
 +			return newItem;
 +		}
 +
- 		public Item DeepClone() => (Item)MemberwiseClone();
++		internal Item DeepClone() => Clone();
  
  		public bool IsTheSameAs(Item compareItem) {
+ 			if (netID == compareItem.netID)
 @@ -45809,6 +_,8 @@
  			dye = 0;
  			shoot = 0;

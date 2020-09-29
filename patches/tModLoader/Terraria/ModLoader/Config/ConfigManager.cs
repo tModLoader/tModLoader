@@ -227,8 +227,11 @@ namespace Terraria.ModLoader.Config
 				string modname = reader.ReadString();
 				string configname = reader.ReadString();
 				string json = reader.ReadString();
-				ModConfig config = GetConfig(ModLoader.GetMod(modname), configname);
-				ModConfig loadTimeConfig = GetLoadTimeConfig(ModLoader.GetMod(modname), configname);
+
+				var mod = ModLoader.GetMod(modname);
+
+				ModConfig config = GetConfig(mod, configname);
+				ModConfig loadTimeConfig = GetLoadTimeConfig(mod, configname);
 				ModConfig pendingConfig = GeneratePopulatedClone(config);
 				JsonConvert.PopulateObject(json, pendingConfig, serializerSettingsCompact);
 				bool success = true;

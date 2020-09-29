@@ -136,7 +136,7 @@ namespace Terraria.ModLoader.UI
 			SoundEngine.PlaySound(10, -1, -1, 1);
 			try {
 				Directory.CreateDirectory(ModCompile.ModSourcePath);
-				Process.Start(ModCompile.ModSourcePath);
+				Utils.OpenFolder(ModCompile.ModSourcePath);
 			} catch(Exception e) {
 				Logging.tML.Error(e);
 			}

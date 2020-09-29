@@ -57,16 +57,22 @@
  							break;
  						}
  					case 7: {
-@@ -298,6 +_,9 @@
+@@ -298,12 +_,15 @@
  							writer.Write((short)WorldGen.SavedOreTiers.Mythril);
  							writer.Write((short)WorldGen.SavedOreTiers.Adamantite);
  							writer.Write((sbyte)Main.invasionType);
-+							if (!ModNet.AllowVanillaClients)
-+								WorldIO.SendModData(writer);
 +
  							if (SocialAPI.Network != null)
  								writer.Write(SocialAPI.Network.GetLobbyId());
  							else
+ 								writer.Write(0uL);
+ 
+ 							writer.Write(Sandstorm.IntendedSeverity);
++							if (!ModNet.AllowVanillaClients)
++								WorldIO.SendModData(writer);
+ 							break;
+ 						}
+ 					case 8:
 @@ -510,6 +_,7 @@
  								value4 = (short)item6.netID;
  
@@ -178,7 +184,7 @@
  						}
  
 -						if (tile2.type == 88 && tile2.frameX % 54 == 0 && tile2.frameY % 36 == 0) {
-+						if (TileLoader.IsDresser(tile2.type) && tile2.frameX % 54 == 0 && tile2.frameY % 36 == 0) {
++						if (TileID.Sets.BasicDresser[tile2.type] && tile2.frameX % 54 == 0 && tile2.frameY % 36 == 0) {
  							short num8 = (short)Chest.FindChest(j, i);
  							if (num8 != -1) {
  								array[num] = num8;

@@ -27,8 +27,6 @@ namespace Terraria.ModLoader
 		internal static readonly IList<ModNPC> npcs = new List<ModNPC>();
 		internal static readonly IList<GlobalNPC> globalNPCs = new List<GlobalNPC>();
 		internal static GlobalNPC[] InstancedGlobals = new GlobalNPC[0];
-		internal static readonly IDictionary<string, int> globalIndexes = new Dictionary<string, int>();
-		internal static readonly IDictionary<Type, int> globalIndexesByType = new Dictionary<Type, int>();
 		internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
 		private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 		/// <summary>
@@ -144,8 +142,6 @@ namespace Terraria.ModLoader
 			npcs.Clear();
 			nextNPC = NPCID.Count;
 			globalNPCs.Clear();
-			globalIndexes.Clear();
-			globalIndexesByType.Clear();
 			bannerToItem.Clear();
 		}
 
@@ -170,14 +166,6 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC g in HookSetDefaults.arr) {
 				g.Instance(npc).SetDefaults(npc);
 			}
-		}
-
-		internal static GlobalNPC GetGlobalNPC(NPC npc, Mod mod, string name) {
-			return globalIndexes.TryGetValue(mod.Name + ':' + name, out int index) ? globalNPCs[index].Instance(npc) : null;
-		}
-
-		internal static GlobalNPC GetGlobalNPC(NPC npc, Type type) {
-			return globalIndexesByType.TryGetValue(type, out int index) ? (index > -1 ? globalNPCs[index].Instance(npc) : null) : null;
 		}
 
 		private static HookList HookScaleExpertStats = AddHook<Action<NPC, int, float>>(g => g.ScaleExpertStats);

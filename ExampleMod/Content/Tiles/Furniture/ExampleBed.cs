@@ -12,21 +12,26 @@ namespace ExampleMod.Content.Tiles.Furniture
 	public class ExampleBed : ModTile
 	{
 		public override void SetDefaults() {
+			// Properties
 			Main.tileFrameImportant[Type] = true;
 			Main.tileLavaDeath[Type] = true;
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.CanBeSleptIn[Type] = true;
+			TileID.Sets.IsValidSpawnPoint[Type] = true;
+			TileID.Sets.DisableSmartCursor[Type] = true;
 
+			dustType = DustType<Sparkle>();
+			adjTiles = new int[] { TileID.Beds };
+
+			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style4x2); //this style already takes care of direction for us
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
 			TileObjectData.addTile(Type);
+
+			// Etc
 			ModTranslation name = CreateMapEntryName();
 			name.SetDefault("Example Bed");
 			AddMapEntry(new Color(200, 200, 200), name);
-			dustType = DustType<Sparkle>();
-			disableSmartCursor = true;
-			adjTiles = new int[] { TileID.Beds };
-			bed = true;
 		}
 
 		public override bool HasSmartInteract() => true;

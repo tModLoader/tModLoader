@@ -410,7 +410,10 @@ namespace Terraria.ModLoader.Core
 
 				PackageMod(mod);
 
-				ModLoader.GetMod(mod.Name)?.Close();
+				if (ModLoader.TryGetMod(mod.Name, out var loadedMod)) {
+					loadedMod.Close();
+				}
+
 				mod.modFile.Save();
 				ModLoader.EnableMod(mod.Name);
 			}
@@ -444,13 +447,20 @@ namespace Terraria.ModLoader.Core
 		private bool IgnoreResource(BuildingMod mod, string resource)
 		{
 			var relPath = resource.Substring(mod.path.Length + 1);
-			return mod.properties.ignoreFile(relPath) ||
+			return IgnoreCompletely(mod, resource) ||
 				relPath == "build.txt" ||
-				relPath[0] == '.' ||
-				relPath.StartsWith("bin" + Path.DirectorySeparatorChar) ||
-				relPath.StartsWith("obj" + Path.DirectorySeparatorChar) ||
 				!mod.properties.includeSource && sourceExtensions.Contains(Path.GetExtension(resource)) ||
 				Path.GetFileName(resource) == "Thumbs.db";
+		}
+
+		// Ignore for both Compile and Packaging
+		private bool IgnoreCompletely(BuildingMod mod, string resource)
+		{
+			var relPath = resource.Substring(mod.path.Length + 1);
+			return mod.properties.ignoreFile(relPath) ||
+				relPath[0] == '.' ||
+				relPath.StartsWith("bin" + Path.DirectorySeparatorChar) ||
+				relPath.StartsWith("obj" + Path.DirectorySeparatorChar);
 		}
 
 		private int packedResourceCount;
@@ -637,7 +647,7 @@ namespace Terraria.ModLoader.Core
 				}
 			}
 
-			var files = Directory.GetFiles(mod.path, "*.cs", SearchOption.AllDirectories).Where(file => !mod.properties.ignoreFile(file.Substring(mod.path.Length + 1))).ToArray();
+			var files = Directory.GetFiles(mod.path, "*.cs", SearchOption.AllDirectories).Where(file => !IgnoreCompletely(mod, file)).ToArray();
 
 			bool allowUnsafe =
 				Program.LaunchParameters.TryGetValue("-unsafe", out var unsafeParam) &&

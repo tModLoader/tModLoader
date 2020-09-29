@@ -1,0 +1,12 @@
+--- src/Terraria/Terraria/GameContent/SmartCursorHelper.cs
++++ src/tModLoader/Terraria/GameContent/SmartCursorHelper.cs
+@@ -192,7 +_,8 @@
+ 					case 511:
+ 					case 573:
+ 					case 621:
+-						result = true;
++					default:
++						result = TileID.Sets.DisableSmartCursor[Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY].type];
+ 						break;
+ 					case 314:
+ 						if (providedInfo.player.gravDir == 1f)

@@ -977,7 +977,7 @@ namespace Terraria.ModLoader
 		/// Receives the custom data sent in the NetSend hook.
 		/// </summary>
 		/// <param name="reader">The reader.</param>
-		public virtual void NetRecieve(BinaryReader reader) {
+		public virtual void NetReceive(BinaryReader reader) {
 		}
 
 		/// <summary>
