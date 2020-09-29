@@ -79,7 +79,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether instances of this ModItem are created through Clone or constructor (by default implementations of NewInstance and Clone(Item, Item)). 
+		/// Whether instances of this ModItem are created through Clone or constructor
 		/// Defaults to false (using default constructor).
 		/// </summary>
 		public virtual bool CloneNewInstances => false;
@@ -88,21 +88,15 @@ namespace Terraria.ModLoader
 		/// Returns a clone of this ModItem. 
 		/// Allows you to decide which fields of your ModItem class are copied over when an item stack is split or something similar happens. 
 		/// By default this will return a memberwise clone; you will want to override this if your ModItem contains object references. 
-		/// Only called if CloneNewInstances is set to true.
 		/// Since several ModItem class fields are also set by the default implementation of this method, you'll most likely want to call base.Clone() as the first statement of your override.
-		/// </summary>
-		/// <example><code>var clone = (ExampleHookItem)base.Clone();
-		/// clone.targets = (int[])this.targets.Clone(); // Or whatever deep copy operations are relevant.
-		/// return clone;</code></example>
-		public virtual ModItem Clone() => (ModItem)MemberwiseClone();
-
-		/// <summary>
-		/// Create a copy of this instanced ModItem. Called when an item is cloned.
-		/// Defaults to NewInstance(item)
 		/// </summary>
 		/// <param name="item">The item being cloned</param>
 		/// <param name="itemClone">The new item</param>
-		public virtual ModItem Clone(Item item) => NewInstance(item);
+		public virtual ModItem Clone(Item item) {
+			ModItem clone = (ModItem)MemberwiseClone();
+			clone.item = item;
+			return clone;
+		}
 
 		/// <summary>
 		/// Create a new instance of this ModItem for an Item instance. 
@@ -110,11 +104,9 @@ namespace Terraria.ModLoader
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields
 		/// </summary>
-		public virtual ModItem NewInstance(Item itemClone) {
+		public ModItem NewInstance(Item itemClone) {
 			if (CloneNewInstances) {
-				var clone = Clone();
-				clone.item = itemClone;
-				return clone;
+				return Clone(itemClone);
 			}
 
 			var copy = (ModItem)Activator.CreateInstance(GetType());

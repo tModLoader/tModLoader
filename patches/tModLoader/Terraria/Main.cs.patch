@@ -2438,9 +2438,25 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31247,8 +_,11 @@
+@@ -31236,19 +_,26 @@
+ 			UILinkPointNavigator.SetPosition(6000 + gamepadPointOffset, vector + rectangle.Size() * 0.65f);
+ 		}
+ 
++		// while in SetDefaults it should be a clone of the base modItem or a new instance
++
+ 		public static void CraftItem(Recipe r) {
+ 			int stack = mouseItem.stack;
+-			mouseItem = r.createItem.Clone();
++			mouseItem = (Item)mouseItem.ShallowClone();
++			mouseItem.modItem = r.createItem.modItem?.NewInstance(mouseItem);
++			mouseItem.globalItems = r.createItem.globalItems.Select(g => g.NewInstance(mouseItem)).ToArray();
+ 			mouseItem.stack += stack;
+ 			if (stack <= 0)
+ 				mouseItem.Prefix(-1);
+ 
+ 			mouseItem.position.X = player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(mouseItem.width / 2);
  			mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
- 			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
+-			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
  			r.Create();
 -			if (mouseItem.type > 0 || r.createItem.type > 0)
 +			if (mouseItem.type > 0 || r.createItem.type > 0) {
@@ -2448,6 +2464,7 @@
 +				ItemLoader.OnCraft(mouseItem, r);
  				SoundEngine.PlaySound(7);
 +			}
++			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
  		}
  
  		private static void DrawPVPIcons() {
