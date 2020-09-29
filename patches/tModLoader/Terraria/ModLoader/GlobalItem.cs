@@ -217,7 +217,6 @@ namespace Terraria.ModLoader
 		public virtual void ModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
 		}
 
-
 		/// <summary>
 		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
 		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
