@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Items.Placeable
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded wall.");
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 400;
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 400;
 		}
 
 		public override void SetDefaults() {

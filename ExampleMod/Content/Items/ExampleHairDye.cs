@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Items
 					new LegacyHairShaderData().UseLegacyMethod((Player player, Color newColor, ref bool lighting) => Main.DiscoColor) //Returning Main.DiscoColor will make our hair an animated rainbow. You can return any Color here.
 				);
 			}
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 1;
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {

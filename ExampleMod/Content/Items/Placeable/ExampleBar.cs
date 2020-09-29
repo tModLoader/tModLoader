@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleBar : ModItem
 	{
 		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 25;
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 25;
 			ItemID.Sets.SortingPriorityMaterials[item.type] = 59; // Influences the inventory sort order. 59 is PlatinumBar, higher is more valuable.
 		}
 

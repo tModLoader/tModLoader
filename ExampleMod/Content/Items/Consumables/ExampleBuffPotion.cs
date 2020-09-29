@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Items.Consumables
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("Gives a light defense buff.");
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 20;
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 20;
 		}
 
 		public override void SetDefaults() {

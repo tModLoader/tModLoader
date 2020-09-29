@@ -20,7 +20,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault($"Permanently increases maximum life by {LifePerFruit}\nUp to {MaxExampleLifeFruits} can be used");
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 10;
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 10;
 		}
 
 		public override void SetDefaults() {

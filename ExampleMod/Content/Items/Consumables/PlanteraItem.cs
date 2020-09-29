@@ -11,8 +11,7 @@ namespace ExampleMod.Content.Items.Consumables
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Plantera");
 			Tooltip.SetDefault("The wrath of the jungle");
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 3;
-
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
 			ItemID.Sets.SortingPriorityBossSpawns[item.type] = 12; // This helps sort inventory know that this is a boss summoning item.
 		}
 

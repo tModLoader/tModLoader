@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Items.Placeable
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded torch.");
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 100;
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
 		}
 
 		public override void SetDefaults() {
@@ -30,6 +30,10 @@ namespace ExampleMod.Content.Items.Placeable
 			item.width = 10;
 			item.height = 12;
 			item.value = 50;
+		}
+
+		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) { //Overrides the default sorting method of this item.
+			itemGroup = ContentSamples.CreativeHelper.ItemGroup.Torches; //Vanilla usually matches sorting methods with the right type of item, but sometimes, like with torches, it doesn't. Make sure to set whichever items manually if need be. 
 		}
 
 		public override void HoldItem(Player player) {

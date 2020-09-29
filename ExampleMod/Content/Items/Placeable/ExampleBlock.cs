@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Items.Placeable
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded tile.");
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 100;
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
 			ItemID.Sets.ExtractinatorMode[item.type] = item.type;
 
 			// Some please convert this to lang files, I'm too lazy to do it

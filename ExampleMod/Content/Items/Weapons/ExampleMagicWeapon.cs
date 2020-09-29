@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is an example magic weapon");
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 1;
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {

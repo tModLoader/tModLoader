@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleOre : ModItem
 	{
 		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 100;
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
 			ItemID.Sets.SortingPriorityMaterials[item.type] = 58;
 		}
 

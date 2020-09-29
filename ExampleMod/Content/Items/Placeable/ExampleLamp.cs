@@ -1,11 +1,15 @@
 ﻿using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent.Creative;
 using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Placeable
 {
 	internal class ExampleLamp : ModItem
 	{
+		public override void SetStaticDefaults() {
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		}
 		public override void SetDefaults() {
 			item.useStyle = ItemUseStyleID.Swing;
 			item.useTurn = true;

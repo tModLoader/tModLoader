@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Items.Consumables
 	public class ExampleHealingPotion : ModItem
 	{
 		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 30;
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 30;
 		}
 
 		public override void SetDefaults() {

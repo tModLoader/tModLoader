@@ -1,5 +1,6 @@
 using ExampleMod.Content.Projectiles;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
@@ -14,6 +15,7 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Meowmere V2");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {

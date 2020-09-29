@@ -15,7 +15,7 @@
  				public ItemGroupAndOrderInGroup(Item item) {
  					ItemType = item.type;
  					Group = GetItemGroup(item, out OrderInGroup);
-+					ModHooks.AddResearchSorting(item, ref Group);
++					ItemLoader.ModifyResearchSorting(item, ref Group);
  				}
  			}
  

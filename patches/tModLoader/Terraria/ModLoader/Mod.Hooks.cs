@@ -77,12 +77,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Override this method to add new sorting groups in the duplication menu for items in your mod.
-		/// </summary>
-		public virtual void AddResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
-		}
-
-		/// <summary>
 		/// Allows you to determine what music should currently play.
 		/// </summary>
 		/// <param name="music">The music.</param>
@@ -279,12 +273,6 @@ namespace Terraria.ModLoader
 
 	internal static class ModHooks
 	{
-		internal static void AddResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.AddResearchSorting(item, ref itemGroup);
-			}
-		}
-
 		//in Terraria.Main.UpdateMusic before updating music boxes call ModHooks.UpdateMusic(ref this.newMusic);
 		internal static void UpdateMusic(ref int music, ref MusicPriority priority) {
 			foreach (Mod mod in ModLoader.Mods) {

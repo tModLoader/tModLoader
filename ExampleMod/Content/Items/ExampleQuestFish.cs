@@ -9,7 +9,7 @@ namespace ExampleMod.Content.Items
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Upside-down Fish");
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = 2;
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 2;
 		}
 
 		public override void SetDefaults() {

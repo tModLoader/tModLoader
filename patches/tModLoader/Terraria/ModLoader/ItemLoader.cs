@@ -413,6 +413,19 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate void DelegateModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup);
+		private static HookList HookModifyResearchSorting = AddHook<DelegateModifyResearchSorting>(g => g.ModifyResearchSorting);
+		public static void ModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
+			if (item.IsAir)
+				return;
+
+			item.modItem?.ModifyResearchSorting(ref itemGroup);
+
+			foreach (var g in HookModifyResearchSorting.arr)
+				g.Instance(item).ModifyResearchSorting(item, ref itemGroup);
+
+		}
+
 		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 		/// <summary>
