@@ -18,7 +18,6 @@ namespace ExampleMod.Content.Items
 			ItemID.Sets.AnimatesAsSoul[item.type] = true; // Makes the item have 4 animation frames by default.
 			ItemID.Sets.ItemIconPulse[item.type] = true; // The item pulses while in the player's inventory
 			ItemID.Sets.ItemNoGravity[item.type] = true; // Makes the item have no gravity
-
 		}
 
 		public override void SetDefaults() {
