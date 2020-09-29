@@ -10,6 +10,7 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void SetStaticDefaults() {
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
+		
 		public override void SetDefaults() {
 			item.useStyle = ItemUseStyleID.Swing;
 			item.useTurn = true;
