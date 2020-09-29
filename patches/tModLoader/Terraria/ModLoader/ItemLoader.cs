@@ -423,7 +423,6 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookModifyResearchSorting.arr)
 				g.Instance(item).ModifyResearchSorting(item, ref itemGroup);
-
 		}
 
 		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat);
