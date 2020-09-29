@@ -476,7 +476,7 @@
 +			return newItem;
 +		}
 +
-+		public Item DeepClone() => Clone();
++		internal Item DeepClone() => Clone();
  
  		public bool IsTheSameAs(Item compareItem) {
  			if (netID == compareItem.netID)
