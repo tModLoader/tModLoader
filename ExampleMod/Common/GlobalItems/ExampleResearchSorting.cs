@@ -14,7 +14,8 @@ namespace ExampleMod.Common.GlobalItems
 		public override void ModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
 			if (item.modItem?.Mod == Mod) {
 				itemGroup = (ContentSamples.CreativeHelper.ItemGroup)1337; //This number is where the item sort is in relation to any other sorts added by vanilla or mods. To know where your custom group relates to the vanilla sorting numbers, refer to (insert wiki page here).
-			};
+			}
+
 			if (item.type == ItemID.CopperShortsword) {
 				itemGroup = ContentSamples.CreativeHelper.ItemGroup.EventItem; //Changed the copper shortsword's default sorting to be with the event items instead of melee weapons.
 				//Vanilla already has many default research sorting groups that you can add your item into. It is usually done automatically with a few exceptions. For an example of an exception, refer to the ExampleTorch file.
