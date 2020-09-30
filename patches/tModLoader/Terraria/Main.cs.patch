@@ -2447,7 +2447,7 @@
  		public static void CraftItem(Recipe r) {
  			int stack = mouseItem.stack;
 -			mouseItem = r.createItem.Clone();
-+			mouseItem = (Item)mouseItem.ShallowClone();
++			mouseItem = (Item)r.createItem.ShallowClone();
 +			mouseItem.modItem = r.createItem.modItem?.NewInstance(mouseItem);
 +			mouseItem.globalItems = r.createItem.globalItems.Select(g => g.NewInstance(mouseItem)).ToArray();
  			mouseItem.stack += stack;
