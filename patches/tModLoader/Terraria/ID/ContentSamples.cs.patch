@@ -11,6 +11,23 @@
  
  namespace Terraria.ID
  {
+@@ -90,6 +_,7 @@
+ 				public ItemGroupAndOrderInGroup(Item item) {
+ 					ItemType = item.type;
+ 					Group = GetItemGroup(item, out OrderInGroup);
++					ItemLoader.ModifyResearchSorting(item, ref Group);
+ 				}
+ 			}
+ 
+@@ -588,7 +_,7 @@
+ 
+ 			public static void SetCreativeMenuOrder() {
+ 				List<Item> list = new List<Item>();
+-				for (int i = 1; i < 5045; i++) {
++				for (int i = 1; i < ItemLoader.ItemCount; i++) {
+ 					Item item = new Item();
+ 					item.SetDefaults(i);
+ 					list.Add(item);
 @@ -676,11 +_,13 @@
  		public static Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup> ItemCreativeSortingId = new Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup>();
  
