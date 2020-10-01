@@ -1,4 +1,5 @@
 ﻿using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
@@ -7,6 +8,7 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleBar : ModItem
 	{
 		public override void SetStaticDefaults() {
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 25;
 			ItemID.Sets.SortingPriorityMaterials[item.type] = 59; // Influences the inventory sort order. 59 is PlatinumBar, higher is more valuable.
 		}
 

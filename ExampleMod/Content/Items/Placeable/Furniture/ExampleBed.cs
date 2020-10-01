@@ -1,5 +1,6 @@
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent.Creative;
 using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Placeable.Furniture
@@ -8,6 +9,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded bed.");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {

@@ -1,5 +1,6 @@
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
@@ -9,6 +10,7 @@ namespace ExampleMod.Content.Items.Consumables
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("Gives a light defense buff.");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 20;
 		}
 
 		public override void SetDefaults() {
