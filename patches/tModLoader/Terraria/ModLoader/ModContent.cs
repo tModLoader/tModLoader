@@ -446,6 +446,7 @@ namespace Terraria.ModLoader
 			Main.ItemDropsDB = itemDropDatabase;
 			bestiaryDatabase.Merge(Main.ItemDropsDB);
 			Main.BestiaryUI = new UIBestiaryTest(Main.BestiaryDB);
+			Main.ItemDropSolver = new ItemDropResolver(itemDropDatabase);
 		}
 
 		private static void SetupRecipes(CancellationToken token) {

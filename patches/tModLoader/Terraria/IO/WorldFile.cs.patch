@@ -116,6 +116,15 @@
  					writer.Write(nPC2.active);
  					writer.Write(nPC2.netID);
  					writer.WriteVector2(nPC2.position);
+@@ -1481,7 +_,7 @@
+ 
+ 			int num2 = reader.ReadInt16();
+ 			for (int i = 0; i < num2; i++) {
+-				if (i < 663)
++				if (i < NPCLoader.NPCCount)
+ 					NPC.killCount[i] = reader.ReadInt32();
+ 				else
+ 					reader.ReadInt32();
 @@ -1859,7 +_,7 @@
  				int num3 = reader.ReadInt32();
  				Tile tile = Main.tile[num2, num3];

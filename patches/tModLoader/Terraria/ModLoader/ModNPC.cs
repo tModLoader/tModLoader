@@ -6,6 +6,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 
@@ -296,25 +297,25 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to call NPCLoot on your own when the NPC dies, rather then letting vanilla call it on its own. Useful for things like dropping loot from the nearest segment of a worm boss. Returns false by default.
+		/// Allows you to call OnKill on your own when the NPC dies, rather then letting vanilla call it on its own. Returns false by default.
 		/// </summary>
-		/// <returns>Return true to stop vanilla from calling NPCLoot on its own. Do this if you call NPCLoot yourself.</returns>
-		public virtual bool SpecialNPCLoot() {
+		/// <returns>Return true to stop vanilla from calling OnKill on its own. Do this if you call OnKill yourself.</returns>
+		public virtual bool SpecialOnKill() {
 			return false;
 		}
 
 		/// <summary>
-		/// Allows you to determine whether or not this NPC will drop anything at all. Return false to stop the NPC from dropping anything. Returns true by default.
+		/// Allows you to determine whether or not this NPC will do anything upon death (besides dying). Returns true by default.
 		/// </summary>
 		/// <returns></returns>
-		public virtual bool PreNPCLoot() {
+		public virtual bool PreKill() {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this NPC dies (for example, dropping items and setting ModWorld fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
+		/// Allows you to make things happen when this NPC dies. This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect.
 		/// </summary>
-		public virtual void NPCLoot() {
+		public virtual void OnKill() {
 		}
 
         /// <summary>
@@ -323,6 +324,12 @@ namespace Terraria.ModLoader
         /// <param name="player">The player catching this NPC</param>
         /// <param name="item">The item that will be spawned</param>
         public virtual void OnCatchNPC(Player player, Item item) {
+		}
+
+		/// <summary>
+		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.
+		/// </summary>
+		public virtual void ModifyNPCLoot(ItemDropDatabase database) {
 		}
 
 		/// <summary>

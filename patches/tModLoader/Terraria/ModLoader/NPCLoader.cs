@@ -13,6 +13,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.GameContent.ItemDropRules;
 
 namespace Terraria.ModLoader
 {
@@ -178,7 +179,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookSetBestiary = AddHook<Action<NPC, BestiaryDatabase, BestiaryEntry>>(g => g.SetBestiary);
+		private delegate void DelegateSetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry);
+		private static HookList HookSetBestiary = AddHook<DelegateSetBestiary>(g => g.SetBestiary);
 		public static void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			npc.modNPC?.SetBestiary(database, bestiaryEntry);
 
@@ -344,30 +346,30 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
-		private static HookList HookSpecialNPCLoot = AddHook<Func<NPC, bool>>(g => g.SpecialNPCLoot);
+		private static HookList HookSpecialOnKill = AddHook<Func<NPC, bool>>(g => g.SpecialOnKill);
 
-		public static bool SpecialNPCLoot(NPC npc) {
-			foreach (GlobalNPC g in HookSpecialNPCLoot.arr) {
-				if (g.Instance(npc).SpecialNPCLoot(npc)) {
+		public static bool SpecialOnKill(NPC npc) {
+			foreach (GlobalNPC g in HookSpecialOnKill.arr) {
+				if (g.Instance(npc).SpecialOnKill(npc)) {
 					return true;
 				}
 			}
 			if (npc.modNPC != null) {
-				return npc.modNPC.SpecialNPCLoot();
+				return npc.modNPC.SpecialOnKill();
 			}
 			return false;
 		}
 
-		private static HookList HookPreNPCLoot = AddHook<Func<NPC, bool>>(g => g.PreNPCLoot);
+		private static HookList HookPreKill = AddHook<Func<NPC, bool>>(g => g.PreKill);
 
-		public static bool PreNPCLoot(NPC npc) {
+		public static bool PreKill(NPC npc) {
 			bool result = true;
-			foreach (GlobalNPC g in HookPreNPCLoot.arr) {
-				result &= g.Instance(npc).PreNPCLoot(npc);
+			foreach (GlobalNPC g in HookPreKill.arr) {
+				result &= g.Instance(npc).PreKill(npc);
 			}
 
 			if (result && npc.modNPC != null) {
-				result = npc.modNPC.PreNPCLoot();
+				result = npc.modNPC.PreKill();
 			}
 
 			if (!result) {
@@ -378,15 +380,24 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		private static HookList HookNPCLoot = AddHook<Action<NPC>>(g => g.NPCLoot);
+		private static HookList HookOnKill = AddHook<Action<NPC>>(g => g.OnKill);
 
-		public static void NPCLoot(NPC npc) {
-			npc.modNPC?.NPCLoot();
+		public static void OnKill(NPC npc) {
+			npc.modNPC?.OnKill();
 
-			foreach (GlobalNPC g in HookNPCLoot.arr) {
-				g.Instance(npc).NPCLoot(npc);
+			foreach (GlobalNPC g in HookOnKill.arr) {
+				g.Instance(npc).OnKill(npc);
 			}
 			blockLoot.Clear();
+		}
+
+		private static HookList HookModifyNPCLoot = AddHook<Action<NPC, ItemDropDatabase>>(g => g.ModifyNPCLoot);
+		public static void ModifyNPCLoot(NPC npc, ItemDropDatabase database) {
+			npc.modNPC?.ModifyNPCLoot(database);
+
+			foreach (GlobalNPC g in HookModifyNPCLoot.arr) {
+				g.Instance(npc).ModifyNPCLoot(npc, database);
+			}
 		}
 
 		public static void BossLoot(NPC npc, ref string name, ref int potionType) {

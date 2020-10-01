@@ -1,6 +1,12 @@
 --- src/Terraria/Terraria/GameContent/UI/EmoteBubble.cs
 +++ src/tModLoader/Terraria/GameContent/UI/EmoteBubble.cs
-@@ -9,7 +_,7 @@
+@@ -4,12 +_,13 @@
+ using System.Collections.Generic;
+ using Terraria.GameContent.Events;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.UI
  {
  	public class EmoteBubble
  	{
@@ -9,3 +15,12 @@
  		public static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>();
  		private static List<int> toClean = new List<int>();
  		public static int NextID;
+@@ -337,7 +_,7 @@
+ 		}
+ 
+ 		private void ProbeTownNPCs(List<int> list) {
+-			for (int i = 0; i < 663; i++) {
++			for (int i = 0; i < NPCLoader.NPCCount; i++) {
+ 				CountNPCs[i] = 0;
+ 			}
+ 

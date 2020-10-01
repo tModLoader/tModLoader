@@ -3,6 +3,9 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using static Terraria.ModLoader.ModContent;
+using ExampleMod.Content.Items;
 
 namespace ExampleMod.Content.NPCS
 {
@@ -38,6 +41,9 @@ namespace ExampleMod.Content.NPCS
 			bannerItem = Item.BannerToItem(banner); // Makes kills of this NPC go towards dropping the banner it's associated with.
 		}
 
+		public override void ModifyNPCLoot(ItemDropDatabase database) {
+			database.RegisterToNPC(npc.type, ItemDropRule.Common(ItemType<ExampleItem>(), 1));
+		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
 			return SpawnCondition.OverworldNightMonster.Chance * 0.5f;
 		}
