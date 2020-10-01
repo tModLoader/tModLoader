@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -13,9 +14,9 @@ namespace ExampleMod.NPCs
 	{
 		public override string Texture => "Terraria/NPC_" + NPCID.DiggerHead;
 
-		//TODO: Actually get CustomTexturePath working once we figure out all this texture stuff
-		public override void SetStaticDefaults() { 
-			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
+		public override void SetStaticDefaults() {
+		DisplayName.SetDefault("Example Worm");
+		NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
 				CustomTexturePath = "ExampleMod/Content/NPCs/ExampleWorm_Bestiary", //If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
 				Position = new Vector2(40f, 24f),
 				PortraitPositionXOverride = 0f,

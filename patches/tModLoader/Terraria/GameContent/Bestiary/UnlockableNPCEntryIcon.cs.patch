@@ -8,21 +8,12 @@
  
  namespace Terraria.GameContent.Bestiary
  {
-@@ -38,7 +_,7 @@
- 			int? num3 = null;
- 			bool wet = false;
- 			float num4 = 0f;
--			Asset<Texture2D> asset = null;
-+			Asset<Texture2D>? asset = null;
- 			if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(_npcNetId, out NPCID.Sets.NPCBestiaryDrawModifiers value)) {
- 				_npcCache.rotation = value.Rotation;
- 				_npcCache.scale = value.Scale;
 @@ -58,7 +_,7 @@
  					positionOffsetCache.Y = value.PortraitPositionYOverride.Value;
  
  				if (value.CustomTexturePath != null)
 -					asset = Main.Assets.Request<Texture2D>(value.CustomTexturePath);
-+					asset = Main.Assets?.Request<Texture2D>(value.CustomTexturePath) == null ? ModContent.GetTexture(value.CustomTexturePath) : Main.Assets.Request<Texture2D>(value.CustomTexturePath);
++					asset = ModContent.GetTexture(value.CustomTexturePath);
  
  				if (asset != null && asset.IsLoaded)
  					_customTexture = asset;
