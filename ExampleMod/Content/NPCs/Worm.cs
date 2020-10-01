@@ -15,13 +15,13 @@ namespace ExampleMod.NPCs
 
 		//TODO: Actually get CustomTexturePath working once we figure out all this texture stuff
 		public override void SetStaticDefaults() { 
-			//NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
-			//	CustomTexturePath = "ExampleMod/Content/NPCs/ExampleWorm_Bestiary", //If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
-			//	Position = new Vector2(40f, 24f),
-			//	PortraitPositionXOverride = 0f,
-			//	PortraitPositionYOverride = 12f
-			//};
-			//NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, value);
+			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
+				CustomTexturePath = "ExampleMod/Content/NPCs/ExampleWorm_Bestiary", //If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
+				Position = new Vector2(40f, 24f),
+				PortraitPositionXOverride = 0f,
+				PortraitPositionYOverride = 12f
+			};
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, value);
 		}
 
 		public override void SetDefaults() {

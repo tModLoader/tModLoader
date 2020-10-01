@@ -404,6 +404,7 @@ namespace Terraria.ModLoader
 			PlayerInput.reinitialize = true;
 			SetupBestiary(token);
 			SetupRecipes(token);
+			ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 			ItemSorting.SetupWhiteLists();
 
 			MenuLoader.GotoSavedModMenu();
