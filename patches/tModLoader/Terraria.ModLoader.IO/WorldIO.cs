@@ -309,7 +309,11 @@ namespace Terraria.ModLoader.IO
 				try {
 					reader.SafeRead(r => modWorld.NetReceive(r));
 				}
-				catch (IOException) {
+				catch (IOException e) {
+					if (FrameworkVersion.Framework == Framework.Mono) {
+						Logging.tML.Error(e);
+					}
+
 					Logging.tML.Error($"Above IOException error caused by {modWorld.Name} from the {modWorld.mod.Name} mod.");
 				}
 			}
