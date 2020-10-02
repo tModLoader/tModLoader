@@ -286,7 +286,7 @@ namespace Terraria.ModLoader
 					if (!downloadingMod.Matches(mod))
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));
 
-					if (downloadingMod.signed && !mod.ValidModBrowserSignature)
+					if (downloadingMod.signed && onlyDownloadSignedMods && !mod.ValidModBrowserSignature)
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
 
 					ModLoader.EnableMod(mod.name);
@@ -339,11 +339,14 @@ namespace Terraria.ModLoader
 			new ModPacket(MessageID.SyncMods).Send();
 		}
 
+		internal static bool NetReloadActive;
 		internal static Action NetReload() {
 			// Main.ActivePlayerFileData gets cleared during reload
 			var path = Main.ActivePlayerFileData.Path;
 			var isCloudSave = Main.ActivePlayerFileData.IsCloudSave;
+			NetReloadActive = true;
 			return () => {
+				NetReloadActive = false;
 				// re-select the current player
 				Player.GetFileData(path, isCloudSave).SetAsActive();
 				//from Netplay.ClientLoopSetup

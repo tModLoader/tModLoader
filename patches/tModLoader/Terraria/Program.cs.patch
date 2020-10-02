@@ -212,7 +212,7 @@
  				}
  
  #if CLIENT
--				MessageBox.Show(e.ToString(), "Terraria: Error");
+-				MessageBox.Show(e.ToString(), Language.GetTextValue("Error.Error"));
 +				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
 +
 +				if (e is FolderCreationFailedException)

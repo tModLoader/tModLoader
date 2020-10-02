@@ -108,16 +108,18 @@
  							}
  
  							if (Main.netMode == 2 && num43 == whoAmI && num44 <= 58 + player2.armor.Length + player2.dye.Length + player2.miscEquips.Length + player2.miscDyes.Length)
-@@ -482,6 +_,9 @@
+@@ -482,8 +_,11 @@
  							Main.StopSlimeRain();
  
  						Main.invasionType = reader.ReadSByte();
-+						if (!ModNet.AllowVanillaClients)
-+							WorldIO.ReceiveModData(reader);
 +
  						Main.LobbyId = reader.ReadUInt64();
  						Sandstorm.IntendedSeverity = reader.ReadSingle();
++						if (!ModNet.AllowVanillaClients && Netplay.Connection.State > 4)
++							WorldIO.ReceiveModData(reader);
  						if (Netplay.Connection.State == 3)
+ 							Netplay.Connection.State = 4;
+ 					}
 @@ -610,6 +_,9 @@
  							NetMessage.SendData(83, whoAmI, -1, null, num192);
  						}
@@ -207,14 +209,38 @@
  						float num163 = reader.ReadSingle();
  						int num164 = reader.ReadByte() - 1;
  						byte b14 = reader.ReadByte();
-@@ -1358,6 +_,7 @@
+@@ -1330,7 +_,7 @@
+ 						int num10 = Chest.FindChest(x2, y2);
+ 						if (num10 > -1 && Chest.UsingChest(num10) == -1) {
+ 							for (int l = 0; l < 40; l++) {
+-								NetMessage.SendData(32, whoAmI, -1, null, num10, l);
++								NetMessage.SendData(32, whoAmI, -1, null, num10, l, 1); //New, the 1 indicates the item is synced synced within RequestChestOpen
+ 							}
+ 
+ 							NetMessage.SendData(33, whoAmI, -1, null, num10);
+@@ -1346,6 +_,7 @@
+ 				case 32: {
+ 						int num215 = reader.ReadInt16();
+ 						int num216 = reader.ReadByte();
++						bool skipRecipes = !ModNet.AllowVanillaClients && reader.ReadBoolean(); // New, third parameter, sent as '(bool)(number3 == 1)', 1 meaning the item is synced within RequestChestOpen
+ 						int stack4 = reader.ReadInt16();
+ 						int pre2 = reader.ReadByte();
+ 						int type14 = reader.ReadInt16();
+@@ -1358,7 +_,13 @@
  						Main.chest[num215].item[num216].netDefaults(type14);
  						Main.chest[num215].item[num216].Prefix(pre2);
  						Main.chest[num215].item[num216].stack = stack4;
 +						ItemIO.ReceiveModData(Main.chest[num215].item[num216], reader);
- 						Recipe.FindRecipes();
++						if (!skipRecipes)
+-						Recipe.FindRecipes();
++							Recipe.FindRecipes();
++						// New, skips FindRecipes if item is synced within RequestChestOpen.
++						// Note that in this case, SyncPlayerChestIndex (80), which is sent at the end of RequestChestOpen,
++						// calls FindRecipes for the current chest, so the client is still aware of new recipes.
++						// In 1.4, the commit adding this patch is redundant because it uses a param called canDelayCheck for FindRecipes, fixing the same problem as this commit
  						break;
  					}
+ 				case 33: {
 @@ -1413,6 +_,7 @@
  						break;
  					}
@@ -256,8 +282,9 @@
  
  										return;
  									}
- 								case 1:
+-								case 1:
 -									if (Main.tile[num19, num20].type == 21) {
++								case byte _ when b2 % 100 == 1:
 +									if (Main.tile[num19, num20].type == 21 || b2 == 101 && TileID.Sets.BasicChest[Main.tile[num19, num20].type]) {
  										Tile tile = Main.tile[num19, num20];
  										if (tile.frameX % 36 != 0)
@@ -288,8 +315,9 @@
  
  										return;
  									}
- 								case 3:
+-								case 3:
 -									if (Main.tile[num19, num20].type == 88) {
++								case byte _ when b2 % 100 == 3:
 +									if (Main.tile[num19, num20].type == 88 || b2 == 103 && TileLoader.IsDresser(Main.tile[num19, num20].type)) {
  										Tile tile2 = Main.tile[num19, num20];
  										num19 -= tile2.frameX % 54 / 18;

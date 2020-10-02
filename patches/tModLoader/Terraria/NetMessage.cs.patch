@@ -57,16 +57,22 @@
  							break;
  						}
  					case 7: {
-@@ -230,6 +_,9 @@
+@@ -230,12 +_,15 @@
  							bb9[7] = DD2Event.DownedInvasionT3;
  							writer.Write(bb9);
  							writer.Write((sbyte)Main.invasionType);
-+							if (!ModNet.AllowVanillaClients)
-+								WorldIO.SendModData(writer);
 +
  							if (SocialAPI.Network != null)
  								writer.Write(SocialAPI.Network.GetLobbyId());
  							else
+ 								writer.Write(0uL);
+ 
+ 							writer.Write(Sandstorm.IntendedSeverity);
++							if (!ModNet.AllowVanillaClients)
++								WorldIO.SendModData(writer);
+ 							break;
+ 						}
+ 					case 8:
 @@ -390,8 +_,12 @@
  										}
  									}
@@ -137,6 +143,15 @@
  						writer.Write(number3);
  						writer.Write((byte)(number4 + 1f));
  						writer.Write((byte)number5);
+@@ -537,6 +_,8 @@
+ 							Item item3 = Main.chest[number].item[(byte)number2];
+ 							writer.Write((short)number);
+ 							writer.Write((byte)number2);
++							if (!ModNet.AllowVanillaClients)
++								writer.Write((bool)(number3 == 1)); // New, passed as third parameter, default 0. 1 if sent from within a RequestChestOpen packet
+ 							short value2 = (short)item3.netID;
+ 							if (item3.Name == null)
+ 								value2 = 0;
 @@ -544,6 +_,7 @@
  							writer.Write((short)item3.stack);
  							writer.Write(item3.prefix);
