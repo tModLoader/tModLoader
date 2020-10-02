@@ -13,7 +13,7 @@
 -		private List<Tuple<int, Point>> _roomLocationPairs = new List<Tuple<int, Point>>();
 +		internal List<Tuple<int, Point>> _roomLocationPairs = new List<Tuple<int, Point>>();
 -		private bool[] _hasRoom = new bool[663];
-+		internal bool[] _hasRoom = new bool[NPCLoader.NPCCount];
++		internal bool[] _hasRoom = new bool[663];
  
  		public void AddOccupantsToList(int x, int y, List<int> occupantsList) {
  			AddOccupantsToList(new Point(x, y), occupantsList);

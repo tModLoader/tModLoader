@@ -333,6 +333,15 @@
  							player5.buffType[num52] = reader.ReadUInt16();
  							if (player5.buffType[num52] > 0)
  								player5.buffTime[num52] = 60;
+@@ -2163,7 +_,7 @@
+ 						if (Main.netMode != 2)
+ 							break;
+ 
+-						if (num179 >= 0 && num179 < 663 && NPCID.Sets.MPAllowedEnemies[num179]) {
++						if (num179 >= 0 && num179 < NPCLoader.NPCCount && NPCID.Sets.MPAllowedEnemies[num179]) {
+ 							if (!NPC.AnyNPCs(num179))
+ 								NPC.SpawnOnPlayer(plr, num179);
+ 						}
 @@ -2451,6 +_,7 @@
  					break;
  				case 74:

@@ -95,11 +95,7 @@ namespace Terraria.ModLoader
 		public static ModNPC GetNPC(int type) {
 			return type >= NPCID.Count && type < NPCCount ? npcs[type - NPCID.Count] : null;
 		}
-		//change initial size of Terraria.Player.npcTypeNoAggro and NPCBannerBuff to NPCLoader.NPCCount()
-		//in Terraria.Main.MouseText replace 251 with NPCLoader.NPCCount()
-		//in Terraria.Main.DrawNPCs and Terraria.NPC.NPCLoot remove type too high check
-		//replace a lot of 540 immediates
-		//in Terraria.GameContent.UI.EmoteBubble make CountNPCs internal
+
 		internal static void ResizeArrays(bool unloading) {
 			//Textures
 			Array.Resize(ref TextureAssets.Npc, nextNPC);
@@ -112,17 +108,22 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.slimeRainNPC, nextNPC);
 			Array.Resize(ref Main.npcCatchable, nextNPC);
 			Array.Resize(ref Main.npcFrameCount, nextNPC);
+			Array.Resize(ref Main.SceneMetrics.NPCBannerBuff, nextNPC);
 			Array.Resize(ref NPC.killCount, nextNPC);
 			Array.Resize(ref NPC.npcsFoundForCheckActive, nextNPC);
 			Array.Resize(ref Lang._npcNameCache, nextNPC);
 			Array.Resize(ref EmoteBubble.CountNPCs, nextNPC);
 			Array.Resize(ref WorldGen.TownManager._hasRoom, nextNPC);
 
+			for (int i = 0; i < Main.player.Length; i++) {
+				Array.Resize(ref Main.player[i].npcTypeNoAggro, nextNPC);
+			}
+
 			for (int k = NPCID.Count; k < nextNPC; k++) {
 				Main.npcFrameCount[k] = 1;
 				Lang._npcNameCache[k] = LocalizedText.Empty;
 			}
-			
+
 			InstancedGlobals = globalNPCs.Where(g => g.InstancePerEntity).ToArray();
 
 			for (int i = 0; i < InstancedGlobals.Length; i++) {

@@ -41,6 +41,15 @@
  			if (type == 160) {
  				if ((double)roomY2 > Main.worldSurface)
  					return false;
+@@ -1599,7 +_,7 @@
+ 		}
+ 
+ 		public static void CheckAchievement_RealEstate() {
+-			bool[] array = new bool[663];
++			bool[] array = new bool[NPCLoader.NPCCount];
+ 			for (int i = 0; i < 200; i++) {
+ 				if (Main.npc[i].active && Main.npc[i].type >= 0 && Main.npc[i].type < 663)
+ 					array[Main.npc[i].type] = true;
 @@ -1804,7 +_,7 @@
  			if (num7 >= Main.maxTilesY - 5)
  				num7 = Main.maxTilesY - 6;
