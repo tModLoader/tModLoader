@@ -1,6 +1,7 @@
 ﻿using ExampleMod.Content.Items;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
@@ -11,6 +12,7 @@ namespace ExampleMod.Content.Pets.ExamplePet
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Paper Airplane");
 			Tooltip.SetDefault("Summons a Paper Airplane to follow aimlessly behind you");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {

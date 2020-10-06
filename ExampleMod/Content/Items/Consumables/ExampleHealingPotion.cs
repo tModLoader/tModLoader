@@ -2,6 +2,7 @@
 using System.Linq;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -9,6 +10,10 @@ namespace ExampleMod.Content.Items.Consumables
 {
 	public class ExampleHealingPotion : ModItem
 	{
+		public override void SetStaticDefaults() {
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 30;
+		}
+
 		public override void SetDefaults() {
 			item.width = 20;
 			item.height = 26;

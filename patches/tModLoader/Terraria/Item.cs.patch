@@ -454,11 +454,12 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -45777,7 +_,22 @@
+@@ -45777,8 +_,23 @@
  			}
  		}
  
 -		public Item Clone() => (Item)MemberwiseClone();
+-		public Item DeepClone() => (Item)MemberwiseClone();
 +		public Item Clone() {
 +			Item newItem = (Item)MemberwiseClone();
 +			newItem.modItem = modItem?.Clone(newItem);
@@ -475,9 +476,10 @@
 +			return newItem;
 +		}
 +
- 		public Item DeepClone() => (Item)MemberwiseClone();
++		internal Item DeepClone() => Clone();
  
  		public bool IsTheSameAs(Item compareItem) {
+ 			if (netID == compareItem.netID)
 @@ -45809,6 +_,8 @@
  			dye = 0;
  			shoot = 0;
