@@ -1,3 +1,4 @@
+using System.IO;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.GameContent.Tile_Entities
@@ -9,5 +10,9 @@ namespace Terraria.GameContent.Tile_Entities
 		};
 
 		public override void Load(TagCompound tag) => item = ItemIO.Load(tag.GetCompound("item"));
+
+		public override void NetSend(BinaryWriter writer, bool lightSend) => ItemIO.Send(item, writer, true);
+
+		public override void NetReceive(BinaryReader reader, bool lightReceive) => item = ItemIO.Receive(reader, true);
 	}
 }

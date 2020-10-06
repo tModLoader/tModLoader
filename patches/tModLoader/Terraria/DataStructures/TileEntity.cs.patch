@@ -41,3 +41,18 @@
  			tileEntity.type = id;
  			tileEntity.ReadInner(reader, networkSend);
  			return tileEntity;
+@@ -71,6 +_,14 @@
+ 
+ 			writer.Write(Position.X);
+ 			writer.Write(Position.Y);
++
++			//Call NetSend instead of the vanilla method when in modded contexts.
++			if (networkSend && !ModNet.AllowVanillaClients) {
++				NetSend(writer, false);
++
++				return;
++			}
++
+ 			WriteExtraData(writer, networkSend);
+ 		}
+ 

@@ -193,6 +193,10 @@ namespace Terraria.ModLoader
 			NetReceive(reader, networkSend);
 		}
 
+		// The base implementations of these methods call Read/WriteExtraData, and those in ModTileEntity's case now call NetSend/Receive.
+		public override void NetSend(BinaryWriter writer, bool lightSend) { }
+		public override void NetReceive(BinaryReader reader, bool lightReceive) { }
+
 		public virtual void Load(Mod mod) {
 			Mod = mod;
 
@@ -209,22 +213,6 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void Unload(){}
-
-		/// <summary>
-		/// Allows you to send custom data for this tile entity between client and server. This is called on the server while sending tile data (!lightSend) and when a MessageID.TileEntitySharing message is sent (lightSend)
-		/// </summary>
-		/// <param name="writer">The writer.</param>
-		/// <param name="lightSend">If true, send only data that can change. Otherwise, send the full information.</param>
-		public virtual void NetSend(BinaryWriter writer, bool lightSend) {
-		}
-
-		/// <summary>
-		/// Receives the data sent in the NetSend hook. Called on MP Client when receiving tile data (!lightReceive) and when a MessageID.TileEntitySharing message is sent (lightReceive)
-		/// </summary>
-		/// <param name="reader">The reader.</param>
-		/// <param name="lightReceive">If true, read only data that can change. Otherwise, read the full information.</param>
-		public virtual void NetReceive(BinaryReader reader, bool lightReceive) {
-		}
 
 		/// <summary>
 		/// Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.
