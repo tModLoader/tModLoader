@@ -3457,7 +3457,13 @@
  							binaryWriter.Write(player.bank3.item[num3].stack);
  							binaryWriter.Write(player.bank3.item[num3].prefix);
  						}
-@@ -36703,14 +_,8 @@
+ 
+ 						for (int num4 = 0; num4 < 40; num4++) {
+-							binaryWriter.Write(player.bank4.item[num4].netID);
++							ItemIO.WriteVanillaID(player.bank4.item[num4], binaryWriter);
+ 							binaryWriter.Write(player.bank4.item[num4].stack);
+ 							binaryWriter.Write(player.bank4.item[num4].prefix);
+ 						}
  
  						binaryWriter.Write(player.voidVaultInfo);
  						for (int num5 = 0; num5 < 22; num5++) {
