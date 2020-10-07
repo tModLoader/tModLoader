@@ -18,6 +18,7 @@ namespace ExampleMod.Common
 		//This sets the layer's parent. Layers don't get drawn if their parent layer is not visible, so smart use of this could help you improve compatibility with other mods.
 		public override DrawLayer<PlayerDrawSet> Parent => Head;
 
+		//GetDefaults is called before the layer is queued for drawing, and lets us control the layer's default depth and visibility. Note that other modders may call this method on your layer too.
 		public override void GetDefaults(Player drawPlayer, out bool visible, out LayerConstraint constraint) {
 			//The layer will be visible only if the player is holding an ExampleItem in their hands. Or if another modder forces this layer to be visible.
 			visible = drawPlayer.HeldItem?.type == ModContent.ItemType<ExampleItem>();
