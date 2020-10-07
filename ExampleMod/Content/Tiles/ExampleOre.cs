@@ -13,6 +13,7 @@ namespace ExampleMod.Content.Tiles
 	{
 		public override void SetDefaults() {
 			TileID.Sets.Ore[Type] = true;
+			TileID.Sets.FriendlyFairyCanLureTo[Type] = true;
 			Main.tileSpelunker[Type] = true; // The tile will be affected by spelunker highlighting
 			Main.tileOreFinderPriority[Type] = 410; // Metal Detector value, see https://terraria.gamepedia.com/Metal_Detector
 			Main.tileShine2[Type] = true; // Modifies the draw color slightly.
