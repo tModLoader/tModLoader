@@ -9,8 +9,6 @@ namespace ExampleMod.Content.Items
 	{
 		public override string Texture => "ExampleMod/Content/Items/ExampleItem";
 
-		public override bool CloneNewInstances => true;
-
 		public int timer;
 
 		public override void SetStaticDefaults() {
@@ -19,8 +17,7 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			TooltipLine tooltip = new TooltipLine(Mod, "ExampleMod: HotPatato", $"You have {timer / 60f:N1} seconds left!");
-			tooltip.overrideColor = Color.Red;
+			TooltipLine tooltip = new TooltipLine(Mod, "ExampleMod: HotPatato", $"You have {timer / 60f:N1} seconds left!") { overrideColor = Color.Red };
 			tooltips.Add(tooltip);
 		}
 

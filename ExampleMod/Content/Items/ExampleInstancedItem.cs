@@ -11,8 +11,6 @@ namespace ExampleMod.Content.Items
 	{
 		public override string Texture => "ExampleMod/Content/Items/ExampleItem";
 
-		public override bool CloneNewInstances => false;
-
 		public override ModItem Clone(Item item) {
 			ExampleInstancedItem clone = (ExampleInstancedItem)base.Clone(item);
 			clone.colors = (Color[])colors.Clone();
@@ -20,6 +18,13 @@ namespace ExampleMod.Content.Items
 		}
 
 		public Color[] colors;
+
+		public override void OnCreate(ItemCreationContext context) {
+			colors = new Color[5];
+			for (int i = 0; i < 5; i++) {
+				colors[i] = Main.hslToRgb(Main.rand.NextFloat(), 1f, 0.7f);
+			}
+		}
 
 		public ExampleInstancedItem() {
 			colors = new Color[5];
@@ -30,8 +35,7 @@ namespace ExampleMod.Content.Items
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			for (int i = 0; i < colors.Length; i++) {
-				TooltipLine tooltipLine = new TooltipLine(Mod, "EM" + i, "Example " + i);
-				tooltipLine.overrideColor = colors[i];
+				TooltipLine tooltipLine = new TooltipLine(Mod, "EM" + i, "Example " + i) { overrideColor = colors[i] };
 				tooltips.Add(tooltipLine);
 			}
 		}
