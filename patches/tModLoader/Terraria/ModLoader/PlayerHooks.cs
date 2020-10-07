@@ -243,6 +243,15 @@ namespace Terraria.ModLoader
 			return texture;
 		}
 
+		private delegate void DelegateNaturalManaRegen(ref float regen);
+		private static HookList HookNaturalManaRegen = AddHook<DelegateNaturalManaRegen>(p => p.NaturalManaRegen);
+
+		public static void NaturalManaRegen(Player player, ref float regen) {
+			foreach (int index in HookNaturalManaRegen.arr) {
+				player.modPlayers[index].NaturalManaRegen(ref regen);
+			}
+		}
+
 		private static HookList HookUpdateBadLifeRegen = AddHook<Action>(p => p.UpdateBadLifeRegen);
 
 		public static void UpdateBadLifeRegen(Player player) {

@@ -1505,6 +1505,15 @@
  			float num4 = (float)statLifeMax2 / 400f * 0.85f + 0.15f;
  			num2 *= num4;
  			lifeRegen += (int)Math.Round(num2);
+@@ -13071,6 +_,8 @@
+ 					manaRegen += statManaMax2 / 2;
+ 
+ 				float num2 = (float)statMana / (float)statManaMax2 * 0.8f + 0.2f;
++				PlayerHooks.NaturalManaRegen(this, ref num2);
++
+ 				if (manaRegenBuff)
+ 					num2 = 1f;
+ 
 @@ -13108,8 +_,8 @@
  
  		public void UpdateJumpHeight() {

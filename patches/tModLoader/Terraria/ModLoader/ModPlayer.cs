@@ -171,6 +171,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the power of the player's natural mana regeneration. This can be done by multiplying the regen parameter by any number. For example, walking multiplies it by 0.5.
+		/// </summary>
+		/// <param name="regen"></param>
+		public virtual void NaturalManaRegen(ref float regen) {
+		}
+
+		/// <summary>
 		/// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time). This is typically done by setting player.lifeRegen to 0 if it is positive, setting player.lifeRegenTime to 0, and subtracting a number from player.lifeRegen. The player will take damage at a rate of half the number you subtract per second.
 		/// </summary>
 		public virtual void UpdateBadLifeRegen() {
