@@ -57,7 +57,7 @@
 +			Regex plural1 = new Regex(@"(?:\#)([\{0}\ \w]+)(\S+)");
 +			// Plural2 should be formatted as &{0} things and should come third in the key.
 +			Regex plural2 = new Regex(@"(?:\&)([\{0}\ \w]+)(\S[^&]+)");
-+			Regex regex = value > 1 ? plural1 : singular;
++			Regex regex = value == 1 ? singular : plural1;
 +			if (Language.ActiveCulture.LegacyId == (int)GameCulture.CultureName.Russian) {
 +				int lN = value % 10;
 +				if (lN == 1) regex = singular; // Singular of course.
