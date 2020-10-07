@@ -27,6 +27,7 @@ namespace Terraria
 		public T GetModPlayer<T>(T baseInstance) where T : ModPlayer
 			=> modPlayers[baseInstance.index] as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current player.");
 
+		/*
 		// TryGet
 
 		/// <summary> Gets the instance of the specified ModPlayer type. </summary>
@@ -46,5 +47,6 @@ namespace Terraria
 
 			return result != null;
 		}
+		*/
 	}
 }

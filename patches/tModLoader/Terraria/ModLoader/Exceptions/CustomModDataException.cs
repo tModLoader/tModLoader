@@ -8,7 +8,7 @@ namespace Terraria.ModLoader.Exceptions
 		public readonly string modName;
 
 		public CustomModDataException(Mod mod, string message, Exception inner) : base(message, inner) {
-			this.modName = mod.Name;
+			modName = mod.Name ?? "Terraria";
 		}
 	}
 }

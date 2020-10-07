@@ -31,10 +31,11 @@ namespace ExampleMod.Content
 			item.consumable = true;
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
-			CreateRecipe(999)
+			CreateRecipe()
 				.AddIngredient<ExampleItem>()
-				.AddTile<ExampleWorkbench>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

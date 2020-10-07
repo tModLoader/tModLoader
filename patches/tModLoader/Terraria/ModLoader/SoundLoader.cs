@@ -1,188 +1,108 @@
 using Microsoft.Xna.Framework.Audio;
 using ReLogic.Content;
-using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria.Audio;
-using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
-	/// <summary>
-	/// This class is used to keep track of and support the existence of custom sounds that have been added to the game.
-	/// </summary>
+	/// <summary> This class is used to keep track of and support the existence of custom sounds that have been added to the game. </summary>
+	//TODO: Load asynchronously and on demand.
 	public static class SoundLoader
 	{
-		private static readonly IDictionary<SoundType, int> nextSound = new Dictionary<SoundType, int>();
-		internal static readonly IDictionary<SoundType, IDictionary<string, int>> sounds = new Dictionary<SoundType, IDictionary<string, int>>();
-		internal static readonly IDictionary<SoundType, IDictionary<int, ModSound>> modSounds = new Dictionary<SoundType, IDictionary<int, ModSound>>();
-		internal static Asset<SoundEffect>[] customSounds = new Asset<SoundEffect>[0];
-		internal static SoundEffectInstance[] customSoundInstances = new SoundEffectInstance[0];
-		/// <summary>
-		/// This value should be passed as the first parameter to Main.PlaySound whenever you want to play a custom sound that is not an item, npcHit, or npcKilled sound.
-		/// </summary>
-		public const int customSoundType = 50;
-		internal static readonly IDictionary<int, int> musicToItem = new Dictionary<int, int>();
-		internal static readonly IDictionary<int, int> itemToMusic = new Dictionary<int, int>();
-		internal static readonly IDictionary<int, IDictionary<int, int>> tileToMusic = new Dictionary<int, IDictionary<int, int>>();
-
-		static SoundLoader() {
-			foreach (SoundType type in Enum.GetValues(typeof(SoundType))) {
-				nextSound[type] = GetNumVanilla(type);
-				sounds[type] = new Dictionary<string, int>();
-				modSounds[type] = new Dictionary<int, ModSound>();
-			}
+		private class SoundData
+		{
+			public Asset<SoundEffect> soundEffect;
+			public SoundEffectInstance soundEffectInstance;
 		}
 
-		internal static int ReserveSoundID(SoundType type) {
-			int reserveID = nextSound[type];
-			nextSound[type]++;
-			return reserveID;
-		}
+		/// <summary> This value should be passed as the first parameter to Main.PlaySound whenever you want to play a custom sound. </summary>
+		public const int CustomSoundType = 66;
 
-		public static int SoundCount(SoundType type) {
-			return nextSound[type];
-		}
+		//Music boxes
+		//TODO: Move to MusicLoader?
+		internal static readonly IDictionary<int, int> MusicToItem = new Dictionary<int, int>();
+		internal static readonly IDictionary<int, int> ItemToMusic = new Dictionary<int, int>();
+		internal static readonly IDictionary<int, IDictionary<int, int>> TileToMusic = new Dictionary<int, IDictionary<int, int>>();
 
-		/// <summary>
-		/// Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given SoundType and the given sound file path. Returns 0 if there is no corresponding style.
-		/// </summary>
-		public static int GetSoundSlot(SoundType type, string sound) {
-			if (sounds[type].ContainsKey(sound)) {
-				return sounds[type][sound];
-			}
-			else {
-				return 0;
-			}
-		}
+		private static readonly List<SoundData> Sounds = new List<SoundData>();
+		private static readonly Dictionary<string, SoundData> SoundsByFullPath = new Dictionary<string, SoundData>();
+		private static readonly Dictionary<string, Dictionary<string, SoundData>> SoundsByModAndPath = new Dictionary<string, Dictionary<string, SoundData>>();
 
-		// TODO: Should we just get rid of the soundType Enum?
+		public static int SoundCount => Sounds.Count;
 
-		/// <summary>
-		/// Returns a LegacySoundStyle object which encapsulates both a sound type and a sound style (This is the new way to do sounds in 1.3.4) Returns null if there is no corresponding style.
-		/// </summary>
-		internal static LegacySoundStyle GetLegacySoundSlot(SoundType type, string sound) {
-			if (sounds[type].ContainsKey(sound)) {
-				return new LegacySoundStyle((int)type, sounds[type][sound]);
+		/// <summary> Gets a SoundEffect Asset object. This throws exceptions on failure. </summary>
+		/// <exception cref="KeyNotFoundException"/>
+		public static Asset<SoundEffect> GetSound(string soundPath) => SoundsByFullPath[soundPath].soundEffect;
+
+		/// <summary> Gets a SoundEffect Asset object. This throws exceptions on failure. </summary>
+		/// <exception cref="KeyNotFoundException"/>
+		public static Asset<SoundEffect> GetSound(string modName, string soundPath) => SoundsByModAndPath[modName][soundPath].soundEffect;
+
+		internal static void Autoload(Mod mod) {
+			string modName = mod.Name;
+
+			foreach (string soundPathWithExtension in mod.Assets.EnumeratePaths<SoundEffect>()) {
+				string soundPath = Path.ChangeExtension(soundPathWithExtension, null);
+				var data = new SoundData {
+					soundEffect = mod.Assets.Request<SoundEffect>(soundPathWithExtension, AssetRequestMode.ImmediateLoad)
+				};
+
+				if (!SoundsByModAndPath.TryGetValue(modName, out var modSoundSlots)) {
+					SoundsByModAndPath[modName] = modSoundSlots = new Dictionary<string, SoundData>();
+				}
+
+				modSoundSlots[soundPath] = data;
+				modSoundSlots[soundPathWithExtension] = data;
+				SoundsByFullPath[modName + '/' + soundPath] = data;
+				SoundsByFullPath[modName + '/' + soundPathWithExtension] = data;
+
+				Sounds.Add(data);
 			}
-			else {
-				return null;
-			}
+
+			/*foreach (string music in musics.Keys.Where(t => t.StartsWith("Sounds/"))) {
+				string substring = music.Substring("Sounds/".Length);
+
+				if (substring.StartsWith("Music/")) {
+					AddSound(SoundType.Music, Name + '/' + music);
+				}
+			}*/
 		}
 
 		internal static void ResizeAndFillArrays() {
-			customSounds = new Asset<SoundEffect>[nextSound[SoundType.Custom]];
-			customSoundInstances = new SoundEffectInstance[nextSound[SoundType.Custom]];
-			
-			Array.Resize(ref SoundEngine._legacyPlayer._soundItem,				nextSound[SoundType.Item]);
-			Array.Resize(ref SoundEngine._legacyPlayer._soundInstanceItem,		nextSound[SoundType.Item]);
-			Array.Resize(ref SoundEngine._legacyPlayer._soundNpcHit,			nextSound[SoundType.NPCHit]);
-			Array.Resize(ref SoundEngine._legacyPlayer._soundInstanceNpcHit,	nextSound[SoundType.NPCHit]);
-			Array.Resize(ref SoundEngine._legacyPlayer._soundNpcKilled,			nextSound[SoundType.NPCKilled]);
-			Array.Resize(ref SoundEngine._legacyPlayer._soundInstanceNpcKilled, nextSound[SoundType.NPCKilled]);
-			Array.Resize(ref Main.music, nextSound[SoundType.Music]);
-			Array.Resize(ref Main.musicFade, nextSound[SoundType.Music]);
-
-			foreach (SoundType type in Enum.GetValues(typeof(SoundType))) {
-				foreach (string sound in sounds[type].Keys) {
-					int slot = GetSoundSlot(type, sound);
-
-					if (type != SoundType.Music) {
-						GetSoundArray(type)[slot] = ModContent.GetSound(sound);
-						GetSoundInstanceArray(type)[slot] = GetSoundArray(type)[slot]?.Value.CreateInstance() ?? null;
-					}
-					else {
-						Main.music[slot] = ModContent.GetMusic(sound) ?? null;
-					}
-				}
-			}
+			//Array.Resize(ref Main.music, SoundCount[SoundType.Music]);
+			//Array.Resize(ref Main.musicFade, SoundCount[SoundType.Music]);
 		}
 
 		internal static void Unload() {
-			//for (int i = Main.maxMusic; i < Main.music.Length; i++)
-			//{
-			//	Main.music[i].Stop(AudioStopOptions.Immediate);
-			//}
-			foreach (SoundType type in Enum.GetValues(typeof(SoundType))) {
-				nextSound[type] = GetNumVanilla(type);
-				sounds[type].Clear();
-				modSounds[type].Clear();
-			}
-			musicToItem.Clear();
-			itemToMusic.Clear();
-			tileToMusic.Clear();
+			/*for (int i = Main.maxMusic; i < Main.music.Length; i++) {
+				Main.music[i].Stop(AudioStopOptions.Immediate);
+			}*/
+
+			Sounds.Clear();
+			SoundsByFullPath.Clear();
+
+			MusicToItem.Clear();
+			ItemToMusic.Clear();
+			TileToMusic.Clear();
 		}
-		//in Terraria.Main.PlaySound before checking type to play sound add
-		//  if (SoundLoader.PlayModSound(type, num, num2, num3)) { return; }
+
 		internal static bool PlayModSound(int type, int style, float volume, float pan, ref SoundEffectInstance soundEffectInstance) {
-			SoundType soundType;
-			switch (type) {
-				case 2:
-					soundType = SoundType.Item;
-					break;
-				case 3:
-					soundType = SoundType.NPCHit;
-					break;
-				case 4:
-					soundType = SoundType.NPCKilled;
-					break;
-				case customSoundType:
-					soundType = SoundType.Custom;
-					break;
-				default:
-					return false;
-			}
-			if (!modSounds[soundType].ContainsKey(style)) {
+			if (type != CustomSoundType || style < 0 || style >= SoundCount) {
 				return false;
 			}
-			soundEffectInstance = modSounds[soundType][style].PlaySound(ref GetSoundInstanceArray(soundType)[style], volume, pan, soundType);
+
+			var soundData = Sounds[style];
+
+			soundEffectInstance = soundData.soundEffectInstance ??= soundData.soundEffect.Value.CreateInstance();
+
+			soundEffectInstance.Stop();
+
+			soundEffectInstance.Volume = volume;
+			soundEffectInstance.Pan = pan;
+			soundEffectInstance.Pitch = 0f;
+
 			return true;
-		}
-
-		internal static int GetNumVanilla(SoundType type) {
-			switch (type) {
-				case SoundType.Custom:
-					return 0;
-				case SoundType.Item:
-					return SoundID.ItemSoundCount + 1;
-				case SoundType.NPCHit:
-					return SoundID.NPCHitCount + 1;
-				case SoundType.NPCKilled:
-					return SoundID.NPCDeathCount + 1;
-				case SoundType.Music:
-					return Main.maxMusic;
-			}
-
-			return 0;
-		}
-
-		internal static Asset<SoundEffect>[] GetSoundArray(SoundType type) {
-			switch (type) {
-				case SoundType.Custom:
-					return customSounds;
-				case SoundType.Item:
-					return SoundEngine._legacyPlayer._soundItem;
-				case SoundType.NPCHit:
-					return SoundEngine._legacyPlayer._soundNpcHit;
-				case SoundType.NPCKilled:
-					return SoundEngine._legacyPlayer._soundNpcKilled;
-			}
-
-			return null;
-		}
-
-		internal static SoundEffectInstance[] GetSoundInstanceArray(SoundType type) {
-			switch (type) {
-				case SoundType.Custom:
-					return customSoundInstances;
-				case SoundType.Item:
-					return SoundEngine._legacyPlayer._soundInstanceItem;
-				case SoundType.NPCHit:
-					return SoundEngine._legacyPlayer._soundInstanceNpcHit;
-				case SoundType.NPCKilled:
-					return SoundEngine._legacyPlayer._soundInstanceNpcKilled;
-			}
-
-			return null;
 		}
 	}
 }

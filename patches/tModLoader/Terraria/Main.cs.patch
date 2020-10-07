@@ -480,6 +480,60 @@
  					Console.WriteLine("");
  					Console.Write(Language.GetTextValue("CLI.ChooseWorld"));
  					string text2 = Console.ReadLine();
+@@ -4005,7 +_,7 @@
+ 							int length = Language.GetTextValue("CLI.DeleteWorld_Command").Length;
+ 							int num2 = Convert.ToInt32(text2.Substring(length + 1)) - 1;
+ 							if (num2 < WorldList.Count) {
+-								Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2));
++								Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2) + " - " + ModLoader.ModLoader.versionedName);
+ 								Console.WriteLine("");
+ 								Console.WriteLine(Language.GetTextValue("CLI.DeleteConfirmation", WorldList[num2].Name));
+ 								Console.Write("({0}/{1}): ", Language.GetTextValue("CLI.ShortYes"), Language.GetTextValue("CLI.ShortNo"));
+@@ -4028,7 +_,7 @@
+ 					if (text2 == "n" || text2 == "N") {
+ 						bool flag2 = true;
+ 						while (flag2) {
+-							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2));
++							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2) + " - " + ModLoader.ModLoader.versionedName);
+ 							Console.WriteLine("");
+ 							Console.WriteLine("1\t" + Language.GetTextValue("UI.WorldSizeSmall"));
+ 							Console.WriteLine("2\t" + Language.GetTextValue("UI.WorldSizeMedium"));
+@@ -4067,7 +_,7 @@
+ 
+ 						flag2 = true;
+ 						while (flag2) {
+-							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2));
++							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2) + " - " + ModLoader.ModLoader.versionedName);
+ 							Console.WriteLine("");
+ 							Console.WriteLine("1\t" + Language.GetTextValue("UI.Normal"));
+ 							Console.WriteLine("2\t" + Language.GetTextValue("UI.Expert"));
+@@ -4109,7 +_,7 @@
+ 						if (SettingsUnlock_WorldEvil) {
+ 							flag2 = true;
+ 							while (flag2) {
+-								Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2));
++								Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2) + " - " + ModLoader.ModLoader.versionedName);
+ 								Console.WriteLine("");
+ 								Console.WriteLine("1\t" + Language.GetTextValue("CLI.Random"));
+ 								Console.WriteLine("2\t" + Language.GetTextValue("CLI.Corrupt"));
+@@ -4146,7 +_,7 @@
+ 
+ 						flag2 = true;
+ 						while (flag2) {
+-							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2));
++							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2) + " - " + ModLoader.ModLoader.versionedName);
+ 							Console.WriteLine("");
+ 							Console.Write(Language.GetTextValue("CLI.EnterWorldName"));
+ 							newWorldName = Console.ReadLine();
+@@ -4163,7 +_,7 @@
+ 						string text3 = "";
+ 						flag2 = true;
+ 						while (flag2) {
+-							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2));
++							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2) + " - " + ModLoader.ModLoader.versionedName);
+ 							Console.WriteLine("");
+ 							Console.Write(Language.GetTextValue("CLI.EnterSeed"));
+ 							text3 = Console.ReadLine();
 @@ -4214,6 +_,14 @@
  
  						continue;
@@ -495,6 +549,42 @@
  
  					try {
  						int num3 = Convert.ToInt32(text2);
+@@ -4223,7 +_,7 @@
+ 
+ 						bool flag3 = true;
+ 						while (flag3) {
+-							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2));
++							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2) + " - " + ModLoader.ModLoader.versionedName);
+ 							Console.WriteLine("");
+ 							Console.Write(Language.GetTextValue("CLI.SetInitialMaxPlayers"));
+ 							string text4 = Console.ReadLine();
+@@ -4251,7 +_,7 @@
+ 
+ 						flag3 = true;
+ 						while (flag3) {
+-							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2));
++							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2) + " - " + ModLoader.ModLoader.versionedName);
+ 							Console.WriteLine("");
+ 							Console.Write(Language.GetTextValue("CLI.SetInitialPort"));
+ 							string text5 = Console.ReadLine();
+@@ -4277,7 +_,7 @@
+ 
+ 						flag3 = true;
+ 						while (flag3) {
+-							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2));
++							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2) + " - " + ModLoader.ModLoader.versionedName);
+ 							Console.WriteLine("");
+ 							Console.Write(Language.GetTextValue("CLI.AutomaticPortForward", Language.GetTextValue("CLI.ShortYes"), Language.GetTextValue("CLI.ShortNo")));
+ 							string text6 = Console.ReadLine();
+@@ -4301,7 +_,7 @@
+ 							}
+ 						}
+ 
+-						Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2));
++						Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2) + " - " + ModLoader.ModLoader.versionedName);
+ 						Console.WriteLine("");
+ 						Console.Write(Language.GetTextValue("CLI.EnterServerPassword"));
+ 						Netplay.ServerPassword = Console.ReadLine();
 @@ -4324,6 +_,7 @@
  			catch {
  			}
@@ -2089,6 +2179,16 @@
  			}
  		}
  
+@@ -27688,6 +_,9 @@
+ 			Microsoft.Xna.Framework.Color color = Lighting.GetColor(item.Center.ToTileCoordinates());
+ 			Microsoft.Xna.Framework.Color currentColor = item.GetAlpha(color);
+ 			ItemSlot.GetItemLight(ref currentColor, ref scale, item);
++			if (!ItemLoader.PreDrawInWorld(item, spriteBatch, color, currentColor, ref num, ref scale, whoami)) {
++				goto PostDraw;
++			}
+ 			int num2 = item.glowMask;
+ 			if (!gamePaused && base.IsActive && ((item.type >= 71 && item.type <= 74) || item.type == 58 || item.type == 109) && color.R > 60 && (float)rand.Next(500) - (Math.Abs(item.velocity.X) + Math.Abs(item.velocity.Y)) * 10f < (float)((int)color.R / 50)) {
+ 				int num3 = Dust.NewDust(item.position, item.width, item.height, 43, 0f, 0f, 254, Microsoft.Xna.Framework.Color.White, 0.5f);
 @@ -27763,11 +_,15 @@
  			if (num2 != -1)
  				spriteBatch.Draw(TextureAssets.GlowMask[num2].Value, vector2, frame, new Microsoft.Xna.Framework.Color(250, 250, 250, item.alpha), num, vector, scale, SpriteEffects.None, 0f);
@@ -2588,7 +2688,7 @@
 +					else {
 +						Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
 +						SoundEngine.PlaySound(SoundID.MenuOpen);
-+						Process.Start(Logging.LogPath);
++						Utils.OpenFolder(Logging.LogPath);
 +					}
 +
  					netMode = 0;
@@ -2619,7 +2719,7 @@
 +					else {
 +						Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
 +						SoundEngine.PlaySound(SoundID.MenuOpen);
-+						Process.Start(Logging.LogPath);
++						Utils.OpenFolder(Logging.LogPath);
 +					}
 +
  					menuMode = 0;
@@ -2775,6 +2875,17 @@
  			if (menuMode == num)
  				GamepadMainMenuHandler.LastDrew = num;
  		}
+@@ -38981,6 +_,10 @@
+ 			Sandstorm.WorldClear();
+ 			maxRaining = 0f;
+ 			raining = false;
++
++			//Added by tML.
++			Graphics.Effects.Filters.Scene.DeactivateAll();
++			SkyManager.Instance.DeactivateAll();
+ 		}
+ 
+ 		private static void PostDrawMenu(Microsoft.Xna.Framework.Point screenSizeCache, Microsoft.Xna.Framework.Point screenSizeCacheAfterScaling) {
 @@ -39476,6 +_,7 @@
  			if (SceneMetrics.MushroomTileCount > SceneMetrics.MushroomTileMax)
  				num8 = 2;

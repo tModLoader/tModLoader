@@ -1,5 +1,4 @@
 ﻿using ExampleMod.Content.Items;
-using ExampleMod.Content.Tiles.Furniture;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -21,17 +20,18 @@ namespace ExampleMod.Content.Pets.ExamplePet
 			item.buffType = BuffType<ExamplePetBuff>(); // Apply buff upon usage of the item.
 		}
 
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient<ExampleItem>(10)
-				.AddTile<ExampleWorkbench>()
-				.Register();
-		}
-
 		public override void UseStyle(Player player) {
 			if (player.whoAmI == Main.myPlayer && player.itemTime == 0) {
 				player.AddBuff(item.buffType, 3600);
 			}
+		}
+
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
+				.Register();
 		}
 	}
 }

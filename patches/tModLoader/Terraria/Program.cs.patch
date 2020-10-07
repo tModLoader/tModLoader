@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -2,19 +_,23 @@
+@@ -2,19 +_,24 @@
  using ReLogic.OS;
  using System;
  using System.Collections.Generic;
@@ -21,6 +21,7 @@
  using Terraria.Initializers;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Exceptions;
  using Terraria.Social;
  using Terraria.Utilities;
  
@@ -133,7 +134,7 @@
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
  			Assembly assembly = null;
  			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-@@ -151,27 +_,49 @@
+@@ -151,27 +_,52 @@
  			}
  		}
  
@@ -150,6 +151,9 @@
 +				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
 +				LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
 +				Platform.Get<IPathService>().GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader{(ModLoader.ModLoader.IsBeta ? Path.DirectorySeparatorChar + "Beta" : "")}");
++
++			if (File.Exists("savehere.txt"))
++				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
 +
 +			try {
 +				Logging.Init();
@@ -201,12 +205,15 @@
  			}
  		}
  
-@@ -204,9 +_,18 @@
+@@ -204,9 +_,21 @@
  				}
  
  #if CLIENT
 -				MessageBox.Show(text, "Terraria: Error");
 +				ModLoader.UI.Interface.MessageBoxShow(text);
++
++				if (e is FolderCreationFailedException)
++					Process.Start(e.HelpLink);
 +
 +				if (e.Message.Contains("CSteamworks"))
 +					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");

@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Initializers;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
@@ -13,8 +15,7 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class EquipLoader
 	{
-		//in Terraria.Main.DrawPlayer and Terraria.Main.DrawPlayerHead get rid of checks for slot too high (not necessary for loading)
-		private static readonly IDictionary<EquipType, int> nextEquip = new Dictionary<EquipType, int>();
+		internal static readonly IDictionary<EquipType, int> nextEquip = new Dictionary<EquipType, int>();
 
 		internal static readonly IDictionary<EquipType, IDictionary<int, EquipTexture>> equipTextures =
 			new Dictionary<EquipType, IDictionary<int, EquipTexture>>();
@@ -58,6 +59,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResizeAndFillArrays() {
+			//Textures
 			Array.Resize(ref TextureAssets.ArmorHead, nextEquip[EquipType.Head]);
 			Array.Resize(ref TextureAssets.ArmorBody, nextEquip[EquipType.Body]);
 			Array.Resize(ref TextureAssets.FemaleBody, nextEquip[EquipType.Body]);
@@ -74,7 +76,10 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.AccNeck, nextEquip[EquipType.Neck]);
 			Array.Resize(ref TextureAssets.AccFace, nextEquip[EquipType.Face]);
 			Array.Resize(ref TextureAssets.AccBalloon, nextEquip[EquipType.Balloon]);
-			Array.Resize(ref ArmorIDs.Wing.Sets.Stats, nextEquip[EquipType.Wings]);
+
+			//Sets
+			LoaderUtils.ResetStaticMembers(typeof(ArmorIDs), true);
+			WingStatsInitializer.Load();
 			
 			foreach (EquipType type in EquipTypes) {
 				foreach (var entry in equipTextures[type]) {

@@ -1,0 +1,82 @@
+--- src/Terraria/Terraria/ID/ArmorIDs.cs
++++ src/tModLoader/Terraria/ID/ArmorIDs.cs
+@@ -1,6 +_,7 @@
+ using System;
+ using System.Collections.Generic;
+ using Terraria.DataStructures;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.ID
+ {
+@@ -10,7 +_,7 @@
+ 		{
+ 			public class Sets
+ 			{
+-				public static SetFactory Factory = new SetFactory(266);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Head]);
+ 				public static int[] FrontToBackID = Factory.CreateIntSet(-1, 242, 246, 243, 247, 244, 248, 245, 249, 133, 252, 224, 253);
+ 			}
+ 
+@@ -302,7 +_,7 @@
+ 					}
+ 				}
+ 
+-				public static SetFactory Factory = new SetFactory(235);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Body]);
+ 				public static bool[] NeedsToDrawArm = Factory.CreateBoolSet(false, 200, 202, 201, 203, 195, 205, 207, 206, 228);
+ 				public static int[] IncludedCapeBack = Factory.CreateIntSet(-1, 207, 13, 206, 12, 205, 11, 185, 17, 96, 18, 94, 19, 80, 21, 217, 22, 24, 29);
+ 				public static int[] IncludedCapeBackFemale = Factory.CreateIntSet(-1, 207, 13, 206, 12, 205, 11, 185, 17, 96, 18, 94, 19, 80, 21, 217, 23, 24, 29);
+@@ -522,7 +_,7 @@
+ 		{
+ 			public class Sets
+ 			{
+-				public static SetFactory Factory = new SetFactory(218);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Legs]);
+ 				public static List<int> MannequinIncompatible = new List<int>();
+ 			}
+ 
+@@ -723,7 +_,7 @@
+ 		{
+ 			public class Sets
+ 			{
+-				public static SetFactory Factory = new SetFactory(22);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOn]);
+ 				public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21);
+ 				public static bool[] UsesOldFramingTexturesForWalking = Factory.CreateBoolSet(false, 12, 8, 17);
+ 			}
+@@ -758,7 +_,7 @@
+ 		{
+ 			public class Sets
+ 			{
+-				public static SetFactory Factory = new SetFactory(14);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOff]);
+ 				public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
+ 			}
+ 
+@@ -818,7 +_,7 @@
+ 		{
+ 			public class Sets
+ 			{
+-				public static SetFactory Factory = new SetFactory(9);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Front]);
+ 				public static bool[] DrawsInNeckLayer = Factory.CreateBoolSet(false, 6);
+ 			}
+ 
+@@ -867,7 +_,7 @@
+ 		{
+ 			public class Sets
+ 			{
+-				public static SetFactory Factory = new SetFactory(17);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Waist]);
+ 				public static bool[] UsesTorsoFraming = Factory.CreateBoolSet(false, 5, 10, 10, 12);
+ 			}
+ 
+@@ -980,7 +_,7 @@
+ 		{
+ 			public class Sets
+ 			{
+-				public static SetFactory Factory = new SetFactory(16);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Face]);
+ 				public static bool[] PreventHairDraw = Factory.CreateBoolSet(false, 2, 3, 4, 10, 11, 12, 13);
+ 			}
+ 

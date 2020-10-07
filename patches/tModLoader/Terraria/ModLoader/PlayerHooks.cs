@@ -75,61 +75,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookSetupStartInventory = AddHook<Action<List<Item>, bool>>(p => p.SetupStartInventory);
-
-		public static IList<Item> SetupStartInventory(Player player, bool mediumcoreDeath = false) {
-			IList<Item> items = new List<Item>();
-			Item item = new Item();
-			item.SetDefaults(ItemID.CopperShortsword);
-			item.Prefix(-1);
-			items.Add(item);
-			item = new Item();
-			item.SetDefaults(ItemID.CopperPickaxe);
-			item.Prefix(-1);
-			items.Add(item);
-			item = new Item();
-			item.SetDefaults(ItemID.CopperAxe);
-			item.Prefix(-1);
-			items.Add(item);
-			if (Main.runningCollectorsEdition && !mediumcoreDeath) {
-				item = new Item();
-				item.SetDefaults(ItemID.Carrot);
-				items.Add(item);
-			}
-			foreach (int index in HookSetupStartInventory.arr) {
-				player.modPlayers[index].SetupStartInventory(items, mediumcoreDeath);
-			}
-			IDictionary<int, int> counts = new Dictionary<int, int>();
-			foreach (Item item0 in items) {
-				if (item0.maxStack > 1) {
-					if (!counts.ContainsKey(item0.netID)) {
-						counts[item0.netID] = 0;
-					}
-					counts[item0.netID] += item0.stack;
-				}
-			}
-			int k = 0;
-			while (k < items.Count) {
-				bool flag = true;
-				int id = items[k].netID;
-				if (counts.ContainsKey(id)) {
-					items[k].stack = counts[id];
-					if (items[k].stack > items[k].maxStack) {
-						items[k].stack = items[k].maxStack;
-					}
-					counts[id] -= items[k].stack;
-					if (items[k].stack <= 0) {
-						items.RemoveAt(k);
-						flag = false;
-					}
-				}
-				if (flag) {
-					k++;
-				}
-			}
-			return items;
-		}
-
 		public static void SetStartInventory(Player player, IList<Item> items) {
 			if (items.Count <= 50) {
 				for (int k = 0; k < items.Count && k < 49; k++)
@@ -146,10 +91,6 @@ namespace Terraria.ModLoader
 				}
 				player.inventory[49] = bag;
 			}
-		}
-
-		public static void SetStartInventory(Player player) {
-			SetStartInventory(player, SetupStartInventory(player));
 		}
 
 		private static HookList HookPreSavePlayer = AddHook<Action>(p => p.PreSavePlayer);
@@ -242,7 +183,9 @@ namespace Terraria.ModLoader
 				string name = reader.ReadString();
 				byte[] data = reader.ReadBytes(reader.ReadByte());
 
-				if (ModLoader.TryGetMod(modName, out var mod) && ModContent.TryFind<ModPlayer>(mod.Name, name, out var modPlayerBase) && player.TryGetModPlayer(modPlayerBase, out var modPlayer)) {
+				if (ModContent.TryFind<ModPlayer>(modName, name, out var modPlayerBase)) {
+					var modPlayer = player.GetModPlayer(modPlayerBase);
+
 					using MemoryStream stream = new MemoryStream(data);
 					using BinaryReader customReader = new BinaryReader(stream);
 
@@ -925,96 +868,32 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateDrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright);
+		private delegate void DelegateDrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright);
 		private static HookList HookDrawEffects = AddHook<DelegateDrawEffects>(p => p.DrawEffects);
 
-		public static void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
+		public static void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
 			ModPlayer[] modPlayers = drawInfo.drawPlayer.modPlayers;
 			foreach (int index in HookDrawEffects.arr) {
 				modPlayers[index].DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
 			}
 		}
 
-		private delegate void DelegateModifyDrawInfo(ref PlayerDrawInfo drawInfo);
+		private delegate void DelegateModifyDrawInfo(ref PlayerDrawSet drawInfo);
 		private static HookList HookModifyDrawInfo = AddHook<DelegateModifyDrawInfo>(p => p.ModifyDrawInfo);
 
-		public static void ModifyDrawInfo(ref PlayerDrawInfo drawInfo) {
+		public static void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
 			ModPlayer[] modPlayers = drawInfo.drawPlayer.modPlayers;
 			foreach (int index in HookModifyDrawInfo.arr) {
 				modPlayers[index].ModifyDrawInfo(ref drawInfo);
 			}
 		}
 
-		private static HookList HookModifyDrawLayers = AddHook<Action<List<PlayerLayer>>>(p => p.ModifyDrawLayers);
+		private static HookList HookModifyDrawLayers = AddHook<Action<IReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>>>>(p => p.ModifyDrawLayers);
 
-		public static List<PlayerLayer> GetDrawLayers(Player drawPlayer) {
-			List<PlayerLayer> layers = new List<PlayerLayer> {
-				PlayerLayer.HairBack,
-				PlayerLayer.MountBack,
-				PlayerLayer.MiscEffectsBack,
-				PlayerLayer.BackAcc,
-				PlayerLayer.Wings,
-				PlayerLayer.BalloonAcc,
-				PlayerLayer.Skin
-			};
-			if (drawPlayer.wearsRobe) {
-				layers.Add(PlayerLayer.ShoeAcc);
-				layers.Add(PlayerLayer.Legs);
-			}
-			else {
-				layers.Add(PlayerLayer.Legs);
-				layers.Add(PlayerLayer.ShoeAcc);
-			}
-			layers.Add(PlayerLayer.Body);
-			layers.Add(PlayerLayer.HandOffAcc);
-			layers.Add(PlayerLayer.WaistAcc);
-			layers.Add(PlayerLayer.NeckAcc);
-			layers.Add(PlayerLayer.Face);
-			layers.Add(PlayerLayer.Hair);
-			layers.Add(PlayerLayer.Head);
-			layers.Add(PlayerLayer.FaceAcc);
-			if (drawPlayer.mount.Cart) {
-				layers.Add(PlayerLayer.ShieldAcc);
-				layers.Add(PlayerLayer.MountFront);
-			}
-			else {
-				layers.Add(PlayerLayer.MountFront);
-				layers.Add(PlayerLayer.ShieldAcc);
-			}
-			layers.Add(PlayerLayer.SolarShield);
-			layers.Add(PlayerLayer.HeldProjBack);
-			layers.Add(PlayerLayer.HeldItem);
-			layers.Add(PlayerLayer.Arms);
-			layers.Add(PlayerLayer.HandOnAcc);
-			layers.Add(PlayerLayer.HeldProjFront);
-			layers.Add(PlayerLayer.FrontAcc);
-			layers.Add(PlayerLayer.MiscEffectsFront);
-			foreach (PlayerLayer layer in layers) {
-				layer.visible = true;
-			}
+		public static void ModifyDrawLayers(Player drawPlayer, IReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>> layers) {
 			foreach (int index in HookModifyDrawLayers.arr) {
 				drawPlayer.modPlayers[index].ModifyDrawLayers(layers);
 			}
-			return layers;
-		}
-
-		private static HookList HookModifyDrawHeadLayers = AddHook<Action<List<PlayerHeadLayer>>>(p => p.ModifyDrawHeadLayers);
-
-		public static List<PlayerHeadLayer> GetDrawHeadLayers(Player drawPlayer) {
-			List<PlayerHeadLayer> layers = new List<PlayerHeadLayer> {
-				PlayerHeadLayer.Head,
-				PlayerHeadLayer.Hair,
-				PlayerHeadLayer.AltHair,
-				PlayerHeadLayer.Armor,
-				PlayerHeadLayer.FaceAcc
-			};
-			foreach (PlayerHeadLayer layer in layers) {
-				layer.visible = true;
-			}
-			foreach (int index in HookModifyDrawHeadLayers.arr) {
-				drawPlayer.modPlayers[index].ModifyDrawHeadLayers(layers);
-			}
-			return layers;
 		}
 
 		private static HookList HookModifyScreenPosition = AddHook<Action>(p => p.ModifyScreenPosition);
@@ -1153,6 +1032,18 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		private static HookList HookCanUseItem = AddHook<Func<Item, bool>>(p => p.CanUseItem);
+
+		public static bool CanUseItem(Player player, Item item) {
+			bool result = true;
+
+			foreach (int index in HookCanUseItem.arr) {
+				result &= player.modPlayers[index].CanUseItem(item);
+			}
+
+			return result;
+		}
+
 		private delegate bool DelegateModifyNurseHeal(NPC npc, ref int health, ref bool removeDebuffs, ref string chatText);
 		private static HookList HookModifyNurseHeal = AddHook<DelegateModifyNurseHeal>(p => p.ModifyNurseHeal);
 
@@ -1179,6 +1070,29 @@ namespace Terraria.ModLoader
 			foreach (int index in HookPostNurseHeal.arr) {
 				player.modPlayers[index].PostNurseHeal(npc, health, removeDebuffs, price);
 			}
+		}
+
+		private static HookList HookAddStartingItems = AddHook<Func<bool, IEnumerable<Item>>>(p => p.AddStartingItems);
+		private static HookList HookModifyStartingInventory = AddHook<Action<IReadOnlyDictionary<string, List<Item>>, bool>>(p => p.ModifyStartingInventory);
+
+		public static List<Item> GetStartingItems(Player player, IEnumerable<Item> vanillaItems, bool mediumCoreDeath = false) {
+			var itemsByMod = new Dictionary<string, List<Item>>();
+
+			itemsByMod["Terraria"] = vanillaItems.ToList();
+
+			foreach (int index in HookAddStartingItems.arr) {
+				ModPlayer modPlayer = player.modPlayers[index];
+				itemsByMod[modPlayer.Mod.Name] = modPlayer.AddStartingItems(mediumCoreDeath).ToList();
+			}
+
+			foreach (int index in HookModifyStartingInventory.arr) {
+				player.modPlayers[index].ModifyStartingInventory(itemsByMod, mediumCoreDeath);
+			}
+
+			return itemsByMod
+				.OrderBy(kv => kv.Key == "Terraria" ? "" : kv.Key)
+				.SelectMany(kv => kv.Value)
+				.ToList();
 		}
 	}
 }

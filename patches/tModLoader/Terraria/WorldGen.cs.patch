@@ -216,7 +216,7 @@
  								int num542 = genRand.Next(num527 - num535, num527 + num535 - 2);
  								PlaceTile(num541, num542, 4, mute: true, forced: false, -1, 3);
 -								if (Main.tile[num541, num542].type == 4)
-+								if (TileLoader.IsTorch(Main.tile[num541, num542].type))
++								if (TileID.Sets.Torch[Main.tile[num541, num542].type])
  									flag35 = true;
  							}
  
@@ -331,7 +331,7 @@
  		public static bool GrowEpicTree(int i, int y) {
  			int j;
 -			for (j = y; Main.tile[i, j].type == 20; j++) {
-+			for (j = y; TileLoader.IsSapling(Main.tile[i, j].type); j++) {
++			for (j = y; TileID.Sets.TreeSapling[Main.tile[i, j].type]; j++) {
  			}
  
 -			if (Main.tile[i, j].active() && !Main.tile[i, j].halfBrick() && Main.tile[i, j].slope() == 0 && Main.tile[i, j].type == 2 && Main.tile[i, j - 1].wall == 0 && Main.tile[i, j - 1].liquid == 0 && ((Main.tile[i - 1, j].active() && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109)) || (Main.tile[i + 1, j].active() && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109)))) {
@@ -379,7 +379,7 @@
  		public static bool GrowTree(int i, int y) {
  			int j;
 -			for (j = y; Main.tile[i, j].type == 20; j++) {
-+			for (j = y; TileLoader.IsSapling(Main.tile[i, j].type); j++) {
++			for (j = y; TileID.Sets.TreeSapling[Main.tile[i, j].type]; j++) {
  			}
  
  			if ((Main.tile[i - 1, j - 1].liquid != 0 || Main.tile[i, j - 1].liquid != 0 || Main.tile[i + 1, j - 1].liquid != 0) && !notTheBees)
@@ -396,24 +396,6 @@
  				flag4 = true;
  
  			if (!flag3) {
-@@ -16114,7 +_,7 @@
- 				return false;
- 
- 			bool flag = false;
--			if (ignoreID != -1 && TileID.Sets.CommonSapling[ignoreID])
-+			if (ignoreID != -1 && (TileID.Sets.CommonSapling[ignoreID] || TileLoader.IsSapling(ignoreID)))
- 				flag = true;
- 
- 			for (int i = startX; i < endX + 1; i++) {
-@@ -16142,7 +_,7 @@
- 					}
- 
- 					if (flag) {
--						if (TileID.Sets.CommonSapling[Main.tile[i, j].type])
-+						if (TileID.Sets.CommonSapling[Main.tile[i, j].type] || TileLoader.IsSapling(Main.tile[i,j].type))
- 							break;
- 
- 						switch (Main.tile[i, j].type) {
 @@ -16185,6 +_,7 @@
  		}
  
@@ -493,7 +475,7 @@
  							for (int k = num6 - 8; k < num6 + 8; k++) {
  								for (int l = num7 - 8; l < num7 + 8; l++) {
 -									if (Main.tile[k, l].active() && Main.tile[k, l].type == 4) {
-+									if (Main.tile[k, l].active() && TileLoader.IsTorch(Main.tile[k, l].type)) {
++									if (Main.tile[k, l].active() && TileID.Sets.Torch[Main.tile[k, l].type]) {
  										flag2 = true;
  										break;
  									}
@@ -613,7 +595,7 @@
  				flag = true;
  
 -			if (Main.tile[x, num].type == 20) {
-+			if (TileLoader.IsSapling(Main.tile[x, num].type)) {
++			if (TileID.Sets.TreeSapling[Main.tile[x, num].type]) {
 +				int originalType = Main.tile[x, num].type;
 +				int newType = TileID.Saplings;
  				int num5 = Main.tile[x, num].frameX / 54;
@@ -728,7 +710,7 @@
  		public static void Place1x2(int x, int y, ushort type, int style) {
  			short frameX = 0;
 -			if (type == 20)
-+			if (TileLoader.IsSapling(type))
++			if (TileID.Sets.TreeSapling[type])
  				frameX = (short)(genRand.Next(3) * 18);
  
  			if (Main.tile[x, y - 1] == null)
@@ -818,7 +800,7 @@
  						ushort type4 = Main.tile[num2, num6 - 1].type;
  						ushort type5 = Main.tile[num2 + 1, num6 - 1].type;
 -						if (!TileID.Sets.BasicChest[type4] && !TileID.Sets.BasicChest[type5] && type4 != 88 && type5 != 88 && !TileID.Sets.BasicChestFake[type4] && !TileID.Sets.BasicChestFake[type5] && type4 != 470 && type5 != 470 && type4 != 475 && type5 != 475 && !SolidTileAllowBottomSlope(num2, num6 + 2) && !SolidTileAllowBottomSlope(num2 + 1, num6 + 2))
-+						if (!TileID.Sets.BasicChest[type4] && !TileID.Sets.BasicChest[type5] && !TileLoader.IsDresser(type4) && !TileLoader.IsDresser(type5) && !TileID.Sets.BasicChestFake[type4] && !TileID.Sets.BasicChestFake[type5] && type4 != 470 && type5 != 470 && type4 != 475 && type5 != 475 && !SolidTileAllowBottomSlope(num2, num6 + 2) && !SolidTileAllowBottomSlope(num2 + 1, num6 + 2))
++						if (!TileID.Sets.BasicChest[type4] && !TileID.Sets.BasicChest[type5] && !TileID.Sets.BasicDresser[type4] && !TileID.Sets.BasicDresser[type5] && !TileID.Sets.BasicChestFake[type4] && !TileID.Sets.BasicChestFake[type5] && type4 != 470 && type5 != 470 && type4 != 475 && type5 != 475 && !SolidTileAllowBottomSlope(num2, num6 + 2) && !SolidTileAllowBottomSlope(num2 + 1, num6 + 2))
  							flag = true;
  
  						break;
@@ -835,7 +817,7 @@
  		}
  
  		public static bool IsAContainer(Tile t) {
-+			if (TileLoader.IsDresser(t.type))
++			if (TileID.Sets.BasicDresser[t.type])
 +				return true;
 +
  			if (t.type != 88 && t.type != 470 && t.type != 475 && !TileID.Sets.BasicChest[t.type])
@@ -855,7 +837,7 @@
  					flag = true;
  
 -				if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || Main.tile[k, j - 1].type == 88 || Main.tile[k, j - 1].type == 470 || Main.tile[k, j - 1].type == 475 || Main.tile[k, j - 1].type == 597))
-+				if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || TileLoader.IsDresser(Main.tile[k, j - 1].type)  || Main.tile[k, j - 1].type == 470 || Main.tile[k, j - 1].type == 475 || Main.tile[k, j - 1].type == 597))
++				if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || TileID.Sets.BasicDresser[Main.tile[k, j - 1].type]  || Main.tile[k, j - 1].type == 470 || Main.tile[k, j - 1].type == 475 || Main.tile[k, j - 1].type == 597))
  					return;
  
  				if (!SolidTileAllowBottomSlope(k, j + 1))
@@ -1023,7 +1005,7 @@
  			}
  
 -			if (type == 88) {
-+			if (TileLoader.IsDresser(type)) {
++			if (TileID.Sets.BasicDresser[type]) {
  				if (Chest.CreateChest(x - 1, y - 1) == -1)
  					flag2 = false;
  				else if (Main.netMode == 1)
@@ -1217,7 +1199,7 @@
  								break;
  							case 3:
 -							case 20:
-+							case int _ when TileLoader.IsSapling(num):
++							case int _ when TileID.Sets.TreeSapling[num]:
  							case 24:
  							case 27:
  							case 32:
@@ -1226,7 +1208,7 @@
  						}
  					}
 -					else if (num == 4) {
-+					else if (TileLoader.IsTorch(num)) {
++					else if (TileID.Sets.Torch[num]) {
  						if (Main.tile[i - 1, j] == null)
  							Main.tile[i - 1, j] = new Tile();
  
@@ -1235,7 +1217,7 @@
  							case 86:
  							case 87:
 -							case 88:
-+							case int _ when TileLoader.IsDresser(num):
++							case int _ when TileID.Sets.BasicDresser[num]:
  							case 89:
  							case 114:
  							case 186:
@@ -1244,7 +1226,7 @@
  								SquareTileFrame(i, j);
  								break;
 -							case 20: {
-+							case int _ when TileLoader.IsSapling(num): {
++							case int _ when TileID.Sets.TreeSapling[num]: {
  									if (Main.tile[i, j + 1] == null)
  										Main.tile[i, j + 1] = new Tile();
  
@@ -1344,7 +1326,7 @@
  						if (tile.type != type && (tile2.frameX == 66 || tile2.frameX == 220))
  							return false;
  						break;
-+					case int _ when TileLoader.IsDresser(type):
++					case int _ when TileID.Sets.BasicDresser[type]:
  					case 21:
  					case 26:
  					case 72:
@@ -1352,7 +1334,7 @@
  					if (!Chest.CanDestroyChest(i - tile.frameX / 18 % 2, j - tile.frameY / 18))
  						return false;
  					break;
-+				case ushort _ when TileLoader.IsDresser(tile.type):
++				case ushort _ when TileID.Sets.BasicDresser[tile.type]:
  				case 88:
  					if (!Chest.CanDestroyChest(i - tile.frameX / 18 % 3, j - tile.frameY / 18))
  						return false;
@@ -1361,7 +1343,7 @@
  			}
  
 -			if (tile.type == 88) {
-+			if (TileLoader.IsDresser(tile.type)) {
++			if (TileID.Sets.BasicDresser[tile.type]) {
  				int num2 = tile.frameX / 18;
  				int y3 = y - tile.frameY / 18;
  				num2 %= 3;
@@ -1602,7 +1584,7 @@
 +						if (!TileLoader.TileFrame(i, j, tile.type, ref resetFrame, ref noBreak))
 +							return;
 +
-+						if (noBreak && Main.tileFrameImportant[tile.type] && !TileLoader.IsTorch(tile.type))
++						if (noBreak && Main.tileFrameImportant[tile.type] && !TileID.Sets.Torch[tile.type])
  							return;
  
  						int num = tile.type;
@@ -1611,7 +1593,7 @@
  									CheckBamboo(i, j);
  									break;
 -								case 4:
-+								case int _ when TileLoader.IsTorch(num):
++								case int _ when TileID.Sets.Torch[num]:
  									CheckTorch(i, j);
  									break;
  								case 442:
@@ -1620,7 +1602,7 @@
  																switch (num) {
  																	case 15:
 -																	case 20:
-+																	case int _ when TileLoader.IsSapling(num):
++																	case int _ when TileID.Sets.TreeSapling[num]:
  																	case 216:
  																	case 338:
  																	case 390:
@@ -1804,7 +1786,7 @@
  		public static bool AllowsSandfall(Tile tileTopCache) {
  			bool result = true;
 -			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || tileTopCache.type == 323 || tileTopCache.type == 88 || tileTopCache.type == 80 || tileTopCache.type == 77 || tileTopCache.type == 26 || tileTopCache.type == 475 || tileTopCache.type == 470 || tileTopCache.type == 597))
-+			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || tileTopCache.type == 323 || TileLoader.IsDresser(tileTopCache.type) || tileTopCache.type == 80 || tileTopCache.type == 77 || tileTopCache.type == 26 || tileTopCache.type == 475 || tileTopCache.type == 470 || tileTopCache.type == 597))
++			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || tileTopCache.type == 323 || TileID.Sets.BasicDresser[tileTopCache.type] || tileTopCache.type == 80 || tileTopCache.type == 77 || tileTopCache.type == 26 || tileTopCache.type == 475 || tileTopCache.type == 470 || tileTopCache.type == 597))
  				result = false;
  
  			return result;

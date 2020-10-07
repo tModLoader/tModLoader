@@ -41,6 +41,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Type {get;internal set;}
 
+		public ModTileEntity() { }
+
 		internal static int ReserveTileEntityID() {
 			if (ModNet.AllowVanillaClients) throw new Exception("Adding tile entities breaks vanilla client compatibility");
 
@@ -207,20 +209,6 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void Unload(){}
-
-		/// <summary>
-		/// Allows you to save custom data for this tile entity.
-		/// </summary>
-		/// <returns></returns>
-		public virtual TagCompound Save() {
-			return null;
-		}
-
-		/// <summary>
-		/// Allows you to load the custom data you have saved for this tile entity.
-		/// </summary>
-		public virtual void Load(TagCompound tag) {
-		}
 
 		/// <summary>
 		/// Allows you to send custom data for this tile entity between client and server. This is called on the server while sending tile data (!lightSend) and when a MessageID.TileEntitySharing message is sent (lightSend)

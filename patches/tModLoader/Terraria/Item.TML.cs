@@ -31,7 +31,8 @@ namespace Terraria
 		/// <exception cref="NullReferenceException"/>
 		public T GetGlobalItem<T>(T baseInstance) where T : GlobalItem
 			=> baseInstance.Instance(this) as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current item.");
-
+		
+		/*
 		// TryGet
 
 		/// <summary> Gets the instance of the specified GlobalItem type. </summary>
@@ -51,6 +52,7 @@ namespace Terraria
 
 			return result != null;
 		}
+		*/
 
 		public TagCompound SerializeData() => ItemIO.Save(this);
 

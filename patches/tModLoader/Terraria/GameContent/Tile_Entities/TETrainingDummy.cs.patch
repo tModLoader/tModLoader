@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/Tile_Entities/TETrainingDummy.cs
++++ src/tModLoader/Terraria/GameContent/Tile_Entities/TETrainingDummy.cs
+@@ -5,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.Tile_Entities
+ {
+-	public class TETrainingDummy : TileEntity
++	public sealed class TETrainingDummy : TileEntity
+ 	{
+ 		private static Dictionary<int, Rectangle> playerBox = new Dictionary<int, Rectangle>();
+ 		private static bool playerBoxFilled;
