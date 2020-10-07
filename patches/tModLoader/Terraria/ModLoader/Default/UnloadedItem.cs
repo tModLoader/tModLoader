@@ -62,10 +62,8 @@ namespace Terraria.ModLoader.Default
 			Setup(TagIO.Read(reader));
 		}
 
-		public override bool CloneNewInstances => true;
-
-		public override ModItem Clone() {
-			var clone = (UnloadedItem)base.Clone();
+		public override ModItem Clone(Item item) {
+			var clone = (UnloadedItem)base.Clone(item);
 			clone.data = (TagCompound)data?.Clone();
 			return clone;
 		}
