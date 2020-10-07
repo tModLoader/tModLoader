@@ -42,12 +42,12 @@
 		"ModsShowAllMods": "Show all mods",
 		"ModsShowEnabledMods": "Show only enabled mods",
 		"ModsShowDisabledMods": "Show only disabled mods",
-		"ModsXItems": "{0} items",
-		"ModsXNPCs": "{0} NPCs",
-		"ModsXTiles": "{0} tiles",
-		"ModsXWalls": "{0} walls",
-		"ModsXBuffs": "{0} buffs",
-		"ModsXMounts": "{0} mounts",
+  "ModsXItems": "#{0} items *1 item",
+  "ModsXNPCs": "#{0} NPCs *1 NPC",
+  "ModsXTiles": "#{0} tiles *1 tile",
+  "ModsXWalls": "#{0} walls *1 wall",
+  "ModsXBuffs": "#{0} buffs *1 buff",
+  "ModsXMounts": "#{0} mounts *1 mount",
 
 		// Mod Errors
 		"LoadError": "An error occurred while loading {0}",

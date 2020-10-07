@@ -43,3 +43,29 @@
  				for (int i = 0; i < 100; i++) {
  					string text = regex.Replace(value.Value, (Match match) => GetTextValue(match.Groups[1].ToString()));
  					if (text == value.Value)
+@@ -118,6 +_,25 @@
+ 					value.SetValue(text);
+ 				}
+ 			}
++		}
++
++		public string RegexPlural(string keyName, int value) {
++			string keyText = Language.GetTextValue(keyName, value);
++			// Singulars should be formatted as *1 thing and should come second in the key.
++			Regex singular = new Regex(@"(?:\*)([\1\ \w]+)(\S+)");
++			// Plural1 should be formatted as #{0} things and should come first in the key.
++			Regex plural1 = new Regex(@"(?:\#)([\{0}\ \w]+)(\S+)");
++			// Plural2 should be formatted as &{0} things and should come third in the key.
++			Regex plural2 = new Regex(@"(?:\&)([\{0}\ \w]+)(\S[^&]+)");
++			Regex regex = value > 1 ? plural1 : singular;
++			if (Language.ActiveCulture.LegacyId == (int)GameCulture.CultureName.Russian) {
++				int lN = value % 10;
++				if (lN == 1) regex = singular; // Singular of course.
++				if (lN > 1 && lN < 5) regex = plural1; // Genitive singular case, 2 3 and 4.
++				if ((lN > 4 && lN < 10) || lN == 0 || (value % 100 > 10 && value % 100 < 20)) regex = plural2; // Genitive plural case, 5 6 7 8 9 0 and teens.
++			}
++			string text = regex.Match(keyText).ToString();
++			return text;
+ 		}
+ 
+ 		public void LoadLanguageFromFileText(string fileText) {
