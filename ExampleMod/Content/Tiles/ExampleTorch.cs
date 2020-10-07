@@ -8,7 +8,6 @@ using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Tiles
 {
@@ -28,8 +27,8 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.DisableSmartCursor[Type] = true;
 			TileID.Sets.Torch[Type] = true;
 
-			drop = ItemType<Items.Placeable.ExampleTorch>();
-			dustType = DustType<Sparkle>();
+			drop = ModContent.ItemType<Items.Placeable.ExampleTorch>();
+			dustType = ModContent.DustType<Sparkle>();
 			adjTiles = new int[] { TileID.Torches };
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorch);
@@ -59,7 +58,7 @@ namespace ExampleMod.Content.Tiles
 
 			// Assets
 			if (!Main.dedServ) {
-				flameTexture = GetTexture("ExampleMod/Content/Tiles/ExampleTorch_Flame");
+				flameTexture = ModContent.GetTexture("ExampleMod/Content/Tiles/ExampleTorch_Flame");
 			}
 		}
 

@@ -2,7 +2,6 @@ using ExampleMod.Content.Tiles.Furniture;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Ammo
 {
@@ -23,7 +22,7 @@ namespace ExampleMod.Content.Items.Ammo
 			item.knockBack = 1.5f;
 			item.value = 10;
 			item.rare = ItemRarityID.Green;
-			item.shoot = ProjectileType<Projectiles.ExampleBullet>(); //The projectile that weapons fire when using this item as ammunition.
+			item.shoot = ModContent.ProjectileType<Projectiles.ExampleBullet>(); //The projectile that weapons fire when using this item as ammunition.
 			item.shootSpeed = 16f; // The speed of the projectile.
 			item.ammo = AmmoID.Bullet; // The ammo class this ammo belongs to.
 		}

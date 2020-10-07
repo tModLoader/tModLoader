@@ -1,7 +1,6 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Placeable.Furniture
 {
@@ -23,7 +22,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			item.useStyle = ItemUseStyleID.Swing;
 			item.consumable = true;
 			item.value = 2000;
-			item.createTile = TileType<Tiles.Furniture.ExampleBed>();
+			item.createTile = ModContent.TileType<Tiles.Furniture.ExampleBed>();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
