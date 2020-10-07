@@ -41,12 +41,12 @@
 		"ModsShowAllMods": "Zeige alle mods",
 		"ModsShowEnabledMods": "Zeige nur aktivierte mods",
 		"ModsShowDisabledMods": "Zeige nur deaktivierte mods",
-		"ModsXItems": "#{0} Gegenstände *1 Gegenstand",
-		"ModsXNPCs": "#{0} NPCs *1 NPC",
-		"ModsXTiles": "#{0} Blöcke *1 Block",
-		"ModsXWalls": "#{0} Wände *1 Wand",
-		"ModsXBuffs": "#{0} Buffs *1 buff",
-		"ModsXMounts": "#{0} Reittiere *1 Reittier",
+		"ModsXItems": "#{0} Gegenstände *{0} Gegenstand",
+		"ModsXNPCs": "#{0} NPCs *{0} NPC",
+		"ModsXTiles": "#{0} Blöcke *{0} Block",
+		"ModsXWalls": "#{0} Wände *{0} Wand",
+		"ModsXBuffs": "#{0} Buffs *{0} buff",
+		"ModsXMounts": "#{0} Reittiere *{0} Reittier",
 
 		// Mod Errors
 		"LoadError": "Beim laden ist etwas schiefgelaufen {0}",
