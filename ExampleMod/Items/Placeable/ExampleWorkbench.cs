@@ -1,6 +1,5 @@
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Placeable
 {
@@ -21,13 +20,13 @@ namespace ExampleMod.Items.Placeable
 			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.consumable = true;
 			item.value = 150;
-			item.createTile = TileType<Tiles.ExampleWorkbench>();
+			item.createTile = ModContent.TileType<Tiles.ExampleWorkbench>();
 		}
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.WorkBench);
-			recipe.AddIngredient(ItemType<ExampleBlock>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<ExampleBlock>(), 10);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

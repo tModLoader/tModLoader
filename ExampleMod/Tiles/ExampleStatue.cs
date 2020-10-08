@@ -9,7 +9,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using Terraria.World.Generation;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -29,7 +28,7 @@ namespace ExampleMod.Tiles
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 32, 48, ItemType<ExampleStatueItem>());
+			Item.NewItem(i * 16, j * 16, 32, 48, ModContent.ItemType<ExampleStatueItem>());
 		}
 
 		public override void HitWire(int i, int j) {
@@ -89,7 +88,7 @@ namespace ExampleMod.Tiles
 
 		public override void SetDefaults() {
 			item.CloneDefaults(ItemID.ArmorStatue);
-			item.createTile = TileType<ExampleStatue>();
+			item.createTile = ModContent.TileType<ExampleStatue>();
 			item.placeStyle = 0;
 		}
 	}
@@ -103,13 +102,13 @@ namespace ExampleMod.Tiles
 					progress.Message = "Adding ExampleMod Statue";
 
 					// Not necessary, just a precaution.
-					if (WorldGen.statueList.Any(point => point.X == TileType<ExampleStatue>())) {
+					if (WorldGen.statueList.Any(point => point.X == ModContent.TileType<ExampleStatue>())) {
 						return;
 					}
 					// Make space in the statueList array, and then add a Point16 of (TileID, PlaceStyle)
 					Array.Resize(ref WorldGen.statueList, WorldGen.statueList.Length + 1);
 					for (int i = WorldGen.statueList.Length - 1; i < WorldGen.statueList.Length; i++) {
-						WorldGen.statueList[i] = new Point16(TileType<ExampleStatue>(), 0);
+						WorldGen.statueList[i] = new Point16(ModContent.TileType<ExampleStatue>(), 0);
 						// Do this if you want the statue to spawn with wire and pressure plate
 						// WorldGen.StatuesWithTraps.Add(i);
 					}

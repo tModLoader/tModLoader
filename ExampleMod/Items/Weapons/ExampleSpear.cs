@@ -2,7 +2,6 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Weapons
 {
@@ -31,7 +30,7 @@ namespace ExampleMod.Items.Weapons
 			item.autoReuse = true; // Most spears don't autoReuse, but it's possible when used in conjunction with CanUseItem()
 
 			item.UseSound = SoundID.Item1;
-			item.shoot = ProjectileType<ExampleSpearProjectile>();
+			item.shoot = ModContent.ProjectileType<ExampleSpearProjectile>();
 		}
 
 		public override bool CanUseItem(Player player) {

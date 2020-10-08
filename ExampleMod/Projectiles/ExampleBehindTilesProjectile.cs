@@ -3,7 +3,6 @@ using ExampleMod.Tiles;
 using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles
 {
@@ -43,14 +42,14 @@ namespace ExampleMod.Projectiles
 
 		public override void SetDefaults() {
 			item.CloneDefaults(ItemID.Shuriken);
-			item.shoot = ProjectileType<ExampleBehindTilesProjectile>();
+			item.shoot = ModContent.ProjectileType<ExampleBehindTilesProjectile>();
 		}
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Shuriken, 10);
-			recipe.AddIngredient(ItemType<ExampleItem>(), 1);
-			recipe.AddTile(TileType<ExampleWorkbench>());
+			recipe.AddIngredient(ModContent.ItemType<ExampleItem>(), 1);
+			recipe.AddTile(ModContent.TileType<ExampleWorkbench>());
 			recipe.SetResult(this, 10);
 			recipe.AddRecipe();
 		}

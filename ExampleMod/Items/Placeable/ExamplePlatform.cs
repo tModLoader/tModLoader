@@ -1,5 +1,4 @@
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 using Terraria.ID;
 
 namespace ExampleMod.Items.Placeable
@@ -20,14 +19,14 @@ namespace ExampleMod.Items.Placeable
 			item.useTime = 10;
 			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.consumable = true;
-			item.createTile = TileType<Tiles.ExamplePlatform>();
+			item.createTile = ModContent.TileType<Tiles.ExamplePlatform>();
 		}
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleBlock>());
+			recipe.AddIngredient(ModContent.ItemType<ExampleBlock>());
 			recipe.SetResult(this, 2);
-			recipe.AddTile(TileType<Tiles.ExampleWorkbench>());
+			recipe.AddTile(ModContent.TileType<Tiles.ExampleWorkbench>());
 			recipe.AddRecipe();
 		}
 	}

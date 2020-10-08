@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles
 {
@@ -28,7 +27,7 @@ namespace ExampleMod.Projectiles
 		public override void AI() {
 			NPC npc = Main.npc[(int)projectile.ai[0]];
 			if (projectile.localAI[0] == 0f) {
-				if (npc.type == NPCType<CaptiveElement>() && npc.ai[1] == 2f && Main.expertMode) {
+				if (npc.type == ModContent.NPCType<CaptiveElement>() && npc.ai[1] == 2f && Main.expertMode) {
 					cooldownSlot = 1;
 				}
 				projectile.Name = GetName();
@@ -61,7 +60,7 @@ namespace ExampleMod.Projectiles
 
 		public string GetName() {
 			NPC npc = Main.npc[(int)projectile.ai[0]];
-			if (npc.type == NPCType<Abomination>()) {
+			if (npc.type == ModContent.NPCType<Abomination>()) {
 				return "Fire Beam";
 			}
 			if (npc.ai[1] == 0f) {
@@ -84,7 +83,7 @@ namespace ExampleMod.Projectiles
 
 		public Color GetColor() {
 			NPC npc = Main.npc[(int)projectile.ai[0]];
-			if (npc.type == NPCType<Abomination>()) {
+			if (npc.type == ModContent.NPCType<Abomination>()) {
 				return new Color(250, 10, 0);
 			}
 			if (npc.ai[1] == 0f) {
@@ -104,14 +103,14 @@ namespace ExampleMod.Projectiles
 
 		public int GetDebuff() {
 			NPC npc = Main.npc[(int)projectile.ai[0]];
-			if (npc.type == NPCType<Abomination>()) {
+			if (npc.type == ModContent.NPCType<Abomination>()) {
 				return BuffID.OnFire;
 			}
 			if (npc.ai[1] == 0f) {
 				return BuffID.Frostburn;
 			}
 			if (npc.ai[1] == 1f) {
-				return BuffType<Buffs.EtherealFlames>();
+				return ModContent.BuffType<Buffs.EtherealFlames>();
 			}
 			if (npc.ai[1] == 3f) {
 				return BuffID.Venom;
@@ -124,7 +123,7 @@ namespace ExampleMod.Projectiles
 
 		public int GetDebuffTime() {
 			NPC npc = Main.npc[(int)projectile.ai[0]];
-			if (npc.type == NPCType<Abomination>()) {
+			if (npc.type == ModContent.NPCType<Abomination>()) {
 				return 600;
 			}
 			if (npc.ai[1] == 0f) {

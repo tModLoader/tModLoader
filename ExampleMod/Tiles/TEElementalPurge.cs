@@ -1,6 +1,5 @@
 using Terraria;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 using Terraria.ID;
 
 namespace ExampleMod.Tiles
@@ -17,7 +16,7 @@ namespace ExampleMod.Tiles
 
 		public override bool ValidTile(int i, int j) {
 			Tile tile = Main.tile[i, j];
-			return tile.active() && tile.type == TileType<ElementalPurge>() && tile.frameX == 0 && tile.frameY == 0;
+			return tile.active() && tile.type == ModContent.TileType<ElementalPurge>() && tile.frameX == 0 && tile.frameY == 0;
 		}
 
 		public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction) {

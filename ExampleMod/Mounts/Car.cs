@@ -9,15 +9,14 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Mounts
 {
 	public class Car : ModMountData
 	{
 		public override void SetDefaults() {
-			mountData.spawnDust = DustType<Smoke>();
-			mountData.buff = BuffType<CarMount>();
+			mountData.spawnDust = ModContent.DustType<Smoke>();
+			mountData.buff = ModContent.BuffType<CarMount>();
 			mountData.heightBoost = 20;
 			mountData.fallDamage = 0.5f;
 			mountData.runSpeed = 11f;
@@ -82,7 +81,7 @@ namespace ExampleMod.Mounts
 				return;
 			}
 			Rectangle rect = player.getRect();
-			Dust.NewDust(new Vector2(rect.X, rect.Y), rect.Width, rect.Height, DustType<Smoke>());
+			Dust.NewDust(new Vector2(rect.X, rect.Y), rect.Width, rect.Height, ModContent.DustType<Smoke>());
 		}
 
 		// Since only a single instance of ModMountData ever exists, we can use player.mount._mountSpecificData to store additional data related to a specific mount.

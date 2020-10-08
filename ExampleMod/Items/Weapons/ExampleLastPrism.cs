@@ -4,7 +4,6 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Weapons
 {
@@ -28,7 +27,7 @@ Ignores NPC immunity frames and fires 10 beams at once instead of 6.");
 			item.CloneDefaults(ItemID.LastPrism);
 			item.mana = 4;
 			item.damage = 42;
-			item.shoot = ProjectileType<ExampleLastPrismHoldout>();
+			item.shoot = ModContent.ProjectileType<ExampleLastPrismHoldout>();
 			item.shootSpeed = 30f;
 
 			// Change the item's draw color so that it is visually distinct from the vanilla Last Prism.
@@ -38,13 +37,13 @@ Ignores NPC immunity frames and fires 10 beams at once instead of 6.");
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
-			recipe.AddTile(TileType<ExampleWorkbench>());
+			recipe.AddIngredient(ModContent.ItemType<ExampleItem>(), 10);
+			recipe.AddTile(ModContent.TileType<ExampleWorkbench>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
 
 		// Because this weapon fires a holdout projectile, it needs to block usage if its projectile already exists.
-		public override bool CanUseItem(Player player) => player.ownedProjectileCounts[ProjectileType<ExampleLastPrismHoldout>()] <= 0;
+		public override bool CanUseItem(Player player) => player.ownedProjectileCounts[ModContent.ProjectileType<ExampleLastPrismHoldout>()] <= 0;
 	}
 }

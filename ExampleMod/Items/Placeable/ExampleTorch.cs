@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Placeable
 {
@@ -25,14 +24,14 @@ namespace ExampleMod.Items.Placeable
 			item.useTime = 10;
 			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.consumable = true;
-			item.createTile = TileType<Tiles.ExampleTorch>();
+			item.createTile = ModContent.TileType<Tiles.ExampleTorch>();
 			item.flame = true;
 			item.value = 50;
 		}
 
 		public override void HoldItem(Player player) {
 			if (Main.rand.Next(player.itemAnimation > 0 ? 40 : 80) == 0) {
-				Dust.NewDust(new Vector2(player.itemLocation.X + 16f * player.direction, player.itemLocation.Y - 14f * player.gravDir), 4, 4, DustType<Sparkle>());
+				Dust.NewDust(new Vector2(player.itemLocation.X + 16f * player.direction, player.itemLocation.Y - 14f * player.gravDir), 4, 4, ModContent.DustType<Sparkle>());
 			}
 			Vector2 position = player.RotatedRelativePoint(new Vector2(player.itemLocation.X + 12f * player.direction + player.velocity.X, player.itemLocation.Y - 14f + player.velocity.Y), true);
 			Lighting.AddLight(position, 1f, 1f, 1f);
@@ -51,7 +50,7 @@ namespace ExampleMod.Items.Placeable
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Torch, 3);
-			recipe.AddIngredient(ItemType<ExampleBlock>());
+			recipe.AddIngredient(ModContent.ItemType<ExampleBlock>());
 			recipe.SetResult(this, 3);
 			recipe.AddRecipe();
 		}

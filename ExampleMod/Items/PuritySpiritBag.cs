@@ -3,7 +3,6 @@ using ExampleMod.NPCs.PuritySpirit;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -32,17 +31,17 @@ namespace ExampleMod.Items
 			player.TryGettingDevArmor();
 			int choice = Main.rand.Next(7);
 			if (choice == 0) {
-				player.QuickSpawnItem(ItemType<PuritySpiritMask>());
+				player.QuickSpawnItem(ModContent.ItemType<PuritySpiritMask>());
 			}
 			else if (choice == 1) {
-				player.QuickSpawnItem(ItemType<BunnyMask>());
+				player.QuickSpawnItem(ModContent.ItemType<BunnyMask>());
 			}
 			if (choice != 1) {
 				player.QuickSpawnItem(ItemID.Bunny);
 			}
-			player.QuickSpawnItem(ItemType<PurityShield>());
+			player.QuickSpawnItem(ModContent.ItemType<PurityShield>());
 		}
 
-		public override int BossBagNPC => NPCType<PuritySpirit>();
+		public override int BossBagNPC => ModContent.NPCType<PuritySpirit>();
 	}
 }

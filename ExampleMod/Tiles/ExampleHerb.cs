@@ -5,7 +5,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -35,7 +34,7 @@ namespace ExampleMod.Tiles
 			{
 				TileID.Grass,
 				TileID.HallowedGrass,
-				TileType<ExampleBlock>()
+				ModContent.TileType<ExampleBlock>()
 			};
 
 			TileObjectData.newTile.AnchorAlternateTiles = new int[]
@@ -59,7 +58,7 @@ namespace ExampleMod.Tiles
 
 			//Only drop items if the herb is grown
 			if (stage == PlantStage.Grown)
-				Item.NewItem(new Vector2(i, j).ToWorldCoordinates(), ItemType<ExampleHerbSeeds>());
+				Item.NewItem(new Vector2(i, j).ToWorldCoordinates(), ModContent.ItemType<ExampleHerbSeeds>());
 
 			return false;
 		}

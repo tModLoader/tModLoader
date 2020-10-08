@@ -4,7 +4,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -23,7 +22,7 @@ namespace ExampleMod.Tiles
 			ModTranslation name = CreateMapEntryName();
 			name.SetDefault("Example Workbench");
 			AddMapEntry(new Color(200, 200, 200), name);
-			dustType = DustType<Sparkle>();
+			dustType = ModContent.DustType<Sparkle>();
 			disableSmartCursor = true;
 			adjTiles = new int[] { TileID.WorkBenches };
 		}
@@ -33,7 +32,7 @@ namespace ExampleMod.Tiles
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 32, 16, ItemType<Items.Placeable.ExampleWorkbench>());
+			Item.NewItem(i * 16, j * 16, 32, 16, ModContent.ItemType<Items.Placeable.ExampleWorkbench>());
 		}
 	}
 }

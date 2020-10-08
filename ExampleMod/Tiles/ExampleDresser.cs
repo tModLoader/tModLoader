@@ -8,7 +8,6 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -36,11 +35,11 @@ namespace ExampleMod.Tiles
 			ModTranslation name = CreateMapEntryName();
 			name.SetDefault("Example Dresser");
 			AddMapEntry(new Color(200, 200, 200), name);
-			dustType = DustType<Sparkle>();
+			dustType = ModContent.DustType<Sparkle>();
 			disableSmartCursor = true;
 			adjTiles = new int[] { TileID.Dressers };
 			dresser = "Example Dresser";
-			dresserDrop = ItemType<Items.Placeable.ExampleDresser>();
+			dresserDrop = ModContent.ItemType<Items.Placeable.ExampleDresser>();
 		}
 
 		public override bool HasSmartInteract() {
@@ -145,7 +144,7 @@ namespace ExampleMod.Tiles
 					player.showItemIconText = chest;
 				}
 				if (player.showItemIconText == chest) {
-					player.showItemIcon2 = ItemType<Items.Placeable.ExampleDresser>();
+					player.showItemIcon2 = ModContent.ItemType<Items.Placeable.ExampleDresser>();
 					player.showItemIconText = "";
 				}
 			}
@@ -179,7 +178,7 @@ namespace ExampleMod.Tiles
 					player.showItemIconText = chest;
 				}
 				if (player.showItemIconText == chest) {
-					player.showItemIcon2 = ItemType<Items.Placeable.ExampleDresser>();
+					player.showItemIcon2 = ModContent.ItemType<Items.Placeable.ExampleDresser>();
 					player.showItemIconText = "";
 				}
 			}

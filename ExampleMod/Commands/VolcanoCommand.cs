@@ -2,7 +2,6 @@
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Commands
 {
@@ -21,7 +20,7 @@ namespace ExampleMod.Commands
 			const string key = "Mods.ExampleMod.VolcanoWarning";
 			Color messageColor = Color.Orange;
 			NetMessage.BroadcastChatMessage(NetworkText.FromKey(key), messageColor);
-			ExampleWorld exampleWorld = GetInstance<ExampleWorld>();
+			ExampleWorld exampleWorld = ModContent.GetInstance<ExampleWorld>();
 			exampleWorld.VolcanoCountdown = ExampleWorld.DefaultVolcanoCountdown;
 			exampleWorld.VolcanoCooldown = ExampleWorld.DefaultVolcanoCooldown;
 		}
