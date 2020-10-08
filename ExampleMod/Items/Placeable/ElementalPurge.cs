@@ -24,8 +24,8 @@ namespace ExampleMod.Items.Placeable
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<VoidMonolith>());
-			recipe.AddIngredient(ItemType<ElementResidue>());
+			recipe.AddIngredient(ModContent.ItemType<VoidMonolith>());
+			recipe.AddIngredient(ModContent.ItemType<ElementResidue>());
 			recipe.AddTile(TileID.CrystalBall);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
