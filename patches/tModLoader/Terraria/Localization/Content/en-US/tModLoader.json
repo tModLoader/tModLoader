@@ -197,7 +197,7 @@
 		"MBPublishPastePassphrase": "Paste Passphrase (ctrl-v)",
 		"MBMyPublishedMods": "My Published Mods",
 		"MBUnpublish": "Unpublish",
-		"MBMyPublishedModsStats": "{0} downloads ({1} latest version)",
+		"MBMyPublishedModsStats": "{0} {^0:download;downloads} ({1} - of the latest version)",
 		"EnterSteamID": "Please Enter Your SteamID",
 		"PasteSteamID": "Paste SteamID (ctrl-v)",
 		"MBServerResponse": "The Mod Browser server response:\n\n{0}",

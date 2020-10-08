@@ -194,7 +194,7 @@
 		"MBPublishPastePassphrase": "Вставить код доступа (ctrl-v)",
 		"MBMyPublishedMods": "Мои опубликованные моды",
 		"MBUnpublish": "Отменить публикацию",
-		"MBMyPublishedModsStats": "{0} скачиваний ({1} на последней версии)",
+		"MBMyPublishedModsStats": "{0} {^0:скачивание;скачивания;скачиваний} ({1} - последней версии)",
 		"EnterSteamID": "Пожалуйста, введите свой SteamID",
 		"PasteSteamID": "Вставить SteamID (ctrl-v)",
 		"MBServerResponse": "Ответ сервера браузера модов:\n\n{0}",
