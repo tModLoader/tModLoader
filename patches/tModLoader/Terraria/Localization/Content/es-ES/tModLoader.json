@@ -391,6 +391,7 @@
 		"AllowFlight": "Permite volar",
 		"AllowDoubleJump": "Su portador puede realizar saltos dobles",
 		"ImmunityX": "Inmunidad a {0}",
+		"GrantImmunityX": "Ofrece inmunidad a {0}",
 		"ClassMagic": "mágicos",
 		"ClassMelee": "cuerpo a cuerpo",
 		"ClassRanger": "a distancia",

@@ -368,6 +368,7 @@
 		"AllowFlight": "Allows flight",
 		"AllowDoubleJump": "Allows the holder to double jump",
 		"ImmunityX": "Immunity to {0}",
+		"GrantImmunityX": "Grants immunity to {0}",
 		"ClassMagic": "magic",
 		"ClassMelee": "melee",
 		"ClassRanger": "ranger",
