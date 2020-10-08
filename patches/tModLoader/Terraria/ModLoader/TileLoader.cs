@@ -940,10 +940,10 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool ModifyTreasureFairySearch(int i, int j, int type, ref int nuggetSize, ref int xDelta, ref int yDelta) {
-			bool flag = GetTile(type)?.ModifyTreasureFairySearch(i, j, ref nuggetSize, ref xDelta, ref yDelta) ?? false;
+			bool flag = GetTile(type)?.ModifyTreasureFairySearch(i, j, ref nuggetSize, ref xDelta, ref yDelta) ?? true;
 
 			foreach (var hook in HookModifyTreasureFairySearch) {
-				flag |= hook(i, j, type, ref nuggetSize, ref xDelta, ref yDelta);
+				flag &= hook(i, j, type, ref nuggetSize, ref xDelta, ref yDelta);
 			}
 
 			return flag;
