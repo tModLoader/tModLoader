@@ -371,7 +371,7 @@
 		"GrantImmunityX": "Grants immunity to {0}",
 		"ClassMagic": "magic",
 		"ClassMelee": "melee",
-		"ClassRanger": "ranger",
+		"ClassRanger": "ranged",
 		"ClassSummoner": "summoner"
 	},
 	"RecipeConditions": {
