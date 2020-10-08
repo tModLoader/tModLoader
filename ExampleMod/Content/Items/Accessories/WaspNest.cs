@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Mono.Cecil.Cil.OpCodes;
+using Mono.Cecil.Cil;
 
 namespace ExampleMod.Content.Items.Accessories
 {
@@ -28,7 +28,7 @@ namespace ExampleMod.Content.Items.Accessories
 			// Move the cursor after 566 and onto the ret op.
 			c.Index++;
 			// Push the Player instance onto the stack
-			c.Emit(Ldarg_0);
+			c.Emit(OpCodes.Ldarg_0);
 			// Call a delegate using the int and Player from the stack.
 			c.EmitDelegate<Func<int, Player, int>>((returnValue, player) => {
 				// Regular c# code
