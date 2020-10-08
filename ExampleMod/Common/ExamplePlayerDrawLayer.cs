@@ -19,11 +19,11 @@ namespace ExampleMod.Common
 		public override DrawLayer<PlayerDrawSet> Parent => Head;
 
 		//GetDefaults is called before the layer is queued for drawing, and lets us control the layer's default depth and visibility. Note that other modders may call this method on your layer too.
-		public override void GetDefaults(Player drawPlayer, out bool visible, out float depth) {
+		public override void GetDefaults(Player drawPlayer, out bool visible, out LayerConstraint constraint) {
 			//The layer will be visible only if the player is holding an ExampleItem in their hands. Or if another modder forces this layer to be visible.
 			visible = drawPlayer.HeldItem?.type == ModContent.ItemType<ExampleItem>();
 			//The layer will be drawn right before the vanilla 'Head' layer.
-			depth = Head.depth - 0.1f;
+			constraint = new LayerConstraint(Head, before: true);
 
 			//If you'd like to reference another PlayerDrawLayer's defaults,
 			//you can do so by getting its instance via ModContent.GetInstance<OtherDrawLayer>(), and calling GetDefaults on it.
