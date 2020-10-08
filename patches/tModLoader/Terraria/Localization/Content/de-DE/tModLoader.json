@@ -194,7 +194,7 @@
 		"MBPublishPastePassphrase": "Kopiere Passcode (ctrl-v)",
 		"MBMyPublishedMods": "Meine veröfentlichten Mods",
 		"MBUnpublish": "Veröffntlichung zurückziehen",
-		"MBMyPublishedModsStats": "{0} downloads ({1} neuste Version)",
+		"MBMyPublishedModsStats": "{0} {^0:download;downloads} ({1} neueste Version)",
 		"EnterSteamID": "Bitte gib deine SteamID ein ",
 		"PasteSteamID": "Kopiere SteamID (ctrl-v)",
 		"MBServerResponse": "Der Modsuchen Server antwortet:\n\n{0}",

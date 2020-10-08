@@ -195,7 +195,7 @@
 		"MBPublishPastePassphrase": "粘贴密码 (ctrl-v)",
 		"MBMyPublishedMods": "已发布模组",
 		"MBUnpublish": "取消发布",
-		"MBMyPublishedModsStats": "{0}次下载({1}次为最新版本)",
+		"MBMyPublishedModsStats": "{0}{^0:次下载}({1}次为最新版本)",
 		"EnterSteamID": "请输入你的SteamID",
 		"PasteSteamID": "粘贴SteamID (ctrl-v)",
 		"MBServerResponse": "模组浏览器服务器响应:\n\n{0}",

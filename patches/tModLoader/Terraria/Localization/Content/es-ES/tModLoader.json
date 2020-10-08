@@ -201,7 +201,7 @@
 		"MBPublishPastePassphrase": "Pegar contraseña (ctrl-v)",
 		"MBMyPublishedMods": "Mis Mods Publicados",
 		"MBUnpublish": "Ocultar",
-		"MBMyPublishedModsStats": "{0} descargas ({1} es la última versión)",
+		"MBMyPublishedModsStats": "{0} {^0:descarga;descargas} ({1} en la última versión)",
 		"EnterSteamID": "Por favor, introduce tu SteamID",
 		"PasteSteamID": "Pegar SteamID (ctrl-v)",
 		"MBServerResponse": "Respuesta del servidor del Navegador:\n\n{0}",

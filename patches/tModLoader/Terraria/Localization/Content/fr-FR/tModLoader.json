@@ -194,7 +194,7 @@
 		"MBPublishPastePassphrase": "Coller la phrase codée (ctrl-v)",
 		"MBMyPublishedMods": "Mes Mods publiés",
 		"MBUnpublish": "Retirer de la publication",
-		"MBMyPublishedModsStats": "{0} téléchargements totaux ({1} pour la dernière version version)",
+		"MBMyPublishedModsStats": "{0} {^0:téléchargement;téléchargements} ({1} pour la dernière version version)",
 		"EnterSteamID": "Merci d'entrer votre ID Steam",
 		"PasteSteamID": "Coller votre ID Steam (ctrl-v)",
 		"MBServerResponse": "La réponse du serveur du Navigateur :\n\n{0}",
