@@ -351,7 +351,6 @@
 		"PercentReducedAmmoUsage": "{0}% chance to not consume ammo",
 		"PercentIncreasedDamageReduction": "{0}% increased damage reduction",
 		"PercentIncreasedDamageMeleeSpeed": "{0}% increased damage and melee speed",
-		"PercentIncreasedThrowSpeed": "{0}% increased throwing velocity",
 		"PercentIncreasedMinionDamageKnockback": "{0}% increased minion damage and increased minion knockback",
 		"IncreasesKnockback": "Increases knockback",
 		"IncreasesKnockbackClass": "Increases {0} knockback",
@@ -368,7 +367,11 @@
 		"IncreadJumpHeightNegate": "Increases jump height and negates fall damage",
 		"AllowFlight": "Allows flight",
 		"AllowDoubleJump": "Allows the holder to double jump",
-		"InmunityX": "Inmunity to {0}"
+		"ImmunityX": "Immunity to {0}",
+		"ClassMagic": "magic",
+		"ClassMelee": "melee",
+		"ClassRanger": "ranger",
+		"ClassSummoner": "summoner"
 	},
 	"RecipeConditions": {
 		"NearWater": "Needs water",
