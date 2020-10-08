@@ -387,5 +387,16 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item used to place this tile.</param>
 		public virtual void PlaceInWorld(int i, int j, Item item) {
 		}
+
+		/// <summary>
+		/// Change how treasure fairies will react to this tile. Only called if this tile is an ore and if <seealso cref="TileID.Sets.FriendlyFairyCanLureTo[Type]"/> is true. If the tile is invalid for whatever reason and should not be checked by the fairy, return false. Returns true by default.
+		/// </summary>
+		/// <param name="i"></param>
+		/// <param name="j"></param>
+		/// <param name="nuggetSize">The minimum size of the ore chunk to be counted by the fairy. Vanilla sets this to 40.</param>
+		/// <param name="xDelta">Determines the width of the search around the specified tile. Setting this to 3 will make the fairy search 3 blocks above the specified tile and 3 blocks below, including the tile itself for a total width of 7 tiles. Vanilla sets this to 3.</param>
+		/// <param name="yDelta">Determines the height of the search around the specified tile. Setting this to 3 will make the fairy search 3 blocks right of the specified tile and 3 blocks to the left, including the tile itself for a total height of 7 tiles. Vanilla sets this to 3.</param>
+		/// <returns></returns>
+		public virtual bool ModifyTreasureFairySearch(int i, int j, int type, ref int nuggetSize, ref int xDelta, ref int yDelta) => true;
 	}
 }

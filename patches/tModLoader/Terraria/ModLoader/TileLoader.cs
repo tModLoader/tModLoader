@@ -88,6 +88,8 @@ namespace Terraria.ModLoader
 		private delegate int DelegateSaplingGrowthType(int type, ref int style);
 		private static DelegateSaplingGrowthType[] HookSaplingGrowthType;
 		private static Action<int, int, Item>[] HookPlaceInWorld;
+		private delegate bool DelegateModifyFriendlyFairySearch(int i, int j, int type, ref int nuggetSize, ref int xDelta, ref int yDelta);
+		private static DelegateModifyFriendlyFairySearch[] HookModifyTreasureFairySearch;
 
 		internal static int ReserveTileID() {
 			if (ModNet.AllowVanillaClients) throw new Exception("Adding tiles breaks vanilla client compatibility");
@@ -223,6 +225,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
 			ModLoader.BuildGlobalHook(ref HookSaplingGrowthType, globalTiles, g => g.SaplingGrowthType);
 			ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalTiles, g => g.PlaceInWorld);
+			ModLoader.BuildGlobalHook(ref HookModifyTreasureFairySearch, globalTiles, g => g.ModifyTreasureFairySearch);
 
 			if (!unloading) {
 				loaded = true;
@@ -445,7 +448,7 @@ namespace Terraria.ModLoader
 					return false;
 				}
 
-				if (modTile.drop > 0) {
+				else if (modTile.drop > 0) {
 					Item.NewItem(i * 16, j * 16, 16, 16, modTile.drop, 1, false, -1);
 				}
 
@@ -934,6 +937,16 @@ namespace Terraria.ModLoader
 
 		public static bool UnlockChest(int i, int j, int type, ref short frameXAdjustment, ref int dustType, ref bool manual) {
 			return GetTile(type)?.UnlockChest(i, j, ref frameXAdjustment, ref dustType, ref manual) ?? false;
+		}
+
+		public static bool ModifyTreasureFairySearch(int i, int j, int type, ref int nuggetSize, ref int xDelta, ref int yDelta) {
+			bool flag = GetTile(type)?.ModifyTreasureFairySearch(i, j, ref nuggetSize, ref xDelta, ref yDelta) ?? false;
+
+			foreach (var hook in HookModifyTreasureFairySearch) {
+				flag |= hook(i, j, type, ref nuggetSize, ref xDelta, ref yDelta);
+			}
+
+			return flag;
 		}
 	}
 }

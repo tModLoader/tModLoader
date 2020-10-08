@@ -565,5 +565,16 @@ namespace Terraria.ModLoader
 		/// <param name="manual">Set this to true to bypass the code playing the unlock sound, adjusting the tile frame, and spawning dust. Network syncing will still happen.</param>
 		/// <returns>Return true if this tile truly is a locked chest and the chest can be unlocked</returns>
 		public virtual bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) => false;
+
+		/// <summary>
+		/// Change how treasure fairies will react to this tile. Only called if this tile is an ore and if <seealso cref="TileID.Sets.FriendlyFairyCanLureTo[Type]"/> is true. If the tile is invalid for whatever reason and should not be checked by the fairy, return false. Returns true by default.
+		/// </summary>
+		/// <param name="i"></param>
+		/// <param name="j"></param>
+		/// <param name="nuggetSize">The minimum size of the ore chunk to be counted by the fairy. Vanilla sets this to 40.</param>
+		/// <param name="xDelta">Determines the width of the search around the specified tile. Setting this to 3 will make the fairy search 3 blocks above the specified tile and 3 blocks below, including the tile itself for a total width of 7 tiles. Vanilla sets this to 3.</param>
+		/// <param name="yDelta">Determines the height of the search around the specified tile. Setting this to 3 will make the fairy search 3 blocks right of the specified tile and 3 blocks to the left, including the tile itself for a total height of 7 tiles. Vanilla sets this to 3.</param>
+		/// <returns></returns>
+		public virtual bool ModifyTreasureFairySearch(int i, int j, ref int nuggetSize, ref int xDelta, ref int yDelta) => true;
 	}
 }

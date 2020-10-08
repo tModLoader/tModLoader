@@ -33,6 +33,23 @@ namespace ExampleMod.Content.Tiles
 			//mineResist = 4f;
 			//minPick = 200;
 		}
+
+		public override bool ModifyTreasureFairySearch(int i, int j, ref int nuggetSize, ref int xDelta, ref int yDelta) {
+			/*
+			// If we wanted, we could make it so that fairies can only find Example Ore if they are in the Underworld
+			if (j > Main.maxTilesY - 200)
+				return false;
+			*/
+
+			// This makes it so that extremely small chunks of Example Ore will be detected by the fairy
+			nuggetSize = 4;
+			// Since so few blocks have to be present, we can make the number of blocks the fairy will check smaller
+			// Because of the way fairies work, this will actually check a 3x3 square around the tile
+			// Read these two parameters' documentation for more details
+			xDelta = 1;
+			yDelta = 1;
+			return true;
+		}
 	}
 
 	public class ExampleOreWorld : ModWorld
