@@ -2,7 +2,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -24,7 +23,7 @@ namespace ExampleMod.Tiles
 			AddMapEntry(new Color(152, 171, 198), name);
 
 			dustType = 84;
-			drop = ItemType<Items.Placeable.ExampleOre>();
+			drop = ModContent.ItemType<Items.Placeable.ExampleOre>();
 			soundType = SoundID.Tink;
 			soundStyle = 1;
 			//mineResist = 4f;

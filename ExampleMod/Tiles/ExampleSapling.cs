@@ -7,7 +7,6 @@ using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -26,7 +25,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
-			TileObjectData.newTile.AnchorValidTiles = new[] { TileType<ExampleBlock>() };
+			TileObjectData.newTile.AnchorValidTiles = new[] { ModContent.TileType<ExampleBlock>() };
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.DrawFlipHorizontal = true;
 			TileObjectData.newTile.WaterPlacement = LiquidPlacement.NotAllowed;
@@ -34,7 +33,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.RandomStyleRange = 3;
 			TileObjectData.newTile.StyleMultiplier = 3;
 			TileObjectData.newSubTile.CopyFrom(TileObjectData.newTile);
-			TileObjectData.newSubTile.AnchorValidTiles = new int[] { TileType<ExampleSand>() };
+			TileObjectData.newSubTile.AnchorValidTiles = new int[] { ModContent.TileType<ExampleSand>() };
 			TileObjectData.addSubTile(1);
 			TileObjectData.addTile(Type);
 
@@ -43,7 +42,7 @@ namespace ExampleMod.Tiles
 			AddMapEntry(new Color(200, 200, 200), name);
 
 			sapling = true;
-			dustType = DustType<Sparkle>();
+			dustType = ModContent.DustType<Sparkle>();
 			adjTiles = new int[] { TileID.Saplings };
 		}
 

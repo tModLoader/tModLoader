@@ -5,7 +5,6 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -66,7 +65,7 @@ namespace ExampleMod.Items
 					overrideColor = Color.Magenta
 				});
 			}
-			if (GetInstance<ExampleConfigClient>().ShowModOriginTooltip)
+			if (ModContent.GetInstance<ExampleConfigClient>().ShowModOriginTooltip)
 			{
 				foreach (TooltipLine line3 in tooltips)
 				{

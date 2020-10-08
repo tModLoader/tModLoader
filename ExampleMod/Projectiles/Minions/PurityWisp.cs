@@ -2,7 +2,7 @@ using ExampleMod.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using static Terraria.ModLoader.ModContent;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Projectiles.Minions
 {
@@ -31,7 +31,7 @@ namespace ExampleMod.Projectiles.Minions
 			projectile.tileCollide = false;
 			projectile.ignoreWater = true;
 			inertia = 20f;
-			shoot = ProjectileType<PurityBolt>();
+			shoot = ModContent.ProjectileType<PurityBolt>();
 			shootSpeed = 12f;
 		}
 
@@ -49,7 +49,7 @@ namespace ExampleMod.Projectiles.Minions
 		public override void CreateDust() {
 			if (projectile.ai[0] == 0f) {
 				if (Main.rand.NextBool(5)) {
-					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height / 2, DustType<PuriumFlame>());
+					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height / 2, ModContent.DustType<PuriumFlame>());
 					Main.dust[dust].velocity.Y -= 1.2f;
 				}
 			}
@@ -59,7 +59,7 @@ namespace ExampleMod.Projectiles.Minions
 					if (dustVel != Vector2.Zero) {
 						dustVel.Normalize();
 					}
-					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, DustType<PuriumFlame>());
+					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, ModContent.DustType<PuriumFlame>());
 					Main.dust[dust].velocity -= 1.2f * dustVel;
 				}
 			}

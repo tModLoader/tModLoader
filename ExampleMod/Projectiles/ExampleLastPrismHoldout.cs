@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles
 {
@@ -228,7 +227,7 @@ namespace ExampleMod.Projectiles
 			int damage = projectile.damage;
 			float knockback = projectile.knockBack;
 			for (int b = 0; b < NumBeams; ++b) {
-				Projectile.NewProjectile(projectile.Center, beamVelocity, ProjectileType<ExampleLastPrismBeam>(), damage, knockback, projectile.owner, b, uuid);
+				Projectile.NewProjectile(projectile.Center, beamVelocity, ModContent.ProjectileType<ExampleLastPrismBeam>(), damage, knockback, projectile.owner, b, uuid);
 			}
 
 			// After creating the beams, mark the Prism as having an important network event. This will make Terraria sync its data to other players ASAP.

@@ -1,7 +1,6 @@
 using ExampleMod.Items.Placeable;
 using Terraria;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Buffs
 {
@@ -23,7 +22,7 @@ namespace ExampleMod.Buffs
 			if (player.townNPCs >= 1 && p.blockyAccessoryPrevious) {
 				p.blockyPower = true;
 				if (Main.myPlayer == player.whoAmI && Main.time % 1000 == 0) {
-					player.QuickSpawnItem(ItemType<ExampleBlock>());
+					player.QuickSpawnItem(ModContent.ItemType<ExampleBlock>());
 				}
 				player.jumpSpeedBoost += 4.8f;
 				player.extraFall += 45;

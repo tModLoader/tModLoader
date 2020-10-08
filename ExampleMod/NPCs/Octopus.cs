@@ -5,7 +5,6 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs
 {
@@ -39,7 +38,7 @@ namespace ExampleMod.NPCs
 			npc.value = Item.buyPrice(0, 0, 15, 0);
 			npc.hide = true;
 			banner = npc.type;
-			bannerItem = ItemType<OctopusBanner>();
+			bannerItem = ModContent.ItemType<OctopusBanner>();
 		}
 
 		public override void AI() {
@@ -49,7 +48,7 @@ namespace ExampleMod.NPCs
 					damage /= 2;
 				}
 				for (int k = 0; k < 6; k++) {
-					int proj = Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, ProjectileType<OctopusArm>(), damage, 0, Main.myPlayer);
+					int proj = Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, ModContent.ProjectileType<OctopusArm>(), damage, 0, Main.myPlayer);
 					if (proj == 1000) {
 						npc.active = false;
 						return;

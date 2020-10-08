@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -39,7 +38,7 @@ namespace ExampleMod.Items
 			item.shootSpeed = 12f;
 
 			//The Bobber projectile
-			item.shoot = ProjectileType<ExampleBobber>();
+			item.shoot = ModContent.ProjectileType<ExampleBobber>();
 
 			// Change the item's draw color so that it is visually distinct from the vanilla Wooden Fishing Rod.
 			item.color = OverrideColor;
@@ -66,8 +65,8 @@ namespace ExampleMod.Items
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
-			recipe.AddTile(TileType<ExampleWorkbench>());
+			recipe.AddIngredient(ModContent.ItemType<ExampleItem>(), 10);
+			recipe.AddTile(ModContent.TileType<ExampleWorkbench>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

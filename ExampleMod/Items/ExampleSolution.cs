@@ -1,7 +1,6 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -14,7 +13,7 @@ namespace ExampleMod.Items
 		}
 
 		public override void SetDefaults() {
-			item.shoot = ProjectileType<Projectiles.ExampleSolution>() - ProjectileID.PureSpray;
+			item.shoot = ModContent.ProjectileType<Projectiles.ExampleSolution>() - ProjectileID.PureSpray;
 			item.ammo = AmmoID.Solution;
 			item.width = 10;
 			item.height = 12;
@@ -26,7 +25,7 @@ namespace ExampleMod.Items
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<ExampleItem>(), 10);
 			recipe.SetResult(this, 999);
 			recipe.AddRecipe();
 		}

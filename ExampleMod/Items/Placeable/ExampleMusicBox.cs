@@ -1,5 +1,4 @@
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 using Terraria.ID;
 
 namespace ExampleMod.Items.Placeable
@@ -17,7 +16,7 @@ namespace ExampleMod.Items.Placeable
 			item.useTime = 10;
 			item.autoReuse = true;
 			item.consumable = true;
-			item.createTile = TileType<Tiles.ExampleMusicBox>();
+			item.createTile = ModContent.TileType<Tiles.ExampleMusicBox>();
 			item.width = 24;
 			item.height = 24;
 			item.rare = ItemRarityID.LightRed;

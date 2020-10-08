@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
-using static Terraria.ModLoader.ModContent;
+using Terraria.ModLoader;
 
 namespace ExampleMod.UI
 {
@@ -27,7 +27,7 @@ namespace ExampleMod.UI
 			area.Width.Set(182, 0f); // We will be placing the following 2 UIElements within this 182x60 area.
 			area.Height.Set(60, 0f);
 
-			barFrame = new UIImage(GetTexture("ExampleMod/UI/ExampleResourceFrame"));
+			barFrame = new UIImage(ModContent.GetTexture("ExampleMod/UI/ExampleResourceFrame"));
 			barFrame.Left.Set(22, 0f);
 			barFrame.Top.Set(0, 0f);
 			barFrame.Width.Set(138, 0f);

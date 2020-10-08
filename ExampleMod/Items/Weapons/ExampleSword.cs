@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Weapons
 {
@@ -40,9 +39,9 @@ namespace ExampleMod.Items.Weapons
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			// ItemType<ExampleItem>() is how to get the ExampleItem item, 10 is the amount of that item you need to craft the recipe
-			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<ExampleItem>(), 10);
 			// You can use recipe.AddIngredient(ItemID.TheItemYouWantToUse, the amount of items needed); for a vanilla item.
-			recipe.AddTile(TileType<ExampleWorkbench>()); // Set the crafting tile to ExampleWorkbench
+			recipe.AddTile(ModContent.TileType<ExampleWorkbench>()); // Set the crafting tile to ExampleWorkbench
 			recipe.SetResult(this); // Set the result to this item (ExampleSword)
 			recipe.AddRecipe(); // When your done, add the recipe
 		}
@@ -50,7 +49,7 @@ namespace ExampleMod.Items.Weapons
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(3)) {
 				//Emit dusts when the sword is swung
-				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustType<Sparkle>());
+				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Sparkle>());
 			}
 		}
 

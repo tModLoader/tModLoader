@@ -6,7 +6,6 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs.Abomination
 {
@@ -76,8 +75,8 @@ namespace ExampleMod.NPCs.Abomination
 
 		public override void AI() {
 			NPC abomination = Main.npc[center];
-			if (!abomination.active || abomination.type != NPCType<Abomination>()) {
-				if (change > 0 || NPC.AnyNPCs(NPCType<AbominationRun>())) {
+			if (!abomination.active || abomination.type != ModContent.NPCType<Abomination>()) {
+				if (change > 0 || NPC.AnyNPCs(ModContent.NPCType<AbominationRun>())) {
 					if (change == 0) {
 						npc.netUpdate = true;
 					}
@@ -93,13 +92,13 @@ namespace ExampleMod.NPCs.Abomination
 				Color? color = GetColor();
 				if (color.HasValue) {
 					for (int x = 0; x < 5; x++) {
-						int dust = Dust.NewDust(npc.position, npc.width, npc.height, DustType<Pixel>(), 0f, 0f, 0, color.Value);
+						int dust = Dust.NewDust(npc.position, npc.width, npc.height, ModContent.DustType<Pixel>(), 0f, 0f, 0, color.Value);
 						double angle = Main.rand.NextDouble() * 2.0 * Math.PI;
 						Main.dust[dust].velocity = 3f * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
 					}
 				}
 				if (Main.netMode != NetmodeID.MultiplayerClient && change >= 100f) {
-					int next = NPC.NewNPC((int)npc.Center.X, (int)npc.position.Y + npc.height, NPCType<CaptiveElement2>());
+					int next = NPC.NewNPC((int)npc.Center.X, (int)npc.position.Y + npc.height, ModContent.NPCType<CaptiveElement2>());
 					Main.npc[next].ai[0] = captiveType;
 					if (captiveType != 4) {
 						Main.npc[next].ai[1] = 300f + (float)Main.rand.Next(100);
@@ -140,7 +139,7 @@ namespace ExampleMod.NPCs.Abomination
 				if (Main.expertMode) {
 					damage = (int)(damage / Main.expertDamage);
 				}
-				Projectile.NewProjectile(npc.Center.X, npc.Center.Y, delta.X, delta.Y, ProjectileType<ElementBall>(), damage, 3f, Main.myPlayer, GetDebuff(), GetDebuffTime());
+				Projectile.NewProjectile(npc.Center.X, npc.Center.Y, delta.X, delta.Y, ModContent.ProjectileType<ElementBall>(), damage, 3f, Main.myPlayer, GetDebuff(), GetDebuffTime());
 				npc.netUpdate = true;
 			}
 		}
@@ -185,7 +184,7 @@ namespace ExampleMod.NPCs.Abomination
 				case 0:
 					return BuffID.Frostburn;
 				case 1:
-					return BuffType<Buffs.EtherealFlames>();
+					return ModContent.BuffType<Buffs.EtherealFlames>();
 				case 3:
 					return BuffID.Venom;
 				case 4:

@@ -2,7 +2,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Weapons
 {
@@ -26,14 +25,14 @@ namespace ExampleMod.Items.Weapons
 			item.rare = ItemRarityID.Yellow;
 			item.UseSound = mod.GetLegacySoundSlot(SoundType.Item, "Sounds/Item/Wooo");
 			item.autoReuse = true;
-			item.shoot = ProjectileType<Projectiles.Wisp>();
+			item.shoot = ModContent.ProjectileType<Projectiles.Wisp>();
 			item.shootSpeed = 6f;
-			item.useAmmo = ItemType<Wisp>();        //Restrict the type of ammo the weapon can use, so that the weapon cannot use other ammos
+			item.useAmmo = ModContent.ItemType<Wisp>();        //Restrict the type of ammo the weapon can use, so that the weapon cannot use other ammos
 		}
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<ExampleItem>(), 10);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.SetResult(this);
 			recipe.AddRecipe();

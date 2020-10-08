@@ -1,6 +1,5 @@
 ﻿using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Placeable
 {
@@ -20,7 +19,7 @@ namespace ExampleMod.Items.Placeable
 			item.autoReuse = true;
 			item.maxStack = 999;
 			item.consumable = true;
-			item.createTile = TileType<Tiles.ExampleOre>();
+			item.createTile = ModContent.TileType<Tiles.ExampleOre>();
 			item.width = 12;
 			item.height = 12;
 			item.value = 3000;

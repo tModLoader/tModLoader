@@ -5,7 +5,6 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles
 {
@@ -64,7 +63,7 @@ namespace ExampleMod.Projectiles
 			//This variable is used to account for Gravitation Potions
 			float gravity = player.gravDir;
 
-			if (type == ItemType<ExampleFishingRod>()) {
+			if (type == ModContent.ItemType<ExampleFishingRod>()) {
 				lineOrigin.X += xPositionAdditive * player.direction;
 				if (player.direction < 0) {
 					lineOrigin.X -= 13f;

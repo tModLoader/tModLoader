@@ -3,7 +3,6 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles
 {
@@ -149,7 +148,7 @@ namespace ExampleMod.Projectiles
 				case 1:
 					return BuffID.Frostburn;
 				case 2:
-					return BuffType<Buffs.EtherealFlames>();
+					return ModContent.BuffType<Buffs.EtherealFlames>();
 				case 3:
 					return 0;
 				case 4:

@@ -8,7 +8,6 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.UI
 {
@@ -47,9 +46,9 @@ namespace ExampleMod.UI
 			base.Update(gameTime);
 
 			// talkNPC is the index of the NPC the player is currently talking to. By checking talkNPC, we can tell when the player switches to another NPC or closes the NPC chat dialog.
-			if (Main.LocalPlayer.talkNPC == -1 || Main.npc[Main.LocalPlayer.talkNPC].type != NPCType<ExamplePerson>()) {
+			if (Main.LocalPlayer.talkNPC == -1 || Main.npc[Main.LocalPlayer.talkNPC].type != ModContent.NPCType<ExamplePerson>()) {
 				// When that happens, we can set the state of our UserInterface to null, thereby closing this UIState. This will trigger OnDeactivate above.
-				GetInstance<ExampleMod>().ExamplePersonUserInterface.SetState(null);
+				ModContent.GetInstance<ExampleMod>().ExamplePersonUserInterface.SetState(null);
 			}
 		}
 
@@ -109,10 +108,10 @@ namespace ExampleMod.UI
 						reforgeItem = reforgeItem.CloneWithModdedDataFrom(_vanillaItemSlot.Item);
 						// This is the main effect of this slot. Giving the Awesome prefix 90% of the time and the ReallyAwesome prefix the other 10% of the time. All for a constant 1 gold. Useless, but informative.
 						if (Main.rand.NextBool(10)) {
-							reforgeItem.Prefix(GetInstance<ExampleMod>().PrefixType("ReallyAwesome"));
+							reforgeItem.Prefix(ModContent.GetInstance<ExampleMod>().PrefixType("ReallyAwesome"));
 						}
 						else {
-							reforgeItem.Prefix(GetInstance<ExampleMod>().PrefixType("Awesome"));
+							reforgeItem.Prefix(ModContent.GetInstance<ExampleMod>().PrefixType("Awesome"));
 						}
 						_vanillaItemSlot.Item = reforgeItem.Clone();
 						_vanillaItemSlot.Item.position.X = Main.LocalPlayer.position.X + (float)(Main.LocalPlayer.width / 2) - (float)(_vanillaItemSlot.Item.width / 2);

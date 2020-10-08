@@ -13,7 +13,6 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.World.Generation;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod
 {
@@ -168,7 +167,7 @@ namespace ExampleMod
 				int y = WorldGen.genRand.Next((int)WorldGen.worldSurfaceLow, Main.maxTilesY); // WorldGen.worldSurfaceLow is actually the highest surface tile. In practice you might want to use WorldGen.rockLayer or other WorldGen values.
 
 				// Then, we call WorldGen.TileRunner with random "strength" and random "steps", as well as the Tile we wish to place. Feel free to experiment with strength and step to see the shape they generate.
-				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), TileType<ExampleOre>());
+				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), ModContent.TileType<ExampleOre>());
 
 				// Alternately, we could check the tile already present in the coordinate we are interested. Wrapping WorldGen.TileRunner in the following condition would make the ore only generate in Snow.
 				// Tile tile = Framing.GetTileSafely(x, y);
@@ -188,7 +187,7 @@ namespace ExampleMod
 			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY) * 6E-05); k++) {
 				bool placeSuccessful = false;
 				Tile tile;
-				int tileToPlace = TileType<ExampleCutTileTile>();
+				int tileToPlace = ModContent.TileType<ExampleCutTileTile>();
 				while (!placeSuccessful) {
 					int x = WorldGen.genRand.Next(0, Main.maxTilesX);
 					int y = WorldGen.genRand.Next(0, Main.maxTilesY);
@@ -372,14 +371,14 @@ namespace ExampleMod
 			//}
 
 			// Here we spawn Example Person just like the Guide.
-			int num = NPC.NewNPC((Main.spawnTileX + 5) * 16, Main.spawnTileY * 16, NPCType<ExamplePerson>(), 0, 0f, 0f, 0f, 0f, 255);
+			int num = NPC.NewNPC((Main.spawnTileX + 5) * 16, Main.spawnTileY * 16, ModContent.NPCType<ExamplePerson>(), 0, 0f, 0f, 0f, 0f, 255);
 			Main.npc[num].homeTileX = Main.spawnTileX + 5;
 			Main.npc[num].homeTileY = Main.spawnTileY;
 			Main.npc[num].direction = 1;
 			Main.npc[num].homeless = true;
 
 			// Place some items in Ice Chests
-			int[] itemsToPlaceInIceChests = { ItemType<CarKey>(), ItemType<ExampleLightPet>(), ItemID.PinkJellyfishJar };
+			int[] itemsToPlaceInIceChests = { ModContent.ItemType<CarKey>(), ModContent.ItemType<ExampleLightPet>(), ItemID.PinkJellyfishJar };
 			int itemsToPlaceInIceChestsChoice = 0;
 			for (int chestIndex = 0; chestIndex < 1000; chestIndex++) {
 				Chest chest = Main.chest[chestIndex];
@@ -405,10 +404,10 @@ namespace ExampleMod
 
 		public override void TileCountsAvailable(int[] tileCounts) {
 			// Here we count various tiles towards ZoneExample
-			exampleTiles = tileCounts[TileType<ExampleBlock>()] + tileCounts[TileType<ExampleSand>()];
+			exampleTiles = tileCounts[ModContent.TileType<ExampleBlock>()] + tileCounts[ModContent.TileType<ExampleSand>()];
 
 			// We can also add to vanilla biome counts if appropriate. Here we are adding to the ZoneDesert since we have a sand tile in the mod.
-			Main.sandTiles += tileCounts[TileType<ExampleSand>()];
+			Main.sandTiles += tileCounts[ModContent.TileType<ExampleSand>()];
 		}
 
 		public override void PreUpdate() {
@@ -421,7 +420,7 @@ namespace ExampleMod
 				if (VolcanoCooldown > 0) {
 					VolcanoCooldown--;
 				}
-				if (VolcanoCooldown <= 0 && Main.rand.NextBool(VolcanoChance) && !GetInstance<ExampleConfigServer>().DisableVolcanoes) {
+				if (VolcanoCooldown <= 0 && Main.rand.NextBool(VolcanoChance) && !ModContent.GetInstance<ExampleConfigServer>().DisableVolcanoes) {
 					string key = "Mods.ExampleMod.VolcanoWarning";
 					Color messageColor = Color.Orange;
 					if (Main.netMode == NetmodeID.Server) // Server
@@ -489,7 +488,7 @@ namespace ExampleMod
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.instance.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			var screenRect = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
 			screenRect.Inflate(TEScoreBoard.drawBorderWidth, TEScoreBoard.drawBorderWidth);
-			int scoreBoardType = TileEntityType<TEScoreBoard>();
+			int scoreBoardType = ModContent.TileEntityType<TEScoreBoard>();
 			foreach (var item in TileEntity.ByID) {
 				if (item.Value.type == scoreBoardType) {
 					var scoreBoard = item.Value as TEScoreBoard;

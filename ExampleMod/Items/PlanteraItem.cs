@@ -1,7 +1,6 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -37,8 +36,8 @@ namespace ExampleMod.Items
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<BossItem>(), 10);
-			recipe.AddTile(TileType<Tiles.ExampleWorkbench>());
+			recipe.AddIngredient(ModContent.ItemType<BossItem>(), 10);
+			recipe.AddTile(ModContent.TileType<Tiles.ExampleWorkbench>());
 			recipe.SetResult(this, 20);
 			recipe.AddRecipe();
 		}

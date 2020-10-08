@@ -4,7 +4,6 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles
 {
@@ -56,7 +55,7 @@ namespace ExampleMod.Projectiles
 				AdjustMagnitude(ref projectile.velocity);
 			}
 			if (projectile.alpha <= 100) {
-				int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, DustType<SpectreDust>());
+				int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, ModContent.DustType<SpectreDust>());
 				Main.dust[dust].velocity /= 2f;
 			}
 		}
@@ -70,7 +69,7 @@ namespace ExampleMod.Projectiles
 
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
 			if (Main.rand.NextBool()) {
-				target.AddBuff(BuffType<Buffs.EtherealFlames>(), 300);
+				target.AddBuff(ModContent.BuffType<Buffs.EtherealFlames>(), 300);
 			}
 		}
 	}

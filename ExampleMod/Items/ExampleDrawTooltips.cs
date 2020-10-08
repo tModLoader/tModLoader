@@ -4,7 +4,6 @@ using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
-using static Terraria.ModLoader.ModContent;
 using Terraria.ID;
 
 namespace ExampleMod.Items
@@ -101,7 +100,7 @@ namespace ExampleMod.Items
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>());
+			recipe.AddIngredient(ModContent.ItemType<ExampleItem>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

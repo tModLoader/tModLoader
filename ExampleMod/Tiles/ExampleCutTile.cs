@@ -4,7 +4,6 @@ using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -51,7 +50,7 @@ namespace ExampleMod.Tiles
 
 		public override void SetDefaults() {
 			item.CloneDefaults(ItemID.DartTrap);
-			item.createTile = TileType<ExampleCutTileTile>();
+			item.createTile = ModContent.TileType<ExampleCutTileTile>();
 			item.value = 1000;
 		}
 

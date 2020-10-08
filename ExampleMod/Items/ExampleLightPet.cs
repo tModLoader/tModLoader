@@ -1,7 +1,6 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -15,7 +14,7 @@ namespace ExampleMod.Items
 		public override void SetDefaults() {
 			item.damage = 0;
 			item.useStyle = ItemUseStyleID.SwingThrow;
-			item.shoot = ProjectileType<Projectiles.Pets.ExampleLightPet>();
+			item.shoot = ModContent.ProjectileType<Projectiles.Pets.ExampleLightPet>();
 			item.width = 16;
 			item.height = 30;
 			item.UseSound = SoundID.Item2;
@@ -24,7 +23,7 @@ namespace ExampleMod.Items
 			item.rare = ItemRarityID.Yellow;
 			item.noMelee = true;
 			item.value = Item.sellPrice(0, 5, 50, 0);
-			item.buffType = BuffType<Buffs.ExampleLightPet>();
+			item.buffType = ModContent.BuffType<Buffs.ExampleLightPet>();
 		}
 
 		public override void AddRecipes() {
