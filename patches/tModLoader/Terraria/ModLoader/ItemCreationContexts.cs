@@ -8,4 +8,9 @@
 	{
 		public Recipe recipe;
 	}
+
+	public class InitializationContext : ItemCreationContext
+	{
+		
+	}
 }

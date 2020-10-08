@@ -26,13 +26,6 @@ namespace ExampleMod.Content.Items
 			}
 		}
 
-		public ExampleInstancedItem() {
-			colors = new Color[5];
-			for (int i = 0; i < 5; i++) {
-				colors[i] = Main.hslToRgb(Main.rand.NextFloat(), 1f, 0.7f);
-			}
-		}
-
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			for (int i = 0; i < colors.Length; i++) {
 				TooltipLine tooltipLine = new TooltipLine(Mod, "EM" + i, "Example " + i) { overrideColor = colors[i] };

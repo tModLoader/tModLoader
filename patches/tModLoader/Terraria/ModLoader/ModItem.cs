@@ -69,6 +69,8 @@ namespace Terraria.ModLoader
 					Mod.AddEquipTexture(this, equip, Texture + '_' + equip);
 				}
 			}
+			
+			OnCreate(new InitializationContext());
 		}
 
 		public override void SetupContent() {
