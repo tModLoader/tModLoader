@@ -1722,7 +1722,7 @@ namespace Terraria.ModLoader
 					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
 
 				if (!HasMethod(type, "Clone", typeof(Item), typeof(Item)))
-					throw new Exception(type + " has InstancePerEntity but must either set CloneNewInstances to true, or override NewInstance(Item) or Clone(Item, Item)");
+					throw new Exception(type + " has InstancePerEntity but does not override Clone(Item, Item)");
 			}
 		}
 	}
