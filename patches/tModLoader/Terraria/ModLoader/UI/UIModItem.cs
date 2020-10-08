@@ -170,7 +170,7 @@ namespace Terraria.ModLoader.UI
 
 				for (int i = 0; i < values.Length; i++) {
 					if (values[i] > 0) {
-						_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.InfoIcon[i].Name), Language.GetTextValue($"tModLoader.{localizationKeys[i]}", values[i], 1)) {
+						_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.InfoIcon[i].Name), Language.GetTextValue($"tModLoader.{localizationKeys[i]}", values[i])) {
 							Left = { Pixels = xOffset, Percent = 1f }
 						};
 
