@@ -181,12 +181,12 @@
 		"MBUnknownMBError": "Произошла неизвестная ошибка браузера модов. Попробуйте опять позже.",
 		"MBNoModsFound": "Не найден ни один мод",
 		"MBBrowserError": "В браузере модов произошла ошибка.",
-		//"XSecondsAgo": "{0} {^0:second;seconds} ago",
-		//"XMinutesAgo": "{0} {^0:minute;minutes} ago",
-		//"XHoursAgo": "{0} {^0:hour;hours} ago",
-		//"XDaysAgo": "{0} {^0:day;days} ago",
-		//"XMonthsAgo": "{0} {^0:month;months} ago",
-		//"XYearsAgo": "{0} {^0:year;years} ago",
+		"XSecondsAgo": "{0} {^0:секунду;секунды;секунд} назад",
+		"XMinutesAgo": "{0} {^0:минуту;минуты;минут} назад",
+		"XHoursAgo": "{0} {^0:час;часа;часов} назад",
+		"XDaysAgo": "{0} {^0:день;дня;дней} назад",
+		"XMonthsAgo": "{0} {^0:месяц;месяца;месяцев} назад",
+		"XYearsAgo": "{0} {^0:год;года;лет} назад",
 
 		// Mod Publishing
 		"MBPublishEnterPassphrase": "Пожалуйста, введите свой код доступа",
