@@ -1,5 +1,6 @@
 ﻿using ExampleMod.Content.Items;
 using System.Collections.Generic;
+using System.Globalization;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -38,6 +39,10 @@ namespace ExampleMod.Common.Players
 		// Terraria's entry is always named just "Terraria"
 		public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
 			itemsByMod["Terraria"].RemoveAll(item => item.type == ItemID.IronAxe);
+		}
+
+		public override void NaturalManaRegen(ref float regen) {
+			regen = -500;
 		}
 	}
 }

@@ -1505,15 +1505,30 @@
  			float num4 = (float)statLifeMax2 / 400f * 0.85f + 0.15f;
  			num2 *= num4;
  			lifeRegen += (int)Math.Round(num2);
-@@ -13071,6 +_,8 @@
+@@ -13069,8 +_,9 @@
+ 				manaRegen = statManaMax2 / 7 + 1 + manaRegenBonus;
+ 				if ((velocity.X == 0f && velocity.Y == 0f) || grappling[0] >= 0 || manaRegenBuff)
  					manaRegen += statManaMax2 / 2;
- 
+-
++				
  				float num2 = (float)statMana / (float)statManaMax2 * 0.8f + 0.2f;
-+				PlayerHooks.NaturalManaRegen(this, ref num2);
 +
  				if (manaRegenBuff)
  					num2 = 1f;
  
+@@ -13080,7 +_,11 @@
+ 				manaRegen = 0;
+ 			}
+ 
+-			manaRegenCount += manaRegen;
++			float flatManaRegenNum = 0;
++			float multiManaRegenNum = 1;
++			PlayerHooks.NaturalManaRegen(this, ref flatManaRegenNum, ref multiManaRegenNum);
++
++			manaRegenCount += (int) ((manaRegen + flatManaRegenNum) * multiManaRegenNum);
+ 			while (manaRegenCount >= 120) {
+ 				bool flag = false;
+ 				manaRegenCount -= 120;
 @@ -13108,8 +_,8 @@
  
  		public void UpdateJumpHeight() {

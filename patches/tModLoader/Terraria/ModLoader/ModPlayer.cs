@@ -171,10 +171,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the power of the player's natural mana regeneration. This can be done by multiplying the regen parameter by any number. For example, walking multiplies it by 0.5.
+		/// Allows you to modify the power of the player's natural mana regeneration. This can be done by multiplying the regen parameter by any number.
 		/// </summary>
 		/// <param name="regen"></param>
-		public virtual void NaturalManaRegen(ref float regen) {
+		public virtual void NaturalManaRegen(ref float flatRegen, ref float multiRegen) {
 		}
 
 		/// <summary>
