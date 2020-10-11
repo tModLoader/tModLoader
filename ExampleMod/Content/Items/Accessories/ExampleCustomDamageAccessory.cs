@@ -19,7 +19,11 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.AddDamage<ExampleDamageClass>(0.25f); // This method will add the given value onto the given damage class' damage stat - in this case, 0.25f or a 25% increase.
+			// GetDamage returns a reference to the specified damage class' damage Modifier.
+			// Since it doesn't return a value, but a reference to it, you can freely modify it with +-*/ operators.
+			// In this case, we're multiplying it by 0.25f, which means a 25% damage increase.
+			// If you want to add a non-multiplicative damage bonus, you can use + or - operators on it instead.
+			player.GetDamage<ExampleDamageClass>() *= 0.25f;
 		}
 	}
 }
