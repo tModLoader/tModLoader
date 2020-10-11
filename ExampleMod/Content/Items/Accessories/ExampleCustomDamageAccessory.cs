@@ -20,7 +20,7 @@ namespace ExampleMod.Content.Items.Accessories
 			// GetDamage returns a reference to the specified damage class' damage Modifier.
 			// Since it doesn't return a value, but a reference to it, you can freely modify it with +-*/ operators.
 			// In this case, we're multiplying it by 0.25f, which means a 25% damage increase.
-			// If you want to add a non-multiplicative damage bonus, you can use + or - operators on it instead.
+			// If you want to add or subtract a non-multiplicative damage value, you can use + or - operators on it instead.
 			player.GetDamage<ExampleDamageClass>() *= 0.25f;
 		}
 	}
