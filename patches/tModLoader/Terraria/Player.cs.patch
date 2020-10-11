@@ -57,7 +57,7 @@
  		public int[] buffType = new int[22];
  		public int[] buffTime = new int[22];
  		public bool[] buffImmune = new bool[323];
-@@ -1034,16 +_,26 @@
+@@ -1034,16 +_,17 @@
  		public bool parryDamageBuff;
  		public bool ballistaPanic;
  		public bool JustDroppedAnItem;
@@ -71,18 +71,9 @@
 -		public float arrowDamage = 1f;
 -		public float rocketDamage = 1f;
 -		public float minionDamage = 1f;
-+		internal int meleeCrit {
-+			get => GetCrit(DamageClass.Melee);
-+			set => AddCrit(DamageClass.Melee, value);
-+		}
-+		internal int magicCrit {
-+			get => GetCrit(DamageClass.Magic);
-+			set => AddCrit(DamageClass.Magic, value);
-+		}
-+		internal int rangedCrit {
-+			get => GetCrit(DamageClass.Ranged);
-+			set => AddCrit(DamageClass.Ranged, value);
-+		}
++		internal ref Modifier meleeCrit => ref GetCrit(DamageClass.Melee);
++		internal ref Modifier magicCrit => ref GetCrit(DamageClass.Magic);
++		internal ref Modifier rangedCrit => ref GetCrit(DamageClass.Ranged);
 +		public Modifier allDamage = Modifier.One;
 +		internal ref Modifier meleeDamage => ref GetDamage(DamageClass.Melee);
 +		internal ref Modifier magicDamage => ref GetDamage(DamageClass.Magic);
@@ -1087,6 +1078,19 @@
  				}
  
  				if (armor[k].type == 371) {
+@@ -8522,9 +_,9 @@
+ 					rangedDamage += 0.02f;
+ 					magicDamage += 0.02f;
+ 					minionDamage += 0.02f;
+-					magicCrit++;
+-					meleeCrit++;
+-					rangedCrit++;
++					magicCrit += 1;
++					meleeCrit += 1;
++					rangedCrit += 1;
+ 				}
+ 
+ 				if (armor[k].type == 1210) {
 @@ -8940,31 +_,43 @@
  				}
  
@@ -1480,7 +1484,7 @@
  								SmartSelect_SelectItem(i);
  								return;
  						}
-@@ -12344,10 +_,11 @@
+@@ -12344,13 +_,14 @@
  			lifeRegen = 0;
  			manaCost = 1f;
  			meleeSpeed = 1f;
@@ -1488,14 +1492,20 @@
 -			rangedDamage = 1f;
 -			magicDamage = 1f;
 -			minionDamage = 1f;
+-			meleeCrit = 4;
+-			rangedCrit = 4;
+-			magicCrit = 4;
 +			allDamage = Modifier.One;
 +			meleeDamage = Modifier.One;
 +			rangedDamage = Modifier.One;
 +			magicDamage = Modifier.One;
 +			minionDamage = Modifier.One;
- 			meleeCrit = 4;
- 			rangedCrit = 4;
- 			magicCrit = 4;
++			meleeCrit = new Modifier(4);
++			rangedCrit = new Modifier(4);
++			magicCrit = new Modifier(4);
+ 			hasFootball = false;
+ 			drawingFootball = false;
+ 			minionKB = 0f;
 @@ -12392,9 +_,9 @@
  			ammoCost80 = false;
  			ammoCost75 = false;
@@ -1784,6 +1794,18 @@
  			if (maxTurretsOld != maxTurrets) {
  				UpdateMaxTurrets();
  				maxTurretsOld = maxTurrets;
+@@ -17528,8 +_,10 @@
+ 
+ 				meleeDamage += (1f - stealth) * 3f;
+ 				meleeCrit += (int)((1f - stealth) * 30f);
++				/*
+ 				if (meleeCrit > 100)
+-					meleeCrit = 100;
++					meleeCrit = new Modifier(100);
++				*/
+ 
+ 				aggro -= (int)((1f - stealth) * 750f);
+ 				if (stealthTimer > 0)
 @@ -17680,6 +_,7 @@
  			}
  

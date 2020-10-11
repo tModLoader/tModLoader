@@ -2,12 +2,12 @@
 {
 	internal struct DamageClassData
 	{
-		public int crit;
 		public Modifier damage;
+		public Modifier crit;
 
-		public DamageClassData(int crit, Modifier damage) {
-			this.crit = crit;
+		public DamageClassData(Modifier damage, Modifier crit) {
 			this.damage = damage;
+			this.crit = crit;
 		}
 	}
 }

@@ -54,44 +54,20 @@ namespace Terraria
 			damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
 
 			for (int i = 0; i < damageData.Length; i++) {
-				damageData[i] = new DamageClassData(4, Modifier.One); // Default values from vanilla - 4 crit, 0 add, 1x mult.
+				damageData[i] = new DamageClassData(Modifier.One, new Modifier(4f, 1f)); // Default values from vanilla - 4 crit, 0 add, 1x mult.
 			}
 		}
 
-		/// <summary>
-		/// Edits the crit for the given damage type on this player.
-		/// </summary>
-		/// <param name="changeAmount">The amount that should be added to the crit. Can be negative too.</param>
-		public void AddCrit<T>(int changeAmount) where T : DamageClass => AddCrit(ModContent.GetInstance<T>(), changeAmount);
+		/// <summary> Gets the reference to the crit modifier for this damage type on this player. Since this returns a reference, you can freely modify this method's return value with operators. <para/> Note that vanilla turns this to int before using it. </summary>
+		public ref Modifier GetCrit<T>() where T : DamageClass => ref GetCrit(ModContent.GetInstance<T>());
 
-		/// <summary>
-		/// Edits the crit for the given damage type on this player.
-		/// </summary>
-		/// <param name="changeAmount">The amount that should be added to the crit. Can be negative too.</param>
-		public void AddCrit(DamageClass damageClass, int changeAmount) {
-			if (!(damageClass is Summon)) {
-				damageData[damageClass.index].crit += changeAmount;
-			}
-		}
-
-		/// <summary>
-		/// Gets the crit stat for this damage type on this player.
-		/// </summary>
-		public int GetCrit<T>() where T : DamageClass => GetCrit(ModContent.GetInstance<T>());
-
-		/// <summary>
-		/// Gets the damage stat for this damage type on this player.
-		/// </summary>
+		/// <summary> Gets the reference to the damage modifier for this damage type on this player. Since this returns a reference, you can freely modify this method's return value with operators. </summary>
 		public ref Modifier GetDamage<T>() where T : DamageClass => ref GetDamage(ModContent.GetInstance<T>());
 
-		/// <summary>
-		/// Gets the crit stat for this damage type on this player.
-		/// </summary>
-		public int GetCrit(DamageClass damageClass) => damageClass is Summon ? 0 : damageData[damageClass.index].crit; // Special case, summoner class cannot have crits.
+		/// <summary> Gets the reference to the crit modifier for this damage type on this player. Since this returns a reference, you can freely modify this method's return value with operators. <para/> Note that vanilla turns this to int before using it. </summary>
+		public ref Modifier GetCrit(DamageClass damageClass) => ref damageData[damageClass.index].crit;
 
-		/// <summary>
-		/// Gets the reference to the damage stat for this damage type on this player. Since this returns a reference, you can freely modify this method's return value with operators.
-		/// </summary>
+		/// <summary> Gets the reference to the damage modifier for this damage type on this player. Since this returns a reference, you can freely modify this method's return value with operators. </summary>
 		public ref Modifier GetDamage(DamageClass damageClass) => ref damageData[damageClass.index].damage;
 	}
 }
