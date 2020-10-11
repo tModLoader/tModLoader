@@ -1,10 +1,9 @@
 using ExampleMod.Content.Rarities;
-using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent; //This lets us access methods (like ItemType) from ModContent without having to type its name.
 
 namespace ExampleMod.Content.Items.Weapons
 {
@@ -12,6 +11,7 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded sword."); //The (English) text shown below your weapon's name.
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
@@ -29,14 +29,14 @@ namespace ExampleMod.Content.Items.Weapons
 			item.crit = 6; //The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
 			item.value = Item.buyPrice(gold: 1); //The value of the weapon in copper coins.
-			item.rare = RarityType<ExampleModRarity>(); // Give this item our custom rarity.
+			item.rare = ModContent.RarityType<ExampleModRarity>(); // Give this item our custom rarity.
 			item.UseSound = SoundID.Item1; //The sound when the weapon is being used.
 		}
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(3)) {
 				// Emit dusts when the sword is swung
-				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustType<Dusts.Sparkle>());
+				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Dusts.Sparkle>());
 			}
 		}
 
@@ -46,12 +46,11 @@ namespace ExampleMod.Content.Items.Weapons
 			target.AddBuff(BuffID.OnFire, 60);
 		}
 
-		// Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<ExampleItem>(10)
-				.AddIngredient(ItemID.Wood)
-				.AddTile<ExampleWorkbench>()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

@@ -1,12 +1,13 @@
 ﻿using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Placeable
 {
 	public class ExampleOre : ModItem
 	{
 		public override void SetStaticDefaults() {
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
 			ItemID.Sets.SortingPriorityMaterials[item.type] = 58;
 		}
 
@@ -18,7 +19,7 @@ namespace ExampleMod.Content.Items.Placeable
 			item.autoReuse = true;
 			item.maxStack = 999;
 			item.consumable = true;
-			item.createTile = TileType<Tiles.ExampleOre>();
+			item.createTile = ModContent.TileType<Tiles.ExampleOre>();
 			item.width = 12;
 			item.height = 12;
 			item.value = 3000;

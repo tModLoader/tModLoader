@@ -2,6 +2,7 @@
 using System.Linq;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -9,6 +10,10 @@ namespace ExampleMod.Content.Items.Consumables
 {
 	public class ExampleHealingPotion : ModItem
 	{
+		public override void SetStaticDefaults() {
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 30;
+		}
+
 		public override void SetDefaults() {
 			item.width = 20;
 			item.height = 26;
@@ -41,10 +46,10 @@ namespace ExampleMod.Content.Items.Consumables
 			healValue = player.statLifeMax2 / (quickHeal ? 4 : 2);
 		}
 
-		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<ExampleItem>(10)
+				.AddIngredient<ExampleItem>()
 				.AddTile(TileID.Bottles) //Making this recipe be crafted at bottles will automatically make Alchemy Table's effect apply to its ingredients.
 				.Register();
 		}

@@ -289,6 +289,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to set an item's sorting group in Journey Mode's duplication menu. This is useful for setting custom item types that group well together, or whenever the default vanilla sorting doesn't sort the way you want it.
+		/// </summary>
+		/// <param name="itemGroup">The item group this item is being assigned to</param>
+		public virtual void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
+		}
+
+		/// <summary>
 		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
 		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
 		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
@@ -977,7 +984,7 @@ namespace Terraria.ModLoader
 		/// Receives the custom data sent in the NetSend hook.
 		/// </summary>
 		/// <param name="reader">The reader.</param>
-		public virtual void NetRecieve(BinaryReader reader) {
+		public virtual void NetReceive(BinaryReader reader) {
 		}
 
 		/// <summary>

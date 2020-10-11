@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -206,6 +207,14 @@ namespace Terraria.ModLoader
 		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
 		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
 		public virtual void ModifyWeaponDamage(Item item, Player player, ref DamageModifier damage, ref float flat) {
+		}
+
+		/// <summary>
+		/// Allows you to set an item's sorting group in Journey Mode's duplication menu. This is useful for setting custom item types that group well together, or whenever the default vanilla sorting doesn't sort the way you want it.
+		/// </summary>
+		/// <param name="item">The item being used</param>
+		/// <param name="itemGroup">The item group this item is being assigned to</param>
+		public virtual void ModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
 		}
 
 		/// <summary>

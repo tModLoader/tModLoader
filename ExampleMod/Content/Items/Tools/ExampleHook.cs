@@ -1,11 +1,10 @@
-﻿using ExampleMod.Content.Tiles.Furniture;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Tools
 {
@@ -13,19 +12,21 @@ namespace ExampleMod.Content.Items.Tools
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Hook"); // The item's name in-game.
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1; // Amount of this item needed to research and become available in Journey mode's duplication menu. Amount based on vanilla hooks' amount needed
 		}
 
 		public override void SetDefaults() {
 			// Copy values from the Amethyst Hook
 			item.CloneDefaults(ItemID.AmethystHook);
 			item.shootSpeed = 18f; // This defines how quickly the hook is shot.
-			item.shoot = ProjectileType<ExampleHookProjectile>(); // Makes the item shoot the hook's projectile when used.
+			item.shoot = ModContent.ProjectileType<ExampleHookProjectile>(); // Makes the item shoot the hook's projectile when used.
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<ExampleItem>(100)
-				.AddTile<ExampleWorkbench>()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}
@@ -36,7 +37,7 @@ namespace ExampleMod.Content.Items.Tools
 
 		public override void Load() { //This is called once on mod (re)load when this piece of content is being loaded.
 			// This is the path to the texture that we'll use for the hook's chain. Make sure to update it.
-			chainTexture = GetTexture("ExampleMod/Content/Items/Tools/ExampleHookChain");
+			chainTexture = ModContent.GetTexture("ExampleMod/Content/Items/Tools/ExampleHookChain");
 		}
 
 		public override void Unload() { //This is called once on mod reload when this piece of content is being unloaded.

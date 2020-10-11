@@ -1,8 +1,8 @@
 ﻿using ExampleMod.Content.Items.Placeable.Furniture;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Placeable
 {
@@ -10,6 +10,7 @@ namespace ExampleMod.Content.Items.Placeable
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded tile.");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
 			ItemID.Sets.ExtractinatorMode[item.type] = item.type;
 
 			// Some please convert this to lang files, I'm too lazy to do it
@@ -43,9 +44,10 @@ namespace ExampleMod.Content.Items.Placeable
 			item.useTime = 10;
 			item.useStyle = ItemUseStyleID.Swing;
 			item.consumable = true;
-			item.createTile = TileType<Tiles.ExampleBlock>();
+			item.createTile = ModContent.TileType<Tiles.ExampleBlock>();
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe(10)
 				.AddIngredient<ExampleItem>()
@@ -65,7 +67,7 @@ namespace ExampleMod.Content.Items.Placeable
 
 		public override void ExtractinatorUse(ref int resultType, ref int resultStack) { // Calls upon use of an extractinator. Below is the chance you will get ExampleOre from the extractinator.
 			if (Main.rand.NextBool(3)) {
-				resultType = ItemType<ExampleOre>();  // Get this from the extractinator with a 1 in 3 chance.
+				resultType = ModContent.ItemType<ExampleOre>();  // Get this from the extractinator with a 1 in 3 chance.
 				if (Main.rand.NextBool(5)) {
 					resultStack += Main.rand.Next(2); // Add a chance to get more than one of ExampleOre from the extractinator.
 				}

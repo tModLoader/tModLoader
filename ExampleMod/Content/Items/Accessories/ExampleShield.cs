@@ -2,8 +2,8 @@ using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Accessories
 {
@@ -12,6 +12,7 @@ namespace ExampleMod.Content.Items.Accessories
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded shield.");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
@@ -81,10 +82,10 @@ namespace ExampleMod.Content.Items.Accessories
 			}
 		}
 
-		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		//Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<ExampleItem>(60)
+				.AddIngredient<ExampleItem>()
 				.AddTile<ExampleWorkbench>()
 				.Register();
 		}
@@ -130,7 +131,7 @@ namespace ExampleMod.Content.Items.Accessories
 
 				//Set the flag for the ExampleDashAccessory being equipped if we have it equipped OR immediately return if any of the accessories are
 				// one of the higher-priority ones
-				if (item.type == ItemType<ExampleShield>()) {
+				if (item.type == ModContent.ItemType<ExampleShield>()) {
 					dashAccessoryEquipped = true;
 				}
 				else if (item.type == ItemID.EoCShield || item.type == ItemID.MasterNinjaGear || item.type == ItemID.Tabi) {

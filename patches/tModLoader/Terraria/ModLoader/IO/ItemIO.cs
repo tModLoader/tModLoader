@@ -129,25 +129,37 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		public static void Send(Item item, BinaryWriter writer, bool writeStack = false, bool writeFavourite = false) {
-			writer.Write((short)item.netID);
-			writer.Write(item.prefix);
-			if (writeStack) writer.Write((short)item.stack);
-			if (writeFavourite) writer.Write(item.favorited);
+		public static void Send(Item item, BinaryWriter writer, bool writeStack = false, bool writeFavorite = false) {
+			writer.WriteVarInt(item.netID);
+			writer.Write(item.prefix); //TODO: Turn prefix into Int32.
+
+			if (writeStack)
+				writer.WriteVarInt(item.stack);
+
+			if (writeFavorite)
+				writer.Write(item.favorited);
+
 			SendModData(item, writer);
 		}
 
 		public static void Receive(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false) {
-			item.netDefaults(reader.ReadInt16());
+			item.netDefaults(reader.ReadVarInt());
 			item.Prefix(reader.ReadByte());
-			if (readStack) item.stack = reader.ReadInt16();
-			if (readFavorite) item.favorited = reader.ReadBoolean();
+
+			if (readStack)
+				item.stack = reader.ReadVarInt();
+
+			if (readFavorite)
+				item.favorited = reader.ReadBoolean();
+
 			ReceiveModData(item, reader);
 		}
 
 		public static Item Receive(BinaryReader reader, bool readStack = false, bool readFavorite = false) {
 			var item = new Item();
+
 			Receive(item, reader, readStack, readFavorite);
+
 			return item;
 		}
 
@@ -161,7 +173,7 @@ namespace Terraria.ModLoader.IO
 		public static void ReceiveModData(Item item, BinaryReader reader) {
 			if (item.IsAir) return;
 			try {
-				reader.SafeRead(r => item.modItem?.NetRecieve(r));
+				reader.SafeRead(r => item.modItem?.NetReceive(r));
 			}
 			catch (IOException) {
 				Logging.tML.Error($"Above IOException error caused by {item.modItem.Name} from the {item.modItem.Mod.Name} mod.");

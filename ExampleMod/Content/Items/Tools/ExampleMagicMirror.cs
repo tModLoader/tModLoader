@@ -1,8 +1,8 @@
-﻿using ExampleMod.Content.Tiles.Furniture;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Tools
@@ -12,6 +12,10 @@ namespace ExampleMod.Content.Items.Tools
 	internal class ExampleMagicMirror : ExampleItem
 	{
 		public override string Texture => $"Terraria/Item_{ItemID.IceMirror}"; // Copies the texture for the Ice Mirror, make your own texture if need be.
+
+		public override void SetStaticDefaults() {
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1; // Amount of this item needed to research and become available in Journey mode's duplication menu. Amount used based upon vanilla Magic Mirror's amount needed.
+		}
 
 		public override void SetDefaults() {
 			item.CloneDefaults(ItemID.IceMirror); // Copies the defaults from the Ice Mirror.
@@ -68,11 +72,11 @@ namespace ExampleMod.Content.Items.Tools
 			}
 		}
 
-		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<ExampleItem>(100)
-				.AddTile<ExampleWorkbench>()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

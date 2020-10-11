@@ -1,5 +1,5 @@
-using ExampleMod.Content.Tiles.Furniture;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
@@ -8,6 +8,7 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is an example magic weapon");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
@@ -30,11 +31,11 @@ namespace ExampleMod.Content.Items.Weapons
 			item.mana = 11; // This is how much mana the item uses.
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ItemID.FallenStar, 5)
 				.AddIngredient<ExampleItem>()
-				.AddTile<ExampleWorkbench>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

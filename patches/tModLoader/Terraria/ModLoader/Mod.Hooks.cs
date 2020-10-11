@@ -5,7 +5,6 @@ using ReLogic.Content.Sources;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Terraria.GameInput;
 using Terraria.Graphics;
 using Terraria.Localization;
 using Terraria.UI;
@@ -18,29 +17,25 @@ namespace Terraria.ModLoader
 		/// <param name="sources">The list with content sources. By default, this list has 1 entry with the default content source that loads assets from the mod's .tmod file.</param>
 		/// <param name="assetReaderCollection">The AssetReaderCollection that will be used for this mod's Assets repository. Use its .RegisterReader() method to register new 'IAssetReader's.</param>
 		/// <param name="delayedLoadTypes">This list contains types that the asynchronous asset loader should delay loading of. Types like that are usually graphics related.</param>
-		public virtual void SetupAssetRepository(IList<IContentSource> sources, AssetReaderCollection assetReaderCollection, IList<Type> delayedLoadTypes)
-		{
+		public virtual void SetupAssetRepository(IList<IContentSource> sources, AssetReaderCollection assetReaderCollection, IList<Type> delayedLoadTypes) {
 		}
 
 		/// <summary>
 		/// Override this method to add most of your content to your mod. Here you will call other methods such as AddItem. This is guaranteed to be called after all content has been autoloaded.
 		/// </summary>
-		public virtual void Load()
-		{
+		public virtual void Load() {
 		}
 
 		/// <summary>
 		/// Allows you to load things in your mod after its content has been setup (arrays have been resized to fit the content, etc).
 		/// </summary>
-		public virtual void PostSetupContent()
-		{
+		public virtual void PostSetupContent() {
 		}
 
 		/// <summary>
 		/// This is called whenever this mod is unloaded from the game. Use it to undo changes that you've made in Load that aren't automatically handled (for example, modifying the texture of a vanilla item). Mods are guaranteed to be unloaded in the reverse order they were loaded in.
 		/// </summary>
-		public virtual void Unload()
-		{
+		public virtual void Unload() {
 		}
 
 		/// <summary>
@@ -51,22 +46,19 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Override this method to add recipe groups to this mod. You must add recipe groups by calling the RecipeGroup.RegisterGroup method here. A recipe group is a set of items that can be used interchangeably in the same recipe.
 		/// </summary>
-		public virtual void AddRecipeGroups()
-		{
+		public virtual void AddRecipeGroups() {
 		}
 
 		/// <summary>
 		/// Override this method to add recipes to the game. It is recommended that you do so through instances of Recipe, since it provides methods that simplify recipe creation.
 		/// </summary>
-		public virtual void AddRecipes()
-		{
+		public virtual void AddRecipes() {
 		}
 
 		/// <summary>
 		/// This provides a hook into the mod-loading process immediately after recipes have been added. You can use this to edit recipes added by other mods.
 		/// </summary>
-		public virtual void PostAddRecipes()
-		{
+		public virtual void PostAddRecipes() {
 		}
 
 		/// <summary>
@@ -75,10 +67,10 @@ namespace Terraria.ModLoader
 		/// Make sure to call `base.Close()` at the end
 		/// May be called multiple times before Unload
 		/// </summary>
-		public virtual void Close()
-		{
+		public virtual void Close() {
 			fileHandle?.Dispose();
-			if(File != null && File.IsOpen)
+
+			if (File != null && File.IsOpen)
 				throw new IOException($"TModFile has open handles: {File.path}");
 		}
 
@@ -274,161 +266,6 @@ namespace Terraria.ModLoader
 		/// Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player.  
 		/// </summary>
 		public virtual void PreSaveAndQuit() {
-		}
-	}
-
-	internal static class ModHooks
-	{
-		//in Terraria.Main.UpdateMusic before updating music boxes call ModHooks.UpdateMusic(ref this.newMusic);
-		internal static void UpdateMusic(ref int music, ref MusicPriority priority) {
-			foreach (Mod mod in ModLoader.Mods) {
-				int modMusic = -1;
-				MusicPriority modPriority = MusicPriority.BiomeLow;
-				mod.UpdateMusic(ref modMusic, ref modPriority);
-				if (modMusic >= 0 && modPriority >= priority) {
-					music = modMusic;
-					priority = modPriority;
-				}
-			}
-		}
-
-		// Pretty much deprecated. 
-		internal static void HotKeyPressed() {
-			foreach (var modHotkey in HotKeyLoader.HotKeys) {
-				if (PlayerInput.Triggers.Current.KeyStatus[modHotkey.uniqueName]) {
-					modHotkey.mod.HotKeyPressed(modHotkey.name);
-				}
-			}
-		}
-
-		internal static void ModifyTransformMatrix(ref SpriteViewMatrix Transform) {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.ModifyTransformMatrix(ref Transform);
-			}
-		}
-
-		internal static void ModifySunLight(ref Color tileColor, ref Color backgroundColor) {
-			if (Main.gameMenu) return;
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.ModifySunLightColor(ref tileColor, ref backgroundColor);
-			}
-		}
-
-		internal static void ModifyLightingBrightness(ref float negLight, ref float negLight2) {
-			float scale = 1f;
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.ModifyLightingBrightness(ref scale);
-			}
-			if (Lighting.NotRetro) {
-				negLight *= scale;
-				negLight2 *= scale;
-			}
-			else {
-				negLight -= (scale - 1f) / 2.307692307692308f;
-				negLight2 -= (scale - 1f) / 0.75f;
-			}
-			negLight = Math.Max(negLight, 0.001f);
-			negLight2 = Math.Max(negLight2, 0.001f);
-		}
-
-		internal static void PostDrawFullscreenMap(ref string mouseText) {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.PostDrawFullscreenMap(ref mouseText);
-			}
-		}
-
-		internal static void UpdateUI(GameTime gameTime) {
-			if (Main.gameMenu) return;
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.UpdateUI(gameTime);
-			}
-		}
-
-		public static void PreUpdateEntities() {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.PreUpdateEntities();
-			}
-		}
-
-		public static void MidUpdatePlayerNPC() {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.MidUpdatePlayerNPC();
-			}
-		}
-
-		public static void MidUpdateNPCGore() {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.MidUpdateNPCGore();
-			}
-		}
-
-		public static void MidUpdateGoreProjectile() {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.MidUpdateGoreProjectile();
-			}
-		}
-
-		public static void MidUpdateProjectileItem() {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.MidUpdateProjectileItem();
-			}
-		}
-
-		public static void MidUpdateItemDust() {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.MidUpdateItemDust();
-			}
-		}
-
-		public static void MidUpdateDustTime() {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.MidUpdateDustTime();
-			}
-		}
-
-		public static void MidUpdateTimeWorld() {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.MidUpdateTimeWorld();
-			}
-		}
-
-		public static void MidUpdateInvasionNet() {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.MidUpdateInvasionNet();
-			}
-		}
-
-		public static void PostUpdateEverything() {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.PostUpdateEverything();
-			}
-		}
-
-		internal static void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
-			foreach (GameInterfaceLayer layer in layers) {
-				layer.Active = true;
-			}
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.ModifyInterfaceLayers(layers);
-			}
-		}
-
-		internal static void PostDrawInterface(SpriteBatch spriteBatch) {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.PostDrawInterface(spriteBatch);
-			}
-		}
-
-		internal static void PostUpdateInput() {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.PostUpdateInput();
-			}
-		}
-
-		internal static void PreSaveAndQuit() {
-			foreach (Mod mod in ModLoader.Mods) {
-				mod.PreSaveAndQuit();
-			}
 		}
 	}
 }

@@ -2,8 +2,9 @@
 using System;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Mono.Cecil.Cil.OpCodes;
+using Mono.Cecil.Cil;
 
 namespace ExampleMod.Content.Items.Accessories
 {
@@ -27,7 +28,7 @@ namespace ExampleMod.Content.Items.Accessories
 			// Move the cursor after 566 and onto the ret op.
 			c.Index++;
 			// Push the Player instance onto the stack
-			c.Emit(Ldarg_0);
+			c.Emit(OpCodes.Ldarg_0);
 			// Call a delegate using the int and Player from the stack.
 			c.EmitDelegate<Func<int, Player, int>>((returnValue, player) => {
 				// Regular c# code
@@ -42,6 +43,7 @@ namespace ExampleMod.Content.Items.Accessories
 		public override void SetStaticDefaults() {
 			// We can use vanilla language keys to copy the tooltip from HiveBackpack
 			Tooltip.SetDefault("{$ItemTooltip.HiveBackpack}");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {

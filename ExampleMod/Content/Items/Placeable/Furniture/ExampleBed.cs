@@ -1,6 +1,6 @@
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
+using Terraria.GameContent.Creative;
 
 namespace ExampleMod.Content.Items.Placeable.Furniture
 {
@@ -8,6 +8,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded bed.");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
@@ -21,13 +22,13 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			item.useStyle = ItemUseStyleID.Swing;
 			item.consumable = true;
 			item.value = 2000;
-			item.createTile = TileType<Tiles.Furniture.ExampleBed>();
+			item.createTile = ModContent.TileType<Tiles.Furniture.ExampleBed>();
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ItemID.Bed)
-				.AddIngredient<ExampleBlock>(10)
+				.AddIngredient<ExampleItem>()
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}

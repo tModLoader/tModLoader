@@ -103,16 +103,15 @@
  							}
  
  							if (Main.netMode == 2 && num239 == whoAmI && num240 <= 58 + player13.armor.Length + player13.dye.Length + player13.miscEquips.Length + player13.miscDyes.Length)
-@@ -559,6 +_,9 @@
- 							Main.StopSlimeRain();
- 
+@@ -561,6 +_,8 @@
  						Main.invasionType = reader.ReadSByte();
-+						if (!ModNet.AllowVanillaClients)
-+							WorldIO.ReceiveModData(reader);
-+
  						Main.LobbyId = reader.ReadUInt64();
  						Sandstorm.IntendedSeverity = reader.ReadSingle();
++						if (!ModNet.AllowVanillaClients && Netplay.Connection.State > 4)
++							WorldIO.ReceiveModData(reader);
  						if (Netplay.Connection.State == 3) {
+ 							Main.windSpeedCurrent = Main.windSpeedTarget;
+ 							Netplay.Connection.State = 4;
 @@ -692,6 +_,9 @@
  							NetMessage.TrySendData(83, whoAmI, -1, null, num168);
  						}
@@ -269,7 +268,7 @@
  									}
  								case 3:
 -									if (Main.tile[num15, num16].type == 88) {
-+									if (Main.tile[num15, num16].type == 88 || b3 == 103 && TileLoader.IsDresser(Main.tile[num15, num16].type)) {
++									if (Main.tile[num15, num16].type == 88 || b3 == 103 && TileID.Sets.BasicDresser[Main.tile[num15, num16].type]) {
  										Tile tile2 = Main.tile[num15, num16];
  										num15 -= tile2.frameX % 54 / 18;
  										if (tile2.frameY % 36 != 0)
