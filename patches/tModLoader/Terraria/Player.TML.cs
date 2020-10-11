@@ -82,7 +82,7 @@ namespace Terraria
 		/// <summary>
 		/// Gets the damage stat for this damage type on this player.
 		/// </summary>
-		public Modifier GetDamage<T>() where T : DamageClass => GetDamage(ModContent.GetInstance<T>());
+		public ref Modifier GetDamage<T>() where T : DamageClass => ref GetDamage(ModContent.GetInstance<T>());
 
 		/// <summary>
 		/// Gets the crit stat for this damage type on this player.
