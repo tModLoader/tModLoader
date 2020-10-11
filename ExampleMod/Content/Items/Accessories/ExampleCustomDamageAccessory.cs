@@ -6,8 +6,6 @@ namespace ExampleMod.Content.Items.Accessories
 {
 	public class ExampleCustomDamageAccessory : ModItem
 	{
-		public override string Texture => "ExampleMod/Content/Items/Accessories/ExampleShield"; // TODO: remove when sprite is made for this
-
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("25% increased example damage");
 		}
