@@ -11,9 +11,11 @@ namespace Terraria.ModLoader.IO
 	{
 		//replace netID writes in Terraria.Player.SavePlayer
 		//in Terraria.IO.WorldFile.SaveChests include IsModItem for no-item check
-		internal static void WriteVanillaID(Item item, BinaryWriter writer) {
-			writer.Write(item.modItem != null ? 0 : item.netID);
-		}
+		internal static void WriteVanillaID(Item item, BinaryWriter writer) => writer.Write(item.modItem != null ? 0 : item.netID);
+
+		internal static void WriteShortVanillaID(Item item, BinaryWriter writer) => writer.Write((short)(item.modItem != null ? 0 : item.netID));
+
+		internal static void WriteByteVanillaPrefix(Item item, BinaryWriter writer) => writer.Write((byte)(item.prefix >= PrefixID.Count ? 0 : item.prefix));
 
 		public static TagCompound Save(Item item) {
 			var tag = new TagCompound();
