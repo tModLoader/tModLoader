@@ -48,9 +48,9 @@ namespace Terraria
 
 		// Damage Classes
 
-		private DamageClassData[] damageData = new DamageClassData[0];
+		private DamageClassData[] damageData;
 
-		internal void ResetDamageClassDictionaries() {
+		internal void ResetDamageClassData() {
 			damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
 
 			for (int i = 0; i < damageData.Length; i++) {

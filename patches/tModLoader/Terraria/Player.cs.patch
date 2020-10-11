@@ -1513,7 +1513,7 @@
  				}
  			}
  
-+			ResetDamageClassDictionaries();
++			ResetDamageClassData();
  			mount.CheckMountBuff(this);
 +			PlayerHooks.ResetEffects(this);
  		}
@@ -3662,12 +3662,13 @@
  				}
  
  				return playerFileData;
-@@ -37381,7 +_,14 @@
+@@ -37381,7 +_,15 @@
  			return -1;
  		}
  
 -		public Player() {
 +		public Player(bool startupInventory = true) {
++			ResetDamageClassData();
 +			buffType = new int[MaxBuffs];
 +			buffTime = new int[MaxBuffs];
 +			buffImmune = new bool[BuffLoader.BuffCount]; // TODO: Move all these patches to field initializers.
