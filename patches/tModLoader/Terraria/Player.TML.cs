@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader;
 
 namespace Terraria
@@ -61,29 +58,11 @@ namespace Terraria
 			}
 		}
 
-		public void AddDamageModifier<T>(Modifier changeAmount) where T : DamageClass => AddDamageModifier(ModContent.GetInstance<T>(), changeAmount);
-
-		public void AddDamageModifier(DamageClass damageClass, Modifier changeAmount) {
-			damageData[damageClass.index].damage &= changeAmount;
-		}
-
 		/// <summary>
 		/// Edits the crit for the given damage type on this player.
 		/// </summary>
 		/// <param name="changeAmount">The amount that should be added to the crit. Can be negative too.</param>
 		public void AddCrit<T>(int changeAmount) where T : DamageClass => AddCrit(ModContent.GetInstance<T>(), changeAmount);
-
-		/// <summary>
-		/// Edits the damage value for the given damage type on this player.
-		/// </summary>
-		/// <param name="changeAmount">The amount that should be added to the damage, as a damage modifier.</param>
-		public void AddDamage<T>(float changeAmount) where T : DamageClass => AddDamage(ModContent.GetInstance<T>(), changeAmount);
-
-		/// <summary>
-		/// Edits the damage value for the given damage type on this player.
-		/// </summary>
-		/// <param name="changeAmount">The amount that should be added to the damage, as a damage modifier.</param>
-		public void AddDamageMult<T>(float changeAmount) where T : DamageClass => AddDamageMult(ModContent.GetInstance<T>(), changeAmount);
 
 		/// <summary>
 		/// Edits the crit for the given damage type on this player.
@@ -93,22 +72,6 @@ namespace Terraria
 			if (!(damageClass is Summon)) {
 				damageData[damageClass.index].crit += changeAmount;
 			}
-		}
-
-		/// <summary>
-		/// Edits the damage value for the given damage type on this player.
-		/// </summary>
-		/// <param name="changeAmount">The amount that should be added to the damage for this class.</param>
-		public void AddDamage(DamageClass damageClass, float changeAmount) {
-			damageData[damageClass.index].damage += changeAmount;
-		}
-
-		/// <summary>
-		/// Edits the damage value for the given damage type on this player.
-		/// </summary>
-		/// <param name="changeAmount">The amount that should be added to the damage multiplier for this class.</param>
-		public void AddDamageMult(DamageClass damageClass, float changeAmount) {
-			damageData[damageClass.index].damage *= changeAmount;
 		}
 
 		/// <summary>
@@ -127,8 +90,8 @@ namespace Terraria
 		public int GetCrit(DamageClass damageClass) => damageClass is Summon ? 0 : damageData[damageClass.index].crit; // Special case, summoner class cannot have crits.
 
 		/// <summary>
-		/// Gets the damage stat for this damage type on this player.
+		/// Gets the reference to the damage stat for this damage type on this player. Since this returns a reference, you can freely modify this method's return value with operators.
 		/// </summary>
-		public Modifier GetDamage(DamageClass damageClass) => damageData[damageClass.index].damage;
+		public ref Modifier GetDamage(DamageClass damageClass) => ref damageData[damageClass.index].damage;
 	}
 }
