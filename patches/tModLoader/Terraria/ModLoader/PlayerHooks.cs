@@ -543,12 +543,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyWeaponDamage(Item item, ref DamageModifier damage, ref float flat);
+		private delegate void DelegateModifyWeaponDamage(Item item, ref Modifier damage, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(p => p.ModifyWeaponDamage);
 		/// <summary>
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
 		/// </summary>
-		public static void ModifyWeaponDamage(Player player, Item item, ref DamageModifier damage, ref float flat) {
+		public static void ModifyWeaponDamage(Player player, Item item, ref Modifier damage, ref float flat) {
 			if (item.IsAir)
 				return;
 

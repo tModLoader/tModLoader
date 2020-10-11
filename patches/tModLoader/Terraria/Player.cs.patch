@@ -83,23 +83,23 @@
 +			get => GetCrit(DamageClass.Ranged);
 +			set => AddCrit(DamageClass.Ranged, value);
 +		}
-+		public DamageModifier allDamage = DamageModifier.One;
-+		internal DamageModifier meleeDamage {
++		public Modifier allDamage = Modifier.One;
++		internal Modifier meleeDamage {
 +			get => GetDamage(DamageClass.Melee);
 +			set => AddDamageModifier(DamageClass.Melee, value);
 +		}
-+		internal DamageModifier magicDamage {
++		internal Modifier magicDamage {
 +			get => GetDamage(DamageClass.Magic);
 +			set => AddDamageModifier(DamageClass.Magic, value);
 +		}
-+		internal DamageModifier rangedDamage {
++		internal Modifier rangedDamage {
 +			get => GetDamage(DamageClass.Ranged);
 +			set => AddDamageModifier(DamageClass.Ranged, value);
 +		}
-+		public DamageModifier bulletDamage = DamageModifier.One;
-+		public DamageModifier arrowDamage = DamageModifier.One;
-+		public DamageModifier rocketDamage = DamageModifier.One;
-+		internal DamageModifier minionDamage {
++		public Modifier bulletDamage = Modifier.One;
++		public Modifier arrowDamage = Modifier.One;
++		public Modifier rocketDamage = Modifier.One;
++		internal Modifier minionDamage {
 +			get => GetDamage(DamageClass.Summon);
 +			set => AddDamageModifier(DamageClass.Summon, value);
 +		}
@@ -1500,11 +1500,11 @@
 -			rangedDamage = 1f;
 -			magicDamage = 1f;
 -			minionDamage = 1f;
-+			allDamage = DamageModifier.One;
-+			meleeDamage = DamageModifier.One;
-+			rangedDamage = DamageModifier.One;
-+			magicDamage = DamageModifier.One;
-+			minionDamage = DamageModifier.One;
++			allDamage = Modifier.One;
++			meleeDamage = Modifier.One;
++			rangedDamage = Modifier.One;
++			magicDamage = Modifier.One;
++			minionDamage = Modifier.One;
  			meleeCrit = 4;
  			rangedCrit = 4;
  			magicCrit = 4;
@@ -1515,9 +1515,9 @@
 -			arrowDamage = 1f;
 -			bulletDamage = 1f;
 -			rocketDamage = 1f;
-+			arrowDamage = DamageModifier.One;
-+			bulletDamage = DamageModifier.One;
-+			rocketDamage = DamageModifier.One;
++			arrowDamage = Modifier.One;
++			bulletDamage = Modifier.One;
++			rocketDamage = Modifier.One;
  			coolWhipBuff = false;
  			yoraiz0rEye = 0;
  			yoraiz0rDarkness = false;
@@ -3164,7 +3164,7 @@
 +				return (int)(sItem.damage * (float)allDamage);
 +			}
 +			
-+			DamageModifier damage = allDamage & GetDamage(sItem.DamageType);
++			Modifier damage = allDamage & GetDamage(sItem.DamageType);
 +
 +			if (sItem.melee) {
 +				damage &= meleeDamage;
@@ -3683,7 +3683,7 @@
 +			buffType = new int[MaxBuffs];
 +			buffTime = new int[MaxBuffs];
 +			buffImmune = new bool[BuffLoader.BuffCount]; // TODO: Move all these patches to field initializers.
-+			allDamage = DamageModifier.One;
++			allDamage = Modifier.One;
 +			ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount];
 +			npcTypeNoAggro = new bool[NPCLoader.NPCCount];
 +			PlayerHooks.SetupPlayer(this);

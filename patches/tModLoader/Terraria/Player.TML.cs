@@ -57,13 +57,13 @@ namespace Terraria
 			damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
 
 			for (int i = 0; i < damageData.Length; i++) {
-				damageData[i] = new DamageClassData(4, DamageModifier.One); // Default values from vanilla - 4 crit, 0 add, 1x mult.
+				damageData[i] = new DamageClassData(4, Modifier.One); // Default values from vanilla - 4 crit, 0 add, 1x mult.
 			}
 		}
 
-		public void AddDamageModifier<T>(DamageModifier changeAmount) where T : DamageClass => AddDamageModifier(ModContent.GetInstance<T>(), changeAmount);
+		public void AddDamageModifier<T>(Modifier changeAmount) where T : DamageClass => AddDamageModifier(ModContent.GetInstance<T>(), changeAmount);
 
-		public void AddDamageModifier(DamageClass damageClass, DamageModifier changeAmount) {
+		public void AddDamageModifier(DamageClass damageClass, Modifier changeAmount) {
 			damageData[damageClass.index].damage &= changeAmount;
 		}
 
@@ -119,7 +119,7 @@ namespace Terraria
 		/// <summary>
 		/// Gets the damage stat for this damage type on this player.
 		/// </summary>
-		public DamageModifier GetDamage<T>() where T : DamageClass => GetDamage(ModContent.GetInstance<T>());
+		public Modifier GetDamage<T>() where T : DamageClass => GetDamage(ModContent.GetInstance<T>());
 
 		/// <summary>
 		/// Gets the crit stat for this damage type on this player.
@@ -129,6 +129,6 @@ namespace Terraria
 		/// <summary>
 		/// Gets the damage stat for this damage type on this player.
 		/// </summary>
-		public DamageModifier GetDamage(DamageClass damageClass) => damageData[damageClass.index].damage;
+		public Modifier GetDamage(DamageClass damageClass) => damageData[damageClass.index].damage;
 	}
 }

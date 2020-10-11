@@ -22,7 +22,7 @@
  			Player player = Main.player[Main.myPlayer];
  			_layerList.Clear();
 -			List<float> list = new List<float> {
-+			List<DamageModifier> list = new List<DamageModifier> {
++			List<Modifier> list = new List<Modifier> {
  				player.meleeDamage,
  				player.rangedDamage,
  				player.magicDamage,

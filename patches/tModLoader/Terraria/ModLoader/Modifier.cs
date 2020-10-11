@@ -1,49 +1,49 @@
 ﻿namespace Terraria.ModLoader
 {
-	public struct DamageModifier
+	public struct Modifier
 	{
-		public static readonly DamageModifier One = new DamageModifier(1f, 1f);
+		public static readonly Modifier One = new Modifier(1f, 1f);
 
 		public float additive;
 		public float multiplicative;
 
-		public DamageModifier(float additive, float multiplicative = 1) {
+		public Modifier(float additive, float multiplicative = 1) {
 			this.additive = additive;
 			this.multiplicative = multiplicative;
 		}
 
-		public static DamageModifier operator +(DamageModifier m, float add) =>
-			new DamageModifier(m.additive + add, m.multiplicative);
+		public static Modifier operator +(Modifier m, float add) =>
+			new Modifier(m.additive + add, m.multiplicative);
 
-		public static DamageModifier operator -(DamageModifier m, float sub) =>
-			new DamageModifier(m.additive - sub, m.multiplicative);
+		public static Modifier operator -(Modifier m, float sub) =>
+			new Modifier(m.additive - sub, m.multiplicative);
 
-		public static DamageModifier operator *(DamageModifier m, float mul) =>
-			new DamageModifier(m.additive, m.multiplicative * mul);
+		public static Modifier operator *(Modifier m, float mul) =>
+			new Modifier(m.additive, m.multiplicative * mul);
 
-		public static DamageModifier operator /(DamageModifier m, float div) =>
-			new DamageModifier(m.additive, m.multiplicative / div);
+		public static Modifier operator /(Modifier m, float div) =>
+			new Modifier(m.additive, m.multiplicative / div);
 
-		public static DamageModifier operator &(DamageModifier m1, DamageModifier m2) =>
-			new DamageModifier(m1.additive + m2.additive - 1, m1.multiplicative * m2.multiplicative);
+		public static Modifier operator &(Modifier m1, Modifier m2) =>
+			new Modifier(m1.additive + m2.additive - 1, m1.multiplicative * m2.multiplicative);
 
-		public static explicit operator float(DamageModifier m) =>
+		public static explicit operator float(Modifier m) =>
 			m.additive * m.multiplicative;
 
-		public static DamageModifier operator +(float add, DamageModifier m) => m + add;
-		public static DamageModifier operator *(float mul, DamageModifier m) => m * mul;
+		public static Modifier operator +(float add, Modifier m) => m + add;
+		public static Modifier operator *(float mul, Modifier m) => m * mul;
 
-		public static bool operator ==(DamageModifier m1, DamageModifier m2) =>
+		public static bool operator ==(Modifier m1, Modifier m2) =>
 			m1.additive == m2.additive && m1.multiplicative == m2.multiplicative;
 
-		public static bool operator !=(DamageModifier m1, DamageModifier m2) =>
+		public static bool operator !=(Modifier m1, Modifier m2) =>
 			m1.additive != m2.additive || m1.multiplicative != m2.multiplicative;
 
 		public override bool Equals(object obj) {
-			if (!(obj is DamageModifier))
+			if (!(obj is Modifier))
 				return false;
 
-			var m = (DamageModifier)obj;
+			var m = (Modifier)obj;
 			return additive == m.additive &&
 				   multiplicative == m.multiplicative;
 		}

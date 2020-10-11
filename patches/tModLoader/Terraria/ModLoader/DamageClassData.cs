@@ -3,9 +3,9 @@
 	internal struct DamageClassData
 	{
 		public int crit;
-		public DamageModifier damage;
+		public Modifier damage;
 
-		public DamageClassData(int crit, DamageModifier damage) {
+		public DamageClassData(int crit, Modifier damage) {
 			this.crit = crit;
 			this.damage = damage;
 		}
