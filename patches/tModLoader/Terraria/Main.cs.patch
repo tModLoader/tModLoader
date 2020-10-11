@@ -1445,7 +1445,7 @@
 +					if (item.DamageType != null) {
 +						bool classIsVanilla = item.DamageType.index < DamageClassLoader.DefaultDamageClassCount;
 +						//'damage' portion is still required on modded ClassNames for the sake of possibility of accurate translations, but the space isn't.
-+						tip = new LocalizedText("", $"{(classIsVanilla ? string.Empty : " ")}{item.DamageType.ClassName.GetTranslation(Language.ActiveCulture)}");
++						tip = new LocalizedText("", $"{(classIsVanilla ? string.Empty : " ")}{item.DamageType.DisplayName}");
 +					}
 +					else {
 +						tip = Lang.tip[55]; // No damage class
