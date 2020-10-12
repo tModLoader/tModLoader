@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Items.Ammo
 
 		public override void SetDefaults() {
 			item.damage = 12; // The damage for projectiles isn't actually 12, it actually is the damage combined with the projectile and the item together.
-			item.ranged = true;
+			item.DamageType = DamageClass.Ranged;
 			item.width = 8;
 			item.height = 8;
 			item.maxStack = 999;
