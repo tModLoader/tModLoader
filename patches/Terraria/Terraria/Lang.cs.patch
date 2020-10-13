@@ -10,7 +10,7 @@
  using Terraria.UI;
  
  namespace Terraria
-@@ -404,6 +_,7 @@
+@@ -410,6 +_,7 @@
  		}
  
  		public static void BuildMapAtlas() {
@@ -18,7 +18,7 @@
  			_mapLegendCache = new LocalizedText[MapHelper.LookupCount()];
  			for (int i = 0; i < _mapLegendCache.Length; i++) {
  				_mapLegendCache[i] = LocalizedText.Empty;
-@@ -804,6 +_,7 @@
+@@ -810,6 +_,7 @@
  			_mapLegendCache[MapHelper.TileToLookup(572, 4)] = _itemNameCache[4699];
  			_mapLegendCache[MapHelper.TileToLookup(572, 5)] = _itemNameCache[4700];
  			_mapLegendCache[MapHelper.TileToLookup(497, 0)] = Language.GetText("MapObject.Toilet");
