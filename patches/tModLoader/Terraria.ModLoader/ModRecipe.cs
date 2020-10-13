@@ -26,6 +26,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="mod">The mod the recipe originates from.</param>
 		public ModRecipe(Mod mod) {
+			if (!RecipeHooks.setupRecipes)
+				throw new RecipeException("A ModRecipe can only be created inside recipe related methods");
 			this.mod = mod;
 		}
 
