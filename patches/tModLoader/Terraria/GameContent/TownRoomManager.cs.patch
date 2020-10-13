@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameContent/TownRoomManager.cs
 +++ src/tModLoader/Terraria/GameContent/TownRoomManager.cs
-@@ -3,13 +_,14 @@
+@@ -3,14 +_,15 @@
  using System.Collections.Generic;
  using System.IO;
  using Terraria.ID;
@@ -10,17 +10,18 @@
  {
  	public class TownRoomManager
  	{
+ 		public static object EntityCreationLock = new object();
 -		private List<Tuple<int, Point>> _roomLocationPairs = new List<Tuple<int, Point>>();
 +		internal List<Tuple<int, Point>> _roomLocationPairs = new List<Tuple<int, Point>>();
--		private bool[] _hasRoom = new bool[663];
+-		private bool[] _hasRoom = new bool[665];
 +		internal bool[] _hasRoom = new bool[NPCLoader.NPCCount];
  
  		public void AddOccupantsToList(int x, int y, List<int> occupantsList) {
  			AddOccupantsToList(new Point(x, y), occupantsList);
-@@ -68,8 +_,16 @@
+@@ -73,8 +_,16 @@
  
  		public void Save(BinaryWriter writer) {
- 			lock (_roomLocationPairs) {
+ 			lock (EntityCreationLock) {
 -				writer.Write(_roomLocationPairs.Count);
 +				int count = 0;
 +				foreach (Tuple<int, Point> current in _roomLocationPairs) {
