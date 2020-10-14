@@ -75,7 +75,7 @@
  							NetMessage.TrySendData(5, -1, -1, null, num214, 220 + num223, (int)player14.bank4.item[num223].prefix);
  						}
  
-+						PlayerHooks.SyncPlayer(player11, -1, -1, true);
++						PlayerHooks.SyncPlayer(player14, -1, -1, true);
  						NetMessage.TrySendData(6);
  						if (Netplay.Connection.State == 2)
  							Netplay.Connection.State = 3;

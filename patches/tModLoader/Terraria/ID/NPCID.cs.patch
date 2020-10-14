@@ -1,7 +1,6 @@
 --- src/Terraria/Terraria/ID/NPCID.cs
 +++ src/tModLoader/Terraria/ID/NPCID.cs
-@@ -2,7 +_,8 @@
- using ReLogic.Reflection;
+@@ -3,6 +_,7 @@
  using System;
  using System.Collections.Generic;
  using Terraria.DataStructures;

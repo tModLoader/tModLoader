@@ -225,7 +225,7 @@
  						}
  
 -						if (TileID.Sets.BasicChest[Main.tile[num54, num55].type]) {
-+						if (TileID.Sets.BasicChest[Main.tile[num54, num55].type] && Main.tile[num52, num53].type < TileID.Count) {
++						if (TileID.Sets.BasicChest[Main.tile[num54, num55].type] && Main.tile[num54, num55].type < TileID.Count) {
  							int num83 = Main.tile[num54, num55].frameX / 18;
  							int num84 = 0;
  							ushort type = 21;
@@ -681,9 +681,9 @@
  			}
  
  			destroyObject = true;
--			Item.NewItem(i * 16, j * 16, 48, 48, 2699);
 +			
-+			if (TileLoader.Drop(i, j, TileID.WeaponsRack)
++			if (TileLoader.Drop(i, j, TileID.WeaponsRack))
+-			Item.NewItem(i * 16, j * 16, 48, 48, 2699);
 +				Item.NewItem(i * 16, j * 16, 48, 48, 2699);
 +			
  			TEWeaponsRack.Kill(num, num2);
@@ -693,9 +693,9 @@
  				return;
  
  			destroyObject = true;
--			Item.NewItem(i * 16, j * 16, 32, 32, 498);
 +			
 +			if (TileLoader.Drop(i, j, TileID.Mannequin))
+-			Item.NewItem(i * 16, j * 16, 32, 32, 498);
 +				Item.NewItem(i * 16, j * 16, 32, 32, 498);
 +			
  			for (int m = 0; m <= 1; m++) {
@@ -705,9 +705,9 @@
  				return;
  
  			destroyObject = true;
--			Item.NewItem(i * 16, j * 16, 32, 32, 1989);
 +			
 +			if (TileLoader.Drop(i, j, TileID.Womannequin))
+-			Item.NewItem(i * 16, j * 16, 32, 32, 1989);
 +				Item.NewItem(i * 16, j * 16, 32, 32, 1989);
 +
  			for (int m = 0; m <= 1; m++) {

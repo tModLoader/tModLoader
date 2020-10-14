@@ -9,7 +9,7 @@
  		"BULLDOZER_Name": "Bulldozer",
  		"ChallengerCategory": "Herausforderer",
  		"CHAMPION_OF_TERRARIA_Description": "Besiege den Mondherrn.",
-@@ -136,6 +_,6 @@
+@@ -136,7 +_,7 @@
  		"INTO_ORBIT_Description": "Von hier geht es nur noch runter!",
  		"INTO_ORBIT_Name": "In den Orbit",
  		"ITS_GETTING_HOT_IN_HERE_Description": "Geh tief genug auf Erkundungstour, um die geschmolzene Unterwelt zu erreichen.",
@@ -17,6 +17,7 @@
 +		"ITS_GETTING_HOT_IN_HERE_Name": "Es wird heiß hier",
  		"ITS_HARD_Description": "Entfessle die alten Geister von Licht und Dunkelheit in deiner Welt, so dass noch stärkere Gegner erscheinen und die Welt mit glitzernden Schätzen (und Regenbogen!) überziehen.",
  		"ITS_HARD_Name": "Das ist nicht leicht!",
+ 		"IT_CAN_TALK_Name": "Kann es sprechen?!",
 @@ -154,7 +_,7 @@
  		"LUCKY_BREAK_Name": "Glück gehabt",
  		"MARATHON_MEDALIST_Description": "Lege insgesamt 26.2 Meilen zu Fuß zurück.",

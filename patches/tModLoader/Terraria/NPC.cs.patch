@@ -208,26 +208,34 @@
  							if (Main.netMode != 1) {
  								if (WorldGen.OpenDoor(num18, num19 - 2, base.direction)) {
  									closeDoor = true;
-@@ -38294,6 +_,7 @@
+@@ -38294,13 +_,19 @@
  					num28 = 589;
  					num30 = 7f;
  					num29 = 22;
-+					//patch context: num28 - proj, num29 - damage, num30 - speed?
++					//Patch context: num28 - proj type, num29 - damage, num30 - speed multiplier, num31 - attack delay, num32 - attack cooldown.
  					num31 = 1;
  					num32 = 10;
  					maxValue = 1;
-@@ -38301,6 +_,11 @@
+ 					knockBack = 2f;
++					//Patch context: num33 - gravity correction.
  					num33 = 10f;
  				}
  
-+				//TODO: Verify variables num27, 30, 33 and 35. And add context patches for them, like the one above.
 +				NPCLoader.TownNPCAttackStrength(this, ref num29, ref knockBack);
 +				NPCLoader.TownNPCAttackCooldown(this, ref num32, ref maxValue);
-+				NPCLoader.TownNPCAttackProj(this, ref num28, ref num27);
++				NPCLoader.TownNPCAttackProj(this, ref num28, ref num31);
 +				NPCLoader.TownNPCAttackProjSpeed(this, ref num30, ref num33, ref num35);
  				if (Main.expertMode)
  					num29 = (int)((float)num29 * Main.GameModeInfo.TownNPCDamageMultiplier);
  
+@@ -38320,6 +_,7 @@
+ 						vec = new Vector2(spriteDirection, -1f);
+ 
+ 					vec *= num30;
++					// Context for the patch above: num35 - random speed offset.
+ 					vec += Utils.RandomVector2(Main.rand, 0f - num35, num35);
+ 					int num36 = 1000;
+ 					num36 = ((type == 124) ? Projectile.NewProjectile(base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec.X, vec.Y, num28, num29, knockBack, Main.myPlayer, 0f, whoAmI) : ((type != 142) ? Projectile.NewProjectile(base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec.X, vec.Y, num28, num29, knockBack, Main.myPlayer) : Projectile.NewProjectile(base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec.X, vec.Y, num28, num29, knockBack, Main.myPlayer, 0f, Main.rand.Next(5))));
 @@ -38345,7 +_,7 @@
  				int num41 = 0;
  				int maxValue2 = 0;
@@ -237,46 +245,91 @@
  				bool flag20 = false;
  				float num43 = 0f;
  				if ((float)NPCID.Sets.AttackTime[type] == ai[1]) {
-@@ -38552,6 +_,13 @@
+@@ -38510,6 +_,7 @@
+ 
+ 					if (localAI[3] > (float)num40) {
+ 						num40 = 48;
++						//Patch context: flag20 means 'in between shots'.
+ 						flag20 = true;
+ 					}
+ 
+@@ -38523,6 +_,7 @@
+ 				}
+ 				else if (type == 209) {
+ 					num37 = Utils.SelectRandom<int>(Main.rand, 134, 133, 135);
++					//Patch context: num37 - proj type, num38 - damage, num39 - speed multiplier, num40 - attack delay, num41 - attack cooldown.
+ 					num40 = 1;
+ 					switch (num37) {
+ 						case 135:
+@@ -38552,6 +_,12 @@
  					}
  				}
  
-+				//TODO: Verify variables, add VERBOSE context patches.
 +				NPCLoader.TownNPCAttackStrength(this, ref num38, ref knockBack2);
 +				NPCLoader.TownNPCAttackCooldown(this, ref num41, ref maxValue2);
 +				NPCLoader.TownNPCAttackProj(this, ref num37, ref num40);
 +				NPCLoader.TownNPCAttackProjSpeed(this, ref num39, ref num42, ref num43);
-+				NPCLoader.TownNPCAttackShoot(this, ref flag18);
++				NPCLoader.TownNPCAttackShoot(this, ref flag20);
 +
  				if (Main.expertMode)
  					num38 = (int)((float)num38 * Main.GameModeInfo.TownNPCDamageMultiplier);
  
+@@ -38672,6 +_,7 @@
+ 				else if (type == 663) {
+ 					num47 = 950;
+ 					num48 = 20;
++					//Patch context: num47 - proj type, num48 - damage, num50 - attack delay, num51 - attack cooldown.
+ 					num50 = 15;
+ 					num51 = 0;
+ 					maxValue3 = 0;
 @@ -38687,6 +_,11 @@
  					knockBack3 = 3f;
  				}
  
 +				NPCLoader.TownNPCAttackStrength(this, ref num48, ref knockBack3);
-+				NPCLoader.TownNPCAttackCooldown(this, ref num50, ref maxValue3);
-+				NPCLoader.TownNPCAttackProj(this, ref num47, ref n);
-+				NPCLoader.TownNPCAttackProjSpeed(this, ref num49, ref num51, ref num54);
-+				NPCLoader.TownNPCAttackMagic(this, ref num53);
++				NPCLoader.TownNPCAttackCooldown(this, ref num51, ref maxValue3);
++				NPCLoader.TownNPCAttackProj(this, ref num47, ref num50);
++				NPCLoader.TownNPCAttackProjSpeed(this, ref num49, ref num52, ref num55);
++				NPCLoader.TownNPCAttackMagic(this, ref num54);
  				if (Main.expertMode)
  					num48 = (int)((float)num48 * Main.GameModeInfo.TownNPCDamageMultiplier);
  
-@@ -38811,12 +_,16 @@
+@@ -38697,12 +_,14 @@
+ 				if (localAI[3] == (float)num50 && Main.netMode != 1) {
+ 					Vector2 vec4 = Vector2.Zero;
+ 					if (num56 != -1)
++						//Patch context: num52 is gravity correction.
+ 						vec4 = DirectionTo(Main.npc[num56].Center + new Vector2(0f, (0f - num52) * MathHelper.Clamp(Distance(Main.npc[num56].Center) / num53, 0f, 1f)));
+ 
+ 					if (vec4.HasNaNs() || Math.Sign(vec4.X) != spriteDirection)
+ 						vec4 = new Vector2(spriteDirection, 0f);
+ 
+ 					vec4 *= num49;
++					// Context for the patch above: num55 - random speed offset.
+ 					vec4 += Utils.RandomVector2(Main.rand, 0f - num55, num55);
+ 					if (type == 108) {
+ 						int num57 = Utils.SelectRandom<int>(Main.rand, 1, 1, 1, 1, 2, 2, 3);
+@@ -38753,6 +_,7 @@
+ 					}
  				}
+ 
++				//Patch context: num54 is aura light multiplier
+ 				if (num54 > 0f) {
+ 					Vector3 vector5 = NPCID.Sets.MagicAuraColor[type].ToVector3() * num54;
+ 					Lighting.AddLight(base.Center, vector5.X, vector5.Y, vector5.Z);
+@@ -38812,11 +_,15 @@
  				else if (type == 637 || type == 638 || type == 656) {
  					num67 = 10;
  					num69 = (num70 = 32);
++					//Patch context: num66 - attack cooldown,  num67 - damage, num68 - knockback, num69 & num70 - width and height, maxValue4 - random extra cooldown
  					num66 = 15;
  					maxValue4 = 8;
  					num68 = 3f;
  				}
  
-+				//TODO: Verify variables, add VERBOSE context patches.
 +				NPCLoader.TownNPCAttackStrength(this, ref num67, ref num68);
 +				NPCLoader.TownNPCAttackCooldown(this, ref num66, ref maxValue4);
-+				NPCLoader.TownNPCAttackSwing(this, ref num70, ref num62);
++				NPCLoader.TownNPCAttackSwing(this, ref num69, ref num70);
  				if (Main.expertMode)
  					num67 = (int)((float)num67 * Main.GameModeInfo.TownNPCDamageMultiplier);
  

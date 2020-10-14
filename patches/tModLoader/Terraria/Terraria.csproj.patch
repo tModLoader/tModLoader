@@ -36,7 +36,7 @@
      <Reference Include="Newtonsoft.Json" />
      <Reference Include="RailSDK.Net">
        <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/RailSDK.Net.dll</HintPath>
-@@ -35,9 +_,9 @@
+@@ -35,8 +_,8 @@
      </Reference>
      <ProjectReference Include="../ReLogic/ReLogic.csproj" />
      <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
@@ -47,7 +47,6 @@
      </EmbeddedResource>
      <Reference Include="SteelSeriesEngineWrapper" />
      <Reference Include="Steamworks.NET">
-       <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/Steamworks.NET.dll</HintPath>
 @@ -48,23 +_,27 @@
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />

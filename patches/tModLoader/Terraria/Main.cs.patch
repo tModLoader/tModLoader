@@ -69,14 +69,14 @@
 +		public RenderTarget2D backWaterTarget;
  		public static RenderTarget2D waterTarget;
 -		private RenderTarget2D tileTarget;
--		private RenderTarget2D blackTarget;
--		private RenderTarget2D tile2Target;
--		private RenderTarget2D wallTarget;
--		private RenderTarget2D backgroundTarget;
 +		public RenderTarget2D tileTarget;
+-		private RenderTarget2D blackTarget;
 +		public RenderTarget2D blackTarget;
+-		private RenderTarget2D tile2Target;
 +		public RenderTarget2D tile2Target;
+-		private RenderTarget2D wallTarget;
 +		public RenderTarget2D wallTarget;
+-		private RenderTarget2D backgroundTarget;
 +		public RenderTarget2D backgroundTarget;
  		public static RenderTarget2D screenTarget;
  		public static RenderTarget2D screenTargetSwap;
@@ -86,8 +86,8 @@
  		public static int mapTargetX = 5;
  		public static int mapTargetY = 2;
 -		private RenderTarget2D[,] mapTarget = new RenderTarget2D[mapTargetX, mapTargetY];
--		private RenderTarget2D mapSectionTexture;
 +		public RenderTarget2D[,] mapTarget = new RenderTarget2D[mapTargetX, mapTargetY];
+-		private RenderTarget2D mapSectionTexture;
 +		public RenderTarget2D mapSectionTexture;
  		public static bool[,] initMap = new bool[mapTargetX, mapTargetY];
  		public static bool[,] mapWasContentLost = new bool[mapTargetX, mapTargetY];
@@ -97,10 +97,10 @@
  		private int firstTileY;
  		private int lastTileY;
 -		private double bgParallax;
--		private int bgStartX;
--		private int bgLoops;
 +		internal double bgParallax;
+-		private int bgStartX;
 +		internal int bgStartX;
+-		private int bgLoops;
 +		internal int bgLoops;
  		private int bgStartY;
  		private int bgLoopsY;
@@ -202,8 +202,8 @@
  		public int textBlinkerState;
  		public static string newWorldName = "";
 -		private static int[] specX = new int[1000];
--		private static int[] specY = new int[1000];
 +		public static int[] specX = new int[1000];
+-		private static int[] specY = new int[1000];
 +		public static int[] specY = new int[1000];
  		public TilePaintSystemV2 TilePaintSystem;
  		public TileDrawing TilesRenderer;
@@ -240,17 +240,17 @@
  		private static float backgroundLayerTransitionSpeed = 0.05f;
  		public static float atmo;
 -		private static float bgScale = 1f;
--		private static int bgWidthScaled = (int)(1024f * bgScale);
 +		internal static float bgScale = 1f;
+-		private static int bgWidthScaled = (int)(1024f * bgScale);
 +		internal static int bgWidthScaled = (int)(1024f * bgScale);
  		public static Microsoft.Xna.Framework.Color ColorOfTheSkies;
 -		private static Microsoft.Xna.Framework.Color ColorOfSurfaceBackgroundsBase = Microsoft.Xna.Framework.Color.White;
--		private static Microsoft.Xna.Framework.Color ColorOfSurfaceBackgroundsModified = Microsoft.Xna.Framework.Color.White;
--		private float screenOff;
--		private float scAdj;
 +		internal static Microsoft.Xna.Framework.Color ColorOfSurfaceBackgroundsBase = Microsoft.Xna.Framework.Color.White;
+-		private static Microsoft.Xna.Framework.Color ColorOfSurfaceBackgroundsModified = Microsoft.Xna.Framework.Color.White;
 +		internal static Microsoft.Xna.Framework.Color ColorOfSurfaceBackgroundsModified = Microsoft.Xna.Framework.Color.White;
+-		private float screenOff;
 +		internal float screenOff;
+-		private float scAdj;
 +		internal float scAdj;
  		private float cTop;
  		private bool _isDrawingOrUpdating;
@@ -300,17 +300,17 @@
  			graphics.GraphicsProfile = _selectedGraphicsProfile;
  			switch (_selectedGraphicsProfile) {
  				case GraphicsProfile.HiDef:
--					maxScreenW = 4096;
--					maxScreenH = 4096;
--					_renderTargetMaxSize = 4096;
--					TrySupporting8K();
 +					// update resolution related variables alongside TrySupporting8K
 +					Configuration.Get("Support8K", ref Support8K);
 +					int hiRes = Support8K ? 8192 : 4096;
+-					maxScreenW = 4096;
 +					maxScreenW = hiRes;
+-					maxScreenH = 4096;
 +					maxScreenH = hiRes;
+-					_renderTargetMaxSize = 4096;
 +					_renderTargetMaxSize = hiRes;
 +					if (Support8K)
+-					TrySupporting8K();
 +						TrySupporting8K();
  					break;
  				case GraphicsProfile.Reach:
@@ -347,8 +347,8 @@
  		public static void SaveRecent() {
  			Utils.TryCreatingDirectory(SavePath);
  			try {
--				File.SetAttributes(SavePath + Path.DirectorySeparatorChar + "servers.dat", FileAttributes.Normal);
 +				if (File.Exists(SavePath + Path.DirectorySeparatorChar + "servers.dat"))
+-				File.SetAttributes(SavePath + Path.DirectorySeparatorChar + "servers.dat", FileAttributes.Normal);
 +					File.SetAttributes(SavePath + Path.DirectorySeparatorChar + "servers.dat", FileAttributes.Normal);
  			}
  			catch {
@@ -965,13 +965,14 @@
  					}
 -					else if (playOldTile) {
 -						newMusic = 6;
-+					else {
-+						newMusic = MenuLoader.CurrentMenu.Music; // TODO: Music loader to make music function properly.
- 					}
+-					}
 -					else if (!_isAsyncLoadComplete) {
 -						newMusic = 50;
 -					}
 -					else if (!music[50].IsPlaying) {
++					else {
++						newMusic = MenuLoader.CurrentMenu.Music; // TODO: Music loader to make music function properly.
++					}
 +
 +					if (_isAsyncLoadComplete && newMusic == 50 && !music[50].IsPlaying) {
  						newMusic = 51;
@@ -1253,10 +1254,10 @@
 +			if (num == 11)
  				baseColor = new Microsoft.Xna.Framework.Color((byte)(180f * num2), (byte)(40f * num2), (byte)(255f * num2), mouseTextColor);
  
--			if (HoverItem.expert || num == -12)
 +			if (num > 11)
 +				baseColor = RarityLoader.GetRarity(num).RarityColor * num2;
 +
+-			if (HoverItem.expert || num == -12)
 +			if (HoverItem.expert || num == ItemRarityID.Expert)
  				baseColor = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num2), (byte)((float)DiscoG * num2), (byte)((float)DiscoB * num2), mouseTextColor);
  
@@ -1386,7 +1387,6 @@
 +					if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "JourneyResearch")
  						black = Colors.JourneyMode;
  
--					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, array[k], new Vector2(X, Y + num16), black, 0f, Vector2.Zero, Vector2.One);
 +					drawableLines[k].color = black;
 +					Color realLineColor = black;
 +
@@ -1398,6 +1398,7 @@
 +					if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[k], ref num12) || !globalCanDraw)
 +						goto PostDraw;
 +
+-					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, array[k], new Vector2(X, Y + num16), black, 0f, Vector2.Zero, Vector2.One);
 +					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, array[k], new Vector2(X, Y + num16), realLineColor, 0f, Vector2.Zero, Vector2.One);
  				}
 +
@@ -2276,13 +2277,13 @@
  				else if (NPCID.Sets.IsTownPet[npc[player[myPlayer].talkNPC].type]) {
  					player[myPlayer].PetAnimal(player[myPlayer].talkNPC);
  				}
--				else if (npc[player[myPlayer].talkNPC].type == 369) {
 +
 +				if (!NPCLoader.PreChatButtonClicked(true))
 +					return;
 +
 +				NPCLoader.OnChatButtonClicked(true);
 +				
+-				else if (npc[player[myPlayer].talkNPC].type == 369) {
 +				if (npc[player[myPlayer].talkNPC].type == 369) {
  					npcChatCornerItem = 0;
  					SoundEngine.PlaySound(12);
@@ -2517,9 +2518,9 @@
  				SetupDrawInterfaceLayers();
  
  			PlayerInput.SetZoom_UI();
--			using (List<GameInterfaceLayer>.Enumerator enumerator = _gameInterfaceLayers.GetEnumerator()) {
 +			List<GameInterfaceLayer> interfaceLayers = new List<GameInterfaceLayer>(_gameInterfaceLayers);
 +			ModHooks.ModifyInterfaceLayers(interfaceLayers);
+-			using (List<GameInterfaceLayer>.Enumerator enumerator = _gameInterfaceLayers.GetEnumerator()) {
 +			using (List<GameInterfaceLayer>.Enumerator enumerator = interfaceLayers.GetEnumerator()) {
  				while (enumerator.MoveNext() && enumerator.Current.Draw()) {
  				}
@@ -2646,8 +2647,8 @@
  				array4[3] = 30;
  				array4[4] = 70;
  				array4[5] = 70;
--				num5 = 6;
 +				array4[6] = 70;
+-				num5 = 6;
 +				num5 = 7;
 +				array9[6] = Language.GetTextValue(showServerConsole ? "tModLoader.MPShowServerConsoleYes" : "tModLoader.MPShowServerConsoleNo");
 +				array7[6] = 0.5f;
@@ -2693,8 +2694,8 @@
  				if (selectedMenu == 2 || flag5) {
  					flag5 = false;
  					SoundEngine.PlaySound(11);
--					menuMode = 0;
 +					if (WorldIO.customDataFail == null)
+-					menuMode = 0;
 +						menuMode = 0;
 +					else {
 +						Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
@@ -2818,15 +2819,14 @@
  					if (num107 == 3)
  						num109 = 2;
  
--					Vector2 origin2 = FontAssets.MouseText.Value.MeasureString(versionNumber);
 +					string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
 +					string patreonShortURL = @"patreon.com/tModLoader";
 +					bool showPatreon = !Steam.IsSteamApp;
 +					string drawVersion = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "");
+-					Vector2 origin2 = FontAssets.MouseText.Value.MeasureString(versionNumber);
 +					Vector2 origin2 = FontAssets.MouseText.Value.MeasureString(drawVersion);
  					origin2.X *= 0.5f;
  					origin2.Y *= 0.5f;
--					spriteBatch.DrawString(FontAssets.MouseText.Value, versionNumber, new Vector2(origin2.X + (float)num108 + 10f, (float)screenHeight - origin2.Y + (float)num109 - 2f), color12, 0f, origin2, 1f, SpriteEffects.None, 0f);
 +
 +					if (menuMode == 0 && !ModCompile.DeveloperMode) {
 +						const string text = "Enable Developer Mode";
@@ -2847,6 +2847,7 @@
 +						spriteBatch.DrawString(FontAssets.MouseText.Value, text, pos, d_color, 0f, textSize, 1f, SpriteEffects.None, 0f);
 +					}
 +
+-					spriteBatch.DrawString(FontAssets.MouseText.Value, versionNumber, new Vector2(origin2.X + (float)num108 + 10f, (float)screenHeight - origin2.Y + (float)num109 - 2f), color12, 0f, origin2, 1f, SpriteEffects.None, 0f);
 +					spriteBatch.DrawString(FontAssets.MouseText.Value, drawVersion, new Vector2(origin2.X + num108 + 10f, screenHeight - origin2.Y + num109 - 2f), color12, 0f, origin2, 1f, SpriteEffects.None, 0f);
 +					if (num107 == 4)
 +						color12 = new Microsoft.Xna.Framework.Color(127, 191, 191, 76);
@@ -3177,11 +3178,11 @@
  					if (num13 < 0)
  						num13 = 0;
  
--					vector2.X = (float)(num12 - screenWidth / 2) / 2f;
--					vector2.Y = (float)(num13 - screenHeight / 2) / 2f;
 +					float zoom = 0.5f;
 +					PlayerHooks.ModifyZoom(player[myPlayer], ref zoom);
+-					vector2.X = (float)(num12 - screenWidth / 2) / 2f;
 +					vector2.X = (num12 - screenWidth / 2) * zoom;
+-					vector2.Y = (float)(num13 - screenHeight / 2) / 2f;
 +					vector2.Y = (num13 - screenHeight / 2) * zoom;
 +				}
 +				else {
@@ -3241,11 +3242,11 @@
  
  				moonColor *= num13;
  				Vector2 position2 = new Vector2(num6, num7 + moonModY) + sceneArea.SceneLocalScreenPositionOffset;
--				if (WorldGen.drunkWorldGen)
 +				if (menu != null) {
 +					bool needsVanillaFraming = value2 == TextureAssets.Moon[num].Value;
 +					spriteBatch.Draw(value2, position2, new Rectangle(0, needsVanillaFraming ? TextureAssets.Moon[num].Width() * moonPhase : 0, needsVanillaFraming ? TextureAssets.Moon[num].Width() : value2.Width, needsVanillaFraming ? TextureAssets.Moon[num].Width() : value2.Width), moonColor, num9, new Vector2(needsVanillaFraming ? TextureAssets.Moon[num].Width() / 2 : value2.Width / 2), num8, SpriteEffects.None, 0f);
 +				}
+-				if (WorldGen.drunkWorldGen)
 +				else if (WorldGen.drunkWorldGen)
  					spriteBatch.Draw(TextureAssets.SmileyMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.SmileyMoon.Width(), TextureAssets.SmileyMoon.Height()), moonColor, num9 / 2f + (float)Math.PI, new Vector2(TextureAssets.SmileyMoon.Width() / 2, TextureAssets.SmileyMoon.Width() / 2), num8, SpriteEffects.None, 0f);
  				else if (pumpkinMoon)
@@ -3338,9 +3339,9 @@
  			}
  
  #if WINDOWS
--			if (!fullscreen && !flag2) {
 +			// appears redundant. Just causes the window to fight the user when attempting to resize too small
 +			// with this disabled, the window will just snap back to minimum size when released
+-			if (!fullscreen && !flag2) {
 +			/*if (!fullscreen && !flag2) {
  				if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  					width = form.ClientSize.Width;
@@ -3365,8 +3366,8 @@
  				screenHeight = height;
  				graphics.PreferredBackBufferWidth = screenWidth;
  				graphics.PreferredBackBufferHeight = screenHeight;
--				graphics.ApplyChanges();
 +				if (width != num3 || height != num4) //avoid resetting the device when it doesn't need resizing
+-				graphics.ApplyChanges();
 +					graphics.ApplyChanges();
 +
  				PlayerInput.CacheOriginalScreenDimensions();

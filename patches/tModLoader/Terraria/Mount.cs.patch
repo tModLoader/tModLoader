@@ -115,7 +115,7 @@
  			return num;
  		}
  
-@@ -2480,7 +_,10 @@
+@@ -2480,6 +_,9 @@
  		private Vector2 GetWitchBroomTrinketOriginOffset(Player player) => new Vector2(27 * player.direction, 5f);
  
  		public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity) {
@@ -125,7 +125,6 @@
  			if (_frameState != state) {
  				_frameState = state;
  				if (_type != 48 || (state != 1 && state != 2))
- 					_frameCounter = 0f;
 @@ -3216,7 +_,7 @@
  
  			Tile tileSafely = Framing.GetTileSafely(p.X, p.Y);

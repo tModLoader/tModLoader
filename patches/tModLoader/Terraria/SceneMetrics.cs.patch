@@ -8,8 +8,7 @@
  using Terraria.WorldBuilding;
  
  namespace Terraria
-@@ -27,8 +_,8 @@
- 		public static int GraveyardTileThreshold = 28;
+@@ -28,7 +_,7 @@
  		public bool CanPlayCreditsRoll;
  		public bool[] NPCBannerBuff = new bool[289];
  		public bool hasBanner;
@@ -27,8 +26,7 @@
  							HasClock = true;
  
  						switch (tile2.type) {
-@@ -419,7 +_,9 @@
- 			MoonLordMonolith = false;
+@@ -420,6 +_,8 @@
  			Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
  			hasBanner = false;
  			CanPlayCreditsRoll = false;

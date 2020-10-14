@@ -1,7 +1,6 @@
 --- src/Terraria/Terraria/Initializers/UILinksInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/UILinksInitializer.cs
-@@ -5,7 +_,10 @@
- using Terraria.GameContent.Tile_Entities;
+@@ -6,6 +_,9 @@
  using Terraria.GameContent.UI.States;
  using Terraria.GameInput;
  using Terraria.Social;

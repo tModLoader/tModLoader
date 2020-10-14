@@ -1,11 +1,12 @@
 --- src/Terraria/Terraria/IO/WorldFile.cs
 +++ src/tModLoader/Terraria/IO/WorldFile.cs
-@@ -14,6 +_,8 @@
+@@ -14,6 +_,9 @@
  using Terraria.Social;
  using Terraria.UI;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
++using System.Linq;
  
  namespace Terraria.IO
  {
@@ -17,7 +18,7 @@
  			if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen) {
  				if (!flag) {
  					for (int num = Main.worldPathName.Length - 1; num >= 0; num--) {
-@@ -348,5 +_,7 @@
+@@ -348,6 +_,8 @@
  							CheckSavedOreTiers();
  							binaryReader.Close();
  							memoryStream.Close();
@@ -25,6 +26,7 @@
 +							WorldIO.Load(Main.worldPathName, flag);
  							if (num3 != 0)
  								WorldGen.loadFailed = true;
+ 							else
 @@ -506,6 +_,9 @@
  			if (Main.worldPathName == null)
  				return;

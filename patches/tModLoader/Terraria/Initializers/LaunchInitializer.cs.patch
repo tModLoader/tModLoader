@@ -1,6 +1,7 @@
 --- src/Terraria/Terraria/Initializers/LaunchInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/LaunchInitializer.cs
-@@ -2,5 +_,8 @@
+@@ -1,6 +_,9 @@
+ using System;
  using System.Diagnostics;
 +using System.Linq;
 +using System.Text.RegularExpressions;
