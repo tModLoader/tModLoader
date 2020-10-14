@@ -129,6 +129,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void SetDefaults() {
 		}
+		
+		/// <summary>
+		/// Gets called when your item spawns in world
+		/// </summary>
+		public virtual void OnSpawn() {
+		}
 
 		/// <summary>
 		/// Automatically sets certain defaults. Override this if you do not want the properties to be set for you.

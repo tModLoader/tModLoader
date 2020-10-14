@@ -82,6 +82,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Gets called when any item spawns in world
+		/// </summary>
+		public virtual void OnSpawn(object userData) {
+		}
+
+		/// <summary>
 		/// Allows you to manually choose what prefix an item will get.
 		/// </summary>
 		/// <returns>The ID of the prefix to give the item, -1 to use default vanilla behavior</returns>

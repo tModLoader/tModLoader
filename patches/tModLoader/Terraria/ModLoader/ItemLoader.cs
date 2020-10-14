@@ -155,6 +155,16 @@ namespace Terraria.ModLoader
 				g.Instance(item).SetDefaults(item);
 		}
 
+		private static HookList HookOnSpawn = AddHook<Action<Item>>(g => g.OnSpawn);
+
+		internal static void OnSpawn(Item item) {
+			item.modItem?.OnSpawn();
+
+			foreach (GlobalItem g in HookOnSpawn.arr) {
+				g.Instance(item).OnSpawn(item);
+			}
+		}
+
 		//near end of Terraria.Main.DrawItem before default drawing call
 		//  if(ItemLoader.animations.Contains(item.type))
 		//  { ItemLoader.DrawAnimatedItem(item, whoAmI, color, alpha, rotation, scale); return; }
