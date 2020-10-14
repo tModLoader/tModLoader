@@ -90,7 +90,7 @@
 @@ -379,12 +_,13 @@
  			// MessageBox.Show fails on Mac, this method will open a text file to show a message.
  			caption = caption ?? "Terraria: Error" + $" ({ModLoader.versionedName})";
- 			string message = $"{text}\n\nA client.log file containing error information has been generated in\n{Path.Combine(Main.SavePath, "Logs")}\n(You will need to share this file if asking for help)";
+ 			string message = Language.GetTextValue("tModLoader.ClientLogHint", text, Path.Combine(Main.SavePath, "Logs"));
 -#if !MAC
 -			System.Windows.Forms.MessageBox.Show(message, caption);
 -#else

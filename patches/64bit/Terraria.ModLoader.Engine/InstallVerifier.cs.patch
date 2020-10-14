@@ -1,8 +1,9 @@
 --- src/tModLoader/Terraria.ModLoader.Engine/InstallVerifier.cs
 +++ src/64bit/Terraria.ModLoader.Engine/InstallVerifier.cs
-@@ -7,6 +_,7 @@
+@@ -7,7 +_,8 @@
  using System.Reflection;
  using System.Security.Cryptography;
+ using Terraria.Localization;
  using Terraria.Social;
 +using Terraria.Utilities;
  

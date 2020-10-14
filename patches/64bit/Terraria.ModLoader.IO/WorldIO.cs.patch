@@ -25,7 +25,7 @@
  			return list;
  		}
  
-@@ -514,13 +_,16 @@
+@@ -518,13 +_,16 @@
  		internal static void EraseWorld(string path, bool cloudSave) {
  			path = Path.ChangeExtension(path, ".twld");
  			if (!cloudSave) {

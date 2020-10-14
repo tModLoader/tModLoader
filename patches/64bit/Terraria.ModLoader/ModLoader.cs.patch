@@ -18,17 +18,7 @@
  
  		[Obsolete("Use CompressedPlatformRepresentation instead")]
  		public static readonly string compressedPlatformRepresentation = Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m");
-@@ -359,6 +_,9 @@
- 			Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
- 			Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
- 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", version.ToString());
-+			Main.Configuration.Put("VanillaMode", Core64.vanillaMode);
-+			Main.Configuration.Put("LiteMode", Core64.liteMode);
-+			Main.Configuration.Put("Last64BitLaunched", Core64.current64BitInternalVersion);
- 		}
- 
- 		internal static void LoadConfiguration()
-@@ -375,7 +_,10 @@
+@@ -376,7 +_,10 @@
  			Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
  			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
  			Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
