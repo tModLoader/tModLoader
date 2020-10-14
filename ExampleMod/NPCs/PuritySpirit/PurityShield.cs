@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs.PuritySpirit
 {
@@ -40,7 +39,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		public override void AI() {
 			NPC owner = Main.npc[(int)npc.ai[0]];
-			if (!owner.active || owner.type != NPCType<PuritySpirit>()) {
+			if (!owner.active || owner.type != ModContent.NPCType<PuritySpirit>()) {
 				npc.active = false;
 				return;
 			}

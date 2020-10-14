@@ -3,9 +3,7 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-
-// This shortens `c.Emit(OpCodes.Ldarg_0);` to simply `c.Emit(Ldarg_0);`
-using static Mono.Cecil.Cil.OpCodes;
+using Mono.Cecil.Cil;
 
 namespace ExampleMod.Items.Accessories
 {
@@ -34,7 +32,7 @@ namespace ExampleMod.Items.Accessories
 				// Move the cursor after 566 and onto the ret op.
 				c.Index++;
 				// Push the Player instance onto the stack
-				c.Emit(Ldarg_0);
+				c.Emit(OpCodes.Ldarg_0);
 				// Call a delegate using the int and Player from the stack.
 				c.EmitDelegate<Func<int, Player, int>>((returnValue, player) =>
 				{
@@ -49,14 +47,14 @@ namespace ExampleMod.Items.Accessories
 				// Make a label to use later
 				var label = c.DefineLabel();
 				// Push the Player instance onto the stack
-				c.Emit(Ldarg_0);
+				c.Emit(OpCodes.Ldarg_0);
 				// Call a delegate popping the Player from the stack and pushing a bool
 				c.EmitDelegate<Func<Player, bool>>(player => player.GetModPlayer<ExamplePlayer>().strongBeesUpgrade && Main.rand.NextBool(10) && Main.ProjectileUpdateLoopIndex == -1);
 				// if the bool on the stack is false, jump to label
-				c.Emit(Brfalse, label);
+				c.Emit(OpCodes.Brfalse, label);
 				// Otherwise, push ProjectileID.Beenade and return
-				c.Emit(Ldc_I4, ProjectileID.Beenade);
-				c.Emit(Ret);
+				c.Emit(OpCodes.Ldc_I4, ProjectileID.Beenade);
+				c.Emit(OpCodes.Ret);
 				// Set the label to the current cursor, which is still the instruction pushing 566 (which is followed by Ret)
 				c.MarkLabel(label);
 			}
@@ -65,24 +63,24 @@ namespace ExampleMod.Items.Accessories
 				var label = c.DefineLabel();
 
 				// Here we simply adapt the dnSpy output. This approach is tedious but easier if you don't understand IL instructions.
-				c.Emit(Ldarg_0);
+				c.Emit(OpCodes.Ldarg_0);
 				// We need to make sure to pass in FieldInfo or MethodInfo into Call instructions.
 				// Here we show how to retrieve a generic version of a MethodInfo
-				c.Emit(Call, typeof(Player).GetMethod("GetModPlayer", new Type[] { }).MakeGenericMethod(typeof(ExamplePlayer)));
+				c.Emit(OpCodes.Call, typeof(Player).GetMethod("GetModPlayer", new Type[] { }).MakeGenericMethod(typeof(ExamplePlayer)));
 				// nameof helps avoid spelling mistakes
-				c.Emit(Ldfld, typeof(ExamplePlayer).GetField(nameof(ExamplePlayer.strongBeesUpgrade)));
-				c.Emit(Brfalse_S, label);
-				c.Emit(Ldsfld, typeof(Main).GetField(nameof(Main.rand)));
+				c.Emit(OpCodes.Ldfld, typeof(ExamplePlayer).GetField(nameof(ExamplePlayer.strongBeesUpgrade)));
+				c.Emit(OpCodes.Brfalse_S, label);
+				c.Emit(OpCodes.Ldsfld, typeof(Main).GetField(nameof(Main.rand)));
 				// Ldc_I4_S expects an int8, aka an sbyte. Failure to cast correctly will crash the game
-				c.Emit(Ldc_I4_S, (sbyte)10);
-				c.Emit(Call, typeof(Utils).GetMethod("NextBool", new Type[] { typeof(Terraria.Utilities.UnifiedRandom), typeof(int) }));
-				c.Emit(Brfalse_S, label);
+				c.Emit(OpCodes.Ldc_I4_S, (sbyte)10);
+				c.Emit(OpCodes.Call, typeof(Utils).GetMethod("NextBool", new Type[] { typeof(Terraria.Utilities.UnifiedRandom), typeof(int) }));
+				c.Emit(OpCodes.Brfalse_S, label);
 				// You may be tempted to write c.Emit(Ldsfld, Main.ProjectileUpdateLoopIndex);, this won't work and will simply use the value of the field at patch time. That will crash.
-				c.Emit(Ldsfld, typeof(Main).GetField(nameof(Main.ProjectileUpdateLoopIndex)));
-				c.Emit(Ldc_I4_M1);
-				c.Emit(Bne_Un_S, label);
-				c.Emit(Ldc_I4, ProjectileID.Beenade);
-				c.Emit(Ret);
+				c.Emit(OpCodes.Ldsfld, typeof(Main).GetField(nameof(Main.ProjectileUpdateLoopIndex)));
+				c.Emit(OpCodes.Ldc_I4_M1);
+				c.Emit(OpCodes.Bne_Un_S, label);
+				c.Emit(OpCodes.Ldc_I4, ProjectileID.Beenade);
+				c.Emit(OpCodes.Ret);
 				// As Emit has been inserting and advancing the cursor index, we are still pointing at the 566 instruction. 
 				// All the branches in the dnspy output jumped to this instruction, so we set the label to this instruction.
 				c.MarkLabel(label);

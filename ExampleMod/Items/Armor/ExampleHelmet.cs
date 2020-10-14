@@ -1,7 +1,6 @@
 using ExampleMod.Tiles;
 using Terraria;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 using Terraria.ID;
 
 namespace ExampleMod.Items.Armor
@@ -22,7 +21,7 @@ namespace ExampleMod.Items.Armor
 		}
 
 		public override bool IsArmorSet(Item head, Item body, Item legs) {
-			return body.type == ItemType<ExampleBreastplate>() && legs.type == ItemType<ExampleLeggings>();
+			return body.type == ModContent.ItemType<ExampleBreastplate>() && legs.type == ModContent.ItemType<ExampleLeggings>();
 		}
 
 		public override void UpdateArmorSet(Player player) {
@@ -39,8 +38,8 @@ namespace ExampleMod.Items.Armor
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<EquipMaterial>(), 30);
-			recipe.AddTile(TileType<ExampleWorkbench>());
+			recipe.AddIngredient(ModContent.ItemType<EquipMaterial>(), 30);
+			recipe.AddTile(ModContent.TileType<ExampleWorkbench>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

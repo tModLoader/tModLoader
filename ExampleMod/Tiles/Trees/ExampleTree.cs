@@ -1,7 +1,6 @@
 using ExampleMod.Dusts;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles.Trees
 {
@@ -10,7 +9,7 @@ namespace ExampleMod.Tiles.Trees
 		private Mod mod => ModLoader.GetMod("ExampleMod");
 
 		public override int CreateDust() {
-			return DustType<Sparkle>();
+			return ModContent.DustType<Sparkle>();
 		}
 
 		public override int GrowthFXGore() {
@@ -18,7 +17,7 @@ namespace ExampleMod.Tiles.Trees
 		}
 
 		public override int DropWood() {
-			return ItemType<Items.Placeable.ExampleBlock>();
+			return ModContent.ItemType<Items.Placeable.ExampleBlock>();
 		}
 
 		public override Texture2D GetTexture() {

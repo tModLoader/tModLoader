@@ -3,7 +3,6 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 {
@@ -31,7 +30,7 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 		}
 
 		public override void Update(Player player, ref int buffIndex) {
-			if (player.ownedProjectileCounts[ProjectileType<ExampleMinion>()] > 0) {
+			if (player.ownedProjectileCounts[ModContent.ProjectileType<ExampleMinion>()] > 0) {
 				player.buffTime[buffIndex] = 18000;
 			}
 			else {
@@ -66,9 +65,9 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 			// These below are needed for a minion weapon
 			item.noMelee = true;
 			item.summon = true;
-			item.buffType = BuffType<ExampleMinionBuff>();
+			item.buffType = ModContent.BuffType<ExampleMinionBuff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
-			item.shoot = ProjectileType<ExampleMinion>();
+			item.shoot = ModContent.ProjectileType<ExampleMinion>();
 		}
 
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
@@ -146,9 +145,9 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 			#region Active check
 			// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
 			if (player.dead || !player.active) {
-				player.ClearBuff(BuffType<ExampleMinionBuff>());
+				player.ClearBuff(ModContent.BuffType<ExampleMinionBuff>());
 			}
-			if (player.HasBuff(BuffType<ExampleMinionBuff>())) {
+			if (player.HasBuff(ModContent.BuffType<ExampleMinionBuff>())) {
 				projectile.timeLeft = 2;
 			}
 			#endregion

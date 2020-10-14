@@ -2,7 +2,6 @@ using ExampleMod.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Waters
 {
@@ -15,7 +14,7 @@ namespace ExampleMod.Waters
 			=> mod.GetWaterfallStyleSlot("ExampleWaterfallStyle");
 
 		public override int GetSplashDust() 
-			=> DustType<ExampleWaterSplash>();
+			=> ModContent.DustType<ExampleWaterSplash>();
 
 		public override int GetDropletGore() 
 			=> mod.GetGoreSlot("Gores/ExampleDroplet");

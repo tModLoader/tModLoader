@@ -7,7 +7,6 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs
 {
@@ -38,7 +37,7 @@ namespace ExampleMod.NPCs
 			npc.buffImmune[BuffID.Poisoned] = true;
 			npc.buffImmune[BuffID.Venom] = true;
 			banner = npc.type;
-			bannerItem = ItemType<SarcophagusBanner>();
+			bannerItem = ModContent.ItemType<SarcophagusBanner>();
 		}
 
 		public override void CustomBehavior(ref float ai) {
@@ -52,7 +51,7 @@ namespace ExampleMod.NPCs
 				else if (ai >= 180f) {
 					ai = -120f;
 					if (Main.netMode != NetmodeID.MultiplayerClient) {
-						int proj = Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, ProjectileType<ShadowArm>(), npc.damage / 2, 0f, Main.myPlayer, player.Center.X, player.Center.Y);
+						int proj = Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, ModContent.ProjectileType<ShadowArm>(), npc.damage / 2, 0f, Main.myPlayer, player.Center.X, player.Center.Y);
 					}
 					npc.netUpdate = true;
 				}
@@ -88,7 +87,7 @@ namespace ExampleMod.NPCs
 				}
 			}
 			for (int k = 0; k < 2; k++) {
-				int dust = Dust.NewDust(npc.position - new Vector2(8f, 8f), npc.width + 16, npc.height + 16, DustType<Smoke>(), 0f, 0f, 0, Color.Black);
+				int dust = Dust.NewDust(npc.position - new Vector2(8f, 8f), npc.width + 16, npc.height + 16, ModContent.DustType<Smoke>(), 0f, 0f, 0, Color.Black);
 				Main.dust[dust].velocity += npc.velocity * 0.25f;
 			}
 		}

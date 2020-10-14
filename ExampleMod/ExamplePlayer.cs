@@ -17,7 +17,6 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod
 {
@@ -91,7 +90,7 @@ namespace ExampleMod
 
 		public override void OnEnterWorld(Player player) {
 			// We can refresh UI using OnEnterWorld. OnEnterWorld happens after Load, so nonStopParty is the correct value.
-			GetInstance<ExampleMod>().ExampleUI.ExampleButton.HoverText = "SendClientChanges Example: Non-Stop Party " + (nonStopParty ? "On" : "Off");
+			ModContent.GetInstance<ExampleMod>().ExampleUI.ExampleButton.HoverText = "SendClientChanges Example: Non-Stop Party " + (nonStopParty ? "On" : "Off");
 		}
 
 		// In MP, other clients need accurate information about your player or else bugs happen.
@@ -166,7 +165,7 @@ namespace ExampleMod
 
 		public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath) {
 			Item item = new Item();
-			item.SetDefaults(ItemType<ExampleItem>());
+			item.SetDefaults(ModContent.ItemType<ExampleItem>());
 			item.stack = 5;
 			items.Add(item);
 		}
@@ -204,7 +203,7 @@ namespace ExampleMod
 		}
 
 		public override void UpdateBiomeVisuals() {
-			bool usePurity = NPC.AnyNPCs(NPCType<PuritySpirit>());
+			bool usePurity = NPC.AnyNPCs(ModContent.NPCType<PuritySpirit>());
 			player.ManageSpecialBiomeVisuals("ExampleMod:PuritySpirit", usePurity);
 			bool useVoidMonolith = voidMonolith && !usePurity && !NPC.AnyNPCs(NPCID.MoonLordCore);
 			player.ManageSpecialBiomeVisuals("ExampleMod:MonolithVoid", useVoidMonolith, player.Center);
@@ -248,7 +247,7 @@ namespace ExampleMod
 				bool flag = false;
 				for (int k = 0; k < 200; k++) {
 					NPC npc = Main.npc[k];
-					if (npc.active && npc.type == NPCType<PuritySpirit>()) {
+					if (npc.active && npc.type == ModContent.NPCType<PuritySpirit>()) {
 						flag = true;
 						PuritySpiritTeleport(npc);
 						break;
@@ -258,13 +257,13 @@ namespace ExampleMod
 					heroLives = 0;
 				}
 				if (heroLives == 1) {
-					player.AddBuff(BuffType<Buffs.HeroOne>(), 2);
+					player.AddBuff(ModContent.BuffType<Buffs.HeroOne>(), 2);
 				}
 				else if (heroLives == 2) {
-					player.AddBuff(BuffType<Buffs.HeroTwo>(), 2);
+					player.AddBuff(ModContent.BuffType<Buffs.HeroTwo>(), 2);
 				}
 				else if (heroLives == 3) {
-					player.AddBuff(BuffType<Buffs.HeroThree>(), 3);
+					player.AddBuff(ModContent.BuffType<Buffs.HeroThree>(), 3);
 				}
 			}
 			if (purityDebuffCooldown > 0) {
@@ -343,10 +342,10 @@ namespace ExampleMod
 				}
 			}
 			if (flag || Main.expertMode || Main.rand.NextBool()) {
-				player.AddBuff(BuffType<Buffs.Undead>(), 1800, false);
+				player.AddBuff(ModContent.BuffType<Buffs.Undead>(), 1800, false);
 			}
 			for (int k = 0; k < 25; k++) {
-				Dust.NewDust(player.position, player.width, player.height, DustType<Dusts.Negative>(), 0f, -1f, 0, default(Color), 2f);
+				Dust.NewDust(player.position, player.width, player.height, ModContent.DustType<Dusts.Negative>(), 0f, -1f, 0, default(Color), 2f);
 			}
 		}
 
@@ -359,7 +358,7 @@ namespace ExampleMod
 		public override void UpdateVanityAccessories() {
 			for (int n = 13; n < 18 + player.extraAccessorySlots; n++) {
 				Item item = player.armor[n];
-				if (item.type == ItemType<Items.Armor.ExampleCostume>()) {
+				if (item.type == ModContent.ItemType<Items.Armor.ExampleCostume>()) {
 					blockyHideVanity = false;
 					blockyForceVanity = true;
 				}
@@ -369,7 +368,7 @@ namespace ExampleMod
 		public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff) {
 			// Make sure this condition is the same as the condition in the Buff to remove itself. We do this here instead of in ModItem.UpdateAccessory in case we want future upgraded items to set blockyAccessory
 			if (player.townNPCs >= 1 && blockyAccessory) {
-				player.AddBuff(BuffType<Buffs.Blocky>(), 60, true);
+				player.AddBuff(ModContent.BuffType<Buffs.Blocky>(), 60, true);
 			}
 		}
 
@@ -463,13 +462,13 @@ namespace ExampleMod
 					int k;
 					bool flag = false;
 					for (k = 3; k < 8 + player.extraAccessorySlots; k++) {
-						if (player.armor[k].type == ItemType<SixColorShield>()) {
+						if (player.armor[k].type == ModContent.ItemType<SixColorShield>()) {
 							flag = true;
 							break;
 						}
 					}
 					if (flag) {
-						Projectile.NewProjectile(player.Center.X, player.Center.Y, 0f, 0f, ProjectileType<ElementShield>(), player.GetWeaponDamage(player.armor[k]), player.GetWeaponKnockback(player.armor[k], 2f), player.whoAmI, elementShields++);
+						Projectile.NewProjectile(player.Center.X, player.Center.Y, 0f, 0f, ModContent.ProjectileType<ElementShield>(), player.GetWeaponDamage(player.armor[k]), player.GetWeaponKnockback(player.armor[k], 2f), player.whoAmI, elementShields++);
 					}
 				}
 				elementShieldTimer = 600;
@@ -477,7 +476,7 @@ namespace ExampleMod
 			if (heroLives > 0) {
 				for (int k = 0; k < 200; k++) {
 					NPC npc = Main.npc[k];
-					if (npc.active && npc.type == NPCType<PuritySpirit>()) {
+					if (npc.active && npc.type == ModContent.NPCType<PuritySpirit>()) {
 						PuritySpirit modNPC = (PuritySpirit)npc.modNPC;
 						if (modNPC.attack >= 0) {
 							double proportion = damage / player.statLifeMax2;
@@ -579,15 +578,15 @@ namespace ExampleMod
 				return;
 			}
 			if (player.FindBuffIndex(BuffID.TwinEyesMinion) > -1 && liquidType == 0 && Main.rand.NextBool(3)) {
-				caughtType = ItemType<SparklingSphere>();
+				caughtType = ModContent.ItemType<SparklingSphere>();
 			}
-			if (player.gravDir == -1f && questFish == ItemType<ExampleQuestFish>() && Main.rand.NextBool()) {
-				caughtType = ItemType<ExampleQuestFish>();
+			if (player.gravDir == -1f && questFish == ModContent.ItemType<ExampleQuestFish>() && Main.rand.NextBool()) {
+				caughtType = ModContent.ItemType<ExampleQuestFish>();
 			}
 		}
 
 		public override void GetFishingLevel(Item fishingRod, Item bait, ref int fishingLevel) {
-			if (player.FindBuffIndex(BuffType<CarMount>()) > -1) {
+			if (player.FindBuffIndex(ModContent.BuffType<CarMount>()) > -1) {
 				fishingLevel = (int)(fishingLevel * 1.1f);
 			}
 		}
@@ -612,7 +611,7 @@ namespace ExampleMod
 		public override void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
 			if (eFlames) {
 				if (Main.rand.NextBool(4) && drawInfo.shadow == 0f) {
-					int dust = Dust.NewDust(drawInfo.position - new Vector2(2f, 2f), player.width + 4, player.height + 4, DustType<EtherealFlame>(), player.velocity.X * 0.4f, player.velocity.Y * 0.4f, 100, default(Color), 3f);
+					int dust = Dust.NewDust(drawInfo.position - new Vector2(2f, 2f), player.width + 4, player.height + 4, ModContent.DustType<EtherealFlame>(), player.velocity.X * 0.4f, player.velocity.Y * 0.4f, 100, default(Color), 3f);
 					Main.dust[dust].noGravity = true;
 					Main.dust[dust].velocity *= 1.8f;
 					Main.dust[dust].velocity.Y -= 0.5f;
@@ -678,7 +677,7 @@ namespace ExampleMod
 				DrawData data = new DrawData(texture, new Vector2(drawX, drawY), null, Lighting.GetColor((int)((drawInfo.position.X + drawPlayer.width / 2f) / 16f), (int)((drawInfo.position.Y - 4f - texture.Height / 2f) / 16f)), 0f, new Vector2(texture.Width / 2f, texture.Height), 1f, SpriteEffects.None, 0);
 				Main.playerDrawData.Add(data);
 				for (int k = 0; k < 2; k++) {
-					int dust = Dust.NewDust(new Vector2(drawInfo.position.X + drawPlayer.width / 2f - texture.Width / 2f, drawInfo.position.Y - 4f - texture.Height), texture.Width, texture.Height, DustType<Smoke>(), 0f, 0f, 0, Color.Black);
+					int dust = Dust.NewDust(new Vector2(drawInfo.position.X + drawPlayer.width / 2f - texture.Width / 2f, drawInfo.position.Y - 4f - texture.Height), texture.Width, texture.Height, ModContent.DustType<Smoke>(), 0f, 0f, 0, Color.Black);
 					Main.dust[dust].velocity += drawPlayer.velocity * 0.25f;
 					Main.playerDrawDust.Add(dust);
 				}
@@ -705,7 +704,7 @@ namespace ExampleMod
 		public override void PostBuyItem(NPC vendor, Item[] shop, Item item)
 		{
 			// Here we use PostBuyItem to limit the player to only buying 1 item from the ExamplePersonFreeGiftList by removing items from the shop.
-			if (vendor.type == NPCType<ExamplePerson>() && item.GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift)
+			if (vendor.type == ModContent.NPCType<ExamplePerson>() && item.GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift)
 			{
 				examplePersonGiftReceived = true;
 				foreach (var shopItem in shop)
@@ -721,7 +720,7 @@ namespace ExampleMod
 		public override void PostSellItem(NPC vendor, Item[] shopInventory, Item item)
 		{
 			// Here we use PostSellItem to let the player buy a different item from the ExamplePersonFreeGiftList when the player sells the item back.
-			if (vendor.type == NPCType<ExamplePerson>() && (GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList?.Any(x => x.Type == item.type) ?? false))
+			if (vendor.type == ModContent.NPCType<ExamplePerson>() && (ModContent.GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList?.Any(x => x.Type == item.type) ?? false))
 			{
 				examplePersonGiftReceived = false;
 				item.TurnToAir();

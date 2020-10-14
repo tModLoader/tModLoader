@@ -3,7 +3,6 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Abomination
 {
@@ -61,7 +60,7 @@ namespace ExampleMod.Items.Abomination
 					int maxAccessoryIndex = 5 + player.extraAccessorySlots;
 					for (int i = 3; i < 3 + maxAccessoryIndex; i++) {
 						// We need "slot != i" because we don't care what is currently in the slot we will be replacing.
-						if (slot != i && player.armor[i].type == ItemType<SixColorShield>()) {
+						if (slot != i && player.armor[i].type == ModContent.ItemType<SixColorShield>()) {
 							return false;
 						}
 					}

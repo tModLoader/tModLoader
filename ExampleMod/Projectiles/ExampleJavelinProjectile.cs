@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles
 {
@@ -91,7 +90,7 @@ namespace ExampleMod.Projectiles
 				// Drop a javelin item, 1 in 18 chance (~5.5% chance)
 				int item =
 				Main.rand.NextBool(18)
-					? Item.NewItem(projectile.getRect(), ItemType<ExampleJavelin>())
+					? Item.NewItem(projectile.getRect(), ModContent.ItemType<ExampleJavelin>())
 					: 0;
 
 				// Sync the drop for multiplayer
@@ -131,7 +130,7 @@ namespace ExampleMod.Projectiles
 				(target.Center - projectile.Center) *
 				0.75f; // Change velocity based on delta center of targets (difference between entity centers)
 			projectile.netUpdate = true; // netUpdate this javelin
-			target.AddBuff(BuffType<Buffs.ExampleJavelin>(), 900); // Adds the ExampleJavelin debuff for a very small DoT
+			target.AddBuff(ModContent.BuffType<Buffs.ExampleJavelin>(), 900); // Adds the ExampleJavelin debuff for a very small DoT
 
 			projectile.damage = 0; // Makes sure the sticking javelins do not deal damage anymore
 
@@ -230,13 +229,13 @@ namespace ExampleMod.Projectiles
 
 			// Spawn some random dusts as the javelin travels
 			if (Main.rand.NextBool(3)) {
-				Dust dust = Dust.NewDustDirect(projectile.position, projectile.height, projectile.width, DustType<Sparkle>(),
+				Dust dust = Dust.NewDustDirect(projectile.position, projectile.height, projectile.width, ModContent.DustType<Sparkle>(),
 					projectile.velocity.X * .2f, projectile.velocity.Y * .2f, 200, Scale: 1.2f);
 				dust.velocity += projectile.velocity * 0.3f;
 				dust.velocity *= 0.2f;
 			}
 			if (Main.rand.NextBool(4)) {
-				Dust dust = Dust.NewDustDirect(projectile.position, projectile.height, projectile.width, DustType<Sparkle>(),
+				Dust dust = Dust.NewDustDirect(projectile.position, projectile.height, projectile.width, ModContent.DustType<Sparkle>(),
 					0, 0, 254, Scale: 0.3f);
 				dust.velocity += projectile.velocity * 0.5f;
 				dust.velocity *= 0.5f;

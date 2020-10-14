@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Weapons
 {
@@ -29,8 +28,8 @@ namespace ExampleMod.Items.Weapons
 			item.value = Item.buyPrice(0, 30, 0, 0);
 			item.rare = ItemRarityID.Cyan;
 			item.UseSound = SoundID.Item44;
-			item.shoot = ProjectileType<PurityWisp>();
-			item.buffType = BuffType<Buffs.PurityWisp>(); //The buff added to player after used the item
+			item.shoot = ModContent.ProjectileType<PurityWisp>();
+			item.buffType = ModContent.BuffType<Buffs.PurityWisp>(); //The buff added to player after used the item
 		}
 
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {

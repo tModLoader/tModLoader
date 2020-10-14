@@ -1,7 +1,6 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Placeable
 {
@@ -19,7 +18,7 @@ namespace ExampleMod.Items.Placeable
 			item.consumable = true;
 			item.rare = ItemRarityID.Red;
 			item.value = Item.buyPrice(0, 10, 0, 0);
-			item.createTile = TileType<Tiles.VoidMonolith>();
+			item.createTile = ModContent.TileType<Tiles.VoidMonolith>();
 		}
 
 		public override void AddRecipes() {

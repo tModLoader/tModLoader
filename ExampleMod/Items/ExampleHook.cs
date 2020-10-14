@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -34,7 +33,7 @@ namespace ExampleMod.Items
 			// Instead of copying these values, we can clone and modify the ones we want to copy
 			item.CloneDefaults(ItemID.AmethystHook);
 			item.shootSpeed = 18f; // how quickly the hook is shot.
-			item.shoot = ProjectileType<ExampleHookProjectile>();
+			item.shoot = ModContent.ProjectileType<ExampleHookProjectile>();
 		}
 	}
 

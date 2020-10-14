@@ -4,7 +4,6 @@ using System;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles.PuritySpirit
 {
@@ -38,7 +37,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 
 		public override void AI() {
 			NPC center = Main.npc[(int)projectile.ai[0]];
-			if (!center.active || center.type != NPCType<NPCs.PuritySpirit.PuritySpirit>()) {
+			if (!center.active || center.type != ModContent.NPCType<NPCs.PuritySpirit.PuritySpirit>()) {
 				projectile.Kill();
 			}
 			if (timer < 120) {

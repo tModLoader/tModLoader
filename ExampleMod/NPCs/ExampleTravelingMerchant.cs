@@ -10,7 +10,6 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs
 {
@@ -30,7 +29,7 @@ namespace ExampleMod.NPCs
 		public static NPC FindNPC(int npcType) => Main.npc.FirstOrDefault(npc => npc.type == npcType && npc.active);
 
 		public static void UpdateTravelingMerchant() {
-			NPC traveler = FindNPC(NPCType<ExampleTravelingMerchant>()); // Find an Explorer if there's one spawned in the world
+			NPC traveler = FindNPC(ModContent.NPCType<ExampleTravelingMerchant>()); // Find an Explorer if there's one spawned in the world
 			if (traveler != null && (!Main.dayTime || Main.time >= despawnTime) && !IsNpcOnscreen(traveler.Center)) // If it's past the despawn time and the NPC isn't onscreen
 			{
 				// Here we despawn the NPC and send a message stating that the NPC has despawned
@@ -59,7 +58,7 @@ namespace ExampleMod.NPCs
 
 			// Spawn the traveler if the spawn conditions are met (time of day, no events, no sundial)
 			if (traveler == null && CanSpawnNow()) {
-				int newTraveler = NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, NPCType<ExampleTravelingMerchant>(), 1); // Spawning at the world spawn
+				int newTraveler = NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, ModContent.NPCType<ExampleTravelingMerchant>(), 1); // Spawning at the world spawn
 				traveler = Main.npc[newTraveler];
 				traveler.homeless = true;
 				traveler.direction = Main.spawnTileX >= WorldGen.bestX ? -1 : 1;
@@ -111,37 +110,37 @@ namespace ExampleMod.NPCs
 			// For each slot we add a switch case to determine what should go in that slot
 			switch (Main.rand.Next(2)) {
 				case 0:
-					itemIds.Add(ItemType<ExampleItem>());
+					itemIds.Add(ModContent.ItemType<ExampleItem>());
 					break;
 				default:
-					itemIds.Add(ItemType<EquipMaterial>());
+					itemIds.Add(ModContent.ItemType<EquipMaterial>());
 					break;
 			}
 
 			switch (Main.rand.Next(3)) {
 				case 0:
-					itemIds.Add(ItemType<BossItem>());
+					itemIds.Add(ModContent.ItemType<BossItem>());
 					break;
 				case 1:
-					itemIds.Add(ItemType<ExampleWorkbench>());
+					itemIds.Add(ModContent.ItemType<ExampleWorkbench>());
 					break;
 				default:
-					itemIds.Add(ItemType<ExampleChair>());
+					itemIds.Add(ModContent.ItemType<ExampleChair>());
 					break;
 			}
 
 			switch (Main.rand.Next(4)) {
 				case 0:
-					itemIds.Add(ItemType<ExampleDoor>());
+					itemIds.Add(ModContent.ItemType<ExampleDoor>());
 					break;
 				case 1:
-					itemIds.Add(ItemType<ExampleBed>());
+					itemIds.Add(ModContent.ItemType<ExampleBed>());
 					break;
 				case 2:
-					itemIds.Add(ItemType<ExampleChest>());
+					itemIds.Add(ModContent.ItemType<ExampleChest>());
 					break;
 				default:
-					itemIds.Add(ItemType<ExamplePickaxe>());
+					itemIds.Add(ModContent.ItemType<ExamplePickaxe>());
 					break;
 			}
 
@@ -197,7 +196,7 @@ namespace ExampleMod.NPCs
 		public override void HitEffect(int hitDirection, double damage) {
 			int num = npc.life > 0 ? 1 : 5;
 			for (int k = 0; k < num; k++) {
-				Dust.NewDust(npc.position, npc.width, npc.height, DustType<Sparkle>());
+				Dust.NewDust(npc.position, npc.width, npc.height, ModContent.DustType<Sparkle>());
 			}
 		}
 
@@ -264,7 +263,7 @@ namespace ExampleMod.NPCs
 		}
 
 		public override void NPCLoot() {
-			Item.NewItem(npc.getRect(), ItemType<Items.Armor.ExampleCostume>());
+			Item.NewItem(npc.getRect(), ModContent.ItemType<Items.Armor.ExampleCostume>());
 		}
 
 		public override void TownNPCAttackStrength(ref int damage, ref float knockback) {
@@ -278,7 +277,7 @@ namespace ExampleMod.NPCs
 		}
 
 		public override void TownNPCAttackProj(ref int projType, ref int attackDelay) {
-			projType = ProjectileType<SparklingBall>();
+			projType = ModContent.ProjectileType<SparklingBall>();
 			attackDelay = 1;
 		}
 

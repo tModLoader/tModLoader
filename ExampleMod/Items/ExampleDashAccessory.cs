@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -78,8 +77,8 @@ namespace ExampleMod.Items
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
-			recipe.AddTile(TileType<ExampleWorkbench>());
+			recipe.AddIngredient(ModContent.ItemType<ExampleItem>(), 10);
+			recipe.AddTile(ModContent.TileType<ExampleWorkbench>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
@@ -124,7 +123,7 @@ namespace ExampleMod.Items
 
 				//Set the flag for the ExampleDashAccessory being equipped if we have it equipped OR immediately return if any of the accessories are
 				// one of the higher-priority ones
-				if(item.type == ItemType<ExampleDashAccessory>())
+				if(item.type == ModContent.ItemType<ExampleDashAccessory>())
 					dashAccessoryEquipped = true;
 				else if(item.type == ItemID.EoCShield || item.type == ItemID.MasterNinjaGear || item.type == ItemID.Tabi)
 					return;

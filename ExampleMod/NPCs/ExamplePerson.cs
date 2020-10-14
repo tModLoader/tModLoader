@@ -10,7 +10,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs
 {
@@ -58,7 +57,7 @@ namespace ExampleMod.NPCs
 		public override void HitEffect(int hitDirection, double damage) {
 			int num = npc.life > 0 ? 1 : 5;
 			for (int k = 0; k < num; k++) {
-				Dust.NewDust(npc.position, npc.width, npc.height, DustType<Sparkle>());
+				Dust.NewDust(npc.position, npc.width, npc.height, ModContent.DustType<Sparkle>());
 			}
 		}
 
@@ -70,7 +69,7 @@ namespace ExampleMod.NPCs
 				}
 
 				foreach (Item item in player.inventory) {
-					if (item.type == ItemType<ExampleItem>() || item.type == ItemType<Items.Placeable.ExampleBlock>()) {
+					if (item.type == ModContent.ItemType<ExampleItem>() || item.type == ModContent.ItemType<Items.Placeable.ExampleBlock>()) {
 						return true;
 					}
 				}
@@ -84,10 +83,10 @@ namespace ExampleMod.NPCs
 			for (int x = left; x <= right; x++) {
 				for (int y = top; y <= bottom; y++) {
 					int type = Main.tile[x, y].type;
-					if (type == TileType<ExampleBlock>() || type == TileType<ExampleChair>() || type == TileType<ExampleWorkbench>() || type == TileType<ExampleBed>() || type == TileType<ExampleDoorOpen>() || type == TileType<ExampleDoorClosed>()) {
+					if (type == ModContent.TileType<ExampleBlock>() || type == ModContent.TileType<ExampleChair>() || type == ModContent.TileType<ExampleWorkbench>() || type == ModContent.TileType<ExampleBed>() || type == ModContent.TileType<ExampleDoorOpen>() || type == ModContent.TileType<ExampleDoorClosed>()) {
 						score++;
 					}
-					if (Main.tile[x, y].wall == WallType<ExampleWall>()) {
+					if (Main.tile[x, y].wall == ModContent.WallType<ExampleWall>()) {
 						score++;
 					}
 				}
@@ -175,10 +174,10 @@ namespace ExampleMod.NPCs
 				if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack))
 				{
 					Main.PlaySound(SoundID.Item37); // Reforge/Anvil sound
-					Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ItemType<Items.Accessories.WaspNest>())}";
+					Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ModContent.ItemType<Items.Accessories.WaspNest>())}";
 					int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
 					Main.LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(ItemType<Items.Accessories.WaspNest>());
+					Main.LocalPlayer.QuickSpawnItem(ModContent.ItemType<Items.Accessories.WaspNest>());
 					return;
 				}
 				shop = true;
@@ -189,52 +188,52 @@ namespace ExampleMod.NPCs
 				// remove the chat window...
 				Main.npcChatText = "";
 				// and start an instance of our UIState.
-				GetInstance<ExampleMod>().ExamplePersonUserInterface.SetState(new UI.ExamplePersonUI());
+				ModContent.GetInstance<ExampleMod>().ExamplePersonUserInterface.SetState(new UI.ExamplePersonUI());
 				// Note that even though we remove the chat window, Main.LocalPlayer.talkNPC will still be set correctly and we are still technically chatting with the npc.
 			}
 		}
 
 		public override void SetupShop(Chest shop, ref int nextSlot) {
-			shop.item[nextSlot].SetDefaults(ItemType<ExampleItem>());
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<ExampleItem>());
 			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemType<EquipMaterial>());
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<EquipMaterial>());
 			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemType<BossItem>());
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<BossItem>());
 			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemType<Items.Placeable.ExampleWorkbench>());
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.ExampleWorkbench>());
 			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemType<Items.Placeable.ExampleChair>());
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.ExampleChair>());
 			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemType<Items.Placeable.ExampleDoor>());
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.ExampleDoor>());
 			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemType<Items.Placeable.ExampleBed>());
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.ExampleBed>());
 			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemType<Items.Placeable.ExampleChest>());
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.ExampleChest>());
 			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemType<ExamplePickaxe>());
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<ExamplePickaxe>());
 			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemType<ExampleHamaxe>());
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<ExampleHamaxe>());
 			nextSlot++;
 			if (Main.LocalPlayer.HasBuff(BuffID.Lifeforce)) {
-				shop.item[nextSlot].SetDefaults(ItemType<ExampleHealingPotion>());
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<ExampleHealingPotion>());
 				nextSlot++;
 			}
-			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample && !GetInstance<ExampleConfigServer>().DisableExampleWings) {
-				shop.item[nextSlot].SetDefaults(ItemType<ExampleWings>());
+			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample && !ModContent.GetInstance<ExampleConfigServer>().DisableExampleWings) {
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<ExampleWings>());
 				nextSlot++;
 			}
 			if (Main.moonPhase < 2) {
-				shop.item[nextSlot].SetDefaults(ItemType<ExampleSword>());
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<ExampleSword>());
 				nextSlot++;
 			}
 			else if (Main.moonPhase < 4) {
-				shop.item[nextSlot].SetDefaults(ItemType<ExampleGun>());
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<ExampleGun>());
 				nextSlot++;
-				shop.item[nextSlot].SetDefaults(ItemType<Items.Weapons.ExampleBullet>());
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.ExampleBullet>());
 				nextSlot++;
 			}
 			else if (Main.moonPhase < 6) {
-				shop.item[nextSlot].SetDefaults(ItemType<ExampleStaff>());
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<ExampleStaff>());
 				nextSlot++;
 			}
 			else {
@@ -246,9 +245,9 @@ namespace ExampleMod.NPCs
 				nextSlot++;
 			}
 
-			if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null)
+			if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && ModContent.GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null)
 			{
-				foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList)
+				foreach (var item in ModContent.GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList)
 				{
 					if (item.IsUnloaded)
 						continue;
@@ -262,7 +261,7 @@ namespace ExampleMod.NPCs
 		}
 
 		public override void NPCLoot() {
-			Item.NewItem(npc.getRect(), ItemType<Items.Armor.ExampleCostume>());
+			Item.NewItem(npc.getRect(), ModContent.ItemType<Items.Armor.ExampleCostume>());
 		}
 
 		// Make this Town NPC teleport to the King and/or Queen statue when triggered.
@@ -293,7 +292,7 @@ namespace ExampleMod.NPCs
 				else {
 					position.Y = Math.Sign(position.Y) * 20;
 				}
-				Dust.NewDustPerfect(npc.Center + position, DustType<Pixel>(), Vector2.Zero).noGravity = true;
+				Dust.NewDustPerfect(npc.Center + position, ModContent.DustType<Pixel>(), Vector2.Zero).noGravity = true;
 			}
 		}
 
@@ -308,7 +307,7 @@ namespace ExampleMod.NPCs
 		}
 
 		public override void TownNPCAttackProj(ref int projType, ref int attackDelay) {
-			projType = ProjectileType<SparklingBall>();
+			projType = ModContent.ProjectileType<SparklingBall>();
 			attackDelay = 1;
 		}
 

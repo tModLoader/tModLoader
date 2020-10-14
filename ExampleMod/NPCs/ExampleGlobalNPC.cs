@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs
 {
@@ -23,7 +22,7 @@ namespace ExampleMod.NPCs
 
 		public override void SetDefaults(NPC npc) {
 			// We want our ExampleJavelin buff to follow the same immunities as BoneJavelin
-			npc.buffImmune[BuffType<Buffs.ExampleJavelin>()] = npc.buffImmune[BuffID.BoneJavelin];
+			npc.buffImmune[ModContent.BuffType<Buffs.ExampleJavelin>()] = npc.buffImmune[BuffID.BoneJavelin];
 		}
 
 		public override void UpdateLifeRegen(NPC npc, ref int damage) {
@@ -34,7 +33,7 @@ namespace ExampleMod.NPCs
 				int exampleJavelinCount = 0;
 				for (int i = 0; i < 1000; i++) {
 					Projectile p = Main.projectile[i];
-					if (p.active && p.type == ProjectileType<Projectiles.ExampleJavelinProjectile>() && p.ai[0] == 1f && p.ai[1] == npc.whoAmI) {
+					if (p.active && p.type == ModContent.ProjectileType<Projectiles.ExampleJavelinProjectile>() && p.ai[0] == 1f && p.ai[1] == npc.whoAmI) {
 						exampleJavelinCount++;
 					}
 				}
@@ -56,9 +55,9 @@ namespace ExampleMod.NPCs
 
 		public override void NPCLoot(NPC npc) {
 			if (npc.lifeMax > 5 && npc.value > 0f) {
-				Item.NewItem(npc.getRect(), ItemType<ExampleItem>());
+				Item.NewItem(npc.getRect(), ModContent.ItemType<ExampleItem>());
 				if (Main.player[(int)Player.FindClosest(npc.position, npc.width, npc.height)].GetModPlayer<ExamplePlayer>().ZoneExample) {
-					Item.NewItem(npc.getRect(), ItemType<BossItem>());
+					Item.NewItem(npc.getRect(), ModContent.ItemType<BossItem>());
 				}
 			}
 			if ((npc.type == NPCID.Pumpking && Main.pumpkinMoon || npc.type == NPCID.IceQueen && Main.snowMoon) && NPC.waveNumber > 10) {
@@ -83,7 +82,7 @@ namespace ExampleMod.NPCs
 			}
 			// See BossBags.OpenVanillaBag to see how to handle adding items to the boss bags used in expert mode. You'll want to do both for most items added to boss drops.
 			if (npc.type == NPCID.DukeFishron && !Main.expertMode) {
-				Item.NewItem(npc.getRect(), ItemType<Items.Abomination.Bubble>(), Main.rand.Next(5, 8));
+				Item.NewItem(npc.getRect(), ModContent.ItemType<Items.Abomination.Bubble>(), Main.rand.Next(5, 8));
 			}
 			if (npc.type == NPCID.Bunny && npc.AnyInteractions()) {
 				int left = (int)(npc.position.X / 16f);
@@ -94,7 +93,7 @@ namespace ExampleMod.NPCs
 				for (int i = left; i <= right; i++) {
 					for (int j = top; j <= bottom; j++) {
 						Tile tile = Main.tile[i, j];
-						if (tile.active() && tile.type == TileType<ElementalPurge>() && !NPC.AnyNPCs(NPCType<PuritySpirit.PuritySpirit>())) {
+						if (tile.active() && tile.type == ModContent.TileType<ElementalPurge>() && !NPC.AnyNPCs(ModContent.NPCType<PuritySpirit.PuritySpirit>())) {
 							i -= Main.tile[i, j].frameX / 18;
 							j -= Main.tile[i, j].frameY / 18;
 							i = i * 16 + 16;
@@ -107,7 +106,7 @@ namespace ExampleMod.NPCs
 								}
 							}
 							if (flag) {
-								NPC.NewNPC(i, j, NPCType<PuritySpirit.PuritySpirit>());
+								NPC.NewNPC(i, j, ModContent.NPCType<PuritySpirit.PuritySpirit>());
 								break;
 							}
 						}
@@ -122,7 +121,7 @@ namespace ExampleMod.NPCs
 		public override void DrawEffects(NPC npc, ref Color drawColor) {
 			if (eFlames) {
 				if (Main.rand.Next(4) < 3) {
-					int dust = Dust.NewDust(npc.position - new Vector2(2f, 2f), npc.width + 4, npc.height + 4, DustType<EtherealFlame>(), npc.velocity.X * 0.4f, npc.velocity.Y * 0.4f, 100, default(Color), 3.5f);
+					int dust = Dust.NewDust(npc.position - new Vector2(2f, 2f), npc.width + 4, npc.height + 4, ModContent.DustType<EtherealFlame>(), npc.velocity.X * 0.4f, npc.velocity.Y * 0.4f, 100, default(Color), 3.5f);
 					Main.dust[dust].noGravity = true;
 					Main.dust[dust].velocity *= 1.8f;
 					Main.dust[dust].velocity.Y -= 0.5f;
@@ -144,27 +143,27 @@ namespace ExampleMod.NPCs
 
 		public override void SetupShop(int type, Chest shop, ref int nextSlot) {
 			if (type == NPCID.Dryad) {
-				shop.item[nextSlot].SetDefaults(ItemType<CarKey>());
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<CarKey>());
 				nextSlot++;
 
 				// We can use shopCustomPrice and shopSpecialCurrency to support custom prices and currency. Usually a shop sells an item for item.value. 
 				// Editing item.value in SetupShop is an incorrect approach.
-				shop.item[nextSlot].SetDefaults(ItemType<CarKey>());
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<CarKey>());
 				shop.item[nextSlot].shopCustomPrice = 2;
 				shop.item[nextSlot].shopSpecialCurrency = CustomCurrencyID.DefenderMedals; // omit this line if shopCustomPrice should be in regular coins. 
 				nextSlot++;
 
-				shop.item[nextSlot].SetDefaults(ItemType<CarKey>());
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<CarKey>());
 				shop.item[nextSlot].shopCustomPrice = 3;
 				shop.item[nextSlot].shopSpecialCurrency = ExampleMod.FaceCustomCurrencyId;
 				nextSlot++;
 			}
 			else if (type == NPCID.Wizard && Main.expertMode) {
-				shop.item[nextSlot].SetDefaults(ItemType<Infinity>());
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Infinity>());
 				nextSlot++;
 			}
 			else if (type == NPCID.Stylist) {
-				shop.item[nextSlot].SetDefaults(ItemType<ExampleHairDye>());
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<ExampleHairDye>());
 				nextSlot++;
 			}
 		}

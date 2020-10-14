@@ -1,6 +1,5 @@
 ﻿using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Placeable
 {
@@ -52,7 +51,7 @@ namespace ExampleMod.Items.Placeable
 			item.autoReuse = true;
 			item.maxStack = 999;
 			item.consumable = true;
-			item.createTile = TileType<Tiles.ExampleTrap>();
+			item.createTile = ModContent.TileType<Tiles.ExampleTrap>();
 			// With all the setup above, placeStyle will be either 0 or 1 for the 2 ExampleTrap instances we've loaded.
 			item.placeStyle = placeStyle;
 			item.width = 12;

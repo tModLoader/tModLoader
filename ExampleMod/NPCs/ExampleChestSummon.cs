@@ -2,7 +2,6 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs
 {
@@ -43,7 +42,7 @@ namespace ExampleMod.NPCs
 			if (TileID.Sets.BasicChest[tileType] && (tileStyle < 5 || tileStyle > 6)) {
 				for (int i = 0; i < 40; i++) {
 					if (Main.chest[num].item[i] != null && Main.chest[num].item[i].type > ItemID.None) {
-						if (Main.chest[num].item[i].type == ItemType<ExampleBlock>()) {
+						if (Main.chest[num].item[i].type == ModContent.ItemType<ExampleBlock>()) {
 							numberExampleBlocks += Main.chest[num].item[i].stack;
 						}
 						else {
@@ -75,7 +74,7 @@ namespace ExampleMod.NPCs
 					NetMessage.SendData(MessageID.ChestUpdates, -1, -1, null, 1, (float)x, (float)y, 0f, number, 0, 0);
 					NetMessage.SendTileSquare(-1, x, y, 3);
 				}
-				int npcToSpawn = NPCType<PartyZombie>();
+				int npcToSpawn = ModContent.NPCType<PartyZombie>();
 				int npcIndex = NPC.NewNPC(x * 16 + 16, y * 16 + 32, npcToSpawn, 0, 0f, 0f, 0f, 0f, 255);
 				Main.npc[npcIndex].whoAmI = npcIndex;
 				NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, npcIndex, 0f, 0f, 0f, 0, 0, 0);

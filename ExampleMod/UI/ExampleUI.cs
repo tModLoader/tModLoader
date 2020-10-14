@@ -7,7 +7,6 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.UI
 {
@@ -188,7 +187,7 @@ namespace ExampleMod.UI
 	{
 		public override bool OnPickup(Item item, Player player) {
 			if (item.type >= ItemID.CopperCoin && item.type <= ItemID.PlatinumCoin)
-				GetInstance<ExampleMod>().ExampleUI.UpdateValue(item.stack * (item.value / 5));
+				ModContent.GetInstance<ExampleMod>().ExampleUI.UpdateValue(item.stack * (item.value / 5));
 
 			return base.OnPickup(item, player);
 		}

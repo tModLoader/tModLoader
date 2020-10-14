@@ -424,7 +424,9 @@ namespace Terraria.ModLoader
 
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();
+			RecipeHooks.setupRecipes = true;
 			Recipe.SetupRecipes();
+			RecipeHooks.setupRecipes = false;
 		}
 
 		internal static void UnloadModContent() {

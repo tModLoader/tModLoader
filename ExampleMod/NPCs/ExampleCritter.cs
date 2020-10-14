@@ -4,7 +4,6 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs
 {
@@ -125,7 +124,7 @@ namespace ExampleMod.NPCs
 			//npc.catchItem = 2007;
 
 			npc.CloneDefaults(NPCID.GlowingSnail);
-			npc.catchItem = (short)ItemType<ExampleCritterItem>();
+			npc.catchItem = (short)ModContent.ItemType<ExampleCritterItem>();
 			npc.lavaImmune = true;
 			//npc.aiStyle = 0;
 			npc.friendly = true; // We have to add this and CanBeHitByItem/CanBeHitByProjectile because of reasons.
@@ -227,7 +226,7 @@ namespace ExampleMod.NPCs
 
 			item.CloneDefaults(ItemID.GlowingSnail);
 			item.bait = 17;
-			item.makeNPC = (short)NPCType<ExampleCritterNPC>();
+			item.makeNPC = (short)ModContent.NPCType<ExampleCritterNPC>();
 		}
 	}
 }

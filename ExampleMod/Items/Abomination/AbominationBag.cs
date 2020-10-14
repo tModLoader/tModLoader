@@ -2,7 +2,6 @@ using ExampleMod.Items.Armor;
 using ExampleMod.Items.Weapons;
 using Terraria;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 using Terraria.ID;
 
 namespace ExampleMod.Items.Abomination
@@ -30,14 +29,14 @@ namespace ExampleMod.Items.Abomination
 		public override void OpenBossBag(Player player) {
 			player.TryGettingDevArmor();
 			if (Main.rand.NextBool(7)) {
-				player.QuickSpawnItem(ItemType<AbominationMask>());
+				player.QuickSpawnItem(ModContent.ItemType<AbominationMask>());
 			}
-			player.QuickSpawnItem(ItemType<MoltenDrill>());
-			player.QuickSpawnItem(ItemType<ElementResidue>());
-			player.QuickSpawnItem(ItemType<PurityTotem>());
-			player.QuickSpawnItem(ItemType<SixColorShield>());
+			player.QuickSpawnItem(ModContent.ItemType<MoltenDrill>());
+			player.QuickSpawnItem(ModContent.ItemType<ElementResidue>());
+			player.QuickSpawnItem(ModContent.ItemType<PurityTotem>());
+			player.QuickSpawnItem(ModContent.ItemType<SixColorShield>());
 		}
 
-		public override int BossBagNPC => NPCType<NPCs.Abomination.Abomination>();
+		public override int BossBagNPC => ModContent.NPCType<NPCs.Abomination.Abomination>();
 	}
 }

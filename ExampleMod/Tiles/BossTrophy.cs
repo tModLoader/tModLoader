@@ -4,7 +4,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -29,16 +28,16 @@ namespace ExampleMod.Tiles
 			int item = 0;
 			switch (frameX / 54) {
 				case 0:
-					item = ItemType<AbominationTrophy>();
+					item = ModContent.ItemType<AbominationTrophy>();
 					break;
 				case 1:
-					item = ItemType<PuritySpiritTrophy>();
+					item = ModContent.ItemType<PuritySpiritTrophy>();
 					break;
 				case 2:
-					item = ItemType<BunnyTrophy>();
+					item = ModContent.ItemType<BunnyTrophy>();
 					break;
 				case 3:
-					item = ItemType<TreeTrophy>();
+					item = ModContent.ItemType<TreeTrophy>();
 					break;
 			}
 			if (item > 0) {

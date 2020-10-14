@@ -1,7 +1,6 @@
 using ExampleMod.Tiles;
 using Terraria;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 using Terraria.ID;
 
 namespace ExampleMod.Items.Armor
@@ -28,8 +27,8 @@ namespace ExampleMod.Items.Armor
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<EquipMaterial>(), 45);
-			recipe.AddTile(TileType<ExampleWorkbench>());
+			recipe.AddIngredient(ModContent.ItemType<EquipMaterial>(), 45);
+			recipe.AddTile(ModContent.TileType<ExampleWorkbench>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

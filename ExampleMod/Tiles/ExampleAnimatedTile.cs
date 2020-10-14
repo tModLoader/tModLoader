@@ -4,7 +4,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -135,7 +134,7 @@ namespace ExampleMod.Tiles
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 16, 32, ItemType<ExampleAnimatedTileItem>());
+			Item.NewItem(i * 16, j * 16, 16, 32, ModContent.ItemType<ExampleAnimatedTileItem>());
 		}
 	}
 
@@ -147,7 +146,7 @@ namespace ExampleMod.Tiles
 
 		public override void SetDefaults() {
 			item.CloneDefaults(ItemID.FireflyinaBottle);
-			item.createTile = TileType<ExampleAnimatedTileTile>();
+			item.createTile = ModContent.TileType<ExampleAnimatedTileTile>();
 		}
 	}
 }

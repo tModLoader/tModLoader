@@ -2,7 +2,6 @@ using ExampleMod.Tiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -16,14 +15,14 @@ namespace ExampleMod.Items
 
 		public override void SetDefaults() {
 			item.CloneDefaults(ItemID.ZephyrFish);
-			item.shoot = ProjectileType<Projectiles.Pets.ExamplePet>();
-			item.buffType = BuffType<Buffs.ExamplePet>();
+			item.shoot = ModContent.ProjectileType<Projectiles.Pets.ExamplePet>();
+			item.buffType = ModContent.BuffType<Buffs.ExamplePet>();
 		}
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
-			recipe.AddTile(TileType<ExampleWorkbench>());
+			recipe.AddIngredient(ModContent.ItemType<ExampleItem>(), 10);
+			recipe.AddTile(ModContent.TileType<ExampleWorkbench>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
