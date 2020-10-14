@@ -98,8 +98,12 @@ namespace Terraria.ModLoader.Engine
 #if CLIENT
 			SocialAPI.LoadSteam();
 			string terrariaInstallLocation = Steam.GetSteamTerrariaInstallDir();
+			string terrariaContentLocation = Path.Combine(terrariaInstallLocation, ContentDirectory);
+#if MAC
+			terrariaContentLocation = Path.Combine(terrariaInstallLocation, "../Resources/Content");
+#endif
 
-			if (!Directory.Exists(Path.Combine(terrariaInstallLocation, ContentDirectory))) {
+			if (!Directory.Exists(terrariaContentLocation)) {
 				Exit(Language.GetTextValue("tModLoader.VanillaSteamInstallationNotFound"), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
 				return false;
 			}
@@ -121,12 +125,15 @@ namespace Terraria.ModLoader.Engine
 			IsGoG = true;
 
 			const string DefaultExe = "Terraria.exe";
-			string CheckExe = $"Terraria_1.4.0.5.exe"; // {Main.versionNumber}
+			string CheckExe = $"Terraria_1.4.1.exe"; // {Main.versionNumber}
 			string vanillaPath = File.Exists(CheckExe) ? CheckExe : DefaultExe;
 
 			// If .exe not present, check Terraria directory (Side-by-Side Manual Install)
 			if (!File.Exists(vanillaPath)) {
 				vanillaPath = Path.Combine("..", "Terraria");
+#if MAC
+				vanillaPath = "../../../Terraria.app/Contents/MacOS/";
+#endif
 				string defaultExe = Path.Combine(vanillaPath, DefaultExe);
 				string checkExe = Path.Combine(vanillaPath, CheckExe);
 				vanillaPath = File.Exists(defaultExe) ? defaultExe : checkExe;
