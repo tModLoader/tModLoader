@@ -109,6 +109,14 @@
  			Form form = (Form)Control.FromHandle(instance.Window.Handle);
  			if (screenBorderless) {
  				SetBorderlessFormStyle(form);
+@@ -3164,6 +_,7 @@
+ 			}
+ 
+ 			form.BringToFront();
++#endif
+ 			if (!startFullscreen) {
+ 				int currentValue2 = graphics.PreferredBackBufferWidth;
+ 				int currentValue3 = graphics.PreferredBackBufferHeight;
 @@ -3519,8 +_,11 @@
  							if (num >= 2)
  								terrariasFixedTiming = binaryReader.ReadBoolean();
@@ -180,13 +188,12 @@
  		}
  
  		private void Main_Exiting(object sender, EventArgs e) {
-@@ -4738,12 +_,17 @@
+@@ -4738,12 +_,16 @@
  			if (graphicsAdapter != null)
  				e.GraphicsDeviceInformation.Adapter = graphicsAdapter;
  
 +#if CLIENT
  			graphics.PreparingDeviceSettings -= SetMonitorOnce;
-+#endif
 +#endif
  		}
  
@@ -275,7 +282,7 @@
  			Configuration.Get("UseExperimentalFeatures", ref UseExperimentalFeatures);
  			Configuration.Get("Support4K", ref Support4K);
 +#if FNA
-+			SetGraphicsProfile(GraphicsProfile.HiDef);
++			SetGraphicsProfile(GraphicsProfile.HiDef, forceSet: true);
 +#else
  			bool flag = Support4K && base.GraphicsDevice.Adapter.IsProfileSupported(GraphicsProfile.HiDef);
  			if (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width <= 1920 && GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height <= 1200)
@@ -329,6 +336,21 @@
  
  			if (_hasPendingNetmodeChange) {
  				netMode = _targetNetMode;
+@@ -12591,12 +_,14 @@
+ 
+ 				UpdateOldNPCShop();
+ 				hasFocus = base.IsActive;
++#if CLIENT && XNA
+ 				Form form = Control.FromHandle(base.Window.Handle) as Form;
+ 				bool num2 = form.WindowState == FormWindowState.Minimized;
+ 				bool flag = Form.ActiveForm == form;
+ 				hasFocus |= flag;
+ 				if (num2)
+ 					hasFocus = false;
++#endif
+ 
+ 				if (!hasFocus && netMode == 0) {
+ 					if (!Platform.IsOSX)
 @@ -12670,7 +_,11 @@
  			if (Main.OnTickForInternalCodeOnly != null)
  				Main.OnTickForInternalCodeOnly();
