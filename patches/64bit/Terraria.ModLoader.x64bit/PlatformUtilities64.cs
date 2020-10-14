@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Terraria.ModLoader.x64bit
 {
-	TO DO: Put platform utilties stuff here
+	//TO DO: Put platform utilties stuff here
 	class PlatformUtilities64
 	{
 	}
