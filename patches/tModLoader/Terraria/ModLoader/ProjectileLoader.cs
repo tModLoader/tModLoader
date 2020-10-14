@@ -111,15 +111,25 @@ namespace Terraria.ModLoader
 
 		internal static void SetDefaults(Projectile projectile, bool createModProjectile = true) {
 			if (IsModProjectile(projectile) && createModProjectile) {
-				projectile.modProjectile = GetProjectile(projectile.type).NewInstance(projectile);
+				projectile.modProjectile = GetProjectile(projectile.type).Clone(projectile);
 			}
-			projectile.globalProjectiles = InstancedGlobals.Select(g => g.NewInstance(projectile)).ToArray();
+			projectile.globalProjectiles = InstancedGlobals.Select(g => g.Clone()).ToArray();
 			projectile.modProjectile?.SetDefaults();
 			foreach (GlobalProjectile g in HookSetDefaults.arr) {
 				g.Instance(projectile).SetDefaults(projectile);
 			}
 		}
 
+		private static HookList HookOnSpawn = AddHook<Action<Projectile>>(g => g.OnSpawn);
+
+		internal static void OnSpawn(Projectile projectile) {
+			projectile.modProjectile?.OnSpawn();
+
+			foreach (GlobalProjectile g in HookOnSpawn.arr) {
+				g.Instance(projectile).OnSpawn(projectile);
+			}
+		}
+		
 		//in Terraria.Projectile rename AI to VanillaAI then make AI call ProjectileLoader.ProjectileAI(this)
 		public static void ProjectileAI(Projectile projectile) {
 			if (PreAI(projectile)) {

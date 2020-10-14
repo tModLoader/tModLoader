@@ -112,6 +112,15 @@
  				if (ProjectileID.Sets.NeedsUUID[Type])
  					projectile.projUUID = projectile.identity;
  
+@@ -8064,6 +_,8 @@
+ 			if (Type == 249)
+ 				projectile.frame = Main.rand.Next(5);
+ 
++			ProjectileLoader.OnSpawn(projectile);
++
+ 			return num;
+ 		}
+ 
 @@ -8752,7 +_,10 @@
  		}
  

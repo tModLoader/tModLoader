@@ -33,34 +33,11 @@ namespace Terraria.ModLoader
 		public GlobalProjectile Instance(Projectile projectile) => InstancePerEntity ? projectile.globalProjectiles[instanceIndex] : this;
 
 		/// <summary>
-		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
-		/// Defaults to false (using default constructor).
-		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
-		/// <summary>
 		/// Returns a clone of this GlobalProjectile. 
 		/// By default this will return a memberwise clone; you will want to override this if your GlobalProjectile contains object references. 
 		/// Only called if CloneNewInstances && InstancePerEntity
 		/// </summary>
 		public virtual GlobalProjectile Clone() => (GlobalProjectile)MemberwiseClone();
-
-		/// <summary>
-		/// Create a new instance of this GlobalProjectile for a Projectile instance. 
-		/// Called at the end of Projectile.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual GlobalProjectile NewInstance(Projectile projectile) {
-			if (CloneNewInstances) {
-				return Clone();
-			}
-			GlobalProjectile copy = (GlobalProjectile)Activator.CreateInstance(GetType());
-			copy.Mod = Mod;
-			copy.index = index;
-			copy.instanceIndex = instanceIndex;
-			return copy;
-		}
 
 		/// <summary>
 		/// Allows you to set the properties of any and every projectile that gets created.
@@ -69,6 +46,9 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaults(Projectile projectile) {
 		}
 
+		public virtual void OnSpawn(Projectile projectile) {
+		}
+		
 		/// <summary>
 		/// Allows you to determine how any projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
 		/// </summary>

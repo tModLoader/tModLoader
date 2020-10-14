@@ -85,41 +85,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether instances of this ModProjectile are created through a memberwise clone or its constructor. Defaults to false.
-		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
-		/// <summary>
 		/// Returns a clone of this ModProjectile. 
 		/// Allows you to decide which fields of your ModProjectile class are copied over when a new Projectile is created. 
 		/// By default this will return a memberwise clone; you will want to override this if your ModProjectile contains object references. 
-		/// Only called if CloneNewInstances is set to true.
 		/// </summary>
-		public virtual ModProjectile Clone() => (ModProjectile)MemberwiseClone();
-
-		/// <summary>
-		/// Create a new instance of this ModProjectile for a Projectile instance. 
-		/// Called at the end of Projectile.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual ModProjectile NewInstance(Projectile projectileClone) {
-			if (CloneNewInstances) {
-				ModProjectile clone = Clone();
-				clone.projectile = projectileClone;
-				return clone;
-			}
-
-			ModProjectile copy = (ModProjectile)Activator.CreateInstance(GetType());
-			copy.projectile = projectileClone;
-			copy.Mod = Mod;
-			copy.aiType = aiType;
-			copy.cooldownSlot = cooldownSlot;
-			copy.drawOffsetX = drawOffsetX;
-			copy.drawOriginOffsetY = drawOriginOffsetY;
-			copy.drawOriginOffsetX = drawOriginOffsetX;
-			copy.drawHeldProjInFrontOfHeldItemAndArms = drawHeldProjInFrontOfHeldItemAndArms;
-			return copy;
+		public virtual ModProjectile Clone(Projectile projectile) {
+			ModProjectile clone = (ModProjectile)MemberwiseClone();
+			clone.projectile = projectile;
+			return clone;
 		}
 
 		/// <summary>
@@ -128,6 +101,9 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaults() {
 		}
 
+		public virtual void OnSpawn() {
+		}
+		
 		/// <summary>
 		/// Allows you to set all your projectile's static properties, such as names/translations and the arrays in ProjectileID.Sets.
 		/// </summary>
