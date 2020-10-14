@@ -46,6 +46,9 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaults(Projectile projectile) {
 		}
 
+		/// <summary>
+		/// Gets called when any projectiles spawns in world
+		/// </summary>
 		public virtual void OnSpawn(Projectile projectile) {
 		}
 		

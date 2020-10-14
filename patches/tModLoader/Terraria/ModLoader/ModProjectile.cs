@@ -101,6 +101,9 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaults() {
 		}
 
+		/// <summary>
+		/// Gets called when your projectiles spawns in world
+		/// </summary>
 		public virtual void OnSpawn() {
 		}
 		

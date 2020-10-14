@@ -45,6 +45,9 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaults(NPC npc) {
 		}
 
+		/// <summary>
+		/// Gets called when any NPC spawns in world
+		/// </summary>
 		public virtual void OnSpawn(NPC npc) {
 		}
 
