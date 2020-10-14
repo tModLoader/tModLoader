@@ -33,40 +33,19 @@ namespace Terraria.ModLoader
 		public GlobalNPC Instance(NPC npc) => InstancePerEntity ? npc.globalNPCs[instanceIndex] : this;
 
 		/// <summary>
-		/// Whether instances of this GlobalNPC are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
-		/// Defaults to false (using default constructor).
-		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
-		/// <summary>
 		/// Returns a clone of this GlobalNPC. 
 		/// By default this will return a memberwise clone; you will want to override this if your GlobalNPC contains object references. 
-		/// Only called if CloneNewInstances && InstancePerEntity
 		/// </summary>
 		public virtual GlobalNPC Clone() => (GlobalNPC)MemberwiseClone();
-
-		/// <summary>
-		/// Create a new instance of this GlobalNPC for an NPC instance. 
-		/// Called at the end of NPC.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual GlobalNPC NewInstance(NPC npc) {
-			if (CloneNewInstances) {
-				return Clone();
-			}
-			GlobalNPC copy = (GlobalNPC)Activator.CreateInstance(GetType());
-			copy.Mod = Mod;
-			copy.index = index;
-			copy.instanceIndex = instanceIndex;
-			return copy;
-		}
 
 		/// <summary>
 		/// Allows you to set the properties of any and every NPC that gets created.
 		/// </summary>
 		/// <param name="npc"></param>
 		public virtual void SetDefaults(NPC npc) {
+		}
+
+		public virtual void OnSpawn(NPC npc) {
 		}
 
 		/// <summary>

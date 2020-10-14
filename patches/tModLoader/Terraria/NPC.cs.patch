@@ -684,6 +684,15 @@
  			if (Main.npc[newNPC].type == 1 && Main.player[num7].RollLuck(180) == 0)
  				Main.npc[newNPC].SetDefaults(-4);
  
+@@ -63701,6 +_,8 @@
+ 						ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[num].GetTypeNetName()), new Color(175, 75, 255));
+ 				}
+ 
++				NPCLoader.OnSpawn(Main.npc[num]);
++
+ 				return num;
+ 			}
+ 
 @@ -63905,12 +_,14 @@
  			if (num2 < 0)
  				num2 = 0;

@@ -153,17 +153,27 @@ namespace Terraria.ModLoader
 		internal static void SetDefaults(NPC npc, bool createModNPC = true) {
 			if (IsModNPC(npc)) {
 				if (createModNPC) {
-					npc.modNPC = GetNPC(npc.type).NewInstance(npc);
+					npc.modNPC = GetNPC(npc.type).Clone(npc);
 				}
 				else //the default NPCs created and bound to ModNPCs are initialized before ResizeArrays. They come here during SetupContent.
 				{
 					Array.Resize(ref npc.buffImmune, BuffLoader.BuffCount);
 				}
 			}
-			npc.globalNPCs = InstancedGlobals.Select(g => g.NewInstance(npc)).ToArray();
+			npc.globalNPCs = InstancedGlobals.Select(g => g.Clone()).ToArray();
 			npc.modNPC?.SetDefaults();
 			foreach (GlobalNPC g in HookSetDefaults.arr) {
 				g.Instance(npc).SetDefaults(npc);
+			}
+		}
+		
+		private static HookList HookOnSpawn = AddHook<Action<NPC>>(g => g.OnSpawn);
+
+		internal static void OnSpawn(NPC npc) {
+			npc.modNPC?.OnSpawn();
+			
+			foreach (GlobalNPC g in HookOnSpawn.arr) {
+				g.Instance(npc).OnSpawn(npc);
 			}
 		}
 

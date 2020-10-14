@@ -116,57 +116,24 @@ namespace Terraria.ModLoader
 			NPCID.Search.Add(FullName, Type);
 		}
 
-		internal void SetupNPC(NPC npc) {
-			ModNPC newNPC = (ModNPC)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
-			newNPC.npc = npc;
-			npc.modNPC = newNPC;
-			newNPC.Mod = Mod;
-			newNPC.SetDefaults();
-		}
-
-		/// <summary>
-		/// Whether instances of this ModNPC are created through a memberwise clone or its constructor. Defaults to false.
-		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
 		/// <summary>
 		/// Returns a clone of this ModNPC. 
 		/// Allows you to decide which fields of your ModNPC class are copied over when a new NPC is created. 
 		/// By default this will return a memberwise clone; you will want to override this if your ModNPC contains object references. 
-		/// Only called if CloneNewInstances is set to true.
 		/// </summary>
-		public virtual ModNPC Clone() => (ModNPC)MemberwiseClone();
-
-		/// <summary>
-		/// Create a new instance of this ModNPC for an NPC instance. 
-		/// Called at the end of NPC.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual ModNPC NewInstance(NPC npcClone) {
-			if (CloneNewInstances) {
-				ModNPC clone = Clone();
-				clone.npc = npcClone;
-				return clone;
-			}
-
-			ModNPC copy = (ModNPC)Activator.CreateInstance(GetType());
-			copy.npc = npcClone;
-			copy.Mod = Mod;
-			copy.aiType = aiType;
-			copy.animationType = animationType;
-			copy.bossBag = bossBag;
-			copy.music = music;
-			copy.drawOffsetY = drawOffsetY;
-			copy.banner = banner;
-			copy.bannerItem = bannerItem;
-			return copy;
+		public virtual ModNPC Clone(NPC npc) {
+			ModNPC clone = (ModNPC)MemberwiseClone();
+			clone.npc = npc;
+			return clone;
 		}
 
 		/// <summary>
 		/// Allows you to set all your NPC's properties, such as width, damage, aiStyle, lifeMax, etc.
 		/// </summary>
 		public virtual void SetDefaults() {
+		}
+
+		public virtual void OnSpawn() {
 		}
 
 		/// <summary>
