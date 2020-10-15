@@ -77,7 +77,7 @@
  		}
  
  		private static void ServerFullWriteCallBack(object state) {
-@@ -361,6 +_,11 @@
+@@ -362,6 +_,11 @@
  					flag = false;
  				}
  				catch {
@@ -89,7 +89,7 @@
  					if (!Disconnect && Main.gameMenu)
  						flag = true;
  				}
-@@ -612,12 +_,26 @@
+@@ -617,12 +_,26 @@
  		}
  
  		public static void Initialize() {
@@ -107,11 +107,11 @@
 +#endif
  		}
  
- 		public static void Update() {
+ 		public static void UpdateInMainThread() {
 +#if CLIENT
- 			UpdateClient();
+ 			UpdateClientInMainThread();
 +#else
-+			UpdateServer();
++			UpdateServerInMainThread();
 +#endif
  		}
  

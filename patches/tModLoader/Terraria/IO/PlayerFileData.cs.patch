@@ -25,17 +25,20 @@
  			string fileName = GetFileName(includeExtension: false);
  			string path = Main.PlayerPath + System.IO.Path.DirectorySeparatorChar + fileName + System.IO.Path.DirectorySeparatorChar;
  			if (Directory.Exists(path)) {
-@@ -81,10 +_,12 @@
+@@ -81,6 +_,7 @@
  			if (!FileUtilities.MoveToLocal(base.Path, playerPathFromName))
  				return;
  
 +			PlayerIO.MoveToLocal(Path, playerPathFromName);
  			string fileName = GetFileName(includeExtension: false);
  			string mapPath = System.IO.Path.Combine(Main.CloudPlayerPath, fileName);
- 			foreach (string item in from path in SocialAPI.Cloud.GetFiles()
--									where path.StartsWith(mapPath, StringComparison.CurrentCultureIgnoreCase) && path.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase)
-+									where path.StartsWith(mapPath, StringComparison.CurrentCultureIgnoreCase)
-+									&& (path.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase) || path.EndsWith(".tmap", StringComparison.CurrentCultureIgnoreCase))
- 									select path) {
- 				string localPath = System.IO.Path.Combine(Main.PlayerPath, fileName, FileUtilities.GetFileName(item));
- 				FileUtilities.MoveToLocal(item, localPath);
+ 			foreach (string item in (from path in SocialAPI.Cloud.GetFiles().ToList()
+@@ -97,7 +_,7 @@
+ 		}
+ 
+ 		private bool MapBelongsToPath(string mapPath, string filePath) {
+-			if (!filePath.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase))
++			if (!filePath.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase) && !filePath.EndsWith(".tmap", StringComparison.CurrentCultureIgnoreCase))
+ 				return false;
+ 
+ 			string value = mapPath.Replace('\\', '/');

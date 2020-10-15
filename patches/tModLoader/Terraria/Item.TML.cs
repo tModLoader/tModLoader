@@ -18,6 +18,11 @@ namespace Terraria
 
 		internal GlobalItem[] globalItems = new GlobalItem[0];
 
+		/// <summary>
+		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon, or ModContent.GetInstance<T>() for custom damage types.
+		/// </summary>
+		public DamageClass DamageType { get; set; }
+
 		// Get
 
 		/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>

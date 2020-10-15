@@ -125,7 +125,6 @@ namespace Terraria.ModLoader.UI
 			if (_modReferences.Length > 0 && !_mod.Enabled) {
 				string refs = string.Join(", ", _mod.properties.modReferences);
 				var icon = UICommon.ButtonExclamationTexture;
-				
 				_modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.ModDependencyClickTooltip", refs)) {
 					Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING, 0f),
 					Top = { Pixels = 42.5f }
@@ -164,7 +163,6 @@ namespace Terraria.ModLoader.UI
 
 			if (loadedMod != null) {
 				_loaded = true;
-				
 				// TODO: refactor and add nicer icons (and maybe not iterate 6 times)
 				int[] values = { loadedMod.GetContent<ModItem>().Count(), loadedMod.GetContent<ModNPC>().Count(), loadedMod.GetContent<ModTile>().Count(), loadedMod.GetContent<ModWall>().Count(), loadedMod.GetContent<ModBuff>().Count(), loadedMod.GetContent<ModMountData>().Count() };
 				string[] localizationKeys = { "ModsXItems", "ModsXNPCs", "ModsXTiles", "ModsXWalls", "ModsXBuffs", "ModsXMounts" };
@@ -177,7 +175,6 @@ namespace Terraria.ModLoader.UI
 						};
 
 						Append(_keyImage);
-						
 						xOffset -= 18;
 					}
 				}

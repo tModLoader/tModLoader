@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameContent/SmartCursorHelper.cs
 +++ src/tModLoader/Terraria/GameContent/SmartCursorHelper.cs
-@@ -192,7 +_,8 @@
+@@ -201,7 +_,8 @@
  					case 511:
  					case 573:
  					case 621:
