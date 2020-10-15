@@ -15,7 +15,7 @@
  
  		private static void ShowTheBox(string preparedMessage) {
 +#if WINDOWS && CLIENT
- 			MessageBox.Show(preparedMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+ 			MessageBox.Show(preparedMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
 +#endif
  		}
  	}
