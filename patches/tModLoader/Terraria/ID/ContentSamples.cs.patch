@@ -11,7 +11,7 @@
  
  namespace Terraria.ID
  {
-@@ -90,6 +_,7 @@
+@@ -92,6 +_,7 @@
  				public ItemGroupAndOrderInGroup(Item item) {
  					ItemType = item.type;
  					Group = GetItemGroup(item, out OrderInGroup);
@@ -19,16 +19,16 @@
  				}
  			}
  
-@@ -588,7 +_,7 @@
+@@ -633,7 +_,7 @@
  
  			public static void SetCreativeMenuOrder() {
  				List<Item> list = new List<Item>();
--				for (int i = 1; i < 5045; i++) {
+-				for (int i = 1; i < 5088; i++) {
 +				for (int i = 1; i < ItemLoader.ItemCount; i++) {
  					Item item = new Item();
  					item.SetDefaults(i);
  					list.Add(item);
-@@ -676,11 +_,13 @@
+@@ -721,11 +_,13 @@
  		public static Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup> ItemCreativeSortingId = new Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup>();
  
  		public static void Initialize() {
@@ -38,16 +38,16 @@
  			NpcNetIdsByPersistentIds.Clear();
  			NpcPersistentIdsByNetIds.Clear();
  			NpcBestiarySortingId.Clear();
--			for (int i = -65; i < 663; i++) {
+-			for (int i = -65; i < 665; i++) {
 +			for (int i = -65; i < NPCLoader.NPCCount; i++) {
  				NPC nPC = new NPC();
  				nPC.SetDefaults(i);
  				NpcsByNetId[i] = nPC;
-@@ -692,14 +_,14 @@
+@@ -737,14 +_,14 @@
  
  			ModifyNPCIds();
  			ProjectilesByType.Clear();
--			for (int j = 0; j < 950; j++) {
+-			for (int j = 0; j < 954; j++) {
 +			for (int j = 0; j < ProjectileLoader.ProjectileCount; j++) {
  				Projectile projectile = new Projectile();
  				projectile.SetDefaults(j);
@@ -55,16 +55,16 @@
  			}
  
  			ItemsByType.Clear();
--			for (int k = 0; k < 5045; k++) {
+-			for (int k = 0; k < 5088; k++) {
 +			for (int k = 0; k < ItemLoader.ItemCount; k++) {
  				Item item = new Item();
  				item.SetDefaults(k);
  				ItemsByType[k] = item;
-@@ -858,7 +_,7 @@
+@@ -903,7 +_,7 @@
  			NPCSpawnParams nPCSpawnParams = default(NPCSpawnParams);
  			nPCSpawnParams.gameModeData = Main.RegisterdGameModes[0];
  			NPCSpawnParams spawnparams = nPCSpawnParams;
--			for (int i = -65; i < 663; i++) {
+-			for (int i = -65; i < 665; i++) {
 +			for (int i = -65; i < NPCLoader.NPCCount; i++) {
  				NPC nPC = new NPC();
  				nPC.SetDefaults(i, spawnparams);

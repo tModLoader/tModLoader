@@ -255,10 +255,6 @@
  		public const byte LiquidUpdate = 48;
 -		public const byte Unknown49 = 49;
 -		public const byte Unknown50 = 50;
--		public const byte Unknown51 = 51;
--		public const byte Unknown52 = 52;
--		public const byte Unknown53 = 53;
--		public const byte Unknown54 = 54;
 +		//spawns a newly joined player
 +		//client state 6->10
 +		//calls Player.Spawn which sends SpawnPlayer to the server
@@ -276,7 +272,7 @@
 +		//3 - Main.Sundialing
 +		//4 - Main.npc[param].BigMimicSpawnSmoke
 +		//}
-+		public const byte Assorted1 = 51;
+ 		public const byte MiscDataSync = 51;
 +		//unlockType, x, y
 +		//if unlockType { Chest.Unlock = 1, WorldGen.UnlockDoor = 2 }
 +		//sends TileSquare to all clients
@@ -286,8 +282,11 @@
 +		//NPC.AddBuff sends this if netMode is client
 +		//adds a buff to an NPC
 +		//SyncNPCBuff is sent to all clients
+-		public const byte Unknown52 = 52;
 +		public const byte AddNPCBuff = 53;
+-		public const byte Unknown53 = 53;
 +		//sends all buffs on an npc
+-		public const byte Unknown54 = 54;
 +		public const byte SendNPCBuffs = 54;
 +		//server does nothing except forward the packet to the buffed player IF the buff is a pvpBuff
 +		//client rejects packets for other players
@@ -402,10 +401,10 @@
  		public const byte ShopOverride = 104;
  		public const byte GemLockToggle = 105;
  		public const byte PoofOfSmoke = 106;
-@@ -150,5 +_,28 @@
- 		public const byte ClientSyncedInventory = 138;
+@@ -151,5 +_,28 @@
  		public const byte SetCountsAsHostForGameplay = 139;
- 		public const byte Count = 140;
+ 		public const byte SetMiscEventValues = 140;
+ 		public const byte Count = 141;
 +		// Sent by Clients who wish to change ConfigScope.ServerSide ModConfigs. Clients send Modname, configname, and json string.
 +		// Server determines if ModConfig.ReloadRequired and ModConfig.ShouldAcceptClientChanges. Replies with ShouldAcceptClientChanges message if rejected.
 +		// Client receives bool success, message, if success, additionally modname, configname, json and applies them locally.

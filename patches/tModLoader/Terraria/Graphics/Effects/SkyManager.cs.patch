@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Graphics/Effects/SkyManager.cs
 +++ src/tModLoader/Terraria/Graphics/Effects/SkyManager.cs
-@@ -84,5 +_,12 @@
+@@ -88,5 +_,12 @@
  
  			return MathHelper.Clamp(num, 0f, 1f);
  		}

@@ -1,0 +1,22 @@
+--- src/decompiled/Terraria/Initializers/ChromaInitializer.cs
++++ src/Terraria/Terraria/Initializers/ChromaInitializer.cs
+@@ -11,7 +_,9 @@
+ using System.Collections.Generic;
+ using System.Diagnostics;
+ using System.Linq;
++#if WINDOWS
+ using System.Windows.Forms;
++#endif
+ using Terraria.GameContent.RGB;
+ using Terraria.GameInput;
+ using Terraria.Graphics.Effects;
+@@ -78,7 +_,9 @@
+ 
+ 			LoadSpecialRulesForDevices();
+ 			AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
++#if WINDOWS
+ 			Application.ApplicationExit += OnProcessExit;
++#endif
+ 		}
+ 
+ 		private static void LoadSpecialRulesForDevices() {

@@ -1,10 +1,11 @@
 --- src/Terraria/ReLogic/ReLogic.csproj
 +++ src/tModLoader/ReLogic/ReLogic.csproj
-@@ -8,12 +_,12 @@
-     <RootNamespace>ReLogic</RootNamespace>
+@@ -9,13 +_,13 @@
    </PropertyGroup>
    <ItemGroup>
+     <Reference Include="SteelSeriesEngineWrapper" />
 -    <Reference Include="../Terraria/Libraries/DotNetZip/Ionic.Zip.CF.dll" />
+     <Reference Include="../Terraria/Libraries/SteelSeriesEngine/SteelSeriesEngineWrapper.dll" />
 +    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.Reduced.dll" />
      <Reference Include="../Terraria/Libraries/FNA/FNA.dll" Condition="$(DefineConstants.Contains('FNA'))" />
      <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.dll" Condition="$(DefineConstants.Contains('XNA'))" />

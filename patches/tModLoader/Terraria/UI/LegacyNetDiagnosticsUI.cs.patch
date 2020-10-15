@@ -4,8 +4,8 @@
  		public static int rxData = 0;
  		public static int txMsg = 0;
  		public static int rxMsg = 0;
--		private const int maxMsg = 141;
-+		internal const int maxMsg = 141;
- 		public static int[] rxMsgType = new int[141];
- 		public static int[] rxDataType = new int[141];
- 		public static int[] txMsgType = new int[141];
+-		private const int maxMsg = 142;
++		internal const int maxMsg = 142;
+ 		public static int[] rxMsgType = new int[142];
+ 		public static int[] rxDataType = new int[142];
+ 		public static int[] txMsgType = new int[142];

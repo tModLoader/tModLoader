@@ -147,9 +147,9 @@
 +										List<int> array = new List<int>();
  										int num142 = 0;
  										for (int num143 = 0; num143 < 200; num143++) {
--											if (Main.npc[num143].active && (Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353 || Main.npc[num143].type == 633)) {
+-											if (Main.npc[num143].active && (Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353 || Main.npc[num143].type == 633 || Main.npc[num143].type == 663)) {
 -												array[num142] = num143;
-+											bool vanillaCanGo = Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353 || Main.npc[num143].type == 633;
++											bool vanillaCanGo = Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353 || Main.npc[num143].type == 633 || Main.npc[num143].type == 663;
 +											if (Main.npc[num143].active && NPCLoader.CanGoToStatue(Main.npc[num143], false, vanillaCanGo)) {
 +												array.Add(num143);
  												num142++;
