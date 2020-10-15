@@ -167,13 +167,13 @@ namespace Terraria.ModLoader
 			}
 		}
 		
-		private static HookList HookOnSpawn = AddHook<Action<NPC>>(g => g.OnSpawn);
+		private static HookList HookOnSpawn = AddHook<Action<NPC, EntitySpawnData>>(g => g.OnSpawn);
 
-		internal static void OnSpawn(NPC npc) {
-			npc.modNPC?.OnSpawn();
+		internal static void OnSpawn(NPC npc, EntitySpawnData data) {
+			npc.modNPC?.OnSpawn(data);
 			
 			foreach (GlobalNPC g in HookOnSpawn.arr) {
-				g.Instance(npc).OnSpawn(npc);
+				g.Instance(npc).OnSpawn(npc, data);
 			}
 		}
 

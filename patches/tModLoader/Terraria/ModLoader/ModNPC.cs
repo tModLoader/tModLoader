@@ -136,7 +136,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets called when your NPC spawns in world
 		/// </summary>
-		public virtual void OnSpawn() {
+		public virtual void OnSpawn(EntitySpawnData data) {
 		}
 
 		/// <summary>

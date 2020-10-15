@@ -120,13 +120,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookOnSpawn = AddHook<Action<Projectile, object>>(g => g.OnSpawn);
+		private static HookList HookOnSpawn = AddHook<Action<Projectile, EntitySpawnData>>(g => g.OnSpawn);
 
-		internal static void OnSpawn(Projectile projectile, object userData) {
-			projectile.modProjectile?.OnSpawn(userData);
+		internal static void OnSpawn(Projectile projectile, EntitySpawnData data) {
+			projectile.modProjectile?.OnSpawn(data);
 
 			foreach (GlobalProjectile g in HookOnSpawn.arr) {
-				g.Instance(projectile).OnSpawn(projectile, userData);
+				g.Instance(projectile).OnSpawn(projectile, data);
 			}
 		}
 		

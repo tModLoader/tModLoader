@@ -155,13 +155,13 @@ namespace Terraria.ModLoader
 				g.Instance(item).SetDefaults(item);
 		}
 
-		private static HookList HookOnSpawn = AddHook<Action<Item>>(g => g.OnSpawn);
+		private static HookList HookOnSpawn = AddHook<Action<Item, EntitySpawnData>>(g => g.OnSpawn);
 
-		internal static void OnSpawn(Item item) {
-			item.modItem?.OnSpawn();
+		internal static void OnSpawn(Item item, EntitySpawnData data) {
+			item.modItem?.OnSpawn(data);
 
 			foreach (GlobalItem g in HookOnSpawn.arr) {
-				g.Instance(item).OnSpawn(item);
+				g.Instance(item).OnSpawn(item, data);
 			}
 		}
 
