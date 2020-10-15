@@ -80,7 +80,7 @@
  			bool flag4 = ItemID.Sets.GamepadWholeScreenUseRange[player.inventory[player.selectedItem].type] || player.scope;
  			int num3 = player.inventory[player.selectedItem].tileBoost + ItemID.Sets.GamepadExtraRange[player.inventory[player.selectedItem].type];
  			if (player.yoyoString && ItemID.Sets.Yoyo[player.inventory[player.selectedItem].type])
-@@ -994,6 +_,9 @@
+@@ -996,6 +_,9 @@
  			List<string> list = new List<string> {
  				"MouseLeft",
  				"MouseRight",
@@ -90,7 +90,7 @@
  				"Inventory"
  			};
  
-@@ -1175,7 +_,7 @@
+@@ -1177,7 +_,7 @@
  					if (DpadSnapCooldown[i] == 0) {
  						int num = 6;
  						if (ItemSlot.IsABuildingItem(player.inventory[player.selectedItem]))
@@ -99,7 +99,7 @@
  
  						DpadSnapCooldown[i] = num;
  						zero += vector;
-@@ -1417,6 +_,9 @@
+@@ -1419,6 +_,9 @@
  						case InputMode.Keyboard:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -109,7 +109,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1454,6 +_,9 @@
+@@ -1456,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -119,7 +119,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Up"].Add("Up");
  							c.KeyStatus["Down"].Add("S");
-@@ -1525,6 +_,9 @@
+@@ -1527,6 +_,9 @@
  						case InputMode.Keyboard:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -129,7 +129,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1562,6 +_,9 @@
+@@ -1564,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -139,7 +139,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Up"].Add("Up");
  							c.KeyStatus["Down"].Add("S");
-@@ -1632,6 +_,9 @@
+@@ -1634,6 +_,9 @@
  						case InputMode.Keyboard:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -149,7 +149,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1669,6 +_,9 @@
+@@ -1671,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -159,7 +159,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Up"].Add("Up");
  							c.KeyStatus["Down"].Add("S");
-@@ -1739,6 +_,9 @@
+@@ -1741,6 +_,9 @@
  						case InputMode.Keyboard:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -169,7 +169,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1776,6 +_,9 @@
+@@ -1778,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
