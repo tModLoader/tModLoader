@@ -200,32 +200,32 @@
  			}
  		}
  
-@@ -1618,10 +_,15 @@
- 				num9 *= inventoryScale;
- 				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num9 / 2f;
+@@ -1628,10 +_,15 @@
+ 				num11 *= inventoryScale;
+ 				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num11 / 2f;
  				Vector2 origin = rectangle2.Size() * (scale3 / 2f - 0.5f);
-+				if (!ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num9 * scale3))
++				if (!ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num11 * scale3))
 +					goto skip;
 +				
- 				spriteBatch.Draw(value7, position2, rectangle2, item.GetAlpha(currentColor), 0f, origin, num9 * scale3, SpriteEffects.None, 0f);
+ 				spriteBatch.Draw(value7, position2, rectangle2, item.GetAlpha(currentColor), 0f, origin, num11 * scale3, SpriteEffects.None, 0f);
  				if (item.color != Color.Transparent)
- 					spriteBatch.Draw(value7, position2, rectangle2, item.GetColor(color), 0f, origin, num9 * scale3, SpriteEffects.None, 0f);
+ 					spriteBatch.Draw(value7, position2, rectangle2, item.GetColor(color), 0f, origin, num11 * scale3, SpriteEffects.None, 0f);
  
 +				skip:
-+				ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num9 * scale3);
++				ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num11 * scale3);
  				if (ItemID.Sets.TrapSigned[item.type])
  					spriteBatch.Draw(TextureAssets.Wire.Value, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle(4, 58, 8, 8), color, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
  
-@@ -1692,7 +_,7 @@
- 					spriteBatch.Draw(TextureAssets.Cd.Value, position3, null, color3, 0f, default(Vector2), num9, SpriteEffects.None, 0f);
+@@ -1702,7 +_,7 @@
+ 					spriteBatch.Draw(TextureAssets.Cd.Value, position3, null, color3, 0f, default(Vector2), num11, SpriteEffects.None, 0f);
  				}
  
 -				if ((context == 10 || context == 18) && item.expertOnly && !Main.expertMode) {
 +				if ((context == 10 || context == 18) && ((item.expertOnly && !Main.expertMode) || (item.masterOnly && !Main.masterMode))) {
  					Vector2 position4 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
  					Color white = Color.White;
- 					spriteBatch.Draw(TextureAssets.Cd.Value, position4, null, white, 0f, default(Vector2), num9, SpriteEffects.None, 0f);
-@@ -1891,7 +_,7 @@
+ 					spriteBatch.Draw(TextureAssets.Cd.Value, position4, null, white, 0f, default(Vector2), num11, SpriteEffects.None, 0f);
+@@ -1901,7 +_,7 @@
  					return false;
  
  				if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0)
@@ -234,7 +234,7 @@
  			}
  
  			for (int i = 0; i < itemCollection.Length; i++) {
-@@ -1907,7 +_,7 @@
+@@ -1917,7 +_,7 @@
  					return true;
  			}
  
@@ -243,7 +243,7 @@
  		}
  
  		private static Item DyeSwap(Item item, out bool success) {
-@@ -1983,6 +_,14 @@
+@@ -1993,6 +_,14 @@
  						accSlotToSwapTo = j - 3;
  				}
  
@@ -258,7 +258,7 @@
  				if (accSlotToSwapTo > num2)
  					return item;
  
-@@ -1998,6 +_,9 @@
+@@ -2008,6 +_,9 @@
  						num3 = k;
  				}
  
@@ -268,7 +268,7 @@
  				result = player.armor[num3].Clone();
  				player.armor[num3] = item.Clone();
  				accSlotToSwapTo = 0;
-@@ -2095,7 +_,7 @@
+@@ -2105,7 +_,7 @@
  		}
  
  		public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false) {
