@@ -3,7 +3,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static Terraria.ModLoader.ModContent; //This lets us access methods (like ItemType) from ModContent without having to type its name.
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
@@ -18,7 +17,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileFrameImportant[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 
-			dustType = DustType<Dusts.Sparkle>();
+			dustType = ModContent.DustType<Dusts.Sparkle>();
 			adjTiles = new int[] { TileID.WorkBenches };
 
 			// Placement
@@ -37,7 +36,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override void NumDust(int x, int y, bool fail, ref int num) => num = fail ? 1 : 3;
 
 		public override void KillMultiTile(int x, int y, int frameX, int frameY) {
-			Item.NewItem(x * 16, y * 16, 32, 16, ItemType<Items.Placeable.Furniture.ExampleWorkbench>());
+			Item.NewItem(x * 16, y * 16, 32, 16, ModContent.ItemType<Items.Placeable.Furniture.ExampleWorkbench>());
 		}
 	}
 }

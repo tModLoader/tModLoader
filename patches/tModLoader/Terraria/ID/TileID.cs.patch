@@ -18,8 +18,8 @@
  				};
  			}
  
--			public static SetFactory Factory = new SetFactory(623);
+-			public static SetFactory Factory = new SetFactory(624);
 +			public static SetFactory Factory = new SetFactory(TileLoader.TileCount);
+ 			public static bool[] AllowsSaveCompressionBatching = Factory.CreateBoolSet(true, 520, 423);
  			public static bool[] IsATreeTrunk = Factory.CreateBoolSet(false, 5, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616);
  			public static bool[] IsShakeable = Factory.CreateBoolSet(false, 5, 72, 323, 583, 584, 585, 586, 587, 588, 589, 596, 616);
- 			public static bool[] GetsDestroyedForMeteors = Factory.CreateBoolSet(false, 5, 32, 352, 583, 584, 585, 586, 587, 588, 589, 596, 616);

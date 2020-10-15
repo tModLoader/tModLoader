@@ -501,6 +501,7 @@ namespace Terraria.ModLoader
 			BuffLoader.Unload();
 			MountLoader.Unload();
 			RarityLoader.Unload();
+			DamageClassLoader.Unload();
 			ModGore.Unload();
 			SoundLoader.Unload();
 			DisposeMusic();

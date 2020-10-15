@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Pets.ExampleLightPet
 {
@@ -18,7 +17,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 		public override void Update(Player player, ref int buffIndex) {
 			player.buffTime[buffIndex] = 18000;
 
-			int projType = ProjectileType<ExampleLightPetProjectile>();
+			int projType = ModContent.ProjectileType<ExampleLightPetProjectile>();
 
 			//If the player is local, and there hasn't been a pet projectile spawned yet - spawn it.
 			if (player.whoAmI == Main.myPlayer && player.ownedProjectileCounts[projType] <= 0) {

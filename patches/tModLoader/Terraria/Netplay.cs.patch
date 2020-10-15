@@ -55,15 +55,15 @@
  		private static void OpenPort(int port) {
  #if SERVER && WINDOWS
  			string localIPAddress = GetLocalIPAddress();
-@@ -421,6 +_,7 @@
+@@ -422,6 +_,7 @@
  		}
  
  		private static void ClientLoopSetup(RemoteAddress address) {
 +			Logging.Terraria.InfoFormat("Connecting to {0}", address.GetFriendlyName());
+ 			Connection.ResetSpecialFlags();
  			ResetNetDiag();
  			Main.ServerSideCharacter = false;
- 			if (Main.rand == null)
-@@ -440,9 +_,11 @@
+@@ -442,9 +_,11 @@
  
  			Disconnect = false;
  			Connection = new RemoteServer();
@@ -76,7 +76,7 @@
  		private static void InnerClientLoop() {
  			try {
  				NetMessage.buffer[256].Reset();
-@@ -485,6 +_,7 @@
+@@ -490,6 +_,7 @@
  						else if (Connection.State == 5 && WorldGen.worldCleared) {
  							Connection.State = 6;
  							Main.player[Main.myPlayer].FindSpawn();
@@ -84,7 +84,7 @@
  							NetMessage.SendData(8, -1, -1, null, Main.player[Main.myPlayer].SpawnX, Main.player[Main.myPlayer].SpawnY);
  						}
  
-@@ -507,8 +_,6 @@
+@@ -512,8 +_,6 @@
  								Main.statusText = Connection.StatusText + ": " + (int)((float)Connection.StatusCount / (float)Connection.StatusMax * 100f) + "%";
  							}
  						}
@@ -93,7 +93,7 @@
  					}
  					else if (Connection.IsActive) {
  						Main.statusText = Language.GetTextValue("Net.LostConnection");
-@@ -518,6 +_,7 @@
+@@ -523,6 +_,7 @@
  					num = Connection.State;
  				}
  

@@ -38,7 +38,7 @@
  				writer.Write((byte)msgType);
  				switch (msgType) {
  					case 1:
--						writer.Write("Terraria" + 230);
+-						writer.Write("Terraria" + 233);
 +						writer.Write(ModLoader.ModLoader.versionedName);
  						break;
  					case 2:
@@ -49,7 +49,7 @@
  						break;
  					case 3:
  						writer.Write((byte)remoteClient);
-@@ -161,6 +_,7 @@
+@@ -163,6 +_,7 @@
  							writer.Write((short)num23);
  							writer.Write((byte)number3);
  							writer.Write((short)num24);
@@ -57,7 +57,7 @@
  							break;
  						}
  					case 7: {
-@@ -298,12 +_,15 @@
+@@ -300,12 +_,15 @@
  							writer.Write((short)WorldGen.SavedOreTiers.Mythril);
  							writer.Write((short)WorldGen.SavedOreTiers.Adamantite);
  							writer.Write((sbyte)Main.invasionType);
@@ -73,7 +73,7 @@
  							break;
  						}
  					case 8:
-@@ -510,6 +_,7 @@
+@@ -512,6 +_,7 @@
  								value4 = (short)item6.netID;
  
  							writer.Write(value4);
@@ -81,11 +81,11 @@
  							break;
  						}
  					case 22:
-@@ -579,9 +_,10 @@
+@@ -581,9 +_,10 @@
  								}
  							}
  
--							if (nPC2.type >= 0 && nPC2.type < 663 && Main.npcCatchable[nPC2.type])
+-							if (nPC2.type >= 0 && nPC2.type < 665 && Main.npcCatchable[nPC2.type])
 +							if (nPC2.type >= 0 && Main.npcCatchable[nPC2.type])
  								writer.Write((byte)nPC2.releaseOwner);
  
@@ -93,11 +93,11 @@
  							break;
  						}
  					case 24:
-@@ -614,18 +_,24 @@
+@@ -616,18 +_,24 @@
  							if (projectile.knockBack != 0f)
  								bb21[5] = true;
  
--							if (projectile.type > 0 && projectile.type < 950 && ProjectileID.Sets.NeedsUUID[projectile.type])
+-							if (projectile.type > 0 && projectile.type < 954 && ProjectileID.Sets.NeedsUUID[projectile.type])
 +							if (projectile.type > 0 && ProjectileID.Sets.NeedsUUID[projectile.type])
  								bb21[7] = true;
  
@@ -119,7 +119,7 @@
  							if (bb21[4])
  								writer.Write((short)projectile.damage);
  
-@@ -642,7 +_,10 @@
+@@ -644,7 +_,10 @@
  						}
  					case 28:
  						writer.Write((short)number);
@@ -131,7 +131,7 @@
  						writer.Write(number3);
  						writer.Write((byte)(number4 + 1f));
  						writer.Write((byte)number5);
-@@ -670,6 +_,7 @@
+@@ -672,6 +_,7 @@
  							writer.Write((short)item5.stack);
  							writer.Write(item5.prefix);
  							writer.Write(value2);
@@ -139,7 +139,7 @@
  							break;
  						}
  					case 33: {
-@@ -713,6 +_,8 @@
+@@ -715,6 +_,8 @@
  						else {
  							writer.Write((short)0);
  						}
@@ -148,7 +148,7 @@
  						break;
  					case 35:
  						writer.Write((byte)number);
-@@ -725,6 +_,9 @@
+@@ -727,6 +_,9 @@
  							writer.Write(player3.zone2);
  							writer.Write(player3.zone3);
  							writer.Write(player3.zone4);
@@ -158,7 +158,7 @@
  							break;
  						}
  					case 38:
-@@ -777,7 +_,7 @@
+@@ -779,7 +_,7 @@
  						}
  					case 50: {
  							writer.Write((byte)number);
@@ -167,7 +167,7 @@
  								writer.Write((ushort)Main.player[number].buffType[n]);
  							}
  
-@@ -1325,7 +_,10 @@
+@@ -1331,7 +_,10 @@
  
  				int num25 = (int)writer.BaseStream.Position;
  				writer.BaseStream.Position = position;
@@ -179,7 +179,7 @@
  				writer.BaseStream.Position = num25;
  				if (Main.netMode == 1) {
  					if (Netplay.Connection.Socket.IsConnected()) {
-@@ -1646,7 +_,7 @@
+@@ -1652,7 +_,7 @@
  							}
  						}
  
@@ -188,7 +188,7 @@
  							short num8 = (short)Chest.FindChest(j, i);
  							if (num8 != -1) {
  								array[num] = num8;
-@@ -1666,7 +_,7 @@
+@@ -1672,7 +_,7 @@
  								array2[num2++] = num10;
  						}
  
@@ -197,7 +197,7 @@
  							short num11 = (short)Sign.ReadSign(j, i);
  							if (num11 != -1)
  								array2[num2++] = num11;
-@@ -1831,6 +_,14 @@
+@@ -1837,6 +_,14 @@
  				writer.Write(sign.text);
  			}
  
@@ -212,7 +212,7 @@
  			writer.Write(num3);
  			for (int m = 0; m < num3; m++) {
  				TileEntity.Write(writer, TileEntity.ByID[array3[m]]);
-@@ -2042,10 +_,11 @@
+@@ -2048,10 +_,11 @@
  					buffer[i].totalData += streamLength;
  					buffer[i].checkBytes = true;
  				}
@@ -225,7 +225,7 @@
  						Netplay.Disconnect = true;
  					}
  					else {
-@@ -2091,7 +_,7 @@
+@@ -2097,7 +_,7 @@
  				catch (Exception) {
  #if SERVER
  					if (num < NetMessage.buffer.Length - 100)
@@ -234,7 +234,7 @@
  #endif
  					num2 = 0;
  					num = 0;
-@@ -2295,7 +_,7 @@
+@@ -2302,7 +_,7 @@
  			}
  
  			if (!flag) {
@@ -243,8 +243,8 @@
  				WorldFile.SaveWorld();
  				Netplay.Disconnect = true;
  			}
-@@ -2346,11 +_,12 @@
- 					SendData(5, toWho, fromWho, null, plr, 58 + Main.player[plr].armor.Length + Main.player[plr].dye.Length + Main.player[plr].miscEquips.Length + 1 + m, (int)Main.player[plr].miscDyes[m].prefix);
+@@ -2353,11 +_,12 @@
+ 					SendData(5, toWho, fromWho, null, plr, 94 + m, (int)Main.player[plr].miscDyes[m].prefix);
  				}
  
 +				PlayerHooks.SyncPlayer(Main.player[plr], toWho, fromWho, false);
@@ -257,7 +257,7 @@
  				}
  
  				return;
-@@ -2362,7 +_,7 @@
+@@ -2369,7 +_,7 @@
  				Netplay.Clients[plr].IsAnnouncementCompleted = false;
  				ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[20].Key, Netplay.Clients[plr].Name), new Color(255, 240, 20), plr);
  				if (Main.dedServ)

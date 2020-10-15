@@ -1,12 +1,13 @@
 --- src/Terraria/Terraria/IO/WorldFile.cs
 +++ src/tModLoader/Terraria/IO/WorldFile.cs
-@@ -14,6 +_,8 @@
+@@ -14,6 +_,9 @@
  using Terraria.Social;
  using Terraria.UI;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
- 
++using System.Linq;
+
  namespace Terraria.IO
  {
 @@ -303,6 +_,7 @@
@@ -17,36 +18,36 @@
  			if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen) {
  				if (!flag) {
  					for (int num = Main.worldPathName.Length - 1; num >= 0; num--) {
-@@ -347,6 +_,8 @@
- 						CheckSavedOreTiers();
- 						binaryReader.Close();
- 						memoryStream.Close();
-+						WorldHooks.SetupWorld();
-+						WorldIO.Load(Main.worldPathName, flag);
- 						if (num3 != 0)
- 							WorldGen.loadFailed = true;
- 						else
-@@ -498,6 +_,9 @@
+@@ -348,6 +_,8 @@
+ 							CheckSavedOreTiers();
+ 							binaryReader.Close();
+ 							memoryStream.Close();
++							WorldHooks.SetupWorld();
++							WorldIO.Load(Main.worldPathName, flag);
+ 							if (num3 != 0)
+ 								WorldGen.loadFailed = true;
+ 							else
+@@ -506,6 +_,9 @@
  			if (Main.worldPathName == null)
  				return;
- 
+
 +			if (!BackupIO.archiveLock)
 +				BackupIO.World.ArchiveWorld(Main.worldPathName, useCloudSaving);
 +
  			new Stopwatch().Start();
  			int num;
  			byte[] array;
-@@ -535,6 +_,7 @@
- 
+@@ -543,6 +_,7 @@
+
  			if (text != null && array2 != null)
  				FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
 +			WorldIO.Save(Main.worldPathName, useCloudSaving);
  		}
- 
+
  		private static void DoRollingBackups(string backupWorldWritePath) {
-@@ -869,7 +_,11 @@
+@@ -877,7 +_,11 @@
  			}
- 
+
  			writer.Write(NPC.savedAngler);
 +			if (Main.anglerQuest < ItemLoader.vanillaQuestFishCount)
 -			writer.Write(Main.anglerQuest);
@@ -57,18 +58,18 @@
  			writer.Write(NPC.savedStylist);
  			writer.Write(NPC.savedTaxCollector);
  			writer.Write(NPC.savedGolfer);
-@@ -951,7 +_,7 @@
+@@ -959,7 +_,7 @@
  					byte b2;
  					byte b3 = b2 = (b = 0);
  					bool flag = false;
 -					if (tile.active())
 +					if (tile.active() && tile.type < TileID.Count)
  						flag = true;
- 
+
  					if (flag) {
-@@ -965,9 +_,11 @@
+@@ -973,9 +_,11 @@
  						}
- 
+
  						if (Main.tileFrameImportant[tile.type]) {
 +							short frameX = tile.frameX;
 +							TileIO.VanillaSaveFrames(tile, ref frameX);
@@ -80,16 +81,16 @@
  							num3++;
  							array[num3] = (byte)(tile.frameY & 0xFF);
  							num3++;
-@@ -982,7 +_,7 @@
+@@ -990,7 +_,7 @@
  						}
  					}
- 
+
 -					if (tile.wall != 0) {
 +					if (tile.wall != 0 && tile.wall < WallID.Count) {
  						b3 = (byte)(b3 | 4);
  						array[num3] = (byte)tile.wall;
  						num3++;
-@@ -1110,7 +_,7 @@
+@@ -1118,7 +_,7 @@
  				writer.Write(chest.name);
  				for (int l = 0; l < 40; l++) {
  					Item item = chest.item[l];
@@ -98,7 +99,7 @@
  						writer.Write((short)0);
  						continue;
  					}
-@@ -1156,7 +_,7 @@
+@@ -1164,7 +_,7 @@
  		private static int SaveNPCs(BinaryWriter writer) {
  			for (int i = 0; i < Main.npc.Length; i++) {
  				NPC nPC = Main.npc[i];
@@ -107,7 +108,7 @@
  					writer.Write(nPC.active);
  					writer.Write(nPC.netID);
  					writer.Write(nPC.GivenName);
-@@ -1176,7 +_,7 @@
+@@ -1184,7 +_,7 @@
  			writer.Write(value: false);
  			for (int j = 0; j < Main.npc.Length; j++) {
  				NPC nPC2 = Main.npc[j];
@@ -134,7 +135,7 @@
  					sign = new Sign();
  					sign.text = text;
  					sign.x = num2;
-@@ -2149,6 +_,7 @@
+@@ -2157,6 +_,7 @@
  				return result;
  			}
  			catch (Exception value) {
@@ -142,16 +143,14 @@
  				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
  					streamWriter.WriteLine(DateTime.Now);
  					streamWriter.WriteLine(value);
-@@ -2199,9 +_,10 @@
- 
+@@ -2207,8 +_,8 @@
+
  		private static int SaveTileEntities(BinaryWriter writer) {
- 			lock (TileEntity.ByID) {
+ 			lock (TileEntity.EntityCreationLock) {
 -				writer.Write(TileEntity.ByID.Count);
+-				foreach (KeyValuePair<int, TileEntity> item in TileEntity.ByID) {
 +				writer.Write(TileEntity.ByID.Count - ModTileEntity.CountInWorld());
- 				foreach (KeyValuePair<int, TileEntity> item in TileEntity.ByID) {
-+					if (item.Value.type < ModTileEntity.NumVanilla)
--					TileEntity.Write(writer, item.Value);
-+						TileEntity.Write(writer, item.Value);
++				foreach (KeyValuePair<int, TileEntity> item in TileEntity.ByID.Where(pair => pair.Value.type < ModTileEntity.NumVanilla)) {
+ 					TileEntity.Write(writer, item.Value);
  				}
  			}
- 

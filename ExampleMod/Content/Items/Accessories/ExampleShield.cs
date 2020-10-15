@@ -4,7 +4,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Accessories
 {
@@ -132,7 +131,7 @@ namespace ExampleMod.Content.Items.Accessories
 
 				//Set the flag for the ExampleDashAccessory being equipped if we have it equipped OR immediately return if any of the accessories are
 				// one of the higher-priority ones
-				if (item.type == ItemType<ExampleShield>()) {
+				if (item.type == ModContent.ItemType<ExampleShield>()) {
 					dashAccessoryEquipped = true;
 				}
 				else if (item.type == ItemID.EoCShield || item.type == ItemID.MasterNinjaGear || item.type == ItemID.Tabi) {

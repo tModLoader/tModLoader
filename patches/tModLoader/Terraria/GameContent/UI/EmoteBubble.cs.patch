@@ -5,28 +5,28 @@
  using Terraria.GameContent.Events;
  using Terraria.ID;
 +using Terraria.ModLoader;
- 
+
  namespace Terraria.GameContent.UI
  {
  	public class EmoteBubble
  	{
--		private static int[] CountNPCs = new int[663];
-+		internal static int[] CountNPCs = new int[NPCLoader.NPCCount];
+-		private static int[] CountNPCs = new int[665];
++		internal static int[] CountNPCs = new int[NPCID.Count];
  		public static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>();
  		private static List<int> toClean = new List<int>();
  		public static int NextID;
 @@ -337,7 +_,7 @@
  		}
- 
+
  		private void ProbeTownNPCs(List<int> list) {
 -			for (int i = 0; i < 663; i++) {
 +			for (int i = 0; i < NPCLoader.NPCCount; i++) {
  				CountNPCs[i] = 0;
  			}
- 
+
 @@ -347,7 +_,7 @@
  			}
- 
+
  			int type = ((NPC)anchor.entity).type;
 -			for (int k = 0; k < 663; k++) {
 +			for (int k = 0; k < NPCLoader.NPCCount; k++) {
