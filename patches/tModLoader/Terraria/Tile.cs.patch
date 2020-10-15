@@ -9,9 +9,75 @@
  		public byte bTileHeader;
  		public byte bTileHeader2;
  		public byte bTileHeader3;
+<<<<<<< Updated upstream
 @@ -329,7 +_,7 @@
  		public byte color() => (byte)(sTileHeader & 0x1F);
  
+=======
+@@ -29,6 +_,9 @@
+ 		public const int Liquid_Water = 0;
+ 		public const int Liquid_Lava = 1;
+ 		public const int Liquid_Honey = 2;
++		public bool countsAsWaterSource;
++		public bool countsAsLavaSource;
++		public bool countsAsHoneySource;
+ 
+ 		public int collisionType {
+ 			get {
+@@ -58,6 +_,9 @@
+ 			bTileHeader3 = 0;
+ 			frameX = 0;
+ 			frameY = 0;
++			countsAsWaterSource = false;
++			countsAsLavaSource = false;
++			countsAsHoneySource = false;
+ 		}
+ 
+ 		public Tile(Tile copy) {
+@@ -71,6 +_,9 @@
+ 				bTileHeader3 = 0;
+ 				frameX = 0;
+ 				frameY = 0;
++				countsAsWaterSource = false;
++				countsAsLavaSource = false;
++				countsAsHoneySource = false;
+ 			}
+ 			else {
+ 				type = copy.type;
+@@ -82,6 +_,9 @@
+ 				bTileHeader3 = copy.bTileHeader3;
+ 				frameX = copy.frameX;
+ 				frameY = copy.frameY;
++				countsAsWaterSource = copy.countsAsWaterSource;
++				countsAsLavaSource = copy.countsAsLavaSource;
++				countsAsHoneySource = copy.countsAsHoneySource;
+ 			}
+ 		}
+ 
+@@ -97,6 +_,9 @@
+ 			bTileHeader3 = 0;
+ 			frameX = 0;
+ 			frameY = 0;
++			countsAsWaterSource = false;
++			countsAsLavaSource = false;
++			countsAsHoneySource = false;
+ 		}
+ 
+ 		public void ClearTile() {
+@@ -116,6 +_,9 @@
+ 			bTileHeader3 = from.bTileHeader3;
+ 			frameX = from.frameX;
+ 			frameY = from.frameY;
++			countsAsWaterSource = from.countsAsWaterSource;
++			countsAsLavaSource = from.countsAsLavaSource;
++			countsAsHoneySource = from.countsAsHoneySource;
+ 		}
+ 
+ 		public bool isTheSameAs(Tile compTile) {
+@@ -329,7 +_,7 @@
+ 		public byte color() => (byte)(sTileHeader & 0x1F);
+ 
+>>>>>>> Stashed changes
  		public void color(byte color) {
 -			sTileHeader = (short)((sTileHeader & 0xFFE0) | color);
 +			sTileHeader = (ushort)((sTileHeader & 0xFFE0) | color);

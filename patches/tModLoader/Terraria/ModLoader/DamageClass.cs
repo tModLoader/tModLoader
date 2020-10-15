@@ -8,6 +8,10 @@ namespace Terraria.ModLoader
 		public static Ranged Ranged { get; private set; } = new Ranged();
 		public static Magic Magic { get; private set; } = new Magic();
 		public static Summon Summon { get; private set; } = new Summon();
+<<<<<<< Updated upstream
+=======
+		public static Throwing Throwing { get; private set; } = new Throwing();
+>>>>>>> Stashed changes
 
 		internal int index;
 

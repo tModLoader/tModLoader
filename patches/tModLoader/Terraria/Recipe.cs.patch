@@ -41,6 +41,7 @@
 -		public bool needGraveyardBiome;
 +		internal bool needGraveyardBiome;
  		private static bool _hasDelayedFindRecipes;
+<<<<<<< Updated upstream
  
 -		public void RequireGroup(string name) {
 +		internal void RequireGroup(string name) {
@@ -60,6 +61,27 @@
  			acceptedGroups[num] = id;
  		}
  
+=======
+ 
+-		public void RequireGroup(string name) {
++		internal void RequireGroup(string name) {
+ 			if (!RecipeGroup.recipeGroupIDs.TryGetValue(name, out int value))
+ 				return;
+ 
+@@ -49,7 +_,7 @@
+ 			acceptedGroups[num] = value;
+ 		}
+ 
+-		public void RequireGroup(int id) {
++		internal void RequireGroup(int id) {
+ 			int num = 0;
+ 			while (true) {
+ 				if (num < maxRequirements) {
+@@ -66,13 +_,13 @@
+ 			acceptedGroups[num] = id;
+ 		}
+ 
+>>>>>>> Stashed changes
 -		public bool ProcessGroupsForText(int type, out string theText) {
 +		internal bool ProcessGroupsForText(int type, out string theText) {
  			for (int i = 0; i < maxRequirements; i++) {
@@ -90,6 +112,7 @@
  
  			return false;
  		}
+<<<<<<< Updated upstream
  
 -		public Recipe() {
 +		internal Recipe(Mod mod = null) {
@@ -104,6 +127,22 @@
  
 +				ConsumeItemHooks?.Invoke(this, item2.type, ref num);
 +
+=======
+ 
+-		public Recipe() {
++		internal Recipe(Mod mod = null) {
++			Mod = mod;
++
+ 			for (int i = 0; i < maxRequirements; i++) {
+ 				requiredItem[i] = new Item();
+ 				requiredTile[i] = -1;
+@@ -128,6 +_,8 @@
+ 					}
+ 				}
+ 
++				ConsumeItemHooks?.Invoke(this, item2.type, ref num);
++
+>>>>>>> Stashed changes
  				if (num <= 0)
  					continue;
  
@@ -152,6 +191,18 @@
  			if (!anyPressurePlate)
  				return false;
  
+<<<<<<< Updated upstream
+=======
+@@ -393,7 +_,7 @@
+ 					}
+ 
+ 					if (flag) {
+-						bool num6 = !Main.recipe[n].needWater || Main.player[Main.myPlayer].adjWater || Main.player[Main.myPlayer].adjTile[172];
++						bool num6 = !Main.recipe[n].needWater || Main.player[Main.myPlayer].adjWater; // individual sink check is no longer needed due to countsAsWaterSource, hardcode begone
+ 						bool flag3 = !Main.recipe[n].needHoney || Main.recipe[n].needHoney == Main.player[Main.myPlayer].adjHoney;
+ 						bool flag4 = !Main.recipe[n].needLava || Main.recipe[n].needLava == Main.player[Main.myPlayer].adjLava;
+ 						bool flag5 = !Main.recipe[n].needSnowBiome || Main.player[Main.myPlayer].ZoneSnow;
+>>>>>>> Stashed changes
 @@ -402,7 +_,7 @@
  							flag = false;
  					}

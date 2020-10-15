@@ -15,7 +15,17 @@
  	{
  		private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  		{
+<<<<<<< Updated upstream
 @@ -88,9 +_,9 @@
+=======
+@@ -83,14 +_,15 @@
+ 		public int soundDelay;
+ 		public int damage;
+ 		public int originalDamage;
++		public int originalCrit;
+ 		public int spriteDirection = 1;
+ 		public bool hostile;
+>>>>>>> Stashed changes
  		public float knockBack;
  		public bool friendly;
  		public int penetrate = 1;
@@ -28,6 +38,44 @@
  		public int maxPenetrate = 1;
  		public int identity;
  		public float light;
+<<<<<<< Updated upstream
+=======
+@@ -100,7 +_,6 @@
+ 		public Vector2[] oldPos = new Vector2[10];
+ 		public float[] oldRot = new float[10];
+ 		public int[] oldSpriteDirection = new int[10];
+-		public bool minion;
+ 		public float minionSlots;
+ 		public int minionPos;
+ 		public int restrikeDelay;
+@@ -112,9 +_,23 @@
+ 		public bool ownerHitCheck;
+ 		public int[] playerImmune = new int[255];
+ 		public string miscText = "";
+-		public bool melee;
+-		public bool ranged;
+-		public bool magic;
++		public DamageClass DamageType;
++		internal bool melee {
++			get => DamageType == DamageClass.Melee;
++			set => DamageType = value ? DamageClass.Melee : (melee ? null : DamageType);
++		}
++		internal bool magic {
++			get => DamageType == DamageClass.Magic;
++			set => DamageType = value ? DamageClass.Magic : (magic ? null : DamageType);
++		}
++		internal bool ranged {
++			get => DamageType == DamageClass.Ranged;
++			set => DamageType = value ? DamageClass.Ranged : (ranged ? null : DamageType);
++		}
++		internal bool minion {
++			get => DamageType == DamageClass.Summon;
++			set => DamageType = value ? DamageClass.Summon : (minion ? null : DamageType);
++		}
+ 		public bool coldDamage;
+ 		public bool noEnchantments;
+ 		public bool noEnchantmentVisuals;
+>>>>>>> Stashed changes
 @@ -140,7 +_,12 @@
  		private static List<int> _ai156_blacklistedTargets = new List<int>();
  		private static float[] _CompanionCubeScreamCooldown = new float[255];
@@ -83,6 +131,33 @@
  			ownerHitCheckDistance = 1000f;
  			counterweight = false;
  			sentry = false;
+<<<<<<< Updated upstream
+=======
+@@ -260,13 +_,14 @@
+ 
+ 			ResetLocalNPCHitImmunity();
+ 			noDropItem = false;
+-			minion = false;
+ 			minionSlots = 0f;
+ 			soundDelay = 0;
+ 			spriteDirection = 1;
++			DamageType = null;
+ 			melee = false;
+ 			ranged = false;
+ 			magic = false;
++			minion = false;
+ 			ownerHitCheck = false;
+ 			hide = false;
+ 			lavaWet = false;
+@@ -298,6 +_,7 @@
+ 			friendly = false;
+ 			damage = 0;
+ 			originalDamage = 0;
++			originalCrit = 0;
+ 			knockBack = 0f;
+ 			miscText = "";
+ 			coldDamage = false;
+>>>>>>> Stashed changes
 @@ -7891,9 +_,8 @@
  				usesLocalNPCImmunity = true;
  				localNPCHitCooldown = 80;
@@ -173,6 +248,18 @@
  							else if (Main.npc[i].trapImmune && trap)
  								flag4 = true;
  							else if (Main.npc[i].immortal && npcProj)
+<<<<<<< Updated upstream
+=======
+@@ -9041,7 +_,7 @@
+ 									}
+ 
+ 									if (type == 604)
+-										Main.player[owner].Counterweight(nPC.Center, damage, knockBack);
++										Main.player[owner].CounterweightBetter(this, damage, knockBack);
+ 
+ 									float num7 = knockBack;
+ 									bool flag6 = false;
+>>>>>>> Stashed changes
 @@ -9089,7 +_,7 @@
  									}
  
@@ -182,6 +269,36 @@
  										float value2 = (scale - 1f) * 100f;
  										value2 = Utils.Clamp(value2, 0f, 50f);
  										num9 = (int)((float)num9 * (1f + value2 * 0.23f));
+<<<<<<< Updated upstream
+=======
+@@ -9106,6 +_,7 @@
+ 									}
+ 
+ 									if (flag7) {
++										/*
+ 										if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
+ 											flag6 = true;
+ 
+@@ -9114,6 +_,9 @@
+ 
+ 										if (magic && Main.rand.Next(1, 101) <= Main.player[owner].magicCrit)
+ 											flag6 = true;
++										*/
++										if (Main.rand.Next(100) < originalCrit)
++											flag6 = true;
+ 
+ 										int num12 = type;
+ 										if ((uint)(num12 - 688) <= 2u) {
+@@ -9357,7 +_,7 @@
+ 										timeLeft = 1;
+ 
+ 									if (aiStyle == 99) {
+-										Main.player[owner].Counterweight(nPC.Center, damage, knockBack);
++										Main.player[owner].CounterweightBetter(this, damage, knockBack);
+ 										if (nPC.Center.X < Main.player[owner].Center.X)
+ 											base.direction = -1;
+ 										else
+>>>>>>> Stashed changes
 @@ -9415,7 +_,7 @@
  											num18 = (int)((double)num18 * 0.75);
  									}
@@ -273,10 +390,23 @@
  
  						if (aiStyle == 3) {
  							if (ai[0] == 0f) {
+<<<<<<< Updated upstream
 @@ -10031,11 +_,15 @@
  						if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
  							flag17 = true;
  
+=======
+@@ -10028,14 +_,20 @@
+ 							timeLeft = 1;
+ 
+ 						bool flag17 = false;
++						// crits aren't supposed to be able to happen in PvP scenarios at all
++						/*
+ 						if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
+ 							flag17 = true;
+-
++						*/
+>>>>>>> Stashed changes
 +						//Patch context: ^ flag17, to be used below multiple times.
  						int num46 = Main.DamageVar((int)((float)damage * num5), Main.player[owner].luck);
 +						ProjectileLoader.ModifyHitPvp(this, player2, ref num46, ref flag17);
@@ -473,6 +603,7 @@
 +				else if (ProjectileLoader.GrappleOutOfRange(num3, this)) {
 +					ai[0] = 1f;
 +				}
+<<<<<<< Updated upstream
  
  				Vector2 value = base.Center - new Vector2(5f);
  				Vector2 value2 = base.Center + new Vector2(5f);
@@ -505,6 +636,40 @@
  				int num4 = item.stack = Main.rand.Next(minValue2, num3 + 1);
  			}
  
+=======
+ 
+ 				Vector2 value = base.Center - new Vector2(5f);
+ 				Vector2 value2 = base.Center + new Vector2(5f);
+@@ -32190,6 +_,7 @@
+ 							if (type >= 646 && type <= 649)
+ 								num17 = 4;
+ 
++							ProjectileLoader.NumGrappleHooks(this, Main.player[owner], ref num17);
+ 							for (int num18 = 0; num18 < 1000; num18++) {
+ 								if (Main.projectile[num18].active && Main.projectile[num18].owner == owner && Main.projectile[num18].aiStyle == 7) {
+ 									if (Main.projectile[num18].timeLeft < num16) {
+@@ -32267,6 +_,7 @@
+ 				if (type == 332)
+ 					num19 = 17f;
+ 
++				ProjectileLoader.GrappleRetreatSpeed(this, Main.player[owner], ref num19);
+ 				if (num3 < 24f)
+ 					Kill();
+ 
+@@ -32783,7 +_,7 @@
+ 						if (tileSafely2.active() && Main.tileSolid[tileSafely2.type] && !Main.tileSolidTop[tileSafely2.type])
+ 							continue;
+ 
+-						int num4 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely);
++						int num4 = WorldGen.KillTile_GetTileDustAmount(true, tileSafely, j, k);
+ 						for (int l = 0; l < num4; l++) {
+ 							Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(j, k, tileSafely)];
+ 							obj.velocity.Y -= 3f + (float)num3 * 1.5f;
+@@ -33196,6 +_,7 @@
+ 				int num4 = item.stack = Main.rand.Next(minValue2, num3 + 1);
+ 			}
+ 
+>>>>>>> Stashed changes
 +			ItemLoader.CaughtFishStack(item);
  			item.newAndShiny = true;
  			Item item2 = thePlayer.GetItem(owner, item, default(GetItemSettings));
