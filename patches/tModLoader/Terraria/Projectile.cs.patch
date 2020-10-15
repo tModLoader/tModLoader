@@ -121,7 +121,7 @@
  
  			if (Main.netMode != 0 && Owner == Main.myPlayer)
  				NetMessage.SendData(27, -1, -1, null, num);
-@@ -8752,7 +_,10 @@
+@@ -8752,8 +_,14 @@
  		}
  
  		public void Damage() {
