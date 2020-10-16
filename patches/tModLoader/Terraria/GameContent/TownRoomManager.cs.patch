@@ -5,7 +5,7 @@
  using System.IO;
  using Terraria.ID;
 +using Terraria.ModLoader;
-
+ 
  namespace Terraria.GameContent
  {
  	public class TownRoomManager
@@ -15,7 +15,7 @@
 +		internal List<Tuple<int, Point>> _roomLocationPairs = new List<Tuple<int, Point>>();
 -		private bool[] _hasRoom = new bool[665];
 +		internal bool[] _hasRoom = new bool[NPCLoader.NPCCount];
-
+ 
  		public void AddOccupantsToList(int x, int y, List<int> occupantsList) {
  			AddOccupantsToList(new Point(x, y), occupantsList);
 @@ -73,8 +_,16 @@

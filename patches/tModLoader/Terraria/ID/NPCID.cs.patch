@@ -17,7 +17,7 @@
  			public static Dictionary<int, int> SpecialSpawningRules = new Dictionary<int, int> {
  				{ 259, 0 },
  				{ 260, 0 },
-@@ -1153,7 +_,7 @@
+@@ -4104,7 +_,7 @@
  
  				dictionary.Add(6, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -26,7 +26,7 @@
  					Position = new Vector2(20f, 29f),
  					PortraitPositionXOverride = 0f,
  					PortraitPositionYOverride = 10f
-@@ -1171,7 +_,7 @@
+@@ -4122,7 +_,7 @@
  
  				dictionary.Add(9, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -35,7 +35,7 @@
  					Position = new Vector2(2f, 24f),
  					PortraitPositionXOverride = 0f,
  					PortraitPositionYOverride = 10f
-@@ -1189,7 +_,7 @@
+@@ -4140,7 +_,7 @@
  
  				dictionary.Add(12, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -44,7 +44,7 @@
  					Position = new Vector2(40f, 22f),
  					PortraitPositionXOverride = 0f,
  					PortraitPositionYOverride = 10f
-@@ -1302,7 +_,7 @@
+@@ -4253,7 +_,7 @@
  
  				dictionary.Add(37, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -53,7 +53,7 @@
  					Position = new Vector2(40f, 23f),
  					PortraitPositionXOverride = 0f,
  					PortraitPositionYOverride = 10f
-@@ -1522,7 +_,7 @@
+@@ -4473,7 +_,7 @@
  
  				dictionary.Add(86, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -62,7 +62,7 @@
  					Position = new Vector2(55f, 15f),
  					PortraitPositionXOverride = 4f,
  					PortraitPositionYOverride = 10f
-@@ -1567,7 +_,7 @@
+@@ -4518,7 +_,7 @@
  
  				dictionary.Add(94, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -71,7 +71,7 @@
  					Position = new Vector2(20f, 28f),
  					PortraitPositionXOverride = 0f,
  					PortraitPositionYOverride = 10f
-@@ -1585,7 +_,7 @@
+@@ -4536,7 +_,7 @@
  
  				dictionary.Add(97, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -80,7 +80,7 @@
  					Position = new Vector2(40f, 24f),
  					PortraitPositionXOverride = 0f,
  					PortraitPositionYOverride = 12f
-@@ -1663,7 +_,7 @@
+@@ -4614,7 +_,7 @@
  
  				dictionary.Add(112, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -89,7 +89,7 @@
  					Position = new Vector2(56f, 5f),
  					PortraitPositionXOverride = 10f,
  					PortraitPositionYOverride = 0f
-@@ -1676,7 +_,7 @@
+@@ -4627,7 +_,7 @@
  
  				dictionary.Add(114, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -98,7 +98,7 @@
  					Position = new Vector2(56f, 3f),
  					PortraitPositionXOverride = 55f,
  					PortraitPositionYOverride = 0f
-@@ -1691,7 +_,7 @@
+@@ -4642,7 +_,7 @@
  
  				dictionary.Add(116, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -107,7 +107,7 @@
  					Position = new Vector2(10f, 20f),
  					PortraitPositionXOverride = 0f,
  					PortraitPositionYOverride = 0f
-@@ -1748,7 +_,7 @@
+@@ -4699,7 +_,7 @@
  
  				dictionary.Add(126, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -116,7 +116,7 @@
  					Position = new Vector2(0f, 0f),
  					PortraitPositionXOverride = 0f,
  					PortraitPositionYOverride = 1f
-@@ -1795,7 +_,7 @@
+@@ -4746,7 +_,7 @@
  
  				dictionary.Add(133, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -125,7 +125,7 @@
  					Position = new Vector2(60f, 8f),
  					PortraitPositionXOverride = 3f,
  					PortraitPositionYOverride = 0f
-@@ -2289,7 +_,7 @@
+@@ -5240,7 +_,7 @@
  
  				dictionary.Add(243, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -134,7 +134,7 @@
  					Position = new Vector2(2f, 48f),
  					PortraitPositionXOverride = 0f,
  					PortraitPositionYOverride = 24f
-@@ -2365,7 +_,7 @@
+@@ -5316,7 +_,7 @@
  
  				dictionary.Add(258, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -143,7 +143,7 @@
  					Position = new Vector2(0f, 25f),
  					PortraitPositionXOverride = 0f,
  					PortraitPositionYOverride = 8f
-@@ -2373,7 +_,7 @@
+@@ -5324,7 +_,7 @@
  
  				dictionary.Add(259, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -152,7 +152,7 @@
  					Position = new Vector2(0f, 25f),
  					PortraitPositionXOverride = 1f,
  					PortraitPositionYOverride = 4f
-@@ -3021,7 +_,7 @@
+@@ -5972,7 +_,7 @@
  
  				dictionary.Add(392, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -161,7 +161,7 @@
  					Position = new Vector2(-1f, 18f),
  					PortraitPositionXOverride = 1f,
  					PortraitPositionYOverride = 0f
-@@ -3049,7 +_,7 @@
+@@ -6000,7 +_,7 @@
  
  				dictionary.Add(397, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -170,7 +170,7 @@
  					Position = new Vector2(0f, 5f),
  					Scale = 0.4f,
  					PortraitScale = 0.7f,
-@@ -3068,7 +_,7 @@
+@@ -6019,7 +_,7 @@
  
  				dictionary.Add(401, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -179,7 +179,7 @@
  					Position = new Vector2(42f, 15f),
  					PortraitPositionXOverride = 0f,
  					PortraitPositionYOverride = 0f
-@@ -3103,7 +_,7 @@
+@@ -6054,7 +_,7 @@
  
  				dictionary.Add(411, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -188,7 +188,7 @@
  					Position = new Vector2(50f, 28f),
  					PortraitPositionXOverride = 0f,
  					PortraitPositionYOverride = 4f
-@@ -3323,7 +_,7 @@
+@@ -6274,7 +_,7 @@
  
  				dictionary.Add(453, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -197,7 +197,7 @@
  					Position = new Vector2(57f, 10f),
  					PortraitPositionXOverride = 5f,
  					PortraitPositionYOverride = 0f
-@@ -3490,7 +_,7 @@
+@@ -6441,7 +_,7 @@
  
  				dictionary.Add(489, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -206,7 +206,7 @@
  					Position = new Vector2(30f, -5f),
  					Scale = 0.8f,
  					PortraitPositionXOverride = 1f,
-@@ -3600,7 +_,7 @@
+@@ -6551,7 +_,7 @@
  
  				dictionary.Add(509, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -215,7 +215,7 @@
  					Position = new Vector2(55f, 18f),
  					PortraitPositionXOverride = 10f,
  					PortraitPositionYOverride = 12f
-@@ -3618,7 +_,7 @@
+@@ -6569,7 +_,7 @@
  
  				dictionary.Add(511, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -224,7 +224,7 @@
  					Position = new Vector2(37f, 24f),
  					PortraitPositionXOverride = 10f,
  					PortraitPositionYOverride = 17f
-@@ -4050,7 +_,7 @@
+@@ -7001,7 +_,7 @@
  
  				dictionary.Add(593, value);
  				value = new NPCBestiaryDrawModifiers(0) {
@@ -233,7 +233,7 @@
  					Scale = 0.8f
  				};
  
-@@ -4166,7 +_,7 @@
+@@ -7117,7 +_,7 @@
  
  				dictionary.Add(620, value);
  				value = new NPCBestiaryDrawModifiers(0) {

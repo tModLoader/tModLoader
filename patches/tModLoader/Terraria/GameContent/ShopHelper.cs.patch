@@ -8,11 +8,11 @@
  using Terraria.Localization;
  
  namespace Terraria.GameContent
-@@ -106,7 +_,7 @@
- 					_currentPriceAdjustment *= 0.9f;
+@@ -118,7 +_,7 @@
+ 					_currentPriceAdjustment *= 0.95f;
  				}
  
--				bool[] array = new bool[663];
+-				bool[] array = new bool[665];
 +				bool[] array = new bool[NPCLoader.NPCCount];
  				foreach (NPC item in nearbyResidentNPCs) {
  					array[item.type] = true;

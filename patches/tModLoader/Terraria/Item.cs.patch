@@ -516,11 +516,11 @@
  		}
  
  		public void OnPurchase(Item item) {
-@@ -45840,7 +_,7 @@
+@@ -46184,7 +_,7 @@
  				Prefix(reader.ReadByte());
  			}
  
--			if (type >= 5045)
+-			if (type >= 5088)
 +			if (type >= ItemLoader.ItemCount)
  				TurnToAir();
  		}

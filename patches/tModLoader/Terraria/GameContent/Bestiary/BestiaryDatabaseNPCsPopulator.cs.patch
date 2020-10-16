@@ -30,7 +30,7 @@
  			AddNPCBiomeRelationships_Automated();
  			AddNPCBiomeRelationships_Manual();
  			AddNPCBiomeRelationships_AddDecorations_Automated();
-@@ -522,52 +_,57 @@
+@@ -542,53 +_,58 @@
  			}
  		}
  
@@ -63,6 +63,7 @@
 -			Register(BestiaryEntry.TownNPC(368));
 -			Register(BestiaryEntry.TownNPC(453));
 -			Register(BestiaryEntry.TownNPC(633));
+-			Register(BestiaryEntry.TownNPC(663));
 -			Register(BestiaryEntry.TownNPC(638));
 -			Register(BestiaryEntry.TownNPC(637));
 -			Register(BestiaryEntry.TownNPC(656));
@@ -96,6 +97,7 @@
 +		//	Register(BestiaryEntry.TownNPC(368));
 +		//	Register(BestiaryEntry.TownNPC(453));
 +		//	Register(BestiaryEntry.TownNPC(633));
++		//	Register(BestiaryEntry.TownNPC(656));
 +		//	Register(BestiaryEntry.TownNPC(638));
 +		//	Register(BestiaryEntry.TownNPC(637));
 +		//	Register(BestiaryEntry.TownNPC(656));
