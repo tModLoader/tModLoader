@@ -15,7 +15,13 @@
  	{
  		private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  		{
-@@ -88,9 +_,9 @@
+@@ -83,14 +_,15 @@
+ 		public int soundDelay;
+ 		public int damage;
+ 		public int originalDamage;
++		public int originalCrit;
+ 		public int spriteDirection = 1;
+ 		public bool hostile;
  		public float knockBack;
  		public bool friendly;
  		public int penetrate = 1;
@@ -83,6 +89,14 @@
  			ownerHitCheckDistance = 1000f;
  			counterweight = false;
  			sentry = false;
+@@ -298,6 +_,7 @@
+ 			friendly = false;
+ 			damage = 0;
+ 			originalDamage = 0;
++			originalCrit = 0;
+ 			knockBack = 0f;
+ 			miscText = "";
+ 			coldDamage = false;
 @@ -7891,9 +_,8 @@
  				usesLocalNPCImmunity = true;
  				localNPCHitCooldown = 80;
@@ -173,6 +187,15 @@
  							else if (Main.npc[i].trapImmune && trap)
  								flag4 = true;
  							else if (Main.npc[i].immortal && npcProj)
+@@ -9041,7 +_,7 @@
+ 									}
+ 
+ 									if (type == 604)
+-										Main.player[owner].Counterweight(nPC.Center, damage, knockBack);
++										Main.player[owner].Counterweight(this, damage, knockBack);
+ 
+ 									float num7 = knockBack;
+ 									bool flag6 = false;
 @@ -9089,7 +_,7 @@
  									}
  
@@ -182,6 +205,33 @@
  										float value2 = (scale - 1f) * 100f;
  										value2 = Utils.Clamp(value2, 0f, 50f);
  										num9 = (int)((float)num9 * (1f + value2 * 0.23f));
+@@ -9106,6 +_,7 @@
+ 									}
+ 
+ 									if (flag7) {
++										/*
+ 										if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
+ 											flag6 = true;
+ 
+@@ -9114,6 +_,9 @@
+ 
+ 										if (magic && Main.rand.Next(1, 101) <= Main.player[owner].magicCrit)
+ 											flag6 = true;
++										*/
++										if (Main.rand.Next(100) < originalCrit)
++											flag6 = true;
+ 
+ 										int num12 = type;
+ 										if ((uint)(num12 - 688) <= 2u) {
+@@ -9357,7 +_,7 @@
+ 										timeLeft = 1;
+ 
+ 									if (aiStyle == 99) {
+-										Main.player[owner].Counterweight(nPC.Center, damage, knockBack);
++										Main.player[owner].Counterweight(this, damage, knockBack);
+ 										if (nPC.Center.X < Main.player[owner].Center.X)
+ 											base.direction = -1;
+ 										else
 @@ -9415,7 +_,7 @@
  											num18 = (int)((double)num18 * 0.75);
  									}
@@ -273,10 +323,15 @@
  
  						if (aiStyle == 3) {
  							if (ai[0] == 0f) {
-@@ -10031,11 +_,15 @@
+@@ -10028,14 +_,19 @@
+ 							timeLeft = 1;
+ 
+ 						bool flag17 = false;
++						/*
  						if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
  							flag17 = true;
- 
+-
++						*/
 +						//Patch context: ^ flag17, to be used below multiple times.
  						int num46 = Main.DamageVar((int)((float)damage * num5), Main.player[owner].luck);
 +						ProjectileLoader.ModifyHitPvp(this, player2, ref num46, ref flag17);
