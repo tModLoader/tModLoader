@@ -3069,6 +3069,16 @@
  					int num178 = Projectile.NewProjectile(pointPoisition.X, pointPoisition.Y, num2, num3, projToShoot, Damage, KnockBack, i);
  					if (sItem.type == 726)
  						Main.projectile[num178].magic = true;
+@@ -33910,6 +_,9 @@
+ 					if (Main.projectile[num178].aiStyle == 160 && Main.IsItAHappyWindyDay)
+ 						AchievementsHelper.HandleSpecialEvent(this, 17);
+ 				}
++
++				if (sItem.UseSound != null && (!((sItem.useStyle == 1 || sItem.useStyle == 3) && !sItem.noMelee && !sItem.noUseGraphic) || sItem.fishingPole > 0))
++					SoundEngine.PlaySound(sItem.UseSound, base.Center);
+ 			}
+ 			else if (sItem.useStyle == 5 || sItem.useStyle == 13) {
+ 				itemRotation = 0f;
 @@ -34434,6 +_,8 @@
  		}
  
@@ -3101,6 +3111,22 @@
  			if (Main.dedServ)
  				return;
  
+@@ -35342,8 +_,13 @@
+ 			attackCD = 0;
+ 			ApplyItemAnimation(sItem);
+ 			bool flag2 = ItemID.Sets.SkipsInitialUseSound[sItem.type];
+-			if (sItem.UseSound != null && !flag2)
++			if (sItem.UseSound != null && !flag2) {
++				if (sItem.shoot == ProjectileID.None)
+-				SoundEngine.PlaySound(sItem.UseSound, base.Center);
++					SoundEngine.PlaySound(sItem.UseSound, base.Center);
++
++				else if ((sItem.useStyle == 1 || sItem.useStyle == 3) && !sItem.noMelee && !sItem.noUseGraphic)
++					SoundEngine.PlaySound(sItem.UseSound, base.Center);
++			}
+ 		}
+ 
+ 		private void FreeUpPetsAndMinions(Item sItem) {
 @@ -35463,6 +_,9 @@
  		}
  
@@ -3123,6 +3149,15 @@
  			if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
  				if (statMana >= num) {
  					if (!flag2)
+@@ -36000,8 +_,6 @@
+ 				if (itemAnimation == 1 && sItem.stack > 0) {
+ 					if (sItem.shoot > 0 && whoAmI != Main.myPlayer && controlUseItem && sItem.useStyle == 5 && sItem.reuseDelay == 0) {
+ 						ApplyItemAnimation(sItem);
+-						if (sItem.UseSound != null)
+-							SoundEngine.PlaySound(sItem.UseSound, base.Center);
+ 					}
+ 					else {
+ 						itemAnimation = 0;
 @@ -36027,6 +_,7 @@
  			if (!mount.Active)
  				return;
