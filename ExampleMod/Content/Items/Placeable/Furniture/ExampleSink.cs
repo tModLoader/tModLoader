@@ -9,8 +9,7 @@ namespace ExampleMod.Content.Items.Placeable
 {
 	public class ExampleSink : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Sink");
 			Tooltip.SetDefault("Counts as a water, lava, and honey source\n"
 							 + "'A shame there's no example liquids (yet)'");
@@ -18,8 +17,7 @@ namespace ExampleMod.Content.Items.Placeable
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.useStyle = ItemUseStyleID.Swing;
 			item.useTurn = true;
 			item.useAnimation = 15;
@@ -33,8 +31,7 @@ namespace ExampleMod.Content.Items.Placeable
 			item.value = 3000;
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient<ExampleItem>()
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()

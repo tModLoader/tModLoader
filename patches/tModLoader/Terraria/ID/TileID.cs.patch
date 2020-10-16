@@ -23,13 +23,3 @@
  			public static bool[] AllowsSaveCompressionBatching = Factory.CreateBoolSet(true, 520, 423);
  			public static bool[] IsATreeTrunk = Factory.CreateBoolSet(false, 5, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616);
  			public static bool[] IsShakeable = Factory.CreateBoolSet(false, 5, 72, 323, 583, 584, 585, 586, 587, 588, 589, 596, 616);
-@@ -196,6 +_,9 @@
- 			public static bool[] IgnoredInHouseScore = Factory.CreateBoolSet(4, 3, 73, 82, 83, 84);
- 			public static bool[] SpreadOverground = Factory.CreateBoolSet(2, 23, 32, 60, 70, 109, 199, 352, 477, 492);
- 			public static bool[] SpreadUnderground = Factory.CreateBoolSet(23, 109, 199, 60, 70);
-+			public static bool[] CountsAsWaterSource = Factory.CreateBoolSet(172);
-+			public static bool[] CountsAsHoneySource = Factory.CreateBoolSet();
-+			public static bool[] CountsAsLavaSource = Factory.CreateBoolSet();
- 		}
- 
- 		public static readonly IdDictionary Search = IdDictionary.Create<TileID, ushort>();

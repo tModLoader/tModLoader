@@ -975,14 +975,7 @@
  			for (int num7 = num - 1; num7 < num + 3; num7++) {
  				for (int num8 = num2 - 1; num8 < num2 + 3; num8++) {
  					TileFrame(num7, num8);
-@@ -31176,14 +_,13 @@
- 					tileSafely.frameX = (short)(k * 18);
- 					tileSafely.frameY = (short)(style * num + l * 18);
- 					tileSafely.type = type;
-+					if (type == 172)
-+						tileSafely.countsAsWaterSource = true;
- 				}
- 			}
+@@ -31181,9 +_,6 @@
  		}
  
  		public static bool PlaceObject(int x, int y, int type, bool mute = false, int style = 0, int alternate = 0, int random = -1, int direction = -1) {

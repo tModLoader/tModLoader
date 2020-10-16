@@ -8,8 +8,7 @@ namespace ExampleMod.Content.Tiles
 {
 	public class ExampleSink : ModTile
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			// Hielo! As you may have noticed, this is a sink --- and as such, it ought to be a water source, right?
 			// Well, let's do it one better, shall we?
 			TileID.Sets.CountsAsWaterSource[Type] = true;
@@ -34,14 +33,12 @@ namespace ExampleMod.Content.Tiles
 			adjTiles = new int[] { Type };
 		}
 
-		public override void NumDust(int i, int j, bool fail, ref int num)
-		{
+		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = fail ? 1 : 3;
 		}
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY)
-		{
-			Item.NewItem(i * 16, j * 16, 16, 16, ItemID.ObsidianSink);
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
+			Item.NewItem(i * 16, j * 16, 16, 16, ModContent.ItemType<Items.Placeable.ExampleSink>());
 		}
 	}
 }
