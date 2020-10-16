@@ -296,6 +296,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Sets if an item can be researched, regardless of vanilla behaviour. If true, item will be researched no matter what, false will block it from being researched, null is vanilla behaviour.
+		/// </summary>
+		public virtual bool? CanResearch() {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to create custom behaviour when an item is accepted by the Research function 
+		/// </summary>
+		/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
+		public virtual void OnResearched(bool fullyResearched) {
+		}
+
+		/// <summary>
 		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
 		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
 		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.

@@ -425,6 +425,38 @@ namespace Terraria.ModLoader
 				g.Instance(item).ModifyResearchSorting(item, ref itemGroup);
 		}
 
+		private delegate bool? DelegateCanResearch(Item item);
+		private static HookList HookCanResearch = AddHook<DelegateCanResearch>(g => g.CanResearch);
+		public static bool? CanResearch(Item item) {
+			if (item.IsAir)
+				return null;
+
+			bool? canResearch = item.modItem?.CanResearch();
+
+			if (canResearch != null)
+				return canResearch;
+
+			foreach (var g in HookCanResearch.arr) {
+				canResearch = g.Instance(item).CanResearch(item);
+				
+				if (canResearch != null)
+					return canResearch;
+			}
+			return null;
+		}
+
+		private delegate void DelegateOnResearched(Item item, bool fullyResearched);
+		private static HookList HookOnResearched = AddHook<DelegateOnResearched>(g => g.OnResearched);
+		public static void OnResearched(Item item, bool fullyResearched) {
+			if (item.IsAir)
+				return;
+
+			item.modItem?.OnResearched(fullyResearched);
+
+			foreach (var g in HookOnResearched.arr)
+				g.Instance(item).OnResearched(item, fullyResearched);
+		}
+
 		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref Modifier damage, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 		/// <summary>
