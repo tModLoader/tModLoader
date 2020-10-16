@@ -577,7 +577,7 @@
  					for (int k = 0; k < num2; k++) {
  						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  						obj.velocity.Y -= 3f + (float)num * 1.5f;
-@@ -44716,6 +_,11 @@
+@@ -44723,6 +_,11 @@
  			int num = timeLeft;
  			timeLeft = 0;
  			ParticleOrchestraSettings settings;
@@ -589,7 +589,7 @@
  			if (type == 949) {
  				SoundEngine.PlaySound(SoundID.Item10, base.Center);
  				int num2 = (int)ai[0];
-@@ -45527,7 +_,7 @@
+@@ -45534,7 +_,7 @@
  
  			if (Main.myPlayer == owner && bobber) {
  				PopupText.ClearSonarText();
@@ -598,7 +598,7 @@
  					AI_061_FishingBobber_GiveItemToPlayer(Main.player[owner], (int)ai[1]);
  
  				ai[1] = 0f;
-@@ -51079,6 +_,7 @@
+@@ -51086,6 +_,7 @@
  				}
  			}
  
@@ -606,7 +606,7 @@
  			active = false;
  		}
  
-@@ -51145,6 +_,9 @@
+@@ -51152,6 +_,9 @@
  			if (Main.tileDungeon[Main.tile[x, y].type] || TileID.Sets.BasicChest[Main.tile[x, y].type])
  				return false;
  
@@ -616,7 +616,7 @@
  			switch (Main.tile[x, y].type) {
  				case 26:
  				case 88:
-@@ -51205,7 +_,7 @@
+@@ -51212,7 +_,7 @@
  
  					for (int k = i - 1; k <= i + 1; k++) {
  						for (int l = j - 1; l <= j + 1; l++) {
@@ -625,7 +625,7 @@
  								WorldGen.KillWall(k, l);
  								if (Main.tile[k, l].wall == 0 && Main.netMode != 0)
  									NetMessage.SendData(17, -1, -1, null, 2, k, l);
-@@ -51259,6 +_,10 @@
+@@ -51266,6 +_,10 @@
  		}
  
  		public Color GetAlpha(Color newColor) {
