@@ -54,7 +54,7 @@ namespace Terraria
 			damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
 
 			for (int i = 0; i < damageData.Length; i++) {
-				damageData[i] = new DamageClassData(Modifier.One, new Modifier(4f, 1f)); // Default values from vanilla - 4 crit, 0 add, 1x mult.
+				damageData[i] = new DamageClassData(Modifier.One, new Modifier(0f, 1f)); // Default values from vanilla - 4 crit, 0 add, 1x mult.
 			}
 		}
 
