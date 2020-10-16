@@ -511,7 +511,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		private delegate bool? DelegateConsumeBait(Player player);
+		private delegate bool? DelegateConsumeBait(Item bait, Player player);
 		private static HookList HookConsumeBait = AddHook<DelegateConsumeBait>(p => p.ConsumeBait);
 		public static bool? ConsumeBait(Player player, Item bait) {
 			if (bait.IsAir)
