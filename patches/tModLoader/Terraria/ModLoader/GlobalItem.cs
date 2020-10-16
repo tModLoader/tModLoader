@@ -245,6 +245,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to change an item bait's rate of consumption, being able to force it to be consumed or stop it from being consumed or return null for unchanged vanilla behaviour.
+		/// </summary>
+		/// <param name="bait">The bait item being targeted</param>
+		/// <param name="player">The player using this bait</param>
+		public virtual bool? ConsumeBait(Item bait, Player player) {
+			return null;
+		}
+
+		/// <summary>
 		/// Allows you to modify the projectile created by a weapon based on the ammo it is using.
 		/// </summary>
 		/// <param name="weapon">The item that is using this ammo</param>

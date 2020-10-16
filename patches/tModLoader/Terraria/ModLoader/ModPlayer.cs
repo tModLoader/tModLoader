@@ -680,17 +680,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to change the item the player gains from catching a fish. The fishingRod and bait parameters refer to the said items in the player's inventory. The liquidType parameter is 0 if the player is fishing in water, 1 for lava, and 2 for honey. The poolSize parameter is the tile size of the pool the player is fishing in. The worldLayer parameter is 0 if the player is in the sky, 1 if the player is on the surface, 2 if the player is underground, 3 if the player is in the caverns, and 4 if the player is in the underworld. The questFish parameter is the item ID for the day's Angler quest. Modify the caughtType parameter to change the item the player catches. The junk parameter is whether the player catches junk; you can set this to true if you make the player catch a junk item, and is mostly used to pass information (has no effect on the game).
+		/// Allows you to modify the result of the fishing attempt.
 		/// </summary>
-		/// <param name="fishingRod"></param>
-		/// <param name="bait"></param>
-		/// <param name="power"></param>
-		/// <param name="liquidType"></param>
-		/// <param name="poolSize"></param>
-		/// <param name="worldLayer"></param>
-		/// <param name="questFish"></param>
-		/// <param name="caughtType"></param>
-		public virtual void CatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType) {
+		/// <param name="fisher">The FishingAttempt structure for this fishing. Modify this parameter to change the caught item or NPC.</param>
+		/// <param name="sonarText">Change this to overwrite the default sonar text. If null (default), the item/monster name will show. If "", no name will be shown.<param>
+		/// <param name="color">Change this to overwrite the color of your new sonar text. Defaults to White.<param>
+		public virtual void CatchFish(FishingAttempt fisher, ref string sonarText, ref Color color) {
 		}
 
 		/// <summary>
@@ -708,6 +703,23 @@ namespace Terraria.ModLoader
 		/// <param name="rareMultiplier"></param>
 		/// <param name="rewardItems"></param>
 		public virtual void AnglerQuestReward(float rareMultiplier, List<Item> rewardItems) {
+		}
+
+		/// <summary>
+		/// Allows you to change or add effects when an NPC was summoned from fishing. Called after the summon, so cannot alter the result. Used primarily to add graphic and sound effects to a NPC Summon.
+		/// </summary>
+		/// <param name="NPCType">The type of the NPC that was summoned.</param>
+		/// <param name="bobber">The projectile bobber that summoned the NPC.<param>
+		/// <param name="baitUsed">The type of the bait item used in the summoning.<param>
+		public virtual void OnFishedNPCSummon(int NPCType, Projectile bobber, int baitUsed) {
+		}
+
+		/// <summary>
+		/// Allows you to change if bait is consumed, either stopping it from being consumed (return false), force it to be consumed (return true) or leave the vanilla behaviour (return null, default)
+		/// </summary>
+		/// <param name="bait">The bait item that was used. Changing its contents will affect the inventory item.</param>
+		public virtual bool? ConsumeBait(Item bait) {
+			return null;
 		}
 
 		/// <summary>

@@ -1,0 +1,10 @@
+--- src/Terraria/Terraria/DataStructures/FishingAttempt.cs
++++ src/tModLoader/Terraria/DataStructures/FishingAttempt.cs
+@@ -24,6 +_,7 @@
+ 		public int questFish;
+ 		public int heightLevel;
+ 		public int rolledItemDrop;
++		public int rolledItemStack;
+ 		public int rolledEnemySpawn;
+ 	}
+ }

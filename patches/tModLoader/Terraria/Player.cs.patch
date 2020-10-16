@@ -3111,6 +3111,43 @@
  			int whoAmI = base.whoAmI;
  			bool flag = true;
  			int num = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
+@@ -35712,10 +_,13 @@
+ 					NPC.SpawnOnPlayer(whoAmI, 370);
+ 				else
+ 					NetMessage.SendData(61, -1, -1, null, whoAmI, 370f);
+-
++				PlayerHooks.OnFishedNPCSummon(this, 370, bobber, baitTypeUsed);
+ 				bobber.ai[0] = 2f;
++				bobber.netUpdate = true;
++				return;
+ 			}
++			
+-			else if (bobber.localAI[1] < 0f) {
++			if (bobber.localAI[1] < 0f) {
+ 				Point point = new Point((int)bobber.position.X, (int)bobber.position.Y);
+ 				int num = (int)(0f - bobber.localAI[1]);
+ 				if (num == 618)
+@@ -35728,6 +_,7 @@
+ 					NPC.NewNPC(point.X, point.Y, num);
+ 					bobber.ai[0] = 2f;
+ 				}
++				PlayerHooks.OnFishedNPCSummon(this, num, bobber, baitTypeUsed);
+ 			}
+ 			else if (Main.rand.Next(7) == 0 && !accFishingLine) {
+ 				bobber.ai[0] = 2f;
+@@ -35787,8 +_,11 @@
+ 			baitTypeUsed = item.type;
+ 			if (baitTypeUsed == 2673)
+ 				flag = true;
++			bool? baitOverride = PlayerHooks.ConsumeBait(this, item);
++			if (baitOverride == null)
++				baitOverride = ItemLoader.ConsumeBait(this, item);
+ 
+-			if (flag) {
++			if (flag && baitOverride == null || baitOverride.Value) {
+ 				if (item.type == 4361 || item.type == 4362)
+ 					NPC.LadyBugKilled(base.Center, item.type == 4362);
+ 
 @@ -35830,6 +_,11 @@
  			if (sItem.type == 3006)
  				flag2 = true;

@@ -827,19 +827,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateCatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType);
+		private delegate void DelegateCatchFish(FishingAttempt fisher, ref string sonarText, ref Color color);
 		private static HookList HookCatchFish = AddHook<DelegateCatchFish>(p => p.CatchFish);
 
-		public static void CatchFish(Player player, Item fishingRod, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType) {
-			int i = 0;
-			while (i < 58) {
-				if (player.inventory[i].stack > 0 && player.inventory[i].bait > 0) {
-					break;
-				}
-				i++;
-			}
+		public static void CatchFish(Player player, FishingAttempt fisher, ref string sonarText, ref Color color) {
 			foreach (int index in HookCatchFish.arr) {
-				player.modPlayers[index].CatchFish(fishingRod, player.inventory[i], power, liquidType, poolSize, worldLayer, questFish, ref caughtType);
+				player.modPlayers[index].CatchFish(fisher, ref sonarText, ref color);
 			}
 		}
 
@@ -858,6 +851,25 @@ namespace Terraria.ModLoader
 			foreach (int index in HookAnglerQuestReward.arr) {
 				player.modPlayers[index].AnglerQuestReward(rareMultiplier, rewardItems);
 			}
+		}
+
+		private delegate void DelegateOnFishedNPCSummon(int NPCType, Projectile bobber, int baitUsed);
+		private static HookList HookOnFishedNPCSummon = AddHook<DelegateOnFishedNPCSummon>(p => p.OnFishedNPCSummon);
+		public static void OnFishedNPCSummon(Player player, int NPCType, Projectile bobber, int baitUsed) {
+			foreach (int index in HookOnFishedNPCSummon.arr) {
+				player.modPlayers[index].OnFishedNPCSummon(NPCType, bobber, baitUsed);
+			}
+		}
+
+		private delegate bool? DelegateConsumeBait(Item bait);
+		private static HookList HookConsumeBait = AddHook<DelegateConsumeBait>(p => p.ConsumeBait);
+		public static bool? ConsumeBait(Player player, Item bait) {
+			foreach (int index in HookConsumeBait.arr) {
+				bool? ans = player.modPlayers[index].ConsumeBait(bait);
+				if (ans != null)
+					return ans;
+			}
+			return null;
 		}
 
 		private static HookList HookGetDyeTraderReward = AddHook<Action<List<int>>>(p => p.GetDyeTraderReward);

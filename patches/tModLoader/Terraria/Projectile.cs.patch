@@ -414,16 +414,66 @@
  			if (wet)
  				position += wetVelocity;
  			else
-@@ -13080,6 +_,9 @@
+@@ -13006,6 +_,7 @@
+ 
+ 			fisher.playerFishingConditions = Main.player[owner].GetFishingConditions();
+ 			int baitItemType = fisher.playerFishingConditions.BaitItemType;
++
+ 			if (baitItemType == 2673) {
+ 				Main.player[owner].displayedFishingInfo = Language.GetTextValue("GameUI.FishingWarning");
+ 				if ((fisher.X < 380 || fisher.X > Main.maxTilesX - 380) && fisher.waterTilesCount > 1000 && !NPC.AnyNPCs(370)) {
+@@ -13080,12 +_,23 @@
  			FishingCheck_RollEnemySpawns(ref fisher);
  			FishingCheck_RollItemDrop(ref fisher);
  			bool flag = false;
-+			PlayerHooks.CatchFish(Main.player[owner], Main.player[owner].inventory[Main.player[owner].selectedItem],
-+				fisher.waterNeededToFish, fisher.inLava ? 1 : fisher.inHoney ? 2 : 0, fisher.fishingLevel, fisher.heightLevel, fisher.questFish, ref fisher.rolledItemDrop);
++			string sonarText = null;
++			Color color = Color.White;
++			PlayerHooks.CatchFish(Main.player[owner], fisher, ref sonarText, ref color);
 +
  			if (fisher.rolledItemDrop > 0) {
- 				if (Main.player[owner].sonarPotion) {
- 					Item item = new Item();
++				if (Main.player[owner].sonarPotion && (sonarText == null || sonarText.Trim().Length > 0)) {
++
+-				if (Main.player[owner].sonarPotion) {
++					if (sonarText == null) {
+-					Item item = new Item();
++						Item item = new Item();
+-					item.SetDefaults(fisher.rolledItemDrop);
++						item.SetDefaults(fisher.rolledItemDrop);
+-					item.position = position;
++						item.position = position;
+-					PopupText.sonarText = PopupText.NewText(PopupTextContext.SonarAlert, item, 1, noStack: true);
++						PopupText.sonarText = PopupText.NewText(PopupTextContext.SonarAlert, item, 1, noStack: true);
++					}
++					else {
++						PopupText.sonarText = PopupText.NewText(PopupTextContext.SonarAlert, sonarText, color, base.Center, stay5TimesLonger: false);
++					}
++
+ 					if (PopupText.sonarText > -1)
+ 						Main.popupText[PopupText.sonarText].sonar = true;
+ 				}
+@@ -13093,13 +_,20 @@
+ 				float num3 = fisher.fishingLevel;
+ 				ai[1] = (float)Main.rand.Next(-240, -90) - num3;
+ 				localAI[1] = fisher.rolledItemDrop;
++				localAI[0] = fisher.rolledItemStack;
+ 				netUpdate = true;
+ 				flag = true;
+ 			}
+ 
+ 			if (fisher.rolledEnemySpawn > 0) {
+-				if (Main.player[owner].sonarPotion) {
+-					PopupText.sonarText = PopupText.NewText(PopupTextContext.SonarAlert, fisher.rolledEnemySpawn, base.Center, stay5TimesLonger: false);
++				if (Main.player[owner].sonarPotion && (sonarText == null || sonarText.Trim().Length > 0)) {
++
++					if (sonarText == null) {
++						PopupText.sonarText = PopupText.NewText(PopupTextContext.SonarAlert, fisher.rolledEnemySpawn, base.Center, stay5TimesLonger: false);
++					}
++					else {
++						PopupText.sonarText = PopupText.NewText(PopupTextContext.SonarAlert, sonarText, color, base.Center, stay5TimesLonger: false);
++					}
+ 					if (PopupText.sonarText > -1)
+ 						Main.popupText[PopupText.sonarText].sonar = true;
+ 				}
 @@ -13575,9 +_,11 @@
  				while (Main.tile[i, num].liquid > 0 && !WorldGen.SolidTile(i, num) && num < Main.maxTilesY - 10) {
  					numWaters++;
@@ -501,10 +551,90 @@
  						for (int l = 0; l < num4; l++) {
  							Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(j, k, tileSafely)];
  							obj.velocity.Y -= 3f + (float)num3 * 1.5f;
-@@ -33196,6 +_,7 @@
- 				int num4 = item.stack = Main.rand.Next(minValue2, num3 + 1);
- 			}
+@@ -32992,9 +_,6 @@
+ 						AI_061_FishingBobber_DoASplash();
+ 				}
  
+-				if (localAI[0] < 100f)
+-					localAI[0] += 1f;
+-
+ 				if (frameCounter == 0) {
+ 					frameCounter = 1;
+ 					ReduceRemainingChumsInPool();
+@@ -33158,44 +_,49 @@
+ 		private void AI_061_FishingBobber_GiveItemToPlayer(Player thePlayer, int itemType) {
+ 			Item item = new Item();
+ 			item.SetDefaults(itemType);
++			if (localAI[0] > 0) {
++				item.stack = (int)localAI[0];
++			}
++			else {
+-			if (itemType == 3196) {
++				if (itemType == 3196) {
+-				int finalFishingLevel = thePlayer.GetFishingConditions().FinalFishingLevel;
++					int finalFishingLevel = thePlayer.GetFishingConditions().FinalFishingLevel;
+-				int minValue = (finalFishingLevel / 20 + 3) / 2;
++					int minValue = (finalFishingLevel / 20 + 3) / 2;
+-				int num = (finalFishingLevel / 10 + 6) / 2;
++					int num = (finalFishingLevel / 10 + 6) / 2;
+-				if (Main.rand.Next(50) < finalFishingLevel)
++					if (Main.rand.Next(50) < finalFishingLevel)
+-					num++;
++						num++;
+ 
+-				if (Main.rand.Next(100) < finalFishingLevel)
++					if (Main.rand.Next(100) < finalFishingLevel)
+-					num++;
++						num++;
+ 
+-				if (Main.rand.Next(150) < finalFishingLevel)
++					if (Main.rand.Next(150) < finalFishingLevel)
+-					num++;
++						num++;
+ 
+-				if (Main.rand.Next(200) < finalFishingLevel)
++					if (Main.rand.Next(200) < finalFishingLevel)
+-					num++;
++						num++;
+ 
+-				int num2 = item.stack = Main.rand.Next(minValue, num + 1);
++					int num2 = item.stack = Main.rand.Next(minValue, num + 1);
+-			}
++				}
+ 
+-			if (itemType == 3197) {
++				if (itemType == 3197) {
+-				int finalFishingLevel2 = thePlayer.GetFishingConditions().FinalFishingLevel;
++					int finalFishingLevel2 = thePlayer.GetFishingConditions().FinalFishingLevel;
+-				int minValue2 = (finalFishingLevel2 / 4 + 15) / 2;
++					int minValue2 = (finalFishingLevel2 / 4 + 15) / 2;
+-				int num3 = (finalFishingLevel2 / 2 + 30) / 2;
++					int num3 = (finalFishingLevel2 / 2 + 30) / 2;
+-				if (Main.rand.Next(50) < finalFishingLevel2)
++					if (Main.rand.Next(50) < finalFishingLevel2)
+-					num3 += 4;
++						num3 += 4;
+ 
+-				if (Main.rand.Next(100) < finalFishingLevel2)
++					if (Main.rand.Next(100) < finalFishingLevel2)
+-					num3 += 4;
++						num3 += 4;
+ 
+-				if (Main.rand.Next(150) < finalFishingLevel2)
++					if (Main.rand.Next(150) < finalFishingLevel2)
+-					num3 += 4;
++						num3 += 4;
+ 
+-				if (Main.rand.Next(200) < finalFishingLevel2)
++					if (Main.rand.Next(200) < finalFishingLevel2)
+-					num3 += 4;
++						num3 += 4;
+ 
+-				int num4 = item.stack = Main.rand.Next(minValue2, num3 + 1);
++					int num4 = item.stack = Main.rand.Next(minValue2, num3 + 1);
++				}
+ 			}
+-
 +			ItemLoader.CaughtFishStack(item);
  			item.newAndShiny = true;
  			Item item2 = thePlayer.GetItem(owner, item, default(GetItemSettings));
