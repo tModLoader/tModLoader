@@ -2258,7 +2258,7 @@
  				oldAdjTile[i] = adjTile[i];
  				adjTile[i] = false;
  			}
-@@ -24942,6 +_,8 @@
+@@ -24942,15 +_,17 @@
  								alchemyTable = true;
  								break;
  						}
@@ -2266,7 +2266,19 @@
 +						TileLoader.AdjTiles(this, Main.tile[j, k].type);
  					}
  
- 					if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 0)
+-					if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 0)
++					if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 0) || Main.tile[j, k].countsAsWaterSource)
+ 						adjWater = true;
+ 
+-					if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 2)
++					if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 2) || Main.tile[j, k].countsAsHoneySource)
+ 						adjHoney = true;
+ 
+-					if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1)
++					if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1) || Main.tile[j, k].countsAsLavaSource)
+ 						adjLava = true;
+ 				}
+ 			}
 @@ -24959,7 +_,7 @@
  				return;
  

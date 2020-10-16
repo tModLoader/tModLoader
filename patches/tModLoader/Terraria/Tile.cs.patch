@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -14,7 +_,7 @@
+@@ -14,12 +_,15 @@
  		public ushort type;
  		public ushort wall;
  		public byte liquid;
@@ -9,6 +9,84 @@
  		public byte bTileHeader;
  		public byte bTileHeader2;
  		public byte bTileHeader3;
+ 		public short frameX;
+ 		public short frameY;
++		public bool countsAsWaterSource;
++		public bool countsAsHoneySource;
++		public bool countsAsLavaSource;
+ 		public const int Type_Solid = 0;
+ 		public const int Type_Halfbrick = 1;
+ 		public const int Type_SlopeDownRight = 2;
+@@ -58,6 +_,9 @@
+ 			bTileHeader3 = 0;
+ 			frameX = 0;
+ 			frameY = 0;
++			countsAsWaterSource = false;
++			countsAsHoneySource = false;
++			countsAsLavaSource = false;
+ 		}
+ 
+ 		public Tile(Tile copy) {
+@@ -71,6 +_,9 @@
+ 				bTileHeader3 = 0;
+ 				frameX = 0;
+ 				frameY = 0;
++				countsAsWaterSource = false;
++				countsAsHoneySource = false;
++				countsAsLavaSource = false;
+ 			}
+ 			else {
+ 				type = copy.type;
+@@ -82,6 +_,9 @@
+ 				bTileHeader3 = copy.bTileHeader3;
+ 				frameX = copy.frameX;
+ 				frameY = copy.frameY;
++				countsAsWaterSource = copy.countsAsWaterSource;
++				countsAsHoneySource = copy.countsAsHoneySource;
++				countsAsLavaSource = copy.countsAsLavaSource;
+ 			}
+ 		}
+ 
+@@ -97,6 +_,9 @@
+ 			bTileHeader3 = 0;
+ 			frameX = 0;
+ 			frameY = 0;
++			countsAsWaterSource = false;
++			countsAsHoneySource = false;
++			countsAsLavaSource = false;
+ 		}
+ 
+ 		public void ClearTile() {
+@@ -116,6 +_,9 @@
+ 			bTileHeader3 = from.bTileHeader3;
+ 			frameX = from.frameX;
+ 			frameY = from.frameY;
++			countsAsWaterSource = from.countsAsWaterSource;
++			countsAsHoneySource = from.countsAsHoneySource;
++			countsAsLavaSource = from.countsAsLavaSource;
+ 		}
+ 
+ 		public bool isTheSameAs(Tile compTile) {
+@@ -192,6 +_,9 @@
+ 			bTileHeader3 = 0;
+ 			frameX = 0;
+ 			frameY = 0;
++			countsAsWaterSource = false;
++			countsAsHoneySource = false;
++			countsAsLavaSource = false;
+ 			this.type = type;
+ 		}
+ 
+@@ -203,6 +_,9 @@
+ 			bTileHeader3 = 0;
+ 			frameX = 0;
+ 			frameY = 0;
++			countsAsWaterSource = false;
++			countsAsHoneySource = false;
++			countsAsLavaSource = false;
+ 		}
+ 
+ 		public Color actColor(Color oldColor) {
 @@ -329,7 +_,7 @@
  		public byte color() => (byte)(sTileHeader & 0x1F);
  
@@ -88,3 +166,13 @@
  		}
  
  		public void Clear(TileDataType types) {
+@@ -407,6 +_,9 @@
+ 				active(active: false);
+ 				frameX = 0;
+ 				frameY = 0;
++				countsAsWaterSource = false;
++				countsAsHoneySource = false;
++				countsAsLavaSource = false;
+ 			}
+ 
+ 			if ((types & TileDataType.Wall) != 0) {
