@@ -29,11 +29,6 @@ namespace Terraria
 		public bool showCrit { get; set; }
 
 		/// <summary>
-		/// Whether or not the mana cost of this item should be shown in its tooltip. By default, set to false for the Space Gun when wearing Meteor armor and true for everyone else.
-		/// </summary>
-		public bool showMana { get; set; }
-
-		/// <summary>
 		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon, or ModContent.GetInstance<T>() for custom damage types.
 		/// </summary>
 		public DamageClass DamageType { get; set; }

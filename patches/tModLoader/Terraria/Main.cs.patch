@@ -1663,8 +1663,7 @@
  					numLines++;
  				}
  
--				if (item.mana > 0 && (item.type != 127 || !player[myPlayer].spaceGun)) {
-+				if (item.mana > 0 && item.showMana) {
+ 				if (item.mana > 0 && (item.type != 127 || !player[myPlayer].spaceGun)) {
  					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.UsesMana", (int)((float)item.mana * player[myPlayer].manaCost));
 +					toolTipNames[numLines] = "UseMana";
  					numLines++;
