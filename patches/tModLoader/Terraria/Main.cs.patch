@@ -1964,8 +1964,8 @@
  		}
  
 +		private static bool ShowCritInTooltip(Item item) {
-+			if (item.showCrit.HasValue)
-+				return item.showCrit.Value;
++			if (item.showCritOverride.HasValue)
++				return item.showCritOverride.Value;
 +
 +			if (item.summon)
 +				return false;
@@ -1974,8 +1974,8 @@
 +		}
 +
 +		private static bool ShowSpeedInTooltip(Item item) {
-+			if (item.showSpeed.HasValue)
-+				return item.showSpeed.Value;
++			if (item.showSpeedOverride.HasValue)
++				return item.showSpeedOverride.Value;
 +
 +			if (item.summon)
 +				return false;
@@ -1984,8 +1984,8 @@
 +		}
 +
 +		private static bool ShowManaInTooltip(Item item) {
-+			if (item.showMana.HasValue)
-+				return item.showMana.Value;
++			if (item.showManaOverride.HasValue)
++				return item.showManaOverride.Value;
 +
 +			if (item.type == 127 && player[myPlayer].spaceGun)
 +				return false;
