@@ -4,7 +4,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Placeable
 {
@@ -26,7 +25,7 @@ namespace ExampleMod.Content.Items.Placeable
 			item.autoReuse = true;
 			item.maxStack = 999;
 			item.consumable = true;
-			item.createTile = TileType<Tiles.ExampleTorch>();
+			item.createTile = ModContent.TileType<Tiles.ExampleTorch>();
 			item.width = 10;
 			item.height = 12;
 			item.value = 50;
@@ -39,7 +38,7 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void HoldItem(Player player) {
 			// Randomly spawn sparkles when the torch is held. Twice bigger chance to spawn them when swinging the torch.
 			if (Main.rand.Next(player.itemAnimation > 0 ? 40 : 80) == 0) {
-				Dust.NewDust(new Vector2(player.itemLocation.X + 16f * player.direction, player.itemLocation.Y - 14f * player.gravDir), 4, 4, DustType<Sparkle>());
+				Dust.NewDust(new Vector2(player.itemLocation.X + 16f * player.direction, player.itemLocation.Y - 14f * player.gravDir), 4, 4, ModContent.DustType<Sparkle>());
 			}
 
 			// Create a white (1.0, 1.0, 1.0) light at the torch's approximate position, when the item is held.

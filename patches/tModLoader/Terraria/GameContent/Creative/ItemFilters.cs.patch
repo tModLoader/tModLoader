@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameContent/Creative/ItemFilters.cs
 +++ src/tModLoader/Terraria/GameContent/Creative/ItemFilters.cs
-@@ -18,6 +_,7 @@
+@@ -19,6 +_,7 @@
  			private bool[] _unusedBadPrefixLines = new bool[30];
  			private int _unusedYoyoLogo;
  			private int _unusedResearchLine;
@@ -8,7 +8,7 @@
  			private string _search;
  
  			public bool FitsFilter(Item entry) {
-@@ -26,7 +_,7 @@
+@@ -27,7 +_,7 @@
  
  				int numLines = 1;
  				float knockBack = entry.knockBack;

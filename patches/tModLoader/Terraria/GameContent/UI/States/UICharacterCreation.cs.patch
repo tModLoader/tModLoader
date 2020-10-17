@@ -8,7 +8,7 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -1053,6 +_,8 @@
+@@ -1055,6 +_,8 @@
  
  			_player.savedPerPlayerFieldsThatArentInThePlayerClass = new Player.SavedPlayerDataWithAnnoyingRules();
  			CreativePowerManager.Instance.ResetDataForNewPlayer(_player);

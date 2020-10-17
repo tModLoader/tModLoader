@@ -8,16 +8,16 @@
  using Terraria.WorldBuilding;
  
  namespace Terraria
-@@ -27,7 +_,7 @@
- 		public static int GraveyardTileThreshold = 24;
+@@ -28,7 +_,7 @@
+ 		public bool CanPlayCreditsRoll;
  		public bool[] NPCBannerBuff = new bool[289];
  		public bool hasBanner;
--		private readonly int[] _tileCounts = new int[623];
+-		private readonly int[] _tileCounts = new int[624];
 +		internal int[] _tileCounts = new int[TileLoader.TileCount];
  		private readonly World _world;
  		private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  		public int bestOre;
-@@ -262,7 +_,7 @@
+@@ -263,7 +_,7 @@
  						if (tile2 == null || !tile2.active())
  							continue;
  
@@ -26,10 +26,10 @@
  							HasClock = true;
  
  						switch (tile2.type) {
-@@ -417,6 +_,8 @@
- 			MoonLordMonolith = false;
+@@ -420,6 +_,8 @@
  			Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
  			hasBanner = false;
+ 			CanPlayCreditsRoll = false;
 +			if(NPCBannerBuff.Length<ModLoader.NPCLoader.NPCCount)
 +				Array.Resize(ref NPCBannerBuff, ModLoader.NPCLoader.NPCCount);
  		}

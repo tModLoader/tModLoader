@@ -5,7 +5,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Tools
 {
@@ -20,7 +19,7 @@ namespace ExampleMod.Content.Items.Tools
 			// Copy values from the Amethyst Hook
 			item.CloneDefaults(ItemID.AmethystHook);
 			item.shootSpeed = 18f; // This defines how quickly the hook is shot.
-			item.shoot = ProjectileType<ExampleHookProjectile>(); // Makes the item shoot the hook's projectile when used.
+			item.shoot = ModContent.ProjectileType<ExampleHookProjectile>(); // Makes the item shoot the hook's projectile when used.
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -38,7 +37,7 @@ namespace ExampleMod.Content.Items.Tools
 
 		public override void Load() { //This is called once on mod (re)load when this piece of content is being loaded.
 			// This is the path to the texture that we'll use for the hook's chain. Make sure to update it.
-			chainTexture = GetTexture("ExampleMod/Content/Items/Tools/ExampleHookChain");
+			chainTexture = ModContent.GetTexture("ExampleMod/Content/Items/Tools/ExampleHookChain");
 		}
 
 		public override void Unload() { //This is called once on mod reload when this piece of content is being unloaded.

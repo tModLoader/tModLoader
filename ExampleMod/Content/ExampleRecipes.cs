@@ -2,7 +2,6 @@
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content
 {
@@ -13,7 +12,7 @@ namespace ExampleMod.Content
 
 		public static void AddRecipeGroups() {
 			//  Store this recipe group in a variable so we can use it later
-			ExampleRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemType<Items.ExampleItem>())}", ItemType<Items.ExampleItem>());
+			ExampleRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ModContent.ItemType<Items.ExampleItem>())}", ModContent.ItemType<Items.ExampleItem>());
 
 			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", ExampleRecipeGroup);
 		}
@@ -39,7 +38,7 @@ namespace ExampleMod.Content
 			//which lets you call subsequent methods on that return value, without having to type a local variable's name.
 			//When using chaining, note that only the last line is supposed to have a semicolon (;).
 
-			var resultItem = GetInstance<Items.ExampleItem>();
+			var resultItem = ModContent.GetInstance<Items.ExampleItem>();
 
 			// Start a new Recipe.
 			resultItem.CreateRecipe()

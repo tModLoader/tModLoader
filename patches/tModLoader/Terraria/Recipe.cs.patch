@@ -170,7 +170,7 @@
  		}
  
  		public static void SetupRecipes() {
-@@ -13052,7 +_,10 @@
+@@ -13317,7 +_,10 @@
  			AddRecipe();
  			CreateReverseWallRecipes();
  			CreateReversePlatformRecipes();
@@ -181,16 +181,16 @@
  			UpdateMaterialFieldForAllRecipes();
  		}
  
-@@ -13067,7 +_,7 @@
+@@ -13332,7 +_,7 @@
  		}
  
  		public static void UpdateWhichItemsAreMaterials() {
--			for (int i = 0; i < 5045; i++) {
+-			for (int i = 0; i < 5088; i++) {
 +			for (int i = 0; i < ItemLoader.ItemCount; i++) {
  				Item item = new Item();
  				item.SetDefaults(i, noMatCheck: true);
  				item.checkMat();
-@@ -13962,8 +_,9 @@
+@@ -14227,8 +_,9 @@
  				}
  			}
  		}
@@ -202,7 +202,7 @@
  			if (ingridients.Length == 1) {
  				ingridients = new int[2] {
  					ingridients[0],
-@@ -13981,15 +_,39 @@
+@@ -14246,15 +_,39 @@
  			}
  		}
  

@@ -1,6 +1,7 @@
 --- src/Terraria/Terraria/Initializers/LaunchInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/LaunchInitializer.cs
-@@ -1,5 +_,8 @@
+@@ -1,6 +_,9 @@
+ using System;
  using System.Diagnostics;
 +using System.Linq;
 +using System.Text.RegularExpressions;
@@ -9,7 +10,7 @@
  using Terraria.Social;
  
  namespace Terraria.Initializers
-@@ -23,6 +_,10 @@
+@@ -24,6 +_,10 @@
  			string s;
  			if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out int result))
  				Netplay.ListenPort = result;
@@ -20,7 +21,7 @@
  		}
  
  		private static void LoadClientParameters(Main game) {
-@@ -38,6 +_,29 @@
+@@ -39,6 +_,29 @@
  
  			if (HasParameter("-host"))
  				game.AutoHost();
@@ -50,9 +51,9 @@
  		}
  
  		private static void LoadServerParameters(Main game) {
-@@ -96,6 +_,18 @@
- 			if ((s3 = TryParameter("-language")) != null)
- 				LanguageManager.Instance.SetLanguage(s3);
+@@ -100,6 +_,18 @@
+ 			if ((s2 = TryParameter("-language")) != null)
+ 				LanguageManager.Instance.SetLanguage(s2);
  
 +			// We handle the build parameter this far in
 +			// so vanilla can take care of loading the appropriate localization keys beforehand
@@ -69,7 +70,7 @@
  			string worldName;
  			if ((worldName = TryParameter("-worldname")) != null)
  				game.SetWorldName(worldName);
-@@ -103,6 +_,15 @@
+@@ -107,6 +_,15 @@
  			string newMOTD;
  			if ((newMOTD = TryParameter("-motd")) != null)
  				game.NewMOTD(newMOTD);

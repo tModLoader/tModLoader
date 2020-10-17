@@ -425,19 +425,19 @@ namespace Terraria.ModLoader
 				g.Instance(item).ModifyResearchSorting(item, ref itemGroup);
 		}
 
-		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat);
+		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref Modifier damage, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 		/// <summary>
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
 		/// </summary>
-		public static void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat) {
+		public static void ModifyWeaponDamage(Item item, Player player, ref Modifier damage, ref float flat) {
 			if (item.IsAir)
 				return;
 
-			item.modItem?.ModifyWeaponDamage(player, ref add, ref mult, ref flat);
+			item.modItem?.ModifyWeaponDamage(player, ref damage, ref flat);
 
 			foreach (var g in HookModifyWeaponDamage.arr)
-				g.Instance(item).ModifyWeaponDamage(item, player, ref add, ref mult, ref flat);
+				g.Instance(item).ModifyWeaponDamage(item, player, ref damage, ref flat);
 		}
 
 		private delegate void DelegateGetWeaponKnockback(Item item, Player player, ref float knockback);
