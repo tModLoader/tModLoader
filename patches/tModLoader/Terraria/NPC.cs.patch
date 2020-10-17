@@ -148,6 +148,14 @@
  			if (aiStyle == 0) {
  				if (Main.netMode != 1) {
  					for (int i = 0; i < 255; i++) {
+@@ -34129,6 +_,7 @@
+ 						int num5 = 3;
+ 						int num6 = 40;
+ 						int num7 = 0;
++						TileLoader.ModifyTreasureFairySearch(i, j, tile.type, ref num6, ref num4, ref num5);
+ 						for (int k = i - num4; k <= i + num4; k++) {
+ 							for (int l = j - num5; l <= j + num5; l++) {
+ 								if (Main.tile[k, l].active() && Main.tile[k, l].type == tile.type)
 @@ -37272,6 +_,7 @@
  			if (type == 638 || type == 656)
  				num = 0;
