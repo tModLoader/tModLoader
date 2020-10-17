@@ -13,6 +13,11 @@ namespace Terraria
 
 		internal GlobalProjectile[] globalProjectiles = new GlobalProjectile[0];
 
+		/// <summary>
+		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
+		/// </summary>
+		public DamageClass DamageType { get; set; }
+
 		// Get
 
 		/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>

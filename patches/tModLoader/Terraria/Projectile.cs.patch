@@ -28,6 +28,40 @@
  		public int maxPenetrate = 1;
  		public int identity;
  		public float light;
+@@ -100,7 +_,6 @@
+ 		public Vector2[] oldPos = new Vector2[10];
+ 		public float[] oldRot = new float[10];
+ 		public int[] oldSpriteDirection = new int[10];
+-		public bool minion;
+ 		public float minionSlots;
+ 		public int minionPos;
+ 		public int restrikeDelay;
+@@ -112,9 +_,22 @@
+ 		public bool ownerHitCheck;
+ 		public int[] playerImmune = new int[255];
+ 		public string miscText = "";
+-		public bool melee;
+-		public bool ranged;
+-		public bool magic;
++		internal bool melee {
++			get => DamageType == DamageClass.Melee;
++			set => DamageType = value ? DamageClass.Melee : (melee ? null : DamageType);
++		}
++		internal bool magic {
++			get => DamageType == DamageClass.Magic;
++			set => DamageType = value ? DamageClass.Magic : (magic ? null : DamageType);
++		}
++		internal bool ranged {
++			get => DamageType == DamageClass.Ranged;
++			set => DamageType = value ? DamageClass.Ranged : (ranged ? null : DamageType);
++		}
++		internal bool minion {
++			get => DamageType == DamageClass.Summon;
++			set => DamageType = value ? DamageClass.Summon : (summon ? null : DamageType);
++		}
+ 		public bool coldDamage;
+ 		public bool noEnchantments;
+ 		public bool noEnchantmentVisuals;
 @@ -140,7 +_,12 @@
  		private static List<int> _ai156_blacklistedTargets = new List<int>();
  		private static float[] _CompanionCubeScreamCooldown = new float[255];
