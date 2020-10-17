@@ -183,7 +183,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a0a620218d451131069b9a513523d8e5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize which sound you want to play when the tile at the given coordinates is hit. Return false to stop the game from playing its default sound for the tile. Returns true by default.  <a href="#a0a620218d451131069b9a513523d8e5a">More...</a><br /></td></tr>
 <tr class="separator:a0a620218d451131069b9a513523d8e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cbb601483a9e85671e507b9fe9b6191"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a7cbb601483a9e85671e507b9fe9b6191">KillTile</a> (int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)</td></tr>
-<tr class="memdesc:a7cbb601483a9e85671e507b9fe9b6191"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe. Fail determines whether the tile is mined, effectOnly makes it so that only dust is created, and noItem stops items from dropping.  <a href="#a7cbb601483a9e85671e507b9fe9b6191">More...</a><br /></td></tr>
+<tr class="memdesc:a7cbb601483a9e85671e507b9fe9b6191"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe. If <em>fail</em>  is true, the tile will not be mined; <em>effectsOnly</em>  makes it so that only dust is created; <em>noItem</em>  stops items from dropping.  <a href="#a7cbb601483a9e85671e507b9fe9b6191">More...</a><br /></td></tr>
 <tr class="separator:a7cbb601483a9e85671e507b9fe9b6191"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af272f63ca2948a9c73f7c48760837d3d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#af272f63ca2948a9c73f7c48760837d3d">ModifyLight</a> (int i, int j, int type, ref float r, ref float g, ref float b)</td></tr>
 <tr class="memdesc:af272f63ca2948a9c73f7c48760837d3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how much light the block emits. Make sure you set Main.tileLighted[type] to true in SetDefaults for this to work.  <a href="#af272f63ca2948a9c73f7c48760837d3d">More...</a><br /></td></tr>
@@ -1300,7 +1300,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe. Fail determines whether the tile is mined, effectOnly makes it so that only dust is created, and noItem stops items from dropping. </p>
+<p>Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe. If <em>fail</em>  is true, the tile will not be mined; <em>effectsOnly</em>  makes it so that only dust is created; <em>noItem</em>  stops items from dropping. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i</td><td></td></tr>
