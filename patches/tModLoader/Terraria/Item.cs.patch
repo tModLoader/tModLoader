@@ -355,9 +355,14 @@
  			dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(type);
  			if (hairDye != 0)
  				hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
-@@ -44876,11 +_,12 @@
+@@ -44875,12 +_,17 @@
+ 			if (createTile == 19)
  				maxStack = 999;
  
++			// tML: summons do not show crit chance or use speed by default
++			showCrit = !summon;
++			showSpeed = !summon;
++
  			netID = type;
 +			ItemLoader.SetDefaults(this);
  			if (!noMatCheck)

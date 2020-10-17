@@ -1020,7 +1020,7 @@
  			}
  
  			if (whoAmI == Main.myPlayer && luckPotion != oldLuckPotion) {
-@@ -8256,12 +_,14 @@
+@@ -8256,12 +_,19 @@
  			}
  		}
  
@@ -1035,6 +1035,11 @@
 +			//for (int j = 0; j < 58; j++)
 +			{
 +				int type = item.type;
++
++				// I wasn't sure where else to put this but it's needed for the mana cost hardcode death and this seems the most appropriate  -Thomas
++				if (item.type == 127)
++					item.showMana = !spaceGun;
++
  				if ((type == 15 || type == 707) && accWatch < 1)
  					accWatch = 1;
  
