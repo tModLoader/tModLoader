@@ -1528,7 +1528,7 @@
 +						numLines++;
 +					}
 +					*/
-+					if (item.showCrit) {
++					if (ShowCritInTooltip(item)) {
 +						int crit = player[myPlayer].GetWeaponCrit(item);
 +						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
 +						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
@@ -1539,7 +1539,7 @@
  
 -					if (item.useStyle != 0 && !item.summon) {
 +					//if (item.useStyle != 0 && !item.summon) {
-+					if (item.useStyle != 0 && item.showSpeed) {
++					if (item.useStyle != 0 && ShowSpeedInTooltip(item)) {
  						if (item.useAnimation <= 8)
  							toolTipLine[numLines] = Lang.tip[6].Value;
  						else if (item.useAnimation <= 20)
@@ -1643,7 +1643,7 @@
  					numLines++;
  				}
  
-@@ -15375,41 +_,49 @@
+@@ -15375,41 +_,50 @@
  					else
  						toolTipLine[numLines] = tileBoost + Lang.tip[54].Value;
  
@@ -1663,7 +1663,9 @@
  					numLines++;
  				}
  
- 				if (item.mana > 0 && (item.type != 127 || !player[myPlayer].spaceGun)) {
+-				if (item.mana > 0 && (item.type != 127 || !player[myPlayer].spaceGun)) {
++				//if (item.mana > 0 && (item.type != 127 || !player[myPlayer].spaceGun)) {
++				if (item.mana > 0 && ShowManaInTooltip(item)) {
  					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.UsesMana", (int)((float)item.mana * player[myPlayer].manaCost));
 +					toolTipNames[numLines] = "UseMana";
  					numLines++;
@@ -1952,7 +1954,7 @@
  					numLines++;
  				}
  			}
-@@ -15711,11 +_,12 @@
+@@ -15711,11 +_,42 @@
  				string[] array = bestiaryNotes.Split('\n');
  				foreach (string text2 in array) {
  					toolTipLine[numLines++] = text2;
@@ -1961,6 +1963,36 @@
  			}
  		}
  
++		private static bool ShowCritInTooltip(Item item) {
++			if (item.showCrit.HasValue)
++				return item.showCrit.Value;
++
++			if (item.summon)
++				return false;
++
++			return true;
++		}
++
++		private static bool ShowSpeedInTooltip(Item item) {
++			if (item.showSpeed.HasValue)
++				return item.showSpeed.Value;
++
++			if (item.summon)
++				return false;
++
++			return true;
++		}
++
++		private static bool ShowManaInTooltip(Item item) {
++			if (item.showMana.HasValue)
++				return item.showMana.Value;
++
++			if (item.type == 127 && player[myPlayer].spaceGun)
++				return false;
++
++			return true;
++		}
++
 -		private void MouseText_DrawBuffTooltip(string buffString, ref int X, ref int Y) {
 +		private void MouseText_DrawBuffTooltip(string buffString, ref int X, ref int Y, int buffNameHeight) {
  			Microsoft.Xna.Framework.Point p = new Microsoft.Xna.Framework.Point(X, Y);

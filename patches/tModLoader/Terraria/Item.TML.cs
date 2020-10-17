@@ -19,14 +19,19 @@ namespace Terraria
 		internal GlobalItem[] globalItems = new GlobalItem[0];
 
 		/// <summary>
-		/// Whether or not the use speed of this item should be shown in its tooltip. By default, set to false for summons and true for everyone else.
+		/// Whether or not the use speed of this item should be shown in its tooltip. Keep unset to use vanilla logic.
 		/// </summary>
-		public bool showSpeed { get; set; }
+		public bool? showSpeed { get; set; }
 
 		/// <summary>
-		/// Whether or not the critical strike chance of this item should be shown in its tooltip. By default, set to false for summons and true for everyone else.
+		/// Whether or not the critical strike chance of this item should be shown in its tooltip. Keep unset to use vanilla logic.
 		/// </summary>
-		public bool showCrit { get; set; }
+		public bool? showCrit { get; set; }
+
+		/// <summary>
+		/// Whether or not the mana cost of this item should be shown in its tooltip. Keep unset to use vanilla logic.
+		/// </summary>
+		public bool? showMana { get; set; }
 
 		/// <summary>
 		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon, or ModContent.GetInstance<T>() for custom damage types.
