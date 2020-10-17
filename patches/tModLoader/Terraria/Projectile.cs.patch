@@ -57,7 +57,7 @@
 +		}
 +		internal bool minion {
 +			get => DamageType == DamageClass.Summon;
-+			set => DamageType = value ? DamageClass.Summon : (summon ? null : DamageType);
++			set => DamageType = value ? DamageClass.Summon : (minion ? null : DamageType);
 +		}
  		public bool coldDamage;
  		public bool noEnchantments;
