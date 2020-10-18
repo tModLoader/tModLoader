@@ -29,15 +29,6 @@
  			Register(BestiaryEntry.TownNPC(22));
  			Register(BestiaryEntry.TownNPC(17));
  			Register(BestiaryEntry.TownNPC(18));
-@@ -571,7 +_,7 @@
- 			Register(BestiaryEntry.TownNPC(368));
- 			Register(BestiaryEntry.TownNPC(453));
- 			Register(BestiaryEntry.TownNPC(633));
--			Register(BestiaryEntry.TownNPC(663));
-+			Register(BestiaryEntry.TownNPC(656));
- 			Register(BestiaryEntry.TownNPC(638));
- 			Register(BestiaryEntry.TownNPC(637));
- 			Register(BestiaryEntry.TownNPC(656));
 @@ -582,13 +_,18 @@
  		}
  
