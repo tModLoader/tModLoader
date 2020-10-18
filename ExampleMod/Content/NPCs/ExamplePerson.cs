@@ -14,7 +14,6 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.GameContent.Bestiary;
-using static Terraria.ModLoader.ModContent;
 using Terraria.GameContent.ItemDropRules;
 
 namespace ExampleMod.Content.NPCs
