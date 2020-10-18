@@ -8,7 +8,7 @@
  
  namespace Terraria.GameContent.Bestiary
  {
-@@ -268,16 +_,17 @@
+@@ -268,9 +_,10 @@
  			public const int ItemSpawn = 61;
  		}
  
@@ -21,94 +21,27 @@
  		private BestiaryEntry Register(BestiaryEntry entry) => _currentDatabase.Register(entry);
  		private IBestiaryEntryFilter Register(IBestiaryEntryFilter filter) => _currentDatabase.Register(filter);
  
- 		public void Populate(BestiaryDatabase database) {
- 			_currentDatabase = database;
--			AddEmptyEntries_CrittersAndEnemies_Automated();
--			AddTownNPCs_Manual();
-+			AddEmptyEntries_Automated();
-+			// AddTownNPCs_Manual();
- 			AddNPCBiomeRelationships_Automated();
- 			AddNPCBiomeRelationships_Manual();
- 			AddNPCBiomeRelationships_AddDecorations_Automated();
-@@ -542,53 +_,58 @@
- 			}
+@@ -543,6 +_,7 @@
  		}
  
--		private void AddTownNPCs_Manual() {
--			Register(BestiaryEntry.TownNPC(22));
--			Register(BestiaryEntry.TownNPC(17));
--			Register(BestiaryEntry.TownNPC(18));
--			Register(BestiaryEntry.TownNPC(19));
--			Register(BestiaryEntry.TownNPC(20));
--			Register(BestiaryEntry.TownNPC(37));
--			Register(BestiaryEntry.TownNPC(54));
--			Register(BestiaryEntry.TownNPC(38));
--			Register(BestiaryEntry.TownNPC(107));
--			Register(BestiaryEntry.TownNPC(108));
--			Register(BestiaryEntry.TownNPC(124));
--			Register(BestiaryEntry.TownNPC(142));
--			Register(BestiaryEntry.TownNPC(160));
--			Register(BestiaryEntry.TownNPC(178));
--			Register(BestiaryEntry.TownNPC(207));
--			Register(BestiaryEntry.TownNPC(208));
--			Register(BestiaryEntry.TownNPC(209));
--			Register(BestiaryEntry.TownNPC(227));
--			Register(BestiaryEntry.TownNPC(228));
--			Register(BestiaryEntry.TownNPC(229));
--			Register(BestiaryEntry.TownNPC(353));
--			Register(BestiaryEntry.TownNPC(369));
--			Register(BestiaryEntry.TownNPC(441));
--			Register(BestiaryEntry.TownNPC(550));
--			Register(BestiaryEntry.TownNPC(588));
--			Register(BestiaryEntry.TownNPC(368));
--			Register(BestiaryEntry.TownNPC(453));
--			Register(BestiaryEntry.TownNPC(633));
+ 		private void AddTownNPCs_Manual() {
++			return; //Town NPCs are loaded automatically now so it just returns.
+ 			Register(BestiaryEntry.TownNPC(22));
+ 			Register(BestiaryEntry.TownNPC(17));
+ 			Register(BestiaryEntry.TownNPC(18));
+@@ -571,7 +_,7 @@
+ 			Register(BestiaryEntry.TownNPC(368));
+ 			Register(BestiaryEntry.TownNPC(453));
+ 			Register(BestiaryEntry.TownNPC(633));
 -			Register(BestiaryEntry.TownNPC(663));
--			Register(BestiaryEntry.TownNPC(638));
--			Register(BestiaryEntry.TownNPC(637));
--			Register(BestiaryEntry.TownNPC(656));
--		}
-+		//private void AddTownNPCs_Manual() {
-+		//	Register(BestiaryEntry.TownNPC(22));
-+		//	Register(BestiaryEntry.TownNPC(17));
-+		//	Register(BestiaryEntry.TownNPC(18));
-+		//	Register(BestiaryEntry.TownNPC(19));
-+		//	Register(BestiaryEntry.TownNPC(20));
-+		//	Register(BestiaryEntry.TownNPC(37));
-+		//	Register(BestiaryEntry.TownNPC(54));
-+		//	Register(BestiaryEntry.TownNPC(38));
-+		//	Register(BestiaryEntry.TownNPC(107));
-+		//	Register(BestiaryEntry.TownNPC(108));
-+		//	Register(BestiaryEntry.TownNPC(124));
-+		//	Register(BestiaryEntry.TownNPC(142));
-+		//	Register(BestiaryEntry.TownNPC(160));
-+		//	Register(BestiaryEntry.TownNPC(178));
-+		//	Register(BestiaryEntry.TownNPC(207));
-+		//	Register(BestiaryEntry.TownNPC(208));
-+		//	Register(BestiaryEntry.TownNPC(209));
-+		//	Register(BestiaryEntry.TownNPC(227));
-+		//	Register(BestiaryEntry.TownNPC(228));
-+		//	Register(BestiaryEntry.TownNPC(229));
-+		//	Register(BestiaryEntry.TownNPC(353));
-+		//	Register(BestiaryEntry.TownNPC(369));
-+		//	Register(BestiaryEntry.TownNPC(441));
-+		//	Register(BestiaryEntry.TownNPC(550));
-+		//	Register(BestiaryEntry.TownNPC(588));
-+		//	Register(BestiaryEntry.TownNPC(368));
-+		//	Register(BestiaryEntry.TownNPC(453));
-+		//	Register(BestiaryEntry.TownNPC(633));
-+		//	Register(BestiaryEntry.TownNPC(656));
-+		//	Register(BestiaryEntry.TownNPC(638));
-+		//	Register(BestiaryEntry.TownNPC(637));
-+		//	Register(BestiaryEntry.TownNPC(656));
-+		//}
- 
- 		private void AddMultiEntryNPCS_Manual() {
- 			Register(BestiaryEntry.Enemy(85)).Icon = new UnlockableNPCEntryIcon(85, 0f, 0f, 0f, 3f);
++			Register(BestiaryEntry.TownNPC(656));
+ 			Register(BestiaryEntry.TownNPC(638));
+ 			Register(BestiaryEntry.TownNPC(637));
+ 			Register(BestiaryEntry.TownNPC(656));
+@@ -582,13 +_,18 @@
  		}
  
--		private void AddEmptyEntries_CrittersAndEnemies_Automated() {
-+		private void AddEmptyEntries_Automated() {
+ 		private void AddEmptyEntries_CrittersAndEnemies_Automated() {
 +			BestiaryEntry bestiaryEntry;
  			HashSet<int> exclusions = GetExclusions();
  			foreach (KeyValuePair<int, NPC> item in ContentSamples.NpcsByNetId) {

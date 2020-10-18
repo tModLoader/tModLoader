@@ -5,7 +5,7 @@
  	public class ItemDropRule
  	{
 -		public static IItemDropRule Common(int itemId, int dropsOutOfX = 1, int minimumDropped = 1, int maximumDropped = 1) => new CommonDrop(itemId, dropsOutOfX, minimumDropped, maximumDropped);
-+		public static IItemDropRule Common(int itemId, int dropsOutOfX = 1, int minimumDropped = 1, int maximumDropped = 1, int dropsXoutofY = 1) => new CommonDrop(itemId, dropsOutOfX, minimumDropped, maximumDropped, dropsXoutofY);
++		public static IItemDropRule Common(int itemId, int dropsOutOfY = 1, int minimumDropped = 1, int maximumDropped = 1, int dropsXoutofY = 1) => new CommonDrop(itemId, dropsOutOfY, minimumDropped, maximumDropped, dropsXoutofY);
  		public static IItemDropRule BossBag(int itemId) => new DropBasedOnExpertMode(DropNothing(), new DropLocalPerClientAndResetsNPCMoneyTo0(itemId, 1, 1, 1, null));
  		public static IItemDropRule BossBagByCondition(IItemDropRuleCondition condition, int itemId) => new DropBasedOnExpertMode(DropNothing(), new DropLocalPerClientAndResetsNPCMoneyTo0(itemId, 1, 1, 1, condition));
  		public static IItemDropRule ExpertGetsRerolls(int itemId, int dropsOutOfX, int expertRerolls) => new DropBasedOnExpertMode(WithRerolls(itemId, 0, dropsOutOfX), WithRerolls(itemId, expertRerolls, dropsOutOfX));

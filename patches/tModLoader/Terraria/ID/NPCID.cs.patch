@@ -22,7 +22,7 @@
  				dictionary.Add(6, value);
  				value = new NPCBestiaryDrawModifiers(0) {
 -					CustomTexturePath = "Images/UI/Bestiary/NPCs/NPC_7",
-+					CustomTexturePath = "Terraria/UI/Bestiary/NPCs/NPC_7",
++					CustomTexturePath = "Terraria/UI/Bestiary/NPCs/NPC_7", // TODO: This and all subsequent filepath patches are temporary until we overhaul the asset system. Very hacky.
  					Position = new Vector2(20f, 29f),
  					PortraitPositionXOverride = 0f,
  					PortraitPositionYOverride = 10f

@@ -37,7 +37,7 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.HatOffsetY[npc.type] = 4; // For when a party is active, the party hat spawns at a Y offset.
 
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
-				Velocity = 1f
+				Velocity = 1f //Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, value);
 		}
