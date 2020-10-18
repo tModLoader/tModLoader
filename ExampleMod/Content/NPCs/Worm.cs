@@ -4,9 +4,9 @@ using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs
 {
@@ -128,9 +128,9 @@ namespace ExampleMod.NPCs
 		public override void Init() {
 			minLength = 6;
 			maxLength = 12;
-			tailType = NPCType<ExampleWormTail>();
-			bodyType = NPCType<ExampleWormBody>();
-			headType = NPCType<ExampleWormHead>();
+			tailType = ModContent.NPCType<ExampleWormTail>();
+			bodyType = ModContent.NPCType<ExampleWormBody>();
+			headType = ModContent.NPCType<ExampleWormHead>();
 			speed = 5.5f;
 			turnSpeed = 0.045f;
 		}

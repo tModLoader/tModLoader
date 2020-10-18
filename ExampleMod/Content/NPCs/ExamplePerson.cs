@@ -15,6 +15,7 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.GameContent.Bestiary;
 using static Terraria.ModLoader.ModContent;
+using Terraria.GameContent.ItemDropRules;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -57,7 +58,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[1] { //Sets the preferred biomes of this town NPC listed in the bestiary.
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[1] { //Sets the preferred biomes of this town NPC listed in the bestiary. With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
 			});
 			bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement( //Sets the description of this NPC listed in the bestiary.
@@ -231,10 +232,10 @@ namespace ExampleMod.Content.NPCs
 		// 	// }
 		// }
 
-		// TODO: implement
-		// public override void NPCLoot() {
-		// 	Item.NewItem(npc.getRect(), ItemType<Items.Armor.ExampleCostume>());
-		// }
+		public override void ModifyNPCLoot(ItemDropDatabase database) {
+			// Readd this once ExampleCostume is implemented.
+			// database.RegisterToNPC(npc.type, ItemDropRule.Common(ModContent.ItemType<ExampleCostume>(), 1));
+		}
 
 		// Make this Town NPC teleport to the King and/or Queen statue when triggered.
 		public override bool CanGoToStatue(bool toKingStatue) => true;
