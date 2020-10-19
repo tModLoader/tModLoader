@@ -40,7 +40,7 @@ namespace Terraria
 		public bool? showManaOverride { get; set; }
 
 		/// <summary>
-		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon, or ModContent.GetInstance<T>() for custom damage types.
+		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
 		/// </summary>
 		public DamageClass DamageType { get; set; }
 
