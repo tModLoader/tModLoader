@@ -152,6 +152,15 @@
  			if (!anyPressurePlate)
  				return false;
  
+@@ -393,7 +_,7 @@
+ 					}
+ 
+ 					if (flag) {
+-						bool num6 = !Main.recipe[n].needWater || Main.player[Main.myPlayer].adjWater || Main.player[Main.myPlayer].adjTile[172];
++						bool num6 = !Main.recipe[n].needWater || Main.player[Main.myPlayer].adjWater;
+ 						bool flag3 = !Main.recipe[n].needHoney || Main.recipe[n].needHoney == Main.player[Main.myPlayer].adjHoney;
+ 						bool flag4 = !Main.recipe[n].needLava || Main.recipe[n].needLava == Main.player[Main.myPlayer].adjLava;
+ 						bool flag5 = !Main.recipe[n].needSnowBiome || Main.player[Main.myPlayer].ZoneSnow;
 @@ -402,7 +_,7 @@
  							flag = false;
  					}

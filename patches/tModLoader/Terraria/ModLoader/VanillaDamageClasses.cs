@@ -21,4 +21,9 @@ namespace Terraria.ModLoader
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.53");
 	}
+
+	public class Throwing : DamageClass
+	{
+		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.58");
+	}
 }
