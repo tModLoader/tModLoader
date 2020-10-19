@@ -10,7 +10,8 @@ namespace Terraria.ModLoader
 			DamageClass.Melee,
 			DamageClass.Ranged,
 			DamageClass.Magic,
-			DamageClass.Summon
+			DamageClass.Summon,
+			DamageClass.Throwing
 		};
 
 		internal static readonly int DefaultDamageClassCount = DamageClasses.Count;
