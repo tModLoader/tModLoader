@@ -108,7 +108,7 @@
  							break;
  						}
  					case 24:
-@@ -500,15 +_,21 @@
+@@ -500,9 +_,10 @@
  									bb14[num9] = true;
  							}
  
@@ -120,18 +120,16 @@
  							writer.Write(bb14);
  							for (int num10 = 0; num10 < Projectile.maxAI; num10++) {
  								if (bb14[num10])
- 									writer.Write(projectile.ai[num10]);
- 							}
+@@ -512,11 +_,19 @@
+ 							if (bb14[Projectile.maxAI])
+ 								writer.Write((short)projectile.projUUID);
  
 +							if (bb14[Projectile.maxAI + 1]) {
 +								writer.Write((byte)extraAI.Length);
 +								writer.Write(extraAI);
 +							}
 +
- 							if (bb14[Projectile.maxAI])
- 								writer.Write((short)projectile.projUUID);
- 
-@@ -516,7 +_,10 @@
+ 							break;
  						}
  					case 28:
  						writer.Write((short)number);
