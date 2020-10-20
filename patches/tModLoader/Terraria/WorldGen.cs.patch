@@ -9,8 +9,25 @@
  
  namespace Terraria
  {
-@@ -664,7 +_,13 @@
- 		private static Queue<Action<StructureMap>> _postGenActions = new Queue<Action<StructureMap>>();
+@@ -470,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			private static bool Gemmable(int type) {
++			public static bool Gemmable(int type) {
+ 				if (type != 0 && type != 1 && type != 40 && type != 59 && type != 60 && type != 70 && type != 147)
+ 					return type == 161;
+ 
+@@ -659,12 +_,18 @@
+ 		public delegate bool GetTreeFoliageDataMethod(int i, int j, int xoffset, ref int treeFrame, ref int treeStyle, out int floorY, out int topTextureFrameWidth, out int topTextureFrameHeight);
+ 
+ 		public static TownRoomManager TownManager = new TownRoomManager();
+-		private static int lAltarX;
++		public static int lAltarX;
+-		private static int lAltarY;
++		public static int lAltarY;
+-		private static Queue<Action<StructureMap>> _postGenActions = new Queue<Action<StructureMap>>();
++		public static Queue<Action<StructureMap>> _postGenActions = new Queue<Action<StructureMap>>();
  		public static int tileReframeCount;
  		public static bool noMapUpdate;
 +		public static StructureMap structures;
@@ -23,6 +40,289 @@
  		public static int tLeft;
  		public static int tRight;
  		public static int tTop;
+@@ -676,7 +_,7 @@
+ 		public static int ironBar = 22;
+ 		public static int silverBar = 21;
+ 		public static int goldBar = 19;
+-		private const int NUM_SEASHELL_STYLES = 2;
++		public const int NUM_SEASHELL_STYLES = 2;
+ 		public static int treeBG1;
+ 		public static int treeBG2;
+ 		public static int treeBG3;
+@@ -690,7 +_,7 @@
+ 		public static int oceanBG;
+ 		public static int mushroomBG;
+ 		public static int underworldBG;
+-		private static ushort crackedType = 481;
++		public static ushort crackedType = 481;
+ 		public static int oceanDistance = 250;
+ 		public static int beachDistance = 380;
+ 		public static bool skipDesertTileCheck = false;
+@@ -715,8 +_,8 @@
+ 		public static int totalX;
+ 		public static int totalD;
+ 		public static bool IsGeneratingHardMode;
+-		private static Vector2[] heartPos = new Vector2[100];
++		public static Vector2[] heartPos = new Vector2[100];
+-		private static int heartCount;
++		public static int heartCount;
+ 		public static int maxTreeShakes = 500;
+ 		public static int numTreeShakes = 0;
+ 		public static int[] treeShakeX = new int[maxTreeShakes];
+@@ -739,15 +_,15 @@
+ 		public static bool worldCleared;
+ 		public static bool worldBackup;
+ 		public static bool loadBackup = false;
+-		private static int lastMaxTilesX;
++		public static int lastMaxTilesX;
+-		private static int lastMaxTilesY;
++		public static int lastMaxTilesY;
+-		private static bool mergeUp;
++		public static bool mergeUp;
+-		private static bool mergeDown;
++		public static bool mergeDown;
+-		private static bool mergeLeft;
++		public static bool mergeLeft;
+-		private static bool mergeRight;
++		public static bool mergeRight;
+-		private static bool stopDrops;
++		public static bool stopDrops;
+ 		public static bool mudWall;
+-		private static int grassSpread;
++		public static int grassSpread;
+ 		public static bool noLiquidCheck;
+ 		public static bool AllowedToSpreadInfections = true;
+ 		[ThreadStatic]
+@@ -791,75 +_,75 @@
+ 		public static int[] dRoomX = new int[maxDRooms];
+ 		public static int[] dRoomY = new int[maxDRooms];
+ 		public static int[] dRoomSize = new int[maxDRooms];
+-		private static bool[] dRoomTreasure = new bool[maxDRooms];
++		public static bool[] dRoomTreasure = new bool[maxDRooms];
+-		private static int[] dRoomL = new int[maxDRooms];
++		public static int[] dRoomL = new int[maxDRooms];
+-		private static int[] dRoomR = new int[maxDRooms];
++		public static int[] dRoomR = new int[maxDRooms];
+-		private static int[] dRoomT = new int[maxDRooms];
++		public static int[] dRoomT = new int[maxDRooms];
+-		private static int[] dRoomB = new int[maxDRooms];
++		public static int[] dRoomB = new int[maxDRooms];
+-		private static int numDDoors;
++		public static int numDDoors;
+-		private static int[] DDoorX = new int[500];
++		public static int[] DDoorX = new int[500];
+-		private static int[] DDoorY = new int[500];
++		public static int[] DDoorY = new int[500];
+-		private static int[] DDoorPos = new int[500];
++		public static int[] DDoorPos = new int[500];
+-		private static int numDungeonPlatforms;
++		public static int numDungeonPlatforms;
+-		private static int[] dungeonPlatformX = new int[500];
++		public static int[] dungeonPlatformX = new int[500];
+-		private static int[] dungeonPlatformY = new int[500];
++		public static int[] dungeonPlatformY = new int[500];
+-		private static bool generatedShadowKey;
++		public static bool generatedShadowKey;
+-		private static int JungleItemCount;
++		public static int JungleItemCount;
+-		private static int[] JChestX = new int[100];
++		public static int[] JChestX = new int[100];
+-		private static int[] JChestY = new int[100];
++		public static int[] JChestY = new int[100];
+-		private static int numJChests;
++		public static int numJChests;
+ 		public static int dEnteranceX;
+ 		public static bool dSurface;
+-		private static double dxStrength1;
++		public static double dxStrength1;
+-		private static double dyStrength1;
++		public static double dyStrength1;
+-		private static double dxStrength2;
++		public static double dxStrength2;
+-		private static double dyStrength2;
++		public static double dyStrength2;
+-		private static int dMinX;
++		public static int dMinX;
+-		private static int dMaxX;
++		public static int dMaxX;
+-		private static int dMinY;
++		public static int dMinY;
+-		private static int dMaxY;
++		public static int dMaxY;
+-		private static int numIslandHouses;
++		public static int numIslandHouses;
+-		private static int houseCount;
++		public static int houseCount;
+-		private static bool[] skyLake = new bool[30];
++		public static bool[] skyLake = new bool[30];
+-		private static int[] floatingIslandHouseX = new int[30];
++		public static int[] floatingIslandHouseX = new int[30];
+-		private static int[] floatingIslandHouseY = new int[30];
++		public static int[] floatingIslandHouseY = new int[30];
+-		private static int[] floatingIslandStyle = new int[30];
++		public static int[] floatingIslandStyle = new int[30];
+-		private static int numMCaves;
++		public static int numMCaves;
+-		private static int[] mCaveX = new int[30];
++		public static int[] mCaveX = new int[30];
+-		private static int[] mCaveY = new int[30];
++		public static int[] mCaveY = new int[30];
+ 		public static int WorldGenParam_Evil = -1;
+-		private static int maxTunnels = 50;
++		public static int maxTunnels = 50;
+-		private static int numTunnels;
++		public static int numTunnels;
+-		private static int[] tunnelX = new int[maxTunnels];
++		public static int[] tunnelX = new int[maxTunnels];
+-		private static int maxOrePatch = 50;
++		public static int maxOrePatch = 50;
+-		private static int numOrePatch;
++		public static int numOrePatch;
+-		private static int[] orePatchX = new int[maxOrePatch];
++		public static int[] orePatchX = new int[maxOrePatch];
+-		private static int maxOasis = 20;
++		public static int maxOasis = 20;
+-		private static int numOasis = 0;
++		public static int numOasis = 0;
+-		private static Vector2[] oasisPosition = new Vector2[maxOasis];
++		public static Vector2[] oasisPosition = new Vector2[maxOasis];
+-		private static int[] oasisWidth = new int[maxOasis];
++		public static int[] oasisWidth = new int[maxOasis];
+-		private static int oasisHeight = 20;
++		public static int oasisHeight = 20;
+-		private static int maxMushroomBiomes = 50;
++		public static int maxMushroomBiomes = 50;
+-		private static int numMushroomBiomes = 0;
++		public static int numMushroomBiomes = 0;
+-		private static Vector2[] mushroomBiomesPosition = new Vector2[maxMushroomBiomes];
++		public static Vector2[] mushroomBiomesPosition = new Vector2[maxMushroomBiomes];
+-		private static int maxLakes = 50;
++		public static int maxLakes = 50;
+-		private static int numLakes = 0;
++		public static int numLakes = 0;
+-		private static int[] LakeX = new int[maxLakes];
++		public static int[] LakeX = new int[maxLakes];
+-		private static int maxOceanCaveTreasure = 2;
++		public static int maxOceanCaveTreasure = 2;
+-		private static int numOceanCaveTreasure = 0;
++		public static int numOceanCaveTreasure = 0;
+-		private static Point[] oceanCaveTreasure = new Point[maxOceanCaveTreasure];
++		public static Point[] oceanCaveTreasure = new Point[maxOceanCaveTreasure];
+-		private static int cactusWaterWidth = 50;
++		public static int cactusWaterWidth = 50;
+-		private static int cactusWaterHeight = 25;
++		public static int cactusWaterHeight = 25;
+-		private static int cactusWaterLimit = 25;
++		public static int cactusWaterLimit = 25;
+-		private static int JungleX;
++		public static int JungleX;
+-		private static int hellChest;
++		public static int hellChest;
+-		private static int[] hellChestItem = new int[7];
++		public static int[] hellChestItem = new int[7];
+-		private static bool roomTorch;
++		public static bool roomTorch;
+-		private static bool roomDoor;
++		public static bool roomDoor;
+-		private static bool roomChair;
++		public static bool roomChair;
+-		private static bool roomTable;
++		public static bool roomTable;
+-		private static bool roomOccupied;
++		public static bool roomOccupied;
+-		private static bool roomEvil;
++		public static bool roomEvil;
+ 		public static Point16[] statueList;
+ 		public static List<int> StatuesWithTraps = new List<int>(new int[4] {
+ 			4,
+@@ -870,16 +_,16 @@
+ 		public static Rectangle UndergroundDesertLocation = Rectangle.Empty;
+ 		public static Rectangle UndergroundDesertHiveLocation = Rectangle.Empty;
+ 		public static MysticLogFairiesEvent mysticLogsEvent = new MysticLogFairiesEvent();
+-		private static bool currentlyTryingToUseAlternateHousingSpot;
++		public static bool currentlyTryingToUseAlternateHousingSpot;
+-		private static int sharedRoomX;
++		public static int sharedRoomX;
+ 		public static TownNPCRoomCheckFailureReason roomCheckFailureReason = TownNPCRoomCheckFailureReason.None;
+ 		public static bool generatingWorld = false;
+-		private static int[,] trapDiag = new int[4, 2];
++		public static int[,] trapDiag = new int[4, 2];
+-		private static int tileCounterNum;
++		public static int tileCounterNum;
+-		private static int tileCounterMax = 20;
++		public static int tileCounterMax = 20;
+-		private static int[] tileCounterX = new int[tileCounterMax];
++		public static int[] tileCounterX = new int[tileCounterMax];
+-		private static int[] tileCounterY = new int[tileCounterMax];
++		public static int[] tileCounterY = new int[tileCounterMax];
+-		private static WorldGenerator _generator;
++		public static WorldGenerator _generator;
+ 		public static int SmallConsecutivesFound = 0;
+ 		public static int SmallConsecutivesEliminated = 0;
+ 		public static bool drunkWorldGen = false;
+@@ -888,12 +_,58 @@
+ 		public static bool placingTraps = false;
+ 		public const bool USE_FRAMING_SKIP_FOR_UNIMPORTANT_TILES_IN_WORLDGEN = false;
+ 		public static bool notTheBees = false;
+-		private static int catTailDistance = 8;
++		public static int catTailDistance = 8;
+ 		public static TreeTopsInfo TreeTops = new TreeTopsInfo();
+ 		public static BackgroundChangeFlashInfo BackgroundsCache = new BackgroundChangeFlashInfo();
+-		private static bool fossilBreak = false;
++		public static bool fossilBreak = false;
+-		private const bool BUBBLES_SOLID_STATE_FOR_HOUSING = true;
++		public const bool BUBBLES_SOLID_STATE_FOR_HOUSING = true;
+-		private static bool skipFramingDuringGen = false;
++		public static bool skipFramingDuringGen = false;
++
++		//local vars turned to public below
++		public static int copper = 7;
++		public static int iron = 6;
++		public static int silver = 9;
++		public static int gold = 8;
++		public static int dungeonSide = 0;
++		public static ushort jungleHut = 0;
++		public static int shellStartXLeft = 0;
++		public static int shellStartYLeft = 0;
++		public static int shellStartXRight = 0;
++		public static int shellStartYRight = 0;
++		public static int howFar = 0;
++		public static int[] PyrX = null;
++		public static int[] PyrY = null;
++		public static int numPyr = 0;
++		public static int jungleMinX = -1;
++		public static int jungleMaxX = -1;
++		public static int[] snowMinX = new int[Main.maxTilesY];
++		public static int[] snowMaxX = new int[Main.maxTilesY];
++		public static int snowTop = 0;
++		public static int snowBottom = 0;
++		public static float dub2 = 0f;
++		public static int skyLakes = 1;
++		public static int beachSandRandomCenter = 275 + 5 + 40;
++		public static int beachSandRandomWidthRange = 20;
++		public static int beachSandDungeonExtraWidth = 40;
++		public static int beachSandJungleExtraWidth = 20;
++		public static int oceanWaterStartRandomMin = 220;
++		public static int oceanWaterStartRandomMax = oceanWaterStartRandomMin + 40;
++		public static int oceanWaterForcedJungleLength = 275;
++		public static int leftBeachEnd = 0;
++		public static int rightBeachStart = 0;
++		public static int minSsandBeforeWater = 50;
++		public static int evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
++		public static int evilBiomeAvoidanceMidFixer = 50;
++		public static int lakesBeachAvoidance = beachSandRandomCenter + 20;
++		public static int smallHolesBeachAvoidance = beachSandRandomCenter + 20;
++		public static int surfaceCavesBeachAvoidance2 = beachSandRandomCenter + 20;
++		public static int jungleOriginX = 0;
++		public static int snowOriginLeft = 0;
++		public static int snowOriginRight = 0;
++		public static int logX = -1;
++		public static int logY = -1;
++		public static int dungeonLocation = 0;
++
+ 
+ 		public static UnifiedRandom genRand {
+ 			get {
 @@ -1214,7 +_,7 @@
  			}
  
@@ -41,6 +341,42 @@
  			if (type == 160) {
  				if ((double)roomY2 > Main.worldSurface)
  					return false;
+@@ -1570,7 +_,7 @@
+ 			return TownNPCSpawnResult.Successful;
+ 		}
+ 
+-		private static int FindAHomelessNPC() {
++		public static int FindAHomelessNPC() {
+ 			int result = -1;
+ 			for (int i = 0; i < 200; i++) {
+ 				if (Main.npc[i].active && Main.npc[i].homeless && Main.npc[i].type == prioritizedTownNPCType && CheckSpecialTownNPCSpawningConditions(Main.npc[i].type)) {
+@@ -1582,7 +_,7 @@
+ 			return result;
+ 		}
+ 
+-		private static bool IsRoomConsideredAlreadyOccupied(int spawnTileX, int spawnTileY, int npcTypeToSpawn) {
++		public static bool IsRoomConsideredAlreadyOccupied(int spawnTileX, int spawnTileY, int npcTypeToSpawn) {
+ 			bool result = false;
+ 			for (int i = 0; i < 200; i++) {
+ 				NPC nPC = Main.npc[i];
+@@ -1695,7 +_,7 @@
+ 			Main.tileSolid[379] = flag;
+ 		}
+ 
+-		private static bool IsRoomConsideredOccupiedForNPCIndex(int npc) {
++		public static bool IsRoomConsideredOccupiedForNPCIndex(int npc) {
+ 			bool result = true;
+ 			for (int i = 0; i < 200; i++) {
+ 				if (i != npc) {
+@@ -1710,7 +_,7 @@
+ 			return result;
+ 		}
+ 
+-		private static bool ScoreRoom_IsThisRoomOccupiedBySomeone(int ignoreNPC = -1, int npcTypeAsking = -1) {
++		public static bool ScoreRoom_IsThisRoomOccupiedBySomeone(int ignoreNPC = -1, int npcTypeAsking = -1) {
+ 			for (int i = 0; i < 200; i++) {
+ 				if (!Main.npc[i].active || !Main.npc[i].townNPC || ignoreNPC == i || Main.npc[i].homeless)
+ 					continue;
 @@ -1801,7 +_,7 @@
  			if (num7 >= Main.maxTilesY - 5)
  				num7 = Main.maxTilesY - 6;
@@ -50,6 +386,33 @@
  			CountTileTypesInArea(tileTypeCounts, num4 + 1, num5 - 1, num6 + 2, num7 + 1);
  			int num8 = -GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.TotalGoodEvil);
  			if (num8 < 50)
+@@ -1890,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static bool ScoreRoom_CanBeHomeSpot(int x, int y) {
++		public static bool ScoreRoom_CanBeHomeSpot(int x, int y) {
+ 			Tile tile = Main.tile[x, y];
+ 			if (tile.active()) {
+ 				ushort type = tile.type;
+@@ -1901,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		private static bool Housing_CheckIfIsCeiling(int i, int j) {
++		public static bool Housing_CheckIfIsCeiling(int i, int j) {
+ 			bool result = false;
+ 			for (int k = 0; k < roomCeilingsCount; k++) {
+ 				if (roomCeilingX[k] == i) {
+@@ -1915,7 +_,7 @@
+ 			return result;
+ 		}
+ 
+-		private static bool Housing_CheckIfInRoom(int i, int j) {
++		public static bool Housing_CheckIfInRoom(int i, int j) {
+ 			bool result = false;
+ 			for (int k = 0; k < numRoomTiles; k++) {
+ 				if (roomX[k] == i && roomY[k] == j) {
 @@ -1934,7 +_,7 @@
  			roomY2 = y;
  			numRoomTiles = 0;
@@ -68,6 +431,219 @@
  			}
  
  			if (x < roomX1)
+@@ -2121,6 +_,8 @@
+ 		}
+ 
+ 		public static bool meteor(int i, int j, bool ignorePlayers = false) {
++			var meteorTasks = new List<GenPass>();
++
+ 			if (i < 50 || i > Main.maxTilesX - 50)
+ 				return false;
+ 
+@@ -2163,101 +_,110 @@
+ 				}
+ 			}
+ 
++			meteorTasks.Add(new PassLegacy("Meteor Spawn", (progress, config) => {
++				num = genRand.Next(17, 23);
++				for (int num2 = i - num; num2 < i + num; num2++) {
++					for (int num3 = j - num; num3 < j + num; num3++) {
++						if (num3 <= j + Main.rand.Next(-2, 3) - 5)
++							continue;
++
++						float num4 = Math.Abs(i - num2);
++						float num5 = Math.Abs(j - num3);
++						if ((double)(float)Math.Sqrt(num4 * num4 + num5 * num5) < (double)num * 0.9 + (double)Main.rand.Next(-4, 5)) {
++							if (!Main.tileSolid[Main.tile[num2, num3].type])
++								Main.tile[num2, num3].active(active: false);
++
++							Main.tile[num2, num3].type = 37;
++						}
++					}
++				}
++
++				num = genRand.Next(8, 14);
++				for (int num6 = i - num; num6 < i + num; num6++) {
++					for (int num7 = j - num; num7 < j + num; num7++) {
++						if (num7 > j + Main.rand.Next(-2, 3) - 4) {
++							float num8 = Math.Abs(i - num6);
++							float num9 = Math.Abs(j - num7);
++							if ((double)(float)Math.Sqrt(num8 * num8 + num9 * num9) < (double)num * 0.8 + (double)Main.rand.Next(-3, 4))
++								Main.tile[num6, num7].active(active: false);
++						}
++					}
++				}
++
++				num = genRand.Next(25, 35);
++				for (int num10 = i - num; num10 < i + num; num10++) {
++					for (int num11 = j - num; num11 < j + num; num11++) {
++						float num12 = Math.Abs(i - num10);
++						float num13 = Math.Abs(j - num11);
++						if ((double)(float)Math.Sqrt(num12 * num12 + num13 * num13) < (double)num * 0.7) {
++							if (TileID.Sets.GetsDestroyedForMeteors[Main.tile[num10, num11].type])
++								KillTile(num10, num11);
++
++							Main.tile[num10, num11].liquid = 0;
++						}
++
++						if (Main.tile[num10, num11].type == 37) {
++							if (!SolidTile(num10 - 1, num11) && !SolidTile(num10 + 1, num11) && !SolidTile(num10, num11 - 1) && !SolidTile(num10, num11 + 1))
++								Main.tile[num10, num11].active(active: false);
++							else if ((Main.tile[num10, num11].halfBrick() || Main.tile[num10 - 1, num11].topSlope()) && !SolidTile(num10, num11 + 1))
++								Main.tile[num10, num11].active(active: false);
++						}
++
++						SquareTileFrame(num10, num11);
++						SquareWallFrame(num10, num11);
++					}
++				}
++
++				num = genRand.Next(23, 32);
++				for (int num14 = i - num; num14 < i + num; num14++) {
++					for (int num15 = j - num; num15 < j + num; num15++) {
++						if (num15 <= j + genRand.Next(-3, 4) - 3 || !Main.tile[num14, num15].active() || Main.rand.Next(10) != 0)
++							continue;
++
++						float num16 = Math.Abs(i - num14);
++						float num17 = Math.Abs(j - num15);
++						if ((double)(float)Math.Sqrt(num16 * num16 + num17 * num17) < (double)num * 0.8) {
++							if (TileID.Sets.GetsDestroyedForMeteors[Main.tile[num14, num15].type])
++								KillTile(num14, num15);
++
++							Main.tile[num14, num15].type = 37;
++							SquareTileFrame(num14, num15);
++						}
++					}
++				}
++
++				num = genRand.Next(30, 38);
++				for (int num18 = i - num; num18 < i + num; num18++) {
++					for (int num19 = j - num; num19 < j + num; num19++) {
++						if (num19 <= j + genRand.Next(-2, 3) || !Main.tile[num18, num19].active() || Main.rand.Next(20) != 0)
++							continue;
++
++						float num20 = Math.Abs(i - num18);
++						float num21 = Math.Abs(j - num19);
++						if ((double)(float)Math.Sqrt(num20 * num20 + num21 * num21) < (double)num * 0.85) {
++							if (TileID.Sets.GetsDestroyedForMeteors[Main.tile[num18, num19].type])
++								KillTile(num18, num19);
++
++							Main.tile[num18, num19].type = 37;
++							SquareTileFrame(num18, num19);
++						}
++					}
++				}
++			}));
++
++			meteorTasks.Add(new PassLegacy("Meteor Announcement", (progress, config) => {
++				if (Main.netMode == 0)
++					Main.NewText(Lang.gen[59].Value, 50, byte.MaxValue, 130);
++				else if (Main.netMode == 2)
++					ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.gen[59].Key), new Color(50, 255, 130));
++			}));
++
+ 			stopDrops = true;
+-			num = genRand.Next(17, 23);
+-			for (int num2 = i - num; num2 < i + num; num2++) {
+-				for (int num3 = j - num; num3 < j + num; num3++) {
+-					if (num3 <= j + Main.rand.Next(-2, 3) - 5)
+-						continue;
+-
+-					float num4 = Math.Abs(i - num2);
+-					float num5 = Math.Abs(j - num3);
+-					if ((double)(float)Math.Sqrt(num4 * num4 + num5 * num5) < (double)num * 0.9 + (double)Main.rand.Next(-4, 5)) {
+-						if (!Main.tileSolid[Main.tile[num2, num3].type])
+-							Main.tile[num2, num3].active(active: false);
+-
+-						Main.tile[num2, num3].type = 37;
+-					}
+-				}
+-			}
+-
+-			num = genRand.Next(8, 14);
+-			for (int num6 = i - num; num6 < i + num; num6++) {
+-				for (int num7 = j - num; num7 < j + num; num7++) {
+-					if (num7 > j + Main.rand.Next(-2, 3) - 4) {
+-						float num8 = Math.Abs(i - num6);
+-						float num9 = Math.Abs(j - num7);
+-						if ((double)(float)Math.Sqrt(num8 * num8 + num9 * num9) < (double)num * 0.8 + (double)Main.rand.Next(-3, 4))
+-							Main.tile[num6, num7].active(active: false);
+-					}
+-				}
+-			}
+-
+-			num = genRand.Next(25, 35);
+-			for (int num10 = i - num; num10 < i + num; num10++) {
+-				for (int num11 = j - num; num11 < j + num; num11++) {
+-					float num12 = Math.Abs(i - num10);
+-					float num13 = Math.Abs(j - num11);
+-					if ((double)(float)Math.Sqrt(num12 * num12 + num13 * num13) < (double)num * 0.7) {
+-						if (TileID.Sets.GetsDestroyedForMeteors[Main.tile[num10, num11].type])
+-							KillTile(num10, num11);
+-
+-						Main.tile[num10, num11].liquid = 0;
+-					}
+-
+-					if (Main.tile[num10, num11].type == 37) {
+-						if (!SolidTile(num10 - 1, num11) && !SolidTile(num10 + 1, num11) && !SolidTile(num10, num11 - 1) && !SolidTile(num10, num11 + 1))
+-							Main.tile[num10, num11].active(active: false);
+-						else if ((Main.tile[num10, num11].halfBrick() || Main.tile[num10 - 1, num11].topSlope()) && !SolidTile(num10, num11 + 1))
+-							Main.tile[num10, num11].active(active: false);
+-					}
+-
+-					SquareTileFrame(num10, num11);
+-					SquareWallFrame(num10, num11);
+-				}
+-			}
+-
+-			num = genRand.Next(23, 32);
+-			for (int num14 = i - num; num14 < i + num; num14++) {
+-				for (int num15 = j - num; num15 < j + num; num15++) {
+-					if (num15 <= j + genRand.Next(-3, 4) - 3 || !Main.tile[num14, num15].active() || Main.rand.Next(10) != 0)
+-						continue;
+-
+-					float num16 = Math.Abs(i - num14);
+-					float num17 = Math.Abs(j - num15);
+-					if ((double)(float)Math.Sqrt(num16 * num16 + num17 * num17) < (double)num * 0.8) {
+-						if (TileID.Sets.GetsDestroyedForMeteors[Main.tile[num14, num15].type])
+-							KillTile(num14, num15);
+-
+-						Main.tile[num14, num15].type = 37;
+-						SquareTileFrame(num14, num15);
+-					}
+-				}
+-			}
+-
+-			num = genRand.Next(30, 38);
+-			for (int num18 = i - num; num18 < i + num; num18++) {
+-				for (int num19 = j - num; num19 < j + num; num19++) {
+-					if (num19 <= j + genRand.Next(-2, 3) || !Main.tile[num18, num19].active() || Main.rand.Next(20) != 0)
+-						continue;
+-
+-					float num20 = Math.Abs(i - num18);
+-					float num21 = Math.Abs(j - num19);
+-					if ((double)(float)Math.Sqrt(num20 * num20 + num21 * num21) < (double)num * 0.85) {
+-						if (TileID.Sets.GetsDestroyedForMeteors[Main.tile[num18, num19].type])
+-							KillTile(num18, num19);
+-
+-						Main.tile[num18, num19].type = 37;
+-						SquareTileFrame(num18, num19);
+-					}
+-				}
+-			}
+-
++			WorldHooks.ModifyMeteorTasks(meteorTasks);
++			foreach (GenPass task in meteorTasks) {
++				task.Apply(null, null);
++			}
+ 			stopDrops = false;
+-			if (Main.netMode == 0)
+-				Main.NewText(Lang.gen[59].Value, 50, byte.MaxValue, 130);
+-			else if (Main.netMode == 2)
+-				ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.gen[59].Key), new Color(50, 255, 130));
+ 
+ 			if (Main.netMode != 1)
+ 				NetMessage.SendTileSquare(-1, i, j, 40);
 @@ -2273,10 +_,20 @@
  		}
  
@@ -178,7 +754,80 @@
  			worldCleared = true;
  		}
  
-@@ -5396,17 +_,18 @@
+@@ -3098,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void SetForestBGSet(int style, int[] mountainSet, int[] treeSet) {
++		public static void SetForestBGSet(int style, int[] mountainSet, int[] treeSet) {
+ 			mountainSet[0] = 7;
+ 			mountainSet[1] = 8;
+ 			switch (style) {
+@@ -3392,7 +_,7 @@
+ 			setBG(9, random.Next(3));
+ 		}
+ 
+-		private static int RollRandomForestBGStyle(UnifiedRandom random) {
++		public static int RollRandomForestBGStyle(UnifiedRandom random) {
+ 			int num = random.Next(11);
+ 			if ((num == 1 || num == 2) && random.Next(2) == 0)
+ 				num = random.Next(11);
+@@ -3532,7 +_,7 @@
+ 			Main.jungleBackStyle = genRand.Next(2);
+ 		}
+ 
+-		private static void ResetGenerator() {
++		public static void ResetGenerator() {
+ 			numOrePatch = 0;
+ 			numTunnels = 0;
+ 			numLakes = 0;
+@@ -4607,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static int FillWallHolesInColumn(int x, int startY, int endY) {
++		public static int FillWallHolesInColumn(int x, int startY, int endY) {
+ 			int num = 0;
+ 			x = Utils.Clamp(x, 2, Main.maxTilesX - 1 - 2);
+ 			startY = Math.Max(startY, 2);
+@@ -4629,7 +_,7 @@
+ 			return num;
+ 		}
+ 
+-		private static bool FillWallHolesInSpot(int originX, int originY, int maxWallsThreshold) {
++		public static bool FillWallHolesInSpot(int originX, int originY, int maxWallsThreshold) {
+ 			if (!InWorld(originX, originY, 2))
+ 				return false;
+ 
+@@ -4775,15 +_,15 @@
+ 			}
+ 		}
+ 
+-		private static void AddGenerationPass(string name, WorldGenLegacyMethod method) {
++		public static void AddGenerationPass(string name, WorldGenLegacyMethod method) {
+ 			_generator.Append(new PassLegacy(name, method));
+ 		}
+ 
+-		private static void AddGenerationPass(GenPass pass) {
++		public static void AddGenerationPass(GenPass pass) {
+ 			_generator.Append(pass);
+ 		}
+ 
+-		private static void AddGenerationPass(string name, float weight, WorldGenLegacyMethod method) {
++		public static void AddGenerationPass(string name, float weight, WorldGenLegacyMethod method) {
+ 			_generator.Append(new PassLegacy(name, method, weight));
+ 		}
+ 
+@@ -4851,7 +_,7 @@
+ 			return result;
+ 		}
+ 
+-		private static void ScanTileColumnAndRemoveClumps(int x) {
++		public static void ScanTileColumnAndRemoveClumps(int x) {
+ 			int num = 0;
+ 			int y = 0;
+ 			for (int i = 10; i < Main.maxTilesY - 10; i++) {
+@@ -5396,39 +_,40 @@
  			Main.lockMenuBGChange = true;
  			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
  			Hooks.ProcessWorldGenConfig(ref configuration);
@@ -200,13 +849,100 @@
 +			rockLayer = 0.0;
 -			double rockLayerHigh = 0.0;
 +			rockLayerHigh = 0.0;
- 			int copper = 7;
- 			int iron = 6;
- 			int silver = 9;
-@@ -5458,6 +_,7 @@
- 			int logX = -1;
- 			int logY = -1;
- 			int dungeonLocation = 0;
+-			int copper = 7;
++			copper = 7;
+-			int iron = 6;
++			iron = 6;
+-			int silver = 9;
++			silver = 9;
+-			int gold = 8;
++			gold = 8;
+-			int dungeonSide = 0;
++			dungeonSide = 0;
+-			ushort jungleHut = (ushort)genRand.Next(5);
++			jungleHut = (ushort)genRand.Next(5);
+-			int shellStartXLeft = 0;
++			shellStartXLeft = 0;
+-			int shellStartYLeft = 0;
++			shellStartYLeft = 0;
+-			int shellStartXRight = 0;
++			shellStartXRight = 0;
+-			int shellStartYRight = 0;
++			shellStartYRight = 0;
+-			int howFar = 0;
++			howFar = 0;
+-			int[] PyrX = null;
++			PyrX = null;
+-			int[] PyrY = null;
++			PyrY = null;
+-			int numPyr = 0;
++			numPyr = 0;
+-			int jungleMinX = -1;
++			jungleMinX = -1;
+-			int jungleMaxX = -1;
++			jungleMaxX = -1;
+-			int[] snowMinX = new int[Main.maxTilesY];
++			snowMinX = new int[Main.maxTilesY];
+-			int[] snowMaxX = new int[Main.maxTilesY];
++			snowMaxX = new int[Main.maxTilesY];
+-			int snowTop = 0;
++			snowTop = 0;
+-			int snowBottom = 0;
++			snowBottom = 0;
+-			float dub2 = 0f;
++			dub2 = 0f;
+-			int skyLakes = 1;
++			skyLakes = 1;
+ 			if (Main.maxTilesX > 8000)
+ 				skyLakes++;
+ 
+@@ -5436,28 +_,29 @@
+ 				skyLakes++;
+ 
+ 			int num = 275;
+-			int beachSandRandomCenter = num + 5 + 40;
++			beachSandRandomCenter = num + 5 + 40;
+-			int beachSandRandomWidthRange = 20;
++			beachSandRandomWidthRange = 20;
+-			int beachSandDungeonExtraWidth = 40;
++			beachSandDungeonExtraWidth = 40;
+-			int beachSandJungleExtraWidth = 20;
++			beachSandJungleExtraWidth = 20;
+-			int oceanWaterStartRandomMin = 220;
++			oceanWaterStartRandomMin = 220;
+-			int oceanWaterStartRandomMax = oceanWaterStartRandomMin + 40;
++			oceanWaterStartRandomMax = oceanWaterStartRandomMin + 40;
+-			int oceanWaterForcedJungleLength = 275;
++			oceanWaterForcedJungleLength = 275;
+-			int leftBeachEnd = 0;
++			leftBeachEnd = 0;
+-			int rightBeachStart = 0;
++			rightBeachStart = 0;
+-			int minSsandBeforeWater = 50;
++			minSsandBeforeWater = 50;
+-			int evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
++			evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
+-			int evilBiomeAvoidanceMidFixer = 50;
++			evilBiomeAvoidanceMidFixer = 50;
+-			int lakesBeachAvoidance = beachSandRandomCenter + 20;
++			lakesBeachAvoidance = beachSandRandomCenter + 20;
+-			int smallHolesBeachAvoidance = beachSandRandomCenter + 20;
++			smallHolesBeachAvoidance = beachSandRandomCenter + 20;
+ 			_ = beachSandRandomCenter;
+-			int surfaceCavesBeachAvoidance2 = beachSandRandomCenter + 20;
++			surfaceCavesBeachAvoidance2 = beachSandRandomCenter + 20;
+-			int jungleOriginX = 0;
++			jungleOriginX = 0;
+-			int snowOriginLeft = 0;
++			snowOriginLeft = 0;
+-			int snowOriginRight = 0;
++			snowOriginRight = 0;
+-			int logX = -1;
++			logX = -1;
+-			int logY = -1;
++			logY = -1;
+-			int dungeonLocation = 0;
++			dungeonLocation = 0;
 +			WorldHooks.PreWorldGen();
  			AddGenerationPass("Reset", delegate (GenerationProgress progress, GameConfiguration passConfig) {
  				numOceanCaveTreasure = 0;
@@ -306,7 +1042,7 @@
  				progress.Set(9f / num27);
  				if (!notTheBees) {
  					double num45 = (double)Main.maxTilesX * 0.02;
-@@ -11808,11 +_,14 @@
+@@ -11808,14 +_,17 @@
  				progress.Message = Lang.gen[87].Value;
  			});
  
@@ -320,7 +1056,47 @@
 +			BackupIO.archiveLock = true;
  		}
  
- 		private static void NotTheBees() {
+-		private static void NotTheBees() {
++		public static void NotTheBees() {
+ 			if (!notTheBees)
+ 				return;
+ 
+@@ -11905,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void FinishNotTheBees() {
++		public static void FinishNotTheBees() {
+ 			if (!notTheBees)
+ 				return;
+ 
+@@ -12035,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void FinishGetGoodWorld() {
++		public static void FinishGetGoodWorld() {
+ 			int num = 0;
+ 			for (int i = 20; (double)i < Main.worldSurface; i++) {
+ 				for (int j = 20; j < Main.maxTilesX - 20; j++) {
+@@ -12150,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void FinishDrunkGen() {
++		public static void FinishDrunkGen() {
+ 			byte color = (byte)genRand.Next(13, 25);
+ 			byte b = 16;
+ 			for (int i = 0; i < Main.maxTilesX; i++) {
+@@ -12320,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static float TuneOceanDepth(int count, float depth, bool floridaStyle = false) {
++		public static float TuneOceanDepth(int count, float depth, bool floridaStyle = false) {
+ 			if (!floridaStyle) {
+ 				if (count < 3)
+ 					depth += (float)genRand.Next(10, 20) * 0.2f;
 @@ -12443,7 +_,7 @@
  			if (tile2.wall != 0 || tile2.liquid != 0)
  				return false;
@@ -356,6 +1132,42 @@
  						flag4 = true;
  
  					if (!flag3) {
+@@ -13834,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		private static bool GrowLivingTree_HorizontalTunnel(int i, int j) {
++		public static bool GrowLivingTree_HorizontalTunnel(int i, int j) {
+ 			int num = i;
+ 			int num2 = i;
+ 			int num3 = 80;
+@@ -14014,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		private static void GrowDungeonTree_MakePassage(int j, int W, ref int minl, ref int minr, bool noSecretRoom = false) {
++		public static void GrowDungeonTree_MakePassage(int j, int W, ref int minl, ref int minr, bool noSecretRoom = false) {
+ 			int num = minl;
+ 			int num2 = minr;
+ 			_ = (minl + minr) / 2;
+@@ -14130,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void GrowLivingTree_MakePassage(int j, int W, ref int minl, ref int minr, bool noSecretRoom = false) {
++		public static void GrowLivingTree_MakePassage(int j, int W, ref int minl, ref int minr, bool noSecretRoom = false) {
+ 			bool flag = noSecretRoom;
+ 			int num = minl;
+ 			int num2 = minr;
+@@ -14302,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void GrowLivingTreePassageRoom(int minl, int minr, int Y) {
++		public static void GrowLivingTreePassageRoom(int minl, int minr, int Y) {
+ 			int num = genRand.Next(2);
+ 			if (num == 0)
+ 				num = -1;
 @@ -14473,6 +_,14 @@
  					continue;
  				}
@@ -483,6 +1295,69 @@
  										flag2 = true;
  										break;
  									}
+@@ -19285,7 +_,7 @@
+ 			count = MakeDungeon_Banners(array, count);
+ 		}
+ 
+-		private static void MakeDungeon_Traps(ref int failCount, int failMax, ref int numAdd) {
++		public static void MakeDungeon_Traps(ref int failCount, int failMax, ref int numAdd) {
+ 			while (numAdd < Main.maxTilesX / 500) {
+ 				failCount++;
+ 				int num = genRand.Next(dMinX, dMaxX);
+@@ -19304,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void MakeDungeon_Lights(ushort tileType, ref int failCount, int failMax, ref int numAdd, int[] roomWall) {
++		public static void MakeDungeon_Lights(ushort tileType, ref int failCount, int failMax, ref int numAdd, int[] roomWall) {
+ 			int[] array = new int[3] {
+ 				genRand.Next(7),
+ 				genRand.Next(7),
+@@ -19480,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static float MakeDungeon_Banners(int[] roomWall, float count) {
++		public static float MakeDungeon_Banners(int[] roomWall, float count) {
+ 			count = 840000f / (float)Main.maxTilesX;
+ 			for (int i = 0; (float)i < count; i++) {
+ 				int num = genRand.Next(dMinX, dMaxX);
+@@ -19522,7 +_,7 @@
+ 			return count;
+ 		}
+ 
+-		private static float MakeDungeon_Pictures(int[] roomWall, float count) {
++		public static float MakeDungeon_Pictures(int[] roomWall, float count) {
+ 			count = 420000f / (float)Main.maxTilesX;
+ 			for (int i = 0; (float)i < count; i++) {
+ 				int num = genRand.Next(dMinX, dMaxX);
+@@ -19774,7 +_,7 @@
+ 			return count;
+ 		}
+ 
+-		private static float MakeDungeon_GroundFurniture(int wallType) {
++		public static float MakeDungeon_GroundFurniture(int wallType) {
+ 			float num = 2000f * (float)Main.maxTilesX / 4200f;
+ 			int num2 = 1 + Main.maxTilesX / 4200;
+ 			int num3 = 1 + Main.maxTilesX / 4200;
+@@ -21837,7 +_,7 @@
+ 			return false;
+ 		}
+ 
+-		private static bool IsUndergroundDesert(int x, int y) {
++		public static bool IsUndergroundDesert(int x, int y) {
+ 			if ((double)y < Main.worldSurface)
+ 				return false;
+ 
+@@ -21855,7 +_,7 @@
+ 			return false;
+ 		}
+ 
+-		private static bool IsDungeon(int x, int y) {
++		public static bool IsDungeon(int x, int y) {
+ 			if ((double)y < Main.worldSurface)
+ 				return false;
+ 
 @@ -23025,7 +_,7 @@
  				Main.tile[i, j] = new Tile();
  
@@ -584,6 +1459,24 @@
  			destroyObject = false;
  		}
  
+@@ -23974,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		private static void GetDesiredStalagtiteStyle(int x, int j, out bool fail, out int desiredStyle, out int height, out int y) {
++		public static void GetDesiredStalagtiteStyle(int x, int j, out bool fail, out int desiredStyle, out int height, out int y) {
+ 			fail = false;
+ 			desiredStyle = 0;
+ 			height = 1;
+@@ -24026,7 +_,7 @@
+ 				fail = true;
+ 		}
+ 
+-		private static void GetStalagtiteStyle(int x, int y, out int style, out bool fail) {
++		public static void GetStalagtiteStyle(int x, int y, out int style, out bool fail) {
+ 			style = 0;
+ 			fail = false;
+ 			switch (Main.tile[x, y].frameX / 54) {
 @@ -24570,7 +_,8 @@
  				}
  			}
@@ -659,6 +1552,33 @@
  				destroyObject = false;
  				return;
  			}
+@@ -26075,7 +_,7 @@
+ 			destroyObject = false;
+ 		}
+ 
+-		private static int RollRandomSeaShellStyle() {
++		public static int RollRandomSeaShellStyle() {
+ 			int result = genRand.Next(2);
+ 			if (genRand.Next(10) == 0)
+ 				result = 2;
+@@ -26370,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static bool GrowMoreVines(int x, int y) {
++		public static bool GrowMoreVines(int x, int y) {
+ 			if (!InWorld(x, y, 30))
+ 				return false;
+ 
+@@ -26398,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		private static void MatureTheHerbPlants() {
++		public static void MatureTheHerbPlants() {
+ 			for (int i = 10; i < Main.maxTilesX - 10; i++) {
+ 				for (int j = 10; j < Main.maxTilesY - 10; j++) {
+ 					if ((double)j > Main.rockLayer && (Main.tile[i, j + 1].type == 59 || Main.tile[i, j + 1].type == 0) && SolidTile(i, j + 1) && !Main.tile[i, j].active() && Main.tile[i, j].liquid == 0 && genRand.Next(25) == 0) {
 @@ -26689,6 +_,9 @@
  					KillTile(x, num + k);
  			}
@@ -775,6 +1695,15 @@
  			destroyObject = false;
  			for (int num7 = num - 1; num7 < num + 4; num7++) {
  				for (int num8 = num2 - 1; num8 < num2 + 4; num8++) {
+@@ -27959,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static bool OasisPlantWaterCheck(int x, int y, bool boost = false) {
++		public static bool OasisPlantWaterCheck(int x, int y, bool boost = false) {
+ 			int num = 45;
+ 			int num2 = 20;
+ 			if (boost) {
 @@ -28267,6 +_,8 @@
  				if (!flag)
  					return;
@@ -840,6 +1769,278 @@
  							Main.tile[k, l].type = type;
  							SquareTileFrame(k, l);
  							if (Main.netMode == 2)
+@@ -29094,6 +_,7 @@
+ 		}
+ 
+ 		public static void SmashAltar(int i, int j) {
++			var altarTasks = new List<GenPass>();
+ 			if (Main.netMode == 1 || !Main.hardMode || noTileActions || gen)
+ 				return;
+ 
+@@ -29112,135 +_,148 @@
+ 					SavedOreTiers.Adamantite = 111;
+ 			}
+ 
++			altarTasks.Add(new PassLegacy("Altar Decide Ore", (progress, config) => {
+-			switch (num) {
++				switch (num) {
+-				case 0: {
++					case 0: {
+-						if (SavedOreTiers.Cobalt == -1) {
++							if (SavedOreTiers.Cobalt == -1) {
+-							flag = true;
++								flag = true;
+-							SavedOreTiers.Cobalt = 107;
+-							if (genRand.Next(2) == 0)
+-								SavedOreTiers.Cobalt = 221;
+-						}
+-
+-						int num6 = 12;
+-						if (SavedOreTiers.Cobalt == 221) {
+-							num6 += 9;
+-							num3 *= 0.9f;
+-						}
+-
+-						if (Main.netMode == 0)
+-							Main.NewText(Lang.misc[num6].Value, 50, byte.MaxValue, 130);
+-						else if (Main.netMode == 2)
+-							ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num6].Key), new Color(50, 255, 130));
+-
+-						num = SavedOreTiers.Cobalt;
+-						num3 *= 1.05f;
+-						break;
+-					}
+-				case 1: {
+-						if (Main.drunkWorld) {
+-							if (SavedOreTiers.Mythril == 108)
+-								SavedOreTiers.Mythril = 222;
+-							else if (SavedOreTiers.Mythril == 222)
+-								SavedOreTiers.Mythril = 108;
+-						}
+-
+-						if (SavedOreTiers.Mythril == -1) {
+-							flag = true;
+-							SavedOreTiers.Mythril = 108;
+-							if (genRand.Next(2) == 0)
+-								SavedOreTiers.Mythril = 222;
+-						}
+-
+-						int num7 = 13;
+-						if (SavedOreTiers.Mythril == 222) {
+-							num7 += 9;
+-							num3 *= 0.9f;
+-						}
+-
+-						if (Main.netMode == 0)
+-							Main.NewText(Lang.misc[num7].Value, 50, byte.MaxValue, 130);
+-						else if (Main.netMode == 2)
+-							ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num7].Key), new Color(50, 255, 130));
+-
+-						num = SavedOreTiers.Mythril;
+-						break;
+-					}
+-				default: {
+-						if (Main.drunkWorld) {
+-							if (SavedOreTiers.Cobalt == 107)
+-								SavedOreTiers.Cobalt = 221;
+-							else if (SavedOreTiers.Cobalt == 221)
+ 								SavedOreTiers.Cobalt = 107;
++								if (genRand.Next(2) == 0)
++									SavedOreTiers.Cobalt = 221;
++							}
++
++							int num6 = 12;
++							if (SavedOreTiers.Cobalt == 221) {
++								num6 += 9;
++								num3 *= 0.9f;
++							}
++
++							if (Main.netMode == 0)
++								Main.NewText(Lang.misc[num6].Value, 50, byte.MaxValue, 130);
++							else if (Main.netMode == 2)
++								ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num6].Key), new Color(50, 255, 130));
++
++							num = SavedOreTiers.Cobalt;
++							num3 *= 1.05f;
++							break;
++						}
++					case 1: {
++							if (Main.drunkWorld) {
++								if (SavedOreTiers.Mythril == 108)
++									SavedOreTiers.Mythril = 222;
++								else if (SavedOreTiers.Mythril == 222)
++									SavedOreTiers.Mythril = 108;
++							}
++
++							if (SavedOreTiers.Mythril == -1) {
++								flag = true;
++								SavedOreTiers.Mythril = 108;
++								if (genRand.Next(2) == 0)
++									SavedOreTiers.Mythril = 222;
++							}
++
++							int num7 = 13;
++							if (SavedOreTiers.Mythril == 222) {
++								num7 += 9;
++								num3 *= 0.9f;
++							}
++
++							if (Main.netMode == 0)
++								Main.NewText(Lang.misc[num7].Value, 50, byte.MaxValue, 130);
++							else if (Main.netMode == 2)
++								ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num7].Key), new Color(50, 255, 130));
++
++							num = SavedOreTiers.Mythril;
++							break;
++						}
++					default: {
++							if (Main.drunkWorld) {
++								if (SavedOreTiers.Cobalt == 107)
++									SavedOreTiers.Cobalt = 221;
++								else if (SavedOreTiers.Cobalt == 221)
++									SavedOreTiers.Cobalt = 107;
+-						}
++							}
+ 
+-						if (SavedOreTiers.Adamantite == -1) {
++							if (SavedOreTiers.Adamantite == -1) {
+-							flag = true;
++								flag = true;
+-							SavedOreTiers.Adamantite = 111;
++								SavedOreTiers.Adamantite = 111;
+-							if (genRand.Next(2) == 0)
++								if (genRand.Next(2) == 0)
+-								SavedOreTiers.Adamantite = 223;
++									SavedOreTiers.Adamantite = 223;
+-						}
++							}
+ 
+-						int num5 = 14;
++							int num5 = 14;
+-						if (SavedOreTiers.Adamantite == 223) {
++							if (SavedOreTiers.Adamantite == 223) {
+-							num5 += 9;
++								num5 += 9;
+-							num3 *= 0.9f;
++								num3 *= 0.9f;
+-						}
++							}
+ 
+-						if (Main.netMode == 0)
++							if (Main.netMode == 0)
+-							Main.NewText(Lang.misc[num5].Value, 50, byte.MaxValue, 130);
++								Main.NewText(Lang.misc[num5].Value, 50, byte.MaxValue, 130);
+-						else if (Main.netMode == 2)
++							else if (Main.netMode == 2)
+-							ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num5].Key), new Color(50, 255, 130));
++								ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num5].Key), new Color(50, 255, 130));
+ 
+-						num = SavedOreTiers.Adamantite;
++							num = SavedOreTiers.Adamantite;
+-						break;
++							break;
+-					}
++						}
+-			}
++				}
+ 
+-			if (flag)
++				if (flag)
+-				NetMessage.SendData(7);
++					NetMessage.SendData(7);
++			}));
+ 
++			altarTasks.Add(new PassLegacy("Altar Spawn Ore", (progress, config) => {
+-			for (int k = 0; (float)k < num3; k++) {
++				for (int k = 0; (float)k < num3; k++) {
+-				int i2 = genRand.Next(100, Main.maxTilesX - 100);
++					int i2 = genRand.Next(100, Main.maxTilesX - 100);
+-				double num8 = Main.worldSurface;
++					double num8 = Main.worldSurface;
+-				if (num == 108 || num == 222)
++					if (num == 108 || num == 222)
+-					num8 = Main.rockLayer;
++						num8 = Main.rockLayer;
+ 
+-				if (num == 111 || num == 223)
++					if (num == 111 || num == 223)
+-					num8 = (Main.rockLayer + Main.rockLayer + (double)Main.maxTilesY) / 3.0;
++						num8 = (Main.rockLayer + Main.rockLayer + (double)Main.maxTilesY) / 3.0;
+ 
+-				int j2 = genRand.Next((int)num8, Main.maxTilesY - 150);
++					int j2 = genRand.Next((int)num8, Main.maxTilesY - 150);
+-				OreRunner(i2, j2, genRand.Next(5, 9 + num4), genRand.Next(5, 9 + num4), (ushort)num);
++					OreRunner(i2, j2, genRand.Next(5, 9 + num4), genRand.Next(5, 9 + num4), (ushort)num);
+-			}
++				}
++			}));
+ 
++			altarTasks.Add(new PassLegacy("Altar Convert Stone", (progress, config) => {
+-			int num9 = genRand.Next(3);
++				int num9 = genRand.Next(3);
+-			int num10 = 0;
++				int num10 = 0;
+-			while (num9 != 2 && num10++ < 1000) {
++				while (num9 != 2 && num10++ < 1000) {
+-				int num11 = genRand.Next(100, Main.maxTilesX - 100);
++					int num11 = genRand.Next(100, Main.maxTilesX - 100);
+-				int num12 = genRand.Next((int)Main.rockLayer + 50, Main.maxTilesY - 300);
++					int num12 = genRand.Next((int)Main.rockLayer + 50, Main.maxTilesY - 300);
+-				if (!Main.tile[num11, num12].active() || Main.tile[num11, num12].type != 1)
++					if (!Main.tile[num11, num12].active() || Main.tile[num11, num12].type != 1)
+-					continue;
++						continue;
+ 
+-				if (num9 == 0) {
++					if (num9 == 0) {
+-					if (crimson)
++						if (crimson)
+-						Main.tile[num11, num12].type = 203;
++							Main.tile[num11, num12].type = 203;
+-					else
++						else
+-						Main.tile[num11, num12].type = 25;
++							Main.tile[num11, num12].type = 25;
+-				}
++					}
+-				else {
++					else {
+-					Main.tile[num11, num12].type = 117;
++						Main.tile[num11, num12].type = 117;
+-				}
++					}
+ 
+-				if (Main.netMode == 2)
++					if (Main.netMode == 2)
+-					NetMessage.SendTileSquare(-1, num11, num12, 1);
++						NetMessage.SendTileSquare(-1, num11, num12, 1);
+ 
+-				break;
++					break;
+-			}
++				}
++			}));
+ 
+-			if (Main.netMode != 1) {
+-				int num13 = Main.rand.Next(2) + 1;
+-				for (int l = 0; l < num13; l++) {
+-					NPC.SpawnOnPlayer(Player.FindClosest(new Vector2(i * 16, j * 16), 16, 16), 82);
+-				}
++			altarTasks.Add(new PassLegacy("Altar Spawn Wraith", (progress, config) => {
++				if (Main.netMode != 1) {
++					int num13 = Main.rand.Next(2) + 1;
++					for (int l = 0; l < num13; l++) {
++						NPC.SpawnOnPlayer(Player.FindClosest(new Vector2(i * 16, j * 16), 16, 16), 82);
++					}
++				}
++			}));
++
++			WorldHooks.ModifyAltarTasks(altarTasks);
++			foreach (GenPass task in altarTasks) {
++				task.Apply(null, null);
+ 			}
+ 
+ 			altarCount++;
 @@ -29268,7 +_,7 @@
  				if (!Main.tile[k, j].active() || Main.tile[k, j].type != type || Main.tile[k, j].frameX != (k - num) * 18 + num3 || Main.tile[k, j].frameY != 0)
  					flag = true;
@@ -876,6 +2077,15 @@
  			destroyObject = false;
  			for (int num12 = num5 - 1; num12 < num5 + 4; num12++) {
  				for (int num13 = num - 1; num13 < num + 4; num13++) {
+@@ -29886,7 +_,7 @@
+ 				mysticLogsEvent.FallenLogDestroyed();
+ 		}
+ 
+-		private static int GetDresserItemDrop(int style) {
++		public static int GetDresserItemDrop(int style) {
+ 			if (style >= 1 && style <= 3)
+ 				return 646 + style;
+ 
 @@ -30011,6 +_,9 @@
  				}
  			}
@@ -1190,6 +2400,78 @@
  			return num;
  		}
  
+@@ -35786,7 +_,7 @@
+ 			destroyObject = false;
+ 		}
+ 
+-		private static int GetChestItemDrop(int x, int y, int type) {
++		public static int GetChestItemDrop(int x, int y, int type) {
+ 			int num = Main.tile[x, y].frameX / 36;
+ 			if (type == 467)
+ 				return Chest.chestItemSpawn2[num];
+@@ -35948,7 +_,7 @@
+ 			return false;
+ 		}
+ 
+-		private static bool SeaOatWaterCheck(int x, int y) {
++		public static bool SeaOatWaterCheck(int x, int y) {
+ 			int num = 45;
+ 			int num2 = 20;
+ 			int num3 = 20;
+@@ -35987,7 +_,7 @@
+ 			return false;
+ 		}
+ 
+-		private static bool PlantSeaOat(int x, int y) {
++		public static bool PlantSeaOat(int x, int y) {
+ 			if (Main.tile[x, y].wall > 0 || Main.tile[x, y].active() || Main.tile[x, y].liquid > 0 || !SolidTileAllowBottomSlope(x, y + 1) || !TileID.Sets.Conversion.Sand[Main.tile[x, y + 1].type])
+ 				return false;
+ 
+@@ -36007,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		private static bool CheckSeaOat(int x, int y) {
++		public static bool CheckSeaOat(int x, int y) {
+ 			if (!SeaOatWaterCheck(x, y)) {
+ 				KillTile(x, y);
+ 				if (Main.netMode == 2)
+@@ -36019,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		private static bool GrowSeaOat(int x, int y) {
++		public static bool GrowSeaOat(int x, int y) {
+ 			if (Main.tile[x, y].frameX < 180)
+ 				Main.tile[x, y].frameX += 90;
+ 
+@@ -36029,7 +_,7 @@
+ 			return false;
+ 		}
+ 
+-		private static int GetWaterDepth(int x, int y) {
++		public static int GetWaterDepth(int x, int y) {
+ 			int num = y;
+ 			while (!SolidTile(x, num)) {
+ 				num++;
+@@ -36046,7 +_,7 @@
+ 			return num - num2;
+ 		}
+ 
+-		private static int CountGrowingPlantTiles(int x, int y, int range, int type) {
++		public static int CountGrowingPlantTiles(int x, int y, int range, int type) {
+ 			int num = 0;
+ 			for (int i = x - range; i <= x + range; i++) {
+ 				for (int j = y - range * 3; j <= y + range * 3; j++) {
+@@ -36058,7 +_,7 @@
+ 			return num;
+ 		}
+ 
+-		private static bool PlaceBamboo(int x, int y) {
++		public static bool PlaceBamboo(int x, int y) {
+ 			int num = 2;
+ 			int num2 = 5;
+ 			int num3 = genRand.Next(1, 21);
 @@ -36773,9 +_,6 @@
  			if (gen && Main.tile[i, j].active() && Main.tile[i, j].type == 488)
  				return false;
@@ -1270,7 +2552,7 @@
  			for (int k = 0; k < num; k++) {
  				KillWall_MakeWallDust(i, j, tile);
  			}
-@@ -37529,7 +_,7 @@
+@@ -37529,11 +_,11 @@
  			tile.wall = 0;
  			tile.wallColor(0);
  			SquareWallFrame(i, j);
@@ -1279,19 +2561,29 @@
  				TileFrame(i, j);
  		}
  
-@@ -37544,6 +_,9 @@
+-		private static bool KillWall_CheckFailure(bool fail, Tile tileCache) {
++		public static bool KillWall_CheckFailure(bool fail, Tile tileCache) {
+ 			if (Main.wallDungeon[tileCache.wall] && !NPC.downedBoss3)
+ 				fail = true;
+ 
+@@ -37543,7 +_,10 @@
+ 			return fail;
  		}
  
- 		private static void KillWall_PlaySounds(int i, int j, Tile tileCache) {
+-		private static void KillWall_PlaySounds(int i, int j, Tile tileCache) {
++		public static void KillWall_PlaySounds(int i, int j, Tile tileCache) {
 +			if (!WallLoader.KillSound(i,j,tileCache.wall))
 +				return;
 +
  			if (tileCache.wall == 241 || (tileCache.wall >= 88 && tileCache.wall <= 93) || tileCache.wall == 21 || tileCache.wall == 186 || tileCache.wall == 136 || tileCache.wall == 137 || tileCache.wall == 168 || tileCache.wall == 169 || tileCache.wall == 172 || tileCache.wall == 226 || tileCache.wall == 227 || tileCache.wall == 242 || tileCache.wall == 243)
  				SoundEngine.PlaySound(13, i * 16, j * 16);
  			else if ((tileCache.wall >= 63 && tileCache.wall <= 70) || tileCache.wall == 264 || tileCache.wall == 268 || tileCache.wall == 265)
-@@ -37554,7 +_,8 @@
+@@ -37552,13 +_,14 @@
+ 				SoundEngine.PlaySound(0, i * 16, j * 16);
+ 		}
  
- 		private static void KillWall_DropItems(int i, int j, Tile tileCache) {
+-		private static void KillWall_DropItems(int i, int j, Tile tileCache) {
++		public static void KillWall_DropItems(int i, int j, Tile tileCache) {
  			int num = KillWall_GetItemDrops(tileCache);
 -			if (num > 0)
 +
@@ -1299,7 +2591,12 @@
  				Item.NewItem(i * 16, j * 16, 16, 16, num);
  		}
  
-@@ -38118,7 +_,7 @@
+-		private static int KillWall_GetItemDrops(Tile tileCache) {
++		public static int KillWall_GetItemDrops(Tile tileCache) {
+ 			switch (tileCache.wall) {
+ 				case 237:
+ 					return 4233;
+@@ -38118,13 +_,13 @@
  
  						if (tileCache.wall >= 138 && tileCache.wall <= 141)
  							result = 2210 + tileCache.wall - 138;
@@ -1308,6 +2605,13 @@
  						return result;
  					}
  			}
+ 		}
+ 
+-		private static void KillWall_MakeWallDust(int i, int j, Tile tileCache) {
++		public static void KillWall_MakeWallDust(int i, int j, Tile tileCache) {
+ 			int num = 0;
+ 			switch (tileCache.wall) {
+ 				case 7:
 @@ -38679,6 +_,9 @@
  			if (tileCache.wall == 245)
  				num = 195;
@@ -1371,7 +2675,52 @@
  			for (int i = 0; i < num; i++) {
  				KillTile_MakeTileDust(x, y, tileSafely);
  			}
-@@ -39107,7 +_,7 @@
+@@ -39008,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		private static void ReplaceTIle_DoActualReplacement(ushort targetType, int targetStyle, int topLeftX, int topLeftY, Tile t) {
++		public static void ReplaceTIle_DoActualReplacement(ushort targetType, int targetStyle, int topLeftX, int topLeftY, Tile t) {
+ 			if (TileID.Sets.BasicChest[targetType]) {
+ 				if (IsChestRigged(topLeftX, topLeftY) && Main.netMode != 1) {
+ 					Wiring.HitSwitch(topLeftX, topLeftY);
+@@ -39025,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void ReplaceTile_DoActualReplacement_Single(ushort targetType, int targetStyle, int topLeftX, int topLeftY, Tile t) {
++		public static void ReplaceTile_DoActualReplacement_Single(ushort targetType, int targetStyle, int topLeftX, int topLeftY, Tile t) {
+ 			ReplaceTile_EliminateNaturalExtras(topLeftX, topLeftY);
+ 			int type = t.type;
+ 			t.type = targetType;
+@@ -39045,7 +_,7 @@
+ 			SquareTileFrame(topLeftX, topLeftY);
+ 		}
+ 
+-		private static void ReplaceTile_EliminateNaturalExtras(int x, int y) {
++		public static void ReplaceTile_EliminateNaturalExtras(int x, int y) {
+ 			if (InWorld(x, y, 2)) {
+ 				if (Main.tile[x, y - 1] != null && Main.tile[x, y - 1].active() && (TileID.Sets.ReplaceTileBreakUp[Main.tile[x, y - 1].type] || (Main.tile[x, y - 1].type == 165 && (Main.tile[x, y - 1].frameY == 36 || Main.tile[x, y - 1].frameY == 54 || Main.tile[x, y - 1].frameY == 90))))
+ 					KillTile(x, y - 1);
+@@ -39055,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void ReplaceTile_DoActualReplacement_Area(ushort targetType, int targetStyle, int topLeftX, int topLeftY, int areaSizeX, int areaSizeY) {
++		public static void ReplaceTile_DoActualReplacement_Area(ushort targetType, int targetStyle, int topLeftX, int topLeftY, int areaSizeX, int areaSizeY) {
+ 			for (int i = 0; i < areaSizeX; i++) {
+ 				for (int j = 0; j < areaSizeY; j++) {
+ 					Tile tile = Main.tile[topLeftX + i, topLeftY + j];
+@@ -39073,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void MoveReplaceTileAnchor(ref int x, ref int y, ushort targetType, Tile t) {
++		public static void MoveReplaceTileAnchor(ref int x, ref int y, ushort targetType, Tile t) {
+ 			if (TileID.Sets.BasicChest[t.type]) {
+ 				x -= t.frameX % 36 / 18;
+ 				y -= t.frameY % 36 / 18;
+@@ -39107,21 +_,21 @@
  			bool flag = !ReplaceTile_IsValidSolid(attemptingToReplaceWith) || !ReplaceTile_IsValidSolid(tile.type);
  			bool num = !ReplaceTile_IsValidPlatform(attemptingToReplaceWith) || !ReplaceTile_IsValidPlatform(tile.type);
  			bool flag2 = (!ReplaceTile_IsValidSolid(attemptingToReplaceWith) && !ReplaceTile_IsValidPlatform(attemptingToReplaceWith)) || (!ReplaceTile_IsValidSolid(tile.type) && !ReplaceTile_IsValidPlatform(tile.type));
@@ -1380,6 +2729,51 @@
  			bool flag4 = !ReplaceTile_IsValidDresser(attemptingToReplaceWith) || !ReplaceTile_IsValidDresser(tile.type);
  			return !(num && flag && flag2 && flag3 && flag4);
  		}
+ 
+-		private static bool ReplaceTile_IsValidSolid(int type) {
++		public static bool ReplaceTile_IsValidSolid(int type) {
+ 			if (Main.tileSolid[type] && !Main.tileSolidTop[type])
+ 				return !Main.tileFrameImportant[type];
+ 
+ 			return false;
+ 		}
+ 
+-		private static bool ReplaceTile_IsValidChest(int type) => TileID.Sets.BasicChest[type];
++		public static bool ReplaceTile_IsValidChest(int type) => TileID.Sets.BasicChest[type];
+-		private static bool ReplaceTile_IsValidDresser(int type) => TileID.Sets.BasicDresser[type];
++		public static bool ReplaceTile_IsValidDresser(int type) => TileID.Sets.BasicDresser[type];
+-		private static bool ReplaceTile_IsValidPlatform(int type) => TileID.Sets.Platforms[type];
++		public static bool ReplaceTile_IsValidPlatform(int type) => TileID.Sets.Platforms[type];
+ 
+ 		public static bool GetVanityTreeFoliageData(int i, int j, int xoffset, ref int treeFrame, ref int treeStyle, out int floorY, out int topTextureFrameWidth, out int topTextureFrameHeight) {
+ 			Tile tile = Main.tile[i, j];
+@@ -39367,7 +_,7 @@
+ 			return false;
+ 		}
+ 
+-		private static void ShakeTree(int i, int j) {
++		public static void ShakeTree(int i, int j) {
+ 			if (numTreeShakes == maxTreeShakes)
+ 				return;
+ 
+@@ -39622,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void GetTreeBottom(int i, int j, out int x, out int y) {
++		public static void GetTreeBottom(int i, int j, out int x, out int y) {
+ 			x = i;
+ 			y = j;
+ 			Tile tileSafely = Framing.GetTileSafely(x, y);
+@@ -39657,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void AttemptFossilShattering(int i, int j, Tile tileCache, bool fail) {
++		public static void AttemptFossilShattering(int i, int j, Tile tileCache, bool fail) {
+ 			if (tileCache.type != 404 || Main.netMode == 1 || fossilBreak)
+ 				return;
+ 
 @@ -39704,6 +_,8 @@
  			if (num == 2)
  				return;
@@ -1409,16 +2803,57 @@
  			for (int k = 0; k < num16; k++) {
  				KillTile_MakeTileDust(i, j, tile);
  			}
-@@ -40012,6 +_,9 @@
- 		private static Player GetPlayerForTile(int x, int y) => Main.player[Player.FindClosest(new Vector2(x, y) * 16f, 16, 16)];
+@@ -40009,9 +_,12 @@
+ 			}
+ 		}
  
- 		private static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false) {
+-		private static Player GetPlayerForTile(int x, int y) => Main.player[Player.FindClosest(new Vector2(x, y) * 16f, 16, 16)];
++		public static Player GetPlayerForTile(int x, int y) => Main.player[Player.FindClosest(new Vector2(x, y) * 16f, 16, 16)];
+ 
+-		private static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false) {
++		public static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false) {
 +			if (!TileLoader.Drop(x, y, Main.tile[x, y].type))
 +				return;
 +
  			KillTile_GetItemDrops(x, y, tileCache, out int dropItem, out int dropItemStack, out int secondaryItem, out int secondaryItemStack, includeLargeObjectDrops);
  			if (!Main.getGoodWorld || tileCache.active()) {
  				if (dropItem > 0) {
+@@ -41847,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void SetGemTreeDrops(int gemType, int seedType, Tile tileCache, ref int dropItem, ref int secondaryItem) {
++		public static void SetGemTreeDrops(int gemType, int seedType, Tile tileCache, ref int dropItem, ref int secondaryItem) {
+ 			if (Main.rand.Next(10) == 0)
+ 				dropItem = gemType;
+ 			else
+@@ -41857,7 +_,7 @@
+ 				secondaryItem = seedType;
+ 		}
+ 
+-		private static void SetVanityTreeDrops(int dropType, Tile tileCache, ref int dropItem) {
++		public static void SetVanityTreeDrops(int dropType, Tile tileCache, ref int dropItem) {
+ 			if (Main.rand.Next(2) == 0)
+ 				dropItem = dropType;
+ 		}
+@@ -41888,7 +_,7 @@
+ 			return result;
+ 		}
+ 
+-		private static bool KillTile_ShouldDropSeeds(int x, int y) {
++		public static bool KillTile_ShouldDropSeeds(int x, int y) {
+ 			if (Main.rand.Next(2) == 0) {
+ 				if (!GetPlayerForTile(x, y).HasItem(281))
+ 					return GetPlayerForTile(x, y).HasItem(986);
+@@ -41899,7 +_,7 @@
+ 			return false;
+ 		}
+ 
+-		private static void KillTile_GetTreeDrops(int i, int j, Tile tileCache, ref bool bonusWood, ref int dropItem, ref int secondaryItem) {
++		public static void KillTile_GetTreeDrops(int i, int j, Tile tileCache, ref bool bonusWood, ref int dropItem, ref int secondaryItem) {
+ 			if (tileCache.frameX >= 22 && tileCache.frameY >= 198) {
+ 				if (Main.netMode != 1) {
+ 					if (genRand.Next(2) == 0) {
 @@ -41909,7 +_,7 @@
  
  						if (Main.tile[i, k] != null) {
@@ -1437,6 +2872,15 @@
  			}
  
  			int num = Player.FindClosest(new Vector2(x * 16, y * 16), 16, 16);
+@@ -41964,7 +_,7 @@
+ 				bonusWood = true;
+ 		}
+ 
+-		private static void KillTile_DropBait(int i, int j, Tile tileCache) {
++		public static void KillTile_DropBait(int i, int j, Tile tileCache) {
+ 			int num = -1;
+ 			int num2 = -1;
+ 			int num3 = -1;
 @@ -42028,6 +_,7 @@
  			if (Main.player[num4].ZoneGraveyard)
  				num5 = 606;
@@ -1468,7 +2912,7 @@
 +			return result;
 +		}
 -		public static int KillTile_GetTileDustAmount(bool fail, Tile tileCache) {
-+		private static int KillTile_GetTileDustAmount_Vanilla(bool fail, Tile tileCache) {
++		public static int KillTile_GetTileDustAmount_Vanilla(bool fail, Tile tileCache) {
  			switch (tileCache.type) {
  				default:
  					if (!fail)
@@ -1516,6 +2960,24 @@
  			return false;
  		}
  
+@@ -44140,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		private static bool nearbyChlorophyte(int i, int j) {
++		public static bool nearbyChlorophyte(int i, int j) {
+ 			float num = 0f;
+ 			int num2 = 5;
+ 			if (i <= num2 + 5 || i >= Main.maxTilesX - num2 - 5)
+@@ -45512,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static int MossConversion(int thisType, int otherType) {
++		public static int MossConversion(int thisType, int otherType) {
+ 			if (TileID.Sets.tileMossBrick[thisType] && otherType == 38)
+ 				return thisType;
+ 
 @@ -45565,6 +_,8 @@
  			if (gen)
  				return;
@@ -1542,22 +3004,53 @@
  		}
  
  		public static int GetWorldUpdateRate() {
-@@ -45684,6 +_,7 @@
+@@ -45683,7 +_,8 @@
+ 			return result;
  		}
  
- 		private static void UpdateWorld_OvergroundTile(int i, int j, bool checkNPCSpawns, int wallDist) {
+-		private static void UpdateWorld_OvergroundTile(int i, int j, bool checkNPCSpawns, int wallDist) {
++		public static void UpdateWorld_OvergroundTile(int i, int j, bool checkNPCSpawns, int wallDist) {
 +			WallLoader.RandomUpdate(i,j,Main.tile[i,j].wall);
  			int num = i - 1;
  			int num2 = i + 2;
  			int num3 = j - 1;
-@@ -46252,6 +_,7 @@
+@@ -46251,7 +_,8 @@
+ 			}
  		}
  
- 		private static void UpdateWorld_UndergroundTile(int i, int j, bool checkNPCSpawns, int wallDist) {
+-		private static void UpdateWorld_UndergroundTile(int i, int j, bool checkNPCSpawns, int wallDist) {
++		public static void UpdateWorld_UndergroundTile(int i, int j, bool checkNPCSpawns, int wallDist) {
 +			TileLoader.RandomUpdate(i,j,Main.tile[i,j].type);
  			int num = i - 1;
  			int num2 = i + 2;
  			int num3 = j - 1;
+@@ -46785,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void UpdateWorld_GrassGrowth(int i, int j, int minI, int maxI, int minJ, int maxJ, bool underground) {
++		public static void UpdateWorld_GrassGrowth(int i, int j, int minI, int maxI, int minJ, int maxJ, bool underground) {
+ 			if (underground) {
+ 				int type = Main.tile[i, j].type;
+ 				int num = -1;
+@@ -47136,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void TrySpawningTownNPC(int x, int y) {
++		public static void TrySpawningTownNPC(int x, int y) {
+ 			bool flag = Main.tileSolid[379];
+ 			Main.tileSolid[379] = true;
+ 			if (prioritizedTownNPCType > 0) {
+@@ -48233,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static bool badOceanCaveTiles(int x, int y) {
++		public static bool badOceanCaveTiles(int x, int y) {
+ 			if (Main.tile[x, y].wall == 83 || Main.tile[x, y].wall == 3 || Main.wallDungeon[Main.tile[x, y].wall] || Main.tile[x, y].type == 203 || Main.tile[x, y].type == 25 || Main.tileDungeon[Main.tile[x, y].type] || Main.tile[x, y].type == 26 || Main.tile[x, y].type == 31)
+ 				return true;
+ 
 @@ -51318,6 +_,8 @@
  							return false;
  					}
@@ -1776,6 +3269,42 @@
  												TileMergeAttempt(num, -2, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  
  											if (up == num && down == num && left == num && right == num) {
+@@ -55887,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void CheckProjectilePressurePad_GetPossiblePlacementDirections(int i, int j, out bool canUp, out bool canLeft, out bool canRight, out bool canDown) {
++		public static void CheckProjectilePressurePad_GetPossiblePlacementDirections(int i, int j, out bool canUp, out bool canLeft, out bool canRight, out bool canDown) {
+ 			canUp = false;
+ 			canLeft = false;
+ 			canRight = false;
+@@ -55980,7 +_,7 @@
+ 			return style;
+ 		}
+ 
+-		private static void CheckDoorOpen(int i, int j, Tile tileCache) {
++		public static void CheckDoorOpen(int i, int j, Tile tileCache) {
+ 			if (destroyObject)
+ 				return;
+ 
+@@ -56055,7 +_,7 @@
+ 			destroyObject = false;
+ 		}
+ 
+-		private static void CheckDoorClosed(int i, int j, Tile tileCache, int type) {
++		public static void CheckDoorClosed(int i, int j, Tile tileCache, int type) {
+ 			if (!destroyObject) {
+ 				int num = j;
+ 				bool flag = false;
+@@ -56120,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void GetSandfallProjData(int type, out int projType, out int dmg) {
++		public static void GetSandfallProjData(int type, out int projType, out int dmg) {
+ 			dmg = 10;
+ 			switch (type) {
+ 				case 112:
 @@ -56181,7 +_,7 @@
  
  		public static bool AllowsSandfall(Tile tileTopCache) {

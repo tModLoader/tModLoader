@@ -101,6 +101,18 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Similar to ModifyWorldGenTasks, but occurs in-game when a meteor drops. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 2 items, the vanilla meteor tasks called "Meteor Spawn" and "Meteor Announcement".
+		/// </summary>
+		public virtual void ModifyMeteorTasks(List<GenPass> list) {
+		}
+
+		/// <summary>
+		/// Similar to ModifyWorldGenTasks, but occurs in-game when a Demon Altar or Crimson Altar is broken. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 4 items, the vanilla altar tasks called "Altar Decide Ore", "Altar Spawn Ore", "Altar Convert Stone", and "Altar Spawn Wraith".
+		/// </summary>
+		public virtual void ModifyAltarTasks(List<GenPass> list) {
+		}
+
+		/// <summary>
 		/// Called after drawing Tiles. Can be used for drawing a tile overlay akin to wires. Note that spritebatch should be begun and ended within this method.
 		/// </summary>
 		public virtual void PostDrawTiles() {

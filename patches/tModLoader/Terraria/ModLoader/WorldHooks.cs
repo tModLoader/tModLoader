@@ -101,6 +101,19 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static void ModifyMeteorTasks(List<GenPass> passes) {
+			foreach (ModWorld modWorld in worlds) {
+				modWorld.ModifyMeteorTasks(passes);
+			}
+		}
+
+		public static void ModifyAltarTasks(List<GenPass> passes) {
+			foreach (ModWorld modWorld in worlds) {
+				modWorld.ModifyAltarTasks(passes);
+			}
+		}
+
+
 		public static void PostDrawTiles() {
 			foreach (ModWorld modWorld in worlds) {
 				modWorld.PostDrawTiles();
