@@ -1367,7 +1367,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15162,99 +_,128 @@
+@@ -15162,95 +_,123 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1528,7 +1528,7 @@
 +						numLines++;
 +					}
 +					*/
-+					if (ShowCritInTooltip(item)) {
++					if (!item.summon) {
 +						int crit = player[myPlayer].GetWeaponCrit(item);
 +						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
 +						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
@@ -1537,12 +1537,6 @@
  						numLines++;
  					}
  
--					if (item.useStyle != 0 && !item.summon) {
-+					//if (item.useStyle != 0 && !item.summon) {
-+					if (item.useStyle != 0 && ShowSpeedInTooltip(item)) {
- 						if (item.useAnimation <= 8)
- 							toolTipLine[numLines] = Lang.tip[6].Value;
- 						else if (item.useAnimation <= 20)
 @@ -15272,6 +_,7 @@
  						else
  							toolTipLine[numLines] = Lang.tip[13].Value;
@@ -1643,7 +1637,7 @@
  					numLines++;
  				}
  
-@@ -15375,41 +_,50 @@
+@@ -15375,41 +_,49 @@
  					else
  						toolTipLine[numLines] = tileBoost + Lang.tip[54].Value;
  
@@ -1663,9 +1657,7 @@
  					numLines++;
  				}
  
--				if (item.mana > 0 && (item.type != 127 || !player[myPlayer].spaceGun)) {
-+				//if (item.mana > 0 && (item.type != 127 || !player[myPlayer].spaceGun)) {
-+				if (item.mana > 0 && ShowManaInTooltip(item)) {
+ 				if (item.mana > 0 && (item.type != 127 || !player[myPlayer].spaceGun)) {
  					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.UsesMana", (int)((float)item.mana * player[myPlayer].manaCost));
 +					toolTipNames[numLines] = "UseMana";
  					numLines++;
@@ -1954,7 +1946,7 @@
  					numLines++;
  				}
  			}
-@@ -15711,11 +_,42 @@
+@@ -15711,11 +_,12 @@
  				string[] array = bestiaryNotes.Split('\n');
  				foreach (string text2 in array) {
  					toolTipLine[numLines++] = text2;
@@ -1963,36 +1955,6 @@
  			}
  		}
  
-+		private static bool ShowCritInTooltip(Item item) {
-+			if (item.showCritOverride.HasValue)
-+				return item.showCritOverride.Value;
-+
-+			if (item.summon)
-+				return false;
-+
-+			return true;
-+		}
-+
-+		private static bool ShowSpeedInTooltip(Item item) {
-+			if (item.showSpeedOverride.HasValue)
-+				return item.showSpeedOverride.Value;
-+
-+			if (item.summon)
-+				return false;
-+
-+			return true;
-+		}
-+
-+		private static bool ShowManaInTooltip(Item item) {
-+			if (item.showManaOverride.HasValue)
-+				return item.showManaOverride.Value;
-+
-+			if (item.type == 127 && player[myPlayer].spaceGun)
-+				return false;
-+
-+			return true;
-+		}
-+
 -		private void MouseText_DrawBuffTooltip(string buffString, ref int X, ref int Y) {
 +		private void MouseText_DrawBuffTooltip(string buffString, ref int X, ref int Y, int buffNameHeight) {
  			Microsoft.Xna.Framework.Point p = new Microsoft.Xna.Framework.Point(X, Y);
