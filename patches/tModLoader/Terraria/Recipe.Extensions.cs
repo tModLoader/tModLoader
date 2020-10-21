@@ -149,13 +149,25 @@ namespace Terraria
 		#endregion
 
 		// should we remove by index or by item/tile type?
+
 		#region RemoveX
-		
 		#endregion
-		
-		// create item should get only replaced -> we don't want recipes without a result
+
 		#region ReplaceX
-		
+		public void ReplaceResult(int itemID, int stack = 1) => createItem = new Item(itemID) { stack = stack };
+
+		public void ReplaceResult(Mod mod, string itemName, int stack = 1) {
+			mod ??= Mod;
+
+			if (!ModContent.TryFind(mod.Name, itemName, out ModItem item))
+				throw new RecipeException($"The item {itemName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla item, try removing the first argument.");
+
+			ReplaceResult(item.Type, stack);
+		}
+
+		public void ReplaceResult(ModItem item, int stack = 1) => ReplaceResult(item.Type, stack);
+
+		public void ReplaceResult<T>(int stack = 1) where T : ModItem => ReplaceResult(ModContent.ItemType<T>(), stack);
 		#endregion
 	}
 }
