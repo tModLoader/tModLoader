@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -2,19 +_,24 @@
+@@ -2,25 +_,30 @@
  using ReLogic.OS;
  using System;
  using System.Collections.Generic;
@@ -25,15 +25,14 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -40,6 +_,7 @@
- 		private static int ThingsLoaded;
- 		public static bool LoadedEverything;
- 		public static IntPtr JitForcedMethodCache;
-+		public static string SavePath { get; private set; } // moved from Main to avoid triggering the Main static constructor before logging initializes
- 
- 		public static float LoadedPercentage {
- 			get {
-@@ -64,27 +_,68 @@
+ namespace Terraria
+ {
+-	public static class Program
++	public static partial class Program
+ 	{
+ #if CLIENT
+ 		public const bool IsServer = false;
+@@ -64,31 +_,23 @@
  		public static void ForceLoadThread(object threadContext) {
  			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
  			LoadedEverything = true;
@@ -55,8 +54,7 @@
 -#else
 -						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
 -#endif
-+		private static void ForceJITOnAssembly(IEnumerable<Type> types)
-+		{
++		private static void ForceJITOnAssembly(IEnumerable<Type> types) {
 +			var methodsToJIT = CollectMethodsToJIT(types);
 +
 +			if (Environment.ProcessorCount > 1) {
@@ -68,20 +66,23 @@
  				}
 -
 -				ThingsLoaded++;
--			}
-+			}
-+		}
-+
-+		private static void ForceStaticInitializers(Type[] types)
-+		{
-+			foreach (Type type in types) {
-+				if (!type.IsGenericType)
-+					RuntimeHelpers.RunClassConstructor(type.TypeHandle);
-+			}
-+		}
-+
-+		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers)
-+		{
+ 			}
+ 		}
+ 
+-		private static void ForceStaticInitializers(Assembly assembly) {
++		private static void ForceStaticInitializers(Type[] types) {
+-			Type[] types = assembly.GetTypes();
+ 			foreach (Type type in types) {
+ 				if (!type.IsGenericType)
+ 					RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+@@ -96,10 +_,13 @@
+ 		}
+ 
+ 		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
+-			ThingsToLoad = assembly.GetTypes().Length;
+-			ForceJITOnAssembly(assembly);
+-			if (initializeStaticMembers)
+-				ForceStaticInitializers(assembly);
 +			var types = assembly.GetTypes();
 +			ThingsToLoad = types.Select(type => GetMethodsCrossPlatform(type).Count()).Sum();
 +
@@ -89,51 +90,9 @@
 +			if (initializeStaticMembers) {
 +				ForceStaticInitializers(types);
 +			}
-+		}
-+
-+		private static IEnumerable<MethodInfo> CollectMethodsToJIT(IEnumerable<Type> types) =>
-+			from type in types
-+			from method in GetMethodsCrossPlatform(type)
-+			where !method.IsAbstract && !method.ContainsGenericParameters && method.GetMethodBody() != null
-+			select method;
-+
-+		private static void ForceJITOnMethod(MethodInfo method)
-+		{
-+#if WINDOWS
-+			RuntimeHelpers.PrepareMethod(method.MethodHandle);
-+#else
-+			// We don't synchronize access to JitForcedMethodCache because no one ever needs to read its value.
-+			var methodPointer = method.MethodHandle.GetFunctionPointer();
-+			JitForcedMethodCache = methodPointer;
-+#endif
-+
-+			Interlocked.Increment(ref ThingsLoaded);
-+		}
-+
-+		private static IEnumerable<MethodInfo> GetMethodsCrossPlatform(Type type)
-+		{
-+#if WINDOWS
-+			return type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-+#else
-+			return type.GetMethods();
-+#endif
  		}
  
- 		private static void ForceStaticInitializers(Assembly assembly) {
-@@ -95,13 +_,6 @@
- 			}
- 		}
- 
--		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
--			ThingsToLoad = assembly.GetTypes().Length;
--			ForceJITOnAssembly(assembly);
--			if (initializeStaticMembers)
--				ForceStaticInitializers(assembly);
--		}
--
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
- 			Assembly assembly = null;
- 			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 @@ -151,27 +_,52 @@
  			}
  		}
