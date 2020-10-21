@@ -1,6 +1,11 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -6,6 +_,7 @@
+@@ -2,25 +_,30 @@
+ using ReLogic.OS;
+ using System;
+ using System.Collections.Generic;
++
+ #if CLIENT
  using System.Diagnostics;
  #endif
  using System.IO;
@@ -8,7 +13,10 @@
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
-@@ -15,12 +_,14 @@
+ using System.Threading;
++
+ #if CLIENT
+ using System.Windows.Forms;
  #endif
  using Terraria.Initializers;
  using Terraria.Localization;
@@ -24,7 +32,7 @@
  	{
  #if CLIENT
  		public const bool IsServer = false;
-@@ -64,32 +_,18 @@
+@@ -64,31 +_,23 @@
  		public static void ForceLoadThread(object threadContext) {
  			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
  			LoadedEverything = true;
@@ -40,33 +48,34 @@
 -				MethodInfo[] methods = types[i].GetMethods();
 -#endif
 -				foreach (MethodInfo methodInfo in methods) {
--					try {
--						if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
--#if XNA
--							RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
+-					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
+-#if WINDOWS
+-						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
 -#else
--							JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
+-						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
 -#endif
--					}
--					catch (BadImageFormatException e) 
--					{
--						Debug.Write(e);
--					}
--				}
 +		private static void ForceJITOnAssembly(IEnumerable<Type> types) {
 +			var methodsToJIT = CollectMethodsToJIT(types);
- 
--				ThingsLoaded++;
++
 +			if (Environment.ProcessorCount > 1) {
 +				methodsToJIT.AsParallel().AsUnordered().ForAll(ForceJITOnMethod);
 +			}
 +			else {
-+				foreach (var method in methodsToJIT)
++				foreach (var method in methodsToJIT) {
 +					ForceJITOnMethod(method);
+ 				}
+-
+-				ThingsLoaded++;
  			}
  		}
  
-@@ -102,10 +_,15 @@
+-		private static void ForceStaticInitializers(Assembly assembly) {
++		private static void ForceStaticInitializers(Type[] types) {
+-			Type[] types = assembly.GetTypes();
+ 			foreach (Type type in types) {
+ 				if (!type.IsGenericType)
+ 					RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+@@ -96,10 +_,13 @@
  		}
  
  		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
@@ -75,18 +84,16 @@
 -			if (initializeStaticMembers)
 -				ForceStaticInitializers(assembly);
 +			var types = assembly.GetTypes();
-+
 +			ThingsToLoad = types.Select(type => GetMethodsCrossPlatform(type).Count()).Sum();
 +
 +			ForceJITOnAssembly(types);
-+
 +			if (initializeStaticMembers) {
 +				ForceStaticInitializers(types);
 +			}
  		}
  
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -157,27 +_,52 @@
+@@ -151,27 +_,52 @@
  			}
  		}
  
@@ -143,7 +150,7 @@
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
  #if CLIENT
-@@ -186,9 +_,10 @@
+@@ -180,9 +_,10 @@
  					main.DedServ();
  #endif
  				}
@@ -157,7 +164,7 @@
  			}
  		}
  
-@@ -223,9 +_,21 @@
+@@ -217,9 +_,21 @@
  				}
  
  #if CLIENT
