@@ -47,9 +47,7 @@ namespace Terraria
 			Interlocked.Increment(ref ThingsLoaded);
 		}
 
-		private static void ForceStaticInitializers(Assembly assembly) {
-			Type[] types = assembly.GetTypes();
-
+		private static void ForceStaticInitializers(Type[] types) {
 			foreach (Type type in types) {
 				if (!type.IsGenericType)
 					RuntimeHelpers.RunClassConstructor(type.TypeHandle);

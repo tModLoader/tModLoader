@@ -32,7 +32,7 @@
  	{
  #if CLIENT
  		public const bool IsServer = false;
-@@ -64,31 +_,23 @@
+@@ -64,23 +_,18 @@
  		public static void ForceLoadThread(object threadContext) {
  			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
  			LoadedEverything = true;
@@ -64,17 +64,8 @@
 +				foreach (var method in methodsToJIT) {
 +					ForceJITOnMethod(method);
  				}
--
--				ThingsLoaded++;
- 			}
- 		}
  
--		private static void ForceStaticInitializers(Assembly assembly) {
-+		private static void ForceStaticInitializers(Type[] types) {
--			Type[] types = assembly.GetTypes();
- 			foreach (Type type in types) {
- 				if (!type.IsGenericType)
- 					RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+ 				ThingsLoaded++;
 @@ -96,10 +_,13 @@
  		}
  
