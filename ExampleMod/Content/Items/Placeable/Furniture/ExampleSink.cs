@@ -5,7 +5,7 @@ using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Content.Items.Placeable
+namespace ExampleMod.Content.Items.Placeable.Furniture
 {
 	public class ExampleSink : ModItem
 	{
