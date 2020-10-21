@@ -22,17 +22,7 @@ namespace Terraria
 
 		public bool HasResult<T>() where T : ModItem => HasResult(ModContent.ItemType<T>());
 
-		public bool HasIngredient(int itemID) {
-			foreach (Item item in requiredItem) {
-				if (item.type == -1) break;
-
-				if (item.type == itemID) {
-					return true;
-				}
-			}
-
-			return false;
-		}
+		public bool HasIngredient(int itemID) => requiredItem.Any(item => item.type == itemID);
 
 		public bool HasIngredient(Mod mod, string itemName) {
 			mod ??= Mod;
@@ -47,17 +37,7 @@ namespace Terraria
 
 		public bool HasIngredient<T>() where T : ModItem => HasIngredient(ModContent.ItemType<T>());
 
-		public bool HasRecipeGroup(int id) {
-			foreach (int groupID in acceptedGroups) {
-				if (groupID == -1) break;
-
-				if (groupID == id) {
-					return true;
-				}
-			}
-
-			return false;
-		}
+		public bool HasRecipeGroup(int id) => acceptedGroups.Any(group => group == id);
 
 		public bool HasRecipeGroup(string name) {
 			if (!RecipeGroup.recipeGroupIDs.ContainsKey(name))
@@ -69,16 +49,7 @@ namespace Terraria
 
 		public bool HasRecipeGroup(RecipeGroup group) => HasRecipeGroup(group.ID);
 
-		public bool HasTile(int tileID) {
-			foreach (int item in requiredTile) {
-				if (item == -1) break;
-
-				if (item == tileID)
-					return true;
-			}
-
-			return false;
-		}
+		public bool HasTile(int tileID) => requiredTile.Any(tile => tile == tileID);
 
 		public bool HasTile(Mod mod, string tileName) {
 			mod ??= Mod;
@@ -122,8 +93,6 @@ namespace Terraria
 
 		public bool TryGetIngredient(int itemID, out Item ingredient) {
 			foreach (Item item in requiredItem) {
-				if (item.type == -1) break;
-
 				if (item.type == itemID) {
 					ingredient = item;
 					return true;

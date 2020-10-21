@@ -114,24 +114,24 @@ namespace Terraria.ModLoader
 				Recipe recipe = Main.recipe[k];
 				bool matches = true;
 				List<Item> checkItems = new List<Item>(items);
-				for (int i = 0; i < Recipe.maxRequirements; i++) {
-					Item item = recipe.requiredItem[i];
-					if (item.type == 0) {
-						break;
-					}
-					bool itemMatched = false;
-					for (int j = 0; j < checkItems.Count; j++) {
-						if (item.type == checkItems[j].type && item.stack == checkItems[j].stack) {
-							itemMatched = true;
-							checkItems.RemoveAt(j);
-							break;
-						}
-					}
-					if (!itemMatched) {
-						matches = false;
-						break;
-					}
-				}
+				// for (int i = 0; i < Recipe.maxRequirements; i++) {
+				// 	Item item = recipe.requiredItem[i];
+				// 	if (item.type == 0) {
+				// 		break;
+				// 	}
+				// 	bool itemMatched = false;
+				// 	for (int j = 0; j < checkItems.Count; j++) {
+				// 		if (item.type == checkItems[j].type && item.stack == checkItems[j].stack) {
+				// 			itemMatched = true;
+				// 			checkItems.RemoveAt(j);
+				// 			break;
+				// 		}
+				// 	}
+				// 	if (!itemMatched) {
+				// 		matches = false;
+				// 		break;
+				// 	}
+				// }
 				if (checkItems.Count > 0) {
 					matches = false;
 				}
@@ -159,24 +159,24 @@ namespace Terraria.ModLoader
 					matches = false;
 				}
 				List<int> checkTiles = new List<int>(tiles);
-				for (int i = 0; i < Recipe.maxRequirements; i++) {
-					int tile = recipe.requiredTile[i];
-					if (tile == -1) {
-						break;
-					}
-					bool tileMatched = false;
-					for (int j = 0; j < checkTiles.Count; j++) {
-						if (tile == checkTiles[j]) {
-							tileMatched = true;
-							checkTiles.RemoveAt(j);
-							break;
-						}
-					}
-					if (!tileMatched) {
-						matches = false;
-						break;
-					}
-				}
+				// for (int i = 0; i < Recipe.maxRequirements; i++) {
+				// 	int tile = recipe.requiredTile[i];
+				// 	if (tile == -1) {
+				// 		break;
+				// 	}
+				// 	bool tileMatched = false;
+				// 	for (int j = 0; j < checkTiles.Count; j++) {
+				// 		if (tile == checkTiles[j]) {
+				// 			tileMatched = true;
+				// 			checkTiles.RemoveAt(j);
+				// 			break;
+				// 		}
+				// 	}
+				// 	if (!tileMatched) {
+				// 		matches = false;
+				// 		break;
+				// 	}
+				// }
 				if (checkTiles.Count > 0) {
 					matches = false;
 				}
@@ -197,18 +197,18 @@ namespace Terraria.ModLoader
 				Recipe recipe = Main.recipe[k];
 				bool matches = true;
 				List<Item> checkItems = new List<Item>(items);
-				for (int i = 0; i < Recipe.maxRequirements; i++) {
-					Item item = recipe.requiredItem[i];
-					if (item.type == 0) {
-						break;
-					}
-					for (int j = 0; j < checkItems.Count; j++) {
-						if (item.type == checkItems[j].type && item.stack >= checkItems[j].stack) {
-							checkItems.RemoveAt(j);
-							break;
-						}
-					}
-				}
+				// for (int i = 0; i < Recipe.maxRequirements; i++) {
+				// 	Item item = recipe.requiredItem[i];
+				// 	if (item.type == 0) {
+				// 		break;
+				// 	}
+				// 	for (int j = 0; j < checkItems.Count; j++) {
+				// 		if (item.type == checkItems[j].type && item.stack >= checkItems[j].stack) {
+				// 			checkItems.RemoveAt(j);
+				// 			break;
+				// 		}
+				// 	}
+				// }
 				if (checkItems.Count > 0) {
 					matches = false;
 				}
@@ -235,18 +235,18 @@ namespace Terraria.ModLoader
 					}
 				}
 				List<int> checkTiles = new List<int>(tiles);
-				for (int i = 0; i < Recipe.maxRequirements; i++) {
-					int tile = recipe.requiredTile[i];
-					if (tile == -1) {
-						break;
-					}
-					for (int j = 0; j < checkTiles.Count; j++) {
-						if (tile == checkTiles[j]) {
-							checkTiles.RemoveAt(j);
-							break;
-						}
-					}
-				}
+				// for (int i = 0; i < Recipe.maxRequirements; i++) {
+				// 	int tile = recipe.requiredTile[i];
+				// 	if (tile == -1) {
+				// 		break;
+				// 	}
+				// 	for (int j = 0; j < checkTiles.Count; j++) {
+				// 		if (tile == checkTiles[j]) {
+				// 			checkTiles.RemoveAt(j);
+				// 			break;
+				// 		}
+				// 	}
+				// }
 				if (checkTiles.Count > 0) {
 					matches = false;
 				}

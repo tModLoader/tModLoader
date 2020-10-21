@@ -28,17 +28,17 @@ namespace Terraria.ModLoader
 			if (itemID <= 0 || itemID >= ItemLoader.ItemCount) {
 				throw new RecipeException("No item has ID " + itemID);
 			}
-			for (int k = 0; k < Recipe.maxRequirements; k++) {
-				if (recipe.requiredItem[k].type == 0) {
-					recipe.requiredItem[k].SetDefaults(itemID, false);
-					recipe.requiredItem[k].stack = stack;
-					return;
-				}
-				if (recipe.requiredItem[k].type == itemID) {
-					recipe.requiredItem[k].stack += stack;
-					return;
-				}
-			}
+			// for (int k = 0; k < Recipe.maxRequirements; k++) {
+			// 	if (recipe.requiredItem[k].type == 0) {
+			// 		recipe.requiredItem[k].SetDefaults(itemID, false);
+			// 		recipe.requiredItem[k].stack = stack;
+			// 		return;
+			// 	}
+			// 	if (recipe.requiredItem[k].type == itemID) {
+			// 		recipe.requiredItem[k].stack += stack;
+			// 		return;
+			// 	}
+			// }
 			throw new RecipeException("Recipe already has maximum number of ingredients");
 		}
 
@@ -52,12 +52,12 @@ namespace Terraria.ModLoader
 			if (itemID <= 0 || itemID >= ItemLoader.ItemCount) {
 				throw new RecipeException("No item has ID " + itemID);
 			}
-			for (int k = 0; k < Recipe.maxRequirements; k++) {
-				if (recipe.requiredItem[k].type == itemID) {
-					recipe.requiredItem[k].stack = stack;
-					return true;
-				}
-			}
+			// for (int k = 0; k < Recipe.maxRequirements; k++) {
+			// 	if (recipe.requiredItem[k].type == itemID) {
+			// 		recipe.requiredItem[k].stack = stack;
+			// 		return true;
+			// 	}
+			// }
 			return false;
 		}
 
@@ -70,15 +70,15 @@ namespace Terraria.ModLoader
 			if (itemID <= 0 || itemID >= ItemLoader.ItemCount) {
 				throw new RecipeException("No item has ID " + itemID);
 			}
-			for (int k = 0; k < Recipe.maxRequirements; k++) {
-				if (recipe.requiredItem[k].type == itemID) {
-					for (int j = k; j < Recipe.maxRequirements - 1; j++) {
-						recipe.requiredItem[j] = recipe.requiredItem[j + 1];
-					}
-					recipe.requiredItem[Recipe.maxRequirements - 1] = new Item();
-					return true;
-				}
-			}
+			// for (int k = 0; k < Recipe.maxRequirements; k++) {
+			// 	if (recipe.requiredItem[k].type == itemID) {
+			// 		for (int j = k; j < Recipe.maxRequirements - 1; j++) {
+			// 			recipe.requiredItem[j] = recipe.requiredItem[j + 1];
+			// 		}
+			// 		recipe.requiredItem[Recipe.maxRequirements - 1] = new Item();
+			// 		return true;
+			// 	}
+			// }
 			return false;
 		}
 
@@ -96,7 +96,7 @@ namespace Terraria.ModLoader
 				return false;
 			}
 
-			recipe.RequireGroup(groupId);
+			// recipe.RequireGroup(groupId);
 
 			return true;
 		}
@@ -113,15 +113,15 @@ namespace Terraria.ModLoader
 
 			bool removedAnything = false;
 
-			for (int i = 0;i<recipe.acceptedGroups.Length;i++) {
-				ref int thisGroup = ref recipe.acceptedGroups[i];
-
-				if (thisGroup==groupId) {
-					thisGroup = -1;
-
-					removedAnything = true;
-				}
-			}
+			// for (int i = 0;i<recipe.acceptedGroups.Length;i++) {
+			// 	ref int thisGroup = ref recipe.acceptedGroups[i];
+			//
+			// 	if (thisGroup==groupId) {
+			// 		thisGroup = -1;
+			//
+			// 		removedAnything = true;
+			// 	}
+			// }
 
 			return removedAnything;
 		}
@@ -148,15 +148,15 @@ namespace Terraria.ModLoader
 			if (tileID < 0 || tileID >= TileLoader.TileCount) {
 				throw new RecipeException("No tile has ID " + tileID);
 			}
-			for (int k = 0; k < Recipe.maxRequirements; k++) {
-				if (recipe.requiredTile[k] == -1) {
-					recipe.requiredTile[k] = tileID;
-					return true;
-				}
-				if (recipe.requiredTile[k] == tileID) {
-					return false;
-				}
-			}
+			// for (int k = 0; k < Recipe.maxRequirements; k++) {
+			// 	if (recipe.requiredTile[k] == -1) {
+			// 		recipe.requiredTile[k] = tileID;
+			// 		return true;
+			// 	}
+			// 	if (recipe.requiredTile[k] == tileID) {
+			// 		return false;
+			// 	}
+			// }
 			throw new RecipeException("Recipe already has maximum number of tiles");
 		}
 
@@ -169,15 +169,15 @@ namespace Terraria.ModLoader
 			if (tileID < 0 || tileID >= TileLoader.TileCount) {
 				throw new RecipeException("No tile has ID " + tileID);
 			}
-			for (int k = 0; k < Recipe.maxRequirements; k++) {
-				if (recipe.requiredTile[k] == tileID) {
-					for (int j = k; j < Recipe.maxRequirements - 1; j++) {
-						recipe.requiredTile[j] = recipe.requiredTile[j + 1];
-					}
-					recipe.requiredTile[Recipe.maxRequirements - 1] = -1;
-					return true;
-				}
-			}
+			// for (int k = 0; k < Recipe.maxRequirements; k++) {
+			// 	if (recipe.requiredTile[k] == tileID) {
+			// 		for (int j = k; j < Recipe.maxRequirements - 1; j++) {
+			// 			recipe.requiredTile[j] = recipe.requiredTile[j + 1];
+			// 		}
+			// 		recipe.requiredTile[Recipe.maxRequirements - 1] = -1;
+			// 		return true;
+			// 	}
+			// }
 			return false;
 		}
 
