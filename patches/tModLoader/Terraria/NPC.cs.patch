@@ -751,7 +751,7 @@
  					netOffset *= 0f;
  				}
 -				else if (NPCID.Sets.NoMultiplayerSmoothingByAI[aiStyle]) {
-+				else if (aiStyle >= 0 && NPCID.Sets.NoMultiplayerSmoothingByAI[aiStyle]) {
++				else if (aiStyle >= 0 && aiStyle < NPCLoader.NPCCount && NPCID.Sets.NoMultiplayerSmoothingByAI[aiStyle]) {
  					netOffset *= 0f;
  				}
  				else {
