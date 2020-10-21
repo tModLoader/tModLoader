@@ -5,7 +5,6 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
@@ -20,7 +19,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.IsValidSpawnPoint[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 
-			dustType = DustType<Sparkle>();
+			dustType = ModContent.DustType<Sparkle>();
 			adjTiles = new int[] { TileID.Beds };
 
 			// Placement
@@ -38,7 +37,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int i, int j, bool fail, ref int num) => num = 1;
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 64, 32, ItemType<Items.Placeable.Furniture.ExampleBed>());
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 64, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleBed>());
 
 		public override bool RightClick(int i, int j) {
 			Player player = Main.LocalPlayer;
@@ -84,7 +83,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			else {
 				player.noThrow = 2;
 				player.cursorItemIconEnabled = true;
-				player.cursorItemIconID = ItemType<Items.Placeable.Furniture.ExampleBed>();
+				player.cursorItemIconID = ModContent.ItemType<Items.Placeable.Furniture.ExampleBed>();
 			}
 		}
 	}

@@ -9,11 +9,13 @@
      <EffectivePlatform>Linux</EffectivePlatform>
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
-@@ -25,7 +_,15 @@
+@@ -25,37 +_,46 @@
      <Reference Include="FNA">
        <HintPath>Libraries/FNA/FNA.dll</HintPath>
      </Reference>
 -    <Reference Include="Ionic.Zip.CF" />
+-    <Reference Include="Newtonsoft.Json" />
+     <Reference Include="SteelSeriesEngineWrapper" />
 +    <Reference Include="Ionic.Zip.Reduced" />
 +    <Reference Include="Mono.Cecil" />
 +    <Reference Include="Mono.Cecil.Pdb" />
@@ -23,10 +25,10 @@
 +    <Reference Include="log4net" />
 +    <Reference Include="MonoMod.RuntimeDetour" />
 +    <Reference Include="MonoMod.Utils" />
-     <Reference Include="Newtonsoft.Json" />
++    <Reference Include="Newtonsoft.Json" />
      <Reference Include="RailSDK.Net">
        <HintPath>Libraries/Common/RailSDK.Net.dll</HintPath>
-@@ -33,28 +_,29 @@
+     </Reference>
      <ProjectReference Include="../ReLogic/ReLogicNetCore.csproj" />
      <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
        <Link>Libraries/ReLogic/ReLogic.dll</Link>
@@ -61,7 +63,7 @@
    <Target Name="CopyToSteamDir" AfterTargets="Build">
      <ItemGroup>
        <BinFiles Include="$(TargetDir)**" />
-@@ -65,8 +_,8 @@
+@@ -66,8 +_,8 @@
      <!--Move important assembly refs to bin-->
      <Copy SourceFiles="@(SteamFiles)" DestinationFolder="$(TargetDir)" />
      <!--Move bin to steam-->

@@ -22,11 +22,11 @@ if NOT ["%errorlevel%"]==["0"] (
 )
 
 echo building setup.csproj
-dotnet build setup/setup.csproj
+dotnet build setup/setup.csproj --output "setup/bin/Debug/netcoreapp3.1"
 
 if NOT ["%errorlevel%"]==["0"] (
     pause
     exit /b %errorlevel%
 )
 
-start "" "setup\bin\Debug\netcoreapp3.1\setup.exe"
+start "" "setup/bin/Debug/netcoreapp3.1/setup.exe"

@@ -14,7 +14,7 @@
  			int num = 0;
  			num = start + 1;
  			b = (byte)(messageType = readBuffer[start]);
--			if (b >= 140)
+-			if (b >= 141)
 -				return;
 -
 -			Main.ActiveNetDiagnosticsUI.CountReadMessage(b, length);
@@ -46,10 +46,10 @@
  						if (Netplay.Clients[whoAmI].State != 0)
  							break;
  
--						if (reader.ReadString() == "Terraria" + 230) {
+-						if (reader.ReadString() == "Terraria" + 233) {
 +						string clientVersion = reader.ReadString();
 +						ModNet.isModdedClient[whoAmI] = clientVersion == ModLoader.ModLoader.versionedName;
-+						if (ModNet.isModdedClient[whoAmI] || clientVersion == "Terraria" + 230 && ModNet.AllowVanillaClients) {
++						if (ModNet.isModdedClient[whoAmI] || clientVersion == "Terraria" + 233 && ModNet.AllowVanillaClients) {
  							if (string.IsNullOrEmpty(Netplay.ServerPassword)) {
  								Netplay.Clients[whoAmI].State = 1;
 +								if (ModNet.isModdedClient[whoAmI]) {
@@ -71,39 +71,39 @@
  						}
  					}
  					break;
-@@ -212,6 +_,7 @@
- 							NetMessage.TrySendData(5, -1, -1, null, num222, 58 + player11.armor.Length + player11.dye.Length + player11.miscEquips.Length + player11.miscDyes.Length + player11.bank.item.Length + player11.bank2.item.Length + player11.bank3.item.Length + 2 + num231, (int)player11.bank4.item[num231].prefix);
+@@ -214,6 +_,7 @@
+ 							NetMessage.TrySendData(5, -1, -1, null, num214, 220 + num223, (int)player14.bank4.item[num223].prefix);
  						}
  
-+						PlayerHooks.SyncPlayer(player11, -1, -1, true);
++						PlayerHooks.SyncPlayer(player14, -1, -1, true);
  						NetMessage.TrySendData(6);
  						if (Netplay.Connection.State == 2)
  							Netplay.Connection.State = 3;
-@@ -379,6 +_,7 @@
- 								player13.trashItem.Prefix(num241);
- 								if (num239 == Main.myPlayer && !Main.ServerSideCharacter)
- 									Main.clientPlayer.trashItem = player13.trashItem.Clone();
-+								ItemIO.ReceiveModData(player13.trashItem, reader);
+@@ -382,6 +_,7 @@
+ 								player6.trashItem.Prefix(num59);
+ 								if (num57 == Main.myPlayer && !Main.ServerSideCharacter)
+ 									Main.clientPlayer.trashItem = player6.trashItem.Clone();
++								ItemIO.ReceiveModData(player6.trashItem, reader);
  							}
- 							else if (num240 <= 58) {
- 								int type15 = array3[num242].type;
-@@ -387,6 +_,7 @@
- 								array3[num242].netDefaults(type14);
- 								array3[num242].stack = stack6;
- 								array3[num242].Prefix(num241);
-+								ItemIO.ReceiveModData(array3[num242], reader);
- 								if (num239 == Main.myPlayer && !Main.ServerSideCharacter)
- 									array4[num242] = array3[num242].Clone();
+ 							else if (num58 <= 58) {
+ 								int type7 = array[num60].type;
+@@ -390,6 +_,7 @@
+ 								array[num60].netDefaults(type6);
+ 								array[num60].stack = stack3;
+ 								array[num60].Prefix(num59);
++								ItemIO.ReceiveModData(array[num60], reader);
+ 								if (num57 == Main.myPlayer && !Main.ServerSideCharacter)
+ 									array2[num60] = array[num60].Clone();
  
-@@ -408,6 +_,7 @@
- 								array3[num242].Prefix(num241);
- 								if (num239 == Main.myPlayer && !Main.ServerSideCharacter)
- 									array4[num242] = array3[num242].Clone();
-+								ItemIO.ReceiveModData(array3[num242], reader);
+@@ -411,6 +_,7 @@
+ 								array[num60].Prefix(num59);
+ 								if (num57 == Main.myPlayer && !Main.ServerSideCharacter)
+ 									array2[num60] = array[num60].Clone();
++								ItemIO.ReceiveModData(array[num60], reader);
  							}
  
- 							if (Main.netMode == 2 && num239 == whoAmI && num240 <= 58 + player13.armor.Length + player13.dye.Length + player13.miscEquips.Length + player13.miscDyes.Length)
-@@ -561,6 +_,8 @@
+ 							if (Main.netMode == 2 && num57 == whoAmI && num58 <= 58 + player6.armor.Length + player6.dye.Length + player6.miscEquips.Length + player6.miscDyes.Length)
+@@ -564,6 +_,8 @@
  						Main.invasionType = reader.ReadSByte();
  						Main.LobbyId = reader.ReadUInt64();
  						Sandstorm.IntendedSeverity = reader.ReadSingle();
@@ -112,8 +112,8 @@
  						if (Netplay.Connection.State == 3) {
  							Main.windSpeedCurrent = Main.windSpeedTarget;
  							Netplay.Connection.State = 4;
-@@ -692,6 +_,9 @@
- 							NetMessage.TrySendData(83, whoAmI, -1, null, num168);
+@@ -695,6 +_,9 @@
+ 							NetMessage.TrySendData(83, whoAmI, -1, null, num260);
  						}
  
 +						for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++)
@@ -122,16 +122,16 @@
  						NetMessage.TrySendData(49, whoAmI);
  						NetMessage.TrySendData(57, whoAmI);
  						NetMessage.TrySendData(7, whoAmI);
-@@ -1141,7 +_,7 @@
- 							Item item2 = Main.item[num72];
+@@ -1154,7 +_,7 @@
+ 							Item item2 = Main.item[num77];
  							ItemSyncPersistentStats itemSyncPersistentStats = default(ItemSyncPersistentStats);
  							itemSyncPersistentStats.CopyFrom(item2);
--							bool newAndShiny = (item2.newAndShiny || item2.netID != num71) && ItemSlot.Options.HighlightNewItems && (num71 < 0 || num71 >= 5045 || !ItemID.Sets.NeverAppearsAsNewInInventory[num71]);
-+							bool newAndShiny = (item2.newAndShiny || item2.netID != num71) && ItemSlot.Options.HighlightNewItems && (num71 < 0 || !ItemID.Sets.NeverAppearsAsNewInInventory[num71]);
- 							item2.netDefaults(num71);
+-							bool newAndShiny = (item2.newAndShiny || item2.netID != num76) && ItemSlot.Options.HighlightNewItems && (num76 < 0 || num76 >= 5088 || !ItemID.Sets.NeverAppearsAsNewInInventory[num76]);
++							bool newAndShiny = (item2.newAndShiny || item2.netID != num76) && ItemSlot.Options.HighlightNewItems && (num76 < 0 || !ItemID.Sets.NeverAppearsAsNewInInventory[num76]);
+ 							item2.netDefaults(num76);
  							item2.newAndShiny = newAndShiny;
  							item2.Prefix(pre2);
-@@ -1149,6 +_,7 @@
+@@ -1162,6 +_,7 @@
  							item2.position = position2;
  							item2.velocity = velocity;
  							item2.active = true;
@@ -139,71 +139,71 @@
  							if (b == 90) {
  								item2.instanced = true;
  								item2.playerIndexTheItemIsReservedFor = Main.myPlayer;
-@@ -1188,6 +_,7 @@
+@@ -1201,6 +_,7 @@
  							obj3.position = position2;
  							obj3.velocity = velocity;
  							obj3.active = true;
 +							ItemIO.ReceiveModData(obj3, reader);
  							obj3.playerIndexTheItemIsReservedFor = Main.myPlayer;
- 							if (flag5) {
- 								NetMessage.TrySendData(21, -1, -1, null, num69);
-@@ -1319,9 +_,10 @@
- 						if (num83 == 245)
- 							NPC.golemBoss = num80;
+ 							if (flag6) {
+ 								NetMessage.TrySendData(21, -1, -1, null, num74);
+@@ -1332,9 +_,10 @@
+ 						if (num88 == 245)
+ 							NPC.golemBoss = num85;
  
--						if (nPC3.type >= 0 && nPC3.type < 663 && Main.npcCatchable[nPC3.type])
-+						if (nPC3.type >= 0 && nPC3.type < NPCLoader.NPCCount && Main.npcCatchable[nPC3.type])
- 							nPC3.releaseOwner = reader.ReadByte();
+-						if (nPC4.type >= 0 && nPC4.type < 665 && Main.npcCatchable[nPC4.type])
++						if (nPC4.type >= 0 && nPC4.type < NPCLoader.NPCCount && Main.npcCatchable[nPC4.type])
+ 							nPC4.releaseOwner = reader.ReadByte();
  
-+						NPCLoader.ReceiveExtraAI(nPC3, reader);
++						NPCLoader.ReceiveExtraAI(nPC4, reader);
  						break;
  					}
  				case 24: {
-@@ -1360,7 +_,7 @@
- 						int num125 = bitsByte8[7] ? reader.ReadInt16() : (-1);
- 						if (num125 >= 1000)
- 							num125 = -1;
+@@ -1373,7 +_,7 @@
+ 						int num130 = bitsByte8[7] ? reader.ReadInt16() : (-1);
+ 						if (num130 >= 1000)
+ 							num130 = -1;
 -
 +						byte[] extraAI = ProjectileLoader.ReadExtraAI(reader, bitsByte8);
  						if (Main.netMode == 2) {
- 							if (num123 == 949) {
- 								num122 = 255;
-@@ -1416,6 +_,7 @@
- 							Main.projectileIdentity[num122, num125] = num126;
+ 							if (num128 == 949) {
+ 								num127 = 255;
+@@ -1429,6 +_,7 @@
+ 							Main.projectileIdentity[num127, num130] = num131;
  						}
  
 +						ProjectileLoader.ReceiveExtraAI(projectile, extraAI);
  						projectile.ProjectileFixDesperation();
  						if (Main.netMode == 2)
- 							NetMessage.TrySendData(27, -1, whoAmI, null, num126);
-@@ -1424,7 +_,7 @@
+ 							NetMessage.TrySendData(27, -1, whoAmI, null, num131);
+@@ -1437,7 +_,7 @@
  					}
  				case 28: {
- 						int num3 = reader.ReadInt16();
--						int num4 = reader.ReadInt16();
-+						int num4 = ModNet.AllowVanillaClients ? reader.ReadInt16() : reader.ReadInt32();
- 						float num5 = reader.ReadSingle();
- 						int num6 = reader.ReadByte() - 1;
+ 						int num4 = reader.ReadInt16();
+-						int num5 = reader.ReadInt16();
++						int num5 = ModNet.AllowVanillaClients ? reader.ReadInt16() : reader.ReadInt32();
+ 						float num6 = reader.ReadSingle();
+ 						int num7 = reader.ReadByte() - 1;
  						byte b2 = reader.ReadByte();
-@@ -1539,6 +_,7 @@
- 							Main.chest[num260].item[num261].netDefaults(type17);
- 							Main.chest[num260].item[num261].Prefix(pre3);
- 							Main.chest[num260].item[num261].stack = stack8;
-+							ItemIO.ReceiveModData(Main.chest[num260].item[num261], reader);
+@@ -1552,6 +_,7 @@
+ 							Main.chest[num261].item[num262].netDefaults(type17);
+ 							Main.chest[num261].item[num262].Prefix(pre3);
+ 							Main.chest[num261].item[num262].stack = stack8;
++							ItemIO.ReceiveModData(Main.chest[num261].item[num262], reader);
  							Recipe.FindRecipes(canDelayCheck: true);
  						}
  
-@@ -1596,6 +_,7 @@
+@@ -1609,6 +_,7 @@
  						break;
  					}
  				case 34: {
 +						// TODO, check that this didn't get messed up...why % 100?
  						byte b3 = reader.ReadByte();
- 						int num15 = reader.ReadInt16();
  						int num16 = reader.ReadInt16();
-@@ -1604,22 +_,32 @@
+ 						int num17 = reader.ReadInt16();
+@@ -1617,22 +_,32 @@
  						if (Main.netMode == 2)
- 							num18 = 0;
+ 							num19 = 0;
  
 +
 +						ushort modType = 0;
@@ -213,96 +213,96 @@
  						if (Main.netMode == 2) {
  							switch (b3) {
 -								case 0: {
--										int num19 = WorldGen.PlaceChest(num15, num16, 21, notNearOtherChests: false, num17);
+-										int num20 = WorldGen.PlaceChest(num16, num17, 21, notNearOtherChests: false, num18);
 +								case byte _ when b3 % 100 == 0: {
 +										if (modType == 0)
 +											modType = TileID.Containers;
 +
-+										int num19 = WorldGen.PlaceChest(num15, num16, modType, notNearOtherChests: false, num17);
- 										if (num19 == -1) {
--											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num15, num16, num17, num19);
--											Item.NewItem(num15 * 16, num16 * 16, 32, 32, Chest.chestItemSpawn[num17], 1, noBroadcast: true);
-+											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num15, num16, num17, num19, modType);
-+											int itemSpawn = b3 < 100 ? Chest.chestItemSpawn[num17] : TileLoader.GetTile(modType).chestDrop;
++										int num20 = WorldGen.PlaceChest(num16, num17, modType, notNearOtherChests: false, num18);
+ 										if (num20 == -1) {
+-											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num16, num17, num18, num20);
+-											Item.NewItem(num16 * 16, num17 * 16, 32, 32, Chest.chestItemSpawn[num18], 1, noBroadcast: true);
++											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num16, num17, num18, num20, modType);
++											int itemSpawn = b3 < 100 ? Chest.chestItemSpawn[num18] : TileLoader.GetTile(modType).chestDrop;
 +											if (itemSpawn > 0)
-+												Item.NewItem(num15 * 16, num16 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
++												Item.NewItem(num16 * 16, num17 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  										}
  										else {
--											NetMessage.TrySendData(34, -1, -1, null, b3, num15, num16, num17, num19);
-+											NetMessage.TrySendData(34, -1, -1, null, b3, num15, num16, num17, num19, modType);
+-											NetMessage.TrySendData(34, -1, -1, null, b3, num16, num17, num18, num20);
++											NetMessage.TrySendData(34, -1, -1, null, b3, num16, num17, num18, num20, modType);
  										}
  
  										return;
  									}
  								case 1:
--									if (Main.tile[num15, num16].type == 21) {
-+									if (Main.tile[num15, num16].type == 21 || b3 == 101 && TileID.Sets.BasicChest[Main.tile[num15, num16].type]) {
- 										Tile tile = Main.tile[num15, num16];
+-									if (Main.tile[num16, num17].type == 21) {
++									if (Main.tile[num16, num17].type == 21 || b3 == 101 && TileID.Sets.BasicChest[Main.tile[num16, num17].type]) {
+ 										Tile tile = Main.tile[num16, num17];
  										if (tile.frameX % 36 != 0)
- 											num15--;
-@@ -1638,20 +_,25 @@
+ 											num16--;
+@@ -1651,20 +_,25 @@
  							}
  
  							switch (b3) {
 -								case 2: {
--										int num20 = WorldGen.PlaceChest(num15, num16, 88, notNearOtherChests: false, num17);
+-										int num21 = WorldGen.PlaceChest(num16, num17, 88, notNearOtherChests: false, num18);
 +								case byte _ when b3 % 100 == 2: {
 +										if (modType == 0)
 +											modType = TileID.Dressers;
 +
-+										int num20 = WorldGen.PlaceChest(num15, num16, modType, notNearOtherChests: false, num17);
- 										if (num20 == -1) {
--											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num15, num16, num17, num20);
--											Item.NewItem(num15 * 16, num16 * 16, 32, 32, Chest.dresserItemSpawn[num17], 1, noBroadcast: true);
-+											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num15, num16, num17, num20, modType);
-+											int itemSpawn = b3 < 100 ? Chest.dresserItemSpawn[num17] : TileLoader.GetTile(modType).dresserDrop;
++										int num21 = WorldGen.PlaceChest(num16, num17, modType, notNearOtherChests: false, num18);
+ 										if (num21 == -1) {
+-											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num16, num17, num18, num21);
+-											Item.NewItem(num16 * 16, num17 * 16, 32, 32, Chest.dresserItemSpawn[num18], 1, noBroadcast: true);
++											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num16, num17, num18, num21, modType);
++											int itemSpawn = b3 < 100 ? Chest.dresserItemSpawn[num18] : TileLoader.GetTile(modType).dresserDrop;
 +											if (itemSpawn > 0)
-+												Item.NewItem(num15 * 16, num16 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
++												Item.NewItem(num16 * 16, num17 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  										}
  										else {
--											NetMessage.TrySendData(34, -1, -1, null, b3, num15, num16, num17, num20);
-+											NetMessage.TrySendData(34, -1, -1, null, b3, num15, num16, num17, num20, modType);
+-											NetMessage.TrySendData(34, -1, -1, null, b3, num16, num17, num18, num21);
++											NetMessage.TrySendData(34, -1, -1, null, b3, num16, num17, num18, num21, modType);
  										}
  
  										return;
  									}
  								case 3:
--									if (Main.tile[num15, num16].type == 88) {
-+									if (Main.tile[num15, num16].type == 88 || b3 == 103 && TileID.Sets.BasicDresser[Main.tile[num15, num16].type]) {
- 										Tile tile2 = Main.tile[num15, num16];
- 										num15 -= tile2.frameX % 54 / 18;
+-									if (Main.tile[num16, num17].type == 88) {
++									if (Main.tile[num16, num17].type == 88 || b3 == 103 && TileID.Sets.BasicDresser[Main.tile[num16, num17].type]) {
+ 										Tile tile2 = Main.tile[num16, num17];
+ 										num16 -= tile2.frameX % 54 / 18;
  										if (tile2.frameY % 36 != 0)
-@@ -1701,21 +_,25 @@
+@@ -1714,21 +_,25 @@
  						}
  
  						switch (b3) {
 -							case 0:
 +							case byte _ when b3 % 100 == 0:
- 								if (num18 == -1) {
- 									WorldGen.KillTile(num15, num16);
+ 								if (num19 == -1) {
+ 									WorldGen.KillTile(num16, num17);
  									break;
  								}
- 								SoundEngine.PlaySound(0, num15 * 16, num16 * 16);
+ 								SoundEngine.PlaySound(0, num16 * 16, num17 * 16);
 +								if (modType == 0)
 +									modType = TileID.Containers;
--								WorldGen.PlaceChestDirect(num15, num16, 21, num17, num18);
-+								WorldGen.PlaceChestDirect(num15, num16, modType, num17, num18);
+-								WorldGen.PlaceChestDirect(num16, num17, 21, num18, num19);
++								WorldGen.PlaceChestDirect(num16, num17, modType, num18, num19);
  								break;
 -							case 2:
 +							case byte _ when b3 % 100 == 2:
- 								if (num18 == -1) {
- 									WorldGen.KillTile(num15, num16);
+ 								if (num19 == -1) {
+ 									WorldGen.KillTile(num16, num17);
  									break;
  								}
- 								SoundEngine.PlaySound(0, num15 * 16, num16 * 16);
+ 								SoundEngine.PlaySound(0, num16 * 16, num17 * 16);
 +								if (modType == 0)
 +									modType = TileID.Dressers;
--								WorldGen.PlaceDresserDirect(num15, num16, 88, num17, num18);
-+								WorldGen.PlaceDresserDirect(num15, num16, modType, num17, num18);
+-								WorldGen.PlaceDresserDirect(num16, num17, 88, num18, num19);
++								WorldGen.PlaceDresserDirect(num16, num17, modType, num18, num19);
  								break;
  							case 4:
- 								if (num18 == -1) {
-@@ -1757,6 +_,9 @@
+ 								if (num19 == -1) {
+@@ -1770,6 +_,9 @@
  						obj7.zone2 = reader.ReadByte();
  						obj7.zone3 = reader.ReadByte();
  						obj7.zone4 = reader.ReadByte();
@@ -310,9 +310,9 @@
 +							PlayerHooks.ReceiveCustomBiomes(obj7, reader);
 +
  						if (Main.netMode == 2)
- 							NetMessage.TrySendData(36, -1, whoAmI, null, num214);
+ 							NetMessage.TrySendData(36, -1, whoAmI, null, num199);
  
-@@ -1778,6 +_,11 @@
+@@ -1791,6 +_,11 @@
  					if (Main.netMode == 2) {
  						if (reader.ReadString() == Netplay.ServerPassword) {
  							Netplay.Clients[whoAmI].State = 1;
@@ -324,16 +324,16 @@
  							NetMessage.TrySendData(3, whoAmI);
  						}
  						else {
-@@ -1963,7 +_,7 @@
+@@ -1974,7 +_,7 @@
  							break;
  
- 						Player player5 = Main.player[num51];
--						for (int num52 = 0; num52 < 22; num52++) {
-+						for (int num52 = 0; num52 < Player.MaxBuffs; num52++) {
- 							player5.buffType[num52] = reader.ReadUInt16();
- 							if (player5.buffType[num52] > 0)
- 								player5.buffTime[num52] = 60;
-@@ -2451,6 +_,7 @@
+ 						Player player5 = Main.player[num52];
+-						for (int num53 = 0; num53 < 22; num53++) {
++						for (int num53 = 0; num53 < Player.MaxBuffs; num53++) {
+ 							player5.buffType[num53] = reader.ReadUInt16();
+ 							if (player5.buffType[num53] > 0)
+ 								player5.buffTime[num53] = 60;
+@@ -2470,6 +_,7 @@
  					break;
  				case 74:
  					if (Main.netMode == 1) {
@@ -341,17 +341,17 @@
  						Main.anglerQuest = reader.ReadByte();
  						Main.anglerQuestFinished = reader.ReadBoolean();
  					}
-@@ -2540,7 +_,7 @@
+@@ -2559,7 +_,7 @@
  					if (Main.netMode == 1) {
- 						int num73 = reader.ReadInt16();
- 						int num74 = reader.ReadInt32();
--						if (num73 >= 0 && num73 < 289)
-+						if (num73 >= 0) // && num73 < 289) //This prevented mod BannerIds from syncing.
- 							NPC.killCount[num73] = num74;
+ 						int num78 = reader.ReadInt16();
+ 						int num79 = reader.ReadInt32();
+-						if (num78 >= 0 && num78 < 289)
++						if (num78 >= 0) // && num78 < 289) //This prevented mod BannerIds from syncing.
+ 							NPC.killCount[num78] = num79;
  					}
  					break;
-@@ -3325,6 +_,27 @@
- 						Main.countsAsHostForGameplay[num2] = flag;
+@@ -3350,6 +_,27 @@
+ 						CreditsRollEvent.SetRemainingTimeDirect(reader.ReadInt32());
  					}
  					break;
 +				case MessageID.InGameChangeConfig:

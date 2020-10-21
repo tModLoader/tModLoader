@@ -1,11 +1,6 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -2,19 +_,24 @@
- using ReLogic.OS;
- using System;
- using System.Collections.Generic;
-+
- #if CLIENT
+@@ -6,6 +_,7 @@
  using System.Diagnostics;
  #endif
  using System.IO;
@@ -13,101 +8,37 @@
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
- using System.Threading;
-+using System.Threading.Tasks;
-+
- #if CLIENT
- using System.Windows.Forms;
+@@ -15,12 +_,14 @@
  #endif
  using Terraria.Initializers;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Exceptions;
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -40,6 +_,7 @@
- 		private static int ThingsLoaded;
- 		public static bool LoadedEverything;
- 		public static IntPtr JitForcedMethodCache;
-+		public static string SavePath { get; private set; } // moved from Main to avoid triggering the Main static constructor before logging initializes
- 
- 		public static float LoadedPercentage {
- 			get {
-@@ -64,33 +_,72 @@
+ namespace Terraria
+ {
+-	public static class Program
++	public static partial class Program
+ 	{
+ #if CLIENT
+ 		public const bool IsServer = false;
+@@ -64,32 +_,18 @@
  		public static void ForceLoadThread(object threadContext) {
  			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
  			LoadedEverything = true;
 +			Logging.Terraria.Info("JIT loading finished");
-+		}
-+
-+		private static void ForceJITOnAssembly(IEnumerable<Type> types) {
-+			try {
-+				var methodsToJIT = CollectMethodsToJIT(types);
-+
-+				if (Environment.ProcessorCount > 1) {
-+					Parallel.ForEach(methodsToJIT, ForceJITOnMethod);
-+				}
-+				else {
-+					foreach (var method in methodsToJIT) {
-+						ForceJITOnMethod(method);
-+					}
-+				}
-+			}
-+			catch (Exception e) {
-+				Debug.WriteLine(e);
-+			}
-+		}
-+
-+		private static void ForceStaticInitializers(Type[] types) {
-+			foreach (Type type in types) {
-+				if (!type.IsGenericType)
-+					RuntimeHelpers.RunClassConstructor(type.TypeHandle);
-+			}
  		}
  
 -		private static void ForceJITOnAssembly(Assembly assembly) {
-+		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
 -			Type[] types = assembly.GetTypes();
-+			var types = assembly.GetTypes();
 -			for (int i = 0; i < types.Length; i++) {
-+			ThingsToLoad = types.Select(type => GetMethodsCrossPlatform(type).Count()).Sum();
-+
-+			ForceJITOnAssembly(types);
-+			if (initializeStaticMembers) {
-+				ForceStaticInitializers(types);
-+			}
-+		}
-+
-+		private static IEnumerable<MethodInfo> CollectMethodsToJIT(IEnumerable<Type> types) =>
-+			from type in types
-+			from method in GetMethodsCrossPlatform(type)
-+			where !method.IsAbstract && !method.ContainsGenericParameters && method.GetMethodBody() != null
-+			select method;
-+
-+		private static void ForceJITOnMethod(MethodInfo method) {
-+			try {
-+#if XNA || NETCORE
-+				RuntimeHelpers.PrepareMethod(method.MethodHandle);
-+#else
-+			// We don't synchronize access to JitForcedMethodCache because no one ever needs to read its value.
-+			var methodPointer = method.MethodHandle.GetFunctionPointer();
-+			JitForcedMethodCache = methodPointer;
-+#endif
-+			}
-+			catch (Exception e) {
-+				Debug.Write(e);
-+			}
-+			Interlocked.Increment(ref ThingsLoaded);
-+		}
-+
-+		private static IEnumerable<MethodInfo> GetMethodsCrossPlatform(Type type) {
- #if WINDOWS
+-#if WINDOWS
 -				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-+			return type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
- #else
+-#else
 -				MethodInfo[] methods = types[i].GetMethods();
-+			return type.GetMethods();
- #endif
+-#endif
 -				foreach (MethodInfo methodInfo in methods) {
 -					try {
 -						if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
@@ -122,26 +53,39 @@
 -						Debug.Write(e);
 -					}
 -				}
--
--				ThingsLoaded++;
--			}
- 		}
++		private static void ForceJITOnAssembly(IEnumerable<Type> types) {
++			var methodsToJIT = CollectMethodsToJIT(types);
  
- 		private static void ForceStaticInitializers(Assembly assembly) {
-@@ -101,13 +_,6 @@
+-				ThingsLoaded++;
++			if (Environment.ProcessorCount > 1) {
++				methodsToJIT.AsParallel().AsUnordered().ForAll(ForceJITOnMethod);
++			}
++			else {
++				foreach (var method in methodsToJIT)
++					ForceJITOnMethod(method);
  			}
  		}
  
--		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
+@@ -102,10 +_,15 @@
+ 		}
+ 
+ 		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
 -			ThingsToLoad = assembly.GetTypes().Length;
 -			ForceJITOnAssembly(assembly);
 -			if (initializeStaticMembers)
 -				ForceStaticInitializers(assembly);
--		}
--
++			var types = assembly.GetTypes();
++
++			ThingsToLoad = types.Select(type => GetMethodsCrossPlatform(type).Count()).Sum();
++
++			ForceJITOnAssembly(types);
++
++			if (initializeStaticMembers) {
++				ForceStaticInitializers(types);
++			}
+ 		}
+ 
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
- 			Assembly assembly = null;
- 			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 @@ -157,27 +_,52 @@
  			}
  		}
@@ -213,12 +157,18 @@
  			}
  		}
  
-@@ -210,9 +_,15 @@
+@@ -223,9 +_,21 @@
  				}
  
  #if CLIENT
 -				MessageBox.Show(text, "Terraria: Error");
 +				ModLoader.UI.Interface.MessageBoxShow(text);
++
++				if (e is FolderCreationFailedException)
++					Process.Start(e.HelpLink);
++
++				if (e.Message.Contains("CSteamworks"))
++					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
 +
 +				if (e.StackTrace.Contains("LaunchLocalServer")) {
 +					ModLoader.UI.Interface.MessageBoxShow("Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.");

@@ -27,6 +27,7 @@
     </Reference>
     <Reference Include="Ionic.Zip.CF" />
     <Reference Include="Newtonsoft.Json" />
+    <Reference Include="SteelSeriesEngineWrapper" />
     <Reference Include="RailSDK.Net">
       <HintPath>Libraries/Common/RailSDK.Net.dll</HintPath>
     </Reference>

@@ -8,7 +8,7 @@
  using Terraria.Net.Sockets;
  
  namespace Terraria
-@@ -49,6 +_,7 @@
+@@ -55,6 +_,7 @@
  			}
  			catch (Exception value) {
  				try {

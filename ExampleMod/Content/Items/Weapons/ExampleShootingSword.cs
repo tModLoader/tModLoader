@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
@@ -14,6 +15,7 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded sword that shoots Star Wrath-like projectiles.");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
@@ -25,7 +27,7 @@ namespace ExampleMod.Content.Items.Weapons
 			item.useAnimation = 20;
 			item.autoReuse = true;
 
-			item.melee = true;
+			item.DamageType = DamageClass.Melee;
 			item.damage = 50;
 			item.knockBack = 6;
 			item.crit = 6;

@@ -17,33 +17,24 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			double delta = Math.Abs(ts.TotalSeconds);
 
 			if (delta < 1 * MINUTE)
-				return ts.Seconds == 1 ? Language.GetTextValue("tModLoader.1SecondAgo") : Language.GetTextValue("tModLoader.XSecondsAgo", ts.Seconds);
+				return Language.GetTextValue("tModLoader.XSecondsAgo", ts.Seconds);
 
-			if (delta < 2 * MINUTE)
-				return Language.GetTextValue("tModLoader.1MinuteAgo");
-
-			if (delta < 45 * MINUTE)
+			if (delta < 60 * MINUTE)
 				return Language.GetTextValue("tModLoader.XMinutesAgo", ts.Minutes);
-
-			if (delta < 90 * MINUTE)
-				return Language.GetTextValue("tModLoader.1HourAgo");
 
 			if (delta < 24 * HOUR)
 				return Language.GetTextValue("tModLoader.XHoursAgo", ts.Hours);
-
-			if (delta < 48 * HOUR)
-				return Language.GetTextValue("tModLoader.1DayAgo");
 
 			if (delta < 30 * DAY)
 				return Language.GetTextValue("tModLoader.XDaysAgo", ts.Days);
 
 			if (delta < 12 * MONTH) {
 				int months = Convert.ToInt32(Math.Floor((double)ts.Days / 30));
-				return months <= 1 ? Language.GetTextValue("tModLoader.1MonthAgo") : Language.GetTextValue("tModLoader.XMonthsAgo", months);
+				return Language.GetTextValue("tModLoader.XMonthsAgo", months);
 			}
 			else {
 				int years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
-				return years <= 1 ? Language.GetTextValue("tModLoader.1YearAgo") : Language.GetTextValue("tModLoader.XYearsAgo", years);
+				return Language.GetTextValue("tModLoader.XYearsAgo", years);
 			}
 		}
 	}

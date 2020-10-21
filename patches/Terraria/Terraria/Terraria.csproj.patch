@@ -1,21 +1,24 @@
 --- src/decompiled/Terraria/Terraria.csproj
 +++ src/Terraria/Terraria/Terraria.csproj
-@@ -1,35 +_,52 @@
+@@ -1,36 +_,56 @@
  <Project Sdk="Microsoft.NET.Sdk">
    <Import Project="../Configuration.targets" />
 +  <Import Project="../../TerrariaSteamPath.targets" />
    <PropertyGroup>
      <OutputType>WinExe</OutputType>
-     <Version>1.4.0.5</Version>
+     <Version>1.4.1.1</Version>
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2020 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
-+  <OutputName>Terraria</OutputName>
++    <OutputName>Terraria</OutputName>
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
      <OutputName>$(OutputName)Server</OutputName>
    </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
++    <OutputName>$(OutputName)Debug</OutputName>
++  </PropertyGroup>
 +  <PropertyGroup>
 +    <PdbFile>bin\$(OutputName)</PdbFile>
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
@@ -38,10 +41,11 @@
 +    </Reference>
      <ProjectReference Include="../ReLogic/ReLogic.csproj" />
      <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
-+    <Link>Libraries/ReLogic/ReLogic.dll</Link>
++      <Link>Libraries/ReLogic/ReLogic.dll</Link>
        <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
      </EmbeddedResource>
 -    <Reference Include="Steamworks.NET" />
+     <Reference Include="SteelSeriesEngineWrapper" />
 +    <Reference Include="Steamworks.NET">
 +      <HintPath>Libraries/Common/Steamworks.NET.dll</HintPath>
 +    </Reference>
@@ -60,7 +64,7 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="GameContent/Creative/Content/*" />
-@@ -37,7 +_,38 @@
+@@ -38,7 +_,27 @@
      <EmbeddedResource Include="GameContent/WorldBuilding/*" />
      <EmbeddedResource Include="IO/Data/*" />
      <EmbeddedResource Include="Libraries/**" />
@@ -71,31 +75,20 @@
    </ItemGroup>
 +  <Target Name="EditBin" AfterTargets="Build">
 +    <PropertyGroup>
-+        <EditBinOpts>/largeaddressaware</EditBinOpts>
-+    <DumpBin>/headers</DumpBin>
++      <EditBinOpts>/largeaddressaware</EditBinOpts>
++      <DumpBin>/headers</DumpBin>
 +    </PropertyGroup>
 +    <PropertyGroup Condition="$(DefineConstants.Contains('DEBUG'))">
-+        <EditBinOpts>$(EditBinOpts) /stack:0x800000</EditBinOpts>
++      <EditBinOpts>$(EditBinOpts) /stack:0x800000</EditBinOpts>
 +    </PropertyGroup>
 +    <Message Text="Applying editbin $(EditBinOpts)" Importance="high" />
 +    <Exec Command="..\largeaddresstool\editbin $(EditBinOpts) &quot;$(TargetPath)&quot;" />
-+  <Message Text="Checking headers with dumpbin." Importance="high" />
-+  <Exec Command="..\largeaddresstool\dumpbin $(DumpBin) &quot;$(TargetPath)&quot; | findstr &quot;large&quot;" />
++    <Message Text="Checking headers with dumpbin." Importance="high" />
++    <Exec Command="..\largeaddresstool\dumpbin $(DumpBin) &quot;$(TargetPath)&quot; | findstr &quot;large&quot;" />
 +  </Target>
-+  <Target Name="CopyToSteamDir" AfterTargets="EditBin">
-+    <ItemGroup>
-+      <SteamFiles Include="Libraries/Native/Windows32/steam*;Libraries/Native/Windows32/Steam*" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-+      <SteamFiles Include="Libraries/Native/Linux/**/*steam*;Libraries/Native/Linux/**/Steam*" Condition="!$(DefineConstants.Contains('WINDOWS'))" />
-+      <SteamFiles Include="@(SteamFiles);Libraries/Common/steam_appid.txt" />
-+      <LibFiles Include="Libraries/Native/OSX/**" Exclude="**/*steam*;**/Steam*" Condition="$(DefineConstants.Contains('MAC'))" />
-+      <LibFiles Include="Libraries/Native/Linux/**" Condition="$(DefineConstants.Contains('LINUX'))" />
-+      <BinFiles Include="$(TargetDir)**" />
-+    </ItemGroup>
++  <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
 +    <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
-+    <!--Move important assembly refs to bin-->
-+    <Copy SourceFiles="@(LibFiles)" DestinationFolder="$(TargetDir)" />
-+    <Copy SourceFiles="@(SteamFiles)" DestinationFolder="$(TargetDir)" />
-+    <!--Move bin to steam-->
-+    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)" />
++    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\$(OutputName).exe" />
++    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(TerrariaSteamPath)" />
 +  </Target>
  </Project>

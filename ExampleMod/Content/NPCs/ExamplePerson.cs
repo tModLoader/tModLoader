@@ -13,7 +13,6 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -53,7 +52,7 @@ namespace ExampleMod.Content.NPCs
 		public override void HitEffect(int hitDirection, double damage) {
 			int num = npc.life > 0 ? 1 : 5;
 			for (int k = 0; k < num; k++) {
-				Dust.NewDust(npc.position, npc.width, npc.height, DustType<Sparkle>());
+				Dust.NewDust(npc.position, npc.width, npc.height, ModContent.DustType<Sparkle>());
 			}
 		}
 
@@ -65,7 +64,7 @@ namespace ExampleMod.Content.NPCs
 				}
 
 				// Player has to have either an ExampleItem or an ExampleBlock in order for the NPC to spawn
-				if (player.inventory.Any(item => item.type == ItemType<ExampleItem>() || item.type == ItemType<Items.Placeable.ExampleBlock>())) {
+				if (player.inventory.Any(item => item.type == ModContent.ItemType<ExampleItem>() || item.type == ModContent.ItemType<Items.Placeable.ExampleBlock>())) {
 					return true;
 				}
 			}
@@ -79,11 +78,11 @@ namespace ExampleMod.Content.NPCs
 			for (int x = left; x <= right; x++) {
 				for (int y = top; y <= bottom; y++) {
 					int type = Main.tile[x, y].type;
-					if (type == TileType<ExampleBlock>() || type == TileType<ExampleChair>() || type == TileType<ExampleWorkbench>() || type == TileType<ExampleBed>() || type == TileType<ExampleDoorOpen>() || type == TileType<ExampleDoorClosed>()) {
+					if (type == ModContent.TileType<ExampleBlock>() || type == ModContent.TileType<ExampleChair>() || type == ModContent.TileType<ExampleWorkbench>() || type == ModContent.TileType<ExampleBed>() || type == ModContent.TileType<ExampleDoorOpen>() || type == ModContent.TileType<ExampleDoorClosed>()) {
 						score++;
 					}
 
-					if (Main.tile[x, y].wall == WallType<ExampleWall>()) {
+					if (Main.tile[x, y].wall == ModContent.WallType<ExampleWall>()) {
 						score++;
 					}
 				}
@@ -148,12 +147,12 @@ namespace ExampleMod.Content.NPCs
 				if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack)) {
 					SoundEngine.PlaySound(SoundID.Item37); // Reforge/Anvil sound
 
-					Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ItemType<WaspNest>())}";
+					Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ModContent.ItemType<WaspNest>())}";
 
 					int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
 
 					Main.LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(ItemType<WaspNest>());
+					Main.LocalPlayer.QuickSpawnItem(ModContent.ItemType<WaspNest>());
 
 					return;
 				}
@@ -248,7 +247,7 @@ namespace ExampleMod.Content.NPCs
 					position.Y = Math.Sign(position.Y) * 20;
 				}
 
-				Dust.NewDustPerfect(npc.Center + position, DustType<Sparkle>(), Vector2.Zero).noGravity = true;
+				Dust.NewDustPerfect(npc.Center + position, ModContent.DustType<Sparkle>(), Vector2.Zero).noGravity = true;
 			}
 		}
 
