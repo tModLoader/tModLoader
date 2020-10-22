@@ -152,7 +152,7 @@
  		public void Damage() {
 +			bool? shouldHitAnything = ProjectileLoader.CanDamage(this);
 +			if (shouldHitAnything.HasValue) {
-+				if (shouldHitAnything.Value == true)
++				if (shouldHitAnything.Value)
 +					goto SkipVanillaLogic;
 +				else
 +					return;
