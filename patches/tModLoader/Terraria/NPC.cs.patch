@@ -746,6 +746,15 @@
  					if (buffTime[i] < time)
  						buffTime[i] = time;
  
+@@ -71162,7 +_,7 @@
+ 				if (NPCID.Sets.NoMultiplayerSmoothingByType[type]) {
+ 					netOffset *= 0f;
+ 				}
+-				else if (NPCID.Sets.NoMultiplayerSmoothingByAI[aiStyle]) {
++				else if (aiStyle >= 0 && aiStyle < NPCLoader.NPCCount && NPCID.Sets.NoMultiplayerSmoothingByAI[aiStyle]) {
+ 					netOffset *= 0f;
+ 				}
+ 				else {
 @@ -71231,6 +_,7 @@
  			}
  
