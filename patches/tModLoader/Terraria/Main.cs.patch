@@ -1367,7 +1367,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15162,95 +_,113 @@
+@@ -15162,95 +_,121 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1488,6 +1488,7 @@
 +					toolTipNames[numLines] = "Damage";
  
  					numLines++;
++					/* fuck all this noise, there's a pre-existing method for crit calcs
  					if (item.melee) {
 -						int num3 = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
 -						toolTipLine[numLines] = num3 + Lang.tip[5].Value;
@@ -1522,6 +1523,13 @@
 +						int crit = item.crit;
 +						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
 +						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
++						toolTipLine[numLines] = crit + Lang.tip[5].Value;
++						toolTipNames[numLines] = "CritChance";
++						numLines++;
++					}
++					*/
++					if (!item.summon) {
++						int crit = player[myPlayer].GetWeaponCrit(item);
 +						toolTipLine[numLines] = crit + Lang.tip[5].Value;
 +						toolTipNames[numLines] = "CritChance";
  						numLines++;
