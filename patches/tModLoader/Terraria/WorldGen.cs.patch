@@ -969,6 +969,68 @@
  			AddGenerationPass("Reset", delegate (GenerationProgress progress, GameConfiguration passConfig) {
  				numOceanCaveTreasure = 0;
  				skipDesertTileCheck = false;
+@@ -5533,6 +_,12 @@
+ 				if (WorldGenParam_Evil == 1)
+ 					crimson = true;
+ 
++				if (jungleHut == 0) {
++					jungleHut = (ushort)WorldGen.genRand.Next(5);
++				}
++				else {
++					jungleHut--;
++				}
+ 				if (jungleHut == 0)
+ 					jungleHut = 119;
+ 				else if (jungleHut == 1)
+@@ -5543,6 +_,8 @@
+ 					jungleHut = 175;
+ 				else if (jungleHut == 4)
+ 					jungleHut = 45;
++				else
++					jungleHut = 45;
+ 
+ 				Main.worldID = genRand.Next(int.MaxValue);
+ 				RandomizeTreeStyle();
+@@ -5609,9 +_,9 @@
+ 
+ 				int num919 = 50;
+ 				if (dungeonSide == -1)
+-					dungeonLocation = genRand.Next(leftBeachEnd + num919, (int)((double)Main.maxTilesX * 0.2));
++					dungeonLocation = genRand.Next(Math.Min(leftBeachEnd + num919, (int)((double)Main.maxTilesX * 0.2) - 1), (int)((double)Main.maxTilesX * 0.2));
+ 				else
+-					dungeonLocation = genRand.Next((int)((double)Main.maxTilesX * 0.8), rightBeachStart - num919);
++					dungeonLocation = genRand.Next((int)((double)Main.maxTilesX * 0.8), Math.Max(rightBeachStart - num919, (int)((double)Main.maxTilesX * 0.8) + 1));
+ 			});
+ 
+ 			AddGenerationPass(new TerrainPass().OnBegin(delegate (GenPass pass) {
+@@ -6129,6 +_,9 @@
+ 						num836--;
+ 					}
+ 
++					num835 = Utils.Clamp(num835, 0, Main.maxTilesX);
++					num836 = Utils.Clamp(num836, 0, Main.maxTilesX);
++
+ 					snowMinX[num838] = num835;
+ 					snowMaxX[num838] = num836;
+ 					for (int num839 = num835; num839 < num836; num839++) {
+@@ -7389,7 +_,7 @@
+ 									int num652 = 3;
+ 									for (int num653 = num651 - num652; num653 <= num651 + num652; num653++) {
+ 										for (int num654 = num650 - num652; num654 <= num650 + num652; num654++) {
+-											if (Main.tile[num653, num654].type == 60 || Main.tile[num653, num654].type == 70 || Main.tile[num653, num654].type == 71 || Main.tile[num653, num654].type == 72) {
++											if (InWorld(num653, num654) && (Main.tile[num653, num654].type == 60 || Main.tile[num653, num654].type == 70 || Main.tile[num653, num654].type == 71 || Main.tile[num653, num654].type == 72)) {
+ 												flag42 = false;
+ 												break;
+ 											}
+@@ -7962,6 +_,8 @@
+ 				int num567;
+ 				while (true) {
+ 					num566 = genRand.Next((int)Main.rockLayer, Main.maxTilesY - 500);
++					if (Main.maxTilesY < 1000) num566 = WorldGen.genRand.Next((int)Main.rockLayer, Main.maxTilesY - 200);
++
+ 					num567 = (int)(((genRand.NextDouble() * num565 + 0.1) * (double)(-dungeonSide) + 0.5) * (double)Main.maxTilesX);
+ 					if (Main.tile[num567, num566].active() && Main.tile[num567, num566].type == 60)
+ 						break;
 @@ -8082,7 +_,7 @@
  								int num543 = genRand.Next(num528 - num536, num528 + num536 + 1);
  								int num544 = genRand.Next(num529 - num537, num529 + num537 - 2);
@@ -978,6 +1040,24 @@
  									flag35 = true;
  							}
  
+@@ -9440,7 +_,7 @@
+ 
+ 			AddGenerationPass("Surface Ore and Stone", delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 				progress.Set(1f);
+-				int num354 = genRand.Next(Main.maxTilesX / 4200 * 5, Main.maxTilesX / 4200 * 10);
++				int num354 = genRand.Next((Main.maxTilesX / 4200) * 5, (Main.maxTilesX / 4200) * 10);
+ 				for (int num355 = 0; num355 < num354; num355++) {
+ 					int num356 = Main.maxTilesX / 420;
+ 					while (num356 > 0) {
+@@ -9468,7 +_,7 @@
+ 					}
+ 				}
+ 
+-				num354 = genRand.Next(1, Main.maxTilesX / 4200 * 7);
++				num354 = genRand.Next(1, Math.Max(Main.maxTilesX / 4200 * 7, 7));
+ 				for (int num359 = 0; num359 < num354; num359++) {
+ 					int num360 = Main.maxTilesX / 420;
+ 					while (num360 > 0) {
 @@ -11145,7 +_,7 @@
  							}
  						}
@@ -1317,6 +1397,17 @@
  										flag2 = true;
  										break;
  									}
+@@ -17583,8 +_,8 @@
+ 		}
+ 
+ 		public static void makeTemple(int x, int y) {
+-			Rectangle[] array = new Rectangle[100];
++			Rectangle[] array = new Rectangle[400];
+-			float num = Main.maxTilesX / 4200;
++			float num = Main.maxTilesX / 4200f;
+ 			int num2 = genRand.Next((int)(num * 10f), (int)(num * 16f));
+ 			if (drunkWorldGen)
+ 				num2 *= 3;
 @@ -19285,7 +_,7 @@
  			count = MakeDungeon_Banners(array, count);
  		}
