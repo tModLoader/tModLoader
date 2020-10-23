@@ -1,12 +1,15 @@
-﻿using ExampleMod.Content.Tiles.Furniture;
-using Terraria.ID;
+﻿using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
+using Terraria.GameContent.Creative;
 
 namespace ExampleMod.Content.Items.Placeable
 {
 	internal class ExampleLamp : ModItem
 	{
+		public override void SetStaticDefaults() {
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		}
+		
 		public override void SetDefaults() {
 			item.useStyle = ItemUseStyleID.Swing;
 			item.useTurn = true;
@@ -15,17 +18,17 @@ namespace ExampleMod.Content.Items.Placeable
 			item.autoReuse = true;
 			item.maxStack = 99;
 			item.consumable = true;
-			item.createTile = TileType<Tiles.ExampleLamp>();
+			item.createTile = ModContent.TileType<Tiles.ExampleLamp>();
 			item.width = 10;
 			item.height = 24;
 			item.value = 500;
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ItemID.WoodenChair)
-				.AddIngredient<ExampleBlock>(10)
-				.AddTile<ExampleWorkbench>()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

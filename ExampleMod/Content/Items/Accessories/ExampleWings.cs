@@ -1,6 +1,6 @@
-using ExampleMod.Content.Tiles.Furniture;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,6 +11,7 @@ namespace ExampleMod.Content.Items.Accessories
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded wing.");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 
 			// These wings use the same values as the solar wings
 			// Fly time: 180 ticks = 3 seconds
@@ -36,11 +37,11 @@ namespace ExampleMod.Content.Items.Accessories
 			constantAscend = 0.135f;
 		}
 
-		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<ExampleItem>(60)
-				.AddTile<ExampleWorkbench>()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

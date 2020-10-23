@@ -4,26 +4,29 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
 	public class ExampleClock : ModTile
 	{
 		public override void SetDefaults() {
+			// Properties
 			Main.tileFrameImportant[Type] = true;
 			Main.tileNoAttach[Type] = true;
 			Main.tileLavaDeath[Type] = true;
+			TileID.Sets.Clock[Type] = true;
+
+			dustType = ModContent.DustType<Sparkle>();
+			adjTiles = new int[] { TileID.GrandfatherClocks };
+
+			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
 			TileObjectData.newTile.Height = 5;
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16, 16, 16 };
 			TileObjectData.addTile(Type);
-			ModTranslation name = CreateMapEntryName();
-			// name.SetDefault("Example Clock"); // Automatic from .lang files
-			AddMapEntry(new Color(200, 200, 200), name);
-			dustType = DustType<Sparkle>();
-			adjTiles = new int[] { TileID.GrandfatherClocks };
-			clock = true;
+
+			// Etc
+			AddMapEntry(new Color(200, 200, 200), CreateMapEntryName()); // We don't need to call SetDefault() on CreateMapEntryName()'s return value if we have .lang files.
 		}
 
 		public override bool RightClick(int x, int y) {
@@ -77,6 +80,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int i, int j, bool fail, ref int num) => num = fail ? 1 : 3;
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 48, 32, ItemType<Items.Placeable.Furniture.ExampleClock>());
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 48, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleClock>());
 	}
 }

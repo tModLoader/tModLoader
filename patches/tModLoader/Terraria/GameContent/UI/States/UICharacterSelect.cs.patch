@@ -84,8 +84,8 @@
 +					noPlayersMessage.Height.Set(200, 0);
 +					noPlayersMessage.MarginTop = 20f;
 +					noPlayersMessage.OnClick += (a, b) => {
-+						System.Diagnostics.Process.Start(Main.PlayerPath);
-+						System.Diagnostics.Process.Start(vanillaPlayersPath);
++						Utils.OpenFolder(Main.PlayerPath);
++						Utils.OpenFolder(vanillaPlayersPath);
 +					};
 +
 +					_playerList.Add(noPlayersMessage);

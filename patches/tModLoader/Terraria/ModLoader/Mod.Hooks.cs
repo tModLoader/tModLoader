@@ -5,7 +5,6 @@ using ReLogic.Content.Sources;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Terraria.GameInput;
 using Terraria.Graphics;
 using Terraria.Localization;
 using Terraria.UI;
@@ -18,29 +17,25 @@ namespace Terraria.ModLoader
 		/// <param name="sources">The list with content sources. By default, this list has 1 entry with the default content source that loads assets from the mod's .tmod file.</param>
 		/// <param name="assetReaderCollection">The AssetReaderCollection that will be used for this mod's Assets repository. Use its .RegisterReader() method to register new 'IAssetReader's.</param>
 		/// <param name="delayedLoadTypes">This list contains types that the asynchronous asset loader should delay loading of. Types like that are usually graphics related.</param>
-		public virtual void SetupAssetRepository(IList<IContentSource> sources, AssetReaderCollection assetReaderCollection, IList<Type> delayedLoadTypes)
-		{
+		public virtual void SetupAssetRepository(IList<IContentSource> sources, AssetReaderCollection assetReaderCollection, IList<Type> delayedLoadTypes) {
 		}
 
 		/// <summary>
 		/// Override this method to add most of your content to your mod. Here you will call other methods such as AddItem. This is guaranteed to be called after all content has been autoloaded.
 		/// </summary>
-		public virtual void Load()
-		{
+		public virtual void Load() {
 		}
 
 		/// <summary>
 		/// Allows you to load things in your mod after its content has been setup (arrays have been resized to fit the content, etc).
 		/// </summary>
-		public virtual void PostSetupContent()
-		{
+		public virtual void PostSetupContent() {
 		}
 
 		/// <summary>
 		/// This is called whenever this mod is unloaded from the game. Use it to undo changes that you've made in Load that aren't automatically handled (for example, modifying the texture of a vanilla item). Mods are guaranteed to be unloaded in the reverse order they were loaded in.
 		/// </summary>
-		public virtual void Unload()
-		{
+		public virtual void Unload() {
 		}
 
 		/// <summary>
@@ -51,22 +46,19 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Override this method to add recipe groups to this mod. You must add recipe groups by calling the RecipeGroup.RegisterGroup method here. A recipe group is a set of items that can be used interchangeably in the same recipe.
 		/// </summary>
-		public virtual void AddRecipeGroups()
-		{
+		public virtual void AddRecipeGroups() {
 		}
 
 		/// <summary>
 		/// Override this method to add recipes to the game. It is recommended that you do so through instances of Recipe, since it provides methods that simplify recipe creation.
 		/// </summary>
-		public virtual void AddRecipes()
-		{
+		public virtual void AddRecipes() {
 		}
 
 		/// <summary>
 		/// This provides a hook into the mod-loading process immediately after recipes have been added. You can use this to edit recipes added by other mods.
 		/// </summary>
-		public virtual void PostAddRecipes()
-		{
+		public virtual void PostAddRecipes() {
 		}
 
 		/// <summary>
@@ -75,10 +67,10 @@ namespace Terraria.ModLoader
 		/// Make sure to call `base.Close()` at the end
 		/// May be called multiple times before Unload
 		/// </summary>
-		public virtual void Close()
-		{
+		public virtual void Close() {
 			fileHandle?.Dispose();
-			if(File != null && File.IsOpen)
+
+			if (File != null && File.IsOpen)
 				throw new IOException($"TModFile has open handles: {File.path}");
 		}
 

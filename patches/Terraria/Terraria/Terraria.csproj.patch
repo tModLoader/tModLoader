@@ -1,12 +1,12 @@
 --- src/decompiled/Terraria/Terraria.csproj
 +++ src/Terraria/Terraria/Terraria.csproj
-@@ -1,34 +_,55 @@
+@@ -1,35 +_,56 @@
  <Project Sdk="Microsoft.NET.Sdk">
    <Import Project="../Configuration.targets" />
 +  <Import Project="../../TerrariaSteamPath.targets" />
    <PropertyGroup>
      <OutputType>WinExe</OutputType>
-     <Version>1.4.0.5</Version>
+     <Version>1.4.1.1</Version>
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2020 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
@@ -47,6 +47,7 @@
        <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
      </EmbeddedResource>
 -    <Reference Include="Steamworks.NET" />
+     <Reference Include="SteelSeriesEngineWrapper" />
 +    <Reference Include="Steamworks.NET">
 +      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/Steamworks.NET.dll</HintPath>
 +      <HintPath Condition="$(DefineConstants.Contains('MAC'))">Libraries/Mac/Steamworks.NET.dll</HintPath>
@@ -63,7 +64,7 @@
      <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
-@@ -37,7 +_,31 @@
+@@ -38,7 +_,31 @@
      <EmbeddedResource Include="GameContent/WorldBuilding/*" />
      <EmbeddedResource Include="IO/Data/*" />
      <EmbeddedResource Include="Libraries/**" />

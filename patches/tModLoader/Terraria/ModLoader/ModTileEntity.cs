@@ -246,7 +246,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// This method does not get called by tModLoader, and is only included for you convenience so you do not have to cast the result of Mod.GetTileEntity.
 		/// </summary>
-		public virtual int Hook_AfterPlacement(int i, int j, int type, int style, int direction) {
+		public virtual int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate) {
 			return -1;
 		}
 

@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Initializers/LaunchInitializer.cs
 +++ src/Terraria/Terraria/Initializers/LaunchInitializer.cs
-@@ -8,7 +_,11 @@
+@@ -9,7 +_,11 @@
  	{
  		public static void LoadParameters(Main game) {
  			LoadSharedParameters(game);

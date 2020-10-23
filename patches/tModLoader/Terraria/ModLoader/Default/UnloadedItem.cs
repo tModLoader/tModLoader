@@ -58,7 +58,7 @@ namespace Terraria.ModLoader.Default
 			TagIO.Write(data ?? new TagCompound(), writer);
 		}
 
-		public override void NetRecieve(BinaryReader reader) {
+		public override void NetReceive(BinaryReader reader) {
 			Setup(TagIO.Read(reader));
 		}
 

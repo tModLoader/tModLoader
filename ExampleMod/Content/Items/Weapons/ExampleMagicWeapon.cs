@@ -1,5 +1,5 @@
-using ExampleMod.Content.Tiles.Furniture;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
@@ -8,11 +8,12 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is an example magic weapon");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
 			item.damage = 25;
-			item.magic = true; // Makes the damage register as magic. If your item does not have any damage type, it becomes true damage (which means that damage scalars will not affect it). Be sure to have a damage type.
+			item.DamageType = DamageClass.Magic; // Makes the damage register as magic. If your item does not have any damage type, it becomes true damage (which means that damage scalars will not affect it). Be sure to have a damage type.
 			item.width = 34;
 			item.height = 40;
 			item.useTime = 20;
@@ -30,11 +31,11 @@ namespace ExampleMod.Content.Items.Weapons
 			item.mana = 11; // This is how much mana the item uses.
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ItemID.FallenStar, 5)
 				.AddIngredient<ExampleItem>()
-				.AddTile<ExampleWorkbench>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

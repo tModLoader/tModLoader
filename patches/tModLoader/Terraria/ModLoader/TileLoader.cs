@@ -6,6 +6,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.Biomes.CaveHouse;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ObjectData;
 
@@ -319,23 +320,6 @@ namespace Terraria.ModLoader
 			TileObject.objectPreview.Active = false;
 		}
 
-		public static void DisableSmartCursor(Tile tile, ref bool disable) {
-			if (tile.active()) {
-				ModTile modTile = GetTile(tile.type);
-				if (modTile != null) {
-					disable = modTile.disableSmartCursor;
-				}
-			}
-		}
-
-		public static void DisableSmartInteract(Tile tile, ref bool disable) {
-			if (tile.active()) {
-				ModTile modTile = GetTile(tile.type);
-				if (modTile != null) {
-					disable = modTile.disableSmartInteract;
-				}
-			}
-		}
 		//in Terraria.WorldGen.OpenDoor replace bad type check with TileLoader.OpenDoorID(Main.tile[i, j]) < 0
 		//in Terraria.WorldGen.OpenDoor replace 11 with (ushort)TileLoader.OpenDoorID
 		//replace all type checks before WorldGen.OpenDoor
@@ -376,19 +360,7 @@ namespace Terraria.ModLoader
 			return tile.type == TileID.ClosedDoor;
 		}
 
-		//in Terraria.UI.ChestUI add this to Lang lookups
-		public static string ModChestName(int type) => GetTile(type)?.chest ?? string.Empty;
-
-		public static bool IsDresser(int type) => type == TileID.Dressers || ModDresserName(type).Length > 0;
-
-		public static string ModDresserName(int type) => GetTile(type)?.dresser ?? string.Empty;
-
-		//in Terraria.Player.CheckSpawn add this to bed type check
-		public static bool IsModBed(int type) => GetTile(type)?.bed ?? false;
-
-		public static bool IsTorch(int type) => GetTile(type)?.torch ?? type == TileID.Torches;
-
-		public static bool IsSapling(int type) => GetTile(type)?.sapling ?? type == TileID.Saplings;
+		public static string ContainerName(int type) => GetTile(type)?.ContainerName?.GetTranslation(Language.ActiveCulture) ?? string.Empty;
 
 		public static bool IsModMusicBox(Tile tile) {
 			return SoundLoader.tileToMusic.ContainsKey(tile.type)
@@ -841,7 +813,7 @@ namespace Terraria.ModLoader
 			ModTile modTile = GetTile(type);
 			if (modTile != null) {
 				saplingType = modTile.SaplingGrowthType(ref style);
-				if (IsSapling(saplingType)) {
+				if (TileID.Sets.TreeSapling[saplingType]) {
 					originalType = saplingType;
 					originalStyle = style;
 					flag = true;
@@ -853,7 +825,7 @@ namespace Terraria.ModLoader
 			}
 			foreach (var hook in HookSaplingGrowthType) {
 				saplingType = hook(type, ref style);
-				if (IsSapling(saplingType)) {
+				if (TileID.Sets.TreeSapling[saplingType]) {
 					originalType = saplingType;
 					originalStyle = style;
 					flag = true;

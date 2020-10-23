@@ -543,17 +543,17 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyWeaponDamage(Item item, ref float add, ref float mult, ref float flat);
+		private delegate void DelegateModifyWeaponDamage(Item item, ref Modifier damage, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(p => p.ModifyWeaponDamage);
 		/// <summary>
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
 		/// </summary>
-		public static void ModifyWeaponDamage(Player player, Item item, ref float add, ref float mult, ref float flat) {
+		public static void ModifyWeaponDamage(Player player, Item item, ref Modifier damage, ref float flat) {
 			if (item.IsAir)
 				return;
 
 			foreach (int index in HookModifyWeaponDamage.arr) {
-				player.modPlayers[index].ModifyWeaponDamage(item, ref add, ref mult, ref flat);
+				player.modPlayers[index].ModifyWeaponDamage(item, ref damage, ref flat);
 			}
 		}
 
@@ -1094,6 +1094,18 @@ namespace Terraria.ModLoader
 					return false;
 			}
 			return true;
+		}
+
+		private static HookList HookCanUseItem = AddHook<Func<Item, bool>>(p => p.CanUseItem);
+
+		public static bool CanUseItem(Player player, Item item) {
+			bool result = true;
+
+			foreach (int index in HookCanUseItem.arr) {
+				result &= player.modPlayers[index].CanUseItem(item);
+			}
+
+			return result;
 		}
 
 		private delegate bool DelegateModifyNurseHeal(NPC npc, ref int health, ref bool removeDebuffs, ref string chatText);

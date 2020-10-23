@@ -45,9 +45,9 @@
 -      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
 +      <LogicalName>ReLogic.dll</LogicalName>
      </EmbeddedResource>
+     <Reference Include="SteelSeriesEngineWrapper" />
      <Reference Include="Steamworks.NET">
-       <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/Steamworks.NET.dll</HintPath>
-@@ -47,23 +_,27 @@
+@@ -48,23 +_,27 @@
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
      <Reference Include="System.Runtime.Serialization" />
@@ -78,7 +78,7 @@
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
-@@ -82,7 +_,11 @@
+@@ -83,7 +_,11 @@
    </Target>
    <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
      <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
