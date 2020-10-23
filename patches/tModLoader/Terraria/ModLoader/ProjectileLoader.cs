@@ -298,27 +298,21 @@ namespace Terraria.ModLoader
 		private static HookList HookCanDamage = AddHook<Func<Projectile, bool?>>(g => g.CanDamage);
 
 		public static bool? CanDamage(Projectile projectile) {
+			bool? result = null;
 
-			bool? flag = null;
 			foreach (GlobalProjectile g in HookCanDamage.arr) {
-				bool? canHit = g.Instance(projectile).CanDamage(projectile);
-				if (canHit.HasValue && !canHit.Value) {
-					return false;
-				}
-				if (canHit.HasValue) {
-					flag = canHit.Value;
-				}
-			}
-			if (projectile.modProjectile != null) {
-				bool? canHit = projectile.modProjectile?.CanDamage();
-				if (canHit.HasValue && !canHit.Value) {
-					return false;
-				}
-				if (canHit.HasValue) {
-					flag = canHit.Value;
+				bool? canDamage = g.Instance(projectile).CanDamage(projectile);
+
+				if (canDamage.HasValue) {
+					if (!canDamage.Value) {
+						return false;
+					}
+
+					result &= canDamage.Value;
 				}
 			}
-			return flag;
+
+			return result ?? projectile.modProjectile?.CanDamage();
 		}
 
 		private static HookList HookMinionContactDamage = AddHook<Func<Projectile, bool>>(g => g.MinionContactDamage);
