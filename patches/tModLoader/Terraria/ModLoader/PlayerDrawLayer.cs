@@ -62,10 +62,10 @@ namespace Terraria.ModLoader
 		public static readonly PlayerDrawLayer Backpacks = CreateVanillaLayer(nameof(Backpacks), false, DrawPlayer_08_Backpacks);
 
 		/// <summary> Draws the player's back accessories. </summary>
-		public static readonly PlayerDrawLayer BackAcc = CreateVanillaLayer(nameof(BackAcc), false, DrawPlayer_09_BackAc);
+		public static readonly PlayerDrawLayer BackAcc = CreateVanillaLayer(nameof(BackAcc), false, DrawPlayer_10_BackAcc);
 
 		/// <summary> Draws the player's wings. </summary>
-		public static readonly PlayerDrawLayer Wings = CreateVanillaLayer(nameof(Wings), false, DrawPlayer_10_Wings);
+		public static readonly PlayerDrawLayer Wings = CreateVanillaLayer(nameof(Wings), false, DrawPlayer_09_Wings);
 
 		/// <summary> Draws the player's balloon accessory, if they have one. </summary>
 		public static readonly PlayerDrawLayer BalloonAcc = CreateVanillaLayer(nameof(BalloonAcc), false, DrawPlayer_11_Balloons);
@@ -106,8 +106,11 @@ namespace Terraria.ModLoader
 		/// <summary> Draws the player's face accessory. </summary>
 		public static readonly PlayerDrawLayer FaceAcc = CreateVanillaLayer(nameof(FaceAcc), false, DrawPlayer_22_FaceAcc);
 
-		/// <summary> Draws the player's front accessory. </summary>
-		public static readonly PlayerDrawLayer FrontAcc = CreateVanillaLayer(nameof(FrontAcc), false, DrawPlayer_32_FrontAcc);
+		/// <summary> Draws the front part of player's front accessory. </summary>
+		public static readonly PlayerDrawLayer FrontAccFront = CreateVanillaLayer(nameof(FrontAccFront), false, DrawPlayer_32_FrontAcc_FrontPart);
+
+		/// <summary> Draws the back part of player's front accessory. </summary>
+		public static readonly PlayerDrawLayer FrontAccBack = CreateVanillaLayer(nameof(FrontAccBack), false, DrawPlayer_32_FrontAcc_BackPart);
 
 		/// <summary> Draws the front textures of the player's mount. </summary>
 		public static readonly PlayerDrawLayer MountFront = CreateVanillaLayer(nameof(MountFront), false, DrawPlayer_23_MountFront);
