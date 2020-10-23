@@ -1,10 +1,9 @@
 using ExampleMod.Content.Dusts;
-using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Tools
 {
@@ -12,11 +11,12 @@ namespace ExampleMod.Content.Items.Tools
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded pickaxe.");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
 			item.damage = 20;
-			item.melee = true;
+			item.DamageType = DamageClass.Melee;
 			item.width = 40;
 			item.height = 40;
 			item.useTime = 10;
@@ -33,15 +33,15 @@ namespace ExampleMod.Content.Items.Tools
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(10)) {
-				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustType<Sparkle>());
+				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Sparkle>());
 			}
 		}
 
-		// Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<ExampleItem>(100)
-				.AddTile<ExampleWorkbench>()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

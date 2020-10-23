@@ -1,6 +1,6 @@
 --- src/decompiled/ReLogic/ReLogic.csproj
 +++ src/Terraria/ReLogic/ReLogic.csproj
-@@ -8,11 +_,12 @@
+@@ -8,12 +_,14 @@
      <RootNamespace>ReLogic</RootNamespace>
    </PropertyGroup>
    <ItemGroup>
@@ -9,7 +9,9 @@
 -    <Reference Include="Microsoft.Xna.Framework.Game" />
 -    <Reference Include="Microsoft.Xna.Framework.Graphics" />
 -    <Reference Include="Newtonsoft.Json" />
+     <Reference Include="SteelSeriesEngineWrapper" />
 +    <Reference Include="../Terraria/Libraries/DotNetZip/Ionic.Zip.CF.dll" />
++    <Reference Include="../Terraria/Libraries/SteelSeriesEngine/SteelSeriesEngineWrapper.dll" />
 +    <Reference Include="../Terraria/Libraries/FNA/FNA.dll" Condition="$(DefineConstants.Contains('FNA'))" />
 +    <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.dll" Condition="$(DefineConstants.Contains('XNA'))" />
 +    <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.Game.dll" Condition="$(DefineConstants.Contains('XNA'))" />

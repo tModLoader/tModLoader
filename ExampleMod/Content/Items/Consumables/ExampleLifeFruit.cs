@@ -1,7 +1,7 @@
-﻿using ExampleMod.Content.Tiles.Furniture;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -20,6 +20,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault($"Permanently increases maximum life by {LifePerFruit}\nUp to {MaxExampleLifeFruits} can be used");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 10;
 		}
 
 		public override void SetDefaults() {
@@ -50,11 +51,11 @@ namespace ExampleMod.Content.Items.Consumables
 			return true;
 		}
 
-		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
-			CreateRecipe(10)
-				.AddIngredient<ExampleItem>(1000)
-				.AddTile<ExampleWorkbench>()
+			CreateRecipe()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

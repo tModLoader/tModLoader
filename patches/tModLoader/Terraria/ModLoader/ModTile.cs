@@ -52,14 +52,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int minPick = 0;
 		/// <summary>
-		/// Whether or not the smart cursor function is disabled when the cursor hovers above this tile. Defaults to false.
-		/// </summary>
-		public bool disableSmartCursor = false;
-		/// <summary>
-		/// Whether or not the smart tile interaction function is disabled when the cursor hovers above this tile. Defaults to false.
-		/// </summary>
-		public bool disableSmartInteract = false;
-		/// <summary>
 		/// An array of the IDs of tiles that this tile can be considered as when looking for crafting stations.
 		/// </summary>
 		public int[] adjTiles = new int[0];
@@ -72,38 +64,17 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int openDoorID = -1;
 		/// <summary>
-		/// The default name of this chest that is displayed when this 2x2 chest is open. Defaults to the empty string, which means that this tile isn't a chest. Setting this field will make the tile behave like a chest (meteors will avoid it, tiles underneath cannot be mined, etc.), but you will have to manually give it storage capabilities yourself. (See the ExampleMod for something you can copy/paste.)
-		/// </summary>
-		public string chest = "";
-		/// <summary>
 		/// The ID of the item that drops when this chest is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server.
 		/// </summary>
 		public int chestDrop = 0;
 		/// <summary>
-		/// Same as chest, except use this if your block is a dresser (has a size of 3x2 instead of 2x2).
-		/// </summary>
-		public string dresser = "";
-		/// <summary>
 		/// The ID of the item that drops when this dresser is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server.
 		/// </summary>
 		public int dresserDrop = 0;
-		/// <summary>
-		/// Whether or not this tile is a valid spawn point. Defaults to false. If you set this to true, you will still have to manually set the spawn yourself in the RightClick hook.
-		/// </summary>
-		public bool bed = false;
-		/// <summary>
-		/// Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to true is necessary in order for tile placement, tile framing, and the item's smart selection to work properly.
-		/// </summary>
-		public bool torch = false;
-		/// <summary>
-		/// Whether or not this tile is a sapling, which can grow into a modded tree or palm tree.
-		/// </summary>
-		public bool sapling = false;
-		/// <summary>
-		/// Whether or not this tile is a clock.
-		/// </summary>
-		public bool clock = false;
-		
+
+		/// <summary> The translations for the name that is displayed when this tile is opened as a chest or dresser. This won't be used if you don't add your tile to <see cref="TileID.Sets.BasicChest"/> or <see cref="TileID.Sets.BasicDresser"/>. </summary>
+		public ModTranslation ContainerName { get; internal set; }
+
 		public bool IsDoor => openDoorID != -1 || closeDoorID != -1;
 		
 		/// <summary>
@@ -203,6 +174,8 @@ namespace Terraria.ModLoader
 		}
 
 		protected sealed override void Register() {
+			ContainerName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.Containers.{Name}", true);
+
 			ModTypeLookup<ModTile>.Register(this);
 
 			Type = (ushort)TileLoader.ReserveTileID();
@@ -231,9 +204,6 @@ namespace Terraria.ModLoader
 
 			if (TileID.Sets.HasOutlines[Type])
 				TextureAssets.HighlightMask[Type] = ModContent.GetTexture(HighlightTexture);
-
-			if (!string.IsNullOrEmpty(chest))
-				TileID.Sets.BasicChest[Type] = true;
 
 			TileID.Search.Add(FullName, Type);
 		}

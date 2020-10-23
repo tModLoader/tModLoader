@@ -18,20 +18,20 @@
  
  		public void DrawPlayerHead(Camera camera, Player drawPlayer, Vector2 position, float alpha = 1f, float scale = 1f, Color borderColor = default(Color)) {
 +			/*
- 			_drawData.Clear();
- 			_dust.Clear();
- 			_gore.Clear();
-@@ -46,6 +_,9 @@
- 			PlayerDrawHeadLayers.DrawPlayer_08_FaceAcc(ref drawinfo);
- 			CreateOutlines(alpha, scale, borderColor);
- 			PlayerDrawHeadLayers.DrawPlayer_RenderAllLayers(ref drawinfo);
+ 			if (!drawPlayer.ShouldNotDraw) {
+ 				_drawData.Clear();
+ 				_dust.Clear();
+@@ -48,6 +_,9 @@
+ 				CreateOutlines(alpha, scale, borderColor);
+ 				PlayerDrawHeadLayers.DrawPlayer_RenderAllLayers(ref drawinfo);
+ 			}
 +			*/
 +
 +			DrawPlayerInternal(camera, drawPlayer, position + Main.screenPosition, 0f, Vector2.Zero, 0f, scale, false, true);
  		}
  
  		private void CreateOutlines(float alpha, float scale, Color borderColor) {
-@@ -108,6 +_,10 @@
+@@ -110,6 +_,10 @@
  		}
  
  		public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f) {
@@ -42,15 +42,13 @@
  			if (drawPlayer.ShouldNotDraw)
  				return;
  
-@@ -115,79 +_,90 @@
+@@ -117,80 +_,91 @@
  			_drawData.Clear();
  			_dust.Clear();
  			_gore.Clear();
 -			drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin);
 -			PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawinfo);
--			PlayerDrawLayers.DrawPlayer_01_BackHair(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_01_2_JimsCloak(ref drawinfo);
--			PlayerDrawLayers.DrawPlayer_01_3_BackHead(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_02_MountBehindPlayer(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_03_Carpet(ref drawinfo);
@@ -63,16 +61,16 @@
 -			PlayerDrawLayers.DrawPlayer_07_LeinforsHairShampoo(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_08_Backpacks(ref drawinfo);
--			PlayerDrawLayers.DrawPlayer_09_BackAc(ref drawinfo);
--			PlayerDrawLayers.DrawPlayer_10_Wings(ref drawinfo);
+-			PlayerDrawLayers.DrawPlayer_09_Wings(ref drawinfo);
+-			PlayerDrawLayers.DrawPlayer_10_BackAcc(ref drawinfo);
+-			PlayerDrawLayers.DrawPlayer_01_BackHair(ref drawinfo);
+-			PlayerDrawLayers.DrawPlayer_01_3_BackHead(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_11_Balloons(ref drawinfo);
 +			drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin, useLighting);
 +
 +			var vanillaLayers = new List<PlayerDrawLayer> {
 +				PlayerDrawLayer.TorsoIndent, //{
-+				PlayerDrawLayer.HairBack,
 +				PlayerDrawLayer.JimsCloak,
-+				PlayerDrawLayer.HeadBack,
 +				PlayerDrawLayer.TorsoUnindent, //}
 +				PlayerDrawLayer.MountBack,
 +				PlayerDrawLayer.Carpet,
@@ -85,8 +83,10 @@
 +				PlayerDrawLayer.LeinforsHairShampoo,
 +				PlayerDrawLayer.TorsoUnindent, //}
 +				PlayerDrawLayer.Backpacks,
-+				PlayerDrawLayer.BackAcc,
 +				PlayerDrawLayer.Wings,
++				PlayerDrawLayer.BackAcc,
++				PlayerDrawLayer.HairBack,
++				PlayerDrawLayer.HeadBack,
 +				PlayerDrawLayer.BalloonAcc,
 +			};
 +
@@ -129,21 +129,23 @@
 +			vanillaLayers.Add(PlayerDrawLayer.FaceAcc);
  			if (drawinfo.drawFrontAccInNeckAccLayer) {
 -				PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawinfo);
--				PlayerDrawLayers.DrawPlayer_32_FrontAcc(ref drawinfo);
+-				PlayerDrawLayers.DrawPlayer_32_FrontAcc_FrontPart(ref drawinfo);
 -				PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawinfo);
 +				vanillaLayers.Add(PlayerDrawLayer.TorsoUnindent); //}
-+				vanillaLayers.Add(PlayerDrawLayer.FrontAcc);
++				vanillaLayers.Add(PlayerDrawLayer.FrontAccFront);
 +				vanillaLayers.Add(PlayerDrawLayer.TorsoIndent); //{
  			}
  
 -			PlayerDrawLayers.DrawPlayer_23_MountFront(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_24_Pulley(ref drawinfo);
+-			PlayerDrawLayers.DrawPlayer_32_FrontAcc_BackPart(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_25_Shield(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_extra_MountPlus(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_26_SolarShield(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_extra_MountMinus(ref drawinfo);
 +			vanillaLayers.Add(PlayerDrawLayer.MountFront);
 +			vanillaLayers.Add(PlayerDrawLayer.Pulley);
++			vanillaLayers.Add(PlayerDrawLayer.FrontAccBack);
 +			vanillaLayers.Add(PlayerDrawLayer.Shield);
 +			vanillaLayers.Add(PlayerDrawLayer.MountIndent); //{
 +			vanillaLayers.Add(PlayerDrawLayer.SolarShield);
@@ -161,8 +163,8 @@
 +			vanillaLayers.Add(PlayerDrawLayer.BladedGlove);
 +			vanillaLayers.Add(PlayerDrawLayer.TorsoUnindent); //}
  			if (!drawinfo.drawFrontAccInNeckAccLayer)
--				PlayerDrawLayers.DrawPlayer_32_FrontAcc(ref drawinfo);
-+				vanillaLayers.Add(PlayerDrawLayer.FrontAcc);
+-				PlayerDrawLayers.DrawPlayer_32_FrontAcc_FrontPart(ref drawinfo);
++				vanillaLayers.Add(PlayerDrawLayer.FrontAccFront);
  
  			if (drawinfo.weaponDrawOrder == WeaponDrawOrder.OverFrontArm)
 -				PlayerDrawLayers.DrawPlayer_27_HeldItem(ref drawinfo);

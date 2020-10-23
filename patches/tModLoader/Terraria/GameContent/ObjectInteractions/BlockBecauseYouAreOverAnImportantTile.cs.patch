@@ -1,0 +1,18 @@
+--- src/Terraria/Terraria/GameContent/ObjectInteractions/BlockBecauseYouAreOverAnImportantTile.cs
++++ src/tModLoader/Terraria/GameContent/ObjectInteractions/BlockBecauseYouAreOverAnImportantTile.cs
+@@ -1,3 +_,5 @@
++using Terraria.ID;
++
+ namespace Terraria.GameContent.ObjectInteractions
+ {
+ 	public class BlockBecauseYouAreOverAnImportantTile : ISmartInteractBlockReasonProvider
+@@ -24,7 +_,8 @@
+ 					case 480:
+ 					case 509:
+ 					case 520:
+-						return true;
++					default:
++						return TileID.Sets.DisableSmartInteract[tile.type];
+ 				}
+ 			}
+ 

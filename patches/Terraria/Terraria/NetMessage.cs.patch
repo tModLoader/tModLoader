@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/NetMessage.cs
 +++ src/Terraria/Terraria/NetMessage.cs
-@@ -2057,6 +_,13 @@
+@@ -2063,6 +_,13 @@
  
  		public static void CheckBytes(int bufferIndex = 256) {
  			lock (buffer[bufferIndex]) {
@@ -14,7 +14,7 @@
  				int num = 0;
  				int num2 = buffer[bufferIndex].totalData;
  				try {
-@@ -2065,6 +_,13 @@
+@@ -2071,6 +_,13 @@
  						if (num2 >= num3) {
  							long position = buffer[bufferIndex].reader.BaseStream.Position;
  							buffer[bufferIndex].GetData(num + 2, num3 - 2, out int _);
@@ -28,7 +28,7 @@
  							buffer[bufferIndex].reader.BaseStream.Position = position + num3;
  							num2 -= num3;
  							num += num3;
-@@ -2075,6 +_,10 @@
+@@ -2081,6 +_,10 @@
  					}
  				}
  				catch (Exception) {

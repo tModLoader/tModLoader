@@ -8,7 +8,7 @@
 @@ -17,6 +_,7 @@
  
  		internal override void DrawTheContent(SpriteBatch spriteBatch) {
- 			if (_player != null) {
+ 			if (_player != null && !_player.ShouldNotDraw) {
 +				/*
  				_drawData.Clear();
  				_dust.Clear();

@@ -70,7 +70,7 @@
 +					case int _ when TileID.Sets.BasicChest[type]:
 +						NetMessage.SendData(34, -1, -1, null, 100, x, y, style, 0, type, 0);
 +						break;
-+					case int _ when TileLoader.IsDresser(type):
++					case int _ when TileID.Sets.BasicDresser[type]:
 +						NetMessage.SendData(34, -1, -1, null, 102, x, y, style, 0, type, 0);
 +						break;
  				}
@@ -112,7 +112,7 @@
  		}
  
  		public static void SetupTravelShop() {
-@@ -877,9 +_,12 @@
+@@ -874,9 +_,12 @@
  							Main.travelShop[num2++] = 3636;
  							Main.travelShop[num2++] = 3641;
  							break;
@@ -125,7 +125,7 @@
  		}
  
  		public void SetupShop(int type) {
-@@ -2508,6 +_,7 @@
+@@ -2553,6 +_,7 @@
  					array[num++].SetDefaults(4921);
  			}
  
