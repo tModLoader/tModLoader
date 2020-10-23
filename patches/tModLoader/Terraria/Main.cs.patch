@@ -3695,10 +3695,12 @@
  			if (!flag)
  				DrawNPCChatButtons(num, textColor, lineAmount, focusText, focusText2);
  
-@@ -28446,7 +_,12 @@
+@@ -28446,7 +_,14 @@
  					else
  						IngameFancyUI.OpenVirtualKeyboard(1);
  				}
++				if (player[myPlayer].talkNPC < 0)
++					return;
 +
 +				if (!NPCLoader.PreChatButtonClicked(true))
 +					return;
