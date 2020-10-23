@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
@@ -20,10 +21,12 @@ namespace Terraria.ModLoader.Default
 			PlayerIO.LoadModData(player, tag.GetList<TagCompound>("list"));
 		}
 
-		public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath) {
+		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			if (AprilFools.CheckAprilFools()) {
-				items.Add(new Item(ModContent.ItemType<AprilFools>()));
+				return new List<Item> { new Item(ModContent.ItemType<AprilFools>()) };
 			}
+
+			return Enumerable.Empty<Item>();
 		}
 	}
 }

@@ -25,14 +25,6 @@
  
  		public override void OnInitialize() {
  			UIElement uIElement = new UIElement();
-@@ -97,6 +_,7 @@
- 		private void NewCharacterClick(UIMouseEvent evt, UIElement listeningElement) {
- 			SoundEngine.PlaySound(10);
- 			Main.PendingPlayer = new Player();
-+			PlayerHooks.SetupStartInventory(Main.PendingPlayer);
- 			Main.MenuUI.SetState(new UICharacterCreation(Main.PendingPlayer));
- 			Main.menuMode = 888;
- 		}
 @@ -141,6 +_,67 @@
  			int num = 0;
  			foreach (PlayerFileData item in list) {
@@ -92,8 +84,8 @@
 +					noPlayersMessage.Height.Set(200, 0);
 +					noPlayersMessage.MarginTop = 20f;
 +					noPlayersMessage.OnClick += (a, b) => {
-+						System.Diagnostics.Process.Start(Main.PlayerPath);
-+						System.Diagnostics.Process.Start(vanillaPlayersPath);
++						Utils.OpenFolder(Main.PlayerPath);
++						Utils.OpenFolder(vanillaPlayersPath);
 +					};
 +
 +					_playerList.Add(noPlayersMessage);

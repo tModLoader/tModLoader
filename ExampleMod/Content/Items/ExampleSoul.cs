@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
@@ -11,6 +12,7 @@ namespace ExampleMod.Content.Items
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Soul of Exampleness");
 			Tooltip.SetDefault("'The essence of example creatures'");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 25;
 			// Registers a vertical animation with 4 frames and each one will last 5 ticks (1/12 second)
 			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 4)); // Reminder, (4, 6) is an example of an item that draws a new frame every 6 ticks
 			ItemID.Sets.AnimatesAsSoul[item.type] = true; // Makes the item have 4 animation frames by default.

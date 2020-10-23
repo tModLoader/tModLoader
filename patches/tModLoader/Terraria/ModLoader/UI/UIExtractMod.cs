@@ -105,7 +105,7 @@ namespace Terraria.ModLoader.UI
 						log?.WriteLine("You can find this mod's documentation .xml file under ModLoader\\references\\mods for easy mod collaboration!");
 					}
 				};
-				Process.Start(dir);
+				Utils.OpenFolder(dir);
 			}
 			catch (OperationCanceledException e) {
 				log?.WriteLine("Extraction was cancelled.");

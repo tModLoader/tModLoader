@@ -9,14 +9,12 @@
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
  
-@@ -105,6 +_,10 @@
+@@ -105,6 +_,8 @@
  						text = Lang.chestType2[tile.frameX / 36].Value;
  					else if (tile.type == 88)
  						text = Lang.dresserType[tile.frameX / 54].Value;
-+					else if (TileID.Sets.BasicChest[Main.tile[player.chestX, player.chestY].type])
-+						text = TileLoader.ModChestName(Main.tile[player.chestX, player.chestY].type);
-+					else if (TileLoader.IsDresser(Main.tile[player.chestX, player.chestY].type))
-+						text = TileLoader.ModDresserName(Main.tile[player.chestX, player.chestY].type);
++					else if (TileID.Sets.BasicChest[Main.tile[player.chestX, player.chestY].type] || TileID.Sets.BasicDresser[Main.tile[player.chestX, player.chestY].type])
++						text = TileLoader.ContainerName(Main.tile[player.chestX, player.chestY].type);
  				}
  			}
  			else if (player.chest == -2) {
