@@ -4,7 +4,7 @@
  {
  	public class EmoteBubble
  	{
--		private static int[] CountNPCs = new int[663];
+-		private static int[] CountNPCs = new int[665];
 +		internal static int[] CountNPCs = new int[NPCID.Count];
  		public static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>();
  		private static List<int> toClean = new List<int>();

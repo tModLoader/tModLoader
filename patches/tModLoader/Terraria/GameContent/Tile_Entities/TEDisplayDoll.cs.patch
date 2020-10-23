@@ -14,7 +14,7 @@
  	{
  		private static byte _myEntityID;
  		private const int MyTileID = 470;
-@@ -105,8 +_,8 @@
+@@ -110,8 +_,8 @@
  			for (int i = 0; i < 8; i++) {
  				Item item = _items[i];
  				if (!item.IsAir) {
@@ -25,7 +25,7 @@
  					writer.Write((short)item.stack);
  				}
  			}
-@@ -114,8 +_,8 @@
+@@ -119,8 +_,8 @@
  			for (int j = 0; j < 8; j++) {
  				Item item2 = _dyes[j];
  				if (!item2.IsAir) {

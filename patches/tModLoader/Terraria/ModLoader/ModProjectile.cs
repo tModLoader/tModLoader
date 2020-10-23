@@ -234,10 +234,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not this projectile is capable of killing tiles (such as grass) and damaging NPCs/players. Return false to prevent it from doing any sort of damage. Returns true by default.
+		/// Whether or not this projectile is capable of killing tiles (such as grass) and damaging NPCs/players.
+		/// Return false to prevent it from doing any sort of damage.
+		/// Return true if you want the projectile to do damage regardless of the default blacklist.
+		/// Return null to let the projectile follow vanilla can-damage-anything rules. This is what happens by default.
 		/// </summary>
-		public virtual bool CanDamage() {
-			return true;
+		public virtual bool? CanDamage() {
+			return null;
 		}
 
 		/// <summary>

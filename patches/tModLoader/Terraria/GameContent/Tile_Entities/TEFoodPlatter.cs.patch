@@ -13,7 +13,7 @@
  	{
  		private static byte _myEntityID;
  		public Item item;
-@@ -72,8 +_,8 @@
+@@ -77,8 +_,8 @@
  		}
  
  		public override void WriteExtraData(BinaryWriter writer, bool networkSend) {

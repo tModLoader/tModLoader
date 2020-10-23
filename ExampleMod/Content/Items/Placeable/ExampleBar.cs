@@ -1,7 +1,6 @@
 ﻿using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Placeable
 {
@@ -23,7 +22,7 @@ namespace ExampleMod.Content.Items.Placeable
 			item.useTime = 10;
 			item.autoReuse = true;
 			item.consumable = true;
-			item.createTile = TileType<Tiles.ExampleBar>(); // The ID of the wall that this item should place when used. ModContent.TileType<T>() method returns an integer ID of the wall provided to it through its generic type argument (the type in angle brackets)..
+			item.createTile = ModContent.TileType<Tiles.ExampleBar>(); // The ID of the wall that this item should place when used. ModContent.TileType<T>() method returns an integer ID of the wall provided to it through its generic type argument (the type in angle brackets)..
 			item.placeStyle = 0;
 		}
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

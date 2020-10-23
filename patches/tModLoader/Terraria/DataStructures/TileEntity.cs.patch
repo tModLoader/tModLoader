@@ -13,7 +13,7 @@
  	{
  		public static TileEntitiesManager manager;
  		public const int MaxEntitiesPerChunk = 1000;
-@@ -21,6 +_,9 @@
+@@ -22,6 +_,9 @@
  		public static event Action _UpdateStart;
  		public static event Action _UpdateEnd;
  
@@ -23,7 +23,7 @@
  		public static int AssignNewID() => TileEntitiesNextID++;
  
  		public static void Clear() {
-@@ -42,6 +_,7 @@
+@@ -43,6 +_,7 @@
  		public static void InitializeAll() {
  			manager = new TileEntitiesManager();
  			manager.RegisterAll();
@@ -31,7 +31,7 @@
  		}
  
  		public static void PlaceEntityNet(int x, int y, int type) {
-@@ -60,6 +_,9 @@
+@@ -61,6 +_,9 @@
  		public static TileEntity Read(BinaryReader reader, bool networkSend = false) {
  			byte id = reader.ReadByte();
  			TileEntity tileEntity = manager.GenerateInstance(id);
@@ -41,7 +41,7 @@
  			tileEntity.type = id;
  			tileEntity.ReadInner(reader, networkSend);
  			return tileEntity;
-@@ -71,6 +_,14 @@
+@@ -72,6 +_,14 @@
  
  			writer.Write(Position.X);
  			writer.Write(Position.Y);

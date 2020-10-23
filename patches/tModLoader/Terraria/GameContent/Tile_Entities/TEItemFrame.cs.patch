@@ -8,11 +8,11 @@
  namespace Terraria.GameContent.Tile_Entities
  {
 -	public class TEItemFrame : TileEntity
-+	public sealed partial class TEItemFrame : TileEntity
++	public partial class TEItemFrame : TileEntity
  	{
  		private static byte _myEntityID;
  		public Item item;
-@@ -71,8 +_,8 @@
+@@ -76,8 +_,8 @@
  		}
  
  		public override void WriteExtraData(BinaryWriter writer, bool networkSend) {

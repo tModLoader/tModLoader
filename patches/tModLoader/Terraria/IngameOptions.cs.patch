@@ -24,7 +24,7 @@
  			0.7f,
  			0.7f,
  			0.7f,
-@@ -172,7 +_,7 @@
+@@ -174,7 +_,7 @@
  			noSound = false;
  			bool flag5 = SocialAPI.Network != null && SocialAPI.Network.CanInvite();
  			int num7 = flag5 ? 1 : 0;
@@ -33,7 +33,7 @@
  			Vector2 vector = new Vector2(value3.X + value2.X / 4f, value3.Y + (float)(num3 * 5 / 2));
  			Vector2 vector2 = new Vector2(0f, value2.Y - (float)(num3 * 5)) / (num8 + 1);
  			if (flag)
-@@ -244,6 +_,20 @@
+@@ -246,6 +_,20 @@
  			}
  
  			num10++;
@@ -54,7 +54,7 @@
  			if (flag5 && DrawLeftSide(sb, Lang.menu[147].Value, num10, vector, vector2, leftScale)) {
  				leftHover = num10;
  				if (flag4) {
-@@ -255,6 +_,7 @@
+@@ -257,6 +_,7 @@
  			if (flag5)
  				num10++;
  
@@ -62,7 +62,7 @@
  			if (DrawLeftSide(sb, Lang.menu[131].Value, num10, vector, vector2, leftScale)) {
  				leftHover = num10;
  				if (flag4) {
-@@ -262,8 +_,9 @@
+@@ -264,8 +_,9 @@
  					IngameFancyUI.OpenAchievements();
  				}
  			}
