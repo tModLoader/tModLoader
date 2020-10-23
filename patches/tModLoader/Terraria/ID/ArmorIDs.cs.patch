@@ -52,6 +52,15 @@
  				public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
  			}
  
+@@ -837,7 +_,7 @@
+ 		{
+ 			public class Sets
+ 			{
+-				public static SetFactory Factory = new SetFactory(35);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Back]);
+ 				public static bool[] DrawInBackpackLayer = Factory.CreateBoolSet(false, 7, 8, 9, 10, 15, 16, 32, 33);
+ 				public static bool[] DrawInTailLayer = Factory.CreateBoolSet(false, 18, 19, 21, 25, 26, 27, 28);
+ 			}
 @@ -883,7 +_,7 @@
  		{
  			public class Sets
@@ -66,7 +75,7 @@
  			public class Sets
  			{
 -				public static SetFactory Factory = new SetFactory(27);
-+				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Face]);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Shoes]);
  				public static int[] MaleToFemaleID = Factory.CreateIntSet(-1, 25, 26);
  			}
  
@@ -79,3 +88,21 @@
  				public static bool[] UsesTorsoFraming = Factory.CreateBoolSet(false, 5, 10, 10, 12);
  			}
  
+@@ -1056,7 +_,7 @@
+ 		{
+ 			public class Sets
+ 			{
+-				public static SetFactory Factory = new SetFactory(19);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Face]);
+ 				public static bool[] PreventHairDraw = Factory.CreateBoolSet(false, 2, 3, 4);
+ 				public static bool[] DrawInFaceUnderHairLayer = Factory.CreateBoolSet(false, 5);
+ 				public static bool[] DrawInFaceFlowerLayer = Factory.CreateBoolSet(false, 1, 6, 9);
+@@ -1089,7 +_,7 @@
+ 		{
+ 			public class Sets
+ 			{
+-				public static SetFactory Factory = new SetFactory(19);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Balloon]);
+ 				public static bool[] DrawInFrontOfBackArmLayer = Factory.CreateBoolSet(false, 18);
+ 				public static bool[] UsesTorsoFraming = Factory.CreateBoolSet(false, 18);
+ 			}
