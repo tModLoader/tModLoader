@@ -308,7 +308,7 @@ namespace Terraria.ModLoader
 						return false;
 					}
 
-					result &= canDamage.Value;
+					result = true;
 				}
 			}
 
