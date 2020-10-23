@@ -3113,7 +3113,7 @@
  			if (Main.dedServ)
  				return;
  
-@@ -35342,8 +_,14 @@
+@@ -35342,8 +_,13 @@
  			attackCD = 0;
  			ApplyItemAnimation(sItem);
  			bool flag2 = ItemID.Sets.SkipsInitialUseSound[sItem.type];
@@ -3123,7 +3123,6 @@
 +				// If the projectile shoots no projectiles or is a broadsword or pre-JE shortsword, play the sound here.
 +				if (sItem.shoot == ProjectileID.None)
 +					SoundEngine.PlaySound(sItem.UseSound, base.Center);
-+
 +				else if ((sItem.useStyle == 1 || sItem.useStyle == 3) && !sItem.noMelee && !sItem.noUseGraphic)
 +					SoundEngine.PlaySound(sItem.UseSound, base.Center);
 +			}
