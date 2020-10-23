@@ -3069,11 +3069,13 @@
  					int num178 = Projectile.NewProjectile(pointPoisition.X, pointPoisition.Y, num2, num3, projToShoot, Damage, KnockBack, i);
  					if (sItem.type == 726)
  						Main.projectile[num178].magic = true;
-@@ -33910,6 +_,9 @@
+@@ -33910,6 +_,11 @@
  					if (Main.projectile[num178].aiStyle == 160 && Main.IsItAHappyWindyDay)
  						AchievementsHelper.HandleSpecialEvent(this, 17);
  				}
 +
++				// If the item is not a broadsword or pre-JE shortsword, play the sound.
++				// This is done because this game is fucking hilarious and likes to play the sound one tick earlier than intended.
 +				if (sItem.UseSound != null && (!((sItem.useStyle == 1 || sItem.useStyle == 3) && !sItem.noMelee && !sItem.noUseGraphic) || sItem.fishingPole > 0))
 +					SoundEngine.PlaySound(sItem.UseSound, base.Center);
  			}
@@ -3111,14 +3113,15 @@
  			if (Main.dedServ)
  				return;
  
-@@ -35342,8 +_,13 @@
+@@ -35342,8 +_,14 @@
  			attackCD = 0;
  			ApplyItemAnimation(sItem);
  			bool flag2 = ItemID.Sets.SkipsInitialUseSound[sItem.type];
 -			if (sItem.UseSound != null && !flag2)
-+			if (sItem.UseSound != null && !flag2) {
-+				if (sItem.shoot == ProjectileID.None)
 -				SoundEngine.PlaySound(sItem.UseSound, base.Center);
++			if (sItem.UseSound != null && !flag2) {
++				// If the projectile shoots no projectiles or is a broadsword or pre-JE shortsword, play the sound here.
++				if (sItem.shoot == ProjectileID.None)
 +					SoundEngine.PlaySound(sItem.UseSound, base.Center);
 +
 +				else if ((sItem.useStyle == 1 || sItem.useStyle == 3) && !sItem.noMelee && !sItem.noUseGraphic)
