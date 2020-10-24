@@ -37,7 +37,7 @@ namespace Terraria
 
 		public bool HasIngredient<T>() where T : ModItem => HasIngredient(ModContent.ItemType<T>());
 
-		public bool HasRecipeGroup(int id) => acceptedGroups.Any(group => group == id);
+		public bool HasRecipeGroup(int id) => acceptedGroups.Contains(id);
 
 		public bool HasRecipeGroup(string name) {
 			if (!RecipeGroup.recipeGroupIDs.ContainsKey(name))
@@ -49,7 +49,7 @@ namespace Terraria
 
 		public bool HasRecipeGroup(RecipeGroup group) => HasRecipeGroup(group.ID);
 
-		public bool HasTile(int tileID) => requiredTile.Any(tile => tile == tileID);
+		public bool HasTile(int tileID) => requiredTile.Contains(tileID);
 
 		public bool HasTile(Mod mod, string tileName) {
 			mod ??= Mod;
@@ -64,7 +64,7 @@ namespace Terraria
 
 		public bool HasTile<T>() where T : ModTile => HasTile(ModContent.TileType<T>());
 
-		public bool HasCondition(Condition condition) => Conditions.Any(c => c == condition);
+		public bool HasCondition(Condition condition) => Conditions.Contains(condition);
 		#endregion
 
 		#region TryGetX
