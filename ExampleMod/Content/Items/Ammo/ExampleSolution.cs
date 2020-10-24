@@ -8,7 +8,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Ammo
 {
@@ -23,7 +22,7 @@ namespace ExampleMod.Content.Items.Ammo
 		}
 
 		public override void SetDefaults() {
-			item.shoot = ProjectileType<ExampleSolutionProjectile>() - ProjectileID.PureSpray;
+			item.shoot = ModContent.ProjectileType<ExampleSolutionProjectile>() - ProjectileID.PureSpray;
 			item.ammo = AmmoID.Solution;
 			item.width = 10;
 			item.height = 12;
@@ -65,7 +64,7 @@ namespace ExampleMod.Content.Items.Ammo
 
 		public override void AI() {
 			//Set the dust type to ExampleSolution
-			int dustType = DustType<Dusts.ExampleSolution>();
+			int dustType = ModContent.DustType<Dusts.ExampleSolution>();
 
 			if (projectile.owner == Main.myPlayer) {
 				Convert((int)(projectile.position.X + (projectile.width * 0.5f)) / 16, (int)(projectile.position.Y + (projectile.height * 0.5f)) / 16, 2);
@@ -117,14 +116,14 @@ namespace ExampleMod.Content.Items.Ammo
 
 						//Convert all walls to ExampleWall
 						if (wall != 0) {
-							Main.tile[k, l].wall = (ushort)WallType<ExampleWall>();
+							Main.tile[k, l].wall = (ushort)ModContent.WallType<ExampleWall>();
 							WorldGen.SquareWallFrame(k, l);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}
 
 						//If the tile is stone, convert to ExampleBlock
 						if (TileID.Sets.Conversion.Stone[type]) {
-							Main.tile[k, l].type = (ushort)TileType<ExampleBlock>();
+							Main.tile[k, l].type = (ushort)ModContent.TileType<ExampleBlock>();
 							WorldGen.SquareTileFrame(k, l);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}
@@ -136,15 +135,15 @@ namespace ExampleMod.Content.Items.Ammo
 						// }
 						//If the tile is a chair, convert to ExampleChair
 						else if (type == TileID.Chairs && Main.tile[k, l - 1].type == TileID.Chairs) {
-							Main.tile[k, l].type = (ushort)TileType<ExampleChair>();
-							Main.tile[k, l - 1].type = (ushort)TileType<ExampleChair>();
+							Main.tile[k, l].type = (ushort)ModContent.TileType<ExampleChair>();
+							Main.tile[k, l - 1].type = (ushort)ModContent.TileType<ExampleChair>();
 							WorldGen.SquareTileFrame(k, l);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}
 						//If the tile is a workbench, convert to ExampleWorkBench
 						else if (type == TileID.WorkBenches && Main.tile[k - 1, l].type == TileID.WorkBenches) {
-							Main.tile[k, l].type = (ushort)TileType<ExampleWorkbench>();
-							Main.tile[k - 1, l].type = (ushort)TileType<ExampleWorkbench>();
+							Main.tile[k, l].type = (ushort)ModContent.TileType<ExampleWorkbench>();
+							Main.tile[k - 1, l].type = (ushort)ModContent.TileType<ExampleWorkbench>();
 							WorldGen.SquareTileFrame(k, l);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}

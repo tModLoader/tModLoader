@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Mount.cs
 +++ src/Terraria/Terraria/Mount.cs
-@@ -977,9 +_,11 @@
+@@ -980,9 +_,11 @@
  			}
  
  			drillTextureSize = new Vector2(80f, 80f);
@@ -12,7 +12,7 @@
  
  			mountData = new MountData();
  			mounts[9] = mountData;
-@@ -1049,9 +_,11 @@
+@@ -1052,9 +_,11 @@
  			scutlixEyePositions[8] = new Vector2(70f, 34f);
  			scutlixEyePositions[9] = new Vector2(76f, 34f);
  			scutlixTextureSize = new Vector2(45f, 54f);

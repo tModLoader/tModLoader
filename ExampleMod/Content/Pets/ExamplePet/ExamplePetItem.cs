@@ -3,7 +3,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Pets.ExamplePet
 {
@@ -18,8 +17,8 @@ namespace ExampleMod.Content.Pets.ExamplePet
 		public override void SetDefaults() {
 			item.CloneDefaults(ItemID.ZephyrFish); // Copy the Defaults of the Zephyr Fish item.
 
-			item.shoot = ProjectileType<ExamplePetProjectile>(); // "Shoot" your pet projectile.
-			item.buffType = BuffType<ExamplePetBuff>(); // Apply buff upon usage of the item.
+			item.shoot = ModContent.ProjectileType<ExamplePetProjectile>(); // "Shoot" your pet projectile.
+			item.buffType = ModContent.BuffType<ExamplePetBuff>(); // Apply buff upon usage of the item.
 		}
 
 		public override void UseStyle(Player player) {

@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Items.Weapons
 
 		public override void SetDefaults() {
 			item.damage = 25;
-			item.magic = true; // Makes the damage register as magic. If your item does not have any damage type, it becomes true damage (which means that damage scalars will not affect it). Be sure to have a damage type.
+			item.DamageType = DamageClass.Magic; // Makes the damage register as magic. If your item does not have any damage type, it becomes true damage (which means that damage scalars will not affect it). Be sure to have a damage type.
 			item.width = 34;
 			item.height = 40;
 			item.useTime = 20;

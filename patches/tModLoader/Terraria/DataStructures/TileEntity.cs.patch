@@ -8,7 +8,7 @@
  
  namespace Terraria.DataStructures
  {
-@@ -42,6 +_,7 @@
+@@ -43,6 +_,7 @@
  		public static void InitializeAll() {
  			manager = new TileEntitiesManager();
  			manager.RegisterAll();
@@ -16,7 +16,7 @@
  		}
  
  		public static void PlaceEntityNet(int x, int y, int type) {
-@@ -60,6 +_,9 @@
+@@ -61,6 +_,9 @@
  		public static TileEntity Read(BinaryReader reader, bool networkSend = false) {
  			byte id = reader.ReadByte();
  			TileEntity tileEntity = manager.GenerateInstance(id);

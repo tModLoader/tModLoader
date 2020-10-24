@@ -1,5 +1,10 @@
 --- src/Terraria/Terraria/Localization/LocalizedText.cs
 +++ src/tModLoader/Terraria/Localization/LocalizedText.cs
+@@ -1,3 +_,4 @@
++using System;
+ using System.ComponentModel;
+ using System.Text.RegularExpressions;
+ 
 @@ -8,10 +_,19 @@
  		public static readonly LocalizedText Empty = new LocalizedText("", "");
  		private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
@@ -22,3 +27,78 @@
  		}
  
  		internal LocalizedText(string key, string text) {
+@@ -62,10 +_,73 @@
+ 			return text.Value;
+ 		}
+ 
++		/*
+ 		public string Format(object arg0) => string.Format(Value, arg0);
+ 		public string Format(object arg0, object arg1) => string.Format(Value, arg0, arg1);
+ 		public string Format(object arg0, object arg1, object arg2) => string.Format(Value, arg0, arg1, arg2);
+-		public string Format(params object[] args) => string.Format(Value, args);
++		*/
++
++		private static readonly Regex PluralizationPatternRegex = new Regex(@"{\^(\d+):([\w;]+)}", RegexOptions.Compiled); // "{0} {^0:item,items}"
++
++		public string Format(params object[] args) {
++			string value = Value;
++
++			value = PluralizationPatternRegex.Replace(value, delegate (Match match) {
++				int argIndex = Convert.ToInt32(match.Groups[1].Value);
++				string[] options = match.Groups[2].Value.Split(';');
++
++				if(args[argIndex] is int count) {
++					int pluralNumber = 0;
++
++					switch (Language.ActiveCulture.LegacyId) {
++						// https://developer.mozilla.org/en-US/docs/Mozilla/Localization/Localization_and_Plurals
++						case (int)GameCulture.CultureName.Russian: // Plural rule 7
++							int lN = count % 10;
++
++							if (lN == 1)
++								pluralNumber = 0;
++
++							if (lN > 1 && lN < 5)
++								pluralNumber = 1;
++
++							if ((lN > 4 && lN < 10) || lN == 0 || (count % 100 > 10 && count % 100 < 20))
++								pluralNumber = 2;
++
++							break;
++						case (int)GameCulture.CultureName.English: // Rule 1
++						case (int)GameCulture.CultureName.German:
++						case (int)GameCulture.CultureName.Italian:
++						case (int)GameCulture.CultureName.Spanish:
++						case (int)GameCulture.CultureName.Portuguese:
++							pluralNumber = count == 1 ? 0 : 1;
++							break;
++						case (int)GameCulture.CultureName.French: // Rule 2
++							pluralNumber = count == 0 || count == 1 ? 0 : 1;
++							break;
++						case (int)GameCulture.CultureName.Polish: // Rule 9
++							int lastDigit = count % 10;
++
++							if (lastDigit == 1 && count != 11)
++								pluralNumber = 0;
++							else if (lastDigit >= 2 && lastDigit <= 4 && count != 12 && count != 13 && count != 14)
++								pluralNumber = 1;
++							else
++								pluralNumber = 2;
++
++							break;
++						default: // Chinese, plural rule 0 (no need to pluralize)
++							break;
++					}
++
++					return options[pluralNumber];
++				}
++
++				return match.ToString();
++			});
++
++			return string.Format(value, args);
++		}
++
+ 		public override string ToString() => Value;
+ 	}
+ }

@@ -2,7 +2,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -25,7 +24,7 @@ namespace ExampleMod.Content.Items.Consumables
 			item.consumable = true;
 			item.rare = ItemRarityID.Orange;
 			item.value = Item.buyPrice(gold: 1);
-			item.buffType = BuffType<Buffs.ExampleDefenseBuff>(); //Specify an existing buff to be applied when used.
+			item.buffType = ModContent.BuffType<Buffs.ExampleDefenseBuff>(); //Specify an existing buff to be applied when used.
 			item.buffTime = 5400; //The amount of time the buff declared in item.buffType will last in ticks. 5400 / 60 is 90, so this buff will last 90 seconds.
 		}
 	}
