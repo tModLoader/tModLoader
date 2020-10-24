@@ -28,7 +28,7 @@ namespace Terraria.ModLoader
 			Parent = parent;
 		}
 
-		public override void GetDefaults(Player drawPlayer, out bool visible, out LayerConstraint constraint) {
+		public override void GetDefaults(PlayerDrawSet drawInfo, out bool visible, out LayerConstraint constraint) {
 			visible = true;
 			constraint = default;
 		}

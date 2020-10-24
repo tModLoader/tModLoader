@@ -158,7 +158,7 @@ namespace Terraria.ModLoader
 		/// <param name="drawPlayer"> The player that's currently being drawn. </param>
 		/// <param name="visible"> Whether or not this layer will be visible by default. Modders can hide and unhide layers later, if needed. </param>
 		/// <param name="constraint"> The constraint that this layer should use by default. Use this to make the layer appear before or after another specific layer. </param>
-		public abstract void GetDefaults(Player drawPlayer, out bool visible, out LayerConstraint constraint);
+		public abstract void GetDefaults(PlayerDrawSet drawInfo, out bool visible, out LayerConstraint constraint);
 
 		protected override void Register() => PlayerDrawLayerHooks.Add(this);
 

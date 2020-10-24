@@ -184,7 +184,7 @@
 +			vanillaLayers.Add(PlayerDrawLayer.CaptureTheGem);
 +			vanillaLayers.Add(PlayerDrawLayer.BeetleBuff);
 +
-+			foreach (var layer in PlayerDrawLayerHooks.GetDrawLayers(drawPlayer, vanillaLayers)) {
++			foreach (var layer in PlayerDrawLayerHooks.GetDrawLayers(drawinfo, vanillaLayers)) {
 +				if (layer.visible && (!headOnly || layer.IsHeadLayer)) {
 +					layer.Draw(ref drawinfo);
 +				}

@@ -14,8 +14,8 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			return GetLegDrawDataInfo(info, _shaderTexture.Value);
 		}
 
-		public override void GetDefaults(Player drawPlayer, out bool visible, out LayerConstraint constraint) {
-			base.GetDefaults(drawPlayer, out visible, out _);
+		public override void GetDefaults(PlayerDrawSet drawInfo, out bool visible, out LayerConstraint constraint) {
+			base.GetDefaults(drawInfo, out visible, out _);
 
 			constraint = new LayerConstraint(Leggings, true);
 		}

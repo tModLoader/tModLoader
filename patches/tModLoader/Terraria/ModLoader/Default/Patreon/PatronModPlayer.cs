@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace Terraria.ModLoader.Default.Patreon
@@ -25,7 +26,7 @@ namespace Terraria.ModLoader.Default.Patreon
 			}
 		}
 
-		public override void ModifyDrawLayers(IReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>> layers) {
+		public override void ModifyDrawLayers(IReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>> layers, PlayerDrawSet drawInfo) {
 			if (player.head == Mod.GetEquipSlot("toplayz_Head", EquipType.Head)) {
 				// If not falling or swinging frames
 				if (player.bodyFrame.Y != 5 * 56

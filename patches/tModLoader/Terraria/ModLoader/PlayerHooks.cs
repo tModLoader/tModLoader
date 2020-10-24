@@ -888,11 +888,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookModifyDrawLayers = AddHook<Action<IReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>>>>(p => p.ModifyDrawLayers);
+		private static HookList HookModifyDrawLayers = AddHook<Action<IReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>>, PlayerDrawSet>>(p => p.ModifyDrawLayers);
 
-		public static void ModifyDrawLayers(Player drawPlayer, IReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>> layers) {
+		public static void ModifyDrawLayers(PlayerDrawSet drawInfo, IReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>> layers) {
 			foreach (int index in HookModifyDrawLayers.arr) {
-				drawPlayer.modPlayers[index].ModifyDrawLayers(layers);
+				drawInfo.drawPlayer.modPlayers[index].ModifyDrawLayers(layers, drawInfo);
 			}
 		}
 

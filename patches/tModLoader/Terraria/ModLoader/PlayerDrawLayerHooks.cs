@@ -1,8 +1,7 @@
-﻿using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader
 {
@@ -14,9 +13,9 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() => ModLayers.Clear();
 
-		public static void AddDrawLayers(Player drawPlayer, Dictionary<string, List<PlayerDrawLayer>> layers) {
+		public static void AddDrawLayers(PlayerDrawSet drawInfo, Dictionary<string, List<PlayerDrawLayer>> layers) {
 			foreach (var layer in ModLayers) {
-				layer.GetDefaults(drawPlayer, out layer.visible, out layer.constraint);
+				layer.GetDefaults(drawInfo, out layer.visible, out layer.constraint);
 
 				string modName = layer.Mod.Name;
 
@@ -28,7 +27,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static IEnumerable<PlayerDrawLayer> GetDrawLayers(Player drawPlayer, List<PlayerDrawLayer> vanillaLayers) {
+		public static IEnumerable<PlayerDrawLayer> GetDrawLayers(PlayerDrawSet drawInfo, List<PlayerDrawLayer> vanillaLayers) {
 			for (int i = 0; i < vanillaLayers.Count; i++) {
 				var layer = (LegacyPlayerDrawLayer)vanillaLayers[i];
 
@@ -41,7 +40,7 @@ namespace Terraria.ModLoader
 			};
 
 			//Add OOP layers.
-			AddDrawLayers(drawPlayer, layers);
+			AddDrawLayers(drawInfo, layers);
 
 			//Actually make layer lists readonly
 			var readonlyLayersBackingDictionary = new Dictionary<string, IReadOnlyList<PlayerDrawLayer>>();
@@ -52,7 +51,7 @@ namespace Terraria.ModLoader
 			}
 
 			//Modify draw layers, but not the collections.
-			PlayerHooks.ModifyDrawLayers(drawPlayer, readonlyLayers);
+			PlayerHooks.ModifyDrawLayers(drawInfo, readonlyLayers);
 
 			var array = layers
 				.SelectMany(pair => pair.Value)
