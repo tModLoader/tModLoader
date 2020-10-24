@@ -2273,9 +2273,15 @@
  			if (!flag) {
  				DrawNPCChatButtons(num, textColor, amountOfLines, focusText, focusText2);
  				if (text2 != null) {
-@@ -29215,7 +_,13 @@
+@@ -29211,11 +_,19 @@
+ 						SubmitSignText();
+ 					else
+ 						IngameFancyUI.OpenVirtualKeyboard(1);
++					return;
+ 				}
  				else if (NPCID.Sets.IsTownPet[npc[player[myPlayer].talkNPC].type]) {
  					player[myPlayer].PetAnimal(player[myPlayer].talkNPC);
++					return;
  				}
 +
 +				if (!NPCLoader.PreChatButtonClicked(true))
