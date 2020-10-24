@@ -1,6 +1,6 @@
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent; //This lets us access methods (like ItemType) from ModContent without having to type its name.
 
 namespace ExampleMod.Content.Items.Placeable.Furniture
 {
@@ -8,10 +8,11 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded workbench.");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
-			item.createTile = TileType<Tiles.Furniture.ExampleWorkbench>(); //This sets the id of the tile that this item should place when used.
+			item.createTile = ModContent.TileType<Tiles.Furniture.ExampleWorkbench>(); //This sets the id of the tile that this item should place when used.
 
 			item.width = 28; //The item texture's width
 			item.height = 14; //The item texture's height
