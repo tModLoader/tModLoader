@@ -11,12 +11,18 @@ namespace Terraria.ModLoader
 	{
 		internal static readonly IList<GlobalRecipe> globalRecipes = new List<GlobalRecipe>();
 
+		/// <summary>
+		/// Set when tML sets up modded recipes. Used to detect misuse of the ModRecipe ctor
+		/// </summary>
+		internal static bool setupRecipes = false;
+
 		internal static void Add(GlobalRecipe globalRecipe) {
 			globalRecipes.Add(globalRecipe);
 		}
 
 		internal static void Unload() {
 			globalRecipes.Clear();
+			setupRecipes = false;
 		}
 
 		internal static void AddRecipes() {
