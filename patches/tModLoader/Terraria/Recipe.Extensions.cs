@@ -117,9 +117,30 @@ namespace Terraria
 		public bool TryGetIngredient<T>(out Item ingredient) where T : ModItem => TryGetIngredient(ModContent.ItemType<T>(), out ingredient);
 		#endregion
 
-		// should we remove by index or by item/tile type?
-
 		#region RemoveX
+		public bool RemoveIngredient(Item item) => requiredItem.Remove(item);
+
+		public bool RemoveTile(int tileID) => requiredTile.Remove(tileID);
+
+		public bool RemoveRecipeGroup(int groupID) => acceptedGroups.Remove(groupID);
+		
+		public bool RemoveCondition(Condition condition) => Conditions.Remove(condition);
+
+		public bool RemoveRecipe() {
+			for (int k = 0; k < numRecipes; k++) {
+				if (Main.recipe[k] == this) {
+					for (int j = k; j < numRecipes - 1; j++) {
+						Main.recipe[j] = Main.recipe[j + 1];
+					}
+
+					Main.recipe[numRecipes - 1] = new Recipe();
+					numRecipes--;
+					return true;
+				}
+			}
+
+			return false;
+		}
 		#endregion
 
 		#region ReplaceX
