@@ -114,7 +114,7 @@ namespace Terraria.ModLoader
 				Recipe recipe = Main.recipe[k];
 				bool matches = true;
 				List<Item> checkItems = new List<Item>(items);
-				for (int i = 0; i < Recipe.maxRequirements; i++) {
+				/*for (int i = 0; i < Recipe.maxRequirements; i++) {
 					Item item = recipe.requiredItem[i];
 					if (item.type == 0) {
 						break;
@@ -131,7 +131,7 @@ namespace Terraria.ModLoader
 						matches = false;
 						break;
 					}
-				}
+				}*/
 				if (checkItems.Count > 0) {
 					matches = false;
 				}
@@ -159,7 +159,7 @@ namespace Terraria.ModLoader
 					matches = false;
 				}
 				List<int> checkTiles = new List<int>(tiles);
-				for (int i = 0; i < Recipe.maxRequirements; i++) {
+				/*for (int i = 0; i < Recipe.maxRequirements; i++) {
 					int tile = recipe.requiredTile[i];
 					if (tile == -1) {
 						break;
@@ -176,7 +176,7 @@ namespace Terraria.ModLoader
 						matches = false;
 						break;
 					}
-				}
+				}*/
 				if (checkTiles.Count > 0) {
 					matches = false;
 				}
@@ -197,7 +197,7 @@ namespace Terraria.ModLoader
 				Recipe recipe = Main.recipe[k];
 				bool matches = true;
 				List<Item> checkItems = new List<Item>(items);
-				for (int i = 0; i < Recipe.maxRequirements; i++) {
+				/*for (int i = 0; i < Recipe.maxRequirements; i++) {
 					Item item = recipe.requiredItem[i];
 					if (item.type == 0) {
 						break;
@@ -208,7 +208,7 @@ namespace Terraria.ModLoader
 							break;
 						}
 					}
-				}
+				}*/
 				if (checkItems.Count > 0) {
 					matches = false;
 				}
@@ -235,7 +235,7 @@ namespace Terraria.ModLoader
 					}
 				}
 				List<int> checkTiles = new List<int>(tiles);
-				for (int i = 0; i < Recipe.maxRequirements; i++) {
+				/*for (int i = 0; i < Recipe.maxRequirements; i++) {
 					int tile = recipe.requiredTile[i];
 					if (tile == -1) {
 						break;
@@ -246,7 +246,7 @@ namespace Terraria.ModLoader
 							break;
 						}
 					}
-				}
+				}*/
 				if (checkTiles.Count > 0) {
 					matches = false;
 				}

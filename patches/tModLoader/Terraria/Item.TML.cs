@@ -63,10 +63,8 @@ namespace Terraria
 
 		internal static void PopulateMaterialCache() {
 			for (int i = 0; i < Recipe.numRecipes; i++) {
-				int num = 0;
-				while (Main.recipe[i].requiredItem[num].type > 0) {
-					ItemID.Sets.IsAMaterial[Main.recipe[i].requiredItem[num].type] = true;
-					num++;
+				foreach (Item item in Main.recipe[i].requiredItem) {
+					ItemID.Sets.IsAMaterial[item.type] = true;
 				}
 			}
 
