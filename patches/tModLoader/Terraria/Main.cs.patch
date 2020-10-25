@@ -2499,8 +2499,8 @@
  			r.Create();
 -			if (mouseItem.type > 0 || r.createItem.type > 0)
 +			if (mouseItem.type > 0 || r.createItem.type > 0) {
++				ItemLoader.OnCreate(mouseItem, new RecipeCreationContext {recipe = r});
 +				RecipeHooks.OnCraft(mouseItem, r);
-+				ItemLoader.OnCraft(mouseItem, r);
  				SoundEngine.PlaySound(7);
 +			}
  		}

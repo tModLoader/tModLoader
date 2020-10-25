@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -38,41 +37,14 @@ namespace Terraria.ModLoader
 		public GlobalItem Instance(Item item) => InstancePerEntity ? item.globalItems[instanceIndex] : this;
 
 		/// <summary>
-		/// Whether instances of this GlobalItem are created through Clone or constructor (by default implementations of NewInstance and Clone(Item, Item)). 
-		/// Defaults to false (using default constructor).
-		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
-		/// <summary>
-		/// Returns a clone of this GlobalItem. 
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalItem contains object references. 
-		/// Only called if CloneNewInstances && InstancePerEntity
-		/// </summary>
-		public virtual GlobalItem Clone() => (GlobalItem)MemberwiseClone();
-
-		/// <summary>
 		/// Create a copy of this instanced GlobalItem. Called when an item is cloned.
 		/// Defaults to NewInstance(item)
 		/// </summary>
 		/// <param name="item">The item being cloned</param>
 		/// <param name="itemClone">The new item</param>
-		public virtual GlobalItem Clone(Item item, Item itemClone) => NewInstance(item);
-
-		/// <summary>
-		/// Create a new instance of this GlobalItem for an Item instance. 
-		/// Called at the end of Item.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual GlobalItem NewInstance(Item item) {
-			if (CloneNewInstances)
-				return Clone();
-
-			var copy = (GlobalItem)Activator.CreateInstance(GetType());
-			copy.Mod = Mod;
-			copy.index = index; //not necessary, but consistency
-			copy.instanceIndex = instanceIndex;//shouldn't be used, but someone might
-			return copy;
+		public virtual GlobalItem Clone(Item item, Item itemClone) {
+			GlobalItem clone = (GlobalItem)MemberwiseClone();
+			return clone;
 		}
 
 		/// <summary>
@@ -81,6 +53,9 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaults(Item item) {
 		}
 
+		public virtual void OnCreate(Item item, ItemCreationContext context) {
+		}
+		
 		/// <summary>
 		/// Allows you to manually choose what prefix an item will get.
 		/// </summary>
@@ -792,12 +767,6 @@ namespace Terraria.ModLoader
 		/// This is essentially the same as Mod.AddRecipes or ModItem.AddRecipes. Use whichever method makes organizational sense for your mod.
 		/// </summary>
 		public virtual void AddRecipes() {
-		}
-
-		/// <summary>
-		/// Allows you to make anything happen when the player crafts the given item using the given recipe.
-		/// </summary>
-		public virtual void OnCraft(Item item, Recipe recipe) {
 		}
 
 		/// <summary>
