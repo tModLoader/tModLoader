@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/PopupText.cs
 +++ src/tModLoader/Terraria/PopupText.cs
-@@ -1,6 +_,8 @@
+@@ -1,10 +_,12 @@
  using Microsoft.Xna.Framework;
  using Terraria.GameContent;
 +using Terraria.ID;
@@ -9,6 +9,11 @@
  
  namespace Terraria
  {
+-	public class PopupText
++	public partial class PopupText
+ 	{
+ 		public Vector2 position;
+ 		public Vector2 velocity;
 @@ -25,6 +_,7 @@
  		public static int sonarText = -1;
  		public bool expert;
@@ -17,48 +22,6 @@
  		public bool sonar;
  		public PopupTextContext context;
  		public int npcNetID;
-@@ -40,6 +_,41 @@
- 			}
- 		}
- 
-+		public static int NewText(PopupTextContext context, string text, Color color, Vector2 position, bool stay5TimesLonger) {
-+			if (!Main.showItemText)
-+				return -1;
-+
-+			if (Main.netMode == 2)
-+				return -1;
-+
-+			int num = FindNextItemTextSlot();
-+			if (num >= 0) {
-+				Vector2 value = FontAssets.MouseText.Value.MeasureString(text);
-+				PopupText popupText = Main.popupText[num];
-+				Main.popupText[num].alpha = 1f;
-+				popupText.alphaDir = -1;
-+				popupText.active = true;
-+				popupText.scale = 0f;
-+				popupText.NoStack = true;
-+				popupText.rotation = 0f;
-+				popupText.position = position - value / 2f;
-+				popupText.expert = false;
-+				popupText.master = false;
-+				popupText.name = text;
-+				popupText.stack = 1;
-+				popupText.velocity.Y = -7f;
-+				popupText.lifeTime = 60;
-+				popupText.context = context;
-+				if (stay5TimesLonger)
-+					popupText.lifeTime *= 5;
-+				popupText.coinValue = 0;
-+				popupText.coinText = false;
-+				popupText.color = color;
-+			}
-+
-+			return num;
-+		}
-+
- 		public static int NewText(PopupTextContext context, int npcNetID, Vector2 position, bool stay5TimesLonger) {
- 			if (!Main.showItemText)
- 				return -1;
 @@ -184,7 +_,6 @@
  				Main.popupText[num2].position.X = newItem.position.X + (float)newItem.width * 0.5f - vector2.X * 0.5f;
  				Main.popupText[num2].position.Y = newItem.position.Y + (float)newItem.height * 0.25f - vector2.Y * 0.5f;

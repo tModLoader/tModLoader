@@ -517,15 +517,21 @@ namespace Terraria.ModLoader
 			if (bait.IsAir)
 				return null;
 
-			bool? ans = bait.modItem?.ConsumeBait(player);
-			if (ans != null)
-				return ans;
-			foreach (var g in HookConsumeBait.arr) {
-				ans = g.ConsumeBait(bait, player);
-				if (ans != null)
-					return ans;
+			bool? result = null;
+
+			foreach (GlobalItem g in HookConsumeBait.arr) {
+				bool? consumeBait = g.Instance(bait).ConsumeBait(bait, player);
+
+				if (consumeBait.HasValue) {
+					if (!consumeBait.Value) {
+						return false;
+					}
+
+					result = true;
+				}
 			}
-			return null;
+
+			return result ?? bait.modItem?.ConsumeBait(player);
 		}
 
 		private static HookList HookOnConsumeAmmo = AddHook<Action<Item, Player>>(g => g.OnConsumeAmmo);

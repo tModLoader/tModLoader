@@ -414,15 +414,7 @@
  			if (wet)
  				position += wetVelocity;
  			else
-@@ -13006,6 +_,7 @@
- 
- 			fisher.playerFishingConditions = Main.player[owner].GetFishingConditions();
- 			int baitItemType = fisher.playerFishingConditions.BaitItemType;
-+
- 			if (baitItemType == 2673) {
- 				Main.player[owner].displayedFishingInfo = Language.GetTextValue("GameUI.FishingWarning");
- 				if ((fisher.X < 380 || fisher.X > Main.maxTilesX - 380) && fisher.waterTilesCount > 1000 && !NPC.AnyNPCs(370)) {
-@@ -13080,12 +_,23 @@
+@@ -13080,12 +_,22 @@
  			FishingCheck_RollEnemySpawns(ref fisher);
  			FishingCheck_RollItemDrop(ref fisher);
  			bool flag = false;
@@ -431,16 +423,12 @@
 +			PlayerHooks.CatchFish(Main.player[owner], fisher, ref sonarText, ref color);
 +
  			if (fisher.rolledItemDrop > 0) {
-+				if (Main.player[owner].sonarPotion && (sonarText == null || sonarText.Trim().Length > 0)) {
-+
 -				if (Main.player[owner].sonarPotion) {
++				if (Main.player[owner].sonarPotion && (sonarText == null || sonarText.Trim().Length > 0)) {
+ 					Item item = new Item();
+ 					item.SetDefaults(fisher.rolledItemDrop);
+ 					item.position = position;
 +					if (sonarText == null) {
--					Item item = new Item();
-+						Item item = new Item();
--					item.SetDefaults(fisher.rolledItemDrop);
-+						item.SetDefaults(fisher.rolledItemDrop);
--					item.position = position;
-+						item.position = position;
 -					PopupText.sonarText = PopupText.NewText(PopupTextContext.SonarAlert, item, 1, noStack: true);
 +						PopupText.sonarText = PopupText.NewText(PopupTextContext.SonarAlert, item, 1, noStack: true);
 +					}
@@ -561,78 +549,30 @@
  				if (frameCounter == 0) {
  					frameCounter = 1;
  					ReduceRemainingChumsInPool();
-@@ -33158,44 +_,49 @@
+@@ -33158,7 +_,10 @@
  		private void AI_061_FishingBobber_GiveItemToPlayer(Player thePlayer, int itemType) {
  			Item item = new Item();
  			item.SetDefaults(itemType);
 +			if (localAI[0] > 0) {
 +				item.stack = (int)localAI[0];
 +			}
-+			else {
 -			if (itemType == 3196) {
-+				if (itemType == 3196) {
--				int finalFishingLevel = thePlayer.GetFishingConditions().FinalFishingLevel;
-+					int finalFishingLevel = thePlayer.GetFishingConditions().FinalFishingLevel;
--				int minValue = (finalFishingLevel / 20 + 3) / 2;
-+					int minValue = (finalFishingLevel / 20 + 3) / 2;
--				int num = (finalFishingLevel / 10 + 6) / 2;
-+					int num = (finalFishingLevel / 10 + 6) / 2;
--				if (Main.rand.Next(50) < finalFishingLevel)
-+					if (Main.rand.Next(50) < finalFishingLevel)
--					num++;
-+						num++;
- 
--				if (Main.rand.Next(100) < finalFishingLevel)
-+					if (Main.rand.Next(100) < finalFishingLevel)
--					num++;
-+						num++;
- 
--				if (Main.rand.Next(150) < finalFishingLevel)
-+					if (Main.rand.Next(150) < finalFishingLevel)
--					num++;
-+						num++;
- 
--				if (Main.rand.Next(200) < finalFishingLevel)
-+					if (Main.rand.Next(200) < finalFishingLevel)
--					num++;
-+						num++;
- 
--				int num2 = item.stack = Main.rand.Next(minValue, num + 1);
-+					int num2 = item.stack = Main.rand.Next(minValue, num + 1);
--			}
-+				}
++			else if (itemType == 3196) {
+ 				int finalFishingLevel = thePlayer.GetFishingConditions().FinalFishingLevel;
+ 				int minValue = (finalFishingLevel / 20 + 3) / 2;
+ 				int num = (finalFishingLevel / 10 + 6) / 2;
+@@ -33177,7 +_,7 @@
+ 				int num2 = item.stack = Main.rand.Next(minValue, num + 1);
+ 			}
  
 -			if (itemType == 3197) {
-+				if (itemType == 3197) {
--				int finalFishingLevel2 = thePlayer.GetFishingConditions().FinalFishingLevel;
-+					int finalFishingLevel2 = thePlayer.GetFishingConditions().FinalFishingLevel;
--				int minValue2 = (finalFishingLevel2 / 4 + 15) / 2;
-+					int minValue2 = (finalFishingLevel2 / 4 + 15) / 2;
--				int num3 = (finalFishingLevel2 / 2 + 30) / 2;
-+					int num3 = (finalFishingLevel2 / 2 + 30) / 2;
--				if (Main.rand.Next(50) < finalFishingLevel2)
-+					if (Main.rand.Next(50) < finalFishingLevel2)
--					num3 += 4;
-+						num3 += 4;
++			else if (itemType == 3197) {
+ 				int finalFishingLevel2 = thePlayer.GetFishingConditions().FinalFishingLevel;
+ 				int minValue2 = (finalFishingLevel2 / 4 + 15) / 2;
+ 				int num3 = (finalFishingLevel2 / 2 + 30) / 2;
+@@ -33195,7 +_,7 @@
  
--				if (Main.rand.Next(100) < finalFishingLevel2)
-+					if (Main.rand.Next(100) < finalFishingLevel2)
--					num3 += 4;
-+						num3 += 4;
- 
--				if (Main.rand.Next(150) < finalFishingLevel2)
-+					if (Main.rand.Next(150) < finalFishingLevel2)
--					num3 += 4;
-+						num3 += 4;
- 
--				if (Main.rand.Next(200) < finalFishingLevel2)
-+					if (Main.rand.Next(200) < finalFishingLevel2)
--					num3 += 4;
-+						num3 += 4;
- 
--				int num4 = item.stack = Main.rand.Next(minValue2, num3 + 1);
-+					int num4 = item.stack = Main.rand.Next(minValue2, num3 + 1);
-+				}
+ 				int num4 = item.stack = Main.rand.Next(minValue2, num3 + 1);
  			}
 -
 +			ItemLoader.CaughtFishStack(item);

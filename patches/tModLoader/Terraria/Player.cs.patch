@@ -3135,16 +3135,14 @@
  			}
  			else if (Main.rand.Next(7) == 0 && !accFishingLine) {
  				bobber.ai[0] = 2f;
-@@ -35787,8 +_,11 @@
+@@ -35787,8 +_,9 @@
  			baitTypeUsed = item.type;
  			if (baitTypeUsed == 2673)
  				flag = true;
-+			bool? baitOverride = PlayerHooks.ConsumeBait(this, item);
-+			if (baitOverride == null)
-+				baitOverride = ItemLoader.ConsumeBait(this, item);
++			bool? baitOverride = PlayerHooks.ConsumeBait(this, item) ?? ItemLoader.ConsumeBait(this, item);
  
 -			if (flag) {
-+			if (flag && baitOverride == null || baitOverride.Value) {
++			if (flag && (baitOverride == null || baitOverride.Value)) {
  				if (item.type == 4361 || item.type == 4362)
  					NPC.LadyBugKilled(base.Center, item.type == 4362);
  
