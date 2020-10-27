@@ -10,10 +10,17 @@ namespace Terraria.ModLoader
 		/// <summary> Allows you to copy the Update behavior of a different type of gore. This defaults to 0, which means no behavior is copied. </summary>
 		public int updateType = -1;
 
+		internal string nameOverride;
+		internal string textureOverride;
+
+		public int Type { get; internal set; }
+
+		public override string Name => nameOverride;
+		public override string Texture => textureOverride;
+
 		protected override void Register() {
 			ModTypeLookup<ModGore>.Register(this);
-
-			GoreLoader.AddGore(Texture, this);
+			GoreLoader.RegisterModGore(this);
 		}
 
 		/// <summary>

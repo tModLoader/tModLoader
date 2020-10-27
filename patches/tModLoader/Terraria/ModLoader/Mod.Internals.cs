@@ -90,7 +90,6 @@ namespace Terraria.ModLoader
 				AsyncLoadQueue.Dequeue().Wait();
 
 			AutoloadLocalization();
-			IList<Type> modGores = new List<Type>();
 			IList<Type> modSounds = new List<Type>();
 
 			Type modType = GetType();
@@ -99,10 +98,7 @@ namespace Terraria.ModLoader
 				if (type.IsAbstract){continue;}
 				if (type.GetConstructor(new Type[0]) == null){continue;}//don't autoload things with no default constructor
 
-				if (type.IsSubclassOf(typeof(ModGore))) {
-					modGores.Add(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModSound))) {
+				if (type.IsSubclassOf(typeof(ModSound))) {
 					modSounds.Add(type);
 				}
 				else if (typeof(ILoadable).IsAssignableFrom(type)) {
@@ -113,7 +109,7 @@ namespace Terraria.ModLoader
 				}
 			}
 			if (Properties.AutoloadGores) {
-				GoreLoader.AutoloadGores(this, modGores);
+				GoreLoader.AutoloadGores(this);
 			}
 			if (Properties.AutoloadSounds) {
 				AutoloadSounds(modSounds);

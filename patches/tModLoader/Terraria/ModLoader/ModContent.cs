@@ -298,6 +298,11 @@ namespace Terraria.ModLoader
 		public static ModUgBgStyle GetModUgBgStyle(int style) => UgBgStyleLoader.GetUgBgStyle(style);
 
 		/// <summary>
+		/// Get the id (type) of a ModGore by class. Assumes one instance per class.
+		/// </summary>
+		public static int GoreType<T>() where T : ModGore => GetInstance<T>()?.Type ?? 0;
+
+		/// <summary>
 		/// Get the id (type) of a ModItem by class. Assumes one instance per class.
 		/// </summary>
 		public static int ItemType<T>() where T : ModItem => GetInstance<T>()?.Type ?? 0;
