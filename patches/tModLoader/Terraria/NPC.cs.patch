@@ -108,7 +108,7 @@
  			waterMovementSpeed = (lavaMovementSpeed = 0.5f);
  			honeyMovementSpeed = 0.25f;
  			netOffset *= 0f;
-@@ -2846,7 +_,10 @@
+@@ -2846,10 +_,14 @@
  				buffType[k] = 0;
  			}
  
@@ -120,6 +120,10 @@
  				buffImmune[l] = false;
  			}
  
++			aiStyle = 0; //Added by tML.
+ 			setFrameSize = false;
+ 			netSkip = -2;
+ 			realLife = -1;
 @@ -11073,6 +_,8 @@
  				lifeMax = 20;
  				boss = true;
