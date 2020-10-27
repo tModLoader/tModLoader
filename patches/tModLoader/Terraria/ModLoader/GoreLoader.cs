@@ -77,19 +77,21 @@ namespace Terraria.ModLoader
 		//in Terraria.Gore add modGore property (internal set)
 		//in Terraria.Gore.NewGore after resetting properties call ModGore.SetupGore(Main.gore[num]);
 		internal static void SetupGore(Gore gore) {
+			gore.ResetNewFields();
+
 			if (gores.ContainsKey(gore.type)) {
-				gore.modGore = gores[gore.type];
-				gore.modGore.OnSpawn(gore);
+				gore.ModGore = gores[gore.type];
+				gore.ModGore.OnSpawn(gore);
 			}
 			else {
-				gore.modGore = null;
+				gore.ModGore = null;
 			}
 		}
 
 		internal static void SetupUpdateType(Gore gore) {
-			if (gore.modGore != null && gore.modGore.updateType > 0) {
+			if (gore.ModGore != null && gore.ModGore.updateType > 0) {
 				gore.realType = gore.type;
-				gore.type = gore.modGore.updateType;
+				gore.type = gore.ModGore.updateType;
 			}
 		}
 
@@ -102,8 +104,8 @@ namespace Terraria.ModLoader
 
 		//in Terraria.Main.DrawGore and DrawGoreBehind replace type checks with this
 		internal static bool DrawBackGore(Gore gore) {
-			if (gore.modGore != null) {
-				return gore.modGore.DrawBehind(gore);
+			if (gore.ModGore != null) {
+				return gore.ModGore.DrawBehind(gore);
 			}
 
 			return (((gore.type >= 706 && gore.type <= 717) || gore.type == 943 || gore.type == 1147 || (gore.type >= 1160 && gore.type <= 1162)) && (gore.frame < 7 || gore.frame > 9));
