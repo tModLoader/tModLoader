@@ -15,8 +15,8 @@ namespace Terraria.ModLoader
 
 		public int Type { get; internal set; }
 
-		public override string Name => nameOverride;
-		public override string Texture => textureOverride;
+		public override string Name => nameOverride ?? base.Name;
+		public override string Texture => textureOverride ?? base.Texture;
 
 		protected override void Register() {
 			ModTypeLookup<ModGore>.Register(this);
