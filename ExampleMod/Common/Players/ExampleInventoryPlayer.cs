@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Common.Players
 {
@@ -23,7 +22,7 @@ namespace ExampleMod.Common.Players
 			}
 
 			return new[] {
-				new Item(ItemType<ExampleItem>()),
+				new Item(ModContent.ItemType<ExampleItem>()),
 				new Item(ItemID.GoldOre) {
 					stack = 256
 				}

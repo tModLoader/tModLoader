@@ -1,6 +1,6 @@
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Placeable.Furniture
 {
@@ -8,6 +8,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded platform.");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 200;
 		}
 
 		public override void SetDefaults() {
@@ -20,7 +21,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			item.useTime = 10;
 			item.useStyle = ItemUseStyleID.Swing;
 			item.consumable = true;
-			item.createTile = TileType<Tiles.Furniture.ExamplePlatform>();
+			item.createTile = ModContent.TileType<Tiles.Furniture.ExamplePlatform>();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

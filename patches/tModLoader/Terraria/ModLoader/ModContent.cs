@@ -399,7 +399,8 @@ namespace Terraria.ModLoader
 			RarityLoader.Initialize();
 			PlayerInput.reinitialize = true;
 			SetupRecipes(token);
-			
+			ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
+
 			ContentSamples.Initialize();
 			MenuLoader.GotoSavedModMenu();
 		}
@@ -439,7 +440,9 @@ namespace Terraria.ModLoader
 
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();
+			RecipeHooks.setupRecipes = true;
 			Recipe.SetupRecipes();
+			RecipeHooks.setupRecipes = false;
 		}
 
 		internal static void UnloadModContent() {
@@ -481,6 +484,7 @@ namespace Terraria.ModLoader
 			BuffLoader.Unload();
 			MountLoader.Unload();
 			RarityLoader.Unload();
+			DamageClassLoader.Unload();
 			ModGore.Unload();
 			SoundLoader.Unload();
 			DisposeMusic();

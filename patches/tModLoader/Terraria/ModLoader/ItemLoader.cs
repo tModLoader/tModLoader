@@ -144,9 +144,9 @@ namespace Terraria.ModLoader
 
 		internal static void SetDefaults(Item item, bool createModItem = true) {
 			if (IsModItem(item.type) && createModItem)
-				item.modItem = GetItem(item.type).NewInstance(item);
+				item.modItem = GetItem(item.type).Clone(item);
 
-			item.globalItems = InstancedGlobals.Select(g => g.NewInstance(item)).ToArray();
+			item.globalItems = InstancedGlobals.Select(g => g.Clone(item, item)).ToArray();
 
 			item.modItem?.AutoDefaults();
 			item.modItem?.SetDefaults();
@@ -155,6 +155,15 @@ namespace Terraria.ModLoader
 				g.Instance(item).SetDefaults(item);
 		}
 
+		private static HookList HookOnCreate = AddHook<Action<Item, ItemCreationContext>>(g => g.OnCreate);
+		public static void OnCreate(Item item, ItemCreationContext context) {
+			foreach (var g in HookOnCreate.arr) {
+				 g.Instance(item).OnCreate(item, context);
+			}
+
+			item.modItem?.OnCreate(context);
+		}
+		
 		//near end of Terraria.Main.DrawItem before default drawing call
 		//  if(ItemLoader.animations.Contains(item.type))
 		//  { ItemLoader.DrawAnimatedItem(item, whoAmI, color, alpha, rotation, scale); return; }
@@ -413,19 +422,31 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat);
+		private delegate void DelegateModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup);
+		private static HookList HookModifyResearchSorting = AddHook<DelegateModifyResearchSorting>(g => g.ModifyResearchSorting);
+		public static void ModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
+			if (item.IsAir)
+				return;
+
+			item.modItem?.ModifyResearchSorting(ref itemGroup);
+
+			foreach (var g in HookModifyResearchSorting.arr)
+				g.Instance(item).ModifyResearchSorting(item, ref itemGroup);
+		}
+
+		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref Modifier damage, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 		/// <summary>
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
 		/// </summary>
-		public static void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat) {
+		public static void ModifyWeaponDamage(Item item, Player player, ref Modifier damage, ref float flat) {
 			if (item.IsAir)
 				return;
 
-			item.modItem?.ModifyWeaponDamage(player, ref add, ref mult, ref flat);
+			item.modItem?.ModifyWeaponDamage(player, ref damage, ref flat);
 
 			foreach (var g in HookModifyWeaponDamage.arr)
-				g.Instance(item).ModifyWeaponDamage(item, player, ref add, ref mult, ref flat);
+				g.Instance(item).ModifyWeaponDamage(item, player, ref damage, ref flat);
 		}
 
 		private delegate void DelegateGetWeaponKnockback(Item item, Player player, ref float knockback);
@@ -1582,13 +1603,6 @@ namespace Terraria.ModLoader
 			return chat + "\n\n(" + catchLocation + ")";
 		}
 
-		private static HookList HookOnCraft = AddHook<Action<Item, Recipe>>(g => g.OnCraft);
-		public static void OnCraft(Item item, Recipe recipe) {
-			item.modItem?.OnCraft(recipe);
-			foreach (var g in HookOnCraft.arr)
-				g.Instance(item).OnCraft(item, recipe);
-		}
-
 		private delegate bool DelegatePreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y);
 		private static HookList HookPreDrawTooltip = AddHook<DelegatePreDrawTooltip>(g => g.PreDrawTooltip);
 		public static bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {
@@ -1707,10 +1721,8 @@ namespace Terraria.ModLoader
 				if (!item.InstancePerEntity)
 					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
 
-				if (!item.CloneNewInstances &&
-						!HasMethod(type, "NewInstance", typeof(Item)) &&
-						!HasMethod(type, "Clone", typeof(Item), typeof(Item)))
-					throw new Exception(type + " has InstancePerEntity but must either set CloneNewInstances to true, or override NewInstance(Item) or Clone(Item, Item)");
+				if (!HasMethod(type, "Clone", typeof(Item), typeof(Item)))
+					throw new Exception(type + " has InstancePerEntity but does not override Clone(Item, Item)");
 			}
 		}
 	}

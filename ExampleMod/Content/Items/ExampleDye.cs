@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
@@ -17,6 +18,7 @@ namespace ExampleMod.Content.Items
 					new ArmorShaderData(new Ref<Effect>(Mod.GetEffect("Assets/Effects/ExampleEffect").Value), "ExampleDyePass") //Be sure to update the effect path and pass name here.
 				);
 			}
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
 		}
 
 		public override void SetDefaults() {

@@ -1,8 +1,8 @@
 --- src/decompiled/Terraria/Utilities/FileUtilities.cs
 +++ src/Terraria/Terraria/Utilities/FileUtilities.cs
-@@ -21,7 +_,11 @@
- 			if (cloud && SocialAPI.Cloud != null)
- 				SocialAPI.Cloud.Delete(path);
+@@ -23,7 +_,11 @@
+ 			else if (forceDeleteFile)
+ 				File.Delete(path);
  			else
 +#if WINDOWS
  				FileOperationAPIWrapper.MoveToRecycleBin(path);

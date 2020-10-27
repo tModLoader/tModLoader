@@ -20,7 +20,7 @@
 -		public class Sets
 +		public partial class Sets
  		{
--			public static SetFactory Factory = new SetFactory(5045);
+-			public static SetFactory Factory = new SetFactory(5088);
 +			public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
  			public static List<int> ItemsThatAreProcessedAfterNormalContentSample = new List<int> {
  				1533,

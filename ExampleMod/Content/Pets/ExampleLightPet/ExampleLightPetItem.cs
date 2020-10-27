@@ -1,8 +1,8 @@
 ﻿using ExampleMod.Content.Items;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Pets.ExampleLightPet
 {
@@ -11,12 +11,13 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Annoying Light");
 			Tooltip.SetDefault("Summons an annoying light");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
 			item.damage = 0;
 			item.useStyle = ItemUseStyleID.Swing;
-			item.shoot = ProjectileType<ExampleLightPetProjectile>();
+			item.shoot = ModContent.ProjectileType<ExampleLightPetProjectile>();
 			item.width = 16;
 			item.height = 30;
 			item.UseSound = SoundID.Item2;
@@ -25,7 +26,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 			item.rare = ItemRarityID.Yellow;
 			item.noMelee = true;
 			item.value = Item.sellPrice(0, 5, 50);
-			item.buffType = BuffType<ExampleLightPetBuff>();
+			item.buffType = ModContent.BuffType<ExampleLightPetBuff>();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

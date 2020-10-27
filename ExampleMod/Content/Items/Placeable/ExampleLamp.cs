@@ -1,11 +1,15 @@
 ﻿using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
+using Terraria.GameContent.Creative;
 
 namespace ExampleMod.Content.Items.Placeable
 {
 	internal class ExampleLamp : ModItem
 	{
+		public override void SetStaticDefaults() {
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		}
+		
 		public override void SetDefaults() {
 			item.useStyle = ItemUseStyleID.Swing;
 			item.useTurn = true;
@@ -14,7 +18,7 @@ namespace ExampleMod.Content.Items.Placeable
 			item.autoReuse = true;
 			item.maxStack = 99;
 			item.consumable = true;
-			item.createTile = TileType<Tiles.ExampleLamp>();
+			item.createTile = ModContent.TileType<Tiles.ExampleLamp>();
 			item.width = 10;
 			item.height = 24;
 			item.value = 500;

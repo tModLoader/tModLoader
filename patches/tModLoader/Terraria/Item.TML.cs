@@ -18,6 +18,11 @@ namespace Terraria
 
 		internal GlobalItem[] globalItems = new GlobalItem[0];
 
+		/// <summary>
+		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
+		/// </summary>
+		public DamageClass DamageType { get; set; }
+
 		// Get
 
 		/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
@@ -58,10 +63,8 @@ namespace Terraria
 
 		internal static void PopulateMaterialCache() {
 			for (int i = 0; i < Recipe.numRecipes; i++) {
-				int num = 0;
-				while (Main.recipe[i].requiredItem[num].type > 0) {
-					ItemID.Sets.IsAMaterial[Main.recipe[i].requiredItem[num].type] = true;
-					num++;
+				foreach (Item item in Main.recipe[i].requiredItem) {
+					ItemID.Sets.IsAMaterial[item.type] = true;
 				}
 			}
 

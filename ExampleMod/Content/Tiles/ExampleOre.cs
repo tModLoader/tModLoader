@@ -5,7 +5,6 @@ using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Tiles
 {
@@ -26,7 +25,7 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(152, 171, 198), name);
 
 			dustType = 84;
-			drop = ItemType<Items.Placeable.ExampleOre>();
+			drop = ModContent.ItemType<Items.Placeable.ExampleOre>();
 			soundType = SoundID.Tink;
 			soundStyle = 1;
 			//mineResist = 4f;
@@ -73,7 +72,7 @@ namespace ExampleMod.Content.Tiles
 
 				// Then, we call WorldGen.TileRunner with random "strength" and random "steps", as well as the Tile we wish to place.
 				// Feel free to experiment with strength and step to see the shape they generate.
-				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), TileType<ExampleOre>());
+				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), ModContent.TileType<ExampleOre>());
 
 				// Alternately, we could check the tile already present in the coordinate we are interested.
 				// Wrapping WorldGen.TileRunner in the following condition would make the ore only generate in Snow.
