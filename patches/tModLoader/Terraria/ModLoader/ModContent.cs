@@ -485,7 +485,7 @@ namespace Terraria.ModLoader
 			MountLoader.Unload();
 			RarityLoader.Unload();
 			DamageClassLoader.Unload();
-			ModGore.Unload();
+			GoreLoader.Unload();
 			SoundLoader.Unload();
 			DisposeMusic();
 			BackgroundTextureLoader.Unload();
@@ -547,7 +547,7 @@ namespace Terraria.ModLoader
 				UgBgStyleLoader.ResizeAndFillArrays();
 				SurfaceBgStyleLoader.ResizeAndFillArrays();
 				GlobalBgStyleLoader.ResizeAndFillArrays(unloading);
-				ModGore.ResizeAndFillArrays();
+				GoreLoader.ResizeAndFillArrays();
 				WaterStyleLoader.ResizeArrays();
 				WaterfallStyleLoader.ResizeArrays();
 			}

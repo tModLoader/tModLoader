@@ -26,7 +26,7 @@
 +			if (modGore != null && !modGore.Update(this))
 +				return;
 +
-+			ModGore.SetupUpdateType(this);
++			GoreLoader.SetupUpdateType(this);
  			switch (GoreID.Sets.SpecialAI[type]) {
  				case 4:
  					UpdateAmbientFloorCloud();
@@ -34,7 +34,7 @@
  				else
  					Lighting.AddLight((int)((position.X + 32f * scale / 2f) / 16f), (int)((position.Y + 32f * scale / 2f) / 16f), num37, num38, num39);
  			}
-+			ModGore.TakeDownUpdateType(this);
++			GoreLoader.TakeDownUpdateType(this);
  		}
  
  		private void Gore_UpdateLeaf() {
@@ -42,7 +42,7 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
  			Main.gore[num].scale = Scale;
-+			ModGore.SetupGore(Main.gore[num]);
++			GoreLoader.SetupGore(Main.gore[num]);
  			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
  				Main.gore[num].type = Main.rand.Next(11, 14);
  				Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
