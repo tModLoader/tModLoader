@@ -41,7 +41,7 @@
 +			
 +			gore.ResetNewFields();
 +			
-+			gore.ModGore = GoreLoader.SetupGore(gore);
++			gore.ModGore = GoreLoader.GetModGore(gore.type);
 +			
 +			gore.ModGore?.OnSpawn(gore);
 +			
