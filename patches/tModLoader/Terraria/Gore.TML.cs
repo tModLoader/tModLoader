@@ -9,7 +9,7 @@ namespace Terraria
 
 		internal int realType;
 
-		public ModGore ModGore { get; internal set; }
+		public ModGore ModGore { get; private set; }
 
 		private void ResetNewFields() {
 			drawOffset = Vector2.Zero;

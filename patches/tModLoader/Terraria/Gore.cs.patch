@@ -32,13 +32,18 @@
  		}
  
  		private void Gore_UpdateLeaf() {
-@@ -1035,6 +_,10 @@
+@@ -1035,6 +_,15 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
  			Main.gore[num].scale = Scale;
 +			
-+			ResetNewFields();
-+			GoreLoader.SetupGore(Main.gore[num]);
++			var gore = Main.gore[num];
++			
++			gore.ResetNewFields();
++			
++			gore.ModGore = GoreLoader.SetupGore(gore);
++			
++			gore.ModGore?.OnSpawn(gore);
 +			
  			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
  				Main.gore[num].type = Main.rand.Next(11, 14);

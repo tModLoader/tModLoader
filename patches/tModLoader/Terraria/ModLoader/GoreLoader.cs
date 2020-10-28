@@ -78,16 +78,10 @@ namespace Terraria.ModLoader
 			GoreCount = GoreID.Count;
 		}
 
-		//in Terraria.Gore add modGore property (internal set)
-		//in Terraria.Gore.NewGore after resetting properties call ModGore.SetupGore(Main.gore[num]);
-		internal static void SetupGore(Gore gore) {
-			if (gores.ContainsKey(gore.type)) {
-				gore.ModGore = gores[gore.type];
-				gore.ModGore.OnSpawn(gore);
-			}
-			else {
-				gore.ModGore = null;
-			}
+		internal static ModGore SetupGore(Gore gore) {
+			gores.TryGetValue(gore.type, out var modGore);
+			
+			return modGore;
 		}
 
 		internal static void SetupUpdateType(Gore gore) {
