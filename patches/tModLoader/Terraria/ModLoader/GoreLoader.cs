@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
@@ -22,6 +23,9 @@ namespace Terraria.ModLoader
 
 			if (texture == null)
 				throw new ArgumentNullException(nameof(texture));
+			
+			if (!mod.loading)
+				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
 			var modGore = Activator.CreateInstance<T>();
 

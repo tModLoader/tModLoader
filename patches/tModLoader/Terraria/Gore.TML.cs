@@ -5,7 +5,7 @@ namespace Terraria
 {
 	public partial class Gore
 	{
-		public Vector2 drawOffset = Vector2.Zero;
+		public Vector2 drawOffset;
 
 		internal int realType;
 
