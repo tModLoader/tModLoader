@@ -11,7 +11,7 @@ namespace Terraria
 
 		public ModGore ModGore { get; internal set; }
 
-		internal void ResetNewFields() {
+		private void ResetNewFields() {
 			drawOffset = Vector2.Zero;
 			realType = 0;
 		}
