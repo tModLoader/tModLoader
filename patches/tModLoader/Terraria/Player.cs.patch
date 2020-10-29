@@ -1225,7 +1225,7 @@
 +
 +			PlayerHooks.UpdateEquips(this, ref flag, ref flag2, ref flag3);
 +			PlayerHooks.UpdateVanityAccessories(this);
-+			// wing loop and vanity thing are merged into VanillaUpdateAccessory
++			// wing loop is merged into VanillaUpdateAccessory
 +			for (int n = 13; n < 18 + extraAccessorySlots; n++) {
 +				if (IsAValidEquipmentSlotForIteration(n))
 +					ApplyEquipVanity(n, armor[n]);
