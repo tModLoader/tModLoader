@@ -1158,7 +1158,7 @@
  				}
  
  				if (armor[k].prefix == 73)
-@@ -9245,56 +_,89 @@
+@@ -9245,56 +_,90 @@
  
  				if (armor[k].prefix == 80)
  					meleeSpeed += 0.04f;
@@ -1224,12 +1224,13 @@
 +			}
 +
 +			PlayerHooks.UpdateEquips(this, ref flag, ref flag2, ref flag3);
-+			PlayerHooks.UpdateVanityAccessories(this);
 +			// wing loop is merged into VanillaUpdateAccessory
 +			for (int n = 13; n < 18 + extraAccessorySlots; n++) {
 +				if (IsAValidEquipmentSlotForIteration(n))
 +					ApplyEquipVanity(n, armor[n]);
 +			}
++
++			PlayerHooks.UpdateVanityAccessories(this);
 +
 +			if (dd2Accessory) {
 +				minionDamage += 0.1f;
