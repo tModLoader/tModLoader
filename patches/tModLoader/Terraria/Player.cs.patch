@@ -1029,50 +1029,51 @@
  			}
  
  			if (whoAmI == Main.myPlayer && luckPotion != oldLuckPotion) {
-@@ -8256,12 +_,14 @@
+@@ -8256,12 +_,19 @@
  			}
  		}
  
 -		public void UpdateEquips(int i) {
 +		//public void UpdateEquips(int i) {
-+		public void VanillaUpdateInventory(Item item) {
++		public void VanillaPreUpdateInventory() {
  			if (inventory[selectedItem].type == 277 && (!mount.Active || !mount.Cart))
  				trident = true;
++		}
  
--			for (int j = 0; j < 58; j++) {
--				int type = inventory[j].type;
-+			//for (int j = 0; j < 58; j++)
++		public void VanillaUpdateInventory(Item item) {
++			/*
+ 			for (int j = 0; j < 58; j++) {
+ 				int type = inventory[j].type;
++			*/
 +			{
 +				int type = item.type;
  				if ((type == 15 || type == 707) && accWatch < 1)
  					accWatch = 1;
  
-@@ -8333,14 +_,21 @@
+@@ -8333,13 +_,21 @@
  
  				if (type == 4743)
  					hasFootball = true;
--			}
- 
++
 +				ItemLoader.UpdateInventory(item, this);
-+			}
+ 			}
+ 
++		}
++
++		public void VanillaPostUpdateInventory() {
  			if (inventory[58].type == 4743)
  				hasFootball = true;
 +		}
  
 -			for (int k = 0; k < 10; k++) {
 -				if (!IsAValidEquipmentSlotForIteration(k) || (armor[k].expertOnly && !Main.expertMode))
--					continue;
 +		public void VanillaUpdateEquip(Item item) {
-+			// for (int k = 0; k < 10; k++)
-+			// fake array and loop to keep patches small
 +			Item[] armor = {item};
-+			int k = 0;
-+			{
-+				if (!IsAValidEquipmentSlotForIteration(k) || (armor[k].expertOnly && !Main.expertMode) || (armor[k].masterOnly && !Main.masterMode))
-+					return;
++			for (k = 0; k < 1; k++) {
++				if ((armor[k].expertOnly && !Main.expertMode) || (armor[k].masterOnly && !Main.masterMode))
+ 					continue;
  
  				int type2 = armor[k].type;
- 				if ((type2 == 15 || type2 == 707) && accWatch < 1)
 @@ -8557,10 +_,13 @@
  					armorPenetration += 5;
  
@@ -1158,84 +1159,39 @@
  				}
  
  				if (armor[k].prefix == 73)
-@@ -9245,56 +_,89 @@
+@@ -9245,6 +_,22 @@
  
  				if (armor[k].prefix == 80)
  					meleeSpeed += 0.04f;
 +
 +				ItemLoader.UpdateEquip(armor[k], this);
- 			}
- 
--			equippedAnyWallSpeedAcc = false;
--			equippedAnyTileSpeedAcc = false;
--			equippedAnyTileRangeAcc = false;
- 			if (whoAmI == Main.myPlayer)
- 				Main.musicBoxNotModifiedByVolume = -1;
--
--			for (int l = 3; l < 10; l++) {
--				if (IsAValidEquipmentSlotForIteration(l))
--					ApplyEquipFunctional(l, armor[l]);
-+		}
-+		public void VanillaUpdateAccessory(int l, Item item, bool hideVisual, ref bool flag, ref bool flag2, ref bool flag3) {
-+			if (IsAValidEquipmentSlotForIteration(l))
-+				ApplyEquipFunctional(l, item);
-+
-+			if (SoundLoader.itemToMusic.ContainsKey(item.type))
-+				Main.musicBox2 = SoundLoader.itemToMusic[item.type];
-+
-+			if (item.wingSlot > 0) {
-+				if (!hideVisual || velocity.Y != 0f && !mount.Active)
-+					wings = item.wingSlot;
-+
-+				wingsLogic = item.wingSlot;
 +			}
-+
-+			ApplyEquipVanity(l, item);
-+			ItemLoader.UpdateAccessory(item, this, hideVisual);
 +		}
 +
-+		public void VanillaUpdateVanityAccessory(Item item) {
-+			//for (int n = 13; n < 18 + this.extraAccessorySlots; n++)
-+			{
-+				int type3 = item.type;
-+				if (item.wingSlot > 0)
-+					wings = item.wingSlot;
-+			}
-+			if (wet && ShouldFloatInWater)
-+				accFlipper = true;
-+		}
-+
-+		public void UpdateEquips(int i) //Noise for the Diff
++		public void UpdateEquips(int i)
 +		{
++			VanillaPreUpdateInventory();
 +			for (int j = 0; j < 58; j++) {
 +				VanillaUpdateInventory(inventory[j]);
 +			}
++			VanillaPostUpdateInventory();
 +
-+			for (int k = 0; k < 8 + extraAccessorySlots; k++) {
-+				VanillaUpdateEquip(armor[k]);
-+			}
-+
-+			bool flag = false;
-+			bool flag2 = false;
-+			bool flag3 = false;
-+			for (int l = 3; l < 8 + extraAccessorySlots; l++) {
-+				VanillaUpdateAccessory(l, armor[l], hideVisibleAccessory[l], ref flag, ref flag2, ref flag3);
-+			}
-+
-+			PlayerHooks.UpdateEquips(this, ref flag, ref flag2, ref flag3);
-+			// wing loop is merged into VanillaUpdateAccessory
-+			for (int n = 13; n < 18 + extraAccessorySlots; n++) {
-+				if (IsAValidEquipmentSlotForIteration(n))
-+					ApplyEquipVanity(n, armor[n]);
-+			}
-+
-+			PlayerHooks.UpdateVanityAccessories(this);
-+
-+			if (dd2Accessory) {
-+				minionDamage += 0.1f;
-+				maxTurrets++;
++			for (int k = 0; k < 10; k++) {
++				if (IsAValidEquipmentSlotForIteration(k))
++					VanillaUpdateEquip(armor[k]);
  			}
  
+ 			equippedAnyWallSpeedAcc = false;
+@@ -9255,21 +_,24 @@
+ 
+ 			for (int l = 3; l < 10; l++) {
+ 				if (IsAValidEquipmentSlotForIteration(l))
+-					ApplyEquipFunctional(l, armor[l]);
++					ApplyEquipFunctional(armor[l], hideVisibleAccessory[l]);
+ 			}
+ 
++			PlayerHooks.UpdateEquips(this);
++			
  			if (skyStoneEffects) {
  				lifeRegen += 2;
  				statDefense += 4;
@@ -1256,36 +1212,61 @@
  				minionKB += 0.5f;
  			}
  
--			if (dd2Accessory) {
--				minionDamage += 0.1f;
--				maxTurrets++;
--			}
--
--			for (int m = 3; m < 10; m++) {
--				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
--					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
--						wings = armor[m].wingSlot;
--
--					wingsLogic = armor[m].wingSlot;
--				}
--			}
--
--			for (int n = 13; n < 20; n++) {
--				if (IsAValidEquipmentSlotForIteration(n))
--					ApplyEquipVanity(n, armor[n]);
--			}
--
--			if (wet && ShouldFloatInWater)
--				accFlipper = true;
--
- 			if (whoAmI == Main.myPlayer && Main.SceneMetrics.HasClock && accWatch < 3)
- 				accWatch++;
+@@ -9278,6 +_,7 @@
+ 				maxTurrets++;
+ 			}
  
-@@ -9494,7 +_,7 @@
++			/* wing loop is merged into ApplyEquipFunctional
+ 			for (int m = 3; m < 10; m++) {
+ 				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
+ 					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
+@@ -9286,12 +_,15 @@
+ 					wingsLogic = armor[m].wingSlot;
+ 				}
+ 			}
++			*/
+ 
+ 			for (int n = 13; n < 20; n++) {
+ 				if (IsAValidEquipmentSlotForIteration(n))
+ 					ApplyEquipVanity(n, armor[n]);
+ 			}
+ 
++			PlayerHooks.UpdateVanityAccessories(this);
++
+ 			if (wet && ShouldFloatInWater)
+ 				accFlipper = true;
+ 
+@@ -9463,6 +_,10 @@
  		}
  
- 		private void ApplyEquipFunctional(int itemSlot, Item currentItem) {
+ 		private void ApplyEquipVanity(int itemSlot, Item currentItem) {
++			ApplyEquipVanity(currentItem); //remove itemSlot parameter and make public so mods can call from their own accessory slots
++		}
++
++		public void ApplyEquipVanity(Item currentItem) {
+ 			int type = currentItem.type;
+ 			if (currentItem.wingSlot > 0)
+ 				wings = currentItem.wingSlot;
+@@ -9484,6 +_,8 @@
+ 				ApplyMusicBox(currentItem);
+ 
+ 			UpdateBootVisualEffects(currentItem);
++
++			ItemLoader.UpdateVanity(currentItem, this);
+ 		}
+ 
+ 		private WingStats GetWingStats(int wingID) {
+@@ -9493,8 +_,12 @@
+ 			return ArmorIDs.Wing.Sets.Stats[wingID];
+ 		}
+ 
+-		private void ApplyEquipFunctional(int itemSlot, Item currentItem) {
 -			if (currentItem.expertOnly && !Main.expertMode)
++		// made public and itemSlot parameter removed, so mods can call this method from their own accessory slots
++		public void ApplyEquipFunctional(Item currentItem, bool hideVisual) {
++			int itemSlot = 0;
++			bool[] hideVisibleAccessory = { hideVisual };
++
 +			if ((currentItem.expertOnly && !Main.expertMode) || (currentItem.masterOnly && !Main.masterMode))
  				return;
  
@@ -1351,7 +1332,7 @@
  				SoundEngine.PlaySound(SoundID.Item166, base.Center);
  				int num3 = -1;
  				if (Main.curMusic == 1)
-@@ -10521,10 +_,14 @@
+@@ -10521,13 +_,26 @@
  					currentItem.SetDefaults(5040);
  				else if (Main.curMusic == 89)
  					currentItem.SetDefaults(5044);
@@ -1362,11 +1343,33 @@
 +					;//Silence
 +				else if (Main.curMusic < Main.maxMusic)
  					currentItem.SetDefaults(num3 + 562);
-+				else if (SoundLoader.musicToItem.ContainsKey(Main.curMusic))
-+					currentItem.SetDefaults(SoundLoader.musicToItem[Main.curMusic]);
++				else if (SoundLoader.musicToItem.TryGetValue(Main.curMusic, out int modMusicBoxType))
++					currentItem.SetDefaults(modMusicBoxType);
  			}
  
  			ApplyMusicBox(currentItem);
++
++			if (currentItem.wingSlot > 0) {
++				if (!hideVisibleAccessory[itemSlot] || velocity.Y != 0f && !mount.Active)
++					wings = currentItem.wingSlot;
++
++				wingsLogic = currentItem.wingSlot;
++			}
++
++			ItemLoader.UpdateAccessory(currentItem, this, hideVisual);
+ 		}
+ 
+ 		private void ApplyMusicBox(Item currentItem) {
+@@ -10714,6 +_,9 @@
+ 			if (currentItem.type == 5044)
+ 				Main.musicBox2 = 85;
+ 
++			if (SoundLoader.itemToMusic.TryGetValue(currentItem.type, out int modMusicBox))
++				Main.musicBox2 = modMusicBox;
++
+ 			Main.musicBoxNotModifiedByVolume = Main.musicBox2;
+ 		}
+ 
 @@ -10746,10 +_,13 @@
  
  			if (head == 112 && body == 75 && legs == 64) {
