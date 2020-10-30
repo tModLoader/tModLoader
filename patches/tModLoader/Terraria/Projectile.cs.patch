@@ -412,6 +412,15 @@
  			if (myRect.Intersects(targetRect))
  				return true;
  
+@@ -11055,7 +_,7 @@
+ 
+ 				if (numUpdates == -1 && (minion || sentry)) {
+ 					Player player = Main.player[owner];
+-					damage = (int)((float)originalDamage * player.minionDamage);
++					damage = (int)((float)originalDamage * (float)(player.allDamage & player.minionDamage));
+ 				}
+ 
+ 				if (minion && numUpdates == -1 && type != 625 && type != 628) {
 @@ -11771,17 +_,21 @@
  					overrideHeight = 4;
  				}
