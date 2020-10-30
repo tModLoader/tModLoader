@@ -230,10 +230,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Called after Update Accessories. 
 		/// </summary>
-		/// <param name="wallSpeedBuff"></param>
-		/// <param name="tileSpeedBuff"></param>
-		/// <param name="tileRangeBuff"></param>
-		public virtual void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff) {
+		public virtual void UpdateEquips() {
 		}
 
 		/// <summary>

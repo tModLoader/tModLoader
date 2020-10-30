@@ -308,12 +308,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateUpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff);
+		private delegate void DelegateUpdateEquips();
 		private static HookList HookUpdateEquips = AddHook<DelegateUpdateEquips>(p => p.UpdateEquips);
 
-		public static void UpdateEquips(Player player, ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff) {
+		public static void UpdateEquips(Player player) {
 			foreach (int index in HookUpdateEquips.arr) {
-				player.modPlayers[index].UpdateEquips(ref wallSpeedBuff, ref tileSpeedBuff, ref tileRangeBuff);
+				player.modPlayers[index].UpdateEquips();
 			}
 		}
 

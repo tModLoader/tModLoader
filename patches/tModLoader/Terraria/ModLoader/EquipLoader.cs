@@ -286,5 +286,17 @@ namespace Terraria.ModLoader
 
 			return 0;
 		}
+
+		/// <summary>
+		/// Hook Player.PlayerFrame
+		/// Calls each of the item's equipment texture's UpdateVanity hook.
+		/// </summary>
+		public static void EquipFrameEffects(Player player) {
+			foreach (EquipType type in EquipTypes) {
+				int slot = GetPlayerEquip(player, type);
+				EquipTexture texture = GetEquipTexture(type, slot);
+				texture?.FrameEffects(player, type);
+			}
+		}
 	}
 }
