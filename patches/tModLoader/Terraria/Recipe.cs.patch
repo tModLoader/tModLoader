@@ -1,6 +1,9 @@
 --- src/Terraria/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
-@@ -3,10 +_,11 @@
+@@ -1,41 +_,44 @@
+ using System;
+ using System.Collections.Generic;
++using System.Linq;
  using Terraria.GameContent.Achievements;
  using Terraria.ID;
  using Terraria.Localization;
@@ -11,12 +14,19 @@
 -	public class Recipe
 +	public sealed partial class Recipe
  	{
- 		public static int maxRequirements = 15;
+-		public static int maxRequirements = 15;
++		private static int maxVanillaRequirements = 15;
  		public static int maxRecipes = 3000;
-@@ -16,20 +_,21 @@
- 		public Item[] requiredItem = new Item[maxRequirements];
- 		public int[] requiredTile = new int[maxRequirements];
- 		public int[] acceptedGroups = new int[maxRequirements];
+ 		public static int numRecipes;
+-		private static Recipe currentRecipe = new Recipe();
++		private static Recipe currentRecipe;
+ 		public Item createItem = new Item();
++		public List<Item> requiredItem = new List<Item>();
+-		public Item[] requiredItem = new Item[maxRequirements];
++		public List<int> requiredTile = new List<int>();
+-		public int[] requiredTile = new int[maxRequirements];
++		public List<int> acceptedGroups = new List<int>();
+-		public int[] acceptedGroups = new int[maxRequirements];
 +		
 -		public bool needHoney;
 +		internal bool needHoney;
@@ -43,61 +53,99 @@
  		private static bool _hasDelayedFindRecipes;
  
 -		public void RequireGroup(string name) {
-+		internal void RequireGroup(string name) {
++		private void RequireGroup(string name) {
  			if (!RecipeGroup.recipeGroupIDs.TryGetValue(name, out int value))
  				return;
  
-@@ -49,7 +_,7 @@
+ 			int num = 0;
+ 			while (true) {
+-				if (num < maxRequirements) {
++				if (num < acceptedGroups.Count) {
+ 					if (acceptedGroups[num] == -1)
+ 						break;
+ 
+@@ -49,10 +_,10 @@
  			acceptedGroups[num] = value;
  		}
  
 -		public void RequireGroup(int id) {
-+		internal void RequireGroup(int id) {
++		private void RequireGroup(int id) {
  			int num = 0;
  			while (true) {
- 				if (num < maxRequirements) {
-@@ -66,13 +_,13 @@
+-				if (num < maxRequirements) {
++				if (num < acceptedGroups.Count) {
+ 					if (acceptedGroups[num] == -1)
+ 						break;
+ 
+@@ -66,13 +_,9 @@
  			acceptedGroups[num] = id;
  		}
  
 -		public bool ProcessGroupsForText(int type, out string theText) {
-+		internal bool ProcessGroupsForText(int type, out string theText) {
- 			for (int i = 0; i < maxRequirements; i++) {
- 				int num = acceptedGroups[i];
- 				if (num == -1)
- 					break;
- 
+-			for (int i = 0; i < maxRequirements; i++) {
+-				int num = acceptedGroups[i];
+-				if (num == -1)
+-					break;
+-
 -				if (RecipeGroup.recipeGroups[num].ValidItems.Contains(type)) {
++		internal bool ProcessGroupsForText(int type, out string theText) {
++			foreach (int num in acceptedGroups) {
 +				if (RecipeGroup.recipeGroups[num].ContainsItem(type)) {
  					theText = RecipeGroup.recipeGroups[num].GetText();
  					return true;
  				}
-@@ -82,20 +_,22 @@
+@@ -82,35 +_,34 @@
  			return false;
  		}
  
 -		public bool AcceptedByItemGroups(int invType, int reqType) {
-+		internal bool AcceptedByItemGroups(int invType, int reqType) {
- 			for (int i = 0; i < maxRequirements; i++) {
- 				int num = acceptedGroups[i];
- 				if (num == -1)
- 					break;
- 
+-			for (int i = 0; i < maxRequirements; i++) {
+-				int num = acceptedGroups[i];
+-				if (num == -1)
+-					break;
+-
 -				if (RecipeGroup.recipeGroups[num].ValidItems.Contains(invType) && RecipeGroup.recipeGroups[num].ValidItems.Contains(reqType))
++		internal bool AcceptedByItemGroups(int invType, int reqType) {
++			foreach (int num in acceptedGroups) {
 +				if (RecipeGroup.recipeGroups[num].ContainsItem(invType) && RecipeGroup.recipeGroups[num].ContainsItem(reqType))
  					return true;
  			}
- 
+-
++			
  			return false;
  		}
  
 -		public Recipe() {
+-			for (int i = 0; i < maxRequirements; i++) {
+-				requiredItem[i] = new Item();
+-				requiredTile[i] = -1;
+-				acceptedGroups[i] = -1;
+-			}
++		static Recipe() {
++			currentRecipe = new Recipe {
++				requiredItem = new List<Item>(),
++				requiredTile = Enumerable.Repeat(-1, maxVanillaRequirements).ToList(),
++				acceptedGroups = Enumerable.Repeat(-1, maxVanillaRequirements).ToList()
++			};
++			for (int i = 0; i < maxVanillaRequirements; i++) currentRecipe.requiredItem.Add(new Item());
++		}
++
 +		internal Recipe(Mod mod = null) {
 +			Mod = mod;
-+
- 			for (int i = 0; i < maxRequirements; i++) {
- 				requiredItem[i] = new Item();
- 				requiredTile[i] = -1;
+ 		}
+ 
+ 		public void Create() {
+ 			Item[] array = null;
+ 			Item item = null;
+ 			Item item2 = null;
+-			for (int i = 0; i < maxRequirements; i++) {
++			for (int i = 0; i < requiredItem.Count; i++) {
+ 				item2 = requiredItem[i];
+-				if (item2.type == 0)
+-					break;
+ 
+ 				int num = item2.stack;
+ 				if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
 @@ -128,6 +_,8 @@
  					}
  				}
@@ -152,6 +200,36 @@
  			if (!anyPressurePlate)
  				return false;
  
+@@ -309,7 +_,7 @@
+ 			Main.numAvailableRecipes = 0;
+ 			if (Main.guideItem.type > 0 && Main.guideItem.stack > 0 && Main.guideItem.Name != "") {
+ 				for (int j = 0; j < maxRecipes && Main.recipe[j].createItem.type != 0; j++) {
+-					for (int k = 0; k < maxRequirements && Main.recipe[j].requiredItem[k].type != 0; k++) {
++					for (int k = 0; k < Main.recipe[j].requiredItem.Count; k++) {
+ 						if (Main.guideItem.IsTheSameAs(Main.recipe[j].requiredItem[k]) || Main.recipe[j].useWood(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useSand(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useIronBar(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useFragment(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].AcceptedByItemGroups(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].usePressurePlate(Main.guideItem.type, Main.recipe[j].requiredItem[k].type)) {
+ 							Main.availableRecipe[Main.numAvailableRecipes] = j;
+ 							Main.numAvailableRecipes++;
+@@ -359,7 +_,7 @@
+ 				for (int n = 0; n < maxRecipes && Main.recipe[n].createItem.type != 0; n++) {
+ 					bool flag = true;
+ 					if (flag) {
+-						for (int num3 = 0; num3 < maxRequirements && Main.recipe[n].requiredTile[num3] != -1; num3++) {
++						for (int num3 = 0; num3 < Main.recipe[n].requiredTile.Count && Main.recipe[n].requiredTile[num3] != -1; num3++) {
+ 							if (!Main.player[Main.myPlayer].adjTile[Main.recipe[n].requiredTile[num3]]) {
+ 								flag = false;
+ 								break;
+@@ -368,10 +_,8 @@
+ 					}
+ 
+ 					if (flag) {
+-						for (int num4 = 0; num4 < maxRequirements; num4++) {
++						for (int num4 = 0; num4 < Main.recipe[n].requiredItem.Count; num4++) {
+ 							item = Main.recipe[n].requiredItem[num4];
+-							if (item.type == 0)
+-								break;
+ 
+ 							int num5 = item.stack;
+ 							bool flag2 = false;
 @@ -393,7 +_,7 @@
  					}
  
@@ -179,7 +257,7 @@
  		}
  
  		public static void SetupRecipes() {
-@@ -13317,7 +_,10 @@
+@@ -13317,14 +_,17 @@
  			AddRecipe();
  			CreateReverseWallRecipes();
  			CreateReversePlatformRecipes();
@@ -190,6 +268,15 @@
  			UpdateMaterialFieldForAllRecipes();
  		}
  
+ 		private static void UpdateMaterialFieldForAllRecipes() {
+ 			for (int i = 0; i < numRecipes; i++) {
+-				for (int j = 0; Main.recipe[i].requiredItem[j].type > 0; j++) {
+-					Main.recipe[i].requiredItem[j].material = ItemID.Sets.IsAMaterial[Main.recipe[i].requiredItem[j].type];
++				foreach (Item item in Main.recipe[i].requiredItem) {
++					item.material = ItemID.Sets.IsAMaterial[item.type];
+ 				}
+ 
+ 				Main.recipe[i].createItem.material = ItemID.Sets.IsAMaterial[Main.recipe[i].createItem.type];
 @@ -13332,7 +_,7 @@
  		}
  
@@ -199,6 +286,40 @@
  				Item item = new Item();
  				item.SetDefaults(i, noMatCheck: true);
  				item.checkMat();
+@@ -14185,14 +_,12 @@
+ 		private static void CreateReversePlatformRecipes() {
+ 			int num = numRecipes;
+ 			for (int i = 0; i < num; i++) {
+-				if (Main.recipe[i].createItem.createTile >= 0 && TileID.Sets.Platforms[Main.recipe[i].createItem.createTile] && Main.recipe[i].requiredItem[1].type == 0) {
++				if (Main.recipe[i].createItem.createTile >= 0 && TileID.Sets.Platforms[Main.recipe[i].createItem.createTile] && Main.recipe[i].requiredItem.Count == 1) {
+ 					currentRecipe.createItem.SetDefaults(Main.recipe[i].requiredItem[0].type);
+ 					currentRecipe.createItem.stack = Main.recipe[i].requiredItem[0].stack;
+ 					currentRecipe.requiredItem[0].SetDefaults(Main.recipe[i].createItem.type);
+ 					currentRecipe.requiredItem[0].stack = Main.recipe[i].createItem.stack;
+-					for (int j = 0; j < currentRecipe.requiredTile.Length; j++) {
+-						currentRecipe.requiredTile[j] = Main.recipe[i].requiredTile[j];
+-					}
++					currentRecipe.requiredTile = new List<int>(Main.recipe[i].requiredTile);
+ 
+ 					AddRecipe();
+ 					Recipe recipe = Main.recipe[numRecipes - 1];
+@@ -14208,14 +_,12 @@
+ 		private static void CreateReverseWallRecipes() {
+ 			int num = numRecipes;
+ 			for (int i = 0; i < num; i++) {
+-				if (Main.recipe[i].createItem.createWall > 0 && Main.recipe[i].requiredItem[1].type == 0 && Main.recipe[i].requiredItem[0].createWall == -1) {
++				if (Main.recipe[i].createItem.createWall > 0 && Main.recipe[i].requiredItem.Count == 1 && Main.recipe[i].requiredItem[0].createWall == -1) {
+ 					currentRecipe.createItem.SetDefaults(Main.recipe[i].requiredItem[0].type);
+ 					currentRecipe.createItem.stack = Main.recipe[i].requiredItem[0].stack;
+ 					currentRecipe.requiredItem[0].SetDefaults(Main.recipe[i].createItem.type);
+ 					currentRecipe.requiredItem[0].stack = Main.recipe[i].createItem.stack;
+-					for (int j = 0; j < currentRecipe.requiredTile.Length; j++) {
+-						currentRecipe.requiredTile[j] = Main.recipe[i].requiredTile[j];
+-					}
++					currentRecipe.requiredTile = new List<int>(Main.recipe[i].requiredTile);
+ 
+ 					AddRecipe();
+ 					Recipe recipe = Main.recipe[numRecipes - 1];
 @@ -14227,8 +_,9 @@
  				}
  			}
@@ -211,7 +332,7 @@
  			if (ingridients.Length == 1) {
  				ingridients = new int[2] {
  					ingridients[0],
-@@ -14246,15 +_,39 @@
+@@ -14246,18 +_,56 @@
  			}
  		}
  
@@ -225,32 +346,51 @@
  		private static void AddRecipe() {
 -			if (currentRecipe.requiredTile[0] == 13)
 -				currentRecipe.alchemy = true;
-+			if (currentRecipe.requiredTile[0] == TileID.Bottles)
+-
++			if (currentRecipe.requiredTile.Count > 0 && currentRecipe.requiredTile[0] == TileID.Bottles)
 +				currentRecipe.AddConsumeItemCallback(ConsumptionRules.Alchemy);
 +
-+			void ReplaceCondition(ref bool field, Recipe.Condition cond) {
++			static void ReplaceCondition(ref bool field, Recipe.Condition cond) {
 +				if (field)
 +					currentRecipe.AddCondition(cond);
 +
 +				field = false;
 +			}
++
 +			ReplaceCondition(ref currentRecipe.needGraveyardBiome, Condition.InGraveyardBiome);
 +			ReplaceCondition(ref currentRecipe.needSnowBiome, Condition.InSnow);
 +			ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
 +			ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);
 +			ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);
 +
-+			void ReplaceGroup(ref bool field, int group) {
++			static void ReplaceGroup(ref bool field, int group) {
 +				if (field)
 +					currentRecipe.RequireGroup(group);
 +
 +				field = false;
 +			}
++
 +			ReplaceGroup(ref currentRecipe.anyFragment, RecipeGroupID.Fragment);
 +			ReplaceGroup(ref currentRecipe.anySand, RecipeGroupID.Sand);
 +			ReplaceGroup(ref currentRecipe.anyWood, RecipeGroupID.Wood);
 +			ReplaceGroup(ref currentRecipe.anyIronBar, RecipeGroupID.IronBar);
 +			ReplaceGroup(ref currentRecipe.anyPressurePlate, RecipeGroupID.PressurePlate);
- 
++
++			currentRecipe.requiredItem.RemoveAll(item => item.IsAir);
++			currentRecipe.requiredTile.RemoveAll(tile => tile == -1);
++			currentRecipe.acceptedGroups.RemoveAll(group => group == -1);
++			
  			Main.recipe[numRecipes] = currentRecipe;
- 			currentRecipe = new Recipe();
+-			currentRecipe = new Recipe();
++			currentRecipe = new Recipe {
++				requiredItem = new List<Item>(),
++				requiredTile = Enumerable.Repeat(-1, maxVanillaRequirements).ToList(),
++				acceptedGroups = Enumerable.Repeat(-1, maxVanillaRequirements).ToList()
++			};
++
++			for (int i = 0; i < maxVanillaRequirements; i++)
++				currentRecipe.requiredItem.Add(new Item());
++
+ 			numRecipes++;
+ 		}
+ 

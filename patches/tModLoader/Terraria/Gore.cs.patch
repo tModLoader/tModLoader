@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Gore.cs
 +++ src/tModLoader/Terraria/Gore.cs
-@@ -7,11 +_,18 @@
+@@ -7,10 +_,11 @@
  using Terraria.Graphics.Effects;
  using Terraria.ID;
  using Terraria.Utilities;
@@ -8,25 +8,19 @@
  
  namespace Terraria
  {
- 	public class Gore
+-	public class Gore
++	public partial class Gore
  	{
-+		public ModGore modGore {
-+			get;
-+			internal set;
-+		}
-+		internal int realType = 0;
-+		public Vector2 drawOffset = Vector2.Zero;
  		public static int goreTime = 600;
  		public Vector2 position;
- 		public Vector2 velocity;
 @@ -239,6 +_,10 @@
  			if (Main.netMode == 2 || !active)
  				return;
  
-+			if (modGore != null && !modGore.Update(this))
++			if (ModGore != null && !ModGore.Update(this))
 +				return;
 +
-+			ModGore.SetupUpdateType(this);
++			GoreLoader.SetupUpdateType(this);
  			switch (GoreID.Sets.SpecialAI[type]) {
  				case 4:
  					UpdateAmbientFloorCloud();
@@ -34,15 +28,21 @@
  				else
  					Lighting.AddLight((int)((position.X + 32f * scale / 2f) / 16f), (int)((position.Y + 32f * scale / 2f) / 16f), num37, num38, num39);
  			}
-+			ModGore.TakeDownUpdateType(this);
++			GoreLoader.TakeDownUpdateType(this);
  		}
  
  		private void Gore_UpdateLeaf() {
-@@ -1035,6 +_,7 @@
+@@ -1035,6 +_,13 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
  			Main.gore[num].scale = Scale;
-+			ModGore.SetupGore(Main.gore[num]);
++			
++			var gore = Main.gore[num];
++			gore.ResetNewFields();
++			
++			gore.ModGore = GoreLoader.GetModGore(gore.type);
++			gore.ModGore?.OnSpawn(gore);
++			
  			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
  				Main.gore[num].type = Main.rand.Next(11, 14);
  				Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
@@ -50,8 +50,8 @@
  		}
  
  		public Color GetAlpha(Color newColor) {
-+			if (modGore != null) {
-+				Color? modColor = modGore.GetAlpha(this, newColor);
++			if (ModGore != null) {
++				Color? modColor = ModGore.GetAlpha(this, newColor);
 +				if (modColor.HasValue)
 +					return modColor.Value;
 +			}

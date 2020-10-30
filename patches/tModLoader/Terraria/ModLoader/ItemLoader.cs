@@ -144,9 +144,9 @@ namespace Terraria.ModLoader
 
 		internal static void SetDefaults(Item item, bool createModItem = true) {
 			if (IsModItem(item.type) && createModItem)
-				item.modItem = GetItem(item.type).NewInstance(item);
+				item.modItem = GetItem(item.type).Clone(item);
 
-			item.globalItems = InstancedGlobals.Select(g => g.NewInstance(item)).ToArray();
+			item.globalItems = InstancedGlobals.Select(g => g.Clone(item, item)).ToArray();
 
 			item.modItem?.AutoDefaults();
 			item.modItem?.SetDefaults();
@@ -155,6 +155,15 @@ namespace Terraria.ModLoader
 				g.Instance(item).SetDefaults(item);
 		}
 
+		private static HookList HookOnCreate = AddHook<Action<Item, ItemCreationContext>>(g => g.OnCreate);
+		public static void OnCreate(Item item, ItemCreationContext context) {
+			foreach (var g in HookOnCreate.arr) {
+				 g.Instance(item).OnCreate(item, context);
+			}
+
+			item.modItem?.OnCreate(context);
+		}
+		
 		//near end of Terraria.Main.DrawItem before default drawing call
 		//  if(ItemLoader.animations.Contains(item.type))
 		//  { ItemLoader.DrawAnimatedItem(item, whoAmI, color, alpha, rotation, scale); return; }
@@ -807,10 +816,8 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookUpdateEquip = AddHook<Action<Item, Player>>(g => g.UpdateEquip);
-		//place in second for loop of Terraria.Player.UpdateEquips before prefix checking
-		//  call ItemLoader.UpdateEquip(this.armor[k], this)
 		/// <summary>
-		/// Calls ModItem.UpdateEquip and all GlobalItem.UpdateEquip hooks.
+		/// Hook at the end of Player.VanillaUpdateEquip can be called from modded slots for modded equipments
 		/// </summary>
 		public static void UpdateEquip(Item item, Player player) {
 			if (item.IsAir)
@@ -823,10 +830,8 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookUpdateAccessory = AddHook<Action<Item, Player, bool>>(g => g.UpdateAccessory);
-		//place at end of third for loop of Terraria.Player.UpdateEquips
-		//  call ItemLoader.UpdateAccessory(this.armor[l], this, this.hideVisual[l])
 		/// <summary>
-		/// Calls ModItem.UpdateAccessory and all GlobalItem.UpdateAccessory hooks.
+		/// Hook at the end of Player.ApplyEquipFunctional can be called from modded slots for modded equipments
 		/// </summary>
 		public static void UpdateAccessory(Item item, Player player, bool hideVisual) {
 			if (item.IsAir)
@@ -838,15 +843,18 @@ namespace Terraria.ModLoader
 				g.Instance(item).UpdateAccessory(item, player, hideVisual);
 		}
 
+		private static HookList HookUpdateVanity = AddHook<Action<Item, Player>>(g => g.UpdateVanity);
 		/// <summary>
-		/// Calls each of the item's equipment texture's UpdateVanity hook.
+		/// Hook at the end of Player.ApplyEquipVanity can be called from modded slots for modded equipments
 		/// </summary>
-		public static void UpdateVanity(Player player) {
-			foreach (EquipType type in EquipLoader.EquipTypes) {
-				int slot = EquipLoader.GetPlayerEquip(player, type);
-				EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
-				texture?.UpdateVanity(player, type);
-			}
+		public static void UpdateVanity(Item item, Player player) {
+			if (item.IsAir)
+				return;
+
+			item.modItem?.UpdateVanity(player);
+
+			foreach (var g in HookUpdateVanity.arr)
+				g.Instance(item).UpdateVanity(item, player);
 		}
 
 		private static HookList HookUpdateArmorSet = AddHook<Action<Player, string>>(g => g.UpdateArmorSet);
@@ -1218,8 +1226,9 @@ namespace Terraria.ModLoader
 		/// Returns the wing item that the player is functionally using. If player.wingsLogic has been modified, so no equipped wing can be found to match what the player is using, this creates a new Item object to return.
 		/// </summary>
 		public static Item GetWing(Player player) {
+			//TODO: this doesn't work with wings in modded accessory slots
 			Item item = null;
-			for (int k = 3; k < 8 + player.extraAccessorySlots; k++) {
+			for (int k = 3; k < 10; k++) {
 				if (player.armor[k].wingSlot == player.wingsLogic) {
 					item = player.armor[k];
 				}
@@ -1594,13 +1603,6 @@ namespace Terraria.ModLoader
 			return chat + "\n\n(" + catchLocation + ")";
 		}
 
-		private static HookList HookOnCraft = AddHook<Action<Item, Recipe>>(g => g.OnCraft);
-		public static void OnCraft(Item item, Recipe recipe) {
-			item.modItem?.OnCraft(recipe);
-			foreach (var g in HookOnCraft.arr)
-				g.Instance(item).OnCraft(item, recipe);
-		}
-
 		private delegate bool DelegatePreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y);
 		private static HookList HookPreDrawTooltip = AddHook<DelegatePreDrawTooltip>(g => g.PreDrawTooltip);
 		public static bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {
@@ -1719,10 +1721,8 @@ namespace Terraria.ModLoader
 				if (!item.InstancePerEntity)
 					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
 
-				if (!item.CloneNewInstances &&
-						!HasMethod(type, "NewInstance", typeof(Item)) &&
-						!HasMethod(type, "Clone", typeof(Item), typeof(Item)))
-					throw new Exception(type + " has InstancePerEntity but must either set CloneNewInstances to true, or override NewInstance(Item) or Clone(Item, Item)");
+				if (!HasMethod(type, "Clone", typeof(Item), typeof(Item)))
+					throw new Exception(type + " has InstancePerEntity but does not override Clone(Item, Item)");
 			}
 		}
 	}
