@@ -1065,11 +1065,11 @@
  				hasFootball = true;
 +		}
  
--			for (int k = 0; k < 10; k++) {
--				if (!IsAValidEquipmentSlotForIteration(k) || (armor[k].expertOnly && !Main.expertMode))
 +		public void VanillaUpdateEquip(Item item) {
 +			Item[] armor = {item};
-+			for (k = 0; k < 1; k++) {
+-			for (int k = 0; k < 10; k++) {
++			for (int k = 0; k < 1; k++) {
+-				if (!IsAValidEquipmentSlotForIteration(k) || (armor[k].expertOnly && !Main.expertMode))
 +				if ((armor[k].expertOnly && !Main.expertMode) || (armor[k].masterOnly && !Main.masterMode))
  					continue;
  
