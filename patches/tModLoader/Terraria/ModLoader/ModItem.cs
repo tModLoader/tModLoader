@@ -494,11 +494,18 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to give effects to this accessory when equipped in a vanity slot. Vanilla uses this for boot effects, wings and merman/werewolf visual flags
+		/// </summary>
+		/// <param name="player">The player.</param>
+		public virtual void UpdateVanity(Player player) {
+		}
+
+		/// <summary>
 		/// Allows you to create special effects (such as dust) when this item's equipment texture of the given equipment type is displayed on the player. Note that this hook is only ever called through this item's associated equipment texture.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <param name="type">The type.</param>
-		public virtual void UpdateVanity(Player player, EquipType type) {
+		public virtual void EquipFrameEffects(Player player, EquipType type) {
 		}
 
 		/// <summary>
