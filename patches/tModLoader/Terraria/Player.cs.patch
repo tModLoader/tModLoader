@@ -1158,7 +1158,7 @@
  				}
  
  				if (armor[k].prefix == 73)
-@@ -9245,56 +_,90 @@
+@@ -9245,56 +_,89 @@
  
  				if (armor[k].prefix == 80)
  					meleeSpeed += 0.04f;
@@ -1177,12 +1177,11 @@
 -					ApplyEquipFunctional(l, armor[l]);
 +		}
 +		public void VanillaUpdateAccessory(int l, Item item, bool hideVisual, ref bool flag, ref bool flag2, ref bool flag3) {
-+
 +			if (IsAValidEquipmentSlotForIteration(l))
 +				ApplyEquipFunctional(l, item);
 +
 +			if (SoundLoader.itemToMusic.ContainsKey(item.type))
-+					Main.musicBox2 = SoundLoader.itemToMusic[item.type];
++				Main.musicBox2 = SoundLoader.itemToMusic[item.type];
 +
 +			if (item.wingSlot > 0) {
 +				if (!hideVisual || velocity.Y != 0f && !mount.Active)
