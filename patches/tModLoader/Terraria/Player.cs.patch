@@ -3943,7 +3943,7 @@
  			}
  
 -			int damage = (int)(20f * (1f + magicDamage + minionDamage - 2f));
-+			int damage = (int)(20f * (1f + magicDamage.additive + minionDamage.additive - 2f));
++			int damage = (int)(20f * (1f + (float)(allDamage & magicDamage) + (float)(allDamage & minionDamage) - 2f));
  			_ = Main.projectile[Projectile.NewProjectile(MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer)];
  		}
  
