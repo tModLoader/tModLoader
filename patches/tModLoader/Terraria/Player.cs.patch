@@ -2337,7 +2337,7 @@
  
 +			//TODO: Do these hooks go inside or outside the conditional?
 +			PlayerHooks.FrameEffects(this);
-+			ItemLoader.UpdateVanity(this);
++			EquipLoader.EquipFrameEffects(this);
  			if (!isDisplayDollOrInanimate) {
  				if (((body == 68 && legs == 57 && head == 106) || (body == 74 && legs == 63 && head == 106)) && Main.rand.Next(10) == 0) {
  					int num3 = Dust.NewDust(new Vector2(position.X - velocity.X * 2f, position.Y - 2f - velocity.Y * 2f), width, height, 43, 0f, 0f, 100, new Color(255, 0, 255), 0.3f);

@@ -505,7 +505,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <param name="type">The type.</param>
-		public virtual void UpdateVanity(Player player, EquipType type) {
+		public virtual void EquipFrameEffects(Player player, EquipType type) {
 		}
 
 		/// <summary>

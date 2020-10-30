@@ -857,17 +857,6 @@ namespace Terraria.ModLoader
 				g.Instance(item).UpdateVanity(item, player);
 		}
 
-		/// <summary>
-		/// Calls each of the item's equipment texture's UpdateVanity hook.
-		/// </summary>
-		public static void UpdateVanity(Player player) {
-			foreach (EquipType type in EquipLoader.EquipTypes) {
-				int slot = EquipLoader.GetPlayerEquip(player, type);
-				EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
-				texture?.UpdateVanity(player, type);
-			}
-		}
-
 		private static HookList HookUpdateArmorSet = AddHook<Action<Player, string>>(g => g.UpdateArmorSet);
 		//at end of Terraria.Player.UpdateArmorSets call ItemLoader.UpdateArmorSet(this, this.armor[0], this.armor[1], this.armor[2])
 		/// <summary>
