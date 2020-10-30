@@ -8,10 +8,9 @@ namespace Terraria.ModLoader.Default
 		internal IList<TagCompound> data = new List<TagCompound>();
 
 		public override bool InstancePerEntity => true;
-		public override bool CloneNewInstances => true;
 
-		public override GlobalItem Clone() {
-			UnloadedGlobalItem clone = (UnloadedGlobalItem)base.Clone();
+		public override GlobalItem Clone(Item item, Item newItem) {
+			UnloadedGlobalItem clone = (UnloadedGlobalItem)base.Clone(item, newItem);
 			if (data != null) {
 				clone.data = TagIO.Clone(data);
 			}

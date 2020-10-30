@@ -1994,7 +1994,7 @@
  
  				bool flag = false;
 -				if (((gore[i].type >= 706 && gore[i].type <= 717) || gore[i].type == 943 || gore[i].type == 1147 || (gore[i].type >= 1160 && gore[i].type <= 1162)) && (gore[i].frame < 7 || gore[i].frame > 9))
-+				if (ModGore.DrawBackGore(gore[i]))
++				if (GoreLoader.DrawBackGore(gore[i]))
  					flag = true;
  
  				if (flag) {
@@ -2017,7 +2017,7 @@
  					continue;
  
 -				if (((gore[i].type >= 706 && gore[i].type <= 717) || gore[i].type == 943 || gore[i].type == 1147 || (gore[i].type >= 1160 && gore[i].type <= 1162)) && (gore[i].frame < 7 || gore[i].frame > 9)) {
-+				if (ModGore.DrawBackGore(gore[i])) {
++				if (GoreLoader.DrawBackGore(gore[i])) {
  					drawBackGore = true;
  					continue;
  				}
@@ -2273,9 +2273,15 @@
  			if (!flag) {
  				DrawNPCChatButtons(num, textColor, amountOfLines, focusText, focusText2);
  				if (text2 != null) {
-@@ -29215,7 +_,13 @@
+@@ -29211,11 +_,19 @@
+ 						SubmitSignText();
+ 					else
+ 						IngameFancyUI.OpenVirtualKeyboard(1);
++					return;
+ 				}
  				else if (NPCID.Sets.IsTownPet[npc[player[myPlayer].talkNPC].type]) {
  					player[myPlayer].PetAnimal(player[myPlayer].talkNPC);
++					return;
  				}
 +
 +				if (!NPCLoader.PreChatButtonClicked(true))
@@ -2429,6 +2435,34 @@
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
  				if (numAvailableRecipes > 0)
+@@ -30626,7 +_,7 @@
+ 				if (numAvailableRecipes > 0) {
+ 					UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
+ 					UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
+-					for (int num72 = 0; num72 < Recipe.maxRequirements; num72++) {
++					for (int num72 = 0; num72 < recipe[availableRecipe[focusRecipe]].requiredItem.Count; num72++) {
+ 						if (recipe[availableRecipe[focusRecipe]].requiredItem[num72].type == 0) {
+ 							UILinkPointNavigator.Shortcuts.CRAFT_CurrentIngridientsCount = num72 + 1;
+ 							break;
+@@ -30671,7 +_,8 @@
+ 						UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = 1 + num72;
+ 						Microsoft.Xna.Framework.Color color5 = inventoryBack;
+ 						inventoryBack = new Microsoft.Xna.Framework.Color((byte)num75, (byte)num75, (byte)num75, (byte)num75);
+-						ItemSlot.Draw(spriteBatch, ref recipe[availableRecipe[focusRecipe]].requiredItem[num72], 22, new Vector2(num73, num74));
++						Item tempItem = recipe[availableRecipe[focusRecipe]].requiredItem[num72];
++						ItemSlot.Draw(spriteBatch, ref tempItem, 22, new Vector2(num73, num74));
+ 						inventoryBack = color5;
+ 					}
+ 				}
+@@ -31092,7 +_,7 @@
+ 			else {
+ 				text = Lang.inter[21].Value + " " + guideItem.Name;
+ 				Recipe recipe = Main.recipe[availableRecipe[focusRecipe]];
+-				for (int i = 0; i < Recipe.maxRequirements; i++) {
++				for (int i = 0; i < recipe.requiredTile.Count; i++) {
+ 					int num = recipe.requiredTile[i];
+ 					if (num == -1)
+ 						break;
 @@ -31117,6 +_,8 @@
  				if (recipe.needGraveyardBiome)
  					_requiredObjecsForCraftingText.Add(Lang.inter[124].Value);
@@ -2438,6 +2472,15 @@
  				if (_requiredObjecsForCraftingText.Count == 0) {
  					string value = Lang.inter[23].Value;
  					_requiredObjecsForCraftingText.Add(value);
+@@ -31153,7 +_,7 @@
+ 				spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[22].Value, new Vector2(inventoryX, inventoryY + 118), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 				int num3 = focusRecipe;
+ 				int num4 = 0;
+-				for (int i = 0; i < Recipe.maxRequirements; i++) {
++				for (int i = 0; i < recipe[availableRecipe[num3]].requiredTile.Count; i++) {
+ 					int num5 = (i + 1) * 26;
+ 					if (recipe[availableRecipe[num3]].requiredTile[i] == -1) {
+ 						if (i == 0 && !recipe[availableRecipe[num3]].needWater && !recipe[availableRecipe[num3]].needHoney && !recipe[availableRecipe[num3]].needLava && !recipe[availableRecipe[num3]].needSnowBiome && !recipe[availableRecipe[num3]].needGraveyardBiome)
 @@ -31282,6 +_,11 @@
  				inventoryScale = 0.755f;
  				num += 5;
@@ -2456,8 +2499,8 @@
  			r.Create();
 -			if (mouseItem.type > 0 || r.createItem.type > 0)
 +			if (mouseItem.type > 0 || r.createItem.type > 0) {
++				ItemLoader.OnCreate(mouseItem, new RecipeCreationContext {recipe = r});
 +				RecipeHooks.OnCraft(mouseItem, r);
-+				ItemLoader.OnCraft(mouseItem, r);
  				SoundEngine.PlaySound(7);
 +			}
  		}
