@@ -263,37 +263,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Adds the given texture to the game as a custom gore, with the given custom gore behavior. If no custom gore behavior is provided, the custom gore will have the default vanilla behavior.
-		/// </summary>
-		/// <param name="texture">The texture.</param>
-		/// <param name="modGore">The mod gore.</param>
-		public void AddGore(string texture, ModGore modGore = null) {
-			if (!loading)
-				throw new Exception("AddGore can only be called from Mod.Load or Mod.Autoload");
-
-			int id = ModGore.ReserveGoreID();
-			ModGore.gores[texture] = id;
-			if (modGore != null) {
-				ModGore.modGores[id] = modGore;
-				ContentInstance.Register(modGore);
-			}
-		}
-
-		/// <summary>
-		/// Shorthand for calling ModGore.GetGoreSlot(this.Name + '/' + name).
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int GetGoreSlot(string name) => ModGore.GetGoreSlot(Name + '/' + name);
-
-		/// <summary>
-		/// Same as the other GetGoreSlot, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		public int GetGoreSlot<T>() where T : ModGore => GetGoreSlot(typeof(T).Name);
-
-		/// <summary>
 		/// Adds a texture to the list of background textures and assigns it a background texture slot.
 		/// </summary>
 		/// <param name="texture">The texture.</param>
