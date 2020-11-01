@@ -1994,7 +1994,7 @@
  
  				bool flag = false;
 -				if (((gore[i].type >= 706 && gore[i].type <= 717) || gore[i].type == 943 || gore[i].type == 1147 || (gore[i].type >= 1160 && gore[i].type <= 1162)) && (gore[i].frame < 7 || gore[i].frame > 9))
-+				if (ModGore.DrawBackGore(gore[i]))
++				if (GoreLoader.DrawBackGore(gore[i]))
  					flag = true;
  
  				if (flag) {
@@ -2017,7 +2017,7 @@
  					continue;
  
 -				if (((gore[i].type >= 706 && gore[i].type <= 717) || gore[i].type == 943 || gore[i].type == 1147 || (gore[i].type >= 1160 && gore[i].type <= 1162)) && (gore[i].frame < 7 || gore[i].frame > 9)) {
-+				if (ModGore.DrawBackGore(gore[i])) {
++				if (GoreLoader.DrawBackGore(gore[i])) {
  					drawBackGore = true;
  					continue;
  				}

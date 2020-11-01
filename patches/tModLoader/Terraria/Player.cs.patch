@@ -48,6 +48,15 @@
  		public OverheadMessage chatOverhead;
  		public SelectionRadial DpadRadial = new SelectionRadial();
  		public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
+@@ -436,7 +_,7 @@
+ 		public Vector2 lastDeathPostion;
+ 		public DateTime lastDeathTime;
+ 		public bool showLastDeath;
+-		public int extraAccessorySlots = 2;
++		private int extraAccessorySlots; //unused vanilla field, noob trap
+ 		public bool extraAccessory;
+ 		private bool dontConsumeWand;
+ 		public int tankPet = -1;
 @@ -690,7 +_,7 @@
  		public bool poundRelease;
  		public float ghostFade;
@@ -1020,50 +1029,51 @@
  			}
  
  			if (whoAmI == Main.myPlayer && luckPotion != oldLuckPotion) {
-@@ -8256,12 +_,14 @@
+@@ -8256,12 +_,19 @@
  			}
  		}
  
 -		public void UpdateEquips(int i) {
 +		//public void UpdateEquips(int i) {
-+		public void VanillaUpdateInventory(Item item) {
++		public void VanillaPreUpdateInventory() {
  			if (inventory[selectedItem].type == 277 && (!mount.Active || !mount.Cart))
  				trident = true;
++		}
  
--			for (int j = 0; j < 58; j++) {
--				int type = inventory[j].type;
-+			//for (int j = 0; j < 58; j++)
++		public void VanillaUpdateInventory(Item item) {
++			/*
+ 			for (int j = 0; j < 58; j++) {
+ 				int type = inventory[j].type;
++			*/
 +			{
 +				int type = item.type;
  				if ((type == 15 || type == 707) && accWatch < 1)
  					accWatch = 1;
  
-@@ -8333,14 +_,21 @@
+@@ -8333,13 +_,21 @@
  
  				if (type == 4743)
  					hasFootball = true;
--			}
- 
++
 +				ItemLoader.UpdateInventory(item, this);
-+			}
+ 			}
+ 
++		}
++
++		public void VanillaPostUpdateInventory() {
  			if (inventory[58].type == 4743)
  				hasFootball = true;
 +		}
  
--			for (int k = 0; k < 10; k++) {
--				if (!IsAValidEquipmentSlotForIteration(k) || (armor[k].expertOnly && !Main.expertMode))
--					continue;
 +		public void VanillaUpdateEquip(Item item) {
-+			// for (int k = 0; k < 10; k++)
-+			// fake array and loop to keep patches small
 +			Item[] armor = {item};
-+			int k = 0;
-+			{
-+				if (!IsAValidEquipmentSlotForIteration(k) || (armor[k].expertOnly && !Main.expertMode) || (armor[k].masterOnly && !Main.masterMode))
-+					return;
+-			for (int k = 0; k < 10; k++) {
++			for (int k = 0; k < 1; k++) {
+-				if (!IsAValidEquipmentSlotForIteration(k) || (armor[k].expertOnly && !Main.expertMode))
++				if ((armor[k].expertOnly && !Main.expertMode) || (armor[k].masterOnly && !Main.masterMode))
+ 					continue;
  
  				int type2 = armor[k].type;
- 				if ((type2 == 15 || type2 == 707) && accWatch < 1)
 @@ -8557,10 +_,13 @@
  					armorPenetration += 5;
  
@@ -1149,32 +1159,40 @@
  				}
  
  				if (armor[k].prefix == 73)
-@@ -9245,15 +_,20 @@
+@@ -9245,6 +_,22 @@
  
  				if (armor[k].prefix == 80)
  					meleeSpeed += 0.04f;
 +
 +				ItemLoader.UpdateEquip(armor[k], this);
- 			}
- 
--			equippedAnyWallSpeedAcc = false;
--			equippedAnyTileSpeedAcc = false;
--			equippedAnyTileRangeAcc = false;
- 			if (whoAmI == Main.myPlayer)
- 				Main.musicBoxNotModifiedByVolume = -1;
++			}
 +		}
-+		public void VanillaUpdateAccessory(int i, Item item, bool hideVisual, ref bool flag, ref bool flag2, ref bool flag3) {
-+			// for (int l = 3; l < 10 + extraAccessorySlots; l++)
-+			// fake array and loop to keep patches small
-+			var armor = new[] { item };
-+			int l = 0;
- 
--			for (int l = 3; l < 10; l++) {
-+			{
- 				if (IsAValidEquipmentSlotForIteration(l))
- 					ApplyEquipFunctional(l, armor[l]);
++
++		public void UpdateEquips(int i)
++		{
++			VanillaPreUpdateInventory();
++			for (int j = 0; j < 58; j++) {
++				VanillaUpdateInventory(inventory[j]);
++			}
++			VanillaPostUpdateInventory();
++
++			for (int k = 0; k < 10; k++) {
++				if (IsAValidEquipmentSlotForIteration(k))
++					VanillaUpdateEquip(armor[k]);
  			}
-@@ -9262,15 +_,58 @@
+ 
+ 			equippedAnyWallSpeedAcc = false;
+@@ -9255,21 +_,24 @@
+ 
+ 			for (int l = 3; l < 10; l++) {
+ 				if (IsAValidEquipmentSlotForIteration(l))
+-					ApplyEquipFunctional(l, armor[l]);
++					ApplyEquipFunctional(armor[l], hideVisibleAccessory[l]);
+ 			}
+ 
++			PlayerHooks.UpdateEquips(this);
++			
+ 			if (skyStoneEffects) {
  				lifeRegen += 2;
  				statDefense += 4;
  				meleeSpeed += 0.1f;
@@ -1192,83 +1210,63 @@
 -				minionDamage += 0.1f;
 +				//minionDamage += 0.1f;
  				minionKB += 0.5f;
-+
-+				if (SoundLoader.itemToMusic.ContainsKey(armor[l].type))
-+					Main.musicBox2 = SoundLoader.itemToMusic[armor[l].type];
-+			}
-+
-+			if (armor[l].wingSlot > 0) {
-+				if (!hideVisual || velocity.Y != 0f && !mount.Active)
-+					wings = armor[l].wingSlot;
-+
-+				wingsLogic = armor[l].wingSlot;
-+			}
-+
-+			ApplyEquipVanity(l, armor[l]);
-+			ItemLoader.UpdateAccessory(armor[l], this, hideVisual);
-+		}
-+
-+		public void VanillaUpdateVanityAccessory(Item item) {
-+			//for (int n = 13; n < 18 + this.extraAccessorySlots; n++)
-+			{
-+				int type3 = item.type;
-+				if (item.wingSlot > 0)
-+					wings = item.wingSlot;
-+			}
-+			if (wet && ShouldFloatInWater)
-+				accFlipper = true;
-+		}
-+
-+		public void UpdateEquips(int i) //Noise for the Diff
-+		{
-+			for (int j = 0; j < 58; j++) {
-+				VanillaUpdateInventory(inventory[j]);
-+			}
-+
-+			for (int k = 0; k < 10 + extraAccessorySlots; k++) {
-+				VanillaUpdateEquip(armor[k]);
-+			}
-+
-+			bool flag = false;
-+			bool flag2 = false;
-+			bool flag3 = false;
-+			for (int l = 3; l < 10 + extraAccessorySlots; l++) {
-+				VanillaUpdateAccessory(i, armor[l], hideVisibleAccessory[l], ref flag, ref flag2, ref flag3);
  			}
  
- 			if (dd2Accessory) {
-@@ -9278,23 +_,14 @@
+@@ -9278,6 +_,7 @@
  				maxTurrets++;
  			}
  
--			for (int m = 3; m < 10; m++) {
--				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
--					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
--						wings = armor[m].wingSlot;
--
--					wingsLogic = armor[m].wingSlot;
--				}
--			}
--
-+			PlayerHooks.UpdateEquips(this, ref flag, ref flag2, ref flag3);
-+			//wing loop merged into VanillaUpdateAccessory
++			/* wing loop is merged into ApplyEquipFunctional
+ 			for (int m = 3; m < 10; m++) {
+ 				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
+ 					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
+@@ -9286,12 +_,15 @@
+ 					wingsLogic = armor[m].wingSlot;
+ 				}
+ 			}
++			*/
+ 
  			for (int n = 13; n < 20; n++) {
  				if (IsAValidEquipmentSlotForIteration(n))
  					ApplyEquipVanity(n, armor[n]);
  			}
  
--			if (wet && ShouldFloatInWater)
--				accFlipper = true;
--
 +			PlayerHooks.UpdateVanityAccessories(this);
- 			if (whoAmI == Main.myPlayer && Main.SceneMetrics.HasClock && accWatch < 3)
- 				accWatch++;
++
+ 			if (wet && ShouldFloatInWater)
+ 				accFlipper = true;
  
-@@ -9494,7 +_,7 @@
+@@ -9463,6 +_,10 @@
  		}
  
- 		private void ApplyEquipFunctional(int itemSlot, Item currentItem) {
+ 		private void ApplyEquipVanity(int itemSlot, Item currentItem) {
++			ApplyEquipVanity(currentItem); //remove itemSlot parameter and make public so mods can call from their own accessory slots
++		}
++
++		public void ApplyEquipVanity(Item currentItem) {
+ 			int type = currentItem.type;
+ 			if (currentItem.wingSlot > 0)
+ 				wings = currentItem.wingSlot;
+@@ -9484,6 +_,8 @@
+ 				ApplyMusicBox(currentItem);
+ 
+ 			UpdateBootVisualEffects(currentItem);
++
++			ItemLoader.UpdateVanity(currentItem, this);
+ 		}
+ 
+ 		private WingStats GetWingStats(int wingID) {
+@@ -9493,8 +_,12 @@
+ 			return ArmorIDs.Wing.Sets.Stats[wingID];
+ 		}
+ 
+-		private void ApplyEquipFunctional(int itemSlot, Item currentItem) {
 -			if (currentItem.expertOnly && !Main.expertMode)
++		// made public and itemSlot parameter removed, so mods can call this method from their own accessory slots
++		public void ApplyEquipFunctional(Item currentItem, bool hideVisual) {
++			int itemSlot = 0;
++			bool[] hideVisibleAccessory = { hideVisual };
++
 +			if ((currentItem.expertOnly && !Main.expertMode) || (currentItem.masterOnly && !Main.masterMode))
  				return;
  
@@ -1334,7 +1332,7 @@
  				SoundEngine.PlaySound(SoundID.Item166, base.Center);
  				int num3 = -1;
  				if (Main.curMusic == 1)
-@@ -10521,10 +_,14 @@
+@@ -10521,13 +_,26 @@
  					currentItem.SetDefaults(5040);
  				else if (Main.curMusic == 89)
  					currentItem.SetDefaults(5044);
@@ -1345,11 +1343,33 @@
 +					;//Silence
 +				else if (Main.curMusic < Main.maxMusic)
  					currentItem.SetDefaults(num3 + 562);
-+				else if (SoundLoader.musicToItem.ContainsKey(Main.curMusic))
-+					currentItem.SetDefaults(SoundLoader.musicToItem[Main.curMusic]);
++				else if (SoundLoader.musicToItem.TryGetValue(Main.curMusic, out int modMusicBoxType))
++					currentItem.SetDefaults(modMusicBoxType);
  			}
  
  			ApplyMusicBox(currentItem);
++
++			if (currentItem.wingSlot > 0) {
++				if (!hideVisibleAccessory[itemSlot] || velocity.Y != 0f && !mount.Active)
++					wings = currentItem.wingSlot;
++
++				wingsLogic = currentItem.wingSlot;
++			}
++
++			ItemLoader.UpdateAccessory(currentItem, this, hideVisual);
+ 		}
+ 
+ 		private void ApplyMusicBox(Item currentItem) {
+@@ -10714,6 +_,9 @@
+ 			if (currentItem.type == 5044)
+ 				Main.musicBox2 = 85;
+ 
++			if (SoundLoader.itemToMusic.TryGetValue(currentItem.type, out int modMusicBox))
++				Main.musicBox2 = modMusicBox;
++
+ 			Main.musicBoxNotModifiedByVolume = Main.musicBox2;
+ 		}
+ 
 @@ -10746,10 +_,13 @@
  
  			if (head == 112 && body == 75 && legs == 64) {
@@ -1697,7 +1717,7 @@
  							num4 = miscEquips[2].mountType;
  
  						int num5 = height + Mount.GetHeightBoost(num4);
-@@ -15824,6 +_,7 @@
+@@ -15824,13 +_,14 @@
  			if (Main.projectile[grappling[0]].type >= 646 && Main.projectile[grappling[0]].type <= 649)
  				num9 = 16f;
  
@@ -1705,6 +1725,14 @@
  			float num10 = num8;
  			num10 = ((!(num8 > num9)) ? 1f : (num9 / num8));
  			preferedPlayerVelocityX *= num10;
+ 			preferedPlayerVelocityY *= num10;
+ 		}
+ 
+-		private void RefreshMovementAbilities(bool doubleJumps = true) {
++		public void RefreshMovementAbilities(bool doubleJumps = true) { //Made public, because this is useful
+ 			wingTime = wingTimeMax;
+ 			rocketTime = rocketTimeMax;
+ 			rocketDelay = 0;
 @@ -16461,6 +_,7 @@
  			slippy2 = (num3 == 197);
  			powerrun = (num3 == 198);
@@ -2302,7 +2330,7 @@
  
 +			//TODO: Do these hooks go inside or outside the conditional?
 +			PlayerHooks.FrameEffects(this);
-+			ItemLoader.UpdateVanity(this);
++			EquipLoader.EquipFrameEffects(this);
  			if (!isDisplayDollOrInanimate) {
  				if (((body == 68 && legs == 57 && head == 106) || (body == 74 && legs == 63 && head == 106)) && Main.rand.Next(10) == 0) {
  					int num3 = Dust.NewDust(new Vector2(position.X - velocity.X * 2f, position.Y - 2f - velocity.Y * 2f), width, height, 43, 0f, 0f, 100, new Color(255, 0, 255), 0.3f);
@@ -3943,7 +3971,7 @@
  			}
  
 -			int damage = (int)(20f * (1f + magicDamage + minionDamage - 2f));
-+			int damage = (int)(20f * (1f + magicDamage.additive + minionDamage.additive - 2f));
++			int damage = (int)(20f * (1f + (float)(allDamage & magicDamage) + (float)(allDamage & minionDamage) - 2f));
  			_ = Main.projectile[Projectile.NewProjectile(MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer)];
  		}
  

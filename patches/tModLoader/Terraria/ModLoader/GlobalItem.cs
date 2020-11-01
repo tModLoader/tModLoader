@@ -375,6 +375,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to give effects to this accessory when equipped in a vanity slot. Vanilla uses this for boot effects, wings and merman/werewolf visual flags
+		/// </summary>
+		public virtual void UpdateVanity(Item item, Player player) {
+		}
+
+		/// <summary>
 		/// Allows you to determine whether the player is wearing an armor set, and return a name for this set. 
 		/// If there is no armor set, return the empty string.
 		/// Returns the empty string by default.
