@@ -25,7 +25,6 @@ namespace Terraria.ModLoader
 		private static int nextNPC = NPCID.Count;
 		internal static readonly IList<ModNPC> npcs = new List<ModNPC>();
 		internal static readonly IList<GlobalNPC> globalNPCs = new List<GlobalNPC>();
-		internal static GlobalNPC[] InstancedGlobals = new GlobalNPC[0];
 		internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
 		private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 		/// <summary>
@@ -33,6 +32,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static readonly IList<int> blockLoot = new List<int>();
 
+		//TODO: Make per-entity-instance hooklists?
 		private class HookList
 		{
 			public int[] arr = new int[0];
@@ -141,12 +141,6 @@ namespace Terraria.ModLoader
 				Lang._npcNameCache[k] = LocalizedText.Empty;
 			}
 			
-			InstancedGlobals = globalNPCs.Where(g => g.InstancePerEntity).ToArray();
-
-			for (int i = 0; i < InstancedGlobals.Length; i++) {
-				InstancedGlobals[i].instanceIndex = i;
-			}
-
 			foreach (var hook in hooks) {
 				hook.arr = ModLoader.BuildGlobalHookNew(globalNPCs, hook.method);
 			}
@@ -182,7 +176,7 @@ namespace Terraria.ModLoader
 			}
 
 			npc.globalNPCs = globalNPCs
-				.Select(g => g.InstanceForEntity(npc) ? (g.InstancePerEntity ? g.NewInstance(npc) : g) : null)
+				.Select(g => g.InstanceForEntity(npc) ? g.NewInstance(npc) : null)
 				.ToArray();
 
 			npc.modNPC?.SetDefaults();
@@ -1097,18 +1091,6 @@ namespace Terraria.ModLoader
 
 		private static bool HasMethod(Type t, string method, params Type[] args) {
 			return t.GetMethod(method, args).DeclaringType != typeof(GlobalNPC);
-		}
-
-		internal static void VerifyGlobalNPC(GlobalNPC npc) {
-			var type = npc.GetType();
-
-			bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-				.Any(f => f.DeclaringType != typeof(GlobalNPC));
-			if (hasInstanceFields) {
-				if (!npc.InstancePerEntity) {
-					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
-				}
-			}
 		}
 	}
 }
