@@ -15,7 +15,6 @@ namespace Terraria.ModLoader
 	public class GlobalItem:ModType
 	{
 		internal int index;
-		internal int instanceIndex;
 
 		protected sealed override void Register() {
 			ItemLoader.VerifyGlobalItem(this);
@@ -34,7 +33,10 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool InstancePerEntity => false;
 
-		public GlobalItem Instance(Item item) => InstancePerEntity ? item.globalItems[instanceIndex] : this;
+		/// <summary> Return whether to create a GlobalItem instance for the provided Item instance. </summary>
+		public virtual bool InstanceForEntity(Item item) => true;
+
+		public GlobalItem Instance(Item item) => item.globalItems[index];
 
 		/// <summary>
 		/// Create a copy of this instanced GlobalItem. Called when an item is cloned.
