@@ -25,7 +25,6 @@ namespace Terraria.ModLoader
 		private static int nextNPC = NPCID.Count;
 		internal static readonly IList<ModNPC> npcs = new List<ModNPC>();
 		internal static readonly IList<GlobalNPC> globalNPCs = new List<GlobalNPC>();
-		internal static GlobalNPC[] InstancedGlobals = new GlobalNPC[0];
 		internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
 		private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 		/// <summary>
@@ -141,12 +140,6 @@ namespace Terraria.ModLoader
 				Lang._npcNameCache[k] = LocalizedText.Empty;
 			}
 			
-			InstancedGlobals = globalNPCs.Where(g => g.InstancePerEntity).ToArray();
-
-			for (int i = 0; i < InstancedGlobals.Length; i++) {
-				InstancedGlobals[i].instanceIndex = i;
-			}
-
 			foreach (var hook in hooks) {
 				hook.arr = ModLoader.BuildGlobalHookNew(globalNPCs, hook.method);
 			}
