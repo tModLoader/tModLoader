@@ -224,14 +224,24 @@
  									switch (type) {
  										case 864:
  											num8 += 25;
-@@ -9088,6 +_,7 @@
+@@ -9088,14 +_,15 @@
  											break;
  									}
  
 +									num8 += armorPenetration;
  									int num9 = (int)((float)damage * num5);
- 									if (type > 0 && type < 954 && ProjectileID.Sets.StardustDragon[type]) {
+-									if (type > 0 && type < 954 && ProjectileID.Sets.StardustDragon[type]) {
++									if (type > 0 && ProjectileID.Sets.StardustDragon[type]) {
  										float value2 = (scale - 1f) * 100f;
+ 										value2 = Utils.Clamp(value2, 0f, 50f);
+ 										num9 = (int)((float)num9 * (1f + value2 * 0.23f));
+ 									}
+ 
+-									if (type > 0 && type < 954 && ProjectileID.Sets.StormTiger[type]) {
++									if (type > 0 && ProjectileID.Sets.StormTiger[type]) {
+ 										int num10 = Math.Max(0, Main.player[owner].ownedProjectileCounts[831] - 1);
+ 										num9 = (int)((float)num9 * (1f + (float)num10 * 0.33333334f));
+ 									}
 @@ -9415,7 +_,7 @@
  											num18 = (int)((double)num18 * 0.75);
  									}
