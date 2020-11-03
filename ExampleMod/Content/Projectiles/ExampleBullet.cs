@@ -31,6 +31,7 @@ namespace ExampleMod.Content.Projectiles
 			projectile.ignoreWater = true; //Does the projectile's speed be influenced by water?
 			projectile.tileCollide = true; //Can the projectile collide with tiles?
 			projectile.extraUpdates = 1; //Set to above 0 if you want the projectile to update multiple time in a frame
+			projectile.armorPenetration = 5; // The amount of defense this projectile can ignore.
 			aiType = ProjectileID.Bullet; //Act exactly like default Bullet
 		}
 
