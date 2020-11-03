@@ -223,18 +223,18 @@
  							else if (Main.npc[i].trapImmune && trap)
  								flag4 = true;
  							else if (Main.npc[i].immortal && npcProj)
-@@ -9046,6 +_,11 @@
- 									float num7 = knockBack;
+@@ -9047,6 +_,11 @@
  									bool flag6 = false;
  									int num8 = Main.player[owner].armorPenetration;
+ 									bool flag7 = !npcProj && !trap;
 +									if (armorPenetration.HasValue) {
 +										num8 += armorPenetration.Value;
 +										goto skipVanillaArmorPen;
 +									}
 +
- 									bool flag7 = !npcProj && !trap;
  									switch (type) {
  										case 864:
+ 											num8 += 25;
 @@ -9088,8 +_,9 @@
  											break;
  									}

@@ -21,7 +21,7 @@ namespace Terraria
 		/// <summary>
 		/// The amount of defense this item can ignore. Leave null to use vanilla rules.
 		/// </summary>
-		public int? armorPenetration { get; set; }
+		public int? armorPenetration;
 
 		// Get
 
