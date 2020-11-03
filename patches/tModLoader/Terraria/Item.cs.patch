@@ -375,7 +375,7 @@
  			BestiaryNotes = null;
 +			modItem = null;
 +			globalItems = new GlobalItem[0];
-+			armorPenetration = null;
++			armorPenetration = 0;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
  			DD2Summon = false;

@@ -24,9 +24,9 @@ namespace Terraria
 		public DamageClass DamageType { get; set; }
 
 		/// <summary>
-		/// The amount of defense this item can ignore. Leave null to use vanilla rules.
+		/// The amount of defense this item can ignore.
 		/// </summary>
-		public int? armorPenetration;
+		public int armorPenetration;
 
 		// Get
 

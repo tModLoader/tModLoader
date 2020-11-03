@@ -2991,8 +2991,8 @@
  							if (armorPenetration > 0)
  								num4 += Main.npc[i].checkArmorPenetration(armorPenetration);
  
-+							if (sItem.armorPenetration.HasValue && sItem.armorPenetration.Value > 0)
-+								num4 += Main.npc[i].checkArmorPenetration(sItem.armorPenetration.Value);
++							if (sItem.armorPenetration > 0)
++								num4 += Main.npc[i].checkArmorPenetration(sItem.armorPenetration);
 +
  							int dmgDone = (int)Main.npc[i].StrikeNPC(num4, knockBack, direction, flag);
 +

@@ -113,7 +113,7 @@
  		public void SetDefaults(int Type) {
 +			modProjectile = null;
 +			globalProjectiles = new GlobalProjectile[0];
-+			armorPenetration = null;
++			armorPenetration = 0;
 +			nameOverride = null;
  			ownerHitCheckDistance = 1000f;
  			counterweight = false;
@@ -216,14 +216,10 @@
  							else if (Main.npc[i].trapImmune && trap)
  								flag4 = true;
  							else if (Main.npc[i].immortal && npcProj)
-@@ -9047,6 +_,11 @@
+@@ -9047,6 +_,7 @@
  									bool flag6 = false;
  									int num8 = Main.player[owner].armorPenetration;
  									bool flag7 = !npcProj && !trap;
-+									if (armorPenetration.HasValue) {
-+										num8 += armorPenetration.Value;
-+										goto skipVanillaArmorPen;
-+									}
 +
  									switch (type) {
  										case 864:
@@ -232,7 +228,7 @@
  											break;
  									}
  
-+									skipVanillaArmorPen:
++									num8 += armorPenetration;
  									int num9 = (int)((float)damage * num5);
  									if (type > 0 && type < 954 && ProjectileID.Sets.StardustDragon[type]) {
  										float value2 = (scale - 1f) * 100f;
