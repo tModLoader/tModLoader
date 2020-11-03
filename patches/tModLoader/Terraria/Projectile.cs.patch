@@ -85,7 +85,7 @@
  				for (int j = 0; j < 200; j++) {
  					perIDStaticNPCImmunity[i][j] = 0u;
  				}
-@@ -217,7 +_,31 @@
+@@ -217,7 +_,32 @@
  			}
  		}
  
@@ -113,18 +113,11 @@
  		public void SetDefaults(int Type) {
 +			modProjectile = null;
 +			globalProjectiles = new GlobalProjectile[0];
++			armorPenetration = null;
 +			nameOverride = null;
  			ownerHitCheckDistance = 1000f;
  			counterweight = false;
  			sentry = false;
-@@ -267,6 +_,7 @@
- 			melee = false;
- 			ranged = false;
- 			magic = false;
-+			armorPenetration = null;
- 			ownerHitCheck = false;
- 			hide = false;
- 			lavaWet = false;
 @@ -7891,9 +_,8 @@
  				usesLocalNPCImmunity = true;
  				localNPCHitCooldown = 80;
@@ -235,17 +228,14 @@
  									switch (type) {
  										case 864:
  											num8 += 25;
-@@ -9088,8 +_,9 @@
+@@ -9088,6 +_,7 @@
  											break;
  									}
  
 +									skipVanillaArmorPen:
  									int num9 = (int)((float)damage * num5);
--									if (type > 0 && type < 954 && ProjectileID.Sets.StardustDragon[type]) {
-+									if (type > 0 && ProjectileID.Sets.StardustDragon[type]) {
+ 									if (type > 0 && type < 954 && ProjectileID.Sets.StardustDragon[type]) {
  										float value2 = (scale - 1f) * 100f;
- 										value2 = Utils.Clamp(value2, 0f, 50f);
- 										num9 = (int)((float)num9 * (1f + value2 * 0.23f));
 @@ -9415,7 +_,7 @@
  											num18 = (int)((double)num18 * 0.75);
  									}

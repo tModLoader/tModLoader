@@ -369,12 +369,13 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -44890,14 +_,18 @@
+@@ -44890,14 +_,19 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
 +			modItem = null;
 +			globalItems = new GlobalItem[0];
++			armorPenetration = null;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
  			DD2Summon = false;
@@ -388,14 +389,6 @@
  			instanced = false;
  			questItem = false;
  			fishingPole = 0;
-@@ -44918,6 +_,7 @@
- 			magic = false;
- 			ranged = false;
- 			summon = false;
-+			armorPenetration = null;
- 			placeStyle = 0;
- 			buffTime = 0;
- 			buffType = 0;
 @@ -44992,6 +_,10 @@
  		}
  
