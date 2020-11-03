@@ -1,18 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Graphics;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
-using Terraria;
-using Terraria.GameContent;
-using Terraria.GameContent.Achievements;
 using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.UI;
-using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.Container
 {
@@ -33,26 +23,24 @@ namespace Terraria.ModLoader.Container
 		public IsItemValidCallback IsItemValid;
 
 		public ItemHandler(int size = 1) {
-			Items = new Item[size];
-
-			for (int i = 0; i < size; i++) Items[i] = new Item();
+			SetSize(size);
 		}
 
 		private ItemHandler(Item[] items) {
 			Items = items;
 		}
 
-		public ItemHandler Clone() => new ItemHandler(Items.Select(x => x.Clone()).ToArray()) {
-			IsItemValid = (IsItemValidCallback)IsItemValid?.Clone(),
-			GetSlotSize = (GetSlotSizeCallback)GetSlotSize?.Clone(),
-			OnContentsChanged = (OnContentsChangedCallback)OnContentsChanged?.Clone()
-		};
-
-		public void SetSize(int size) {
+		private void SetSize(int size) {
 			Items = new Item[size];
 
 			for (int i = 0; i < size; i++) Items[i] = new Item();
 		}
+		
+		public ItemHandler Clone() => new ItemHandler(Items.Select(x => x.Clone()).ToArray()) {
+			IsItemValid = (IsItemValidCallback)IsItemValid?.Clone(),
+			GetSlotSize = (GetSlotSizeCallback)GetSlotSize?.Clone(), 
+			OnContentsChanged = (OnContentsChangedCallback)OnContentsChanged?.Clone()
+		};
 
 		public void SetItemInSlot(int slot, Item stack, bool user = false) {
 			ValidateSlotIndex(slot);
@@ -65,13 +53,13 @@ namespace Terraria.ModLoader.Container
 			return ref Items[slot];
 		}
 
-		public static bool CanItemsStack(Item a, Item b) {
+		private static bool CanItemsStack(Item a, Item b) {
 			// if (a.modItem != null && b.modItem != null) return a.modItem.CanStack(b.modItem);
 
 			return a.IsTheSameAs(b);
 		}
 
-		public static Item CloneItemWithSize(Item itemStack, int size) {
+		private static Item CloneItemWithSize(Item itemStack, int size) {
 			if (size == 0) return new Item();
 			Item copy = itemStack.Clone();
 			copy.stack = size;
@@ -198,7 +186,7 @@ namespace Terraria.ModLoader.Container
 		public bool Contains(Item item) => Items.Any(item.IsTheSameAs);
 
 		/// <summary>
-		/// Gets the coin value for a given item handler 
+		///     Gets the coin value for a given item handler
 		/// </summary>
 		public long CountCoins() {
 			long num = 0L;
@@ -217,27 +205,22 @@ namespace Terraria.ModLoader.Container
 		}
 
 		#region IO
-		public TagCompound Save() => new TagCompound {
-			["Items"] = Items.Select(ItemIO.Save).ToList(),
-		};
+		public TagCompound Save() => new TagCompound { ["Items"] = Items.ToList() };
 
-		public void Load(TagCompound tag) {
-			IList<TagCompound> items = tag.GetList<TagCompound>("Items");
-			Items = items.Select(ItemIO.Load).ToArray();
+		public void Load(TagCompound tag) => Items = tag.GetList<Item>("Items").ToArray();
+
+		public void Write(BinaryWriter writer) {
+			writer.Write(Slots);
+		
+			for (int i = 0; i < Slots; i++) ItemIO.Send(Items[i],writer, true, true);
 		}
-
-		// public void Write(BinaryWriter writer) {
-		// 	writer.Write(Slots);
-		//
-		// 	for (int i = 0; i < Slots; i++) writer.Write(Items[i], true, true);
-		// }
-		//
-		// public void Read(BinaryReader reader) {
-		// 	int size = reader.ReadInt32();
-		// 	SetSize(size);
-		//
-		// 	for (int i = 0; i < Slots; i++) Items[i] = reader.Receive(true, true);
-		// }
+		
+		public void Read(BinaryReader reader) {
+			int size = reader.ReadInt32();
+			SetSize(size);
+		
+			for (int i = 0; i < Slots; i++) Items[i] = ItemIO.Receive(reader, true, true);
+		}
 		#endregion
 	}
 }
