@@ -388,6 +388,14 @@
  			instanced = false;
  			questItem = false;
  			fishingPole = 0;
+@@ -44918,6 +_,7 @@
+ 			magic = false;
+ 			ranged = false;
+ 			summon = false;
++			armorPenetration = null;
+ 			placeStyle = 0;
+ 			buffTime = 0;
+ 			buffType = 0;
 @@ -44992,6 +_,10 @@
  		}
  

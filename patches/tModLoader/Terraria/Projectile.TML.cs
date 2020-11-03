@@ -18,6 +18,11 @@ namespace Terraria
 		/// </summary>
 		public DamageClass DamageType { get; set; }
 
+		/// <summary>
+		/// The amount of defense this item can ignore. Leave null to use vanilla rules.
+		/// </summary>
+		public int? armorPenetration { get; set; }
+
 		// Get
 
 		/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>

@@ -2987,9 +2987,13 @@
  							StatusToNPC(sItem.type, i);
  							if (Main.npc[i].life > 5)
  								OnHit(Main.npc[i].Center.X, Main.npc[i].Center.Y, Main.npc[i]);
-@@ -30655,6 +_,11 @@
+@@ -30654,7 +_,15 @@
+ 							if (armorPenetration > 0)
  								num4 += Main.npc[i].checkArmorPenetration(armorPenetration);
  
++							if (sItem.armorPenetration.HasValue && sItem.armorPenetration.Value > 0)
++								num4 += Main.npc[i].checkArmorPenetration(sItem.armorPenetration.Value);
++
  							int dmgDone = (int)Main.npc[i].StrikeNPC(num4, knockBack, direction, flag);
 +
 +							ItemLoader.OnHitNPC(sItem, this, Main.npc[i], dmgDone, knockBack, flag);
