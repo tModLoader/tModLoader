@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.Container
 			for (int i = 49; i >= 10; i--) {
 				ref Item inventory = ref player.inventory[i];
 
-				if (!inventory.IsAir && handler.Contains(inventory.type)) handler.InsertItem(ref inventory);
+				if (!inventory.IsAir && handler.Contains(inventory.type)) handler.InsertItem(ref inventory, true);
 			}
 
 			SoundEngine.PlaySound(SoundID.Grab);
@@ -61,7 +61,7 @@ namespace Terraria.ModLoader.Container
 		///     Deposits player's items into the ItemHandler
 		/// </summary>
 		public static void DepositAll(this Player player, ItemHandler handler) {
-			for (int i = 53; i >= 10; i--) {
+			for (int i = 49; i >= 10; i--) {
 				ref Item item = ref player.inventory[i];
 				if (item.IsAir || item.favorited) continue;
 				handler.InsertItem(ref item);

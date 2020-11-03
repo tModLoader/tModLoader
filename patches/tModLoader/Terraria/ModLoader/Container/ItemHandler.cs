@@ -8,12 +8,20 @@ namespace Terraria.ModLoader.Container
 {
 	public class ItemHandler
 	{
+		public enum Operation
+		{
+			Input,
+			Output
+		}
+		
 		public delegate void OnContentsChangedCallback(int slot, bool user);
 
 		public delegate int GetSlotSizeCallback(int slot);
 
 		public delegate bool IsItemValidCallback(int slot, Item item);
 
+		public delegate bool CanInteractCallback(int slot, Operation operation, bool user);
+		
 		public Item[] Items { get; private set; }
 
 		public int Slots => Items.Length;
@@ -21,6 +29,7 @@ namespace Terraria.ModLoader.Container
 		public OnContentsChangedCallback OnContentsChanged;
 		public GetSlotSizeCallback GetSlotSize;
 		public IsItemValidCallback IsItemValid;
+		public CanInteractCallback CanInteract;
 
 		public ItemHandler(int size = 1) {
 			SetSize(size);
@@ -39,7 +48,8 @@ namespace Terraria.ModLoader.Container
 		public ItemHandler Clone() => new ItemHandler(Items.Select(x => x.Clone()).ToArray()) {
 			IsItemValid = (IsItemValidCallback)IsItemValid?.Clone(),
 			GetSlotSize = (GetSlotSizeCallback)GetSlotSize?.Clone(), 
-			OnContentsChanged = (OnContentsChangedCallback)OnContentsChanged?.Clone()
+			OnContentsChanged = (OnContentsChangedCallback)OnContentsChanged?.Clone(),
+			CanInteract = (CanInteractCallback)CanInteract?.Clone()
 		};
 
 		public void SetItemInSlot(int slot, Item stack, bool user = false) {
@@ -77,7 +87,7 @@ namespace Terraria.ModLoader.Container
 
 			ValidateSlotIndex(slot);
 
-			if (!IsItemValid?.Invoke(slot, item) ?? false) return false;
+			if (CanInteract?.Invoke(slot, Operation.Input, user) == false || IsItemValid?.Invoke(slot, item) == false) return false;
 
 			Item existing = Items[slot];
 			if (!existing.IsAir && !CanItemsStack(item, existing)) return false;
@@ -126,6 +136,8 @@ namespace Terraria.ModLoader.Container
 			if (amount == null || amount <= 0) return false;
 
 			ValidateSlotIndex(slot);
+			
+			if (CanInteract?.Invoke(slot, Operation.Output, user) == false) return false;
 
 			Item existing = Items[slot];
 			if (existing.IsAir) return false;
@@ -159,6 +171,8 @@ namespace Terraria.ModLoader.Container
 		}
 
 		public bool Grow(int slot, int quantity, bool user = false) {
+			if (CanInteract?.Invoke(slot, Operation.Input, user) == false) return false;
+			
 			ref Item item = ref GetItemInSlot(slot);
 			int limit = GetItemLimit(slot) ?? item.maxStack;
 			if (item.IsAir || quantity <= 0 || item.stack + quantity > limit) return false;
@@ -170,6 +184,8 @@ namespace Terraria.ModLoader.Container
 		}
 
 		public bool Shrink(int slot, int quantity, bool user = false) {
+			if (CanInteract?.Invoke(slot, Operation.Output, user) == false) return false;
+			
 			ref Item item = ref GetItemInSlot(slot);
 
 			if (item.IsAir || quantity <= 0 || item.stack - quantity < 0) return false;
