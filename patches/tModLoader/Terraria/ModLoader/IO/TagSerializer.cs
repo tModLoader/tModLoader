@@ -36,6 +36,7 @@ namespace Terraria.ModLoader.IO
 			AddSerializer(new ColorSerializer());
 			AddSerializer(new Point16Serializer());
 			AddSerializer(new RectangleSerializer());
+			AddSerializer(new ItemSerializer());
 		}
 
 		public static bool TryGetSerializer(Type type, out TagSerializer serializer) {
@@ -174,5 +175,11 @@ namespace Terraria.ModLoader.IO
 		};
 
 		public override Rectangle Deserialize(TagCompound tag) => new Rectangle(tag.GetInt("x"), tag.GetInt("y"), tag.GetInt("width"), tag.GetInt("height"));
+	}
+	
+	public class ItemSerializer : TagSerializer<Item, TagCompound>
+	{
+		public override TagCompound Serialize(Item value) => ItemIO.Save(value);
+		public override Item Deserialize(TagCompound tag) => ItemIO.Load(tag);
 	}
 }
