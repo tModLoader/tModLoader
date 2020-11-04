@@ -30,8 +30,7 @@ namespace Terraria.ModLoader
 		public static IEnumerable<PlayerDrawLayer> GetDrawLayers(PlayerDrawSet drawInfo, List<PlayerDrawLayer> vanillaLayers) {
 			for (int i = 0; i < vanillaLayers.Count; i++) {
 				var layer = (LegacyPlayerDrawLayer)vanillaLayers[i];
-
-				layer.visible = true;
+				layer.GetDefaults(drawInfo, out layer.visible, out layer.constraint);
 				layer.constraint = i > 0 ? new PlayerDrawLayer.LayerConstraint(vanillaLayers[i - 1], false) : default;
 			}
 

@@ -71,7 +71,13 @@ namespace Terraria.ModLoader
 		public static readonly PlayerDrawLayer BalloonAcc = new LegacyPlayerDrawLayer(nameof(BalloonAcc), false, DrawPlayer_11_Balloons);
 
 		/// <summary> Draws the player's held item. </summary>
-		public static readonly PlayerDrawLayer HeldItem = new LegacyPlayerDrawLayer(nameof(HeldItem), false, DrawPlayer_27_HeldItem);
+		public static readonly PlayerDrawLayer HeldItemBehindBackArm = new LegacyPlayerDrawLayer(nameof(HeldItemBehindBackArm), false, DrawPlayer_27_HeldItem, drawinfo => drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindBackArm);
+
+		/// <summary> Draws the player's held item. </summary>
+		public static readonly PlayerDrawLayer HeldItemBehindFrontArm = new LegacyPlayerDrawLayer(nameof(HeldItemBehindFrontArm), false, DrawPlayer_27_HeldItem, drawinfo => drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindFrontArm);
+
+		/// <summary> Draws the player's held item. </summary>
+		public static readonly PlayerDrawLayer HeldItemOverFrontArm = new LegacyPlayerDrawLayer(nameof(HeldItemOverFrontArm), false, DrawPlayer_27_HeldItem, drawinfo => drawinfo.weaponDrawOrder == WeaponDrawOrder.OverFrontArm);
 
 		/// <summary> Draws the player's body and leg skin. </summary>
 		public static readonly PlayerDrawLayer Skin = new LegacyPlayerDrawLayer(nameof(Skin), false, DrawPlayer_12_Skin);
@@ -80,8 +86,11 @@ namespace Terraria.ModLoader
 		public static readonly PlayerDrawLayer Shoes = new LegacyPlayerDrawLayer(nameof(Shoes), false, DrawPlayer_14_Shoes);
 
 		/// <summary> Draws the player's leg armor or pants and shoes. </summary>
-		public static readonly PlayerDrawLayer Leggings = new LegacyPlayerDrawLayer(nameof(Leggings), false, DrawPlayer_13_Leggings);
-		
+		public static readonly PlayerDrawLayer Leggings = new LegacyPlayerDrawLayer(nameof(Leggings), false, DrawPlayer_13_Leggings, drawinfo => !(drawinfo.drawPlayer.wearsRobe && drawinfo.drawPlayer.body != 166));
+
+		/// <summary> Draws the player's robe. </summary>
+		public static readonly PlayerDrawLayer Robe = new LegacyPlayerDrawLayer(nameof(Robe), false, DrawPlayer_13_Leggings, drawinfo => drawinfo.drawPlayer.wearsRobe && drawinfo.drawPlayer.body != 166);
+
 		/// <summary> Draws the longcoat default clothing style, if the player has it. </summary>
 		public static readonly PlayerDrawLayer SkinLongCoat = new LegacyPlayerDrawLayer(nameof(SkinLongCoat), false, DrawPlayer_15_SkinLongCoat);
 		
@@ -107,7 +116,10 @@ namespace Terraria.ModLoader
 		public static readonly PlayerDrawLayer FaceAcc = new LegacyPlayerDrawLayer(nameof(FaceAcc), false, DrawPlayer_22_FaceAcc);
 
 		/// <summary> Draws the front part of player's front accessory. </summary>
-		public static readonly PlayerDrawLayer FrontAccFront = new LegacyPlayerDrawLayer(nameof(FrontAccFront), false, DrawPlayer_32_FrontAcc_FrontPart);
+		public static readonly PlayerDrawLayer FrontAccFront = new LegacyPlayerDrawLayer(nameof(FrontAccFront), false, DrawPlayer_32_FrontAcc_FrontPart, drawinfo => !drawinfo.drawFrontAccInNeckAccLayer);
+
+		/// <summary> Draws the front part of player's front accessory. </summary>
+		public static readonly PlayerDrawLayer FrontAccFrontNeck = new LegacyPlayerDrawLayer(nameof(FrontAccFrontNeck), false, DrawPlayer_32_FrontAcc_FrontPart, drawinfo => drawinfo.drawFrontAccInNeckAccLayer);
 
 		/// <summary> Draws the back part of player's front accessory. </summary>
 		public static readonly PlayerDrawLayer FrontAccBack = new LegacyPlayerDrawLayer(nameof(FrontAccBack), false, DrawPlayer_32_FrontAcc_BackPart);

@@ -23,9 +23,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		/// <summary> The delegate used for draw layers. </summary>
-		public delegate void LayerFunction(ref InfoType info);
-
 		/// <summary> Whether or not this DrawLayer should be drawn. For vanilla layers, this will be set to true before all drawing-related hooks are called. For modded layers, you must set this to true or false yourself. </summary>
 		public bool visible = true;
 
