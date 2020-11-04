@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Terraria.Audio;
 using Terraria.ID;
 
@@ -8,6 +9,43 @@ namespace Terraria.ModLoader.Container
 {
 	public static class ItemHandlerUtility
 	{
+		public static bool Contains(this ItemHandler handler, int type) => handler.Items.Any(item => !item.IsAir && item.type == type);
+
+		public static bool Contains(this ItemHandler handler, Item item) => handler.Items.Any(item.IsTheSameAs);
+
+		/// <summary>
+		///     Gets the coin value for a given item handler
+		/// </summary>
+		public static long CountCoins(this ItemHandler handler) {
+			long num = 0L;
+			for (int i = 0; i < handler.Slots; i++) {
+				Item item = handler.Items[i];
+				num += item.type switch {
+					ItemID.CopperCoin => item.stack,
+					ItemID.SilverCoin => item.stack * 100,
+					ItemID.GoldCoin => item.stack * 10000,
+					ItemID.PlatinumCoin => item.stack * 1000000,
+					_ => 0
+				};
+			}
+
+			return num;
+		}
+
+		public static void DropItems(this ItemHandler handler, Rectangle hitbox)
+		{
+			for (int i = 0; i < handler.Slots; i++)
+			{
+				ref Item item = ref handler.GetItemInSlot(i);
+				if (!item.IsAir)
+				{
+					Item.NewItem(hitbox, item.type, item.stack, prefixGiven: item.prefix);
+					item.TurnToAir();
+					handler.OnContentsChanged(i, false);
+				}
+			}
+		}
+
 		/// <summary>
 		///     Quick stacks player's items into the ItemHandler
 		/// </summary>

@@ -1,27 +1,23 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Terraria.ID;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Container
 {
-	public class ItemHandler
+	public sealed class ItemHandler
 	{
 		public enum Operation
 		{
 			Input,
 			Output
 		}
-		
+
 		public delegate void OnContentsChangedCallback(int slot, bool user);
-
 		public delegate int GetSlotSizeCallback(int slot);
-
 		public delegate bool IsItemValidCallback(int slot, Item item);
-
 		public delegate bool CanInteractCallback(int slot, Operation operation, bool user);
-		
+
 		public Item[] Items { get; private set; }
 
 		public int Slots => Items.Length;
@@ -44,13 +40,15 @@ namespace Terraria.ModLoader.Container
 
 			for (int i = 0; i < size; i++) Items[i] = new Item();
 		}
-		
-		public ItemHandler Clone() => new ItemHandler(Items.Select(x => x.Clone()).ToArray()) {
-			IsItemValid = (IsItemValidCallback)IsItemValid?.Clone(),
-			GetSlotSize = (GetSlotSizeCallback)GetSlotSize?.Clone(), 
-			OnContentsChanged = (OnContentsChangedCallback)OnContentsChanged?.Clone(),
-			CanInteract = (CanInteractCallback)CanInteract?.Clone()
-		};
+
+		public ItemHandler Clone() {
+			return new ItemHandler(Items.Select(x => x.Clone()).ToArray()) {
+				IsItemValid = (IsItemValidCallback)IsItemValid?.Clone(), 
+				GetSlotSize = (GetSlotSizeCallback)GetSlotSize?.Clone(), 
+				OnContentsChanged = (OnContentsChangedCallback)OnContentsChanged?.Clone(), 
+				CanInteract = (CanInteractCallback)CanInteract?.Clone()
+			};
+		}
 
 		public void SetItemInSlot(int slot, Item stack, bool user = false) {
 			ValidateSlotIndex(slot);
@@ -61,19 +59,6 @@ namespace Terraria.ModLoader.Container
 		public ref Item GetItemInSlot(int slot) {
 			ValidateSlotIndex(slot);
 			return ref Items[slot];
-		}
-
-		private static bool CanItemsStack(Item a, Item b) {
-			// if (a.modItem != null && b.modItem != null) return a.modItem.CanStack(b.modItem);
-
-			return a.IsTheSameAs(b);
-		}
-
-		private static Item CloneItemWithSize(Item itemStack, int size) {
-			if (size == 0) return new Item();
-			Item copy = itemStack.Clone();
-			copy.stack = size;
-			return copy;
 		}
 
 		/// <summary>
@@ -136,7 +121,7 @@ namespace Terraria.ModLoader.Container
 			if (amount == null || amount <= 0) return false;
 
 			ValidateSlotIndex(slot);
-			
+
 			if (CanInteract?.Invoke(slot, Operation.Output, user) == false) return false;
 
 			Item existing = Items[slot];
@@ -166,14 +151,15 @@ namespace Terraria.ModLoader.Container
 			return limit;
 		}
 
-		protected void ValidateSlotIndex(int slot) {
+		private void ValidateSlotIndex(int slot) {
 			if (slot < 0 || slot >= Slots) throw new Exception($"Slot {slot} not in valid range - [0, {Slots})");
 		}
 
 		public bool Grow(int slot, int quantity, bool user = false) {
-			if (CanInteract?.Invoke(slot, Operation.Input, user) == false) return false;
-			
+			// if (CanInteract?.Invoke(slot, Operation.Input, user) == false) return false;
+
 			ref Item item = ref GetItemInSlot(slot);
+
 			int limit = GetItemLimit(slot) ?? item.maxStack;
 			if (item.IsAir || quantity <= 0 || item.stack + quantity > limit) return false;
 
@@ -184,8 +170,8 @@ namespace Terraria.ModLoader.Container
 		}
 
 		public bool Shrink(int slot, int quantity, bool user = false) {
-			if (CanInteract?.Invoke(slot, Operation.Output, user) == false) return false;
-			
+			// if (CanInteract?.Invoke(slot, Operation.Output, user) == false) return false;
+
 			ref Item item = ref GetItemInSlot(slot);
 
 			if (item.IsAir || quantity <= 0 || item.stack - quantity < 0) return false;
@@ -197,46 +183,46 @@ namespace Terraria.ModLoader.Container
 			return true;
 		}
 
-		public bool Contains(int type) => Items.Any(item => !item.IsAir && item.type == type);
-
-		public bool Contains(Item item) => Items.Any(item.IsTheSameAs);
-
-		/// <summary>
-		///     Gets the coin value for a given item handler
-		/// </summary>
-		public long CountCoins() {
-			long num = 0L;
-			for (int i = 0; i < Slots; i++) {
-				Item item = Items[i];
-				num += item.type switch {
-					ItemID.CopperCoin => item.stack,
-					ItemID.SilverCoin => item.stack * 100,
-					ItemID.GoldCoin => item.stack * 10000,
-					ItemID.PlatinumCoin => item.stack * 1000000,
-					_ => 0
-				};
-			}
-
-			return num;
+		#region IO
+		public TagCompound Save() {
+			return new TagCompound {
+				["Items"] = Items.ToList()
+			};
 		}
 
-		#region IO
-		public TagCompound Save() => new TagCompound { ["Items"] = Items.ToList() };
-
-		public void Load(TagCompound tag) => Items = tag.GetList<Item>("Items").ToArray();
+		public void Load(TagCompound tag) {
+			Items = tag.GetList<Item>("Items").ToArray();
+		}
 
 		public void Write(BinaryWriter writer) {
 			writer.Write(Slots);
-		
-			for (int i = 0; i < Slots; i++) ItemIO.Send(Items[i],writer, true, true);
+
+			for (int i = 0; i < Slots; i++) {
+				ItemIO.Send(Items[i], writer, true, true);
+			}
 		}
-		
+
 		public void Read(BinaryReader reader) {
 			int size = reader.ReadInt32();
 			SetSize(size);
-		
-			for (int i = 0; i < Slots; i++) Items[i] = ItemIO.Receive(reader, true, true);
+
+			for (int i = 0; i < Slots; i++) {
+				Items[i] = ItemIO.Receive(reader, true, true);
+			}
 		}
 		#endregion
+		
+		private static bool CanItemsStack(Item a, Item b) {
+			// if (a.modItem != null && b.modItem != null) return a.modItem.CanStack(b.modItem);
+
+			return a.IsTheSameAs(b);
+		}
+
+		private static Item CloneItemWithSize(Item itemStack, int size) {
+			if (size == 0) return new Item();
+			Item copy = itemStack.Clone();
+			copy.stack = size;
+			return copy;
+		}
 	}
 }
