@@ -748,14 +748,12 @@
  			}
  
  			bool enabled = CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled;
-@@ -4751,8 +_,12 @@
+@@ -4751,8 +_,10 @@
  			if (enabled)
  				num = 0;
  
 +			int tileUpdates = num;
-+
 +			WorldHooks.UpdateTimeRate(ref num, ref tileUpdates);
-+
  			dayRate = num;
 -			desiredWorldTilesUpdateRate = num;
 +			desiredWorldTilesUpdateRate = tileUpdates;
