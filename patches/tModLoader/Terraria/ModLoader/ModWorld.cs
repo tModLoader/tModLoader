@@ -107,10 +107,9 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the world should update with it.
-		/// Called after almost all other time calculations; only superseded by Journey Mode's time freeze, which sets both parameters to 0.
+		/// Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the world should update with it.
 		/// </summary>
-		public virtual void UpdateTimeRate(ref int timeRate, ref int tileUpdateRate) {
+		public virtual void ModifyTimeRate(ref int timeRate, ref int tileUpdateRate, bool sundial, bool journeyTimeFreeze) {
 		}
 	}
 }
