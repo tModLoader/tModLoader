@@ -762,7 +762,7 @@
 +				tileUpdates = 1;
 +			}
 +
-+			WorldHooks.ModifyTimeRate(ref num, ref tileUpdates, enabled, fastForwardTime);
++			WorldHooks.ModifyTimeRate(ref num, ref tileUpdates, fastForwardTime, enabled);
 +
  			dayRate = num;
 -			desiredWorldTilesUpdateRate = num;
