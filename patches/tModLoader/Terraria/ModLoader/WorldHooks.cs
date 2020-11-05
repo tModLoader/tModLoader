@@ -106,5 +106,11 @@ namespace Terraria.ModLoader
 				modWorld.PostDrawTiles();
 			}
 		}
+
+		public static void UpdateTimeRate(ref int rate) {
+			foreach (ModWorld modWorld in worlds) {
+				modWorld.UpdateTimeRate(ref rate);
+			}
+		}
 	}
 }

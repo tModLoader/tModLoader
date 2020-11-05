@@ -105,5 +105,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void PostDrawTiles() {
 		}
+
+		/// <summary>
+		/// Called right before Main.dayRate is updated. Can be used to modify the speed at which time should progress per tick in seconds.
+		/// </summary>
+		public virtual void UpdateTimeRate(ref int rate) {
+		}
 	}
 }

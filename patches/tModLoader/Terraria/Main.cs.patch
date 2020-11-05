@@ -739,6 +739,15 @@
  		}
  
  		public static void Sundialing() {
+@@ -4751,6 +_,8 @@
+ 			if (enabled)
+ 				num = 0;
+ 
++			WorldHooks.UpdateTimeRate(ref num);
++
+ 			dayRate = num;
+ 			desiredWorldTilesUpdateRate = num;
+ 		}
 @@ -4762,7 +_,41 @@
  #if CLIENT
  			Configuration.Load();
