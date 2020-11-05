@@ -107,9 +107,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void UpdateTimeRate(ref int rate) {
+		public static void UpdateTimeRate(ref int timeRate, ref int tileUpdateRate) {
 			foreach (ModWorld modWorld in worlds) {
-				modWorld.UpdateTimeRate(ref rate);
+				modWorld.UpdateTimeRate(ref timeRate, ref tileUpdateRate);
 			}
 		}
 	}

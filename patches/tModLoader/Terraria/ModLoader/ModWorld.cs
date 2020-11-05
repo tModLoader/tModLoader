@@ -107,9 +107,9 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Called right before Main.dayRate is updated. Can be used to modify the speed at which time should progress per tick in seconds.
+		/// Called right before Main.dayRate is updated. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the world should update with it.
 		/// </summary>
-		public virtual void UpdateTimeRate(ref int rate) {
+		public virtual void UpdateTimeRate(ref int timeRate, ref int tileUpdateRate) {
 		}
 	}
 }
