@@ -754,7 +754,7 @@
  			desiredWorldTilesUpdateRate = num;
 +
 +			endVanillaMethod:
-+			WorldHooks.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate, fastForwardTime, enabled);
++			WorldHooks.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate);
  		}
  
  		public Main() {
