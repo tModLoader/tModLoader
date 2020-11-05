@@ -739,21 +739,37 @@
  		}
  
  		public static void Sundialing() {
-@@ -4738,7 +_,7 @@
- 			if (fastForwardTime) {
- 				dayRate = 60;
- 				desiredWorldTilesUpdateRate = 1;
+@@ -4735,24 +_,28 @@
+ 		}
+ 
+ 		public static void UpdateTimeRate() {
+-			if (fastForwardTime) {
+-				dayRate = 60;
+-				desiredWorldTilesUpdateRate = 1;
 -				return;
-+				//return;
- 			}
- 
+-			}
+-
  			bool enabled = CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled;
-@@ -4751,8 +_,10 @@
- 			if (enabled)
- 				num = 0;
- 
+ 			int targetTimeRate = CreativePowerManager.Instance.GetPower<CreativePowers.ModifyTimeRate>().TargetTimeRate;
+ 			bool flag = CurrentFrameFlags.SleepingPlayersCount == CurrentFrameFlags.ActivePlayersCount && CurrentFrameFlags.SleepingPlayersCount > 0;
+ 			int num = targetTimeRate;
 +			int tileUpdates = num;
+ 			if (!gameMenu && flag)
+ 				num *= 5;
+ 
+-			if (enabled)
++			if (fastForwardTime) {
++				num = 60;
++				tileUpdates = 1;
++			}
++
 +			WorldHooks.UpdateTimeRate(ref num, ref tileUpdates);
++
++			if (enabled) {
+ 				num = 0;
++				tileUpdates = 0;
++			}
+ 
  			dayRate = num;
 -			desiredWorldTilesUpdateRate = num;
 +			desiredWorldTilesUpdateRate = tileUpdates;
