@@ -62,6 +62,7 @@ namespace ExampleMod.Content.Tiles
 
 			Vector2 position = new Vector2(i * 16 + 24, j * 16 + 24) - Main.screenPosition + (Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange));
 
+			// todo: change color based on solution
 			spriteBatch.Draw(Mask, position, null, Color.Purple, 0f, Mask.Size() * 0.5f, te.cleansingProgress * 1.5f, SpriteEffects.None, 0f);
 		}
 
