@@ -67,6 +67,7 @@ namespace Terraria.ModLoader.Container
 				ref Item item = ref handler.GetItemInSlot(i);
 				if (!item.IsAir) {
 					item.position = player.Center;
+					item.noGrabDelay = 0;
 
 					item = Combine(item.Split().Select(split => player.GetItem(player.whoAmI, split, GetItemSettings.LootAllSettings)));
 
@@ -86,6 +87,8 @@ namespace Terraria.ModLoader.Container
 				int count = Math.Min(item.stack, item.maxStack);
 				n.stack = count;
 				n.position = player.Center;
+				n.noGrabDelay = 0;
+				
 				player.GetItem(player.whoAmI, n, GetItemSettings.LootAllSettings);
 
 				item.stack -= count;
@@ -109,11 +112,9 @@ namespace Terraria.ModLoader.Container
 		}
 
 		public static Item Combine(IEnumerable<Item> items) {
-			List<Item> list = items.ToList();
-
 			Item ret = new Item();
 
-			foreach (Item item in list) {
+			foreach (Item item in items) {
 				if (ret.IsAir && !item.IsAir) {
 					ret = item.Clone();
 					ret.stack = 0;
