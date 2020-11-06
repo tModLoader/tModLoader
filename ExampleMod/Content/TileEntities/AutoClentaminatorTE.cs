@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ExampleMod.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.GameContent.Drawing;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Container;
@@ -22,7 +23,7 @@ namespace ExampleMod.Content.TileEntities
 		}
 
 		private const int Range = 48;
-		private const int Speed = 30;
+		private const int Speed = 600;
 
 		private static readonly Dictionary<int, ConversionTypes> Solutions = new Dictionary<int, ConversionTypes> {
 			{ ItemID.GreenSolution, ConversionTypes.Pure },
@@ -34,6 +35,9 @@ namespace ExampleMod.Content.TileEntities
 
 		private int timer;
 		private ItemHandler ItemHandler;
+		public float cleansingProgress;
+		private float cleansingDelta;
+		public int currentType;
 
 		public AutoClentaminatorTE() {
 			ItemHandler = new ItemHandler();
@@ -45,12 +49,32 @@ namespace ExampleMod.Content.TileEntities
 			if (++timer >= Speed) {
 				timer = 0;
 
-				int type = ItemHandler.GetItemInSlot(0).type;
+				currentType = ItemHandler.GetItemInSlot(0).type;
 				if (ItemHandler.Shrink(0, 1)) {
-					int i = Position.X + 1 + Main.rand.Next(-Range, Range + 1);
-					int j = Position.Y + 1 + Main.rand.Next(-Range, Range + 1);
+					cleansingDelta = 0.02f;
 
-					WorldGen.Convert(i, j, (int)Solutions[type], 2);
+					SoundEngine.PlaySound(SoundID.NPCDeath59.WithVolume(0.4f), (Position.X * 16) + 24, (Position.Y * 16) + 24);
+				}
+			}
+
+			cleansingProgress += cleansingDelta;
+			if (cleansingProgress > 1f) {
+				cleansingDelta = 0f;
+				cleansingProgress = 0f;
+			}
+			else if (cleansingProgress > 0f) {
+				// todo: clean this up
+				Vector2 center = new Vector2((Position.X * 16f) + 24f, (Position.Y * 16) + 24f);
+				float f = Range * 16 * cleansingProgress;
+				f *= f;
+
+				for (int y = (int)(-Range * cleansingProgress) + 1; y < Range * cleansingProgress; y++) {
+					for (int x = (int)(-Range * cleansingProgress) + 1; x < Range * cleansingProgress; x++) {
+						Vector2 point = new Vector2((x * 16f) + 8f, (y * 16) + 8f);
+						if (Math.Abs(Vector2.DistanceSquared(center, point) - f) < 4f) continue;
+
+						WorldGen.Convert(Position.X + x, Position.Y + y, (int)Solutions[currentType], 0);
+					}
 				}
 			}
 		}

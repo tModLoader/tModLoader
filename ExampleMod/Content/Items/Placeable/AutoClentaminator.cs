@@ -22,10 +22,12 @@ namespace ExampleMod.Content.Items.Placeable
 		}
 
 		public override void AddRecipes() {
-			// recipe.AddIngredient(ModContent.ItemType<VoidMonolith>());
-			// recipe.AddIngredient(ModContent.ItemType<ElementResidue>());
-			// recipe.AddTile(TileID.CrystalBall);
-			CreateRecipe().AddIngredient(ItemID.DirtBlock, 10).Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.Clentaminator)
+				.AddIngredient(ItemID.Wire, 100)
+				.AddIngredient(ItemID.Timer5Second)
+				.AddTile(ItemID.MythrilAnvil)
+				.Register();
 		}
 	}
 }
