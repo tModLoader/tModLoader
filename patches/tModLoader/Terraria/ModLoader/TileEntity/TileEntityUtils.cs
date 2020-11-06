@@ -49,5 +49,20 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool TryGetTileEntity<T>(int i, int j, out T tileEntity) where T : ModTileEntity => TryGetTileEntity(new Point16(i, j), out tileEntity);
+		
+		public static bool IsTopLeft(this Tile tile)
+		{
+			int style = 0;
+			int alt = 0;
+			TileObjectData.GetTileInfo(tile, ref style, ref alt);
+			TileObjectData data = TileObjectData.GetTileData(tile.type, style, alt);
+
+			if (data != null) {
+				int size = data.CoordinateWidth + data.CoordinatePadding;
+				return tile.frameX % (data.Width * size) == 0 && tile.frameY % (data.Height * size) == 0;
+			}
+
+			return true;
+		}
 	}
 }

@@ -1,8 +1,11 @@
 ﻿using ExampleMod.Content.TileEntities;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
+using Terraria.GameContent;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Container;
@@ -26,7 +29,7 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.addTile(Type);
 
 			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Elemental Purge");
+			name.SetDefault("Auto Clentaminator");
 			AddMapEntry(new Color(190, 230, 190), name);
 			dustType = 11;
 		}
@@ -34,7 +37,7 @@ namespace ExampleMod.Content.Tiles
 		public override bool RightClick(int i, int j) {
 			if (!TileEntityUtils.TryGetTileEntity(i, j, out AutoClentaminatorTE te)) return false;
 
-			ItemHandler handler = te.GetItemHandler();  
+			ItemHandler handler = te.GetItemHandler();
 
 			Item item = new Item(ItemID.PurpleSolution) { stack = 5 };
 			handler.InsertItem(0, ref item, true);
@@ -43,6 +46,19 @@ namespace ExampleMod.Content.Tiles
 			Main.NewText($"Currently has {itemInSlot.Name} x{itemInSlot.stack}");
 
 			return true;
+		}
+
+		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
+			if (!TileEntityUtils.TryGetTileEntity(i, j, out AutoClentaminatorTE te)) return;
+
+			Vector2 position = (new Vector2((i * 16) + 24, (j * 16) + 24) - Main.screenPosition) + (Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange));
+
+			Texture2D actuatorValue = TextureAssets.Actuator.Value;
+			spriteBatch.Draw(actuatorValue, position, null, Color.White, 0f, actuatorValue.Size() * 0.5f, 1f, SpriteEffects.None, 0f);
+		}
+
+		public override void DrawEffects(int i, int j) {
+			Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
 		}
 
 		public override void MouseOver(int i, int j) {

@@ -2,6 +2,7 @@
 using ExampleMod.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Container;
