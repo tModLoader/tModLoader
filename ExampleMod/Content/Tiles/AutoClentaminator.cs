@@ -10,7 +10,7 @@ using Terraria.ObjectData;
 
 namespace ExampleMod.Content.Tiles
 {
-	public class ExampleContainer : ModTile
+	public class AutoClentaminator : ModTile
 	{
 		public override void SetDefaults() {
 			Main.tileFrameImportant[Type] = true;
@@ -22,7 +22,7 @@ namespace ExampleMod.Content.Tiles
 			newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop, newTile.Width, 0);
 			newTile.Origin = new Point16(1, 2);
 			newTile.CoordinateHeights = new[] { 16, 16, 18 };
-			newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<ExampleContainerTE>().Hook_AfterPlacement, -1, 0, false);
+			newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<AutoClentaminatorTE>().Hook_AfterPlacement, -1, 0, false);
 			TileObjectData.addTile(Type);
 
 			ModTranslation name = CreateMapEntryName();
@@ -36,13 +36,13 @@ namespace ExampleMod.Content.Tiles
 			int left = i - ((tile.frameX % 54) / 18);
 			int top = j - ((tile.frameY % 54) / 18);
 
-			int index = ModContent.GetInstance<ExampleContainerTE>().Find(left, top);
+			int index = ModContent.GetInstance<AutoClentaminatorTE>().Find(left, top);
 			if (index == -1) return false;
 
-			ExampleContainerTE te = (ExampleContainerTE)TileEntity.ByID[index];
+			AutoClentaminatorTE te = (AutoClentaminatorTE)TileEntity.ByID[index];
 			ItemHandler handler = te.GetItemHandler();
 
-			Item item = new Item(ItemID.ViciousPowder) { stack = 5 };
+			Item item = new Item(ItemID.PurpleSolution) { stack = 5 };
 			handler.InsertItem(0, ref item, true);
 			Main.NewText($"Inserted {5 - item.stack} items");
 			Item itemInSlot = handler.GetItemInSlot(0);
@@ -52,15 +52,15 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void MouseOver(int i, int j) {
-			Main.LocalPlayer.cursorItemIconID = ModContent.ItemType<Items.Placeable.ExampleContainer>();
+			Main.LocalPlayer.cursorItemIconID = ModContent.ItemType<Items.Placeable.AutoClentaminator>();
 			Main.LocalPlayer.cursorItemIconEnabled = true;
 
 			Main.LocalPlayer.noThrow = 2;
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 48, 48, ModContent.ItemType<Items.Placeable.ExampleContainer>());
-			ModContent.GetInstance<ExampleContainerTE>().Kill(i, j);
+			Item.NewItem(i * 16, j * 16, 48, 48, ModContent.ItemType<Items.Placeable.AutoClentaminator>());
+			ModContent.GetInstance<AutoClentaminatorTE>().Kill(i, j);
 		}
 	}
 }

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable
 {
-	public class ExampleContainer : ModItem
+	public class AutoClentaminator : ModItem
 	{
 		public override void SetDefaults() {
 			item.width = 22;
@@ -18,7 +18,7 @@ namespace ExampleMod.Content.Items.Placeable
 			item.consumable = true;
 			item.rare = ItemRarityID.Red;
 			item.value = Item.buyPrice(0, 20, 0, 0);
-			item.createTile = ModContent.TileType<Tiles.ExampleContainer>();
+			item.createTile = ModContent.TileType<Tiles.AutoClentaminator>();
 		}
 
 		public override void AddRecipes() {

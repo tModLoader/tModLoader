@@ -1,4 +1,5 @@
-﻿using ExampleMod.Content.Tiles;
+﻿using System.Collections.Generic;
+using ExampleMod.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -8,7 +9,7 @@ using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Content.TileEntities
 {
-	public class ExampleContainerTE : ModTileEntity, IItemHandler
+	public class AutoClentaminatorTE : ModTileEntity, IItemHandler
 	{
 		private enum ConversionTypes
 		{
@@ -19,35 +20,43 @@ namespace ExampleMod.Content.TileEntities
 			Crimson = 4
 		}
 
-		private const int range = 48;
-		private const int speed = 30;
+		private const int Range = 48;
+		private const int Speed = 30;
+
+		private static readonly Dictionary<int, ConversionTypes> Solutions = new Dictionary<int, ConversionTypes> {
+			{ ItemID.GreenSolution, ConversionTypes.Pure },
+			{ ItemID.RedSolution, ConversionTypes.Crimson },
+			{ ItemID.PurpleSolution, ConversionTypes.Corrupt },
+			{ ItemID.BlueSolution, ConversionTypes.Hallow },
+			{ ItemID.DarkBlueSolution, ConversionTypes.Mushroom }
+		};
 
 		private int timer;
 		private ItemHandler ItemHandler;
 
-		public ExampleContainerTE() {
+		public AutoClentaminatorTE() {
 			ItemHandler = new ItemHandler();
-			ItemHandler.IsItemValid += (slot, item) => item.type == ItemID.PurificationPowder || item.type == ItemID.ViciousPowder || item.type == ItemID.VilePowder;
+			ItemHandler.IsItemValid += (slot, item) => Solutions.ContainsKey(item.type);
 			ItemHandler.GetSlotSize += slot => 50;
 		}
 
 		public override void Update() {
-			if (++timer >= speed) {
+			if (++timer >= Speed) {
 				timer = 0;
 
 				int type = ItemHandler.GetItemInSlot(0).type;
 				if (ItemHandler.Shrink(0, 1)) {
-					int i = Position.X + 1 + Main.rand.Next(-range, range + 1);
-					int j = Position.Y + 1 + Main.rand.Next(-range, range + 1);
+					int i = Position.X + 1 + Main.rand.Next(-Range, Range + 1);
+					int j = Position.Y + 1 + Main.rand.Next(-Range, Range + 1);
 
-					WorldGen.Convert(i, j, (int)ConversionTypes.Corrupt, 2);
+					WorldGen.Convert(i, j, (int)Solutions[type], 2);
 				}
 			}
 		}
 
 		public override bool ValidTile(int i, int j) {
 			Tile tile = Main.tile[i, j];
-			return tile.active() && tile.type == ModContent.TileType<ExampleContainer>() && tile.frameX == 0 && tile.frameY == 0;
+			return tile.active() && tile.type == ModContent.TileType<AutoClentaminator>() && tile.frameX == 0 && tile.frameY == 0;
 		}
 
 		public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate) {
