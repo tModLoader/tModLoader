@@ -32,15 +32,9 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override bool RightClick(int i, int j) {
-			Tile tile = Main.tile[i, j];
-			int left = i - ((tile.frameX % 54) / 18);
-			int top = j - ((tile.frameY % 54) / 18);
+			if (!TileEntityUtils.TryGetTileEntity(i, j, out AutoClentaminatorTE te)) return false;
 
-			int index = ModContent.GetInstance<AutoClentaminatorTE>().Find(left, top);
-			if (index == -1) return false;
-
-			AutoClentaminatorTE te = (AutoClentaminatorTE)TileEntity.ByID[index];
-			ItemHandler handler = te.GetItemHandler();
+			ItemHandler handler = te.GetItemHandler();  
 
 			Item item = new Item(ItemID.PurpleSolution) { stack = 5 };
 			handler.InsertItem(0, ref item, true);
