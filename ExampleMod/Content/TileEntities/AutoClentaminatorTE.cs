@@ -13,6 +13,17 @@ namespace ExampleMod.Content.TileEntities
 {
 	public class AutoClentaminatorTE : ModTileEntity, IItemHandler
 	{
+		private class AutoClentaminatorItemHandler : ItemHandler
+		{
+			public override bool IsItemValid(int slot, Item item) {
+				return Solutions.ContainsKey(item.type);
+			}
+
+			public override int? GetSlotSize(int slot) {
+				return 50;
+			}
+		}
+
 		private enum ConversionTypes
 		{
 			Pure = 0,
@@ -34,15 +45,13 @@ namespace ExampleMod.Content.TileEntities
 		};
 
 		private int timer;
-		private ItemHandler ItemHandler;
+		private AutoClentaminatorItemHandler ItemHandler;
 		public float cleansingProgress;
 		private float cleansingDelta;
 		public int currentType;
 
 		public AutoClentaminatorTE() {
-			ItemHandler = new ItemHandler();
-			ItemHandler.IsItemValid += (slot, item) => Solutions.ContainsKey(item.type);
-			ItemHandler.GetSlotSize += slot => 50;
+			ItemHandler = new AutoClentaminatorItemHandler();
 		}
 
 		public override void Update() {

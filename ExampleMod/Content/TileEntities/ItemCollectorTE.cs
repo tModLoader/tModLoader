@@ -25,8 +25,9 @@ namespace ExampleMod.Content.TileEntities
 				timer = 0;
 				Vector2 center = new Vector2((Position.X * 16) + 16, (Position.Y * 16) + 16);
 
-				for (int i = 0; i < Main.item.Length; i++) {
+				for (int i = 0; i < Main.maxItems; i++) {
 					ref Item item = ref Main.item[i];
+					
 					if (!item.active || item.IsAir) continue;
 					if (Vector2.DistanceSquared(item.Center, center) > Range * Range) continue;
 

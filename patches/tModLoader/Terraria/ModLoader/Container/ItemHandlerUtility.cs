@@ -71,7 +71,7 @@ namespace Terraria.ModLoader.Container
 
 					item = Combine(item.Split().Select(split => player.GetItem(player.whoAmI, split, GetItemSettings.LootAllSettings)));
 
-					handler.OnContentsChanged?.Invoke(i, true);
+					handler.OnContentsChanged(i, true);
 				}
 			}
 		}
@@ -94,7 +94,7 @@ namespace Terraria.ModLoader.Container
 				item.stack -= count;
 				if (item.stack <= 0) item.TurnToAir();
 
-				handler.OnContentsChanged?.Invoke(slot, true);
+				handler.OnContentsChanged(slot, true);
 			}
 		}
 
