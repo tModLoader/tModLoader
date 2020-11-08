@@ -14,7 +14,7 @@ namespace Terraria.ModLoader
 
 	public static class FrameworkVersion
 	{
-		public static readonly Framework Framework;
+		public static readonly Framework Framework = Framework.NetFramework;
 		public static readonly Version Version;
 
 		static FrameworkVersion() {
@@ -25,11 +25,6 @@ namespace Terraria.ModLoader
 				Version = new Version(displayName.Substring(0, displayName.IndexOf(' ')));
 				return;
 			}
-
-			if (!Platform.IsWindows)
-				Framework = Framework.Unknown;
-
-			Framework = Framework.NetFramework;
 
 			const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
 			using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
