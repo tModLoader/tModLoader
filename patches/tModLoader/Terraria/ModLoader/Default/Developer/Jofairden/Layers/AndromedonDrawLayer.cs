@@ -10,11 +10,9 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 
 		public abstract DrawDataInfo GetData(PlayerDrawSet info);
 
-		public override void GetDefaults(PlayerDrawSet drawInfo, out bool visible, out LayerConstraint constraint) {
+		public override bool GetDefaultVisiblity(PlayerDrawSet drawInfo) {
 			var player = drawInfo.drawPlayer;
-
-			visible = drawInfo.shadow == 0f && !player.invis && player.GetModPlayer<DeveloperPlayer>().AndromedonEffect.LayerStrength > 0f;
-			constraint = default;
+			return drawInfo.shadow == 0f && !player.invis && player.GetModPlayer<DeveloperPlayer>().AndromedonEffect.LayerStrength > 0f;
 		}
 
 		public static DrawDataInfo GetHeadDrawDataInfo(PlayerDrawSet drawInfo, Texture2D texture) {

@@ -734,10 +734,19 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the layers that are about to be drawn, either their depth, or whether or not they'll be visible.
+		/// Allows you to reorder the player draw layers. 
+		/// This is called once at the end of mod loading, not during the game.
+		/// Use with extreme caution, or risk breaking other mods.
+		/// </summary>
+		/// <param name="constraints">Add/remove/change the ordering constraints applied to each layer here</param>
+		public virtual void ModifyDrawLayerOrdering(IReadOnlyDictionary<PlayerDrawLayer, List<DrawLayer<PlayerDrawLayer, PlayerDrawSet>.LayerConstraint>> constraints) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the visiblity of layers about to be drawn
 		/// </summary>
 		/// <param name="layers"></param>
-		public virtual void ModifyDrawLayers(IReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>> layers, PlayerDrawSet drawInfo) {
+		public virtual void ModifyDrawLayers(PlayerDrawSet drawInfo, IReadOnlyList<PlayerDrawLayer> layers) {
 		}
 
 		/// <summary>

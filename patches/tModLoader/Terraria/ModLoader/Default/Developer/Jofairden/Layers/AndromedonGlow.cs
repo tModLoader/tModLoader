@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 	//TODO: Glowmasks should be simplified for everyone.
 	internal abstract class AndromedonGlow : AndromedonDrawLayer
 	{
-		public override void Draw(ref PlayerDrawSet drawInfo) {
+		protected override void Draw(ref PlayerDrawSet drawInfo) {
 			var drawDataInfo = GetData(drawInfo);
 			var drawPlayer = drawInfo.drawPlayer;
 			var devPlayer = drawPlayer.GetModPlayer<DeveloperPlayer>();

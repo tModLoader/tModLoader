@@ -31,12 +31,62 @@
  		}
  
  		private void CreateOutlines(float alpha, float scale, Color borderColor) {
-@@ -110,87 +_,85 @@
+@@ -110,87 +_,75 @@
  		}
  
  		public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f) {
 +			DrawPlayerInternal(camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
 +		}
++
++		// Compare this with the vanilla layer drawing call order to make sure it's accurate when updating
++		internal static IList<PlayerDrawLayer> GetVanillaLayers() => new List<PlayerDrawLayer> {
++			PlayerDrawLayer.JimsCloak,
++			PlayerDrawLayer.MountBack,
++			PlayerDrawLayer.Carpet,
++			PlayerDrawLayer.PortableStool,
++			PlayerDrawLayer.ElectrifiedDebuffBack,
++			PlayerDrawLayer.ForbiddenSetRing,
++			PlayerDrawLayer.SafemanSun,
++			PlayerDrawLayer.WebbedDebuffBack,
++			PlayerDrawLayer.LeinforsHairShampoo,
++			PlayerDrawLayer.Backpacks,
++			PlayerDrawLayer.Wings,
++			PlayerDrawLayer.BackAcc,
++			PlayerDrawLayer.HairBack,
++			PlayerDrawLayer.HeadBack,
++			PlayerDrawLayer.BalloonAcc,
++			PlayerDrawLayer.HeldItemBehindBackArm, // drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindBackArm
++			PlayerDrawLayer.Skin,
++			PlayerDrawLayer.Leggings, // !(drawinfo.drawPlayer.wearsRobe && drawinfo.drawPlayer.body != 166)
++			PlayerDrawLayer.Shoes,
++			PlayerDrawLayer.Robe, // drawinfo.drawPlayer.wearsRobe && drawinfo.drawPlayer.body != 166
++			PlayerDrawLayer.SkinLongCoat,
++			PlayerDrawLayer.ArmorLongCoat,
++			PlayerDrawLayer.Torso,
++			PlayerDrawLayer.OffhandAcc,
++			PlayerDrawLayer.WaistAcc,
++			PlayerDrawLayer.NeckAcc,
++			PlayerDrawLayer.Head,
++			PlayerDrawLayer.FaceAcc,
++			PlayerDrawLayer.FrontAccFrontNeck, // drawinfo.drawFrontAccInNeckAccLayer
++			PlayerDrawLayer.MountFront,
++			PlayerDrawLayer.Pulley,
++			PlayerDrawLayer.FrontAccBack,
++			PlayerDrawLayer.Shield,
++			PlayerDrawLayer.SolarShield,
++			PlayerDrawLayer.HeldItemBehindFrontArm, // drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindFrontArm
++			PlayerDrawLayer.ArmOverItem,
++			PlayerDrawLayer.HandOnAcc,
++			PlayerDrawLayer.BladedGlove,
++			PlayerDrawLayer.FrontAccFront, // !drawinfo.drawFrontAccInNeckAccLayer
++			PlayerDrawLayer.HeldItemOverFrontArm, // drawinfo.weaponDrawOrder == WeaponDrawOrder.OverFrontArm
++			PlayerDrawLayer.ProjectileOverArm,
++			PlayerDrawLayer.FrozenOrWebbedDebuff,
++			PlayerDrawLayer.ElectrifiedDebuffFront,
++			PlayerDrawLayer.IceBarrier,
++			PlayerDrawLayer.CaptureTheGem,
++			PlayerDrawLayer.BeetleBuff
++		};
 +
 +		private void DrawPlayerInternal(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f, bool useLighting = true, bool headOnly = false) {
  			if (drawPlayer.ShouldNotDraw)
@@ -122,70 +172,10 @@
 -			PlayerDrawLayers.DrawPlayer_36_CTG(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_37_BeetleBuff(ref drawinfo);
 +			drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin, useLighting);
-+
-+			var vanillaLayers = new List<PlayerDrawLayer> {
-+				PlayerDrawLayer.TorsoIndent, //{
-+				PlayerDrawLayer.JimsCloak,
-+				PlayerDrawLayer.TorsoUnindent, //}
-+				PlayerDrawLayer.MountBack,
-+				PlayerDrawLayer.Carpet,
-+				PlayerDrawLayer.PortableStool,
-+				PlayerDrawLayer.TorsoIndent, //{
-+				PlayerDrawLayer.ElectrifiedDebuffBack,
-+				PlayerDrawLayer.ForbiddenSetRing,
-+				PlayerDrawLayer.SafemanSun,
-+				PlayerDrawLayer.WebbedDebuffBack,
-+				PlayerDrawLayer.LeinforsHairShampoo,
-+				PlayerDrawLayer.TorsoUnindent, //}
-+				PlayerDrawLayer.Backpacks,
-+				PlayerDrawLayer.Wings,
-+				PlayerDrawLayer.BackAcc,
-+				PlayerDrawLayer.HairBack,
-+				PlayerDrawLayer.HeadBack,
-+				PlayerDrawLayer.BalloonAcc,
-+				PlayerDrawLayer.HeldItemBehindBackArm, // drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindBackArm
-+				PlayerDrawLayer.Skin,
-+				PlayerDrawLayer.Leggings, // !(drawinfo.drawPlayer.wearsRobe && drawinfo.drawPlayer.body != 166)
-+				PlayerDrawLayer.Shoes,
-+				PlayerDrawLayer.Robe, // drawinfo.drawPlayer.wearsRobe && drawinfo.drawPlayer.body != 166
-+				PlayerDrawLayer.TorsoIndent,
-+				PlayerDrawLayer.SkinLongCoat,
-+				PlayerDrawLayer.ArmorLongCoat,
-+				PlayerDrawLayer.Torso,
-+				PlayerDrawLayer.OffhandAcc,
-+				PlayerDrawLayer.WaistAcc,
-+				PlayerDrawLayer.NeckAcc,
-+				PlayerDrawLayer.Head,
-+				PlayerDrawLayer.FaceAcc,
-+				PlayerDrawLayer.TorsoUnindent,
-+				PlayerDrawLayer.FrontAccFrontNeck, // drawinfo.drawFrontAccInNeckAccLayer
-+				PlayerDrawLayer.TorsoIndent,
-+				PlayerDrawLayer.MountFront,
-+				PlayerDrawLayer.Pulley,
-+				PlayerDrawLayer.FrontAccBack,
-+				PlayerDrawLayer.Shield,
-+				PlayerDrawLayer.MountIndent,
-+				PlayerDrawLayer.SolarShield,
-+				PlayerDrawLayer.MountUnindent,
-+				PlayerDrawLayer.HeldItemBehindFrontArm, // drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindFrontArm
-+				PlayerDrawLayer.ArmOverItem,
-+				PlayerDrawLayer.HandOnAcc,
-+				PlayerDrawLayer.BladedGlove,
-+				PlayerDrawLayer.TorsoUnindent, //}
-+				PlayerDrawLayer.FrontAccFront, // !drawinfo.drawFrontAccInNeckAccLayer
-+				PlayerDrawLayer.HeldItemOverFrontArm, // drawinfo.weaponDrawOrder == WeaponDrawOrder.OverFrontArm
-+				PlayerDrawLayer.ProjectileOverArm,
-+				PlayerDrawLayer.FrozenOrWebbedDebuff,
-+				PlayerDrawLayer.ElectrifiedDebuffFront,
-+				PlayerDrawLayer.IceBarrier,
-+				PlayerDrawLayer.CaptureTheGem,
-+				PlayerDrawLayer.BeetleBuff
-+			};
-+
-+
-+			foreach (var layer in PlayerDrawLayerHooks.GetDrawLayers(drawinfo, vanillaLayers)) {
-+				if (layer.visible && (!headOnly || layer.IsHeadLayer)) {
-+					layer.Draw(ref drawinfo);
++			
++			foreach (var layer in PlayerDrawLayerHooks.GetDrawLayers(drawinfo)) {
++				if (!headOnly || layer.IsHeadLayer) {
++					layer.PositionAndDraw(ref drawinfo);
 +				}
 +			}
 +

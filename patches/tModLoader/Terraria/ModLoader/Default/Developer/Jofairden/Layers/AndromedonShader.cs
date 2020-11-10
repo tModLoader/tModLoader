@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 		public const int ShaderNumSegments = 8;
 		public const int ShaderDrawOffset = 2;
 
-		public override void Draw(ref PlayerDrawSet drawInfo) {
+		protected override void Draw(ref PlayerDrawSet drawInfo) {
 			DrawDataInfo drawDataInfo = GetData(drawInfo);
 			Player drawPlayer = drawInfo.drawPlayer;
 			var devPlayer = drawPlayer.GetModPlayer<DeveloperPlayer>();

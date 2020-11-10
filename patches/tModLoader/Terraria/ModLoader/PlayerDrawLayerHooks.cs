@@ -2,63 +2,52 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Terraria.DataStructures;
+using Terraria.Graphics.Renderers;
 
 namespace Terraria.ModLoader
 {
 	public static class PlayerDrawLayerHooks
 	{
-		internal static readonly IList<PlayerDrawLayer> ModLayers = new List<PlayerDrawLayer>();
+		public static readonly IReadOnlyList<PlayerDrawLayer> VanillaLayers = new ReadOnlyCollection<PlayerDrawLayer>(LegacyPlayerRenderer.GetVanillaLayers());
 
-		internal static void Add(PlayerDrawLayer layer) => ModLayers.Add(layer);
+		private static readonly IList<PlayerDrawLayer> _layers = new List<PlayerDrawLayer>(VanillaLayers);
+		public static readonly IReadOnlyList<PlayerDrawLayer> Layers = new ReadOnlyCollection<PlayerDrawLayer>(_layers);
 
-		internal static void Unload() => ModLayers.Clear();
-
-		public static void AddDrawLayers(PlayerDrawSet drawInfo, Dictionary<string, List<PlayerDrawLayer>> layers) {
-			foreach (var layer in ModLayers) {
-				layer.GetDefaults(drawInfo, out layer.visible, out layer.constraint);
-
-				string modName = layer.Mod.Name;
-
-				if (!layers.TryGetValue(modName, out var list)) {
-					layers[modName] = list = new List<PlayerDrawLayer>();
-				}
-
-				list.Add(layer);
+		internal static void ReplaceLayers(IEnumerable<PlayerDrawLayer> newLayers) {
+			_layers.Clear();
+			foreach (var l in newLayers) {
+				_layers.Add(l);
 			}
 		}
 
-		public static IEnumerable<PlayerDrawLayer> GetDrawLayers(PlayerDrawSet drawInfo, List<PlayerDrawLayer> vanillaLayers) {
-			for (int i = 0; i < vanillaLayers.Count; i++) {
-				var layer = (LegacyPlayerDrawLayer)vanillaLayers[i];
-				layer.GetDefaults(drawInfo, out layer.visible, out layer.constraint);
-				layer.constraint = i > 0 ? new PlayerDrawLayer.LayerConstraint(vanillaLayers[i - 1], false) : default;
+		internal static void Add(PlayerDrawLayer layer) => _layers.Add(layer);
+
+		internal static void Unload() => ReplaceLayers(VanillaLayers);
+
+		internal static void ResizeArrays() {
+			var constraints = Layers.ToDictionary(l => l, l => l.GetConstraints().ToList());
+			var readOnlyConstraints = new ReadOnlyDictionary<PlayerDrawLayer, List<PlayerDrawLayer.LayerConstraint>>(constraints);
+
+			PlayerHooks.ModifyDrawLayerOrdering(readOnlyConstraints);
+
+			var sort = new TopoSort<PlayerDrawLayer>(Layers,
+				l => readOnlyConstraints[l].Where(c => !c.before).Select(c => c.layer),
+				l => readOnlyConstraints[l].Where(c => c.before).Select(c => c.layer));
+
+			ReplaceLayers(sort.Sort());
+		}
+
+		/// <summary>
+		/// Note, not threadsafe
+		/// </summary>
+		public static IEnumerable<PlayerDrawLayer> GetDrawLayers(PlayerDrawSet drawInfo) {
+			foreach (var layer in Layers) {
+				layer.visible = layer.GetDefaultVisiblity(drawInfo);
 			}
 
-			var layers = new Dictionary<string, List<PlayerDrawLayer>> {
-				{ "Terraria", vanillaLayers }
-			};
+			PlayerHooks.ModifyDrawLayers(drawInfo, Layers);
 
-			//Add OOP layers.
-			AddDrawLayers(drawInfo, layers);
-
-			//Actually make layer lists readonly
-			var readonlyLayersBackingDictionary = new Dictionary<string, IReadOnlyList<PlayerDrawLayer>>();
-			var readonlyLayers = new ReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>>(readonlyLayersBackingDictionary);
-
-			foreach (var pair in layers) {
-				readonlyLayersBackingDictionary[pair.Key] = pair.Value.AsReadOnly();
-			}
-
-			//Modify draw layers, but not the collections.
-			PlayerHooks.ModifyDrawLayers(drawInfo, readonlyLayers);
-
-			var array = layers
-				.SelectMany(pair => pair.Value)
-				.ToArray();
-
-			//TODO: Sort the array based on layer constraints.
-
-			return array;
+			return Layers;
 		}
 	}
 }

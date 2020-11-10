@@ -26,7 +26,10 @@ namespace Terraria.ModLoader.Default.Patreon
 			}
 		}
 
-		public override void ModifyDrawLayers(IReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>> layers, PlayerDrawSet drawInfo) {
+
+		// TODO: figure out how this was meant to work. Separate the hair and face layers if necessary, otherwise add a new layer for the arm rendering, pointed at the vanilla layer, and and control the visibility
+
+		/*public override void ModifyDrawLayers(IReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>> layers, PlayerDrawSet drawInfo) {
 			if (player.head == Mod.GetEquipSlot("toplayz_Head", EquipType.Head)) {
 				// If not falling or swinging frames
 				if (player.bodyFrame.Y != 5 * 56
@@ -47,6 +50,6 @@ namespace Terraria.ModLoader.Default.Patreon
 				//						layers.Insert(bodyIndex, headLayer);
 				//					}
 			}
-		}
+		}*/
 	}
 }
