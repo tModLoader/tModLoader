@@ -31,7 +31,7 @@
  		}
  
  		private void CreateOutlines(float alpha, float scale, Color borderColor) {
-@@ -110,87 +_,75 @@
+@@ -110,87 +_,77 @@
  		}
  
  		public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f) {
@@ -172,7 +172,9 @@
 -			PlayerDrawLayers.DrawPlayer_36_CTG(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_37_BeetleBuff(ref drawinfo);
 +			drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin, useLighting);
-+			
++
++			PlayerHooks.ModifyDrawInfo(ref drawinfo);
++
 +			foreach (var layer in PlayerDrawLayerHooks.GetDrawLayers(drawinfo)) {
 +				if (!headOnly || layer.IsHeadLayer) {
 +					layer.PositionAndDraw(ref drawinfo);
