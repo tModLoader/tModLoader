@@ -75,7 +75,7 @@
  							NetMessage.TrySendData(5, -1, -1, null, num250, 220 + num259, (int)player16.bank4.item[num259].prefix);
  						}
  
-+						PlayerHooks.SyncPlayer(player14, -1, -1, true);
++						PlayerHooks.SyncPlayer(player16, -1, -1, true);
  						NetMessage.TrySendData(6);
  						if (Netplay.Connection.State == 2)
  							Netplay.Connection.State = 3;
@@ -83,7 +83,7 @@
  								player8.trashItem.Prefix(num139);
  								if (num137 == Main.myPlayer && !Main.ServerSideCharacter)
  									Main.clientPlayer.trashItem = player8.trashItem.Clone();
-+								ItemIO.ReceiveModData(player6.trashItem, reader);
++								ItemIO.ReceiveModData(player8.trashItem, reader);
  							}
  							else if (num138 <= 58) {
  								int type9 = array2[num140].type;
@@ -91,7 +91,7 @@
  								array2[num140].netDefaults(type8);
  								array2[num140].stack = stack4;
  								array2[num140].Prefix(num139);
-+								ItemIO.ReceiveModData(array[num60], reader);
++								ItemIO.ReceiveModData(array2[num140], reader);
  								if (num137 == Main.myPlayer && !Main.ServerSideCharacter)
  									array3[num140] = array2[num140].Clone();
  
@@ -99,7 +99,7 @@
  								array2[num140].Prefix(num139);
  								if (num137 == Main.myPlayer && !Main.ServerSideCharacter)
  									array3[num140] = array2[num140].Clone();
-+								ItemIO.ReceiveModData(array[num60], reader);
++								ItemIO.ReceiveModData(array2[num140], reader);
  							}
  
  							if (Main.netMode == 2 && num137 == whoAmI && num138 <= 58 + player8.armor.Length + player8.dye.Length + player8.miscEquips.Length + player8.miscDyes.Length)
@@ -127,7 +127,7 @@
  							ItemSyncPersistentStats itemSyncPersistentStats = default(ItemSyncPersistentStats);
  							itemSyncPersistentStats.CopyFrom(item2);
 -							bool newAndShiny = (item2.newAndShiny || item2.netID != num69) && ItemSlot.Options.HighlightNewItems && (num69 < 0 || num69 >= 5088 || !ItemID.Sets.NeverAppearsAsNewInInventory[num69]);
-+							bool newAndShiny = (item2.newAndShiny || item2.netID != num76) && ItemSlot.Options.HighlightNewItems && (num76 < 0 || !ItemID.Sets.NeverAppearsAsNewInInventory[num76]);
++							bool newAndShiny = (item2.newAndShiny || item2.netID != num69) && ItemSlot.Options.HighlightNewItems && (num69 < 0 || !ItemID.Sets.NeverAppearsAsNewInInventory[num69]);
  							item2.netDefaults(num69);
  							item2.newAndShiny = newAndShiny;
  							item2.Prefix(pre2);
@@ -189,7 +189,7 @@
  							Main.chest[num260].item[num261].netDefaults(type17);
  							Main.chest[num260].item[num261].Prefix(pre3);
  							Main.chest[num260].item[num261].stack = stack8;
-+							ItemIO.ReceiveModData(Main.chest[num261].item[num262], reader);
++							ItemIO.ReceiveModData(Main.chest[num261].item[num261], reader);
  							Recipe.FindRecipes(canDelayCheck: true);
  						}
  
@@ -346,7 +346,7 @@
  						int num73 = reader.ReadInt16();
  						int num74 = reader.ReadInt32();
 -						if (num73 >= 0 && num73 < 289)
-+						if (num78 >= 0) // && num78 < 289) //This prevented mod BannerIds from syncing.
++						if (num73 >= 0) // && num78 < 289) //This prevented mod BannerIds from syncing.
  							NPC.killCount[num73] = num74;
  					}
  					break;

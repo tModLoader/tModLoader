@@ -104,14 +104,14 @@
  							if (projectile.originalDamage != 0)
  								bb20[6] = true;
  
-+							byte[] extraAI = ProjectileLoader.SendExtraAI(projectile, ref bb21);
++							byte[] extraAI = ProjectileLoader.SendExtraAI(projectile, ref bb20);
  							writer.Write(bb20);
  							for (int num18 = 0; num18 < Projectile.maxAI; num18++) {
  								if (bb20[num18])
  									writer.Write(projectile.ai[num18]);
  							}
  
-+							if (bb21[Projectile.maxAI + 1]) {
++							if (bb20[Projectile.maxAI + 1]) {
 +								writer.Write((byte)extraAI.Length);
 +								writer.Write(extraAI);
 +							}
@@ -175,7 +175,7 @@
 +				// chunks can go more than 32767 (and even 65535) bytes. This is because ModTileEntities can have large amounts of data especially when they sync Items and instanced GlobalItem classes are in play.
 +				// Complications include AllowVanillaClients, message length byte length negotiation, and MessageBuffer.readBuffer having a fixed size.
 -				writer.Write((short)num26);
-+				writer.Write((ushort)num25);
++				writer.Write((ushort)num26);
  				writer.BaseStream.Position = num26;
  				if (Main.netMode == 1) {
  					if (Netplay.Connection.Socket.IsConnected()) {

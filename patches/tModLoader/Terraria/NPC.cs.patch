@@ -273,7 +273,7 @@
 +				NPCLoader.TownNPCAttackCooldown(this, ref num41, ref maxValue2);
 +				NPCLoader.TownNPCAttackProj(this, ref num37, ref num40);
 +				NPCLoader.TownNPCAttackProjSpeed(this, ref num39, ref num42, ref num43);
-+				NPCLoader.TownNPCAttackShoot(this, ref flag20);
++				NPCLoader.TownNPCAttackShoot(this, ref flag21);
 +
  				if (Main.expertMode)
  					num38 = (int)((float)num38 * Main.GameModeInfo.TownNPCDamageMultiplier);

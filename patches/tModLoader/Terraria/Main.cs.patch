@@ -434,7 +434,7 @@
  
  		public void YouCanSleepNow() {
 +#if CLIENT
-+			if (waveBank == null) //supress extra exceptions from audio engine failing to load
++			if (audioSystem == null) //supress extra exceptions from audio engine failing to load
 +				return;
 +#endif
  #if WINDOWS
@@ -850,7 +850,7 @@
  				}
  
  				if (gameMenu || musicVolume == 0f) {
-@@ -8812,12 +_,14 @@
+@@ -8812,23 +_,25 @@
  						curMusic = 0;
  					}
  
