@@ -850,7 +850,7 @@
  				}
  
  				if (gameMenu || musicVolume == 0f) {
-@@ -8812,23 +_,25 @@
+@@ -8812,12 +_,14 @@
  						curMusic = 0;
  					}
  
@@ -861,8 +861,8 @@
  
  				bool isMainTrackAudible = musicFade[curMusic] > 0.25f;
 -				for (int i = 1; i < 90; i++) {
-+				for (int k = 1; k < music.Length; k++) {
-+					if (music[k] == null)
++				for (int i = 1; i < music.Length; i++) {
++					if (music[i] == null)
 +						continue; // Race condition, Music is resized during load.
  					float num2 = musicFade[i] * musicVolume * num;
  					if (i >= 62 && i <= 88) {
