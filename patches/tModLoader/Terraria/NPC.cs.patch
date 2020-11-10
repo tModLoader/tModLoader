@@ -152,7 +152,7 @@
  			if (aiStyle == 0) {
  				if (Main.netMode != 1) {
  					for (int i = 0; i < 255; i++) {
-@@ -37272,6 +_,7 @@
+@@ -37282,6 +_,7 @@
  			if (type == 638 || type == 656)
  				num = 0;
  
@@ -160,7 +160,7 @@
  			bool flag = Main.raining;
  			if (!Main.dayTime)
  				flag = true;
-@@ -37360,6 +_,8 @@
+@@ -37370,6 +_,8 @@
  					num2 += 0.15f;
  					defense += 8;
  				}
@@ -169,7 +169,7 @@
  			}
  
  			if (type == 142 && Main.netMode != 1 && !Main.xMas) {
-@@ -37419,7 +_,7 @@
+@@ -37429,7 +_,7 @@
  					break;
  			}
  
@@ -178,7 +178,7 @@
  				TargetClosest();
  				if (position.X < Main.player[target].position.X) {
  					base.direction = 1;
-@@ -37571,7 +_,14 @@
+@@ -37569,7 +_,14 @@
  			int num11 = -1;
  			if (!flag6 && Main.netMode != 1 && !flag3) {
  				for (int l = 0; l < 200; l++) {
@@ -193,8 +193,8 @@
 +					if (!Main.npc[l].active || Main.npc[l].friendly || Main.npc[l].damage <= 0 || !(Main.npc[l].Distance(base.Center) < num6) || (type == 453 && NPCID.Sets.Skeletons[Main.npc[l].type] && canHitVal) || (!Main.npc[l].noTileCollide && !Collision.CanHit(base.Center, 0, 0, Main.npc[l].Center, 0, 0)))
  						continue;
  
- 					flag10 = true;
-@@ -37821,7 +_,7 @@
+ 					bool flag12 = Main.npc[l].CanBeChasedBy(this);
+@@ -37823,7 +_,7 @@
  
  					if (closeDoor && ((position.X + (float)(width / 2)) / 16f > (float)(doorX + 2) || (position.X + (float)(width / 2)) / 16f < (float)(doorX - 2))) {
  						Tile tileSafely = Framing.GetTileSafely(doorX, doorY);
@@ -203,16 +203,16 @@
  							if (WorldGen.CloseDoor(doorX, doorY)) {
  								closeDoor = false;
  								NetMessage.SendData(19, -1, -1, null, 1, doorX, doorY, base.direction);
-@@ -37985,7 +_,7 @@
+@@ -37987,7 +_,7 @@
  						Tile tileSafely4 = Framing.GetTileSafely(num18, num19 - 1);
  						Tile tileSafely5 = Framing.GetTileSafely(num18, num19 - 2);
- 						bool flag17 = height / 16 < 3;
+ 						bool flag18 = height / 16 < 3;
 -						if (townNPC && tileSafely5.nactive() && (tileSafely5.type == 10 || tileSafely5.type == 388) && (Main.rand.Next(10) == 0 || flag)) {
 +						if (townNPC && tileSafely5.nactive() && (TileLoader.OpenDoorID(tileSafely5) >= 0 || tileSafely5.type == 388) && (Main.rand.Next(10) == 0 || flag)) {
  							if (Main.netMode != 1) {
  								if (WorldGen.OpenDoor(num18, num19 - 2, base.direction)) {
  									closeDoor = true;
-@@ -38309,13 +_,19 @@
+@@ -38311,13 +_,19 @@
  					num28 = 589;
  					num30 = 7f;
  					num29 = 22;
@@ -232,7 +232,7 @@
  				if (Main.expertMode)
  					num29 = (int)((float)num29 * Main.GameModeInfo.TownNPCDamageMultiplier);
  
-@@ -38335,6 +_,7 @@
+@@ -38337,6 +_,7 @@
  						vec = new Vector2(spriteDirection, -1f);
  
  					vec *= num30;
@@ -240,24 +240,24 @@
  					vec += Utils.RandomVector2(Main.rand, 0f - num35, num35);
  					int num36 = 1000;
  					num36 = ((type == 124) ? Projectile.NewProjectile(base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec.X, vec.Y, num28, num29, knockBack, Main.myPlayer, 0f, whoAmI) : ((type != 142) ? Projectile.NewProjectile(base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec.X, vec.Y, num28, num29, knockBack, Main.myPlayer) : Projectile.NewProjectile(base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec.X, vec.Y, num28, num29, knockBack, Main.myPlayer, 0f, Main.rand.Next(5))));
-@@ -38360,7 +_,7 @@
+@@ -38362,7 +_,7 @@
  				int num41 = 0;
  				int maxValue2 = 0;
  				float knockBack2 = 0f;
 -				int num42 = 0;
 +				float num42 = 0;
- 				bool flag20 = false;
+ 				bool flag21 = false;
  				float num43 = 0f;
  				if ((float)NPCID.Sets.AttackTime[type] == ai[1]) {
-@@ -38525,6 +_,7 @@
+@@ -38527,6 +_,7 @@
  
  					if (localAI[3] > (float)num40) {
  						num40 = 48;
 +						//Patch context: flag20 means 'in between shots'.
- 						flag20 = true;
+ 						flag21 = true;
  					}
  
-@@ -38538,6 +_,7 @@
+@@ -38540,6 +_,7 @@
  				}
  				else if (type == 209) {
  					num37 = Utils.SelectRandom<int>(Main.rand, 134, 133, 135);
@@ -265,7 +265,7 @@
  					num40 = 1;
  					switch (num37) {
  						case 135:
-@@ -38567,6 +_,12 @@
+@@ -38569,6 +_,12 @@
  					}
  				}
  
@@ -278,7 +278,7 @@
  				if (Main.expertMode)
  					num38 = (int)((float)num38 * Main.GameModeInfo.TownNPCDamageMultiplier);
  
-@@ -38687,6 +_,7 @@
+@@ -38689,6 +_,7 @@
  				else if (type == 663) {
  					num47 = 950;
  					num48 = 20;
@@ -286,7 +286,7 @@
  					num50 = 15;
  					num51 = 0;
  					maxValue3 = 0;
-@@ -38702,6 +_,11 @@
+@@ -38704,6 +_,11 @@
  					knockBack3 = 3f;
  				}
  
@@ -298,7 +298,7 @@
  				if (Main.expertMode)
  					num48 = (int)((float)num48 * Main.GameModeInfo.TownNPCDamageMultiplier);
  
-@@ -38712,12 +_,14 @@
+@@ -38714,12 +_,14 @@
  				if (localAI[3] == (float)num50 && Main.netMode != 1) {
  					Vector2 vec4 = Vector2.Zero;
  					if (num56 != -1)
@@ -313,7 +313,7 @@
  					vec4 += Utils.RandomVector2(Main.rand, 0f - num55, num55);
  					if (type == 108) {
  						int num57 = Utils.SelectRandom<int>(Main.rand, 1, 1, 1, 1, 2, 2, 3);
-@@ -38768,6 +_,7 @@
+@@ -38770,6 +_,7 @@
  					}
  				}
  
@@ -321,7 +321,7 @@
  				if (num54 > 0f) {
  					Vector3 vector5 = NPCID.Sets.MagicAuraColor[type].ToVector3() * num54;
  					Lighting.AddLight(base.Center, vector5.X, vector5.Y, vector5.Z);
-@@ -38827,11 +_,15 @@
+@@ -38829,11 +_,15 @@
  				else if (type == 637 || type == 638 || type == 656) {
  					num67 = 10;
  					num69 = (num70 = 32);
@@ -337,7 +337,7 @@
  				if (Main.expertMode)
  					num67 = (int)((float)num67 * Main.GameModeInfo.TownNPCDamageMultiplier);
  
-@@ -42409,7 +_,7 @@
+@@ -42446,7 +_,7 @@
  					Main.tile[num177 - direction, num178 + 1] = new Tile();
  
  				Main.tile[num177, num178 + 1].halfBrick();
@@ -346,7 +346,7 @@
  					ai[2] += 1f;
  					ai[3] = 0f;
  					if (ai[2] >= 60f) {
-@@ -42448,7 +_,7 @@
+@@ -42485,7 +_,7 @@
  									NetMessage.SendData(17, -1, -1, null, 0, num177, num178 - 1);
  							}
  							else {
@@ -355,7 +355,7 @@
  									bool flag24 = WorldGen.OpenDoor(num177, num178 - 1, direction);
  									if (!flag24) {
  										ai[3] = num52;
-@@ -43574,7 +_,7 @@
+@@ -43611,7 +_,7 @@
  								Tile tileSafely = Framing.GetTileSafely(i, j);
  								bool flag2 = tileSafely.active() && Main.tileSolid[tileSafely.type] && !Main.tileFrameImportant[tileSafely.type];
  								if (flag && flag2) {
@@ -364,7 +364,7 @@
  									for (int k = 0; k < num38; k++) {
  										Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  										obj.velocity.Y -= 3f + (float)num37 * 1.5f;
-@@ -45198,7 +_,7 @@
+@@ -45235,7 +_,7 @@
  				Tile tileSafely4 = Framing.GetTileSafely(num64, num65 - 1);
  				Tile tileSafely5 = Framing.GetTileSafely(num64, num65 - 2);
  				Tile tileSafely6 = Framing.GetTileSafely(num64, num65 - 3);
@@ -373,7 +373,7 @@
  					ai[0] += 1f;
  					ai[3] = 0f;
  					if (ai[0] >= 60f) {
-@@ -45228,7 +_,7 @@
+@@ -45265,7 +_,7 @@
  									NetMessage.SendData(17, -1, -1, null, 0, num64, num65 - 1);
  							}
  							else {
@@ -382,7 +382,7 @@
  									bool flag38 = WorldGen.OpenDoor(num64, num65 - 1, direction);
  									if (!flag38) {
  										ai[3] = num19;
-@@ -47210,6 +_,10 @@
+@@ -47247,6 +_,10 @@
  		public bool UsesPartyHat() {
  			if (type == 441 || type == 37 || type == 633)
  				return false;
@@ -393,7 +393,7 @@
  
  			if (ForcePartyHatOn)
  				return true;
-@@ -47262,6 +_,10 @@
+@@ -47299,6 +_,10 @@
  				num = TextureAssets.Npc[type].Height() / Main.npcFrameCount[type];
  			}
  
@@ -404,7 +404,7 @@
  			int num2 = 0;
  			if (aiAction == 0)
  				num2 = ((velocity.Y < 0f) ? 2 : ((velocity.Y > 0f) ? 3 : ((velocity.X != 0f) ? 1 : 0)));
-@@ -55140,7 +_,10 @@
+@@ -55177,7 +_,10 @@
  					if (Main.tile[x, y].type == 467)
  						number2 = 5;
  
@@ -416,7 +416,7 @@
  					NetMessage.SendTileSquare(-1, x, y, 3);
  				}
  
-@@ -55481,6 +_,9 @@
+@@ -55518,6 +_,9 @@
  			if (!active || DoesntDespawnToInactivity())
  				return;
  
@@ -426,7 +426,7 @@
  			if (townNPC) {
  				AddIntoPlayersTownNPCSlots();
  				return;
-@@ -55640,6 +_,9 @@
+@@ -55677,6 +_,9 @@
  				return;
  			}
  
@@ -436,7 +436,7 @@
  			noSpawnCycle = true;
  			if (townNPC && type != 37 && type != 453) {
  				if (Main.netMode != 2)
-@@ -55688,7 +_,9 @@
+@@ -55725,7 +_,9 @@
  			if (DeathSound != null)
  				SoundEngine.PlaySound(DeathSound, base.position);
  
@@ -447,7 +447,7 @@
  				DropEoWLoot();
  			}
  			else if (type == 134) {
-@@ -56201,7 +_,7 @@
+@@ -56238,7 +_,7 @@
  		}
  
  		public static void ResetKillCount() {
@@ -456,7 +456,7 @@
  				killCount[i] = 0;
  			}
  		}
-@@ -56305,7 +_,7 @@
+@@ -56342,7 +_,7 @@
  
  			if (type == 1 && ai[1] > 0f) {
  				int num3 = (int)ai[1];
@@ -465,7 +465,7 @@
  					int stackForSlimeItemDrop = GetStackForSlimeItemDrop(num3);
  					Item.NewItem((int)position.X, (int)position.Y, width, height, num3, stackForSlimeItemDrop);
  				}
-@@ -58779,7 +_,7 @@
+@@ -58816,7 +_,7 @@
  		}
  
  		public void NPCLoot() {
@@ -474,7 +474,7 @@
  				return;
  
  			Player closestPlayer = Main.player[Player.FindClosest(position, width, height)];
-@@ -58796,6 +_,9 @@
+@@ -58833,6 +_,9 @@
  			if ((type == 23 && Main.hardMode) || (SpawnedFromStatue && NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue[type] && !Main.hardMode) || (SpawnedFromStatue && NPCID.Sets.StatueSpawnedDropRarity[type] != -1f && (Main.rand.NextFloat() >= NPCID.Sets.StatueSpawnedDropRarity[type] || !AnyInteractions())))
  				return;
  
@@ -484,7 +484,7 @@
  			bool num = downedMechBoss1 && downedMechBoss2 && downedMechBoss3;
  			DoDeathEvents_BeforeLoot(closestPlayer);
  			NPCLoot_DropItems(closestPlayer);
-@@ -58807,6 +_,7 @@
+@@ -58844,6 +_,7 @@
  					ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[32].Key), new Color(50, 255, 130));
  			}
  
@@ -492,7 +492,7 @@
  			NPCLoot_DropMoney(closestPlayer);
  			NPCLoot_DropHeals(closestPlayer);
  		}
-@@ -58844,7 +_,7 @@
+@@ -58881,7 +_,7 @@
  			WoFKilledToday = false;
  		}
  
@@ -501,7 +501,7 @@
  			int stack = Main.rand.Next(5, 16);
  			int num = 28;
  			if (type == 113)
-@@ -58868,6 +_,7 @@
+@@ -58905,6 +_,7 @@
  			else if (type == 398)
  				num = 3544;
  
@@ -509,7 +509,7 @@
  			Item.NewItem((int)position.X, (int)position.Y, width, height, num, stack);
  			int num2 = Main.rand.Next(5) + 5;
  			for (int i = 0; i < num2; i++) {
-@@ -58885,7 +_,7 @@
+@@ -58922,7 +_,7 @@
  			}
  		}
  
@@ -518,7 +518,7 @@
  			if (type == 125 || type == 126) {
  				if (Main.netMode == 0)
  					Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Plural", Language.GetTextValue("Enemies.TheTwins")), 175, 75);
-@@ -58899,7 +_,7 @@
+@@ -58936,7 +_,7 @@
  					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", NetworkText.FromKey("Enemies.MoonLord")), new Color(175, 75, 255));
  			}
  			else if (Main.netMode == 0) {
@@ -527,7 +527,7 @@
  			}
  			else if (Main.netMode == 2) {
  				ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", GetTypeNetName()), new Color(175, 75, 255));
-@@ -59281,8 +_,10 @@
+@@ -59318,8 +_,10 @@
  			}
  
  			if (boss) {
@@ -540,7 +540,7 @@
  				if (Main.netMode == 2)
  					NetMessage.SendData(7);
  			}
-@@ -59674,8 +_,10 @@
+@@ -59711,8 +_,10 @@
  					NetMessage.SendData(106, -1, -1, null, (int)position.X, position.Y);
  				}
  				else {
@@ -553,7 +553,7 @@
  					Main.npc[i].active = false;
  					NetMessage.SendData(23, -1, -1, null, i);
  				}
-@@ -59732,6 +_,7 @@
+@@ -59769,6 +_,7 @@
  			if (type == 551)
  				itemType = 3860;
  
@@ -561,7 +561,7 @@
  			DropItemInstanced(position, base.Size, itemType);
  		}
  
-@@ -59869,7 +_,7 @@
+@@ -59906,7 +_,7 @@
  				NetMessage.SendData(71, -1, -1, null, x, y, Type, Style);
  			}
  			else {
@@ -570,7 +570,7 @@
  					return;
  
  				switch (Type) {
-@@ -60097,6 +_,7 @@
+@@ -60134,6 +_,7 @@
  			int num9;
  			int num10;
  			bool flag15;
@@ -578,7 +578,7 @@
  			while (true) {
  				if (num7 >= 255)
  					return;
-@@ -60117,11 +_,12 @@
+@@ -60154,11 +_,12 @@
  						flag11 = false;
  						flag12 = false;
  						flag13 = false;
@@ -592,7 +592,7 @@
  								flag6 = true;
  							}
  							else if (Main.invasionX >= (double)(Main.maxTilesX / 2 - 5) && Main.invasionX <= (double)(Main.maxTilesX / 2 + 5)) {
-@@ -60145,6 +_,7 @@
+@@ -60182,6 +_,7 @@
  							flag5 = true;
  
  						if (Main.tile[num9, num10].wall == 87)
@@ -600,7 +600,7 @@
  							flag4 = true;
  
  						flag2 = false;
-@@ -60422,6 +_,7 @@
+@@ -60459,6 +_,7 @@
  								}
  							}
  						}
@@ -608,7 +608,7 @@
  
  						flag15 = false;
  						if (Main.player[num7].active && !Main.player[num7].dead && Main.player[num7].nearbyActiveNPCs < (float)maxSpawns && Main.rand.Next(spawnRate) == 0) {
-@@ -60447,6 +_,7 @@
+@@ -60484,6 +_,7 @@
  								safeRangeY += (int)((double)(sHeight / 16) * 0.5 / (double)num12);
  							}
  
@@ -616,7 +616,7 @@
  							int num13 = (int)(Main.player[num7].position.X / 16f) - spawnRangeX;
  							int num14 = (int)(Main.player[num7].position.X / 16f) + spawnRangeX;
  							int num15 = (int)(Main.player[num7].position.Y / 16f) - spawnRangeY;
-@@ -60565,18 +_,23 @@
+@@ -60602,18 +_,23 @@
  								flag2 = false;
  
  							if (Main.tile[num, num2 - 1].liquid > 0 && Main.tile[num, num2 - 2].liquid > 0 && !Main.tile[num, num2 - 1].lava()) {
@@ -640,7 +640,7 @@
  								flag9 = true;
  							}
  							else if (Main.tile[num29, num30].type == 367) {
-@@ -60661,6 +_,7 @@
+@@ -60698,6 +_,7 @@
  						for (int num40 = num - num39; num40 < num + num39; num40++) {
  							for (int num41 = num2 - num39; num41 < num2 + num39; num41++) {
  								if (Main.tile[num40, num41].wall == 62)
@@ -648,7 +648,7 @@
  									flag11 = true;
  							}
  						}
-@@ -60681,6 +_,7 @@
+@@ -60718,6 +_,7 @@
  						for (int num45 = num - num44; num45 < num + num44; num45++) {
  							for (int num46 = num2 - num44; num46 < num2 + num44; num46++) {
  								if (WallID.Sets.Conversion.Sandstone[Main.tile[num45, num46].wall] || WallID.Sets.Conversion.HardenedSand[Main.tile[num45, num46].wall])
@@ -656,7 +656,7 @@
  									flag13 = true;
  							}
  						}
-@@ -60702,9 +_,33 @@
+@@ -60739,9 +_,33 @@
  
  			bool flag17 = (float)new Point(num9 - num, num10 - num2).X * Main.windSpeedTarget > 0f;
  			spawnTileType = SpawnNPC_TryFindingProperGroundTileType(spawnTileType, num, num2);
@@ -690,7 +690,7 @@
  			if (Main.player[num7].ZoneTowerNebula) {
  				bool flag18 = true;
  				int num50 = 0;
-@@ -62824,6 +_,10 @@
+@@ -62861,6 +_,10 @@
  				}
  			}
  
@@ -701,7 +701,7 @@
  			if (Main.npc[newNPC].type == 1 && Main.player[num7].RollLuck(180) == 0)
  				Main.npc[newNPC].SetDefaults(-4);
  
-@@ -63601,12 +_,14 @@
+@@ -63655,12 +_,14 @@
  			if (num2 < 0)
  				num2 = 0;
  
@@ -721,7 +721,7 @@
  
  			if ((takenDamageMultiplier > 1f || Damage != 9999) && lifeMax > 1) {
  				if (friendly) {
-@@ -63884,6 +_,10 @@
+@@ -63938,6 +_,10 @@
  		}
  
  		public void HitEffect(int hitDirection = 0, double dmg = 10.0) {
@@ -732,7 +732,7 @@
  			if (!active)
  				return;
  
-@@ -70913,6 +_,8 @@
+@@ -70967,6 +_,8 @@
  			return false;
  		}
  
@@ -741,7 +741,7 @@
  		public int FindBuffIndex(int type) {
  			if (buffImmune[type])
  				return -1;
-@@ -70939,6 +_,8 @@
+@@ -70993,6 +_,8 @@
  			int num = -1;
  			for (int i = 0; i < 5; i++) {
  				if (buffType[i] == type) {
@@ -750,7 +750,7 @@
  					if (buffTime[i] < time)
  						buffTime[i] = time;
  
-@@ -71162,7 +_,7 @@
+@@ -71216,7 +_,7 @@
  				if (NPCID.Sets.NoMultiplayerSmoothingByType[type]) {
  					netOffset *= 0f;
  				}
@@ -759,7 +759,7 @@
  					netOffset *= 0f;
  				}
  				else {
-@@ -71231,6 +_,7 @@
+@@ -71285,6 +_,7 @@
  			}
  
  			UpdateNPC_BuffFlagsReset();
@@ -767,7 +767,7 @@
  			UpdateNPC_BuffSetFlags();
  			UpdateNPC_SoulDrainDebuff();
  			UpdateNPC_BuffClearExpiredBuffs();
-@@ -72167,6 +_,7 @@
+@@ -72221,6 +_,7 @@
  					num = 5;
  			}
  
@@ -775,7 +775,7 @@
  			if (lifeRegen <= -240 && num < 2)
  				num = 2;
  
-@@ -72374,6 +_,7 @@
+@@ -72428,6 +_,7 @@
  
  					if (buffType[i] == 324)
  						onFrostBurn2 = true;
@@ -783,7 +783,7 @@
  				}
  			}
  		}
-@@ -72578,7 +_,12 @@
+@@ -72632,7 +_,12 @@
  				if (acceptableNPCIDs[nPC.type] && nPC.active && !nPC.friendly && nPC.damage > 0) {
  					Rectangle npcRect = nPC.Hitbox;
  					GetMeleeCollisionData(hitbox, i, ref specialHitSetter, ref damageMultiplier, ref npcRect);
@@ -797,7 +797,7 @@
  						BeHurtByOtherNPC(i, nPC);
  				}
  			}
-@@ -72590,14 +_,17 @@
+@@ -72644,14 +_,17 @@
  				num = 20;
  
  			int num2 = Main.DamageVar(thatNPC.damage);
@@ -817,7 +817,7 @@
  			if (dryadWard) {
  				num2 = (int)num5 / 3;
  				num3 = 6;
-@@ -73233,6 +_,10 @@
+@@ -73287,6 +_,10 @@
  			if (IsABestiaryIconDummy)
  				newColor = Color.White;
  
@@ -828,7 +828,7 @@
  			float num = (float)(255 - alpha) / 255f;
  			int num2 = (int)((float)(int)newColor.R * num);
  			int num3 = (int)((float)(int)newColor.G * num);
-@@ -74713,6 +_,7 @@
+@@ -74767,6 +_,7 @@
  				result = ((!HasSpecialEventText("Bunny", out specialEventText)) ? Lang.BunnyChat(this) : specialEventText);
  			}
  
