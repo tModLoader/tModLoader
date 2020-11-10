@@ -490,7 +490,7 @@
 +		public Item Clone() {
 +			Item newItem = (Item)MemberwiseClone();
 +			newItem.modItem = modItem?.Clone(newItem);
-+			newItem.globalItems = globalItems.Select(g => g.Clone(this, newItem)).ToArray();
++			newItem.globalItems = globalItems.Select(g => g?.Clone(this, newItem)).ToArray();
 +			return newItem;
 +		}
 +
@@ -499,7 +499,7 @@
 +		public Item CloneWithModdedDataFrom(Item dataSource) {
 +			Item newItem = (Item)MemberwiseClone();
 +			newItem.modItem = dataSource.modItem?.Clone(newItem);
-+			newItem.globalItems = dataSource.globalItems.Select(g => g.Clone(dataSource, newItem)).ToArray();
++			newItem.globalItems = dataSource.globalItems.Select(g => g?.Clone(dataSource, newItem)).ToArray();
 +			return newItem;
 +		}
 +
