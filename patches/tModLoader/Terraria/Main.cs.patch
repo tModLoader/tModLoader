@@ -940,7 +940,7 @@
  		}
  
  		private void LoadFonts() {
-@@ -7140,12 +_,14 @@
+@@ -7140,12 +_,20 @@
  					npcAltTextures[num35][num37] = OurLoad<Texture2D>("Images" + Path.DirectorySeparatorChar.ToString() + "NPC_" + num35 + "_Alt_" + num37);
  				}
  			}
@@ -950,11 +950,17 @@
  
  		private static void LoadMusic() {
 -			engine = new AudioEngine("Content" + Path.DirectorySeparatorChar + "TerrariaMusic.xgs");
-+			engine = new AudioEngine(Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "TerrariaMusic.xgs");
 -			soundBank = new SoundBank(engine, "Content" + Path.DirectorySeparatorChar + "Sound Bank.xsb");
-+			soundBank = new SoundBank(engine, Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "Sound Bank.xsb");
 -			waveBank = new WaveBank(engine, "Content" + Path.DirectorySeparatorChar + "Wave Bank.xwb");
-+			waveBank = new WaveBank(engine, Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "Wave Bank.xwb");
++			engine = new AudioEngine(Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "TerrariaMusic.xgs");
++			soundBank = new SoundBank(engine, Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "Sound Bank.xsb");
++			engine.Update();
++			waveBank = new WaveBank(engine, Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "Wave Bank.xwb", 0, 512);
++			engine.Update();
++			music = new Music[42];
++			while (!waveBank.IsPrepared) {
++				engine.Update();
++			}
  			for (int i = 1; i < 42; i++) {
  				music[i] = soundBank.GetCue("Music_" + i);
  			}
@@ -1141,6 +1147,14 @@
  						if (musicFade[curMusic] > 0.25f)
  							musicFade[m] -= 0.005f;
  						else if (curMusic == 0)
+@@ -7951,6 +_,7 @@
+ 					}
+ 				}
+ 
++				engine.Update();
+ 				if (musicError > 0)
+ 					musicError--;
+ 			}
 @@ -9803,6 +_,7 @@
  		}
  
