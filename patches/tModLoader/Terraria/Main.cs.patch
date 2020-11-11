@@ -3981,15 +3981,15 @@
  				InReforgeMenu = false;
  			}
  
-@@ -33064,6 +_,8 @@
- 				num3 += 70;
+@@ -33065,6 +_,8 @@
  				text2 = $"{txDataType[j]:0,0}";
  				spriteBatch.DrawString(fontMouseText, text2, new Vector2(num3, num4), Microsoft.Xna.Framework.Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
-+
-+				ModNet.DrawModDiagnoseNet();
  			}
++
++			ModNet.DrawModDiagnoseNet();
  		}
  
+ 		private void DrawInterface_16_MapOrMinimap() {
 @@ -33170,6 +_,11 @@
  						if (type == 439 || type == 370)
  							scale = 1.5f;
