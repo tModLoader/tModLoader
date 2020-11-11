@@ -799,7 +799,7 @@
 +				vanillaContentFolder = "../Content"; // Nested Manual Install
 +			}
 +#if MAC
-+			vanillaContentFolder = "../../../Terraria.app/Contents/Resources/Content";
++			vanillaContentFolder = "../../../../Terraria/Terraria.app/Contents/Resources/Content";
 +#endif
 +			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
 +				var appID = ModLoader.Engine.Steam.TerrariaAppId_t;
