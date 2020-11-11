@@ -1,4 +1,5 @@
-﻿using ExampleMod.Content.Tiles;
+﻿using System.Linq;
+using ExampleMod.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -10,6 +11,8 @@ namespace ExampleMod.Content.TileEntities
 {
 	public class ItemCollectorTE : ModTileEntity, IItemHandler
 	{
+		private static int[] IgnoredItems = { ItemID.Heart, ItemID.CandyApple, ItemID.CandyCane, ItemID.Star, ItemID.SoulCake, ItemID.SugarPlum };
+
 		private const int Range = 10 * 16;
 		private const int Speed = 30;
 
@@ -27,8 +30,10 @@ namespace ExampleMod.Content.TileEntities
 
 				for (int i = 0; i < Main.maxItems; i++) {
 					ref Item item = ref Main.item[i];
-					
+
 					if (!item.active || item.IsAir) continue;
+					if (item.IsACoin || IgnoredItems.Contains(item.type) || ItemID.Sets.NebulaPickup[item.type]) continue;
+
 					if (Vector2.DistanceSquared(item.Center, center) > Range * Range) continue;
 
 					ItemHandler.InsertItem(ref item);
