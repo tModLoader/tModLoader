@@ -8,14 +8,12 @@
 
 	//Player
 		//Check if Player constructor still needs startupInventory arg
-		//Ensure ItemLoader.ConsumeItem hook was added to everywhere that a player can consume item.consumable.
 		//Make sure "22" replaced with "MaxBuffs" in 'for' and CountBuffs() == and !=.
 		//Ensure all blockLists are cleared everywhere that they need to be.
 		//Correct new allDamage increasing accessories
 		//Basically everywhere it would set itemTime and we would use PlayerHooks.TotalUseTime,
 			we can now let the game use ApplyItemTime, it has our hook built in.
 		//Fishing submethods will need to use Item instead of values.
-		//Ensure all ItemLoader.ConsumeItems have been added.
 		//Change all CheckMana() to use version with item passed in
 		//VanillaUpdateVanityAccessory --> ApplyEquipVanity
 
