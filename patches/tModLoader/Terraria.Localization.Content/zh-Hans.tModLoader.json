@@ -256,6 +256,7 @@
 		"NewModsListing": "新增模组:\n{0}",
 		"PlayerCustomDataFail": "加载人物自定义数据时遇到问题",
 		"PlayerLoadWorldFail": "尝试加载世界时遇到问题",
+		// "CloudWarning": "Cloud storage limit reached, unable to move to cloud",
 
 		// Mod Sources
 		"MSBuild": "生成",
@@ -358,7 +359,7 @@
 		"ContentFolderNotFoundInstallCheck": "无法检测到{0}文件夹。\r\n\r\n请确保tModLoader安装在单独的文件夹里，或从Steam中直接安装。",
 		"VanillaSteamInstallationNotFound": "无法检测到原版Terraria的Content资源文件夹。\r\n\r\n请确保已经从Steam安装了原版Terraria且位于同一个Steam目录。",
 		"SteamAPIHashMismatch": "SteamAPI校验失败，检测为盗版。\n\ntModLoader需要购买安装正版Terraria。",
-		"VanillaGOGNotFound": "无法检测到{0}。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。",
+		"VanillaGOGNotFound": "无法检测到{0}。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。This version of tModLoader expects the {1} version of Terraria, you may need to downgrade or upgrade Terraria via GOG Galaxy, or wait for tModLoader to update.",
 		"GOGHashMismatch": "{0}校验失败。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。\r\n\r\n如果你打了自定义补丁，请将未补丁的原版复制并命名为\"Terraria_v<版本>.exe\"（如Terraria_v4.3.2.1.exe）",
 		"DefaultExtraMessage": "请校验Terraria的游戏完整性，然后从Steam安装tModLoader。如果你希望手动安装，请仔细阅读README.txt中的教程。",
 		"ClientLogHint": "{0}\n\n你可以在{0}中找到一个名为client.log的日志文件。\n（如果你需要寻求帮助，请附带上这个日志文件。）",

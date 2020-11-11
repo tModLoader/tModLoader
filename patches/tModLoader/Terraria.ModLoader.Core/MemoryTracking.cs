@@ -47,6 +47,7 @@ namespace Terraria.ModLoader.Core
 				usage.textures = mod.textures.Values.Sum(tex => tex.Width * tex.Height * 4);
 				usage.sounds = mod.sounds.Values.Sum(sound => (long)sound.Duration.TotalSeconds * 44100 * 2 * 2);
 			}
+			Logging.tML.Info($"RAM usage: {UI.UIMemoryBar.SizeSuffix(System.Diagnostics.Process.GetCurrentProcess().WorkingSet64)}");
 		}
 	}
 }

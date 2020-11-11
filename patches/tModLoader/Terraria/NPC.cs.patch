@@ -133,7 +133,7 @@
  			waterMovementSpeed = (lavaMovementSpeed = 0.5f);
  			honeyMovementSpeed = 0.25f;
  			altTexture = 0;
-@@ -2460,7 +_,10 @@
+@@ -2460,10 +_,14 @@
  				buffType[k] = 0;
  			}
  
@@ -145,6 +145,10 @@
  				buffImmune[l] = false;
  			}
  
++			aiStyle = 0; //Added by tML.
+ 			setFrameSize = false;
+ 			buffImmune[31] = true;
+ 			netSkip = -2;
 @@ -10410,8 +_,9 @@
  				rarity = 1;
  			}

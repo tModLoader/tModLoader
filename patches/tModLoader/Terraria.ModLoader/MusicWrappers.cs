@@ -34,6 +34,7 @@ namespace Terraria.ModLoader.Audio
 		public override void SetVariable(string name, float value) => cue.SetVariable(name, value);
 		
 		public override void Reset() {
+			cue.Stop(AudioStopOptions.Immediate);
 			cue = Main.soundBank.GetCue(cue.Name);
 		}
 	}

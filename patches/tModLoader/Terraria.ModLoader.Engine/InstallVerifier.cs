@@ -30,20 +30,20 @@ namespace Terraria.ModLoader.Engine
 			if (Platform.IsWindows) {
 				steamAPIPath = "steam_api.dll";
 				steamAPIHash = ToByteArray("7B857C897BC69313E4936DC3DCCE5193");
-				gogHash = ToByteArray("fb4ea5896142d5b76ac1ede10e864690");
-				steamHash = ToByteArray("9d8adb4aab1f1f7eac8742a685b4cba8");
+				gogHash = ToByteArray("492dc0ff718d48936aa892e84a045e08");
+				steamHash = ToByteArray("6a21906ef7681d7d9c40ef61af620974");
 			}
 			else if (Platform.IsOSX) {
 				steamAPIPath = "osx/libsteam_api.dylib";
 				steamAPIHash = ToByteArray("4EECD26A0CDF89F90D4FF26ECAD37BE0");
-				gogHash = ToByteArray("3591d61f040fca118430f32c78dc247b");
-				steamHash = ToByteArray("3651544f9387bbbba0183177cf631880");
+				gogHash = ToByteArray("77aa5e6bba5276a012a4b5be87229d92");
+				steamHash = ToByteArray("4784728e5a73e930ad49f9eb7da45ca1");
 			}
 			else if (Platform.IsLinux) {
 				steamAPIPath = "lib/libsteam_api.so";
 				steamAPIHash = ToByteArray("7B74FD4C207D22DB91B4B649A44467F6");
-				gogHash = ToByteArray("db41f89cfa0df5fb35f9878375ae7483");
-				steamHash = ToByteArray("dd3ba3b44bee0e4b130f95d502429ab5");
+				gogHash = ToByteArray("535a6f1705f145efc237711ffe458481");
+				steamHash = ToByteArray("758de120bc80c26bdb5e5a78134a652d");
 			}
 			else {
 				string message = Language.GetTextValue("tModLoader.UnknownVerificationOS");
@@ -125,14 +125,14 @@ namespace Terraria.ModLoader.Engine
 			IsGoG = true;
 
 			const string DefaultExe = "Terraria.exe";
-			string CheckExe = $"Terraria_1.4.1.exe"; // {Main.versionNumber}
+			string CheckExe = $"Terraria_1.4.1.2.exe"; // {Main.versionNumber}
 			string vanillaPath = File.Exists(CheckExe) ? CheckExe : DefaultExe;
 
 			// If .exe not present, check Terraria directory (Side-by-Side Manual Install)
 			if (!File.Exists(vanillaPath)) {
 				vanillaPath = Path.Combine("..", "Terraria");
 #if MAC
-				vanillaPath = "../../../Terraria.app/Contents/MacOS/";
+				vanillaPath = "../../../../Terraria/Terraria.app/Contents/MacOS/";
 #endif
 				string defaultExe = Path.Combine(vanillaPath, DefaultExe);
 				string checkExe = Path.Combine(vanillaPath, CheckExe);
@@ -149,7 +149,7 @@ namespace Terraria.ModLoader.Engine
 #if SERVER
 				return false;
 #else
-				Exit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaPath), string.Empty);
+				Exit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaPath, CheckExe), string.Empty);
 				return false;
 #endif
 			}
