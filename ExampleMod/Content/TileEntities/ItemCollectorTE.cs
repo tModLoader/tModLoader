@@ -2,6 +2,7 @@
 using ExampleMod.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Container;
@@ -36,7 +37,66 @@ namespace ExampleMod.Content.TileEntities
 
 					if (Vector2.DistanceSquared(item.Center, center) > Range * Range) continue;
 
+					item.noGrabDelay = 0;
 					ItemHandler.InsertItem(ref item);
+				}
+
+				int index = Chest.FindChest(Position.X - 2, Position.Y);
+				if (index == -1) index = Chest.FindChest(Position.X + 2, Position.Y);
+				if (index == -1) return;
+
+				for (int i = 0; i < ItemHandler.Slots; i++) {
+					Item item = ItemHandler.Items[i];
+					if (!item.active || item.IsAir) continue;
+
+					PlaceItemInChest(index, item);
+				}
+			}
+		}
+
+		// Adapted from ChestUI.TryPlacingInChest
+		private static void PlaceItemInChest(int index, Item item) {
+			var chestinv = Main.chest[index].item;
+
+			if (item.maxStack > 1) {
+				for (int i = 0; i < chestinv.Length; i++) {
+					if (chestinv[i].stack >= chestinv[i].maxStack || !item.IsTheSameAs(chestinv[i]))
+						continue;
+
+					int num = item.stack;
+					if (item.stack + chestinv[i].stack > chestinv[i].maxStack)
+						num = chestinv[i].maxStack - chestinv[i].stack;
+
+					item.stack -= num;
+					chestinv[i].stack += num;
+					SoundEngine.PlaySound(7);
+					if (item.stack <= 0) {
+						item.SetDefaults();
+						NetMessage.SendData(MessageID.SyncChestItem, -1, -1, null, index, i);
+
+						break;
+					}
+
+					if (chestinv[i].type == ItemID.None) {
+						chestinv[i] = item.Clone();
+						item.SetDefaults();
+					}
+
+					NetMessage.SendData(MessageID.SyncChestItem, -1, -1, null, index, i);
+				}
+			}
+
+			if (item.stack > 0) {
+				for (int j = 0; j < chestinv.Length; j++) {
+					if (chestinv[j].stack != 0)
+						continue;
+
+					SoundEngine.PlaySound(7);
+					chestinv[j] = item.Clone();
+					item.SetDefaults();
+					NetMessage.SendData(MessageID.SyncChestItem, -1, -1, null, index, j);
+
+					break;
 				}
 			}
 		}
