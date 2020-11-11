@@ -251,7 +251,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Implements <a class="el" href="class_terraria_1_1_mod_loader_1_1_audio_1_1_music.html#ac2a4cb1b396c897c720e6a2b93f476a8">Terraria.ModLoader.Audio.Music</a>.</p>
 
 <p>Definition at line <a class="el" href="_music_wrappers_8cs_source.html#l00036">36</a> of file <a class="el" href="_music_wrappers_8cs_source.html">MusicWrappers.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                                     {</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            cue = Main.soundBank.GetCue(cue.Name);</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                                     {</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            cue.Stop(AudioStopOptions.Immediate);</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            cue = Main.soundBank.GetCue(cue.Name);</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="adfe2aca483558336c80a39b4e5665ed4"></a>
