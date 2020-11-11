@@ -118,17 +118,23 @@ namespace Terraria.ModLoader.Engine
 			IsGoG = true;
 
 			const string DefaultExe = "Terraria.exe";
-			string CheckExe = $"Terraria_{Main.versionNumber}.exe";
+			string CheckExe = $"Terraria_1.4.1.2.exe"; // {Main.versionNumber}
 			string vanillaPath = File.Exists(CheckExe) ? CheckExe : DefaultExe;
 
-			// If .exe not present check Terraria dir in root
+			// If .exe not present, check Terraria directory (Side-by-Side Manual Install)
 			if (!File.Exists(vanillaPath)) {
 				vanillaPath = Path.Combine("..", "Terraria");
 #if MAC
-				vanillaPath = "../../../Terraria.app/Contents/MacOS/";
+				vanillaPath = "../../../../Terraria/Terraria.app/Contents/MacOS/";
 #endif
 				string defaultExe = Path.Combine(vanillaPath, DefaultExe);
 				string checkExe = Path.Combine(vanillaPath, CheckExe);
+				vanillaPath = File.Exists(defaultExe) ? defaultExe : checkExe;
+			}
+			// If .exe not present check parent directory (Nested Manual Install)
+			if (!File.Exists(vanillaPath)) {
+				string defaultExe = Path.Combine("..", DefaultExe);
+				string checkExe = Path.Combine("..", CheckExe);
 				vanillaPath = File.Exists(defaultExe) ? defaultExe : checkExe;
 			}
 

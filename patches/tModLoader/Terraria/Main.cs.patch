@@ -749,7 +749,7 @@
  		}
  
  		public Main() {
-@@ -4761,7 +_,43 @@
+@@ -4761,7 +_,46 @@
  #if CLIENT
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
@@ -757,29 +757,32 @@
 +#endif
 +		}
 +
-+		internal void PostSocialInitialize()
-+		{
++		internal void PostSocialInitialize() {
 +#if CLIENT
-+			//Make tML use assets from the vanilla game's folder, instead of expecting them all to be in its Content folder.
-+
 +			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
 +
 +			if (!Directory.Exists(vanillaContentFolder)) {
 +				vanillaContentFolder = "../Content"; // Nested Manual Install
 +			}
 +
-+			if (SocialAPI.Mode == SocialMode.Steam && SteamAPI.Init()) {
-+				var appID = ModLoader.Engine.Steam.TerrariaAppId_t;
-+				bool appInstalled = SteamApps.BIsAppInstalled(appID);
++#if MAC
++			vanillaContentFolder = "../../../../Terraria/Terraria.app/Contents/Resources/Content";
++#endif
 +
-+				if (appInstalled) { 
-+					SteamApps.GetAppInstallDir(appID, out string steamInstallFolder, 1000);
-+					Logging.Terraria.Info($"Found Terraria steamapp install at: {steamInstallFolder}");
++			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
++				var appID = ModLoader.Engine.Steam.TerrariaAppId_t;
++				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
++
++				if (appInstalled) {
++					Steamworks.SteamApps.GetAppInstallDir(appID, out var steamInstallFolder, 1000);
++					Logging.Terraria.Info("Found Terraria steamapp install at: " + steamInstallFolder);
 +
 +					vanillaContentFolder = Path.Combine(steamInstallFolder, "Content");
++
 +					if (!Directory.Exists(vanillaContentFolder))
 +						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/Resources/Content");
 +				}
++
 +				ModLoader.Engine.Steam.RecalculateAvailableSteamCloudStorage();
 +				Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)ModLoader.Engine.Steam.lastAvailableSteamCloudStorage)} available");
 +			}
