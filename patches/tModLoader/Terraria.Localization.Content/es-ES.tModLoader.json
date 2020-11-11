@@ -255,6 +255,7 @@
 		"NewModsListing": "Mods nuevos:\n{0}",
 		"PlayerCustomDataFail": "Se ha producido un problema al cargar los datos personalizados de un jugador",
 		"PlayerLoadWorldFail": "Se ha producido un problema al cargar un mundo",
+		// "CloudWarning": "Cloud storage limit reached, unable to move to cloud",
 
 		// Mod Sources
 		"MSBuild": "Construir",
@@ -357,7 +358,7 @@
 		"ContentFolderNotFoundInstallCheck": "No se ha podido encontrar el directorio {0}.\r\n\r\n¿Olvidaste extraer el directorio de contenido de tModLoader en la carpeta de tModLoader?\r\n\r\nAsegúrate de que tModLoader esté instalado en una carpeta separada de Terraria.",
 		"VanillaSteamInstallationNotFound": "Instalación de Terraria por Steam o el directorio de contenido de Terraria no encontrado. Por favor, asegúrate de que Terraria 1.4 se haya instalado mediante Steam.",
 		"SteamAPIHashMismatch": "La API de Steam no coincide, se asume que es pirata.\n\nEs imprescindible usar una instalación legítima de Terraria para que tModLoader funcione correctamente.",
-		"VanillaGOGNotFound": "No se ha encontrado {0}.\r\n\r\nLas instalaciones GOG deben tener el ejecutable de Terraria sin modificar para funcionar.",
+		"VanillaGOGNotFound": "No se ha encontrado {0}.\r\n\r\nLas instalaciones GOG deben tener el ejecutable de Terraria sin modificar para funcionar. This version of tModLoader expects the {1} version of Terraria, you may need to downgrade or upgrade Terraria via GOG Galaxy, or wait for tModLoader to update.",
 		"GOGHashMismatch": "{0} no es el ejecutable de Terraria sin modificar.\r\n\r\nLas instalaciones GOG deben tener el ejecutable de Terraria sin modificar para funcionar.\r\n\r\nSi has parcheado el .exe, puedes crear una copia del ejecutable original y nombrarlo \"Terraria_v<VERSION>.exe\"",
 		"DefaultExtraMessage": "Restaura tu instalación de Terraria e instala tModLoader por Steam o siguiendo las instrucciones del README.txt para la instalación manual.",
 		"ClientLogHint": "Se ha generado un archivo de registro del cliente con información sobre los errores en\n{1}\n(Tendrás que compartir este archivo si pides ayuda)",

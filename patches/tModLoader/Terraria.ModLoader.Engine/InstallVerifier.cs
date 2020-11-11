@@ -149,7 +149,7 @@ namespace Terraria.ModLoader.Engine
 #if SERVER
 				return false;
 #else
-				Exit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaPath), string.Empty);
+				Exit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaPath, CheckExe), string.Empty);
 				return false;
 #endif
 			}
