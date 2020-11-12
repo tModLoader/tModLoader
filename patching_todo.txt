@@ -262,8 +262,6 @@
 		//Reimplement these calls (unrelated to each other):
 			ModHooks.MidUpdateProjectileItem();
 			
-			PlayerHooks.SendClientChanges(player[myPlayer], clientPlayer);
-			
 			ProjectileLoader.PostDraw(projectile, spriteBatch, color25);
 			
 		//Reimplement broken patches:

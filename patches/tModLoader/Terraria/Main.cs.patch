@@ -1097,6 +1097,15 @@
  				if (Main.player[myPlayer].buffType[num4] != player.buffType[num4])
  					flag3 = true;
  			}
+@@ -12983,6 +_,8 @@
+ 			if (flag)
+ 				NetMessage.SendData(138);
+ 
++			PlayerHooks.SendClientChanges(Main.player[myPlayer], clientPlayer);
++
+ 			clientPlayer = (Player)Main.player[myPlayer].clientClone();
+ 		}
+ 
 @@ -13025,6 +_,7 @@
  			}
  
