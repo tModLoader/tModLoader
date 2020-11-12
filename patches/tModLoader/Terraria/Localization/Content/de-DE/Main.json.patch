@@ -68,8 +68,8 @@
 +		"YOU_CAN_DO_IT_Name": "Du kannst es schaffen!",
  		"BENCHED_Description": "Stelle deine erste Werkbank her",
  		"BENCHED_Name": "Auf der Bank",
- 		"TOPPED_OFF_Description": "Erreiche die maximalen Lebenspunkte und das Höchstmana ohne Zubehör und Buffs.",
-@@ -272,7 +_,7 @@
+ 		"TOPPED_OFF_Description": "Erreiche maximale Lebenspunkte und maximales Mana ohne Zubehör und Buffs.",
+@@ -304,7 +_,7 @@
  		"Crimson": "Purpur",
  		"Dawn_Command": "Morgengrauen",
  		"Dawn_Description": "Ändere die Zeit zu Morgengrauen.",
@@ -78,7 +78,7 @@
  		"DeleteWorld_Command": "T",
  		"DeleteWorld_Description": "Welt löschen",
  		"DeleteWorld_Example": "T <number>",
-@@ -388,7 +_,7 @@
+@@ -422,7 +_,7 @@
  		"UnableToCapture": "Aufnahme nicht möglich.",
  		"UnableToLoadWorld": "Welt konnte nicht geladen werden:",
  		"UnableToWritePreferences": "Datei konnte nicht geschrieben werden unter: {0}",
@@ -87,7 +87,7 @@
  		"CaptureError": "Ein Fehler ist beim Speichern aufgetreten. Neuer Versuch ..."
  	},
  	"Game": {
-@@ -444,7 +_,7 @@
+@@ -478,7 +_,7 @@
  	},
  	"GameUI": {
  		"ActuationDeviceOff": "Aktuatoraparat AUS",
@@ -96,7 +96,7 @@
  		"BaitPower": "{0}% Köderkraft",
  		"BaitRequired": "Benötigt Köder, um Fische zu fangen",
  		"Bright": "Hell",
-@@ -482,7 +_,7 @@
+@@ -516,7 +_,7 @@
  		"LayerUnderworld": "Unterwelt",
  		"LightRain": "Nieselregen",
  		"MechanicalRulerOff": "Mechanisches Lineal AUS",
@@ -105,7 +105,7 @@
  		"MostlyCloudy": "Stark bewölkt",
  		"NewMoon": "Neumond",
  		"NoDPS": "K/A",
-@@ -496,13 +_,13 @@
+@@ -530,13 +_,13 @@
  		"OreDetected": "{0} in der Nähe gefunden",
  		"Overcast": "Bewölkt",
  		"PaintSprayerOff": "Farbensprüher AUS",
@@ -121,7 +121,7 @@
  		"SettingsMenu": "Einstellungsmenü",
  		"OpenFileFolder": "{$LegacyInterface.110}",
  		"Speed": "{0} mph",
-@@ -517,8 +_,8 @@
+@@ -551,8 +_,8 @@
  		"WireModeNormal": "Mechanische Anzeige: Normal",
  		"Gameplay": "Gameplay",
  		"GameZoom": "Zoom: {0}% ({1}%)",
@@ -132,7 +132,7 @@
  		"Misc": "Sonstiges",
  		"QualityHigh": "Hoch",
  		"QualityLow": "Niedrig",
-@@ -604,8 +_,8 @@
+@@ -640,8 +_,8 @@
  		"PlayerIsNotCreativeAndWorldIsCreative": "Nur Reisecharaktere können einen Reiseserver betreten."
  	},
  	"Social": {
@@ -143,16 +143,16 @@
  		"StatusInGame": "Online spielen.",
  		"StatusJoining": "Spiel beitreten."
  	},
-@@ -627,7 +_,7 @@
+@@ -663,7 +_,7 @@
  		"Mediumcore": "Mediumcore",
  		"More": "mehr",
- 		"MoveOffCloud": "Von Wolke weg",
--		"MoveToCloud": "Zu Wolke hin",
+ 		"MoveOffCloud": "Aus Cloud entfernen",
+-		"MoveToCloud": "In Cloud speichern",
 +		"MoveToCloud": "Zur Wolke hin",
  		"New": "Neue(r/s)",
  		"AvailableResourcePacksTitle": "Verfügbare Pakete ({Amount})",
  		"LightMode_White": "{$LegacyMenu.56}",
-@@ -640,7 +_,7 @@
+@@ -676,7 +_,7 @@
  		"Author": "von {0}",
  		"SpaceButton": "Raum",
  		"Submit": "Absenden",
@@ -161,8 +161,8 @@
  		"WorldCreatedFormat": "Erstellt: {0}",
  		"WorldSizeFormat": "{0} Welt",
  		"WorldSizeLarge": "Groß",
-@@ -649,7 +_,7 @@
- 		"WorldSizeUnknown": "Unbekanntes",
+@@ -685,7 +_,7 @@
+ 		"WorldSizeUnknown": "Unbekannt",
  		"BartenderHelp": "Eternia-Kristall",
  		"CopySeed": "Seed kopieren: {0}",
 -		"EnterSeed": "Gib Seed ein (für Zufallsseed freilassen)",
@@ -170,7 +170,7 @@
  		"LoadingCode": "Wird geladen:",
  		"SeedCopied": "Seed kopiert",
  		"ZoomIn": "{$LegacyMenu.168}",
-@@ -761,7 +_,7 @@
+@@ -798,7 +_,7 @@
  		"Drowned_2": "{0} schläft jetzt bei den Fischen.",
  		"Drowned_3": "{0} ist ertrunken.",
  		"Drowned_4": "{0} ist jetzt Haifischfutter.",
@@ -179,7 +179,7 @@
  		"Fell_1": "{0} ist zu Tode gestürzt.",
  		"Fell_2": "{0} ist nicht abgeprallt.",
  		"Lava_1": "{0} ist geschmolzen.",
-@@ -786,7 +_,7 @@
+@@ -823,7 +_,7 @@
  	"DeathTextGeneric": {
  		"ArmTornOff": "{0} wurden die Arme ausgerissen.",
  		"Chopped": "{0} wurde zerkleinert.",
@@ -188,7 +188,7 @@
  		"Decapitated": "{0} wurde geköpft.",
  		"Destroyed": "{0} wurde zerstört.",
  		"Dissected": "{0} wurde brutal seziert.",
-@@ -804,7 +_,7 @@
+@@ -841,7 +_,7 @@
  		"PileOfFlesh": "{0} hat sich in einen unansehnlichen Fleischhaufen verwandelt.",
  		"Removed": "{0} wurde aus {1} entfernt.",
  		"Ripped": "{0}s Fleisch wurde von den Knochen gerissen.",
@@ -197,7 +197,7 @@
  		"SkullCrushed": "{0}s Schädel wurde eingeschlagen",
  		"Slain": "{0} wurde ermordet.",
  		"Snapped": "{0} wurde in zwei Teile geteilt.",
-@@ -813,7 +_,7 @@
+@@ -850,7 +_,7 @@
  	},
  	"DungeonDefenders2": {
  		"BartenderWarning": "Der Eternia-Kristall sträubt sich gegen dieses Gebiet und teleportiert sich sofort weg. Der Tavernenwirt hatte erwähnt, dass er in einem großen, flachen und offenen Gebiet aufgestellt werden sollte ...",
