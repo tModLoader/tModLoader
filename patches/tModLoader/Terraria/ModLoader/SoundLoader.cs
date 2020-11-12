@@ -79,8 +79,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref SoundEngine._legacyPlayer._soundInstanceNpcHit,	nextSound[SoundType.NPCHit]);
 			Array.Resize(ref SoundEngine._legacyPlayer._soundNpcKilled,			nextSound[SoundType.NPCKilled]);
 			Array.Resize(ref SoundEngine._legacyPlayer._soundInstanceNpcKilled, nextSound[SoundType.NPCKilled]);
-			Array.Resize(ref Main.music, nextSound[SoundType.Music]);
-			Array.Resize(ref Main.musicFade, nextSound[SoundType.Music]);
+			//Array.Resize(ref Main.music, nextSound[SoundType.Music]);
+			//Array.Resize(ref Main.musicFade, nextSound[SoundType.Music]);
 
 			foreach (SoundType type in Enum.GetValues(typeof(SoundType))) {
 				foreach (string sound in sounds[type].Keys) {
@@ -91,7 +91,7 @@ namespace Terraria.ModLoader
 						GetSoundInstanceArray(type)[slot] = GetSoundArray(type)[slot]?.Value.CreateInstance() ?? null;
 					}
 					else {
-						Main.music[slot] = ModContent.GetMusic(sound) ?? null;
+						//Main.music[slot] = ModContent.GetMusic(sound) ?? null;
 					}
 				}
 			}
