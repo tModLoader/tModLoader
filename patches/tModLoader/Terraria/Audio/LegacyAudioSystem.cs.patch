@@ -1,0 +1,35 @@
+--- src/Terraria/Terraria/Audio/LegacyAudioSystem.cs
++++ src/tModLoader/Terraria/Audio/LegacyAudioSystem.cs
+@@ -1,6 +_,7 @@
+ using Microsoft.Xna.Framework.Audio;
+ using System;
+ using System.Collections;
++using Terraria.ModLoader.Engine;
+ 
+ namespace Terraria.Audio
+ {
+@@ -13,10 +_,12 @@
+ 		private WaveBank waveBank;
+ 
+ 		public LegacyAudioSystem() {
+-			engine = new AudioEngine("Content\\TerrariaMusic.xgs");
+-			soundBank = new SoundBank(engine, "Content\\Sound Bank.xsb");
++			var contentManager = (TMLContentManager)Main.instance.Content;
++
++			engine = new AudioEngine(contentManager.GetPath("TerrariaMusic.xgs"));
++			soundBank = new SoundBank(engine, contentManager.GetPath("Sound Bank.xsb"));
+ 			engine.Update();
+-			waveBank = new WaveBank(engine, "Content\\Wave Bank.xwb", 0, 512);
++			waveBank = new WaveBank(engine, contentManager.GetPath("Wave Bank.xwb"), 0, 512);
+ 			engine.Update();
+ 			music = new Cue[90];
+ 		}
+@@ -27,6 +_,8 @@
+ 				yield return null;
+ 			}
+ 		}
++
++		internal Cue GetCueInternal(string cueName) => soundBank.GetCue(cueName);
+ 
+ 		public void LoadCue(int cueIndex, string cueName) {
+ 			music[cueIndex] = soundBank.GetCue(cueName);

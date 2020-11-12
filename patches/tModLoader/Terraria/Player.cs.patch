@@ -483,7 +483,15 @@
  				return;
  
  			Item item = QuickBuff_PickBestFoodItem();
-@@ -2886,15 +_,19 @@
+@@ -2879,22 +_,26 @@
+ 					num = 3600;
+ 
+ 				AddBuff(item.buffType, num);
+-				if (item.consumable) {
++				if (item.consumable && ItemLoader.ConsumeItem(item, this)) {
+ 					item.stack--;
+ 					if (item.stack <= 0)
+ 						item.TurnToAir();
  				}
  			}
  
@@ -513,7 +521,7 @@
  					if (whoAmI == Main.myPlayer && item2.type == 603 && !Main.runningCollectorsEdition)
  						flag = false;
  
-@@ -2922,6 +_,7 @@
+@@ -2922,19 +_,21 @@
  					if (!flag)
  						continue;
  
@@ -521,13 +529,12 @@
  					legacySoundStyle = item2.UseSound;
  					int num3 = item2.buffTime;
  					if (num3 == 0)
-@@ -2929,12 +_,14 @@
+ 						num3 = 3600;
  
  					AddBuff(num2, num3);
- 					if (item2.consumable) {
-+						if (ItemLoader.ConsumeItem(item2, this))
--						item2.stack--;
-+							item2.stack--;
+-					if (item2.consumable) {
++					if (item2.consumable && ItemLoader.ConsumeItem(item2, this)) {
+ 						item2.stack--;
 +
  						if (item2.stack <= 0)
  							item2.TurnToAir();
