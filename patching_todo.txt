@@ -128,8 +128,6 @@
 		
 		//Test modded grasses' behavior.
 		
-		//Ensure that all of KillTile_GetTileDustAmount's calls have x,y parameters in other files:
-		
 	//TileDrawing:
 		//Reimplement cactus drawing. Search for modCactus in Main.cs 1.3.5.3 tML diffs.
 		
@@ -139,16 +137,6 @@
 			TileLoader.DrawEffects(j, i, type, spriteBatch, ref color, ref nextSpecialDrawIndex);
 			
 			TileLoader.PostDraw(x, y, type, spriteBatch);
-			
-	//WallDrawing:
-		//Reimplement these calls:
-			if (!WallLoader.PreDraw(j, i, wall, spriteBatch)) {
-				WallLoader.PostDraw(j, i, wall, spriteBatch);
-				continue;
-			}
-		
-		//Around line 130, after outline draws, put this:
-			WallLoader.PostDraw(j, i, wall, spriteBatch);
 			
 	//Item:
 		//In Item.GetDrawHitbox, return the following size if it's not null.
