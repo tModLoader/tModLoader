@@ -31,7 +31,7 @@
  		}
  
  		private void CreateOutlines(float alpha, float scale, Color borderColor) {
-@@ -110,92 +_,77 @@
+@@ -110,92 +_,78 @@
  		}
  
  		public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f) {
@@ -50,9 +50,10 @@
 +			PlayerDrawLayer.WebbedDebuffBack,
 +			PlayerDrawLayer.LeinforsHairShampoo,
 +			PlayerDrawLayer.Backpacks,
++			PlayerDrawLayer.Tails,
 +			PlayerDrawLayer.Wings,
-+			PlayerDrawLayer.BackAcc,
 +			PlayerDrawLayer.HairBack,
++			PlayerDrawLayer.BackAcc,
 +			PlayerDrawLayer.HeadBack,
 +			PlayerDrawLayer.BalloonAcc,
 +			PlayerDrawLayer.HeldItemBehindBackArm, // drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindBackArm

@@ -4,7 +4,7 @@
  {
  	public struct PlayerDrawSet
  	{
-+		//A sad trick to avoid big patches for disabling lighting below.
++		//An absolutely utterly epic trick to avoid big patches for disabling lighting below.
 +		private class Lighting
 +		{
 +			public static bool use;

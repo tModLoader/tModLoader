@@ -52,17 +52,20 @@ namespace Terraria.ModLoader
 		/// <summary> Draws the player's held item's backpack. </summary>
 		public static readonly PlayerDrawLayer Backpacks = new LegacyPlayerDrawLayer(nameof(Backpacks), DrawPlayer_08_Backpacks);
 
+		/// <summary> Draws the player's tails vanities. </summary>
+		public static readonly PlayerDrawLayer Tails = new LegacyPlayerDrawLayer(nameof(Tails), DrawPlayer_08_1_Tails, TorsoGroup);
+
 		/// <summary> Draws the player's wings. </summary>
 		public static readonly PlayerDrawLayer Wings = new LegacyPlayerDrawLayer(nameof(Wings), DrawPlayer_09_Wings);
 
-		/// <summary> Draws the player's back accessories. </summary>
-		public static readonly PlayerDrawLayer BackAcc = new LegacyPlayerDrawLayer(nameof(BackAcc), DrawPlayer_10_BackAcc);
-
 		/// <summary> Draws the player's under-headgear hair. </summary>
-		public static readonly PlayerDrawLayer HairBack = new LegacyPlayerDrawLayer(nameof(HairBack), DrawPlayer_01_BackHair, isHeadLayer: true);
+		public static readonly PlayerDrawLayer HairBack = new LegacyPlayerDrawLayer(nameof(HairBack), DrawPlayer_01_BackHair, TorsoGroup, isHeadLayer: true);
+
+		/// <summary> Draws the player's back accessories. </summary>
+		public static readonly PlayerDrawLayer BackAcc = new LegacyPlayerDrawLayer(nameof(BackAcc), DrawPlayer_10_BackAcc, TorsoGroup);
 
 		/// <summary> Draws the back textures of the player's head, including armor. </summary>
-		public static readonly PlayerDrawLayer HeadBack = new LegacyPlayerDrawLayer(nameof(HeadBack), DrawPlayer_01_3_BackHead, isHeadLayer: true);
+		public static readonly PlayerDrawLayer HeadBack = new LegacyPlayerDrawLayer(nameof(HeadBack), DrawPlayer_01_3_BackHead, TorsoGroup, isHeadLayer: true);
 
 		/// <summary> Draws the player's balloon accessory, if they have one. </summary>
 		public static readonly PlayerDrawLayer BalloonAcc = new LegacyPlayerDrawLayer(nameof(BalloonAcc), DrawPlayer_11_Balloons);
@@ -107,7 +110,7 @@ namespace Terraria.ModLoader
 		public static readonly PlayerDrawLayer FaceAcc = new LegacyPlayerDrawLayer(nameof(FaceAcc), DrawPlayer_22_FaceAcc, TorsoGroup);
 
 		/// <summary> Draws the front part of player's front accessory. </summary>
-		public static readonly PlayerDrawLayer FrontAccFrontNeck = new LegacyPlayerDrawLayer(nameof(FrontAccFrontNeck), DrawPlayer_32_FrontAcc_FrontPart, condition: drawinfo => drawinfo.drawFrontAccInNeckAccLayer);
+		public static readonly PlayerDrawLayer FrontAccFrontNeck = new LegacyPlayerDrawLayer(nameof(FrontAccFrontNeck), DrawPlayer_32_FrontAcc_FrontPart, TorsoGroup, condition: drawinfo => drawinfo.drawFrontAccInNeckAccLayer);
 
 		/// <summary> Draws the front textures of the player's mount. </summary>
 		public static readonly PlayerDrawLayer MountFront = new LegacyPlayerDrawLayer(nameof(MountFront), DrawPlayer_23_MountFront, TorsoGroup);
