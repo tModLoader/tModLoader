@@ -12,10 +12,10 @@
       <Value Profile="(Default)">2015-01-01</Value>
     </Setting>
     <Setting Name="ClientVersion" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">1.4.1.0</Value>
+      <Value Profile="(Default)">1.4.1.2</Value>
     </Setting>
     <Setting Name="ServerVersion" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">1.4.1.0</Value>
+      <Value Profile="(Default)">1.4.1.2</Value>
     </Setting>
     <Setting Name="PatchMode" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
