@@ -31,7 +31,7 @@
  		}
  
  		private void CreateOutlines(float alpha, float scale, Color borderColor) {
-@@ -110,87 +_,77 @@
+@@ -110,92 +_,77 @@
  		}
  
  		public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f) {
@@ -112,10 +112,15 @@
 -			PlayerDrawLayers.DrawPlayer_07_LeinforsHairShampoo(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_08_Backpacks(ref drawinfo);
+-			PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawinfo);
+-			PlayerDrawLayers.DrawPlayer_08_1_Tails(ref drawinfo);
+-			PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_09_Wings(ref drawinfo);
--			PlayerDrawLayers.DrawPlayer_10_BackAcc(ref drawinfo);
+-			PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_01_BackHair(ref drawinfo);
+-			PlayerDrawLayers.DrawPlayer_10_BackAcc(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_01_3_BackHead(ref drawinfo);
+-			PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_11_Balloons(ref drawinfo);
 -			if (drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindBackArm)
 -				PlayerDrawLayers.DrawPlayer_27_HeldItem(ref drawinfo);
@@ -158,10 +163,10 @@
 -			PlayerDrawLayers.DrawPlayer_28_ArmOverItem(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_29_OnhandAcc(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_30_BladedGlove(ref drawinfo);
--			PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawinfo);
 -			if (!drawinfo.drawFrontAccInNeckAccLayer)
 -				PlayerDrawLayers.DrawPlayer_32_FrontAcc_FrontPart(ref drawinfo);
 -
+-			PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawinfo);
 -			if (drawinfo.weaponDrawOrder == WeaponDrawOrder.OverFrontArm)
 -				PlayerDrawLayers.DrawPlayer_27_HeldItem(ref drawinfo);
 -

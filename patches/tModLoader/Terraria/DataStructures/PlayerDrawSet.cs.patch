@@ -15,7 +15,7 @@
  		public List<DrawData> DrawDataCache;
  		public List<int> DustCache;
  		public List<int> GoreCache;
-@@ -127,7 +_,9 @@
+@@ -128,7 +_,9 @@
  
  		public Vector2 Center => new Vector2(Position.X + (float)(drawPlayer.width / 2), Position.Y + (float)(drawPlayer.height / 2));
  
@@ -26,16 +26,16 @@
  			DrawDataCache = drawData;
  			DustCache = dust;
  			GoreCache = gore;
-@@ -252,7 +_,7 @@
+@@ -253,7 +_,7 @@
  
  			playerEffect = SpriteEffects.None;
  			itemEffect = SpriteEffects.FlipHorizontally;
 -			colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(), shadow);
 +			colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting), shadow);
- 			colorEyeWhites = drawPlayer.GetImmuneAlpha(Lighting.GetColor((int)((double)Position.X + (double)drawPlayer.width * 0.5) / 16, (int)(((double)Position.Y + (double)drawPlayer.height * 0.25) / 16.0), Color.White), shadow);
- 			colorEyes = drawPlayer.GetImmuneAlpha(Lighting.GetColor((int)((double)Position.X + (double)drawPlayer.width * 0.5) / 16, (int)(((double)Position.Y + (double)drawPlayer.height * 0.25) / 16.0), drawPlayer.eyeColor), shadow);
- 			colorHead = drawPlayer.GetImmuneAlpha(Lighting.GetColor((int)((double)Position.X + (double)drawPlayer.width * 0.5) / 16, (int)(((double)Position.Y + (double)drawPlayer.height * 0.25) / 16.0), drawPlayer.skinColor), shadow);
-@@ -1046,7 +_,7 @@
+ 			colorEyeWhites = drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)((double)Position.X + (double)drawPlayer.width * 0.5) / 16, (int)(((double)Position.Y + (double)drawPlayer.height * 0.25) / 16.0), Color.White), shadow);
+ 			colorEyes = drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)((double)Position.X + (double)drawPlayer.width * 0.5) / 16, (int)(((double)Position.Y + (double)drawPlayer.height * 0.25) / 16.0), drawPlayer.eyeColor), shadow);
+ 			colorHead = drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)((double)Position.X + (double)drawPlayer.width * 0.5) / 16, (int)(((double)Position.Y + (double)drawPlayer.height * 0.25) / 16.0), drawPlayer.skinColor), shadow);
+@@ -1053,7 +_,7 @@
  				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2) {
  					colorEyeWhites = drawPlayer.GetImmuneAlpha(Color.White, shadow);
  					colorEyes = drawPlayer.GetImmuneAlpha(drawPlayer.eyeColor, shadow);
