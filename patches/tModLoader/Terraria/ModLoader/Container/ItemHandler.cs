@@ -32,7 +32,9 @@ namespace Terraria.ModLoader.Container
 		}
 
 		public ItemHandler Clone() {
-			return new ItemHandler(Items.Select(x => x.Clone()).ToArray());
+			ItemHandler handler = (ItemHandler)MemberwiseClone();
+			handler.Items = Items.Select(item => item.Clone()).ToArray();
+			return handler;
 		}
 
 		public void SetItemInSlot(int slot, Item stack, bool user = false) {
