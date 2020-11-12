@@ -242,11 +242,6 @@
 		//Add this to the middle of DrawBG() after definition of the used variable.
 			SurfaceBgStyleLoader.ChooseStyle(ref preferredBGStyleForPlayer);
 			
-		//Add this near the end of Main.DrawItem, before the default drawing calls:
-			if(ItemLoader.animations.Contains(item.type))
-				ItemLoader.DrawAnimatedItem(item, whoAmI, color, alpha, rotation, scale);
-				goto PostDraw;
-			
 		//Add this to the end of DrawSurfaceBG_BackMountainsStep2:
 			SurfaceBgStyleLoader.DrawMiddleTexture();
 			
