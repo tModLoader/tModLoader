@@ -350,7 +350,7 @@ namespace Terraria.ModLoader
 			if (!loading)
 				throw new Exception("AddMusicBox can only be called from Mod.Load or Mod.Autoload");
 
-			if (Main.waveBank == null)
+			if (Main.audioSystem == null)
 				return;
 
 			if (musicSlot < Main.maxMusic) {

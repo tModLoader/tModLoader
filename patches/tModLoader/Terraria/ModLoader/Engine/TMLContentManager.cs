@@ -44,6 +44,20 @@ namespace Terraria.ModLoader.Engine
 			return base.Load<T>(assetName);
 		}
 
+		/// <summary> Returns a path to the provided relative asset path, prioritizing overrides in the alternate content manager. Throws exceptions on failure. </summary>
+		public string GetPath(string asset) => TryGetPath(asset, out string result) ? result : throw new FileNotFoundException($"Unable to find asset '{asset}'.");
+		/// <summary> Safely attempts to get a path to the provided relative asset path, prioritizing overrides in the alternate content manager. </summary>
+		public bool TryGetPath(string asset, out string result) {
+			if (alternateContentManager != null && alternateContentManager.TryGetPath(asset, out result)) {
+				return true;
+			}
+
+			string path = Path.Combine(RootDirectory, asset);
+
+			result = File.Exists(path) ? path : null;
+
+			return result != null;
+		}
 		public bool ImageExists(string assetName)
 		{
 			return File.Exists(Path.Combine(RootDirectory, "Image", assetName + ".xnb")) || alternateContentManager != null && File.Exists(Path.Combine(alternateContentManager.RootDirectory, "Image", assetName + ".xnb"));
