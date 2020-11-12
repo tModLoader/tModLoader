@@ -3,13 +3,13 @@ using Microsoft.Xna.Framework.Audio;
 using System.IO;
 using MP3Sharp;
 using NVorbis;
+using Terraria.Audio;
 
 //TODO refactor to Terraria.ModLoader, delayed due to breaking change (public in Mod[Content].GetMusic)
 namespace Terraria.ModLoader.Audio
 {
 	public abstract class Music
 	{
-		public static implicit operator Music(Cue cue) { return new MusicCue() { cue = cue }; }
 		public abstract bool IsPaused { get; }
 		public abstract bool IsPlaying { get; }
 		public abstract void Reset();
@@ -19,12 +19,14 @@ namespace Terraria.ModLoader.Audio
 		public abstract void Stop(AudioStopOptions options);
 		public abstract void SetVariable(string name, float value);
 		public virtual void CheckBuffer() { }
+
+		public static implicit operator Music(Cue cue) => new MusicCue() { cue = cue };
 	}
 
 	public class MusicCue : Music
 	{
 		internal Cue cue;
-		//public static implicit operator Cue(MusicCue musicCue){return musicCue.cue;}
+
 		public override bool IsPaused => cue.IsPaused;
 		public override bool IsPlaying => cue.IsPlaying;
 		public override void Pause() => cue.Pause();
@@ -33,10 +35,9 @@ namespace Terraria.ModLoader.Audio
 		public override void Stop(AudioStopOptions options) => cue.Stop(options);
 		public override void SetVariable(string name, float value) => cue.SetVariable(name, value);
 		
-		public override void Reset() {
-			// todo: fix this
-			// cue = Main.audioSystem.GetCue(cue.Name);
-		}
+		public override void Reset() => cue = ((LegacyAudioSystem)Main.audioSystem).GetCueInternal(cue.Name);
+
+		//public static implicit operator Cue(MusicCue musicCue) => musicCue.cue;
 	}
 
 	public abstract class MusicStreaming : Music, IDisposable
