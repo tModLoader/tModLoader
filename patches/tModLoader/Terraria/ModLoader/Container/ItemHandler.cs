@@ -136,7 +136,7 @@ namespace Terraria.ModLoader.Container
 		}
 
 		public bool Grow(int slot, int quantity, bool user = false) {
-			// if (CanInteract?.Invoke(slot, Operation.Input, user) == false) return false;
+			if (!CanInteract(slot, Operation.Input, user)) return false;
 
 			ref Item item = ref GetItemInSlot(slot);
 
@@ -150,7 +150,7 @@ namespace Terraria.ModLoader.Container
 		}
 
 		public bool Shrink(int slot, int quantity, bool user = false) {
-			// if (CanInteract?.Invoke(slot, Operation.Output, user) == false) return false;
+			if (!CanInteract(slot, Operation.Output, user)) return false;
 
 			ref Item item = ref GetItemInSlot(slot);
 
