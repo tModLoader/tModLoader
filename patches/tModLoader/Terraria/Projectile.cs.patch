@@ -508,6 +508,15 @@
  			if (aiStyle == 1) {
  				AI_001();
  			}
+@@ -25632,7 +_,7 @@
+ 			}
+ 
+ 			if (flag) {
+-				player.CheckMana(player.inventory[player.selectedItem].mana, pay: true);
++				player.CheckMana(player.inventory[player.selectedItem], pay: true);
+ 				localAI[0] = 1f;
+ 			}
+ 		}
 @@ -27210,7 +_,7 @@
  
  						if (flag3) {

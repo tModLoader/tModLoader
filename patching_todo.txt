@@ -14,7 +14,6 @@
 		//Basically everywhere it would set itemTime and we would use PlayerHooks.TotalUseTime,
 			we can now let the game use ApplyItemTime, it has our hook built in.
 		//Fishing submethods will need to use Item instead of values.
-		//Change all CheckMana() to use version with item passed in
 		//VanillaUpdateVanityAccessory --> ApplyEquipVanity
 
 	//Need reimplementing:
