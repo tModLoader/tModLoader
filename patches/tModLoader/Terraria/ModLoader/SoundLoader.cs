@@ -62,7 +62,6 @@ namespace Terraria.ModLoader
 
 			/*foreach (string music in musics.Keys.Where(t => t.StartsWith("Sounds/"))) {
 				string substring = music.Substring("Sounds/".Length);
-
 				if (substring.StartsWith("Music/")) {
 					AddSound(SoundType.Music, Name + '/' + music);
 				}

@@ -1,0 +1,31 @@
+--- src/Terraria/Terraria/GameContent/Drawing/WallDrawing.cs
++++ src/tModLoader/Terraria/GameContent/Drawing/WallDrawing.cs
+@@ -3,6 +_,7 @@
+ using System.Diagnostics;
+ using Terraria.Graphics;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.Drawing
+ {
+@@ -73,6 +_,10 @@
+ 					if (wall <= 0 || FullTile(j, i))
+ 						continue;
+ 
++					if (!WallLoader.PreDraw(j, i, wall, spriteBatch)) {
++						goto PostDraw;
++					}
++
+ 					Color color = Lighting.GetColor(j, i);
+ 					if (tile.wallColor() == 31)
+ 						color = Color.White;
+@@ -129,6 +_,9 @@
+ 						if (flag3)
+ 							spriteBatch.Draw(TextureAssets.WallOutline.Value, new Vector2(j * 16 - (int)screenPosition.X, i * 16 - (int)screenPosition.Y + 14) + value, new Rectangle(0, 14, 16, 2), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+ 					}
++
++					PostDraw:
++					WallLoader.PostDraw(j, i, wall, spriteBatch);
+ 				}
+ 			}
+ 

@@ -11,7 +11,17 @@
  		private static bool _areSoundsPaused;
  
  		public static bool IsAudioSupported {
-@@ -50,13 +_,19 @@
+@@ -34,9 +_,6 @@
+ 				if (Main.audioSystem != null)
+ 					Main.audioSystem.UpdateAudioEngine();
+ 
+-#if FNA
+-				Main.engine?.Update();
+-#endif
+ 				SoundInstanceGarbageCollector.Update();
+ 				bool flag = (!Main.hasFocus || Main.gamePaused) && Main.netMode == 0;
+ 				if (!_areSoundsPaused && flag)
+@@ -53,13 +_,19 @@
  			PlaySound(type, (int)position.X, (int)position.Y, style);
  		}
  
