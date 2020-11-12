@@ -254,15 +254,15 @@
 			
 		//Reimplement the entire ModifyTooltips hook call with all the tooltipNames filling, based on diffs of 1.3.5.3. See MouseText_DrawItemTooltip.
 		
+		//Reimplement PreDrawExtras and PostDraw:
 		//In DrawProj, jump over drawing of all extras with a goto:
 			if (!ProjectileLoader.PreDrawExtras(projectile, spriteBatch)) {
 				goto DrawExtrasEnd;
 			}
-		
-		//Reimplement these calls (unrelated to each other):
-			ModHooks.MidUpdateProjectileItem();
 			
 			ProjectileLoader.PostDraw(projectile, spriteBatch, color25);
+			
+		//Projectile drawing hooks need more thought because of early returns
 			
 		//Reimplement broken patches:
 // {

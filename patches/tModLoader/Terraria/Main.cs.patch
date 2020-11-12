@@ -1130,6 +1130,14 @@
  			LockOnHelper.SetUP();
  			CurrentFrameFlags.HadAnActiveInteractibleProjectile = false;
  			PreUpdateAllProjectiles();
+@@ -13108,6 +_,7 @@
+ 			ProjectileUpdateLoopIndex = -1;
+ 			PostUpdateAllProjectiles();
+ 			LockOnHelper.SetDOWN();
++			ModHooks.MidUpdateProjectileItem();
+ 			Item.numberOfNewItems = 0;
+ 			for (int n = 0; n < 400; n++) {
+ 				if (ignoreErrors) {
 @@ -13138,11 +_,13 @@
  				Dust.UpdateDust();
  			}
