@@ -617,8 +617,8 @@ namespace Terraria.ModLoader
 		}
 
 		private static void DisposeMusic() {
-			foreach (var music in Main.music.OfType<MusicStreaming>())
-				music.Dispose();
+			//foreach (var music in Main.audioSystem.OfType<MusicStreaming>())
+			//	music.Dispose();
 		}
 
 		/// <summary>

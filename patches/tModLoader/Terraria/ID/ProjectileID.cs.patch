@@ -15,7 +15,7 @@
  			public static bool[] DontApplyParryDamageBuff = Factory.CreateBoolSet(false, 524, 321, 181, 566);
  			public static bool[] IsAWhip = Factory.CreateBoolSet(false, 847, 841, 848, 849, 912, 913, 914, 915, 952);
  			public static bool[] ImmediatelyUpdatesNPCBuffFlags = Factory.CreateBoolSet(636);
-@@ -1215,5 +_,6 @@
+@@ -1216,5 +_,6 @@
  		public const short BoneWhip = 952;
  		public const short DaybreakExplosion = 953;
  		public const short Count = 954;

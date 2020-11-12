@@ -167,7 +167,7 @@
  
  										break;
 @@ -2229,6 +_,7 @@
- 					NetMessage.SendTileSquare(-1, i, j, 1);
+ 					NetMessage.SendTileSquare(-1, i, j);
  					break;
  			}
 +			TileLoader.HitWire(i, j, type);
