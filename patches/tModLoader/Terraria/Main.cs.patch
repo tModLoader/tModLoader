@@ -1052,6 +1052,15 @@
  					if (gameMenu)
  						UpdateMenu();
  
+@@ -12615,6 +_,8 @@
+ 
+ 			if (CanPauseGame()) {
+ 				DoUpdate_WhilePaused();
++				PlayerHooks.UpdateAutopause(player[myPlayer]);
++
+ 				gamePaused = true;
+ 				return;
+ 			}
 @@ -12661,6 +_,7 @@
  				Sandstorm.EmitDust();
  			}
