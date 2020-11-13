@@ -165,13 +165,13 @@ namespace Terraria.ModLoader.UI
 				foreach (var monoPath in new[] { "tModLoader", "tModLoaderServer" })
 					File.Copy("tModLoader-mono", monoPath, true);
 
-				// vanilla start scripts need to be upgraded to copy back the sys/ folder
+/*				// vanilla start scripts need to be upgraded to copy back the sys/ folder
 				var kickPaths = new List<string> { "TerrariaServer" };
 				if (!File.ReadAllText("Terraria").Contains("forwarder"))
 					kickPaths.Add("Terraria");
 
 				foreach (var kickPath in kickPaths)
-					File.Copy("tModLoader-kick", kickPath, true);
+					File.Copy("tModLoader-kick", kickPath, true);*/
 
 				monoStartScriptsUpdated = true;
 				_updateRequired = true;
