@@ -72,7 +72,7 @@ namespace Terraria.ModLoader.IO
 			return null;
 		}
 
-		protected override void Register() {
+		protected sealed override void Register() {
 			AddSerializer(this);
 		}
 	}
