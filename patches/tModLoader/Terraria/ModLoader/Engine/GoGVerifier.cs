@@ -72,7 +72,7 @@ namespace Terraria.ModLoader.Engine
 
 			// TODO These steam checks should not be here, but I'm afraid to move stuff around right now -Jof
 			bool checkSteam = File.Exists(steamAPIpath);
-#if !SERVER
+#if CLIENT
 			/*if (!Directory.Exists(ContentDirectory)) {
 				Exit($"{ContentDirectory} directory could not be found.\r\n\r\nDid you forget to extract tModLoader's Content directory into the tModLoader folder?\r\n\r\nEnsure tModLoader is installed in a separate folder from Terraria.");
 				return false;
@@ -80,6 +80,9 @@ namespace Terraria.ModLoader.Engine
 			if (checkSteam) {
 				SocialAPI.LoadSteam();
 				SteamApps.GetAppInstallDir(Steam.TerrariaAppId_t, out string terrariaInstallLocation, 1000);
+#if MAC
+				terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "Terraria.app/Contents/MacOS");
+#endif
 				if (!Directory.Exists(Path.Combine(terrariaInstallLocation, ContentDirectory))) {
 					Exit($"Terraria Steam installation or Terraria Content directory not found.\r\n\r\nPlease ensure Terraria 1.4 is installed through Steam.");
 					return false;
