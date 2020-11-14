@@ -769,7 +769,7 @@
 +			}
 +
 +			if (SocialAPI.Mode == SocialMode.Steam && SteamAPI.Init()) {
-+				var appID = new AppId_t(105600u);
++				var appID = ModLoader.Engine.Steam.TMLAppID_t;
 +				bool appInstalled = SteamApps.BIsAppInstalled(appID);
 +
 +				if (appInstalled) { 
