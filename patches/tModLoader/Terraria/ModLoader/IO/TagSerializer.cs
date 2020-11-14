@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 
 namespace Terraria.ModLoader.IO
 {
-	public abstract class TagSerializer
+	public abstract class TagSerializer : ILoadable
 	{
 		public abstract Type Type { get; }
 		public abstract Type TagType { get; }
@@ -70,6 +70,13 @@ namespace Terraria.ModLoader.IO
 			}
 
 			return null;
+		}
+
+		public void Load(Mod mod) {
+			AddSerializer(this);
+		}
+
+		public void Unload() {
 		}
 	}
 
