@@ -100,7 +100,7 @@ namespace Terraria.ModLoader.Engine
 #endif
 			if (!HashMatchesFile(steamAPIPath, steamAPIHash)) {
 				Process.Start(@"https://terraria.org");
-				Exit("Steam API hash mismatch, assumed pirated.\n\ntModLoader requires a legitimate Terraria install to work.", "");
+				Exit("Steam API hash mismatch, assumed pirated.\n\ntModLoader requires a legitimate Terraria install to work.", string.Empty);
 				return false;
 			}
 
@@ -129,13 +129,13 @@ namespace Terraria.ModLoader.Engine
 #if SERVER
 				return false;
 #else
-				Exit($"{vanillaPath} could not be found.\r\n\r\nGOG and manual installs must have the unmodified Terraria executable to function.", string.Empty);
+				Exit($"{vanillaPath} could not be found.\r\n\r\nGOG installs must have the unmodified Terraria executable to function.", string.Empty);
 				return false;
 #endif
 			}
 
-			if (!HashMatchesFile(vanillaPath, gogHash) && !HashMatchesFile(vanillaPath, steamHash)) {
-				Exit($"{vanillaPath} is not the unmodified Terraria executable.\r\n\r\nGOG and manual installs must have the unmodified Terraria executable to function.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"Terraria_v<VERSION>.exe\"", string.Empty);
+			if (!HashMatchesFile(vanillaPath, gogHash)) {
+				Exit($"{vanillaPath} is not the unmodified Terraria executable.\r\n\r\nGOG installs must have the unmodified Terraria executable to function.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"Terraria_v<VERSION>.exe\"", string.Empty);
 				return false;
 			}
 
