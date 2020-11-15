@@ -117,5 +117,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void PostDrawTiles() {
 		}
+
+		/// <summary>
+		/// Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the world should update with it.
+		/// You may want to consider Main.fastForwardTime and CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled here.
+		/// </summary>
+		public virtual void ModifyTimeRate(ref int timeRate, ref int tileUpdateRate) {
+		}
 	}
 }

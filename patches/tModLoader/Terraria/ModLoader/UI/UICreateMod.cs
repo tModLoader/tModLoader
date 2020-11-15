@@ -281,7 +281,8 @@ $@"{{
 		internal string GetBasicSword(string modNameTrimmed, string basicSwordName)
 		{
 			return
-$@"using Terraria.ID;
+$@"using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace {modNameTrimmed}.Items
@@ -297,7 +298,7 @@ namespace {modNameTrimmed}.Items
 		public override void SetDefaults() 
 		{{
 			item.damage = 50;
-			item.melee = true;
+			item.DamageType = DamageClass.Melee;
 			item.width = 40;
 			item.height = 40;
 			item.useTime = 20;
@@ -312,11 +313,10 @@ namespace {modNameTrimmed}.Items
 
 		public override void AddRecipes() 
 		{{
-			Recipe recipe = new Recipe(mod);
+			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.DirtBlock, 10);
 			recipe.AddTile(TileID.WorkBenches);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			recipe.Register();
 		}}
 	}}
 }}";

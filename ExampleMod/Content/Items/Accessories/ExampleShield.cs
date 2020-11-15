@@ -126,7 +126,10 @@ namespace ExampleMod.Content.Items.Accessories
 			bool dashAccessoryEquipped = false;
 
 			//This is the loop used in vanilla to update/check the not-vanity accessories
-			for (int i = 3; i < 8 + player.extraAccessorySlots; i++) {
+			for (int i = 3; i < 10; i++) {
+				if (!player.IsAValidEquipmentSlotForIteration(i))
+					continue;
+
 				Item item = player.armor[i];
 
 				//Set the flag for the ExampleDashAccessory being equipped if we have it equipped OR immediately return if any of the accessories are

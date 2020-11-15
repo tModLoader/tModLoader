@@ -22,17 +22,7 @@ namespace Terraria
 
 		public bool HasResult<T>() where T : ModItem => HasResult(ModContent.ItemType<T>());
 
-		public bool HasIngredient(int itemID) {
-			foreach (Item item in requiredItem) {
-				if (item.type == -1) break;
-
-				if (item.type == itemID) {
-					return true;
-				}
-			}
-
-			return false;
-		}
+		public bool HasIngredient(int itemID) => requiredItem.Any(item => item.type == itemID);
 
 		public bool HasIngredient(Mod mod, string itemName) {
 			mod ??= Mod;
@@ -47,17 +37,7 @@ namespace Terraria
 
 		public bool HasIngredient<T>() where T : ModItem => HasIngredient(ModContent.ItemType<T>());
 
-		public bool HasRecipeGroup(int id) {
-			foreach (int groupID in acceptedGroups) {
-				if (groupID == -1) break;
-
-				if (groupID == id) {
-					return true;
-				}
-			}
-
-			return false;
-		}
+		public bool HasRecipeGroup(int id) => acceptedGroups.Contains(id);
 
 		public bool HasRecipeGroup(string name) {
 			if (!RecipeGroup.recipeGroupIDs.ContainsKey(name))
@@ -69,16 +49,7 @@ namespace Terraria
 
 		public bool HasRecipeGroup(RecipeGroup group) => HasRecipeGroup(group.ID);
 
-		public bool HasTile(int tileID) {
-			foreach (int item in requiredTile) {
-				if (item == -1) break;
-
-				if (item == tileID)
-					return true;
-			}
-
-			return false;
-		}
+		public bool HasTile(int tileID) => requiredTile.Contains(tileID);
 
 		public bool HasTile(Mod mod, string tileName) {
 			mod ??= Mod;
@@ -93,7 +64,7 @@ namespace Terraria
 
 		public bool HasTile<T>() where T : ModTile => HasTile(ModContent.TileType<T>());
 
-		public bool HasCondition(Condition condition) => Conditions.Any(c => c == condition);
+		public bool HasCondition(Condition condition) => Conditions.Contains(condition);
 		#endregion
 
 		#region TryGetX
@@ -122,8 +93,6 @@ namespace Terraria
 
 		public bool TryGetIngredient(int itemID, out Item ingredient) {
 			foreach (Item item in requiredItem) {
-				if (item.type == -1) break;
-
 				if (item.type == itemID) {
 					ingredient = item;
 					return true;
@@ -148,9 +117,30 @@ namespace Terraria
 		public bool TryGetIngredient<T>(out Item ingredient) where T : ModItem => TryGetIngredient(ModContent.ItemType<T>(), out ingredient);
 		#endregion
 
-		// should we remove by index or by item/tile type?
-
 		#region RemoveX
+		public bool RemoveIngredient(Item item) => requiredItem.Remove(item);
+
+		public bool RemoveTile(int tileID) => requiredTile.Remove(tileID);
+
+		public bool RemoveRecipeGroup(int groupID) => acceptedGroups.Remove(groupID);
+		
+		public bool RemoveCondition(Condition condition) => Conditions.Remove(condition);
+
+		public bool RemoveRecipe() {
+			for (int k = 0; k < numRecipes; k++) {
+				if (Main.recipe[k] == this) {
+					for (int j = k; j < numRecipes - 1; j++) {
+						Main.recipe[j] = Main.recipe[j + 1];
+					}
+
+					Main.recipe[numRecipes - 1] = new Recipe();
+					numRecipes--;
+					return true;
+				}
+			}
+
+			return false;
+		}
 		#endregion
 
 		#region ReplaceX
