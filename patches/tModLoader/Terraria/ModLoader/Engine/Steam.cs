@@ -18,6 +18,22 @@ namespace Terraria.ModLoader.Engine
 		public static AppId_t TerrariaAppId_t = new AppId_t(TerrariaAppID);
 		public static bool IsSteamApp => SocialAPI.Mode == SocialMode.Steam && SteamAPI.Init() && SteamApps.BIsAppInstalled(new AppId_t(TMLAppID));
 
+		public static string GetSteamTerrariaInstallDir() {
+			SteamApps.GetAppInstallDir(TerrariaAppId_t, out string terrariaInstallLocation, 1000);
+#if MAC
+			terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "Terraria.app/Contents/MacOS");
+#endif
+			return terrariaInstallLocation;
+		}
+
+		public static string GetSteamTMLInstallDir() {
+			SteamApps.GetAppInstallDir(TMLAppID_t, out string terrariaInstallLocation, 1000);
+#if MAC
+			terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "tModLoader.app/Contents/MacOS");
+#endif
+			return terrariaInstallLocation;
+		}
+
 		public static bool EnsureSteamAppIdTMLFile()
 		{
 			bool exists = File.Exists("steam_appid.txt");
