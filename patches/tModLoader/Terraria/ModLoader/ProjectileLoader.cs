@@ -605,6 +605,17 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate void DelegateGrappleTargetPoint(Projectile projectile, Player player, ref float grappleX, ref float grappleY);
+		private static HookList HookGrappleTargetPoint = AddHook<DelegateGrappleTargetPoint>(g => g.GrappleTargetPoint);
+
+		public static void GrappleTargetPoint(Projectile projectile, Player player, ref float grappleX, ref float grappleY) {
+			projectile.modProjectile?.GrappleTargetPoint(player, ref grappleX, ref grappleY);
+
+			foreach (GlobalProjectile g in HookGrappleTargetPoint.arr) {
+				g.Instance(projectile).GrappleTargetPoint(projectile, player, ref grappleX, ref grappleY);
+			}
+		}
+
 		private static HookList HookDrawBehind = AddHook<Action<Projectile, int, List<int>, List<int>, List<int>, List<int>>>(g => g.DrawBehind);
 
 		internal static void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {

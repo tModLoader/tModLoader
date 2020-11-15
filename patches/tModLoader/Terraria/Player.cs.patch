@@ -1724,6 +1724,29 @@
  							num4 = miscEquips[2].mountType;
  
  						int num5 = height + Mount.GetHeightBoost(num4);
+@@ -15706,6 +_,11 @@
+ 				Projectile projectile = Main.projectile[grappling[i]];
+ 				if (projectile.ai[0] != 2f || projectile.position.HasNaNs())
+ 					continue;
++				int type = projectile.type;
++				bool useAiType = projectile.modProjectile != null && projectile.modProjectile.aiType > 0;
++				if (useAiType) {
++					projectile.type = projectile.modProjectile.aiType;
++				}
+ 
+ 				num += projectile.position.X + (float)(projectile.width / 2);
+ 				num2 += projectile.position.Y + (float)(projectile.height / 2);
+@@ -15747,6 +_,10 @@
+ 					if (value2.X != 0f)
+ 						preferredPlayerDirectionToSet = Math.Sign(value2.X);
+ 				}
++				if (useAiType) {
++					projectile.type = type;
++				}
++				ProjectileLoader.GrappleTargetPoint(projectile, this, ref num, ref num2);
+ 			}
+ 
+ 			if (num3 == 0) {
 @@ -15771,13 +_,14 @@
  			if (Main.projectile[grappling[0]].type >= 646 && Main.projectile[grappling[0]].type <= 649)
  				num9 = 16f;
