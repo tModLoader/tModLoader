@@ -1,8 +1,3 @@
----
-name: New Feature
-about: A new feature added to tModLoader
----
-
 ### What is the new feature?
 
 ### Why should this be part of tModLoader?
