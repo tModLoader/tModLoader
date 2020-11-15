@@ -1,3 +1,8 @@
+---
+name: Example Mod
+about: Changes to ExampleMod
+---
+
 ### What are the changes to ExampleMod?
 
 ### Do these changes need additional documentation?

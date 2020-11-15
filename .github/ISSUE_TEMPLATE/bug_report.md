@@ -10,7 +10,7 @@ Please look at the FAQ before submitting an issue. Your issue might be well know
 Please fill out all the necessary details. 
 Please only report an issue if you are certain there's a problem with the tModLoader software.
 
-For support questions you should go to Discord: https://tmodloader.net/discord 
+For support questions, you should go to Discord: https://tmodloader.net/discord 
 Please read the pinned messages in the #support channel beforehand.
 
 -->
@@ -43,5 +43,5 @@ Mac Logs: ~/Library/Application support/Terraria/ModLoader/Logs/  -->
 <!-- How often are you reliably able to reproduce this issue? -->
 
 ### Additional Information
-<!-- Any additional information, configuration or data that might be necessary to reproduce the issue. -->
+<!-- Any additional information, configuration, or data that might be necessary to reproduce the issue. -->
 
