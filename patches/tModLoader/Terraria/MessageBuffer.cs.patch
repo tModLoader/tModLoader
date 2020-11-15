@@ -307,7 +307,7 @@
  						obj7.zone3 = reader.ReadByte();
  						obj7.zone4 = reader.ReadByte();
 +						if (!ModNet.AllowVanillaClients)
-+							PlayerHooks.ReceiveCustomBiomes(obj7, reader);
++							BiomeLoader.ReceiveCustomBiomes(obj7, reader);
 +
  						if (Main.netMode == 2)
  							NetMessage.TrySendData(36, -1, whoAmI, null, num213);

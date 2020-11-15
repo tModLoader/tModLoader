@@ -545,6 +545,7 @@ namespace Terraria.ModLoader
 			BuffLoader.ResizeArrays();
 			PlayerHooks.RebuildHooks();
 			WorldHooks.ResizeArrays();
+			BiomeLoader.RebuildHooks();
 
 			if (!Main.dedServ) {
 				SoundLoader.ResizeAndFillArrays();

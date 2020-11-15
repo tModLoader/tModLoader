@@ -69,5 +69,20 @@ namespace Terraria
 
 		/// <summary> Gets the reference to the damage modifier for this damage type on this player. Since this returns a reference, you can freely modify this method's return value with operators. </summary>
 		public ref Modifier GetDamage(DamageClass damageClass) => ref damageData[damageClass.index].damage;
+
+		internal ModBiome[] modBiomes = new ModBiome[0];
+
+		/// <summary> Gets the instance of the specified ModBiome type. This will throw exceptions on failure. </summary>
+		/// <exception cref="KeyNotFoundException"/>
+		/// <exception cref="IndexOutOfRangeException"/>
+		public T GetModBiome<T>() where T : ModBiome
+			=> GetModBiome(ModContent.GetInstance<T>());
+
+		/// <summary> Gets the local instance of the type of the specified ModBiome instance. This will throw exceptions on failure. </summary>
+		/// <exception cref="KeyNotFoundException"/>
+		/// <exception cref="IndexOutOfRangeException"/>
+		/// <exception cref="NullReferenceException"/>
+		public T GetModBiome<T>(T baseInstance) where T : ModBiome
+			=> modBiomes[baseInstance.index] as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current player.");
 	}
 }

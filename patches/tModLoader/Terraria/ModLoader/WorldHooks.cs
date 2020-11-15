@@ -57,6 +57,8 @@ namespace Terraria.ModLoader
 			foreach (ModWorld modWorld in worlds) {
 				modWorld.ModifyWorldGenTasks(passes, ref totalWeight);
 			}
+
+			BiomeLoader.ModifyWorldGenTasks(passes, ref totalWeight);
 		}
 
 		public static void PostWorldGen() {

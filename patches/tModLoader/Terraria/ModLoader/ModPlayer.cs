@@ -24,6 +24,7 @@ namespace Terraria.ModLoader
 		internal int index;
 
 		internal ModPlayer CreateFor(Player newPlayer) {
+			BiomeLoader.CopyBiomesTo(newPlayer);
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
 			modPlayer.Mod = Mod;
 			modPlayer.player = newPlayer;
@@ -95,48 +96,6 @@ namespace Terraria.ModLoader
 		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. 
 		/// </summary>
 		public virtual void PostSavePlayer() {
-		}
-
-		/// <summary>
-		/// Allows you to set biome variables in your ModPlayer class based on tile counts.
-		/// </summary>
-		public virtual void UpdateBiomes() {
-		}
-
-		/// <summary>
-		/// Whether or not this player and the other player parameter have the same custom biome variables. This hook is used to help with client/server syncing. Returns true by default.
-		/// </summary>
-		/// <param name="other"></param>
-		/// <returns></returns>
-		public virtual bool CustomBiomesMatch(Player other) {
-			return true;
-		}
-
-		/// <summary>
-		/// In this hook, you should copy the custom biome variables from this player to the other player parameter. This hook is used to help with client/server syncing.
-		/// </summary>
-		/// <param name="other"></param>
-		public virtual void CopyCustomBiomesTo(Player other) {
-		}
-
-		/// <summary>
-		/// Allows you to send custom biome information between client and server.
-		/// </summary>
-		/// <param name="writer"></param>
-		public virtual void SendCustomBiomes(BinaryWriter writer) {
-		}
-
-		/// <summary>
-		/// Allows you to do things with the custom biome information you send between client and server.
-		/// </summary>
-		/// <param name="reader"></param>
-		public virtual void ReceiveCustomBiomes(BinaryReader reader) {
-		}
-
-		/// <summary>
-		/// Allows you to create special visual effects in the area around the player. For example, the blood moon's red filter on the screen or the slime rain's falling slime in the background. You must create classes that override Terraria.Graphics.Shaders.ScreenShaderData or Terraria.Graphics.Effects.CustomSky, add them in your mod's Load hook, then call Player.ManageSpecialBiomeVisuals. See the ExampleMod if you do not have access to the source code.
-		/// </summary>
-		public virtual void UpdateBiomeVisuals() {
 		}
 
 		/// <summary>

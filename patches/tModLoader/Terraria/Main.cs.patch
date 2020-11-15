@@ -1063,7 +1063,7 @@
  			if ((byte)Main.player[myPlayer].zone4 != (byte)player.zone4)
  				flag2 = true;
  
-+			if (!PlayerHooks.CustomBiomesMatch(Main.player[myPlayer], player))
++			if (!BiomeLoader.CustomBiomesMatch(Main.player[myPlayer], player))
 +				flag2 = true;
 +
  			if (flag2)

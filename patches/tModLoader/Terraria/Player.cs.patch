@@ -1441,7 +1441,7 @@
  			bool flag7 = point.Y > Main.maxTilesY - 320;
  			bool flag8 = ZoneOverworldHeight && (point.X < 380 || point.X > Main.maxTilesX - 380);
 +			// TODO, are these flags a problem?
-+			PlayerHooks.UpdateBiomes(this);
++			BiomeLoader.UpdateBiomes(this);
  			ManageSpecialBiomeVisuals("Stardust", ZoneTowerStardust, value4 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Nebula", ZoneTowerNebula, value3 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Vortex", ZoneTowerVortex, value2 - new Vector2(0f, 10f));
@@ -1449,7 +1449,7 @@
  				}
  			}
  
-+			PlayerHooks.UpdateBiomeVisuals(this);
++			BiomeLoader.UpdateBiomeVisuals(this);
  			if (!dead) {
  				Point point2 = base.Center.ToTileCoordinates();
  				if (WorldGen.InWorld(point2.X, point2.Y, 1)) {
@@ -3552,7 +3552,7 @@
  			player.zone4 = zone4;
  			player.voidVaultInfo = voidVaultInfo;
  			player.luck = luck;
-+			PlayerHooks.CopyCustomBiomesTo(this, player);
++			BiomeLoader.CopyCustomBiomesTo(this, player);
  			player.extraAccessory = extraAccessory;
  			player.MinionRestTargetPoint = MinionRestTargetPoint;
  			player.MinionAttackTargetNPC = MinionAttackTargetNPC;
