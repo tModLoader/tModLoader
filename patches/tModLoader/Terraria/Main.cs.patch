@@ -1927,6 +1927,15 @@
  				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.Black;
  				switch (k) {
  					case 0:
+@@ -15670,7 +_,7 @@
+ 				return;
+ 
+ 			int num13 = 0;
+-			for (int l = 0; l < 289; l++) {
++			for (int l = 0; l < NPCLoader.NPCCount; l++) {
+ 				if (Item.BannerToNPC(l) == 0 || !player[myPlayer].HasNPCBannerBuff(l))
+ 					continue;
+ 
 @@ -15712,9 +_,12 @@
  					spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(num14, num15), color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  				}
