@@ -1,4 +1,4 @@
-// Chinese Translations made by 抗药又坚硬汉化组(SBMW GROUP).
+// Chinese Translations made by @Dierney.
 {
 	"tModLoader": {
 		// Main Menu
@@ -8,7 +8,7 @@
 		"MenuModSources": "模组源码",
 		"MenuEnableDeveloperMode": "启用开发者模式",
 		"FirstLaunchWelcomeMessage": "欢迎使用tModLoader.\n\n你已成功安装tModLoader.使用模组浏览器可以找到你想要下载的模组.在模组管理中可以更改已安装的模组.更改模组后,请确保你点击了“重新加载模组”以使它们生效.",
-		"tModLoaderSettings": "设定tModLoader",
+		"tModLoaderSettings": "tModLoader设置",
 
 		// Mods Menu
 		"ModsModsList": "模组列表",
@@ -173,7 +173,7 @@
 		"MBOfflineWithReason": "- 离线({0})",
 		"MBBusy": "繁忙",
 		"MBUnknown": "未知",
-		"MBOfflineTroubleshooting": "无法访问模组浏览器,这可能是由于许多原因造成的.\n 1.检查你的网络连接.\n 2.模组浏览器可能只是处于离线状态.如果之前可连接,请等待几个小时.\n 3.双击此信息以打开模组浏览器网站.你可以使用它来手动下载模组.如果网站一切正常,你应该检查你的防火墙以允许Terraria.exe通过,或尝试禁用你的VPN(如果正在使用).\n 4.如果该网站仍不起作用,那么你的政府,互联网提供商,路由器,或网络过滤器可能会阻止模组浏览器的服务器.如果是这种情况,你需要自己解决.",
+		"MBOfflineTroubleshooting": "无法访问模组浏览器,这可能是由于许多原因造成的.\n 1.检查你的网络连接.\n 2.模组浏览器可能只是处于离线状态.如果之前可连接,请等待几个小时.\n 3.双击此信息以打开模组浏览器网站.你可以使用它来手动下载模组.如果网站一切正常,你应该检查你的防火墙以允许Terraria.exe通过,或尝试禁用你的VPN(如果正在使用).\n 4.如果该网站仍不起作用,那么你的政府,互联网提供商,路由器,或网络过滤器可能会阻止模组浏览器的服务器.如果是这种情况,你需要自己解决.\n 5.如果你在中国大陆,建议使用国内玩家(@恋恋)自制的网页版模组浏览器：https://mirror.sgkoi.dev",
 		"MBClickToViewDependencyMods": "点击查看依赖模组:\n{0}",
 		"MBModsNotFoundOnline": "在模组浏览器中未找到下列模组: {0}",
 		"MBFilterDependencies": "依赖",
