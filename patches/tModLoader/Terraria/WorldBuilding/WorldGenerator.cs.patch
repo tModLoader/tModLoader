@@ -1,6 +1,15 @@
 --- src/Terraria/Terraria/WorldBuilding/WorldGenerator.cs
 +++ src/tModLoader/Terraria/WorldBuilding/WorldGenerator.cs
-@@ -6,9 +_,9 @@
+@@ -1,14 +_,18 @@
++using System;
+ using System.Collections.Generic;
+ using System.Diagnostics;
++using Terraria.Localization;
++using Terraria.ModLoader;
++using Terraria.ModLoader.UI;
+ using Terraria.Utilities;
+ 
+ namespace Terraria.WorldBuilding
  {
  	public class WorldGenerator
  	{
@@ -13,3 +22,28 @@
  		private readonly WorldGenConfiguration _configuration;
  		public static GenerationProgress CurrentGenerationProgress;
  
+@@ -39,7 +_,23 @@
+ 				Main.rand = new UnifiedRandom(_seed);
+ 				stopwatch.Start();
+ 				progress.Start(pass2.Weight);
++				try {
+-				pass2.Apply(progress, _configuration.GetPassConfiguration(pass2.Name));
++					pass2.Apply(progress, _configuration.GetPassConfiguration(pass2.Name));
++				}
++				catch(Exception e) {
++					string message = string.Join(
++						"\n",
++						Language.GetTextValue("tModLoader.WorldGenError"),
++						pass2.Name,
++						e
++					);
++					Logging.tML.Error(message);
++					Interface.errorMessage.Show(message, 0);
++
++					//We need to shutdown the thread without it saving.
++					//TODO: Allow returning a bool to signify if it should save or not.
++					throw e;
++				}
+ 				progress.End();
+ 				stopwatch.Reset();
+ 			}
