@@ -749,7 +749,7 @@
  		}
  
  		public Main() {
-@@ -4761,7 +_,41 @@
+@@ -4761,7 +_,43 @@
  #if CLIENT
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
@@ -780,6 +780,8 @@
 +					if (!Directory.Exists(vanillaContentFolder))
 +						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/MacOS/Content");
 +				}
++				Steamworks.SteamRemoteStorage.GetQuota(out ulong pnTotalBytes, out ulong puAvailableBytes);
++				Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)puAvailableBytes)} available");
 +			}
 +
 +			if (!Directory.Exists(vanillaContentFolder)) {
