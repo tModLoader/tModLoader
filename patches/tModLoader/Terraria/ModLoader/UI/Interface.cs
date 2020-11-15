@@ -389,12 +389,36 @@ namespace Terraria.ModLoader.UI
 		internal static void MessageBoxShow(string text, string caption = null) {
 			// MessageBox.Show fails on Mac, this method will open a text file to show a message.
 			caption ??= "Terraria: Error" + $" ({ModLoader.versionedName})";
+			string message = $"{text}\n\nA client.log file containing error information has been generated in\n{Path.Combine(Main.SavePath, "Logs")}\n(You will need to share this file if asking for help)";
 #if !MAC
-			System.Windows.Forms.MessageBox.Show(text, caption);
+			System.Windows.Forms.MessageBox.Show(message, caption);
 #else
 			File.WriteAllText("fake-messagebox.txt", $"{caption}\n\n{text}");
 			Process.Start("fake-messagebox.txt");
 #endif
+		}
+
+		internal static void MessageBoxShow(Exception e, string caption = null, bool generateTip = false) {
+			string tip = "";
+
+			if (generateTip) {
+				if (e is OutOfMemoryException)
+					tip = "Try running less mods at once, or determine if a mod is taking up too much memory. Optionally, install 64-bit tModLoader";
+				else if (e is InvalidOperationException || e is NullReferenceException || e is IndexOutOfRangeException || e is ArgumentNullException)
+					tip = "This is likely a mod's fault. Disable mods one by one and check if the issue persists";
+				else if (e is IOException && e.Message.Contains("cloud file provider"))
+					tip = "Try installing/enabling OneDrive. Right click your Documents folder and enable \"Always save on this device\"";
+				else if (e is System.Threading.SynchronizationLockException)
+					tip = "If you have an antivirus, try adding Terraria to its whitelist/exclusion list";
+				else if (e is TypeInitializationException)
+					tip = "Restart the game. If this issue persists, try uninstalling Terraria completely, then reinstalling through Steam, and then reinstalling tModLoader";
+			}
+
+			string message = e.ToString();
+			if (tip != "")
+				message += $"\n\nTip: {tip}";
+
+			MessageBoxShow(message, caption);
 		}
 	}
 }
