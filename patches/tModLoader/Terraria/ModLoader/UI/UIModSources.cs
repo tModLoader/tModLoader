@@ -20,6 +20,7 @@ namespace Terraria.ModLoader.UI
 	{
 		private readonly List<UIModSourceItem> _items = new List<UIModSourceItem>();
 		private UIList _modList;
+		private float modListViewPosition;
 		private bool _updateNeeded;
 		private UIElement _uIElement;
 		private UIPanel _uIPanel;
@@ -172,6 +173,7 @@ namespace Terraria.ModLoader.UI
 			_cts?.Cancel(false);
 			_cts?.Dispose();
 			_cts = null;
+			modListViewPosition = _modList.ViewPosition;
 		}
 
 		internal void Populate() {
@@ -199,6 +201,7 @@ namespace Terraria.ModLoader.UI
 			_uIPanel.RemoveChild(_uiLoader);
 			_modList.Clear();
 			_modList.AddRange(_items);
+			_modList.ViewPosition = modListViewPosition;
 		}
 	}
 }
