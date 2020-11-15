@@ -148,14 +148,6 @@
  		public static bool allChestStackHover;
  		public static bool inventorySortMouseOver;
  		public static float GraveyardVisualIntensity;
-@@ -840,6 +_,7 @@
- 		public static bool UseExperimentalFeatures;
- 		public static string DefaultSeed = "";
- 		public static IAudioSystem audioSystem;
-+		public static Music[] music = new Music[90];
- 		public static bool[] musicNoCrossFade = new bool[90];
- 		public static float[] musicFade = new float[90];
- 		public static float musicVolume = 1f;
 @@ -1155,9 +_,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -777,7 +769,7 @@
 +			}
 +
 +			if (SocialAPI.Mode == SocialMode.Steam && SteamAPI.Init()) {
-+				var appID = new AppId_t(105600u);
++				var appID = ModLoader.Engine.Steam.TMLAppID_t;
 +				bool appInstalled = SteamApps.BIsAppInstalled(appID);
 +
 +				if (appInstalled) { 
@@ -850,20 +842,18 @@
  				}
  
  				if (gameMenu || musicVolume == 0f) {
-@@ -8812,12 +_,14 @@
+@@ -8812,12 +_,12 @@
  						curMusic = 0;
  					}
  
 -					if (NPC.MoonLordCountdown == 1 && curMusic >= 1 && curMusic < 90)
-+					if (NPC.MoonLordCountdown == 1 && curMusic >= 1 && curMusic < music.Length)
++					if (NPC.MoonLordCountdown == 1 && curMusic >= 1 && curMusic < musicFade.Length)
  						musicFade[curMusic] = 0f;
  				}
  
  				bool isMainTrackAudible = musicFade[curMusic] > 0.25f;
 -				for (int i = 1; i < 90; i++) {
-+				for (int i = 1; i < music.Length; i++) {
-+					if (music[i] == null)
-+						continue; // Race condition, Music is resized during load.
++				for (int i = 1; i < musicFade.Length; i++) {
  					float num2 = musicFade[i] * musicVolume * num;
  					if (i >= 62 && i <= 88) {
  						num2 *= 0.9f;
@@ -933,7 +923,7 @@
  					}
 -					else if (!audioSystem.IsTrackPlaying(50)) {
 +
-+					if (_isAsyncLoadComplete && newMusic == 50 && !music[50].IsPlaying) {
++					if (_isAsyncLoadComplete && newMusic == 50 && audioSystem.IsTrackPlaying(50)) {
  						newMusic = 51;
  						if (musicNoCrossFade[51])
  							musicFade[51] = 1f;

@@ -24,3 +24,12 @@
  			engine.Update();
  			music = new Cue[90];
  		}
+@@ -27,6 +_,8 @@
+ 				yield return null;
+ 			}
+ 		}
++
++		internal Cue GetCueInternal(string cueName) => soundBank.GetCue(cueName);
+ 
+ 		public void LoadCue(int cueIndex, string cueName) {
+ 			music[cueIndex] = soundBank.GetCue(cueName);
