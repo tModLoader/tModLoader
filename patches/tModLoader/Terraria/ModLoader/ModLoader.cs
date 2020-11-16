@@ -200,6 +200,7 @@ namespace Terraria.ModLoader
 				isLoading = false;
 				OnSuccessfulLoad = null;
 				skipLoad = false;
+				ModNet.NetReloadActive = false;
 			}
 		}
 
