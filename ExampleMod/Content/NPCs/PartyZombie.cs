@@ -47,5 +47,25 @@ namespace ExampleMod.Content.NPCS
 				dust.scale *= 1f + Main.rand.NextFloat(-0.03f, 0.03f);
 			}
 		}
+		
+		// Allows the NPC to talk with the player despite the NPC not being a town NPC.
+		public override bool CanChat() => true;
+		
+		// Determines what the NPC will say when the player talks to them.
+		public override string GetChat() {
+			switch (Main.rand.Next(3)) {
+				case 0:
+					return "I'm not a town NPC!";
+				
+				case 1:
+					return "Stand still for a second!";
+					
+				case 2:
+					return "Wanna party?";
+					
+				default:
+					goto case 0;
+			}
+		}
 	}
 }

@@ -3,12 +3,8 @@
 		//Make PlayerHooks.CatchFish and other related hooks use the new FishingAttempt struct.
 		//Move PlayerHooks.CatchFish and fishing related hooks to be each of the FishingCheck submethods.
 
-	//Terraria.GameContent.UI.States.UICharacterCreation.SetupPlayerStatsAndInventoryBasedOnDifficulty
-		//Add call to PlayerHooks.SetStartInventory here. Moved from Player constructor.
-
 	//Player
 		//Check if Player constructor still needs startupInventory arg
-		//Make sure "22" replaced with "MaxBuffs" in 'for' and CountBuffs() == and !=.
 		//Ensure all blockLists are cleared everywhere that they need to be.
 		//Correct new allDamage increasing accessories
 		//Basically everywhere it would set itemTime and we would use PlayerHooks.TotalUseTime,
@@ -18,8 +14,6 @@
 
 	//Need reimplementing:
 		//TileLoader.HasSmartInteract
-		//NPCLoader.CanChat
-			//Add to NPCSmartInteractCandidateProvider.ProvideCandidate's npc loop checks.
 		//TileLoader.FixSmartInteractCoords
 			//Add to TileSmartInteractCandidateProvider.ProvideCandidate, right before the if with two Collision.InTileBounds calls.
 
