@@ -69,6 +69,8 @@ namespace Terraria.ModLoader
 					Mod.AddEquipTexture(this, equip, Texture + '_' + equip);
 				}
 			}
+			
+			OnCreate(new InitializationContext());
 		}
 
 		public override void SetupContent() {
@@ -79,48 +81,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether instances of this ModItem are created through Clone or constructor (by default implementations of NewInstance and Clone(Item, Item)). 
-		/// Defaults to false (using default constructor).
+		/// Create a copy of this ModItem. Called when an item is cloned.
 		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
-		/// <summary>
-		/// Returns a clone of this ModItem. 
-		/// Allows you to decide which fields of your ModItem class are copied over when an item stack is split or something similar happens. 
-		/// By default this will return a memberwise clone; you will want to override this if your ModItem contains object references. 
-		/// Only called if CloneNewInstances is set to true.
-		/// Since several ModItem class fields are also set by the default implementation of this method, you'll most likely want to call base.Clone() as the first statement of your override.
-		/// </summary>
-		/// <example><code>var clone = (ExampleHookItem)base.Clone();
-		/// clone.targets = (int[])this.targets.Clone(); // Or whatever deep copy operations are relevant.
-		/// return clone;</code></example>
-		public virtual ModItem Clone() => (ModItem)MemberwiseClone();
-
-		/// <summary>
-		/// Create a copy of this instanced ModItem. Called when an item is cloned.
-		/// Defaults to NewInstance(item)
-		/// </summary>
-		/// <param name="item">The item being cloned</param>
-		/// <param name="itemClone">The new item</param>
-		public virtual ModItem Clone(Item item) => NewInstance(item);
-
-		/// <summary>
-		/// Create a new instance of this ModItem for an Item instance. 
-		/// Called at the end of Item.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual ModItem NewInstance(Item itemClone) {
-			if (CloneNewInstances) {
-				var clone = Clone();
-				clone.item = itemClone;
-				return clone;
-			}
-
-			var copy = (ModItem)Activator.CreateInstance(GetType());
-			copy.item = itemClone;
-			copy.Mod = Mod;
-			return copy;
+		/// <param name="item">The new item</param>
+		public virtual ModItem Clone(Item item) {
+			ModItem clone = (ModItem)MemberwiseClone();
+			clone.item = item;
+			return clone;
 		}
 
 		/// <summary>
@@ -128,6 +95,9 @@ namespace Terraria.ModLoader
 		/// For those that are familiar with tAPI, this has the same function as .json files.
 		/// </summary>
 		public virtual void SetDefaults() {
+		}
+
+		public virtual void OnCreate(ItemCreationContext context) {
 		}
 
 		/// <summary>
@@ -285,7 +255,7 @@ namespace Terraria.ModLoader
 		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05`</param>
 		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
 		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
-		public virtual void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat) {
+		public virtual void ModifyWeaponDamage(Player player, ref Modifier damage, ref float flat) {
 		}
 
 		/// <summary>
@@ -524,11 +494,18 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to give effects to this accessory when equipped in a vanity slot. Vanilla uses this for boot effects, wings and merman/werewolf visual flags
+		/// </summary>
+		/// <param name="player">The player.</param>
+		public virtual void UpdateVanity(Player player) {
+		}
+
+		/// <summary>
 		/// Allows you to create special effects (such as dust) when this item's equipment texture of the given equipment type is displayed on the player. Note that this hook is only ever called through this item's associated equipment texture.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <param name="type">The type.</param>
-		public virtual void UpdateVanity(Player player, EquipType type) {
+		public virtual void EquipFrameEffects(Player player, EquipType type) {
 		}
 
 		/// <summary>

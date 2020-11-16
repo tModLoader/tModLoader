@@ -308,12 +308,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateUpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff);
+		private delegate void DelegateUpdateEquips();
 		private static HookList HookUpdateEquips = AddHook<DelegateUpdateEquips>(p => p.UpdateEquips);
 
-		public static void UpdateEquips(Player player, ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff) {
+		public static void UpdateEquips(Player player) {
 			foreach (int index in HookUpdateEquips.arr) {
-				player.modPlayers[index].UpdateEquips(ref wallSpeedBuff, ref tileSpeedBuff, ref tileRangeBuff);
+				player.modPlayers[index].UpdateEquips();
 			}
 		}
 
@@ -543,17 +543,17 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyWeaponDamage(Item item, ref float add, ref float mult, ref float flat);
+		private delegate void DelegateModifyWeaponDamage(Item item, ref Modifier damage, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(p => p.ModifyWeaponDamage);
 		/// <summary>
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
 		/// </summary>
-		public static void ModifyWeaponDamage(Player player, Item item, ref float add, ref float mult, ref float flat) {
+		public static void ModifyWeaponDamage(Player player, Item item, ref Modifier damage, ref float flat) {
 			if (item.IsAir)
 				return;
 
 			foreach (int index in HookModifyWeaponDamage.arr) {
-				player.modPlayers[index].ModifyWeaponDamage(item, ref add, ref mult, ref flat);
+				player.modPlayers[index].ModifyWeaponDamage(item, ref damage, ref flat);
 			}
 		}
 

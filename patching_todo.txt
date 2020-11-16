@@ -8,15 +8,12 @@
 
 	//Player
 		//Check if Player constructor still needs startupInventory arg
-		//Ensure ItemLoader.ConsumeItem hook was added to everywhere that a player can consume item.consumable.
 		//Make sure "22" replaced with "MaxBuffs" in 'for' and CountBuffs() == and !=.
 		//Ensure all blockLists are cleared everywhere that they need to be.
 		//Correct new allDamage increasing accessories
 		//Basically everywhere it would set itemTime and we would use PlayerHooks.TotalUseTime,
 			we can now let the game use ApplyItemTime, it has our hook built in.
 		//Fishing submethods will need to use Item instead of values.
-		//Ensure all ItemLoader.ConsumeItems have been added.
-		//Change all CheckMana() to use version with item passed in
 		//VanillaUpdateVanityAccessory --> ApplyEquipVanity
 
 	//Need reimplementing:
@@ -131,8 +128,6 @@
 		
 		//Test modded grasses' behavior.
 		
-		//Ensure that all of KillTile_GetTileDustAmount's calls have x,y parameters in other files:
-		
 	//TileDrawing:
 		//Reimplement cactus drawing. Search for modCactus in Main.cs 1.3.5.3 tML diffs.
 		
@@ -142,16 +137,6 @@
 			TileLoader.DrawEffects(j, i, type, spriteBatch, ref color, ref nextSpecialDrawIndex);
 			
 			TileLoader.PostDraw(x, y, type, spriteBatch);
-			
-	//WallDrawing:
-		//Reimplement these calls:
-			if (!WallLoader.PreDraw(j, i, wall, spriteBatch)) {
-				WallLoader.PostDraw(j, i, wall, spriteBatch);
-				continue;
-			}
-		
-		//Around line 130, after outline draws, put this:
-			WallLoader.PostDraw(j, i, wall, spriteBatch);
 			
 	//Item:
 		//In Item.GetDrawHitbox, return the following size if it's not null.

@@ -112,7 +112,7 @@
  		}
  
  		public static void SetupTravelShop() {
-@@ -877,9 +_,12 @@
+@@ -874,9 +_,12 @@
  							Main.travelShop[num2++] = 3636;
  							Main.travelShop[num2++] = 3641;
  							break;
@@ -125,7 +125,7 @@
  		}
  
  		public void SetupShop(int type) {
-@@ -2508,6 +_,7 @@
+@@ -2553,6 +_,7 @@
  					array[num++].SetDefaults(4921);
  			}
  

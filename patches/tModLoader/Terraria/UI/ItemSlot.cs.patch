@@ -89,7 +89,7 @@
  								inv[slot].SetDefaults();
  
 @@ -1016,7 +_,9 @@
- 					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < 5045 && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
+ 					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < 5088 && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
  						if (Main.mouseRightRelease) {
  							player.OpenFishingCrate(inv[slot].type);
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
@@ -110,7 +110,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1067,7 +_,9 @@
+@@ -1093,7 +_,9 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 1774) {
  						if (Main.mouseRightRelease) {
@@ -121,7 +121,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1080,7 +_,9 @@
+@@ -1106,7 +_,9 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 3085) {
  						if (Main.mouseRightRelease && player.ConsumeItem(327)) {
@@ -132,7 +132,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1106,7 +_,9 @@
+@@ -1132,7 +_,9 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 1869) {
  						if (Main.mouseRightRelease) {
@@ -143,7 +143,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1136,6 +_,9 @@
+@@ -1162,6 +_,9 @@
  
  						Recipe.FindRecipes();
  					}
@@ -153,7 +153,7 @@
  					else {
  						result = false;
  					}
-@@ -1161,7 +_,7 @@
+@@ -1187,7 +_,7 @@
  							}
  						}
  
@@ -162,7 +162,7 @@
  							break;
  
  						Utils.Swap(ref inv[slot], ref inv[slot - 10]);
-@@ -1238,6 +_,8 @@
+@@ -1264,6 +_,8 @@
  			int num = Main.superFastStack + 1;
  			Player localPlayer = Main.LocalPlayer;
  			for (int i = 0; i < num; i++) {
@@ -171,7 +171,7 @@
  				if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  					continue;
  
-@@ -1250,12 +_,19 @@
+@@ -1276,12 +_,19 @@
  						SoundEngine.PlaySound(18);
  					else
  						SoundEngine.PlaySound(7);
@@ -191,7 +191,7 @@
  
  					Main.mouseItem.stack = 0;
  				}
-@@ -1267,6 +_,8 @@
+@@ -1293,6 +_,8 @@
  				RefreshStackSplitCooldown();
  				if (inv[slot].buyOnce && --inv[slot].stack <= 0)
  					inv[slot].SetDefaults();
@@ -200,32 +200,32 @@
  			}
  		}
  
-@@ -1592,10 +_,15 @@
- 				num9 *= inventoryScale;
- 				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num9 / 2f;
+@@ -1628,10 +_,15 @@
+ 				num11 *= inventoryScale;
+ 				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num11 / 2f;
  				Vector2 origin = rectangle2.Size() * (scale3 / 2f - 0.5f);
-+				if (!ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num9 * scale3))
++				if (!ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num11 * scale3))
 +					goto skip;
 +				
- 				spriteBatch.Draw(value7, position2, rectangle2, item.GetAlpha(currentColor), 0f, origin, num9 * scale3, SpriteEffects.None, 0f);
+ 				spriteBatch.Draw(value7, position2, rectangle2, item.GetAlpha(currentColor), 0f, origin, num11 * scale3, SpriteEffects.None, 0f);
  				if (item.color != Color.Transparent)
- 					spriteBatch.Draw(value7, position2, rectangle2, item.GetColor(color), 0f, origin, num9 * scale3, SpriteEffects.None, 0f);
+ 					spriteBatch.Draw(value7, position2, rectangle2, item.GetColor(color), 0f, origin, num11 * scale3, SpriteEffects.None, 0f);
  
 +				skip:
-+				ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num9 * scale3);
++				ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num11 * scale3);
  				if (ItemID.Sets.TrapSigned[item.type])
  					spriteBatch.Draw(TextureAssets.Wire.Value, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle(4, 58, 8, 8), color, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
  
-@@ -1666,7 +_,7 @@
- 					spriteBatch.Draw(TextureAssets.Cd.Value, position3, null, color3, 0f, default(Vector2), num9, SpriteEffects.None, 0f);
+@@ -1702,7 +_,7 @@
+ 					spriteBatch.Draw(TextureAssets.Cd.Value, position3, null, color3, 0f, default(Vector2), num11, SpriteEffects.None, 0f);
  				}
  
 -				if ((context == 10 || context == 18) && item.expertOnly && !Main.expertMode) {
 +				if ((context == 10 || context == 18) && ((item.expertOnly && !Main.expertMode) || (item.masterOnly && !Main.masterMode))) {
  					Vector2 position4 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
  					Color white = Color.White;
- 					spriteBatch.Draw(TextureAssets.Cd.Value, position4, null, white, 0f, default(Vector2), num9, SpriteEffects.None, 0f);
-@@ -1858,7 +_,7 @@
+ 					spriteBatch.Draw(TextureAssets.Cd.Value, position4, null, white, 0f, default(Vector2), num11, SpriteEffects.None, 0f);
+@@ -1901,7 +_,7 @@
  					return false;
  
  				if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0)
@@ -234,7 +234,7 @@
  			}
  
  			for (int i = 0; i < itemCollection.Length; i++) {
-@@ -1874,7 +_,7 @@
+@@ -1917,7 +_,7 @@
  					return true;
  			}
  
@@ -243,7 +243,7 @@
  		}
  
  		private static Item DyeSwap(Item item, out bool success) {
-@@ -1950,6 +_,14 @@
+@@ -1993,6 +_,14 @@
  						accSlotToSwapTo = j - 3;
  				}
  
@@ -258,7 +258,7 @@
  				if (accSlotToSwapTo > num2)
  					return item;
  
-@@ -1965,6 +_,9 @@
+@@ -2008,6 +_,9 @@
  						num3 = k;
  				}
  
@@ -268,11 +268,11 @@
  				result = player.armor[num3].Clone();
  				player.armor[num3] = item.Clone();
  				accSlotToSwapTo = 0;
-@@ -2062,7 +_,7 @@
+@@ -2105,7 +_,7 @@
  		}
  
  		public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false) {
--			if (type < 0 || type > 5045)
+-			if (type < 0 || type > 5088)
 +			if (type < 0)
  				return currentColor;
  

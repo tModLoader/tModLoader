@@ -49,25 +49,25 @@
  					if (dust.scale > 10f)
  						dust.active = false;
  
-@@ -1536,7 +_,7 @@
+@@ -1562,7 +_,7 @@
  
- 						Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num98 * 0.7f, num98, num98 * 0.8f);
+ 						Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num100 * 0.7f, num100, num100 * 0.8f);
  					}
--					else {
-+					else if (modDust == null || !modDust.MidUpdate(dust)) {
+-					else if (dust.type != 304) {
++					else if (dust.type != 304 && (modDust == null || !modDust.MidUpdate(dust))) {
  						dust.velocity.X *= 0.99f;
  					}
  
-@@ -1758,6 +_,8 @@
+@@ -1784,6 +_,8 @@
  
- 					if (dust.scale < num107)
+ 					if (dust.scale < num109)
  						dust.active = false;
 +
 +					ModDust.TakeDownUpdateType(dust);
  				}
  				else {
  					dust.active = false;
-@@ -1780,6 +_,13 @@
+@@ -1806,6 +_,13 @@
  		}
  
  		public Color GetAlpha(Color newColor) {
