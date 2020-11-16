@@ -48,6 +48,10 @@
 		"ModsXWalls": "{0} {^0:wall;walls}",
 		"ModsXBuffs": "{0} {^0:buff;buffs}",
 		"ModsXMounts": "{0} {^0:mount;mounts}",
+		"ModsReloadAndReturn": "Reload and return to world menu",
+		"ModsNotFoundServer": "No mods were found in: \"{0}\"\nIf you are running a dedicated server, you may wish to use the 'modpath' command line switch or server config setting to specify a custom mods directory.\n",
+		"AskForModIndex": "Type a number to switch between enabled/disabled",
+		"AskForCommand": "Type a command: ",
 
 		// Mod Errors
 		"LoadError": "An error occurred while loading {0}",
@@ -336,7 +340,22 @@
 		"PatreonSetTooltip": "Thank you for your support!",
 		"WorldGenError": "A problem was encountered during world generation",
 		"WorldIODataException": "The game encountered a mod data problem for a world.",
-		"ServerCrash": "Server crash: {0}\n{1}\n\nPlease check server.log to determine if a mod is responsible, otherwise head to #support in the tModLoader Discord"
+		"ServerCrash": "Server crash: {0}\n{1}\n\nPlease check server.log to determine if a mod is responsible, otherwise head to #support in the tModLoader Discord",
+
+		// MessageBox
+		"ContentFolderNotFound": "Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.",
+		"MissingServerExecutable": "Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.",
+		"GraphicsEngineFailure": "Graphics Engine Failure",
+		"GraphicsEngineReportUnknown": "Unknown",
+		"GraphicsEngineReportFailure": "Failure",
+		"GraphicsEngineFailureMessage": "tML encountered a crash when testing some experimental graphics features. If this issue persists consistently, you may have to edit config.json and set the Support4K setting to false. \nPlease restart your game.\nReport Status: {0}",
+		"OutOfMemory": "Game ran out of memory. You'll have to find which mod is consuming lots of memory, and contact the devs or remove it.",
+		"ContentFolderNotFoundInstallCheck": "{0} directory could not be found.\r\n\r\nDid you forget to extract tModLoader's Content directory into the tModLoader folder?\r\n\r\nEnsure tModLoader is installed in a separate folder from Terraria.",
+		"VanillaSteamInstallationNotFound": "Terraria Steam installation or Terraria Content directory not found.\r\n\r\nPlease ensure Terraria 1.4 is installed through Steam.",
+		"SteamAPIHashMismatch": "Steam API hash mismatch, assumed pirated.\n\ntModLoader requires a legitimate Terraria install to work.",
+		"VanillaGOGNotFound": "{0} could not be found.\r\n\r\nGOG installs must have the unmodified Terraria executable to function.",
+		"GOGHashMismatch": "{0} is not the unmodified Terraria executable.\r\n\r\nGOG installs must have the unmodified Terraria executable to function.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"Terraria_v<VERSION>.exe\"",
+		"DefaultExtraMessage": "Please restore your Terraria install, then install tModLoader on Steam or by following the README.txt instructions for manual installation."
 	},
 	"CommonItemTooltip": {
 		"PercentIncreasedDamage": "{0}% increased damage"
