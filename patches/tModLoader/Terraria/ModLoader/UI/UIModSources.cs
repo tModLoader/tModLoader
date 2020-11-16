@@ -74,14 +74,14 @@ namespace Terraria.ModLoader.UI
 			};
 			buttonBA.WithFadedMouseOver();
 			buttonBA.OnClick += BuildMods;
-			_uIElement.Append(buttonBA);
+			//_uIElement.Append(buttonBA);
 
 			var buttonBRA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReloadAll"));
 			buttonBRA.CopyStyle(buttonBA);
 			buttonBRA.HAlign = 0.5f;
 			buttonBRA.WithFadedMouseOver();
 			buttonBRA.OnClick += BuildAndReload;
-			_uIElement.Append(buttonBRA);
+			//_uIElement.Append(buttonBRA);
 
 			var buttonCreateMod = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSCreateMod"));
 			buttonCreateMod.CopyStyle(buttonBA);
