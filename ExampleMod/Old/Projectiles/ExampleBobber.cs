@@ -94,8 +94,7 @@ namespace ExampleMod.Projectiles
 			playerToProjectileMagnitude = 12f / playerToProjectileMagnitude;
 			playerToProjectile *= playerToProjectileMagnitude;
 			lineOrigin -= playerToProjectile;
-			playerToProjectile.X = projectile.position.X + projectile.width * 0.5f - lineOrigin.X;
-			playerToProjectile.Y = projectile.position.Y + projectile.height * 0.1f - lineOrigin.Y;
+			playerToProjectile = projectile.Center - lineOrigin;
 
 			// This math draws the line, while allowing the line to sag.
 			while (canDraw)
@@ -112,7 +111,8 @@ namespace ExampleMod.Projectiles
 				}
 				playerToProjectile *= 12f / positionMagnitude;
 				lineOrigin += playerToProjectile;
-				playerToProjectile = projectile.Center - lineOrigin;
+				playerToProjectile.X = projectile.position.X + projectile.width * 0.5f - lineOrigin.X;
+				playerToProjectile.Y = projectile.position.Y + projectile.height * 0.1f - lineOrigin.Y;
 				if (positionMagnitude > 12f)
 				{
 					float positionInverseMultiplier = 0.3f;
