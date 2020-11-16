@@ -2806,7 +2806,7 @@
  					FreeUpPetsAndMinions(item);
  
  				if (flag3)
-@@ -29787,6 +_,8 @@
+@@ -29787,12 +_,18 @@
  				itemAnimation--;
  			}
  
@@ -2815,6 +2815,26 @@
  			if (itemAnimation > 0)
  				ItemCheck_ApplyUseStyle(heightOffsetHitboxCenter, item2, drawHitbox);
  			else
+ 				ItemCheck_ApplyHoldStyle(heightOffsetHitboxCenter, item2, drawHitbox);
+ 
+ 			releaseUseItem = !controlUseItem;
++
++			goto SkipReduceItemTime;
++			ReduceItemTime:
++
+ 			if (itemTime > 0) {
+ 				itemTime--;
+ 				if (ItemTimeIsZero && whoAmI == Main.myPlayer) {
+@@ -29806,6 +_,9 @@
+ 				}
+ 			}
+ 
++			goto PostReduceItemtime;
++			SkipReduceItemTime:
++
+ 			if (!JustDroppedAnItem) {
+ 				ItemCheck_EmitHeldItemLight(item);
+ 				ItemCheck_EmitFoodParticles(item);
 @@ -29835,7 +_,7 @@
  
  					ItemCheck_TurretAltFeatureUse(item, flag4);
@@ -2945,8 +2965,13 @@
  							if (item.stack > 0)
  								item.stack--;
  
-@@ -30286,6 +_,8 @@
+@@ -30284,8 +_,13 @@
+ 				}
+ 			}
  
++			goto ReduceItemTime;
++			PostReduceItemtime:
++
  			if (itemAnimation == 0)
  				JustDroppedAnItem = false;
 +
@@ -3170,6 +3195,15 @@
  			if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
  				if (statMana >= num) {
  					if (!flag2)
+@@ -35997,7 +_,7 @@
+ 							SoundEngine.PlaySound(sItem.UseSound, base.Center);
+ 					}
+ 					else {
+-						itemAnimation = 0;
++						//itemAnimation = 0;
+ 					}
+ 				}
+ 			}
 @@ -36020,6 +_,7 @@
  			if (!mount.Active)
  				return;
