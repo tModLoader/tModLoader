@@ -41,92 +41,51 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void CopyBiomesTo(Player newPlayer) {
-			newPlayer.modBiomes = new ModBiome[biomes.Count];
-			biomes.CopyTo(newPlayer.modBiomes, 0);
+		// Internal boilerplate
+
+		internal static void SetupPlayer(Player player) {
+			player.modBiomeFlags = new bool[biomes.Count];
 		}
 
 		public static void UpdateBiomes(Player player) {
-			foreach (var biome in player.modBiomes) {
-				biome.Update();
+			for (int i = 0; i < player.modBiomeFlags.Length; i++) {
+				biomes[i].Update(player, ref player.modBiomeFlags[i]);
 			}
 		}
 
 		public static bool CustomBiomesMatch(Player player, Player other) {
-			for (int i = 0; i < player.modBiomes.Length; i++) {
-				if (player.modBiomes[i].Active ^ other.modBiomes[i].Active)
+			for (int i = 0; i < player.modBiomeFlags.Length; i++) {
+				if (player.modBiomeFlags[i] ^ other.modBiomeFlags[i])
 					return false;
 			}
 			return true;
 		}
 
 		public static void CopyCustomBiomesTo(Player player, Player other) {
-			for (int i = 0; i < player.modBiomes.Length; i++) {
-				other.modBiomes[i].Active = player.modBiomes[i].Active;
+			for (int i = 0; i < player.modBiomeFlags.Length; i++) {
+				other.modBiomeFlags[i] = player.modBiomeFlags[i];
 			}
 		}
 
 		public static void SendCustomBiomes(Player player, BinaryWriter writer) {
-			ushort count = 0;
-			byte[] data;
-			using (MemoryStream stream = new MemoryStream()) {
-				using BinaryWriter customWriter = new BinaryWriter(stream);
-				for (int i = 0; i < player.modBiomes.Length; i++) {
-					if (SendCustomBiomes(player.modBiomes[i], customWriter)) {
-						count++;
-					}
-				}
-				customWriter.Flush();
-				data = stream.ToArray();
+			for (int i = 0; i < player.modBiomeFlags.Length; i++) {
+				writer.Write(player.modBiomeFlags[i]);
 			}
-			writer.Write(count);
-			writer.Write(data);
-		}
-
-		private static bool SendCustomBiomes(ModBiome modBiome, BinaryWriter writer) {
-			byte[] data;
-			using (MemoryStream stream = new MemoryStream()) {
-				using BinaryWriter customWriter = new BinaryWriter(stream);
-				//modPlayer.SendCustomBiomes(writer);
-				customWriter.Write(modBiome.Active);
-				customWriter.Flush();
-				data = stream.ToArray();
-			}
-			if (data.Length > 0) {
-				writer.Write(modBiome.Mod.Name);
-				writer.Write(modBiome.Name);
-				writer.Write((byte)data.Length);
-				writer.Write(data);
-				return true;
-			}
-			return false;
 		}
 
 		public static void ReceiveCustomBiomes(Player player, BinaryReader reader) {
-			int count = reader.ReadUInt16();
-
-			for (int k = 0; k < count; k++) {
-				string modName = reader.ReadString();
-				string name = reader.ReadString();
-				byte[] data = reader.ReadBytes(reader.ReadByte());
-
-				if (ModContent.TryFind<ModBiome>(modName, name, out var modBiomeBase)) {
-					var modBiome = player.GetModBiome(modBiomeBase);
-
-					using MemoryStream stream = new MemoryStream(data);
-					using BinaryReader customReader = new BinaryReader(stream);
-
-					modBiome.Active = customReader.ReadBoolean();
-					//try { modPlayer.ReceiveCustomBiomes(reader) }
-				}
+			for (int i = 0; i < player.modBiomeFlags.Length; i++) {
+				player.modBiomeFlags[i] = reader.ReadBoolean();
 			}
 		}
 
-		private static HookList HookUpdateBiomeVisuals = AddHook<Action>(b => b.UpdateBiomeVisuals);
+		// Hooks
+
+		private static HookList HookUpdateBiomeVisuals = AddHook<Action<Player>>(b => b.UpdateBiomeVisuals);
 
 		public static void UpdateBiomeVisuals(Player player) {
 			foreach (int index in HookUpdateBiomeVisuals.arr) {
-				player.modBiomes[index].UpdateBiomeVisuals();
+				biomes[index].UpdateBiomeVisuals(player);
 			}
 		}
 

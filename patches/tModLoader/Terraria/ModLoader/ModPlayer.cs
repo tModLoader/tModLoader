@@ -24,7 +24,6 @@ namespace Terraria.ModLoader
 		internal int index;
 
 		internal ModPlayer CreateFor(Player newPlayer) {
-			BiomeLoader.CopyBiomesTo(newPlayer);
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
 			modPlayer.Mod = Mod;
 			modPlayer.player = newPlayer;

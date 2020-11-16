@@ -8,55 +8,45 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModBiome : ModType
 	{
-		/// <summary>
-		/// The player associated with this ModBiome object. This does not relate to the local player in any way.
-		/// </summary>
-		public Player player { get; internal set; }
-
 		internal int index;
-
-		/// <summary>
-		/// Whether or not the player is in this specific biome.
-		/// </summary>
-		public bool Active { get; internal set; }
 
 		protected override void Register() {
 			ModTypeLookup<ModBiome>.Register(this);
 			BiomeLoader.Add(this);
 		}
 
-		internal void Update() {
-			bool prev = Active;
-			Active = IsBiomeActive();
+		internal void Update(Player player, ref bool value) {
+			bool prev = value;
+			value = IsBiomeActive(player);
 
-			if (!prev && Active)
-				OnEnter();
-			else if (!Active)
-				OnLeave();
+			if (!prev && value)
+				OnEnter(player);
+			else if (!value)
+				OnLeave(player);
 		}
 
 		/// <summary>
 		/// Return true if the player is in the biome.
 		/// </summary>
 		/// <returns></returns>
-		protected virtual bool IsBiomeActive() => false;
+		protected virtual bool IsBiomeActive(Player player) => false;
 
 		/// <summary>
 		/// Override this hook to make things happen when the player enters the biome.
 		/// </summary>
-		protected virtual void OnEnter() {
+		protected virtual void OnEnter(Player player) {
 		}
 
 		/// <summary>
 		/// Override this hook to make things happen when the player leaves the biome.
 		/// </summary>
-		protected virtual void OnLeave() {
+		protected virtual void OnLeave(Player player) {
 		}
 
 		/// <summary>
 		/// Allows you to create special visual effects in the area around the player. For example, the blood moon's red filter on the screen or the slime rain's falling slime in the background. You must create classes that override Terraria.Graphics.Shaders.ScreenShaderData or Terraria.Graphics.Effects.CustomSky, add them in your mod's Load hook, then call Player.ManageSpecialBiomeVisuals. See the ExampleMod if you do not have access to the source code.
 		/// </summary>
-		public virtual void UpdateBiomeVisuals() {
+		public virtual void UpdateBiomeVisuals(Player player) {
 		}
 
 		/// <summary>

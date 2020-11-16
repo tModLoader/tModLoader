@@ -3763,7 +3763,7 @@
  				}
  
  				return playerFileData;
-@@ -38226,7 +_,15 @@
+@@ -38226,7 +_,16 @@
  			return -1;
  		}
  
@@ -3777,6 +3777,7 @@
 +			ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount];
 +			npcTypeNoAggro = new bool[NPCLoader.NPCCount];
 +			PlayerHooks.SetupPlayer(this);
++			BiomeLoader.SetupPlayer(this);
  			width = 20;
  			height = 42;
  			name = string.Empty;
