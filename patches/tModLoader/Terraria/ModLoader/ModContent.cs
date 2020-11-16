@@ -301,6 +301,11 @@ namespace Terraria.ModLoader
 		public static ModUgBgStyle GetModUgBgStyle(int style) => UgBgStyleLoader.GetUgBgStyle(style);
 
 		/// <summary>
+		/// Get the id (type) of a ModGore by class. Assumes one instance per class.
+		/// </summary>
+		public static int GoreType<T>() where T : ModGore => GetInstance<T>()?.Type ?? 0;
+
+		/// <summary>
 		/// Get the id (type) of a ModItem by class. Assumes one instance per class.
 		/// </summary>
 		public static int ItemType<T>() where T : ModItem => GetInstance<T>()?.Type ?? 0;
@@ -459,7 +464,9 @@ namespace Terraria.ModLoader
 
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();
+			RecipeHooks.setupRecipes = true;
 			Recipe.SetupRecipes();
+			RecipeHooks.setupRecipes = false;
 		}
 
 		internal static void UnloadModContent() {
@@ -502,7 +509,7 @@ namespace Terraria.ModLoader
 			MountLoader.Unload();
 			RarityLoader.Unload();
 			DamageClassLoader.Unload();
-			ModGore.Unload();
+			GoreLoader.Unload();
 			SoundLoader.Unload();
 			DisposeMusic();
 			BackgroundTextureLoader.Unload();
@@ -564,7 +571,7 @@ namespace Terraria.ModLoader
 				UgBgStyleLoader.ResizeAndFillArrays();
 				SurfaceBgStyleLoader.ResizeAndFillArrays();
 				GlobalBgStyleLoader.ResizeAndFillArrays(unloading);
-				ModGore.ResizeAndFillArrays();
+				GoreLoader.ResizeAndFillArrays();
 				WaterStyleLoader.ResizeArrays();
 				WaterfallStyleLoader.ResizeArrays();
 			}
@@ -629,8 +636,8 @@ namespace Terraria.ModLoader
 		}
 
 		private static void DisposeMusic() {
-			foreach (var music in Main.music.OfType<MusicStreaming>())
-				music.Dispose();
+			//foreach (var music in Main.audioSystem.OfType<MusicStreaming>())
+			//	music.Dispose();
 		}
 
 		/// <summary>
