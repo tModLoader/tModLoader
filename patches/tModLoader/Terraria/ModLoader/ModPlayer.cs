@@ -789,12 +789,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Called whenever the player shift-clicks an item slot. This can be used to override default clicking behavior (ie. selling or trashing items).
+		/// Called whenever the player shift-clicks an item slot. This can be used to override default clicking behavior (ie. selling, trashing, moving items).
 		/// </summary>
 		/// <param name="inventory">The array of items the slot is part of.</param>
 		/// <param name="context">The Terraria.UI.ItemSlot.Context of the inventory.</param>
 		/// <param name="slot">The index in the inventory of the clicked slot.</param>
-		/// <returns>Whether or not to block the default code (sell and trash) from running. Returns false by default.</returns>
+		/// <returns>Whether or not to block the default code (sell, trash, move, etc) from running. Returns false by default.</returns>
 		public virtual bool ShiftClickSlot(Item[] inventory, int context, int slot) {
 			return false;
 		}
