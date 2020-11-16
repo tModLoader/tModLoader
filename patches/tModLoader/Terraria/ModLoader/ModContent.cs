@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Terraria.DataStructures;
 using Terraria.GameContent.UI;
 using Terraria.GameInput;
 using Terraria.ID;
@@ -660,6 +661,8 @@ namespace Terraria.ModLoader
 				Main.projectile[i] = new Projectile();
 				// projectile.whoAmI is only set for active projectiles
 			}
+
+			TileEntity.Clear(); // drop all possible references to mod TEs
 		}
 
 		public static Stream OpenRead(string assetName, bool newFileStream = false) {
