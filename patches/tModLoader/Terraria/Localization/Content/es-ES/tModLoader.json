@@ -25,7 +25,7 @@
 		"ModDidNotFullyUnloadWarning": "Este mod no se desactivó completamente durante el último reinicio.\n(Este es un mensaje para el creador del mod)",
 		"BetaModCantPublish": "Este mod ha sido desarrollado en una versión beta y no puede ser publicado",
 		"BetaModCantPublishError": "No puedes publicar un mod basado en una versión beta de tModLoader",
-		"OutdatedModCantPublishError": "No puedes publicar un mod construido sobre una versión antigua de tModLoader",
+		"OutdatedModCantPublishError": "No puedes publicar un mod creado para una versión antigua de tModLoader",
 		"ModReloadRequired": "Reinicio necesario",
 		"ModReloadForced": "Reinicio forzado",
 		"ModIsServerSide": "Este es un mod del lado del servidor",
