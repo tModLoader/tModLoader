@@ -3380,7 +3380,7 @@
  				item.stack--;
  				if (item.stack <= 0) {
  					item.active = false;
-@@ -36633,21 +_,31 @@
+@@ -36633,7 +_,7 @@
  						NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
  					}
  
@@ -3389,10 +3389,9 @@
  						NetMessage.SendData(34, -1, -1, null, 1, x, y);
  
  					if (Main.tile[x, y].type == 467)
- 						NetMessage.SendData(34, -1, -1, null, 5, x, y);
+@@ -36641,13 +_,23 @@
  
--					if (Main.tile[x, y].type == 88)
-+					if (TileID.Sets.BasicDresser[Main.tile[x, y].type] || Main.tile[x, y].type < TileID.Count && TileID.Sets.BasicDresser[Main.tile[x, y].type])
+ 					if (Main.tile[x, y].type == 88)
  						NetMessage.SendData(34, -1, -1, null, 3, x, y);
 +
 +					if (Main.tile[x, y].type >= TileID.Count) {

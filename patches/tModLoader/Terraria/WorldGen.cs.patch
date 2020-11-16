@@ -1328,15 +1328,22 @@
  			if (j >= 1)
  				tile2 = Main.tile[i, j - 1];
  
-@@ -38799,6 +_,7 @@
+@@ -38799,7 +_,9 @@
  						if (tile.type != type && (tile2.frameX == 66 || tile2.frameX == 220))
  							return false;
  						break;
 +					case int _ when TileID.Sets.BasicDresser[type]:
  					case 21:
++					case int _ when TileID.Sets.BasicChest[type]:
  					case 26:
  					case 72:
-@@ -38849,6 +_,7 @@
+ 					case 77:
+@@ -38845,10 +_,11 @@
+ 						break;
+ 					}
+ 				case 21:
+-				case 467:
++				case ushort _ when TileID.Sets.BasicChest[tile.type]:
  					if (!Chest.CanDestroyChest(i - tile.frameX / 18 % 2, j - tile.frameY / 18))
  						return false;
  					break;
