@@ -247,6 +247,7 @@
 		"NewModsListing": "New mods:\n{0}",
 		"PlayerCustomDataFail": "A problem was encountered when loading custom data for a player",
 		"PlayerLoadWorldFail": "A problem was encountered when trying to load a world",
+		"CloudWarning": "Cloud storage limit reached, unable to move to cloud",
 
 		// Mod Sources
 		"MSBuild": "Build",

@@ -780,8 +780,8 @@
 +					if (!Directory.Exists(vanillaContentFolder))
 +						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/MacOS/Content");
 +				}
-+				Steamworks.SteamRemoteStorage.GetQuota(out ulong pnTotalBytes, out ulong puAvailableBytes);
-+				Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)puAvailableBytes)} available");
++				ModLoader.Engine.Steam.RecalculateAvailableSteamCloudStorage();
++				Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)ModLoader.Engine.Steam.lastAvailableSteamCloudStorage)} available");
 +			}
 +
 +			if (!Directory.Exists(vanillaContentFolder)) {

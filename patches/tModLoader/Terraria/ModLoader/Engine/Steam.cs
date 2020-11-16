@@ -18,6 +18,20 @@ namespace Terraria.ModLoader.Engine
 		public static AppId_t TerrariaAppId_t = new AppId_t(TerrariaAppID);
 		public static bool IsSteamApp => SocialAPI.Mode == SocialMode.Steam && SteamAPI.Init() && SteamApps.BIsAppInstalled(new AppId_t(TMLAppID));
 
+		public static ulong lastAvailableSteamCloudStorage = ulong.MaxValue;
+
+		public static bool CheckSteamCloudStorageSufficient(ulong input) {
+			if (SocialAPI.Cloud != null)
+				return input < lastAvailableSteamCloudStorage;
+			return true;
+		}
+
+		// Called in PostSocialInitialize and just before files get sent to cloud
+		public static void RecalculateAvailableSteamCloudStorage() {
+			if (SocialAPI.Cloud != null)
+				SteamRemoteStorage.GetQuota(out _, out lastAvailableSteamCloudStorage);
+		}
+
 		public static string GetSteamTerrariaInstallDir() {
 			SteamApps.GetAppInstallDir(TerrariaAppId_t, out string terrariaInstallLocation, 1000);
 #if MAC
