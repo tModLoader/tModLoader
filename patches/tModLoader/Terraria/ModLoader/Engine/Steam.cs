@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.Engine
 		public const uint TerrariaAppID = 105600;
 
 		public static AppId_t TMLAppID_t = new AppId_t(TMLAppID);
-		public static AppId_t TerrariaAppId_t = new AppId_t(TerrariaAppID);
+		public static AppId_t TerrariaAppID_t = new AppId_t(TerrariaAppID);
 		public static bool IsSteamApp => SocialAPI.Mode == SocialMode.Steam && SteamAPI.Init() && SteamApps.BIsAppInstalled(new AppId_t(TMLAppID));
 
 		public static string GetSteamTerrariaInstallDir() {

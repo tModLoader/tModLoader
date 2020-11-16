@@ -769,7 +769,7 @@
 +			}
 +
 +			if (SocialAPI.Mode == SocialMode.Steam && SteamAPI.Init()) {
-+				var appID = ModLoader.Engine.Steam.TMLAppID_t;
++				var appID = ModLoader.Engine.Steam.TerrariaAppID_t;
 +				bool appInstalled = SteamApps.BIsAppInstalled(appID);
 +
 +				if (appInstalled) { 
