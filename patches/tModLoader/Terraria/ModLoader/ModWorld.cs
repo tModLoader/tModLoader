@@ -47,6 +47,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to set specific variables used before worldgen starts, like maxTilesX and maxTilesY (world size).
+		/// </summary>
+		public virtual void SetWorldGenDefaults() {
+		}
+
+		/// <summary>
 		/// Allows a mod to run code before a world is generated.
 		/// </summary>
 		public virtual void PreWorldGen() {

@@ -650,7 +650,7 @@
  
  			if (Main.netMode != 1)
  				NetMessage.SendTileSquare(-1, i, j, 40);
-@@ -2273,10 +_,20 @@
+@@ -2273,10 +_,21 @@
  		}
  
  		public static void worldGenCallback(object threadContext) {
@@ -664,6 +664,7 @@
 +
 +		public static void do_worldGenCallBack(object threadContext) {
  			SoundEngine.PlaySound(10);
++			WorldHooks.SetWorldGenDefaults();
  			clearWorld();
  			GenerateWorld(Main.ActiveWorldFileData.Seed, threadContext as GenerationProgress);
  			WorldFile.SaveWorld(Main.ActiveWorldFileData.IsCloudSave, resetTime: true);
@@ -768,6 +769,33 @@
  			Main.ladyBugRainBoost = 0;
  			Main.getGoodWorld = false;
  			Main.drunkWorld = false;
+@@ -2666,15 +_,17 @@
+ 			noLiquidCheck = false;
+ 			Liquid.numLiquid = 0;
+ 			LiquidBuffer.numLiquidBuffer = 0;
+-			if (Main.netMode == 1 || lastMaxTilesX > Main.maxTilesX || lastMaxTilesY > Main.maxTilesY) {
+-				for (int j = 0; j < lastMaxTilesX; j++) {
+-					float num = (float)j / (float)lastMaxTilesX;
+-					Main.statusText = Lang.gen[46].Value + " " + (int)(num * 100f + 1f) + "%";
+-					for (int k = 0; k < lastMaxTilesY; k++) {
+-						Main.tile[j, k] = null;
+-					}
+-				}
+-			}
++			//Ok, so with this new system this is just not needed anymore. This is pretty radical to get rid of, so please look for bugs related to this closely.
++			//Everything should still be vanilla compatible.
++			//if (Main.netMode == 1 || lastMaxTilesX > Main.maxTilesX || lastMaxTilesY > Main.maxTilesY) {
++			//	for (int j = 0; j < lastMaxTilesX; j++) {
++			//		float num = (float)j / (float)lastMaxTilesX;
++			//		Main.statusText = Lang.gen[46].Value + " " + (int)(num * 100f + 1f) + "%";
++			//		for (int k = 0; k < lastMaxTilesY; k++) {
++			//			Main.tile[j, k] = null;
++			//		}
++			//	}
++			//}
+ 
+ 			lastMaxTilesX = Main.maxTilesX;
+ 			lastMaxTilesY = Main.maxTilesY;
 @@ -2739,6 +_,7 @@
  
  			setWorldSize();

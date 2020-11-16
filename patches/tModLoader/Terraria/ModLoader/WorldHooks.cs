@@ -47,6 +47,12 @@ namespace Terraria.ModLoader
 				NetWorlds[i] = ModContent.Find<ModWorld>(ModNet.GetMod(r.ReadInt16()).Name, r.ReadString());
 		}
 
+		public static void SetWorldGenDefaults() {
+			foreach (ModWorld modWorld in worlds) {
+				modWorld.SetWorldGenDefaults();
+			}
+		}
+
 		public static void PreWorldGen() {
 			foreach (ModWorld modWorld in worlds) {
 				modWorld.PreWorldGen();
