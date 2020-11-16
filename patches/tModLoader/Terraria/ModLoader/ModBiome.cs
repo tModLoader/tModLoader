@@ -48,11 +48,5 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void UpdateBiomeVisuals(Player player) {
 		}
-
-		/// <summary>
-		/// Exactly the same as ModWorld.ModifyWorldGenTasks except it's tied to this ModBiome.
-		/// </summary>
-		public virtual void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight) {
-		}
 	}
 }

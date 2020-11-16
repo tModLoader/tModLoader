@@ -88,14 +88,5 @@ namespace Terraria.ModLoader
 				biomes[index].UpdateBiomeVisuals(player);
 			}
 		}
-
-		private delegate void DelegateModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight);
-		private static HookList HookModifyWorldGenTasks = AddHook<DelegateModifyWorldGenTasks>(b => b.ModifyWorldGenTasks);
-
-		public static void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight) {
-			foreach (var index in HookModifyWorldGenTasks.arr) {
-				biomes[index].ModifyWorldGenTasks(tasks, ref totalWeight);
-			}
-		}
 	}
 }
