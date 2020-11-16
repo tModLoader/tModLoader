@@ -912,6 +912,15 @@
  				if (buffType[j] == 1) {
  					lavaImmune = true;
  					fireWalk = true;
+@@ -6488,7 +_,7 @@
+ 					manaRegenBonus += 2;
+ 				}
+ 				else if (buffType[j] == 159 && inventory[selectedItem].melee) {
+-					armorPenetration = 12;
++					armorPenetration += 12;
+ 				}
+ 				else if (buffType[j] == 192) {
+ 					pickSpeed -= 0.2f;
 @@ -6716,10 +_,13 @@
  					}
  				}
@@ -2982,7 +2991,7 @@
  				if (Main.netMode != 0)
  					NetMessage.SendPlayerHurt(i, playerDeathReason, num, direction, flag, pvp: true, -1);
  
-@@ -30638,6 +_,11 @@
+@@ -30638,14 +_,24 @@
  							}
  
  							int num4 = Main.DamageVar(num, luck);
@@ -2994,8 +3003,11 @@
  							StatusToNPC(sItem.type, i);
  							if (Main.npc[i].life > 5)
  								OnHit(Main.npc[i].Center.X, Main.npc[i].Center.Y, Main.npc[i]);
-@@ -30646,6 +_,11 @@
- 								num4 += Main.npc[i].checkArmorPenetration(armorPenetration);
+ 
+-							if (armorPenetration > 0)
+-								num4 += Main.npc[i].checkArmorPenetration(armorPenetration);
++							if (armorPenetration + sItem.armorPenetration != 0)
++								num4 += Main.npc[i].checkArmorPenetration(armorPenetration + sItem.armorPenetration);
  
  							int dmgDone = (int)Main.npc[i].StrikeNPC(num4, knockBack, direction, flag);
 +

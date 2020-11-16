@@ -369,12 +369,13 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -44889,14 +_,18 @@
+@@ -44889,14 +_,19 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
 +			modItem = null;
 +			globalItems = new GlobalItem[0];
++			armorPenetration = 0;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
  			DD2Summon = false;

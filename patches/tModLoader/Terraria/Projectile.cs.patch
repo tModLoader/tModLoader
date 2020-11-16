@@ -85,7 +85,7 @@
  				for (int j = 0; j < 200; j++) {
  					perIDStaticNPCImmunity[i][j] = 0u;
  				}
-@@ -217,7 +_,31 @@
+@@ -217,7 +_,32 @@
  			}
  		}
  
@@ -113,10 +113,83 @@
  		public void SetDefaults(int Type) {
 +			modProjectile = null;
 +			globalProjectiles = new GlobalProjectile[0];
++			armorPenetration = 0;
 +			nameOverride = null;
  			ownerHitCheckDistance = 1000f;
  			counterweight = false;
  			sentry = false;
+@@ -1811,6 +_,7 @@
+ 				alpha = 255;
+ 				ignoreWater = true;
+ 				magic = true;
++				armorPenetration = 10;
+ 			}
+ 			else if (type == 153) {
+ 				width = 18;
+@@ -2150,6 +_,7 @@
+ 				timeLeft = 600;
+ 				magic = true;
+ 				extraUpdates = 3;
++				armorPenetration = 10;
+ 			}
+ 			else if (type == 190) {
+ 				width = 22;
+@@ -4855,6 +_,7 @@
+ 				ignoreWater = true;
+ 				magic = true;
+ 				light = 0.2f;
++				armorPenetration = 10;
+ 			}
+ 			else if (type == 495) {
+ 				arrow = true;
+@@ -5122,6 +_,7 @@
+ 				extraUpdates = 1;
+ 				usesLocalNPCImmunity = true;
+ 				localNPCHitCooldown = 10;
++				armorPenetration = 25;
+ 			}
+ 			else if (type == 533) {
+ 				netImportant = true;
+@@ -5527,6 +_,7 @@
+ 				melee = true;
+ 				penetrate = -1;
+ 				ownerHitCheck = true;
++				armorPenetration = 20;
+ 			}
+ 			else if (type == 596) {
+ 				width = 8;
+@@ -6610,6 +_,7 @@
+ 				tileCollide = false;
+ 				usesLocalNPCImmunity = true;
+ 				localNPCHitCooldown = 10;
++				armorPenetration = 25;
+ 			}
+ 			else if (type == 728) {
+ 				width = 24;
+@@ -7235,6 +_,7 @@
+ 				timeLeft = 60;
+ 				aiStyle = 169;
+ 				localNPCHitCooldown = 40;
++				armorPenetration = 25;
+ 			}
+ 			else if (type == 865) {
+ 				netImportant = true;
+@@ -7590,6 +_,7 @@
+ 				usesLocalNPCImmunity = true;
+ 				localNPCHitCooldown = -1;
+ 				extraUpdates = 2;
++				armorPenetration = 50;
+ 			}
+ 			else if (type == 918) {
+ 				aiStyle = 178;
+@@ -7612,6 +_,7 @@
+ 				usesLocalNPCImmunity = true;
+ 				coldDamage = true;
+ 				localNPCHitCooldown = 20;
++				armorPenetration = 30;
+ 			}
+ 			else if (type == 919) {
+ 				width = 8;
 @@ -7894,9 +_,8 @@
  				usesLocalNPCImmunity = true;
  				localNPCHitCooldown = 80;
@@ -215,6 +288,26 @@
  							else if (Main.npc[i].trapImmune && trap)
  								flag4 = true;
  							else if (Main.npc[i].immortal && npcProj)
+@@ -9051,9 +_,10 @@
+ 
+ 									float num7 = knockBack;
+ 									bool flag6 = false;
+-									int num8 = Main.player[owner].armorPenetration;
++									int num8 = Main.player[owner].armorPenetration + armorPenetration;
+ 									bool flag7 = !npcProj && !trap;
+ 									switch (type) {
++										/*
+ 										case 864:
+ 											num8 += 25;
+ 											break;
+@@ -9087,6 +_,7 @@
+ 										case 532:
+ 											num8 += 25;
+ 											break;
++										*/
+ 										case 877:
+ 										case 878:
+ 										case 879:
 @@ -9095,7 +_,7 @@
  									}
  
