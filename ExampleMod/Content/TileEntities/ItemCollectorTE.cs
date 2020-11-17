@@ -45,8 +45,7 @@ namespace ExampleMod.Content.TileEntities
 				if (index == -1) index = Chest.FindChest(Position.X + 2, Position.Y);
 				if (index == -1) return;
 
-				for (int i = 0; i < itemStorage.Slots; i++) {
-					Item item = itemStorage.Items[i];
+				foreach (Item item in itemStorage.Items) {
 					if (!item.active || item.IsAir) continue;
 
 					PlaceItemInChest(index, item);

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Terraria.ModLoader.IO;
@@ -12,40 +14,44 @@ namespace Terraria.ModLoader.Container
 			Input,
 			Output
 		}
+		
+		public IReadOnlyList<Item> Items { get; private set; }
 
-		public Item[] Items { get; private set; }
+		private Item[] items;
 
-		public int Slots => Items.Length;
+		public int Length => items.Length;
 
 		public ItemStorage(int size = 1) {
 			SetSize(size);
 		}
 
 		private ItemStorage(Item[] items) {
-			Items = items;
+			this.items = items;
+			Items = new ReadOnlyCollection<Item>(items);
 		}
 
 		private void SetSize(int size) {
-			Items = new Item[size];
+			items = new Item[size];
+			Items = new ReadOnlyCollection<Item>(items);
 
-			for (int i = 0; i < size; i++) Items[i] = new Item();
+			for (int i = 0; i < size; i++) items[i] = new Item();
 		}
 
 		public ItemStorage Clone() {
 			ItemStorage storage = (ItemStorage)MemberwiseClone();
-			storage.Items = Items.Select(item => item.Clone()).ToArray();
+			storage.items = items.Select(item => item.Clone()).ToArray();
 			return storage;
 		}
 
 		public void SetItemInSlot(int slot, Item stack, bool user = false) {
 			ValidateSlotIndex(slot);
-			Items[slot] = stack;
+			items[slot] = stack;
 			OnContentsChanged(slot, user);
 		}
 
 		public ref Item GetItemInSlot(int slot) {
 			ValidateSlotIndex(slot);
-			return ref Items[slot];
+			return ref items[slot];
 		}
 
 		/// <summary>
@@ -61,7 +67,7 @@ namespace Terraria.ModLoader.Container
 
 			if (!CanInteract(slot, Operation.Input, user) || !IsItemValid(slot, item)) return false;
 
-			Item existing = Items[slot];
+			Item existing = items[slot];
 			if (!existing.IsAir && !CanItemsStack(item, existing)) return false;
 
 			int slotSize = GetSlotSize(slot) ?? item.maxStack;
@@ -70,7 +76,7 @@ namespace Terraria.ModLoader.Container
 
 			bool reachedLimit = item.stack > toInsert;
 
-			if (existing.IsAir) Items[slot] = reachedLimit ? CloneItemWithSize(item, toInsert) : item;
+			if (existing.IsAir) items[slot] = reachedLimit ? CloneItemWithSize(item, toInsert) : item;
 			else existing.stack += toInsert;
 
 			OnContentsChanged(slot, user);
@@ -80,15 +86,15 @@ namespace Terraria.ModLoader.Container
 		}
 
 		public void InsertItem(ref Item item, bool user = false) {
-			for (int i = 0; i < Slots; i++) {
-				Item other = Items[i];
+			for (int i = 0; i < Length; i++) {
+				Item other = items[i];
 				if (CanItemsStack(item, other) && other.stack < other.maxStack) {
 					InsertItem(i, ref item, user);
 					if (item.IsAir || !item.active) return;
 				}
 			}
 
-			for (int i = 0; i < Slots; i++) {
+			for (int i = 0; i < Length; i++) {
 				InsertItem(i, ref item, user);
 				if (item.IsAir) return;
 			}
@@ -111,14 +117,14 @@ namespace Terraria.ModLoader.Container
 
 			if (!CanInteract(slot, Operation.Output, user)) return false;
 
-			Item existing = Items[slot];
+			Item existing = items[slot];
 			if (existing.IsAir) return false;
 
 			int toExtract = Utils.Min(amount.Value, existing.maxStack, existing.stack);
 
 			if (existing.stack <= toExtract) {
 				item = existing;
-				Items[slot] = new Item();
+				items[slot] = new Item();
 
 				OnContentsChanged(slot, user);
 
@@ -126,7 +132,7 @@ namespace Terraria.ModLoader.Container
 			}
 
 			item = CloneItemWithSize(existing, toExtract);
-			Items[slot] = CloneItemWithSize(existing, existing.stack - toExtract);
+			items[slot] = CloneItemWithSize(existing, existing.stack - toExtract);
 
 			OnContentsChanged(slot, user);
 
@@ -134,7 +140,7 @@ namespace Terraria.ModLoader.Container
 		}
 
 		private void ValidateSlotIndex(int slot) {
-			if (slot < 0 || slot >= Slots) throw new Exception($"Slot {slot} not in valid range - [0, {Slots})");
+			if (slot < 0 || slot >= Length) throw new Exception($"Slot {slot} not in valid range - [0, {Length})");
 		}
 
 		public bool Grow(int slot, int quantity, bool user = false) {
@@ -182,18 +188,18 @@ namespace Terraria.ModLoader.Container
 
 		#region IO
 		public TagCompound Save() {
-			return new TagCompound { ["Items"] = Items.ToList() };
+			return new TagCompound { ["Items"] = items.ToList() };
 		}
 
 		public void Load(TagCompound tag) {
-			Items = tag.GetList<Item>("Items").ToArray();
+			items = tag.GetList<Item>("Items").ToArray();
 		}
 
 		public void Write(BinaryWriter writer) {
-			writer.Write(Slots);
+			writer.Write(Length);
 
-			for (int i = 0; i < Slots; i++) {
-				ItemIO.Send(Items[i], writer, true, true);
+			for (int i = 0; i < Length; i++) {
+				ItemIO.Send(items[i], writer, true, true);
 			}
 		}
 
@@ -201,8 +207,8 @@ namespace Terraria.ModLoader.Container
 			int size = reader.ReadInt32();
 			SetSize(size);
 
-			for (int i = 0; i < Slots; i++) {
-				Items[i] = ItemIO.Receive(reader, true, true);
+			for (int i = 0; i < Length; i++) {
+				items[i] = ItemIO.Receive(reader, true, true);
 			}
 		}
 		#endregion

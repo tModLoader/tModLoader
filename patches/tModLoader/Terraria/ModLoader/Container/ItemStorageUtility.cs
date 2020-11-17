@@ -18,8 +18,9 @@ namespace Terraria.ModLoader.Container
 		/// </summary>
 		public static long CountCoins(this ItemStorage storage) {
 			long num = 0L;
-			for (int i = 0; i < storage.Slots; i++) {
-				Item item = storage.Items[i];
+			foreach (Item item in storage.Items) {
+				if (item.IsAir) continue;
+
 				num += item.type switch {
 					ItemID.CopperCoin => item.stack,
 					ItemID.SilverCoin => item.stack * 100,
@@ -32,13 +33,10 @@ namespace Terraria.ModLoader.Container
 			return num;
 		}
 
-		public static void DropItems(this ItemStorage storage, Rectangle hitbox)
-		{
-			for (int i = 0; i < storage.Slots; i++)
-			{
+		public static void DropItems(this ItemStorage storage, Rectangle hitbox) {
+			for (int i = 0; i < storage.Length; i++) {
 				ref Item item = ref storage.GetItemInSlot(i);
-				if (!item.IsAir)
-				{
+				if (!item.IsAir) {
 					Item.NewItem(hitbox, item.type, item.stack, prefixGiven: item.prefix);
 					item.TurnToAir();
 					storage.OnContentsChanged(i, false);
@@ -63,7 +61,7 @@ namespace Terraria.ModLoader.Container
 		///     Loots ItemStorage's items into player's inventory
 		/// </summary>
 		public static void LootAll(this Player player, ItemStorage storage) {
-			for (int i = 0; i < storage.Slots; i++) {
+			for (int i = 0; i < storage.Length; i++) {
 				ref Item item = ref storage.GetItemInSlot(i);
 				if (!item.IsAir) {
 					item.position = player.Center;
@@ -88,7 +86,7 @@ namespace Terraria.ModLoader.Container
 				n.stack = count;
 				n.position = player.Center;
 				n.noGrabDelay = 0;
-				
+
 				player.GetItem(player.whoAmI, n, GetItemSettings.LootAllSettings);
 
 				item.stack -= count;
