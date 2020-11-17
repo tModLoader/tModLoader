@@ -101,13 +101,13 @@ namespace Terraria.ModLoader
 		/// Returns whether or not a texture with the specified name exists.
 		/// </summary>
 		public static bool TextureExists(string name) {
-			if (!name.Contains('/'))
+			if (Main.dedServ || string.IsNullOrWhiteSpace(name) || !name.Contains('/'))
 				return false;
 
 			SplitName(name, out string modName, out string subName);
 
 			if (modName == "Terraria")
-				return !Main.dedServ && (Main.instance.Content as TMLContentManager).ImageExists(subName);
+				return (Main.instance.Content as TMLContentManager).ImageExists(subName);
 
 			return ModLoader.TryGetMod(modName, out var mod) && mod.TextureExists(subName);
 		}
@@ -122,7 +122,7 @@ namespace Terraria.ModLoader
 		{
 			texture = null;
 
-			if (Main.dedServ || !TextureExists(name)) {
+			if (Main.dedServ || string.IsNullOrWhiteSpace(name) || !name.Contains('/')) {
 				return false;
 			}
 
