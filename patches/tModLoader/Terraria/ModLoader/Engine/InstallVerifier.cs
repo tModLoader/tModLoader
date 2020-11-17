@@ -124,6 +124,9 @@ namespace Terraria.ModLoader.Engine
 			// If .exe not present check Terraria dir in root
 			if (!File.Exists(vanillaPath)) {
 				vanillaPath = Path.Combine("..", "Terraria");
+#if MAC
+				vanillaPath = "../../../Terraria.app/Contents/MacOS/";
+#endif
 				string defaultExe = Path.Combine(vanillaPath, DefaultExe);
 				string checkExe = Path.Combine(vanillaPath, CheckExe);
 				vanillaPath = File.Exists(defaultExe) ? defaultExe : checkExe;
