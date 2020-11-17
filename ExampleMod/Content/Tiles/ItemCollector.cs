@@ -32,8 +32,8 @@ namespace ExampleMod.Content.Tiles
 		public override bool RightClick(int i, int j) {
 			if (!TileEntityUtils.TryGetTileEntity(i, j, out ItemCollectorTE te)) return false;
 
-			ItemHandler handler = te.GetItemHandler();
-			Main.LocalPlayer.LootAll(handler);
+			ItemStorage storage = te.GetItemStorage();
+			Main.LocalPlayer.LootAll(storage);
 
 			return true;
 		}

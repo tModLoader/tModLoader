@@ -7,19 +7,19 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader.Container
 {
-	public static class ItemHandlerUtility
+	public static class ItemStorageUtility
 	{
-		public static bool Contains(this ItemHandler handler, int type) => handler.Items.Any(item => !item.IsAir && item.type == type);
+		public static bool Contains(this ItemStorage storage, int type) => storage.Items.Any(item => !item.IsAir && item.type == type);
 
-		public static bool Contains(this ItemHandler handler, Item item) => handler.Items.Any(item.IsTheSameAs);
+		public static bool Contains(this ItemStorage storage, Item item) => storage.Items.Any(item.IsTheSameAs);
 
 		/// <summary>
 		///     Gets the coin value for a given item handler
 		/// </summary>
-		public static long CountCoins(this ItemHandler handler) {
+		public static long CountCoins(this ItemStorage storage) {
 			long num = 0L;
-			for (int i = 0; i < handler.Slots; i++) {
-				Item item = handler.Items[i];
+			for (int i = 0; i < storage.Slots; i++) {
+				Item item = storage.Items[i];
 				num += item.type switch {
 					ItemID.CopperCoin => item.stack,
 					ItemID.SilverCoin => item.stack * 100,
@@ -32,55 +32,55 @@ namespace Terraria.ModLoader.Container
 			return num;
 		}
 
-		public static void DropItems(this ItemHandler handler, Rectangle hitbox)
+		public static void DropItems(this ItemStorage storage, Rectangle hitbox)
 		{
-			for (int i = 0; i < handler.Slots; i++)
+			for (int i = 0; i < storage.Slots; i++)
 			{
-				ref Item item = ref handler.GetItemInSlot(i);
+				ref Item item = ref storage.GetItemInSlot(i);
 				if (!item.IsAir)
 				{
 					Item.NewItem(hitbox, item.type, item.stack, prefixGiven: item.prefix);
 					item.TurnToAir();
-					handler.OnContentsChanged(i, false);
+					storage.OnContentsChanged(i, false);
 				}
 			}
 		}
 
 		/// <summary>
-		///     Quick stacks player's items into the ItemHandler
+		///     Quick stacks player's items into the ItemStorage
 		/// </summary>
-		public static void QuickStack(this Player player, ItemHandler handler) {
+		public static void QuickStack(this Player player, ItemStorage storage) {
 			for (int i = 49; i >= 10; i--) {
 				ref Item inventory = ref player.inventory[i];
 
-				if (!inventory.IsAir && handler.Contains(inventory.type)) handler.InsertItem(ref inventory, true);
+				if (!inventory.IsAir && storage.Contains(inventory.type)) storage.InsertItem(ref inventory, true);
 			}
 
 			SoundEngine.PlaySound(SoundID.Grab);
 		}
 
 		/// <summary>
-		///     Loots ItemHandler's items into player's inventory
+		///     Loots ItemStorage's items into player's inventory
 		/// </summary>
-		public static void LootAll(this Player player, ItemHandler handler) {
-			for (int i = 0; i < handler.Slots; i++) {
-				ref Item item = ref handler.GetItemInSlot(i);
+		public static void LootAll(this Player player, ItemStorage storage) {
+			for (int i = 0; i < storage.Slots; i++) {
+				ref Item item = ref storage.GetItemInSlot(i);
 				if (!item.IsAir) {
 					item.position = player.Center;
 					item.noGrabDelay = 0;
 
 					item = Combine(item.Split().Select(split => player.GetItem(player.whoAmI, split, GetItemSettings.LootAllSettings)));
 
-					handler.OnContentsChanged(i, true);
+					storage.OnContentsChanged(i, true);
 				}
 			}
 		}
 
 		/// <summary>
-		///     Loots ItemHandler's items into player's inventory
+		///     Loots ItemStorage's items into player's inventory
 		/// </summary>
-		public static void Loot(this Player player, ItemHandler handler, int slot) {
-			ref Item item = ref handler.GetItemInSlot(slot);
+		public static void Loot(this Player player, ItemStorage storage, int slot) {
+			ref Item item = ref storage.GetItemInSlot(slot);
 			if (!item.IsAir) {
 				Item n = new Item(item.type);
 
@@ -94,18 +94,18 @@ namespace Terraria.ModLoader.Container
 				item.stack -= count;
 				if (item.stack <= 0) item.TurnToAir();
 
-				handler.OnContentsChanged(slot, true);
+				storage.OnContentsChanged(slot, true);
 			}
 		}
 
 		/// <summary>
-		///     Deposits player's items into the ItemHandler
+		///     Deposits player's items into the ItemStorage
 		/// </summary>
-		public static void DepositAll(this Player player, ItemHandler handler) {
+		public static void DepositAll(this Player player, ItemStorage storage) {
 			for (int i = 49; i >= 10; i--) {
 				ref Item item = ref player.inventory[i];
 				if (item.IsAir || item.favorited) continue;
-				handler.InsertItem(ref item);
+				storage.InsertItem(ref item);
 			}
 
 			SoundEngine.PlaySound(SoundID.Grab);

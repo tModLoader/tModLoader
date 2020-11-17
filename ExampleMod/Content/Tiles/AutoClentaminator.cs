@@ -46,12 +46,12 @@ namespace ExampleMod.Content.Tiles
 		public override bool RightClick(int i, int j) {
 			if (!TileEntityUtils.TryGetTileEntity(i, j, out AutoClentaminatorTE te)) return false;
 
-			ItemHandler handler = te.GetItemHandler();
+			ItemStorage storage = te.GetItemStorage();
 
 			Item item = new Item(ItemID.PurpleSolution) { stack = 5 };
-			handler.InsertItem(0, ref item, true);
+			storage.InsertItem(0, ref item, true);
 			Main.NewText($"Inserted {5 - item.stack} items");
-			Item itemInSlot = handler.GetItemInSlot(0);
+			Item itemInSlot = storage.GetItemInSlot(0);
 			Main.NewText($"Currently has {itemInSlot.Name} x{itemInSlot.stack}");
 
 			return true;

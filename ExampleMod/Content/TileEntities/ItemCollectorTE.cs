@@ -10,7 +10,7 @@ using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Content.TileEntities
 {
-	public class ItemCollectorTE : ModTileEntity, IItemHandler
+	public class ItemCollectorTE : ModTileEntity, IItemStorage
 	{
 		private static int[] IgnoredItems = { ItemID.Heart, ItemID.CandyApple, ItemID.CandyCane, ItemID.Star, ItemID.SoulCake, ItemID.SugarPlum };
 
@@ -18,10 +18,10 @@ namespace ExampleMod.Content.TileEntities
 		private const int Speed = 30;
 
 		private int timer;
-		private ItemHandler ItemHandler;
+		private ItemStorage itemStorage;
 
 		public ItemCollectorTE() {
-			ItemHandler = new ItemHandler(18);
+			itemStorage = new ItemStorage(18);
 		}
 
 		public override void Update() {
@@ -38,15 +38,15 @@ namespace ExampleMod.Content.TileEntities
 					if (Vector2.DistanceSquared(item.Center, center) > Range * Range) continue;
 
 					item.noGrabDelay = 0;
-					ItemHandler.InsertItem(ref item);
+					itemStorage.InsertItem(ref item);
 				}
 
 				int index = Chest.FindChest(Position.X - 2, Position.Y);
 				if (index == -1) index = Chest.FindChest(Position.X + 2, Position.Y);
 				if (index == -1) return;
 
-				for (int i = 0; i < ItemHandler.Slots; i++) {
-					Item item = ItemHandler.Items[i];
+				for (int i = 0; i < itemStorage.Slots; i++) {
+					Item item = itemStorage.Items[i];
 					if (!item.active || item.IsAir) continue;
 
 					PlaceItemInChest(index, item);
@@ -117,17 +117,17 @@ namespace ExampleMod.Content.TileEntities
 		}
 
 		public override void OnKill() {
-			ItemHandler.DropItems(new Rectangle(Position.X * 16, Position.Y * 16, 32, 32));
+			itemStorage.DropItems(new Rectangle(Position.X * 16, Position.Y * 16, 32, 32));
 		}
 
 		public override TagCompound Save() {
-			return ItemHandler.Save();
+			return itemStorage.Save();
 		}
 
 		public override void Load(TagCompound tag) {
-			ItemHandler.Load(tag);
+			itemStorage.Load(tag);
 		}
 
-		public ItemHandler GetItemHandler() => ItemHandler;
+		public ItemStorage GetItemStorage() => itemStorage;
 	}
 }

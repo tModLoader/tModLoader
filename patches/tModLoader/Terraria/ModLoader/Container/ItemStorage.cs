@@ -5,7 +5,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Container
 {
-	public class ItemHandler
+	public class ItemStorage
 	{
 		public enum Operation
 		{
@@ -17,11 +17,11 @@ namespace Terraria.ModLoader.Container
 
 		public int Slots => Items.Length;
 
-		public ItemHandler(int size = 1) {
+		public ItemStorage(int size = 1) {
 			SetSize(size);
 		}
 
-		private ItemHandler(Item[] items) {
+		private ItemStorage(Item[] items) {
 			Items = items;
 		}
 
@@ -31,10 +31,10 @@ namespace Terraria.ModLoader.Container
 			for (int i = 0; i < size; i++) Items[i] = new Item();
 		}
 
-		public ItemHandler Clone() {
-			ItemHandler handler = (ItemHandler)MemberwiseClone();
-			handler.Items = Items.Select(item => item.Clone()).ToArray();
-			return handler;
+		public ItemStorage Clone() {
+			ItemStorage storage = (ItemStorage)MemberwiseClone();
+			storage.Items = Items.Select(item => item.Clone()).ToArray();
+			return storage;
 		}
 
 		public void SetItemInSlot(int slot, Item stack, bool user = false) {

@@ -11,9 +11,9 @@ using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Content.TileEntities
 {
-	public class AutoClentaminatorTE : ModTileEntity, IItemHandler
+	public class AutoClentaminatorTE : ModTileEntity, IItemStorage
 	{
-		private class AutoClentaminatorItemHandler : ItemHandler
+		private class AutoClentaminatorItemStorage : ItemStorage
 		{
 			public override bool IsItemValid(int slot, Item item) {
 				return Solutions.ContainsKey(item.type);
@@ -45,21 +45,21 @@ namespace ExampleMod.Content.TileEntities
 		};
 
 		private int timer;
-		private AutoClentaminatorItemHandler ItemHandler;
+		private AutoClentaminatorItemStorage itemStorage;
 		public float cleansingProgress;
 		private float cleansingDelta;
 		public int currentType;
 
 		public AutoClentaminatorTE() {
-			ItemHandler = new AutoClentaminatorItemHandler();
+			itemStorage = new AutoClentaminatorItemStorage();
 		}
 
 		public override void Update() {
 			if (++timer >= Speed) {
 				timer = 0;
 
-				currentType = ItemHandler.GetItemInSlot(0).type;
-				if (ItemHandler.Shrink(0, 1)) {
+				currentType = itemStorage.GetItemInSlot(0).type;
+				if (itemStorage.Shrink(0, 1)) {
 					cleansingDelta = 0.02f;
 
 					SoundEngine.PlaySound(SoundID.NPCDeath59.WithVolume(0.4f), (Position.X * 16) + 24, (Position.Y * 16) + 24);
@@ -104,17 +104,17 @@ namespace ExampleMod.Content.TileEntities
 		}
 
 		public override void OnKill() {
-			ItemHandler.DropItems(new Rectangle(Position.X * 16, Position.Y * 16, 48, 48));
+			itemStorage.DropItems(new Rectangle(Position.X * 16, Position.Y * 16, 48, 48));
 		}
 
 		public override TagCompound Save() {
-			return ItemHandler.Save();
+			return itemStorage.Save();
 		}
 
 		public override void Load(TagCompound tag) {
-			ItemHandler.Load(tag);
+			itemStorage.Load(tag);
 		}
 
-		public ItemHandler GetItemHandler() => ItemHandler;
+		public ItemStorage GetItemStorage() => itemStorage;
 	}
 }
