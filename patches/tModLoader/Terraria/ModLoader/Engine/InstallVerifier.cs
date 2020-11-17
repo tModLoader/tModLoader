@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
+using Terraria.Localization;
 using Terraria.Social;
 
 namespace Terraria.ModLoader.Engine
@@ -13,7 +14,6 @@ namespace Terraria.ModLoader.Engine
 	internal static class InstallVerifier
 	{
 		const string ContentDirectory = "Content";
-		const string InstallInstructions = "Please restore your Terraria install, then install tModLoader on Steam or by following the README.txt instructions for manual installation.";
 
 		private static bool? isValid;
 		public static bool IsValid => isValid ?? (isValid = InstallCheck()).Value;
@@ -45,7 +45,7 @@ namespace Terraria.ModLoader.Engine
 				steamHash = ToByteArray("758de120bc80c26bdb5e5a78134a652d");
 			}
 			else {
-				string message = "Unknown OS platform: unable to verify installation.";
+				string message = Language.GetTextValue("tModLoader.UnknownVerificationOS");
 				Logging.tML.Fatal(message);
 				Exit(message, string.Empty);
 			}
@@ -63,7 +63,7 @@ namespace Terraria.ModLoader.Engine
 				retval[i / 2] = Convert.ToByte(hexString.Substring(i, 2), 16);
 			return retval;
 		}
-		private static void Exit(string errorMessage, string extraMessage = InstallInstructions) {
+		private static void Exit(string errorMessage, string extraMessage) {
 			errorMessage += $"\r\n\r\n{extraMessage}";
 			Logging.tML.Fatal(errorMessage);
 			UI.Interface.MessageBoxShow(errorMessage);
@@ -74,7 +74,7 @@ namespace Terraria.ModLoader.Engine
 #if CLIENT
 			// Check if the content directory is present which is required
 			if (!Directory.Exists(ContentDirectory)) {
-				Exit($"{ContentDirectory} directory could not be found.\r\n\r\nDid you forget to extract tModLoader's Content directory into the tModLoader folder?\r\n\r\nEnsure tModLoader is installed in a separate folder from Terraria.");
+				Exit(Language.GetTextValue("tModLoader.ContentFolderNotFoundInstallCheck", ContentDirectory), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
 				return false;
 			}
 #endif
@@ -92,15 +92,19 @@ namespace Terraria.ModLoader.Engine
 #if CLIENT
 			SocialAPI.LoadSteam();
 			string terrariaInstallLocation = Steam.GetSteamTerrariaInstallDir();
+			string terrariaContentLocation = Path.Combine(terrariaInstallLocation, ContentDirectory);
+#if MAC
+			terrariaContentLocation = Path.Combine(terrariaInstallLocation, "../Resources/Content");
+#endif
 
-			if (!Directory.Exists(Path.Combine(terrariaInstallLocation, ContentDirectory))) {
-				Exit($"Terraria Steam installation or Terraria Content directory not found.\r\n\r\nPlease ensure Terraria 1.4 is installed through Steam.");
+			if (!Directory.Exists(terrariaContentLocation)) {
+				Exit(Language.GetTextValue("tModLoader.VanillaSteamInstallationNotFound"), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
 				return false;
 			}
 #endif
 			if (!HashMatchesFile(steamAPIPath, steamAPIHash)) {
 				Process.Start(@"https://terraria.org");
-				Exit("Steam API hash mismatch, assumed pirated.\n\ntModLoader requires a legitimate Terraria install to work.", "");
+				Exit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"), string.Empty);
 				return false;
 			}
 
@@ -129,13 +133,13 @@ namespace Terraria.ModLoader.Engine
 #if SERVER
 				return false;
 #else
-				Exit($"{vanillaPath} could not be found.\r\n\r\nGOG and manual installs must have the unmodified Terraria executable to function.", string.Empty);
+				Exit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaPath), string.Empty);
 				return false;
 #endif
 			}
 
 			if (!HashMatchesFile(vanillaPath, gogHash) && !HashMatchesFile(vanillaPath, steamHash)) {
-				Exit($"{vanillaPath} is not the unmodified Terraria executable.\r\n\r\nGOG and manual installs must have the unmodified Terraria executable to function.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"Terraria_v<VERSION>.exe\"", string.Empty);
+				Exit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaPath), string.Empty);
 				return false;
 			}
 

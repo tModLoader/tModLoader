@@ -785,7 +785,7 @@
 +			}
 +
 +			if (!Directory.Exists(vanillaContentFolder)) {
-+				Interface.MessageBoxShow("Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.");
++				Interface.MessageBoxShow(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
 +				Environment.Exit(1);
 +			}
 +
