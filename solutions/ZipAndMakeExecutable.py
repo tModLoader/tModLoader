@@ -26,7 +26,7 @@ def zipdir(path, ziph):
                 destination = os.path.join(extra, destination)
             print("Zipping " + file)
             if (filename in executables):
-                f = open(file, 'r')
+                f = open(file, 'br')
                 bytes = f.read()
                 f.close()
                 

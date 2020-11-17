@@ -12,7 +12,6 @@ set destinationFolder=.\tModLoader %tModLoaderVersion% Release
 	pause
 	EXIT /B %ERRORLEVEL%
 )
-@ECHO on
 
 :: Make up-to-date Installers
 ::cd ..\installer2
@@ -158,6 +157,17 @@ call python ZipAndMakeExecutable.py "%pdbs%" "%pdbs%.zip"
 
 :: SharedSteam
 echo|set /p="1281930" > "%sharedsteam%\steam_appid.txt"
+
+:: Add ModCompile folders to Beta Steam releases
+echo.%tModLoaderVersion% | findstr /C:"Beta" 1>nul
+if errorlevel 1 (
+  echo. Non-Beta
+) ELSE (
+  echo. Beta release, ModCompile added to Steam release for simplicity
+  robocopy /s "%mcfna%" "%winsteam%\ModCompile"
+  robocopy /s "%mcxna%" "%lnxsteam%\ModCompile"
+  robocopy /s "%mcxna%" "%macsteam%\tModLoader.app\Contents\MacOS\ModCompile"
+)
 
 :: CleanUp, Delete temp Folders
 rmdir "%win%" /S /Q
