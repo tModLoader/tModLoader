@@ -2806,7 +2806,7 @@
  					FreeUpPetsAndMinions(item);
  
  				if (flag3)
-@@ -29787,12 +_,18 @@
+@@ -29787,12 +_,23 @@
  				itemAnimation--;
  			}
  
@@ -2819,6 +2819,11 @@
  
  			releaseUseItem = !controlUseItem;
 +
++			//The following block has been moved to the end of the method with goto chains.
++			//This is done to fix the half of the item use/anim desync issue.
++			//In this exact case, this fixes itemTime not being lowered in the first tick after it's set, like itemAnim is.
++			//That happens because this itemTime reduction happened before the code that calls SetItemTime
++			//- Mirsario
 +			goto SkipReduceItemTime;
 +			ReduceItemTime:
 +
@@ -3195,15 +3200,18 @@
  			if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
  				if (statMana >= num) {
  					if (!flag2)
-@@ -35997,7 +_,7 @@
- 							SoundEngine.PlaySound(sItem.UseSound, base.Center);
- 					}
- 					else {
--						itemAnimation = 0;
-+						//itemAnimation = 0;
- 					}
- 				}
- 			}
+@@ -35990,7 +_,10 @@
+ 		private void ItemCheck_HandleMPItemAnimation(Item sItem) {
+ 			if (sItem.autoReuse && !noItems) {
+ 				releaseUseItem = true;
+-				if (itemAnimation == 1 && sItem.stack > 0) {
++				//The following code line has been changed to fix a half of the vanilla item use/anim desync bug.
++				//In this exact case, itemAnim, which resets at 1, would desync from itemTime at the end of every tick, which resets at 0.
++				//- Mirsario
++				if (itemAnimation == 0 && sItem.stack > 0) { //if (itemAnimation == 1 && sItem.stack > 0) {
+ 					if (sItem.shoot > 0 && whoAmI != Main.myPlayer && controlUseItem && sItem.useStyle == 5 && sItem.reuseDelay == 0) {
+ 						ApplyItemAnimation(sItem);
+ 						if (sItem.UseSound != null)
 @@ -36020,6 +_,7 @@
  			if (!mount.Active)
  				return;
