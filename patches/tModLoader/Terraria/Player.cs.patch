@@ -733,7 +733,7 @@
  
  			NPC nPC = new NPC();
  			nPC.SetDefaults(num11);
-@@ -4437,9 +_,13 @@
+@@ -4437,9 +_,12 @@
  				value -= (float)num15;
  				QuickSpawnItem(71, num15);
  			}
@@ -742,8 +742,7 @@
  
 -		private void TryGettingDevArmor() {
 +		public void TryGettingDevArmor() {
-+			if (ModLoader.Default.ModLoaderMod.TryGettingPatreonOrDevArmor(this))
-+				return;
++			ModLoader.Default.ModLoaderMod.TryGettingPatreonOrDevArmor(this);
 +
  			if (Main.rand.Next(20) == 0) {
  				switch (Main.rand.Next(18)) {
