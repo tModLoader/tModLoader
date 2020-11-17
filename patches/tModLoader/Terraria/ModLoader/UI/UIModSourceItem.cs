@@ -25,6 +25,7 @@ namespace Terraria.ModLoader.UI
 	internal class UIModSourceItem : UIPanel
 	{
 		private readonly string _mod;
+		internal readonly string modName;
 		private readonly Asset<Texture2D> _dividerTexture;
 		private readonly UIText _modName;
 		private readonly LocalMod _builtMod;
@@ -41,7 +42,8 @@ namespace Terraria.ModLoader.UI
 			SetPadding(6f);
 
 			string addendum = Path.GetFileName(mod).Contains(" ") ? $"  [c/FF0000:{Language.GetTextValue("tModLoader.MSModSourcesCantHaveSpaces")}]" : "";
-			_modName = new UIText(Path.GetFileName(mod) + addendum) {
+			modName = Path.GetFileName(mod);
+			_modName = new UIText(modName + addendum) {
 				Left = { Pixels = 10 },
 				Top = { Pixels = 5 }
 			};

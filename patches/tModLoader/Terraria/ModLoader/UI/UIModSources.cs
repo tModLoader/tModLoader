@@ -24,6 +24,7 @@ namespace Terraria.ModLoader.UI
 		private bool _updateNeeded;
 		private UIElement _uIElement;
 		private UIPanel _uIPanel;
+		private UIInputTextField filterTextBox;
 		private UILoaderAnimatedImage _uiLoader;
 		private CancellationTokenSource _cts;
 
@@ -39,21 +40,48 @@ namespace Terraria.ModLoader.UI
 			_uIPanel = new UIPanel {
 				Width = { Percent = 1f },
 				Height = { Pixels = -110, Percent = 1f },
-				BackgroundColor = UICommon.MainPanelBackground
+				BackgroundColor = UICommon.MainPanelBackground,
+				PaddingTop = 0f
 			};
 			_uIElement.Append(_uIPanel);
 
 			_uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
+			var upperMenuContainer = new UIElement {
+				Width = { Percent = 1f },
+				Height = { Pixels = 32 },
+				Top = { Pixels = 10 }
+			};
+			var filterTextBoxBackground = new UIPanel {
+				Top = { Percent = 0f },
+				Left = { Pixels = -135, Percent = 1f },
+				Width = { Pixels = 135 },
+				Height = { Pixels = 40 }
+			};
+			filterTextBoxBackground.OnRightClick += (a, b) => filterTextBox.Text = "";
+			upperMenuContainer.Append(filterTextBoxBackground);
+
+			filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch")) {
+				Top = { Pixels = 5 },
+				Left = { Pixels = -125, Percent = 1f },
+				Width = { Pixels = 120 },
+				Height = { Pixels = 20 }
+			};
+			filterTextBox.OnTextChange += (a, b) => _updateNeeded = true;
+			upperMenuContainer.Append(filterTextBox);
+			_uIPanel.Append(upperMenuContainer);
+
 			_modList = new UIList {
 				Width = { Pixels = -25, Percent = 1f },
-				Height = { Percent = 1f },
+				Height = { Pixels = -50, Percent = 1f },
+				Top = { Pixels = 50 },
 				ListPadding = 5f
 			};
 			_uIPanel.Append(_modList);
 
 			var uIScrollbar = new UIScrollbar {
-				Height = { Percent = 1f },
+				Height = { Pixels = -50, Percent = 1f },
+				Top = { Pixels = 50 },
 				HAlign = 1f
 			}.WithView(100f, 1000f);
 			_uIPanel.Append(uIScrollbar);
@@ -200,7 +228,8 @@ namespace Terraria.ModLoader.UI
 			_updateNeeded = false;
 			_uIPanel.RemoveChild(_uiLoader);
 			_modList.Clear();
-			_modList.AddRange(_items);
+			string filter = filterTextBox.Text;
+			_modList.AddRange(_items.Where(item => filter.Length > 0 ? item.modName.IndexOf(filter, StringComparison.OrdinalIgnoreCase) != -1 : true));
 			Recalculate();
 			_modList.ViewPosition = modListViewPosition;
 		}

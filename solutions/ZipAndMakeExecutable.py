@@ -4,7 +4,7 @@ import sys
 import time
 import tarfile
 
-executables = ['tModLoaderServer', 'tModLoader', 'open-folder']
+executables = ['tModLoaderServer', 'tModLoader', 'open-folder', 'tModLoaderServer.bin.x86', 'tModLoaderServer.bin.x86_64', 'tModLoader.bin.x86', 'tModLoader.bin.x86_64', 'tModLoaderServer.bin.osx', 'tModLoaderServer.bin.osx']
 extra = None
 
 def set_permissions(tarinfo):
