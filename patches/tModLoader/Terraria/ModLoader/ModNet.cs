@@ -294,7 +294,7 @@ namespace Terraria.ModLoader
 					if (!downloadingMod.Matches(mod))
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));
 
-					if (downloadingMod.signed && !mod.ValidModBrowserSignature)
+					if (downloadingMod.signed && onlyDownloadSignedMods && !mod.ValidModBrowserSignature)
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
 
 					ModLoader.EnableMod(mod.name);
