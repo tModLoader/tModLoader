@@ -504,6 +504,9 @@ tree /a /f > NonGithubFiles.txt
 |       |   Glow_127.xnb
 |       |   Gore_182.xnb
 |       |   Gore_183.xnb
+|       |   Gore_332.xnb
+|       |   Gore_333.xnb
+|       |   Gore_334.xnb
 |       |   Gore_48.xnb
 |       |   Gore_49.xnb
 |       |   Gore_50.xnb
@@ -594,6 +597,8 @@ tree /a /f > NonGithubFiles.txt
 |       |   Item_153.xnb
 |       |   Item_1578.xnb
 |       |   Item_1601.xnb
+|       |   Item_1743.xnb
+|       |   Item_1767.xnb
 |       |   Item_1771.xnb
 |       |   Item_1785.xnb
 |       |   Item_1786.xnb
@@ -619,6 +624,7 @@ tree /a /f > NonGithubFiles.txt
 |       |   Item_2425.xnb
 |       |   Item_2426.xnb
 |       |   Item_2427.xnb
+|       |   Item_2501.xnb
 |       |   Item_2502.xnb
 |       |   Item_2507.xnb
 |       |   Item_2862.xnb
@@ -689,6 +695,7 @@ tree /a /f > NonGithubFiles.txt
 |       |   NPC_188.xnb
 |       |   NPC_203.xnb
 |       |   NPC_222.xnb
+|       |   NPC_236.xnb
 |       |   NPC_253.xnb
 |       |   NPC_272.xnb
 |       |   NPC_273.xnb
@@ -821,6 +828,8 @@ tree /a /f > NonGithubFiles.txt
 |       |   Tiles_90.xnb
 |       |   Tiles_93.xnb
 |       |   Timer.xnb
+|       |   Tree_Tops_11.xnb
+|       |   Tree_Tops_13.xnb
 |       |   Wall_144.xnb
 |       |   
 |       +---Backgrounds

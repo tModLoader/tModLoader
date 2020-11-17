@@ -778,7 +778,7 @@
 +
 +					vanillaContentFolder = Path.Combine(steamInstallFolder, "Content");
 +					if (!Directory.Exists(vanillaContentFolder))
-+						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/MacOS/Content");
++						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/Resources/Content");
 +				}
 +				ModLoader.Engine.Steam.RecalculateAvailableSteamCloudStorage();
 +				Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)ModLoader.Engine.Steam.lastAvailableSteamCloudStorage)} available");
