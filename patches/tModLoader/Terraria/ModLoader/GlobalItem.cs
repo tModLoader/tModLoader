@@ -530,7 +530,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to determine whether the skin/shirt on the player's arms and hands are drawn when a body armor is worn.
 		/// Note that if drawHands is false, the arms will not be drawn either.
-		/// 
+		/// "body" is the player's associated body equipment texture.
 		/// This method is not instanced.
 		/// </summary>
 		public virtual void DrawHands(int body, ref bool drawHands, ref bool drawArms) {
@@ -538,7 +538,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to determine whether the player's hair or alt (hat) hair will be drawn when a head armor is worn.
-		/// 
+		/// "head" is the player's associated head equipment texture.
 		/// This method is not instanced.
 		/// </summary>
 		public virtual void DrawHair(int head, ref bool drawHair, ref bool drawAltHair) {
@@ -546,7 +546,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Return false to hide the player's head when a head armor is worn. Returns true by default.
-		/// 
+		/// "head" is the player's associated head equipment texture.
 		/// This method is not instanced.
 		/// </summary>
 		public virtual bool DrawHead(int head) {
@@ -555,7 +555,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Return false to hide the player's body when a body armor is worn. Returns true by default.
-		/// 
+		/// "body" is the player's associated body equipment texture.
 		/// This method is not instanced.
 		/// </summary>
 		public virtual bool DrawBody(int body) {
@@ -564,7 +564,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Return false to hide the player's legs when a leg armor or shoe accessory is worn. Returns true by default.
-		/// 
+		/// "legs" and "shoes" are the player's associated legs and shoes equipment textures.
 		/// This method is not instanced.
 		/// </summary>
 		public virtual bool DrawLegs(int legs, int shoes) {
