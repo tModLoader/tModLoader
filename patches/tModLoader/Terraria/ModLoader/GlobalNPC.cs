@@ -331,10 +331,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to customize the boss head texture used by an NPC based on its state.
+		/// Allows you to customize the boss head texture used by an NPC based on its state. Set index to -1 to stop the texture from being displayed.
 		/// </summary>
 		/// <param name="npc"></param>
-		/// <param name="index"></param>
+		/// <param name="index">The index for NPCID.Sets.BossHeadTextures</param>
 		public virtual void BossHeadSlot(NPC npc, ref int index) {
 		}
 

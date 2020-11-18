@@ -1,0 +1,12 @@
+--- src/Terraria/Terraria/WindowsLaunch.cs
++++ src/tModLoader/Terraria/WindowsLaunch.cs
+@@ -63,7 +_,8 @@
+ 					return Assembly.Load(array);
+ 				}
+ 			};
+-
++			if (File.Exists("ReLogic.dll"))
++				File.Delete("ReLogic.dll");
+ #if SERVER
+ 			WindowsLaunch._handleRoutine = new WindowsLaunch.HandlerRoutine(WindowsLaunch.ConsoleCtrlCheck);
+ 			WindowsLaunch.SetConsoleCtrlHandler(WindowsLaunch._handleRoutine, true);

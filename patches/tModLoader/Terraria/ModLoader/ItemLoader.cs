@@ -1132,6 +1132,7 @@ namespace Terraria.ModLoader
 		private static HookList HookDrawHands = AddHook<DelegateDrawHands>(g => g.DrawHands);
 		/// <summary>
 		/// Calls the item's body equipment texture's DrawHands hook, then all GlobalItem.DrawHands hooks.
+		/// "body" is the player's associated body equipment texture.
 		/// </summary>
 		public static void DrawHands(Player player, ref bool drawHands, ref bool drawArms) {
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
@@ -1149,13 +1150,14 @@ namespace Terraria.ModLoader
 		//  call ItemLoader.DrawHair(drawPlayer, ref flag4, ref flag5)
 		/// <summary>
 		/// Calls the item's head equipment texture's DrawHair hook, then all GlobalItem.DrawHair hooks.
+		/// "head" is the player's associated head equipment texture.
 		/// </summary>
 		public static void DrawHair(Player player, ref bool drawHair, ref bool drawAltHair) {
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
 			texture?.DrawHair(ref drawHair, ref drawAltHair);
 
 			foreach (var g in HookDrawHair.Enumerate())
-				g.DrawHair(player.body, ref drawHair, ref drawAltHair);
+				g.DrawHair(player.head, ref drawHair, ref drawAltHair);
 		}
 
 		private static HookList HookDrawHead = AddHook<Func<int, bool>>(g => g.DrawHead);
@@ -1164,6 +1166,7 @@ namespace Terraria.ModLoader
 		//  use && with ItemLoader.DrawHead(drawPlayer)
 		/// <summary>
 		/// Calls the item's head equipment texture's DrawHead hook, then all GlobalItem.DrawHead hooks, until one of them returns false. Returns true if none of them return false.
+		/// "head" is the player's associated head equipment texture.
 		/// </summary>
 		public static bool DrawHead(Player player) {
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
@@ -1180,6 +1183,7 @@ namespace Terraria.ModLoader
 		private static HookList HookDrawBody = AddHook<Func<int, bool>>(g => g.DrawBody);
 		/// <summary>
 		/// Calls the item's body equipment texture's DrawBody hook, then all GlobalItem.DrawBody hooks, until one of them returns false. Returns true if none of them return false.
+		/// "body" is the player's associated body equipment texture.
 		/// </summary>
 		public static bool DrawBody(Player player) {
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
@@ -1196,6 +1200,7 @@ namespace Terraria.ModLoader
 		private static HookList HookDrawLegs = AddHook<Func<int, int, bool>>(g => g.DrawLegs);
 		/// <summary>
 		/// Calls the item's leg equipment texture's DrawLegs hook, then the item's shoe equipment texture's DrawLegs hook, then all GlobalItem.DrawLegs hooks, until one of them returns false. Returns true if none of them return false.
+		/// "legs" and "shoes" are the player's associated legs and shoes equipment textures.
 		/// </summary>
 		public static bool DrawLegs(Player player) {
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
