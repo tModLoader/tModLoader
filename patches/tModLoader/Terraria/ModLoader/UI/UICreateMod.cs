@@ -125,6 +125,7 @@ namespace Terraria.ModLoader.UI
 		{
 			base.OnActivate();
 			_modName.SetText("");
+			_basicSword.SetText("");
 			_modDiplayName.SetText("");
 			_modAuthor.SetText("");
 			_messagePanel.SetText("");

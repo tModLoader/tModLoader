@@ -77,6 +77,15 @@
  			}
  		}
  
+@@ -2063,6 +_,8 @@
+ 					break;
+ 			}
+ 
++			NPCLoader.BossHeadSlot(this, ref result);
++
+ 			return result;
+ 		}
+ 
 @@ -2084,6 +_,7 @@
  					break;
  			}

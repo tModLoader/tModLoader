@@ -20,12 +20,15 @@ namespace Terraria.ModLoader.Default
 			var tile = Main.tile[i, j];
 			if(tile != null && tile.type == Type) {
 				var frame = new UnloadedTileFrame(tile.frameX, tile.frameY);
-				var info = ModContent.GetInstance<UnloadedTilesWorld>().infos[frame.FrameID];
-
-				if(info != null) {
-					Main.LocalPlayer.cursorItemIconEnabled = true;
-					Main.LocalPlayer.cursorItemIconID = -1;
-					Main.LocalPlayer.cursorItemIconText = $"{info.modName}: {info.name}";
+				var infos = ModContent.GetInstance<UnloadedTilesWorld>().infos;
+				int frameID = frame.FrameID;
+				if (frameID >= 0 && frameID < infos.Count) { // This only works in SP
+					var info = infos[frameID];
+					if (info != null) {
+						Main.LocalPlayer.cursorItemIconEnabled = true;
+						Main.LocalPlayer.cursorItemIconID = -1;
+						Main.LocalPlayer.cursorItemIconText = $"{info.modName}: {info.name}";
+					}
 				}
 			}
 		}

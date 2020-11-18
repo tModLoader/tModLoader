@@ -379,5 +379,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void GrapplePullSpeed(Projectile projectile, Player player, ref float speed) {
 		}
+
+		/// <summary>
+		/// The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile.
+		/// </summary>
+		public virtual void GrappleTargetPoint(Projectile projectile, Player player, ref float grappleX, ref float grappleY) {
+		}
 	}
 }
