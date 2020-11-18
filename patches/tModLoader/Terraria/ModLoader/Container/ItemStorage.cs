@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.Container
 			Output
 		}
 
-		internal Item[] items;
+		protected Item[] items;
 
 		internal int Length => items.Length;
 
