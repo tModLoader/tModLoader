@@ -31,7 +31,7 @@ namespace Terraria.ModLoader.Container
 				items[i] = new Item();
 		}
 
-		private ItemStorage(Item[] items) {
+		public ItemStorage(Item[] items) {
 			this.items = items;
 		}
 
@@ -45,11 +45,6 @@ namespace Terraria.ModLoader.Container
 			ValidateSlotIndex(slot);
 			items[slot] = stack;
 			OnContentsChanged(slot, user);
-		}
-
-		public ref Item GetItemInSlot(int slot) {
-			ValidateSlotIndex(slot);
-			return ref items[slot];
 		}
 
 		/// <summary>
@@ -144,7 +139,7 @@ namespace Terraria.ModLoader.Container
 		public bool Grow(int slot, int quantity, bool user = false) {
 			if (!CanInteract(slot, Operation.Input, user)) return false;
 
-			ref Item item = ref GetItemInSlot(slot);
+			ref Item item = ref items[slot];
 
 			int limit = GetSlotSize(slot) ?? item.maxStack;
 			if (item.IsAir || quantity <= 0 || item.stack + quantity > limit) return false;
@@ -158,7 +153,7 @@ namespace Terraria.ModLoader.Container
 		public bool Shrink(int slot, int quantity, bool user = false) {
 			if (!CanInteract(slot, Operation.Output, user)) return false;
 
-			ref Item item = ref GetItemInSlot(slot);
+			ref Item item = ref items[slot];
 
 			if (item.IsAir || quantity <= 0 || item.stack - quantity < 0) return false;
 
@@ -172,28 +167,22 @@ namespace Terraria.ModLoader.Container
 		public virtual void OnContentsChanged(int slot, bool user) {
 		}
 
-		public virtual int? GetSlotSize(int slot) {
-			return null;
-		}
+		public virtual int? GetSlotSize(int slot) => null;
 
-		public virtual bool IsItemValid(int slot, Item item) {
-			return true;
-		}
+		public virtual bool IsItemValid(int slot, Item item) => true;
 
-		public virtual bool CanInteract(int slot, Operation operation, bool user) {
-			return true;
-		}
+		public virtual bool CanInteract(int slot, Operation operation, bool user) => true;
 
 		#region IO
-		public TagCompound Save() {
+		public virtual TagCompound Save() {
 			return new TagCompound { ["Items"] = items.ToList() };
 		}
 
-		public void Load(TagCompound tag) {
+		public virtual void Load(TagCompound tag) {
 			items = tag.GetList<Item>("Items").ToArray();
 		}
 
-		public void Write(BinaryWriter writer) {
+		public virtual void Write(BinaryWriter writer) {
 			writer.Write(Length);
 
 			for (int i = 0; i < Length; i++) {
@@ -201,7 +190,7 @@ namespace Terraria.ModLoader.Container
 			}
 		}
 
-		public void Read(BinaryReader reader) {
+		public virtual void Read(BinaryReader reader) {
 			int size = reader.ReadInt32();
 
 			items = new Item[size];
@@ -214,7 +203,6 @@ namespace Terraria.ModLoader.Container
 
 		private static bool CanItemsStack(Item a, Item b) {
 			// if (a.modItem != null && b.modItem != null) return a.modItem.CanStack(b.modItem);
-
 			return a.IsTheSameAs(b);
 		}
 
@@ -225,12 +213,8 @@ namespace Terraria.ModLoader.Container
 			return copy;
 		}
 
-		public IEnumerator<Item> GetEnumerator() {
-			return items.AsEnumerable().GetEnumerator();
-		}
+		public IEnumerator<Item> GetEnumerator() => items.AsEnumerable().GetEnumerator();
 
-		IEnumerator IEnumerable.GetEnumerator() {
-			return GetEnumerator();
-		}
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }
