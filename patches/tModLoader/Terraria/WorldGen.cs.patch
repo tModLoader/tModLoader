@@ -1549,19 +1549,21 @@
  		}
  
  		public static int GetWorldUpdateRate() {
-@@ -45711,6 +_,7 @@
+@@ -45711,6 +_,8 @@
  		}
  
  		private static void UpdateWorld_OvergroundTile(int i, int j, bool checkNPCSpawns, int wallDist) {
++			TileLoader.RandomUpdate(i,j,Main.tile[i,j].type);
 +			WallLoader.RandomUpdate(i,j,Main.tile[i,j].wall);
  			int num = i - 1;
  			int num2 = i + 2;
  			int num3 = j - 1;
-@@ -46279,6 +_,7 @@
+@@ -46279,6 +_,8 @@
  		}
  
  		private static void UpdateWorld_UndergroundTile(int i, int j, bool checkNPCSpawns, int wallDist) {
 +			TileLoader.RandomUpdate(i,j,Main.tile[i,j].type);
++			WallLoader.RandomUpdate(i,j,Main.tile[i,j].wall);
  			int num = i - 1;
  			int num2 = i + 2;
  			int num3 = j - 1;
