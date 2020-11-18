@@ -51,7 +51,7 @@
  		}
  
  		private static void LoadServerParameters(Main game) {
-@@ -100,6 +_,18 @@
+@@ -100,6 +_,24 @@
  			if ((s2 = TryParameter("-language")) != null)
  				LanguageManager.Instance.SetLanguage(s2);
  
@@ -62,6 +62,12 @@
 +				// Inside the build from command line, the application exits
 +				// Anything beyond this point will not be executed
 +				ModCompile.BuildModCommandLine(build);
++
++			string publish;
++			if ((publish = LaunchInitializer.TryParameter("-publish")) != null) {
++				ModLoader.UI.UIModSourceItem.PublishModCommandLine(publish, TryParameter("-passphrase"), TryParameter("-steamid64"));
++				// Application Exits
++			}
 +
 +			string install;
 +			if ((install = TryParameter("-install")) != null)

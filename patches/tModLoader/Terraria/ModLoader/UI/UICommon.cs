@@ -68,24 +68,23 @@ namespace Terraria.ModLoader.UI
 			Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
 		}
 
-		internal static Asset<Texture2D> ButtonErrorTexture;
-		internal static Asset<Texture2D> ButtonConfigTexture;
-		internal static Asset<Texture2D> ButtonPlusTexture;
-		internal static Asset<Texture2D> ButtonUpDownTexture;
-		internal static Asset<Texture2D> ButtonCollapsedTexture;
-		internal static Asset<Texture2D> ButtonExpandedTexture;
-		internal static Asset<Texture2D> ModBrowserIconsTexture;
-		internal static Asset<Texture2D> ButtonExclamationTexture;
-		internal static Asset<Texture2D> LoaderTexture;
-		internal static Asset<Texture2D> LoaderBgTexture;
-		internal static Asset<Texture2D> ButtonDownloadTexture;
-		internal static Asset<Texture2D> ButtonDowngradeTexture;
-		internal static Asset<Texture2D> ButtonDownloadMultipleTexture;
-		internal static Asset<Texture2D> ButtonModInfoTexture;
-		internal static Asset<Texture2D> ButtonModConfigTexture;
-
-		internal static Asset<Texture2D> DividerTexture;
-		internal static Asset<Texture2D> InnerPanelTexture;
+		public static Asset<Texture2D> ButtonErrorTexture { get; internal set; }
+		public static Asset<Texture2D> ButtonConfigTexture { get; internal set; }
+		public static Asset<Texture2D> ButtonPlusTexture { get; internal set; }
+		public static Asset<Texture2D> ButtonUpDownTexture { get; internal set; }
+		public static Asset<Texture2D> ButtonCollapsedTexture { get; internal set; }
+		public static Asset<Texture2D> ButtonExpandedTexture { get; internal set; }
+		public static Asset<Texture2D> ModBrowserIconsTexture { get; internal set; }
+		public static Asset<Texture2D> ButtonExclamationTexture { get; internal set; }
+		public static Asset<Texture2D> LoaderTexture { get; internal set; }
+		public static Asset<Texture2D> LoaderBgTexture { get; internal set; }
+		public static Asset<Texture2D> ButtonDownloadTexture { get; internal set; }
+		public static Asset<Texture2D> ButtonDowngradeTexture { get; internal set; }
+		public static Asset<Texture2D> ButtonDownloadMultipleTexture { get; internal set; }
+		public static Asset<Texture2D> ButtonModInfoTexture { get; internal set; }
+		public static Asset<Texture2D> ButtonModConfigTexture { get; internal set; }
+		public static Asset<Texture2D> DividerTexture { get; internal set; }
+		public static Asset<Texture2D> InnerPanelTexture { get; internal set; }
 
 		internal static void LoadTextures() {
 			Asset<Texture2D> LoadEmbeddedTexture(string name)

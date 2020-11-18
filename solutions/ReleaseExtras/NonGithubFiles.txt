@@ -1,4 +1,6 @@
-These files are omitted from the repository because they are big and not ours to host. They are necessary for the CompleteRelease.bat.
+These files are omitted from the repository because they are big and not ours to host. They are necessary for the CompleteRelease.bat. 
+
+tree /a /f > NonGithubFiles.txt
 
 +---JourneysEndCompatibilityContent
 |   \---Images
@@ -502,6 +504,9 @@ These files are omitted from the repository because they are big and not ours to
 |       |   Glow_127.xnb
 |       |   Gore_182.xnb
 |       |   Gore_183.xnb
+|       |   Gore_332.xnb
+|       |   Gore_333.xnb
+|       |   Gore_334.xnb
 |       |   Gore_48.xnb
 |       |   Gore_49.xnb
 |       |   Gore_50.xnb
@@ -586,10 +591,14 @@ These files are omitted from the repository because they are big and not ours to
 |       |   Item_1328.xnb
 |       |   Item_1331.xnb
 |       |   Item_149.xnb
+|       |   Item_1505.xnb
 |       |   Item_151.xnb
 |       |   Item_152.xnb
 |       |   Item_153.xnb
+|       |   Item_1578.xnb
 |       |   Item_1601.xnb
+|       |   Item_1743.xnb
+|       |   Item_1767.xnb
 |       |   Item_1771.xnb
 |       |   Item_1785.xnb
 |       |   Item_1786.xnb
@@ -615,6 +624,8 @@ These files are omitted from the repository because they are big and not ours to
 |       |   Item_2425.xnb
 |       |   Item_2426.xnb
 |       |   Item_2427.xnb
+|       |   Item_2501.xnb
+|       |   Item_2502.xnb
 |       |   Item_2507.xnb
 |       |   Item_2862.xnb
 |       |   Item_2888.xnb
@@ -684,6 +695,7 @@ These files are omitted from the repository because they are big and not ours to
 |       |   NPC_188.xnb
 |       |   NPC_203.xnb
 |       |   NPC_222.xnb
+|       |   NPC_236.xnb
 |       |   NPC_253.xnb
 |       |   NPC_272.xnb
 |       |   NPC_273.xnb
@@ -816,6 +828,8 @@ These files are omitted from the repository because they are big and not ours to
 |       |   Tiles_90.xnb
 |       |   Tiles_93.xnb
 |       |   Timer.xnb
+|       |   Tree_Tops_11.xnb
+|       |   Tree_Tops_13.xnb
 |       |   Wall_144.xnb
 |       |   
 |       +---Backgrounds
@@ -837,11 +851,17 @@ These files are omitted from the repository because they are big and not ours to
 |       |           Planet.xnb
 |       |           
 |       \---UI
-|               Achievements.xnb
-|               BuilderIcons.xnb
-|               House_Banner_0.xnb
-|               House_Banner_1.xnb
-|               
+|           |   Achievements.xnb
+|           |   BuilderIcons.xnb
+|           |   House_Banner_0.xnb
+|           |   House_Banner_1.xnb
+|           |   
+|           \---WorldGen
+|                   Outer Corrupt.xnb
+|                   Outer Crimson.xnb
+|                   Outer Dirt.xnb
+|                   Outer Lower.xnb
+|                          
 +---LinuxFiles
 |   |   open-folder
 |   |   System.dll
@@ -861,6 +881,7 @@ These files are omitted from the repository because they are big and not ours to
 |   |       libCSteamworks.so
 |   |       libjpeg.so.62
 |   |       libmojoshader.so
+|   |       libMonoPosixHelper.so
 |   |       libogg.so.0
 |   |       libopenal.so.1
 |   |       libpng15.so.15
@@ -876,6 +897,7 @@ These files are omitted from the repository because they are big and not ours to
 |           libCSteamworks.so
 |           libjpeg.so.62
 |           libmojoshader.so
+|           libMonoPosixHelper.so
 |           libogg.so.0
 |           libopenal.so.1
 |           libpng15.so.15
@@ -944,6 +966,10 @@ These files are omitted from the repository because they are big and not ours to
 \---WindowsFiles
     |   CSteamworks.dll
     |   ReLogic.Native.dll
+    |   serverconfig.txt
+    |   start-tModLoaderServer-steam-friends.bat
+    |   start-tModLoaderServer-steam-private.bat
+    |   start-tModLoaderServer.bat
     |   steam_api.dll
     |   
     \---Content
