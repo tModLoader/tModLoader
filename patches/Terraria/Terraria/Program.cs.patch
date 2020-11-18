@@ -83,8 +83,9 @@
  					streamWriter.WriteLine("");
  				}
  
+-				MessageBox.Show(text, "Terraria: Error");
 +#if CLIENT
- 				MessageBox.Show(text, "Terraria: Error");
++				MessageBox.Show(e.ToString(), Language.GetTextValue("Error.Error"));
 +#else
 +				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
 +#endif

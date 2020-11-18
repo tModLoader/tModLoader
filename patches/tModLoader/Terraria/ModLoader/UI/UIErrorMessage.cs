@@ -135,7 +135,7 @@ namespace Terraria.ModLoader.UI
 
 		private void OpenFile(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Utils.OpenFolder(Logging.LogPath);
+			Process.Start(Logging.LogPath);
 		}
 
 		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {

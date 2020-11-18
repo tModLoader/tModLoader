@@ -749,7 +749,7 @@
  		}
  
  		public Main() {
-@@ -4761,7 +_,41 @@
+@@ -4761,7 +_,46 @@
  #if CLIENT
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
@@ -757,33 +757,38 @@
 +#endif
 +		}
 +
-+		internal void PostSocialInitialize()
-+		{
++		internal void PostSocialInitialize() {
 +#if CLIENT
-+			//Make tML use assets from the vanilla game's folder, instead of expecting them all to be in its Content folder.
-+
 +			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
 +
 +			if (!Directory.Exists(vanillaContentFolder)) {
 +				vanillaContentFolder = "../Content"; // Nested Manual Install
 +			}
 +
-+			if (SocialAPI.Mode == SocialMode.Steam && SteamAPI.Init()) {
-+				var appID = new AppId_t(105600u);
-+				bool appInstalled = SteamApps.BIsAppInstalled(appID);
++#if MAC
++			vanillaContentFolder = "../../../../Terraria/Terraria.app/Contents/Resources/Content";
++#endif
 +
-+				if (appInstalled) { 
-+					SteamApps.GetAppInstallDir(appID, out string steamInstallFolder, 1000);
-+					Logging.Terraria.Info($"Found Terraria steamapp install at: {steamInstallFolder}");
++			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
++				var appID = ModLoader.Engine.Steam.TerrariaAppId_t;
++				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
++
++				if (appInstalled) {
++					Steamworks.SteamApps.GetAppInstallDir(appID, out var steamInstallFolder, 1000);
++					Logging.Terraria.Info("Found Terraria steamapp install at: " + steamInstallFolder);
 +
 +					vanillaContentFolder = Path.Combine(steamInstallFolder, "Content");
++
 +					if (!Directory.Exists(vanillaContentFolder))
-+						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/MacOS/Content");
++						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/Resources/Content");
 +				}
++
++				ModLoader.Engine.Steam.RecalculateAvailableSteamCloudStorage();
++				Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)ModLoader.Engine.Steam.lastAvailableSteamCloudStorage)} available");
 +			}
 +
 +			if (!Directory.Exists(vanillaContentFolder)) {
-+				Interface.MessageBoxShow("Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.");
++				Interface.MessageBoxShow(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
 +				Environment.Exit(1);
 +			}
 +
@@ -1042,6 +1047,15 @@
  					if (gameMenu)
  						UpdateMenu();
  
+@@ -12615,6 +_,8 @@
+ 
+ 			if (CanPauseGame()) {
+ 				DoUpdate_WhilePaused();
++				PlayerHooks.UpdateAutopause(player[myPlayer]);
++
+ 				gamePaused = true;
+ 				return;
+ 			}
 @@ -12661,6 +_,7 @@
  				Sandstorm.EmitDust();
  			}
@@ -1078,6 +1092,15 @@
  				if (Main.player[myPlayer].buffType[num4] != player.buffType[num4])
  					flag3 = true;
  			}
+@@ -12983,6 +_,8 @@
+ 			if (flag)
+ 				NetMessage.SendData(138);
+ 
++			PlayerHooks.SendClientChanges(Main.player[myPlayer], clientPlayer);
++
+ 			clientPlayer = (Player)Main.player[myPlayer].clientClone();
+ 		}
+ 
 @@ -13025,6 +_,7 @@
  			}
  
@@ -1102,6 +1125,14 @@
  			LockOnHelper.SetUP();
  			CurrentFrameFlags.HadAnActiveInteractibleProjectile = false;
  			PreUpdateAllProjectiles();
+@@ -13108,6 +_,7 @@
+ 			ProjectileUpdateLoopIndex = -1;
+ 			PostUpdateAllProjectiles();
+ 			LockOnHelper.SetDOWN();
++			ModHooks.MidUpdateProjectileItem();
+ 			Item.numberOfNewItems = 0;
+ 			for (int n = 0; n < 400; n++) {
+ 				if (ignoreErrors) {
 @@ -13138,11 +_,13 @@
  				Dust.UpdateDust();
  			}
@@ -1925,6 +1956,15 @@
  				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.Black;
  				switch (k) {
  					case 0:
+@@ -15670,7 +_,7 @@
+ 				return;
+ 
+ 			int num13 = 0;
+-			for (int l = 0; l < 289; l++) {
++			for (int l = 0; l < NPCLoader.NPCCount; l++) {
+ 				if (Item.BannerToNPC(l) == 0 || !player[myPlayer].HasNPCBannerBuff(l))
+ 					continue;
+ 
 @@ -15712,9 +_,12 @@
  					spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(num14, num15), color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  				}
@@ -2150,6 +2190,18 @@
  			int num2 = item.glowMask;
  			if (!gamePaused && base.IsActive && (item.IsACoin || item.type == 58 || item.type == 109) && color.R > 60 && (float)rand.Next(500) - (Math.Abs(item.velocity.X) + Math.Abs(item.velocity.Y)) * 10f < (float)((int)color.R / 50)) {
  				int type = 43;
+@@ -27897,6 +_,11 @@
+ 			if (item.type == 3779)
+ 				num2 = -1;
+ 
++			if (ItemLoader.animations.Contains(item.type)) {
++				ItemLoader.DrawAnimatedItem(item, whoami, color, currentColor, num, scale);
++				goto PostDraw;
++			}
++
+ 			spriteBatch.Draw(texture, vector2, frame, currentColor, num, vector, scale, SpriteEffects.None, 0f);
+ 			if (item.color != Microsoft.Xna.Framework.Color.Transparent)
+ 				spriteBatch.Draw(texture, vector2, frame, item.GetColor(color), num, vector, scale, SpriteEffects.None, 0f);
 @@ -27904,11 +_,15 @@
  			if (num2 != -1)
  				spriteBatch.Draw(TextureAssets.GlowMask[num2].Value, vector2, frame, new Microsoft.Xna.Framework.Color(250, 250, 250, item.alpha), num, vector, scale, SpriteEffects.None, 0f);

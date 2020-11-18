@@ -1137,7 +1137,7 @@ namespace Terraria.ModLoader
 			texture?.DrawHair(ref drawHair, ref drawAltHair);
 
 			foreach (var g in HookDrawHair.arr)
-				g.DrawHair(player.body, ref drawHair, ref drawAltHair);
+				g.DrawHair(player.head, ref drawHair, ref drawAltHair);
 		}
 
 		private static HookList HookDrawHead = AddHook<Func<int, bool>>(g => g.DrawHead);

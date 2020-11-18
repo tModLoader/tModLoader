@@ -1328,15 +1328,22 @@
  			if (j >= 1)
  				tile2 = Main.tile[i, j - 1];
  
-@@ -38799,6 +_,7 @@
+@@ -38799,7 +_,9 @@
  						if (tile.type != type && (tile2.frameX == 66 || tile2.frameX == 220))
  							return false;
  						break;
 +					case int _ when TileID.Sets.BasicDresser[type]:
  					case 21:
++					case int _ when TileID.Sets.BasicChest[type]:
  					case 26:
  					case 72:
-@@ -38849,6 +_,7 @@
+ 					case 77:
+@@ -38845,10 +_,11 @@
+ 						break;
+ 					}
+ 				case 21:
+-				case 467:
++				case ushort _ when TileID.Sets.BasicChest[tile.type]:
  					if (!Chest.CanDestroyChest(i - tile.frameX / 18 % 2, j - tile.frameY / 18))
  						return false;
  					break;
@@ -1542,19 +1549,21 @@
  		}
  
  		public static int GetWorldUpdateRate() {
-@@ -45711,6 +_,7 @@
+@@ -45711,6 +_,8 @@
  		}
  
  		private static void UpdateWorld_OvergroundTile(int i, int j, bool checkNPCSpawns, int wallDist) {
++			TileLoader.RandomUpdate(i,j,Main.tile[i,j].type);
 +			WallLoader.RandomUpdate(i,j,Main.tile[i,j].wall);
  			int num = i - 1;
  			int num2 = i + 2;
  			int num3 = j - 1;
-@@ -46279,6 +_,7 @@
+@@ -46279,6 +_,8 @@
  		}
  
  		private static void UpdateWorld_UndergroundTile(int i, int j, bool checkNPCSpawns, int wallDist) {
 +			TileLoader.RandomUpdate(i,j,Main.tile[i,j].type);
++			WallLoader.RandomUpdate(i,j,Main.tile[i,j].wall);
  			int num = i - 1;
  			int num2 = i + 2;
  			int num3 = j - 1;
