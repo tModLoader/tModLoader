@@ -41,19 +41,20 @@ namespace Terraria.ModLoader.Container
 			return storage;
 		}
 
-		public void SetItemInSlot(int slot, Item stack, bool user = false) {
+		protected void ForceReplaceItem(int slot, Item stack, object? user) {
 			ValidateSlotIndex(slot);
 			items[slot] = stack;
-			OnContentsChanged(slot, user);
+			OnContentsChanged?.Invoke(slot, user);
 		}
 
 		/// <summary>
+		/// Puts an item into the storage.
 		/// </summary>
-		/// <param name="slot"></param>
-		/// <param name="item"></param>
-		/// <param name="user"></param>
-		/// <returns></returns>
-		public bool InsertItem(int slot, ref Item item, bool user = false) {
+		/// <param name="slot">The slot to put into.</param>
+		/// <param name="item">The item.</param>
+		/// <param name="user">The object doing this.</param>
+		/// <returns>True if the item was successfully inserted.</returns>
+		public bool InsertItem(int slot, ref Item item, object? user) {
 			if (item == null || item.IsAir) return false;
 
 			ValidateSlotIndex(slot);
@@ -72,13 +73,18 @@ namespace Terraria.ModLoader.Container
 			if (existing.IsAir) items[slot] = reachedLimit ? CloneItemWithSize(item, toInsert) : item;
 			else existing.stack += toInsert;
 
-			OnContentsChanged(slot, user);
+			OnContentsChanged?.Invoke(slot, user);
 
 			item = reachedLimit ? CloneItemWithSize(item, item.stack - toInsert) : new Item();
 			return true;
 		}
 
-		public void InsertItem(ref Item item, bool user = false) {
+		/// <summary>
+		/// Puts an item into storage, without caring about what slots to put it in.
+		/// </summary>
+		/// <param name="item">The item to put in.</param>
+		/// <param name="user">The object doing this.</param>
+		public void InsertItem(ref Item item, object? user) {
 			for (int i = 0; i < Length; i++) {
 				Item other = items[i];
 				if (CanItemsStack(item, other) && other.stack < other.maxStack) {
@@ -94,17 +100,17 @@ namespace Terraria.ModLoader.Container
 		}
 
 		/// <summary>
-		///     Extracts an item from the handler
+		/// Removes an item from the storage and returns it.
 		/// </summary>
 		/// <param name="slot">The slot.</param>
-		/// <param name="item">The item. Returns null if unsuccessful</param>
-		/// <param name="amount">The amount.</param>
-		/// <param name="user">Pass true if interaction was caused by user</param>
-		/// <returns>Returns true if successful, otherwise returns false</returns>
-		public bool ExtractItem(int slot, out Item? item, int? amount = null, bool user = false) {
+		/// <param name="item">The item. Returns null if unsuccessful.</param>
+		/// <param name="amount">The amount of items to take from a stack.</param>
+		/// <param name="user">The object doing this.</param>
+		/// <returns>Returns true if any items were actually removed.</returns>
+		public bool RemoveItem(int slot, object? user, out Item? item, int amount = -1) {
 			item = null;
 
-			if (amount == null || amount <= 0) return false;
+			if (amount == 0) return false;
 
 			ValidateSlotIndex(slot);
 
@@ -113,13 +119,13 @@ namespace Terraria.ModLoader.Container
 			Item existing = items[slot];
 			if (existing.IsAir) return false;
 
-			int toExtract = Utils.Min(amount.Value, existing.maxStack, existing.stack);
+			int toExtract = Utils.Min(amount < 0 ? int.MaxValue : amount, existing.maxStack, existing.stack);
 
 			if (existing.stack <= toExtract) {
 				item = existing;
 				items[slot] = new Item();
 
-				OnContentsChanged(slot, user);
+				OnContentsChanged?.Invoke(slot, user);
 
 				return true;
 			}
@@ -127,10 +133,12 @@ namespace Terraria.ModLoader.Container
 			item = CloneItemWithSize(existing, toExtract);
 			items[slot] = CloneItemWithSize(existing, existing.stack - toExtract);
 
-			OnContentsChanged(slot, user);
+			OnContentsChanged?.Invoke(slot, user);
 
 			return true;
 		}
+
+		public bool RemoveItem(int slot, object? user) => RemoveItem(slot, user, out _);
 
 		private void ValidateSlotIndex(int slot) {
 			if (slot < 0 || slot >= Length) throw new Exception($"Slot {slot} not in valid range - [0, {Length})");
@@ -145,12 +153,12 @@ namespace Terraria.ModLoader.Container
 			if (item.IsAir || quantity <= 0 || item.stack + quantity > limit) return false;
 
 			item.stack += quantity;
-			OnContentsChanged(slot, user);
+			OnContentsChanged?.Invoke(slot, user);
 
 			return true;
 		}
 
-		public bool Shrink(int slot, int quantity, bool user = false) {
+		public bool Shrink(int slot, int quantity, object? user) {
 			if (!CanInteract(slot, Operation.Output, user)) return false;
 
 			ref Item item = ref items[slot];
@@ -159,19 +167,19 @@ namespace Terraria.ModLoader.Container
 
 			item.stack -= quantity;
 			if (item.stack <= 0) item.TurnToAir();
-			OnContentsChanged(slot, user);
+			OnContentsChanged?.Invoke(slot, user);
 
 			return true;
 		}
 
-		public virtual void OnContentsChanged(int slot, bool user) {
-		}
+		public delegate void ContentsChangedDelegate(int slot, object? user);
+		public event ContentsChangedDelegate? OnContentsChanged;
 
 		public virtual int? GetSlotSize(int slot) => null;
 
 		public virtual bool IsItemValid(int slot, Item item) => true;
 
-		public virtual bool CanInteract(int slot, Operation operation, bool user) => true;
+		public virtual bool CanInteract(int slot, Operation operation, object? user) => true;
 
 		#region IO
 		public virtual TagCompound Save() {
