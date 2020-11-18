@@ -4,7 +4,7 @@ import sys
 import time
 import tarfile
 
-executables = ['tModLoaderServer', 'tModLoader']
+executables = ['tModLoaderServer', 'tModLoader', 'open-folder', 'tModLoaderServer.bin.x86', 'tModLoaderServer.bin.x86_64', 'tModLoader.bin.x86', 'tModLoader.bin.x86_64', 'tModLoaderServer.bin.osx', 'tModLoaderServer.bin.osx']
 extra = None
 
 def set_permissions(tarinfo):
@@ -26,7 +26,7 @@ def zipdir(path, ziph):
                 destination = os.path.join(extra, destination)
             print("Zipping " + file)
             if (filename in executables):
-                f = open(file, 'r')
+                f = open(file, 'br')
                 bytes = f.read()
                 f.close()
                 

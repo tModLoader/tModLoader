@@ -83,7 +83,8 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate() {
 			_myPublishedMods.Clear();
-			TextPanel.SetText(Language.GetTextValue("tModLoader.MBMyPublishedMods"), 0.8f, true);
+			string text = Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBUnknown"));
+			TextPanel.SetText(text, 0.8f, true);
 			string response = string.Empty;
 			try {
 				ServicePointManager.Expect100Continue = false;

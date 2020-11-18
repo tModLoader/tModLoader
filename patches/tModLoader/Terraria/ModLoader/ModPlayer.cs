@@ -421,7 +421,7 @@ namespace Terraria.ModLoader
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// </summary>
 		/// <param name="item">The item being used</param>
-		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05`</param>
+		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05f`</param>
 		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
 		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
 		public virtual void ModifyWeaponDamage(Item item, ref Modifier damage, ref float flat) {
@@ -791,12 +791,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Called whenever the player shift-clicks an item slot. This can be used to override default clicking behavior (ie. selling or trashing items).
+		/// Called whenever the player shift-clicks an item slot. This can be used to override default clicking behavior (ie. selling, trashing, moving items).
 		/// </summary>
 		/// <param name="inventory">The array of items the slot is part of.</param>
 		/// <param name="context">The Terraria.UI.ItemSlot.Context of the inventory.</param>
 		/// <param name="slot">The index in the inventory of the clicked slot.</param>
-		/// <returns>Whether or not to block the default code (sell and trash) from running. Returns false by default.</returns>
+		/// <returns>Whether or not to block the default code (sell, trash, move, etc) from running. Returns false by default.</returns>
 		public virtual bool ShiftClickSlot(Item[] inventory, int context, int slot) {
 			return false;
 		}
