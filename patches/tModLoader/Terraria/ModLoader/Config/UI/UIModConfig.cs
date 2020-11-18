@@ -13,6 +13,7 @@ using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.Config.UI
 {
@@ -351,6 +352,8 @@ namespace Terraria.ModLoader.Config.UI
 			if (!string.IsNullOrEmpty(tooltip)) {
 				UICommon.DrawHoverStringInBounds(spriteBatch, tooltip, GetDimensions().ToRectangle());
 			}
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
+			UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
 		}
 
 		// do we need 2 copies? We can discard changes by reloading.

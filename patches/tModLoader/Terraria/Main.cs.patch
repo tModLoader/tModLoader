@@ -749,7 +749,7 @@
  		}
  
  		public Main() {
-@@ -4761,7 +_,41 @@
+@@ -4761,7 +_,43 @@
  #if CLIENT
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
@@ -769,7 +769,7 @@
 +			}
 +
 +			if (SocialAPI.Mode == SocialMode.Steam && SteamAPI.Init()) {
-+				var appID = ModLoader.Engine.Steam.TerrariaAppID_t;
++				var appID = ModLoader.Engine.Steam.TerrariaAppId_t;
 +				bool appInstalled = SteamApps.BIsAppInstalled(appID);
 +
 +				if (appInstalled) { 
@@ -778,12 +778,14 @@
 +
 +					vanillaContentFolder = Path.Combine(steamInstallFolder, "Content");
 +					if (!Directory.Exists(vanillaContentFolder))
-+						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/MacOS/Content");
++						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/Resources/Content");
 +				}
++				ModLoader.Engine.Steam.RecalculateAvailableSteamCloudStorage();
++				Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)ModLoader.Engine.Steam.lastAvailableSteamCloudStorage)} available");
 +			}
 +
 +			if (!Directory.Exists(vanillaContentFolder)) {
-+				Interface.MessageBoxShow("Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.");
++				Interface.MessageBoxShow(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
 +				Environment.Exit(1);
 +			}
 +
@@ -1951,6 +1953,15 @@
  				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.Black;
  				switch (k) {
  					case 0:
+@@ -15670,7 +_,7 @@
+ 				return;
+ 
+ 			int num13 = 0;
+-			for (int l = 0; l < 289; l++) {
++			for (int l = 0; l < NPCLoader.NPCCount; l++) {
+ 				if (Item.BannerToNPC(l) == 0 || !player[myPlayer].HasNPCBannerBuff(l))
+ 					continue;
+ 
 @@ -15712,9 +_,12 @@
  					spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(num14, num15), color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  				}
