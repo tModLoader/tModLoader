@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -7,34 +9,30 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Container
 {
-	public class ItemStorage
+	public class ItemStorage : IReadOnlyList<Item>
 	{
 		public enum Operation
 		{
 			Input,
 			Output
 		}
-		
-		public IReadOnlyList<Item> Items { get; private set; }
 
-		private Item[] items;
+		internal Item[] items;
 
-		public int Length => items.Length;
+		internal int Length => items.Length;
+
+		public int Count => items.Length;
+
+		public Item this[int index] => items[index];
 
 		public ItemStorage(int size = 1) {
-			SetSize(size);
+			items = new Item[size];
+			for (int i = 0; i < size; i++)
+				items[i] = new Item();
 		}
 
 		private ItemStorage(Item[] items) {
 			this.items = items;
-			Items = new ReadOnlyCollection<Item>(items);
-		}
-
-		private void SetSize(int size) {
-			items = new Item[size];
-			Items = new ReadOnlyCollection<Item>(items);
-
-			for (int i = 0; i < size; i++) items[i] = new Item();
 		}
 
 		public ItemStorage Clone() {
@@ -108,7 +106,7 @@ namespace Terraria.ModLoader.Container
 		/// <param name="amount">The amount.</param>
 		/// <param name="user">Pass true if interaction was caused by user</param>
 		/// <returns>Returns true if successful, otherwise returns false</returns>
-		public bool ExtractItem(int slot, out Item item, int? amount = null, bool user = false) {
+		public bool ExtractItem(int slot, out Item? item, int? amount = null, bool user = false) {
 			item = null;
 
 			if (amount == null || amount <= 0) return false;
@@ -205,7 +203,8 @@ namespace Terraria.ModLoader.Container
 
 		public void Read(BinaryReader reader) {
 			int size = reader.ReadInt32();
-			SetSize(size);
+
+			items = new Item[size];
 
 			for (int i = 0; i < Length; i++) {
 				items[i] = ItemIO.Receive(reader, true, true);
@@ -224,6 +223,14 @@ namespace Terraria.ModLoader.Container
 			Item copy = itemStack.Clone();
 			copy.stack = size;
 			return copy;
+		}
+
+		public IEnumerator<Item> GetEnumerator() {
+			return items.AsEnumerable().GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator() {
+			return GetEnumerator();
 		}
 	}
 }

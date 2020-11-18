@@ -9,16 +9,16 @@ namespace Terraria.ModLoader.Container
 {
 	public static class ItemStorageUtility
 	{
-		public static bool Contains(this ItemStorage storage, int type) => storage.Items.Any(item => !item.IsAir && item.type == type);
+		public static bool Contains(this ItemStorage storage, int type) => storage.Any(item => !item.IsAir && item.type == type);
 
-		public static bool Contains(this ItemStorage storage, Item item) => storage.Items.Any(item.IsTheSameAs);
+		public static bool Contains(this ItemStorage storage, Item item) => storage.Any(item.IsTheSameAs);
 
 		/// <summary>
 		///     Gets the coin value for a given item handler
 		/// </summary>
 		public static long CountCoins(this ItemStorage storage) {
 			long num = 0L;
-			foreach (Item item in storage.Items) {
+			foreach (Item item in storage) {
 				if (item.IsAir) continue;
 
 				num += item.type switch {
