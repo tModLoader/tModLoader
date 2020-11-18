@@ -90,6 +90,15 @@
  
  			((UIImageButton)evt.Target).SetImage(_data.IsCloudSave ? _buttonCloudActiveTexture : _buttonCloudInactiveTexture);
  			if (_data.IsCloudSave)
+@@ -228,7 +_,7 @@
+ 		}
+ 
+ 		private void PlayGame(UIMouseEvent evt, UIElement listeningElement) {
+-			if (listeningElement == evt.Target && !TryMovingToRejectionMenuIfNeeded(_data.GameMode)) {
++			if (listeningElement == evt.Target && _data.IsValid && !TryMovingToRejectionMenuIfNeeded(_data.GameMode)) {
+ 				_data.SetAsActive();
+ 				SoundEngine.PlaySound(10);
+ 				Main.GetInputText("");
 @@ -239,9 +_,29 @@
  				else
  					Main.menuMode = 10;
