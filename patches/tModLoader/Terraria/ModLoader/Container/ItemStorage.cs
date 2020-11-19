@@ -47,11 +47,11 @@ namespace Terraria.ModLoader.Container
 		/// <summary>
 		/// Puts an item into the storage.
 		/// </summary>
+		/// <param name="user">The object doing this.</param>
 		/// <param name="slot">The slot.</param>
 		/// <param name="item">The item.</param>
-		/// <param name="user">The object doing this.</param>
 		/// <returns>True if the item was successfully inserted, even partially. False if the item is air, if the slot is already fully occupied, if the slot rejects the item, or if the slot rejects the user.</returns>
-		public bool InsertItem(int slot, ref Item item, object? user) {
+		public bool InsertItem(object? user, int slot, ref Item item) {
 			if (item == null || item.IsAir)
 				return false;
 
@@ -73,7 +73,7 @@ namespace Terraria.ModLoader.Container
 
 			bool reachedLimit = item.stack > toInsert;
 
-			OnItemInsert?.Invoke(slot, item, user);
+			OnItemInsert?.Invoke(user, slot, item);
 
 			if (existing.IsAir)
 				Items[slot] = reachedLimit ? CloneItemWithSize(item, toInsert) : item;
@@ -87,10 +87,10 @@ namespace Terraria.ModLoader.Container
 		/// <summary>
 		/// Puts an item into storage, disregarding what slots to put it in.
 		/// </summary>
-		/// <param name="item">The item to insert.</param>
 		/// <param name="user">The object doing this.</param>
+		/// <param name="item">The item to insert.</param>
 		/// <returns>True if the item was successfully inserted, even partially. False if the item is air, if the slot is already fully occupied, if the slot rejects the item, or if the slot rejects the user.</returns>
-		public bool InsertItem(ref Item item, object? user) {
+		public bool InsertItem(object? user, ref Item item) {
 			if (item is null || item.IsAir) {
 				return false;
 			}
@@ -99,13 +99,13 @@ namespace Terraria.ModLoader.Container
 			for (int i = 0; i < Count; i++) {
 				Item other = Items[i];
 				if (CanItemsStack(item, other) && other.stack < other.maxStack) {
-					ret |= InsertItem(i, ref item, user);
+					ret |= InsertItem(user, i, ref item);
 				}
 			}
 			for (int i = 0; i < Count; i++) {
 				Item other = Items[i];
 				if (other.IsAir) {
-					ret |= InsertItem(i, ref item, user);
+					ret |= InsertItem(user, i, ref item);
 				}
 			}
 			return ret;
@@ -120,7 +120,7 @@ namespace Terraria.ModLoader.Container
 		/// <param name="amount">The amount of items to take from a stack.</param>
 		/// <param name="user">The object doing this.</param>
 		/// <returns>Returns true if any items were actually removed. False if the slot is air or if the slot rejects the user.</returns>
-		public bool RemoveItem(int slot, object? user, out Item item, int amount = -1) {
+		public bool RemoveItem(object? user, int slot, out Item item, int amount = -1) {
 			item = Items[slot];
 
 			if (amount == 0)
@@ -134,7 +134,7 @@ namespace Terraria.ModLoader.Container
 			if (item.IsAir)
 				return false;
 
-			OnItemRemove?.Invoke(slot, user);
+			OnItemRemove?.Invoke(user, slot);
 
 			int toExtract = Utils.Min(amount < 0 ? int.MaxValue : amount, item.maxStack, item.stack);
 
@@ -153,19 +153,19 @@ namespace Terraria.ModLoader.Container
 		/// <summary>
 		/// Removes an item from storage.
 		/// </summary>
-		/// <param name="slot">The slot.</param>
 		/// <param name="user">The object doing this.</param>
+		/// <param name="slot">The slot.</param>
 		/// <returns>Returns true if any items were actually removed.</returns>
-		public bool RemoveItem(int slot, object? user) => RemoveItem(slot, user, out _);
+		public bool RemoveItem(object? user, int slot) => RemoveItem(user, slot, out _);
 
 		/// <summary>
 		/// Swaps two items in a slot.
 		/// </summary>
-		/// <param name="slot">The slot.</param>
 		/// <param name="user">The object doing this.</param>
+		/// <param name="slot">The slot.</param>
 		/// <param name="newStack">The item to insert.</param>
 		/// <returns>True if the items were successfully swapped. False if the slot did not have enough stack size to be fully swapped, refused the new item, or refused the user.</returns>
-		public bool SwapStacks(int slot, object? user, Item newStack) {
+		public bool SwapStacks(object? user, int slot, Item newStack) {
 			ValidateSlotIndex(slot);
 
 			if (!IsItemValid(slot, newStack))
@@ -178,8 +178,8 @@ namespace Terraria.ModLoader.Container
 				return false;
 			}
 
-			OnItemRemove?.Invoke(slot, user);
-			OnItemInsert?.Invoke(slot, newStack, user);
+			OnItemRemove?.Invoke(user, slot);
+			OnItemInsert?.Invoke(user, slot, newStack);
 			Items[slot] = newStack;
 
 			return true;
@@ -191,7 +191,7 @@ namespace Terraria.ModLoader.Container
 		/// <param name="quantity">The amount to increase/decrease the item's stack.</param>
 		/// <param name="user">The object doing this.</param>
 		/// <returns>True if the item was successfully affected. False if the slot denies the user, if the item is air, or if the quantity is zero.</returns>
-		public bool ModifyStackSize(int slot, int quantity, object? user) {
+		public bool ModifyStackSize(object? user, int slot, int quantity) {
 			Item item = Items[slot];
 
 			if (quantity > 0 && !CanInteract(slot, Operation.Input, user) ||
@@ -199,23 +199,23 @@ namespace Terraria.ModLoader.Container
 				quantity == 0 || item.IsAir)
 				return false;
 
-			OnStackModify?.Invoke(slot, ref quantity, user);
+			OnStackModify?.Invoke(user, slot, ref quantity);
 
 			item.stack += Math.Min(quantity, MaxStackFor(slot, item));
 
 			if (item.stack <= 0)
-				RemoveItem(slot, user);
+				RemoveItem(user, slot);
 
 			return true;
 		}
 
 		/// <param name="quantity">This parameter is not clamped upon firing. After firing, it will be clamped between 0 and <see cref="MaxStackFor(int, Item)"/>.</param>
-		public delegate void StackChangedDelegate(int slot, ref int quantity, object? user);
-		public delegate void InsertItemDelegate(int slot, Item inserting, object? user);
-		public delegate void RemoveItemDelegate(int slot, object? user);
+		public delegate void StackChangedDelegate(object? user, int slot, ref int quantity);
+		public delegate void InsertItemDelegate(object? user, int slot, Item inserting);
+		public delegate void RemoveItemDelegate(object? user, int slot);
 
 		/// <summary>
-		/// Fired just before the slot's item's stack is modified through <see cref="ModifyStackSize(int, int, object?)"/>.
+		/// Fired just before the slot's item's stack is modified through <see cref="ModifyStackSize(object?, int, int)"/>.
 		/// <para/> The quantity parameter is not clamped upon firing. After firing, it will be clamped between 0 and <see cref="MaxStackFor(int, Item)"/>
 		/// </summary>
 		public event StackChangedDelegate? OnStackModify;

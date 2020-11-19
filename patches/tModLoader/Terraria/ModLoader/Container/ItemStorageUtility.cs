@@ -15,6 +15,16 @@ namespace Terraria.ModLoader.Container
 		public static bool Contains(this ItemStorage storage, Item item) => storage.Any(item.IsTheSameAs);
 
 		/// <summary>
+		/// If you need to check if a storage contains an item, use <see cref="Contains(ItemStorage, int)"/>. It is much faster.
+		/// </summary>
+		public static int Count(this ItemStorage storage, int type) => storage.Count(item => !item.IsAir && item.type == type);
+
+		/// <summary>
+		/// If you need to check if a storage contains an item, use <see cref="Contains(ItemStorage, Item)"/>. It is much faster.
+		/// </summary>
+		public static int Count(this ItemStorage storage, Item item) => storage.Count(item.IsTheSameAs);
+
+		/// <summary>
 		/// Gets the coin value for a storage.
 		/// </summary>
 		public static long CountCoins(this ItemStorage storage) {
@@ -43,9 +53,9 @@ namespace Terraria.ModLoader.Container
 		/// <param name="fromSlot">The slot to take from.</param>
 		/// <param name="amount">The amount of items to take from the slot.</param>
 		public static void Transfer(this ItemStorage from, object? user, ItemStorage to, int fromSlot, int amount) {
-			if (from.RemoveItem(fromSlot, user, out var item, amount)) {
-				to.InsertItem(ref item, user);
-				from.InsertItem(ref item, user);
+			if (from.RemoveItem(user, fromSlot, out var item, amount)) {
+				to.InsertItem(user, ref item);
+				from.InsertItem(user, ref item);
 			}
 		}
 
@@ -57,7 +67,7 @@ namespace Terraria.ModLoader.Container
 				Item item = storage[i];
 				if (!item.IsAir) {
 					Item.NewItem(hitbox, item.type, item.stack, prefixGiven: item.prefix);
-					storage.RemoveItem(i, user);
+					storage.RemoveItem(user, i);
 				}
 			}
 		}
@@ -70,7 +80,7 @@ namespace Terraria.ModLoader.Container
 				Item inventory = player.inventory[i];
 
 				if (!inventory.IsAir && storage.Contains(inventory.type)) 
-					storage.InsertItem(ref inventory, player);
+					storage.InsertItem(player, ref inventory);
 			}
 
 			SoundEngine.PlaySound(SoundID.Grab);
@@ -90,7 +100,7 @@ namespace Terraria.ModLoader.Container
 						player.GetItem(player.whoAmI, split, GetItemSettings.LootAllSettings);
 					}
 
-					storage.RemoveItem(i, player, out _);
+					storage.RemoveItem(player, i, out _);
 				}
 			}
 		}
@@ -110,7 +120,7 @@ namespace Terraria.ModLoader.Container
 
 				player.GetItem(player.whoAmI, n, GetItemSettings.LootAllSettings);
 
-				storage.ModifyStackSize(slot, -count, player);
+				storage.ModifyStackSize(player, slot, -count);
 			}
 		}
 
@@ -121,7 +131,7 @@ namespace Terraria.ModLoader.Container
 			for (int i = 49; i >= 10; i--) {
 				Item item = player.inventory[i];
 				if (item.IsAir || item.favorited) continue;
-				storage.InsertItem(ref item, player);
+				storage.InsertItem(player, ref item);
 			}
 
 			SoundEngine.PlaySound(SoundID.Grab);
