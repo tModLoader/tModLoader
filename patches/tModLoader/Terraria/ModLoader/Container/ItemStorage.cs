@@ -17,7 +17,7 @@ namespace Terraria.ModLoader.Container
 
 		protected Item[] Items;
 
-		public int Count => Items.Count;
+		public int Count => Items.Length;
 
 		public Item this[int index] => Items[index];
 
@@ -258,7 +258,7 @@ namespace Terraria.ModLoader.Container
 			Items = new Item[size];
 
 			for (int i = 0; i < Count; i++) {
-				Items.Add(ItemIO.Receive(reader, true, true));
+				Items[i] = ItemIO.Receive(reader, true, true);
 			}
 		}
 		#endregion
@@ -280,7 +280,7 @@ namespace Terraria.ModLoader.Container
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		public override string ToString() {
-			return $"{GetType()} with {Items.Count} slots";
+			return $"{GetType()} with {Count} slots";
 		}
 	}
 }
