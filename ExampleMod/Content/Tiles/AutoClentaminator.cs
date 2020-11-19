@@ -49,9 +49,9 @@ namespace ExampleMod.Content.Tiles
 			ItemStorage storage = te.GetItemStorage();
 
 			Item item = new Item(ItemID.PurpleSolution) { stack = 5 };
-			storage.InsertItem(0, ref item, true);
+			storage.InsertItem(Main.LocalPlayer, 0, ref item);
 			Main.NewText($"Inserted {5 - item.stack} items");
-			Item itemInSlot = storage.GetItemInSlot(0);
+			Item itemInSlot = storage[0];
 			Main.NewText($"Currently has {itemInSlot.Name} x{itemInSlot.stack}");
 
 			return true;

@@ -5,20 +5,31 @@ using Microsoft.Xna.Framework;
 using Terraria.Audio;
 using Terraria.ID;
 
+#nullable enable
 namespace Terraria.ModLoader.Container
 {
 	public static class ItemStorageUtility
 	{
-		public static bool Contains(this ItemStorage storage, int type) => storage.Items.Any(item => !item.IsAir && item.type == type);
+		public static bool Contains(this ItemStorage storage, int type) => storage.Any(item => !item.IsAir && item.type == type);
 
-		public static bool Contains(this ItemStorage storage, Item item) => storage.Items.Any(item.IsTheSameAs);
+		public static bool Contains(this ItemStorage storage, Item item) => storage.Any(item.IsTheSameAs);
 
 		/// <summary>
-		///     Gets the coin value for a given item handler
+		/// If you need to check if a storage contains an item, use <see cref="Contains(ItemStorage, int)"/>. It is much faster.
+		/// </summary>
+		public static int Count(this ItemStorage storage, int type) => storage.Count(item => !item.IsAir && item.type == type);
+
+		/// <summary>
+		/// If you need to check if a storage contains an item, use <see cref="Contains(ItemStorage, Item)"/>. It is much faster.
+		/// </summary>
+		public static int Count(this ItemStorage storage, Item item) => storage.Count(item.IsTheSameAs);
+
+		/// <summary>
+		/// Gets the coin value for a storage.
 		/// </summary>
 		public static long CountCoins(this ItemStorage storage) {
 			long num = 0L;
-			foreach (Item item in storage.Items) {
+			foreach (Item item in storage) {
 				if (item.IsAir) continue;
 
 				num += item.type switch {
@@ -33,52 +44,72 @@ namespace Terraria.ModLoader.Container
 			return num;
 		}
 
-		public static void DropItems(this ItemStorage storage, Rectangle hitbox) {
-			for (int i = 0; i < storage.Length; i++) {
-				ref Item item = ref storage.GetItemInSlot(i);
+		/// <summary>
+		/// Transfers an item from one item storage to another.
+		/// </summary>
+		/// <param name="from">The item storage to take from.</param>
+		/// <param name="user">The object doing this.</param>
+		/// <param name="to">The item storage to send into.</param>
+		/// <param name="fromSlot">The slot to take from.</param>
+		/// <param name="amount">The amount of items to take from the slot.</param>
+		public static void Transfer(this ItemStorage from, object? user, ItemStorage to, int fromSlot, int amount) {
+			if (from.RemoveItem(user, fromSlot, out var item, amount)) {
+				to.InsertItem(user, ref item);
+				from.InsertItem(user, ref item);
+			}
+		}
+
+		/// <summary>
+		/// Drops items from the storage into the rectangle specified.
+		/// </summary>
+		public static void DropItems(this ItemStorage storage, object? user, Rectangle hitbox) {
+			for (int i = 0; i < storage.Count; i++) {
+				Item item = storage[i];
 				if (!item.IsAir) {
 					Item.NewItem(hitbox, item.type, item.stack, prefixGiven: item.prefix);
-					item.TurnToAir();
-					storage.OnContentsChanged(i, false);
+					storage.RemoveItem(user, i);
 				}
 			}
 		}
 
 		/// <summary>
-		///     Quick stacks player's items into the ItemStorage
+		/// Quick stacks player's items into the storage.
 		/// </summary>
 		public static void QuickStack(this Player player, ItemStorage storage) {
 			for (int i = 49; i >= 10; i--) {
-				ref Item inventory = ref player.inventory[i];
+				Item inventory = player.inventory[i];
 
-				if (!inventory.IsAir && storage.Contains(inventory.type)) storage.InsertItem(ref inventory, true);
+				if (!inventory.IsAir && storage.Contains(inventory.type)) 
+					storage.InsertItem(player, ref inventory);
 			}
 
 			SoundEngine.PlaySound(SoundID.Grab);
 		}
 
 		/// <summary>
-		///     Loots ItemStorage's items into player's inventory
+		/// Loots storage's items into a player's inventory
 		/// </summary>
 		public static void LootAll(this Player player, ItemStorage storage) {
-			for (int i = 0; i < storage.Length; i++) {
-				ref Item item = ref storage.GetItemInSlot(i);
+			for (int i = 0; i < storage.Count; i++) {
+				Item item = storage[i];
 				if (!item.IsAir) {
 					item.position = player.Center;
 					item.noGrabDelay = 0;
 
-					item = Combine(item.Split().Select(split => player.GetItem(player.whoAmI, split, GetItemSettings.LootAllSettings)));
+					foreach (var split in item.Split()) {
+						player.GetItem(player.whoAmI, split, GetItemSettings.LootAllSettings);
+					}
 
-					storage.OnContentsChanged(i, true);
+					storage.RemoveItem(player, i, out _);
 				}
 			}
 		}
 
 		/// <summary>
-		///     Loots ItemStorage's items into player's inventory
+		/// Loots storage's items into the player's inventory.
 		/// </summary>
 		public static void Loot(this Player player, ItemStorage storage, int slot) {
-			ref Item item = ref storage.GetItemInSlot(slot);
+			Item item = storage[slot];
 			if (!item.IsAir) {
 				Item n = new Item(item.type);
 
@@ -89,26 +120,26 @@ namespace Terraria.ModLoader.Container
 
 				player.GetItem(player.whoAmI, n, GetItemSettings.LootAllSettings);
 
-				item.stack -= count;
-				if (item.stack <= 0) item.TurnToAir();
-
-				storage.OnContentsChanged(slot, true);
+				storage.ModifyStackSize(player, slot, -count);
 			}
 		}
 
 		/// <summary>
-		///     Deposits player's items into the ItemStorage
+		/// Deposits a player's items into storage.
 		/// </summary>
 		public static void DepositAll(this Player player, ItemStorage storage) {
 			for (int i = 49; i >= 10; i--) {
-				ref Item item = ref player.inventory[i];
+				Item item = player.inventory[i];
 				if (item.IsAir || item.favorited) continue;
-				storage.InsertItem(ref item);
+				storage.InsertItem(player, ref item);
 			}
 
 			SoundEngine.PlaySound(SoundID.Grab);
 		}
 
+		/// <summary>
+		/// Combines several stacks of items into one stack, disregarding max stack.
+		/// </summary>
 		public static Item Combine(IEnumerable<Item> items) {
 			Item ret = new Item();
 
@@ -124,6 +155,9 @@ namespace Terraria.ModLoader.Container
 			return ret;
 		}
 
+		/// <summary>
+		/// Splits a stack of items into separate stacks that respect max stack.
+		/// </summary>
 		public static IEnumerable<Item> Split(this Item item) {
 			while (item.stack > 0) {
 				Item clone = item.Clone();
