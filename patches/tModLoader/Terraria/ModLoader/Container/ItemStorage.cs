@@ -46,7 +46,7 @@ namespace Terraria.ModLoader.Container
 		/// Puts an item into the storage.
 		/// </summary>
 		/// <param name="slot">The slot.</param>
-		/// <param name="item">The item. If the item cannot be fully inserted, then part of it will be, and this instance will have its stack reduced accordingly.</param>
+		/// <param name="item">The item.</param>
 		/// <param name="user">The object doing this.</param>
 		/// <returns>True if the item was successfully inserted. False if the item is air, if the slot is already fully occupied, if the slot rejects the item, or if the slot rejects the user.</returns>
 		public bool InsertItem(int slot, ref Item item, object? user) {
@@ -80,25 +80,30 @@ namespace Terraria.ModLoader.Container
 		/// <summary>
 		/// Puts an item into storage, disregarding what slots to put it in.
 		/// </summary>
-		/// <param name="item">The item to put in.</param>
+		/// <param name="item">The item to insert.</param>
 		/// <param name="user">The object doing this.</param>
 		public void InsertItem(ref Item item, object? user) {
+			if (item is null || item.IsAir) {
+				return;
+			}
+
 			for (int i = 0; i < Count; i++) {
 				Item other = Items[i];
 				if (CanItemsStack(item, other) && other.stack < other.maxStack) {
 					InsertItem(i, ref item, user);
-					if (item.IsAir || !item.active) return;
 				}
 			}
-
 			for (int i = 0; i < Count; i++) {
-				InsertItem(i, ref item, user);
-				if (item.IsAir) return;
+				Item other = Items[i];
+				if (other.IsAir) {
+					InsertItem(i, ref item, user);
+				}
 			}
 		}
 
 		/// <summary>
-		/// Removes an item from storage and returns the item that was grabbed.
+		/// Removes an item from storage and returns the item that was grabbed. 
+		/// <para/> Compare the stack of the <paramref name="item"/> parameter with the <paramref name="amount"/> parameter to see if the item was completely taken.
 		/// </summary>
 		/// <param name="slot">The slot.</param>
 		/// <param name="item">The item that is . Returns null if unsuccessful.</param>
