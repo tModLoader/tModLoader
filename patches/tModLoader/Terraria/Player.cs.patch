@@ -66,7 +66,7 @@
  		public int[] buffType = new int[22];
  		public int[] buffTime = new int[22];
  		public bool[] buffImmune = new bool[327];
-@@ -1059,16 +_,17 @@
+@@ -1059,18 +_,21 @@
  		public bool parryDamageBuff;
  		public bool ballistaPanic;
  		public bool JustDroppedAnItem;
@@ -80,9 +80,12 @@
 -		public float arrowDamage = 1f;
 -		public float rocketDamage = 1f;
 -		public float minionDamage = 1f;
-+		internal ref Modifier meleeCrit => ref GetCrit(DamageClass.Melee);
-+		internal ref Modifier magicCrit => ref GetCrit(DamageClass.Magic);
-+		internal ref Modifier rangedCrit => ref GetCrit(DamageClass.Ranged);
+-		public float minionKB;
+-		public float meleeSpeed = 1f;
++		public int allCrit;
++		internal ref int meleeCrit => ref GetCrit(DamageClass.Melee);
++		internal ref int magicCrit => ref GetCrit(DamageClass.Magic);
++		internal ref int rangedCrit => ref GetCrit(DamageClass.Ranged);
 +		public Modifier allDamage = Modifier.One;
 +		internal ref Modifier meleeDamage => ref GetDamage(DamageClass.Melee);
 +		internal ref Modifier magicDamage => ref GetDamage(DamageClass.Magic);
@@ -91,9 +94,12 @@
 +		public Modifier arrowDamage = Modifier.One;
 +		public Modifier rocketDamage = Modifier.One;
 +		internal ref Modifier minionDamage => ref GetDamage(DamageClass.Summon);
- 		public float minionKB;
- 		public float meleeSpeed = 1f;
++		public Modifier allKB = Modifier.One;
++		internal ref Modifier minionKB => ref GetKnockback(DamageClass.Summon);
++		public float meleeSpeed;
  		public float moveSpeed = 1f;
+ 		public float pickSpeed = 1f;
+ 		public float wallSpeed = 1f;
 @@ -1105,8 +_,26 @@
  		public bool oldAdjWater;
  		public bool oldAdjHoney;
@@ -912,6 +918,32 @@
  				if (buffType[j] == 1) {
  					lavaImmune = true;
  					fireWalk = true;
+@@ -6496,9 +_,12 @@
+ 				}
+ 				else if (buffType[j] == 321) {
+ 					int num = 10;
++					allCrit += num;
++					/*
+ 					meleeCrit += num;
+ 					rangedCrit += num;
+ 					magicCrit += num;
++					*/
+ 					minionDamage += (float)num / 100f;
+ 				}
+ 				else if (buffType[j] == 2) {
+@@ -6670,9 +_,12 @@
+ 					endurance += 0.1f;
+ 				}
+ 				else if (buffType[j] == 115) {
++					allCrit += 10;
++					/*
+ 					meleeCrit += 10;
+ 					rangedCrit += 10;
+ 					magicCrit += 10;
++					*/
+ 				}
+ 				else if (buffType[j] == 116) {
+ 					inferno = true;
 @@ -6716,10 +_,13 @@
  					}
  				}
@@ -1008,18 +1040,23 @@
  				}
  				else if (buffType[j] == 41) {
  					buffTime[j] = 18000;
-@@ -7939,13 +_,14 @@
+@@ -7938,14 +_,16 @@
+ 				else if (buffType[j] == 26) {
  					wellFed = true;
  					statDefense += 2;
- 					meleeCrit += 2;
++					//meleeCrit += 2;
+-					meleeCrit += 2;
++					allCrit += 2;
 -					meleeDamage += 0.05f;
 +					allDamage += 0.05f;
 +					//meleeDamage += 0.05f;
  					meleeSpeed += 0.05f;
- 					magicCrit += 2;
+-					magicCrit += 2;
++					//magicCrit += 2;
 -					magicDamage += 0.05f;
 +					//magicDamage += 0.05f;
- 					rangedCrit += 2;
+-					rangedCrit += 2;
++					//rangedCrit += 2;
 -					rangedDamage += 0.05f;
 +					//rangedDamage += 0.05f;
 -					minionDamage += 0.05f;
@@ -1027,6 +1064,54 @@
  					minionKB += 0.5f;
  					moveSpeed += 0.2f;
  					pickSpeed -= 0.05f;
+@@ -7953,14 +_,16 @@
+ 				else if (buffType[j] == 206) {
+ 					wellFed = true;
+ 					statDefense += 3;
++					//meleeCrit += 3;
+-					meleeCrit += 3;
++					allCrit += 3;
+-					meleeDamage += 0.075f;
++					allDamage += 0.075f;
++					//meleeDamage += 0.075f;
+ 					meleeSpeed += 0.075f;
+-					magicCrit += 3;
++					//magicCrit += 3;
+-					magicDamage += 0.075f;
++					//magicDamage += 0.075f;
+-					rangedCrit += 3;
++					//rangedCrit += 3;
+-					rangedDamage += 0.075f;
++					//rangedDamage += 0.075f;
+-					minionDamage += 0.075f;
++					//minionDamage += 0.075f;
+ 					minionKB += 0.75f;
+ 					moveSpeed += 0.3f;
+ 					pickSpeed -= 0.1f;
+@@ -7968,14 +_,16 @@
+ 				else if (buffType[j] == 207) {
+ 					wellFed = true;
+ 					statDefense += 4;
++					//meleeCrit += 4;
+-					meleeCrit += 4;
++					allCrit += 4;
+-					meleeDamage += 0.1f;
++					allDamage += 0.1f;
++					//meleeDamage += 0.1f;
+ 					meleeSpeed += 0.1f;
+-					magicCrit += 4;
++					//magicCrit += 4;
+-					magicDamage += 0.1f;
++					//magicDamage += 0.1f;
+-					rangedCrit += 4;
++					//rangedCrit += 4;
+-					rangedDamage += 0.1f;
++					//rangedDamage += 0.1f;
+-					minionDamage += 0.1f;
++					//minionDamage += 0.1f;
+ 					minionKB += 1f;
+ 					moveSpeed += 0.4f;
+ 					pickSpeed -= 0.15f;
 @@ -8004,6 +_,8 @@
  				else if (buffType[j] == 79) {
  					meleeEnchant = 8;
@@ -1081,7 +1166,7 @@
  					continue;
  
  				int type2 = armor[k].type;
-@@ -8576,10 +_,13 @@
+@@ -8576,13 +_,19 @@
  					armorPenetration += 5;
  
  				if (armor[k].type == 2277) {
@@ -1092,9 +1177,28 @@
  					rangedDamage += 0.05f;
  					minionDamage += 0.05f;
 +					*/
++					allCrit += 5;
++					/*
  					magicCrit += 5;
  					rangedCrit += 5;
  					meleeCrit += 5;
++					*/
+ 					meleeSpeed += 0.1f;
+ 					moveSpeed += 0.1f;
+ 				}
+@@ -8597,9 +_,12 @@
+ 					nightVision = true;
+ 
+ 				if (armor[k].type == 256 || armor[k].type == 257 || armor[k].type == 258) {
++					allCrit += 3;
++					/*
+ 					rangedCrit += 3;
+ 					meleeCrit += 3;
+ 					magicCrit += 3;
++					*/
+ 				}
+ 
+ 				if (armor[k].type == 3374)
 @@ -8644,10 +_,13 @@
  					meleeSpeed += 0.07f;
  
@@ -1109,7 +1213,97 @@
  				}
  
  				if (armor[k].type == 231)
-@@ -8781,9 +_,9 @@
+@@ -8676,16 +_,22 @@
+ 				}
+ 
+ 				if (armor[k].type == 374) {
++					allCrit += 5;
++					/*
+ 					magicCrit += 5;
+ 					meleeCrit += 5;
+ 					rangedCrit += 5;
++					*/
+ 				}
+ 
+ 				if (armor[k].type == 375) {
++					allDamage += 0.03f;
++					/*
+ 					rangedDamage += 0.03f;
+ 					meleeDamage += 0.03f;
+ 					magicDamage += 0.03f;
+ 					minionDamage += 0.03f;
++					*/
+ 					moveSpeed += 0.1f;
+ 				}
+ 
+@@ -8705,16 +_,22 @@
+ 				}
+ 
+ 				if (armor[k].type == 379) {
++					allDamage += 0.07f;
++					/*
+ 					rangedDamage += 0.07f;
+ 					meleeDamage += 0.07f;
+ 					magicDamage += 0.07f;
+ 					minionDamage += 0.07f;
++					*/
+ 				}
+ 
+ 				if (armor[k].type == 380) {
++					allCrit += 10;
++					/*
+ 					magicCrit += 10;
+ 					meleeCrit += 10;
+ 					rangedCrit += 10;
++					*/
+ 				}
+ 
+ 				if (armor[k].type >= 2367 && armor[k].type <= 2369)
+@@ -8737,16 +_,22 @@
+ 				}
+ 
+ 				if (armor[k].type == 403) {
++					allDamage += 0.08f;
++					/*
+ 					rangedDamage += 0.08f;
+ 					meleeDamage += 0.08f;
+ 					magicDamage += 0.08f;
+ 					minionDamage += 0.08f;
++					*/
+ 				}
+ 
+ 				if (armor[k].type == 404) {
++					allCrit += 7;
++					/*
+ 					magicCrit += 7;
+ 					meleeCrit += 7;
+ 					rangedCrit += 7;
++					*/
+ 					moveSpeed += 0.05f;
+ 				}
+ 
+@@ -8767,6 +_,9 @@
+ 				}
+ 
+ 				if (armor[k].type == 1208) {
++					allDamage += 0.03f;
++					allCrit += 2;
++					/*
+ 					meleeDamage += 0.03f;
+ 					rangedDamage += 0.03f;
+ 					magicDamage += 0.03f;
+@@ -8774,16 +_,21 @@
+ 					magicCrit += 2;
+ 					meleeCrit += 2;
+ 					rangedCrit += 2;
++					*/
+ 				}
+ 
+ 				if (armor[k].type == 1209) {
++					allDamage += 0.02f;
++					allCrit += 1;
++					/*
+ 					meleeDamage += 0.02f;
  					rangedDamage += 0.02f;
  					magicDamage += 0.02f;
  					minionDamage += 0.02f;
@@ -1119,10 +1313,145 @@
 +					magicCrit += 1;
 +					meleeCrit += 1;
 +					rangedCrit += 1;
++					*/
  				}
  
  				if (armor[k].type == 1210) {
-@@ -9214,31 +_,43 @@
+@@ -8803,9 +_,12 @@
+ 				}
+ 
+ 				if (armor[k].type == 1213) {
++					allCrit += 6;
++					/*
+ 					magicCrit += 6;
+ 					meleeCrit += 6;
+ 					rangedCrit += 6;
++					*/
+ 				}
+ 
+ 				if (armor[k].type == 1214)
+@@ -8829,6 +_,9 @@
+ 				}
+ 
+ 				if (armor[k].type == 1218) {
++					allDamage += 0.04f;
++					allCrit += 3;
++					/*
+ 					meleeDamage += 0.04f;
+ 					rangedDamage += 0.04f;
+ 					magicDamage += 0.04f;
+@@ -8836,9 +_,13 @@
+ 					magicCrit += 3;
+ 					meleeCrit += 3;
+ 					rangedCrit += 3;
++					*/
+ 				}
+ 
+ 				if (armor[k].type == 1219) {
++					allDamage += 0.03f;
++					allCrit += 3;
++					/*
+ 					meleeDamage += 0.03f;
+ 					rangedDamage += 0.03f;
+ 					magicDamage += 0.03f;
+@@ -8846,6 +_,7 @@
+ 					magicCrit += 3;
+ 					meleeCrit += 3;
+ 					rangedCrit += 3;
++					*/
+ 					moveSpeed += 0.06f;
+ 				}
+ 
+@@ -8872,31 +_,43 @@
+ 				}
+ 
+ 				if (armor[k].type == 551 || armor[k].type == 4900) {
++					allCrit += 7;
++					/*
+ 					magicCrit += 7;
+ 					meleeCrit += 7;
+ 					rangedCrit += 7;
++					*/
+ 				}
+ 
+ 				if (armor[k].type == 552 || armor[k].type == 4901) {
++					allDamage += 0.07f;
++					/*
+ 					rangedDamage += 0.07f;
+ 					meleeDamage += 0.07f;
+ 					magicDamage += 0.07f;
+ 					minionDamage += 0.07f;
++					*/
+ 					moveSpeed += 0.08f;
+ 				}
+ 
+ 				if (armor[k].type == 4982) {
++					allCrit += 5;
++					/*
+ 					rangedCrit += 5;
+ 					meleeCrit += 5;
+ 					magicCrit += 5;
++					*/
+ 					manaCost -= 0.1f;
+ 				}
+ 
+ 				if (armor[k].type == 4983) {
++					allDamage += 0.05f;
++					/*
+ 					rangedDamage += 0.05f;
+ 					meleeDamage += 0.05f;
+ 					magicDamage += 0.05f;
+ 					minionDamage += 0.05f;
++					*/
+ 					huntressAmmoCost90 = true;
+ 				}
+ 
+@@ -8922,6 +_,9 @@
+ 				}
+ 
+ 				if (armor[k].type == 1004) {
++					allDamage += 0.05f;
++					allCrit += 7;
++					/*
+ 					meleeDamage += 0.05f;
+ 					magicDamage += 0.05f;
+ 					rangedDamage += 0.05f;
+@@ -8929,12 +_,16 @@
+ 					magicCrit += 7;
+ 					meleeCrit += 7;
+ 					rangedCrit += 7;
++					*/
+ 				}
+ 
+ 				if (armor[k].type == 1005) {
++					allCrit += 8;
++					/*
+ 					magicCrit += 8;
+ 					meleeCrit += 8;
+ 					rangedCrit += 8;
++					*/
+ 					moveSpeed += 0.05f;
+ 				}
+ 
+@@ -9202,43 +_,61 @@
+ 					statManaMax2 += 20;
+ 
+ 				if (armor[k].prefix == 67) {
++					allCrit += 2;
++					/*
+ 					meleeCrit += 2;
+ 					rangedCrit += 2;
+ 					magicCrit += 2;
++					*/
+ 				}
+ 
+ 				if (armor[k].prefix == 68) {
++					allCrit += 4;
++					/*
+ 					meleeCrit += 4;
+ 					rangedCrit += 4;
+ 					magicCrit += 4;
++					*/
  				}
  
  				if (armor[k].prefix == 69) {
@@ -1189,7 +1518,7 @@
  			}
  
  			equippedAnyWallSpeedAcc = false;
-@@ -9274,21 +_,24 @@
+@@ -9274,21 +_,25 @@
  
  			for (int l = 3; l < 10; l++) {
  				if (IsAValidEquipmentSlotForIteration(l))
@@ -1203,16 +1532,20 @@
  				lifeRegen += 2;
  				statDefense += 4;
  				meleeSpeed += 0.1f;
--				meleeDamage += 0.1f;
 +				allDamage += 0.1f;
++				allCrit += 2;
+-				meleeDamage += 0.1f;
 +				//meleeDamage += 0.1f;
- 				meleeCrit += 2;
+-				meleeCrit += 2;
++				//meleeCrit += 2;
 -				rangedDamage += 0.1f;
 +				//rangedDamage += 0.1f;
- 				rangedCrit += 2;
+-				rangedCrit += 2;
++				//rangedCrit += 2;
 -				magicDamage += 0.1f;
 +				//magicDamage += 0.1f;
- 				magicCrit += 2;
+-				magicCrit += 2;
++				//magicCrit += 2;
  				pickSpeed -= 0.15f;
 -				minionDamage += 0.1f;
 +				//minionDamage += 0.1f;
@@ -1278,13 +1611,17 @@
  				return;
  
  			if (currentItem.type == 3810 || currentItem.type == 3809 || currentItem.type == 3812 || currentItem.type == 3811)
-@@ -9636,10 +_,13 @@
+@@ -9633,6 +_,9 @@
+ 
+ 			if (currentItem.type == 3015) {
+ 				aggro -= 400;
++				allDamage += 0.05f;
++				allCrit += 5;
++				/*
  				meleeCrit += 5;
  				magicCrit += 5;
  				rangedCrit += 5;
-+				allDamage += 0.05f;
-+				/*
- 				meleeDamage += 0.05f;
+@@ -9640,6 +_,7 @@
  				magicDamage += 0.05f;
  				rangedDamage += 0.05f;
  				minionDamage += 0.05f;
@@ -1292,13 +1629,17 @@
  			}
  
  			if (currentItem.type == 3016)
-@@ -9827,10 +_,13 @@
+@@ -9824,6 +_,9 @@
+ 			}
+ 
+ 			if (currentItem.type == 1301) {
++				allDamage += 0.1f;
++				allCrit += 8;
++				/*
  				meleeCrit += 8;
  				rangedCrit += 8;
  				magicCrit += 8;
-+				allDamage += 0.1f;
-+				/*
- 				meleeDamage += 0.1f;
+@@ -9831,6 +_,7 @@
  				rangedDamage += 0.1f;
  				magicDamage += 0.1f;
  				minionDamage += 0.1f;
@@ -1306,6 +1647,19 @@
  			}
  
  			if (currentItem.type == 111)
+@@ -9873,9 +_,12 @@
+ 			}
+ 
+ 			if (currentItem.type == 1248) {
++				allCrit += 10;
++				/*
+ 				meleeCrit += 10;
+ 				rangedCrit += 10;
+ 				magicCrit += 10;
++				*/
+ 			}
+ 
+ 			if (currentItem.type == 854)
 @@ -10007,7 +_,7 @@
  			if (currentItem.type == 861) {
  				accMerman = true;
@@ -1418,6 +1772,26 @@
  					if (buffType[n] == 60)
  						DelBuff(n);
  				}
+@@ -11090,13 +_,19 @@
+ 
+ 			if (head == 261 && body == 230 && legs == 213) {
+ 				setBonus = Language.GetTextValue("ArmorSetBonus.CrystalNinja");
++				allDamage += 0.1f;
++				/*
+ 				rangedDamage += 0.1f;
+ 				meleeDamage += 0.1f;
+ 				magicDamage += 0.1f;
+ 				minionDamage += 0.1f;
++				*/
++				allCrit += 10;
++				/*
+ 				rangedCrit += 10;
+ 				meleeCrit += 10;
+ 				magicCrit += 10;
++				*/
+ 				dashType = 5;
+ 			}
+ 
 @@ -11130,7 +_,7 @@
  				int num9 = 180;
  				if (solarCounter >= num9) {
@@ -1526,7 +1900,7 @@
  								SmartSelect_SelectItem(i);
  								return;
  						}
-@@ -12711,13 +_,14 @@
+@@ -12711,16 +_,19 @@
  			lifeRegen = 0;
  			manaCost = 1f;
  			meleeSpeed = 1f;
@@ -1534,20 +1908,23 @@
 -			rangedDamage = 1f;
 -			magicDamage = 1f;
 -			minionDamage = 1f;
--			meleeCrit = 4;
--			rangedCrit = 4;
--			magicCrit = 4;
 +			allDamage = Modifier.One;
 +			meleeDamage = Modifier.One;
 +			rangedDamage = Modifier.One;
 +			magicDamage = Modifier.One;
 +			minionDamage = Modifier.One;
-+			meleeCrit = new Modifier(4);
-+			rangedCrit = new Modifier(4);
-+			magicCrit = new Modifier(4);
++			allCrit = 0;
+ 			meleeCrit = 4;
+ 			rangedCrit = 4;
+ 			magicCrit = 4;
  			hasFootball = false;
  			drawingFootball = false;
- 			minionKB = 0f;
+-			minionKB = 0f;
++			allKB = Modifier.One;
++			minionKB = Modifier.One;
+ 			moveSpeed = 1f;
+ 			boneArmor = false;
+ 			honey = false;
 @@ -12762,9 +_,9 @@
  			ammoCost75 = false;
  			manaRegenBuff = false;
@@ -1678,24 +2055,50 @@
  						float knockback = 5f;
  						int direction = base.direction;
  						if (velocity.X < 0f)
-@@ -14643,7 +_,7 @@
+@@ -14643,16 +_,18 @@
  
  						Rectangle rect = nPC.getRect();
  						if (rectangle.Intersects(rect) && (nPC.noTileCollide || CanHit(nPC))) {
 -							float num = 30f * meleeDamage;
-+							float num = 30f * meleeDamage.additive;
++							float num = 30f * (allDamage & meleeDamage);
  							float num2 = 9f;
++							num2 *= allKB & GetKnockback(DamageClass.Melee);
  							bool crit = false;
++							/*
  							if (kbGlove)
-@@ -14693,7 +_,7 @@
+ 								num2 *= 2f;
+ 
+ 							if (kbBuff)
+ 								num2 *= 1.5f;
+-
+-							if (Main.rand.Next(100) < meleeCrit)
++							*/
++							if (Main.rand.Next(100) < allCrit + meleeCrit)
+ 								crit = true;
+ 
+ 							int num3 = base.direction;
+@@ -14693,16 +_,18 @@
  							ConsumeSolarFlare();
  						}
  
 -						float num4 = 150f * meleeDamage;
-+						float num4 = 150f * meleeDamage.additive;
++						float num4 = 150f * (allDamage & meleeDamage);
  						float num5 = 9f;
++						num5 *= allKB & GetKnockback(DamageClass.Melee);
  						bool crit2 = false;
++						/*
  						if (kbGlove)
+ 							num5 *= 2f;
+ 
+ 						if (kbBuff)
+ 							num5 *= 1.5f;
+-
+-						if (Main.rand.Next(100) < meleeCrit)
++						*/
++						if (Main.rand.Next(100) < allCrit + meleeCrit)
+ 							crit2 = true;
+ 
+ 						int direction = base.direction;
 @@ -15232,8 +_,10 @@
  				float num5 = 0.1f;
  				if (wingsLogic == 26) {
@@ -1852,10 +2255,11 @@
  			if (maxTurretsOld != maxTurrets) {
  				UpdateMaxTurrets();
  				maxTurretsOld = maxTurrets;
-@@ -17943,8 +_,10 @@
+@@ -17943,8 +_,11 @@
  
  				meleeDamage += (1f - stealth) * 3f;
  				meleeCrit += (int)((1f - stealth) * 30f);
++				GetKnockback(DamageClass.Melee).additive += GetKnockback(DamageClass.Melee).additive * (1f - stealth);
 +				/*
  				if (meleeCrit > 100)
 -					meleeCrit = 100;
@@ -1864,6 +2268,22 @@
  
  				aggro -= (int)((1f - stealth) * 750f);
  				if (stealthTimer > 0)
+@@ -17976,6 +_,7 @@
+ 
+ 				rangedDamage += (1f - stealth) * 0.6f;
+ 				rangedCrit += (int)((1f - stealth) * 10f);
++				GetKnockback(DamageClass.Ranged) *= 1f + (1f - stealth) * 0.5f;
+ 				aggro -= (int)((1f - stealth) * 750f);
+ 				if (stealthTimer > 0)
+ 					stealthTimer--;
+@@ -17995,6 +_,7 @@
+ 
+ 					rangedDamage += (1f - stealth) * 0.8f;
+ 					rangedCrit += (int)((1f - stealth) * 20f);
++					GetKnockback(DamageClass.Ranged) *= 1f + (1f - stealth) * 0.5f;
+ 					aggro -= (int)((1f - stealth) * 1200f);
+ 					accRunSpeed *= 0.3f;
+ 					maxRunSpeed *= 0.3f;
 @@ -18095,6 +_,7 @@
  			}
  
@@ -2844,16 +3264,36 @@
  						ItemCheck_Shoot(i, item, weaponDamage);
  
  					ItemCheck_UseWiringTools(item);
-@@ -29910,6 +_,9 @@
+@@ -29899,6 +_,18 @@
+ 						if (Main.myPlayer == i && item.damage > 0) {
+ 							int num = weaponDamage;
+ 							float knockBack = item.knockBack;
++							Modifier knockBackMult = allKB & GetKnockback(item.DamageType);
++							if (item.DamageType.BenefitsFrom() != null) {
++								foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
++									if (item.DamageType.BenefitsFrom().ContainsKey(damageClass)) {
++										Modifier addKB = GetKnockback(damageClass);
++										addKB *= item.DamageType.BenefitsFrom()[damageClass];
++										knockBackMult &= addKB;
++									}
++								}
++							}
++							knockBack *= knockBackMult;
++							/*
+ 							float num2 = 1f;
+ 							if (kbGlove)
+ 								num2 += 1f;
+@@ -29909,6 +_,10 @@
+ 							knockBack *= num2;
  							if (inventory[selectedItem].type == 3106)
  								knockBack += knockBack * (1f - stealth);
- 
++							*/
++
 +							ItemLoader.GetWeaponKnockback(item, this, ref knockBack);
 +							PlayerHooks.GetWeaponKnockback(this, item, ref knockBack);
-+
+ 
  							List<ushort> ignoreList2 = ItemCheck_GetTileCutIgnoreList(item);
  							ItemCheck_CutTiles(item, itemRectangle, ignoreList2);
- 							ItemCheck_MeleeHitNPCs(item, itemRectangle, num, knockBack);
 @@ -29920,6 +_,9 @@
  				}
  
@@ -3221,10 +3661,31 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -36350,48 +_,75 @@
+@@ -36335,6 +_,18 @@
+ 		}
+ 
+ 		public float GetWeaponKnockback(Item sItem, float KnockBack) {
++			Modifier knockBackMult = allKB & GetKnockback(sItem.DamageType);
++			if (sItem.DamageType.BenefitsFrom() != null) {
++				foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
++					if (sItem.DamageType.BenefitsFrom().ContainsKey(damageClass)) {
++						Modifier addKB = GetKnockback(damageClass);
++						addKB *= sItem.DamageType.BenefitsFrom()[damageClass];
++						knockBackMult &= addKB;
++					}
++				}
++			}
++			KnockBack *= knockBackMult;
++			/*
+ 			if (sItem.summon)
+ 				KnockBack += minionKB;
+ 
+@@ -36349,49 +_,95 @@
+ 
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
- 
+-
++			*/
 +			ItemLoader.GetWeaponKnockback(sItem, this, ref KnockBack);
 +			PlayerHooks.GetWeaponKnockback(this, sItem, ref KnockBack);
  			return KnockBack;
@@ -3234,9 +3695,18 @@
 +			int crit = 0;
 +
 +			if (sItem.DamageType != null) {
-+				crit += GetCrit(sItem.DamageType);
-+				goto SkipVanillaCrit;
++				crit = GetCrit(sItem.DamageType);
++				if (sItem.DamageType.BenefitsFrom() != null) {
++					foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
++						if (sItem.DamageType.BenefitsFrom().ContainsKey(damageClass)) {
++							float addCrit = (float)GetCrit(damageClass);
++							addCrit *= sItem.DamageType.BenefitsFrom()[damageClass];
++							crit += (int)addCrit;
++						}
++					}
++				}
 +			}
++			goto SkipVanillaCrit;
 +
  			if (sItem.melee)
 -				return meleeCrit;
@@ -3283,19 +3753,30 @@
 -			}
 -
 -			return num;
-+			if (sItem.DamageType == null && (!sItem.modItem?.IgnoreDamageModifiers ?? true)) {
++			if (sItem.DamageType == null && (!sItem.modItem?.IgnoreDamageModifiers ?? true))
 +				return (int)(sItem.damage * (float)allDamage);
-+			}
-+			
-+			Modifier damage = allDamage & GetDamage(sItem.DamageType);
 +
++			if (sItem.modItem?.IgnoreDamageModifiers == true)
++				return sItem.damage;
++
++			Modifier damage = allDamage & GetDamage(sItem.DamageType);
++			if (sItem.DamageType.BenefitsFrom() != null) {
++				foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
++					if (sItem.DamageType.BenefitsFrom().ContainsKey(damageClass)) {
++						Modifier addDamage = GetDamage(damageClass);
++						addDamage *= sItem.DamageType.BenefitsFrom()[damageClass];
++						damage &= addDamage;
++					}
++				}
++			}
++			/*
 +			if (sItem.melee) {
 +				damage &= meleeDamage;
 +			}
 +
 +			if (sItem.ranged) {
 +				damage &= rangedDamage;
-+				if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
++			*/	if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
 +					damage &= arrowDamage;
 +
 +				if (sItem.useAmmo == AmmoID.Arrow && archery)
@@ -3306,6 +3787,7 @@
 +
 +				if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly)
 +					damage &= rocketDamage;
++			/*
 +			}
 +
 +			if (sItem.magic) {
@@ -3315,9 +3797,7 @@
 +			if (sItem.summon) {
 +				damage &= minionDamage;
 +			}
-+
-+			if (sItem.modItem?.IgnoreDamageModifiers == true)
-+				return sItem.damage;
++			*/
 +
 +			float flat = 0f;
 +			CombinedHooks.ModifyWeaponDamage(this, sItem, ref damage, ref flat);
@@ -3797,7 +4277,7 @@
  				}
  
  				return playerFileData;
-@@ -38226,7 +_,15 @@
+@@ -38226,7 +_,17 @@
  			return -1;
  		}
  
@@ -3808,6 +4288,8 @@
 +			buffTime = new int[MaxBuffs];
 +			buffImmune = new bool[BuffLoader.BuffCount]; // TODO: Move all these patches to field initializers.
 +			allDamage = Modifier.One;
++			allCrit = 4;
++			allKB = Modifier.One;
 +			ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount];
 +			npcTypeNoAggro = new bool[NPCLoader.NPCCount];
 +			PlayerHooks.SetupPlayer(this);

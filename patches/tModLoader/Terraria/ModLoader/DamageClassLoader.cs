@@ -7,6 +7,8 @@ namespace Terraria.ModLoader
 		public static int DamageClassCount => DamageClasses.Count;
 
 		internal static readonly List<DamageClass> DamageClasses = new List<DamageClass>() {
+			DamageClass.Generic,
+			DamageClass.NoScaling,
 			DamageClass.Melee,
 			DamageClass.Ranged,
 			DamageClass.Magic,

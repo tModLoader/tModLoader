@@ -84,5 +84,15 @@ namespace Terraria
 			Item.NewItem(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 		public static int NewItem(Vector2 position, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => 
 			NewItem((int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
+
+		public bool CountsAsClass(DamageClass damageClass) {
+			if (DamageType == damageClass)
+				return true;
+
+			if (DamageType.CountsAs() != null && DamageType.CountsAs().Contains(damageClass))
+				return true;
+
+			return false;
+		}
 	}
 }

@@ -31,7 +31,7 @@ namespace Terraria
 		/// <exception cref="NullReferenceException"/>
 		public T GetGlobalProjectile<T>(T baseInstance) where T : GlobalProjectile
 			=> baseInstance.Instance(this) as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current projectile.");
-		
+
 		/*
 		// TryGet
 
@@ -53,5 +53,15 @@ namespace Terraria
 			return result != null;
 		}
 		*/
+
+		public bool CountsAsClass(DamageClass damageClass) {
+			if (DamageType == damageClass)
+				return true;
+
+			if (DamageType.CountsAs() != null && DamageType.CountsAs().Contains(damageClass))
+				return true;
+
+			return false;
+		}
 	}
 }

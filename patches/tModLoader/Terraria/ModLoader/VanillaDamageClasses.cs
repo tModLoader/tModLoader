@@ -2,6 +2,16 @@
 
 namespace Terraria.ModLoader
 {
+	public class Generic : DamageClass
+	{
+		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.55");
+	}
+
+	public class NoScaling : DamageClass
+	{
+		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.55");
+	}
+
 	public class Melee : DamageClass
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.2");

@@ -36,7 +36,7 @@
  		public float minionSlots;
  		public int minionPos;
  		public int restrikeDelay;
-@@ -112,9 +_,22 @@
+@@ -112,9 +_,42 @@
  		public bool ownerHitCheck;
  		public int[] playerImmune = new int[255];
  		public string miscText = "";
@@ -44,20 +44,40 @@
 -		public bool ranged;
 -		public bool magic;
 +		internal bool melee {
-+			get => DamageType == DamageClass.Melee;
-+			set => DamageType = value ? DamageClass.Melee : (melee ? null : DamageType);
++			get => CountsAsClass(DamageClass.Melee);
++			set {
++				if (value)
++					DamageType = DamageClass.Melee;
++				else if (DamageType == DamageClass.Melee)
++					DamageType = DamageClass.Generic;
++			}
 +		}
 +		internal bool magic {
-+			get => DamageType == DamageClass.Magic;
-+			set => DamageType = value ? DamageClass.Magic : (magic ? null : DamageType);
++			get => CountsAsClass(DamageClass.Magic);
++			set {
++				if (value)
++					DamageType = DamageClass.Magic;
++				else if (DamageType == DamageClass.Magic)
++					DamageType = DamageClass.Generic;
++			}
 +		}
 +		internal bool ranged {
-+			get => DamageType == DamageClass.Ranged;
-+			set => DamageType = value ? DamageClass.Ranged : (ranged ? null : DamageType);
++			get => CountsAsClass(DamageClass.Ranged);
++			set {
++				if (value)
++					DamageType = DamageClass.Ranged;
++				else if (DamageType == DamageClass.Ranged)
++					DamageType = DamageClass.Generic;
++			}
 +		}
 +		internal bool minion {
-+			get => DamageType == DamageClass.Summon;
-+			set => DamageType = value ? DamageClass.Summon : (minion ? null : DamageType);
++			get => CountsAsClass(DamageClass.Summon);
++			set {
++				if (value)
++					DamageType = DamageClass.Summon;
++				else if (DamageType == DamageClass.Summon)
++					DamageType = DamageClass.Generic;
++			}
 +		}
  		public bool coldDamage;
  		public bool noEnchantments;
