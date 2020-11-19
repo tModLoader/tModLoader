@@ -421,6 +421,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile.
+		/// </summary>
+		public virtual void GrappleTargetPoint(Player player, ref float grappleX, ref float grappleY) {
+		}
+
+		/// <summary>
 		/// When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
 		/// </summary>
 		public virtual void DrawBehind(int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {

@@ -42,19 +42,7 @@ fi
 # tModLoader scripts for running with system mono put the kickstart libraries in a sys folder to avoid conflicts
 mv sys/* . 2> /dev/null
 
-# This simplifies manual install for OSX users.
-if [ "$ext" == "osx" ]; then
-	mv libMonoPosixHelper.dylib ./osx/libMonoPosixHelper.dylib 2> /dev/null
-fi
-rm MP3Sharp.dll Ionic.Zip.Reduced.dll Mono.Cecil.dll 2> /dev/null
-
 KICKSTART=./${BASENAME}.bin.${ext}
-
-# copy the Terraria and rename the terraria kickstart
-if [ ! -f ${KICKSTART} ]; then
-	kicks=( Terraria*.bin.${ext} ) # find a vanilla kickstart, either Terraria.bin. or TerrariaServer.bin.
-	cp "./${kicks[0]}" $KICKSTART
-fi
 
 export MONO_IOMAP=all
 $KICKSTART $@
