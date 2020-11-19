@@ -50,7 +50,7 @@ namespace Terraria.ModLoader.Container
 		/// <param name="slot">The slot.</param>
 		/// <param name="item">The item.</param>
 		/// <param name="user">The object doing this.</param>
-		/// <returns>True if the item was successfully inserted. False if the item is air, if the slot is already fully occupied, if the slot rejects the item, or if the slot rejects the user.</returns>
+		/// <returns>True if the item was successfully inserted, even partially. False if the item is air, if the slot is already fully occupied, if the slot rejects the item, or if the slot rejects the user.</returns>
 		public bool InsertItem(int slot, ref Item item, object? user) {
 			if (item == null || item.IsAir)
 				return false;
@@ -89,23 +89,26 @@ namespace Terraria.ModLoader.Container
 		/// </summary>
 		/// <param name="item">The item to insert.</param>
 		/// <param name="user">The object doing this.</param>
-		public void InsertItem(ref Item item, object? user) {
+		/// <returns>True if the item was successfully inserted, even partially. False if the item is air, if the slot is already fully occupied, if the slot rejects the item, or if the slot rejects the user.</returns>
+		public bool InsertItem(ref Item item, object? user) {
 			if (item is null || item.IsAir) {
-				return;
+				return false;
 			}
 
+			bool ret = false;
 			for (int i = 0; i < Count; i++) {
 				Item other = Items[i];
 				if (CanItemsStack(item, other) && other.stack < other.maxStack) {
-					InsertItem(i, ref item, user);
+					ret |= InsertItem(i, ref item, user);
 				}
 			}
 			for (int i = 0; i < Count; i++) {
 				Item other = Items[i];
 				if (other.IsAir) {
-					InsertItem(i, ref item, user);
+					ret |= InsertItem(i, ref item, user);
 				}
 			}
+			return ret;
 		}
 
 		/// <summary>

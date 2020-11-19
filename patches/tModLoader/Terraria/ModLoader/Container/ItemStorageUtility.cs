@@ -35,14 +35,29 @@ namespace Terraria.ModLoader.Container
 		}
 
 		/// <summary>
+		/// Transfers an item from one item storage to another.
+		/// </summary>
+		/// <param name="from">The item storage to take from.</param>
+		/// <param name="user">The object doing this.</param>
+		/// <param name="to">The item storage to send into.</param>
+		/// <param name="fromSlot">The slot to take from.</param>
+		/// <param name="amount">The amount of items to take from the slot.</param>
+		public static void Transfer(this ItemStorage from, object? user, ItemStorage to, int fromSlot, int amount) {
+			if (from.RemoveItem(fromSlot, user, out var item, amount)) {
+				to.InsertItem(ref item, user);
+				from.InsertItem(ref item, user);
+			}
+		}
+
+		/// <summary>
 		/// Drops items from the storage into the rectangle specified.
 		/// </summary>
-		public static void DropItems(this ItemStorage storage, object? sender, Rectangle hitbox) {
+		public static void DropItems(this ItemStorage storage, object? user, Rectangle hitbox) {
 			for (int i = 0; i < storage.Count; i++) {
 				Item item = storage[i];
 				if (!item.IsAir) {
 					Item.NewItem(hitbox, item.type, item.stack, prefixGiven: item.prefix);
-					storage.RemoveItem(i, sender);
+					storage.RemoveItem(i, user);
 				}
 			}
 		}
