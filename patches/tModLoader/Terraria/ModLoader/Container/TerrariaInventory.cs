@@ -2,9 +2,12 @@
 
 namespace Terraria.ModLoader.Container
 {
-	public sealed class PlayerInventory : HookedItemStorage
+	/// <summary>
+	/// Represents vanilla Terraria inventories. Chests, players, etc. Do not rely on vanilla to call hooks.
+	/// </summary>
+	public sealed class TerrariaInventory : HookedItemStorage
 	{
-		public PlayerInventory() : base(59) { }
+		public TerrariaInventory(int size) : base(size) { }
 
 		/// <summary>
 		/// Synonymous with Count; kept for backwards compatibility.
@@ -17,6 +20,6 @@ namespace Terraria.ModLoader.Container
 		/// <returns></returns>
 		public ref Item[] GetItemArray() => ref Items;
 
-		public static implicit operator Item[](PlayerInventory inv) => inv.Items;
+		public static implicit operator Item[](TerrariaInventory inv) => inv.Items;
 	}
 }

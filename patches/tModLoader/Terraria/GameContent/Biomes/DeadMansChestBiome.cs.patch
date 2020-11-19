@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/Biomes/DeadMansChestBiome.cs
++++ src/tModLoader/Terraria/GameContent/Biomes/DeadMansChestBiome.cs
+@@ -399,7 +_,7 @@
+ 
+ 			item[1] = new Item();
+ 			item[1].SetDefaults(5007);
+-			Main.chest[num3].item = item;
++			Main.chest[num3].item.GetItemArray() = item;
+ 		}
+ 
+ 		private void ActuallyPlaceDartTrap(Point position, int directionX, int x, int y, int xPush, Tile t) {

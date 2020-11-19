@@ -71,7 +71,7 @@
  		public float firstFractalAfterImageOpacity;
  		public string setBonus = "";
 -		public Item[] inventory = new Item[59];
-+		public Terraria.ModLoader.Container.PlayerInventory inventory = new Terraria.ModLoader.Container.PlayerInventory();
++		public Terraria.ModLoader.Container.TerrariaInventory inventory = new Terraria.ModLoader.Container.TerrariaInventory(59);
  		public bool[] inventoryChestStack = new bool[59];
  		public Item lastVisualizedSelectedItem;
  		public Chest bank = new Chest(bank: true);
