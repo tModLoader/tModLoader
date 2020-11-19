@@ -38,7 +38,7 @@ namespace Terraria.ModLoader.Container
 		/// Drops items from the storage into the rectangle specified.
 		/// </summary>
 		public static void DropItems(this ItemStorage storage, object? sender, Rectangle hitbox) {
-			for (int i = 0; i < storage.Length; i++) {
+			for (int i = 0; i < storage.Count; i++) {
 				Item item = storage[i];
 				if (!item.IsAir) {
 					Item.NewItem(hitbox, item.type, item.stack, prefixGiven: item.prefix);
@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.Container
 		/// </summary>
 		public static void QuickStack(this Player player, ItemStorage storage) {
 			for (int i = 49; i >= 10; i--) {
-				ref Item inventory = ref player.inventory[i];
+				Item inventory = player.inventory[i];
 
 				if (!inventory.IsAir && storage.Contains(inventory.type)) 
 					storage.InsertItem(ref inventory, player);
@@ -65,7 +65,7 @@ namespace Terraria.ModLoader.Container
 		/// Loots storage's items into a player's inventory
 		/// </summary>
 		public static void LootAll(this Player player, ItemStorage storage) {
-			for (int i = 0; i < storage.Length; i++) {
+			for (int i = 0; i < storage.Count; i++) {
 				Item item = storage[i];
 				if (!item.IsAir) {
 					item.position = player.Center;
@@ -95,7 +95,7 @@ namespace Terraria.ModLoader.Container
 
 				player.GetItem(player.whoAmI, n, GetItemSettings.LootAllSettings);
 
-				storage.Shrink(slot, count, player);
+				storage.ModifyStackSize(slot, -count, player);
 			}
 		}
 
@@ -104,7 +104,7 @@ namespace Terraria.ModLoader.Container
 		/// </summary>
 		public static void DepositAll(this Player player, ItemStorage storage) {
 			for (int i = 49; i >= 10; i--) {
-				ref Item item = ref player.inventory[i];
+				Item item = player.inventory[i];
 				if (item.IsAir || item.favorited) continue;
 				storage.InsertItem(ref item, player);
 			}
