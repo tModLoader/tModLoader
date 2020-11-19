@@ -38,14 +38,14 @@ namespace ExampleMod.Content.TileEntities
 					if (Vector2.DistanceSquared(item.Center, center) > Range * Range) continue;
 
 					item.noGrabDelay = 0;
-					itemStorage.InsertItem(ref item);
+					itemStorage.InsertItem(this, ref item);
 				}
 
 				int index = Chest.FindChest(Position.X - 2, Position.Y);
 				if (index == -1) index = Chest.FindChest(Position.X + 2, Position.Y);
 				if (index == -1) return;
 
-				foreach (Item item in itemStorage.Items) {
+				foreach (Item item in itemStorage) {
 					if (!item.active || item.IsAir) continue;
 
 					PlaceItemInChest(index, item);
@@ -116,7 +116,7 @@ namespace ExampleMod.Content.TileEntities
 		}
 
 		public override void OnKill() {
-			itemStorage.DropItems(new Rectangle(Position.X * 16, Position.Y * 16, 32, 32));
+			itemStorage.DropItems(this, new Rectangle(Position.X * 16, Position.Y * 16, 32, 32));
 		}
 
 		public override TagCompound Save() {
