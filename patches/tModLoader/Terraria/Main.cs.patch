@@ -1316,7 +1316,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15033,95 +_,113 @@
+@@ -15033,95 +_,115 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1437,6 +1437,7 @@
 +					toolTipNames[numLines] = "Damage";
  
  					numLines++;
++					/*
  					if (item.melee) {
 -						int num3 = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
 -						toolTipLine[numLines] = num3 + Lang.tip[5].Value;
@@ -1468,9 +1469,10 @@
 +						numLines++;
 +					}
 +					else if (!item.summon) {
-+						int crit = item.crit;
-+						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
-+						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
++					*/
++					// TO-DO: make this not hardcoded to cuck summons. minions should be allowed to crit in the right circumstances, too!
++					if (!item.summon) {
++						int crit = player[myPlayer].GetWeaponCrit(item);
 +						toolTipLine[numLines] = crit + Lang.tip[5].Value;
 +						toolTipNames[numLines] = "CritChance";
  						numLines++;
@@ -2914,7 +2916,7 @@
  				Microsoft.Xna.Framework.Rectangle destinationRectangle = new Microsoft.Xna.Framework.Rectangle((int)num27, (int)num28, (int)num29, (int)num30);
  				spriteBatch.Draw(TextureAssets.Map.Value, destinationRectangle, Microsoft.Xna.Framework.Color.White);
 +				*/
-+				int x = (int)(num + mapFullscreenScale * 10);
++					int x = (int)(num + mapFullscreenScale * 10);
 +				int y = (int)(num2 + mapFullscreenScale * 10);
 +				int width = (int)((maxTilesX - 40) * mapFullscreenScale);
 +				int height = (int)((maxTilesY - 40) * mapFullscreenScale);

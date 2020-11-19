@@ -55,12 +55,13 @@ namespace Terraria
 		*/
 
 		public bool CountsAsClass(DamageClass damageClass) {
-			if (DamageType == damageClass)
-				return true;
+			if (DamageType != null) {
+				if (DamageType == damageClass)
+					return true;
 
-			if (DamageType.CountsAs() != null && DamageType.CountsAs().Contains(damageClass))
-				return true;
-
+				if (DamageType.CountsAs()?.Contains(damageClass) ?? false)
+					return true;
+			}
 			return false;
 		}
 	}

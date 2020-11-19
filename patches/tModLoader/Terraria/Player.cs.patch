@@ -3661,11 +3661,15 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -36335,6 +_,18 @@
+@@ -36334,7 +_,22 @@
+ 			}
  		}
  
++		// TO-DO: apparently stat bonuses ef
  		public float GetWeaponKnockback(Item sItem, float KnockBack) {
-+			Modifier knockBackMult = allKB & GetKnockback(sItem.DamageType);
++			Modifier knockBackMult = allKB;
++			if (sItem.DamageType != DamageClass.Generic)
++				knockBackMult &= GetKnockback(sItem.DamageType);
 +			if (sItem.DamageType.BenefitsFrom() != null) {
 +				foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
 +					if (sItem.DamageType.BenefitsFrom().ContainsKey(damageClass)) {
@@ -3680,7 +3684,7 @@
  			if (sItem.summon)
  				KnockBack += minionKB;
  
-@@ -36349,49 +_,95 @@
+@@ -36349,49 +_,94 @@
  
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
@@ -3694,15 +3698,15 @@
  		public int GetWeaponCrit(Item sItem) {
 +			int crit = 0;
 +
-+			if (sItem.DamageType != null) {
-+				crit = GetCrit(sItem.DamageType);
-+				if (sItem.DamageType.BenefitsFrom() != null) {
-+					foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+						if (sItem.DamageType.BenefitsFrom().ContainsKey(damageClass)) {
-+							float addCrit = (float)GetCrit(damageClass);
-+							addCrit *= sItem.DamageType.BenefitsFrom()[damageClass];
-+							crit += (int)addCrit;
-+						}
++			crit = allCrit;
++			if (sItem.DamageType != DamageClass.Generic)
++				crit += GetCrit(sItem.DamageType);
++			if (sItem.DamageType.BenefitsFrom() != null) {
++				foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
++					if (sItem.DamageType.BenefitsFrom().ContainsKey(damageClass)) {
++						float addCrit = (float)GetCrit(damageClass);
++						addCrit *= sItem.DamageType.BenefitsFrom()[damageClass];
++						crit += (int)addCrit;
 +					}
 +				}
 +			}
@@ -3753,13 +3757,12 @@
 -			}
 -
 -			return num;
-+			if (sItem.DamageType == null && (!sItem.modItem?.IgnoreDamageModifiers ?? true))
-+				return (int)(sItem.damage * (float)allDamage);
-+
-+			if (sItem.modItem?.IgnoreDamageModifiers == true)
++			if (sItem.IgnoreDamageModifiers)
 +				return sItem.damage;
 +
-+			Modifier damage = allDamage & GetDamage(sItem.DamageType);
++			Modifier damage = allDamage;
++			if (sItem.DamageType != DamageClass.Generic)
++				damage &= GetDamage(sItem.DamageType);
 +			if (sItem.DamageType.BenefitsFrom() != null) {
 +				foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
 +					if (sItem.DamageType.BenefitsFrom().ContainsKey(damageClass)) {

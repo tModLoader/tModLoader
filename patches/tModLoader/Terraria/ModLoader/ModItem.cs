@@ -931,11 +931,6 @@ namespace Terraria.ModLoader
 		public virtual int BossBagNPC => 0;
 
 		/// <summary>
-		/// Set this to true to prevent this weapon or ammo item from being adjusted by damage modifiers.
-		/// </summary>
-		public virtual bool IgnoreDamageModifiers => false;
-
-		/// <summary>
 		/// Allows you to save custom data for this item. Returns null by default.
 		/// </summary>
 		/// <returns></returns>
