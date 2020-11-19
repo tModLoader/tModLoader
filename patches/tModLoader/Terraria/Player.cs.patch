@@ -3786,7 +3786,7 @@
 -			}
 -
 -			return num;
-+			if (sItem.IgnoreDamageModifiers)
++			if (sItem.IgnoreDamageModifiers || sItem.DamageType == DamageClass.NoScaling)
 +				return sItem.damage;
 +
 +			Modifier damage = allDamage;
