@@ -11,25 +11,7 @@ namespace Terraria.ModLoader.Container
 		protected HookedItemStorage(IEnumerable<Item> items) : base(items) {
 		}
 
-		internal new Item this[int index] {
-			get => Items[index];
-			set {
-				if (Items[index].Equals(value) || Items[index].IsAir && value.IsAir) {
-					return;
-				}
-				OnUpdateItem?.Invoke(index, Items[index], value);
-				Items[index] = value;
-			}
-		}
-
-		public delegate void UpdateItem(int slot, Item oldItem, Item newItem);
-
-		/// <summary>
-		/// Fired just before updating an item through the indexer.
-		/// </summary>
-		public event UpdateItem? OnUpdateItem;
-
-		public delegate void CanInteractDelegate(int slot, Operation operation, object? user, ref bool result);
+		public delegate void CanInteractDelegate(object? user, int slot, Operation operation, ref bool result);
 		public delegate void IsItemValidDelegate(int slot, Item item, ref bool result);
 		public delegate void GetSlotSizeDelegate(int slot, Item item, ref int result);
 
@@ -39,7 +21,7 @@ namespace Terraria.ModLoader.Container
 
 		public override bool CanInteract(int slot, Operation operation, object? user) {
 			bool ret = base.CanInteract(slot, operation, user);
-			OnCanInteract?.Invoke(slot, operation, user, ref ret);
+			OnCanInteract?.Invoke(user, slot, operation, ref ret);
 			return ret;
 		}
 

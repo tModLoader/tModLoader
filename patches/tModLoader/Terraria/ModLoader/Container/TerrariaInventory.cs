@@ -9,6 +9,24 @@ namespace Terraria.ModLoader.Container
 	{
 		public TerrariaInventory(int size) : base(size) { }
 
+		public new Item this[int index] {
+			get => base[index];
+			set {
+				if (Items[index].Equals(value) || Items[index].IsAir && value.IsAir) {
+					return;
+				}
+				OnUpdateItem?.Invoke(index, Items[index], value);
+				Items[index] = value;
+			}
+		}
+
+		public delegate void UpdateItem(int slot, Item oldItem, Item newItem);
+
+		/// <summary>
+		/// Fired just before updating an item through the indexer.
+		/// </summary>
+		public event UpdateItem? OnUpdateItem;
+
 		/// <summary>
 		/// Synonymous with Count; kept for backwards compatibility.
 		/// </summary>

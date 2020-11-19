@@ -66,7 +66,7 @@ namespace Terraria.ModLoader.Container
 
 			int slotSize = GetSlotSize(slot, item);
 			if (slotSize < 0)
-				slotSize = item.maxStack;
+				slotSize = int.MaxValue;
 			int toInsert = Utils.Min(slotSize, slotSize - existing.stack, item.stack);
 			if (toInsert <= 0)
 				return false;
@@ -173,7 +173,7 @@ namespace Terraria.ModLoader.Container
 
 			int size = GetSlotSize(slot, newStack);
 			if (size < 0)
-				size = newStack.maxStack;
+				size = int.MaxValue;
 			if (newStack.stack > size) {
 				return false;
 			}
@@ -229,10 +229,10 @@ namespace Terraria.ModLoader.Container
 		public event RemoveItemDelegate? OnItemRemove;
 
 		/// <summary>
-		/// Gets the size of a given slot and item. Non-negatives indicate a value to override items' max stack. Negatives indicate to use to max stack size.
+		/// Gets the size of a given slot and item. Negative values indicate no stack limit. The default is to use <see cref="Item.maxStack"/>.
 		/// </summary>
 		/// <param name="item">An item to be tried against the slot.</param>
-		public virtual int GetSlotSize(int slot, Item item) => -1;
+		public virtual int GetSlotSize(int slot, Item item) => item.maxStack;
 
 		/// <summary>
 		/// Gets if a given item is valid to be inserted into in a given slot.
@@ -249,7 +249,7 @@ namespace Terraria.ModLoader.Container
 		public int MaxStackFor(int slot, Item item) {
 			int limit = GetSlotSize(slot, item);
 			if (limit < 0)
-				limit = item.maxStack;
+				limit = int.MaxValue;
 			return limit;
 		}
 
