@@ -90,19 +90,27 @@ namespace Terraria.ModLoader.Container
 		/// <param name="user">The object doing this.</param>
 		/// <param name="item">The item to insert.</param>
 		/// <returns>True if the item was successfully inserted, even partially. False if the item is air, if the slot is already fully occupied, if the slot rejects the item, or if the slot rejects the user.</returns>
-		public bool InsertItem(object? user, ref Item item) {
+		public bool InsertItem(object? user, ref Item item) => InsertItemStartingFrom(user, 0, ref item);
+
+		/// <summary>
+		/// Puts an item into storage, starting from a slot and inserting iteratively from there.
+		/// </summary>
+		/// <param name="user">The object doing this.</param>
+		/// <param name="item">The item to insert.</param>
+		/// <returns>True if the item was successfully inserted, even partially. False if the item is air, if the slot is already fully occupied, if the slot rejects the item, or if the slot rejects the user.</returns>
+		public bool InsertItemStartingFrom(object? user, int slot, ref Item item) {
 			if (item is null || item.IsAir) {
 				return false;
 			}
 
 			bool ret = false;
-			for (int i = 0; i < Count; i++) {
+			for (int i = slot; i < Count; i++) {
 				Item other = Items[i];
 				if (CanItemsStack(item, other) && other.stack < other.maxStack) {
 					ret |= InsertItem(user, i, ref item);
 				}
 			}
-			for (int i = 0; i < Count; i++) {
+			for (int i = slot; i < Count; i++) {
 				Item other = Items[i];
 				if (other.IsAir) {
 					ret |= InsertItem(user, i, ref item);
