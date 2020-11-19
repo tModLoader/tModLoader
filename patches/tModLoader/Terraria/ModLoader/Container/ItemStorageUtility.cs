@@ -55,7 +55,7 @@ namespace Terraria.ModLoader.Container
 		public static void Transfer(this ItemStorage from, object? user, ItemStorage to, int fromSlot, int amount) {
 			if (from.RemoveItem(user, fromSlot, out var item, amount)) {
 				to.InsertItem(user, ref item);
-				from.InsertItemStartingFrom(user, fromSlot, ref item);
+				from.InsertItemStartingFrom(user, fromSlot, 1, ref item);
 			}
 		}
 
