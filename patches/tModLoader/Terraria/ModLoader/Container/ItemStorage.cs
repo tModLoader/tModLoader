@@ -292,6 +292,40 @@ namespace Terraria.ModLoader.Container
 		}
 		#endregion
 
+		/// <summary>
+		/// Gets if the <paramref name="operand"/> can fit in the slot completely.
+		/// </summary>
+		public bool CanItemStack(int slot, Item operand) {
+			if (operand is null || operand.IsAir) {
+				return false;
+			}
+			if (Items[slot].IsAir) {
+				return true;
+			}
+			if (!CanItemsStack(Items[slot], operand) || !IsItemValid(slot, operand)) {
+				return false;
+			}
+			int size = GetSlotSize(slot, operand);
+			if (size < 0)
+				slot = int.MaxValue;
+			return Items[slot].stack + operand.stack <= size;
+		}
+
+		/// <summary>
+		/// Gets if the operand can fit in any slot in the storage.
+		/// </summary>
+		/// <param name="slot">The first slot it can fit in</param>
+		public bool CanItemStack(Item operand, out int slot) {
+			for (int i = 0; i < Count; i++) {
+				if (CanItemStack(i, operand)) {
+					slot = i;
+					return true;
+				}
+			}
+			slot = -1;
+			return false;
+		}
+
 		private static bool CanItemsStack(Item a, Item b) {
 			// if (a.modItem != null && b.modItem != null) return a.modItem.CanStack(b.modItem);
 			return a.IsTheSameAs(b);
