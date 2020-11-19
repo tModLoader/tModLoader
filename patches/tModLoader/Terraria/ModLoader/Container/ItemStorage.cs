@@ -9,8 +9,10 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Container
 {
-	public class ItemStorage : IReadOnlyList<Item> {
-		public enum Operation {
+	public class ItemStorage : IReadOnlyList<Item>
+	{
+		public enum Operation
+		{
 			Input,
 			Output
 		}
@@ -50,28 +52,33 @@ namespace Terraria.ModLoader.Container
 		/// <param name="user">The object doing this.</param>
 		/// <returns>True if the item was successfully inserted. False if the item is air, if the slot is already fully occupied, if the slot rejects the item, or if the slot rejects the user.</returns>
 		public bool InsertItem(int slot, ref Item item, object? user) {
-			if (item == null || item.IsAir) return false;
+			if (item == null || item.IsAir)
+				return false;
 
 			ValidateSlotIndex(slot);
 
-			if (!CanInteract(slot, Operation.Input, user) || !IsItemValid(slot, item)) return false;
+			if (!CanInteract(slot, Operation.Input, user) || !IsItemValid(slot, item))
+				return false;
 
 			Item existing = Items[slot];
-			if (!existing.IsAir && !CanItemsStack(item, existing)) return false;
+			if (!existing.IsAir && !CanItemsStack(item, existing))
+				return false;
 
 			int slotSize = GetSlotSize(slot, item);
 			if (slotSize < 0)
 				slotSize = item.maxStack;
 			int toInsert = Utils.Min(slotSize, slotSize - existing.stack, item.stack);
-			if (toInsert <= 0) 
+			if (toInsert <= 0)
 				return false;
 
 			bool reachedLimit = item.stack > toInsert;
 
 			OnItemInsert?.Invoke(slot, item, user);
 
-			if (existing.IsAir) Items[slot] = reachedLimit ? CloneItemWithSize(item, toInsert) : item;
-			else existing.stack += toInsert;
+			if (existing.IsAir)
+				Items[slot] = reachedLimit ? CloneItemWithSize(item, toInsert) : item;
+			else
+				existing.stack += toInsert;
 
 			item = reachedLimit ? CloneItemWithSize(item, item.stack - toInsert) : new Item();
 			return true;
@@ -113,13 +120,16 @@ namespace Terraria.ModLoader.Container
 		public bool RemoveItem(int slot, object? user, out Item item, int amount = -1) {
 			item = Items[slot];
 
-			if (amount == 0) return false;
+			if (amount == 0)
+				return false;
 
 			ValidateSlotIndex(slot);
 
-			if (!CanInteract(slot, Operation.Output, user)) return false;
+			if (!CanInteract(slot, Operation.Output, user))
+				return false;
 
-			if (item.IsAir) return false;
+			if (item.IsAir)
+				return false;
 
 			OnItemRemove?.Invoke(slot, user);
 
@@ -181,7 +191,7 @@ namespace Terraria.ModLoader.Container
 		public bool ModifyStackSize(int slot, int quantity, object? user) {
 			Item item = Items[slot];
 
-			if (quantity > 0 && !CanInteract(slot, Operation.Input, user) || 
+			if (quantity > 0 && !CanInteract(slot, Operation.Input, user) ||
 				quantity < 0 && !CanInteract(slot, Operation.Output, user) ||
 				quantity == 0 || item.IsAir)
 				return false;
@@ -274,7 +284,8 @@ namespace Terraria.ModLoader.Container
 		}
 
 		private static Item CloneItemWithSize(Item itemStack, int size) {
-			if (size == 0) return new Item();
+			if (size == 0)
+				return new Item();
 			Item copy = itemStack.Clone();
 			copy.stack = size;
 			return copy;
