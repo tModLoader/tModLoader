@@ -64,9 +64,7 @@ namespace Terraria.ModLoader.Container
 			if (!existing.IsAir && !CanItemsStack(item, existing))
 				return false;
 
-			int slotSize = GetSlotSize(slot, item);
-			if (slotSize < 0)
-				slotSize = int.MaxValue;
+			int slotSize = MaxStackFor(slot, item);
 			int toInsert = Utils.Min(slotSize, slotSize - existing.stack, item.stack);
 			if (toInsert <= 0)
 				return false;
@@ -182,10 +180,7 @@ namespace Terraria.ModLoader.Container
 			if (!IsItemValid(slot, newStack))
 				return false;
 
-			int size = GetSlotSize(slot, newStack);
-			if (size < 0)
-				size = int.MaxValue;
-			if (newStack.stack > size) {
+			if (newStack.stack > MaxStackFor(slot, newStack)) {
 				return false;
 			}
 
@@ -215,7 +210,7 @@ namespace Terraria.ModLoader.Container
 			item.stack += Math.Min(quantity, MaxStackFor(slot, item));
 
 			if (item.stack <= 0)
-				RemoveItem(user, slot);
+				item.TurnToAir();
 
 			return true;
 		}
@@ -305,10 +300,7 @@ namespace Terraria.ModLoader.Container
 			if (!CanItemsStack(Items[slot], operand) || !IsItemValid(slot, operand)) {
 				return false;
 			}
-			int size = GetSlotSize(slot, operand);
-			if (size < 0)
-				slot = int.MaxValue;
-			return Items[slot].stack + operand.stack <= size;
+			return Items[slot].stack + operand.stack <= MaxStackFor(slot, operand);
 		}
 
 		/// <summary>
