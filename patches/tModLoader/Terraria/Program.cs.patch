@@ -159,8 +159,8 @@
  				}
  
  #if CLIENT
--				MessageBox.Show(text, "Terraria: Error");
-+				ModLoader.UI.Interface.MessageBoxShow(text);
+-				MessageBox.Show(e.ToString(), Language.GetTextValue("Error.Error"));
++				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
 +
 +				if (e is FolderCreationFailedException)
 +					Process.Start(e.HelpLink);
@@ -169,7 +169,7 @@
 +					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
 +
 +				if (e.StackTrace.Contains("LaunchLocalServer")) {
-+					ModLoader.UI.Interface.MessageBoxShow("Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.");
++					ModLoader.UI.Interface.MessageBoxShow(Language.GetTextValue("tModLoader.MissingServerExecutable"));
 +
 +					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
 +				}

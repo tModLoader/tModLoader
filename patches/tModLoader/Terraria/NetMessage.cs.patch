@@ -93,7 +93,7 @@
  							break;
  						}
  					case 24:
-@@ -615,18 +_,24 @@
+@@ -615,12 +_,13 @@
  							if (projectile.knockBack != 0f)
  								bb20[5] = true;
  
@@ -108,18 +108,16 @@
  							writer.Write(bb20);
  							for (int num18 = 0; num18 < Projectile.maxAI; num18++) {
  								if (bb20[num18])
- 									writer.Write(projectile.ai[num18]);
- 							}
+@@ -639,11 +_,19 @@
+ 							if (bb20[7])
+ 								writer.Write((short)projectile.projUUID);
  
 +							if (bb20[Projectile.maxAI + 1]) {
 +								writer.Write((byte)extraAI.Length);
 +								writer.Write(extraAI);
 +							}
 +
- 							if (bb20[4])
- 								writer.Write((short)projectile.damage);
- 
-@@ -643,7 +_,10 @@
+ 							break;
  						}
  					case 28:
  						writer.Write((short)number);

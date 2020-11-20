@@ -80,8 +80,8 @@ namespace Terraria.ModLoader.UI
 			}
 
 			var uIScrollbar = new UIScrollbar {
-				Height = { Pixels = -50, Percent = 1f },
-				Top = { Pixels = 50 },
+				Height = { Pixels = ModLoader.showMemoryEstimates ? -72 : -50, Percent = 1f },
+				Top = { Pixels = ModLoader.showMemoryEstimates ? 72 : 50 },
 				HAlign = 1f
 			}.WithView(100f, 1000f);
 			uIPanel.Append(uIScrollbar);
