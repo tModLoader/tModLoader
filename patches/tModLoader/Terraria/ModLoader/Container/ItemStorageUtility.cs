@@ -96,6 +96,7 @@ namespace Terraria.ModLoader.Container
 					item.position = player.Center;
 					item.noGrabDelay = 0;
 
+					// bug: wrong logic
 					foreach (var split in item.Split()) {
 						player.GetItem(player.whoAmI, split, GetItemSettings.LootAllSettings);
 					}
@@ -118,6 +119,7 @@ namespace Terraria.ModLoader.Container
 				n.position = player.Center;
 				n.noGrabDelay = 0;
 
+				// bug: wrong logic
 				player.GetItem(player.whoAmI, n, GetItemSettings.LootAllSettings);
 
 				storage.ModifyStackSize(player, slot, -count);
