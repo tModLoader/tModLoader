@@ -254,6 +254,28 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
+		private static HookList HookIsTheSameAs = AddHook<Func<Item, Item, bool>>(g => g.IsTheSameAs);
+		/// <summary>
+		/// Allows you to prevent two items from stacking.
+		/// </summary>
+		/// <returns>True if the items can stack. False otherwise.</returns>
+		public static bool IsTheSameAs(Item item, Item compareItem) {
+			if (netID == compareItem.netID && stack == compareItem.stack && prefix == compareItem.prefix) {
+				bool result = true;
+				foreach (var g in HookIsTheSameAs.arr) {
+					result &= g.Instance(item).IsTheSameAs(item, compareItem);
+				}
+				if (item.modItem != null) {
+					result &= item.modItem.IsTheSameAs(compareItem);
+				}
+				if (compareItem.modItem != null) {
+					result &= compareItem.modItem.IsTheSameAs(item);
+				}
+				return result;
+			}
+			return false;
+		}
+
 		private static HookList HookCanUseItem = AddHook<Func<Item, Player, bool>>(g => g.CanUseItem);
 		//in Terraria.Player.ItemCheck
 		//  inside block if (this.controlUseItem && this.itemAnimation == 0 && this.releaseUseItem && item.useStyle > 0)

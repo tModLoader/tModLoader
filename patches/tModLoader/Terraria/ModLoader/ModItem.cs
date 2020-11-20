@@ -137,6 +137,14 @@ namespace Terraria.ModLoader
 		public virtual int ChoosePrefix(UnifiedRandom rand) => -1;
 
 		/// <summary>
+		/// Allows you to prevent two items from stacking.
+		/// </summary>
+		/// <returns>True by default. False prevents the items from stacking.</returns>
+		public virtual bool IsTheSameAs(Item compareItem) {
+			return true;
+		}
+
+		/// <summary>
 		/// To prevent putting the item in the tinkerer slot, return false when pre is -3.
 		/// To prevent rolling of a prefix on spawn, return false when pre is -1.
 		/// To force rolling of a prefix on spawn, return true when pre is -1.

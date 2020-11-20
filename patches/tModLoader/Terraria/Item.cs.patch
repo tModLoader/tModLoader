@@ -481,7 +481,7 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -46120,8 +_,23 @@
+@@ -46120,21 +_,30 @@
  			}
  		}
  
@@ -506,7 +506,22 @@
 +		internal Item DeepClone() => Clone();
  
  		public bool IsTheSameAs(Item compareItem) {
- 			if (netID == compareItem.netID)
+-			if (netID == compareItem.netID)
+-				return type == compareItem.type;
+-
+-			return false;
++			return ItemLoader.IsTheSameAs(this, compareItem);
+ 		}
+ 
+ 		public bool IsNotTheSameAs(Item compareItem) {
+-			if (netID == compareItem.netID && stack == compareItem.stack)
+-				return prefix != compareItem.prefix;
+-
+-			return true;
++			return !IsTheSameAs(compareItem);
+ 		}
+ 
+ 		public void SetNameOverride(string name) {
 @@ -46152,6 +_,8 @@
  			dye = 0;
  			shoot = 0;
