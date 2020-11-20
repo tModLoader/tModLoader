@@ -9,12 +9,12 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Container
 {
-	public class ItemStorage : IReadOnlyList<Item>
-	{
-		public enum Operation
-		{
-			Input,
-			Output
+	public class ItemStorage : IReadOnlyList<Item> {
+		[Flags]
+		public enum Operation {
+			Input = 1,
+			Output = 2,
+			Both = 1 | 2
 		}
 
 		protected Item[] Items;
@@ -57,19 +57,19 @@ namespace Terraria.ModLoader.Container
 
 			ValidateSlotIndex(slot);
 
-			if (!CanInteract(slot, Operation.Input, user) || !IsItemValid(slot, item))
+			if (!CanInteract(slot, Operation.Input, user) || !IsInsertValid(slot, item))
 				return false;
 
 			Item existing = Items[slot];
 			if (!existing.IsAir && !CanItemsStack(item, existing))
 				return false;
 
-			int slotSize = MaxStackFor(slot, item);
-			int toInsert = Utils.Min(slotSize, slotSize - existing.stack, item.stack);
-			if (toInsert <= 0)
+			if (!CanItemStackPartially(slot, item, out int leftOver)) {
 				return false;
+			}
 
-			bool reachedLimit = item.stack > toInsert;
+			bool reachedLimit = leftOver > 0;
+			int toInsert = reachedLimit ? item.stack - leftOver : item.stack;
 
 			OnItemInsert?.Invoke(user, slot, item);
 
@@ -137,7 +137,7 @@ namespace Terraria.ModLoader.Container
 
 			ValidateSlotIndex(slot);
 
-			if (!CanInteract(slot, Operation.Output, user))
+			if (!CanInteract(slot, Operation.Output, user) || !IsRemoveValid(slot))
 				return false;
 
 			if (item.IsAir)
@@ -149,7 +149,6 @@ namespace Terraria.ModLoader.Container
 
 			if (item.stack <= toExtract) {
 				Items[slot] = new Item();
-
 				return true;
 			}
 
@@ -177,12 +176,11 @@ namespace Terraria.ModLoader.Container
 		public bool SwapStacks(object? user, int slot, Item newStack) {
 			ValidateSlotIndex(slot);
 
-			if (!IsItemValid(slot, newStack))
+			if (!CanInteract(slot, Operation.Both, user) || !IsInsertValid(slot, newStack) || !IsRemoveValid(slot))
 				return false;
 
-			if (newStack.stack > MaxStackFor(slot, newStack)) {
+			if (newStack.stack > MaxStackFor(slot, newStack))
 				return false;
-			}
 
 			OnItemRemove?.Invoke(user, slot);
 			OnItemInsert?.Invoke(user, slot, newStack);
@@ -244,7 +242,12 @@ namespace Terraria.ModLoader.Container
 		/// Gets if a given item is valid to be inserted into in a given slot.
 		/// </summary>
 		/// <param name="item">An item to be tried against the slot.</param>
-		public virtual bool IsItemValid(int slot, Item item) => true;
+		public virtual bool IsInsertValid(int slot, Item item) => true;
+
+		/// <summary>
+		/// Gets if a given slot can have its item removed.
+		/// </summary>
+		protected virtual bool IsRemoveValid(int slot) => true;
 
 		/// <summary>
 		/// Gets if a given user can interact with a slot in the storage.
@@ -290,32 +293,35 @@ namespace Terraria.ModLoader.Container
 		/// <summary>
 		/// Gets if the <paramref name="operand"/> can fit in the slot completely.
 		/// </summary>
-		public bool CanItemStack(int slot, Item operand) {
-			if (operand is null || operand.IsAir) {
+		public bool CanItemStack(int slot, Item operand) => CanItemStackPartially(slot, operand, out int leftOver) && leftOver <= 0;
+
+		/// <summary>
+		/// Gets if the <paramref name="operand"/> can fit in the slot partially.
+		/// </summary>
+		/// <param name="leftOver">The amount of items left over after simulated stacking. <para/>
+		/// Positive values represent how many items could not fit.
+		/// Zero represents a perfect fit.
+		/// Negative values represent how many extra items could fit.
+		/// </param>
+		public bool CanItemStackPartially(int slot, Item operand, out int leftOver) {
+			leftOver = operand.stack;
+			if (operand is null || operand.IsAir || !IsInsertValid(slot, operand)) {
+				return false;
+			}
+			int size = MaxStackFor(slot, operand);
+			if (size == 0) {
 				return false;
 			}
 			if (Items[slot].IsAir) {
-				return true;
+				leftOver = operand.stack - size;
 			}
-			if (!CanItemsStack(Items[slot], operand) || !IsItemValid(slot, operand)) {
-				return false;
-			}
-			return Items[slot].stack + operand.stack <= MaxStackFor(slot, operand);
-		}
-
-		/// <summary>
-		/// Gets if the operand can fit in any slot in the storage.
-		/// </summary>
-		/// <param name="slot">The first slot it can fit in</param>
-		public bool CanItemStack(Item operand, out int slot) {
-			for (int i = 0; i < Count; i++) {
-				if (CanItemStack(i, operand)) {
-					slot = i;
-					return true;
+			else {
+				if (!CanItemsStack(Items[slot], operand)) {
+					return false;
 				}
+				leftOver = Items[slot].stack + operand.stack - size;
 			}
-			slot = -1;
-			return false;
+			return true;
 		}
 
 		private static bool CanItemsStack(Item a, Item b) {
