@@ -813,20 +813,19 @@ namespace Terraria.ModLoader
 
 		private static HookList HookCanChat = AddHook<Func<NPC, bool?>>(g => g.CanChat);
 
-		public static bool CanChat(NPC npc, bool vanillaCanChat) {
-			bool defaultCanChat = npc.modNPC?.CanChat() ?? vanillaCanChat;
-
+		public static bool? CanChat(NPC npc) {
+			bool? canChat = npc.modNPC?.CanChat();
 			foreach (GlobalNPC g in HookCanChat.arr) {
-				bool? canChat = g.Instance(npc).CanChat(npc);
-				if (canChat.HasValue) {
-					if (!canChat.Value) {
+				bool? globalCanChat = g.Instance(npc).CanChat(npc);
+				if (globalCanChat.HasValue) {
+					if (!globalCanChat.Value) {
 						return false;
 					}
-					defaultCanChat = true;
+					canChat = true;
 				}
 			}
 
-			return defaultCanChat;
+			return canChat;
 		}
 
 		private delegate void DelegateGetChat(NPC npc, ref string chat);

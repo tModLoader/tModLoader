@@ -589,11 +589,11 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine whether this NPC can talk with the player. By default, returns if the NPC is a town NPC.
+		/// Allows you to determine whether this NPC can talk with the player. Return true to allow talking with the player, return false to block this NPC from talking with the player, and return null to use the vanilla code for whether the NPC can talk. Returns null by default.
 		/// </summary>
 		/// <returns></returns>
-		public virtual bool CanChat() {
-			return npc.townNPC;
+		public virtual bool? CanChat() {
+			return null;
 		}
 
 		/// <summary>

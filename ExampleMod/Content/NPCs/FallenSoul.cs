@@ -52,7 +52,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		// Allows the NPC to talk with the player, even if it isn't a town NPC.
-		public override bool CanChat() => true;
+		public override bool? CanChat() => true;
 
 		// Allows us to choose what the NPC says when talked to.
 		public override string GetChat() {

@@ -2521,7 +2521,7 @@
  					if (flag2 && ((npc[k].type != 85 && npc[k].type != 341 && npc[k].type != 629 && npc[k].aiStyle != 87) || npc[k].ai[0] != 0f) && npc[k].type != 488) {
  						bool flag3 = SmartInteractShowingGenuine && SmartInteractNPC == k;
 -						if (npc[k].townNPC || npc[k].type == 105 || npc[k].type == 106 || npc[k].type == 123 || npc[k].type == 354 || npc[k].type == 376 || npc[k].type == 579 || npc[k].type == 453 || npc[k].type == 589) {
-+						if (NPCLoader.CanChat(npc[k], npc[k].townNPC || npc[k].type == 105 || npc[k].type == 106 || npc[k].type == 123 || npc[k].type == 354 || npc[k].type == 376 || npc[k].type == 579 || npc[k].type == 453 || npc[k].type == 589)) {
++						if (NPCLoader.CanChat(npc[k]) ?? npc[k].townNPC || npc[k].type == 105 || npc[k].type == 106 || npc[k].type == 123 || npc[k].type == 354 || npc[k].type == 376 || npc[k].type == 579 || npc[k].type == 453 || npc[k].type == 589) {
  							Microsoft.Xna.Framework.Rectangle rectangle2 = new Microsoft.Xna.Framework.Rectangle((int)(player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(Player.tileRangeX * 16)), (int)(player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(Player.tileRangeY * 16)), Player.tileRangeX * 16 * 2, Player.tileRangeY * 16 * 2);
  							Microsoft.Xna.Framework.Rectangle value4 = new Microsoft.Xna.Framework.Rectangle((int)npc[k].position.X, (int)npc[k].position.Y, npc[k].width, npc[k].height);
  							if (rectangle2.Intersects(value4))
