@@ -189,40 +189,29 @@ namespace Terraria.ModLoader.Container
 		}
 
 		/// <summary>
-		/// Removes an item from storage.
-		/// </summary>
-		/// <param name="user">The object doing this.</param>
-		/// <param name="slot">The slot.</param>
-		/// <returns><see cref="CanRemoveItem(object?, int, int)"/></returns>
-		public bool RemoveItem(object? user, int slot) => RemoveItem(user, slot, out _);
-
-		/// <summary>
 		/// Removes an item from storage and returns the item that was grabbed.
 		/// <para />
 		/// Compare the stack of the <paramref name="item" /> parameter with the <paramref name="amount" /> parameter to see if
 		/// the item was completely taken.
 		/// </summary>
 		/// <param name="slot">The slot.</param>
-		/// <param name="item">The item that is . Returns null if unsuccessful.</param>
-		/// <param name="amount">The amount of items to take from a stack.</param>
+		/// <param name="amount">The amount of items to take from a stack. Negative values are interpreted as infinity.</param>
 		/// <param name="user">The object doing this.</param>
-		/// <returns><see cref="CanRemoveItem(object?, int)"/></returns>
-		public bool RemoveItem(object? user, int slot, out Item item, int amount = -1) {
-			item = Items[slot];
-
+		/// <returns><see cref="CanRemoveItem(object?, int, int)"/></returns>
+		public bool RemoveItem(object? user, int slot, int amount = -1) {
 			if (amount == 0 || !CanRemoveItem(user, slot, amount))
 				return false;
 
 			// OnItemRemove?.Invoke(user, slot);
 
+			var item = Items[slot];
 			int toExtract = Utils.Min(amount < 0 ? int.MaxValue : amount, item.maxStack, item.stack);
 
 			if (item.stack <= toExtract) {
 				Items[slot] = new Item();
 			}
 			else {
-				item = CloneItemWithSize(item, toExtract);
-				Items[slot] = CloneItemWithSize(item, item.stack - toExtract);
+				Items[slot].stack = item.stack - toExtract;
 			}
 			return true;
 		}

@@ -257,7 +257,8 @@ namespace Terraria.ModLoader.Container
 		/// <param name="fromSlot">The slot to take from.</param>
 		/// <param name="amount">The amount of items to take from the slot.</param>
 		public static void TransferItems(this ItemStorage from, object? user, ItemStorage to, int fromSlot, int amount) {
-			if (from.RemoveItem(user, fromSlot, out var item, amount)) {
+			var item = from[fromSlot];
+			if (from.RemoveItem(user, fromSlot, amount)) {
 				to.InsertItem(user, ref item);
 				from.InsertItemStartingFrom(user, fromSlot, 1, ref item);
 			}
@@ -296,7 +297,7 @@ namespace Terraria.ModLoader.Container
 		public static void LootAll(this Player player, ItemStorage storage) {
 			for (int i = 0; i < storage.Count; i++) {
 				Item item = storage[i];
-				if (!item.IsAir) {
+				if (!item.IsAir && storage.RemoveItem(player, i)) {
 					item.position = player.Center;
 					item.noGrabDelay = 0;
 
@@ -304,8 +305,6 @@ namespace Terraria.ModLoader.Container
 					foreach (var split in item.Split()) {
 						player.GetItem(player.whoAmI, split, GetItemSettings.LootAllSettings);
 					}
-
-					storage.RemoveItem(player, i, out _);
 				}
 			}
 		}
