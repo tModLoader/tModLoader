@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -132,6 +133,23 @@ namespace ExampleMod.Content.NPCs
 			}
 
 			return true;
+		}
+	}
+
+	// This is an example of a GlobalProjectile class. GlobalProjectile hooks are called on all projectiles in the game and are suitable for sweeping
+	// changes like adding additional data to all projectiles in the game. Here we simply override PostAI in order to make Purification Powder loop through the
+	// NPC array to affect Wraiths specifically, transforming them into Fallen Souls, as it is simple to understand.
+	public class WraithPurificationGlobalProjectile : GlobalProjectile
+	{
+		// Make purification powder transform wraiths into purified ghosts.
+		public override void PostAI(Projectile projectile) {
+			if (projectile.type == ProjectileID.PurificationPowder && Main.netMode != NetmodeID.MultiplayerClient) {
+				for (int i = 0; i < Main.maxNPCs; i++) {
+					if (Main.npc[i].active && Main.npc[i].type == NPCID.Wraith && projectile.Hitbox.Intersects(Main.npc[i].Hitbox)) {
+						Main.npc[i].Transform(ModContent.NPCType<FallenSoul>());
+					}
+				}
+			}
 		}
 	}
 }
