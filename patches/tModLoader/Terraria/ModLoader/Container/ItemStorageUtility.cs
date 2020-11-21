@@ -66,20 +66,22 @@ namespace Terraria.ModLoader.Container
 			return num;
 		}
 
-		private static Item[] CoinsSplit(long count) {
-			Item[] array = new Item[4];
-			long coinsAdded = 0L;
-			long currentCoin = 1000000L;
-			for (int i = 3; i >= 0; i--) {
-				array[i] = new Item(ItemID.CopperCoin + i) { stack = (int)((count - coinsAdded) / currentCoin) };
-				coinsAdded += array[i].stack * currentCoin;
-				currentCoin /= 100;
-			}
-
-			return array;
-		}
+		// private static Item[] CoinsSplit(long count) {
+		// 	Item[] array = new Item[4];
+		// 	long coinsAdded = 0L;
+		// 	long currentCoin = 1000000L;
+		// 	for (int i = 3; i >= 0; i--) {
+		// 		array[i] = new Item(ItemID.CopperCoin + i) { stack = (int)((count - coinsAdded) / currentCoin) };
+		// 		coinsAdded += array[i].stack * currentCoin;
+		// 		currentCoin /= 100;
+		// 	}
+		//
+		// 	return array;
+		// }
 
 		public static bool RemoveCoins(this ItemStorage storage, object? user, ref long amount) {
+			if (amount <= 0) return false;
+			
 			Dictionary<int, List<int>> slotsEmptyForCoin = new Dictionary<int, List<int>> {
 				{ ItemID.CopperCoin, new List<int>() },
 				{ ItemID.SilverCoin, new List<int>() },
@@ -106,34 +108,33 @@ namespace Terraria.ModLoader.Container
 				}
 			}
 
-			long num = amount;
 			Dictionary<int, Item> dictionary = new Dictionary<int, Item>();
 			bool result = false;
-			while (num > 0) {
-				long num2 = 1000000L;
+			while (amount > 0) {
+				long coinValue = 1000000L;
 				for (int i = 0; i < 4; i++) {
-					if (num >= num2) {
+					if (amount >= coinValue) {
 						foreach (int slotCoin in slotCoins) {
 							if (storage[slotCoin].type == 74 - i) {
-								long num3 = num / num2;
+								long toRemove = amount / coinValue;
 								dictionary[slotCoin] = storage[slotCoin].Clone();
-								if (num3 < storage[slotCoin].stack) {
-									storage[slotCoin].stack -= (int)num3;
+								if (toRemove < storage[slotCoin].stack) {
+									storage[slotCoin].stack -= (int)toRemove;
 								}
 								else {
 									storage[slotCoin].SetDefaults();
 									slotsEmptyForCoin[74 - i].Add(slotCoin);
 								}
 
-								num -= num2 * (dictionary[slotCoin].stack - storage[slotCoin].stack);
+								amount -= coinValue * (dictionary[slotCoin].stack - storage[slotCoin].stack);
 							}
 						}
 					}
 
-					num2 /= 100;
+					coinValue /= 100;
 				}
 
-				if (num <= 0)
+				if (amount <= 0)
 					continue;
 
 				if (slotsEmptyForCoin.Count > 0) {
@@ -141,61 +142,61 @@ namespace Terraria.ModLoader.Container
 						pair.Value.Sort((a, b) => b.CompareTo(a));
 					}
 
-					int item = -1;
+					int changedIndex = -1;
 					for (int j = 0; j < storage.Count; j++) {
-						num2 = 10000L;
+						coinValue = 10000L;
 						for (int k = 0; k < 3; k++) {
-							if (num >= num2) {
-								foreach (int slotCoin2 in slotCoins) {
-									if (storage[slotCoin2].type == 74 - k && storage[slotCoin2].stack >= 1) {
-										if (--storage[slotCoin2].stack <= 0) {
-											storage[slotCoin2].SetDefaults();
-											slotsEmptyForCoin[74 - k].Add(slotCoin2);
+							if (amount >= coinValue) {
+								foreach (int slotCoin in slotCoins) {
+									if (storage[slotCoin].type == 74 - k && storage[slotCoin].stack >= 1) {
+										if (--storage[slotCoin].stack <= 0) {
+											storage[slotCoin].SetDefaults();
+											slotsEmptyForCoin[74 - k].Add(slotCoin);
 										}
 
-										List<int> list = slotsEmptyForCoin[73 - k];
+										int index = PopFirst(slotsEmptyForCoin[73 - k]);
 
-										dictionary[list[0]] = storage[list[0]].Clone();
-										storage[list[0]].SetDefaults(73 - k);
-										storage[list[0]].stack = 100;
-										item = list[0];
-										list.RemoveAt(0);
+										dictionary[index] = storage[index].Clone();
+										storage[index].SetDefaults(73 - k);
+										storage[index].stack = 100;
+										changedIndex = index;
+
 										break;
 									}
 								}
 							}
 
-							if (item != -1)
+							if (changedIndex != -1)
 								break;
 
-							num2 /= 100;
+							coinValue /= 100;
 						}
 
 						for (int l = 0; l < 2; l++) {
-							if (item != -1)
+							if (changedIndex != -1)
 								continue;
 
-							foreach (int slotCoin3 in slotCoins) {
-								if (storage[slotCoin3].type == 73 + l && storage[slotCoin3].stack >= 1) {
-									if (--storage[slotCoin3].stack <= 0) {
-										storage[slotCoin3].SetDefaults();
-										slotsEmptyForCoin[73 + l].Add(slotCoin3);
+							foreach (int slotCoin in slotCoins) {
+								if (storage[slotCoin].type == 73 + l && storage[slotCoin].stack >= 1) {
+									if (--storage[slotCoin].stack <= 0) {
+										storage[slotCoin].SetDefaults();
+										slotsEmptyForCoin[73 + l].Add(slotCoin);
 									}
 
-									List<int> list2 = slotsEmptyForCoin[72 + l];
+									int index = PopFirst(slotsEmptyForCoin[72 + l]);
 
-									dictionary[list2[0]] = storage[list2[0]].Clone();
-									storage[list2[0]].SetDefaults(72 + l);
-									storage[list2[0]].stack = 100;
-									item = list2[0];
-									list2.RemoveAt(0);
+									dictionary[index] = storage[index].Clone();
+									storage[index].SetDefaults(72 + l);
+									storage[index].stack = 100;
+									changedIndex = index;
+
 									break;
 								}
 							}
 						}
 
-						if (item != -1) {
-							slotCoins.Add(item);
+						if (changedIndex != -1) {
+							slotCoins.Add(changedIndex);
 							break;
 						}
 					}
@@ -216,46 +217,52 @@ namespace Terraria.ModLoader.Container
 				break;
 			}
 
-			return result;
+			return !result;
+
+			static T PopFirst<T>(List<T> list) {
+				T temp = list[0];
+				list.RemoveAt(0);
+				return temp;
+			}
 		}
 
 		public static bool InsertCoins(this ItemStorage storage, object? user, long amount) {
-			if (amount < 0) return false;
-			long storageCoinCount = storage.CountCoins();
-
-			Item[] coins = CoinsSplit(storageCoinCount + amount);
-
-			// check if the storage will fit new coins
-			var cloned = storage.Clone();
-			for (int i = 0; i < cloned.Count; i++) {
-				if (cloned[i].IsACoin) {
-					cloned[i].TurnToAir();
-				}
-			}
-
-			bool flag = true;
-			for (int i = 0; i < coins.Length; i++) {
-				if (coins[i].IsAir) continue;
-
-				flag &= cloned.CanInsert(user, coins[i]);
-			}
-
-			if (!flag) {
-				return false;
-			}
-			// -----
-
-			for (int i = 0; i < storage.Count; i++) {
-				if (storage[i].IsACoin) {
-					storage[i].TurnToAir();
-				}
-			}
-
-			for (int i = 0; i < coins.Length; i++) {
-				if (coins[i].IsAir) continue;
-
-				storage.InsertItem(user, ref coins[i]);
-			}
+			// if (amount < 0) return false;
+			// long storageCoinCount = storage.CountCoins();
+			//
+			// Item[] coins = CoinsSplit(storageCoinCount + amount);
+			//
+			// // check if the storage will fit new coins
+			// var cloned = storage.Clone();
+			// for (int i = 0; i < cloned.Count; i++) {
+			// 	if (cloned[i].IsACoin) {
+			// 		cloned[i].TurnToAir();
+			// 	}
+			// }
+			//
+			// bool flag = true;
+			// for (int i = 0; i < coins.Length; i++) {
+			// 	if (coins[i].IsAir) continue;
+			//
+			// 	flag &= cloned.CanInsert(user, coins[i]);
+			// }
+			//
+			// if (!flag) {
+			// 	return false;
+			// }
+			// // -----
+			//
+			// for (int i = 0; i < storage.Count; i++) {
+			// 	if (storage[i].IsACoin) {
+			// 		storage[i].TurnToAir();
+			// 	}
+			// }
+			//
+			// for (int i = 0; i < coins.Length; i++) {
+			// 	if (coins[i].IsAir) continue;
+			//
+			// 	storage.InsertItem(user, ref coins[i]);
+			// }
 
 			return true;
 		}
