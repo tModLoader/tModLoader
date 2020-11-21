@@ -15,58 +15,19 @@ namespace Terraria.ModLoader.Container
 		public static bool Contains(this ItemStorage storage, Item item) => storage.Any(item.IsTheSameAs);
 
 		/// <summary>
-		///     If you need to check if a storage contains an item, use <see cref="Contains(ItemStorage, int)" />. It is much
-		///     faster.
+		/// If you need to check if a storage contains an item, use <see cref="Contains(ItemStorage, int)" />. It is much
+		/// faster.
 		/// </summary>
 		public static int Count(this ItemStorage storage, int type) => storage.Count(item => !item.IsAir && item.type == type);
 
 		/// <summary>
-		///     If you need to check if a storage contains an item, use <see cref="Contains(ItemStorage, Item)" />. It is much
-		///     faster.
+		/// If you need to check if a storage contains an item, use <see cref="Contains(ItemStorage, Item)" />. It is much
+		/// faster.
 		/// </summary>
 		public static int Count(this ItemStorage storage, Item item) => storage.Count(item.IsTheSameAs);
 
 		/// <summary>
-		/// Gets if this item can be inserted completely into the storage.
-		/// </summary>
-		public static bool CanInsert(this ItemStorage storage, object? user, Item item) {
-			if (item is null || item.IsAir) {
-				return false;
-			}
-			item = item.Clone();
-			for (int i = 0; i < storage.Count; i++) {
-				if (!storage.CanInteract(i, ItemStorage.Operation.Input, user)) {
-					return false;
-				}
-
-				if (storage.CanItemStackPartially(i, item, out int leftOver)) {
-					item.stack = leftOver;
-				}
-			}
-			return false;
-		}
-
-		/// <summary>
-		/// Gets if this item can be inserted, even partially, into the storage.
-		/// </summary>
-		public static bool CanInsertPartially(this ItemStorage storage, object? user, Item item) {
-			if (item is null || item.IsAir) {
-				return false;
-			}
-			for (int i = 0; i < storage.Count; i++) {
-				if (!storage.CanInteract(i, ItemStorage.Operation.Input, user)) {
-					return false;
-				}
-
-				if (storage.CanItemStackPartially(i, item, out int leftOver)) {
-					return true;
-				}
-			}
-			return false;
-		}
-
-		/// <summary>
-		///     Gets the coin value for a storage.
+		/// Gets the coin value for a storage.
 		/// </summary>
 		public static long CountCoins(this ItemStorage storage) {
 			long num = 0L;
@@ -99,7 +60,8 @@ namespace Terraria.ModLoader.Container
 		// }
 
 		public static bool RemoveCoins(this ItemStorage storage, object? user, ref long amount) {
-			if (amount <= 0) return false;
+			if (amount <= 0)
+				return false;
 			
 			Dictionary<int, List<int>> slotsEmptyForCoin = new Dictionary<int, List<int>> {
 				{ ItemID.CopperCoin, new List<int>() },
@@ -114,7 +76,7 @@ namespace Terraria.ModLoader.Container
 					Item item = storage[i];
 					if (!item.IsAir) continue;
 
-					if (storage.IsInsertValid(i, coin)) {
+					if (storage.IsInsertValid(user, i, coin)) {
 						pair.Value.Add(i);
 					}
 				}
@@ -287,14 +249,14 @@ namespace Terraria.ModLoader.Container
 		}
 
 		/// <summary>
-		///     Transfers an item from one item storage to another.
+		/// Transfers an item from one item storage to another.
 		/// </summary>
 		/// <param name="from">The item storage to take from.</param>
 		/// <param name="user">The object doing this.</param>
 		/// <param name="to">The item storage to send into.</param>
 		/// <param name="fromSlot">The slot to take from.</param>
 		/// <param name="amount">The amount of items to take from the slot.</param>
-		public static void Transfer(this ItemStorage from, object? user, ItemStorage to, int fromSlot, int amount) {
+		public static void TransferItems(this ItemStorage from, object? user, ItemStorage to, int fromSlot, int amount) {
 			if (from.RemoveItem(user, fromSlot, out var item, amount)) {
 				to.InsertItem(user, ref item);
 				from.InsertItemStartingFrom(user, fromSlot, 1, ref item);
@@ -302,7 +264,7 @@ namespace Terraria.ModLoader.Container
 		}
 
 		/// <summary>
-		///     Drops items from the storage into the rectangle specified.
+		/// Drops items from the storage into the rectangle specified.
 		/// </summary>
 		public static void DropItems(this ItemStorage storage, object? user, Rectangle hitbox) {
 			for (int i = 0; i < storage.Count; i++) {
@@ -315,7 +277,7 @@ namespace Terraria.ModLoader.Container
 		}
 
 		/// <summary>
-		///     Quick stacks player's items into the storage.
+		/// Quick stacks player's items into the storage.
 		/// </summary>
 		public static void QuickStack(this Player player, ItemStorage storage) {
 			for (int i = 49; i >= 10; i--) {
@@ -329,7 +291,7 @@ namespace Terraria.ModLoader.Container
 		}
 
 		/// <summary>
-		///     Loots storage's items into a player's inventory
+		/// Loots storage's items into a player's inventory
 		/// </summary>
 		public static void LootAll(this Player player, ItemStorage storage) {
 			for (int i = 0; i < storage.Count; i++) {
@@ -349,11 +311,11 @@ namespace Terraria.ModLoader.Container
 		}
 
 		/// <summary>
-		///     Loots storage's items into the player's inventory.
+		/// Loots storage's items into the player's inventory.
 		/// </summary>
 		public static void Loot(this Player player, ItemStorage storage, int slot) {
 			Item item = storage[slot];
-			if (!item.IsAir) {
+			if (!item.IsAir && storage.RemoveItem(player, slot)) {
 				Item n = new Item(item.type);
 
 				int count = Math.Min(item.stack, item.maxStack);
@@ -361,15 +323,13 @@ namespace Terraria.ModLoader.Container
 				n.position = player.Center;
 				n.noGrabDelay = 0;
 
-				// bug: wrong logic
+				// TODO: bug: wrong logic
 				player.GetItem(player.whoAmI, n, GetItemSettings.LootAllSettings);
-
-				storage.ModifyStackSize(player, slot, -count);
 			}
 		}
 
 		/// <summary>
-		///     Deposits a player's items into storage.
+		/// Deposits a player's items into storage.
 		/// </summary>
 		public static void DepositAll(this Player player, ItemStorage storage) {
 			for (int i = 49; i >= 10; i--) {
@@ -382,7 +342,7 @@ namespace Terraria.ModLoader.Container
 		}
 
 		/// <summary>
-		///     Combines several stacks of items into one stack, disregarding max stack.
+		/// Combines several stacks of items into one stack, disregarding max stack.
 		/// </summary>
 		public static Item Combine(IEnumerable<Item> items) {
 			Item ret = new Item();
@@ -400,7 +360,7 @@ namespace Terraria.ModLoader.Container
 		}
 
 		/// <summary>
-		///     Splits a stack of items into separate stacks that respect max stack.
+		/// Splits a stack of items into separate stacks that respect max stack.
 		/// </summary>
 		public static IEnumerable<Item> Split(this Item item) {
 			while (item.stack > 0) {
