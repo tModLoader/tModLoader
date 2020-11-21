@@ -37,17 +37,23 @@ namespace ExampleMod.Content.NPCs
 
 		// Allows us to do something when the NPC is hit. Here, we spawn dust.
 		public override void HitEffect(int hitDirection, double damage) {
-			if (npc.life > 0) {
-				for (int i = 0; i < damage / npc.lifeMax * 100; i++) {
-					Dust dust = Dust.NewDustDirect(npc.position, npc.width, npc.height, 192, hitDirection, -1f, 100, new Color(100, 100, 100, 100), 1f);
-					dust.noGravity = true;
-				}
+			int loopAmount = 50;
+			int speedX = hitDirection * 2;
+			float speedY = -2f;
 
-				return;
+			// If the NPC is alive when it gets hit, we change the variables.
+			if (npc.life > 0) {
+				loopAmount = (int)(damage / npc.lifeMax * 100);
+				speedX = hitDirection;
+				speedY = -1f;
 			}
 
-			for (int i = 0; i < 50; i++) {
-				Dust dust = Dust.NewDustDirect(npc.position, npc.width, npc.height, 192, 2 * hitDirection, -2f, 100, new Color(100, 100, 100, 100), 1f);
+			// Loop as many times as loopAmount is set ot.
+			for (int i = 0; i < loopAmount; i++) {
+				// Here we spawn dust that uses the variables defined earlier in this method. This will spawn when the NPC is hit.
+				Dust dust = Dust.NewDustDirect(npc.position, npc.width, npc.height, 192, speedX, speedY, 100, new Color(100, 100, 100, 100), 1f);
+
+				// Makes it so the dust we spawned is not affected by gravity.
 				dust.noGravity = true;
 			}
 		}
