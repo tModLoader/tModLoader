@@ -100,6 +100,9 @@ Moderators:
 -   Rartrin
 -   Itorius
 -   Shockah
+-   Frous
+-   Trivaxy
+-   Orian34
 
 ## 10. Monetizing Mods Policy
 

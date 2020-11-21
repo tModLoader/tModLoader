@@ -123,17 +123,26 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
-@@ -2051,11 +_,13 @@
+@@ -2050,12 +_,20 @@
+ 			itemTimeMax = frames;
  		}
  
- 		public void ApplyItemTime(Item sItem) {
+-		public void ApplyItemTime(Item sItem) {
 -			SetItemTime(sItem.useTime);
++		public void ApplyItemTime(Item sItem, bool? callUseItem = null) {
++			if ((callUseItem ?? ItemTimeIsZero) && !ItemLoader.UseItem(sItem, this))
++				return;
++
 +			int totalUseTime = PlayerHooks.TotalUseTime(sItem.useTime, this, sItem);
 +			SetItemTime(totalUseTime);
  		}
  
- 		public void ApplyItemTime(Item sItem, float multiplier) {
+-		public void ApplyItemTime(Item sItem, float multiplier) {
 -			SetItemTime((int)((float)sItem.useTime * multiplier));
++		public void ApplyItemTime(Item sItem, float multiplier, bool? callUseItem = null) {
++			if ((callUseItem ?? ItemTimeIsZero) && !ItemLoader.UseItem(sItem, this))
++				return;
++
 +			int totalUseTime = PlayerHooks.TotalUseTime((int)(sItem.useTime * multiplier), this, sItem);
 +			SetItemTime(totalUseTime);
  		}
@@ -733,7 +742,7 @@
  
  			NPC nPC = new NPC();
  			nPC.SetDefaults(num11);
-@@ -4437,9 +_,13 @@
+@@ -4437,9 +_,12 @@
  				value -= (float)num15;
  				QuickSpawnItem(71, num15);
  			}
@@ -742,8 +751,7 @@
  
 -		private void TryGettingDevArmor() {
 +		public void TryGettingDevArmor() {
-+			if (ModLoader.Default.ModLoaderMod.TryGettingPatreonOrDevArmor(this))
-+				return;
++			ModLoader.Default.ModLoaderMod.TryGettingPatreonOrDevArmor(this);
 +
  			if (Main.rand.Next(20) == 0) {
  				switch (Main.rand.Next(18)) {
@@ -1724,6 +1732,29 @@
  							num4 = miscEquips[2].mountType;
  
  						int num5 = height + Mount.GetHeightBoost(num4);
+@@ -15706,6 +_,11 @@
+ 				Projectile projectile = Main.projectile[grappling[i]];
+ 				if (projectile.ai[0] != 2f || projectile.position.HasNaNs())
+ 					continue;
++				int type = projectile.type;
++				bool useAiType = projectile.modProjectile != null && projectile.modProjectile.aiType > 0;
++				if (useAiType) {
++					projectile.type = projectile.modProjectile.aiType;
++				}
+ 
+ 				num += projectile.position.X + (float)(projectile.width / 2);
+ 				num2 += projectile.position.Y + (float)(projectile.height / 2);
+@@ -15747,6 +_,10 @@
+ 					if (value2.X != 0f)
+ 						preferredPlayerDirectionToSet = Math.Sign(value2.X);
+ 				}
++				if (useAiType) {
++					projectile.type = type;
++				}
++				ProjectileLoader.GrappleTargetPoint(projectile, this, ref num, ref num2);
+ 			}
+ 
+ 			if (num3 == 0) {
 @@ -15771,13 +_,14 @@
  			if (Main.projectile[grappling[0]].type >= 646 && Main.projectile[grappling[0]].type <= 649)
  				num9 = 16f;
@@ -2806,11 +2837,11 @@
  					FreeUpPetsAndMinions(item);
  
  				if (flag3)
-@@ -29787,12 +_,18 @@
+@@ -29787,12 +_,23 @@
  				itemAnimation--;
  			}
  
-+			ItemLoader.HoldItem(item2, this);
++			ItemLoader.HoldItem(item, this);
 +
  			if (itemAnimation > 0)
  				ItemCheck_ApplyUseStyle(heightOffsetHitboxCenter, item2, drawHitbox);
@@ -2819,6 +2850,11 @@
  
  			releaseUseItem = !controlUseItem;
 +
++			//The following block has been moved to the end of the method with goto chains.
++			//This is done to fix the half of the item use/anim desync issue.
++			//In this exact case, this fixes itemTime not being lowered in the first tick after it's set, like itemAnim is.
++			//That happens because this itemTime reduction happened before the code that calls SetItemTime
++			//- Mirsario
 +			goto SkipReduceItemTime;
 +			ReduceItemTime:
 +
@@ -2854,16 +2890,6 @@
  							List<ushort> ignoreList2 = ItemCheck_GetTileCutIgnoreList(item);
  							ItemCheck_CutTiles(item, itemRectangle, ignoreList2);
  							ItemCheck_MeleeHitNPCs(item, itemRectangle, num, knockBack);
-@@ -29920,6 +_,9 @@
- 				}
- 
- 				if (ItemTimeIsZero && itemAnimation > 0) {
-+					if (ItemLoader.UseItem(item, this))
-+						ApplyItemTime(item);
-+
- 					if (item.hairDye >= 0) {
- 						ApplyItemTime(item);
- 						if (whoAmI == Main.myPlayer) {
 @@ -29929,18 +_,20 @@
  					}
  
@@ -3195,15 +3221,18 @@
  			if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
  				if (statMana >= num) {
  					if (!flag2)
-@@ -35997,7 +_,7 @@
- 							SoundEngine.PlaySound(sItem.UseSound, base.Center);
- 					}
- 					else {
--						itemAnimation = 0;
-+						//itemAnimation = 0;
- 					}
- 				}
- 			}
+@@ -35990,7 +_,10 @@
+ 		private void ItemCheck_HandleMPItemAnimation(Item sItem) {
+ 			if (sItem.autoReuse && !noItems) {
+ 				releaseUseItem = true;
+-				if (itemAnimation == 1 && sItem.stack > 0) {
++				//The following code line has been changed to fix a half of the vanilla item use/anim desync bug.
++				//In this exact case, itemAnim, which resets at 1, would desync from itemTime at the end of every tick, which resets at 0.
++				//- Mirsario
++				if (itemAnimation == 0 && sItem.stack > 0) { //if (itemAnimation == 1 && sItem.stack > 0) {
+ 					if (sItem.shoot > 0 && whoAmI != Main.myPlayer && controlUseItem && sItem.useStyle == 5 && sItem.reuseDelay == 0) {
+ 						ApplyItemAnimation(sItem);
+ 						if (sItem.UseSound != null)
 @@ -36020,6 +_,7 @@
  			if (!mount.Active)
  				return;
@@ -3391,7 +3420,7 @@
  				item.stack--;
  				if (item.stack <= 0) {
  					item.active = false;
-@@ -36633,21 +_,31 @@
+@@ -36633,7 +_,7 @@
  						NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
  					}
  
@@ -3400,10 +3429,9 @@
  						NetMessage.SendData(34, -1, -1, null, 1, x, y);
  
  					if (Main.tile[x, y].type == 467)
- 						NetMessage.SendData(34, -1, -1, null, 5, x, y);
+@@ -36641,13 +_,23 @@
  
--					if (Main.tile[x, y].type == 88)
-+					if (TileID.Sets.BasicDresser[Main.tile[x, y].type] || Main.tile[x, y].type < TileID.Count && TileID.Sets.BasicDresser[Main.tile[x, y].type])
+ 					if (Main.tile[x, y].type == 88)
  						NetMessage.SendData(34, -1, -1, null, 3, x, y);
 +
 +					if (Main.tile[x, y].type >= TileID.Count) {

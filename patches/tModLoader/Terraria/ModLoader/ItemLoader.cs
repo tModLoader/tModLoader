@@ -694,19 +694,20 @@ namespace Terraria.ModLoader
 
 		private static HookList HookUseItem = AddHook<Func<Item, Player, bool>>(g => g.UseItem);
 		/// <summary>
-		/// Returns true if any of ModItem.UseItem or GlobalItem.UseItem return true
+		/// Returns true if none of ModItem.UseItem or GlobalItem.UseItem return false
 		/// Does not fail fast (calls every hook)
 		/// </summary>
 		public static bool UseItem(Item item, Player player) {
 			if (item.IsAir)
 				return false;
 
-			bool flag = false;
+			bool flag = true;
+
 			if (item.modItem != null)
-				flag |= item.modItem.UseItem(player);
+				flag &= item.modItem.UseItem(player);
 
 			foreach (var g in HookUseItem.arr)
-				flag |= g.Instance(item).UseItem(item, player);
+				flag &= g.Instance(item).UseItem(item, player);
 
 			return flag;
 		}
@@ -1137,7 +1138,7 @@ namespace Terraria.ModLoader
 			texture?.DrawHair(ref drawHair, ref drawAltHair);
 
 			foreach (var g in HookDrawHair.arr)
-				g.DrawHair(player.body, ref drawHair, ref drawAltHair);
+				g.DrawHair(player.head, ref drawHair, ref drawAltHair);
 		}
 
 		private static HookList HookDrawHead = AddHook<Func<int, bool>>(g => g.DrawHead);

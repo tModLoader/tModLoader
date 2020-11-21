@@ -47,6 +47,10 @@
 		"ModsXWalls": "{0} {^0:Wand;Wände}",
 		"ModsXBuffs": "{0} {^0:buff;Buffs}",
 		"ModsXMounts": "{0} {^0:Reittier;Reittiere}",
+		// "ModsReloadAndReturn": "Reload and return to world menu",
+		// "ModsNotFoundServer": "No mods were found in: \"{0}\"\nIf you are running a dedicated server, you may wish to use the 'modpath' command line switch or server config setting to specify a custom mods directory.\n",
+		// "AskForModIndex": "Type a number to switch between enabled/disabled",
+		// "AskForCommand": "Type a command: ",
 
 		// Mod Errors
 		"LoadError": "Beim laden ist etwas schiefgelaufen {0}",
@@ -187,6 +191,9 @@
 		"XDaysAgo": "Vor {0} {^0:tag;tagen}",
 		"XMonthsAgo": "Vor {0} {^0:monat;monaten}",
 		"XYearsAgo": "Vor {0} {^0:jahr;jahren}",
+		// "MBServerReturnToMenu": "Return to world menu",
+		// "MBServerAskForModName": "Type an exact ModName to download: ",
+		// "MBServerDownloadError": "Error: Could not download {0} -- {1}",
 
 		// Mod Publishing
 		"MBPublishEnterPassphrase": "Bitte gib deinen Passcode ein",
@@ -242,6 +249,7 @@
 		"NewModsListing": "Neue Mods::\n{0}",
 		"PlayerCustomDataFail": "Ein Problem beim laden der benutzerdefinierten Daten eines Charakters ist aufgetreten",
 		"PlayerLoadWorldFail": "Ein problem ist beim Laden einer Welt aufgetreten",
+		// "CloudWarning": "Cloud storage limit reached, unable to move to cloud",
 
 		// Mod Sources
 		"MSBuild": "Erstellen",
@@ -331,7 +339,28 @@
 		"PatreonSetTooltip": "Danke für deine Unterstüzung!",
 		"WorldGenError": "Ein Problem ist beim Erstellen der Welt aufgetreten",
 		"WorldIODataException": "Das Spiel hat ein Mod-Datei Problem bei dieser Welt festgestellt.",
-		"ServerCrash": "Server crash: {0}\n{1}\n\nBitte checke server.log um festzustellen ob eine Mod daran schuld ist, ansonsten gehe in den #support Kanal im tModLoader Discord!"
+		"ServerCrash": "Server crash: {0}\n{1}\n\nBitte checke server.log um festzustellen ob eine Mod daran schuld ist, ansonsten gehe in den #support Kanal im tModLoader Discord!",
+
+		// MessageBox
+		// "ContentFolderNotFound": "Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.",
+		// "MissingServerExecutable": "Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.",
+		// "GraphicsEngineFailure": "Graphics Engine Failure",
+		// "GraphicsEngineReportUnknown": "Unknown",
+		// "GraphicsEngineReportFailure": "Failure",
+		// "GraphicsEngineFailureMessage": "tML encountered a crash when testing some experimental graphics features. If this issue persists consistently, you may have to edit config.json and set the Support4K setting to false. \nPlease restart your game.\nReport Status: {0}",
+		// "OutOfMemory": "Game ran out of memory. You'll have to find which mod is consuming lots of memory, and contact the devs or remove it.",
+		// "ContentFolderNotFoundInstallCheck": "{0} directory could not be found.\r\n\r\nDid you forget to extract tModLoader's Content directory into the tModLoader folder?\r\n\r\nEnsure tModLoader is installed in a separate folder from Terraria.",
+		// "VanillaSteamInstallationNotFound": "Terraria Steam installation or Terraria Content directory not found.\r\n\r\nPlease ensure Terraria 1.4 is installed through Steam.",
+		// "SteamAPIHashMismatch": "Steam API hash mismatch, assumed pirated.\n\ntModLoader requires a legitimate Terraria install to work.",
+		// "VanillaGOGNotFound": "{0} could not be found.\r\n\r\nGOG installs must have the unmodified Terraria executable to function.",
+		// "GOGHashMismatch": "{0} is not the unmodified Terraria executable.\r\n\r\nGOG installs must have the unmodified Terraria executable to function.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"Terraria_v<VERSION>.exe\"",
+		// "DefaultExtraMessage": "Please restore your Terraria install, then install tModLoader on Steam or by following the README.txt instructions for manual installation.",
+		// "ClientLogHint": "{0}\n\nA client.log file containing error information has been generated in\n{1}\n(You will need to share this file if asking for help)",
+		// "OutOfMemoryHint": "\n\nTip: Try running less mods at once, or determine if a mod is taking up too much memory. Optionally, install 64-bit tModLoader",
+		// "ModExceptionHint": "\n\nTip: This is likely a mod's fault. Disable mods one by one and check if the issue persists",
+		// "OneDriveHint": "\n\nTip: Try installing/enabling OneDrive. Right click your Documents folder and enable \"Always save on this device\"",
+		// "AntivirusHint": "\n\nTip: If you have an antivirus, try adding Terraria to its whitelist/exclusion list",
+		// "TypeInitializationHint": "\n\nTip: Restart the game. If this issue persists, try uninstalling Terraria completely, then reinstalling through Steam, and then reinstalling tModLoader"
 	},
 	"CommonItemTooltip": {
 		"PercentIncreasedDamage": "Um {0}% erhöhter Schaden",

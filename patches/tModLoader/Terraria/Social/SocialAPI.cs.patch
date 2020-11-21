@@ -17,7 +17,7 @@
 +#if DEBUG
 +				if (!Program.LaunchParameters.ContainsKey("-nosteam"))
 +#endif
-+				if (!GoGVerifier.IsGoG)
++				if (InstallVerifier.IsValid && InstallVerifier.IsSteam)
 -				mode = SocialMode.Steam;
 +					mode = SocialMode.Steam;
  #else
