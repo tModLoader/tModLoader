@@ -305,15 +305,15 @@ namespace Terraria.ModLoader.UI
 				}
 				if (mods.Length == 0) {
 					Console.ForegroundColor = ConsoleColor.Yellow;
-					Console.WriteLine($"No mods were found in: \"{ModLoader.ModPath}\"\nIf you are running a dedicated server, you may wish to use the 'modpath' command line switch or server config setting to specify a custom mods directory.\n");
+					Console.WriteLine(Language.GetTextValue("tModLoader.ModsNotFoundServer", ModLoader.ModPath));
 					Console.ResetColor();
 				}
-				Console.WriteLine("e\t\tEnable All");
-				Console.WriteLine("d\t\tDisable All");
-				Console.WriteLine("r\t\tReload and return to world menu");
-				Console.WriteLine("Type a number to switch between enabled/disabled");
+				Console.WriteLine("e\t\t" + Language.GetTextValue("tModLoader.ModsEnableAll"));
+				Console.WriteLine("d\t\t" + Language.GetTextValue("tModLoader.ModsDisableAll"));
+				Console.WriteLine("r\t\t" + Language.GetTextValue("tModLoader.ModsReloadAndReturn"));
+				Console.WriteLine(Language.GetTextValue("tModLoader.AskForModIndex"));
 				Console.WriteLine();
-				Console.WriteLine("Type a command: ");
+				Console.WriteLine(Language.GetTextValue("tModLoader.AskForCommand"));
 				string command = Console.ReadLine();
 				if (command == null) {
 					command = "";
@@ -345,9 +345,9 @@ namespace Terraria.ModLoader.UI
 			Console.Clear();
 			while (!exit) {
 				Console.WriteLine();
-				Console.WriteLine("b\t\tReturn to world menu");
+				Console.WriteLine("b\t\t" + Language.GetTextValue("tModLoader.MBServerReturnToMenu"));
 				Console.WriteLine();
-				Console.WriteLine("Type an exact ModName to download: ");
+				Console.WriteLine(Language.GetTextValue("tModLoader.MBServerAskForModName"));
 				string command = Console.ReadLine();
 				if (command == null) {
 					command = "";
@@ -379,7 +379,7 @@ namespace Terraria.ModLoader.UI
 						}
 					}
 					catch (Exception e) {
-						Console.WriteLine("Error: Could not download " + modname + " -- " + e.ToString());
+						Console.WriteLine(Language.GetTextValue("tModLoader.MBServerDownloadError", modname, e.ToString()));
 					}
 				}
 			}
@@ -388,13 +388,37 @@ namespace Terraria.ModLoader.UI
 
 		internal static void MessageBoxShow(string text, string caption = null) {
 			// MessageBox.Show fails on Mac, this method will open a text file to show a message.
-			caption ??= "Terraria: Error" + $" ({ModLoader.versionedName})";
+			caption = caption ?? "Terraria: Error" + $" ({ModLoader.versionedName})";
+			string message = Language.GetTextValue("tModLoader.ClientLogHint", text, Path.Combine(Main.SavePath, "Logs"));
+			if(Language.ActiveCulture == null) // Simple backup approach in case error happens before localization is loaded
+				message = string.Format("{0}\n\nA client.log file containing error information has been generated in\n{1}\n(You will need to share this file if asking for help)", text, Path.Combine(Main.SavePath, "Logs"));
 #if !MAC
-			System.Windows.Forms.MessageBox.Show(text, caption);
+			System.Windows.Forms.MessageBox.Show(message, caption);
 #else
 			File.WriteAllText("fake-messagebox.txt", $"{caption}\n\n{text}");
 			Process.Start("fake-messagebox.txt");
 #endif
+		}
+
+		internal static void MessageBoxShow(Exception e, string caption = null, bool generateTip = false) {
+			string tip = "";
+
+			if (generateTip) {
+				if (e is OutOfMemoryException)
+					tip = Language.GetTextValue("tModLoader.OutOfMemoryHint");
+				else if (e is InvalidOperationException || e is NullReferenceException || e is IndexOutOfRangeException || e is ArgumentNullException)
+					tip = Language.GetTextValue("tModLoader.ModExceptionHint");
+				else if (e is IOException && e.Message.Contains("cloud file provider"))
+					tip = Language.GetTextValue("tModLoader.OneDriveHint");
+				else if (e is System.Threading.SynchronizationLockException)
+					tip = Language.GetTextValue("tModLoader.AntivirusHint");
+				else if (e is TypeInitializationException)
+					tip = Language.GetTextValue("tModLoader.TypeInitializationHint");
+			}
+
+			string message = e.ToString() + tip;
+
+			MessageBoxShow(message, caption);
 		}
 	}
 }

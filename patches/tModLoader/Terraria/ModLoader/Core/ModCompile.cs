@@ -488,9 +488,11 @@ namespace Terraria.ModLoader.Core
 				throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorModNamedTerraria"));
 
 			// Verify that folder and namespace match up
-			var modClassType = asmDef.MainModule.Types.SingleOrDefault(x => x.BaseType?.FullName == "Terraria.ModLoader.Mod");
-			if (modClassType == null)
-				throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorNoModClass"));
+			var modClassTypes = asmDef.MainModule.Types.Where(x => x.BaseType?.FullName == "Terraria.ModLoader.Mod");
+			if (modClassTypes.Count() != 1) {
+				throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorNoModClass") + $"\nFound: {(modClassTypes.Any() ? string.Join(", ", modClassTypes.Select(x => x.FullName)) : "No Mod classes")}");
+			}
+			var modClassType = modClassTypes.Single();
 
 			string topNamespace = modClassType.Namespace.Split('.')[0];
 			if (topNamespace != modName)
