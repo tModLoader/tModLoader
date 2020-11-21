@@ -60,9 +60,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="type"></param>
-		public virtual void UpdateVanity(Player player, EquipType type) {
+		public virtual void FrameEffects(Player player, EquipType type) {
 			if (item != null) {
-				item.UpdateVanity(player, type);
+				item.EquipFrameEffects(player, type);
 			}
 		}
 

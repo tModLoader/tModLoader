@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Terraria.DataStructures;
 using Terraria.GameContent.UI;
 using Terraria.GameInput;
 using Terraria.ID;
@@ -100,13 +101,13 @@ namespace Terraria.ModLoader
 		/// Returns whether or not a texture with the specified name exists.
 		/// </summary>
 		public static bool TextureExists(string name) {
-			if (!name.Contains('/'))
+			if (Main.dedServ || string.IsNullOrWhiteSpace(name) || !name.Contains('/'))
 				return false;
 
 			SplitName(name, out string modName, out string subName);
 
 			if (modName == "Terraria")
-				return !Main.dedServ && (Main.instance.Content as TMLContentManager).ImageExists(subName);
+				return (Main.instance.Content as TMLContentManager).ImageExists(subName);
 
 			return ModLoader.TryGetMod(modName, out var mod) && mod.TextureExists(subName);
 		}
@@ -121,7 +122,7 @@ namespace Terraria.ModLoader
 		{
 			texture = null;
 
-			if (Main.dedServ || !TextureExists(name)) {
+			if (Main.dedServ || string.IsNullOrWhiteSpace(name) || !name.Contains('/')) {
 				return false;
 			}
 
@@ -298,6 +299,11 @@ namespace Terraria.ModLoader
 		public static ModUgBgStyle GetModUgBgStyle(int style) => UgBgStyleLoader.GetUgBgStyle(style);
 
 		/// <summary>
+		/// Get the id (type) of a ModGore by class. Assumes one instance per class.
+		/// </summary>
+		public static int GoreType<T>() where T : ModGore => GetInstance<T>()?.Type ?? 0;
+
+		/// <summary>
 		/// Get the id (type) of a ModItem by class. Assumes one instance per class.
 		/// </summary>
 		public static int ItemType<T>() where T : ModItem => GetInstance<T>()?.Type ?? 0;
@@ -440,7 +446,9 @@ namespace Terraria.ModLoader
 
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();
+			RecipeHooks.setupRecipes = true;
 			Recipe.SetupRecipes();
+			RecipeHooks.setupRecipes = false;
 		}
 
 		internal static void UnloadModContent() {
@@ -483,7 +491,7 @@ namespace Terraria.ModLoader
 			MountLoader.Unload();
 			RarityLoader.Unload();
 			DamageClassLoader.Unload();
-			ModGore.Unload();
+			GoreLoader.Unload();
 			SoundLoader.Unload();
 			DisposeMusic();
 			BackgroundTextureLoader.Unload();
@@ -545,7 +553,7 @@ namespace Terraria.ModLoader
 				UgBgStyleLoader.ResizeAndFillArrays();
 				SurfaceBgStyleLoader.ResizeAndFillArrays();
 				GlobalBgStyleLoader.ResizeAndFillArrays(unloading);
-				ModGore.ResizeAndFillArrays();
+				GoreLoader.ResizeAndFillArrays();
 				WaterStyleLoader.ResizeArrays();
 				WaterfallStyleLoader.ResizeArrays();
 			}
@@ -610,8 +618,8 @@ namespace Terraria.ModLoader
 		}
 
 		private static void DisposeMusic() {
-			foreach (var music in Main.music.OfType<MusicStreaming>())
-				music.Dispose();
+			//foreach (var music in Main.audioSystem.OfType<MusicStreaming>())
+			//	music.Dispose();
 		}
 
 		/// <summary>
@@ -653,6 +661,8 @@ namespace Terraria.ModLoader
 				Main.projectile[i] = new Projectile();
 				// projectile.whoAmI is only set for active projectiles
 			}
+
+			TileEntity.Clear(); // drop all possible references to mod TEs
 		}
 
 		public static Stream OpenRead(string assetName, bool newFileStream = false) {

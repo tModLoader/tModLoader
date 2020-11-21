@@ -45,7 +45,7 @@ namespace Terraria.ModLoader.Default.Patreon
 			item.height = 18;
 		}
 
-		public override void UpdateVanity(Player player, EquipType type)
+		public override void EquipFrameEffects(Player player, EquipType type)
 		{
 			player.shoe = 0;
 		}

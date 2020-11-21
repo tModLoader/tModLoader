@@ -234,10 +234,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not this projectile is capable of killing tiles (such as grass) and damaging NPCs/players. Return false to prevent it from doing any sort of damage. Returns true by default.
+		/// Whether or not this projectile is capable of killing tiles (such as grass) and damaging NPCs/players.
+		/// Return false to prevent it from doing any sort of damage.
+		/// Return true if you want the projectile to do damage regardless of the default blacklist.
+		/// Return null to let the projectile follow vanilla can-damage-anything rules. This is what happens by default.
 		/// </summary>
-		public virtual bool CanDamage() {
-			return true;
+		public virtual bool? CanDamage() {
+			return null;
 		}
 
 		/// <summary>
@@ -415,6 +418,12 @@ namespace Terraria.ModLoader
 		/// The speed at which the grapple pulls the player after hitting something. Defaults to 11, but the Bat Hook uses 16.
 		/// </summary>
 		public virtual void GrapplePullSpeed(Player player, ref float speed) {
+		}
+
+		/// <summary>
+		/// The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile.
+		/// </summary>
+		public virtual void GrappleTargetPoint(Player player, ref float grappleX, ref float grappleY) {
 		}
 
 		/// <summary>

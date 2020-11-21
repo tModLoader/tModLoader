@@ -118,6 +118,14 @@ namespace ExampleMod.Content.Items.Tools
 		public override void GrapplePullSpeed(Player player, ref float speed) {
 			speed = 10; // How fast you get pulled to the grappling hook projectile's landing position
 		}
+		
+		// Comments needed for this one
+		public override void GrappleTargetPoint(Player player, ref float grappleX, ref float grappleY) {
+			Vector2 dirToPlayer = projectile.DirectionTo(player.Center);
+			float hangDist = 50f;
+			grappleX += dirToPlayer.X * hangDist;
+			grappleY += dirToPlayer.Y * hangDist;
+		}
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
 			Vector2 playerCenter = Main.player[projectile.owner].MountedCenter;

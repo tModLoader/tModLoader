@@ -125,6 +125,7 @@ namespace Terraria.ModLoader.UI
 		{
 			base.OnActivate();
 			_modName.SetText("");
+			_basicSword.SetText("");
 			_modDiplayName.SetText("");
 			_modAuthor.SetText("");
 			_messagePanel.SetText("");
@@ -300,7 +301,7 @@ namespace {modNameTrimmed}.Items
 		public override void SetDefaults() 
 		{{
 			item.damage = 50;
-			item.melee = true;
+			item.DamageType = DamageClass.Melee;
 			item.width = 40;
 			item.height = 40;
 			item.useTime = 20;
@@ -315,10 +316,10 @@ namespace {modNameTrimmed}.Items
 
 		public override void AddRecipes() 
 		{{
-			CreateRecipe()
-				.AddIngredient(ItemID.DirtBlock, 10)
-				.AddTile(TileID.WorkBenches)
-				.Register();
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ItemID.DirtBlock, 10);
+			recipe.AddTile(TileID.WorkBenches);
+			recipe.Register();
 		}}
 	}}
 }}";
