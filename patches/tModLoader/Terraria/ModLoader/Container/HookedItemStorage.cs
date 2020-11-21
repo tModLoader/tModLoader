@@ -20,31 +20,23 @@ namespace Terraria.ModLoader.Container
 			public void Set() => set = true;
 		}
 
-		public delegate void CanInteractDelegate(object? user, int slot, Operation operation, in Flag cancel);
-		public delegate void IsInsertValidDelegate(int slot, Item item, in Flag cancel);
-		public delegate void IsRemoveValidDelegate(int slot, in Flag cancel);
+		public delegate void IsInsertValidDelegate(object? user, int slot, Item item, in Flag cancelOperation);
+		public delegate void IsRemoveValidDelegate(object? user, int slot, int amount, in Flag cancelOperation);
 		public delegate void GetSlotSizeDelegate(int slot, Item item, ref int result);
 
-		public event CanInteractDelegate? OnCanInteract;
 		public event IsInsertValidDelegate? OnIsInsertValid;
 		public event IsRemoveValidDelegate? OnIsRemoveValid;
 		public event GetSlotSizeDelegate? OnGetSlotSize;
 
-		public override bool CanInteract(int slot, Operation operation, object? user) {
+		public override bool IsInsertValid(object? user, int slot, Item inserting) {
 			Flag ret = new Flag();
-			OnCanInteract?.Invoke(user, slot, operation, in ret);
+			OnIsInsertValid?.Invoke(user, slot, inserting, in ret);
 			return !ret.Get();
 		}
 
-		public override bool IsInsertValid(int slot, Item item) {
+		public override bool IsRemoveValid(object? user, int slot, int amount) {
 			Flag ret = new Flag();
-			OnIsInsertValid?.Invoke(slot, item, in ret);
-			return !ret.Get();
-		}
-
-		protected override bool IsRemoveValid(int slot) {
-			Flag ret = new Flag();
-			OnIsRemoveValid?.Invoke(slot, in ret);
+			OnIsRemoveValid?.Invoke(user, slot, amount, in ret);
 			return !ret.Get();
 		}
 
