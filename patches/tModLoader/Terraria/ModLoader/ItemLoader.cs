@@ -260,7 +260,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <returns>True if the items can stack. False otherwise.</returns>
 		public static bool IsTheSameAs(Item item, Item compareItem) {
-			if (netID == compareItem.netID && stack == compareItem.stack && prefix == compareItem.prefix) {
+			if (item.netID == compareItem.netID && item.stack == compareItem.stack && item.prefix == compareItem.prefix) {
 				bool result = true;
 				foreach (var g in HookIsTheSameAs.arr) {
 					result &= g.Instance(item).IsTheSameAs(item, compareItem);
