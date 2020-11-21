@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.Container
 			Output
 		}
 
-		protected Item[] Items;
+		internal Item[] Items;
 
 		public int Count => Items.Length;
 
@@ -306,7 +306,7 @@ namespace Terraria.ModLoader.Container
 		}
 		#endregion
 
-		private static bool CanItemsStack(Item a, Item b) {
+		internal static bool CanItemsStack(Item a, Item b) {
 			// if (a.modItem != null && b.modItem != null) return a.modItem.CanStack(b.modItem);
 			return a.IsTheSameAs(b);
 		}
