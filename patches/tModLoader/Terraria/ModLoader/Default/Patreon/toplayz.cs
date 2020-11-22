@@ -1,10 +1,8 @@
 ﻿namespace Terraria.ModLoader.Default.Patreon
 {
+	[AutoloadEquip(EquipType.Head)]
 	internal class toplayz_Head : PatreonItem
 	{
-		public override string SetName => "toplayz";
-		public override EquipType ItemEquipType => EquipType.Head;
-
 		public override void SetDefaults() {
 			base.SetDefaults();
 			item.width = 28;
@@ -12,11 +10,9 @@
 		}
 	}
 
+	[AutoloadEquip(EquipType.Body)]
 	internal class toplayz_Body : PatreonItem
 	{
-		public override string SetName => "toplayz";
-		public override EquipType ItemEquipType => EquipType.Body;
-
 		public override void SetDefaults() {
 			base.SetDefaults();
 			item.width = 30;
@@ -24,11 +20,9 @@
 		}
 	}
 
+	[AutoloadEquip(EquipType.Legs)]
 	internal class toplayz_Legs : PatreonItem
 	{
-		public override string SetName => "toplayz";
-		public override EquipType ItemEquipType => EquipType.Legs;
-
 		public override void SetDefaults() {
 			base.SetDefaults();
 			item.width = 22;

@@ -4,11 +4,9 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
-	public class StartBag : ModItem
+	public class StartBag : ModLoaderModItem
 	{
 		private List<Item> items = new List<Item>();
-
-		public override string Texture => "ModLoader/StartBag";
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("{$tModLoader.StartBagItemName}");

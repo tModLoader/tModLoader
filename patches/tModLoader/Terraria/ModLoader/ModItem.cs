@@ -17,7 +17,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each item. Create instances of ModItem (preferably overriding this class) to pass as parameters to Mod.AddItem.
 	/// </summary>
-	public class ModItem:ModTexturedType
+	public abstract class ModItem : ModTexturedType
 	{
 		//add modItem property to Terraria.Item (internal set)
 		//set modItem to null at beginning of Terraria.Item.ResetStats		

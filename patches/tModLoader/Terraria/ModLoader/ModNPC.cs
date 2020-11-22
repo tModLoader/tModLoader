@@ -13,7 +13,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each NPC. Create instances of ModNPC (preferably overriding this class) to pass as parameters to Mod.AddNPC.
 	/// </summary>
-	public class ModNPC:ModTexturedType
+	public abstract class ModNPC : ModTexturedType
 	{
 		//add modNPC property to Terraria.NPC (internal set)
 		//set modNPC to null at beginning of Terraria.NPC.SetDefaults

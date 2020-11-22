@@ -8,7 +8,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.
 	/// </summary>
-	public class GlobalNPC:ModType
+	public abstract class GlobalNPC : ModType
 	{
 		internal int index;
 		internal int instanceIndex;

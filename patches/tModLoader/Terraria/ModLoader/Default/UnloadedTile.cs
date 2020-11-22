@@ -1,5 +1,6 @@
 namespace Terraria.ModLoader.Default
 {
+	[Autoload(false)] // need two named versions
 	public class UnloadedTile : ModTile
 	{
 		public override string Name{get;}

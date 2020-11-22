@@ -7,7 +7,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify the behavior of any tile in the game. Create an instance of an overriding class then call Mod.AddGlobalTile to use this.
 	/// </summary>
-	public class GlobalTile:ModType
+	public abstract class GlobalTile : ModType
 	{
 		/// <summary>
 		/// A convenient method for adding an integer to the end of an array. This can be used with the arrays in TileID.Sets.RoomNeeds.
