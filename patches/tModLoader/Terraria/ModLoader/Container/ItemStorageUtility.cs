@@ -24,24 +24,110 @@ namespace Terraria.ModLoader.Container
 		/// </summary>
 		public static int Count(this ItemStorage storage, Item item) => storage.Count(item.IsTheSameAs);
 
-		public static bool CanInsert(this ItemStorage storage, object? user, Item item) {
-			for (int i = 0; i < storage.Count; i++) {
-				Item existing = storage[i];
+		/// <summary>
+		/// Gets if the <paramref name="item" /> can fit in the slot completely.
+		/// </summary>
+		public static bool CanItemStack(this ItemStorage storage, int slot, Item item) => CanItemStackPartially(storage, slot, item, out int leftOver) && leftOver <= 0;
 
-				if (!storage.CanInteract(i, ItemStorage.Operation.Input, user)) {
+		/// <summary>
+		/// Gets if the <paramref name="item" /> can fit in the slot partially.
+		/// </summary>
+		/// <param name="leftOver">
+		/// The amount of items left over after simulated stacking.
+		/// <para />
+		/// Positive values represent how many items could not fit.
+		/// Zero represents a perfect fit.
+		/// Negative values represent how many extra items could fit.
+		/// </param>
+		public static bool CanItemStackPartially(this ItemStorage storage, int slot, Item item, out int leftOver) {
+			leftOver = 0;
+			if (item is null || item.IsAir) {
+				return false;
+			}
+
+			if (!storage.IsItemValid(slot, item)) {
+				return false;
+			}
+
+			leftOver = item.stack;
+			int size = storage.MaxStackFor(slot, item);
+			if (size <= 0) {
+				return false;
+			}
+
+			Item storageItem = storage.Items[slot];
+			if (storageItem.IsAir) {
+				leftOver = item.stack - size;
+			}
+			else {
+				if (!ItemStorage.CanItemsStack(storageItem, item)) {
 					return false;
 				}
 
-				if (existing.IsAir && storage.IsItemValid(i, item)) {
-					return true;
-				}
+				leftOver = (storageItem.stack + item.stack) - size;
+			}
 
-				if (ItemStorage.CanItemsStack(existing, item) && existing.stack + item.stack <= storage.MaxStackFor(i, existing)) {
+			return true;
+		}
+
+		/// <summary>
+		/// Gets if this item can be inserted completely into the storage.
+		/// </summary>
+		public static bool CanInsertItem(this ItemStorage storage, object? user, Item item) {
+			if (item is null || item.IsAir) {
+				return false;
+			}
+
+			item = item.Clone();
+			for (int i = 0; i < storage.Count; i++) {
+				if (storage.CanInteract(i, ItemStorage.Operation.Insert, user) && storage.CanItemStackPartially(i, item, out int leftOver)) {
+					item.stack = leftOver;
+					if (item.stack <= 0) {
+						return true;
+					}
+				}
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Gets if this item can be inserted, even partially, into the storage.
+		/// </summary>
+		public static bool CanInsertItemPartially(this ItemStorage storage, object? user, Item item) {
+			if (item is null || item.IsAir) {
+				return false;
+			}
+
+			for (int i = 0; i < storage.Count; i++) {
+				if (storage.CanInteract(i, ItemStorage.Operation.Insert, user) && storage.CanItemStackPartially(i, item, out _)) {
 					return true;
 				}
 			}
 
 			return false;
+		}
+
+		/// <summary>
+		/// Simulates putting an item into storage and returns if it is feasible.
+		/// </summary>
+		/// <param name="leftOver">
+		/// Positive values represent how many items could not fit.
+		/// Zero represents a perfect fit.
+		/// Negative values represent how many extra items could fit.
+		/// </param>
+		/// <returns>
+		/// True if the item was successfully inserted, even partially. False if the item is air, if the slot is already
+		/// fully occupied, if the slot rejects the item, or if the slot rejects the user.
+		/// </returns>
+		public static bool CanInsertItem(this ItemStorage storage, object? user, int slot, Item item, out int leftOver) {
+			leftOver = 0;
+			if (item == null || item.IsAir)
+				return false;
+
+			storage.ValidateSlotIndex(slot);
+
+			return storage.CanInteract(slot, ItemStorage.Operation.Insert, user) && storage.CanItemStackPartially(slot, item, out leftOver);
 		}
 
 		/// <summary>
