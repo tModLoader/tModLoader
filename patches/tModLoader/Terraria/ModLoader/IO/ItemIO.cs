@@ -176,10 +176,7 @@ namespace Terraria.ModLoader.IO
 				reader.SafeRead(r => item.modItem?.NetReceive(r));
 			}
 			catch (IOException e) {
-				if (FrameworkVersion.Framework == Framework.Mono) {
-					Logging.tML.Error(e);
-				}
-
+				Logging.tML.Error(e.ToString());
 				Logging.tML.Error($"Above IOException error caused by {item.modItem.Name} from the {item.modItem.Mod.Name} mod.");
 			}
 
@@ -188,10 +185,7 @@ namespace Terraria.ModLoader.IO
 					reader.SafeRead(r => globalItem.Instance(item).NetReceive(item, r));
 				}
 				catch (IOException e) {
-					if (FrameworkVersion.Framework == Framework.Mono) {
-						Logging.tML.Error(e);
-					}
-
+					Logging.tML.Error(e.ToString());
 					Logging.tML.Error($"Above IOException error caused by {globalItem.Name} from the {globalItem.Mod.Name} mod while reading {item.Name}.");
 				}
 			}

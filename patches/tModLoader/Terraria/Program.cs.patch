@@ -32,7 +32,7 @@
  	{
  #if CLIENT
  		public const bool IsServer = false;
-@@ -64,23 +_,18 @@
+@@ -65,24 +_,19 @@
  		public static void ForceLoadThread(object threadContext) {
  			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
  			LoadedEverything = true;
@@ -48,11 +48,12 @@
 -				MethodInfo[] methods = types[i].GetMethods();
 -#endif
 -				foreach (MethodInfo methodInfo in methods) {
--					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
--#if WINDOWS
--						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
+-					try {
+-						if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
+-#if XNA
+-							RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
 -#else
--						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
+-							JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
 -#endif
 +		private static void ForceJITOnAssembly(IEnumerable<Type> types) {
 +			var methodsToJIT = CollectMethodsToJIT(types);
@@ -62,10 +63,11 @@
 +			}
 +			else {
 +				foreach (var method in methodsToJIT) {
-+					ForceJITOnMethod(method);
- 				}
- 
- 				ThingsLoaded++;
++					try {
++						ForceJITOnMethod(method);
+ 					}
+ 					catch (BadImageFormatException e) 
+ 					{
 @@ -96,10 +_,13 @@
  		}
  

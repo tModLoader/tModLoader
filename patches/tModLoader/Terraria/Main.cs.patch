@@ -829,7 +829,8 @@
  			});
  
  			VanillaContentValidator.Instance = new VanillaContentValidator("Terraria.IO.Data.ResourcePacksDefaultInfo.tsv");
-@@ -8313,6 +_,8 @@ 			AssetInitializer.LoadSplashAssets(asyncLoadForSounds: true);
+@@ -8313,6 +_,8 @@
+ 			AssetInitializer.LoadSplashAssets(asyncLoadForSounds: true);
  			ChromaInitializer.Load();
  			_gameContentLoadProcess = LoadContent_Deferred();
 +
