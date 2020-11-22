@@ -20,7 +20,10 @@ namespace Terraria.ModLoader.Container
 
 		public int Count => Items.Length;
 
-		public Item this[int index] => Items[index];
+		public Item this[int index] {
+			get => Items[index];
+			internal set => Items[index] = value;
+		}
 
 		public ItemStorage(int size) {
 			Items = new Item[size];
