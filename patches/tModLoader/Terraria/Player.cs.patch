@@ -4305,7 +4305,7 @@
 +			buffTime = new int[MaxBuffs];
 +			buffImmune = new bool[BuffLoader.BuffCount]; // TODO: Move all these patches to field initializers.
 +			allDamage = Modifier.One;
-+			allCrit = 4;
++			allCrit = new Modifier(4);
 +			allKB = Modifier.One;
 +			ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount];
 +			npcTypeNoAggro = new bool[NPCLoader.NPCCount];
