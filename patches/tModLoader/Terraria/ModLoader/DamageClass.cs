@@ -15,8 +15,6 @@ namespace Terraria.ModLoader
 		public static Summon Summon { get; private set; } = new Summon();
 		public static Throwing Throwing { get; private set; } = new Throwing();
 
-		internal int index;
-
 		/// <summary> This is the translation that is used behind <see cref="DisplayName"/>. The translation will show up when an item tooltip displays 'X [ClassName]'. This should include the 'damage' part. </summary>
 		public ModTranslation ClassName { get; internal set; }
 
@@ -40,17 +38,11 @@ namespace Terraria.ModLoader
 		internal protected virtual string DisplayNameInternal => ClassName.GetTranslation(Language.ActiveCulture);
 
 		public override void Load() {
-			Generic.index = 0;
-			NoScaling.index = 1;
-			Melee.index = 2;
-			Ranged.index = 3;
-			Magic.index = 4;
-			Summon.index = 5;
-			Throwing.index = 6;
+
 		}
 
 		protected override void Register() {
-			index = DamageClassLoader.Add(this);
+			DamageClassLoader.Add(this);
 
 			ClassName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.DamageClassName.{Name}");
 

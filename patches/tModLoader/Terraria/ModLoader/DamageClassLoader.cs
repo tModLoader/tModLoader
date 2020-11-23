@@ -18,9 +18,8 @@ namespace Terraria.ModLoader
 
 		internal static readonly int DefaultDamageClassCount = DamageClasses.Count;
 
-		internal static int Add(DamageClass damageClass) {
+		internal static void Add(DamageClass damageClass) {
 			DamageClasses.Add(damageClass);
-			return DamageClasses.Count - 1;
 		}
 
 		internal static void Unload() {
