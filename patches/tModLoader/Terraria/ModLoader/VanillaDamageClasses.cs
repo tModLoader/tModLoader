@@ -5,7 +5,7 @@ namespace Terraria.ModLoader
 {
 	public class Generic : DamageClass
 	{
-		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.55");
+		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.55").Substring(1);
 
 		public override Dictionary<DamageClass, float>? BenefitsFrom() {
 			return null;
@@ -18,7 +18,7 @@ namespace Terraria.ModLoader
 
 	public class NoScaling : DamageClass
 	{
-		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.55");
+		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.55").Substring(1);
 
 		public override Dictionary<DamageClass, float>? BenefitsFrom() {
 			return null;
@@ -31,7 +31,7 @@ namespace Terraria.ModLoader
 
 	public class Melee : DamageClass
 	{
-		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.2");
+		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.2").Substring(1);
 
 		public override Dictionary<DamageClass, float>? BenefitsFrom() {
 			return null;
@@ -44,7 +44,7 @@ namespace Terraria.ModLoader
 
 	public class Ranged : DamageClass
 	{
-		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.3");
+		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.3").Substring(1);
 
 		public override Dictionary<DamageClass, float>? BenefitsFrom() {
 			return null;
@@ -57,7 +57,7 @@ namespace Terraria.ModLoader
 
 	public class Magic : DamageClass
 	{
-		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.4");
+		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.4").Substring(1);
 
 		public override Dictionary<DamageClass, float>? BenefitsFrom() {
 			return null;
@@ -70,7 +70,7 @@ namespace Terraria.ModLoader
 
 	public class Summon : DamageClass
 	{
-		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.53");
+		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.53").Substring(1);
 
 		public override Dictionary<DamageClass, float>? BenefitsFrom() {
 			return null;
@@ -83,7 +83,7 @@ namespace Terraria.ModLoader
 
 	public class Throwing : DamageClass
 	{
-		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.58");
+		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.58").Substring(1);
 
 		public override Dictionary<DamageClass, float>? BenefitsFrom() {
 			return null;

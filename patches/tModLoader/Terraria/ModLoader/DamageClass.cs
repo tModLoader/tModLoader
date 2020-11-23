@@ -7,13 +7,13 @@ namespace Terraria.ModLoader
 {
 	public abstract class DamageClass : ModType
 	{
-		public static Generic Generic { get; private set; } = new Generic();
-		public static NoScaling NoScaling { get; private set; } = new NoScaling();
-		public static Melee Melee { get; private set; } = new Melee();
-		public static Ranged Ranged { get; private set; } = new Ranged();
-		public static Magic Magic { get; private set; } = new Magic();
-		public static Summon Summon { get; private set; } = new Summon();
-		public static Throwing Throwing { get; private set; } = new Throwing();
+		public static Generic Generic => ModContent.GetInstance<Generic>();
+		public static NoScaling NoScaling => ModContent.GetInstance<NoScaling>();
+		public static Melee Melee => ModContent.GetInstance<Melee>();
+		public static Ranged Ranged => ModContent.GetInstance<Ranged>();
+		public static Magic Magic => ModContent.GetInstance<Magic>();
+		public static Summon Summon => ModContent.GetInstance<Summon>();
+		public static Throwing Throwing => ModContent.GetInstance<Throwing>();
 
 		/// <summary> This is the translation that is used behind <see cref="DisplayName"/>. The translation will show up when an item tooltip displays 'X [ClassName]'. This should include the 'damage' part. </summary>
 		public ModTranslation ClassName { get; internal set; }
@@ -36,10 +36,6 @@ namespace Terraria.ModLoader
 			return null;
 		}
 		internal protected virtual string DisplayNameInternal => ClassName.GetTranslation(Language.ActiveCulture);
-
-		public override void Load() {
-
-		}
 
 		protected override void Register() {
 			DamageClassLoader.Add(this);

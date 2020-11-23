@@ -7,7 +7,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify the behavior of any buff in the game.
 	/// </summary>
-	public class GlobalBuff:ModType
+	public abstract class GlobalBuff : ModType
 	{
 		protected sealed override void Register() {
 			ModTypeLookup<GlobalBuff>.Register(this);

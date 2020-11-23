@@ -3248,7 +3248,7 @@
  				itemAnimation--;
  			}
  
-+			ItemLoader.HoldItem(item2, this);
++			ItemLoader.HoldItem(item, this);
 +
  			if (itemAnimation > 0)
  				ItemCheck_ApplyUseStyle(heightOffsetHitboxCenter, item2, drawHitbox);
