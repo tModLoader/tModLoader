@@ -440,7 +440,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item">The item</param>
 		/// <param name="crit">The crit chance, ranging from 0 to 100</param>
-		public virtual void GetWeaponCrit(Item item, ref int crit) {
+		public virtual void GetWeaponCrit(Item item, ref Modifier crit) {
 		}
 
 		/// <summary>

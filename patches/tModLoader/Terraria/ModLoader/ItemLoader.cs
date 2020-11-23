@@ -465,12 +465,12 @@ namespace Terraria.ModLoader
 		}
 
 
-		private delegate void DelegateGetWeaponCrit(Item item, Player player, ref int crit);
+		private delegate void DelegateGetWeaponCrit(Item item, Player player, ref Modifier crit);
 		private static HookList HookGetWeaponCrit = AddHook<DelegateGetWeaponCrit>(g => g.GetWeaponCrit);
 		/// <summary>
 		/// Calls ModItem.GetWeaponCrit, then all GlobalItem.GetWeaponCrit hooks.
 		/// </summary>
-		public static void GetWeaponCrit(Item item, Player player, ref int crit) {
+		public static void GetWeaponCrit(Item item, Player player, ref Modifier crit) {
 			if (item.IsAir)
 				return;
 

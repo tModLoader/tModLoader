@@ -82,10 +82,10 @@
 -		public float minionDamage = 1f;
 -		public float minionKB;
 -		public float meleeSpeed = 1f;
-+		public int allCrit;
-+		internal ref int meleeCrit => ref GetCrit(DamageClass.Melee);
-+		internal ref int magicCrit => ref GetCrit(DamageClass.Magic);
-+		internal ref int rangedCrit => ref GetCrit(DamageClass.Ranged);
++		public Modifier allCrit;
++		internal ref Modifier meleeCrit => ref GetCrit(DamageClass.Melee);
++		internal ref Modifier magicCrit => ref GetCrit(DamageClass.Magic);
++		internal ref Modifier rangedCrit => ref GetCrit(DamageClass.Ranged);
 +		public Modifier allDamage = Modifier.One;
 +		internal ref Modifier meleeDamage => ref GetDamage(DamageClass.Melee);
 +		internal ref Modifier magicDamage => ref GetDamage(DamageClass.Magic);
@@ -1903,15 +1903,18 @@
 -			rangedDamage = 1f;
 -			magicDamage = 1f;
 -			minionDamage = 1f;
+-			meleeCrit = 4;
+-			rangedCrit = 4;
+-			magicCrit = 4;
 +			allDamage = Modifier.One;
 +			meleeDamage = Modifier.One;
 +			rangedDamage = Modifier.One;
 +			magicDamage = Modifier.One;
 +			minionDamage = Modifier.One;
-+			allCrit = 0;
- 			meleeCrit = 4;
- 			rangedCrit = 4;
- 			magicCrit = 4;
++			allCrit = new Modifier(4);
++			meleeCrit = new Modifier(0);
++			rangedCrit = new Modifier(0);
++			magicCrit = new Modifier(0);
  			hasFootball = false;
  			drawingFootball = false;
 -			minionKB = 0f;
@@ -2068,7 +2071,7 @@
 -
 -							if (Main.rand.Next(100) < meleeCrit)
 +							*/
-+							if (Main.rand.Next(100) < allCrit + meleeCrit)
++							if (Main.rand.Next(100) < allCrit & meleeCrit)
  								crit = true;
  
  							int num3 = base.direction;
@@ -2090,7 +2093,7 @@
 -
 -						if (Main.rand.Next(100) < meleeCrit)
 +						*/
-+						if (Main.rand.Next(100) < allCrit + meleeCrit)
++						if (Main.rand.Next(100) < allCrit & meleeCrit)
  							crit2 = true;
  
  						int direction = base.direction;
@@ -3677,11 +3680,9 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -36334,7 +_,22 @@
- 			}
+@@ -36335,6 +_,20 @@
  		}
  
-+		// TO-DO: apparently stat bonuses ef
  		public float GetWeaponKnockback(Item sItem, float KnockBack) {
 +			Modifier knockBackMult = allKB;
 +			if (sItem.damageType != DamageClass.Generic)
@@ -3700,7 +3701,7 @@
  			if (sItem.summon)
  				KnockBack += minionKB;
  
-@@ -36349,49 +_,94 @@
+@@ -36349,49 +_,92 @@
  
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
@@ -3712,17 +3713,15 @@
  		}
  
  		public int GetWeaponCrit(Item sItem) {
-+			int crit = 0;
-+
-+			crit = allCrit;
++			Modifier crit = allCrit;
 +			if (sItem.damageType != DamageClass.Generic)
 +				crit += GetCrit(sItem.damageType);
 +			if (sItem.damageType.BenefitsFrom() != null) {
 +				foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
 +					if (sItem.damageType.BenefitsFrom().ContainsKey(damageClass)) {
-+						float addCrit = (float)GetCrit(damageClass);
++						Modifier addCrit = GetCrit(damageClass);
 +						addCrit *= sItem.damageType.BenefitsFrom()[damageClass];
-+						crit += (int)addCrit;
++						crit &= addCrit;
 +					}
 +				}
 +			}
