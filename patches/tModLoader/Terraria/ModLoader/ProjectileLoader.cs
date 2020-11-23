@@ -628,6 +628,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookAddToShotProjectile = AddHook<Action<Projectile>>(g => g.AddToShotProjectile);
+
+		internal static void AddToShotProjectile(Projectile projectile) {
+			projectile.modProjectile?.AddToShotProjectile(projectile);
+
+			foreach (GlobalProjectile g in HookAddToShotProjectile.arr) {
+				g.Instance(projectile).AddToShotProjectile(projectile);
+			}
+		}
+
 		private static bool HasMethod(Type t, string method, params Type[] args) {
 			return t.GetMethod(method, args).DeclaringType != typeof(GlobalProjectile);
 		}

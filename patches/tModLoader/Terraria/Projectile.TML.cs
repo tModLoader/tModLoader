@@ -18,6 +18,30 @@ namespace Terraria
 		/// </summary>
 		public DamageClass DamageType { get; set; }
 
+		/// <summary>
+		/// An event to be called when a projectile hits an NPC. Will not sync; data here must be either deterministic or specific to the client.
+		/// </summary>
+		public event ProjectileDelegateOnHitNPC OnProjectileHitNPC;
+		public delegate void ProjectileDelegateOnHitNPC(NPC npc);
+
+		/// <summary>
+		/// An event to be called when a projectile hits a tile. Will not sync; data here must be either deterministic or specific to the client.
+		/// </summary>
+		public event ProjectileDelegateOnHitTile OnProjectileTileCollide;
+		public delegate void ProjectileDelegateOnHitTile(Microsoft.Xna.Framework.Vector2 coords);
+
+		/// <summary>
+		/// An event to be called when a projectile hits a player in PVP. Will not sync; data here must be either deterministic or specific to the client.
+		/// </summary>
+		public event ProjectileDelegateOnHitPvp OnProjectileHitPvp;
+		public delegate void ProjectileDelegateOnHitPvp(Player player);
+
+		/// <summary>
+		/// An event to be called when a projectile calls the Kill method. Will not sync; data here must be either deterministic or specific to the client.
+		/// </summary>
+		public event ProjectileDelegateKill OnProjectileKill;
+		public delegate void ProjectileDelegateKill();
+
 		// Get
 
 		/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>

@@ -431,5 +431,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void DrawBehind(int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {
 		}
+
+		/// <summary>
+		/// This is where you would add to the events for a projectile created when Shoot returns true. Will not be called for other projectiles; manually add to their events.
+		/// </summary>
+		public virtual void AddToShotProjectile(Projectile projectile) {
+		}
 	}
 }

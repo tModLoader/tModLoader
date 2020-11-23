@@ -295,11 +295,12 @@
  									}
  
  									if (type == 916)
-@@ -9856,6 +_,9 @@
+@@ -9856,6 +_,10 @@
  									if (type == 710)
  										BetsySharpnel(i);
  
 +									ProjectileLoader.OnHitNPC(this, Main.npc[i], num32, knockback, flag6);
++									OnProjectileHitNPC?.Invoke(Main.npc[i]);
 +									NPCLoader.OnHitByProjectile(Main.npc[i], this, num32, knockback, flag6);
 +									PlayerHooks.OnHitNPCWithProj(this, Main.npc[i], num32, knockback, flag6);
  									if (penetrate > 0 && type != 317 && type != 866) {
@@ -331,11 +332,12 @@
  						int num47 = (int)player2.Hurt(playerDeathReason, num46, base.direction, pvp: true, quiet: false, flag17);
  						if (num47 > 0 && Main.player[owner].ghostHeal && friendly && !hostile)
  							ghostHeal(num47, new Vector2(player2.Center.X, player2.Center.Y));
-@@ -10052,6 +_,8 @@
+@@ -10052,6 +_,9 @@
  						if ((melee || ProjectileID.Sets.IsAWhip[type]) && Main.player[owner].meleeEnchant == 7)
  							NewProjectile(player2.Center.X, player2.Center.Y, player2.velocity.X, player2.velocity.Y, 289, 0, 0f, owner);
  
 +						ProjectileLoader.OnHitPvp(this, player2, num47, flag17);
++						OnProjectileHitPvp?.Invoke(player2);
 +						PlayerHooks.OnHitPvpWithProj(this, player2, num47, flag17);
  						if (Main.netMode != 0)
  							NetMessage.SendPlayerHurt(num45, playerDeathReason, num46, base.direction, flag17, pvp: true, -1);
@@ -444,10 +446,12 @@
  						int num = (overrideWidth != -1) ? overrideWidth : base.width;
  						int num2 = (overrideHeight != -1) ? overrideHeight : base.height;
  						if (overrideHeight != -1 || overrideWidth != -1)
-@@ -12047,7 +_,9 @@
+@@ -12047,7 +_,11 @@
  						}
  					}
  
++					OnProjectileTileCollide?.Invoke(this.position);
++
 +					if (!ProjectileLoader.OnTileCollide(this, lastVelocity)) {
 +					}
 -					if (type == 663 || type == 665 || type == 667 || type == 677 || type == 678 || type == 679 || type == 691 || type == 692 || type == 693 || type == 688 || type == 689 || type == 690) {
@@ -647,11 +651,12 @@
  					AI_061_FishingBobber_GiveItemToPlayer(Main.player[owner], (int)ai[1]);
  
  				ai[1] = 0f;
-@@ -51207,6 +_,7 @@
+@@ -51207,6 +_,8 @@
  				}
  			}
  
 +			ProjectileLoader.Kill(this, num);
++			OnProjectileKill?.Invoke();
  			active = false;
  		}
  

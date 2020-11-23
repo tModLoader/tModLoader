@@ -1019,6 +1019,12 @@ namespace Terraria.ModLoader
 		public virtual void ModifyTooltips(List<TooltipLine> tooltips) {
 		}
 
+		/// <summary>
+		/// This is where you would add to the events for a projectile created when Shoot returns true. Will not be called for other projectiles; manually add to their events.
+		/// </summary>
+		public virtual void AddToShotProjectile(Projectile projectile) {
+		}
+
 		public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Mod, item.type, amount);
 	}
 }

@@ -851,5 +851,10 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void NetReceive(Item item, BinaryReader reader) {
 		}
+		/// <summary>
+		/// This is where you would add to the events for a projectile created when Shoot returns true. Will not be called for other projectiles; manually add to their events.
+		/// </summary>
+		public virtual void AddToShotProjectile(Projectile projectile, Item item) {
+		}
 	}
 }

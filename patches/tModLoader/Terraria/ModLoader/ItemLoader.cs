@@ -1681,6 +1681,16 @@ namespace Terraria.ModLoader
 			return item.type != 0 && (item.modItem != null || item.prefix >= PrefixID.Count || HookNeedsSaving.arr.Count(g => g.Instance(item).NeedsSaving(item)) > 0);
 		}
 
+		private static HookList HookAddToShotProjectile = AddHook<Action<Projectile, Item>>(g => g.AddToShotProjectile);
+
+		internal static void AddToShotProjectile(Projectile projectile, Item item) {
+			item.modItem?.AddToShotProjectile(projectile);
+
+			foreach (GlobalItem g in HookAddToShotProjectile.arr) {
+				g.Instance(item).AddToShotProjectile(projectile, item);
+			}
+		}
+
 		internal static void WriteNetGlobalOrder(BinaryWriter w) {
 			w.Write((short)NetGlobals.Length);
 			foreach (var globalItem in NetGlobals) {

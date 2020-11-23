@@ -385,5 +385,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void GrappleTargetPoint(Projectile projectile, Player player, ref float grappleX, ref float grappleY) {
 		}
+
+		/// <summary>
+		/// This is where you would add to the events for a projectile created when Shoot returns true. Will not be called for other projectiles; manually add to their events.
+		/// </summary>
+		public virtual void AddToShotProjectile(Projectile projectile) {
+		}
 	}
 }

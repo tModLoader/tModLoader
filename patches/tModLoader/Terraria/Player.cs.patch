@@ -3157,7 +3157,7 @@
  				if (sItem.stack <= 0)
  					sItem.SetDefaults();
  			}
-@@ -33870,7 +_,8 @@
+@@ -33870,8 +_,13 @@
  					Main.projectile[num177].originalDamage = damage;
  					UpdateMaxTurrets();
  				}
@@ -3165,8 +3165,13 @@
 +				else if (PlayerHooks.Shoot(this, sItem, ref pointPoisition, ref num2, ref num3, ref projToShoot, ref Damage, ref KnockBack)
 +					&& ItemLoader.Shoot(sItem, this, ref pointPoisition, ref num2, ref num3, ref projToShoot, ref Damage, ref KnockBack)) {
  					int num178 = Projectile.NewProjectile(pointPoisition.X, pointPoisition.Y, num2, num3, projToShoot, Damage, KnockBack, i);
++
++					ProjectileLoader.AddToShotProjectile(Main.projectile[num178]);
++					ItemLoader.AddToShotProjectile(Main.projectile[num178], sItem);
++
  					if (sItem.type == 726)
  						Main.projectile[num178].magic = true;
+ 
 @@ -34427,6 +_,8 @@
  		}
  
