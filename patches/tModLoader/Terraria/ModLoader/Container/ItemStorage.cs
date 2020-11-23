@@ -8,7 +8,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Container
 {
-	public class ItemStorage : IReadOnlyList<Item>
+	public partial class ItemStorage : IReadOnlyList<Item>
 	{
 		[Flags]
 		public enum Operation
@@ -68,7 +68,7 @@ namespace Terraria.ModLoader.Container
 				return false;
 
 			Item existing = Items[slot];
-			if (!existing.IsAir && !CanItemsStack(item, existing))
+			if (!existing.IsAir && !item.IsTheSameAs(existing))
 				return false;
 
 			int slotSize = GetSlotSize(slot, item);
@@ -108,7 +108,7 @@ namespace Terraria.ModLoader.Container
 			bool ret = false;
 			for (int i = 0; i < Count; i++) {
 				Item other = Items[i];
-				if (CanItemsStack(item, other) && other.stack < other.maxStack) {
+				if (item.IsTheSameAs(other) && other.stack < other.maxStack) {
 					ret |= InsertItem(user, i, ref item);
 				}
 			}
@@ -185,7 +185,7 @@ namespace Terraria.ModLoader.Container
 		public bool SwapStacks(object? user, int slot, ref Item newStack) {
 			ValidateSlotIndex(slot);
 
-			if (!IsItemValid(slot, newStack))
+			if (!CanInteract(slot, Operation.Both, user) && !IsItemValid(slot, newStack))
 				return false;
 
 			int size = MaxStackFor(slot, newStack);
@@ -237,25 +237,6 @@ namespace Terraria.ModLoader.Container
 
 			return true;
 		}
-
-		/// <param name="quantity">This parameter is not clamped upon firing. After firing, it will be clamped between 0 and <see cref="MaxStackFor(int, Item)"/>.</param>
-		// public delegate void StackChangedDelegate(object? user, int slot, ref int quantity);
-		// public delegate void InsertItemDelegate(object? user, int slot, Item inserting);
-		// public delegate void RemoveItemDelegate(object? user, int slot);
-
-		/// <summary>
-		/// Fired just before the slot's item's stack is modified through <see cref="ModifyStackSize(object?, int, int)"/>.
-		/// <para/> The quantity parameter is not clamped upon firing. After firing, it will be clamped between 0 and <see cref="MaxStackFor(int, Item)"/>
-		/// </summary>
-		// public event StackChangedDelegate? OnStackModify;
-		/// <summary>
-		/// Fired just before an item is inserted into storage.
-		/// </summary>
-		// public event InsertItemDelegate? OnItemInsert;
-		/// <summary>
-		/// Fired just before an item is removed from storage.
-		/// </summary>
-		// public event RemoveItemDelegate? OnItemRemove;
 
 		/// <summary>
 		/// Gets the size of a given slot and item. Negative values indicate no stack limit. The default is to use
@@ -310,11 +291,6 @@ namespace Terraria.ModLoader.Container
 			}
 		}
 		#endregion
-
-		internal static bool CanItemsStack(Item a, Item b) {
-			// if (a.modItem != null && b.modItem != null) return a.modItem.CanStack(b.modItem);
-			return a.IsTheSameAs(b);
-		}
 
 		private static Item CloneItemWithSize(Item itemStack, int size) {
 			if (size == 0)
