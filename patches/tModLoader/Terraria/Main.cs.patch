@@ -1417,7 +1417,7 @@
 -					int damage = item.damage;
 +					LocalizedText tip;
 +					if (item.DamageType != null) {
-+						tip = new LocalizedText("", item.DamageType.DisplayName);
++						tip = new LocalizedText("", " "+item.DamageType.DisplayName);
 +					}
 +					else {
 +						tip = Lang.tip[55]; // No damage class
