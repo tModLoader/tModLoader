@@ -2071,7 +2071,7 @@
 -
 -							if (Main.rand.Next(100) < meleeCrit)
 +							*/
-+							if (Main.rand.Next(100) < allCrit & meleeCrit)
++							if (Main.rand.Next(100) < (allCrit & meleeCrit))
  								crit = true;
  
  							int num3 = base.direction;
@@ -2093,7 +2093,7 @@
 -
 -						if (Main.rand.Next(100) < meleeCrit)
 +						*/
-+						if (Main.rand.Next(100) < allCrit & meleeCrit)
++						if (Main.rand.Next(100) < (allCrit & meleeCrit))
  							crit2 = true;
  
  						int direction = base.direction;
@@ -3701,7 +3701,7 @@
  			if (sItem.summon)
  				KnockBack += minionKB;
  
-@@ -36349,49 +_,92 @@
+@@ -36349,49 +_,90 @@
  
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
@@ -3715,7 +3715,7 @@
  		public int GetWeaponCrit(Item sItem) {
 +			Modifier crit = allCrit;
 +			if (sItem.damageType != DamageClass.Generic)
-+				crit += GetCrit(sItem.damageType);
++				crit &= GetCrit(sItem.damageType);
 +			if (sItem.damageType.BenefitsFrom() != null) {
 +				foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
 +					if (sItem.damageType.BenefitsFrom().ContainsKey(damageClass)) {
@@ -3725,8 +3725,7 @@
 +					}
 +				}
 +			}
-+			goto SkipVanillaCrit;
-+
++			/*
  			if (sItem.melee)
 -				return meleeCrit;
 +				crit += meleeCrit;
@@ -3737,12 +3736,12 @@
  
  			if (sItem.magic)
 -				return magicCrit;
+-
+-			return 0;
 +				crit += magicCrit;
- 
-+			SkipVanillaCrit:
++			*/	
 +			ItemLoader.GetWeaponCrit(sItem, this, ref crit);
 +			PlayerHooks.GetWeaponCrit(this, sItem, ref crit);
--			return 0;
 +			return crit;
  		}
  
