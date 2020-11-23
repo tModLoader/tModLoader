@@ -21,12 +21,12 @@ namespace Terraria
 		/// <summary>
 		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
 		/// </summary>
-		public DamageClass DamageType;
+		public DamageClass damageType;
 
 		/// <summary>
 		/// Set this to true to prevent this weapon or ammo item from being adjusted by damage modifiers.
 		/// </summary>
-		public bool IgnoreDamageModifiers;
+		public bool ignoreDamageModifiers;
 
 		// Get
 
@@ -91,11 +91,11 @@ namespace Terraria
 			NewItem((int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
 		public bool CountsAsClass(DamageClass damageClass) {
-			if (DamageType != null) {
-				if (DamageType == damageClass)
+			if (damageType != null) {
+				if (damageType == damageClass)
 					return true;
 
-				if (DamageType.CountsAs()?.Contains(damageClass) ?? false)
+				if (damageType.CountsAs()?.Contains(damageClass) ?? false)
 					return true;
 			}
 			return false;

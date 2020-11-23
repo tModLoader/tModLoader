@@ -42,36 +42,36 @@
 +			get => CountsAsClass(DamageClass.Melee);
 +			set {
 +				if (value)
-+					DamageType = DamageClass.Melee;
-+				else if (DamageType == DamageClass.Melee)
-+					DamageType = DamageClass.Generic;
++					damageType = DamageClass.Melee;
++				else if (damageType == DamageClass.Melee)
++					damageType = DamageClass.Generic;
 +			}
 +		}
 +		internal bool magic {
 +			get => CountsAsClass(DamageClass.Magic);
 +			set {
 +				if (value)
-+					DamageType = DamageClass.Magic;
-+				else if (DamageType == DamageClass.Magic)
-+					DamageType = DamageClass.Generic;
++					damageType = DamageClass.Magic;
++				else if (damageType == DamageClass.Magic)
++					damageType = DamageClass.Generic;
 +			}
 +		}
 +		internal bool ranged {
 +			get => CountsAsClass(DamageClass.Ranged);
 +			set {
 +				if (value)
-+					DamageType = DamageClass.Ranged;
-+				else if (DamageType == DamageClass.Ranged)
-+					DamageType = DamageClass.Generic;
++					damageType = DamageClass.Ranged;
++				else if (damageType == DamageClass.Ranged)
++					damageType = DamageClass.Generic;
 +			}
 +		}
 +		internal bool summon {
 +			get => CountsAsClass(DamageClass.Summon);
 +			set {
 +				if (value)
-+					DamageType = DamageClass.Summon;
-+				else if (DamageType == DamageClass.Summon)
-+					DamageType = DamageClass.Generic;
++					damageType = DamageClass.Summon;
++				else if (damageType == DamageClass.Summon)
++					damageType = DamageClass.Generic;
 +			}
 +		}
  		public bool sentry;
@@ -395,7 +395,7 @@
  			BestiaryNotes = null;
 +			modItem = null;
 +			globalItems = new GlobalItem[0];
-+			DamageType = DamageClass.Generic;
++			damageType = DamageClass.Generic;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
  			DD2Summon = false;
@@ -409,6 +409,21 @@
  			instanced = false;
  			questItem = false;
  			fishingPole = 0;
+@@ -44913,10 +_,10 @@
+ 			mech = false;
+ 			flame = false;
+ 			reuseDelay = 0;
+-			melee = false;
++			//melee = false;
+-			magic = false;
++			//magic = false;
+-			ranged = false;
++			//ranged = false;
+-			summon = false;
++			//summon = false;
+ 			placeStyle = 0;
+ 			buffTime = 0;
+ 			buffType = 0;
 @@ -44991,6 +_,10 @@
  		}
  

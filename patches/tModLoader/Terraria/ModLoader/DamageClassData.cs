@@ -4,10 +4,10 @@
 	{
 		public DamageClass damageClass;
 		public Modifier damage;
-		public int crit;
+		public Modifier crit;
 		public Modifier knockback;
 
-		public DamageClassData(DamageClass damageClass, Modifier damage, int crit, Modifier knockback) {
+		public DamageClassData(DamageClass damageClass, Modifier damage, Modifier crit, Modifier knockback) {
 			this.damageClass = damageClass;
 			this.damage = damage;
 			this.crit = crit;

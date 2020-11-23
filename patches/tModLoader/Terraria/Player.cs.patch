@@ -1048,7 +1048,7 @@
  				}
  				else if (buffType[j] == 41) {
  					buffTime[j] = 18000;
-@@ -7938,14 +_,16 @@
+@@ -7938,14 +_,18 @@
  				else if (buffType[j] == 26) {
  					wellFed = true;
  					statDefense += 2;
@@ -1059,20 +1059,17 @@
 +					allDamage += 0.05f;
 +					//meleeDamage += 0.05f;
  					meleeSpeed += 0.05f;
--					magicCrit += 2;
-+					//magicCrit += 2;
--					magicDamage += 0.05f;
-+					//magicDamage += 0.05f;
--					rangedCrit += 2;
-+					//rangedCrit += 2;
--					rangedDamage += 0.05f;
-+					//rangedDamage += 0.05f;
--					minionDamage += 0.05f;
-+					//minionDamage += 0.05f;
++					/*
+ 					magicCrit += 2;
+ 					magicDamage += 0.05f;
+ 					rangedCrit += 2;
+ 					rangedDamage += 0.05f;
+ 					minionDamage += 0.05f;
++					*/
  					minionKB += 0.5f;
  					moveSpeed += 0.2f;
  					pickSpeed -= 0.05f;
-@@ -7953,14 +_,16 @@
+@@ -7953,14 +_,18 @@
  				else if (buffType[j] == 206) {
  					wellFed = true;
  					statDefense += 3;
@@ -1083,20 +1080,17 @@
 +					allDamage += 0.075f;
 +					//meleeDamage += 0.075f;
  					meleeSpeed += 0.075f;
--					magicCrit += 3;
-+					//magicCrit += 3;
--					magicDamage += 0.075f;
-+					//magicDamage += 0.075f;
--					rangedCrit += 3;
-+					//rangedCrit += 3;
--					rangedDamage += 0.075f;
-+					//rangedDamage += 0.075f;
--					minionDamage += 0.075f;
-+					//minionDamage += 0.075f;
++					/*
+ 					magicCrit += 3;
+ 					magicDamage += 0.075f;
+ 					rangedCrit += 3;
+ 					rangedDamage += 0.075f;
+ 					minionDamage += 0.075f;
++					*/
  					minionKB += 0.75f;
  					moveSpeed += 0.3f;
  					pickSpeed -= 0.1f;
-@@ -7968,14 +_,16 @@
+@@ -7968,14 +_,18 @@
  				else if (buffType[j] == 207) {
  					wellFed = true;
  					statDefense += 4;
@@ -1107,16 +1101,13 @@
 +					allDamage += 0.1f;
 +					//meleeDamage += 0.1f;
  					meleeSpeed += 0.1f;
--					magicCrit += 4;
-+					//magicCrit += 4;
--					magicDamage += 0.1f;
-+					//magicDamage += 0.1f;
--					rangedCrit += 4;
-+					//rangedCrit += 4;
--					rangedDamage += 0.1f;
-+					//rangedDamage += 0.1f;
--					minionDamage += 0.1f;
-+					//minionDamage += 0.1f;
++					/*
+ 					magicCrit += 4;
+ 					magicDamage += 0.1f;
+ 					rangedCrit += 4;
+ 					rangedDamage += 0.1f;
+ 					minionDamage += 0.1f;
++					*/
  					minionKB += 1f;
  					moveSpeed += 0.4f;
  					pickSpeed -= 0.15f;
@@ -1145,8 +1136,8 @@
  			for (int j = 0; j < 58; j++) {
  				int type = inventory[j].type;
 +			*/
-+			{
-+				int type = item.type;
++					{
++						int type = item.type;
  				if ((type == 15 || type == 707) && accWatch < 1)
  					accWatch = 1;
  
@@ -1526,7 +1517,7 @@
  			}
  
  			equippedAnyWallSpeedAcc = false;
-@@ -9274,21 +_,25 @@
+@@ -9274,21 +_,27 @@
  
  			for (int l = 3; l < 10; l++) {
  				if (IsAValidEquipmentSlotForIteration(l))
@@ -1542,18 +1533,14 @@
  				meleeSpeed += 0.1f;
 +				allDamage += 0.1f;
 +				allCrit += 2;
--				meleeDamage += 0.1f;
-+				//meleeDamage += 0.1f;
--				meleeCrit += 2;
-+				//meleeCrit += 2;
--				rangedDamage += 0.1f;
-+				//rangedDamage += 0.1f;
--				rangedCrit += 2;
-+				//rangedCrit += 2;
--				magicDamage += 0.1f;
-+				//magicDamage += 0.1f;
--				magicCrit += 2;
-+				//magicCrit += 2;
++				/*
+ 				meleeDamage += 0.1f;
+ 				meleeCrit += 2;
+ 				rangedDamage += 0.1f;
+ 				rangedCrit += 2;
+ 				magicDamage += 0.1f;
+ 				magicCrit += 2;
++				*/
  				pickSpeed -= 0.15f;
 -				minionDamage += 0.1f;
 +				//minionDamage += 0.1f;
@@ -3304,12 +3291,12 @@
  						if (Main.myPlayer == i && item.damage > 0) {
  							int num = weaponDamage;
  							float knockBack = item.knockBack;
-+							Modifier knockBackMult = allKB & GetKnockback(item.DamageType);
-+							if (item.DamageType.BenefitsFrom() != null) {
++							Modifier knockBackMult = allKB & GetKnockback(item.damageType);
++							if (item.damageType.BenefitsFrom() != null) {
 +								foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+									if (item.DamageType.BenefitsFrom().ContainsKey(damageClass)) {
++									if (item.damageType.BenefitsFrom().ContainsKey(damageClass)) {
 +										Modifier addKB = GetKnockback(damageClass);
-+										addKB *= item.DamageType.BenefitsFrom()[damageClass];
++										addKB *= item.damageType.BenefitsFrom()[damageClass];
 +										knockBackMult &= addKB;
 +									}
 +								}
@@ -3697,13 +3684,13 @@
 +		// TO-DO: apparently stat bonuses ef
  		public float GetWeaponKnockback(Item sItem, float KnockBack) {
 +			Modifier knockBackMult = allKB;
-+			if (sItem.DamageType != DamageClass.Generic)
-+				knockBackMult &= GetKnockback(sItem.DamageType);
-+			if (sItem.DamageType.BenefitsFrom() != null) {
++			if (sItem.damageType != DamageClass.Generic)
++				knockBackMult &= GetKnockback(sItem.damageType);
++			if (sItem.damageType.BenefitsFrom() != null) {
 +				foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+					if (sItem.DamageType.BenefitsFrom().ContainsKey(damageClass)) {
++					if (sItem.damageType.BenefitsFrom().ContainsKey(damageClass)) {
 +						Modifier addKB = GetKnockback(damageClass);
-+						addKB *= sItem.DamageType.BenefitsFrom()[damageClass];
++						addKB *= sItem.damageType.BenefitsFrom()[damageClass];
 +						knockBackMult &= addKB;
 +					}
 +				}
@@ -3728,13 +3715,13 @@
 +			int crit = 0;
 +
 +			crit = allCrit;
-+			if (sItem.DamageType != DamageClass.Generic)
-+				crit += GetCrit(sItem.DamageType);
-+			if (sItem.DamageType.BenefitsFrom() != null) {
++			if (sItem.damageType != DamageClass.Generic)
++				crit += GetCrit(sItem.damageType);
++			if (sItem.damageType.BenefitsFrom() != null) {
 +				foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+					if (sItem.DamageType.BenefitsFrom().ContainsKey(damageClass)) {
++					if (sItem.damageType.BenefitsFrom().ContainsKey(damageClass)) {
 +						float addCrit = (float)GetCrit(damageClass);
-+						addCrit *= sItem.DamageType.BenefitsFrom()[damageClass];
++						addCrit *= sItem.damageType.BenefitsFrom()[damageClass];
 +						crit += (int)addCrit;
 +					}
 +				}
@@ -3786,17 +3773,17 @@
 -			}
 -
 -			return num;
-+			if (sItem.IgnoreDamageModifiers || sItem.DamageType == DamageClass.NoScaling)
++			if (sItem.ignoreDamageModifiers || sItem.damageType == DamageClass.NoScaling)
 +				return sItem.damage;
 +
 +			Modifier damage = allDamage;
-+			if (sItem.DamageType != DamageClass.Generic)
-+				damage &= GetDamage(sItem.DamageType);
-+			if (sItem.DamageType.BenefitsFrom() != null) {
++			if (sItem.damageType != DamageClass.Generic)
++				damage &= GetDamage(sItem.damageType);
++			if (sItem.damageType.BenefitsFrom() != null) {
 +				foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+					if (sItem.DamageType.BenefitsFrom().ContainsKey(damageClass)) {
++					if (sItem.damageType.BenefitsFrom().ContainsKey(damageClass)) {
 +						Modifier addDamage = GetDamage(damageClass);
-+						addDamage *= sItem.DamageType.BenefitsFrom()[damageClass];
++						addDamage *= sItem.damageType.BenefitsFrom()[damageClass];
 +						damage &= addDamage;
 +					}
 +				}

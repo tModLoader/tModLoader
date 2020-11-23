@@ -1421,17 +1421,17 @@
 -					float num = 5E-06f;
 -					int damage = item.damage;
 +					LocalizedText tip;
-+					if (item.DamageType != null) {
++					if (item.damageType != null) {
 +						int index = 0;
 +						for (int i = 0; i < DamageClassLoader.DamageClassCount; i++) {
-+							if (DamageClassLoader.DamageClasses[i] == item.DamageType) {
++							if (DamageClassLoader.DamageClasses[i] == item.damageType) {
 +								index = i;
 +								break;
 +							}
 +						}
 +						bool classIsVanilla = index < DamageClassLoader.DefaultDamageClassCount;
 +						//'damage' portion is still required on modded ClassNames for the sake of possibility of accurate translations, but the space isn't.
-+						tip = new LocalizedText("", $"{(classIsVanilla ? string.Empty : " ")}{item.DamageType.DisplayName}");
++						tip = new LocalizedText("", $"{(classIsVanilla ? string.Empty : " ")}{item.damageType.DisplayName}");
 +					}
 +					else {
 +						tip = Lang.tip[55]; // No damage class
@@ -1508,7 +1508,7 @@
 +					}
 +					else if (!item.summon) {
 +					*/
-+					// TO-DO: make this not hardcoded to cuck summons. minions should be allowed to crit in the right circumstances, too!
++					// TODO: make this not inherently exclude summons. minions should be allowed to crit in the right circumstances, too
 +					if (!item.summon) {
 +						int crit = player[myPlayer].GetWeaponCrit(item);
 +						toolTipLine[numLines] = crit + Lang.tip[5].Value;
@@ -2975,7 +2975,7 @@
  				Microsoft.Xna.Framework.Rectangle destinationRectangle = new Microsoft.Xna.Framework.Rectangle((int)num27, (int)num28, (int)num29, (int)num30);
  				spriteBatch.Draw(TextureAssets.Map.Value, destinationRectangle, Microsoft.Xna.Framework.Color.White);
 +				*/
-+					int x = (int)(num + mapFullscreenScale * 10);
++				int x = (int)(num + mapFullscreenScale * 10);
 +				int y = (int)(num2 + mapFullscreenScale * 10);
 +				int width = (int)((maxTilesX - 40) * mapFullscreenScale);
 +				int height = (int)((maxTilesY - 40) * mapFullscreenScale);

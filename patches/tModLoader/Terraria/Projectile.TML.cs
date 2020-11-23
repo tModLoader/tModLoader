@@ -16,7 +16,7 @@ namespace Terraria
 		/// <summary>
 		/// The damage type of this Projectile. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
 		/// </summary>
-		public DamageClass DamageType { get; set; }
+		public DamageClass damageType;
 
 		// Get
 
@@ -55,11 +55,11 @@ namespace Terraria
 		*/
 
 		public bool CountsAsClass(DamageClass damageClass) {
-			if (DamageType != null) {
-				if (DamageType == damageClass)
+			if (damageType != null) {
+				if (damageType == damageClass)
 					return true;
 
-				if (DamageType.CountsAs()?.Contains(damageClass) ?? false)
+				if (damageType.CountsAs()?.Contains(damageClass) ?? false)
 					return true;
 			}
 			return false;
