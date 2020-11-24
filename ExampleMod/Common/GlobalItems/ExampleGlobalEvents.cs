@@ -24,10 +24,8 @@ namespace ExampleMod.Common.GlobalItems
 			}
 		}
 
-		private void SayHi_OnProjectileKill() {
-		 	Main.NewText("Hi!", Main.DiscoColor);
-		}
+		private void SayHi_OnProjectileKill(Projectile projectile) => Main.NewText("Hi!", Main.DiscoColor);
 		
-		private void AddADebuff_OnProjectileHitNPC(NPC npc) => npc.AddBuff(BuffID.OnFire, 50);
+		private void AddADebuff_OnProjectileHitNPC(Projectile projectile, NPC npc) => npc.AddBuff(BuffID.OnFire, 50);
 	}
 }

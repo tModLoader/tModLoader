@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Items.Weapons
 			projectile.OnProjectileHitNPC += Projectile_OnProjectileHitNPC;
 		}
 		// Here I launch the NPC up, give it the Cursed inferno debuff, and size it up by 1.2f when it is hit by this.
-		private void Projectile_OnProjectileHitNPC(NPC npc) {
+		private void Projectile_OnProjectileHitNPC(Projectile projectile, NPC npc) {
 			DisplayName.SetDefault($"I have been used {timesHit} times!");
 			npc.velocity.Y -= 5;
 			npc.AddBuff(BuffID.CursedInferno, 60);
