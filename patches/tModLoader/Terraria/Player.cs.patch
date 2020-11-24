@@ -129,26 +129,17 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
-@@ -2050,12 +_,20 @@
- 			itemTimeMax = frames;
+@@ -2051,11 +_,13 @@
  		}
  
--		public void ApplyItemTime(Item sItem) {
+ 		public void ApplyItemTime(Item sItem) {
 -			SetItemTime(sItem.useTime);
-+		public void ApplyItemTime(Item sItem, bool? callUseItem = null) {
-+			if ((callUseItem ?? ItemTimeIsZero) && !ItemLoader.UseItem(sItem, this))
-+				return;
-+
 +			int totalUseTime = PlayerHooks.TotalUseTime(sItem.useTime, this, sItem);
 +			SetItemTime(totalUseTime);
  		}
  
--		public void ApplyItemTime(Item sItem, float multiplier) {
+ 		public void ApplyItemTime(Item sItem, float multiplier) {
 -			SetItemTime((int)((float)sItem.useTime * multiplier));
-+		public void ApplyItemTime(Item sItem, float multiplier, bool? callUseItem = null) {
-+			if ((callUseItem ?? ItemTimeIsZero) && !ItemLoader.UseItem(sItem, this))
-+				return;
-+
 +			int totalUseTime = PlayerHooks.TotalUseTime((int)(sItem.useTime * multiplier), this, sItem);
 +			SetItemTime(totalUseTime);
  		}
@@ -3320,6 +3311,17 @@
  
  							List<ushort> ignoreList2 = ItemCheck_GetTileCutIgnoreList(item);
  							ItemCheck_CutTiles(item, itemRectangle, ignoreList2);
+ 							ItemCheck_MeleeHitNPCs(item, itemRectangle, num, knockBack);
+@@ -29920,6 +_,9 @@
+ 				}
+ 
+ 				if (ItemTimeIsZero && itemAnimation > 0) {
++					if (ItemLoader.UseItem(item, this))
++						ApplyItemTime(item);
++
+ 					if (item.hairDye >= 0) {
+ 						ApplyItemTime(item);
+ 						if (whoAmI == Main.myPlayer) {
 @@ -29929,18 +_,20 @@
  					}
  
