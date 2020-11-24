@@ -2841,14 +2841,33 @@
  
  			if (menuMode == 888) {
  				if (!_blockFancyUIWhileLoading)
-@@ -38839,6 +_,7 @@
+@@ -38838,7 +_,9 @@
+ 			}
  
  			bool flag11 = false;
++			List<MenuButton> buttons = ModHooks.ModifyMenuButtons(ref num5, ref array, ref array2, ref array3, ref array4, ref array5, ref array6, ref array7, ref array8, ref array9, color, out Color[] buttonColor, out Action[] onClick, out Action[] onHover);
  			for (int num95 = 0; num95 < num5; num95++) {
 +				//patch file: num5, array9, num95
  				if (array9[num95] == null)
  					continue;
  
+@@ -38848,6 +_,7 @@
+ 				for (int num96 = 0; num96 < 5; num96++) {
+ 					Microsoft.Xna.Framework.Color color11 = Microsoft.Xna.Framework.Color.Black;
+ 					if (num96 == 4) {
++						goto SkipColorSwitch;
+ 						switch (array6[num95]) {
+ 							case 0:
+ 								color11 = color;
+@@ -38870,6 +_,8 @@
+ 								color11 = color;
+ 								break;
+ 						}
++					SkipColorSwitch:
++						color11 = buttonColor[num95];
+ 
+ 						color11.R = (byte)((255 + color11.R) / 2);
+ 						color11.G = (byte)((255 + color11.G) / 2);
 @@ -38936,6 +_,7 @@
  
  					num104 *= array7[num95];
@@ -2857,6 +2876,26 @@
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, origin, num104, SpriteEffects.None, 0f);
  					else
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, new Vector2(0f, origin.Y), num104, SpriteEffects.None, 0f);
+@@ -38952,6 +_,7 @@
+ 						continue;
+ 
+ 					focusMenu = num95;
++					buttons[num95].OnHover.Invoke();
+ 					if (array[num95] || array2[num95]) {
+ 						focusMenu = -1;
+ 						continue;
+@@ -38960,8 +_,10 @@
+ 					if (num45 != focusMenu)
+ 						flag11 = true;
+ 
+-					if (mouseLeftRelease && mouseLeft)
++					if (mouseLeftRelease && mouseLeft) {
+ 						selectedMenu = num95;
++						buttons[num95].OnClick.Invoke();
++					}
+ 
+ 					if (mouseRightRelease && mouseRight)
+ 						selectedMenu2 = num95;
 @@ -39047,10 +_,47 @@
  					if (num107 == 3)
  						num109 = 2;

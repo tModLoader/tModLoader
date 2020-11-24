@@ -267,5 +267,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void PreSaveAndQuit() {
 		}
+
+		public virtual void ModifyMenuButtons(List<MenuButton> buttons) {
+		}
 	}
 }
