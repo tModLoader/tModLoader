@@ -651,15 +651,17 @@
  					AI_061_FishingBobber_GiveItemToPlayer(Main.player[owner], (int)ai[1]);
  
  				ai[1] = 0f;
-@@ -51207,6 +_,8 @@
+@@ -51207,7 +_,10 @@
  				}
  			}
  
 +			ProjectileLoader.Kill(this, num);
 +			OnProjectileKill?.Invoke();
  			active = false;
++			ClearEvents();
  		}
  
+ 		private void DoRainbowCrystalStaffExplosion() {
 @@ -51273,6 +_,9 @@
  			if (Main.tileDungeon[Main.tile[x, y].type] || TileID.Sets.BasicChest[Main.tile[x, y].type])
  				return false;

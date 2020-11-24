@@ -42,6 +42,13 @@ namespace Terraria
 		public event ProjectileDelegateKill OnProjectileKill;
 		public delegate void ProjectileDelegateKill();
 
+		internal void ClearEvents() {
+			OnProjectileHitNPC = null;
+			OnProjectileTileCollide = null;
+			OnProjectileHitPvp = null;
+			OnProjectileKill = null;
+		}
+
 		// Get
 
 		/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
