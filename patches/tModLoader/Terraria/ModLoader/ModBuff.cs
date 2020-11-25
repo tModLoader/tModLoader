@@ -7,7 +7,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to define a new buff and how that buff behaves.
 	/// </summary>
-	public class ModBuff:ModTexturedType
+	public abstract class ModBuff : ModTexturedType
 	{
 		/// <summary>
 		/// The buff id of this buff.
