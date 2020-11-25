@@ -93,7 +93,7 @@
  
  		public static void SaveAndQuit(Action callback = null) {
  			SoundEngine.PlaySound(11);
-+			ModHooks.PreSaveAndQuit();
++			SystemHooks.PreSaveAndQuit();
  			ThreadPool.QueueUserWorkItem(SaveAndQuitCallBack, callback);
  		}
  

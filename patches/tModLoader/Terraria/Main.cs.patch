@@ -913,7 +913,7 @@
  					}
  				}
 +
-+				ModHooks.UpdateMusic(ref modMusic, ref modPriority);
++				SystemHooks.UpdateMusic(ref modMusic, ref modPriority);
  			}
  
  			_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
@@ -1060,7 +1060,7 @@
  				Sandstorm.EmitDust();
  			}
  
-+			ModHooks.PreUpdateEntities();
++			SystemHooks.PreUpdateEntities();
  			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
  				Star.UpdateStars();
  				Cloud.UpdateClouds();
@@ -1068,7 +1068,7 @@
  			if (InGameUI != null)
  				InGameUI.Update(gameTime);
  
-+			ModHooks.UpdateUI(gameTime);
++			SystemHooks.UpdateUI(gameTime);
 +			PlayerInput.ScrollWheelDeltaForUI = 0; //TODO: Should this be before PlayerInput.ResetInputsOnActiveStateChange()?
  			CreativeMenu.Update(gameTime);
  			BigBossProgressBar.Update();
@@ -1105,7 +1105,7 @@
  			}
  
  			_gameUpdateCount++;
-+			ModHooks.MidUpdatePlayerNPC();
++			SystemHooks.MidUpdatePlayerNPC();
  			NPC.RevengeManager.Update();
  			if (netMode != 1) {
  				try {
@@ -1113,7 +1113,7 @@
  			}
  
  			CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
-+			ModHooks.MidUpdateNPCGore();
++			SystemHooks.MidUpdateNPCGore();
  			for (int l = 0; l < 600; l++) {
  				if (ignoreErrors) {
  					try {
@@ -1121,7 +1121,7 @@
  				}
  			}
  
-+			ModHooks.MidUpdateGoreProjectile();
++			SystemHooks.MidUpdateGoreProjectile();
  			LockOnHelper.SetUP();
  			CurrentFrameFlags.HadAnActiveInteractibleProjectile = false;
  			PreUpdateAllProjectiles();
@@ -1129,7 +1129,7 @@
  			ProjectileUpdateLoopIndex = -1;
  			PostUpdateAllProjectiles();
  			LockOnHelper.SetDOWN();
-+			ModHooks.MidUpdateProjectileItem();
++			SystemHooks.MidUpdateProjectileItem();
  			Item.numberOfNewItems = 0;
  			for (int n = 0; n < 400; n++) {
  				if (ignoreErrors) {
@@ -1137,13 +1137,13 @@
  				Dust.UpdateDust();
  			}
  
-+			ModHooks.MidUpdateDustTime();
++			SystemHooks.MidUpdateDustTime();
  			if (netMode != 2) {
  				CombatText.UpdateCombatText();
  				PopupText.UpdateItemText();
  			}
  
-+			ModHooks.MidUpdateItemDust();
++			SystemHooks.MidUpdateItemDust();
  			if (ignoreErrors) {
  				try {
  					UpdateTime();
@@ -1151,7 +1151,7 @@
  				UpdateTime();
  			}
  
-+			ModHooks.MidUpdateTimeWorld();
++			SystemHooks.MidUpdateTimeWorld();
  			tileSolid[379] = true;
  			if (gameMenu && netMode != 2)
  				return;
@@ -1159,7 +1159,7 @@
  					UpdateClient();
  			}
  
-+			ModHooks.PostUpdateEverything();
++			SystemHooks.PostUpdateEverything();
  			chatMonitor.Update();
  			upTimer = (float)sw.Elapsed.TotalMilliseconds;
  			if (upTimerMaxDelay > 0f)
@@ -1177,7 +1177,7 @@
  
  		private void DoUpdate_HandleInput() {
  			PlayerInput.UpdateInput();
-+			ModHooks.PostUpdateInput();
++			SystemHooks.PostUpdateInput();
  			UpdateViewZoomKeys();
  			PlayerInput.SetZoom_Unscaled();
  			UILinkPointNavigator.Update();
@@ -2561,7 +2561,7 @@
  
  			PlayerInput.SetZoom_UI();
 +			List<GameInterfaceLayer> interfaceLayers = new List<GameInterfaceLayer>(_gameInterfaceLayers);
-+			ModHooks.ModifyInterfaceLayers(interfaceLayers);
++			SystemHooks.ModifyInterfaceLayers(interfaceLayers);
 -			using (List<GameInterfaceLayer>.Enumerator enumerator = _gameInterfaceLayers.GetEnumerator()) {
 +			using (List<GameInterfaceLayer>.Enumerator enumerator = interfaceLayers.GetEnumerator()) {
  				while (enumerator.MoveNext() && enumerator.Current.Draw()) {
@@ -2572,7 +2572,7 @@
  
  		private void DrawInterface_33_MouseText() {
 +			// TODO - UI Sorting and selective disable support -  move this to new one between 32 and 33
-+			ModHooks.PostDrawInterface(spriteBatch);
++			SystemHooks.PostDrawInterface(spriteBatch);
  			if (mouseItem.stack <= 0)
  				mouseItem.type = 0;
  
@@ -3008,7 +3008,7 @@
  				}
  
  				spriteBatch.Draw(TextureAssets.MapIcon[num138].Value, new Vector2(num136, num137), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.MapIcon[num138].Width(), TextureAssets.MapIcon[num138].Height()), new Microsoft.Xna.Framework.Color(num139, num139, num139, num139), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+				ModHooks.PostDrawFullscreenMap(ref text);
++				SystemHooks.PostDrawFullscreenMap(ref text);
  				DrawCursor(DrawThickCursor());
  			}
  
@@ -3117,7 +3117,7 @@
  			else
  				Rasterizer = RasterizerState.CullClockwise;
  
-+			ModHooks.ModifyTransformMatrix(ref GameViewMatrix);
++			SystemHooks.ModifyTransformMatrix(ref GameViewMatrix);
  			bool flag = !drawToScreen && netMode != 2 && !gameMenu && !mapFullscreen && Lighting.NotRetro && Terraria.Graphics.Effects.Filters.Scene.CanCapture();
  			if (flag)
  				Terraria.Graphics.Effects.Filters.Scene.BeginCapture(screenTarget, Microsoft.Xna.Framework.Color.Black);
@@ -3306,7 +3306,7 @@
  			tileColor.B = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.B * 7) / 10);
  			tileColor = SkyManager.Instance.ProcessTileColor(tileColor);
 +			// TODO: Add in white and white2 as sunColor and moonColor
-+			ModHooks.ModifySunLight(ref tileColor, ref colorOfTheSkies);
++			SystemHooks.ModifySunLight(ref tileColor, ref colorOfTheSkies);
  		}
  
  		private static void UpdateAtmosphereTransparencyToSkyColor() {
