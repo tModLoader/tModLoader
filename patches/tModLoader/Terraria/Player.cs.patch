@@ -66,6 +66,15 @@
  		public int[] buffType = new int[22];
  		public int[] buffTime = new int[22];
  		public bool[] buffImmune = new bool[327];
+@@ -724,7 +_,7 @@
+ 		public bool isFirstFractalAfterImage;
+ 		public float firstFractalAfterImageOpacity;
+ 		public string setBonus = "";
+-		public Item[] inventory = new Item[59];
++		public Terraria.ModLoader.Container.TerrariaInventory inventory = new Terraria.ModLoader.Container.TerrariaInventory(59);
+ 		public bool[] inventoryChestStack = new bool[59];
+ 		public Item lastVisualizedSelectedItem;
+ 		public Chest bank = new Chest(bank: true);
 @@ -1059,16 +_,17 @@
  		public bool parryDamageBuff;
  		public bool ballistaPanic;
