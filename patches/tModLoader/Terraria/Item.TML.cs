@@ -95,8 +95,7 @@ namespace Terraria
 				if (damageType == damageClass)
 					return true;
 
-				if (damageType.CountsAs()?.Contains(damageClass) ?? false)
-					return true;
+				return damageType.CountsAs(damageClass);
 			}
 			return false;
 		}

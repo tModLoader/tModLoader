@@ -3281,37 +3281,24 @@
  						ItemCheck_Shoot(i, item, weaponDamage);
  
  					ItemCheck_UseWiringTools(item);
-@@ -29899,6 +_,18 @@
+@@ -29898,7 +_,8 @@
+ 
  						if (Main.myPlayer == i && item.damage > 0) {
  							int num = weaponDamage;
- 							float knockBack = item.knockBack;
-+							Modifier knockBackMult = allKB & GetKnockback(item.damageType);
-+							if (item.damageType.BenefitsFrom() != null) {
-+								foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+									if (item.damageType.BenefitsFrom().ContainsKey(damageClass)) {
-+										Modifier addKB = GetKnockback(damageClass);
-+										addKB *= item.damageType.BenefitsFrom()[damageClass];
-+										knockBackMult &= addKB;
-+									}
-+								}
-+							}
-+							knockBack *= knockBackMult;
+-							float knockBack = item.knockBack;
++							float knockBack = GetWeaponKnockback(item, item.knockBack);
 +							/*
  							float num2 = 1f;
  							if (kbGlove)
  								num2 += 1f;
-@@ -29909,6 +_,10 @@
+@@ -29909,6 +_,7 @@
  							knockBack *= num2;
  							if (inventory[selectedItem].type == 3106)
  								knockBack += knockBack * (1f - stealth);
 +							*/
-+
-+							ItemLoader.GetWeaponKnockback(item, this, ref knockBack);
-+							PlayerHooks.GetWeaponKnockback(this, item, ref knockBack);
  
  							List<ushort> ignoreList2 = ItemCheck_GetTileCutIgnoreList(item);
  							ItemCheck_CutTiles(item, itemRectangle, ignoreList2);
- 							ItemCheck_MeleeHitNPCs(item, itemRectangle, num, knockBack);
 @@ -29920,6 +_,9 @@
  				}
  
@@ -3682,20 +3669,19 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -36335,6 +_,20 @@
+@@ -36335,6 +_,19 @@
  		}
  
  		public float GetWeaponKnockback(Item sItem, float KnockBack) {
 +			Modifier knockBackMult = allKB;
 +			if (sItem.damageType != DamageClass.Generic)
 +				knockBackMult &= GetKnockback(sItem.damageType);
-+			if (sItem.damageType.BenefitsFrom() != null) {
-+				foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+					if (sItem.damageType.BenefitsFrom().ContainsKey(damageClass)) {
-+						Modifier addKB = GetKnockback(damageClass);
-+						addKB *= sItem.damageType.BenefitsFrom()[damageClass];
-+						knockBackMult &= addKB;
-+					}
++			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
++				if (sItem.damageType.BenefitsFrom(damageClass) != 0) {
++					Modifier addKB = GetKnockback(damageClass);
++					addKB.additive = 1 + ((addKB.additive - 1) * sItem.damageType.BenefitsFrom(damageClass));
++					addKB.multiplicative = 1 + ((addKB.multiplicative - 1) * sItem.damageType.BenefitsFrom(damageClass));
++					knockBackMult &= addKB;
 +				}
 +			}
 +			KnockBack *= knockBackMult;
@@ -3703,7 +3689,7 @@
  			if (sItem.summon)
  				KnockBack += minionKB;
  
-@@ -36349,49 +_,90 @@
+@@ -36349,49 +_,89 @@
  
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
@@ -3718,13 +3704,12 @@
 +			Modifier crit = allCrit;
 +			if (sItem.damageType != DamageClass.Generic)
 +				crit &= GetCrit(sItem.damageType);
-+			if (sItem.damageType.BenefitsFrom() != null) {
-+				foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+					if (sItem.damageType.BenefitsFrom().ContainsKey(damageClass)) {
-+						Modifier addCrit = GetCrit(damageClass);
-+						addCrit *= sItem.damageType.BenefitsFrom()[damageClass];
-+						crit &= addCrit;
-+					}
++			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
++				if (sItem.damageType.BenefitsFrom(damageClass) != 0) {
++					Modifier addCrit = GetCrit(damageClass);
++					addCrit.additive = 1 + ((addCrit.additive - 1) * sItem.damageType.BenefitsFrom(damageClass));
++					addCrit.multiplicative = 1 + ((addCrit.multiplicative - 1) * sItem.damageType.BenefitsFrom(damageClass));
++					crit &= addCrit;
 +				}
 +			}
 +			/*
@@ -3779,13 +3764,12 @@
 +			Modifier damage = allDamage;
 +			if (sItem.damageType != DamageClass.Generic)
 +				damage &= GetDamage(sItem.damageType);
-+			if (sItem.damageType.BenefitsFrom() != null) {
-+				foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+					if (sItem.damageType.BenefitsFrom().ContainsKey(damageClass)) {
-+						Modifier addDamage = GetDamage(damageClass);
-+						addDamage *= sItem.damageType.BenefitsFrom()[damageClass];
-+						damage &= addDamage;
-+					}
++			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
++				if (sItem.damageType.BenefitsFrom(damageClass) != 0) {
++					Modifier addDamage = GetDamage(damageClass);
++					addDamage.additive = 1 + ((addDamage.additive - 1) * sItem.damageType.BenefitsFrom(damageClass));
++					addDamage.multiplicative = 1 + ((addDamage.multiplicative - 1) * sItem.damageType.BenefitsFrom(damageClass));
++					damage &= addDamage;
 +				}
 +			}
 +			/*
@@ -3795,7 +3779,8 @@
 +
 +			if (sItem.ranged) {
 +				damage &= rangedDamage;
-+			*/	if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
++			*/
++			if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
 +					damage &= arrowDamage;
 +
 +				if (sItem.useAmmo == AmmoID.Arrow && archery)

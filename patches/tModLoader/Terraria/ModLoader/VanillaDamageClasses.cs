@@ -7,12 +7,12 @@ namespace Terraria.ModLoader
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.55").Substring(1);
 
-		public override Dictionary<DamageClass, float>? BenefitsFrom() {
-			return null;
+		public override float BenefitsFrom(DamageClass damageClass) {
+			return 0;
 		}
 
-		public override List<DamageClass>? CountsAs() {
-			return null;
+		public override bool CountsAs(DamageClass damageClass) {
+			return false;
 		}
 	}
 
@@ -20,12 +20,12 @@ namespace Terraria.ModLoader
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.55").Substring(1);
 
-		public override Dictionary<DamageClass, float>? BenefitsFrom() {
-			return null;
+		public override float BenefitsFrom(DamageClass damageClass) {
+			return 0;
 		}
 
-		public override List<DamageClass>? CountsAs() {
-			return null;
+		public override bool CountsAs(DamageClass damageClass) {
+			return false;
 		}
 	}
 
@@ -33,12 +33,12 @@ namespace Terraria.ModLoader
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.2").Substring(1);
 
-		public override Dictionary<DamageClass, float>? BenefitsFrom() {
-			return null;
+		public override float BenefitsFrom(DamageClass damageClass) {
+			return 0;
 		}
 
-		public override List<DamageClass>? CountsAs() {
-			return null;
+		public override bool CountsAs(DamageClass damageClass) {
+			return false;
 		}
 	}
 
@@ -46,12 +46,12 @@ namespace Terraria.ModLoader
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.3").Substring(1);
 
-		public override Dictionary<DamageClass, float>? BenefitsFrom() {
-			return null;
+		public override float BenefitsFrom(DamageClass damageClass) {
+			return 0;
 		}
 
-		public override List<DamageClass>? CountsAs() {
-			return null;
+		public override bool CountsAs(DamageClass damageClass) {
+			return false;
 		}
 	}
 
@@ -59,12 +59,12 @@ namespace Terraria.ModLoader
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.4").Substring(1);
 
-		public override Dictionary<DamageClass, float>? BenefitsFrom() {
-			return null;
+		public override float BenefitsFrom(DamageClass damageClass) {
+			return 0;
 		}
 
-		public override List<DamageClass>? CountsAs() {
-			return null;
+		public override bool CountsAs(DamageClass damageClass) {
+			return false;
 		}
 	}
 
@@ -72,12 +72,12 @@ namespace Terraria.ModLoader
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.53").Substring(1);
 
-		public override Dictionary<DamageClass, float>? BenefitsFrom() {
-			return null;
+		public override float BenefitsFrom(DamageClass damageClass) {
+			return 0;
 		}
 
-		public override List<DamageClass>? CountsAs() {
-			return null;
+		public override bool CountsAs(DamageClass damageClass) {
+			return false;
 		}
 	}
 
@@ -85,12 +85,12 @@ namespace Terraria.ModLoader
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.58").Substring(1);
 
-		public override Dictionary<DamageClass, float>? BenefitsFrom() {
-			return null;
+		public override float BenefitsFrom(DamageClass damageClass) {
+			return 0;
 		}
 
-		public override List<DamageClass>? CountsAs() {
-			return null;
+		public override bool CountsAs(DamageClass damageClass) {
+			return false;
 		}
 	}
 }

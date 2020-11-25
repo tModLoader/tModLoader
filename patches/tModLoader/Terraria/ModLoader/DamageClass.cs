@@ -21,16 +21,16 @@ namespace Terraria.ModLoader
 		/// <summary> This is the name that will show up when an item tooltip displays 'X [ClassName]'. This should include the 'damage' part. </summary>
 		public string DisplayName => DisplayNameInternal;
 		/// <summary>
-		/// This defines the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
-		/// Returns null by default, which does not let any other classes boost this DamageClass.
+		/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
+		/// Returns 0 in all cases by default, which does not let any other classes boost this DamageClass.
 		/// </summary>
-		public virtual Dictionary<DamageClass, float>? BenefitsFrom() => null;
+		public virtual float BenefitsFrom(DamageClass damageClass) => 0;
 
 		/// <summary> 
-		/// This defines the classes that this DamageClass will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.
-		/// Returns null by default, which does not let any other classes' effects trigger on this DamageClass.
+		/// This lets you define the classes that this DamageClass will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.
+		/// Returns false in all cases by default, which does not let any other classes' effects trigger on this DamageClass.
 		/// </summary>
-		public virtual List<DamageClass>? CountsAs() => null;
+		public virtual bool CountsAs(DamageClass damageClass) => false;
 
 		internal protected virtual string DisplayNameInternal => ClassName.GetTranslation(Language.ActiveCulture);
 
