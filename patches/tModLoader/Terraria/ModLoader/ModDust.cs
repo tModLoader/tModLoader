@@ -11,7 +11,7 @@ namespace Terraria.ModLoader
 	/// This class represents a type of dust that is added by a mod. Only one instance of this class will ever exist for each type of dust you add.
 	/// </summary>
 	[Autoload(Side = ModSide.Client)]
-	public class ModDust:ModTexturedType
+	public abstract class ModDust : ModTexturedType
 	{
 		private static int nextDust = DustID.Count;
 		internal static readonly IList<ModDust> dusts = new List<ModDust>();

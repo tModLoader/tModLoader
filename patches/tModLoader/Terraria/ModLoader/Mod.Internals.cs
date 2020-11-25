@@ -95,7 +95,7 @@ namespace Terraria.ModLoader
 			Type modType = GetType();
 			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName, StringComparer.InvariantCulture)) {
 				//don't autoload things with no default constructor
-				if (type == modType || type.IsAbstract || type.GetConstructor(new Type[0]) == null) {
+				if (type == modType || type.IsAbstract || type.ContainsGenericParameters || type.GetConstructor(new Type[0]) == null) {
 					continue;
 				}
 
@@ -182,6 +182,9 @@ namespace Terraria.ModLoader
 		/// Loads .lang files
 		/// </summary>
 		private void AutoloadLocalization() {
+			if (File == null)
+				return;
+
 			var modTranslationDictionary = new Dictionary<string, ModTranslation>();
 			foreach (var translationFile in File.Where(entry => Path.GetExtension(entry.Name) == ".lang")) {
 				// .lang files need to be UTF8 encoded.
