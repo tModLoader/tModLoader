@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/DataStructures/TileEntity.cs
 +++ src/tModLoader/Terraria/DataStructures/TileEntity.cs
-@@ -4,6 +_,7 @@
+@@ -4,10 +_,11 @@
  using System.IO;
  using Terraria.Audio;
  using Terraria.GameInput;
@@ -8,6 +8,21 @@
  
  namespace Terraria.DataStructures
  {
+-	public abstract class TileEntity
++	public abstract partial class TileEntity
+ 	{
+ 		public static TileEntitiesManager manager;
+ 		public const int MaxEntitiesPerChunk = 1000;
+@@ -22,6 +_,9 @@
+ 		public static event Action _UpdateStart;
+ 		public static event Action _UpdateEnd;
+ 
++		//Force modders to use ModTileEntity, to prevent them from messing with vanilla saving/loading.
++		internal TileEntity() { }
++
+ 		public static int AssignNewID() => TileEntitiesNextID++;
+ 
+ 		public static void Clear() {
 @@ -43,6 +_,7 @@
  		public static void InitializeAll() {
  			manager = new TileEntitiesManager();
@@ -26,3 +41,18 @@
  			tileEntity.type = id;
  			tileEntity.ReadInner(reader, networkSend);
  			return tileEntity;
+@@ -72,6 +_,14 @@
+ 
+ 			writer.Write(Position.X);
+ 			writer.Write(Position.Y);
++
++			//Call NetSend instead of the vanilla method when in modded contexts.
++			if (networkSend && !ModNet.AllowVanillaClients) {
++				NetSend(writer, false);
++
++				return;
++			}
++
+ 			WriteExtraData(writer, networkSend);
+ 		}
+ 

@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/DataStructures/TileEntitiesManager.cs
++++ src/tModLoader/Terraria/DataStructures/TileEntitiesManager.cs
+@@ -3,7 +_,7 @@
+ 
+ namespace Terraria.DataStructures
+ {
+-	public class TileEntitiesManager
++	public partial class TileEntitiesManager
+ 	{
+ 		private int _nextEntityID;
+ 		private Dictionary<int, TileEntity> _types = new Dictionary<int, TileEntity>();

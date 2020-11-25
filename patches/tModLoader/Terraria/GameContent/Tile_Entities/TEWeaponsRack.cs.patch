@@ -1,18 +1,19 @@
---- src/Terraria/Terraria/GameContent/Tile_Entities/TEItemFrame.cs
-+++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEItemFrame.cs
-@@ -1,9 +_,10 @@
+--- src/Terraria/Terraria/GameContent/Tile_Entities/TEWeaponsRack.cs
++++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEWeaponsRack.cs
+@@ -1,10 +_,11 @@
  using System.IO;
  using Terraria.DataStructures;
+ using Terraria.ID;
 +using Terraria.ModLoader.IO;
  
  namespace Terraria.GameContent.Tile_Entities
  {
--	public class TEItemFrame : TileEntity
-+	public partial class TEItemFrame : TileEntity
+-	public class TEWeaponsRack : TileEntity
++	public sealed partial class TEWeaponsRack : TileEntity
  	{
  		private static byte _myEntityID;
  		public Item item;
-@@ -76,8 +_,8 @@
+@@ -78,8 +_,8 @@
  		}
  
  		public override void WriteExtraData(BinaryWriter writer, bool networkSend) {
