@@ -7,7 +7,7 @@ namespace Terraria.ModLoader
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.55").Substring(1);
 
-		public override float BenefitsFrom(DamageClass damageClass) {
+		public override float BenefitsFrom(DamageClass damageClass, int statType) {
 			return 0;
 		}
 
@@ -20,7 +20,7 @@ namespace Terraria.ModLoader
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.55").Substring(1);
 
-		public override float BenefitsFrom(DamageClass damageClass) {
+		public override float BenefitsFrom(DamageClass damageClass, int statType) {
 			return 0;
 		}
 
@@ -33,7 +33,7 @@ namespace Terraria.ModLoader
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.2").Substring(1);
 
-		public override float BenefitsFrom(DamageClass damageClass) {
+		public override float BenefitsFrom(DamageClass damageClass, int statType) {
 			return 0;
 		}
 
@@ -46,7 +46,7 @@ namespace Terraria.ModLoader
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.3").Substring(1);
 
-		public override float BenefitsFrom(DamageClass damageClass) {
+		public override float BenefitsFrom(DamageClass damageClass, int statType) {
 			return 0;
 		}
 
@@ -59,7 +59,7 @@ namespace Terraria.ModLoader
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.4").Substring(1);
 
-		public override float BenefitsFrom(DamageClass damageClass) {
+		public override float BenefitsFrom(DamageClass damageClass, int statType) {
 			return 0;
 		}
 
@@ -72,7 +72,7 @@ namespace Terraria.ModLoader
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.53").Substring(1);
 
-		public override float BenefitsFrom(DamageClass damageClass) {
+		public override float BenefitsFrom(DamageClass damageClass, int statType) {
 			return 0;
 		}
 
@@ -85,7 +85,7 @@ namespace Terraria.ModLoader
 	{
 		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.58").Substring(1);
 
-		public override float BenefitsFrom(DamageClass damageClass) {
+		public override float BenefitsFrom(DamageClass damageClass, int statType) {
 			return 0;
 		}
 

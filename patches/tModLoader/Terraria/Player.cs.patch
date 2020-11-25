@@ -3669,7 +3669,7 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -36335,6 +_,19 @@
+@@ -36335,6 +_,25 @@
  		}
  
  		public float GetWeaponKnockback(Item sItem, float KnockBack) {
@@ -3677,10 +3677,16 @@
 +			if (sItem.damageType != DamageClass.Generic)
 +				knockBackMult &= GetKnockback(sItem.damageType);
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				if (sItem.damageType.BenefitsFrom(damageClass) != 0) {
++				if (sItem.damageType.BenefitsFrom(damageClass, 0) != 0) {
 +					Modifier addKB = GetKnockback(damageClass);
-+					addKB.additive = 1 + ((addKB.additive - 1) * sItem.damageType.BenefitsFrom(damageClass));
-+					addKB.multiplicative = 1 + ((addKB.multiplicative - 1) * sItem.damageType.BenefitsFrom(damageClass));
++					addKB.additive = 1 + ((addKB.additive - 1) * sItem.damageType.BenefitsFrom(damageClass, 0));
++					addKB.multiplicative = 1 + ((addKB.multiplicative - 1) * sItem.damageType.BenefitsFrom(damageClass, 0));
++					knockBackMult &= addKB;
++				}
++				if (sItem.damageType.BenefitsFrom(damageClass, 3) != 0) {
++					Modifier addKB = GetKnockback(damageClass);
++					addKB.additive = 1 + ((addKB.additive - 1) * sItem.damageType.BenefitsFrom(damageClass, 3));
++					addKB.multiplicative = 1 + ((addKB.multiplicative - 1) * sItem.damageType.BenefitsFrom(damageClass, 3));
 +					knockBackMult &= addKB;
 +				}
 +			}
@@ -3689,7 +3695,7 @@
  			if (sItem.summon)
  				KnockBack += minionKB;
  
-@@ -36349,49 +_,89 @@
+@@ -36349,49 +_,101 @@
  
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
@@ -3705,10 +3711,16 @@
 +			if (sItem.damageType != DamageClass.Generic)
 +				crit &= GetCrit(sItem.damageType);
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				if (sItem.damageType.BenefitsFrom(damageClass) != 0) {
++				if (sItem.damageType.BenefitsFrom(damageClass, 0) != 0) {
 +					Modifier addCrit = GetCrit(damageClass);
-+					addCrit.additive = 1 + ((addCrit.additive - 1) * sItem.damageType.BenefitsFrom(damageClass));
-+					addCrit.multiplicative = 1 + ((addCrit.multiplicative - 1) * sItem.damageType.BenefitsFrom(damageClass));
++					addCrit.additive = 1 + ((addCrit.additive - 1) * sItem.damageType.BenefitsFrom(damageClass, 0));
++					addCrit.multiplicative = 1 + ((addCrit.multiplicative - 1) * sItem.damageType.BenefitsFrom(damageClass, 0));
++					crit &= addCrit;
++				}
++				if (sItem.damageType.BenefitsFrom(damageClass, 2) != 0) {
++					Modifier addCrit = GetCrit(damageClass);
++					addCrit.additive = 1 + ((addCrit.additive - 1) * sItem.damageType.BenefitsFrom(damageClass, 2));
++					addCrit.multiplicative = 1 + ((addCrit.multiplicative - 1) * sItem.damageType.BenefitsFrom(damageClass, 2));
 +					crit &= addCrit;
 +				}
 +			}
@@ -3765,10 +3777,16 @@
 +			if (sItem.damageType != DamageClass.Generic)
 +				damage &= GetDamage(sItem.damageType);
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				if (sItem.damageType.BenefitsFrom(damageClass) != 0) {
++				if (sItem.damageType.BenefitsFrom(damageClass, 0) != 0) {
 +					Modifier addDamage = GetDamage(damageClass);
-+					addDamage.additive = 1 + ((addDamage.additive - 1) * sItem.damageType.BenefitsFrom(damageClass));
-+					addDamage.multiplicative = 1 + ((addDamage.multiplicative - 1) * sItem.damageType.BenefitsFrom(damageClass));
++					addDamage.additive = 1 + ((addDamage.additive - 1) * sItem.damageType.BenefitsFrom(damageClass, 0));
++					addDamage.multiplicative = 1 + ((addDamage.multiplicative - 1) * sItem.damageType.BenefitsFrom(damageClass, 0));
++					damage &= addDamage;
++				}
++				if (sItem.damageType.BenefitsFrom(damageClass, 1) != 0) {
++					Modifier addDamage = GetDamage(damageClass);
++					addDamage.additive = 1 + ((addDamage.additive - 1) * sItem.damageType.BenefitsFrom(damageClass, 1));
++					addDamage.multiplicative = 1 + ((addDamage.multiplicative - 1) * sItem.damageType.BenefitsFrom(damageClass, 1));
 +					damage &= addDamage;
 +				}
 +			}
@@ -3780,7 +3798,7 @@
 +			if (sItem.ranged) {
 +				damage &= rangedDamage;
 +			*/
-+			if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
++				if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
 +					damage &= arrowDamage;
 +
 +				if (sItem.useAmmo == AmmoID.Arrow && archery)
