@@ -2,15 +2,9 @@
 
 namespace Terraria.ModLoader.Default.Developer.Jofairden
 {
+	[AutoloadEquip(EquipType.Head)]
 	internal class PowerRanger_Head : AndromedonItem
 	{
-		public override EquipType ItemEquipType => EquipType.Head;
-
-		public override void Load() {
-			Mod.AddContent<AndromedonHeadGlow>();
-			Mod.AddContent<AndromedonHeadShader>();
-		}
-
 		public override void SetDefaults() {
 			base.SetDefaults();
 
@@ -18,9 +12,9 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 		}
 
 		public override bool IsVanitySet(int head, int body, int legs)
-			=> head == Mod.GetEquipSlot($"{SetName}_{EquipType.Head}", EquipType.Head)
-			&& body == Mod.GetEquipSlot($"{SetName}_{EquipType.Body}", EquipType.Body)
-			&& legs == Mod.GetEquipSlot($"{SetName}_{EquipType.Legs}", EquipType.Legs);
+			=> head == Mod.GetEquipSlot(nameof(PowerRanger_Head), EquipType.Head)
+			&& body == Mod.GetEquipSlot(nameof(PowerRanger_Body), EquipType.Body)
+			&& legs == Mod.GetEquipSlot(nameof(PowerRanger_Legs), EquipType.Legs);
 
 		public override void UpdateVanitySet(Player player)
 			=> player.GetModPlayer<DeveloperPlayer>().AndromedonEffect.HasSetBonus = true;
