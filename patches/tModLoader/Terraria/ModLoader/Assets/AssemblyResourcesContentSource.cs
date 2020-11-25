@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.Assets
 		public IContentValidator ContentValidator { get; set; }
 
 		private readonly string RootPath;
-		private readonly HashSet<string> ResourceNames;
+		private readonly List<string> ResourceNames;
 		private readonly RejectedAssetCollection Rejections;
 		private readonly Dictionary<string, string> PathRedirects;
 
@@ -23,29 +23,18 @@ namespace Terraria.ModLoader.Assets
 
 		public AssemblyResourcesContentSource(Assembly assembly, string rootPath = null)
 		{
-			RootPath = rootPath;
+			RootPath = rootPath ?? "";
 			Rejections = new RejectedAssetCollection();
 
-			var resourceNames = assembly.GetManifestResourceNames().ToList();
+			IEnumerable<string> resourceNames = assembly.GetManifestResourceNames();
 
 			if (RootPath != null) {
-				PathRedirects = new Dictionary<string, string>();
-
-				for (int i = 0;i<resourceNames.Count;i++) {
-					string path = resourceNames[i];
-
-					if (path.StartsWith(rootPath)) {
-						string shortPath = path.Substring(rootPath.Length);
-
-						resourceNames[i] = shortPath;
-						PathRedirects[shortPath] = path;
-					} else {
-						resourceNames.RemoveAt(i--);
-					}
-				}
+				resourceNames = resourceNames
+					.Where(p => p.StartsWith(RootPath))
+					.Select(p => p.Substring(RootPath.Length));
 			}
 
-			ResourceNames = new HashSet<string>(resourceNames);
+			ResourceNames = resourceNames.ToList();
 
 			this.assembly = assembly;
 		}
@@ -53,7 +42,7 @@ namespace Terraria.ModLoader.Assets
 		//Assets
 		public bool HasAsset(string assetName) => ResourceNames.Any(s => StringComparer.Equals(s, assetName));
 		public string GetExtension(string assetName) => Path.GetExtension(assetName);
-		public Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(PathRedirects != null ? PathRedirects[assetName] : assetName);
+		public Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(RootPath + assetName);
 		public IEnumerable<string> EnumerateFiles() => ResourceNames;
 		//Etc
 		public void Dispose()

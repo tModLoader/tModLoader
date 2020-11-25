@@ -12,7 +12,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.
 	/// </summary>
-	public class ModTile:ModTexturedType
+	public abstract class ModTile : ModTexturedType
 	{
 		/// <summary>
 		/// The internal ID of this type of tile.

@@ -27,16 +27,6 @@ namespace Terraria.ModLoader.IO
 		internal static void Reload() {
 			serializers.Clear();
 			typeNameCache.Clear();
-			AddSerializer(new BoolTagSerializer());
-			AddSerializer(new UShortTagSerializer());
-			AddSerializer(new UIntTagSerializer());
-			AddSerializer(new ULongTagSerializer());
-			AddSerializer(new Vector2TagSerializer());
-			AddSerializer(new Vector3TagSerializer());
-			AddSerializer(new ColorSerializer());
-			AddSerializer(new Point16Serializer());
-			AddSerializer(new RectangleSerializer());
-			AddSerializer(new ItemSerializer());
 		}
 
 		public static bool TryGetSerializer(Type type, out TagSerializer serializer) {
@@ -180,7 +170,7 @@ namespace Terraria.ModLoader.IO
 
 		public override Rectangle Deserialize(TagCompound tag) => new Rectangle(tag.GetInt("x"), tag.GetInt("y"), tag.GetInt("width"), tag.GetInt("height"));
 	}
-	
+
 	public class ItemSerializer : TagSerializer<Item, TagCompound>
 	{
 		public override TagCompound Serialize(Item value) => ItemIO.Save(value);

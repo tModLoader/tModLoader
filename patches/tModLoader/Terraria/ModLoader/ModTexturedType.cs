@@ -3,7 +3,7 @@
 	/// <summary>
 	/// The base type for most modded things with textures.
 	/// </summary>
-	public abstract class ModTexturedType:ModType
+	public abstract class ModTexturedType : ModType
 	{
 		/// <summary>
 		/// The file name of this type's texture file in the mod loader's file space.
