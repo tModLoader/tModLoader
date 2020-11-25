@@ -12,7 +12,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this.
 	/// </summary>
-	public class GlobalItem:ModType
+	public abstract class GlobalItem : ModType
 	{
 		internal int index;
 
