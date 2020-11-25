@@ -6,15 +6,7 @@ namespace Terraria.ModLoader
 	{
 		public static int DamageClassCount => DamageClasses.Count;
 
-		internal static readonly List<DamageClass> DamageClasses = new List<DamageClass>() {
-			DamageClass.Melee,
-			DamageClass.Ranged,
-			DamageClass.Magic,
-			DamageClass.Summon,
-			DamageClass.Throwing
-		};
-
-		internal static readonly int DefaultDamageClassCount = DamageClasses.Count;
+		internal static readonly List<DamageClass> DamageClasses = new List<DamageClass>();
 
 		internal static int Add(DamageClass damageClass) {
 			DamageClasses.Add(damageClass);
@@ -22,7 +14,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void Unload() {
-			DamageClasses.RemoveRange(DefaultDamageClassCount, DamageClasses.Count - DefaultDamageClassCount);
+			DamageClasses.Clear();
 		}
 	}
 }
