@@ -1,5 +1,4 @@
-﻿#nullable enable
-using Newtonsoft.Json.Serialization;
+﻿using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using Terraria.Localization;
 
@@ -15,7 +14,14 @@ namespace Terraria.ModLoader
 		public static Summon Summon => ModContent.GetInstance<Summon>();
 		public static Throwing Throwing => ModContent.GetInstance<Throwing>();
 
-		/// <summary> This is the translation that is used behind <see cref="DisplayName"/>. The translation will show up when an item tooltip displays 'X [ClassName]'. This should include the 'damage' part. </summary>
+		/// <summary>
+		/// This is the internal ID of this DamageClass.
+		/// </summary>
+		public int Type { get; internal set; }
+
+		/// <summary>
+		/// This is the translation that is used behind <see cref="DisplayName"/>. The translation will show up when an item tooltip displays 'X [ClassName]'. This should include the 'damage' part.
+		/// </summary>
 		public ModTranslation ClassName { get; internal set; }
 
 		/// <summary> This is the name that will show up when an item tooltip displays 'X [ClassName]'. This should include the 'damage' part. </summary>
@@ -43,11 +49,11 @@ namespace Terraria.ModLoader
 		internal protected virtual string DisplayNameInternal => ClassName.GetTranslation(Language.ActiveCulture);
 
 		protected override void Register() {
-			DamageClassLoader.Add(this);
-
 			ClassName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.DamageClassName.{Name}");
 
 			ModTypeLookup<DamageClass>.Register(this);
+
+			Type = DamageClassLoader.Add(this);
 		}
 	}
 }

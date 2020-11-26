@@ -8,8 +8,9 @@ namespace Terraria.ModLoader
 
 		internal static readonly List<DamageClass> DamageClasses = new List<DamageClass>();
 
-		internal static void Add(DamageClass damageClass) {
+		internal static int Add(DamageClass damageClass) {
 			DamageClasses.Add(damageClass);
+			return DamageClasses.IndexOf(damageClass);
 		}
 
 		internal static void Unload() {

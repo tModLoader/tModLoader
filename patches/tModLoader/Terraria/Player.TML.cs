@@ -54,7 +54,7 @@ namespace Terraria
 			damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
 
 			for (int i = 0; i < damageData.Length; i++) {
-				damageData[i] = new DamageClassData(DamageClassLoader.DamageClasses[i], Modifier.One, new Modifier(0f, 1f), Modifier.One);
+				damageData[i] = new DamageClassData(Modifier.One, new Modifier(0f, 1f), Modifier.One);
 			}
 		}
 
@@ -72,46 +72,19 @@ namespace Terraria
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// If the DamageClass provided cannot be found, returns a stock value.
 		/// </summary>
-		public ref Modifier GetCrit(DamageClass damageClass) {
-			int index = 0;
-			for (int i = 0; i < damageData.Length; i++) {
-				if (damageData[i].damageClass == damageClass) {
-					index = i;
-					break;
-				}
-			}
-			return ref damageData[index].crit;
-		}
+		public ref Modifier GetCrit(DamageClass damageClass) => ref damageData[damageClass.Type].crit;
 		/// <summary>
 		/// Gets the damage modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// If the DamageClass provided cannot be found, returns a stock value.
 		/// </summary>
-		public ref Modifier GetDamage(DamageClass damageClass) {
-			int index = 0;
-			for (int i = 0; i < damageData.Length; i++) {
-				if (damageData[i].damageClass == damageClass) {
-					index = i;
-					break;
-				}
-			}
-			return ref damageData[index].damage;
-		}
+		public ref Modifier GetDamage(DamageClass damageClass) => ref damageData[damageClass.Type].damage;
 
 		/// <summary>
 		/// Gets the knockback modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// If the DamageClass provided cannot be found, returns a stock value.
 		/// </summary>
-		public ref Modifier GetKnockback(DamageClass damageClass) {
-			int index = 0;
-			for (int i = 0; i < damageData.Length; i++) {
-				if (damageData[i].damageClass == damageClass) {
-					index = i;
-					break;
-				}
-			}
-			return ref damageData[index].knockback;
-		}
+		public ref Modifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
 	}
 }
