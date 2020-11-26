@@ -58,32 +58,39 @@ namespace Terraria
 			}
 		}
 
-		/// <summary> Gets the reference to the crit modifier for this damage type on this player. Since this returns a reference, you can freely modify this method's return value with operators. <para/> Note that vanilla turns this to int before using it. </summary>
+
+		/// <summary>
+		/// Gets the crit modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary> 
 		public ref Modifier GetCrit<T>() where T : DamageClass => ref GetCrit(ModContent.GetInstance<T>());
 
-		/// <summary> Gets the reference to the damage modifier for this damage type on this player. Since this returns a reference, you can freely modify this method's return value with operators. </summary>
+		/// <summary>
+		/// Gets the damage modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
 		public ref Modifier GetDamage<T>() where T : DamageClass => ref GetDamage(ModContent.GetInstance<T>());
 
-		/// <summary> Gets the reference to the knockback modifier for this damage type on this player. Since this returns a reference, you can freely modify this method's return value with operators. </summary>
+		/// <summary>
+		/// Gets the knockback modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
 		public ref Modifier GetKnockback<T>() where T : DamageClass => ref GetKnockback(ModContent.GetInstance<T>());
 
 		/// <summary>
 		/// Gets the crit modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
-		/// If the DamageClass provided cannot be found, returns a stock value.
 		/// </summary>
 		public ref Modifier GetCrit(DamageClass damageClass) => ref damageData[damageClass.Type].crit;
 		/// <summary>
 		/// Gets the damage modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
-		/// If the DamageClass provided cannot be found, returns a stock value.
 		/// </summary>
 		public ref Modifier GetDamage(DamageClass damageClass) => ref damageData[damageClass.Type].damage;
 
 		/// <summary>
 		/// Gets the knockback modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
-		/// If the DamageClass provided cannot be found, returns a stock value.
 		/// </summary>
 		public ref Modifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
 	}

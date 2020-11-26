@@ -10,9 +10,9 @@ namespace ExampleMod.Content.DamageClasses
 			ClassName.SetDefault("example damage");
 		}
 
-		public override Dictionary<DamageClass, float> BenefitsFrom() {
+		public override float BenefitsFrom(DamageClass damageClass, int statType) {
 			// Make this damage class not benefit from any otherclass stat bonuses by default.
-			return null;
+			return 0;
 
 			// Now, I know you're just dyin' to get into the fun side of things, so let's have ourselves some demonstrations.
 			// Feel free to comment out the above null return and uncomment one of the below! Experiment, play with the variables a bit. See what works best for you!
@@ -20,44 +20,42 @@ namespace ExampleMod.Content.DamageClasses
 			// PROMPT: You want your damage class to benefit at a standard rate from a vanilla class' stat boosts.
 			// The below makes your class benefit at a standard rate (100%) from all melee stat bonuses.
 			/*
-			Dictionary<DamageClass, float> benefit = new Dictionary<DamageClass, float>();
-			benefit.Add(DamageClass.Melee, 1f);
-			return benefit;
+			if (damageClass == DamageClass.Melee && statType == 0)
+				return 1f;
 			*/
 
-			// PROMPT: You want your damage class to benefit at a much higher rate from a vanilla class' stat boosts.
-			// The below makes your class benefit at 500% effectiveness from all magic stat bonuses.
+			// PROMPT: You want your damage class to benefit at a much higher rate from a vanilla class' crit boosts specifically.
+			// The below makes your class benefit at 500% effectiveness from all magic crit bonuses, but no other stats.
 			/*
-			Dictionary<DamageClass, float> benefit = new Dictionary<DamageClass, float>();
-			benefit.Add(DamageClass.Magic, 5f);
-			return benefit;
+			if (damageClass == DamageClass.Magic && statType == 2)
+				return 1f;
 			*/
 
 			// PROMPT: You want your damage class to benefit at a equal rate from two vanilla classes' stat boosts.
 			// The below makes your class benefit at a standard rate from all melee and ranged stat bonuses equally.
 			// This functionality can be useful for hybrid weapons, such as Calamity's Prismatic Breaker.
 			/*
-			Dictionary<DamageClass, float> benefit = new Dictionary<DamageClass, float>();
-			benefit.Add(DamageClass.Melee, 1f);
-			benefit.Add(DamageClass.Ranged, 1f);
-			return benefit;
+			if (damageClass == DamageClass.Melee && statType == 0)
+				return 1f;
+			if (damageClass == DamageClass.Ranged && statType == 0)
+				return 1f;
 			*/
 
 			// PROMPT: You want your damage class to benefit at a equal rate from a vanilla class' stat boosts and another modded class' stat boosts.
-			// The below makes your class benefit at a standard rate from all melee and ranged stat bonuses equally.
+			// The below makes your class benefit at a standard rate from melee damage bonuses and at a 200% rate from another modded class' knockback bonuses.
 			// This functionality can be useful for hybrid weapons, particularly those involving cross-mod content (see the guide on that for more detail!).
 			/*
-			Dictionary<DamageClass, float> benefit = new Dictionary<DamageClass, float>();
-			benefit.Add(DamageClass.Melee, 1f);
-			benefit.Add(ModContent.GetInstance<CoolDamageClass>(), 1f);
-			return benefit;
+			if (damageClass == DamageClass.Melee && statType == 1)
+				return 1f;
+			if (damageClass == ModContent.GetInstance<CoolDamageClass>() && statType == 3)
+				return 2f;
 			*/
 			// Note that the other modded damage class isn't provided here --- that'd ruin the point, now wouldn't it?
 		}
 
-		public override List<DamageClass> CountsAs() {
+		public override bool CountsAs(DamageClass damageClass) {
 			// Make this damage class not benefit from any otherclass effects (e.g. Spectre bolts, Magma Stone) by default.
-			return null;
+			return false;
 		}
 	}
 }
