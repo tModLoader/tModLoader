@@ -10,7 +10,7 @@ namespace Terraria.ModLoader
 
 		internal static int Add(DamageClass damageClass) {
 			DamageClasses.Add(damageClass);
-			return DamageClasses.IndexOf(damageClass);
+			return DamageClasses.Count - 1;
 		}
 
 		internal static void Unload() {

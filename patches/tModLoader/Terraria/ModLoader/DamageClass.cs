@@ -28,17 +28,10 @@ namespace Terraria.ModLoader
 		public string DisplayName => DisplayNameInternal;
 		/// <summary>
 		/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
-		/// You can also define the individual stats that should be drawn from.
 		/// Returns 0 in all cases by default, which does not let any other classes boost this DamageClass.
 		/// </summary>
 		/// <param name="damageClass">The DamageClass which you want this DamageClass to benefit from statistically.</param>
-		/// <param name="statType">The stat that you want this DamageClass to benefit from in particular.
-		/// 
-		/// 0 = All stats
-		/// 1 = Damage
-		/// 2 = Crit chance
-		/// 3 = Knockback</param>
-		public virtual float BenefitsFrom(DamageClass damageClass, int statType) => 0;
+		public virtual float BenefitsFrom(DamageClass damageClass) => 0;
 
 		/// <summary> 
 		/// This lets you define the classes that this DamageClass will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.
