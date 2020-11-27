@@ -173,7 +173,7 @@
  			base.Window.AllowUserResizing = true;
  			OpenSettings();
  			if (screenWidth > GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width)
-@@ -7473,7 +_,7 @@
+@@ -7479,7 +_,7 @@
  			if (waveBank == null) //supress extra exceptions from audio engine failing to load
  				return;
  
@@ -182,7 +182,7 @@
  			if (Main.engine != null)
  				Main.engine.Update();
  
-@@ -10254,7 +_,7 @@
+@@ -10261,7 +_,7 @@
  				}
  
  				hasFocus = base.IsActive;
@@ -191,7 +191,7 @@
  				hasFocus = (Form.ActiveForm == Control.FromHandle(base.Window.Handle) as Form);
  #endif
  				if (!gameMenu || netMode == 2) {
-@@ -35786,9 +_,8 @@
+@@ -35792,9 +_,8 @@
  			SocialAPI.Shutdown();
  #endif
  			Exit();
@@ -203,7 +203,7 @@
  		}
  
  		protected Microsoft.Xna.Framework.Color randColor() {
-@@ -36420,19 +_,19 @@
+@@ -36426,19 +_,19 @@
  				}
  				else if (selectedMenu == 2 || inputTextEnter || autoPass) {
  					string str = "-autoshutdown -password \"" + Netplay.ServerPassword + "\" -lang " + Language.ActiveCulture.LegacyId;
@@ -231,7 +231,7 @@
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {
  						ProcessStartInfo startInfo = tServer.StartInfo;
-@@ -37712,7 +_,7 @@
+@@ -37718,7 +_,7 @@
  					}
  
  					bool flag7 = false;
@@ -240,7 +240,7 @@
  					flag7 = true;
  					System.Drawing.Rectangle bounds = Screen.FromPoint(((Form)Control.FromHandle(instance.Window.Handle)).Location).Bounds;
  					if (bounds.Width > maxScreenW || bounds.Height > maxScreenH)
-@@ -38367,36 +_,42 @@
+@@ -38373,36 +_,42 @@
  					array4[1] = 30;
  					array4[2] = 30;
  					array4[3] = 30;
@@ -293,7 +293,7 @@
  						WorldGen.setWorldSize();
  					}
  				}
-@@ -39180,26 +_,11 @@
+@@ -39186,26 +_,11 @@
  				if (num108 == 3)
  					num110 = 2;
  
@@ -324,7 +324,7 @@
  			}
  
  			DrawCursor(DrawThickCursor());
-@@ -41330,7 +_,7 @@
+@@ -41336,7 +_,7 @@
  			base.GraphicsDevice.SetRenderTarget(backWaterTarget);
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
  			spriteBatch.Begin();
@@ -333,7 +333,7 @@
  			tileBatch.Begin();
  #else
  			tileBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend);
-@@ -50871,8 +_,9 @@
+@@ -50877,8 +_,9 @@
  				graphics.ToggleFullScreen();
  
  			bool flag = false;
@@ -344,7 +344,7 @@
  			screenMaximized = (((Form)Control.FromHandle(instance.Window.Handle)).WindowState == FormWindowState.Maximized);
  			if (screenBorderless && screenMaximized && !graphics.IsFullScreen) {
  				screenMaximized = false;
-@@ -50884,14 +_,11 @@
+@@ -50890,14 +_,11 @@
  #else
  			Main.screenMaximized = false;
  #endif
@@ -360,7 +360,7 @@
  				form.MinimumSize = new Size(0, 0);
  				if (screenBorderless && !graphics.IsFullScreen && screenBorderlessPendingResizes > 0) {
  					screenBorderlessPendingResizes--;
-@@ -50922,10 +_,11 @@
+@@ -50928,10 +_,11 @@
  				else {
  					num3 = graphics.PreferredBackBufferWidth;
  					num4 = graphics.PreferredBackBufferHeight;
@@ -373,7 +373,7 @@
  				form.MinimumSize = new Size(minScreenW, minScreenH);
  				if (flag) {
  					width = displayWidth[0];
-@@ -50940,7 +_,7 @@
+@@ -50946,7 +_,7 @@
  				flag2 = (graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height);
  			}
  
@@ -382,7 +382,7 @@
  			// appears redundant. Just causes the window to fight the user when attempting to resize too small
  			// with this disabled, the window will just snap back to minimum size when released
  			/*if (!fullscreen && !flag2) {
-@@ -50970,8 +_,7 @@
+@@ -50976,8 +_,7 @@
  				screenHeight = height;
  				graphics.PreferredBackBufferWidth = screenWidth;
  				graphics.PreferredBackBufferHeight = screenHeight;
@@ -392,7 +392,7 @@
  
  				PlayerInput.CacheOriginalScreenDimensions();
  				FixUIScale();
-@@ -50981,7 +_,7 @@
+@@ -50987,7 +_,7 @@
  				PendingResolutionWidth = screenWidth;
  				PendingResolutionHeight = screenHeight;
  				PlayerInput.CacheOriginalScreenDimensions();
@@ -401,7 +401,7 @@
  				if (!fullscreen) {
  					form.SendToBack();
  					form.BringToFront();
-@@ -51020,7 +_,6 @@
+@@ -51026,7 +_,6 @@
  		}
  
  		public void UpdateDisplaySettings() {

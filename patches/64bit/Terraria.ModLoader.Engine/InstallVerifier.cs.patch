@@ -18,18 +18,18 @@
 +				steamAPIPath = "./steam_api64.dll";
 -				steamAPIHash = ToByteArray("7B857C897BC69313E4936DC3DCCE5193");
 +				steamAPIHash = ToByteArray("2bca4e2c047ec969cb3cff277e7fc184".ToUpper());
- 				gogHash = ToByteArray("fb4ea5896142d5b76ac1ede10e864690");
- 				steamHash = ToByteArray("9d8adb4aab1f1f7eac8742a685b4cba8");
+ 				gogHash = ToByteArray("492dc0ff718d48936aa892e84a045e08");
+ 				steamHash = ToByteArray("6a21906ef7681d7d9c40ef61af620974");
  			}
 -			else if (Platform.IsOSX) {
 +			else if (PlatformUtilities.IsOSX) {
  				steamAPIPath = "osx/libsteam_api.dylib";
  				steamAPIHash = ToByteArray("4EECD26A0CDF89F90D4FF26ECAD37BE0");
- 				gogHash = ToByteArray("3591d61f040fca118430f32c78dc247b");
- 				steamHash = ToByteArray("3651544f9387bbbba0183177cf631880");
+ 				gogHash = ToByteArray("77aa5e6bba5276a012a4b5be87229d92");
+ 				steamHash = ToByteArray("4784728e5a73e930ad49f9eb7da45ca1");
  			}
 -			else if (Platform.IsLinux) {
 +			else if (PlatformUtilities.IsLinux) {
  				steamAPIPath = "lib/libsteam_api.so";
  				steamAPIHash = ToByteArray("7B74FD4C207D22DB91B4B649A44467F6");
- 				gogHash = ToByteArray("db41f89cfa0df5fb35f9878375ae7483");
+ 				gogHash = ToByteArray("535a6f1705f145efc237711ffe458481");
