@@ -10,7 +10,7 @@ namespace ExampleMod.Content.DamageClasses
 			ClassName.SetDefault("example damage");
 		}
 
-		public override float BenefitsFrom(DamageClass damageClass, int statType) {
+		public override float BenefitsFrom(DamageClass damageClass) {
 			// Make this damage class not benefit from any otherclass stat bonuses by default.
 			return 0;
 
@@ -20,14 +20,14 @@ namespace ExampleMod.Content.DamageClasses
 			// PROMPT: You want your damage class to benefit at a standard rate from a vanilla class' stat boosts.
 			// The below makes your class benefit at a standard rate (100%) from all melee stat bonuses.
 			/*
-			if (damageClass == DamageClass.Melee && statType == 0)
+			if (damageClass == DamageClass.Melee)
 				return 1f;
 			*/
 
-			// PROMPT: You want your damage class to benefit at a much higher rate from a vanilla class' crit boosts specifically.
-			// The below makes your class benefit at 500% effectiveness from all magic crit bonuses, but no other stats.
+			// PROMPT: You want your damage class to benefit at a much higher rate from a vanilla class' stat boosts.
+			// The below makes your class benefit at 500% effectiveness from all magic stat bonuses.
 			/*
-			if (damageClass == DamageClass.Magic && statType == 2)
+			if (damageClass == DamageClass.Magic)
 				return 1f;
 			*/
 
@@ -35,19 +35,19 @@ namespace ExampleMod.Content.DamageClasses
 			// The below makes your class benefit at a standard rate from all melee and ranged stat bonuses equally.
 			// This functionality can be useful for hybrid weapons, such as Calamity's Prismatic Breaker.
 			/*
-			if (damageClass == DamageClass.Melee && statType == 0)
+			if (damageClass == DamageClass.Melee)
 				return 1f;
-			if (damageClass == DamageClass.Ranged && statType == 0)
+			if (damageClass == DamageClass.Ranged)
 				return 1f;
 			*/
 
 			// PROMPT: You want your damage class to benefit at a equal rate from a vanilla class' stat boosts and another modded class' stat boosts.
-			// The below makes your class benefit at a standard rate from melee damage bonuses and at a 200% rate from another modded class' knockback bonuses.
+			// The below makes your class benefit at a standard rate from melee stat bonuses and at a 200% rate from another modded class' stat bonuses.
 			// This functionality can be useful for hybrid weapons, particularly those involving cross-mod content (see the guide on that for more detail!).
 			/*
-			if (damageClass == DamageClass.Melee && statType == 1)
+			if (damageClass == DamageClass.Melee)
 				return 1f;
-			if (damageClass == ModContent.GetInstance<CoolDamageClass>() && statType == 3)
+			if (damageClass == ModContent.GetInstance<CoolDamageClass>())
 				return 2f;
 			*/
 			// Note that the other modded damage class isn't provided here --- that'd ruin the point, now wouldn't it?
