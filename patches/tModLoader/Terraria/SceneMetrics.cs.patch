@@ -52,6 +52,14 @@
  					}
  				}
  			}
+@@ -334,6 +_,7 @@
+ 			CanPlayCreditsRoll = (ActiveMusicBox == 85);
+ 			if (settings.ScanOreFinderData)
+ 				UpdateOreFinderData();
++			WorldHooks.TileCountsAvailable(_tileCounts);
+ 		}
+ 
+ 		private void ExportTileCountsToMain() {
 @@ -420,6 +_,8 @@
  			Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
  			hasBanner = false;
