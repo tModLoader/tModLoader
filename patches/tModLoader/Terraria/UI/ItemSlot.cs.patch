@@ -192,8 +192,8 @@
 +					*/
 +					Main.mouseItem = inv[slot].Clone();
 +					Main.mouseItem.stack = 1;
-+					if (inv[slot].buyOnce)
-+						Main.mouseItem.value *= 5; // preserve item value for items sold to the shop
++					//if (inv[slot].buyOnce)
++					//	Main.mouseItem.value *= 5; // tMl bug: increased sell back price by 5, enabling infinite money
  
  					Main.mouseItem.stack = 0;
  				}

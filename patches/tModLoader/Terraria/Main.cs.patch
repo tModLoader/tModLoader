@@ -1247,7 +1247,7 @@
  			if (diff == 1)
  				baseColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num2), (byte)((float)(int)mcColor.G * num2), (byte)((float)(int)mcColor.B * num2), mouseTextColor);
  
-@@ -14825,8 +_,9 @@
+@@ -14825,15 +_,19 @@
  				array2[i] = false;
  				array3[i] = false;
  			}
@@ -1258,9 +1258,11 @@
  			float num3 = (float)(int)mouseTextColor / 255f;
  			float num4 = num3;
  			int a = mouseTextColor;
-@@ -14834,6 +_,7 @@
+ 			if (npcShop > 0 && hoverItem.value >= 0 && (hoverItem.type < 71 || hoverItem.type > 74)) {
  				LocalPlayer.GetItemExpectedPrice(hoverItem, out int calcForSelling, out int calcForBuying);
  				int num5 = (hoverItem.isAShopItem || hoverItem.buyOnce) ? calcForBuying : calcForSelling;
++				if (hoverItem.buyOnce && !hoverItem.buy) // tMl: bad(?) fix for visual bug (dividedp price by 5) when bought back item from shop
++					num5 *= 5;
  				if (hoverItem.shopSpecialCurrency != -1) {
 +					tooltipNames[numLines] = "SpecialPrice";
  					CustomCurrencyManager.GetPriceText(hoverItem.shopSpecialCurrency, array, ref numLines, num5);
