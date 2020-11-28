@@ -15,14 +15,7 @@
 		public Modifier CombineWith(Modifier that) =>
 			new Modifier(additive + that.additive - 1, multiplicative * that.multiplicative);
 
-		public override bool Equals(object obj) {
-			if (!(obj is Modifier))
-				return false;
-
-			var m = (Modifier)obj;
-			return additive == m.additive &&
-				   multiplicative == m.multiplicative;
-		}
+		public override bool Equals(object obj) => (obj is Modifier that) && (this == that);
 
 		public override int GetHashCode() {
 			int hashCode = 1713062080;
