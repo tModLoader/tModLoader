@@ -4,11 +4,11 @@ namespace Terraria.ModLoader
 {
 	public abstract class DamageClass : ModType
 	{
-		public static Melee Melee { get; private set; } = new Melee();
-		public static Ranged Ranged { get; private set; } = new Ranged();
-		public static Magic Magic { get; private set; } = new Magic();
-		public static Summon Summon { get; private set; } = new Summon();
-		public static Throwing Throwing { get; private set; } = new Throwing();
+		public static Melee Melee => ModContent.GetInstance<Melee>();
+		public static Ranged Ranged => ModContent.GetInstance<Ranged>();
+		public static Magic Magic => ModContent.GetInstance<Magic>();
+		public static Summon Summon => ModContent.GetInstance<Summon>();
+		public static Throwing Throwing => ModContent.GetInstance<Throwing>();
 
 		internal int index;
 
@@ -19,14 +19,6 @@ namespace Terraria.ModLoader
 		public string DisplayName => DisplayNameInternal;
 
 		internal protected virtual string DisplayNameInternal => ClassName.GetTranslation(Language.ActiveCulture);
-
-		public override void Load() {
-			Melee.index = 0;
-			Ranged.index = 1;
-			Magic.index = 2;
-			Summon.index = 3;
-			Throwing.index = 4;
-		}
 
 		protected override void Register() {
 			index = DamageClassLoader.Add(this);

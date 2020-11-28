@@ -3,10 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader.Default.Developer.Jofairden
 {
+	[AutoloadEquip(EquipType.Legs)]
 	internal class PowerRanger_Legs : AndromedonItem
 	{
-		public override EquipType ItemEquipType => EquipType.Legs;
-
 		public override void SetDefaults() {
 			base.SetDefaults();
 			item.Size = new Vector2(22, 18);

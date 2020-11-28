@@ -11,7 +11,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a type of wall that can be added by a mod. Only one instance of this class will ever exist for each type of wall that is added. Any hooks that are called will be called by the instance corresponding to the wall type.
 	/// </summary>
-	public class ModWall:ModTexturedType
+	public abstract class ModWall : ModTexturedType
 	{
 		/// <summary>
 		/// The internal ID of this type of wall.

@@ -7,7 +7,7 @@ using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
-	public abstract class ModPrefix:ModType
+	public abstract class ModPrefix : ModType
 	{
 		private static byte nextPrefix = PrefixID.Count;
 

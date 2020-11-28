@@ -3,7 +3,7 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader.Default
 {
-	public class AprilFools : ModItem
+	public class AprilFools : ModLoaderModItem
 	{
 		public override string Texture => "Terraria/Item_3389";
 

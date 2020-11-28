@@ -13,7 +13,7 @@ namespace Terraria.ModLoader.Default
 		}
 
 		protected ModPacket GetPacket(byte packetType, int fromWho) {
-			var p = ModLoaderMod.Instance.GetPacket();
+			var p = ModContent.GetInstance<ModLoaderMod>().GetPacket();
 			p.Write(HandlerType);
 			p.Write(packetType);
 			if (Main.netMode == NetmodeID.Server) {

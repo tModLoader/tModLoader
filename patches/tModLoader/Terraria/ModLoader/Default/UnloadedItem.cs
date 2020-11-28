@@ -5,13 +5,11 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
-	public class UnloadedItem : ModItem
+	public class UnloadedItem : ModLoaderModItem
 	{
 		private string modName;
 		private string itemName;
 		private TagCompound data;
-
-		public override string Texture => "ModLoader/UnloadedItem";
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("{$tModLoader.UnloadedItemItemName}");
