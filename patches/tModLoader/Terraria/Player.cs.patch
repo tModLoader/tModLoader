@@ -3317,33 +3317,33 @@
 +				return (int)(sItem.damage * (float)allDamage);
 +			}
 +			
-+			Modifier damage = allDamage & GetDamage(sItem.DamageType);
++			Modifier damage = allDamage.CombineWith(GetDamage(sItem.DamageType));
 +
 +			if (sItem.melee) {
-+				damage &= meleeDamage;
++				damage = damage.CombineWith(meleeDamage);
 +			}
 +
 +			if (sItem.ranged) {
-+				damage &= rangedDamage;
++				damage = damage.CombineWith(rangedDamage);
 +				if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
-+					damage &= arrowDamage;
++					damage = damage.CombineWith(arrowDamage);
 +
 +				if (sItem.useAmmo == AmmoID.Arrow && archery)
 +					damage *= 1.2f;
 +
 +				if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn)
-+					damage &= bulletDamage;
++					damage = damage.CombineWith(bulletDamage);
 +
 +				if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly)
-+					damage &= rocketDamage;
++					damage = damage.CombineWith(rocketDamage);
 +			}
 +
 +			if (sItem.magic) {
-+				damage &= magicDamage;
++				damage = damage.CombineWith(magicDamage);
 +			}
 +
 +			if (sItem.summon) {
-+				damage &= minionDamage;
++				damage = damage.CombineWith(minionDamage);
 +			}
 +
 +			if (sItem.modItem?.IgnoreDamageModifiers == true)
@@ -4041,7 +4041,7 @@
  			}
  
 -			int damage = (int)(20f * (1f + magicDamage + minionDamage - 2f));
-+			int damage = (int)(20f * (1f + (float)(allDamage & magicDamage) + (float)(allDamage & minionDamage) - 2f));
++			int damage = (int)(20f * (1f + (float)allDamage.CombineWith(magicDamage) + (float)allDamage.CombineWith(minionDamage) - 2f));
  			_ = Main.projectile[Projectile.NewProjectile(MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer)];
  		}
  
