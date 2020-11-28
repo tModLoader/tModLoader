@@ -17,6 +17,23 @@
  		private readonly World _world;
  		private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  		public int bestOre;
+@@ -197,6 +_,7 @@
+ 			int num2 = 0;
+ 			if (settings.ScanOreFinderData)
+ 				_oreFinderTileLocations.Clear();
++			WorldHooks.ResetNearbyTileEffects();
+ 
+ 			if (settings.BiomeScanCenterPositionInWorld.HasValue) {
+ 				Point point = settings.BiomeScanCenterPositionInWorld.Value.ToTileCoordinates();
+@@ -251,6 +_,8 @@
+ 
+ 						if (settings.ScanOreFinderData && Main.tileOreFinderPriority[tile.type] != 0)
+ 							_oreFinderTileLocations.Add(new Point(i, j));
++
++						TileLoader.NearbyEffects(i, j, tile.type, false);
+ 					}
+ 				}
+ 			}
 @@ -263,7 +_,7 @@
  						if (tile2 == null || !tile2.active())
  							continue;
@@ -26,6 +43,15 @@
  							HasClock = true;
  
  						switch (tile2.type) {
+@@ -324,6 +_,8 @@
+ 									BloodMoonMonolith = true;
+ 								break;
+ 						}
++
++						TileLoader.NearbyEffects(k, l, tile2.type, true);
+ 					}
+ 				}
+ 			}
 @@ -420,6 +_,8 @@
  			Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
  			hasBanner = false;
