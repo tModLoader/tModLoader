@@ -3034,6 +3034,25 @@
  				if (Main.netMode != 0)
  					NetMessage.SendPlayerHurt(i, playerDeathReason, num, direction, flag, pvp: true, -1);
  
+@@ -30605,6 +_,18 @@
+ 				if (!Main.npc[i].dontTakeDamage && CanNPCBeHitByPlayerOrPlayerProjectile(Main.npc[i])) {
+ 					if (!Main.npc[i].friendly || (Main.npc[i].type == 22 && killGuide) || (Main.npc[i].type == 54 && killClothier)) {
+ 						Rectangle value = new Rectangle((int)Main.npc[i].position.X, (int)Main.npc[i].position.Y, Main.npc[i].width, Main.npc[i].height);
++						bool? modCanHit = NPCLoader.CanBeHitByItem(Main.npc[i], this, sItem);
++						if (modCanHit.HasValue && !modCanHit.Value)
++							continue;
++
++						modCanHit = ItemLoader.CanHitNPC(sItem, this, Main.npc[i]);
++						if (modCanHit.HasValue && !modCanHit.Value)
++							continue;
++
++						modCanHit = PlayerHooks.CanHitNPC(this, sItem, Main.npc[i]);
++						if (modCanHit.HasValue && !modCanHit.Value)
++							continue;
++
+ 						if (itemRectangle.Intersects(value) && (Main.npc[i].noTileCollide || CanHit(Main.npc[i]))) {
+ 							int num = originalDamage;
+ 							bool flag = false;
 @@ -30638,6 +_,11 @@
  							}
  
