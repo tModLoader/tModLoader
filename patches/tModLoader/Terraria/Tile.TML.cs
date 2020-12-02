@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Terraria
 {
@@ -62,6 +62,11 @@ namespace Terraria
 			}
 		}
 
+		public byte LiquidAmount {
+			get => liquid;
+			set => liquid = value;
+		}
+		
 		public bool IsAir {
 			get => !IsBitSet(sTileHeader, 5);
 			set {

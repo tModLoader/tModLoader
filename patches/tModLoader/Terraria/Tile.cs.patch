@@ -9,8 +9,9 @@
  	{
  		public ushort type;
  		public ushort wall;
- 		public byte liquid;
+-		public byte liquid;
 -		public short sTileHeader;
++		internal byte liquid;
 +		public ushort sTileHeader; //For easier bitwise manipulations
  		public byte bTileHeader;
  		public byte bTileHeader2;
