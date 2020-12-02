@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 			Setup();
 		}
 
-		public ModSoundStyle(string modName, string soundPath, int variations, SoundType type = SoundType.Sound, float volume = 1.0f, float pitchVariance = 0.1f) : base(volume, pitchVariance, type) {
+		public ModSoundStyle(string modName, string soundPath, int variations = 0, SoundType type = SoundType.Sound, float volume = 1.0f, float pitchVariance = 0.1f) : base(volume, pitchVariance, type) {
 			ModName = modName;
 			SoundPath = soundPath;
 			Variations = variations;
