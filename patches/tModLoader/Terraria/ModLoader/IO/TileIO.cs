@@ -575,8 +575,11 @@ namespace Terraria.ModLoader.IO
 				var point = new Point16(tag.GetShort("X"), tag.GetShort("Y"));
 
 				ModTileEntity baseModTileEntity = null;
+				TileEntity tileEntity = null;
 
-				if (modName != "Terraria" || !TileEntity.ByPosition.TryGetValue(point, out var tileEntity)) {
+				//If the TE is modded
+				if (modName != "Terraria") {
+					//Find its type, defaulting to unloaded.
 					if (!ModContent.TryFind(modName, name, out baseModTileEntity)) {
 						baseModTileEntity = ModContent.GetInstance<UnloadedTileEntity>();
 					}
@@ -587,7 +590,13 @@ namespace Terraria.ModLoader.IO
 
 					(tileEntity as UnloadedTileEntity)?.SetData(tag);
 				}
+				//Otherwise, if the TE is vanilla, try to find its existing instance for the current coordinate.
+				else if (!TileEntity.ByPosition.TryGetValue(point, out tileEntity)) {
+					//Do not create an UnloadedTileEntity on failure to do so.
+					continue;
+				}
 
+				//Load TE data.
 				if (tag.ContainsKey("data")) {
 					try {
 						tileEntity.Load(tag.GetCompound("data"));
@@ -603,6 +612,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 
+				//Check mods' TEs for being valid. If they are, register them to TE collections.
 				if (baseModTileEntity != null && baseModTileEntity.ValidTile(tileEntity.Position.X, tileEntity.Position.Y)) {
 					tileEntity.ID = TileEntity.AssignNewID();
 					TileEntity.ByID[tileEntity.ID] = tileEntity;
