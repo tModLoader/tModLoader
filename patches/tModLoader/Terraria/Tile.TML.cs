@@ -1,6 +1,4 @@
-using System;
-
-namespace Terraria
+﻿namespace Terraria
 {
 	public partial class Tile
 	{
@@ -10,16 +8,6 @@ namespace Terraria
 			Lava = 1,
 			Honey = 2,
 			None = 3
-		}
-
-		[Flags]
-		public enum WireColor
-		{
-			Red = 1,
-			Blue = 2,
-			Green = 4,
-			Yellow = 8,
-			None = 0
 		}
 
 		private static void SetBit(ref byte value, int pos) {
@@ -107,30 +95,46 @@ namespace Terraria
 			}
 		}
 
-		public WireColor Wire {
-			get {
-				WireColor wire = WireColor.None;
-				if (IsBitSet(sTileHeader, 7)) wire |= WireColor.Red;
-				if (IsBitSet(sTileHeader, 8)) wire |= WireColor.Blue;
-				if (IsBitSet(sTileHeader, 9)) wire |= WireColor.Green;
-				if (IsBitSet(bTileHeader, 7)) wire |= WireColor.Yellow;
-				return wire;
-			}
+		public bool RedWire {
+			get => IsBitSet(sTileHeader, 7);
 			set {
-				if ((value & WireColor.Red) == WireColor.Red) SetBit(ref sTileHeader, 7);
-				else ResetBit(ref sTileHeader, 7);
-
-				if ((value & WireColor.Blue) == WireColor.Blue) SetBit(ref sTileHeader, 8);
-				else ResetBit(ref sTileHeader, 8);
-
-				if ((value & WireColor.Green) == WireColor.Green) SetBit(ref sTileHeader, 9);
-				else ResetBit(ref sTileHeader, 9);
-
-				if ((value & WireColor.Yellow) == WireColor.Yellow) SetBit(ref bTileHeader, 7);
-				else ResetBit(ref bTileHeader, 7);
+				if (value)
+					SetBit(ref sTileHeader, 7);
+				else
+					ResetBit(ref sTileHeader, 7);
 			}
 		}
-		
+
+		public bool GreenWire {
+			get => IsBitSet(sTileHeader, 9);
+			set {
+				if (value)
+					SetBit(ref sTileHeader, 9);
+				else
+					ResetBit(ref sTileHeader, 9);
+			}
+		}
+
+		public bool BlueWire {
+			get => IsBitSet(sTileHeader, 8);
+			set {
+				if (value)
+					SetBit(ref sTileHeader, 8);
+				else
+					ResetBit(ref sTileHeader, 8);
+			}
+		}
+
+		public bool YellowWire {
+			get => IsBitSet(bTileHeader, 7);
+			set {
+				if (value)
+					SetBit(ref bTileHeader, 7);
+				else
+					ResetBit(ref bTileHeader, 7);
+			}
+		}
+
 		// todo: wall frame, color, wall color, slope
 	}
 }
