@@ -1,0 +1,38 @@
+--- src/Terraria/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
++++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
+@@ -4,11 +_,12 @@
+ using Terraria.Audio;
+ using Terraria.DataStructures;
+ using Terraria.GameInput;
++using Terraria.ModLoader.IO;
+ using Terraria.UI;
+ 
+ namespace Terraria.GameContent.Tile_Entities
+ {
+-	public class TEDisplayDoll : TileEntity
++	public sealed partial class TEDisplayDoll : TileEntity
+ 	{
+ 		private static byte _myEntityID;
+ 		private const int MyTileID = 470;
+@@ -110,8 +_,8 @@
+ 			for (int i = 0; i < 8; i++) {
+ 				Item item = _items[i];
+ 				if (!item.IsAir) {
+-					writer.Write((short)item.netID);
+-					writer.Write(item.prefix);
++					ItemIO.WriteShortVanillaID(item, writer);
++					ItemIO.WriteByteVanillaPrefix(item, writer);
+ 					writer.Write((short)item.stack);
+ 				}
+ 			}
+@@ -119,8 +_,8 @@
+ 			for (int j = 0; j < 8; j++) {
+ 				Item item2 = _dyes[j];
+ 				if (!item2.IsAir) {
+-					writer.Write((short)item2.netID);
+-					writer.Write(item2.prefix);
++					ItemIO.WriteShortVanillaID(item2, writer);
++					ItemIO.WriteByteVanillaPrefix(item2, writer);
+ 					writer.Write((short)item2.stack);
+ 				}
+ 			}

@@ -19,9 +19,6 @@ namespace Terraria.ModLoader
 			.Where(t => !t.IsAbstract && t.IsSubclassOf(typeof(TileEntity)) && !typeof(ModTileEntity).IsAssignableFrom(t))
 			.Count();
 
-		private static int nextTileEntity = NumVanilla;
-
-		internal static readonly List<ModTileEntity> tileEntities = new List<ModTileEntity>();
 		// TODO: public bool netUpdate;
 
 		/// <summary>
@@ -41,28 +38,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Type {get;internal set;}
 
-		internal static int ReserveTileEntityID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding tile entities breaks vanilla client compatibility");
-
-			int reserveID = nextTileEntity;
-			nextTileEntity++;
-			if (reserveID > Byte.MaxValue) {
-				throw new Exception("Too many tile entities have been added");
-			}
-			return reserveID;
-		}
-
-		/// <summary>
-		/// Gets the base ModTileEntity object with the given type.
-		/// </summary>
-		public static ModTileEntity GetTileEntity(int type) {
-			return type >= NumVanilla && type < nextTileEntity ? tileEntities[type - NumVanilla] : null;
-		}
-
-		internal static void UnloadAll() {
-			nextTileEntity = NumVanilla;
-			tileEntities.Clear();
-		}
+		public ModTileEntity() { }
 
 		/// <summary>
 		/// Returns the number of modded tile entities that exist in the world currently being played.
@@ -77,22 +53,19 @@ namespace Terraria.ModLoader
 			return count;
 		}
 
-		/// <summary>
-		/// You should never use this. It is only included here for completion's sake.
-		/// </summary>
-		public static void Initialize() {
+		internal static void Initialize() {
 			_UpdateStart += UpdateStartInternal;
 			_UpdateEnd += UpdateEndInternal;
 		}
 
 		private static void UpdateStartInternal() {
-			foreach (ModTileEntity tileEntity in tileEntities) {
+			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().OfType<ModTileEntity>()) {
 				tileEntity.PreGlobalUpdate();
 			}
 		}
 
 		private static void UpdateEndInternal() {
-			foreach (ModTileEntity tileEntity in tileEntities) {
+			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().OfType<ModTileEntity>()) {
 				tileEntity.PostGlobalUpdate();
 			}
 		}
@@ -101,14 +74,11 @@ namespace Terraria.ModLoader
 		/// You should never use this. It is only included here for completion's sake.
 		/// </summary>
 		public override void NetPlaceEntityAttempt(int i, int j) {
-			ModTileEntity tileEntity = GetTileEntity(type);
-			if (tileEntity == null) {
+			if (!manager.TryGetTileEntity(type, out ModTileEntity modTileEntity) || !modTileEntity.ValidTile(i, j)) {
 				return;
 			}
-			if (!tileEntity.ValidTile(i, j)) {
-				return;
-			}
-			int id = tileEntity.Place(i, j);
+
+			int id = modTileEntity.Place(i, j);
 			ModTileEntity newEntity = (ModTileEntity)ByID[id];
 			newEntity.OnNetPlace();
 			NetMessage.SendData(86, -1, -1, null, id, i, j, 0f, 0, 0, 0);
@@ -118,11 +88,11 @@ namespace Terraria.ModLoader
 		/// Returns a new ModTileEntity with the same class, mod, name, and type as the ModTileEntity with the given type. It is very rare that you should have to use this.
 		/// </summary>
 		public static ModTileEntity ConstructFromType(int type) {
-			ModTileEntity tileEntity = GetTileEntity(type);
-			if (tileEntity == null) {
+			if (!manager.TryGetTileEntity(type, out ModTileEntity modTileEntity)) {
 				return null;
 			}
-			return ConstructFromBase(tileEntity);
+
+			return ConstructFromBase(modTileEntity);
 		}
 
 		/// <summary>
@@ -191,52 +161,24 @@ namespace Terraria.ModLoader
 			NetReceive(reader, networkSend);
 		}
 
+		// The base implementations of these methods call Read/WriteExtraData, and those in ModTileEntity's case now call NetSend/Receive.
+		public override void NetSend(BinaryWriter writer, bool lightSend) { }
+		public override void NetReceive(BinaryReader reader, bool lightReceive) { }
+
+		public sealed override TileEntity GenerateInstance() => ConstructFromBase(this);
+		public sealed override void RegisterTileEntityID(int assignedID) => Type = assignedID;
+
 		public virtual void Load(Mod mod) {
 			Mod = mod;
 
 			if (!Mod.loading)
 				throw new Exception("AddTileEntity can only be called from Mod.Load or Mod.Autoload");
 
-			//TODO: TileENtityLoader??
-			int id = ReserveTileEntityID();
-			Type = id;
-			type = (byte)id;
-
+			manager.Register(this);
 			ModTypeLookup<ModTileEntity>.Register(this);
-			tileEntities.Add(this);
 		}
 
 		public virtual void Unload(){}
-
-		/// <summary>
-		/// Allows you to save custom data for this tile entity.
-		/// </summary>
-		/// <returns></returns>
-		public virtual TagCompound Save() {
-			return null;
-		}
-
-		/// <summary>
-		/// Allows you to load the custom data you have saved for this tile entity.
-		/// </summary>
-		public virtual void Load(TagCompound tag) {
-		}
-
-		/// <summary>
-		/// Allows you to send custom data for this tile entity between client and server. This is called on the server while sending tile data (!lightSend) and when a MessageID.TileEntitySharing message is sent (lightSend)
-		/// </summary>
-		/// <param name="writer">The writer.</param>
-		/// <param name="lightSend">If true, send only data that can change. Otherwise, send the full information.</param>
-		public virtual void NetSend(BinaryWriter writer, bool lightSend) {
-		}
-
-		/// <summary>
-		/// Receives the data sent in the NetSend hook. Called on MP Client when receiving tile data (!lightReceive) and when a MessageID.TileEntitySharing message is sent (lightReceive)
-		/// </summary>
-		/// <param name="reader">The reader.</param>
-		/// <param name="lightReceive">If true, read only data that can change. Otherwise, read the full information.</param>
-		public virtual void NetReceive(BinaryReader reader, bool lightReceive) {
-		}
 
 		/// <summary>
 		/// Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.

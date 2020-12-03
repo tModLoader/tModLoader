@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/Tile_Entities/TELogicSensor.cs
++++ src/tModLoader/Terraria/GameContent/Tile_Entities/TELogicSensor.cs
+@@ -6,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.Tile_Entities
+ {
+-	public class TELogicSensor : TileEntity
++	public sealed class TELogicSensor : TileEntity
+ 	{
+ 		public enum LogicCheckType
+ 		{
