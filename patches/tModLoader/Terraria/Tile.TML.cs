@@ -1,4 +1,6 @@
-﻿namespace Terraria
+﻿using Terraria.ID;
+
+namespace Terraria
 {
 	public partial class Tile
 	{
@@ -54,7 +56,7 @@
 			get => liquid;
 			set => liquid = value;
 		}
-		
+
 		public bool IsAir {
 			get => !IsBitSet(sTileHeader, 5);
 			set {
@@ -135,6 +137,39 @@
 			}
 		}
 
-		// todo: wall frame, color, wall color, slope
+		public byte Color {
+			get => (byte)(sTileHeader & 0x1F);
+			set => sTileHeader = (ushort)((sTileHeader & 0xFFE0) | value);
+		}
+
+		public byte WallColor {
+			get => (byte)(bTileHeader & 0x1F);
+			set => bTileHeader = (byte)((bTileHeader & 0xE0) | value);
+		}
+
+		public int WallFrameX {
+			get => (bTileHeader2 & 0xF) * 36;
+			set => bTileHeader2 = (byte)((bTileHeader2 & 0xF0) | ((value / 36) & 0xF));
+		}
+
+		public int WallFrameY {
+			get => (bTileHeader3 & 7) * 36;
+			set => bTileHeader3 = (byte)((bTileHeader3 & 0xF8) | ((value / 36) & 7));
+		}
+
+		public SlopeID Slope {
+			get => (SlopeID)((sTileHeader & 0x7000) >> 12);
+			set => sTileHeader = (ushort)((sTileHeader & 0x8FFF) | (((byte)value & 7) << 12));
+		}
+
+		public byte FrameNumber {
+			get => (byte)((bTileHeader2 & 0x30) >> 4);
+			set => bTileHeader2 = (byte)((bTileHeader2 & 0xCF) | ((value & 3) << 4));
+		}
+
+		public byte WallFrameNumber {
+			get => (byte)((bTileHeader2 & 0xC0) >> 6);
+			set => bTileHeader2 = (byte)((bTileHeader2 & 0x3F) | ((value & 3) << 6));
+		}
 	}
 }

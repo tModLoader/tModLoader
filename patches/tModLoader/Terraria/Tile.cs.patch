@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -9,12 +_,12 @@
+@@ -9,26 +_,26 @@
  #if !WINDOWS
  	[StructLayout(LayoutKind.Sequential, Pack = 1)]
  #endif
@@ -16,7 +16,95 @@
  		public byte bTileHeader;
  		public byte bTileHeader2;
  		public byte bTileHeader3;
-@@ -257,27 +_,27 @@
+ 		public short frameX;
+ 		public short frameY;
+-		public const int Type_Solid = 0;
++		internal const int Type_Solid = 0;
+-		public const int Type_Halfbrick = 1;
++		internal const int Type_Halfbrick = 1;
+-		public const int Type_SlopeDownRight = 2;
++		internal const int Type_SlopeDownRight = 2;
+-		public const int Type_SlopeDownLeft = 3;
++		internal const int Type_SlopeDownLeft = 3;
+-		public const int Type_SlopeUpRight = 4;
++		internal const int Type_SlopeUpRight = 4;
+-		public const int Type_SlopeUpLeft = 5;
++		internal const int Type_SlopeUpLeft = 5;
+-		public const int Liquid_Water = 0;
++		internal const int Liquid_Water = 0;
+-		public const int Liquid_Lava = 1;
++		internal const int Liquid_Lava = 1;
+-		public const int Liquid_Honey = 2;
++		internal const int Liquid_Honey = 2;
+ 
+ 		public int collisionType {
+ 			get {
+@@ -161,7 +_,7 @@
+ 			return num;
+ 		}
+ 
+-		public void liquidType(int liquidType) {
++		internal void liquidType(int liquidType) {
+ 			switch (liquidType) {
+ 				case 0:
+ 					bTileHeader &= 159;
+@@ -175,9 +_,9 @@
+ 			}
+ 		}
+ 
+-		public byte liquidType() => (byte)((bTileHeader & 0x60) >> 5);
++		internal byte liquidType() => (byte)((bTileHeader & 0x60) >> 5);
+ 
+-		public bool nactive() {
++		internal bool nactive() {
+ 			if ((sTileHeader & 0x60) == 32)
+ 				return true;
+ 
+@@ -218,7 +_,7 @@
+ 				oldColor *= 0.4f;
+ 		}
+ 
+-		public bool topSlope() {
++		internal bool topSlope() {
+ 			byte b = slope();
+ 			if (b != 1)
+ 				return b == 2;
+@@ -226,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		public bool bottomSlope() {
++		internal bool bottomSlope() {
+ 			byte b = slope();
+ 			if (b != 3)
+ 				return b == 4;
+@@ -234,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		public bool leftSlope() {
++		internal bool leftSlope() {
+ 			byte b = slope();
+ 			if (b != 2)
+ 				return b == 4;
+@@ -242,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		public bool rightSlope() {
++		internal bool rightSlope() {
+ 			byte b = slope();
+ 			if (b != 1)
+ 				return b == 3;
+@@ -251,60 +_,60 @@
+ 		}
+ 
+ 		public bool HasSameSlope(Tile tile) => (sTileHeader & 0x7400) == (tile.sTileHeader & 0x7400);
+-		public byte wallColor() => (byte)(bTileHeader & 0x1F);
++		internal byte wallColor() => (byte)(bTileHeader & 0x1F);
+ 
+-		public void wallColor(byte wallColor) {
++		internal void wallColor(byte wallColor) {
  			bTileHeader = (byte)((bTileHeader & 0xE0) | wallColor);
  		}
  
@@ -50,10 +138,50 @@
  			if (wire4)
  				bTileHeader |= 128;
  			else
-@@ -329,76 +_,76 @@
- 		public byte color() => (byte)(sTileHeader & 0x1F);
+ 				bTileHeader &= 127;
+ 		}
  
- 		public void color(byte color) {
+-		public int wallFrameX() => (bTileHeader2 & 0xF) * 36;
++		internal int wallFrameX() => (bTileHeader2 & 0xF) * 36;
+ 
+-		public void wallFrameX(int wallFrameX) {
++		internal void wallFrameX(int wallFrameX) {
+ 			bTileHeader2 = (byte)((bTileHeader2 & 0xF0) | ((wallFrameX / 36) & 0xF));
+ 		}
+ 
+-		public byte frameNumber() => (byte)((bTileHeader2 & 0x30) >> 4);
++		internal byte frameNumber() => (byte)((bTileHeader2 & 0x30) >> 4);
+ 
+-		public void frameNumber(byte frameNumber) {
++		internal void frameNumber(byte frameNumber) {
+ 			bTileHeader2 = (byte)((bTileHeader2 & 0xCF) | ((frameNumber & 3) << 4));
+ 		}
+ 
+-		public byte wallFrameNumber() => (byte)((bTileHeader2 & 0xC0) >> 6);
++		internal byte wallFrameNumber() => (byte)((bTileHeader2 & 0xC0) >> 6);
+ 
+-		public void wallFrameNumber(byte wallFrameNumber) {
++		internal void wallFrameNumber(byte wallFrameNumber) {
+ 			bTileHeader2 = (byte)((bTileHeader2 & 0x3F) | ((wallFrameNumber & 3) << 6));
+ 		}
+ 
+-		public int wallFrameY() => (bTileHeader3 & 7) * 36;
++		internal int wallFrameY() => (bTileHeader3 & 7) * 36;
+ 
+-		public void wallFrameY(int wallFrameY) {
++		internal void wallFrameY(int wallFrameY) {
+ 			bTileHeader3 = (byte)((bTileHeader3 & 0xF8) | ((wallFrameY / 36) & 7));
+ 		}
+ 
+@@ -326,79 +_,79 @@
+ 				bTileHeader3 &= 239;
+ 		}
+ 
+-		public byte color() => (byte)(sTileHeader & 0x1F);
++		internal byte color() => (byte)(sTileHeader & 0x1F);
+ 
+-		public void color(byte color) {
++		internal void color(byte color) {
 -			sTileHeader = (short)((sTileHeader & 0xFFE0) | color);
 +			sTileHeader = (ushort)((sTileHeader & 0xFFE0) | color);
  		}
@@ -142,9 +270,11 @@
 +				sTileHeader = (ushort)(sTileHeader & 0xF7FF);
  		}
  
- 		public byte slope() => (byte)((sTileHeader & 0x7000) >> 12);
+-		public byte slope() => (byte)((sTileHeader & 0x7000) >> 12);
++		internal byte slope() => (byte)((sTileHeader & 0x7000) >> 12);
  
- 		public void slope(byte slope) {
+-		public void slope(byte slope) {
++		internal void slope(byte slope) {
 -			sTileHeader = (short)((sTileHeader & 0x8FFF) | ((slope & 7) << 12));
 +			sTileHeader = (ushort)((sTileHeader & 0x8FFF) | ((slope & 7) << 12));
  		}
