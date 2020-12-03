@@ -343,10 +343,19 @@
  			if (type == 0) {
  				netID = 0;
  				stack = 0;
-@@ -44726,6 +_,11 @@
+@@ -44726,6 +_,20 @@
  				SetDefaults5(type);
  			}
  
++			//Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
++			if (type < ItemID.Count) {
++				if (useTime == useAnimation) {
++					useTime--;
++				}
++
++				useAnimation--;
++			}
++
 +			//Set 'master' bool for vanilla items with master rarity.
 +			if (type < ItemID.Count && rare == ItemRarityID.Master) {
 +				master = true;
