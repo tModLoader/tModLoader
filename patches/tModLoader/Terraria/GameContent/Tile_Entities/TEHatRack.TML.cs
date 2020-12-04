@@ -18,7 +18,7 @@ namespace Terraria.GameContent.Tile_Entities
 			PlayerIO.LoadInventory(_dyes, tag.GetList<TagCompound>("dyes"));
 		}
 
-		public override void NetSend(BinaryWriter writer, bool lightSend) {
+		public override void NetSend(BinaryWriter writer) {
 			writer.Write(BitsByte.ComposeBitsBytesChain(false, _items.Select(i => !i.IsAir).ToArray())[0]);
 			writer.Write(BitsByte.ComposeBitsBytesChain(false, _dyes.Select(i => !i.IsAir).ToArray())[0]);
 
@@ -39,7 +39,7 @@ namespace Terraria.GameContent.Tile_Entities
 			}
 		}
 
-		public override void NetReceive(BinaryReader reader, bool lightReceive) {
+		public override void NetReceive(BinaryReader reader) {
 			BitsByte presentItems = reader.ReadByte();
 			BitsByte presentDyes = reader.ReadByte();
 

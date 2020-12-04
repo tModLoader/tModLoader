@@ -74,7 +74,7 @@
 +
 +			//Call NetSend instead of the vanilla method when in modded contexts.
 +			if (networkSend && !ModNet.AllowVanillaClients) {
-+				NetSend(writer, lightSend);
++				NetSend(writer);
 +
 +				return;
 +			}
@@ -93,7 +93,7 @@
 +
 +			//Call NetReceive instead of the vanilla method when in modded contexts.
 +			if (networkSend && !ModNet.AllowVanillaClients) {
-+				NetReceive(reader, lightSend);
++				NetReceive(reader);
 +
 +				return;
 +			}

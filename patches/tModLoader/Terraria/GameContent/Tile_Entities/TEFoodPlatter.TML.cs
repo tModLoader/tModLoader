@@ -11,8 +11,8 @@ namespace Terraria.GameContent.Tile_Entities
 
 		public override void Load(TagCompound tag) => item = ItemIO.Load(tag.GetCompound("item"));
 
-		public override void NetSend(BinaryWriter writer, bool lightSend) => ItemIO.Send(item, writer, true);
+		public override void NetSend(BinaryWriter writer) => ItemIO.Send(item, writer, true);
 
-		public override void NetReceive(BinaryReader reader, bool lightReceive) => item = ItemIO.Receive(reader, true);
+		public override void NetReceive(BinaryReader reader) => item = ItemIO.Receive(reader, true);
 	}
 }

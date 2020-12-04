@@ -148,22 +148,24 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Don't use this. It is included only for completion's sake.
+		/// Should never be called on ModTileEntity. Replaced by NetSend and Save.
+		/// Would make the base method internal if not for patch size
 		/// </summary>
 		public sealed override void WriteExtraData(BinaryWriter writer, bool networkSend) {
-			NetSend(writer, networkSend);
+			throw new NotImplementedException();
 		}
 
 		/// <summary>
-		/// Don't use this. It is included only for completion's sake.
+		/// Should never be called on ModTileEntity. Replaced by NetReceive and Load
+		/// Would make the base method internal if not for patch size
 		/// </summary>
 		public sealed override void ReadExtraData(BinaryReader reader, bool networkSend) {
-			NetReceive(reader, networkSend);
+			throw new NotImplementedException();
 		}
 
-		// The base implementations of these methods call Read/WriteExtraData, and those in ModTileEntity's case now call NetSend/Receive.
-		public override void NetSend(BinaryWriter writer, bool lightSend) { }
-		public override void NetReceive(BinaryReader reader, bool lightReceive) { }
+		// The base implementations of these methods call Read/WriteExtraData. Should do nothing for ModTileEntity unless overriden.
+		public override void NetSend(BinaryWriter writer) { }
+		public override void NetReceive(BinaryReader reader) { }
 
 		public sealed override TileEntity GenerateInstance() => ConstructFromBase(this);
 		public sealed override void RegisterTileEntityID(int assignedID) => Type = assignedID;

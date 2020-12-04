@@ -21,13 +21,13 @@ namespace Terraria.DataStructures
 		/// </summary>
 		/// <param name="writer">The writer.</param>
 		/// <param name="lightSend">If true, send only data that can change. Otherwise, send the full information.</param>
-		public virtual void NetSend(BinaryWriter writer, bool lightSend) => WriteExtraData(writer, true);
+		public virtual void NetSend(BinaryWriter writer) => WriteExtraData(writer, true);
 
 		/// <summary>
 		/// Receives the data sent in the NetSend hook. Called on MP Client when receiving tile data (!lightReceive) and when a MessageID.TileEntitySharing message is sent (lightReceive)
 		/// </summary>
 		/// <param name="reader">The reader.</param>
 		/// <param name="lightReceive">If true, read only data that can change. Otherwise, read the full information.</param>
-		public virtual void NetReceive(BinaryReader reader, bool lightReceive) => ReadExtraData(reader, true);
+		public virtual void NetReceive(BinaryReader reader) => ReadExtraData(reader, true);
 	}
 }
