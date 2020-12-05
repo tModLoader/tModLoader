@@ -1,17 +1,10 @@
-﻿using Terraria.ID;
+﻿using System;
+using Terraria.ID;
 
 namespace Terraria
 {
 	public partial class Tile
 	{
-		public enum Liquid
-		{
-			Water = 0,
-			Lava = 1,
-			Honey = 2,
-			None = 3
-		}
-
 		private static void SetBit(ref byte value, int pos) {
 			value = (byte)(value | (1 << pos));
 		}
@@ -32,29 +25,32 @@ namespace Terraria
 			return (value & (1 << pos)) != 0;
 		}
 
-		public Liquid LiquidType {
-			get => (Liquid)((bTileHeader & 0b0110_0000) >> 5);
+		public int LiquidType {
+			get => (bTileHeader & 0b0110_0000) >> 5;
 			set {
 				switch (value) {
-					case Liquid.Water:
+					case LiquidID.Water:
 						bTileHeader &= 0b1001_1111;
 						break;
-					case Liquid.Lava:
+					case LiquidID.Lava:
 						bTileHeader = (byte)((bTileHeader & 0b1001_1111) | 0b0010_0000);
 						break;
-					case Liquid.Honey:
+					case LiquidID.Honey:
 						bTileHeader = (byte)((bTileHeader & 0b1001_1111) | 0b0100_0000);
 						break;
-					case Liquid.None:
-						bTileHeader = (byte)((bTileHeader & 0b1001_1111) | 0b0110_0000);
-						break;
+					default:
+						throw new Exception($"The liquid with type {value} does not exist");
 				}
 			}
 		}
 
 		public byte LiquidAmount {
 			get => liquid;
-			set => liquid = value;
+			set {
+				liquid = value;
+				if (liquid == 0)
+					LiquidType = LiquidID.Water;
+			}
 		}
 
 		public bool IsAir {
