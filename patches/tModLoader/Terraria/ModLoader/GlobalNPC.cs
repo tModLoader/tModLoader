@@ -10,7 +10,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.
 	/// </summary>
-	public class GlobalNPC:ModType
+	public abstract class GlobalNPC : ModType
 	{
 		internal int index;
 		internal int instanceIndex;
@@ -349,10 +349,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to customize the boss head texture used by an NPC based on its state.
+		/// Allows you to customize the boss head texture used by an NPC based on its state. Set index to -1 to stop the texture from being displayed.
 		/// </summary>
 		/// <param name="npc"></param>
-		/// <param name="index"></param>
+		/// <param name="index">The index for NPCID.Sets.BossHeadTextures</param>
 		public virtual void BossHeadSlot(NPC npc, ref int index) {
 		}
 

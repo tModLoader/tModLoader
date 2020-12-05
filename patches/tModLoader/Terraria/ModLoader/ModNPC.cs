@@ -15,7 +15,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each NPC. Create instances of ModNPC (preferably overriding this class) to pass as parameters to Mod.AddNPC.
 	/// </summary>
-	public class ModNPC:ModTexturedType
+	public abstract class ModNPC : ModTexturedType
 	{
 		//add modNPC property to Terraria.NPC (internal set)
 		//set modNPC to null at beginning of Terraria.NPC.SetDefaults
@@ -473,9 +473,9 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to customize the boss head texture used by this NPC based on its state.
+		/// Allows you to customize the boss head texture used by an NPC based on its state. Set index to -1 to stop the texture from being displayed.
 		/// </summary>
-		/// <param name="index"></param>
+		/// <param name="index">The index for NPCID.Sets.BossHeadTextures</param>
 		public virtual void BossHeadSlot(ref int index) {
 		}
 

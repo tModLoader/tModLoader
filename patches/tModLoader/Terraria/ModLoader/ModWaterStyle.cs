@@ -7,7 +7,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Represents a style of water that gets drawn, based on factors such as the background. This is used to determine the color of the water, as well as other things as determined by the hooks below.
 	/// </summary>
-	public abstract class ModWaterStyle:ModTexturedType
+	public abstract class ModWaterStyle : ModTexturedType
 	{
 		/// <summary>
 		/// The ID of the water style.
@@ -70,7 +70,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Represents a style of waterfalls that gets drawn. This is mostly used to determine the color of the waterfall.
 	/// </summary>
-	public class ModWaterfallStyle:ModTexturedType
+	public abstract class ModWaterfallStyle : ModTexturedType
 	{
 		/// <summary>
 		/// The ID of this waterfall style.

@@ -1,16 +1,33 @@
-using System;
-using System.IO;
 using Microsoft.Xna.Framework.Content;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Terraria.ModLoader.Engine
 {
 	internal class TMLContentManager : ContentManager
 	{
 		private readonly TMLContentManager alternateContentManager;
+		private readonly HashSet<string> ExistingImages = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+
 		private int loadedAssets = 0;
 
 		public TMLContentManager(IServiceProvider serviceProvider, string rootDirectory, TMLContentManager alternateContentManager) : base(serviceProvider, rootDirectory) {
 			this.alternateContentManager = alternateContentManager;
+
+			//Fill cache for ImageExists() lookup.
+			void CacheImagePaths(string path) {
+				string basePath = Path.Combine(path, "Images");
+
+				foreach (string file in Directory.EnumerateFiles(basePath, "*.xnb", SearchOption.AllDirectories)) {
+					ExistingImages.Add(Path.GetFileNameWithoutExtension(file.Remove(0, basePath.Length + 1)));
+				}
+			}
+
+			CacheImagePaths(rootDirectory);
+
+			if (alternateContentManager != null)
+				CacheImagePaths(alternateContentManager.RootDirectory);
 		}
 
 		protected override Stream OpenStream(string assetName) {
@@ -58,9 +75,7 @@ namespace Terraria.ModLoader.Engine
 
 			return result != null;
 		}
-		public bool ImageExists(string assetName)
-		{
-			return File.Exists(Path.Combine(RootDirectory, "Image", assetName + ".xnb")) || alternateContentManager != null && File.Exists(Path.Combine(alternateContentManager.RootDirectory, "Image", assetName + ".xnb"));
-		}
+
+		public bool ImageExists(string assetName) => ExistingImages.Contains(assetName);
 	}
 }

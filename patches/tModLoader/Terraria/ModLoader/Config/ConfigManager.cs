@@ -98,7 +98,7 @@ namespace Terraria.ModLoader.Config
 		{
 			string filename = config.mod.Name + "_" + config.Name + ".json";
 			string path = Path.Combine(ModConfigPath, filename);
-			if (config.Mode == ConfigScope.ServerSide && Main.netMode == 1)
+			if (config.Mode == ConfigScope.ServerSide && ModNet.NetReloadActive) // #999: Main.netMode isn't 1 at this point due to #770 fix.
 			{
 				string netJson = ModNet.pendingConfigs.Single(x => x.modname == config.mod.Name && x.configname == config.Name).json;
 				JsonConvert.PopulateObject(netJson, config, serializerSettingsCompact);
