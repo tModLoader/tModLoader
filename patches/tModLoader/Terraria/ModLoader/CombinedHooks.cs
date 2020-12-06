@@ -28,5 +28,22 @@ namespace Terraria.ModLoader
 		public static bool CanUseItem(Player player, Item item) {
 			return PlayerHooks.CanUseItem(player, item) & ItemLoader.CanUseItem(item, player);
 		}
+
+		// This returns false by default because it just makes more sense in the context as it will only NOT damage the npc if one of the hooks returned false.
+		public static bool CanPlayerHitNPCWithMelee(NPC target, Item item, Player player) {
+			bool canHit = ItemLoader.CanHitNPC(item, player, target);
+			if (!canHit)
+				return true;
+
+			canHit = NPCLoader.CanBeHitByItem(target, player, item);
+			if (!canHit)
+				return true;
+
+			canHit = PlayerHooks.CanHitNPC(player, item, target);
+			if (!canHit)
+				return true;
+
+			return false;
+		}
 	}
 }
