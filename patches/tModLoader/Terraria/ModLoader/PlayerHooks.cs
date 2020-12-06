@@ -633,16 +633,20 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookCanHitNPC = AddHook<Func<Item, NPC, bool>>(p => p.CanHitNPC);
+		private static HookList HookCanHitNPC = AddHook<Func<Item, NPC, bool?>>(p => p.CanHitNPC);
 
-		public static bool CanHitNPC(Player player, Item item, NPC target) {
+		public static bool? CanHitNPC(Player player, Item item, NPC target) {
+			bool? flag = null;
 			foreach (int index in HookCanHitNPC.arr) {
-				bool canHit = player.modPlayers[index].CanHitNPC(item, target);
-				if (!canHit) {
+				bool? canHit = player.modPlayers[index].CanHitNPC(item, target);
+				if (canHit.HasValue && !canHit.Value) {
 					return false;
 				}
+				if (canHit.HasValue) {
+					flag = canHit.Value;
+				}
 			}
-			return true;
+			return flag;
 		}
 
 		private delegate void DelegateModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit);

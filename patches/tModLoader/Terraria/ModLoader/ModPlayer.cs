@@ -497,13 +497,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine whether a player can hit the given NPC by swinging a melee weapon. Return true to allow hitting the target, return false to block this player from hitting the target. Returns true by default.
+		/// Allows you to determine whether a player can hit the given NPC by swinging a melee weapon. Return true to allow hitting the target, return false to block this player from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
 		/// </summary>
 		/// <param name="item"></param>
 		/// <param name="target"></param>
 		/// <returns></returns>
-		public virtual bool CanHitNPC(Item item, NPC target) {
-			return true;
+		public virtual bool? CanHitNPC(Item item, NPC target) {
+			return null;
 		}
 
 		/// <summary>

@@ -594,7 +594,7 @@ namespace Terraria.ModLoader
 				g.Instance(item).MeleeEffects(item, player, hitbox);
 		}
 
-		private static HookList HookCanHitNPC = AddHook<Func<Item, Player, NPC, bool>>(g => g.CanHitNPC);
+		private static HookList HookCanHitNPC = AddHook<Func<Item, Player, NPC, bool?>>(g => g.CanHitNPC);
 		//in Terraria.Player.ItemCheck before checking whether npc type can be hit add
 		//  bool? modCanHit = ItemLoader.CanHitNPC(item, this, Main.npc[num292]);
 		//  if(modCanHit.HasValue && !modCanHit.Value) { continue; }
@@ -605,16 +605,23 @@ namespace Terraria.ModLoader
 		/// Otherwise, if any of them returns true then this returns true. 
 		/// If all of them return null, this returns null.
 		/// </summary>
-		public static bool CanHitNPC(Item item, Player player, NPC target) {
-			if (item.modItem != null && !item.modItem.CanHitNPC(player, target)) {
+		public static bool? CanHitNPC(Item item, Player player, NPC target) {
+			bool? canHit = item.modItem?.CanHitNPC(player, target);
+			if (canHit.HasValue && !canHit.Value) {
 				return false;
 			}
 			foreach (var g in HookCanHitNPC.arr) {
-				if (!g.Instance(item).CanHitNPC(item, player, target)) {
-					return false;
+				bool? globalCanHit = g.Instance(item).CanHitNPC(item, player, target);
+				if (globalCanHit.HasValue) {
+					if (globalCanHit.Value) {
+						canHit = true;
+					}
+					else {
+						return false;
+					}
 				}
 			}
-			return true;
+			return canHit;
 		}
 
 		private delegate void DelegateModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit);
