@@ -352,6 +352,15 @@
  							NPC.killCount[num73] = num74;
  					}
  					break;
+@@ -2591,7 +_,7 @@
+ 							}
+ 						}
+ 						else {
+-							TileEntity tileEntity = TileEntity.Read(reader, networkSend: true);
++							TileEntity tileEntity = TileEntity.Read(reader, networkSend: true, lightSend: true); //TML: Made lightSend be true.
+ 							tileEntity.ID = num48;
+ 							TileEntity.ByID[tileEntity.ID] = tileEntity;
+ 							TileEntity.ByPosition[tileEntity.Position] = tileEntity;
 @@ -3346,6 +_,27 @@
  						CreditsRollEvent.SetRemainingTimeDirect(reader.ReadInt32());
  					}

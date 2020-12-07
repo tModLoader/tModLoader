@@ -481,7 +481,7 @@ namespace Terraria.ModLoader
 			ModPrefix.Unload();
 			ModDust.Unload();
 			TileLoader.Unload();
-			ModTileEntity.UnloadAll();
+			TileEntity.manager.Reset();
 			WallLoader.Unload();
 			ProjectileLoader.Unload();
 			NPCLoader.Unload();

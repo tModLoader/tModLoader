@@ -12,7 +12,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this.
 	/// </summary>
-	public class GlobalItem:ModType
+	public abstract class GlobalItem : ModType
 	{
 		internal int index;
 		internal int instanceIndex;
@@ -314,10 +314,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when an item is used. Return false if the item didn't do anything, to not set a use timer (itemTime). Returns true by default.
+		/// Allows you to make things happen when an item is used. Return true if using the item actually does stuff. Returns false by default.
 		/// </summary>
 		public virtual bool UseItem(Item item, Player player) {
-			return true;
+			return false;
 		}
 
 		/// <summary>

@@ -5,7 +5,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to customize the behavior of a custom gore.
 	/// </summary>
-	public class ModGore : ModTexturedType
+	public abstract class ModGore : ModTexturedType
 	{
 		/// <summary> Allows you to copy the Update behavior of a different type of gore. This defaults to 0, which means no behavior is copied. </summary>
 		public int updateType = -1;
