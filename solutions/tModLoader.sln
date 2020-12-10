@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30128.36
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReLogic", "..\src\tModLoader\ReLogic\ReLogic.csproj", "{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terraria", "..\src\tModLoader\Terraria\Terraria.csproj", "{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReLogic", "..\src\tModLoader\ReLogic\ReLogic.csproj", "{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModLoaderTests", "..\test\tModLoaderTests.csproj", "{60CBCBCB-F937-45AB-9AFB-CD9196EBCB7C}"
 EndProject

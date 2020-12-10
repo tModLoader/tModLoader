@@ -1,5 +1,13 @@
 --- src/Terraria/Terraria/UI/ItemSlot.cs
 +++ src/tModLoader/Terraria/UI/ItemSlot.cs
+@@ -1,6 +_,7 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using System;
++using System.Linq;
+ using Terraria.Audio;
+ using Terraria.DataStructures;
+ using Terraria.GameContent;
 @@ -10,6 +_,7 @@
  using Terraria.GameInput;
  using Terraria.ID;
@@ -177,7 +185,7 @@
  				if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  					continue;
  
-@@ -1276,12 +_,19 @@
+@@ -1276,13 +_,18 @@
  						SoundEngine.PlaySound(18);
  					else
  						SoundEngine.PlaySound(7);
@@ -185,18 +193,17 @@
  				}
  
  				if (Main.mouseItem.type == 0) {
-+					/* //no prefix, preserved by cloning
  					Main.mouseItem.netDefaults(inv[slot].netID);
++
  					if (inv[slot].prefix != 0)
  						Main.mouseItem.Prefix(inv[slot].prefix);
-+					*/
-+					Main.mouseItem = inv[slot].Clone();
-+					Main.mouseItem.stack = 1;
-+					if (inv[slot].buyOnce)
-+						Main.mouseItem.value *= 5; // preserve item value for items sold to the shop
  
++					Main.mouseItem.modItem = inv[slot].modItem?.Clone(Main.mouseItem);
++					Main.mouseItem.globalItems = inv[slot].globalItems.Select(g => g.Clone(inv[slot], Main.mouseItem)).ToArray();
++
  					Main.mouseItem.stack = 0;
  				}
+ 
 @@ -1293,6 +_,8 @@
  				RefreshStackSplitCooldown();
  				if (inv[slot].buyOnce && --inv[slot].stack <= 0)
