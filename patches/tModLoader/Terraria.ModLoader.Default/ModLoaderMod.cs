@@ -68,11 +68,14 @@ namespace Terraria.ModLoader.Default
 				new PatreonItem[] { new Orian_Head(), new Orian_Body(), new Orian_Legs() },
 				new PatreonItem[] { new Glory_Head(), new Glory_Body(), new Glory_Legs() },
 				new PatreonItem[] { new POCKETS_Head(), new POCKETS_Body(), new POCKETS_Legs(), new POCKETS_Wings() },
+				new PatreonItem[] { new Guildpack_Head(), new Guildpack_Body(), new Guildpack_Legs() },
 			};
 
 			foreach (var patronItem in PatronSets.SelectMany(x => x)) {
 				AddItemAndEquipType(patronItem, "Patreon", patronItem.SetName, patronItem.ItemEquipType);
 			}
+			AddTexture($"Patreon.Guildpack_Aura", ReadTexture($"Patreon.Guildpack_Aura"));
+			AddTexture($"Patreon.Guildpack_Head_Glow", ReadTexture($"Patreon.Guildpack_Head_Glow"));
 		}
 
 		private void AddDeveloperSets() {
