@@ -1,6 +1,10 @@
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using ExampleMod.Content.Items;
 
 namespace ExampleMod.Content.NPCS
 {
@@ -11,6 +15,11 @@ namespace ExampleMod.Content.NPCS
 			DisplayName.SetDefault("Zombie");
 
 			Main.npcFrameCount[npc.type] = Main.npcFrameCount[NPCID.Zombie];
+
+			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
+				Velocity = 1f //Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
+			};
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, value);
 		}
 
 		public override void SetDefaults() {
@@ -31,8 +40,22 @@ namespace ExampleMod.Content.NPCS
 			bannerItem = Item.BannerToItem(banner); // Makes kills of this NPC go towards dropping the banner it's associated with.
 		}
 
+		public override void ModifyNPCLoot(ItemDropDatabase database) { 
+			database.RegisterToNPC(npc.type, ItemDropRule.Common(216, 50)); //Drop shackles with a 1 out of 50 chance.
+			database.RegisterToNPC(npc.type, ItemDropRule.Common(1304, 250)); //Drop zombie arm with a 1 out of 250 chance.	
+		}
+
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
 			return SpawnCondition.OverworldNightMonster.Chance * 0.5f;
+		}
+
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[1] { //Sets the spawning conditions of this NPC that is listed in the bestiary.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime
+			});
+			bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement( //Sets the description of this NPC that is listed in the bestiary.
+				"This type of zombie for some reason really likes to spread confetti around. Otherwise, it behaves just like a normal zombie."
+			));
 		}
 
 		public override void HitEffect(int hitDirection, double damage) {

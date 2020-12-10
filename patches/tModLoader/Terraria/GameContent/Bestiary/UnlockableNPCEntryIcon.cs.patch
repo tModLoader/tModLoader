@@ -1,0 +1,19 @@
+--- src/Terraria/Terraria/GameContent/Bestiary/UnlockableNPCEntryIcon.cs
++++ src/tModLoader/Terraria/GameContent/Bestiary/UnlockableNPCEntryIcon.cs
+@@ -3,6 +_,7 @@
+ using ReLogic.Content;
+ using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.Bestiary
+ {
+@@ -58,7 +_,7 @@
+ 					positionOffsetCache.Y = value.PortraitPositionYOverride.Value;
+ 
+ 				if (value.CustomTexturePath != null)
+-					asset = Main.Assets.Request<Texture2D>(value.CustomTexturePath);
++					asset = ModContent.GetTexture(value.CustomTexturePath);
+ 
+ 				if (asset != null && asset.IsLoaded)
+ 					_customTexture = asset;

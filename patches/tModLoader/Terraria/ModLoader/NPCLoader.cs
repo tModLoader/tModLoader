@@ -9,9 +9,11 @@ using System.Reflection;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.GameContent.ItemDropRules;
 
 namespace Terraria.ModLoader
 {
@@ -112,11 +114,7 @@ namespace Terraria.ModLoader
 		public static ModNPC GetNPC(int type) {
 			return type >= NPCID.Count && type < NPCCount ? npcs[type - NPCID.Count] : null;
 		}
-		//change initial size of Terraria.Player.npcTypeNoAggro and NPCBannerBuff to NPCLoader.NPCCount()
-		//in Terraria.Main.MouseText replace 251 with NPCLoader.NPCCount()
-		//in Terraria.Main.DrawNPCs and Terraria.NPC.NPCLoot remove type too high check
-		//replace a lot of 540 immediates
-		//in Terraria.GameContent.UI.EmoteBubble make CountNPCs internal
+
 		internal static void ResizeArrays(bool unloading) {
 			//Textures
 			Array.Resize(ref TextureAssets.Npc, nextNPC);
@@ -129,17 +127,22 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.slimeRainNPC, nextNPC);
 			Array.Resize(ref Main.npcCatchable, nextNPC);
 			Array.Resize(ref Main.npcFrameCount, nextNPC);
+			Array.Resize(ref Main.SceneMetrics.NPCBannerBuff, nextNPC);
 			Array.Resize(ref NPC.killCount, nextNPC);
 			Array.Resize(ref NPC.npcsFoundForCheckActive, nextNPC);
 			Array.Resize(ref Lang._npcNameCache, nextNPC);
 			Array.Resize(ref EmoteBubble.CountNPCs, nextNPC);
 			Array.Resize(ref WorldGen.TownManager._hasRoom, nextNPC);
 
+			for (int i = 0; i < Main.player.Length; i++) {
+				Array.Resize(ref Main.player[i].npcTypeNoAggro, nextNPC);
+			}
+
 			for (int k = NPCID.Count; k < nextNPC; k++) {
 				Main.npcFrameCount[k] = 1;
 				Lang._npcNameCache[k] = LocalizedText.Empty;
 			}
-			
+
 			foreach (var hook in hooks) {
 				hook.arr = ModLoader.BuildGlobalHookNew(globalNPCs, hook.method);
 			}
@@ -192,6 +195,16 @@ namespace Terraria.ModLoader
 
 			foreach (GlobalNPC g in HookScaleExpertStats.Enumerate(npc)) {
 				g.ScaleExpertStats(npc, numPlayers, bossLifeScale);
+			}
+		}
+
+		private delegate void DelegateSetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry);
+		private static HookList HookSetBestiary = AddHook<DelegateSetBestiary>(g => g.SetBestiary);
+		public static void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+			npc.modNPC?.SetBestiary(database, bestiaryEntry);
+
+			foreach (GlobalNPC g in HookSetBestiary.Enumerate(npc)) {
+				g.Instance(npc).SetBestiary(npc, database, bestiaryEntry);
 			}
 		}
 
@@ -352,30 +365,30 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
-		private static HookList HookSpecialNPCLoot = AddHook<Func<NPC, bool>>(g => g.SpecialNPCLoot);
+		private static HookList HookSpecialOnKill = AddHook<Func<NPC, bool>>(g => g.SpecialOnKill);
 
-		public static bool SpecialNPCLoot(NPC npc) {
-			foreach (GlobalNPC g in HookSpecialNPCLoot.Enumerate(npc)) {
-				if (g.SpecialNPCLoot(npc)) {
+		public static bool SpecialOnKill(NPC npc) {
+			foreach (GlobalNPC g in HookSpecialOnKill.Enumerate(npc)) {
+				if (g.Instance(npc).SpecialOnKill(npc)) {
 					return true;
 				}
 			}
 			if (npc.modNPC != null) {
-				return npc.modNPC.SpecialNPCLoot();
+				return npc.modNPC.SpecialOnKill();
 			}
 			return false;
 		}
 
-		private static HookList HookPreNPCLoot = AddHook<Func<NPC, bool>>(g => g.PreNPCLoot);
+		private static HookList HookPreKill = AddHook<Func<NPC, bool>>(g => g.PreKill);
 
-		public static bool PreNPCLoot(NPC npc) {
+		public static bool PreKill(NPC npc) {
 			bool result = true;
-			foreach (GlobalNPC g in HookPreNPCLoot.Enumerate(npc)) {
-				result &= g.PreNPCLoot(npc);
+			foreach (GlobalNPC g in HookPreKill.Enumerate(npc)) {
+				result &= g.Instance(npc).PreKill(npc);
 			}
 
 			if (result && npc.modNPC != null) {
-				result = npc.modNPC.PreNPCLoot();
+				result = npc.modNPC.PreKill();
 			}
 
 			if (!result) {
@@ -386,15 +399,24 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		private static HookList HookNPCLoot = AddHook<Action<NPC>>(g => g.NPCLoot);
+		private static HookList HookOnKill = AddHook<Action<NPC>>(g => g.OnKill);
 
-		public static void NPCLoot(NPC npc) {
-			npc.modNPC?.NPCLoot();
+		public static void OnKill(NPC npc) {
+			npc.modNPC?.OnKill();
 
-			foreach (GlobalNPC g in HookNPCLoot.Enumerate(npc)) {
-				g.NPCLoot(npc);
+			foreach (GlobalNPC g in HookOnKill.Enumerate(npc)) {
+				g.Instance(npc).OnKill(npc);
 			}
 			blockLoot.Clear();
+		}
+
+		private static HookList HookModifyNPCLoot = AddHook<Action<NPC, ItemDropDatabase>>(g => g.ModifyNPCLoot);
+		public static void ModifyNPCLoot(NPC npc, ItemDropDatabase database) {
+			npc.modNPC?.ModifyNPCLoot(database);
+
+			foreach (GlobalNPC g in HookModifyNPCLoot.Enumerate(npc)) {
+				g.Instance(npc).ModifyNPCLoot(npc, database);
+			}
 		}
 
 		public static void BossLoot(NPC npc, ref string name, ref int potionType) {
