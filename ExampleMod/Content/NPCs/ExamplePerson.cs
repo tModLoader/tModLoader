@@ -15,6 +15,7 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -40,6 +41,7 @@ namespace ExampleMod.Content.NPCs
 				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 				Direction = 1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
 				// Rotation = MathHelper.ToRadians(180) // You can also change the rotation of an NPC. Rotation is measured in radians
+				// If you want to see an example of manually modifying these when the NPC is drawn, see PreDraw
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
@@ -74,6 +76,20 @@ namespace ExampleMod.Content.NPCs
 				// You can also use localization keys (see Localization/en-US.lang)
 				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExamplePerson")
 			});
+		}
+
+		// The PreDraw hook is useful for drawing things before our sprite is drawn or running code before the sprite is drawn
+		// Returning false will allow you to manually draw your NPC
+		public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor) {
+			if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(Type, out NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers)) {
+                drawModifiers.Rotation += 0.001f;
+
+				// Replace the existing NPCBestiaryDrawModifiers with our new one with an adjusted rotation
+				NPCID.Sets.NPCBestiaryDrawOffset.Remove(Type);
+				NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+			}
+
+			return true;
 		}
 
 		public override void HitEffect(int hitDirection, double damage) {
