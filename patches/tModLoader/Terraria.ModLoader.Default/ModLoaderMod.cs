@@ -74,8 +74,11 @@ namespace Terraria.ModLoader.Default
 			foreach (var patronItem in PatronSets.SelectMany(x => x)) {
 				AddItemAndEquipType(patronItem, "Patreon", patronItem.SetName, patronItem.ItemEquipType);
 			}
-			AddTexture($"Patreon.Guildpack_Aura", ReadTexture($"Patreon.Guildpack_Aura"));
-			AddTexture($"Patreon.Guildpack_Head_Glow", ReadTexture($"Patreon.Guildpack_Head_Glow"));
+			if (!Main.dedServ) 
+			{
+				AddTexture($"Patreon.Guildpack_Aura", ReadTexture($"Patreon.Guildpack_Aura"));
+				AddTexture($"Patreon.Guildpack_Head_Glow", ReadTexture($"Patreon.Guildpack_Head_Glow"));
+			}
 		}
 
 		private void AddDeveloperSets() {
