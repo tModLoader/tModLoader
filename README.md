@@ -31,7 +31,7 @@ If you do not want to use a Patreon subscription, it is best that you contact on
 
 ## Get in touch
 
-If you would like to contact us or TML users, it's best to join our [Discord server](https://discord.me/tmodloader). To use Discord you will need to register a new account on [their website](https://discordapp.com/).
+If you would like to contact us or TML users, it's best to join our [Discord server](https://discord.com/invite/RMZCqq6). To use Discord you will need to register a new account on [their website](https://discord.com/).
 
 ## Contributors
 ### Core team
