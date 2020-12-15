@@ -9,11 +9,9 @@ namespace Terraria.ModLoader
 	partial class ModSystem
 	{
 		/// <summary>
-		/// Override this method to initialize your system. This is guaranteed to be called after all content has been autoloaded.
+		/// This hook is called right after Mod.Load(), which is guaranteed to be called after all content has been autoloaded.
 		/// </summary>
-		public new virtual void Load() {
-			
-		}
+		public virtual void OnModLoad() { }
 
 		/// <summary>
 		/// Allows you to load things in your system after the mod's content has been setup (arrays have been resized to fit the content, etc).

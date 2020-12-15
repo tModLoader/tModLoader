@@ -32,13 +32,13 @@ namespace Terraria.ModLoader
 			SystemsByMod.Clear();
 		}
 
-		internal static void Load(Mod mod) {
+		internal static void OnModLoad(Mod mod) {
 			if (!SystemsByMod.TryGetValue(mod.Name, out var list)) {
 				return;
 			}
 
 			foreach (var system in list) {
-				system.Load();
+				system.OnModLoad();
 			}
 		}
 

@@ -379,7 +379,7 @@ namespace Terraria.ModLoader
 				mod.PrepareAssets();
 				mod.Autoload();
 				mod.Load();
-				SystemHooks.Load(mod);
+				SystemHooks.OnModLoad(mod);
 				mod.loading = false;
 			});
 
