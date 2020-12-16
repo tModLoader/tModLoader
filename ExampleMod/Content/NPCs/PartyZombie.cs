@@ -41,8 +41,8 @@ namespace ExampleMod.Content.NPCS
 		}
 
 		public override void ModifyNPCLoot(ItemDropDatabase database) { 
-			database.RegisterToNPC(npc.type, ItemDropRule.Common(216, 50)); //Drop shackles with a 1 out of 50 chance.
-			database.RegisterToNPC(npc.type, ItemDropRule.Common(1304, 250)); //Drop zombie arm with a 1 out of 250 chance.	
+			database.RegisterToNPC(npc.type, ItemDropRule.Common(ItemID.Shackle, 50)); //Drop shackles with a 1 out of 50 chance.
+			database.RegisterToNPC(npc.type, ItemDropRule.Common(ItemID.ZombieArm, 250)); //Drop zombie arm with a 1 out of 250 chance.	
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
