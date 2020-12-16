@@ -185,7 +185,7 @@
  				if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  					continue;
  
-@@ -1276,13 +_,18 @@
+@@ -1276,13 +_,12 @@
  						SoundEngine.PlaySound(18);
  					else
  						SoundEngine.PlaySound(7);
@@ -193,14 +193,12 @@
  				}
  
  				if (Main.mouseItem.type == 0) {
- 					Main.mouseItem.netDefaults(inv[slot].netID);
-+
- 					if (inv[slot].prefix != 0)
- 						Main.mouseItem.Prefix(inv[slot].prefix);
- 
-+					Main.mouseItem.modItem = inv[slot].modItem?.Clone(Main.mouseItem);
-+					Main.mouseItem.globalItems = inv[slot].globalItems.Select(g => g.Clone(inv[slot], Main.mouseItem)).ToArray();
-+
+-					Main.mouseItem.netDefaults(inv[slot].netID);
+-					if (inv[slot].prefix != 0)
+-						Main.mouseItem.Prefix(inv[slot].prefix);
+-
++					Main.mouseItem = inv[slot].Clone();
++					Main.mouseItem.buyOnce = false;
  					Main.mouseItem.stack = 0;
  				}
  
