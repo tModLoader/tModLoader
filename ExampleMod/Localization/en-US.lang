@@ -40,3 +40,6 @@ Common.LocalizedHeader=Headers can help organize
 
 # Content/Items/ExampleItem.cs
 RecipeConditions.Night=At Low Health
+
+# Content/NPCs/ExamplePerson.cs
+Bestiary.ExamplePerson=Built of blocks with arms of steel. Pumps iron day and night.
