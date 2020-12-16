@@ -22,8 +22,8 @@ namespace ExampleMod.Common.GlobalNPCs
 				// For example, if you had a dropsOutOfY as 7 and a dropsXOutOfY as 2, then the chance the item would drop is 2/7 or about 28%.
 			}
 			if (npc.type == NPCID.Guide) { //We will now use the Guide to explain many of the other types of drop rules.
-				database.RemoveFromNPC(npc.type, new ItemDropWithConditionRule(867, 1, 1, 1, new Conditions.NamedNPC("Andrew"))); //RemoveFromNPC will uniquely remove any drop with the specific drop rule from any NPC specified.
-				database.RegisterToNPC(npc.type, ItemDropRule.Common(867, 1)); //In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				database.RemoveFromNPC(npc.type, new ItemDropWithConditionRule(ItemID.GreenCap, 1, 1, 1, new Conditions.NamedNPC("Andrew"))); //RemoveFromNPC will uniquely remove any drop with the specific drop rule from any NPC specified.
+				database.RegisterToNPC(npc.type, ItemDropRule.Common(ItemID.GreenCap, 1)); //In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 			//add more stuff here
 
