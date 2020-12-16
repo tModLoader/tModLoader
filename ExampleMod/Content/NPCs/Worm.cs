@@ -15,14 +15,15 @@ namespace ExampleMod.NPCs
 		public override string Texture => "Terraria/NPC_" + NPCID.DiggerHead;
 
 		public override void SetStaticDefaults() {
-		DisplayName.SetDefault("Example Worm");
-		NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
+			DisplayName.SetDefault("Example Worm");
+	
+			var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
 				CustomTexturePath = "ExampleMod/Content/NPCs/ExampleWorm_Bestiary", //If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
 				Position = new Vector2(40f, 24f),
 				PortraitPositionXOverride = 0f,
 				PortraitPositionYOverride = 12f
 			};
-			NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, value);
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, drawModifier);
 		}
 
 		public override void SetDefaults() {
