@@ -123,7 +123,6 @@ namespace ExampleMod.NPCs
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Worm");
-
 		}
 
 		public override void Init() {
