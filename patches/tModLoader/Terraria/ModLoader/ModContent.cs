@@ -443,17 +443,24 @@ namespace Terraria.ModLoader
 		}
 
 		private static void SetupBestiary(CancellationToken token) {
-			BestiaryDatabase bestiaryDatabase = new BestiaryDatabase();
+			//Beastiary DB
+			var bestiaryDatabase = new BestiaryDatabase();
 			new BestiaryDatabaseNPCsPopulator().Populate(bestiaryDatabase);
 			Main.BestiaryDB = bestiaryDatabase;
 			ContentSamples.RebuildBestiarySortingIDsByBestiaryDatabaseContents(bestiaryDatabase);
-			Main.BestiaryTracker = new BestiaryUnlocksTracker();
-			ItemDropDatabase itemDropDatabase = new ItemDropDatabase();
+			
+			//Drops DB
+			var itemDropDatabase = new ItemDropDatabase();
 			itemDropDatabase.Populate();
 			Main.ItemDropsDB = itemDropDatabase;
+			
+			//Update the bestiary DB with the drops DB.
 			bestiaryDatabase.Merge(Main.ItemDropsDB);
+			
+			//Etc
 			Main.BestiaryUI = new UIBestiaryTest(Main.BestiaryDB);
 			Main.ItemDropSolver = new ItemDropResolver(itemDropDatabase);
+			Main.BestiaryTracker = new BestiaryUnlocksTracker();
 		}
 
 		private static void SetupRecipes(CancellationToken token) {
