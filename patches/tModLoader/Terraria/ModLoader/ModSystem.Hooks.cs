@@ -179,12 +179,12 @@ namespace Terraria.ModLoader
 		public virtual void ModifyTimeRate(ref int timeRate, ref int tileUpdateRate) { }
 
 		/// <summary>
-		/// Allows you to save custom data for this world. Useful for things like saving world specific flags. For example, if your mod adds a boss and you want certain NPC to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. Returns null by default.
+		/// Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. For example, if your mod adds a boss and you want certain NPC to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. Returns null by default.
 		/// </summary>
 		public virtual TagCompound SaveWorldData() => null;
 
 		/// <summary>
-		/// Allows you to load custom data you have saved for this world.
+		/// Allows you to load custom data you have saved for this system in the currently loading world.
 		/// </summary>
 		public virtual void LoadWorldData(TagCompound tag) { }
 
