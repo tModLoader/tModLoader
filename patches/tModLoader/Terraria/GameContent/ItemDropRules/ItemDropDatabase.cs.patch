@@ -17,13 +17,15 @@
  			if (!_entriesByNpcNetId.ContainsKey(npcNetId))
  				_entriesByNpcNetId[npcNetId] = new List<IItemDropRule>();
  
-@@ -114,6 +_,9 @@
+@@ -114,6 +_,11 @@
  			RegisterMimic();
  			RegisterEclipse();
  			RegisterBloodMoonFishing();
-+			foreach (KeyValuePair<int, NPC> item in ContentSamples.NpcsByNetId) {
-+				NPCLoader.ModifyNPCLoot(item.Value, this);
++
++			foreach (KeyValuePair<int, NPC> pair in ContentSamples.NpcsByNetId) {
++				NPCLoader.ModifyNPCLoot(pair.Value, new NPCLoot(pair.Key, this));
 +			}
++
  			TrimDuplicateRulesForNegativeIDs();
  		}
  

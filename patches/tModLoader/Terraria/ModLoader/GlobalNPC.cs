@@ -200,7 +200,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="dropRule"></param>
-		public virtual void ModifyNPCLoot(NPC npc, ItemDropDatabase database) {
+		public virtual void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 		}
 
 		/// <summary>

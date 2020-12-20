@@ -262,9 +262,9 @@ namespace ExampleMod.Content.NPCs
 		// 	// }
 		// }
 
-		public override void ModifyNPCLoot(ItemDropDatabase database) {
+		public override void ModifyNPCLoot(NPCLoot npcLoot) {
 			// Readd this once ExampleCostume is implemented.
-			// database.RegisterToNPC(Type, ItemDropRule.Common(ModContent.ItemType<ExampleCostume>(), 1));
+			// npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleCostume>(), 1));
 		}
 
 		// Make this Town NPC teleport to the King and/or Queen statue when triggered.

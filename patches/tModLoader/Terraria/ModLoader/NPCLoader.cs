@@ -392,12 +392,12 @@ namespace Terraria.ModLoader
 			blockLoot.Clear();
 		}
 
-		private static HookList HookModifyNPCLoot = AddHook<Action<NPC, ItemDropDatabase>>(g => g.ModifyNPCLoot);
-		public static void ModifyNPCLoot(NPC npc, ItemDropDatabase database) {
-			npc.modNPC?.ModifyNPCLoot(database);
+		private static HookList HookModifyNPCLoot = AddHook<Action<NPC, NPCLoot>>(g => g.ModifyNPCLoot);
+		public static void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
+			npc.modNPC?.ModifyNPCLoot(npcLoot);
 
 			foreach (GlobalNPC g in HookModifyNPCLoot.arr) {
-				g.Instance(npc).ModifyNPCLoot(npc, database);
+				g.Instance(npc).ModifyNPCLoot(npc, npcLoot);
 			}
 		}
 
