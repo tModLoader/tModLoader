@@ -1,7 +1,6 @@
 --- src/tModLoader/Terraria.ModLoader.Engine/HiDefGraphicsIssues.cs
 +++ src/64bit/Terraria.ModLoader.Engine/HiDefGraphicsIssues.cs
-@@ -13,7 +_,8 @@
- using System.Threading;
+@@ -14,6 +_,7 @@
  using System.Windows.Forms;
  using Terraria.Localization;
  using Terraria.ModLoader.IO;
@@ -9,6 +8,15 @@
  
  namespace Terraria.ModLoader.Engine
  {
+@@ -50,7 +_,7 @@
+ #endif
+ #if DEBUG
+ 	        mainThreadId = Thread.CurrentThread.ManagedThreadId;
+-	        new Hook(typeof(Texture2D).FindMethod("ValidateCreationParameters"), new hook_ValidateCreationParameters(HookValidateCreationParameters));
++	        //new Hook(typeof(Texture2D).FindMethod("ValidateCreationParameters"), new hook_ValidateCreationParameters(HookValidateCreationParameters));
+ #endif
+         }
+ 
 @@ -136,11 +_,11 @@
  
  			//var modsAffected = ModContent.HiDefMods.Count == 0 ? "No mods will be affected." : $"The following mods will be affected {string.Join(", ", ModContent.HiDefMods.Select(m => m.DisplayName))}";

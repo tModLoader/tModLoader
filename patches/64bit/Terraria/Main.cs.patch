@@ -173,6 +173,15 @@
  			base.Window.AllowUserResizing = true;
  			OpenSettings();
  			if (screenWidth > GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width)
+@@ -7296,7 +_,7 @@
+ 			engine = new AudioEngine(Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "TerrariaMusic.xgs");
+ 			soundBank = new SoundBank(engine, Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "Sound Bank.xsb");
+ 			engine.Update();
+-			waveBank = new WaveBank(engine, Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "Wave Bank.xwb", 0, 512);
++			waveBank = new WaveBank(engine, Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "Wave Bank.xwb");
+ 			engine.Update();
+ 			music = new Music[42];
+ 			while (!waveBank.IsPrepared) {
 @@ -7479,7 +_,7 @@
  			if (waveBank == null) //supress extra exceptions from audio engine failing to load
  				return;

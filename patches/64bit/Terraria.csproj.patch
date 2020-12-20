@@ -1,11 +1,9 @@
 --- src/tModLoader/Terraria.csproj
 +++ src/64bit/Terraria.csproj
-@@ -1,66 +_,120 @@
- <Project Sdk="Microsoft.NET.Sdk">
+@@ -2,65 +_,120 @@
    <Import Project="..\TerrariaSteamPath.targets" />
    <PropertyGroup>
--    <TargetFramework>net45</TargetFramework>
-+    <TargetFramework>net48</TargetFramework>
+     <TargetFramework>net45</TargetFramework>
 -    <OutputType>WinExe</OutputType>
      <Version>1.3.5.3</Version>
      <Company>Re-Logic</Company>
@@ -109,6 +107,7 @@
    <PropertyGroup>
      <PdbFile>bin\$(OutputName)</PdbFile>
 -    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
++    <AssemblyName>tModLoader</AssemblyName>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='XNADebug|AnyCPU'">
 +    <Prefer32Bit>false</Prefer32Bit>
@@ -140,7 +139,7 @@
 +      <HintPath>..\..\references\ReLogicXNA.dll</HintPath>
 +    </Reference>
 +    <Reference Include="ReLogic" Condition="$(DefineConstants.Contains('FNA'))">
-+      <HintPath>..\..\references\ReLogicFNA.dll</HintPath>
++      <HintPath>..\..\references\ReLogic.64bit.dll</HintPath>
 +    </Reference>
 +    <Reference Include="Newtonsoft.Json" />
 +    <Reference Include="Steamworks.NET">
@@ -196,20 +195,32 @@
 -      <LogicalName>ReLogic.dll</LogicalName>
 -    </EmbeddedResource>
 -    <EmbeddedResource Include="..\..\references\ReLogicMac.dll" Condition="$(DefineConstants.Contains('MAC'))">
-+    <EmbeddedResource Include="..\..\references\ReLogicXNA.dll" Condition="$(DefineConstants.Contains('XNA'))">
-       <LogicalName>ReLogic.dll</LogicalName>
-     </EmbeddedResource>
+-      <LogicalName>ReLogic.dll</LogicalName>
+-    </EmbeddedResource>
 -    <EmbeddedResource Include="..\..\references\ReLogicLinux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
-+    <EmbeddedResource Include="..\..\references\ReLogicFNA.dll" Condition="$(DefineConstants.Contains('FNA'))">
-       <LogicalName>ReLogic.dll</LogicalName>
-     </EmbeddedResource>
+-      <LogicalName>ReLogic.dll</LogicalName>
+-    </EmbeddedResource>
 -    <EmbeddedResource Include="..\..\references\Steamworks.NET.Windows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
++    <Compile Remove="Terraria.Libraries\ReLogic\**" />
++    <EmbeddedResource Remove="Terraria.Libraries\ReLogic\**" />
++    <None Remove="Terraria.Libraries\ReLogic\**" />
++    <EmbeddedResource Include="..\..\references\ReLogic.64bit.dll">
++      <LogicalName>ReLogic.dll</LogicalName>
++    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\Steamworks.NET.64bit.dll" Condition="$(DefineConstants.Contains('FNA'))">
        <LogicalName>Steamworks.NET.dll</LogicalName>
      </EmbeddedResource>
      <EmbeddedResource Include="..\..\references\Steamworks.NET.OSX.dll" Condition="$(DefineConstants.Contains('MAC'))">
-@@ -137,7 +_,17 @@
-     <EmbeddedResource Include="..\..\references\TerrariaHooks.FNA.dll" Condition="$(DefineConstants.Contains('FNA'))">
+@@ -131,13 +_,23 @@
+     <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
+       <LogicalName>Steamworks.NET.dll</LogicalName>
+     </EmbeddedResource>
+-    <EmbeddedResource Include="..\..\references\TerrariaHooks.XNA.dll" Condition="$(DefineConstants.Contains('XNA'))">
++    <EmbeddedResource Include="..\..\references\TerrariaHooks.Window.dll" Condition="$(DefineConstants.Contains('XNA'))">
+       <LogicalName>TerrariaHooks.dll</LogicalName>
+     </EmbeddedResource>
+-    <EmbeddedResource Include="..\..\references\TerrariaHooks.FNA.dll" Condition="$(DefineConstants.Contains('FNA'))">
++    <EmbeddedResource Include="..\..\references\TerrariaHooks.Mono.dll" Condition="$(DefineConstants.Contains('FNA'))">
        <LogicalName>TerrariaHooks.dll</LogicalName>
      </EmbeddedResource>
 -    <EmbeddedResource Include="..\..\references\Ionic.Zip.Reduced.dll" />

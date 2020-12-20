@@ -1,0 +1,25 @@
+--- src/tModLoader/Terraria.ModLoader/MusicWrappers.cs
++++ src/64bit/Terraria.ModLoader/MusicWrappers.cs
+@@ -18,6 +_,11 @@
+ 		public abstract void Resume();
+ 		public abstract void Stop(AudioStopOptions options);
+ 		public abstract void SetVariable(string name, float value);
++
++		public virtual object GetVariable(string name) {
++			return null;
++		}
++
+ 		public virtual void CheckBuffer() { }
+ 	}
+ 
+@@ -32,7 +_,9 @@
+ 		public override void Resume() => cue.Resume();
+ 		public override void Stop(AudioStopOptions options) => cue.Stop(options);
+ 		public override void SetVariable(string name, float value) => cue.SetVariable(name, value);
+-		
++
++		public override object GetVariable(string name) => cue.GetVariable(name);
++
+ 		public override void Reset() {
+ 			cue.Stop(AudioStopOptions.Immediate);
+ 			cue = Main.soundBank.GetCue(cue.Name);

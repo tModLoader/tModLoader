@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -118,6 +119,7 @@ namespace Terraria.ModLoader.Core
 		}
 
 		private void ClearClipboard() {
+			
 			try {
 				using (Process process = new Process()) {
 					process.StartInfo = new ProcessStartInfo("xsel", "-c") {
@@ -212,8 +214,6 @@ namespace Terraria.ModLoader.Core
 
 			return environmentVariable + "/Library/Application Support";
 		}
-
-		public static string NoteToEveryone = "Thanks for Stackoverflow for proper platform detection https://stackoverflow.com/questions/10138040/how-to-detect-properly-windows-linux-mac-operating-systems -- Dradon tml 64bit dev";
 
 
 		protected override PlatformIme CreateIme(IntPtr windowHandle) {

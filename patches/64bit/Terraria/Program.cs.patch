@@ -26,12 +26,15 @@
  			return type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
  #else
  			return type.GetMethods();
-@@ -204,89 +_,133 @@
+@@ -204,89 +_,135 @@
  		// some versions of the .NET runtime will run the Main static initilizer as soon as LaunchGame is invoked
  		// causing Main.SavePath to be initialized before LaunchParameters is parsed.
  		// moving arg parsing to a separate function avoids this
 -		public static void LaunchGame(string[] args, bool monoArgs = false) {
 -			if (monoArgs)
+-				args = Utils.ConvertMonoArgsToDotNet(args);
+-
+-			LaunchParameters = Utils.ParseArguements(args);
 +		public static void LaunchGame(string[] args, bool monoArgs = false)
 +		{
 +#if FNA && CLIENT
@@ -62,21 +65,18 @@
 +			}
 +#endif
 +
++			typeof(ReLogic.OS.Platform).GetField("Current", BindingFlags.Static | BindingFlags.Public).SetValue(null, new UniversalPlatform(PlatformType.Linux));
+ 			SavePath =
+ 				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
+ 				LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
+ 				Platform.Current.GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader");
++
 +			if (monoArgs) {
- 				args = Utils.ConvertMonoArgsToDotNet(args);
- 
++				args = Utils.ConvertMonoArgsToDotNet(args);
++
 +				LaunchParameters = Utils.ParseArguements(args);
 +
--			LaunchParameters = Utils.ParseArguements(args);
-+				typeof(ReLogic.OS.Platform).GetField("Current", BindingFlags.Static | BindingFlags.Public).SetValue(null, new UniversalPlatform(PlatformType.Linux));
--			SavePath =
-+				SavePath =
--				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
-+					LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
--				LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
-+					LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
--				Platform.Current.GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader");
-+					Platform.Current.GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader");
++				
 -			if (File.Exists("savehere.txt"))
 +				if (File.Exists("savehere.txt"))
 -				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
