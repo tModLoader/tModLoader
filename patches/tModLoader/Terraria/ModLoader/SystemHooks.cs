@@ -145,51 +145,111 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void MidUpdatePlayerNPC() {
+		public static void PreUpdatePlayers() {
 			foreach (var system in Systems) {
-				system.MidUpdatePlayerNPC();
+				system.PreUpdatePlayers();
 			}
 		}
 
-		public static void MidUpdateNPCGore() {
+		public static void PostUpdatePlayers() {
 			foreach (var system in Systems) {
-				system.MidUpdateNPCGore();
+				system.PostUpdatePlayers();
 			}
 		}
 
-		public static void MidUpdateGoreProjectile() {
+		public static void PreUpdateNPCs() {
 			foreach (var system in Systems) {
-				system.MidUpdateGoreProjectile();
+				system.PreUpdateNPCs();
 			}
 		}
 
-		public static void MidUpdateProjectileItem() {
+		public static void PostUpdateNPCs() {
 			foreach (var system in Systems) {
-				system.MidUpdateProjectileItem();
+				system.PostUpdateNPCs();
 			}
 		}
 
-		public static void MidUpdateItemDust() {
+		public static void PreUpdateGores() {
 			foreach (var system in Systems) {
-				system.MidUpdateItemDust();
+				system.PreUpdateGores();
 			}
 		}
 
-		public static void MidUpdateDustTime() {
+		public static void PostUpdateGores() {
 			foreach (var system in Systems) {
-				system.MidUpdateDustTime();
+				system.PostUpdateGores();
 			}
 		}
 
-		public static void MidUpdateTimeWorld() {
+		public static void PreUpdateProjectiles() {
 			foreach (var system in Systems) {
-				system.MidUpdateTimeWorld();
+				system.PreUpdateProjectiles();
 			}
 		}
 
-		public static void MidUpdateInvasionNet() {
+		public static void PostUpdateProjectiles() {
 			foreach (var system in Systems) {
-				system.MidUpdateInvasionNet();
+				system.PostUpdateProjectiles();
+			}
+		}
+
+		public static void PreUpdateItems() {
+			foreach (var system in Systems) {
+				system.PreUpdateItems();
+			}
+		}
+
+		public static void PostUpdateItems() {
+			foreach (var system in Systems) {
+				system.PostUpdateItems();
+			}
+		}
+
+		public static void PreUpdateDusts() {
+			foreach (var system in Systems) {
+				system.PreUpdateDusts();
+			}
+		}
+
+		public static void PostUpdateDusts() {
+			foreach (var system in Systems) {
+				system.PostUpdateDusts();
+			}
+		}
+
+		public static void PreUpdateTime() {
+			foreach (var system in Systems) {
+				system.PreUpdateTime();
+			}
+		}
+
+		public static void PostUpdateTime() {
+			foreach (var system in Systems) {
+				system.PostUpdateTime();
+			}
+		}
+
+		public static void PreUpdateWorld() {
+			foreach (var system in Systems) {
+				system.PreUpdateWorld();
+			}
+		}
+
+		public static void PostUpdateWorld() {
+			foreach (var system in Systems) {
+				system.PostUpdateWorld();
+			}
+		}
+
+		public static void PreUpdateInvasions() {
+			foreach (var system in Systems) {
+				system.PreUpdateInvasions();
+			}
+		}
+
+		public static void PostUpdateInvasions() {
+			foreach (var system in Systems) {
+				system.PostUpdateInvasions();
 			}
 		}
 
@@ -260,18 +320,6 @@ namespace Terraria.ModLoader
 		public static void ResetNearbyTileEffects() {
 			foreach (var system in Systems) {
 				system.ResetNearbyTileEffects();
-			}
-		}
-
-		public static void PreUpdateWorld() {
-			foreach (var system in Systems) {
-				system.PreUpdateWorld();
-			}
-		}
-
-		public static void PostUpdateWorld() {
-			foreach (var system in Systems) {
-				system.PostUpdateWorld();
 			}
 		}
 

@@ -1526,12 +1526,17 @@
  			return false;
  		}
  
-@@ -45592,6 +_,8 @@
+@@ -45592,6 +_,13 @@
  			if (gen)
  				return;
  
 +			SystemHooks.PreUpdateWorld();
 +
++			UpdateWorld_Inner();
++
++			SystemHooks.PostUpdateWorld();
++		}
++		private static void UpdateWorld_Inner() {
  			AllowedToSpreadInfections = true;
  			CreativePowers.StopBiomeSpreadPower power = CreativePowerManager.Instance.GetPower<CreativePowers.StopBiomeSpreadPower>();
  			if (power != null && power.GetIsUnlocked())
@@ -1544,14 +1549,6 @@
  				num6 *= Star.starfallBoost;
  				if (!((float)Main.rand.Next(8000) < 10f * num6))
  					continue;
-@@ -45700,6 +_,7 @@
- 					Projectile.NewProjectile(position.X, position.Y, num13, num14, 720, 0, 0f, Main.myPlayer, 0f, num10);
- 				}
- 			}
-+			SystemHooks.PostUpdateWorld();
- 		}
- 
- 		public static int GetWorldUpdateRate() {
 @@ -45711,6 +_,8 @@
  		}
  

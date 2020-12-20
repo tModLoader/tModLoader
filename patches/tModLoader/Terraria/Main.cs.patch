@@ -1101,57 +1101,93 @@
  			clientPlayer = (Player)Main.player[myPlayer].clientClone();
  		}
  
-@@ -13025,6 +_,7 @@
- 			}
- 
- 			_gameUpdateCount++;
-+			SystemHooks.MidUpdatePlayerNPC();
- 			NPC.RevengeManager.Update();
- 			if (netMode != 1) {
- 				try {
-@@ -13073,6 +_,7 @@
- 			}
- 
- 			CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
-+			SystemHooks.MidUpdateNPCGore();
- 			for (int l = 0; l < 600; l++) {
- 				if (ignoreErrors) {
- 					try {
-@@ -13087,6 +_,7 @@
+@@ -12991,6 +_,9 @@
+ 		private void DoUpdateInWorld(Stopwatch sw) {
+ 			UpdateParticleSystems();
+ 			tileSolid[379] = false;
++
++			SystemHooks.PreUpdatePlayers();
++
+ 			int num = 0;
+ 			int num2 = 0;
+ 			sittingManager.ClearPlayerAnchors();
+@@ -13024,7 +_,12 @@
  				}
  			}
  
-+			SystemHooks.MidUpdateGoreProjectile();
++			SystemHooks.PostUpdatePlayers();
++
+ 			_gameUpdateCount++;
++
++			SystemHooks.PreUpdateNPCs();
++
+ 			NPC.RevengeManager.Update();
+ 			if (netMode != 1) {
+ 				try {
+@@ -13073,6 +_,10 @@
+ 			}
+ 
+ 			CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
++
++			SystemHooks.PostUpdateNPCs();
++			SystemHooks.PreUpdateGores();
++
+ 			for (int l = 0; l < 600; l++) {
+ 				if (ignoreErrors) {
+ 					try {
+@@ -13087,6 +_,9 @@
+ 				}
+ 			}
+ 
++			SystemHooks.PostUpdateGores();
++			SystemHooks.PreUpdateProjectiles();
++
  			LockOnHelper.SetUP();
  			CurrentFrameFlags.HadAnActiveInteractibleProjectile = false;
  			PreUpdateAllProjectiles();
-@@ -13108,6 +_,7 @@
+@@ -13108,6 +_,10 @@
  			ProjectileUpdateLoopIndex = -1;
  			PostUpdateAllProjectiles();
  			LockOnHelper.SetDOWN();
-+			SystemHooks.MidUpdateProjectileItem();
++
++			SystemHooks.PostUpdateProjectiles();
++			SystemHooks.PreUpdateItems();
++
  			Item.numberOfNewItems = 0;
  			for (int n = 0; n < 400; n++) {
  				if (ignoreErrors) {
-@@ -13138,11 +_,13 @@
+@@ -13123,6 +_,9 @@
+ 				}
+ 			}
+ 
++			SystemHooks.PostUpdateItems();
++			SystemHooks.PreUpdateDusts();
++
+ 			if (ignoreErrors) {
+ 				try {
+ 					Dust.UpdateDust();
+@@ -13138,11 +_,15 @@
  				Dust.UpdateDust();
  			}
  
-+			SystemHooks.MidUpdateDustTime();
++			SystemHooks.PostUpdateDusts();
++
  			if (netMode != 2) {
  				CombatText.UpdateCombatText();
  				PopupText.UpdateItemText();
  			}
  
-+			SystemHooks.MidUpdateItemDust();
++			SystemHooks.PreUpdateTime();
++
  			if (ignoreErrors) {
  				try {
  					UpdateTime();
-@@ -13155,6 +_,7 @@
+@@ -13155,6 +_,8 @@
  				UpdateTime();
  			}
  
-+			SystemHooks.MidUpdateTimeWorld();
++			SystemHooks.PostUpdateTime();
++
  			tileSolid[379] = true;
  			if (gameMenu && netMode != 2)
  				return;
@@ -3326,6 +3362,20 @@
  			try {
  				DrawSurfaceBG();
  				if (BackgroundEnabled)
+@@ -48959,6 +_,13 @@
+ 		}
+ 
+ 		private static void UpdateInvasion() {
++			SystemHooks.PreUpdateInvasions();
++
++			UpdateInvasion_Inner();
++
++			SystemHooks.PostUpdateInvasions();
++		}
++		private static void UpdateInvasion_Inner() {
+ 			if (invasionType <= 0)
+ 				return;
+ 
 @@ -49199,6 +_,15 @@
  			}
  		}

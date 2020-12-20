@@ -48,79 +48,105 @@ namespace Terraria.ModLoader
 		/// Called after UI updates, but before anything in the World (Players, NPCs, Projectiles, Tiles) gets updated.
 		/// <para />
 		/// When <see cref="Main.autoPause" /> is true or <see cref="Main.FrameSkipMode" /> is 0 or 2, the game may do a partial update. This means that it only updates menus and some animations, but not the World or Entities. This hook - and every hook after it - only gets called on frames with a full update.
-		/// <para />
-		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdatePlayerNPC" />.
 		/// </summary>
 		public virtual void PreUpdateEntities() { }
 
 		/// <summary>
-		/// Called after Players got updated, but before any NPCs get updated.
-		/// <para />
-		/// If you are looking to hook an earlier part of the update process, see <see cref="PreUpdateEntities" />.
-		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateNPCGore" />.
+		/// Called before Players get updated.
 		/// </summary>
-		public virtual void MidUpdatePlayerNPC() { }
+		public virtual void PreUpdatePlayers() { }
 
 		/// <summary>
-		/// Called after NPCs got updated, but before any Gores get updated.
-		/// <para />
-		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdatePlayerNPC" />.
-		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateGoreProjectile" />.
+		/// Called after Players get updated.
 		/// </summary>
-		public virtual void MidUpdateNPCGore() { }
+		public virtual void PostUpdatePlayers() { }
 
 		/// <summary>
-		/// Called after Gores got updated, but before any Projectiles get updated.
-		/// <para />
-		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateNPCGore" />.
-		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateProjectileItem" />.
+		/// Called before NPCs get updated.
 		/// </summary>
-		public virtual void MidUpdateGoreProjectile() { }
+		public virtual void PreUpdateNPCs() { }
 
 		/// <summary>
-		/// Gets called immediately after all Projectiles are updated, but before any Items get updated.
-		/// <para />
-		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateGoreProjectile" />.
-		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateItemDust" />.
+		/// Called after NPCs get updated.
 		/// </summary>
-		public virtual void MidUpdateProjectileItem() { }
+		public virtual void PostUpdateNPCs() { }
 
 		/// <summary>
-		/// Called after Items got updated, but before any Dust gets updated.
-		/// <para />
-		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateProjectileItem" />.
-		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateDustTime" />.
+		/// Called before Gores get updated.
 		/// </summary>
-		public virtual void MidUpdateItemDust() { }
+		public virtual void PreUpdateGores() { }
 
 		/// <summary>
-		/// Called after Dust got updated, but before Time (day/night, events, etc.) gets updated.
-		/// <para />
-		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateItemDust" />.
-		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateTimeWorld" />.
+		/// Called after Gores get updated.
 		/// </summary>
-		public virtual void MidUpdateDustTime() { }
+		public virtual void PostUpdateGores() { }
 
 		/// <summary>
-		/// Called after Time got updated, but before the World gets updated.
-		/// <para />
-		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateDustTime" />.
-		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateInvasionNet" />.
+		/// Called before Projectiles get updated.
 		/// </summary>
-		public virtual void MidUpdateTimeWorld() { }
+		public virtual void PreUpdateProjectiles() { }
 
 		/// <summary>
-		/// Called after Invasions got updated. The only thing that is updated after this is the Network.
-		/// <para />
-		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateTimeWorld" />.
-		/// If you are looking to hook even after the Network is updated, see <see cref="PostUpdateEverything" />.
+		/// Called after Projectiles get updated.
 		/// </summary>
-		public virtual void MidUpdateInvasionNet() { }
+		public virtual void PostUpdateProjectiles() { }
+
+		/// <summary>
+		/// Called before Items get updated.
+		/// </summary>
+		public virtual void PreUpdateItems() { }
+
+		/// <summary>
+		/// Called after Items get updated.
+		/// </summary>
+		public virtual void PostUpdateItems() { }
+
+		/// <summary>
+		/// Called before Dusts get updated.
+		/// </summary>
+		public virtual void PreUpdateDusts() { }
+
+		/// <summary>
+		/// Called after Dusts get updated.
+		/// </summary>
+		public virtual void PostUpdateDusts() { }
+
+		/// <summary>
+		/// Called before Time gets updated.
+		/// </summary>
+		public virtual void PreUpdateTime() { }
+
+		/// <summary>
+		/// Called after Time gets updated.
+		/// </summary>
+		public virtual void PostUpdateTime() { }
+
+		/// <summary>
+		/// Use this method to have things happen in the world. In vanilla Terraria, a good example of code suitable for this hook is how Falling Stars fall to the ground during the night.
+		/// <para/> This hook is not called for multiplayer clients.
+		/// </summary>
+		public virtual void PreUpdateWorld() { }
+
+		/// <summary>
+		/// Use this method to have things happen in the world. In vanilla Terraria, a good example of code suitable for this hook is how Falling Stars fall to the ground during the night.
+		/// <para/> This hook is not called for multiplayer clients.
+		/// </summary>
+		public virtual void PostUpdateWorld() { }
+
+		/// <summary>
+		/// Called before Invasions get updated.
+		/// <para/> This hook is not called for multiplayer clients.
+		/// </summary>
+		public virtual void PreUpdateInvasions() { }
+
+		/// <summary>
+		/// Called after Invasions get updated.
+		/// <para/> This hook is not called for multiplayer clients.
+		/// </summary>
+		public virtual void PostUpdateInvasions() { }
 
 		/// <summary>
 		/// Called after the Network got updated, this is the last hook that happens in an update.
-		/// <para />
-		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateInvasionNet" />.
 		/// </summary>
 		public virtual void PostUpdateEverything() { }
 
@@ -218,16 +244,6 @@ namespace Terraria.ModLoader
 		/// Use this to reset any fields you set in any of your ModTile.NearbyEffects hooks back to their default values.
 		/// </summary>
 		public virtual void ResetNearbyTileEffects() { }
-
-		/// <summary>
-		/// Use this method to have things happen in the world. In vanilla Terraria, a good example of code suitable for this hook is how Falling Stars fall to the ground during the night. This hook is called every frame.
-		/// </summary>
-		public virtual void PreUpdateWorld() { }
-
-		/// <summary>
-		/// Use this method to have things happen in the world. In vanilla Terraria, a good example of code suitable for this hook is how Falling Stars fall to the ground during the night. This hook is called every frame.
-		/// </summary>
-		public virtual void PostUpdateWorld() { }
 
 		/// <summary>
 		/// Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are. The tileCounts parameter stores the tile count indexed by tile type.
