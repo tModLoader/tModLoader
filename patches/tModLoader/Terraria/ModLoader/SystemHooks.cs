@@ -2,8 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria.Graphics;
 using Terraria.UI;
+using Terraria.WorldBuilding;
 
 namespace Terraria.ModLoader
 {
@@ -16,6 +18,8 @@ namespace Terraria.ModLoader
 		internal static readonly List<ModSystem> Systems = new List<ModSystem>();
 		internal static readonly Dictionary<string, List<ModSystem>> SystemsByMod = new Dictionary<string, List<ModSystem>>();
 
+		internal static ModSystem[] NetSystems { get; private set; }
+
 		internal static void Add(ModSystem modSystem) {
 			string modName = modSystem.Mod.Name;
 
@@ -27,9 +31,30 @@ namespace Terraria.ModLoader
 			Systems.Add(modSystem);
 		}
 
+		internal static void ResizeArrays() => NetSystems = ModLoader.BuildGlobalHook<ModSystem, Action<BinaryWriter>>(Systems, s => s.NetSend);
+
 		internal static void Unload() {
 			Systems.Clear();
 			SystemsByMod.Clear();
+		}
+
+		internal static void WriteNetSystemOrder(BinaryWriter w) {
+			w.Write((short)NetSystems.Length);
+
+			foreach (var netWorld in NetSystems) {
+				w.Write(netWorld.Mod.netID);
+				w.Write(netWorld.Name);
+			}
+		}
+
+		internal static void ReadNetSystemOrder(BinaryReader r) {
+			short n = r.ReadInt16();
+
+			NetSystems = new ModSystem[n];
+
+			for (short i = 0; i < n; i++) {
+				NetSystems[i] = ModContent.Find<ModSystem>(ModNet.GetMod(r.ReadInt16()).Name, r.ReadString());
+			}
 		}
 
 		internal static void OnModLoad(Mod mod) {
@@ -49,6 +74,12 @@ namespace Terraria.ModLoader
 
 			foreach (var system in list) {
 				system.PostSetupContent();
+			}
+		}
+
+		internal static void OnWorldLoad() {
+			foreach (var system in Systems) {
+				system.OnWorldLoad();
 			}
 		}
 
@@ -193,6 +224,72 @@ namespace Terraria.ModLoader
 		public static void PreSaveAndQuit() {
 			foreach (var system in Systems) {
 				system.PreSaveAndQuit();
+			}
+		}
+
+		public static void PostDrawTiles() {
+			foreach (var system in Systems) {
+				system.PostDrawTiles();
+			}
+		}
+
+		public static void ModifyTimeRate(ref int timeRate, ref int tileUpdateRate) {
+			foreach (var system in Systems) {
+				system.ModifyTimeRate(ref timeRate, ref tileUpdateRate);
+			}
+		}
+
+		public static void PreWorldGen() {
+			foreach (var system in Systems) {
+				system.PreWorldGen();
+			}
+		}
+
+		public static void ModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight) {
+			foreach (var system in Systems) {
+				system.ModifyWorldGenTasks(passes, ref totalWeight);
+			}
+		}
+
+		public static void PostWorldGen() {
+			foreach (var system in Systems) {
+				system.PostWorldGen();
+			}
+		}
+
+		public static void ResetNearbyTileEffects() {
+			foreach (var system in Systems) {
+				system.ResetNearbyTileEffects();
+			}
+		}
+
+		public static void PreUpdateWorld() {
+			foreach (var system in Systems) {
+				system.PreUpdateWorld();
+			}
+		}
+
+		public static void PostUpdateWorld() {
+			foreach (var system in Systems) {
+				system.PostUpdateWorld();
+			}
+		}
+
+		public static void TileCountsAvailable(int[] tileCounts) {
+			foreach (var system in Systems) {
+				system.TileCountsAvailable(tileCounts);
+			}
+		}
+
+		public static void ChooseWaterStyle(ref int style) {
+			foreach (var system in Systems) {
+				system.ChooseWaterStyle(ref style);
+			}
+		}
+
+		public static void ModifyHardmodeTasks(List<GenPass> passes) {
+			foreach (var system in Systems) {
+				system.ModifyHardmodeTasks(passes);
 			}
 		}
 	}

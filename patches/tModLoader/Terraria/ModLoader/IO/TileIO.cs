@@ -275,11 +275,11 @@ namespace Terraria.ModLoader.IO
 					else {
 						info = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
 					}
-					UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
-					int pendingFrameID = modWorld.pendingInfos.IndexOf(info);
+					UnloadedTilesSystem unloadedTiles = ModContent.GetInstance<UnloadedTilesSystem>();
+					int pendingFrameID = unloadedTiles.pendingInfos.IndexOf(info);
 					if (pendingFrameID < 0) {
-						pendingFrameID = modWorld.pendingInfos.Count;
-						modWorld.pendingInfos.Add(info);
+						pendingFrameID = unloadedTiles.pendingInfos.Count;
+						unloadedTiles.pendingInfos.Add(info);
 					}
 					UnloadedTileFrame pendingFrame = new UnloadedTileFrame(pendingFrameID);
 					tile.frameX = pendingFrame.FrameX;

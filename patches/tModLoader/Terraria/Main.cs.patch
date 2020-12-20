@@ -745,7 +745,7 @@
  			}
 +
 +			endVanillaMethod:
-+			WorldHooks.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate);
++			SystemHooks.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate);
  		}
  
  		public Main() {
@@ -3134,7 +3134,7 @@
  
  			TimeLogger.DetailedDrawReset();
  			spriteBatch.End();
-+			WorldHooks.PostDrawTiles();
++			SystemHooks.PostDrawTiles();
  			TimeLogger.DetailedDrawTime(35);
  			HasInteractibleObjectThatIsNotATile = false;
  			SortDrawCacheWorms();

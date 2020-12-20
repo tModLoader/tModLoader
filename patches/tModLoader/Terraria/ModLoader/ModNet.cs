@@ -377,7 +377,7 @@ namespace Terraria.ModLoader
 				p.Write(mod.Name);
 
 			ItemLoader.WriteNetGlobalOrder(p);
-			WorldHooks.WriteNetWorldOrder(p);
+			SystemHooks.WriteNetSystemOrder(p);
 			p.Write(Player.MaxBuffs);
 
 			p.Send(toClient);
@@ -402,7 +402,7 @@ namespace Terraria.ModLoader
 			SetupDiagnostics();
 
 			ItemLoader.ReadNetGlobalOrder(reader);
-			WorldHooks.ReadNetWorldOrder(reader);
+			SystemHooks.ReadNetSystemOrder(reader);
 
 			int serverMaxBuffs = reader.ReadInt32();
 
