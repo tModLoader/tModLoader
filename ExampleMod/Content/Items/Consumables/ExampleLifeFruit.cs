@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Items.Consumables
 		public const int MaxExampleLifeFruits = 10;
 		public const int LifePerFruit = 10;
 
-		public override string Texture => "Terraria/Item_" + ItemID.LifeFruit;
+		public override string Texture => "Terraria/Images/Item_" + ItemID.LifeFruit;
 
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault($"Permanently increases maximum life by {LifePerFruit}\nUp to {MaxExampleLifeFruits} can be used");
