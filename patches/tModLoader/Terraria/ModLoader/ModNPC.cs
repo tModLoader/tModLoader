@@ -329,7 +329,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.
 		/// </summary>
-		public virtual void ModifyNPCLoot(ItemDropDatabase database) {
+		public virtual void ModifyNPCLoot(NPCLoot npcLoot) {
 		}
 
 		/// <summary>

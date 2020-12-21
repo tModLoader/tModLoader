@@ -1,14 +1,13 @@
 --- src/Terraria/Terraria/GameContent/Creative/ItemsSacrificedUnlocksTracker.cs
 +++ src/tModLoader/Terraria/GameContent/Creative/ItemsSacrificedUnlocksTracker.cs
-@@ -1,13 +_,15 @@
+@@ -1,5 +_,6 @@
  using System.Collections.Generic;
  using System.IO;
++using System.Linq;
  using Terraria.ID;
-+using Terraria.ModLoader;
-+using Terraria.ModLoader.IO;
  
  namespace Terraria.GameContent.Creative
- {
+@@ -7,7 +_,7 @@
  	public class ItemsSacrificedUnlocksTracker : IPersistentPerWorldContent, IOnPlayerJoining
  	{
  		public const int POSITIVE_SACRIFICE_COUNT_CAP = 9999;
@@ -17,38 +16,16 @@
  		public readonly Dictionary<int, int> SacrificesCountByItemIdCache;
  
  		public int LastEditId {
-@@ -50,19 +_,28 @@
- 			Dictionary<string, int> dictionary = new Dictionary<string, int>(_sacrificeCountByItemPersistentId);
+@@ -47,7 +_,11 @@
+ 		}
+ 
+ 		public void Save(BinaryWriter writer) {
+-			Dictionary<string, int> dictionary = new Dictionary<string, int>(_sacrificeCountByItemPersistentId);
++			//Only include vanilla items in the dictionary.
++			Dictionary<string, int> dictionary = _sacrificeCountByItemPersistentId
++				.Where(pair => ContentSamples.ItemNetIdsByPersistentIds.TryGetValue(pair.Key, out int netID) && ContentSamples.ItemsByType.TryGetValue(netID, out Item realItem) && realItem.modItem == null)
++				.ToDictionary(pair => pair.Key, pair => pair.Value);
++
  			writer.Write(dictionary.Count);
  			foreach (KeyValuePair<string, int> item in dictionary) {
-+				ContentSamples.ItemNetIdsByPersistentIds.TryGetValue(item.Key, out int netID);
-+				ContentSamples.ItemsByType.TryGetValue(netID, out Item realItem);
-+				if (realItem.modItem == null) {
--				writer.Write(item.Key);
-+					writer.Write(item.Key);
--				writer.Write(item.Value);
-+					writer.Write(item.Value);
-+				}
- 			}
- 		}
- 
- 		public void Load(BinaryReader reader, int gameVersionSaveWasMadeOn) {
-+			Dictionary<string, int> dictionary = new Dictionary<string, int>(_sacrificeCountByItemPersistentId);
- 			int num = reader.ReadInt32();
--			for (int i = 0; i < num; i++) {
-+			foreach (KeyValuePair<string, int> item in dictionary) {
- 				string key = reader.ReadString();
- 				int value = reader.ReadInt32();
-+				ContentSamples.ItemNetIdsByPersistentIds.TryGetValue(key, out int netID);
-+				ContentSamples.ItemsByType.TryGetValue(netID, out Item realItem);
-+				if (realItem.modItem == null) {
--				_sacrificeCountByItemPersistentId[key] = value;
-+					_sacrificeCountByItemPersistentId[key] = value;
--				if (ContentSamples.ItemNetIdsByPersistentIds.TryGetValue(key, out int value2))
-+					if (ContentSamples.ItemNetIdsByPersistentIds.TryGetValue(key, out int value2))
--					SacrificesCountByItemIdCache[value2] = value;
-+						SacrificesCountByItemIdCache[value2] = value;
-+				}
- 			}
- 		}
- 
+ 				writer.Write(item.Key);

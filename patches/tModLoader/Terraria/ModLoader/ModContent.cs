@@ -82,7 +82,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets the texture with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithoutExtension". Throws an ArgumentException if the texture does not exist. If a vanilla texture is desired, the format "Terraria/FileNameWithoutExtension" will reference an image from the "terraria/Content/Images" folder. Note: Texture2D is in the Microsoft.Xna.Framework.Graphics namespace.
+		/// Gets the texture with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithoutExtension". Throws an ArgumentException if the texture does not exist. If a vanilla texture is desired, the format "Terraria/Images/FileNameWithoutExtension" will reference an image from the "terraria/Images/Content" folder. Note: Texture2D is in the Microsoft.Xna.Framework.Graphics namespace.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
 		public static Asset<Texture2D> GetTexture(string name) {
@@ -92,7 +92,7 @@ namespace Terraria.ModLoader
 			SplitName(name, out string modName, out string subName);
 
 			if(modName == "Terraria")
-				return Main.Assets.Request<Texture2D>(Path.Combine("Images", subName));
+				return Main.Assets.Request<Texture2D>(subName);
 
 			if (!ModLoader.TryGetMod(modName, out var mod))
 				throw new MissingResourceException($"Missing mod: {name}");
@@ -133,7 +133,7 @@ namespace Terraria.ModLoader
 
 			if (modName == "Terraria") {
 				if ((Main.instance.Content as TMLContentManager).ImageExists(subName)) {
-					texture = Main.Assets.Request<Texture2D>(Path.Combine("Images", subName));
+					texture = Main.Assets.Request<Texture2D>(subName);
 
 					return true;
 				}
@@ -445,17 +445,24 @@ namespace Terraria.ModLoader
 		}
 
 		private static void SetupBestiary(CancellationToken token) {
-			BestiaryDatabase bestiaryDatabase = new BestiaryDatabase();
+			//Beastiary DB
+			var bestiaryDatabase = new BestiaryDatabase();
 			new BestiaryDatabaseNPCsPopulator().Populate(bestiaryDatabase);
 			Main.BestiaryDB = bestiaryDatabase;
 			ContentSamples.RebuildBestiarySortingIDsByBestiaryDatabaseContents(bestiaryDatabase);
-			Main.BestiaryTracker = new BestiaryUnlocksTracker();
-			ItemDropDatabase itemDropDatabase = new ItemDropDatabase();
+			
+			//Drops DB
+			var itemDropDatabase = new ItemDropDatabase();
 			itemDropDatabase.Populate();
 			Main.ItemDropsDB = itemDropDatabase;
+			
+			//Update the bestiary DB with the drops DB.
 			bestiaryDatabase.Merge(Main.ItemDropsDB);
+			
+			//Etc
 			Main.BestiaryUI = new UIBestiaryTest(Main.BestiaryDB);
 			Main.ItemDropSolver = new ItemDropResolver(itemDropDatabase);
+			Main.BestiaryTracker = new BestiaryUnlocksTracker();
 		}
 
 		private static void SetupRecipes(CancellationToken token) {
