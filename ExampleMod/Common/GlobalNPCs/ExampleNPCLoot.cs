@@ -23,12 +23,11 @@ namespace ExampleMod.Common.GlobalNPCs
 			}
 
 			if (npc.type == NPCID.Guide) { //We will now use the Guide to explain many of the other types of drop rules.
-				npcLoot.Remove(new ItemDropWithConditionRule(ItemID.GreenCap, 1, 1, 1, new Conditions.NamedNPC("Andrew"))); //RemoveFromNPC will uniquely remove any drop with the specific drop rule from any NPC specified.
+				//TODO: This doesn't work, as .Remove() uses by-reference checks.
+				//npcLoot.Remove(new ItemDropWithConditionRule(ItemID.GreenCap, 1, 1, 1, new Conditions.NamedNPC("Andrew"))); //RemoveFromNPC will uniquely remove any drop with the specific drop rule from any NPC specified.
+				
 				npcLoot.Add(ItemDropRule.Common(ItemID.GreenCap, 1)); //In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
-
-			//add more stuff here
-
 		}
 	}
 }
