@@ -4,7 +4,7 @@
  namespace Terraria.GameContent.ItemDropRules
  {
 -	public class DropLocalPerClientAndResetsNPCMoneyTo0 : CommonDrop
-+	public partial class DropLocalPerClientAndResetsNPCMoneyTo0
++	public partial class DropLocalPerClientAndResetsNPCMoneyTo0 : CommonDrop
  	{
  		private IItemDropRuleCondition _condition;
  

@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/ItemDropRules/DropBasedOnMasterMode.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/DropBasedOnMasterMode.cs
+@@ -2,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.ItemDropRules
+ {
+-	public class DropBasedOnMasterMode : IItemDropRule, INestedItemDropRule
++	public partial class DropBasedOnMasterMode : IItemDropRule, INestedItemDropRule
+ 	{
+ 		private IItemDropRule _ruleForDefault;
+ 		private IItemDropRule _ruleForMasterMode;
