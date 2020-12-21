@@ -22,9 +22,17 @@ namespace ExampleMod.Common.GlobalNPCs
 				// For example, if you had a dropsOutOfY as 7 and a dropsXOutOfY as 2, then the chance the item would drop is 2/7 or about 28%.
 			}
 
-			if (npc.type == NPCID.Guide) { //We will now use the Guide to explain many of the other types of drop rules.
-				//TODO: This doesn't work, as .Remove() uses by-reference checks.
-				//npcLoot.Remove(new ItemDropWithConditionRule(ItemID.GreenCap, 1, 1, 1, new Conditions.NamedNPC("Andrew"))); //RemoveFromNPC will uniquely remove any drop with the specific drop rule from any NPC specified.
+			// We will now use the Guide to explain many of the other types of drop rules.
+			if (npc.type == NPCID.Guide) {
+				// RemoveWhere will remove any drop rule that matches the provided expression.
+				// To make your own expressions to remove vanilla drop rules, you'll usually have to study the original source code that adds those rules.
+				npcLoot.RemoveWhere(
+					// The following expression returns true if the following conditions are met:
+					rule => rule is ItemDropWithConditionRule drop // If the rule is an ItemDropWithConditionRule instance
+						&& drop._itemId == ItemID.GreenCap // And that instance drops a green cap
+						&& drop._condition is Conditions.NamedNPC npcNameCondition // ..And if its condition is that an npc name must match some string
+						&& npcNameCondition._neededName == "Andrew" // And the condition's string is "Andrew". 
+				);
 				
 				npcLoot.Add(ItemDropRule.Common(ItemID.GreenCap, 1)); //In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
