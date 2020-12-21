@@ -1,11 +1,11 @@
 --- src/Terraria/Terraria/GameContent/ItemDropRules/LeadingConditionRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/LeadingConditionRule.cs
-@@ -2,7 +_,7 @@
- 
- namespace Terraria.GameContent.ItemDropRules
+@@ -4,7 +_,7 @@
  {
--	public class LeadingConditionRule : IItemDropRule
-+	public partial class LeadingConditionRule : IItemDropRule
+ 	public class LeadingConditionRule : IItemDropRule
  	{
- 		private IItemDropRuleCondition _condition;
+-		private IItemDropRuleCondition _condition;
++		public IItemDropRuleCondition _condition;
  
+ 		public List<IItemDropRuleChainAttempt> ChainedRules {
+ 			get;

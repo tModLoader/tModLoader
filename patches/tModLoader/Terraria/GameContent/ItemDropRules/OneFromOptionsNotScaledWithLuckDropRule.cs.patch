@@ -1,11 +1,15 @@
 --- src/Terraria/Terraria/GameContent/ItemDropRules/OneFromOptionsNotScaledWithLuckDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/OneFromOptionsNotScaledWithLuckDropRule.cs
-@@ -2,7 +_,7 @@
- 
- namespace Terraria.GameContent.ItemDropRules
+@@ -4,9 +_,9 @@
  {
--	public class OneFromOptionsNotScaledWithLuckDropRule : IItemDropRule
-+	public partial class OneFromOptionsNotScaledWithLuckDropRule : IItemDropRule
+ 	public class OneFromOptionsNotScaledWithLuckDropRule : IItemDropRule
  	{
- 		private int[] _dropIds;
- 		private int _outOfY;
+-		private int[] _dropIds;
++		public int[] _dropIds;
+-		private int _outOfY;
++		public int _outOfY;
+-		private int _xoutOfY;
++		public int _xoutOfY;
+ 
+ 		public List<IItemDropRuleChainAttempt> ChainedRules {
+ 			get;

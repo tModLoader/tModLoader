@@ -1,11 +1,13 @@
 --- src/Terraria/Terraria/GameContent/ItemDropRules/OneFromRulesRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/OneFromRulesRule.cs
-@@ -2,7 +_,7 @@
- 
- namespace Terraria.GameContent.ItemDropRules
+@@ -4,8 +_,8 @@
  {
--	public class OneFromRulesRule : IItemDropRule, INestedItemDropRule
-+	public partial class OneFromRulesRule : IItemDropRule, INestedItemDropRule
+ 	public class OneFromRulesRule : IItemDropRule, INestedItemDropRule
  	{
- 		private IItemDropRule[] _options;
- 		private int _outOfY;
+-		private IItemDropRule[] _options;
++		public IItemDropRule[] _options;
+-		private int _outOfY;
++		public int _outOfY;
+ 
+ 		public List<IItemDropRuleChainAttempt> ChainedRules {
+ 			get;

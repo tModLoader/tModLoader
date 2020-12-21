@@ -1,11 +1,13 @@
 --- src/Terraria/Terraria/GameContent/ItemDropRules/DropBasedOnExpertMode.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/DropBasedOnExpertMode.cs
-@@ -2,7 +_,7 @@
- 
- namespace Terraria.GameContent.ItemDropRules
+@@ -4,8 +_,8 @@
  {
--	public class DropBasedOnExpertMode : IItemDropRule, INestedItemDropRule
-+	public partial class DropBasedOnExpertMode : IItemDropRule, INestedItemDropRule
+ 	public class DropBasedOnExpertMode : IItemDropRule, INestedItemDropRule
  	{
- 		private IItemDropRule _ruleForNormalMode;
- 		private IItemDropRule _ruleForExpertMode;
+-		private IItemDropRule _ruleForNormalMode;
++		public IItemDropRule _ruleForNormalMode;
+-		private IItemDropRule _ruleForExpertMode;
++		public IItemDropRule _ruleForExpertMode;
+ 
+ 		public List<IItemDropRuleChainAttempt> ChainedRules {
+ 			get;

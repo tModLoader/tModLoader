@@ -1,11 +1,13 @@
 --- src/Terraria/Terraria/GameContent/ItemDropRules/DropOneByOne.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/DropOneByOne.cs
-@@ -2,7 +_,7 @@
+@@ -18,8 +_,8 @@
+ 			public float GetPersonalDropRate() => (float)DropsXOutOfYTimes_TheX / (float)DropsXOutOfYTimes_TheY;
+ 		}
  
- namespace Terraria.GameContent.ItemDropRules
- {
--	public class DropOneByOne : IItemDropRule
-+	public partial class DropOneByOne : IItemDropRule
- 	{
- 		public struct Parameters
- 		{
+-		private int _itemId;
++		public int _itemId;
+-		private Parameters _parameters;
++		public Parameters _parameters;
+ 
+ 		public List<IItemDropRuleChainAttempt> ChainedRules {
+ 			get;
