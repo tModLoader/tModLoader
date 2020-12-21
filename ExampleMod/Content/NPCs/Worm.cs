@@ -12,7 +12,7 @@ namespace ExampleMod.NPCs
 {
 	internal class ExampleWormHead : ExampleWorm
 	{
-		public override string Texture => "Terraria/NPC_" + NPCID.DiggerHead;
+		public override string Texture => "Terraria/Images/NPC_" + NPCID.DiggerHead;
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Worm");
@@ -81,7 +81,7 @@ namespace ExampleMod.NPCs
 
 	internal class ExampleWormBody : ExampleWorm
 	{
-		public override string Texture => "Terraria/NPC_" + NPCID.DiggerBody;
+		public override string Texture => "Terraria/Images/NPC_" + NPCID.DiggerBody;
 
 		public override void SetStaticDefaults() {
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
@@ -99,7 +99,7 @@ namespace ExampleMod.NPCs
 
 	internal class ExampleWormTail : ExampleWorm
 	{
-		public override string Texture => "Terraria/NPC_" + NPCID.DiggerTail;
+		public override string Texture => "Terraria/Images/NPC_" + NPCID.DiggerTail;
 
 		public override void SetStaticDefaults() {
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
