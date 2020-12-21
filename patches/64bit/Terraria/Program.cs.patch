@@ -1,6 +1,6 @@
 --- src/tModLoader/Terraria/Program.cs
 +++ src/64bit/Terraria/Program.cs
-@@ -20,6 +_,7 @@
+@@ -20,10 +_,12 @@
  using Terraria.Initializers;
  using Terraria.Localization;
  using Terraria.ModLoader;
@@ -8,6 +8,11 @@
  using Terraria.ModLoader.Exceptions;
  using Terraria.Social;
  using Terraria.Utilities;
+ 
++
+ namespace Terraria
+ {
+ 	public static class Program
 @@ -104,7 +_,7 @@
  
  		private static void ForceJITOnMethod(MethodInfo method)

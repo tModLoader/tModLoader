@@ -211,16 +211,8 @@
        <LogicalName>Steamworks.NET.dll</LogicalName>
      </EmbeddedResource>
      <EmbeddedResource Include="..\..\references\Steamworks.NET.OSX.dll" Condition="$(DefineConstants.Contains('MAC'))">
-@@ -131,13 +_,23 @@
-     <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
-       <LogicalName>Steamworks.NET.dll</LogicalName>
-     </EmbeddedResource>
--    <EmbeddedResource Include="..\..\references\TerrariaHooks.XNA.dll" Condition="$(DefineConstants.Contains('XNA'))">
-+    <EmbeddedResource Include="..\..\references\TerrariaHooks.Window.dll" Condition="$(DefineConstants.Contains('XNA'))">
-       <LogicalName>TerrariaHooks.dll</LogicalName>
-     </EmbeddedResource>
--    <EmbeddedResource Include="..\..\references\TerrariaHooks.FNA.dll" Condition="$(DefineConstants.Contains('FNA'))">
-+    <EmbeddedResource Include="..\..\references\TerrariaHooks.Mono.dll" Condition="$(DefineConstants.Contains('FNA'))">
+@@ -137,7 +_,17 @@
+     <EmbeddedResource Include="..\..\references\TerrariaHooks.FNA.dll" Condition="$(DefineConstants.Contains('FNA'))">
        <LogicalName>TerrariaHooks.dll</LogicalName>
      </EmbeddedResource>
 -    <EmbeddedResource Include="..\..\references\Ionic.Zip.Reduced.dll" />
