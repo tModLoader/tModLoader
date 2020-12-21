@@ -1,0 +1,19 @@
+--- src/Terraria/Terraria/GameContent/LootSimulation/LootSimulationItemCounter.cs
++++ src/tModLoader/Terraria/GameContent/LootSimulation/LootSimulationItemCounter.cs
+@@ -1,13 +_,14 @@
+ using System.Collections.Generic;
+ using System.Linq;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.LootSimulation
+ {
+ 	public class LootSimulationItemCounter
+ 	{
+-		private long[] _itemCountsObtained = new long[5088];
++		private long[] _itemCountsObtained = new long[ItemLoader.ItemCount];
+-		private long[] _itemCountsObtainedExpert = new long[5088];
++		private long[] _itemCountsObtainedExpert = new long[ItemLoader.ItemCount];
+ 		private long _totalTimesAttempted;
+ 		private long _totalTimesAttemptedExpert;
+ 

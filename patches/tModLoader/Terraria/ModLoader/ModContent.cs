@@ -8,6 +8,9 @@ using System.Linq;
 using System.Threading;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI;
+using Terraria.GameContent.UI.States;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
@@ -401,13 +404,15 @@ namespace Terraria.ModLoader
 
 			RefreshModLanguage(Language.ActiveCulture);
 			MapLoader.SetupModMap();
-			ItemSorting.SetupWhiteLists();
 			RarityLoader.Initialize();
+			
+			ContentSamples.Initialize();
 			PlayerInput.reinitialize = true;
+			SetupBestiary(token);
 			SetupRecipes(token);
 			ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
+			ItemSorting.SetupWhiteLists();
 
-			ContentSamples.Initialize();
 			MenuLoader.GotoSavedModMenu();
 		}
 		
@@ -435,6 +440,27 @@ namespace Terraria.ModLoader
 					MemoryTracking.Update(mod.Name);
 				}
 			}
+		}
+
+		private static void SetupBestiary(CancellationToken token) {
+			//Beastiary DB
+			var bestiaryDatabase = new BestiaryDatabase();
+			new BestiaryDatabaseNPCsPopulator().Populate(bestiaryDatabase);
+			Main.BestiaryDB = bestiaryDatabase;
+			ContentSamples.RebuildBestiarySortingIDsByBestiaryDatabaseContents(bestiaryDatabase);
+			
+			//Drops DB
+			var itemDropDatabase = new ItemDropDatabase();
+			itemDropDatabase.Populate();
+			Main.ItemDropsDB = itemDropDatabase;
+			
+			//Update the bestiary DB with the drops DB.
+			bestiaryDatabase.Merge(Main.ItemDropsDB);
+			
+			//Etc
+			Main.BestiaryUI = new UIBestiaryTest(Main.BestiaryDB);
+			Main.ItemDropSolver = new ItemDropResolver(itemDropDatabase);
+			Main.BestiaryTracker = new BestiaryUnlocksTracker();
 		}
 
 		private static void SetupRecipes(CancellationToken token) {
@@ -527,7 +553,7 @@ namespace Terraria.ModLoader
 			// BuffID.Search = IdDictionary.Create<BuffID, int>();
 			
 			ContentSamples.Initialize();
-			
+
 			CleanupModReferences();
 		}
 
