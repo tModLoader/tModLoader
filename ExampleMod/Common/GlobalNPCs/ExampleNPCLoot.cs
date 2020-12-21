@@ -14,7 +14,7 @@ namespace ExampleMod.Common.GlobalNPCs
 		//Here we go through all of them, and how they can be used.
 		//There are tons of other examples in vanilla! In a decompiled vanilla build, GameContent/ItemDropRules/ItemDropDatabase adds item drops to every single vanilla NPC, which can be a good resource.
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-			if (npc.lifeMax > 5 && npc.value > 0f) { //If npc has health higher than 5 and drops money (aka is not a critter)
+			if (!NPCID.Sets.CountsAsCritter[npc.type]) { //If npc is not a critter
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1)); //Make it drop ExampleItem.
 				// ItemDropRule.Common is what you would use in most cases, it simply drops the item with a chance specified.
 				// The dropsOutOfY int is used for the numerator of the fractional chance of dropping this item.
