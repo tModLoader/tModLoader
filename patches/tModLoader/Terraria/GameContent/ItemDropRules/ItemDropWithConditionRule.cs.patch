@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/ItemDropRules/ItemDropWithConditionRule.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/ItemDropWithConditionRule.cs
+@@ -2,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.ItemDropRules
+ {
+-	public class ItemDropWithConditionRule : CommonDrop
++	public partial class ItemDropWithConditionRule : CommonDrop
+ 	{
+ 		private IItemDropRuleCondition _condition;
+ 
