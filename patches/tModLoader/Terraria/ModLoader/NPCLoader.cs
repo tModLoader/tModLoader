@@ -134,8 +134,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref EmoteBubble.CountNPCs, nextNPC);
 			Array.Resize(ref WorldGen.TownManager._hasRoom, nextNPC);
 
-			for (int i = 0; i < Main.player.Length; i++) {
-				Array.Resize(ref Main.player[i].npcTypeNoAggro, nextNPC);
+			foreach (var player in Main.player) {
+				Array.Resize(ref player.npcTypeNoAggro, nextNPC);
 			}
 
 			for (int k = NPCID.Count; k < nextNPC; k++) {

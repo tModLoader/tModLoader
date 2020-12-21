@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Terraria.GameContent.ItemDropRules;
 
 namespace Terraria.ModLoader
@@ -14,8 +15,18 @@ namespace Terraria.ModLoader
 			this.itemDropDatabase = itemDropDatabase;
 		}
 
-		public IItemDropRule Add(IItemDropRule entry) => itemDropDatabase.RegisterToNPC(npcType, entry);
-		public IItemDropRule Remove(IItemDropRule entry) => itemDropDatabase.RemoveFromNPC(npcType, entry);
 		public List<IItemDropRule> Get(bool includeGlobalDrops = true) => itemDropDatabase.GetRulesForNPCID(npcType, includeGlobalDrops);
+
+		public IItemDropRule Add(IItemDropRule entry) => itemDropDatabase.RegisterToNPC(npcType, entry);
+
+		public IItemDropRule Remove(IItemDropRule entry) => itemDropDatabase.RemoveFromNPC(npcType, entry);
+
+		public void RemoveWhere(Predicate<IItemDropRule> predicate, bool includeGlobalDrops = true) {
+			foreach (var entry in Get(includeGlobalDrops)) {
+				if (predicate(entry)) {
+					itemDropDatabase.RemoveFromNPC(npcType, entry);
+				}
+			}
+		}
 	}
 }
