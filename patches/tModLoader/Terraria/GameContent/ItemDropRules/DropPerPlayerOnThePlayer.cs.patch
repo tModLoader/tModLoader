@@ -1,0 +1,10 @@
+--- src/Terraria/Terraria/GameContent/ItemDropRules/DropPerPlayerOnThePlayer.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/DropPerPlayerOnThePlayer.cs
+@@ -1,6 +_,6 @@
+ namespace Terraria.GameContent.ItemDropRules
+ {
+-	public class DropPerPlayerOnThePlayer : CommonDrop
++	public partial class DropPerPlayerOnThePlayer : CommonDrop
+ 	{
+ 		private IItemDropRuleCondition _condition;
+ 

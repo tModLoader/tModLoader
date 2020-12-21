@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/ItemDropRules/DropOneByOne.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/DropOneByOne.cs
+@@ -2,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.ItemDropRules
+ {
+-	public class DropOneByOne : IItemDropRule
++	public partial class DropOneByOne : IItemDropRule
+ 	{
+ 		public struct Parameters
+ 		{

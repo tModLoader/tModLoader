@@ -1,0 +1,10 @@
+--- src/Terraria/Terraria/GameContent/ItemDropRules/DropLocalPerClientAndResetsNPCMoneyTo0.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/DropLocalPerClientAndResetsNPCMoneyTo0.cs
+@@ -1,6 +_,6 @@
+ namespace Terraria.GameContent.ItemDropRules
+ {
+-	public class DropLocalPerClientAndResetsNPCMoneyTo0 : CommonDrop
++	public partial class DropLocalPerClientAndResetsNPCMoneyTo0
+ 	{
+ 		private IItemDropRuleCondition _condition;
+ 

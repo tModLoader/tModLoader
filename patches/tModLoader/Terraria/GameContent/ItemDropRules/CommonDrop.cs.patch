@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/ItemDropRules/CommonDrop.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonDrop.cs
+@@ -2,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.ItemDropRules
+ {
+-	public class CommonDrop : IItemDropRule
++	public partial class CommonDrop : IItemDropRule
+ 	{
+ 		protected int _itemId;
+ 		protected int _dropsOutOfY;

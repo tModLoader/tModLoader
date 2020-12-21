@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/ItemDropRules/OneFromOptionsDropRule.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/OneFromOptionsDropRule.cs
+@@ -2,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.ItemDropRules
+ {
+-	public class OneFromOptionsDropRule : IItemDropRule
++	public partial class OneFromOptionsDropRule : IItemDropRule
+ 	{
+ 		private int[] _dropIds;
+ 		private int _outOfY;

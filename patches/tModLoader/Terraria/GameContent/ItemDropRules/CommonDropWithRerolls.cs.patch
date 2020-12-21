@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/ItemDropRules/CommonDropWithRerolls.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonDropWithRerolls.cs
+@@ -2,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.ItemDropRules
+ {
+-	public class CommonDropWithRerolls : CommonDrop
++	public partial class CommonDropWithRerolls : CommonDrop
+ 	{
+ 		private int _timesToRoll;
+ 
