@@ -77,9 +77,15 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void OnWorldLoad() {
+		public static void OnWorldLoad() {
 			foreach (var system in Systems) {
 				system.OnWorldLoad();
+			}
+		}
+
+		public static void OnWorldUnload() {
+			foreach (var system in Systems) {
+				system.OnWorldUnload();
 			}
 		}
 

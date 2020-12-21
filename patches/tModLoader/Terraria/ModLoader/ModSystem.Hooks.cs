@@ -27,6 +27,11 @@ namespace Terraria.ModLoader
 		public virtual void OnWorldLoad() { }
 
 		/// <summary>
+		/// Called whenever a world is unloaded. Use this to deinitialize world-related data structures, etc.
+		/// </summary>
+		public virtual void OnWorldUnload() { }
+
+		/// <summary>
 		/// Allows you to determine what music should currently play.
 		/// </summary>
 		/// <param name="music">The music.</param>

@@ -174,7 +174,7 @@
  
  			setWorldSize();
  			Star.SpawnStars();
-+			SystemHooks.OnWorldLoad();
++			SystemHooks.OnWorldUnload();
  			worldCleared = true;
  		}
  
