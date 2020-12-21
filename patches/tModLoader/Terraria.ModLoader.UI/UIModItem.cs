@@ -17,6 +17,7 @@ namespace Terraria.ModLoader.UI
 	internal class UIModItem : UIPanel
 	{
 		private const float PADDING = 5f;
+		private const int MAXREFERENCESTOSHOWINTOOLTIP = 16;
 
 		private UIImage _moreInfoButton;
 		private UIImage _modIcon;
@@ -115,13 +116,15 @@ namespace Terraria.ModLoader.UI
 
 			_modReferences = _mod.properties.modReferences.Select(x => x.mod).ToArray();
 			if (_modReferences.Length > 0 && !_mod.Enabled) {
-				string refs = string.Join(", ", _mod.properties.modReferences);
+				string refs = "\n" + string.Join("\n", _mod.properties.modReferences.Take(MAXREFERENCESTOSHOWINTOOLTIP));
 				var icon = UICommon.ButtonExclamationTexture;
-				_modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.ModDependencyClickTooltip", refs)) {
+				string modReferenceIconTooltip = _mod.properties.modReferences.Length > MAXREFERENCESTOSHOWINTOOLTIP ? Language.GetTextValue("tModLoader.ModDependencyClickTooltipMore", refs, _mod.properties.modReferences.Length - MAXREFERENCESTOSHOWINTOOLTIP) : Language.GetTextValue("tModLoader.ModDependencyClickTooltip", refs);
+				_modReferenceIcon = new UIHoverImage(icon, modReferenceIconTooltip) {
 					Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING, 0f),
 					Top = { Pixels = 42.5f }
 				};
 				_modReferenceIcon.OnClick += EnableDependencies;
+				_modReferenceIcon.delayedDrawStorage = (string tooltipText) => UIMods.tooltip = tooltipText; 
 				Append(_modReferenceIcon);
 			}
 			if (_mod.modFile.ValidModBrowserSignature) {
@@ -252,10 +255,10 @@ namespace Terraria.ModLoader.UI
 		}
 
 		internal void Enable() {
+			_uiModStateText.SetEnabled();
 			if(_mod.Enabled){return;}
 			Main.PlaySound(SoundID.MenuTick);
 			_mod.Enabled = true;
-			_uiModStateText.SetEnabled();
 		}
 
 		internal void Disable() {
@@ -272,7 +275,7 @@ namespace Terraria.ModLoader.UI
 			EnableDepsRecursive(modList, _modReferences, missingRefs);
 
 			if (missingRefs.Any()) {
-				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", string.Join(",", missingRefs)), Interface.modsMenuID);
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", string.Join(", ", missingRefs)), Interface.modsMenuID);
 			}
 		}
 

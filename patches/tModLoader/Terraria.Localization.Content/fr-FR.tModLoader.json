@@ -21,6 +21,7 @@
 		// "ModsOpenConfig": "Click to open config",
 		"ModOldWarning": "Mod obsolète, activer à vos risques et périls",
 		"ModDependencyClickTooltip": "Ce Mod dépend de : {0}\n (Cliquer pour activer)",
+		// "ModDependencyClickTooltipMore": "This mod depends on: {0}\n...and {1} more mods\n (click to enable)",
 		"ModDependencyModsNotFound": "Ces Mods n'ont pas été trouvés: {0}",
 		// "ModDidNotFullyUnloadWarning": "This mod did not fully unload during last unload.\n(This is a message for the mod creator)",
 		"BetaModCantPublish": "Ce Mod a été compilé en version Beta et ne peut pas être publié",

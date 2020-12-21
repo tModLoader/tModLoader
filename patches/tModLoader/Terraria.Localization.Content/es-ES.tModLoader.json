@@ -21,6 +21,7 @@
 		"ModsOpenConfig": "Haz clic para abrir la configuración",
 		"ModOldWarning": "Mod desactualizado, actívalo bajo tu propia responsabilidad",
 		"ModDependencyClickTooltip": "Este mod depende de {0}\n (haz clic para activar)",
+		// "ModDependencyClickTooltipMore": "This mod depends on: {0}\n...and {1} more mods\n (click to enable)",
 		"ModDependencyModsNotFound": "Los siguientes mods no han sido encontrados: {0}",
 		"ModDidNotFullyUnloadWarning": "Este mod no se desactivó completamente durante el último reinicio.\n(Este es un mensaje para el creador del mod)",
 		"BetaModCantPublish": "Este mod ha sido desarrollado en una versión beta y no puede ser publicado",

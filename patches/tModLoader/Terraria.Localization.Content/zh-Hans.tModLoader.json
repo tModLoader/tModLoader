@@ -22,6 +22,7 @@
 		"ModsOpenConfig": "点击打开配置",
 		"ModOldWarning": "旧模组,有风险",
 		"ModDependencyClickTooltip": "该模组依赖于: {0}\n(点击启用)",
+		// "ModDependencyClickTooltipMore": "This mod depends on: {0}\n...and {1} more mods\n (click to enable)",
 		"ModDependencyModsNotFound": "未找到下列模组: {0}",
 		"ModDidNotFullyUnloadWarning": "该模组在上次卸载时未完全卸载.\n(这是给模组作者的信息)",
 		"BetaModCantPublish": "该模组基于测试版本tModLoader,不能发布",
