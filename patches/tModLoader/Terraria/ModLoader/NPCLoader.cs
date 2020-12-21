@@ -208,16 +208,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateSetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry);
-		private static HookList HookSetBestiary = AddHook<DelegateSetBestiary>(g => g.SetBestiary);
-		public static void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
-			npc.modNPC?.SetBestiary(database, bestiaryEntry);
-
-			foreach (GlobalNPC g in HookSetBestiary.arr) {
-				g.Instance(npc).SetBestiary(npc, database, bestiaryEntry);
-			}
-		}
-
 		private static HookList HookResetEffects = AddHook<Action<NPC>>(g => g.ResetEffects);
 
 		public static void ResetEffects(NPC npc) {
