@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 
 namespace Terraria.ModLoader.IO
 {
-	public abstract class TagSerializer
+	public abstract class TagSerializer : ModType
 	{
 		public abstract Type Type { get; }
 		public abstract Type TagType { get; }
@@ -27,15 +27,6 @@ namespace Terraria.ModLoader.IO
 		internal static void Reload() {
 			serializers.Clear();
 			typeNameCache.Clear();
-			AddSerializer(new BoolTagSerializer());
-			AddSerializer(new UShortTagSerializer());
-			AddSerializer(new UIntTagSerializer());
-			AddSerializer(new ULongTagSerializer());
-			AddSerializer(new Vector2TagSerializer());
-			AddSerializer(new Vector3TagSerializer());
-			AddSerializer(new ColorSerializer());
-			AddSerializer(new Point16Serializer());
-			AddSerializer(new RectangleSerializer());
 		}
 
 		public static bool TryGetSerializer(Type type, out TagSerializer serializer) {
@@ -51,7 +42,7 @@ namespace Terraria.ModLoader.IO
 			return false;
 		}
 
-		public static void AddSerializer(TagSerializer serializer) {
+		internal static void AddSerializer(TagSerializer serializer) {
 			serializers.Add(serializer.Type, serializer);
 		}
 
@@ -70,6 +61,10 @@ namespace Terraria.ModLoader.IO
 			}
 
 			return null;
+		}
+
+		protected sealed override void Register() {
+			AddSerializer(this);
 		}
 	}
 

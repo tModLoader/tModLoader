@@ -12,7 +12,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of ModProjectile (preferably overriding this class) to pass as parameters to Mod.AddProjectile.
 	/// </summary>
-	public class ModProjectile : ModTexturedType
+	public abstract class ModProjectile : ModTexturedType
 	{
 		//add modProjectile property to Terraria.Projectile (internal set)
 		//set modProjectile to null at beginning of Terraria.Projectile.SetDefaults
@@ -418,6 +418,12 @@ namespace Terraria.ModLoader
 		/// The speed at which the grapple pulls the player after hitting something. Defaults to 11, but the Bat Hook uses 16.
 		/// </summary>
 		public virtual void GrapplePullSpeed(Player player, ref float speed) {
+		}
+
+		/// <summary>
+		/// The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile.
+		/// </summary>
+		public virtual void GrappleTargetPoint(Player player, ref float grappleX, ref float grappleY) {
 		}
 
 		/// <summary>

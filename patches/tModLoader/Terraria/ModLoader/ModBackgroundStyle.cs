@@ -99,7 +99,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves to collect functions that operate on any kind of background style, without being specific to one single background style.
 	/// </summary>
-	public class GlobalBgStyle:ModType
+	public abstract class GlobalBgStyle : ModType
 	{
 		protected override sealed void Register() {
 			ModTypeLookup<GlobalBgStyle>.Register(this);

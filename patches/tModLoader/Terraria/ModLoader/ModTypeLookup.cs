@@ -4,14 +4,14 @@ using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
-	internal class ModTypeLookup
+	internal static class ModTypeLookup
 	{
 		public static event Action OnClear;
 
 		public static void Clear() => OnClear?.Invoke();
 	}
 
-	internal class ModTypeLookup<T> where T : IModType
+	public static class ModTypeLookup<T> where T : IModType
 	{
 		private static readonly Dictionary<string, T> dict = new Dictionary<string, T>();
 		private static readonly Dictionary<string, Dictionary<string, T>> tieredDict = new Dictionary<string, Dictionary<string, T>>();
@@ -35,13 +35,13 @@ namespace Terraria.ModLoader
 			subDictionary[instance.Name] = instance;
 		}
 
-		public static T Get(string fullname) => dict[fullname];
+		internal static T Get(string fullName) => dict[fullName];
 
-		public static T Get(string modName, string contentName) => tieredDict[modName][contentName];
+		internal static T Get(string modName, string contentName) => tieredDict[modName][contentName];
 
-		public static bool TryGetValue(string fullname, out T value) => dict.TryGetValue(fullname, out value);
+		internal static bool TryGetValue(string fullName, out T value) => dict.TryGetValue(fullName, out value);
 
-		public static bool TryGetValue(string modName, string contentName, out T value) {
+		internal static bool TryGetValue(string modName, string contentName, out T value) {
 			if (!tieredDict.TryGetValue(modName, out var subDictionary)) {
 				value = default;
 

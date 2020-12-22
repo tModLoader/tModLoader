@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
-@@ -5,79 +_,329 @@
+@@ -5,79 +_,330 @@
  	public class MessageID
  	{
  		public const byte NeverCalled = 0;
@@ -181,7 +181,8 @@
 +		//on server, sends ChestName and SyncPlayerChestIndex to other clients
  		public const byte SyncPlayerChest = 33;
 +		//changeType, x, y, chestType, [chestIndex]
-+		//changeType { PlaceChest, KillChest, PlaceDresser, KillDresser }
++		//changeType { PlaceChest, KillChest, PlaceDresser, KillDresser, PlaceChest2, KillChest2 }
++		// tMod adds 100 to first 4 changeTypes and sends modType 
 +		//on server {
 +		//    if a place fails, the packet is sent back to the client, and the item dropped
 +		//    if a place succeeds the packet is forwarded to all clients with chestIndex = WorldGen.PlaceChest

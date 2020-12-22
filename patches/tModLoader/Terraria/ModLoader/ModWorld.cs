@@ -8,7 +8,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes to keep track of mod-specific information on the world. It also contains hooks to insert your code into the world generation process.
 	/// </summary>
-	public class ModWorld:ModType
+	public abstract class ModWorld : ModType
 	{
 		protected sealed override void Register() {
 			ModTypeLookup<ModWorld>.Register(this);

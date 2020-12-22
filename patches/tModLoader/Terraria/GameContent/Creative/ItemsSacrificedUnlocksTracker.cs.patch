@@ -1,0 +1,22 @@
+--- src/Terraria/Terraria/GameContent/Creative/ItemsSacrificedUnlocksTracker.cs
++++ src/tModLoader/Terraria/GameContent/Creative/ItemsSacrificedUnlocksTracker.cs
+@@ -1,5 +_,6 @@
+ using System.Collections.Generic;
+ using System.IO;
++using System.Linq;
+ using Terraria.ID;
+ 
+ namespace Terraria.GameContent.Creative
+@@ -47,7 +_,11 @@
+ 		}
+ 
+ 		public void Save(BinaryWriter writer) {
+-			Dictionary<string, int> dictionary = new Dictionary<string, int>(_sacrificeCountByItemPersistentId);
++			//Only include vanilla items in the dictionary.
++			Dictionary<string, int> dictionary = _sacrificeCountByItemPersistentId
++				.Where(pair => ContentSamples.ItemNetIdsByPersistentIds.TryGetValue(pair.Key, out int netID) && ContentSamples.ItemsByType.TryGetValue(netID, out Item realItem) && realItem.modItem == null)
++				.ToDictionary(pair => pair.Key, pair => pair.Value);
++
+ 			writer.Write(dictionary.Count);
+ 			foreach (KeyValuePair<string, int> item in dictionary) {
+ 				writer.Write(item.Key);
