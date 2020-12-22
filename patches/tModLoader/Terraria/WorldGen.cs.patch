@@ -1258,7 +1258,7 @@
  
  		public static void makeTemple(int x, int y) {
 -			Rectangle[] array = new Rectangle[100];
-+			Rectangle[] array = new Rectangle[400];
++			Rectangle[] array = new Rectangle[1000]; //100 to 1000
 -			float num = Main.maxTilesX / 4200;
 +			float num = Main.maxTilesX / 4200f;
  			int num2 = genRand.Next((int)(num * 10f), (int)(num * 16f));
