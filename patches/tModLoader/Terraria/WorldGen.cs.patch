@@ -446,207 +446,35 @@
  			if (i < 50 || i > Main.maxTilesX - 50)
  				return false;
  
-@@ -2163,101 +_,110 @@
+@@ -2163,7 +_,7 @@
  				}
  			}
  
+-			stopDrops = true;
 +			meteorTasks.Add(new PassLegacy("Meteor Spawn", (progress, config) => {
-+				num = genRand.Next(17, 23);
-+				for (int num2 = i - num; num2 < i + num; num2++) {
-+					for (int num3 = j - num; num3 < j + num; num3++) {
-+						if (num3 <= j + Main.rand.Next(-2, 3) - 5)
-+							continue;
-+
-+						float num4 = Math.Abs(i - num2);
-+						float num5 = Math.Abs(j - num3);
-+						if ((double)(float)Math.Sqrt(num4 * num4 + num5 * num5) < (double)num * 0.9 + (double)Main.rand.Next(-4, 5)) {
-+							if (!Main.tileSolid[Main.tile[num2, num3].type])
-+								Main.tile[num2, num3].active(active: false);
-+
-+							Main.tile[num2, num3].type = 37;
-+						}
-+					}
-+				}
-+
-+				num = genRand.Next(8, 14);
-+				for (int num6 = i - num; num6 < i + num; num6++) {
-+					for (int num7 = j - num; num7 < j + num; num7++) {
-+						if (num7 > j + Main.rand.Next(-2, 3) - 4) {
-+							float num8 = Math.Abs(i - num6);
-+							float num9 = Math.Abs(j - num7);
-+							if ((double)(float)Math.Sqrt(num8 * num8 + num9 * num9) < (double)num * 0.8 + (double)Main.rand.Next(-3, 4))
-+								Main.tile[num6, num7].active(active: false);
-+						}
-+					}
-+				}
-+
-+				num = genRand.Next(25, 35);
-+				for (int num10 = i - num; num10 < i + num; num10++) {
-+					for (int num11 = j - num; num11 < j + num; num11++) {
-+						float num12 = Math.Abs(i - num10);
-+						float num13 = Math.Abs(j - num11);
-+						if ((double)(float)Math.Sqrt(num12 * num12 + num13 * num13) < (double)num * 0.7) {
-+							if (TileID.Sets.GetsDestroyedForMeteors[Main.tile[num10, num11].type])
-+								KillTile(num10, num11);
-+
-+							Main.tile[num10, num11].liquid = 0;
-+						}
-+
-+						if (Main.tile[num10, num11].type == 37) {
-+							if (!SolidTile(num10 - 1, num11) && !SolidTile(num10 + 1, num11) && !SolidTile(num10, num11 - 1) && !SolidTile(num10, num11 + 1))
-+								Main.tile[num10, num11].active(active: false);
-+							else if ((Main.tile[num10, num11].halfBrick() || Main.tile[num10 - 1, num11].topSlope()) && !SolidTile(num10, num11 + 1))
-+								Main.tile[num10, num11].active(active: false);
-+						}
-+
-+						SquareTileFrame(num10, num11);
-+						SquareWallFrame(num10, num11);
-+					}
-+				}
-+
-+				num = genRand.Next(23, 32);
-+				for (int num14 = i - num; num14 < i + num; num14++) {
-+					for (int num15 = j - num; num15 < j + num; num15++) {
-+						if (num15 <= j + genRand.Next(-3, 4) - 3 || !Main.tile[num14, num15].active() || Main.rand.Next(10) != 0)
-+							continue;
-+
-+						float num16 = Math.Abs(i - num14);
-+						float num17 = Math.Abs(j - num15);
-+						if ((double)(float)Math.Sqrt(num16 * num16 + num17 * num17) < (double)num * 0.8) {
-+							if (TileID.Sets.GetsDestroyedForMeteors[Main.tile[num14, num15].type])
-+								KillTile(num14, num15);
-+
-+							Main.tile[num14, num15].type = 37;
-+							SquareTileFrame(num14, num15);
-+						}
-+					}
-+				}
-+
-+				num = genRand.Next(30, 38);
-+				for (int num18 = i - num; num18 < i + num; num18++) {
-+					for (int num19 = j - num; num19 < j + num; num19++) {
-+						if (num19 <= j + genRand.Next(-2, 3) || !Main.tile[num18, num19].active() || Main.rand.Next(20) != 0)
-+							continue;
-+
-+						float num20 = Math.Abs(i - num18);
-+						float num21 = Math.Abs(j - num19);
-+						if ((double)(float)Math.Sqrt(num20 * num20 + num21 * num21) < (double)num * 0.85) {
-+							if (TileID.Sets.GetsDestroyedForMeteors[Main.tile[num18, num19].type])
-+								KillTile(num18, num19);
-+
-+							Main.tile[num18, num19].type = 37;
-+							SquareTileFrame(num18, num19);
-+						}
-+					}
-+				}
+ 			num = genRand.Next(17, 23);
+ 			for (int num2 = i - num; num2 < i + num; num2++) {
+ 				for (int num3 = j - num; num3 < j + num; num3++) {
+@@ -2252,12 +_,21 @@
+ 					}
+ 				}
+ 			}
 +			}));
-+
+ 
+-			stopDrops = false;
 +			meteorTasks.Add(new PassLegacy("Meteor Announcement", (progress, config) => {
-+				if (Main.netMode == 0)
-+					Main.NewText(Lang.gen[59].Value, 50, byte.MaxValue, 130);
-+				else if (Main.netMode == 2)
-+					ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.gen[59].Key), new Color(50, 255, 130));
+ 			if (Main.netMode == 0)
+ 				Main.NewText(Lang.gen[59].Value, 50, byte.MaxValue, 130);
+ 			else if (Main.netMode == 2)
+ 				ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.gen[59].Key), new Color(50, 255, 130));
 +			}));
 +
- 			stopDrops = true;
--			num = genRand.Next(17, 23);
--			for (int num2 = i - num; num2 < i + num; num2++) {
--				for (int num3 = j - num; num3 < j + num; num3++) {
--					if (num3 <= j + Main.rand.Next(-2, 3) - 5)
--						continue;
--
--					float num4 = Math.Abs(i - num2);
--					float num5 = Math.Abs(j - num3);
--					if ((double)(float)Math.Sqrt(num4 * num4 + num5 * num5) < (double)num * 0.9 + (double)Main.rand.Next(-4, 5)) {
--						if (!Main.tileSolid[Main.tile[num2, num3].type])
--							Main.tile[num2, num3].active(active: false);
--
--						Main.tile[num2, num3].type = 37;
--					}
--				}
--			}
--
--			num = genRand.Next(8, 14);
--			for (int num6 = i - num; num6 < i + num; num6++) {
--				for (int num7 = j - num; num7 < j + num; num7++) {
--					if (num7 > j + Main.rand.Next(-2, 3) - 4) {
--						float num8 = Math.Abs(i - num6);
--						float num9 = Math.Abs(j - num7);
--						if ((double)(float)Math.Sqrt(num8 * num8 + num9 * num9) < (double)num * 0.8 + (double)Main.rand.Next(-3, 4))
--							Main.tile[num6, num7].active(active: false);
--					}
--				}
--			}
--
--			num = genRand.Next(25, 35);
--			for (int num10 = i - num; num10 < i + num; num10++) {
--				for (int num11 = j - num; num11 < j + num; num11++) {
--					float num12 = Math.Abs(i - num10);
--					float num13 = Math.Abs(j - num11);
--					if ((double)(float)Math.Sqrt(num12 * num12 + num13 * num13) < (double)num * 0.7) {
--						if (TileID.Sets.GetsDestroyedForMeteors[Main.tile[num10, num11].type])
--							KillTile(num10, num11);
--
--						Main.tile[num10, num11].liquid = 0;
--					}
--
--					if (Main.tile[num10, num11].type == 37) {
--						if (!SolidTile(num10 - 1, num11) && !SolidTile(num10 + 1, num11) && !SolidTile(num10, num11 - 1) && !SolidTile(num10, num11 + 1))
--							Main.tile[num10, num11].active(active: false);
--						else if ((Main.tile[num10, num11].halfBrick() || Main.tile[num10 - 1, num11].topSlope()) && !SolidTile(num10, num11 + 1))
--							Main.tile[num10, num11].active(active: false);
--					}
--
--					SquareTileFrame(num10, num11);
--					SquareWallFrame(num10, num11);
--				}
--			}
--
--			num = genRand.Next(23, 32);
--			for (int num14 = i - num; num14 < i + num; num14++) {
--				for (int num15 = j - num; num15 < j + num; num15++) {
--					if (num15 <= j + genRand.Next(-3, 4) - 3 || !Main.tile[num14, num15].active() || Main.rand.Next(10) != 0)
--						continue;
--
--					float num16 = Math.Abs(i - num14);
--					float num17 = Math.Abs(j - num15);
--					if ((double)(float)Math.Sqrt(num16 * num16 + num17 * num17) < (double)num * 0.8) {
--						if (TileID.Sets.GetsDestroyedForMeteors[Main.tile[num14, num15].type])
--							KillTile(num14, num15);
--
--						Main.tile[num14, num15].type = 37;
--						SquareTileFrame(num14, num15);
--					}
--				}
--			}
--
--			num = genRand.Next(30, 38);
--			for (int num18 = i - num; num18 < i + num; num18++) {
--				for (int num19 = j - num; num19 < j + num; num19++) {
--					if (num19 <= j + genRand.Next(-2, 3) || !Main.tile[num18, num19].active() || Main.rand.Next(20) != 0)
--						continue;
--
--					float num20 = Math.Abs(i - num18);
--					float num21 = Math.Abs(j - num19);
--					if ((double)(float)Math.Sqrt(num20 * num20 + num21 * num21) < (double)num * 0.85) {
--						if (TileID.Sets.GetsDestroyedForMeteors[Main.tile[num18, num19].type])
--							KillTile(num18, num19);
--
--						Main.tile[num18, num19].type = 37;
--						SquareTileFrame(num18, num19);
--					}
--				}
--			}
--
++			stopDrops = true;
 +			WorldHooks.ModifyMeteorTasks(meteorTasks);
 +			foreach (GenPass task in meteorTasks) {
 +				task.Apply(null, null);
 +			}
- 			stopDrops = false;
--			if (Main.netMode == 0)
--				Main.NewText(Lang.gen[59].Value, 50, byte.MaxValue, 130);
--			else if (Main.netMode == 2)
--				ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.gen[59].Key), new Color(50, 255, 130));
++			stopDrops = false;
  
  			if (Main.netMode != 1)
  				NetMessage.SendTileSquare(-1, i, j, 40);
@@ -1357,11 +1185,11 @@
 -			GERunner(num3, 0, 3 * num5, 5f);
 -			GERunner(num4, 0, 3 * -num5, 5f, good: false);
 +			hardmodeTasks.Add(new PassLegacy("Hardmode Good", (progress, config) => {
-+				GERunner(num3, 0, 3 * num5, 5f, true);
++			GERunner(num3, 0, 3 * num5, 5f, true);
 +			}));
 +
 +			hardmodeTasks.Add(new PassLegacy("Hardmode Evil", (progress, config) => {
-+				GERunner(num4, 0, 3 * -(float)num5, 5f, false);
++			GERunner(num4, 0, 3 * -(float)num5, 5f, false);
 +			}));
 +
 +			hardmodeTasks.Add(new PassLegacy("Hardmode Walls", (progress, config) => {
@@ -1918,270 +1746,61 @@
  			if (Main.netMode == 1 || !Main.hardMode || noTileActions || gen)
  				return;
  
-@@ -29110,135 +_,148 @@
+@@ -29110,6 +_,7 @@
  					SavedOreTiers.Adamantite = 111;
  			}
  
 +			altarTasks.Add(new PassLegacy("Altar Decide Ore", (progress, config) => {
--			switch (num) {
-+				switch (num) {
--				case 0: {
-+					case 0: {
--						if (SavedOreTiers.Cobalt == -1) {
-+							if (SavedOreTiers.Cobalt == -1) {
--							flag = true;
-+								flag = true;
--							SavedOreTiers.Cobalt = 107;
--							if (genRand.Next(2) == 0)
--								SavedOreTiers.Cobalt = 221;
--						}
--
--						int num6 = 12;
--						if (SavedOreTiers.Cobalt == 221) {
--							num6 += 9;
--							num3 *= 0.9f;
--						}
--
--						if (Main.netMode == 0)
--							Main.NewText(Lang.misc[num6].Value, 50, byte.MaxValue, 130);
--						else if (Main.netMode == 2)
--							ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num6].Key), new Color(50, 255, 130));
--
--						num = SavedOreTiers.Cobalt;
--						num3 *= 1.05f;
--						break;
--					}
--				case 1: {
--						if (Main.drunkWorld) {
--							if (SavedOreTiers.Mythril == 108)
--								SavedOreTiers.Mythril = 222;
--							else if (SavedOreTiers.Mythril == 222)
--								SavedOreTiers.Mythril = 108;
--						}
--
--						if (SavedOreTiers.Mythril == -1) {
--							flag = true;
--							SavedOreTiers.Mythril = 108;
--							if (genRand.Next(2) == 0)
--								SavedOreTiers.Mythril = 222;
--						}
--
--						int num7 = 13;
--						if (SavedOreTiers.Mythril == 222) {
--							num7 += 9;
--							num3 *= 0.9f;
--						}
--
--						if (Main.netMode == 0)
--							Main.NewText(Lang.misc[num7].Value, 50, byte.MaxValue, 130);
--						else if (Main.netMode == 2)
--							ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num7].Key), new Color(50, 255, 130));
--
--						num = SavedOreTiers.Mythril;
--						break;
--					}
--				default: {
--						if (Main.drunkWorld) {
--							if (SavedOreTiers.Cobalt == 107)
--								SavedOreTiers.Cobalt = 221;
--							else if (SavedOreTiers.Cobalt == 221)
- 								SavedOreTiers.Cobalt = 107;
-+								if (genRand.Next(2) == 0)
-+									SavedOreTiers.Cobalt = 221;
-+							}
-+
-+							int num6 = 12;
-+							if (SavedOreTiers.Cobalt == 221) {
-+								num6 += 9;
-+								num3 *= 0.9f;
-+							}
-+
-+							if (Main.netMode == 0)
-+								Main.NewText(Lang.misc[num6].Value, 50, byte.MaxValue, 130);
-+							else if (Main.netMode == 2)
-+								ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num6].Key), new Color(50, 255, 130));
-+
-+							num = SavedOreTiers.Cobalt;
-+							num3 *= 1.05f;
-+							break;
-+						}
-+					case 1: {
-+							if (Main.drunkWorld) {
-+								if (SavedOreTiers.Mythril == 108)
-+									SavedOreTiers.Mythril = 222;
-+								else if (SavedOreTiers.Mythril == 222)
-+									SavedOreTiers.Mythril = 108;
-+							}
-+
-+							if (SavedOreTiers.Mythril == -1) {
-+								flag = true;
-+								SavedOreTiers.Mythril = 108;
-+								if (genRand.Next(2) == 0)
-+									SavedOreTiers.Mythril = 222;
-+							}
-+
-+							int num7 = 13;
-+							if (SavedOreTiers.Mythril == 222) {
-+								num7 += 9;
-+								num3 *= 0.9f;
-+							}
-+
-+							if (Main.netMode == 0)
-+								Main.NewText(Lang.misc[num7].Value, 50, byte.MaxValue, 130);
-+							else if (Main.netMode == 2)
-+								ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num7].Key), new Color(50, 255, 130));
-+
-+							num = SavedOreTiers.Mythril;
-+							break;
-+						}
-+					default: {
-+							if (Main.drunkWorld) {
-+								if (SavedOreTiers.Cobalt == 107)
-+									SavedOreTiers.Cobalt = 221;
-+								else if (SavedOreTiers.Cobalt == 221)
-+									SavedOreTiers.Cobalt = 107;
--						}
-+							}
+ 			switch (num) {
+ 				case 0: {
+ 						if (SavedOreTiers.Cobalt == -1) {
+@@ -29196,7 +_,9 @@
  
--						if (SavedOreTiers.Adamantite == -1) {
-+							if (SavedOreTiers.Adamantite == -1) {
--							flag = true;
-+								flag = true;
--							SavedOreTiers.Adamantite = 111;
-+								SavedOreTiers.Adamantite = 111;
--							if (genRand.Next(2) == 0)
-+								if (genRand.Next(2) == 0)
--								SavedOreTiers.Adamantite = 223;
-+									SavedOreTiers.Adamantite = 223;
--						}
-+							}
- 
--						int num5 = 14;
-+							int num5 = 14;
--						if (SavedOreTiers.Adamantite == 223) {
-+							if (SavedOreTiers.Adamantite == 223) {
--							num5 += 9;
-+								num5 += 9;
--							num3 *= 0.9f;
-+								num3 *= 0.9f;
--						}
-+							}
- 
--						if (Main.netMode == 0)
-+							if (Main.netMode == 0)
--							Main.NewText(Lang.misc[num5].Value, 50, byte.MaxValue, 130);
-+								Main.NewText(Lang.misc[num5].Value, 50, byte.MaxValue, 130);
--						else if (Main.netMode == 2)
-+							else if (Main.netMode == 2)
--							ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num5].Key), new Color(50, 255, 130));
-+								ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num5].Key), new Color(50, 255, 130));
- 
--						num = SavedOreTiers.Adamantite;
-+							num = SavedOreTiers.Adamantite;
--						break;
-+							break;
--					}
-+						}
--			}
-+				}
- 
--			if (flag)
-+				if (flag)
--				NetMessage.SendData(7);
-+					NetMessage.SendData(7);
+ 			if (flag)
+ 				NetMessage.SendData(7);
 +			}));
  
 +			altarTasks.Add(new PassLegacy("Altar Spawn Ore", (progress, config) => {
--			for (int k = 0; (float)k < num3; k++) {
-+				for (int k = 0; (float)k < num3; k++) {
--				int i2 = genRand.Next(100, Main.maxTilesX - 100);
-+					int i2 = genRand.Next(100, Main.maxTilesX - 100);
--				double num8 = Main.worldSurface;
-+					double num8 = Main.worldSurface;
--				if (num == 108 || num == 222)
-+					if (num == 108 || num == 222)
--					num8 = Main.rockLayer;
-+						num8 = Main.rockLayer;
- 
--				if (num == 111 || num == 223)
-+					if (num == 111 || num == 223)
--					num8 = (Main.rockLayer + Main.rockLayer + (double)Main.maxTilesY) / 3.0;
-+						num8 = (Main.rockLayer + Main.rockLayer + (double)Main.maxTilesY) / 3.0;
- 
--				int j2 = genRand.Next((int)num8, Main.maxTilesY - 150);
-+					int j2 = genRand.Next((int)num8, Main.maxTilesY - 150);
--				OreRunner(i2, j2, genRand.Next(5, 9 + num4), genRand.Next(5, 9 + num4), (ushort)num);
-+					OreRunner(i2, j2, genRand.Next(5, 9 + num4), genRand.Next(5, 9 + num4), (ushort)num);
--			}
-+				}
+ 			for (int k = 0; (float)k < num3; k++) {
+ 				int i2 = genRand.Next(100, Main.maxTilesX - 100);
+ 				double num8 = Main.worldSurface;
+@@ -29209,7 +_,9 @@
+ 				int j2 = genRand.Next((int)num8, Main.maxTilesY - 150);
+ 				OreRunner(i2, j2, genRand.Next(5, 9 + num4), genRand.Next(5, 9 + num4), (ushort)num);
+ 			}
 +			}));
  
 +			altarTasks.Add(new PassLegacy("Altar Convert Stone", (progress, config) => {
--			int num9 = genRand.Next(3);
-+				int num9 = genRand.Next(3);
--			int num10 = 0;
-+				int num10 = 0;
--			while (num9 != 2 && num10++ < 1000) {
-+				while (num9 != 2 && num10++ < 1000) {
--				int num11 = genRand.Next(100, Main.maxTilesX - 100);
-+					int num11 = genRand.Next(100, Main.maxTilesX - 100);
--				int num12 = genRand.Next((int)Main.rockLayer + 50, Main.maxTilesY - 300);
-+					int num12 = genRand.Next((int)Main.rockLayer + 50, Main.maxTilesY - 300);
--				if (!Main.tile[num11, num12].active() || Main.tile[num11, num12].type != 1)
-+					if (!Main.tile[num11, num12].active() || Main.tile[num11, num12].type != 1)
--					continue;
-+						continue;
+ 			int num9 = genRand.Next(3);
+ 			int num10 = 0;
+ 			while (num9 != 2 && num10++ < 1000) {
+@@ -29229,17 +_,25 @@
+ 				}
  
--				if (num9 == 0) {
-+					if (num9 == 0) {
--					if (crimson)
-+						if (crimson)
--						Main.tile[num11, num12].type = 203;
-+							Main.tile[num11, num12].type = 203;
--					else
-+						else
--						Main.tile[num11, num12].type = 25;
-+							Main.tile[num11, num12].type = 25;
--				}
-+					}
--				else {
-+					else {
--					Main.tile[num11, num12].type = 117;
-+						Main.tile[num11, num12].type = 117;
--				}
-+					}
- 
--				if (Main.netMode == 2)
-+					if (Main.netMode == 2)
+ 				if (Main.netMode == 2)
 -					NetMessage.SendTileSquare(-1, num11, num12);
-+						NetMessage.SendTileSquare(-1, num11, num12, 1);
++					NetMessage.SendTileSquare(-1, num11, num12, 1);
  
--				break;
-+					break;
--			}
-+				}
+ 				break;
+ 			}
 +			}));
  
--			if (Main.netMode != 1) {
--				int num13 = Main.rand.Next(2) + 1;
--				for (int l = 0; l < num13; l++) {
--					NPC.SpawnOnPlayer(Player.FindClosest(new Vector2(i * 16, j * 16), 16, 16), 82);
--				}
 +			altarTasks.Add(new PassLegacy("Altar Spawn Wraith", (progress, config) => {
-+				if (Main.netMode != 1) {
-+					int num13 = Main.rand.Next(2) + 1;
-+					for (int l = 0; l < num13; l++) {
-+						NPC.SpawnOnPlayer(Player.FindClosest(new Vector2(i * 16, j * 16), 16, 16), 82);
-+					}
-+				}
+ 			if (Main.netMode != 1) {
+ 				int num13 = Main.rand.Next(2) + 1;
+ 				for (int l = 0; l < num13; l++) {
+ 					NPC.SpawnOnPlayer(Player.FindClosest(new Vector2(i * 16, j * 16), 16, 16), 82);
+ 				}
+ 			}
 +			}));
 +
 +			WorldHooks.ModifyAltarTasks(altarTasks);
 +			foreach (GenPass task in altarTasks) {
 +				task.Apply(null, null);
- 			}
++			}
  
  			altarCount++;
+ 			AchievementsHelper.NotifyProgressionEvent(6);
 @@ -29266,7 +_,7 @@
  				if (!Main.tile[k, j].active() || Main.tile[k, j].type != type || Main.tile[k, j].frameX != (k - num) * 18 + num3 || Main.tile[k, j].frameY != 0)
  					flag = true;
