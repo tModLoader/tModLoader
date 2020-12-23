@@ -460,7 +460,8 @@ namespace Terraria.ModLoader
 			bestiaryDatabase.Merge(Main.ItemDropsDB);
 			
 			//Etc
-			Main.BestiaryUI = new UIBestiaryTest(Main.BestiaryDB);
+			if (!Main.dedServ)
+				Main.BestiaryUI = new UIBestiaryTest(Main.BestiaryDB);
 			Main.ItemDropSolver = new ItemDropResolver(itemDropDatabase);
 			Main.BestiaryTracker = new BestiaryUnlocksTracker();
 		}
