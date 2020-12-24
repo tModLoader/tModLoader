@@ -47,10 +47,14 @@
      </EmbeddedResource>
      <Reference Include="SteelSeriesEngineWrapper" />
      <Reference Include="Steamworks.NET">
-@@ -48,23 +_,27 @@
+@@ -48,23 +_,31 @@
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
      <Reference Include="System.Runtime.Serialization" />
++    <Reference Include="System.ValueTuple">
++      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/System.ValueTuple.dll</HintPath>
++      <HintPath Condition="$(DefineConstants.Contains('Mono'))">Libraries/Mono/System.ValueTuple.dll</HintPath>
++    </Reference>
 +    <Reference Include="System.XML" />
      <Reference Include="System.Windows.Forms">
        <HintPath Condition="$(DefineConstants.Contains('Mono'))">Libraries/Mono/System.Windows.Forms.dll</HintPath>

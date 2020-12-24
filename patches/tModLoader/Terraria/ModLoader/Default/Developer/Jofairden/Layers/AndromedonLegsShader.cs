@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System.Collections.Generic;
 using Terraria.DataStructures;
 
 namespace Terraria.ModLoader.Default.Developer.Jofairden
@@ -15,9 +14,6 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			return GetLegDrawDataInfo(info, _shaderTexture.Value);
 		}
 
-		public override IEnumerable<LayerConstraint> GetConstraints() {
-			yield return LayerConstraint.After(Skin);
-			yield return LayerConstraint.Before(Leggings);
-		}
+		public override Position GetDefaultPosition() => new Before(PlayerDrawLayers.Leggings);
 	}
 }

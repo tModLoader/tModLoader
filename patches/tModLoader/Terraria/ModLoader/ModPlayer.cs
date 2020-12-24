@@ -738,15 +738,15 @@ namespace Terraria.ModLoader
 		/// This is called once at the end of mod loading, not during the game.
 		/// Use with extreme caution, or risk breaking other mods.
 		/// </summary>
-		/// <param name="constraints">Add/remove/change the ordering constraints applied to each layer here</param>
-		public virtual void ModifyDrawLayerOrdering(IReadOnlyDictionary<PlayerDrawLayer, List<DrawLayer<PlayerDrawLayer, PlayerDrawSet>.LayerConstraint>> constraints) {
+		/// <param name="positions">Add/remove/change the positions applied to each layer here</param>
+		public virtual void ModifyDrawLayerOrdering(IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position> positions) {
 		}
 
 		/// <summary>
 		/// Allows you to modify the visiblity of layers about to be drawn
 		/// </summary>
 		/// <param name="layers"></param>
-		public virtual void ModifyDrawLayers(PlayerDrawSet drawInfo, IReadOnlyList<PlayerDrawLayer> layers) {
+		public virtual void HideDrawLayers(PlayerDrawSet drawInfo) {
 		}
 
 		/// <summary>

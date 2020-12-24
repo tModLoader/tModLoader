@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System.Collections.Generic;
 using Terraria.DataStructures;
 
 namespace Terraria.ModLoader.Default.Developer.Jofairden
@@ -17,9 +16,6 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			return GetHeadDrawDataInfo(info, _glowTexture.Value);
 		}
 
-		public override IEnumerable<LayerConstraint> GetConstraints() {
-			yield return LayerConstraint.After(Head);
-			yield return LayerConstraint.Before(FaceAcc);
-		}
+		public override Position GetDefaultPosition() => new After(PlayerDrawLayers.Head);
 	}
 }
