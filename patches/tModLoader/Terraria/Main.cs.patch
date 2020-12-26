@@ -3330,7 +3330,11 @@
  			try {
  				DrawSurfaceBG();
  				if (BackgroundEnabled)
-@@ -48903,6 +_,7 @@
+@@ -48900,9 +_,11 @@
+ 						num = 11;
+ 					else if (WorldGen.treeBG1 != WorldGen.treeBG4)
+ 						num = 12;
++					//Patch context.
  				}
  			}
  
