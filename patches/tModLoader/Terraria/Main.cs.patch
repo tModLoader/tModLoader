@@ -3330,6 +3330,14 @@
  			try {
  				DrawSurfaceBG();
  				if (BackgroundEnabled)
+@@ -48903,6 +_,7 @@
+ 				}
+ 			}
+ 
++			SurfaceBgStyleLoader.ChooseStyle(ref num);
+ 			return num;
+ 		}
+ 
 @@ -49199,6 +_,15 @@
  			}
  		}
