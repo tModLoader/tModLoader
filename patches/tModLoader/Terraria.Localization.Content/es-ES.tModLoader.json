@@ -21,7 +21,7 @@
 		"ModsOpenConfig": "Haz clic para abrir la configuración",
 		"ModOldWarning": "Mod desactualizado, actívalo bajo tu propia responsabilidad",
 		"ModDependencyClickTooltip": "Este mod depende de {0}\n (haz clic para activar)",
-		// "ModDependencyClickTooltipMore": "This mod depends on: {0}\n...and {1} more mods\n (click to enable)",
+		"ModDependencyClickTooltipMore": "Este mod depende de: {0}\n... y {1} mods adicionales\n (haz clic para activar)",
 		"ModDependencyModsNotFound": "Los siguientes mods no han sido encontrados: {0}",
 		"ModDidNotFullyUnloadWarning": "Este mod no se desactivó completamente durante el último reinicio.\n(Este es un mensaje para el creador del mod)",
 		"BetaModCantPublish": "Este mod ha sido desarrollado en una versión beta y no puede ser publicado",
@@ -256,7 +256,7 @@
 		"NewModsListing": "Mods nuevos:\n{0}",
 		"PlayerCustomDataFail": "Se ha producido un problema al cargar los datos personalizados de un jugador",
 		"PlayerLoadWorldFail": "Se ha producido un problema al cargar un mundo",
-		// "CloudWarning": "Cloud storage limit reached, unable to move to cloud",
+		"CloudWarning": "No queda almacenamiento disponible en Steam Cloud, no puede moverse a la nube",
 
 		// Mod Sources
 		"MSBuild": "Construir",
@@ -357,7 +357,7 @@
 		"GraphicsEngineFailureMessage": "tML se cerró al probar algunas características gráficas experimentales. Si el problema persiste, es posible que debas editar el archivo config.json y establecer el valor de Support4K en 'false'.\nPor favor, reinicia tu juego.\nEstado del informe: {0}",
 		"OutOfMemory": "El juego se ha quedado sin memoria. Tendrás que encontrar qué mod está consumiendo recursos y contactar con sus desarrolladores o eliminarlo.",
 		"ContentFolderNotFoundInstallCheck": "No se ha podido encontrar el directorio {0}.\r\n\r\n¿Olvidaste extraer el directorio de contenido de tModLoader en la carpeta de tModLoader?\r\n\r\nAsegúrate de que tModLoader esté instalado en una carpeta separada de Terraria.",
-		"VanillaSteamInstallationNotFound": "Instalación de Terraria por Steam o el directorio de contenido de Terraria no encontrado. Por favor, asegúrate de que Terraria 1.4 se haya instalado mediante Steam.",
+		"VanillaSteamInstallationNotFound": "Instalación de Terraria por Steam o el directorio de contenido de Terraria no encontrado. Por favor, asegúrate de que Terraria 1.4 se haya instalado por Steam.",
 		"SteamAPIHashMismatch": "La API de Steam no coincide, se asume que es pirata.\n\ntModLoader necesita una versión legítima de Terraria para funcionar correctamente.",
 		"VanillaGOGNotFound": "No se ha encontrado {0}. Las instalaciones de GOG deben tener el ejecutable de Terraria sin modificar para funcionar. Esta versión de tModLoader espera la versión {1} de Terraria, por lo que puede ser necesario restaurar una versión previa o actualizar Terraria a través de GOG Galaxy o esperar a que tModLoader se actualice.",
 		"GOGHashMismatch": "{0} no es el ejecutable de Terraria sin modificar.\r\n\r\nLas instalaciones de GOG deben tener el ejecutable de Terraria sin modificar para funcionar.\r\n\r\nSi has parcheado el .exe, puedes crear una copia del ejecutable original y nombrarlo \"Terraria_v<VERSIÓN>.exe\"",
