@@ -491,8 +491,7 @@ namespace Terraria.ModLoader
 			}
 			return true;
 		}
-		//in Terraria.Lighting.PreRenderPhase add local closer variable and after setting music box
-		//  call TileLoader.NearbyEffects(n, num17, type, closer);
+
 		public static void NearbyEffects(int i, int j, int type, bool closer) {
 			GetTile(type)?.NearbyEffects(i, j, closer);
 
@@ -500,8 +499,7 @@ namespace Terraria.ModLoader
 				hook(i, j, type, closer);
 			}
 		}
-		//in Terraria.Lighting.PreRenderPhase after label after if statement checking Main.tileLighted call
-		//  TileLoader.ModifyLight(n, num17, tile.type, ref num18, ref num19, ref num20);
+
 		public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b) {
 			if (!Main.tileLighted[type]) {
 				return;

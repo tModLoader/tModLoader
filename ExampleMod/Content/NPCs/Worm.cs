@@ -1,21 +1,48 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs
 {
 	internal class ExampleWormHead : ExampleWorm
 	{
-		public override string Texture => "Terraria/NPC_" + NPCID.DiggerHead;
+		public override string Texture => "Terraria/Images/NPC_" + NPCID.DiggerHead;
+
+		public override void SetStaticDefaults() {
+			DisplayName.SetDefault("Example Worm");
+	
+			var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
+				CustomTexturePath = "ExampleMod/Content/NPCs/ExampleWorm_Bestiary", //If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
+				Position = new Vector2(40f, 24f),
+				PortraitPositionXOverride = 0f,
+				PortraitPositionYOverride = 12f
+			};
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, drawModifier);
+		}
 
 		public override void SetDefaults() {
 			// Head is 10 defence, body 20, tail 30.
 			npc.CloneDefaults(NPCID.DiggerHead);
 			npc.aiStyle = -1;
 			npc.color = Color.Aqua;
+		}
+
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				// Sets the spawning conditions of this NPC that is listed in the bestiary.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Underground,
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Caverns,
+
+				// Sets the description of this NPC that is listed in the bestiary.
+				new FlavorTextBestiaryInfoElement("Looks like a Digger fell into some aqua-colored paint. Oh well.")
+			});
 		}
 
 		public override void Init() {
@@ -54,7 +81,14 @@ namespace ExampleMod.NPCs
 
 	internal class ExampleWormBody : ExampleWorm
 	{
-		public override string Texture => "Terraria/NPC_" + NPCID.DiggerBody;
+		public override string Texture => "Terraria/Images/NPC_" + NPCID.DiggerBody;
+
+		public override void SetStaticDefaults() {
+			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+				Hide = true //Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
+			};
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, value);
+		}
 
 		public override void SetDefaults() {
 			npc.CloneDefaults(NPCID.DiggerBody);
@@ -65,7 +99,14 @@ namespace ExampleMod.NPCs
 
 	internal class ExampleWormTail : ExampleWorm
 	{
-		public override string Texture => "Terraria/NPC_" + NPCID.DiggerTail;
+		public override string Texture => "Terraria/Images/NPC_" + NPCID.DiggerTail;
+
+		public override void SetStaticDefaults() {
+			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+				Hide = true //Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
+			};
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, value);
+		}
 
 		public override void SetDefaults() {
 			npc.CloneDefaults(NPCID.DiggerTail);
@@ -89,9 +130,9 @@ namespace ExampleMod.NPCs
 		public override void Init() {
 			minLength = 6;
 			maxLength = 12;
-			tailType = NPCType<ExampleWormTail>();
-			bodyType = NPCType<ExampleWormBody>();
-			headType = NPCType<ExampleWormHead>();
+			tailType = ModContent.NPCType<ExampleWormTail>();
+			bodyType = ModContent.NPCType<ExampleWormBody>();
+			headType = ModContent.NPCType<ExampleWormHead>();
 			speed = 5.5f;
 			turnSpeed = 0.045f;
 		}
@@ -166,7 +207,7 @@ namespace ExampleMod.NPCs
 					npc.active = false;
 				}
 				if (!npc.active && Main.netMode == NetmodeID.Server) {
-					NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+					NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
 				}
 			}
 			int num180 = (int)(npc.position.X / 16f) - 1;
@@ -347,29 +388,9 @@ namespace ExampleMod.NPCs
 							num192 = num188;
 						}
 					}
+
 					bool flag21 = false;
-					if (npc.type == NPCID.WyvernHead) {
-						if ((npc.velocity.X > 0f && num191 < 0f || npc.velocity.X < 0f && num191 > 0f || npc.velocity.Y > 0f && num192 < 0f || npc.velocity.Y < 0f && num192 > 0f) && System.Math.Abs(npc.velocity.X) + System.Math.Abs(npc.velocity.Y) > num189 / 2f && num193 < 300f) {
-							flag21 = true;
-							if (System.Math.Abs(npc.velocity.X) + System.Math.Abs(npc.velocity.Y) < num188) {
-								npc.velocity *= 1.1f;
-							}
-						}
-						if (npc.position.Y > Main.player[npc.target].position.Y || (double)(Main.player[npc.target].position.Y / 16f) > Main.worldSurface || Main.player[npc.target].dead) {
-							flag21 = true;
-							if (System.Math.Abs(npc.velocity.X) < num188 / 2f) {
-								if (npc.velocity.X == 0f) {
-									npc.velocity.X = npc.velocity.X - (float)npc.direction;
-								}
-								npc.velocity.X = npc.velocity.X * 1.1f;
-							}
-							else {
-								if (npc.velocity.Y > -num188) {
-									npc.velocity.Y = npc.velocity.Y - num189;
-								}
-							}
-						}
-					}
+
 					if (!flag21) {
 						if (npc.velocity.X > 0f && num191 > 0f || npc.velocity.X < 0f && num191 < 0f || npc.velocity.Y > 0f && num192 > 0f || npc.velocity.Y < 0f && num192 < 0f) {
 							if (npc.velocity.X < num191) {

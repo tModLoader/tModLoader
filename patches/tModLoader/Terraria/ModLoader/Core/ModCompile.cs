@@ -657,7 +657,7 @@ namespace Terraria.ModLoader.Core
 
 			var preprocessorSymbols = new List<string> { xna ? "XNA" : "FNA" };
 			if (Program.LaunchParameters.TryGetValue("-define", out var defineParam))
-				preprocessorSymbols.AddRange(defineParam.Split(';', ' '));
+				preprocessorSymbols.AddRange(defineParam.Trim(';').Split(';', ' '));
 			preprocessorSymbols.RemoveAll(string.IsNullOrWhiteSpace);
 
 			var results = RoslynCompile(mod.Name, outputPath, refs.ToArray(), files, preprocessorSymbols.ToArray(), mod.properties.includePDB, allowUnsafe);
