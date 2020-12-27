@@ -1,0 +1,11 @@
+--- src/Terraria/ReLogic/Peripherals/RGB/SteelSeries/GameSenseConnection.cs
++++ src/tModLoader/ReLogic/Peripherals/RGB/SteelSeries/GameSenseConnection.cs
+@@ -235,7 +_,7 @@
+ 						throw new ServerDownException(ex.Message);
+ 					default:
+ 						_logException("Unexpected status", ex);
+-						throw;
++						break; //throw; //Commented out to stop crashes when debugging in break mode.
+ 				}
+ 			}
+ 		}

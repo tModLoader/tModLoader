@@ -165,6 +165,15 @@
  								writer.Write((ushort)Main.player[number].buffType[n]);
  							}
  
+@@ -987,7 +_,7 @@
+ 							bool flag3 = TileEntity.ByID.ContainsKey(number);
+ 							writer.Write(flag3);
+ 							if (flag3)
+-								TileEntity.Write(writer, TileEntity.ByID[number], networkSend: true);
++								TileEntity.Write(writer, TileEntity.ByID[number], networkSend: true, lightSend: true); //TML: Made lightSend true.
+ 
+ 							break;
+ 						}
 @@ -1330,7 +_,10 @@
  
  				int num26 = (int)writer.BaseStream.Position;
@@ -195,7 +204,7 @@
  							short num11 = (short)Sign.ReadSign(j, i);
  							if (num11 != -1)
  								array2[num2++] = num11;
-@@ -1833,6 +_,14 @@
+@@ -1833,9 +_,17 @@
  				writer.Write(sign.text);
  			}
  
@@ -209,7 +218,20 @@
 +
  			writer.Write(num3);
  			for (int m = 0; m < num3; m++) {
- 				TileEntity.Write(writer, TileEntity.ByID[array3[m]]);
+-				TileEntity.Write(writer, TileEntity.ByID[array3[m]]);
++				TileEntity.Write(writer, TileEntity.ByID[array3[m]], networkSend: true); //TML: Made networkSend true, but lightSend should be false.
+ 			}
+ 		}
+ 
+@@ -2031,7 +_,7 @@
+ 
+ 			num3 = reader.ReadInt16();
+ 			for (int m = 0; m < num3; m++) {
+-				TileEntity tileEntity = TileEntity.Read(reader);
++				TileEntity tileEntity = TileEntity.Read(reader, networkSend: true); //TML: Made networkSend true, but lightSend should be false.
+ 				TileEntity.ByID[tileEntity.ID] = tileEntity;
+ 				TileEntity.ByPosition[tileEntity.Position] = tileEntity;
+ 			}
 @@ -2044,10 +_,11 @@
  					buffer[i].totalData += streamLength;
  					buffer[i].checkBytes = true;

@@ -46,7 +46,7 @@ namespace Terraria.ModLoader
 			foreach (string texturePath in mod.Assets.EnumeratePaths<Texture2D>().Where(t => t.StartsWith("Gores/"))) {
 				string textureKey = $"{mod.Name}/{texturePath}";
 
-				if (!mod.TryFind<ModGore>($"{mod.Name}/{Path.GetFileName(texturePath)}", out _)) //ModGore gores will already be loaded at this point.
+				if (!mod.TryFind<ModGore>(Path.GetFileNameWithoutExtension(texturePath), out _)) //ModGore gores will already be loaded at this point.
 					AddGoreFromTexture<SimpleModGore>(mod, textureKey);
 			}
 		}
