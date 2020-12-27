@@ -2059,7 +2059,7 @@
  			NPC rCurrentNPC = npc[iNPCIndex];
  			Vector2 screenPos = screenPosition;
  			DrawNPCDirect(spriteBatch, rCurrentNPC, behindTiles, screenPos);
-@@ -16791,6 +_,13 @@
+@@ -16791,6 +_,20 @@
  				}
  			}
  
@@ -2070,23 +2070,16 @@
 +				return;
 +			}
 +
++			DrawNPCDirect_Inner(spriteBatch, rCurrentNPC, behindTiles, screenPos, ref npcColor);
++
++			NPCLoader.PostDraw(rCurrentNPC, spriteBatch, npcColor);
++		}
++
++		private void DrawNPCDirect_Inner(SpriteBatch mySpriteBatch, NPC rCurrentNPC, bool behindTiles, Vector2 screenPos, ref Color npcColor) {
++			int type = rCurrentNPC.type;
  			npcColor = rCurrentNPC.GetNPCColorTintedByBuffs(npcColor);
  			if (type == 50) {
  				Vector2 zero = Vector2.Zero;
-@@ -19135,10 +_,13 @@
- 
- 									if (rCurrentNPC.aiStyle == 7)
- 										DrawNPCExtras(rCurrentNPC, beforeDraw: false, num37, num36, npcColor, halfSize, spriteEffects, screenPos);
-+									// Patch context
- 
- 									break;
- 								}
- 						}
-+
-+						NPCLoader.PostDraw(rCurrentNPC, spriteBatch, npcColor);
- 
- 						break;
- 					}
 @@ -20115,12 +_,14 @@
  				}
  
