@@ -16,6 +16,6 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			return GetHeadDrawDataInfo(info, _shaderTexture.Value);
 		}
 
-		public override Position GetDefaultPosition() => new Before(PlayerDrawLayers.Torso);
+		public override Position GetDefaultPosition() => new BeforeParent(PlayerDrawLayers.Torso);
 	}
 }

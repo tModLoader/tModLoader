@@ -3,7 +3,7 @@
 namespace Terraria.DataStructures
 {
 	[Autoload(false)]
-	internal sealed class LegacyPlayerDrawLayer : PlayerDrawLayer
+	internal sealed class VanillaPlayerDrawLayer : PlayerDrawLayer
 	{
 		/// <summary> The delegate of this method, which can either do the actual drawing or add draw data, depending on what kind of layer this is. </summary>
 		public delegate void DrawFunc(ref PlayerDrawSet info);
@@ -25,7 +25,7 @@ namespace Terraria.DataStructures
 		private readonly Position position;
 
 		/// <summary> Creates a LegacyPlayerLayer with the given mod name, identifier name, and drawing action. </summary>
-		public LegacyPlayerDrawLayer(string name, DrawFunc drawFunc, Transformation transform = null, bool isHeadLayer = false, Condition condition = null, Position position = null) {
+		public VanillaPlayerDrawLayer(string name, DrawFunc drawFunc, Transformation transform = null, bool isHeadLayer = false, Condition condition = null, Position position = null) {
 			_name = name;
 			this.drawFunc = drawFunc;
 			this.condition = condition;

@@ -1,11 +1,6 @@
 --- src/Terraria/Terraria/Graphics/Renderers/LegacyPlayerRenderer.cs
 +++ src/tModLoader/Terraria/Graphics/Renderers/LegacyPlayerRenderer.cs
-@@ -2,9 +_,12 @@
- using Microsoft.Xna.Framework.Graphics;
- using System;
- using System.Collections.Generic;
-+using System.Collections.ObjectModel;
-+using System.Linq;
+@@ -5,6 +_,7 @@
  using Terraria.DataStructures;
  using Terraria.GameContent;
  using Terraria.ID;
@@ -27,7 +22,7 @@
  			}
 +			*/
 +
-+			DrawPlayerInternal(camera, drawPlayer, position + Main.screenPosition, 0f, Vector2.Zero, 0f, scale, false, true);
++			DrawPlayerInternal(camera, drawPlayer, position + Main.screenPosition, 0f, Vector2.Zero, 0f, scale, useLighting: false, headOnly: true);
  		}
  
  		private void CreateOutlines(float alpha, float scale, Color borderColor) {

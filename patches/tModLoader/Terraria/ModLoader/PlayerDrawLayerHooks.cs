@@ -35,16 +35,16 @@ namespace Terraria.ModLoader
 				switch (kv.Value) {
 					case Between _:
 						continue;
-					case Before b:
-						b.Layer.AddChildBefore(layer);
+					case BeforeParent b:
+						b.Parent.AddChildBefore(layer);
 						break;
-					case After a:
-						a.Layer.AddChildAfter(layer);
+					case AfterParent a:
+						a.Parent.AddChildAfter(layer);
 						break;
 					case Multiple m:
 						int slot = 0;
 						foreach (var (pos, cond) in m.Positions)
-							positions.Add(new MobilePlayerDrawLayerSlot(layer, cond, slot++), pos);
+							positions.Add(new PlayerDrawLayerSlot(layer, cond, slot++), pos);
 						break;
 					default:
 						throw new ArgumentException($"PlayerDrawLayer {layer} has unknown Position type {kv.Value}");
@@ -72,28 +72,5 @@ namespace Terraria.ModLoader
 
 			return _drawOrder;
 		}
-	}
-
-	[Autoload(false)]
-	public class MobilePlayerDrawLayerSlot : PlayerDrawLayer
-	{
-		public PlayerDrawLayer Layer { get; }
-		public Multiple.Condition Condition { get; }
-
-		private readonly int _slot;
-
-		public override string Name => $"{Layer.Name}_slot{_slot}";
-
-		public MobilePlayerDrawLayerSlot(PlayerDrawLayer layer, Multiple.Condition cond, int slot) {
-			Layer = layer;
-			Condition = cond;
-			_slot = slot;
-		}
-
-		public override Position GetDefaultPosition() => throw new NotImplementedException();
-
-		protected override void Draw(ref PlayerDrawSet drawInfo) => Layer.DrawWithTransformationAndChildren(ref drawInfo);
-
-		public override bool GetDefaultVisiblity(PlayerDrawSet drawInfo) => Condition(drawInfo);
 	}
 }

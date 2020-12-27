@@ -16,6 +16,6 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			return GetHeadDrawDataInfo(info, _glowTexture.Value);
 		}
 
-		public override Position GetDefaultPosition() => new After(PlayerDrawLayers.Head);
+		public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Head);
 	}
 }

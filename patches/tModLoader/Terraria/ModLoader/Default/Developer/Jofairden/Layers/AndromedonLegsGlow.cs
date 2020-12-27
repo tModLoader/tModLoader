@@ -14,6 +14,6 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			return GetLegDrawDataInfo(info, _glowTexture.Value);
 		}
 
-		public override Position GetDefaultPosition() => new After(PlayerDrawLayers.Leggings);
+		public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Leggings);
 	}
 }
