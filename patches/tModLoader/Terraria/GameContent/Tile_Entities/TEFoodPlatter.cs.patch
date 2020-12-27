@@ -1,0 +1,26 @@
+--- src/Terraria/Terraria/GameContent/Tile_Entities/TEFoodPlatter.cs
++++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEFoodPlatter.cs
+@@ -1,10 +_,11 @@
+ using System.IO;
+ using Terraria.DataStructures;
+ using Terraria.ID;
++using Terraria.ModLoader.IO;
+ 
+ namespace Terraria.GameContent.Tile_Entities
+ {
+-	public class TEFoodPlatter : TileEntity
++	public sealed partial class TEFoodPlatter : TileEntity
+ 	{
+ 		private static byte _myEntityID;
+ 		public Item item;
+@@ -77,8 +_,8 @@
+ 		}
+ 
+ 		public override void WriteExtraData(BinaryWriter writer, bool networkSend) {
+-			writer.Write((short)item.netID);
+-			writer.Write(item.prefix);
++			ItemIO.WriteShortVanillaID(item, writer);
++			ItemIO.WriteByteVanillaPrefix(item, writer);
+ 			writer.Write((short)item.stack);
+ 		}
+ 
