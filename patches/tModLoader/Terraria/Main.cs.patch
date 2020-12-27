@@ -2073,6 +2073,20 @@
  			npcColor = rCurrentNPC.GetNPCColorTintedByBuffs(npcColor);
  			if (type == 50) {
  				Vector2 zero = Vector2.Zero;
+@@ -19135,10 +_,13 @@
+ 
+ 									if (rCurrentNPC.aiStyle == 7)
+ 										DrawNPCExtras(rCurrentNPC, beforeDraw: false, num37, num36, npcColor, halfSize, spriteEffects, screenPos);
++									// Patch context
+ 
+ 									break;
+ 								}
+ 						}
++
++						NPCLoader.PostDraw(rCurrentNPC, spriteBatch, npcColor);
+ 
+ 						break;
+ 					}
 @@ -20115,12 +_,14 @@
  				}
  
