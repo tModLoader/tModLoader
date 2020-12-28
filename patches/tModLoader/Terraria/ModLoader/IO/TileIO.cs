@@ -328,7 +328,7 @@ namespace Terraria.ModLoader.IO
 			Tile tile = Main.tile[i, j];
 			if (tile.wall == UnloadedTilesWorld.PendingWallType
 					&& tables.wallNames.ContainsKey(type)) {
-				UnloadedTileInfo info = new UnloadedTileInfo(tables.wallModNames[type], tables.wallNames[type]);
+				UnloadedTileInfo info = new UnloadedTileInfo(tables.wallModNames[type], tables.wallNames[type],false,false);
 				UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
 				int pendingID = modWorld.pendingWallInfos.IndexOf(info);
 				if (pendingID < 0) {

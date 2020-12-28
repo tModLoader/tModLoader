@@ -105,7 +105,7 @@ namespace Terraria.ModLoader.Default
 
 				string modName = infoTag.GetString("mod");
 				string name = infoTag.GetString("name");
-				var info = new UnloadedTileInfo(modName, name);
+				var info = new UnloadedTileInfo(modName, name,false,false);
 				wallInfos.Add(info);
 
 				ushort type = ModContent.TryFind(modName, name, out ModWall wall) ? wall.Type : (ushort)0;
@@ -121,7 +121,7 @@ namespace Terraria.ModLoader.Default
 
 				string modName = infoTag.GetString("mod");
 				string name = infoTag.GetString("name");
-				var info = new UnloadedTileInfo(modName, name);
+				var info = new UnloadedTileInfo(modName, name,false,false);
 
 				wallCoordsToWallInfos[coords] = info;
 			}
