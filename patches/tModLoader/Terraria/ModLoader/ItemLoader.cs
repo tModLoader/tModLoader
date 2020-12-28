@@ -706,7 +706,7 @@ namespace Terraria.ModLoader
 			bool? result = null;
 
 			foreach (var g in HookUseItem.arr) {
-				bool? useItem = g.UseItem(item, player);
+				bool? useItem = g.Instance(item).UseItem(item, player);
 
 				if (useItem.HasValue && result != false) {
 					result = useItem.Value;
