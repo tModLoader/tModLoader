@@ -9,6 +9,7 @@ using System.Reflection;
 using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ID;
+using Terraria.ModLoader.Container;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.IO;
 
