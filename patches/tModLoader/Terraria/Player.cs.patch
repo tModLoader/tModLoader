@@ -483,10 +483,12 @@
  					return inventory[i];
  			}
  
-@@ -2868,7 +_,7 @@
+@@ -2867,8 +_,8 @@
+ 			if (cursed || CCed || dead)
  				return;
  
- 			LegacySoundStyle legacySoundStyle = null;
+-			LegacySoundStyle legacySoundStyle = null;
++			SoundStyle legacySoundStyle = null;
 -			if (CountBuffs() == 22)
 +			if (CountBuffs() == MaxBuffs)
  				return;
@@ -3117,6 +3119,15 @@
  						if (tile.halfBrick()) {
  							WorldGen.PoundTile(x, y);
  							if (Main.netMode == 1)
+@@ -32125,7 +_,7 @@
+ 
+ 				num3 = (float)Math.Round(num3 * (float)musicNotes);
+ 				num3 = (Main.musicPitch = num3 / (float)musicNotes);
+-				LegacySoundStyle type = SoundID.Item26;
++				SoundStyle type = SoundID.Item26;
+ 				if (sItem.type == 507)
+ 					type = SoundID.Item35;
+ 
 @@ -32311,7 +_,8 @@
  				}
  
