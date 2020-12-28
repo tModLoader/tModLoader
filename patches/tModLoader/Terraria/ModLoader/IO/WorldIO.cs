@@ -21,7 +21,7 @@ namespace Terraria.ModLoader.IO
 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
 			var tag = new TagCompound {
-				["chests"] = SaveChests(),
+				["chests"] = SaveChestInventory(),
 				["tiles"] = TileIO.SaveTiles(),
 				["containers"] = TileIO.SaveContainers(),
 				["npcs"] = SaveNPCs(),
@@ -53,7 +53,7 @@ namespace Terraria.ModLoader.IO
 			}
 
 			var tag = TagIO.FromStream(new MemoryStream(buf));
-			LoadChests(tag.GetList<TagCompound>("chests"));
+			LoadChestInventory(tag.GetList<TagCompound>("chests"));
 			TileIO.LoadTiles(tag.GetCompound("tiles"));
 			TileIO.LoadContainers(tag.GetCompound("containers"));
 			LoadNPCs(tag.GetList<TagCompound>("npcs"));
@@ -76,15 +76,16 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static List<TagCompound> SaveChests() {
+		internal static List<TagCompound> SaveChestInventory() {
 			var list = new List<TagCompound>();
-			for (int k = 0; k < 1000; k++) {
+			short MaxChestSaveCount = 8000; //As of Vanilla 1.4.0.1
+			for (int k = 0; k < MaxChestSaveCount; k++) {
 				var chest = Main.chest[k];
 				if (chest == null)
 					continue;
 
 				var itemTagList = PlayerIO.SaveInventory(chest.item);
-				if (itemTagList == null) //doesn't need mod saving
+				if (itemTagList == null) //doesn't need mod saving, no modded contents and thus Vanilla should cover it
 					continue;
 
 				list.Add(new TagCompound {
@@ -96,13 +97,11 @@ namespace Terraria.ModLoader.IO
 			return list;
 		}
 
-		internal static void LoadChests(IList<TagCompound> list) {
+		internal static void LoadChestInventory(IList<TagCompound> list) {
 			foreach (var tag in list) {
 				int x = tag.GetInt("x");
 				int y = tag.GetInt("y");
 				int chest = Chest.FindChest(x, y);
-				if (chest < 0)
-					chest = Chest.CreateChest(x, y);
 				if (chest >= 0)
 					PlayerIO.LoadInventory(Main.chest[chest].item, tag.GetList<TagCompound>("items"));
 			}
