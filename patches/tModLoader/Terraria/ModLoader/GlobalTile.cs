@@ -221,7 +221,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things in front of the tile at the given coordinates. This can also be used to do things such as creating dust. Called on active tiles. See also ModWorld.PostDrawTiles.
+		/// Allows you to draw things in front of the tile at the given coordinates. This can also be used to do things such as creating dust. Called on active tiles. See also ModSystem.PostDrawTiles.
 		/// </summary>
 		/// <param name="i"></param>
 		/// <param name="j"></param>

@@ -377,7 +377,7 @@ namespace Terraria.ModLoader
 				p.Write(mod.Name);
 
 			ItemLoader.WriteNetGlobalOrder(p);
-			WorldHooks.WriteNetWorldOrder(p);
+			SystemHooks.WriteNetSystemOrder(p);
 			p.Write(Player.MaxBuffs);
 
 			p.Send(toClient);
@@ -402,7 +402,7 @@ namespace Terraria.ModLoader
 			SetupDiagnostics();
 
 			ItemLoader.ReadNetGlobalOrder(reader);
-			WorldHooks.ReadNetWorldOrder(reader);
+			SystemHooks.ReadNetSystemOrder(reader);
 
 			int serverMaxBuffs = reader.ReadInt32();
 
@@ -468,7 +468,7 @@ namespace Terraria.ModLoader
 		}
 
 		// Mirror of Main class network diagnostic fields, but mod specific.
-		// Potential improvements: separate page from vanilla messageIDs, track automatic/ModWorld/etc sends per class or mod, sort by most active, moving average, NetStats console command in ModLoaderMod
+		// Potential improvements: separate page from vanilla messageIDs, track automatic/ModSystem/etc sends per class or mod, sort by most active, moving average, NetStats console command in ModLoaderMod
 		// Currently we only update these on client
 		public static int[] rxMsgType;
 		public static int[] rxDataType;
