@@ -8,6 +8,9 @@ using System.Linq;
 using System.Threading;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI;
+using Terraria.GameContent.UI.States;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
@@ -79,7 +82,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets the texture with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithoutExtension". Throws an ArgumentException if the texture does not exist. If a vanilla texture is desired, the format "Terraria/FileNameWithoutExtension" will reference an image from the "terraria/Content/Images" folder. Note: Texture2D is in the Microsoft.Xna.Framework.Graphics namespace.
+		/// Gets the texture with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithoutExtension". Throws an ArgumentException if the texture does not exist. If a vanilla texture is desired, the format "Terraria/Images/FileNameWithoutExtension" will reference an image from the "terraria/Images/Content" folder. Note: Texture2D is in the Microsoft.Xna.Framework.Graphics namespace.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
 		public static Asset<Texture2D> GetTexture(string name) {
@@ -89,7 +92,7 @@ namespace Terraria.ModLoader
 			SplitName(name, out string modName, out string subName);
 
 			if(modName == "Terraria")
-				return Main.Assets.Request<Texture2D>(Path.Combine("Images", subName));
+				return Main.Assets.Request<Texture2D>(subName);
 
 			if (!ModLoader.TryGetMod(modName, out var mod))
 				throw new MissingResourceException($"Missing mod: {name}");
@@ -130,7 +133,7 @@ namespace Terraria.ModLoader
 
 			if (modName == "Terraria") {
 				if ((Main.instance.Content as TMLContentManager).ImageExists(subName)) {
-					texture = Main.Assets.Request<Texture2D>(Path.Combine("Images", subName));
+					texture = Main.Assets.Request<Texture2D>(subName);
 
 					return true;
 				}
@@ -401,13 +404,15 @@ namespace Terraria.ModLoader
 
 			RefreshModLanguage(Language.ActiveCulture);
 			MapLoader.SetupModMap();
-			ItemSorting.SetupWhiteLists();
 			RarityLoader.Initialize();
+			
+			ContentSamples.Initialize();
 			PlayerInput.reinitialize = true;
+			SetupBestiary(token);
 			SetupRecipes(token);
 			ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
+			ItemSorting.SetupWhiteLists();
 
-			ContentSamples.Initialize();
 			MenuLoader.GotoSavedModMenu();
 		}
 		
@@ -435,6 +440,30 @@ namespace Terraria.ModLoader
 					MemoryTracking.Update(mod.Name);
 				}
 			}
+		}
+
+		private static void SetupBestiary(CancellationToken token) {
+			//Beastiary DB
+			var bestiaryDatabase = new BestiaryDatabase();
+			new BestiaryDatabaseNPCsPopulator().Populate(bestiaryDatabase);
+			Main.BestiaryDB = bestiaryDatabase;
+			ContentSamples.RebuildBestiarySortingIDsByBestiaryDatabaseContents(bestiaryDatabase);
+			
+			//Drops DB
+			var itemDropDatabase = new ItemDropDatabase();
+			itemDropDatabase.Populate();
+			Main.ItemDropsDB = itemDropDatabase;
+			
+			//Update the bestiary DB with the drops DB.
+			bestiaryDatabase.Merge(Main.ItemDropsDB);
+			
+			//Etc
+			
+			if (!Main.dedServ)
+				Main.BestiaryUI = new UIBestiaryTest(Main.BestiaryDB);
+			
+			Main.ItemDropSolver = new ItemDropResolver(itemDropDatabase);
+			Main.BestiaryTracker = new BestiaryUnlocksTracker();
 		}
 
 		private static void SetupRecipes(CancellationToken token) {
@@ -500,6 +529,7 @@ namespace Terraria.ModLoader
 			GlobalBgStyleLoader.Unload();
 			WaterStyleLoader.Unload();
 			WaterfallStyleLoader.Unload();
+			PlayerDrawLayerHooks.Unload();
 			WorldHooks.Unload();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
@@ -527,7 +557,7 @@ namespace Terraria.ModLoader
 			// BuffID.Search = IdDictionary.Create<BuffID, int>();
 			
 			ContentSamples.Initialize();
-			
+
 			CleanupModReferences();
 		}
 
@@ -545,6 +575,7 @@ namespace Terraria.ModLoader
 			MountLoader.ResizeArrays();
 			BuffLoader.ResizeArrays();
 			PlayerHooks.RebuildHooks();
+			PlayerDrawLayerHooks.ResizeArrays();
 			WorldHooks.ResizeArrays();
 
 			if (!Main.dedServ) {

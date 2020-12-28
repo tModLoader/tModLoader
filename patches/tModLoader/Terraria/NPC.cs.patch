@@ -460,7 +460,7 @@
  			if (DeathSound != null)
  				SoundEngine.PlaySound(DeathSound, base.position);
  
-+			if (NPCLoader.SpecialNPCLoot(this)) {
++			if (NPCLoader.SpecialOnKill(this)) {
 +			}
 -			if (type == 13 || type == 14 || type == 15) {
 +			else if (type == 13 || type == 14 || type == 15) {
@@ -498,7 +498,7 @@
  			if ((type == 23 && Main.hardMode) || (SpawnedFromStatue && NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue[type] && !Main.hardMode) || (SpawnedFromStatue && NPCID.Sets.StatueSpawnedDropRarity[type] != -1f && (Main.rand.NextFloat() >= NPCID.Sets.StatueSpawnedDropRarity[type] || !AnyInteractions())))
  				return;
  
-+			if (!NPCLoader.PreNPCLoot(this))
++			if (!NPCLoader.PreKill(this))
 +				return;
 +
  			bool num = downedMechBoss1 && downedMechBoss2 && downedMechBoss3;
@@ -508,7 +508,7 @@
  					ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[32].Key), new Color(50, 255, 130));
  			}
  
-+			NPCLoader.NPCLoot(this);
++			NPCLoader.OnKill(this);
  			NPCLoot_DropMoney(closestPlayer);
  			NPCLoot_DropHeals(closestPlayer);
  		}

@@ -534,3 +534,12 @@
  		}
  
  		public void OnPurchase(Item item) {
+@@ -46183,7 +_,7 @@
+ 				Prefix(reader.ReadByte());
+ 			}
+ 
+-			if (type >= 5088)
++			if (type >= ItemLoader.ItemCount)
+ 				TurnToAir();
+ 		}
+ 
