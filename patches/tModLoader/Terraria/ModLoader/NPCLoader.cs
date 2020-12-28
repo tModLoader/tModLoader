@@ -384,7 +384,7 @@ namespace Terraria.ModLoader
 		public static bool PreKill(NPC npc) {
 			bool result = true;
 			foreach (GlobalNPC g in HookPreKill.Enumerate(npc)) {
-				result &= g.PreNPCLoot(npc);
+				result &= g.PreKill(npc);
 			}
 
 			if (result && npc.modNPC != null) {
@@ -405,7 +405,7 @@ namespace Terraria.ModLoader
 			npc.modNPC?.OnKill();
 
 			foreach (GlobalNPC g in HookOnKill.Enumerate(npc)) {
-				g.NPCLoot(npc);
+				g.OnKill(npc);
 			}
 			
 			blockLoot.Clear();
