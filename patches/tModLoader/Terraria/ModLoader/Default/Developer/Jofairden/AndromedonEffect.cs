@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Terraria.ModLoader.Default.Developer.Jofairden
 {
@@ -68,58 +67,6 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 				_auraTime = 300 + diff;
 			}
 			_lastLife = player.statLife;
-		}
-
-		public void ModifyDrawLayers(Mod mod, Player player, List<PlayerLayer> layers) {
-			_headSlot ??= mod.GetEquipSlot($"PowerRanger_{EquipType.Head}", EquipType.Head);
-			_bodySlot ??= mod.GetEquipSlot($"PowerRanger_{EquipType.Body}", EquipType.Body);
-			_legSlot ??= mod.GetEquipSlot($"PowerRanger_{EquipType.Legs}", EquipType.Legs);
-
-			if (LayerStrength >= 0f) {
-				int i;
-
-				if (player.head == _headSlot) {
-					PowerRanger_Head.GlowLayer.visible = true;
-
-					i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Head"));
-					if (i != -1) {
-						if (ShaderStrength > 0f) {
-							PowerRanger_Head.ShaderLayer.visible = true;
-							layers.Insert(i - 1, PowerRanger_Head.ShaderLayer);
-						}
-						layers.Insert(i + 2, PowerRanger_Head.GlowLayer);
-					}
-				}
-
-				if (player.body == _bodySlot) {
-					if (ShaderStrength > 0f) {
-						PowerRanger_Body.ShaderLayer.visible = true;
-						i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Body"));
-						if (i != -1) {
-							layers.Insert(i - 1, PowerRanger_Body.ShaderLayer);
-						}
-					}
-
-					PowerRanger_Body.GlowLayer.visible = true;
-					i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Arms"));
-					if (i != -1) {
-						layers.Insert(i + 1, PowerRanger_Body.GlowLayer);
-					}
-				}
-
-				if (player.legs == _legSlot) {
-					PowerRanger_Legs.GlowLayer.visible = true;
-
-					i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Legs"));
-					if (i != -1) {
-						if (ShaderStrength > 0f) {
-							PowerRanger_Legs.ShaderLayer.visible = true;
-							layers.Insert(i - 1, PowerRanger_Legs.ShaderLayer);
-						}
-						layers.Insert(i + 2, PowerRanger_Legs.GlowLayer);
-					}
-				}
-			}
 		}
 
 		public object Clone() {

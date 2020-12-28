@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleModifiedProjectilesItem : ModItem
 	{
-		public override string Texture => "Examplemod/Content/Items/Weapons/ExampleShootingSword";
+		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleShootingSword";
 		public override void SetDefaults() {
 			item.useTime = 20;
 			item.useAnimation = 20;
