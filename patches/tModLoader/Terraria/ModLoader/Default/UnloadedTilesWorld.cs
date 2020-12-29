@@ -80,11 +80,12 @@ namespace Terraria.ModLoader.Default
 				string name = infoTag.GetString("name");
 				bool IsChest = infoTag.GetBool("IsChest");
 				bool IsSolid = infoTag.GetBool("IsSolid");
+				short ChestIndx = infoTag.GetShort("ChestIndx");
 				bool frameImportant = infoTag.ContainsKey("frameX");
 				var info = frameImportant ?
 					new UnloadedTileInfo(modName, name, infoTag.GetShort("frameX"), infoTag.GetShort("frameY"),
-						IsChest, IsSolid) :
-					new UnloadedTileInfo(modName, name, IsChest, IsSolid);
+						IsChest, IsSolid, ChestIndx) :
+					new UnloadedTileInfo(modName, name, IsChest, IsSolid, ChestIndx);
 				infos.Add(info);
 
 				//Check if the previously unloaded tile is now loadable again
@@ -105,7 +106,7 @@ namespace Terraria.ModLoader.Default
 
 				string modName = infoTag.GetString("mod");
 				string name = infoTag.GetString("name");
-				var info = new UnloadedTileInfo(modName, name,false,false);
+				var info = new UnloadedTileInfo(modName, name,false,false,-2);
 				wallInfos.Add(info);
 
 				ushort type = ModContent.TryFind(modName, name, out ModWall wall) ? wall.Type : (ushort)0;
@@ -121,7 +122,7 @@ namespace Terraria.ModLoader.Default
 
 				string modName = infoTag.GetString("mod");
 				string name = infoTag.GetString("name");
-				var info = new UnloadedTileInfo(modName, name,false,false);
+				var info = new UnloadedTileInfo(modName, name,false,false,-2);
 
 				wallCoordsToWallInfos[coords] = info;
 			}
@@ -167,8 +168,7 @@ namespace Terraria.ModLoader.Default
 
 					// If tile is of Type unloaded, then get frame data, and restore if frame data allows it
 					Tile tile = Main.tile[x, y];
-					if (canRestoreFlag && (tile.type == unloadedTile || tile.type == unloadedNonSolidTile ||
-						Main.tile[x, y].type == unloadedChest)) {
+					if (canRestoreFlag && (tile.type == unloadedTile || tile.type == unloadedNonSolidTile)) {
 						UnloadedTileFrame frame = new UnloadedTileFrame(tile.frameX, tile.frameY);
 						int frameID = frame.FrameID;
 						if (canRestore[frameID] > 0) {
@@ -178,6 +178,17 @@ namespace Terraria.ModLoader.Default
 							tile.frameY = info.frameY;
 						}
 					}
+					// If Tile is a Chest, Replace the chest with original. 
+					if (canRestoreFlag && (tile.type == unloadedChest)) {
+						Tile inactTile = Main.tile[x + 1, y + 1];
+						UnloadedTileFrame frame = new UnloadedTileFrame(inactTile.frameX, inactTile.frameY);
+						int frameID = frame.FrameID;
+						if (canRestore[frameID] > 0) {
+							UnloadedTileInfo info = infos[frameID];
+							WorldGen.PlaceChestDirect(x, y+1, unloadedChest, 0, info.ChestIndx);
+						}
+					}
+					Chest.UpdateChestFrames
 					if (canRestoreWallsFlag && tile.wall == unloadedWallType) {
 						Point16 coords = new Point16(x, y);
 						if (wallCoordsToWallInfos.TryGetValue(coords, out UnloadedTileInfo info) &&
@@ -235,7 +246,6 @@ namespace Terraria.ModLoader.Default
 
 			ushort pendingWallType = PendingWallType;
 			ushort unloadedWallType = UnloadedWallType;
-			
 			// For all tiles on the map
 			for (int x = 0; x < Main.maxTilesX; x++) {
 				for (int y = 0; y < Main.maxTilesY; y++) {
@@ -255,12 +265,17 @@ namespace Terraria.ModLoader.Default
 							workingType = unloadedNonSolidTile;
 						}
 						if (info.IsChest) {
-							workingType = unloadedChest;
-						} 
-						// Place TileObject
-						tile.type = workingType;
-						tile.frameX = frame.FrameX;
-						tile.frameY = frame.FrameY;
+							WorldGen.PlaceChestDirect(x, y+1, unloadedChest, 0, info.ChestIndx);
+							Tile inactTile = Main.tile[x + 1, y + 1];
+							inactTile.type = unloadedNonSolidTile;
+							inactTile.frameX = frame.FrameX;
+							inactTile.frameY = frame.FrameY;
+						}
+						else {
+							tile.type = workingType;
+							tile.frameX = frame.FrameX;
+							tile.frameY = frame.FrameY;
+						}
 					}
 					if (confirmWallInfo && tile.wall == pendingWallType)
 						tile.wall = unloadedWallType;

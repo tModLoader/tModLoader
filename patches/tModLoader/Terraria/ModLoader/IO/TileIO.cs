@@ -232,8 +232,9 @@ namespace Terraria.ModLoader.IO
 		internal static void WriteModTile(ref int i, ref int j, BinaryWriter writer, ref bool nextModTile, bool[] hasTile, bool[] hasWall) {
 			Tile tile = Main.tile[i, j];
 			byte flags = TileIOFlags.None;
-			byte[] data = new byte[11]; //data[0] will be filled with the flags, hence why index starts with 1 below
-			int index = 1;
+			byte flags2 = 0;
+			byte[] data = new byte[14]; //data[0-1] will be filled with the flags, hence why index starts with 2 below
+			int index = 2;
 
 			// Write Tiles
 			if (tile.active() && tile.type >= TileID.Count) {
@@ -268,6 +269,15 @@ namespace Terraria.ModLoader.IO
 				if (tile.color() != 0) {
 					data[index] = tile.color();
 					flags |= TileIOFlags.TileColor;
+					index++;
+				}
+
+				// Checks if Tile is a Chest, records Chest Index
+				if (TileID.Sets.BasicChest[tile.type]) {
+					flags2 |= 0x1; // Bool IsChest
+					data[index] = (byte)Chest.FindChest(i, j);
+					index++;
+					data[index] = (byte)(Chest.FindChest(i, j) >> 8);
 					index++;
 				}
 			}
@@ -321,6 +331,7 @@ namespace Terraria.ModLoader.IO
 
 			// Output result Data array to stream
 			data[0] = flags;
+			data[1] = flags2;
 			writer.Write(data, 0, index);
 		}
 
@@ -328,7 +339,7 @@ namespace Terraria.ModLoader.IO
 			Tile tile = Main.tile[i, j];
 			if (tile.wall == UnloadedTilesWorld.PendingWallType
 					&& tables.wallNames.ContainsKey(type)) {
-				UnloadedTileInfo info = new UnloadedTileInfo(tables.wallModNames[type], tables.wallNames[type],false,false);
+				UnloadedTileInfo info = new UnloadedTileInfo(tables.wallModNames[type], tables.wallNames[type],false,false,-2);
 				UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
 				int pendingID = modWorld.pendingWallInfos.IndexOf(info);
 				if (pendingID < 0) {
@@ -345,7 +356,11 @@ namespace Terraria.ModLoader.IO
 		internal static void ReadModTile(ref int i, ref int j, TileTables tables, BinaryReader reader, ref bool nextModTile) {
 			// Access Stored Flags
 			byte flags;
+			byte flags2;
 			flags = reader.ReadByte();
+			flags2 = reader.ReadByte();
+
+			
 
 			// Read Tiles
 			Tile tile = Main.tile[i, j];
@@ -373,6 +388,17 @@ namespace Terraria.ModLoader.IO
 					tile.frameX = -1;
 					tile.frameY = -1;
 				}
+
+				if ((flags & TileIOFlags.TileColor) == TileIOFlags.TileColor) {
+					tile.color(reader.ReadByte());
+				}
+
+				// Temp Variable -> Refactor this to replace field "IsChest" and use -2 if not a chest.
+				short ChestIndx = 0;
+				if ((flags2 & 0x1) == 0x1) {
+					ChestIndx = (reader.ReadInt16());
+				}
+
 				// Handle Disabled Mods and Implement a Placeholder Tile
 				if (tile.type == UnloadedTilesWorld.PendingType
 					&& tables.tileNames.ContainsKey(saveType)) {
@@ -380,11 +406,11 @@ namespace Terraria.ModLoader.IO
 					UnloadedTileInfo info;
 					if (tables.frameImportant[saveType]) {
 						info = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],
-							tile.frameX, tile.frameY, tables.IsChest[saveType],tables.IsSolid[saveType]);
+							tile.frameX, tile.frameY, tables.IsChest[saveType],tables.IsSolid[saveType],ChestIndx);
 					}
 					else {
 						info = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType], 
-							tables.IsChest[saveType], tables.IsSolid[saveType]);
+							tables.IsChest[saveType], tables.IsSolid[saveType],ChestIndx);
 					}
 
 					// Create and apply placeholder tile frame
@@ -399,9 +425,7 @@ namespace Terraria.ModLoader.IO
 					tile.frameX = pendingFrame.FrameX;
 					tile.frameY = pendingFrame.FrameY;
 				}
-				if ((flags & TileIOFlags.TileColor) == TileIOFlags.TileColor) {
-					tile.color(reader.ReadByte());
-				}
+				
 
 				// Ready Tile
 				WorldGen.tileCounts[tile.type] += j <= Main.worldSurface ? 5 : 1;

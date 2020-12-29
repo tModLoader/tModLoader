@@ -11,8 +11,9 @@ namespace Terraria.ModLoader.Default
 		public readonly short frameY;
 		public readonly bool IsChest;
 		public readonly bool IsSolid;
+		public readonly short ChestIndx;
 
-		public UnloadedTileInfo(string modName, string name, bool IsChest, bool IsSolid) {
+		public UnloadedTileInfo(string modName, string name, bool IsChest, bool IsSolid, short ChestIndx) {
 			this.modName = modName;
 			this.name = name;
 			this.frameImportant = false;
@@ -20,9 +21,10 @@ namespace Terraria.ModLoader.Default
 			this.frameY = -1;
 			this.IsChest = IsChest;
 			this.IsSolid = IsSolid;
+			this.ChestIndx = ChestIndx;
 		}
 
-		public UnloadedTileInfo(string modName, string name, short frameX, short frameY, bool IsChest, bool IsSolid) {
+		public UnloadedTileInfo(string modName, string name, short frameX, short frameY, bool IsChest, bool IsSolid, short ChestIndx) {
 			this.modName = modName;
 			this.name = name;
 			this.frameImportant = true;
@@ -30,6 +32,7 @@ namespace Terraria.ModLoader.Default
 			this.frameY = frameY;
 			this.IsChest = IsChest;
 			this.IsSolid = IsSolid;
+			this.ChestIndx = ChestIndx;
 		}
 
 		public override bool Equals(object obj) {
@@ -57,6 +60,7 @@ namespace Terraria.ModLoader.Default
 				["name"] = name,
 				["IsChest"] = IsChest,
 				["IsSolid"] = IsSolid,
+				["ChestIndx"] = ChestIndx,
 			};
 			if (frameImportant) {
 				tag.Set("frameX", frameX);
