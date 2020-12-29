@@ -17,7 +17,7 @@ namespace Terraria.ModLoader
 		public static int GoreCount { get; private set; } = GoreID.Count;
 
 		/// <summary> Registers a new gore with the provided texture. </summary>
-		public static void AddGoreFromTexture<T>(Mod mod, string texture) where T : ModGore, new() {
+		public static void AddGoreFromTexture<TGore>(Mod mod, string texture) where TGore : ModGore, new() {
 			if (mod == null)
 				throw new ArgumentNullException(nameof(mod));
 
@@ -27,12 +27,10 @@ namespace Terraria.ModLoader
 			if (!mod.loading)
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
-			var modGore = Activator.CreateInstance<T>();
-
-			modGore.nameOverride = Path.GetFileNameWithoutExtension(texture);
-			modGore.textureOverride = texture;
-
-			mod.AddContent(modGore);
+			mod.AddContent(new TGore {
+				nameOverride = Path.GetFileNameWithoutExtension(texture),
+				textureOverride = texture
+			});
 		}
 
 		//Called by ModGore.Register
@@ -48,8 +46,8 @@ namespace Terraria.ModLoader
 			foreach (string texturePath in mod.Assets.EnumeratePaths<Texture2D>().Where(t => t.StartsWith("Gores/"))) {
 				string textureKey = $"{mod.Name}/{texturePath}";
 
-				if (!mod.TryFind<ModGore>($"{mod.Name}/{Path.GetFileName(texturePath)}", out _)) //ModGore gores will already be loaded at this point.
-					AddGoreFromTexture<ModGore>(mod, textureKey);
+				if (!mod.TryFind<ModGore>(Path.GetFileNameWithoutExtension(texturePath), out _)) //ModGore gores will already be loaded at this point.
+					AddGoreFromTexture<SimpleModGore>(mod, textureKey);
 			}
 		}
 

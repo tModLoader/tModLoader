@@ -1,0 +1,25 @@
+--- src/Terraria/Terraria/GameContent/PlayerHeadDrawRenderTargetContent.cs
++++ src/tModLoader/Terraria/GameContent/PlayerHeadDrawRenderTargetContent.cs
+@@ -1,3 +_,4 @@
++using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using System.Collections.Generic;
+ using Terraria.DataStructures;
+@@ -17,6 +_,7 @@
+ 
+ 		internal override void DrawTheContent(SpriteBatch spriteBatch) {
+ 			if (_player != null && !_player.ShouldNotDraw) {
++				/*
+ 				_drawData.Clear();
+ 				_dust.Clear();
+ 				_gore.Clear();
+@@ -32,6 +_,9 @@
+ 				PlayerDrawHeadLayers.DrawPlayer_07_JustHair(ref drawinfo);
+ 				PlayerDrawHeadLayers.DrawPlayer_08_FaceAcc(ref drawinfo);
+ 				PlayerDrawHeadLayers.DrawPlayer_RenderAllLayers(ref drawinfo);
++				*/
++
++				Main.PlayerRenderer.DrawPlayerHead(Main.Camera, _player, new Vector2(width * 0.5f, height * 0.5f));
+ 			}
+ 		}
+ 	}

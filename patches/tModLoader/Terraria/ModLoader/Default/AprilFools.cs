@@ -3,9 +3,9 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader.Default
 {
-	public class AprilFools : ModItem
+	public class AprilFools : ModLoaderModItem
 	{
-		public override string Texture => "Terraria/Item_3389";
+		public override string Texture => "Terraria/Images/Item_3389";
 
 		public static bool CheckAprilFools() {
 			DateTime now = DateTime.Now;

@@ -12,7 +12,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.
 	/// </summary>
-	public class ModTile:ModTexturedType
+	public abstract class ModTile : ModTexturedType
 	{
 		/// <summary>
 		/// The internal ID of this type of tile.
@@ -307,7 +307,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this tile is within a certain range of the player (around the same range water fountains and music boxes work). The closer parameter is whether or not the tile is within the range at which things like campfires and banners work.
+		/// Allows you to make things happen when this tile is within a certain range of the player (around the same range water fountains and music boxes work). The closer parameter is whether or not the tile is within the range at which aesthetics like monoliths and music boxes and clocks work. It is false for campfires and heart lanterns.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>

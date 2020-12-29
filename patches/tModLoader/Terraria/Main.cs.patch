@@ -926,18 +926,22 @@
  			}
  
  			_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
-@@ -9459,10 +_,11 @@
- 					else if (playOldTile) {
- 						newMusic = 6;
+@@ -9456,13 +_,11 @@
+ 					else if (menuMode == 3000) {
+ 						newMusic = 89;
  					}
+-					else if (playOldTile) {
+-						newMusic = 6;
+-					}
 -					else if (!_isAsyncLoadComplete) {
 -						newMusic = 50;
+-					}
+-					else if (!audioSystem.IsTrackPlaying(50)) {
 +					else {
 +						newMusic = MenuLoader.CurrentMenu.Music; // TODO: Music loader to make music function properly.
- 					}
--					else if (!audioSystem.IsTrackPlaying(50)) {
++					}
 +
-+					if (_isAsyncLoadComplete && newMusic == 50 && audioSystem.IsTrackPlaying(50)) {
++					if (_isAsyncLoadComplete && newMusic == 50 && !audioSystem.IsTrackPlaying(50)) {
  						newMusic = 51;
  						if (musicNoCrossFade[51])
  							musicFade[51] = 1f;
@@ -1356,7 +1360,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15033,95 +_,113 @@
+@@ -15033,95 +_,111 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1431,9 +1435,7 @@
 -					int damage = item.damage;
 +					LocalizedText tip;
 +					if (item.DamageType != null) {
-+						bool classIsVanilla = item.DamageType.index < DamageClassLoader.DefaultDamageClassCount;
-+						//'damage' portion is still required on modded ClassNames for the sake of possibility of accurate translations, but the space isn't.
-+						tip = new LocalizedText("", $"{(classIsVanilla ? string.Empty : " ")}{item.DamageType.DisplayName}");
++						tip = new LocalizedText("", " "+item.DamageType.DisplayName);
 +					}
 +					else {
 +						tip = Lang.tip[55]; // No damage class
@@ -3337,6 +3339,18 @@
  			try {
  				DrawSurfaceBG();
  				if (BackgroundEnabled)
+@@ -48900,9 +_,11 @@
+ 						num = 11;
+ 					else if (WorldGen.treeBG1 != WorldGen.treeBG4)
+ 						num = 12;
++					//Patch context.
+ 				}
+ 			}
+ 
++			SurfaceBgStyleLoader.ChooseStyle(ref num);
+ 			return num;
+ 		}
+ 
 @@ -49199,6 +_,15 @@
  			}
  		}
