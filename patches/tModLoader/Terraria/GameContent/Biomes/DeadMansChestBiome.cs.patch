@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/Biomes/DeadMansChestBiome.cs
++++ src/tModLoader/Terraria/GameContent/Biomes/DeadMansChestBiome.cs
+@@ -200,7 +_,7 @@
+ 		}
+ 
+ 		private void PlaceBoulderTrapSpot(Point position, int yPush) {
+-			int[] array = new int[624];
++			int[] array = new int[Main.tileSolid.Length];
+ 			for (int i = position.X; i < position.X + 2; i++) {
+ 				for (int j = position.Y - 4; j <= position.Y; j++) {
+ 					Tile tile = Main.tile[i, j];
