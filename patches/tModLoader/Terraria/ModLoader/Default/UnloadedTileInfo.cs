@@ -2,37 +2,30 @@
 
 namespace Terraria.ModLoader.Default
 {
-	internal class UnloadedTileInfo
+	internal class UnloadedTileInfo : UnloadedInfo 
 	{
-		public readonly string modName;
-		public readonly string name;
 		public readonly bool frameImportant;
 		public readonly short frameX;
 		public readonly short frameY;
-		public readonly bool IsChest;
 		public readonly bool IsSolid;
-		public readonly short ChestIndx;
 
-		public UnloadedTileInfo(string modName, string name, bool IsChest, bool IsSolid, short ChestIndx) {
+
+		public UnloadedTileInfo(string modName, string name, bool IsSolid) :base(modName,name){
 			this.modName = modName;
 			this.name = name;
 			this.frameImportant = false;
 			this.frameX = -1;
 			this.frameY = -1;
-			this.IsChest = IsChest;
 			this.IsSolid = IsSolid;
-			this.ChestIndx = ChestIndx;
 		}
 
-		public UnloadedTileInfo(string modName, string name, short frameX, short frameY, bool IsChest, bool IsSolid, short ChestIndx) {
+		public UnloadedTileInfo(string modName, string name, short frameX, short frameY, bool IsSolid):base(modName, name) {
 			this.modName = modName;
 			this.name = name;
 			this.frameImportant = true;
 			this.frameX = frameX;
 			this.frameY = frameY;
-			this.IsChest = IsChest;
 			this.IsSolid = IsSolid;
-			this.ChestIndx = ChestIndx;
 		}
 
 		public override bool Equals(object obj) {
@@ -54,13 +47,11 @@ namespace Terraria.ModLoader.Default
 			return hash;
 		}
 
-		public TagCompound Save() {
+		public new TagCompound Save() {
 			var tag = new TagCompound {
 				["mod"] = modName,
 				["name"] = name,
-				["IsChest"] = IsChest,
 				["IsSolid"] = IsSolid,
-				["ChestIndx"] = ChestIndx,
 			};
 			if (frameImportant) {
 				tag.Set("frameX", frameX);

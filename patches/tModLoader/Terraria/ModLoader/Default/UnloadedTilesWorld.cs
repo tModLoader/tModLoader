@@ -94,7 +94,7 @@ namespace Terraria.ModLoader.Default
 				if (type != 0)
 					canRestoreFlag = true;
 			}
-			//infos and canRestoreFlag are same length so the indices match later for RestoreTilesAndWalls
+			//infos and canRestore[] are same length so the indices match later for RestoreTilesAndWalls
 
 			var wallList = tag.GetList<TagCompound>("wallList");
 			foreach (var infoTag in wallList) {
@@ -127,8 +127,10 @@ namespace Terraria.ModLoader.Default
 				wallCoordsToWallInfos[coords] = info;
 			}
 
-			RestoreTilesAndWalls(canRestore, canRestoreWalls, canRestoreFlag, canRestoreWallsFlag);
 			// If restoration should occur during this load cycle, then do so
+			RestoreTilesAndWalls(canRestore, canRestoreWalls, canRestoreFlag, canRestoreWallsFlag);
+			
+			// Cleanup infos to reflect restored content
 			if (canRestoreFlag) {
 				for (int k = 0; k < canRestore.Count; k++) {
 					if (canRestore[k] > 0)
@@ -181,14 +183,13 @@ namespace Terraria.ModLoader.Default
 					// If Tile is a Chest, Replace the chest with original. 
 					if (canRestoreFlag && (tile.type == unloadedChest)) {
 						Tile inactTile = Main.tile[x + 1, y + 1];
-						UnloadedTileFrame frame = new UnloadedTileFrame(inactTile.frameX, inactTile.frameY);
-						int frameID = frame.FrameID;
+						UnloadedTileFrame inactFrame = new UnloadedTileFrame(inactTile.frameX, inactTile.frameY);
+						int frameID = inactFrame.FrameID; jjj // Error resulting from this line :( 
 						if (canRestore[frameID] > 0) {
 							UnloadedTileInfo info = infos[frameID];
-							WorldGen.PlaceChestDirect(x, y+1, unloadedChest, 0, info.ChestIndx);
+							WorldGen.PlaceChestDirect(x, y+1, canRestore[frameID], 0, info.ChestIndx);
 						}
 					}
-					Chest.UpdateChestFrames
 					if (canRestoreWallsFlag && tile.wall == unloadedWallType) {
 						Point16 coords = new Point16(x, y);
 						if (wallCoordsToWallInfos.TryGetValue(coords, out UnloadedTileInfo info) &&
@@ -265,9 +266,12 @@ namespace Terraria.ModLoader.Default
 							workingType = unloadedNonSolidTile;
 						}
 						if (info.IsChest) {
-							WorldGen.PlaceChestDirect(x, y+1, unloadedChest, 0, info.ChestIndx);
+							// Copy 'info' data from top left to bottom right of chest
 							Tile inactTile = Main.tile[x + 1, y + 1];
-							inactTile.type = unloadedNonSolidTile;
+							UnloadedTileFrame inactFrame = new UnloadedTileFrame(inactTile.frameX, inactTile.frameY);
+							infos[inactFrame.FrameID] = info;
+							// Place Chest &  use bottom right of chest as 'info' index
+							WorldGen.PlaceChestDirect(x, y + 1, unloadedChest, 0, info.ChestIndx);
 							inactTile.frameX = frame.FrameX;
 							inactTile.frameY = frame.FrameY;
 						}

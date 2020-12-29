@@ -53,7 +53,6 @@ namespace Terraria.ModLoader.IO
 			}
 
 			var tag = TagIO.FromStream(new MemoryStream(buf));
-			LoadChestInventory(tag.GetList<TagCompound>("chests"));
 			TileIO.LoadTiles(tag.GetCompound("tiles"));
 			TileIO.LoadContainers(tag.GetCompound("containers"));
 			LoadNPCs(tag.GetList<TagCompound>("npcs"));
@@ -64,6 +63,7 @@ namespace Terraria.ModLoader.IO
 				customDataFail = e;
 				throw;
 			}
+			LoadChestInventory(tag.GetList<TagCompound>("chests")); // Must occur after tiles are loaded
 			LoadNPCKillCounts(tag.GetList<TagCompound>("killCounts"));
 			LoadAnglerQuest(tag.GetCompound("anglerQuest"));
 			LoadTownManager(tag.GetList<TagCompound>("townManager"));
@@ -81,29 +81,48 @@ namespace Terraria.ModLoader.IO
 			short MaxChestSaveCount = 8000; //As of Vanilla 1.4.0.1
 			for (int k = 0; k < MaxChestSaveCount; k++) {
 				var chest = Main.chest[k];
-				if (chest == null)
+				if (chest == null) // chest doesn't exist
 					continue;
 
-				var itemTagList = PlayerIO.SaveInventory(chest.item);
-				if (itemTagList == null) //doesn't need mod saving, no modded contents and thus Vanilla should cover it
+				ushort chestType = Main.tile[chest.x, chest.y].type;
+				bool moddedChest = chestType >= TileID.Count; // Check if modded Chest
+
+				var itemTagListModded = PlayerIO.SaveInventory(chest.item); //list of mod only items in inventory
+				if (itemTagListModded == null && !moddedChest) //doesn't need mod saving
 					continue;
 
-				list.Add(new TagCompound {
-					["items"] = itemTagList,
+				//TODO: Refactor to reduce double saving of modded items
+				var tag = new TagCompound {
+					["items"] = itemTagListModded,
 					["x"] = chest.x,
-					["y"] = chest.y
-				});
+					["y"] = chest.y,
+					["chestType"] = chestType,
+				};
+				if (moddedChest) {
+					tag.Set("allItems", chest.item);
+				}
+				list.Add(tag);
+				
 			}
 			return list;
 		}
 
 		internal static void LoadChestInventory(IList<TagCompound> list) {
+			ushort unloadedChest = ModContent.Find<ModTile>("ModLoader/UnloadedChest").Type;
 			foreach (var tag in list) {
-				int x = tag.GetInt("x");
-				int y = tag.GetInt("y");
-				int chest = Chest.FindChest(x, y);
-				if (chest >= 0)
-					PlayerIO.LoadInventory(Main.chest[chest].item, tag.GetList<TagCompound>("items"));
+				int cID = Chest.FindChest(tag.GetShort("x"), tag.GetShort("y"));
+				if(cID >= 0) {
+					var chest = Main.chest[Chest.FindChest(tag.GetShort("x"), tag.GetShort("y"))];
+					bool isUnloaded = !(Main.tile[chest.x, chest.y].type == unloadedChest);
+					bool wasUnloaded = !(tag.Get<ushort>("chestType") == unloadedChest);
+
+					if (isUnloaded ^ wasUnloaded) { // restore all inventory due to switching
+						PlayerIO.LoadInventory(chest.item, tag.GetList<TagCompound>("allItems"));
+					}
+					else { // restore only modded items
+						PlayerIO.LoadInventory(chest.item, tag.GetList<TagCompound>("items"));
+					}
+				}
 			}
 		}
 

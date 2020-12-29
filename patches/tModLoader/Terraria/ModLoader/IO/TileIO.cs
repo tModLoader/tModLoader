@@ -399,7 +399,7 @@ namespace Terraria.ModLoader.IO
 					ChestIndx = (reader.ReadInt16());
 				}
 
-				// Handle Disabled Mods and Implement a Placeholder Tile
+				// Handle Disabled Mods and Implement a Pending Tile
 				if (tile.type == UnloadedTilesWorld.PendingType
 					&& tables.tileNames.ContainsKey(saveType)) {
 					// Load saved Basic Tile Type Data into UnloadedTileInfo
@@ -413,7 +413,7 @@ namespace Terraria.ModLoader.IO
 							tables.IsChest[saveType], tables.IsSolid[saveType],ChestIndx);
 					}
 
-					// Create and apply placeholder tile frame
+					// Index pending tile info
 					UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
 					int pendingFrameID = modWorld.pendingInfos.IndexOf(info);
 					if (pendingFrameID < 0) {
