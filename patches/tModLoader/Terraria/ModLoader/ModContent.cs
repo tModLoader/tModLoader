@@ -515,6 +515,7 @@ namespace Terraria.ModLoader
 			ProjectileLoader.Unload();
 			NPCLoader.Unload();
 			NPCHeadLoader.Unload();
+			Main.BigBossProgressBar.Unload();
 			PlayerHooks.Unload();
 			BuffLoader.Unload();
 			MountLoader.Unload();

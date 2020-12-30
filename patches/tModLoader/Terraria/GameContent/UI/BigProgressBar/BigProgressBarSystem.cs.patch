@@ -9,3 +9,13 @@
  	{
  		private IBigProgressBar _currentBar;
  		private CommonBossBigProgressBar _bossBar = new CommonBossBigProgressBar();
+@@ -86,7 +_,8 @@
+ 			bigProgressBarInfo.npcIndexToAimAt = npcIndex;
+ 			BigProgressBarInfo info = bigProgressBarInfo;
+ 			IBigProgressBar bigProgressBar = _bossBar;
++			//Moved if (_bossBarsByNpcNetId.TryGetValue(nPC.netID, out IBigProgressBar value)) into the partial .TML class
+-			if (_bossBarsByNpcNetId.TryGetValue(nPC.netID, out IBigProgressBar value))
++			if (TryGetBar(nPC.netID, out IBigProgressBar value))
+ 				bigProgressBar = value;
+ 
+ 			if (!bigProgressBar.ValidateAndCollectNecessaryInfo(ref info))
