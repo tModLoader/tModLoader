@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/UI/BigProgressBar/BigProgressBarSystem.cs
++++ src/tModLoader/Terraria/GameContent/UI/BigProgressBar/BigProgressBarSystem.cs
+@@ -4,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.BigProgressBar
+ {
+-	public class BigProgressBarSystem
++	public partial class BigProgressBarSystem
+ 	{
+ 		private IBigProgressBar _currentBar;
+ 		private CommonBossBigProgressBar _bossBar = new CommonBossBigProgressBar();
