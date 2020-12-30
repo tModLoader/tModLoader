@@ -1068,15 +1068,23 @@
  			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
  				Star.UpdateStars();
  				Cloud.UpdateClouds();
-@@ -12806,6 +_,8 @@
+@@ -12806,8 +_,16 @@
  			if (InGameUI != null)
  				InGameUI.Update(gameTime);
  
 +			ModHooks.UpdateUI(gameTime);
 +			PlayerInput.ScrollWheelDeltaForUI = 0; //TODO: Should this be before PlayerInput.ResetInputsOnActiveStateChange()?
  			CreativeMenu.Update(gameTime);
++
++			if (gameMenu) //Don't update IBigProgressBars in the main menu to avoid IOOB during unload when modded NPCs were alive --direwolf420
++				goto afterBigBossProgressBarUpdate; //Avoids indentation change
++
  			BigBossProgressBar.Update();
++
++			afterBigBossProgressBarUpdate: ;
  		}
+ 
+ 		private void DoDebugFunctions() {
 @@ -12925,6 +_,9 @@
  			if ((byte)Main.player[myPlayer].zone4 != (byte)player.zone4)
  				flag2 = true;
