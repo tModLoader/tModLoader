@@ -20,6 +20,10 @@ namespace ExampleMod.Content.NPCS
 				Velocity = 1f //Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, value);
+
+			//TODO showcase changing vanilla NPC bars after ModSystem merge using PostSetupContent
+			//Custom "boss health bar", see the Content/BigProgressBars folder
+			Main.BigBossProgressBar.AddBar(npc.type, new Content.BigProgressBars.PartyZombieBigProgressBar());
 		}
 
 		public override void SetDefaults() {

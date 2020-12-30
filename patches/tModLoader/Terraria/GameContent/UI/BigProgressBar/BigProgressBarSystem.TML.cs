@@ -23,7 +23,7 @@ namespace Terraria.GameContent.UI.BigProgressBar
 		/// <param name="netID">The NPCs netID (most of the time the same as its type) to register to</param>
 		/// <param name="bar">The IBigProgressBar</param>
 		/// <returns>true if added, false if overridden</returns>
-		internal bool AddBar(int netID, IBigProgressBar bar) {
+		public bool AddBar(int netID, IBigProgressBar bar) {
 			//This is callable anywhere at any point in the game
 			if (!BarOverridden(netID) && !SpecialVanillaBarExists(netID)) {
 				overrideBossBarsByNpcNetId.Add(netID, bar);
