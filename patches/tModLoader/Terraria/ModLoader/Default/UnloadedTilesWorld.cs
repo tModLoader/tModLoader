@@ -88,7 +88,7 @@ namespace Terraria.ModLoader.Default
 				}).ToList(),
 				["chestList"] = chestInfos.Select(info => info?.Save() ?? new TagCompound()).ToList(),
 				["chestPosIndex"] = chestCoordsToChestInfos.Select(pair => new TagCompound {
-					["PosID"] = pair.Key,
+					["posID"] = pair.Key,
 					["frameID"] = pair.Value
 				}).ToList(),
 			};
@@ -150,7 +150,6 @@ namespace Terraria.ModLoader.Default
 				if (type != 0)
 					canRestoreWallsFlag = true;
 			}
-
 			// Prcoess Walls Coordinates Conversion
 			var wallCoordsList = tag.GetList<TagCompound>("wallCoordsList");
 			foreach (var coordsTag in wallCoordsList) {
@@ -187,9 +186,9 @@ namespace Terraria.ModLoader.Default
 			}
 			// Prcoess Chests Coordinates Conversion
 			var chestPosIndex = tag.GetList<TagCompound>("chestPosIndex");
-			foreach (var coordsTag in chestPosIndex) {
-				int PosID = coordsTag.Get<int>("PosID");
-				var frameID = coordsTag.Get<int>("frameID");
+			foreach (var posTag in chestPosIndex) {
+				int PosID = posTag.Get<int>("PosID");
+				var frameID = posTag.Get<int>("frameID");
 				chestCoordsToChestInfos[PosID] = frameID;
 			}
 
@@ -254,15 +253,17 @@ namespace Terraria.ModLoader.Default
 							tile.frameY = info.frameY;
 						}
 					}
-					// If Tile is a Chest, Replace the chest with original. 
+					// If Tile is a Chest, Replace the chest with original by referencing Position mapping 
 					if (canRestoreChestsFlag && (tile.type == unloadedChest)) {
 						int PosID = y * Main.maxTilesX + x;
 						chestCoordsToChestInfos.TryGetValue(PosID, out int frameID);
 						if (canRestoreChests[frameID] > 0) {
 							UnloadedChestInfo info = chestInfos[frameID];
 							WorldGen.PlaceChestDirect(x, y+1, canRestoreChests[frameID], 0, -1);
+							chestCoordsToChestInfos.Remove(PosID);
 						}
 					}
+					// If tile has a wall, replace unloaded Wal with original by coordinate mapping
 					if (canRestoreWallsFlag && tile.wall == unloadedWallType) {
 						Point16 coords = new Point16(x, y);
 						if (wallCoordsToWallInfos.TryGetValue(coords, out UnloadedWallInfo info) &&
@@ -312,6 +313,17 @@ namespace Terraria.ModLoader.Default
 					wallInfos.Add(pendingWallInfos[k]);
 				else
 					wallInfos[nextID] = pendingWallInfos[k];
+			}
+
+			nextID = 0;
+			for (int k = 0; k < pendingChestInfos.Count; k++) {
+				while (nextID < chestInfos.Count && chestInfos[nextID] != null)
+					nextID++;
+
+				if (nextID == chestInfos.Count)
+					chestInfos.Add(pendingChestInfos[k]);
+				else
+					chestInfos[nextID] = pendingChestInfos[k];
 			}
 
 			ushort pendingTile = PendingTile;
