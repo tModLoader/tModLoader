@@ -1076,7 +1076,7 @@
 +			PlayerInput.ScrollWheelDeltaForUI = 0; //TODO: Should this be before PlayerInput.ResetInputsOnActiveStateChange()?
  			CreativeMenu.Update(gameTime);
 +
-+			if (gameMenu) //Don't update IBigProgressBars in the main menu to avoid IOOB during unload when modded NPCs were alive --direwolf420
++			if (!gameMenu) //Don't update IBigProgressBars in the main menu to avoid IOOB during unload when modded NPCs were alive --direwolf420
 -			BigBossProgressBar.Update();
 +				BigBossProgressBar.Update();
  		}
