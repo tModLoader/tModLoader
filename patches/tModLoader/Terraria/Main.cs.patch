@@ -1068,7 +1068,7 @@
  			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
  				Star.UpdateStars();
  				Cloud.UpdateClouds();
-@@ -12806,8 +_,16 @@
+@@ -12806,8 +_,12 @@
  			if (InGameUI != null)
  				InGameUI.Update(gameTime);
  
@@ -1077,11 +1077,8 @@
  			CreativeMenu.Update(gameTime);
 +
 +			if (gameMenu) //Don't update IBigProgressBars in the main menu to avoid IOOB during unload when modded NPCs were alive --direwolf420
-+				goto afterBigBossProgressBarUpdate; //Avoids indentation change
-+
- 			BigBossProgressBar.Update();
-+
-+			afterBigBossProgressBarUpdate: ;
+-			BigBossProgressBar.Update();
++				BigBossProgressBar.Update();
  		}
  
  		private void DoDebugFunctions() {
