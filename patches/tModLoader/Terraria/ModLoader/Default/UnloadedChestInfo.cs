@@ -7,24 +7,17 @@ namespace Terraria.ModLoader.Default
 	{
 		public readonly short frameX;
 		public readonly short frameY;
-		public readonly short chestIndex;
-		public readonly short MaxChests = 8000; //As of Vanilla 1.4.0.1
+		//TODO: Future add if the chest at the location had been unlocked.  
 
-		public UnloadedChestInfo(string modName, string name, short frameX, short frameY, short chestIndex):base(modName, name) {
+		public UnloadedChestInfo(string modName, string name):base(modName, name) {
 			this.modName = modName;
 			this.name = name;
-			this.frameX = frameX;
-			this.frameY = frameY;
-			this.chestIndex = chestIndex;
 		}
 
 		public new TagCompound Save() {
 			var tag = new TagCompound {
 				["mod"] = modName,
-				["name"] = name,
-				["frameX"] = frameX,
-				["frameY"] = frameY,
-				["chestIndex"] = chestIndex,
+				["name"] = name
 			};
 			return tag;
 		}

@@ -21,7 +21,7 @@ namespace Terraria.ModLoader.Default
 			var tile = Main.tile[i, j];
 			if(tile != null && tile.type == Type) {
 				var frame = new UnloadedTileFrame(tile.frameX, tile.frameY);
-				var infos = ModContent.GetInstance<UnloadedTilesWorld>().infos;
+				var infos = ModContent.GetInstance<UnloadedTilesWorld>().tileInfos;
 				int frameID = frame.FrameID;
 				if (frameID >= 0 && frameID < infos.Count) { // This only works in SP
 					var info = infos[frameID];

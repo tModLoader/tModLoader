@@ -91,37 +91,23 @@ namespace Terraria.ModLoader.IO
 				if (itemTagListModded == null && !moddedChest) //doesn't need mod saving
 					continue;
 
-				//TODO: Refactor to reduce double saving of modded items
-				var tag = new TagCompound {
+				TagCompound tag = new TagCompound {
 					["items"] = itemTagListModded,
 					["x"] = chest.x,
 					["y"] = chest.y,
-					["chestType"] = chestType,
 				};
-				if (moddedChest) {
-					tag.Set("allItems", chest.item);
-				}
 				list.Add(tag);
-				
 			}
 			return list;
 		}
 
 		internal static void LoadChestInventory(IList<TagCompound> list) {
-			ushort unloadedChest = ModContent.Find<ModTile>("ModLoader/UnloadedChest").Type;
+			ushort unloadedChest = UnloadedTilesWorld.UnloadedChest;
 			foreach (var tag in list) {
-				int cID = Chest.FindChest(tag.GetShort("x"), tag.GetShort("y"));
+				int cID = Chest.FindChest(tag.GetInt("x"), tag.GetInt("y"));
 				if(cID >= 0) {
-					var chest = Main.chest[Chest.FindChest(tag.GetShort("x"), tag.GetShort("y"))];
-					bool isUnloaded = !(Main.tile[chest.x, chest.y].type == unloadedChest);
-					bool wasUnloaded = !(tag.Get<ushort>("chestType") == unloadedChest);
-
-					if (isUnloaded ^ wasUnloaded) { // restore all inventory due to switching
-						PlayerIO.LoadInventory(chest.item, tag.GetList<TagCompound>("allItems"));
-					}
-					else { // restore only modded items
-						PlayerIO.LoadInventory(chest.item, tag.GetList<TagCompound>("items"));
-					}
+					var chest = Main.chest[cID];
+					PlayerIO.LoadInventory(chest.item, tag.GetList<TagCompound>("items"));
 				}
 			}
 		}

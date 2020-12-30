@@ -161,9 +161,9 @@ namespace Terraria.ModLoader.Default
 			}
 
 			if (tile != null && tile.type == Type) {
-				var frame = new UnloadedTileFrame(tile.frameX, tile.frameY);
-				var infos = ModContent.GetInstance<UnloadedTilesWorld>().infos;
-				int frameID = frame.FrameID;
+				int PosID = top * Main.maxTilesX + left;
+				ModContent.GetInstance<UnloadedTilesWorld>().chestCoordsToChestInfos.TryGetValue(PosID, out int frameID);
+				var infos = ModContent.GetInstance<UnloadedTilesWorld>().chestInfos;
 				if (frameID >= 0 && frameID < infos.Count) { // This only works in SP
 					var info = infos[frameID];
 					if (info != null) {
@@ -186,9 +186,9 @@ namespace Terraria.ModLoader.Default
 			Player player = Main.LocalPlayer;
 			var tile = Main.tile[i, j];
 			if(tile != null && tile.type == Type) {
-				var frame = new UnloadedTileFrame(tile.frameX, tile.frameY);
-				var infos = ModContent.GetInstance<UnloadedTilesWorld>().infos;
-				int frameID = frame.FrameID;
+				int PosID = j * Main.maxTilesX + i;
+				ModContent.GetInstance<UnloadedTilesWorld>().chestCoordsToChestInfos.TryGetValue(PosID, out int frameID);
+				var infos = ModContent.GetInstance<UnloadedTilesWorld>().chestInfos;
 				if (frameID >= 0 && frameID < infos.Count) { // This only works in SP
 					var info = infos[frameID];
 					if (info != null) {
