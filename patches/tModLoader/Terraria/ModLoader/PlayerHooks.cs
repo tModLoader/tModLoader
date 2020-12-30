@@ -637,15 +637,19 @@ namespace Terraria.ModLoader
 
 		public static bool? CanHitNPC(Player player, Item item, NPC target) {
 			bool? flag = null;
+
 			foreach (int index in HookCanHitNPC.arr) {
 				bool? canHit = player.modPlayers[index].CanHitNPC(item, target);
-				if (canHit.HasValue && !canHit.Value) {
-					return false;
-				}
+
 				if (canHit.HasValue) {
-					flag = canHit.Value;
+					if (!canHit.Value) {
+						return false;
+					}
+
+					flag = true;
 				}
 			}
+
 			return flag;
 		}
 
