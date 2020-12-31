@@ -7,7 +7,6 @@ namespace Terraria.ModLoader.Default
 		public readonly bool frameImportant;
 		public readonly short frameX;
 		public readonly short frameY;
-		public readonly bool IsSolid;
 
 
 		public UnloadedTileInfo(string modName, string name, bool IsSolid) :base(modName,name){
@@ -16,7 +15,6 @@ namespace Terraria.ModLoader.Default
 			this.frameImportant = false;
 			this.frameX = -1;
 			this.frameY = -1;
-			this.IsSolid = IsSolid;
 		}
 
 		public UnloadedTileInfo(string modName, string name, short frameX, short frameY, bool IsSolid):base(modName, name) {
@@ -25,7 +23,6 @@ namespace Terraria.ModLoader.Default
 			this.frameImportant = true;
 			this.frameX = frameX;
 			this.frameY = frameY;
-			this.IsSolid = IsSolid;
 		}
 
 		public override bool Equals(object obj) {
@@ -51,7 +48,6 @@ namespace Terraria.ModLoader.Default
 			var tag = new TagCompound {
 				["mod"] = modName,
 				["name"] = name,
-				["IsSolid"] = IsSolid,
 			};
 			if (frameImportant) {
 				tag.Set("frameX", frameX);

@@ -132,7 +132,7 @@ namespace Terraria.ModLoader.Default
 					player.chest = -1;
 					SoundEngine.PlaySound(SoundID.MenuClose);
 				}
-				else {
+				else { // Commented out the ability to open the inventory of unloaded chests
 					player.chest = chest;
 					Main.playerInventory = true;
 					Main.recBigList = false;
@@ -162,7 +162,7 @@ namespace Terraria.ModLoader.Default
 
 			if (tile != null && tile.type == Type) {
 				int PosID = top * Main.maxTilesX + left;
-				ModContent.GetInstance<UnloadedTilesWorld>().chestCoordsToChestInfos.TryGetValue(PosID, out int frameID);
+				ModContent.GetInstance<UnloadedTilesWorld>().chestInfoMap.TryGetValue(PosID, out int frameID);
 				var infos = ModContent.GetInstance<UnloadedTilesWorld>().chestInfos;
 				if (frameID >= 0 && frameID < infos.Count) { // This only works in SP
 					var info = infos[frameID];
@@ -187,7 +187,7 @@ namespace Terraria.ModLoader.Default
 			var tile = Main.tile[i, j];
 			if(tile != null && tile.type == Type) {
 				int PosID = j * Main.maxTilesX + i;
-				ModContent.GetInstance<UnloadedTilesWorld>().chestCoordsToChestInfos.TryGetValue(PosID, out int frameID);
+				ModContent.GetInstance<UnloadedTilesWorld>().chestInfoMap.TryGetValue(PosID, out int frameID);
 				var infos = ModContent.GetInstance<UnloadedTilesWorld>().chestInfos;
 				if (frameID >= 0 && frameID < infos.Count) { // This only works in SP
 					var info = infos[frameID];

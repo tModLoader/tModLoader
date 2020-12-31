@@ -334,6 +334,9 @@ namespace Terraria.ModLoader.IO
 			// Access Stored Flags
 			byte flags;
 			flags = reader.ReadByte();
+			UnloadedPosIndexing posIndexer = new UnloadedPosIndexing(i, j);
+			UnloadedTileInfo tInfo = null;
+			UnloadedWallInfo wInfo = null;
 
 			// Read Tiles
 			Tile tile = Main.tile[i, j];
@@ -372,39 +375,25 @@ namespace Terraria.ModLoader.IO
 					bool nonSolidChk = tile.type == UnloadedTilesWorld.PendingNonSolidTile;
 					
 					if (tile.type == UnloadedTilesWorld.PendingTile || nonSolidChk) {
-						// Load saved Basic Tile Type Data into UnloadedTileInfo
-						UnloadedTileInfo info;
+						// Load saved Basic Tile Type Data into UnloadedTileInfo and index
 						if (tables.frameImportant[saveType]) {
-							info = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],
+							tInfo = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],
 								tile.frameX, tile.frameY, nonSolidChk);
 						}
 						else {
-							info = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],
+							tInfo = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],
 								nonSolidChk);
 						}
-						// Index pending tile info
-						UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
-						int pendingFrameID = modWorld.pendingTileInfos.IndexOf(info);
-						if (pendingFrameID < 0) {
-							pendingFrameID = modWorld.pendingTileInfos.Count;
-							modWorld.pendingTileInfos.Add(info);
-						}
-						//Use frameX/Y as memory for the pendingFrameID
-						UnloadedTileFrame pendingFrame = new UnloadedTileFrame(pendingFrameID);
-						tile.frameX = pendingFrame.FrameX;
-						tile.frameY = pendingFrame.FrameY;
+						posIndexer.SaveTileInfoToPos(tInfo);
 					}
-
-					
 					if (tile.type == UnloadedTilesWorld.PendingChest) {
 						bool accountedFor = (Main.tile[i - 1, j].type == UnloadedTilesWorld.PendingChest ||
 							Main.tile[i, j - 1].type == UnloadedTilesWorld.PendingChest);
 						if (!accountedFor) { // Only care about top-left tile of 2x2 for Chests
-							// Load saved Basic Chest Type Data into UnloadedChestInfo
-							UnloadedChestInfo info;
-							info = new UnloadedChestInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
-							// Index pending chest info
-							SaveChestInfoToPos(i, j, info);
+							// Load saved Basic Chest Type Data into UnloadedChestInfo and index
+							UnloadedChestInfo cInfo;
+							cInfo = new UnloadedChestInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
+							posIndexer.SaveChestInfoToPos(cInfo);
 						}
 					}
 				}
@@ -415,58 +404,33 @@ namespace Terraria.ModLoader.IO
 			if ((flags & TileIOFlags.ModWall) == TileIOFlags.ModWall) {
 				saveWallType = reader.ReadUInt16();
 				tile.wall = tables.walls[saveWallType];
-
-				SaveWallInfoToWallCoords(i, j, tables, saveWallType);
-
+				if (tile.wall == UnloadedTilesWorld.PendingWallType) {
+					wInfo = new UnloadedWallInfo(tables.wallModNames[saveWallType], tables.wallNames[saveWallType]);
+					posIndexer.SaveWallInfoToPos(wInfo);
+				}
 				if ((flags & TileIOFlags.WallColor) == TileIOFlags.WallColor) {
 					tile.wallColor(reader.ReadByte());
 				}
 			}
+
 			// Handle re-occurence, up to 256 counts.
-			if ((flags & TileIOFlags.NextTilesAreSame) == TileIOFlags.NextTilesAreSame) {
+			if ((flags & TileIOFlags.NextTilesAreSame) == TileIOFlags.NextTilesAreSame) { 
 				byte sameCount = reader.ReadByte();
 				for (byte k = 0; k < sameCount; k++) {
 					NextTile(ref i, ref j);
+					posIndexer = new UnloadedPosIndexing(i, j);
+					if (((flags &TileIOFlags.ModTile)== TileIOFlags.ModTile) && (tInfo == null ))
+						posIndexer.SaveTileInfoToPos(tInfo);
+					if (((flags & TileIOFlags.ModWall) == TileIOFlags.ModWall) && (wInfo == null))
+						posIndexer.SaveWallInfoToPos(wInfo);
 
-					if ((flags & TileIOFlags.ModWall) == TileIOFlags.ModWall) 
-						SaveWallInfoToWallCoords(i, j, tables, saveWallType);
-
-					Main.tile[i, j].CopyFrom(tile); //TODO: Q: Does copyfrom take also Wall data and liquid data? It should if 'NextIsSame' includes walls and liquids
+					Main.tile[i, j].CopyFrom(tile); 
 					WorldGen.tileCounts[tile.type] += j <= Main.worldSurface ? 5 : 1;
 				}
 			}
 			if ((flags & TileIOFlags.NextModTile) == TileIOFlags.NextModTile) {
 				nextModTile = true;
 			}
-		}
-
-		private static void SaveWallInfoToWallCoords(int i, int j, TileTables tables, ushort type) {
-			Tile tile = Main.tile[i, j];
-			if (tile.wall == UnloadedTilesWorld.PendingWallType
-					&& tables.wallNames.ContainsKey(type)) {
-				UnloadedWallInfo info = new UnloadedWallInfo(tables.wallModNames[type], tables.wallNames[type]);
-				UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
-				int pendingID = modWorld.pendingWallInfos.IndexOf(info);
-				if (pendingID < 0) {
-					pendingID = modWorld.pendingWallInfos.Count;
-					modWorld.pendingWallInfos.Add(info);
-				}
-				//Walls have no sufficient memory to store it like tiles do (bTileHeader2/3 is used for wall framing and it's section is tiny),
-				//so use a by-coordinates approach
-
-				modWorld.wallCoordsToWallInfos[new Point16(i, j)] = info;
-			}
-		}
-
-		private static void SaveChestInfoToPos(int i, int j, UnloadedChestInfo info) {
-				UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
-				int pendingID = modWorld.pendingChestInfos.IndexOf(info);
-				if (pendingID < 0) {
-					pendingID = modWorld.pendingChestInfos.Count;
-					modWorld.pendingChestInfos.Add(info);
-				}
-				int PosID = j * Main.maxTilesX + i;
-				modWorld.chestCoordsToChestInfos[PosID] = pendingID;
 		}
 
 		private static bool HasModData(Tile tile) => (tile.active() && tile.type >= TileID.Count) || tile.wall >= WallID.Count;

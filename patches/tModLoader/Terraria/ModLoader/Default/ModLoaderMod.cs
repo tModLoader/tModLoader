@@ -34,11 +34,11 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void Load() {
-			AddContent(new UnloadedTile());
-			AddContent(new UnloadedTile("PendingUnloadedTile"));
+			AddContent(new UnloadedTile("UnloadedTile",true));
+			AddContent(new UnloadedTile("PendingUnloadedTile",true));
 
-			AddContent(new UnloadedNonSolidTile());
-			AddContent(new UnloadedNonSolidTile("PendingUnloadedNonSolidTile"));
+			AddContent(new UnloadedTile("UnloadedNonSolidTile", false));
+			AddContent(new UnloadedTile("PendingUnloadedNonSolidTile", false));
 
 			AddContent(new UnloadedChest());
 			AddContent(new UnloadedChest("PendingUnloadedChest"));

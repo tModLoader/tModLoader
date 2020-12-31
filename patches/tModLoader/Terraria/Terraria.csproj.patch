@@ -47,7 +47,7 @@
      </EmbeddedResource>
      <Reference Include="SteelSeriesEngineWrapper" />
      <Reference Include="Steamworks.NET">
-@@ -48,26 +_,36 @@
+@@ -48,26 +_,35 @@
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
      <Reference Include="System.Runtime.Serialization" />
@@ -80,7 +80,6 @@
    </ItemGroup>
 +  <ItemGroup>
 +    <None Remove="ModLoader\Default\UnloadedChest.png" />
-+    <None Remove="ModLoader\Default\UnloadedNonSolidTile.png" />
 +    <None Remove="ModLoader\Default\UnloadedSprite.png" />
 +    <None Remove="ModLoader\Default\UnloadedTile.png" />
 +  </ItemGroup>

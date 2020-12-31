@@ -8,6 +8,7 @@ namespace Terraria.ModLoader.Default
 		public readonly short frameX;
 		public readonly short frameY;
 		//TODO: Future add if the chest at the location had been unlocked.  
+		//TODO: Future record what was the Chest Style 
 
 		public UnloadedChestInfo(string modName, string name):base(modName, name) {
 			this.modName = modName;

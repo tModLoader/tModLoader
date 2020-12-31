@@ -4,15 +4,17 @@ namespace Terraria.ModLoader.Default
 	public class UnloadedTile : ModTile
 	{
 		public override string Name{get;}
+		internal bool IsSolid;
 
 		public override string Texture => "ModLoader/UnloadedTile";
 
-		public UnloadedTile(string name = null) {
+		public UnloadedTile(string name = null,bool isSolid = true) {
 			Name = name ?? base.Name;
+			this.IsSolid = isSolid;
 		}
 
 		public override void SetDefaults() {
-			Main.tileSolid[Type] = true;
+			Main.tileSolid[Type] = IsSolid;
 			Main.tileFrameImportant[Type] = true;
 		}
 
@@ -20,11 +22,10 @@ namespace Terraria.ModLoader.Default
 		{
 			var tile = Main.tile[i, j];
 			if(tile != null && tile.type == Type) {
-				var frame = new UnloadedTileFrame(tile.frameX, tile.frameY);
+				var infoID = new UnloadedPosIndexing(i, j).PosID;
 				var infos = ModContent.GetInstance<UnloadedTilesWorld>().tileInfos;
-				int frameID = frame.FrameID;
-				if (frameID >= 0 && frameID < infos.Count) { // This only works in SP
-					var info = infos[frameID];
+				if (infoID >= 0 && infoID < infos.Count) { // This only works in SP
+					var info = infos[infoID];
 					if (info != null) {
 						Main.LocalPlayer.cursorItemIconEnabled = true;
 						Main.LocalPlayer.cursorItemIconID = -1;

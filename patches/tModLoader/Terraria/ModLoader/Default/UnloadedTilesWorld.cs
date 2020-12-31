@@ -18,6 +18,11 @@ namespace Terraria.ModLoader.Default
 		internal List<UnloadedTileInfo> pendingTileInfos = new List<UnloadedTileInfo>();
 
 		/// <summary>
+		/// Use a dictionary mapping coordinates of tile infos from <see cref="tileInfos"/>
+		/// </summary>
+		internal Dictionary<int, int> tileInfoMap = new Dictionary<int, int>();
+
+		/// <summary>
 		/// Tile-<see cref="UnloadedChestInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
 		/// </summary>
 		internal List<UnloadedChestInfo> chestInfos = new List<UnloadedChestInfo>();
@@ -26,6 +31,11 @@ namespace Terraria.ModLoader.Default
 		/// Populated during <see cref="TileIO.ReadModTile"/>, detecting chests that lost their loaded mod, to then turn them into unloaded tiles
 		/// </summary>
 		internal List<UnloadedChestInfo> pendingChestInfos = new List<UnloadedChestInfo>();
+
+		/// <summary>
+		/// Use a dictionary mapping coordinates of chest infos from <see cref="chestInfos"/>
+		/// </summary>
+		internal Dictionary<int, int> chestInfoMap = new Dictionary<int, int>();
 
 		/// <summary>
 		/// Wall-<see cref="UnloadedWallInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
@@ -38,16 +48,10 @@ namespace Terraria.ModLoader.Default
 		internal List<UnloadedWallInfo> pendingWallInfos = new List<UnloadedWallInfo>();
 
 		/// <summary>
-		/// Because walls don't have "memory" in the form of frameX/Y that can be misused to store IDs, use a dictionary mapping coordinates of walls infos from <see cref="wallInfos"/>
+		/// Use a dictionary mapping coordinates of walls infos from <see cref="wallInfos"/>
 		/// </summary>
-		internal Dictionary<Point16, UnloadedWallInfo> wallCoordsToWallInfos = new Dictionary<Point16, UnloadedWallInfo>();
+		internal Dictionary<int, int> wallInfoMap = new Dictionary<int, int>();
 
-		/// <summary>
-		/// Because chests don't have "static memory" in the form of frameX/Y that can be misused to store IDs, use a dictionary mapping coordinates of walls infos from <see cref="wallInfos"/>
-		/// </summary>
-		/// 
-
-		internal Dictionary<int, int> chestCoordsToChestInfos = new Dictionary<int, int>();
 
 		internal static ushort UnloadedTile => ModContent.Find<ModTile>("ModLoader/UnloadedTile").Type;
 
@@ -68,28 +72,33 @@ namespace Terraria.ModLoader.Default
 		public override void Initialize() {
 			tileInfos.Clear();
 			pendingTileInfos.Clear();
+			tileInfoMap.Clear();
 
 			wallInfos.Clear();
 			pendingWallInfos.Clear();
-			wallCoordsToWallInfos.Clear();
+			wallInfoMap.Clear();
 
 			chestInfos.Clear();
 			pendingChestInfos.Clear();
-			chestCoordsToChestInfos.Clear();
+			chestInfoMap.Clear();
 		}
 
-		public override TagCompound Save() { //TODO: Figure out what to do with this part
+		public override TagCompound Save() { 
 			return new TagCompound {
 				["tileList"] = tileInfos.Select(info => info?.Save() ?? new TagCompound()).ToList(),
+				["tilePosIndex"] = tileInfoMap.Select(pair => new TagCompound {
+					["posID"] = pair.Key,
+					["infoID"] = pair.Value
+				}).ToList(),
 				["wallList"] = wallInfos.Select(info => info?.Save() ?? new TagCompound()).ToList(),
-				["wallCoordsList"] = wallCoordsToWallInfos.Select(pair => new TagCompound {
-					["coords"] = pair.Key,
-					["info"] = pair.Value.Save()
+				["wallPosIndex"] = wallInfoMap.Select(pair => new TagCompound {
+					["posID"] = pair.Key,
+					["infoID"] = pair.Value
 				}).ToList(),
 				["chestList"] = chestInfos.Select(info => info?.Save() ?? new TagCompound()).ToList(),
-				["chestPosIndex"] = chestCoordsToChestInfos.Select(pair => new TagCompound {
+				["chestPosIndex"] = chestInfoMap.Select(pair => new TagCompound {
 					["posID"] = pair.Key,
-					["frameID"] = pair.Value
+					["infoID"] = pair.Value
 				}).ToList(),
 			};
 		}
@@ -101,95 +110,48 @@ namespace Terraria.ModLoader.Default
 			bool canRestoreTilesFlag = false; // true if atleast one previously unloaded type is now loadable again
 			bool canRestoreWallsFlag = false;
 			bool canRestoreChestsFlag = false;
+			UnloadedInfoUpdate update;
 
 			//NOTE: infos and canRestore[] are same length so the indices match later for RestoreTilesAndWalls
 
 			// Process tiles
 			var tileList = tag.GetList<TagCompound>("tileList");
-			foreach (var infoTag in tileList) {
-				if (!infoTag.ContainsKey("mod")) {
-					// infos entries get nulled out once restored, leading to an empty tag. This reverts it
-					tileInfos.Add(null);
-					canRestoreTiles.Add(0);
-					continue;
-				}
-
-				// Repopulate Unloaded Tile Info
-				string modName = infoTag.GetString("mod");
-				string name = infoTag.GetString("name");
-				bool IsSolid = infoTag.GetBool("IsSolid");
-				bool frameImportant = infoTag.ContainsKey("frameX");
-				var info = frameImportant ?
-					new UnloadedTileInfo(modName, name, infoTag.GetShort("frameX"), infoTag.GetShort("frameY"),IsSolid) :
-					new UnloadedTileInfo(modName, name, IsSolid);
-				tileInfos.Add(info);
-
-				// Check if the previously unloaded tile is now loadable again
-				ushort type = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : (ushort)0;
-				canRestoreTiles.Add(type);
-				if (type != 0)
-					canRestoreTilesFlag = true;
-			}
+			update = new UnloadedInfoUpdate(tileList,'t');
+			canRestoreTilesFlag = update.canRestoreFlag;
+			canRestoreTiles = update.canRestore;
 
 			// Process Walls
 			var wallList = tag.GetList<TagCompound>("wallList");
-			foreach (var infoTag in wallList) {
-				if (!infoTag.ContainsKey("mod")) {
-					wallInfos.Add(null);
-					canRestoreWalls.Add(0);
-					continue;
-				}
-
-				string modName = infoTag.GetString("mod");
-				string name = infoTag.GetString("name");
-				var info = new UnloadedWallInfo(modName, name);
-				wallInfos.Add(info);
-
-				ushort type = ModContent.TryFind(modName, name, out ModWall wall) ? wall.Type : (ushort)0;
-				canRestoreWalls.Add(type);
-				if (type != 0)
-					canRestoreWallsFlag = true;
-			}
-			// Prcoess Walls Coordinates Conversion
-			var wallCoordsList = tag.GetList<TagCompound>("wallCoordsList");
-			foreach (var coordsTag in wallCoordsList) {
-				Point16 coords = coordsTag.Get<Point16>("coords");
-				var infoTag = coordsTag.Get<TagCompound>("info");
-
-				string modName = infoTag.GetString("mod");
-				string name = infoTag.GetString("name");
-				var info = new UnloadedWallInfo(modName, name);
-
-				wallCoordsToWallInfos[coords] = info;
-			}
+			update = new UnloadedInfoUpdate(wallList, 'w');
+			canRestoreWallsFlag = update.canRestoreFlag;
+			canRestoreWalls = update.canRestore;
 
 			// Process chests
 			var chestList = tag.GetList<TagCompound>("chestList");
-			foreach (var infoTag in chestList) {
-				if (!infoTag.ContainsKey("mod")) {
-					chestInfos.Add(null);
-					canRestoreChests.Add(0);
-					continue;
-				}
+			update = new UnloadedInfoUpdate(chestList, 'c');
+			canRestoreChestsFlag = update.canRestoreFlag;
+			canRestoreChests = update.canRestore;
 
-				// Repopulate Unloaded Chest Info
-				string modName = infoTag.GetString("mod");
-				string name = infoTag.GetString("name");
-				var info = new UnloadedChestInfo(modName, name);
-				chestInfos.Add(info);
-
-				// Check if the previously unloaded chest is now loadable again
-				ushort type = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : (ushort)0;
-				canRestoreChests.Add(type);
-				if (type != 0)
-					canRestoreChestsFlag = true;
-			}
-			// Prcoess Chests Coordinates Conversion
+			// Prcoess chest Info Mapping
 			var chestPosIndex = tag.GetList<TagCompound>("chestPosIndex");
 			foreach (var posTag in chestPosIndex) {
 				int PosID = posTag.Get<int>("PosID");
-				var frameID = posTag.Get<int>("frameID");
-				chestCoordsToChestInfos[PosID] = frameID;
+				var infoID = posTag.Get<int>("infoID");
+				chestInfoMap[PosID] = infoID;
+			}
+			// Prcoess wall Info Mapping
+			var wallPosIndex = tag.GetList<TagCompound>("wallPosIndex");
+			foreach (var posTag in wallPosIndex) {
+				int PosID = posTag.Get<int>("PosID");
+				var infoID = posTag.Get<int>("infoID");
+				wallInfoMap[PosID] = infoID;
+			}
+			// Prcoess wall Info Mapping
+			var tilePosIndex = tag.GetList<TagCompound>("tilePosIndex");
+			foreach (var posTag in tilePosIndex) {
+				int PosID = posTag.Get<int>("PosID");
+				var infoID = posTag.Get<int>("infoID");
+				tileInfoMap[PosID] = infoID;
 			}
 
 			// If restoration should occur during this load cycle, then do so
@@ -214,6 +176,7 @@ namespace Terraria.ModLoader.Default
 						chestInfos[k] = null;
 				}
 			}
+			// Resolve pending objects
 			ConfirmPendingInfo();
 		}
 
@@ -227,7 +190,8 @@ namespace Terraria.ModLoader.Default
 		/// <param name="canRestoreWallsFlag"><see langword="true"/> if atleast one wall type isn't 0 </param>
 		/// <param name="canRestoreChestsFlag"><see langword="true"/> if atleast one chest type isn't 0 </param>
 		private void RestoreTilesAndWalls(List<ushort> canRestoreTiles, List<ushort> canRestoreWalls, List<ushort> canRestoreChests,
-			bool canRestoreTilesFlag, bool canRestoreWallsFlag, bool canRestoreChestsFlag) {
+			bool canRestoreTilesFlag, bool canRestoreWallsFlag, bool canRestoreChestsFlag) 
+		{
 			if (!(canRestoreTilesFlag || canRestoreWallsFlag || canRestoreChestsFlag))
 				return; //Nothing to restore
 
@@ -241,37 +205,37 @@ namespace Terraria.ModLoader.Default
 			for (int x = 0; x < Main.maxTilesX; x++) {
 				for (int y = 0; y < Main.maxTilesY; y++) {
 
-					// If tile is of Type unloaded, then get frame data, and restore if frame data allows it
+					// If tile is of Type unloaded, restore original by position mapping
 					Tile tile = Main.tile[x, y];
 					if (canRestoreTilesFlag && (tile.type == unloadedTile || tile.type == unloadedNonSolidTile)) {
-						UnloadedTileFrame frame = new UnloadedTileFrame(tile.frameX, tile.frameY);
-						int frameID = frame.FrameID;
-						if (canRestoreTiles[frameID] > 0) {
-							UnloadedTileInfo info = tileInfos[frameID];
-							tile.type = canRestoreTiles[frameID];
+						int PosID = new UnloadedPosIndexing(x, y).PosID;
+						tileInfoMap.TryGetValue(PosID, out int infoID);
+						if (canRestoreTiles[infoID] > 0) {
+							UnloadedTileInfo info = tileInfos[infoID];
+							tile.type = canRestoreTiles[infoID];
 							tile.frameX = info.frameX;
 							tile.frameY = info.frameY;
+							tileInfoMap.Remove(PosID);
 						}
 					}
-					// If Tile is a Chest, Replace the chest with original by referencing Position mapping 
+					// If Tile is a Chest, Replace the chest with original by referencing position mapping 
 					if (canRestoreChestsFlag && (tile.type == unloadedChest)) {
-						int PosID = y * Main.maxTilesX + x;
-						chestCoordsToChestInfos.TryGetValue(PosID, out int frameID);
-						if (canRestoreChests[frameID] > 0) {
-							UnloadedChestInfo info = chestInfos[frameID];
-							WorldGen.PlaceChestDirect(x, y+1, canRestoreChests[frameID], 0, -1);
-							chestCoordsToChestInfos.Remove(PosID);
+						int PosID = new UnloadedPosIndexing(x, y).PosID;
+						chestInfoMap.TryGetValue(PosID, out int infoID);
+						if (canRestoreChests[infoID] > 0) {
+							UnloadedChestInfo info = chestInfos[infoID];
+							WorldGen.PlaceChestDirect(x, y+1, canRestoreChests[infoID], 0, -1);
+							chestInfoMap.Remove(PosID);
 						}
 					}
-					// If tile has a wall, replace unloaded Wal with original by coordinate mapping
+					// If tile has a wall, restore original by position mapping
 					if (canRestoreWallsFlag && tile.wall == unloadedWallType) {
-						Point16 coords = new Point16(x, y);
-						if (wallCoordsToWallInfos.TryGetValue(coords, out UnloadedWallInfo info) &&
-							wallInfos.IndexOf(info) is int index && index > -1 && canRestoreWalls[index] > 0) {
-							//If info for these coords exists and it can be restored, restore and remove saved coords
-							tile.wall = canRestoreWalls[index];
-							//TODO remove/move
-							wallCoordsToWallInfos.Remove(coords);
+						int PosID = new UnloadedPosIndexing(x, y).PosID;
+						tileInfoMap.TryGetValue(PosID, out int infoID);
+						if (canRestoreWalls[infoID] > 0) {
+							UnloadedTileInfo info = tileInfos[infoID];
+							tile.wall = canRestoreWalls[infoID];
+							wallInfoMap.Remove(PosID);
 						}
 					}
 				}
@@ -343,18 +307,10 @@ namespace Terraria.ModLoader.Default
 
 					// Replace tiles like for like, so to speak
 					if (confirmTileInfo && tile.type == pendingTile) {
-						UnloadedTileFrame frame = new UnloadedTileFrame(tile.frameX, tile.frameY);
-						int frameID = frame.FrameID;
 						tile.type = unloadedTile;
-						tile.frameX = frame.FrameX;
-						tile.frameY = frame.FrameY;
 					}
 					if (confirmTileInfo && tile.type == pendingNSTile) {
-						UnloadedTileFrame frame = new UnloadedTileFrame(tile.frameX, tile.frameY);
-						int frameID = frame.FrameID;
 						tile.type = unloadedNSTile;
-						tile.frameX = frame.FrameX;
-						tile.frameY = frame.FrameY;
 					}
 					if (confirmChestInfo && tile.type == pendingChest) {
 						WorldGen.PlaceChestDirect(x, y + 1, unloadedChest, 0, -1);
