@@ -1,11 +1,13 @@
 --- src/Terraria/ReLogic/ReLogicNetCore.csproj
 +++ src/tModLoader/ReLogic/ReLogicNetCore.csproj
-@@ -12,7 +_,7 @@
+@@ -12,8 +_,8 @@
    <ItemGroup>
      <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
      <Reference Include="../Terraria/Libraries/FNA/FNA.dll" />
 -    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />
 +    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.Reduced.dll" />
-     <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
+-    <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
++    <Reference Include="../Terraria/Libraries/JSON.NET/Newtonsoft.Json.dll" />
      <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
    </ItemGroup>
+   <ItemGroup>

@@ -8,16 +8,3 @@
      <Configurations>WindowsDebug;WindowsRelease;WindowsServerDebug;WindowsServerRelease;LinuxRelease;LinuxServerRelease;MacRelease;MacServerRelease</Configurations>
      <PlatformTarget>x86</PlatformTarget>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-@@ -10,10 +_,10 @@
-     <DefineConstants>$(DefineConstants);WINDOWS;XNA</DefineConstants>
-   </PropertyGroup>
-   <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
--    <DefineConstants>$(DefineConstants);LINUX;FNA;MONO</DefineConstants>
-+    <DefineConstants>$(DefineConstants);LINUX;FNA</DefineConstants>
-   </PropertyGroup>
-   <PropertyGroup Condition="$(Configuration.Contains('Mac'))">
--    <DefineConstants>$(DefineConstants);MAC;FNA;MONO</DefineConstants>
-+    <DefineConstants>$(DefineConstants);MAC;FNA</DefineConstants>
-   </PropertyGroup>
-   <PropertyGroup Condition="$(Configuration.Contains('Server'))">
-     <DefineConstants>$(DefineConstants);SERVER</DefineConstants>

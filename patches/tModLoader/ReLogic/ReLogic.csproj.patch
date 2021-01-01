@@ -1,11 +1,19 @@
 --- src/Terraria/ReLogic/ReLogic.csproj
 +++ src/tModLoader/ReLogic/ReLogic.csproj
-@@ -9,7 +_,7 @@
+@@ -8,14 +_,13 @@
+     <RootNamespace>ReLogic</RootNamespace>
    </PropertyGroup>
    <ItemGroup>
-     <Reference Include="SteelSeriesEngineWrapper" />
+-    <Reference Include="SteelSeriesEngineWrapper" />
 -    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />
 +    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.Reduced.dll" />
      <Reference Include="../Terraria/Libraries/SteelSeriesEngine/SteelSeriesEngineWrapper.dll" />
      <Reference Include="../Terraria/Libraries/FNA/FNA.dll" Condition="$(DefineConstants.Contains('FNA'))" />
      <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.dll" Condition="$(DefineConstants.Contains('XNA'))" />
+     <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.Game.dll" Condition="$(DefineConstants.Contains('XNA'))" />
+     <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.Graphics.dll" Condition="$(DefineConstants.Contains('XNA'))" />
+-    <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
++    <Reference Include="../Terraria/Libraries/JSON.NET/Newtonsoft.Json.dll" />
+     <Reference Include="System" />
+     <Reference Include="System.Core" />
+     <Reference Include="System.Drawing" />

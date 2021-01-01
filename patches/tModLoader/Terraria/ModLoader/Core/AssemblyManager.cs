@@ -220,6 +220,27 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
+#if NETCORE
+		private static AssemblyLoadContext modContext;
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		internal static void Asms_Unload() 
+		{
+			var asmRef = new WeakReference(modContext, true);
+			modContext = new AssemblyLoadContext("tModLoader Mod Context", true);
+
+			for (int i = 0; asmRef.IsAlive; i++) {
+				if (i > 10) {
+					Logging.tML.Warn($"ModContext refused to finalize");
+					break;
+				}
+				// Beg the assemblies to finalize and cleanup
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
+			}
+		}
+#endif
+
 		private static readonly IDictionary<string, LoadedMod> loadedMods = new Dictionary<string, LoadedMod>();
 		private static readonly IDictionary<string, Assembly> loadedAssemblies = new ConcurrentDictionary<string, Assembly>();
 		private static readonly IDictionary<string, byte[]> assemblyBinaries = new ConcurrentDictionary<string, byte[]>();
