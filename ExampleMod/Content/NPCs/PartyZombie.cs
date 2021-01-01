@@ -21,7 +21,6 @@ namespace ExampleMod.Content.NPCS
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(npc.type, value);
 
-			//TODO showcase changing vanilla NPC bars after ModSystem merge using PostSetupContent
 			//Custom "boss health bar", see the Content/BigProgressBars folder
 			Main.BigBossProgressBar.AddBar(npc.type, new Content.BigProgressBars.PartyZombieBigProgressBar());
 		}
