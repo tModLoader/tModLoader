@@ -1,12 +1,11 @@
 --- src/decompiled/Terraria/Social/Steam/CoreSocialModule.cs
 +++ src/Terraria/Terraria/Social/Steam/CoreSocialModule.cs
-@@ -20,10 +_,13 @@
+@@ -20,10 +_,12 @@
  
  		public void Initialize() {
  			_instance = this;
 +#if CLIENT
  			if (SteamAPI.RestartAppIfNecessary(new AppId_t(105600u))) {
-+				Console.WriteLine("Restarting through steam...");
  				Environment.Exit(1);
  				return;
  			}
