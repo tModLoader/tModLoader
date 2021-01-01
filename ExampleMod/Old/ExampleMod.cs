@@ -78,10 +78,6 @@ namespace ExampleMod
 				// Register a new music box
 				AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/MarbleGallery"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
 
-				// Change the vanilla loom texture
-				Main.instance.LoadTiles(TileID.Loom); // First load the tile texture
-				Main.tileTexture[TileID.Loom] = GetTexture("Tiles/AnimatedLoom"); // Now we change it
-
 				//What if....Replace a vanilla item texture and equip texture.
 				//Main.itemTexture[ItemID.CopperHelmet] = GetTexture("Resprite/CopperHelmet_Item");
 				//Item copperHelmet = new Item();
@@ -144,12 +140,6 @@ namespace ExampleMod
 		}
 
 		public override void Unload() {
-			// All code below runs only if we're not loading on a server
-			if (!Main.dedServ) {
-				Main.tileFrame[TileID.Loom] = 0; // Reset the frame of the loom tile
-				Main.tileSetsLoaded[TileID.Loom] = false; // Causes the loom tile to reload its vanilla texture
-			}
-
 			// Unload static references
 			// You need to clear static references to assets (Texture2D, SoundEffects, Effects). 
 			// In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class
