@@ -5,7 +5,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Common.GlobalNPCs
+namespace ExampleMod.Common.GlobalTiles
 {
 	//This class showcases how to change the vanilla loom texture and also add animation for our own texture
 	public class AnimatedLoomGlobalTile : GlobalTile
