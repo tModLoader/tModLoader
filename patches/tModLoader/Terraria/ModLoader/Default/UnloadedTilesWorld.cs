@@ -231,9 +231,9 @@ namespace Terraria.ModLoader.Default
 					// If tile has a wall, restore original by position mapping
 					if (canRestoreWallsFlag && tile.wall == unloadedWallType) {
 						int PosID = new UnloadedPosIndexing(x, y).PosID;
-						tileInfoMap.TryGetValue(PosID, out int infoID);
+						wallInfoMap.TryGetValue(PosID, out int infoID);
 						if (canRestoreWalls[infoID] > 0) {
-							UnloadedTileInfo info = tileInfos[infoID];
+							UnloadedWallInfo info = wallInfos[infoID];
 							tile.wall = canRestoreWalls[infoID];
 							wallInfoMap.Remove(PosID);
 						}
