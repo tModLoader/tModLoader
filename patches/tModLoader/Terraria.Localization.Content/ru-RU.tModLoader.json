@@ -21,6 +21,7 @@
 		"ModsOpenConfig": "Кликните для настроек",
 		"ModOldWarning": "Устаревший мод, включайте на свой страх и риск",
 		"ModDependencyClickTooltip": "Этот мод зависит от: {0}\n (нажмите чтобы включить)",
+		// "ModDependencyClickTooltipMore": "This mod depends on: {0}\n...and {1} more mods\n (click to enable)",
 		"ModDependencyModsNotFound": "Следующие моды не были обнаружены: {0}",
 		"ModDidNotFullyUnloadWarning": "Этот мод не выгрузился полностью во время последней перезагрузки.\n(Это сообщение для создателей этого мода)",
 		"BetaModCantPublish": "Этот мод был собран на бета версии и не может быть опубликован",

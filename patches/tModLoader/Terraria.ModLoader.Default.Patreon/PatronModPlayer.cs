@@ -13,9 +13,11 @@ namespace Terraria.ModLoader.Default.Patreon
 			=> player.GetModPlayer<PatronModPlayer>();
 
 		public bool OrianSet;
+		public bool GuildpackSet;
 
 		public override void ResetEffects() {
 			OrianSet = false;
+			GuildpackSet = false;
 		}
 
 		public override void PostUpdate() {
@@ -55,6 +57,13 @@ namespace Terraria.ModLoader.Default.Patreon
 					//						layers.Insert(bodyIndex, headLayer);
 					//					}
 				}
+			}
+			if (GuildpackSet) {
+				Guildpack_Head.MiscEffectsBack.visible = true;
+				layers.Insert(0, Guildpack_Head.MiscEffectsBack);
+				int headLayerIndex = layers.FindIndex(x => x == PlayerLayer.Head);
+				if (headLayerIndex != -1)
+					layers.Insert(headLayerIndex + 1, Guildpack_Head.EyeGlow);
 			}
 		}
 	}

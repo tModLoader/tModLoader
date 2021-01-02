@@ -96,6 +96,7 @@ Administrators:
 
 Moderators:
 
+-   Frous
 -   Jenosis
 -   Rartrin
 -   Itorius

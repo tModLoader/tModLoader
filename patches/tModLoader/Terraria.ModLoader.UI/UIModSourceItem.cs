@@ -213,8 +213,8 @@ namespace Terraria.ModLoader.UI
 						Content = modFile.GetBytes("icon.png")
 					});
 			}
-			//if (bp.beta)
-			//	throw new WebException(Language.GetTextValue("tModLoader.BetaModCantPublishError"));
+			if (bp.beta)
+				throw new WebException(Language.GetTextValue("tModLoader.BetaModCantPublishError"));
 			if (bp.buildVersion != modFile.tModLoaderVersion)
 				throw new WebException(Language.GetTextValue("OutdatedModCantPublishError.BetaModCantPublishError"));
 

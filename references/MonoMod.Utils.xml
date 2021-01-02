@@ -643,89 +643,6 @@
             An IL reference bag implementation to be used for runtime-generated methods.
             </summary>
         </member>
-        <member name="F:MonoMod.Utils.DynDll.Mappings">
-            <summary>
-            Allows you to remap library paths / names and specify loading flags. Useful for cross-platform compatibility. Applies only to DynDll.
-            </summary>
-        </member>
-        <member name="M:MonoMod.Utils.DynDll.OpenLibrary(System.String,System.Boolean,System.Nullable{System.Int32})">
-            <summary>
-            Open a given library and get its handle.
-            </summary>
-            <param name="name">The library name.</param>
-            <param name="skipMapping">Whether to skip using the mapping or not.</param>
-            <param name="flags">Any optional platform-specific flags.</param>
-            <returns>The library handle.</returns>
-        </member>
-        <member name="M:MonoMod.Utils.DynDll.TryOpenLibrary(System.String,System.IntPtr@,System.Boolean,System.Nullable{System.Int32})">
-            <summary>
-            Try to open a given library and get its handle.
-            </summary>
-            <param name="name">The library name.</param>
-            <param name="lib">The library handle, or null if it failed loading.</param>
-            <param name="skipMapping">Whether to skip using the mapping or not.</param>
-            <param name="flags">Any optional platform-specific flags.</param>
-            <returns>True if the handle was obtained, false otherwise.</returns>
-        </member>
-        <member name="M:MonoMod.Utils.DynDll.CloseLibrary(System.IntPtr)">
-            <summary>
-            Release a library handle obtained via OpenLibrary. Don't release the result of OpenLibrary(null)!
-            </summary>
-            <param name="lib">The library handle.</param>
-        </member>
-        <member name="M:MonoMod.Utils.DynDll.GetFunction(System.IntPtr,System.String)">
-            <summary>
-            Get a function pointer for a function in the given library.
-            </summary>
-            <param name="lib">The library handle.</param>
-            <param name="name">The function name.</param>
-            <returns>The function pointer.</returns>
-        </member>
-        <member name="M:MonoMod.Utils.DynDll.TryGetFunction(System.IntPtr,System.String,System.IntPtr@)">
-            <summary>
-            Get a function pointer for a function in the given library.
-            </summary>
-            <param name="lib">The library handle.</param>
-            <param name="name">The function name.</param>
-            <param name="ptr">The function pointer, or null if it wasn't found.</param>
-            <returns>True if the function pointer was obtained, false otherwise.</returns>
-        </member>
-        <member name="M:MonoMod.Utils.DynDll.AsDelegate``1(System.IntPtr)">
-            <summary>
-            Extension method wrapping Marshal.GetDelegateForFunctionPointer
-            </summary>
-        </member>
-        <member name="M:MonoMod.Utils.DynDll.ResolveDynDllImports(System.Type,System.Collections.Generic.Dictionary{System.String,MonoMod.Utils.DynDllMapping})">
-            <summary>
-            Fill all static delegate fields with the DynDllImport attribute.
-            Call this early on in the static constructor.
-            </summary>
-            <param name="type">The type containing the DynDllImport delegate fields.</param>
-            <param name="mappings">Any optional mappings similar to the static mappings.</param>
-        </member>
-        <member name="M:MonoMod.Utils.DynDll.ResolveDynDllImports(System.Object,System.Collections.Generic.Dictionary{System.String,MonoMod.Utils.DynDllMapping})">
-            <summary>
-            Fill all instance delegate fields with the DynDllImport attribute.
-            Call this early on in the constructor.
-            </summary>
-            <param name="instance">An instance of a type containing the DynDllImport delegate fields.</param>
-            <param name="mappings">Any optional mappings similar to the static mappings.</param>
-        </member>
-        <member name="T:MonoMod.Utils.DynDllImportAttribute">
-            <summary>
-            Similar to DllImport, but requires you to run typeof(DeclaringType).ResolveDynDllImports();
-            </summary>
-        </member>
-        <member name="F:MonoMod.Utils.DynDllMapping.ResolveAs">
-            <summary>
-            The name as which the library will be resolved as. Useful to remap libraries or to provide full paths.
-            </summary>
-        </member>
-        <member name="F:MonoMod.Utils.DynDllMapping.Flags">
-            <summary>
-            Platform-dependant loading flags.
-            </summary>
-        </member>
         <member name="T:MonoMod.Utils.Extensions">
             <summary>
             Collection of extensions used by MonoMod and other projects.
@@ -1363,6 +1280,112 @@
             <summary>
             Emit a reference to an arbitrary object. Note that the references "leak."
             </summary>
+        </member>
+        <member name="F:MonoMod.Utils.DynDll.Mappings">
+            <summary>
+            Allows you to remap library paths / names and specify loading flags. Useful for cross-platform compatibility. Applies only to DynDll.
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.DynDll.OpenLibrary(System.String,System.Boolean,System.Nullable{System.Int32})">
+            <summary>
+            Open a given library and get its handle.
+            </summary>
+            <param name="name">The library name.</param>
+            <param name="skipMapping">Whether to skip using the mapping or not.</param>
+            <param name="flags">Any optional platform-specific flags.</param>
+            <returns>The library handle.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.DynDll.TryOpenLibrary(System.String,System.IntPtr@,System.Boolean,System.Nullable{System.Int32})">
+            <summary>
+            Try to open a given library and get its handle.
+            </summary>
+            <param name="name">The library name.</param>
+            <param name="libraryPtr">The library handle, or null if it failed loading.</param>
+            <param name="skipMapping">Whether to skip using the mapping or not.</param>
+            <param name="flags">Any optional platform-specific flags.</param>
+            <returns>True if the handle was obtained, false otherwise.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.DynDll.CloseLibrary(System.IntPtr)">
+            <summary>
+            Release a library handle obtained via OpenLibrary. Don't release the result of OpenLibrary(null)!
+            </summary>
+            <param name="lib">The library handle.</param>
+        </member>
+        <member name="M:MonoMod.Utils.DynDll.GetFunction(System.IntPtr,System.String)">
+            <summary>
+            Get a function pointer for a function in the given library.
+            </summary>
+            <param name="libraryPtr">The library handle.</param>
+            <param name="name">The function name.</param>
+            <returns>The function pointer.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.DynDll.TryGetFunction(System.IntPtr,System.String,System.IntPtr@)">
+            <summary>
+            Get a function pointer for a function in the given library.
+            </summary>
+            <param name="libraryPtr">The library handle.</param>
+            <param name="name">The function name.</param>
+            <param name="functionPtr">The function pointer, or null if it wasn't found.</param>
+            <returns>True if the function pointer was obtained, false otherwise.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.DynDll.AsDelegate``1(System.IntPtr)">
+            <summary>
+            Extension method wrapping Marshal.GetDelegateForFunctionPointer
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.DynDll.ResolveDynDllImports(System.Type,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{MonoMod.Utils.DynDllMapping}})">
+            <summary>
+            Fill all static delegate fields with the DynDllImport attribute.
+            Call this early on in the static constructor.
+            </summary>
+            <param name="type">The type containing the DynDllImport delegate fields.</param>
+            <param name="mappings">Any optional mappings similar to the static mappings.</param>
+        </member>
+        <member name="M:MonoMod.Utils.DynDll.ResolveDynDllImports(System.Object,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{MonoMod.Utils.DynDllMapping}})">
+            <summary>
+            Fill all instance delegate fields with the DynDllImport attribute.
+            Call this early on in the constructor.
+            </summary>
+            <param name="instance">An instance of a type containing the DynDllImport delegate fields.</param>
+            <param name="mappings">Any optional mappings similar to the static mappings.</param>
+        </member>
+        <member name="T:MonoMod.Utils.DynDllImportAttribute">
+            <summary>
+            Similar to DllImport, but requires you to run typeof(DeclaringType).ResolveDynDllImports();
+            </summary>
+        </member>
+        <member name="P:MonoMod.Utils.DynDllImportAttribute.LibraryName">
+            <summary>
+            The library or library alias to use.
+            </summary>
+        </member>
+        <member name="P:MonoMod.Utils.DynDllImportAttribute.EntryPoints">
+            <summary>
+            A list of possible entrypoints that the function can be resolved to. Implicitly includes the field name and delegate name.
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.DynDllImportAttribute.#ctor(System.String,System.String[])">
+            <param name="libraryName">The library or library alias to use.</param>
+            <param name="entryPoints">A list of possible entrypoints that the function can be resolved to. Implicitly includes the field name and delegate name.</param>
+        </member>
+        <member name="T:MonoMod.Utils.DynDllMapping">
+            <summary>
+            A mapping entry, to be used by <see cref="T:MonoMod.Utils.DynDllImportAttribute"/>.
+            </summary>
+        </member>
+        <member name="P:MonoMod.Utils.DynDllMapping.LibraryName">
+            <summary>
+            The name as which the library will be resolved as. Useful to remap libraries or to provide full paths.
+            </summary>
+        </member>
+        <member name="P:MonoMod.Utils.DynDllMapping.Flags">
+            <summary>
+            Platform-dependent loading flags.
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.DynDllMapping.#ctor(System.String,System.Nullable{System.Int32})">
+            <param name="libraryName">The name as which the library will be resolved as. Useful to remap libraries or to provide full paths.</param>
+            <param name="flags">Platform-dependent loading flags.</param>
         </member>
         <member name="T:MonoMod.Utils.Relinker">
             <summary>
