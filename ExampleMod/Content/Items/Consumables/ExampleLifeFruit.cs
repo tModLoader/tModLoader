@@ -34,7 +34,7 @@ namespace ExampleMod.Content.Items.Consumables
 			return player.statLifeMax == 500 && player.GetModPlayer<ExampleLifeFruitPlayer>().exampleLifeFruits < MaxExampleLifeFruits;
 		}
 
-		public override bool UseItem(Player player) {
+		public override bool? UseItem(Player player) {
 			// Do not do this: player.statLifeMax += 2;
 			player.statLifeMax2 += LifePerFruit;
 			player.statLife += LifePerFruit;
