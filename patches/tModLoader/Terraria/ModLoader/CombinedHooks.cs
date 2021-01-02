@@ -28,5 +28,31 @@ namespace Terraria.ModLoader
 		public static bool CanUseItem(Player player, Item item) {
 			return PlayerHooks.CanUseItem(player, item) & ItemLoader.CanUseItem(item, player);
 		}
+
+		public static bool? CanPlayerHitNPCWithItem(Player player, Item item, NPC npc) {
+			bool? result = null;
+
+			bool ModifyResult(bool? nbool) {
+				if (nbool.HasValue) {
+					result = nbool.Value;
+				}
+
+				return result != false;
+			}
+
+			if (!ModifyResult(PlayerHooks.CanHitNPC(player, item, npc))) {
+				return false;
+			}
+
+			if (!ModifyResult(ItemLoader.CanHitNPC(item, player, npc))) {
+				return false;
+			}
+
+			if (!ModifyResult(NPCLoader.CanBeHitByItem(npc, player, item))) {
+				return false;
+			}
+
+			return result;
+		}
 	}
 }
