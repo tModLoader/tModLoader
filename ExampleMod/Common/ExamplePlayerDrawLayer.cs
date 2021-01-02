@@ -26,7 +26,7 @@ namespace ExampleMod.Common
 		// This layer will be a 'child' of the head layer, and draw before (beneath) it.
 		// If the Head layer is hidden, this layer will also be hidden.
 		// If the Head layer is moved, this layer will move with it.
-		public override Position GetDefaultPosition() => new Before(PlayerDrawLayers.Head);
+		public override Position GetDefaultPosition() => new BeforeParent(PlayerDrawLayers.Head);
 		// If you want to make a layer which isn't a child of another layer, use `new Between(Layer1, Layer2)` to specify the position.
 		// If you want to make a 'mobile' layer which can render in different locations depending on the drawInfo, use a `Multiple` position.
 
