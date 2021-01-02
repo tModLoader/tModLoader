@@ -7,7 +7,7 @@ namespace Terraria.Audio
 	{
 		public float Pitch { get; private set; }
 
-		public virtual SoundEffectInstance Play(Vector2? position) {
+		public virtual SoundEffectInstance CreateInstance(Vector2? position) {
 			var instance = GetRandomSound().CreateInstance();
 
 			instance.Pitch = GetRandomPitch();
@@ -18,8 +18,6 @@ namespace Terraria.Audio
 				instance.Volume = Volume * volumeScale;
 				instance.Pan = pan;
 			}
-
-			instance.Play();
 
 			return instance;
 		}

@@ -1,13 +1,12 @@
 --- src/Terraria/Terraria/Audio/ActiveSound.cs
 +++ src/tModLoader/Terraria/Audio/ActiveSound.cs
-@@ -47,9 +_,7 @@
+@@ -47,8 +_,7 @@
  		}
  
  		private void Play() {
 -			SoundEffectInstance soundEffectInstance = Style.GetRandomSound().CreateInstance();
 -			soundEffectInstance.Pitch += Style.GetRandomPitch();
--			soundEffectInstance.Play();
-+			SoundEffectInstance soundEffectInstance = Style.Play(null); //Null here is on purpose.
++			SoundEffectInstance soundEffectInstance = Style.CreateInstance(null); //Null here is on purpose.
+ 			soundEffectInstance.Play();
  			SoundInstanceGarbageCollector.Track(soundEffectInstance);
  			Sound = soundEffectInstance;
- 			Update();

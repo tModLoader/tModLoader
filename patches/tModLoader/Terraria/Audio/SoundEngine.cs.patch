@@ -21,7 +21,7 @@
  				SoundInstanceGarbageCollector.Update();
  				bool flag = (!Main.hasFocus || Main.gamePaused) && Main.netMode == 0;
  				if (!_areSoundsPaused && flag)
-@@ -53,13 +_,16 @@
+@@ -53,13 +_,22 @@
  			PlaySound(type, (int)position.X, (int)position.Y, style);
  		}
  
@@ -34,10 +34,16 @@
  				return null;
  
 -			return PlaySound(type.SoundId, x, y, type.Style, type.Volume, type.GetRandomPitch());
-+			if (x != -1 || y != -1)
-+				return type.Play(new Vector2(x, y));
++			SoundEffectInstance instance = null;
 +
-+			return type.Play(null);
++			if (x != -1 || y != -1)
++				instance = type.CreateInstance(new Vector2(x, y));
++			else
++				instance = type.CreateInstance(null);
++
++			instance.Play();
++
++			return instance;
  		}
  
  		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
