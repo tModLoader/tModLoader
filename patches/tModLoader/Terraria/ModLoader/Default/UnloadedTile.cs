@@ -16,6 +16,7 @@ namespace Terraria.ModLoader.Default
 		public override void SetDefaults() {
 			Main.tileSolid[Type] = IsSolid;
 			Main.tileFrameImportant[Type] = true;
+			Main.tileNoAttach[Type] = !IsSolid;
 		}
 
 		public override void MouseOver(int i, int j)

@@ -247,7 +247,7 @@ namespace Terraria.ModLoader.Default
 				}
 			}
 			// Prep dictionaries for cleanup by indexing nullable entries, then removing
-			/*
+			// tiles
 			List<int> nullable = new List<int>();
 			foreach (var entry in tileInfoMap) {
 				if (canRestoreTiles[entry.Value] > 0) {
@@ -256,7 +256,27 @@ namespace Terraria.ModLoader.Default
 			}
 			foreach (int posID in nullable) {
 				tileInfoMap.Remove(posID);
-			}*/
+			}
+			// Chests
+			nullable = new List<int>();
+			foreach (var entry in chestInfoMap) {
+				if (canRestoreChests[entry.Value] > 0) {
+					nullable.Add(entry.Key);
+				}
+			}
+			foreach (int posID in nullable) {
+				chestInfoMap.Remove(posID);
+			}
+			// Walls
+			nullable = new List<int>();
+			foreach (var entry in wallInfoMap) {
+				if (canRestoreWalls[entry.Value] > 0) {
+					nullable.Add(entry.Key);
+				}
+			}
+			foreach (int posID in nullable) {
+				wallInfoMap.Remove(posID);
+			}
 		}
 	}
 }
