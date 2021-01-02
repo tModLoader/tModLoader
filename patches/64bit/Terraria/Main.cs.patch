@@ -233,9 +233,9 @@
 -					tServer.StartInfo.FileName = "tModLoaderServer";
 -#endif
 +					if(PlatformUtilities.IsWindows)
-+						tServer.StartInfo.FileName = "tModLoaderServer.exe";
++						tServer.StartInfo.FileName = "tModLoader64BitServer.exe";
 +					else
-+						tServer.StartInfo.FileName = "tModLoaderServer";
++						tServer.StartInfo.FileName = "tModLoader64BitServer";
 +
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {

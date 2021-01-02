@@ -32,7 +32,7 @@ namespace Terraria.ModLoader.x64bit
 		internal const int vanillaChestLimit = 1000;
 		internal static readonly int maxChest = 2000;
 
-		internal static readonly string current64BitInternalVersion = "0.11.7.8.1";
+		internal static readonly string current64BitInternalVersion = "0.11.8";
 		internal static string last64bitVersionLaunched = "";
 
 		internal static void SetupVariable() {
@@ -65,7 +65,7 @@ namespace Terraria.ModLoader.x64bit
 				drawVersion = Main.versionNumber;
 			}
 			else {
-				drawVersion = Main.versionNumber + Environment.NewLine + ModLoader.versionedName + $".1 - {architecture} {GoG} {PlatformUtilities.RunningPlatform()}";
+				drawVersion = Main.versionNumber + Environment.NewLine + ModLoader.versionedName + $" - {architecture} {GoG} {PlatformUtilities.RunningPlatform()}";
 			}
 
 			Vector2 origin3 = Main.fontMouseText.MeasureString(drawVersion);

@@ -17,52 +17,47 @@
 +    <OutputType>WinExe</OutputType>
      <PlatformTarget>AnyCPU</PlatformTarget>
      <Optimize>true</Optimize>
-     <OutputName>tModLoader</OutputName>
+-    <OutputName>tModLoader</OutputName>
++    <OutputName>tModLoader64Bit</OutputName>
    </PropertyGroup>
 -  <PropertyGroup Condition="$(Configuration.Contains('Server'))">
--    <OutputType>Exe</OutputType>
--    <DefineConstants>$(DefineConstants);SERVER</DefineConstants>
--    <OutputName>$(OutputName)Server</OutputName>
--  </PropertyGroup>
--  <PropertyGroup Condition="!$(Configuration.Contains('Server'))">
--    <DefineConstants>$(DefineConstants);CLIENT</DefineConstants>
--  </PropertyGroup>
--  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
--    <Optimize>false</Optimize>
--    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
--    <OutputName>$(OutputName)Debug</OutputName>
--  </PropertyGroup>
--  <PropertyGroup Condition="$(Configuration.Contains('Windows'))">
--    <PlatformTarget>x86</PlatformTarget>
--    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
--    <DefineConstants>$(DefineConstants);WINDOWS;XNA</DefineConstants>
--  </PropertyGroup>
--  <PropertyGroup Condition="$(Configuration.Contains('Mac'))">
--    <DefineConstants>$(DefineConstants);MAC;FNA</DefineConstants>
--  </PropertyGroup>
--  <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
--    <DefineConstants>$(DefineConstants);LINUX;FNA</DefineConstants>
 +  <PropertyGroup Condition="$(Configuration.Contains('FNAServerRelease'))">
-+    <OutputType>Exe</OutputType>
+     <OutputType>Exe</OutputType>
+-    <DefineConstants>$(DefineConstants);SERVER</DefineConstants>
 +    <DefineConstants>TRACE;SERVER;FNA</DefineConstants>
 +    <ApplicationIcon>IconFNAServer.ico</ApplicationIcon>
-+    <OutputName>$(OutputName)Server</OutputName>
-+  </PropertyGroup>
+     <OutputName>$(OutputName)Server</OutputName>
+   </PropertyGroup>
+-  <PropertyGroup Condition="!$(Configuration.Contains('Server'))">
 +  <PropertyGroup Condition="$(Configuration.Contains('XNAServerRelease'))">
+-    <DefineConstants>$(DefineConstants);CLIENT</DefineConstants>
+-  </PropertyGroup>
 +  <OutputType>Exe</OutputType>
+-  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
 +    <DefineConstants>DEBUG;TRACE;SERVER;XNA</DefineConstants>
+-    <Optimize>false</Optimize>
 +    <ApplicationIcon>IconXNA.ico</ApplicationIcon>
+-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+-    <OutputName>$(OutputName)Debug</OutputName>
 +    <OutputName>$(OutputName)Server</OutputName>
-+  </PropertyGroup>
+   </PropertyGroup>
+-  <PropertyGroup Condition="$(Configuration.Contains('Windows'))">
 +  <PropertyGroup Condition="$(Configuration.Contains('XNAServerDebug'))">
 +    <Optimize>false</Optimize>
-+    <PlatformTarget>x86</PlatformTarget>
+     <PlatformTarget>x86</PlatformTarget>
+-    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
+-    <DefineConstants>$(DefineConstants);WINDOWS;XNA</DefineConstants>
 +    <DefineConstants>TRACE;DEBUG;SERVER;XNA</DefineConstants>
+-  </PropertyGroup>
 +    <OutputName>$(OutputName)Debug</OutputName>
+-  <PropertyGroup Condition="$(Configuration.Contains('Mac'))">
 +    <ApplicationIcon>IconXNA.ico</ApplicationIcon>
+-    <DefineConstants>$(DefineConstants);MAC;FNA</DefineConstants>
 +    <OutputType>Exe</OutputType>
-+  </PropertyGroup>
+   </PropertyGroup>
+-  <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
 +  <PropertyGroup Condition="$(Configuration.Contains('FNAServerDebug'))">
+-    <DefineConstants>$(DefineConstants);LINUX;FNA</DefineConstants>
 +    <Optimize>false</Optimize>
 +    <PlatformTarget>AnyCPU</PlatformTarget>
 +    <DefineConstants>TRACE;DEBUG;DSERVER;FNA</DefineConstants>
