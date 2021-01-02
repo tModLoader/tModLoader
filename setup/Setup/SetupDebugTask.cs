@@ -17,28 +17,35 @@ namespace Terraria.ModLoader.Setup
 			taskInterface.SetStatus("Updating ModCompile version");
 			var modCompile = Path.Combine(tMLSteamDir, "ModCompile");
 			UpdateModCompileVersion(modCompile);
+			bool msBuildOnPath = RunCmd("RoslynWrapper", "where",
+				"msbuild",
+				(s) => Console.WriteLine(s), null, null, taskInterface.CancellationToken
+			) == 0;
+			if (!msBuildOnPath)
+				throw new Exception("msbuild not found on PATH");
 
-			taskInterface.SetStatus("Compiling RoslynWrapper");
+			roslynCompileFailed = RunCmd("RoslynWrapper", "msbuild",
+				"RoslynWrapper.sln /restore /p:Configuration=Release",
+				null, null, null, taskInterface.CancellationToken
+			) != 0;
 
-			//Compile Roslyn.
-			roslynCompileFailed = RunCmd("RoslynWrapper", "dotnet", "build", cancel: taskInterface.CancellationToken) != 0;
-
-			//Try to install Roslyn's libraries.
-
-			string[] roslynRefs = new[] {"RoslynWrapper.dll", "Microsoft.CodeAnalysis.dll", "Microsoft.CodeAnalysis.CSharp.dll",
+			var roslynRefs = new[] {"RoslynWrapper.dll", "Microsoft.CodeAnalysis.dll", "Microsoft.CodeAnalysis.CSharp.dll",
 				"System.Collections.Immutable.dll", "System.Reflection.Metadata.dll", "System.IO.FileSystem.dll", "System.IO.FileSystem.Primitives.dll",
 				"System.Security.Cryptography.Algorithms.dll", "System.Security.Cryptography.Encoding.dll", "System.Security.Cryptography.Primitives.dll", "System.Security.Cryptography.X509Certificates.dll" };
 
-			foreach (string dll in roslynRefs) {
-				string path = Path.Combine("RoslynWrapper/bin/Release/net46", dll);
+			foreach (var dll in roslynRefs)
+				Copy(Path.Combine("RoslynWrapper/bin/Release/net46", dll), Path.Combine(modCompile, dll));
 
-				if (!roslynCompileFailed || File.Exists(path))
-					Copy(path, Path.Combine(modCompile, dll));
-			}
 
-			//Compile FNA tML.
 			taskInterface.SetStatus("Compiling tModLoader.FNA.exe");
-			tMLFNACompileFailed = RunCmd("src/tModLoader", "dotnet", "build -c MacRelease", cancel: taskInterface.CancellationToken) != 0;
+			var references = new[] { "FNA.dll" };
+			foreach (var dll in references)
+				Copy("references/" + dll, Path.Combine(modCompile, dll));
+
+			tMLFNACompileFailed = RunCmd("solutions", "msbuild",
+				"tModLoader.sln /restore /p:Configuration=MacRelease",
+				null, null, null, taskInterface.CancellationToken
+			) != 0;
 		}
 
 		private void UpdateModCompileVersion(string modCompileDir) {
