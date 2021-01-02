@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Utilities;
@@ -69,6 +70,9 @@ namespace Terraria
 		public static bool NextBool(this UnifiedRandom r)
 			=> r.NextDouble() < .5;
 
+		public static T Min<T>(params T[] array)
+			=> array.Min();
+		
 		/// <summary> Returns true 1 out of X times. </summary>
 		public static bool NextBool(this UnifiedRandom r, int consequent)
 		{
