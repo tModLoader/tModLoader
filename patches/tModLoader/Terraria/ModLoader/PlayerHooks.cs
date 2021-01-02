@@ -637,15 +637,19 @@ namespace Terraria.ModLoader
 
 		public static bool? CanHitNPC(Player player, Item item, NPC target) {
 			bool? flag = null;
+
 			foreach (int index in HookCanHitNPC.arr) {
 				bool? canHit = player.modPlayers[index].CanHitNPC(item, target);
-				if (canHit.HasValue && !canHit.Value) {
-					return false;
-				}
+
 				if (canHit.HasValue) {
-					flag = canHit.Value;
+					if (!canHit.Value) {
+						return false;
+					}
+
+					flag = true;
 				}
 			}
+
 			return flag;
 		}
 
@@ -868,96 +872,40 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateDrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright);
+		private delegate void DelegateDrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright);
 		private static HookList HookDrawEffects = AddHook<DelegateDrawEffects>(p => p.DrawEffects);
 
-		public static void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
+		public static void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
 			ModPlayer[] modPlayers = drawInfo.drawPlayer.modPlayers;
 			foreach (int index in HookDrawEffects.arr) {
 				modPlayers[index].DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
 			}
 		}
 
-		private delegate void DelegateModifyDrawInfo(ref PlayerDrawInfo drawInfo);
+		private delegate void DelegateModifyDrawInfo(ref PlayerDrawSet drawInfo);
 		private static HookList HookModifyDrawInfo = AddHook<DelegateModifyDrawInfo>(p => p.ModifyDrawInfo);
 
-		public static void ModifyDrawInfo(ref PlayerDrawInfo drawInfo) {
+		public static void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
 			ModPlayer[] modPlayers = drawInfo.drawPlayer.modPlayers;
 			foreach (int index in HookModifyDrawInfo.arr) {
 				modPlayers[index].ModifyDrawInfo(ref drawInfo);
 			}
 		}
 
-		private static HookList HookModifyDrawLayers = AddHook<Action<List<PlayerLayer>>>(p => p.ModifyDrawLayers);
+		private static HookList HookModifyDrawLayerOrdering = AddHook<Action<IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position>>>(p => p.ModifyDrawLayerOrdering);
 
-		public static List<PlayerLayer> GetDrawLayers(Player drawPlayer) {
-			List<PlayerLayer> layers = new List<PlayerLayer> {
-				PlayerLayer.HairBack,
-				PlayerLayer.MountBack,
-				PlayerLayer.MiscEffectsBack,
-				PlayerLayer.BackAcc,
-				PlayerLayer.Wings,
-				PlayerLayer.BalloonAcc,
-				PlayerLayer.Skin
-			};
-			if (drawPlayer.wearsRobe) {
-				layers.Add(PlayerLayer.ShoeAcc);
-				layers.Add(PlayerLayer.Legs);
+		public static void ModifyDrawLayerOrdering(IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position> positions) {
+			foreach (int index in HookModifyDrawLayerOrdering.arr) {
+				players[index].ModifyDrawLayerOrdering(positions);
 			}
-			else {
-				layers.Add(PlayerLayer.Legs);
-				layers.Add(PlayerLayer.ShoeAcc);
-			}
-			layers.Add(PlayerLayer.Body);
-			layers.Add(PlayerLayer.HandOffAcc);
-			layers.Add(PlayerLayer.WaistAcc);
-			layers.Add(PlayerLayer.NeckAcc);
-			layers.Add(PlayerLayer.Face);
-			layers.Add(PlayerLayer.Hair);
-			layers.Add(PlayerLayer.Head);
-			layers.Add(PlayerLayer.FaceAcc);
-			if (drawPlayer.mount.Cart) {
-				layers.Add(PlayerLayer.ShieldAcc);
-				layers.Add(PlayerLayer.MountFront);
-			}
-			else {
-				layers.Add(PlayerLayer.MountFront);
-				layers.Add(PlayerLayer.ShieldAcc);
-			}
-			layers.Add(PlayerLayer.SolarShield);
-			layers.Add(PlayerLayer.HeldProjBack);
-			layers.Add(PlayerLayer.HeldItem);
-			layers.Add(PlayerLayer.Arms);
-			layers.Add(PlayerLayer.HandOnAcc);
-			layers.Add(PlayerLayer.HeldProjFront);
-			layers.Add(PlayerLayer.FrontAcc);
-			layers.Add(PlayerLayer.MiscEffectsFront);
-			foreach (PlayerLayer layer in layers) {
-				layer.visible = true;
-			}
-			foreach (int index in HookModifyDrawLayers.arr) {
-				drawPlayer.modPlayers[index].ModifyDrawLayers(layers);
-			}
-			return layers;
 		}
 
-		private static HookList HookModifyDrawHeadLayers = AddHook<Action<List<PlayerHeadLayer>>>(p => p.ModifyDrawHeadLayers);
+		private static HookList HookModifyDrawLayers = AddHook<Action<PlayerDrawSet>>(p => p.HideDrawLayers);
 
-		public static List<PlayerHeadLayer> GetDrawHeadLayers(Player drawPlayer) {
-			List<PlayerHeadLayer> layers = new List<PlayerHeadLayer> {
-				PlayerHeadLayer.Head,
-				PlayerHeadLayer.Hair,
-				PlayerHeadLayer.AltHair,
-				PlayerHeadLayer.Armor,
-				PlayerHeadLayer.FaceAcc
-			};
-			foreach (PlayerHeadLayer layer in layers) {
-				layer.visible = true;
+		public static void HideDrawLayers(PlayerDrawSet drawInfo) {
+			foreach (int index in HookModifyDrawLayers.arr) {
+				drawInfo.drawPlayer.modPlayers[index].HideDrawLayers(drawInfo);
 			}
-			foreach (int index in HookModifyDrawHeadLayers.arr) {
-				drawPlayer.modPlayers[index].ModifyDrawHeadLayers(layers);
-			}
-			return layers;
 		}
 
 		private static HookList HookModifyScreenPosition = AddHook<Action>(p => p.ModifyScreenPosition);

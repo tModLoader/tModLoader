@@ -189,7 +189,7 @@
  							Main.chest[num260].item[num261].netDefaults(type17);
  							Main.chest[num260].item[num261].Prefix(pre3);
  							Main.chest[num260].item[num261].stack = stack8;
-+							ItemIO.ReceiveModData(Main.chest[num261].item[num261], reader);
++							ItemIO.ReceiveModData(Main.chest[num260].item[num261], reader);
  							Recipe.FindRecipes(canDelayCheck: true);
  						}
  
