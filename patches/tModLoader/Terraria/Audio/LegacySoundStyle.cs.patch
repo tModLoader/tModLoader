@@ -1,5 +1,14 @@
 --- src/Terraria/Terraria/Audio/LegacySoundStyle.cs
 +++ src/tModLoader/Terraria/Audio/LegacySoundStyle.cs
+@@ -3,7 +_,7 @@
+ 
+ namespace Terraria.Audio
+ {
+-	public class LegacySoundStyle : SoundStyle
++	public partial class LegacySoundStyle : SoundStyle
+ 	{
+ 		private static readonly UnifiedRandom Random = new UnifiedRandom();
+ 		private readonly int _style;
 @@ -35,18 +_,18 @@
  			SoundId = soundId;
  		}
