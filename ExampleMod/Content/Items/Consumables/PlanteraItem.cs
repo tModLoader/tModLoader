@@ -31,7 +31,7 @@ namespace ExampleMod.Content.Items.Consumables
 			return Main.hardMode && NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3 && !NPC.AnyNPCs(NPCID.Plantera);
 		}
 
-		public override bool UseItem(Player player) {
+		public override bool? UseItem(Player player) {
 			NPC.SpawnOnPlayer(player.whoAmI, NPCID.Plantera);
 
 			// Avoid trying to call sounds on dedicated servers.

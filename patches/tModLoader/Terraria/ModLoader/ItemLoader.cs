@@ -721,23 +721,30 @@ namespace Terraria.ModLoader
 				g.OnHitPvp(item, player, target, damage, crit);
 		}
 
-		private static HookList HookUseItem = AddHook<Func<Item, Player, bool>>(g => g.UseItem);
+		private static HookList HookUseItem = AddHook<Func<Item, Player, bool?>>(g => g.UseItem);
 		/// <summary>
-		/// Returns true if any of ModItem.UseItem or GlobalItem.UseItem return true
+		/// Returns false if any of ModItem.UseItem or GlobalItem.UseItem return false.
+		/// Returns true if anything returns true without returning false.
+		/// Returns null by default.
 		/// Does not fail fast (calls every hook)
 		/// </summary>
-		public static bool UseItem(Item item, Player player) {
+		public static bool? UseItem(Item item, Player player) {
 			if (item.IsAir)
 				return false;
 
-			bool flag = false;
-			if (item.modItem != null)
-				flag |= item.modItem.UseItem(player);
+			bool? result = null;
 
 			foreach (var g in HookUseItem.Enumerate(item))
-				flag |= g.UseItem(item, player);
+				bool? useItem = g.UseItem(item, player);
 
-			return flag;
+				if (useItem.HasValue && result != false) {
+					result = useItem.Value;
+				}
+			}
+
+			bool? modItemResult = item.modItem?.UseItem(player);
+
+			return result ?? modItemResult;
 		}
 
 		private static HookList HookConsumeItem = AddHook<Func<Item, Player, bool>>(g => g.ConsumeItem);

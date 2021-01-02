@@ -422,8 +422,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <returns></returns>
-		public virtual bool UseItem(Player player) {
-			return false;
+		public virtual bool? UseItem(Player player) {
+			return null;
 		}
 
 		/// <summary>
