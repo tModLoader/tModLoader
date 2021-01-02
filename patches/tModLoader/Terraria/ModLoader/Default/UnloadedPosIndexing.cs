@@ -5,7 +5,7 @@
 		public int PosID;
 
 		public UnloadedPosIndexing(int posX, int posY) {
-			this.PosID = posY * Main.maxTilesX + posX;
+			this.PosID = posX * Main.maxTilesY + posY; // Order determined in accordance with increasing Y in TileIO ReadModData such that PosID is ordered numerically
 		}
 
 		public void SaveChestInfoToPos(UnloadedChestInfo info) {

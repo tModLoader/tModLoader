@@ -101,10 +101,7 @@ namespace Terraria.ModLoader.Default
 				string modName = infoTag.GetString("mod");
 				string name = infoTag.GetString("name");
 				bool IsSolid = infoTag.GetBool("IsSolid");
-				bool frameImportant = infoTag.ContainsKey("frameX");
-				var tInfo = frameImportant ?
-					new UnloadedTileInfo(modName, name, infoTag.GetShort("frameX"), infoTag.GetShort("frameY"), IsSolid) :
-					new UnloadedTileInfo(modName, name, IsSolid);
+				var tInfo =  new UnloadedTileInfo(modName, name);
 				tileInfos.Add(tInfo);
 				type = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : (ushort)0;
 				canRestoreTiles.Add(type);
@@ -227,10 +224,7 @@ namespace Terraria.ModLoader.Default
 						int PosID = new UnloadedPosIndexing(x, y).PosID;
 						tileInfoMap.TryGetValue(PosID, out int infoID);
 						if (canRestoreTiles[infoID] > 0) {
-							UnloadedTileInfo info = tileInfos[infoID];
 							tile.type = canRestoreTiles[infoID];
-							tile.frameX = info.frameX;
-							tile.frameY = info.frameY;
 							tileInfoMap.Remove(PosID);
 						}
 					}
@@ -249,7 +243,6 @@ namespace Terraria.ModLoader.Default
 						int PosID = new UnloadedPosIndexing(x, y).PosID;
 						wallInfoMap.TryGetValue(PosID, out int infoID);
 						if (canRestoreWalls[infoID] > 0) {
-							UnloadedWallInfo info = wallInfos[infoID];
 							tile.wall = canRestoreWalls[infoID];
 							wallInfoMap.Remove(PosID);
 						}

@@ -384,14 +384,7 @@ namespace Terraria.ModLoader.IO
 
 					if (tile.type == PendingTile || nonSolidChk) {
 						// Load saved Basic Tile Type Data into UnloadedTileInfo and index
-						if (tables.frameImportant[saveType]) {
-							tInfo = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],
-								tile.frameX, tile.frameY, nonSolidChk);
-						}
-						else {
-							tInfo = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],
-								nonSolidChk);
-						}
+						tInfo = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
 						posIndexer.SaveTileInfoToPos(tInfo);
 						tile.type = nonSolidChk ? UnloadedTilesWorld.UnloadedNonSolidTile : UnloadedTilesWorld.UnloadedTile;
 					}
