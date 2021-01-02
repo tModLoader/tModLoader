@@ -1,6 +1,16 @@
 --- src/decompiled/Terraria/Social/Steam/CoreSocialModule.cs
 +++ src/Terraria/Terraria/Social/Steam/CoreSocialModule.cs
-@@ -20,10 +_,12 @@
+@@ -2,7 +_,9 @@
+ using Steamworks;
+ using System;
+ using System.Threading;
++#if WINDOWS
+ using System.Windows.Forms;
++#endif
+ using Terraria.Localization;
+ 
+ namespace Terraria.Social.Steam
+@@ -20,13 +_,17 @@
  
  		public void Initialize() {
  			_instance = this;
@@ -12,7 +22,12 @@
 +#endif
  
  			if (!SteamAPI.Init()) {
++#if WINDOWS
  				MessageBox.Show(Language.GetTextValue("Error.LaunchFromSteam"), Language.GetTextValue("Error.Error"));
++#endif
+ 				Environment.Exit(1);
+ 			}
+ 
 @@ -39,8 +_,13 @@
  			thread2.Start();
  			Main.OnTickForThirdPartySoftwareOnly += PulseSteamTick;

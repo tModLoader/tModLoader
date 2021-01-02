@@ -1,4 +1,5 @@
 ReLogic\Content\Sources\XnaContentSource.cs
 Terraria\Libraries\Common\Ionic.Zip.CF.dll
 Terraria\Libraries\Common\Newtonsoft.Json.dll
-Terraria\Libraries\Common\steam_appid.txt
+Terraria\Libraries\Mono\Steamworks.NET.dll
+Terraria\Libraries\Mono\System.Windows.Forms.dll

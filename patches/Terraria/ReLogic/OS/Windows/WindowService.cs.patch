@@ -1,5 +1,14 @@
 --- src/decompiled/ReLogic/OS/Windows/WindowService.cs
 +++ src/Terraria/ReLogic/OS/Windows/WindowService.cs
+@@ -9,7 +_,7 @@
+ 	{
+ 		public float GetScaling() {
+ 			try {
+-				IntPtr hdc = System.Drawing.Graphics.FromHwnd(IntPtr.Zero).GetHdc();
++				IntPtr hdc = NativeMethods.GetDC(IntPtr.Zero);
+ 				int deviceCaps = NativeMethods.GetDeviceCaps(hdc, NativeMethods.DeviceCap.VertRes);
+ 				return (float)NativeMethods.GetDeviceCaps(hdc, NativeMethods.DeviceCap.DesktopVertRes) / (float)deviceCaps;
+ 			}
 @@ -27,10 +_,14 @@
  		}
  

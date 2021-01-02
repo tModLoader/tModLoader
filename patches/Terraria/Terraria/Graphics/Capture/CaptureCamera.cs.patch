@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Graphics/Capture/CaptureCamera.cs
 +++ src/Terraria/Terraria/Graphics/Capture/CaptureCamera.cs
-@@ -5,10 +_,16 @@
+@@ -5,10 +_,15 @@
  using System.Drawing;
  using System.Drawing.Imaging;
  using System.IO;
@@ -10,13 +10,21 @@
  using System.Threading;
  using Terraria.Graphics.Effects;
  using Terraria.Localization;
-+using Terraria.Utilities;
 +#if !XNA
 +using Terraria.Utilities;
 +#endif
  
  namespace Terraria.Graphics.Capture
  {
+@@ -158,7 +_,7 @@
+ 				}
+ 				else {
+ 					_graphics.SetRenderTarget(null);
+-					SaveImage(_frameBuffer, captureChunk.ScaledArea.Width, captureChunk.ScaledArea.Height, ImageFormat.Png, _activeSettings.OutputName, captureChunk.Area.X + "-" + captureChunk.Area.Y + ".png");
++					SaveImage(_frameBuffer, captureChunk.ScaledArea.Width, captureChunk.ScaledArea.Height, _activeSettings.OutputName, captureChunk.Area.X + "-" + captureChunk.Area.Y + ".png");
+ 				}
+ 
+ 				_tilesProcessed += captureChunk.Area.Width * captureChunk.Area.Height;
 @@ -177,10 +_,17 @@
  					byte* ptr4 = ptr3 + (destinationBufferWidth * area.Y + area.X << 2);
  					for (int i = 0; i < area.Height; i++) {
@@ -37,7 +45,13 @@
  							ptr2 += 4;
  							ptr4 += 4;
  						}
-@@ -199,6 +_,7 @@
+@@ -194,20 +_,24 @@
+ 
+ 		public float GetProgress() => _tilesProcessed / _totalTiles;
+ 
+-		private bool SaveImage(int width, int height, ImageFormat imageFormat, string filename) {
++		private bool SaveImage(int width, int height, string filename) {
+ 			if (!Utils.TryCreatingDirectory(Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar))
  				return false;
  
  			try {
@@ -45,8 +59,11 @@
  				using (Bitmap bitmap = new Bitmap(width, height)) {
  					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
  					BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
-@@ -208,6 +_,9 @@
- 					bitmap.Save(filename, imageFormat);
+ 					IntPtr scan = bitmapData.Scan0;
+ 					Marshal.Copy(_outputData, 0, scan, width * height * 4);
+ 					bitmap.UnlockBits(bitmapData);
+-					bitmap.Save(filename, imageFormat);
++					bitmap.Save(filename, ImageFormat.Png);
  					bitmap.Dispose();
  				}
 +#else
@@ -67,7 +84,8 @@
 +		}
 +#endif
 +
- 		private void SaveImage(Texture2D texture, int width, int height, ImageFormat imageFormat, string foldername, string filename) {
+-		private void SaveImage(Texture2D texture, int width, int height, ImageFormat imageFormat, string foldername, string filename) {
++		private void SaveImage(Texture2D texture, int width, int height, string foldername, string filename) {
  			string text = Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar + foldername;
  			string filename2 = Path.Combine(text, filename);
  			if (!Utils.TryCreatingDirectory(text))
@@ -100,7 +118,7 @@
  						num += 4;
  						num2 += 4;
  					}
-@@ -243,12 +_,18 @@
+@@ -243,18 +_,24 @@
  					num += texture.Width - width << 2;
  				}
  
@@ -109,7 +127,8 @@
  				IntPtr scan = bitmapData.Scan0;
  				Marshal.Copy(_outputData, 0, scan, width * height * 4);
  				bitmap.UnlockBits(bitmapData);
- 				bitmap.Save(filename2, imageFormat);
+-				bitmap.Save(filename2, imageFormat);
++				bitmap.Save(filename2, ImageFormat.Png);
  			}
 +#else
 +			}
@@ -119,6 +138,13 @@
  		}
  
  		private void FinishCapture() {
+ 			if (_activeSettings.UseScaling) {
+ 				int num = 0;
+-				while (!SaveImage(_outputImageSize.Width, _outputImageSize.Height, ImageFormat.Png, Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar + _activeSettings.OutputName + ".png")) {
++				while (!SaveImage(_outputImageSize.Width, _outputImageSize.Height, Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar + _activeSettings.OutputName + ".png")) {
+ 					GC.Collect();
+ 					Thread.Sleep(5);
+ 					num++;
 @@ -279,6 +_,7 @@
  		}
  

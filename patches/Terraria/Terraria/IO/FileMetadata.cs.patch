@@ -1,0 +1,29 @@
+--- src/decompiled/Terraria/IO/FileMetadata.cs
++++ src/Terraria/Terraria/IO/FileMetadata.cs
+@@ -37,7 +_,7 @@
+ 			FileMetadata fileMetadata = new FileMetadata();
+ 			fileMetadata.Read(reader);
+ 			if (fileMetadata.Type != expectedType)
+-				throw new FileFormatException("Expected type \"" + Enum.GetName(typeof(FileType), expectedType) + "\" but found \"" + Enum.GetName(typeof(FileType), fileMetadata.Type) + "\".");
++				throw new FormatException("Expected type \"" + Enum.GetName(typeof(FileType), expectedType) + "\" but found \"" + Enum.GetName(typeof(FileType), fileMetadata.Type) + "\".");
+ 
+ 			return fileMetadata;
+ 		}
+@@ -45,7 +_,7 @@
+ 		private void Read(BinaryReader reader) {
+ 			ulong num = reader.ReadUInt64();
+ 			if ((num & 0xFFFFFFFFFFFFFF) != 27981915666277746L)
+-				throw new FileFormatException("Expected Re-Logic file format.");
++				throw new FormatException("Expected Re-Logic file format.");
+ 
+ 			byte b = (byte)((num >> 56) & 0xFF);
+ 			FileType fileType = FileType.None;
+@@ -58,7 +_,7 @@
+ 			}
+ 
+ 			if (fileType == FileType.None)
+-				throw new FileFormatException("Found invalid file type.");
++				throw new FormatException("Found invalid file type.");
+ 
+ 			Type = fileType;
+ 			Revision = reader.ReadUInt32();

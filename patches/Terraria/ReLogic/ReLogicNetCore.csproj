@@ -6,17 +6,19 @@
     <Company>Re-Logic</Company>
     <Copyright>Copyright © Re-Logic 2017</Copyright>
     <RootNamespace>ReLogic</RootNamespace>
+	<!-- because project name is "ReLogicNetCore" -->
     <AssemblyName>ReLogic</AssemblyName>
-    <TargetName>ReLogic</TargetName>
   </PropertyGroup>
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
-    <Reference Include="../Terraria/Libraries/FNA/FNA.dll" />
     <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />
+    <Reference Include="../Terraria/Libraries/FNA/FNA.dll" />
     <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
     <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
   </ItemGroup>
   <ItemGroup>
+	<Compile Remove="Localization/IME/Windows/*" />
+	<Compile Remove="Localization/IME/WindowsIme.cs" />
+	<Compile Remove="OS/Windows/WindowsMessageHook.cs" />
     <EmbeddedResource Include="Microsoft/**" />
   </ItemGroup>
 </Project>

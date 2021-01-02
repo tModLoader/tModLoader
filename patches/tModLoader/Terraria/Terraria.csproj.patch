@@ -10,17 +10,15 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -18,15 +_,25 @@
+@@ -18,51 +_,55 @@
    </PropertyGroup>
    <PropertyGroup>
      <PdbFile>bin\$(OutputName)</PdbFile>
 -    <ApplicationIcon>Icon.ico</ApplicationIcon>
 +    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
-+    <AssemblyName>$(OutputName)</AssemblyName>
-+    <TargetName>$(OutputName)</TargetName>
    </PropertyGroup>
    <ItemGroup>
-     <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))" />
+-    <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))" />
 -    <Reference Include="Ionic.Zip.CF" />
 +    <Reference Include="Ionic.Zip.Reduced" />
      <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
@@ -36,31 +34,30 @@
 +    <Reference Include="MonoMod.RuntimeDetour" />
 +    <Reference Include="MonoMod.Utils" />
      <Reference Include="Newtonsoft.Json" />
-     <Reference Include="RailSDK.Net">
-       <HintPath>Libraries/Common/RailSDK.Net.dll</HintPath>
-@@ -34,7 +_,7 @@
+     <Reference Include="RailSDK.Net" />
      <ProjectReference Include="../ReLogic/ReLogic.csproj" />
      <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
        <Link>Libraries/ReLogic/ReLogic.dll</Link>
 -      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
 +      <LogicalName>ReLogic.dll</LogicalName>
      </EmbeddedResource>
+-    <Reference Include="Steamworks.NET">
++    <Reference Include="Steamworks.NET" />
+-      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/Steamworks.NET.dll</HintPath>
+-      <HintPath Condition="$(DefineConstants.Contains('MONO'))">Libraries/Mono/Steamworks.NET.dll</HintPath>
+-    </Reference>
      <Reference Include="SteelSeriesEngineWrapper" />
-     <Reference Include="Steamworks.NET">
-@@ -48,6 +_,11 @@
+     <Reference Include="System" />
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
      <Reference Include="System.Runtime.Serialization" />
-+    <Reference Include="System.ValueTuple">
-+      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/System.ValueTuple.dll</HintPath>
-+      <HintPath Condition="$(DefineConstants.Contains('Mono'))">Libraries/Mono/System.ValueTuple.dll</HintPath>
-+    </Reference>
+-    <Reference Include="System.Windows.Forms">
+-      <HintPath Condition="$(DefineConstants.Contains('Mono'))">Libraries/Mono/System.Windows.Forms.dll</HintPath>
+-    </Reference>
++    <Reference Include="System.ValueTuple" />
 +    <Reference Include="System.XML" />
-     <Reference Include="System.Windows.Forms">
-       <HintPath Condition="$(DefineConstants.Contains('Mono'))">Libraries/Mono/System.Windows.Forms.dll</HintPath>
-     </Reference>
-@@ -53,13 +_,18 @@
-     </Reference>
++    <Reference Include="System.Windows.Forms" />
+     <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
 +    <EmbeddedResource Include="**\*.png" />
@@ -72,14 +69,19 @@
 +    <EmbeddedResource Include="Libraries/**">
 +      <LogicalName>%(Filename)%(Extension)</LogicalName>
 +    </EmbeddedResource>
+     <EmbeddedResource Remove="Libraries/Common/Steamworks.NET.dll" />
+     <EmbeddedResource Remove="Libraries/Common/Newtonsoft.Json.dll" />
+     <None Remove="Libraries/Common/Steamworks.NET.dll" />
+     <None Remove="Libraries/Common/Newtonsoft.Json.dll" />
+     <EmbeddedResource Remove="Libraries/FNA/**" />
+-    <EmbeddedResource Remove="Libraries/XNA/**" />
      <EmbeddedResource Remove="Libraries/Native/**" />
-     <EmbeddedResource Remove="Libraries/Mono/**" Condition="!$(DefineConstants.Contains('MONO'))" />
-+    <EmbeddedResource Remove="Libraries/XNA/**" Condition="!$(DefineConstants.Contains('XNA'))" />
-+    <EmbeddedResource Remove="Libraries/FNA/**" Condition="!$(DefineConstants.Contains('FNA'))" />
+-    <EmbeddedResource Remove="Libraries/Windows/**" Condition="!$(DefineConstants.Contains('WINDOWS'))" />
+-    <EmbeddedResource Remove="Libraries/Mono/**" Condition="!$(DefineConstants.Contains('MONO'))" />
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
-@@ -78,7 +_,11 @@
+@@ -84,7 +_,11 @@
    </Target>
    <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
      <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />

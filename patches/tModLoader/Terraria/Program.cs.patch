@@ -1,11 +1,6 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -2,25 +_,30 @@
- using ReLogic.OS;
- using System;
- using System.Collections.Generic;
-+
- #if CLIENT
+@@ -6,6 +_,7 @@
  using System.Diagnostics;
  #endif
  using System.IO;
@@ -13,10 +8,7 @@
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
- using System.Threading;
-+
- #if CLIENT
- using System.Windows.Forms;
+@@ -15,12 +_,14 @@
  #endif
  using Terraria.Initializers;
  using Terraria.Localization;
@@ -32,42 +24,6 @@
  	{
  #if CLIENT
  		public const bool IsServer = false;
-@@ -65,24 +_,19 @@
- 		public static void ForceLoadThread(object threadContext) {
- 			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
- 			LoadedEverything = true;
-+			Logging.Terraria.Info("JIT loading finished");
- 		}
- 
--		private static void ForceJITOnAssembly(Assembly assembly) {
--			Type[] types = assembly.GetTypes();
--			for (int i = 0; i < types.Length; i++) {
--#if WINDOWS
--				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
--#else
--				MethodInfo[] methods = types[i].GetMethods();
--#endif
--				foreach (MethodInfo methodInfo in methods) {
--					try {
--						if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
--#if XNA
--							RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
--#else
--							JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
--#endif
-+		private static void ForceJITOnAssembly(IEnumerable<Type> types) {
-+			var methodsToJIT = CollectMethodsToJIT(types);
-+
-+			if (Environment.ProcessorCount > 1) {
-+				methodsToJIT.AsParallel().AsUnordered().ForAll(ForceJITOnMethod);
-+			}
-+			else {
-+				foreach (var method in methodsToJIT) {
-+					try {
-+						ForceJITOnMethod(method);
- 					}
- 					catch (BadImageFormatException e) 
- 					{
 @@ -96,10 +_,13 @@
  		}
  
@@ -130,10 +86,10 @@
  			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
  			InitializeConsoleOutput();
 -			SetupLogging();
++			//Program.SetupLogging();
  			Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
 -			using (Main main = new Main()) {
 -				try {
-+			//Program.SetupLogging();
 +			try {
 +				ModLoader.ModLoader.EngineInit();
 +				using (Main main = new Main()) {
@@ -157,11 +113,13 @@
  			}
  		}
  
-@@ -217,9 +_,21 @@
+@@ -216,10 +_,22 @@
+ 					streamWriter.WriteLine("");
  				}
  
- #if CLIENT
+-#if CLIENT && WINDOWS
 -				MessageBox.Show(e.ToString(), Language.GetTextValue("Error.Error"));
++#if CLIENT
 +				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
 +
 +				if (e is FolderCreationFailedException)

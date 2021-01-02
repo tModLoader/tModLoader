@@ -101,6 +101,19 @@
  		public static int sundialCooldown;
  		public static bool fastForwardTime;
  		private static Stopwatch splashTimer = new Stopwatch();
+@@ -3102,10 +_,12 @@
+ 
+ 		protected void CheckBunny() {
+ 			try {
++#if WINDOWS //TODO: <https://www.nuget.org/packages/Microsoft.Win32.Registry/>?
+ 				RegistryKey currentUser = Registry.CurrentUser;
+ 				currentUser = currentUser.CreateSubKey("Software\\Terraria");
+ 				if (currentUser != null && currentUser.GetValue("Bunny") != null && currentUser.GetValue("Bunny").ToString() == "1")
+ 					runningCollectorsEdition = true;
++#endif
+ 			}
+ 			catch {
+ 				runningCollectorsEdition = false;
 @@ -3146,6 +_,7 @@
  
  			PendingBorderlessState = screenBorderless;
