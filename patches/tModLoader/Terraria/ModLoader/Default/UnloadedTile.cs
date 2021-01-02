@@ -32,6 +32,11 @@ namespace Terraria.ModLoader.Default
 						Main.LocalPlayer.cursorItemIconID = -1;
 						Main.LocalPlayer.cursorItemIconText = $"{info.modName}: {info.name}";
 					}
+					else {
+						Main.LocalPlayer.cursorItemIconEnabled = true;
+						Main.LocalPlayer.cursorItemIconID = -1;
+						Main.LocalPlayer.cursorItemIconText = $" info not at ID {infoID} Error";
+					}
 				}
 			}
 		}

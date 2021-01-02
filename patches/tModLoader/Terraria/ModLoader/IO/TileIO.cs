@@ -12,6 +12,14 @@ namespace Terraria.ModLoader.IO
 {
 	internal static class TileIO
 	{
+		internal static ushort PendingChest => ModContent.Find<ModTile>("ModLoader/PendingChest").Type;
+
+		internal static ushort PendingWallType => ModContent.Find<ModWall>("ModLoader/PendingWall").Type;
+
+		internal static ushort PendingTile => ModContent.Find<ModTile>("ModLoader/PendingTile").Type;
+
+		internal static ushort PendingNonSolidTile => ModContent.Find<ModTile>("ModLoader/PendingNonSolidTile").Type;
+
 		//*********** Tile, Walls, & Chests Save, Load, and Placeholder Implementations ***************************//
 		//Should add liquids data to implementation in locational data
 
@@ -116,10 +124,10 @@ namespace Terraria.ModLoader.IO
 
 			// Create a Table to store working information
 			var tables = TileTables.Create();
-			ushort pendingTile = UnloadedTilesWorld.PendingTile;
-			ushort pendingNSTile = UnloadedTilesWorld.PendingNonSolidTile;
-			ushort pendingChest = UnloadedTilesWorld.PendingChest;
-			ushort pendingWallType = UnloadedTilesWorld.PendingWallType;
+			ushort pendingTile = PendingTile;
+			ushort pendingNSTile = PendingNonSolidTile;
+			ushort pendingChest = PendingChest;
+			ushort pendingWallType = PendingWallType;
 
 			// Retrieve Basic Tile Type Data from saved Tile Map, and store in table
 			foreach (var tileTag in tag.GetList<TagCompound>("tileMap")) {
@@ -372,9 +380,9 @@ namespace Terraria.ModLoader.IO
 				
 				if (tables.tileNames.ContainsKey(saveType)) {
 					// Handle Disabled Mods and Implement Pending Tile
-					bool nonSolidChk = tile.type == UnloadedTilesWorld.PendingNonSolidTile;
-					
-					if (tile.type == UnloadedTilesWorld.PendingTile || nonSolidChk) {
+					bool nonSolidChk = tile.type == PendingNonSolidTile;
+
+					if (tile.type == PendingTile || nonSolidChk) {
 						// Load saved Basic Tile Type Data into UnloadedTileInfo and index
 						if (tables.frameImportant[saveType]) {
 							tInfo = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],
@@ -385,15 +393,19 @@ namespace Terraria.ModLoader.IO
 								nonSolidChk);
 						}
 						posIndexer.SaveTileInfoToPos(tInfo);
+						tile.type = nonSolidChk ? UnloadedTilesWorld.UnloadedNonSolidTile : UnloadedTilesWorld.UnloadedTile;
 					}
-					if (tile.type == UnloadedTilesWorld.PendingChest) {
-						bool accountedFor = (Main.tile[i - 1, j].type == UnloadedTilesWorld.PendingChest ||
-							Main.tile[i, j - 1].type == UnloadedTilesWorld.PendingChest);
+					if (tile.type == PendingChest) {
+						bool accountedFor = (Main.tile[i - 1, j].type == UnloadedTilesWorld.UnloadedChest ||
+							Main.tile[i, j - 1].type == UnloadedTilesWorld.UnloadedChest ||
+							Main.tile[i-1 , j - 1].type == UnloadedTilesWorld.UnloadedChest);
 						if (!accountedFor) { // Only care about top-left tile of 2x2 for Chests
 							// Load saved Basic Chest Type Data into UnloadedChestInfo and index
 							UnloadedChestInfo cInfo;
 							cInfo = new UnloadedChestInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
 							posIndexer.SaveChestInfoToPos(cInfo);
+							// Place UnloadedChest (required to preserve the inventory and re-namings
+							WorldGen.PlaceChestDirect(i, j + 1, UnloadedTilesWorld.UnloadedChest, 0, -1);
 						}
 					}
 				}
@@ -404,9 +416,10 @@ namespace Terraria.ModLoader.IO
 			if ((flags & TileIOFlags.ModWall) == TileIOFlags.ModWall) {
 				saveWallType = reader.ReadUInt16();
 				tile.wall = tables.walls[saveWallType];
-				if (tile.wall == UnloadedTilesWorld.PendingWallType) {
+				if (tile.wall == PendingWallType) {
 					wInfo = new UnloadedWallInfo(tables.wallModNames[saveWallType], tables.wallNames[saveWallType]);
 					posIndexer.SaveWallInfoToPos(wInfo);
+					tile.wall = UnloadedTilesWorld.UnloadedWallType;
 				}
 				if ((flags & TileIOFlags.WallColor) == TileIOFlags.WallColor) {
 					tile.wallColor(reader.ReadByte());
@@ -415,13 +428,13 @@ namespace Terraria.ModLoader.IO
 
 			// Handle re-occurence, up to 256 counts.
 			if ((flags & TileIOFlags.NextTilesAreSame) == TileIOFlags.NextTilesAreSame) { 
-				byte sameCount = reader.ReadByte();
-				for (byte k = 0; k < sameCount; k++) {
-					NextTile(ref i, ref j);
-					posIndexer = new UnloadedPosIndexing(i, j);
-					if (((flags &TileIOFlags.ModTile)== TileIOFlags.ModTile) && (tInfo == null ))
+				byte sameCount = reader.ReadByte(); //how many are the same
+				for (byte k = 0; k < sameCount; k++) { // for all copy-paste tiles
+					NextTile(ref i, ref j); // move i,j to the next tile
+					posIndexer = new UnloadedPosIndexing(i, j); // get a new position Indexer
+					if (((flags &TileIOFlags.ModTile)== TileIOFlags.ModTile) && (tInfo != null ))
 						posIndexer.SaveTileInfoToPos(tInfo);
-					if (((flags & TileIOFlags.ModWall) == TileIOFlags.ModWall) && (wInfo == null))
+					if (((flags & TileIOFlags.ModWall) == TileIOFlags.ModWall) && (wInfo != null))
 						posIndexer.SaveWallInfoToPos(wInfo);
 
 					Main.tile[i, j].CopyFrom(tile); 

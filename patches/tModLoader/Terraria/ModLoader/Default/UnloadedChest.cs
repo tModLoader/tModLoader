@@ -133,11 +133,11 @@ namespace Terraria.ModLoader.Default
 					SoundEngine.PlaySound(SoundID.MenuClose);
 				}
 				else { // Commented out the ability to open the inventory of unloaded chests
-					player.chest = chest;
+					//player.chest = chest;
 					Main.playerInventory = true;
-					Main.recBigList = false;
-					player.chestX = left;
-					player.chestY = top;
+					//Main.recBigList = false;
+					//player.chestX = left;
+					//player.chestY = top;
 					SoundEngine.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
 				}
 

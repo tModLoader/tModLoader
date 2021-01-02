@@ -13,11 +13,6 @@ namespace Terraria.ModLoader.Default
 		internal List<UnloadedTileInfo> tileInfos = new List<UnloadedTileInfo>();
 
 		/// <summary>
-		/// Populated during <see cref="TileIO.ReadModTile"/>, detecting tiles that lost their loaded mod, to then turn them into unloaded tiles
-		/// </summary>
-		internal List<UnloadedTileInfo> pendingTileInfos = new List<UnloadedTileInfo>();
-
-		/// <summary>
 		/// Use a dictionary mapping coordinates of tile infos from <see cref="tileInfos"/>
 		/// </summary>
 		internal Dictionary<int, int> tileInfoMap = new Dictionary<int, int>();
@@ -26,11 +21,6 @@ namespace Terraria.ModLoader.Default
 		/// Tile-<see cref="UnloadedChestInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
 		/// </summary>
 		internal List<UnloadedChestInfo> chestInfos = new List<UnloadedChestInfo>();
-
-		/// <summary>
-		/// Populated during <see cref="TileIO.ReadModTile"/>, detecting chests that lost their loaded mod, to then turn them into unloaded tiles
-		/// </summary>
-		internal List<UnloadedChestInfo> pendingChestInfos = new List<UnloadedChestInfo>();
 
 		/// <summary>
 		/// Use a dictionary mapping coordinates of chest infos from <see cref="chestInfos"/>
@@ -43,11 +33,6 @@ namespace Terraria.ModLoader.Default
 		internal List<UnloadedWallInfo> wallInfos = new List<UnloadedWallInfo>();
 
 		/// <summary>
-		/// Populated during <see cref="TileIO.ReadModTile"/>, detecting walls that lost their loaded mod, to then turn them into unloaded walls
-		/// </summary>
-		internal List<UnloadedWallInfo> pendingWallInfos = new List<UnloadedWallInfo>();
-
-		/// <summary>
 		/// Use a dictionary mapping coordinates of walls infos from <see cref="wallInfos"/>
 		/// </summary>
 		internal Dictionary<int, int> wallInfoMap = new Dictionary<int, int>();
@@ -55,31 +40,21 @@ namespace Terraria.ModLoader.Default
 
 		internal static ushort UnloadedTile => ModContent.Find<ModTile>("ModLoader/UnloadedTile").Type;
 
-		internal static ushort PendingTile => ModContent.Find<ModTile>("ModLoader/PendingUnloadedTile").Type;
-
 		internal static ushort UnloadedNonSolidTile => ModContent.Find<ModTile>("ModLoader/UnloadedNonSolidTile").Type;
-
-		internal static ushort PendingNonSolidTile => ModContent.Find<ModTile>("ModLoader/PendingUnloadedNonSolidTile").Type;
 
 		internal static ushort UnloadedChest => ModContent.Find<ModTile>("ModLoader/UnloadedChest").Type;
 
-		internal static ushort PendingChest => ModContent.Find<ModTile>("ModLoader/PendingUnloadedChest").Type;
-
 		internal static ushort UnloadedWallType => ModContent.Find<ModWall>("ModLoader/UnloadedWall").Type;
 
-		internal static ushort PendingWallType => ModContent.Find<ModWall>("ModLoader/PendingUnloadedWall").Type;
 
 		public override void Initialize() {
 			tileInfos.Clear();
-			pendingTileInfos.Clear();
 			tileInfoMap.Clear();
 
 			wallInfos.Clear();
-			pendingWallInfos.Clear();
 			wallInfoMap.Clear();
 
 			chestInfos.Clear();
-			pendingChestInfos.Clear();
 			chestInfoMap.Clear();
 		}
 
@@ -110,47 +85,90 @@ namespace Terraria.ModLoader.Default
 			bool canRestoreTilesFlag = false; // true if atleast one previously unloaded type is now loadable again
 			bool canRestoreWallsFlag = false;
 			bool canRestoreChestsFlag = false;
-			UnloadedInfoUpdate update;
 
 			//NOTE: infos and canRestore[] are same length so the indices match later for RestoreTilesAndWalls
-
+			
+			ushort type = 0;
 			// Process tiles
 			var tileList = tag.GetList<TagCompound>("tileList");
-			update = new UnloadedInfoUpdate(tileList,'t');
-			canRestoreTilesFlag = update.canRestoreFlag;
-			canRestoreTiles = update.canRestore;
+			foreach (var infoTag in tileList) {
+				if (!infoTag.ContainsKey("mod")) {
+					// infos entries get nulled out once restored, leading to an empty tag. This reverts it
+					tileInfos.Add(null);
+					canRestoreTiles.Add(0);
+					continue;
+				}
+				string modName = infoTag.GetString("mod");
+				string name = infoTag.GetString("name");
+				bool IsSolid = infoTag.GetBool("IsSolid");
+				bool frameImportant = infoTag.ContainsKey("frameX");
+				var tInfo = frameImportant ?
+					new UnloadedTileInfo(modName, name, infoTag.GetShort("frameX"), infoTag.GetShort("frameY"), IsSolid) :
+					new UnloadedTileInfo(modName, name, IsSolid);
+				tileInfos.Add(tInfo);
+				type = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : (ushort)0;
+				canRestoreTiles.Add(type);
+				if (type != 0)
+					canRestoreTilesFlag = true;
+			}
 
 			// Process Walls
 			var wallList = tag.GetList<TagCompound>("wallList");
-			update = new UnloadedInfoUpdate(wallList, 'w');
-			canRestoreWallsFlag = update.canRestoreFlag;
-			canRestoreWalls = update.canRestore;
+			foreach (var infoTag in wallList) {
+				if (!infoTag.ContainsKey("mod")) {
+					// infos entries get nulled out once restored, leading to an empty tag. This reverts it
+					wallInfos.Add(null);
+					canRestoreWalls.Add(0);
+					continue;
+				}
+				string modName = infoTag.GetString("mod");
+				string name = infoTag.GetString("name");
+				var wInfo = new UnloadedWallInfo(modName, name);
+				wallInfos.Add(wInfo);
+				type = ModContent.TryFind(modName, name, out ModWall wall) ? wall.Type : (ushort)0;
+				canRestoreWalls.Add(type);
+				if (type != 0)
+					canRestoreWallsFlag = true;
+			}
 
 			// Process chests
 			var chestList = tag.GetList<TagCompound>("chestList");
-			update = new UnloadedInfoUpdate(chestList, 'c');
-			canRestoreChestsFlag = update.canRestoreFlag;
-			canRestoreChests = update.canRestore;
+			foreach (var infoTag in chestList) {
+				if (!infoTag.ContainsKey("mod")) {
+					// infos entries get nulled out once restored, leading to an empty tag. This reverts it
+					chestInfos.Add(null);
+					canRestoreChests.Add(0);
+					continue;
+				}
+				string modName = infoTag.GetString("mod");
+				string name = infoTag.GetString("name");
+				var cInfo = new UnloadedChestInfo(modName, name);
+				chestInfos.Add(cInfo);
+				type = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : (ushort)0;
+				canRestoreChests.Add(type);
+				if (type != 0)
+					canRestoreChestsFlag = true;
+			}
 
 			// Prcoess chest Info Mapping
 			var chestPosIndex = tag.GetList<TagCompound>("chestPosIndex");
 			foreach (var posTag in chestPosIndex) {
-				int PosID = posTag.Get<int>("PosID");
-				var infoID = posTag.Get<int>("infoID");
+				int PosID = posTag.Get<int>("posID");
+				int infoID = posTag.Get<int>("infoID");
 				chestInfoMap[PosID] = infoID;
 			}
 			// Prcoess wall Info Mapping
 			var wallPosIndex = tag.GetList<TagCompound>("wallPosIndex");
 			foreach (var posTag in wallPosIndex) {
-				int PosID = posTag.Get<int>("PosID");
-				var infoID = posTag.Get<int>("infoID");
+				int PosID = posTag.Get<int>("posID");
+				int infoID = posTag.Get<int>("infoID");
 				wallInfoMap[PosID] = infoID;
 			}
 			// Prcoess wall Info Mapping
 			var tilePosIndex = tag.GetList<TagCompound>("tilePosIndex");
 			foreach (var posTag in tilePosIndex) {
-				int PosID = posTag.Get<int>("PosID");
-				var infoID = posTag.Get<int>("infoID");
+				int PosID = posTag.Get<int>("posID");
+				int infoID = posTag.Get<int>("infoID");
 				tileInfoMap[PosID] = infoID;
 			}
 
@@ -176,8 +194,6 @@ namespace Terraria.ModLoader.Default
 						chestInfos[k] = null;
 				}
 			}
-			// Resolve pending objects
-			ConfirmPendingInfo();
 		}
 
 		/// <summary>
@@ -238,85 +254,6 @@ namespace Terraria.ModLoader.Default
 							wallInfoMap.Remove(PosID);
 						}
 					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// If there are pending tiles or walls (after a mod disable), convert them to unloaded, and refill <see cref="infos"/> and/or <see cref="wallInfos"/>
-		/// </summary>
-		private void ConfirmPendingInfo() {
-			bool confirmTileInfo = pendingTileInfos.Count > 0;
-			bool confirmWallInfo = pendingWallInfos.Count > 0;
-			bool confirmChestInfo = pendingChestInfos.Count > 0;
-			if (!(confirmTileInfo || confirmWallInfo || confirmChestInfo))
-				return; //Nothing to confirm
-
-			List<int> truePendingID = new List<int>();
-
-			int nextID = 0;
-			// If the ID hasn't already been recorded in 'infos' list, add it, and create shortlist of net-new pending
-			for (int k = 0; k < pendingTileInfos.Count; k++) {
-				while (nextID < tileInfos.Count && tileInfos[nextID] != null)
-					nextID++;
-
-				if (nextID == tileInfos.Count)
-					tileInfos.Add(pendingTileInfos[k]);
-				else
-					tileInfos[nextID] = pendingTileInfos[k];
-
-				truePendingID.Add(nextID); // Shortlist of net-new pending
-			}
-
-			nextID = 0;
-			for (int k = 0; k < pendingWallInfos.Count; k++) {
-				while (nextID < wallInfos.Count && wallInfos[nextID] != null)
-					nextID++;
-
-				if (nextID == wallInfos.Count)
-					wallInfos.Add(pendingWallInfos[k]);
-				else
-					wallInfos[nextID] = pendingWallInfos[k];
-			}
-
-			nextID = 0;
-			for (int k = 0; k < pendingChestInfos.Count; k++) {
-				while (nextID < chestInfos.Count && chestInfos[nextID] != null)
-					nextID++;
-
-				if (nextID == chestInfos.Count)
-					chestInfos.Add(pendingChestInfos[k]);
-				else
-					chestInfos[nextID] = pendingChestInfos[k];
-			}
-
-			ushort pendingTile = PendingTile;
-			ushort pendingNSTile = PendingNonSolidTile;
-			ushort pendingChest = PendingChest;
-			ushort pendingWallType = PendingWallType;
-
-			ushort unloadedTile = UnloadedTile;
-			ushort unloadedNSTile = UnloadedNonSolidTile;
-			ushort unloadedChest = UnloadedChest;
-			ushort unloadedWallType = UnloadedWallType;
-		
-			// For all tiles on the map
-			for (int x = 0; x < Main.maxTilesX; x++) {
-				for (int y = 0; y < Main.maxTilesY; y++) {
-					Tile tile = Main.tile[x, y];
-
-					// Replace tiles like for like, so to speak
-					if (confirmTileInfo && tile.type == pendingTile) {
-						tile.type = unloadedTile;
-					}
-					if (confirmTileInfo && tile.type == pendingNSTile) {
-						tile.type = unloadedNSTile;
-					}
-					if (confirmChestInfo && tile.type == pendingChest) {
-						WorldGen.PlaceChestDirect(x, y + 1, unloadedChest, 0, -1);
-					}
-					if (confirmWallInfo && tile.wall == pendingWallType)
-						tile.wall = unloadedWallType;
 				}
 			}
 		}
