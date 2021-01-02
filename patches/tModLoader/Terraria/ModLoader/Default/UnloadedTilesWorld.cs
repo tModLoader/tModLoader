@@ -221,34 +221,42 @@ namespace Terraria.ModLoader.Default
 					// If tile is of Type unloaded, restore original by position mapping
 					Tile tile = Main.tile[x, y];
 					if (canRestoreTilesFlag && (tile.type == unloadedTile || tile.type == unloadedNonSolidTile)) {
-						int PosID = new UnloadedPosIndexing(x, y).PosID;
-						tileInfoMap.TryGetValue(PosID, out int infoID);
+						int posID = new UnloadedPosIndexing(x, y).PosID;
+						tileInfoMap.TryGetValue(posID, out int infoID);
 						if (canRestoreTiles[infoID] > 0) {
 							tile.type = canRestoreTiles[infoID];
-							tileInfoMap.Remove(PosID);
 						}
 					}
 					// If Tile is a Chest, Replace the chest with original by referencing position mapping 
 					if (canRestoreChestsFlag && (tile.type == unloadedChest)) {
-						int PosID = new UnloadedPosIndexing(x, y).PosID;
-						chestInfoMap.TryGetValue(PosID, out int infoID);
+						int posID = new UnloadedPosIndexing(x, y).PosID;
+						chestInfoMap.TryGetValue(posID, out int infoID);
 						if (canRestoreChests[infoID] > 0) {
 							UnloadedChestInfo info = chestInfos[infoID];
 							WorldGen.PlaceChestDirect(x, y+1, canRestoreChests[infoID], 0, -1);
-							chestInfoMap.Remove(PosID);
 						}
 					}
 					// If tile has a wall, restore original by position mapping
 					if (canRestoreWallsFlag && tile.wall == unloadedWallType) {
-						int PosID = new UnloadedPosIndexing(x, y).PosID;
-						wallInfoMap.TryGetValue(PosID, out int infoID);
+						int posID = new UnloadedPosIndexing(x, y).PosID;
+						wallInfoMap.TryGetValue(posID, out int infoID);
 						if (canRestoreWalls[infoID] > 0) {
 							tile.wall = canRestoreWalls[infoID];
-							wallInfoMap.Remove(PosID);
 						}
 					}
 				}
 			}
+			// Prep dictionaries for cleanup by indexing nullable entries, then removing
+			/*
+			List<int> nullable = new List<int>();
+			foreach (var entry in tileInfoMap) {
+				if (canRestoreTiles[entry.Value] > 0) {
+					nullable.Add(entry.Key);
+				}
+			}
+			foreach (int posID in nullable) {
+				tileInfoMap.Remove(posID);
+			}*/
 		}
 	}
 }

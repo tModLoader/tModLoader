@@ -423,13 +423,7 @@ namespace Terraria.ModLoader.IO
 			if ((flags & TileIOFlags.NextTilesAreSame) == TileIOFlags.NextTilesAreSame) { 
 				byte sameCount = reader.ReadByte(); //how many are the same
 				for (byte k = 0; k < sameCount; k++) { // for all copy-paste tiles
-					NextTile(ref i, ref j); // move i,j to the next tile
-					posIndexer = new UnloadedPosIndexing(i, j); // get a new position Indexer
-					if (((flags &TileIOFlags.ModTile)== TileIOFlags.ModTile) && (tInfo != null ))
-						posIndexer.SaveTileInfoToPos(tInfo);
-					if (((flags & TileIOFlags.ModWall) == TileIOFlags.ModWall) && (wInfo != null))
-						posIndexer.SaveWallInfoToPos(wInfo);
-
+					NextTile(ref i, ref j); // move i,j to the next tile, with vertical being priority
 					Main.tile[i, j].CopyFrom(tile); 
 					WorldGen.tileCounts[tile.type] += j <= Main.worldSurface ? 5 : 1;
 				}
