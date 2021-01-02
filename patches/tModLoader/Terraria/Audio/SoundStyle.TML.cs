@@ -7,15 +7,16 @@ namespace Terraria.Audio
 	{
 		public float Pitch { get; private set; }
 
-		public virtual SoundEffectInstance Play(Vector2? position) {
+		public virtual SoundEffectInstance Play(Vector2? position, float volumeScale = 1f) {
 			var instance = GetRandomSound().CreateInstance();
 
 			instance.Pitch = GetRandomPitch();
+			instance.Volume = Volume * volumeScale;
 
 			if (position.HasValue) {
 				CalculateVolumeAndPan(position.Value, Main.screenWidth * 1.5f, out float volumeScale, out float pan);
 
-				instance.Volume = Volume * volumeScale;
+				instance.Volume *= volumeScale;
 				instance.Pan = pan;
 			}
 
