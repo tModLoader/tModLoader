@@ -382,6 +382,7 @@ namespace Terraria.ModLoader
 				mod.PrepareAssets();
 				mod.Autoload();
 				mod.Load();
+				SystemHooks.OnModLoad(mod);
 				mod.loading = false;
 			});
 
@@ -393,6 +394,7 @@ namespace Terraria.ModLoader
 			LoadModContent(token, mod => {
 				mod.SetupContent();
 				mod.PostSetupContent();
+				SystemHooks.PostSetupContent(mod);
 			});
 
 			MemoryTracking.Finish();
@@ -530,7 +532,7 @@ namespace Terraria.ModLoader
 			WaterStyleLoader.Unload();
 			WaterfallStyleLoader.Unload();
 			PlayerDrawLayerHooks.Unload();
-			WorldHooks.Unload();
+			SystemHooks.Unload();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
 				Main.recipe[k] = new Recipe();
@@ -576,7 +578,7 @@ namespace Terraria.ModLoader
 			BuffLoader.ResizeArrays();
 			PlayerHooks.RebuildHooks();
 			PlayerDrawLayerHooks.ResizeArrays();
-			WorldHooks.ResizeArrays();
+			SystemHooks.ResizeArrays();
 
 			if (!Main.dedServ) {
 				SoundLoader.ResizeAndFillArrays();
