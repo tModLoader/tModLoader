@@ -606,22 +606,33 @@ namespace Terraria.ModLoader
 		/// If all of them return null, this returns null.
 		/// </summary>
 		public static bool? CanHitNPC(Item item, Player player, NPC target) {
-			bool? canHit = item.modItem?.CanHitNPC(player, target);
-			if (canHit.HasValue && !canHit.Value) {
-				return false;
-			}
-			foreach (var g in HookCanHitNPC.arr) {
-				bool? globalCanHit = g.Instance(item).CanHitNPC(item, player, target);
-				if (globalCanHit.HasValue) {
-					if (globalCanHit.Value) {
-						canHit = true;
-					}
-					else {
+			bool? flag = null;
+
+			foreach (GlobalItem g in HookCanHitNPC.arr) {
+				bool? canHit = g.Instance(item).CanHitNPC(item, player, target);
+
+				if (canHit.HasValue) {
+					if (!canHit.Value) {
 						return false;
 					}
+
+					flag = true;
 				}
 			}
-			return canHit;
+
+			if (item.modItem != null) {
+				bool? canHit = item.modItem.CanHitNPC(player, target);
+
+				if (canHit.HasValue) {
+					if (!canHit.Value) {
+						return false;
+					}
+
+					flag = true;
+				}
+			}
+
+			return flag;
 		}
 
 		private delegate void DelegateModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit);
