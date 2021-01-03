@@ -1,7 +1,7 @@
 --- src/Terraria/Terraria/Graphics/Capture/CaptureCamera.cs
 +++ src/tModLoader/Terraria/Graphics/Capture/CaptureCamera.cs
-@@ -236,7 +_,13 @@
- #if !XNA
+@@ -237,7 +_,13 @@
+ #if FNA
  		private void SavePng(int width, int height, string filename) {
  			using (FileStream fileStream = File.Create(filename)) {
 +#if !NETCORE

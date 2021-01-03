@@ -13,13 +13,13 @@
  		}
  
  		public void SetUnicodeTitle(GameWindow window, string title) {
-+#if NETCORE
-+			SDL2.SDL.SDL_SetWindowTitle(window.Handle, title);
-+#else
++#if WINDOWS
  			NativeMethods.WndProcCallback d = NativeMethods.DefWindowProc;
  			int dwNewLong = NativeMethods.SetWindowLong(window.Handle, -4, (int)Marshal.GetFunctionPointerForDelegate((Delegate)d));
  			window.Title = title;
  			NativeMethods.SetWindowLong(window.Handle, -4, dwNewLong);
++#else
++			SDL2.SDL.SDL_SetWindowTitle(window.Handle, title);
 +#endif
  		}
  

@@ -4,7 +4,7 @@
  {
  	internal class WindowsPlatform : Platform
  	{
-+#if !NETCORE
++#if WINDOWS
  		private WindowsMessageHook _wndProcHook;
  		private bool _disposedValue;
 +#endif
@@ -15,7 +15,7 @@
  		}
  
  		public override void InitializeClientServices(IntPtr windowHandle) {
-+#if NETCORE
++#if !WINDOWS
 +			RegisterService((IImeService)new FnaIme());
 +#else
  			if (_wndProcHook == null)
@@ -25,7 +25,7 @@
 +#endif
  		}
  
-+#if !NETCORE
++#if WINDOWS
  		protected override void Dispose(bool disposing) {
  			if (!_disposedValue) {
  				if (disposing && _wndProcHook != null) {

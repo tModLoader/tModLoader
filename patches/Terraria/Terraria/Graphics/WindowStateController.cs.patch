@@ -1,7 +1,7 @@
 --- src/decompiled/Terraria/Graphics/WindowStateController.cs
 +++ src/Terraria/Terraria/Graphics/WindowStateController.cs
 @@ -1,15 +_,26 @@
-+#if XNA
++#if WINDOWS
  using System.Drawing;
  using System.Windows.Forms;
 +#endif
@@ -10,20 +10,20 @@
  {
  	public class WindowStateController
  	{
-+#if XNA
++#if WINDOWS
  		public bool CanMoveWindowAcrossScreens => true;
 +#else
 +		public bool CanMoveWindowAcrossScreens => false;
 +#endif
  
-+#if XNA
++#if WINDOWS
  		public string ScreenDeviceName => Main.instance.Window.ScreenDeviceName;
 +#else
 +		public string ScreenDeviceName => "";
 +#endif
  
  		public void TryMovingToScreen(string screenDeviceName) {
-+#if XNA
++#if WINDOWS
  			if (CanMoveWindowAcrossScreens && TryGetBounds(screenDeviceName, out Rectangle bounds) && IsVisibleOnAnyScreen(bounds)) {
  				Form form = (Form)Control.FromHandle(Main.instance.Window.Handle);
  				if (WouldViewFitInScreen(form.Bounds, bounds))

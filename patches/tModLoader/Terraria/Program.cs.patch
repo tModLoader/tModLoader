@@ -22,9 +22,9 @@
 -	public static class Program
 +	public static partial class Program
  	{
- #if CLIENT
+ 		/* hide unused consts
  		public const bool IsServer = false;
-@@ -96,10 +_,13 @@
+@@ -89,10 +_,13 @@
  		}
  
  		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
@@ -42,7 +42,7 @@
  		}
  
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -151,27 +_,52 @@
+@@ -144,27 +_,52 @@
  			}
  		}
  
@@ -99,7 +99,7 @@
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
  #if CLIENT
-@@ -180,9 +_,10 @@
+@@ -173,9 +_,10 @@
  					main.DedServ();
  #endif
  				}
@@ -113,7 +113,7 @@
  			}
  		}
  
-@@ -216,10 +_,22 @@
+@@ -209,10 +_,22 @@
  					streamWriter.WriteLine("");
  				}
  

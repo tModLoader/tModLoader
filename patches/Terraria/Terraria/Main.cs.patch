@@ -10,11 +10,13 @@
  using ReLogic.Graphics;
  using ReLogic.Localization.IME;
  using ReLogic.OS;
-@@ -15,15 +_,19 @@
+@@ -15,15 +_,22 @@
  using System.Collections.Concurrent;
  using System.Collections.Generic;
  using System.Diagnostics;
--using System.Drawing;
++#if WINDOWS
+ using System.Drawing;
++#endif
  using System.IO;
  using System.Linq;
  using System.Reflection;
@@ -25,7 +27,7 @@
  using System.Text;
  using System.Threading;
  using System.Threading.Tasks;
-+#if XNA
++#if WINDOWS
  using System.Windows.Forms;
 +#endif
  using Terraria.Achievements;
@@ -118,7 +120,7 @@
  
  			PendingBorderlessState = screenBorderless;
  			screenBorderlessPendingResizes = (screenBorderless ? 6 : 0);
-+#if CLIENT && XNA
++#if CLIENT && WINDOWS
  			Form form = (Form)Control.FromHandle(instance.Window.Handle);
  			if (screenBorderless) {
  				SetBorderlessFormStyle(form);
@@ -136,7 +138,7 @@
  
 -							if (num >= 91 && binaryReader.ReadBoolean())
 +							if (num >= 91 && binaryReader.ReadBoolean()) {
-+#if CLIENT && XNA
++#if CLIENT && WINDOWS
  								((Form)Control.FromHandle(base.Window.Handle)).WindowState = FormWindowState.Maximized;
 +#endif
 +							}
@@ -353,7 +355,7 @@
  
  				UpdateOldNPCShop();
  				hasFocus = base.IsActive;
-+#if CLIENT && XNA
++#if CLIENT && WINDOWS
  				Form form = Control.FromHandle(base.Window.Handle) as Form;
  				bool num2 = form.WindowState == FormWindowState.Minimized;
  				bool flag = Form.ActiveForm == form;
@@ -431,7 +433,7 @@
  			_uiScaleWanted = uiScaleWanted;
  		}
  
-+#if !XNA
++#if FNA
 +		private static bool IsBorderlessDisplayAvailable() => false;
 +#else
  		private static bool IsBorderlessDisplayAvailable() => true;
@@ -517,7 +519,7 @@
  
  		public static void SetDisplayMode(int width, int height, bool fullscreen) {
  			bool flag = false;
-+#if XNA
++#if WINDOWS
  			Form form = (Form)Control.FromHandle(instance.Window.Handle);
  			screenMaximized = (form.WindowState == FormWindowState.Maximized);
  			if (screenBorderless && screenMaximized && !graphics.IsFullScreen) {
@@ -528,16 +530,15 @@
 +			Main.screenMaximized = false;
 +#endif
  
-+#if XNA
++#if WINDOWS
  			flag = (form.FormBorderStyle == FormBorderStyle.None);
 +#endif
  			bool flag2 = false;
  			int num3;
  			int num4;
  			if (screenBorderless || screenMaximized || graphics.IsFullScreen || fullscreen) {
-+#if XNA
--				form.MinimumSize = new Size(0, 0);
-+				form.MinimumSize = new System.Drawing.Size(0, 0);
++#if WINDOWS
+ 				form.MinimumSize = new Size(0, 0);
  				if (!fullscreen)
  					SetDisplayModeAsBorderless(ref width, ref height, form);
 +#endif
@@ -551,9 +552,8 @@
  			}
  			else {
  				PlayerInput.RawMouseScale = Vector2.One;
-+#if XNA
--				form.MinimumSize = new Size(minScreenW, minScreenH);
-+				form.MinimumSize = new System.Drawing.Size(minScreenW, minScreenH);
++#if WINDOWS
+ 				form.MinimumSize = new Size(minScreenW, minScreenH);
  				if (flag) {
  					width = displayWidth[0];
  					height = displayHeight[0];
@@ -582,7 +582,7 @@
  				PendingResolutionWidth = screenWidth;
  				PendingResolutionHeight = screenHeight;
  				PlayerInput.CacheOriginalScreenDimensions();
-+#if XNA
++#if WINDOWS
  				if (!fullscreen) {
  					if (screenBorderless) {
  						ApplyBorderlessResolution(form);
