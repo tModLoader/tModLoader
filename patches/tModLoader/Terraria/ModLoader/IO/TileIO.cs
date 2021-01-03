@@ -12,55 +12,25 @@ namespace Terraria.ModLoader.IO
 {
 	internal static class TileIO
 	{
-		internal static ushort PendingChest => ModContent.Find<ModTile>("ModLoader/PendingChest").Type;
-
-		internal static ushort PendingWallType => ModContent.Find<ModWall>("ModLoader/PendingWall").Type;
-
-		internal static ushort PendingTile => ModContent.Find<ModTile>("ModLoader/PendingTile").Type;
-
-		internal static ushort PendingNonSolidTile => ModContent.Find<ModTile>("ModLoader/PendingNonSolidTile").Type;
-
-		//*********** Tile, Walls, & Chests Save, Load, and Placeholder Implementations ***************************//
-		//Should add liquids data to implementation in locational data
-
 		//in Terraria.IO.WorldFile.SaveWorldTiles add type check to tile.active() check and wall check
 		internal struct TileTables
 		{
 			internal IDictionary<ushort, ushort> tiles;
 			internal IDictionary<ushort, bool> frameImportant;
+			internal IDictionary<ushort, ushort> walls;
 			internal IDictionary<ushort, string> tileModNames;
 			internal IDictionary<ushort, string> tileNames;
-
-			internal IDictionary<ushort, ushort> walls;
-			internal IDictionary<ushort, string> wallModNames;
-			internal IDictionary<ushort, string> wallNames;
 
 			internal static TileTables Create() {
 				TileTables tables = new TileTables {
 					tiles = new Dictionary<ushort, ushort>(),
 					frameImportant = new Dictionary<ushort, bool>(),
-					tileModNames = new Dictionary<ushort, string>(),
-					tileNames = new Dictionary<ushort, string>(),
-
 					walls = new Dictionary<ushort, ushort>(),
-					wallModNames = new Dictionary<ushort, string>(),
-					wallNames = new Dictionary<ushort, string>(),
+					tileModNames = new Dictionary<ushort, string>(),
+					tileNames = new Dictionary<ushort, string>()
 				};
 				return tables;
 			}
-		}
-
-		internal static class TileIOFlags
-		{
-			internal const byte None = 0;
-			internal const byte ModTile = 1;
-			internal const byte FrameXInt16 = 2;
-			internal const byte FrameYInt16 = 4;
-			internal const byte TileColor = 8;
-			internal const byte ModWall = 16;
-			internal const byte WallColor = 32;
-			internal const byte NextTilesAreSame = 64;
-			internal const byte NextModTile = 128;
 		}
 
 		internal static TagCompound SaveTiles() {
@@ -68,32 +38,23 @@ namespace Terraria.ModLoader.IO
 			var hasWall = new bool[WallLoader.WallCount];
 			using (var ms = new MemoryStream())
 			using (var writer = new BinaryWriter(ms)) {
-
-				// Store Locational-Specific Data
 				WriteTileData(writer, hasTile, hasWall);
 
-				// Store Basic Tile Type Data
 				var tileList = new List<TagCompound>();
 				for (int type = TileID.Count; type < hasTile.Length; type++) {
-					// Skip Tile Types that aren't active in world
 					if (!hasTile[type])
 						continue;
 
 					var modTile = TileLoader.GetTile(type);
-					tileList.Add(new TagCompound { 
+					tileList.Add(new TagCompound {
 						["value"] = (short)type,
 						["mod"] = modTile.Mod.Name,
 						["name"] = modTile.Name,
 						["framed"] = Main.tileFrameImportant[type],
-						["IsChest"] = TileID.Sets.BasicChest[type], // Flag Chests for preserving Chest Tile data 
-						["IsSolid"] = Main.tileSolid[type], // Flag non-solid blocks for liquids, player movement, etc.
 					});
 				}
-
-				// Store Basic Wall Type Data
 				var wallList = new List<TagCompound>();
 				for (int wall = WallID.Count; wall < hasWall.Length; wall++) {
-					// Skip Wall Types that aren't active in world
 					if (!hasWall[wall])
 						continue;
 
@@ -104,82 +65,51 @@ namespace Terraria.ModLoader.IO
 						["name"] = modWall.Name,
 					});
 				}
-
-				// Return compressed variant of all data
 				if (tileList.Count == 0 && wallList.Count == 0)
 					return null;
 
 				return new TagCompound {
-					["tileMap"] = tileList, // List of all active tile types
-					["wallMap"] = wallList, // List of all active wall types
-					["data"] = ms.ToArray() // Array of locational-specific data
+					["tileMap"] = tileList,
+					["wallMap"] = wallList,
+					["data"] = ms.ToArray()
 				};
 			}
 		}
 
 		internal static void LoadTiles(TagCompound tag) {
-			// If there is no modded data saved, skip
 			if (!tag.ContainsKey("data"))
 				return;
 
-			// Create a Table to store working information
 			var tables = TileTables.Create();
-			ushort pendingTile = PendingTile;
-			ushort pendingNSTile = PendingNonSolidTile;
-			ushort pendingChest = PendingChest;
-			ushort pendingWallType = PendingWallType;
-
-			// Retrieve Basic Tile Type Data from saved Tile Map, and store in table
 			foreach (var tileTag in tag.GetList<TagCompound>("tileMap")) {
 				ushort type = (ushort)tileTag.GetShort("value");
 				string modName = tileTag.GetString("mod");
 				string name = tileTag.GetString("name");
-				
 				tables.tiles[type] = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : (ushort)0;
 				if (tables.tiles[type] == 0) {
+					tables.tiles[type] = ModContent.Find<ModTile>("ModLoader/PendingUnloadedTile").Type;
 					tables.tileModNames[type] = modName;
 					tables.tileNames[type] = name;
-					ushort workingType = pendingTile;
-					if (!tileTag.GetBool("IsSolid")) {
-						workingType = pendingNSTile;
-					}
-					if (tileTag.GetBool("IsChest")) { // Order matters, Chest should override NonSolid
-						workingType = pendingChest;
-					} 
-					tables.tiles[type] = workingType;
 				}
 				tables.frameImportant[type] = tileTag.GetBool("framed");
 			}
-
-			// Retrieve Basic Wall Type Data from saved Wall Map, and store in table
 			foreach (var wallTag in tag.GetList<TagCompound>("wallMap")) {
 				ushort type = (ushort)wallTag.GetShort("value");
 				string modName = wallTag.GetString("mod");
 				string name = wallTag.GetString("name");
 				tables.walls[type] = ModContent.TryFind(modName, name, out ModWall wall) ? wall.Type : (ushort)0;
-				if (tables.walls[type] == 0) {
-					tables.walls[type] = pendingWallType;
-					tables.wallModNames[type] = modName;
-					tables.wallNames[type] = name;
-				}
 			}
-
-			// Retrieve Locational-Specific Data from 'Data' and apply
 			using (var memoryStream = new MemoryStream(tag.GetByteArray("data")))
 			using (var reader = new BinaryReader(memoryStream))
 				ReadTileData(reader, tables);
-
-			// Validate Load
 			WorldIO.ValidateSigns();
 		}
 
 		internal static void WriteTileData(BinaryWriter writer, bool[] hasTile, bool[] hasWall) {
-			byte skip = 0; //Track amount of tiles that don't contain mod data
+			byte skip = 0;
 			bool nextModTile = false;
 			int i = 0;
 			int j = 0;
-
-			// Index a shortlist all tile locations with mod data on either of wall or tiles
 			do {
 				Tile tile = Main.tile[i, j];
 				if (HasModData(tile)) {
@@ -192,11 +122,9 @@ namespace Terraria.ModLoader.IO
 					}
 					WriteModTile(ref i, ref j, writer, ref nextModTile, hasTile, hasWall);
 				}
-				// Skip vanilla tiles, and record number of skips
 				else {
-					skip++; //Skip over vanilla tiles
+					skip++;
 					if (skip == 255) {
-						//Write additional skip
 						writer.Write(skip);
 						skip = 0;
 					}
@@ -211,19 +139,14 @@ namespace Terraria.ModLoader.IO
 		internal static void ReadTileData(BinaryReader reader, TileTables tables) {
 			int i = 0;
 			int j = 0;
-			byte skip;
 			bool nextModTile = false;
-
-			// Access indexed shortlist of all tile locations with mod data on either of wall or tiles
 			do {
-				// Skip vanilla tiles
 				if (!nextModTile) {
-					skip = reader.ReadByte();
-					
+					byte skip = reader.ReadByte();
 					while (skip == 255) {
 						for (byte k = 0; k < 255; k++) {
 							if (!NextTile(ref i, ref j)) {
-								return; //Skip over vanilla tiles
+								return;
 							}
 						}
 						skip = reader.ReadByte();
@@ -237,7 +160,6 @@ namespace Terraria.ModLoader.IO
 				else {
 					nextModTile = false;
 				}
-				// Load modded tiles
 				ReadModTile(ref i, ref j, tables, reader, ref nextModTile);
 			}
 			while (NextTile(ref i, ref j));
@@ -245,81 +167,62 @@ namespace Terraria.ModLoader.IO
 
 		internal static void WriteModTile(ref int i, ref int j, BinaryWriter writer, ref bool nextModTile, bool[] hasTile, bool[] hasWall) {
 			Tile tile = Main.tile[i, j];
-			byte flags = TileIOFlags.None;
-			byte[] data = new byte[11]; //data[0] will be filled with the flags, hence why index starts with 1 below
+			byte flags = 0;
+			byte[] data = new byte[11];
 			int index = 1;
-
-			// Write Tiles
 			if (tile.active() && tile.type >= TileID.Count) {
-				// Atleast one Tile is placed of that Type, so record Type as 16 bit uint
 				hasTile[tile.type] = true;
-				flags |= TileIOFlags.ModTile;
-				//Converts an Int16 into two bytes, reversed by reader.ReadInt16
+				flags |= 1;
 				data[index] = (byte)tile.type;
 				index++;
 				data[index] = (byte)(tile.type >> 8);
 				index++;
-
-				// Checks if Tile Framing is important, if so records x and y data as 16 bit uint
 				if (Main.tileFrameImportant[tile.type]) {
 					data[index] = (byte)tile.frameX;
 					index++;
 					if (tile.frameX >= 256) {
-						flags |= TileIOFlags.FrameXInt16;
+						flags |= 2;
 						data[index] = (byte)(tile.frameX >> 8);
 						index++;
 					}
 					data[index] = (byte)tile.frameY;
 					index++;
 					if (tile.frameY >= 256) {
-						flags |= TileIOFlags.FrameYInt16;
+						flags |= 4;
 						data[index] = (byte)(tile.frameY >> 8);
 						index++;
 					}
 				}
-
-				// Checks if Tile has been Coloured 
 				if (tile.color() != 0) {
+					flags |= 8;
 					data[index] = tile.color();
-					flags |= TileIOFlags.TileColor;
 					index++;
 				}
 			}
-
-			// Write Walls
 			if (tile.wall >= WallID.Count) {
-				// Atleast one Wall is placed of that ID, so record ID as 16 bit uint
 				hasWall[tile.wall] = true;
-				flags |= TileIOFlags.ModWall;
-				//Converts a UInt16 into two bytes, reversed by reader.ReadUInt16
+				flags |= 16;
 				data[index] = (byte)tile.wall;
 				index++;
 				data[index] = (byte)(tile.wall >> 8);
 				index++;
-
-				// Checks if Wall has been Coloured 
 				if (tile.wallColor() != 0) {
-					flags |= TileIOFlags.WallColor;
+					flags |= 32;
 					data[index] = tile.wallColor();
 					index++;
 				}
 			}
-
-			/* Check for re-occurence of exact same tile (includes walls, liquids, wires, etc), and compress data by 
-			// skipping to next occurence of a new modded tile. Maximum of 256 grouped tiles. */
 			int nextI = i;
 			int nextJ = j;
 			byte sameCount = 0;
 			while (NextTile(ref nextI, ref nextJ)) {
-				Tile nextTile = Main.tile[nextI, nextJ];
-				if (tile.isTheSameAs(nextTile) && sameCount < 255) {
-					// Optimization by not writing potentially duplicate data: simply write the amount of tiles that are identical
+				if (tile.isTheSameAs(Main.tile[nextI, nextJ]) && sameCount < 255) {
 					sameCount++;
 					i = nextI;
 					j = nextJ;
 				}
-				else if (HasModData(nextTile)) {
-					flags |= TileIOFlags.NextModTile;
+				else if (HasModData(Main.tile[nextI, nextJ])) {
+					flags |= 128;
 					nextModTile = true;
 					break;
 				}
@@ -328,40 +231,30 @@ namespace Terraria.ModLoader.IO
 				}
 			}
 			if (sameCount > 0) {
-				flags |= TileIOFlags.NextTilesAreSame;
+				flags |= 64;
 				data[index] = sameCount;
 				index++;
 			}
-
-			// Output result Data array to stream
 			data[0] = flags;
 			writer.Write(data, 0, index);
 		}
 
 		internal static void ReadModTile(ref int i, ref int j, TileTables tables, BinaryReader reader, ref bool nextModTile) {
-			// Access Stored Flags
 			byte flags;
 			flags = reader.ReadByte();
-			UnloadedPosIndexing posIndexer = new UnloadedPosIndexing(i, j);
-			UnloadedTileInfo tInfo = null;
-			UnloadedWallInfo wInfo = null;
-
-			// Read Tiles
 			Tile tile = Main.tile[i, j];
-			if ((flags & TileIOFlags.ModTile) == TileIOFlags.ModTile) {
+			if ((flags & 1) == 1) {
 				tile.active(true);
 				ushort saveType = reader.ReadUInt16();
 				tile.type = tables.tiles[saveType];
-
-				// Implement tile frames
 				if (tables.frameImportant[saveType]) {
-					if ((flags & TileIOFlags.FrameXInt16) == TileIOFlags.FrameXInt16) {
+					if ((flags & 2) == 2) {
 						tile.frameX = reader.ReadInt16();
 					}
 					else {
 						tile.frameX = reader.ReadByte();
 					}
-					if ((flags & TileIOFlags.FrameYInt16) == TileIOFlags.FrameYInt16) {
+					if ((flags & 4) == 4) {
 						tile.frameY = reader.ReadInt16();
 					}
 					else {
@@ -372,68 +265,53 @@ namespace Terraria.ModLoader.IO
 					tile.frameX = -1;
 					tile.frameY = -1;
 				}
-
-				if ((flags & TileIOFlags.TileColor) == TileIOFlags.TileColor) {
+				if (tile.type == ModContent.Find<ModTile>("ModLoader/PendingUnloadedTile").Type
+					&& tables.tileNames.ContainsKey(saveType)) {
+					UnloadedTileInfo info;
+					if (tables.frameImportant[saveType]) {
+						info = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],
+							tile.frameX, tile.frameY);
+					}
+					else {
+						info = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
+					}
+					UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
+					int pendingFrameID = modWorld.pendingInfos.IndexOf(info);
+					if (pendingFrameID < 0) {
+						pendingFrameID = modWorld.pendingInfos.Count;
+						modWorld.pendingInfos.Add(info);
+					}
+					UnloadedTileFrame pendingFrame = new UnloadedTileFrame(pendingFrameID);
+					tile.frameX = pendingFrame.FrameX;
+					tile.frameY = pendingFrame.FrameY;
+				}
+				if ((flags & 8) == 8) {
 					tile.color(reader.ReadByte());
 				}
-
-				
-				if (tables.tileNames.ContainsKey(saveType)) {
-					// Handle Disabled Mods and Implement Pending Tile
-					bool nonSolidChk = tile.type == PendingNonSolidTile;
-
-					if (tile.type == PendingTile || nonSolidChk) {
-						// Load saved Basic Tile Type Data into UnloadedTileInfo and index
-						tInfo = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
-						posIndexer.SaveTileInfoToPos(tInfo);
-						tile.type = nonSolidChk ? UnloadedTilesWorld.UnloadedNonSolidTile : UnloadedTilesWorld.UnloadedTile;
-					}
-					if (tile.type == PendingChest) {
-						bool accountedFor = (Main.tile[i - 1, j].type == UnloadedTilesWorld.UnloadedChest ||
-							Main.tile[i, j - 1].type == UnloadedTilesWorld.UnloadedChest ||
-							Main.tile[i-1 , j - 1].type == UnloadedTilesWorld.UnloadedChest);
-						if (!accountedFor) { // Only care about top-left tile of 2x2 for Chests
-							// Load saved Basic Chest Type Data into UnloadedChestInfo and index
-							UnloadedChestInfo cInfo;
-							cInfo = new UnloadedChestInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
-							posIndexer.SaveChestInfoToPos(cInfo);
-							// Place UnloadedChest (required to preserve the inventory and re-namings
-							WorldGen.PlaceChestDirect(i, j + 1, UnloadedTilesWorld.UnloadedChest, 0, -1);
-						}
-					}
-				}
-				// Ready Tile
 				WorldGen.tileCounts[tile.type] += j <= Main.worldSurface ? 5 : 1;
 			}
-			ushort saveWallType = WallID.None; //This value is used later, in handling reoccurence
-			if ((flags & TileIOFlags.ModWall) == TileIOFlags.ModWall) {
-				saveWallType = reader.ReadUInt16();
-				tile.wall = tables.walls[saveWallType];
-				if (tile.wall == PendingWallType) {
-					wInfo = new UnloadedWallInfo(tables.wallModNames[saveWallType], tables.wallNames[saveWallType]);
-					posIndexer.SaveWallInfoToPos(wInfo);
-					tile.wall = UnloadedTilesWorld.UnloadedWallType;
-				}
-				if ((flags & TileIOFlags.WallColor) == TileIOFlags.WallColor) {
+			if ((flags & 16) == 16) {
+				tile.wall = tables.walls[reader.ReadUInt16()];
+				if ((flags & 32) == 32) {
 					tile.wallColor(reader.ReadByte());
 				}
 			}
-
-			// Handle re-occurence, up to 256 counts.
-			if ((flags & TileIOFlags.NextTilesAreSame) == TileIOFlags.NextTilesAreSame) { 
-				byte sameCount = reader.ReadByte(); //how many are the same
-				for (byte k = 0; k < sameCount; k++) { // for all copy-paste tiles
-					NextTile(ref i, ref j); // move i,j to the next tile, with vertical being priority
-					Main.tile[i, j].CopyFrom(tile); 
+			if ((flags & 64) == 64) {
+				byte sameCount = reader.ReadByte();
+				for (byte k = 0; k < sameCount; k++) {
+					NextTile(ref i, ref j);
+					Main.tile[i, j].CopyFrom(tile);
 					WorldGen.tileCounts[tile.type] += j <= Main.worldSurface ? 5 : 1;
 				}
 			}
-			if ((flags & TileIOFlags.NextModTile) == TileIOFlags.NextModTile) {
+			if ((flags & 128) == 128) {
 				nextModTile = true;
 			}
 		}
 
-		private static bool HasModData(Tile tile) => (tile.active() && tile.type >= TileID.Count) || tile.wall >= WallID.Count;
+		private static bool HasModData(Tile tile) {
+			return (tile.active() && tile.type >= TileID.Count) || tile.wall >= WallID.Count;
+		}
 
 		private static bool NextTile(ref int i, ref int j) {
 			j++;
@@ -446,9 +324,6 @@ namespace Terraria.ModLoader.IO
 			}
 			return true;
 		}
-
-		//*********** Containers (*annequin) Save, Load, and Placeholder Implementations ***********************************//
-
 		//in Terraria.IO.WorldFile.SaveWorldTiles for saving tile frames add
 		//  short frameX = tile.frameX; TileIO.VanillaSaveFrames(tile, ref frameX);
 		//  and replace references to tile.frameX with frameX
@@ -674,7 +549,6 @@ namespace Terraria.ModLoader.IO
 			return false;
 		}
 
-		//*********** Tile Entities Save, Load, and Placeholder Implementations ***********************************//
 		internal static List<TagCompound> SaveTileEntities() {
 			var list = new List<TagCompound>();
 

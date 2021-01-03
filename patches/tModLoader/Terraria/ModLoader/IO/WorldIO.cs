@@ -21,7 +21,7 @@ namespace Terraria.ModLoader.IO
 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
 			var tag = new TagCompound {
-				["chests"] = SaveChestInventory(),
+				["chests"] = SaveChests(),
 				["tiles"] = TileIO.SaveTiles(),
 				["containers"] = TileIO.SaveContainers(),
 				["npcs"] = SaveNPCs(),
@@ -53,6 +53,7 @@ namespace Terraria.ModLoader.IO
 			}
 
 			var tag = TagIO.FromStream(new MemoryStream(buf));
+			LoadChests(tag.GetList<TagCompound>("chests"));
 			TileIO.LoadTiles(tag.GetCompound("tiles"));
 			TileIO.LoadContainers(tag.GetCompound("containers"));
 			LoadNPCs(tag.GetList<TagCompound>("npcs"));
@@ -63,7 +64,6 @@ namespace Terraria.ModLoader.IO
 				customDataFail = e;
 				throw;
 			}
-			LoadChestInventory(tag.GetList<TagCompound>("chests")); // Must occur after tiles are loaded
 			LoadNPCKillCounts(tag.GetList<TagCompound>("killCounts"));
 			LoadAnglerQuest(tag.GetCompound("anglerQuest"));
 			LoadTownManager(tag.GetList<TagCompound>("townManager"));
@@ -76,39 +76,35 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static List<TagCompound> SaveChestInventory() {
+		internal static List<TagCompound> SaveChests() {
 			var list = new List<TagCompound>();
-			short MaxChestSaveCount = 8000; //As of Vanilla 1.4.0.1
-			for (int k = 0; k < MaxChestSaveCount; k++) {
+			for (int k = 0; k < 1000; k++) {
 				var chest = Main.chest[k];
-				if (chest == null) // chest doesn't exist
+				if (chest == null)
 					continue;
 
-				ushort chestType = Main.tile[chest.x, chest.y].type;
-				bool moddedChest = chestType >= TileID.Count; // Check if modded Chest
-
-				var itemTagListModded = PlayerIO.SaveInventory(chest.item); //list of mod only items in inventory
-				if (itemTagListModded == null && !moddedChest) //doesn't need mod saving
+				var itemTagList = PlayerIO.SaveInventory(chest.item);
+				if (itemTagList == null) //doesn't need mod saving
 					continue;
 
-				TagCompound tag = new TagCompound {
-					["items"] = itemTagListModded,
+				list.Add(new TagCompound {
+					["items"] = itemTagList,
 					["x"] = chest.x,
-					["y"] = chest.y,
-				};
-				list.Add(tag);
+					["y"] = chest.y
+				});
 			}
 			return list;
 		}
 
-		internal static void LoadChestInventory(IList<TagCompound> list) {
-			ushort unloadedChest = UnloadedTilesWorld.UnloadedChest;
+		internal static void LoadChests(IList<TagCompound> list) {
 			foreach (var tag in list) {
-				int cID = Chest.FindChest(tag.GetInt("x"), tag.GetInt("y"));
-				if(cID >= 0) {
-					var chest = Main.chest[cID];
-					PlayerIO.LoadInventory(chest.item, tag.GetList<TagCompound>("items"));
-				}
+				int x = tag.GetInt("x");
+				int y = tag.GetInt("y");
+				int chest = Chest.FindChest(x, y);
+				if (chest < 0)
+					chest = Chest.CreateChest(x, y);
+				if (chest >= 0)
+					PlayerIO.LoadInventory(Main.chest[chest].item, tag.GetList<TagCompound>("items"));
 			}
 		}
 
