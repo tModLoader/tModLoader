@@ -140,12 +140,14 @@ namespace Terraria.ModLoader.IO
 					tables.tileModNames[type] = modName;
 					tables.tileNames[type] = name;
 					ushort workingType = pendingTile;
-					if (!tileTag.GetBool("IsSolid")) {
-						workingType = pendingNSTile;
+					if (tileTag.ContainsKey("IsSolid")) {
+						if (!tileTag.GetBool("IsSolid")) {
+							workingType = pendingNSTile;
+						}
+						if (tileTag.GetBool("IsChest")) { // Order matters, Chest should override NonSolid
+							workingType = pendingChest;
+						}
 					}
-					if (tileTag.GetBool("IsChest")) { // Order matters, Chest should override NonSolid
-						workingType = pendingChest;
-					} 
 					tables.tiles[type] = workingType;
 				}
 				tables.frameImportant[type] = tileTag.GetBool("framed");
