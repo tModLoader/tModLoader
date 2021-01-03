@@ -8,7 +8,7 @@ namespace Terraria.Audio
 	{
 		public float Pitch { get; private set; }
 
-		public virtual SoundEffectInstance Play(Vector2? position, float volumeScale = 1f) {
+		public virtual SoundEffectInstance Play(Vector2? position) {
 			SlotId slot;
 
 			if (position.HasValue)

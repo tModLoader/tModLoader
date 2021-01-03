@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Audio/SoundStyle.cs
 +++ src/tModLoader/Terraria/Audio/SoundStyle.cs
-@@ -1,9 +_,10 @@
+@@ -1,18 +_,25 @@
 +using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Audio;
  using Terraria.Utilities;
@@ -12,6 +12,23 @@
  	{
  		private static UnifiedRandom _random = new UnifiedRandom();
  		private float _volume;
+ 		private float _pitchVariance;
+ 		private SoundType _type;
+ 
+-		public float Volume => _volume;
++		public float Volume {
++			get => _volume;
++			set => _volume = value;
++		}
+ 
+-		public float PitchVariance => _pitchVariance;
++		public float PitchVariance {
++			get => _pitchVariance;
++			set => _pitchVariance = value;
++		}
+ 
+ 		public SoundType Type => _type;
+ 
 @@ -20,19 +_,23 @@
  			get;
  		}
