@@ -4,31 +4,39 @@ namespace Terraria.ModLoader.Default
 	public class UnloadedTile : ModTile
 	{
 		public override string Name{get;}
+		internal bool IsSolid;
 
 		public override string Texture => "ModLoader/UnloadedTile";
 
-		public UnloadedTile(string name = null) {
+		public UnloadedTile(string name = null,bool isSolid = true) {
 			Name = name ?? base.Name;
+			this.IsSolid = isSolid;
 		}
 
 		public override void SetDefaults() {
-			Main.tileSolid[Type] = true;
+			Main.tileSolid[Type] = IsSolid;
 			Main.tileFrameImportant[Type] = true;
+			Main.tileNoAttach[Type] = !IsSolid;
 		}
 
 		public override void MouseOver(int i, int j)
 		{
 			var tile = Main.tile[i, j];
 			if(tile != null && tile.type == Type) {
-				var frame = new UnloadedTileFrame(tile.frameX, tile.frameY);
-				var infos = ModContent.GetInstance<UnloadedTilesWorld>().infos;
-				int frameID = frame.FrameID;
-				if (frameID >= 0 && frameID < infos.Count) { // This only works in SP
-					var info = infos[frameID];
+				UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
+				int posID = new UnloadedPosIndexing(i, j).PosID;
+				modWorld.tileInfoMap.TryGetValue(posID, out int infoID);
+				if (infoID >= 0) { // This only works in SP
+					var info = modWorld.tileInfos[infoID];
 					if (info != null) {
 						Main.LocalPlayer.cursorItemIconEnabled = true;
 						Main.LocalPlayer.cursorItemIconID = -1;
 						Main.LocalPlayer.cursorItemIconText = $"{info.modName}: {info.name}";
+					}
+					else {
+						Main.LocalPlayer.cursorItemIconEnabled = true;
+						Main.LocalPlayer.cursorItemIconID = -1;
+						Main.LocalPlayer.cursorItemIconText = $" info not at ID {infoID} Error";
 					}
 				}
 			}
