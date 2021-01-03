@@ -8,7 +8,6 @@
     <Copyright>Copyright © 2020 Re-Logic</Copyright>
     <RootNamespace>Terraria</RootNamespace>
     <AssemblyName>TerrariaNetCore</AssemblyName>
-    <EffectivePlatform>Linux</EffectivePlatform>
   </PropertyGroup>
   <PropertyGroup Condition="$(Configuration.Contains('Server'))">
     <OutputType>Exe</OutputType>

@@ -1,15 +1,14 @@
 --- src/Terraria/Terraria/TerrariaNetCore.csproj
 +++ src/tModLoader/Terraria/TerrariaNetCore.csproj
-@@ -7,7 +_,7 @@
+@@ -7,6 +_,6 @@
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2020 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
 -    <AssemblyName>TerrariaNetCore</AssemblyName>
 +    <AssemblyName>tModLoaderNetCore</AssemblyName>
-     <EffectivePlatform>Linux</EffectivePlatform>
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
-@@ -19,19 +_,27 @@
+@@ -18,19 +_,27 @@
    </PropertyGroup>
    <PropertyGroup>
      <OutputName>$(AssemblyName)</OutputName>
@@ -41,7 +40,7 @@
      </EmbeddedResource>
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
-@@ -40,29 +_,37 @@
+@@ -39,29 +_,37 @@
      </Reference>
    </ItemGroup>
    <ItemGroup>
