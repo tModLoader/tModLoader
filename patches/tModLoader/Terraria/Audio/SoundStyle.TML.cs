@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using ReLogic.Utilities;
 
 namespace Terraria.Audio
 {
@@ -8,21 +9,14 @@ namespace Terraria.Audio
 		public float Pitch { get; private set; }
 
 		public virtual SoundEffectInstance Play(Vector2? position, float volumeScale = 1f) {
-			var instance = GetRandomSound().CreateInstance();
+			SlotId slot;
 
-			instance.Pitch = GetRandomPitch();
-			instance.Volume = Volume * volumeScale;
+			if (position.HasValue)
+				slot = SoundEngine.PlayTrackedSound(this, position.Value);
+			else
+				slot = SoundEngine.PlayTrackedSound(this);
 
-			if (position.HasValue) {
-				CalculateVolumeAndPan(position.Value, Main.screenWidth * 1.5f, out float distanceScale, out float pan);
-
-				instance.Volume *= distanceScale;
-				instance.Pan = pan;
-			}
-
-			instance.Play();
-
-			return instance;
+			return slot.IsValid ? SoundEngine.GetActiveSound(slot)?.Sound : null;
 		}
 
 		protected static void CalculateVolumeAndPan(Vector2 position, float maxDistance, out float volume, out float pan) {
