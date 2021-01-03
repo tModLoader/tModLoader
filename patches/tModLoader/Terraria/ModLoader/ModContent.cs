@@ -529,6 +529,7 @@ namespace Terraria.ModLoader
 			GlobalBgStyleLoader.Unload();
 			WaterStyleLoader.Unload();
 			WaterfallStyleLoader.Unload();
+			PlayerDrawLayerHooks.Unload();
 			WorldHooks.Unload();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
@@ -574,6 +575,7 @@ namespace Terraria.ModLoader
 			MountLoader.ResizeArrays();
 			BuffLoader.ResizeArrays();
 			PlayerHooks.RebuildHooks();
+			PlayerDrawLayerHooks.ResizeArrays();
 			WorldHooks.ResizeArrays();
 
 			if (!Main.dedServ) {

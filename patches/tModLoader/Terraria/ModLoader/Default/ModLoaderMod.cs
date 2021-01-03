@@ -55,8 +55,6 @@ namespace Terraria.ModLoader.Default
 			DeveloperSets = null;
 		}
 
-		internal static Texture2D ReadTexture(string file) => ModContent.GetInstance<ModLoaderMod>().GetTexture(file).Value;
-
 		internal static bool TryGettingPatreonOrDevArmor(Player player) {
 			if (Main.rand.NextBool(ChanceToGetPatreonArmor)) {
 				int randomIndex = Main.rand.Next(PatronSets.Length);

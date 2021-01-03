@@ -1,0 +1,17 @@
+--- src/Terraria/Terraria/Initializers/WingStatsInitializer.cs
++++ src/tModLoader/Terraria/Initializers/WingStatsInitializer.cs
+@@ -1,12 +_,13 @@
+ using Terraria.DataStructures;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.Initializers
+ {
+ 	public class WingStatsInitializer
+ 	{
+ 		public static void Load() {
+-			WingStats[] array = new WingStats[47];
++			WingStats[] array = new WingStats[EquipLoader.nextEquip[EquipType.Wings]];
+ 			float flySpeedOverride = 3f;
+ 			float flySpeedOverride2 = 6f;
+ 			float flySpeedOverride3 = 6.25f;
