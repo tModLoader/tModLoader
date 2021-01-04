@@ -3,7 +3,7 @@
 @@ -1,6 +_,8 @@
  using System;
  using System.Runtime.InteropServices;
-+#if WINDOWS
++#if !NETCORE
  using System.Windows.Forms;
 +#endif
  
@@ -13,7 +13,7 @@
  		[DllImport("user32.dll", CharSet = CharSet.Unicode)]
  		public static extern IntPtr DefWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
  
-+#if WINDOWS
++#if !NETCORE
  		[DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
  		public static extern bool TranslateMessage(ref Message message);
 +#endif

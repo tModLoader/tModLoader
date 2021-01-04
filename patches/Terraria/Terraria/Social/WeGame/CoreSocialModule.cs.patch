@@ -1,15 +1,5 @@
 --- src/decompiled/Terraria/Social/WeGame/CoreSocialModule.cs
 +++ src/Terraria/Terraria/Social/WeGame/CoreSocialModule.cs
-@@ -2,7 +_,9 @@
- using System;
- using System.Runtime.InteropServices;
- using System.Threading;
-+#if WINDOWS
- using System.Windows.Forms;
-+#endif
- 
- namespace Terraria.Social.WeGame
- {
 @@ -20,9 +_,13 @@
  		public void Initialize() {
  			RailGameID railGameID = new RailGameID();
@@ -37,13 +27,3 @@
  				isRailValid = false;
  			};
  
-@@ -76,7 +_,9 @@
- 
- 		private static void ProcessRailSystemStateChange(RailSystemState state) {
- 			if (state == RailSystemState.kSystemStatePlatformOffline || state == RailSystemState.kSystemStatePlatformExit) {
-+#if WINDOWS
- 				MessageBox.Show("检测到WeGame异常，游戏将自动保存进度并退出游戏", "Terraria--WeGame Error");
-+#endif
- 				WorldGen.SaveAndQuit(SaveAndQuitCallBack);
- 			}
- 		}

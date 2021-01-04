@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Program.cs
 +++ src/Terraria/Terraria/Program.cs
-@@ -2,13 +_,17 @@
+@@ -2,7 +_,9 @@
  using ReLogic.OS;
  using System;
  using System.Collections.Generic;
@@ -10,14 +10,6 @@
  using System.IO;
  using System.Reflection;
  using System.Runtime.CompilerServices;
- using System.Text;
- using System.Threading;
-+#if CLIENT && WINDOWS
- using System.Windows.Forms;
-+#endif
- using Terraria.Initializers;
- using Terraria.Localization;
- using Terraria.Social;
 @@ -18,10 +_,12 @@
  {
  	public static class Program
@@ -73,16 +65,13 @@
  				}
  				catch (Exception e) {
  					DisplayException(e);
-@@ -189,7 +_,11 @@
+@@ -189,6 +_,9 @@
  					streamWriter.WriteLine("");
  				}
  
--				MessageBox.Show(text, "Terraria: Error");
-+#if CLIENT && WINDOWS
-+				MessageBox.Show(e.ToString(), Language.GetTextValue("Error.Error"));
-+#else
++#if SERVER
 +				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
 +#endif
+ 				MessageBox.Show(text, "Terraria: Error");
  			}
  			catch {
- 			}

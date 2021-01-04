@@ -8,8 +8,8 @@
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
-@@ -15,12 +_,14 @@
- #endif
+@@ -13,12 +_,14 @@
+ using System.Windows.Forms;
  using Terraria.Initializers;
  using Terraria.Localization;
 +using Terraria.ModLoader;
@@ -24,7 +24,7 @@
  	{
  		/* hide unused consts
  		public const bool IsServer = false;
-@@ -89,10 +_,13 @@
+@@ -87,10 +_,13 @@
  		}
  
  		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
@@ -42,7 +42,7 @@
  		}
  
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -144,27 +_,52 @@
+@@ -142,27 +_,52 @@
  			}
  		}
  
@@ -99,7 +99,7 @@
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
  #if CLIENT
-@@ -173,9 +_,10 @@
+@@ -171,9 +_,10 @@
  					main.DedServ();
  #endif
  				}
@@ -113,13 +113,13 @@
  			}
  		}
  
-@@ -209,10 +_,22 @@
- 					streamWriter.WriteLine("");
+@@ -208,9 +_,22 @@
  				}
  
--#if CLIENT && WINDOWS
--				MessageBox.Show(e.ToString(), Language.GetTextValue("Error.Error"));
-+#if CLIENT
+ #if SERVER
+-				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
++				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
++#else
 +				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
 +
 +				if (e is FolderCreationFailedException)
@@ -133,9 +133,8 @@
 +
 +					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
 +				}
- #else
--				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
-+				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
  #endif
+-				MessageBox.Show(text, "Terraria: Error");
  			}
  			catch {
+ 			}
