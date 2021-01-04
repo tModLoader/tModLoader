@@ -1,11 +1,12 @@
 --- src/tModLoader/Terraria.Localization.Content/en-US.tModLoader.json
 +++ src/64bit/Terraria.Localization.Content/en-US.tModLoader.json
-@@ -348,6 +_,9 @@
+@@ -348,6 +_,10 @@
  		"WorldIODataException": "The game encountered a mod data problem for a world.",
  		"ServerCrash": "Server crash: {0}\n{1}\n\nPlease check server.log to determine if a mod is responsible, otherwise head to #support in the tModLoader Discord",
  
 +		// Misc. 64bit
 +		"XL": "XL",
++  "Support": "Support",
 +
  		// MessageBox
  		"ContentFolderNotFound": "Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.",
