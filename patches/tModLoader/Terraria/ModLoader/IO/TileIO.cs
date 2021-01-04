@@ -63,6 +63,15 @@ namespace Terraria.ModLoader.IO
 			internal const byte NextModTile = 128;
 		}
 
+		internal static class TileIOFlags2
+		{
+			internal const byte None = 0;
+			internal const byte ChestStyle = 1;
+			internal const byte LiquidAmount = 2;
+			internal const byte CustomData = 128;
+		}
+
+
 		internal static TagCompound SaveTiles() {
 			var hasTile = new bool[TileLoader.TileCount];
 			var hasWall = new bool[WallLoader.WallCount];
@@ -128,6 +137,8 @@ namespace Terraria.ModLoader.IO
 			ushort pendingNSTile = PendingNonSolidTile;
 			ushort pendingChest = PendingChest;
 			ushort pendingWallType = PendingWallType;
+			// Create a flag to support legacy (pre-unloaded rework change) world loading
+			bool unloadedLegacyCompat = false;
 
 			// Retrieve Basic Tile Type Data from saved Tile Map, and store in table
 			foreach (var tileTag in tag.GetList<TagCompound>("tileMap")) {
@@ -151,6 +162,11 @@ namespace Terraria.ModLoader.IO
 					tables.tiles[type] = workingType;
 				}
 				tables.frameImportant[type] = tileTag.GetBool("framed");
+				// Check if loading locational data requires legacy support:  
+				//Note: legacy loading will not work if the world contains no modded tiles, but does contatin modded walls. Treated as edge case
+				if (!unloadedLegacyCompat && !tileTag.ContainsKey("IsSolid")) {
+					unloadedLegacyCompat = true;
+				}
 			}
 
 			// Retrieve Basic Wall Type Data from saved Wall Map, and store in table
@@ -169,7 +185,7 @@ namespace Terraria.ModLoader.IO
 			// Retrieve Locational-Specific Data from 'Data' and apply
 			using (var memoryStream = new MemoryStream(tag.GetByteArray("data")))
 			using (var reader = new BinaryReader(memoryStream))
-				ReadTileData(reader, tables);
+				ReadTileData(reader, tables, unloadedLegacyCompat);
 
 			// Validate Load
 			WorldIO.ValidateSigns();
@@ -210,7 +226,7 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static void ReadTileData(BinaryReader reader, TileTables tables) {
+		internal static void ReadTileData(BinaryReader reader, TileTables tables, bool legacyCompatFlag) {
 			int i = 0;
 			int j = 0;
 			byte skip;
@@ -240,7 +256,7 @@ namespace Terraria.ModLoader.IO
 					nextModTile = false;
 				}
 				// Load modded tiles
-				ReadModTile(ref i, ref j, tables, reader, ref nextModTile);
+				ReadModTile(ref i, ref j, tables, reader, ref nextModTile, legacyCompatFlag);
 			}
 			while (NextTile(ref i, ref j));
 		}
@@ -248,8 +264,9 @@ namespace Terraria.ModLoader.IO
 		internal static void WriteModTile(ref int i, ref int j, BinaryWriter writer, ref bool nextModTile, bool[] hasTile, bool[] hasWall) {
 			Tile tile = Main.tile[i, j];
 			byte flags = TileIOFlags.None;
-			byte[] data = new byte[11]; //data[0] will be filled with the flags, hence why index starts with 1 below
-			int index = 1;
+			byte flags2 = TileIOFlags2.None;
+			byte[] data = new byte[13]; //data[0-1] will be filled with the flags, hence why index starts with 2 below
+			int index = 2;
 
 			// Write Tiles
 			if (tile.active() && tile.type >= TileID.Count) {
@@ -286,6 +303,13 @@ namespace Terraria.ModLoader.IO
 					flags |= TileIOFlags.TileColor;
 					index++;
 				}
+
+				// Check if Tile is a chest, and record style as uint8
+				if (TileID.Sets.BasicChest[tile.type]) {
+					data[index] = (byte) Math.Truncate((decimal)(tile.frameX / 36));
+					flags2 |= TileIOFlags2.ChestStyle;
+					index++;
+				}
 			}
 
 			// Write Walls
@@ -315,7 +339,7 @@ namespace Terraria.ModLoader.IO
 			while (NextTile(ref nextI, ref nextJ)) {
 				Tile nextTile = Main.tile[nextI, nextJ];
 				if (tile.isTheSameAs(nextTile) && sameCount < 255) {
-					// Optimization by not writing potentially duplicate data: simply write the amount of tiles that are identical
+					//Optimization by not writing potentially duplicate data: simply write the amount of tiles that are identical
 					sameCount++;
 					i = nextI;
 					j = nextJ;
@@ -337,13 +361,20 @@ namespace Terraria.ModLoader.IO
 
 			// Output result Data array to stream
 			data[0] = flags;
+			data[1] = flags2;
 			writer.Write(data, 0, index);
 		}
 
-		internal static void ReadModTile(ref int i, ref int j, TileTables tables, BinaryReader reader, ref bool nextModTile) {
-			// Access Stored Flags
+		internal static void ReadModTile(ref int i, ref int j, TileTables tables, BinaryReader reader, ref bool nextModTile,bool legacyCompatFlag) {
+			// Access Stored 8bit Flags
 			byte flags;
 			flags = reader.ReadByte();
+			// Apply legacy compatibility for saves following legacy 8bit flag system
+			byte flags2 = TileIOFlags2.None;
+			if (!legacyCompatFlag) {
+				flags2 = reader.ReadByte();
+			}
+
 			UnloadedPosIndexing posIndexer = new UnloadedPosIndexing(i, j);
 			UnloadedTileInfo tInfo = null;
 			UnloadedWallInfo wInfo = null;
@@ -379,6 +410,11 @@ namespace Terraria.ModLoader.IO
 					tile.color(reader.ReadByte());
 				}
 
+				byte chestStyle = 0;
+				if ((flags2 & TileIOFlags2.ChestStyle) == TileIOFlags2.ChestStyle){
+					chestStyle = reader.ReadByte();
+				}
+
 				
 				if (tables.tileNames.ContainsKey(saveType)) {
 					// Handle Disabled Mods and Implement Pending Tile
@@ -396,8 +432,7 @@ namespace Terraria.ModLoader.IO
 							Main.tile[i-1 , j - 1].type == UnloadedTilesWorld.UnloadedChest);
 						if (!accountedFor) { // Only care about top-left tile of 2x2 for Chests
 							// Load saved Basic Chest Type Data into UnloadedChestInfo and index
-							UnloadedChestInfo cInfo;
-							cInfo = new UnloadedChestInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
+							UnloadedChestInfo cInfo = new UnloadedChestInfo(tables.tileModNames[saveType], tables.tileNames[saveType],chestStyle);
 							posIndexer.SaveChestInfoToPos(cInfo);
 							// Place UnloadedChest (required to preserve the inventory and re-namings
 							WorldGen.PlaceChestDirect(i, j + 1, UnloadedTilesWorld.UnloadedChest, 0, -1);

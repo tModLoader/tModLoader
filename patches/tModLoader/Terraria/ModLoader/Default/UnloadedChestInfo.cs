@@ -5,20 +5,19 @@ namespace Terraria.ModLoader.Default
 {
 	internal class UnloadedChestInfo : UnloadedInfo 
 	{
-		public readonly short frameX;
-		public readonly short frameY;
-		//TODO: Future add if the chest at the location had been unlocked.  
-		//TODO: Future record what was the Chest Style 
+		internal byte ChestStyle; 
 
-		public UnloadedChestInfo(string modName, string name):base(modName, name) {
+		public UnloadedChestInfo(string modName, string name, byte chestStyle = 0):base(modName, name) {
 			this.modName = modName;
 			this.name = name;
+			this.ChestStyle = chestStyle;
 		}
 
 		public new TagCompound Save() {
 			var tag = new TagCompound {
 				["mod"] = modName,
-				["name"] = name
+				["name"] = name,
+				["style"] = ChestStyle,
 			};
 			return tag;
 		}

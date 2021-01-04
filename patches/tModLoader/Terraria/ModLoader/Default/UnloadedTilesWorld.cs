@@ -100,7 +100,6 @@ namespace Terraria.ModLoader.Default
 				}
 				string modName = infoTag.GetString("mod");
 				string name = infoTag.GetString("name");
-				bool IsSolid = infoTag.GetBool("IsSolid");
 				var tInfo =  new UnloadedTileInfo(modName, name);
 				tileInfos.Add(tInfo);
 				type = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : (ushort)0;
@@ -139,7 +138,8 @@ namespace Terraria.ModLoader.Default
 				}
 				string modName = infoTag.GetString("mod");
 				string name = infoTag.GetString("name");
-				var cInfo = new UnloadedChestInfo(modName, name);
+				byte chestStyle = infoTag.GetByte("style");
+				var cInfo = new UnloadedChestInfo(modName, name, chestStyle);
 				chestInfos.Add(cInfo);
 				type = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : (ushort)0;
 				canRestoreChests.Add(type);
@@ -233,7 +233,7 @@ namespace Terraria.ModLoader.Default
 						chestInfoMap.TryGetValue(posID, out int infoID);
 						if (canRestoreChests[infoID] > 0) {
 							UnloadedChestInfo info = chestInfos[infoID];
-							WorldGen.PlaceChestDirect(x, y+1, canRestoreChests[infoID], 0, -1);
+							WorldGen.PlaceChestDirect(x, y+1, canRestoreChests[infoID], info.ChestStyle, -1);
 						}
 					}
 					// If tile has a wall, restore original by position mapping
