@@ -1,16 +1,26 @@
 --- src/tModLoader/Terraria.Localization.Content/pl-PL.tModLoader.json
 +++ src/64bit/Terraria.Localization.Content/pl-PL.tModLoader.json
-@@ -349,6 +_,14 @@
+@@ -349,6 +_,24 @@
  		// "WorldIODataException": "The game encountered a mod data problem for a world.",
  		// "ServerCrash": "Server crash: {0}\n{1}\n\nPlease check server.log to determine if a mod is responsible, otherwise head to #support in the tModLoader Discord",
  
 +		// Misc. 64bit
 +		//"XL": "XL",
 +		//"Support": "Support",
-+  //"64bitDiscord": "tModLoader 64bit Discord",
++		//"64bitDiscord": "tModLoader 64bit Discord",
 +		//"tModDiscord": "Official tModLoader Discord",
 +		//"PatreonDradon": "Support Dradon on Patreon!",
 +		//"PatreontMod": "Support tModLoader on Patreon!",
++		//"VanillaMode": "Switch to 64bit vanillla",
++		//"tModMode": "Switch to 64bit tML",
++		//"DisableLite": "Disable Lite mode",
++		//"EnableLite": "Enable Lite mode",
++		//"RunningBitMode": "(Running in {0}bit mode)",
++		//"GoG": "GoG",
++		//"Steam": "Steam",
++		//"UnfinishedFeature": "This feature is NOT finshed and will be released at a later date.\n\n\n- Dradonhunter11",
++		//"SwitchFromLite": "Your game will be switched to the full 64bit version. You will need to restart your game completely for all effects to be applied.\nIn this mode, you can generate XL worlds and larger chest limit of 2000; however, you will no longer be able to play with 32bit tML users anymore unless you switch back to Lite mode.",
++		//"SwitchToLite": "Your game will be switched to the Lite version of 64bit. You will need to restart your game completely for all effects to be applied.\nIn this mode, you will be able to play with other 32bit tML users (along with other 64bit Lite users); however, you will not be able to player with tML 64bit users who are not using the Lite version. You can always switch back to the full version of 64bit tML.",
 +
  		// MessageBox
  		// "ContentFolderNotFound": "Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.",
