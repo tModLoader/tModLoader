@@ -171,7 +171,39 @@ namespace Terraria.ModLoader.Default
 
 			// If restoration should occur during this load cycle, then do so
 			RestoreTilesAndWalls(canRestoreTiles, canRestoreWalls, canRestoreChests, canRestoreTilesFlag, canRestoreWallsFlag, canRestoreChestsFlag);
-			
+
+			// Prep dictionaries for cleanup by indexing nullable entries, then removing.
+			// tiles
+			List<int> nullable = new List<int>();
+			foreach (var entry in tileInfoMap) {
+				if (canRestoreTiles[entry.Value] > 0) {
+					nullable.Add(entry.Key);
+				}
+			}
+			foreach (int posID in nullable) {
+				tileInfoMap.Remove(posID);
+			}
+			// Chests
+			nullable = new List<int>();
+			foreach (var entry in chestInfoMap) {
+				if (canRestoreChests[entry.Value] > 0) {
+					nullable.Add(entry.Key);
+				}
+			}
+			foreach (int posID in nullable) {
+				chestInfoMap.Remove(posID);
+			}
+			// Walls
+			nullable = new List<int>();
+			foreach (var entry in wallInfoMap) {
+				if (canRestoreWalls[entry.Value] > 0) {
+					nullable.Add(entry.Key);
+				}
+			}
+			foreach (int posID in nullable) {
+				wallInfoMap.Remove(posID);
+			}
+
 			// Cleanup infos to reflect restored content
 			if (canRestoreTilesFlag) {
 				for (int k = 0; k < canRestoreTiles.Count; k++) {
@@ -245,37 +277,6 @@ namespace Terraria.ModLoader.Default
 						}
 					}
 				}
-			}
-			// Prep dictionaries for cleanup by indexing nullable entries, then removing
-			// tiles
-			List<int> nullable = new List<int>();
-			foreach (var entry in tileInfoMap) {
-				if (canRestoreTiles[entry.Value] > 0) {
-					nullable.Add(entry.Key);
-				}
-			}
-			foreach (int posID in nullable) {
-				tileInfoMap.Remove(posID);
-			}
-			// Chests
-			nullable = new List<int>();
-			foreach (var entry in chestInfoMap) {
-				if (canRestoreChests[entry.Value] > 0) {
-					nullable.Add(entry.Key);
-				}
-			}
-			foreach (int posID in nullable) {
-				chestInfoMap.Remove(posID);
-			}
-			// Walls
-			nullable = new List<int>();
-			foreach (var entry in wallInfoMap) {
-				if (canRestoreWalls[entry.Value] > 0) {
-					nullable.Add(entry.Key);
-				}
-			}
-			foreach (int posID in nullable) {
-				wallInfoMap.Remove(posID);
 			}
 		}
 	}
