@@ -282,11 +282,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe. Fail determines whether the tile is mined, effectOnly makes it so that only dust is created, and noItem stops items from dropping.
+		/// Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem) {
+		/// <param name="fail">Determines whether the tile is mined</param>
+		/// <param name="effectOnly">Only dust / effects are created</param>
+		/// <param name="noItem">Stops items from dropping</param>
+		/// <param name="worldGen">Called from world generation</param>
+		public virtual void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem, bool worldGen) {
 		}
 
 		/// <summary>

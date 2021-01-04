@@ -1391,7 +1391,7 @@
  			if (num == 2)
  				return;
  
-+			TileLoader.KillTile(i, j, tile.type, ref fail, ref effectOnly, ref noItem); //Placed before gen check on purpose.
++			TileLoader.KillTile(i, j, tile.type, ref fail, ref effectOnly, ref noItem, gen); //Placed before gen check on purpose.
 +
  			if (gen)
  				noItem = true;

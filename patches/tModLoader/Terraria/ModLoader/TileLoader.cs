@@ -55,7 +55,7 @@ namespace Terraria.ModLoader
 		private static Func<int, int, int, bool>[] HookDrop;
 		private delegate bool DelegateCanKillTile(int i, int j, int type, ref bool blockDamaged);
 		private static DelegateCanKillTile[] HookCanKillTile;
-		private delegate void DelegateKillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem);
+		private delegate void DelegateKillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem, bool worldGen);
 		private static DelegateKillTile[] HookKillTile;
 		private static Func<int, int, int, bool>[] HookCanExplode;
 		private static Action<int, int, int, bool>[] HookNearbyEffects;
@@ -466,11 +466,11 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.WorldGen.KillTile before if (!effectOnly && !WorldGen.stopDrops) add
 		//  TileLoader.KillTile(i, j, tile.type, ref fail, ref effectOnly, ref noItem);
-		public static void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem) {
-			GetTile(type)?.KillTile(i, j, ref fail, ref effectOnly, ref noItem);
+		public static void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem, bool worldGen) {
+			GetTile(type)?.KillTile(i, j, ref fail, ref effectOnly, ref noItem, worldGen);
 
 			foreach (var hook in HookKillTile) {
-				hook(i, j, type, ref fail, ref effectOnly, ref noItem);
+				hook(i, j, type, ref fail, ref effectOnly, ref noItem, worldGen);
 			}
 		}
 
