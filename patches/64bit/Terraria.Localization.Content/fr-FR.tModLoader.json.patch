@@ -1,12 +1,16 @@
 --- src/tModLoader/Terraria.Localization.Content/fr-FR.tModLoader.json
 +++ src/64bit/Terraria.Localization.Content/fr-FR.tModLoader.json
-@@ -348,6 +_,10 @@
+@@ -348,6 +_,14 @@
  		"WorldIODataException": "Le jeu a rencontré un problème de données de Mod pour un monde.",
  		"ServerCrash": "Crash du serveur : {0}\n{1}\n\nMerci de vérifier le server.log pour déterminer si un mod est fautif, sinon rendez vous dans le canal de chat #support du Discord de tModLoader"
  
 +		// Misc. 64bit
 +		//"XL": "XL",
-+  //"Support": "Support",
++		//"Support": "Support",
++  //"64bitDiscord": "tModLoader 64bit Discord",
++		//"tModDiscord": "Official tModLoader Discord",
++		//"PatreonDradon": "Support Dradon on Patreon!",
++		//"PatreontMod": "Support tModLoader on Patreon!",
 +
  		// MessageBox
  		// "ContentFolderNotFound": "Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.",

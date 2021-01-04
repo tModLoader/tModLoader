@@ -49,28 +49,28 @@
 +				numButtons = 5;
 +				buttonVerticalSpacing[numButtons - 1] = 18;
 +				int buttonIndex = 0;
-+				buttonNames[buttonIndex] = "tModLoader 64bit discord";
++				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.64bitDiscord");
 +				if (selectedMenu == buttonIndex) {
 +					Main.PlaySound(SoundID.MenuOpen);
 +					Process.Start("https://discord.gg/DY8cx5T");
 +				}
 +
 +				buttonIndex++;
-+				buttonNames[buttonIndex] = "Official tModLoader discord";
++				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.tModDiscord");
 +				if (selectedMenu == buttonIndex) {
 +					Main.PlaySound(SoundID.MenuOpen);
 +					Process.Start("https://discord.gg/RMZCqq6");
 +				}
 +
 +				buttonIndex++;
-+				buttonNames[buttonIndex] = "Support Dradon on Patreon!";
++				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.PatreonDradon");
 +				if (selectedMenu == buttonIndex) {
 +					Main.PlaySound(SoundID.MenuOpen);
 +					Process.Start("https://www.patreon.com/dradonhunter11");
 +				}
 +
 +				buttonIndex++;
-+				buttonNames[buttonIndex] = "Support tModLoader on Patreon!";
++				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.PatreontMod");
 +				if (selectedMenu == buttonIndex) {
 +					Main.PlaySound(SoundID.MenuOpen);
 +					Process.Start("https://www.patreon.com/tModLoader");
