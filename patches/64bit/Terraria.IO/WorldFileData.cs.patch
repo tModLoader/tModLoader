@@ -5,7 +5,7 @@
  					_worldSizeName = Language.GetText("UI.WorldSizeLarge");
  					break;
 +				case 16800:
-+					_worldSizeName = Language.GetText("XL");
++					_worldSizeName = Language.GetText("tModLoader.XL");
 +					break;
  				default:
  					_worldSizeName = Language.GetText("UI.WorldSizeUnknown");
