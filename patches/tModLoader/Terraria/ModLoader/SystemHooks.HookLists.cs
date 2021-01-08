@@ -71,6 +71,8 @@ namespace Terraria.ModLoader
 
 		private static HookList HookUpdateMusic = AddHook<DelegateUpdateMusic>(s => s.UpdateMusic);
 
+		private static HookList HookModifyScreenPosition = AddHook<Action>(s => s.ModifyScreenPosition);
+
 		private static HookList HookModifyTransformMatrix = AddHook<DelegateModifyTransformMatrix>(s => s.ModifyTransformMatrix);
 
 		private static HookList HookModifySunLightColor = AddHook<DelegateModifySunLightColor>(s => s.ModifySunLightColor);

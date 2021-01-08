@@ -3296,11 +3296,12 @@
  					flag = true;
  				}
  			}
-@@ -47833,16 +_,25 @@
+@@ -47833,16 +_,26 @@
  
  			screenPosition.X = (int)screenPosition.X;
  			screenPosition.Y = (int)screenPosition.Y;
 +			PlayerHooks.ModifyScreenPosition(LocalPlayer);
++			SystemHooks.ModifyScreenPosition();
  			ClampScreenPositionToWorld();
  		}
  

@@ -49,6 +49,11 @@ namespace Terraria.ModLoader
 		public virtual void UpdateMusic(ref int music, ref MusicPriority priority) { }
 
 		/// <summary>
+		/// Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place.
+		/// </summary>
+		public virtual void ModifyScreenPosition() { }
+
+		/// <summary>
 		/// Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.)
 		/// </summary>
 		public virtual void ModifyTransformMatrix(ref SpriteViewMatrix Transform) { }
