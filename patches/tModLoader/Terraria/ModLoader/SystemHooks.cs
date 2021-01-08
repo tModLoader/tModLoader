@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria.Graphics;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -12,8 +13,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This is where all <see cref="ModSystem"/> hooks are gathered and called.
 	/// </summary>
-	//TODO: Use combined delegates whenever possible.
-	public static class SystemHooks
+	public static partial class SystemHooks
 	{
 		internal static readonly List<ModSystem> Systems = new List<ModSystem>();
 		internal static readonly Dictionary<string, List<ModSystem>> SystemsByMod = new Dictionary<string, List<ModSystem>>();
@@ -31,7 +31,7 @@ namespace Terraria.ModLoader
 			Systems.Add(modSystem);
 		}
 
-		internal static void ResizeArrays() => NetSystems = ModLoader.BuildGlobalHook<ModSystem, Action<BinaryWriter>>(Systems, s => s.NetSend);
+		internal static void ResizeArrays() => RebuildHooks();
 
 		internal static void Unload() {
 			Systems.Clear();
@@ -58,54 +58,46 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void OnModLoad(Mod mod) {
-			if (!SystemsByMod.TryGetValue(mod.Name, out var list)) {
-				return;
-			}
-
-			foreach (var system in list) {
+			foreach (var system in HookOnModLoad.arr.Where(s => s.Mod == mod)) {
 				system.OnModLoad();
 			}
 		}
 
 		internal static void PostSetupContent(Mod mod) {
-			if (!SystemsByMod.TryGetValue(mod.Name, out var list)) {
-				return;
-			}
-
-			foreach (var system in list) {
+			foreach (var system in HookPostSetupContent.arr.Where(s => s.Mod == mod)) {
 				system.PostSetupContent();
 			}
 		}
 
 		public static void OnWorldLoad() {
-			foreach (var system in Systems) {
+			foreach (var system in HookOnWorldLoad.arr) {
 				system.OnWorldLoad();
 			}
 		}
 
 		public static void OnWorldUnload() {
-			foreach (var system in Systems) {
+			foreach (var system in HookOnWorldUnload.arr) {
 				system.OnWorldUnload();
 			}
 		}
 
 		public static void UpdateMusic(ref int music, ref MusicPriority priority) {
-			foreach (var system in Systems) {
+			foreach (var system in HookUpdateMusic.arr) {
 				system.UpdateMusic(ref music, ref priority);
 			}
 		}
 
 		public static void ModifyTransformMatrix(ref SpriteViewMatrix Transform) {
-			foreach (var system in Systems) {
+			foreach (var system in HookModifyTransformMatrix.arr) {
 				system.ModifyTransformMatrix(ref Transform);
 			}
 		}
 
-		public static void ModifySunLight(ref Color tileColor, ref Color backgroundColor) {
+		public static void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) {
 			if (Main.gameMenu)
 				return;
 
-			foreach (var system in Systems) {
+			foreach (var system in HookModifySunLightColor.arr) {
 				system.ModifySunLightColor(ref tileColor, ref backgroundColor);
 			}
 		}
@@ -113,7 +105,7 @@ namespace Terraria.ModLoader
 		public static void ModifyLightingBrightness(ref float negLight, ref float negLight2) {
 			float scale = 1f;
 
-			foreach (var system in Systems) {
+			foreach (var system in HookModifyLightingBrightness.arr) {
 				system.ModifyLightingBrightness(ref scale);
 			}
 
@@ -131,7 +123,7 @@ namespace Terraria.ModLoader
 		}
 
 		public static void PostDrawFullscreenMap(ref string mouseText) {
-			foreach (var system in Systems) {
+			foreach (var system in HookPostDrawFullscreenMap.arr) {
 				system.PostDrawFullscreenMap(ref mouseText);
 			}
 		}
@@ -140,127 +132,127 @@ namespace Terraria.ModLoader
 			if (Main.gameMenu)
 				return;
 
-			foreach (var system in Systems) {
+			foreach (var system in HookUpdateUI.arr) {
 				system.UpdateUI(gameTime);
 			}
 		}
 
 		public static void PreUpdateEntities() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPreUpdateEntities.arr) {
 				system.PreUpdateEntities();
 			}
 		}
 
 		public static void PreUpdatePlayers() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPreUpdatePlayers.arr) {
 				system.PreUpdatePlayers();
 			}
 		}
 
 		public static void PostUpdatePlayers() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPostUpdatePlayers.arr) {
 				system.PostUpdatePlayers();
 			}
 		}
 
 		public static void PreUpdateNPCs() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPreUpdateNPCs.arr) {
 				system.PreUpdateNPCs();
 			}
 		}
 
 		public static void PostUpdateNPCs() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPostUpdateNPCs.arr) {
 				system.PostUpdateNPCs();
 			}
 		}
 
 		public static void PreUpdateGores() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPreUpdateGores.arr) {
 				system.PreUpdateGores();
 			}
 		}
 
 		public static void PostUpdateGores() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPostUpdateGores.arr) {
 				system.PostUpdateGores();
 			}
 		}
 
 		public static void PreUpdateProjectiles() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPreUpdateProjectiles.arr) {
 				system.PreUpdateProjectiles();
 			}
 		}
 
 		public static void PostUpdateProjectiles() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPostUpdateProjectiles.arr) {
 				system.PostUpdateProjectiles();
 			}
 		}
 
 		public static void PreUpdateItems() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPreUpdateItems.arr) {
 				system.PreUpdateItems();
 			}
 		}
 
 		public static void PostUpdateItems() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPostUpdateItems.arr) {
 				system.PostUpdateItems();
 			}
 		}
 
 		public static void PreUpdateDusts() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPreUpdateDusts.arr) {
 				system.PreUpdateDusts();
 			}
 		}
 
 		public static void PostUpdateDusts() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPostUpdateDusts.arr) {
 				system.PostUpdateDusts();
 			}
 		}
 
 		public static void PreUpdateTime() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPreUpdateTime.arr) {
 				system.PreUpdateTime();
 			}
 		}
 
 		public static void PostUpdateTime() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPostUpdateTime.arr) {
 				system.PostUpdateTime();
 			}
 		}
 
 		public static void PreUpdateWorld() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPreUpdateWorld.arr) {
 				system.PreUpdateWorld();
 			}
 		}
 
 		public static void PostUpdateWorld() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPostUpdateWorld.arr) {
 				system.PostUpdateWorld();
 			}
 		}
 
 		public static void PreUpdateInvasions() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPreUpdateInvasions.arr) {
 				system.PreUpdateInvasions();
 			}
 		}
 
 		public static void PostUpdateInvasions() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPostUpdateInvasions.arr) {
 				system.PostUpdateInvasions();
 			}
 		}
 
 		public static void PostUpdateEverything() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPostUpdateEverything.arr) {
 				system.PostUpdateEverything();
 			}
 		}
@@ -270,79 +262,79 @@ namespace Terraria.ModLoader
 				layer.Active = true;
 			}
 
-			foreach (var system in Systems) {
+			foreach (var system in HookModifyInterfaceLayers.arr) {
 				system.ModifyInterfaceLayers(layers);
 			}
 		}
 
 		public static void PostDrawInterface(SpriteBatch spriteBatch) {
-			foreach (var system in Systems) {
+			foreach (var system in HookPostDrawInterface.arr) {
 				system.PostDrawInterface(spriteBatch);
 			}
 		}
 
 		public static void PostUpdateInput() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPostUpdateInput.arr) {
 				system.PostUpdateInput();
 			}
 		}
 
 		public static void PreSaveAndQuit() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPreSaveAndQuit.arr) {
 				system.PreSaveAndQuit();
 			}
 		}
 
 		public static void PostDrawTiles() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPostDrawTiles.arr) {
 				system.PostDrawTiles();
 			}
 		}
 
 		public static void ModifyTimeRate(ref int timeRate, ref int tileUpdateRate) {
-			foreach (var system in Systems) {
+			foreach (var system in HookModifyTimeRate.arr) {
 				system.ModifyTimeRate(ref timeRate, ref tileUpdateRate);
 			}
 		}
 
 		public static void PreWorldGen() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPreWorldGen.arr) {
 				system.PreWorldGen();
 			}
 		}
 
 		public static void ModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight) {
-			foreach (var system in Systems) {
+			foreach (var system in HookModifyWorldGenTasks.arr) {
 				system.ModifyWorldGenTasks(passes, ref totalWeight);
 			}
 		}
 
 		public static void PostWorldGen() {
-			foreach (var system in Systems) {
+			foreach (var system in HookPostWorldGen.arr) {
 				system.PostWorldGen();
 			}
 		}
 
 		public static void ResetNearbyTileEffects() {
-			foreach (var system in Systems) {
+			foreach (var system in HookResetNearbyTileEffects.arr) {
 				system.ResetNearbyTileEffects();
 			}
 		}
 
 		public static void TileCountsAvailable(int[] tileCounts) {
-			foreach (var system in Systems) {
+			foreach (var system in HookTileCountsAvailable.arr) {
 				system.TileCountsAvailable(tileCounts);
 			}
 		}
 
 		public static void ChooseWaterStyle(ref int style) {
-			foreach (var system in Systems) {
+			foreach (var system in HookChooseWaterStyle.arr) {
 				system.ChooseWaterStyle(ref style);
 			}
 		}
 
 		public static void ModifyHardmodeTasks(List<GenPass> passes) {
-			foreach (var system in Systems) {
+			foreach (var system in HookModifyHardmodeTasks.arr) {
 				system.ModifyHardmodeTasks(passes);
 			}
 		}
