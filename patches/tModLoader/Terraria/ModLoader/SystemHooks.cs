@@ -87,6 +87,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static void ModifyScreenPosition() {
+			foreach (var system in HookModifyScreenPosition.arr) {
+				system.ModifyScreenPosition();
+			}
+		}
+
 		public static void ModifyTransformMatrix(ref SpriteViewMatrix Transform) {
 			foreach (var system in HookModifyTransformMatrix.arr) {
 				system.ModifyTransformMatrix(ref Transform);
