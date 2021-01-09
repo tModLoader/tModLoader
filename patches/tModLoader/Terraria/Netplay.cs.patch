@@ -123,7 +123,6 @@
  							NetMessage.SendData(8, -1, -1, null, Main.player[Main.myPlayer].SpawnX, Main.player[Main.myPlayer].SpawnY);
  						}
  
-
 @@ -307,6 +_,7 @@
  					num = Connection.State;
  				}
