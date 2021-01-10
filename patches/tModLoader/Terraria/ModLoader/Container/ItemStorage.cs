@@ -223,7 +223,7 @@ namespace Terraria.ModLoader.Container
 			if (quantity < 0) {
 				if (item.stack + quantity < 0) return false;
 
-				item.stack -= quantity;
+				item.stack += quantity;
 				if (item.stack <= 0) item.TurnToAir();
 				// OnContentsChanged(slot, user);
 			}
