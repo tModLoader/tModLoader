@@ -62,6 +62,11 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
+		public override void NearbyEffects(int i, int j, bool closer) { //Set torch luck if the player is nearby an ExampleTorch. Look in ExampleLuckPlayer for more info.
+			Player player = Main.LocalPlayer;
+			player.GetModPlayer<Common.Players.ExampleLuckPlayer>().ExampleTorchNearby = true;
+		}
+
 		public override void NumDust(int i, int j, bool fail, ref int num) => num = Main.rand.Next(1, 3);
 
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {

@@ -361,6 +361,14 @@
  							tileEntity.ID = num48;
  							TileEntity.ByID[tileEntity.ID] = tileEntity;
  							TileEntity.ByPosition[tileEntity.Position] = tileEntity;
+@@ -3304,6 +_,7 @@
+ 						obj.luckPotion = luckPotion;
+ 						obj.HasGardenGnomeNearby = hasGardenGnomeNearby;
+ 						obj.RecalculateLuck();
++						PlayerHooks.ModifyLuck(obj, ref obj.luck); //Neccesary? Should this be in PlayerIO instead?
+ 						if (Main.netMode == 2)
+ 							NetMessage.SendData(134, -1, num14, null, num14);
+ 
 @@ -3346,6 +_,27 @@
  						CreditsRollEvent.SetRemainingTimeDirect(reader.ReadInt32());
  					}
