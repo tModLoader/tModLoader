@@ -452,7 +452,7 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateModifyTorchLuck(ref float positiveLuck, ref float negativeLuck);
 		private static HookList HookModifyTorchLuck = AddHook<DelegateModifyTorchLuck>(p => p.ModifyTorchLuck);
-		public static void ModifyTorchLuck(Player player, ref float postiveLuck, ref float negativeLuck) {
+		public static void ModifyTorchLuck(Player player, ref float positiveLuck, ref float negativeLuck) {
 			foreach (int index in HookModifyTorchLuck.arr) {
 				player.modPlayers[index].ModifyTorchLuck(ref positiveLuck, ref negativeLuck);
 			}
