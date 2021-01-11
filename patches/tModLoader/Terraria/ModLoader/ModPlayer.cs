@@ -359,7 +359,7 @@ namespace Terraria.ModLoader
 		/// Allows you to modify the variables that affect overall torch luck. Increase positiveLuck if you want it to affect luck positively, and increase (note: increase) negativeLuck if you want to affect luck negatively.
 		/// </summary>
 		/// <param name="positiveLuck"></param>
-		/// <param name="negativeLuck"></param
+		/// <param name="negativeLuck"></param>
 		public virtual void ModifyTorchLuck(ref float positiveLuck, ref float negativeLuck) {
 
 		}
