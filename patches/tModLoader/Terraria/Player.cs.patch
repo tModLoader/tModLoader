@@ -1525,15 +1525,14 @@
  								SmartSelect_SelectItem(i);
  								return;
  						}
-@@ -12622,6 +_,8 @@
- 					else if (ZoneDesert || ZoneCorrupt || ZoneCrimson || ZoneHallow)
- 						num += 0.5f;
+@@ -12624,6 +_,7 @@
  				}
-+
-+				PlayerHooks.ModifyTorchLuck(this, ref num2, ref num);
  			}
  
++			PlayerHooks.ModifyTorchLuck(this, ref num2, ref num); //Modders WILL want to have torch luck in the dungeon and temple, thanks.
  			if (num2 >= 1f)
+ 				torchLuck += 1f;
+ 			else if (num2 > 0f)
 @@ -12711,13 +_,14 @@
  			lifeRegen = 0;
  			manaCost = 1f;
