@@ -31,9 +31,9 @@ namespace ExampleMod.Common.Players
 			if (ExampleTorchNearby) { //If an ExampleTorch is nearby (set in ExampleTorch's file)...
 				positiveLuck += 1f; //...the torch has a positive influence on overall torch luck.
 			}
-			else
+			else {
 				negativeLuck += 0.1f; //...otherwise it has a small negative influence on overall torch luck.
-
+			}
 			//TODO: Make ExampleTorch require being in ExampleBiome when that gets implemented.
 		}
 	}
