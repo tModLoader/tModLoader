@@ -224,8 +224,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npcType">Type of the NPC.</param>
 		/// <param name="texture">The texture.</param>
+		/// <returns>The boss head txture slot</returns>
 		/// <exception cref="MissingResourceException"></exception>
-		public void AddNPCHeadTexture(int npcType, string texture) {
+		public int AddNPCHeadTexture(int npcType, string texture) {
 			if (!loading)
 				throw new Exception("AddNPCHeadTexture can only be called from Mod.Load or Mod.Autoload");
 
@@ -243,6 +244,7 @@ namespace Terraria.ModLoader
 
 			NPCHeadLoader.npcToHead[npcType] = slot;
 			NPCHeadLoader.headToNPC[slot] = npcType;
+			return slot;
 		}
 
 		/// <summary>
@@ -250,7 +252,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="texture">The texture.</param>
 		/// <param name="npcType">An optional npc id for NPCID.Sets.BossHeadTextures</param>
-		public void AddBossHeadTexture(string texture, int npcType = -1) {
+		/// <returns>The boss head txture slot</returns>
+		public int AddBossHeadTexture(string texture, int npcType = -1) {
 			if (!loading)
 				throw new Exception("AddBossHeadTexture can only be called from Mod.Load or Mod.Autoload");
 
@@ -260,6 +263,7 @@ namespace Terraria.ModLoader
 			if (npcType >= 0) {
 				NPCHeadLoader.npcToBossHead[npcType] = slot;
 			}
+			return slot;
 		}
 
 		/// <summary>
