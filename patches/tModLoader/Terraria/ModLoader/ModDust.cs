@@ -101,7 +101,7 @@ namespace Terraria.ModLoader
 			Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.GetTexture(Texture).Value : TextureAssets.Dust.Value;
 		}
 
-		public override void SetupContent() {
+		public sealed override void SetupContent() {
 			SetDefaults();
 		}
 

@@ -110,7 +110,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public override void SetupContent() {
+		public sealed override void SetupContent() {
 			NPCLoader.SetDefaults(npc, false);
 			AutoStaticDefaults();
 			SetStaticDefaults();

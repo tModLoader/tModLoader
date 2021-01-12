@@ -76,7 +76,7 @@ namespace Terraria.ModLoader
 			ProjectileLoader.projectiles.Add(this);
 		}
 
-		public override void SetupContent() {
+		public sealed override void SetupContent() {
 			ProjectileLoader.SetDefaults(projectile, false);
 			AutoStaticDefaults();
 			SetStaticDefaults();

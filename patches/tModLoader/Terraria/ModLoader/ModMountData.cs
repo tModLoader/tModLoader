@@ -76,7 +76,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public override void SetupContent() {
+		public sealed override void SetupContent() {
 			mountData.modMountData = this;
 			MountLoader.SetupMount(mountData);
 			Mount.mounts[Type] = mountData;

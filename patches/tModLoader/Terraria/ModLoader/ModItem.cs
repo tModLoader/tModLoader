@@ -73,7 +73,7 @@ namespace Terraria.ModLoader
 			OnCreate(new InitializationContext());
 		}
 
-		public override void SetupContent() {
+		public sealed override void SetupContent() {
 			ItemLoader.SetDefaults(item, false);
 			AutoStaticDefaults();
 			SetStaticDefaults();
