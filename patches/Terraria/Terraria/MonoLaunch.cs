@@ -63,8 +63,6 @@ internal static class MonoLaunch
 	private static string getNativeDir(string name) {
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			return "Windows";
-		if (name.Contains("steam", StringComparison.OrdinalIgnoreCase))
-			return "Linux";
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 			return "Linux";
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
