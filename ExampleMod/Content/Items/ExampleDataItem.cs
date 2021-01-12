@@ -33,7 +33,7 @@ namespace ExampleMod.Content.Items
 		public override void AddRecipes() {
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient<ExampleItem>(100);
-			(recipe.createItem.modItem as ExampleDataItem).timer = 300;
+			(recipe.createItem.ModItem as ExampleDataItem).timer = 300;
 			recipe.Register();
 		}
 	}
