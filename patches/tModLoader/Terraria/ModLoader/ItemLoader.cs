@@ -89,7 +89,6 @@ namespace Terraria.ModLoader
 			LoaderUtils.ResetStaticMembers(typeof(ItemID), true);
 			
 			//Etc
-			Array.Resize(ref Main.itemAnimations, nextItem);
 			Array.Resize(ref Item.cachedItemSpawnsByType, nextItem);
 			Array.Resize(ref Item.staff, nextItem);
 			Array.Resize(ref Item.claw, nextItem);
@@ -100,6 +99,14 @@ namespace Terraria.ModLoader
 				Lang._itemNameCache[k] = LocalizedText.Empty;
 				Lang._itemTooltipCache[k] = ItemTooltip.None;
 				Item.cachedItemSpawnsByType[k] = -1;
+			}
+
+			//Animation collections can be accessed during an ongoing (un)loading process.
+			//Which is why the following 2 lines have to run without any interruptions.
+			lock (Main.itemAnimationsRegistered) {
+				Array.Resize(ref Main.itemAnimations, nextItem);
+
+				Main.InitializeItemAnimations();
 			}
 
 			if (unloading)
