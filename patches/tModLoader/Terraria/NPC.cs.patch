@@ -98,11 +98,11 @@
 +		public void CloneDefaults(int Type) {
 +			int originalType = type;
 +			int originalNetID = netID;
-+			ModNPC originalModEntity = modNPC;
++			ModNPC originalModEntity = ModNPC;
 +			SetDefaultsKeepPlayerInteraction(Type);
 +			type = originalType;
 +			netID = originalNetID;
-+			modNPC = originalModEntity;
++			ModNPC = originalModEntity;
 +		}
 +
  		public void SetDefaultsKeepPlayerInteraction(int Type) {
@@ -112,7 +112,7 @@
  				return;
  			}
  
-+			modNPC = null;
++			ModNPC = null;
 +			globalNPCs = new GlobalNPC[0];
  			waterMovementSpeed = (lavaMovementSpeed = 0.5f);
  			honeyMovementSpeed = 0.25f;

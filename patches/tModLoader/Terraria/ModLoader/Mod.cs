@@ -40,15 +40,15 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Stores the name of the mod. This name serves as the mod's identification, and also helps with saving everything your mod adds. By default this returns the name of the folder that contains all your code and stuff.
 		/// </summary>
-		public virtual string Name => File.name;
+		public virtual string Name => File.Name;
 		/// <summary>
 		/// The version of tModLoader that was being used when this mod was built.
 		/// </summary>
-		public Version tModLoaderVersion { get; internal set; }
+		public Version TModLoaderVersion { get; internal set; }
 		/// <summary>
 		/// This version number of this mod.
 		/// </summary>
-		public virtual Version Version => File.version;
+		public virtual Version Version => File.Version;
 
 		public ModProperties Properties { get; protected set; } = ModProperties.AutoLoadAll;
 		/// <summary>
@@ -87,7 +87,7 @@ namespace Terraria.ModLoader
 						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is ServerSide but this Mods ModSide isn't Both or Server");
 					if (mc.Mode == ConfigScope.ClientSide && Side == ModSide.Server) // Doesn't make sense. 
 						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is ClientSide but this Mods ModSide is Server");
-					mc.mod = this;
+					mc.Mod = this;
 					var name = type.Name;
 					if (mc.Autoload(ref name))
 						AddConfig(name, mc);
@@ -98,7 +98,7 @@ namespace Terraria.ModLoader
 		public void AddConfig(string name, ModConfig mc)
 		{
 			mc.Name = name;
-			mc.mod = this;
+			mc.Mod = this;
 
 			ConfigManager.Add(mc);
 			ContentInstance.Register(mc);
@@ -156,10 +156,10 @@ namespace Terraria.ModLoader
 			ModContent.GetTexture(texture); //ensure texture exists
 
 			equipTexture.Texture = texture;
-			equipTexture.mod = this;
+			equipTexture.Mod = this;
 			equipTexture.Name = item.Name;
 			equipTexture.Type = type;
-			equipTexture.item = item;
+			equipTexture.Item = item;
 			int slot = equipTexture.Slot = EquipLoader.ReserveEquipID(type);
 
 			EquipLoader.equipTextures[type][slot] = equipTexture;

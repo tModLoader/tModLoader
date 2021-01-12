@@ -598,11 +598,11 @@ namespace Terraria.ModLoader
 			Dictionary<string, LocalizedText> dict = LanguageManager.Instance._localizedTexts;
 			foreach (ModItem item in ItemLoader.items) {
 				LocalizedText text = new LocalizedText(item.DisplayName.Key, item.DisplayName.GetTranslation(culture));
-				Lang._itemNameCache[item.item.type] = SetLocalizedText(dict, text);
+				Lang._itemNameCache[item.Item.type] = SetLocalizedText(dict, text);
 				text = new LocalizedText(item.Tooltip.Key, item.Tooltip.GetTranslation(culture));
 				if (text.Value != null) {
 					text = SetLocalizedText(dict, text);
-					Lang._itemTooltipCache[item.item.type] = ItemTooltip.FromLanguageKey(text.Key);
+					Lang._itemTooltipCache[item.Item.type] = ItemTooltip.FromLanguageKey(text.Key);
 				}
 			}
 			foreach (ModPrefix prefix in ModPrefix.prefixes) {
@@ -627,11 +627,11 @@ namespace Terraria.ModLoader
 			}
 			foreach (ModProjectile proj in ProjectileLoader.projectiles) {
 				LocalizedText text = new LocalizedText(proj.DisplayName.Key, proj.DisplayName.GetTranslation(culture));
-				Lang._projectileNameCache[proj.projectile.type] = SetLocalizedText(dict, text);
+				Lang._projectileNameCache[proj.Projectile.type] = SetLocalizedText(dict, text);
 			}
 			foreach (ModNPC npc in NPCLoader.npcs) {
 				LocalizedText text = new LocalizedText(npc.DisplayName.Key, npc.DisplayName.GetTranslation(culture));
-				Lang._npcNameCache[npc.npc.type] = SetLocalizedText(dict, text);
+				Lang._npcNameCache[npc.NPC.type] = SetLocalizedText(dict, text);
 			}
 			foreach (ModBuff buff in BuffLoader.buffs) {
 				LocalizedText text = new LocalizedText(buff.DisplayName.Key, buff.DisplayName.GetTranslation(culture));

@@ -22,12 +22,12 @@ namespace Terraria.ModLoader
 		/// <value>
 		/// The projectile.
 		/// </value>
-		public Projectile projectile { get; internal set; }
+		public Projectile Projectile { get; internal set; }
 
 		/// <summary>
 		/// Shorthand for projectile.type;
 		/// </summary>
-		public int Type => projectile.type;
+		public int Type => Projectile.type;
 
 		/// <summary>
 		/// The translations for the display name of this projectile.
@@ -64,20 +64,20 @@ namespace Terraria.ModLoader
 		public bool drawHeldProjInFrontOfHeldItemAndArms = false;
 
 		public ModProjectile() {
-			projectile = new Projectile { modProjectile = this };
+			Projectile = new Projectile { ModProjectile = this };
 		}
 
 		protected sealed override void Register() {
 			ModTypeLookup<ModProjectile>.Register(this);
 
-			projectile.type = ProjectileLoader.ReserveProjectileID();
+			Projectile.type = ProjectileLoader.ReserveProjectileID();
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ProjectileName.{Name}");
 
 			ProjectileLoader.projectiles.Add(this);
 		}
 
 		public sealed override void SetupContent() {
-			ProjectileLoader.SetDefaults(projectile, false);
+			ProjectileLoader.SetDefaults(Projectile, false);
 			AutoStaticDefaults();
 			SetStaticDefaults();
 
@@ -106,12 +106,12 @@ namespace Terraria.ModLoader
 		public virtual ModProjectile NewInstance(Projectile projectileClone) {
 			if (CloneNewInstances) {
 				ModProjectile clone = Clone();
-				clone.projectile = projectileClone;
+				clone.Projectile = projectileClone;
 				return clone;
 			}
 
 			ModProjectile copy = (ModProjectile)Activator.CreateInstance(GetType());
-			copy.projectile = projectileClone;
+			copy.Projectile = projectileClone;
 			copy.Mod = Mod;
 			copy.aiType = aiType;
 			copy.cooldownSlot = cooldownSlot;
@@ -138,13 +138,13 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			TextureAssets.Projectile[projectile.type] = ModContent.GetTexture(Texture);
-			Main.projFrames[projectile.type] = 1;
-			if (projectile.hostile) {
-				Main.projHostile[projectile.type] = true;
+			TextureAssets.Projectile[Projectile.type] = ModContent.GetTexture(Texture);
+			Main.projFrames[Projectile.type] = 1;
+			if (Projectile.hostile) {
+				Main.projHostile[Projectile.type] = true;
 			}
-			if (projectile.aiStyle == 7) {
-				Main.projHook[projectile.type] = true;
+			if (Projectile.aiStyle == 7) {
+				Main.projHook[Projectile.type] = true;
 			}
 			if (DisplayName.IsDefault())
 				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
