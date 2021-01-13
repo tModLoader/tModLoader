@@ -26,7 +26,7 @@ namespace ExampleMod.Content.Items
 				player.statLife += 100;
 				if (player.statLife > player.statLifeMax2) player.statLife = player.statLifeMax2;
 				player.HealEffect(100);
-				item.TurnToAir();
+				Item.TurnToAir();
 			}
 		}
 
