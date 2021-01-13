@@ -29,3 +29,20 @@
  			TrimDuplicateRulesForNegativeIDs();
  		}
  
+@@ -231,6 +_,16 @@
+ 			RegisterBoss_PumpkinMoon();
+ 			RegisterBoss_HallowBoss();
+ 			RegisterBoss_QueenSlime();
++
++			for (int i = NPCID.Count; i < NPCLoader.NPCCount; i++) {
++				//For modded NPCs, automatically register boss bags as a drop rule
++				NPC npc = ContentSamples.NpcsByNetId[i];
++				int bagType = -1;
++				NPCLoader.BossBag(npc, ref bagType);
++
++				if (bagType > -1)
++					RegisterToNPC(i, ItemDropRule.BossBag(bagType));
++			}
+ 		}
+ 
+ 		private void RegisterBoss_QueenSlime() {
