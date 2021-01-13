@@ -30,6 +30,19 @@
  		public bool midas;
  		public bool ichor;
  		public bool onFire;
+@@ -284,6 +_,12 @@
+ 		private static int maximumAmountOfTimesLadyBugRainCanStack = 10 * ladyBugRainTime;
+ 		public static int offSetDelayTime = 60;
+ 
++		public NPC() { }
++
++		public NPC(int setDefaultsToType, NPCSpawnParams spawnparams = default(NPCSpawnParams)) {
++			SetDefaults(setDefaultsToType, spawnparams);
++		}
++
+ 		public bool CanTalk {
+ 			get {
+ 				if (isLikeATownNPC && aiStyle == 7 && velocity.Y == 0f)
 @@ -653,7 +_,7 @@
  		public static void UpdateFoundActiveNPCs() {
  			for (int i = 0; i < 200; i++) {
@@ -562,10 +575,11 @@
  					Main.npc[i].active = false;
  					NetMessage.SendData(23, -1, -1, null, i);
  				}
-@@ -59769,6 +_,7 @@
+@@ -59769,6 +_,8 @@
  			if (type == 551)
  				itemType = 3860;
  
++			//Left in for compatibility. It is now in ItemDropDatabase.RegisterBosses
 +			NPCLoader.BossBag(this, ref itemType);
  			DropItemInstanced(position, base.Size, itemType);
  		}
