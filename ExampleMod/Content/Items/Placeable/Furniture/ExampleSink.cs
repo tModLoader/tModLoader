@@ -18,17 +18,17 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		}
 
 		public override void SetDefaults() {
-			item.useStyle = ItemUseStyleID.Swing;
-			item.useTurn = true;
-			item.useAnimation = 15;
-			item.useTime = 10;
-			item.autoReuse = true;
-			item.maxStack = 999;
-			item.consumable = true;
-			item.createTile = ModContent.TileType<Tiles.ExampleSink>();
-			item.width = 24;
-			item.height = 30;
-			item.value = 3000;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.useTurn = true;
+			Item.useAnimation = 15;
+			Item.useTime = 10;
+			Item.autoReuse = true;
+			Item.maxStack = 999;
+			Item.consumable = true;
+			Item.createTile = ModContent.TileType<Tiles.ExampleSink>();
+			Item.width = 24;
+			Item.height = 30;
+			Item.value = 3000;
 		}
 
 		public override void AddRecipes() {

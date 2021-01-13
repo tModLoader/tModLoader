@@ -19,25 +19,25 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		public override void SetDefaults() {
-			item.width = 26;
-			item.height = 42;
+			Item.width = 26;
+			Item.height = 42;
 
-			item.useStyle = ItemUseStyleID.Swing;
-			item.useTime = 20;
-			item.useAnimation = 20;
-			item.autoReuse = true;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.useTime = 20;
+			Item.useAnimation = 20;
+			Item.autoReuse = true;
 
-			item.DamageType = DamageClass.Melee;
-			item.damage = 50;
-			item.knockBack = 6;
-			item.crit = 6;
+			Item.DamageType = DamageClass.Melee;
+			Item.damage = 50;
+			Item.knockBack = 6;
+			Item.crit = 6;
 
-			item.value = Item.buyPrice(gold: 5);
-			item.rare = ItemRarityID.Pink;
-			item.UseSound = SoundID.Item1;
+			Item.value = Item.buyPrice(gold: 5);
+			Item.rare = ItemRarityID.Pink;
+			Item.UseSound = SoundID.Item1;
 
-			item.shoot = ProjectileID.StarWrath; // ID of the projectiles the sword will shoot
-			item.shootSpeed = 8f; // Speed of the projectiles the sword will shoot
+			Item.shoot = ProjectileID.StarWrath; // ID of the projectiles the sword will shoot
+			Item.shootSpeed = 8f; // Speed of the projectiles the sword will shoot
 		}
 		// This method gets called when firing your weapon/sword.
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
