@@ -483,7 +483,7 @@
  				return;
  
  			Player closestPlayer = Main.player[Player.FindClosest(position, width, height)];
-@@ -58833,6 +_,9 @@
+@@ -58833,9 +_,13 @@
  			if ((type == 23 && Main.hardMode) || (SpawnedFromStatue && NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue[type] && !Main.hardMode) || (SpawnedFromStatue && NPCID.Sets.StatueSpawnedDropRarity[type] != -1f && (Main.rand.NextFloat() >= NPCID.Sets.StatueSpawnedDropRarity[type] || !AnyInteractions())))
  				return;
  
@@ -493,14 +493,10 @@
  			bool num = downedMechBoss1 && downedMechBoss2 && downedMechBoss3;
  			DoDeathEvents_BeforeLoot(closestPlayer);
  			NPCLoot_DropItems(closestPlayer);
-@@ -58844,6 +_,7 @@
- 					ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[32].Key), new Color(50, 255, 130));
- 			}
- 
 +			NPCLoader.OnKill(this);
- 			NPCLoot_DropMoney(closestPlayer);
- 			NPCLoot_DropHeals(closestPlayer);
- 		}
+ 			DoDeathEvents(closestPlayer);
+ 			if (!num && downedMechBoss1 && downedMechBoss2 && downedMechBoss3 && Main.hardMode) {
+ 				if (Main.netMode == 0)
 @@ -58881,7 +_,7 @@
  			WoFKilledToday = false;
  		}
