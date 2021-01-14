@@ -48,10 +48,10 @@ namespace ExampleMod.Common.GlobalNPCs
 					itemType = ItemID.RottenChunk;
 				}
 				//33% chance to drop other corresponding item in addition
-				IItemDropRule exampleItemRule = ItemDropRule.Common(itemType, dropsOutOfY: 3, dropsXoutofY: 1);
+				IItemDropRule rule = ItemDropRule.Common(itemType, dropsOutOfY: 3, dropsXoutofY: 1);
 
-				//Apply our ExampleItem drop rule to the conditional rule
-				conditionalRule.OnSuccess(exampleItemRule);
+				//Apply our item drop rule to the conditional rule
+				conditionalRule.OnSuccess(rule);
 				//Add the rule
 				npcLoot.Add(conditionalRule);
 				//It will result in the drop being shown in the bestiary, but only drop if the condition is true.
