@@ -2234,12 +2234,10 @@
  						immune = false;
  						int num25 = (int)((float)num18 * gravDir - (float)num17) * 10;
  						if (mount.Active)
-@@ -17761,9 +_,13 @@
+@@ -17761,9 +_,11 @@
  			else
  				afkCounter = 0;
  
-+			// done this way on purpose to comply with current crit mechanics, will fix crit once and for all at a later date   -Thomas
-+			allCrit += inventory[selectedItem].crit;
 +			/*
  			meleeCrit += inventory[selectedItem].crit;
  			magicCrit += inventory[selectedItem].crit;
@@ -3737,7 +3735,7 @@
  		}
  
  		public int GetWeaponCrit(Item sItem) {
-+			int crit = allCrit;
++			int crit = allCrit + sItem.crit;
 +			if (sItem.DamageType != DamageClass.Generic)
 +				crit += GetCritChance(sItem.DamageType);
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
