@@ -20,11 +20,6 @@ namespace ExampleMod.Content.Items.Consumables
 			NPCID.Sets.MPAllowedEnemies[NPCID.Plantera] = true;
 		}
 
-		public override void Unload() {
-			//If the mod is disabled, the flag should be reset again to retain the original state of the game
-			NPCID.Sets.MPAllowedEnemies[NPCID.Plantera] = false;
-		}
-
 		public override void SetDefaults() {
 			Item.width = 20;
 			Item.height = 20;
@@ -56,7 +51,7 @@ namespace ExampleMod.Content.Items.Consumables
 				}
 				else {
 					//If the player is in multiplayer, request a spawn
-					//This will only work if NPCID.Sets.MPAllowedEnemies[NPCID.Plantera] is true, which we set in this class above
+					//This will only work if NPCID.Sets.MPAllowedEnemies[type] is true, which we set in this class above
 					NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
 				}
 			}
