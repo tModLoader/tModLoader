@@ -374,6 +374,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("ShowModMenuNotifications", notifyNewMainMenuThemes);
 			Main.Configuration.Put("LastSelectedModMenu", MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Put("KnownMenuThemes", MenuLoader.KnownMenuSaveString);
+			Main.Configuration.Put("BossBarStyle", BossBarLoader.lastSelectedStyle);
 		}
 
 		internal static void LoadConfiguration()
@@ -393,6 +394,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("ShowModMenuNotifications", ref notifyNewMainMenuThemes);
 			Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
+			Main.Configuration.Get("BossBarStyle", ref BossBarLoader.lastSelectedStyle);
 		}
 
 		internal static void MigrateSettings()
