@@ -13,6 +13,7 @@ namespace ExampleMod.Common.GlobalNPCs
 		//ModifyNPCLoot uses a unique system called the ItemDropDatabase, which has many different rules for many different drop use cases.
 		//Here we go through all of them, and how they can be used.
 		//There are tons of other examples in vanilla! In a decompiled vanilla build, GameContent/ItemDropRules/ItemDropDatabase adds item drops to every single vanilla NPC, which can be a good resource.
+
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 			if (!NPCID.Sets.CountsAsCritter[npc.type]) { //If npc is not a critter
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1)); //Make it drop ExampleItem.
@@ -36,6 +37,16 @@ namespace ExampleMod.Common.GlobalNPCs
 				
 				npcLoot.Add(ItemDropRule.Common(ItemID.GreenCap, 1)); //In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
+
+			//TODO: Add the rest of the vanilla drop rules!!
+		}
+
+		//ModifyGlobalLoot allows you to modify loot that every NPC should be able to drop, preferably with a condition.
+		//Vanilla uses this for the biome keys, souls of night/light, as well as the holiday drops.
+		//Any drop rules in ModifyGlobalLoot should only run once. Everything else should go in ModifyNPCLoot.
+		public override void ModifyGlobalLoot(GlobalLoot globalLoot) {
+			globalLoot.Add(ItemDropRule.ByCondition(new Conditions.IsMasterMode(), ModContent.ItemType<ExampleSoul>(), 5, 1, 1)); //If the world is in master mode, drop ExampleSouls 20% of the time from every npc.
+			//TODO: Make it so it only drops from enemies in ExampleBiome when that gets made.
 		}
 	}
 }

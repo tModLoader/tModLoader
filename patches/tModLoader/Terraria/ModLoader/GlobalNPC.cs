@@ -199,8 +199,15 @@ namespace Terraria.ModLoader
 		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.
 		/// </summary>
 		/// <param name="npc"></param>
-		/// <param name="dropRule"></param>
+		/// <param name="npcLoot"></param>
 		public virtual void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
+		}
+
+		/// <summary>
+		/// Allows you to add and modify global loot rules that are conditional, i.e. vanilla's biome keys and souls.
+		/// </summary>
+		/// <param name="globalLoot"></param>
+		public virtual void ModifyGlobalLoot(GlobalLoot globalLoot) {
 		}
 
 		/// <summary>

@@ -401,6 +401,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookModifyGlobalLoot = AddHook<Action<GlobalLoot>>(g => g.ModifyGlobalLoot);
+		public static void ModifyGlobalLoot(GlobalLoot globalLoot) {
+			foreach (GlobalNPC g in HookModifyGlobalLoot.arr) {
+				g.ModifyGlobalLoot(globalLoot);
+			}
+		}
+
 		public static void BossLoot(NPC npc, ref string name, ref int potionType) {
 			npc.ModNPC?.BossLoot(ref name, ref potionType);
 		}
