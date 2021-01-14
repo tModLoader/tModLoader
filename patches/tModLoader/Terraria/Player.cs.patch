@@ -2234,6 +2234,20 @@
  						immune = false;
  						int num25 = (int)((float)num18 * gravDir - (float)num17) * 10;
  						if (mount.Active)
+@@ -17761,9 +_,13 @@
+ 			else
+ 				afkCounter = 0;
+ 
++			// done this way on purpose to comply with current crit mechanics, will fix crit once and for all at a later date   -Thomas
++			allCrit += inventory[selectedItem].crit;
++			/*
+ 			meleeCrit += inventory[selectedItem].crit;
+ 			magicCrit += inventory[selectedItem].crit;
+ 			rangedCrit += inventory[selectedItem].crit;
++			*/
+ 			if (whoAmI == Main.myPlayer) {
+ 				Main.musicBox2 = -1;
+ 				if (Main.SceneMetrics.WaterCandleCount > 0)
 @@ -17794,12 +_,14 @@
  					AddBuff(194, 2, quiet: false);
  			}
