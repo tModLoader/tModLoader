@@ -315,7 +315,7 @@ namespace Terraria.ModLoader
 			f.SetHashAlgorithm("SHA1");
 			v.FromXmlString(xmlPublicKey);
 			f.SetKey(v);
-			return f.VerifySignature(mod.hash, mod.signature);
+			return f.VerifySignature(mod.Hash, mod.Signature);
 		}
 
 		private static bool _pauseSavingEnabledMods;

@@ -874,7 +874,7 @@
  						num2 = 1;
  
 -					if (num2 == 0)
-+					if (num2 == 0 && (npc[i].modNPC == null || npc[i].modNPC.music < 0))
++					if (num2 == 0 && (npc[i].ModNPC == null || npc[i].ModNPC.music < 0))
  						continue;
  
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[i].position.X + (float)(npc[i].width / 2)) - num, (int)(npc[i].position.Y + (float)(npc[i].height / 2)) - num, num * 2, num * 2);
@@ -901,9 +901,9 @@
  
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[j].position.X + (float)(npc[j].width / 2)) - num2, (int)(npc[j].position.Y + (float)(npc[j].height / 2)) - num2, num2 * 2, num2 * 2);
  					if (rectangle.Intersects(value)) {
-+						if (npc[j].modNPC != null && npc[j].modNPC.music >= 0 && (modMusic < 0 || npc[j].modNPC.musicPriority > modPriority)) {
-+							modMusic = npc[j].modNPC.music;
-+							modPriority = npc[j].modNPC.musicPriority;
++						if (npc[j].ModNPC != null && npc[j].ModNPC.music >= 0 && (modMusic < 0 || npc[j].ModNPC.musicPriority > modPriority)) {
++							modMusic = npc[j].ModNPC.music;
++							modPriority = npc[j].ModNPC.musicPriority;
 +						}
  						switch (num3) {
  							case 1:
@@ -1316,7 +1316,7 @@
 +				if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "OneDropLogo") {
 +					int num20 = (int)((float)(int)mouseTextColor * 1f);
 +					Color color2 = Color.Black;
-+					drawableLines[k].color = new Color(num20, num20, num20, num20);
++					drawableLines[k].Color = new Color(num20, num20, num20, num20);
 +					if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[k], ref num12) || !globalCanDraw)
 +						goto PostDraw;
 +
@@ -1329,7 +1329,7 @@
  						}
 -
 -						spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+						Color drawColor2 = drawableLines[k].overrideColor ?? drawableLines[k].color;
++						Color drawColor2 = drawableLines[k].overrideColor ?? drawableLines[k].Color;
 +						spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, (l != 4) ? color2 : drawColor2, drawableLines[k].rotation, drawableLines[k].origin, (drawableLines[k].baseScale.X + drawableLines[k].baseScale.Y) / 2f, SpriteEffects.None, 0f);
  					}
  				}
@@ -1378,7 +1378,7 @@
 +					if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "JourneyResearch")
  						black = Colors.JourneyMode;
  
-+					drawableLines[k].color = black;
++					drawableLines[k].Color = black;
 +					Color realLineColor = black;
 +
 +					if (overrideColor[k].HasValue) {
@@ -2037,8 +2037,8 @@
  			float num = 0f;
  			if (theNPC.type == 125)
  				num = 30f;
-+			else if (theNPC.modNPC != null)
-+				num = theNPC.modNPC.drawOffsetY;
++			else if (theNPC.ModNPC != null)
++				num = theNPC.ModNPC.drawOffsetY;
  			else if (theNPC.type == 54)
  				num = 2f;
  			else if (theNPC.type == 205)
@@ -2144,7 +2144,7 @@
  					if (projectile.type == 473)
  						EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height()), new Microsoft.Xna.Framework.Color(255, 255, 0, 0), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
  
-+					ModProjectile modProjectile = projectile.modProjectile;
++					ModProjectile modProjectile = projectile.ModProjectile;
 +					if (modProjectile != null && ModContent.TryGetTexture(modProjectile.GlowTexture, out var glowTexture))
 +						spriteBatch.Draw(glowTexture.Value, new Vector2(projectile.position.X - screenPosition.X + num138 + num137, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height())), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0f);
 +

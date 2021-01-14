@@ -8,7 +8,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 		public override void SetDefaults() {
 			base.SetDefaults();
 
-			item.Size = new Vector2(18, 20);
+			Item.Size = new Vector2(18, 20);
 		}
 
 		public override bool IsVanitySet(int head, int body, int legs)
