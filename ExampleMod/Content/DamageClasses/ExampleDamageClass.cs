@@ -28,7 +28,7 @@ namespace ExampleMod.Content.DamageClasses
 			// The below makes your class benefit at 500% effectiveness from all magic stat bonuses.
 			/*
 			if (damageClass == DamageClass.Magic)
-				return 1f;
+				return 5f;
 			*/
 
 			// PROMPT: You want your damage class to benefit at a equal rate from two vanilla classes' stat boosts.
