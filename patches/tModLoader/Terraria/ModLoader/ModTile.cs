@@ -183,7 +183,7 @@ namespace Terraria.ModLoader
 			TileLoader.tiles.Add(this);
 		}
 
-		public override void SetupContent() {
+		public sealed override void SetupContent() {
 			TextureAssets.Tile[Type] = ModContent.GetTexture(Texture);
 
 			SetDefaults();
@@ -307,7 +307,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this tile is within a certain range of the player (around the same range water fountains and music boxes work). The closer parameter is whether or not the tile is within the range at which things like campfires and banners work.
+		/// Allows you to make things happen when this tile is within a certain range of the player (around the same range water fountains and music boxes work). The closer parameter is whether or not the tile is within the range at which aesthetics like monoliths and music boxes and clocks work. It is false for campfires and heart lanterns.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>

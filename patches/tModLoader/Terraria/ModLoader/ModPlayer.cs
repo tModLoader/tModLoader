@@ -19,14 +19,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The Player instance that this ModPlayer instance is attached to.
 		/// </summary>
-		public Player player {get;internal set;}
+		public Player Player { get; internal set; }
 
 		internal int index;
 
 		internal ModPlayer CreateFor(Player newPlayer) {
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
 			modPlayer.Mod = Mod;
-			modPlayer.player = newPlayer;
+			modPlayer.Player = newPlayer;
 			modPlayer.index = index;
 			modPlayer.Initialize();
 			return modPlayer;
@@ -723,28 +723,30 @@ namespace Terraria.ModLoader
 		/// <param name="b"></param>
 		/// <param name="a"></param>
 		/// <param name="fullBright"></param>
-		public virtual void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
+		public virtual void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
 		}
 
 		/// <summary>
 		/// Allows you to modify the drawing parameters of the player before drawing begins.
 		/// </summary>
 		/// <param name="drawInfo"></param>
-		public virtual void ModifyDrawInfo(ref PlayerDrawInfo drawInfo) {
+		public virtual void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
 		}
 
 		/// <summary>
-		/// Allows you to modify the drawing of the player. This is done by removing from, adding to, or rearranging the list, by setting some of the layers' visible field to false, etc.
+		/// Allows you to reorder the player draw layers. 
+		/// This is called once at the end of mod loading, not during the game.
+		/// Use with extreme caution, or risk breaking other mods.
 		/// </summary>
-		/// <param name="layers"></param>
-		public virtual void ModifyDrawLayers(List<PlayerLayer> layers) {
+		/// <param name="positions">Add/remove/change the positions applied to each layer here</param>
+		public virtual void ModifyDrawLayerOrdering(IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position> positions) {
 		}
 
 		/// <summary>
-		/// Allows you to modify the drawing of the player head on the minimap. This is done by removing from, adding to, or rearranging the list, by setting some of the layers' visible field to false, etc.
+		/// Allows you to modify the visiblity of layers about to be drawn
 		/// </summary>
 		/// <param name="layers"></param>
-		public virtual void ModifyDrawHeadLayers(List<PlayerHeadLayer> layers) {
+		public virtual void HideDrawLayers(PlayerDrawSet drawInfo) {
 		}
 
 		/// <summary>

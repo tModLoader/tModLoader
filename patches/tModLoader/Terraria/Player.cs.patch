@@ -2121,9 +2121,9 @@
  				if (projectile.ai[0] != 2f || projectile.position.HasNaNs())
  					continue;
 +				int type = projectile.type;
-+				bool useAiType = projectile.modProjectile != null && projectile.modProjectile.aiType > 0;
++				bool useAiType = projectile.ModProjectile != null && projectile.ModProjectile.aiType > 0;
 +				if (useAiType) {
-+					projectile.type = projectile.modProjectile.aiType;
++					projectile.type = projectile.ModProjectile.aiType;
 +				}
  
  				num += projectile.position.X + (float)(projectile.width / 2);
@@ -3452,6 +3452,28 @@
  				if (Main.netMode != 0)
  					NetMessage.SendPlayerHurt(i, playerDeathReason, num, direction, flag, pvp: true, -1);
  
+@@ -30601,11 +_,18 @@
+ 				if (!Main.npc[i].active || Main.npc[i].immune[whoAmI] != 0 || attackCD != 0)
+ 					continue;
+ 
++				bool? modCanHit = CombinedHooks.CanPlayerHitNPCWithItem(this, sItem, Main.npc[i]);
++
++				if (modCanHit == false) {
++					continue;
++				}
++
+ 				Main.npc[i].position += Main.npc[i].netOffset;
+-				if (!Main.npc[i].dontTakeDamage && CanNPCBeHitByPlayerOrPlayerProjectile(Main.npc[i])) {
+-					if (!Main.npc[i].friendly || (Main.npc[i].type == 22 && killGuide) || (Main.npc[i].type == 54 && killClothier)) {
++				if (modCanHit == true || ((!Main.npc[i].dontTakeDamage && CanNPCBeHitByPlayerOrPlayerProjectile(Main.npc[i])))) {
++					if (modCanHit == true || ((!Main.npc[i].friendly || (Main.npc[i].type == 22 && killGuide) || (Main.npc[i].type == 54 && killClothier)))) {
+ 						Rectangle value = new Rectangle((int)Main.npc[i].position.X, (int)Main.npc[i].position.Y, Main.npc[i].width, Main.npc[i].height);
++
+-						if (itemRectangle.Intersects(value) && (Main.npc[i].noTileCollide || CanHit(Main.npc[i]))) {
++						if (modCanHit == true || (itemRectangle.Intersects(value) && (Main.npc[i].noTileCollide || CanHit(Main.npc[i])))) {
+ 							int num = originalDamage;
+ 							bool flag = false;
+ 							int weaponCrit = GetWeaponCrit(sItem);
 @@ -30638,6 +_,11 @@
  							}
  
@@ -3983,7 +4005,7 @@
  						Main.item[num].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num].noGrabDelay = 100;
  						Main.item[num].newAndShiny = false;
-+						Main.item[num].modItem = item.modItem;
++						Main.item[num].ModItem = item.ModItem;
 +						Main.item[num].globalItems = item.globalItems;
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num);
@@ -3998,7 +4020,7 @@
  						Main.item[num2].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num2].noGrabDelay = 100;
  						Main.item[num2].newAndShiny = false;
-+						Main.item[num2].modItem = armor[i].modItem;
++						Main.item[num2].ModItem = armor[i].ModItem;
 +						Main.item[num2].globalItems = armor[i].globalItems;
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num2);
@@ -4007,7 +4029,7 @@
  						Main.item[num3].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num3].noGrabDelay = 100;
  						Main.item[num3].newAndShiny = false;
-+						Main.item[num3].modItem = dye[i].modItem;
++						Main.item[num3].ModItem = dye[i].ModItem;
 +						Main.item[num3].globalItems = dye[i].globalItems;
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num3);
@@ -4016,7 +4038,7 @@
  						Main.item[num4].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num4].noGrabDelay = 100;
  						Main.item[num4].newAndShiny = false;
-+						Main.item[num4].modItem = miscEquips[i].modItem;
++						Main.item[num4].ModItem = miscEquips[i].ModItem;
 +						Main.item[num4].globalItems = miscEquips[i].globalItems;
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num4);
@@ -4025,7 +4047,7 @@
  					Main.item[num5].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  					Main.item[num5].noGrabDelay = 100;
  					Main.item[num5].newAndShiny = false;
-+					Main.item[num5].modItem = miscDyes[i].modItem;
++					Main.item[num5].ModItem = miscDyes[i].ModItem;
 +					Main.item[num5].globalItems = miscDyes[i].globalItems;
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, num5);

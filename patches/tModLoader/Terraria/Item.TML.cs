@@ -11,10 +11,7 @@ namespace Terraria
 	{
 		public static readonly Func<TagCompound, Item> DESERIALIZER = ItemIO.Load;
 
-		public ModItem modItem {
-			get;
-			internal set;
-		}
+		public ModItem ModItem { get; internal set; }
 
 		internal GlobalItem[] globalItems = new GlobalItem[0];
 

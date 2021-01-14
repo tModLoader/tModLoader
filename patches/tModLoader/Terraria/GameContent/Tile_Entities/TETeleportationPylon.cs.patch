@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/Tile_Entities/TETeleportationPylon.cs
++++ src/tModLoader/Terraria/GameContent/Tile_Entities/TETeleportationPylon.cs
+@@ -2,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.Tile_Entities
+ {
+-	public class TETeleportationPylon : TileEntity
++	public sealed class TETeleportationPylon : TileEntity
+ 	{
+ 		private static byte _myEntityID;
+ 		private const int MyTileID = 597;

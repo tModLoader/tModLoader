@@ -13,6 +13,9 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -23,36 +26,77 @@ namespace ExampleMod.Content.NPCs
 		public override void SetStaticDefaults() {
 			// DisplayName automatically assigned from .lang files, but the commented line below is the normal approach.
 			// DisplayName.SetDefault("Example Person");
-			Main.npcFrameCount[npc.type] = 25; // The amount of frames the NPC has
+			Main.npcFrameCount[Type] = 25; // The amount of frames the NPC has
 
-			NPCID.Sets.ExtraFramesCount[npc.type] = 9; // Generally for Town NPCs, but this is how the NPC does extra things such as sitting in a chair and talking to other NPCs. 
-			NPCID.Sets.AttackFrameCount[npc.type] = 4;
-			NPCID.Sets.DangerDetectRange[npc.type] = 700; // The amount of pixels away from the center of the npc that it tries to attack enemies.
-			NPCID.Sets.AttackType[npc.type] = 0;
-			NPCID.Sets.AttackTime[npc.type] = 90; // The amount of time it takes for the NPC's attack animation to be over once it starts.
-			NPCID.Sets.AttackAverageChance[npc.type] = 30;
-			NPCID.Sets.HatOffsetY[npc.type] = 4; // For when a party is active, the party hat spawns at a Y offset.
+			NPCID.Sets.ExtraFramesCount[Type] = 9; // Generally for Town NPCs, but this is how the NPC does extra things such as sitting in a chair and talking to other NPCs.
+			NPCID.Sets.AttackFrameCount[Type] = 4;
+			NPCID.Sets.DangerDetectRange[Type] = 700; // The amount of pixels away from the center of the npc that it tries to attack enemies.
+			NPCID.Sets.AttackType[Type] = 0;
+			NPCID.Sets.AttackTime[Type] = 90; // The amount of time it takes for the NPC's attack animation to be over once it starts.
+			NPCID.Sets.AttackAverageChance[Type] = 30;
+			NPCID.Sets.HatOffsetY[Type] = 4; // For when a party is active, the party hat spawns at a Y offset.
+
+			// Influences how the NPC looks in the Bestiary
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
+				Direction = 1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
+				// Rotation = MathHelper.ToRadians(180) // You can also change the rotation of an NPC. Rotation is measured in radians
+				// If you want to see an example of manually modifying these when the NPC is drawn, see PreDraw
+			};
+
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
 
 		public override void SetDefaults() {
-			npc.townNPC = true; // Sets NPC to be a Town NPC
-			npc.friendly = true; // NPC Will not attack player
-			npc.width = 18;
-			npc.height = 40;
-			npc.aiStyle = 7;
-			npc.damage = 10;
-			npc.defense = 15;
-			npc.lifeMax = 250;
-			npc.HitSound = SoundID.NPCHit1;
-			npc.DeathSound = SoundID.NPCDeath1;
-			npc.knockBackResist = 0.5f;
+			NPC.townNPC = true; // Sets NPC to be a Town NPC
+			NPC.friendly = true; // NPC Will not attack player
+			NPC.width = 18;
+			NPC.height = 40;
+			NPC.aiStyle = 7;
+			NPC.damage = 10;
+			NPC.defense = 15;
+			NPC.lifeMax = 250;
+			NPC.HitSound = SoundID.NPCHit1;
+			NPC.DeathSound = SoundID.NPCDeath1;
+			NPC.knockBackResist = 0.5f;
 			animationType = NPCID.Guide;
 		}
 
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				// Sets the preferred biomes of this town NPC listed in the bestiary.
+				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
+
+				// Sets your NPC's flavor text in the bestiary.
+				new FlavorTextBestiaryInfoElement("Hailing from a mysterious greyscale cube world, the Example Person is here to help you understand everything about tModLoader."),
+
+				// You can add multiple elements if you really wanted to
+				// You can also use localization keys (see Localization/en-US.lang)
+				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExamplePerson")
+			});
+		}
+
+		// The PreDraw hook is useful for drawing things before our sprite is drawn or running code before the sprite is drawn
+		// Returning false will allow you to manually draw your NPC
+		public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor) {
+			if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(Type, out NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers)) {
+                drawModifiers.Rotation += 0.001f;
+
+				// Replace the existing NPCBestiaryDrawModifiers with our new one with an adjusted rotation
+				NPCID.Sets.NPCBestiaryDrawOffset.Remove(Type);
+				NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+			}
+
+			return true;
+		}
+
 		public override void HitEffect(int hitDirection, double damage) {
-			int num = npc.life > 0 ? 1 : 5;
+			int num = NPC.life > 0 ? 1 : 5;
+
 			for (int k = 0; k < num; k++) {
-				Dust.NewDust(npc.position, npc.width, npc.height, ModContent.DustType<Sparkle>());
+				Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
 			}
 		}
 
@@ -95,10 +139,13 @@ namespace ExampleMod.Content.NPCs
 			switch (WorldGen.genRand.Next(4)) {
 				case 0: // The cases are potential names for the NPC.
 					return "Someone";
+
 				case 1:
 					return "Somebody";
+
 				case 2:
 					return "Blocky";
+
 				default:
 					return "Colorless";
 			}
@@ -160,6 +207,7 @@ namespace ExampleMod.Content.NPCs
 				shop = true;
 			}
 		}
+
 		// Not completely finished, but below is what the NPC will sell
 
 		// public override void SetupShop(Chest shop, ref int nextSlot) {
@@ -205,8 +253,8 @@ namespace ExampleMod.Content.NPCs
 		//
 		// 	// if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
 		// 	// 	foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
-		// 	// 		if (item.IsUnloaded) continue;
-		// 	// 		shop.item[nextSlot].SetDefaults(item.Type);
+		// 	// 		if (Item.IsUnloaded) continue;
+		// 	// 		shop.item[nextSlot].SetDefaults(Item.Type);
 		// 	// 		shop.item[nextSlot].shopCustomPrice = 0;
 		// 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
 		// 	// 		nextSlot++;
@@ -215,10 +263,10 @@ namespace ExampleMod.Content.NPCs
 		// 	// }
 		// }
 
-		// TODO: implement
-		// public override void NPCLoot() {
-		// 	Item.NewItem(npc.getRect(), ItemType<Items.Armor.ExampleCostume>());
-		// }
+		public override void ModifyNPCLoot(NPCLoot npcLoot) {
+			// Readd this once ExampleCostume is implemented.
+			// npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleCostume>(), 1));
+		}
 
 		// Make this Town NPC teleport to the King and/or Queen statue when triggered.
 		public override bool CanGoToStatue(bool toKingStatue) => true;
@@ -228,7 +276,7 @@ namespace ExampleMod.Content.NPCs
 			if (Main.netMode == NetmodeID.Server) {
 				ModPacket packet = Mod.GetPacket();
 				packet.Write((byte)ExampleModMessageType.ExampleTeleportToStatue);
-				packet.Write((byte)npc.whoAmI);
+				packet.Write((byte)NPC.whoAmI);
 				packet.Send();
 			}
 			else {
@@ -247,7 +295,7 @@ namespace ExampleMod.Content.NPCs
 					position.Y = Math.Sign(position.Y) * 20;
 				}
 
-				Dust.NewDustPerfect(npc.Center + position, ModContent.DustType<Sparkle>(), Vector2.Zero).noGravity = true;
+				Dust.NewDustPerfect(NPC.Center + position, ModContent.DustType<Sparkle>(), Vector2.Zero).noGravity = true;
 			}
 		}
 

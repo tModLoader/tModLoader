@@ -343,11 +343,11 @@
 +		public void CloneDefaults(int TypeToClone) {
 +			int originalType = type;
 +			int originalNetID = netID;
-+			ModItem originalModItem = modItem;
++			ModItem originalModItem = ModItem;
 +			SetDefaults(TypeToClone);
 +			type = originalType;
 +			netID = originalNetID;
-+			modItem = originalModItem;
++			ModItem = originalModItem;
 +		}
 +
  		public void SetDefaults(int Type, bool noMatCheck = false) {
@@ -363,10 +363,19 @@
  			if (type == 0) {
  				netID = 0;
  				stack = 0;
-@@ -44726,6 +_,11 @@
+@@ -44726,6 +_,20 @@
  				SetDefaults5(type);
  			}
  
++			//Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
++			if (type < ItemID.Count) {
++				if (useTime == useAnimation) {
++					useTime--;
++				}
++
++				useAnimation--;
++			}
++
 +			//Set 'master' bool for vanilla items with master rarity.
 +			if (type < ItemID.Count && rare == ItemRarityID.Master) {
 +				master = true;
@@ -393,7 +402,7 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
-+			modItem = null;
++			ModItem = null;
 +			globalItems = new GlobalItem[0];
 +			damageType = DamageClass.Generic;
  			sentry = false;
@@ -525,7 +534,7 @@
 -		public Item DeepClone() => (Item)MemberwiseClone();
 +		public Item Clone() {
 +			Item newItem = (Item)MemberwiseClone();
-+			newItem.modItem = modItem?.Clone(newItem);
++			newItem.ModItem = ModItem?.Clone(newItem);
 +			newItem.globalItems = globalItems.Select(g => g.Clone(this, newItem)).ToArray();
 +			return newItem;
 +		}
@@ -534,7 +543,7 @@
 +		// specifically needed for reforging
 +		public Item CloneWithModdedDataFrom(Item dataSource) {
 +			Item newItem = (Item)MemberwiseClone();
-+			newItem.modItem = dataSource.modItem?.Clone(newItem);
++			newItem.ModItem = dataSource.ModItem?.Clone(newItem);
 +			newItem.globalItems = dataSource.globalItems.Select(g => g.Clone(dataSource, newItem)).ToArray();
 +			return newItem;
 +		}
@@ -547,8 +556,17 @@
  			dye = 0;
  			shoot = 0;
  			mountType = -1;
-+			modItem = null;
++			ModItem = null;
 +			globalItems = new GlobalItem[0];
  		}
  
  		public void OnPurchase(Item item) {
+@@ -46183,7 +_,7 @@
+ 				Prefix(reader.ReadByte());
+ 			}
+ 
+-			if (type >= 5088)
++			if (type >= ItemLoader.ItemCount)
+ 				TurnToAir();
+ 		}
+ 
