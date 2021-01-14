@@ -22,14 +22,14 @@ namespace ExampleMod.Content.Items.Ammo
 		}
 
 		public override void SetDefaults() {
-			item.shoot = ModContent.ProjectileType<ExampleSolutionProjectile>() - ProjectileID.PureSpray;
-			item.ammo = AmmoID.Solution;
-			item.width = 10;
-			item.height = 12;
-			item.value = Item.buyPrice(0, 0, 25);
-			item.rare = ItemRarityID.Orange;
-			item.maxStack = 999;
-			item.consumable = true;
+			Item.shoot = ModContent.ProjectileType<ExampleSolutionProjectile>() - ProjectileID.PureSpray;
+			Item.ammo = AmmoID.Solution;
+			Item.width = 10;
+			Item.height = 12;
+			Item.value = Item.buyPrice(0, 0, 25);
+			Item.rare = ItemRarityID.Orange;
+			Item.maxStack = 999;
+			Item.consumable = true;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -45,33 +45,33 @@ namespace ExampleMod.Content.Items.Ammo
 	{
 		public override string Texture => ExampleMod.AssetPath + "Textures/Projectiles/ExampleSolution";
 
-		public ref float Progress => ref projectile.ai[0];
+		public ref float Progress => ref Projectile.ai[0];
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Spray");
 		}
 
 		public override void SetDefaults() {
-			projectile.width = 6;
-			projectile.height = 6;
-			projectile.friendly = true;
-			projectile.alpha = 255;
-			projectile.penetrate = -1;
-			projectile.extraUpdates = 2;
-			projectile.tileCollide = false;
-			projectile.ignoreWater = true;
+			Projectile.width = 6;
+			Projectile.height = 6;
+			Projectile.friendly = true;
+			Projectile.alpha = 255;
+			Projectile.penetrate = -1;
+			Projectile.extraUpdates = 2;
+			Projectile.tileCollide = false;
+			Projectile.ignoreWater = true;
 		}
 
 		public override void AI() {
 			//Set the dust type to ExampleSolution
 			int dustType = ModContent.DustType<Dusts.ExampleSolution>();
 
-			if (projectile.owner == Main.myPlayer) {
-				Convert((int)(projectile.position.X + (projectile.width * 0.5f)) / 16, (int)(projectile.position.Y + (projectile.height * 0.5f)) / 16, 2);
+			if (Projectile.owner == Main.myPlayer) {
+				Convert((int)(Projectile.position.X + (Projectile.width * 0.5f)) / 16, (int)(Projectile.position.Y + (Projectile.height * 0.5f)) / 16, 2);
 			}
 
-			if (projectile.timeLeft > 133) {
-				projectile.timeLeft = 133;
+			if (Projectile.timeLeft > 133) {
+				Projectile.timeLeft = 133;
 			}
 
 			if (Progress > 7f) {
@@ -92,7 +92,7 @@ namespace ExampleMod.Content.Items.Ammo
 
 				Progress += 1f;
 
-				int dustIndex = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, dustType, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 100);
+				int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, dustType, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 100);
 				Dust dust = Main.dust[dustIndex];
 				dust.noGravity = true;
 				dust.scale *= 1.75f;
@@ -104,7 +104,7 @@ namespace ExampleMod.Content.Items.Ammo
 				Progress += 1f;
 			}
 
-			projectile.rotation += 0.3f * projectile.direction;
+			Projectile.rotation += 0.3f * Projectile.direction;
 		}
 
 		private static void Convert(int i, int j, int size = 4) {

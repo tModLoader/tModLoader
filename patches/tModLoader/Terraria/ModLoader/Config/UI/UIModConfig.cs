@@ -251,7 +251,7 @@ namespace Terraria.ModLoader.Config.UI
 					SetMessage("Asking server to accept changes...", Color.Yellow);
 
 					var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
-					requestChanges.Write(pendingConfig.mod.Name);
+					requestChanges.Write(pendingConfig.Mod.Name);
 					requestChanges.Write(pendingConfig.Name);
 					string json = JsonConvert.SerializeObject(pendingConfig, ConfigManager.serializerSettingsCompact);
 					requestChanges.Write(json);
@@ -262,7 +262,7 @@ namespace Terraria.ModLoader.Config.UI
 					return;
 				}
 				// SP or MP with ClientSide
-				ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.mod, modConfig.Name);
+				ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.Mod, modConfig.Name);
 				if (loadTimeConfig.NeedsReload(pendingConfig)) {
 					SoundEngine.PlaySound(SoundID.MenuClose);
 					SetMessage("Can't save because changes would require a reload.", Color.Red);
@@ -386,7 +386,7 @@ namespace Terraria.ModLoader.Config.UI
 			updateNeeded = false;
 			SetMessage("", Color.White);
 			string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(modConfig.GetType(), typeof(LabelAttribute)))?.Label ?? modConfig.Name;
-			headerTextPanel.SetText(string.IsNullOrEmpty(configDisplayName) ? modConfig.mod.DisplayName : modConfig.mod.DisplayName + ": " + configDisplayName);
+			headerTextPanel.SetText(string.IsNullOrEmpty(configDisplayName) ? modConfig.Mod.DisplayName : modConfig.Mod.DisplayName + ": " + configDisplayName);
 			pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
 			pendingChanges = pendingRevertDefaults;
 			if (pendingRevertDefaults) {

@@ -35,7 +35,7 @@ namespace Terraria.ModLoader
 				path = Path.Combine(ModLoader.ModPath, name + ".tmod");
 			}
 
-			public bool Matches(TmodFile mod) => name == mod.name && version == mod.version && hash.SequenceEqual(mod.hash);
+			public bool Matches(TmodFile mod) => name == mod.Name && version == mod.Version && hash.SequenceEqual(mod.Hash);
 			public override string ToString() => name + " v" + version;
 		}
 
@@ -96,7 +96,7 @@ namespace Terraria.ModLoader
 			foreach (Mod mod in syncMods) { // We only sync ServerSide configs for ModSide.Both. ModSide.Server can have 
 				p.Write(mod.Name);
 				p.Write(mod.Version.ToString());
-				p.Write(mod.File.hash);
+				p.Write(mod.File.Hash);
 				p.Write(mod.File.ValidModBrowserSignature);
 				SendServerConfigs(p, mod);
 			}
@@ -126,7 +126,7 @@ namespace Terraria.ModLoader
 			p.Write(serverConfigs.Length);
 			foreach (ModConfig config in serverConfigs) {
 				string json = JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact);
-				Logging.Terraria.Info($"Sending Server Config {config.mod.Name} {config.Name}: {json}");
+				Logging.Terraria.Info($"Sending Server Config {config.Mod.Name} {config.Name}: {json}");
 
 				p.Write(config.Name);
 				p.Write(json);
@@ -297,7 +297,7 @@ namespace Terraria.ModLoader
 					if (downloadingMod.signed && onlyDownloadSignedMods && !mod.ValidModBrowserSignature)
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
 
-					ModLoader.EnableMod(mod.name);
+					ModLoader.EnableMod(mod.Name);
 
 					if (downloadQueue.Count > 0)
 						DownloadNextMod();

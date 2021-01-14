@@ -87,7 +87,7 @@ namespace Terraria.ModLoader
 				Item bag = new Item();
 				bag.SetDefaults(ModContent.ItemType<StartBag>());
 				for (int k = 49; k < items.Count; k++) {
-					((StartBag)bag.modItem).AddItem(items[k]);
+					((StartBag)bag.ModItem).AddItem(items[k]);
 				}
 				player.inventory[49] = bag;
 			}

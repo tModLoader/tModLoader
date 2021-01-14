@@ -27,29 +27,29 @@ namespace Terraria.ModLoader
 		/// <value>
 		/// The item.
 		/// </value>
-		public Item item {get;internal set;}
+		public Item Item { get; internal set; }
 
 		/// <summary>
 		/// Shorthand for item.type;
 		/// </summary>
-		public int Type => item.type;
+		public int Type => Item.type;
 
 		/// <summary>
 		/// The translations for the display name of this item.
 		/// </summary>
-		public ModTranslation DisplayName {get;internal set;}
+		public ModTranslation DisplayName { get; internal set; }
 
 		/// <summary>
 		/// The translations for the display name of this tooltip.
 		/// </summary>
-		public ModTranslation Tooltip {get;internal set;}
+		public ModTranslation Tooltip { get; internal set; }
 
 		public virtual string ArmTexture => Texture + "_Arms";
 
 		public virtual string FemaleTexture => Texture + "_FemaleBody";
 
 		public ModItem() {
-			item = new Item { modItem = this };
+			Item = new Item { ModItem = this };
 		}
 
 		protected sealed override void Register() {
@@ -58,8 +58,8 @@ namespace Terraria.ModLoader
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemName.{Name}");
 			Tooltip = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemTooltip.{Name}", true);
 
-			item.ResetStats(ItemLoader.ReserveItemID());
-			item.modItem = this;
+			Item.ResetStats(ItemLoader.ReserveItemID());
+			Item.ModItem = this;
 
 			ItemLoader.items.Add(this);
 
@@ -73,8 +73,8 @@ namespace Terraria.ModLoader
 			OnCreate(new InitializationContext());
 		}
 
-		public override void SetupContent() {
-			ItemLoader.SetDefaults(item, false);
+		public sealed override void SetupContent() {
+			ItemLoader.SetDefaults(Item, false);
 			AutoStaticDefaults();
 			SetStaticDefaults();
 			ItemID.Search.Add(FullName, Type);
@@ -86,7 +86,7 @@ namespace Terraria.ModLoader
 		/// <param name="item">The new item</param>
 		public virtual ModItem Clone(Item item) {
 			ModItem clone = (ModItem)MemberwiseClone();
-			clone.item = item;
+			clone.Item = item;
 			return clone;
 		}
 
@@ -104,7 +104,7 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoDefaults() {
-			EquipLoader.SetSlot(item);
+			EquipLoader.SetSlot(Item);
 		}
 
 		/// <summary>
@@ -118,12 +118,12 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			TextureAssets.Item[item.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Item[Item.type] = ModContent.GetTexture(Texture);
 
 			string flameTexture = Texture + "_Flame";
 
 			if (ModContent.TextureExists(flameTexture)) {
-				TextureAssets.ItemFlame[item.type] = ModContent.GetTexture(flameTexture);
+				TextureAssets.ItemFlame[Item.type] = ModContent.GetTexture(flameTexture);
 			}
 
 			if (DisplayName.IsDefault())
@@ -1019,6 +1019,6 @@ namespace Terraria.ModLoader
 		public virtual void ModifyTooltips(List<TooltipLine> tooltips) {
 		}
 
-		public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Mod, item.type, amount);
+		public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Mod, Item.type, amount);
 	}
 }

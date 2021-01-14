@@ -15,20 +15,20 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void SetDefaults() {
-			item.width = 20;
-			item.height = 26;
-			item.useStyle = ItemUseStyleID.EatFood;
-			item.useAnimation = 17;
-			item.useTime = 17;
-			item.useTurn = true;
-			item.UseSound = SoundID.Item3;
-			item.maxStack = 30;
-			item.consumable = true;
-			item.rare = ItemRarityID.Orange;
-			item.value = Item.buyPrice(gold: 1);
+			Item.width = 20;
+			Item.height = 26;
+			Item.useStyle = ItemUseStyleID.EatFood;
+			Item.useAnimation = 17;
+			Item.useTime = 17;
+			Item.useTurn = true;
+			Item.UseSound = SoundID.Item3;
+			Item.maxStack = 30;
+			Item.consumable = true;
+			Item.rare = ItemRarityID.Orange;
+			Item.value = Item.buyPrice(gold: 1);
 
-			item.healLife = 100; // While we change the actual healing value in GetHealLife, item.healLife still needs to be higher than 0 for the item to be considered a healing item
-			item.potion = true; // Makes it so this item applies potion sickness on use and allows it to be used with quick heal
+			Item.healLife = 100; // While we change the actual healing value in GetHealLife, Item.healLife still needs to be higher than 0 for the item to be considered a healing item
+			Item.potion = true; // Makes it so this item applies potion sickness on use and allows it to be used with quick heal
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {

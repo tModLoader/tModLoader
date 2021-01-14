@@ -8,7 +8,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 		public override void SetDefaults() {
 			base.SetDefaults();
 
-			item.Size = new Vector2(22, 18);
+			Item.Size = new Vector2(22, 18);
 		}
 	}
 }
