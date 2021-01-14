@@ -41,7 +41,7 @@ namespace ExampleMod.Content.BossBars
 
 			lifePercent = Utils.Clamp(npc.life / (float)npc.lifeMax, 0f, 1f);
 
-			if (npc.modNPC is MinionBossBody body) {
+			if (npc.ModNPC is MinionBossBody body) {
 				//We did all the calculation work on RemainingShields inside the body NPC already so we just have to fetch the value again
 				shieldPercent = Utils.Clamp(body.RemainingShields, 0f, 1f);
 			}

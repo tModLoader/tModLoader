@@ -13,15 +13,15 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 	public class MinionBossMinion : ModNPC
 	{
 		public int ParentIndex {
-			get => (int)npc.ai[0] - 1;
-			set => npc.ai[0] = value + 1;
+			get => (int)NPC.ai[0] - 1;
+			set => NPC.ai[0] = value + 1;
 		}
 
 		public bool HasParent => ParentIndex > -1;
 
 		public int PositionIndex {
-			get => (int)npc.ai[1] - 1;
-			set => npc.ai[1] = value + 1;
+			get => (int)NPC.ai[1] - 1;
+			set => NPC.ai[1] = value + 1;
 		}
 
 		public bool HasPosition => PositionIndex > -1;
@@ -52,20 +52,20 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		}
 
 		public override void SetDefaults() {
-			npc.width = 30;
-			npc.height = 30;
-			npc.damage = 7;
-			npc.defense = 0;
-			npc.lifeMax = 50;
-			npc.HitSound = SoundID.NPCHit9;
-			npc.DeathSound = SoundID.NPCDeath11;
-			npc.noGravity = true;
-			npc.noTileCollide = true;
-			npc.knockBackResist = 0.8f;
-			npc.alpha = 255; //This makes it transparent upon spawning, we have to manually fade it in in AI()
-			npc.netAlways = true;
+			NPC.width = 30;
+			NPC.height = 30;
+			NPC.damage = 7;
+			NPC.defense = 0;
+			NPC.lifeMax = 50;
+			NPC.HitSound = SoundID.NPCHit9;
+			NPC.DeathSound = SoundID.NPCDeath11;
+			NPC.noGravity = true;
+			NPC.noTileCollide = true;
+			NPC.knockBackResist = 0.8f;
+			NPC.alpha = 255; //This makes it transparent upon spawning, we have to manually fade it in in AI()
+			NPC.netAlways = true;
 
-			npc.aiStyle = -1;
+			NPC.aiStyle = -1;
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
@@ -79,20 +79,20 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		}
 
 		public override Color? GetAlpha(Color drawColor) {
-			if (npc.IsABestiaryIconDummy) {
-				//This is required because we have npc.alpha = 255, in the bestiary it would look transparent
-				return npc.GetBestiaryEntryColor();
+			if (NPC.IsABestiaryIconDummy) {
+				//This is required because we have NPC.alpha = 255, in the bestiary it would look transparent
+				return NPC.GetBestiaryEntryColor();
 			}
-			return Color.White * (1f - npc.alpha / 255f);
+			return Color.White * (1f - NPC.alpha / 255f);
 		}
 
 		public override void HitEffect(int hitDirection, double damage) {
-			if (npc.life <= 0) {
+			if (NPC.life <= 0) {
 				//If this NPC dies, spawn some visuals
 
 				int dustType = 59; //Some blue dust
 				for (int i = 0; i < 20; i++) {
-					Dust dust = Dust.NewDustPerfect(npc.Center, dustType, new Vector2(Main.rand.NextFloat(-1.5f, 1.5f) + npc.velocity.X, Main.rand.NextFloat(-1.5f, 1f)), 26, Color.White, Main.rand.NextFloat(1.5f, 2.4f));
+					Dust dust = Dust.NewDustPerfect(NPC.Center, dustType, new Vector2(Main.rand.NextFloat(-1.5f, 1.5f) + NPC.velocity.X, Main.rand.NextFloat(-1.5f, 1f)), 26, Color.White, Main.rand.NextFloat(1.5f, 2.4f));
 					dust.noLight = true;
 					dust.noGravity = true;
 					dust.fadeIn = Main.rand.NextFloat(0.3f, 0.8f);
@@ -117,20 +117,20 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				//* Parent isn't active or
 				//* Parent isn't the body
 				//=> invalid, kill itself without dropping any items
-				npc.active = false;
-				npc.life = 0;
-				NetMessage.SendData(MessageID.SyncNPC, number: npc.whoAmI);
+				NPC.active = false;
+				NPC.life = 0;
+				NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
 				return true;
 			}
 			return false;
 		}
 
 		private void FadeIn() {
-			//Fade in (we have npc.alpha = 255 in SetDefaults which means it spawns transparent)
-			if (npc.alpha > 0) {
-				npc.alpha -= 10;
-				if (npc.alpha < 0) {
-					npc.alpha = 0;
+			//Fade in (we have NPC.alpha = 255 in SetDefaults which means it spawns transparent)
+			if (NPC.alpha > 0) {
+				NPC.alpha -= 10;
+				if (NPC.alpha < 0) {
+					NPC.alpha = 0;
 				}
 			}
 		}
@@ -142,20 +142,20 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			//the main body it is positioned at
 			float rad = (float)PositionIndex / MinionBossBody.MinionCount() * MathHelper.TwoPi;
 
-			float distanceFromBody = parentNPC.width + npc.width * 2;
+			float distanceFromBody = parentNPC.width + NPC.width * 2;
 
 			//offset is now a vector that will determine the position of the NPC based on its index
 			Vector2 offset = Vector2.One.RotatedBy(rad) * distanceFromBody;
 
 			Vector2 destination = parentNPC.Center + offset;
-			Vector2 toDestination = destination - npc.Center;
+			Vector2 toDestination = destination - NPC.Center;
 			Vector2 toDestinationNormalized = Vector2.Normalize(toDestination);
 
 			float speed = 8f;
 			float inertia = 20;
 
 			Vector2 moveTo = toDestinationNormalized * speed;
-			npc.velocity = (npc.velocity * (inertia - 1) + moveTo) / inertia;
+			NPC.velocity = (NPC.velocity * (inertia - 1) + moveTo) / inertia;
 		}
 	}
 }

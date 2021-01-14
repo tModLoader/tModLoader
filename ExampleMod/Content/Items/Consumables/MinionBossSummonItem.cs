@@ -14,19 +14,19 @@ namespace ExampleMod.Content.Items.Consumables
 			DisplayName.SetDefault("Minion Boss Summon Item");
 			Tooltip.SetDefault("Summons Minion Boss");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
-			ItemID.Sets.SortingPriorityBossSpawns[item.type] = 12; // This helps sort inventory know that this is a boss summoning item.
+			ItemID.Sets.SortingPriorityBossSpawns[Type] = 12; // This helps sort inventory know that this is a boss summoning Item.
 		}
 
 		public override void SetDefaults() {
-			item.width = 20;
-			item.height = 20;
-			item.maxStack = 20;
-			item.value = 100;
-			item.rare = ItemRarityID.Blue;
-			item.useAnimation = 30;
-			item.useTime = 30;
-			item.useStyle = ItemUseStyleID.HoldUp;
-			item.consumable = true;
+			Item.width = 20;
+			Item.height = 20;
+			Item.maxStack = 20;
+			Item.value = 100;
+			Item.rare = ItemRarityID.Blue;
+			Item.useAnimation = 30;
+			Item.useTime = 30;
+			Item.useStyle = ItemUseStyleID.HoldUp;
+			Item.consumable = true;
 		}
 
 		public override bool CanUseItem(Player player) {

@@ -22,42 +22,42 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		//It is applied in the BossHeadSlot hook when the boss is in its second stage
 		public static int secondStageHeadSlot = -1;
 
-		//This code here is called a property: It acts like a variable, but can modify other things. In this case it uses the npc.ai[] array that has four entries.
-		//We use properties because it makes code more readable ("if (SecondStage)" vs "if (npc.ai[0] == 1f)").
-		//We use npc.ai[] because in combination with npc.netUpdate we can make it multiplayer compatible. Otherwise (making our own fields) we would have to write extra code to make it work (not covered here)
+		//This code here is called a property: It acts like a variable, but can modify other things. In this case it uses the NPC.ai[] array that has four entries.
+		//We use properties because it makes code more readable ("if (SecondStage)" vs "if (NPC.ai[0] == 1f)").
+		//We use NPC.ai[] because in combination with NPC.netUpdate we can make it multiplayer compatible. Otherwise (making our own fields) we would have to write extra code to make it work (not covered here)
 		public bool SecondStage {
-			get => npc.ai[0] == 1f;
-			set => npc.ai[0] = value ? 1f : 0f;
+			get => NPC.ai[0] == 1f;
+			set => NPC.ai[0] = value ? 1f : 0f;
 		}
 
 		//More advanced usage of a property, used to wrap around to floats to act as a Vector2
 		public Vector2 FirstStageDestination {
-			get => new Vector2(npc.ai[1], npc.ai[2]);
+			get => new Vector2(NPC.ai[1], NPC.ai[2]);
 			set {
-				npc.ai[1] = value.X;
-				npc.ai[2] = value.Y;
+				NPC.ai[1] = value.X;
+				NPC.ai[2] = value.Y;
 			}
 		}
 
 		//Auto property, acts exactly like a variable by using a hidden backing field
 		public Vector2 LastFirstStageDestination { get; set; } = Vector2.Zero;
 
-		//This property uses npc.localAI[] instead which doesn't get synced, but because SpawnedMinions is only used on spawn as a flag, this will get set by all parties to true.
-		//Knowing what side (client, server, all) is in charge of a variable is important as npc.ai[] only has four entries
+		//This property uses NPC.localAI[] instead which doesn't get synced, but because SpawnedMinions is only used on spawn as a flag, this will get set by all parties to true.
+		//Knowing what side (client, server, all) is in charge of a variable is important as NPC.ai[] only has four entries
 		public bool SpawnedMinions {
-			get => npc.localAI[0] == 1f;
-			set => npc.localAI[0] = value ? 1f : 0f;
+			get => NPC.localAI[0] == 1f;
+			set => NPC.localAI[0] = value ? 1f : 0f;
 		}
 
 		private const int FirstStageTimerMax = 90;
-		public ref float FirstStageTimer => ref npc.localAI[1];
+		public ref float FirstStageTimer => ref NPC.localAI[1];
 
-		public ref float RemainingShields => ref npc.localAI[2];
+		public ref float RemainingShields => ref NPC.localAI[2];
 
 		//We could also repurpose FirstStageTimer since it's unused in the second stage, or write "=> ref FirstStageTimer", but then we have to reset the timer when the state switch happens
-		public ref float SecondStageTimer_SpawnEyes => ref npc.localAI[3];
+		public ref float SecondStageTimer_SpawnEyes => ref NPC.localAI[3];
 
-		//Do NOT try to use npc.ai[4]/npc.localAI[4] or higher indexes, it only accepts 0, 1, 2 and 3!
+		//Do NOT try to use NPC.ai[4]/NPC.localAI[4] or higher indexes, it only accepts 0, 1, 2 and 3!
 
 		//Helper method to determine the minion type
 		public static int MinionType() {
@@ -121,26 +121,26 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		}
 
 		public override void SetDefaults() {
-			npc.width = 110;
-			npc.height = 110;
-			npc.damage = 12;
-			npc.defense = 10;
-			npc.lifeMax = 2000;
-			npc.HitSound = SoundID.NPCHit1;
-			npc.DeathSound = SoundID.NPCDeath1;
-			npc.knockBackResist = 0f;
-			npc.noGravity = true;
-			npc.noTileCollide = true;
-			npc.value = Item.buyPrice(gold: 5);
-			npc.SpawnWithHigherTime(30);
-			npc.boss = true;
-			npc.npcSlots = 10f;
+			NPC.width = 110;
+			NPC.height = 110;
+			NPC.damage = 12;
+			NPC.defense = 10;
+			NPC.lifeMax = 2000;
+			NPC.HitSound = SoundID.NPCHit1;
+			NPC.DeathSound = SoundID.NPCDeath1;
+			NPC.knockBackResist = 0f;
+			NPC.noGravity = true;
+			NPC.noTileCollide = true;
+			NPC.value = Item.buyPrice(gold: 5);
+			NPC.SpawnWithHigherTime(30);
+			NPC.boss = true;
+			NPC.npcSlots = 10f;
 
 			//Don't set immunities like this as of 1.4:
-			//npc.buffImmune[BuffID.Confused] = true;
+			//NPC.buffImmune[BuffID.Confused] = true;
 			//immunities are handled via dictionaries through NPCID.Sets.DebuffImmunitySets
 
-			npc.aiStyle = -1; //Custom AI, 0 has some very basic spriteDirection code we don't need
+			NPC.aiStyle = -1; //Custom AI, 0 has some very basic spriteDirection code we don't need
 
 			//Important if this boss has a treasure bag
 			bossBag = ModContent.ItemType<MinionBossBag>();
@@ -204,38 +204,38 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			if (SecondStage) {
 				startFrame = 3;
-				finalFrame = Main.npcFrameCount[npc.type] - 1;
+				finalFrame = Main.npcFrameCount[NPC.type] - 1;
 
-				if (npc.frame.Y < startFrame * frameHeight) {
+				if (NPC.frame.Y < startFrame * frameHeight) {
 					//If we were animating the first stage frames and then switch to second stage, immediately change to the start frame of the second stage
-					npc.frame.Y = startFrame * frameHeight;
+					NPC.frame.Y = startFrame * frameHeight;
 				}
 			}
 
 			int frameSpeed = 5; //How long it stays on a frame in ticks
-			npc.frameCounter++;
-			npc.frameCounter += npc.velocity.Length() / 10f;
-			if (npc.frameCounter > frameSpeed) {
-				npc.frameCounter = 0;
-				npc.frame.Y += frameHeight;
+			NPC.frameCounter++;
+			NPC.frameCounter += NPC.velocity.Length() / 10f;
+			if (NPC.frameCounter > frameSpeed) {
+				NPC.frameCounter = 0;
+				NPC.frame.Y += frameHeight;
 
-				if (npc.frame.Y > finalFrame * frameHeight) {
-					npc.frame.Y = startFrame * frameHeight;
+				if (NPC.frame.Y > finalFrame * frameHeight) {
+					NPC.frame.Y = startFrame * frameHeight;
 				}
 			}
 		}
 
 		public override void AI() {
-			if (npc.target < 0 || npc.target == 255 || Main.player[npc.target].dead || !Main.player[npc.target].active) {
-				npc.TargetClosest();
+			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active) {
+				NPC.TargetClosest();
 			}
 
-			Player player = Main.player[npc.target];
+			Player player = Main.player[NPC.target];
 
 			if (player.dead) {
-				npc.velocity.Y -= 0.04f;
+				NPC.velocity.Y -= 0.04f;
 				//This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
-				npc.EncourageDespawn(10);
+				NPC.EncourageDespawn(10);
 				return;
 			}
 
@@ -244,7 +244,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			CheckSecondStage();
 
 			//Be invulnerable during the first stage
-			npc.dontTakeDamage = !SecondStage;
+			NPC.dontTakeDamage = !SecondStage;
 
 			if (SecondStage) {
 				DoSecondStage(player);
@@ -262,11 +262,11 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 					int count = MinionCount();
 
 					for (int i = 0; i < count; i++) {
-						int index = NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<MinionBossMinion>(), npc.whoAmI);
+						int index = NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
 						NPC minionNPC = Main.npc[index];
 
-						if (minionNPC.modNPC is MinionBossMinion minion) {
-							minion.ParentIndex = npc.whoAmI;
+						if (minionNPC.ModNPC is MinionBossMinion minion) {
+							minion.ParentIndex = NPC.whoAmI;
 							minion.PositionIndex = i;
 						}
 
@@ -287,8 +287,8 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			float remainingShieldsSum = 0f;
 			for (int i = 0; i < Main.maxNPCs; i++) {
 				NPC otherNPC = Main.npc[i];
-				if (otherNPC.active && otherNPC.type == MinionType() && otherNPC.modNPC is MinionBossMinion minion) {
-					if (minion.ParentIndex == npc.whoAmI) {
+				if (otherNPC.active && otherNPC.type == MinionType() && otherNPC.ModNPC is MinionBossMinion minion) {
+					if (minion.ParentIndex == NPC.whoAmI) {
 						remainingShieldsSum += (float)otherNPC.life / otherNPC.lifeMax;
 					}
 				}
@@ -299,11 +299,11 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			if (RemainingShields <= 0 && Main.netMode != NetmodeID.MultiplayerClient) {
 				//If we have no shields (aka "no minions alive"), we initiate the second stage, and notify other players that this NPC has reached its second stage
-				//by setting npc.netUpdate to true in this tick. It will send important data like position, velocity and the npc.ai[] array to all connected clients
+				//by setting NPC.netUpdate to true in this tick. It will send important data like position, velocity and the NPC.ai[] array to all connected clients
 
-				//Because SecondStage is a property using npc.ai[], it will get synced this way
+				//Because SecondStage is a property using NPC.ai[], it will get synced this way
 				SecondStage = true;
-				npc.netUpdate = true;
+				NPC.netUpdate = true;
 			}
 		}
 
@@ -319,7 +319,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			float distance = 200; //Distance in pixels behind the player
 
 			if (FirstStageTimer == 0) {
-				Vector2 fromPlayer = npc.Center - player.Center;
+				Vector2 fromPlayer = NPC.Center - player.Center;
 
 				if (Main.netMode != NetmodeID.MultiplayerClient) {
 					//Important multiplayer concideration: drastic change in behavior (that is also decided by randomness) like this requires
@@ -339,93 +339,93 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 					Vector2 relativeDestination = angle.ToRotationVector2() * distance;
 
 					FirstStageDestination = player.Center + relativeDestination;
-					npc.netUpdate = true;
+					NPC.netUpdate = true;
 				}
 			}
 
 			//Move along the vector
-			Vector2 toDestination = FirstStageDestination - npc.Center;
+			Vector2 toDestination = FirstStageDestination - NPC.Center;
 			Vector2 toDestinationNormalized = Vector2.Normalize(toDestination);
 			float speed = Math.Min(distance, toDestination.Length());
-			npc.velocity = toDestinationNormalized * speed / 30;
+			NPC.velocity = toDestinationNormalized * speed / 30;
 
 			if (FirstStageDestination != LastFirstStageDestination) {
 				//If destination changed
-				npc.TargetClosest(); //Pick the closest player target again
+				NPC.TargetClosest(); //Pick the closest player target again
 
 				//"Why is this not in the same code that sets FirstStageDestination?" Because in multiplayer it's ran by the server.
 				//The client has to know when the destination changes a different way. Keeping track of the previous ticks' destination is one way
 				if (Main.netMode != NetmodeID.Server) {
 					//For visuals regarding NPC position, netOffset has to be concidered to make visuals align properly
-					npc.position += npc.netOffset;
+					NPC.position += NPC.netOffset;
 
 					//Draw a line between the NPC and its destination, represented as dusts every 20 pixels
-					Dust.QuickDustLine(npc.Center + toDestinationNormalized * npc.width, FirstStageDestination, toDestination.Length() / 20f, Color.Yellow);
+					Dust.QuickDustLine(NPC.Center + toDestinationNormalized * NPC.width, FirstStageDestination, toDestination.Length() / 20f, Color.Yellow);
 
-					npc.position -= npc.netOffset;
+					NPC.position -= NPC.netOffset;
 				}
 			}
 			LastFirstStageDestination = FirstStageDestination;
 
 			//No damage during first phase
-			npc.damage = 0;
+			NPC.damage = 0;
 
 			//Fade in based on remaining total minion life
-			npc.alpha = (int)(RemainingShields * 255);
+			NPC.alpha = (int)(RemainingShields * 255);
 
-			npc.rotation = npc.velocity.ToRotation() - MathHelper.PiOver2;
+			NPC.rotation = NPC.velocity.ToRotation() - MathHelper.PiOver2;
 		}
 
 		private void DoSecondStage(Player player) {
-			Vector2 toPlayer = player.Center - npc.Center;
+			Vector2 toPlayer = player.Center - NPC.Center;
 
 			float offsetX = 200f;
 
-			Vector2 abovePlayer = player.Top + new Vector2(npc.direction * offsetX, -npc.height);
+			Vector2 abovePlayer = player.Top + new Vector2(NPC.direction * offsetX, -NPC.height);
 
-			Vector2 toAbovePlayer = abovePlayer - npc.Center;
+			Vector2 toAbovePlayer = abovePlayer - NPC.Center;
 			Vector2 toAbovePlayerNormalized = Vector2.Normalize(toAbovePlayer);
 
 			//The NPC tries to go towards the offsetX position, but most likely it will never get there exactly, or close to if the player is moving
 			//This checks if the npc is "70% there", and then changes direction
 			float changeDirOffset = offsetX * 0.7f;
 
-			if (npc.direction == -1 && npc.Center.X - changeDirOffset < abovePlayer.X ||
-				npc.direction == 1 && npc.Center.X + changeDirOffset > abovePlayer.X) {
-				npc.direction *= -1;
+			if (NPC.direction == -1 && NPC.Center.X - changeDirOffset < abovePlayer.X ||
+				NPC.direction == 1 && NPC.Center.X + changeDirOffset > abovePlayer.X) {
+				NPC.direction *= -1;
 			}
 
 			float speed = 8f;
 			float inertia = 40f;
 
 			//If the boss is somehow below the player, move faster to catch up
-			if (npc.Top.Y > player.Bottom.Y) {
+			if (NPC.Top.Y > player.Bottom.Y) {
 				speed = 12f;
 			}
 
 			Vector2 moveTo = toAbovePlayerNormalized * speed;
-			npc.velocity = (npc.velocity * (inertia - 1) + moveTo) / inertia;
+			NPC.velocity = (NPC.velocity * (inertia - 1) + moveTo) / inertia;
 
 			DoSecondStage_SpawnEyes(player);
 
-			npc.damage = npc.defDamage;
+			NPC.damage = NPC.defDamage;
 
-			npc.alpha = 0;
+			NPC.alpha = 0;
 
-			npc.rotation = toPlayer.ToRotation() - MathHelper.PiOver2;
+			NPC.rotation = toPlayer.ToRotation() - MathHelper.PiOver2;
 		}
 
 		private void DoSecondStage_SpawnEyes(Player player) {
 			//At 100% health, spawn every 90 ticks
 			//Drops down until 33% health to spawn every 30 ticks
-			float timerMax = Utils.Clamp((float)npc.life / npc.lifeMax, 0.33f, 1f) * 90;
+			float timerMax = Utils.Clamp((float)NPC.life / NPC.lifeMax, 0.33f, 1f) * 90;
 
 			SecondStageTimer_SpawnEyes++;
 			if (SecondStageTimer_SpawnEyes > timerMax) {
 				SecondStageTimer_SpawnEyes = 0;
 			}
 
-			if (npc.HasValidTarget && SecondStageTimer_SpawnEyes == 0 && Main.netMode != NetmodeID.MultiplayerClient) {
+			if (NPC.HasValidTarget && SecondStageTimer_SpawnEyes == 0 && Main.netMode != NetmodeID.MultiplayerClient) {
 				//Spawn projectile randomly below player, based on horizontal velocity to make kiting harder, starting velocity 1f upwards
 				//(The projectiles accelerate from their initial velocity)
 
@@ -433,7 +433,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				Vector2 position = player.Bottom + new Vector2(kitingOffsetX + Main.rand.Next(-100, 100), Main.rand.Next(50, 100));
 
 				int type = ModContent.ProjectileType<MinionBossEye>();
-				int damage = npc.damage / 2;
+				int damage = NPC.damage / 2;
 				Projectile.NewProjectile(position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
 			}
 		}
