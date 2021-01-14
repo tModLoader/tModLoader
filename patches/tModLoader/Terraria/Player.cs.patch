@@ -3696,13 +3696,13 @@
  
  		public float GetWeaponKnockback(Item sItem, float KnockBack) {
 +			StatModifier knockBackMult = allKB;
-+			if (sItem.damageType != DamageClass.Generic)
-+				knockBackMult = knockBackMult.CombineWith(GetKnockback(sItem.damageType));
++			if (sItem.DamageType != DamageClass.Generic)
++				knockBackMult = knockBackMult.CombineWith(GetKnockback(sItem.DamageType));
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				if (sItem.damageType.BenefitsFrom(damageClass) != 0) {
++				if (sItem.DamageType.BenefitsFrom(damageClass) != 0) {
 +					StatModifier addKB = GetKnockback(damageClass);
-+					addKB.additive = 1 + ((addKB.additive - 1) * sItem.damageType.BenefitsFrom(damageClass));
-+					addKB.multiplicative = 1 + ((addKB.multiplicative - 1) * sItem.damageType.BenefitsFrom(damageClass));
++					addKB.additive = 1 + ((addKB.additive - 1) * sItem.DamageType.BenefitsFrom(damageClass));
++					addKB.multiplicative = 1 + ((addKB.multiplicative - 1) * sItem.DamageType.BenefitsFrom(damageClass));
 +					knockBackMult = knockBackMult.CombineWith(addKB);
 +				}
 +			}
@@ -3724,11 +3724,11 @@
  
  		public int GetWeaponCrit(Item sItem) {
 +			int crit = allCrit;
-+			if (sItem.damageType != DamageClass.Generic)
-+				crit += GetCritChance(sItem.damageType);
++			if (sItem.DamageType != DamageClass.Generic)
++				crit += GetCritChance(sItem.DamageType);
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				if (sItem.damageType.BenefitsFrom(damageClass) != 0) {
-+					crit += (int)(GetCritChance(damageClass) * sItem.damageType.BenefitsFrom(damageClass));
++				if (sItem.DamageType.BenefitsFrom(damageClass) != 0) {
++					crit += (int)(GetCritChance(damageClass) * sItem.DamageType.BenefitsFrom(damageClass));
 +				}
 +			}
 +			/*
@@ -3777,17 +3777,17 @@
 -			}
 -
 -			return num;
-+			if (sItem.ignoreDamageModifiers || sItem.damageType == DamageClass.NoScaling)
++			if (sItem.IgnoreDamageModifiers || sItem.DamageType == DamageClass.NoScaling)
 +				return sItem.damage;
 +
 +			StatModifier damage = allDamage;
-+			if (sItem.damageType != DamageClass.Generic)
-+				damage = damage.CombineWith(GetDamage(sItem.damageType));
++			if (sItem.DamageType != DamageClass.Generic)
++				damage = damage.CombineWith(GetDamage(sItem.DamageType));
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				if (sItem.damageType.BenefitsFrom(damageClass) != 0) {
++				if (sItem.DamageType.BenefitsFrom(damageClass) != 0) {
 +					StatModifier addDamage = GetDamage(damageClass);
-+					addDamage.additive = 1 + ((addDamage.additive - 1) * sItem.damageType.BenefitsFrom(damageClass));
-+					addDamage.multiplicative = 1 + ((addDamage.multiplicative - 1) * sItem.damageType.BenefitsFrom(damageClass));
++					addDamage.additive = 1 + ((addDamage.additive - 1) * sItem.DamageType.BenefitsFrom(damageClass));
++					addDamage.multiplicative = 1 + ((addDamage.multiplicative - 1) * sItem.DamageType.BenefitsFrom(damageClass));
 +					damage = damage.CombineWith(addDamage);
 +				}
 +			}

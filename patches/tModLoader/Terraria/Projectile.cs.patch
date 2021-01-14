@@ -47,36 +47,36 @@
 +			get => CountsAsClass(DamageClass.Melee);
 +			set {
 +				if (value)
-+					damageType = DamageClass.Melee;
-+				else if (damageType == DamageClass.Melee)
-+					damageType = DamageClass.Generic;
++					DamageType = DamageClass.Melee;
++				else if (DamageType == DamageClass.Melee)
++					DamageType = DamageClass.Generic;
 +			}
 +		}
 +		internal bool magic {
 +			get => CountsAsClass(DamageClass.Magic);
 +			set {
 +				if (value)
-+					damageType = DamageClass.Magic;
-+				else if (damageType == DamageClass.Magic)
-+					damageType = DamageClass.Generic;
++					DamageType = DamageClass.Magic;
++				else if (DamageType == DamageClass.Magic)
++					DamageType = DamageClass.Generic;
 +			}
 +		}
 +		internal bool ranged {
 +			get => CountsAsClass(DamageClass.Ranged);
 +			set {
 +				if (value)
-+					damageType = DamageClass.Ranged;
-+				else if (damageType == DamageClass.Ranged)
-+					damageType = DamageClass.Generic;
++					DamageType = DamageClass.Ranged;
++				else if (DamageType == DamageClass.Ranged)
++					DamageType = DamageClass.Generic;
 +			}
 +		}
 +		internal bool minion {
 +			get => CountsAsClass(DamageClass.Summon);
 +			set {
 +				if (value)
-+					damageType = DamageClass.Summon;
-+				else if (damageType == DamageClass.Summon)
-+					damageType = DamageClass.Generic;
++					DamageType = DamageClass.Summon;
++				else if (DamageType == DamageClass.Summon)
++					DamageType = DamageClass.Generic;
 +			}
 +		}
  		public bool coldDamage;
@@ -133,7 +133,7 @@
  		public void SetDefaults(int Type) {
 +			ModProjectile = null;
 +			globalProjectiles = new GlobalProjectile[0];
-+			damageType = DamageClass.Generic;
++			DamageType = DamageClass.Generic;
 +			nameOverride = null;
  			ownerHitCheckDistance = 1000f;
  			counterweight = false;

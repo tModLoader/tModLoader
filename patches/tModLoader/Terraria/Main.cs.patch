@@ -1430,8 +1430,8 @@
 -					float num = 5E-06f;
 -					int damage = item.damage;
 +					LocalizedText tip;
-+					if (item.damageType != null) {
-+						tip = new LocalizedText("", " "+item.damageType.DisplayName);
++					if (item.DamageType != null) {
++						tip = new LocalizedText("", " "+item.DamageType.DisplayName);
 +					}
 +					else {
 +						tip = Lang.tip[55]; // No damage class

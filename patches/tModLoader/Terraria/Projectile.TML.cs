@@ -11,9 +11,9 @@ namespace Terraria
 		internal GlobalProjectile[] globalProjectiles = new GlobalProjectile[0];
 
 		/// <summary>
-		/// The damage type of this Projectile. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
+		/// The damage type of this Projectile. Assign to DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
 		/// </summary>
-		public DamageClass damageType;
+		public DamageClass DamageType { get; set; }
 
 		// Get
 
@@ -52,11 +52,11 @@ namespace Terraria
 		*/
 
 		public bool CountsAsClass(DamageClass damageClass) {
-			if (damageType != null) {
-				if (damageType == damageClass)
+			if (DamageType != null) {
+				if (DamageType == damageClass)
 					return true;
 
-				return damageType.CountsAs(damageClass);
+				return DamageType.CountsAs(damageClass);
 			}
 			return false;
 		}
