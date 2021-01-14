@@ -54,7 +54,7 @@ namespace Terraria
 			damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
 
 			for (int i = 0; i < damageData.Length; i++) {
-				damageData[i] = new DamageClassData(Modifier.One, new Modifier(0f, 1f), Modifier.One);
+				damageData[i] = new DamageClassData(StatModifier.One, 0, StatModifier.One);
 			}
 		}
 
@@ -63,35 +63,84 @@ namespace Terraria
 		/// Gets the crit modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary> 
-		public ref Modifier GetCrit<T>() where T : DamageClass => ref GetCrit(ModContent.GetInstance<T>());
+		public ref int GetCritChance<T>() where T : DamageClass => ref GetCritChance(ModContent.GetInstance<T>());
 
 		/// <summary>
 		/// Gets the damage modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary>
-		public ref Modifier GetDamage<T>() where T : DamageClass => ref GetDamage(ModContent.GetInstance<T>());
+		public ref StatModifier GetDamage<T>() where T : DamageClass => ref GetDamage(ModContent.GetInstance<T>());
+
+		/// <summary>
+		/// Gets the additive portion of the damage modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref float GetDamageAdd<T>() where T : DamageClass => ref GetDamageAdd(ModContent.GetInstance<T>());
+
+		/// <summary>
+		/// Gets the multiplicative portion of the damage modifier for this damage type on this player; this is applied after the additive portion.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref float GetDamageMult<T>() where T : DamageClass => ref GetDamageMult(ModContent.GetInstance<T>());
 
 		/// <summary>
 		/// Gets the knockback modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary>
-		public ref Modifier GetKnockback<T>() where T : DamageClass => ref GetKnockback(ModContent.GetInstance<T>());
+		public ref StatModifier GetKnockback<T>() where T : DamageClass => ref GetKnockback(ModContent.GetInstance<T>());
+
+		/// <summary>
+		/// Gets the additive portion of the knockback modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref float GetKnockbackAdd<T>() where T : DamageClass => ref GetKnockbackAdd(ModContent.GetInstance<T>());
+
+		/// <summary>
+		/// Gets the multiplicative portion of the knockback modifier for this damage type on this player; this is applied after the additive portion.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref float GetKnockbackMult<T>() where T : DamageClass => ref GetKnockbackMult(ModContent.GetInstance<T>());
 
 		/// <summary>
 		/// Gets the crit modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary>
-		public ref Modifier GetCrit(DamageClass damageClass) => ref damageData[damageClass.Type].crit;
+		public ref int GetCritChance(DamageClass damageClass) => ref damageData[damageClass.Type].critChance;
+
 		/// <summary>
 		/// Gets the damage modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary>
-		public ref Modifier GetDamage(DamageClass damageClass) => ref damageData[damageClass.Type].damage;
+		public ref StatModifier GetDamage(DamageClass damageClass) => ref damageData[damageClass.Type].damage;
+
+		/// <summary>
+		/// Gets the additive portion of the damage modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref float GetDamageAdd(DamageClass damageClass) => ref damageData[damageClass.Type].damage.additive;
+
+		/// <summary>
+		/// Gets the multiplicative portion of the damage modifier for this damage type on this player; this is applied after the additive portion.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref float GetDamageMult(DamageClass damageClass) => ref damageData[damageClass.Type].damage.multiplicative;
 
 		/// <summary>
 		/// Gets the knockback modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary>
-		public ref Modifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
+		public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
+
+		/// <summary>
+		/// Gets the additive portion of the knockback modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref float GetKnockbackAdd(DamageClass damageClass) => ref damageData[damageClass.Type].knockback.additive;
+
+		/// <summary>
+		/// Gets the multiplicative portion of the knockback modifier for this damage type on this player; this is applied after the additive portion.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref float GetKnockbackMult(DamageClass damageClass) => ref damageData[damageClass.Type].knockback.multiplicative;
 	}
 }

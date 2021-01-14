@@ -254,7 +254,7 @@ namespace Terraria.ModLoader
 		/// <param name="player">The player using the item</param>
 		/// <param name="damage">Use to directly multiply the player's effective damage.</param>
 		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
-		public virtual void ModifyWeaponDamage(Player player, ref Modifier damage, ref float flat) {
+		public virtual void ModifyWeaponDamage(Player player, ref StatModifier damage, ref float flat) {
 		}
 
 		/// <summary>
@@ -277,7 +277,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player using this item</param>
 		/// <param name="crit">The critical strike chance, at 0 it will never trigger a crit and at 100 or above it will always trigger a crit</param>
-		public virtual void GetWeaponCrit(Player player, ref Modifier  crit) {
+		public virtual void GetWeaponCrit(Player player, ref int crit) {
 		}
 
 		/// <summary>

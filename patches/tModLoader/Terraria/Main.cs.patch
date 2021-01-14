@@ -1516,7 +1516,7 @@
  						numLines++;
  					}
  
-@@ -15143,6 +_,7 @@
+@@ -15143,10 +_,13 @@
  						else
  							toolTipLine[numLines] = Lang.tip[13].Value;
  
@@ -1524,12 +1524,19 @@
  						numLines++;
  					}
  
-@@ -15156,6 +_,8 @@
+ 					float num6 = item.knockBack;
++					num6 = player[myPlayer].GetWeaponKnockback(item, num6);
++					/*
+ 					if (item.summon)
+ 						num6 += player[myPlayer].minionKB;
+ 
+@@ -15156,6 +_,9 @@
  					if (player[myPlayer].inventory[player[myPlayer].selectedItem].type == 3106 && item.type == 3106)
  						num6 += num6 * (1f - player[myPlayer].stealth);
  
 +					ItemLoader.GetWeaponKnockback(item, player[myPlayer], ref num6);
 +					PlayerHooks.GetWeaponKnockback(player[myPlayer], item, ref num6);
++					*/
  					if (num6 == 0f)
  						toolTipLine[numLines] = Lang.tip[14].Value;
  					else if ((double)num6 <= 1.5)

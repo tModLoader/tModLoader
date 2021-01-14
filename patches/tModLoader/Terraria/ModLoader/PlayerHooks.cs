@@ -543,12 +543,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyWeaponDamage(Item item, ref Modifier damage, ref float flat);
+		private delegate void DelegateModifyWeaponDamage(Item item, ref StatModifier damage, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(p => p.ModifyWeaponDamage);
 		/// <summary>
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
 		/// </summary>
-		public static void ModifyWeaponDamage(Player player, Item item, ref Modifier damage, ref float flat) {
+		public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage, ref float flat) {
 			if (item.IsAir)
 				return;
 
@@ -577,10 +577,10 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateGetWeaponCrit(Item item, ref Modifier crit);
+		private delegate void DelegateGetWeaponCrit(Item item, ref int crit);
 		private static HookList HookGetWeaponCrit = AddHook<DelegateGetWeaponCrit>(p => p.GetWeaponCrit);
 
-		public static void GetWeaponCrit(Player player, Item item, ref Modifier crit) {
+		public static void GetWeaponCrit(Player player, Item item, ref int crit) {
 			if (item.IsAir) return;
 			foreach (int index in HookGetWeaponCrit.arr) {
 				player.modPlayers[index].GetWeaponCrit(item, ref crit);

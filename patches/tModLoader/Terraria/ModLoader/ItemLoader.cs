@@ -441,12 +441,12 @@ namespace Terraria.ModLoader
 				g.Instance(item).ModifyResearchSorting(item, ref itemGroup);
 		}
 
-		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref Modifier damage, ref float flat);
+		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 		/// <summary>
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
 		/// </summary>
-		public static void ModifyWeaponDamage(Item item, Player player, ref Modifier damage, ref float flat) {
+		public static void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat) {
 			if (item.IsAir)
 				return;
 
@@ -472,12 +472,12 @@ namespace Terraria.ModLoader
 		}
 
 
-		private delegate void DelegateGetWeaponCrit(Item item, Player player, ref Modifier crit);
+		private delegate void DelegateGetWeaponCrit(Item item, Player player, ref int crit);
 		private static HookList HookGetWeaponCrit = AddHook<DelegateGetWeaponCrit>(g => g.GetWeaponCrit);
 		/// <summary>
 		/// Calls ModItem.GetWeaponCrit, then all GlobalItem.GetWeaponCrit hooks.
 		/// </summary>
-		public static void GetWeaponCrit(Item item, Player player, ref Modifier crit) {
+		public static void GetWeaponCrit(Item item, Player player, ref int crit) {
 			if (item.IsAir)
 				return;
 
