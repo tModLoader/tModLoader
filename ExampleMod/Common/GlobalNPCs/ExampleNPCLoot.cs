@@ -15,6 +15,14 @@ namespace ExampleMod.Common.GlobalNPCs
 		//Here we go through all of them, and how they can be used.
 		//There are tons of other examples in vanilla! In a decompiled vanilla build, GameContent/ItemDropRules/ItemDropDatabase adds item drops to every single vanilla NPC, which can be a good resource.
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
+			if (!NPCID.Sets.CountsAsCritter[npc.type]) { //If npc is not a critter
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1)); //Make it drop ExampleItem.
+				// ItemDropRule.Common is what you would use in most cases, it simply drops the item with a chance specified.
+				// The dropsOutOfY int is used for the numerator of the fractional chance of dropping this item.
+				// Likewise, the dropsXOutOfY int is used for the denominator.
+				// For example, if you had a dropsOutOfY as 7 and a dropsXOutOfY as 2, then the chance the item would drop is 2/7 or about 28%.
+			}
+
 			// We will now use the Guide to explain many of the other types of drop rules.
 			if (npc.type == NPCID.Guide) {
 				// RemoveWhere will remove any drop rule that matches the provided expression.
@@ -35,11 +43,12 @@ namespace ExampleMod.Common.GlobalNPCs
 				ExampleDropCondition exampleDropCondition = new ExampleDropCondition();
 				IItemDropRule conditionalRule = new LeadingConditionRule(exampleDropCondition);
 
-				IItemDropRule exampleItemRule = ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1);
-				// ItemDropRule.Common is what you would use in most cases, it simply drops the item with a chance specified.
-				// The dropsOutOfY int is used for the numerator of the fractional chance of dropping this item.
-				// Likewise, the dropsXOutOfY int is used for the denominator.
-				// For example, if you had a dropsOutOfY as 7 and a dropsXOutOfY as 2, then the chance the item would drop is 2/7 or about 28%.
+				int itemType = ItemID.Vertebrae;
+				if (npc.type == NPCID.Crimera) {
+					itemType = ItemID.RottenChunk;
+				}
+				//33% chance to drop other corresponding item in addition
+				IItemDropRule exampleItemRule = ItemDropRule.Common(itemType, dropsOutOfY: 3, dropsXoutofY: 1);
 
 				//Apply our ExampleItem drop rule to the conditional rule
 				conditionalRule.OnSuccess(exampleItemRule);
