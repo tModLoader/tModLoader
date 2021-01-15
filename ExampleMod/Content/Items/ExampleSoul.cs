@@ -14,21 +14,21 @@ namespace ExampleMod.Content.Items
 			Tooltip.SetDefault("'The essence of example creatures'");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 25;
 			// Registers a vertical animation with 4 frames and each one will last 5 ticks (1/12 second)
-			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 4)); // Reminder, (4, 6) is an example of an item that draws a new frame every 6 ticks
-			ItemID.Sets.AnimatesAsSoul[item.type] = true; // Makes the item have 4 animation frames by default.
-			ItemID.Sets.ItemIconPulse[item.type] = true; // The item pulses while in the player's inventory
-			ItemID.Sets.ItemNoGravity[item.type] = true; // Makes the item have no gravity
+			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 4)); // Reminder, (4, 6) is an example of an item that draws a new frame every 6 ticks
+			ItemID.Sets.AnimatesAsSoul[Item.type] = true; // Makes the item have 4 animation frames by default.
+			ItemID.Sets.ItemIconPulse[Item.type] = true; // The item pulses while in the player's inventory
+			ItemID.Sets.ItemNoGravity[Item.type] = true; // Makes the item have no gravity
 		}
 
 		public override void SetDefaults() {
-			item.width = 18;
-			item.height = 18;
-			item.maxStack = 999;
-			item.value = 1000; // Makes the item worth 1 gold.
-			item.rare = ItemRarityID.Orange;
+			Item.width = 18;
+			Item.height = 18;
+			Item.maxStack = 999;
+			Item.value = 1000; // Makes the item worth 1 gold.
+			Item.rare = ItemRarityID.Orange;
 		}
 
-		public override void PostUpdate() => Lighting.AddLight(item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale); // Makes this item glow when thrown out of inventory.
+		public override void PostUpdate() => Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale); // Makes this item glow when thrown out of inventory.
 	}
 
 	// todo: implement

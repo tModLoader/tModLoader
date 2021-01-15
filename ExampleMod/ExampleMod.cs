@@ -28,7 +28,7 @@ namespace ExampleMod
 					// SyncPlayer will be called automatically, so there is no need to forward this data to other clients.
 					break;
 				case ExampleModMessageType.ExampleTeleportToStatue:
-					if (Main.npc[reader.ReadByte()].modNPC is ExamplePerson person && person.npc.active) {
+					if (Main.npc[reader.ReadByte()].ModNPC is ExamplePerson person && person.NPC.active) {
 						person.StatueTeleport();
 					}
 

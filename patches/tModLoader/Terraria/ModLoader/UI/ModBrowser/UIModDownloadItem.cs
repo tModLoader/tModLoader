@@ -189,9 +189,9 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			if (installed != null) {
 				//exists = true;
 				var cVersion = new Version(version.Substring(1));
-				if (cVersion > installed.modFile.version)
+				if (cVersion > installed.modFile.Version)
 					update = true;
-				else if (cVersion < installed.modFile.version)
+				else if (cVersion < installed.modFile.Version)
 					update = updateIsDowngrade = true;
 			}
 

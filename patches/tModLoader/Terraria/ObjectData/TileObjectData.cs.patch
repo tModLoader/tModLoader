@@ -102,7 +102,7 @@
 +			// Detect modder mistake: IndexOutOfRangeException
 +			if (Height != _tileObjectCoords.heights.Length) {
 +				// legacy compatibility, mismatch isn't a problem here
-+				if (Height < _tileObjectCoords.heights.Length && ModContent.LoadingMod.tModLoaderVersion < new Version(0, 11))
++				if (Height < _tileObjectCoords.heights.Length && ModContent.LoadingMod.TModLoaderVersion < new Version(0, 11))
 +					return;
 +
 +				FixNewTile();

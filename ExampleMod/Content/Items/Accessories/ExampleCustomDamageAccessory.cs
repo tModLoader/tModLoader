@@ -11,9 +11,9 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void SetDefaults() {
-			item.width = 40;
-			item.height = 40;
-			item.accessory = true;
+			Item.width = 40;
+			Item.height = 40;
+			Item.accessory = true;
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
