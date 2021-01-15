@@ -83,8 +83,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		public override void Load() {
 			//We want to give it a second boss head icon, so we register one
 			string texture = BossHeadTexture + "_SecondStage"; //Our texture is called "ClassName_Head_Boss_SecondStage"
-			Mod.AddBossHeadTexture(texture, -1); //-1 because we already have one registered via the [AutoloadBossHead] attribute, it would overwrite it otherwise
-			secondStageHeadSlot = ModContent.GetModBossHeadSlot(texture);
+			secondStageHeadSlot = Mod.AddBossHeadTexture(texture, -1); //-1 because we already have one registered via the [AutoloadBossHead] attribute, it would overwrite it otherwise
 		}
 
 		public override void BossHeadSlot(ref int index) {
