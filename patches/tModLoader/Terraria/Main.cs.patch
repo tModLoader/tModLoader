@@ -379,15 +379,18 @@
  			PlayerInput.Load();
  			if (currentValue < 165) {
  				try {
-@@ -3496,7 +_,7 @@
+@@ -3496,8 +_,10 @@
  			mouseColorSlider.SetHSL(mouseColor);
  			mouseBorderColorSlider.SetHSL(MouseBorderColor);
  			mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
 -			if (currentValue != 234)
-+			if (currentValue != 234 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != ModLoader.ModLoader.version)
++			if (currentValue != 234 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != ModLoader.ModLoader.version) {
++				ModLoader.MigrateSettings();
  				SaveSettings();
++			}
  		}
  
+ 		protected void OpenLegacySettings() {
 @@ -3622,9 +_,11 @@
  				FileUtilities.Delete(PlayerList[i].Path, PlayerList[i].IsCloudSave);
  				FileUtilities.Delete(PlayerList[i].Path + ".bak", PlayerList[i].IsCloudSave);
