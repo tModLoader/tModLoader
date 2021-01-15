@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded tile.");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
-			ItemID.Sets.ExtractinatorMode[item.type] = item.type;
+			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
 
 			// Some please convert this to lang files, I'm too lazy to do it
 			// Sorry Itorius, I feel you
@@ -35,16 +35,16 @@ namespace ExampleMod.Content.Items.Placeable
 		}
 
 		public override void SetDefaults() {
-			item.width = 12;
-			item.height = 12;
-			item.maxStack = 999;
-			item.useTurn = true;
-			item.autoReuse = true;
-			item.useAnimation = 15;
-			item.useTime = 10;
-			item.useStyle = ItemUseStyleID.Swing;
-			item.consumable = true;
-			item.createTile = ModContent.TileType<Tiles.ExampleBlock>();
+			Item.width = 12;
+			Item.height = 12;
+			Item.maxStack = 999;
+			Item.useTurn = true;
+			Item.autoReuse = true;
+			Item.useAnimation = 15;
+			Item.useTime = 10;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.consumable = true;
+			Item.createTile = ModContent.TileType<Tiles.ExampleBlock>();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -54,7 +54,7 @@ namespace ExampleMod.Content.Items.Placeable
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 
-			CreateRecipe() // Add multiple recipes set to one item.
+			CreateRecipe() // Add multiple recipes set to one Item.
 				.AddIngredient<ExampleWall>(4)
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();

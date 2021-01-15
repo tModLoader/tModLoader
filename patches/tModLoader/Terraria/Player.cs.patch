@@ -1728,9 +1728,9 @@
  				if (projectile.ai[0] != 2f || projectile.position.HasNaNs())
  					continue;
 +				int type = projectile.type;
-+				bool useAiType = projectile.modProjectile != null && projectile.modProjectile.aiType > 0;
++				bool useAiType = projectile.ModProjectile != null && projectile.ModProjectile.aiType > 0;
 +				if (useAiType) {
-+					projectile.type = projectile.modProjectile.aiType;
++					projectile.type = projectile.ModProjectile.aiType;
 +				}
  
  				num += projectile.position.X + (float)(projectile.width / 2);
@@ -3335,7 +3335,7 @@
 -			}
 -
 -			return num;
-+			if (sItem.DamageType == null && (!sItem.modItem?.IgnoreDamageModifiers ?? true)) {
++			if (sItem.DamageType == null && (!sItem.ModItem?.IgnoreDamageModifiers ?? true)) {
 +				return (int)(sItem.damage * (float)allDamage);
 +			}
 +			
@@ -3368,7 +3368,7 @@
 +				damage &= minionDamage;
 +			}
 +
-+			if (sItem.modItem?.IgnoreDamageModifiers == true)
++			if (sItem.ModItem?.IgnoreDamageModifiers == true)
 +				return sItem.damage;
 +
 +			float flat = 0f;
@@ -3551,7 +3551,7 @@
  						Main.item[num].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num].noGrabDelay = 100;
  						Main.item[num].newAndShiny = false;
-+						Main.item[num].modItem = item.modItem;
++						Main.item[num].ModItem = item.ModItem;
 +						Main.item[num].globalItems = item.globalItems;
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num);
@@ -3566,7 +3566,7 @@
  						Main.item[num2].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num2].noGrabDelay = 100;
  						Main.item[num2].newAndShiny = false;
-+						Main.item[num2].modItem = armor[i].modItem;
++						Main.item[num2].ModItem = armor[i].ModItem;
 +						Main.item[num2].globalItems = armor[i].globalItems;
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num2);
@@ -3575,7 +3575,7 @@
  						Main.item[num3].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num3].noGrabDelay = 100;
  						Main.item[num3].newAndShiny = false;
-+						Main.item[num3].modItem = dye[i].modItem;
++						Main.item[num3].ModItem = dye[i].ModItem;
 +						Main.item[num3].globalItems = dye[i].globalItems;
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num3);
@@ -3584,7 +3584,7 @@
  						Main.item[num4].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num4].noGrabDelay = 100;
  						Main.item[num4].newAndShiny = false;
-+						Main.item[num4].modItem = miscEquips[i].modItem;
++						Main.item[num4].ModItem = miscEquips[i].ModItem;
 +						Main.item[num4].globalItems = miscEquips[i].globalItems;
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num4);
@@ -3593,7 +3593,7 @@
  					Main.item[num5].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  					Main.item[num5].noGrabDelay = 100;
  					Main.item[num5].newAndShiny = false;
-+					Main.item[num5].modItem = miscDyes[i].modItem;
++					Main.item[num5].ModItem = miscDyes[i].ModItem;
 +					Main.item[num5].globalItems = miscDyes[i].globalItems;
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, num5);

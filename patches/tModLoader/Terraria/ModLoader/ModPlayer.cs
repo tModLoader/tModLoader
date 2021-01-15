@@ -19,14 +19,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The Player instance that this ModPlayer instance is attached to.
 		/// </summary>
-		public Player player {get;internal set;}
+		public Player Player { get; internal set; }
 
 		internal int index;
 
 		internal ModPlayer CreateFor(Player newPlayer) {
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
 			modPlayer.Mod = Mod;
-			modPlayer.player = newPlayer;
+			modPlayer.Player = newPlayer;
 			modPlayer.index = index;
 			modPlayer.Initialize();
 			return modPlayer;

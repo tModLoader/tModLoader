@@ -16,6 +16,8 @@ namespace Terraria.ModLoader.Config.UI
 	{
 		private object set;
 
+		//TODO: C# 9.0: Use covariant returns here.
+
 		private V _value;
 		public V value {
 			get { return _value; }
