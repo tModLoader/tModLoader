@@ -24,8 +24,8 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void SetDefaults() {
-			item.CloneDefaults(ItemID.LifeFruit);
-			item.color = Color.Purple;
+			Item.CloneDefaults(ItemID.LifeFruit);
+			Item.color = Color.Purple;
 		}
 
 		public override bool CanUseItem(Player player) {
@@ -65,13 +65,13 @@ namespace ExampleMod.Content.Items.Consumables
 		public int exampleLifeFruits;
 
 		public override void ResetEffects() {
-			player.statLifeMax2 += exampleLifeFruits * ExampleLifeFruit.LifePerFruit;
+			Player.statLifeMax2 += exampleLifeFruits * ExampleLifeFruit.LifePerFruit;
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 			ModPacket packet = Mod.GetPacket();
 			packet.Write((byte)ExampleModMessageType.ExamplePlayerSyncPlayer);
-			packet.Write((byte)player.whoAmI);
+			packet.Write((byte)Player.whoAmI);
 			packet.Write(exampleLifeFruits);
 			packet.Send(toWho, fromWho);
 		}

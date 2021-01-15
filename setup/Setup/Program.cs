@@ -37,7 +37,7 @@ namespace Terraria.ModLoader.Setup
 			if (!Directory.Exists(tMLSteamDir))
 				tMLSteamDir = SteamDir;
 
-			UpdateSteamDirTargetsFile();
+			UpdateSteamDirTargetsFile(false);
 
 			Application.Run(new MainForm());
 		}
@@ -123,14 +123,15 @@ namespace Terraria.ModLoader.Setup
 				else {
 					Settings.Default.SteamDir = Path.GetDirectoryName(dialog.FileName);
 					Settings.Default.Save();
-					UpdateSteamDirTargetsFile();
+					UpdateSteamDirTargetsFile(true);
 					return true;
 				}
 			}
 		}
 
 		private static readonly string targetsFilePath = Path.Combine("src", "TerrariaSteamPath.targets");
-		private static void UpdateSteamDirTargetsFile() {
+
+		private static void UpdateSteamDirTargetsFile(bool overwrite) {
 			SetupOperation.CreateParentDirectory(targetsFilePath);
 
 			string targetsText =
@@ -142,8 +143,7 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
   </PropertyGroup>
 </Project>";
 
-
-			if (File.Exists(targetsFilePath) && targetsText == File.ReadAllText(targetsFilePath))
+			if (File.Exists(targetsFilePath) && (!overwrite || targetsText == File.ReadAllText(targetsFilePath)))
 				return;
 
 			File.WriteAllText(targetsFilePath, targetsText);

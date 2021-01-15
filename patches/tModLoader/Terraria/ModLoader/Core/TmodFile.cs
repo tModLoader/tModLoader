@@ -55,15 +55,15 @@ namespace Terraria.ModLoader.Core
 		private EntryReadStream sharedEntryReadStream;
 		private List<EntryReadStream> independentEntryReadStreams = new List<EntryReadStream>();
 
-		public Version tModLoaderVersion { get; private set; }
+		public Version TModLoaderVersion { get; private set; }
 
-		public string name { get; private set; }
+		public string Name { get; private set; }
 
-		public Version version { get; private set; }
+		public Version Version { get; private set; }
 
-		public byte[] hash { get; private set; }
+		public byte[] Hash { get; private set; }
 
-		internal byte[] signature { get; private set; } = new byte[256];
+		internal byte[] Signature { get; private set; } = new byte[256];
 
 		private bool? validModBrowserSignature;
 		internal bool ValidModBrowserSignature {
@@ -77,8 +77,8 @@ namespace Terraria.ModLoader.Core
 
 		internal TmodFile(string path, string name = null, Version version = null) {
 			this.path = path;
-			this.name = name;
-			this.version = version;
+			this.Name = name;
+			this.Version = version;
 		}
 
 		public bool HasFile(string fileName) => files.ContainsKey(Sanitize(fileName));
@@ -187,14 +187,14 @@ namespace Terraria.ModLoader.Core
 			using (fileStream = File.Create(path))
 			using (var writer = new BinaryWriter(fileStream)) {
 				writer.Write(Encoding.ASCII.GetBytes("TMOD"));
-				writer.Write((tModLoaderVersion = ModLoader.version).ToString());
+				writer.Write((TModLoaderVersion = ModLoader.version).ToString());
 
 				int hashPos = (int)fileStream.Position;
 				writer.Write(new byte[20 + 256 + 4]); //hash, sig, data length
 
 				int dataPos = (int)fileStream.Position;
-				writer.Write(name);
-				writer.Write(version.ToString());
+				writer.Write(Name);
+				writer.Write(Version.ToString());
 
 				// write file table
 				// file count
@@ -225,10 +225,10 @@ namespace Terraria.ModLoader.Core
 
 				// update hash
 				fileStream.Position = dataPos;
-				hash = SHA1.Create().ComputeHash(fileStream);
+				Hash = SHA1.Create().ComputeHash(fileStream);
 
 				fileStream.Position = hashPos;
-				writer.Write(hash);
+				writer.Write(Hash);
 
 				//skip signature
 				fileStream.Seek(256, SeekOrigin.Current);
@@ -255,7 +255,7 @@ namespace Terraria.ModLoader.Core
 					throw new Exception($"File already opened? {path}");
 
 				try {
-					if (name == null)
+					if (Name == null)
 						Read();
 					else
 						Reopen();
@@ -300,28 +300,28 @@ namespace Terraria.ModLoader.Core
 			if (Encoding.ASCII.GetString(reader.ReadBytes(4)) != "TMOD")
 				throw new Exception("Magic Header != \"TMOD\"");
 
-			tModLoaderVersion = new Version(reader.ReadString());
-			hash = reader.ReadBytes(20);
-			signature = reader.ReadBytes(256);
+			TModLoaderVersion = new Version(reader.ReadString());
+			Hash = reader.ReadBytes(20);
+			Signature = reader.ReadBytes(256);
 			//currently unused, included to read the entire data-blob as a byte-array without decompressing or waiting to hit end of stream
 			int datalen = reader.ReadInt32();
 
 			// verify integrity
 			long pos = fileStream.Position;
 			var verifyHash = SHA1.Create().ComputeHash(fileStream);
-			if (!verifyHash.SequenceEqual(hash))
+			if (!verifyHash.SequenceEqual(Hash))
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorHashMismatchCorrupted"));
 
 			fileStream.Position = pos;
 
-			if (tModLoaderVersion < new Version(0, 11)) {
+			if (TModLoaderVersion < new Version(0, 11)) {
 				Upgrade();
 				return;
 			}
 
 			// read hashed/signed mod info
-			name = reader.ReadString();
-			version = new Version(reader.ReadString());
+			Name = reader.ReadString();
+			Version = new Version(reader.ReadString());
 
 			// read file table
 			int offset = 0;
@@ -352,7 +352,7 @@ namespace Terraria.ModLoader.Core
 				throw new Exception("Magic Header != \"TMOD\"");
 
 			reader.ReadString(); //tModLoader version
-			if (!reader.ReadBytes(20).SequenceEqual(hash))
+			if (!reader.ReadBytes(20).SequenceEqual(Hash))
 				throw new Exception($"File has been modifed, hash. {path}");
 
 			// could also check name and version but hash should suffice
@@ -387,8 +387,8 @@ namespace Terraria.ModLoader.Core
 
 			using (var deflateStream = new DeflateStream(fileStream, CompressionMode.Decompress, true))
 			using (var reader = new BinaryReader(deflateStream)) {
-				name = reader.ReadString();
-				version = new Version(reader.ReadString());
+				Name = reader.ReadString();
+				Version = new Version(reader.ReadString());
 
 				int count = reader.ReadInt32();
 				for (int i = 0; i < count; i++)
@@ -397,7 +397,7 @@ namespace Terraria.ModLoader.Core
 
 			// update buildVersion
 			var info = BuildProperties.ReadModFile(this);
-			info.buildVersion = tModLoaderVersion;
+			info.buildVersion = TModLoaderVersion;
 			// TODO should be turn this into .info? Generally files starting with . are ignored, at least on Windows (and are much harder to accidentally delete or even manually create)
 			AddFile("Info", info.ToBytes());
 

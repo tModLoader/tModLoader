@@ -33,7 +33,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public bool Visible { get; private set; }
+		public bool Visible { get; private set; } = true;
 
 		public virtual Transformation Transform { get; }
 

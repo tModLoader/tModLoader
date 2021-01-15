@@ -76,8 +76,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public override void SetupContent() {
-			mountData.modMountData = this;
+		public sealed override void SetupContent() {
+			mountData.ModMountData = this;
 			MountLoader.SetupMount(mountData);
 			Mount.mounts[Type] = mountData;
 		}
@@ -87,7 +87,7 @@ namespace Terraria.ModLoader
 		internal void SetupMount(Mount.MountData mountData) {
 			ModMountData newMountData = (ModMountData)MemberwiseClone();
 			newMountData.mountData = mountData;
-			mountData.modMountData = newMountData;
+			mountData.ModMountData = newMountData;
 			newMountData.Mod = Mod;
 			newMountData.SetDefaults();
 		}

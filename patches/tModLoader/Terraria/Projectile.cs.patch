@@ -91,10 +91,10 @@
  
 +		public void CloneDefaults(int TypeToClone) {
 +			int originalType = type;
-+			ModProjectile originalModProjectile = modProjectile;
++			ModProjectile originalModProjectile = ModProjectile;
 +			SetDefaults(TypeToClone);
 +			type = originalType;
-+			modProjectile = originalModProjectile;
++			ModProjectile = originalModProjectile;
 +			int num = ProjectileID.Sets.TrailCacheLength[type];
 +			if (num != oldPos.Length) {
 +				Array.Resize(ref oldPos, num);
@@ -111,7 +111,7 @@
 +		}
 +
  		public void SetDefaults(int Type) {
-+			modProjectile = null;
++			ModProjectile = null;
 +			globalProjectiles = new GlobalProjectile[0];
 +			nameOverride = null;
  			ownerHitCheckDistance = 1000f;
@@ -345,8 +345,8 @@
  			if (Main.getGoodWorld && type == 281)
  				flag18 = true;
 +				
-+			if (modProjectile != null)
-+				num51 = modProjectile.cooldownSlot;
++			if (ModProjectile != null)
++				num51 = ModProjectile.cooldownSlot;
  
  			if (!flag18 || !Colliding(myRect, Main.player[myPlayer2].getRect()))
  				return;

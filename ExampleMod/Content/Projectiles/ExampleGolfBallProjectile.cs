@@ -13,13 +13,13 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void SetDefaults() {
-			projectile.netImportant = true; // Indicates that this projectile will be synced to a joining player (by default, any projectiles active before the player joins (besides pets) are not synced over).
-			projectile.width = 7; // The width of the projectile's hitbox.
-			projectile.height = 7; // The height of the projectile's hitbox.
-			projectile.friendly = true; // Setting this to anything other than true causes an index out of bounds error.
-			projectile.penetrate = -1; // Number of times the projectile can penetrate enemies. -1 sets it to infinite penetration.
-			projectile.aiStyle = 149; // 149 is the golf ball AI.
-			projectile.tileCollide = false; // Tile Collision is set to false, as it's handled in the AI.
+			Projectile.netImportant = true; // Indicates that this projectile will be synced to a joining player (by default, any projectiles active before the player joins (besides pets) are not synced over).
+			Projectile.width = 7; // The width of the projectile's hitbox.
+			Projectile.height = 7; // The height of the projectile's hitbox.
+			Projectile.friendly = true; // Setting this to anything other than true causes an index out of bounds error.
+			Projectile.penetrate = -1; // Number of times the projectile can penetrate enemies. -1 sets it to infinite penetration.
+			Projectile.aiStyle = 149; // 149 is the golf ball AI.
+			Projectile.tileCollide = false; // Tile Collision is set to false, as it's handled in the AI.
 		}
 	}
 }

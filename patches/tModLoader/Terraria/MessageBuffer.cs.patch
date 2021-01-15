@@ -189,7 +189,7 @@
  							Main.chest[num260].item[num261].netDefaults(type17);
  							Main.chest[num260].item[num261].Prefix(pre3);
  							Main.chest[num260].item[num261].stack = stack8;
-+							ItemIO.ReceiveModData(Main.chest[num261].item[num261], reader);
++							ItemIO.ReceiveModData(Main.chest[num260].item[num261], reader);
  							Recipe.FindRecipes(canDelayCheck: true);
  						}
  
@@ -335,6 +335,15 @@
  							player5.buffType[num50] = reader.ReadUInt16();
  							if (player5.buffType[num50] > 0)
  								player5.buffTime[num50] = 60;
+@@ -2178,7 +_,7 @@
+ 						if (Main.netMode != 2)
+ 							break;
+ 
+-						if (num180 >= 0 && num180 < 665 && NPCID.Sets.MPAllowedEnemies[num180]) {
++						if (num180 >= 0 && num180 < NPCID.Sets.MPAllowedEnemies.Length && NPCID.Sets.MPAllowedEnemies[num180]) {
+ 							if (!NPC.AnyNPCs(num180))
+ 								NPC.SpawnOnPlayer(plr, num180);
+ 						}
 @@ -2466,6 +_,7 @@
  					break;
  				case 74:

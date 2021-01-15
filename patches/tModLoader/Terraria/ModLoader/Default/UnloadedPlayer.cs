@@ -18,7 +18,7 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void Load(TagCompound tag) {
-			PlayerIO.LoadModData(player, tag.GetList<TagCompound>("list"));
+			PlayerIO.LoadModData(Player, tag.GetList<TagCompound>("list"));
 		}
 
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
