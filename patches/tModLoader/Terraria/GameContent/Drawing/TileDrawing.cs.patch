@@ -1,0 +1,38 @@
+--- src/Terraria/Terraria/GameContent/Drawing/TileDrawing.cs
++++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
+@@ -9,6 +_,7 @@
+ using Terraria.GameContent.Tile_Entities;
+ using Terraria.Graphics.Capture;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.ObjectData;
+ using Terraria.UI;
+ using Terraria.Utilities;
+@@ -2744,6 +_,9 @@
+ 						AddSpecialPoint(tileX, tileY, TileCounterType.Tree);
+ 					break;
+ 			}
++
++			Point16 topleft = TileEntityUtils.TileTopLeft(tileX, tileY);
++			TileLoader.DrawEffects(topleft.X, topleft.Y, drawData.typeCache);
+ 		}
+ 
+ 		private static Color GetFinalLight(Tile tileCache, ushort typeCache, Color tileLight, Color tint) {
+@@ -4444,7 +_,7 @@
+ 			AddSpecialLegacyPoint(p.X, p.Y);
+ 		}
+ 
+-		private void AddSpecialLegacyPoint(int x, int y) {
++		public void AddSpecialLegacyPoint(int x, int y) {
+ 			_specialTileX[_specialTilesCount] = x;
+ 			_specialTileY[_specialTilesCount] = y;
+ 			_specialTilesCount++;
+@@ -5418,6 +_,8 @@
+ 
+ 					Main.spriteBatch.Draw(value9, vector, value10, new Color(255, 255, 255, 0) * 0.1f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+ 				}
++				
++				TileLoader.SpecialDraw(type, num, num2, Main.spriteBatch);
+ 			}
+ 		}
+ 
