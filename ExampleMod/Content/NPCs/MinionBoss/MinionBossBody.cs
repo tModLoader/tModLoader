@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
@@ -212,9 +213,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				}
 			}
 
-			int frameSpeed = 5; //How long it stays on a frame in ticks
-			NPC.frameCounter++;
-			NPC.frameCounter += NPC.velocity.Length() / 10f;
+			int frameSpeed = 5;
+			NPC.frameCounter += 0.5f;
+			NPC.frameCounter += NPC.velocity.Length() / 10f; //Make the counter go faster with more movement speed
 			if (NPC.frameCounter > frameSpeed) {
 				NPC.frameCounter = 0;
 				NPC.frame.Y += frameHeight;
@@ -225,7 +226,24 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			}
 		}
 
+		public override void HitEffect(int hitDirection, double damage) {
+			//If the NPC dies, spawn gore and play a sound
+			if (NPC.life <= 0) {
+				//These gores work by simply existing as a texture inside the ExampleMod/Gores folder. They won't be recognized in any other folder
+				int backGoreType = ModContent.Find<ModGore>("ExampleMod/MinionBossBody_Back").Type;
+				int frontGoreType = ModContent.Find<ModGore>("ExampleMod/MinionBossBody_Front").Type;
+
+				for (int i = 0; i < 2; i++) {
+					Gore.NewGore(NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), backGoreType);
+					Gore.NewGore(NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), frontGoreType);
+				}
+
+				SoundEngine.PlaySound(SoundID.Roar, NPC.Center, 0);
+			}
+		}
+
 		public override void AI() {
+			//This should almost always be the first code in AI() as it is responsible for finding the proper player target.
 			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active) {
 				NPC.TargetClosest();
 			}
@@ -233,6 +251,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			Player player = Main.player[NPC.target];
 
 			if (player.dead) {
+				//If the targeted player is dead, flee
 				NPC.velocity.Y -= 0.04f;
 				//This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
 				NPC.EncourageDespawn(10);
