@@ -197,6 +197,11 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			*/
 		}
 
+		public override void BossLoot(ref string name, ref int potionType) {
+			//Here you'd want to change the potion type that drops when the boss is defeated. Because this boss is early pre-hardmode, we keep it unchanged
+			//(Lesser Healing Potion). If you wanted to change it, simply write "potionType = ItemID.HealingPotion;" or any other potion type
+		}
+
 		public override void FindFrame(int frameHeight) {
 			//This NPC animates with a simple "go from start frame to final frame, and loop back to start frame" rule
 			int startFrame = 0;
