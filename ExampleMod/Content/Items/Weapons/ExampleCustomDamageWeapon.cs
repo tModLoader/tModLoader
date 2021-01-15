@@ -11,19 +11,19 @@ namespace ExampleMod.Content.Items.Weapons
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleSword"; // TODO: remove when sprite is made for this
 
 		public override void SetDefaults() {
-			item.DamageType = ModContent.GetInstance<ExampleDamageClass>(); // Makes our item use our custom damage type.
-			item.width = 40;
-			item.height = 40;
-			item.useStyle = ItemUseStyleID.Swing;
-			item.useTime = 30;
-			item.useAnimation = 30;
-			item.autoReuse = true;
-			item.damage = 70;
-			item.knockBack = 4;
-			item.crit = 6;
-			item.value = Item.buyPrice(gold: 1);
-			item.rare = ItemRarityID.Green;
-			item.UseSound = SoundID.Item1;
+			Item.DamageType = ModContent.GetInstance<ExampleDamageClass>(); // Makes our item use our custom damage type.
+			Item.width = 40;
+			Item.height = 40;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.useTime = 30;
+			Item.useAnimation = 30;
+			Item.autoReuse = true;
+			Item.damage = 70;
+			Item.knockBack = 4;
+			Item.crit = 6;
+			Item.value = Item.buyPrice(gold: 1);
+			Item.rare = ItemRarityID.Green;
+			Item.UseSound = SoundID.Item1;
 		}
 
 		public override void AddRecipes() {

@@ -461,19 +461,19 @@ namespace Terraria.ModLoader.IO
 				int count = reader.ReadUInt16();
 
 				for (int k = 0; k < count; k++) {
-					tables.headSlots[reader.ReadUInt16()] = ModContent.TryFind(reader.ReadString(), reader.ReadString(), out ModItem item) ? item.item.headSlot : 0;
+					tables.headSlots[reader.ReadUInt16()] = ModContent.TryFind(reader.ReadString(), reader.ReadString(), out ModItem item) ? item.Item.headSlot : 0;
 				}
 
 				count = reader.ReadUInt16();
 
 				for (int k = 0; k < count; k++) {
-					tables.bodySlots[reader.ReadUInt16()] = ModContent.TryFind(reader.ReadString(), reader.ReadString(), out ModItem item) ? item.item.bodySlot : 0;
+					tables.bodySlots[reader.ReadUInt16()] = ModContent.TryFind(reader.ReadString(), reader.ReadString(), out ModItem item) ? item.Item.bodySlot : 0;
 				}
 
 				count = reader.ReadUInt16();
 
 				for (int k = 0; k < count; k++) {
-					tables.legSlots[reader.ReadUInt16()] = ModContent.TryFind(reader.ReadString(), reader.ReadString(), out ModItem item) ? item.item.legSlot : 0;
+					tables.legSlots[reader.ReadUInt16()] = ModContent.TryFind(reader.ReadString(), reader.ReadString(), out ModItem item) ? item.Item.legSlot : 0;
 				}
 
 				ReadContainerData(reader, tables);

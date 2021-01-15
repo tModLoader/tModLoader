@@ -115,8 +115,8 @@ namespace Terraria.ModLoader.IO
 				if (npc.active && NPCLoader.IsModNPC(npc)) {
 					if (npc.townNPC) {
 						TagCompound tag = new TagCompound {
-							["mod"] = npc.modNPC.Mod.Name,
-							["name"] = npc.modNPC.Name,
+							["mod"] = npc.ModNPC.Mod.Name,
+							["name"] = npc.ModNPC.Name,
 							["displayName"] = npc.GivenName,
 							["x"] = npc.position.X,
 							["y"] = npc.position.Y,
@@ -128,8 +128,8 @@ namespace Terraria.ModLoader.IO
 					}
 					else if (NPCID.Sets.SavesAndLoads[npc.type]) {
 						TagCompound tag = new TagCompound {
-							["mod"] = npc.modNPC.Mod.Name,
-							["name"] = npc.modNPC.Name,
+							["mod"] = npc.ModNPC.Mod.Name,
+							["name"] = npc.ModNPC.Name,
 							["x"] = npc.position.X,
 							["y"] = npc.position.Y
 						};

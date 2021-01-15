@@ -246,9 +246,10 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class OptionStringsAttribute : Attribute
 	{
-		public string[] optionLabels { get; set; }
+		public string[] OptionLabels { get; set; }
+
 		public OptionStringsAttribute(string[] optionLabels) {
-			this.optionLabels = optionLabels;
+			OptionLabels = optionLabels;
 		}
 	}
 
