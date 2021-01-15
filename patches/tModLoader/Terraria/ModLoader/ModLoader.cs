@@ -370,11 +370,11 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("AvoidGithub", UI.ModBrowser.UIModBrowser.AvoidGithub);
 			Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
-			Main.Configuration.Put("LastLaunchedTModLoaderVersion", version.ToString());
 			Main.Configuration.Put("ShowModMenuNotifications", notifyNewMainMenuThemes);
 			Main.Configuration.Put("LastSelectedModMenu", MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Put("KnownMenuThemes", MenuLoader.KnownMenuSaveString);
 			Main.Configuration.Put("BossBarStyle", BossBarLoader.lastSelectedStyle);
+			Main.Configuration.Put("LastLaunchedTModLoaderVersion", version.ToString());
 		}
 
 		internal static void LoadConfiguration()
@@ -395,20 +395,19 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
 			Main.Configuration.Get("BossBarStyle", ref BossBarLoader.lastSelectedStyle);
+			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get("LastLaunchedTModLoaderVersion", "0.0"));
 		}
 
 		internal static void MigrateSettings()
 		{
-			if (LastLaunchedTModLoaderVersion != null) return;
-
-			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get("LastLaunchedTModLoaderVersion", "0.0"));
-			if (LastLaunchedTModLoaderVersion <= new Version(0, 11, 4))
-				Main.Configuration.Put("Support4K", true); // This reverts a potentially bad setting change. 
-														   // Subsequent migrations here.
+			if (LastLaunchedTModLoaderVersion < new Version(0, 11, 7, 5))
+				showMemoryEstimates = true;
+			
 			/*
 			if (LastLaunchedTModLoaderVersion < version)
 				ShowWhatsNew = true;
 			*/
+
 			if (LastLaunchedTModLoaderVersion == new Version(0, 0))
 				ShowFirstLaunchWelcomeMessage = true;
 		}
