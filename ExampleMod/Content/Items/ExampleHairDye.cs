@@ -15,7 +15,7 @@ namespace ExampleMod.Content.Items
 			if (!Main.dedServ) {
 				//The following code creates a hair color-returning delegate (anonymous method), and associates it with this item's type Id.
 				GameShaders.Hair.BindShader(
-					item.type,
+					Item.type,
 					new LegacyHairShaderData().UseLegacyMethod((Player player, Color newColor, ref bool lighting) => Main.DiscoColor) //Returning Main.DiscoColor will make our hair an animated rainbow. You can return any Color here.
 				);
 			}
@@ -23,17 +23,17 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void SetDefaults() {
-			item.width = 20;
-			item.height = 26;
-			item.maxStack = 99;
-			item.value = Item.buyPrice(gold: 5);
-			item.rare = ItemRarityID.Green;
-			item.UseSound = SoundID.Item3;
-			item.useStyle = ItemUseStyleID.EatFood;
-			item.useTurn = true;
-			item.useAnimation = 17;
-			item.useTime = 17;
-			item.consumable = true;
+			Item.width = 20;
+			Item.height = 26;
+			Item.maxStack = 99;
+			Item.value = Item.buyPrice(gold: 5);
+			Item.rare = ItemRarityID.Green;
+			Item.UseSound = SoundID.Item3;
+			Item.useStyle = ItemUseStyleID.EatFood;
+			Item.useTurn = true;
+			Item.useAnimation = 17;
+			Item.useTime = 17;
+			Item.consumable = true;
 		}
 	}
 }

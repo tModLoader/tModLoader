@@ -50,24 +50,24 @@ namespace Terraria.ModLoader
 		}
 
 		internal static bool IsModMountData(Mount.MountData mountData) {
-			return mountData.modMountData != null;
+			return mountData.ModMountData != null;
 		}
 
 		internal static void SetupMount(Mount.MountData mount) {
 			if (IsModMountData(mount)) {
-				GetMount(mount.modMountData.Type).SetupMount(mount);
+				GetMount(mount.ModMountData.Type).SetupMount(mount);
 			}
 		}
 
 		public static void JumpHeight(Player mountedPlayer, Mount.MountData mount, ref int jumpHeight, float xVelocity) {
 			if (IsModMountData(mount)) {
-				mount.modMountData.JumpHeight(mountedPlayer, ref jumpHeight, xVelocity);
+				mount.ModMountData.JumpHeight(mountedPlayer, ref jumpHeight, xVelocity);
 			}
 		}
 
 		public static void JumpSpeed(Player mountedPlayer, Mount.MountData mount, ref float jumpSpeed, float xVelocity) {
 			if (IsModMountData(mount)) {
-				mount.modMountData.JumpSpeed(mountedPlayer, ref jumpSpeed, xVelocity);
+				mount.ModMountData.JumpSpeed(mountedPlayer, ref jumpSpeed, xVelocity);
 			}
 		}
 
@@ -86,7 +86,7 @@ namespace Terraria.ModLoader
 
 		//todo: this is never called, why is this in here?
 		internal static bool CustomBodyFrame(Mount.MountData mount) {
-			if (IsModMountData(mount) && mount.modMountData.CustomBodyFrame()) {
+			if (IsModMountData(mount) && mount.ModMountData.CustomBodyFrame()) {
 				return true;
 			}
 			return false;
@@ -99,7 +99,7 @@ namespace Terraria.ModLoader
 		/// <param name="toggleOn">Does nothing yet</param>
 		public static void UseAbility(Player player, Vector2 mousePosition, bool toggleOn) {
 			if (IsModMountData(player.mount._data)) {
-				player.mount._data.modMountData.UseAbility(player, mousePosition, toggleOn);
+				player.mount._data.ModMountData.UseAbility(player, mousePosition, toggleOn);
 			}
 		}
 		/// <summary>
@@ -110,7 +110,7 @@ namespace Terraria.ModLoader
 		/// <param name="mousePosition"></param>
 		public static void AimAbility(Mount mount, Player player, Vector2 mousePosition) {
 			if (IsModMountData(mount._data)) {
-				mount._data.modMountData.AimAbility(player, mousePosition);
+				mount._data.ModMountData.AimAbility(player, mousePosition);
 			}
 		}
 
@@ -123,7 +123,7 @@ namespace Terraria.ModLoader
 		/// <param name="skipDust">Set to true to skip the vanilla dust spawning logic</param>
 		public static void SetMount(Mount mount, Player player, ref bool skipDust) {
 			if (IsModMountData(mount._data)) {
-				mount._data.modMountData.SetMount(player, ref skipDust);
+				mount._data.ModMountData.SetMount(player, ref skipDust);
 			}
 		}
 
@@ -136,7 +136,7 @@ namespace Terraria.ModLoader
 		/// <param name="skipDust">Set to true to skip the vanilla dust spawning logic</param>
 		public static void Dismount(Mount mount, Player player, ref bool skipDust) {
 			if (IsModMountData(mount._data)) {
-				mount._data.modMountData.Dismount(player, ref skipDust);
+				mount._data.ModMountData.Dismount(player, ref skipDust);
 			}
 		}
 
@@ -145,7 +145,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool Draw(Mount mount, List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow) {
 			if (IsModMountData(mount._data)) {
-				return mount._data.modMountData.Draw(playerDrawData, drawType, drawPlayer, ref texture, ref glowTexture, ref drawPosition, ref frame, ref drawColor, ref glowColor, ref rotation, ref spriteEffects, ref drawOrigin, ref drawScale, shadow);
+				return mount._data.ModMountData.Draw(playerDrawData, drawType, drawPlayer, ref texture, ref glowTexture, ref drawPosition, ref frame, ref drawColor, ref glowColor, ref rotation, ref spriteEffects, ref drawOrigin, ref drawScale, shadow);
 			}
 			return true;
 		}

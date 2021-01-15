@@ -25,7 +25,7 @@ namespace Terraria.ModLoader.Config.UI
 			base.OnBind();
 			stringList = (IList<string>)list;
 			OptionStringsAttribute optionsAttribute = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(memberInfo, item, stringList);
-			options = optionsAttribute.optionLabels;
+			options = optionsAttribute.OptionLabels;
 
 			TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
 			_GetValue = () => DefaultGetValue();
