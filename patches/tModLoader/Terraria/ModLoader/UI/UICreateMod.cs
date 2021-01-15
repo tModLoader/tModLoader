@@ -298,18 +298,18 @@ namespace {modNameTrimmed}.Items
 
 		public override void SetDefaults() 
 		{{
-			item.damage = 50;
-			item.DamageType = DamageClass.Melee;
-			item.width = 40;
-			item.height = 40;
-			item.useTime = 20;
-			item.useAnimation = 20;
-			item.useStyle = 1;
-			item.knockBack = 6;
-			item.value = 10000;
-			item.rare = 2;
-			item.UseSound = SoundID.Item1;
-			item.autoReuse = true;
+			Item.damage = 50;
+			Item.DamageType = DamageClass.Melee;
+			Item.width = 40;
+			Item.height = 40;
+			Item.useTime = 20;
+			Item.useAnimation = 20;
+			Item.useStyle = 1;
+			Item.knockBack = 6;
+			Item.value = 10000;
+			Item.rare = 2;
+			Item.UseSound = SoundID.Item1;
+			Item.autoReuse = true;
 		}}
 
 		public override void AddRecipes() 
