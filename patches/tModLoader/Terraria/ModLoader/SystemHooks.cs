@@ -31,7 +31,11 @@ namespace Terraria.ModLoader
 			Systems.Add(modSystem);
 		}
 
-		internal static void ResizeArrays() => RebuildHooks();
+		internal static void ResizeArrays() {
+			NetSystems = ModLoader.BuildGlobalHook<ModSystem, Action<BinaryWriter>>(Systems, s => s.NetSend);
+
+			RebuildHooks();
+		}
 
 		internal static void Unload() {
 			Systems.Clear();
