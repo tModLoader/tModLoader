@@ -15,18 +15,18 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 		}
 
 		public override void SetDefaults() {
-			item.damage = 0;
-			item.useStyle = ItemUseStyleID.Swing;
-			item.shoot = ModContent.ProjectileType<ExampleLightPetProjectile>();
-			item.width = 16;
-			item.height = 30;
-			item.UseSound = SoundID.Item2;
-			item.useAnimation = 20;
-			item.useTime = 20;
-			item.rare = ItemRarityID.Yellow;
-			item.noMelee = true;
-			item.value = Item.sellPrice(0, 5, 50);
-			item.buffType = ModContent.BuffType<ExampleLightPetBuff>();
+			Item.damage = 0;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.shoot = ModContent.ProjectileType<ExampleLightPetProjectile>();
+			Item.width = 16;
+			Item.height = 30;
+			Item.UseSound = SoundID.Item2;
+			Item.useAnimation = 20;
+			Item.useTime = 20;
+			Item.rare = ItemRarityID.Yellow;
+			Item.noMelee = true;
+			Item.value = Item.sellPrice(0, 5, 50);
+			Item.buffType = ModContent.BuffType<ExampleLightPetBuff>();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -39,7 +39,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 
 		public override void UseStyle(Player player) {
 			if (player.whoAmI == Main.myPlayer && player.itemTime == 0) {
-				player.AddBuff(item.buffType, 3600);
+				player.AddBuff(Item.buffType, 3600);
 			}
 		}
 	}

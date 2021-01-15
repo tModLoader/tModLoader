@@ -12,9 +12,7 @@ namespace Terraria.ModLoader
 			WallLoader.globalWalls.Add(this);
 		}
 
-		public override void SetupContent() {
-			SetDefaults();
-		}
+		public sealed override void SetupContent() => SetDefaults();
 
 		/// <summary>
 		/// Allows you to modify the properties of any wall in the game. Most properties are stored as arrays throughout the Terraria code.

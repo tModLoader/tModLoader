@@ -39,7 +39,7 @@ namespace Terraria.ModLoader
 			BuffLoader.buffs.Add(this);
 		}
 
-		public override void SetupContent() {
+		public sealed override void SetupContent() {
 			TextureAssets.Buff[Type] = ModContent.GetTexture(Texture);
 			SetDefaults();
 			BuffID.Search.Add(FullName, Type);
