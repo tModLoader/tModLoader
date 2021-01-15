@@ -245,6 +245,25 @@
  										float value2 = (scale - 1f) * 100f;
  										value2 = Utils.Clamp(value2, 0f, 50f);
  										num9 = (int)((float)num9 * (1f + value2 * 0.23f));
+@@ -9112,6 +_,7 @@
+ 									}
+ 
+ 									if (flag7) {
++										/*
+ 										if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
+ 											flag6 = true;
+ 
+@@ -9120,6 +_,10 @@
+ 
+ 										if (magic && Main.rand.Next(1, 101) <= Main.player[owner].magicCrit)
+ 											flag6 = true;
++										*/
++
++										if (!minion && Main.rand.Next(100) < Main.player[owner].GetWeaponCrit(Main.player[owner].HeldItem))
++											flag6 = true;
+ 
+ 										int num12 = type;
+ 										if ((uint)(num12 - 688) <= 2u) {
 @@ -9421,7 +_,7 @@
  											num18 = (int)((double)num18 * 0.75);
  									}
