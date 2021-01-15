@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Items.Consumables
 			return Main.hardMode && NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3 && !NPC.AnyNPCs(NPCID.Plantera);
 		}
 
-		public override bool UseItem(Player player) {
+		public override bool? UseItem(Player player) {
 			if (player.whoAmI == Main.myPlayer) {
 				//If the player using the item is the client
 				//(explicitely excluded serverside here)
