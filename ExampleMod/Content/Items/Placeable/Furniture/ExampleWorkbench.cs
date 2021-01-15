@@ -12,20 +12,20 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		}
 
 		public override void SetDefaults() {
-			item.createTile = ModContent.TileType<Tiles.Furniture.ExampleWorkbench>(); //This sets the id of the tile that this item should place when used.
+			Item.createTile = ModContent.TileType<Tiles.Furniture.ExampleWorkbench>(); //This sets the id of the tile that this item should place when used.
 
-			item.width = 28; //The item texture's width
-			item.height = 14; //The item texture's height
+			Item.width = 28; //The item texture's width
+			Item.height = 14; //The item texture's height
 
-			item.useTurn = true;
-			item.autoReuse = true;
-			item.useStyle = ItemUseStyleID.Swing;
-			item.useTime = 10;
-			item.useAnimation = 15;
+			Item.useTurn = true;
+			Item.autoReuse = true;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.useTime = 10;
+			Item.useAnimation = 15;
 
-			item.maxStack = 99;
-			item.consumable = true;
-			item.value = 150;
+			Item.maxStack = 99;
+			Item.consumable = true;
+			Item.value = 150;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

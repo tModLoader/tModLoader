@@ -21,11 +21,11 @@ namespace Terraria.ModLoader.Default.Developer
 		}
 
 		public override void PostUpdate() {
-			AndromedonEffect?.UpdateEffects(player);
+			AndromedonEffect?.UpdateEffects(Player);
 		}
 
 		public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
-			AndromedonEffect?.UpdateAura(player);
+			AndromedonEffect?.UpdateAura(Player);
 		}
 	}
 }

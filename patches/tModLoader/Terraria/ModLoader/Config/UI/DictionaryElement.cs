@@ -37,6 +37,8 @@ namespace Terraria.ModLoader.Config.UI
 		//	}
 		//}
 
+		//TODO: C# 9.0: Use covariant returns here.
+
 		private K _key;
 		public K key {
 			get { return _key; }

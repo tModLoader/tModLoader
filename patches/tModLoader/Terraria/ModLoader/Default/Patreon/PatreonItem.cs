@@ -17,8 +17,8 @@ namespace Terraria.ModLoader.Default.Patreon
 		}
 
 		public override void SetDefaults() {
-			item.rare = 9;
-			item.vanity = true;
+			Item.rare = 9;
+			Item.vanity = true;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
