@@ -30,10 +30,12 @@ namespace Terraria.ModLoader.IO
 			internal IDictionary<ushort, bool> frameImportant;
 			internal IDictionary<ushort, string> tileModNames;
 			internal IDictionary<ushort, string> tileNames;
+			internal IDictionary<ushort, ushort> tileFallback;
 
 			internal IDictionary<ushort, ushort> walls;
 			internal IDictionary<ushort, string> wallModNames;
 			internal IDictionary<ushort, string> wallNames;
+			internal IDictionary<ushort, ushort> wallFallback;
 
 			internal static TileTables Create() {
 				TileTables tables = new TileTables {
@@ -41,10 +43,12 @@ namespace Terraria.ModLoader.IO
 					frameImportant = new Dictionary<ushort, bool>(),
 					tileModNames = new Dictionary<ushort, string>(),
 					tileNames = new Dictionary<ushort, string>(),
+					tileFallback = new Dictionary<ushort, ushort>(),
 
 					walls = new Dictionary<ushort, ushort>(),
 					wallModNames = new Dictionary<ushort, string>(),
 					wallNames = new Dictionary<ushort, string>(),
+					wallFallback = new Dictionary<ushort, ushort>(),
 				};
 				return tables;
 			}
@@ -96,6 +100,7 @@ namespace Terraria.ModLoader.IO
 						["framed"] = Main.tileFrameImportant[type],
 						["IsChest"] = TileID.Sets.BasicChest[type], // Flag Chests for preserving Chest Tile data 
 						["IsSolid"] = Main.tileSolid[type], // Flag non-solid blocks for liquids, player movement, etc.
+						["fallbackType"] = (ushort)1, //Unintelligent fallback type prototyping
 					});
 				}
 
@@ -111,6 +116,7 @@ namespace Terraria.ModLoader.IO
 						["value"] = (short)wall,
 						["mod"] = modWall.Mod.Name,
 						["name"] = modWall.Name,
+						["fallbackType"] = (ushort)1, //Unintelligent fallback type prototyping
 					});
 				}
 
@@ -151,6 +157,7 @@ namespace Terraria.ModLoader.IO
 					tables.tileModNames[type] = modName;
 					tables.tileNames[type] = name;
 					ushort workingType = pendingTile;
+					ushort fallbackType = 0;
 					if (tileTag.ContainsKey("IsSolid")) {
 						if (!tileTag.GetBool("IsSolid")) {
 							workingType = pendingNSTile;
@@ -158,7 +165,9 @@ namespace Terraria.ModLoader.IO
 						if (tileTag.GetBool("IsChest")) { // Order matters, Chest should override NonSolid
 							workingType = pendingChest;
 						}
+						fallbackType = tileTag.Get<ushort>("fallbackType");
 					}
+					tables.tileFallback[type] = fallbackType;
 					tables.tiles[type] = workingType;
 				}
 				tables.frameImportant[type] = tileTag.GetBool("framed");
@@ -179,6 +188,11 @@ namespace Terraria.ModLoader.IO
 					tables.walls[type] = pendingWallType;
 					tables.wallModNames[type] = modName;
 					tables.wallNames[type] = name;
+					if (!unloadedLegacyCompat) {
+						tables.wallFallback[type] = wallTag.Get<ushort>("fallbackType");
+					}
+					else
+						tables.wallFallback[type] = 0;
 				}
 			}
 
@@ -422,7 +436,7 @@ namespace Terraria.ModLoader.IO
 
 					if (tile.type == PendingTile || nonSolidChk) {
 						// Load saved Basic Tile Type Data into UnloadedTileInfo and index
-						tInfo = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
+						tInfo = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],tables.tileFallback[saveType]);
 						posIndexer.SaveTileInfoToPos(tInfo);
 						tile.type = nonSolidChk ? UnloadedTilesWorld.UnloadedNonSolidTile : UnloadedTilesWorld.UnloadedTile;
 					}
@@ -447,7 +461,7 @@ namespace Terraria.ModLoader.IO
 				saveWallType = reader.ReadUInt16();
 				tile.wall = tables.walls[saveWallType];
 				if (tile.wall == PendingWallType) {
-					wInfo = new UnloadedWallInfo(tables.wallModNames[saveWallType], tables.wallNames[saveWallType]);
+					wInfo = new UnloadedWallInfo(tables.wallModNames[saveWallType], tables.wallNames[saveWallType],tables.wallFallback[saveWallType]);
 					posIndexer.SaveWallInfoToPos(wInfo);
 					tile.wall = UnloadedTilesWorld.UnloadedWallType;
 				}
