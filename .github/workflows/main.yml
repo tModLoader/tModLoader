@@ -28,7 +28,7 @@ jobs:
           echo Downloading Terraraia Server zip
           curl -s -L http://terraria.org/server/terraria-server-1353.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
-          echo Make fake Terraria.exe (Temp)
+          echo Make fake Terraria.exe [Temp]
           cp .\1354\Windows\TerrariaServer.exe .\1354\Windows\Terraria.exe
           echo ls -l is:
           ls -l
