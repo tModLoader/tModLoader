@@ -13,7 +13,6 @@ namespace Terraria.ModLoader
 	public abstract class GlobalNPC : ModType
 	{
 		internal int index;
-		internal int instanceIndex;
 
 		protected sealed override void Register() {
 			NPCLoader.VerifyGlobalNPC(this);
@@ -32,7 +31,10 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool InstancePerEntity => false;
 
-		public GlobalNPC Instance(NPC npc) => InstancePerEntity ? npc.globalNPCs[instanceIndex] : this;
+		/// <summary> Return whether to create a GlobalNPC instance for the provided NPC instance. </summary>
+		public virtual bool InstanceForEntity(NPC npc) => true;
+
+		public GlobalNPC Instance(NPC npc) => npc.globalNPCs[index];
 
 		/// <summary>
 		/// Whether instances of this GlobalNPC are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
@@ -60,7 +62,6 @@ namespace Terraria.ModLoader
 			GlobalNPC copy = (GlobalNPC)Activator.CreateInstance(GetType());
 			copy.Mod = Mod;
 			copy.index = index;
-			copy.instanceIndex = instanceIndex;
 			return copy;
 		}
 
