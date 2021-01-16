@@ -82,9 +82,6 @@
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
-+  <ItemGroup>
-+    <None Remove="ModLoader\Default\UnloadedDresser.png" />
-+  </ItemGroup>
    <Target Name="EditBin" AfterTargets="Build">
      <PropertyGroup>
          <EditBinOpts>/largeaddressaware</EditBinOpts>
