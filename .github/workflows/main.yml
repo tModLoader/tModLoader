@@ -28,11 +28,23 @@ jobs:
           echo Downloading Terraraia Server zip
           curl -s -L http://terraria.org/server/terraria-server-1353.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
+          echo Make fake Terraria.exe (Temp)
+          cp .\1354\Windows\TerrariaServer.exe .\1354\Windows\Terraria.exe
           echo ls -l is:
           ls -l
+          echo Installing XNA
+          curl -s -L https://download.microsoft.com/download/5/3/A/53A804C8-EC78-43CD-A0F0-2FB4D45603D3/xnafx40_redist.msi -O
+          msiexec //i xnafx40_redist.msi //quiet
+          echo XNA Installed
+          echo Running setupcommandline.bat
+          setupcommandline.bat
+          echo Done
+          echo Building Windows Client exe 
+          C:/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2019/Enterprise/MSBuild/Current/Bin/MSBuild.exe .\solutions\tModLoader.sln /restore /p:Configuration=WindowsRelease
+          echo Done.
           
-      #- uses: actions/upload-artifact@v2
-      #  with:
-      #    name: Windows Release exe
-      #    path: ./src/tModLoader/bin/WindowsRelease/net45/Terraria.exe
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Windows Release exe
+          path: ./src/tModLoader/bin/WindowsRelease/net45/Terraria.exe
           
