@@ -395,6 +395,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
 			Main.Configuration.Get("BossBarStyle", ref BossBarLoader.lastSelectedStyle);
+
 			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get("LastLaunchedTModLoaderVersion", "0.0"));
 		}
 
