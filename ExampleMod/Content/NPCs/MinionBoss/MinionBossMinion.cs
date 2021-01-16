@@ -12,6 +12,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 	//Please read MinionBossBody.cs first for important comments, they won't be explained here again
 	public class MinionBossMinion : ModNPC
 	{
+		//This is a neat trick that uses the fact that NPCs have all NPC.ai[] values set to 0f on spawn (if not otherwise changed).
+		//We set ParentIndex to a number in the body after spawning it. If we set ParentIndex to 3, NPC.ai[0] will be 4. If NPC.ai[0] is 0, ParentIndex will be -1.
+		//Now combine both facts, and the conclusion is that if this NPC spawns by other means (not from the body), ParentIndex will be -1, allowing us to distinguish
+		//between a proper spawn and an invalid/"cheated" spawn
 		public int ParentIndex {
 			get => (int)NPC.ai[0] - 1;
 			set => NPC.ai[0] = value + 1;
@@ -90,9 +94,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			if (NPC.life <= 0) {
 				//If this NPC dies, spawn some visuals
 
-				int dustType = 59; //Some blue dust
+				int dustType = 59; //Some blue dust, read the dust guide on the wiki for how to find the perfect dust
 				for (int i = 0; i < 20; i++) {
-					Dust dust = Dust.NewDustPerfect(NPC.Center, dustType, new Vector2(Main.rand.NextFloat(-1.5f, 1.5f) + NPC.velocity.X, Main.rand.NextFloat(-1.5f, 1f)), 26, Color.White, Main.rand.NextFloat(1.5f, 2.4f));
+					Vector2 velocity = NPC.velocity + new Vector2(Main.rand.NextFloat(-2f, 2f), Main.rand.NextFloat(-2f, 2f));
+					Dust dust = Dust.NewDustPerfect(NPC.Center, dustType, velocity, 26, Color.White, Main.rand.NextFloat(1.5f, 2.4f));
 					dust.noLight = true;
 					dust.noGravity = true;
 					dust.fadeIn = Main.rand.NextFloat(0.3f, 0.8f);
@@ -138,7 +143,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		private void MoveInFormation() {
 			NPC parentNPC = Main.npc[ParentIndex];
 
-			//This basically turns the NPCs position in the Main.npc[] array into a number between 0f and TwoPi to determine where around
+			//This basically turns the NPCs PositionIndex into a number between 0f and TwoPi to determine where around
 			//the main body it is positioned at
 			float rad = (float)PositionIndex / MinionBossBody.MinionCount() * MathHelper.TwoPi;
 

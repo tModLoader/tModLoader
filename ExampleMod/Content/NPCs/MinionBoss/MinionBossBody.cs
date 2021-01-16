@@ -40,17 +40,18 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			}
 		}
 
-		//Auto property, acts exactly like a variable by using a hidden backing field
+		//Auto-implemented property, acts exactly like a variable by using a hidden backing field
 		public Vector2 LastFirstStageDestination { get; set; } = Vector2.Zero;
 
 		//This property uses NPC.localAI[] instead which doesn't get synced, but because SpawnedMinions is only used on spawn as a flag, this will get set by all parties to true.
-		//Knowing what side (client, server, all) is in charge of a variable is important as NPC.ai[] only has four entries
+		//Knowing what side (client, server, all) is in charge of a variable is important as NPC.ai[] only has four entries, so choose wisely which things you need synced and not synced
 		public bool SpawnedMinions {
 			get => NPC.localAI[0] == 1f;
 			set => NPC.localAI[0] = value ? 1f : 0f;
 		}
 
 		private const int FirstStageTimerMax = 90;
+		//This is a reference property. It lets us write FirstStageTimer as if it's NPC.localAI[1], essentially giving it our own name
 		public ref float FirstStageTimer => ref NPC.localAI[1];
 
 		public ref float RemainingShields => ref NPC.localAI[2];
@@ -189,7 +190,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			//Since this hook is only ran in singleplayer and serverside, we would have to sync it manually.
 			//Thankfully, vanilla sends the MessageID.WorldData packet if a BOSS was killed automatically, shortly after this hook is ran
 
-			//If your NPC is not a boss and you need to sync the world (which includes ModWorlds, check DownedBossWorld), use this code:
+			//If your NPC is not a boss and you need to sync the world (which includes ModSystem, check DownedBossSystem), use this code:
 			/*
 			if (Main.netMode == NetmodeID.Server) {
 				NetMessage.SendData(MessageID.WorldData);
@@ -204,6 +205,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 		public override void FindFrame(int frameHeight) {
 			//This NPC animates with a simple "go from start frame to final frame, and loop back to start frame" rule
+			//In this case: First stage: 0-1-2-0-1-2, Second stage: 3-4-5-3-4-5, 5 being "total frame count - 1"
 			int startFrame = 0;
 			int finalFrame = 2;
 
@@ -282,17 +284,24 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				SpawnedMinions = true;
 
 				if (Main.netMode != NetmodeID.MultiplayerClient) {
+					//Because we want to spawn minions, and minions are NPCs, we have to do this on the server (or singleplayer, "!= NetmodeID.MultiplayerClient" covers both)
+					//This means we also have to sync it after we spawned and set up the minion
 					int count = MinionCount();
 
 					for (int i = 0; i < count; i++) {
 						int index = NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
 						NPC minionNPC = Main.npc[index];
 
+						//Now that the minion is spawned, we need to prepare it with data that is necessary for it to work.
+						//This is not required usually if you simply spawn NPCs, but because the minion is tied to the body, we need to pass this information to it
+
 						if (minionNPC.ModNPC is MinionBossMinion minion) {
-							minion.ParentIndex = NPC.whoAmI;
-							minion.PositionIndex = i;
+							//This checks if our spawned NPC is indeed the minion, and casts it so we can access its variables
+							minion.ParentIndex = NPC.whoAmI; //Let the minion know who the "parent" is
+							minion.PositionIndex = i; //Give it the iteration index so each minion has a separate one, used for movement
 						}
 
+						//Finally, syncing, only sync on server and if the NPC actually exists (Main.maxNPCs is the index of a dummy NPC, there is no point syncing it)
 						if (Main.netMode == NetmodeID.Server && index < Main.maxNPCs) {
 							NetMessage.SendData(MessageID.SyncNPC, number: index);
 						}
