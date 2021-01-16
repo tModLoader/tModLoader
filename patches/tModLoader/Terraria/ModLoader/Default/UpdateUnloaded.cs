@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.Default
 		internal List<ushort> CanRestore = new List<ushort>();
 		internal byte Index;
 
-		internal bool CanPurge = false; //for deleting unloaded mod data in a world; should point to UI flag; temp false
+		internal bool CanPurge = false; //for deleting unloaded mod data in a System; should point to UI flag; temp false
 
 
 		public UpdateUnloaded(byte index) {
@@ -19,19 +19,19 @@ namespace Terraria.ModLoader.Default
 
 		public void updateInfos(IList<TagCompound> list) {
 			//NOTE: infos and canRestore lists are same length so the indices match later for RestoreTilesAndWalls
-			UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
+			UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
 			foreach (var infoTag in list) {
 				if (!infoTag.ContainsKey("mod")) {
 					// infos entries get nulled out once restored, leading to an empty tag. This aligns CanRestore and Infos
 					switch (Index) {
 						case 0:
-							modWorld.tileInfos.Add(null);
+							modSystem.tileInfos.Add(null);
 							break;
 						case 1:
-							modWorld.wallInfos.Add(null);
+							modSystem.wallInfos.Add(null);
 							break;
 						case 2:
-							modWorld.chestInfos.Add(null);
+							modSystem.chestInfos.Add(null);
 							break;
 					}
 					CanRestore.Add(0);
@@ -47,18 +47,18 @@ namespace Terraria.ModLoader.Default
 				switch (Index) {
 					case 0:
 						var tInfo = new UnloadedTileInfo(modName, name, fallbackType);
-						modWorld.tileInfos.Add(tInfo);
+						modSystem.tileInfos.Add(tInfo);
 						type = ModContent.TryFind(modName, name, out tile) ? tile.Type : (ushort)0;
 						break;
 					case 1:
 						var wInfo = new UnloadedWallInfo(modName, name);
-						modWorld.wallInfos.Add(wInfo);
+						modSystem.wallInfos.Add(wInfo);
 						type = ModContent.TryFind(modName, name, out ModWall wall) ? wall.Type : (ushort)0;
 						break;
 					case 2:
 						byte chestStyle = infoTag.GetByte("style");
 						var cInfo = new UnloadedChestInfo(modName, name, chestStyle);
-						modWorld.chestInfos.Add(cInfo);
+						modSystem.chestInfos.Add(cInfo);
 						type = ModContent.TryFind(modName, name, out tile) ? tile.Type : (ushort)0;
 						break;
 				}
@@ -71,19 +71,19 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public void updateMaps(IList<TagCompound> list) {
-			UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
+			UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
 			foreach (var posTag in list) {
 				int PosID = posTag.Get<int>("posID");
 				int infoID = posTag.Get<int>("infoID");
 				switch (Index) {
 					case 0:
-						modWorld.tileInfoMap[PosID] = infoID;
+						modSystem.tileInfoMap[PosID] = infoID;
 						break;
 					case 1:
-						modWorld.wallInfoMap[PosID] = infoID;
+						modSystem.wallInfoMap[PosID] = infoID;
 						break;
 					case 2:
-						modWorld.chestInfoMap[PosID] = infoID;
+						modSystem.chestInfoMap[PosID] = infoID;
 						break;
 				}
 
@@ -92,18 +92,18 @@ namespace Terraria.ModLoader.Default
 
 		public void cleanupMaps() {
 			if (CanRestoreFlag) {
-				UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
+				UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
 				List<int> nullable = new List<int>();
 				Dictionary<int, int> infoMap = null;
 				switch (Index) {
 					case 0:
-						infoMap = modWorld.tileInfoMap;
+						infoMap = modSystem.tileInfoMap;
 						break;
 					case 1:
-						infoMap = modWorld.wallInfoMap;
+						infoMap = modSystem.wallInfoMap;
 						break;
 					case 2:
-						infoMap = modWorld.chestInfoMap;
+						infoMap = modSystem.chestInfoMap;
 						break;
 				}
 				foreach (var entry in infoMap) {
@@ -119,18 +119,18 @@ namespace Terraria.ModLoader.Default
 
 		public void cleanupInfos() {
 			if (CanRestoreFlag) {
-				UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
+				UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
 				for (int k = 0; k < CanRestore.Count; k++) {
 					if (CanRestore[k] > 0)
 						switch (Index) {
 							case 0:
-								modWorld.tileInfos[k] = null;
+								modSystem.tileInfos[k] = null;
 								break;
 							case 1:
-								modWorld.wallInfos[k] = null;
+								modSystem.wallInfos[k] = null;
 								break;
 							case 2:
-								modWorld.chestInfos[k] = null;
+								modSystem.chestInfos[k] = null;
 								break;
 						}
 				}

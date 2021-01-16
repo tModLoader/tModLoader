@@ -478,38 +478,38 @@ namespace Terraria.ModLoader.IO
 						// Load saved Basic Tile Type Data into UnloadedTileInfo and index
 						tInfo = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],tables.tileFallback[saveType]);
 						posIndexer.SaveTileInfoToPos(tInfo);
-						tile.type = UnloadedTilesWorld.UnloadedTile;
+						tile.type = UnloadedTilesSystem.UnloadedTile;
 						if (nonSolidChk)
-							tile.type = UnloadedTilesWorld.UnloadedNonSolidTile;
+							tile.type = UnloadedTilesSystem.UnloadedNonSolidTile;
 						if (semiSolidChk)
-							tile.type = UnloadedTilesWorld.UnloadedSemiSolidTile;
+							tile.type = UnloadedTilesSystem.UnloadedSemiSolidTile;
 					}
 					if (tile.type == PendingChest) {
-						bool accountedFor = (
-							Main.tile[i - 1, j].type == UnloadedTilesWorld.UnloadedChest ||
-							Main.tile[i, j - 1].type == UnloadedTilesWorld.UnloadedChest ||
-							Main.tile[i - 1, j - 1].type == UnloadedTilesWorld.UnloadedChest);
+						bool accountedFor = ( //Extremely janky check that not sure why is needed and works
+							Main.tile[i - 1, j].type == UnloadedTilesSystem.UnloadedChest ||
+							Main.tile[i, j - 1].type == UnloadedTilesSystem.UnloadedChest ||
+							Main.tile[i - 1, j - 1].type == UnloadedTilesSystem.UnloadedChest);
 						if (!accountedFor) { // Only care about top-left tile of 2x2 for Chests
 							// Load saved Basic Chest Type Data into UnloadedChestInfo and index
 							UnloadedChestInfo cInfo = new UnloadedChestInfo(tables.tileModNames[saveType], tables.tileNames[saveType], chestStyle);
 							posIndexer.SaveChestInfoToPos(cInfo);
 							// Place UnloadedChest (required to preserve the inventory and re-namings
-							WorldGen.PlaceChestDirect(i, j + 1, UnloadedTilesWorld.UnloadedChest, 0, -1);
+							WorldGen.PlaceChestDirect(i, j + 1, UnloadedTilesSystem.UnloadedChest, 0, -1);
 						}
 					}
 					if (tile.type == PendingDresser) {
-						bool accountedFor = (
-							Main.tile[i - 1, j].type == UnloadedTilesWorld.UnloadedDresser || //bottom middle
-							Main.tile[i, j - 1].type == UnloadedTilesWorld.UnloadedDresser || //top right
-							Main.tile[i - 1, j - 1].type == UnloadedTilesWorld.UnloadedDresser || //top middle
-							Main.tile[i - 2, j - 1].type == UnloadedTilesWorld.UnloadedDresser || //top left
-							Main.tile[i - 2, j].type == UnloadedTilesWorld.UnloadedDresser); //bottom left
+						bool accountedFor = ( //Extremely janky check that not sure why is needed and works
+							Main.tile[i - 1, j].type == UnloadedTilesSystem.UnloadedDresser || //bottom middle
+							Main.tile[i, j - 1].type == UnloadedTilesSystem.UnloadedDresser || //top right
+							Main.tile[i - 1, j - 1].type == UnloadedTilesSystem.UnloadedDresser || //top middle
+							Main.tile[i - 2, j - 1].type == UnloadedTilesSystem.UnloadedDresser || //top left
+							Main.tile[i - 2, j].type == UnloadedTilesSystem.UnloadedDresser); //bottom left
 						if (!accountedFor) { // Only care about top-left tile of 3x2 for Dressers
 							// Load saved Basic Dresser Type Data into UnloadedChestInfo and index
 							UnloadedChestInfo cInfo = new UnloadedChestInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
 							posIndexer.SaveChestInfoToPos(cInfo);
 							// Place UnloadedChest (required to preserve the inventory and re-namings
-							WorldGen.PlaceDresserDirect(i + 1, j + 1, UnloadedTilesWorld.UnloadedDresser, 0, -1);
+							WorldGen.PlaceDresserDirect(i + 1, j + 1, UnloadedTilesSystem.UnloadedDresser, 0, -1);
 						}
 					}
 				}
@@ -523,7 +523,7 @@ namespace Terraria.ModLoader.IO
 				if (tile.wall == PendingWallType) {
 					wInfo = new UnloadedWallInfo(tables.wallModNames[saveWallType], tables.wallNames[saveWallType],tables.wallFallback[saveWallType]);
 					posIndexer.SaveWallInfoToPos(wInfo);
-					tile.wall = UnloadedTilesWorld.UnloadedWallType;
+					tile.wall = UnloadedTilesSystem.UnloadedWallType;
 				}
 				if ((flags & TileIOFlags.WallColor) == TileIOFlags.WallColor) {
 					tile.wallColor(reader.ReadByte());

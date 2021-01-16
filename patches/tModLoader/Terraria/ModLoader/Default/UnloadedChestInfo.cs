@@ -1,5 +1,6 @@
 ﻿using Terraria.ModLoader.IO;
 using System.Collections.Generic;
+using Terraria.ID;
 
 namespace Terraria.ModLoader.Default
 {
@@ -7,7 +8,7 @@ namespace Terraria.ModLoader.Default
 	{
 		internal byte ChestStyle; 
 
-		public UnloadedChestInfo(string modName, string name, byte chestStyle = 0,ushort fallbackType = 23):base(modName, name,fallbackType) {
+		public UnloadedChestInfo(string modName, string name, byte chestStyle = 0,ushort fallbackType = TileID.Containers):base(modName, name,fallbackType) {
 			this.modName = modName;
 			this.name = name;
 			this.ChestStyle = chestStyle;

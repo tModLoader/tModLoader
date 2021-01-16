@@ -37,8 +37,8 @@ namespace Terraria.ModLoader.Default
 
 			if (tile != null && tile.type == Type) {
 				int PosID = top * Main.maxTilesX + left;
-				ModContent.GetInstance<UnloadedTilesWorld>().chestInfoMap.TryGetValue(PosID, out int frameID);
-				var infos = ModContent.GetInstance<UnloadedTilesWorld>().chestInfos;
+				ModContent.GetInstance<UnloadedTilesSystem>().chestInfoMap.TryGetValue(PosID, out int frameID);
+				var infos = ModContent.GetInstance<UnloadedTilesSystem>().chestInfos;
 				if (frameID >= 0 && frameID < infos.Count) { // This only works in SP
 					var info = infos[frameID];
 					if (info != null) {

@@ -19,7 +19,7 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void SetDefaults() {
-			Main.tileSolid[Type] = true;
+			Main.tileSolid[Type] = IsSolid;
 			Main.tileFrameImportant[Type] = true;
 			Main.tileNoAttach[Type] = (!IsSolid || IsSemi);
 			Main.tileTable[Type] =IsSemi;
