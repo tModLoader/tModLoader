@@ -4149,7 +4149,7 @@
  						BitsByte bb = (byte)0;
  						for (int i = 0; i < 8; i++) {
  							bb[i] = player.hideVisibleAccessory[i];
-@@ -37469,43 +_,43 @@
+@@ -37469,63 +_,57 @@
  						binaryWriter.Write(player.shoeColor.G);
  						binaryWriter.Write(player.shoeColor.B);
  						for (int k = 0; k < player.armor.Length; k++) {
@@ -4201,7 +4201,13 @@
  							binaryWriter.Write(player.bank3.item[num3].stack);
  							binaryWriter.Write(player.bank3.item[num3].prefix);
  						}
-@@ -37518,14 +_,8 @@
+ 
+ 						for (int num4 = 0; num4 < 40; num4++) {
+-							binaryWriter.Write(player.bank4.item[num4].netID);
++							ItemIO.WriteVanillaID(player.bank4.item[num4], binaryWriter);
+ 							binaryWriter.Write(player.bank4.item[num4].stack);
+ 							binaryWriter.Write(player.bank4.item[num4].prefix);
+ 						}
  
  						binaryWriter.Write(player.voidVaultInfo);
  						for (int num5 = 0; num5 < 22; num5++) {
