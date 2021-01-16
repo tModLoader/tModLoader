@@ -12,7 +12,7 @@
  	{
  		public const int POSITIVE_SACRIFICE_COUNT_CAP = 9999;
 -		private Dictionary<string, int> _sacrificeCountByItemPersistentId;
-+		internal Dictionary<string, int> _sacrificeCountByItemPersistentId; //Is there another way besides making this public?
++		internal Dictionary<string, int> _sacrificeCountByItemPersistentId;
  		public readonly Dictionary<int, int> SacrificesCountByItemIdCache;
  
  		public int LastEditId {
