@@ -14,11 +14,15 @@ namespace Terraria.ModLoader.IO
 	{
 		internal static ushort PendingChest => ModContent.Find<ModTile>("ModLoader/PendingChest").Type;
 
+		internal static ushort PendingDresser => ModContent.Find<ModTile>("ModLoader/PendingDresser").Type;
+
 		internal static ushort PendingWallType => ModContent.Find<ModWall>("ModLoader/PendingWall").Type;
 
 		internal static ushort PendingTile => ModContent.Find<ModTile>("ModLoader/PendingTile").Type;
 
 		internal static ushort PendingNonSolidTile => ModContent.Find<ModTile>("ModLoader/PendingNonSolidTile").Type;
+
+		internal static ushort PendingSemiSolidTile => ModContent.Find<ModTile>("ModLoader/PendingSemiSolidTile").Type;
 
 		//*********** Tile, Walls, & Chests Save, Load, and Placeholder Implementations ***************************//
 		//Should add liquids data to implementation in locational data
@@ -54,6 +58,18 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
+		internal static class TileVariantFlags
+		{
+			internal const byte Standard = 0;
+			internal const byte NonSolid = 1;
+			internal const byte SemiSolid = 2;
+			internal const byte Planter = 4;
+			internal const byte Container = 8;
+			internal const byte Dresser = 16;
+			internal const byte Chest = 32;
+			internal const byte Framed = 64;
+		}
+
 		internal static class TileIOFlags
 		{
 			internal const byte None = 0;
@@ -66,7 +82,7 @@ namespace Terraria.ModLoader.IO
 			internal const byte NextTilesAreSame = 64;
 			internal const byte NextModTile = 128;
 		}
-
+		
 		internal static class TileIOFlags2
 		{
 			internal const byte None = 0;
@@ -92,14 +108,27 @@ namespace Terraria.ModLoader.IO
 					if (!hasTile[type])
 						continue;
 
+					ushort tileVariants = TileVariantFlags.Standard;
+					if (TileID.Sets.BasicChest[type])
+						tileVariants |= TileVariantFlags.Chest; // Flag Chests for preserving Chest Tile data 
+					if (TileID.Sets.BasicDresser[type])
+						tileVariants |= TileVariantFlags.Dresser; // Flag Dressers for preserving Dresser shape
+					if (TileID.Sets.IsAContainer[type] && !TileID.Sets.BasicDresser[type] && !TileID.Sets.BasicChest[type])
+						tileVariants |= TileVariantFlags.Container; // Flag non-standard Containers 
+					if (!Main.tileSolid[type])
+						tileVariants |= TileVariantFlags.NonSolid; // Flag non-solid blocks for liquids, player movement, etc.
+					if (Main.tileSolidTop[type])
+						tileVariants |= TileVariantFlags.SemiSolid; // Flag semi-solid blocks for platforms, tables
+					if (Main.tileFrameImportant[type])
+						tileVariants |= TileVariantFlags.Framed; // Flag tiles where framing is important
+
 					var modTile = TileLoader.GetTile(type);
 					tileList.Add(new TagCompound { 
 						["value"] = (short)type,
 						["mod"] = modTile.Mod.Name,
 						["name"] = modTile.Name,
-						["framed"] = Main.tileFrameImportant[type],
-						["IsChest"] = TileID.Sets.BasicChest[type], // Flag Chests for preserving Chest Tile data 
-						["IsSolid"] = Main.tileSolid[type], // Flag non-solid blocks for liquids, player movement, etc.
+						["variants"] = tileVariants,
+						["framed"] = Main.tileFrameImportant[type], // Just here for legacy
 						["fallbackType"] = (ushort)1, //Unintelligent fallback type prototyping
 					});
 				}
@@ -142,6 +171,8 @@ namespace Terraria.ModLoader.IO
 			ushort pendingTile = PendingTile;
 			ushort pendingNSTile = PendingNonSolidTile;
 			ushort pendingChest = PendingChest;
+			ushort pendingSSTile = PendingSemiSolidTile;
+			ushort pendingDresser = PendingDresser;
 			ushort pendingWallType = PendingWallType;
 			// Create a flag to support legacy (pre-unloaded rework change) world loading
 			bool unloadedLegacyCompat = false;
@@ -151,29 +182,37 @@ namespace Terraria.ModLoader.IO
 				ushort type = (ushort)tileTag.GetShort("value");
 				string modName = tileTag.GetString("mod");
 				string name = tileTag.GetString("name");
-				
+				ushort tileVariants = tileTag.Get<ushort>("variants");
+
 				tables.tiles[type] = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : (ushort)0;
 				if (tables.tiles[type] == 0) {
 					tables.tileModNames[type] = modName;
 					tables.tileNames[type] = name;
+
 					ushort workingType = pendingTile;
 					ushort fallbackType = 0;
-					if (tileTag.ContainsKey("IsSolid")) {
-						if (!tileTag.GetBool("IsSolid")) {
+					if (tileTag.ContainsKey("variants")) {
+						if ((tileVariants & TileVariantFlags.NonSolid) == TileVariantFlags.NonSolid) {
 							workingType = pendingNSTile;
 						}
-						if (tileTag.GetBool("IsChest")) { // Order matters, Chest should override NonSolid
+						if ((tileVariants & TileVariantFlags.Chest) == TileVariantFlags.Chest) { // Order matters, Chest should override NonSolid
 							workingType = pendingChest;
 						}
+						if ((tileVariants & TileVariantFlags.SemiSolid) == TileVariantFlags.SemiSolid)
+							workingType = pendingSSTile;
+						if ((tileVariants & TileVariantFlags.Dresser) == TileVariantFlags.Dresser) // Order matters, Dresser should override SemiSolid
+							workingType = pendingDresser;
+
 						fallbackType = tileTag.Get<ushort>("fallbackType");
 					}
 					tables.tileFallback[type] = fallbackType;
 					tables.tiles[type] = workingType;
 				}
 				tables.frameImportant[type] = tileTag.GetBool("framed");
+
 				// Check if loading locational data requires legacy support:  
 				//Note: legacy loading will not work if the world contains no modded tiles, but does contatin modded walls. Treated as edge case
-				if (!unloadedLegacyCompat && !tileTag.ContainsKey("IsSolid")) {
+				if (!unloadedLegacyCompat && !tileTag.ContainsKey("variants")) {
 					unloadedLegacyCompat = true;
 				}
 			}
@@ -433,23 +472,44 @@ namespace Terraria.ModLoader.IO
 				if (tables.tileNames.ContainsKey(saveType)) {
 					// Handle Disabled Mods and Implement Pending Tile
 					bool nonSolidChk = tile.type == PendingNonSolidTile;
+					bool semiSolidChk = tile.type == PendingSemiSolidTile;
 
-					if (tile.type == PendingTile || nonSolidChk) {
+					if (tile.type == PendingTile || nonSolidChk || semiSolidChk) {
 						// Load saved Basic Tile Type Data into UnloadedTileInfo and index
 						tInfo = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],tables.tileFallback[saveType]);
 						posIndexer.SaveTileInfoToPos(tInfo);
-						tile.type = nonSolidChk ? UnloadedTilesWorld.UnloadedNonSolidTile : UnloadedTilesWorld.UnloadedTile;
+						tile.type = UnloadedTilesWorld.UnloadedTile;
+						if (nonSolidChk)
+							tile.type = UnloadedTilesWorld.UnloadedNonSolidTile;
+						if (semiSolidChk)
+							tile.type = UnloadedTilesWorld.UnloadedSemiSolidTile;
 					}
 					if (tile.type == PendingChest) {
-						bool accountedFor = (Main.tile[i - 1, j].type == UnloadedTilesWorld.UnloadedChest ||
+						bool accountedFor = (
+							Main.tile[i - 1, j].type == UnloadedTilesWorld.UnloadedChest ||
 							Main.tile[i, j - 1].type == UnloadedTilesWorld.UnloadedChest ||
-							Main.tile[i-1 , j - 1].type == UnloadedTilesWorld.UnloadedChest);
+							Main.tile[i - 1, j - 1].type == UnloadedTilesWorld.UnloadedChest);
 						if (!accountedFor) { // Only care about top-left tile of 2x2 for Chests
 							// Load saved Basic Chest Type Data into UnloadedChestInfo and index
-							UnloadedChestInfo cInfo = new UnloadedChestInfo(tables.tileModNames[saveType], tables.tileNames[saveType],chestStyle);
+							UnloadedChestInfo cInfo = new UnloadedChestInfo(tables.tileModNames[saveType], tables.tileNames[saveType], chestStyle);
 							posIndexer.SaveChestInfoToPos(cInfo);
 							// Place UnloadedChest (required to preserve the inventory and re-namings
 							WorldGen.PlaceChestDirect(i, j + 1, UnloadedTilesWorld.UnloadedChest, 0, -1);
+						}
+					}
+					if (tile.type == PendingDresser) {
+						bool accountedFor = (
+							Main.tile[i - 1, j].type == UnloadedTilesWorld.UnloadedDresser || //bottom middle
+							Main.tile[i, j - 1].type == UnloadedTilesWorld.UnloadedDresser || //top right
+							Main.tile[i - 1, j - 1].type == UnloadedTilesWorld.UnloadedDresser || //top middle
+							Main.tile[i - 2, j - 1].type == UnloadedTilesWorld.UnloadedDresser || //top left
+							Main.tile[i - 2, j].type == UnloadedTilesWorld.UnloadedDresser); //bottom left
+						if (!accountedFor) { // Only care about top-left tile of 3x2 for Dressers
+							// Load saved Basic Dresser Type Data into UnloadedChestInfo and index
+							UnloadedChestInfo cInfo = new UnloadedChestInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
+							posIndexer.SaveChestInfoToPos(cInfo);
+							// Place UnloadedChest (required to preserve the inventory and re-namings
+							WorldGen.PlaceDresserDirect(i + 1, j + 1, UnloadedTilesWorld.UnloadedDresser, 0, -1);
 						}
 					}
 				}

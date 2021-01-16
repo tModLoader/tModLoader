@@ -42,7 +42,11 @@ namespace Terraria.ModLoader.Default
 
 		internal static ushort UnloadedNonSolidTile => ModContent.Find<ModTile>("ModLoader/UnloadedNonSolidTile").Type;
 
+		internal static ushort UnloadedSemiSolidTile => ModContent.Find<ModTile>("ModLoader/UnloadedSemiSolidTile").Type;
+
 		internal static ushort UnloadedChest => ModContent.Find<ModTile>("ModLoader/UnloadedChest").Type;
+
+		internal static ushort UnloadedDresser => ModContent.Find<ModTile>("ModLoader/UnloadedDresser").Type;
 
 		internal static ushort UnloadedWallType => ModContent.Find<ModWall>("ModLoader/UnloadedWall").Type;
 
@@ -135,7 +139,9 @@ namespace Terraria.ModLoader.Default
 			// Load instances of UnloadedTile
 			ushort unloadedTile = UnloadedTile;
 			ushort unloadedNonSolidTile = UnloadedNonSolidTile;
+			ushort unloadedSemiSolidTile = UnloadedSemiSolidTile;
 			ushort unloadedChest = UnloadedChest;
+			ushort unloadedDresser = UnloadedDresser;
 			ushort unloadedWallType = UnloadedWallType;
 
 			// Loop through all tiles in world	
@@ -144,7 +150,8 @@ namespace Terraria.ModLoader.Default
 
 					// If tile is of Type unloaded, restore original by position mapping
 					Tile tile = Main.tile[x, y];
-					if (canRestoreFlag[TilesIndex] && (tile.type == unloadedTile || tile.type == unloadedNonSolidTile)) {
+					if (canRestoreFlag[TilesIndex] && 
+						(tile.type == unloadedTile || tile.type == unloadedNonSolidTile || tile.type == unloadedSemiSolidTile)) {
 						int posID = new UnloadedPosIndexing(x, y).PosID;
 						tileInfoMap.TryGetValue(posID, out int infoID);
 						if (canRestoreTiles[infoID] > 0) {
@@ -153,12 +160,15 @@ namespace Terraria.ModLoader.Default
 					}
 
 					// If Tile is a Chest, Replace the chest with original by referencing position mapping 
-					if (canRestoreFlag[ChestIndex] && (tile.type == unloadedChest)) {
+					if (canRestoreFlag[ChestIndex] && (tile.type == unloadedChest || tile.type == unloadedDresser)) {
 						int posID = new UnloadedPosIndexing(x, y).PosID;
 						chestInfoMap.TryGetValue(posID, out int infoID);
 						if (canRestoreChests[infoID] > 0) {
 							UnloadedChestInfo info = chestInfos[infoID];
-							WorldGen.PlaceChestDirect(x, y+1, canRestoreChests[infoID], info.ChestStyle, -1);
+							if (tile.type == unloadedDresser)
+								WorldGen.PlaceDresserDirect(x+1 , y + 1, canRestoreChests[infoID], info.ChestStyle, -1);
+							if (tile.type == unloadedChest)
+								WorldGen.PlaceChestDirect(x, y+1, canRestoreChests[infoID], info.ChestStyle, -1);
 						}
 					}
 

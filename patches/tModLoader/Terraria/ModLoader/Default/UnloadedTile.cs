@@ -5,18 +5,22 @@ namespace Terraria.ModLoader.Default
 	{
 		public override string Name{get;}
 		internal bool IsSolid;
+		internal bool IsSemi;
 
 		public override string Texture => "ModLoader/UnloadedTile";
 
-		public UnloadedTile(string name = null,bool isSolid = true) {
+		public UnloadedTile(string name = null,bool isSolid = true, bool isSemi = false) {
 			Name = name ?? base.Name;
 			this.IsSolid = isSolid;
+			this.IsSemi = isSemi;
 		}
 
 		public override void SetDefaults() {
 			Main.tileSolid[Type] = IsSolid;
 			Main.tileFrameImportant[Type] = true;
-			Main.tileNoAttach[Type] = !IsSolid;
+			Main.tileNoAttach[Type] = (!IsSolid || IsSemi);
+			Main.tileTable[Type] =IsSemi;
+			Main.tileSolidTop[Type] = IsSemi;
 		}
 
 		public override void MouseOver(int i, int j)

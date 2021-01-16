@@ -34,14 +34,20 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void Load() {
-			AddContent(new UnloadedTile("PendingTile",true));
-			AddContent(new UnloadedTile("UnloadedTile",true));
+			AddContent(new UnloadedTile("PendingTile",isSolid:true));
+			AddContent(new UnloadedTile("UnloadedTile",isSolid:true));
 
-			AddContent(new UnloadedTile("PendingNonSolidTile",false));
-			AddContent(new UnloadedTile("UnloadedNonSolidTile", false));
+			AddContent(new UnloadedTile("PendingNonSolidTile",isSolid:false));
+			AddContent(new UnloadedTile("UnloadedNonSolidTile", isSolid:false));
+
+			AddContent(new UnloadedTile("PendingSemiSolidTile", isSemi: true));
+			AddContent(new UnloadedTile("UnloadedSemiSolidTile", isSemi: true));
 
 			AddContent(new UnloadedChest());
 			AddContent(new UnloadedChest("PendingChest"));
+
+			AddContent(new UnloadedDresser());
+			AddContent(new UnloadedDresser("PendingDresser"));
 
 			AddContent(new UnloadedWall());
 			AddContent(new UnloadedWall("PendingWall"));

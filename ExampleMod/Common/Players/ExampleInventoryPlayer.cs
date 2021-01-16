@@ -30,6 +30,9 @@ namespace ExampleMod.Common.Players
 				new Item(ModContent.ItemType<ExampleChair>()){
 					stack = 90
 				},
+				new Item(ModContent.ItemType<ExamplePlatform>()){
+					stack = 90
+				},
 				new Item(ModContent.ItemType<ExampleOre>()){
 					stack = 90
 				},
