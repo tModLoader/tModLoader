@@ -1,4 +1,4 @@
-﻿using ExampleMod.Common;
+﻿using ExampleMod.Common.Systems;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.Projectiles;
