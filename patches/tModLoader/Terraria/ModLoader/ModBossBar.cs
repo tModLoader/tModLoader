@@ -30,7 +30,7 @@ namespace Terraria.ModLoader
 
 		public sealed override void SetupContent() {
 			//Here because modded types are accessible at this point
-			ValidNPCs = (IReadOnlyList<int>)GetValidNPCs();
+			ValidNPCs = (IReadOnlyList<int>)InitializeValidNPCs();
 			ValidateNPCs();
 			SetStaticDefaults();
 		}
@@ -46,8 +46,8 @@ namespace Terraria.ModLoader
 		/// Allows you to specify a list of NPC types this ModBossBar is associated with. Has to contain atleast one type.
 		/// <para>If you need to fetch this list again, use this.ValidNPCs instead.</para>
 		/// </summary>
-		/// <returns>List of NPC types this ModBossBar is associated with</returns>
-		protected abstract IEnumerable<int> GetValidNPCs();
+		/// <returns>List of NPC types this ModBossBar is associated with. Will be cast to IReadOnlyList.</returns>
+		protected abstract IEnumerable<int> InitializeValidNPCs();
 
 		/// <summary>
 		/// Allows you to specify the icon texture, and optionally the frame it should be displayed on. The frame defaults to the entire texture otherwise.
@@ -119,7 +119,7 @@ namespace Terraria.ModLoader
 		private void ValidateNPCs() {
 			//null or no IDs
 			if (ValidNPCs == null || ValidNPCs.Count == 0)
-				throw new Exception($"{Name}.{nameof(GetValidNPCs)} has returned null or is empty. Specify a List<int> of the NPC types this {nameof(ModBossBar)} is associated with");
+				throw new Exception($"{Name}.{nameof(InitializeValidNPCs)} has returned null or is empty. Specify a List<int> of the NPC types this {nameof(ModBossBar)} is associated with");
 		}
 	}
 }

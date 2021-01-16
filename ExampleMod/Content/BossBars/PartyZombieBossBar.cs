@@ -12,7 +12,7 @@ namespace ExampleMod.Content.BossBars
 	//Shows basic single-entity boss bar code using a custom colored texture
 	public class PartyZombieBossBar : ModBossBar
 	{
-		protected override IEnumerable<int> GetValidNPCs() {
+		protected override IEnumerable<int> InitializeValidNPCs() {
 			return new List<int> { ModContent.NPCType<PartyZombie>() };
 		}
 
