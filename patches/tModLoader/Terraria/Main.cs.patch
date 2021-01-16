@@ -379,15 +379,18 @@
  			PlayerInput.Load();
  			if (currentValue < 165) {
  				try {
-@@ -3496,7 +_,7 @@
+@@ -3496,8 +_,10 @@
  			mouseColorSlider.SetHSL(mouseColor);
  			mouseBorderColorSlider.SetHSL(MouseBorderColor);
  			mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
 -			if (currentValue != 234)
-+			if (currentValue != 234 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != ModLoader.ModLoader.version)
++			if (currentValue != 234 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != ModLoader.ModLoader.version) {
++				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
++			}
  		}
  
+ 		protected void OpenLegacySettings() {
 @@ -3622,9 +_,11 @@
  				FileUtilities.Delete(PlayerList[i].Path, PlayerList[i].IsCloudSave);
  				FileUtilities.Delete(PlayerList[i].Path + ".bak", PlayerList[i].IsCloudSave);
@@ -745,7 +748,7 @@
  			}
 +
 +			endVanillaMethod:
-+			WorldHooks.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate);
++			SystemHooks.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate);
  		}
  
  		public Main() {
@@ -874,7 +877,7 @@
  						num2 = 1;
  
 -					if (num2 == 0)
-+					if (num2 == 0 && (npc[i].modNPC == null || npc[i].modNPC.music < 0))
++					if (num2 == 0 && (npc[i].ModNPC == null || npc[i].ModNPC.music < 0))
  						continue;
  
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[i].position.X + (float)(npc[i].width / 2)) - num, (int)(npc[i].position.Y + (float)(npc[i].height / 2)) - num, num * 2, num * 2);
@@ -901,9 +904,9 @@
  
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[j].position.X + (float)(npc[j].width / 2)) - num2, (int)(npc[j].position.Y + (float)(npc[j].height / 2)) - num2, num2 * 2, num2 * 2);
  					if (rectangle.Intersects(value)) {
-+						if (npc[j].modNPC != null && npc[j].modNPC.music >= 0 && (modMusic < 0 || npc[j].modNPC.musicPriority > modPriority)) {
-+							modMusic = npc[j].modNPC.music;
-+							modPriority = npc[j].modNPC.musicPriority;
++						if (npc[j].ModNPC != null && npc[j].ModNPC.music >= 0 && (modMusic < 0 || npc[j].ModNPC.musicPriority > modPriority)) {
++							modMusic = npc[j].ModNPC.music;
++							modPriority = npc[j].ModNPC.musicPriority;
 +						}
  						switch (num3) {
  							case 1:
@@ -913,7 +916,7 @@
  					}
  				}
 +
-+				ModHooks.UpdateMusic(ref modMusic, ref modPriority);
++				SystemHooks.UpdateMusic(ref modMusic, ref modPriority);
  			}
  
  			_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
@@ -1015,6 +1018,23 @@
  			else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
  				if (player[myPlayer].ZoneHallow) {
  					newMusic = 11;
+@@ -12221,11 +_,16 @@
+ 		}
+ 
+ 		public static void DoUpdate_AnimateItemIcons() {
++			//Lock the collection to avoid race conditions during mod loading & unloading.
++			Monitor.Enter(itemAnimationsRegistered);
++
+ 			for (int i = 0; i < itemAnimationsRegistered.Count; i++) {
+ 				int num = itemAnimationsRegistered[i];
+ 				if (itemAnimations[num] != null)
+ 					itemAnimations[num].Update();
+ 			}
++
++			Monitor.Exit(itemAnimationsRegistered);
+ 		}
+ 
+ 		public static void QueueMainThreadAction(Action action) {
 @@ -12246,6 +_,17 @@
  					Main.OnEnginePreload();
  			}
@@ -1064,7 +1084,7 @@
  				Sandstorm.EmitDust();
  			}
  
-+			ModHooks.PreUpdateEntities();
++			SystemHooks.PreUpdateEntities();
  			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
  				Star.UpdateStars();
  				Cloud.UpdateClouds();
@@ -1072,7 +1092,7 @@
  			if (InGameUI != null)
  				InGameUI.Update(gameTime);
  
-+			ModHooks.UpdateUI(gameTime);
++			SystemHooks.UpdateUI(gameTime);
 +			PlayerInput.ScrollWheelDeltaForUI = 0; //TODO: Should this be before PlayerInput.ResetInputsOnActiveStateChange()?
  			CreativeMenu.Update(gameTime);
 +
@@ -1110,57 +1130,93 @@
  			clientPlayer = (Player)Main.player[myPlayer].clientClone();
  		}
  
-@@ -13025,6 +_,7 @@
- 			}
- 
- 			_gameUpdateCount++;
-+			ModHooks.MidUpdatePlayerNPC();
- 			NPC.RevengeManager.Update();
- 			if (netMode != 1) {
- 				try {
-@@ -13073,6 +_,7 @@
- 			}
- 
- 			CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
-+			ModHooks.MidUpdateNPCGore();
- 			for (int l = 0; l < 600; l++) {
- 				if (ignoreErrors) {
- 					try {
-@@ -13087,6 +_,7 @@
+@@ -12991,6 +_,9 @@
+ 		private void DoUpdateInWorld(Stopwatch sw) {
+ 			UpdateParticleSystems();
+ 			tileSolid[379] = false;
++
++			SystemHooks.PreUpdatePlayers();
++
+ 			int num = 0;
+ 			int num2 = 0;
+ 			sittingManager.ClearPlayerAnchors();
+@@ -13024,7 +_,12 @@
  				}
  			}
  
-+			ModHooks.MidUpdateGoreProjectile();
++			SystemHooks.PostUpdatePlayers();
++
+ 			_gameUpdateCount++;
++
++			SystemHooks.PreUpdateNPCs();
++
+ 			NPC.RevengeManager.Update();
+ 			if (netMode != 1) {
+ 				try {
+@@ -13073,6 +_,10 @@
+ 			}
+ 
+ 			CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
++
++			SystemHooks.PostUpdateNPCs();
++			SystemHooks.PreUpdateGores();
++
+ 			for (int l = 0; l < 600; l++) {
+ 				if (ignoreErrors) {
+ 					try {
+@@ -13087,6 +_,9 @@
+ 				}
+ 			}
+ 
++			SystemHooks.PostUpdateGores();
++			SystemHooks.PreUpdateProjectiles();
++
  			LockOnHelper.SetUP();
  			CurrentFrameFlags.HadAnActiveInteractibleProjectile = false;
  			PreUpdateAllProjectiles();
-@@ -13108,6 +_,7 @@
+@@ -13108,6 +_,10 @@
  			ProjectileUpdateLoopIndex = -1;
  			PostUpdateAllProjectiles();
  			LockOnHelper.SetDOWN();
-+			ModHooks.MidUpdateProjectileItem();
++
++			SystemHooks.PostUpdateProjectiles();
++			SystemHooks.PreUpdateItems();
++
  			Item.numberOfNewItems = 0;
  			for (int n = 0; n < 400; n++) {
  				if (ignoreErrors) {
-@@ -13138,11 +_,13 @@
+@@ -13123,6 +_,9 @@
+ 				}
+ 			}
+ 
++			SystemHooks.PostUpdateItems();
++			SystemHooks.PreUpdateDusts();
++
+ 			if (ignoreErrors) {
+ 				try {
+ 					Dust.UpdateDust();
+@@ -13138,11 +_,15 @@
  				Dust.UpdateDust();
  			}
  
-+			ModHooks.MidUpdateDustTime();
++			SystemHooks.PostUpdateDusts();
++
  			if (netMode != 2) {
  				CombatText.UpdateCombatText();
  				PopupText.UpdateItemText();
  			}
  
-+			ModHooks.MidUpdateItemDust();
++			SystemHooks.PreUpdateTime();
++
  			if (ignoreErrors) {
  				try {
  					UpdateTime();
-@@ -13155,6 +_,7 @@
+@@ -13155,6 +_,8 @@
  				UpdateTime();
  			}
  
-+			ModHooks.MidUpdateTimeWorld();
++			SystemHooks.PostUpdateTime();
++
  			tileSolid[379] = true;
  			if (gameMenu && netMode != 2)
  				return;
@@ -1168,7 +1224,7 @@
  					UpdateClient();
  			}
  
-+			ModHooks.PostUpdateEverything();
++			SystemHooks.PostUpdateEverything();
  			chatMonitor.Update();
  			upTimer = (float)sw.Elapsed.TotalMilliseconds;
  			if (upTimerMaxDelay > 0f)
@@ -1186,7 +1242,7 @@
  
  		private void DoUpdate_HandleInput() {
  			PlayerInput.UpdateInput();
-+			ModHooks.PostUpdateInput();
++			SystemHooks.PostUpdateInput();
  			UpdateViewZoomKeys();
  			PlayerInput.SetZoom_Unscaled();
  			UILinkPointNavigator.Update();
@@ -1314,7 +1370,7 @@
 +				if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "OneDropLogo") {
 +					int num20 = (int)((float)(int)mouseTextColor * 1f);
 +					Color color2 = Color.Black;
-+					drawableLines[k].color = new Color(num20, num20, num20, num20);
++					drawableLines[k].Color = new Color(num20, num20, num20, num20);
 +					if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[k], ref num12) || !globalCanDraw)
 +						goto PostDraw;
 +
@@ -1327,7 +1383,7 @@
  						}
 -
 -						spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+						Color drawColor2 = drawableLines[k].overrideColor ?? drawableLines[k].color;
++						Color drawColor2 = drawableLines[k].overrideColor ?? drawableLines[k].Color;
 +						spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, (l != 4) ? color2 : drawColor2, drawableLines[k].rotation, drawableLines[k].origin, (drawableLines[k].baseScale.X + drawableLines[k].baseScale.Y) / 2f, SpriteEffects.None, 0f);
  					}
  				}
@@ -1376,7 +1432,7 @@
 +					if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "JourneyResearch")
  						black = Colors.JourneyMode;
  
-+					drawableLines[k].color = black;
++					drawableLines[k].Color = black;
 +					Color realLineColor = black;
 +
 +					if (overrideColor[k].HasValue) {
@@ -2035,8 +2091,8 @@
  			float num = 0f;
  			if (theNPC.type == 125)
  				num = 30f;
-+			else if (theNPC.modNPC != null)
-+				num = theNPC.modNPC.drawOffsetY;
++			else if (theNPC.ModNPC != null)
++				num = theNPC.ModNPC.drawOffsetY;
  			else if (theNPC.type == 54)
  				num = 2f;
  			else if (theNPC.type == 205)
@@ -2142,7 +2198,7 @@
  					if (projectile.type == 473)
  						EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height()), new Microsoft.Xna.Framework.Color(255, 255, 0, 0), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
  
-+					ModProjectile modProjectile = projectile.modProjectile;
++					ModProjectile modProjectile = projectile.ModProjectile;
 +					if (modProjectile != null && ModContent.TryGetTexture(modProjectile.GlowTexture, out var glowTexture))
 +						spriteBatch.Draw(glowTexture.Value, new Vector2(projectile.position.X - screenPosition.X + num138 + num137, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height())), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0f);
 +
@@ -2570,7 +2626,7 @@
  
  			PlayerInput.SetZoom_UI();
 +			List<GameInterfaceLayer> interfaceLayers = new List<GameInterfaceLayer>(_gameInterfaceLayers);
-+			ModHooks.ModifyInterfaceLayers(interfaceLayers);
++			SystemHooks.ModifyInterfaceLayers(interfaceLayers);
 -			using (List<GameInterfaceLayer>.Enumerator enumerator = _gameInterfaceLayers.GetEnumerator()) {
 +			using (List<GameInterfaceLayer>.Enumerator enumerator = interfaceLayers.GetEnumerator()) {
  				while (enumerator.MoveNext() && enumerator.Current.Draw()) {
@@ -2581,7 +2637,7 @@
  
  		private void DrawInterface_33_MouseText() {
 +			// TODO - UI Sorting and selective disable support -  move this to new one between 32 and 33
-+			ModHooks.PostDrawInterface(spriteBatch);
++			SystemHooks.PostDrawInterface(spriteBatch);
  			if (mouseItem.stack <= 0)
  				mouseItem.type = 0;
  
@@ -3017,7 +3073,7 @@
  				}
  
  				spriteBatch.Draw(TextureAssets.MapIcon[num138].Value, new Vector2(num136, num137), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.MapIcon[num138].Width(), TextureAssets.MapIcon[num138].Height()), new Microsoft.Xna.Framework.Color(num139, num139, num139, num139), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+				ModHooks.PostDrawFullscreenMap(ref text);
++				SystemHooks.PostDrawFullscreenMap(ref text);
  				DrawCursor(DrawThickCursor());
  			}
  
@@ -3126,7 +3182,7 @@
  			else
  				Rasterizer = RasterizerState.CullClockwise;
  
-+			ModHooks.ModifyTransformMatrix(ref GameViewMatrix);
++			SystemHooks.ModifyTransformMatrix(ref GameViewMatrix);
  			bool flag = !drawToScreen && netMode != 2 && !gameMenu && !mapFullscreen && Lighting.NotRetro && Terraria.Graphics.Effects.Filters.Scene.CanCapture();
  			if (flag)
  				Terraria.Graphics.Effects.Filters.Scene.BeginCapture(screenTarget, Microsoft.Xna.Framework.Color.Black);
@@ -3143,7 +3199,7 @@
  
  			TimeLogger.DetailedDrawReset();
  			spriteBatch.End();
-+			WorldHooks.PostDrawTiles();
++			SystemHooks.PostDrawTiles();
  			TimeLogger.DetailedDrawTime(35);
  			HasInteractibleObjectThatIsNotATile = false;
  			SortDrawCacheWorms();
@@ -3260,11 +3316,12 @@
  					flag = true;
  				}
  			}
-@@ -47833,16 +_,25 @@
+@@ -47833,16 +_,26 @@
  
  			screenPosition.X = (int)screenPosition.X;
  			screenPosition.Y = (int)screenPosition.Y;
 +			PlayerHooks.ModifyScreenPosition(LocalPlayer);
++			SystemHooks.ModifyScreenPosition();
  			ClampScreenPositionToWorld();
  		}
  
@@ -3315,7 +3372,7 @@
  			tileColor.B = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.B * 7) / 10);
  			tileColor = SkyManager.Instance.ProcessTileColor(tileColor);
 +			// TODO: Add in white and white2 as sunColor and moonColor
-+			ModHooks.ModifySunLight(ref tileColor, ref colorOfTheSkies);
++			SystemHooks.ModifySunLightColor(ref tileColor, ref colorOfTheSkies);
  		}
  
  		private static void UpdateAtmosphereTransparencyToSkyColor() {
@@ -3346,6 +3403,20 @@
 +			SurfaceBgStyleLoader.ChooseStyle(ref num);
  			return num;
  		}
+ 
+@@ -48959,6 +_,13 @@
+ 		}
+ 
+ 		private static void UpdateInvasion() {
++			SystemHooks.PreUpdateInvasions();
++
++			UpdateInvasion_Inner();
++
++			SystemHooks.PostUpdateInvasions();
++		}
++		private static void UpdateInvasion_Inner() {
+ 			if (invasionType <= 0)
+ 				return;
  
 @@ -49199,6 +_,15 @@
  			}

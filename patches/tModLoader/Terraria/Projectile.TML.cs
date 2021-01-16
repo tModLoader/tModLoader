@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader;
 
 namespace Terraria
 {
 	public partial class Projectile
 	{
-		public ModProjectile modProjectile { get; internal set; }
+		public ModProjectile ModProjectile { get; internal set; }
 
 		internal GlobalProjectile[] globalProjectiles = new GlobalProjectile[0];
 

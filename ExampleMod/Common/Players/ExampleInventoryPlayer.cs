@@ -1,6 +1,4 @@
 ﻿using ExampleMod.Content.Items;
-using ExampleMod.Content.Items.Placeable;
-using ExampleMod.Content.Items.Placeable.Furniture;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -39,6 +37,7 @@ namespace ExampleMod.Common.Players
 				new Item(ModContent.ItemType<ExampleWall>()){
 					stack = 90
 				},
+				new Item(ModContent.ItemType<ExampleItem>()),
 				new Item(ItemID.GoldOre) {
 					stack = 256
 				}

@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.Core
 		public readonly BuildProperties properties;
 		public DateTime lastModified;
 
-		public string Name => modFile.name;
+		public string Name => modFile.Name;
 		public string DisplayName => string.IsNullOrEmpty(properties.displayName) ? Name : properties.displayName;
 		public Version tModLoaderVersion => properties.buildVersion;
 

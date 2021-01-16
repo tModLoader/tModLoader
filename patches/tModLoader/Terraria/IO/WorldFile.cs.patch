@@ -22,7 +22,7 @@
  							CheckSavedOreTiers();
  							binaryReader.Close();
  							memoryStream.Close();
-+							WorldHooks.SetupWorld();
++							SystemHooks.OnWorldLoad();
 +							WorldIO.Load(Main.worldPathName, flag);
  							if (num3 != 0)
  								WorldGen.loadFailed = true;
@@ -95,7 +95,7 @@
  				for (int l = 0; l < 40; l++) {
  					Item item = chest.item[l];
 -					if (item == null) {
-+					if (item == null || item.modItem != null) {
++					if (item == null || item.ModItem != null) {
  						writer.Write((short)0);
  						continue;
  					}

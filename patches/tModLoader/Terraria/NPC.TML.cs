@@ -9,7 +9,7 @@ namespace Terraria
 {
 	public partial class NPC
 	{
-		public ModNPC modNPC { get; internal set; }
+		public ModNPC ModNPC { get; internal set; }
 
 		internal GlobalNPC[] globalNPCs = new GlobalNPC[0];
 

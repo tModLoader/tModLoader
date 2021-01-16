@@ -34,8 +34,8 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void Load() {
-			AddContent(new UnloadedTile("PendingTile",isSolid:true));
-			AddContent(new UnloadedTile("UnloadedTile",isSolid:true));
+			AddContent(new UnloadedTile("PendingTile"));
+			AddContent(new UnloadedTile());
 
 			AddContent(new UnloadedTile("PendingNonSolidTile",isSolid:false));
 			AddContent(new UnloadedTile("UnloadedNonSolidTile", isSolid:false));

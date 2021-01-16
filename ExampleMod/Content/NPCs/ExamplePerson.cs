@@ -48,17 +48,17 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void SetDefaults() {
-			npc.townNPC = true; // Sets NPC to be a Town NPC
-			npc.friendly = true; // NPC Will not attack player
-			npc.width = 18;
-			npc.height = 40;
-			npc.aiStyle = 7;
-			npc.damage = 10;
-			npc.defense = 15;
-			npc.lifeMax = 250;
-			npc.HitSound = SoundID.NPCHit1;
-			npc.DeathSound = SoundID.NPCDeath1;
-			npc.knockBackResist = 0.5f;
+			NPC.townNPC = true; // Sets NPC to be a Town NPC
+			NPC.friendly = true; // NPC Will not attack player
+			NPC.width = 18;
+			NPC.height = 40;
+			NPC.aiStyle = 7;
+			NPC.damage = 10;
+			NPC.defense = 15;
+			NPC.lifeMax = 250;
+			NPC.HitSound = SoundID.NPCHit1;
+			NPC.DeathSound = SoundID.NPCDeath1;
+			NPC.knockBackResist = 0.5f;
 			animationType = NPCID.Guide;
 		}
 
@@ -93,9 +93,10 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void HitEffect(int hitDirection, double damage) {
-			int num = npc.life > 0 ? 1 : 5;
+			int num = NPC.life > 0 ? 1 : 5;
+
 			for (int k = 0; k < num; k++) {
-				Dust.NewDust(npc.position, npc.width, npc.height, ModContent.DustType<Sparkle>());
+				Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
 			}
 		}
 
@@ -252,8 +253,8 @@ namespace ExampleMod.Content.NPCs
 		//
 		// 	// if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
 		// 	// 	foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
-		// 	// 		if (item.IsUnloaded) continue;
-		// 	// 		shop.item[nextSlot].SetDefaults(item.Type);
+		// 	// 		if (Item.IsUnloaded) continue;
+		// 	// 		shop.item[nextSlot].SetDefaults(Item.Type);
 		// 	// 		shop.item[nextSlot].shopCustomPrice = 0;
 		// 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
 		// 	// 		nextSlot++;
@@ -275,7 +276,7 @@ namespace ExampleMod.Content.NPCs
 			if (Main.netMode == NetmodeID.Server) {
 				ModPacket packet = Mod.GetPacket();
 				packet.Write((byte)ExampleModMessageType.ExampleTeleportToStatue);
-				packet.Write((byte)npc.whoAmI);
+				packet.Write((byte)NPC.whoAmI);
 				packet.Send();
 			}
 			else {
@@ -294,7 +295,7 @@ namespace ExampleMod.Content.NPCs
 					position.Y = Math.Sign(position.Y) * 20;
 				}
 
-				Dust.NewDustPerfect(npc.Center + position, ModContent.DustType<Sparkle>(), Vector2.Zero).noGravity = true;
+				Dust.NewDustPerfect(NPC.Center + position, ModContent.DustType<Sparkle>(), Vector2.Zero).noGravity = true;
 			}
 		}
 

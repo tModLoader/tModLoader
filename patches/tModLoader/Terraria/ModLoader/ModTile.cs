@@ -183,7 +183,7 @@ namespace Terraria.ModLoader
 			TileLoader.tiles.Add(this);
 		}
 
-		public override void SetupContent() {
+		public sealed override void SetupContent() {
 			TextureAssets.Tile[Type] = ModContent.GetTexture(Texture);
 
 			SetDefaults();

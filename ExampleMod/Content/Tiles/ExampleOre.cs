@@ -33,7 +33,7 @@ namespace ExampleMod.Content.Tiles
 		}
 	}
 
-	public class ExampleOreWorld : ModWorld
+	public class ExampleOreSystem : ModSystem
 	{
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight) {
 			// Because world generation is like layering several images ontop of each other, we need to do some steps between the original world generation steps.

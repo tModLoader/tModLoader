@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.Default
 			FallbackType = fallbackType;
 		}
 
-		public new TagCompound Save() {
+		public TagCompound Save() {
 			var tag = new TagCompound {
 				["mod"] = modName,
 				["name"] = name,

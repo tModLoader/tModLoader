@@ -117,7 +117,7 @@ namespace Terraria.ModLoader
 			ModPrefix.categoryPrefixes[Category].Add(this);
 		}
 
-		public override void SetupContent() {
+		public sealed override void SetupContent() {
 			AutoDefaults();
 			SetDefaults();
 		}

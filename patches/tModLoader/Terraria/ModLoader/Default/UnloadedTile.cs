@@ -19,7 +19,7 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void SetDefaults() {
-			Main.tileSolid[Type] = IsSolid;
+			Main.tileSolid[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 			Main.tileNoAttach[Type] = (!IsSolid || IsSemi);
 			Main.tileTable[Type] =IsSemi;
@@ -43,7 +43,7 @@ namespace Terraria.ModLoader.Default
 		{
 			var tile = Main.tile[i, j];
 			if(tile != null && tile.type == Type) {
-				UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
+				UnloadedTilesSystem modWorld = ModContent.GetInstance<UnloadedTilesSystem>();
 				int posID = new UnloadedPosIndexing(i, j).PosID;
 				modWorld.tileInfoMap.TryGetValue(posID, out int infoID);
 				if (infoID >= 0) { // This only works in SP
@@ -52,11 +52,6 @@ namespace Terraria.ModLoader.Default
 						Main.LocalPlayer.cursorItemIconEnabled = true;
 						Main.LocalPlayer.cursorItemIconID = -1;
 						Main.LocalPlayer.cursorItemIconText = $"{info.modName}: {info.name}";
-					}
-					else {
-						Main.LocalPlayer.cursorItemIconEnabled = true;
-						Main.LocalPlayer.cursorItemIconID = -1;
-						Main.LocalPlayer.cursorItemIconText = $" info not at ID {infoID} Error";
 					}
 				}
 			}
