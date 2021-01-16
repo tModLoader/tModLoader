@@ -1,3 +1,6 @@
+using Terraria.ID;
+using Terraria.ObjectData;
+
 namespace Terraria.ModLoader.Default
 {
 	[Autoload(false)] // need two named versions
@@ -21,6 +24,19 @@ namespace Terraria.ModLoader.Default
 			Main.tileNoAttach[Type] = (!IsSolid || IsSemi);
 			Main.tileTable[Type] =IsSemi;
 			Main.tileSolidTop[Type] = IsSemi;
+			TileID.Sets.Platforms[Type] = true;
+			adjTiles = new int[] { TileID.Platforms };
+
+			// Placement
+			TileObjectData.newTile.CoordinateHeights = new[] { 16 };
+			TileObjectData.newTile.CoordinateWidth = 16;
+			TileObjectData.newTile.CoordinatePadding = 2;
+			TileObjectData.newTile.StyleHorizontal = true;
+			TileObjectData.newTile.StyleMultiplier = 27;
+			TileObjectData.newTile.StyleWrapLimit = 27;
+			TileObjectData.newTile.UsesCustomCanPlace = false;
+			TileObjectData.newTile.LavaDeath = true;
+			TileObjectData.addTile(Type);
 		}
 
 		public override void MouseOver(int i, int j)
