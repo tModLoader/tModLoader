@@ -5,10 +5,12 @@
  using System;
  using System.IO;
  using System.Reflection;
-@@ -63,7 +_,12 @@
+@@ -63,9 +_,12 @@
  				}
  			};
  
+-			_handleRoutine = ConsoleCtrlCheck;
+-			SetConsoleCtrlHandler(_handleRoutine, Add: true);
 +#if SERVER
 +			WindowsLaunch._handleRoutine = new WindowsLaunch.HandlerRoutine(WindowsLaunch.ConsoleCtrlCheck);
 +			WindowsLaunch.SetConsoleCtrlHandler(WindowsLaunch._handleRoutine, true);

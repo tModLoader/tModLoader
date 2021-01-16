@@ -1,13 +1,13 @@
 --- src/decompiled/Terraria.GameContent.UI.Elements/UIHeader.cs
 +++ src/Terraria/Terraria.GameContent.UI.Elements/UIHeader.cs
-@@ -16,9 +_,11 @@
+@@ -16,6 +_,11 @@
  			set {
  				if (_text != value) {
  					_text = value;
 +#if CLIENT
- 					Vector2 vector = Main.fontDeathText.MeasureString(Text);
- 					Width.Pixels = vector.X;
- 					Height.Pixels = vector.Y;
++					Vector2 vector = Main.fontDeathText.MeasureString(Text);
++					Width.Pixels = vector.X;
++					Height.Pixels = vector.Y;
 +#endif
  					Width.Precent = 0f;
  					Height.Precent = 0f;

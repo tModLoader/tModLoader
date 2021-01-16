@@ -1,26 +1,30 @@
 --- src/decompiled/Terraria.Social/SocialAPI.cs
 +++ src/Terraria/Terraria.Social/SocialAPI.cs
-@@ -19,7 +_,12 @@
+@@ -17,8 +_,15 @@
+ 		public static SocialMode Mode => _mode;
+ 
  		public static void Initialize(SocialMode? mode = null) {
- 			if (!mode.HasValue) {
+-			if (!mode.HasValue)
++			if (!mode.HasValue) {
  				mode = SocialMode.None;
 +#if CLIENT
- 				mode = SocialMode.Steam;
++				mode = SocialMode.Steam;
 +#else
 +				if (Program.LaunchParameters.ContainsKey("-steam"))
 +					mode = SocialMode.Steam;
 +#endif
- 			}
++			}
  
  			_mode = mode.Value;
-@@ -57,7 +_,11 @@
+ 			_modules = new List<ISocialModule>();
+@@ -55,7 +_,11 @@
  			Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
  			Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
  			Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
 +#if CLIENT
- 			Network = LoadModule<NetClientSocialModule>();
++			Network = LoadModule<NetClientSocialModule>();
 +#else
-+			Network = LoadModule<NetServerSocialModule>();
+ 			Network = LoadModule<NetServerSocialModule>();
 +#endif
  		}
  	}

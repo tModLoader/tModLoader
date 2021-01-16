@@ -1,0 +1,12 @@
+--- src/decompiled/NATUPNPLib/IStaticPortMapping.cs
++++ src/Terraria/NATUPNPLib/IStaticPortMapping.cs
+@@ -1,3 +_,4 @@
++#if SERVER
+ using System.Runtime.CompilerServices;
+ using System.Runtime.InteropServices;
+ 
+@@ -35,3 +_,4 @@
+ 		void _VtblGap1_2();
+ 	}
+ }
++#endif

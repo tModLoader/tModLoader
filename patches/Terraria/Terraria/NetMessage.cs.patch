@@ -1,9 +1,12 @@
 --- src/decompiled/Terraria/NetMessage.cs
 +++ src/Terraria/Terraria/NetMessage.cs
-@@ -1780,6 +_,12 @@
+@@ -1780,9 +_,12 @@
  					}
  				}
  				catch {
+-					if (num < buffer.Length - 100)
+-						Console.WriteLine(Language.GetTextValue("Error.NetMessageError", buffer[num + 2]));
+-
 +#if SERVER
 +					if (num < NetMessage.buffer.Length - 100)
 +					{

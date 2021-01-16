@@ -1,13 +1,16 @@
 --- src/decompiled/Terraria/Player.cs
 +++ src/Terraria/Terraria/Player.cs
-@@ -30115,9 +_,11 @@
+@@ -30113,8 +_,13 @@
+ 				}
+ 				else {
  					int num4 = y;
- 					bool num5 = Main.tile[x, num4].active();
+-					Main.tile[x, num4].active();
++					bool num5 = Main.tile[x, num4].active();
  					WorldGen.KillTile(x, num4);
 +#if CLIENT
- 					if (num5 && !Main.tile[x, num4].active())
- 						AchievementsHelper.HandleMining();
- 
++					if (num5 && !Main.tile[x, num4].active())
++						AchievementsHelper.HandleMining();
++
 +#endif
  					if (Main.netMode == 1)
  						NetMessage.SendData(17, -1, -1, null, 0, x, num4);

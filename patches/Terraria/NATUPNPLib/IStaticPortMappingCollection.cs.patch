@@ -1,0 +1,12 @@
+--- src/decompiled/NATUPNPLib/IStaticPortMappingCollection.cs
++++ src/Terraria/NATUPNPLib/IStaticPortMappingCollection.cs
+@@ -1,3 +_,4 @@
++#if SERVER
+ using System.Collections;
+ using System.Reflection;
+ using System.Runtime.CompilerServices;
+@@ -29,3 +_,4 @@
+ 		IStaticPortMapping Add([In] int lExternalPort, [In] [MarshalAs(UnmanagedType.BStr)] string bstrProtocol, [In] int lInternalPort, [In] [MarshalAs(UnmanagedType.BStr)] string bstrInternalClient, [In] bool bEnabled, [In] [MarshalAs(UnmanagedType.BStr)] string bstrDescription);
+ 	}
+ }
++#endif

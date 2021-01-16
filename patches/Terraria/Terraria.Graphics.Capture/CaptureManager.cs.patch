@@ -5,19 +5,19 @@
  		private CaptureCamera _camera;
  
 +#if CLIENT
- 		public bool IsCapturing => _camera.IsCapturing;
++		public bool IsCapturing => _camera.IsCapturing;
 +#else
-+		public bool IsCapturing => false;
+ 		public bool IsCapturing => false;
 +#endif
  
  		public bool Active {
  			get {
-@@ -32,7 +_,9 @@
+@@ -32,6 +_,9 @@
  
  		public CaptureManager() {
  			_interface = new CaptureInterface();
 +#if CLIENT
- 			_camera = new CaptureCamera(Main.instance.GraphicsDevice);
++			_camera = new CaptureCamera(Main.instance.GraphicsDevice);
 +#endif
  		}
  

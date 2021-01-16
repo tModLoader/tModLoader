@@ -1,20 +1,20 @@
 --- src/decompiled/Terraria.Social.Steam/CoreSocialModule.cs
 +++ src/Terraria/Terraria.Social.Steam/CoreSocialModule.cs
-@@ -19,11 +_,13 @@
+@@ -19,6 +_,13 @@
  
  		public void Initialize() {
  			_instance = this;
 +#if CLIENT
- 			if (SteamAPI.RestartAppIfNecessary(new AppId_t(105600u))) {
- 				Environment.Exit(1);
- 				return;
- 			}
- 
++			if (SteamAPI.RestartAppIfNecessary(new AppId_t(105600u))) {
++				Environment.Exit(1);
++				return;
++			}
++
 +#endif
  			if (!SteamAPI.Init()) {
  				MessageBox.Show(Language.GetTextValue("Error.LaunchFromSteam"), Language.GetTextValue("Error.Error"));
  				Environment.Exit(1);
-@@ -34,6 +_,9 @@
+@@ -29,6 +_,9 @@
  			ThreadPool.QueueUserWorkItem(SteamTickLoop, null);
  			Main.OnTick += PulseSteamTick;
  			Main.OnTick += PulseSteamCallback;
@@ -24,7 +24,7 @@
  		}
  
  		public void PulseSteamTick() {
-@@ -79,7 +_,12 @@
+@@ -74,7 +_,12 @@
  		}
  
  		public void Shutdown() {

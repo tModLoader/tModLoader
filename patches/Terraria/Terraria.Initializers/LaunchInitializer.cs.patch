@@ -5,7 +5,8 @@
  		public static void LoadParameters(Main game) {
  			LoadSharedParameters(game);
 +#if CLIENT
- 			LoadClientParameters(game);
+-			LoadServerParameters(game);
++			LoadClientParameters(game);
 +#else
 +			LaunchInitializer.LoadServerParameters(game);
 +#endif

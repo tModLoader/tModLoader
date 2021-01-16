@@ -26,7 +26,14 @@
  using System.Runtime.InteropServices;
  using System.Text;
  using System.Threading;
-@@ -51,10 +_,17 @@
+@@ -45,17 +_,23 @@
+ using Terraria.Map;
+ using Terraria.Net;
+ using Terraria.ObjectData;
+-using Terraria.Server;
+ using Terraria.Social;
+ using Terraria.UI;
+ using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.World.Generation;
@@ -37,45 +44,51 @@
  namespace Terraria
  {
 +#if CLIENT
- 	public class Main : Game
++	public class Main : Game
 +#else
-+	public class Main : Terraria.Server.Game
+ 	public class Main : Terraria.Server.Game
 +#endif
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
  
-@@ -2791,6 +_,7 @@
+@@ -2792,6 +_,21 @@
  				LockOnHelper.UseMode = LockOnHelper.LockOnMode.ThreeDS;
  
  			Configuration.Get("InvisibleCursorForGamepad", ref InvisibleCursorForGamepad);
 +#if CLIENT && WINDOWS
- 			Form form = (Form)Control.FromHandle(instance.Window.Handle);
- 			if (screenBorderless) {
- 				form.Location = new System.Drawing.Point(0, 0);
-@@ -2804,6 +_,7 @@
- 				form.FormBorderStyle = FormBorderStyle.Sizable;
- 			}
- 
++			Form form = (Form)Control.FromHandle(instance.Window.Handle);
++			if (screenBorderless) {
++				form.Location = new System.Drawing.Point(0, 0);
++				form.FormBorderStyle = FormBorderStyle.None;
++			}
++			else if (screenMaximized) {
++				form.WindowState = FormWindowState.Maximized;
++				form.FormBorderStyle = FormBorderStyle.Sizable;
++			}
++			else {
++				form.FormBorderStyle = FormBorderStyle.Sizable;
++			}
++
 +#endif
  			SetDisplayMode(currentValue3, currentValue4, currentValue2);
  			Configuration.Get("SettingsUnlock_WorldEvil", ref SettingsUnlock_WorldEvil);
  			Configuration.Get("SettingsEnabled_MinersWobble", ref SettingsEnabled_MinersWobble);
-@@ -2990,9 +_,13 @@
+@@ -2978,8 +_,12 @@
  							if (num >= 2)
  								terrariasFixedTiming = binaryReader.ReadBoolean();
  
--							if (num >= 91 && binaryReader.ReadBoolean())
+-							if (num >= 91)
+-								binaryReader.ReadBoolean();
 +							if (num >= 91 && binaryReader.ReadBoolean()) {
 +#if CLIENT && WINDOWS
- 								((Form)Control.FromHandle(base.Window.Handle)).WindowState = FormWindowState.Maximized;
- 
++								((Form)Control.FromHandle(base.Window.Handle)).WindowState = FormWindowState.Maximized;
++
 +#endif
 +							}
-+
+ 
  							if (num >= 4) {
  								int width = binaryReader.ReadInt32();
- 								int height = binaryReader.ReadInt32();
-@@ -3086,8 +_,13 @@
+@@ -3074,8 +_,13 @@
  		private static void EraseWorld(int i) {
  			try {
  				if (!WorldList[i].IsCloudSave) {
@@ -89,7 +102,7 @@
  				}
  				else if (SocialAPI.Cloud != null) {
  					SocialAPI.Cloud.Delete(WorldList[i].Path);
-@@ -3361,9 +_,11 @@
+@@ -3349,9 +_,11 @@
  			rand = new UnifiedRandom();
  			if (autoShutdown) {
  				string lpWindowName = Console.Title = "terraria" + rand.Next(int.MaxValue);
@@ -101,85 +114,85 @@
  			}
  			else {
  				Console.Title = "Terraria Server " + versionNumber2;
-@@ -4075,13 +_,17 @@
+@@ -4063,9 +_,17 @@
  
  		public Main() {
  			instance = this;
 +#if CLIENT
- 			graphics = new GraphicsDeviceManager(this);
- 			base.Content.RootDirectory = "Content";
++			graphics = new GraphicsDeviceManager(this);
++			base.Content.RootDirectory = "Content";
 +#endif
  		}
  
  		protected void SetTitle() {
 +#if CLIENT
- 			_cachedTitle = Lang.GetRandomGameTitle();
- 			Platform.Current.SetWindowUnicodeTitle(base.Window, _cachedTitle);
++			_cachedTitle = Lang.GetRandomGameTitle();
++			Platform.Current.SetWindowUnicodeTitle(base.Window, _cachedTitle);
 +#endif
  		}
  
  		public static void InitLifeBytes() {
-@@ -4135,6 +_,9 @@
+@@ -4119,7 +_,9 @@
  		}
  
  		protected override void Initialize() {
 +#if SERVER
-+			netMode = 2;
+ 			netMode = 2;
 +#endif
  			LocalFavoriteData.Load();
  			CloudFavoritesData.Load();
  			FindAnnouncementBoxStatus();
-@@ -4149,9 +_,14 @@
+@@ -4134,8 +_,14 @@
  			TileEntity.InitializeAll();
  			Projectile.InitializeStaticThings();
  			InitializeItemAnimations();
 +#if CLIENT
- 			Lighting.Initialize();
- 			MapHelper.Initialize();
- 			TimeLogger.Initialize();
++			Lighting.Initialize();
++			MapHelper.Initialize();
++			TimeLogger.Initialize();
 +#else
-+			Mount.Initialize();
-+			Minecart.Initialize();
+ 			Mount.Initialize();
+ 			Minecart.Initialize();
 +#endif
  			WorldGen.RandomizeBackgrounds();
  			WorldGen.RandomizeCaveBackgrounds();
  			WorldGen.RandomizeMoonState();
-@@ -6554,13 +_,18 @@
+@@ -6538,6 +_,18 @@
  				ActivePlayerFileData.StartPlayTimer();
  				Player.Hooks.EnterWorld(myPlayer);
  			}
 +
 +#if CLIENT && WINDOWS
- 			else {
- 				IntPtr systemMenu = GetSystemMenu(base.Window.Handle, bRevert: false);
- 				int menuItemCount = GetMenuItemCount(systemMenu);
- 				RemoveMenu(systemMenu, menuItemCount - 1, 1024);
- 			}
- 
++			else {
++				IntPtr systemMenu = GetSystemMenu(base.Window.Handle, bRevert: false);
++				int menuItemCount = GetMenuItemCount(systemMenu);
++				RemoveMenu(systemMenu, menuItemCount - 1, 1024);
++			}
++
 +#endif
 +#if CLIENT
- 			ClientInitialize();
++			ClientInitialize();
 +#endif
  		}
  
  		private void ClientInitialize() {
-@@ -6600,6 +_,7 @@
+@@ -6577,6 +_,15 @@
  			OpenRecent();
  			Star.SpawnStars();
  			WorldGen.RandomizeWeather();
 +#if CLIENT
- 			_achievements = new AchievementManager();
- 			AchievementInitializer.Load();
- 			DyeInitializer.Load();
-@@ -6607,6 +_,7 @@
- 			AchievementCompleteUI.Initialize();
- 			UILinksInitializer.Load();
- 			ItemSorting.SetupWhiteLists();
++			_achievements = new AchievementManager();
++			AchievementInitializer.Load();
++			DyeInitializer.Load();
++			ScreenEffectInitializer.Load();
++			AchievementCompleteUI.Initialize();
++			UILinksInitializer.Load();
++			ItemSorting.SetupWhiteLists();
 +#endif
  			foreach (DisplayMode supportedDisplayMode in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes) {
  				if (supportedDisplayMode.Width < minScreenW || supportedDisplayMode.Height < minScreenH || supportedDisplayMode.Width > maxScreenW || supportedDisplayMode.Height > maxScreenH)
  					continue;
-@@ -7273,6 +_,25 @@
+@@ -7243,6 +_,25 @@
  		}
  
  		protected void UpdateAudio() {
@@ -205,42 +218,126 @@
  			if (!dedServ) {
  				bool flag = (!hasFocus || gamePaused) && netMode == 0;
  				if (flag) {
-@@ -9795,9 +_,11 @@
+@@ -9765,6 +_,11 @@
  			PlayerInput.SetZoom_Unscaled();
  			MouseOversTryToClear();
  			PlayerInput.ResetInputsOnActiveStateChange();
 +#if CLIENT
- 			if (Main.OnTick != null)
- 				Main.OnTick();
- 
++			if (Main.OnTick != null)
++				Main.OnTick();
++
 +#endif
  			if (_hasPendingNetmodeChange) {
  				netMode = _targetNetMode;
  				_hasPendingNetmodeChange = false;
-@@ -11587,6 +_,7 @@
+@@ -11553,7 +_,100 @@
+ 		[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
  		public static extern short GetKeyState(int keyCode);
  
- 		public static string GetInputText(string oldString) {
+-		public static string GetInputText(string oldString) => "";
++		public static string GetInputText(string oldString) {
 +#if CLIENT
- 			if (!hasFocus)
- 				return oldString;
- 
-@@ -11675,6 +_,9 @@
- 			}
- 
- 			return text;
++			if (!hasFocus)
++				return oldString;
++
++			inputTextEnter = false;
++			inputTextEscape = false;
++			string text = oldString;
++			string text2 = "";
++			if (text == null)
++				text = "";
++
++			bool flag = false;
++			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl)) {
++				if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
++					text = "";
++				}
++				else if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.X) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.X)) {
++					Platform.Current.Clipboard = oldString;
++					text = "";
++				}
++				else if ((inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C)) || (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert))) {
++					Platform.Current.Clipboard = oldString;
++				}
++				else if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.V) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.V)) {
++					text2 += Platform.Current.Clipboard;
++				}
++			}
++			else {
++				if (inputText.PressingShift()) {
++					if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Delete) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Delete)) {
++						Platform.Current.Clipboard = oldString;
++						text = "";
++					}
++
++					if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert)) {
++						string text3 = Platform.Current.Clipboard;
++						for (int i = 0; i < text3.Length; i++) {
++							if (text3[i] < ' ' || text3[i] == '\u007f')
++								text3 = text3.Replace(text3[i--].ToString() ?? "", "");
++						}
++
++						text2 += text3;
++					}
++				}
++
++				for (int j = 0; j < keyCount; j++) {
++					int num = keyInt[j];
++					string str = keyString[j];
++					if (num == 13)
++						inputTextEnter = true;
++					else if (num == 27)
++						inputTextEscape = true;
++					else if (num >= 32 && num != 127)
++						text2 += str;
++				}
++			}
++
++			keyCount = 0;
++			text += text2;
++			oldInputText = inputText;
++			inputText = Keyboard.GetState();
++			Microsoft.Xna.Framework.Input.Keys[] pressedKeys = inputText.GetPressedKeys();
++			Microsoft.Xna.Framework.Input.Keys[] pressedKeys2 = oldInputText.GetPressedKeys();
++			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Back) && oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Back)) {
++				if (backSpaceCount == 0) {
++					backSpaceCount = 7;
++					flag = true;
++				}
++
++				backSpaceCount--;
++			}
++			else {
++				backSpaceCount = 15;
++			}
++
++			for (int k = 0; k < pressedKeys.Length; k++) {
++				bool flag2 = true;
++				for (int l = 0; l < pressedKeys2.Length; l++) {
++					if (pressedKeys[k] == pressedKeys2[l])
++						flag2 = false;
++				}
++
++				if (string.Concat(pressedKeys[k]) == "Back" && (flag2 || flag) && text.Length > 0) {
++					TextSnippet[] array = ChatManager.ParseMessage(text, Microsoft.Xna.Framework.Color.White).ToArray();
++					text = ((!array[array.Length - 1].DeleteWhole) ? text.Substring(0, text.Length - 1) : text.Substring(0, text.Length - array[array.Length - 1].TextOriginal.Length));
++				}
++			}
++
++			return text;
 +#else
 +			return "";
 +#endif
- 		}
++		}
  
  		public void MouseTextHackZoom(string text) {
-@@ -34774,8 +_,13 @@
+ 			MouseTextHackZoom(text, 0, 0);
+@@ -34652,7 +_,13 @@
  
  		protected void QuitGame() {
  			SaveSettings();
 +#if CLIENT
- 			SocialAPI.Shutdown();
++			SocialAPI.Shutdown();
 +#endif
  			Exit();
 +#if MAC
@@ -249,7 +346,7 @@
  		}
  
  		protected Microsoft.Xna.Framework.Color randColor() {
-@@ -35399,8 +_,15 @@
+@@ -35276,8 +_,15 @@
  				}
  				else if (selectedMenu == 2 || inputTextEnter || autoPass) {
  					string str = "-autoshutdown -password \"" + Netplay.ServerPassword + "\" -lang " + Language.ActiveCulture.LegacyId;
@@ -265,7 +362,7 @@
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {
  						ProcessStartInfo startInfo = tServer.StartInfo;
-@@ -36629,11 +_,13 @@
+@@ -36506,11 +_,13 @@
  					}
  
  					bool flag7 = false;
@@ -279,7 +376,7 @@
  					num2 = 210;
  					num4 = 55;
  					int num28 = 0;
-@@ -40186,7 +_,11 @@
+@@ -40063,7 +_,11 @@
  			base.GraphicsDevice.SetRenderTarget(backWaterTarget);
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
  			spriteBatch.Begin();
@@ -291,49 +388,165 @@
  			try {
  				drawWaters(bg: true);
  			}
-@@ -45715,6 +_,7 @@
+@@ -45592,6 +_,25 @@
  		}
  
  		private static void CheckMonoliths() {
 +#if CLIENT
- 			bool flag = player[myPlayer].ZoneTowerVortex || player[myPlayer].ZoneTowerNebula || player[myPlayer].ZoneTowerStardust || player[myPlayer].ZoneTowerSolar;
- 			for (int i = 0; i < MonolithFilterNames.Length; i++) {
- 				if (!flag && i == monolithType) {
-@@ -45732,6 +_,7 @@
- 						SkyManager.Instance.Deactivate(MonolithSkyNames[i]);
- 				}
- 			}
++			bool flag = player[myPlayer].ZoneTowerVortex || player[myPlayer].ZoneTowerNebula || player[myPlayer].ZoneTowerStardust || player[myPlayer].ZoneTowerSolar;
++			for (int i = 0; i < MonolithFilterNames.Length; i++) {
++				if (!flag && i == monolithType) {
++					if (!Filters.Scene[MonolithFilterNames[monolithType]].IsActive())
++						Filters.Scene.Activate(MonolithFilterNames[monolithType], default(Vector2));
++
++					if (!SkyManager.Instance[MonolithSkyNames[i]].IsActive())
++						SkyManager.Instance.Activate(MonolithSkyNames[i], default(Vector2));
++				}
++				else {
++					if (Filters.Scene[MonolithFilterNames[i]].IsActive())
++						Filters.Scene.Deactivate(MonolithFilterNames[i]);
++
++					if (SkyManager.Instance[MonolithSkyNames[i]].IsActive())
++						SkyManager.Instance.Deactivate(MonolithSkyNames[i]);
++				}
++			}
 +#endif
  		}
  
  		private void GraphicsDeviceLost(object sender, EventArgs evt) {
-@@ -45786,7 +_,9 @@
+@@ -45646,6 +_,12 @@
  			if (!base.IsActive)
  				maxQ = true;
  
 +#if CLIENT
- 			UpdateDisplaySettings();
++			UpdateDisplaySettings();
 +#endif
- 			if (Main.OnPreDraw != null)
- 				Main.OnPreDraw(gameTime);
- 
-@@ -48180,6 +_,7 @@
++			if (Main.OnPreDraw != null)
++				Main.OnPreDraw(gameTime);
++
+ 			drawsCountedForFPS++;
+ 			screenLastPosition = screenPosition;
+ 			if (stackSplit == 0) {
+@@ -48036,6 +_,20 @@
  			BirthdayParty.UpdateTime();
  			Sandstorm.UpdateTime();
  			DD2Event.UpdateTime();
 +#if CLIENT
- 			if (NPC.MoonLordCountdown > 0) {
- 				float num4 = MathHelper.Clamp((float)Math.Sin((float)NPC.MoonLordCountdown / 60f * 0.5f) * 2f, 0f, 1f);
- 				num4 *= 0.75f - 0.5f * ((float)NPC.MoonLordCountdown / 3600f);
-@@ -48192,6 +_,7 @@
- 				Filters.Scene.Deactivate("MoonLordShake");
- 			}
- 
++			if (NPC.MoonLordCountdown > 0) {
++				float num4 = MathHelper.Clamp((float)Math.Sin((float)NPC.MoonLordCountdown / 60f * 0.5f) * 2f, 0f, 1f);
++				num4 *= 0.75f - 0.5f * ((float)NPC.MoonLordCountdown / 3600f);
++				if (!Filters.Scene["MoonLordShake"].IsActive())
++					Filters.Scene.Activate("MoonLordShake", player[myPlayer].position);
++
++				Filters.Scene["MoonLordShake"].GetShader().UseIntensity(num4);
++			}
++			else if (Filters.Scene["MoonLordShake"].IsActive()) {
++				Filters.Scene.Deactivate("MoonLordShake");
++			}
++
 +#endif
  			if (NPC.MoonLordCountdown > 0) {
  				NPC.MoonLordCountdown--;
  				if (NPC.MoonLordCountdown <= 0 && netMode != 1)
-@@ -48855,6 +_,9 @@
+@@ -48074,16 +_,16 @@
+ 						WorldGen.UnspawnTravelNPC();
+ 				}
+ 				else if (!fastForwardTime && dayTime && time < 27000.0) {
+-					int num4 = (int)(27000.0 / (double)dayRate);
++					int num5 = (int)(27000.0 / (double)dayRate);
+-					num4 *= 4;
++					num5 *= 4;
+-					if (rand.Next(num4) == 0) {
++					if (rand.Next(num5) == 0) {
+-						int num5 = 0;
++						int num6 = 0;
+ 						for (int j = 0; j < 200; j++) {
+ 							if (npc[j].active && npc[j].townNPC && npc[j].type != 37 && npc[j].type != 453)
+-								num5++;
++								num6++;
+ 						}
+ 
+-						if (num5 >= 2)
++						if (num6 >= 2)
+ 							WorldGen.SpawnTravelNPC();
+ 					}
+ 				}
+@@ -48236,13 +_,13 @@
+ 						}
+ 
+ 						if (flag3 && rand.Next(3) == 0) {
+-							int num6 = 0;
++							int num7 = 0;
+-							for (int num7 = 0; num7 < 200; num7++) {
++							for (int num8 = 0; num8 < 200; num8++) {
+-								if (npc[num7].active && npc[num7].townNPC)
++								if (npc[num8].active && npc[num8].townNPC)
+-									num6++;
++									num7++;
+ 							}
+ 
+-							if (num6 >= 4) {
++							if (num7 >= 4) {
+ 								WorldGen.spawnEye = true;
+ 								if (netMode == 0)
+ 									NewText(Lang.misc[9].Value, 50, byte.MaxValue, 130);
+@@ -48254,16 +_,16 @@
+ 
+ 					if (netMode != 1 && !pumpkinMoon && !DD2Event.Ongoing && !snowMoon && WorldGen.altarCount > 0 && hardMode && !WorldGen.spawnEye && rand.Next(10) == 0) {
+ 						bool flag4 = false;
+-						for (int num8 = 0; num8 < 200; num8++) {
++						for (int num9 = 0; num9 < 200; num9++) {
+-							if (npc[num8].active && npc[num8].boss)
++							if (npc[num9].active && npc[num9].boss)
+ 								flag4 = true;
+ 						}
+ 
+ 						if (!flag4 && (!NPC.downedMechBoss1 || !NPC.downedMechBoss2 || !NPC.downedMechBoss3)) {
+-							for (int num9 = 0; num9 < 1000; num9++) {
++							for (int num10 = 0; num10 < 1000; num10++) {
+-								int num10 = rand.Next(3) + 1;
++								int num11 = rand.Next(3) + 1;
+-								if (num10 == 1 && !NPC.downedMechBoss1) {
++								if (num11 == 1 && !NPC.downedMechBoss1) {
+-									WorldGen.spawnHardBoss = num10;
++									WorldGen.spawnHardBoss = num11;
+ 									if (netMode == 0)
+ 										NewText(Lang.misc[28].Value, 50, byte.MaxValue, 130);
+ 									else if (netMode == 2)
+@@ -48272,8 +_,8 @@
+ 									break;
+ 								}
+ 
+-								if (num10 == 2 && !NPC.downedMechBoss2) {
++								if (num11 == 2 && !NPC.downedMechBoss2) {
+-									WorldGen.spawnHardBoss = num10;
++									WorldGen.spawnHardBoss = num11;
+ 									if (netMode == 0)
+ 										NewText(Lang.misc[29].Value, 50, byte.MaxValue, 130);
+ 									else if (netMode == 2)
+@@ -48282,8 +_,8 @@
+ 									break;
+ 								}
+ 
+-								if (num10 == 3 && !NPC.downedMechBoss3) {
++								if (num11 == 3 && !NPC.downedMechBoss3) {
+-									WorldGen.spawnHardBoss = num10;
++									WorldGen.spawnHardBoss = num11;
+ 									if (netMode == 0)
+ 										NewText(Lang.misc[30].Value, 50, byte.MaxValue, 130);
+ 									else if (netMode == 2)
+@@ -48296,8 +_,8 @@
+ 					}
+ 
+ 					if (!WorldGen.spawnEye && moonPhase != 4 && rand.Next(9) == 0 && netMode != 1) {
+-						for (int num11 = 0; num11 < 255; num11++) {
++						for (int num12 = 0; num12 < 255; num12++) {
+-							if (player[num11].active && player[num11].statLifeMax > 120) {
++							if (player[num12].active && player[num12].statLifeMax > 120) {
+ 								bloodMoon = true;
+ 								break;
+ 							}
+@@ -48699,6 +_,9 @@
  
  		public static void PlaySoundInstance(SoundEffectInstance sound) {
  			sound.Play();
@@ -343,7 +556,7 @@
  		}
  
  		public static ActiveSound GetActiveSound(SlotId id) {
-@@ -48906,6 +_,11 @@
+@@ -48750,6 +_,11 @@
  		}
  
  		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
@@ -355,7 +568,7 @@
  			int num = Style;
  			try {
  				if (dedServ)
-@@ -49479,6 +_,12 @@
+@@ -49323,6 +_,12 @@
  			}
  			catch {
  			}
@@ -368,7 +581,7 @@
  
  			return null;
  		}
-@@ -49542,6 +_,7 @@
+@@ -49386,6 +_,7 @@
  
  			bool flag = false;
  			Form form = null;
@@ -376,7 +589,7 @@
  			screenMaximized = (((Form)Control.FromHandle(instance.Window.Handle)).WindowState == FormWindowState.Maximized);
  			if (screenBorderless && screenMaximized && !graphics.IsFullScreen) {
  				screenMaximized = false;
-@@ -49550,6 +_,9 @@
+@@ -49394,6 +_,9 @@
  
  			form = (Form)Control.FromHandle(instance.Window.Handle);
  			flag = (form.FormBorderStyle == FormBorderStyle.None);
@@ -386,7 +599,7 @@
  			if (!instance.IsActive && (screenBorderless || screenMaximized || graphics.IsFullScreen))
  				return;
  
-@@ -49557,6 +_,7 @@
+@@ -49401,6 +_,7 @@
  			int num3;
  			int num4;
  			if (screenBorderless || screenMaximized || graphics.IsFullScreen) {
@@ -394,7 +607,7 @@
  				form.MinimumSize = new Size(0, 0);
  				if (screenBorderless && !graphics.IsFullScreen && screenBorderlessPendingResizes > 0) {
  					screenBorderlessPendingResizes--;
-@@ -49565,6 +_,7 @@
+@@ -49409,6 +_,7 @@
  					height = bounds.Height;
  				}
  
@@ -402,7 +615,7 @@
  				if (width > maxScreenW) {
  					float num = (float)height / (float)width;
  					width = maxScreenW;
-@@ -49589,12 +_,14 @@
+@@ -49433,12 +_,14 @@
  				}
  			}
  			else {
@@ -417,7 +630,7 @@
  				width = Math.Min(width, maxScreenW);
  				height = Math.Min(height, maxScreenH);
  				num3 = graphics.GraphicsDevice.Viewport.Width;
-@@ -49602,6 +_,7 @@
+@@ -49446,6 +_,7 @@
  				flag2 = (graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height);
  			}
  
@@ -425,7 +638,7 @@
  			if (!fullscreen && !flag2) {
  				if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  					width = form.ClientSize.Width;
-@@ -49614,6 +_,7 @@
+@@ -49458,6 +_,7 @@
  				}
  			}
  
@@ -433,7 +646,7 @@
  			width &= 0x7FFFFFFE;
  			height &= 0x7FFFFFFE;
  			width = Math.Max(width, minScreenW);
-@@ -49636,6 +_,7 @@
+@@ -49480,6 +_,7 @@
  				PendingResolutionWidth = screenWidth;
  				PendingResolutionHeight = screenHeight;
  				PlayerInput.CacheOriginalScreenDimensions();
@@ -441,7 +654,7 @@
  				if (!fullscreen) {
  					form.SendToBack();
  					form.BringToFront();
-@@ -49654,6 +_,7 @@
+@@ -49498,6 +_,7 @@
  					}
  				}
  

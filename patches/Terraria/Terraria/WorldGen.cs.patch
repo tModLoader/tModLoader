@@ -1,10 +1,6 @@
 --- src/decompiled/Terraria/WorldGen.cs
 +++ src/Terraria/Terraria/WorldGen.cs
-@@ -15,10 +_,12 @@
- using Terraria.ID;
- using Terraria.IO;
- using Terraria.Localization;
--using Terraria.Map;
+@@ -18,6 +_,9 @@
  using Terraria.ObjectData;
  using Terraria.Utilities;
  using Terraria.World.Generation;
@@ -14,19 +10,44 @@
  
  namespace Terraria
  {
-@@ -38048,6 +_,7 @@
- 
- 		public static bool UpdateMapTile(int i, int j, bool addToList = true) {
- 			bool result = false;
-+#if CLIENT
- 			if (Main.mapEnabled && !noMapUpdate && !gen && Main.Map[i, j].Light > 0 && Main.Map.UpdateType(i, j) && addToList) {
- 				result = true;
- 				if (MapHelper.numUpdateTile < MapHelper.maxUpdateTile - 1) {
-@@ -38060,6 +_,7 @@
- 				}
- 			}
- 
-+#endif
- 			return result;
+@@ -38045,7 +_,24 @@
+ 			return num3;
  		}
  
+-		public static bool UpdateMapTile(int i, int j, bool addToList = true) => false;
++		public static bool UpdateMapTile(int i, int j, bool addToList = true) {
++			bool result = false;
++#if CLIENT
++			if (Main.mapEnabled && !noMapUpdate && !gen && Main.Map[i, j].Light > 0 && Main.Map.UpdateType(i, j) && addToList) {
++				result = true;
++				if (MapHelper.numUpdateTile < MapHelper.maxUpdateTile - 1) {
++					MapHelper.updateTileX[MapHelper.numUpdateTile] = (short)i;
++					MapHelper.updateTileY[MapHelper.numUpdateTile] = (short)j;
++					MapHelper.numUpdateTile++;
++				}
++				else {
++					Main.refreshMap = true;
++				}
++			}
++
++#endif
++			return result;
++		}
+ 
+ 		public static void TileMergeAttemptFrametest(int i, int j, int myType, int lookfor, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight) {
+ 			if (up == lookfor) {
+@@ -39587,10 +_,10 @@
+ 											int num57 = i % 3;
+ 											num55 = (new int[4, 3] {
+ 												{
+-												2,
+-												4,
+-												2
+-											},
++													2,
++													4,
++													2
++												},
+ 												{
+ 												1,
+ 												3,

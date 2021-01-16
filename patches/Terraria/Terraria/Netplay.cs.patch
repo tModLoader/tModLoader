@@ -1,6 +1,8 @@
 --- src/decompiled/Terraria/Netplay.cs
 +++ src/Terraria/Terraria/Netplay.cs
-@@ -2,6 +_,9 @@
+@@ -1,8 +_,10 @@
+-using NATUPNPLib;
+ using System;
  using System.IO;
  using System.Net;
  using System.Net.Sockets;
@@ -10,7 +12,7 @@
  using System.Threading;
  using Terraria.IO;
  using Terraria.Localization;
-@@ -9,6 +_,12 @@
+@@ -10,6 +_,12 @@
  using Terraria.Net.Sockets;
  using Terraria.Social;
  using Terraria.Utilities;
@@ -23,21 +25,38 @@
  
  namespace Terraria
  {
-@@ -31,6 +_,10 @@
+@@ -32,8 +_,10 @@
  		public static bool spamCheck = false;
  		public static bool anyClients = false;
  		private static Thread ServerThread;
 +#if SERVER
-+		public static UPnPNAT upnpnat;
-+		public static IStaticPortMappingCollection mappings;
+ 		public static UPnPNAT upnpnat;
+ 		public static IStaticPortMappingCollection mappings;
 +#endif
  		public static string portForwardIP;
  		public static int portForwardPort;
  		public static bool portForwardOpen;
-@@ -40,9 +_,37 @@
+@@ -43,28 +_,37 @@
  		private static void OpenPort() {
  			portForwardIP = GetLocalIPAddress();
  			portForwardPort = ListenPort;
+-			if (upnpnat == null) {
+-				upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
+-				mappings = upnpnat.StaticPortMappingCollection;
+-			}
+-
+-			if (mappings == null)
+-				return;
+-
+-			foreach (IStaticPortMapping mapping in mappings) {
+-				if (mapping.InternalPort == portForwardPort && mapping.InternalClient == portForwardIP && mapping.Protocol == "TCP")
+-					portForwardOpen = true;
+-			}
+-
+-			if (!portForwardOpen) {
+-				mappings.Add(portForwardPort, "TCP", portForwardPort, portForwardIP, bEnabled: true, "Terraria Server");
+-				portForwardOpen = true;
+-			}
 +#if SERVER
 +			if (Netplay.upnpnat == null)
 +			{
@@ -63,6 +82,8 @@
  		}
  
  		public static void closePort() {
+-			if (portForwardOpen)
+-				mappings.Remove(portForwardPort, "TCP");
 +#if SERVER
 +			if (Netplay.portForwardOpen)
 +			{
@@ -72,7 +93,7 @@
  		}
  
  		public static string GetLocalIPAddress() {
-@@ -152,6 +_,11 @@
+@@ -174,6 +_,11 @@
  					flag = false;
  				}
  				catch {
@@ -84,23 +105,26 @@
  					if (!disconnect && Main.gameMenu)
  						flag = true;
  				}
-@@ -572,8 +_,20 @@
+@@ -594,13 +_,20 @@
  		}
  
  		public static void Initialize() {
 +#if CLIENT
- 			NetMessage.buffer[256] = new MessageBuffer();
- 			NetMessage.buffer[256].whoAmI = 256;
++			NetMessage.buffer[256] = new MessageBuffer();
++			NetMessage.buffer[256].whoAmI = 256;
 +#else
+-			for (int i = 0; i < 257; i++) {
 +			for (int i = 0; i < 257; i++)
 +			{
-+				if (i < 256)
+ 				if (i < 256)
+-					Clients[i] = new RemoteClient();
+-
 +				{
 +					Netplay.Clients[i] = new RemoteClient();
 +				}
-+				NetMessage.buffer[i] = new MessageBuffer();
-+				NetMessage.buffer[i].whoAmI = i;
-+			}
+ 				NetMessage.buffer[i] = new MessageBuffer();
+ 				NetMessage.buffer[i].whoAmI = i;
+ 			}
 +#endif
  		}
  

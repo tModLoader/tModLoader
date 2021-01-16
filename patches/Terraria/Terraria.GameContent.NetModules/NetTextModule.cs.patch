@@ -4,7 +4,7 @@
  			NetManager.Instance.Broadcast(SerializeServerMessage(NetworkText.FromLiteral(message.Text), messageColor));
  		}
  
--		public override bool Deserialize(BinaryReader reader, int senderPlayerId) => DeserializeAsClient(reader, senderPlayerId);
+-		public override bool Deserialize(BinaryReader reader, int senderPlayerId) => DeserializeAsServer(reader, senderPlayerId);
 +		public override bool Deserialize(BinaryReader reader, int senderPlayerId) {
 +#if CLIENT
 +			return DeserializeAsClient(reader, senderPlayerId);

@@ -1,18 +1,32 @@
 --- src/decompiled/Terraria.Graphics/TextureManager.cs
 +++ src/Terraria/Terraria.Graphics/TextureManager.cs
-@@ -31,6 +_,7 @@
+@@ -1,4 +_,5 @@
+ using Microsoft.Xna.Framework.Graphics;
++using System;
+ using System.Collections.Concurrent;
+ using System.Threading;
+ 
+@@ -29,9 +_,20 @@
+ 
  		public static Texture2D Load(string name) {
  			if (!_textures.ContainsKey(name)) {
- 				Texture2D texture2D = BlankTexture;
+-				Texture2D blankTexture = BlankTexture;
+-				_textures[name] = blankTexture;
+-				return blankTexture;
++				Texture2D texture2D = BlankTexture;
 +#if CLIENT
- 				if (name != "" && name != null) {
- 					try {
- 						texture2D = Main.instance.OurLoad<Texture2D>(name);
-@@ -40,6 +_,7 @@
- 					}
- 				}
- 
++				if (name != "" && name != null) {
++					try {
++						texture2D = Main.instance.OurLoad<Texture2D>(name);
++					}
++					catch (Exception) {
++						texture2D = BlankTexture;
++					}
++				}
++
 +#endif
- 				_textures[name] = texture2D;
- 				return texture2D;
++				_textures[name] = texture2D;
++				return texture2D;
  			}
+ 
+ 			return _textures[name];

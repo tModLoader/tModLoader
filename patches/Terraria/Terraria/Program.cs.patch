@@ -1,11 +1,11 @@
 --- src/decompiled/Terraria/Program.cs
 +++ src/Terraria/Terraria/Program.cs
-@@ -2,14 +_,18 @@
+@@ -2,12 +_,18 @@
  using ReLogic.OS;
  using System;
  using System.Collections.Generic;
 +#if CLIENT
- using System.Diagnostics;
++using System.Diagnostics;
 +#endif
  using System.IO;
  using System.Reflection;
@@ -14,24 +14,24 @@
  using System.Text;
  using System.Threading;
 +#if CLIENT
- using System.Windows.Forms;
++using System.Windows.Forms;
 +#endif
  using Terraria.Initializers;
  using Terraria.Localization;
  using Terraria.Social;
-@@ -19,7 +_,11 @@
+@@ -17,7 +_,11 @@
  {
  	public static class Program
  	{
 +#if CLIENT
- 		public const bool IsServer = false;
++		public const bool IsServer = false;
 +#else
-+		public const bool IsServer = true;
+ 		public const bool IsServer = true;
 +#endif
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  		private static int ThingsToLoad = 0;
  		private static int ThingsLoaded = 0;
-@@ -50,10 +_,18 @@
+@@ -48,10 +_,18 @@
  		private static void ForceJITOnAssembly(Assembly assembly) {
  			Type[] types = assembly.GetTypes();
  			for (int i = 0; i < types.Length; i++) {
@@ -50,39 +50,38 @@
  				}
  
  				ThingsLoaded++;
-@@ -128,9 +_,11 @@
+@@ -126,6 +_,11 @@
  		}
  
  		private static void InitializeConsoleOutput() {
 +#if CLIENT
- 			if (Debugger.IsAttached)
- 				return;
- 
++			if (Debugger.IsAttached)
++				return;
++
 +#endif
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
  				if (Platform.IsWindows)
-@@ -163,7 +_,11 @@
+@@ -158,7 +_,11 @@
  					SocialAPI.Initialize();
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
 +#if CLIENT
- 					main.Run();
++					main.Run();
 +#else
-+					main.DedServ();
+ 					main.DedServ();
 +#endif
  				}
  				catch (Exception e) {
  					DisplayException(e);
-@@ -179,7 +_,11 @@
+@@ -174,7 +_,11 @@
  					streamWriter.WriteLine("");
  				}
  
--				MessageBox.Show(e.ToString(), "Terraria: Error");
 +#if CLIENT
 +				MessageBox.Show(e.ToString(), Language.GetTextValue("Error.Error"));
 +#else
-+				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
+ 				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
 +#endif
  			}
  			catch {

@@ -1,13 +1,13 @@
 --- src/decompiled/Terraria/Minecart.cs
 +++ src/Terraria/Terraria/Minecart.cs
-@@ -55,9 +_,11 @@
+@@ -55,6 +_,11 @@
  		private static int[][] _tileHeight;
  
  		public static void Initialize() {
 +#if CLIENT
- 			if ((float)Main.minecartMountTexture.Width != 50f)
- 				throw new Exception("Be sure to update Minecart.textureWidth to match the actual texture size of " + 50f + ".");
- 
++			if ((float)Main.minecartMountTexture.Width != 50f)
++				throw new Exception("Be sure to update Minecart.textureWidth to match the actual texture size of " + 50f + ".");
++
 +#endif
  			_rightSideConnection = new int[36];
  			_leftSideConnection = new int[36];

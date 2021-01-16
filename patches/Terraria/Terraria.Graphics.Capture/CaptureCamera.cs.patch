@@ -108,18 +108,23 @@
  		}
  
  		private void FinishCapture() {
-@@ -256,6 +_,7 @@
+@@ -256,6 +_,20 @@
  		}
  
  		public void Dispose() {
 +#if CLIENT
- 			Monitor.Enter(_captureLock);
- 			if (!_isDisposed) {
- 				_frameBuffer.Dispose();
-@@ -268,6 +_,7 @@
- 				_isDisposed = true;
- 				Monitor.Exit(_captureLock);
- 			}
++			Monitor.Enter(_captureLock);
++			if (!_isDisposed) {
++				_frameBuffer.Dispose();
++				if (_scaledFrameBuffer != null) {
++					_scaledFrameBuffer.Dispose();
++					_scaledFrameBuffer = null;
++				}
++
++				CameraExists = false;
++				_isDisposed = true;
++				Monitor.Exit(_captureLock);
++			}
 +#endif
  		}
  	}
