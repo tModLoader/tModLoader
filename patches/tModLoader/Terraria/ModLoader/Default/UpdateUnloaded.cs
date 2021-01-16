@@ -6,24 +6,24 @@ namespace Terraria.ModLoader.Default
 {
 	internal class UpdateUnloaded
 	{
-		internal bool CanRestoreFlag;
-		internal List<ushort> CanRestore = new List<ushort>();
-		internal byte Index;
+		internal bool canRestoreFlag;
+		internal List<ushort> canRestore = new List<ushort>();
+		readonly byte index;
 
-		internal bool CanPurge = false; //for deleting unloaded mod data in a System; should point to UI flag; temp false
+		internal bool canPurge = false; //for deleting unloaded mod data in a System; should point to UI flag; temp false
 
 
 		public UpdateUnloaded(byte index) {
-			this.Index = index;
+			this.index = index;
 		}
 
-		public void updateInfos(IList<TagCompound> list) {
+		public void UpdateInfos(IList<TagCompound> list) {
 			//NOTE: infos and canRestore lists are same length so the indices match later for RestoreTilesAndWalls
 			UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
 			foreach (var infoTag in list) {
 				if (!infoTag.ContainsKey("mod")) {
 					// infos entries get nulled out once restored, leading to an empty tag. This aligns CanRestore and Infos
-					switch (Index) {
+					switch (index) {
 						case 0:
 							modSystem.tileInfos.Add(null);
 							break;
@@ -34,7 +34,7 @@ namespace Terraria.ModLoader.Default
 							modSystem.chestInfos.Add(null);
 							break;
 					}
-					CanRestore.Add(0);
+					canRestore.Add(0);
 					continue;
 				}
 
@@ -44,7 +44,7 @@ namespace Terraria.ModLoader.Default
 
 				ushort type = 0;
 				ModTile tile;
-				switch (Index) {
+				switch (index) {
 					case 0:
 						var tInfo = new UnloadedTileInfo(modName, name, fallbackType);
 						modSystem.tileInfos.Add(tInfo);
@@ -62,20 +62,20 @@ namespace Terraria.ModLoader.Default
 						type = ModContent.TryFind(modName, name, out tile) ? tile.Type : (ushort)0;
 						break;
 				}
-				if ((type == 0) && CanPurge)
+				if ((type == 0) && canPurge)
 					type = infoTag.Get<ushort>("fallbackType");
-				CanRestore.Add(type);
+				canRestore.Add(type);
 				if (type != 0)
-					CanRestoreFlag = true;
+					canRestoreFlag = true;
 			}
 		}
 
-		public void updateMaps(IList<TagCompound> list) {
+		public void UpdateMaps(IList<TagCompound> list) {
 			UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
 			foreach (var posTag in list) {
 				int PosID = posTag.Get<int>("posID");
 				int infoID = posTag.Get<int>("infoID");
-				switch (Index) {
+				switch (index) {
 					case 0:
 						modSystem.tileInfoMap[PosID] = infoID;
 						break;
@@ -90,12 +90,12 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public void cleanupMaps() {
-			if (CanRestoreFlag) {
+		public void CleanupMaps() {
+			if (canRestoreFlag) {
 				UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
 				List<int> nullable = new List<int>();
 				Dictionary<int, int> infoMap = null;
-				switch (Index) {
+				switch (index) {
 					case 0:
 						infoMap = modSystem.tileInfoMap;
 						break;
@@ -107,7 +107,7 @@ namespace Terraria.ModLoader.Default
 						break;
 				}
 				foreach (var entry in infoMap) {
-					if (CanRestore[entry.Value] > 0) {
+					if (canRestore[entry.Value] > 0) {
 						nullable.Add(entry.Key);
 					}
 				}
@@ -117,12 +117,12 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public void cleanupInfos() {
-			if (CanRestoreFlag) {
+		public void CleanupInfos() {
+			if (canRestoreFlag) {
 				UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
-				for (int k = 0; k < CanRestore.Count; k++) {
-					if (CanRestore[k] > 0)
-						switch (Index) {
+				for (int k = 0; k < canRestore.Count; k++) {
+					if (canRestore[k] > 0)
+						switch (index) {
 							case 0:
 								modSystem.tileInfos[k] = null;
 								break;

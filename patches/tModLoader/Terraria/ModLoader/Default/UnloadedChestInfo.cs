@@ -6,13 +6,13 @@ namespace Terraria.ModLoader.Default
 {
 	internal class UnloadedChestInfo : UnloadedInfo 
 	{
-		internal byte ChestStyle; 
+		internal byte chestStyle; 
 
 		public UnloadedChestInfo(string modName, string name, byte chestStyle = 0,ushort fallbackType = TileID.Containers):base(modName, name,fallbackType) {
 			this.modName = modName;
 			this.name = name;
-			this.ChestStyle = chestStyle;
-			this.FallbackType = fallbackType;
+			this.chestStyle = chestStyle;
+			this.fallbackType = fallbackType;
 
 		}
 
@@ -20,8 +20,8 @@ namespace Terraria.ModLoader.Default
 			var tag = new TagCompound {
 				["mod"] = modName,
 				["name"] = name,
-				["style"] = ChestStyle,
-				["fallbackType"] = FallbackType,
+				["style"] = chestStyle,
+				["fallbackType"] = fallbackType,
 			};
 			return tag;
 		}

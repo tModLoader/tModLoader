@@ -6,24 +6,24 @@ namespace Terraria.ModLoader.Default
 	[Autoload(false)] // need two named versions
 	public class UnloadedTile : ModTile
 	{
-		public override string Name{get;}
-		internal bool IsSolid;
-		internal bool IsSemi;
+		public override string Name{ get; }
+		internal bool isSolid;
+		internal bool isSemi;
 
 		public override string Texture => "ModLoader/UnloadedTile";
 
 		public UnloadedTile(string name = null,bool isSolid = true, bool isSemi = false) {
 			Name = name ?? base.Name;
-			this.IsSolid = isSolid;
-			this.IsSemi = isSemi;
+			this.isSolid = isSolid;
+			this.isSemi = isSemi;
 		}
 
 		public override void SetDefaults() {
-			Main.tileSolid[Type] = IsSolid;
+			Main.tileSolid[Type] = isSolid;
 			Main.tileFrameImportant[Type] = true;
-			Main.tileNoAttach[Type] = (!IsSolid || IsSemi);
-			Main.tileTable[Type] =IsSemi;
-			Main.tileSolidTop[Type] = IsSemi;
+			Main.tileNoAttach[Type] = (!isSolid || isSemi);
+			Main.tileTable[Type] =isSemi;
+			Main.tileSolidTop[Type] = isSemi;
 			TileID.Sets.Platforms[Type] = true;
 			adjTiles = new int[] { TileID.Platforms };
 
@@ -44,7 +44,7 @@ namespace Terraria.ModLoader.Default
 			var tile = Main.tile[i, j];
 			if(tile != null && tile.type == Type) {
 				UnloadedTilesSystem modWorld = ModContent.GetInstance<UnloadedTilesSystem>();
-				int posID = new UnloadedPosIndexing(i, j).PosID;
+				int posID = new UnloadedPosIndexing(i, j).posID;
 				modWorld.tileInfoMap.TryGetValue(posID, out int infoID);
 				if (infoID >= 0) { // This only works in SP
 					var info = modWorld.tileInfos[infoID];

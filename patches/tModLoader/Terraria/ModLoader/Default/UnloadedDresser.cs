@@ -5,9 +5,7 @@ namespace Terraria.ModLoader.Default
 	[Autoload(false)] // need two named versions
 	public class UnloadedDresser : ModTile
 	{
-		public override string Name{get;}
-		
-		internal bool IsSemi;
+		public override string Name{ get; }
 
 		public override string Texture => "ModLoader/UnloadedDresser";
 

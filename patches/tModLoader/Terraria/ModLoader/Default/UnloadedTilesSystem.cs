@@ -93,32 +93,32 @@ namespace Terraria.ModLoader.Default
 
 			// Process tiles
 			UpdateUnloaded tileUpdater = new UpdateUnloaded(TilesIndex);
-			tileUpdater.updateInfos(tag.GetList<TagCompound>("tileList"));
-			canRestoreFlag[TilesIndex] = tileUpdater.CanRestoreFlag;
-			tileUpdater.updateMaps(tag.GetList<TagCompound>("tilePosIndex"));
+			tileUpdater.UpdateInfos(tag.GetList<TagCompound>("tileList"));
+			canRestoreFlag[TilesIndex] = tileUpdater.canRestoreFlag;
+			tileUpdater.UpdateMaps(tag.GetList<TagCompound>("tilePosIndex"));
 
 			// Process Walls
 			UpdateUnloaded wallUpdater = new UpdateUnloaded(WallsIndex);
-			wallUpdater.updateInfos(tag.GetList<TagCompound>("wallList"));
-			canRestoreFlag[WallsIndex] = wallUpdater.CanRestoreFlag;
-			wallUpdater.updateMaps(tag.GetList<TagCompound>("wallPosIndex"));
+			wallUpdater.UpdateInfos(tag.GetList<TagCompound>("wallList"));
+			canRestoreFlag[WallsIndex] = wallUpdater.canRestoreFlag;
+			wallUpdater.UpdateMaps(tag.GetList<TagCompound>("wallPosIndex"));
 
 			// Process chests
 			UpdateUnloaded chestUpdater = new UpdateUnloaded(ChestIndex);
-			chestUpdater.updateInfos(tag.GetList<TagCompound>("chestList"));
-			canRestoreFlag[ChestIndex] = chestUpdater.CanRestoreFlag;
-			chestUpdater.updateMaps(tag.GetList<TagCompound>("chestPosIndex"));
+			chestUpdater.UpdateInfos(tag.GetList<TagCompound>("chestList"));
+			canRestoreFlag[ChestIndex] = chestUpdater.canRestoreFlag;
+			chestUpdater.UpdateMaps(tag.GetList<TagCompound>("chestPosIndex"));
 
 			// If restoration should occur during this load cycle, then do so
-			RestoreTilesAndWalls(tileUpdater.CanRestore, wallUpdater.CanRestore, chestUpdater.CanRestore, canRestoreFlag);
+			RestoreTilesAndWalls(tileUpdater.canRestore, wallUpdater.canRestore, chestUpdater.canRestore, canRestoreFlag);
 
 			// Cleanup data remnants
-			tileUpdater.cleanupMaps();
-			tileUpdater.cleanupInfos();
-			wallUpdater.cleanupMaps();
-			wallUpdater.cleanupInfos();
-			chestUpdater.cleanupMaps();
-			chestUpdater.cleanupInfos();
+			tileUpdater.CleanupMaps();
+			tileUpdater.CleanupInfos();
+			wallUpdater.CleanupMaps();
+			wallUpdater.CleanupInfos();
+			chestUpdater.CleanupMaps();
+			chestUpdater.CleanupInfos();
 		}
 
 		/// <summary>
@@ -151,7 +151,7 @@ namespace Terraria.ModLoader.Default
 					Tile tile = Main.tile[x, y];
 					if (canRestoreFlag[TilesIndex] &&
 						(tile.type == unloadedTile || tile.type == unloadedNonSolidTile || tile.type == unloadedSemiSolidTile)) {
-						int posID = new UnloadedPosIndexing(x, y).PosID;
+						int posID = new UnloadedPosIndexing(x, y).posID;
 						tileInfoMap.TryGetValue(posID, out int infoID);
 						if (canRestoreTiles[infoID] > 0) {
 							tile.type = canRestoreTiles[infoID];
@@ -160,20 +160,20 @@ namespace Terraria.ModLoader.Default
 
 					// If Tile is a Chest, Replace the chest with original by referencing position mapping 
 					if (canRestoreFlag[ChestIndex] && (tile.type == unloadedChest || tile.type == unloadedDresser)) {
-						int posID = new UnloadedPosIndexing(x, y).PosID;
+						int posID = new UnloadedPosIndexing(x, y).posID;
 						chestInfoMap.TryGetValue(posID, out int infoID);
 						if (canRestoreChests[infoID] > 0) {
 							UnloadedChestInfo info = chestInfos[infoID];
 							if (tile.type == unloadedDresser)
-								WorldGen.PlaceDresserDirect(x + 1, y + 1, canRestoreChests[infoID], info.ChestStyle, -1);
+								WorldGen.PlaceDresserDirect(x + 1, y + 1, canRestoreChests[infoID], info.chestStyle, -1);
 							if (tile.type == unloadedChest)
-								WorldGen.PlaceChestDirect(x, y + 1, canRestoreChests[infoID], info.ChestStyle, -1);
+								WorldGen.PlaceChestDirect(x, y + 1, canRestoreChests[infoID], info.chestStyle, -1);
 						}
 					}
 
 					// If tile has a wall, restore original by position mapping
 					if (canRestoreFlag[WallsIndex] && (tile.wall == unloadedWallType)) {
-						int posID = new UnloadedPosIndexing(x, y).PosID;
+						int posID = new UnloadedPosIndexing(x, y).posID;
 						wallInfoMap.TryGetValue(posID, out int infoID);
 						if (canRestoreWalls[infoID] > 0) {
 							tile.wall = canRestoreWalls[infoID];

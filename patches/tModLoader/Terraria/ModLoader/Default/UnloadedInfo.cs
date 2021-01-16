@@ -4,21 +4,21 @@ namespace Terraria.ModLoader.Default
 {
 	internal class UnloadedInfo
 	{
-		public string modName;
-		public string name;
-		internal ushort FallbackType;
+		internal string modName;
+		internal string name;
+		internal ushort fallbackType;
 
 		public UnloadedInfo(string modName, string name, ushort fallbackType = 0) {
 			this.modName = modName;
 			this.name = name;
-			FallbackType = fallbackType;
+			this.fallbackType = fallbackType;
 		}
 
 		public TagCompound Save() {
 			var tag = new TagCompound {
 				["mod"] = modName,
 				["name"] = name,
-				["fallbackType"] = FallbackType,
+				["fallbackType"] = fallbackType,
 			};
 			return tag;
 		}
