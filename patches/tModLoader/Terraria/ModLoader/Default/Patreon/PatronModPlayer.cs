@@ -21,8 +21,9 @@ namespace Terraria.ModLoader.Default.Patreon
 
 		public override void PostUpdate() {
 			if (OrianSet) {
-				var close = Main.npc.Any(x => x.active && !x.friendly && !NPCID.Sets.TownCritter[x.type] && x.type != NPCID.TargetDummy && x.Distance(player.position) <= 300);
-				if (close) Lighting.AddLight(player.Center, Color.DeepSkyBlue.ToVector3() * 1.5f);
+				var close = Main.npc.Any(x => x.active && !x.friendly && !NPCID.Sets.TownCritter[x.type] && x.type != NPCID.TargetDummy && x.Distance(base.Player.position) <= 300);
+				if (close)
+					Lighting.AddLight(base.Player.Center, Color.DeepSkyBlue.ToVector3() * 1.5f);
 			}
 		}
 

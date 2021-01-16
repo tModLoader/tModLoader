@@ -15,8 +15,8 @@ namespace Terraria.ModLoader.Default.Patreon
 
 		public override void SetDefaults() {
 			base.SetDefaults();
-			item.width = 24;
-			item.height = 24;
+			Item.width = 24;
+			Item.height = 24;
 		}
 	}
 
@@ -25,8 +25,8 @@ namespace Terraria.ModLoader.Default.Patreon
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
-			item.width = 30;
-			item.height = 20;
+			Item.width = 30;
+			Item.height = 20;
 		}
 	}
 
@@ -35,8 +35,8 @@ namespace Terraria.ModLoader.Default.Patreon
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
-			item.width = 22;
-			item.height = 18;
+			Item.width = 22;
+			Item.height = 18;
 		}
 
 		public override void EquipFrameEffects(Player player, EquipType type)

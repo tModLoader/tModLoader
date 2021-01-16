@@ -16,14 +16,14 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void SetDefaults() {
-			item.width = 24;
-			item.height = 28;
-			item.value = Item.buyPrice(10);
-			item.rare = ItemRarityID.Green;
-			item.accessory = true;
+			Item.width = 24;
+			Item.height = 28;
+			Item.value = Item.buyPrice(10);
+			Item.rare = ItemRarityID.Green;
+			Item.accessory = true;
 
-			item.defense = 1000;
-			item.lifeRegen = 10;
+			Item.defense = 1000;
+			Item.lifeRegen = 10;
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
@@ -70,16 +70,16 @@ namespace ExampleMod.Content.Items.Accessories
 			// ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
 			// When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash
 			// If the timers are set to 15, then this is the first press just processed by the vanilla logic.  Otherwise, it's a double-tap
-			if (player.controlDown && player.releaseDown && player.doubleTapCardinalTimer[DashDown] < 15) {
+			if (Player.controlDown && Player.releaseDown && Player.doubleTapCardinalTimer[DashDown] < 15) {
 				DashDir = DashDown;
 			}
-			else if (player.controlUp && player.releaseUp && player.doubleTapCardinalTimer[DashUp] < 15) {
+			else if (Player.controlUp && Player.releaseUp && Player.doubleTapCardinalTimer[DashUp] < 15) {
 				DashDir = DashUp;
 			}
-			else if (player.controlRight && player.releaseRight && player.doubleTapCardinalTimer[DashRight] < 15) {
+			else if (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15) {
 				DashDir = DashRight;
 			}
-			else if (player.controlLeft && player.releaseLeft && player.doubleTapCardinalTimer[DashLeft] < 15) {
+			else if (Player.controlLeft && Player.releaseLeft && Player.doubleTapCardinalTimer[DashLeft] < 15) {
 				DashDir = DashLeft;
 			}
 			else {
@@ -92,12 +92,12 @@ namespace ExampleMod.Content.Items.Accessories
 		public override void PreUpdateMovement() {
 			// if the player can use our dash, has double tapped in a direction, and our dash isn't currently on cooldown
 			if (CanUseDash() && DashDir != -1 && DashDelay == 0) {
-				Vector2 newVelocity = player.velocity;
+				Vector2 newVelocity = Player.velocity;
 
 				switch (DashDir) {
 					//Only apply the dash velocity if our current speed in the wanted direction is less than DashVelocity
-					case DashUp when player.velocity.Y > -DashVelocity:
-					case DashDown when player.velocity.Y < DashVelocity: {
+					case DashUp when Player.velocity.Y > -DashVelocity:
+					case DashDown when Player.velocity.Y < DashVelocity: {
 							//Y-velocity is set here
 							//If the direction requested was DashUp, then we adjust the velocity to make the dash appear "faster" due to gravity being immediately in effect
 							//This adjustment is roughly 1.3x the intended dash velocity
@@ -105,8 +105,8 @@ namespace ExampleMod.Content.Items.Accessories
 							newVelocity.Y = dashDirection * DashVelocity;
 							break;
 						}
-					case DashLeft when player.velocity.X > -DashVelocity:
-					case DashRight when player.velocity.X < DashVelocity: {
+					case DashLeft when Player.velocity.X > -DashVelocity:
+					case DashRight when Player.velocity.X < DashVelocity: {
 							//X-velocity is set here
 							float dashDirection = DashDir == DashRight ? 1 : -1;
 							newVelocity.X = dashDirection * DashVelocity;
@@ -119,7 +119,7 @@ namespace ExampleMod.Content.Items.Accessories
 				// start our dash
 				DashDelay = DashCooldown;
 				DashTimer = DashDuration;
-				player.velocity = newVelocity;
+				Player.velocity = newVelocity;
 
 				//Here you'd be able to set an effect that happens when the dash first activates
 				//Some examples include:  the larger smoke effect from the Master Ninja Gear and Tabi
@@ -132,8 +132,8 @@ namespace ExampleMod.Content.Items.Accessories
 				// This is where we set the afterimage effect.  You can replace these two lines with whatever you want to happen during the dash
 				// Some examples include:  spawning dust where the player is, adding buffs, making the player immune, etc.
 				// Here we take advantage of "player.eocDash" and "player.armorEffectDrawShadowEOCShield" to get the Shield of Cthulhu's afterimage effect
-				player.eocDash = DashTimer;
-				player.armorEffectDrawShadowEOCShield = true;
+				Player.eocDash = DashTimer;
+				Player.armorEffectDrawShadowEOCShield = true;
 
 				// count down frames remaining
 				DashTimer--;
@@ -142,9 +142,9 @@ namespace ExampleMod.Content.Items.Accessories
 
 		private bool CanUseDash() {
 			return DashAccessoryEquipped
-				&& player.dashType == 0 // player doesn't have Tabi or EoCShield equipped (give priority to those dashes)
-				&& !player.setSolar // player isn't wearing solar armor
-				&& !player.mount.Active; // player isn't mounted, since dashes on a mount look weird
+				&& Player.dashType == 0 // player doesn't have Tabi or EoCShield equipped (give priority to those dashes)
+				&& !Player.setSolar // player isn't wearing solar armor
+				&& !Player.mount.Active; // player isn't mounted, since dashes on a mount look weird
 		}
 	}
 }
