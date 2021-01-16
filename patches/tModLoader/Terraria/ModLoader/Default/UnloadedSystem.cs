@@ -3,6 +3,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
+	[LegacyName("UnloadedWorld")]
 	public class UnloadedSystem : ModSystem
 	{
 		internal IList<TagCompound> data;
