@@ -40,7 +40,7 @@ jobs:
           ./setupcommandline.bat
           echo Done
           echo Building Windows Client exe 
-          C:/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2019/Enterprise/MSBuild/Current/Bin/MSBuild.exe ./solutions/tModLoader.sln /restore /p:Configuration=WindowsRelease
+          C:/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2019/Enterprise/MSBuild/Current/Bin/MSBuild.exe ./solutions/tModLoader.sln //restore //p:Configuration=WindowsRelease
           echo Done.
           
       - uses: actions/upload-artifact@v2
