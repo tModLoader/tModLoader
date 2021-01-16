@@ -89,6 +89,17 @@
  			if (Main.menuMode == 10 || Main.menuMode == 888)
  				Main.menuMode = 6;
  
+@@ -2340,6 +_,10 @@
+ 			if (netMode == 0)
+ 				WorldFile.CacheSaveTime();
+ 
++			//This is only called in case of a manual quit or disconnect.
++			//There is a less common call to this in Netplay.InnerClientLoop.
++			SystemHooks.OnWorldUnload();
++
+ 			Main.invasionProgress = -1;
+ 			Main.invasionProgressDisplayLeft = 0;
+ 			Main.invasionProgressAlpha = 0f;
 @@ -2370,10 +_,21 @@
  
  		public static void SaveAndQuit(Action callback = null) {
@@ -170,14 +181,6 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
-@@ -2739,6 +_,7 @@
- 
- 			setWorldSize();
- 			Star.SpawnStars();
-+			SystemHooks.OnWorldUnload();
- 			worldCleared = true;
- 		}
- 
 @@ -5396,17 +_,18 @@
  			Main.lockMenuBGChange = true;
  			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");

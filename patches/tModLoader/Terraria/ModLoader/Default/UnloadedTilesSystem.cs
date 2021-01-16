@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
+	[LegacyName("UnloadedTilesWorld")]
 	class UnloadedTilesSystem : ModSystem
 	{
 		internal List<UnloadedTileInfo> infos = new List<UnloadedTileInfo>();
