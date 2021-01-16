@@ -66,7 +66,7 @@ namespace Terraria.ModLoader
 		private static DelegateSetSpriteEffects[] HookSetSpriteEffects;
 		private static Action[] HookAnimateTile;
 		private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
-		private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex);
+		private delegate void DelegateDrawEffects(int i, int j, int type);
 		private static DelegateDrawEffects[] HookDrawEffects;
 		private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 		private static Action<int, int, int, SpriteBatch>[] HookSpecialDraw;
@@ -595,10 +595,10 @@ namespace Terraria.ModLoader
 			return GetTile(type)?.PreDraw(i, j, spriteBatch) ?? true;
 		}
 
-		public static void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) {
-			GetTile(type)?.DrawEffects(i, j, spriteBatch, ref drawColor, ref nextSpecialDrawIndex);
+		public static void DrawEffects(int i, int j, int type) {
+			GetTile(type)?.DrawEffects(i, j);
 			foreach (var hook in HookDrawEffects) {
-				hook(i, j, type, spriteBatch, ref drawColor, ref nextSpecialDrawIndex);
+				hook(i, j, type);
 			}
 		}
 		//in Terraria.Main.Draw after if statement checking whether texture2D is null call

@@ -18,3 +18,16 @@
  				}
  			}
  			else if (player.chest == -2) {
+@@ -1078,10 +_,10 @@
+ 		}
+ 
+ 		public static bool IsBlockedFromTransferIntoChest(Item item, Item[] container) {
+-			if (item.type == 3213 && item.favorited && container == Main.LocalPlayer.bank.item)
++			if (item.type == 3213 && item.favorited && container == Main.LocalPlayer.bank.item.GetItemArray())
+ 				return true;
+ 
+-			if (item.type == 4131 && item.favorited && container == Main.LocalPlayer.bank4.item)
++			if (item.type == 4131 && item.favorited && container == Main.LocalPlayer.bank4.item.GetItemArray())
+ 				return true;
+ 
+ 			return false;
