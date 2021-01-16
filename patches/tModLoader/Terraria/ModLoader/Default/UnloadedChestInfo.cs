@@ -6,9 +6,9 @@ namespace Terraria.ModLoader.Default
 {
 	internal class UnloadedChestInfo : UnloadedInfo 
 	{
-		internal byte chestStyle; 
+		internal readonly byte chestStyle; 
 
-		public UnloadedChestInfo(string modName, string name, byte chestStyle = 0,ushort fallbackType = TileID.Containers):base(modName, name,fallbackType) {
+		public UnloadedChestInfo(string modName, string name, byte chestStyle = 0, ushort fallbackType = TileID.Containers):base(modName, name, fallbackType) {
 			this.modName = modName;
 			this.name = name;
 			this.chestStyle = chestStyle;

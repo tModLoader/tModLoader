@@ -484,7 +484,7 @@ namespace Terraria.ModLoader.IO
 						if (semiSolidChk)
 							tile.type = UnloadedTilesSystem.UnloadedSemiSolidTile;
 					}
-					if (tile.type == PendingChest) {
+					else if (tile.type == PendingChest) {
 						bool accountedFor = ( //Extremely janky check that not sure why is needed and works
 							Main.tile[i - 1, j].type == UnloadedTilesSystem.UnloadedChest ||
 							Main.tile[i, j - 1].type == UnloadedTilesSystem.UnloadedChest ||
@@ -497,7 +497,7 @@ namespace Terraria.ModLoader.IO
 							WorldGen.PlaceChestDirect(i, j + 1, UnloadedTilesSystem.UnloadedChest, 0, -1);
 						}
 					}
-					if (tile.type == PendingDresser) {
+					else if (tile.type == PendingDresser) {
 						bool accountedFor = ( //Extremely janky check that not sure why is needed and works
 							Main.tile[i - 1, j].type == UnloadedTilesSystem.UnloadedDresser || //bottom middle
 							Main.tile[i, j - 1].type == UnloadedTilesSystem.UnloadedDresser || //top right
