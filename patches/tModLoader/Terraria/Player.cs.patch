@@ -1156,19 +1156,17 @@
  					continue;
  
  				int type2 = armor[k].type;
-@@ -8576,13 +_,19 @@
+@@ -8576,6 +_,9 @@
  					armorPenetration += 5;
  
  				if (armor[k].type == 2277) {
 +					allDamage += 0.05f;
++					allCrit += 5;
 +					/*
  					magicDamage += 0.05f;
  					meleeDamage += 0.05f;
  					rangedDamage += 0.05f;
- 					minionDamage += 0.05f;
-+					*/
-+					allCrit += 5;
-+					/*
+@@ -8583,6 +_,7 @@
  					magicCrit += 5;
  					rangedCrit += 5;
  					meleeCrit += 5;
@@ -1758,19 +1756,17 @@
  					if (buffType[n] == 60)
  						DelBuff(n);
  				}
-@@ -11090,13 +_,19 @@
+@@ -11090,6 +_,9 @@
  
  			if (head == 261 && body == 230 && legs == 213) {
  				setBonus = Language.GetTextValue("ArmorSetBonus.CrystalNinja");
 +				allDamage += 0.1f;
++				allCrit += 10;
 +				/*
  				rangedDamage += 0.1f;
  				meleeDamage += 0.1f;
  				magicDamage += 0.1f;
- 				minionDamage += 0.1f;
-+				*/
-+				allCrit += 10;
-+				/*
+@@ -11097,6 +_,7 @@
  				rangedCrit += 10;
  				meleeCrit += 10;
  				magicCrit += 10;
