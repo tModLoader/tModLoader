@@ -29,7 +29,7 @@ jobs:
           curl -s -L http://terraria.org/server/terraria-server-1353.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
           echo Make fake Terraria.exe [Temp]
-          cp .\1354\Windows\TerrariaServer.exe .\1354\Windows\Terraria.exe
+          cp ./1353/Windows/TerrariaServer.exe ./1353/Windows/Terraria.exe
           echo ls -l is:
           ls -l
           echo Installing XNA
@@ -37,7 +37,7 @@ jobs:
           msiexec //i xnafx40_redist.msi //quiet
           echo XNA Installed
           echo Running setupcommandline.bat
-          setupcommandline.bat
+          ./setupcommandline.bat
           echo Done
           echo Building Windows Client exe 
           C:/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2019/Enterprise/MSBuild/Current/Bin/MSBuild.exe .\solutions\tModLoader.sln /restore /p:Configuration=WindowsRelease
