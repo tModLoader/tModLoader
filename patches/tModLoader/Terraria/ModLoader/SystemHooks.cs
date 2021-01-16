@@ -17,30 +17,17 @@ namespace Terraria.ModLoader
 	public static partial class SystemHooks
 	{
 		internal static readonly List<ModSystem> Systems = new List<ModSystem>();
-		internal static readonly Dictionary<string, List<ModSystem>> SystemsByMod = new Dictionary<string, List<ModSystem>>();
 
 		internal static ModSystem[] NetSystems { get; private set; }
 
-		internal static void Add(ModSystem modSystem) {
-			string modName = modSystem.Mod.Name;
+		internal static void Add(ModSystem modSystem) => Systems.Add(modSystem);
 
-			if (!SystemsByMod.TryGetValue(modName, out var list)) {
-				SystemsByMod[modName] = list = new List<ModSystem>();
-			}
-
-			list.Add(modSystem);
-			Systems.Add(modSystem);
-		}
+		internal static void Unload() => Systems.Clear();
 
 		internal static void ResizeArrays() {
 			NetSystems = ModLoader.BuildGlobalHook<ModSystem, Action<BinaryWriter>>(Systems, s => s.NetSend);
 
 			RebuildHooks();
-		}
-
-		internal static void Unload() {
-			Systems.Clear();
-			SystemsByMod.Clear();
 		}
 
 		internal static void WriteNetSystemOrder(BinaryWriter w) {
@@ -63,13 +50,13 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void OnModLoad(Mod mod) {
-			foreach (var system in HookOnModLoad.arr.Where(s => s.Mod == mod)) {
+			foreach (var system in Systems.Where(s => s.Mod == mod)) {
 				system.OnModLoad();
 			}
 		}
 
 		internal static void PostSetupContent(Mod mod) {
-			foreach (var system in HookPostSetupContent.arr.Where(s => s.Mod == mod)) {
+			foreach (var system in Systems.Where(s => s.Mod == mod)) {
 				system.PostSetupContent();
 			}
 		}
