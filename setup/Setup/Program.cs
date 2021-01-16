@@ -44,6 +44,10 @@ namespace Terraria.ModLoader.Setup
 				Console.WriteLine(SteamDir);
 				return;
 			}*/
+#if AUTO
+			Settings.Default.SteamDir = @".\1353\Windows";
+#endif
+
 
 			tMLSteamDir = Path.Combine(Path.GetDirectoryName(SteamDir), "tModLoader");
 			if (!Directory.Exists(tMLSteamDir))
@@ -51,6 +55,12 @@ namespace Terraria.ModLoader.Setup
 
 			UpdateSteamDirTargetsFile();
 
+#if AUTO
+			Console.WriteLine("Automatic setup start");
+			new AutoSetup().DoAuto();
+			Console.WriteLine("Automatic setup finished");
+			return;
+#endif
 			Application.Run(new MainForm());
 		}
 
