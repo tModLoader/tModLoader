@@ -89,10 +89,8 @@
 		"LoadErrorEffectFailedToLoad": "El archivo de efectos en {0} falló al cargarse",
 		"LoadErrorUnknownXNBFileHint": "Archivo XNB desconocido: {0}. Tal vez debería estar en /Fonts o /Effects",
 		"LoadErrorCannotLoadCompressedEffects": "No se pueden cargar los efectos comprimidos.",
-
 		"LoadErrorNotLoading": "Solo puede llamarse a Mod.AddContent durante la carga",
 		"LoadErrorDuplicateName": "No se pueden sumar dos {0} con el mismo nombre: {1}. Tal vez 2 clases compartan un nombre de clase, pero en diferentes espacios de nombres mientras se cargan automáticamente, o quizá has llamado a AddContent con 2 {0} del mismo nombre.",
-
 		"LoadErrorResourceNotFoundPathHint": "Recurso esperado no encontrado: \n	{0}\nSuposición más probable: (¿Hay un error de ortografía o de colocación de la carpeta?)\n	{1}",
 		"RuntimeErrorSilentlyCaughtException": "Excepción silenciosa: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(abre {0} para ver el registro completo)",
