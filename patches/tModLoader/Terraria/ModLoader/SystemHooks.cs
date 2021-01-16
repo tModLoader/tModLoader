@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Terraria.Graphics;
+using Terraria.Localization;
 using Terraria.UI;
 using Terraria.WorldBuilding;
 
@@ -347,6 +348,37 @@ namespace Terraria.ModLoader
 			foreach (var system in HookModifyHardmodeTasks.arr) {
 				system.ModifyHardmodeTasks(passes);
 			}
+		}
+
+		internal static bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber) {
+			bool hijacked = false;
+			long readerPos = reader.BaseStream.Position;
+			long biggestReaderPos = readerPos;
+
+			foreach (var system in HookHijackGetData.arr) {
+				if (system.HijackGetData(ref messageType, ref reader, playerNumber)) {
+					hijacked = true;
+					biggestReaderPos = Math.Max(reader.BaseStream.Position, biggestReaderPos);
+				}
+
+				reader.BaseStream.Position = readerPos;
+			}
+
+			if (hijacked) {
+				reader.BaseStream.Position = biggestReaderPos;
+			}
+
+			return hijacked;
+		}
+
+		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7) {
+			bool result = false;
+
+			foreach (var system in HookHijackSendData.arr) {
+				result |= system.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
+			}
+
+			return result;
 		}
 	}
 }

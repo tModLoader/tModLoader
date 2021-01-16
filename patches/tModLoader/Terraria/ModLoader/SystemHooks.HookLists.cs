@@ -2,9 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 using Terraria.Graphics;
+using Terraria.Localization;
 using Terraria.UI;
 using Terraria.WorldBuilding;
 
@@ -58,6 +60,8 @@ namespace Terraria.ModLoader
 		private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight);
 
 		private delegate void DelegateChooseWaterStyle(ref int style);
+
+		private delegate bool DelegateHijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber);
 
 		//HookLists
 
@@ -147,6 +151,10 @@ namespace Terraria.ModLoader
 
 		private static HookList HookChooseWaterStyle = AddHook<DelegateChooseWaterStyle>(s => s.ChooseWaterStyle);
 
-		private static HookList HookModifyHardmodeTasks = AddHook<Action<List<GenPass>>> (s => s.ModifyHardmodeTasks);
+		private static HookList HookModifyHardmodeTasks = AddHook<Action<List<GenPass>>>(s => s.ModifyHardmodeTasks);
+
+		private static HookList HookHijackGetData = AddHook<DelegateHijackGetData>(s => s.HijackGetData);
+
+		private static HookList HookHijackSendData = AddHook<Func<int, int, int, int, NetworkText, int, float, float, float, int, int, int, bool>>(s => s.HijackSendData);
 	}
 }

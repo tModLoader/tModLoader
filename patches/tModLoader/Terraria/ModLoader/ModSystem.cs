@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -243,6 +244,21 @@ namespace Terraria.ModLoader
 		/// Allows you to do things with custom data that is received between clients and server.
 		/// </summary>
 		public virtual void NetReceive(BinaryReader reader) { }
+
+		/// <summary>
+		/// Allows you to modify net message / packet information that is received before the game can act on it.
+		/// </summary>
+		/// <param name="messageType">Type of the message.</param>
+		/// <param name="reader">The reader.</param>
+		/// <param name="playerNumber">The player number the message is from.</param>
+		public virtual bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber)
+			=> false;
+
+		/// <summary>
+		/// Hijacks the send data method. Only use if you absolutely know what you are doing. If any hooks return true, the message is not sent.
+		/// </summary>
+		public virtual bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
+			=> false;
 
 		/// <summary>
 		/// Allows a mod to run code before a world is generated.

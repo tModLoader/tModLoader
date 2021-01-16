@@ -81,23 +81,5 @@ namespace Terraria.ModLoader
 		/// <param name="whoAmI">The player the message is from.</param>
 		public virtual void HandlePacket(BinaryReader reader, int whoAmI) {
 		}
-
-		/// <summary>
-		/// Allows you to modify net message / packet information that is received before the game can act on it.
-		/// </summary>
-		/// <param name="messageType">Type of the message.</param>
-		/// <param name="reader">The reader.</param>
-		/// <param name="playerNumber">The player number the message is from.</param>
-		/// <returns></returns>
-		public virtual bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber) {
-			return false;
-		}
-
-		/// <summary>
-		/// Hijacks the send data method. Only use if you absolutely know what you are doing. If any hooks return true, the message is not sent.
-		/// </summary>
-		public virtual bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7) {
-			return false;
-		}
 	}
 }
