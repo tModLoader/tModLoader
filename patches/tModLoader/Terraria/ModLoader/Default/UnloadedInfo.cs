@@ -2,9 +2,13 @@
 
 namespace Terraria.ModLoader.Default
 {
-	internal class UnloadedTileInfo : UnloadedInfo 
+	internal class UnloadedInfo
 	{
-		public UnloadedTileInfo(string modName, string name, ushort fallbackType=0):base(modName, name,fallbackType) {
+		public string modName;
+		public string name;
+		internal ushort FallbackType;
+
+		public UnloadedInfo(string modName, string name, ushort fallbackType = 0) {
 			this.modName = modName;
 			this.name = name;
 			FallbackType = fallbackType;

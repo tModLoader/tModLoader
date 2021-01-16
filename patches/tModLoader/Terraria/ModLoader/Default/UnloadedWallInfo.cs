@@ -2,15 +2,16 @@
 
 namespace Terraria.ModLoader.Default
 {
-	internal class UnloadedTileInfo : UnloadedInfo 
+	internal class UnloadedWallInfo : UnloadedInfo 
 	{
-		public UnloadedTileInfo(string modName, string name, ushort fallbackType=0):base(modName, name,fallbackType) {
+		
+		public UnloadedWallInfo(string modName, string name, ushort fallbackType = 0) :base(modName, name,fallbackType) {
 			this.modName = modName;
 			this.name = name;
 			FallbackType = fallbackType;
 		}
 
-		public TagCompound Save() {
+		public new TagCompound Save() {
 			var tag = new TagCompound {
 				["mod"] = modName,
 				["name"] = name,
