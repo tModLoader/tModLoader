@@ -94,27 +94,28 @@ namespace Terraria.ModLoader
 
 			Type modType = GetType();
 			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName, StringComparer.InvariantCulture)) {
-				if (type == modType) continue;
-				if (type.IsAbstract) continue;
-				if (type.ContainsGenericParameters) continue;
-				if (type.GetConstructor(new Type[0]) == null) continue;//don't autoload things with no default constructor
-
-				if (type.IsSubclassOf(typeof(ModSound))) {
-					modSounds.Add(type);
+				//don't autoload things with no default constructor
+				if (type == modType || type.IsAbstract || type.ContainsGenericParameters || type.GetConstructor(new Type[0]) == null) {
+					continue;
 				}
-				else if (typeof(ILoadable).IsAssignableFrom(type)) {
+
+				if (typeof(ILoadable).IsAssignableFrom(type)) {
 					var autoload = AutoloadAttribute.GetValue(type);
+
 					if (autoload.NeedsAutoloading) {
 						AddContent((ILoadable)Activator.CreateInstance(type));
 					}
 				}
 			}
+
+			if (Properties.AutoloadSounds) {
+				SoundLoader.Autoload(this);
+			}
+
 			if (Properties.AutoloadGores) {
 				GoreLoader.AutoloadGores(this);
 			}
-			if (Properties.AutoloadSounds) {
-				AutoloadSounds(modSounds);
-			}
+
 			if (Properties.AutoloadBackgrounds) {
 				AutoloadBackgrounds();
 			}
@@ -174,41 +175,6 @@ namespace Terraria.ModLoader
 		private void AutoloadBackgrounds() {
 			foreach (string texture in Assets.EnumeratePaths<Texture2D>().Where(t => t.StartsWith("Backgrounds/"))) {
 				AddBackgroundTexture($"{Name}/{texture}");
-			}
-		}
-
-		private void AutoloadSounds(IList<Type> modSounds) {
-			var modSoundNames = modSounds.ToDictionary(t => t.FullName);
-
-			const string SoundFolder = "Sounds/";
-
-			foreach (string soundPath in Assets.EnumeratePaths<SoundEffect>().Where(t => t.StartsWith(SoundFolder))) {
-				string substring = soundPath.Substring(SoundFolder.Length);
-				SoundType soundType = SoundType.Custom;
-
-				if (substring.StartsWith("Item/")) {
-					soundType = SoundType.Item;
-				}
-				else if (substring.StartsWith("NPCHit/")) {
-					soundType = SoundType.NPCHit;
-				}
-				else if (substring.StartsWith("NPCKilled/")) {
-					soundType = SoundType.NPCKilled;
-				}
-
-				ModSound modSound = null;
-				if (modSoundNames.TryGetValue($"{Name}/{soundPath}".Replace('/', '.'), out Type t))
-					modSound = (ModSound)Activator.CreateInstance(t);
-
-				AddSound(soundType, $"{Name}/{soundPath}", modSound);
-			}
-
-			foreach (string music in musics.Keys.Where(t => t.StartsWith("Sounds/"))) {
-				string substring = music.Substring("Sounds/".Length);
-
-				if (substring.StartsWith("Music/")) {
-					AddSound(SoundType.Music, Name + '/' + music);
-				}
 			}
 		}
 
