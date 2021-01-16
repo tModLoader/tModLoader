@@ -8,16 +8,20 @@ namespace ExampleMod.Common
 {
 	//Acts as a container for "downed boss" flags.
 	//Set a flag like this in your bosses OnKill hook:
-	//    NPC.SetEventFlagCleared(ref DownedBossWorld.downedMinionBoss, -1);
-	public class DownedBossWorld : ModWorld
+	//    NPC.SetEventFlagCleared(ref DownedBossSystem.downedMinionBoss, -1);
+	public class DownedBossSystem : ModSystem
 	{
 		public static bool downedMinionBoss = false;
 
-		public override void Initialize() {
+		public override void OnWorldLoad() {
 			downedMinionBoss = false;
 		}
 
-		public override TagCompound Save() {
+		public override void OnWorldUnload() {
+			downedMinionBoss = false;
+		}
+
+		public override TagCompound SaveWorldData() {
 			var downed = new List<string>();
 			if (downedMinionBoss) {
 				downed.Add("downedMinionBoss");
@@ -28,7 +32,7 @@ namespace ExampleMod.Common
 			};
 		}
 
-		public override void Load(TagCompound tag) {
+		public override void LoadWorldData(TagCompound tag) {
 			var downed = tag.GetList<string>("downed");
 			downedMinionBoss = downed.Contains("downedMinionBoss");
 		}

@@ -142,7 +142,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			//the main body it is positioned at
 			float rad = (float)PositionIndex / MinionBossBody.MinionCount() * MathHelper.TwoPi;
 
-			float distanceFromBody = parentNPC.width + NPC.width * 2;
+			float distanceFromBody = parentNPC.width + NPC.width;
 
 			//offset is now a vector that will determine the position of the NPC based on its index
 			Vector2 offset = Vector2.One.RotatedBy(rad) * distanceFromBody;

@@ -184,7 +184,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 		public override void OnKill() {
 			//This sets downedMinionBoss to true, and if it was false before, it initiates a lantern night
-			NPC.SetEventFlagCleared(ref DownedBossWorld.downedMinionBoss, -1);
+			NPC.SetEventFlagCleared(ref DownedBossSystem.downedMinionBoss, -1);
 
 			//Since this hook is only ran in singleplayer and serverside, we would have to sync it manually.
 			//Thankfully, vanilla sends the MessageID.WorldData packet if a BOSS was killed automatically, shortly after this hook is ran
