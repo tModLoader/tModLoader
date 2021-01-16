@@ -88,12 +88,9 @@ namespace Terraria
 			NewItem((int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
 		public bool CountsAsClass(DamageClass damageClass) {
-			if (DamageType != null) {
-				if (DamageType == damageClass)
-					return true;
+			if (DamageType != null)
+				return DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
 
-				return DamageType.CountsAs(damageClass);
-			}
 			return false;
 		}
 	}
