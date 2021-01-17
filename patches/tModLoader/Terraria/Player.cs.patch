@@ -2047,7 +2047,7 @@
 -							float num = 30f * meleeDamage;
 +							float num = 30f * allDamage.CombineWith(meleeDamage);
  							float num2 = 9f;
-+							num2 *= allKB & GetKnockback(DamageClass.Melee);
++							num2 *= allKB.CombineWith(GetKnockback(DamageClass.Melee));
  							bool crit = false;
 +							/*
  							if (kbGlove)
@@ -2069,7 +2069,7 @@
 -						float num4 = 150f * meleeDamage;
 +						float num4 = 150f * allDamage.CombineWith(meleeDamage);
  						float num5 = 9f;
-+						num5 *= allKB & GetKnockback(DamageClass.Melee);
++						num5 *= allKB.CombineWith(GetKnockback(DamageClass.Melee));
  						bool crit2 = false;
 +						/*
  						if (kbGlove)
