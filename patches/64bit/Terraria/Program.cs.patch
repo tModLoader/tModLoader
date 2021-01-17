@@ -31,7 +31,7 @@
  			return type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
  #else
  			return type.GetMethods();
-@@ -204,89 +_,135 @@
+@@ -204,89 +_,137 @@
  		// some versions of the .NET runtime will run the Main static initilizer as soon as LaunchGame is invoked
  		// causing Main.SavePath to be initialized before LaunchParameters is parsed.
  		// moving arg parsing to a separate function avoids this
@@ -43,20 +43,22 @@
 +		public static void LaunchGame(string[] args, bool monoArgs = false)
 +		{
 +#if FNA && CLIENT
++			// I doubt localization would work here
 +			if (!Environment.Is64BitOperatingSystem) {
-+				MessageBox.Show("Your current OS has been detected as a 32bit OS\n" +
-+				                "Unfortunately, tModLoader 64 bit currently has no support for 32 bit operating systems. You will have to upgrade your PC if you wish to use tModLoader 64 bit.\n" +
-+				                "There may be an update that will support 32 bit systems in the distant future.", "Terraria.exe", MessageBoxButtons.OK);
++				MessageBox.Show("Your current OS has been detected as a 32bit OS!" +
++					"\nUnfortunately, tModLoader 64bit currently does not support 32bit operating systems. You will have to upgrade your PC if you wish to use tModLoader 64bit." +
++					"\nThere may be an update that will support 32bit systems in the future.", "Terraria.exe", MessageBoxButtons.OK);
 +				Environment.Exit(1);
 +			}
 +
 +			//This check here if the proper VCRedist is installed on windows, should take care of the Faudio problem for some user (other need to update their driver)
 +			if (PlatformUtilities.IsWindows) {
 +				if (!PlatformUtilities.RegisteryKeyInstalled(@"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64")) {
-+					MessageBox.Show("You are missing the VC Redist required for the Faudio.dll.\n" +
-+					                "Now executing the VC redist installer included with this package.\n" +
-+					                "If you have additional problems, you can join our discord server for assistance.\n" +
-+					                "link: https://discord.gg/DY8cx5T \n", "Terraria.exe", MessageBoxButtons.OK);
++					MessageBox.Show("You are missing VC Redist, which is required for Faudio.dll." +
++						"\nNow executing the VC Redist installer included with this package." +
++						"\nIf you have additional problems, you can join our Discord server for assistance:" +
++						"\nhttps://discord.gg/DY8cx5T" +
++						"\n", "Terraria.exe", MessageBoxButtons.OK);
 +					ProcessStartInfo installerStartInfo = new ProcessStartInfo("VC_redist.x64.exe", "/quiet /norestart");
 +					Process process = Process.Start(installerStartInfo);
 +					Console.Write("Installing VC redist, please wait...");

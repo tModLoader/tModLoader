@@ -1,0 +1,12 @@
+--- src/tModLoader/Terraria.Localization.Content/zh-Hans.tModLoader.json
++++ src/64bit/Terraria.Localization.Content/zh-Hans.tModLoader.json
+@@ -349,6 +_,9 @@
+ 		"WorldIODataException": "游戏遇到一个关于地图的模组数据问题.",
+ 		"ServerCrash": "服务器崩溃: {0}\n{1}\n\n请检查[server.log]以确定是否由模组导致, 否则请转到tModLoader Discord群组中的#support频道",
+ 
++		// Misc. 64bit
++		//"XL": "XL",
++
+ 		// MessageBox
+ 		"ContentFolderNotFound": "无法检测到原版Terraria的Content资源文件夹\n如果你是通过Steam安装的tModLoader，请确保你也安装了Terraria\n否则，请确保你的tModLoader安装在原版Terraria的文件夹或与原版Terraria处于同级",
+ 		"MissingServerExecutable": "安装文件不完整（文件tModLoaderServer.exe缺失），无法启动服务器。请阅读教程并重新安装。",

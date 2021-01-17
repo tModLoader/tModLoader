@@ -9,6 +9,7 @@ using ReLogic.Graphics;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.IO;
+using Terraria.Localization;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
@@ -54,54 +55,52 @@ namespace Terraria.ModLoader.x64bit
 			Main.PlayerPath = Path.Combine(Main.SavePath, "ModLoader", "Players");
 		}
 
-		internal static void DrawPatreon(SpriteBatch sb, int num109, int num110, int num111, bool hasFocus, Color color12) {
-			string patreonShortURL = !vanillaMode ? "Switch to vanilla mode" : "Switch to TML";
-			string tmlModeString = liteMode ? "Disable lite mode" : "Enable lite mode";
+		internal static void DrawPatreon(SpriteBatch sb, int loopNum, int offsetX, int offsetY, bool hasFocus, Color color12) {
+			// TODO: Localization for vanilla, tml, and lite modes when they're actually used
+			string patreonShortURL = !vanillaMode ? Language.GetTextValue("tModLoader.VanillaMode") : Language.GetTextValue("tModLoader.tModMode");
+			string tmlModeString = liteMode ? Language.GetTextValue("tModLoader.DisableLite") : Language.GetTextValue("tModLoader.EnableLite");
 			bool showPatreon = Main.menuMode == 0;
-			string architecture = $"(Running in {(Environment.Is64BitProcess ? 64.ToString() : 32.ToString())} bit mode)";
-			string GoG = InstallVerifier.IsGoG ? "GoG" : "Steam";
+			string architecture = Language.GetTextValue("tModLoader.RunningBitMode", Environment.Is64BitProcess ? 64.ToString() : 32.ToString());
+			string GoG = InstallVerifier.IsGoG ? Language.GetTextValue("tModLoader.GoG") : Language.GetTextValue("tModLoader.Steam");
 			string drawVersion;
-			if (vanillaMode) {
+
+			if (vanillaMode)
 				drawVersion = Main.versionNumber;
-			}
-			else {
+			else
 				drawVersion = Main.versionNumber + Environment.NewLine + ModLoader.versionedName + $" - {architecture} {GoG} {PlatformUtilities.RunningPlatform()}";
-			}
 
 			Vector2 origin3 = Main.fontMouseText.MeasureString(drawVersion);
 			origin3.X *= 0.5f;
 			origin3.Y *= 0.5f;
-			Main.spriteBatch.DrawString(Main.fontMouseText, drawVersion, new Vector2(origin3.X + num110 + 10f, Main.screenHeight - origin3.Y - num111 + 2f), color12, 0f, origin3, 1f, SpriteEffects.None, 0f);
-			if (num109 == 4) {
-				color12 = new Microsoft.Xna.Framework.Color(127, 191, 191, 76);
-			}
 
-			if (Main.menuMode == 10002 && vanillaMode) {
+			Main.spriteBatch.DrawString(Main.fontMouseText, drawVersion, new Vector2(origin3.X + offsetX + 10f, Main.screenHeight - origin3.Y - offsetY + 2f), color12, 0f, origin3, 1f, SpriteEffects.None, 0f);
+
+			if (loopNum == 4)
+				color12 = new Color(127, 191, 191, 76);
+
+			if (Main.menuMode == 10002 && vanillaMode)
 				Main.menuMode = 0;
-			}
 
 			if (showPatreon) {
 				Vector2 urlSize = Main.fontMouseText.MeasureString(patreonShortURL);
-				Main.spriteBatch.DrawString(Main.fontMouseText, patreonShortURL, new Vector2(num110 + 10f, Main.screenHeight - origin3.Y - 50f - num111 + 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-				if (num109 == 4 && Main.mouseLeftRelease && Main.mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)(num110 + 10f), (int)(Main.screenHeight - origin3.Y - 50f - num111 + 2f), (int)urlSize.X, (int)origin3.Y).Contains(new Microsoft.Xna.Framework.Point(Main.mouseX, Main.mouseY)) && hasFocus) {
+				Main.spriteBatch.DrawString(Main.fontMouseText, patreonShortURL, new Vector2(offsetX + 10f, Main.screenHeight - origin3.Y - 50f - offsetY + 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+
+				if (loopNum == 4 && Main.mouseLeftRelease && Main.mouseLeft && new Rectangle((int)(offsetX + 10f), (int)(Main.screenHeight - origin3.Y - 50f - offsetY + 2f), (int)urlSize.X, (int)origin3.Y).Contains(new Point(Main.mouseX, Main.mouseY)) && hasFocus) {
 					Main.PlaySound(SoundID.MenuOpen);
-					//vanillaMode = !vanillaMode;
-					//Main.SaveSettings();
-					//Interface.infoMessage.Show("You'll need to restart the game so that the necessary change can apply.", 0, null, "Restart", () => Environment.Exit(0));
-					Interface.infoMessage.Show("This feature is note completely done and will be released at a further time.\n\n\n-Dradonhunter11", 0);
+					/*vanillaMode = !vanillaMode;
+					Main.SaveSettings();
+					Interface.infoMessage.Show("You'll need to restart the game so that the necessary change can apply.", 0, null, "Restart", () => Environment.Exit(0));*/
+					Interface.infoMessage.Show(Language.GetTextValue("tModLoader.UnfinishedFeature"), 0);
 				}
 
 				if (!vanillaMode) {
 					urlSize = Main.fontMouseText.MeasureString(tmlModeString);
-					Main.spriteBatch.DrawString(Main.fontMouseText, tmlModeString, new Vector2(num110 + 10f, Main.screenHeight - origin3.Y - 72f - num111 + 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-					if (num109 == 4 && Main.mouseLeftRelease && Main.mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)(num110 + 10f), (int)(Main.screenHeight - origin3.Y - 72f - num111 + 2f), (int)urlSize.X, (int)origin3.Y).Contains(new Microsoft.Xna.Framework.Point(Main.mouseX, Main.mouseY)) && hasFocus) {
-						string message = liteMode ? "Your game will be switched to the full tML 64bit version. You will need to restart your game completely to have the effect applied.\n" +
-													  "In this mode you can generate an XL world, and allows for a chest limit of 2000. However, you can't play with 32bit anymore unless you switch back to tML64bit lite mode." :
-							"Your game will be switched to the tML 64bit lite mode. You will need to restart your game completely to have the effect applied.\n" +
-							"In this mode, you can play with other 32bit tModLoader clients and other tModLoader 64 bit lite users, but cannot play with tML64bit users in full mode. You can always switch back to the full tML64bit.";
+					Main.spriteBatch.DrawString(Main.fontMouseText, tmlModeString, new Vector2(offsetX + 10f, Main.screenHeight - origin3.Y - 72f - offsetY + 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+					if (loopNum == 4 && Main.mouseLeftRelease && Main.mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)(offsetX + 10f), (int)(Main.screenHeight - origin3.Y - 72f - offsetY + 2f), (int)urlSize.X, (int)origin3.Y).Contains(new Microsoft.Xna.Framework.Point(Main.mouseX, Main.mouseY)) && hasFocus) {
+						string message = liteMode ? Language.GetTextValue("tModLoader.SwitchFromLite") : Language.GetTextValue("tModLoader.SwitchToLite");
 
 						Main.PlaySound(SoundID.MenuOpen);
-						Interface.infoMessage.SpecialShow(message, 0, null, "Back", "Apply", () => {
+						Interface.infoMessage.SpecialShow(message, 0, null, Language.GetTextValue("UI.Back"), Language.GetTextValue("LegacyMenu.134"), () => { // 134: Apply
 							liteMode = !liteMode;
 							Main.SaveSettings();
 							Environment.Exit(0);
