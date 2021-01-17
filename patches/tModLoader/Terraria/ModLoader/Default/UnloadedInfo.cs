@@ -1,17 +1,20 @@
 ﻿using Terraria.ModLoader.IO;
+using System.Collections.Generic;
 
 namespace Terraria.ModLoader.Default
 {
 	internal class UnloadedInfo
 	{
-		internal string modName;
-		internal string name;
-		internal ushort fallbackType;
+		internal readonly string modName;
+		internal readonly string name;
+		internal readonly ushort fallbackType;
+		internal readonly TagCompound customData;
 
-		public UnloadedInfo(string modName, string name, ushort fallbackType = 0) {
+		public UnloadedInfo(string modName, string name, ushort fallbackType, TagCompound customData = null) {
 			this.modName = modName;
 			this.name = name;
 			this.fallbackType = fallbackType;
+			this.customData = customData;
 		}
 
 		public TagCompound Save() {
@@ -19,6 +22,7 @@ namespace Terraria.ModLoader.Default
 				["mod"] = modName,
 				["name"] = name,
 				["fallbackType"] = fallbackType,
+				["customData"] = customData,
 			};
 			return tag;
 		}

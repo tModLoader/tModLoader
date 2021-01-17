@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.Default
 		/// <summary>
 		/// Tile-<see cref="UnloadedTileInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
 		/// </summary>
-		internal List<UnloadedTileInfo> tileInfos = new List<UnloadedTileInfo>();
+		internal List<UnloadedInfo> tileInfos = new List<UnloadedInfo>();
 
 		/// <summary>
 		/// Use a dictionary mapping coordinates of tile infos from <see cref="tileInfos"/>
@@ -20,7 +20,7 @@ namespace Terraria.ModLoader.Default
 		/// <summary>
 		/// Tile-<see cref="UnloadedChestInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
 		/// </summary>
-		internal List<UnloadedChestInfo> chestInfos = new List<UnloadedChestInfo>();
+		internal List<UnloadedInfo> chestInfos = new List<UnloadedInfo>();
 
 		/// <summary>
 		/// Use a dictionary mapping coordinates of chest infos from <see cref="chestInfos"/>
@@ -30,7 +30,7 @@ namespace Terraria.ModLoader.Default
 		/// <summary>
 		/// Wall-<see cref="UnloadedWallInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
 		/// </summary>
-		internal List<UnloadedWallInfo> wallInfos = new List<UnloadedWallInfo>();
+		internal List<UnloadedInfo> wallInfos = new List<UnloadedInfo>();
 
 		/// <summary>
 		/// Use a dictionary mapping coordinates of walls infos from <see cref="wallInfos"/>
@@ -50,7 +50,8 @@ namespace Terraria.ModLoader.Default
 
 		internal static ushort UnloadedWallType => ModContent.Find<ModWall>("ModLoader/UnloadedWall").Type;
 
-		/// These values are synced to match UpdateUnloadedInfos <see cref="UpdateUnloadedInfos"/>s
+		/// These values are synced to match UpdateUnloadedInfos <see cref="UpdateUnloadedInfos"/> 
+		/// and synced to UnloadedPosIndexing <see cref="UnloadedPosIndexing"/>
 		internal static byte TilesIndex = 0;
 		internal static byte WallsIndex = 1;
 		internal static byte ChestIndex = 2;
@@ -163,11 +164,15 @@ namespace Terraria.ModLoader.Default
 						int posID = new UnloadedPosIndexing(x, y).posID;
 						chestInfoMap.TryGetValue(posID, out int infoID);
 						if (canRestoreChests[infoID] > 0) {
-							UnloadedChestInfo info = chestInfos[infoID];
 							if (tile.type == unloadedDresser)
-								WorldGen.PlaceDresserDirect(x + 1, y + 1, canRestoreChests[infoID], info.chestStyle, -1);
-							if (tile.type == unloadedChest)
-								WorldGen.PlaceChestDirect(x, y + 1, canRestoreChests[infoID], info.chestStyle, -1);
+								WorldGen.PlaceDresserDirect(x + 1, y + 1, canRestoreChests[infoID], 0, -1);
+							if (tile.type == unloadedChest) 
+							{
+								UnloadedInfo info = chestInfos[infoID];
+								int chestStyle = info.customData.GetAsInt("chestStyle");
+								WorldGen.PlaceChestDirect(x, y + 1, canRestoreChests[infoID], chestStyle, -1);
+							}
+								
 						}
 					}
 

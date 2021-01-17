@@ -41,24 +41,23 @@ namespace Terraria.ModLoader.Default
 				string modName = infoTag.GetString("mod");
 				string name = infoTag.GetString("name");
 				ushort fallbackType = infoTag.Get<ushort>("fallbackType");
+				TagCompound customData = infoTag.Get<TagCompound>("customData");
 
 				ushort type = 0;
 				ModTile tile;
+
+				var info = new UnloadedInfo(modName, name, fallbackType,customData);
 				switch (index) {
 					case 0:
-						var tInfo = new UnloadedTileInfo(modName, name, fallbackType);
-						modSystem.tileInfos.Add(tInfo);
+						modSystem.tileInfos.Add(info);
 						type = ModContent.TryFind(modName, name, out tile) ? tile.Type : (ushort)0;
 						break;
 					case 1:
-						var wInfo = new UnloadedWallInfo(modName, name);
-						modSystem.wallInfos.Add(wInfo);
+						modSystem.wallInfos.Add(info);
 						type = ModContent.TryFind(modName, name, out ModWall wall) ? wall.Type : (ushort)0;
 						break;
 					case 2:
-						byte chestStyle = infoTag.GetByte("style");
-						var cInfo = new UnloadedChestInfo(modName, name, chestStyle);
-						modSystem.chestInfos.Add(cInfo);
+						modSystem.chestInfos.Add(info);
 						type = ModContent.TryFind(modName, name, out tile) ? tile.Type : (ushort)0;
 						break;
 				}

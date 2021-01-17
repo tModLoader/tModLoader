@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 namespace Terraria.ModLoader.Default
 {
 	internal class UnloadedPosIndexing
@@ -8,25 +9,26 @@ namespace Terraria.ModLoader.Default
 			this.posID = posX * Main.maxTilesY + posY; // Order determined in accordance with increasing Y in TileIO ReadModData such that PosID is ordered numerically
 		}
 
-		public void SaveChestInfoToPos(UnloadedChestInfo info) {
+		public void SaveInfoToPos(UnloadedInfo info,byte index) {
 			UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
-			var infos = modSystem.chestInfos;
-			int pendingID = infos.IndexOf(info);
-			if (pendingID < 0) {
-				pendingID = 0;
-				while (pendingID < infos.Count && infos[pendingID] != null)
-					pendingID++;
-				if (pendingID == infos.Count)
-					infos.Add(info);
-				else
-					infos[pendingID] = info;
-			}
-			modSystem.chestInfoMap[posID] = pendingID;
-		}
+			List<UnloadedInfo> infos = null;
+			Dictionary<int, int> posMap = null;
 
-		public void SaveTileInfoToPos(UnloadedTileInfo info) {
-			UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
-			var infos = modSystem.tileInfos;
+			switch (index) {
+				case 0:
+					infos = modSystem.tileInfos;
+					posMap = modSystem.tileInfoMap;
+					break;
+				case 1:
+					infos = modSystem.wallInfos;
+					posMap = modSystem.wallInfoMap;
+					break;
+				case 2:
+					infos = modSystem.chestInfos;
+					posMap = modSystem.chestInfoMap;
+					break;
+			}
+			
 			int pendingID = infos.IndexOf(info);
 			if (pendingID < 0) {
 				pendingID = 0;
@@ -37,23 +39,7 @@ namespace Terraria.ModLoader.Default
 				else
 					infos[pendingID] = info;
 			}
-			modSystem.tileInfoMap[posID] = pendingID;
-		}
-
-		public void SaveWallInfoToPos(UnloadedWallInfo info) {
-			UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
-			var infos = modSystem.wallInfos;
-			int pendingID = infos.IndexOf(info);
-			if (pendingID < 0) {
-				pendingID = 0;
-				while (pendingID < infos.Count && infos[pendingID] != null)
-					pendingID++;
-				if (pendingID == infos.Count)
-					infos.Add(info);
-				else
-					infos[pendingID] = info;
-			}
-			modSystem.wallInfoMap[posID] = pendingID;
+			posMap[posID] = pendingID;
 		}
 	}
 }
