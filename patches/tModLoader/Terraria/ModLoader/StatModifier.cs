@@ -54,11 +54,11 @@
 
 		public static implicit operator int(StatModifier m) =>
 			(int)(m.additive * m.multiplicative);
-	}
 
-	public static class ModifierExtensions
-	{
-		public static StatModifier CombineWith(this StatModifier m1, StatModifier m2) =>
-			new StatModifier(m1.additive + m2.additive - 1, m1.multiplicative * m2.multiplicative);
+		public StatModifier CombineWith(StatModifier m) =>
+			new StatModifier(additive + m.additive - 1, multiplicative * m.multiplicative);
+
+		public StatModifier Scale(float scale) =>
+			new StatModifier(1 + (additive - 1) * scale, 1 + (multiplicative - 1) * scale);
 	}
 }

@@ -269,7 +269,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player using the item</param>
 		/// <param name="knockback">The knockback</param>
-		public virtual void GetWeaponKnockback(Player player, ref float knockback) {
+		public virtual void GetWeaponKnockback(Player player, ref StatModifier knockback, ref float flat) {
 		}
 
 		/// <summary>

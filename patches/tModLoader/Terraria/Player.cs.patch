@@ -1039,16 +1039,16 @@
  				}
  				else if (buffType[j] == 41) {
  					buffTime[j] = 18000;
-@@ -7938,14 +_,18 @@
+@@ -7938,14 +_,20 @@
  				else if (buffType[j] == 26) {
  					wellFed = true;
  					statDefense += 2;
-+					//meleeCrit += 2;
--					meleeCrit += 2;
 +					allCrit += 2;
--					meleeDamage += 0.05f;
 +					allDamage += 0.05f;
-+					//meleeDamage += 0.05f;
++					/*
+ 					meleeCrit += 2;
+ 					meleeDamage += 0.05f;
++					*/
  					meleeSpeed += 0.05f;
 +					/*
  					magicCrit += 2;
@@ -1060,16 +1060,16 @@
  					minionKB += 0.5f;
  					moveSpeed += 0.2f;
  					pickSpeed -= 0.05f;
-@@ -7953,14 +_,18 @@
+@@ -7953,14 +_,20 @@
  				else if (buffType[j] == 206) {
  					wellFed = true;
  					statDefense += 3;
-+					//meleeCrit += 3;
--					meleeCrit += 3;
 +					allCrit += 3;
--					meleeDamage += 0.075f;
 +					allDamage += 0.075f;
-+					//meleeDamage += 0.075f;
++					/*
+ 					meleeCrit += 3;
+ 					meleeDamage += 0.075f;
++					*/
  					meleeSpeed += 0.075f;
 +					/*
  					magicCrit += 3;
@@ -1127,8 +1127,8 @@
  			for (int j = 0; j < 58; j++) {
  				int type = inventory[j].type;
 +			*/
-+					{
-+						int type = item.type;
++			{
++				int type = item.type;
  				if ((type == 15 || type == 707) && accWatch < 1)
  					accWatch = 1;
  
@@ -1882,26 +1882,21 @@
  								SmartSelect_SelectItem(i);
  								return;
  						}
-@@ -12711,16 +_,19 @@
+@@ -12711,6 +_,9 @@
  			lifeRegen = 0;
  			manaCost = 1f;
  			meleeSpeed = 1f;
--			meleeDamage = 1f;
--			rangedDamage = 1f;
--			magicDamage = 1f;
--			minionDamage = 1f;
--			meleeCrit = 4;
--			rangedCrit = 4;
--			magicCrit = 4;
 +			allDamage = StatModifier.One;
-+			meleeDamage = StatModifier.One;
-+			rangedDamage = StatModifier.One;
-+			magicDamage = StatModifier.One;
-+			minionDamage = StatModifier.One;
 +			allCrit = 4;
-+			meleeCrit = 0;
-+			rangedCrit = 0;
-+			magicCrit = 0;
++			/* individual class damage handled by ResetDamageClassData
+ 			meleeDamage = 1f;
+ 			rangedDamage = 1f;
+ 			magicDamage = 1f;
+@@ -12718,9 +_,11 @@
+ 			meleeCrit = 4;
+ 			rangedCrit = 4;
+ 			magicCrit = 4;
++			*/
  			hasFootball = false;
  			drawingFootball = false;
 -			minionKB = 0f;
@@ -1910,16 +1905,18 @@
  			moveSpeed = 1f;
  			boneArmor = false;
  			honey = false;
-@@ -12762,9 +_,9 @@
+@@ -12762,9 +_,14 @@
  			ammoCost75 = false;
  			manaRegenBuff = false;
  			hasCreditsSceneMusicBox = false;
--			arrowDamage = 1f;
--			bulletDamage = 1f;
--			rocketDamage = 1f;
 +			arrowDamage = StatModifier.One;
 +			bulletDamage = StatModifier.One;
 +			rocketDamage = StatModifier.One;
++			/*
+ 			arrowDamage = 1f;
+ 			bulletDamage = 1f;
+ 			rocketDamage = 1f;
++			*/
  			coolWhipBuff = false;
  			yoraiz0rEye = 0;
  			yoraiz0rDarkness = false;
@@ -3699,136 +3696,102 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -36335,6 +_,19 @@
+@@ -36335,6 +_,7 @@
  		}
  
  		public float GetWeaponKnockback(Item sItem, float KnockBack) {
-+			StatModifier knockBackMult = allKB;
-+			if (sItem.DamageType != DamageClass.Generic)
-+				knockBackMult = knockBackMult.CombineWith(GetKnockback(sItem.DamageType));
-+			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				if (sItem.DamageType.BenefitsFrom(damageClass) != 0) {
-+					StatModifier addKB = GetKnockback(damageClass);
-+					addKB.additive = 1 + ((addKB.additive - 1) * sItem.DamageType.BenefitsFrom(damageClass));
-+					addKB.multiplicative = 1 + ((addKB.multiplicative - 1) * sItem.DamageType.BenefitsFrom(damageClass));
-+					knockBackMult = knockBackMult.CombineWith(addKB);
-+				}
-+			}
-+			KnockBack *= knockBackMult;
 +			/*
  			if (sItem.summon)
  				KnockBack += minionKB;
  
-@@ -36349,49 +_,86 @@
+@@ -36349,11 +_,25 @@
  
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
 -
+-			return KnockBack;
 +			*/
-+			ItemLoader.GetWeaponKnockback(sItem, this, ref KnockBack);
-+			PlayerHooks.GetWeaponKnockback(this, sItem, ref KnockBack);
- 			return KnockBack;
++
++			StatModifier kbModifier = allKB;
++			if (sItem.DamageType != DamageClass.Generic)
++				kbModifier = kbModifier.CombineWith(GetKnockback(sItem.DamageType));
++
++			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
++				float scale = sItem.DamageType.BenefitsFrom(damageClass);
++				if (scale != 0)
++					kbModifier = kbModifier.CombineWith(GetKnockback(damageClass).Scale(scale));
++			}
++
++			float flat = 0f;
++			CombinedHooks.GetWeaponKnockback(this, sItem, ref kbModifier, ref flat);
++			return Math.Max(0, KnockBack * kbModifier + flat);
  		}
  
  		public int GetWeaponCrit(Item sItem) {
++			/*
+ 			if (sItem.melee)
+ 				return meleeCrit;
+ 
+@@ -36364,9 +_,24 @@
+ 				return magicCrit;
+ 
+ 			return 0;
++			*/
++
 +			int crit = allCrit + sItem.crit;
 +			if (sItem.DamageType != DamageClass.Generic)
 +				crit += GetCritChance(sItem.DamageType);
++
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
 +				if (sItem.DamageType.BenefitsFrom(damageClass) != 0) {
 +					crit += (int)(GetCritChance(damageClass) * sItem.DamageType.BenefitsFrom(damageClass));
 +				}
 +			}
-+			/*
- 			if (sItem.melee)
--				return meleeCrit;
-+				crit += meleeCrit;
- 
- 			if (sItem.ranged)
--				return rangedCrit;
-+				crit += rangedCrit;
- 
- 			if (sItem.magic)
--				return magicCrit;
--
--			return 0;
-+				crit += magicCrit;
-+			*/	
-+			ItemLoader.GetWeaponCrit(sItem, this, ref crit);
-+			PlayerHooks.GetWeaponCrit(this, sItem, ref crit);
++
++			CombinedHooks.GetWeaponCrit(this, sItem, ref crit);
 +			return crit;
  		}
  
  		public int GetWeaponDamage(Item sItem) {
--			int num = sItem.damage;
--			if (num > 0) {
--				if (sItem.melee) {
--					num = (int)((float)num * meleeDamage + 5E-06f);
--				}
--				else if (sItem.ranged) {
--					num = (int)((float)num * rangedDamage + 5E-06f);
--					if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
--						num = (int)((float)num * arrowDamage + 5E-06f);
--
--					if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn)
--						num = (int)((float)num * bulletDamage + 5E-06f);
--
--					if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly)
--						num = (int)((float)num * rocketDamage + 5E-06f);
--				}
--				else if (sItem.magic) {
--					num = (int)((float)num * magicDamage + 5E-06f);
--				}
--				else if (sItem.summon) {
--					num = (int)((float)num * minionDamage);
++			/*
+ 			int num = sItem.damage;
+ 			if (num > 0) {
+ 				if (sItem.melee) {
+@@ -36388,10 +_,39 @@
+ 				}
+ 				else if (sItem.summon) {
+ 					num = (int)((float)num * minionDamage);
 -				}
 -			}
 -
--			return num;
++ 				}
++ 			}
+ 			return num;
++			*/
 +			if (sItem.IgnoreDamageModifiers || sItem.DamageType == DamageClass.NoScaling)
 +				return sItem.damage;
 +
 +			StatModifier damage = allDamage;
 +			if (sItem.DamageType != DamageClass.Generic)
 +				damage = damage.CombineWith(GetDamage(sItem.DamageType));
++
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				if (sItem.DamageType.BenefitsFrom(damageClass) != 0) {
-+					StatModifier addDamage = GetDamage(damageClass);
-+					addDamage.additive = 1 + ((addDamage.additive - 1) * sItem.DamageType.BenefitsFrom(damageClass));
-+					addDamage.multiplicative = 1 + ((addDamage.multiplicative - 1) * sItem.DamageType.BenefitsFrom(damageClass));
-+					damage = damage.CombineWith(addDamage);
-+				}
-+			}
-+			/*
-+			if (sItem.melee) {
-+				damage &= meleeDamage;
++				float scale = sItem.DamageType.BenefitsFrom(damageClass);
++				if (scale != 0)
++					damage = damage.CombineWith(GetDamage(damageClass).Scale(scale));
 +			}
 +
-+			if (sItem.ranged) {
-+				damage &= rangedDamage;
-+			*/
-+				if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
-+					damage = damage.CombineWith(arrowDamage);
++			if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
++				damage = damage.CombineWith(arrowDamage);
 +
-+				if (sItem.useAmmo == AmmoID.Arrow && archery)
-+					damage *= 1.2f;
++			if (sItem.useAmmo == AmmoID.Arrow && archery)
++				damage *= 1.2f;
 +
-+				if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn)
-+					damage = damage.CombineWith(bulletDamage);
++			if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn)
++				damage = damage.CombineWith(bulletDamage);
 +
-+				if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly)
-+					damage = damage.CombineWith(rocketDamage);
-+			/*
-+			}
-+
-+			if (sItem.magic) {
-+				damage &= magicDamage;
-+			}
-+
-+			if (sItem.summon) {
-+				damage &= minionDamage;
-+			}
-+			*/
++			if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly)
++				damage = damage.CombineWith(rocketDamage);
 +
 +			float flat = 0f;
 +			CombinedHooks.ModifyWeaponDamage(this, sItem, ref damage, ref flat);

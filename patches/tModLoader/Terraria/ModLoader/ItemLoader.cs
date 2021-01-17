@@ -456,19 +456,19 @@ namespace Terraria.ModLoader
 				g.Instance(item).ModifyWeaponDamage(item, player, ref damage, ref flat);
 		}
 
-		private delegate void DelegateGetWeaponKnockback(Item item, Player player, ref float knockback);
+		private delegate void DelegateGetWeaponKnockback(Item item, Player player, ref StatModifier knockback, ref float flat);
 		private static HookList HookGetWeaponKnockback = AddHook<DelegateGetWeaponKnockback>(g => g.GetWeaponKnockback);
 		/// <summary>
 		/// Calls ModItem.GetWeaponKnockback, then all GlobalItem.GetWeaponKnockback hooks.
 		/// </summary>
-		public static void GetWeaponKnockback(Item item, Player player, ref float knockback) {
+		public static void GetWeaponKnockback(Item item, Player player, ref StatModifier knockback, ref float flat) {
 			if (item.IsAir)
 				return;
 
-			item.ModItem?.GetWeaponKnockback(player, ref knockback);
+			item.ModItem?.GetWeaponKnockback(player, ref knockback, ref flat);
 
 			foreach (var g in HookGetWeaponKnockback.arr)
-				g.Instance(item).GetWeaponKnockback(item, player, ref knockback);
+				g.Instance(item).GetWeaponKnockback(item, player, ref knockback, ref flat);
 		}
 
 

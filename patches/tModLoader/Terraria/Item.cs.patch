@@ -418,18 +418,16 @@
  			instanced = false;
  			questItem = false;
  			fishingPole = 0;
-@@ -44913,10 +_,10 @@
+@@ -44913,10 +_,12 @@
  			mech = false;
  			flame = false;
  			reuseDelay = 0;
--			melee = false;
-+			//melee = false;
--			magic = false;
-+			//magic = false;
--			ranged = false;
-+			//ranged = false;
--			summon = false;
-+			//summon = false;
++			/*
+ 			melee = false;
+ 			magic = false;
+ 			ranged = false;
+ 			summon = false;
++			*/
  			placeStyle = 0;
  			buffTime = 0;
  			buffType = 0;
