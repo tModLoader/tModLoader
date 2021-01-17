@@ -50,8 +50,7 @@ namespace Terraria.ModLoader.Default
 
 		internal static ushort UnloadedWallType => ModContent.Find<ModWall>("ModLoader/UnloadedWall").Type;
 
-		/// These values are synced to match UpdateUnloadedInfos <see cref="UpdateUnloadedInfos"/> 
-		/// and synced to UnloadedPosIndexing <see cref="UnloadedPosIndexing"/>
+		/// These values are synced to match UpdateUnloadedInfos <see cref="UpdateUnloaded"/> 
 		internal static byte TilesIndex = 0;
 		internal static byte WallsIndex = 1;
 		internal static byte ChestIndex = 2;
@@ -93,32 +92,32 @@ namespace Terraria.ModLoader.Default
 			bool[] canRestoreFlag = new bool[] { false, false, false };
 
 			// Process tiles
-			UpdateUnloaded tileUpdater = new UpdateUnloaded(TilesIndex);
-			tileUpdater.UpdateInfos(tag.GetList<TagCompound>("tileList"));
+			UpdateUnloaded tileUpdater = new UpdateUnloaded(tileInfos);
+			tileUpdater.UpdateInfos(tag.GetList<TagCompound>("tileList"),TilesIndex);
 			canRestoreFlag[TilesIndex] = tileUpdater.canRestoreFlag;
-			tileUpdater.UpdateMaps(tag.GetList<TagCompound>("tilePosIndex"));
+			tileUpdater.UpdateMaps(tag.GetList<TagCompound>("tilePosIndex"),tileInfoMap);
 
 			// Process Walls
-			UpdateUnloaded wallUpdater = new UpdateUnloaded(WallsIndex);
-			wallUpdater.UpdateInfos(tag.GetList<TagCompound>("wallList"));
+			UpdateUnloaded wallUpdater = new UpdateUnloaded(wallInfos);
+			wallUpdater.UpdateInfos(tag.GetList<TagCompound>("wallList"),WallsIndex);
 			canRestoreFlag[WallsIndex] = wallUpdater.canRestoreFlag;
-			wallUpdater.UpdateMaps(tag.GetList<TagCompound>("wallPosIndex"));
+			wallUpdater.UpdateMaps(tag.GetList<TagCompound>("wallPosIndex"),wallInfoMap);
 
 			// Process chests
-			UpdateUnloaded chestUpdater = new UpdateUnloaded(ChestIndex);
-			chestUpdater.UpdateInfos(tag.GetList<TagCompound>("chestList"));
+			UpdateUnloaded chestUpdater = new UpdateUnloaded(chestInfos);
+			chestUpdater.UpdateInfos(tag.GetList<TagCompound>("chestList"),ChestIndex);
 			canRestoreFlag[ChestIndex] = chestUpdater.canRestoreFlag;
-			chestUpdater.UpdateMaps(tag.GetList<TagCompound>("chestPosIndex"));
+			chestUpdater.UpdateMaps(tag.GetList<TagCompound>("chestPosIndex"),chestInfoMap);
 
 			// If restoration should occur during this load cycle, then do so
 			RestoreTilesAndWalls(tileUpdater.canRestore, wallUpdater.canRestore, chestUpdater.canRestore, canRestoreFlag);
 
 			// Cleanup data remnants
-			tileUpdater.CleanupMaps();
+			tileUpdater.CleanupMaps(tileInfoMap);
 			tileUpdater.CleanupInfos();
-			wallUpdater.CleanupMaps();
+			wallUpdater.CleanupMaps(wallInfoMap);
 			wallUpdater.CleanupInfos();
-			chestUpdater.CleanupMaps();
+			chestUpdater.CleanupMaps(chestInfoMap);
 			chestUpdater.CleanupInfos();
 		}
 

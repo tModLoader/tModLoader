@@ -7,33 +7,27 @@ namespace Terraria.ModLoader.Default
 	internal class UpdateUnloaded
 	{
 		internal bool canRestoreFlag;
-		internal List<ushort> canRestore = new List<ushort>();
-		readonly byte index;
+		internal readonly List<ushort> canRestore = new List<ushort>();
+		internal readonly List<UnloadedInfo> infos;
 
 		internal bool canPurge = false; //for deleting unloaded mod data in a System; should point to UI flag; temp false
 
+		/// These values are synced to match UnloadedTilesSystem <see cref="UnloadedTilesSystem"/> 
+		internal static byte TilesIndex = 0;
+		internal static byte WallsIndex = 1;
+		internal static byte ChestIndex = 2;
 
-		public UpdateUnloaded(byte index) {
-			this.index = index;
+
+		public UpdateUnloaded(List<UnloadedInfo> infos) {
+			this.infos = infos;
 		}
 
-		public void UpdateInfos(IList<TagCompound> list) {
+		public void UpdateInfos(IList<TagCompound> list, byte index) {
 			//NOTE: infos and canRestore lists are same length so the indices match later for RestoreTilesAndWalls
-			UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
 			foreach (var infoTag in list) {
 				if (!infoTag.ContainsKey("mod")) {
 					// infos entries get nulled out once restored, leading to an empty tag. This aligns CanRestore and Infos
-					switch (index) {
-						case 0:
-							modSystem.tileInfos.Add(null);
-							break;
-						case 1:
-							modSystem.wallInfos.Add(null);
-							break;
-						case 2:
-							modSystem.chestInfos.Add(null);
-							break;
-					}
+					infos.Add(null);
 					canRestore.Add(0);
 					continue;
 				}
@@ -43,68 +37,37 @@ namespace Terraria.ModLoader.Default
 				ushort fallbackType = infoTag.Get<ushort>("fallbackType");
 				TagCompound customData = infoTag.Get<TagCompound>("customData");
 
-				ushort type = 0;
-				ModTile tile;
-
 				var info = new UnloadedInfo(modName, name, fallbackType,customData);
-				switch (index) {
-					case 0:
-						modSystem.tileInfos.Add(info);
-						type = ModContent.TryFind(modName, name, out tile) ? tile.Type : (ushort)0;
-						break;
-					case 1:
-						modSystem.wallInfos.Add(info);
-						type = ModContent.TryFind(modName, name, out ModWall wall) ? wall.Type : (ushort)0;
-						break;
-					case 2:
-						modSystem.chestInfos.Add(info);
-						type = ModContent.TryFind(modName, name, out tile) ? tile.Type : (ushort)0;
-						break;
-				}
+				infos.Add(info);
+
+				//TODO: find a way to remove the typing sensitivity so this class is truly generic and can eliminate index
+				ushort type = 0;
+				if (index == TilesIndex || index == ChestIndex) // is a tile
+					type = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : (ushort)0;
+				else if (index == WallsIndex) // is a wall
+					type = ModContent.TryFind(modName, name, out ModWall wall) ? wall.Type : (ushort)0;
+
 				if ((type == 0) && canPurge)
 					type = infoTag.Get<ushort>("fallbackType");
+
 				canRestore.Add(type);
 				if (type != 0)
 					canRestoreFlag = true;
 			}
 		}
 
-		public void UpdateMaps(IList<TagCompound> list) {
-			UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
+		public void UpdateMaps(IList<TagCompound> list, Dictionary<int,int> posMap) {
 			foreach (var posTag in list) {
-				int PosID = posTag.Get<int>("posID");
+				int posID = posTag.Get<int>("posID");
 				int infoID = posTag.Get<int>("infoID");
-				switch (index) {
-					case 0:
-						modSystem.tileInfoMap[PosID] = infoID;
-						break;
-					case 1:
-						modSystem.wallInfoMap[PosID] = infoID;
-						break;
-					case 2:
-						modSystem.chestInfoMap[PosID] = infoID;
-						break;
-				}
+				posMap[posID] = infoID;
 
 			}
 		}
 
-		public void CleanupMaps() {
+		public void CleanupMaps(Dictionary<int, int> infoMap) {
 			if (canRestoreFlag) {
-				UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
 				List<int> nullable = new List<int>();
-				Dictionary<int, int> infoMap = null;
-				switch (index) {
-					case 0:
-						infoMap = modSystem.tileInfoMap;
-						break;
-					case 1:
-						infoMap = modSystem.wallInfoMap;
-						break;
-					case 2:
-						infoMap = modSystem.chestInfoMap;
-						break;
-				}
 				foreach (var entry in infoMap) {
 					if (canRestore[entry.Value] > 0) {
 						nullable.Add(entry.Key);
@@ -121,17 +84,7 @@ namespace Terraria.ModLoader.Default
 				UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
 				for (int k = 0; k < canRestore.Count; k++) {
 					if (canRestore[k] > 0)
-						switch (index) {
-							case 0:
-								modSystem.tileInfos[k] = null;
-								break;
-							case 1:
-								modSystem.wallInfos[k] = null;
-								break;
-							case 2:
-								modSystem.chestInfos[k] = null;
-								break;
-						}
+						infos[k] = null;
 				}
 			}
 		}

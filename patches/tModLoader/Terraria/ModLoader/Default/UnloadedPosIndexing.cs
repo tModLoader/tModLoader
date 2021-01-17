@@ -9,26 +9,7 @@ namespace Terraria.ModLoader.Default
 			this.posID = posX * Main.maxTilesY + posY; // Order determined in accordance with increasing Y in TileIO ReadModData such that PosID is ordered numerically
 		}
 
-		public void SaveInfoToPos(UnloadedInfo info,byte index) {
-			UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
-			List<UnloadedInfo> infos = null;
-			Dictionary<int, int> posMap = null;
-
-			switch (index) {
-				case 0:
-					infos = modSystem.tileInfos;
-					posMap = modSystem.tileInfoMap;
-					break;
-				case 1:
-					infos = modSystem.wallInfos;
-					posMap = modSystem.wallInfoMap;
-					break;
-				case 2:
-					infos = modSystem.chestInfos;
-					posMap = modSystem.chestInfoMap;
-					break;
-			}
-			
+		public void SaveInfoToPos(UnloadedInfo info, List<UnloadedInfo> infos, Dictionary<int, int> posMap) {
 			int pendingID = infos.IndexOf(info);
 			if (pendingID < 0) {
 				pendingID = 0;

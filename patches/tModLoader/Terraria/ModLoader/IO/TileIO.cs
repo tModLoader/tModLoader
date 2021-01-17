@@ -7,6 +7,7 @@ using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
+using Terraria.ObjectData;
 
 namespace Terraria.ModLoader.IO
 {
@@ -23,12 +24,6 @@ namespace Terraria.ModLoader.IO
 		internal static ushort PendingNonSolidTile => ModContent.Find<ModTile>("ModLoader/PendingNonSolidTile").Type;
 
 		internal static ushort PendingSemiSolidTile => ModContent.Find<ModTile>("ModLoader/PendingSemiSolidTile").Type;
-
-		/// These values are synced to match UpdateUnloadedInfos <see cref="UpdateUnloadedInfos"/> 
-		/// and synced to UnloadedPosIndexing <see cref="UnloadedPosIndexing"/>
-		internal static byte TilesIndex = 0;
-		internal static byte WallsIndex = 1;
-		internal static byte ChestIndex = 2;
 
 		//*********** Tile, Walls, & Chests Save, Load, and Placeholder Implementations ***************************//
 		//Should add liquids data to implementation in locational data
@@ -434,6 +429,7 @@ namespace Terraria.ModLoader.IO
 				flags2 = reader.ReadByte();
 			}
 
+			UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
 			UnloadedPosIndexing posIndexer = new UnloadedPosIndexing(i, j);
 			UnloadedInfo info = null;
 
@@ -478,48 +474,61 @@ namespace Terraria.ModLoader.IO
 					// Handle Disabled Mods and Implement Pending Tile
 					bool nonSolidChk = tile.type == PendingNonSolidTile;
 					bool semiSolidChk = tile.type == PendingSemiSolidTile;
+					bool isPendingChest = tile.type == PendingChest;
+					bool isPendingDresser = tile.type == PendingDresser;
+					bool isPendingContainer = isPendingChest || isPendingDresser;
 
 					if (tile.type == PendingTile || nonSolidChk || semiSolidChk) {
 						// Load saved Basic Tile Type Data into UnloadedTileInfo and index
 						info = new UnloadedInfo(tables.tileModNames[saveType], tables.tileNames[saveType],tables.tileFallback[saveType]);
-						posIndexer.SaveInfoToPos(info,TilesIndex);
+						posIndexer.SaveInfoToPos(info,modSystem.tileInfos,modSystem.tileInfoMap);
 						tile.type = UnloadedTilesSystem.UnloadedTile;
 						if (nonSolidChk)
 							tile.type = UnloadedTilesSystem.UnloadedNonSolidTile;
 						if (semiSolidChk)
 							tile.type = UnloadedTilesSystem.UnloadedSemiSolidTile;
 					}
-					else if (tile.type == PendingChest) {
-						bool accountedFor = ( //Extremely janky check that not sure why is needed and works
-							Main.tile[i - 1, j].type == UnloadedTilesSystem.UnloadedChest ||
-							Main.tile[i, j - 1].type == UnloadedTilesSystem.UnloadedChest ||
-							Main.tile[i - 1, j - 1].type == UnloadedTilesSystem.UnloadedChest);
+					
+					else if (isPendingContainer) {
+						bool accountedFor = false;
+						
+						ushort unloadedContainer = 0;
+						if (isPendingChest)
+							unloadedContainer = UnloadedTilesSystem.UnloadedChest;
+						else if (isPendingDresser)
+							unloadedContainer = UnloadedTilesSystem.UnloadedDresser;
+
+						//Moderately janky check that not sure why is needed and doesn't break
+						TileObjectData tileData = TileObjectData.GetTileData(tile.type, 0);
+						for (int m = 0; m < tileData.Width; m++) {
+							for (int n = 0; n < tileData.Height; n++) {
+								if (Main.tile[i - m, j - n].type ==  unloadedContainer)
+									accountedFor = true;
+							}
+						}
+
 						if (!accountedFor) { // Only care about top-left tile of 2x2 for Chests
 							TagCompound customData = new TagCompound {
 								["chestStyle"] = chestStyle,
 							};
-							// Load saved Basic Chest Type Data into UnloadedChestInfo and index
+							// Load saved Basic Container Type Data into UnloadedChestInfo and index
 							info = new UnloadedInfo(tables.tileModNames[saveType], tables.tileNames[saveType],tables.tileFallback[saveType],customData);
-							posIndexer.SaveInfoToPos(info,ChestIndex);
-							// Place UnloadedChest (required to preserve the inventory and re-namings
-							WorldGen.PlaceChestDirect(i, j + 1, UnloadedTilesSystem.UnloadedChest, 0, -1);
+							posIndexer.SaveInfoToPos(info, modSystem.chestInfos, modSystem.chestInfoMap);
+
+							if (isPendingChest) {
+								// Place UnloadedChest (required to preserve the inventory and re-namings
+								WorldGen.PlaceChestDirect(i, j + 1, unloadedContainer, 0, -1);
+							}
+							else if (isPendingDresser) {
+								// Place UnloadedDresser (required to preserve the inventory and re-namings
+								WorldGen.PlaceDresserDirect(i + 1, j + 1, unloadedContainer, 0, -1);
+							}
+							
 						}
 					}
-					else if (tile.type == PendingDresser) {
-						bool accountedFor = ( //Extremely janky check that not sure why is needed and works
-							Main.tile[i - 1, j].type == UnloadedTilesSystem.UnloadedDresser || //bottom middle
-							Main.tile[i, j - 1].type == UnloadedTilesSystem.UnloadedDresser || //top right
-							Main.tile[i - 1, j - 1].type == UnloadedTilesSystem.UnloadedDresser || //top middle
-							Main.tile[i - 2, j - 1].type == UnloadedTilesSystem.UnloadedDresser || //top left
-							Main.tile[i - 2, j].type == UnloadedTilesSystem.UnloadedDresser); //bottom left
-						if (!accountedFor) { // Only care about top-left tile of 3x2 for Dressers
-							// Load saved Basic Dresser Type Data into UnloadedChestInfo and index
-							info = new UnloadedInfo(tables.tileModNames[saveType], tables.tileNames[saveType], tables.tileFallback[saveType]);
-							posIndexer.SaveInfoToPos(info,ChestIndex);
-							// Place UnloadedChest (required to preserve the inventory and re-namings
-							WorldGen.PlaceDresserDirect(i + 1, j + 1, UnloadedTilesSystem.UnloadedDresser, 0, -1);
-						}
-					}
+
+					
+
 				}
 				// Ready Tile
 				WorldGen.tileCounts[tile.type] += j <= Main.worldSurface ? 5 : 1;
@@ -530,7 +539,7 @@ namespace Terraria.ModLoader.IO
 				tile.wall = tables.walls[saveWallType];
 				if (tile.wall == PendingWallType) {
 					info = new UnloadedInfo(tables.wallModNames[saveWallType], tables.wallNames[saveWallType],tables.wallFallback[saveWallType]);
-					posIndexer.SaveInfoToPos(info,WallsIndex);
+					posIndexer.SaveInfoToPos(info, modSystem.wallInfos, modSystem.wallInfoMap);
 					tile.wall = UnloadedTilesSystem.UnloadedWallType;
 				}
 				if ((flags & TileIOFlags.WallColor) == TileIOFlags.WallColor) {
