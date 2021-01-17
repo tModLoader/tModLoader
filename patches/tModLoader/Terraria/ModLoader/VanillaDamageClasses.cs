@@ -1,68 +1,50 @@
-﻿using System.Collections.Generic;
-using Terraria.Localization;
+﻿using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
-	public class Generic : DamageClass
+	public abstract class VanillaDamageClass : DamageClass
 	{
-		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.55").Substring(1);
+		internal protected override string DisplayNameInternal => Language.GetTextValue(LangKey).Substring(1);
+
+		protected abstract string LangKey { get; }
 
 		public override float BenefitsFrom(DamageClass damageClass) => 0;
 
 		public override bool CountsAs(DamageClass damageClass) => false;
 	}
 
-	public class NoScaling : DamageClass
+	public class Generic : VanillaDamageClass
 	{
-		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.55").Substring(1);
-
-		public override float BenefitsFrom(DamageClass damageClass) => 0;
-
-		public override bool CountsAs(DamageClass damageClass) => false;
+		protected override string LangKey => "LegacyTooltip.55";
 	}
 
-	public class Melee : DamageClass
+	public class NoScaling : VanillaDamageClass
 	{
-		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.2").Substring(1);
-
-		public override float BenefitsFrom(DamageClass damageClass) => 0;
-
-		public override bool CountsAs(DamageClass damageClass) => false;
+		protected override string LangKey => "LegacyTooltip.55";
 	}
 
-	public class Ranged : DamageClass
+	public class Melee : VanillaDamageClass
 	{
-		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.3").Substring(1);
-
-		public override float BenefitsFrom(DamageClass damageClass) => 0;
-
-		public override bool CountsAs(DamageClass damageClass) => false;
+		protected override string LangKey => "LegacyTooltip.2";
 	}
 
-	public class Magic : DamageClass
+	public class Ranged : VanillaDamageClass
 	{
-		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.4").Substring(1);
-
-		public override float BenefitsFrom(DamageClass damageClass) => 0;
-
-		public override bool CountsAs(DamageClass damageClass) => false;
+		protected override string LangKey => "LegacyTooltip.3";
 	}
 
-	public class Summon : DamageClass
+	public class Magic : VanillaDamageClass
 	{
-		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.53").Substring(1);
-
-		public override float BenefitsFrom(DamageClass damageClass) => 0;
-
-		public override bool CountsAs(DamageClass damageClass) => false;
+		protected override string LangKey => "LegacyTooltip.4";
 	}
 
-	public class Throwing : DamageClass
+	public class Summon : VanillaDamageClass
 	{
-		internal protected override string DisplayNameInternal => Language.GetTextValue("LegacyTooltip.58").Substring(1);
+		protected override string LangKey => "LegacyTooltip.53";
+	}
 
-		public override float BenefitsFrom(DamageClass damageClass) => 0;
-
-		public override bool CountsAs(DamageClass damageClass) => false;
+	public class Throwing : VanillaDamageClass
+	{
+		protected override string LangKey => "LegacyTooltip.58";
 	}
 }
