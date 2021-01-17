@@ -8,7 +8,7 @@ namespace Terraria.ModLoader
 
 		protected abstract string LangKey { get; }
 
-		public override float BenefitsFrom(DamageClass damageClass) => 0;
+		protected override float GetBenefitsFrom(DamageClass damageClass) => 0;
 
 		public override bool CountsAs(DamageClass damageClass) => false;
 	}

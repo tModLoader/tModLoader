@@ -3717,7 +3717,7 @@
 +				kbModifier = kbModifier.CombineWith(GetKnockback(sItem.DamageType));
 +
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				float scale = sItem.DamageType.BenefitsFrom(damageClass);
++				float scale = sItem.DamageType.GetCachedBenifitsFrom(damageClass);
 +				if (scale != 0)
 +					kbModifier = kbModifier.CombineWith(GetKnockback(damageClass).Scale(scale));
 +			}
@@ -3732,7 +3732,7 @@
  			if (sItem.melee)
  				return meleeCrit;
  
-@@ -36364,9 +_,24 @@
+@@ -36364,9 +_,25 @@
  				return magicCrit;
  
  			return 0;
@@ -3743,8 +3743,9 @@
 +				crit += GetCritChance(sItem.DamageType);
 +
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				if (sItem.DamageType.BenefitsFrom(damageClass) != 0) {
-+					crit += (int)(GetCritChance(damageClass) * sItem.DamageType.BenefitsFrom(damageClass));
++				float scale = sItem.DamageType.GetCachedBenifitsFrom(damageClass);
++				if (scale != 0) {
++					crit += (int)(GetCritChance(damageClass) * scale);
 +				}
 +			}
 +
@@ -3776,7 +3777,7 @@
 +				damage = damage.CombineWith(GetDamage(sItem.DamageType));
 +
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				float scale = sItem.DamageType.BenefitsFrom(damageClass);
++				float scale = sItem.DamageType.GetCachedBenifitsFrom(damageClass);
 +				if (scale != 0)
 +					damage = damage.CombineWith(GetDamage(damageClass).Scale(scale));
 +			}
