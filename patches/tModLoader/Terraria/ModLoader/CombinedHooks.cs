@@ -9,14 +9,14 @@ namespace Terraria.ModLoader
 			PlayerHooks.ModifyWeaponDamage(player, item, ref damage, ref flat);
 		}
 
-		public static void GetWeaponCrit(Player player, Item item, ref int crit) {
-			ItemLoader.GetWeaponCrit(item, player, ref crit);
-			PlayerHooks.GetWeaponCrit(player, item, ref crit);
+		public static void ModifyWeaponCrit(Player player, Item item, ref int crit) {
+			ItemLoader.ModifyWeaponCrit(item, player, ref crit);
+			PlayerHooks.ModifyWeaponCrit(player, item, ref crit);
 		}
 
-		public static void GetWeaponKnockback(Player player, Item item, ref StatModifier knockback, ref float flat) {
-			ItemLoader.GetWeaponKnockback(item, player, ref knockback, ref flat);
-			PlayerHooks.GetWeaponKnockback(player, item, ref knockback, ref flat);
+		public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback, ref float flat) {
+			ItemLoader.ModifyWeaponKnockback(item, player, ref knockback, ref flat);
+			PlayerHooks.ModifyWeaponKnockback(player, item, ref knockback, ref flat);
 		}
 
 		public static void ModifyManaCost(Player player, Item item, ref float reduce, ref float mult) {

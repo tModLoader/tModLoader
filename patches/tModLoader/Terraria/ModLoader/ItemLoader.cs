@@ -456,35 +456,35 @@ namespace Terraria.ModLoader
 				g.Instance(item).ModifyWeaponDamage(item, player, ref damage, ref flat);
 		}
 
-		private delegate void DelegateGetWeaponKnockback(Item item, Player player, ref StatModifier knockback, ref float flat);
-		private static HookList HookGetWeaponKnockback = AddHook<DelegateGetWeaponKnockback>(g => g.GetWeaponKnockback);
+		private delegate void DelegateModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback, ref float flat);
+		private static HookList HookModifyWeaponKnockback = AddHook<DelegateModifyWeaponKnockback>(g => g.ModifyWeaponKnockback);
 		/// <summary>
 		/// Calls ModItem.GetWeaponKnockback, then all GlobalItem.GetWeaponKnockback hooks.
 		/// </summary>
-		public static void GetWeaponKnockback(Item item, Player player, ref StatModifier knockback, ref float flat) {
+		public static void ModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback, ref float flat) {
 			if (item.IsAir)
 				return;
 
-			item.ModItem?.GetWeaponKnockback(player, ref knockback, ref flat);
+			item.ModItem?.ModifyWeaponKnockback(player, ref knockback, ref flat);
 
-			foreach (var g in HookGetWeaponKnockback.arr)
-				g.Instance(item).GetWeaponKnockback(item, player, ref knockback, ref flat);
+			foreach (var g in HookModifyWeaponKnockback.arr)
+				g.Instance(item).ModifyWeaponKnockback(item, player, ref knockback, ref flat);
 		}
 
 
-		private delegate void DelegateGetWeaponCrit(Item item, Player player, ref int crit);
-		private static HookList HookGetWeaponCrit = AddHook<DelegateGetWeaponCrit>(g => g.GetWeaponCrit);
+		private delegate void DelegateModifyWeaponCrit(Item item, Player player, ref int crit);
+		private static HookList HookModifyWeaponCrit = AddHook<DelegateModifyWeaponCrit>(g => g.ModifyWeaponCrit);
 		/// <summary>
 		/// Calls ModItem.GetWeaponCrit, then all GlobalItem.GetWeaponCrit hooks.
 		/// </summary>
-		public static void GetWeaponCrit(Item item, Player player, ref int crit) {
+		public static void ModifyWeaponCrit(Item item, Player player, ref int crit) {
 			if (item.IsAir)
 				return;
 
-			item.ModItem?.GetWeaponCrit(player, ref crit);
+			item.ModItem?.ModifyWeaponCrit(player, ref crit);
 
-			foreach (var g in HookGetWeaponCrit.arr)
-				g.Instance(item).GetWeaponCrit(item, player, ref crit);
+			foreach (var g in HookModifyWeaponCrit.arr)
+				g.Instance(item).ModifyWeaponCrit(item, player, ref crit);
 		}
 
 		/// <summary>

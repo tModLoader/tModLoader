@@ -269,7 +269,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player using the item</param>
 		/// <param name="knockback">The knockback</param>
-		public virtual void GetWeaponKnockback(Player player, ref StatModifier knockback, ref float flat) {
+		public virtual void ModifyWeaponKnockback(Player player, ref StatModifier knockback, ref float flat) {
 		}
 
 		/// <summary>
@@ -277,7 +277,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player using this item</param>
 		/// <param name="crit">The critical strike chance, at 0 it will never trigger a crit and at 100 or above it will always trigger a crit</param>
-		public virtual void GetWeaponCrit(Player player, ref int crit) {
+		public virtual void ModifyWeaponCrit(Player player, ref int crit) {
 		}
 
 		/// <summary>

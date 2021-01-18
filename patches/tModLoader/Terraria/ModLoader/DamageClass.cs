@@ -8,7 +8,6 @@ namespace Terraria.ModLoader
 	public abstract class DamageClass : ModType
 	{
 		public static Generic Generic => ModContent.GetInstance<Generic>();
-		public static NoScaling NoScaling => ModContent.GetInstance<NoScaling>();
 		public static Melee Melee => ModContent.GetInstance<Melee>();
 		public static Ranged Ranged => ModContent.GetInstance<Ranged>();
 		public static Magic Magic => ModContent.GetInstance<Magic>();

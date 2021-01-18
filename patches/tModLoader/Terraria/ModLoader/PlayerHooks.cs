@@ -568,7 +568,7 @@ namespace Terraria.ModLoader
 		private delegate void DelegateGetWeaponKnockback(Item item, ref StatModifier knockback, ref float flat);
 		private static HookList HookGetWeaponKnockback = AddHook<DelegateGetWeaponKnockback>(p => p.GetWeaponKnockback);
 
-		public static void GetWeaponKnockback(Player player, Item item, ref StatModifier knockback, ref float flat) {
+		public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback, ref float flat) {
 			if (item.IsAir)
 				return;
 
@@ -580,7 +580,7 @@ namespace Terraria.ModLoader
 		private delegate void DelegateGetWeaponCrit(Item item, ref int crit);
 		private static HookList HookGetWeaponCrit = AddHook<DelegateGetWeaponCrit>(p => p.GetWeaponCrit);
 
-		public static void GetWeaponCrit(Player player, Item item, ref int crit) {
+		public static void ModifyWeaponCrit(Player player, Item item, ref int crit) {
 			if (item.IsAir) return;
 			foreach (int index in HookGetWeaponCrit.arr) {
 				player.modPlayers[index].GetWeaponCrit(item, ref crit);
