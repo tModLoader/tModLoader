@@ -198,7 +198,7 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item being used</param>
 		/// <param name="player">The player using the item</param>
 		/// <param name="knockback">The knockback</param>
-		public virtual void GetWeaponKnockback(Item item, Player player, ref StatModifier knockback, ref float flat) {
+		public virtual void ModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback, ref float flat) {
 		}
 
 		/// <summary>
@@ -207,7 +207,7 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item being used</param>
 		/// <param name="player">The player using the item</param>
 		/// <param name="crit">The critical strike chance</param>
-		public virtual void GetWeaponCrit(Item item, Player player, ref int crit) {
+		public virtual void ModifyWeaponCrit(Item item, Player player, ref int crit) {
 		}
 
 		/// <summary>

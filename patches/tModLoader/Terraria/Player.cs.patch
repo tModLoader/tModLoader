@@ -95,7 +95,7 @@
 +		public StatModifier rocketDamage = StatModifier.One;
 +		internal ref StatModifier minionDamage => ref GetDamage(DamageClass.Summon);
 +		public StatModifier allKB = StatModifier.One;
-+		internal ref StatModifier minionKB => ref GetKnockback(DamageClass.Summon);
++		public float minionKB = 0f;
 +		public float meleeSpeed;
  		public float moveSpeed = 1f;
  		public float pickSpeed = 1f;
@@ -1892,19 +1892,17 @@
  			meleeDamage = 1f;
  			rangedDamage = 1f;
  			magicDamage = 1f;
-@@ -12718,9 +_,11 @@
+@@ -12718,8 +_,10 @@
  			meleeCrit = 4;
  			rangedCrit = 4;
  			magicCrit = 4;
 +			*/
  			hasFootball = false;
  			drawingFootball = false;
--			minionKB = 0f;
 +			allKB = StatModifier.One;
-+			minionKB = StatModifier.One;
+ 			minionKB = 0f;
  			moveSpeed = 1f;
  			boneArmor = false;
- 			honey = false;
 @@ -12762,9 +_,14 @@
  			ammoCost75 = false;
  			manaRegenBuff = false;
@@ -3696,15 +3694,17 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -36335,6 +_,7 @@
+@@ -36335,6 +_,9 @@
  		}
  
  		public float GetWeaponKnockback(Item sItem, float KnockBack) {
++			if (sItem.IgnoreStatModifiers)
++				return sItem.knockBack;
 +			/*
  			if (sItem.summon)
  				KnockBack += minionKB;
  
-@@ -36349,11 +_,25 @@
+@@ -36349,11 +_,27 @@
  
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
@@ -3717,17 +3717,19 @@
 +				kbModifier = kbModifier.CombineWith(GetKnockback(sItem.DamageType));
 +
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				float scale = sItem.DamageType.BenefitsFrom(damageClass);
++				float scale = sItem.DamageType.GetBenefitFrom(damageClass);
 +				if (scale != 0)
 +					kbModifier = kbModifier.CombineWith(GetKnockback(damageClass).Scale(scale));
 +			}
 +
-+			float flat = 0f;
-+			CombinedHooks.GetWeaponKnockback(this, sItem, ref kbModifier, ref flat);
++			float flat = minionKB;
++			CombinedHooks.ModifyWeaponKnockback(this, sItem, ref kbModifier, ref flat);
 +			return Math.Max(0, KnockBack * kbModifier + flat);
  		}
  
  		public int GetWeaponCrit(Item sItem) {
++			if (sItem.IgnoreStatModifiers)
++				return sItem.crit;
 +			/*
  			if (sItem.melee)
  				return meleeCrit;
@@ -3743,12 +3745,12 @@
 +				crit += GetCritChance(sItem.DamageType);
 +
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				if (sItem.DamageType.BenefitsFrom(damageClass) != 0) {
-+					crit += (int)(GetCritChance(damageClass) * sItem.DamageType.BenefitsFrom(damageClass));
++				if (sItem.DamageType.GetBenefitFrom(damageClass) != 0) {
++					crit += (int)(GetCritChance(damageClass) * sItem.DamageType.GetBenefitFrom(damageClass));
 +				}
 +			}
 +
-+			CombinedHooks.GetWeaponCrit(this, sItem, ref crit);
++			CombinedHooks.ModifyWeaponCrit(this, sItem, ref crit);
 +			return crit;
  		}
  
@@ -3768,7 +3770,7 @@
 + 			}
  			return num;
 +			*/
-+			if (sItem.IgnoreDamageModifiers || sItem.DamageType == DamageClass.NoScaling)
++			if (sItem.IgnoreStatModifiers)
 +				return sItem.damage;
 +
 +			StatModifier damage = allDamage;
@@ -3776,7 +3778,7 @@
 +				damage = damage.CombineWith(GetDamage(sItem.DamageType));
 +
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				float scale = sItem.DamageType.BenefitsFrom(damageClass);
++				float scale = sItem.DamageType.GetBenefitFrom(damageClass);
 +				if (scale != 0)
 +					damage = damage.CombineWith(GetDamage(damageClass).Scale(scale));
 +			}

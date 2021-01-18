@@ -7,7 +7,6 @@ namespace Terraria.ModLoader
 	public abstract class DamageClass : ModType
 	{
 		public static Generic Generic => ModContent.GetInstance<Generic>();
-		public static NoScaling NoScaling => ModContent.GetInstance<NoScaling>();
 		public static Melee Melee => ModContent.GetInstance<Melee>();
 		public static Ranged Ranged => ModContent.GetInstance<Ranged>();
 		public static Magic Magic => ModContent.GetInstance<Magic>();
@@ -31,7 +30,7 @@ namespace Terraria.ModLoader
 		/// Returns 0 in all cases by default, which does not let any other classes boost this DamageClass.
 		/// </summary>
 		/// <param name="damageClass">The DamageClass which you want this DamageClass to benefit from statistically.</param>
-		public virtual float BenefitsFrom(DamageClass damageClass) => 0;
+		public virtual float GetBenefitFrom(DamageClass damageClass) => 0;
 
 		/// <summary> 
 		/// This lets you define the classes that this DamageClass will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.

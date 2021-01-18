@@ -16,14 +16,14 @@ namespace Terraria
 		internal GlobalItem[] globalItems = new GlobalItem[0];
 
 		/// <summary>
-		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
+		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or ModContent.GetInstance<T>() for custom damage types.
 		/// </summary>
 		public DamageClass DamageType { get; set; }
 
 		/// <summary>
-		/// Set this to true to prevent this weapon or ammo item from being adjusted by damage modifiers.
+		/// Set this to true to prevent this weapon or ammo item from being adjusted by stat modifiers (such as those for damage, crit chance, and knockback).
 		/// </summary>
-		public bool IgnoreDamageModifiers { get; set; }
+		public bool IgnoreStatModifiers { get; set; }
 
 		// Get
 

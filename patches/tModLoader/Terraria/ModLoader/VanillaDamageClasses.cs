@@ -8,7 +8,7 @@ namespace Terraria.ModLoader
 
 		protected abstract string LangKey { get; }
 
-		public override float BenefitsFrom(DamageClass damageClass) => 0;
+		public override float GetBenefitFrom(DamageClass damageClass) => 0;
 
 		public override bool CountsAs(DamageClass damageClass) => false;
 	}
@@ -18,33 +18,63 @@ namespace Terraria.ModLoader
 		protected override string LangKey => "LegacyTooltip.55";
 	}
 
-	public class NoScaling : VanillaDamageClass
-	{
-		protected override string LangKey => "LegacyTooltip.55";
-	}
-
 	public class Melee : VanillaDamageClass
 	{
 		protected override string LangKey => "LegacyTooltip.2";
+
+		public override float GetBenefitFrom(DamageClass damageClass) {
+			if (damageClass == Generic)
+				return 1f;
+
+			return 0f;
+		}
 	}
 
 	public class Ranged : VanillaDamageClass
 	{
 		protected override string LangKey => "LegacyTooltip.3";
+
+		public override float GetBenefitFrom(DamageClass damageClass) {
+			if (damageClass == Generic)
+				return 1f;
+
+			return 0f;
+		}
 	}
 
 	public class Magic : VanillaDamageClass
 	{
 		protected override string LangKey => "LegacyTooltip.4";
+
+		public override float GetBenefitFrom(DamageClass damageClass) {
+			if (damageClass == Generic)
+				return 1f;
+
+			return 0f;
+		}
 	}
 
 	public class Summon : VanillaDamageClass
 	{
 		protected override string LangKey => "LegacyTooltip.53";
+
+		public override float GetBenefitFrom(DamageClass damageClass) {
+			if (damageClass == Generic)
+				return 1f;
+
+			return 0f;
+		}
 	}
 
 	public class Throwing : VanillaDamageClass
 	{
 		protected override string LangKey => "LegacyTooltip.58";
+
+		public override float GetBenefitFrom(DamageClass damageClass) {
+			if (damageClass == Generic)
+				return 1f;
+
+			return 0f;
+		}
 	}
 }
