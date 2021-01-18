@@ -82,11 +82,11 @@
 -		public float minionDamage = 1f;
 -		public float minionKB;
 -		public float meleeSpeed = 1f;
-+		public int allCrit;
++		internal ref int allCrit => ref GetCritChance(DamageClass.Generic);
 +		internal ref int meleeCrit => ref GetCritChance(DamageClass.Melee);
 +		internal ref int magicCrit => ref GetCritChance(DamageClass.Magic);
 +		internal ref int rangedCrit => ref GetCritChance(DamageClass.Ranged);
-+		public StatModifier allDamage = StatModifier.One;
++		internal ref StatModifier allDamage => ref GetDamage(DamageClass.Generic);
 +		internal ref StatModifier meleeDamage => ref GetDamage(DamageClass.Melee);
 +		internal ref StatModifier magicDamage => ref GetDamage(DamageClass.Magic);
 +		internal ref StatModifier rangedDamage => ref GetDamage(DamageClass.Ranged);
@@ -94,7 +94,7 @@
 +		public StatModifier arrowDamage = StatModifier.One;
 +		public StatModifier rocketDamage = StatModifier.One;
 +		internal ref StatModifier minionDamage => ref GetDamage(DamageClass.Summon);
-+		public StatModifier allKB = StatModifier.One;
++		internal ref StatModifier allKB => ref GetKnockback(DamageClass.Generic);
 +		public float minionKB = 0f;
 +		public float meleeSpeed;
  		public float moveSpeed = 1f;
