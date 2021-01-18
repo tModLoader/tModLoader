@@ -10,12 +10,13 @@ namespace ExampleMod.Content.DamageClasses
 			ClassName.SetDefault("example damage");
 		}
 
-		public override float BenefitsFrom(DamageClass damageClass) {
-			// Make this damage class not benefit from any otherclass stat bonuses by default.
-			return 0;
+		public override float GetBenefitFrom(DamageClass damageClass) {
+			// Make this damage class not benefit from any otherclass stat bonuses by default, but still benefit from universal "all (XYZ stat)" bonuses.
+			if (damageClass == DamageClass.Generic)
+				return 1f;
 
 			// Now, I know you're just dyin' to get into the fun side of things, so let's have ourselves some demonstrations.
-			// Feel free to comment out the above null return and uncomment one of the below! Experiment, play with the variables a bit. See what works best for you!
+			// Feel free to uncomment one of the below! Experiment, play with the variables a bit. See what works best for you!
 
 			// PROMPT: You want your damage class to benefit at a standard rate from a vanilla class' stat boosts.
 			// The below makes your class benefit at a standard rate (100%) from all melee stat bonuses.
@@ -51,10 +52,13 @@ namespace ExampleMod.Content.DamageClasses
 				return 2f;
 			*/
 			// Note that the other modded damage class isn't provided here --- that'd ruin the point, now wouldn't it?
+
+			return 0;
 		}
 
 		public override bool CountsAs(DamageClass damageClass) {
 			// Make this damage class not benefit from any otherclass effects (e.g. Spectre bolts, Magma Stone) by default.
+			// Note that unlike GetBenefitFrom, you do not need to account for universal bonuses in this method.
 			return false;
 		}
 	}
