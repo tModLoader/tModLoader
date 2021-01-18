@@ -94,7 +94,7 @@ namespace ExampleMod.Common.Systems
 				downedOtherBoss,
 			};
 			BitArray bitArray = new BitArray(flags);
-			byte[] bytes = new byte[bitArray.Length / 8]; //8 because that's the amount of bits in a byte
+			byte[] bytes = new byte[bitArray.Length / 8 + 1]; //8 because that's the amount of bits in a byte
 			bitArray.CopyTo(bytes, 0);
 
 			writer.Write(bytes.Length);
