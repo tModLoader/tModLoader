@@ -18,11 +18,16 @@ namespace Terraria.ModLoader
 		protected override string LangKey => "LegacyTooltip.55";
 	}
 
+	public class NoScaling : VanillaDamageClass
+	{
+		protected override string LangKey => "LegacyTooltip.55";
+	}
+
 	public class Melee : VanillaDamageClass
 	{
 		protected override string LangKey => "LegacyTooltip.2";
 
-		protected override float GetBenefitFrom(DamageClass damageClass) {
+		protected override float GetBenefitsFrom(DamageClass damageClass) {
 			if (damageClass == Generic)
 				return 1f;
 
@@ -34,7 +39,7 @@ namespace Terraria.ModLoader
 	{
 		protected override string LangKey => "LegacyTooltip.3";
 
-		protected override float GetBenefitFrom(DamageClass damageClass) {
+		protected override float GetBenefitsFrom(DamageClass damageClass) {
 			if (damageClass == Generic)
 				return 1f;
 
@@ -46,7 +51,7 @@ namespace Terraria.ModLoader
 	{
 		protected override string LangKey => "LegacyTooltip.4";
 
-		protected override float GetBenefitFrom(DamageClass damageClass) {
+		protected override float GetBenefitsFrom(DamageClass damageClass) {
 			if (damageClass == Generic)
 				return 1f;
 
@@ -58,7 +63,7 @@ namespace Terraria.ModLoader
 	{
 		protected override string LangKey => "LegacyTooltip.53";
 
-		protected override float GetBenefitFrom(DamageClass damageClass) {
+		protected override float GetBenefitsFrom(DamageClass damageClass) {
 			if (damageClass == Generic)
 				return 1f;
 
@@ -70,7 +75,7 @@ namespace Terraria.ModLoader
 	{
 		protected override string LangKey => "LegacyTooltip.58";
 
-		protected override float GetBenefitFrom(DamageClass damageClass) {
+		protected override float GetBenefitsFrom(DamageClass damageClass) {
 			if (damageClass == Generic)
 				return 1f;
 

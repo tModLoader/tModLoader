@@ -8,13 +8,14 @@ namespace Terraria.ModLoader
 	public abstract class DamageClass : ModType
 	{
 		public static Generic Generic => ModContent.GetInstance<Generic>();
+		public static NoScaling NoScaling => ModContent.GetInstance<NoScaling>();
 		public static Melee Melee => ModContent.GetInstance<Melee>();
 		public static Ranged Ranged => ModContent.GetInstance<Ranged>();
 		public static Magic Magic => ModContent.GetInstance<Magic>();
 		public static Summon Summon => ModContent.GetInstance<Summon>();
 		public static Throwing Throwing => ModContent.GetInstance<Throwing>();
 
-		private float?[] benifitsCache;
+		private float?[] benefitsCache;
 
 		/// <summary>
 		/// This is the internal ID of this DamageClass.
@@ -36,14 +37,14 @@ namespace Terraria.ModLoader
 		/// <param name="damageClass">The DamageClass which you want this DamageClass to benefit from statistically.</param>
 		protected virtual float GetBenefitsFrom(DamageClass damageClass) => 0;
 
-		public float GetCachedBenifitsFrom(DamageClass damageClass) {
-			ref float? benifit = ref benifitsCache[damageClass.Type];
+		public float GetCachedBenefitsFrom(DamageClass damageClass) {
+			ref float? benefit = ref benefitsCache[damageClass.Type];
 			
-			if(benifit is null) {
-				benifit = GetBenefitsFrom(damageClass);
+			if (benefit is null) {
+				benefit = GetBenefitsFrom(damageClass);
 			}
 
-			return benifit.Value;
+			return benefit.Value;
 		}
 
 		/// <summary> 
@@ -64,7 +65,7 @@ namespace Terraria.ModLoader
 		}
 
 		public override void SetupContent() {
-			benifitsCache = new float?[DamageClassLoader.DamageClassCount];
+			benefitsCache = new float?[DamageClassLoader.DamageClassCount];
 		}
 	}
 }

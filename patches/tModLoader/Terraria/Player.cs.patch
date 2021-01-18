@@ -3694,17 +3694,15 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -36335,6 +_,9 @@
+@@ -36335,6 +_,7 @@
  		}
  
  		public float GetWeaponKnockback(Item sItem, float KnockBack) {
-+			if (sItem.IgnoreStatModifiers)
-+				return sItem.knockBack;
 +			/*
  			if (sItem.summon)
  				KnockBack += minionKB;
  
-@@ -36349,11 +_,27 @@
+@@ -36349,11 +_,22 @@
  
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
@@ -3712,12 +3710,9 @@
 -			return KnockBack;
 +			*/
 +
-+			StatModifier kbModifier = allKB;
-+			if (sItem.DamageType != DamageClass.Generic)
-+				kbModifier = kbModifier.CombineWith(GetKnockback(sItem.DamageType));
-+
++			StatModifier kbModifier = GetKnockback(sItem.DamageType);
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				float scale = sItem.DamageType.GetCachedBenifitsFrom(damageClass);
++				float scale = sItem.DamageType.GetCachedBenefitsFrom(damageClass);
 +				if (scale != 0)
 +					kbModifier = kbModifier.CombineWith(GetKnockback(damageClass).Scale(scale));
 +			}
@@ -3728,24 +3723,19 @@
  		}
  
  		public int GetWeaponCrit(Item sItem) {
-+			if (sItem.IgnoreStatModifiers)
-+				return sItem.crit;
 +			/*
  			if (sItem.melee)
  				return meleeCrit;
  
-@@ -36364,9 +_,25 @@
+@@ -36364,9 +_,22 @@
  				return magicCrit;
  
  			return 0;
 +			*/
 +
-+			int crit = allCrit + sItem.crit;
-+			if (sItem.DamageType != DamageClass.Generic)
-+				crit += GetCritChance(sItem.DamageType);
-+
++			int crit = sItem.crit + GetCritChance(sItem.DamageType);
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				float scale = sItem.DamageType.GetCachedBenifitsFrom(damageClass);
++				float scale = sItem.DamageType.GetCachedBenefitsFrom(damageClass);
 +				if (scale != 0) {
 +					crit += (int)(GetCritChance(damageClass) * scale);
 +				}
@@ -3760,7 +3750,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -36388,10 +_,39 @@
+@@ -36388,10 +_,34 @@
  				}
  				else if (sItem.summon) {
  					num = (int)((float)num * minionDamage);
@@ -3771,15 +3761,10 @@
 + 			}
  			return num;
 +			*/
-+			if (sItem.IgnoreStatModifiers)
-+				return sItem.damage;
 +
-+			StatModifier damage = allDamage;
-+			if (sItem.DamageType != DamageClass.Generic)
-+				damage = damage.CombineWith(GetDamage(sItem.DamageType));
-+
++			StatModifier damage = GetDamage(sItem.DamageType);
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				float scale = sItem.DamageType.GetCachedBenifitsFrom(damageClass);
++				float scale = sItem.DamageType.GetCachedBenefitsFrom(damageClass);
 +				if (scale != 0)
 +					damage = damage.CombineWith(GetDamage(damageClass).Scale(scale));
 +			}

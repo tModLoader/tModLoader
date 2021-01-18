@@ -20,11 +20,6 @@ namespace Terraria
 		/// </summary>
 		public DamageClass DamageType { get; set; }
 
-		/// <summary>
-		/// Set this to true to prevent this weapon or ammo item from being adjusted by stat modifiers (such as those for damage, crit chance, and knockback).
-		/// </summary>
-		public bool IgnoreStatModifiers { get; set; }
-
 		// Get
 
 		/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
