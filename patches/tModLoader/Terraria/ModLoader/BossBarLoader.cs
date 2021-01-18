@@ -31,8 +31,7 @@ namespace Terraria.ModLoader
 
 		private static ModBossBarStyle switchToStyle = null;
 
-		private static ModBossBarStyle currentStyle = vanillaStyle;
-		public static ModBossBarStyle CurrentStyle => currentStyle;
+		public static ModBossBarStyle CurrentStyle { get; private set; } = vanillaStyle;
 
 		/// <summary>
 		/// The string that is saved in the config
@@ -111,15 +110,15 @@ namespace Terraria.ModLoader
 		/// Checks if the style was changed and applies it, saves the config if required
 		/// </summary>
 		internal static void HandleStyle() {
-			if (switchToStyle != null && switchToStyle != currentStyle) {
-				currentStyle.OnDeselected();
-				currentStyle = switchToStyle;
-				currentStyle.OnSelected();
+			if (switchToStyle != null && switchToStyle != CurrentStyle) {
+				CurrentStyle.OnDeselected();
+				CurrentStyle = switchToStyle;
+				CurrentStyle.OnSelected();
 			}
 			switchToStyle = null;
 
-			if (!styleLoading && currentStyle.SavedName != lastSelectedStyle) {
-				lastSelectedStyle = currentStyle.SavedName;
+			if (!styleLoading && CurrentStyle.SavedName != lastSelectedStyle) {
+				lastSelectedStyle = CurrentStyle.SavedName;
 				Main.SaveSettings();
 			}
 		}
