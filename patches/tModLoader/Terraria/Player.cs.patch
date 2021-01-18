@@ -2274,7 +2274,7 @@
  
  				meleeDamage += (1f - stealth) * 3f;
  				meleeCrit += (int)((1f - stealth) * 30f);
-+				GetKnockback(DamageClass.Melee).additive += GetKnockback(DamageClass.Melee).additive * (1f - stealth);
++				GetKnockback(DamageClass.Melee) *= 1f + (1f - stealth);
 +				/*
  				if (meleeCrit > 100)
 -					meleeCrit = 100;
