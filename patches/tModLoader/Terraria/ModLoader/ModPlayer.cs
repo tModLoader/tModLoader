@@ -432,7 +432,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item"></param>
 		/// <param name="knockback"></param>
-		public virtual void GetWeaponKnockback(Item item, ref StatModifier knockback, ref float flat) {
+		public virtual void ModifyWeaponKnockback(Item item, ref StatModifier knockback, ref float flat) {
 		}
 
 		/// <summary>
@@ -440,7 +440,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item">The item</param>
 		/// <param name="crit">The crit chance, ranging from 0 to 100</param>
-		public virtual void GetWeaponCrit(Item item, ref int crit) {
+		public virtual void ModifyWeaponCrit(Item item, ref int crit) {
 		}
 
 		/// <summary>
