@@ -147,12 +147,13 @@ namespace Terraria.ModLoader.Default
 			for (int x = 0; x < Main.maxTilesX; x++) {
 				for (int y = 0; y < Main.maxTilesY; y++) {
 
+					
 					// If tile is of Type unloaded, restore original by position mapping
 					Tile tile = Main.tile[x, y];
 					if (canRestoreFlag[TilesIndex] &&
 						(tile.type == unloadedTile || tile.type == unloadedNonSolidTile || tile.type == unloadedSemiSolidTile)) {
-						int posID = new UnloadedPosIndexing(x, y).posID;
-						tileInfoMap.TryGetValue(posID, out int infoID);
+						UnloadedPosIndexing posIndex = new UnloadedPosIndexing(x, y);
+						int infoID = posIndex.FloorGetValue(tileInfoMap);
 						if (canRestoreTiles[infoID] > 0) {
 							tile.type = canRestoreTiles[infoID];
 						}
@@ -160,8 +161,8 @@ namespace Terraria.ModLoader.Default
 
 					// If Tile is a Chest, Replace the chest with original by referencing position mapping 
 					if (canRestoreFlag[ChestIndex] && (tile.type == unloadedChest || tile.type == unloadedDresser)) {
-						int posID = new UnloadedPosIndexing(x, y).posID;
-						chestInfoMap.TryGetValue(posID, out int infoID);
+						UnloadedPosIndexing posIndex = new UnloadedPosIndexing(x, y);
+						int infoID = posIndex.FloorGetValue(chestInfoMap);
 						if (canRestoreChests[infoID] > 0) {
 							if (tile.type == unloadedDresser)
 								WorldGen.PlaceDresserDirect(x + 1, y + 1, canRestoreChests[infoID], 0, -1);
@@ -177,8 +178,8 @@ namespace Terraria.ModLoader.Default
 
 					// If tile has a wall, restore original by position mapping
 					if (canRestoreFlag[WallsIndex] && (tile.wall == unloadedWallType)) {
-						int posID = new UnloadedPosIndexing(x, y).posID;
-						wallInfoMap.TryGetValue(posID, out int infoID);
+						UnloadedPosIndexing posIndex = new UnloadedPosIndexing(x, y);
+						int infoID = posIndex.FloorGetValue(wallInfoMap);
 						if (canRestoreWalls[infoID] > 0) {
 							tile.wall = canRestoreWalls[infoID];
 						}

@@ -162,11 +162,12 @@ namespace Terraria.ModLoader.Default
 			}
 
 			if (tile != null && tile.type == Type) {
-				int PosID = top * Main.maxTilesX + left;
-				ModContent.GetInstance<UnloadedTilesSystem>().chestInfoMap.TryGetValue(PosID, out int frameID);
-				var infos = ModContent.GetInstance<UnloadedTilesSystem>().chestInfos;
-				if (frameID >= 0 && frameID < infos.Count) { // This only works in SP
-					var info = infos[frameID];
+				UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
+				UnloadedPosIndexing posIndex = new UnloadedPosIndexing(left, top);
+				int infoID = posIndex.FloorGetValue(modSystem.chestInfoMap);
+				var infos = modSystem.chestInfos;
+				if (infoID < infos.Count) { // This only works in SP
+					var info = infos[infoID];
 					if (info != null) {
 						player.cursorItemIconEnabled = true;
 						player.cursorItemIconID = -1;
@@ -187,11 +188,12 @@ namespace Terraria.ModLoader.Default
 			Player player = Main.LocalPlayer;
 			var tile = Main.tile[i, j];
 			if (tile != null && tile.type == Type) {
-				int PosID = j * Main.maxTilesX + i;
-				ModContent.GetInstance<UnloadedTilesSystem>().chestInfoMap.TryGetValue(PosID, out int frameID);
-				var infos = ModContent.GetInstance<UnloadedTilesSystem>().chestInfos;
-				if (frameID >= 0 && frameID < infos.Count) { // This only works in SP
-					var info = infos[frameID];
+				UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
+				UnloadedPosIndexing posIndex = new UnloadedPosIndexing(i, j);
+				int infoID = posIndex.FloorGetValue(modSystem.chestInfoMap);
+				var infos = modSystem.chestInfos;
+				if (infoID < infos.Count) { // This only works in SP
+					var info = infos[infoID];
 					if (info != null) {
 						player.cursorItemIconEnabled = true;
 						player.cursorItemIconID = -1;

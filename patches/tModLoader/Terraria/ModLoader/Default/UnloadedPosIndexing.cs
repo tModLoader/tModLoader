@@ -22,5 +22,17 @@ namespace Terraria.ModLoader.Default
 			}
 			posMap[posID] = pendingID;
 		}
+
+		public int FloorGetValue(Dictionary<int, int> posMap) {
+			Dictionary<int, int>.KeyCollection keys = posMap.Keys;
+			int floorKey = 0;
+			foreach (int testKey in keys) {
+				if (testKey > posID)
+					break;
+				floorKey = testKey;
+			}
+			posMap.TryGetValue(floorKey, out int value);
+			return value;
+		}
 	}
 }

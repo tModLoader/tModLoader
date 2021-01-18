@@ -43,11 +43,12 @@ namespace Terraria.ModLoader.Default
 		{
 			var tile = Main.tile[i, j];
 			if(tile != null && tile.type == Type) {
-				UnloadedTilesSystem modWorld = ModContent.GetInstance<UnloadedTilesSystem>();
-				int posID = new UnloadedPosIndexing(i, j).posID;
-				modWorld.tileInfoMap.TryGetValue(posID, out int infoID);
-				if (infoID >= 0) { // This only works in SP
-					var info = modWorld.tileInfos[infoID];
+				UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
+				UnloadedPosIndexing posIndex = new UnloadedPosIndexing(i, j);
+				int infoID = posIndex.FloorGetValue(modSystem.tileInfoMap);
+				var infos = modSystem.tileInfos;
+				if (infoID < infos.Count) { // This only works in SP
+					var info = infos[infoID];
 					if (info != null) {
 						Main.LocalPlayer.cursorItemIconEnabled = true;
 						Main.LocalPlayer.cursorItemIconID = -1;
