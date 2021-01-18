@@ -10,7 +10,7 @@ namespace ExampleMod.Content.DamageClasses
 			ClassName.SetDefault("example damage");
 		}
 
-		public override float GetBenefitFrom(DamageClass damageClass) {
+		protected override float GetBenefitFrom(DamageClass damageClass) {
 			// Make this damage class not benefit from any otherclass stat bonuses by default, but still benefit from universal "all (XYZ stat)" bonuses.
 			if (damageClass == DamageClass.Generic)
 				return 1f;
