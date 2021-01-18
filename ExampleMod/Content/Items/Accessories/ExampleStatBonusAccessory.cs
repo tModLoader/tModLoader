@@ -4,10 +4,12 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Accessories
 {
-	public class ExampleCustomDamageAccessory : ModItem
+	public class ExampleStatBonusAccessory : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("25% increased example damage\r\n10% increased example crit chance\r\n100% increased example knockback");
+			Tooltip.SetDefault("20% increased damage\n"
+							 + "10% increased melee crit chance\n"
+							 + "100% increased example knockback");
 		}
 
 		public override void SetDefaults() {
@@ -22,15 +24,16 @@ namespace ExampleMod.Content.Items.Accessories
 			// Modifier is a structure that separately holds float additive and multiplicative modifiers.
 			// When Modifier is applied to a value, its additive modifiers are applied before multiplicative ones.
 
-			// In this case, we're multiplying by 1.25f, which will mean a 25% damage increase after every additive modifier (and a number of multiplicative modifiers) are applied.
-			player.GetDamage<ExampleDamageClass>() *= 1.25f;
+			// In this case, we're multiplying by 1.20f, which will mean a 20% damage increase after every additive modifier (and a number of multiplicative modifiers) are applied.
+			// Since we're using DamageClass.Generic, this bonus applies to ALL damage the player deals.
+			player.GetDamage<DamageClass.Generic>() *= 1.20f;
 
 			// GetCrit, similarly to GetDamage, returns a reference to the specified damage class' crit chance.
-			// In this case, we're adding 10% crit chance.
-			player.GetCrit<ExampleDamageClass>() += 10;
+			// In this case, we're adding 10% crit chance, but only for the melee DamageClass (as such, only melee weapons will receive this bonus).
+			player.GetCrit<DamageClass.Melee>() += 10;
 
 			// GetKnockback is functionally identical to GetDamage, but for the knockback stat instead.
-			// In this case, we're adding 100% knockback additively.
+			// In this case, we're adding 100% knockback additively, but only for our custom example DamageClass (as such, only our example class weapons will receive this bonus).
 			player.GetKnockback<ExampleDamageClass>() += 1f;
 		}
 	}
