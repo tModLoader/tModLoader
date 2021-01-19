@@ -211,7 +211,7 @@
  			int logY = -1;
  			int dungeonLocation = 0;
 +
-+			SystemHooks.PreWorldGen();
++			GenerationHooks.PreWorldGen();
 +
  			AddGenerationPass("Reset", delegate (GenerationProgress progress, GameConfiguration passConfig) {
  				numOceanCaveTreasure = 0;
@@ -315,10 +315,10 @@
  				progress.Message = Lang.gen[87].Value;
  			});
  
-+			SystemHooks.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
++			GenerationHooks.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
  			_generator.GenerateWorld(customProgressObject);
  			ConsumePostGenActions(structures);
-+			SystemHooks.PostWorldGen();
++			GenerationHooks.PostWorldGen();
  			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
  			Main.NotifyOfEvent(GameNotificationType.WorldGen);
  			drunkWorldGenText = false;
@@ -446,7 +446,7 @@
  			AchievementsHelper.NotifyProgressionEvent(9);
 +			}));
 +
-+			SystemHooks.ModifyHardmodeTasks(hardmodeTasks);
++			GenerationHooks.ModifyHardmodeTasks(hardmodeTasks);
 +
 +			foreach (GenPass task in hardmodeTasks) {
 +				task.Apply(null, null);

@@ -295,24 +295,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void PreWorldGen() {
-			foreach (var system in HookPreWorldGen.arr) {
-				system.PreWorldGen();
-			}
-		}
-
-		public static void ModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight) {
-			foreach (var system in HookModifyWorldGenTasks.arr) {
-				system.ModifyWorldGenTasks(passes, ref totalWeight);
-			}
-		}
-
-		public static void PostWorldGen() {
-			foreach (var system in HookPostWorldGen.arr) {
-				system.PostWorldGen();
-			}
-		}
-
 		public static void ResetNearbyTileEffects() {
 			foreach (var system in HookResetNearbyTileEffects.arr) {
 				system.ResetNearbyTileEffects();
@@ -328,12 +310,6 @@ namespace Terraria.ModLoader
 		public static void ChooseWaterStyle(ref int style) {
 			foreach (var system in HookChooseWaterStyle.arr) {
 				system.ChooseWaterStyle(ref style);
-			}
-		}
-
-		public static void ModifyHardmodeTasks(List<GenPass> passes) {
-			foreach (var system in HookModifyHardmodeTasks.arr) {
-				system.ModifyHardmodeTasks(passes);
 			}
 		}
 

@@ -57,8 +57,6 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateModifyTimeRate(ref int timeRate, ref int tileUpdateRate);
 
-		private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight);
-
 		private delegate void DelegateChooseWaterStyle(ref int style);
 
 		private delegate bool DelegateHijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber);
@@ -135,19 +133,11 @@ namespace Terraria.ModLoader
 
 		private static HookList HookModifyTimeRate = AddHook<DelegateModifyTimeRate>(s => s.ModifyTimeRate);
 
-		private static HookList HookPreWorldGen = AddHook<Action>(s => s.PreWorldGen);
-
-		private static HookList HookModifyWorldGenTasks = AddHook<DelegateModifyWorldGenTasks>(s => s.ModifyWorldGenTasks);
-
-		private static HookList HookPostWorldGen = AddHook<Action>(s => s.PostWorldGen);
-
 		private static HookList HookResetNearbyTileEffects = AddHook<Action>(s => s.ResetNearbyTileEffects);
 
 		private static HookList HookTileCountsAvailable = AddHook<Action<int[]>>(s => s.TileCountsAvailable);
 
 		private static HookList HookChooseWaterStyle = AddHook<DelegateChooseWaterStyle>(s => s.ChooseWaterStyle);
-
-		private static HookList HookModifyHardmodeTasks = AddHook<Action<List<GenPass>>>(s => s.ModifyHardmodeTasks);
 
 		private static HookList HookHijackGetData = AddHook<DelegateHijackGetData>(s => s.HijackGetData);
 
