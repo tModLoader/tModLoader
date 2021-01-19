@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using ExampleMod.Content.Items.Accessories;
 using ExampleMod.Content.NPCs;
 using ExampleMod.Content.Pets.ExampleLightPet;
-using ExampleMod.Content.Items.Accessories;
 using ExampleMod.Content.Tiles;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.IO;
@@ -14,7 +14,6 @@ namespace ExampleMod.Content
 	public class ExampleGeneration : ModGeneration
 	{
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight) {
-
 			// Because world generation is like layering several images ontop of each other, we need to do some steps between the original world generation steps.
 
 			// The first step is an Ore. Most vanilla ores are generated in a step called "Shinies", so for maximum compatibility, we will also do this.
@@ -44,8 +43,7 @@ namespace ExampleMod.Content
 		// We can use PostWorldGen for world generation tasks that don't need to happen between vanilla world generation steps.
 		public override void PostWorldGen() {
 			// This is simply generating a line of Chlorophyte halfway down the world.
-			for (int i = 0; i < Main.maxTilesX; i++)
-			{
+			for (int i = 0; i < Main.maxTilesX; i++) {
 				Main.tile[i, Main.maxTilesY / 2].type = TileID.Chlorophyte;
 			}
 
