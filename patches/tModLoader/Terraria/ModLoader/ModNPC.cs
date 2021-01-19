@@ -313,7 +313,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this NPC dies. This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect.
+		/// Allows you to make things happen when this NPC dies (for example, dropping items and setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
 		/// </summary>
 		public virtual void OnKill() {
 		}
