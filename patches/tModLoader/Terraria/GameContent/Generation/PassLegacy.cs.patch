@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/Generation/PassLegacy.cs
++++ src/tModLoader/Terraria/GameContent/Generation/PassLegacy.cs
+@@ -102,7 +_,7 @@
+ 			{ "Lihzahrd Altars", 0.2171f },
+ 			{ "Micro Biomes", 24240.068f },
+ 			{ "Final Cleanup", 1768.4618f }		};
+-		private static readonly Dictionary<string, float> _weightMap = new Dictionary<string, float> {
++		private static readonly Dictionary<string, float> _weightMap = new Dictionary<string, float> { //TODO: Figure out what the hell this even does and how the numbers were chosen
+ 			{ "Reset", 0.9667f },
+ 			{ "Terrain", 507.352f },
+ 			{ "Dunes", 239.7913f },

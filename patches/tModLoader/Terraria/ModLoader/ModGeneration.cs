@@ -7,7 +7,7 @@ using Terraria.WorldBuilding;
 
 namespace Terraria.ModLoader
 {
-	public abstract partial class ModGeneration : ModType
+	public abstract class ModGeneration : ModType
 	{
 		protected override void Register() {
 			GenerationHooks.Add(this);
