@@ -1865,14 +1865,6 @@
  			if (whoAmI == Main.myPlayer) {
  				if (!onFire && !poisoned)
  					trapDebuffSource = false;
-@@ -17810,6 +_,7 @@
- 
- 			UpdateLuckFactors();
- 			RecalculateLuck();
-+			PlayerHooks.ModifyLuck(this, ref luck);
- 			if (luckNeedsSync && whoAmI == Main.myPlayer) {
- 				luckNeedsSync = false;
- 				NetMessage.SendData(134, -1, -1, null, whoAmI);
 @@ -17843,7 +_,7 @@
  			hideWolf = false;
  			forceWerewolf = false;
@@ -2006,15 +1998,26 @@
  		}
  
  		private void UpdateControlHolds() {
-@@ -19767,6 +_,8 @@
+@@ -19767,6 +_,10 @@
  		}
  
  		public void RecalculateLuck() {
-+			if (!PlayerHooks.PreModifyLuck(this, ref luck))
++			if (!PlayerHooks.PreModifyLuck(this, ref luck)) {
++				PlayerHooks.ModifyLuck(this, ref luck);
 +				return;
++			}
  			luck = GetLadyBugLuck() * 0.2f + torchLuck * 0.2f;
  			luck += (float)(int)luckPotion * 0.1f;
  			if (LanternNight.LanternsUp)
+@@ -19774,6 +_,8 @@
+ 
+ 			if (HasGardenGnomeNearby)
+ 				luck += 0.2f;
++
++			PlayerHooks.ModifyLuck(this, ref luck);
+ 		}
+ 
+ 		private static int GetMouseScrollDelta() => PlayerInput.ScrollWheelDelta / 120;
 @@ -19872,6 +_,8 @@
  
  			if (wingsLogic == 45 && (float)timeSinceLastDashStarted >= 60f)
