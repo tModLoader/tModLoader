@@ -51,6 +51,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookSetWorldGenDefaults = AddHook<Action>(s => s.SetWorldGenDefaults);
+		public static void SetWorldGenDefaults() {
+			foreach (var worldGen in HookSetWorldGenDefaults.arr) {
+				worldGen.SetWorldGenDefaults();
+			}
+		}
+
 		private static HookList HookPreWorldGen = AddHook<Action>(s => s.PreWorldGen);
 		public static void PreWorldGen() {
 			foreach (var worldGen in HookPreWorldGen.arr) {
@@ -73,10 +80,24 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookModifyMeteorTasks = AddHook<Action<List<GenPass>>>(s => s.ModifyMeteorTasks);
+		public static void ModifyMeteorTasks(List<GenPass> passes) {
+			foreach (var worldGen in HookModifyMeteorTasks.arr) {
+				worldGen.ModifyMeteorTasks(passes);
+			}
+		}
+
 		private static HookList HookModifyHardmodeTasks = AddHook<Action<List<GenPass>>>(s => s.ModifyHardmodeTasks);
 		public static void ModifyHardmodeTasks(List<GenPass> passes) {
 			foreach (var worldGen in HookModifyHardmodeTasks.arr) {
 				worldGen.ModifyHardmodeTasks(passes);
+			}
+		}
+
+		private static HookList HookModifyAltarTasks = AddHook<Action<List<GenPass>>>(s => s.ModifyAltarTasks);
+		public static void ModifyAltarTasks(List<GenPass> passes) {
+			foreach (var worldGen in HookModifyAltarTasks.arr) {
+				worldGen.ModifyAltarTasks(passes);
 			}
 		}
 	}
