@@ -36,7 +36,7 @@
  		public float minionSlots;
  		public int minionPos;
  		public int restrikeDelay;
-@@ -112,9 +_,42 @@
+@@ -112,9 +_,34 @@
  		public bool ownerHitCheck;
  		public int[] playerImmune = new int[255];
  		public string miscText = "";
@@ -70,15 +70,7 @@
 +					DamageType = DamageClass.Generic;
 +			}
 +		}
-+		internal bool minion {
-+			get => CountsAsClass(DamageClass.Summon);
-+			set {
-+				if (value)
-+					DamageType = DamageClass.Summon;
-+				else if (DamageType == DamageClass.Summon)
-+					DamageType = DamageClass.Generic;
-+			}
-+		}
++		public bool minion;
  		public bool coldDamage;
  		public bool noEnchantments;
  		public bool noEnchantmentVisuals;
