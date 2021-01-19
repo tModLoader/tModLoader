@@ -261,22 +261,6 @@ namespace Terraria.ModLoader
 			=> false;
 
 		/// <summary>
-		/// Allows a mod to run code before a world is generated.
-		/// </summary>
-		public virtual void PreWorldGen() { }
-
-		/// <summary>
-		/// A more advanced option to PostWorldGen, this method allows you modify the list of Generation Passes before a new world begins to be generated. <para/>
-		/// For example, removing the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon.
-		/// </summary>
-		public virtual void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight) { }
-
-		/// <summary>
-		/// Use this method to place tiles in the world after world generation is complete.
-		/// </summary>
-		public virtual void PostWorldGen() { }
-
-		/// <summary>
 		/// Use this to reset any fields you set in any of your ModTile.NearbyEffects hooks back to their default values.
 		/// </summary>
 		public virtual void ResetNearbyTileEffects() { }
@@ -290,10 +274,5 @@ namespace Terraria.ModLoader
 		/// Allows you to change the water style (determines water color) that is currently being used.
 		/// </summary>
 		public virtual void ChooseWaterStyle(ref int style) { }
-
-		/// <summary>
-		/// Similar to ModifyWorldGenTasks, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 4 items, the vanilla hardmode tasks called "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcment"
-		/// </summary>
-		public virtual void ModifyHardmodeTasks(List<GenPass> list) { }
 	}
 }
