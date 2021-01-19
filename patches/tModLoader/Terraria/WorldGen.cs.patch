@@ -242,24 +242,6 @@
  			Main.ladyBugRainBoost = 0;
  			Main.getGoodWorld = false;
  			Main.drunkWorld = false;
-@@ -2681,6 +_,9 @@
- 			if (Main.netMode != 2)
- 				Main.sectionManager = new WorldSections(Main.maxTilesX / 200, Main.maxTilesY / 150);
- 
-+			//Ok, so with this new system this is just not needed anymore. This is pretty radical to get rid of, so please look for bugs related to this closely.
-+			//Everything should still be vanilla compatible.
-+			/*
- 			if (Main.netMode != 1) {
- 				for (int l = 0; l < Main.maxTilesX; l++) {
- 					float num2 = (float)l / (float)Main.maxTilesX;
-@@ -2693,6 +_,7 @@
- 					}
- 				}
- 			}
-+			*/
- 
- 			for (int n = 0; n < Main.countsAsHostForGameplay.Length; n++) {
- 				Main.countsAsHostForGameplay[n] = false;
 @@ -5396,17 +_,18 @@
  			Main.lockMenuBGChange = true;
  			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
