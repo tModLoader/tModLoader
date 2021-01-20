@@ -1018,6 +1018,23 @@
  			else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
  				if (player[myPlayer].ZoneHallow) {
  					newMusic = 11;
+@@ -12221,11 +_,16 @@
+ 		}
+ 
+ 		public static void DoUpdate_AnimateItemIcons() {
++			//Lock the collection to avoid race conditions during mod loading & unloading.
++			Monitor.Enter(itemAnimationsRegistered);
++
+ 			for (int i = 0; i < itemAnimationsRegistered.Count; i++) {
+ 				int num = itemAnimationsRegistered[i];
+ 				if (itemAnimations[num] != null)
+ 					itemAnimations[num].Update();
+ 			}
++
++			Monitor.Exit(itemAnimationsRegistered);
+ 		}
+ 
+ 		public static void QueueMainThreadAction(Action action) {
 @@ -12246,6 +_,17 @@
  					Main.OnEnginePreload();
  			}
