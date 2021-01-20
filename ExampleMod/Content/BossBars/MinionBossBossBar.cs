@@ -16,7 +16,7 @@ namespace ExampleMod.Content.BossBars
 		private int bossHeadIndex = -1;
 
 		protected override IEnumerable<int> InitializeValidNPCs() {
-			return new List<int> { ModContent.NPCType<MinionBossBody>() };
+			return new int[] { ModContent.NPCType<MinionBossBody>() };
 			//We don't include the minion here as it's not an essential "segment" or body part of the boss itself (unlike Twins, Moonlord, Golem etc.)
 		}
 
