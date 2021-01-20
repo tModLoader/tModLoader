@@ -36,7 +36,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The string that is saved in the config
 		/// </summary>
-		internal static string lastSelectedStyle = CurrentStyle.SavedName;
+		internal static string lastSelectedStyle = CurrentStyle.FullName;
 
 		internal static readonly IList<ModBossBar> bossBars = new List<ModBossBar>();
 
@@ -102,7 +102,7 @@ namespace Terraria.ModLoader
 		/// Sets the saved style that should be switched to, handles possibly unloaded/invalid ones and defaults to the vanilla style
 		/// </summary>
 		internal static void GotoSavedStyle() {
-			switchToStyle = bossBarStyles.SingleOrDefault(m => m.SavedName == lastSelectedStyle) ?? vanillaStyle;
+			switchToStyle = bossBarStyles.SingleOrDefault(m => m.FullName == lastSelectedStyle) ?? vanillaStyle;
 			styleLoading = false;
 		}
 
@@ -117,8 +117,8 @@ namespace Terraria.ModLoader
 			}
 			switchToStyle = null;
 
-			if (!styleLoading && CurrentStyle.SavedName != lastSelectedStyle) {
-				lastSelectedStyle = CurrentStyle.SavedName;
+			if (!styleLoading && CurrentStyle.FullName != lastSelectedStyle) {
+				lastSelectedStyle = CurrentStyle.FullName;
 				Main.SaveSettings();
 			}
 		}

@@ -9,11 +9,6 @@ namespace Terraria.ModLoader
 	public abstract class ModBossBarStyle : ModType
 	{
 		/// <summary>
-		/// The string that gets saved in the config to represent this ModBossBarStyle. Defaults to "TheMod/TheModBossBarStyle".
-		/// </summary>
-		public string SavedName => $"{Mod?.Name ?? "Terraria"}/{Name}";
-
-		/// <summary>
 		/// Checks if the selected style matches this ModBossBarStyle.
 		/// </summary>
 		public bool IsSelected => BossBarLoader.CurrentStyle == this;
