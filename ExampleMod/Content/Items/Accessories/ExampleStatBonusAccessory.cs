@@ -26,11 +26,11 @@ namespace ExampleMod.Content.Items.Accessories
 
 			// In this case, we're multiplying by 1.20f, which will mean a 20% damage increase after every additive modifier (and a number of multiplicative modifiers) are applied.
 			// Since we're using DamageClass.Generic, this bonus applies to ALL damage the player deals.
-			player.GetDamage<DamageClass.Generic>() *= 1.20f;
+			player.GetDamage(DamageClass.Generic) *= 1.20f;
 
 			// GetCrit, similarly to GetDamage, returns a reference to the specified damage class' crit chance.
 			// In this case, we're adding 10% crit chance, but only for the melee DamageClass (as such, only melee weapons will receive this bonus).
-			player.GetCrit<DamageClass.Melee>() += 10;
+			player.GetCritChance(DamageClass.Melee) += 10;
 
 			// GetKnockback is functionally identical to GetDamage, but for the knockback stat instead.
 			// In this case, we're adding 100% knockback additively, but only for our custom example DamageClass (as such, only our example class weapons will receive this bonus).
