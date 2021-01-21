@@ -8,13 +8,13 @@ namespace Terraria.ModLoader
 {
 	public abstract class DamageClass : ModType
 	{
-		public static Generic Generic => ModContent.GetInstance<Generic>();
-		public static NoScaling NoScaling => ModContent.GetInstance<NoScaling>();
-		public static Melee Melee => ModContent.GetInstance<Melee>();
-		public static Ranged Ranged => ModContent.GetInstance<Ranged>();
-		public static Magic Magic => ModContent.GetInstance<Magic>();
-		public static Summon Summon => ModContent.GetInstance<Summon>();
-		public static Throwing Throwing => ModContent.GetInstance<Throwing>();
+		public static DamageClass Generic => ModContent.GetInstance<GenericDamageClass>();
+		public static DamageClass NoScaling => ModContent.GetInstance<NoScalingDamageClass>();
+		public static DamageClass Melee => ModContent.GetInstance<MeleeDamageClass>();
+		public static DamageClass Ranged => ModContent.GetInstance<RangedDamageClass>();
+		public static DamageClass Magic => ModContent.GetInstance<MagicDamageClass>();
+		public static DamageClass Summon => ModContent.GetInstance<SummonDamageClass>();
+		public static DamageClass Throwing => ModContent.GetInstance<ThrowingDamageClass>();
 
 		internal float[] benefitsCache;
 
