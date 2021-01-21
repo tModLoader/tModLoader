@@ -3715,7 +3715,7 @@
  			if (sItem.summon)
  				KnockBack += minionKB;
  
-@@ -36349,11 +_,25 @@
+@@ -36349,11 +_,26 @@
  
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
@@ -3723,13 +3723,14 @@
 -			return KnockBack;
 +			*/
 +
++			// implement minionKB as 'base damage'
++			KnockBack += minionKB * sItem.DamageType.GetCachedBenefitsFrom(DamageClass.Summon);
++
 +			StatModifier kbModifier = GetKnockback(sItem.DamageType);
 +			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
 +				float scale = sItem.DamageType.GetCachedBenefitsFrom(damageClass);
 +				if (scale != 0) {
 +					kbModifier = kbModifier.CombineWith(GetKnockback(damageClass).Scale(scale));
-+					if (damageClass == DamageClass.Summon)
-+						KnockBack += minionKB * GetKnockback(damageClass).Scale(scale);
 +				}
 +			}
 +
