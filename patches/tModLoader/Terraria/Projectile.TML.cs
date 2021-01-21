@@ -10,12 +10,19 @@ namespace Terraria
 
 		internal GlobalProjectile[] globalProjectiles = new GlobalProjectile[0];
 
+		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
 		/// The damage type of this Projectile. Assign to DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
 		/// </summary>
-		public DamageClass DamageType { get; set; }
+		public DamageClass DamageType {
+			get => _damageClass;
+			set {
+				if (value == null)
+					throw new ArgumentException("DamageType cannot be null");
 
-		// Get
+				_damageClass = value;
+			}
+		}
 
 		/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
@@ -51,11 +58,6 @@ namespace Terraria
 		}
 		*/
 
-		public bool CountsAsClass(DamageClass damageClass) {
-			if (DamageType != null)
-				return DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
-
-			return false;
-		}
+		public bool CountsAsClass(DamageClass damageClass) => DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
 	}
 }

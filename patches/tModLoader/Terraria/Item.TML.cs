@@ -15,12 +15,19 @@ namespace Terraria
 
 		internal GlobalItem[] globalItems = new GlobalItem[0];
 
+		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
 		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or ModContent.GetInstance<T>() for custom damage types.
 		/// </summary>
-		public DamageClass DamageType { get; set; } = DamageClass.Generic;
+		public DamageClass DamageType {
+			get => _damageClass;
+			set {
+				if (value == null)
+					throw new ArgumentException("DamageType cannot be null");
 
-		// Get
+				_damageClass = value;
+			}
+		}
 
 		/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
@@ -82,11 +89,6 @@ namespace Terraria
 		public static int NewItem(Vector2 position, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => 
 			NewItem((int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
-		public bool CountsAsClass(DamageClass damageClass) {
-			if (DamageType != null)
-				return DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
-
-			return false;
-		}
+		public bool CountsAsClass(DamageClass damageClass) => DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
 	}
 }
