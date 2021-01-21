@@ -2399,6 +2399,26 @@
  						if (buffType[num79] == 38)
  							DelBuff(num79);
  					}
+@@ -19257,15 +_,17 @@
+ 					Rectangle rectangle2 = new Rectangle((int)base.position.X, (int)base.position.Y, width, height);
+ 					for (int num80 = 0; num80 < 200; num80++) {
+ 						if (Main.npc[num80].active && !Main.npc[num80].dontTakeDamage && !Main.npc[num80].friendly && Main.npc[num80].immune[i] == 0 && CanNPCBeHitByPlayerOrPlayerProjectile(Main.npc[num80]) && rectangle2.Intersects(new Rectangle((int)Main.npc[num80].position.X, (int)Main.npc[num80].position.Y, Main.npc[num80].width, Main.npc[num80].height))) {
++							/*
+ 							float num81 = meleeCrit;
+ 							if (num81 < (float)rangedCrit)
+ 								num81 = rangedCrit;
+ 
+ 							if (num81 < (float)magicCrit)
+ 								num81 = magicCrit;
+-
++							*/
++							// congrats, minecarts now crit based on generic crit (which is probably what the above logic was trying to emulate)
+ 							bool crit = false;
+-							if ((float)Main.rand.Next(1, 101) <= num81)
++							if ((float)Main.rand.Next(1, 101) <= allCrit)
+ 								crit = true;
+ 
+ 							float currentSpeed = Math.Abs(base.velocity.X) / maxRunSpeed;
 @@ -19395,7 +_,7 @@
  
  			if (num83) {

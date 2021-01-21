@@ -347,8 +347,12 @@
  
  						if (aiStyle == 3) {
  							if (ai[0] == 0f) {
-@@ -10037,11 +_,15 @@
- 						if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
+@@ -10034,14 +_,18 @@
+ 							timeLeft = 1;
+ 
+ 						bool flag17 = false;
+-						if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
++						if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit + Main.player[owner].allCrit)
  							flag17 = true;
  
 +						//Patch context: ^ flag17, to be used below multiple times.
