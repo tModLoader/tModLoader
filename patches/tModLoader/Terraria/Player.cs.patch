@@ -4285,7 +4285,7 @@
  				}
  
  				return playerFileData;
-@@ -38226,7 +_,17 @@
+@@ -38226,7 +_,14 @@
  			return -1;
  		}
  
@@ -4295,9 +4295,6 @@
 +			buffType = new int[MaxBuffs];
 +			buffTime = new int[MaxBuffs];
 +			buffImmune = new bool[BuffLoader.BuffCount]; // TODO: Move all these patches to field initializers.
-+			allDamage = StatModifier.One;
-+			allCrit = 4;
-+			allKB = StatModifier.One;
 +			ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount];
 +			npcTypeNoAggro = new bool[NPCLoader.NPCCount];
 +			PlayerHooks.SetupPlayer(this);

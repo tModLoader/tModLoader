@@ -30,7 +30,9 @@ namespace Terraria.ModLoader
 
 		/// <summary> This is the name that will show up when an item tooltip displays 'X [ClassName]'. This should include the 'damage' part. </summary>
 		public string DisplayName => DisplayNameInternal;
-		
+
+		internal protected virtual string DisplayNameInternal => ClassName.GetTranslation(Language.ActiveCulture);
+
 		/// <summary>
 		/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
 		/// Returns 0 in all cases by default, which does not let any other classes boost this DamageClass.
@@ -52,7 +54,10 @@ namespace Terraria.ModLoader
 		/// <param name="damageClass">The DamageClass which you want this DamageClass to gain effects from.</param>
 		public virtual bool CountsAs(DamageClass damageClass) => false;
 
-		internal protected virtual string DisplayNameInternal => ClassName.GetTranslation(Language.ActiveCulture);
+		/// <summary> 
+		/// This lets you define default buffs for all items of this class (eg, base crit)
+		/// </summary>
+		public virtual void SetDefaultStats(Player player) {}
 
 		protected override void Register() {
 			ClassName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.DamageClassName.{Name}");

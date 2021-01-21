@@ -55,6 +55,7 @@ namespace Terraria
 
 			for (int i = 0; i < damageData.Length; i++) {
 				damageData[i] = new DamageClassData(StatModifier.One, 0, StatModifier.One);
+				DamageClassLoader.DamageClasses[i].SetDefaultStats(this);
 			}
 		}
 

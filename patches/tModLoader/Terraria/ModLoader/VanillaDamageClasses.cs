@@ -16,6 +16,10 @@ namespace Terraria.ModLoader
 		protected override string LangKey => "LegacyTooltip.55";
 
 		protected override float GetBenefitFrom(DamageClass damageClass) => 0;
+
+		public override void SetDefaultStats(Player player) {
+			player.GetCritChance(this) = 4;
+		}
 	}
 
 	public class NoScaling : VanillaDamageClass
