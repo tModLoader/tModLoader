@@ -21,12 +21,7 @@ namespace Terraria
 		/// </summary>
 		public DamageClass DamageType {
 			get => _damageClass;
-			set {
-				if (value == null)
-					throw new ArgumentException("DamageType cannot be null");
-
-				_damageClass = value;
-			}
+			set => _damageClass = value ?? throw new ArgumentException("DamageType cannot be null");
 		}
 
 		/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
