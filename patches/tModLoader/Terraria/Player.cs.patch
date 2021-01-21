@@ -930,6 +930,14 @@
  					minionDamage += (float)num / 100f;
  				}
  				else if (buffType[j] == 2) {
+@@ -6546,6 +_,7 @@
+ 				}
+ 				else if (buffType[j] == 16) {
+ 					archery = true;
++					arrowDamage *= 1.2f; // moved from PickAmmo, as StatModifier allows multiplicative buffs to be 'registered' before additive ones
+ 				}
+ 				else if (buffType[j] == 17) {
+ 					detectCreature = true;
 @@ -6670,9 +_,12 @@
  					endurance += 0.1f;
  				}
@@ -3765,7 +3773,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -36388,10 +_,36 @@
+@@ -36388,10 +_,32 @@
  				}
  				else if (sItem.summon) {
  					num = (int)((float)num * minionDamage);
@@ -3787,10 +3795,6 @@
 +			// TODO: use an ItemID.Sets for arrow/bullet/rocket
 +			if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
 +				damage = damage.CombineWith(arrowDamage);
-+
-+			// TODO: should this just be rolled into arrowDamage?
-+			if (sItem.useAmmo == AmmoID.Arrow && archery)
-+				damage *= 1.2f;
 +
 +			if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn)
 +				damage = damage.CombineWith(bulletDamage);
@@ -3841,7 +3845,7 @@
  				}
 -
 -				Damage = (int)((double)Damage * 1.2);
-+				// archery buff damage moved into GetWeaponDamage
++				// archery buff damage moved into UpdateBuffs
 +				// Damage = (int)((double)Damage * 1.2);
  			}
  
