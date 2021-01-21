@@ -3789,7 +3789,7 @@
 +			var currentModifiers = damageData;
 +			var scalings = sItem.DamageType.benefitsCache;
 +			for (int i = 0; i < currentModifiers.Length; i++) {
-+				damage = damage.CombineWith(currentModifiers[i].knockback.Scale(scalings[i]));
++				damage = damage.CombineWith(currentModifiers[i].damage.Scale(scalings[i]));
 +			}
 +
 +			// TODO: use an ItemID.Sets for arrow/bullet/rocket
