@@ -3715,7 +3715,7 @@
  			if (sItem.summon)
  				KnockBack += minionKB;
  
-@@ -36349,11 +_,26 @@
+@@ -36349,11 +_,25 @@
  
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
@@ -3724,14 +3724,13 @@
 +			*/
 +
 +			// implement minionKB as 'base damage'
-+			KnockBack += minionKB * sItem.DamageType.GetCachedBenefitsFrom(DamageClass.Summon);
++			KnockBack += minionKB * sItem.DamageType.GetCachedBenefitFrom(DamageClass.Summon);
 +
-+			StatModifier kbModifier = GetKnockback(sItem.DamageType);
-+			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				float scale = sItem.DamageType.GetCachedBenefitsFrom(damageClass);
-+				if (scale != 0) {
-+					kbModifier = kbModifier.CombineWith(GetKnockback(damageClass).Scale(scale));
-+				}
++			StatModifier kbModifier = StatModifier.One;
++			var currentModifiers = damageData;
++			var scalings = sItem.DamageType.benefitsCache;
++			for (int i = 0; i < currentModifiers.Length; i++) {
++				kbModifier = kbModifier.CombineWith(currentModifiers[i].knockback.Scale(scalings[i]));
 +			}
 +
 +			float flat = 0;
@@ -3744,18 +3743,17 @@
  			if (sItem.melee)
  				return meleeCrit;
  
-@@ -36364,9 +_,22 @@
+@@ -36364,9 +_,21 @@
  				return magicCrit;
  
  			return 0;
 +			*/
 +
-+			int crit = sItem.crit + GetCritChance(sItem.DamageType);
-+			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				float scale = sItem.DamageType.GetCachedBenefitsFrom(damageClass);
-+				if (scale != 0) {
-+					crit += (int)(GetCritChance(damageClass) * scale);
-+				}
++			int crit = sItem.crit;
++			var currentModifiers = damageData;
++			var scalings = sItem.DamageType.benefitsCache;
++			for (int i = 0; i < currentModifiers.Length; i++) {
++				crit += (int)(currentModifiers[i].critChance * scalings[i]);
 +			}
 +
 +			CombinedHooks.ModifyWeaponCrit(this, sItem, ref crit);
@@ -3767,7 +3765,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -36388,10 +_,34 @@
+@@ -36388,10 +_,36 @@
  				}
  				else if (sItem.summon) {
  					num = (int)((float)num * minionDamage);
@@ -3779,16 +3777,18 @@
  			return num;
 +			*/
 +
-+			StatModifier damage = GetDamage(sItem.DamageType);
-+			foreach (DamageClass damageClass in DamageClassLoader.DamageClasses) {
-+				float scale = sItem.DamageType.GetCachedBenefitsFrom(damageClass);
-+				if (scale != 0)
-+					damage = damage.CombineWith(GetDamage(damageClass).Scale(scale));
++			StatModifier damage = StatModifier.One;
++			var currentModifiers = damageData;
++			var scalings = sItem.DamageType.benefitsCache;
++			for (int i = 0; i < currentModifiers.Length; i++) {
++				damage = damage.CombineWith(currentModifiers[i].knockback.Scale(scalings[i]));
 +			}
 +
++			// TODO: use an ItemID.Sets for arrow/bullet/rocket
 +			if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
 +				damage = damage.CombineWith(arrowDamage);
 +
++			// TODO: should this just be rolled into arrowDamage?
 +			if (sItem.useAmmo == AmmoID.Arrow && archery)
 +				damage *= 1.2f;
 +

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
@@ -15,7 +16,7 @@ namespace Terraria.ModLoader
 		public static Summon Summon => ModContent.GetInstance<Summon>();
 		public static Throwing Throwing => ModContent.GetInstance<Throwing>();
 
-		private float?[] benefitsCache;
+		internal float[] benefitsCache;
 
 		/// <summary>
 		/// This is the internal ID of this DamageClass.
@@ -35,17 +36,14 @@ namespace Terraria.ModLoader
 		/// Returns 0 in all cases by default, which does not let any other classes boost this DamageClass.
 		/// </summary>
 		/// <param name="damageClass">The DamageClass which you want this DamageClass to benefit from statistically.</param>
-		protected virtual float GetBenefitsFrom(DamageClass damageClass) => 0;
+		protected virtual float GetBenefitFrom(DamageClass damageClass) => 0;
 
-		public float GetCachedBenefitsFrom(DamageClass damageClass) {
-			ref float? benefit = ref benefitsCache[damageClass.Type];
-			
-			if (benefit is null) {
-				benefit = GetBenefitsFrom(damageClass);
-			}
-
-			return benefit.Value;
+		internal void RebuildBenefitCache() {
+			benefitsCache = DamageClassLoader.DamageClasses.Select(GetBenefitFrom).ToArray();
+			benefitsCache[Type] = 1f;
 		}
+
+		public float GetCachedBenefitFrom(DamageClass damageClass) => benefitsCache[damageClass.Type];
 
 		/// <summary> 
 		/// This lets you define the classes that this DamageClass will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.
@@ -62,10 +60,6 @@ namespace Terraria.ModLoader
 			ModTypeLookup<DamageClass>.Register(this);
 
 			Type = DamageClassLoader.Add(this);
-		}
-
-		public override void SetupContent() {
-			benefitsCache = new float?[DamageClassLoader.DamageClassCount];
 		}
 	}
 }

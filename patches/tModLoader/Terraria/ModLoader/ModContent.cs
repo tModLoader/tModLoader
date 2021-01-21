@@ -389,7 +389,7 @@ namespace Terraria.ModLoader
 			Interface.loadMods.SetLoadStage("tModLoader.MSSettingUp");
 			ResizeArrays();
 			RecipeGroupHelper.FixRecipeGroupLookups();
-			DamageClassLoader.CountsAsCache();
+			DamageClassLoader.ResizeArrays();
 
 			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
