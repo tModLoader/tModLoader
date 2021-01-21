@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.allDamage += 1f; // Increase ALL player damage by 100%
+			player.GetDamage(DamageClass.Generic) += 1f; // Increase ALL player damage by 100%
 			player.endurance = 1f - (0.1f * (1f - player.endurance));  // The percentage of damage reduction
 			player.GetModPlayer<ExampleDashPlayer>().DashAccessoryEquipped = true;
 		}
