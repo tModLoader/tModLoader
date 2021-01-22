@@ -36,7 +36,7 @@
  		public float minionSlots;
  		public int minionPos;
  		public int restrikeDelay;
-@@ -112,9 +_,22 @@
+@@ -112,9 +_,34 @@
  		public bool ownerHitCheck;
  		public int[] playerImmune = new int[255];
  		public string miscText = "";
@@ -44,21 +44,33 @@
 -		public bool ranged;
 -		public bool magic;
 +		internal bool melee {
-+			get => DamageType == DamageClass.Melee;
-+			set => DamageType = value ? DamageClass.Melee : (melee ? null : DamageType);
++			get => CountsAsClass(DamageClass.Melee);
++			set {
++				if (value)
++					DamageType = DamageClass.Melee;
++				else if (DamageType == DamageClass.Melee)
++					DamageType = DamageClass.Generic;
++			}
 +		}
 +		internal bool magic {
-+			get => DamageType == DamageClass.Magic;
-+			set => DamageType = value ? DamageClass.Magic : (magic ? null : DamageType);
++			get => CountsAsClass(DamageClass.Magic);
++			set {
++				if (value)
++					DamageType = DamageClass.Magic;
++				else if (DamageType == DamageClass.Magic)
++					DamageType = DamageClass.Generic;
++			}
 +		}
 +		internal bool ranged {
-+			get => DamageType == DamageClass.Ranged;
-+			set => DamageType = value ? DamageClass.Ranged : (ranged ? null : DamageType);
++			get => CountsAsClass(DamageClass.Ranged);
++			set {
++				if (value)
++					DamageType = DamageClass.Ranged;
++				else if (DamageType == DamageClass.Ranged)
++					DamageType = DamageClass.Generic;
++			}
 +		}
-+		internal bool minion {
-+			get => DamageType == DamageClass.Summon;
-+			set => DamageType = value ? DamageClass.Summon : (minion ? null : DamageType);
-+		}
++		public bool minion;
  		public bool coldDamage;
  		public bool noEnchantments;
  		public bool noEnchantmentVisuals;
@@ -85,16 +97,16 @@
  				for (int j = 0; j < 200; j++) {
  					perIDStaticNPCImmunity[i][j] = 0u;
  				}
-@@ -217,7 +_,31 @@
+@@ -217,7 +_,32 @@
  			}
  		}
  
 +		public void CloneDefaults(int TypeToClone) {
 +			int originalType = type;
-+			ModProjectile originalModProjectile = modProjectile;
++			ModProjectile originalModProjectile = ModProjectile;
 +			SetDefaults(TypeToClone);
 +			type = originalType;
-+			modProjectile = originalModProjectile;
++			ModProjectile = originalModProjectile;
 +			int num = ProjectileID.Sets.TrailCacheLength[type];
 +			if (num != oldPos.Length) {
 +				Array.Resize(ref oldPos, num);
@@ -111,8 +123,9 @@
 +		}
 +
  		public void SetDefaults(int Type) {
-+			modProjectile = null;
++			ModProjectile = null;
 +			globalProjectiles = new GlobalProjectile[0];
++			DamageType = DamageClass.Generic;
 +			nameOverride = null;
  			ownerHitCheckDistance = 1000f;
  			counterweight = false;
@@ -224,6 +237,25 @@
  										float value2 = (scale - 1f) * 100f;
  										value2 = Utils.Clamp(value2, 0f, 50f);
  										num9 = (int)((float)num9 * (1f + value2 * 0.23f));
+@@ -9112,6 +_,7 @@
+ 									}
+ 
+ 									if (flag7) {
++										/*
+ 										if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
+ 											flag6 = true;
+ 
+@@ -9120,6 +_,10 @@
+ 
+ 										if (magic && Main.rand.Next(1, 101) <= Main.player[owner].magicCrit)
+ 											flag6 = true;
++										*/
++
++										if (!minion && Main.rand.Next(100) < Main.player[owner].GetWeaponCrit(Main.player[owner].HeldItem))
++											flag6 = true;
+ 
+ 										int num12 = type;
+ 										if ((uint)(num12 - 688) <= 2u) {
 @@ -9421,7 +_,7 @@
  											num18 = (int)((double)num18 * 0.75);
  									}
@@ -315,8 +347,12 @@
  
  						if (aiStyle == 3) {
  							if (ai[0] == 0f) {
-@@ -10037,11 +_,15 @@
- 						if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
+@@ -10034,14 +_,18 @@
+ 							timeLeft = 1;
+ 
+ 						bool flag17 = false;
+-						if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
++						if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit + Main.player[owner].allCrit)
  							flag17 = true;
  
 +						//Patch context: ^ flag17, to be used below multiple times.
@@ -345,8 +381,8 @@
  			if (Main.getGoodWorld && type == 281)
  				flag18 = true;
 +				
-+			if (modProjectile != null)
-+				num51 = modProjectile.cooldownSlot;
++			if (ModProjectile != null)
++				num51 = ModProjectile.cooldownSlot;
  
  			if (!flag18 || !Colliding(myRect, Main.player[myPlayer2].getRect()))
  				return;
@@ -417,7 +453,7 @@
  				if (numUpdates == -1 && (minion || sentry)) {
  					Player player = Main.player[owner];
 -					damage = (int)((float)originalDamage * player.minionDamage);
-+					damage = (int)((float)originalDamage * (float)(player.allDamage & player.minionDamage));
++					damage = (int)((float)originalDamage * (float)(player.allDamage.CombineWith(player.minionDamage)));
  				}
  
  				if (minion && numUpdates == -1 && type != 625 && type != 628) {

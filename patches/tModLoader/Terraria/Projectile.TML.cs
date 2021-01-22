@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader;
 
 namespace Terraria
 {
 	public partial class Projectile
 	{
-		public ModProjectile modProjectile { get; internal set; }
+		public ModProjectile ModProjectile { get; internal set; }
 
 		internal GlobalProjectile[] globalProjectiles = new GlobalProjectile[0];
 
+		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
-		/// The damage type of this Projectile. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
+		/// The damage type of this Projectile. Assign to DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
 		/// </summary>
-		public DamageClass DamageType { get; set; }
-
-		// Get
+		public DamageClass DamageType {
+			get => _damageClass;
+			set => _damageClass = value ?? throw new ArgumentException("DamageType cannot be null");
+		}
 
 		/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
@@ -31,7 +30,7 @@ namespace Terraria
 		/// <exception cref="NullReferenceException"/>
 		public T GetGlobalProjectile<T>(T baseInstance) where T : GlobalProjectile
 			=> baseInstance.Instance(this) as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current projectile.");
-		
+
 		/*
 		// TryGet
 
@@ -53,5 +52,7 @@ namespace Terraria
 			return result != null;
 		}
 		*/
+
+		public bool CountsAsClass(DamageClass damageClass) => DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
 	}
 }

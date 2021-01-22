@@ -54,7 +54,7 @@ namespace Terraria.ModLoader.UI
 		public override void OnInitialize() {
 			base.OnInitialize();
 
-			string text = _mod.DisplayName + " v" + _mod.modFile.version;
+			string text = _mod.DisplayName + " v" + _mod.modFile.Version;
 			if (_mod.tModLoaderVersion < new Version(0, 10)) {
 				text += $" [c/FF0000:({Language.GetTextValue("tModLoader.ModOldWarning")})]";
 			}

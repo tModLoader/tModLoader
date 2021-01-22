@@ -115,8 +115,8 @@ namespace Terraria.ModLoader.IO
 				if (npc.active && NPCLoader.IsModNPC(npc)) {
 					if (npc.townNPC) {
 						TagCompound tag = new TagCompound {
-							["mod"] = npc.modNPC.Mod.Name,
-							["name"] = npc.modNPC.Name,
+							["mod"] = npc.ModNPC.Mod.Name,
+							["name"] = npc.ModNPC.Name,
 							["displayName"] = npc.GivenName,
 							["x"] = npc.position.X,
 							["y"] = npc.position.Y,
@@ -128,8 +128,8 @@ namespace Terraria.ModLoader.IO
 					}
 					else if (NPCID.Sets.SavesAndLoads[npc.type]) {
 						TagCompound tag = new TagCompound {
-							["mod"] = npc.modNPC.Mod.Name,
-							["name"] = npc.modNPC.Name,
+							["mod"] = npc.ModNPC.Mod.Name,
+							["name"] = npc.ModNPC.Name,
 							["x"] = npc.position.X,
 							["y"] = npc.position.Y
 						};
@@ -165,7 +165,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				else {
-					ModContent.GetInstance<UnloadedWorld>().unloadedNPCs.Add(tag);
+					ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
 				}
 			}
 		}
@@ -191,7 +191,7 @@ namespace Terraria.ModLoader.IO
 					NPC.killCount[modNpc.Type] = tag.GetInt("count");
 				}
 				else {
-					ModContent.GetInstance<UnloadedWorld>().unloadedKillCounts.Add(tag);
+					ModContent.GetInstance<UnloadedSystem>().unloadedKillCounts.Add(tag);
 				}
 			}
 		}
@@ -257,53 +257,56 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<TagCompound> SaveModData() {
 			var list = new List<TagCompound>();
-			foreach (var modWorld in WorldHooks.worlds) {
-				var data = modWorld.Save();
+
+			foreach (var system in SystemHooks.Systems) {
+				var data = system.SaveWorldData();
+
 				if (data == null)
 					continue;
 
 				list.Add(new TagCompound {
-					["mod"] = modWorld.Mod.Name,
-					["name"] = modWorld.Name,
+					["mod"] = system.Mod.Name,
+					["name"] = system.Name,
 					["data"] = data
 				});
 			}
+
 			return list;
 		}
 
 		internal static void LoadModData(IList<TagCompound> list) {
 			foreach (var tag in list) {
-				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModWorld modWorld)) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModSystem system)) {
 					try {
-						modWorld.Load(tag.GetCompound("data"));
+						system.LoadWorldData(tag.GetCompound("data"));
 					}
 					catch (Exception e) {
-						throw new CustomModDataException(modWorld.Mod,
-							"Error in reading custom world data for " + modWorld.Mod.Name, e);
+						throw new CustomModDataException(system.Mod,
+							"Error in reading custom world data for " + system.Mod.Name, e);
 					}
 				}
 				else {
-					ModContent.GetInstance<UnloadedWorld>().data.Add(tag);
+					ModContent.GetInstance<UnloadedSystem>().data.Add(tag);
 				}
 			}
 		}
 
 		public static void SendModData(BinaryWriter writer) {
-			foreach (var modWorld in WorldHooks.NetWorlds)
-				writer.SafeWrite(w => modWorld.NetSend(w));
+			foreach (var system in SystemHooks.NetSystems)
+				writer.SafeWrite(w => system.NetSend(w));
 		}
 
 		public static void ReceiveModData(BinaryReader reader) {
-			foreach (var modWorld in WorldHooks.NetWorlds) {
+			foreach (var system in SystemHooks.NetSystems) {
 				try {
-					reader.SafeRead(r => modWorld.NetReceive(r));
+					reader.SafeRead(r => system.NetReceive(r));
 				}
 				catch (IOException e) {
 					if (FrameworkVersion.Framework == Framework.Mono) {
 						Logging.tML.Error(e);
 					}
 
-					Logging.tML.Error($"Above IOException error caused by {modWorld.Name} from the {modWorld.Mod.Name} mod.");
+					Logging.tML.Error($"Above IOException error caused by {system.Name} from the {system.Mod.Name} mod.");
 				}
 			}
 		}

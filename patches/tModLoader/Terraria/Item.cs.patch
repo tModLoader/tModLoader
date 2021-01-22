@@ -30,7 +30,7 @@
  		public bool isAShopItem;
  		public short hairDye = -1;
  		public byte paint;
-@@ -147,10 +_,22 @@
+@@ -147,10 +_,42 @@
  		public int netID;
  		public int crit;
  		public byte prefix;
@@ -39,20 +39,40 @@
 -		public bool ranged;
 -		public bool summon;
 +		internal bool melee {
-+			get => DamageType == DamageClass.Melee;
-+			set => DamageType = value ? DamageClass.Melee : (melee ? null : DamageType);
++			get => CountsAsClass(DamageClass.Melee);
++			set {
++				if (value)
++					DamageType = DamageClass.Melee;
++				else if (DamageType == DamageClass.Melee)
++					DamageType = DamageClass.Generic;
++			}
 +		}
 +		internal bool magic {
-+			get => DamageType == DamageClass.Magic;
-+			set => DamageType = value ? DamageClass.Magic : (magic ? null : DamageType);
++			get => CountsAsClass(DamageClass.Magic);
++			set {
++				if (value)
++					DamageType = DamageClass.Magic;
++				else if (DamageType == DamageClass.Magic)
++					DamageType = DamageClass.Generic;
++			}
 +		}
 +		internal bool ranged {
-+			get => DamageType == DamageClass.Ranged;
-+			set => DamageType = value ? DamageClass.Ranged : (ranged ? null : DamageType);
++			get => CountsAsClass(DamageClass.Ranged);
++			set {
++				if (value)
++					DamageType = DamageClass.Ranged;
++				else if (DamageType == DamageClass.Ranged)
++					DamageType = DamageClass.Generic;
++			}
 +		}
 +		internal bool summon {
-+			get => DamageType == DamageClass.Summon;
-+			set => DamageType = value ? DamageClass.Summon : (summon ? null : DamageType);
++			get => CountsAsClass(DamageClass.Summon);
++			set {
++				if (value)
++					DamageType = DamageClass.Summon;
++				else if (DamageType == DamageClass.Summon)
++					DamageType = DamageClass.Generic;
++			}
 +		}
  		public bool sentry;
  		public int reuseDelay;
@@ -323,11 +343,11 @@
 +		public void CloneDefaults(int TypeToClone) {
 +			int originalType = type;
 +			int originalNetID = netID;
-+			ModItem originalModItem = modItem;
++			ModItem originalModItem = ModItem;
 +			SetDefaults(TypeToClone);
 +			type = originalType;
 +			netID = originalNetID;
-+			modItem = originalModItem;
++			ModItem = originalModItem;
 +		}
 +
  		public void SetDefaults(int Type, bool noMatCheck = false) {
@@ -378,12 +398,13 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -44889,14 +_,18 @@
+@@ -44889,14 +_,19 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
-+			modItem = null;
++			ModItem = null;
 +			globalItems = new GlobalItem[0];
++			DamageType = DamageClass.Generic;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
  			DD2Summon = false;
@@ -397,6 +418,19 @@
  			instanced = false;
  			questItem = false;
  			fishingPole = 0;
+@@ -44913,10 +_,12 @@
+ 			mech = false;
+ 			flame = false;
+ 			reuseDelay = 0;
++			/*
+ 			melee = false;
+ 			magic = false;
+ 			ranged = false;
+ 			summon = false;
++			*/
+ 			placeStyle = 0;
+ 			buffTime = 0;
+ 			buffType = 0;
 @@ -44991,6 +_,10 @@
  		}
  
@@ -498,7 +532,7 @@
 -		public Item DeepClone() => (Item)MemberwiseClone();
 +		public Item Clone() {
 +			Item newItem = (Item)MemberwiseClone();
-+			newItem.modItem = modItem?.Clone(newItem);
++			newItem.ModItem = ModItem?.Clone(newItem);
 +			newItem.globalItems = globalItems.Select(g => g.Clone(this, newItem)).ToArray();
 +			return newItem;
 +		}
@@ -507,7 +541,7 @@
 +		// specifically needed for reforging
 +		public Item CloneWithModdedDataFrom(Item dataSource) {
 +			Item newItem = (Item)MemberwiseClone();
-+			newItem.modItem = dataSource.modItem?.Clone(newItem);
++			newItem.ModItem = dataSource.ModItem?.Clone(newItem);
 +			newItem.globalItems = dataSource.globalItems.Select(g => g.Clone(dataSource, newItem)).ToArray();
 +			return newItem;
 +		}
@@ -520,8 +554,17 @@
  			dye = 0;
  			shoot = 0;
  			mountType = -1;
-+			modItem = null;
++			ModItem = null;
 +			globalItems = new GlobalItem[0];
  		}
  
  		public void OnPurchase(Item item) {
+@@ -46183,7 +_,7 @@
+ 				Prefix(reader.ReadByte());
+ 			}
+ 
+-			if (type >= 5088)
++			if (type >= ItemLoader.ItemCount)
+ 				TurnToAir();
+ 		}
+ 

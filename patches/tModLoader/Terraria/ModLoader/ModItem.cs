@@ -27,29 +27,29 @@ namespace Terraria.ModLoader
 		/// <value>
 		/// The item.
 		/// </value>
-		public Item item {get;internal set;}
+		public Item Item { get; internal set; }
 
 		/// <summary>
 		/// Shorthand for item.type;
 		/// </summary>
-		public int Type => item.type;
+		public int Type => Item.type;
 
 		/// <summary>
 		/// The translations for the display name of this item.
 		/// </summary>
-		public ModTranslation DisplayName {get;internal set;}
+		public ModTranslation DisplayName { get; internal set; }
 
 		/// <summary>
 		/// The translations for the display name of this tooltip.
 		/// </summary>
-		public ModTranslation Tooltip {get;internal set;}
+		public ModTranslation Tooltip { get; internal set; }
 
 		public virtual string ArmTexture => Texture + "_Arms";
 
 		public virtual string FemaleTexture => Texture + "_FemaleBody";
 
 		public ModItem() {
-			item = new Item { modItem = this };
+			Item = new Item { ModItem = this };
 		}
 
 		protected sealed override void Register() {
@@ -58,8 +58,8 @@ namespace Terraria.ModLoader
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemName.{Name}");
 			Tooltip = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemTooltip.{Name}", true);
 
-			item.ResetStats(ItemLoader.ReserveItemID());
-			item.modItem = this;
+			Item.ResetStats(ItemLoader.ReserveItemID());
+			Item.ModItem = this;
 
 			ItemLoader.items.Add(this);
 
@@ -73,8 +73,8 @@ namespace Terraria.ModLoader
 			OnCreate(new InitializationContext());
 		}
 
-		public override void SetupContent() {
-			ItemLoader.SetDefaults(item, false);
+		public sealed override void SetupContent() {
+			ItemLoader.SetDefaults(Item, false);
 			AutoStaticDefaults();
 			SetStaticDefaults();
 			ItemID.Search.Add(FullName, Type);
@@ -86,7 +86,7 @@ namespace Terraria.ModLoader
 		/// <param name="item">The new item</param>
 		public virtual ModItem Clone(Item item) {
 			ModItem clone = (ModItem)MemberwiseClone();
-			clone.item = item;
+			clone.Item = item;
 			return clone;
 		}
 
@@ -104,7 +104,7 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoDefaults() {
-			EquipLoader.SetSlot(item);
+			EquipLoader.SetSlot(Item);
 		}
 
 		/// <summary>
@@ -118,12 +118,12 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			TextureAssets.Item[item.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Item[Item.type] = ModContent.GetTexture(Texture);
 
 			string flameTexture = Texture + "_Flame";
 
 			if (ModContent.TextureExists(flameTexture)) {
-				TextureAssets.ItemFlame[item.type] = ModContent.GetTexture(flameTexture);
+				TextureAssets.ItemFlame[Item.type] = ModContent.GetTexture(flameTexture);
 			}
 
 			if (DisplayName.IsDefault())
@@ -252,10 +252,9 @@ namespace Terraria.ModLoader
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// </summary>
 		/// <param name="player">The player using the item</param>
-		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05f`</param>
-		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
+		/// <param name="damage">Use to directly multiply the player's effective damage.</param>
 		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
-		public virtual void ModifyWeaponDamage(Player player, ref Modifier damage, ref float flat) {
+		public virtual void ModifyWeaponDamage(Player player, ref StatModifier damage, ref float flat) {
 		}
 
 		/// <summary>
@@ -267,27 +266,18 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
-		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
-		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
-		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, summon
-		/// So if you set both melee class and another class to true, only the melee knockback will actually be used.
 		/// </summary>
 		/// <param name="player">The player using the item</param>
 		/// <param name="knockback">The knockback</param>
-		public virtual void GetWeaponKnockback(Player player, ref float knockback) {
+		public virtual void ModifyWeaponKnockback(Player player, ref StatModifier knockback, ref float flat) {
 		}
 
 		/// <summary>
 		/// Allows you to temporarily modify this weapon's crit chance based on player buffs, etc.
-		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
-		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
-		/// If you use a custom damage class, the crit value will equal item.crit
-		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, and summon cannot crit.
-		/// So if you set both melee class and another class to true, only the melee crit will actually be used.
 		/// </summary>
 		/// <param name="player">The player using this item</param>
 		/// <param name="crit">The critical strike chance, at 0 it will never trigger a crit and at 100 or above it will always trigger a crit</param>
-		public virtual void GetWeaponCrit(Player player, ref int crit) {
+		public virtual void ModifyWeaponCrit(Player player, ref int crit) {
 		}
 
 		/// <summary>
@@ -931,11 +921,6 @@ namespace Terraria.ModLoader
 		public virtual int BossBagNPC => 0;
 
 		/// <summary>
-		/// Set this to true to prevent this weapon or ammo item from being adjusted by damage modifiers.
-		/// </summary>
-		public virtual bool IgnoreDamageModifiers => false;
-
-		/// <summary>
 		/// Allows you to save custom data for this item. Returns null by default.
 		/// </summary>
 		/// <returns></returns>
@@ -1019,6 +1004,6 @@ namespace Terraria.ModLoader
 		public virtual void ModifyTooltips(List<TooltipLine> tooltips) {
 		}
 
-		public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Mod, item.type, amount);
+		public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Mod, Item.type, amount);
 	}
 }

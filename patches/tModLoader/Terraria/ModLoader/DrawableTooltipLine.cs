@@ -58,7 +58,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The color the tooltip would be drawn in
 		/// </summary>
-		public Color color { get; internal set; }
+		public Color Color { get; internal set; }
 		/// <summary>
 		/// If the tooltip line's color was overridden this will hold that color, it will be null otherwise
 		/// </summary>
@@ -105,7 +105,7 @@ namespace Terraria.ModLoader
 			this.index = index;
 			OriginalX = x;
 			OriginalY = y;
-			this.color = color;
+			this.Color = color;
 		}
 	}
 }

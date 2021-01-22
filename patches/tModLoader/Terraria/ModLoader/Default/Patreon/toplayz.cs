@@ -5,8 +5,8 @@
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
-			item.width = 28;
-			item.height = 26;
+			Item.width = 28;
+			Item.height = 26;
 		}
 	}
 
@@ -15,8 +15,8 @@
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
-			item.width = 30;
-			item.height = 20;
+			Item.width = 30;
+			Item.height = 20;
 		}
 	}
 
@@ -25,8 +25,8 @@
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
-			item.width = 22;
-			item.height = 18;
+			Item.width = 22;
+			Item.height = 18;
 		}
 	}
 }

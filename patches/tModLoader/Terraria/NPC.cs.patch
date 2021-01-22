@@ -98,11 +98,11 @@
 +		public void CloneDefaults(int Type) {
 +			int originalType = type;
 +			int originalNetID = netID;
-+			ModNPC originalModEntity = modNPC;
++			ModNPC originalModEntity = ModNPC;
 +			SetDefaultsKeepPlayerInteraction(Type);
 +			type = originalType;
 +			netID = originalNetID;
-+			modNPC = originalModEntity;
++			ModNPC = originalModEntity;
 +		}
 +
  		public void SetDefaultsKeepPlayerInteraction(int Type) {
@@ -112,7 +112,7 @@
  				return;
  			}
  
-+			modNPC = null;
++			ModNPC = null;
 +			globalNPCs = new GlobalNPC[0];
  			waterMovementSpeed = (lavaMovementSpeed = 0.5f);
  			honeyMovementSpeed = 0.25f;
@@ -449,7 +449,7 @@
  			if (DeathSound != null)
  				SoundEngine.PlaySound(DeathSound, base.position);
  
-+			if (NPCLoader.SpecialNPCLoot(this)) {
++			if (NPCLoader.SpecialOnKill(this)) {
 +			}
 -			if (type == 13 || type == 14 || type == 15) {
 +			else if (type == 13 || type == 14 || type == 15) {
@@ -483,24 +483,20 @@
  				return;
  
  			Player closestPlayer = Main.player[Player.FindClosest(position, width, height)];
-@@ -58833,6 +_,9 @@
+@@ -58833,9 +_,13 @@
  			if ((type == 23 && Main.hardMode) || (SpawnedFromStatue && NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue[type] && !Main.hardMode) || (SpawnedFromStatue && NPCID.Sets.StatueSpawnedDropRarity[type] != -1f && (Main.rand.NextFloat() >= NPCID.Sets.StatueSpawnedDropRarity[type] || !AnyInteractions())))
  				return;
  
-+			if (!NPCLoader.PreNPCLoot(this))
++			if (!NPCLoader.PreKill(this))
 +				return;
 +
  			bool num = downedMechBoss1 && downedMechBoss2 && downedMechBoss3;
  			DoDeathEvents_BeforeLoot(closestPlayer);
  			NPCLoot_DropItems(closestPlayer);
-@@ -58844,6 +_,7 @@
- 					ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[32].Key), new Color(50, 255, 130));
- 			}
- 
-+			NPCLoader.NPCLoot(this);
- 			NPCLoot_DropMoney(closestPlayer);
- 			NPCLoot_DropHeals(closestPlayer);
- 		}
++			NPCLoader.OnKill(this);
+ 			DoDeathEvents(closestPlayer);
+ 			if (!num && downedMechBoss1 && downedMechBoss2 && downedMechBoss3 && Main.hardMode) {
+ 				if (Main.netMode == 0)
 @@ -58881,7 +_,7 @@
  			WoFKilledToday = false;
  		}
