@@ -48,15 +48,41 @@
  		public OverheadMessage chatOverhead;
  		public SelectionRadial DpadRadial = new SelectionRadial();
  		public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
-@@ -438,7 +_,7 @@
+@@ -438,8 +_,21 @@
  		public Vector2 lastDeathPostion;
  		public DateTime lastDeathTime;
  		public bool showLastDeath;
 -		public int extraAccessorySlots = 2;
-+		private int extraAccessorySlots; //unused vanilla field, noob trap
- 		public bool extraAccessory;
+-		public bool extraAccessory;
++		//private int extraAccessorySlots; unused vanilla field
++		// Create fields to facilitate dynamic inventory, accessory counts
++		public int moddedEXAccSlots = 0;
++		private static int vanillaEXAccSlots = 2;
++		private static int defaultAccSlots = 5;
++		private static int totalArmorSlots = 3;
++		private int totalEquipSlots => moddedEXAccSlots + vanillaEXAccSlots + defaultAccSlots + totalArmorSlots;
++		private static int vanillaInventorySlots = 50;
++		private static int vanillaCoinAmmoSlots = 8;
++		public int moddedInventorySlots = 0;
++		private int totalInventorySlots => moddedInventorySlots + vanillaInventorySlots + vanillaCoinAmmoSlots;
++		//public bool extraAccessory; -> renamed to demonHeartUsed to avoid confusion
++		public bool demonHeartUsed;
++		public int demonHeartSlot => totalArmorSlots+ defaultAccSlots;
++		public int masterModeSlot => totalArmorSlots + defaultAccSlots + 1;
  		private bool dontConsumeWand;
  		public int tankPet = -1;
+ 		public bool tankPetReset;
+@@ -682,8 +_,8 @@
+ 		public const int miscSlotMount = 3;
+ 		public const int miscSlotHook = 4;
+ 		public const int SupportedMiscSlotCount = 5;
+-		public Item[] armor = new Item[20];
++		public Item[] armor = new Item[255];
+-		public Item[] dye = new Item[10];
++		public Item[] dye = new Item[255];
+ 		public Item[] miscEquips = new Item[5];
+ 		public Item[] miscDyes = new Item[5];
+ 		public Item trashItem = new Item();
 @@ -694,7 +_,7 @@
  		public bool poundRelease;
  		public float ghostFade;
@@ -129,6 +155,43 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
+@@ -1969,28 +_,20 @@
+ 			return pos;
+ 		}
+ 
+-		public bool CanDemonHeartAccessoryBeShown() {
++		public bool CanAccessoryBeShown(int index) {
+-			if (!IsAValidEquipmentSlotForIteration(8) && armor[8].type <= 0 && armor[18].type <= 0)
++			if (!IsAValidEquipmentSlotForIteration(index) && armor[index].type <= 0 && armor[index+totalEquipSlots].type <= 0)
+-				return dye[8].type > 0;
++				return dye[index].type > 0;
+-
+-			return true;
+-		}
+-
+-		public bool CanMasterModeAccessoryBeShown() {
+-			if (!IsAValidEquipmentSlotForIteration(9) && armor[9].type <= 0 && armor[19].type <= 0)
+-				return dye[9].type > 0;
+ 
+ 			return true;
+ 		}
+ 
+ 		public int GetAmountOfExtraAccessorySlotsToShow() {
+ 			int num = 0;
+-			if (CanDemonHeartAccessoryBeShown())
+-				num++;
+-
+-			if (CanMasterModeAccessoryBeShown())
+-				num++;
+-
++			// Change to a for loop to be generalized for any added accessory slot
++			for (int i = totalArmorSlots+defaultAccSlots; i < totalEquipSlots; i++) {
++				if (CanAccessoryBeShown(i))
++					num++;
++			}
+ 			return num;
+ 		}
+ 
 @@ -2051,11 +_,13 @@
  		}
  
@@ -726,6 +789,15 @@
  			switch (type) {
  				case 3318: {
  						if (Main.rand.Next(2) == 0)
+@@ -4083,7 +_,7 @@
+ 							QuickSpawnItem(2105);
+ 
+ 						QuickSpawnItem(367);
+-						if (!extraAccessory)
++						if (!demonHeartUsed)
+ 							QuickSpawnItem(3335);
+ 
+ 						int num10 = Main.rand.Next(4);
 @@ -4389,8 +_,11 @@
  			if (type == 4957)
  				num11 = 657;
@@ -838,6 +910,20 @@
  		}
  
  		public void UpdateDyes() {
+@@ -6354,10 +_,10 @@
+ 			cMinecart = miscDyes[2].dye;
+ 			cMount = miscDyes[3].dye;
+ 			cGrapple = miscDyes[4].dye;
+-			for (int i = 0; i < 20; i++) {
++			for (int i = 0; i < 2*totalEquipSlots; i++) {
+ 				if (IsAValidEquipmentSlotForIteration(i)) {
+-					int num = i % 10;
++					int num = i % totalEquipSlots;
+-					UpdateItemDye(i < 10, hideVisibleAccessory[num], armor[i], dye[num]);
++					UpdateItemDye(i < totalEquipSlots, hideVisibleAccessory[num], armor[i], dye[num]);
+ 				}
+ 			}
+ 
 @@ -6376,13 +_,13 @@
  			if (!num && flag)
  				return;
@@ -1119,8 +1205,37 @@
  			}
  
  			if (whoAmI == Main.myPlayer && luckPotion != oldLuckPotion) {
-@@ -8274,12 +_,19 @@
- 			}
+@@ -8252,34 +_,28 @@
+ 		}
+ 
+ 		public bool IsAValidEquipmentSlotForIteration(int slot) {
+-			switch (slot) {
+-				default:
+-					return true;
+-				case 8:
+-				case 18: {
+-						bool result2 = extraAccessory;
+-						if (!Main.expertMode && !Main.gameMenu)
+-							result2 = false;
+-
+-						return result2;
+-					}
+-				case 9:
+-				case 19: {
+-						bool result = true;
+-						if (!Main.masterMode && !Main.gameMenu)
+-							result = false;
+-
+-						return result;
+-					}
+-			}
++			int expertModeSlot = defaultAccSlots + totalArmorSlots;
++			int masterModeSlot = defaultAccSlots + totalArmorSlots + 1;
++			if (slot == expertModeSlot || slot == totalEquipSlots + expertModeSlot)
++				return (demonHeartUsed && (Main.expertMode || Main.gameMenu));
++			else if (slot == masterModeSlot || slot == totalEquipSlots + masterModeSlot)
++				return (Main.masterMode || Main.gameMenu);
++			else return true;
  		}
  
 -		public void UpdateEquips(int i) {
@@ -1503,23 +1618,29 @@
 +		public void UpdateEquips(int i)
 +		{
 +			VanillaPreUpdateInventory();
-+			for (int j = 0; j < 58; j++) {
++			for (int j = 0; j < totalInventorySlots; j++) {
 +				VanillaUpdateInventory(inventory[j]);
 +			}
 +			VanillaPostUpdateInventory();
 +
-+			for (int k = 0; k < 10; k++) {
++			for (int k = 0; k < totalEquipSlots; k++) {
 +				if (IsAValidEquipmentSlotForIteration(k))
 +					VanillaUpdateEquip(armor[k]);
  			}
  
  			equippedAnyWallSpeedAcc = false;
-@@ -9274,21 +_,30 @@
+@@ -9272,23 +_,35 @@
+ 			if (whoAmI == Main.myPlayer)
+ 				Main.musicBoxNotModifiedByVolume = -1;
  
- 			for (int l = 3; l < 10; l++) {
+-			for (int l = 3; l < 10; l++) {
++			for (int l = totalArmorSlots; l < totalEquipSlots; l++) {
  				if (IsAValidEquipmentSlotForIteration(l))
 -					ApplyEquipFunctional(l, armor[l]);
 +					ApplyEquipFunctional(armor[l], hideVisibleAccessory[l]);
++				//TODO: Figure out why ModernMak wanted this line
++				if (SoundLoader.itemToMusic.ContainsKey(armor[l].type))
++					Main.musicBox2 = SoundLoader.itemToMusic[armor[l].type];
  			}
  
 +			PlayerHooks.UpdateEquips(this);
@@ -1555,28 +1676,31 @@
  			for (int m = 3; m < 10; m++) {
  				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
  					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
-@@ -9305,12 +_,15 @@
+@@ -9305,11 +_,14 @@
  					wingsLogic = armor[m].wingSlot;
  				}
  			}
 +			*/
  
- 			for (int n = 13; n < 20; n++) {
+-			for (int n = 13; n < 20; n++) {
++			for (int n = totalEquipSlots+totalArmorSlots; n < 2*totalEquipSlots; n++) {
  				if (IsAValidEquipmentSlotForIteration(n))
- 					ApplyEquipVanity(n, armor[n]);
+-					ApplyEquipVanity(n, armor[n]);
++					ApplyEquipVanity(armor[n]);
  			}
- 
-+			PlayerHooks.UpdateVanityAccessories(this);
 +
++			PlayerHooks.UpdateVanityAccessories(this);
+ 
  			if (wet && ShouldFloatInWater)
  				accFlipper = true;
- 
-@@ -9482,6 +_,10 @@
+@@ -9481,7 +_,11 @@
+ 			return false;
  		}
  
- 		private void ApplyEquipVanity(int itemSlot, Item currentItem) {
-+			ApplyEquipVanity(currentItem); //remove itemSlot parameter and make public so mods can call from their own accessory slots
-+		}
+-		private void ApplyEquipVanity(int itemSlot, Item currentItem) {
++		//private void ApplyEquipVanity(int itemSlot, Item currentItem) {
++		//	ApplyEquipVanity(currentItem); //remove itemSlot parameter and make public so mods can call from their own accessory slots
++		//}
 +
 +		public void ApplyEquipVanity(Item currentItem) {
  			int type = currentItem.type;
@@ -1591,7 +1715,7 @@
  		}
  
  		private WingStats GetWingStats(int wingID) {
-@@ -9512,8 +_,12 @@
+@@ -9512,13 +_,21 @@
  			return ArmorIDs.Wing.Sets.Stats[wingID];
  		}
  
@@ -1606,6 +1730,15 @@
  				return;
  
  			if (currentItem.type == 3810 || currentItem.type == 3809 || currentItem.type == 3812 || currentItem.type == 3811)
+ 				dd2Accessory = true;
+ 
++			for (int i = 0; i < totalEquipSlots; i++) {
++				if (armor[i] == currentItem)
++					itemSlot = i;
++			}
+ 			if (!hideVisibleAccessory[itemSlot])
+ 				UpdateBootVisualEffects(currentItem);
+ 
 @@ -9633,6 +_,9 @@
  
  			if (currentItem.type == 3015) {
@@ -1676,19 +1809,29 @@
  			}
  
  			if (currentItem.wingSlot != -1)
-@@ -10379,9 +_,9 @@
+@@ -10378,10 +_,19 @@
+ 				manaCost -= 0.08f;
  			}
  
++			if (currentItem.wingSlot > 0) {
++				if (!hideVisibleAccessory[itemSlot] || velocity.Y != 0f && !mount.Active)
++					wings = currentItem.wingSlot;
++
++				wingsLogic = currentItem.wingSlot;
++			}
++
++			ItemLoader.UpdateAccessory(currentItem, this, hideVisual);
++
  			if (Main.myPlayer != whoAmI)
 -				return;
-+				return; // TODO: double check wings logic, etc.
++				return; // return early if sounds are not relevant
  
 -			if (currentItem.type == 576 && Main.rand.Next(540) == 0 && Main.curMusic > 0 && Main.curMusic <= 90) {
 +			if (currentItem.type == 576 && Main.rand.Next(540) == 0 && Main.curMusic > 0) {
  				SoundEngine.PlaySound(SoundID.Item166, base.Center);
  				int num3 = -1;
  				if (Main.curMusic == 1)
-@@ -10543,13 +_,26 @@
+@@ -10543,10 +_,14 @@
  					currentItem.SetDefaults(5040);
  				else if (Main.curMusic == 89)
  					currentItem.SetDefaults(5044);
@@ -1704,18 +1847,6 @@
  			}
  
  			ApplyMusicBox(currentItem);
-+
-+			if (currentItem.wingSlot > 0) {
-+				if (!hideVisibleAccessory[itemSlot] || velocity.Y != 0f && !mount.Active)
-+					wings = currentItem.wingSlot;
-+
-+				wingsLogic = currentItem.wingSlot;
-+			}
-+
-+			ItemLoader.UpdateAccessory(currentItem, this, hideVisual);
- 		}
- 
- 		private void ApplyMusicBox(Item currentItem) {
 @@ -10736,6 +_,9 @@
  			if (currentItem.type == 5044)
  				Main.musicBox2 = 85;
@@ -1893,6 +2024,21 @@
  								SmartSelect_SelectItem(i);
  								return;
  						}
+@@ -12689,10 +_,10 @@
+ 		public static float GetClosestRollLuck(int x, int y, int range) => Main.player[FindClosest(new Vector2(x * 16, y * 16), 1, 1)].RollLuck(range);
+ 
+ 		public void ResetEffects() {
+-			if (extraAccessory && (Main.expertMode || Main.gameMenu))
+-				extraAccessorySlots = 1;
+-			else
+-				extraAccessorySlots = 0;
++			//if (extraAccessory && (Main.expertMode || Main.gameMenu))
++			//	extraAccessorySlots = 1;
++			//else
++			//	extraAccessorySlots = 0;
+ 
+ 			fairyBoots = false;
+ 			moonLordLegs = false;
 @@ -12711,6 +_,9 @@
  			lifeRegen = 0;
  			manaCost = 1f;
@@ -2799,6 +2945,30 @@
  				if (oldAdjTile[l] != adjTile[l]) {
  					flag = true;
  					break;
+@@ -25000,16 +_,16 @@
+ 			head = armor[0].headSlot;
+ 			body = armor[1].bodySlot;
+ 			legs = armor[2].legSlot;
+-			if (armor[10].headSlot >= 0)
++			if (armor[totalEquipSlots].headSlot >= 0)
+-				head = armor[10].headSlot;
++				head = armor[totalEquipSlots].headSlot;
+ 
+-			if (armor[11].bodySlot >= 0)
++			if (armor[totalEquipSlots+1].bodySlot >= 0)
+-				body = armor[11].bodySlot;
++				body = armor[totalEquipSlots+1].bodySlot;
+ 
+-			if (armor[12].legSlot >= 0)
++			if (armor[totalEquipSlots+2].legSlot >= 0)
+-				legs = armor[12].legSlot;
++				legs = armor[totalEquipSlots+2].legSlot;
+ 
+-			if (!dead)
++			if (!dead) // player is not dead
+ 				UpdateVisibleAccessories();
+ 
+ 			wearsRobe = false;
 @@ -25151,6 +_,7 @@
  				faceHead = -1;
  			}
@@ -2843,6 +3013,24 @@
  			else if (shieldRaised) {
  				bodyFrame.Y = bodyFrame.Height * 10;
  			}
+@@ -25739,7 +_,7 @@
+ 		}
+ 
+ 		private void UpdateVisibleAccessories() {
+-			for (int i = 3; i < 10; i++) {
++			for (int i = totalArmorSlots; i < totalEquipSlots; i++) {
+ 				if (!IsAValidEquipmentSlotForIteration(i))
+ 					continue;
+ 
+@@ -25770,7 +_,7 @@
+ 					UpdateVisibleAccessory(i, item);
+ 			}
+ 
+-			for (int j = 13; j < 20; j++) {
++			for (int j = totalEquipSlots+totalArmorSlots; j < 2*totalEquipSlots; j++) {
+ 				if (IsAValidEquipmentSlotForIteration(j)) {
+ 					Item item2 = armor[j];
+ 					if (!ItemIsVisuallyIncompatible(item2))
 @@ -26035,6 +_,8 @@
  			if (drawPlayer.head == 267)
  				yoraiz0rDarkness = true;
@@ -2879,6 +3067,32 @@
  				if (buffTime[i] > 0 && buffType[i] == 59)
  					DelBuff(i);
  			}
+@@ -26650,18 +_,19 @@
+ 				NetMessage.SendData(62, -1, -1, null, whoAmI, 1f);
+ 		}
+ 
++		//TODO: what does this method accomplish? Just determining frost and bone armor?
+ 		public void ApplyArmorSoundAndDustChanges() {
+ 			int num = armor[0].headSlot;
+ 			int num2 = armor[1].bodySlot;
+ 			int num3 = armor[2].legSlot;
+-			if (armor[10].headSlot >= 0)
++			if (armor[totalEquipSlots].headSlot >= 0)
+-				num = armor[10].headSlot;
++				num = armor[totalEquipSlots].headSlot;
+ 
+-			if (armor[11].bodySlot >= 0)
++			if (armor[totalEquipSlots+1].bodySlot >= 0)
+-				num2 = armor[11].bodySlot;
++				num2 = armor[totalEquipSlots+1].bodySlot;
+ 
+-			if (armor[12].legSlot >= 0)
++			if (armor[totalEquipSlots+2].legSlot >= 0)
+-				num3 = armor[12].legSlot;
++				num3 = armor[totalEquipSlots+2].legSlot;
+ 
+ 			if ((wereWolf || forceWerewolf) && !hideWolf) {
+ 				num3 = 20;
 @@ -26712,6 +_,12 @@
  					return 0.0;
  				}
@@ -3560,6 +3774,18 @@
  			if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
  				int num = -1;
  				float x = itemRectangle.X + Main.rand.Next(itemRectangle.Width);
+@@ -31271,9 +_,9 @@
+ 		}
+ 
+ 		private void ItemCheck_UseDemonHeart(Item sItem) {
+-			if (sItem.type == 3335 && itemAnimation > 0 && !extraAccessory && Main.expertMode && ItemTimeIsZero) {
++			if (sItem.type == 3335 && itemAnimation > 0 && !demonHeartUsed && Main.expertMode && ItemTimeIsZero) {
+ 				ApplyItemTime(sItem);
+-				extraAccessory = true;
++				demonHeartUsed = true;
+ 				NetMessage.SendData(4, -1, -1, null, whoAmI);
+ 			}
+ 		}
 @@ -31541,7 +_,7 @@
  			if (Main.tileHammer[tile.type]) {
  				canHitWalls = false;
@@ -3652,6 +3878,15 @@
  					int num178 = Projectile.NewProjectile(pointPoisition.X, pointPoisition.Y, num2, num3, projToShoot, Damage, KnockBack, i);
  					if (sItem.type == 726)
  						Main.projectile[num178].magic = true;
+@@ -34074,7 +_,7 @@
+ 				return;
+ 			}
+ 
+-			for (int num = 19; num >= 0; num--) {
++			for (int num = 2*totalEquipSlots-1; num >= 0; num--) {
+ 				if (IsAValidEquipmentSlotForIteration(num)) {
+ 					_ = num % 10;
+ 					Item item2 = armor[num];
 @@ -34427,6 +_,8 @@
  		}
  
@@ -3694,6 +3929,15 @@
  			int whoAmI = base.whoAmI;
  			bool flag = true;
  			int num = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
+@@ -35463,7 +_,7 @@
+ 			if (gravDir == -1f)
+ 				num2 = (int)(Main.screenPosition.Y + (float)Main.screenHeight - (float)Main.mouseY) / 16;
+ 
+-			if (sItem.type == 3335 && (extraAccessory || !Main.expertMode))
++			if (sItem.type == 3335 && (demonHeartUsed || !Main.expertMode))
+ 				flag = false;
+ 
+ 			if (pulley && sItem.fishingPole > 0)
 @@ -35823,6 +_,11 @@
  			if (sItem.type == 3006)
  				flag2 = true;
@@ -3963,7 +4207,7 @@
  
  			if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  				num += pickPower;
-@@ -37060,24 +_,47 @@
+@@ -37060,28 +_,51 @@
  		}
  
  		public void DropItems() {
@@ -3978,7 +4222,8 @@
 +			}
 +
 +			startCounts[ModContent.ItemType<ModLoader.Default.StartBag>()] = 1;
- 			for (int i = 0; i < 59; i++) {
+-			for (int i = 0; i < 59; i++) {
++			for (int i = 0; i < totalInventorySlots; i++) {
  				if (inventory[i].stack > 0) {
 +					Item item = inventory[i];
  					bool flag = true;
@@ -4013,7 +4258,12 @@
  				}
  
  				inventory[i].TurnToAir();
-@@ -37091,6 +_,8 @@
+-				if (i < armor.Length) {
++				if (i < totalEquipSlots) {
+ 					if (armor[i].stack > 0) {
+ 						int num2 = Item.NewItem((int)position.X, (int)position.Y, width, height, armor[i].type);
+ 						Main.item[num2].netDefaults(armor[i].netID);
+@@ -37091,14 +_,14 @@
  						Main.item[num2].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num2].noGrabDelay = 100;
  						Main.item[num2].newAndShiny = false;
@@ -4022,6 +4272,14 @@
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num2);
  					}
+ 
+ 					armor[i] = new Item();
+-				}
+ 
+-				if (i < dye.Length) {
+ 					if (dye[i].stack > 0) {
+ 						int num3 = Item.NewItem((int)position.X, (int)position.Y, width, height, dye[i].type);
+ 						Main.item[num3].netDefaults(dye[i].netID);
 @@ -37108,6 +_,8 @@
  						Main.item[num3].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num3].noGrabDelay = 100;
@@ -4076,7 +4334,32 @@
  			Main.mouseItem.TurnToAir();
  		}
  
-@@ -37204,13 +_,14 @@
+@@ -37166,7 +_,7 @@
+ 			skinVariant = other.skinVariant;
+ 			direction = other.direction;
+ 			selectedItem = other.selectedItem;
+-			extraAccessory = other.extraAccessory;
++			demonHeartUsed = other.demonHeartUsed;
+ 			skinColor = other.skinColor;
+ 			eyeColor = other.eyeColor;
+ 			hair = other.hair;
+@@ -37184,12 +_,12 @@
+ 			statManaMax = other.statManaMax;
+ 			statManaMax2 = other.statManaMax2;
+ 			hideMisc = other.hideMisc;
+-			for (int i = 0; i < 59; i++) {
++			for (int i = 0; i < totalInventorySlots; i++) {
+ 				inventory[i] = other.inventory[i].Clone();
+-				if (i < armor.Length)
++				if (i < totalEquipSlots)
+ 					armor[i] = other.armor[i].Clone();
+ 
+-				if (i < dye.Length)
++				if (i < totalEquipSlots)
+ 					dye[i] = other.dye[i].Clone();
+ 
+ 				if (i < miscEquips.Length)
+@@ -37204,14 +_,15 @@
  		}
  
  		public object clientClone() {
@@ -4089,9 +4372,27 @@
  			player.voidVaultInfo = voidVaultInfo;
  			player.luck = luck;
 +			PlayerHooks.CopyCustomBiomesTo(this, player);
- 			player.extraAccessory = extraAccessory;
+-			player.extraAccessory = extraAccessory;
++			player.demonHeartUsed = demonHeartUsed;
  			player.MinionRestTargetPoint = MinionRestTargetPoint;
  			player.MinionAttackTargetNPC = MinionAttackTargetNPC;
+ 			player.direction = direction;
+@@ -37233,12 +_,12 @@
+ 			player.hideVisibleAccessory = hideVisibleAccessory;
+ 			player.hideMisc = hideMisc;
+ 			player.shieldRaised = shieldRaised;
+-			for (int i = 0; i < 59; i++) {
++			for (int i = 0; i < totalInventorySlots; i++) {
+ 				player.inventory[i] = inventory[i].Clone();
+-				if (i < armor.Length)
++				if (i < totalEquipSlots)
+ 					player.armor[i] = armor[i].Clone();
+ 
+-				if (i < dye.Length)
++				if (i < totalEquipSlots)
+ 					player.dye[i] = dye[i].Clone();
+ 
+ 				if (i < miscEquips.Length)
 @@ -37261,13 +_,14 @@
  			}
  
@@ -4141,22 +4442,35 @@
  						BitsByte bb = (byte)0;
  						for (int i = 0; i < 8; i++) {
  							bb[i] = player.hideVisibleAccessory[i];
-@@ -37469,63 +_,57 @@
+@@ -37442,7 +_,7 @@
+ 						binaryWriter.Write(player.statLifeMax);
+ 						binaryWriter.Write(player.statMana);
+ 						binaryWriter.Write(player.statManaMax);
+-						binaryWriter.Write(player.extraAccessory);
++						binaryWriter.Write(player.demonHeartUsed);
+ 						binaryWriter.Write(player.unlockedBiomeTorches);
+ 						binaryWriter.Write(player.UsingBiomeTorches);
+ 						binaryWriter.Write(player.downedDD2EventAnyDifficulty);
+@@ -37468,64 +_,58 @@
+ 						binaryWriter.Write(player.shoeColor.R);
  						binaryWriter.Write(player.shoeColor.G);
  						binaryWriter.Write(player.shoeColor.B);
- 						for (int k = 0; k < player.armor.Length; k++) {
+-						for (int k = 0; k < player.armor.Length; k++) {
++						for (int k = 0; k < player.totalEquipSlots; k++) {
 -							binaryWriter.Write(player.armor[k].netID);
 +							ItemIO.WriteVanillaID(player.armor[k], binaryWriter);
  							binaryWriter.Write(player.armor[k].prefix);
  						}
  
- 						for (int l = 0; l < player.dye.Length; l++) {
+-						for (int l = 0; l < player.dye.Length; l++) {
++						for (int l = 0; l < player.totalEquipSlots; l++) {
 -							binaryWriter.Write(player.dye[l].netID);
 +							ItemIO.WriteVanillaID(player.dye[l], binaryWriter);
  							binaryWriter.Write(player.dye[l].prefix);
  						}
  
- 						for (int m = 0; m < 58; m++) {
+-						for (int m = 0; m < 58; m++) {
++						for (int m = 0; m < player.totalEquipSlots; m++) {
 -							binaryWriter.Write(player.inventory[m].netID);
 +							ItemIO.WriteVanillaID(player.inventory[m], binaryWriter);
  							binaryWriter.Write(player.inventory[m].stack);
@@ -4239,6 +4553,49 @@
  			try {
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
  				rijndaelManaged.Padding = PaddingMode.None;
+@@ -37714,18 +_,18 @@
+ 
+ 							if (num >= 124) {
+ 								BitsByte bitsByte = binaryReader.ReadByte();
+-								for (int i = 0; i < 8; i++) {
++								for (int i = 0; i < totalArmorSlots + defaultAccSlots; i++) {
+ 									player.hideVisibleAccessory[i] = bitsByte[i];
+ 								}
+ 
+ 								bitsByte = binaryReader.ReadByte();
+-								for (int j = 0; j < 2; j++) {
++								for (int j = 0; j < vanillaEXAccSlots; j++) {
+-									player.hideVisibleAccessory[j + 8] = bitsByte[j];
++									player.hideVisibleAccessory[j + totalArmorSlots+defaultAccSlots] = bitsByte[j];
+ 								}
+ 							}
+ 							else if (num >= 83) {
+ 								BitsByte bitsByte2 = binaryReader.ReadByte();
+-								for (int k = 0; k < 8; k++) {
++								for (int k = 0; k < totalArmorSlots + defaultAccSlots; k++) {
+ 									player.hideVisibleAccessory[k] = bitsByte2[k];
+ 								}
+ 							}
+@@ -37763,7 +_,7 @@
+ 								player.statMana = 400;
+ 
+ 							if (num >= 125)
+-								player.extraAccessory = binaryReader.ReadBoolean();
++								player.demonHeartUsed = binaryReader.ReadBoolean();
+ 
+ 							if (num >= 229) {
+ 								player.unlockedBiomeTorches = binaryReader.ReadBoolean();
+@@ -37794,8 +_,8 @@
+ 
+ 									for (int l = 0; l < num2; l++) {
+ 										int num3 = l;
+-										if (num3 >= 8)
++										if (num3 >= defaultAccSlots+totalArmorSlots)
+-											num3 += 2;
++											num3 += vanillaEXAccSlots;
+ 
+ 										player.armor[num3].netDefaults(binaryReader.ReadInt32());
+ 										player.armor[num3].Prefix(binaryReader.ReadByte());
 @@ -38014,7 +_,7 @@
  							if (num >= 11) {
  								int num28 = 22;
@@ -4267,7 +4624,7 @@
  			catch {
  			}
  
-@@ -38144,8 +_,9 @@
+@@ -38144,9 +_,10 @@
  			}
  		}
  
@@ -4275,9 +4632,11 @@
 +		private static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
  			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
 +			PlayerIO.Load(newPlayer, playerFileData.Path, playerFileData.IsCloudSave);
- 			for (int i = 3; i < 10; i++) {
+-			for (int i = 3; i < 10; i++) {
++			for (int i = totalArmorSlots; i < newPlayer.totalEquipSlots; i++) {
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 4874 || type == 5000)
+ 					newPlayer.lavaMax += 420;
 @@ -38162,6 +_,7 @@
  
  				newPlayer.lavaTime = newPlayer.lavaMax;
@@ -4321,10 +4680,32 @@
  			width = 20;
  			height = 42;
  			name = string.Empty;
-@@ -38267,7 +_,7 @@
+@@ -38236,8 +_,8 @@
+ 			legFrame.Height = 56;
+ 			tileEntityAnchor.Clear();
+ 			doorHelper = new DoorOpeningHelper();
+-			for (int i = 0; i < 59; i++) {
++			for (int i = 0; i < totalInventorySlots; i++) {
+-				if (i < armor.Length)
++				if (i < totalEquipSlots)
+ 					armor[i] = new Item();
+ 
+ 				inventory[i] = new Item();
+@@ -38250,7 +_,7 @@
+ 				bank4.item[j] = new Item();
+ 			}
+ 
+-			for (int k = 0; k < dye.Length; k++) {
++			for (int k = 0; k < totalEquipSlots; k++) {
+ 				dye[k] = new Item();
+ 			}
+ 
+@@ -38266,8 +_,8 @@
+ 			lastVisualizedSelectedItem = new Item();
  			grappling[0] = -1;
  			statManaMax = 20;
- 			extraAccessory = false;
+-			extraAccessory = false;
++			demonHeartUsed = false;
 -			for (int n = 0; n < 624; n++) {
 +			for (int n = 0; n < adjTile.Length; n++) {
  				adjTile[n] = false;

@@ -1245,6 +1245,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static Item GetWing(Player player) {
 			//TODO: this doesn't work with wings in modded accessory slots
+
+			// If wings are present in accessory slots (slots 3 through N, where 0,1,2 are armor), then return wings
 			Item item = null;
 			for (int k = 3; k < 10; k++) {
 				if (player.armor[k].wingSlot == player.wingsLogic) {
@@ -1254,16 +1256,19 @@ namespace Terraria.ModLoader
 			if (item != null) {
 				return item;
 			}
+			// If didn't find wings in accesory slots, and player has vanilla wings, then return default wings
 			if (player.wingsLogic > 0 && player.wingsLogic < Main.maxWings) {
 				item = new Item();
 				item.SetDefaults(vanillaWings[player.wingsLogic]);
 				return item;
 			}
+			// If didn't find wings in accesory slots, and player has modded wings, then try get wings by texture
 			if (player.wingsLogic >= Main.maxWings) {
 				EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wingsLogic);
 				if (texture?.Item != null)
 					return texture.Item.Item;
 			}
+			// else return null
 			return null;
 		}
 

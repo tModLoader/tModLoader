@@ -49,6 +49,15 @@
  						break;
  					case 3:
  						writer.Write((byte)remoteClient);
+@@ -135,7 +_,7 @@
+ 							else if (player5.difficulty == 3)
+ 								bb10[3] = true;
+ 
+-							bb10[2] = player5.extraAccessory;
++							bb10[2] = player5.demonHeartUsed;
+ 							writer.Write(bb10);
+ 							BitsByte bb11 = (byte)0;
+ 							bb11[0] = player5.UsingBiomeTorches;
 @@ -163,6 +_,7 @@
  							writer.Write((short)num22);
  							writer.Write((byte)number3);

@@ -211,6 +211,24 @@
  			}
  		}
  
+@@ -1325,7 +_,7 @@
+ 					case 10:
+ 					case 11: {
+ 							int num3 = slot;
+-							if (num3 % 10 == 9 && !player.CanDemonHeartAccessoryBeShown())
++							if (num3 % 10 == 9 && !player.CanAccessoryBeShown(player.demonHeartSlot))
+ 								num3--;
+ 
+ 							num = 100 + num3;
+@@ -1334,7 +_,7 @@
+ 					case 12:
+ 						if (inv == player.dye) {
+ 							int num4 = slot;
+-							if (num4 % 10 == 9 && !player.CanDemonHeartAccessoryBeShown())
++							if (num4 % 10 == 9 && !player.CanAccessoryBeShown(player.demonHeartSlot))
+ 								num4--;
+ 
+ 							num = 120 + num4;
 @@ -1628,10 +_,15 @@
  				num11 *= inventoryScale;
  				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num11 / 2f;
@@ -288,3 +306,12 @@
  				return currentColor;
  
  			if (type == 662 || type == 663) {
+@@ -2373,7 +_,7 @@
+ 
+ 					if (context == 8 && slot >= 3) {
+ 						int num = slot;
+-						if (num % 10 == 8 && !player.CanDemonHeartAccessoryBeShown())
++						if (num % 10 == 8 && !player.CanAccessoryBeShown(player.demonHeartSlot))
+ 							num++;
+ 
+ 						bool flag3 = player.hideVisibleAccessory[num];
