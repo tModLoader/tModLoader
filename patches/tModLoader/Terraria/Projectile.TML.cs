@@ -12,13 +12,11 @@ namespace Terraria
 
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
-		/// The damage type of this Projectile.
-		/// Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or ModContent.GetInstance<T>() for custom damage types.
-		/// Set to DamageClass.Generic to not have any one damage class, but still have the weapon be boosted by universal bonuses.
+		/// The damage type of this Projectile. Assign to DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
 		/// </summary>
 		public DamageClass DamageType {
 			get => _damageClass;
-			set => _damageClass = value;
+			set => _damageClass = value ?? throw new ArgumentException("DamageType cannot be null");
 		}
 
 		/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
@@ -55,11 +53,6 @@ namespace Terraria
 		}
 		*/
 
-		public bool CountsAsClass(DamageClass damageClass) {
-			if (DamageType != null)
-				return DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
-
-			return false;
-		}
+		public bool CountsAsClass(DamageClass damageClass) => DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
 	}
 }
