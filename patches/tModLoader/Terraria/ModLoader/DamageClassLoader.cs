@@ -39,7 +39,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void Unload() {
-			DamageClasses.RemoveRange(DefaultClassCount - 1, DamageClasses.Count - DefaultClassCount);
+			DamageClasses.RemoveRange(DefaultClassCount, DamageClasses.Count - DefaultClassCount);
 		}
 
 		private static void RebuildCountsAsCache() {
