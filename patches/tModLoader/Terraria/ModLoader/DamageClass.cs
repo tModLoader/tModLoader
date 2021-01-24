@@ -1,20 +1,17 @@
-﻿using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
 	public abstract class DamageClass : ModType
 	{
-		public static DamageClass Generic => ModContent.GetInstance<GenericDamageClass>();
-		public static DamageClass NoScaling => ModContent.GetInstance<NoScalingDamageClass>();
-		public static DamageClass Melee => ModContent.GetInstance<MeleeDamageClass>();
-		public static DamageClass Ranged => ModContent.GetInstance<RangedDamageClass>();
-		public static DamageClass Magic => ModContent.GetInstance<MagicDamageClass>();
-		public static DamageClass Summon => ModContent.GetInstance<SummonDamageClass>();
-		public static DamageClass Throwing => ModContent.GetInstance<ThrowingDamageClass>();
+		public static DamageClass Generic { get; private set; } = new GenericDamageClass();
+		public static DamageClass NoScaling { get; private set; } = new NoScalingDamageClass();
+		public static DamageClass Melee { get; private set; } = new MeleeDamageClass();
+		public static DamageClass Ranged { get; private set; } = new RangedDamageClass();
+		public static DamageClass Magic { get; private set; } = new MagicDamageClass();
+		public static DamageClass Summon { get; private set; } = new SummonDamageClass();
+		public static DamageClass Throwing { get; private set; } = new ThrowingDamageClass();
 
 		internal float[] benefitsCache;
 
