@@ -60,11 +60,11 @@
 +		private static int vanillaEXAccSlots = 2;
 +		private static int defaultAccSlots = 5;
 +		private static int totalArmorSlots = 3;
-+		private int totalEquipSlots => moddedEXAccSlots + vanillaEXAccSlots + defaultAccSlots + totalArmorSlots;
++		public int totalEquipSlots => moddedEXAccSlots + vanillaEXAccSlots + defaultAccSlots + totalArmorSlots;
 +		private static int vanillaInventorySlots = 50;
 +		private static int vanillaCoinAmmoSlots = 8;
 +		public int moddedInventorySlots = 0;
-+		private int totalInventorySlots => moddedInventorySlots + vanillaInventorySlots + vanillaCoinAmmoSlots;
++		public int totalInventorySlots => moddedInventorySlots + vanillaInventorySlots + vanillaCoinAmmoSlots;
 +		//public bool extraAccessory; -> renamed to demonHeartUsed to avoid confusion
 +		public bool demonHeartUsed;
 +		public int demonHeartSlot => totalArmorSlots+ defaultAccSlots;
@@ -72,17 +72,6 @@
  		private bool dontConsumeWand;
  		public int tankPet = -1;
  		public bool tankPetReset;
-@@ -682,8 +_,8 @@
- 		public const int miscSlotMount = 3;
- 		public const int miscSlotHook = 4;
- 		public const int SupportedMiscSlotCount = 5;
--		public Item[] armor = new Item[20];
-+		public Item[] armor = new Item[255];
--		public Item[] dye = new Item[10];
-+		public Item[] dye = new Item[255];
- 		public Item[] miscEquips = new Item[5];
- 		public Item[] miscDyes = new Item[5];
- 		public Item trashItem = new Item();
 @@ -694,7 +_,7 @@
  		public bool poundRelease;
  		public float ghostFade;
@@ -1205,7 +1194,7 @@
  			}
  
  			if (whoAmI == Main.myPlayer && luckPotion != oldLuckPotion) {
-@@ -8252,34 +_,28 @@
+@@ -8252,34 +_,26 @@
  		}
  
  		public bool IsAValidEquipmentSlotForIteration(int slot) {
@@ -1229,9 +1218,7 @@
 -						return result;
 -					}
 -			}
-+			int expertModeSlot = defaultAccSlots + totalArmorSlots;
-+			int masterModeSlot = defaultAccSlots + totalArmorSlots + 1;
-+			if (slot == expertModeSlot || slot == totalEquipSlots + expertModeSlot)
++			if (slot == demonHeartSlot || slot == totalEquipSlots + demonHeartSlot)
 +				return (demonHeartUsed && (Main.expertMode || Main.gameMenu));
 +			else if (slot == masterModeSlot || slot == totalEquipSlots + masterModeSlot)
 +				return (Main.masterMode || Main.gameMenu);
@@ -1668,21 +1655,30 @@
  				minionKB += 0.5f;
  			}
  
-@@ -9297,6 +_,7 @@
+@@ -9297,19 +_,22 @@
  				maxTurrets++;
  			}
  
-+			/* wing loop is merged into ApplyEquipFunctional
- 			for (int m = 3; m < 10; m++) {
- 				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
- 					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
-@@ -9305,11 +_,14 @@
- 					wingsLogic = armor[m].wingSlot;
- 				}
- 			}
-+			*/
- 
+-			for (int m = 3; m < 10; m++) {
+-				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
+-					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
+-						wings = armor[m].wingSlot;
+-
+-					wingsLogic = armor[m].wingSlot;
+-				}
+-			}
+-
 -			for (int n = 13; n < 20; n++) {
++			// wing loop is merged into ApplyEquipFunctional
++			//for (int m = 3; m < 10; m++) {
++			//	if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
++			//		if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
++			//			wings = armor[m].wingSlot;
++			//		wingsLogic = armor[m].wingSlot;
++			//	}
++			//}
++			
++
 +			for (int n = totalEquipSlots+totalArmorSlots; n < 2*totalEquipSlots; n++) {
  				if (IsAValidEquipmentSlotForIteration(n))
 -					ApplyEquipVanity(n, armor[n]);
@@ -1715,7 +1711,7 @@
  		}
  
  		private WingStats GetWingStats(int wingID) {
-@@ -9512,13 +_,21 @@
+@@ -9512,8 +_,12 @@
  			return ArmorIDs.Wing.Sets.Stats[wingID];
  		}
  
@@ -1730,15 +1726,6 @@
  				return;
  
  			if (currentItem.type == 3810 || currentItem.type == 3809 || currentItem.type == 3812 || currentItem.type == 3811)
- 				dd2Accessory = true;
- 
-+			for (int i = 0; i < totalEquipSlots; i++) {
-+				if (armor[i] == currentItem)
-+					itemSlot = i;
-+			}
- 			if (!hideVisibleAccessory[itemSlot])
- 				UpdateBootVisualEffects(currentItem);
- 
 @@ -9633,6 +_,9 @@
  
  			if (currentItem.type == 3015) {
@@ -3878,15 +3865,18 @@
  					int num178 = Projectile.NewProjectile(pointPoisition.X, pointPoisition.Y, num2, num3, projToShoot, Damage, KnockBack, i);
  					if (sItem.type == 726)
  						Main.projectile[num178].magic = true;
-@@ -34074,7 +_,7 @@
+@@ -34074,9 +_,9 @@
  				return;
  			}
  
 -			for (int num = 19; num >= 0; num--) {
-+			for (int num = 2*totalEquipSlots-1; num >= 0; num--) {
++			for (int num = 2 * totalEquipSlots - 1; num >= 0; num--) {
  				if (IsAValidEquipmentSlotForIteration(num)) {
- 					_ = num % 10;
+-					_ = num % 10;
++					_ = num % totalEquipSlots;
  					Item item2 = armor[num];
+ 					if (!item2.IsAir && item2.shoot > 0 && ProjectileID.Sets.IsAGolfBall[item2.shoot]) {
+ 						projType = item2.shoot;
 @@ -34427,6 +_,8 @@
  		}
  
@@ -4207,7 +4197,7 @@
  
  			if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  				num += pickPower;
-@@ -37060,28 +_,51 @@
+@@ -37060,28 +_,52 @@
  		}
  
  		public void DropItems() {
@@ -4223,7 +4213,7 @@
 +
 +			startCounts[ModContent.ItemType<ModLoader.Default.StartBag>()] = 1;
 -			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < totalInventorySlots; i++) {
++			for (int i = 0; i < totalInventorySlots + 1; i++) {
  				if (inventory[i].stack > 0) {
 +					Item item = inventory[i];
  					bool flag = true;
@@ -4259,11 +4249,12 @@
  
  				inventory[i].TurnToAir();
 -				if (i < armor.Length) {
-+				if (i < totalEquipSlots) {
++
++				if (i < totalEquipSlots * 2) {
  					if (armor[i].stack > 0) {
  						int num2 = Item.NewItem((int)position.X, (int)position.Y, width, height, armor[i].type);
  						Main.item[num2].netDefaults(armor[i].netID);
-@@ -37091,14 +_,14 @@
+@@ -37091,6 +_,8 @@
  						Main.item[num2].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num2].noGrabDelay = 100;
  						Main.item[num2].newAndShiny = false;
@@ -4272,11 +4263,12 @@
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num2);
  					}
- 
+@@ -37098,7 +_,7 @@
  					armor[i] = new Item();
--				}
+ 				}
  
 -				if (i < dye.Length) {
++				if (i < totalEquipSlots) {
  					if (dye[i].stack > 0) {
  						int num3 = Item.NewItem((int)position.X, (int)position.Y, width, height, dye[i].type);
  						Main.item[num3].netDefaults(dye[i].netID);
@@ -4348,10 +4340,10 @@
  			statManaMax2 = other.statManaMax2;
  			hideMisc = other.hideMisc;
 -			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < totalInventorySlots; i++) {
++			for (int i = 0; i < totalInventorySlots + 1; i++) {
  				inventory[i] = other.inventory[i].Clone();
 -				if (i < armor.Length)
-+				if (i < totalEquipSlots)
++				if (i < totalEquipSlots * 2)
  					armor[i] = other.armor[i].Clone();
  
 -				if (i < dye.Length)
@@ -4382,10 +4374,10 @@
  			player.hideMisc = hideMisc;
  			player.shieldRaised = shieldRaised;
 -			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < totalInventorySlots; i++) {
++			for (int i = 0; i < totalInventorySlots + 1; i++) {
  				player.inventory[i] = inventory[i].Clone();
 -				if (i < armor.Length)
-+				if (i < totalEquipSlots)
++				if (i < totalEquipSlots * 2)
  					player.armor[i] = armor[i].Clone();
  
 -				if (i < dye.Length)
@@ -4426,7 +4418,7 @@
  			if (FileUtilities.Exists(path, isCloudSave))
  				FileUtilities.Copy(path, path + ".bak", isCloudSave);
  
-@@ -37417,13 +_,14 @@
+@@ -37417,22 +_,23 @@
  			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write)) {
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream)) {
@@ -4440,8 +4432,20 @@
 -						binaryWriter.Write(player.hairDye);
 +						PlayerIO.WriteVanillaHairDye(player.hairDye, binaryWriter);
  						BitsByte bb = (byte)0;
- 						for (int i = 0; i < 8; i++) {
+-						for (int i = 0; i < 8; i++) {
++						for (int i = 0; i < defaultAccSlots + totalArmorSlots; i++) {
  							bb[i] = player.hideVisibleAccessory[i];
+ 						}
+ 
+ 						binaryWriter.Write(bb);
+ 						bb = (byte)0;
+-						for (int j = 0; j < 2; j++) {
++						for (int j = 0; j < vanillaEXAccSlots; j++) {
+-							bb[j] = player.hideVisibleAccessory[j + 8];
++							bb[j] = player.hideVisibleAccessory[j + defaultAccSlots + totalArmorSlots];
+ 						}
+ 
+ 						binaryWriter.Write(bb);
 @@ -37442,7 +_,7 @@
  						binaryWriter.Write(player.statLifeMax);
  						binaryWriter.Write(player.statMana);
@@ -4456,7 +4460,7 @@
  						binaryWriter.Write(player.shoeColor.G);
  						binaryWriter.Write(player.shoeColor.B);
 -						for (int k = 0; k < player.armor.Length; k++) {
-+						for (int k = 0; k < player.totalEquipSlots; k++) {
++						for (int k = 0; k < player.totalEquipSlots * 2; k++) {
 -							binaryWriter.Write(player.armor[k].netID);
 +							ItemIO.WriteVanillaID(player.armor[k], binaryWriter);
  							binaryWriter.Write(player.armor[k].prefix);
@@ -4470,7 +4474,7 @@
  						}
  
 -						for (int m = 0; m < 58; m++) {
-+						for (int m = 0; m < player.totalEquipSlots; m++) {
++						for (int m = 0; m < player.totalInventorySlots; m++) {
 -							binaryWriter.Write(player.inventory[m].netID);
 +							ItemIO.WriteVanillaID(player.inventory[m], binaryWriter);
  							binaryWriter.Write(player.inventory[m].stack);
@@ -4566,7 +4570,7 @@
 -								for (int j = 0; j < 2; j++) {
 +								for (int j = 0; j < vanillaEXAccSlots; j++) {
 -									player.hideVisibleAccessory[j + 8] = bitsByte[j];
-+									player.hideVisibleAccessory[j + totalArmorSlots+defaultAccSlots] = bitsByte[j];
++									player.hideVisibleAccessory[j + totalArmorSlots + defaultAccSlots] = bitsByte[j];
  								}
  							}
  							else if (num >= 83) {
@@ -4585,17 +4589,25 @@
  
  							if (num >= 229) {
  								player.unlockedBiomeTorches = binaryReader.ReadBoolean();
-@@ -37794,8 +_,8 @@
+@@ -37794,15 +_,15 @@
  
  									for (int l = 0; l < num2; l++) {
  										int num3 = l;
 -										if (num3 >= 8)
-+										if (num3 >= defaultAccSlots+totalArmorSlots)
 -											num3 += 2;
-+											num3 += vanillaEXAccSlots;
++										if (num3 >= defaultAccSlots + totalArmorSlots)
++											num3 += vanillaEXAccSlots; // skip master, demon heart slots
  
  										player.armor[num3].netDefaults(binaryReader.ReadInt32());
  										player.armor[num3].Prefix(binaryReader.ReadByte());
+ 									}
+ 								}
+ 								else {
+-									int num4 = 20;
++									int num4 = player.totalEquipSlots * 2;
+ 									for (int m = 0; m < num4; m++) {
+ 										player.armor[m].netDefaults(binaryReader.ReadInt32());
+ 										player.armor[m].Prefix(binaryReader.ReadByte());
 @@ -38014,7 +_,7 @@
  							if (num >= 11) {
  								int num28 = 22;
@@ -4685,9 +4697,9 @@
  			tileEntityAnchor.Clear();
  			doorHelper = new DoorOpeningHelper();
 -			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < totalInventorySlots; i++) {
 -				if (i < armor.Length)
-+				if (i < totalEquipSlots)
++			for (int i = 0; i < totalInventorySlots + 1; i++) {
++				if (i < totalEquipSlots * 2)
  					armor[i] = new Item();
  
  				inventory[i] = new Item();

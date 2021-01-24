@@ -1,0 +1,45 @@
+--- src/Terraria/Terraria/GameContent/Achievements/AchievementsHelper.cs
++++ src/tModLoader/Terraria/GameContent/Achievements/AchievementsHelper.cs
+@@ -59,15 +_,15 @@
+ 
+ 		internal static void OnPlayerEnteredWorld(Player player) {
+ 			if (AchievementsHelper.OnItemPickup != null) {
+-				for (int i = 0; i < 58; i++) {
++				for (int i = 0; i < player.totalInventorySlots; i++) {
+ 					AchievementsHelper.OnItemPickup(player, (short)player.inventory[i].type, player.inventory[i].stack);
+ 				}
+ 
+-				for (int j = 0; j < player.armor.Length; j++) {
++				for (int j = 0; j < player.totalEquipSlots * 2; j++) {
+ 					AchievementsHelper.OnItemPickup(player, (short)player.armor[j].type, player.armor[j].stack);
+ 				}
+ 
+-				for (int k = 0; k < player.dye.Length; k++) {
++				for (int k = 0; k < player.totalEquipSlots; k++) {
+ 					AchievementsHelper.OnItemPickup(player, (short)player.dye[k].type, player.dye[k].stack);
+ 				}
+ 
+@@ -108,7 +_,7 @@
+ 			if (player.miscEquips[3].type > 0)
+ 				Main.Achievements.GetCondition("THE_CAVALRY", "Equip").Complete();
+ 
+-			for (int num4 = 0; num4 < player.armor.Length; num4++) {
++			for (int num4 = 0; num4 < player.totalEquipSlots; num4++) {
+ 				if (player.armor[num4].wingSlot > 0) {
+ 					Main.Achievements.GetCondition("HEAD_IN_THE_CLOUDS", "Equip").Complete();
+ 					break;
+@@ -118,11 +_,12 @@
+ 			if (player.armor[0].stack > 0 && player.armor[1].stack > 0 && player.armor[2].stack > 0)
+ 				Main.Achievements.GetCondition("MATCHING_ATTIRE", "Equip").Complete();
+ 
+-			if (player.armor[10].stack > 0 && player.armor[11].stack > 0 && player.armor[12].stack > 0)
++			if (player.armor[player.totalEquipSlots].stack > 0 && player.armor[player.totalEquipSlots+1].stack > 0 
++				&& player.armor[player.totalEquipSlots+2].stack > 0)
+ 				Main.Achievements.GetCondition("FASHION_STATEMENT", "Equip").Complete();
+ 
+ 			bool flag = true;
+-			for (int num5 = 0; num5 < 10; num5++) {
++			for (int num5 = 0; num5 < player.totalEquipSlots; num5++) {
+ 				if (player.IsAValidEquipmentSlotForIteration(num5) && (player.dye[num5].type < 1 || player.dye[num5].stack < 1))
+ 					flag = false;
+ 			}
