@@ -75,6 +75,15 @@
  		private bool dontConsumeWand;
  		public int tankPet = -1;
  		public bool tankPetReset;
+@@ -683,7 +_,7 @@
+ 		public const int miscSlotHook = 4;
+ 		public const int SupportedMiscSlotCount = 5;
+ 		public Item[] armor = new Item[20];
+-		public Item[] dye = new Item[10];
++		public Item[] dye = new Item[20];
+ 		public Item[] miscEquips = new Item[5];
+ 		public Item[] miscDyes = new Item[5];
+ 		public Item trashItem = new Item();
 @@ -694,7 +_,7 @@
  		public bool poundRelease;
  		public float ghostFade;
