@@ -28,7 +28,7 @@ namespace Terraria.ModLoader
 
 			//Add legacy aliases, if the type has any.
 			foreach (string legacyName in LegacyNameAttribute.GetLegacyNamesOfType(instance.GetType())) {
-				RegisterInternal(instance, legacyName, $"{instance.Mod.Name}/{legacyName}");
+				RegisterInternal(instance, legacyName, $"{instance.Mod?.Name ?? "Terraria"}/{legacyName}");
 			}
 		}
 
@@ -38,8 +38,10 @@ namespace Terraria.ModLoader
 
 			dict[fullName] = instance;
 
-			if (!tieredDict.TryGetValue(instance.Mod.Name, out var subDictionary))
-				tieredDict[instance.Mod.Name] = subDictionary = new Dictionary<string, T>();
+			string modName = instance.Mod?.Name ?? "Terraria";
+
+			if (!tieredDict.TryGetValue(modName, out var subDictionary))
+				tieredDict[modName] = subDictionary = new Dictionary<string, T>();
 
 			subDictionary[name] = instance;
 		}
