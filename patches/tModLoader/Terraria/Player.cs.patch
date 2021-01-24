@@ -56,7 +56,7 @@
 -		public bool extraAccessory;
 +		//private int extraAccessorySlots; unused vanilla field
 +		// Create fields to facilitate dynamic inventory, accessory counts
-+		public int moddedEXAccSlots = 0;
++		public int moddedEXAccSlots = 2;
 +		public int vanillaEXAccSlots = 2;
 +		public int vanillaBasicAccSlots = 5;
 +		public int totalArmorSlots = 3;

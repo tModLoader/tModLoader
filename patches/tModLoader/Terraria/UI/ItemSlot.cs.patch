@@ -172,27 +172,27 @@
  							return true;
  
 -						if ((inv[slot].type <= 0 || inv[slot].stack <= 0) && (inv[slot - 10].type <= 0 || inv[slot - 10].stack <= 0))
-+						if ((inv[slot].type <= 0 || inv[slot].stack <= 0) && (inv[slot - player.totalEquipSlots].type <= 0 || inv[slot - player.totalEquipSlots].stack <= 0))
++						if ((inv[slot].type <= 0 || inv[slot].stack <= 0) && (inv[slot - player.vanillaEquipSlots].type <= 0 || inv[slot - player.vanillaEquipSlots].stack <= 0))
  							break;
  
 -						Item item = inv[slot - 10];
-+						Item item = inv[slot - player.totalEquipSlots];
++						Item item = inv[slot - player.vanillaEquipSlots];
  						bool flag2 = context != 11 || item.FitsAccessoryVanitySlot || item.IsAir;
  						if (flag2 && context == 11 && inv[slot].wingSlot > 0) {
 -							for (int i = 3; i < 10; i++) {
-+							for (int i = player.totalArmorSlots; i < player.totalEquipSlots; i++) {
++							for (int i = player.totalArmorSlots; i < player.vanillaEquipSlots; i++) {
 -								if (inv[i].wingSlot > 0 && i != slot - 10)
-+								if (inv[i].wingSlot > 0 && i != slot - player.totalEquipSlots)
++								if (inv[i].wingSlot > 0 && i != slot - player.vanillaEquipSlots)
  									flag2 = false;
  							}
  						}
  
 -						if (!flag2)
-+						if (!flag2 || !ItemLoader.CanEquipAccessory(inv[slot], slot - player.totalEquipSlots))
++						if (!flag2 || !ItemLoader.CanEquipAccessory(inv[slot], slot - player.vanillaEquipSlots))
  							break;
  
 -						Utils.Swap(ref inv[slot], ref inv[slot - 10]);
-+						Utils.Swap(ref inv[slot], ref inv[slot - player.totalEquipSlots]);
++						Utils.Swap(ref inv[slot], ref inv[slot - player.vanillaEquipSlots]);
  						SoundEngine.PlaySound(7);
  						Recipe.FindRecipes();
  						if (inv[slot].stack > 0) {
@@ -304,6 +304,34 @@
  		}
  
  		private static Item DyeSwap(Item item, out bool success) {
+@@ -1927,23 +_,23 @@
+ 
+ 			Player player = Main.player[Main.myPlayer];
+ 			Item item2 = item;
+-			for (int i = 0; i < 10; i++) {
++			for (int i = 0; i < player.totalEquipSlots; i++) {
+ 				if (player.dye[i].type == 0) {
+ 					dyeSlotCount = i;
+ 					break;
+ 				}
+ 			}
+ 
+-			if (dyeSlotCount >= 10)
++			if (dyeSlotCount >= player.totalEquipSlots)
+ 				dyeSlotCount = 0;
+ 
+ 			if (dyeSlotCount < 0)
+-				dyeSlotCount = 9;
++				dyeSlotCount = player.totalEquipSlots - 1;
+ 
+ 			item2 = player.dye[dyeSlotCount].Clone();
+ 			player.dye[dyeSlotCount] = item.Clone();
+ 			dyeSlotCount++;
+-			if (dyeSlotCount >= 10)
++			if (dyeSlotCount >= player.totalEquipSlots)
+ 				accSlotToSwapTo = 0;
+ 
+ 			SoundEngine.PlaySound(7);
 @@ -1958,7 +_,7 @@
  				return item;
  
