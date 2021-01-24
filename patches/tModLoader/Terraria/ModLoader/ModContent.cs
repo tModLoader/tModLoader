@@ -389,7 +389,6 @@ namespace Terraria.ModLoader
 			Interface.loadMods.SetLoadStage("tModLoader.MSSettingUp");
 			ResizeArrays();
 			RecipeGroupHelper.FixRecipeGroupLookups();
-			DamageClassLoader.ResizeArrays();
 
 			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
@@ -565,6 +564,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static void ResizeArrays(bool unloading = false) {
+			DamageClassLoader.ResizeArrays();
 			ItemLoader.ResizeArrays(unloading);
 			EquipLoader.ResizeAndFillArrays();
 			ModPrefix.ResizeArrays();

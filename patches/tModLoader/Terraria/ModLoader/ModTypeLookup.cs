@@ -32,8 +32,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void RegisterInternal(T instance, string name, string fullName) {
-			if (dict.ContainsKey(fullName))
+		internal static void RegisterInternal(T instance, string name, string fullName, bool throwOnDuplicate = true) {
+			if (throwOnDuplicate && dict.ContainsKey(fullName))
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorDuplicateName", typeof(T).Name, fullName));
 
 			dict[fullName] = instance;
