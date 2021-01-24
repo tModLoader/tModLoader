@@ -1244,11 +1244,11 @@ namespace Terraria.ModLoader
 		/// Returns the wing item that the player is functionally using. If player.wingsLogic has been modified, so no equipped wing can be found to match what the player is using, this creates a new Item object to return.
 		/// </summary>
 		public static Item GetWing(Player player) {
-			//TODO: this doesn't work with wings in modded accessory slots
+			//TODO: this sort-of works with wings in modded accessory slots, but needs fixing
 
 			// If wings are present in accessory slots (slots 3 through N, where 0,1,2 are armor), then return wings
 			Item item = null;
-			for (int k = 3; k < 10; k++) {
+			for (int k = player.totalArmorSlots; k < player.totalEquipSlots; k++) {
 				if (player.armor[k].wingSlot == player.wingsLogic) {
 					item = player.armor[k];
 				}

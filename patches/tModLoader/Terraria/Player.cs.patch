@@ -48,7 +48,7 @@
  		public OverheadMessage chatOverhead;
  		public SelectionRadial DpadRadial = new SelectionRadial();
  		public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
-@@ -438,8 +_,21 @@
+@@ -438,8 +_,24 @@
  		public Vector2 lastDeathPostion;
  		public DateTime lastDeathTime;
  		public bool showLastDeath;
@@ -57,18 +57,21 @@
 +		//private int extraAccessorySlots; unused vanilla field
 +		// Create fields to facilitate dynamic inventory, accessory counts
 +		public int moddedEXAccSlots = 0;
-+		private static int vanillaEXAccSlots = 2;
-+		private static int defaultAccSlots = 5;
-+		private static int totalArmorSlots = 3;
-+		public int totalEquipSlots => moddedEXAccSlots + vanillaEXAccSlots + defaultAccSlots + totalArmorSlots;
-+		private static int vanillaInventorySlots = 50;
-+		private static int vanillaCoinAmmoSlots = 8;
++		public int vanillaEXAccSlots = 2;
++		public int vanillaBasicAccSlots = 5;
++		public int totalArmorSlots = 3;
++		public int vanillaEquipSlots => vanillaEXAccSlots + vanillaBasicAccSlots + totalArmorSlots;
++		public int totalEquipSlots => moddedEXAccSlots + vanillaEquipSlots;
++		public int vanillaContainerSlots = 10;
++		public int vanillaHotbarSlots = 40;
++		public int vanillaCoinAmmoSlots = 8;
++		public int vanillaInventorySlots => vanillaHotbarSlots + vanillaCoinAmmoSlots + vanillaContainerSlots;
 +		public int moddedInventorySlots = 0;
-+		public int totalInventorySlots => moddedInventorySlots + vanillaInventorySlots + vanillaCoinAmmoSlots;
++		public int totalInventorySlots => moddedInventorySlots + vanillaInventorySlots;
 +		//public bool extraAccessory; -> renamed to demonHeartUsed to avoid confusion
 +		public bool demonHeartUsed;
-+		public int demonHeartSlot => totalArmorSlots+ defaultAccSlots;
-+		public int masterModeSlot => totalArmorSlots + defaultAccSlots + 1;
++		public int demonHeartSlot => totalArmorSlots+ vanillaBasicAccSlots;
++		public int masterModeSlot => totalArmorSlots + vanillaBasicAccSlots + 1;
  		private bool dontConsumeWand;
  		public int tankPet = -1;
  		public bool tankPetReset;
@@ -174,7 +177,7 @@
 -				num++;
 -
 +			// Change to a for loop to be generalized for any added accessory slot
-+			for (int i = totalArmorSlots+defaultAccSlots; i < totalEquipSlots; i++) {
++			for (int i = totalArmorSlots+vanillaBasicAccSlots; i < totalEquipSlots; i++) {
 +				if (CanAccessoryBeShown(i))
 +					num++;
 +			}
@@ -1194,7 +1197,7 @@
  			}
  
  			if (whoAmI == Main.myPlayer && luckPotion != oldLuckPotion) {
-@@ -8252,34 +_,26 @@
+@@ -8252,34 +_,27 @@
  		}
  
  		public bool IsAValidEquipmentSlotForIteration(int slot) {
@@ -1222,6 +1225,7 @@
 +				return (demonHeartUsed && (Main.expertMode || Main.gameMenu));
 +			else if (slot == masterModeSlot || slot == totalEquipSlots + masterModeSlot)
 +				return (Main.masterMode || Main.gameMenu);
++			//TODO: add a conditional hook for mods to whether or not allow accessory based on their condition
 +			else return true;
  		}
  
@@ -1605,7 +1609,7 @@
 +		public void UpdateEquips(int i)
 +		{
 +			VanillaPreUpdateInventory();
-+			for (int j = 0; j < totalInventorySlots; j++) {
++			for (int j = 0; j < vanillaInventorySlots; j++) {
 +				VanillaUpdateInventory(inventory[j]);
 +			}
 +			VanillaPostUpdateInventory();
@@ -4197,7 +4201,7 @@
  
  			if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  				num += pickPower;
-@@ -37060,28 +_,52 @@
+@@ -37060,27 +_,51 @@
  		}
  
  		public void DropItems() {
@@ -4213,7 +4217,7 @@
 +
 +			startCounts[ModContent.ItemType<ModLoader.Default.StartBag>()] = 1;
 -			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < totalInventorySlots + 1; i++) {
++			for (int i = 0; i < vanillaInventorySlots + 1; i++) {
  				if (inventory[i].stack > 0) {
 +					Item item = inventory[i];
  					bool flag = true;
@@ -4248,12 +4252,10 @@
  				}
  
  				inventory[i].TurnToAir();
--				if (i < armor.Length) {
 +
-+				if (i < totalEquipSlots * 2) {
+ 				if (i < armor.Length) {
  					if (armor[i].stack > 0) {
  						int num2 = Item.NewItem((int)position.X, (int)position.Y, width, height, armor[i].type);
- 						Main.item[num2].netDefaults(armor[i].netID);
 @@ -37091,6 +_,8 @@
  						Main.item[num2].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num2].noGrabDelay = 100;
@@ -4263,15 +4265,6 @@
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num2);
  					}
-@@ -37098,7 +_,7 @@
- 					armor[i] = new Item();
- 				}
- 
--				if (i < dye.Length) {
-+				if (i < totalEquipSlots) {
- 					if (dye[i].stack > 0) {
- 						int num3 = Item.NewItem((int)position.X, (int)position.Y, width, height, dye[i].type);
- 						Main.item[num3].netDefaults(dye[i].netID);
 @@ -37108,6 +_,8 @@
  						Main.item[num3].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num3].noGrabDelay = 100;
@@ -4335,22 +4328,15 @@
  			skinColor = other.skinColor;
  			eyeColor = other.eyeColor;
  			hair = other.hair;
-@@ -37184,12 +_,12 @@
+@@ -37184,7 +_,7 @@
  			statManaMax = other.statManaMax;
  			statManaMax2 = other.statManaMax2;
  			hideMisc = other.hideMisc;
 -			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < totalInventorySlots + 1; i++) {
++			for (int i = 0; i < vanillaInventorySlots + 1; i++) {
  				inventory[i] = other.inventory[i].Clone();
--				if (i < armor.Length)
-+				if (i < totalEquipSlots * 2)
+ 				if (i < armor.Length)
  					armor[i] = other.armor[i].Clone();
- 
--				if (i < dye.Length)
-+				if (i < totalEquipSlots)
- 					dye[i] = other.dye[i].Clone();
- 
- 				if (i < miscEquips.Length)
 @@ -37204,14 +_,15 @@
  		}
  
@@ -4369,22 +4355,15 @@
  			player.MinionRestTargetPoint = MinionRestTargetPoint;
  			player.MinionAttackTargetNPC = MinionAttackTargetNPC;
  			player.direction = direction;
-@@ -37233,12 +_,12 @@
+@@ -37233,7 +_,7 @@
  			player.hideVisibleAccessory = hideVisibleAccessory;
  			player.hideMisc = hideMisc;
  			player.shieldRaised = shieldRaised;
 -			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < totalInventorySlots + 1; i++) {
++			for (int i = 0; i < vanillaInventorySlots + 1; i++) {
  				player.inventory[i] = inventory[i].Clone();
--				if (i < armor.Length)
-+				if (i < totalEquipSlots * 2)
+ 				if (i < armor.Length)
  					player.armor[i] = armor[i].Clone();
- 
--				if (i < dye.Length)
-+				if (i < totalEquipSlots)
- 					player.dye[i] = dye[i].Clone();
- 
- 				if (i < miscEquips.Length)
 @@ -37261,13 +_,14 @@
  			}
  
@@ -4418,7 +4397,7 @@
  			if (FileUtilities.Exists(path, isCloudSave))
  				FileUtilities.Copy(path, path + ".bak", isCloudSave);
  
-@@ -37417,22 +_,23 @@
+@@ -37417,23 +_,25 @@
  			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write)) {
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream)) {
@@ -4433,19 +4412,21 @@
 +						PlayerIO.WriteVanillaHairDye(player.hairDye, binaryWriter);
  						BitsByte bb = (byte)0;
 -						for (int i = 0; i < 8; i++) {
-+						for (int i = 0; i < defaultAccSlots + totalArmorSlots; i++) {
++						for (int i = 0; i < player.vanillaBasicAccSlots + player.totalArmorSlots; i++) {
  							bb[i] = player.hideVisibleAccessory[i];
  						}
  
  						binaryWriter.Write(bb);
  						bb = (byte)0;
 -						for (int j = 0; j < 2; j++) {
-+						for (int j = 0; j < vanillaEXAccSlots; j++) {
++						for (int j = 0; j < player.vanillaEXAccSlots; j++) {
 -							bb[j] = player.hideVisibleAccessory[j + 8];
-+							bb[j] = player.hideVisibleAccessory[j + defaultAccSlots + totalArmorSlots];
++							bb[j] = player.hideVisibleAccessory[j + player.vanillaBasicAccSlots + player.totalArmorSlots];
  						}
++						//TODO: save hideVisible in modded accessory slots
  
  						binaryWriter.Write(bb);
+ 						binaryWriter.Write(player.hideMisc);
 @@ -37442,7 +_,7 @@
  						binaryWriter.Write(player.statLifeMax);
  						binaryWriter.Write(player.statMana);
@@ -4455,26 +4436,33 @@
  						binaryWriter.Write(player.unlockedBiomeTorches);
  						binaryWriter.Write(player.UsingBiomeTorches);
  						binaryWriter.Write(player.downedDD2EventAnyDifficulty);
-@@ -37468,64 +_,58 @@
+@@ -37468,64 +_,65 @@
  						binaryWriter.Write(player.shoeColor.R);
  						binaryWriter.Write(player.shoeColor.G);
  						binaryWriter.Write(player.shoeColor.B);
 -						for (int k = 0; k < player.armor.Length; k++) {
-+						for (int k = 0; k < player.totalEquipSlots * 2; k++) {
++						for (int k = 0; k < player.vanillaEquipSlots; k++) {
 -							binaryWriter.Write(player.armor[k].netID);
 +							ItemIO.WriteVanillaID(player.armor[k], binaryWriter);
  							binaryWriter.Write(player.armor[k].prefix);
  						}
++						for (int k = player.totalEquipSlots; 
++							k < player.totalEquipSlots + player.vanillaEquipSlots; k++) {
++							ItemIO.WriteVanillaID(player.armor[k], binaryWriter);
++							binaryWriter.Write(player.armor[k].prefix);
++						}
++						//TODO: save equips in modded slots
  
 -						for (int l = 0; l < player.dye.Length; l++) {
-+						for (int l = 0; l < player.totalEquipSlots; l++) {
++						for (int l = 0; l < player.vanillaEquipSlots; l++) {
 -							binaryWriter.Write(player.dye[l].netID);
 +							ItemIO.WriteVanillaID(player.dye[l], binaryWriter);
  							binaryWriter.Write(player.dye[l].prefix);
  						}
++						//TODO: save dyes in modded slots
  
 -						for (int m = 0; m < 58; m++) {
-+						for (int m = 0; m < player.totalInventorySlots; m++) {
++						for (int m = 0; m < player.vanillaInventorySlots; m++) {
 -							binaryWriter.Write(player.inventory[m].netID);
 +							ItemIO.WriteVanillaID(player.inventory[m], binaryWriter);
  							binaryWriter.Write(player.inventory[m].stack);
@@ -4548,38 +4536,45 @@
  		}
  
  		private void SaveTemporaryItemSlotContents(BinaryWriter writer) {
-@@ -37675,7 +_,7 @@
+@@ -37675,7 +_,8 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
 -			Player player = new Player();
 +			Player player = new Player(false); // setup inventory is unnecessary
++
  			try {
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
  				rijndaelManaged.Padding = PaddingMode.None;
-@@ -37714,18 +_,18 @@
+@@ -37714,20 +_,24 @@
  
  							if (num >= 124) {
  								BitsByte bitsByte = binaryReader.ReadByte();
 -								for (int i = 0; i < 8; i++) {
-+								for (int i = 0; i < totalArmorSlots + defaultAccSlots; i++) {
++								for (int i = 0; i < player.totalArmorSlots + player.vanillaBasicAccSlots; i++) {
  									player.hideVisibleAccessory[i] = bitsByte[i];
  								}
  
  								bitsByte = binaryReader.ReadByte();
 -								for (int j = 0; j < 2; j++) {
-+								for (int j = 0; j < vanillaEXAccSlots; j++) {
++								for (int j = 0; j < player.vanillaEXAccSlots; j++) {
 -									player.hideVisibleAccessory[j + 8] = bitsByte[j];
-+									player.hideVisibleAccessory[j + totalArmorSlots + defaultAccSlots] = bitsByte[j];
++									player.hideVisibleAccessory[j + player.totalArmorSlots + player.vanillaBasicAccSlots] = bitsByte[j];
  								}
++
++								//TODO: modded slots visibility flags load here?
  							}
  							else if (num >= 83) {
  								BitsByte bitsByte2 = binaryReader.ReadByte();
 -								for (int k = 0; k < 8; k++) {
-+								for (int k = 0; k < totalArmorSlots + defaultAccSlots; k++) {
++								for (int k = 0; k < player.totalArmorSlots + player.vanillaBasicAccSlots; k++) {
  									player.hideVisibleAccessory[k] = bitsByte2[k];
  								}
++
++								//TODO: modded slots visibility flags load here?
  							}
+ 
+ 							if (num >= 119)
 @@ -37763,7 +_,7 @@
  								player.statMana = 400;
  
@@ -4589,25 +4584,91 @@
  
  							if (num >= 229) {
  								player.unlockedBiomeTorches = binaryReader.ReadBoolean();
-@@ -37794,15 +_,15 @@
+@@ -37787,41 +_,49 @@
+ 							Main.player[Main.myPlayer].pantsColor = player.pantsColor;
+ 							Main.player[Main.myPlayer].hairColor = player.hairColor;
+ 							if (num >= 38) {
+-								if (num < 124) {
+-									int num2 = 11;
+-									if (num >= 81)
+-										num2 = 16;
++								if (num < 124) { // not in expert mode world
++									int num2 = player.vanillaEquipSlots + 1;
++									if (num >= 81) // character was in expert mode
++										num2 = 2 * (player.vanillaBasicAccSlots + player.totalArmorSlots);
  
  									for (int l = 0; l < num2; l++) {
  										int num3 = l;
 -										if (num3 >= 8)
 -											num3 += 2;
-+										if (num3 >= defaultAccSlots + totalArmorSlots)
-+											num3 += vanillaEXAccSlots; // skip master, demon heart slots
++										if (num3 >= player.vanillaBasicAccSlots + player.totalArmorSlots)
++											num3 += player.vanillaEXAccSlots + player.moddedEXAccSlots; // skip extra slots
  
  										player.armor[num3].netDefaults(binaryReader.ReadInt32());
  										player.armor[num3].Prefix(binaryReader.ReadByte());
  									}
++									//TODO: Modded Slots load here?
  								}
  								else {
 -									int num4 = 20;
-+									int num4 = player.totalEquipSlots * 2;
++									int num4 = player.vanillaEquipSlots;
  									for (int m = 0; m < num4; m++) {
  										player.armor[m].netDefaults(binaryReader.ReadInt32());
  										player.armor[m].Prefix(binaryReader.ReadByte());
+ 									}
++									for (int m = player.totalEquipSlots; m < player.totalEquipSlots + num4; m++) {
++										player.armor[m].netDefaults(binaryReader.ReadInt32());
++										player.armor[m].Prefix(binaryReader.ReadByte());
++									}
++									//TODO: Modded Slots load here?
+ 								}
+ 
+ 								if (num >= 47) {
+ 									int num5 = 3;
+ 									if (num >= 81)
+-										num5 = 8;
++										num5 = player.totalArmorSlots + player.vanillaBasicAccSlots;
+ 
+ 									if (num >= 124)
+-										num5 = 10;
++										num5 = player.vanillaEquipSlots;
+ 
+ 									for (int n = 0; n < num5; n++) {
+ 										int num6 = n;
+ 										player.dye[num6].netDefaults(binaryReader.ReadInt32());
+ 										player.dye[num6].Prefix(binaryReader.ReadByte());
+ 									}
++
++									//TODO: modded slots load stuff here?
+ 								}
+ 
+ 								if (num >= 58) {
+@@ -37957,19 +_,23 @@
+ 									player.voidVaultInfo = binaryReader.ReadByte();
+ 							}
+ 							else {
+-								for (int num21 = 0; num21 < 8; num21++) {
++								for (int num21 = 0; num21 < player.totalArmorSlots + player.vanillaBasicAccSlots; num21++) {
+ 									player.armor[num21].SetDefaults(ItemID.FromLegacyName(binaryReader.ReadString(), num));
+ 									if (num >= 36)
+ 										player.armor[num21].Prefix(binaryReader.ReadByte());
+ 								}
+ 
+ 								if (num >= 6) {
+-									for (int num22 = 8; num22 < 11; num22++) {
++									for (int num22 = player.totalArmorSlots + player.vanillaBasicAccSlots;
++										num22 < player.vanillaEquipSlots + 1; num22++) {
+ 										player.armor[num22].SetDefaults(ItemID.FromLegacyName(binaryReader.ReadString(), num));
+ 										if (num >= 36)
+ 											player.armor[num22].Prefix(binaryReader.ReadByte());
+ 									}
++									
+ 								}
++								
++								//TODO: do we need load prefix here for modded slots?
+ 
+ 								for (int num23 = 0; num23 < 44; num23++) {
+ 									player.inventory[num23].SetDefaults(ItemID.FromLegacyName(binaryReader.ReadString(), num));
 @@ -38014,7 +_,7 @@
  							if (num >= 11) {
  								int num28 = 22;
@@ -4645,7 +4706,7 @@
  			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
 +			PlayerIO.Load(newPlayer, playerFileData.Path, playerFileData.IsCloudSave);
 -			for (int i = 3; i < 10; i++) {
-+			for (int i = totalArmorSlots; i < newPlayer.totalEquipSlots; i++) {
++			for (int i = newPlayer.totalArmorSlots; i < newPlayer.totalEquipSlots; i++) {
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 4874 || type == 5000)
  					newPlayer.lavaMax += 420;
@@ -4692,25 +4753,21 @@
  			width = 20;
  			height = 42;
  			name = string.Empty;
-@@ -38236,8 +_,8 @@
+@@ -38236,7 +_,14 @@
  			legFrame.Height = 56;
  			tileEntityAnchor.Clear();
  			doorHelper = new DoorOpeningHelper();
++
++			// Resize arrays to include mod added accessory slots
++			//TODO: Actually make this code useful, possibly need to move it
++			Array.Resize<Item>(ref armor, totalEquipSlots * 2);
++			Array.Resize<Item>(ref dye, totalEquipSlots);
++			Array.Resize<bool>(ref hideVisibleAccessory, totalEquipSlots);
++			
 -			for (int i = 0; i < 59; i++) {
--				if (i < armor.Length)
-+			for (int i = 0; i < totalInventorySlots + 1; i++) {
-+				if (i < totalEquipSlots * 2)
++			for (int i = 0; i < vanillaInventorySlots + 1; i++) {
+ 				if (i < armor.Length)
  					armor[i] = new Item();
- 
- 				inventory[i] = new Item();
-@@ -38250,7 +_,7 @@
- 				bank4.item[j] = new Item();
- 			}
- 
--			for (int k = 0; k < dye.Length; k++) {
-+			for (int k = 0; k < totalEquipSlots; k++) {
- 				dye[k] = new Item();
- 			}
  
 @@ -38266,8 +_,8 @@
  			lastVisualizedSelectedItem = new Item();
