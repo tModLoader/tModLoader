@@ -79,15 +79,6 @@
  						NetMessage.TrySendData(6);
  						if (Netplay.Connection.State == 2)
  							Netplay.Connection.State = 3;
-@@ -269,7 +_,7 @@
- 						if (player14.difficulty > 3)
- 							player14.difficulty = 3;
- 
--						player14.extraAccessory = bitsByte18[2];
-+						player14.demonHeartUsed = bitsByte18[2];
- 						BitsByte bitsByte19 = reader.ReadByte();
- 						player14.UsingBiomeTorches = bitsByte19[0];
- 						player14.happyFunTorchTime = bitsByte19[1];
 @@ -382,6 +_,7 @@
  								player8.trashItem.Prefix(num139);
  								if (num137 == Main.myPlayer && !Main.ServerSideCharacter)

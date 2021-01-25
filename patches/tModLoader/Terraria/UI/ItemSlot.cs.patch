@@ -236,7 +236,7 @@
  					case 11: {
  							int num3 = slot;
 -							if (num3 % 10 == 9 && !player.CanDemonHeartAccessoryBeShown())
-+							if (num3 % player.totalEquipSlots == player.demonHeartSlot + 1 && !player.CanAccessoryBeShown(player.demonHeartSlot))
++							if (num3 % player.totalEquipSlots == player.demonHeartSlot + 1 && !player.CanDemonHeartAccessoryBeShown())
  								num3--;
  
  							num = 100 + num3;
@@ -245,7 +245,7 @@
  						if (inv == player.dye) {
  							int num4 = slot;
 -							if (num4 % 10 == 9 && !player.CanDemonHeartAccessoryBeShown())
-+							if (num4 % player.totalEquipSlots == player.demonHeartSlot + 1 && !player.CanAccessoryBeShown(player.demonHeartSlot))
++							if (num4 % player.totalEquipSlots == player.demonHeartSlot + 1 && !player.CanDemonHeartAccessoryBeShown())
  								num4--;
  
  							num = 120 + num4;

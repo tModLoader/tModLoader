@@ -1,14 +1,5 @@
 --- src/Terraria/Terraria/GameContent/Achievements/AchievementsHelper.cs
 +++ src/tModLoader/Terraria/GameContent/Achievements/AchievementsHelper.cs
-@@ -59,7 +_,7 @@
- 
- 		internal static void OnPlayerEnteredWorld(Player player) {
- 			if (AchievementsHelper.OnItemPickup != null) {
--				for (int i = 0; i < 58; i++) {
-+				for (int i = 0; i < player.vanillaInventorySlots; i++) {
- 					AchievementsHelper.OnItemPickup(player, (short)player.inventory[i].type, player.inventory[i].stack);
- 				}
- 
 @@ -118,11 +_,12 @@
  			if (player.armor[0].stack > 0 && player.armor[1].stack > 0 && player.armor[2].stack > 0)
  				Main.Achievements.GetCondition("MATCHING_ATTIRE", "Equip").Complete();

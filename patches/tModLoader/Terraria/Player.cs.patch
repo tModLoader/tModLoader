@@ -48,7 +48,7 @@
  		public OverheadMessage chatOverhead;
  		public SelectionRadial DpadRadial = new SelectionRadial();
  		public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
-@@ -438,8 +_,24 @@
+@@ -438,8 +_,20 @@
  		public Vector2 lastDeathPostion;
  		public DateTime lastDeathTime;
  		public bool showLastDeath;
@@ -56,34 +56,21 @@
 -		public bool extraAccessory;
 +		//private int extraAccessorySlots; unused vanilla field
 +		// Create fields to facilitate dynamic inventory, accessory counts
-+		public int moddedEXAccSlots = 7; // This is the critical field that "Accessory Slot Creation Rework; Part 1: The Vanilla Twist" created
++		public int moddedEXAccSlots = 2; // This is the critical field that "Accessory Slot Creation Rework; Part 1: The Vanilla Twist" created
 +		public int vanillaEXAccSlots = 2;
 +		public int vanillaBasicAccSlots = 5;
 +		public int totalArmorSlots = 3;
 +		public int vanillaEquipSlots => vanillaEXAccSlots + vanillaBasicAccSlots + totalArmorSlots;
 +		public int totalEquipSlots => moddedEXAccSlots + vanillaEquipSlots;
-+		public int vanillaContainerSlots = 10;
-+		public int vanillaHotbarSlots = 40;
-+		public int vanillaCoinAmmoSlots = 8;
-+		public int vanillaInventorySlots => vanillaHotbarSlots + vanillaCoinAmmoSlots + vanillaContainerSlots;
-+		public int moddedInventorySlots = 0;
-+		public int totalInventorySlots => moddedInventorySlots + vanillaInventorySlots;
-+		//public bool extraAccessory; -> renamed to demonHeartUsed to avoid confusion
++
++		internal ref bool extraAccessory => ref demonHeartUsed; // Minimize modder confusion by using a good name
++		
 +		public bool demonHeartUsed;
 +		public int demonHeartSlot => totalArmorSlots+ vanillaBasicAccSlots;
 +		public int masterModeSlot => totalArmorSlots + vanillaBasicAccSlots + 1;
  		private bool dontConsumeWand;
  		public int tankPet = -1;
  		public bool tankPetReset;
-@@ -683,7 +_,7 @@
- 		public const int miscSlotHook = 4;
- 		public const int SupportedMiscSlotCount = 5;
- 		public Item[] armor = new Item[20];
--		public Item[] dye = new Item[10];
-+		public Item[] dye = new Item[20];
- 		public Item[] miscEquips = new Item[5];
- 		public Item[] miscDyes = new Item[5];
- 		public Item trashItem = new Item();
 @@ -694,7 +_,7 @@
  		public bool poundRelease;
  		public float ghostFade;
@@ -156,35 +143,51 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
-@@ -1969,28 +_,20 @@
+@@ -1968,29 +_,47 @@
+ 
  			return pos;
  		}
- 
--		public bool CanDemonHeartAccessoryBeShown() {
+-
++		public bool CanDemonHeartAccessoryBeShown() {
++			return CanAccessoryBeShown(demonHeartSlot);
++		}
++		/*
+ 		public bool CanDemonHeartAccessoryBeShown() {
+ 			if (!IsAValidEquipmentSlotForIteration(8) && armor[8].type <= 0 && armor[18].type <= 0)
+ 				return dye[8].type > 0;
+-
+ 			return true;
+ 		}
+-
++		*/
++		public bool CanMasterModeAccessoryBeShown() {
++			return CanAccessoryBeShown(masterModeSlot);
++		}
++		/*
+ 		public bool CanMasterModeAccessoryBeShown() {
+ 			if (!IsAValidEquipmentSlotForIteration(9) && armor[9].type <= 0 && armor[19].type <= 0)
+ 				return dye[9].type > 0;
++			return true;
++		}
++		*/
 +		public bool CanAccessoryBeShown(int index) {
--			if (!IsAValidEquipmentSlotForIteration(8) && armor[8].type <= 0 && armor[18].type <= 0)
 +			if (!IsAValidEquipmentSlotForIteration(index) && armor[index].type <= 0 && armor[index+totalEquipSlots].type <= 0)
--				return dye[8].type > 0;
 +				return dye[index].type > 0;
--
--			return true;
--		}
--
--		public bool CanMasterModeAccessoryBeShown() {
--			if (!IsAValidEquipmentSlotForIteration(9) && armor[9].type <= 0 && armor[19].type <= 0)
--				return dye[9].type > 0;
  
  			return true;
  		}
  
  		public int GetAmountOfExtraAccessorySlotsToShow() {
  			int num = 0;
--			if (CanDemonHeartAccessoryBeShown())
--				num++;
++			/*
+ 			if (CanDemonHeartAccessoryBeShown())
+ 				num++;
 -
--			if (CanMasterModeAccessoryBeShown())
--				num++;
++			
+ 			if (CanMasterModeAccessoryBeShown())
+ 				num++;
 -
++			*/
 +			// Change to a for loop to be generalized for any added accessory slot
 +			for (int i = totalArmorSlots+vanillaBasicAccSlots; i < totalEquipSlots; i++) {
 +				if (CanAccessoryBeShown(i))
@@ -790,15 +793,6 @@
  			switch (type) {
  				case 3318: {
  						if (Main.rand.Next(2) == 0)
-@@ -4083,7 +_,7 @@
- 							QuickSpawnItem(2105);
- 
- 						QuickSpawnItem(367);
--						if (!extraAccessory)
-+						if (!demonHeartUsed)
- 							QuickSpawnItem(3335);
- 
- 						int num10 = Main.rand.Next(4);
 @@ -4389,8 +_,11 @@
  			if (type == 4957)
  				num11 = 657;
@@ -1231,7 +1225,7 @@
 -					}
 -			}
 +			if (slot == demonHeartSlot || slot == totalEquipSlots + demonHeartSlot)
-+				return (demonHeartUsed && (Main.expertMode || Main.gameMenu));
++				return (extraAccessory && (Main.expertMode || Main.gameMenu));
 +			else if (slot == masterModeSlot || slot == totalEquipSlots + masterModeSlot)
 +				return (Main.masterMode || Main.gameMenu);
 +			//TODO: add a conditional hook for mods to whether or not allow accessory based on their condition
@@ -1618,7 +1612,7 @@
 +		public void UpdateEquips(int i)
 +		{
 +			VanillaPreUpdateInventory();
-+			for (int j = 0; j < vanillaInventorySlots; j++) {
++			for (int j = 0; j < 58; j++) {
 +				VanillaUpdateInventory(inventory[j]);
 +			}
 +			VanillaPostUpdateInventory();
@@ -1668,30 +1662,24 @@
  				minionKB += 0.5f;
  			}
  
-@@ -9297,19 +_,22 @@
+@@ -9296,20 +_,23 @@
+ 				minionDamage += 0.1f;
  				maxTurrets++;
  			}
- 
--			for (int m = 3; m < 10; m++) {
--				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
--					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
--						wings = armor[m].wingSlot;
 -
--					wingsLogic = armor[m].wingSlot;
--				}
--			}
--
--			for (int n = 13; n < 20; n++) {
++			/*
 +			// wing loop is merged into ApplyEquipFunctional
-+			//for (int m = 3; m < 10; m++) {
-+			//	if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
-+			//		if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
-+			//			wings = armor[m].wingSlot;
-+			//		wingsLogic = armor[m].wingSlot;
-+			//	}
-+			//}
-+			
-+
+ 			for (int m = 3; m < 10; m++) {
+ 				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
+ 					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
+ 						wings = armor[m].wingSlot;
+-
+ 					wingsLogic = armor[m].wingSlot;
+ 				}
+ 			}
++			*/
+ 
+-			for (int n = 13; n < 20; n++) {
 +			for (int n = totalEquipSlots+totalArmorSlots; n < 2*totalEquipSlots; n++) {
  				if (IsAValidEquipmentSlotForIteration(n))
 -					ApplyEquipVanity(n, armor[n]);
@@ -3774,18 +3762,6 @@
  			if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
  				int num = -1;
  				float x = itemRectangle.X + Main.rand.Next(itemRectangle.Width);
-@@ -31271,9 +_,9 @@
- 		}
- 
- 		private void ItemCheck_UseDemonHeart(Item sItem) {
--			if (sItem.type == 3335 && itemAnimation > 0 && !extraAccessory && Main.expertMode && ItemTimeIsZero) {
-+			if (sItem.type == 3335 && itemAnimation > 0 && !demonHeartUsed && Main.expertMode && ItemTimeIsZero) {
- 				ApplyItemTime(sItem);
--				extraAccessory = true;
-+				demonHeartUsed = true;
- 				NetMessage.SendData(4, -1, -1, null, whoAmI);
- 			}
- 		}
 @@ -31541,7 +_,7 @@
  			if (Main.tileHammer[tile.type]) {
  				canHitWalls = false;
@@ -3932,15 +3908,6 @@
  			int whoAmI = base.whoAmI;
  			bool flag = true;
  			int num = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
-@@ -35463,7 +_,7 @@
- 			if (gravDir == -1f)
- 				num2 = (int)(Main.screenPosition.Y + (float)Main.screenHeight - (float)Main.mouseY) / 16;
- 
--			if (sItem.type == 3335 && (extraAccessory || !Main.expertMode))
-+			if (sItem.type == 3335 && (demonHeartUsed || !Main.expertMode))
- 				flag = false;
- 
- 			if (pulley && sItem.fishingPole > 0)
 @@ -35823,6 +_,11 @@
  			if (sItem.type == 3006)
  				flag2 = true;
@@ -4226,7 +4193,7 @@
 +
 +			startCounts[ModContent.ItemType<ModLoader.Default.StartBag>()] = 1;
 -			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < vanillaInventorySlots + 1; i++) {
++			for (int i = 0; i < 58 + 1; i++) {
  				if (inventory[i].stack > 0) {
 +					Item item = inventory[i];
  					bool flag = true;
@@ -4328,25 +4295,16 @@
  			Main.mouseItem.TurnToAir();
  		}
  
-@@ -37166,7 +_,7 @@
- 			skinVariant = other.skinVariant;
- 			direction = other.direction;
- 			selectedItem = other.selectedItem;
--			extraAccessory = other.extraAccessory;
-+			demonHeartUsed = other.demonHeartUsed;
- 			skinColor = other.skinColor;
- 			eyeColor = other.eyeColor;
- 			hair = other.hair;
 @@ -37184,7 +_,7 @@
  			statManaMax = other.statManaMax;
  			statManaMax2 = other.statManaMax2;
  			hideMisc = other.hideMisc;
 -			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < vanillaInventorySlots + 1; i++) {
++			for (int i = 0; i < 58 + 1; i++) {
  				inventory[i] = other.inventory[i].Clone();
  				if (i < armor.Length)
  					armor[i] = other.armor[i].Clone();
-@@ -37204,14 +_,15 @@
+@@ -37204,13 +_,14 @@
  		}
  
  		public object clientClone() {
@@ -4359,17 +4317,15 @@
  			player.voidVaultInfo = voidVaultInfo;
  			player.luck = luck;
 +			PlayerHooks.CopyCustomBiomesTo(this, player);
--			player.extraAccessory = extraAccessory;
-+			player.demonHeartUsed = demonHeartUsed;
+ 			player.extraAccessory = extraAccessory;
  			player.MinionRestTargetPoint = MinionRestTargetPoint;
  			player.MinionAttackTargetNPC = MinionAttackTargetNPC;
- 			player.direction = direction;
 @@ -37233,7 +_,7 @@
  			player.hideVisibleAccessory = hideVisibleAccessory;
  			player.hideMisc = hideMisc;
  			player.shieldRaised = shieldRaised;
 -			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < vanillaInventorySlots + 1; i++) {
++			for (int i = 0; i < 58 + 1; i++) {
  				player.inventory[i] = inventory[i].Clone();
  				if (i < armor.Length)
  					player.armor[i] = armor[i].Clone();
@@ -4436,15 +4392,6 @@
  
  						binaryWriter.Write(bb);
  						binaryWriter.Write(player.hideMisc);
-@@ -37442,7 +_,7 @@
- 						binaryWriter.Write(player.statLifeMax);
- 						binaryWriter.Write(player.statMana);
- 						binaryWriter.Write(player.statManaMax);
--						binaryWriter.Write(player.extraAccessory);
-+						binaryWriter.Write(player.demonHeartUsed);
- 						binaryWriter.Write(player.unlockedBiomeTorches);
- 						binaryWriter.Write(player.UsingBiomeTorches);
- 						binaryWriter.Write(player.downedDD2EventAnyDifficulty);
 @@ -37468,64 +_,65 @@
  						binaryWriter.Write(player.shoeColor.R);
  						binaryWriter.Write(player.shoeColor.G);
@@ -4470,8 +4417,7 @@
  						}
 +						//TODO: save dyes in modded slots
  
--						for (int m = 0; m < 58; m++) {
-+						for (int m = 0; m < player.vanillaInventorySlots; m++) {
+ 						for (int m = 0; m < 58; m++) {
 -							binaryWriter.Write(player.inventory[m].netID);
 +							ItemIO.WriteVanillaID(player.inventory[m], binaryWriter);
  							binaryWriter.Write(player.inventory[m].stack);
@@ -4584,15 +4530,6 @@
  							}
  
  							if (num >= 119)
-@@ -37763,7 +_,7 @@
- 								player.statMana = 400;
- 
- 							if (num >= 125)
--								player.extraAccessory = binaryReader.ReadBoolean();
-+								player.demonHeartUsed = binaryReader.ReadBoolean();
- 
- 							if (num >= 229) {
- 								player.unlockedBiomeTorches = binaryReader.ReadBoolean();
 @@ -37787,41 +_,49 @@
  							Main.player[Main.myPlayer].pantsColor = player.pantsColor;
  							Main.player[Main.myPlayer].hairColor = player.hairColor;
@@ -4775,16 +4712,14 @@
 +			Array.Resize<bool>(ref hideVisibleAccessory, totalEquipSlots);
 +			
 -			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < vanillaInventorySlots + 1; i++) {
++			for (int i = 0; i < 58 + 1; i++) {
  				if (i < armor.Length)
  					armor[i] = new Item();
  
-@@ -38266,8 +_,8 @@
- 			lastVisualizedSelectedItem = new Item();
+@@ -38267,7 +_,7 @@
  			grappling[0] = -1;
  			statManaMax = 20;
--			extraAccessory = false;
-+			demonHeartUsed = false;
+ 			extraAccessory = false;
 -			for (int n = 0; n < 624; n++) {
 +			for (int n = 0; n < adjTile.Length; n++) {
  				adjTile[n] = false;

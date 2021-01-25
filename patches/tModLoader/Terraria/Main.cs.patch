@@ -255,15 +255,6 @@
  		}
  
  		public static string playerPathName => ActivePlayerFileData.Path;
-@@ -2283,7 +_,7 @@
- 
- 		public int RecommendedEquipmentAreaPushUp {
- 			get {
--				if (player[myPlayer].CanDemonHeartAccessoryBeShown())
-+				if (player[myPlayer].CanAccessoryBeShown(player[myPlayer].demonHeartSlot))
- 					return 610 + PlayerInput.UsingGamepad.ToInt() * 30;
- 
- 				return 600;
 @@ -2733,6 +_,7 @@
  			}
  
@@ -2432,17 +2423,6 @@
  					}
  				}
  			}
-@@ -30099,8 +_,8 @@
- 				float num36 = inventoryScale;
- 				bool flag3 = false;
- 				int num37 = num19 - 1;
--				bool flag4 = LocalPlayer.CanDemonHeartAccessoryBeShown();
--				bool flag5 = LocalPlayer.CanMasterModeAccessoryBeShown();
-+				bool flag4 = LocalPlayer.CanAccessoryBeShown(LocalPlayer.demonHeartSlot);
-+				bool flag5 = LocalPlayer.CanAccessoryBeShown(LocalPlayer.masterModeSlot);
- 				if (_settingsButtonIsPushedToSide)
- 					num37--;
- 
 @@ -30108,9 +_,13 @@
  				Microsoft.Xna.Framework.Color color = inventoryBack;
  				Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
