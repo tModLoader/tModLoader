@@ -55,8 +55,11 @@ jobs:
           echo Building WindowsServerDebug [2/2]
           dotnet build -c WindowsServerDebug --nologo -v q /clp:ErrorsOnly
           cd ../../..
-          mv ./src/tModLoader/Terraria/bin/WindowsDebug/net45/Terraria.exe  ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderDebug.exe
-          mv ./src/tModLoader/Terraria/bin/WindowsServerDebug/net45/Terraria.exe  ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderServerDebug.exe
+          mkdir -p artifacts/Windows
+          mv ./src/tModLoader/Terraria/bin/WindowsDebug/net45/Terraria.exe  ./artifacts/Windows/tModLoaderDebug.exe
+          mv ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderDebug.pdb  ./artifacts/Windows/tModLoaderDebug.pdb
+          mv ./src/tModLoader/Terraria/bin/WindowsServerDebug/net45/Terraria.exe  ./artifacts/Windows/tModLoaderServerDebug.exe
+          mv ./src/tModLoader/Terraria/bin/WindowsServerDebug/net45/tModLoaderServerDebug.pdb  ./artifacts/Windows/tModLoaderServerDebug.pdb
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           
@@ -64,7 +67,7 @@ jobs:
         with:
           name: Windows Debug Build
           path: |
-            ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderDebug.exe
-            ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderDebug.pdb
-            ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderServerDebug.exe
-            ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderServerDebug.pdb
+            ./artifacts/Windows/tModLoaderDebug.exe
+            ./artifacts/Windows/tModLoaderDebug.pdb
+            ./artifacts/Windows/tModLoaderServerDebug.exe
+            ./artifacts/Windows/tModLoaderServerDebug.pdb
