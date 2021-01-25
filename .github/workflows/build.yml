@@ -37,15 +37,23 @@ jobs:
           echo XNA Installed
           echo Running setupcommandline.bat
           ./setupcommandline.bat
-          echo Done
-          echo Building Windows Client exe 
-          C:/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2019/Enterprise/MSBuild/Current/Bin/MSBuild.exe ./solutions/tModLoader.sln //restore //p:Configuration=WindowsRelease
-          echo Done.
+          echo setupcommandline Done
+          cd src/tModLoader/Terraria
+          echo Building WindowsDebug [1/2]
+          dotnet build -c WindowsDebug --nologo -v q /clp:ErrorsOnly
+          echo Building WindowsServerDebug (2/2)
+          dotnet build -c WindowsServerDebug --nologo -v q /clp:ErrorsOnly
+          cd ../../..
+          mv ./src/tModLoader/Terraria/bin/WindowsDebug/net45/Terraria.exe  ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderDebug.exe
+          mv ./src/tModLoader/Terraria/bin/WindowsServerDebug/net45/Terraria.exe  ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderServerDebug.exe
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           
       - uses: actions/upload-artifact@v2
         with:
-          name: Windows Release exe
-          path: ./src/tModLoader/bin/WindowsRelease/net45/Terraria.exe
-          
+          name: Windows Debug Build
+          path: |
+            ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderDebug.exe
+            ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderDebug.pdb
+            ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderServerDebug.exe
+            ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderServerDebug.pdb
