@@ -24,7 +24,7 @@ jobs:
         shell: bash
         run: |
           echo Downloading Terraraia Server zip
-          curl -s -L http://terraria.org/server/terraria-server-1412.zip -o terrariaserver.zip
+          curl -s -L https://terraria.org/system/dedicated_servers/archives/000/000/042/original/terraria-server-1412.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
           echo Extracting Setup Secret Assets
           gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1353/Windows/Terraria.exe SetupAsset1.gpg
