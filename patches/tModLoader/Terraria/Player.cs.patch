@@ -2843,6 +2843,28 @@
  			else if (shieldRaised) {
  				bodyFrame.Y = bodyFrame.Height * 10;
  			}
+@@ -25787,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private bool ItemIsVisuallyIncompatible(Item item) {
++		public bool ItemIsVisuallyIncompatible(Item item) {
+ 			if (compositeBackArm.enabled && item.shieldSlot > 0)
+ 				return true;
+ 
+@@ -25813,6 +_,12 @@
+ 			return false;
+ 		}
+ 
++		/// <summary>
++		/// Won't work with yoraiz0rEye as effect needs target item slot.
++		/// </summary>
++		/// <param name="item"></param>
++		public void UpdateVisibleAccessory(Item item) => UpdateVisibleAccessory(-1, item);
++
+ 		private void UpdateVisibleAccessory(int itemSlot, Item item) {
+ 			if (item.stringColor > 0)
+ 				stringColor = item.stringColor;
 @@ -26035,6 +_,8 @@
  			if (drawPlayer.head == 267)
  				yoraiz0rDarkness = true;
