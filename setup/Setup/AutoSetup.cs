@@ -77,6 +77,8 @@ namespace Terraria.ModLoader.Setup
 				}));
 			}
 			catch (Exception e) {
+				SetStatus(e.Message);
+				Environment.Exit(1);
 				var status = "";
 				Invoke(new Action(() => {
 					//status = labelStatus.Text;
