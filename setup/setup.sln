@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiffPatch", "PatchReviewer\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "setup.Designer", "setup.Designer.csproj", "{DA61485E-0500-44D6-BF6F-DDB795C565C3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "setupAuto", "setupAuto.csproj", "{A3FC40B6-3560-4673-8E9A-C80608014D36}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{DA61485E-0500-44D6-BF6F-DDB795C565C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA61485E-0500-44D6-BF6F-DDB795C565C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA61485E-0500-44D6-BF6F-DDB795C565C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3FC40B6-3560-4673-8E9A-C80608014D36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3FC40B6-3560-4673-8E9A-C80608014D36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3FC40B6-3560-4673-8E9A-C80608014D36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3FC40B6-3560-4673-8E9A-C80608014D36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
