@@ -52,7 +52,7 @@ jobs:
           cd Terraria
           echo Building WindowsDebug [1/2]
           dotnet build -c WindowsDebug --nologo -v q /clp:ErrorsOnly
-          echo Building WindowsServerDebug (2/2)
+          echo Building WindowsServerDebug [2/2]
           dotnet build -c WindowsServerDebug --nologo -v q /clp:ErrorsOnly
           cd ../../..
           mv ./src/tModLoader/Terraria/bin/WindowsDebug/net45/Terraria.exe  ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderDebug.exe
