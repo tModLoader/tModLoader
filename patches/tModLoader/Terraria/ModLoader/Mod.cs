@@ -17,6 +17,8 @@ using Terraria.ModLoader.Config;
 using ReLogic.Content;
 using Terraria.ModLoader.Assets;
 
+This is a syntax error
+
 namespace Terraria.ModLoader
 {
 	/// <summary>
