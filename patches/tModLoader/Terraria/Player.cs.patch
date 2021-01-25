@@ -56,7 +56,7 @@
 -		public bool extraAccessory;
 +		//private int extraAccessorySlots; unused vanilla field
 +		// Create fields to facilitate dynamic inventory, accessory counts
-+		public int moddedEXAccSlots = 2;
++		public int moddedEXAccSlots = 7; // This is the critical field that "Accessory Slot Creation Rework; Part 1: The Vanilla Twist" created
 +		public int vanillaEXAccSlots = 2;
 +		public int vanillaBasicAccSlots = 5;
 +		public int totalArmorSlots = 3;
@@ -4762,13 +4762,14 @@
  			width = 20;
  			height = 42;
  			name = string.Empty;
-@@ -38236,7 +_,14 @@
+@@ -38236,7 +_,15 @@
  			legFrame.Height = 56;
  			tileEntityAnchor.Clear();
  			doorHelper = new DoorOpeningHelper();
 +
 +			// Resize arrays to include mod added accessory slots
 +			//TODO: Actually make this code useful, possibly need to move it
++			//TODO: armor array is two separate arrays of vanity and functional. need to split it, change where vanity is indexed about and rejoin. Most notably fix where vanity gets indexed
 +			Array.Resize<Item>(ref armor, totalEquipSlots * 2);
 +			Array.Resize<Item>(ref dye, totalEquipSlots);
 +			Array.Resize<bool>(ref hideVisibleAccessory, totalEquipSlots);

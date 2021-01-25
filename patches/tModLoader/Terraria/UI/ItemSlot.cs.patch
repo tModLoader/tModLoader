@@ -172,27 +172,27 @@
  							return true;
  
 -						if ((inv[slot].type <= 0 || inv[slot].stack <= 0) && (inv[slot - 10].type <= 0 || inv[slot - 10].stack <= 0))
-+						if ((inv[slot].type <= 0 || inv[slot].stack <= 0) && (inv[slot - player.vanillaEquipSlots].type <= 0 || inv[slot - player.vanillaEquipSlots].stack <= 0))
++						if ((inv[slot].type <= 0 || inv[slot].stack <= 0) && (inv[slot - player.totalEquipSlots].type <= 0 || inv[slot - player.totalEquipSlots].stack <= 0))
  							break;
  
 -						Item item = inv[slot - 10];
-+						Item item = inv[slot - player.vanillaEquipSlots];
++						Item item = inv[slot - player.totalEquipSlots];
  						bool flag2 = context != 11 || item.FitsAccessoryVanitySlot || item.IsAir;
  						if (flag2 && context == 11 && inv[slot].wingSlot > 0) {
 -							for (int i = 3; i < 10; i++) {
-+							for (int i = player.totalArmorSlots; i < player.vanillaEquipSlots; i++) {
++							for (int i = player.totalArmorSlots; i < player.totalEquipSlots; i++) {
 -								if (inv[i].wingSlot > 0 && i != slot - 10)
-+								if (inv[i].wingSlot > 0 && i != slot - player.vanillaEquipSlots)
++								if (inv[i].wingSlot > 0 && i != slot - player.totalEquipSlots)
  									flag2 = false;
  							}
  						}
  
 -						if (!flag2)
-+						if (!flag2 || !ItemLoader.CanEquipAccessory(inv[slot], slot - player.vanillaEquipSlots))
++						if (!flag2 || !ItemLoader.CanEquipAccessory(inv[slot], slot - player.totalEquipSlots))
  							break;
  
 -						Utils.Swap(ref inv[slot], ref inv[slot - 10]);
-+						Utils.Swap(ref inv[slot], ref inv[slot - player.vanillaEquipSlots]);
++						Utils.Swap(ref inv[slot], ref inv[slot - player.totalEquipSlots]);
  						SoundEngine.PlaySound(7);
  						Recipe.FindRecipes();
  						if (inv[slot].stack > 0) {
@@ -249,6 +249,21 @@
  								num4--;
  
  							num = 120 + num4;
+@@ -1569,11 +_,11 @@
+ 					num10 = 0;
+ 					break;
+ 				case 9:
+-					if (slot == 10)
++					if (slot == player.totalEquipSlots)
+ 						num10 = 3;
+-					if (slot == 11)
++					if (slot == player.totalEquipSlots + 1)
+ 						num10 = 9;
+-					if (slot == 12)
++					if (slot == player.totalEquipSlots + 2)
+ 						num10 = 15;
+ 					break;
+ 				case 10:
 @@ -1628,10 +_,15 @@
  				num11 *= inventoryScale;
  				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num11 / 2f;
