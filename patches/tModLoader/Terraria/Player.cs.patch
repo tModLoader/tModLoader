@@ -56,12 +56,12 @@
 -		public bool extraAccessory;
 +		//private int extraAccessorySlots; unused vanilla field
 +		// Create fields to facilitate dynamic inventory, accessory counts
-+		public int moddedEXAccSlots = 2; // This is the critical field that "Accessory Slot Creation Rework; Part 1: The Vanilla Twist" created
++		public List<string> moddedAccSlots = new List<string>(); // List of identifiers for the modded accessories.
 +		public int vanillaEXAccSlots = 2;
 +		public int vanillaBasicAccSlots = 5;
 +		public int totalArmorSlots = 3;
 +		public int vanillaEquipSlots => vanillaEXAccSlots + vanillaBasicAccSlots + totalArmorSlots;
-+		public int totalEquipSlots => moddedEXAccSlots + vanillaEquipSlots;
++		public int totalEquipSlots => moddedAccSlots.Count + vanillaEquipSlots;
 +
 +		internal ref bool extraAccessory => ref demonHeartUsed; // Minimize modder confusion by using a good name
 +		
@@ -4548,7 +4548,7 @@
 -										if (num3 >= 8)
 -											num3 += 2;
 +										if (num3 >= player.vanillaBasicAccSlots + player.totalArmorSlots)
-+											num3 += player.vanillaEXAccSlots + player.moddedEXAccSlots; // skip extra slots
++											num3 += player.vanillaEXAccSlots + player.moddedAccSlots.Count; // skip extra slots
  
  										player.armor[num3].netDefaults(binaryReader.ReadInt32());
  										player.armor[num3].Prefix(binaryReader.ReadByte());

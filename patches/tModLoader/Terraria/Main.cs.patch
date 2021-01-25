@@ -2423,23 +2423,21 @@
  					}
  				}
  			}
-@@ -30108,9 +_,13 @@
+@@ -30108,10 +_,10 @@
  				Microsoft.Xna.Framework.Color color = inventoryBack;
  				Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
  				int num39 = -1;
 -				for (int num40 = 0; num40 < 10; num40++) {
 -					if ((num40 == 8 && !flag4) || (num40 == 9 && !flag5))
-+				int modRowCorrect = 0;
-+				for (int num40 = 0; num40 < player[myPlayer].totalEquipSlots; num40++) { // Added support for modded accessory slots; does not support custom draw conditions natively here
++				for (int num40 = 0; num40 < player[myPlayer].vanillaEquipSlots; num40++) { // Added support for modded accessory slots; does not support custom draw conditions natively here
 +					if ((num40 == player[myPlayer].demonHeartSlot && !flag4) 
 +						|| (num40 == player[myPlayer].masterModeSlot && !flag5))
  						continue;
-+					if (num40 == player[myPlayer].vanillaEquipSlots) // begin a new column for modded accessory slots, with functionals being unique
-+						modRowCorrect = num39 + 1;
- 
+-
  					num39++;
  					bool flag6 = LocalPlayer.IsAValidEquipmentSlotForIteration(num40);
-@@ -30123,12 +_,17 @@
+ 					if (!flag6)
+@@ -30123,12 +_,11 @@
  					int num43 = screenWidth - 58;
  					int num44 = (int)((float)(num20 - 2) + (float)(num39 * 56) * inventoryScale);
  					int context2 = 8;
@@ -2450,12 +2448,6 @@
  						context2 = 10;
  					}
 -
-+					if (num40 > player[myPlayer].vanillaEquipSlots - 1) {
-+						num41 -= 47 * 3;
-+						num42 -= (int)((float)(modRowCorrect * 56) * inventoryScale);
-+						num43 -= 47 * 3;
-+						num44 -= (int)((float)(modRowCorrect * 56) * inventoryScale);
-+					}
  					if (num39 == num38 && !_achievementAdvisor.CanDrawAboveCoins) {
  						_achievementAdvisor.DrawOneAchievement(spriteBatch, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8), large: false);
  						UILinkPointNavigator.SetPosition(1570, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8) + new Vector2(20f) * inventoryScale);
@@ -2477,65 +2469,72 @@
  						spriteBatch.Draw(value4, new Vector2(num43, num44), Microsoft.Xna.Framework.Color.White * 0.7f);
  						if (num45 > 0) {
  							HoverItem = new Item();
-@@ -30182,9 +_,13 @@
+@@ -30182,10 +_,10 @@
  					player[myPlayer].mouseInterface = true;
  
  				num39 = -1;
 -				for (int num46 = 10; num46 < 20; num46++) {
 -					if ((num46 == 18 && !flag4) || (num46 == 19 && !flag5))
-+				for (int num46 = player[myPlayer].totalEquipSlots; num46 < player[myPlayer].totalEquipSlots * 2; num46++) {
++				for (int num46 = player[myPlayer].totalEquipSlots; num46 < player[myPlayer].totalEquipSlots + player[myPlayer].vanillaEquipSlots; num46++) {
 +					if ((num46 == player[myPlayer].totalEquipSlots + player[myPlayer].demonHeartSlot && !flag4) 
 +						|| (num46 == player[myPlayer].totalEquipSlots + player[myPlayer].masterModeSlot && !flag5))
  						continue;
-+
-+					if (num46 == player[myPlayer].totalEquipSlots + player[myPlayer].vanillaEquipSlots) // begin a new column for modded accessory slots
-+						num39 = -1;
- 
+-
  					num39++;
  					bool num47 = LocalPlayer.IsAValidEquipmentSlotForIteration(num46);
-@@ -30193,11 +_,13 @@
+ 					flag3 = !num47;
+@@ -30193,11 +_,10 @@
  					int num48 = screenWidth - 64 - 28 - 47;
  					int num49 = (int)((float)num20 + (float)(num39 * 56) * inventoryScale);
  					new Microsoft.Xna.Framework.Color(100, 100, 100, 100);
 -					if (num46 > 12)
 +					if (num46 > player[myPlayer].totalEquipSlots + player[myPlayer].totalArmorSlots - 1)
  						num49 += num35;
-+					if (num46 > player[myPlayer].totalEquipSlots + player[myPlayer].vanillaEquipSlots -1)
-+						num48 -= 47 * 3;
- 
+-
  					int context3 = 9;
 -					if (num46 > 12)
 +					if (num46 > player[myPlayer].totalEquipSlots + player[myPlayer].totalArmorSlots - 1)
  						context3 = 11;
  
  					if (mouseX >= num48 && (float)mouseX <= (float)num48 + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num49 && (float)mouseY <= (float)num49 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -30223,9 +_,12 @@
+@@ -30223,10 +_,10 @@
  					player[myPlayer].mouseInterface = true;
  
  				num39 = -1;
 -				for (int num50 = 0; num50 < 10; num50++) {
 -					if ((num50 == 8 && !flag4) || (num50 == 9 && !flag5))
-+				for (int num50 = 0; num50 < player[myPlayer].totalEquipSlots; num50++) {
++				for (int num50 = 0; num50 < player[myPlayer].vanillaEquipSlots; num50++) {
 +					if ((num50 == player[myPlayer].demonHeartSlot && !flag4) 
 +						|| (num50 == player[myPlayer].masterModeSlot && !flag5))
  						continue;
-+					if (num50 == player[myPlayer].vanillaEquipSlots) // begin a new column for modded accessory slots
-+						num39 = -1;
- 
+-
  					num39++;
  					bool num51 = LocalPlayer.IsAValidEquipmentSlotForIteration(num50);
-@@ -30234,8 +_,10 @@
+ 					flag3 = !num51;
+@@ -30234,9 +_,9 @@
  					int num52 = screenWidth - 64 - 28 - 47 - 47;
  					int num53 = (int)((float)num20 + (float)(num39 * 56) * inventoryScale);
  					new Microsoft.Xna.Framework.Color(100, 100, 100, 100);
 -					if (num50 > 2)
 +					if (num50 > player[myPlayer].totalArmorSlots - 1)
  						num53 += num35;
-+					if (num50 > player[myPlayer].vanillaEquipSlots - 1)
-+						num52 -= 47 * 3;
- 
+-
++					
  					if (mouseX >= num52 && (float)mouseX <= (float)num52 + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num53 && (float)mouseY <= (float)num53 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
  						player[myPlayer].mouseInterface = true;
+ 						armorHide = true;
+@@ -30258,6 +_,11 @@
+ 				}
+ 
+ 				inventoryBack = color;
++				for (int modSlot = 0; modSlot < player[myPlayer].moddedAccSlots.Count; modSlot++) {
++					// code that looks up name of 
++				}
++
++				inventoryBack = color;
+ 				inventoryScale = num36;
+ 			}
+ 
 @@ -30304,11 +_,17 @@
  					string text = Lang.inter[46].Value + ": ";
  					if (reforgeItem.type > 0) {
