@@ -38,7 +38,18 @@ jobs:
           echo Running setupcommandline.bat
           ./setupcommandline.bat
           echo setupcommandline Done
-          cd src/tModLoader/Terraria
+          echo pwd is: ${PWD}
+          echo ls -l is:
+          ls -l
+          cd src
+          echo pwd is: ${PWD}
+          echo ls -l is:
+          ls -l
+          cd tModLoader
+          echo pwd is: ${PWD}
+          echo ls -l is:
+          ls -l
+          cd Terraria
           echo Building WindowsDebug [1/2]
           dotnet build -c WindowsDebug --nologo -v q /clp:ErrorsOnly
           echo Building WindowsServerDebug (2/2)
