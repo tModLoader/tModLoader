@@ -61,42 +61,21 @@ namespace Terraria.ModLoader.Setup
 						throw new OperationCanceledException();
 				}
 				catch (OperationCanceledException e) {
-					Invoke(new Action(() => {
-						//labelStatus.Text = "Cancelled";
-						//if (e.Message != new OperationCanceledException().Message)
-						//	labelStatus.Text += ": " + e.Message;
-					}));
 					return;
 				}
 
 				if (task.Failed() || task.Warnings())
 					task.FinishedDialog();
-
-				Invoke(new Action(() => {
-					//labelStatus.Text = task.Failed() ? "Failed" : "Done";
-				}));
 			}
 			catch (Exception e) {
 				SetStatus(e.Message);
 				Environment.Exit(1);
 				var status = "";
-				Invoke(new Action(() => {
-					//status = labelStatus.Text;
-					//labelStatus.Text = "Error: " + e.Message.Trim();
-				}));
 
 				SetupOperation.CreateDirectory(Program.logsDir);
 				File.WriteAllText(errorLogFile, status + "\r\n" + e);
 			}
 			finally {
-				Invoke(new Action(() => {
-					//foreach (var b in taskButtons.Keys)
-					//	b.Enabled = true;
-					//buttonCancel.Enabled = false;
-					//progressBar.Value = 0;
-					//if (closeOnCancel)
-					//	Close();
-				}));
 			}
 		}
 	}
