@@ -34,24 +34,38 @@
  				public static List<int> MannequinIncompatible = new List<int>();
  				public static bool[] IncompatibleWithFrogLeg = Factory.CreateBoolSet(106, 143, 217, 222, 226, 228);
  			}
-@@ -778,7 +_,7 @@
+@@ -778,9 +_,13 @@
  		{
  			public class Sets
  			{
 -				public static SetFactory Factory = new SetFactory(23);
+-				public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22);
 +				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOn]);
- 				public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22);
++				public static bool[] UsesNewFramingCode;
  				public static bool[] UsesOldFramingTexturesForWalking = Factory.CreateBoolSet(false, 12, 8, 17);
++				
++				static Sets() {
++					UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22);
++				}
  			}
-@@ -814,7 +_,7 @@
+ 
+ 			public const sbyte ManaRegenerationBand = 1;
+@@ -814,8 +_,13 @@
  		{
  			public class Sets
  			{
 -				public static SetFactory Factory = new SetFactory(15);
+-				public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
 +				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOff]);
- 				public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
++				public static bool[] UsesNewFramingCode;
++				
++				static Sets()
++				{
++					UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
++				}
  			}
  
+ 			public const sbyte FireGauntlet = 1;
 @@ -841,7 +_,7 @@
  		{
  			public class Sets

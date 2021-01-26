@@ -72,7 +72,9 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.ArmorArm, nextEquip[EquipType.Body]);
 			Array.Resize(ref TextureAssets.ArmorLeg, nextEquip[EquipType.Legs]);
 			Array.Resize(ref TextureAssets.AccHandsOn, nextEquip[EquipType.HandsOn]);
+			Array.Resize(ref TextureAssets.AccHandsOnComposite, nextEquip[EquipType.HandsOn]);
 			Array.Resize(ref TextureAssets.AccHandsOff, nextEquip[EquipType.HandsOff]);
+			Array.Resize(ref TextureAssets.AccHandsOffComposite, nextEquip[EquipType.HandsOff]);
 			Array.Resize(ref TextureAssets.AccBack, nextEquip[EquipType.Back]);
 			Array.Resize(ref TextureAssets.AccFront, nextEquip[EquipType.Front]);
 			Array.Resize(ref TextureAssets.AccShoes, nextEquip[EquipType.Shoes]);
@@ -102,6 +104,12 @@ namespace Terraria.ModLoader
 					
 					if (type == EquipType.BodyComposite) {
 						ArmorIDs.Body.Sets.UsesNewFramingCode[slot] = true;
+					}
+					else if (type == EquipType.HandsOnComposite) {
+						ArmorIDs.HandOn.Sets.UsesNewFramingCode[slot] = true;
+					}
+					else if (type == EquipType.HandsOffComposite) {
+						ArmorIDs.HandOff.Sets.UsesNewFramingCode[slot] = true;
 					}
 				}
 			}
@@ -152,8 +160,10 @@ namespace Terraria.ModLoader
 				case EquipType.Legs:
 					return Main.numArmorLegs;
 				case EquipType.HandsOn:
+				case EquipType.HandsOnComposite:
 					return Main.numAccHandsOn;
 				case EquipType.HandsOff:
+				case EquipType.HandsOffComposite:
 					return Main.numAccHandsOff;
 				case EquipType.Back:
 					return Main.numAccBack;
@@ -188,8 +198,10 @@ namespace Terraria.ModLoader
 				case EquipType.Legs:
 					return TextureAssets.ArmorLeg;
 				case EquipType.HandsOn:
+				case EquipType.HandsOnComposite:
 					return TextureAssets.AccHandsOn;
 				case EquipType.HandsOff:
+				case EquipType.HandsOffComposite:
 					return TextureAssets.AccHandsOff;
 				case EquipType.Back:
 					return TextureAssets.AccBack;
@@ -234,9 +246,11 @@ namespace Terraria.ModLoader
 						item.legSlot = slot;
 						break;
 					case EquipType.HandsOn:
+					case EquipType.HandsOnComposite:
 						item.handOnSlot = (sbyte)slot;
 						break;
 					case EquipType.HandsOff:
+					case EquipType.HandsOffComposite:
 						item.handOffSlot = (sbyte)slot;
 						break;
 					case EquipType.Back:
@@ -280,8 +294,10 @@ namespace Terraria.ModLoader
 				case EquipType.Legs:
 					return player.legs;
 				case EquipType.HandsOn:
+				case EquipType.HandsOnComposite:
 					return player.handon;
 				case EquipType.HandsOff:
+				case EquipType.HandsOffComposite:
 					return player.handoff;
 				case EquipType.Back:
 					return player.back;
