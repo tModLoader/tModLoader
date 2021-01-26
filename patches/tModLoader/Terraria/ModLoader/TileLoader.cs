@@ -500,6 +500,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static void ModifyTorchLuck(Player player, ref float positiveLuck, ref float negativeLuck) {
+			foreach (int type in player.nearbyModTorch) {
+				float f = GetTile(type).GetTorchLuck(player);
+				if (f > 0)
+					positiveLuck += f;
+				else
+					negativeLuck += -f;
+			}
+		}
+
 		public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b) {
 			if (!Main.tileLighted[type]) {
 				return;

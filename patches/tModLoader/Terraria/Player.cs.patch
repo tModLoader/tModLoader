@@ -1893,6 +1893,46 @@
  								SmartSelect_SelectItem(i);
  								return;
  						}
+@@ -12387,6 +_,13 @@
+ 					if (tile == null)
+ 						return;
+ 
++					if (tile.type > TileID.Count) {
++						if (tile.active() && TileID.Sets.Torch[tile.type])
++							nearbyModTorch.Add(tile.type);
++
++						continue;
++					}
++
+ 					if (!tile.active() || tile.type != 4)
+ 						continue;
+ 
+@@ -12555,6 +_,9 @@
+ 			if (inventory[selectedItem].createTile == 4 && inventory[selectedItem].placeStyle < 22)
+ 				nearbyTorch[inventory[selectedItem].placeStyle] = true;
+ 
++			if (TileLoader.GetTile(inventory[selectedItem].createTile) is ModTile modTile && TileID.Sets.Torch[modTile.Type])
++				nearbyModTorch.Add(modTile.Type);
++
+ 			float num = 0f;
+ 			float num2 = 0f;
+ 			if (!ZoneDungeon && !ZoneLihzhardTemple) {
+@@ -12624,6 +_,7 @@
+ 				}
+ 			}
+ 
++			TileLoader.ModifyTorchLuck(this, ref num2, ref num);
+ 			if (num2 >= 1f)
+ 				torchLuck += 1f;
+ 			else if (num2 > 0f)
+@@ -12640,6 +_,7 @@
+ 			for (int i = 0; i < 22; i++) {
+ 				nearbyTorch[i] = false;
+ 			}
++			nearbyModTorch.Clear();
+ 
+ 			if (torchLuck < 0f)
+ 				torchLuck = 0f;
 @@ -12711,6 +_,9 @@
  			lifeRegen = 0;
  			manaCost = 1f;
@@ -2444,6 +2484,26 @@
  		}
  
  		private void UpdateControlHolds() {
+@@ -19767,6 +_,9 @@
+ 		}
+ 
+ 		public void RecalculateLuck() {
++			if (!PlayerHooks.PreModifyLuck(this, ref luck))
++				goto skipVanillaLuck;
++
+ 			luck = GetLadyBugLuck() * 0.2f + torchLuck * 0.2f;
+ 			luck += (float)(int)luckPotion * 0.1f;
+ 			if (LanternNight.LanternsUp)
+@@ -19774,6 +_,9 @@
+ 
+ 			if (HasGardenGnomeNearby)
+ 				luck += 0.2f;
++
++			skipVanillaLuck:
++			PlayerHooks.ModifyLuck(this, ref luck);
+ 		}
+ 
+ 		private static int GetMouseScrollDelta() => PlayerInput.ScrollWheelDelta / 120;
 @@ -19872,6 +_,8 @@
  
  			if (wingsLogic == 45 && (float)timeSinceLastDashStarted >= 60f)
@@ -3815,15 +3875,9 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -36388,10 +_,32 @@
- 				}
- 				else if (sItem.summon) {
- 					num = (int)((float)num * minionDamage);
--				}
--			}
--
-+ 				}
-+ 			}
+@@ -36392,6 +_,29 @@
+ 			}
+ 
  			return num;
 +			*/
 +
