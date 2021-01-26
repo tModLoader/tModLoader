@@ -35,8 +35,6 @@ namespace ExampleMod.Common.GlobalNPCs
 				);
 				
 				npcLoot.Add(ItemDropRule.Common(ItemID.GreenCap, 1)); //In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-
-				//TODO: Add more examples for the other drop rules!!
 			}
 		}
 	}
