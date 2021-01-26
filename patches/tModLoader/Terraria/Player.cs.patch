@@ -1998,22 +1998,22 @@
  		}
  
  		private void UpdateControlHolds() {
-@@ -19767,6 +_,10 @@
+@@ -19767,6 +_,9 @@
  		}
  
  		public void RecalculateLuck() {
-+			if (!PlayerHooks.PreModifyLuck(this, ref luck)) {
-+				PlayerHooks.ModifyLuck(this, ref luck);
-+				return;
-+			}
++			if (!PlayerHooks.PreModifyLuck(this, ref luck))
++				goto skipVanillaLuck;
++
  			luck = GetLadyBugLuck() * 0.2f + torchLuck * 0.2f;
  			luck += (float)(int)luckPotion * 0.1f;
  			if (LanternNight.LanternsUp)
-@@ -19774,6 +_,8 @@
+@@ -19774,6 +_,9 @@
  
  			if (HasGardenGnomeNearby)
  				luck += 0.2f;
 +
++			skipVanillaLuck:
 +			PlayerHooks.ModifyLuck(this, ref luck);
  		}
  
