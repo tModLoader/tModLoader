@@ -35,8 +35,8 @@ jobs:
           curl -s -L https://download.microsoft.com/download/5/3/A/53A804C8-EC78-43CD-A0F0-2FB4D45603D3/xnafx40_redist.msi -O
           msiexec //i xnafx40_redist.msi //quiet
           echo XNA Installed
-          echo Running setupcommandline.bat
-          ./setupcommandline.bat
+          echo Running setup.bat
+          ./setup.bat auto
           echo setupcommandline Done
           echo pwd is: ${PWD}
           echo ls -l is:
@@ -60,6 +60,7 @@ jobs:
           mv ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderDebug.pdb  ./artifacts/Windows/tModLoaderDebug.pdb
           mv ./src/tModLoader/Terraria/bin/WindowsServerDebug/net45/Terraria.exe  ./artifacts/Windows/tModLoaderServerDebug.exe
           mv ./src/tModLoader/Terraria/bin/WindowsServerDebug/net45/tModLoaderServerDebug.pdb  ./artifacts/Windows/tModLoaderServerDebug.pdb
+          mv ./1412/Windows/ModCompile/ ./artifacts/Windows/
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           
@@ -71,3 +72,4 @@ jobs:
             ./artifacts/Windows/tModLoaderDebug.pdb
             ./artifacts/Windows/tModLoaderServerDebug.exe
             ./artifacts/Windows/tModLoaderServerDebug.pdb
+            ./artifacts/Windows/ModCompile/
