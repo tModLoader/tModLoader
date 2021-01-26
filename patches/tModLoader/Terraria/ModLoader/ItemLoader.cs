@@ -456,12 +456,12 @@ namespace Terraria.ModLoader
 				g.ModifyResearchSorting(item, ref itemGroup);
 		}
 
-		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref Modifier damage, ref float flat);
+		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 		/// <summary>
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
 		/// </summary>
-		public static void ModifyWeaponDamage(Item item, Player player, ref Modifier damage, ref float flat) {
+		public static void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat) {
 			if (item.IsAir)
 				return;
 
@@ -471,32 +471,32 @@ namespace Terraria.ModLoader
 				g.ModifyWeaponDamage(item, player, ref damage, ref flat);
 		}
 
-		private delegate void DelegateGetWeaponKnockback(Item item, Player player, ref float knockback);
-		private static HookList HookGetWeaponKnockback = AddHook<DelegateGetWeaponKnockback>(g => g.GetWeaponKnockback);
+		private delegate void DelegateModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback, ref float flat);
+		private static HookList HookModifyWeaponKnockback = AddHook<DelegateModifyWeaponKnockback>(g => g.ModifyWeaponKnockback);
 		/// <summary>
-		/// Calls ModItem.GetWeaponKnockback, then all GlobalItem.GetWeaponKnockback hooks.
+		/// Calls ModItem.ModifyWeaponKnockback, then all GlobalItem.ModifyWeaponKnockback hooks.
 		/// </summary>
-		public static void GetWeaponKnockback(Item item, Player player, ref float knockback) {
+		public static void ModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback, ref float flat) {
 			if (item.IsAir)
 				return;
 
-			item.ModItem?.GetWeaponKnockback(player, ref knockback);
+			item.ModItem?.ModifyWeaponKnockback(player, ref knockback, ref flat);
 
 			foreach (var g in HookGetWeaponKnockback.Enumerate(item))
 				g.GetWeaponKnockback(item, player, ref knockback);
 		}
 
 
-		private delegate void DelegateGetWeaponCrit(Item item, Player player, ref int crit);
-		private static HookList HookGetWeaponCrit = AddHook<DelegateGetWeaponCrit>(g => g.GetWeaponCrit);
+		private delegate void DelegateModifyWeaponCrit(Item item, Player player, ref int crit);
+		private static HookList HookModifyWeaponCrit = AddHook<DelegateModifyWeaponCrit>(g => g.ModifyWeaponCrit);
 		/// <summary>
-		/// Calls ModItem.GetWeaponCrit, then all GlobalItem.GetWeaponCrit hooks.
+		/// Calls ModItem.ModifyWeaponCrit, then all GlobalItem.ModifyWeaponCrit hooks.
 		/// </summary>
-		public static void GetWeaponCrit(Item item, Player player, ref int crit) {
+		public static void ModifyWeaponCrit(Item item, Player player, ref int crit) {
 			if (item.IsAir)
 				return;
 
-			item.ModItem?.GetWeaponCrit(player, ref crit);
+			item.ModItem?.ModifyWeaponCrit(player, ref crit);
 
 			foreach (var g in HookGetWeaponCrit.Enumerate(item))
 				g.GetWeaponCrit(item, player, ref crit);

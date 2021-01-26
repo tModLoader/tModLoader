@@ -384,7 +384,7 @@
  			mouseBorderColorSlider.SetHSL(MouseBorderColor);
  			mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
 -			if (currentValue != 234)
-+			if (currentValue != 234 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != ModLoader.ModLoader.version) {
++			if (currentValue != 234 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 +				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
 +			}
@@ -1412,7 +1412,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15033,95 +_,111 @@
+@@ -15033,82 +_,82 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1531,46 +1531,26 @@
 +					toolTipNames[numLines] = "Damage";
  
  					numLines++;
++					/*
  					if (item.melee) {
--						int num3 = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
--						toolTipLine[numLines] = num3 + Lang.tip[5].Value;
-+						int crit = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
-+						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
-+						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
-+						toolTipLine[numLines] = crit + Lang.tip[5].Value;
-+						toolTipNames[numLines] = "CritChance";
+ 						int num3 = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
+ 						toolTipLine[numLines] = num3 + Lang.tip[5].Value;
+@@ -15124,6 +_,14 @@
+ 						toolTipLine[numLines] = num5 + Lang.tip[5].Value;
  						numLines++;
  					}
- 					else if (item.ranged) {
--						int num4 = player[myPlayer].rangedCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
--						toolTipLine[numLines] = num4 + Lang.tip[5].Value;
-+						int crit = player[myPlayer].rangedCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
-+						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
-+						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
-+						toolTipLine[numLines] = crit + Lang.tip[5].Value;
-+						toolTipNames[numLines] = "CritChance";
- 						numLines++;
- 					}
- 					else if (item.magic) {
--						int num5 = player[myPlayer].magicCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
--						toolTipLine[numLines] = num5 + Lang.tip[5].Value;
-+						int crit = player[myPlayer].magicCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
-+						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
-+						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
++					*/
++					// TODO: make this not inherently exclude summons. minions should be allowed to crit in the right circumstances, too
++					if (!item.summon) {
++						int crit = player[myPlayer].GetWeaponCrit(item);
 +						toolTipLine[numLines] = crit + Lang.tip[5].Value;
 +						toolTipNames[numLines] = "CritChance";
 +						numLines++;
 +					}
-+					else if (!item.summon) {
-+						int crit = item.crit;
-+						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
-+						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
-+						toolTipLine[numLines] = crit + Lang.tip[5].Value;
-+						toolTipNames[numLines] = "CritChance";
- 						numLines++;
- 					}
  
-@@ -15143,6 +_,7 @@
+ 					if (item.useStyle != 0 && !item.summon) {
+ 						if (item.useAnimation <= 8)
+@@ -15143,10 +_,13 @@
  						else
  							toolTipLine[numLines] = Lang.tip[13].Value;
  
@@ -1578,12 +1558,19 @@
  						numLines++;
  					}
  
-@@ -15156,6 +_,8 @@
+ 					float num6 = item.knockBack;
++					num6 = player[myPlayer].GetWeaponKnockback(item, num6);
++					/*
+ 					if (item.summon)
+ 						num6 += player[myPlayer].minionKB;
+ 
+@@ -15156,6 +_,9 @@
  					if (player[myPlayer].inventory[player[myPlayer].selectedItem].type == 3106 && item.type == 3106)
  						num6 += num6 * (1f - player[myPlayer].stealth);
  
 +					ItemLoader.GetWeaponKnockback(item, player[myPlayer], ref num6);
 +					PlayerHooks.GetWeaponKnockback(player[myPlayer], item, ref num6);
++					*/
  					if (num6 == 0f)
  						toolTipLine[numLines] = Lang.tip[14].Value;
  					else if ((double)num6 <= 1.5)

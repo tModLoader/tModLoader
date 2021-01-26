@@ -48,7 +48,7 @@
  
 -						if (reader.ReadString() == "Terraria" + 234) {
 +						string clientVersion = reader.ReadString();
-+						ModNet.isModdedClient[whoAmI] = clientVersion == ModLoader.ModLoader.versionedName;
++						ModNet.isModdedClient[whoAmI] = clientVersion == BuildInfo.versionedName;
 +						if (ModNet.isModdedClient[whoAmI] || clientVersion == "Terraria" + 234 && ModNet.AllowVanillaClients) {
  							if (string.IsNullOrEmpty(Netplay.ServerPassword)) {
  								Netplay.Clients[whoAmI].State = 1;
@@ -65,7 +65,7 @@
  						else {
 -							NetMessage.TrySendData(2, whoAmI, -1, Lang.mp[4].ToNetworkText());
 +							if (clientVersion.StartsWith("tModLoader"))
-+								NetMessage.SendData(2, whoAmI, -1, NetworkText.FromLiteral(Lang.mp[4].Value + $"\n(You are on {clientVersion}, server is on {ModLoader.ModLoader.versionedName})"));
++								NetMessage.SendData(2, whoAmI, -1, NetworkText.FromLiteral(Lang.mp[4].Value + $"\n(You are on {clientVersion}, server is on {BuildInfo.versionedName})"));
 +							else
 +								NetMessage.SendData(2, whoAmI, -1, NetworkText.FromLiteral(Lang.mp[4].Value + "\n(You cannot connect to a tModLoader Server with an unmodded client.)"));
  						}
