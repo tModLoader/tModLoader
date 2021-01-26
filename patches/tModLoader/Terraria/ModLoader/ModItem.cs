@@ -44,9 +44,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public ModTranslation Tooltip { get; internal set; }
 
-		public virtual string ArmTexture => Texture + "_Arms";
-
-		public virtual string FemaleTexture => Texture + "_FemaleBody";
+		public virtual string EquipTexture => Texture + "_Equip";
 
 		public ModItem() {
 			Item = new Item { ModItem = this };
@@ -66,7 +64,7 @@ namespace Terraria.ModLoader
 			var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
 			if (autoloadEquip != null) {
 				foreach (var equip in autoloadEquip.equipTypes) {
-					Mod.AddEquipTexture(this, equip, Texture + '_' + equip);
+					Mod.AddEquipTexture(this, equip, $"{EquipTexture}_{equip}");
 				}
 			}
 			

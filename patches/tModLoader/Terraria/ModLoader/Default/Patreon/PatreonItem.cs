@@ -6,6 +6,8 @@ namespace Terraria.ModLoader.Default.Patreon
 {
 	internal abstract class PatreonItem : ModLoaderModItem
 	{
+		public override string EquipTexture => Texture;
+
 		public virtual string SetSuffix => "'s";
 
 		public string InternalSetName => GetType().Name.Split('_')[0];

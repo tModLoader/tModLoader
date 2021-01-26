@@ -45,3 +45,12 @@
  					colorHead = drawPlayer.GetImmuneAlpha(drawPlayer.skinColor, shadow);
  					colorBodySkin = drawPlayer.GetImmuneAlpha(drawPlayer.skinColor, shadow);
  					colorShirt = drawPlayer.GetImmuneAlpha(drawPlayer.shirtColor, shadow);
+@@ -1327,7 +_,7 @@
+ 		private void CreateCompositeData() {
+ 			frontShoulderOffset = Vector2.Zero;
+ 			backShoulderOffset = Vector2.Zero;
+-			usesCompositeTorso = (drawPlayer.body > 0 && drawPlayer.body < 244 && ArmorIDs.Body.Sets.UsesNewFramingCode[drawPlayer.body]);
++			usesCompositeTorso = (drawPlayer.body > 0 && ArmorIDs.Body.Sets.UsesNewFramingCode[drawPlayer.body]);
+ 			usesCompositeFrontHandAcc = (drawPlayer.handon > 0 && drawPlayer.handon < 23 && ArmorIDs.HandOn.Sets.UsesNewFramingCode[drawPlayer.handon]);
+ 			usesCompositeBackHandAcc = (drawPlayer.handoff > 0 && drawPlayer.handoff < 15 && ArmorIDs.HandOff.Sets.UsesNewFramingCode[drawPlayer.handoff]);
+ 			if (drawPlayer.body < 1)

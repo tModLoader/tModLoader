@@ -15,6 +15,7 @@ using Terraria.ModLoader.Exceptions;
 using System.Linq;
 using Terraria.ModLoader.Config;
 using ReLogic.Content;
+using Terraria.GameContent;
 using Terraria.ModLoader.Assets;
 
 namespace Terraria.ModLoader
@@ -165,24 +166,17 @@ namespace Terraria.ModLoader
 			EquipLoader.equipTextures[type][slot] = equipTexture;
 			equipTextures[Tuple.Create(item.Name, type)] = equipTexture;
 
-			if (type == EquipType.Body) {
-				if (!ModContent.TextureExists(item.FemaleTexture)) {
-					EquipLoader.femaleTextures[slot] = texture;
-				}
-				else {
-					EquipLoader.femaleTextures[slot] = item.FemaleTexture;
-				}
-				ModContent.GetTexture(item.ArmTexture); //ensure texture exists
-				EquipLoader.armTextures[slot] = item.ArmTexture;
-			}
-
 			if (!EquipLoader.idToSlot.TryGetValue(item.Type, out IDictionary<EquipType, int> slots))
 				EquipLoader.idToSlot[item.Type] = slots = new Dictionary<EquipType, int>();
 
 			slots[type] = slot;
-			if (type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs)
+			if (type == EquipType.Head || type == EquipType.Body || type == EquipType.BodyComposite || type == EquipType.Legs)
 				EquipLoader.slotToId[type][slot] = item.Type;
 
+			if (type == EquipType.BodyComposite) {
+				ArmorIDs.Body.Sets.UsesNewFramingCode[slot] = true;
+			}
+			
 			return slot;
 		}
 
