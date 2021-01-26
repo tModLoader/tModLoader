@@ -99,6 +99,10 @@ namespace Terraria.ModLoader
 						TextureAssets.FemaleBody[slot] = ModContent.TextureExists(texture + "_Female") ? ModContent.GetTexture(texture + "_Female") : ModContent.GetTexture(texture);
 						TextureAssets.ArmorArm[slot] = ModContent.GetTexture(texture + "_Arms");
 					}
+					
+					if (type == EquipType.BodyComposite) {
+						ArmorIDs.Body.Sets.UsesNewFramingCode[slot] = true;
+					}
 				}
 			}
 

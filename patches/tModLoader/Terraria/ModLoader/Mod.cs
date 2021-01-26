@@ -173,10 +173,6 @@ namespace Terraria.ModLoader
 			if (type == EquipType.Head || type == EquipType.Body || type == EquipType.BodyComposite || type == EquipType.Legs)
 				EquipLoader.slotToId[type][slot] = item.Type;
 
-			if (type == EquipType.BodyComposite) {
-				ArmorIDs.Body.Sets.UsesNewFramingCode[slot] = true;
-			}
-			
 			return slot;
 		}
 
