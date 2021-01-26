@@ -60,7 +60,7 @@ namespace Terraria.ModLoader.Core
 		internal string eacPath = "";
 		// This .tmod was built against a beta release, preventing publishing.
 		internal bool beta = false;
-		internal Version buildVersion = ModLoader.version;
+		internal Version buildVersion = BuildInfo.tMLVersion;
 		internal string homepage = "";
 		internal string description = "";
 		internal ModSide side;

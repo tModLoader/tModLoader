@@ -384,7 +384,7 @@
  			mouseBorderColorSlider.SetHSL(MouseBorderColor);
  			mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
 -			if (currentValue != 234)
-+			if (currentValue != 234 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != ModLoader.ModLoader.version) {
++			if (currentValue != 234 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 +				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
 +			}

@@ -138,7 +138,7 @@ namespace Terraria.ModLoader.Setup
 			RunCmd("", "git", "rev-parse HEAD", s => gitsha = s.Trim());
 
 			string branch = "";
-			RunCmd("", "git", "branch --show-current", s => branch = s.Trim());
+			RunCmd("", "git", "rev-parse --abbrev-ref HEAD", s => branch = s.Trim());
 
 
 			string targetsText =
