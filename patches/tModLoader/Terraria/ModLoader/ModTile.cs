@@ -27,7 +27,7 @@ namespace Terraria.ModLoader
 		public int DustType { get; set; }
 
 		/// <summary> The default type of item dropped when this tile is killed. Defaults to 0, which means no item. </summary>
-		public int TileDrop { get; set; }
+		public int Drop { get; set; }
 
 		/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations. </summary>
 		public int AnimationFrameHeight { get; set; }

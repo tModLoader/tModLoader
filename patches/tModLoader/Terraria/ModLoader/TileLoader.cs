@@ -445,8 +445,8 @@ namespace Terraria.ModLoader
 					return false;
 				}
 
-				if (modTile.TileDrop > 0) {
-					Item.NewItem(i * 16, j * 16, 16, 16, modTile.TileDrop, 1, false, -1);
+				if (modTile.Drop > 0) {
+					Item.NewItem(i * 16, j * 16, 16, 16, modTile.Drop, 1, false, -1);
 				}
 
 				return false;
