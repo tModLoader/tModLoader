@@ -39,7 +39,7 @@
  		public int defense;
  		public int headSlot = -1;
  		public int bodySlot = -1;
-@@ -147,10 +_,22 @@
+@@ -147,10 +_,42 @@
  		public int netID;
  		public int crit;
  		public byte prefix;

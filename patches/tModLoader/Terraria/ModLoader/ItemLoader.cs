@@ -482,8 +482,8 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.ModifyWeaponKnockback(player, ref knockback, ref flat);
 
-			foreach (var g in HookGetWeaponKnockback.Enumerate(item))
-				g.GetWeaponKnockback(item, player, ref knockback);
+			foreach (var g in HookModifyWeaponKnockback.Enumerate(item))
+				g.ModifyWeaponKnockback(item, player, ref knockback, ref flat);
 		}
 
 
@@ -498,8 +498,8 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.ModifyWeaponCrit(player, ref crit);
 
-			foreach (var g in HookGetWeaponCrit.Enumerate(item))
-				g.GetWeaponCrit(item, player, ref crit);
+			foreach (var g in HookModifyWeaponCrit.Enumerate(item))
+				g.ModifyWeaponCrit(item, player, ref crit);
 		}
 
 		/// <summary>

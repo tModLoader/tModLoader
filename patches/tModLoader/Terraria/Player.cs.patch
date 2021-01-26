@@ -75,7 +75,7 @@
  		public bool[] inventoryChestStack = new bool[59];
  		public Item lastVisualizedSelectedItem;
  		public Chest bank = new Chest(bank: true);
-@@ -1059,16 +_,17 @@
+@@ -1059,18 +_,21 @@
  		public bool parryDamageBuff;
  		public bool ballistaPanic;
  		public bool JustDroppedAnItem;
