@@ -48,14 +48,13 @@
  		public OverheadMessage chatOverhead;
  		public SelectionRadial DpadRadial = new SelectionRadial();
  		public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
-@@ -438,8 +_,20 @@
+@@ -438,8 +_,19 @@
  		public Vector2 lastDeathPostion;
  		public DateTime lastDeathTime;
  		public bool showLastDeath;
 -		public int extraAccessorySlots = 2;
 -		public bool extraAccessory;
 +		//private int extraAccessorySlots; unused vanilla field
-+		// Create fields to facilitate dynamic inventory, accessory counts
 +		public List<string> moddedAccSlots = new List<string>(); // List of identifiers for the modded accessories.
 +		public int vanillaEXAccSlots = 2;
 +		public int vanillaBasicAccSlots = 5;
@@ -66,7 +65,7 @@
 +		internal ref bool extraAccessory => ref demonHeartUsed; // Minimize modder confusion by using a good name
 +		
 +		public bool demonHeartUsed;
-+		public int demonHeartSlot => totalArmorSlots+ vanillaBasicAccSlots;
++		public int demonHeartSlot => totalArmorSlots + vanillaBasicAccSlots;
 +		public int masterModeSlot => totalArmorSlots + vanillaBasicAccSlots + 1;
  		private bool dontConsumeWand;
  		public int tankPet = -1;
@@ -4710,7 +4709,7 @@
 +			Array.Resize<Item>(ref armor, totalEquipSlots * 2);
 +			Array.Resize<Item>(ref dye, totalEquipSlots);
 +			Array.Resize<bool>(ref hideVisibleAccessory, totalEquipSlots);
-+			
++
 -			for (int i = 0; i < 59; i++) {
 +			for (int i = 0; i < 58 + 1; i++) {
  				if (i < armor.Length)

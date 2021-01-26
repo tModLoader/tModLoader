@@ -20,40 +20,70 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModAccessorySlot : ModPlayer
 	{
-		internal bool overrideVanillaConditions = false;
+		/// <summary>
+		/// Currently never gets checked, so this is useless. 
+		/// Set to true if you want the slot to ignore vanilla limitations on what can be placed.
+		/// Warning: SlotCustomCondition() runs independant of this bool
+		/// </summary>
+		public bool overrideVanillaConditions = false;
 
 		internal int slot;
+		
 		private int num20;
 		private Microsoft.Xna.Framework.Color color2;
 		private int yLoc;
 		private int xLoc;
+		private int xColumn;
+		private static int AccessoryPerColumn = 5;
 		private bool flag3;
 
-		protected void GetModdedAccessorySlot() {
+		/// <summary>
+		/// Called when loading characters from parent ModPlayer.
+		/// Requests Player for a modded Slot, and stores assigned Slot. Player will auto-manage slots and save known in PlayerIO
+		/// </summary>
+		public override void Initialize() {
 			int pendingID = Player.moddedAccSlots.IndexOf(this.FullName);
 			if (pendingID < 0) {
 				pendingID = Player.moddedAccSlots.Count;
 				Player.moddedAccSlots.Add(this.FullName);
 			}
-			this.slot = pendingID + Player.vanillaEquipSlots;
+			this.xColumn = (int)(pendingID / AccessoryPerColumn) + 1;
+			this.slot = pendingID % AccessoryPerColumn + Player.vanillaEquipSlots;
 		}
 
+		/// <summary>
+		/// Hooks into ModPlayer? to save what was in the modded slot for functional, vanity, dyes, and visiblity data.
+		/// </summary>
 		public override TagCompound Save() { // Needs to revisit and fix up.
 			return new TagCompound {
-				["slot"] = ItemIO.Save(Player.armor[slot]),
+				["functional"] = ItemIO.Save(Player.armor[slot]),
 				["dyes"] = ItemIO.Save(Player.dye[slot]),
 				["vanity"] = ItemIO.Save(Player.armor[slot + Player.totalEquipSlots]),
 				["visible"] = (bool) Player.hideVisibleAccessory[slot]
 			};
 		}
 
+		/// <summary>
+		/// Hooks into ModPlayer? to load what was in the modded slot for functional, vanity, dyes, and visiblity data.
+		/// </summary>
 		public override void Load(TagCompound tag) {
-			Player.armor[slot] = tag.Get<Item>("slot");
+			Player.armor[slot] = tag.Get<Item>("functional");
 			Player.dye[slot] = tag.Get<Item>("dyes");
-			Player.armor[slot + Player.totalEquipSlots] = tag.Get<Item>("slot");
+			Player.armor[slot + Player.totalEquipSlots] = tag.Get<Item>("vanity");
 			Player.hideVisibleAccessory[slot] = tag.Get<bool>("visible");
 		}
 
+		/// <summary>
+		/// Currently never gets called, so this is useless. 
+		/// This is deprecated in favour of ItemLoader.CanEquipAccessory
+		/// </summary>
+		public virtual void SlotCustomCondition() {
+		}
+
+		/// <summary>
+		/// Is run after vanilla draws normal accessory slots. Currently doesn't get called.
+		/// Creates new accessory slots in a column to the left of vanilla.  
+		/// </summary>
 		public void Draw(int num20) { 
 			this.PreDraw(num20);
 			this.DrawFunctional();
@@ -61,23 +91,39 @@ namespace Terraria.ModLoader
 			this.DrawDye();
 		}
 
-		internal void PreDraw(int num20) {
-			this.num20 = num20;
+		/// <summary>
+		/// Is run first in this.Draw. 
+		/// Initializes all fields that are used in subsequent draw events.
+		/// For Overriding fields see this.PreDrawCustom
+		/// </summary>
+		private void PreDraw(int num20) {
+			this.num20 = 174 + Main.mH;
 			this.flag3 = !Player.IsAValidEquipmentSlotForIteration(slot);
-			//int num20 = 174 + Main.mh; 
 			this.PreDrawCustom();
 			if (flag3)
 				Main.inventoryBack = color2;
 		}
 
-		// Override Method for setting custom colour and/or custom position
+		/// <summary>
+		/// Is run in this.PreDraw. Override to your leisure. 
+		/// Contains default assignment to fields color2, yLoc, and xLoc based on vanilla:
+		/// <para>this.color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);</para>
+		/// <para>this.yLoc = (int) ((float)(num20) + (float) (slot* 56) * Main.inventoryScale);</para>
+		/// <para>this.xLoc = Main.screenWidth - 64 - 28 - 47 * 3;</para>
+		/// </summary>
 		public void PreDrawCustom() {
 			this.color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
 			this.yLoc = (int)((float)(num20) + (float)(slot * 56) * Main.inventoryScale);
-			this.xLoc = Main.screenWidth - 64 - 28 - 47 * 3;
+			this.xLoc = Main.screenWidth - 64 - 28 - 47 * 3 * xColumn - 50; // 47*3 is per column, 50 adjusts to not overlap vanilla UI
 		}
 
-		internal void DrawFunctional() {
+		/// <summary>
+		/// Is run in this.Draw. 
+		/// Generates a significant amount of functionality for the slot, despite being for drawing because vanilla.
+		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
+		/// Also includes creating hidevisibilitybutton.
+		/// </summary>
+		private void DrawFunctional() {
 			int yLoc2 = yLoc + (int)((float)(-2) + (float)(slot * 56) * Main.inventoryScale);
 			int xLoc2 = xLoc - 58 + 64 + 28;
 			int context = 8;
@@ -121,7 +167,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal void DrawVanity() {
+		/// <summary>
+		/// Is run in this.Draw. 
+		/// Generates a significant amount of functionality for the slot, despite being for drawing because vanilla.
+		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
+		/// </summary>
+		private void DrawVanity() {
 			int vanity = slot + Player.totalEquipSlots;
 			bool flag7 = flag3 && !Main.mouseItem.IsAir;
 			xLoc -= 47;
@@ -146,7 +197,12 @@ namespace Terraria.ModLoader
 			this.DrawModded(Player.armor, context, vanity, new Vector2(xLoc, yLoc));
 		}
 
-		internal void DrawDye() {
+		/// <summary>
+		/// Is run in this.Draw. 
+		/// Generates a significant amount of functionality for the slot, despite being for drawing because vanilla.
+		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
+		/// </summary>
+		private void DrawDye() {
 			bool flag8 = flag3 && !Main.mouseItem.IsAir;
 			xLoc -= 47;
 
@@ -167,7 +223,14 @@ namespace Terraria.ModLoader
 			this.DrawModded(Player.armor, 12, slot, new Vector2(xLoc, yLoc));
 		}
 
-		// Override here for creating custom drawing at generated position
+		/// <summary>
+		/// Is run in each of the DrawX methods. Defaults to run Vanilla ItemSlot.Draw().
+		/// Is responsible for actually drawing the visual and could be overriden. Receives parameters:
+		/// <para><paramref name="inv"/> :: the array containing all accessory slots, yours is inv[slot] </para>
+		/// <para><paramref name="slot"/> :: which is the index for inventory that you were assigned </para>
+		/// <para><paramref name="position"/> :: is the position of where the ItemSlot will be drawn </para>
+		/// <para><paramref name="context"/> :: 12=>dye; 9,11 => vanity; 8,10 => functional </para>
+		/// </summary>
 		public void DrawModded(Item[] inv, int context, int slot, Vector2 position) {
 			ItemSlot.Draw(Main.spriteBatch, inv, context, slot, position);
 		}

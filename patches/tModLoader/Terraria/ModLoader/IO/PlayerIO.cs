@@ -40,7 +40,8 @@ namespace Terraria.ModLoader.IO
 				["research"] = SaveResearch(player),
 				["modData"] = SaveModData(player),
 				["modBuffs"] = SaveModBuffs(player),
-				["usedMods"] = SaveUsedMods(player)
+				["usedMods"] = SaveUsedMods(player),
+				["modAccessSlots"] = player.moddedAccSlots
 			};
 
 			using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create)) {
@@ -78,6 +79,7 @@ namespace Terraria.ModLoader.IO
 			LoadModData(player, tag.GetList<TagCompound>("modData"));
 			LoadModBuffs(player, tag.GetList<TagCompound>("modBuffs"));
 			LoadUsedMods(player, tag.GetList<string>("usedMods"));
+			player.moddedAccSlots = (List<string>)tag.GetList<string>("modAccessSlots");
 		}
 
 		public static List<TagCompound> SaveInventory(Item[] inv) {

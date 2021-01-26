@@ -2437,7 +2437,7 @@
  					num39++;
  					bool flag6 = LocalPlayer.IsAValidEquipmentSlotForIteration(num40);
  					if (!flag6)
-@@ -30123,12 +_,11 @@
+@@ -30123,12 +_,12 @@
  					int num43 = screenWidth - 58;
  					int num44 = (int)((float)(num20 - 2) + (float)(num39 * 56) * inventoryScale);
  					int context2 = 8;
@@ -2448,6 +2448,7 @@
  						context2 = 10;
  					}
 -
++					
  					if (num39 == num38 && !_achievementAdvisor.CanDrawAboveCoins) {
  						_achievementAdvisor.DrawOneAchievement(spriteBatch, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8), large: false);
  						UILinkPointNavigator.SetPosition(1570, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8) + new Vector2(20f) * inventoryScale);
@@ -2469,7 +2470,7 @@
  						spriteBatch.Draw(value4, new Vector2(num43, num44), Microsoft.Xna.Framework.Color.White * 0.7f);
  						if (num45 > 0) {
  							HoverItem = new Item();
-@@ -30182,10 +_,10 @@
+@@ -30182,10 +_,11 @@
  					player[myPlayer].mouseInterface = true;
  
  				num39 = -1;
@@ -2480,10 +2481,11 @@
 +						|| (num46 == player[myPlayer].totalEquipSlots + player[myPlayer].masterModeSlot && !flag5))
  						continue;
 -
++					
  					num39++;
  					bool num47 = LocalPlayer.IsAValidEquipmentSlotForIteration(num46);
  					flag3 = !num47;
-@@ -30193,11 +_,10 @@
+@@ -30193,11 +_,11 @@
  					int num48 = screenWidth - 64 - 28 - 47;
  					int num49 = (int)((float)num20 + (float)(num39 * 56) * inventoryScale);
  					new Microsoft.Xna.Framework.Color(100, 100, 100, 100);
@@ -2491,6 +2493,7 @@
 +					if (num46 > player[myPlayer].totalEquipSlots + player[myPlayer].totalArmorSlots - 1)
  						num49 += num35;
 -
++					
  					int context3 = 9;
 -					if (num46 > 12)
 +					if (num46 > player[myPlayer].totalEquipSlots + player[myPlayer].totalArmorSlots - 1)
@@ -2523,12 +2526,14 @@
  					if (mouseX >= num52 && (float)mouseX <= (float)num52 + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num53 && (float)mouseY <= (float)num53 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
  						player[myPlayer].mouseInterface = true;
  						armorHide = true;
-@@ -30258,6 +_,11 @@
+@@ -30258,6 +_,13 @@
  				}
  
  				inventoryBack = color;
++				//TODO: currently player[myPlayer] != loaded player OR total equip is not propogating?
 +				for (int modSlot = 0; modSlot < player[myPlayer].moddedAccSlots.Count; modSlot++) {
-+					// code that looks up name of 
++					ModContent.TryFind<ModAccessorySlot>(player[myPlayer].moddedAccSlots[modSlot], out ModAccessorySlot mAccSlot);
++					mAccSlot.Draw(num20);
 +				}
 +
 +				inventoryBack = color;
