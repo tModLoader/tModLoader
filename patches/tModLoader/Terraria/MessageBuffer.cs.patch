@@ -223,7 +223,7 @@
 -											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num16, num17, num18, num20);
 -											Item.NewItem(num16 * 16, num17 * 16, 32, 32, Chest.chestItemSpawn[num18], 1, noBroadcast: true);
 +											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num16, num17, num18, num20, modType);
-+											int itemSpawn = b3 < 100 ? Chest.chestItemSpawn[num18] : TileLoader.GetTile(modType).chestDrop;
++											int itemSpawn = b3 < 100 ? Chest.chestItemSpawn[num18] : TileLoader.GetTile(modType).ChestDrop;
 +											if (itemSpawn > 0)
 +												Item.NewItem(num16 * 16, num17 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  										}
@@ -256,7 +256,7 @@
 -											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num16, num17, num18, num21);
 -											Item.NewItem(num16 * 16, num17 * 16, 32, 32, Chest.dresserItemSpawn[num18], 1, noBroadcast: true);
 +											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num16, num17, num18, num21, modType);
-+											int itemSpawn = b3 < 100 ? Chest.dresserItemSpawn[num18] : TileLoader.GetTile(modType).dresserDrop;
++											int itemSpawn = b3 < 100 ? Chest.dresserItemSpawn[num18] : TileLoader.GetTile(modType).DresserDrop;
 +											if (itemSpawn > 0)
 +												Item.NewItem(num16 * 16, num17 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  										}
