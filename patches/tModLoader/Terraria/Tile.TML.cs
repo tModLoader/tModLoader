@@ -53,13 +53,13 @@ namespace Terraria
 			}
 		}
 
-		public bool IsAir {
-			get => !IsBitSet(sTileHeader, 5);
+		public bool IsActive {
+			get => IsBitSet(sTileHeader, 5);
 			set {
 				if (value)
-					ResetBit(ref sTileHeader, 5);
-				else
 					SetBit(ref sTileHeader, 5);
+				else
+					ResetBit(ref sTileHeader, 5);
 			}
 		}
 
