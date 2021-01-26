@@ -315,6 +315,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Only called for torches, when there is one nearby. Use this to contribute to vanilla torch luck calculations.
+		/// Typical return values are 1f for a torch in its biome, 0.5f for a weak positive torch, -1f for a torch in an opposing biome, and -0.5f for a weak negative torch.
+		/// </summary>
+		/// <param name="player">Main.LocalPlayer</param>
+		/// <returns></returns>
+		public virtual float GetTorchLuck(Player player) => 0f;
+
+		/// <summary>
 		/// Allows you to determine how much light this block emits. Make sure you set Main.tileLighted[Type] to true in SetDefaults for this to work.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>

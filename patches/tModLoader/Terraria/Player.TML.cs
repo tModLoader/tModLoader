@@ -9,6 +9,8 @@ namespace Terraria
 		internal IList<string> usedMods;
 		internal ModPlayer[] modPlayers = new ModPlayer[0];
 
+		public HashSet<int> nearbyModTorch = new HashSet<int>();
+
 		// Get
 
 		/// <summary> Gets the instance of the specified ModPlayer type. This will throw exceptions on failure. </summary>

@@ -1525,14 +1525,46 @@
  								SmartSelect_SelectItem(i);
  								return;
  						}
+@@ -12387,6 +_,13 @@
+ 					if (tile == null)
+ 						return;
+ 
++					if (tile.type > TileID.Count) {
++						if (tile.active() && TileID.Sets.Torch[tile.type])
++							nearbyModTorch.Add(tile.type);
++
++						continue;
++					}
++
+ 					if (!tile.active() || tile.type != 4)
+ 						continue;
+ 
+@@ -12555,6 +_,9 @@
+ 			if (inventory[selectedItem].createTile == 4 && inventory[selectedItem].placeStyle < 22)
+ 				nearbyTorch[inventory[selectedItem].placeStyle] = true;
+ 
++			if (TileLoader.GetTile(inventory[selectedItem].createTile) is ModTile modTile && TileID.Sets.Torch[modTile.Type])
++				nearbyModTorch.Add(modTile.Type);
++
+ 			float num = 0f;
+ 			float num2 = 0f;
+ 			if (!ZoneDungeon && !ZoneLihzhardTemple) {
 @@ -12624,6 +_,7 @@
  				}
  			}
  
-+			PlayerHooks.ModifyTorchLuck(this, ref num2, ref num); //Modders WILL want to have torch luck in the dungeon and temple, thanks.
++			TileLoader.ModifyTorchLuck(this, ref num2, ref num);
  			if (num2 >= 1f)
  				torchLuck += 1f;
  			else if (num2 > 0f)
+@@ -12640,6 +_,7 @@
+ 			for (int i = 0; i < 22; i++) {
+ 				nearbyTorch[i] = false;
+ 			}
++			nearbyModTorch.Clear();
+ 
+ 			if (torchLuck < 0f)
+ 				torchLuck = 0f;
 @@ -12711,13 +_,14 @@
  			lifeRegen = 0;
  			manaCost = 1f;
