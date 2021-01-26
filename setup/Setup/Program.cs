@@ -37,7 +37,7 @@ namespace Terraria.ModLoader.Setup
 			if (!Directory.Exists(tMLSteamDir))
 				tMLSteamDir = SteamDir;
 
-			UpdateSteamDirTargetsFile(false);
+			UpdateTargetsFile();
 
 			Application.Run(new MainForm());
 		}
@@ -123,27 +123,36 @@ namespace Terraria.ModLoader.Setup
 				else {
 					Settings.Default.SteamDir = Path.GetDirectoryName(dialog.FileName);
 					Settings.Default.Save();
-					UpdateSteamDirTargetsFile(true);
+					UpdateTargetsFile();
 					return true;
 				}
 			}
 		}
 
-		private static readonly string targetsFilePath = Path.Combine("src", "TerrariaSteamPath.targets");
+		private static readonly string targetsFilePath = Path.Combine("src", "WorkspaceInfo.targets");
 
-		private static void UpdateSteamDirTargetsFile(bool overwrite) {
+		private static void UpdateTargetsFile() {
 			SetupOperation.CreateParentDirectory(targetsFilePath);
+
+			string gitsha = "";
+			RunCmd("", "git", "rev-parse HEAD", s => gitsha = s.Trim());
+
+			string branch = "";
+			RunCmd("", "git", "branch --show-current", s => branch = s.Trim());
+
 
 			string targetsText =
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <PropertyGroup>
-    <TerrariaSteamPath>{SteamDir}</TerrariaSteamPath>
+	<BranchName>{branch}</BranchName>
+	<CommitSHA>{gitsha}</CommitSHA>
+	<TerrariaSteamPath>{SteamDir}</TerrariaSteamPath>
     <tModLoaderSteamPath>{tMLSteamDir}</tModLoaderSteamPath>
   </PropertyGroup>
 </Project>";
 
-			if (File.Exists(targetsFilePath) && (!overwrite || targetsText == File.ReadAllText(targetsFilePath)))
+			if (File.Exists(targetsFilePath) && targetsText == File.ReadAllText(targetsFilePath))
 				return;
 
 			File.WriteAllText(targetsFilePath, targetsText);

@@ -1,12 +1,20 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -7,7 +_,8 @@
+@@ -7,7 +_,16 @@
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2020 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
 -	<OutputName>Terraria</OutputName>
 +	<OutputName>tModLoader</OutputName>
-+	<LangVersion>8.0</LangVersion>
++    <LangVersion>8.0</LangVersion>
++  </PropertyGroup>
++  <PropertyGroup>
++    <tMLVersion>0.12</tMLVersion>
++	<BuildPurpose Condition="'$(BuildPurpose)' == ''">dev</BuildPurpose>
++	<BranchName Condition="'$(BranchName)' == ''">unknown</BranchName>
++	<CommitSHA Condition="'$(CommitSHA)' == ''">unknown</CommitSHA>
++    <BuildDate>$([System.DateTime]::UtcNow.ToBinary())</BuildDate>
++    <SourceRevisionId>$(tMLVersion)-$(BranchName)-$(BuildPurpose)-$(CommitSHA)-$(BuildDate)</SourceRevisionId>
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>

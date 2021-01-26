@@ -37,19 +37,7 @@ namespace Terraria.ModLoader
 		// public static bool ShowWhatsNew;
 		public static bool ShowFirstLaunchWelcomeMessage;
 
-		public static readonly string branchName = "1.4";
-		// beta > 0 cannot publish to mod browser
-		internal const bool IsBeta = true;
-		public static readonly int beta = 1;
-
-		// SteamApps.GetCurrentBetaName(out string betaName, 100) ? betaName :
-		public static readonly string versionedName = $"tModLoader v{version}" +
-													  (branchName.Length == 0 ? "" : $" {branchName}") +
-													  (beta == 0 ? "" : $" Beta {beta}");
-
-		public static readonly string versionTag = $"v{version}" +
-													(branchName.Length == 0 ? "" : $"-{branchName.ToLower()}") +
-													(beta == 0 ? "" : $"-beta{beta}");
+		public static string versionedName => ModCompile.DeveloperMode ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
 
 		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (InstallVerifier.IsGoG ? "g" : "s") + (FrameworkVersion.Framework == Framework.NetFramework ? "n" : (FrameworkVersion.Framework == Framework.Mono ? "o" : "u"));
 
