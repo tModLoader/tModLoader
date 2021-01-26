@@ -2423,27 +2423,15 @@
  					}
  				}
  			}
-@@ -30108,10 +_,10 @@
- 				Microsoft.Xna.Framework.Color color = inventoryBack;
- 				Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
- 				int num39 = -1;
--				for (int num40 = 0; num40 < 10; num40++) {
--					if ((num40 == 8 && !flag4) || (num40 == 9 && !flag5))
-+				for (int num40 = 0; num40 < player[myPlayer].vanillaEquipSlots; num40++) { // Added support for modded accessory slots; does not support custom draw conditions natively here
-+					if ((num40 == player[myPlayer].demonHeartSlot && !flag4) 
-+						|| (num40 == player[myPlayer].masterModeSlot && !flag5))
+@@ -30111,7 +_,6 @@
+ 				for (int num40 = 0; num40 < 10; num40++) {
+ 					if ((num40 == 8 && !flag4) || (num40 == 9 && !flag5))
  						continue;
 -
  					num39++;
  					bool flag6 = LocalPlayer.IsAValidEquipmentSlotForIteration(num40);
  					if (!flag6)
-@@ -30123,12 +_,12 @@
- 					int num43 = screenWidth - 58;
- 					int num44 = (int)((float)(num20 - 2) + (float)(num39 * 56) * inventoryScale);
- 					int context2 = 8;
--					if (num40 > 2) {
-+					if (num40 > player[myPlayer].totalArmorSlots - 1) {
- 						num42 += num35;
+@@ -30128,7 +_,7 @@
  						num44 += num35;
  						context2 = 10;
  					}
@@ -2452,89 +2440,47 @@
  					if (num39 == num38 && !_achievementAdvisor.CanDrawAboveCoins) {
  						_achievementAdvisor.DrawOneAchievement(spriteBatch, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8), large: false);
  						UILinkPointNavigator.SetPosition(1570, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8) + new Vector2(20f) * inventoryScale);
-@@ -30143,7 +_,7 @@
- 
- 					Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(num43, num44, value4.Width, value4.Height);
- 					int num45 = 0;
--					if (num40 > 2 && rectangle.Contains(new Microsoft.Xna.Framework.Point(mouseX, mouseY)) && !PlayerInput.IgnoreMouseInterface) {
-+					if (num40 > player[myPlayer].totalArmorSlots - 1 && rectangle.Contains(new Microsoft.Xna.Framework.Point(mouseX, mouseY)) && !PlayerInput.IgnoreMouseInterface) {
- 						player[myPlayer].mouseInterface = true;
- 						if (mouseLeft && mouseLeftRelease) {
- 							player[myPlayer].hideVisibleAccessory[num40] = !player[myPlayer].hideVisibleAccessory[num40];
-@@ -30168,7 +_,7 @@
- 						inventoryBack = color2;
- 
- 					ItemSlot.Draw(spriteBatch, player[myPlayer].armor, context2, num40, new Vector2(num41, num42));
--					if (num40 > 2) {
-+					if (num40 > player[myPlayer].totalArmorSlots - 1) {
- 						spriteBatch.Draw(value4, new Vector2(num43, num44), Microsoft.Xna.Framework.Color.White * 0.7f);
- 						if (num45 > 0) {
- 							HoverItem = new Item();
-@@ -30182,10 +_,11 @@
- 					player[myPlayer].mouseInterface = true;
- 
- 				num39 = -1;
--				for (int num46 = 10; num46 < 20; num46++) {
--					if ((num46 == 18 && !flag4) || (num46 == 19 && !flag5))
-+				for (int num46 = player[myPlayer].totalEquipSlots; num46 < player[myPlayer].totalEquipSlots + player[myPlayer].vanillaEquipSlots; num46++) {
-+					if ((num46 == player[myPlayer].totalEquipSlots + player[myPlayer].demonHeartSlot && !flag4) 
-+						|| (num46 == player[myPlayer].totalEquipSlots + player[myPlayer].masterModeSlot && !flag5))
+@@ -30185,7 +_,7 @@
+ 				for (int num46 = 10; num46 < 20; num46++) {
+ 					if ((num46 == 18 && !flag4) || (num46 == 19 && !flag5))
  						continue;
 -
 +					
  					num39++;
  					bool num47 = LocalPlayer.IsAValidEquipmentSlotForIteration(num46);
  					flag3 = !num47;
-@@ -30193,11 +_,11 @@
- 					int num48 = screenWidth - 64 - 28 - 47;
- 					int num49 = (int)((float)num20 + (float)(num39 * 56) * inventoryScale);
+@@ -30195,7 +_,7 @@
  					new Microsoft.Xna.Framework.Color(100, 100, 100, 100);
--					if (num46 > 12)
-+					if (num46 > player[myPlayer].totalEquipSlots + player[myPlayer].totalArmorSlots - 1)
+ 					if (num46 > 12)
  						num49 += num35;
 -
 +					
  					int context3 = 9;
--					if (num46 > 12)
-+					if (num46 > player[myPlayer].totalEquipSlots + player[myPlayer].totalArmorSlots - 1)
+ 					if (num46 > 12)
  						context3 = 11;
- 
- 					if (mouseX >= num48 && (float)mouseX <= (float)num48 + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num49 && (float)mouseY <= (float)num49 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -30223,10 +_,10 @@
- 					player[myPlayer].mouseInterface = true;
- 
- 				num39 = -1;
--				for (int num50 = 0; num50 < 10; num50++) {
--					if ((num50 == 8 && !flag4) || (num50 == 9 && !flag5))
-+				for (int num50 = 0; num50 < player[myPlayer].vanillaEquipSlots; num50++) {
-+					if ((num50 == player[myPlayer].demonHeartSlot && !flag4) 
-+						|| (num50 == player[myPlayer].masterModeSlot && !flag5))
+@@ -30226,7 +_,6 @@
+ 				for (int num50 = 0; num50 < 10; num50++) {
+ 					if ((num50 == 8 && !flag4) || (num50 == 9 && !flag5))
  						continue;
 -
  					num39++;
  					bool num51 = LocalPlayer.IsAValidEquipmentSlotForIteration(num50);
  					flag3 = !num51;
-@@ -30234,9 +_,9 @@
- 					int num52 = screenWidth - 64 - 28 - 47 - 47;
- 					int num53 = (int)((float)num20 + (float)(num39 * 56) * inventoryScale);
+@@ -30236,7 +_,7 @@
  					new Microsoft.Xna.Framework.Color(100, 100, 100, 100);
--					if (num50 > 2)
-+					if (num50 > player[myPlayer].totalArmorSlots - 1)
+ 					if (num50 > 2)
  						num53 += num35;
 -
 +					
  					if (mouseX >= num52 && (float)mouseX <= (float)num52 + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num53 && (float)mouseY <= (float)num53 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
  						player[myPlayer].mouseInterface = true;
  						armorHide = true;
-@@ -30258,6 +_,13 @@
+@@ -30258,6 +_,10 @@
  				}
  
  				inventoryBack = color;
-+				//TODO: currently player[myPlayer] != loaded player OR total equip is not propogating?
-+				for (int modSlot = 0; modSlot < player[myPlayer].moddedAccSlots.Count; modSlot++) {
-+					ModContent.TryFind<ModAccessorySlot>(player[myPlayer].moddedAccSlots[modSlot], out ModAccessorySlot mAccSlot);
-+					mAccSlot.Draw(num20);
-+				}
++
++				EquipLoader.DrawModAccSlots(num20);
 +
 +				inventoryBack = color;
  				inventoryScale = num36;

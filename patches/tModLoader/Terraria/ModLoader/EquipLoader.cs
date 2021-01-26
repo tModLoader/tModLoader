@@ -6,6 +6,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Initializers;
 using Terraria.ModLoader.Core;
+using Terraria.Audio;
 
 namespace Terraria.ModLoader
 {
@@ -297,6 +298,365 @@ namespace Terraria.ModLoader
 				EquipTexture texture = GetEquipTexture(type, slot);
 				texture?.FrameEffects(player, type);
 			}
+		}
+
+		// List of identifiers for the modded accessory slots.
+		internal static List<string> moddedAccSlots = new List<string>();
+		// Arrays for modded accessory slot save/load/stuff
+		internal static Item[] exAccessorySlot = new Item[2];
+		internal static Item[] exDyesAccessory = new Item[1];
+		internal static bool[] exHideAccessory = new bool[1];
+
+		internal static void ResizeAccesoryArrays(int newSize) {
+			Array.Resize<Item>(ref exAccessorySlot, 2 * newSize);
+			Array.Resize<Item>(ref exDyesAccessory, newSize);
+			Array.Resize<bool>(ref exHideAccessory, newSize);
+		}
+
+		public static void DrawModAccSlots(int num20) {
+			for (int modSlot = 0; modSlot < moddedAccSlots.Count; modSlot++) {
+				ModContent.TryFind<ModAccessorySlot>(moddedAccSlots[modSlot], out ModAccessorySlot mAccSlot);
+				mAccSlot.Draw(num20);
+			}
+		}
+		internal static void VanillaUpdateEquipsMirror(Player player) {
+			Item item = null;
+			Item vItem = null;
+			for (int k = 0; k < moddedAccSlots.Count; k++) {
+				if (player.IsAValidEquipmentSlotForIteration(k)) {
+					item = exAccessorySlot[k];
+					vItem = exAccessorySlot[k + moddedAccSlots.Count];
+					player.VanillaUpdateEquip(item);
+					player.ApplyEquipFunctional(item, exHideAccessory[k]);
+					if (SoundLoader.itemToMusic.ContainsKey(item.type))
+						Main.musicBox2 = SoundLoader.itemToMusic[item.type];
+					VanillaVanityEquipMirror(item, vItem, player, k);
+
+					
+				}
+				
+			}
+		}
+
+		private static void VanillaVanityEquipMirror(Item item, Item vItem, Player player, int k) {
+			if (player.eocDash > 0 && player.shield == -1 && item.shieldSlot != -1) {
+				player.shield = item.shieldSlot;
+				if (player.cShieldFallback != -1)
+					player.cShield = player.cShieldFallback;
+			}
+
+			if (player.shieldRaised && player.shield == -1 && item.shieldSlot != -1) {
+				player.shield = item.shieldSlot;
+				if (player.cShieldFallback != -1)
+					player.cShield = player.cShieldFallback;
+			}
+
+			if (player.ItemIsVisuallyIncompatible(item))
+				return;
+
+			if (item.wingSlot > 0) {
+				if (exHideAccessory[k] && (player.velocity.Y == 0f || player.mount.Active))
+					return;
+
+				player.wings = item.wingSlot;
+			}
+			if (!exHideAccessory[k])
+				player.UpdateVisibleAccessory(k, item);
+			if (!player.ItemIsVisuallyIncompatible(vItem))
+				player.UpdateVisibleAccessory(k + moddedAccSlots.Count, vItem);
+		}
+
+		private static ItemLoader.HookList HookUpdateArmorSet = ItemLoader.AddHook<Action<Player, string>>(g => g.UpdateArmorSet);
+		//at end of Terraria.Player.UpdateArmorSets call ItemLoader.UpdateArmorSet(this, this.armor[0], this.armor[1], this.armor[2])
+		/// <summary>
+		/// If the head's ModItem.IsArmorSet returns true, calls the head's ModItem.UpdateArmorSet. This is then repeated for the body, then the legs. Then for each GlobalItem, if GlobalItem.IsArmorSet returns a non-empty string, calls GlobalItem.UpdateArmorSet with that string.
+		/// </summary>
+		public static void UpdateArmorSet(Player player, Item head, Item body, Item legs) {
+			if (head.ModItem != null && head.ModItem.IsArmorSet(head, body, legs))
+				head.ModItem.UpdateArmorSet(player);
+
+			if (body.ModItem != null && body.ModItem.IsArmorSet(head, body, legs))
+				body.ModItem.UpdateArmorSet(player);
+
+			if (legs.ModItem != null && legs.ModItem.IsArmorSet(head, body, legs))
+				legs.ModItem.UpdateArmorSet(player);
+
+			foreach (GlobalItem globalItem in HookUpdateArmorSet.arr) {
+				string set = globalItem.IsArmorSet(head, body, legs);
+				if (!string.IsNullOrEmpty(set))
+					globalItem.UpdateArmorSet(player, set);
+			}
+		}
+
+		private static ItemLoader.HookList HookUpdateEquip = ItemLoader.AddHook<Action<Item, Player>>(g => g.UpdateEquip);
+		/// <summary>
+		/// Hook at the end of Player.VanillaUpdateEquip can be called from modded slots for modded equipments
+		/// </summary>
+		public static void UpdateEquip(Item item, Player player) {
+			if (item.IsAir)
+				return;
+
+			item.ModItem?.UpdateEquip(player);
+
+			foreach (var g in HookUpdateEquip.arr)
+				g.Instance(item).UpdateEquip(item, player);
+		}
+
+		private static ItemLoader.HookList HookUpdateAccessory = ItemLoader.AddHook<Action<Item, Player, bool>>(g => g.UpdateAccessory);
+
+		/// <summary>
+		/// Hook at the end of Player.ApplyEquipFunctional can be called from modded slots for modded equipments
+		/// </summary>
+		public static void UpdateAccessory(Item item, Player player, bool hideVisual) {
+			if (item.IsAir)
+				return;
+
+			item.ModItem?.UpdateAccessory(player, hideVisual);
+
+			foreach (var g in HookUpdateAccessory.arr)
+				g.Instance(item).UpdateAccessory(item, player, hideVisual);
+		}
+
+		private static ItemLoader.HookList HookUpdateVanity = ItemLoader.AddHook<Action<Item, Player>>(g => g.UpdateVanity);
+		/// <summary>
+		/// Hook at the end of Player.ApplyEquipVanity can be called from modded slots for modded equipments
+		/// </summary>
+		public static void UpdateVanity(Item item, Player player) {
+			if (item.IsAir)
+				return;
+
+			item.ModItem?.UpdateVanity(player);
+
+			foreach (var g in HookUpdateVanity.arr)
+				g.Instance(item).UpdateVanity(item, player);
+		}
+
+		private static ItemLoader.HookList HookPreUpdateVanitySet = ItemLoader.AddHook<Action<Player, string>>(g => g.PreUpdateVanitySet);
+		//in Terraria.Player.PlayerFrame after setting armor effects fields call this
+		/// <summary>
+		/// If the player's head texture's IsVanitySet returns true, calls the equipment texture's PreUpdateVanitySet. This is then repeated for the player's body, then the legs. Then for each GlobalItem, if GlobalItem.IsVanitySet returns a non-empty string, calls GlobalItem.PreUpdateVanitySet, using player.head, player.body, and player.legs.
+		/// </summary>
+		public static void PreUpdateVanitySet(Player player) {
+			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
+			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
+			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
+			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
+				headTexture.PreUpdateVanitySet(player);
+
+			if (bodyTexture != null && bodyTexture.IsVanitySet(player.head, player.body, player.legs))
+				bodyTexture.PreUpdateVanitySet(player);
+
+			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
+				legTexture.PreUpdateVanitySet(player);
+
+			foreach (GlobalItem globalItem in HookPreUpdateVanitySet.arr) {
+				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
+				if (!string.IsNullOrEmpty(set))
+					globalItem.PreUpdateVanitySet(player, set);
+			}
+		}
+
+		private static ItemLoader.HookList HookUpdateVanitySet = ItemLoader.AddHook<Action<Player, string>>(g => g.UpdateVanitySet);
+		//in Terraria.Player.PlayerFrame after armor sets creating dust call this
+		/// <summary>
+		/// If the player's head texture's IsVanitySet returns true, calls the equipment texture's UpdateVanitySet. This is then repeated for the player's body, then the legs. Then for each GlobalItem, if GlobalItem.IsVanitySet returns a non-empty string, calls GlobalItem.UpdateVanitySet, using player.head, player.body, and player.legs.
+		/// </summary>
+		public static void UpdateVanitySet(Player player) {
+			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
+			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
+			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
+			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
+				headTexture.UpdateVanitySet(player);
+
+			if (bodyTexture != null && bodyTexture.IsVanitySet(player.head, player.body, player.legs))
+				bodyTexture.UpdateVanitySet(player);
+
+			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
+				legTexture.UpdateVanitySet(player);
+
+			foreach (GlobalItem globalItem in HookUpdateVanitySet.arr) {
+				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
+				if (!string.IsNullOrEmpty(set))
+					globalItem.UpdateVanitySet(player, set);
+			}
+		}
+
+		private static ItemLoader.HookList HookArmorSetShadows = ItemLoader.AddHook<Action<Player, string>>(g => g.ArmorSetShadows);
+		//in Terraria.Main.DrawPlayers after armor combinations setting flags call
+		//  ItemLoader.ArmorSetShadows(player);
+		/// <summary>
+		/// If the player's head texture's IsVanitySet returns true, calls the equipment texture's ArmorSetShadows. This is then repeated for the player's body, then the legs. Then for each GlobalItem, if GlobalItem.IsVanitySet returns a non-empty string, calls GlobalItem.ArmorSetShadows, using player.head, player.body, and player.legs.
+		/// </summary>
+		public static void ArmorSetShadows(Player player) {
+			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
+			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
+			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
+			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
+				headTexture.ArmorSetShadows(player);
+
+			if (bodyTexture != null && bodyTexture.IsVanitySet(player.head, player.body, player.legs))
+				bodyTexture.ArmorSetShadows(player);
+
+			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
+				legTexture.ArmorSetShadows(player);
+
+			foreach (GlobalItem globalItem in HookArmorSetShadows.arr) {
+				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
+				if (!string.IsNullOrEmpty(set))
+					globalItem.ArmorSetShadows(player, set);
+			}
+		}
+
+		private delegate void DelegateSetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes);
+		private static ItemLoader.HookList HookSetMatch = ItemLoader.AddHook<DelegateSetMatch>(g => g.SetMatch);
+		/// <summary>
+		/// Calls EquipTexture.SetMatch, then all GlobalItem.SetMatch hooks.
+		/// </summary>   
+		public static void SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) {
+			EquipTexture texture = EquipLoader.GetEquipTexture((EquipType)armorSlot, type);
+			texture?.SetMatch(male, ref equipSlot, ref robes);
+
+			foreach (var g in HookSetMatch.arr)
+				g.SetMatch(armorSlot, type, male, ref equipSlot, ref robes);
+		}
+
+		private static ItemLoader.HookList HookCanRightClick = ItemLoader.AddHook<Func<Item, bool>>(g => g.CanRightClick);
+		//in Terraria.UI.ItemSlot.RightClick in end of item-opening if/else chain before final else
+		//  make else if(ItemLoader.CanRightClick(inv[slot]))
+		/// <summary>
+		/// Calls ModItem.CanRightClick, then all GlobalItem.CanRightClick hooks, until one of the returns true. If one of the returns true, returns Main.mouseRight. Otherwise, returns false.
+		/// </summary>
+		public static bool CanRightClick(Item item) {
+			if (item.IsAir || !Main.mouseRight)
+				return false;
+
+			if (item.ModItem != null && item.ModItem.CanRightClick())
+				return true;
+
+			foreach (var g in HookCanRightClick.arr)
+				if (g.Instance(item).CanRightClick(item))
+					return true;
+
+			return false;
+		}
+
+		private static ItemLoader.HookList HookRightClick = ItemLoader.AddHook<Action<Item, Player>>(g => g.RightClick);
+		//in Terraria.UI.ItemSlot in block from CanRightClick call ItemLoader.RightClick(inv[slot], player)
+		/// <summary>
+		/// If Main.mouseRightRelease is true, the following steps are taken:
+		/// 1. Call ModItem.RightClick
+		/// 2. Calls all GlobalItem.RightClick hooks
+		/// 3. Call ItemLoader.ConsumeItem, and if it returns true, decrements the item's stack
+		/// 4. Sets the item's type to 0 if the item's stack is 0
+		/// 5. Plays the item-grabbing sound
+		/// 6. Sets Main.stackSplit to 30
+		/// 7. Sets Main.mouseRightRelease to false
+		/// 8. Calls Recipe.FindRecipes.
+		/// </summary>
+		public static void RightClick(Item item, Player player) {
+			if (!Main.mouseRightRelease)
+				return;
+
+			item.ModItem?.RightClick(player);
+
+			foreach (var g in HookRightClick.arr)
+				g.Instance(item).RightClick(item, player);
+
+			if (ItemLoader.ConsumeItem(item, player) && --item.stack == 0)
+				item.SetDefaults();
+
+			SoundEngine.PlaySound(7);
+			Main.stackSplit = 30;
+			Main.mouseRightRelease = false;
+			Recipe.FindRecipes();
+		}
+
+		/// <summary>s
+		/// Returns the wing item that the player is functionally using. If player.wingsLogic has been modified, so no equipped wing can be found to match what the player is using, this creates a new Item object to return.
+		/// </summary>
+		public static Item GetWing(Player player) {
+			//TODO: Try and rework away to get value from Player? instead.
+
+			// If wings are present in accessory slots (slots 3 through N, where 0,1,2 are armor), then return wings
+			Item item = null;
+			for (int k = 3; k < 10; k++) {
+				if (player.armor[k].wingSlot == player.wingsLogic) {
+					item = player.armor[k];
+				}
+			}
+			for (int k = 0; k < EquipLoader.moddedAccSlots.Count; k++) {
+				if (EquipLoader.exAccessorySlot[k].wingSlot == player.wingsLogic) {
+					item = player.armor[k];
+				}
+			}
+			if (item != null) {
+				return item;
+			}
+			return null;
+		}
+
+		private delegate void DelegateVerticalWingSpeeds(Item item, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
+		private static ItemLoader.HookList HookVerticalWingSpeeds = ItemLoader.AddHook<DelegateVerticalWingSpeeds>(g => g.VerticalWingSpeeds);
+		//in Terraria.Player.WingMovement after if statements that set num1-5
+		//  call ItemLoader.VerticalWingSpeeds(this, ref num2, ref num5, ref num4, ref num3, ref num)
+		/// <summary>
+		/// If the player is using wings, this uses the result of GetWing, and calls ModItem.VerticalWingSpeeds then all GlobalItem.VerticalWingSpeeds hooks.
+		/// </summary>
+		public static void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
+			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend) {
+			Item item = GetWing(player);
+			if (item == null) {
+				EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wingsLogic);
+				texture?.VerticalWingSpeeds(
+					player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier,
+					ref maxAscentMultiplier, ref constantAscend);
+				return;
+			}
+
+			item.ModItem?.VerticalWingSpeeds(player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier,
+				ref maxAscentMultiplier, ref constantAscend);
+
+			foreach (var g in HookVerticalWingSpeeds.arr)
+				g.Instance(item).VerticalWingSpeeds(item, player, ref ascentWhenFalling, ref ascentWhenRising,
+					ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
+		}
+
+		private delegate void DelegateHorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration);
+		private static ItemLoader.HookList HookHorizontalWingSpeeds = ItemLoader.AddHook<DelegateHorizontalWingSpeeds>(g => g.HorizontalWingSpeeds);
+		//in Terraria.Player.Update after wingsLogic if statements modifying accRunSpeed and runAcceleration
+		//  call ItemLoader.HorizontalWingSpeeds(this)
+		/// <summary>
+		/// If the player is using wings, this uses the result of GetWing, and calls ModItem.HorizontalWingSpeeds then all GlobalItem.HorizontalWingSpeeds hooks.
+		/// </summary>
+		public static void HorizontalWingSpeeds(Player player) {
+			Item item = GetWing(player);
+			if (item == null) {
+				EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wingsLogic);
+				texture?.HorizontalWingSpeeds(player, ref player.accRunSpeed, ref player.runAcceleration);
+				return;
+			}
+
+			item.ModItem?.HorizontalWingSpeeds(player, ref player.accRunSpeed, ref player.runAcceleration);
+
+			foreach (var g in HookHorizontalWingSpeeds.arr)
+				g.Instance(item).HorizontalWingSpeeds(item, player, ref player.accRunSpeed, ref player.runAcceleration);
+		}
+
+		private static ItemLoader.HookList HookWingUpdate = ItemLoader.AddHook<Func<int, Player, bool, bool>>(g => g.WingUpdate);
+		/// <summary>
+		/// If wings can be seen on the player, calls the player's wing's equipment texture's WingUpdate and all GlobalItem.WingUpdate hooks.
+		/// </summary>
+		public static bool WingUpdate(Player player, bool inUse) {
+			if (player.wings <= 0)
+				return false;
+
+			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wings);
+			bool? retVal = texture?.WingUpdate(player, inUse);
+
+			foreach (var g in HookWingUpdate.arr)
+				retVal |= g.WingUpdate(player.wings, player, inUse);
+
+			return retVal ?? false;
 		}
 	}
 }

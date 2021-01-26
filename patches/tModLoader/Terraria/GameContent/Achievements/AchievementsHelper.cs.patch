@@ -1,17 +1,12 @@
 --- src/Terraria/Terraria/GameContent/Achievements/AchievementsHelper.cs
 +++ src/tModLoader/Terraria/GameContent/Achievements/AchievementsHelper.cs
-@@ -118,11 +_,12 @@
+@@ -118,7 +_,8 @@
  			if (player.armor[0].stack > 0 && player.armor[1].stack > 0 && player.armor[2].stack > 0)
  				Main.Achievements.GetCondition("MATCHING_ATTIRE", "Equip").Complete();
  
 -			if (player.armor[10].stack > 0 && player.armor[11].stack > 0 && player.armor[12].stack > 0)
-+			if (player.armor[player.totalEquipSlots].stack > 0 && player.armor[player.totalEquipSlots+1].stack > 0 
-+				&& player.armor[player.totalEquipSlots+2].stack > 0)
++			if (player.armor[10].stack > 0 && player.armor[11].stack > 0 
++				&& player.armor[12].stack > 0)
  				Main.Achievements.GetCondition("FASHION_STATEMENT", "Equip").Complete();
  
  			bool flag = true;
--			for (int num5 = 0; num5 < 10; num5++) {
-+			for (int num5 = 0; num5 < player.totalEquipSlots; num5++) {
- 				if (player.IsAValidEquipmentSlotForIteration(num5) && (player.dye[num5].type < 1 || player.dye[num5].stack < 1))
- 					flag = false;
- 			}

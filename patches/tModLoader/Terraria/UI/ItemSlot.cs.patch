@@ -161,8 +161,8 @@
  
  						Recipe.FindRecipes();
  					}
-+					else if (ItemLoader.CanRightClick(inv[slot])) {
-+						ItemLoader.RightClick(inv[slot], player);
++					else if (EquipLoader.CanRightClick(inv[slot])) {
++						EquipLoader.RightClick(inv[slot], player);
 +					}
  					else {
  						result = false;
@@ -172,27 +172,27 @@
  							return true;
  
 -						if ((inv[slot].type <= 0 || inv[slot].stack <= 0) && (inv[slot - 10].type <= 0 || inv[slot - 10].stack <= 0))
-+						if ((inv[slot].type <= 0 || inv[slot].stack <= 0) && (inv[slot - player.totalEquipSlots].type <= 0 || inv[slot - player.totalEquipSlots].stack <= 0))
++						if ((inv[slot].type <= 0 || inv[slot].stack <= 0) && (inv[slot - inv.Length/2].type <= 0 || inv[slot - inv.Length/2].stack <= 0))
  							break;
  
 -						Item item = inv[slot - 10];
-+						Item item = inv[slot - player.totalEquipSlots];
++						Item item = inv[slot - inv.Length / 2];
  						bool flag2 = context != 11 || item.FitsAccessoryVanitySlot || item.IsAir;
  						if (flag2 && context == 11 && inv[slot].wingSlot > 0) {
 -							for (int i = 3; i < 10; i++) {
-+							for (int i = player.totalArmorSlots; i < player.totalEquipSlots; i++) {
++							for (int i = 0; i < inv.Length / 2; i++) {
 -								if (inv[i].wingSlot > 0 && i != slot - 10)
-+								if (inv[i].wingSlot > 0 && i != slot - player.totalEquipSlots)
++								if (inv[i].wingSlot > 0 && i != slot - inv.Length / 2)
  									flag2 = false;
  							}
  						}
  
 -						if (!flag2)
-+						if (!flag2 || !ItemLoader.CanEquipAccessory(inv[slot], slot - player.totalEquipSlots))
++						if (!flag2 || !ItemLoader.CanEquipAccessory(inv[slot], slot - inv.Length / 2))
  							break;
  
 -						Utils.Swap(ref inv[slot], ref inv[slot - 10]);
-+						Utils.Swap(ref inv[slot], ref inv[slot - player.totalEquipSlots]);
++						Utils.Swap(ref inv[slot], ref inv[slot - inv.Length / 2]);
  						SoundEngine.PlaySound(7);
  						Recipe.FindRecipes();
  						if (inv[slot].stack > 0) {
@@ -231,39 +231,6 @@
  			}
  		}
  
-@@ -1325,7 +_,7 @@
- 					case 10:
- 					case 11: {
- 							int num3 = slot;
--							if (num3 % 10 == 9 && !player.CanDemonHeartAccessoryBeShown())
-+							if (num3 % player.totalEquipSlots == player.demonHeartSlot + 1 && !player.CanDemonHeartAccessoryBeShown())
- 								num3--;
- 
- 							num = 100 + num3;
-@@ -1334,7 +_,7 @@
- 					case 12:
- 						if (inv == player.dye) {
- 							int num4 = slot;
--							if (num4 % 10 == 9 && !player.CanDemonHeartAccessoryBeShown())
-+							if (num4 % player.totalEquipSlots == player.demonHeartSlot + 1 && !player.CanDemonHeartAccessoryBeShown())
- 								num4--;
- 
- 							num = 120 + num4;
-@@ -1569,11 +_,11 @@
- 					num10 = 0;
- 					break;
- 				case 9:
--					if (slot == 10)
-+					if (slot == player.totalEquipSlots)
- 						num10 = 3;
--					if (slot == 11)
-+					if (slot == player.totalEquipSlots + 1)
- 						num10 = 9;
--					if (slot == 12)
-+					if (slot == player.totalEquipSlots + 2)
- 						num10 = 15;
- 					break;
- 				case 10:
 @@ -1628,10 +_,15 @@
  				num11 *= inventoryScale;
  				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num11 / 2f;

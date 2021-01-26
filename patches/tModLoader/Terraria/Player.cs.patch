@@ -48,25 +48,21 @@
  		public OverheadMessage chatOverhead;
  		public SelectionRadial DpadRadial = new SelectionRadial();
  		public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
-@@ -438,8 +_,19 @@
+@@ -438,8 +_,15 @@
  		public Vector2 lastDeathPostion;
  		public DateTime lastDeathTime;
  		public bool showLastDeath;
 -		public int extraAccessorySlots = 2;
 -		public bool extraAccessory;
 +		//private int extraAccessorySlots; unused vanilla field
-+		public List<string> moddedAccSlots = new List<string>(); // List of identifiers for the modded accessories.
-+		public int vanillaEXAccSlots = 2;
 +		public int vanillaBasicAccSlots = 5;
-+		public int totalArmorSlots = 3;
-+		public int vanillaEquipSlots => vanillaEXAccSlots + vanillaBasicAccSlots + totalArmorSlots;
-+		public int totalEquipSlots => moddedAccSlots.Count + vanillaEquipSlots;
-+
++		public int vanillaEXAccSlots = 2;
++		public int vanillaArmorSlots = 3;
++		public int vanillaEquipSlots => vanillaBasicAccSlots + vanillaEXAccSlots + vanillaArmorSlots;
 +		internal ref bool extraAccessory => ref demonHeartUsed; // Minimize modder confusion by using a good name
-+		
 +		public bool demonHeartUsed;
-+		public int demonHeartSlot => totalArmorSlots + vanillaBasicAccSlots;
-+		public int masterModeSlot => totalArmorSlots + vanillaBasicAccSlots + 1;
++		public int demonHeartSlot => vanillaArmorSlots + vanillaBasicAccSlots;
++		public int masterModeSlot => vanillaArmorSlots + vanillaBasicAccSlots + 1;
  		private bool dontConsumeWand;
  		public int tankPet = -1;
  		public bool tankPetReset;
@@ -142,15 +138,12 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
-@@ -1968,29 +_,47 @@
+@@ -1968,18 +_,16 @@
  
  			return pos;
  		}
 -
-+		public bool CanDemonHeartAccessoryBeShown() {
-+			return CanAccessoryBeShown(demonHeartSlot);
-+		}
-+		/*
++				
  		public bool CanDemonHeartAccessoryBeShown() {
  			if (!IsAValidEquipmentSlotForIteration(8) && armor[8].type <= 0 && armor[18].type <= 0)
  				return dye[8].type > 0;
@@ -158,40 +151,22 @@
  			return true;
  		}
 -
-+		*/
-+		public bool CanMasterModeAccessoryBeShown() {
-+			return CanAccessoryBeShown(masterModeSlot);
-+		}
-+		/*
++				
  		public bool CanMasterModeAccessoryBeShown() {
  			if (!IsAValidEquipmentSlotForIteration(9) && armor[9].type <= 0 && armor[19].type <= 0)
  				return dye[9].type > 0;
-+			return true;
-+		}
-+		*/
-+		public bool CanAccessoryBeShown(int index) {
-+			if (!IsAValidEquipmentSlotForIteration(index) && armor[index].type <= 0 && armor[index+totalEquipSlots].type <= 0)
-+				return dye[index].type > 0;
- 
+-
  			return true;
  		}
  
- 		public int GetAmountOfExtraAccessorySlotsToShow() {
+@@ -1987,10 +_,8 @@
  			int num = 0;
-+			/*
  			if (CanDemonHeartAccessoryBeShown())
  				num++;
 -
-+			
  			if (CanMasterModeAccessoryBeShown())
  				num++;
 -
-+			*/
-+			// Change to a for loop to be generalized for any added accessory slot
-+			for (int i = totalArmorSlots+vanillaBasicAccSlots; i < totalEquipSlots; i++) {
-+				if (CanAccessoryBeShown(i))
-+					num++;
-+			}
  			return num;
  		}
  
@@ -904,20 +879,6 @@
  		}
  
  		public void UpdateDyes() {
-@@ -6354,10 +_,10 @@
- 			cMinecart = miscDyes[2].dye;
- 			cMount = miscDyes[3].dye;
- 			cGrapple = miscDyes[4].dye;
--			for (int i = 0; i < 20; i++) {
-+			for (int i = 0; i < 2*totalEquipSlots; i++) {
- 				if (IsAValidEquipmentSlotForIteration(i)) {
--					int num = i % 10;
-+					int num = i % totalEquipSlots;
--					UpdateItemDye(i < 10, hideVisibleAccessory[num], armor[i], dye[num]);
-+					UpdateItemDye(i < totalEquipSlots, hideVisibleAccessory[num], armor[i], dye[num]);
- 				}
- 			}
- 
 @@ -6376,13 +_,13 @@
  			if (!num && flag)
  				return;
@@ -1199,35 +1160,56 @@
  			}
  
  			if (whoAmI == Main.myPlayer && luckPotion != oldLuckPotion) {
-@@ -8252,34 +_,27 @@
+@@ -8252,34 +_,49 @@
  		}
  
  		public bool IsAValidEquipmentSlotForIteration(int slot) {
--			switch (slot) {
++			/*
+ 			switch (slot) {
 -				default:
++-				default:
 -					return true;
++-					return true;
 -				case 8:
++-				case 8:
 -				case 18: {
++-				case 18: {
 -						bool result2 = extraAccessory;
++-						bool result2 = extraAccessory;
 -						if (!Main.expertMode && !Main.gameMenu)
++-						if (!Main.expertMode && !Main.gameMenu)
 -							result2 = false;
++-							result2 = false;
 -
++-
 -						return result2;
++-						return result2;
 -					}
++-					}
 -				case 9:
++-				case 9:
 -				case 19: {
++-				case 19: {
 -						bool result = true;
++-						bool result = true;
 -						if (!Main.masterMode && !Main.gameMenu)
++-						if (!Main.masterMode && !Main.gameMenu)
 -							result = false;
++-							result = false;
 -
++-
 -						return result;
++-						return result;
 -					}
++-					}
 -			}
-+			if (slot == demonHeartSlot || slot == totalEquipSlots + demonHeartSlot)
++-			}
++			*/
++			if (slot == demonHeartSlot || slot == vanillaEquipSlots + demonHeartSlot)
 +				return (extraAccessory && (Main.expertMode || Main.gameMenu));
-+			else if (slot == masterModeSlot || slot == totalEquipSlots + masterModeSlot)
++			else if (slot == masterModeSlot || slot == vanillaEquipSlots + masterModeSlot)
 +				return (Main.masterMode || Main.gameMenu);
-+			//TODO: add a conditional hook for mods to whether or not allow accessory based on their condition
++			
 +			else return true;
  		}
  
@@ -1599,13 +1581,14 @@
  				}
  
  				if (armor[k].prefix == 73)
-@@ -9264,6 +_,22 @@
+@@ -9264,7 +_,26 @@
  
  				if (armor[k].prefix == 80)
  					meleeSpeed += 0.04f;
 +
-+				ItemLoader.UpdateEquip(armor[k], this);
-+			}
++				EquipLoader.UpdateEquip(armor[k], this);
++				
+ 			}
 +		}
 +
 +		public void UpdateEquips(int i)
@@ -1616,18 +1599,18 @@
 +			}
 +			VanillaPostUpdateInventory();
 +
-+			for (int k = 0; k < totalEquipSlots; k++) {
++			for (int k = 0; k < 10; k++) {
 +				if (IsAValidEquipmentSlotForIteration(k))
 +					VanillaUpdateEquip(armor[k]);
- 			}
++			}
++
++			EquipLoader.VanillaUpdateEquipsMirror(this);
  
  			equippedAnyWallSpeedAcc = false;
-@@ -9272,23 +_,35 @@
- 			if (whoAmI == Main.myPlayer)
- 				Main.musicBoxNotModifiedByVolume = -1;
+ 			equippedAnyTileSpeedAcc = false;
+@@ -9274,21 +_,33 @@
  
--			for (int l = 3; l < 10; l++) {
-+			for (int l = totalArmorSlots; l < totalEquipSlots; l++) {
+ 			for (int l = 3; l < 10; l++) {
  				if (IsAValidEquipmentSlotForIteration(l))
 -					ApplyEquipFunctional(l, armor[l]);
 +					ApplyEquipFunctional(armor[l], hideVisibleAccessory[l]);
@@ -1678,8 +1661,7 @@
  			}
 +			*/
  
--			for (int n = 13; n < 20; n++) {
-+			for (int n = totalEquipSlots+totalArmorSlots; n < 2*totalEquipSlots; n++) {
+ 			for (int n = 13; n < 20; n++) {
  				if (IsAValidEquipmentSlotForIteration(n))
 -					ApplyEquipVanity(n, armor[n]);
 +					ApplyEquipVanity(armor[n]);
@@ -1707,7 +1689,7 @@
  
  			UpdateBootVisualEffects(currentItem);
 +
-+			ItemLoader.UpdateVanity(currentItem, this);
++			EquipLoader.UpdateVanity(currentItem, this);
  		}
  
  		private WingStats GetWingStats(int wingID) {
@@ -1807,7 +1789,7 @@
 +				wingsLogic = currentItem.wingSlot;
 +			}
 +
-+			ItemLoader.UpdateAccessory(currentItem, this, hideVisual);
++			EquipLoader.UpdateAccessory(currentItem, this, hideVisual);
 +
  			if (Main.myPlayer != whoAmI)
 -				return;
@@ -1917,7 +1899,7 @@
  
  			ApplyArmorSoundAndDustChanges();
 +
-+			ItemLoader.UpdateArmorSet(this, armor[0], armor[1], armor[2]);
++			EquipLoader.UpdateArmorSet(this, armor[0], armor[1], armor[2]);
  		}
  
  		public void UpdateSocialShadow() {
@@ -2238,7 +2220,7 @@
  						num = 0.15f;
  				}
  
-+				ItemLoader.VerticalWingSpeeds(this, ref num2, ref num5, ref num4, ref num3, ref num);
++				EquipLoader.VerticalWingSpeeds(this, ref num2, ref num5, ref num4, ref num3, ref num);
  				velocity.Y -= num * gravDir;
  				if (gravDir == 1f) {
  					if (velocity.Y > 0f)
@@ -2494,7 +2476,7 @@
  					CancelAllJumpVisualEffects();
  				}
  				else {
-+					bool isCustomWings = ItemLoader.WingUpdate(this, flag20);
++					bool isCustomWings = EquipLoader.WingUpdate(this, flag20);
  					if (flag20) {
  						WingAirVisuals();
  						WingMovement();
@@ -2582,7 +2564,7 @@
  			if (wingsLogic == 45 && (float)timeSinceLastDashStarted >= 60f)
  				runSlowdown *= 6f;
 +			
-+			ItemLoader.HorizontalWingSpeeds(this);
++			EquipLoader.HorizontalWingSpeeds(this);
  		}
  
  		private void RocketBootVisuals() {
@@ -2932,24 +2914,9 @@
  				if (oldAdjTile[l] != adjTile[l]) {
  					flag = true;
  					break;
-@@ -25000,16 +_,16 @@
- 			head = armor[0].headSlot;
- 			body = armor[1].bodySlot;
- 			legs = armor[2].legSlot;
--			if (armor[10].headSlot >= 0)
-+			if (armor[totalEquipSlots].headSlot >= 0)
--				head = armor[10].headSlot;
-+				head = armor[totalEquipSlots].headSlot;
- 
--			if (armor[11].bodySlot >= 0)
-+			if (armor[totalEquipSlots+1].bodySlot >= 0)
--				body = armor[11].bodySlot;
-+				body = armor[totalEquipSlots+1].bodySlot;
- 
--			if (armor[12].legSlot >= 0)
-+			if (armor[totalEquipSlots+2].legSlot >= 0)
--				legs = armor[12].legSlot;
-+				legs = armor[totalEquipSlots+2].legSlot;
+@@ -25009,7 +_,7 @@
+ 			if (armor[12].legSlot >= 0)
+ 				legs = armor[12].legSlot;
  
 -			if (!dead)
 +			if (!dead) // player is not dead
@@ -2960,7 +2927,7 @@
  				faceHead = -1;
  			}
  
-+			ItemLoader.PreUpdateVanitySet(this);
++			EquipLoader.PreUpdateVanitySet(this);
  			if (head > 0 && face > 0) {
  				if (ArmorIDs.Face.Sets.OverrideHelmet[face]) {
  					head = -1;
@@ -2978,7 +2945,7 @@
  			Item.GetDrawHitbox(HeldItem.type, this);
  			bool flag3 = CanVisuallyHoldItem(HeldItem);
  			bool flag4 = HeldItem.type != 4952;
-+			ItemLoader.UpdateVanitySet(this);
++			EquipLoader.UpdateVanitySet(this);
  			if (mount.Active) {
  				legFrameCounter = 0.0;
  				legFrame.Y = legFrame.Height * 6;
@@ -3000,29 +2967,29 @@
  			else if (shieldRaised) {
  				bodyFrame.Y = bodyFrame.Height * 10;
  			}
-@@ -25739,7 +_,7 @@
+@@ -25787,7 +_,7 @@
+ 			}
  		}
  
- 		private void UpdateVisibleAccessories() {
--			for (int i = 3; i < 10; i++) {
-+			for (int i = totalArmorSlots; i < totalEquipSlots; i++) {
- 				if (!IsAValidEquipmentSlotForIteration(i))
- 					continue;
+-		private bool ItemIsVisuallyIncompatible(Item item) {
++		public bool ItemIsVisuallyIncompatible(Item item) {
+ 			if (compositeBackArm.enabled && item.shieldSlot > 0)
+ 				return true;
  
-@@ -25770,7 +_,7 @@
- 					UpdateVisibleAccessory(i, item);
- 			}
+@@ -25813,7 +_,7 @@
+ 			return false;
+ 		}
  
--			for (int j = 13; j < 20; j++) {
-+			for (int j = totalEquipSlots+totalArmorSlots; j < 2*totalEquipSlots; j++) {
- 				if (IsAValidEquipmentSlotForIteration(j)) {
- 					Item item2 = armor[j];
- 					if (!ItemIsVisuallyIncompatible(item2))
+-		private void UpdateVisibleAccessory(int itemSlot, Item item) {
++		public void UpdateVisibleAccessory(int itemSlot, Item item) {
+ 			if (item.stringColor > 0)
+ 				stringColor = item.stringColor;
+ 
 @@ -26035,6 +_,8 @@
  			if (drawPlayer.head == 267)
  				yoraiz0rDarkness = true;
  
-+			ItemLoader.ArmorSetShadows(drawPlayer);
++			EquipLoader.ArmorSetShadows(drawPlayer);
 +			// TODO, rename to this? SetArmorEffectVisuals
  			if (drawPlayer.stoned || drawPlayer.stealth != 1f) {
  				armorEffectDrawOutlines = false;
@@ -3031,7 +2998,7 @@
  				}
  			}
  
-+			ItemLoader.SetMatch(armorslot, type, male, ref num, ref somethingSpecial);
++			EquipLoader.SetMatch(armorslot, type, male, ref num, ref somethingSpecial);
  			return num;
  		}
  
@@ -3054,7 +3021,7 @@
  				if (buffTime[i] > 0 && buffType[i] == 59)
  					DelBuff(i);
  			}
-@@ -26650,18 +_,19 @@
+@@ -26650,6 +_,7 @@
  				NetMessage.SendData(62, -1, -1, null, whoAmI, 1f);
  		}
  
@@ -3062,24 +3029,6 @@
  		public void ApplyArmorSoundAndDustChanges() {
  			int num = armor[0].headSlot;
  			int num2 = armor[1].bodySlot;
- 			int num3 = armor[2].legSlot;
--			if (armor[10].headSlot >= 0)
-+			if (armor[totalEquipSlots].headSlot >= 0)
--				num = armor[10].headSlot;
-+				num = armor[totalEquipSlots].headSlot;
- 
--			if (armor[11].bodySlot >= 0)
-+			if (armor[totalEquipSlots+1].bodySlot >= 0)
--				num2 = armor[11].bodySlot;
-+				num2 = armor[totalEquipSlots+1].bodySlot;
- 
--			if (armor[12].legSlot >= 0)
-+			if (armor[totalEquipSlots+2].legSlot >= 0)
--				num3 = armor[12].legSlot;
-+				num3 = armor[totalEquipSlots+2].legSlot;
- 
- 			if ((wereWolf || forceWerewolf) && !hideWolf) {
- 				num3 = 20;
 @@ -26712,6 +_,12 @@
  					return 0.0;
  				}
@@ -4698,17 +4647,10 @@
  			width = 20;
  			height = 42;
  			name = string.Empty;
-@@ -38236,7 +_,15 @@
+@@ -38236,7 +_,8 @@
  			legFrame.Height = 56;
  			tileEntityAnchor.Clear();
  			doorHelper = new DoorOpeningHelper();
-+
-+			// Resize arrays to include mod added accessory slots
-+			//TODO: Actually make this code useful, possibly need to move it
-+			//TODO: armor array is two separate arrays of vanity and functional. need to split it, change where vanity is indexed about and rejoin. Most notably fix where vanity gets indexed
-+			Array.Resize<Item>(ref armor, totalEquipSlots * 2);
-+			Array.Resize<Item>(ref dye, totalEquipSlots);
-+			Array.Resize<bool>(ref hideVisibleAccessory, totalEquipSlots);
 +
 -			for (int i = 0; i < 59; i++) {
 +			for (int i = 0; i < 58 + 1; i++) {
