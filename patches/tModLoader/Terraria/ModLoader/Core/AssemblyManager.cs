@@ -13,6 +13,7 @@ using Terraria.ModLoader.UI;
 using Terraria.Utilities;
 #if NETCORE
 using System.Runtime.Loader;
+using System.Runtime.CompilerServices;
 #endif
 
 namespace Terraria.ModLoader.Core

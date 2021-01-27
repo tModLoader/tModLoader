@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="../ConfigurationNetCore.targets" />
-  <Import Project="../../TerrariaSteamPath.targets" />
+  <Import Project="../../WorkspaceInfo.targets" />
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <Version>1.4.1.2</Version>
