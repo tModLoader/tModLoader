@@ -24,7 +24,7 @@ namespace Terraria.ModLoader.Core
 		{
 			public TmodFile modFile;
 			public BuildProperties properties;
-			public string Name => modFile.name;
+			public string Name => modFile.Name;
 
 			public readonly List<LoadedMod> dependencies = new List<LoadedMod>();
 			public readonly List<LoadedMod> dependents = new List<LoadedMod>();
@@ -56,8 +56,8 @@ namespace Terraria.ModLoader.Core
 
 			public void SetMod(LocalMod mod) {
 				if (modFile == null ||
-					modFile.version != mod.modFile.version ||
-					!modFile.hash.SequenceEqual(mod.modFile.hash))
+					modFile.Version != mod.modFile.Version ||
+					!modFile.Hash.SequenceEqual(mod.modFile.Hash))
 					SetNeedsReload();
 
 				modFile = mod.modFile;
@@ -78,7 +78,7 @@ namespace Terraria.ModLoader.Core
 			}
 
 			public bool CanEaC => eacEnabled ||
-				!loadedAssemblies.ContainsKey(modFile.name) && dependencies.All(dep => dep.CanEaC);
+				!loadedAssemblies.ContainsKey(modFile.Name) && dependencies.All(dep => dep.CanEaC);
 
 			public void EnableEaC() {
 				if (eacEnabled)
@@ -303,7 +303,7 @@ namespace Terraria.ModLoader.Core
 				m.Logger = LogManager.GetLogger(m.Name);
 				m.Side = mod.properties.side;
 				m.DisplayName = mod.properties.displayName;
-				m.tModLoaderVersion = mod.properties.buildVersion;
+				m.TModLoaderVersion = mod.properties.buildVersion;
 				return m;
 			}
 			catch (Exception e) {
@@ -361,8 +361,8 @@ namespace Terraria.ModLoader.Core
 		}
 
 		private static string GetModAssemblyFileName(this TmodFile modFile, bool? xna = null) {
-			var variant = modFile.HasFile($"{modFile.name}.All.dll") ? "All" : (xna ?? PlatformUtilities.IsXNA) ? "XNA" : "FNA";
-			var fileName = $"{modFile.name}.{variant}.dll";
+			var variant = modFile.HasFile($"{modFile.Name}.All.dll") ? "All" : (xna ?? PlatformUtilities.IsXNA) ? "XNA" : "FNA";
+			var fileName = $"{modFile.Name}.{variant}.dll";
 
 			return fileName;
 		}

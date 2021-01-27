@@ -240,7 +240,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 					ServicePointManager.Expect100Continue = false;
 					string url = "http://javid.ddns.net/tModLoader/listmods.php";
 					var values = new NameValueCollection {
-						{"modloaderversion", ModLoader.versionedName},
+						{"modloaderversion", BuildInfo.versionedName},
 						{"platform", ModLoader.CompressedPlatformRepresentation},
 						{"netversion", FrameworkVersion.Version.ToString()},
 						{"EarlyAutoUpdate", EarlyAutoUpdate.ToString()}

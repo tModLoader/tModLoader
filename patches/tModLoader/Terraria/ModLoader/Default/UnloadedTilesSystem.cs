@@ -1,29 +1,30 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
-	class UnloadedTilesWorld : ModWorld
+	[LegacyName("UnloadedTilesWorld")]
+	class UnloadedTilesSystem : ModSystem
 	{
 		internal List<UnloadedTileInfo> infos = new List<UnloadedTileInfo>();
 		internal List<UnloadedTileInfo> pendingInfos = new List<UnloadedTileInfo>();
 
-		public override void Initialize() {
+		public override void OnWorldLoad() {
 			infos.Clear();
 			pendingInfos.Clear();
 		}
 
-		public override TagCompound Save() {
+		public override TagCompound SaveWorldData() {
 			return new TagCompound {
 				["list"] = infos.Select(info => info?.Save() ?? new TagCompound()).ToList()
 			};
 		}
 
-		public override void Load(TagCompound tag) {
+		public override void LoadWorldData(TagCompound tag) {
 			List<ushort> canRestore = new List<ushort>();
 			bool canRestoreFlag = false;
+
 			foreach (var infoTag in tag.GetList<TagCompound>("list")) {
 				if (!infoTag.ContainsKey("mod")) {
 					infos.Add(null);
@@ -37,21 +38,27 @@ namespace Terraria.ModLoader.Default
 				var info = frameImportant ?
 					new UnloadedTileInfo(modName, name, infoTag.GetShort("frameX"), infoTag.GetShort("frameY")) :
 					new UnloadedTileInfo(modName, name);
+
 				infos.Add(info);
 
 				int type = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : 0;
+
 				canRestore.Add((ushort)type);
+
 				if (type != 0)
 					canRestoreFlag = true;
 			}
+
 			if (canRestoreFlag) {
 				RestoreTiles(canRestore);
+
 				for (int k = 0; k < canRestore.Count; k++) {
 					if (canRestore[k] > 0) {
 						infos[k] = null;
 					}
 				}
 			}
+
 			if (pendingInfos.Count > 0) {
 				ConfirmPendingInfo();
 			}

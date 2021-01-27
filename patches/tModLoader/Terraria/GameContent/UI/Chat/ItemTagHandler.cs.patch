@@ -65,7 +65,7 @@
  			string text = "[i";
 +			// assuming we have modded data, simply write the item as base64
 +			// do not write other option, base64 holds all the info.
-+			if (I.modItem != null || I.globalItems.Any()) {
++			if (I.ModItem != null || I.globalItems.Any()) {
 +				text = text + "/d" + ItemIO.ToBase64(I);
 +			}
 +			else {
