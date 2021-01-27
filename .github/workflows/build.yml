@@ -60,7 +60,11 @@ jobs:
           mv ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderDebug.pdb  ./artifacts/Windows/tModLoaderDebug.pdb
           mv ./src/tModLoader/Terraria/bin/WindowsServerDebug/net45/Terraria.exe  ./artifacts/Windows/tModLoaderServerDebug.exe
           mv ./src/tModLoader/Terraria/bin/WindowsServerDebug/net45/tModLoaderServerDebug.pdb  ./artifacts/Windows/tModLoaderServerDebug.pdb
+          mv ./1412/Windows/ReLogic.Native.dll ./artifacts/Windows/ReLogic.Native.dll
+          mv ./solutions/ReleaseExtras/Content/ ./artifacts/Windows/
           mv ./1412/Windows/ModCompile/ ./artifacts/Windows/
+          mv ./src/tModLoader/Terraria/bin/MacRelease/net45/Terraria.exe ./artifacts/Windows/ModCompile/tModLoader.FNA.exe
+          mv ./src/tModLoader/Terraria/bin/MacRelease/net45/FNA.dll ./artifacts/Windows/ModCompile/FNA.dll
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           
@@ -68,8 +72,4 @@ jobs:
         with:
           name: Windows Debug Build
           path: |
-            ./artifacts/Windows/tModLoaderDebug.exe
-            ./artifacts/Windows/tModLoaderDebug.pdb
-            ./artifacts/Windows/tModLoaderServerDebug.exe
-            ./artifacts/Windows/tModLoaderServerDebug.pdb
-            ./artifacts/Windows/ModCompile/
+            ./artifacts/Windows/
