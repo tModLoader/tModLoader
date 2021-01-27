@@ -75,8 +75,6 @@ namespace Terraria.ModLoader.Setup
 				SetupOperation.CreateDirectory(Program.logsDir);
 				File.WriteAllText(errorLogFile, status + "\r\n" + e);
 			}
-			finally {
-			}
 		}
 	}
 }

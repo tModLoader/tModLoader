@@ -27,7 +27,7 @@ namespace Terraria.ModLoader
 		public int DustType { get; set; }
 
 		/// <summary> The default type of item dropped when this tile is killed. Defaults to 0, which means no item. </summary>
-		public int Drop { get; set; }
+		public int ItemDrop { get; set; }
 
 		/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations. </summary>
 		public int AnimationFrameHeight { get; set; }
@@ -297,6 +297,14 @@ namespace Terraria.ModLoader
 		/// <param name="j">The y position in tile coordinates.</param>
 		public virtual void NearbyEffects(int i, int j, bool closer) {
 		}
+
+		/// <summary>
+		/// Only called for torches, when there is one nearby. Use this to contribute to vanilla torch luck calculations.
+		/// Typical return values are 1f for a torch in its biome, 0.5f for a weak positive torch, -1f for a torch in an opposing biome, and -0.5f for a weak negative torch.
+		/// </summary>
+		/// <param name="player">Main.LocalPlayer</param>
+		/// <returns></returns>
+		public virtual float GetTorchLuck(Player player) => 0f;
 
 		/// <summary>
 		/// Allows you to determine how much light this block emits. Make sure you set Main.tileLighted[Type] to true in SetDefaults for this to work.
