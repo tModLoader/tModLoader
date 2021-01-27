@@ -5,8 +5,22 @@ using System.Reflection;
 
 namespace Terraria.ModLoader
 {
+	public enum Framework
+	{
+		NetCore,
+		NetFramework,
+		Mono,
+		Unknown
+	}
+
 	public static class FrameworkVersion
 	{
+#if NETCORE
+		public static readonly Framework Framework = Framework.NetCore;
+#else
+		public static readonly Framework Framework = Framework.NetFramework;
+#endif
+
 		public static readonly Version Version = GetVersion();
 
 		private static Version GetVersion() {

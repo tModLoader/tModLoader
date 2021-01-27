@@ -99,3 +99,4 @@ namespace Terraria.ModLoader.Engine
 		}
 	}
 }
+#endif

@@ -1,5 +1,14 @@
 --- src/Terraria/Terraria/Main.cs
 +++ src/tModLoader/Terraria/Main.cs
+@@ -19,7 +_,7 @@
+ using System.Collections.Generic;
+ using System.Diagnostics;
+ #if WINDOWS
+-using System.Drawing;
++using Size = System.Drawing.Size;
+ #endif
+ using System.IO;
+ using System.Linq;
 @@ -34,6 +_,7 @@
  #if WINDOWS
  using System.Windows.Forms;
@@ -3414,14 +3423,10 @@
  			if (invasionType <= 0)
  				return;
  
-@@ -49204,6 +_,15 @@
+@@ -49204,6 +_,11 @@
  			}
  		}
  
-+		public static void NewText(string newText, Microsoft.Xna.Framework.Color color) {
-+			NewText(newText, color.R, color.G, color.B);
-+		}
-+
 +		public static void NewText(object o, Color? color = null) {
 +			if (color == null) color = Color.White;
 +			NewText(o.ToString(), color.Value.R, color.Value.G, color.Value.B);
