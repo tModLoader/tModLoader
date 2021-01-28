@@ -96,4 +96,3 @@
 +    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(TerrariaSteamPath)" />
 +  </Target>
  </Project>
- 
