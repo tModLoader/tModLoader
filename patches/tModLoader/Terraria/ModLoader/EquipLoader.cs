@@ -331,8 +331,6 @@ namespace Terraria.ModLoader
 					if (SoundLoader.itemToMusic.ContainsKey(item.type))
 						Main.musicBox2 = SoundLoader.itemToMusic[item.type];
 					VanillaVanityEquipMirror(item, vItem, player, k);
-
-					
 				}
 				
 			}
@@ -360,10 +358,25 @@ namespace Terraria.ModLoader
 
 				player.wings = item.wingSlot;
 			}
+
 			if (!exHideAccessory[k])
 				player.UpdateVisibleAccessory(k, item);
+
 			if (!player.ItemIsVisuallyIncompatible(vItem))
 				player.UpdateVisibleAccessory(k + moddedAccSlots.Count, vItem);
+		}
+
+		private static void VanillaPreferredGolfBall(ref int projType, Player player) {
+			for (int num = moddedAccSlots.Count * 2 - 1; num >= 0; num--) {
+				if (player.IsAValidEquipmentSlotForIteration(num)) {
+					_ = num % 10;
+					Item item2 = exAccessorySlot[num];
+					if (!item2.IsAir && item2.shoot > 0 && ProjectileID.Sets.IsAGolfBall[item2.shoot]) {
+						projType = item2.shoot;
+						return;
+					}
+				}
+			}
 		}
 
 		private static ItemLoader.HookList HookUpdateArmorSet = ItemLoader.AddHook<Action<Player, string>>(g => g.UpdateArmorSet);
@@ -403,7 +416,6 @@ namespace Terraria.ModLoader
 		}
 
 		private static ItemLoader.HookList HookUpdateAccessory = ItemLoader.AddHook<Action<Item, Player, bool>>(g => g.UpdateAccessory);
-
 		/// <summary>
 		/// Hook at the end of Player.ApplyEquipFunctional can be called from modded slots for modded equipments
 		/// </summary>
@@ -440,6 +452,7 @@ namespace Terraria.ModLoader
 			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
 			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
 			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
+
 			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
 				headTexture.PreUpdateVanitySet(player);
 
@@ -465,6 +478,7 @@ namespace Terraria.ModLoader
 			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
 			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
 			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
+
 			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
 				headTexture.UpdateVanitySet(player);
 
@@ -491,6 +505,7 @@ namespace Terraria.ModLoader
 			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
 			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
 			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
+
 			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
 				headTexture.ArmorSetShadows(player);
 
@@ -577,18 +592,22 @@ namespace Terraria.ModLoader
 		public static Item GetWing(Player player) {
 			//TODO: Try and rework away to get value from Player? instead.
 
-			// If wings are present in accessory slots (slots 3 through N, where 0,1,2 are armor), then return wings
+			// If wings are present in accessory slots (slots 3 through 10, where 0,1,2 are armor), then return wings
 			Item item = null;
+
 			for (int k = 3; k < 10; k++) {
 				if (player.armor[k].wingSlot == player.wingsLogic) {
 					item = player.armor[k];
 				}
 			}
+
+			// If wings are present in modded accessory slots (slots 0 through N), then return wings
 			for (int k = 0; k < EquipLoader.moddedAccSlots.Count; k++) {
 				if (EquipLoader.exAccessorySlot[k].wingSlot == player.wingsLogic) {
 					item = player.armor[k];
 				}
 			}
+
 			if (item != null) {
 				return item;
 			}

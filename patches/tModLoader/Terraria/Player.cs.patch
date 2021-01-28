@@ -3802,18 +3802,18 @@
  					int num178 = Projectile.NewProjectile(pointPoisition.X, pointPoisition.Y, num2, num3, projToShoot, Damage, KnockBack, i);
  					if (sItem.type == 726)
  						Main.projectile[num178].magic = true;
-@@ -34074,9 +_,9 @@
+@@ -34074,7 +_,10 @@
  				return;
  			}
  
 -			for (int num = 19; num >= 0; num--) {
++			if (EquipLoader.VanillaPerferredGolfBall(ref projType, this))
++				return;
++
 +			for (int num = 2 * totalEquipSlots - 1; num >= 0; num--) {
  				if (IsAValidEquipmentSlotForIteration(num)) {
--					_ = num % 10;
-+					_ = num % totalEquipSlots;
+ 					_ = num % 10;
  					Item item2 = armor[num];
- 					if (!item2.IsAir && item2.shoot > 0 && ProjectileID.Sets.IsAGolfBall[item2.shoot]) {
- 						projType = item2.shoot;
 @@ -34427,6 +_,8 @@
  		}
  
