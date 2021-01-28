@@ -25,9 +25,7 @@ namespace ExampleMod.Common.Players
 
 			return new[] {
 				new Item(ModContent.ItemType<ExampleItem>()),
-				new Item(ItemID.GoldOre) {
-					stack = 256
-				},
+				new Item(ItemID.GoldOre, 256),
 				new Item(ModContent.ItemType<ExampleBlock>()) {
 					stack = 256
 				},

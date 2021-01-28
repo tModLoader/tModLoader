@@ -3,7 +3,7 @@
 @@ -1,35 +_,56 @@
  <Project Sdk="Microsoft.NET.Sdk">
    <Import Project="../Configuration.targets" />
-+  <Import Project="../../TerrariaSteamPath.targets" />
++  <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
      <OutputType>WinExe</OutputType>
      <Version>1.4.1.2</Version>

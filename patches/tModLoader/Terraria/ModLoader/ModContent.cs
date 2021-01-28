@@ -420,6 +420,7 @@ namespace Terraria.ModLoader
 		
 		private static void CacheVanillaState() {
 			EffectsTracker.CacheVanillaState();
+			DamageClassLoader.RegisterDefaultClasses();
 		}
 
 		internal static Mod LoadingMod { get; private set; }

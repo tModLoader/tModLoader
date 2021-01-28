@@ -428,6 +428,28 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate bool DelegatePreModifyLuck(ref float luck);
+		private static HookList HookPreModifyLuck = AddHook<DelegatePreModifyLuck>(p => p.PreModifyLuck);
+
+		public static bool PreModifyLuck(Player player, ref float luck) {
+			bool flag = true;
+			foreach (int index in HookPreModifyLuck.arr) {
+				if (!player.modPlayers[index].PreModifyLuck(ref luck)) {
+					flag = false;
+				}
+			}
+			return flag;
+		}
+
+		private delegate void DelegateModifyLuck(ref float luck);
+		private static HookList HookModifyLuck = AddHook<DelegateModifyLuck>(p => p.ModifyLuck);
+
+		public static void ModifyLuck(Player player, ref float luck) {
+			foreach (int index in HookModifyLuck.arr) {
+				player.modPlayers[index].ModifyLuck(ref luck);
+			}
+		}
+
 		private static HookList HookPreItemCheck = AddHook<Func<bool>>(p => p.PreItemCheck);
 
 		public static bool PreItemCheck(Player player) {
