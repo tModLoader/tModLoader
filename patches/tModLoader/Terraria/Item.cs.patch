@@ -77,14 +77,18 @@
  		public bool sentry;
  		public int reuseDelay;
  		public bool newAndShiny;
-@@ -158,6 +_,12 @@
+@@ -158,6 +_,16 @@
  		public const int WALL_PLACEMENT_USETIME = 7;
  		public static int numberOfNewItems = 0;
  
 +		public Item() { } // EntryFilter complains if item doesn't have a parameterless constructor (even when the parameter is optional).
 +
-+		public Item(int setDefaultsToType) {
++		public Item(int setDefaultsToType, int stack = 1) {
 +			SetDefaults(setDefaultsToType);
++
++			if (setDefaultsToType > 0) {
++				this.stack = stack;
++			}
 +		}
 +
  		public string Name => _nameOverride ?? Lang.GetItemNameValue(type);
