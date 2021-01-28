@@ -1,5 +1,4 @@
 ﻿using Terraria.ModLoader.IO;
-using System.Collections.Generic;
 
 namespace Terraria.ModLoader.Default
 {
@@ -17,14 +16,11 @@ namespace Terraria.ModLoader.Default
 			this.customData = customData;
 		}
 
-		public TagCompound Save() {
-			var tag = new TagCompound {
-				["mod"] = modName,
-				["name"] = name,
-				["fallbackType"] = fallbackType,
-				["customData"] = customData,
-			};
-			return tag;
-		}
+		public TagCompound Save() => new TagCompound {
+			["mod"] = modName,
+			["name"] = name,
+			["fallbackType"] = fallbackType,
+			["customData"] = customData,
+		};
 	}
 }

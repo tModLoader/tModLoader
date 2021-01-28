@@ -1,14 +1,10 @@
-﻿
-using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Microsoft.Xna.Framework;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader;
 using Terraria.ObjectData;
-
 
 namespace Terraria.ModLoader.Default
 {
@@ -68,6 +64,7 @@ namespace Terraria.ModLoader.Default
 			int left = i;
 			int top = j;
 			Tile tile = Main.tile[i, j];
+
 			if (tile.frameX % 36 != 0) {
 				left--;
 			}
@@ -95,11 +92,13 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override bool RightClick(int i, int j) {
+			Main.mouseRightRelease = false;
+
 			Player player = Main.LocalPlayer;
 			Tile tile = Main.tile[i, j];
-			Main.mouseRightRelease = false;
 			int left = i;
 			int top = j;
+
 			if (tile.frameX % 36 != 0) {
 				left--;
 			}
@@ -109,26 +108,31 @@ namespace Terraria.ModLoader.Default
 			}
 
 			if (player.sign >= 0) {
-				SoundEngine.PlaySound(SoundID.MenuClose);
 				player.sign = -1;
 				Main.editSign = false;
 				Main.npcChatText = "";
+
+				SoundEngine.PlaySound(SoundID.MenuClose);
 			}
 
 			if (Main.editChest) {
-				SoundEngine.PlaySound(SoundID.MenuTick);
 				Main.editChest = false;
 				Main.npcChatText = "";
+
+				SoundEngine.PlaySound(SoundID.MenuTick);
 			}
 
 			if (player.editedChestName) {
 				NetMessage.SendData(MessageID.SyncPlayerChest, -1, -1, NetworkText.FromLiteral(Main.chest[player.chest].name), player.chest, 1f);
+
 				player.editedChestName = false;
 			}
 
 			int chest = Chest.FindChest(left, top);
+
 			if (chest >= 0) {
 				Main.stackSplit = 600;
+
 				if (chest == player.chest) {
 					player.chest = -1;
 					SoundEngine.PlaySound(SoundID.MenuClose);
@@ -153,6 +157,7 @@ namespace Terraria.ModLoader.Default
 			Tile tile = Main.tile[i, j];
 			int left = i;
 			int top = j;
+
 			if (tile.frameX % 36 != 0) {
 				left--;
 			}
@@ -166,14 +171,17 @@ namespace Terraria.ModLoader.Default
 				UnloadedPosIndexing posIndex = new UnloadedPosIndexing(left, top);
 				int infoID = posIndex.FloorGetValue(modSystem.chestInfoMap);
 				var infos = modSystem.chestInfos;
+
 				if (infoID < infos.Count) { // This only works in SP
 					var info = infos[infoID];
+
 					if (info != null) {
 						player.cursorItemIconEnabled = true;
 						player.cursorItemIconID = -1;
 						player.cursorItemIconText = $"{info.modName}: {info.name}";
 					}
 				}
+
 				if (Main.tile[left, top].frameX / 36 == 1) {
 					player.cursorItemIconID = Terraria.ID.ItemID.BoneKey;
 				}
@@ -185,20 +193,26 @@ namespace Terraria.ModLoader.Default
 
 		public override void MouseOverFar(int i, int j) {
 			MouseOver(i, j);
-			Player player = Main.LocalPlayer;
+
 			var tile = Main.tile[i, j];
-			if (tile != null && tile.type == Type) {
-				UnloadedTilesSystem modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
-				UnloadedPosIndexing posIndex = new UnloadedPosIndexing(i, j);
-				int infoID = posIndex.FloorGetValue(modSystem.chestInfoMap);
-				var infos = modSystem.chestInfos;
-				if (infoID < infos.Count) { // This only works in SP
-					var info = infos[infoID];
-					if (info != null) {
-						player.cursorItemIconEnabled = true;
-						player.cursorItemIconID = -1;
-						player.cursorItemIconText = $"{info.modName}: {info.name}";
-					}
+
+			if (tile == null || tile.type != Type) {
+				return;
+			}
+
+			Player player = Main.LocalPlayer;
+			var modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
+			var posIndex = new UnloadedPosIndexing(i, j);
+			int infoID = posIndex.FloorGetValue(modSystem.chestInfoMap);
+			var infos = modSystem.chestInfos;
+
+			if (infoID < infos.Count) { // This only works in SP
+				var info = infos[infoID];
+
+				if (info != null) {
+					player.cursorItemIconEnabled = true;
+					player.cursorItemIconID = -1;
+					player.cursorItemIconText = $"{info.modName}: {info.name}";
 				}
 			}
 		}

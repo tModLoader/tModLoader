@@ -78,7 +78,9 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<TagCompound> SaveChestInventory() {
 			var list = new List<TagCompound>();
-			short MaxChestSaveCount = 8000; //As of Vanilla 1.4.0.1
+
+			const short MaxChestSaveCount = 8000; //As of Vanilla 1.4.0.1
+
 			for (int k = 0; k < MaxChestSaveCount; k++) {
 				var chest = Main.chest[k];
 				if (chest == null) // chest doesn't exist
@@ -93,17 +95,20 @@ namespace Terraria.ModLoader.IO
 					["x"] = chest.x,
 					["y"] = chest.y,
 				};
+
 				list.Add(tag);
 			}
+
 			return list;
 		}
 
 		internal static void LoadChestInventory(IList<TagCompound> list) {
-			ushort unloadedChest = UnloadedTilesSystem.UnloadedChest;
 			foreach (var tag in list) {
 				int cID = Chest.FindChest(tag.GetInt("x"), tag.GetInt("y"));
+
 				if (cID >= 0) {
 					var chest = Main.chest[cID];
+
 					PlayerIO.LoadInventory(chest.item, tag.GetList<TagCompound>("items"));
 				}
 			}

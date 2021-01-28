@@ -1,7 +1,7 @@
 
 namespace Terraria.ModLoader.Default
 {
-	[Autoload(false)] // need two named versions
+	[Autoload(false)] // Need two named versions
 	public class UnloadedWall : ModWall
 	{
 		public override string Name { get; }
