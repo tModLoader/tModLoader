@@ -26,24 +26,12 @@ namespace ExampleMod.Common.Players
 			return new[] {
 				new Item(ModContent.ItemType<ExampleItem>()),
 				new Item(ItemID.GoldOre, 256),
-				new Item(ModContent.ItemType<ExampleBlock>()) {
-					stack = 256
-				},
-				new Item(ModContent.ItemType<ExampleWall>()) {
-					stack = 256
-				},
-				new Item(ModContent.ItemType<ExampleOre>()) {
-					stack = 256
-				},
-				new Item(ModContent.ItemType<ExampleChair>()) {
-					stack = 256
-				},
-				new Item(ModContent.ItemType<ExampleChest>()) {
-					stack = 256
-				},
-				new Item(ModContent.ItemType<ExamplePlatform>()) {
-					stack = 256
-				}
+				new Item(ModContent.ItemType<ExampleBlock>(), 256),
+				new Item(ModContent.ItemType<ExampleWall>(), 256),
+				new Item(ModContent.ItemType<ExampleOre>(), 256),
+				new Item(ModContent.ItemType<ExampleChair>(), 256),
+				new Item(ModContent.ItemType<ExampleChest>(), 256),
+				new Item(ModContent.ItemType<ExamplePlatform>(), 256)
 			};
 		}
 
