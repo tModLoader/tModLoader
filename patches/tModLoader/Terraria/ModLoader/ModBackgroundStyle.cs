@@ -17,7 +17,6 @@ namespace Terraria.ModLoader
 
 			ModTypeLookup<ModUgBgStyle>.Register(this);
 			UgBgStyleLoader.ugBgStyles.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>

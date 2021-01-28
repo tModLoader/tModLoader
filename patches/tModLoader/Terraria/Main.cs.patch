@@ -379,15 +379,18 @@
  			PlayerInput.Load();
  			if (currentValue < 165) {
  				try {
-@@ -3496,7 +_,7 @@
+@@ -3496,8 +_,10 @@
  			mouseColorSlider.SetHSL(mouseColor);
  			mouseBorderColorSlider.SetHSL(MouseBorderColor);
  			mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
 -			if (currentValue != 234)
-+			if (currentValue != 234 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != ModLoader.ModLoader.version)
++			if (currentValue != 234 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
++				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
++			}
  		}
  
+ 		protected void OpenLegacySettings() {
 @@ -3622,9 +_,11 @@
  				FileUtilities.Delete(PlayerList[i].Path, PlayerList[i].IsCloudSave);
  				FileUtilities.Delete(PlayerList[i].Path + ".bak", PlayerList[i].IsCloudSave);
@@ -745,7 +748,7 @@
  			}
 +
 +			endVanillaMethod:
-+			WorldHooks.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate);
++			SystemHooks.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate);
  		}
  
  		public Main() {
@@ -913,7 +916,7 @@
  					}
  				}
 +
-+				ModHooks.UpdateMusic(ref modMusic, ref modPriority);
++				SystemHooks.UpdateMusic(ref modMusic, ref modPriority);
  			}
  
  			_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
@@ -1015,6 +1018,23 @@
  			else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
  				if (player[myPlayer].ZoneHallow) {
  					newMusic = 11;
+@@ -12221,11 +_,16 @@
+ 		}
+ 
+ 		public static void DoUpdate_AnimateItemIcons() {
++			//Lock the collection to avoid race conditions during mod loading & unloading.
++			Monitor.Enter(itemAnimationsRegistered);
++
+ 			for (int i = 0; i < itemAnimationsRegistered.Count; i++) {
+ 				int num = itemAnimationsRegistered[i];
+ 				if (itemAnimations[num] != null)
+ 					itemAnimations[num].Update();
+ 			}
++
++			Monitor.Exit(itemAnimationsRegistered);
+ 		}
+ 
+ 		public static void QueueMainThreadAction(Action action) {
 @@ -12246,6 +_,17 @@
  					Main.OnEnginePreload();
  			}
@@ -1064,7 +1084,7 @@
  				Sandstorm.EmitDust();
  			}
  
-+			ModHooks.PreUpdateEntities();
++			SystemHooks.PreUpdateEntities();
  			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
  				Star.UpdateStars();
  				Cloud.UpdateClouds();
@@ -1072,7 +1092,7 @@
  			if (InGameUI != null)
  				InGameUI.Update(gameTime);
  
-+			ModHooks.UpdateUI(gameTime);
++			SystemHooks.UpdateUI(gameTime);
 +			PlayerInput.ScrollWheelDeltaForUI = 0; //TODO: Should this be before PlayerInput.ResetInputsOnActiveStateChange()?
  			CreativeMenu.Update(gameTime);
 +
@@ -1110,57 +1130,93 @@
  			clientPlayer = (Player)Main.player[myPlayer].clientClone();
  		}
  
-@@ -13025,6 +_,7 @@
- 			}
- 
- 			_gameUpdateCount++;
-+			ModHooks.MidUpdatePlayerNPC();
- 			NPC.RevengeManager.Update();
- 			if (netMode != 1) {
- 				try {
-@@ -13073,6 +_,7 @@
- 			}
- 
- 			CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
-+			ModHooks.MidUpdateNPCGore();
- 			for (int l = 0; l < 600; l++) {
- 				if (ignoreErrors) {
- 					try {
-@@ -13087,6 +_,7 @@
+@@ -12991,6 +_,9 @@
+ 		private void DoUpdateInWorld(Stopwatch sw) {
+ 			UpdateParticleSystems();
+ 			tileSolid[379] = false;
++
++			SystemHooks.PreUpdatePlayers();
++
+ 			int num = 0;
+ 			int num2 = 0;
+ 			sittingManager.ClearPlayerAnchors();
+@@ -13024,7 +_,12 @@
  				}
  			}
  
-+			ModHooks.MidUpdateGoreProjectile();
++			SystemHooks.PostUpdatePlayers();
++
+ 			_gameUpdateCount++;
++
++			SystemHooks.PreUpdateNPCs();
++
+ 			NPC.RevengeManager.Update();
+ 			if (netMode != 1) {
+ 				try {
+@@ -13073,6 +_,10 @@
+ 			}
+ 
+ 			CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
++
++			SystemHooks.PostUpdateNPCs();
++			SystemHooks.PreUpdateGores();
++
+ 			for (int l = 0; l < 600; l++) {
+ 				if (ignoreErrors) {
+ 					try {
+@@ -13087,6 +_,9 @@
+ 				}
+ 			}
+ 
++			SystemHooks.PostUpdateGores();
++			SystemHooks.PreUpdateProjectiles();
++
  			LockOnHelper.SetUP();
  			CurrentFrameFlags.HadAnActiveInteractibleProjectile = false;
  			PreUpdateAllProjectiles();
-@@ -13108,6 +_,7 @@
+@@ -13108,6 +_,10 @@
  			ProjectileUpdateLoopIndex = -1;
  			PostUpdateAllProjectiles();
  			LockOnHelper.SetDOWN();
-+			ModHooks.MidUpdateProjectileItem();
++
++			SystemHooks.PostUpdateProjectiles();
++			SystemHooks.PreUpdateItems();
++
  			Item.numberOfNewItems = 0;
  			for (int n = 0; n < 400; n++) {
  				if (ignoreErrors) {
-@@ -13138,11 +_,13 @@
+@@ -13123,6 +_,9 @@
+ 				}
+ 			}
+ 
++			SystemHooks.PostUpdateItems();
++			SystemHooks.PreUpdateDusts();
++
+ 			if (ignoreErrors) {
+ 				try {
+ 					Dust.UpdateDust();
+@@ -13138,11 +_,15 @@
  				Dust.UpdateDust();
  			}
  
-+			ModHooks.MidUpdateDustTime();
++			SystemHooks.PostUpdateDusts();
++
  			if (netMode != 2) {
  				CombatText.UpdateCombatText();
  				PopupText.UpdateItemText();
  			}
  
-+			ModHooks.MidUpdateItemDust();
++			SystemHooks.PreUpdateTime();
++
  			if (ignoreErrors) {
  				try {
  					UpdateTime();
-@@ -13155,6 +_,7 @@
+@@ -13155,6 +_,8 @@
  				UpdateTime();
  			}
  
-+			ModHooks.MidUpdateTimeWorld();
++			SystemHooks.PostUpdateTime();
++
  			tileSolid[379] = true;
  			if (gameMenu && netMode != 2)
  				return;
@@ -1168,7 +1224,7 @@
  					UpdateClient();
  			}
  
-+			ModHooks.PostUpdateEverything();
++			SystemHooks.PostUpdateEverything();
  			chatMonitor.Update();
  			upTimer = (float)sw.Elapsed.TotalMilliseconds;
  			if (upTimerMaxDelay > 0f)
@@ -1186,7 +1242,7 @@
  
  		private void DoUpdate_HandleInput() {
  			PlayerInput.UpdateInput();
-+			ModHooks.PostUpdateInput();
++			SystemHooks.PostUpdateInput();
  			UpdateViewZoomKeys();
  			PlayerInput.SetZoom_Unscaled();
  			UILinkPointNavigator.Update();
@@ -1356,7 +1412,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15033,95 +_,111 @@
+@@ -15033,82 +_,82 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1475,46 +1531,26 @@
 +					toolTipNames[numLines] = "Damage";
  
  					numLines++;
++					/*
  					if (item.melee) {
--						int num3 = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
--						toolTipLine[numLines] = num3 + Lang.tip[5].Value;
-+						int crit = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
-+						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
-+						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
-+						toolTipLine[numLines] = crit + Lang.tip[5].Value;
-+						toolTipNames[numLines] = "CritChance";
+ 						int num3 = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
+ 						toolTipLine[numLines] = num3 + Lang.tip[5].Value;
+@@ -15124,6 +_,14 @@
+ 						toolTipLine[numLines] = num5 + Lang.tip[5].Value;
  						numLines++;
  					}
- 					else if (item.ranged) {
--						int num4 = player[myPlayer].rangedCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
--						toolTipLine[numLines] = num4 + Lang.tip[5].Value;
-+						int crit = player[myPlayer].rangedCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
-+						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
-+						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
-+						toolTipLine[numLines] = crit + Lang.tip[5].Value;
-+						toolTipNames[numLines] = "CritChance";
- 						numLines++;
- 					}
- 					else if (item.magic) {
--						int num5 = player[myPlayer].magicCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
--						toolTipLine[numLines] = num5 + Lang.tip[5].Value;
-+						int crit = player[myPlayer].magicCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
-+						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
-+						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
++					*/
++					// TODO: make this not inherently exclude summons. minions should be allowed to crit in the right circumstances, too
++					if (!item.summon) {
++						int crit = player[myPlayer].GetWeaponCrit(item);
 +						toolTipLine[numLines] = crit + Lang.tip[5].Value;
 +						toolTipNames[numLines] = "CritChance";
 +						numLines++;
 +					}
-+					else if (!item.summon) {
-+						int crit = item.crit;
-+						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
-+						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
-+						toolTipLine[numLines] = crit + Lang.tip[5].Value;
-+						toolTipNames[numLines] = "CritChance";
- 						numLines++;
- 					}
  
-@@ -15143,6 +_,7 @@
+ 					if (item.useStyle != 0 && !item.summon) {
+ 						if (item.useAnimation <= 8)
+@@ -15143,10 +_,13 @@
  						else
  							toolTipLine[numLines] = Lang.tip[13].Value;
  
@@ -1522,12 +1558,19 @@
  						numLines++;
  					}
  
-@@ -15156,6 +_,8 @@
+ 					float num6 = item.knockBack;
++					num6 = player[myPlayer].GetWeaponKnockback(item, num6);
++					/*
+ 					if (item.summon)
+ 						num6 += player[myPlayer].minionKB;
+ 
+@@ -15156,6 +_,9 @@
  					if (player[myPlayer].inventory[player[myPlayer].selectedItem].type == 3106 && item.type == 3106)
  						num6 += num6 * (1f - player[myPlayer].stealth);
  
 +					ItemLoader.GetWeaponKnockback(item, player[myPlayer], ref num6);
 +					PlayerHooks.GetWeaponKnockback(player[myPlayer], item, ref num6);
++					*/
  					if (num6 == 0f)
  						toolTipLine[numLines] = Lang.tip[14].Value;
  					else if ((double)num6 <= 1.5)
@@ -2064,17 +2107,21 @@
  			NPC rCurrentNPC = npc[iNPCIndex];
  			Vector2 screenPos = screenPosition;
  			DrawNPCDirect(spriteBatch, rCurrentNPC, behindTiles, screenPos);
-@@ -16791,6 +_,13 @@
+@@ -16791,6 +_,17 @@
  				}
  			}
  
 +			NPCLoader.DrawEffects(rCurrentNPC, ref npcColor); //TODO: Effects were previously done before drawing, here, but 1.4 moved them to updates in UpdateNPC_BuffApplyVFX(). Should this hook be moved and renamed? --Mirsario
 +			
-+			if (!NPCLoader.PreDraw(rCurrentNPC, spriteBatch, npcColor)) {
-+				NPCLoader.PostDraw(rCurrentNPC, spriteBatch, npcColor);
-+				return;
++			if (NPCLoader.PreDraw(rCurrentNPC, spriteBatch, npcColor)) {
++				DrawNPCDirect_Inner(spriteBatch, rCurrentNPC, behindTiles, screenPos, ref npcColor);
 +			}
 +
++			NPCLoader.PostDraw(rCurrentNPC, spriteBatch, npcColor);
++		}
++
++		private void DrawNPCDirect_Inner(SpriteBatch mySpriteBatch, NPC rCurrentNPC, bool behindTiles, Vector2 screenPos, ref Color npcColor) {
++			int type = rCurrentNPC.type;
  			npcColor = rCurrentNPC.GetNPCColorTintedByBuffs(npcColor);
  			if (type == 50) {
  				Vector2 zero = Vector2.Zero;
@@ -2570,7 +2617,7 @@
  
  			PlayerInput.SetZoom_UI();
 +			List<GameInterfaceLayer> interfaceLayers = new List<GameInterfaceLayer>(_gameInterfaceLayers);
-+			ModHooks.ModifyInterfaceLayers(interfaceLayers);
++			SystemHooks.ModifyInterfaceLayers(interfaceLayers);
 -			using (List<GameInterfaceLayer>.Enumerator enumerator = _gameInterfaceLayers.GetEnumerator()) {
 +			using (List<GameInterfaceLayer>.Enumerator enumerator = interfaceLayers.GetEnumerator()) {
  				while (enumerator.MoveNext() && enumerator.Current.Draw()) {
@@ -2581,7 +2628,7 @@
  
  		private void DrawInterface_33_MouseText() {
 +			// TODO - UI Sorting and selective disable support -  move this to new one between 32 and 33
-+			ModHooks.PostDrawInterface(spriteBatch);
++			SystemHooks.PostDrawInterface(spriteBatch);
  			if (mouseItem.stack <= 0)
  				mouseItem.type = 0;
  
@@ -3017,7 +3064,7 @@
  				}
  
  				spriteBatch.Draw(TextureAssets.MapIcon[num138].Value, new Vector2(num136, num137), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.MapIcon[num138].Width(), TextureAssets.MapIcon[num138].Height()), new Microsoft.Xna.Framework.Color(num139, num139, num139, num139), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+				ModHooks.PostDrawFullscreenMap(ref text);
++				SystemHooks.PostDrawFullscreenMap(ref text);
  				DrawCursor(DrawThickCursor());
  			}
  
@@ -3126,7 +3173,7 @@
  			else
  				Rasterizer = RasterizerState.CullClockwise;
  
-+			ModHooks.ModifyTransformMatrix(ref GameViewMatrix);
++			SystemHooks.ModifyTransformMatrix(ref GameViewMatrix);
  			bool flag = !drawToScreen && netMode != 2 && !gameMenu && !mapFullscreen && Lighting.NotRetro && Terraria.Graphics.Effects.Filters.Scene.CanCapture();
  			if (flag)
  				Terraria.Graphics.Effects.Filters.Scene.BeginCapture(screenTarget, Microsoft.Xna.Framework.Color.Black);
@@ -3143,7 +3190,7 @@
  
  			TimeLogger.DetailedDrawReset();
  			spriteBatch.End();
-+			WorldHooks.PostDrawTiles();
++			SystemHooks.PostDrawTiles();
  			TimeLogger.DetailedDrawTime(35);
  			HasInteractibleObjectThatIsNotATile = false;
  			SortDrawCacheWorms();
@@ -3260,11 +3307,12 @@
  					flag = true;
  				}
  			}
-@@ -47833,16 +_,25 @@
+@@ -47833,16 +_,26 @@
  
  			screenPosition.X = (int)screenPosition.X;
  			screenPosition.Y = (int)screenPosition.Y;
 +			PlayerHooks.ModifyScreenPosition(LocalPlayer);
++			SystemHooks.ModifyScreenPosition();
  			ClampScreenPositionToWorld();
  		}
  
@@ -3315,7 +3363,7 @@
  			tileColor.B = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.B * 7) / 10);
  			tileColor = SkyManager.Instance.ProcessTileColor(tileColor);
 +			// TODO: Add in white and white2 as sunColor and moonColor
-+			ModHooks.ModifySunLight(ref tileColor, ref colorOfTheSkies);
++			SystemHooks.ModifySunLightColor(ref tileColor, ref colorOfTheSkies);
  		}
  
  		private static void UpdateAtmosphereTransparencyToSkyColor() {
@@ -3346,6 +3394,20 @@
 +			SurfaceBgStyleLoader.ChooseStyle(ref num);
  			return num;
  		}
+ 
+@@ -48959,6 +_,13 @@
+ 		}
+ 
+ 		private static void UpdateInvasion() {
++			SystemHooks.PreUpdateInvasions();
++
++			UpdateInvasion_Inner();
++
++			SystemHooks.PostUpdateInvasions();
++		}
++		private static void UpdateInvasion_Inner() {
+ 			if (invasionType <= 0)
+ 				return;
  
 @@ -49199,6 +_,15 @@
  			}

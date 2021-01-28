@@ -30,7 +30,7 @@
  		public bool isAShopItem;
  		public short hairDye = -1;
  		public byte paint;
-@@ -147,10 +_,22 @@
+@@ -147,10 +_,42 @@
  		public int netID;
  		public int crit;
  		public byte prefix;
@@ -39,32 +39,56 @@
 -		public bool ranged;
 -		public bool summon;
 +		internal bool melee {
-+			get => DamageType == DamageClass.Melee;
-+			set => DamageType = value ? DamageClass.Melee : (melee ? null : DamageType);
++			get => CountsAsClass(DamageClass.Melee);
++			set {
++				if (value)
++					DamageType = DamageClass.Melee;
++				else if (DamageType == DamageClass.Melee)
++					DamageType = DamageClass.Generic;
++			}
 +		}
 +		internal bool magic {
-+			get => DamageType == DamageClass.Magic;
-+			set => DamageType = value ? DamageClass.Magic : (magic ? null : DamageType);
++			get => CountsAsClass(DamageClass.Magic);
++			set {
++				if (value)
++					DamageType = DamageClass.Magic;
++				else if (DamageType == DamageClass.Magic)
++					DamageType = DamageClass.Generic;
++			}
 +		}
 +		internal bool ranged {
-+			get => DamageType == DamageClass.Ranged;
-+			set => DamageType = value ? DamageClass.Ranged : (ranged ? null : DamageType);
++			get => CountsAsClass(DamageClass.Ranged);
++			set {
++				if (value)
++					DamageType = DamageClass.Ranged;
++				else if (DamageType == DamageClass.Ranged)
++					DamageType = DamageClass.Generic;
++			}
 +		}
 +		internal bool summon {
-+			get => DamageType == DamageClass.Summon;
-+			set => DamageType = value ? DamageClass.Summon : (summon ? null : DamageType);
++			get => CountsAsClass(DamageClass.Summon);
++			set {
++				if (value)
++					DamageType = DamageClass.Summon;
++				else if (DamageType == DamageClass.Summon)
++					DamageType = DamageClass.Generic;
++			}
 +		}
  		public bool sentry;
  		public int reuseDelay;
  		public bool newAndShiny;
-@@ -158,6 +_,12 @@
+@@ -158,6 +_,16 @@
  		public const int WALL_PLACEMENT_USETIME = 7;
  		public static int numberOfNewItems = 0;
  
 +		public Item() { } // EntryFilter complains if item doesn't have a parameterless constructor (even when the parameter is optional).
 +
-+		public Item(int setDefaultsToType) {
++		public Item(int setDefaultsToType, int stack = 1) {
 +			SetDefaults(setDefaultsToType);
++
++			if (setDefaultsToType > 0) {
++				this.stack = stack;
++			}
 +		}
 +
  		public string Name => _nameOverride ?? Lang.GetItemNameValue(type);
@@ -316,6 +340,193 @@
  		}
  
  		public bool FitsAmmoSlot() {
+@@ -44077,7 +_,7 @@
+ 			return false;
+ 		}
+ 
+-		private void DefaultToSeaShelll() {
++		public void DefaultToSeaShelll() {
+ 			useStyle = 1;
+ 			autoReuse = true;
+ 			useAnimation = 15;
+@@ -44110,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private void DefaultToCapturedCritter(short npcIdToSpawnOnUse) {
++		public void DefaultToCapturedCritter(short npcIdToSpawnOnUse) {
+ 			useStyle = 1;
+ 			autoReuse = true;
+ 			useTurn = true;
+@@ -44124,7 +_,7 @@
+ 			makeNPC = npcIdToSpawnOnUse;
+ 		}
+ 
+-		private void DefaultToStaff(int projType, float pushForwardSpeed, int singleShotTime, int manaPerShot) {
++		public void DefaultToStaff(int projType, float pushForwardSpeed, int singleShotTime, int manaPerShot) {
+ 			DefaultToMagicWeapon(projType, singleShotTime, pushForwardSpeed, hasAutoReuse: true);
+ 			mana = manaPerShot;
+ 			width = 40;
+@@ -44132,7 +_,7 @@
+ 			UseSound = SoundID.Item43;
+ 		}
+ 
+-		private void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime) {
++		public void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime) {
+ 			useStyle = 5;
+ 			useAnimation = 31;
+ 			useTime = 31;
+@@ -44475,13 +_,13 @@
+ 			rare = (int)(num / 4f);
+ 		}
+ 
+-		private void DefaultToMount(int mount) {
++		public void DefaultToMount(int mount) {
+ 			width = 36;
+ 			height = 26;
+ 			mountType = mount;
+ 		}
+ 
+-		private void DefaultToPlacableWall(ushort wallToPlace) {
++		public void DefaultToPlacableWall(ushort wallToPlace) {
+ 			useStyle = 1;
+ 			useTurn = true;
+ 			useAnimation = 15;
+@@ -44494,20 +_,20 @@
+ 			height = 12;
+ 		}
+ 
+-		private void SetWeaponValues(int dmg, float knockback, int bonusCritChance = 0) {
++		public void SetWeaponValues(int dmg, float knockback, int bonusCritChance = 0) {
+ 			damage = dmg;
+ 			knockBack = knockback;
+ 			crit = bonusCritChance;
+ 		}
+ 
+-		private void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
++		public void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
+ 			DefaultToRangedWeapon(1, AmmoID.Arrow, singleShotTime, shotVelocity, hasAutoReuse);
+ 			width = 14;
+ 			height = 30;
+ 			UseSound = SoundID.Item5;
+ 		}
+ 
+-		private void DefaultToMagicWeapon(int projType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
++		public void DefaultToMagicWeapon(int projType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
+ 			autoReuse = hasAutoReuse;
+ 			useStyle = 5;
+ 			useAnimation = singleShotTime;
+@@ -44518,7 +_,7 @@
+ 			magic = true;
+ 		}
+ 
+-		private void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
++		public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
+ 			autoReuse = hasAutoReuse;
+ 			useStyle = 5;
+ 			useAnimation = singleShotTime;
+@@ -44530,7 +_,7 @@
+ 			ranged = true;
+ 		}
+ 
+-		private void DefaultToThrownWeapon(int baseProjType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
++		public void DefaultToThrownWeapon(int baseProjType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
+ 			autoReuse = hasAutoReuse;
+ 			useStyle = 1;
+ 			useAnimation = singleShotTime;
+@@ -44543,7 +_,7 @@
+ 			maxStack = 999;
+ 		}
+ 
+-		private void DefaultToTorch(int tileStyleToPlace, bool allowWaterPlacement = false) {
++		public void DefaultToTorch(int tileStyleToPlace, bool allowWaterPlacement = false) {
+ 			flame = true;
+ 			noWet = !allowWaterPlacement;
+ 			holdStyle = 1;
+@@ -44561,11 +_,11 @@
+ 			useTime = 10;
+ 		}
+ 
+-		private void DefaultToPlacableTile(int tileIDToPlace, int tileStyleToPlace = 0) {
++		public void DefaultToPlacableTile(int tileIDToPlace, int tileStyleToPlace = 0) {
+ 			DefaultToPlacableTile((ushort)tileIDToPlace, tileStyleToPlace);
+ 		}
+ 
+-		private void DefaultToPlacableTile(ushort tileIDToPlace, int tileStyleToPlace = 0) {
++		public void DefaultToPlacableTile(ushort tileIDToPlace, int tileStyleToPlace = 0) {
+ 			createTile = tileIDToPlace;
+ 			placeStyle = tileStyleToPlace;
+ 			width = 14;
+@@ -44579,7 +_,7 @@
+ 			consumable = true;
+ 		}
+ 
+-		private void DefaultToGolfClub(int newwidth, int newheight) {
++		public void DefaultToGolfClub(int newwidth, int newheight) {
+ 			width = newwidth;
+ 			height = newheight;
+ 			channel = true;
+@@ -44592,7 +_,7 @@
+ 			noMelee = true;
+ 		}
+ 
+-		private void DefaultToLawnMower(int newwidth, int newheight) {
++		public void DefaultToLawnMower(int newwidth, int newheight) {
+ 			width = newwidth;
+ 			height = newheight;
+ 			holdStyle = 1;
+@@ -44603,7 +_,7 @@
+ 			autoReuse = true;
+ 		}
+ 
+-		private void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17) {
++		public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17) {
+ 			if (useGulpSound)
+ 				UseSound = SoundID.Item3;
+ 			else
+@@ -44626,7 +_,7 @@
+ 			value = buyPrice(0, 0, 20);
+ 		}
+ 
+-		private void DefaultToHealingPotion(int newwidth, int newheight, int healingAmount, int animationTime = 17) {
++		public void DefaultToHealingPotion(int newwidth, int newheight, int healingAmount, int animationTime = 17) {
+ 			UseSound = SoundID.Item3;
+ 			useStyle = 9;
+ 			useTurn = true;
+@@ -44641,7 +_,7 @@
+ 			healLife = healingAmount;
+ 		}
+ 
+-		private void SetShopValues(ItemRarityColor rarity, int coinValue) {
++		public void SetShopValues(ItemRarityColor rarity, int coinValue) {
+ 			rare = (int)rarity;
+ 			value = coinValue;
+ 		}
+@@ -44652,13 +_,13 @@
+ 			headSlot = helmetArtID;
+ 		}
+ 
+-		private void DefaultToAccessory(int newwidth = 24, int newheight = 24) {
++		public void DefaultToAccessory(int newwidth = 24, int newheight = 24) {
+ 			width = newwidth;
+ 			height = newheight;
+ 			accessory = true;
+ 		}
+ 
+-		private void DefaultToGuitar(int newwidth = 24, int newheight = 24) {
++		public void DefaultToGuitar(int newwidth = 24, int newheight = 24) {
+ 			width = newwidth;
+ 			height = newheight;
+ 			autoReuse = true;
+@@ -44667,7 +_,7 @@
+ 			useAnimation = (useTime = 12);
+ 		}
+ 
+-		private void DefaultToMusicBox(int style) {
++		public void DefaultToMusicBox(int style) {
+ 			useStyle = 1;
+ 			useTurn = true;
+ 			useAnimation = 15;
 @@ -44688,6 +_,16 @@
  			SetDefaults(Type, noMatCheck: false);
  		}
@@ -378,12 +589,13 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -44889,14 +_,18 @@
+@@ -44889,14 +_,19 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
 +			ModItem = null;
 +			globalItems = new GlobalItem[0];
++			DamageType = DamageClass.Generic;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
  			DD2Summon = false;
@@ -397,6 +609,19 @@
  			instanced = false;
  			questItem = false;
  			fishingPole = 0;
+@@ -44913,10 +_,12 @@
+ 			mech = false;
+ 			flame = false;
+ 			reuseDelay = 0;
++			/*
+ 			melee = false;
+ 			magic = false;
+ 			ranged = false;
+ 			summon = false;
++			*/
+ 			placeStyle = 0;
+ 			buffTime = 0;
+ 			buffType = 0;
 @@ -44991,6 +_,10 @@
  		}
  
