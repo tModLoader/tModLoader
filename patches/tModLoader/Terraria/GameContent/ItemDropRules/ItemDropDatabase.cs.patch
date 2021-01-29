@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameContent/ItemDropRules/ItemDropDatabase.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/ItemDropDatabase.cs
-@@ -1,6 +_,7 @@
+@@ -1,12 +_,13 @@
  using System.Collections.Generic;
  using System.Linq;
  using Terraria.ID;
@@ -8,6 +8,13 @@
  
  namespace Terraria.GameContent.ItemDropRules
  {
+ 	public class ItemDropDatabase
+ 	{
+-		private List<IItemDropRule> _globalEntries = new List<IItemDropRule>();
++		internal List<IItemDropRule> _globalEntries = new List<IItemDropRule>();
+ 		private Dictionary<int, List<IItemDropRule>> _entriesByNpcNetId = new Dictionary<int, List<IItemDropRule>>();
+ 		private Dictionary<int, List<int>> _npcNetIdsByType = new Dictionary<int, List<int>>();
+ 		private int _masterModeDropRng = 4;
 @@ -55,7 +_,7 @@
  			return entry;
  		}
