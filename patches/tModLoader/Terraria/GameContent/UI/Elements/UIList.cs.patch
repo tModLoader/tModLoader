@@ -32,7 +32,7 @@
  		public virtual void Add(UIElement item) {
  			_items.Add(item);
  			_innerList.Append(item);
-@@ -72,9 +_,19 @@
+@@ -72,6 +_,15 @@
  			_innerList.Recalculate();
  		}
  
@@ -48,14 +48,12 @@
  		public virtual bool Remove(UIElement item) {
  			_innerList.RemoveChild(item);
  			UpdateOrder();
-+			_innerList.Recalculate();
- 			return _items.Remove(item);
- 		}
+@@ -90,8 +_,14 @@
  
-@@ -91,7 +_,13 @@
  		public override void ScrollWheel(UIScrollWheelEvent evt) {
  			base.ScrollWheel(evt);
- 			if (_scrollbar != null)
+-			if (_scrollbar != null)
++			if (_scrollbar != null) 
 +			{
  				_scrollbar.ViewPosition -= evt.ScrollWheelValue;
 +				if (evt.ScrollWheelValue != 0) {
