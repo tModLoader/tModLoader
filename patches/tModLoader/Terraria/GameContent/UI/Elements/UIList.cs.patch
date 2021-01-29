@@ -48,7 +48,7 @@
  		public virtual bool Remove(UIElement item) {
  			_innerList.RemoveChild(item);
  			UpdateOrder();
-+			_innerList.Recalculate();
++			_innerList.Recalculate(); 
  			return _items.Remove(item);
  		}
  
