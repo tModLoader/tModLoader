@@ -18,6 +18,14 @@
  			"Up",
  			"Down",
  			"Left",
+@@ -107,6 +_,7 @@
+ 		public static int ScrollWheelValueOld;
+ 		public static int ScrollWheelDelta;
+ 		public static int ScrollWheelDeltaForUI;
++		public static int ScrollWheelDeltaForHotbar;
+ 		public static bool GamepadAllowScrolling;
+ 		public static int GamepadScrollValue;
+ 		public static Vector2 GamepadThumbstickLeft = Vector2.Zero;
 @@ -316,9 +_,21 @@
  			}
  		}
