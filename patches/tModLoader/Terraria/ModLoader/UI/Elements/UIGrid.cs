@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
+using Terraria.GameInput;
 
 namespace Terraria.ModLoader.UI.Elements
 {
@@ -105,6 +106,9 @@ namespace Terraria.ModLoader.UI.Elements
 			base.ScrollWheel(evt);
 			if (this._scrollbar != null) {
 				this._scrollbar.ViewPosition -= (float)evt.ScrollWheelValue;
+				if (evt.ScrollWheelValue != 0) {
+					PlayerInput.ScrollWheelDeltaForHotbar = 0;
+				}
 			}
 		}
 
@@ -184,6 +188,9 @@ namespace Terraria.ModLoader.UI.Elements
 				if (oldpos == _scrollbar.ViewPosition)
 				{
 					base.ScrollWheel(evt);
+				}
+				if (evt.ScrollWheelValue != 0) {
+					PlayerInput.ScrollWheelDeltaForHotbar = 0;
 				}
 			}
 			else
