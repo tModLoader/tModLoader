@@ -57,5 +57,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void DrawCustomBuffTip(string buffTip, SpriteBatch spriteBatch, int originX, int originY) {
 		}
+
+		public virtual bool PreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref Vector2 drawPosition, ref Rectangle sourceRectangle, ref Rectangle mouseRectangle, ref Color drawColor) {
+			return true;
+		}
 	}
 }

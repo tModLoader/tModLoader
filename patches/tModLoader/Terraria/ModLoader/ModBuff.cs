@@ -1,3 +1,5 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -89,6 +91,10 @@ namespace Terraria.ModLoader
 		/// Allows you to modify the tooltip that displays when the mouse hovers over the buff icon, as well as the color the buff's name is drawn in.
 		/// </summary>
 		public virtual void ModifyBuffTip(ref string tip, ref int rare) {
+		}
+
+		public virtual bool PreDraw(SpriteBatch spriteBatch, int buffIndex, ref Vector2 drawPosition, ref Rectangle sourceRectangle, ref Rectangle mouseRectangle, ref Color drawColor) {
+			return true;
 		}
 	}
 }

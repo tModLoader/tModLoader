@@ -2612,6 +2612,39 @@
  			}
  		}
  
+@@ -31877,13 +_,27 @@
+ 				return drawBuffText;
+ 
+ 			Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color(buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer]);
+-			spriteBatch.Draw(TextureAssets.Buff[num].Value, new Vector2(x, y), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Buff[num].Width(), TextureAssets.Buff[num].Height()), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-			if (TryGetBuffTime(buffSlotOnPlayer, out int buffTimeValue) && buffTimeValue > 2) {
++			Asset<Texture2D> buffAsset = TextureAssets.Buff[num];
++			Vector2 drawPosition = new Vector2(x, y);
++			int bbwidth = buffAsset.Width();
++			int bbheight = buffAsset.Height();
++			Rectangle sourceRectangle = new Rectangle(0, 0, bbwidth, bbheight);
++			Rectangle mouseRectangle = new Rectangle(x, y, bbwidth, bbheight);
++			Color drawColor = color;
++			
++			if (BuffLoader.PreDraw(spriteBatch, num, buffSlotOnPlayer, ref drawPosition, ref sourceRectangle, ref mouseRectangle, ref drawColor)) {
++				spriteBatch.Draw(buffAsset.Value, drawPosition, sourceRectangle, drawColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++				x = mouseRectangle.X;
++				y = mouseRectangle.Y;
++				bbwidth = mouseRectangle.Width;
++				bbheight = mouseRectangle.Height;
++			}
++			//BuffLoader.PostDraw
++ 			if (TryGetBuffTime(buffSlotOnPlayer, out int buffTimeValue) && buffTimeValue > 2) {
+ 				string text = Lang.LocalizedDuration(new TimeSpan(0, 0, buffTimeValue / 60), abbreviated: true, showAllAvailableUnits: false);
+-				spriteBatch.DrawString(FontAssets.ItemStack.Value, text, new Vector2(x, y + TextureAssets.Buff[num].Height()), color, 0f, default(Vector2), 0.8f, SpriteEffects.None, 0f);
++				spriteBatch.DrawString(FontAssets.ItemStack.Value, text, new Vector2(x, y + bbheight), color, 0f, default(Vector2), 0.8f, SpriteEffects.None, 0f);
+ 			}
+-
+-			if (mouseX < x + TextureAssets.Buff[num].Width() && mouseY < y + TextureAssets.Buff[num].Height() && mouseX > x && mouseY > y) {
++			if (mouseX < x + bbwidth && mouseY < y + bbheight && mouseX > x && mouseY > y) {
+ 				drawBuffText = buffSlotOnPlayer;
+ 				buffAlpha[buffSlotOnPlayer] += 0.1f;
+ 				bool flag = mouseRight && mouseRightRelease;
 @@ -33169,7 +_,9 @@
  				SetupDrawInterfaceLayers();
  
