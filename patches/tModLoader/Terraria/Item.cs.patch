@@ -322,7 +322,7 @@
 -					return 0;
  			}
 +			if (i >= NPCID.Count) // in NPCtoBanner method
-+				return NPCLoader.GetNPC(i).banner;
++				return NPCLoader.GetNPC(i).Banner;
 +			return 0;
  		}
  

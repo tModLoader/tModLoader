@@ -2163,9 +2163,9 @@
  				if (projectile.ai[0] != 2f || projectile.position.HasNaNs())
  					continue;
 +				int type = projectile.type;
-+				bool useAiType = projectile.ModProjectile != null && projectile.ModProjectile.aiType > 0;
++				bool useAiType = projectile.ModProjectile != null && projectile.ModProjectile.AIType > 0;
 +				if (useAiType) {
-+					projectile.type = projectile.ModProjectile.aiType;
++					projectile.type = projectile.ModProjectile.AIType;
 +				}
  
  				num += projectile.position.X + (float)(projectile.width / 2);

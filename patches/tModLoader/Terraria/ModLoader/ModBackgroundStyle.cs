@@ -10,7 +10,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The ID of this underground background style.
 		/// </summary>
-		public int Slot {get;internal set;}
+		public int Slot { get; internal set; }
 
 		protected override sealed void Register() {
 			Slot = UgBgStyleLoader.ReserveBackgroundSlot();
@@ -40,7 +40,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The ID of this surface background style.
 		/// </summary>
-		public int Slot {get;internal set;}
+		public int Slot { get; internal set; }
 
 		protected override sealed void Register() {
 			Slot = SurfaceBgStyleLoader.ReserveBackgroundSlot();
