@@ -26,9 +26,13 @@ namespace Terraria.ModLoader
 		}
 
 		public void RemoveWhere(Predicate<IItemDropRule> predicate) {
-			foreach(var entry in Get()) {
+			var list = itemDropDatabase._globalEntries;
+
+			for (int i = 0; i < list.Count; i++) {
+				var entry = list[i];
+
 				if (predicate(entry)) {
-					Remove(entry);
+					list.RemoveAt(i--);
 				}
 			}
 		}
