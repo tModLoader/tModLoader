@@ -144,6 +144,9 @@ namespace Terraria.ModLoader.Default
 					} while (tile.wall == uID);
 				}
 			}
+
+			this.CleanupMaps(posMap);
+			this.CleanupInfos();
 		}
 
 		//TODO, don't have this be a copy paste from tileIO.
