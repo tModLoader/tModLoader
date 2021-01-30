@@ -58,6 +58,15 @@ namespace Terraria.ModLoader.Setup
 		}
 
 		public override void FinishedDialog() {
+#if AUTO
+			if (roslynCompileFailed)
+				Console.WriteLine("Failed to compile RoslynWrapper.sln.");
+			if (tMLFNACompileFailed)
+				Console.WriteLine("Failed to compile tModLoader.FNA.exe");
+			if(roslynCompileFailed || tMLFNACompileFailed)
+				Environment.Exit(1);
+			return;
+#endif
 			if (roslynCompileFailed)
 				MessageBox.Show("MSBuild Error", "Failed to compile RoslynWrapper.sln.", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
