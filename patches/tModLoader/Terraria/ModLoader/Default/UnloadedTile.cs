@@ -27,7 +27,7 @@ namespace Terraria.ModLoader.Default
 			Main.tileTable[Type] = isSemi;
 			Main.tileSolidTop[Type] = isSemi;
 			TileID.Sets.Platforms[Type] = true;
-			adjTiles = new int[] { TileID.Platforms };
+			AdjTiles = new int[] { TileID.Platforms };
 
 			// Placement
 			TileObjectData.newTile.CoordinateHeights = new[] { 16 };

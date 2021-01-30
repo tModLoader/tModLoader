@@ -10,23 +10,12 @@ namespace Terraria.ModLoader.Default
 			posID = posX * Main.maxTilesY + posY;
 		}
 
-		public void SaveInfoToPos(UnloadedInfo info, List<UnloadedInfo> infos, Dictionary<int, int> posMap) {
+		public void MapPosToInfo(UnloadedInfo info, List<UnloadedInfo> infos, SortedDictionary<int, int> posMap) {
 			int pendingID = infos.IndexOf(info);
-
-			if (pendingID < 0) {
-				pendingID = 0;
-				while (pendingID < infos.Count && infos[pendingID] != null)
-					pendingID++;
-				if (pendingID == infos.Count)
-					infos.Add(info);
-				else
-					infos[pendingID] = info;
-			}
-
 			posMap[posID] = pendingID;
 		}
 
-		public int FloorGetValue(Dictionary<int, int> posMap) {
+		public int FloorGetValue(SortedDictionary<int, int> posMap) {
 			var keys = posMap.Keys;
 			int floorKey = 0;
 

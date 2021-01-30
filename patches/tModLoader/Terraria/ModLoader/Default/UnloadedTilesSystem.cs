@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.Default
 		/// <summary>
 		/// Use a dictionary mapping coordinates of tile infos from <see cref="tileInfos"/>
 		/// </summary>
-		internal Dictionary<int, int> tileInfoMap = new Dictionary<int, int>();
+		internal SortedDictionary<int, int> tileInfoMap = new SortedDictionary<int, int>();
 
 		/// <summary>
 		/// Tile-<see cref="UnloadedChestInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
@@ -25,7 +25,7 @@ namespace Terraria.ModLoader.Default
 		/// <summary>
 		/// Use a dictionary mapping coordinates of chest infos from <see cref="chestInfos"/>
 		/// </summary>
-		internal Dictionary<int, int> chestInfoMap = new Dictionary<int, int>();
+		internal SortedDictionary<int, int> chestInfoMap = new SortedDictionary<int, int>();
 
 		/// <summary>
 		/// Wall-<see cref="UnloadedWallInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
@@ -35,7 +35,7 @@ namespace Terraria.ModLoader.Default
 		/// <summary>
 		/// Use a dictionary mapping coordinates of walls infos from <see cref="wallInfos"/>
 		/// </summary>
-		internal Dictionary<int, int> wallInfoMap = new Dictionary<int, int>();
+		internal SortedDictionary<int, int> wallInfoMap = new SortedDictionary<int, int>();
 
 		internal static ushort UnloadedTile => ModContent.Find<ModTile>("ModLoader/UnloadedTile").Type;
 		internal static ushort UnloadedNonSolidTile => ModContent.Find<ModTile>("ModLoader/UnloadedNonSolidTile").Type;
@@ -161,8 +161,7 @@ namespace Terraria.ModLoader.Default
 
 							if (tile.type == unloadedChest) {
 								UnloadedInfo info = chestInfos[infoID];
-								int chestStyle = info.customData.GetAsInt("chestStyle");
-								WorldGen.PlaceChestDirect(x, y + 1, canRestoreChests[infoID], chestStyle, -1);
+								WorldGen.PlaceChestDirect(x, y + 1, canRestoreChests[infoID], tile.frameX / 36, -1);
 							}
 						}
 					}

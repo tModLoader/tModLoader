@@ -20,6 +20,20 @@ namespace Terraria.ModLoader.Default
 			this.infos = infos;
 		}
 
+		public void AddInfos(UnloadedInfo info) {
+			int pendingID = infos.IndexOf(info);
+
+			if (pendingID < 0) {
+				pendingID = 0;
+				while (pendingID < infos.Count && infos[pendingID] != null)
+					pendingID++;
+				if (pendingID == infos.Count)
+					infos.Add(info);
+				else
+					infos[pendingID] = info;
+			}
+		}
+
 		public void UpdateInfos(IList<TagCompound> list, byte index) {
 			//NOTE: infos and canRestore lists are same length so the indices match later for RestoreTilesAndWalls
 			foreach (var infoTag in list) {
@@ -33,9 +47,8 @@ namespace Terraria.ModLoader.Default
 				string modName = infoTag.GetString("mod");
 				string name = infoTag.GetString("name");
 				ushort fallbackType = infoTag.Get<ushort>("fallbackType");
-				TagCompound customData = infoTag.Get<TagCompound>("customData");
 
-				var info = new UnloadedInfo(modName, name, fallbackType, customData);
+				var info = new UnloadedInfo(modName, name, fallbackType);
 
 				infos.Add(info);
 
@@ -57,7 +70,7 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public void UpdateMaps(IList<TagCompound> list, Dictionary<int, int> posMap) {
+		public void UpdateMaps(IList<TagCompound> list, SortedDictionary<int, int> posMap) {
 			foreach (var posTag in list) {
 				int posID = posTag.Get<int>("posID");
 				int infoID = posTag.Get<int>("infoID");
@@ -66,7 +79,7 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public void CleanupMaps(Dictionary<int, int> infoMap) {
+		public void CleanupMaps(SortedDictionary<int, int> infoMap) {
 			if (!canRestoreFlag) {
 				return;
 			}

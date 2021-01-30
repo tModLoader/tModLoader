@@ -30,7 +30,7 @@ namespace Terraria.ModLoader.Default
 			TileID.Sets.BasicChest[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 
-			adjTiles = new int[] { TileID.Containers };
+			AdjTiles = new int[] { TileID.Containers };
 
 			// Names
 			ContainerName.SetDefault("UnloadedChest");
