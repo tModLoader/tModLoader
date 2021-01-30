@@ -79,9 +79,9 @@ namespace Terraria.ModLoader
 			prefix = wr.Get();
 		}
 
-		public byte Type {get;internal set;}
+		public byte Type { get; internal set; }
 
-		public ModTranslation DisplayName {get;internal set;}
+		public ModTranslation DisplayName { get; internal set; }
 
 		/// <summary>
 		/// The roll chance of your prefix relative to a vanilla prefix, 1f by default. 

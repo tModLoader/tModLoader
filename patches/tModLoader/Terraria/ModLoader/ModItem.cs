@@ -19,14 +19,9 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModItem : ModTexturedType
 	{
-		//add modItem property to Terraria.Item (internal set)
-		//set modItem to null at beginning of Terraria.Item.ResetStats		
 		/// <summary>
 		/// The item object that this ModItem controls.
 		/// </summary>
-		/// <value>
-		/// The item.
-		/// </value>
 		public Item Item { get; internal set; }
 
 		/// <summary>

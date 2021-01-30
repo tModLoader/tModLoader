@@ -16,8 +16,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileLavaDeath[Type] = true;
 			TileID.Sets.Clock[Type] = true;
 
-			dustType = ModContent.DustType<Sparkle>();
-			adjTiles = new int[] { TileID.GrandfatherClocks };
+			DustType = ModContent.DustType<Sparkle>();
+			AdjTiles = new int[] { TileID.GrandfatherClocks };
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
