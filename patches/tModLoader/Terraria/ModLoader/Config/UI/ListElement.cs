@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.GameInput;
 
 namespace Terraria.ModLoader.Config.UI
 {
@@ -63,6 +64,9 @@ namespace Terraria.ModLoader.Config.UI
 				this._scrollbar.ViewPosition -= (float)evt.ScrollWheelValue;
 				if (oldpos == _scrollbar.ViewPosition) {
 					base.ScrollWheel(evt);
+				}
+				if (evt.ScrollWheelValue != 0) {
+					PlayerInput.ScrollWheelDeltaForHotbar = 0;
 				}
 			}
 			else {
