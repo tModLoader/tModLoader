@@ -75,31 +75,23 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void LoadWorldData(TagCompound tag) {
-			bool[] canRestoreFlag = new bool[] { false, false, false };
-
 			// Process tiles
-			UpdateUnloaded tileUpdater = new UpdateUnloaded(tileInfos, TilesContext);
-			tileUpdater.UpdateInfos(tag.GetList<TagCompound>("tileList"));
-			tileUpdater.UpdateMaps(tag.GetList<TagCompound>("tilePosIndex"), tileInfoMap);
-			tileUpdater.Restore(tileInfoMap);
-			tileUpdater.CleanupMaps(tileInfoMap);
-			tileUpdater.CleanupInfos();
+			UpdateUnloaded Updater = new UpdateUnloaded(tileInfos, TilesContext);
+			Updater.UpdateInfos(tag.GetList<TagCompound>("tileList"));
+			Updater.UpdateMaps(tag.GetList<TagCompound>("tilePosIndex"), tileInfoMap);
+			Updater.Restore(tileInfoMap);
 
 			// Process Walls
-			UpdateUnloaded wallUpdater = new UpdateUnloaded(wallInfos, WallsContext);
-			wallUpdater.UpdateInfos(tag.GetList<TagCompound>("wallList"));
-			wallUpdater.UpdateMaps(tag.GetList<TagCompound>("wallPosIndex"), wallInfoMap);
-			wallUpdater.Restore(wallInfoMap);
-			wallUpdater.CleanupMaps(wallInfoMap);
-			wallUpdater.CleanupInfos();
-
+			Updater = new UpdateUnloaded(wallInfos, WallsContext);
+			Updater.UpdateInfos(tag.GetList<TagCompound>("wallList"));
+			Updater.UpdateMaps(tag.GetList<TagCompound>("wallPosIndex"), wallInfoMap);
+			Updater.Restore(wallInfoMap);
+			
 			// Process chests
-			UpdateUnloaded chestUpdater = new UpdateUnloaded(chestInfos, ChestContext);
-			chestUpdater.UpdateInfos(tag.GetList<TagCompound>("chestList"));
-			chestUpdater.UpdateMaps(tag.GetList<TagCompound>("chestPosIndex"), chestInfoMap);
-			chestUpdater.Restore(chestInfoMap);
-			chestUpdater.CleanupMaps(chestInfoMap);
-			chestUpdater.CleanupInfos();
+			Updater = new UpdateUnloaded(chestInfos, ChestContext);
+			Updater.UpdateInfos(tag.GetList<TagCompound>("chestList"));
+			Updater.UpdateMaps(tag.GetList<TagCompound>("chestPosIndex"), chestInfoMap);
+			Updater.Restore(chestInfoMap);
 		}
 	}
 }

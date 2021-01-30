@@ -128,22 +128,17 @@ namespace Terraria.ModLoader.Default
 				else if (context == ChestContext) {
 					ushort uID = tile.type;
 
-					do {
-						if (tile.type == TileIO.UnloadedDresser) {
-							WorldGen.PlaceDresserDirect(x + 1, y + 1, restoreID, 0, -1);
-						}
-
-						if (tile.type == TileIO.UnloadedChest) {
-							WorldGen.PlaceChestDirect(x, y + 1, restoreID, tile.frameX / 36, -1);
-						}
-
-						if (!NextTile(ref x, ref y))
-							break;
-
-						tile = Main.tile[x, y];
-					} while (tile.wall == uID);
+					if (tile.type == TileIO.UnloadedDresser) {
+						WorldGen.PlaceDresserDirect(x + 1, y + 1, restoreID, 0, -1);
+					}
+					if (tile.type == TileIO.UnloadedChest) {
+						WorldGen.PlaceChestDirect(x, y + 1, restoreID, tile.frameX / 36, -1);
+					}
 				}
 			}
+
+			this.CleanupMaps(posMap);
+			this.CleanupInfos();
 		}
 
 		//TODO, don't have this be a copy paste from tileIO.
