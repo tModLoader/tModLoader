@@ -14,16 +14,18 @@ namespace Terraria.ModLoader.IO
 	internal static class TileIO
 	{
 		internal static ushort PendingTile => ModContent.Find<ModTile>("ModLoader/PendingTile").Type;
-
 		internal static ushort PendingNonSolidTile => ModContent.Find<ModTile>("ModLoader/PendingNonSolidTile").Type;
-
 		internal static ushort PendingSemiSolidTile => ModContent.Find<ModTile>("ModLoader/PendingSemiSolidTile").Type;
-
 		internal static ushort PendingChest => ModContent.Find<ModTile>("ModLoader/PendingChest").Type;
-
 		internal static ushort PendingDresser => ModContent.Find<ModTile>("ModLoader/PendingDresser").Type;
-
 		internal static ushort PendingWallType => ModContent.Find<ModWall>("ModLoader/PendingWall").Type;
+		
+		internal static ushort UnloadedTile => ModContent.Find<ModTile>("ModLoader/UnloadedTile").Type;
+		internal static ushort UnloadedNonSolidTile => ModContent.Find<ModTile>("ModLoader/UnloadedNonSolidTile").Type;
+		internal static ushort UnloadedSemiSolidTile => ModContent.Find<ModTile>("ModLoader/UnloadedSemiSolidTile").Type;
+		internal static ushort UnloadedChest => ModContent.Find<ModTile>("ModLoader/UnloadedChest").Type;
+		internal static ushort UnloadedDresser => ModContent.Find<ModTile>("ModLoader/UnloadedDresser").Type;
+		internal static ushort UnloadedWallType => ModContent.Find<ModWall>("ModLoader/UnloadedWall").Type;
 
 		//*********** Tile, Walls, & Chests Save, Load, and Placeholder Implementations ***************************//
 
@@ -176,11 +178,10 @@ namespace Terraria.ModLoader.IO
 			ushort pendingWallType = PendingWallType;
 
 			// Grab reference to PendingTileSystem for infos Lists
-			UnloadedInfo info;
 			var modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
-			UpdateUnloaded pendingTInfo = new UpdateUnloaded(modSystem.tileInfos);
-			UpdateUnloaded pendingCInfo = new UpdateUnloaded(modSystem.chestInfos);
-			UpdateUnloaded pendingWInfo = new UpdateUnloaded(modSystem.wallInfos);
+			UpdateUnloaded pendingTInfo = new UpdateUnloaded(modSystem.tileInfos, 0);
+			UpdateUnloaded pendingWInfo = new UpdateUnloaded(modSystem.wallInfos, 1);
+			UpdateUnloaded pendingCInfo = new UpdateUnloaded(modSystem.chestInfos, 2);
 
 			// Retrieve Basic Tile Type Data from saved Tile Map, and store in table
 			foreach (var tileTag in tag.GetList<TagCompound>("tileMap")) {
@@ -481,21 +482,21 @@ namespace Terraria.ModLoader.IO
 						
 						posIndexer.MapPosToInfo(info, modSystem.tileInfos, modSystem.tileInfoMap);
 						
-						tile.type = UnloadedTilesSystem.UnloadedTile;
+						tile.type = UnloadedTile;
 
 						if (nonSolidChk)
-							tile.type = UnloadedTilesSystem.UnloadedNonSolidTile;
+							tile.type = UnloadedNonSolidTile;
 						if (semiSolidChk)
-							tile.type = UnloadedTilesSystem.UnloadedSemiSolidTile;
+							tile.type = UnloadedSemiSolidTile;
 					}
 
 					else if (isPendingContainer) {
 						ushort unloadedContainer = 0;
 
 						if (isPendingChest)
-							unloadedContainer = UnloadedTilesSystem.UnloadedChest;
+							unloadedContainer = UnloadedChest;
 						else if (isPendingDresser)
-							unloadedContainer = UnloadedTilesSystem.UnloadedDresser;
+							unloadedContainer = UnloadedDresser;
 
 						// Handle Multi-tile by only focusing on working with TOP-LEFT tile.
 						TileObjectData tileData = TileObjectData.GetTileData(unloadedContainer, 0);
@@ -539,7 +540,7 @@ namespace Terraria.ModLoader.IO
 					
 					posIndexer.MapPosToInfo(info, modSystem.wallInfos, modSystem.wallInfoMap);
 
-					tile.wall = UnloadedTilesSystem.UnloadedWallType;
+					tile.wall = UnloadedWallType;
 				}
 
 				if ((flags & TileIOFlags.WallColor) == TileIOFlags.WallColor) {

@@ -10,6 +10,15 @@ namespace Terraria.ModLoader.Default
 			posID = posX * Main.maxTilesY + posY;
 		}
 
+		public UnloadedPosIndexing(int posID) {
+			this.posID = posID;
+		}
+
+		public void GetCoords(out int posX, out int posY) {
+			posY = posID % Main.maxTilesY;
+			posX = posID / Main.maxTilesY;
+		}
+
 		public void MapPosToInfo(UnloadedInfo info, List<UnloadedInfo> infos, SortedDictionary<int, int> posMap) {
 			int pendingID = infos.IndexOf(info);
 			posMap[posID] = pendingID;
