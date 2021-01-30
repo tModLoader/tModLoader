@@ -3,7 +3,7 @@ name: Build tModLoader
 # Controls when the action will run. 
 on:
   push:
-    branches: [1.4-CI-experiment]
+    branches: [1.4]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -32,7 +32,7 @@ jobs:
           echo ls -l is:
           ls -l
           echo Installing XNA
-          curl -s -L https://download.microsoft.com/download/5/3/A/53A804C8-EC78-43CD-A0F0-2FB4D45603D3/xnafx40_redist.msi -O
+          curl -s -L https://github.com/JavidPack/tModLoaderPublishIntegration/raw/master/xnafx40_redist.msi -O
           msiexec //i xnafx40_redist.msi //quiet
           echo XNA Installed
           echo Running setup.bat
