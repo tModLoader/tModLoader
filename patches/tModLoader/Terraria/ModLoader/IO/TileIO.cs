@@ -498,27 +498,31 @@ namespace Terraria.ModLoader.IO
 							unloadedContainer = UnloadedTilesSystem.UnloadedDresser;
 
 						// Handle Multi-tile by only focusing on working with TOP-LEFT tile.
-						TileObjectData tileData = TileObjectData.GetTileData(tile.type, 0);
+						TileObjectData tileData = TileObjectData.GetTileData(unloadedContainer, 0);
 
+						bool accountedFor = false;
 						for (int m = 0; m < tileData.Width; m++) {
 							for (int n = 0; n < tileData.Height; n++) {
-								Main.tile[i + m, j + n].type = unloadedContainer;
+								if (Main.tile[i - m, j - n].type == unloadedContainer) {
+									accountedFor = true;
+								}
 							}
 						}
 
-						// Load saved Basic Container Type Data into PendingChestInfo and index
-						info = new UnloadedInfo(tables.tileModNames[saveType], tables.tileNames[saveType],tables.tileFallback[saveType]);
-						posIndexer.MapPosToInfo(info, modSystem.chestInfos, modSystem.chestInfoMap);
+						if (!accountedFor) {
+							// Load saved Basic Container Type Data into PendingChestInfo and index
+							info = new UnloadedInfo(tables.tileModNames[saveType], tables.tileNames[saveType], tables.tileFallback[saveType]);
+							posIndexer.MapPosToInfo(info, modSystem.chestInfos, modSystem.chestInfoMap);
 
-						if (isPendingChest) {
-							// Place PendingChest (required to preserve the inventory and re-namings
-							WorldGen.PlaceChestDirect(i, j + 1, unloadedContainer, tile.frameX / 36, -1);
+							if (isPendingChest) {
+								// Place PendingChest (required to preserve the inventory and re-namings
+								WorldGen.PlaceChestDirect(i, j + 1, unloadedContainer, tile.frameX / 36, -1);
+							}
+							else if (isPendingDresser) {
+								// Place PendingDresser (required to preserve the inventory and re-namings
+								WorldGen.PlaceDresserDirect(i + 1, j + 1, unloadedContainer, 0, -1);
+							}
 						}
-						else if (isPendingDresser) {
-							// Place PendingDresser (required to preserve the inventory and re-namings
-							WorldGen.PlaceDresserDirect(i + 1, j + 1, unloadedContainer, 0, -1);
-						}
-						
 					}
 				}
 
