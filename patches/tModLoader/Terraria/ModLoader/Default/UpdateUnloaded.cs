@@ -90,7 +90,7 @@ namespace Terraria.ModLoader.Default
 			foreach (var entry in posMap) {
 				var posIndex = new UnloadedPosIndexing(entry.Key);
 				posIndex.GetCoords(out int x, out int y);
-				int infoID = posIndex.FloorGetValue(posMap);
+				int infoID = entry.Key;
 
 				ushort restoreID = canRestore[infoID];
 				if (restoreID <= 0) {
