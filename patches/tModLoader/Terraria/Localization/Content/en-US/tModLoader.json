@@ -338,8 +338,6 @@
 		// Misc
 		"OK": "OK",
 		"Continue": "Continue",
-		"Yes": "Yes",
-		"No": "No",
 		"DeleteModConfirm": "Are you sure you want to delete this mod permanently?",
 		"PatreonSetTooltip": "Thank you for your support!",
 		"WorldGenError": "A problem was encountered during world generation",
