@@ -395,14 +395,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void QuickModDelete(UIMouseEvent evt, UIElement listeningElement) {
-			bool shiftPressed = false;
-			List<Keys> pressedKeys = Main.keyState.GetPressedKeys().ToList();
-			for (int i = 0; i < pressedKeys.Count; i++) {
-				if (pressedKeys[i] == Keys.LeftShift || pressedKeys[i] == Keys.RightShift) {
-					shiftPressed = true;
-					break;
-				}
-			}
+			bool shiftPressed = Main.keyState.PressingShift();
 
 			if (!shiftPressed) {
 				SoundEngine.PlaySound(10, -1, -1, 1);
@@ -426,7 +419,7 @@ namespace Terraria.ModLoader.UI
 				_deleteModDialog.SetPadding(6f);
 				Interface.modsMenu.Append(_deleteModDialog);
 
-				_dialogYesButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.Yes")) {
+				_dialogYesButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("LegacyMenu.104")) {
 					TextColor = Color.White,
 					Width = new StyleDimension(-10f, 1f / 3f),
 					Height = { Pixels = 40 },
@@ -436,7 +429,7 @@ namespace Terraria.ModLoader.UI
 				_dialogYesButton.OnClick += DeleteMod;
 				_deleteModDialog.Append(_dialogYesButton);
 
-				_dialogNoButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.No")) {
+				_dialogNoButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("LegacyMenu.105")) {
 					TextColor = Color.White,
 					Width = new StyleDimension(-10f, 1f / 3f),
 					Height = { Pixels = 40 },
