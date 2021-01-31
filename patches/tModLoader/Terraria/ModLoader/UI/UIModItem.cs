@@ -198,7 +198,7 @@ namespace Terraria.ModLoader.UI
 				_deleteModButton = new UIImage(TextureAssets.Trash) {
 					Width = { Pixels = 36 },
 					Height = { Pixels = 36 },
-					Left = { Pixels = _moreInfoButton.Left.Pixels - (_configButton == null ? 0 : _configButton.Left.Pixels) - 36 - PADDING, Precent = 1 },
+					Left = { Pixels = _moreInfoButton.Left.Pixels - 36 - PADDING, Precent = 1 },
 					Top = { Pixels = 42.5f }
 				};
 				_deleteModButton.OnClick += QuickModDelete;
