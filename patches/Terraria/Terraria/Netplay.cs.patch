@@ -17,7 +17,7 @@
 +#if !XNA
 +using Terraria.Social.Base;
 +#endif
-+#if SERVER && XNA
++#if SERVER
 +using NATUPNPLib;
 +#endif
  
@@ -27,7 +27,7 @@
  		public static bool SpamCheck = false;
  		public static bool HasClients;
  		private static Thread _serverThread;
-+#if SERVER && XNA
++#if SERVER
 +		public static UPnPNAT _upnpnat;
 +		public static IStaticPortMappingCollection _mappings;
 +#endif
@@ -38,10 +38,10 @@
  		}
  
  		private static void OpenPort(int port) {
-+#if SERVER && XNA
++#if SERVER
 +			string localIPAddress = GetLocalIPAddress();
 +			if (_upnpnat == null) {
-+				_upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
++				_upnpnat = new UPnPNAT();//(UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
 +				_mappings = _upnpnat.StaticPortMappingCollection;
 +			}
 +
@@ -60,7 +60,7 @@
  		}
  
  		private static void ClosePort(int port) {
-+#if SERVER && XNA
++#if SERVER
 +			string localIPAddress = GetLocalIPAddress();
 +			bool flag = false;
 +			if (_mappings == null)
@@ -77,6 +77,30 @@
  		}
  
  		private static void ServerFullWriteCallBack(object state) {
+@@ -224,6 +_,7 @@
+ 			}
+ 		}
+ 
++		private static bool serverNeedsCleanUp = false;
+ 		private static void CleanupServer() {
+ 			StopListening();
+ 			try {
+@@ -251,6 +_,7 @@
+ 
+ 		private static void ServerLoop() {
+ 			int num = 0;
++			serverNeedsCleanUp = true;
+ 			StartBroadCasting();
+ 			while (!Disconnect) {
+ 				StartListeningIfNeeded();
+@@ -261,6 +_,7 @@
+ 
+ 			StopBroadCasting();
+ 			CleanupServer();
++			serverNeedsCleanUp = false;
+ 		}
+ 
+ 		private static void UpdateConnectedClients() {
 @@ -362,6 +_,11 @@
  					flag = false;
  				}
@@ -89,7 +113,7 @@
  					if (!Disconnect && Main.gameMenu)
  						flag = true;
  				}
-@@ -617,12 +_,26 @@
+@@ -617,17 +_,32 @@
  		}
  
  		public static void Initialize() {
@@ -116,3 +140,50 @@
  		}
  
  		public static int GetSectionX(int x) => x / 200;
+ 		public static int GetSectionY(int y) => y / 150;
+ 
++		private static bool abortBroadcastThread = false;
+ 		private static void BroadcastThread() {
+ 			BroadcastClient = new UdpClient();
+ 			new IPEndPoint(IPAddress.Any, 0);
+@@ -656,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			while (true) {
++			while (!abortBroadcastThread) {
+ 				int num = 0;
+ 				for (int i = 0; i < 255; i++) {
+ 					if (Main.player[i].active)
+@@ -678,19 +_,30 @@
+ 			if (broadcastThread != null)
+ 				StopBroadCasting();
+ 
++			abortBroadcastThread = false;
+ 			broadcastThread = new Thread(BroadcastThread);
+ 			broadcastThread.Start();
+ 		}
+ 
+ 		public static void StopBroadCasting() {
+ 			if (broadcastThread != null) {
+-				broadcastThread.Abort();
++				//thread.Abort() is not supported as of .NET 5
++				abortBroadcastThread = true;
++				while(broadcastThread.IsAlive) {
++					Thread.Sleep(1);
++				}
+ 				broadcastThread = null;
+ 			}
+ 
+ 			if (BroadcastClient != null) {
+ 				BroadcastClient.Close();
+ 				BroadcastClient = null;
++			}
++		}
++
++		public static void WaitForClosePortClose() {
++			while(!serverNeedsCleanUp) {
++				Thread.Sleep(10);
+ 			}
+ 		}
+ 	}

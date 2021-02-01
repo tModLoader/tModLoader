@@ -19,6 +19,7 @@
   <PropertyGroup>
     <OutputName>$(AssemblyName)</OutputName>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FNA" />

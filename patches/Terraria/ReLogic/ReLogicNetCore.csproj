@@ -8,6 +8,7 @@
     <RootNamespace>ReLogic</RootNamespace>
 	<!-- because project name is "ReLogicNetCore" -->
     <AssemblyName>ReLogic</AssemblyName>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />

@@ -162,7 +162,7 @@
  				}
  				else if (SocialAPI.Cloud != null) {
  					SocialAPI.Cloud.Delete(WorldList[i].Path);
-@@ -3908,12 +_,16 @@
+@@ -3908,12 +_,17 @@
  		}
  
  		public void NeverSleep() {
@@ -176,6 +176,7 @@
  			if (previousExecutionState != 0)
  				NativeMethods.SetThreadExecutionState(previousExecutionState);
 +#endif
++			Netplay.WaitForClosePortClose();
  		}
  
  		public void DedServ() {
