@@ -35,7 +35,7 @@
  		}
  
  		public static void ResetSections() {
-@@ -121,6 +_,19 @@
+@@ -121,6 +_,20 @@
  			return false;
  		}
  
@@ -46,7 +46,8 @@
 +				t.RunSynchronously();
 +		}
 +
-+		private static void InvokeOnMainThread(Action action) {
++		//tML: Made internal.
++		internal static void InvokeOnMainThread(Action action) {
 +			var t = new Task(action);
 +			mainThreadTasks.Enqueue(t);
 +			t.Wait();
@@ -76,6 +77,14 @@
  		private static void InnerClientLoop() {
  			try {
  				NetMessage.buffer[256].Reset();
+@@ -479,6 +_,7 @@
+ 							Cloud.resetClouds();
+ 							Main.cloudAlpha = Main.maxRaining;
+ 							WorldGen.clearWorld();
++							SystemHooks.OnWorldLoad();
+ 							if (Main.mapEnabled)
+ 								Main.Map.Load();
+ 						}
 @@ -490,6 +_,7 @@
  						else if (Connection.State == 5 && WorldGen.worldCleared) {
  							Connection.State = 6;
@@ -84,15 +93,6 @@
  							NetMessage.SendData(8, -1, -1, null, Main.player[Main.myPlayer].SpawnX, Main.player[Main.myPlayer].SpawnY);
  						}
  
-@@ -512,8 +_,6 @@
- 								Main.statusText = Connection.StatusText + ": " + (int)((float)Connection.StatusCount / (float)Connection.StatusMax * 100f) + "%";
- 							}
- 						}
--
--						Thread.Sleep(1);
- 					}
- 					else if (Connection.IsActive) {
- 						Main.statusText = Language.GetTextValue("Net.LostConnection");
 @@ -523,6 +_,7 @@
  					num = Connection.State;
  				}
@@ -101,3 +101,14 @@
  				try {
  					Connection.Socket.Close();
  				}
+@@ -530,6 +_,10 @@
+ 				}
+ 
+ 				if (!Main.gameMenu) {
++					//This is only called in case of kicks and other sudden disconnects.
++					//The more common call to this is in Main.SaveAndQuitCallback
++					SystemHooks.OnWorldUnload();
++
+ 					Main.gameMenu = true;
+ 					Main.SwitchNetMode(0);
+ 					MapHelper.noStatusText = true;

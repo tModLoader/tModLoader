@@ -35,7 +35,7 @@ namespace Terraria.ModLoader
 				path = Path.Combine(ModLoader.ModPath, name + ".tmod");
 			}
 
-			public bool Matches(TmodFile mod) => name == mod.name && version == mod.version && hash.SequenceEqual(mod.hash);
+			public bool Matches(TmodFile mod) => name == mod.Name && version == mod.Version && hash.SequenceEqual(mod.Hash);
 			public override string ToString() => name + " v" + version;
 		}
 
@@ -96,7 +96,7 @@ namespace Terraria.ModLoader
 			foreach (Mod mod in syncMods) { // We only sync ServerSide configs for ModSide.Both. ModSide.Server can have 
 				p.Write(mod.Name);
 				p.Write(mod.Version.ToString());
-				p.Write(mod.File.hash);
+				p.Write(mod.File.Hash);
 				p.Write(mod.File.ValidModBrowserSignature);
 				SendServerConfigs(p, mod);
 			}
@@ -126,7 +126,7 @@ namespace Terraria.ModLoader
 			p.Write(serverConfigs.Length);
 			foreach (ModConfig config in serverConfigs) {
 				string json = JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact);
-				Logging.Terraria.Info($"Sending Server Config {config.mod.Name} {config.Name}: {json}");
+				Logging.Terraria.Info($"Sending Server Config {config.Mod.Name} {config.Name}: {json}");
 
 				p.Write(config.Name);
 				p.Write(json);
@@ -297,7 +297,7 @@ namespace Terraria.ModLoader
 					if (downloadingMod.signed && onlyDownloadSignedMods && !mod.ValidModBrowserSignature)
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
 
-					ModLoader.EnableMod(mod.name);
+					ModLoader.EnableMod(mod.Name);
 
 					if (downloadQueue.Count > 0)
 						DownloadNextMod();
@@ -377,7 +377,7 @@ namespace Terraria.ModLoader
 				p.Write(mod.Name);
 
 			ItemLoader.WriteNetGlobalOrder(p);
-			WorldHooks.WriteNetWorldOrder(p);
+			SystemHooks.WriteNetSystemOrder(p);
 			p.Write(Player.MaxBuffs);
 
 			p.Send(toClient);
@@ -402,7 +402,7 @@ namespace Terraria.ModLoader
 			SetupDiagnostics();
 
 			ItemLoader.ReadNetGlobalOrder(reader);
-			WorldHooks.ReadNetWorldOrder(reader);
+			SystemHooks.ReadNetSystemOrder(reader);
 
 			int serverMaxBuffs = reader.ReadInt32();
 
@@ -443,32 +443,14 @@ namespace Terraria.ModLoader
 				return false;
 			}
 
-			bool hijacked = false;
-			long readerPos = reader.BaseStream.Position;
-			long biggestReaderPos = readerPos;
-			foreach (Mod mod in ModLoader.Mods) {
-				if (mod.HijackGetData(ref messageType, ref reader, playerNumber)) {
-					hijacked = true;
-					biggestReaderPos = Math.Max(reader.BaseStream.Position, biggestReaderPos);
-				}
-				reader.BaseStream.Position = readerPos;
-			}
-			if (hijacked) {
-				reader.BaseStream.Position = biggestReaderPos;
-			}
-			return hijacked;
+			return SystemHooks.HijackGetData(ref messageType, ref reader, playerNumber);
 		}
 
-		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7) {
-			bool hijacked = false;
-			foreach (Mod mod in ModLoader.Mods) {
-				hijacked |= mod.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
-			}
-			return hijacked;
-		}
+		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
+			=> SystemHooks.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
 
 		// Mirror of Main class network diagnostic fields, but mod specific.
-		// Potential improvements: separate page from vanilla messageIDs, track automatic/ModWorld/etc sends per class or mod, sort by most active, moving average, NetStats console command in ModLoaderMod
+		// Potential improvements: separate page from vanilla messageIDs, track automatic/ModSystem/etc sends per class or mod, sort by most active, moving average, NetStats console command in ModLoaderMod
 		// Currently we only update these on client
 		public static int[] rxMsgType;
 		public static int[] rxDataType;

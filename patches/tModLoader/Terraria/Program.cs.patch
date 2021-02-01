@@ -24,6 +24,37 @@
  	{
  		/* hide unused consts
  		public const bool IsServer = false;
+@@ -57,21 +_,15 @@
+ 			LoadedEverything = true;
+ 		}
+ 
+-		private static void ForceJITOnAssembly(Assembly assembly) {
+-			Type[] types = assembly.GetTypes();
+-			for (int i = 0; i < types.Length; i++) {
+-#if WINDOWS || NETCORE
+-				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+-#else
+-				MethodInfo[] methods = types[i].GetMethods();
+-#endif
+-				foreach (MethodInfo methodInfo in methods) {
+-					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
+-#if WINDOWS || NETCORE
+-						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
+-#else
+-						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
+-#endif
++		private static void ForceJITOnAssembly(IEnumerable<Type> types) {
++			var methodsToJIT = CollectMethodsToJIT(types);
++
++			if (Environment.ProcessorCount > 1) {
++				methodsToJIT.AsParallel().AsUnordered().ForAll(ForceJITOnMethod);
++			}
++			else {
++				foreach (var method in methodsToJIT) {
++					ForceJITOnMethod(method);
+ 				}
+ 
+ 				ThingsLoaded++;
 @@ -87,10 +_,13 @@
  		}
  
@@ -58,7 +89,7 @@
 +			SavePath =
 +				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
 +				LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
-+				Platform.Get<IPathService>().GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader{(ModLoader.ModLoader.IsBeta ? Path.DirectorySeparatorChar + "Beta" : "")}");
++				Platform.Get<IPathService>().GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader{(!BuildInfo.IsRelease ? Path.DirectorySeparatorChar + "Beta" : "")}");
 +
 +			if (File.Exists("savehere.txt"))
 +				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.

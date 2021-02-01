@@ -42,18 +42,13 @@ namespace Terraria.ModLoader.Setup
 		}
 
 		private void UpdateModCompileVersion(string modCompileDir) {
-			var modLoaderCsPath = Path.Combine("src", "tModLoader", "Terraria", "ModLoader", "ModLoader.cs");
-			var r = new Regex(@"new Version\((.+?)\).+?string branchName.+?""(.*?)"".+?int beta.+?(\d+?)", RegexOptions.Singleline);
+			var modLoaderCsPath = Path.Combine("src", "tModLoader", "Terraria", "Terraria.csproj");
+			var r = new Regex(@"<tMLVersion>(.+?)</tMLVersion>", RegexOptions.Singleline);
 			var match = r.Match(File.ReadAllText(modLoaderCsPath));
 
-			string version = match.Groups[1].Value.Replace(", ", ".");
-			string branchName = match.Groups[2].Value;
-			int beta = int.Parse(match.Groups[3].Value);
-
-			var versionTag = $"v{version}" +
-				(branchName.Length == 0 ? "" : $"-{branchName.ToLower()}") +
-				(beta == 0 ? "" : $"-beta{beta}");
-
+			// ModCompile.GetModCompileVersion currently does not care about other fields, like branch, purpose, BuildDate, sha. It probably should.
+			string version = match.Groups[1].Value;
+			var versionTag = $"v{version}";
 			Directory.CreateDirectory(modCompileDir);
 			File.WriteAllText(Path.Combine(modCompileDir, "version"), versionTag);
 		}

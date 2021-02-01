@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/TerrariaNetCore.csproj
 +++ src/tModLoader/Terraria/TerrariaNetCore.csproj
-@@ -7,6 +_,6 @@
+@@ -7,7 +_,7 @@
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2020 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
@@ -8,6 +8,7 @@
 +    <AssemblyName>tModLoaderNetCore</AssemblyName>
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
+     <OutputType>Exe</OutputType>
 @@ -18,19 +_,27 @@
    </PropertyGroup>
    <PropertyGroup>

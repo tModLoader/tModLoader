@@ -26,14 +26,14 @@ namespace ExampleMod.Content.Items
 				player.statLife += 100;
 				if (player.statLife > player.statLifeMax2) player.statLife = player.statLifeMax2;
 				player.HealEffect(100);
-				item.TurnToAir();
+				Item.TurnToAir();
 			}
 		}
 
 		public override void AddRecipes() {
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient<ExampleItem>(100);
-			(recipe.createItem.modItem as ExampleDataItem).timer = 300;
+			(recipe.createItem.ModItem as ExampleDataItem).timer = 300;
 			recipe.Register();
 		}
 	}

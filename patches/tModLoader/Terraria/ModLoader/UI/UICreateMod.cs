@@ -300,18 +300,18 @@ namespace {modNameTrimmed}.Items
 
 		public override void SetDefaults() 
 		{{
-			item.damage = 50;
-			item.DamageType = DamageClass.Melee;
-			item.width = 40;
-			item.height = 40;
-			item.useTime = 20;
-			item.useAnimation = 20;
-			item.useStyle = ItemUseStyleID.Swing;
-			item.knockBack = 6;
-			item.value = Item.sellPrice(platinum: 0, gold: 0, silver: 10, copper: 0); // Equivalent to Item.buyPrice(platinum: 0, gold: 0, silver: 50, copper: 0)
-			item.rare = ItemRarityID.Green;
-			item.UseSound = SoundID.Item1;
-			item.autoReuse = true;
+			Item.damage = 50;
+			Item.DamageType = DamageClass.Melee;
+			Item.width = 40;
+			Item.height = 40;
+			Item.useTime = 20;
+			Item.useAnimation = 20;
+			Item.useStyle = 1;
+			Item.knockBack = 6;
+			Item.value = 10000;
+			Item.rare = 2;
+			Item.UseSound = SoundID.Item1;
+			Item.autoReuse = true;
 		}}
 
 		public override void AddRecipes() 

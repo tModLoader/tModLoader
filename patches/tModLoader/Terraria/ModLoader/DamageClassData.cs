@@ -2,12 +2,14 @@
 {
 	internal struct DamageClassData
 	{
-		public Modifier damage;
-		public Modifier crit;
+		public StatModifier damage;
+		public int critChance;
+		public StatModifier knockback;
 
-		public DamageClassData(Modifier damage, Modifier crit) {
+		public DamageClassData(StatModifier damage, int critChance, StatModifier knockback) {
 			this.damage = damage;
-			this.crit = crit;
+			this.critChance = critChance;
+			this.knockback = knockback;
 		}
 	}
 }

@@ -89,5 +89,5 @@ namespace System.Windows.Forms
 			return (DialogResult)buttonid;
 		}
 	}
-#endif
 }
+#endif
