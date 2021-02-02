@@ -8,42 +8,14 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Buffs
 {
-	//This file contains two classes, the ModSystem responsible for updating the animation, and the ModBuff itself.
-
-	//If you are not interested in making your buff animated, you don't need this ModSystem class here.
-	public class AnimatedBuffSystem : ModSystem
-	{
-		public const int FrameCount = 4; //Amount of frames we have on our animation spritesheet.
-		public const int AnimationSpeed = 60; //In ticks.
-
-		//This is a property, in this case it allows us to restrict the setter to only this class, meaning that "AnimatedBuffSystem.Frame = 5" in another class would not let us compile.
-		public static int Frame { get; private set; } = 0;
-
-		private static int FrameCounter { get; set; } = 0;
-
-		public override void PreUpdateEntities() {
-			//This hook runs once per game tick, in the same place where other animation updates take place.
-			//If we were to put this code in AnimatedBuff.PreDraw, even though vanilla makes sure to only have one buff per player,
-			//it's possible that another mod might invoke drawing of buffs, which will then speed up the animation due to code running multiple times per tick.
-			if (!Main.dedServ && (Main.hasFocus || Main.netMode != NetmodeID.SinglePlayer)) {
-				//The above conditions are the same vanilla uses to update animations.
-
-				FrameCounter++;
-				if (FrameCounter > AnimationSpeed) {
-					FrameCounter = 0;
-					Frame++;
-					if (Frame >= FrameCount) {
-						Frame = 0;
-					}
-				}
-			}
-		}
-	}
-
 	//This buff has an extra animation spritesheet, and also showcases PreDraw specifically.
 	//(We keep the autoloaded texture as one frame in case other mods need to access the buff sprite directly and aren't aware of it having special draw code).
 	public class AnimatedBuff : ModBuff
 	{
+		//Some constants we define to make our life easier.
+		public const int FrameCount = 4; //Amount of frames we have on our animation spritesheet.
+		public const int AnimationSpeed = 60; //In ticks.
+
 		private Asset<Texture2D> animatedTexture;
 
 		public override void SetDefaults() {
@@ -61,13 +33,20 @@ namespace ExampleMod.Content.Buffs
 		}
 
 		public override bool PreDraw(SpriteBatch spriteBatch, int buffIndex, ref BuffDrawParams drawParams) {
-			//We draw our special texture here, the animation takes place in AnimatedBuffSystem.
+			//You can use this hook to make something special happen when the buff icon is drawn (such as reposition it, pick a different texture, etc.).
+
+			//We draw our special texture here with a specific animation.
 
 			//Use our animation spritesheet.
 			Texture2D ourTexture = animatedTexture.Value;
-			//Choose the frame to display.
-			//We reference the frame count and frame from the ModSystem here.
-			Rectangle ourSourceRectangle = ourTexture.Frame(verticalFrames: AnimatedBuffSystem.FrameCount, frameY: AnimatedBuffSystem.Frame);
+			//Choose the frame to display, here based on constants and the game's tick count.
+			Rectangle ourSourceRectangle = ourTexture.Frame(verticalFrames: FrameCount, frameY: (int)Main.GameUpdateCount / AnimationSpeed % FrameCount);
+
+			//Other stuff you can do in this hook
+			/*
+			//Here we make the icon have a lime green tint.
+			drawParams.drawColor = Color.LimeGreen * Main.buffAlpha[buffIndex];
+			*/
 
 			//Be aware of the fact that drawParams.mouseRectangle exists: it defaults to the size of the autoloaded buffs' sprite,
 			//it handles mouseovering and clicking on the buff icon. Since our frame in the animation is 32x32 (same as the autoloaded sprite),

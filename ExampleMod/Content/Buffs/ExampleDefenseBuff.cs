@@ -18,15 +18,5 @@ namespace ExampleMod.Content.Buffs
 		public override void Update(Player player, ref int buffIndex) {
 			player.statDefense += 4; //Grant a +4 defense boost to the player while the buff is active.
 		}
-
-		//Optional
-		public override bool PreDraw(SpriteBatch spriteBatch, int buffIndex, ref BuffDrawParams drawParams) {
-			//You can use this hook to make something special happen when the buff icon is drawn (such as reposition it, pick a different texture, etc.).
-			//Here we make the icon have a lime green tint.
-			drawParams.drawColor = Color.LimeGreen * Main.buffAlpha[buffIndex];
-			
-			//Return true to let the game draw the buff icon.
-			return true;
-		}
 	}
 }

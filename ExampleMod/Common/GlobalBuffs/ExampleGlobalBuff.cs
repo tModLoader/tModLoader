@@ -30,7 +30,7 @@ namespace ExampleMod.Common.GlobalBuffs
 			}
 
 			//If the buff is one of the three specified:
-			if (System.Array.IndexOf(new int[] { BuffID.Regeneration, BuffID.Ironskin, BuffID.Swiftness }, type) > -1) {
+			if (type == BuffID.Regeneration || type == BuffID.Ironskin || type == BuffID.Swiftness) {
 				//Make text go up and down 6 pixels on each buff, offset by 4 ticks for each.
 				int interval = 60;
 				float time = ((int)Main.GameUpdateCount + 4 * buffIndex) % interval / (float)interval;
@@ -46,7 +46,7 @@ namespace ExampleMod.Common.GlobalBuffs
 		}
 
 		public override void ModifyBuffTip(int type, ref string tip, ref int rare) {
-			//This code adds a more extensible remaining time display for suitable buffs.
+			//This code adds a more extensible remaining time tooltip for suitable buffs.
 			Player player = Main.LocalPlayer;
 
 			int buffIndex = player.FindBuffIndex(type);
