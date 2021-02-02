@@ -7,11 +7,11 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModGore : ModTexturedType
 	{
-		/// <summary> Allows you to copy the Update behavior of a different type of gore. This defaults to 0, which means no behavior is copied. </summary>
-		public int updateType = -1;
-
 		internal string nameOverride;
 		internal string textureOverride;
+
+		/// <summary> Allows you to copy the Update behavior of a different type of gore. This defaults to 0, which means no behavior is copied. </summary>
+		public int UpdateType { get; set; } = -1;
 
 		public int Type { get; internal set; }
 

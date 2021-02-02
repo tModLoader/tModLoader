@@ -122,7 +122,7 @@ namespace Terraria.ModLoader.Engine
 				var values = new NameValueCollection
 				{
 					{ "steamid64", ModLoader.SteamID64 },
-					{ "modloaderversion", ModLoader.versionedName },
+					{ "modloaderversion", BuildInfo.versionedName },
 					{ "category", "ReportFatalEngineReload" },
 					{ "logcontents", logContents },
 				};
