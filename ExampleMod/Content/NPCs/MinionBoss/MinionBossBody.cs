@@ -30,6 +30,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			get => NPC.ai[0] == 1f;
 			set => NPC.ai[0] = value ? 1f : 0f;
 		}
+		//If your boss has more than two stages, and since this is a boolean and can only be two things (true, false), concider using an integer or enum
 
 		//More advanced usage of a property, used to wrap around to floats to act as a Vector2
 		public Vector2 FirstStageDestination {
@@ -60,6 +61,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		public ref float SecondStageTimer_SpawnEyes => ref NPC.localAI[3];
 
 		//Do NOT try to use NPC.ai[4]/NPC.localAI[4] or higher indexes, it only accepts 0, 1, 2 and 3!
+		//If you choose to go the route of "wrapping properties" for NPC.ai[], make sure they don't overlap (two properties using the same variable in different ways), and that you don't accidently use NPC.ai[] directly
 
 		//Helper method to determine the minion type
 		public static int MinionType() {
