@@ -58,7 +58,7 @@
 +			int type = tile.type;
 +
 +			ModTile modTile = ModContent.GetModTile(type);
-+			if (modTile != null && modTile.openDoorID > 0) type = TileID.ClosedDoor;
++			if (modTile != null && modTile.OpenDoorID > 0) type = TileID.ClosedDoor;
 +			
 +			return _handlerByTileType.TryGetValue(type, out infoProvider);
  		}

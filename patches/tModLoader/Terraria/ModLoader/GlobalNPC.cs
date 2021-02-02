@@ -181,7 +181,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when an NPC dies (for example, setting ModWorld fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
+		/// Allows you to make things happen when an NPC dies (for example, setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
 		/// </summary>
 		/// <param name="npc"></param>
 		public virtual void OnKill(NPC npc) {
@@ -200,8 +200,15 @@ namespace Terraria.ModLoader
 		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.
 		/// </summary>
 		/// <param name="npc"></param>
-		/// <param name="dropRule"></param>
+		/// <param name="npcLoot"></param>
 		public virtual void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
+		}
+
+		/// <summary>
+		/// Allows you to add and modify global loot rules that are conditional, i.e. vanilla's biome keys and souls.
+		/// </summary>
+		/// <param name="globalLoot"></param>
+		public virtual void ModifyGlobalLoot(GlobalLoot globalLoot) {
 		}
 
 		/// <summary>

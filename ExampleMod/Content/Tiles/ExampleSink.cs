@@ -29,8 +29,8 @@ namespace ExampleMod.Content.Tiles
 
 			AddMapEntry(new Color(100, 100, 100));
 
-			dustType = 84;
-			adjTiles = new int[] { Type };
+			DustType = 84;
+			AdjTiles = new int[] { Type };
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {
