@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader
 {
@@ -58,8 +59,27 @@ namespace Terraria.ModLoader
 		public virtual void DrawCustomBuffTip(string buffTip, SpriteBatch spriteBatch, int originX, int originY) {
 		}
 
-		public virtual bool PreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref Vector2 drawPosition, ref Rectangle sourceRectangle, ref Rectangle mouseRectangle, ref Color drawColor) {
+		/// <summary>
+		/// Allows you to draw things before the default draw code is ran. Return false to prevent drawing the buff. Returns true by default.
+		/// </summary>
+		/// <param name="spriteBatch">The spriteBatch that is drawn on</param>
+		/// <param name="type">The buff type</param>
+		/// <param name="buffIndex">The index in Main.LocalPlayer.buffType and .buffTime of the buff</param>
+		/// <param name="drawParams">The draw parameters for the buff</param>
+		/// <returns><see langword="true"/> for allowing drawing, <see langword="false"/> for preventing drawing</returns>
+		public virtual bool PreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref BuffDrawParams drawParams) {
 			return true;
+		}
+
+		/// <summary>
+		/// Allows you to draw things after the buff has been drawn. skipped is true if you or another mod has skipped drawing the buff (possibly hiding it or in favor of new visuals).
+		/// </summary>
+		/// <param name="skipped"><see langword="true"/> if you or another mod has skipped drawing the buff in PreDraw (possibly hiding it or in favor of new visuals)</param>
+		/// <param name="spriteBatch">The spriteBatch that is drawn on</param>
+		/// <param name="type">The buff type</param>
+		/// <param name="buffIndex">The index in Main.LocalPlayer.buffType and .buffTime of the buff</param>
+		/// <param name="drawParams">The draw parameters for the buff</param>
+		public virtual void PostDraw(bool skipped, SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams) {
 		}
 	}
 }

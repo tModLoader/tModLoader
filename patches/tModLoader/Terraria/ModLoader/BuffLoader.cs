@@ -7,6 +7,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.GameContent;
 using Terraria.ModLoader.Core;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader
 {
@@ -32,8 +33,10 @@ namespace Terraria.ModLoader
 		private static DelegateModifyBuffTip[] HookModifyBuffTip;
 		private static Action<string, List<Vector2>>[] HookCustomBuffTipSize;
 		private static Action<string, SpriteBatch, int, int>[] HookDrawCustomBuffTip;
-		private delegate bool DelegatePreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref Vector2 drawPosition, ref Rectangle sourceRectangle, ref Rectangle mouseRectangle, ref Color drawColor);
+		private delegate bool DelegatePreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref BuffDrawParams drawParams);
 		private static DelegatePreDraw[] HookPreDraw;
+		private delegate void DelegatePostDraw(bool skipped, SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams);
+		private static DelegatePostDraw[] HookPostDraw;
 
 		static BuffLoader() {
 			for (int k = 0; k < BuffID.Count; k++) {
@@ -117,6 +120,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookCustomBuffTipSize, globalBuffs, g => g.CustomBuffTipSize);
 			ModLoader.BuildGlobalHook(ref HookDrawCustomBuffTip, globalBuffs, g => g.DrawCustomBuffTip);
 			ModLoader.BuildGlobalHook(ref HookPreDraw, globalBuffs, g => g.PreDraw);
+			ModLoader.BuildGlobalHook(ref HookPostDraw, globalBuffs, g => g.PostDraw);
 		}
 
 		internal static void Unload() {
@@ -198,15 +202,24 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static bool PreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref Vector2 drawPosition, ref Rectangle sourceRectangle, ref Rectangle mouseRectangle, ref Color drawColor) {
+		public static bool PreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref BuffDrawParams drawParams) {
 			bool result = true;
 			foreach (var hook in HookPreDraw) {
-				result &= hook(spriteBatch, type, buffIndex, ref drawPosition, ref sourceRectangle, ref mouseRectangle, ref drawColor);
+				result &= hook(spriteBatch, type, buffIndex, ref drawParams);
 			}
 			if (result && IsModBuff(type)) {
-				return GetBuff(type).PreDraw(spriteBatch, buffIndex, ref drawPosition, ref sourceRectangle, ref mouseRectangle, ref drawColor);
+				return GetBuff(type).PreDraw(spriteBatch, buffIndex, ref drawParams);
 			}
 			return result;
+		}
+
+		public static void PostDraw(bool skipped, SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams) {
+			if (IsModBuff(type)) {
+				GetBuff(type).PostDraw(skipped, spriteBatch, buffIndex, drawParams);
+			}
+			foreach (var hook in HookPostDraw) {
+				hook(skipped, spriteBatch, type, buffIndex, drawParams);
+			}
 		}
 	}
 }
