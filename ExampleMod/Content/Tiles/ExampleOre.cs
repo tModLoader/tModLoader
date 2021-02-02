@@ -24,16 +24,16 @@ namespace ExampleMod.Content.Tiles
 			name.SetDefault("ExampleOre");
 			AddMapEntry(new Color(152, 171, 198), name);
 
-			dustType = 84;
-			drop = ModContent.ItemType<Items.Placeable.ExampleOre>();
-			soundType = SoundID.Tink;
-			soundStyle = 1;
+			DustType = 84;
+			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleOre>();
+			SoundType = SoundID.Tink;
+			SoundStyle = 1;
 			//mineResist = 4f;
 			//minPick = 200;
 		}
 	}
 
-	public class ExampleOreWorld : ModWorld
+	public class ExampleOreSystem : ModSystem
 	{
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight) {
 			// Because world generation is like layering several images ontop of each other, we need to do some steps between the original world generation steps.

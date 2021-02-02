@@ -17,14 +17,15 @@
  		private readonly World _world;
  		private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  		public int bestOre;
-@@ -197,6 +_,7 @@
- 			int num2 = 0;
+@@ -198,6 +_,8 @@
  			if (settings.ScanOreFinderData)
  				_oreFinderTileLocations.Clear();
-+			WorldHooks.ResetNearbyTileEffects();
  
++			SystemHooks.ResetNearbyTileEffects();
++
  			if (settings.BiomeScanCenterPositionInWorld.HasValue) {
  				Point point = settings.BiomeScanCenterPositionInWorld.Value.ToTileCoordinates();
+ 				Rectangle rectangle = WorldUtils.ClampToWorld(tileRectangle: new Rectangle(point.X - Main.buffScanAreaWidth / 2, point.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight), world: _world);
 @@ -251,6 +_,8 @@
  
  						if (settings.ScanOreFinderData && Main.tileOreFinderPriority[tile.type] != 0)
@@ -52,11 +53,12 @@
  					}
  				}
  			}
-@@ -334,6 +_,7 @@
+@@ -334,6 +_,8 @@
  			CanPlayCreditsRoll = (ActiveMusicBox == 85);
  			if (settings.ScanOreFinderData)
  				UpdateOreFinderData();
-+			WorldHooks.TileCountsAvailable(_tileCounts);
++
++			SystemHooks.TileCountsAvailable(_tileCounts);
  		}
  
  		private void ExportTileCountsToMain() {
