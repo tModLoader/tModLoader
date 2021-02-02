@@ -19,7 +19,7 @@ namespace Terraria.ModLoader.Default
 		private const int ChanceToGetDevArmor = 30;
 
 		public override string Name => "ModLoader";
-		public override Version Version => ModLoader.version;
+		public override Version Version => BuildInfo.tMLVersion;
 
 		internal ModLoaderMod() {
 			Side = ModSide.NoSync;

@@ -27,9 +27,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 
-			dustType = ModContent.DustType<Sparkle>();
-			adjTiles = new int[] { TileID.ClosedDoor };
-			openDoorID = ModContent.TileType<ExampleDoorOpen>();
+			DustType = ModContent.DustType<Sparkle>();
+			AdjTiles = new int[] { TileID.ClosedDoor };
+			OpenDoorID = ModContent.TileType<ExampleDoorOpen>();
 
 			// Names
 			ModTranslation name = CreateMapEntryName();

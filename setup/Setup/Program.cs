@@ -32,13 +32,22 @@ namespace Terraria.ModLoader.Setup
 				Console.WriteLine(SteamDir);
 				return;
 			}*/
+#if AUTO
+			Settings.Default.SteamDir = @".\1412\Windows";
+#endif
 
 			tMLSteamDir = Path.Combine(Path.GetDirectoryName(SteamDir), "tModLoader");
 			if (!Directory.Exists(tMLSteamDir))
 				tMLSteamDir = SteamDir;
 
-			UpdateSteamDirTargetsFile();
+			UpdateTargetsFile();
 
+#if AUTO
+			Console.WriteLine("Automatic setup start");
+			new AutoSetup().DoAuto();
+			Console.WriteLine("Automatic setup finished");
+			return;
+#endif
 			Application.Run(new MainForm());
 		}
 
@@ -123,25 +132,34 @@ namespace Terraria.ModLoader.Setup
 				else {
 					Settings.Default.SteamDir = Path.GetDirectoryName(dialog.FileName);
 					Settings.Default.Save();
-					UpdateSteamDirTargetsFile();
+					UpdateTargetsFile();
 					return true;
 				}
 			}
 		}
 
-		private static readonly string targetsFilePath = Path.Combine("src", "TerrariaSteamPath.targets");
-		private static void UpdateSteamDirTargetsFile() {
+		private static readonly string targetsFilePath = Path.Combine("src", "WorkspaceInfo.targets");
+
+		private static void UpdateTargetsFile() {
 			SetupOperation.CreateParentDirectory(targetsFilePath);
+
+			string gitsha = "";
+			RunCmd("", "git", "rev-parse HEAD", s => gitsha = s.Trim());
+
+			string branch = "";
+			RunCmd("", "git", "rev-parse --abbrev-ref HEAD", s => branch = s.Trim());
+
 
 			string targetsText =
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <PropertyGroup>
-    <TerrariaSteamPath>{SteamDir}</TerrariaSteamPath>
+	<BranchName>{branch}</BranchName>
+	<CommitSHA>{gitsha}</CommitSHA>
+	<TerrariaSteamPath>{SteamDir}</TerrariaSteamPath>
     <tModLoaderSteamPath>{tMLSteamDir}</tModLoaderSteamPath>
   </PropertyGroup>
 </Project>";
-
 
 			if (File.Exists(targetsFilePath) && targetsText == File.ReadAllText(targetsFilePath))
 				return;

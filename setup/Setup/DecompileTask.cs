@@ -130,6 +130,10 @@ namespace Terraria.ModLoader.Setup
 			items.Add(WriteTerrariaProjectFile(mainModule, files, resources, decompiledLibraries));
 			items.Add(WriteCommonConfigurationFile());
 
+#if AUTO
+			ExecuteParallel(items, true, 1);
+			return;
+#endif
 			ExecuteParallel(items);
 		}
 

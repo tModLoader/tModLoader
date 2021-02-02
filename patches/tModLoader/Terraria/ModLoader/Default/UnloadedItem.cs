@@ -5,6 +5,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
+	[LegacyName("MysteryItem")]
 	public class UnloadedItem : ModLoaderModItem
 	{
 		private string modName;

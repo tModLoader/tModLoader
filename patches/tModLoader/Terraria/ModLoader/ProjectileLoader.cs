@@ -124,9 +124,9 @@ namespace Terraria.ModLoader
 		public static void ProjectileAI(Projectile projectile) {
 			if (PreAI(projectile)) {
 				int type = projectile.type;
-				bool useAiType = projectile.ModProjectile != null && projectile.ModProjectile.aiType > 0;
+				bool useAiType = projectile.ModProjectile != null && projectile.ModProjectile.AIType > 0;
 				if (useAiType) {
-					projectile.type = projectile.ModProjectile.aiType;
+					projectile.type = projectile.ModProjectile.AIType;
 				}
 				projectile.VanillaAI();
 				if (useAiType) {
@@ -471,7 +471,7 @@ namespace Terraria.ModLoader
 
 		public static void DrawHeldProjInFrontOfHeldItemAndArms(Projectile projectile, ref bool flag) {
 			if (projectile.ModProjectile != null) {
-				flag = projectile.ModProjectile.drawHeldProjInFrontOfHeldItemAndArms;
+				flag = projectile.ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms;
 			}
 		}
 
@@ -489,9 +489,9 @@ namespace Terraria.ModLoader
 
 		public static void DrawOffset(Projectile projectile, ref int offsetX, ref int offsetY, ref float originX) {
 			if (projectile.ModProjectile != null) {
-				offsetX = projectile.ModProjectile.drawOffsetX;
-				offsetY = -projectile.ModProjectile.drawOriginOffsetY;
-				originX += projectile.ModProjectile.drawOriginOffsetX;
+				offsetX = projectile.ModProjectile.DrawOffsetX;
+				offsetY = -projectile.ModProjectile.DrawOriginOffsetY;
+				originX += projectile.ModProjectile.DrawOriginOffsetX;
 			}
 		}
 

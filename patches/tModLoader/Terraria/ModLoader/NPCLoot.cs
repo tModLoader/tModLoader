@@ -24,7 +24,7 @@ namespace Terraria.ModLoader
 		public void RemoveWhere(Predicate<IItemDropRule> predicate, bool includeGlobalDrops = true) {
 			foreach (var entry in Get(includeGlobalDrops)) {
 				if (predicate(entry)) {
-					itemDropDatabase.RemoveFromNPC(npcType, entry);
+					Remove(entry);
 				}
 			}
 		}

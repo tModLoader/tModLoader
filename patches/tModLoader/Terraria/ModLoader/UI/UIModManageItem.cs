@@ -95,7 +95,7 @@ namespace Terraria.ModLoader.UI
 				{
 					{ "name", Name },
 					{ "steamid64", ModLoader.SteamID64 },
-					{ "modloaderversion", ModLoader.versionedName },
+					{ "modloaderversion", BuildInfo.versionedName },
 					{ "passphrase", ModLoader.modBrowserPassphrase },
 				};
 				byte[] result = UploadFile.UploadFiles(UNPUBLISH_URL, null, values);
