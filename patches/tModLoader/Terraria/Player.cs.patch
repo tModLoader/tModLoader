@@ -139,17 +139,26 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
-@@ -2051,11 +_,13 @@
+@@ -2050,12 +_,20 @@
+ 			itemTimeMax = frames;
  		}
  
- 		public void ApplyItemTime(Item sItem) {
+-		public void ApplyItemTime(Item sItem) {
 -			SetItemTime(sItem.useTime);
++		public void ApplyItemTime(Item sItem, bool? callUseItem = null) {
++			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
++				return;
++
 +			int totalUseTime = PlayerHooks.TotalUseTime(sItem.useTime, this, sItem);
 +			SetItemTime(totalUseTime);
  		}
  
- 		public void ApplyItemTime(Item sItem, float multiplier) {
+-		public void ApplyItemTime(Item sItem, float multiplier) {
 -			SetItemTime((int)((float)sItem.useTime * multiplier));
++		public void ApplyItemTime(Item sItem, float multiplier, bool? callUseItem = null) {
++			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
++				return;
++
 +			int totalUseTime = PlayerHooks.TotalUseTime((int)(sItem.useTime * multiplier), this, sItem);
 +			SetItemTime(totalUseTime);
  		}
@@ -3441,8 +3450,8 @@
  				}
  
  				if (ItemTimeIsZero && itemAnimation > 0) {
-+					if (ItemLoader.UseItem(item, this))
-+						ApplyItemTime(item);
++					if (ItemLoader.UseItem(item, this) == true)
++						ApplyItemTime(item, false);
 +
  					if (item.hairDye >= 0) {
  						ApplyItemTime(item);

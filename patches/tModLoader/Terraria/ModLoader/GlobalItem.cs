@@ -307,10 +307,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when an item is used. Return true if using the item actually does stuff. Returns false by default.
+		/// Allows you to make things happen when an item is used. Return true if using the item actually does stuff. Returns null by default.
 		/// </summary>
-		public virtual bool UseItem(Item item, Player player) {
-			return false;
+		public virtual bool? UseItem(Item item, Player player) {
+			return null;
 		}
 
 		/// <summary>
