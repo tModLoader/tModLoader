@@ -1,4 +1,4 @@
-﻿using ExampleMod.Content.NPCS;
+﻿using ExampleMod.Content.NPCs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
