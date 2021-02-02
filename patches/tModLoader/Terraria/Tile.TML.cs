@@ -6,13 +6,17 @@ namespace Terraria
 	public partial class Tile
 	{
 		private static void SetBit(ref byte header, int position, bool value) {
-			if (value) header = (byte)(header | (1 << position));
-			else header = (byte)(header | ~(1 << position));
+			if (value)
+				header = (byte)(header | (1 << position));
+			else
+				header = (byte)(header | ~(1 << position));
 		}
 
 		private static void SetBit(ref ushort header, int position, bool value) {
-			if (value) header = (ushort)(header | (1 << position));
-			else header = (ushort)(header | ~(1 << position));
+			if (value)
+				header = (ushort)(header | (1 << position));
+			else
+				header = (ushort)(header | ~(1 << position));
 		}
 
 		private static bool IsBitSet(ushort value, int pos) {
@@ -22,7 +26,8 @@ namespace Terraria
 		public int LiquidType {
 			get => (bTileHeader & 0x60) >> 5;
 			set {
-				if (value >= LiquidID.Count) throw new Exception($"The liquid with type {value} does not exist");
+				if (value >= LiquidID.Count)
+					throw new Exception($"The liquid with type {value} does not exist");
 
 				bTileHeader &= (byte)((bTileHeader & 0x9F) | (32 * value));
 			}
