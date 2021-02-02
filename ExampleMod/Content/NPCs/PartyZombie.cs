@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using ExampleMod.Content.Items;
+using ExampleMod.Content.Buffs;
 
 namespace ExampleMod.Content.NPCS
 {
@@ -71,6 +72,17 @@ namespace ExampleMod.Content.NPCS
 				
 				dust.scale *= 1f + Main.rand.NextFloat(-0.03f, 0.03f);
 			}
+		}
+
+		public override void OnHitPlayer(Player target, int damage, bool crit) {
+			//Here we can make things happen if this NPC hits a player via its hitbox (not projectiles it shoots, this is handled in the projectile code usually)
+			//Common use is applying buffs/debuffs:
+
+			int buffType = ModContent.BuffType<AnimatedBuff>();
+			//Alternatively, you can use a vanilla buff: buffType = BuffID.Slow;
+
+			int timeToAdd = 5 * 60; //This makes it 5 seconds, one second is 60 ticks
+			target.AddBuff(buffType, timeToAdd);
 		}
 	}
 }
