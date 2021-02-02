@@ -196,16 +196,19 @@ namespace Terraria.ModLoader
 
 			NPC npc = Main.npc[index];
 
+			bool isModded = NpcToBossBar(npc.type, out ModBossBar bossBar);
+
+			if (isModded)
+				drawParams.barTexture = GetTexture(bossBar).Value;
+
 			bool modify = true;
 
 			foreach (GlobalBossBar globalBossBar in globalBossBars) {
 				modify &= globalBossBar.PreDraw(spriteBatch, npc, ref drawParams);
 			}
 
-			if (modify && NpcToBossBar(npc.type, out ModBossBar bossBar)) {
-				drawParams.barTexture = GetTexture(bossBar).Value;
+			if (modify && isModded)
 				modify = bossBar.PreDraw(spriteBatch, npc, ref drawParams);
-			}
 
 			return modify;
 		}
