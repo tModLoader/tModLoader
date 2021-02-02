@@ -146,7 +146,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			NPC.aiStyle = -1; //Custom AI, 0 has some very basic spriteDirection code we don't need
 
 			//Important if this boss has a treasure bag
-			bossBag = ModContent.ItemType<MinionBossBag>();
+			BossBag = ModContent.ItemType<MinionBossBag>();
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
@@ -161,7 +161,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			//Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
 
 			//Add the treasure bag (automatically checks for expert mode)
-			npcLoot.Add(ItemDropRule.BossBag(bossBag)); //this requires you to set BossBag in SetDefaults accordingly
+			npcLoot.Add(ItemDropRule.BossBag(BossBag)); //this requires you to set BossBag in SetDefaults accordingly
 
 			//Master mode drops go here
 
