@@ -7,6 +7,15 @@
  using Terraria.ID;
  
  namespace Terraria.GameContent.Creative
+@@ -7,7 +_,7 @@
+ 	public class ItemsSacrificedUnlocksTracker : IPersistentPerWorldContent, IOnPlayerJoining
+ 	{
+ 		public const int POSITIVE_SACRIFICE_COUNT_CAP = 9999;
+-		private Dictionary<string, int> _sacrificeCountByItemPersistentId;
++		internal Dictionary<string, int> _sacrificeCountByItemPersistentId;
+ 		public readonly Dictionary<int, int> SacrificesCountByItemIdCache;
+ 
+ 		public int LastEditId {
 @@ -47,7 +_,11 @@
  		}
  
