@@ -2612,7 +2612,7 @@
  			}
  		}
  
-@@ -31877,13 +_,30 @@
+@@ -31877,13 +_,31 @@
  				return drawBuffText;
  
  			Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color(buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer]);
@@ -2631,9 +2631,10 @@
 +
 +			bool skipped = !BuffLoader.PreDraw(spriteBatch, num, buffSlotOnPlayer, ref drawParams);
 +			(texture, drawPosition, textPosition, sourceRectangle, mouseRectangle, drawColor) = drawParams;
-+			if (!skipped) {
++
++			if (!skipped)
 +				spriteBatch.Draw(texture, drawPosition, sourceRectangle, drawColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+			}
++
 +			BuffLoader.PostDraw(skipped, spriteBatch, num, buffSlotOnPlayer, drawParams);
 +
  			if (TryGetBuffTime(buffSlotOnPlayer, out int buffTimeValue) && buffTimeValue > 2) {
