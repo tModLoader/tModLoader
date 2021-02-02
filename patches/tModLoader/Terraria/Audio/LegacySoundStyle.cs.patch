@@ -1,0 +1,37 @@
+--- src/Terraria/Terraria/Audio/LegacySoundStyle.cs
++++ src/tModLoader/Terraria/Audio/LegacySoundStyle.cs
+@@ -3,7 +_,7 @@
+ 
+ namespace Terraria.Audio
+ {
+-	public class LegacySoundStyle : SoundStyle
++	public partial class LegacySoundStyle : SoundStyle
+ 	{
+ 		private static readonly UnifiedRandom Random = new UnifiedRandom();
+ 		private readonly int _style;
+@@ -35,18 +_,18 @@
+ 			SoundId = soundId;
+ 		}
+ 
+-		private LegacySoundStyle(int soundId, int style, int variations, SoundType type, float volume, float pitchVariance)
++		private LegacySoundStyle(int soundId, int style, int variations, SoundType type, float volume, float pitch, float pitchVariance)
+-			: base(volume, pitchVariance, type) {
++			: base(volume, pitchVariance, pitch, type) {
+ 			_style = style;
+ 			Variations = variations;
+ 			SoundId = soundId;
+ 		}
+ 
+-		public LegacySoundStyle WithVolume(float volume) => new LegacySoundStyle(SoundId, _style, Variations, base.Type, volume, base.PitchVariance);
++		public LegacySoundStyle WithVolume(float volume) => new LegacySoundStyle(SoundId, _style, Variations, base.Type, volume, Pitch, base.PitchVariance);
+-		public LegacySoundStyle WithPitchVariance(float pitchVariance) => new LegacySoundStyle(SoundId, _style, Variations, base.Type, base.Volume, pitchVariance);
++		public LegacySoundStyle WithPitchVariance(float pitchVariance) => new LegacySoundStyle(SoundId, _style, Variations, base.Type, base.Volume, Pitch, pitchVariance);
+-		public LegacySoundStyle AsMusic() => new LegacySoundStyle(SoundId, _style, Variations, SoundType.Music, base.Volume, base.PitchVariance);
++		public LegacySoundStyle AsMusic() => new LegacySoundStyle(SoundId, _style, Variations, SoundType.Music, base.Volume, Pitch, base.PitchVariance);
+-		public LegacySoundStyle AsAmbient() => new LegacySoundStyle(SoundId, _style, Variations, SoundType.Ambient, base.Volume, base.PitchVariance);
++		public LegacySoundStyle AsAmbient() => new LegacySoundStyle(SoundId, _style, Variations, SoundType.Ambient, base.Volume, Pitch, base.PitchVariance);
+-		public LegacySoundStyle AsSound() => new LegacySoundStyle(SoundId, _style, Variations, SoundType.Sound, base.Volume, base.PitchVariance);
++		public LegacySoundStyle AsSound() => new LegacySoundStyle(SoundId, _style, Variations, SoundType.Sound, base.Volume, Pitch, base.PitchVariance);
+ 
+ 		public bool Includes(int soundId, int style) {
+ 			if (SoundId == soundId && style >= _style)
