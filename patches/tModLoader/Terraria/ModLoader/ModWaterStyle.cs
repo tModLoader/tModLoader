@@ -12,7 +12,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The ID of the water style.
 		/// </summary>
-		public int Type {get;internal set;}
+		public int Type { get; internal set; }
 
 		public virtual string BlockTexture => Texture + "_Block";
 
@@ -75,7 +75,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The ID of this waterfall style.
 		/// </summary>
-		public int Type {get;internal set;}
+		public int Type { get; internal set; }
 
 		protected sealed override void Register() {
 			Type = WaterfallStyleLoader.ReserveStyle();

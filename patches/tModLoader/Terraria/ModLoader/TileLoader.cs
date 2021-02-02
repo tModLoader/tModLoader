@@ -326,7 +326,7 @@ namespace Terraria.ModLoader
 		public static int OpenDoorID(Tile tile) {
 			ModTile modTile = GetTile(tile.type);
 			if (modTile != null) {
-				return modTile.openDoorID;
+				return modTile.OpenDoorID;
 			}
 			if (tile.type == TileID.ClosedDoor && (tile.frameY < 594 || tile.frameY > 646 || tile.frameX >= 54)) {
 				return TileID.OpenDoor;
@@ -341,7 +341,7 @@ namespace Terraria.ModLoader
 			ModTile modTile = GetTile(tile.type);
 
 			if (modTile != null) {
-				return modTile.closeDoorID;
+				return modTile.CloseDoorID;
 			}
 
 			if (tile.type == TileID.OpenDoor) {
@@ -354,7 +354,7 @@ namespace Terraria.ModLoader
 			ModTile modTile = GetTile(tile.type);
 
 			if (modTile != null) {
-				return modTile.openDoorID > -1;
+				return modTile.OpenDoorID > -1;
 			}
 
 			return tile.type == TileID.ClosedDoor;
@@ -395,7 +395,7 @@ namespace Terraria.ModLoader
 				if (!modTile.KillSound(i, j)) {
 					return false;
 				}
-				SoundEngine.PlaySound(modTile.soundType, i * 16, j * 16, modTile.soundStyle);
+				SoundEngine.PlaySound(modTile.SoundType, i * 16, j * 16, modTile.SoundStyle);
 				return false;
 			}
 			return true;
@@ -445,8 +445,8 @@ namespace Terraria.ModLoader
 					return false;
 				}
 
-				if (modTile.drop > 0) {
-					Item.NewItem(i * 16, j * 16, 16, 16, modTile.drop, 1, false, -1);
+				if (modTile.ItemDrop > 0) {
+					Item.NewItem(i * 16, j * 16, 16, 16, modTile.ItemDrop, 1, false, -1);
 				}
 
 				return false;
@@ -497,6 +497,16 @@ namespace Terraria.ModLoader
 
 			foreach (var hook in HookNearbyEffects) {
 				hook(i, j, type, closer);
+			}
+		}
+
+		public static void ModifyTorchLuck(Player player, ref float positiveLuck, ref float negativeLuck) {
+			foreach (int type in player.nearbyModTorch) {
+				float f = GetTile(type).GetTorchLuck(player);
+				if (f > 0)
+					positiveLuck += f;
+				else
+					negativeLuck += -f;
 			}
 		}
 
@@ -578,7 +588,7 @@ namespace Terraria.ModLoader
 		public static void SetAnimationFrame(int type, int i, int j, ref int frameXOffset, ref int frameYOffset) {
 			ModTile modTile = GetTile(type);
 			if (modTile != null) {
-				frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type];
+				frameYOffset = modTile.AnimationFrameHeight * Main.tileFrame[type];
 				modTile.AnimateIndividualTile(type, i, j, ref frameXOffset, ref frameYOffset);
 			}
 		}
@@ -658,13 +668,13 @@ namespace Terraria.ModLoader
 		public static void MineDamage(int minePower, ref int damage) {
 			Tile target = Main.tile[Player.tileTargetX, Player.tileTargetY];
 			ModTile modTile = GetTile(target.type);
-			damage += modTile != null ? (int)(1.2f * minePower / modTile.mineResist) : (int)(1.2f * minePower);
+			damage += modTile != null ? (int)(1.2f * minePower / modTile.MineResist) : (int)(1.2f * minePower);
 		}
 		//in Terraria.Player.ItemCheck at end of else if chain setting num to 0 add
 		//  else { TileLoader.PickPowerCheck(tile, pickPower, ref num); }
 		public static void PickPowerCheck(Tile target, int pickPower, ref int damage) {
 			ModTile modTile = GetTile(target.type);
-			if (modTile != null && pickPower < modTile.minPick) {
+			if (modTile != null && pickPower < modTile.MinPick) {
 				damage = 0;
 			}
 		}
@@ -683,7 +693,7 @@ namespace Terraria.ModLoader
 		public static void AdjTiles(Player player, int type) {
 			ModTile modTile = GetTile(type);
 			if (modTile != null) {
-				foreach (int k in modTile.adjTiles) {
+				foreach (int k in modTile.AdjTiles) {
 					player.adjTile[k] = true;
 				}
 			}

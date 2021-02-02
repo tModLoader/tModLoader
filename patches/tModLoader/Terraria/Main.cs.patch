@@ -384,7 +384,7 @@
  			mouseBorderColorSlider.SetHSL(MouseBorderColor);
  			mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
 -			if (currentValue != 234)
-+			if (currentValue != 234 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != ModLoader.ModLoader.version) {
++			if (currentValue != 234 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 +				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
 +			}
@@ -877,7 +877,7 @@
  						num2 = 1;
  
 -					if (num2 == 0)
-+					if (num2 == 0 && (npc[i].ModNPC == null || npc[i].ModNPC.music < 0))
++					if (num2 == 0 && (npc[i].ModNPC == null || npc[i].ModNPC.Music < 0))
  						continue;
  
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[i].position.X + (float)(npc[i].width / 2)) - num, (int)(npc[i].position.Y + (float)(npc[i].height / 2)) - num, num * 2, num * 2);
@@ -904,9 +904,9 @@
  
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[j].position.X + (float)(npc[j].width / 2)) - num2, (int)(npc[j].position.Y + (float)(npc[j].height / 2)) - num2, num2 * 2, num2 * 2);
  					if (rectangle.Intersects(value)) {
-+						if (npc[j].ModNPC != null && npc[j].ModNPC.music >= 0 && (modMusic < 0 || npc[j].ModNPC.musicPriority > modPriority)) {
-+							modMusic = npc[j].ModNPC.music;
-+							modPriority = npc[j].ModNPC.musicPriority;
++						if (npc[j].ModNPC != null && npc[j].ModNPC.Music >= 0 && (modMusic < 0 || npc[j].ModNPC.MusicPriority > modPriority)) {
++							modMusic = npc[j].ModNPC.Music;
++							modPriority = npc[j].ModNPC.MusicPriority;
 +						}
  						switch (num3) {
  							case 1:
@@ -1414,7 +1414,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15033,95 +_,111 @@
+@@ -15033,82 +_,82 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1533,46 +1533,26 @@
 +					toolTipNames[numLines] = "Damage";
  
  					numLines++;
++					/*
  					if (item.melee) {
--						int num3 = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
--						toolTipLine[numLines] = num3 + Lang.tip[5].Value;
-+						int crit = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
-+						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
-+						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
-+						toolTipLine[numLines] = crit + Lang.tip[5].Value;
-+						toolTipNames[numLines] = "CritChance";
+ 						int num3 = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
+ 						toolTipLine[numLines] = num3 + Lang.tip[5].Value;
+@@ -15124,6 +_,14 @@
+ 						toolTipLine[numLines] = num5 + Lang.tip[5].Value;
  						numLines++;
  					}
- 					else if (item.ranged) {
--						int num4 = player[myPlayer].rangedCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
--						toolTipLine[numLines] = num4 + Lang.tip[5].Value;
-+						int crit = player[myPlayer].rangedCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
-+						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
-+						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
-+						toolTipLine[numLines] = crit + Lang.tip[5].Value;
-+						toolTipNames[numLines] = "CritChance";
- 						numLines++;
- 					}
- 					else if (item.magic) {
--						int num5 = player[myPlayer].magicCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
--						toolTipLine[numLines] = num5 + Lang.tip[5].Value;
-+						int crit = player[myPlayer].magicCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
-+						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
-+						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
++					*/
++					// TODO: make this not inherently exclude summons. minions should be allowed to crit in the right circumstances, too
++					if (!item.summon) {
++						int crit = player[myPlayer].GetWeaponCrit(item);
 +						toolTipLine[numLines] = crit + Lang.tip[5].Value;
 +						toolTipNames[numLines] = "CritChance";
 +						numLines++;
 +					}
-+					else if (!item.summon) {
-+						int crit = item.crit;
-+						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
-+						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
-+						toolTipLine[numLines] = crit + Lang.tip[5].Value;
-+						toolTipNames[numLines] = "CritChance";
- 						numLines++;
- 					}
  
-@@ -15143,6 +_,7 @@
+ 					if (item.useStyle != 0 && !item.summon) {
+ 						if (item.useAnimation <= 8)
+@@ -15143,10 +_,13 @@
  						else
  							toolTipLine[numLines] = Lang.tip[13].Value;
  
@@ -1580,12 +1560,19 @@
  						numLines++;
  					}
  
-@@ -15156,6 +_,8 @@
+ 					float num6 = item.knockBack;
++					num6 = player[myPlayer].GetWeaponKnockback(item, num6);
++					/*
+ 					if (item.summon)
+ 						num6 += player[myPlayer].minionKB;
+ 
+@@ -15156,6 +_,9 @@
  					if (player[myPlayer].inventory[player[myPlayer].selectedItem].type == 3106 && item.type == 3106)
  						num6 += num6 * (1f - player[myPlayer].stealth);
  
 +					ItemLoader.GetWeaponKnockback(item, player[myPlayer], ref num6);
 +					PlayerHooks.GetWeaponKnockback(player[myPlayer], item, ref num6);
++					*/
  					if (num6 == 0f)
  						toolTipLine[numLines] = Lang.tip[14].Value;
  					else if ((double)num6 <= 1.5)
@@ -2094,7 +2081,7 @@
  			if (theNPC.type == 125)
  				num = 30f;
 +			else if (theNPC.ModNPC != null)
-+				num = theNPC.ModNPC.drawOffsetY;
++				num = theNPC.ModNPC.DrawOffsetY;
  			else if (theNPC.type == 54)
  				num = 2f;
  			else if (theNPC.type == 205)
@@ -2122,17 +2109,21 @@
  			NPC rCurrentNPC = npc[iNPCIndex];
  			Vector2 screenPos = screenPosition;
  			DrawNPCDirect(spriteBatch, rCurrentNPC, behindTiles, screenPos);
-@@ -16791,6 +_,13 @@
+@@ -16791,6 +_,17 @@
  				}
  			}
  
 +			NPCLoader.DrawEffects(rCurrentNPC, ref npcColor); //TODO: Effects were previously done before drawing, here, but 1.4 moved them to updates in UpdateNPC_BuffApplyVFX(). Should this hook be moved and renamed? --Mirsario
 +			
-+			if (!NPCLoader.PreDraw(rCurrentNPC, spriteBatch, npcColor)) {
-+				NPCLoader.PostDraw(rCurrentNPC, spriteBatch, npcColor);
-+				return;
++			if (NPCLoader.PreDraw(rCurrentNPC, spriteBatch, npcColor)) {
++				DrawNPCDirect_Inner(spriteBatch, rCurrentNPC, behindTiles, screenPos, ref npcColor);
 +			}
 +
++			NPCLoader.PostDraw(rCurrentNPC, spriteBatch, npcColor);
++		}
++
++		private void DrawNPCDirect_Inner(SpriteBatch mySpriteBatch, NPC rCurrentNPC, bool behindTiles, Vector2 screenPos, ref Color npcColor) {
++			int type = rCurrentNPC.type;
  			npcColor = rCurrentNPC.GetNPCColorTintedByBuffs(npcColor);
  			if (type == 50) {
  				Vector2 zero = Vector2.Zero;

@@ -422,6 +422,7 @@ namespace Terraria.ModLoader
 		
 		private static void CacheVanillaState() {
 			EffectsTracker.CacheVanillaState();
+			DamageClassLoader.RegisterDefaultClasses();
 		}
 
 		internal static Mod LoadingMod { get; private set; }
@@ -567,6 +568,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static void ResizeArrays(bool unloading = false) {
+			DamageClassLoader.ResizeArrays();
 			ItemLoader.ResizeArrays(unloading);
 			EquipLoader.ResizeAndFillArrays();
 			ModPrefix.ResizeArrays();

@@ -34,10 +34,10 @@ namespace ExampleMod.Content.NPCS
 			NPC.knockBackResist = 0.5f;
 			NPC.aiStyle = 3;
 
-			aiType = NPCID.Zombie; // Use vanilla zombie's type when executing AI code.
-			animationType = NPCID.Zombie; // Use vanilla zombie's type when executing animation code.
-			banner = Item.NPCtoBanner(NPCID.Zombie); // Makes this NPC get affected by the normal zombie banner.
-			bannerItem = Item.BannerToItem(banner); // Makes kills of this NPC go towards dropping the banner it's associated with.
+			AIType = NPCID.Zombie; // Use vanilla zombie's type when executing AI code.
+			AnimationType = NPCID.Zombie; // Use vanilla zombie's type when executing animation code.
+			Banner = Item.NPCtoBanner(NPCID.Zombie); // Makes this NPC get affected by the normal zombie banner.
+			BannerItem = Item.BannerToItem(Banner); // Makes kills of this NPC go towards dropping the banner it's associated with.
 		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot) { 

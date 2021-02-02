@@ -24,22 +24,24 @@ namespace Terraria.ModLoader
 		}
 
 		public static void Register(T instance) {
-			RegisterInternal(instance, instance.Name, instance.FullName);
+			RegisterWithName(instance, instance.Name, instance.FullName);
 
 			//Add legacy aliases, if the type has any.
 			foreach (string legacyName in LegacyNameAttribute.GetLegacyNamesOfType(instance.GetType())) {
-				RegisterInternal(instance, legacyName, $"{instance.Mod.Name}/{legacyName}");
+				RegisterWithName(instance, legacyName, $"{instance.Mod?.Name ?? "Terraria"}/{legacyName}");
 			}
 		}
 
-		private static void RegisterInternal(T instance, string name, string fullName) {
+		private static void RegisterWithName(T instance, string name, string fullName) {
 			if (dict.ContainsKey(fullName))
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorDuplicateName", typeof(T).Name, fullName));
 
 			dict[fullName] = instance;
 
-			if (!tieredDict.TryGetValue(instance.Mod.Name, out var subDictionary))
-				tieredDict[instance.Mod.Name] = subDictionary = new Dictionary<string, T>();
+			string modName = instance.Mod?.Name ?? "Terraria";
+
+			if (!tieredDict.TryGetValue(modName, out var subDictionary))
+				tieredDict[modName] = subDictionary = new Dictionary<string, T>();
 
 			subDictionary[name] = instance;
 		}
