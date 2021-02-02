@@ -1,8 +1,9 @@
 --- src/Terraria/Terraria/GameContent/UI/BigProgressBar/BigProgressBarHelper.cs
 +++ src/tModLoader/Terraria/GameContent/UI/BigProgressBar/BigProgressBarHelper.cs
-@@ -1,5 +_,6 @@
+@@ -1,5 +_,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
++using Terraria.DataStructures;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.UI.BigProgressBar

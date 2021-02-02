@@ -4,6 +4,7 @@ using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.DataStructures;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.Localization;
 using Terraria.ModLoader.Default;

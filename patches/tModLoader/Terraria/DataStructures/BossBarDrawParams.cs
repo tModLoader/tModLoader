@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Terraria.ModLoader
+namespace Terraria.DataStructures
 {
 	/// <summary>
 	/// Holds data required for boss bar drawing.
