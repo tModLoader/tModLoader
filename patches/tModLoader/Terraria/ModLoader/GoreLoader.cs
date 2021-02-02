@@ -83,9 +83,9 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void SetupUpdateType(Gore gore) {
-			if (gore.ModGore != null && gore.ModGore.updateType > 0) {
+			if (gore.ModGore != null && gore.ModGore.UpdateType > 0) {
 				gore.realType = gore.type;
-				gore.type = gore.ModGore.updateType;
+				gore.type = gore.ModGore.UpdateType;
 			}
 		}
 

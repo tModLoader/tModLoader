@@ -39,7 +39,7 @@
  				switch (msgType) {
  					case 1:
 -						writer.Write("Terraria" + 234);
-+						writer.Write(ModLoader.ModLoader.versionedName);
++						writer.Write(BuildInfo.versionedName);
  						break;
  					case 2:
  						text.Serialize(writer);

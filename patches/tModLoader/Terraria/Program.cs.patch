@@ -100,7 +100,7 @@
 +			SavePath =
 +				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
 +				LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
-+				Platform.Get<IPathService>().GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader{(ModLoader.ModLoader.IsBeta ? Path.DirectorySeparatorChar + "Beta" : "")}");
++				Platform.Get<IPathService>().GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader{(!BuildInfo.IsRelease ? Path.DirectorySeparatorChar + "Beta" : "")}");
 +
 +			if (File.Exists("savehere.txt"))
 +				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.

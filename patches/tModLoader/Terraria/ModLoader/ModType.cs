@@ -17,7 +17,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual string Name => GetType().Name;
 
-		public string FullName => $"{Mod.Name}/{Name}";
+		public string FullName => $"{Mod?.Name ?? "Terraria"}/{Name}";
 
 		void ILoadable.Load(Mod mod) {
 			Mod = mod;
