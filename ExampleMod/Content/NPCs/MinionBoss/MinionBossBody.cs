@@ -158,6 +158,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
 			//Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
 
+			//Add the treasure bag (automatically checks for expert mode)
+			npcLoot.Add(ItemDropRule.BossBag(bossBag)); //this requires you to set BossBag in SetDefaults accordingly
+
 			//Master mode drops go here
 
 			//All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
