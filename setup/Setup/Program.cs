@@ -18,7 +18,7 @@ namespace Terraria.ModLoader.Setup
 		public static string SteamDir => Settings.Default.SteamDir;
 		public static string TerrariaPath => Path.Combine(SteamDir, "Terraria.exe");
 		public static string TerrariaServerPath => Path.Combine(SteamDir, "TerrariaServer.exe");
-		public static string TMLSteamDir { get; private set; }
+		public static string tMLSteamDir { get; private set; }
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -36,11 +36,11 @@ namespace Terraria.ModLoader.Setup
 			Settings.Default.SteamDir = @".\1412\Windows";
 #endif
 
-			TMLSteamDir = Path.Combine(Path.GetDirectoryName(SteamDir), "tModLoader");
-			if (!Directory.Exists(TMLSteamDir))
-				TMLSteamDir = SteamDir;
+			tMLSteamDir = Path.Combine(Path.GetDirectoryName(SteamDir), "tModLoader");
+			if (!Directory.Exists(tMLSteamDir))
+				tMLSteamDir = SteamDir;
 
-			LoadWorkspaceInfo();
+			UpdateTargetsFile();
 
 #if AUTO
 			Console.WriteLine("Automatic setup start");
@@ -132,35 +132,39 @@ namespace Terraria.ModLoader.Setup
 				else {
 					Settings.Default.SteamDir = Path.GetDirectoryName(dialog.FileName);
 					Settings.Default.Save();
-
-					workspaceInfo.TerrariaSteamPath = SteamDir;
-					
-					UpdateWorkspaceInfo();
-
+					UpdateTargetsFile();
 					return true;
 				}
 			}
 		}
 
-		private static readonly string workspaceInfoFilePath = Path.Combine("src", "WorkspaceInfo.targets");
-		private static WorkspaceInfo workspaceInfo;
+		private static readonly string targetsFilePath = Path.Combine("src", "WorkspaceInfo.targets");
 
-		private static void LoadWorkspaceInfo() {
-			WorkspaceInfo.Load(workspaceInfoFilePath, out workspaceInfo);
+		private static void UpdateTargetsFile() {
+			SetupOperation.CreateParentDirectory(targetsFilePath);
 
-			UpdateWorkspaceInfo();
-		}
+			string gitsha = "";
+			RunCmd("", "git", "rev-parse HEAD", s => gitsha = s.Trim());
 
-		private static void UpdateWorkspaceInfo() {
-			SetupOperation.CreateParentDirectory(workspaceInfoFilePath);
+			string branch = "";
+			RunCmd("", "git", "rev-parse --abbrev-ref HEAD", s => branch = s.Trim());
 
-			workspaceInfo.TerrariaSteamPath ??= SteamDir;
-			workspaceInfo.TModLoaderSteamPath ??= TMLSteamDir;
 
-			RunCmd("", "git", "rev-parse HEAD", s => workspaceInfo.CommitSHA = s.Trim());
-			RunCmd("", "git", "rev-parse --abbrev-ref HEAD", s => workspaceInfo.BranchName = s.Trim());
+			string targetsText =
+$@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+  <PropertyGroup>
+	<BranchName>{branch}</BranchName>
+	<CommitSHA>{gitsha}</CommitSHA>
+	<TerrariaSteamPath>{SteamDir}</TerrariaSteamPath>
+    <tModLoaderSteamPath>{tMLSteamDir}</tModLoaderSteamPath>
+  </PropertyGroup>
+</Project>";
 
-			WorkspaceInfo.Save(workspaceInfo, workspaceInfoFilePath);
+			if (File.Exists(targetsFilePath) && targetsText == File.ReadAllText(targetsFilePath))
+				return;
+
+			File.WriteAllText(targetsFilePath, targetsText);
 		}
 	}
 }
