@@ -11,15 +11,15 @@ namespace ExampleMod.Content.Items.Tools
 	// It may prove a useful guide for ModItems with similar behaviors.
 	internal class ExampleMagicMirror : ExampleItem
 	{
-		public override string Texture => $"Terraria/Item_{ItemID.IceMirror}"; // Copies the texture for the Ice Mirror, make your own texture if need be.
+		public override string Texture => $"Terraria/Images/Item_{ItemID.IceMirror}"; // Copies the texture for the Ice Mirror, make your own texture if need be.
 
 		public override void SetStaticDefaults() {
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1; // Amount of this item needed to research and become available in Journey mode's duplication menu. Amount used based upon vanilla Magic Mirror's amount needed.
 		}
 
 		public override void SetDefaults() {
-			item.CloneDefaults(ItemID.IceMirror); // Copies the defaults from the Ice Mirror.
-			item.color = Color.Violet; // Sets the item color
+			Item.CloneDefaults(ItemID.IceMirror); // Copies the defaults from the Ice Mirror.
+			Item.color = Color.Violet; // Sets the item color
 		}
 
 		// UseStyle is called each frame that the item is being actively used.
@@ -31,10 +31,10 @@ namespace ExampleMod.Content.Items.Tools
 
 			// This sets up the itemTime correctly.
 			if (player.itemTime == 0) {
-				player.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(player, item));
+				player.itemTime = (int)(Item.useTime / PlayerHooks.TotalUseTimeMultiplier(player, Item));
 			}
-			else if (player.itemTime == (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(player, item)) / 2) {
-				// This code runs once halfway through the useTime of the item. You'll notice with magic mirrors you are still holding the item for a little bit after you've teleported.
+			else if (player.itemTime == (int)(Item.useTime / PlayerHooks.TotalUseTimeMultiplier(player, Item)) / 2) {
+				// This code runs once halfway through the useTime of the Item. You'll notice with magic mirrors you are still holding the item for a little bit after you've teleported.
 
 				// Make dust 70 times for a cool effect.
 				for (int d = 0; d < 70; d++) {

@@ -13,27 +13,20 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModWall : ModTexturedType
 	{
-		/// <summary>
-		/// The internal ID of this type of wall.
-		/// </summary>
-		public ushort Type {get;internal set;}
+		/// <summary> The internal ID of this type of wall. </summary>
+		public ushort Type { get; internal set; }
 
-		/// <summary>
-		/// The default type of sound made when this wall is hit. Defaults to 0.
-		/// </summary>
-		public int soundType = 0;
-		/// <summary>
-		/// The default style of sound made when this wall is hit. Defaults to 1.
-		/// </summary>
-		public int soundStyle = 1;
-		/// <summary>
-		/// The default type of dust made when this wall is hit. Defaults to 0.
-		/// </summary>
-		public int dustType = 0;
-		/// <summary>
-		/// The default type of item dropped when this wall is killed. Defaults to 0, which means no item.
-		/// </summary>
-		public int drop = 0;
+		/// <summary> The default type of sound made when this wall is hit. Defaults to 0. </summary>
+		public int SoundType { get; set; }
+
+		/// <summary> The default style of sound made when this wall is hit. Defaults to 1. </summary>
+		public int SoundStyle { get; set; } = 1;
+
+		/// <summary> The default type of dust made when this wall is hit. Defaults to 0. </summary>
+		public int DustType { get; set; }
+
+		/// <summary> The default type of item dropped when this wall is killed. Defaults to 0, which means no item. </summary>
+		public int ItemDrop { get; set; }
 
 		/// <summary>
 		/// Adds an entry to the minimap for this wall with the given color and display name. This should be called in SetDefaults.
@@ -106,7 +99,7 @@ namespace Terraria.ModLoader
 			WallLoader.walls.Add(this);
 		}
 
-		public override void SetupContent() {
+		public sealed override void SetupContent() {
 			TextureAssets.Wall[Type] = ModContent.GetTexture(Texture);
 			SetDefaults();
 			WallID.Search.Add(FullName, Type);
@@ -135,7 +128,7 @@ namespace Terraria.ModLoader
 		/// Allows you to modify the default type of dust created when the wall at the given coordinates is hit. Return false to stop the default dust (the type parameter) from being created. Returns true by default.
 		/// </summary>
 		public virtual bool CreateDust(int i, int j, ref int type) {
-			type = dustType;
+			type = DustType;
 			return true;
 		}
 
@@ -143,7 +136,7 @@ namespace Terraria.ModLoader
 		/// Allows you to customize which items the wall at the given coordinates drops. Return false to stop the game from dropping the tile's default item (the type parameter). Returns true by default.
 		/// </summary>
 		public virtual bool Drop(int i, int j, ref int type) {
-			type = drop;
+			type = ItemDrop;
 			return true;
 		}
 

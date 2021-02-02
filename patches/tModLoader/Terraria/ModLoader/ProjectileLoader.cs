@@ -111,10 +111,10 @@ namespace Terraria.ModLoader
 
 		internal static void SetDefaults(Projectile projectile, bool createModProjectile = true) {
 			if (IsModProjectile(projectile) && createModProjectile) {
-				projectile.modProjectile = GetProjectile(projectile.type).NewInstance(projectile);
+				projectile.ModProjectile = GetProjectile(projectile.type).NewInstance(projectile);
 			}
 			projectile.globalProjectiles = InstancedGlobals.Select(g => g.NewInstance(projectile)).ToArray();
-			projectile.modProjectile?.SetDefaults();
+			projectile.ModProjectile?.SetDefaults();
 			foreach (GlobalProjectile g in HookSetDefaults.arr) {
 				g.Instance(projectile).SetDefaults(projectile);
 			}
@@ -124,9 +124,9 @@ namespace Terraria.ModLoader
 		public static void ProjectileAI(Projectile projectile) {
 			if (PreAI(projectile)) {
 				int type = projectile.type;
-				bool useAiType = projectile.modProjectile != null && projectile.modProjectile.aiType > 0;
+				bool useAiType = projectile.ModProjectile != null && projectile.ModProjectile.AIType > 0;
 				if (useAiType) {
-					projectile.type = projectile.modProjectile.aiType;
+					projectile.type = projectile.ModProjectile.AIType;
 				}
 				projectile.VanillaAI();
 				if (useAiType) {
@@ -144,8 +144,8 @@ namespace Terraria.ModLoader
 			foreach (GlobalProjectile g in HookPreAI.arr) {
 				result &= g.Instance(projectile).PreAI(projectile);
 			}
-			if (result && projectile.modProjectile != null) {
-				return projectile.modProjectile.PreAI();
+			if (result && projectile.ModProjectile != null) {
+				return projectile.ModProjectile.PreAI();
 			}
 			return result;
 		}
@@ -153,7 +153,7 @@ namespace Terraria.ModLoader
 		private static HookList HookAI = AddHook<Action<Projectile>>(g => g.AI);
 
 		public static void AI(Projectile projectile) {
-			projectile.modProjectile?.AI();
+			projectile.ModProjectile?.AI();
 
 			foreach (GlobalProjectile g in HookAI.arr) {
 				g.Instance(projectile).AI(projectile);
@@ -163,7 +163,7 @@ namespace Terraria.ModLoader
 		private static HookList HookPostAI = AddHook<Action<Projectile>>(g => g.PostAI);
 
 		public static void PostAI(Projectile projectile) {
-			projectile.modProjectile?.PostAI();
+			projectile.ModProjectile?.PostAI();
 
 			foreach (GlobalProjectile g in HookPostAI.arr) {
 				g.Instance(projectile).PostAI(projectile);
@@ -172,11 +172,11 @@ namespace Terraria.ModLoader
 		//in Terraria.NetMessage.SendData at end of case 27 call
 		//  ProjectileLoader.SendExtraAI(projectile, writer, ref bb14);
 		public static byte[] SendExtraAI(Projectile projectile, ref BitsByte flags) {
-			if (projectile.modProjectile != null) {
+			if (projectile.ModProjectile != null) {
 				byte[] data;
 				using (MemoryStream stream = new MemoryStream()) {
 					using (BinaryWriter modWriter = new BinaryWriter(stream)) {
-						projectile.modProjectile.SendExtraAI(modWriter);
+						projectile.ModProjectile.SendExtraAI(modWriter);
 						modWriter.Flush();
 						data = stream.ToArray();
 					}
@@ -199,10 +199,10 @@ namespace Terraria.ModLoader
 		//in Terraria.MessageBuffer.GetData for case 27 before calling ProjectileFixDesperation add
 		//  ProjectileLoader.ReceiveExtraAI(projectile, extraAI);
 		public static void ReceiveExtraAI(Projectile projectile, byte[] extraAI) {
-			if (extraAI.Length > 0 && projectile.modProjectile != null) {
+			if (extraAI.Length > 0 && projectile.ModProjectile != null) {
 				using (MemoryStream stream = new MemoryStream(extraAI)) {
 					using (BinaryReader reader = new BinaryReader(stream)) {
-						projectile.modProjectile.ReceiveExtraAI(reader);
+						projectile.ModProjectile.ReceiveExtraAI(reader);
 					}
 				}
 			}
@@ -211,7 +211,7 @@ namespace Terraria.ModLoader
 		private static HookList HookShouldUpdatePosition = AddHook<Func<Projectile, bool>>(g => g.ShouldUpdatePosition);
 
 		public static bool ShouldUpdatePosition(Projectile projectile) {
-			if (IsModProjectile(projectile) && !projectile.modProjectile.ShouldUpdatePosition()) {
+			if (IsModProjectile(projectile) && !projectile.ModProjectile.ShouldUpdatePosition()) {
 				return false;
 			}
 			foreach (GlobalProjectile g in HookShouldUpdatePosition.arr) {
@@ -226,7 +226,7 @@ namespace Terraria.ModLoader
 		private static HookList HookTileCollideStyle = AddHook<DelegateTileCollideStyle>(g => g.TileCollideStyle);
 
 		public static bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough) {
-			if (IsModProjectile(projectile) && !projectile.modProjectile.TileCollideStyle(ref width, ref height, ref fallThrough)) {
+			if (IsModProjectile(projectile) && !projectile.ModProjectile.TileCollideStyle(ref width, ref height, ref fallThrough)) {
 				return false;
 			}
 
@@ -245,8 +245,8 @@ namespace Terraria.ModLoader
 			foreach (GlobalProjectile g in HookOnTileCollide.arr) {
 				result &= g.Instance(projectile).OnTileCollide(projectile, oldVelocity);
 			}
-			if (result && projectile.modProjectile != null) {
-				return projectile.modProjectile.OnTileCollide(oldVelocity);
+			if (result && projectile.ModProjectile != null) {
+				return projectile.ModProjectile.OnTileCollide(oldVelocity);
 			}
 			return result;
 		}
@@ -260,7 +260,7 @@ namespace Terraria.ModLoader
 					return canCutTiles.Value;
 				}
 			}
-			return projectile.modProjectile?.CanCutTiles();
+			return projectile.ModProjectile?.CanCutTiles();
 		}
 
 		private static HookList HookCutTiles = AddHook<Action<Projectile>>(g => g.CutTiles);
@@ -269,7 +269,7 @@ namespace Terraria.ModLoader
 			foreach (GlobalProjectile g in HookCutTiles.arr) {
 				g.Instance(projectile).CutTiles(projectile);
 			}
-			projectile.modProjectile?.CutTiles();
+			projectile.ModProjectile?.CutTiles();
 		}
 
 		private static HookList HookPreKill = AddHook<Func<Projectile, int, bool>>(g => g.PreKill);
@@ -279,8 +279,8 @@ namespace Terraria.ModLoader
 			foreach (GlobalProjectile g in HookPreKill.arr) {
 				result &= g.Instance(projectile).PreKill(projectile, timeLeft);
 			}
-			if (result && projectile.modProjectile != null) {
-				return projectile.modProjectile.PreKill(timeLeft);
+			if (result && projectile.ModProjectile != null) {
+				return projectile.ModProjectile.PreKill(timeLeft);
 			}
 			return result;
 		}
@@ -288,7 +288,7 @@ namespace Terraria.ModLoader
 		private static HookList HookKill = AddHook<Action<Projectile, int>>(g => g.Kill);
 
 		public static void Kill(Projectile projectile, int timeLeft) {
-			projectile.modProjectile?.Kill(timeLeft);
+			projectile.ModProjectile?.Kill(timeLeft);
 
 			foreach (GlobalProjectile g in HookKill.arr) {
 				g.Instance(projectile).Kill(projectile, timeLeft);
@@ -312,13 +312,13 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			return result ?? projectile.modProjectile?.CanDamage();
+			return result ?? projectile.ModProjectile?.CanDamage();
 		}
 
 		private static HookList HookMinionContactDamage = AddHook<Func<Projectile, bool>>(g => g.MinionContactDamage);
 
 		public static bool MinionContactDamage(Projectile projectile) {
-			if (projectile.modProjectile != null && !projectile.modProjectile.MinionContactDamage()) {
+			if (projectile.ModProjectile != null && !projectile.ModProjectile.MinionContactDamage()) {
 				return false;
 			}
 
@@ -335,7 +335,7 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyDamageHitbox = AddHook<DelegateModifyDamageHitbox>(g => g.ModifyDamageHitbox);
 
 		public static void ModifyDamageHitbox(Projectile projectile, ref Rectangle hitbox) {
-			projectile.modProjectile?.ModifyDamageHitbox(ref hitbox);
+			projectile.ModProjectile?.ModifyDamageHitbox(ref hitbox);
 			foreach (GlobalProjectile g in HookModifyDamageHitbox.arr) {
 				g.Instance(projectile).ModifyDamageHitbox(projectile, ref hitbox);
 			}
@@ -354,8 +354,8 @@ namespace Terraria.ModLoader
 					flag = canHit.Value;
 				}
 			}
-			if (projectile.modProjectile != null) {
-				bool? canHit = projectile.modProjectile.CanHitNPC(target);
+			if (projectile.ModProjectile != null) {
+				bool? canHit = projectile.ModProjectile.CanHitNPC(target);
 				if (canHit.HasValue && !canHit.Value) {
 					return false;
 				}
@@ -370,7 +370,7 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(g => g.ModifyHitNPC);
 
 		public static void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
-			projectile.modProjectile?.ModifyHitNPC(target, ref damage, ref knockback, ref crit, ref hitDirection);
+			projectile.ModProjectile?.ModifyHitNPC(target, ref damage, ref knockback, ref crit, ref hitDirection);
 
 			foreach (GlobalProjectile g in HookModifyHitNPC.arr) {
 				g.Instance(projectile).ModifyHitNPC(projectile, target, ref damage, ref knockback, ref crit, ref hitDirection);
@@ -380,7 +380,7 @@ namespace Terraria.ModLoader
 		private static HookList HookOnHitNPC = AddHook<Action<Projectile, NPC, int, float, bool>>(g => g.OnHitNPC);
 
 		public static void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit) {
-			projectile.modProjectile?.OnHitNPC(target, damage, knockback, crit);
+			projectile.ModProjectile?.OnHitNPC(target, damage, knockback, crit);
 
 			foreach (GlobalProjectile g in HookOnHitNPC.arr) {
 				g.Instance(projectile).OnHitNPC(projectile, target, damage, knockback, crit);
@@ -395,8 +395,8 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-			if (projectile.modProjectile != null) {
-				return projectile.modProjectile.CanHitPvp(target);
+			if (projectile.ModProjectile != null) {
+				return projectile.ModProjectile.CanHitPvp(target);
 			}
 			return true;
 		}
@@ -405,7 +405,7 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyHitPvp = AddHook<DelegateModifyHitPvp>(g => g.ModifyHitPvp);
 
 		public static void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit) {
-			projectile.modProjectile?.ModifyHitPvp(target, ref damage, ref crit);
+			projectile.ModProjectile?.ModifyHitPvp(target, ref damage, ref crit);
 
 			foreach (GlobalProjectile g in HookModifyHitPvp.arr) {
 				g.Instance(projectile).ModifyHitPvp(projectile, target, ref damage, ref crit);
@@ -415,7 +415,7 @@ namespace Terraria.ModLoader
 		private static HookList HookOnHitPvp = AddHook<Action<Projectile, Player, int, bool>>(g => g.OnHitPvp);
 
 		public static void OnHitPvp(Projectile projectile, Player target, int damage, bool crit) {
-			projectile.modProjectile?.OnHitPvp(target, damage, crit);
+			projectile.ModProjectile?.OnHitPvp(target, damage, crit);
 
 			foreach (GlobalProjectile g in HookOnHitPvp.arr) {
 				g.Instance(projectile).OnHitPvp(projectile, target, damage, crit);
@@ -430,8 +430,8 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-			if (projectile.modProjectile != null) {
-				return projectile.modProjectile.CanHitPlayer(target);
+			if (projectile.ModProjectile != null) {
+				return projectile.ModProjectile.CanHitPlayer(target);
 			}
 			return true;
 		}
@@ -440,7 +440,7 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyHitPlayer = AddHook<DelegateModifyHitPlayer>(g => g.ModifyHitPlayer);
 
 		public static void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit) {
-			projectile.modProjectile?.ModifyHitPlayer(target, ref damage, ref crit);
+			projectile.ModProjectile?.ModifyHitPlayer(target, ref damage, ref crit);
 
 			foreach (GlobalProjectile g in HookModifyHitPlayer.arr) {
 				g.Instance(projectile).ModifyHitPlayer(projectile, target, ref damage, ref crit);
@@ -450,7 +450,7 @@ namespace Terraria.ModLoader
 		private static HookList HookOnHitPlayer = AddHook<Action<Projectile, Player, int, bool>>(g => g.OnHitPlayer);
 
 		public static void OnHitPlayer(Projectile projectile, Player target, int damage, bool crit) {
-			projectile.modProjectile?.OnHitPlayer(target, damage, crit);
+			projectile.ModProjectile?.OnHitPlayer(target, damage, crit);
 
 			foreach (GlobalProjectile g in HookOnHitPlayer.arr) {
 				g.Instance(projectile).OnHitPlayer(projectile, target, damage, crit);
@@ -466,12 +466,12 @@ namespace Terraria.ModLoader
 					return colliding.Value;
 				}
 			}
-			return projectile.modProjectile?.Colliding(projHitbox, targetHitbox);
+			return projectile.ModProjectile?.Colliding(projHitbox, targetHitbox);
 		}
 
 		public static void DrawHeldProjInFrontOfHeldItemAndArms(Projectile projectile, ref bool flag) {
-			if (projectile.modProjectile != null) {
-				flag = projectile.modProjectile.drawHeldProjInFrontOfHeldItemAndArms;
+			if (projectile.ModProjectile != null) {
+				flag = projectile.ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms;
 			}
 		}
 
@@ -484,14 +484,14 @@ namespace Terraria.ModLoader
 					return color;
 				}
 			}
-			return projectile.modProjectile?.GetAlpha(lightColor);
+			return projectile.ModProjectile?.GetAlpha(lightColor);
 		}
 
 		public static void DrawOffset(Projectile projectile, ref int offsetX, ref int offsetY, ref float originX) {
-			if (projectile.modProjectile != null) {
-				offsetX = projectile.modProjectile.drawOffsetX;
-				offsetY = -projectile.modProjectile.drawOriginOffsetY;
-				originX += projectile.modProjectile.drawOriginOffsetX;
+			if (projectile.ModProjectile != null) {
+				offsetX = projectile.ModProjectile.DrawOffsetX;
+				offsetY = -projectile.ModProjectile.DrawOriginOffsetY;
+				originX += projectile.ModProjectile.DrawOriginOffsetX;
 			}
 		}
 
@@ -502,8 +502,8 @@ namespace Terraria.ModLoader
 			foreach (GlobalProjectile g in HookPreDrawExtras.arr) {
 				result &= g.Instance(projectile).PreDrawExtras(projectile, spriteBatch);
 			}
-			if (result && projectile.modProjectile != null) {
-				return projectile.modProjectile.PreDrawExtras(spriteBatch);
+			if (result && projectile.ModProjectile != null) {
+				return projectile.ModProjectile.PreDrawExtras(spriteBatch);
 			}
 			return result;
 		}
@@ -515,8 +515,8 @@ namespace Terraria.ModLoader
 			foreach (GlobalProjectile g in HookPreDraw.arr) {
 				result &= g.Instance(projectile).PreDraw(projectile, spriteBatch, lightColor);
 			}
-			if (result && projectile.modProjectile != null) {
-				return projectile.modProjectile.PreDraw(spriteBatch, lightColor);
+			if (result && projectile.ModProjectile != null) {
+				return projectile.ModProjectile.PreDraw(spriteBatch, lightColor);
 			}
 			return result;
 		}
@@ -524,7 +524,7 @@ namespace Terraria.ModLoader
 		private static HookList HookPostDraw = AddHook<Action<Projectile, SpriteBatch, Color>>(g => g.PostDraw);
 
 		public static void PostDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
-			projectile.modProjectile?.PostDraw(spriteBatch, lightColor);
+			projectile.ModProjectile?.PostDraw(spriteBatch, lightColor);
 
 			foreach (GlobalProjectile g in HookPostDraw.arr) {
 				g.Instance(projectile).PostDraw(projectile, spriteBatch, lightColor);
@@ -571,14 +571,14 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool GrappleOutOfRange(float distance, Projectile projectile) {
-			return distance > projectile.modProjectile?.GrappleRange();
+			return distance > projectile.ModProjectile?.GrappleRange();
 		}
 
 		private delegate void DelegateNumGrappleHooks(Projectile projectile, Player player, ref int numHooks);
 		private static HookList HookNumGrappleHooks = AddHook<DelegateNumGrappleHooks>(g => g.NumGrappleHooks);
 
 		public static void NumGrappleHooks(Projectile projectile, Player player, ref int numHooks) {
-			projectile.modProjectile?.NumGrappleHooks(player, ref numHooks);
+			projectile.ModProjectile?.NumGrappleHooks(player, ref numHooks);
 
 			foreach (GlobalProjectile g in HookNumGrappleHooks.arr) {
 				g.Instance(projectile).NumGrappleHooks(projectile, player, ref numHooks);
@@ -589,7 +589,7 @@ namespace Terraria.ModLoader
 		private static HookList HookGrappleRetreatSpeed = AddHook<DelegateGrappleRetreatSpeed>(g => g.GrappleRetreatSpeed);
 
 		public static void GrappleRetreatSpeed(Projectile projectile, Player player, ref float speed) {
-			projectile.modProjectile?.GrappleRetreatSpeed(player, ref speed);
+			projectile.ModProjectile?.GrappleRetreatSpeed(player, ref speed);
 
 			foreach (GlobalProjectile g in HookGrappleRetreatSpeed.arr) {
 				g.Instance(projectile).GrappleRetreatSpeed(projectile, player, ref speed);
@@ -600,7 +600,7 @@ namespace Terraria.ModLoader
 		private static HookList HookGrapplePullSpeed = AddHook<DelegateGrapplePullSpeed>(g => g.GrapplePullSpeed);
 
 		public static void GrapplePullSpeed(Projectile projectile, Player player, ref float speed) {
-			projectile.modProjectile?.GrapplePullSpeed(player, ref speed);
+			projectile.ModProjectile?.GrapplePullSpeed(player, ref speed);
 
 			foreach (GlobalProjectile g in HookGrapplePullSpeed.arr) {
 				g.Instance(projectile).GrapplePullSpeed(projectile, player, ref speed);
@@ -611,7 +611,7 @@ namespace Terraria.ModLoader
 		private static HookList HookGrappleTargetPoint = AddHook<DelegateGrappleTargetPoint>(g => g.GrappleTargetPoint);
 
 		public static void GrappleTargetPoint(Projectile projectile, Player player, ref float grappleX, ref float grappleY) {
-			projectile.modProjectile?.GrappleTargetPoint(player, ref grappleX, ref grappleY);
+			projectile.ModProjectile?.GrappleTargetPoint(player, ref grappleX, ref grappleY);
 
 			foreach (GlobalProjectile g in HookGrappleTargetPoint.arr) {
 				g.Instance(projectile).GrappleTargetPoint(projectile, player, ref grappleX, ref grappleY);
@@ -621,7 +621,7 @@ namespace Terraria.ModLoader
 		private static HookList HookDrawBehind = AddHook<Action<Projectile, int, List<int>, List<int>, List<int>, List<int>>>(g => g.DrawBehind);
 
 		internal static void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {
-			projectile.modProjectile?.DrawBehind(index, drawCacheProjsBehindNPCsAndTiles, drawCacheProjsBehindNPCs, drawCacheProjsBehindProjectiles, drawCacheProjsOverWiresUI);
+			projectile.ModProjectile?.DrawBehind(index, drawCacheProjsBehindNPCsAndTiles, drawCacheProjsBehindNPCs, drawCacheProjsBehindProjectiles, drawCacheProjsOverWiresUI);
 
 			foreach (GlobalProjectile g in HookDrawBehind.arr) {
 				g.Instance(projectile).DrawBehind(projectile, index, drawCacheProjsBehindNPCsAndTiles, drawCacheProjsBehindNPCs, drawCacheProjsBehindProjectiles, drawCacheProjsOverWiresUI);

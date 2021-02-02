@@ -5,6 +5,8 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 
@@ -15,84 +17,53 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModNPC : ModTexturedType
 	{
-		//add modNPC property to Terraria.NPC (internal set)
-		//set modNPC to null at beginning of Terraria.NPC.SetDefaults
-		/// <summary>
-		/// The NPC object that this ModNPC controls.
-		/// </summary>
-		public NPC npc {get;internal set; }
+		/// <summary> The NPC object that this ModNPC controls. </summary>
+		public NPC NPC { get; internal set; }
 
-		/// <summary>
-		/// Shorthand for npc.type;
-		/// </summary>
-		public int Type => npc.type;
+		/// <summary> Shorthand for npc.type; </summary>
+		public int Type => NPC.type;
 
-		/// <summary>
-		/// The translations for the display name of this NPC.
-		/// </summary>
-		public ModTranslation DisplayName {get;internal set;}
+		/// <summary> The translations for the display name of this NPC. </summary>
+		public ModTranslation DisplayName { get; internal set; }
 
-		/// <summary>
-		/// The file name of this NPC's head texture file, to be used in autoloading.
-		/// </summary>
+		/// <summary> The file name of this NPC's head texture file, to be used in autoloading. </summary>
 		public virtual string HeadTexture => Texture + "_Head";
-		/// <summary>
-		/// This file name of this NPC's boss head texture file, to be used in autoloading.
-		/// </summary>
-		public virtual string BossHeadTexture => Texture + "_Head_Boss";
-		/// <summary>
-		/// Determines which type of vanilla NPC this ModNPC will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0.
-		/// </summary>
-		public int aiType = 0;
-		/// <summary>
-		/// Determines which type of vanilla NPC this ModNPC will copy the animation (FindFrame) of. Leave as 0 to not copy any animation. Defaults to 0.
-		/// </summary>
-		public int animationType = 0;
-		/// <summary>
-		/// The item type of the boss bag that is dropped when DropBossBags is called for this NPC.
-		/// </summary>
-		public int bossBag = -1;
-		//make changes to Terraria.Main.UpdateMusic (see patch files)
-		/// <summary>
-		/// The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally.
-		/// </summary>
-		public int music = -1;
-		/// <summary>
-		/// The priority of the music that plays when this NPC is on or near the screen.
-		/// </summary>
-		public MusicPriority musicPriority = MusicPriority.BossLow;
-		//in Terraria.Main.NPCAddHeight at end of else if chain add
-		//  else if(Main.npc[i].modNPC != null) { num = Main.npc[i].modNPC.drawOffsetY; }
-		/// <summary>
-		/// The vertical offset used for drawing this NPC. Defaults to 0.
-		/// </summary>
-		public float drawOffsetY = 0f;
-		//in Terraria.Item.NPCToBanner before returning 0 add
-		//  if(i >= NPCID.Count) { return NPCLoader.npcs[i].banner; }
-		//in Terraria.Item.BannerToNPC before returning 0 add
-		//  if(i >= NPCID.Count) { return i; }
-		/// <summary>
-		/// The type of NPC that this NPC will be considered as when determining banner drops and banner bonuses. By default this will be 0, which means this NPC is not associated with any banner. To give your NPC its own banner, set this field to the NPC's type.
-		/// </summary>
-		public int banner = 0;
-		//in Terraria.NPC.NPCLoot after if statements setting num6 add
-		//  if(num3 >= NPCID.Count) { num6 = NPCLoader.npcs[num3].bannerItem; }
-		/// <summary>
-		/// The type of the item this NPC drops for every 50 times it is defeated. For any ModNPC whose banner field is set to the type of this NPC, that ModNPC will drop this banner.
-		/// </summary>
-		public int bannerItem = 0;
 
-		/// <summary>
-		/// ModNPC constructor.
-		/// </summary>
+		/// <summary> This file name of this NPC's boss head texture file, to be used in autoloading. </summary>
+		public virtual string BossHeadTexture => Texture + "_Head_Boss";
+
+		/// <summary> Determines which type of vanilla NPC this ModNPC will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0. </summary>
+		public int AIType { get; set; }
+		
+		/// <summary> Determines which type of vanilla NPC this ModNPC will copy the animation (FindFrame) of. Leave as 0 to not copy any animation. Defaults to 0. </summary>
+		public int AnimationType { get; set; }
+
+		/// <summary> The item type of the boss bag that is dropped when DropBossBags is called for this NPC. </summary>
+		public int BossBag { get; set; } = -1;
+		
+		/// <summary> The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally. </summary>
+		public int Music { get; set; } = -1;
+		
+		/// <summary> The priority of the music that plays when this NPC is on or near the screen. </summary>
+		public MusicPriority MusicPriority { get; set; } = MusicPriority.BossLow;
+		
+		/// <summary> The vertical offset used for drawing this NPC. Defaults to 0. </summary>
+		public float DrawOffsetY { get; set; }
+		
+		/// <summary> The type of NPC that this NPC will be considered as when determining banner drops and banner bonuses. By default this will be 0, which means this NPC is not associated with any banner. To give your NPC its own banner, set this field to the NPC's type. </summary>
+		public int Banner { get; set; }
+
+		/// <summary> The type of the item this NPC drops for every 50 times it is defeated. For any ModNPC whose banner field is set to the type of this NPC, that ModNPC will drop this banner. </summary>
+		public int BannerItem { get; set; }
+
 		public ModNPC() {
-			npc = new NPC{modNPC = this};
+			NPC = new NPC{ModNPC = this};
 		}
 
 		protected sealed override void Register() {
 			ModTypeLookup<ModNPC>.Register(this);
 
-			npc.type = NPCLoader.ReserveNPCID();
+			NPC.type = NPCLoader.ReserveNPCID();
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.NPCName.{Name}");
 
 			NPCLoader.npcs.Add(this);
@@ -100,16 +71,16 @@ namespace Terraria.ModLoader
 			Type type = GetType();
 			var autoloadHead = type.GetAttribute<AutoloadHead>();
 			if (autoloadHead != null) {
-				Mod.AddNPCHeadTexture(npc.type, HeadTexture);
+				Mod.AddNPCHeadTexture(NPC.type, HeadTexture);
 			}
 			var autoloadBossHead = type.GetAttribute<AutoloadBossHead>();
 			if (autoloadBossHead != null) {
-				Mod.AddBossHeadTexture(BossHeadTexture, npc.type);
+				Mod.AddBossHeadTexture(BossHeadTexture, NPC.type);
 			}
 		}
 
-		public override void SetupContent() {
-			NPCLoader.SetDefaults(npc, false);
+		public sealed override void SetupContent() {
+			NPCLoader.SetDefaults(NPC, false);
 			AutoStaticDefaults();
 			SetStaticDefaults();
 
@@ -118,8 +89,8 @@ namespace Terraria.ModLoader
 
 		internal void SetupNPC(NPC npc) {
 			ModNPC newNPC = (ModNPC)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
-			newNPC.npc = npc;
-			npc.modNPC = newNPC;
+			newNPC.NPC = npc;
+			npc.ModNPC = newNPC;
 			newNPC.Mod = Mod;
 			newNPC.SetDefaults();
 		}
@@ -146,20 +117,20 @@ namespace Terraria.ModLoader
 		public virtual ModNPC NewInstance(NPC npcClone) {
 			if (CloneNewInstances) {
 				ModNPC clone = Clone();
-				clone.npc = npcClone;
+				clone.NPC = npcClone;
 				return clone;
 			}
 
 			ModNPC copy = (ModNPC)Activator.CreateInstance(GetType());
-			copy.npc = npcClone;
+			copy.NPC = npcClone;
 			copy.Mod = Mod;
-			copy.aiType = aiType;
-			copy.animationType = animationType;
-			copy.bossBag = bossBag;
-			copy.music = music;
-			copy.drawOffsetY = drawOffsetY;
-			copy.banner = banner;
-			copy.bannerItem = bannerItem;
+			copy.AIType = AIType;
+			copy.AnimationType = AnimationType;
+			copy.BossBag = BossBag;
+			copy.Music = Music;
+			copy.DrawOffsetY = DrawOffsetY;
+			copy.Banner = Banner;
+			copy.BannerItem = BannerItem;
 			return copy;
 		}
 
@@ -179,23 +150,23 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			TextureAssets.Npc[npc.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Npc[NPC.type] = ModContent.GetTexture(Texture);
 
-			if (banner != 0 && bannerItem != 0) {
-				NPCLoader.bannerToItem[banner] = bannerItem;
+			if (Banner != 0 && BannerItem != 0) {
+				NPCLoader.bannerToItem[Banner] = BannerItem;
 			}
-			else if (banner != 0 || bannerItem != 0) {
+			else if (Banner != 0 || BannerItem != 0) {
 				Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", Mod.DisplayName, Name));
 			}
 
-			if (npc.lifeMax > 32767 || npc.boss) {
-				Main.npcLifeBytes[npc.type] = 4;
+			if (NPC.lifeMax > 32767 || NPC.boss) {
+				Main.npcLifeBytes[NPC.type] = 4;
 			}
-			else if (npc.lifeMax > 127) {
-				Main.npcLifeBytes[npc.type] = 2;
+			else if (NPC.lifeMax > 127) {
+				Main.npcLifeBytes[NPC.type] = 2;
 			}
 			else {
-				Main.npcLifeBytes[npc.type] = 1;
+				Main.npcLifeBytes[NPC.type] = 1;
 			}
 
 			if (DisplayName.IsDefault())
@@ -208,6 +179,14 @@ namespace Terraria.ModLoader
 		/// <param name="numPlayers"></param>
 		/// <param name="bossLifeScale"></param>
 		public virtual void ScaleExpertStats(int numPlayers, float bossLifeScale) {
+		}
+
+		/// <summary>
+		/// Allows you to set an NPC's information in the Bestiary.
+		/// </summary>
+		/// <param name="database"></param>
+		/// <param name="bestiaryEntry"></param>
+		public virtual void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 		}
 
 		/// <summary>
@@ -287,25 +266,25 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to call NPCLoot on your own when the NPC dies, rather then letting vanilla call it on its own. Useful for things like dropping loot from the nearest segment of a worm boss. Returns false by default.
+		/// Allows you to call OnKill on your own when the NPC dies, rather then letting vanilla call it on its own. Returns false by default.
 		/// </summary>
-		/// <returns>Return true to stop vanilla from calling NPCLoot on its own. Do this if you call NPCLoot yourself.</returns>
-		public virtual bool SpecialNPCLoot() {
+		/// <returns>Return true to stop vanilla from calling OnKill on its own. Do this if you call OnKill yourself.</returns>
+		public virtual bool SpecialOnKill() {
 			return false;
 		}
 
 		/// <summary>
-		/// Allows you to determine whether or not this NPC will drop anything at all. Return false to stop the NPC from dropping anything. Returns true by default.
+		/// Allows you to determine whether or not this NPC will do anything upon death (besides dying). Returns true by default.
 		/// </summary>
 		/// <returns></returns>
-		public virtual bool PreNPCLoot() {
+		public virtual bool PreKill() {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this NPC dies (for example, dropping items and setting ModWorld fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
+		/// Allows you to make things happen when this NPC dies (for example, dropping items and setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
 		/// </summary>
-		public virtual void NPCLoot() {
+		public virtual void OnKill() {
 		}
 
         /// <summary>
@@ -314,6 +293,13 @@ namespace Terraria.ModLoader
         /// <param name="player">The player catching this NPC</param>
         /// <param name="item">The item that will be spawned</param>
         public virtual void OnCatchNPC(Player player, Item item) {
+		}
+
+		/// <summary>
+		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.
+		/// </summary>
+		/// <param name="npcLoot"></param>
+		public virtual void ModifyNPCLoot(NPCLoot npcLoot) {
 		}
 
 		/// <summary>
@@ -547,7 +533,7 @@ namespace Terraria.ModLoader
 		/// <param name="tileY"></param>
 		/// <returns></returns>
 		public virtual int SpawnNPC(int tileX, int tileY) {
-			return NPC.NewNPC(tileX * 16 + 8, tileY * 16, npc.type);
+			return NPC.NewNPC(tileX * 16 + 8, tileY * 16, NPC.type);
 		}
 
 		/// <summary>
@@ -593,7 +579,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <returns></returns>
 		public virtual bool CanChat() {
-			return npc.townNPC;
+			return NPC.townNPC;
 		}
 
 		/// <summary>

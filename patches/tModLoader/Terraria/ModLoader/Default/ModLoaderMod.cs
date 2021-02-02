@@ -19,7 +19,7 @@ namespace Terraria.ModLoader.Default
 		private const int ChanceToGetDevArmor = 30;
 
 		public override string Name => "ModLoader";
-		public override Version Version => ModLoader.version;
+		public override Version Version => BuildInfo.tMLVersion;
 
 		internal ModLoaderMod() {
 			Side = ModSide.NoSync;
@@ -45,8 +45,6 @@ namespace Terraria.ModLoader.Default
 			PatronSets = null;
 			DeveloperSets = null;
 		}
-
-		internal static Texture2D ReadTexture(string file) => ModContent.GetInstance<ModLoaderMod>().GetTexture(file).Value;
 
 		internal static bool TryGettingPatreonOrDevArmor(Player player) {
 			if (Main.rand.NextBool(ChanceToGetPatreonArmor)) {

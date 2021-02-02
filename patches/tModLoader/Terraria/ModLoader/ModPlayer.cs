@@ -19,14 +19,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The Player instance that this ModPlayer instance is attached to.
 		/// </summary>
-		public Player player {get;internal set;}
+		public Player Player { get; internal set; }
 
 		internal int index;
 
 		internal ModPlayer CreateFor(Player newPlayer) {
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
 			modPlayer.Mod = Mod;
-			modPlayer.player = newPlayer;
+			modPlayer.Player = newPlayer;
 			modPlayer.index = index;
 			modPlayer.Initialize();
 			return modPlayer;
@@ -341,6 +341,21 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Called before vanilla makes any luck calculations. Return false to prevent vanilla from making their luck calculations. Returns true by default.
+		/// </summary>
+		/// <param name="luck"></param>
+		public virtual bool PreModifyLuck(ref float luck) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to modify a player's luck amount.
+		/// </summary>
+		/// <param name="luck"></param>
+		public virtual void ModifyLuck(ref float luck) {
+		}
+
+		/// <summary>
 		/// Allows you to do anything before the update code for the player's held item is run. Return false to stop the held item update code from being run (for example, if the player is frozen). Returns true by default.
 		/// </summary>
 		/// <returns></returns>
@@ -424,7 +439,7 @@ namespace Terraria.ModLoader
 		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05f`</param>
 		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
 		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
-		public virtual void ModifyWeaponDamage(Item item, ref Modifier damage, ref float flat) {
+		public virtual void ModifyWeaponDamage(Item item, ref StatModifier damage, ref float flat) {
 		}
 
 		/// <summary>
@@ -432,7 +447,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item"></param>
 		/// <param name="knockback"></param>
-		public virtual void GetWeaponKnockback(Item item, ref float knockback) {
+		public virtual void ModifyWeaponKnockback(Item item, ref StatModifier knockback, ref float flat) {
 		}
 
 		/// <summary>
@@ -440,7 +455,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item">The item</param>
 		/// <param name="crit">The crit chance, ranging from 0 to 100</param>
-		public virtual void GetWeaponCrit(Item item, ref int crit) {
+		public virtual void ModifyWeaponCrit(Item item, ref int crit) {
 		}
 
 		/// <summary>
@@ -723,28 +738,30 @@ namespace Terraria.ModLoader
 		/// <param name="b"></param>
 		/// <param name="a"></param>
 		/// <param name="fullBright"></param>
-		public virtual void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
+		public virtual void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
 		}
 
 		/// <summary>
 		/// Allows you to modify the drawing parameters of the player before drawing begins.
 		/// </summary>
 		/// <param name="drawInfo"></param>
-		public virtual void ModifyDrawInfo(ref PlayerDrawInfo drawInfo) {
+		public virtual void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
 		}
 
 		/// <summary>
-		/// Allows you to modify the drawing of the player. This is done by removing from, adding to, or rearranging the list, by setting some of the layers' visible field to false, etc.
+		/// Allows you to reorder the player draw layers. 
+		/// This is called once at the end of mod loading, not during the game.
+		/// Use with extreme caution, or risk breaking other mods.
 		/// </summary>
-		/// <param name="layers"></param>
-		public virtual void ModifyDrawLayers(List<PlayerLayer> layers) {
+		/// <param name="positions">Add/remove/change the positions applied to each layer here</param>
+		public virtual void ModifyDrawLayerOrdering(IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position> positions) {
 		}
 
 		/// <summary>
-		/// Allows you to modify the drawing of the player head on the minimap. This is done by removing from, adding to, or rearranging the list, by setting some of the layers' visible field to false, etc.
+		/// Allows you to modify the visiblity of layers about to be drawn
 		/// </summary>
 		/// <param name="layers"></param>
-		public virtual void ModifyDrawHeadLayers(List<PlayerHeadLayer> layers) {
+		public virtual void HideDrawLayers(PlayerDrawSet drawInfo) {
 		}
 
 		/// <summary>

@@ -17,18 +17,18 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The vanilla MountData object that is controlled by this ModMountData.
 		/// </summary>
-		public Mount.MountData mountData {get;internal set;}
+		public Mount.MountData MountData { get; internal set; }
 
 		/// <summary>
 		/// The index of this ModMountData in the Mount.mounts array.
 		/// </summary>
-		public int Type {get;internal set;}
+		public int Type { get; internal set; }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		public ModMountData() {
-			mountData = new Mount.MountData();
+			MountData = new Mount.MountData();
 		}
 
 		protected sealed override void Register() {
@@ -49,45 +49,45 @@ namespace Terraria.ModLoader
 
 				switch (textureType) {
 					case MountTextureType.Back:
-						mountData.backTexture = textureAsset;
+						MountData.backTexture = textureAsset;
 						break;
 					case MountTextureType.BackGlow:
-						mountData.backTextureGlow = textureAsset;
+						MountData.backTextureGlow = textureAsset;
 						break;
 					case MountTextureType.BackExtra:
-						mountData.backTextureExtra = textureAsset;
+						MountData.backTextureExtra = textureAsset;
 						break;
 					case MountTextureType.BackExtraGlow:
-						mountData.backTextureExtraGlow = textureAsset;
+						MountData.backTextureExtraGlow = textureAsset;
 						break;
 					case MountTextureType.Front:
-						mountData.frontTexture = textureAsset;
+						MountData.frontTexture = textureAsset;
 						break;
 					case MountTextureType.FrontGlow:
-						mountData.frontTextureGlow = textureAsset;
+						MountData.frontTextureGlow = textureAsset;
 						break;
 					case MountTextureType.FrontExtra:
-						mountData.frontTextureExtra = textureAsset;
+						MountData.frontTextureExtra = textureAsset;
 						break;
 					case MountTextureType.FrontExtraGlow:
-						mountData.frontTextureExtraGlow = textureAsset;
+						MountData.frontTextureExtraGlow = textureAsset;
 						break;
 				}
 			}
 		}
 
-		public override void SetupContent() {
-			mountData.modMountData = this;
-			MountLoader.SetupMount(mountData);
-			Mount.mounts[Type] = mountData;
+		public sealed override void SetupContent() {
+			MountData.ModMountData = this;
+			MountLoader.SetupMount(MountData);
+			Mount.mounts[Type] = MountData;
 		}
 
 		protected virtual string GetExtraTexture(MountTextureType textureType) => Texture + "_" + textureType;
 
 		internal void SetupMount(Mount.MountData mountData) {
 			ModMountData newMountData = (ModMountData)MemberwiseClone();
-			newMountData.mountData = mountData;
-			mountData.modMountData = newMountData;
+			newMountData.MountData = mountData;
+			mountData.ModMountData = newMountData;
 			newMountData.Mod = Mod;
 			newMountData.SetDefaults();
 		}

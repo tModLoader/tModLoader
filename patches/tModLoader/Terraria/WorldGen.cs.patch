@@ -89,11 +89,22 @@
  			if (Main.menuMode == 10 || Main.menuMode == 888)
  				Main.menuMode = 6;
  
+@@ -2340,6 +_,10 @@
+ 			if (netMode == 0)
+ 				WorldFile.CacheSaveTime();
+ 
++			//This is only called in case of a manual quit or disconnect.
++			//There is a less common call to this in Netplay.InnerClientLoop.
++			SystemHooks.OnWorldUnload();
++
+ 			Main.invasionProgress = -1;
+ 			Main.invasionProgressDisplayLeft = 0;
+ 			Main.invasionProgressAlpha = 0f;
 @@ -2370,10 +_,21 @@
  
  		public static void SaveAndQuit(Action callback = null) {
  			SoundEngine.PlaySound(11);
-+			ModHooks.PreSaveAndQuit();
++			SystemHooks.PreSaveAndQuit();
  			ThreadPool.QueueUserWorkItem(SaveAndQuitCallBack, callback);
  		}
  
@@ -170,14 +181,6 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
-@@ -2739,6 +_,7 @@
- 
- 			setWorldSize();
- 			Star.SpawnStars();
-+			WorldHooks.SetupWorld();
- 			worldCleared = true;
- 		}
- 
 @@ -5396,17 +_,18 @@
  			Main.lockMenuBGChange = true;
  			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
@@ -203,11 +206,13 @@
  			int copper = 7;
  			int iron = 6;
  			int silver = 9;
-@@ -5458,6 +_,7 @@
+@@ -5458,6 +_,9 @@
  			int logX = -1;
  			int logY = -1;
  			int dungeonLocation = 0;
-+			WorldHooks.PreWorldGen();
++
++			SystemHooks.PreWorldGen();
++
  			AddGenerationPass("Reset", delegate (GenerationProgress progress, GameConfiguration passConfig) {
  				numOceanCaveTreasure = 0;
  				skipDesertTileCheck = false;
@@ -310,10 +315,10 @@
  				progress.Message = Lang.gen[87].Value;
  			});
  
-+			WorldHooks.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
++			SystemHooks.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
  			_generator.GenerateWorld(customProgressObject);
  			ConsumePostGenActions(structures);
-+			WorldHooks.PostWorldGen();
++			SystemHooks.PostWorldGen();
  			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
  			Main.NotifyOfEvent(GameNotificationType.WorldGen);
  			drunkWorldGenText = false;
@@ -426,7 +431,7 @@
  			float num7 = (float)Main.maxTilesX / 4200f;
  			int num8 = (int)(25f * num7);
  			ShapeData shapeData = new ShapeData();
-@@ -16283,13 +_,22 @@
+@@ -16283,13 +_,23 @@
  					shapeData.Clear();
  				}
  			}
@@ -441,7 +446,8 @@
  			AchievementsHelper.NotifyProgressionEvent(9);
 +			}));
 +
-+			WorldHooks.ModifyHardmodeTasks(hardmodeTasks);
++			SystemHooks.ModifyHardmodeTasks(hardmodeTasks);
++
 +			foreach (GenPass task in hardmodeTasks) {
 +				task.Apply(null, null);
 +			}
@@ -1523,12 +1529,17 @@
  			return false;
  		}
  
-@@ -45592,6 +_,8 @@
+@@ -45592,6 +_,13 @@
  			if (gen)
  				return;
  
-+			WorldHooks.PreUpdate();
++			SystemHooks.PreUpdateWorld();
 +
++			UpdateWorld_Inner();
++
++			SystemHooks.PostUpdateWorld();
++		}
++		private static void UpdateWorld_Inner() {
  			AllowedToSpreadInfections = true;
  			CreativePowers.StopBiomeSpreadPower power = CreativePowerManager.Instance.GetPower<CreativePowers.StopBiomeSpreadPower>();
  			if (power != null && power.GetIsUnlocked())
@@ -1541,14 +1552,6 @@
  				num6 *= Star.starfallBoost;
  				if (!((float)Main.rand.Next(8000) < 10f * num6))
  					continue;
-@@ -45700,6 +_,7 @@
- 					Projectile.NewProjectile(position.X, position.Y, num13, num14, 720, 0, 0f, Main.myPlayer, 0f, num10);
- 				}
- 			}
-+			WorldHooks.PostUpdate();
- 		}
- 
- 		public static int GetWorldUpdateRate() {
 @@ -45711,6 +_,8 @@
  		}
  

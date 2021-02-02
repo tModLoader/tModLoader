@@ -8,6 +8,9 @@ using System.Linq;
 using System.Threading;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI;
+using Terraria.GameContent.UI.States;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
@@ -79,7 +82,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets the texture with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithoutExtension". Throws an ArgumentException if the texture does not exist. If a vanilla texture is desired, the format "Terraria/FileNameWithoutExtension" will reference an image from the "terraria/Content/Images" folder. Note: Texture2D is in the Microsoft.Xna.Framework.Graphics namespace.
+		/// Gets the texture with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithoutExtension". Throws an ArgumentException if the texture does not exist. If a vanilla texture is desired, the format "Terraria/Images/FileNameWithoutExtension" will reference an image from the "terraria/Images/Content" folder. Note: Texture2D is in the Microsoft.Xna.Framework.Graphics namespace.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
 		public static Asset<Texture2D> GetTexture(string name) {
@@ -89,7 +92,7 @@ namespace Terraria.ModLoader
 			SplitName(name, out string modName, out string subName);
 
 			if(modName == "Terraria")
-				return Main.Assets.Request<Texture2D>(Path.Combine("Images", subName));
+				return Main.Assets.Request<Texture2D>(subName);
 
 			if (!ModLoader.TryGetMod(modName, out var mod))
 				throw new MissingResourceException($"Missing mod: {name}");
@@ -130,7 +133,7 @@ namespace Terraria.ModLoader
 
 			if (modName == "Terraria") {
 				if ((Main.instance.Content as TMLContentManager).ImageExists(subName)) {
-					texture = Main.Assets.Request<Texture2D>(Path.Combine("Images", subName));
+					texture = Main.Assets.Request<Texture2D>(subName);
 
 					return true;
 				}
@@ -379,6 +382,7 @@ namespace Terraria.ModLoader
 				mod.PrepareAssets();
 				mod.Autoload();
 				mod.Load();
+				SystemHooks.OnModLoad(mod);
 				mod.loading = false;
 			});
 
@@ -390,6 +394,7 @@ namespace Terraria.ModLoader
 			LoadModContent(token, mod => {
 				mod.SetupContent();
 				mod.PostSetupContent();
+				SystemHooks.PostSetupContent(mod);
 			});
 
 			MemoryTracking.Finish();
@@ -401,18 +406,21 @@ namespace Terraria.ModLoader
 
 			RefreshModLanguage(Language.ActiveCulture);
 			MapLoader.SetupModMap();
-			ItemSorting.SetupWhiteLists();
 			RarityLoader.Initialize();
+			
+			ContentSamples.Initialize();
 			PlayerInput.reinitialize = true;
+			SetupBestiary(token);
 			SetupRecipes(token);
 			ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
+			ItemSorting.SetupWhiteLists();
 
-			ContentSamples.Initialize();
 			MenuLoader.GotoSavedModMenu();
 		}
 		
 		private static void CacheVanillaState() {
 			EffectsTracker.CacheVanillaState();
+			DamageClassLoader.RegisterDefaultClasses();
 		}
 
 		internal static Mod LoadingMod { get; private set; }
@@ -435,6 +443,30 @@ namespace Terraria.ModLoader
 					MemoryTracking.Update(mod.Name);
 				}
 			}
+		}
+
+		private static void SetupBestiary(CancellationToken token) {
+			//Beastiary DB
+			var bestiaryDatabase = new BestiaryDatabase();
+			new BestiaryDatabaseNPCsPopulator().Populate(bestiaryDatabase);
+			Main.BestiaryDB = bestiaryDatabase;
+			ContentSamples.RebuildBestiarySortingIDsByBestiaryDatabaseContents(bestiaryDatabase);
+			
+			//Drops DB
+			var itemDropDatabase = new ItemDropDatabase();
+			itemDropDatabase.Populate();
+			Main.ItemDropsDB = itemDropDatabase;
+			
+			//Update the bestiary DB with the drops DB.
+			bestiaryDatabase.Merge(Main.ItemDropsDB);
+			
+			//Etc
+			
+			if (!Main.dedServ)
+				Main.BestiaryUI = new UIBestiaryTest(Main.BestiaryDB);
+			
+			Main.ItemDropSolver = new ItemDropResolver(itemDropDatabase);
+			Main.BestiaryTracker = new BestiaryUnlocksTracker();
 		}
 
 		private static void SetupRecipes(CancellationToken token) {
@@ -500,7 +532,8 @@ namespace Terraria.ModLoader
 			GlobalBgStyleLoader.Unload();
 			WaterStyleLoader.Unload();
 			WaterfallStyleLoader.Unload();
-			WorldHooks.Unload();
+			PlayerDrawLayerHooks.Unload();
+			SystemHooks.Unload();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
 				Main.recipe[k] = new Recipe();
@@ -527,15 +560,15 @@ namespace Terraria.ModLoader
 			// BuffID.Search = IdDictionary.Create<BuffID, int>();
 			
 			ContentSamples.Initialize();
-			
+
 			CleanupModReferences();
 		}
 
 		private static void ResizeArrays(bool unloading = false) {
+			DamageClassLoader.ResizeArrays();
 			ItemLoader.ResizeArrays(unloading);
 			EquipLoader.ResizeAndFillArrays();
 			ModPrefix.ResizeArrays();
-			Main.InitializeItemAnimations();
 			ModDust.ResizeArrays();
 			TileLoader.ResizeArrays(unloading);
 			WallLoader.ResizeArrays(unloading);
@@ -545,7 +578,8 @@ namespace Terraria.ModLoader
 			MountLoader.ResizeArrays();
 			BuffLoader.ResizeArrays();
 			PlayerHooks.RebuildHooks();
-			WorldHooks.ResizeArrays();
+			PlayerDrawLayerHooks.ResizeArrays();
+			SystemHooks.ResizeArrays();
 
 			if (!Main.dedServ) {
 				SoundLoader.ResizeAndFillArrays();
@@ -567,11 +601,11 @@ namespace Terraria.ModLoader
 			Dictionary<string, LocalizedText> dict = LanguageManager.Instance._localizedTexts;
 			foreach (ModItem item in ItemLoader.items) {
 				LocalizedText text = new LocalizedText(item.DisplayName.Key, item.DisplayName.GetTranslation(culture));
-				Lang._itemNameCache[item.item.type] = SetLocalizedText(dict, text);
+				Lang._itemNameCache[item.Item.type] = SetLocalizedText(dict, text);
 				text = new LocalizedText(item.Tooltip.Key, item.Tooltip.GetTranslation(culture));
 				if (text.Value != null) {
 					text = SetLocalizedText(dict, text);
-					Lang._itemTooltipCache[item.item.type] = ItemTooltip.FromLanguageKey(text.Key);
+					Lang._itemTooltipCache[item.Item.type] = ItemTooltip.FromLanguageKey(text.Key);
 				}
 			}
 			foreach (ModPrefix prefix in ModPrefix.prefixes) {
@@ -596,11 +630,11 @@ namespace Terraria.ModLoader
 			}
 			foreach (ModProjectile proj in ProjectileLoader.projectiles) {
 				LocalizedText text = new LocalizedText(proj.DisplayName.Key, proj.DisplayName.GetTranslation(culture));
-				Lang._projectileNameCache[proj.projectile.type] = SetLocalizedText(dict, text);
+				Lang._projectileNameCache[proj.Projectile.type] = SetLocalizedText(dict, text);
 			}
 			foreach (ModNPC npc in NPCLoader.npcs) {
 				LocalizedText text = new LocalizedText(npc.DisplayName.Key, npc.DisplayName.GetTranslation(culture));
-				Lang._npcNameCache[npc.npc.type] = SetLocalizedText(dict, text);
+				Lang._npcNameCache[npc.NPC.type] = SetLocalizedText(dict, text);
 			}
 			foreach (ModBuff buff in BuffLoader.buffs) {
 				LocalizedText text = new LocalizedText(buff.DisplayName.Key, buff.DisplayName.GetTranslation(culture));

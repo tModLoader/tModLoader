@@ -48,7 +48,7 @@
  
 -						if (reader.ReadString() == "Terraria" + 234) {
 +						string clientVersion = reader.ReadString();
-+						ModNet.isModdedClient[whoAmI] = clientVersion == ModLoader.ModLoader.versionedName;
++						ModNet.isModdedClient[whoAmI] = clientVersion == BuildInfo.versionedName;
 +						if (ModNet.isModdedClient[whoAmI] || clientVersion == "Terraria" + 234 && ModNet.AllowVanillaClients) {
  							if (string.IsNullOrEmpty(Netplay.ServerPassword)) {
  								Netplay.Clients[whoAmI].State = 1;
@@ -65,7 +65,7 @@
  						else {
 -							NetMessage.TrySendData(2, whoAmI, -1, Lang.mp[4].ToNetworkText());
 +							if (clientVersion.StartsWith("tModLoader"))
-+								NetMessage.SendData(2, whoAmI, -1, NetworkText.FromLiteral(Lang.mp[4].Value + $"\n(You are on {clientVersion}, server is on {ModLoader.ModLoader.versionedName})"));
++								NetMessage.SendData(2, whoAmI, -1, NetworkText.FromLiteral(Lang.mp[4].Value + $"\n(You are on {clientVersion}, server is on {BuildInfo.versionedName})"));
 +							else
 +								NetMessage.SendData(2, whoAmI, -1, NetworkText.FromLiteral(Lang.mp[4].Value + "\n(You cannot connect to a tModLoader Server with an unmodded client.)"));
  						}
@@ -189,7 +189,7 @@
  							Main.chest[num260].item[num261].netDefaults(type17);
  							Main.chest[num260].item[num261].Prefix(pre3);
  							Main.chest[num260].item[num261].stack = stack8;
-+							ItemIO.ReceiveModData(Main.chest[num261].item[num261], reader);
++							ItemIO.ReceiveModData(Main.chest[num260].item[num261], reader);
  							Recipe.FindRecipes(canDelayCheck: true);
  						}
  
@@ -223,7 +223,7 @@
 -											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num16, num17, num18, num20);
 -											Item.NewItem(num16 * 16, num17 * 16, 32, 32, Chest.chestItemSpawn[num18], 1, noBroadcast: true);
 +											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num16, num17, num18, num20, modType);
-+											int itemSpawn = b3 < 100 ? Chest.chestItemSpawn[num18] : TileLoader.GetTile(modType).chestDrop;
++											int itemSpawn = b3 < 100 ? Chest.chestItemSpawn[num18] : TileLoader.GetTile(modType).ChestDrop;
 +											if (itemSpawn > 0)
 +												Item.NewItem(num16 * 16, num17 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  										}
@@ -256,7 +256,7 @@
 -											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num16, num17, num18, num21);
 -											Item.NewItem(num16 * 16, num17 * 16, 32, 32, Chest.dresserItemSpawn[num18], 1, noBroadcast: true);
 +											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num16, num17, num18, num21, modType);
-+											int itemSpawn = b3 < 100 ? Chest.dresserItemSpawn[num18] : TileLoader.GetTile(modType).dresserDrop;
++											int itemSpawn = b3 < 100 ? Chest.dresserItemSpawn[num18] : TileLoader.GetTile(modType).DresserDrop;
 +											if (itemSpawn > 0)
 +												Item.NewItem(num16 * 16, num17 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  										}
@@ -335,6 +335,15 @@
  							player5.buffType[num50] = reader.ReadUInt16();
  							if (player5.buffType[num50] > 0)
  								player5.buffTime[num50] = 60;
+@@ -2178,7 +_,7 @@
+ 						if (Main.netMode != 2)
+ 							break;
+ 
+-						if (num180 >= 0 && num180 < 665 && NPCID.Sets.MPAllowedEnemies[num180]) {
++						if (num180 >= 0 && num180 < NPCID.Sets.MPAllowedEnemies.Length && NPCID.Sets.MPAllowedEnemies[num180]) {
+ 							if (!NPC.AnyNPCs(num180))
+ 								NPC.SpawnOnPlayer(plr, num180);
+ 						}
 @@ -2466,6 +_,7 @@
  					break;
  				case 74:

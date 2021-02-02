@@ -13,12 +13,12 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void SetDefaults() {
-			item.questItem = true;
-			item.maxStack = 1;
-			item.width = 26;
-			item.height = 26;
-			item.uniqueStack = true; // Make this item only stack one time.
-			item.rare = ItemRarityID.Quest; // Sets the item's rarity. This exact line uses a special rarity for quest items.
+			Item.questItem = true;
+			Item.maxStack = 1;
+			Item.width = 26;
+			Item.height = 26;
+			Item.uniqueStack = true; // Make this item only stack one time.
+			Item.rare = ItemRarityID.Quest; // Sets the item's rarity. This exact line uses a special rarity for quest items.
 		}
 
 		public override bool IsQuestFish() => true; // Makes the item a quest fish

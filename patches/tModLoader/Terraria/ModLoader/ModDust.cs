@@ -15,19 +15,15 @@ namespace Terraria.ModLoader
 	{
 		private static int nextDust = DustID.Count;
 		internal static readonly IList<ModDust> dusts = new List<ModDust>();
-		/// <summary>Allows you to choose a type of dust for this type of dust to copy the behavior of. Defaults to -1, which means that no behavior is copied.</summary>
-		public int updateType = -1;
 
-		/// <summary>
-		/// The sprite sheet that this type of dust uses. Normally a sprite sheet will consist of a vertical alignment of three 10 x 10 pixel squares, each one containing a possible look for the dust.
-		/// </summary>
-		public Texture2D Texture2D{get;private set;}
+		/// <summary> Allows you to choose a type of dust for this type of dust to copy the behavior of. Defaults to -1, which means that no behavior is copied. </summary>
+		public int UpdateType { get; set; } = -1;
 
+		/// <summary> The sprite sheet that this type of dust uses. Normally a sprite sheet will consist of a vertical alignment of three 10 x 10 pixel squares, each one containing a possible look for the dust. </summary>
+		public Texture2D Texture2D { get; private set; }
 
-		/// <summary>
-		/// The ID of this type of dust.
-		/// </summary>
-		public int Type {get;internal set;}
+		/// <summary> The ID of this type of dust. </summary>
+		public int Type { get; internal set; }
 
 		internal static int DustCount => nextDust;
 
@@ -68,9 +64,9 @@ namespace Terraria.ModLoader
 		//in Terraria.Dust.UpdateDust after incrementing Dust.dCount call this
 		internal static void SetupUpdateType(Dust dust) {
 			ModDust modDust = GetDust(dust.type);
-			if (modDust != null && modDust.updateType >= 0) {
+			if (modDust != null && modDust.UpdateType >= 0) {
 				dust.realType = dust.type;
-				dust.type = modDust.updateType;
+				dust.type = modDust.UpdateType;
 			}
 		}
 		//in Terraria.Dust.UdpateDust at end of dust update code call this
@@ -101,9 +97,7 @@ namespace Terraria.ModLoader
 			Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.GetTexture(Texture).Value : TextureAssets.Dust.Value;
 		}
 
-		public override void SetupContent() {
-			SetDefaults();
-		}
+		public sealed override void SetupContent() => SetDefaults();
 
 		/// <summary>
 		/// Allows you to set this ModDust's updateType field and modify the Terraria.GameContent.ChildSafety.SafeDust array.
