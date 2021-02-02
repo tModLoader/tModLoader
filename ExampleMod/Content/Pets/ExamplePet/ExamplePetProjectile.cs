@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Pets.ExamplePet
 		public override void SetDefaults() {
 			Projectile.CloneDefaults(ProjectileID.ZephyrFish); // Copy the stats of the Zephyr Fish
 
-			aiType = ProjectileID.ZephyrFish; // Copy the AI of the Zephyr Fish.
+			AIType = ProjectileID.ZephyrFish; // Copy the AI of the Zephyr Fish.
 		}
 
 		public override bool PreAI() {
