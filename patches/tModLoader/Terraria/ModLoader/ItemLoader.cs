@@ -757,8 +757,8 @@ namespace Terraria.ModLoader
 		private static HookList HookUseAnimation = AddHook<Action<Item, Player>>(g => g.UseAnimation);
 		
 		public static void UseAnimation(Item item, Player player) {
-			foreach (var g in HookUseAnimation.arr) {
-				g.Instance(item).UseAnimation(item, player);
+			foreach (var g in HookUseAnimation.Enumerate(item)) {
+				g.UseAnimation(item, player);
 			}
 
 			item.ModItem?.UseAnimation(player);
