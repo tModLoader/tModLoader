@@ -73,6 +73,22 @@ jobs:
           name: Windows Debug Build
           path: |
             ./artifacts/Windows/
+            
+      - name: Build ExampleMod
+        shell: bash
+        run: |
+          echo Adding build info to ExampleMod displayName
+          echo "displayName = Example Mod (${GITHUB_REF##*/}-${{ github.sha }})" >> ./ExampleMod/build.txt
+          echo Building ExampleMod
+          ./artifacts/Windows/tModLoaderServerDebug.exe -build ./ExampleMod/ -tmlsavedirectory ./ModLoader
+          mkdir -p artifacts/Mods
+          mv ./ModLoader/Mods/ExampleMod.tmod ./artifacts/Mods/ExampleMod.tmod
+          
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ExampleMod Build
+          path: |
+            ./artifacts/Mods/ExampleMod.tmod
         
       - uses: sarisia/actions-status-discord@v1
         if: always()
