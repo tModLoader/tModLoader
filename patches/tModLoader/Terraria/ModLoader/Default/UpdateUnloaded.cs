@@ -81,7 +81,7 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		//TODO: Can this be simplified further?
+		//NOTE: Can this be simplified further?
 		public void Restore(List<TileIO.posMap> posMap ) {
 			if (!canRestoreFlag)
 				return;

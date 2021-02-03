@@ -2,6 +2,7 @@ using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
+using Terraria.ObjectData;
 
 
 namespace Terraria.ModLoader.Default
@@ -26,8 +27,6 @@ namespace Terraria.ModLoader.Default
 			this.isDresser = isDresser;
 		}
 
-		//TODO: Disable hammering of unloaded tile
-
 		public override void SetDefaults() {
 			//common
 			Main.tileFrameImportant[Type] = true;
@@ -38,10 +37,12 @@ namespace Terraria.ModLoader.Default
 			Main.tileTable[Type] = isSemi || isDresser;
 			Main.tileSolidTop[Type] = isSemi || isDresser;
 
-			
 			TileID.Sets.Platforms[Type] = isSemi;
 			TileID.Sets.BasicChest[Type] = isChest;
 			TileID.Sets.BasicDresser[Type] = isDresser;
+
+			TileObjectData.newTile.CopyFrom(TileObjectData.Style1x1); // Disables hammering
+			TileObjectData.addTile(Type);
 
 			//unique 
 			if (isSemi) {
@@ -90,14 +91,15 @@ namespace Terraria.ModLoader.Default
 				return;
 			}
 
-			Player player = Main.LocalPlayer;
+			Player player = Main.LocalPlayer; 
 			var modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
 			var posIndex = new UnloadedPosIndexing(i, j);
 
+			//NOTE: Onwards only works in singleplayer.
 			int infoID = posIndex.FloorGetValue(TileIO.tileInfoMap.ToArray());
 			var infos = modSystem.tileInfos;
 
-			if (infoID < infos.Count) { // This only works in SP
+			if (infoID < infos.Count) {
 				var info = infos[infoID];
 
 				if (info != null) {

@@ -3,7 +3,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
-	internal class UnloadedPosIndexing //Make Static?
+	internal class UnloadedPosIndexing //Requires identity to enable adding support of labelling to multiplayer. Should make static otherwise.
 	{
 		public int posID;
 

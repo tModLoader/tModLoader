@@ -178,7 +178,7 @@ namespace Terraria.ModLoader.IO
 					ModContent.Find<ModTile>("ModLoader/UnloadedTile").Type
 			};
 
-			//TODO: Refactor the insides of two ForEach into one method call
+			//NOTE: Refactor the insides of two ForEach into one method if adding another
 
 			// Retrieve Basic Tile Type Data from saved Tile Map, and store in table
 			foreach (var tileTag in tag.GetList<TagCompound>("tileMap")) {
