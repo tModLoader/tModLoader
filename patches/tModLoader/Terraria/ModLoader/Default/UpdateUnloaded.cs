@@ -86,10 +86,19 @@ namespace Terraria.ModLoader.Default
 			if (!canRestoreFlag)
 				return;
 
-			foreach (var entry in posMap) {
-				var posIndex = new UnloadedPosIndexing(entry.posID);
+			var posMapArray = posMap.ToArray();
+
+			for (int i = 0; i < posMapArray.Length; i++) {
+				var posIndex = new UnloadedPosIndexing(posMapArray[i].posID);
 				posIndex.GetCoords(out int x, out int y);
-				int infoID = entry.infoID;
+
+				int nextX = 0, nextY = 0;
+				if (i < posMapArray.Length - 1) {
+					posIndex = new UnloadedPosIndexing(posMapArray[i + 1].posID);
+					posIndex.GetCoords(out nextX, out nextY);
+				}
+
+				int infoID = posMapArray[i].infoID;
 
 				ushort restoreID = canRestore[infoID];
 				if (restoreID <= 0) {
@@ -108,7 +117,8 @@ namespace Terraria.ModLoader.Default
 							break;
 
 						tile = Main.tile[x, y];
-					} while (tile.type == uID);
+
+					} while (tile.type == uID && !(x == nextX && y == nextY));
 				}
 
 				else if (context == TileIO.WallsContext) {
@@ -121,7 +131,7 @@ namespace Terraria.ModLoader.Default
 							break;
 
 						tile = Main.tile[x, y];
-					} while (tile.wall == uID);
+					} while (tile.wall == uID && !(x == nextX && y == nextY));
 				}
 			}
 
