@@ -309,9 +309,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to make things happen when an item is used. Return true if using the item actually does stuff. Returns null by default.
 		/// </summary>
-		public virtual bool? UseItem(Item item, Player player) {
-			return null;
-		}
+		public virtual bool? UseItem(Item item, Player player) => null;
+
+		/// <summary>
+		/// Allows you to make things happen when an item's use animation starts.
+		/// </summary>
+		public virtual void UseAnimation(Item item, Player player) { }
 
 		/// <summary>
 		/// If the item is consumable and this returns true, then the item will be consumed upon usage. Returns true by default.

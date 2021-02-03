@@ -402,14 +402,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this item is used. Return true if using this item actually does stuff. Returns false by default.
-		/// Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
+		/// Allows you to make things happen when this item is used.
+		/// <para/> Return true if using this item actually does stuff. Returns false by default.
+		/// <para/> Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <returns></returns>
-		public virtual bool? UseItem(Player player) {
-			return null;
-		}
+		public virtual bool UseItem(Player player) => false;
+
+		/// <summary>
+		/// Allows you to make things happen when this item's use animation starts.
+		/// <para/> Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
+		/// </summary>
+		/// <param name="player"> The player. </param>
+		public virtual void UseAnimation(Player player) { }
 
 		/// <summary>
 		/// If this item is consumable and this returns true, then this item will be consumed upon usage. Returns true by default.

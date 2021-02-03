@@ -754,6 +754,16 @@ namespace Terraria.ModLoader
 			return result ?? modItemResult;
 		}
 
+		private static HookList HookUseAnimation = AddHook<Action<Item, Player>>(g => g.UseAnimation);
+		
+		public static void UseAnimation(Item item, Player player) {
+			foreach (var g in HookUseAnimation.arr) {
+				g.Instance(item).UseAnimation(item, player);
+			}
+
+			item.ModItem?.UseAnimation(player);
+		}
+
 		private static HookList HookConsumeItem = AddHook<Func<Item, Player, bool>>(g => g.ConsumeItem);
 		//near end of Terraria.Player.ItemCheck
 		//  if (flag22 && ItemLoader.ConsumeItem(item, this))
