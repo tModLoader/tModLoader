@@ -34,24 +34,18 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void Load() {
-			AddContent(new UnloadedTile("PendingTile"));
 			AddContent(new UnloadedTile());
 
-			AddContent(new UnloadedTile("PendingNonSolidTile",isSolid:false));
 			AddContent(new UnloadedTile("UnloadedNonSolidTile", isSolid:false));
 
-			AddContent(new UnloadedTile("PendingSemiSolidTile", isSemi: true));
 			AddContent(new UnloadedTile("UnloadedSemiSolidTile", isSemi: true));
 
-			AddContent(new UnloadedChest());
-			AddContent(new UnloadedChest("PendingChest"));
-
-			AddContent(new UnloadedDresser());
-			AddContent(new UnloadedDresser("PendingDresser"));
-
+			AddContent(new UnloadedTile("UnloadedChest", isChest: true));
+			
+			AddContent(new UnloadedTile("UnloadedDresser", isDresser: true));
+			
 			AddContent(new UnloadedWall());
-			AddContent(new UnloadedWall("PendingWall"));
-
+			
 			PatronSets = GetContent<PatreonItem>().GroupBy(t => t.InternalSetName).Select(set => set.ToArray()).ToArray();
 			DeveloperSets = GetContent<DeveloperItem>().GroupBy(t => t.InternalSetName).Select(set => set.ToArray()).ToArray();
 		}

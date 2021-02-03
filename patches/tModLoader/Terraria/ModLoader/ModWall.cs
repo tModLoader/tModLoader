@@ -28,6 +28,9 @@ namespace Terraria.ModLoader
 		/// <summary> The default type of item dropped when this wall is killed. Defaults to 0, which means no item. </summary>
 		public int ItemDrop { get; set; }
 
+		/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>
+		public ushort vanillaFallbackOnModDeletion { get; set; } = 0;
+
 		/// <summary>
 		/// Adds an entry to the minimap for this wall with the given color and display name. This should be called in SetDefaults.
 		/// </summary>

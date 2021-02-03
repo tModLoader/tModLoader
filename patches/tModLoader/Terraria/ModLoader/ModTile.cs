@@ -53,6 +53,9 @@ namespace Terraria.ModLoader
 		/// <summary> The ID of the item that drops when this dresser is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server. </summary>
 		public int DresserDrop { get; set; }
 
+		/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>
+		public ushort vanillaFallbackOnModDeletion { get; set; } = 0;
+
 		/// <summary> The translations for the name that is displayed when this tile is opened as a chest or dresser. This won't be used if you don't add your tile to <see cref="TileID.Sets.BasicChest"/> or <see cref="TileID.Sets.BasicDresser"/>. </summary>
 		public ModTranslation ContainerName { get; internal set; }
 

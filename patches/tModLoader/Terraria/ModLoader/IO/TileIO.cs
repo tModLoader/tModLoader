@@ -7,70 +7,12 @@ using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
-using Terraria.ObjectData;
 
 namespace Terraria.ModLoader.IO
 {
 	internal static class TileIO
 	{
-		internal static ushort PendingTile => ModContent.Find<ModTile>("ModLoader/PendingTile").Type;
-		internal static ushort PendingNonSolidTile => ModContent.Find<ModTile>("ModLoader/PendingNonSolidTile").Type;
-		internal static ushort PendingSemiSolidTile => ModContent.Find<ModTile>("ModLoader/PendingSemiSolidTile").Type;
-		internal static ushort PendingChest => ModContent.Find<ModTile>("ModLoader/PendingChest").Type;
-		internal static ushort PendingDresser => ModContent.Find<ModTile>("ModLoader/PendingDresser").Type;
-		internal static ushort PendingWallType => ModContent.Find<ModWall>("ModLoader/PendingWall").Type;
-		
-		internal static ushort UnloadedTile => ModContent.Find<ModTile>("ModLoader/UnloadedTile").Type;
-		internal static ushort UnloadedNonSolidTile => ModContent.Find<ModTile>("ModLoader/UnloadedNonSolidTile").Type;
-		internal static ushort UnloadedSemiSolidTile => ModContent.Find<ModTile>("ModLoader/UnloadedSemiSolidTile").Type;
-		internal static ushort UnloadedChest => ModContent.Find<ModTile>("ModLoader/UnloadedChest").Type;
-		internal static ushort UnloadedDresser => ModContent.Find<ModTile>("ModLoader/UnloadedDresser").Type;
-		internal static ushort UnloadedWallType => ModContent.Find<ModWall>("ModLoader/UnloadedWall").Type;
-
 		//*********** Tile, Walls, & Chests Save, Load, and Placeholder Implementations ***************************//
-
-		//in Terraria.IO.WorldFile.SaveWorldTiles add type check to tile.active() check and wall check
-		internal struct TileTables
-		{
-			internal IDictionary<ushort, ushort> tiles;
-			internal IDictionary<ushort, bool> frameImportant;
-			internal IDictionary<ushort, string> tileModNames;
-			internal IDictionary<ushort, string> tileNames;
-			internal IDictionary<ushort, ushort> tileFallback;
-
-			internal IDictionary<ushort, ushort> walls;
-			internal IDictionary<ushort, string> wallModNames;
-			internal IDictionary<ushort, string> wallNames;
-			internal IDictionary<ushort, ushort> wallFallback;
-
-			internal static TileTables Create() {
-				return new TileTables {
-					tiles = new Dictionary<ushort, ushort>(),
-					frameImportant = new Dictionary<ushort, bool>(),
-					tileModNames = new Dictionary<ushort, string>(),
-					tileNames = new Dictionary<ushort, string>(),
-					tileFallback = new Dictionary<ushort, ushort>(),
-
-					walls = new Dictionary<ushort, ushort>(),
-					wallModNames = new Dictionary<ushort, string>(),
-					wallNames = new Dictionary<ushort, string>(),
-					wallFallback = new Dictionary<ushort, ushort>(),
-				};
-			}
-		}
-
-		internal static class TileVariantFlags
-		{
-			internal const byte Standard = 0;
-			internal const byte NonSolid = 1;
-			internal const byte SemiSolid = 2;
-			internal const byte Planter = 4;
-			internal const byte Container = 8;
-			internal const byte Dresser = 16;
-			internal const byte Chest = 32;
-			internal const byte Framed = 64;
-		}
-
 		internal static class TileIOFlags
 		{
 			internal const byte None = 0;
@@ -83,6 +25,73 @@ namespace Terraria.ModLoader.IO
 			internal const byte NextTilesAreSame = 64;
 			internal const byte NextModTile = 128;
 		}
+
+		internal struct tableData
+		{
+			internal ushort id;
+			internal string modName;
+			internal string name;
+			internal ushort fallbackID;
+
+			internal static tableData Create() {
+				return new tableData {
+					id = 0,
+					modName = null,
+					name = null,
+					fallbackID = 0
+				};
+			}
+		}
+
+		//in Terraria.IO.WorldFile.SaveWorldTiles add type check to tile.active() check and wall check
+		internal struct TileTables
+		{
+			internal Dictionary<int, bool> frameImportant;
+			internal Dictionary<int, tableData> tileData;
+			internal Dictionary<int, tableData> wallData;
+			
+			internal static TileTables Create() {
+				return new TileTables {
+					frameImportant = new Dictionary<int, bool>(),
+					tileData = new Dictionary<int, tableData>(),
+					wallData = new Dictionary<int, tableData>()
+				};
+			}
+		}
+
+		internal struct posMap
+		{
+			public int posID;
+			public ushort infoID;
+		}
+
+		/// These values are synced to match UpdateUnloadedInfos <see cref="UpdateUnloaded"/> 
+		internal static byte TilesContext = 0;
+		internal static byte WallsContext = 1;
+
+		/// <summary>
+		/// Tile-<see cref="UnloadedTileInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
+		/// </summary>
+		internal static List<UnloadedInfo> tileInfos = new List<UnloadedInfo>();
+
+		/// <summary>
+		/// Use a dictionary mapping coordinates of tile infos from <see cref="tileInfos"/>
+		/// </summary>
+		internal static List<posMap> tileInfoMap = new List<posMap>();
+		internal static List<posMap> prevTileInfoMap = new List<posMap>();
+
+		/// <summary>
+		/// Wall-<see cref="UnloadedWallInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
+		/// </summary>
+		internal static List<UnloadedInfo> wallInfos = new List<UnloadedInfo>();
+
+		/// <summary>
+		/// Use a dictionary mapping coordinates of walls infos from <see cref="wallInfos"/>
+		/// </summary>
+		internal static List<posMap> wallInfoMap = new List<posMap>();
+		internal static List<posMap> prevWallInfoMap = new List<posMap>();
+
+		internal static int[] unloadedTileIDs = new int[5];
 
 		internal static TagCompound SaveTiles() {
 			bool[] hasTile = new bool[TileLoader.TileCount];
@@ -101,36 +110,16 @@ namespace Terraria.ModLoader.IO
 				// Skip Tile Types that aren't active in world
 				if (!hasTile[type])
 					continue;
-
-				ushort tileVariants = TileVariantFlags.Standard;
-
-				if (TileID.Sets.BasicChest[type])
-					tileVariants |= TileVariantFlags.Chest; // Flag Chests for preserving Chest Tile data 
-
-				if (TileID.Sets.BasicDresser[type])
-					tileVariants |= TileVariantFlags.Dresser; // Flag Dressers for preserving Dresser shape
-				
-				if (TileID.Sets.IsAContainer[type] && !TileID.Sets.BasicDresser[type] && !TileID.Sets.BasicChest[type])
-					tileVariants |= TileVariantFlags.Container; // Flag non-standard Containers 
-				
-				if (!Main.tileSolid[type])
-					tileVariants |= TileVariantFlags.NonSolid; // Flag non-solid blocks for liquids, player movement, etc.
-				
-				if (Main.tileSolidTop[type])
-					tileVariants |= TileVariantFlags.SemiSolid; // Flag semi-solid blocks for platforms, tables
-				
-				if (Main.tileFrameImportant[type])
-					tileVariants |= TileVariantFlags.Framed; // Flag tiles where framing is important
-
+						
 				var modTile = TileLoader.GetTile(type);
 
 				tileList.Add(new TagCompound {
 					["value"] = (short)type,
 					["mod"] = modTile.Mod.Name,
 					["name"] = modTile.Name,
-					["variants"] = tileVariants,
-					["framed"] = Main.tileFrameImportant[type], // Just here for legacy
-					["fallbackType"] = (ushort)1, //Unintelligent fallback type prototyping
+					["unloadedType"] = GetUnloadedTileType(type),
+					["framed"] = Main.tileFrameImportant[type], 
+					["fallbackType"] = modTile.vanillaFallbackOnModDeletion, 
 				});
 			}
 
@@ -148,7 +137,7 @@ namespace Terraria.ModLoader.IO
 					["value"] = (short)wall,
 					["mod"] = modWall.Mod.Name,
 					["name"] = modWall.Name,
-					["fallbackType"] = (ushort)1, //Unintelligent fallback type prototyping
+					["fallbackType"] = modWall.vanillaFallbackOnModDeletion, 
 				});
 			}
 
@@ -157,9 +146,19 @@ namespace Terraria.ModLoader.IO
 				return null;
 
 			return new TagCompound {
-				["tileMap"] = tileList, // List of all active tile types
-				["wallMap"] = wallList, // List of all active wall types
-				["data"] = ms.ToArray() // Array of locational-specific data
+				["tileMap"] = tileList, // Lists of all active tile types and restoration mapping
+				["tileInfoMap"] = tileInfoMap.Select(pair => new TagCompound {
+					["posID"] = pair.posID,
+					["infoID"] = pair.infoID
+				}).ToList(),
+
+				["wallMap"] = wallList, // Lists of all active wall types and restoration mapping
+				["wallInfoMap"] = wallInfoMap.Select(pair => new TagCompound {
+					["posID"] = pair.posID,
+					["infoID"] = pair.infoID
+				}).ToList(),
+
+				["data"] = ms.ToArray(), // Array of locational-specific data
 			};
 		}
 
@@ -170,83 +169,83 @@ namespace Terraria.ModLoader.IO
 
 			// Create a Table to store working information
 			var tables = TileTables.Create();
-			ushort pendingTile = PendingTile;
-			ushort pendingNSTile = PendingNonSolidTile;
-			ushort pendingChest = PendingChest;
-			ushort pendingSSTile = PendingSemiSolidTile;
-			ushort pendingDresser = PendingDresser;
-			ushort pendingWallType = PendingWallType;
 
-			// Grab reference to PendingTileSystem for infos Lists
-			var modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
-			UpdateUnloaded pendingTInfo = new UpdateUnloaded(modSystem.tileInfos, 0);
-			UpdateUnloaded pendingWInfo = new UpdateUnloaded(modSystem.wallInfos, 1);
-			UpdateUnloaded pendingCInfo = new UpdateUnloaded(modSystem.chestInfos, 2);
+			unloadedTileIDs = new int[5] {
+					ModContent.Find<ModTile>("ModLoader/UnloadedNonSolidTile").Type,
+					ModContent.Find<ModTile>("ModLoader/UnloadedSemiSolidTile").Type,
+					ModContent.Find<ModTile>("ModLoader/UnloadedChest").Type,
+					ModContent.Find<ModTile>("ModLoader/UnloadedDresser").Type,
+					ModContent.Find<ModTile>("ModLoader/UnloadedTile").Type
+			};
+
+			//TODO: Refactor the insides of two ForEach into one method call
 
 			// Retrieve Basic Tile Type Data from saved Tile Map, and store in table
 			foreach (var tileTag in tag.GetList<TagCompound>("tileMap")) {
-				ushort type = (ushort)tileTag.GetShort("value");
+				tableData tabData = tableData.Create();
+
+				int saveType = tileTag.GetShort("value") - TileID.Count;
 				string modName = tileTag.GetString("mod");
 				string name = tileTag.GetString("name");
-				ushort tileVariants = tileTag.Get<ushort>("variants");
+				
+				tabData.id = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : (ushort)0;
 
-				tables.tiles[type] = ModContent.TryFind(modName, name, out ModTile tile) ? tile.Type : (ushort)0;
+				// Handle unloaded tiles at the tile level by storing restoration data
+				if (tabData.id == 0) { 
+					tabData.modName = modName;
+					tabData.name = name;
 
-				if (tables.tiles[type] == 0) {
-					tables.tileModNames[type] = modName;
-					tables.tileNames[type] = name;
-
-					ushort workingType = pendingTile;
+					string unloadedType = "ModLoader/UnloadedTile"; 
 					ushort fallbackType = 0;
-					
-					if (tileTag.ContainsKey("variants")) { // If statement is for legacy support
-						if ((tileVariants & TileVariantFlags.NonSolid) == TileVariantFlags.NonSolid) 
-							workingType = pendingNSTile;
-						
-						if ((tileVariants & TileVariantFlags.Chest) == TileVariantFlags.Chest) // Order matters, Chest should override NonSolid
-							workingType = pendingChest;
-						
-						if ((tileVariants & TileVariantFlags.SemiSolid) == TileVariantFlags.SemiSolid)
-							workingType = pendingSSTile;
-						
-						if ((tileVariants & TileVariantFlags.Dresser) == TileVariantFlags.Dresser) // Order matters, Dresser should override SemiSolid
-							workingType = pendingDresser;
 
+					if (tileTag.ContainsKey("unloadedType")) { // If statement is for legacy support
+						unloadedType = tileTag.Get<string>("unloadedType");
+						
 						fallbackType = tileTag.Get<ushort>("fallbackType");
 					}
 
-					if (workingType == pendingDresser || workingType == pendingChest)
-						pendingCInfo.AddInfos(new UnloadedInfo(modName, name, fallbackType));
-					else
-						pendingTInfo.AddInfos(new UnloadedInfo(modName, name, fallbackType));
+					UpdateUnloaded pendingInfo = new UpdateUnloaded(tileInfos, TilesContext);
+					pendingInfo.AddInfos(new UnloadedInfo(modName, name, fallbackType));
 
-					tables.tileFallback[type] = fallbackType;
-					tables.tiles[type] = workingType;
+					tabData.fallbackID = fallbackType;
+					tabData.id = ModContent.Find<ModTile>(unloadedType).Type;
 				}
 
-				tables.frameImportant[type] = tileTag.GetBool("framed");
+				tables.tileData[saveType] = tabData;
+				tables.frameImportant[saveType] = tileTag.GetBool("framed");
 			}
 
 			// Retrieve Basic Wall Type Data from saved Wall Map, and store in table
 			foreach (var wallTag in tag.GetList<TagCompound>("wallMap")) {
-				ushort type = (ushort)wallTag.GetShort("value");
+				tableData tabData = tableData.Create();
+
+				int saveType = wallTag.GetShort("value") - WallID.Count;
 				string modName = wallTag.GetString("mod");
 				string name = wallTag.GetString("name");
-				ushort fallbackType = 0;
+								
+				tabData.id = ModContent.TryFind(modName, name, out ModWall wall) ? wall.Type : (ushort)0;
 				
-				tables.walls[type] = ModContent.TryFind(modName, name, out ModWall wall) ? wall.Type : (ushort)0;
-				
-				if (tables.walls[type] == 0) {
-					tables.walls[type] = pendingWallType;
-					tables.wallModNames[type] = modName;
-					tables.wallNames[type] = name;
-
+				if (tabData.id == 0) {
+					tabData.id = ModContent.Find<ModWall>("ModLoader/UnloadedWall").Type;
+					tabData.modName = modName;
+					tabData.name = name;
+					
+					ushort fallbackType = 0;
 					if (wallTag.ContainsKey("fallbackType"))
 						fallbackType = wallTag.Get<ushort>("fallbackType");
-					tables.wallFallback[type] = fallbackType;
 
-					pendingWInfo.AddInfos(new UnloadedInfo(modName, name, fallbackType));
+					tabData.fallbackID = fallbackType;
+
+					UpdateUnloaded pendingInfo = new UpdateUnloaded(wallInfos, WallsContext);
+					pendingInfo.AddInfos(new UnloadedInfo(modName, name, fallbackType));
 				}
+
+				tables.wallData[saveType] = tabData;
+			}
+
+			if (tag.ContainsKey("tileInfoMap")) {
+				UpdateMaps(tag.GetList<TagCompound>("tileInfoMap"), prevTileInfoMap);
+				UpdateMaps(tag.GetList<TagCompound>("wallInfoMap"), prevWallInfoMap);
 			}
 
 			// Retrieve Locational-Specific Data from 'Data' and apply
@@ -432,7 +431,6 @@ namespace Terraria.ModLoader.IO
 			flags = reader.ReadByte();
 
 			UnloadedInfo info;
-			var modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
 			var posIndexer = new UnloadedPosIndexing(i, j);
 
 			// Read Tiles
@@ -441,8 +439,8 @@ namespace Terraria.ModLoader.IO
 			if ((flags & TileIOFlags.ModTile) == TileIOFlags.ModTile) {
 				tile.active(true);
 
-				ushort saveType = reader.ReadUInt16();
-				tile.type = tables.tiles[saveType];
+				ushort saveType = (ushort) (reader.ReadUInt16() - TileID.Count);
+				tile.type = tables.tileData[saveType].id;
 
 				// Implement tile frames
 				if (tables.frameImportant[saveType]) {
@@ -468,83 +466,43 @@ namespace Terraria.ModLoader.IO
 					tile.color(reader.ReadByte());
 				}
 
-				if (tables.tileNames.ContainsKey(saveType)) { //TODO: Something is fishy with this condition
-					// Handle Disabled Mods and Implement pending Tile
-					bool nonSolidChk = tile.type == PendingNonSolidTile;
-					bool semiSolidChk = tile.type == PendingSemiSolidTile;
-					bool isPendingChest = tile.type == PendingChest;
-					bool isPendingDresser = tile.type == PendingDresser;
-					bool isPendingContainer = isPendingChest || isPendingDresser;
+				
 
-					if (tile.type == PendingTile || nonSolidChk || semiSolidChk) {
-						// Load saved Basic Tile Type Data into PendingTileInfo and index
-						info = new UnloadedInfo(tables.tileModNames[saveType], tables.tileNames[saveType],tables.tileFallback[saveType]);
-						
-						posIndexer.MapPosToInfo(info, modSystem.tileInfos, modSystem.tileInfoMap);
-						
-						tile.type = UnloadedTile;
+				if (unloadedTileIDs.Contains(tile.type)) {   
+					tableData tabData = tables.tileData[saveType];
 
-						if (nonSolidChk)
-							tile.type = UnloadedNonSolidTile;
-						if (semiSolidChk)
-							tile.type = UnloadedSemiSolidTile;
+					// Update Unloaded Tile Position Map
+					if (tabData.name != null) {
+						info = new UnloadedInfo(tabData.modName, tabData.name, tabData.fallbackID);
+						posIndexer.MapPosToInfo(tileInfos, tileInfoMap, info: info);
 					}
-
-					else if (isPendingContainer) {
-						ushort unloadedContainer = 0;
-
-						if (isPendingChest)
-							unloadedContainer = UnloadedChest;
-						else if (isPendingDresser)
-							unloadedContainer = UnloadedDresser;
-
-						// Handle Multi-tile by only focusing on working with TOP-LEFT tile.
-						TileObjectData tileData = TileObjectData.GetTileData(unloadedContainer, 0);
-
-						bool accountedFor = false;
-						for (int m = 0; m < tileData.Width; m++) {
-							for (int n = 0; n < tileData.Height; n++) {
-								if (Main.tile[i - m, j - n].type == unloadedContainer) {
-									accountedFor = true;
-								}
-							}
-						}
-
-						if (!accountedFor) {
-							// Load saved Basic Container Type Data into PendingChestInfo and index
-							info = new UnloadedInfo(tables.tileModNames[saveType], tables.tileNames[saveType], tables.tileFallback[saveType]);
-							posIndexer.MapPosToInfo(info, modSystem.chestInfos, modSystem.chestInfoMap);
-
-							if (isPendingChest) {
-								// Place PendingChest (required to preserve the inventory and re-namings
-								WorldGen.PlaceChestDirect(i, j + 1, unloadedContainer, tile.frameX / 36, -1);
-							}
-							else if (isPendingDresser) {
-								// Place PendingDresser (required to preserve the inventory and re-namings
-								WorldGen.PlaceDresserDirect(i + 1, j + 1, unloadedContainer, 0, -1);
-							}
-						}
+					else {
+						posIndexer.MapPosToInfo(tileInfos, tileInfoMap, prevTileInfoMap); 
 					}
 				}
 
-				// Ready Tile
 				WorldGen.tileCounts[tile.type] += j <= Main.worldSurface ? 5 : 1;
 			}
 
 			if ((flags & TileIOFlags.ModWall) == TileIOFlags.ModWall) {
-				ushort saveWallType = reader.ReadUInt16();
-				tile.wall = tables.walls[saveWallType];
-
-				if (tile.wall == PendingWallType) {
-					info = new UnloadedInfo(tables.wallModNames[saveWallType], tables.wallNames[saveWallType],tables.wallFallback[saveWallType]);
-					
-					posIndexer.MapPosToInfo(info, modSystem.wallInfos, modSystem.wallInfoMap);
-
-					tile.wall = UnloadedWallType;
-				}
+				ushort saveWallType = (ushort) (reader.ReadUInt16() - WallID.Count);
+				tile.wall = tables.wallData[saveWallType].id;
 
 				if ((flags & TileIOFlags.WallColor) == TileIOFlags.WallColor) {
 					tile.wallColor(reader.ReadByte());
+				}
+
+				if (tile.wall == ModContent.Find<ModWall>("ModLoader/UnloadedWall").Type) {
+					tableData tabData = tables.wallData[saveWallType];
+
+					// Update Unloaded Wall Position Map
+					if (tabData.name != null) {
+						info = new UnloadedInfo(tabData.modName, tabData.name, tabData.fallbackID);
+						posIndexer.MapPosToInfo(wallInfos, wallInfoMap, info: info);
+					}
+					else {
+						posIndexer.MapPosToInfo(wallInfos, wallInfoMap, prevWallInfoMap);
+					}
 				}
 			}
 
@@ -567,7 +525,7 @@ namespace Terraria.ModLoader.IO
 
 		private static bool HasModData(Tile tile) => (tile.active() && tile.type >= TileID.Count) || tile.wall >= WallID.Count;
 
-		private static bool NextTile(ref int i, ref int j) {
+		internal static bool NextTile(ref int i, ref int j) {
 			j++;
 			if (j >= Main.maxTilesY) {
 				j = 0;
@@ -577,6 +535,33 @@ namespace Terraria.ModLoader.IO
 				}
 			}
 			return true;
+		}
+
+		//TODO: Figure out where to put this
+		public static string GetUnloadedTileType(int type) {
+			if (TileID.Sets.BasicChest[type])
+				return "ModLoader/UnloadedChest";
+
+			if (TileID.Sets.BasicDresser[type])
+				return "ModLoader/UnloadedDresser";
+
+			if (Main.tileSolidTop[type])
+				return "ModLoader/UnloadedSemiSolidTile";
+
+			if (!Main.tileSolid[type])
+				return "ModLoader/UnloadedNonSolidTile";
+
+			return "ModLoader/UnloadedTile";
+		}
+
+		public static void UpdateMaps(IList<TagCompound> list, List<posMap> prevPosMap) {
+			prevPosMap.Clear();
+			foreach (var posTag in list) {
+				prevPosMap.Add(new posMap {
+					posID = posTag.Get<int>("posID"),
+					infoID = posTag.Get<ushort>("infoID")
+				});
+			}
 		}
 
 		//*********** Containers (*annequin) Save, Load, and Placeholder Implementations ***********************************//

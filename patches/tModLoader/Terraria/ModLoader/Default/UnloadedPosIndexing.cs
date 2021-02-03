@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using Terraria.ModLoader.IO;
+
 namespace Terraria.ModLoader.Default
 {
-	internal class UnloadedPosIndexing
+	internal class UnloadedPosIndexing //Make Static?
 	{
 		public int posID;
 
@@ -19,25 +21,48 @@ namespace Terraria.ModLoader.Default
 			posX = posID / Main.maxTilesY;
 		}
 
-		public void MapPosToInfo(UnloadedInfo info, List<UnloadedInfo> infos, SortedDictionary<int, int> posMap) {
-			int pendingID = infos.IndexOf(info);
-			posMap[posID] = pendingID;
+		public void MapPosToInfo(List<UnloadedInfo> infos, List<TileIO.posMap> posMap, List<TileIO.posMap> prevPosMap = null, UnloadedInfo info = null)  {
+			ushort pendingID = 0;
+			if (info == null && prevPosMap.Count > 0) {
+				pendingID = (ushort) (FloorGetValue(prevPosMap.ToArray()) + infos.Count);
+			}
+			else {
+				pendingID = (ushort) infos.IndexOf(info);
+			}
+			
+			posMap.Add(new TileIO.posMap {
+				posID = this.posID,
+				infoID = pendingID
+			});
 		}
 
-		public int FloorGetValue(SortedDictionary<int, int> posMap) {
-			var keys = posMap.Keys;
-			int floorKey = 0;
+		public ushort FloorGetValue(TileIO.posMap[] posMap) {
+			
+			int index = BinarySearchPosMap(posMap);	
 
-			foreach (int testKey in keys) {
-				if (testKey > posID)
+			return posMap[index].infoID;
+		}
+
+		private int BinarySearchPosMap (TileIO.posMap[] posMap) {
+			int minimum = 0, maximum = posMap.Length;
+			// Binary search for interval containing posID
+			while (maximum - minimum > 1) {
+				int split = (minimum + maximum) / 2;
+
+				if (split == posMap.Length - 1) {
 					break;
+				}
 
-				floorKey = testKey;
+				if (posMap[split].posID <= this.posID) {
+					minimum = split;
+				}
+
+				if (posMap[split + 1].posID > this.posID) {
+					maximum = split;
+				}
+
 			}
-
-			posMap.TryGetValue(floorKey, out int value);
-
-			return value;
+			return minimum;
 		}
 	}
 }
