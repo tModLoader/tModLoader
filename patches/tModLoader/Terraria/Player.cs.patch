@@ -154,44 +154,55 @@
  		}
  
  		public void SetDummyItemTime(int frames) {
-@@ -2070,33 +_,33 @@
+@@ -2064,39 +_,40 @@
+ 			itemTimeMax = frames + 1;
  		}
  
- 		private void ApplyItemAnimation(Item sItem, float multiplier, int itemReuseDelay = 0) {
+-		private void SetItemAnimation(int frames) {
++		public void SetItemAnimation(int frames) {
+ 			itemAnimation = frames;
+ 			itemAnimationMax = frames;
+ 		}
+ 
+-		private void ApplyItemAnimation(Item sItem, float multiplier, int itemReuseDelay = 0) {
 -			SetItemAnimation((int)((float)sItem.useAnimation * multiplier));
 -			reuseDelay = itemReuseDelay;
++		public void ApplyItemAnimation(Item sItem, float multiplier, int itemReuseDelay = 0) {
++			ItemLoader.UseAnimation(sItem, this);
++
 +			SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * multiplier, this, sItem));
 +			reuseDelay = (int)(itemReuseDelay / PlayerHooks.TotalUseTimeMultiplier(this, sItem));
  		}
  
- 		private void ApplyItemAnimation(Item sItem) {
+-		private void ApplyItemAnimation(Item sItem) {
++		public void ApplyItemAnimation(Item sItem) {
  			if (sItem.melee) {
 -				SetItemAnimation((int)((float)sItem.useAnimation * meleeSpeed));
-+				SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * meleeSpeed, this, sItem));
++				ApplyItemAnimation(sItem, meleeSpeed);
  				return;
  			}
  
  			if (sItem.summon && ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type]) {
 -				SetItemAnimation((int)((float)sItem.useAnimation * meleeSpeed * whipUseTimeMultiplier));
-+				SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * meleeSpeed * whipUseTimeMultiplier, this, sItem));
++				ApplyItemAnimation(sItem, meleeSpeed * whipUseTimeMultiplier);
  				return;
  			}
  
  			if (sItem.createTile >= 0) {
 -				SetItemAnimation((int)((float)sItem.useAnimation * tileSpeed));
-+				SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * tileSpeed, this, sItem));
++				ApplyItemAnimation(sItem, tileSpeed);
  				return;
  			}
  
  			if (sItem.createWall >= 0) {
 -				SetItemAnimation((int)((float)sItem.useAnimation * wallSpeed));
-+				SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * wallSpeed, this, sItem));
++				ApplyItemAnimation(sItem, wallSpeed);
  				return;
  			}
  
- 			SetItemAnimation(sItem.useAnimation);
+-			SetItemAnimation(sItem.useAnimation);
 -			reuseDelay = sItem.reuseDelay;
-+			reuseDelay = (int)(sItem.reuseDelay / PlayerHooks.TotalUseTimeMultiplier(this, sItem));
++			ApplyItemAnimation(sItem, 1f);
  		}
  
  		public bool InOpposingTeam(Player otherPlayer) {
