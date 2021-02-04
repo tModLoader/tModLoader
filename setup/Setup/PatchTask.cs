@@ -51,6 +51,8 @@ namespace Terraria.ModLoader.Setup
 
 		public override void Run()
 		{
+			Program.UpdateTargetsFile(); //Update branch information
+
 			mode = (Patcher.Mode) Settings.Default.PatchMode;
 
 			string removedFileList = Path.Combine(patchDir, DiffTask.RemovedFileList);
