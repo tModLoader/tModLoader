@@ -594,7 +594,7 @@
  			tooltipContext = -1;
  			BestiaryNotes = null;
 +			ModItem = null;
-+			globalItems = new GlobalItem[0];
++			globalItems = new GlobalInstance<GlobalItem>[0];
 +			DamageType = DamageClass.Generic;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
@@ -715,7 +715,7 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -46120,8 +_,23 @@
+@@ -46120,8 +_,31 @@
  			}
  		}
  
@@ -723,8 +723,12 @@
 -		public Item DeepClone() => (Item)MemberwiseClone();
 +		public Item Clone() {
 +			Item newItem = (Item)MemberwiseClone();
++
 +			newItem.ModItem = ModItem?.Clone(newItem);
-+			newItem.globalItems = globalItems.Select(g => g?.Clone(this, newItem)).ToArray();
++			newItem.globalItems = globalItems
++				.Select(g => new GlobalInstance<GlobalItem>(g.index, g.instance?.Clone(this, newItem)))
++				.ToArray();
++
 +			return newItem;
 +		}
 +
@@ -732,8 +736,12 @@
 +		// specifically needed for reforging
 +		public Item CloneWithModdedDataFrom(Item dataSource) {
 +			Item newItem = (Item)MemberwiseClone();
++
 +			newItem.ModItem = dataSource.ModItem?.Clone(newItem);
-+			newItem.globalItems = dataSource.globalItems.Select(g => g?.Clone(dataSource, newItem)).ToArray();
++			newItem.globalItems = globalItems
++				.Select(g => new GlobalInstance<GlobalItem>(g.index, g.instance?.Clone(this, newItem)))
++				.ToArray();
++
 +			return newItem;
 +		}
 +
@@ -746,7 +754,7 @@
  			shoot = 0;
  			mountType = -1;
 +			ModItem = null;
-+			globalItems = new GlobalItem[0];
++			globalItems = new GlobalInstance<GlobalItem>[0];
  		}
  
  		public void OnPurchase(Item item) {

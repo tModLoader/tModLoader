@@ -23,7 +23,6 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class ItemLoader
 	{
-		private static int nextItem = ItemID.Count;
 		internal static readonly IList<ModItem> items = new List<ModItem>();
 		internal static readonly IList<GlobalItem> globalItems = new List<GlobalItem>();
 		internal static GlobalItem[] NetGlobals;
@@ -31,31 +30,35 @@ namespace Terraria.ModLoader
 		internal static readonly int vanillaQuestFishCount = 41;
 		internal static readonly int[] vanillaWings = new int[Main.maxWings];
 
+		private static int nextItem = ItemID.Count;
+		private static GlobalInstance<GlobalItem>[] globalItemsArray = new GlobalInstance<GlobalItem>[0];
+
 		private class HookList
 		{
-			public int[] arr = new int[0];
 			public readonly MethodInfo method;
+
+			public int[] arr = new int[0];
 
 			public HookList(MethodInfo method) {
 				this.method = method;
 			}
 
-			public IEnumerable<GlobalItem> Enumerate(Item item) {
-				for (int i = 0; i < arr.Length; i++) {
-					var g = item.globalItems[arr[i]];
+			public IEnumerable<GlobalItem> Enumerate() {
+				for (int i = 0; i < globalItemsArray.Length; i++) {
+					var g = globalItemsArray[i];
 
-					if (g != null) {
-						yield return g;
+					if (g.index == i) {
+						yield return g.instance;
 					}
 				}
 			}
 
-			public IEnumerable<GlobalItem> Enumerate() {
-				for (int i = 0; i < arr.Length; i++) {
-					var g = globalItems[arr[i]];
+			public IEnumerable<GlobalItem> Enumerate(Item item) {
+				for (int i = 0; i < item.globalItems.Length; i++) {
+					var g = item.globalItems[i];
 
-					if (g != null) {
-						yield return g;
+					if (g.index == i) {
+						yield return g.instance;
 					}
 				}
 			}
@@ -137,6 +140,10 @@ namespace Terraria.ModLoader
 
 			FindVanillaWings();
 
+			globalItemsArray = globalItems
+				.Select(g => new GlobalInstance<GlobalItem>(g.index, g))
+				.ToArray();
+
 			NetGlobals = ModLoader.BuildGlobalHook<GlobalItem, Action<Item, BinaryWriter>>(globalItems, g => g.NetSend);
 
 			foreach (var hook in hooks)
@@ -167,7 +174,8 @@ namespace Terraria.ModLoader
 				item.ModItem = GetItem(item.type).Clone(item);
 
 			item.globalItems = globalItems
-				.Select(g => g.InstanceForEntity(item) ? (g.InstancePerEntity ? g.Clone(item, item) : g) : null)
+				.Where(g => g.InstanceForEntity(item))
+				.Select(g => new GlobalInstance<GlobalItem>(g.index, g.InstancePerEntity ? g.Clone(item, item) : g))
 				.ToArray();
 
 			item.ModItem?.AutoDefaults();
