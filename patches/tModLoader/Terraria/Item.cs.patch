@@ -594,7 +594,7 @@
  			tooltipContext = -1;
  			BestiaryNotes = null;
 +			ModItem = null;
-+			globalItems = new GlobalInstance<GlobalItem>[0];
++			globalItems = new Instanced<GlobalItem>[0];
 +			DamageType = DamageClass.Generic;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
@@ -726,7 +726,7 @@
 +
 +			newItem.ModItem = ModItem?.Clone(newItem);
 +			newItem.globalItems = globalItems
-+				.Select(g => new GlobalInstance<GlobalItem>(g.index, g.instance?.Clone(this, newItem)))
++				.Select(g => new Instanced<GlobalItem>(g.index, g.instance?.Clone(this, newItem)))
 +				.ToArray();
 +
 +			return newItem;
@@ -739,7 +739,7 @@
 +
 +			newItem.ModItem = dataSource.ModItem?.Clone(newItem);
 +			newItem.globalItems = globalItems
-+				.Select(g => new GlobalInstance<GlobalItem>(g.index, g.instance?.Clone(this, newItem)))
++				.Select(g => new Instanced<GlobalItem>(g.index, g.instance?.Clone(this, newItem)))
 +				.ToArray();
 +
 +			return newItem;
@@ -754,7 +754,7 @@
  			shoot = 0;
  			mountType = -1;
 +			ModItem = null;
-+			globalItems = new GlobalInstance<GlobalItem>[0];
++			globalItems = new Instanced<GlobalItem>[0];
  		}
  
  		public void OnPurchase(Item item) {

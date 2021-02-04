@@ -15,6 +15,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.Utilities;
+using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalItem>;
 
 namespace Terraria.ModLoader
 {
@@ -31,38 +32,7 @@ namespace Terraria.ModLoader
 		internal static readonly int[] vanillaWings = new int[Main.maxWings];
 
 		private static int nextItem = ItemID.Count;
-		private static GlobalInstance<GlobalItem>[] globalItemsArray = new GlobalInstance<GlobalItem>[0];
-
-		private class HookList
-		{
-			public readonly MethodInfo method;
-
-			public int[] arr = new int[0];
-
-			public HookList(MethodInfo method) {
-				this.method = method;
-			}
-
-			public IEnumerable<GlobalItem> Enumerate() {
-				for (int i = 0; i < globalItemsArray.Length; i++) {
-					var g = globalItemsArray[i];
-
-					if (g.index == i) {
-						yield return g.instance;
-					}
-				}
-			}
-
-			public IEnumerable<GlobalItem> Enumerate(Item item) {
-				for (int i = 0; i < item.globalItems.Length; i++) {
-					var g = item.globalItems[i];
-
-					if (g.index == i) {
-						yield return g.instance;
-					}
-				}
-			}
-		}
+		private static Instanced<GlobalItem>[] globalItemsArray = new Instanced<GlobalItem>[0];
 
 		private static List<HookList> hooks = new List<HookList>();
 
@@ -109,7 +79,7 @@ namespace Terraria.ModLoader
 
 			//Sets
 			LoaderUtils.ResetStaticMembers(typeof(ItemID), true);
-			
+
 			//Etc
 			Array.Resize(ref Item.cachedItemSpawnsByType, nextItem);
 			Array.Resize(ref Item.staff, nextItem);
@@ -141,13 +111,13 @@ namespace Terraria.ModLoader
 			FindVanillaWings();
 
 			globalItemsArray = globalItems
-				.Select(g => new GlobalInstance<GlobalItem>(g.index, g))
+				.Select(g => new Instanced<GlobalItem>(g.index, g))
 				.ToArray();
 
 			NetGlobals = ModLoader.BuildGlobalHook<GlobalItem, Action<Item, BinaryWriter>>(globalItems, g => g.NetSend);
 
 			foreach (var hook in hooks)
-				hook.arr = ModLoader.BuildGlobalHookNew(globalItems, hook.method);
+				hook.registeredGlobalIndices = ModLoader.BuildGlobalHookNew(globalItems, hook.method);
 		}
 
 		internal static void Unload() {
@@ -175,20 +145,21 @@ namespace Terraria.ModLoader
 
 			item.globalItems = globalItems
 				.Where(g => g.InstanceForEntity(item))
-				.Select(g => new GlobalInstance<GlobalItem>(g.index, g.InstancePerEntity ? g.Clone(item, item) : g))
+				.Select(g => new Instanced<GlobalItem>(g.index, g.InstancePerEntity ? g.Clone(item, item) : g))
 				.ToArray();
 
 			item.ModItem?.AutoDefaults();
 			item.ModItem?.SetDefaults();
 
-			foreach (var g in HookSetDefaults.Enumerate(item))
+			foreach (var g in HookSetDefaults.Enumerate(item.globalItems)) {
 				g.SetDefaults(item);
+			}
 		}
 
 		private static HookList HookOnCreate = AddHook<Action<Item, ItemCreationContext>>(g => g.OnCreate);
 		public static void OnCreate(Item item, ItemCreationContext context) {
-			foreach (var g in HookOnCreate.Enumerate(item)) {
-				 g.OnCreate(item, context);
+			foreach (var g in HookOnCreate.Enumerate(item.globalItems)) {
+				g.OnCreate(item, context);
 			}
 
 			item.ModItem?.OnCreate(context);
@@ -235,7 +206,7 @@ namespace Terraria.ModLoader
 		private static HookList HookChoosePrefix = AddHook<Func<Item, UnifiedRandom, int>>(g => g.ChoosePrefix);
 
 		public static int ChoosePrefix(Item item, UnifiedRandom rand) {
-			foreach (var g in HookChoosePrefix.Enumerate(item)) {
+			foreach (var g in HookChoosePrefix.Enumerate(item.globalItems)) {
 				int pre = g.ChoosePrefix(item, rand);
 				if (pre > 0) {
 					return pre;
@@ -259,7 +230,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool? PrefixChance(Item item, int pre, UnifiedRandom rand) {
 			bool? result = null;
-			foreach (var g in HookPrefixChance.Enumerate(item)) {
+			foreach (var g in HookPrefixChance.Enumerate(item.globalItems)) {
 				bool? r = g.PrefixChance(item, pre, rand);
 				if (r.HasValue)
 					result = r.Value && (result ?? true);
@@ -275,7 +246,7 @@ namespace Terraria.ModLoader
 		private static HookList HookAllowPrefix = AddHook<Func<Item, int, bool>>(g => g.AllowPrefix);
 		public static bool AllowPrefix(Item item, int pre) {
 			bool result = true;
-			foreach (var g in HookAllowPrefix.Enumerate(item)) {
+			foreach (var g in HookAllowPrefix.Enumerate(item.globalItems)) {
 				result &= g.AllowPrefix(item, pre);
 			}
 			if (item.ModItem != null) {
@@ -299,8 +270,9 @@ namespace Terraria.ModLoader
 			if (item.ModItem != null)
 				flag &= item.ModItem.CanUseItem(player);
 
-			foreach (var g in HookCanUseItem.Enumerate(item))
+			foreach (var g in HookCanUseItem.Enumerate(item.globalItems)) {
 				flag &= g.CanUseItem(item, player);
+			}
 
 			return flag;
 		}
@@ -316,8 +288,9 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.UseStyle(player);
 
-			foreach (var g in HookUseStyle.Enumerate(item))
+			foreach (var g in HookUseStyle.Enumerate(item.globalItems)) {
 				g.UseStyle(item, player);
+			}
 		}
 
 		private static HookList HookHoldStyle = AddHook<Action<Item, Player>>(g => g.HoldStyle);
@@ -331,8 +304,9 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.HoldStyle(player);
 
-			foreach (var g in HookHoldStyle.Enumerate(item))
+			foreach (var g in HookHoldStyle.Enumerate(item.globalItems)) {
 				g.HoldStyle(item, player);
+			}
 		}
 
 		private static HookList HookHoldItem = AddHook<Action<Item, Player>>(g => g.HoldItem);
@@ -346,8 +320,9 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.HoldItem(player);
 
-			foreach (var g in HookHoldItem.Enumerate(item))
+			foreach (var g in HookHoldItem.Enumerate(item.globalItems)) {
 				g.HoldItem(item, player);
+			}
 		}
 
 		private static HookList HookUseTimeMultiplier = AddHook<Func<Item, Player, float>>(g => g.UseTimeMultiplier);
@@ -357,8 +332,9 @@ namespace Terraria.ModLoader
 
 			float multiplier = item.ModItem?.UseTimeMultiplier(player) ?? 1f;
 
-			foreach (var g in HookUseTimeMultiplier.Enumerate(item))
+			foreach (var g in HookUseTimeMultiplier.Enumerate(item.globalItems)) {
 				multiplier *= g.UseTimeMultiplier(item, player);
+			}
 
 			return multiplier;
 		}
@@ -370,8 +346,9 @@ namespace Terraria.ModLoader
 
 			float multiplier = item.ModItem?.MeleeSpeedMultiplier(player) ?? 1f;
 
-			foreach (var g in HookMeleeSpeedMultiplier.Enumerate(item))
+			foreach (var g in HookMeleeSpeedMultiplier.Enumerate(item.globalItems)) {
 				multiplier *= g.MeleeSpeedMultiplier(item, player);
+			}
 
 			return multiplier;
 		}
@@ -387,8 +364,9 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.GetHealLife(player, quickHeal, ref healValue);
 
-			foreach (var g in HookGetHealLife.Enumerate(item))
+			foreach (var g in HookGetHealLife.Enumerate(item.globalItems)) {
 				g.GetHealLife(item, player, quickHeal, ref healValue);
+			}
 		}
 
 		private delegate void DelegateGetHealMana(Item item, Player player, bool quickHeal, ref int healValue);
@@ -402,8 +380,9 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.GetHealMana(player, quickHeal, ref healValue);
 
-			foreach (var g in HookGetHealMana.Enumerate(item))
+			foreach (var g in HookGetHealMana.Enumerate(item.globalItems)) {
 				g.GetHealMana(item, player, quickHeal, ref healValue);
+			}
 		}
 
 		private delegate void DelegateModifyManaCost(Item item, Player player, ref float reduce, ref float mult);
@@ -417,7 +396,7 @@ namespace Terraria.ModLoader
 			
 			item.ModItem?.ModifyManaCost(player, ref reduce, ref mult);
 
-			foreach (var g in HookModifyManaCost.Enumerate(item)) {
+			foreach (var g in HookModifyManaCost.Enumerate(item.globalItems)) {
 				g.ModifyManaCost(item, player, ref reduce, ref mult);
 			}
 		}
@@ -432,7 +411,7 @@ namespace Terraria.ModLoader
 			
 			item.ModItem?.OnMissingMana(player, neededMana);
 
-			foreach (var g in HookOnMissingMana.Enumerate(item)) {
+			foreach (var g in HookOnMissingMana.Enumerate(item.globalItems)) {
 				g.OnMissingMana(item, player, neededMana);
 			}
 		}
@@ -447,7 +426,7 @@ namespace Terraria.ModLoader
 			
 			item.ModItem?.OnConsumeMana(player, manaConsumed);
 
-			foreach (var g in HookOnConsumeMana.Enumerate(item)) {
+			foreach (var g in HookOnConsumeMana.Enumerate(item.globalItems)) {
 				g.OnConsumeMana(item, player, manaConsumed);
 			}
 		}
@@ -460,8 +439,9 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.ModifyResearchSorting(ref itemGroup);
 
-			foreach (var g in HookModifyResearchSorting.Enumerate(item))
+			foreach (var g in HookModifyResearchSorting.Enumerate(item.globalItems)) {
 				g.ModifyResearchSorting(item, ref itemGroup);
+			}
 		}
 
 		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat);
@@ -475,8 +455,9 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.ModifyWeaponDamage(player, ref damage, ref flat);
 
-			foreach (var g in HookModifyWeaponDamage.Enumerate(item))
+			foreach (var g in HookModifyWeaponDamage.Enumerate(item.globalItems)) {
 				g.ModifyWeaponDamage(item, player, ref damage, ref flat);
+			}
 		}
 
 		private delegate void DelegateModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback, ref float flat);
@@ -490,8 +471,9 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.ModifyWeaponKnockback(player, ref knockback, ref flat);
 
-			foreach (var g in HookModifyWeaponKnockback.Enumerate(item))
+			foreach (var g in HookModifyWeaponKnockback.Enumerate(item.globalItems)) {
 				g.ModifyWeaponKnockback(item, player, ref knockback, ref flat);
+			}
 		}
 
 
@@ -506,8 +488,9 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.ModifyWeaponCrit(player, ref crit);
 
-			foreach (var g in HookModifyWeaponCrit.Enumerate(item))
+			foreach (var g in HookModifyWeaponCrit.Enumerate(item.globalItems)) {
 				g.ModifyWeaponCrit(item, player, ref crit);
+			}
 		}
 
 		/// <summary>
@@ -525,7 +508,7 @@ namespace Terraria.ModLoader
 		public static void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 			ammo.ModItem?.PickAmmo(weapon, player, ref type, ref speed, ref damage, ref knockback);
 
-			foreach (var g in HookPickAmmo.Enumerate(ammo)) {
+			foreach (var g in HookPickAmmo.Enumerate(ammo.globalItems)) {
 				g.PickAmmo(weapon, ammo, player, ref type, ref speed, ref damage, ref knockback);
 			}
 		}
@@ -541,7 +524,7 @@ namespace Terraria.ModLoader
 					ammo.ModItem != null && !ammo.ModItem.ConsumeAmmo(player))
 				return false;
 
-			foreach (var g in HookConsumeAmmo.Enumerate(ammo)) {
+			foreach (var g in HookConsumeAmmo.Enumerate(ammo.globalItems)) {
 				if (!g.ConsumeAmmo(item, player) ||
 					!g.ConsumeAmmo(ammo, player))
 					return false;
@@ -561,11 +544,11 @@ namespace Terraria.ModLoader
 			item.ModItem?.OnConsumeAmmo(player);
 			ammo.ModItem?.OnConsumeAmmo(player);
 
-			foreach (var g in HookOnConsumeAmmo.Enumerate(item)) {
+			foreach (var g in HookOnConsumeAmmo.Enumerate(item.globalItems)) {
 				g.OnConsumeAmmo(item, player);
 			}
 
-			foreach (var g in HookOnConsumeAmmo.Enumerate(ammo)) {
+			foreach (var g in HookOnConsumeAmmo.Enumerate(ammo.globalItems)) {
 				g.OnConsumeAmmo(item, player);
 			}
 		}
@@ -589,7 +572,7 @@ namespace Terraria.ModLoader
 		public static bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
 			bool result = true;
 
-			foreach (var g in HookShoot.Enumerate(item)) {
+			foreach (var g in HookShoot.Enumerate(item.globalItems)) {
 				result &= g.Shoot(item, player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
 			}
 
@@ -610,8 +593,9 @@ namespace Terraria.ModLoader
 		public static void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox) {
 			item.ModItem?.UseItemHitbox(player, ref hitbox, ref noHitbox);
 
-			foreach (var g in HookUseItemHitbox.Enumerate(item))
+			foreach (var g in HookUseItemHitbox.Enumerate(item.globalItems)) {
 				g.UseItemHitbox(item, player, ref hitbox, ref noHitbox);
+			}
 		}
 
 		private static HookList HookMeleeEffects = AddHook<Action<Item, Player, Rectangle>>(g => g.MeleeEffects);
@@ -623,8 +607,9 @@ namespace Terraria.ModLoader
 		public static void MeleeEffects(Item item, Player player, Rectangle hitbox) {
 			item.ModItem?.MeleeEffects(player, hitbox);
 
-			foreach (var g in HookMeleeEffects.Enumerate(item))
+			foreach (var g in HookMeleeEffects.Enumerate(item.globalItems)) {
 				g.MeleeEffects(item, player, hitbox);
+			}
 		}
 
 		private static HookList HookCanHitNPC = AddHook<Func<Item, Player, NPC, bool?>>(g => g.CanHitNPC);
@@ -641,7 +626,7 @@ namespace Terraria.ModLoader
 		public static bool? CanHitNPC(Item item, Player player, NPC target) {
 			bool? flag = null;
 
-			foreach (GlobalItem g in HookCanHitNPC.Enumerate(item)) {
+			foreach (GlobalItem g in HookCanHitNPC.Enumerate(item.globalItems)) {
 				bool? canHit = g.CanHitNPC(item, player, target);
 
 				if (canHit.HasValue) {
@@ -678,8 +663,9 @@ namespace Terraria.ModLoader
 		public static void ModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit) {
 			item.ModItem?.ModifyHitNPC(player, target, ref damage, ref knockBack, ref crit);
 
-			foreach (var g in HookModifyHitNPC.Enumerate(item))
+			foreach (var g in HookModifyHitNPC.Enumerate(item.globalItems)) {
 				g.ModifyHitNPC(item, player, target, ref damage, ref knockBack, ref crit);
+			}
 		}
 
 		private static HookList HookOnHitNPC = AddHook<Action<Item, Player, NPC, int, float, bool>>(g => g.OnHitNPC);
@@ -691,8 +677,9 @@ namespace Terraria.ModLoader
 		public static void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit) {
 			item.ModItem?.OnHitNPC(player, target, damage, knockBack, crit);
 
-			foreach (var g in HookOnHitNPC.Enumerate(item))
+			foreach (var g in HookOnHitNPC.Enumerate(item.globalItems)) {
 				g.OnHitNPC(item, player, target, damage, knockBack, crit);
+			}
 		}
 
 		private static HookList HookCanHitPvp = AddHook<Func<Item, Player, Player, bool>>(g => g.CanHitPvp);
@@ -702,9 +689,10 @@ namespace Terraria.ModLoader
 		/// If all of them return true, this returns true.
 		/// </summary>
 		public static bool CanHitPvp(Item item, Player player, Player target) {
-			foreach (var g in HookCanHitPvp.Enumerate(item))
+			foreach (var g in HookCanHitPvp.Enumerate(item.globalItems)) {
 				if (!g.CanHitPvp(item, player, target))
 					return false;
+			}
 
 			return item.ModItem == null || item.ModItem.CanHitPvp(player, target);
 		}
@@ -719,8 +707,9 @@ namespace Terraria.ModLoader
 		public static void ModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit) {
 			item.ModItem?.ModifyHitPvp(player, target, ref damage, ref crit);
 
-			foreach (var g in HookModifyHitPvp.Enumerate(item))
+			foreach (var g in HookModifyHitPvp.Enumerate(item.globalItems)) {
 				g.ModifyHitPvp(item, player, target, ref damage, ref crit);
+			}
 		}
 
 		private static HookList HookOnHitPvp = AddHook<Action<Item, Player, Player, int, bool>>(g => g.OnHitPvp);
@@ -732,8 +721,9 @@ namespace Terraria.ModLoader
 		public static void OnHitPvp(Item item, Player player, Player target, int damage, bool crit) {
 			item.ModItem?.OnHitPvp(player, target, damage, crit);
 
-			foreach (var g in HookOnHitPvp.Enumerate(item))
+			foreach (var g in HookOnHitPvp.Enumerate(item.globalItems)) {
 				g.OnHitPvp(item, player, target, damage, crit);
+			}
 		}
 
 		private static HookList HookUseItem = AddHook<Func<Item, Player, bool>>(g => g.UseItem);
@@ -749,7 +739,7 @@ namespace Terraria.ModLoader
 			if (item.ModItem != null)
 				flag |= item.ModItem.UseItem(player);
 
-			foreach (var g in HookUseItem.Enumerate(item))
+			foreach (var g in HookUseItem.Enumerate(item.globalItems))
 				flag |= g.UseItem(item, player);
 
 			return flag;
@@ -766,9 +756,10 @@ namespace Terraria.ModLoader
 			if (item.ModItem != null && !item.ModItem.ConsumeItem(player))
 				return false;
 
-			foreach (var g in HookConsumeItem.Enumerate(item))
+			foreach (var g in HookConsumeItem.Enumerate(item.globalItems)) {
 				if (!g.ConsumeItem(item, player))
 					return false;
+			}
 
 			OnConsumeItem(item, player);
 			return true;
@@ -784,8 +775,9 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.OnConsumeItem(player);
 
-			foreach (var g in HookOnConsumeItem.Enumerate(item))
+			foreach (var g in HookOnConsumeItem.Enumerate(item.globalItems)) {
 				g.OnConsumeItem(item, player);
+			}
 		}
 
 		private static HookList HookUseItemFrame = AddHook<Func<Item, Player, bool>>(g => g.UseItemFrame);
@@ -798,9 +790,10 @@ namespace Terraria.ModLoader
 			if (item.ModItem != null && item.ModItem.UseItemFrame(player))
 				return true;
 
-			foreach (var g in HookUseItemFrame.Enumerate(item))
+			foreach (var g in HookUseItemFrame.Enumerate(item.globalItems)) {
 				if (g.UseItemFrame(item, player))
 					return true;
+			}
 
 			return false;
 		}
@@ -818,9 +811,10 @@ namespace Terraria.ModLoader
 			if (item.ModItem != null && item.ModItem.HoldItemFrame(player))
 				return true;
 
-			foreach (var g in HookHoldItemFrame.Enumerate(item))
+			foreach (var g in HookHoldItemFrame.Enumerate(item.globalItems)) {
 				if (g.HoldItemFrame(item, player))
 					return true;
+			}
 
 			return false;
 		}
@@ -836,9 +830,10 @@ namespace Terraria.ModLoader
 			if (item.ModItem != null && item.ModItem.AltFunctionUse(player))
 				return true;
 
-			foreach (var g in HookAltFunctionUse.Enumerate(item))
+			foreach (var g in HookAltFunctionUse.Enumerate(item.globalItems)) {
 				if (g.AltFunctionUse(item, player))
 					return true;
+			}
 
 			return false;
 		}
@@ -855,8 +850,9 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.UpdateInventory(player);
 
-			foreach (var g in HookUpdateInventory.Enumerate(item))
+			foreach (var g in HookUpdateInventory.Enumerate(item.globalItems)) {
 				g.UpdateInventory(item, player);
+			}
 		}
 
 		private static HookList HookUpdateEquip = AddHook<Action<Item, Player>>(g => g.UpdateEquip);
@@ -869,8 +865,9 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.UpdateEquip(player);
 
-			foreach (var g in HookUpdateEquip.Enumerate(item))
+			foreach (var g in HookUpdateEquip.Enumerate(item.globalItems)) {
 				g.UpdateEquip(item, player);
+			}
 		}
 
 		private static HookList HookUpdateAccessory = AddHook<Action<Item, Player, bool>>(g => g.UpdateAccessory);
@@ -883,8 +880,9 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.UpdateAccessory(player, hideVisual);
 
-			foreach (var g in HookUpdateAccessory.Enumerate(item))
+			foreach (var g in HookUpdateAccessory.Enumerate(item.globalItems)) {
 				g.UpdateAccessory(item, player, hideVisual);
+			}
 		}
 
 		private static HookList HookUpdateVanity = AddHook<Action<Item, Player>>(g => g.UpdateVanity);
@@ -897,8 +895,9 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.UpdateVanity(player);
 
-			foreach (var g in HookUpdateVanity.Enumerate(item))
+			foreach (var g in HookUpdateVanity.Enumerate(item.globalItems)) {
 				g.UpdateVanity(item, player);
+			}
 		}
 
 		private static HookList HookUpdateArmorSet = AddHook<Action<Player, string>>(g => g.UpdateArmorSet);
@@ -916,7 +915,7 @@ namespace Terraria.ModLoader
 			if (legs.ModItem != null && legs.ModItem.IsArmorSet(head, body, legs))
 				legs.ModItem.UpdateArmorSet(player);
 
-			foreach (GlobalItem globalItem in HookUpdateArmorSet.Enumerate()) {
+			foreach (GlobalItem globalItem in HookUpdateArmorSet.Enumerate(globalItemsArray)) {
 				string set = globalItem.IsArmorSet(head, body, legs);
 				if (!string.IsNullOrEmpty(set))
 					globalItem.UpdateArmorSet(player, set);
@@ -941,7 +940,7 @@ namespace Terraria.ModLoader
 			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 				legTexture.PreUpdateVanitySet(player);
 
-			foreach (GlobalItem globalItem in HookPreUpdateVanitySet.Enumerate()) {
+			foreach (GlobalItem globalItem in HookPreUpdateVanitySet.Enumerate(globalItemsArray)) {
 				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
 				if (!string.IsNullOrEmpty(set))
 					globalItem.PreUpdateVanitySet(player, set);
@@ -966,7 +965,7 @@ namespace Terraria.ModLoader
 			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 				legTexture.UpdateVanitySet(player);
 
-			foreach (GlobalItem globalItem in HookUpdateVanitySet.Enumerate()) {
+			foreach (GlobalItem globalItem in HookUpdateVanitySet.Enumerate(globalItemsArray)) {
 				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
 				if (!string.IsNullOrEmpty(set))
 					globalItem.UpdateVanitySet(player, set);
@@ -992,7 +991,7 @@ namespace Terraria.ModLoader
 			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 				legTexture.ArmorSetShadows(player);
 
-			foreach (GlobalItem globalItem in HookArmorSetShadows.Enumerate()) {
+			foreach (GlobalItem globalItem in HookArmorSetShadows.Enumerate(globalItemsArray)) {
 				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
 				if (!string.IsNullOrEmpty(set))
 					globalItem.ArmorSetShadows(player, set);
@@ -1008,8 +1007,9 @@ namespace Terraria.ModLoader
 			EquipTexture texture = EquipLoader.GetEquipTexture((EquipType)armorSlot, type);
 			texture?.SetMatch(male, ref equipSlot, ref robes);
 
-			foreach (var g in HookSetMatch.Enumerate())
+			foreach (var g in HookSetMatch.Enumerate(globalItemsArray)) {
 				g.SetMatch(armorSlot, type, male, ref equipSlot, ref robes);
+			}
 		}
 
 		private static HookList HookCanRightClick = AddHook<Func<Item, bool>>(g => g.CanRightClick);
@@ -1025,9 +1025,10 @@ namespace Terraria.ModLoader
 			if (item.ModItem != null && item.ModItem.CanRightClick())
 				return true;
 
-			foreach (var g in HookCanRightClick.Enumerate(item))
+			foreach (var g in HookCanRightClick.Enumerate(item.globalItems)) {
 				if (g.CanRightClick(item))
 					return true;
+			}
 
 			return false;
 		}
@@ -1051,8 +1052,9 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.RightClick(player);
 
-			foreach (var g in HookRightClick.Enumerate(item))
+			foreach (var g in HookRightClick.Enumerate(item.globalItems)) {
 				g.RightClick(item, player);
+			}
 
 			if (ConsumeItem(item, player) && --item.stack == 0)
 				item.SetDefaults();
@@ -1094,8 +1096,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool PreOpenVanillaBag(string context, Player player, int arg) {
 			bool result = true;
-			foreach (var g in HookPreOpenVanillaBag.Enumerate())
+			foreach (var g in HookPreOpenVanillaBag.Enumerate(globalItemsArray)) {
 				result &= g.PreOpenVanillaBag(context, player, arg);
+			}
 
 			if (!result) {
 				NPCLoader.blockLoot.Clear(); // clear blockloot
@@ -1112,8 +1115,9 @@ namespace Terraria.ModLoader
 		/// Calls all GlobalItem.OpenVanillaBag hooks.
 		/// </summary>
 		public static void OpenVanillaBag(string context, Player player, int arg) {
-			foreach (var g in HookOpenVanillaBag.Enumerate())
+			foreach (var g in HookOpenVanillaBag.Enumerate(globalItemsArray)) {
 				g.OpenVanillaBag(context, player, arg);
+			}
 		}
 
 		private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);
@@ -1126,8 +1130,9 @@ namespace Terraria.ModLoader
 		public static bool ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) {
 			bool b = item.ModItem?.ReforgePrice(ref reforgePrice, ref canApplyDiscount) ?? true;
 
-			foreach (var g in HookReforgePrice.Enumerate(item))
+			foreach (var g in HookReforgePrice.Enumerate(item.globalItems)) {
 				b &= g.ReforgePrice(item, ref reforgePrice, ref canApplyDiscount);
+			}
 
 			return b;
 		}
@@ -1140,8 +1145,9 @@ namespace Terraria.ModLoader
 		public static bool PreReforge(Item item) {
 			bool b = item.ModItem?.PreReforge() ?? true;
 
-			foreach (var g in HookPreReforge.Enumerate(item))
+			foreach (var g in HookPreReforge.Enumerate(item.globalItems)) {
 				b &= g.PreReforge(item);
+			}
 
 			return b;
 		}
@@ -1152,9 +1158,10 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void PostReforge(Item item) {
 			item.ModItem?.PostReforge();
-			
-			foreach (var g in HookPostReforge.Enumerate(item))
+
+			foreach (var g in HookPostReforge.Enumerate(item.globalItems)) {
 				g.PostReforge(item);
+			}
 		}
 
 		private delegate void DelegateDrawHands(int body, ref bool drawHands, ref bool drawArms);
@@ -1167,8 +1174,9 @@ namespace Terraria.ModLoader
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
 			texture?.DrawHands(ref drawHands, ref drawArms);
 
-			foreach (var g in HookDrawHands.Enumerate())
+			foreach (var g in HookDrawHands.Enumerate(globalItemsArray)) {
 				g.DrawHands(player.body, ref drawHands, ref drawArms);
+			}
 		}
 
 		private delegate void DelegateDrawHair(int body, ref bool drawHair, ref bool drawAltHair);
@@ -1185,8 +1193,9 @@ namespace Terraria.ModLoader
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
 			texture?.DrawHair(ref drawHair, ref drawAltHair);
 
-			foreach (var g in HookDrawHair.Enumerate())
+			foreach (var g in HookDrawHair.Enumerate(globalItemsArray)) {
 				g.DrawHair(player.head, ref drawHair, ref drawAltHair);
+			}
 		}
 
 		private static HookList HookDrawHead = AddHook<Func<int, bool>>(g => g.DrawHead);
@@ -1202,9 +1211,10 @@ namespace Terraria.ModLoader
 			if (texture != null && !texture.DrawHead())
 				return false;
 
-			foreach (var g in HookDrawHead.Enumerate())
+			foreach (var g in HookDrawHead.Enumerate(globalItemsArray)) {
 				if (!g.DrawHead(player.head))
 					return false;
+			}
 
 			return true;
 		}
@@ -1219,9 +1229,10 @@ namespace Terraria.ModLoader
 			if (texture != null && !texture.DrawBody())
 				return false;
 
-			foreach (var g in HookDrawBody.Enumerate())
+			foreach (var g in HookDrawBody.Enumerate(globalItemsArray)) {
 				if (!g.DrawBody(player.body))
 					return false;
+			}
 
 			return true;
 		}
@@ -1240,9 +1251,10 @@ namespace Terraria.ModLoader
 			if (texture != null && !texture.DrawLegs())
 				return false;
 
-			foreach (var g in HookDrawLegs.Enumerate())
+			foreach (var g in HookDrawLegs.Enumerate(globalItemsArray)) {
 				if (!g.DrawLegs(player.legs, player.shoe))
 					return false;
+			}
 
 			return true;
 		}
@@ -1257,8 +1269,9 @@ namespace Terraria.ModLoader
 			EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
 			texture?.DrawArmorColor(drawPlayer, shadow, ref color, ref glowMask, ref glowMaskColor);
 
-			foreach (var g in HookDrawArmorColor.Enumerate())
+			foreach (var g in HookDrawArmorColor.Enumerate(globalItemsArray)) {
 				g.DrawArmorColor(type, slot, drawPlayer, shadow, ref color, ref glowMask, ref glowMaskColor);
+			}
 		}
 
 		private delegate void DelegateArmorArmGlowMask(int slot, Player drawPlayer, float shadow, ref int glowMask, ref Color color);
@@ -1270,8 +1283,9 @@ namespace Terraria.ModLoader
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, slot);
 			texture?.ArmorArmGlowMask(drawPlayer, shadow, ref glowMask, ref color);
 
-			foreach (var g in HookArmorArmGlowMask.Enumerate())
+			foreach (var g in HookArmorArmGlowMask.Enumerate(globalItemsArray)) {
 				g.ArmorArmGlowMask(slot, drawPlayer, shadow, ref glowMask, ref color);
+			}
 		}
 
 		/// <summary>s
@@ -1322,9 +1336,10 @@ namespace Terraria.ModLoader
 			item.ModItem?.VerticalWingSpeeds(player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier,
 				ref maxAscentMultiplier, ref constantAscend);
 
-			foreach (var g in HookVerticalWingSpeeds.Enumerate(item))
+			foreach (var g in HookVerticalWingSpeeds.Enumerate(item.globalItems)) {
 				g.VerticalWingSpeeds(item, player, ref ascentWhenFalling, ref ascentWhenRising,
 					ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
+			}
 		}
 
 		private delegate void DelegateHorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration);
@@ -1344,8 +1359,9 @@ namespace Terraria.ModLoader
 			
 			item.ModItem?.HorizontalWingSpeeds(player, ref player.accRunSpeed, ref player.runAcceleration);
 
-			foreach (var g in HookHorizontalWingSpeeds.Enumerate(item))
+			foreach (var g in HookHorizontalWingSpeeds.Enumerate(item.globalItems)) {
 				g.HorizontalWingSpeeds(item, player, ref player.accRunSpeed, ref player.runAcceleration);
+			}
 		}
 
 		private static HookList HookWingUpdate = AddHook<Func<int, Player, bool, bool>>(g => g.WingUpdate);
@@ -1359,8 +1375,9 @@ namespace Terraria.ModLoader
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wings);
 			bool? retVal = texture?.WingUpdate(player, inUse);
 
-			foreach (var g in HookWingUpdate.Enumerate())
+			foreach (var g in HookWingUpdate.Enumerate(globalItemsArray)) {
 				retVal |= g.WingUpdate(player.wings, player, inUse);
+			}
 
 			return retVal ?? false;
 		}
@@ -1375,8 +1392,9 @@ namespace Terraria.ModLoader
 		public static void Update(Item item, ref float gravity, ref float maxFallSpeed) {
 			item.ModItem?.Update(ref gravity, ref maxFallSpeed);
 
-			foreach (var g in HookUpdate.Enumerate(item))
+			foreach (var g in HookUpdate.Enumerate(item.globalItems)) {
 				g.Update(item, ref gravity, ref maxFallSpeed);
+			}
 		}
 
 		private static HookList HookCanBurnInLava = AddHook<Func<Item, bool>>(g => g.CanBurnInLava);
@@ -1385,9 +1403,10 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool CanBurnInLava(Item item)
 		{
-			foreach (var g in HookCanBurnInLava.Enumerate(item))
+			foreach (var g in HookCanBurnInLava.Enumerate(item.globalItems)) {
 				if (g.CanBurnInLava(item))
 					return true;
+			}
 
 			return item.ModItem?.CanBurnInLava() ?? false;
 		}
@@ -1399,8 +1418,9 @@ namespace Terraria.ModLoader
 		public static void PostUpdate(Item item) {
 			item.ModItem?.PostUpdate();
 
-			foreach (var g in HookPostUpdate.Enumerate(item))
+			foreach (var g in HookPostUpdate.Enumerate(item.globalItems)) {
 				g.PostUpdate(item);
+			}
 		}
 
 		private delegate void DelegateGrabRange(Item item, Player player, ref int grabRange);
@@ -1413,8 +1433,9 @@ namespace Terraria.ModLoader
 		public static void GrabRange(Item item, Player player, ref int grabRange) {
 			item.ModItem?.GrabRange(player, ref grabRange);
 
-			foreach (var g in HookGrabRange.Enumerate(item))
+			foreach (var g in HookGrabRange.Enumerate(item.globalItems)) {
 				g.GrabRange(item, player, ref grabRange);
+			}
 		}
 
 		private static HookList HookGrabStyle = AddHook<Func<Item, Player, bool>>(g => g.GrabStyle);
@@ -1424,9 +1445,10 @@ namespace Terraria.ModLoader
 		/// Calls all GlobalItem.GrabStyle hooks then ModItem.GrabStyle, until one of them returns true. Returns whether any of the hooks returned true.
 		/// </summary>
 		public static bool GrabStyle(Item item, Player player) {
-			foreach (var g in HookGrabStyle.Enumerate(item))
+			foreach (var g in HookGrabStyle.Enumerate(item.globalItems)) {
 				if (g.GrabStyle(item, player))
 					return true;
+			}
 
 			return item.ModItem != null && item.ModItem.GrabStyle(player);
 		}
@@ -1435,9 +1457,10 @@ namespace Terraria.ModLoader
 		//in Terraria.Player.GrabItems first per item if statement add
 		//  && ItemLoader.CanPickup(Main.item[j], this)
 		public static bool CanPickup(Item item, Player player) {
-			foreach (var g in HookCanPickup.Enumerate(item))
+			foreach (var g in HookCanPickup.Enumerate(item.globalItems)) {
 				if (!g.CanPickup(item, player))
 					return false;
+			}
 
 			return item.ModItem?.CanPickup(player) ?? true;
 		}
@@ -1449,9 +1472,10 @@ namespace Terraria.ModLoader
 		/// Calls all GlobalItem.OnPickup hooks then ModItem.OnPickup, until one of the returns false. Returns true if all of the hooks return true.
 		/// </summary>
 		public static bool OnPickup(Item item, Player player) {
-			foreach (var g in HookOnPickup.Enumerate(item))
+			foreach (var g in HookOnPickup.Enumerate(item.globalItems)) {
 				if (!g.OnPickup(item, player))
 					return false;
+			}
 
 			return item.ModItem?.OnPickup(player) ?? true;
 		}
@@ -1460,9 +1484,10 @@ namespace Terraria.ModLoader
 		//in Terraria.Player.GrabItems before grab effect
 		//  (this.ItemSpace(Main.item[j]) || ItemLoader.ExtraPickupSpace(Main.item[j], this)
 		public static bool ItemSpace(Item item, Player player) {
-			foreach (var g in HookItemSpace.Enumerate(item))
+			foreach (var g in HookItemSpace.Enumerate(item.globalItems)) {
 				if (g.ItemSpace(item, player))
 					return true;
+			}
 
 			return item.ModItem?.ItemSpace(player) ?? false;
 		}
@@ -1479,7 +1504,7 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return null;
 
-			foreach (var g in HookGetAlpha.Enumerate(item)) {
+			foreach (var g in HookGetAlpha.Enumerate(item.globalItems)) {
 				Color? color = g.GetAlpha(item, lightColor);
 				if (color.HasValue)
 					return color;
@@ -1499,8 +1524,9 @@ namespace Terraria.ModLoader
 			if (item.ModItem != null)
 				flag &= item.ModItem.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
 
-			foreach (var g in HookPreDrawInWorld.Enumerate(item))
+			foreach (var g in HookPreDrawInWorld.Enumerate(item.globalItems)) {
 				flag &= g.PreDrawInWorld(item, spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+			}
 
 			return flag;
 		}
@@ -1514,8 +1540,9 @@ namespace Terraria.ModLoader
 		public static void PostDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI) {
 			item.ModItem?.PostDrawInWorld(spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);
 
-			foreach (var g in HookPostDrawInWorld.Enumerate(item))
+			foreach (var g in HookPostDrawInWorld.Enumerate(item.globalItems)) {
 				g.PostDrawInWorld(item, spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);
+			}
 		}
 
 		private static HookList HookPreDrawInInventory = AddHook<Func<Item, SpriteBatch, Vector2, Rectangle, Color, Color, Vector2, float, bool>>(g => g.PreDrawInInventory);
@@ -1528,8 +1555,9 @@ namespace Terraria.ModLoader
 		public static bool PreDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame,
 			Color drawColor, Color itemColor, Vector2 origin, float scale) {
 			bool flag = true;
-			foreach (var g in HookPreDrawInInventory.Enumerate(item))
+			foreach (var g in HookPreDrawInInventory.Enumerate(item.globalItems)) {
 				flag &= g.PreDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+			}
 
 			if (item.ModItem != null)
 				flag &= item.ModItem.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
@@ -1548,8 +1576,9 @@ namespace Terraria.ModLoader
 			Color drawColor, Color itemColor, Vector2 origin, float scale) {
 			item.ModItem?.PostDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
 
-			foreach (var g in HookPostDrawInInventory.Enumerate(item))
+			foreach (var g in HookPostDrawInInventory.Enumerate(item.globalItems)) {
 				g.PostDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+			}
 		}
 
 		private static HookList HookHoldoutOffset = AddHook<Func<int, Vector2?>>(g => g.HoldoutOffset);
@@ -1565,7 +1594,7 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			foreach (var g in HookHoldoutOffset.Enumerate()) {
+			foreach (var g in HookHoldoutOffset.Enumerate(globalItemsArray)) {
 				Vector2? modOffset = g.HoldoutOffset(type);
 
 				if (modOffset.HasValue) {
@@ -1585,7 +1614,7 @@ namespace Terraria.ModLoader
 					modOrigin = modOrigin2.Value;
 				}
 			}
-			foreach (var g in HookHoldoutOrigin.Enumerate(item)) {
+			foreach (var g in HookHoldoutOrigin.Enumerate(item.globalItems)) {
 				Vector2? modOrigin2 = g.HoldoutOrigin(item.type);
 				if (modOrigin2.HasValue) {
 					modOrigin = modOrigin2.Value;
@@ -1604,9 +1633,10 @@ namespace Terraria.ModLoader
 			if (item.ModItem != null && !item.ModItem.CanEquipAccessory(player, slot))
 				return false;
 
-			foreach (var g in HookCanEquipAccessory.Enumerate(item))
+			foreach (var g in HookCanEquipAccessory.Enumerate(item.globalItems)) {
 				if (!g.CanEquipAccessory(item, player, slot))
 					return false;
+			}
 
 			return true;
 		}
@@ -1616,8 +1646,9 @@ namespace Terraria.ModLoader
 		public static void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType) {
 			GetItem(extractType)?.ExtractinatorUse(ref resultType, ref resultStack);
 
-			foreach (var g in HookExtractinatorUse.Enumerate())
+			foreach (var g in HookExtractinatorUse.Enumerate(globalItemsArray)) {
 				g.ExtractinatorUse(extractType, ref resultType, ref resultStack);
+			}
 		}
 
 		private delegate void DelegateCaughtFishStack(int type, ref int stack);
@@ -1625,8 +1656,9 @@ namespace Terraria.ModLoader
 		public static void CaughtFishStack(Item item) {
 			item.ModItem?.CaughtFishStack(ref item.stack);
 
-			foreach (var g in HookCaughtFishStack.Enumerate(item))
+			foreach (var g in HookCaughtFishStack.Enumerate(item.globalItems)) {
 				g.CaughtFishStack(item.type, ref item.stack);
+			}
 		}
 
 		private static HookList HookIsAnglerQuestAvailable = AddHook<Func<int, bool>>(g => g.IsAnglerQuestAvailable);
@@ -1635,8 +1667,9 @@ namespace Terraria.ModLoader
 			if (modItem != null)
 				notAvailable |= !modItem.IsAnglerQuestAvailable();
 
-			foreach (var g in HookIsAnglerQuestAvailable.Enumerate())
+			foreach (var g in HookIsAnglerQuestAvailable.Enumerate(globalItemsArray)) {
 				notAvailable |= !g.IsAnglerQuestAvailable(itemID);
+			}
 		}
 
 		private delegate void DelegateAnglerChat(int type, ref string chat, ref string catchLocation);
@@ -1646,8 +1679,9 @@ namespace Terraria.ModLoader
 			string catchLocation = "";
 			GetItem(type)?.AnglerQuestChat(ref chat, ref catchLocation);
 
-			foreach (var g in HookAnglerChat.Enumerate())
+			foreach (var g in HookAnglerChat.Enumerate(globalItemsArray)) {
 				g.AnglerChat(type, ref chat, ref catchLocation);
+			}
 
 			if (string.IsNullOrEmpty(chat) || string.IsNullOrEmpty(catchLocation))
 				return null;
@@ -1660,8 +1694,11 @@ namespace Terraria.ModLoader
 		public static bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {
 			bool modItemPreDraw = item.ModItem?.PreDrawTooltip(lines, ref x, ref y) ?? true;
 			List<bool> globalItemPreDraw = new List<bool>();
-			foreach (var g in HookPreDrawTooltip.Enumerate(item))
+			
+			foreach (var g in HookPreDrawTooltip.Enumerate(item.globalItems)) {
 				globalItemPreDraw.Add(g.PreDrawTooltip(item, lines, ref x, ref y));
+			}
+
 			return modItemPreDraw && globalItemPreDraw.All(z => z);
 		}
 
@@ -1669,9 +1706,10 @@ namespace Terraria.ModLoader
 		private static HookList HookPostDrawTooltip = AddHook<DelegatePostDrawTooltip>(g => g.PostDrawTooltip);
 		public static void PostDrawTooltip(Item item, ReadOnlyCollection<DrawableTooltipLine> lines) {
 			item.ModItem?.PostDrawTooltip(lines);
-			
-			foreach (var g in HookPostDrawTooltip.Enumerate(item))
+
+			foreach (var g in HookPostDrawTooltip.Enumerate(item.globalItems)) {
 				g.PostDrawTooltip(item, lines);
+			}
 		}
 
 		private delegate bool DelegatePreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset);
@@ -1679,8 +1717,11 @@ namespace Terraria.ModLoader
 		public static bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset) {
 			bool modItemPreDrawLine = item.ModItem?.PreDrawTooltipLine(line, ref yOffset) ?? true;
 			List<bool> globalItemPreDrawLine = new List<bool>();
-			foreach (var g in HookPreDrawTooltipLine.Enumerate(item))
+
+			foreach (var g in HookPreDrawTooltipLine.Enumerate(item.globalItems)) {
 				globalItemPreDrawLine.Add(g.PreDrawTooltipLine(item, line, ref yOffset));
+			}
+			
 			return modItemPreDrawLine && globalItemPreDrawLine.All(x => x);
 		}
 
@@ -1688,9 +1729,10 @@ namespace Terraria.ModLoader
 		private static HookList HookPostDrawTooltipLine = AddHook<DelegatePostDrawTooltipLine>(g => g.PostDrawTooltipLine);
 		public static void PostDrawTooltipLine(Item item, DrawableTooltipLine line) {
 			item.ModItem?.PostDrawTooltipLine(line);
-			
-			foreach (var g in HookPostDrawTooltipLine.Enumerate(item))
+
+			foreach (var g in HookPostDrawTooltipLine.Enumerate(item.globalItems)) {
 				g.PostDrawTooltipLine(item, line);
+			}
 		}
 
 		private static HookList HookModifyTooltips = AddHook<Action<Item, List<TooltipLine>>>(g => g.ModifyTooltips);
@@ -1708,9 +1750,10 @@ namespace Terraria.ModLoader
 			}
 			
 			item.ModItem?.ModifyTooltips(tooltips);
-			
-			foreach (var g in HookModifyTooltips.Enumerate(item))
+
+			foreach (var g in HookModifyTooltips.Enumerate(item.globalItems)) {
 				g.ModifyTooltips(item, tooltips);
+			}
 
 			numTooltips = tooltips.Count;
 			text = new string[numTooltips];
@@ -1733,7 +1776,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookNeedsSaving = AddHook<Func<Item, bool>>(g => g.NeedsSaving);
 		public static bool NeedsModSaving(Item item) {
-			return item.type != 0 && (item.ModItem != null || item.prefix >= PrefixID.Count || HookNeedsSaving.Enumerate(item).Count(g => g.NeedsSaving(item)) > 0);
+			return item.type != 0 && (item.ModItem != null || item.prefix >= PrefixID.Count || HookNeedsSaving.Enumerate(item.globalItems).Count(g => g.NeedsSaving(item)) > 0);
 		}
 
 		internal static void WriteNetGlobalOrder(BinaryWriter w) {

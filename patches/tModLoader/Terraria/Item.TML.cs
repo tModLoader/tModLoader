@@ -13,7 +13,7 @@ namespace Terraria
 
 		public ModItem ModItem { get; internal set; }
 
-		internal GlobalInstance<GlobalItem>[] globalItems = new GlobalInstance<GlobalItem>[0];
+		internal Instanced<GlobalItem>[] globalItems = new Instanced<GlobalItem>[0];
 
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
