@@ -29,7 +29,7 @@ namespace Terraria
 				if (value >= LiquidID.Count)
 					throw new Exception($"The liquid with type {value} does not exist");
 
-				bTileHeader &= (byte)((bTileHeader & 0x9F) | (32 * value));
+				bTileHeader = (byte)((bTileHeader & 0x9F) | (32 * value));
 			}
 		}
 
