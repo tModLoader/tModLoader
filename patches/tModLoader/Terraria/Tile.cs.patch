@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -9,26 +_,26 @@
+@@ -9,28 +_,28 @@
  #if !WINDOWS
  	[StructLayout(LayoutKind.Sequential, Pack = 1)]
  #endif
@@ -37,8 +37,20 @@
 -		public const int Liquid_Honey = 2;
 +		internal const int Liquid_Honey = 2;
  
- 		public int collisionType {
+-		public int collisionType {
++		internal int collisionType {
  			get {
+ 				if (!active())
+ 					return 0;
+@@ -118,7 +_,7 @@
+ 			frameY = from.frameY;
+ 		}
+ 
+-		public bool isTheSameAs(Tile compTile) {
++		internal bool isTheSameAs(Tile compTile) {
+ 			if (compTile == null)
+ 				return false;
+ 
 @@ -161,7 +_,7 @@
  			return num;
  		}
@@ -60,7 +72,22 @@
  			if ((sTileHeader & 0x60) == 32)
  				return true;
  
-@@ -218,7 +_,7 @@
+@@ -205,7 +_,7 @@
+ 			frameY = 0;
+ 		}
+ 
+-		public Color actColor(Color oldColor) {
++		internal Color actColor(Color oldColor) {
+ 			if (!inActive())
+ 				return oldColor;
+ 
+@@ -213,12 +_,12 @@
+ 			return new Color((byte)(num * (double)(int)oldColor.R), (byte)(num * (double)(int)oldColor.G), (byte)(num * (double)(int)oldColor.B), oldColor.A);
+ 		}
+ 
+-		public void actColor(ref Vector3 oldColor) {
++		internal void actColor(ref Vector3 oldColor) {
+ 			if (inActive())
  				oldColor *= 0.4f;
  		}
  
@@ -96,7 +123,7 @@
  			byte b = slope();
  			if (b != 1)
  				return b == 3;
-@@ -251,60 +_,60 @@
+@@ -251,154 +_,154 @@
  		}
  
  		public bool HasSameSlope(Tile tile) => (sTileHeader & 0x7400) == (tile.sTileHeader & 0x7400);
@@ -173,7 +200,25 @@
  			bTileHeader3 = (byte)((bTileHeader3 & 0xF8) | ((wallFrameY / 36) & 7));
  		}
  
-@@ -326,79 +_,79 @@
+-		public bool checkingLiquid() => (bTileHeader3 & 8) == 8;
++		internal bool checkingLiquid() => (bTileHeader3 & 8) == 8;
+ 
+-		public void checkingLiquid(bool checkingLiquid) {
++		internal void checkingLiquid(bool checkingLiquid) {
+ 			if (checkingLiquid)
+ 				bTileHeader3 |= 8;
+ 			else
+ 				bTileHeader3 &= 247;
+ 		}
+ 
+-		public bool skipLiquid() => (bTileHeader3 & 0x10) == 16;
++		internal bool skipLiquid() => (bTileHeader3 & 0x10) == 16;
+ 
+-		public void skipLiquid(bool skipLiquid) {
++		internal void skipLiquid(bool skipLiquid) {
+ 			if (skipLiquid)
+ 				bTileHeader3 |= 16;
+ 			else
  				bTileHeader3 &= 239;
  		}
  

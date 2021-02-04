@@ -9,14 +9,14 @@ namespace Terraria
 			if (value)
 				header = (byte)(header | (1 << position));
 			else
-				header = (byte)(header | ~(1 << position));
+				header = (byte)(header & ~(1 << position));
 		}
 
 		private static void SetBit(ref ushort header, int position, bool value) {
 			if (value)
 				header = (ushort)(header | (1 << position));
 			else
-				header = (ushort)(header | ~(1 << position));
+				header = (ushort)(header & ~(1 << position));
 		}
 
 		private static bool IsBitSet(ushort value, int pos) {
@@ -115,6 +115,66 @@ namespace Terraria
 		public byte WallFrameNumber {
 			get => (byte)((bTileHeader2 & 0xC0) >> 6);
 			set => bTileHeader2 = (byte)((bTileHeader2 & 0x3F) | ((value & 3) << 6));
+		}
+
+		public bool CheckingLiquid {
+			get => IsBitSet(bTileHeader, 3);
+			set => SetBit(ref bTileHeader, 3, value);
+		}
+
+		public bool SkipLiquid {
+			get => IsBitSet(bTileHeader, 4);
+			set => SetBit(ref bTileHeader, 4, value);
+		}
+
+		public int CollisionType {
+			get {
+				if (!IsActive)
+					return 0;
+
+				if (IsHalfBrick)
+					return 2;
+
+				if (Slope != SlopeID.Solid)
+					return 2 + (int)Slope;
+
+				if (Main.tileSolid[type] && !Main.tileSolidTop[type])
+					return 1;
+
+				return -1;
+			}
+		}
+		
+		public bool IsTheSameAs(Tile other) {
+			if (other == null)
+				return false;
+
+			if (sTileHeader != other.sTileHeader)
+				return false;
+
+			if (IsActive) {
+				if (type != other.type)
+					return false;
+
+				if (Main.tileFrameImportant[type] && (frameX != other.frameX || frameY != other.frameY))
+					return false;
+			}
+
+			if (wall != other.wall || liquid != other.liquid)
+				return false;
+
+			if (other.liquid == 0) {
+				if (WallColor != other.WallColor)
+					return false;
+
+				if (YellowWire != other.YellowWire)
+					return false;
+			}
+			else if (bTileHeader != other.bTileHeader) {
+				return false;
+			}
+
+			return true;
 		}
 	}
 }
