@@ -41,7 +41,7 @@ namespace Terraria.ModLoader
 				var g = item.globalItems[i];
 
 				if (g.index == index) {
-					return item.globalItems[index].instance;
+					return g.instance;
 				}
 			}
 

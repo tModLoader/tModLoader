@@ -11,7 +11,7 @@ namespace Terraria
 	{
 		public ModNPC ModNPC { get; internal set; }
 
-		internal GlobalNPC[] globalNPCs = new GlobalNPC[0];
+		internal Instanced<GlobalNPC>[] globalNPCs = new Instanced<GlobalNPC>[0];
 
 		// Get
 
