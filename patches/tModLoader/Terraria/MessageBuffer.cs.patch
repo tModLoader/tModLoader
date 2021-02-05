@@ -344,6 +344,21 @@
  							if (!NPC.AnyNPCs(num180))
  								NPC.SpawnOnPlayer(plr, num180);
  						}
+@@ -2445,11 +_,12 @@
+ 					}
+ 					break;
+ 				case 72:
++					// todo: fix
+-					if (Main.netMode == 1) {
++					/*if (Main.netMode == 1) {
+ 						for (int num197 = 0; num197 < 40; num197++) {
+ 							Main.travelShop[num197] = reader.ReadInt16();
+ 						}
+-					}
++					}*/
+ 					break;
+ 				case 73:
+ 					switch (reader.ReadByte()) {
 @@ -2466,6 +_,7 @@
  					break;
  				case 74:
@@ -370,6 +385,25 @@
  							tileEntity.ID = num48;
  							TileEntity.ByID[tileEntity.ID] = tileEntity;
  							TileEntity.ByPosition[tileEntity.Position] = tileEntity;
+@@ -2901,7 +_,8 @@
+ 						NPC.MoonLordCountdown = reader.ReadInt32();
+ 					break;
+ 				case 104:
++					// todo: fix
+-					if (Main.netMode == 1 && Main.npcShop > 0) {
++					/*if (Main.netMode == 1 && Main.npcShop > 0) {
+ 						Item[] item = Main.instance.shop[Main.npcShop].item;
+ 						int num15 = reader.ReadByte();
+ 						int type = reader.ReadInt16();
+@@ -2917,7 +_,7 @@
+ 							item[num15].value = value;
+ 							item[num15].buyOnce = bitsByte[0];
+ 						}
+-					}
++					}*/
+ 					break;
+ 				case 105:
+ 					if (Main.netMode != 1) {
 @@ -3346,6 +_,27 @@
  						CreditsRollEvent.SetRemainingTimeDirect(reader.ReadInt32());
  					}

@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Player.cs
 +++ src/tModLoader/Terraria/Player.cs
-@@ -34,10 +_,15 @@
+@@ -34,10 +_,16 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -9,6 +9,7 @@
 +using Terraria.ModLoader.IO;
 +using Terraria.ModLoader.UI;
 +using System.Linq;
++using Terraria.ModLoader.Shops;
  
  namespace Terraria
  {
@@ -2254,6 +2255,28 @@
  					if (controlInv) {
  						if (releaseInventory)
  							ToggleInv();
+@@ -17407,7 +_,20 @@
+ 							else {
+ 								int num8 = GetMouseScrollDelta();
+ 								bool flag9 = true;
++								
++								if (NPCShopManager.CurrentShop != null)
++								{
++									PlayerInput.SetZoom_UI();
++									
++									if (NPCShopManager.CurrentShop.GetDimensions().Contains(Main.MouseScreen))
++									{
++										NPCShopManager.CurrentShop.OnScroll(-num8);
++										flag9 = false;
++									}
++								
++									PlayerInput.SetZoom_World();
++								}
+-								if (Main.recBigList) {
++								else if (Main.recBigList) {
+ 									int num9 = 42;
+ 									int num10 = 340;
+ 									int num11 = 310;
 @@ -17633,12 +_,6 @@
  						}
  					}
@@ -2783,6 +2806,19 @@
  							PullItem_Pickup(item, 12f, 5);
  						else if (lifeMagnet && (item.type == 58 || item.type == 1734 || item.type == 1867))
  							PullItem_Pickup(item, 15f, 5);
+@@ -24479,9 +_,10 @@
+ 
+ 			int num2 = num;
+ 			num *= stack;
++			// todo: fix
+-			int amount = Main.shopSellbackHelper.GetAmount(item);
++			/*int amount = Main.shopSellbackHelper.GetAmount(item);
+ 			if (amount > 0)
+-				num += (-num2 + calcForBuying) * Math.Min(amount, item.stack);
++				num += (-num2 + calcForBuying) * Math.Min(amount, item.stack);*/
+ 
+ 			bool flag = false;
+ 			while (num >= 1000000 && !flag) {
 @@ -24649,6 +_,36 @@
  			}
  		}

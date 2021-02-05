@@ -8,7 +8,7 @@
  using Terraria.Achievements;
  using Terraria.Audio;
  using Terraria.Chat;
-@@ -65,6 +_,13 @@
+@@ -65,6 +_,14 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
@@ -18,10 +18,20 @@
 +using Terraria.ModLoader.Default;
 +using Terraria.ModLoader.Engine;
 +using Terraria.ModLoader.IO;
++using Terraria.ModLoader.Shops;
 +using Terraria.ModLoader.UI;
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
+@@ -73,6 +_,8 @@
+ using Terraria.UI.Gamepad;
+ using Terraria.Utilities;
+ using Terraria.WorldBuilding;
++using ItemShopSellbackHelper = Terraria.GameContent.ItemShopSellbackHelper;
++
+ #if SERVER
+ using Terraria.Server;
+ #endif
 @@ -80,9 +_,9 @@
  namespace Terraria
  {
@@ -814,6 +824,21 @@
  #if SERVER
  			netMode = 2;
  #endif
+@@ -4970,12 +_,12 @@
+ 				liquidBuffer[l] = new LiquidBuffer();
+ 			}
+ 
+-			shop[0] = new Chest();
++			/*shop[0] = new Chest();
+ 			Chest.SetupTravelShop();
+ 			for (int m = 1; m < 100; m++) {
+ 				shop[m] = new Chest();
+ 				shop[m].SetupShop(m);
+-			}
++			}*/
+ 
+ 			teamColor[0] = Microsoft.Xna.Framework.Color.White;
+ 			teamColor[1] = new Microsoft.Xna.Framework.Color(218, 59, 59);
 @@ -5037,7 +_,7 @@
  			}
  
@@ -1228,6 +1253,15 @@
  			chatMonitor.Update();
  			upTimer = (float)sw.Elapsed.TotalMilliseconds;
  			if (upTimerMaxDelay > 0f)
+@@ -13253,7 +_,7 @@
+ 		private static void UpdateOldNPCShop() {
+ 			if (npcShop != oldNPCShop) {
+ 				oldNPCShop = npcShop;
+-				shopSellbackHelper.Clear();
++				// shopSellbackHelper.Clear();
+ 			}
+ 		}
+ 
 @@ -13375,7 +_,8 @@
  			if (!inputTextEnter || !chatRelease)
  				return;
@@ -1331,6 +1365,19 @@
  					CustomCurrencyManager.GetPriceText(hoverItem.shopSpecialCurrency, array, ref numLines, num5);
  					color = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(255f * num4), (byte)(255f * num4), a);
  				}
+@@ -14851,9 +_,10 @@
+ 
+ 						int num11 = num10;
+ 						num10 *= hoverItem.stack;
++						// todo: fix
+-						int amount = shopSellbackHelper.GetAmount(hoverItem);
++						/*int amount = shopSellbackHelper.GetAmount(hoverItem);
+ 						if (amount > 0)
+-							num10 += (-num11 + calcForBuying) * Math.Min(amount, hoverItem.stack);
++							num10 += (-num11 + calcForBuying) * Math.Min(amount, hoverItem.stack);*/
+ 					}
+ 
+ 					if (num10 < 1)
 @@ -14894,6 +_,7 @@
  					else
  						array[numLines] = Lang.tip[50].Value + " " + text;
@@ -2402,6 +2449,22 @@
  				if (npc[player[myPlayer].talkNPC].type == 20) {
  					SoundEngine.PlaySound(12);
  					npcChatText = Lang.GetDryadWorldStatusDialog();
+@@ -29389,11 +_,14 @@
+ 			stackSplit = 9999;
+ 			npcChatText = "";
+ 			SetNPCShopIndex(shopIndex);
+-			shop[npcShop].SetupShop(npcShop);
++			Chest.SetupShop(npcShop);
+ 			SoundEngine.PlaySound(12);
+ 		}
+ 
+ 		public static void SetNPCShopIndex(int index) {
++			if (index == 0 && NPCShopManager.CurrentShop != null)
++				NPCShopManager.CurrentShop.OnClose();
++
+ 			npcShop = index;
+ 		}
+ 
 @@ -30058,7 +_,7 @@
  					num29++;
  
@@ -2509,6 +2572,25 @@
  						inventoryBack = color5;
  					}
  				}
+@@ -30751,6 +_,9 @@
+ 				SetNPCShopIndex(0);
+ 
+ 			if (npcShop > 0 && !recBigList) {
++				NPCShopManager.CurrentShop.Draw(spriteBatch);
++				goto ShopRenderingSkip;
++			
+ 				Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, Lang.inter[28].Value, 504f, invBottom, Microsoft.Xna.Framework.Color.White * ((float)(int)mouseTextColor / 255f), Microsoft.Xna.Framework.Color.Black, Vector2.Zero);
+ 				ItemSlot.DrawSavings(spriteBatch, 504f, invBottom);
+ 				inventoryScale = 0.755f;
+@@ -30776,6 +_,8 @@
+ 				}
+ 			}
+ 
++			ShopRenderingSkip:
++			
+ 			if (player[myPlayer].chest > -1 && !tileContainer[tile[player[myPlayer].chestX, player[myPlayer].chestY].type]) {
+ 				player[myPlayer].chest = -1;
+ 				Recipe.FindRecipes();
 @@ -30975,7 +_,7 @@
  			else {
  				text = Lang.inter[21].Value + " " + guideItem.Name;

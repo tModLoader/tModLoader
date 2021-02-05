@@ -1,10 +1,11 @@
 --- src/Terraria/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -7,6 +_,7 @@
+@@ -7,6 +_,8 @@
  using Terraria.GameContent.Events;
  using Terraria.ID;
  using Terraria.ObjectData;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Shops;
  
  namespace Terraria
  {
@@ -81,7 +82,7 @@
  		}
  
 -		public void AddItemToShop(Item newItem) {
-+		public int AddItemToShop(Item newItem) { //tML: Now returns the item's index.
++		private int AddItemToShop(Item newItem) { //tML: Now returns the item's index.
  			int num = Main.shopSellbackHelper.Remove(newItem);
 +			
  			if (num >= newItem.stack)
@@ -104,7 +105,7 @@
  			}
  
  			item[num2] = newItem.Clone();
-@@ -528,6 +_,7 @@
+@@ -528,9 +_,14 @@
  			item[num2].stack -= num;
  			_ = item[num2].value;
  			_ = 0;
@@ -112,7 +113,14 @@
  		}
  
  		public static void SetupTravelShop() {
-@@ -874,9 +_,12 @@
++			NPCShop shop = NPCShopManager.GetShop<TravellingMerchantShop>();
++			shop.Evaluate();
++			return;
++			
+ 			for (int i = 0; i < 40; i++) {
+ 				Main.travelShop[i] = 0;
+ 			}
+@@ -874,14 +_,20 @@
  							Main.travelShop[num2++] = 3636;
  							Main.travelShop[num2++] = 3641;
  							break;
@@ -120,16 +128,18 @@
  					}
  				}
  			}
-+
-+			NPCLoader.SetupTravelShop(Main.travelShop, ref num2);
  		}
  
- 		public void SetupShop(int type) {
-@@ -2553,6 +_,7 @@
- 					array[num++].SetDefaults(4921);
- 			}
- 
-+			NPCLoader.SetupShop(type, this, ref num);
- 			for (int num12 = 0; num12 < num; num12++) {
- 				array[num12].isAShopItem = true;
+-		public void SetupShop(int type) {
++		public static void SetupShop(int type) {
++			type = NPCShopManager.ShopIDToNPCID(type);
++			NPCShop shop = NPCShopManager.GetShop(type);
++			shop.OnOpen();
++			return;
++			
+ 			bool flag = Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8500000238418579;
+-			Item[] array = item;
++			Item[] array = new Item[0];
+ 			for (int i = 0; i < 40; i++) {
+ 				array[i] = new Item();
  			}

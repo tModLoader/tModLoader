@@ -88,5 +88,9 @@ namespace Terraria
 		}
 
 		public static int Repeat(int value, int length) => value >= 0 ? value % length : (value % length) + length;
+
+		public static bool Contains(this Rectangle rectangle, Vector2 point) {
+			return point.X >= rectangle.Left && point.X <= rectangle.Right && point.Y >= rectangle.Top && point.Y <= rectangle.Bottom;
+		}
 	}
 }

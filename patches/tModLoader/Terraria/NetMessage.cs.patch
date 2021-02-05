@@ -165,6 +165,19 @@
  								writer.Write((ushort)Main.player[number].buffType[n]);
  							}
  
+@@ -895,9 +_,10 @@
+ 						writer.Write((byte)number4);
+ 						break;
+ 					case 72: {
++							// todo: fix
+-							for (int num24 = 0; num24 < 40; num24++) {
++							/*for (int num24 = 0; num24 < 40; num24++) {
+ 								writer.Write((short)Main.travelShop[num24]);
+-							}
++							}*/
+ 
+ 							break;
+ 						}
 @@ -987,7 +_,7 @@
  							bool flag3 = TileEntity.ByID.ContainsKey(number);
  							writer.Write(flag3);

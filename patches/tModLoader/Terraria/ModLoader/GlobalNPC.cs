@@ -512,20 +512,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to add items to an NPC's shop. The type parameter is the type of the NPC that this shop belongs to. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item. If you want to remove an item, you will have to be familiar with programming.
+		/// Allows you to add items to an NPC's shop.
 		/// </summary>
-		/// <param name="type"></param>
-		/// <param name="shop"></param>
-		/// <param name="nextSlot"></param>
-		public virtual void SetupShop(int type, Chest shop, ref int nextSlot) {
-		}
-
-		/// <summary>
-		/// Allows you to add items to the traveling merchant's shop. Add an item by setting shop[nextSlot] to the ID of the item you are adding then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop that represents an item ID. If you want to remove an item, you will have to be familiar with programming.
-		/// </summary>
-		/// <param name="shop"></param>
-		/// <param name="nextSlot"></param>
-		public virtual void SetupTravelShop(int[] shop, ref int nextSlot) {
+		/// <param name="npc"></param>
+		public virtual void SetupShop(NPC npc) {
 		}
 
 		/// <summary>

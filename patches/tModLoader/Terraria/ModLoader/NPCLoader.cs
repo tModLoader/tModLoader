@@ -29,7 +29,6 @@ namespace Terraria.ModLoader
 		internal static readonly IList<GlobalNPC> globalNPCs = new List<GlobalNPC>();
 		internal static GlobalNPC[] InstancedGlobals = new GlobalNPC[0];
 		internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
-		private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 		/// <summary>
 		/// Allows you to stop an NPC from dropping loot by adding item IDs to this list. This list will be cleared whenever NPCLoot ends. Useful for either removing an item or change the drop rate of an item in the NPC's loot table. To change the drop rate of an item, use the PreNPCLoot hook, spawn the item yourself, then add the item's ID to this list.
 		/// </summary>
@@ -51,30 +50,6 @@ namespace Terraria.ModLoader
 			var hook = new HookList(ModLoader.Method(func));
 			hooks.Add(hook);
 			return hook;
-		}
-
-		static NPCLoader() {
-			shopToNPC[1] = NPCID.Merchant;
-			shopToNPC[2] = NPCID.ArmsDealer;
-			shopToNPC[3] = NPCID.Dryad;
-			shopToNPC[4] = NPCID.Demolitionist;
-			shopToNPC[5] = NPCID.Clothier;
-			shopToNPC[6] = NPCID.GoblinTinkerer;
-			shopToNPC[7] = NPCID.Wizard;
-			shopToNPC[8] = NPCID.Mechanic;
-			shopToNPC[9] = NPCID.SantaClaus;
-			shopToNPC[10] = NPCID.Truffle;
-			shopToNPC[11] = NPCID.Steampunker;
-			shopToNPC[12] = NPCID.DyeTrader;
-			shopToNPC[13] = NPCID.PartyGirl;
-			shopToNPC[14] = NPCID.Cyborg;
-			shopToNPC[15] = NPCID.Painter;
-			shopToNPC[16] = NPCID.WitchDoctor;
-			shopToNPC[17] = NPCID.Pirate;
-			shopToNPC[18] = NPCID.Stylist;
-			shopToNPC[19] = NPCID.TravellingMerchant;
-			shopToNPC[20] = NPCID.SkeletonMerchant;
-			shopToNPC[21] = NPCID.DD2Bartender;
 		}
 
 		internal static int ReserveNPCID() {
@@ -920,7 +895,7 @@ namespace Terraria.ModLoader
 					Main.playerInventory = true;
 					Main.npcChatText = "";
 					Main.npcShop = Main.MaxShopIDs - 1;
-					Main.instance.shop[Main.npcShop].SetupShop(npc.type);
+					Chest.SetupShop(npc.type);
 				}
 			}
 
@@ -929,27 +904,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateSetupShop(int type, Chest shop, ref int nextSlot);
+		private delegate void DelegateSetupShop(NPC npc);
 		private static HookList HookSetupShop = AddHook<DelegateSetupShop>(g => g.SetupShop);
 
-		public static void SetupShop(int type, Chest shop, ref int nextSlot) {
-			if (type < shopToNPC.Length) {
-				type = shopToNPC[type];
-			}
-			else {
-				GetNPC(type)?.SetupShop(shop, ref nextSlot);
-			}
+		public static void SetupShop(NPC npc) {
 			foreach (GlobalNPC g in HookSetupShop.arr) {
-				g.SetupShop(type, shop, ref nextSlot);
-			}
-		}
-
-		private delegate void DelegateSetupTravelShop(int[] shop, ref int nextSlot);
-		private static HookList HookSetupTravelShop = AddHook<DelegateSetupTravelShop>(g => g.SetupTravelShop);
-
-		public static void SetupTravelShop(int[] shop, ref int nextSlot) {
-			foreach (GlobalNPC g in HookSetupTravelShop.arr) {
-				g.SetupTravelShop(shop, ref nextSlot);
+				g.SetupShop(npc);
 			}
 		}
 

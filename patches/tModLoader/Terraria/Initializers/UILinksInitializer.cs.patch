@@ -10,6 +10,28 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
+@@ -547,17 +_,18 @@
+ 			uILinkPage4.IsValidEvent += (() => Main.playerInventory && Main.LocalPlayer.tileEntityAnchor.GetTileEntity() is TEHatRack);
+ 			UILinkPage uILinkPage5 = new UILinkPage();
+ 			uILinkPage5.OnSpecialInteracts += (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
++			// todo: fix
+-			Func<string> value11 = delegate {
++			/*Func<string> value11 = delegate {
+ 				if (Main.npcShop == 0)
+ 					return "";
+ 
+ 				int slot7 = UILinkPointNavigator.CurrentPoint - 2700;
+ 				return ItemSlot.GetGamepadInstructions(Main.instance.shop[Main.npcShop].item, 15, slot7);
+-			};
++			};*/
+ 
+ 			for (int num10 = 2700; num10 <= 2739; num10++) {
+ 				UILinkPoint uILinkPoint8 = new UILinkPoint(num10, enabled: true, num10 - 1, num10 + 1, num10 - 10, num10 + 10);
+-				uILinkPoint8.OnSpecialInteracts += value11;
++				// uILinkPoint8.OnSpecialInteracts += value11;
+ 				int num11 = num10 - 2700;
+ 				if (num11 < 10)
+ 					uILinkPoint8.Up = 40 + num11;
 @@ -632,7 +_,7 @@
  				return PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]) + PlayerInput.BuildCommand(Lang.misc[70].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]) + PlayerInput.BuildCommand(Lang.misc[69].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]) + (flag6 ? PlayerInput.BuildCommand("Evict", false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]) : "");
  			};
