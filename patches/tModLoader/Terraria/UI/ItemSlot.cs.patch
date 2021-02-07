@@ -286,92 +286,49 @@
  		}
  
  		private static Item DyeSwap(Item item, out bool success) {
-@@ -1927,23 +_,23 @@
- 
- 			Player player = Main.player[Main.myPlayer];
- 			Item item2 = item;
--			for (int i = 0; i < 10; i++) {
-+			for (int i = 0; i < player.totalEquipSlots; i++) {
- 				if (player.dye[i].type == 0) {
- 					dyeSlotCount = i;
- 					break;
+@@ -1934,9 +_,15 @@
  				}
  			}
  
 -			if (dyeSlotCount >= 10)
-+			if (dyeSlotCount >= player.totalEquipSlots)
- 				dyeSlotCount = 0;
- 
- 			if (dyeSlotCount < 0)
--				dyeSlotCount = 9;
-+				dyeSlotCount = player.totalEquipSlots - 1;
- 
- 			item2 = player.dye[dyeSlotCount].Clone();
- 			player.dye[dyeSlotCount] = item.Clone();
- 			dyeSlotCount++;
--			if (dyeSlotCount >= 10)
-+			if (dyeSlotCount >= player.totalEquipSlots)
- 				accSlotToSwapTo = 0;
- 
- 			SoundEngine.PlaySound(7);
-@@ -1958,7 +_,7 @@
- 				return item;
- 
- 			Player player = Main.player[Main.myPlayer];
--			int num = (item.vanity && !item.accessory) ? 10 : 0;
-+			int num = (item.vanity && !item.accessory) ? player.totalEquipSlots : 0;
- 			item.favorited = false;
- 			Item result = item;
- 			if (item.headSlot != -1) {
-@@ -1974,12 +_,12 @@
- 				player.armor[num + 2] = item.Clone();
- 			}
- 			else if (item.accessory) {
--				int num2 = 3;
-+				int num2 = player.totalArmorSlots;
--				for (int i = 3; i < 10; i++) {
-+				for (int i = player.totalArmorSlots; i < player.totalEquipSlots; i++) {
- 					if (player.IsAValidEquipmentSlotForIteration(i)) {
- 						num2 = i;
- 						if (player.armor[i].type == 0) {
--							accSlotToSwapTo = i - 3;
-+							accSlotToSwapTo = i - player.totalArmorSlots;
- 							break;
- 						}
- 					}
-@@ -1987,19 +_,27 @@
- 
- 				for (int j = 0; j < player.armor.Length; j++) {
- 					if (item.IsTheSameAs(player.armor[j]))
--						accSlotToSwapTo = j - 3;
-+						accSlotToSwapTo = j - player.totalArmorSlots;
- 
--					if (j < 10 && item.wingSlot > 0 && player.armor[j].wingSlot > 0)
-+					if (j < player.totalEquipSlots && item.wingSlot > 0 && player.armor[j].wingSlot > 0)
--						accSlotToSwapTo = j - 3;
-+						accSlotToSwapTo = j - player.totalArmorSlots;
-+				}
++			if (dyeSlotCount >= 10) 
++			{
++				item2 = EquipLoader.VanillaDyeSwapMirror(item, out success);
++				if (success)
++					return item2;
 +
+ 				dyeSlotCount = 0;
+-
++			}
++			
+ 			if (dyeSlotCount < 0)
+ 				dyeSlotCount = 9;
+ 
+@@ -1993,8 +_,23 @@
+ 						accSlotToSwapTo = j - 3;
+ 				}
+ 
 +				for (int k = 0; k < num2; k++) {
-+					int index = player.totalArmorSlots + (accSlotToSwapTo + num2) % num2;
++					int index = 3 + (accSlotToSwapTo + num2) % num2;
 +					if (ItemLoader.CanEquipAccessory(item, index)) {
-+						accSlotToSwapTo = index - player.totalArmorSlots;
++						accSlotToSwapTo = index - 3;
 +						break;
 +					}
- 				}
- 
- 				if (accSlotToSwapTo > num2)
++				}
++
+-				if (accSlotToSwapTo > num2)
++				if (accSlotToSwapTo > num2) {
++					result = EquipLoader.VanillaArmorSwapMirror(item, out success);
++					if (success) {
++						return result;
++					}
++
  					return item;
++				}
++					
  
  				if (accSlotToSwapTo < 0)
--					accSlotToSwapTo = num2 - 3;
-+					accSlotToSwapTo = num2 - player.totalArmorSlots;
- 
--				int num3 = 3 + accSlotToSwapTo;
-+				int num3 = player.totalArmorSlots + accSlotToSwapTo;
- 				if (isEquipLocked(player.armor[num3].type))
- 					return item;
- 
+ 					accSlotToSwapTo = num2 - 3;
 @@ -2008,6 +_,9 @@
  						num3 = k;
  				}

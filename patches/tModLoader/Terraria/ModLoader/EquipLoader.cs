@@ -6,6 +6,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Initializers;
 using Terraria.ModLoader.Core;
+using Terraria.UI;
 using Terraria.Audio;
 
 namespace Terraria.ModLoader
@@ -319,11 +320,12 @@ namespace Terraria.ModLoader
 				mAccSlot.Draw(num20);
 			}
 		}
+
 		internal static void VanillaUpdateEquipsMirror(Player player) {
 			Item item = null;
 			Item vItem = null;
 			for (int k = 0; k < moddedAccSlots.Count; k++) {
-				if (player.IsAValidEquipmentSlotForIteration(k)) {
+				if (play.IsAValidEquipmentSlotForIteration(k)) {
 					item = exAccessorySlot[k];
 					vItem = exAccessorySlot[k + moddedAccSlots.Count];
 					player.VanillaUpdateEquip(item);
@@ -366,16 +368,115 @@ namespace Terraria.ModLoader
 				player.UpdateVisibleAccessory(k + moddedAccSlots.Count, vItem);
 		}
 
-		private static void VanillaPreferredGolfBall(ref int projType, Player player) {
+		public static bool VanillaPreferredGolfBall(ref int projType, Player player) {
 			for (int num = moddedAccSlots.Count * 2 - 1; num >= 0; num--) {
-				if (player.IsAValidEquipmentSlotForIteration(num)) {
+				if (play.IsAValidEquipmentSlotForIteration(num)) {
 					_ = num % 10;
 					Item item2 = exAccessorySlot[num];
 					if (!item2.IsAir && item2.shoot > 0 && ProjectileID.Sets.IsAGolfBall[item2.shoot]) {
 						projType = item2.shoot;
-						return;
+						return true;
 					}
 				}
+			}
+			return false;
+		}
+
+		public static Item VanillaDyeSwapMirror(Item item, out bool success) {
+			Item item2 = item;
+			int dyeSlotCount = moddedAccSlots.Count;
+
+			for (int i = 0; i < moddedAccSlots.Count; i++) {
+				if (exDyesAccessory[i].type == 0) {
+					dyeSlotCount = i;
+					break;
+				}
+			}
+
+			if (dyeSlotCount >= moddedAccSlots.Count ) {
+				success = false;
+				return item2;
+			}
+
+			item2 = exDyesAccessory[dyeSlotCount].Clone();
+			exDyesAccessory[dyeSlotCount] = item.Clone();
+				
+			SoundEngine.PlaySound(7);
+			Recipe.FindRecipes();
+			success = true;
+			return item2;
+		}
+
+		public static Item VanillaArmorSwapMirror(Item item, out bool success) {
+			int num2 = 0;
+			int accSlotToSwapTo = moddedAccSlots.Count;
+			success = false;
+
+			for (int i = 0; i < moddedAccSlots.Count; i++) {
+				if (play.IsAValidEquipmentSlotForIteration(i)) {
+					num2 = i;
+					if (exAccessorySlot[i].type == 0) {
+						accSlotToSwapTo = i;
+						break;
+					}
+				}
+			}
+
+			for (int j = 0; j < exAccessorySlot.Length; j++) {
+				if (item.IsTheSameAs(exAccessorySlot[j]))
+					accSlotToSwapTo = j;
+
+				if (j < moddedAccSlots.Count && item.wingSlot > 0 && exAccessorySlot[j].wingSlot > 0)
+					accSlotToSwapTo = j;
+			}
+
+			for (int k = 0; k < num2; k++) {
+				int index = (accSlotToSwapTo + num2) % num2;
+				if (ItemLoader.CanEquipAccessory(item, index)) {
+					accSlotToSwapTo = index;
+					break;
+				}
+			}
+
+			if (accSlotToSwapTo > num2)
+				return item;
+
+			if (ItemSlot.isEquipLocked(exAccessorySlot[accSlotToSwapTo].type))
+				return item;
+
+			for (int k = 0; k < exAccessorySlot.Length; k++) {
+				if (item.IsTheSameAs(exAccessorySlot[k]))
+					accSlotToSwapTo = k;
+			}
+
+			if (!ItemLoader.CanEquipAccessory(item, accSlotToSwapTo))
+				return item;
+
+			Item result = exAccessorySlot[accSlotToSwapTo].Clone();
+			exAccessorySlot[accSlotToSwapTo] = item.Clone();
+
+			SoundEngine.PlaySound(7);
+			Recipe.FindRecipes();
+			success = true;
+			return result;
+		}
+
+		public static void VanillaLastMinuteFixesMirror(Player newPlayer) {
+			for (int i = 0; i < moddedAccSlots.Count; i++) {
+				int type = exAccessorySlot[i].type;
+				if (type == 908 || type == 4874 || type == 5000)
+					newPlayer.lavaMax += 420;
+
+				if (type == 906 || type == 4038)
+					newPlayer.lavaMax += 420;
+
+				if (newPlayer.wingsLogic == 0 && exAccessorySlot[i].wingSlot >= 0)
+					newPlayer.wingsLogic = exAccessorySlot[i].wingSlot;
+
+				if (type == 158 || type == 396 || type == 1250 || type == 1251 || type == 1252)
+					newPlayer.noFallDmg = true;
+
+				newPlayer.lavaTime = newPlayer.lavaMax;
 			}
 		}
 

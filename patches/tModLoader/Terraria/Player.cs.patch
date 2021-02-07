@@ -3802,18 +3802,16 @@
  					int num178 = Projectile.NewProjectile(pointPoisition.X, pointPoisition.Y, num2, num3, projToShoot, Damage, KnockBack, i);
  					if (sItem.type == 726)
  						Main.projectile[num178].magic = true;
-@@ -34074,7 +_,10 @@
+@@ -34074,6 +_,9 @@
  				return;
  			}
  
--			for (int num = 19; num >= 0; num--) {
-+			if (EquipLoader.VanillaPerferredGolfBall(ref projType, this))
++			if (EquipLoader.VanillaPreferredGolfBall(ref projType, this))
 +				return;
 +
-+			for (int num = 2 * totalEquipSlots - 1; num >= 0; num--) {
+ 			for (int num = 19; num >= 0; num--) {
  				if (IsAValidEquipmentSlotForIteration(num)) {
  					_ = num % 10;
- 					Item item2 = armor[num];
 @@ -34427,6 +_,8 @@
  		}
  
@@ -4310,7 +4308,7 @@
  			if (FileUtilities.Exists(path, isCloudSave))
  				FileUtilities.Copy(path, path + ".bak", isCloudSave);
  
-@@ -37417,23 +_,25 @@
+@@ -37417,13 +_,14 @@
  			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write)) {
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream)) {
@@ -4324,46 +4322,31 @@
 -						binaryWriter.Write(player.hairDye);
 +						PlayerIO.WriteVanillaHairDye(player.hairDye, binaryWriter);
  						BitsByte bb = (byte)0;
--						for (int i = 0; i < 8; i++) {
-+						for (int i = 0; i < player.vanillaBasicAccSlots + player.totalArmorSlots; i++) {
+ 						for (int i = 0; i < 8; i++) {
  							bb[i] = player.hideVisibleAccessory[i];
+@@ -37434,7 +_,7 @@
+ 						for (int j = 0; j < 2; j++) {
+ 							bb[j] = player.hideVisibleAccessory[j + 8];
  						}
- 
- 						binaryWriter.Write(bb);
- 						bb = (byte)0;
--						for (int j = 0; j < 2; j++) {
-+						for (int j = 0; j < player.vanillaEXAccSlots; j++) {
--							bb[j] = player.hideVisibleAccessory[j + 8];
-+							bb[j] = player.hideVisibleAccessory[j + player.vanillaBasicAccSlots + player.totalArmorSlots];
- 						}
-+						//TODO: save hideVisible in modded accessory slots
- 
+-
++						
  						binaryWriter.Write(bb);
  						binaryWriter.Write(player.hideMisc);
-@@ -37468,64 +_,65 @@
- 						binaryWriter.Write(player.shoeColor.R);
+ 						binaryWriter.Write((byte)player.skinVariant);
+@@ -37469,63 +_,57 @@
  						binaryWriter.Write(player.shoeColor.G);
  						binaryWriter.Write(player.shoeColor.B);
--						for (int k = 0; k < player.armor.Length; k++) {
-+						for (int k = 0; k < player.vanillaEquipSlots; k++) {
+ 						for (int k = 0; k < player.armor.Length; k++) {
 -							binaryWriter.Write(player.armor[k].netID);
 +							ItemIO.WriteVanillaID(player.armor[k], binaryWriter);
  							binaryWriter.Write(player.armor[k].prefix);
  						}
-+						for (int k = player.totalEquipSlots; 
-+							k < player.totalEquipSlots + player.vanillaEquipSlots; k++) {
-+							ItemIO.WriteVanillaID(player.armor[k], binaryWriter);
-+							binaryWriter.Write(player.armor[k].prefix);
-+						}
-+						//TODO: save equips in modded slots
  
--						for (int l = 0; l < player.dye.Length; l++) {
-+						for (int l = 0; l < player.vanillaEquipSlots; l++) {
+ 						for (int l = 0; l < player.dye.Length; l++) {
 -							binaryWriter.Write(player.dye[l].netID);
 +							ItemIO.WriteVanillaID(player.dye[l], binaryWriter);
  							binaryWriter.Write(player.dye[l].prefix);
  						}
-+						//TODO: save dyes in modded slots
  
  						for (int m = 0; m < 58; m++) {
 -							binaryWriter.Write(player.inventory[m].netID);
@@ -4439,130 +4422,29 @@
  		}
  
  		private void SaveTemporaryItemSlotContents(BinaryWriter writer) {
-@@ -37675,7 +_,8 @@
+@@ -37675,7 +_,7 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
 -			Player player = new Player();
 +			Player player = new Player(false); // setup inventory is unnecessary
-+
  			try {
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
  				rijndaelManaged.Padding = PaddingMode.None;
-@@ -37714,20 +_,24 @@
- 
- 							if (num >= 124) {
- 								BitsByte bitsByte = binaryReader.ReadByte();
--								for (int i = 0; i < 8; i++) {
-+								for (int i = 0; i < player.totalArmorSlots + player.vanillaBasicAccSlots; i++) {
- 									player.hideVisibleAccessory[i] = bitsByte[i];
- 								}
- 
- 								bitsByte = binaryReader.ReadByte();
--								for (int j = 0; j < 2; j++) {
-+								for (int j = 0; j < player.vanillaEXAccSlots; j++) {
--									player.hideVisibleAccessory[j + 8] = bitsByte[j];
-+									player.hideVisibleAccessory[j + player.totalArmorSlots + player.vanillaBasicAccSlots] = bitsByte[j];
- 								}
-+
-+								//TODO: modded slots visibility flags load here?
- 							}
- 							else if (num >= 83) {
- 								BitsByte bitsByte2 = binaryReader.ReadByte();
--								for (int k = 0; k < 8; k++) {
-+								for (int k = 0; k < player.totalArmorSlots + player.vanillaBasicAccSlots; k++) {
- 									player.hideVisibleAccessory[k] = bitsByte2[k];
- 								}
-+
-+								//TODO: modded slots visibility flags load here?
- 							}
- 
- 							if (num >= 119)
-@@ -37787,41 +_,49 @@
- 							Main.player[Main.myPlayer].pantsColor = player.pantsColor;
- 							Main.player[Main.myPlayer].hairColor = player.hairColor;
- 							if (num >= 38) {
--								if (num < 124) {
--									int num2 = 11;
--									if (num >= 81)
--										num2 = 16;
-+								if (num < 124) { // not in expert mode world
-+									int num2 = player.vanillaEquipSlots + 1;
-+									if (num >= 81) // character was in expert mode
-+										num2 = 2 * (player.vanillaBasicAccSlots + player.totalArmorSlots);
- 
- 									for (int l = 0; l < num2; l++) {
- 										int num3 = l;
--										if (num3 >= 8)
--											num3 += 2;
-+										if (num3 >= player.vanillaBasicAccSlots + player.totalArmorSlots)
-+											num3 += player.vanillaEXAccSlots + player.moddedAccSlots.Count; // skip extra slots
- 
- 										player.armor[num3].netDefaults(binaryReader.ReadInt32());
- 										player.armor[num3].Prefix(binaryReader.ReadByte());
- 									}
-+									//TODO: Modded Slots load here?
- 								}
- 								else {
--									int num4 = 20;
-+									int num4 = player.vanillaEquipSlots;
- 									for (int m = 0; m < num4; m++) {
- 										player.armor[m].netDefaults(binaryReader.ReadInt32());
- 										player.armor[m].Prefix(binaryReader.ReadByte());
- 									}
-+									for (int m = player.totalEquipSlots; m < player.totalEquipSlots + num4; m++) {
-+										player.armor[m].netDefaults(binaryReader.ReadInt32());
-+										player.armor[m].Prefix(binaryReader.ReadByte());
-+									}
-+									//TODO: Modded Slots load here?
- 								}
- 
- 								if (num >= 47) {
- 									int num5 = 3;
- 									if (num >= 81)
--										num5 = 8;
-+										num5 = player.totalArmorSlots + player.vanillaBasicAccSlots;
- 
- 									if (num >= 124)
--										num5 = 10;
-+										num5 = player.vanillaEquipSlots;
- 
- 									for (int n = 0; n < num5; n++) {
- 										int num6 = n;
- 										player.dye[num6].netDefaults(binaryReader.ReadInt32());
- 										player.dye[num6].Prefix(binaryReader.ReadByte());
- 									}
-+
-+									//TODO: modded slots load stuff here?
- 								}
- 
- 								if (num >= 58) {
-@@ -37957,19 +_,23 @@
- 									player.voidVaultInfo = binaryReader.ReadByte();
- 							}
- 							else {
--								for (int num21 = 0; num21 < 8; num21++) {
-+								for (int num21 = 0; num21 < player.totalArmorSlots + player.vanillaBasicAccSlots; num21++) {
- 									player.armor[num21].SetDefaults(ItemID.FromLegacyName(binaryReader.ReadString(), num));
- 									if (num >= 36)
- 										player.armor[num21].Prefix(binaryReader.ReadByte());
+@@ -37964,11 +_,11 @@
  								}
  
  								if (num >= 6) {
 -									for (int num22 = 8; num22 < 11; num22++) {
-+									for (int num22 = player.totalArmorSlots + player.vanillaBasicAccSlots;
-+										num22 < player.vanillaEquipSlots + 1; num22++) {
++									for (int num22 = 8;	num22 < 11; num22++) {
  										player.armor[num22].SetDefaults(ItemID.FromLegacyName(binaryReader.ReadString(), num));
  										if (num >= 36)
  											player.armor[num22].Prefix(binaryReader.ReadByte());
- 									}
-+									
+-									}
++									}	
  								}
-+								
-+								//TODO: do we need load prefix here for modded slots?
  
  								for (int num23 = 0; num23 < 44; num23++) {
- 									player.inventory[num23].SetDefaults(ItemID.FromLegacyName(binaryReader.ReadString(), num));
 @@ -38014,7 +_,7 @@
  							if (num >= 11) {
  								int num28 = 22;
@@ -4591,7 +4473,7 @@
  			catch {
  			}
  
-@@ -38144,9 +_,10 @@
+@@ -38144,8 +_,9 @@
  			}
  		}
  
@@ -4599,15 +4481,14 @@
 +		private static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
  			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
 +			PlayerIO.Load(newPlayer, playerFileData.Path, playerFileData.IsCloudSave);
--			for (int i = 3; i < 10; i++) {
-+			for (int i = newPlayer.totalArmorSlots; i < newPlayer.totalEquipSlots; i++) {
+ 			for (int i = 3; i < 10; i++) {
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 4874 || type == 5000)
- 					newPlayer.lavaMax += 420;
-@@ -38162,6 +_,7 @@
+@@ -38162,6 +_,8 @@
  
  				newPlayer.lavaTime = newPlayer.lavaMax;
  			}
++			EquipLoader.VanillaLastMinuteFixesMirror(newPlayer);
 +			newPlayer.ResetEffects();
  		}
  
@@ -4653,7 +4534,7 @@
  			doorHelper = new DoorOpeningHelper();
 +
 -			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < 58 + 1; i++) {
++			for (int i = 0; i < 59 + 1; i++) {
  				if (i < armor.Length)
  					armor[i] = new Item();
  

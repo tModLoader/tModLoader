@@ -116,7 +116,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Is run in this.Draw. 
-		/// Generates a significant amount of functionality for the slot, despite being for drawing because vanilla.
+		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
 		/// Also includes creating hidevisibilitybutton.
 		/// </summary>
@@ -137,7 +137,7 @@ namespace Terraria.ModLoader
 					EquipLoader.exHideAccessory[slot] = !EquipLoader.exHideAccessory[slot];
 					SoundEngine.PlaySound(12);
 					if (Main.netMode == 1)
-						NetMessage.SendData(4, -1, -1, null, Player.whoAmI); //blindly called
+						NetMessage.SendData(4, -1, -1, null, Player.whoAmI); //blindly called, won't work
 				}
 
 				num45 = ((!EquipLoader.exHideAccessory[slot]) ? 1 : 2);
@@ -148,16 +148,15 @@ namespace Terraria.ModLoader
 
 				Main.armorHide = true;
 				Player.mouseInterface = true;
-				ItemSlot.OverrideHover(EquipLoader.exAccessorySlot, context, slot); //blindly called
+				ItemSlot.OverrideHover(EquipLoader.exAccessorySlot, context, slot); //should work
 				if (!flag3 || Main.mouseItem.IsAir)
-					ItemSlot.LeftClick(EquipLoader.exAccessorySlot, context, slot); //blindly called
+					ItemSlot.LeftClick(EquipLoader.exAccessorySlot, context, slot); //should work
 
-				ItemSlot.MouseHover(EquipLoader.exAccessorySlot, context, slot); //blindly called
+				ItemSlot.MouseHover(EquipLoader.exAccessorySlot, context, slot); //should work
 			}
 
 			this.DrawRedirect(EquipLoader.exAccessorySlot, context, slot, new Vector2(xLoc, yLoc));
 
-			//TODO: figure out below code include or not.
 			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Microsoft.Xna.Framework.Color.White * 0.7f);
 			if (num45 > 0) {
 				Main.HoverItem = new Item();
@@ -167,7 +166,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Is run in this.Draw. 
-		/// Generates a significant amount of functionality for the slot, despite being for drawing because vanilla.
+		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
 		/// </summary>
 		private void DrawVanity() {
@@ -179,13 +178,13 @@ namespace Terraria.ModLoader
 				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
 				Player.mouseInterface = true;
 				Main.armorHide = true;
-				ItemSlot.OverrideHover(EquipLoader.exAccessorySlot, context, slot); //blindly called
+				ItemSlot.OverrideHover(EquipLoader.exAccessorySlot, context, slot); //should work
 				if (!flag7) {
-					ItemSlot.LeftClick(EquipLoader.exAccessorySlot, context, slot); //blindly called
+					ItemSlot.LeftClick(EquipLoader.exAccessorySlot, context, slot); //should work
 					ItemSlot.RightClick(EquipLoader.exAccessorySlot, context, slot); //blindly called
 				}
 
-				ItemSlot.MouseHover(EquipLoader.exAccessorySlot, context, slot); //blindly called
+				ItemSlot.MouseHover(EquipLoader.exAccessorySlot, context, slot); //should work
 			}
 
 			this.DrawRedirect(EquipLoader.exAccessorySlot, context, slot, new Vector2(xLoc, yLoc));
@@ -193,7 +192,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Is run in this.Draw. 
-		/// Generates a significant amount of functionality for the slot, despite being for drawing because vanilla.
+		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
 		/// </summary>
 		private void DrawDye() {
@@ -205,15 +204,15 @@ namespace Terraria.ModLoader
 				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
 				Player.mouseInterface = true;
 				Main.armorHide = true;
-				ItemSlot.OverrideHover(EquipLoader.exDyesAccessory, context, slot); //blindly called
+				ItemSlot.OverrideHover(EquipLoader.exDyesAccessory, context, slot); //should work
 				if (!flag8) {
 					if (Main.mouseRightRelease && Main.mouseRight)
 						ItemSlot.RightClick(EquipLoader.exDyesAccessory, context, slot); //blindly called
 
-					ItemSlot.LeftClick(EquipLoader.exDyesAccessory, context, slot); //blindly called
+					ItemSlot.LeftClick(EquipLoader.exDyesAccessory, context, slot); //should work
 				}
 
-				ItemSlot.MouseHover(EquipLoader.exDyesAccessory, context, slot); //blindly called
+				ItemSlot.MouseHover(EquipLoader.exDyesAccessory, context, slot); //should work
 			}
 			this.DrawRedirect(EquipLoader.exDyesAccessory, context, slot, new Vector2(xLoc, yLoc));
 		}
@@ -224,6 +223,8 @@ namespace Terraria.ModLoader
 			else
 				this.DrawModded(inv, context, slot, position);
 		}
+
+
 
 		/// <summary>
 		/// If overrideVanillaDrawing is true, then this method will be called to draw instead. 
