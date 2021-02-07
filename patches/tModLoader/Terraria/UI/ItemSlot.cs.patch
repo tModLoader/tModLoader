@@ -91,7 +91,7 @@
 -				if (inv[slot].type < 71 || inv[slot].type > 74) {
 +				NPCShop shop = NPCShopManager.CurrentShop;
 +
-+				if (!inv[slot].IsCurrency && PlayerHooks.CanSellItem(player, shop, inv[slot])) {					
++				if (!inv[slot].IsCurrency && shop.CanSellItem(player, inv[slot]) && PlayerHooks.CanSellItem(player, shop, inv[slot])) {					
  					if (player.SellItem(inv[slot])) {
 -						chest.AddItemToShop(inv[slot]);
 +						int soldItemIndex = shop.SellItem(inv[slot]);
@@ -201,20 +201,34 @@
  							break;
  
  						Utils.Swap(ref inv[slot], ref inv[slot - 10]);
+@@ -1256,7 +_,7 @@
+ 			if (Main.cursorOverride == 2)
+ 				return;
+ 
+-			_ = Main.instance.shop[Main.npcShop];
++			NPCShop shop = NPCShopManager.CurrentShop;
+ 			bool flag = (Main.mouseRight && rightClickIsValid) || (Main.mouseLeft && leftClickIsValid);
+ 			if (!(Main.stackSplit <= 1 && flag) || inv[slot].type <= 0 || (!Main.mouseItem.IsTheSameAs(inv[slot]) && Main.mouseItem.type != 0))
+ 				return;
 @@ -1264,6 +_,8 @@
  			int num = Main.superFastStack + 1;
  			Player localPlayer = Main.LocalPlayer;
  			for (int i = 0; i < num; i++) {
-+				if (!PlayerHooks.CanBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, inv[slot]))
++				if (!PlayerHooks.CanBuyItem(localPlayer, shop, inv[slot]))
 +					continue;
  				if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  					continue;
  
-@@ -1276,23 +_,24 @@
- 						SoundEngine.PlaySound(18);
- 					else
- 						SoundEngine.PlaySound(7);
-+					PlayerHooks.PostBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, Main.mouseItem);
+@@ -1272,27 +_,25 @@
+ 					continue;
+ 
+ 				if (i == 0) {
+-					if (inv[slot].value > 0)
+-						SoundEngine.PlaySound(18);
+-					else
+-						SoundEngine.PlaySound(7);
++					SoundEngine.PlaySound(inv[slot].value > 0 ? SoundID.Coins : SoundID.Grab);
++					PlayerHooks.PostBuyItem(localPlayer, shop, Main.mouseItem);
  				}
  
  				if (Main.mouseItem.type == 0) {
@@ -236,7 +250,7 @@
  				if (inv[slot].buyOnce && --inv[slot].stack <= 0)
  					inv[slot].SetDefaults();
 +
-+				PlayerHooks.PostBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, Main.mouseItem);
++				PlayerHooks.PostBuyItem(localPlayer, shop, Main.mouseItem);
  			}
  		}
  

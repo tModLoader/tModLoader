@@ -602,8 +602,7 @@ namespace Terraria.ModLoader
 		/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this NPC's shop.
 		/// </summary>
 		/// <param name="firstButton"></param>
-		/// <param name="shop"></param>
-		public virtual void OnChatButtonClicked(bool firstButton, ref bool shop) {
+		public virtual void OnChatButtonClicked(bool firstButton) {
 		}
 
 		/// <summary>

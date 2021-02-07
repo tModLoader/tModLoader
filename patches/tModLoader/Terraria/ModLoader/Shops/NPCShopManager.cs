@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Terraria.ID;
 using Terraria.Localization;
 
@@ -66,14 +65,43 @@ namespace Terraria.ModLoader.Shops
 
 		internal static Dictionary<int, Dictionary<string, CacheList>> entryCache = new Dictionary<int, Dictionary<string, CacheList>>();
 
-		internal static int NextTypeID;
+		internal const int VanillaShopCount = 24;
+		internal static int NextTypeID = VanillaShopCount;
 
-		public static NPCShop CurrentShop => Main.npcShop > 0 ? GetShop(ShopIDToNPCID(Main.npcShop)) : null;
+		public static NPCShop CurrentShop => Main.npcShop > 0 ? GetShop(Main.npcShop) : null;
 
 		public static NPCShop GetShop(int type) => shops[type];
 
 		internal static void RegisterShop(NPCShop shop) {
-			shop.Type = NextTypeID++;
+			shop.Type = shop.NPCType switch
+			{
+				NPCID.Merchant => 1,
+				NPCID.ArmsDealer => 2,
+				NPCID.Dryad => 3,
+				NPCID.Demolitionist => 4,
+				NPCID.Clothier => 5,
+				NPCID.GoblinTinkerer => 6,
+				NPCID.Wizard => 7,
+				NPCID.Mechanic => 8,
+				NPCID.SantaClaus => 9,
+				NPCID.Truffle => 10,
+				NPCID.Steampunker => 11,
+				NPCID.DyeTrader => 12,
+				NPCID.PartyGirl => 13,
+				NPCID.Cyborg => 14,
+				NPCID.Painter => 15,
+				NPCID.WitchDoctor => 16,
+				NPCID.Pirate => 17,
+				NPCID.Stylist => 18,
+				NPCID.TravellingMerchant => 19,
+				NPCID.SkeletonMerchant => 20,
+				NPCID.DD2Bartender => 21,
+				NPCID.Golfer => 22,
+				NPCID.BestiaryGirl => 23,
+				NPCID.Princess => 24,
+				_ => NextTypeID++
+			};
+
 			shops.Add(shop);
 
 			entryCache.Add(shop.Type, new Dictionary<string, CacheList>());
@@ -82,39 +110,6 @@ namespace Terraria.ModLoader.Shops
 		public static NPCShop GetShop<T>() where T : NPCShop => GetShop(ShopType<T>());
 
 		public static int ShopType<T>() where T : NPCShop => ModContent.GetInstance<T>()?.Type ?? -1;
-
-		internal static int ShopIDToNPCID(int type) {
-			type = type switch
-			{
-				1 => NPCID.Merchant,
-				2 => NPCID.ArmsDealer,
-				3 => NPCID.Dryad,
-				4 => NPCID.Demolitionist,
-				5 => NPCID.Clothier,
-				6 => NPCID.GoblinTinkerer,
-				7 => NPCID.Wizard,
-				8 => NPCID.Mechanic,
-				9 => NPCID.SantaClaus,
-				10 => NPCID.Truffle,
-				11 => NPCID.Steampunker,
-				12 => NPCID.DyeTrader,
-				13 => NPCID.PartyGirl,
-				14 => NPCID.Cyborg,
-				15 => NPCID.Painter,
-				16 => NPCID.WitchDoctor,
-				17 => NPCID.Pirate,
-				18 => NPCID.Stylist,
-				19 => NPCID.TravellingMerchant,
-				20 => NPCID.SkeletonMerchant,
-				21 => NPCID.DD2Bartender,
-				22 => NPCID.Golfer,
-				23 => NPCID.BestiaryGirl,
-				24 => NPCID.Princess,
-				_ => type
-			};
-
-			return shops.First(x => x.NPCType == type).Type;
-		}
 
 		internal static void Initialize() {
 			// note: allow modded NPC to sell pylons?
@@ -164,8 +159,8 @@ namespace Terraria.ModLoader.Shops
 		}
 
 		public static void Unload() {
-			NextTypeID = 0;
-			
+			NextTypeID = VanillaShopCount;
+
 			shops.Clear();
 			entryCache.Clear();
 		}

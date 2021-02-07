@@ -68,6 +68,8 @@ namespace Terraria.ModLoader.Shops
 			var cache = NPCShopManager.entryCache[Type][currentTab.Name];
 			int index = cache.Add(clone);
 
+			// todo: increase rows when a row is filled (solves not being able to manual sell)
+			
 			int maxRowIndex = cache.Capacity / 10 - 4;
 			npcShopRowIndex = Math.Min(maxRowIndex, index / 10);
 
@@ -93,6 +95,21 @@ namespace Terraria.ModLoader.Shops
 			}
 		}
 
+		// note: different names (because technically the shop is buying the item)
+		public virtual bool CanSellItem(Player player, Item item) {
+			return true;
+		}
+
+		public virtual void PostSellItem(Player player, Item item) {
+		}
+
+		public virtual bool CanBuyItem(Player player, Item item) {
+			return true;
+		}
+
+		public virtual void PostBuyItem(Player player, Item item) {
+		}
+		
 		private static int npcShopRowIndex;
 		internal static Tab currentTab;
 		private static Dictionary<string, CacheList> temp;

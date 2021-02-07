@@ -14,6 +14,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.ModLoader.Shops;
 
 namespace Terraria.ModLoader
 {
@@ -888,15 +889,8 @@ namespace Terraria.ModLoader
 			bool shop = false;
 
 			if (npc.ModNPC != null) {
-				npc.ModNPC.OnChatButtonClicked(firstButton, ref shop);
+				npc.ModNPC.OnChatButtonClicked(firstButton);
 				SoundEngine.PlaySound(SoundID.MenuTick);
-
-				if (shop) {
-					Main.playerInventory = true;
-					Main.npcChatText = "";
-					Main.npcShop = Main.MaxShopIDs - 1;
-					Chest.SetupShop(npc.type);
-				}
 			}
 
 			foreach (GlobalNPC g in HookOnChatButtonClicked.arr) {

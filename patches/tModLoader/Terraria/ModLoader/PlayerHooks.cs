@@ -1040,7 +1040,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookCanSellItem = AddHook<Func<NPCShop, Item, bool>>(p => p.CanSellItem);
 
-		// TODO: GlobalNPC and ModNPC hooks for Buy/Sell hooks as well.
+		// TODO: GlobalNPC 
 		public static bool CanSellItem(Player player, NPCShop shop, Item item) {
 			foreach (int index in HookCanSellItem.arr) {
 				if (!player.modPlayers[index].CanSellItem(shop, item))

@@ -97,7 +97,7 @@
  			for (int i = 0; i < 40; i++) {
  				Main.travelShop[i] = 0;
  			}
-@@ -874,14 +_,20 @@
+@@ -874,14 +_,19 @@
  							Main.travelShop[num2++] = 3636;
  							Main.travelShop[num2++] = 3641;
  							break;
@@ -109,7 +109,6 @@
  
 -		public void SetupShop(int type) {
 +		public static void SetupShop(int type) {
-+			type = NPCShopManager.ShopIDToNPCID(type);
 +			NPCShop shop = NPCShopManager.GetShop(type);
 +			shop.OnOpen();
 +			return;

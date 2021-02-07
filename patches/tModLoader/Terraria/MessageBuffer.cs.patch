@@ -385,25 +385,24 @@
  							tileEntity.ID = num48;
  							TileEntity.ByID[tileEntity.ID] = tileEntity;
  							TileEntity.ByPosition[tileEntity.Position] = tileEntity;
-@@ -2901,7 +_,8 @@
+@@ -2900,7 +_,7 @@
+ 					if (Main.netMode == 1)
  						NPC.MoonLordCountdown = reader.ReadInt32();
  					break;
- 				case 104:
-+					// todo: fix shop netcode
--					if (Main.netMode == 1 && Main.npcShop > 0) {
-+					/*if (Main.netMode == 1 && Main.npcShop > 0) {
+-				case 104:
++				/*case 104:
+ 					if (Main.netMode == 1 && Main.npcShop > 0) {
  						Item[] item = Main.instance.shop[Main.npcShop].item;
  						int num15 = reader.ReadByte();
- 						int type = reader.ReadInt16();
-@@ -2917,7 +_,7 @@
- 							item[num15].value = value;
+@@ -2918,7 +_,7 @@
  							item[num15].buyOnce = bitsByte[0];
  						}
--					}
-+					}*/
- 					break;
+ 					}
+-					break;
++					break;*/
  				case 105:
  					if (Main.netMode != 1) {
+ 						short i2 = reader.ReadInt16();
 @@ -3346,6 +_,27 @@
  						CreditsRollEvent.SetRemainingTimeDirect(reader.ReadInt32());
  					}

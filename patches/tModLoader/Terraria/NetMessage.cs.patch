@@ -187,6 +187,23 @@
  
  							break;
  						}
+@@ -1123,14 +_,14 @@
+ 					case 103:
+ 						writer.Write(NPC.MoonLordCountdown);
+ 						break;
+-					case 104:
++					/*case 104:
+ 						writer.Write((byte)number);
+ 						writer.Write((short)number2);
+ 						writer.Write(((short)number3 < 0) ? 0f : number3);
+ 						writer.Write((byte)number4);
+ 						writer.Write(number5);
+ 						writer.Write((byte)number6);
+-						break;
++						break;*/
+ 					case 105:
+ 						writer.Write((short)number);
+ 						writer.Write((short)number2);
 @@ -1330,7 +_,10 @@
  
  				int num26 = (int)writer.BaseStream.Position;
@@ -267,6 +284,17 @@
  #endif
  					num2 = 0;
  					num = 0;
+@@ -2176,8 +_,9 @@
+ 		}
+ 
+ 		public static void SendTravelShop(int remoteClient) {
++			// note: shop separate packet
+ 			if (Main.netMode == 2)
+-				SendData(72, remoteClient);
++				SendData(MessageID.TravelMerchantItems, remoteClient);
+ 		}
+ 
+ 		public static void SendAnglerQuest(int remoteClient) {
 @@ -2303,7 +_,7 @@
  			}
  
