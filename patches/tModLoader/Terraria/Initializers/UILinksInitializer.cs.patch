@@ -14,7 +14,7 @@
  			uILinkPage4.IsValidEvent += (() => Main.playerInventory && Main.LocalPlayer.tileEntityAnchor.GetTileEntity() is TEHatRack);
  			UILinkPage uILinkPage5 = new UILinkPage();
  			uILinkPage5.OnSpecialInteracts += (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
-+			// todo: fix
++			// todo: fix shop
 -			Func<string> value11 = delegate {
 +			/*Func<string> value11 = delegate {
  				if (Main.npcShop == 0)

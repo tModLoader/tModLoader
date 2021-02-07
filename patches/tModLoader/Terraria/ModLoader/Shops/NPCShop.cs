@@ -30,7 +30,6 @@ namespace Terraria.ModLoader.Shops
 
 		public sealed override void SetupContent() {
 			DefaultTab = AddTab(null, "Default");
-//, NetworkText.FromKey("ShopTab.Default")
 			SetDefaults();
 		}
 
@@ -57,7 +56,7 @@ namespace Terraria.ModLoader.Shops
 		public EntryItem CreateEntry<T>() where T : ModItem => CreateEntry(ModContent.ItemType<T>());
 
 		public int SellItem(Item newItem) {
-			int num = ItemShopSellbackHelper.Remove(newItem);
+			int num = ShopSellbackHelper.Remove(newItem);
 
 			if (num >= newItem.stack)
 				return 0;

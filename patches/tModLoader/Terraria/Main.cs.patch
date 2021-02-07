@@ -1365,19 +1365,16 @@
  					CustomCurrencyManager.GetPriceText(hoverItem.shopSpecialCurrency, array, ref numLines, num5);
  					color = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(255f * num4), (byte)(255f * num4), a);
  				}
-@@ -14851,9 +_,10 @@
+@@ -14851,7 +_,8 @@
  
  						int num11 = num10;
  						num10 *= hoverItem.stack;
-+						// todo: fix
++
 -						int amount = shopSellbackHelper.GetAmount(hoverItem);
-+						/*int amount = shopSellbackHelper.GetAmount(hoverItem);
++						int amount = ShopSellbackHelper.GetAmount(hoverItem);
  						if (amount > 0)
--							num10 += (-num11 + calcForBuying) * Math.Min(amount, hoverItem.stack);
-+							num10 += (-num11 + calcForBuying) * Math.Min(amount, hoverItem.stack);*/
+ 							num10 += (-num11 + calcForBuying) * Math.Min(amount, hoverItem.stack);
  					}
- 
- 					if (num10 < 1)
 @@ -14894,6 +_,7 @@
  					else
  						array[numLines] = Lang.tip[50].Value + " " + text;

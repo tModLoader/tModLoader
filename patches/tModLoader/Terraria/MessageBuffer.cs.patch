@@ -348,7 +348,7 @@
  					}
  					break;
  				case 72:
-+					// todo: fix
++					// todo: fix shop netcode
 -					if (Main.netMode == 1) {
 +					/*if (Main.netMode == 1) {
  						for (int num197 = 0; num197 < 40; num197++) {
@@ -389,7 +389,7 @@
  						NPC.MoonLordCountdown = reader.ReadInt32();
  					break;
  				case 104:
-+					// todo: fix
++					// todo: fix shop netcode
 -					if (Main.netMode == 1 && Main.npcShop > 0) {
 +					/*if (Main.netMode == 1 && Main.npcShop > 0) {
  						Item[] item = Main.instance.shop[Main.npcShop].item;

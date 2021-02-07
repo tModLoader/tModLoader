@@ -169,7 +169,7 @@
  						writer.Write((byte)number4);
  						break;
  					case 72: {
-+							// todo: fix
++							// todo: fix shop netcode
 -							for (int num24 = 0; num24 < 40; num24++) {
 +							/*for (int num24 = 0; num24 < 40; num24++) {
  								writer.Write((short)Main.travelShop[num24]);

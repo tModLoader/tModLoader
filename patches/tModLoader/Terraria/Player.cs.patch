@@ -2806,19 +2806,16 @@
  							PullItem_Pickup(item, 12f, 5);
  						else if (lifeMagnet && (item.type == 58 || item.type == 1734 || item.type == 1867))
  							PullItem_Pickup(item, 15f, 5);
-@@ -24479,9 +_,10 @@
+@@ -24479,7 +_,8 @@
  
  			int num2 = num;
  			num *= stack;
-+			// todo: fix
++			
 -			int amount = Main.shopSellbackHelper.GetAmount(item);
-+			/*int amount = Main.shopSellbackHelper.GetAmount(item);
++			int amount = ShopSellbackHelper.GetAmount(item);
  			if (amount > 0)
--				num += (-num2 + calcForBuying) * Math.Min(amount, item.stack);
-+				num += (-num2 + calcForBuying) * Math.Min(amount, item.stack);*/
+ 				num += (-num2 + calcForBuying) * Math.Min(amount, item.stack);
  
- 			bool flag = false;
- 			while (num >= 1000000 && !flag) {
 @@ -24649,6 +_,36 @@
  			}
  		}

@@ -5,7 +5,7 @@ using Terraria.Localization;
 
 namespace Terraria.ModLoader.Shops
 {
-	public static class ItemShopSellbackHelper
+	public static class ShopSellbackHelper
 	{
 		private class ItemMemo
 		{
@@ -164,6 +164,8 @@ namespace Terraria.ModLoader.Shops
 		}
 
 		public static void Unload() {
+			NextTypeID = 0;
+			
 			shops.Clear();
 			entryCache.Clear();
 		}
