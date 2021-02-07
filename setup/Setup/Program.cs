@@ -16,9 +16,9 @@ namespace Terraria.ModLoader.Setup
 		public static readonly string logsDir = Path.Combine("setup", "logs");
 
 		public static string SteamDir => Settings.Default.SteamDir;
+		public static string TMLSteamDir => Settings.Default.TMLSteamDir;
 		public static string TerrariaPath => Path.Combine(SteamDir, "Terraria.exe");
 		public static string TerrariaServerPath => Path.Combine(SteamDir, "TerrariaServer.exe");
-		public static string tMLSteamDir { get; private set; }
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -33,12 +33,10 @@ namespace Terraria.ModLoader.Setup
 				return;
 			}*/
 #if AUTO
-			Settings.Default.SteamDir = @".\1412\Windows";
+			Settings.Default.TMLSteamDir = Settings.Default.SteamDir = @".\1412\Windows";
+#else
+			UpdateTmlSteamDir();
 #endif
-
-			tMLSteamDir = Path.Combine(Path.GetDirectoryName(SteamDir), "tModLoader");
-			if (!Directory.Exists(tMLSteamDir))
-				tMLSteamDir = SteamDir;
 
 			UpdateTargetsFile();
 
@@ -132,15 +130,49 @@ namespace Terraria.ModLoader.Setup
 				else {
 					Settings.Default.SteamDir = Path.GetDirectoryName(dialog.FileName);
 					Settings.Default.Save();
+
+					UpdateTmlSteamDir(true);
 					UpdateTargetsFile();
+
 					return true;
 				}
 			}
 		}
 
+		public static bool SelectTmlDirectoryDialog() {
+			while (true) {
+				var dialog = new OpenFileDialog {
+					InitialDirectory = Path.GetFullPath(Directory.Exists(SteamDir) ? SteamDir : "."),
+					ValidateNames = false,
+					CheckFileExists = false,
+					CheckPathExists = true,
+					FileName = "Folder Selection.",
+				};
+
+				if (dialog.ShowDialog() != DialogResult.OK)
+					return false;
+
+				Settings.Default.TMLSteamDir = Path.GetDirectoryName(dialog.FileName);
+				Settings.Default.Save();
+
+				UpdateTargetsFile();
+				
+				return true;
+			}
+		}
+
+		private static void UpdateTmlSteamDir(bool reset = false) {
+			if (reset || !Directory.Exists(TMLSteamDir)) {
+				Settings.Default.TMLSteamDir = Path.GetFullPath(Path.Combine(Settings.Default.SteamDir, "..", "tModLoader"));
+				Settings.Default.Save();
+			}
+
+			Directory.CreateDirectory(TMLSteamDir);
+		}
+
 		private static readonly string targetsFilePath = Path.Combine("src", "WorkspaceInfo.targets");
 
-		private static void UpdateTargetsFile() {
+		internal static void UpdateTargetsFile() {
 			SetupOperation.CreateParentDirectory(targetsFilePath);
 
 			string gitsha = "";
@@ -149,15 +181,15 @@ namespace Terraria.ModLoader.Setup
 			string branch = "";
 			RunCmd("", "git", "rev-parse --abbrev-ref HEAD", s => branch = s.Trim());
 
-
 			string targetsText =
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+  <!-- This file will always be overwritten, do not edit it manually. -->
   <PropertyGroup>
 	<BranchName>{branch}</BranchName>
 	<CommitSHA>{gitsha}</CommitSHA>
 	<TerrariaSteamPath>{SteamDir}</TerrariaSteamPath>
-    <tModLoaderSteamPath>{tMLSteamDir}</tModLoaderSteamPath>
+    <tModLoaderSteamPath>{TMLSteamDir}</tModLoaderSteamPath>
   </PropertyGroup>
 </Project>";
 
