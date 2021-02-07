@@ -11,6 +11,7 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.IO;
+using Terraria.ModLoader.Shops;
 
 namespace Terraria.ModLoader
 {
@@ -1029,38 +1030,38 @@ namespace Terraria.ModLoader
 				throw new Exception(type + " must override both of (NetSend/NetReceive) or none");
 		}
 
-		private static HookList HookPostSellItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostSellItem);
+		private static HookList HookPostSellItem = AddHook<Action<NPCShop, Item>>(p => p.PostSellItem);
 
-		public static void PostSellItem(Player player, NPC npc, Item[] shopInventory, Item item) {
+		public static void PostSellItem(Player player, NPCShop shop, Item item) {
 			foreach (int index in HookPostSellItem.arr) {
-				player.modPlayers[index].PostSellItem(npc, shopInventory, item);
+				player.modPlayers[index].PostSellItem(shop, item);
 			}
 		}
 
-		private static HookList HookCanSellItem = AddHook<Func<NPC, Item[], Item, bool>>(p => p.CanSellItem);
+		private static HookList HookCanSellItem = AddHook<Func<NPCShop, Item, bool>>(p => p.CanSellItem);
 
 		// TODO: GlobalNPC and ModNPC hooks for Buy/Sell hooks as well.
-		public static bool CanSellItem(Player player, NPC npc, Item[] shopInventory, Item item) {
+		public static bool CanSellItem(Player player, NPCShop shop, Item item) {
 			foreach (int index in HookCanSellItem.arr) {
-				if (!player.modPlayers[index].CanSellItem(npc, shopInventory, item))
+				if (!player.modPlayers[index].CanSellItem(shop, item))
 					return false;
 			}
 			return true;
 		}
 
-		private static HookList HookPostBuyItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostBuyItem);
+		private static HookList HookPostBuyItem = AddHook<Action<NPCShop, Item>>(p => p.PostBuyItem);
 
-		public static void PostBuyItem(Player player, NPC npc, Item[] shopInventory, Item item) {
+		public static void PostBuyItem(Player player, NPCShop shop, Item item) {
 			foreach (int index in HookPostBuyItem.arr) {
-				player.modPlayers[index].PostBuyItem(npc, shopInventory, item);
+				player.modPlayers[index].PostBuyItem(shop, item);
 			}
 		}
 
-		private static HookList HookCanBuyItem = AddHook<Func<NPC, Item[], Item, bool>>(p => p.CanBuyItem);
+		private static HookList HookCanBuyItem = AddHook<Func<NPCShop, Item, bool>>(p => p.CanBuyItem);
 
-		public static bool CanBuyItem(Player player, NPC npc, Item[] shopInventory, Item item) {
+		public static bool CanBuyItem(Player player, NPCShop shop, Item item) {
 			foreach (int index in HookCanBuyItem.arr) {
-				if (!player.modPlayers[index].CanBuyItem(npc, shopInventory, item))
+				if (!player.modPlayers[index].CanBuyItem(shop, item))
 					return false;
 			}
 			return true;

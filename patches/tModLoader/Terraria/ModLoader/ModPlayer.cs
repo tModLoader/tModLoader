@@ -8,6 +8,7 @@ using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader.IO;
+using Terraria.ModLoader.Shops;
 
 namespace Terraria.ModLoader
 {
@@ -819,40 +820,36 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Called whenever the player sells an item to an NPC.
 		/// </summary>
-		/// <param name="vendor">The NPC vendor.</param>
-		/// <param name="shopInventory">The current inventory of the NPC shop.</param>
+		/// <param name="shop">The NPC shop.</param>
 		/// <param name="item">The item the player just sold.</param>
-		public virtual void PostSellItem(NPC vendor, Item[] shopInventory, Item item) {
+		public virtual void PostSellItem(NPCShop shop, Item item) {
 		}
 
 		/// <summary>
 		/// Return false to prevent a transaction. Called before the transaction.
 		/// </summary>
-		/// <param name="vendor">The NPC vendor.</param>
-		/// <param name="shopInventory">The current inventory of the NPC shop.</param>
+		/// <param name="shop">The NPC shop.</param>
 		/// <param name="item">The item the player is attempting to sell.</param>
 		/// <returns></returns>
-		public virtual bool CanSellItem(NPC vendor, Item[] shopInventory, Item item) {
+		public virtual bool CanSellItem(NPCShop shop, Item item) {
 			return true;
 		}
 
 		/// <summary>
 		/// Called whenever the player buys an item from an NPC.
 		/// </summary>
-		/// <param name="vendor">The NPC vendor.</param>
-		/// <param name="shopInventory">The current inventory of the NPC shop.</param>
+		/// <param name="shop">The NPC shop.</param>
 		/// <param name="item">The item the player just purchased.</param>
-		public virtual void PostBuyItem(NPC vendor, Item[] shopInventory, Item item) {
+		public virtual void PostBuyItem(NPCShop shop, Item item) {
 		}
 
 		/// <summary>
 		/// Return false to prevent a transaction. Called before the transaction.
 		/// </summary>
-		/// <param name="vendor">The NPC vendor.</param>
-		/// <param name="shopInventory">The current inventory of the NPC shop.</param>
+		/// <param name="shop">The NPC shop.</param>
 		/// <param name="item">The item the player is attempting to buy.</param>
 		/// <returns></returns>
-		public virtual bool CanBuyItem(NPC vendor, Item[] shopInventory, Item item) {
+		public virtual bool CanBuyItem(NPCShop shop, Item item) {
 			return true;
 		}
 

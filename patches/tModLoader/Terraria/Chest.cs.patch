@@ -77,39 +77,16 @@
  				}
  			}
  
-@@ -504,14 +_,15 @@
+@@ -504,7 +_,7 @@
  			}
  		}
  
 -		public void AddItemToShop(Item newItem) {
-+		private int AddItemToShop(Item newItem) { //tML: Now returns the item's index.
++		private void AddItemToShop(Item newItem) {
  			int num = Main.shopSellbackHelper.Remove(newItem);
-+			
  			if (num >= newItem.stack)
--				return;
-+				return 0;
- 
- 			int num2 = 0;
- 			while (true) {
--				if (num2 < 39) {
-+				if (num2 < 38) { // tModLoader change: When selling to vendor with full inventory, replace 2nd to last item rather than have the item disappear to facilitate PostSellItem Item reference.
- 					if (item[num2] == null || item[num2].type == 0)
- 						break;
- 
-@@ -519,7 +_,7 @@
- 					continue;
- 				}
- 
--				return;
-+				break;
- 			}
- 
- 			item[num2] = newItem.Clone();
-@@ -528,9 +_,14 @@
- 			item[num2].stack -= num;
- 			_ = item[num2].value;
- 			_ = 0;
-+			return num2;
+ 				return;
+@@ -531,6 +_,10 @@
  		}
  
  		public static void SetupTravelShop() {
