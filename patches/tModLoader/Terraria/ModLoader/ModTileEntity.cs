@@ -24,7 +24,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The mod that added this ModTileEntity.
 		/// </summary>
-		public Mod Mod {get;internal set;}
+		public Mod Mod { get; internal set; }
 
 		/// <summary>
 		/// The internal name of this ModTileEntity.
@@ -36,7 +36,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The numeric type used to identify this kind of tile entity.
 		/// </summary>
-		public int Type {get;internal set;}
+		public int Type { get; internal set; }
 
 		public ModTileEntity() { }
 

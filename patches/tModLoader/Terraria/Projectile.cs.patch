@@ -382,7 +382,7 @@
  				flag18 = true;
 +				
 +			if (ModProjectile != null)
-+				num51 = ModProjectile.cooldownSlot;
++				num51 = ModProjectile.CooldownSlot;
  
  			if (!flag18 || !Colliding(myRect, Main.player[myPlayer2].getRect()))
  				return;

@@ -1993,21 +1993,46 @@
  								SmartSelect_SelectItem(i);
  								return;
  						}
-@@ -12689,10 +_,10 @@
- 		public static float GetClosestRollLuck(int x, int y, int range) => Main.player[FindClosest(new Vector2(x * 16, y * 16), 1, 1)].RollLuck(range);
+@@ -12387,6 +_,13 @@
+ 					if (tile == null)
+ 						return;
  
- 		public void ResetEffects() {
--			if (extraAccessory && (Main.expertMode || Main.gameMenu))
--				extraAccessorySlots = 1;
--			else
--				extraAccessorySlots = 0;
-+			//if (extraAccessory && (Main.expertMode || Main.gameMenu))
-+			//	extraAccessorySlots = 1;
-+			//else
-+			//	extraAccessorySlots = 0;
++					if (tile.type > TileID.Count) {
++						if (tile.active() && TileID.Sets.Torch[tile.type])
++							nearbyModTorch.Add(tile.type);
++
++						continue;
++					}
++
+ 					if (!tile.active() || tile.type != 4)
+ 						continue;
  
- 			fairyBoots = false;
- 			moonLordLegs = false;
+@@ -12555,6 +_,9 @@
+ 			if (inventory[selectedItem].createTile == 4 && inventory[selectedItem].placeStyle < 22)
+ 				nearbyTorch[inventory[selectedItem].placeStyle] = true;
+ 
++			if (TileLoader.GetTile(inventory[selectedItem].createTile) is ModTile modTile && TileID.Sets.Torch[modTile.Type])
++				nearbyModTorch.Add(modTile.Type);
++
+ 			float num = 0f;
+ 			float num2 = 0f;
+ 			if (!ZoneDungeon && !ZoneLihzhardTemple) {
+@@ -12624,6 +_,7 @@
+ 				}
+ 			}
+ 
++			TileLoader.ModifyTorchLuck(this, ref num2, ref num);
+ 			if (num2 >= 1f)
+ 				torchLuck += 1f;
+ 			else if (num2 > 0f)
+@@ -12640,6 +_,7 @@
+ 			for (int i = 0; i < 22; i++) {
+ 				nearbyTorch[i] = false;
+ 			}
++			nearbyModTorch.Clear();
+ 
+ 			if (torchLuck < 0f)
+ 				torchLuck = 0f;
 @@ -12711,6 +_,9 @@
  			lifeRegen = 0;
  			manaCost = 1f;
@@ -2112,7 +2137,7 @@
  					num5 = 30;
  
 -				float damage = (float)num5 * minionDamage;
-+				float damage = (float)num5 * minionDamage.additive;
++				float damage = (float)num5 * minionDamage.Additive;
  				float knockback = 10f;
  				if (flag4)
  					knockback = 7f;
@@ -2121,7 +2146,7 @@
  				rect2.Width = 2;
  				rect2.Inflate(6, 12);
 -				float damage2 = 100f * minionDamage;
-+				float damage2 = 100f * minionDamage.additive;
++				float damage2 = 100f * minionDamage.Additive;
  				float knockback2 = 12f;
  				int nPCImmuneTime2 = 30;
  				int playerImmuneTime2 = 6;
@@ -2130,7 +2155,7 @@
  				rect3.Width = 2;
  				rect3.Inflate(6, 12);
 -				float damage3 = 120f * minionDamage;
-+				float damage3 = 120f * minionDamage.additive;
++				float damage3 = 120f * minionDamage.Additive;
  				float knockback3 = 12f;
  				int nPCImmuneTime3 = 30;
  				int playerImmuneTime3 = 6;
@@ -2139,7 +2164,7 @@
  				rect4.Width = 2;
  				rect4.Inflate(6, 12);
 -				float damage4 = 90f * minionDamage;
-+				float damage4 = 90f * minionDamage.additive;
++				float damage4 = 90f * minionDamage.Additive;
  				float knockback4 = 10f;
  				int nPCImmuneTime4 = 30;
  				int playerImmuneTime4 = 6;
@@ -2157,7 +2182,7 @@
  					Rectangle rect2 = nPC.getRect();
  					if (rect.Intersects(rect2) && (nPC.noTileCollide || Collision.CanHit(base.position, width, height, nPC.position, nPC.width, nPC.height))) {
 -						float num = 40f * minionDamage;
-+						float num = 40f * minionDamage.additive;
++						float num = 40f * minionDamage.Additive;
  						float knockback = 5f;
  						int direction = base.direction;
  						if (velocity.X < 0f)
@@ -2238,9 +2263,9 @@
  				if (projectile.ai[0] != 2f || projectile.position.HasNaNs())
  					continue;
 +				int type = projectile.type;
-+				bool useAiType = projectile.ModProjectile != null && projectile.ModProjectile.aiType > 0;
++				bool useAiType = projectile.ModProjectile != null && projectile.ModProjectile.AIType > 0;
 +				if (useAiType) {
-+					projectile.type = projectile.ModProjectile.aiType;
++					projectile.type = projectile.ModProjectile.AIType;
 +				}
  
  				num += projectile.position.X + (float)(projectile.width / 2);
@@ -2559,6 +2584,26 @@
  		}
  
  		private void UpdateControlHolds() {
+@@ -19767,6 +_,9 @@
+ 		}
+ 
+ 		public void RecalculateLuck() {
++			if (!PlayerHooks.PreModifyLuck(this, ref luck))
++				goto skipVanillaLuck;
++
+ 			luck = GetLadyBugLuck() * 0.2f + torchLuck * 0.2f;
+ 			luck += (float)(int)luckPotion * 0.1f;
+ 			if (LanternNight.LanternsUp)
+@@ -19774,6 +_,9 @@
+ 
+ 			if (HasGardenGnomeNearby)
+ 				luck += 0.2f;
++
++			skipVanillaLuck:
++			PlayerHooks.ModifyLuck(this, ref luck);
+ 		}
+ 
+ 		private static int GetMouseScrollDelta() => PlayerInput.ScrollWheelDelta / 120;
 @@ -19872,6 +_,8 @@
  
  			if (wingsLogic == 45 && (float)timeSinceLastDashStarted >= 60f)
@@ -2976,15 +3021,19 @@
  			if (compositeBackArm.enabled && item.shieldSlot > 0)
  				return true;
  
-@@ -25813,7 +_,7 @@
+@@ -25813,6 +_,12 @@
  			return false;
  		}
  
--		private void UpdateVisibleAccessory(int itemSlot, Item item) {
-+		public void UpdateVisibleAccessory(int itemSlot, Item item) {
++		/// <summary>
++		/// Won't work with yoraiz0rEye as effect needs target item slot.
++		/// </summary>
++		/// <param name="item"></param>
++		public void UpdateVisibleAccessory(Item item) => UpdateVisibleAccessory(-1, item);
++
+ 		private void UpdateVisibleAccessory(int itemSlot, Item item) {
  			if (item.stringColor > 0)
  				stringColor = item.stringColor;
- 
 @@ -26035,6 +_,8 @@
  			if (drawPlayer.head == 267)
  				yoraiz0rDarkness = true;
@@ -3953,15 +4002,9 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -36388,10 +_,32 @@
- 				}
- 				else if (sItem.summon) {
- 					num = (int)((float)num * minionDamage);
--				}
--			}
--
-+ 				}
-+ 			}
+@@ -36392,6 +_,29 @@
+ 			}
+ 
  			return num;
 +			*/
 +
