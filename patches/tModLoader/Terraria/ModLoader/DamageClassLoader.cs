@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Terraria.ModLoader
 {
@@ -22,7 +23,7 @@ namespace Terraria.ModLoader
 
 		static DamageClassLoader() {
 			RegisterDefaultClasses();
-			RebuildCountsAsCache();
+			ResizeArrays();
 		}
 
 		internal static int Add(DamageClass damageClass) {
@@ -31,7 +32,6 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResizeArrays() {
-			RegisterDefaultClasses();
 			RebuildCountsAsCache();
 
 			foreach (var dc in DamageClasses)
@@ -53,14 +53,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void RegisterDefaultClasses() {
-			for (int i = 0; i < DefaultClassCount; i++) {
-				var damageClass = DamageClasses[i];
-
-				damageClass.Type = i;
-
+		internal static void RegisterDefaultClasses() {
+			int i = 0;
+			foreach (var damageClass in DamageClasses) {
+				damageClass.Type = i++;
 				ContentInstance.Register(damageClass);
-				ModTypeLookup<DamageClass>.RegisterInternal(damageClass, damageClass.Name, damageClass.FullName, throwOnDuplicate: false);
+				ModTypeLookup<DamageClass>.Register(damageClass);
 			}
 		}
 	}

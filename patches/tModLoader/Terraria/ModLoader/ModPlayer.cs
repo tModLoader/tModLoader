@@ -341,6 +341,21 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Called before vanilla makes any luck calculations. Return false to prevent vanilla from making their luck calculations. Returns true by default.
+		/// </summary>
+		/// <param name="luck"></param>
+		public virtual bool PreModifyLuck(ref float luck) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to modify a player's luck amount.
+		/// </summary>
+		/// <param name="luck"></param>
+		public virtual void ModifyLuck(ref float luck) {
+		}
+
+		/// <summary>
 		/// Allows you to do anything before the update code for the player's held item is run. Return false to stop the held item update code from being run (for example, if the player is frozen). Returns true by default.
 		/// </summary>
 		/// <returns></returns>
