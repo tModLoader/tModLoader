@@ -172,7 +172,7 @@ namespace Terraria.ModLoader.Setup
 
 		private static readonly string targetsFilePath = Path.Combine("src", "WorkspaceInfo.targets");
 
-		private static void UpdateTargetsFile() {
+		internal static void UpdateTargetsFile() {
 			SetupOperation.CreateParentDirectory(targetsFilePath);
 
 			string gitsha = "";
