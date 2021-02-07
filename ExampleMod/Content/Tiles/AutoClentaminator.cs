@@ -25,6 +25,8 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void SetDefaults() {
+			DustType = 11;
+
 			Main.tileFrameImportant[Type] = true;
 
 			TileObjectData newTile = TileObjectData.newTile;
@@ -40,7 +42,6 @@ namespace ExampleMod.Content.Tiles
 			ModTranslation name = CreateMapEntryName();
 			name.SetDefault("Auto Clentaminator");
 			AddMapEntry(new Color(190, 230, 190), name);
-			dustType = 11;
 		}
 
 		public override bool RightClick(int i, int j) {
