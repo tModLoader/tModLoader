@@ -102,7 +102,7 @@ namespace ExampleMod.Content.TileEntities
 
 		public override bool ValidTile(int i, int j) {
 			Tile tile = Main.tile[i, j];
-			return tile.active() && tile.type == ModContent.TileType<ItemCollector>() && tile.frameX == 0 && tile.frameY == 0;
+			return tile.IsActive && tile.type == ModContent.TileType<ItemCollector>() && tile.frameX == 0 && tile.frameY == 0;
 		}
 
 		public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate) {
