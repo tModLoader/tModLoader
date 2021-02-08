@@ -8,6 +8,8 @@ namespace Terraria.ModLoader.Shops
 		public string Name { get; internal set; }
 		public readonly ModTranslation DisplayName;
 		
+		// todo: tab ID
+		
 		public Mod Mod { get; internal set; }
 
 		public readonly List<Entry> Entries = new List<Entry>();

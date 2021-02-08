@@ -13,6 +13,8 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI;
 using Terraria.GameContent;
+using Terraria.ModLoader.IO;
+using Terraria.ModLoader.Shops;
 using Terraria.UI;
 
 namespace Terraria.ModLoader
@@ -498,6 +500,61 @@ namespace Terraria.ModLoader
 				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, txMsgType[j].ToString(), new Vector2(x += 80, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
 				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, txDataType[j].ToString(), new Vector2(x += 30, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
 			}
+		}
+
+		internal static void ReceiveTravelShop(BinaryReader reader) {
+			var cache = NPCShopManager.entryCache[NPCShopManager.ShopType<TravellingMerchantShop>()];
+			cache.Clear();
+			
+			int tabs = reader.ReadInt32();
+			for (int i = 0; i < tabs; i++)
+			{
+				string tab = reader.ReadString();
+				CacheList list = new CacheList();
+				
+				int items = reader.ReadInt32();
+				for (int j = 0; j < items; j++)
+				{
+					int netID = reader.ReadInt32();
+					int currency = reader.ReadInt32();
+					int price = reader.ReadInt32();
+
+					Item item = new Item();
+					item.netDefaults(netID);
+					item.shopSpecialCurrency = currency;
+					item.shopCustomPrice = price == -1 ? default(int?) : price;
+					ItemIO.ReceiveModData(item, reader);
+
+					list.Add(item);
+				}
+				
+				cache.Add(tab, list);
+			}
+		}
+
+		internal static void SendTravelShop(int remoteClient) {
+			if (Main.netMode != NetmodeID.Server)
+				return;
+
+			var packet = new ModPacket(MessageID.SyncTravelShop);
+
+			var cache = NPCShopManager.entryCache[NPCShopManager.ShopType<TravellingMerchantShop>()];
+
+			packet.Write(cache.Count); // tab count
+			foreach (KeyValuePair<string, CacheList> pair in cache)
+			{
+				packet.Write(pair.Key);
+				packet.Write(pair.Value.Count); // item count
+				foreach (Item item in pair.Value)
+				{
+					packet.Write(item.netID);
+					packet.Write(item.shopSpecialCurrency);
+					packet.Write(item.shopCustomPrice ?? -1);
+					ItemIO.SendModData(item, packet);
+				}
+			}
+			
+			packet.Send(remoteClient);
 		}
 	}
 }

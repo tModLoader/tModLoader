@@ -7,6 +7,16 @@ namespace Terraria.ModLoader.Shops
 {
 	public class ComparisonCondition<T> : Condition where T : IComparable
 	{
+		public override string Description {
+			get {
+				if (Language.ActiveCulture.LegacyId == 1)
+				{
+					return "english poop";
+				}
+				return "poop";
+			}
+		}
+
 		private Func<T> field;
 		private T other;
 		private Operation operation;

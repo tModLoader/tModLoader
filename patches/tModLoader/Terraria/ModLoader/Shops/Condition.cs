@@ -7,7 +7,7 @@ namespace Terraria.ModLoader.Shops
 	public abstract partial class Condition
 	{
 		private readonly NetworkText DescriptionText;
-		public string Description => DescriptionText.ToString();
+		public virtual string Description => DescriptionText.ToString();
 
 		public Condition(NetworkText description) {
 			DescriptionText = description ?? throw new ArgumentNullException(nameof(description));

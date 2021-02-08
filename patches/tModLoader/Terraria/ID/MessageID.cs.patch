@@ -402,7 +402,7 @@
  		public const byte ShopOverride = 104;
  		public const byte GemLockToggle = 105;
  		public const byte PoofOfSmoke = 106;
-@@ -151,5 +_,28 @@
+@@ -151,5 +_,29 @@
  		public const byte SetCountsAsHostForGameplay = 139;
  		public const byte SetMiscEventValues = 140;
  		public const byte Count = 141;
@@ -429,5 +429,6 @@
 +		//client displays the downloading mod UI when it recieves the first packet with display name and length
 +		//once the file is downloaded, the client either sends a request for the next file, or reloads and sends SyncMods
 +		public const byte ModFile = 252;
++		public const byte SyncTravelShop = 253;
  	}
  }

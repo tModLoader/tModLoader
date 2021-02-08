@@ -165,19 +165,6 @@
  								writer.Write((ushort)Main.player[number].buffType[n]);
  							}
  
-@@ -895,9 +_,10 @@
- 						writer.Write((byte)number4);
- 						break;
- 					case 72: {
-+							// todo: fix shop netcode
--							for (int num24 = 0; num24 < 40; num24++) {
-+							/*for (int num24 = 0; num24 < 40; num24++) {
- 								writer.Write((short)Main.travelShop[num24]);
--							}
-+							}*/
- 
- 							break;
- 						}
 @@ -987,7 +_,7 @@
  							bool flag3 = TileEntity.ByID.ContainsKey(number);
  							writer.Write(flag3);
@@ -284,17 +271,24 @@
  #endif
  					num2 = 0;
  					num = 0;
-@@ -2176,8 +_,9 @@
+@@ -2175,7 +_,7 @@
+ 			SendTileSquare(whoAmi, tileX - num2, tileY - num2, num, num, changeType);
  		}
  
- 		public static void SendTravelShop(int remoteClient) {
-+			// note: shop separate packet
+-		public static void SendTravelShop(int remoteClient) {
++		private static void SendTravelShop(int remoteClient) {
  			if (Main.netMode == 2)
--				SendData(72, remoteClient);
-+				SendData(MessageID.TravelMerchantItems, remoteClient);
+ 				SendData(72, remoteClient);
+ 		}
+@@ -2287,7 +_,7 @@
+ 			}
+ 
+ 			if (flag)
+-				SendTravelShop(plr);
++				ModNet.SendTravelShop(plr);
  		}
  
- 		public static void SendAnglerQuest(int remoteClient) {
+ 		private static void EnsureLocalPlayerIsPresent() {
 @@ -2303,7 +_,7 @@
  			}
  

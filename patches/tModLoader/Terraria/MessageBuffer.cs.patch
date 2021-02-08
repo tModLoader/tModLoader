@@ -344,21 +344,6 @@
  							if (!NPC.AnyNPCs(num180))
  								NPC.SpawnOnPlayer(plr, num180);
  						}
-@@ -2445,11 +_,12 @@
- 					}
- 					break;
- 				case 72:
-+					// todo: fix shop netcode
--					if (Main.netMode == 1) {
-+					/*if (Main.netMode == 1) {
- 						for (int num197 = 0; num197 < 40; num197++) {
- 							Main.travelShop[num197] = reader.ReadInt16();
- 						}
--					}
-+					}*/
- 					break;
- 				case 73:
- 					switch (reader.ReadByte()) {
 @@ -2466,6 +_,7 @@
  					break;
  				case 74:
@@ -403,7 +388,7 @@
  				case 105:
  					if (Main.netMode != 1) {
  						short i2 = reader.ReadInt16();
-@@ -3346,6 +_,27 @@
+@@ -3346,6 +_,31 @@
  						CreditsRollEvent.SetRemainingTimeDirect(reader.ReadInt32());
  					}
  					break;
@@ -427,6 +412,10 @@
 +						ModNet.ReceiveMod(reader);
 +					else
 +						ModNet.SendMod(reader.ReadString(), whoAmI);
++					return;
++				case MessageID.SyncTravelShop:
++					if (Main.netMode == 1)
++						ModNet.ReceiveTravelShop(reader);
 +					return;
  				default:
  					if (Netplay.Clients[whoAmI].State == 0)
