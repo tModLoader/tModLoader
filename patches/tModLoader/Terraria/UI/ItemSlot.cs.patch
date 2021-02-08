@@ -36,6 +36,29 @@
  			if (Main.cursorOverride == 2) {
  				if (ChatManager.AddChatText(FontAssets.MouseText.Value, ItemTagHandler.GenerateTag(item), Vector2.One))
  					SoundEngine.PlaySound(12);
+@@ -425,11 +_,11 @@
+ 			Player player = Main.player[Main.myPlayer];
+ 			bool flag = Main.mouseLeftRelease && Main.mouseLeft;
+ 			if (flag) {
+-				if (OverrideLeftClick(inv, context, slot))
++				if (OverrideLeftClick(inv, Math.Abs(context), slot))
+ 					return;
+ 
+ 				inv[slot].newAndShiny = false;
+-				if (LeftClick_SellOrTrash(inv, context, slot) || player.itemAnimation != 0 || player.itemTime != 0)
++				if (LeftClick_SellOrTrash(inv, Math.Abs(context), slot) || player.itemAnimation != 0 || player.itemTime != 0)
+ 					return;
+ 			}
+ 
+@@ -437,6 +_,8 @@
+ 			if (num != 3 && !flag)
+ 				return;
+ 
++			context = Math.Abs(context);
++
+ 			switch (num) {
+ 				case 0:
+ 					if (context == 6 && Main.mouseItem.type != 0)
 @@ -651,18 +_,24 @@
  					break;
  				case 3:
@@ -87,6 +110,26 @@
  					}
  				}
  			}
+@@ -864,6 +_,11 @@
+ 					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
+ 						result = 1;
+ 					break;
++				case -10:
++				case -11:
++					if (checkItem.type == 0 || (checkItem.accessory && EquipLoader.ModSlotCheck(EquipLoader.exAccessorySlot,checkItem, slot)))
++						result = 1;
++					break;
+ 				case 24:
+ 					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(inv, checkItem, slot)))
+ 						result = 1;
+@@ -873,6 +_,7 @@
+ 						result = 1;
+ 					break;
+ 				case 12:
++				case -12:
+ 				case 25:
+ 				case 27:
+ 					result = 2;
 @@ -1000,10 +_,12 @@
  			switch (context) {
  				case 0:
@@ -161,8 +204,8 @@
  
  						Recipe.FindRecipes();
  					}
-+					else if (EquipLoader.CanRightClick(inv[slot])) {
-+						EquipLoader.RightClick(inv[slot], player);
++					else if (ItemLoader.CanRightClick(inv[slot])) {
++						ItemLoader.RightClick(inv[slot], player);
 +					}
  					else {
  						result = false;
@@ -256,28 +299,37 @@
  					Vector2 position4 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
  					Color white = Color.White;
  					spriteBatch.Draw(TextureAssets.Cd.Value, position4, null, white, 0f, default(Vector2), num11, SpriteEffects.None, 0f);
-@@ -1901,15 +_,15 @@
+@@ -1892,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		private static bool AccCheck(Item[] itemCollection, Item item, int slot) {
++		internal static bool AccCheck(Item[] itemCollection, Item item, int slot) {
+ 			if (isEquipLocked(item.type))
+ 				return true;
+ 
+@@ -1901,23 +_,20 @@
  					return false;
  
  				if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0)
 -					return false;
 +					return !ItemLoader.CanEquipAccessory(item, slot);
  			}
--
--			for (int i = 0; i < itemCollection.Length; i++) {
+ 
+ 			for (int i = 0; i < itemCollection.Length; i++) {
 -				if (slot < 10 && i < 10) {
-+			int sizeColl = itemCollection.Length;
-+			for (int i = 0; i < sizeColl; i++) {
-+				if (slot < sizeColl / 2  && i < sizeColl / 2) {
- 					if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0)
- 						return true;
+-					if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0)
++				if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0)
+-						return true;
++					return true;			
++			}
  
 -					if (slot >= 10 && i >= 10 && item.wingSlot > 0 && itemCollection[i].wingSlot > 0)
-+					if (slot >= sizeColl / 2 && i >= sizeColl / 2 && item.wingSlot > 0 && itemCollection[i].wingSlot > 0)
- 						return true;
- 				}
- 
-@@ -1917,7 +_,7 @@
+-						return true;
+-				}
+-
++			for (int i = 0; i < itemCollection.Length; i++) {
+ 				if (item.IsTheSameAs(itemCollection[i]))
  					return true;
  			}
  
@@ -348,55 +400,3 @@
  				return currentColor;
  
  			if (type == 662 || type == 663) {
-@@ -2345,7 +_,7 @@
- 						s += PlayerInput.BuildCommand(Lang.misc[54].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]);
- 					}
- 
--					if (context == 8 && slot >= 3) {
-+					if (context == 8 && slot >= player.totalArmorSlots) {
- 						bool flag = player.hideVisibleAccessory[slot];
- 						s += PlayerInput.BuildCommand(Lang.misc[flag ? 77 : 78].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]);
- 						if (PlayerInput.Triggers.JustPressed.Grapple) {
-@@ -2356,7 +_,7 @@
- 						}
- 					}
- 
--					if ((context == 16 || context == 17 || context == 18 || context == 19 || context == 20) && slot < 2) {
-+					if ((context == 16 || context == 17 || context == 18 || context == 19 || context == 20) && slot < player.totalArmorSlots - 1) {
- 						bool flag2 = player.hideMisc[slot];
- 						s += PlayerInput.BuildCommand(Lang.misc[flag2 ? 77 : 78].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]);
- 						if (PlayerInput.Triggers.JustPressed.Grapple) {
-@@ -2371,9 +_,9 @@
- 					if (Main.mouseItem.type > 0 && Equippable(ref Main.mouseItem, context))
- 						s += PlayerInput.BuildCommand(Lang.misc[65].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]);
- 
--					if (context == 8 && slot >= 3) {
-+					if (context == 8 && slot >= player.totalArmorSlots) {
- 						int num = slot;
--						if (num % 10 == 8 && !player.CanDemonHeartAccessoryBeShown())
-+						if (num % player.totalEquipSlots == player.demonHeartSlot && !player.CanAccessoryBeShown(player.demonHeartSlot))
- 							num++;
- 
- 						bool flag3 = player.hideVisibleAccessory[num];
-@@ -2386,7 +_,7 @@
- 						}
- 					}
- 
--					if ((context == 16 || context == 17 || context == 18 || context == 19 || context == 20) && slot < 2) {
-+					if ((context == 16 || context == 17 || context == 18 || context == 19 || context == 20) && slot < player.totalArmorSlots - 1) {
- 						bool flag4 = player.hideMisc[slot];
- 						s += PlayerInput.BuildCommand(Lang.misc[flag4 ? 77 : 78].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]);
- 						if (PlayerInput.Triggers.JustPressed.Grapple) {
-@@ -2424,10 +_,10 @@
- 								num2 = slot;
- 
- 							if (inv == player.miscDyes)
--								num2 = 10 + slot;
-+								num2 = player.totalEquipSlots + slot;
- 
- 							if (num2 != -1) {
--								if (num2 < 10) {
-+								if (num2 < player.totalEquipSlots) {
- 									bool flag7 = player.hideVisibleAccessory[slot];
- 									s += PlayerInput.BuildCommand(Lang.misc[flag7 ? 77 : 78].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]);
- 									if (PlayerInput.Triggers.JustPressed.Grapple) {

@@ -1586,7 +1586,7 @@
  				if (armor[k].prefix == 80)
  					meleeSpeed += 0.04f;
 +
-+				EquipLoader.UpdateEquip(armor[k], this);
++				ItemLoader.UpdateEquip(armor[k], this);
 +				
  			}
 +		}
@@ -1689,7 +1689,7 @@
  
  			UpdateBootVisualEffects(currentItem);
 +
-+			EquipLoader.UpdateVanity(currentItem, this);
++			ItemLoader.UpdateVanity(currentItem, this);
  		}
  
  		private WingStats GetWingStats(int wingID) {
@@ -1789,7 +1789,7 @@
 +				wingsLogic = currentItem.wingSlot;
 +			}
 +
-+			EquipLoader.UpdateAccessory(currentItem, this, hideVisual);
++			ItemLoader.UpdateAccessory(currentItem, this, hideVisual);
 +
  			if (Main.myPlayer != whoAmI)
 -				return;
@@ -1899,7 +1899,7 @@
  
  			ApplyArmorSoundAndDustChanges();
 +
-+			EquipLoader.UpdateArmorSet(this, armor[0], armor[1], armor[2]);
++			ItemLoader.UpdateArmorSet(this, armor[0], armor[1], armor[2]);
  		}
  
  		public void UpdateSocialShadow() {
@@ -2033,6 +2033,19 @@
  
  			if (torchLuck < 0f)
  				torchLuck = 0f;
+@@ -12689,10 +_,12 @@
+ 		public static float GetClosestRollLuck(int x, int y, int range) => Main.player[FindClosest(new Vector2(x * 16, y * 16), 1, 1)].RollLuck(range);
+ 
+ 		public void ResetEffects() {
++			/*
+ 			if (extraAccessory && (Main.expertMode || Main.gameMenu))
+ 				extraAccessorySlots = 1;
+ 			else
+ 				extraAccessorySlots = 0;
++			*/
+ 
+ 			fairyBoots = false;
+ 			moonLordLegs = false;
 @@ -12711,6 +_,9 @@
  			lifeRegen = 0;
  			manaCost = 1f;
@@ -2245,7 +2258,7 @@
  						num = 0.15f;
  				}
  
-+				EquipLoader.VerticalWingSpeeds(this, ref num2, ref num5, ref num4, ref num3, ref num);
++				ItemLoader.VerticalWingSpeeds(this, ref num2, ref num5, ref num4, ref num3, ref num);
  				velocity.Y -= num * gravDir;
  				if (gravDir == 1f) {
  					if (velocity.Y > 0f)
@@ -2501,7 +2514,7 @@
  					CancelAllJumpVisualEffects();
  				}
  				else {
-+					bool isCustomWings = EquipLoader.WingUpdate(this, flag20);
++					bool isCustomWings = ItemLoader.WingUpdate(this, flag20);
  					if (flag20) {
  						WingAirVisuals();
  						WingMovement();
@@ -2609,7 +2622,7 @@
  			if (wingsLogic == 45 && (float)timeSinceLastDashStarted >= 60f)
  				runSlowdown *= 6f;
 +			
-+			EquipLoader.HorizontalWingSpeeds(this);
++			ItemLoader.HorizontalWingSpeeds(this);
  		}
  
  		private void RocketBootVisuals() {
@@ -2972,7 +2985,7 @@
  				faceHead = -1;
  			}
  
-+			EquipLoader.PreUpdateVanitySet(this);
++			ItemLoader.PreUpdateVanitySet(this);
  			if (head > 0 && face > 0) {
  				if (ArmorIDs.Face.Sets.OverrideHelmet[face]) {
  					head = -1;
@@ -2990,7 +3003,7 @@
  			Item.GetDrawHitbox(HeldItem.type, this);
  			bool flag3 = CanVisuallyHoldItem(HeldItem);
  			bool flag4 = HeldItem.type != 4952;
-+			EquipLoader.UpdateVanitySet(this);
++			ItemLoader.UpdateVanitySet(this);
  			if (mount.Active) {
  				legFrameCounter = 0.0;
  				legFrame.Y = legFrame.Height * 6;
@@ -3038,7 +3051,7 @@
  			if (drawPlayer.head == 267)
  				yoraiz0rDarkness = true;
  
-+			EquipLoader.ArmorSetShadows(drawPlayer);
++			ItemLoader.ArmorSetShadows(drawPlayer);
 +			// TODO, rename to this? SetArmorEffectVisuals
  			if (drawPlayer.stoned || drawPlayer.stealth != 1f) {
  				armorEffectDrawOutlines = false;
@@ -3047,7 +3060,7 @@
  				}
  			}
  
-+			EquipLoader.SetMatch(armorslot, type, male, ref num, ref somethingSpecial);
++			ItemLoader.SetMatch(armorslot, type, male, ref num, ref somethingSpecial);
  			return num;
  		}
  
@@ -4571,16 +4584,14 @@
  			width = 20;
  			height = 42;
  			name = string.Empty;
-@@ -38236,7 +_,8 @@
+@@ -38236,6 +_,7 @@
  			legFrame.Height = 56;
  			tileEntityAnchor.Clear();
  			doorHelper = new DoorOpeningHelper();
 +
--			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < 59 + 1; i++) {
+ 			for (int i = 0; i < 59; i++) {
  				if (i < armor.Length)
  					armor[i] = new Item();
- 
 @@ -38267,7 +_,7 @@
  			grappling[0] = -1;
  			statManaMax = 20;

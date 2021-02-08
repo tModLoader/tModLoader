@@ -1,17 +1,14 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Terraria.DataStructures;
 using Terraria.GameInput;
-using Terraria.ID;
 using Terraria.ModLoader.IO;
-using Terraria;
 using Terraria.GameContent;
 using Terraria.UI;
 using Terraria.Audio;
+
+//TODO: Does not Support: ItemLoader.GetGamepadInstructions
+//TODO: Does not Support: Multiplayer
 
 namespace Terraria.ModLoader
 {
@@ -123,7 +120,7 @@ namespace Terraria.ModLoader
 		private void DrawFunctional() {
 			int yLoc2 = yLoc + (int)((float)(-2) + (float)(slot * 56) * Main.inventoryScale);
 			int xLoc2 = xLoc - 58 + 64 + 28;
-			int context = 10;
+			int context = -10;
 
 			Texture2D value4 = TextureAssets.InventoryTickOn.Value;
 			if (EquipLoader.exHideAccessory[slot])
@@ -148,11 +145,11 @@ namespace Terraria.ModLoader
 
 				Main.armorHide = true;
 				Player.mouseInterface = true;
-				ItemSlot.OverrideHover(EquipLoader.exAccessorySlot, context, slot); //should work
+				ItemSlot.OverrideHover(EquipLoader.exAccessorySlot, Math.Abs(context), slot);
 				if (!flag3 || Main.mouseItem.IsAir)
-					ItemSlot.LeftClick(EquipLoader.exAccessorySlot, context, slot); //should work
+					ItemSlot.LeftClick(EquipLoader.exAccessorySlot, context, slot);
 
-				ItemSlot.MouseHover(EquipLoader.exAccessorySlot, context, slot); //should work
+				ItemSlot.MouseHover(EquipLoader.exAccessorySlot, Math.Abs(context), slot);
 			}
 
 			this.DrawRedirect(EquipLoader.exAccessorySlot, context, slot, new Vector2(xLoc, yLoc));
@@ -172,19 +169,19 @@ namespace Terraria.ModLoader
 		private void DrawVanity() {
 			bool flag7 = flag3 && !Main.mouseItem.IsAir;
 			xLoc -= 47;
-			int context = 11;
+			int context = -11;
 
 			if (Main.mouseX >= xLoc && (float)Main.mouseX <= (float)xLoc + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
 				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
 				Player.mouseInterface = true;
 				Main.armorHide = true;
-				ItemSlot.OverrideHover(EquipLoader.exAccessorySlot, context, slot); //should work
+				ItemSlot.OverrideHover(EquipLoader.exAccessorySlot, Math.Abs(context), slot);
 				if (!flag7) {
-					ItemSlot.LeftClick(EquipLoader.exAccessorySlot, context, slot); //should work
-					ItemSlot.RightClick(EquipLoader.exAccessorySlot, context, slot); //blindly called
+					ItemSlot.LeftClick(EquipLoader.exAccessorySlot, context, slot);
+					ItemSlot.RightClick(EquipLoader.exAccessorySlot, Math.Abs(context), slot);
 				}
 
-				ItemSlot.MouseHover(EquipLoader.exAccessorySlot, context, slot); //should work
+				ItemSlot.MouseHover(EquipLoader.exAccessorySlot, Math.Abs(context), slot);
 			}
 
 			this.DrawRedirect(EquipLoader.exAccessorySlot, context, slot, new Vector2(xLoc, yLoc));
@@ -198,28 +195,28 @@ namespace Terraria.ModLoader
 		private void DrawDye() {
 			bool flag8 = flag3 && !Main.mouseItem.IsAir;
 			xLoc -= 47;
-			int context = 12;
+			int context = -12;
 
 			if (Main.mouseX >= xLoc && (float)Main.mouseX <= (float)xLoc + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
 				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
 				Player.mouseInterface = true;
 				Main.armorHide = true;
-				ItemSlot.OverrideHover(EquipLoader.exDyesAccessory, context, slot); //should work
+				ItemSlot.OverrideHover(EquipLoader.exDyesAccessory, Math.Abs(context), slot);
 				if (!flag8) {
 					if (Main.mouseRightRelease && Main.mouseRight)
-						ItemSlot.RightClick(EquipLoader.exDyesAccessory, context, slot); //blindly called
+						ItemSlot.RightClick(EquipLoader.exDyesAccessory, Math.Abs(context), slot);
 
-					ItemSlot.LeftClick(EquipLoader.exDyesAccessory, context, slot); //should work
+					ItemSlot.LeftClick(EquipLoader.exDyesAccessory, context, slot);
 				}
 
-				ItemSlot.MouseHover(EquipLoader.exDyesAccessory, context, slot); //should work
+				ItemSlot.MouseHover(EquipLoader.exDyesAccessory, Math.Abs(context), slot);
 			}
 			this.DrawRedirect(EquipLoader.exDyesAccessory, context, slot, new Vector2(xLoc, yLoc));
 		}
 
 		private void DrawRedirect(Item[] inv, int context, int slot, Vector2 position) {
 			if (!this.overrideVanillaDrawing)
-				ItemSlot.Draw(Main.spriteBatch, inv, context, slot, position); //blindly called
+				EquipLoader.DefaultDrawModSlots(Main.spriteBatch, inv, context, slot, position); 
 			else
 				this.DrawModded(inv, context, slot, position);
 		}
@@ -229,13 +226,29 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// If overrideVanillaDrawing is true, then this method will be called to draw instead. 
 		/// Note that this should be treated as an alternative to vanilla's ItemSlot.Draw.
-		/// Receives parameters:
+		/// Receives data:
 		/// <para><paramref name="inv"/> :: the array containing all accessory slots, yours is inv[slot] </para>
 		/// <para><paramref name="slot"/> :: which is the index for inventory that you were assigned </para>
 		/// <para><paramref name="position"/> :: is the position of where the ItemSlot will be drawn </para>
-		/// <para><paramref name="context"/> :: 12=>dye; 9,11 => vanity; 8,10 => functional </para>
+		/// <para><paramref name="context"/> :: 12 => dye; 11 => vanity; 10 => functional </para>
 		/// </summary>
 		public virtual void DrawModded(Item[] inv, int context, int slot, Vector2 position) {
+		}
+
+		/// <summary>
+		/// Override to set conditions on when the slot is available, Example: the demonHeart is consumed and in Expert mode in Vanilla.
+		/// </summary>
+		public virtual bool CanUseSlot() {
+			return true;
+		}
+
+		/// <summary>
+		/// Override to set conditions on what can go in slot. Return false to prevent the item going in slot. Example: only wings can go in slot.
+		/// Receives data:
+		/// <para><paramref name="checkItem"/> :: the item that is attempting to enter the slot </para>
+		/// </summary>
+		public virtual bool LimitWhatCanGoInSlot(Item checkItem) {
+			return true;
 		}
 	}
 }
