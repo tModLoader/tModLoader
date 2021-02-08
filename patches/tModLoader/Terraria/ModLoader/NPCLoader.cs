@@ -835,6 +835,17 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate void DelegateNPCHappiness(NPC npc, ref ShopHelper shopHelperInstance);
+		private static HookList HookNPCHappiness = AddHook<DelegateNPCHappiness>(g => g.NPCHappiness);
+
+		public static void NPCHappiness(NPC npc, ref ShopHelper shopHelperInstance) {
+			npc.ModNPC?.NPCHappiness(ref shopHelperInstance);
+
+			foreach (GlobalNPC g in HookNPCHappiness.arr) {
+				g.Instance(npc).NPCHappiness(npc, ref shopHelperInstance);
+			}
+		}
+
 		public static bool CheckConditions(int type) {
 			return GetNPC(type)?.CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2) ?? true;
 		}

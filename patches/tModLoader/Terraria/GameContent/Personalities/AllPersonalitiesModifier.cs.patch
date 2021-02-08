@@ -1,0 +1,18 @@
+--- src/Terraria/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
++++ src/tModLoader/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
+@@ -1,4 +_,6 @@
+ using System.Collections.Generic;
++using Terraria;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.Personalities
+ {
+@@ -392,6 +_,8 @@
+ 						shopHelperInstance.LikeNPC(588);
+ 					break;
+ 			}
++
++			NPCLoader.NPCHappiness(info.npc, ref shopHelperInstance);
+ 		}
+ 	}
+ }
