@@ -23,6 +23,27 @@ namespace Terraria.ModLoader
 
 		internal int index;
 
+		// List of registered identifiers for modded accessory slots. Used in DefaultPlayer.
+		internal List<ModAccessorySlot> moddedAccSlots = new List<ModAccessorySlot>();
+		// Arrays for modded accessory slot save/load/usage. Used in DefaultPlayer.
+		internal Item[] exAccessorySlot = new Item[2];
+		internal Item[] exDyesAccessory = new Item[1];
+		internal bool[] exHideAccessory = new bool[1];
+
+		internal void ResizeAccesoryArrays(int newSize) {
+			newSize = Math.Max(newSize, 1);
+			Array.Resize<Item>(ref exAccessorySlot, 2 * newSize);
+			Array.Resize<Item>(ref exDyesAccessory, newSize);
+			Array.Resize<bool>(ref exHideAccessory, newSize);
+			for (int i = 0; i < exAccessorySlot.Length; i++) {
+				if (i < exDyesAccessory.Length) {
+					exDyesAccessory[i] = new Item();
+					exHideAccessory[i] = true;
+				}
+				exAccessorySlot[i] = new Item();
+			}
+		}
+
 		internal ModPlayer CreateFor(Player newPlayer) {
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
 			modPlayer.Mod = Mod;
@@ -41,7 +62,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool CloneNewInstances => true;
 		
-		protected sealed override void Register() {
+		protected override void Register() { //TODO: put this back to be sealed by separating ModAccessSlot to derive from ModType
 			ModTypeLookup<ModPlayer>.Register(this);
 			PlayerHooks.Add(this);
 		}

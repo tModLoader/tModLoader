@@ -116,7 +116,7 @@
  					break;
 +				case -10:
 +				case -11:
-+					if (checkItem.type == 0 || (checkItem.accessory && EquipLoader.ModSlotCheck(EquipLoader.exAccessorySlot,checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && EquipLoader.ModSlotCheck(checkItem, slot)))
 +						result = 1;
 +					break;
  				case 24:
@@ -210,32 +210,34 @@
  					else {
  						result = false;
  					}
-@@ -1175,22 +_,22 @@
+@@ -1175,22 +_,24 @@
  						if (Main.npcShop > 0)
  							return true;
  
++						int tSlot = slot - inv.Length / 2;
++
 -						if ((inv[slot].type <= 0 || inv[slot].stack <= 0) && (inv[slot - 10].type <= 0 || inv[slot - 10].stack <= 0))
-+						if ((inv[slot].type <= 0 || inv[slot].stack <= 0) && (inv[slot - inv.Length/2].type <= 0 || inv[slot - inv.Length/2].stack <= 0))
++						if ((inv[slot].type <= 0 || inv[slot].stack <= 0) && (inv[tSlot].type <= 0 || inv[tSlot].stack <= 0))
  							break;
  
 -						Item item = inv[slot - 10];
-+						Item item = inv[slot - inv.Length / 2];
++						Item item = inv[tSlot];
  						bool flag2 = context != 11 || item.FitsAccessoryVanitySlot || item.IsAir;
  						if (flag2 && context == 11 && inv[slot].wingSlot > 0) {
 -							for (int i = 3; i < 10; i++) {
 +							for (int i = 0; i < inv.Length / 2; i++) {
 -								if (inv[i].wingSlot > 0 && i != slot - 10)
-+								if (inv[i].wingSlot > 0 && i != slot - inv.Length / 2)
++								if (inv[i].wingSlot > 0 && i != tSlot)
  									flag2 = false;
  							}
  						}
  
 -						if (!flag2)
-+						if (!flag2 || !ItemLoader.CanEquipAccessory(inv[slot], slot - inv.Length / 2))
++						if (!flag2 || !ItemLoader.CanEquipAccessory(inv[slot], tSlot))
  							break;
  
 -						Utils.Swap(ref inv[slot], ref inv[slot - 10]);
-+						Utils.Swap(ref inv[slot], ref inv[slot - inv.Length / 2]);
++						Utils.Swap(ref inv[slot], ref inv[tSlot]);
  						SoundEngine.PlaySound(7);
  						Recipe.FindRecipes();
  						if (inv[slot].stack > 0) {

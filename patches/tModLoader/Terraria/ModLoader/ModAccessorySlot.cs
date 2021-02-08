@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria.GameInput;
-using Terraria.ModLoader.IO;
+using Terraria.ModLoader.Default;
 using Terraria.GameContent;
 using Terraria.UI;
 using Terraria.Audio;
@@ -17,58 +17,39 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModAccessorySlot : ModPlayer
 	{
-		/// <summary>
-		/// Set to true if you want to use custom visuals. See DrawModded for more details.
-		/// </summary>
-		public bool overrideVanillaDrawing = false;
+		new internal Player Player => Main.LocalPlayer;
 
 		internal int slot;
-		
+
 		private int num20;
 		private Microsoft.Xna.Framework.Color color2;
-		public int yLoc = 0;
 		public int xLoc = 0;
-		private int xColumn;
-		private int yRow;
-		private static int accessoryPerColumn = 6; //TODO: figure out how to get around the 9, 10 slots being nixed by IsValidEquipmentSlot 
-		private bool flag3;
+		public int yLoc = 0;
+		internal int xColumn;
+		internal int yRow;
+		private static int accessoryPerColumn = 10;
+		internal bool flag3;
 
 		/// <summary>
 		/// Called when loading characters from parent ModPlayer.
 		/// Requests Player for a modded Slot, and stores assigned Slot. Player will auto-manage slots and save known in PlayerIO
 		/// </summary>
 		public override void Initialize() {
-			int pendingID = EquipLoader.moddedAccSlots.IndexOf(this.FullName);
+			ModPlayer dPlayer = EquipLoader.GetDefaultModdedPlayer();
+			int pendingID = dPlayer.moddedAccSlots.IndexOf(this);
 			if (pendingID < 0) {
-				pendingID = EquipLoader.moddedAccSlots.Count;
-				EquipLoader.ResizeAccesoryArrays(pendingID);
-				EquipLoader.moddedAccSlots.Add(this.FullName);
+				pendingID = dPlayer.moddedAccSlots.Count;
+				dPlayer.ResizeAccesoryArrays(pendingID + 1);
+				dPlayer.moddedAccSlots.Add(this);
 			}
 			this.xColumn = (int)(pendingID / accessoryPerColumn) + 1;
 			this.yRow = pendingID % accessoryPerColumn;
 			this.slot = pendingID;
 		}
 
-		/// <summary>
-		/// Hooks into ModPlayer? to save what was in the modded slot for functional, vanity, dyes, and visiblity data.
-		/// </summary>
-		public override TagCompound Save() { // Needs to revisit and fix up.
-			return new TagCompound {
-				["functional"] = ItemIO.Save(EquipLoader.exAccessorySlot[slot]),
-				["dyes"] = ItemIO.Save(EquipLoader.exDyesAccessory[slot]),
-				["vanity"] = ItemIO.Save(EquipLoader.exAccessorySlot[slot + EquipLoader.moddedAccSlots.Count]),
-				["visible"] = (bool) EquipLoader.exHideAccessory[slot]
-			};
-		}
-
-		/// <summary>
-		/// Hooks into ModPlayer? to load what was in the modded slot for functional, vanity, dyes, and visiblity data.
-		/// </summary>
-		public override void Load(TagCompound tag) {
-			EquipLoader.exAccessorySlot[slot] = tag.Get<Item>("functional");
-			EquipLoader.exDyesAccessory[slot] = tag.Get<Item>("dyes");
-			EquipLoader.exAccessorySlot[slot + EquipLoader.moddedAccSlots.Count] = tag.Get<Item>("vanity");
-			EquipLoader.exHideAccessory[slot] = tag.Get<bool>("visible");
+		protected sealed override void Register() { //TODO: separating ModAccessSlot to derive from ModType
+			ModTypeLookup<ModAccessorySlot>.Register(this);
+			PlayerHooks.Add(this);
 		}
 
 		/// <summary>
@@ -87,9 +68,9 @@ namespace Terraria.ModLoader
 		/// Initializes all fields that are used in subsequent draw events.
 		/// For Overriding fields see this.PreDrawCustom
 		/// </summary>
-		private void PreDraw(int num20) {
+		public void PreDraw(int num20) {
 			this.num20 = num20;
-			this.flag3 = !Player.IsAValidEquipmentSlotForIteration(slot);
+			this.flag3 = !EquipLoader.ModdedIsAValidEquipmentSlotForIteration(slot);
 			this.PreDrawCustom();
 			if (flag3)
 				Main.inventoryBack = color2;
@@ -106,7 +87,7 @@ namespace Terraria.ModLoader
 			if (this.color2 == null) 
 				this.color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
 			if (this.yLoc == 0)
-				this.yLoc = (int)((float)(num20) + (float)(slot * 56) * Main.inventoryScale);
+				this.yLoc = (int)((float)(num20) + (float)(yRow * 56) * Main.inventoryScale);
 			if (this.xLoc == 0)
 				this.xLoc = Main.screenWidth - 64 - 28 - 47 * 3 * xColumn - 50; // 47*3 is per column, 50 adjusts to not overlap vanilla UI
 		}
@@ -117,13 +98,15 @@ namespace Terraria.ModLoader
 		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
 		/// Also includes creating hidevisibilitybutton.
 		/// </summary>
-		private void DrawFunctional() {
-			int yLoc2 = yLoc + (int)((float)(-2) + (float)(slot * 56) * Main.inventoryScale);
-			int xLoc2 = xLoc - 58 + 64 + 28;
+		public void DrawFunctional() {
+			ModPlayer dPlayer = EquipLoader.GetDefaultModdedPlayer();
+			int yLoc2 = yLoc - 2;
+			int xLoc1 = xLoc;
+			int xLoc2 = xLoc1 - 58 + 64 + 28;
 			int context = -10;
 
 			Texture2D value4 = TextureAssets.InventoryTickOn.Value;
-			if (EquipLoader.exHideAccessory[slot])
+			if (dPlayer.exHideAccessory[slot])
 				value4 = TextureAssets.InventoryTickOff.Value;
 
 			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc2, yLoc2, value4.Width, value4.Height);
@@ -131,28 +114,28 @@ namespace Terraria.ModLoader
 			if (rectangle.Contains(new Microsoft.Xna.Framework.Point(Main.mouseX, Main.mouseY)) && !PlayerInput.IgnoreMouseInterface) {
 				Player.mouseInterface = true;
 				if (Main.mouseLeft && Main.mouseLeftRelease) {
-					EquipLoader.exHideAccessory[slot] = !EquipLoader.exHideAccessory[slot];
+					dPlayer.exHideAccessory[slot] = !dPlayer.exHideAccessory[slot];
 					SoundEngine.PlaySound(12);
 					if (Main.netMode == 1)
 						NetMessage.SendData(4, -1, -1, null, Player.whoAmI); //blindly called, won't work
 				}
 
-				num45 = ((!EquipLoader.exHideAccessory[slot]) ? 1 : 2);
+				num45 = ((!dPlayer.exHideAccessory[slot]) ? 1 : 2);
 			}
 
-			else if (Main.mouseX >= xLoc && (float)Main.mouseX <= (float)xLoc + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
+			else if (Main.mouseX >= xLoc1 && (float)Main.mouseX <= (float)xLoc1 + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
 				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
 
 				Main.armorHide = true;
 				Player.mouseInterface = true;
-				ItemSlot.OverrideHover(EquipLoader.exAccessorySlot, Math.Abs(context), slot);
+				ItemSlot.OverrideHover(dPlayer.exAccessorySlot, Math.Abs(context), slot);
 				if (!flag3 || Main.mouseItem.IsAir)
-					ItemSlot.LeftClick(EquipLoader.exAccessorySlot, context, slot);
+					ItemSlot.LeftClick(dPlayer.exAccessorySlot, context, slot);
 
-				ItemSlot.MouseHover(EquipLoader.exAccessorySlot, Math.Abs(context), slot);
+				ItemSlot.MouseHover(dPlayer.exAccessorySlot, Math.Abs(context), slot);
 			}
 
-			this.DrawRedirect(EquipLoader.exAccessorySlot, context, slot, new Vector2(xLoc, yLoc));
+			this.DrawRedirect(dPlayer.exAccessorySlot, context, slot, new Vector2(xLoc1, yLoc));
 
 			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Microsoft.Xna.Framework.Color.White * 0.7f);
 			if (num45 > 0) {
@@ -166,25 +149,27 @@ namespace Terraria.ModLoader
 		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
 		/// </summary>
-		private void DrawVanity() {
+		public void DrawVanity() {
+			ModPlayer dPlayer = EquipLoader.GetDefaultModdedPlayer();
 			bool flag7 = flag3 && !Main.mouseItem.IsAir;
-			xLoc -= 47;
+			int vSlot = slot + dPlayer.moddedAccSlots.Count;
+			int xLoc1 = xLoc - 47;
 			int context = -11;
 
-			if (Main.mouseX >= xLoc && (float)Main.mouseX <= (float)xLoc + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
+			if (Main.mouseX >= xLoc1 && (float)Main.mouseX <= (float)xLoc1 + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
 				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
 				Player.mouseInterface = true;
 				Main.armorHide = true;
-				ItemSlot.OverrideHover(EquipLoader.exAccessorySlot, Math.Abs(context), slot);
+				ItemSlot.OverrideHover(dPlayer.exAccessorySlot, Math.Abs(context), vSlot);
 				if (!flag7) {
-					ItemSlot.LeftClick(EquipLoader.exAccessorySlot, context, slot);
-					ItemSlot.RightClick(EquipLoader.exAccessorySlot, Math.Abs(context), slot);
+					ItemSlot.LeftClick(dPlayer.exAccessorySlot, context, slot);
+					ItemSlot.RightClick(dPlayer.exAccessorySlot, Math.Abs(context), vSlot);
 				}
 
-				ItemSlot.MouseHover(EquipLoader.exAccessorySlot, Math.Abs(context), slot);
+				ItemSlot.MouseHover(dPlayer.exAccessorySlot, Math.Abs(context), vSlot);
 			}
 
-			this.DrawRedirect(EquipLoader.exAccessorySlot, context, slot, new Vector2(xLoc, yLoc));
+			this.DrawRedirect(dPlayer.exAccessorySlot, context, vSlot, new Vector2(xLoc1, yLoc));
 		}
 
 		/// <summary>
@@ -192,47 +177,45 @@ namespace Terraria.ModLoader
 		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
 		/// </summary>
-		private void DrawDye() {
+		public void DrawDye() {
+			ModPlayer dPlayer = EquipLoader.GetDefaultModdedPlayer();
 			bool flag8 = flag3 && !Main.mouseItem.IsAir;
-			xLoc -= 47;
+			int xLoc1 = xLoc - 47 * 2;
 			int context = -12;
 
-			if (Main.mouseX >= xLoc && (float)Main.mouseX <= (float)xLoc + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
+			if (Main.mouseX >= xLoc1 && (float)Main.mouseX <= (float)xLoc1 + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
 				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
 				Player.mouseInterface = true;
 				Main.armorHide = true;
-				ItemSlot.OverrideHover(EquipLoader.exDyesAccessory, Math.Abs(context), slot);
+				ItemSlot.OverrideHover(dPlayer.exDyesAccessory, Math.Abs(context), slot);
 				if (!flag8) {
 					if (Main.mouseRightRelease && Main.mouseRight)
-						ItemSlot.RightClick(EquipLoader.exDyesAccessory, Math.Abs(context), slot);
+						ItemSlot.RightClick(dPlayer.exDyesAccessory, Math.Abs(context), slot);
 
-					ItemSlot.LeftClick(EquipLoader.exDyesAccessory, context, slot);
+					ItemSlot.LeftClick(dPlayer.exDyesAccessory, context, slot);
 				}
 
-				ItemSlot.MouseHover(EquipLoader.exDyesAccessory, Math.Abs(context), slot);
+				ItemSlot.MouseHover(dPlayer.exDyesAccessory, Math.Abs(context), slot);
 			}
-			this.DrawRedirect(EquipLoader.exDyesAccessory, context, slot, new Vector2(xLoc, yLoc));
+			this.DrawRedirect(dPlayer.exDyesAccessory, context, slot, new Vector2(xLoc1, yLoc));
 		}
 
-		private void DrawRedirect(Item[] inv, int context, int slot, Vector2 position) {
-			if (!this.overrideVanillaDrawing)
+		public void DrawRedirect(Item[] inv, int context, int slot, Vector2 position) {
+			if (!this.DrawModded(inv, context, slot, position))
 				EquipLoader.DefaultDrawModSlots(Main.spriteBatch, inv, context, slot, position); 
-			else
-				this.DrawModded(inv, context, slot, position);
 		}
-
-
 
 		/// <summary>
 		/// If overrideVanillaDrawing is true, then this method will be called to draw instead. 
-		/// Note that this should be treated as an alternative to vanilla's ItemSlot.Draw.
+		/// Note that this should be treated as an alternative to EquipLoader.DefaultDrawModSlots. Return True if you used custom drawing.
 		/// Receives data:
 		/// <para><paramref name="inv"/> :: the array containing all accessory slots, yours is inv[slot] </para>
 		/// <para><paramref name="slot"/> :: which is the index for inventory that you were assigned </para>
 		/// <para><paramref name="position"/> :: is the position of where the ItemSlot will be drawn </para>
 		/// <para><paramref name="context"/> :: 12 => dye; 11 => vanity; 10 => functional </para>
 		/// </summary>
-		public virtual void DrawModded(Item[] inv, int context, int slot, Vector2 position) {
+		public virtual bool DrawModded(Item[] inv, int context, int slot, Vector2 position) {
+			return false;
 		}
 
 		/// <summary>
@@ -250,5 +233,22 @@ namespace Terraria.ModLoader
 		public virtual bool LimitWhatCanGoInSlot(Item checkItem) {
 			return true;
 		}
+
+		public override bool Equals(object obj) {
+			ModAccessorySlot other = obj as ModAccessorySlot;
+			if (other == null) {
+				return false;
+			}
+			if (this.FullName != other.FullName) {
+				return false;
+			}
+			return true;
+		}
+
+		public override int GetHashCode() {
+			int hash = FullName.GetHashCode();
+			return hash;
+		}
+
 	}
 }
