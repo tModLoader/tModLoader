@@ -41,6 +41,15 @@
  			if (type == 160) {
  				if ((double)roomY2 > Main.worldSurface)
  					return false;
+@@ -1325,7 +_,7 @@
+ 			}
+ 
+ 			Chest.SetupTravelShop();
+-			NetMessage.SendTravelShop(-1);
++			ModNet.SendTravelShop(-1);
+ 			int num = 0;
+ 			int[] array = new int[200];
+ 			int num2 = 0;
 @@ -1801,7 +_,7 @@
  			if (num7 >= Main.maxTilesY - 5)
  				num7 = Main.maxTilesY - 6;
