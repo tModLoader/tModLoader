@@ -8,38 +8,51 @@
 
 # The following 2 examples are simple.
 
-NPCName.FlutterSlime=Flutter Slime
-MapObject.ExampleClock=Example Clock
+ExampleMod.NPCName.FlutterSlime=Flutter Slime
+ExampleMod.MapObject.ExampleClock=Example Clock
 
 # These 2 examples show using substitutions. Here we use a vanilla Key and a key from this Mod to generate the text: "Nearby players get a bonus against: Octopus". 
 # Note that the translation files for other languages don't need to define ItemTooltip.OctopusBanner, they would only need to define NPCName.Octopus, as seen in zh-Hans.lang file. 
 
-ItemTooltip.OctopusBanner={$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}
-ItemTooltip.SarcophagusBanner={$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Sarcophagus}
+ExampleMod.ItemTooltip.OctopusBanner={$CommonItemTooltip.BannerBonus}{$ExampleMod.NPCName.Octopus}
+ExampleMod.ItemTooltip.SarcophagusBanner={$CommonItemTooltip.BannerBonus}{$ExampleMod.NPCName.Sarcophagus}
 
 # Here we see that spaces in translation keys are not allowed. Any space will be replaced with an underscore.
 
-NPCName.Example_Person=Example Person
+ExampleMod.NPCName.Example_Person=Example Person
 
 # Since the item, buff, and projectile all share the word "Paper Airplane", here is a custom translation key that we define. 
 # By sharing a common tooltip, we can simplify other language files since English is the fallback language.
 # Other languages would only need to provide a translation for Common.PaperAirplane, BuffDescription, and ItemTooltip. They can skip ProjectileName, ItemName, and BuffName.
 # Also note that \n makes a newline character, useful for multiline tooltips.
 
-Common.PaperAirplane=Paper Airplane
+ExampleMod.Common.PaperAirplane=Paper Airplane
 
-ItemName.ExamplePet={$Mods.ExampleMod.Common.PaperAirplane}
-ItemTooltip.ExamplePet=Summons a {$Mods.ExampleMod.Common.PaperAirplane} to follow aimlessly behind you\nSecond Line!
-ProjectileName.ExamplePet={$Mods.ExampleMod.Common.PaperAirplane}
-BuffName.ExamplePet={$Mods.ExampleMod.Common.PaperAirplane}
-BuffDescription.ExamplePet="Let this pet be an example to you!"
+ExampleMod.ItemName.ExamplePet={$ExampleMod.Common.PaperAirplane}
+ExampleMod.ItemTooltip.ExamplePet=Summons a {$ExampleMod.Common.PaperAirplane} to follow aimlessly behind you\nSecond Line!
+ExampleMod.ProjectileName.ExamplePet={$ExampleMod.Common.PaperAirplane}
+ExampleMod.BuffName.ExamplePet={$ExampleMod.Common.PaperAirplane}
+ExampleMod.BuffDescription.ExamplePet="Let this pet be an example to you!"
 
-Common.LocalizedLabel=This Label is from the .lang files: {$Mods.ExampleMod.Common.PaperAirplane}
-Common.LocalizedTooltip=This tooltip is from the .lang files.
-Common.LocalizedHeader=Headers can help organize
+ExampleMod.Common.LocalizedLabel=This Label is from the .lang files: {$Mods.ExampleMod.Common.PaperAirplane}
+ExampleMod.Common.LocalizedTooltip=This tooltip is from the .lang files.
+ExampleMod.Common.LocalizedHeader=Headers can help organize
 
 # Content/Items/ExampleItem.cs
-RecipeConditions.Night=At Low Health
+ExampleMod.RecipeConditions.Night=At Low Health
 
 # Content/NPCs/ExamplePerson.cs
-Bestiary.ExamplePerson=Built of blocks with arms of steel. Pumps iron day and night.
+ExampleMod.Bestiary.ExamplePerson=Built of blocks with arms of steel. Pumps iron day and night.
+TownNPCMood_ExampleMod/ExamplePerson.Content=I feel pretty fine right now.
+TownNPCMood_ExampleMod/ExamplePerson.NoHome=I would very much like a house, all the colorful monsters scare me.
+TownNPCMood_ExampleMod/ExamplePerson.LoveSpace=I love how there so much space here to code tModLoader mods!
+TownNPCMood_ExampleMod/ExamplePerson.FarFromHome=Could you please get me back to my house?
+TownNPCMood_ExampleMod/ExamplePerson.DislikeCrowded=There are too many people around, it makes it hard for me to focus on mod making.
+TownNPCMood_ExampleMod/ExamplePerson.LikeBiome={BiomeName} is a very nice place to test mods in.
+TownNPCMood_ExampleMod/ExamplePerson.LoveBiome=I love {BiomeName}.
+TownNPCMood_ExampleMod/ExamplePerson.DislikeBiome=It's way too cold in {BiomeName}, I'm freezing!
+TownNPCMood_ExampleMod/ExamplePerson.HateBiome=I hate {BiomeName}.
+TownNPCMood_ExampleMod/ExamplePerson.LikeNPC=I can respect {NPCName} as a fellow guide and educator!
+TownNPCMood_ExampleMod/ExamplePerson.LoveNPC=Do you think {NPCName} notices me?
+TownNPCMood_ExampleMod/ExamplePerson.DislikeNPC={NPCName} keeps rambling on about "payed mods"... Wish I could convince him how terrible of an idea that is.
+TownNPCMood_ExampleMod/ExamplePerson.HateNPC=I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet.

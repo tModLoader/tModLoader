@@ -414,7 +414,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="key">The key for the ModTranslation. The full key will be Mods.ModName.key</param>
 		public ModTranslation CreateTranslation(string key) =>
-			new ModTranslation(string.Format("Mods.{0}.{1}", Name, key));
+			new ModTranslation(key);
 
 		/// <summary>
 		/// Adds a ModTranslation to the game so that you can use Language.GetText to get a LocalizedText.

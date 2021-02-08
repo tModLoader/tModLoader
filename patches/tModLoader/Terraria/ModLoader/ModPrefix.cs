@@ -110,7 +110,7 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<ModPrefix>.Register(this);
 
-			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.Prefix.{Name}");
+			DisplayName = Mod.GetOrCreateTranslation($"{Mod.Name}.Prefix.{Name}");
 			Type = ModPrefix.ReservePrefixID();
 
 			ModPrefix.prefixes.Add(this);

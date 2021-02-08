@@ -50,8 +50,8 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<ModItem>.Register(this);
 
-			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemName.{Name}");
-			Tooltip = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemTooltip.{Name}", true);
+			DisplayName = Mod.GetOrCreateTranslation($"{Mod.Name}.ItemName.{Name}");
+			Tooltip = Mod.GetOrCreateTranslation($"{Mod.Name}.ItemTooltip.{Name}", true);
 
 			Item.ResetStats(ItemLoader.ReserveItemID());
 			Item.ModItem = this;

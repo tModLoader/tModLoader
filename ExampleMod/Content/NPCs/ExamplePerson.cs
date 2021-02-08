@@ -16,6 +16,7 @@ using Terraria.Utilities;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -134,6 +135,30 @@ namespace ExampleMod.Content.NPCs
 			}
 
 			return score >= ((right - left) * (bottom - top)) / 2;
+		}
+
+		//Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
+		public override void NPCHappiness(ref ShopHelper shopHelperInstance, ref int primaryPlayerBiome, ref bool[] nearbyNPCsByType) {
+			//TODO: Make it prefer ExampleBiome when that happens. And BiomeID.
+			if (primaryPlayerBiome == 1) {
+				shopHelperInstance.LikeBiome(1); //Example Person prefers the forest.
+			}
+			if (primaryPlayerBiome == 2) {
+				shopHelperInstance.DislikeBiome(2); //Example Person dislikes the snow.
+			}
+
+			if (nearbyNPCsByType[NPCID.Demolitionist]) {
+				shopHelperInstance.HateNPC(NPCID.Demolitionist); //Hates living near the demolitionist.
+			}
+			if (nearbyNPCsByType[NPCID.Merchant]) {
+				shopHelperInstance.DislikeNPC(NPCID.Merchant); //Dislikes living near the merchant.
+			}
+			if (nearbyNPCsByType[NPCID.Guide]) {
+				shopHelperInstance.LikeNPC(NPCID.Guide); //Likes living near the guide.
+			}
+			if (nearbyNPCsByType[NPCID.Dryad]) {
+				shopHelperInstance.LoveNPC(NPCID.Dryad); //Loves living near the dryad.
+			}
 		}
 
 		public override string TownNPCName() {

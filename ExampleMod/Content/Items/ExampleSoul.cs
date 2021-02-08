@@ -30,14 +30,4 @@ namespace ExampleMod.Content.Items
 
 		public override void PostUpdate() => Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale); // Makes this item glow when thrown out of inventory.
 	}
-
-	// todo: implement
-	// public class SoulGlobalNPC : GlobalNPC
-	// {
-	// 	public override void NPCLoot(NPC npc) {
-	// 		if (Main.player[Player.FindClosest(npc.position, npc.width, npc.height)].GetModPlayer<ExamplePlayer>().ZoneExample) { // Drop this item only in the ExampleBiome.
-	// 			Item.NewItem(npc.getRect(), ItemType<ExampleSoul>()); // get the npc's hitbox rectangle and spawn an item of choice
-	// 		}
-	// 	}
-	// }
 }

@@ -64,7 +64,7 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModNPC>.Register(this);
 
 			NPC.type = NPCLoader.ReserveNPCID();
-			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.NPCName.{Name}");
+			DisplayName = Mod.GetOrCreateTranslation($"{Mod.Name}.NPCName.{Name}");
 
 			NPCLoader.npcs.Add(this);
 
@@ -550,7 +550,9 @@ namespace Terraria.ModLoader
 		/// Allows you to set an NPC's biome preferences and nearby npc preferences for the NPC happiness system. Recommended to only be used with NPCs that have shops.
 		/// </summary>
 		/// <param name="shopHelperInstance"></param>
-		public virtual void NPCHappiness(ref ShopHelper shopHelperInstance) {
+		/// <param name="primaryPlayerBiome"></param>
+		/// <param name="nearbyNPCsByType"></param>
+		public virtual void NPCHappiness(ref ShopHelper shopHelperInstance, ref int primaryPlayerBiome, ref bool[] nearbyNPCsByType) {
 		}
 
 		/// <summary>
