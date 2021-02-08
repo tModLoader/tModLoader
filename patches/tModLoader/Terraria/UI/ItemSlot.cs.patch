@@ -67,13 +67,13 @@
 +						int soldItemIndex = shop.SellItem(Main.mouseItem);
 +						Main.mouseItem.SetDefaults();
 +						SoundEngine.PlaySound(SoundID.Coins);
-+						PlayerHooks.PostSellItem(player, shop, NPCShopManager.entryCache[shop.Type][NPCShop.currentTab.Name][soldItemIndex]);
++						PlayerHooks.PostSellItem(player, shop, shop.GetCache(shop.CurrentTab)[soldItemIndex]);
  					}
 +					else if (Main.mouseItem.value == 0) {
 +						int soldItemIndex = shop.SellItem(Main.mouseItem);
 +						Main.mouseItem.SetDefaults();
 +						SoundEngine.PlaySound(SoundID.Grab);
-+						PlayerHooks.PostSellItem(player, shop, NPCShopManager.entryCache[shop.Type][NPCShop.currentTab.Name][soldItemIndex]);
++						PlayerHooks.PostSellItem(player, shop, shop.GetCache(shop.CurrentTab)[soldItemIndex]);
 +					}
 +					
 +					Recipe.FindRecipes();
@@ -99,7 +99,7 @@
 -						SoundEngine.PlaySound(18);
 +						SoundEngine.PlaySound(SoundID.Coins);
  						Recipe.FindRecipes();
-+						PlayerHooks.PostSellItem(player, shop, NPCShopManager.entryCache[shop.Type][NPCShop.currentTab.Name][soldItemIndex]);
++						PlayerHooks.PostSellItem(player, shop, shop.GetCache(shop.CurrentTab)[soldItemIndex]);
  					}
  					else if (inv[slot].value == 0) {
 -						chest.AddItemToShop(inv[slot]);
@@ -108,7 +108,7 @@
 -						SoundEngine.PlaySound(7);
 +						SoundEngine.PlaySound(SoundID.Grab);
  						Recipe.FindRecipes();
-+						PlayerHooks.PostSellItem(player, shop, NPCShopManager.entryCache[shop.Type][NPCShop.currentTab.Name][soldItemIndex]);
++						PlayerHooks.PostSellItem(player, shop, shop.GetCache(shop.CurrentTab)[soldItemIndex]);
  					}
  				}
  			}

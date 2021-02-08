@@ -14,19 +14,20 @@ namespace Terraria.ModLoader.Shops
 	public abstract class NPCShop : ModType
 	{
 		public abstract int NPCType { get; }
-
-		public int Type { get; internal set; }
-
 		public virtual bool EvaluateOnOpen => true;
-
+		
+		public int Type { get; internal set; }
+		private int NextTabID { get; set; }
+		
+		public Tab DefaultTab { get; private set; }
+		
 		protected sealed override void Register() {
 			ModTypeLookup<NPCShop>.Register(this);
 
 			NPCShopManager.RegisterShop(this);
 		}
 
-		internal readonly Dictionary<string, Tab> tabs = new Dictionary<string, Tab>();
-		public Tab DefaultTab { get; private set; }
+		internal readonly Dictionary<int, Tab> tabs = new Dictionary<int, Tab>();
 
 		public sealed override void SetupContent() {
 			DefaultTab = AddTab(null, "Default");
@@ -36,20 +37,25 @@ namespace Terraria.ModLoader.Shops
 		public virtual void SetDefaults() {
 		}
 
-		public Tab AddTab(Mod mod, string key) {
+		public CacheList GetCache(Tab tab) {
+			return NPCShopManager.entryCache[Type][tab.Type];
+		}
+		
+		public Tab AddTab(Mod mod, string name) {
 			Tab tab = new Tab
 			{
-				Name = key,
-				Mod = mod
+				Name = name,
+				Mod = mod,
+				Type = NextTabID++
 			};
-			tabs.Add(key, tab);
+			tabs.Add(tab.Type, tab);
 
-			NPCShopManager.entryCache[Type].Add(key, new CacheList());
+			NPCShopManager.entryCache[Type].Add(tab.Type, new CacheList());
 
 			return tab;
 		}
 
-		public Tab GetTab(string key) => tabs.ContainsKey(key) ? tabs[key] : null;
+		public Tab GetTab(int type) => tabs.ContainsKey(type) ? tabs[type] : null;
 
 		public EntryItem CreateEntry(int type) => DefaultTab.AddEntry(type);
 
@@ -65,7 +71,7 @@ namespace Terraria.ModLoader.Shops
 			clone.favorited = false;
 			clone.buyOnce = true;
 
-			var cache = NPCShopManager.entryCache[Type][currentTab.Name];
+			var cache = GetCache(CurrentTab);
 			int index = cache.Add(clone);
 
 			// todo: increase rows when a row is filled (solves not being able to manual sell)
@@ -111,8 +117,8 @@ namespace Terraria.ModLoader.Shops
 		}
 		
 		private static int npcShopRowIndex;
-		internal static Tab currentTab;
-		private static Dictionary<string, CacheList> temp;
+		public Tab CurrentTab;
+		private static Dictionary<int, CacheList> temp;
 
 		public void OnClose() {
 			NPCShopManager.entryCache[Type] = temp;
@@ -123,7 +129,7 @@ namespace Terraria.ModLoader.Shops
 		}
 
 		public virtual void OnScroll(int delta) {
-			var inv = NPCShopManager.entryCache[Type][currentTab.Name];
+			var inv = GetCache(CurrentTab);
 			int rows = Math.Max(4, inv.Capacity / 10);
 			int maxRowIndex = rows - 4;
 
@@ -137,11 +143,11 @@ namespace Terraria.ModLoader.Shops
 
 		public virtual void OnOpen() {
 			npcShopRowIndex = 0;
-			currentTab = DefaultTab;
+			CurrentTab = DefaultTab;
 
 			if (EvaluateOnOpen) Evaluate();
 
-			temp = new Dictionary<string, CacheList>(NPCShopManager.entryCache[Type]);
+			temp = new Dictionary<int, CacheList>(NPCShopManager.entryCache[Type]);
 		}
 
 		public virtual void Draw(SpriteBatch spriteBatch) {
@@ -152,7 +158,7 @@ namespace Terraria.ModLoader.Shops
 			float mouseY = Main.mouseY;
 			Vector2 slotSize = TextureAssets.InventoryBack.Size() * inventoryScale;
 			int invBottom = Main.instance.invBottom;
-			var inv = NPCShopManager.entryCache[Type][currentTab.Name];
+			var inv = GetCache(CurrentTab);
 			int rows = Math.Max(4, inv.Capacity / 10);
 
 			Rectangle shopRect = GetDimensions();
@@ -162,7 +168,7 @@ namespace Terraria.ModLoader.Shops
 
 			// todo: add tab selection
 			if (tabs.Count > 1)
-				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, "Tab: " + currentTab.DisplayName, new Vector2(73f, 426f), Color.White, 0f, Vector2.Zero, Vector2.One);
+				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, "Tab: " + CurrentTab.DisplayName, new Vector2(73f, 426f), Color.White, 0f, Vector2.Zero, Vector2.One);
 
 			// todo: better scrollbar visuals
 			spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(shopRect.Right, invBottom, 4, shopRect.Height), new Color(79, 91, 39));

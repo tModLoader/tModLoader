@@ -509,7 +509,7 @@ namespace Terraria.ModLoader
 			int tabs = reader.ReadInt32();
 			for (int i = 0; i < tabs; i++)
 			{
-				string tab = reader.ReadString();
+				int tab = reader.ReadInt32();
 				CacheList list = new CacheList();
 				
 				int items = reader.ReadInt32();
@@ -541,7 +541,7 @@ namespace Terraria.ModLoader
 			var cache = NPCShopManager.entryCache[NPCShopManager.ShopType<TravellingMerchantShop>()];
 
 			packet.Write(cache.Count); // tab count
-			foreach (KeyValuePair<string, CacheList> pair in cache)
+			foreach (KeyValuePair<int, CacheList> pair in cache)
 			{
 				packet.Write(pair.Key);
 				packet.Write(pair.Value.Count); // item count

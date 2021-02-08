@@ -5,13 +5,11 @@ namespace Terraria.ModLoader.Shops
 {
 	public class Tab
 	{
-		public string Name { get; internal set; }
-		public readonly ModTranslation DisplayName;
-		
-		// todo: tab ID
-		
 		public Mod Mod { get; internal set; }
+		public int Type { get; internal set; }
+		public string Name { get; internal set; }
 
+		public readonly ModTranslation DisplayName;
 		public readonly List<Entry> Entries = new List<Entry>();
 
 		public Tab() {

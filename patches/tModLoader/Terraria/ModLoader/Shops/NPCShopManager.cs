@@ -63,7 +63,7 @@ namespace Terraria.ModLoader.Shops
 	{
 		internal static List<NPCShop> shops = new List<NPCShop>();
 
-		internal static Dictionary<int, Dictionary<string, CacheList>> entryCache = new Dictionary<int, Dictionary<string, CacheList>>();
+		internal static Dictionary<int, Dictionary<int, CacheList>> entryCache = new Dictionary<int, Dictionary<int, CacheList>>();
 
 		internal const int VanillaShopCount = 24;
 		internal static int NextTypeID = VanillaShopCount;
@@ -104,7 +104,7 @@ namespace Terraria.ModLoader.Shops
 
 			shops.Add(shop);
 
-			entryCache.Add(shop.Type, new Dictionary<string, CacheList>());
+			entryCache.Add(shop.Type, new Dictionary<int, CacheList>());
 		}
 
 		public static NPCShop GetShop<T>() where T : NPCShop => GetShop(ShopType<T>());
