@@ -27,37 +27,41 @@ namespace Terraria.ModLoader
 		public int yLoc = 0;
 		internal int xColumn;
 		internal int yRow;
-		private static int accessoryPerColumn = 10;
+		internal static int accessoryPerColumn = 9;
 		internal bool flag3;
 
 		/// <summary>
 		/// Called when loading characters from parent ModPlayer.
-		/// Requests Player for a modded Slot, and stores assigned Slot. Player will auto-manage slots and save known in PlayerIO
+		/// Requests for a modded Slot, and stores assigned Slot. DefaultPlayer will auto-manage slots.
 		/// </summary>
 		public override void Initialize() {
-			ModPlayer dPlayer = EquipLoader.GetDefaultModdedPlayer();
-			int pendingID = dPlayer.moddedAccSlots.IndexOf(this);
+			int pendingID = ModPlayer.moddedAccSlots.IndexOf(this);
 			if (pendingID < 0) {
-				pendingID = dPlayer.moddedAccSlots.Count;
-				dPlayer.ResizeAccesoryArrays(pendingID + 1);
-				dPlayer.moddedAccSlots.Add(this);
+				pendingID = ModPlayer.moddedAccSlots.Count;
+				ModPlayer.moddedAccSlots.Add(this);
 			}
+
 			this.xColumn = (int)(pendingID / accessoryPerColumn) + 1;
 			this.yRow = pendingID % accessoryPerColumn;
 			this.slot = pendingID;
 		}
 
-		protected sealed override void Register() { //TODO: separating ModAccessSlot to derive from ModType
+		protected sealed override void Register() { //TODO?: separating ModAccessSlot to derive from ModType
 			ModTypeLookup<ModAccessorySlot>.Register(this);
 			PlayerHooks.Add(this);
 		}
 
+		//TODO: the draw code doesn't take into account window resizing, which borks it.
 		/// <summary>
 		/// Is run after vanilla draws normal accessory slots. Currently doesn't get called.
 		/// Creates new accessory slots in a column to the left of vanilla.  
 		/// </summary>
 		public void Draw(int num20) { 
 			this.PreDraw(num20);
+			if (flag3) {
+				return; //TODO: make it so slots auto shrink to minimum display. And visibility with items in it
+			}
+
 			this.DrawFunctional();
 			this.DrawVanity();
 			this.DrawDye();
@@ -87,7 +91,7 @@ namespace Terraria.ModLoader
 			if (this.color2 == null) 
 				this.color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
 			if (this.yLoc == 0)
-				this.yLoc = (int)((float)(num20) + (float)(yRow * 56) * Main.inventoryScale);
+				this.yLoc = (int)((float)(num20) + (float)((yRow + 1) * 56) * Main.inventoryScale);
 			if (this.xLoc == 0)
 				this.xLoc = Main.screenWidth - 64 - 28 - 47 * 3 * xColumn - 50; // 47*3 is per column, 50 adjusts to not overlap vanilla UI
 		}
@@ -99,7 +103,7 @@ namespace Terraria.ModLoader
 		/// Also includes creating hidevisibilitybutton.
 		/// </summary>
 		public void DrawFunctional() {
-			ModPlayer dPlayer = EquipLoader.GetDefaultModdedPlayer();
+			ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
 			int yLoc2 = yLoc - 2;
 			int xLoc1 = xLoc;
 			int xLoc2 = xLoc1 - 58 + 64 + 28;
@@ -150,9 +154,9 @@ namespace Terraria.ModLoader
 		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
 		/// </summary>
 		public void DrawVanity() {
-			ModPlayer dPlayer = EquipLoader.GetDefaultModdedPlayer();
+			ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
 			bool flag7 = flag3 && !Main.mouseItem.IsAir;
-			int vSlot = slot + dPlayer.moddedAccSlots.Count;
+			int vSlot = slot + ModPlayer.moddedAccSlots.Count;
 			int xLoc1 = xLoc - 47;
 			int context = -11;
 
@@ -162,7 +166,7 @@ namespace Terraria.ModLoader
 				Main.armorHide = true;
 				ItemSlot.OverrideHover(dPlayer.exAccessorySlot, Math.Abs(context), vSlot);
 				if (!flag7) {
-					ItemSlot.LeftClick(dPlayer.exAccessorySlot, context, slot);
+					ItemSlot.LeftClick(dPlayer.exAccessorySlot, context, vSlot);
 					ItemSlot.RightClick(dPlayer.exAccessorySlot, Math.Abs(context), vSlot);
 				}
 
@@ -178,7 +182,7 @@ namespace Terraria.ModLoader
 		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
 		/// </summary>
 		public void DrawDye() {
-			ModPlayer dPlayer = EquipLoader.GetDefaultModdedPlayer();
+			ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
 			bool flag8 = flag3 && !Main.mouseItem.IsAir;
 			int xLoc1 = xLoc - 47 * 2;
 			int context = -12;

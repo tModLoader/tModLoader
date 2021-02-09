@@ -15,4 +15,22 @@ namespace ExampleMod.Common.Players
 	{
 		// If the class is empty, everything will default to a basic vanilla slot.
 	}
+
+	
+	public class ExampleModWingSlot : ModAccessorySlot
+	{
+		public override bool LimitWhatCanGoInSlot(Item checkItem) {
+			if (checkItem.wingSlot > 0) // if is Wing, then can go in slot
+				return true;
+
+			return false; // Otherwise nothing in slot
+		}
+
+		public override bool CanUseSlot() {
+			if (Main.LocalPlayer.armor[0].headSlot >= 0) // if player is wearing a helmet, because flight safety
+				return true; // Then Display Slot
+
+			return false; // Don't display slot
+		}
+	}
 }

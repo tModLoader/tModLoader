@@ -1,13 +1,21 @@
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Terraria.ModLoader.IO;
+using System;
 
 namespace Terraria.ModLoader.Default
 {
 	public class DefaultPlayer : ModPlayer
 	{
-		//TODO: Should save all important datas; namely everthing to do with exAccessSlot, and the like 
+		public override bool CloneNewInstances => false;
+
+		public DefaultPlayer() {
+			exAccessorySlot = new Item[2] { new Item(), new Item() };
+			exDyesAccessory = new Item[1] { new Item() }; 
+			exHideAccessory = new bool[1] { false };
+			this.ResizeAccesoryArrays(ModPlayer.moddedAccSlots.Count);
+		}
+
+		//TODO BUG: This default? uses LocalPlayer instead of playerX. This leads to if you swap characters, the new takes the accessories you had.
 		public override TagCompound Save() {
 			return new TagCompound {
 				["size"] = moddedAccSlots.Count,
@@ -15,6 +23,35 @@ namespace Terraria.ModLoader.Default
 				["dyes"] = exDyesAccessory.Select(ItemIO.Save).ToList(),
 				["visible"] = exHideAccessory.ToList()
 			};
+		}
+
+		internal void ResizeAccesoryArrays(int newSize) {
+			int oldLen = exDyesAccessory.Length;
+			if (newSize <= oldLen)
+				return;
+
+			Array.Resize<Item>(ref exAccessorySlot, 2 * newSize);
+			Array.Resize<Item>(ref exDyesAccessory, newSize);
+			Array.Resize<bool>(ref exHideAccessory, newSize);
+
+			for (int i = oldLen; i < newSize; i++) {
+				exDyesAccessory[i] = new Item();
+				exHideAccessory[i] = false;
+
+				exAccessorySlot[i * 2] = new Item();
+				exAccessorySlot[i * 2 + 1] = new Item();
+			}
+
+
+			if (moddedAccSlots.Count == newSize)
+				return;
+
+			//Create and apply unloadedSlot where there was one last time.
+			ModContent.TryFind<ModAccessorySlot>("ModLoader/UnloadedAccessorySlot", out ModAccessorySlot unloadedSlot);
+			unloadedSlot.xColumn = (int)((newSize - 1) / ModAccessorySlot.accessoryPerColumn) + 1;
+			unloadedSlot.yRow = (newSize - 1) % ModAccessorySlot.accessoryPerColumn;
+			unloadedSlot.slot = newSize - 1;
+			moddedAccSlots.Add(unloadedSlot);
 		}
 
 		public override void Load(TagCompound tag) {
