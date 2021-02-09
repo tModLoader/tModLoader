@@ -9,12 +9,13 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -18,19 +_,27 @@
+@@ -18,20 +_,28 @@
    </PropertyGroup>
    <PropertyGroup>
      <OutputName>$(AssemblyName)</OutputName>
 -    <ApplicationIcon>Icon.ico</ApplicationIcon>
 +    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
+     <TargetFramework>net5.0</TargetFramework>
    </PropertyGroup>
    <ItemGroup>
      <Reference Include="FNA" />

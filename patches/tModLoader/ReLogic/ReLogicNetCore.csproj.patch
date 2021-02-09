@@ -1,7 +1,7 @@
 --- src/Terraria/ReLogic/ReLogicNetCore.csproj
 +++ src/tModLoader/ReLogic/ReLogicNetCore.csproj
 @@ -10,7 +_,7 @@
-     <AssemblyName>ReLogic</AssemblyName>
+     <TargetFramework>net5.0</TargetFramework>
    </PropertyGroup>
    <ItemGroup>
 -    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />
