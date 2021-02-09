@@ -211,5 +211,17 @@ namespace Terraria.ModLoader.Setup
 			Settings.Default.Save();
 			formatDecompiledOutputToolStripMenuItem.Checked = Settings.Default.FormatAfterDecompiling;
 		}
+
+		private void mainMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
+
+		}
+
+		private void toolTipButtons_Popup(object sender, PopupEventArgs e) {
+
+		}
+
+		private void menuItemTmlPath_Click(object sender, EventArgs e) {
+			Program.SelectTmlDirectoryDialog();
+		}
 	}
 }

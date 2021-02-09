@@ -2834,7 +2834,7 @@
 +					else {
 +						Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
 +						SoundEngine.PlaySound(SoundID.MenuOpen);
-+						Utils.OpenFolder(Logging.LogPath);
++						Utils.OpenFolder(Logging.LogDir);
 +					}
 +
  					netMode = 0;
@@ -2865,7 +2865,7 @@
 +					else {
 +						Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
 +						SoundEngine.PlaySound(SoundID.MenuOpen);
-+						Utils.OpenFolder(Logging.LogPath);
++						Utils.OpenFolder(Logging.LogDir);
 +					}
 +
  					menuMode = 0;
