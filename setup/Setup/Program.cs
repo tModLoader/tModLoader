@@ -161,13 +161,21 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
-		private static void UpdateTmlSteamDir(bool reset = false) {
-			if (reset || !Directory.Exists(TMLSteamDir)) {
+		private static void UpdateTmlSteamDir(bool manualSet = false) {
+			if (manualSet || !Directory.Exists(TMLSteamDir)) {
 				Settings.Default.TMLSteamDir = Path.GetFullPath(Path.Combine(Settings.Default.SteamDir, "..", "tModLoader"));
 				Settings.Default.Save();
 			}
 
-			Directory.CreateDirectory(TMLSteamDir);
+			//Lame.
+			if (manualSet && !Directory.Exists(TMLSteamDir)) {
+				try {
+					Directory.CreateDirectory(TMLSteamDir);
+				}
+				catch(Exception e) {
+					Console.WriteLine($"{e.GetType().Name}: {e.Message}");
+				}
+			}
 		}
 
 		private static readonly string targetsFilePath = Path.Combine("src", "WorkspaceInfo.targets");
