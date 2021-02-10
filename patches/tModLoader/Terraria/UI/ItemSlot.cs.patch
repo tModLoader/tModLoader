@@ -340,12 +340,10 @@
  		}
  
  		private static Item DyeSwap(Item item, out bool success) {
-@@ -1934,9 +_,15 @@
- 				}
+@@ -1935,8 +_,14 @@
  			}
  
--			if (dyeSlotCount >= 10)
-+			if (dyeSlotCount >= 10) 
+ 			if (dyeSlotCount >= 10)
 +			{
 +				item2 = EquipLoader.VanillaDyeSwapMirror(item, out success);
 +				if (success)
@@ -358,7 +356,7 @@
  			if (dyeSlotCount < 0)
  				dyeSlotCount = 9;
  
-@@ -1993,8 +_,23 @@
+@@ -1993,8 +_,24 @@
  						accSlotToSwapTo = j - 3;
  				}
  
@@ -370,8 +368,8 @@
 +					}
 +				}
 +
--				if (accSlotToSwapTo > num2)
-+				if (accSlotToSwapTo > num2) {
+ 				if (accSlotToSwapTo > num2)
++				{
 +					result = EquipLoader.VanillaArmorSwapMirror(item, out success);
 +					if (success) {
 +						return result;

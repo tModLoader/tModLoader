@@ -48,21 +48,15 @@
  		public OverheadMessage chatOverhead;
  		public SelectionRadial DpadRadial = new SelectionRadial();
  		public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
-@@ -438,8 +_,15 @@
+@@ -438,8 +_,9 @@
  		public Vector2 lastDeathPostion;
  		public DateTime lastDeathTime;
  		public bool showLastDeath;
 -		public int extraAccessorySlots = 2;
 -		public bool extraAccessory;
-+		//private int extraAccessorySlots; unused vanilla field
-+		public int vanillaBasicAccSlots = 5;
-+		public int vanillaEXAccSlots = 2;
-+		public int vanillaArmorSlots = 3;
-+		public int vanillaEquipSlots => vanillaBasicAccSlots + vanillaEXAccSlots + vanillaArmorSlots;
++		internal int extraAccessorySlots = 2; 
 +		internal ref bool extraAccessory => ref demonHeartUsed; // Minimize modder confusion by using a good name
 +		public bool demonHeartUsed;
-+		public int demonHeartSlot => vanillaArmorSlots + vanillaBasicAccSlots;
-+		public int masterModeSlot => vanillaArmorSlots + vanillaBasicAccSlots + 1;
  		private bool dontConsumeWand;
  		public int tankPet = -1;
  		public bool tankPetReset;
@@ -138,38 +132,6 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
-@@ -1968,18 +_,16 @@
- 
- 			return pos;
- 		}
--
-+				
- 		public bool CanDemonHeartAccessoryBeShown() {
- 			if (!IsAValidEquipmentSlotForIteration(8) && armor[8].type <= 0 && armor[18].type <= 0)
- 				return dye[8].type > 0;
--
- 			return true;
- 		}
--
-+				
- 		public bool CanMasterModeAccessoryBeShown() {
- 			if (!IsAValidEquipmentSlotForIteration(9) && armor[9].type <= 0 && armor[19].type <= 0)
- 				return dye[9].type > 0;
--
- 			return true;
- 		}
- 
-@@ -1987,10 +_,8 @@
- 			int num = 0;
- 			if (CanDemonHeartAccessoryBeShown())
- 				num++;
--
- 			if (CanMasterModeAccessoryBeShown())
- 				num++;
--
- 			return num;
- 		}
- 
 @@ -2051,11 +_,13 @@
  		}
  
@@ -1160,57 +1122,8 @@
  			}
  
  			if (whoAmI == Main.myPlayer && luckPotion != oldLuckPotion) {
-@@ -8252,34 +_,49 @@
- 		}
- 
- 		public bool IsAValidEquipmentSlotForIteration(int slot) {
-+			/*
- 			switch (slot) {
--				default:
-+-				default:
--					return true;
-+-					return true;
--				case 8:
-+-				case 8:
--				case 18: {
-+-				case 18: {
--						bool result2 = extraAccessory;
-+-						bool result2 = extraAccessory;
--						if (!Main.expertMode && !Main.gameMenu)
-+-						if (!Main.expertMode && !Main.gameMenu)
--							result2 = false;
-+-							result2 = false;
--
-+-
--						return result2;
-+-						return result2;
--					}
-+-					}
--				case 9:
-+-				case 9:
--				case 19: {
-+-				case 19: {
--						bool result = true;
-+-						bool result = true;
--						if (!Main.masterMode && !Main.gameMenu)
-+-						if (!Main.masterMode && !Main.gameMenu)
--							result = false;
-+-							result = false;
--
-+-
--						return result;
-+-						return result;
--					}
-+-					}
--			}
-+-			}
-+			*/
-+			if (slot == demonHeartSlot || slot == vanillaEquipSlots + demonHeartSlot)
-+				return (extraAccessory && (Main.expertMode || Main.gameMenu));
-+			else if (slot == masterModeSlot || slot == vanillaEquipSlots + masterModeSlot)
-+				return (Main.masterMode || Main.gameMenu);
-+			
-+			else return true;
+@@ -8274,12 +_,19 @@
+ 			}
  		}
  
 -		public void UpdateEquips(int i) {
@@ -1581,13 +1494,12 @@
  				}
  
  				if (armor[k].prefix == 73)
-@@ -9264,7 +_,26 @@
+@@ -9264,7 +_,25 @@
  
  				if (armor[k].prefix == 80)
  					meleeSpeed += 0.04f;
 +
 +				ItemLoader.UpdateEquip(armor[k], this);
-+				
  			}
 +		}
 +
@@ -1644,18 +1556,16 @@
  				minionKB += 0.5f;
  			}
  
-@@ -9296,20 +_,23 @@
- 				minionDamage += 0.1f;
+@@ -9297,6 +_,8 @@
  				maxTurrets++;
  			}
--
+ 
 +			/*
 +			// wing loop is merged into ApplyEquipFunctional
  			for (int m = 3; m < 10; m++) {
  				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
  					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
- 						wings = armor[m].wingSlot;
--
+@@ -9305,11 +_,14 @@
  					wingsLogic = armor[m].wingSlot;
  				}
  			}
@@ -1663,22 +1573,19 @@
  
  			for (int n = 13; n < 20; n++) {
  				if (IsAValidEquipmentSlotForIteration(n))
--					ApplyEquipVanity(n, armor[n]);
-+					ApplyEquipVanity(armor[n]);
+ 					ApplyEquipVanity(n, armor[n]);
  			}
-+
++			
 +			PlayerHooks.UpdateVanityAccessories(this);
  
  			if (wet && ShouldFloatInWater)
  				accFlipper = true;
-@@ -9481,7 +_,11 @@
- 			return false;
+@@ -9482,6 +_,10 @@
  		}
  
--		private void ApplyEquipVanity(int itemSlot, Item currentItem) {
-+		//private void ApplyEquipVanity(int itemSlot, Item currentItem) {
-+		//	ApplyEquipVanity(currentItem); //remove itemSlot parameter and make public so mods can call from their own accessory slots
-+		//}
+ 		private void ApplyEquipVanity(int itemSlot, Item currentItem) {
++			ApplyEquipVanity(currentItem);
++		}
 +
 +		public void ApplyEquipVanity(Item currentItem) {
  			int type = currentItem.type;
@@ -2972,15 +2879,6 @@
  				if (oldAdjTile[l] != adjTile[l]) {
  					flag = true;
  					break;
-@@ -25009,7 +_,7 @@
- 			if (armor[12].legSlot >= 0)
- 				legs = armor[12].legSlot;
- 
--			if (!dead)
-+			if (!dead) // player is not dead
- 				UpdateVisibleAccessories();
- 
- 			wearsRobe = false;
 @@ -25151,6 +_,7 @@
  				faceHead = -1;
  			}
@@ -4179,7 +4077,7 @@
  
  			if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  				num += pickPower;
-@@ -37060,27 +_,51 @@
+@@ -37060,24 +_,47 @@
  		}
  
  		public void DropItems() {
@@ -4194,8 +4092,7 @@
 +			}
 +
 +			startCounts[ModContent.ItemType<ModLoader.Default.StartBag>()] = 1;
--			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < 58 + 1; i++) {
+ 			for (int i = 0; i < 59; i++) {
  				if (inventory[i].stack > 0) {
 +					Item item = inventory[i];
  					bool flag = true;
@@ -4230,10 +4127,6 @@
  				}
  
  				inventory[i].TurnToAir();
-+
- 				if (i < armor.Length) {
- 					if (armor[i].stack > 0) {
- 						int num2 = Item.NewItem((int)position.X, (int)position.Y, width, height, armor[i].type);
 @@ -37091,6 +_,8 @@
  						Main.item[num2].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num2].noGrabDelay = 100;
@@ -4297,15 +4190,6 @@
  			Main.mouseItem.TurnToAir();
  		}
  
-@@ -37184,7 +_,7 @@
- 			statManaMax = other.statManaMax;
- 			statManaMax2 = other.statManaMax2;
- 			hideMisc = other.hideMisc;
--			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < 58 + 1; i++) {
- 				inventory[i] = other.inventory[i].Clone();
- 				if (i < armor.Length)
- 					armor[i] = other.armor[i].Clone();
 @@ -37204,13 +_,14 @@
  		}
  
@@ -4380,15 +4264,6 @@
  						BitsByte bb = (byte)0;
  						for (int i = 0; i < 8; i++) {
  							bb[i] = player.hideVisibleAccessory[i];
-@@ -37434,7 +_,7 @@
- 						for (int j = 0; j < 2; j++) {
- 							bb[j] = player.hideVisibleAccessory[j + 8];
- 						}
--
-+						
- 						binaryWriter.Write(bb);
- 						binaryWriter.Write(player.hideMisc);
- 						binaryWriter.Write((byte)player.skinVariant);
 @@ -37469,63 +_,57 @@
  						binaryWriter.Write(player.shoeColor.G);
  						binaryWriter.Write(player.shoeColor.B);
@@ -4487,20 +4362,6 @@
  			try {
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
  				rijndaelManaged.Padding = PaddingMode.None;
-@@ -37964,11 +_,11 @@
- 								}
- 
- 								if (num >= 6) {
--									for (int num22 = 8; num22 < 11; num22++) {
-+									for (int num22 = 8;	num22 < 11; num22++) {
- 										player.armor[num22].SetDefaults(ItemID.FromLegacyName(binaryReader.ReadString(), num));
- 										if (num >= 36)
- 											player.armor[num22].Prefix(binaryReader.ReadByte());
--									}
-+									}	
- 								}
- 
- 								for (int num23 = 0; num23 < 44; num23++) {
 @@ -38014,7 +_,7 @@
  							if (num >= 11) {
  								int num28 = 22;
@@ -4584,14 +4445,6 @@
  			width = 20;
  			height = 42;
  			name = string.Empty;
-@@ -38236,6 +_,7 @@
- 			legFrame.Height = 56;
- 			tileEntityAnchor.Clear();
- 			doorHelper = new DoorOpeningHelper();
-+
- 			for (int i = 0; i < 59; i++) {
- 				if (i < armor.Length)
- 					armor[i] = new Item();
 @@ -38267,7 +_,7 @@
  			grappling[0] = -1;
  			statManaMax = 20;

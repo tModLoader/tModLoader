@@ -2427,23 +2427,6 @@
  					}
  				}
  			}
-@@ -30111,7 +_,6 @@
- 				for (int num40 = 0; num40 < 10; num40++) {
- 					if ((num40 == 8 && !flag4) || (num40 == 9 && !flag5))
- 						continue;
--
- 					num39++;
- 					bool flag6 = LocalPlayer.IsAValidEquipmentSlotForIteration(num40);
- 					if (!flag6)
-@@ -30128,7 +_,7 @@
- 						num44 += num35;
- 						context2 = 10;
- 					}
--
-+					
- 					if (num39 == num38 && !_achievementAdvisor.CanDrawAboveCoins) {
- 						_achievementAdvisor.DrawOneAchievement(spriteBatch, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8), large: false);
- 						UILinkPointNavigator.SetPosition(1570, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8) + new Vector2(20f) * inventoryScale);
 @@ -30185,7 +_,7 @@
  				for (int num46 = 10; num46 < 20; num46++) {
  					if ((num46 == 18 && !flag4) || (num46 == 19 && !flag5))
@@ -2453,32 +2436,6 @@
  					num39++;
  					bool num47 = LocalPlayer.IsAValidEquipmentSlotForIteration(num46);
  					flag3 = !num47;
-@@ -30195,7 +_,7 @@
- 					new Microsoft.Xna.Framework.Color(100, 100, 100, 100);
- 					if (num46 > 12)
- 						num49 += num35;
--
-+					
- 					int context3 = 9;
- 					if (num46 > 12)
- 						context3 = 11;
-@@ -30226,7 +_,6 @@
- 				for (int num50 = 0; num50 < 10; num50++) {
- 					if ((num50 == 8 && !flag4) || (num50 == 9 && !flag5))
- 						continue;
--
- 					num39++;
- 					bool num51 = LocalPlayer.IsAValidEquipmentSlotForIteration(num50);
- 					flag3 = !num51;
-@@ -30236,7 +_,7 @@
- 					new Microsoft.Xna.Framework.Color(100, 100, 100, 100);
- 					if (num50 > 2)
- 						num53 += num35;
--
-+					
- 					if (mouseX >= num52 && (float)mouseX <= (float)num52 + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num53 && (float)mouseY <= (float)num53 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
- 						player[myPlayer].mouseInterface = true;
- 						armorHide = true;
 @@ -30258,6 +_,10 @@
  				}
  

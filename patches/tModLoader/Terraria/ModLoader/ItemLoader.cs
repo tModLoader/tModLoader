@@ -1037,7 +1037,6 @@ namespace Terraria.ModLoader
 			Recipe.FindRecipes();
 		}
 
-
 		//in Terraria.UI.ItemSlot add this to boss bag check
 		/// <summary>
 		/// Returns whether ModItem.bossBagNPC is greater than 0. Returns false if item is not a modded item.
