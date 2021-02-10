@@ -15,26 +15,33 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// A ModAccessorySlot instance represents a net new accessory slot instance. You can store fields in the ModAccessorySlot class. 
 	/// </summary>
-	public abstract class ModAccessorySlot : ModPlayer
+	public abstract class ModAccessorySlot : ModType
 	{
-		new internal Player Player => Main.LocalPlayer;
-
-		internal int slot;
+		internal Player Player => Main.LocalPlayer;
+		internal virtual bool skipRegister => false;
 
 		private int num20;
 		private Microsoft.Xna.Framework.Color color2;
+
 		public int xLoc = 0;
 		public int yLoc = 0;
+
+		internal int slot;
+		internal int index;
 		internal int xColumn;
 		internal int yRow;
-		internal static int accessoryPerColumn = 9;
+		internal static int accessoryPerColumn = 5;
 		internal bool flag3;
 
 		/// <summary>
 		/// Called when loading characters from parent ModPlayer.
 		/// Requests for a modded Slot, and stores assigned Slot. DefaultPlayer will auto-manage slots.
 		/// </summary>
-		public override void Initialize() {
+		internal protected void Initialize() {
+			if (skipRegister) {
+				return;
+			}
+
 			int pendingID = ModPlayer.moddedAccSlots.IndexOf(this);
 			if (pendingID < 0) {
 				pendingID = ModPlayer.moddedAccSlots.Count;
@@ -46,9 +53,9 @@ namespace Terraria.ModLoader
 			this.slot = pendingID;
 		}
 
-		protected sealed override void Register() { //TODO?: separating ModAccessSlot to derive from ModType
+		protected sealed override void Register() {
 			ModTypeLookup<ModAccessorySlot>.Register(this);
-			PlayerHooks.Add(this);
+			this.Initialize();
 		}
 
 		//TODO: the draw code doesn't take into account window resizing, which borks it.
@@ -56,15 +63,16 @@ namespace Terraria.ModLoader
 		/// Is run after vanilla draws normal accessory slots. Currently doesn't get called.
 		/// Creates new accessory slots in a column to the left of vanilla.  
 		/// </summary>
-		public void Draw(int num20) { 
-			this.PreDraw(num20);
+		public void Draw(int num20) {
+			ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
+			this.PreDraw(num20, dPlayer);
 			if (flag3) {
-				return; //TODO: make it so slots auto shrink to minimum display. And visibility with items in it
+				return;
 			}
 
-			this.DrawFunctional();
-			this.DrawVanity();
-			this.DrawDye();
+			this.DrawFunctional(dPlayer);
+			this.DrawVanity(dPlayer);
+			this.DrawDye(dPlayer);
 		}
 
 		/// <summary>
@@ -72,38 +80,47 @@ namespace Terraria.ModLoader
 		/// Initializes all fields that are used in subsequent draw events.
 		/// For Overriding fields see this.PreDrawCustom
 		/// </summary>
-		public void PreDraw(int num20) {
+		internal void PreDraw(int num20, ModPlayer dPlayer) {
 			this.num20 = num20;
 			this.flag3 = !EquipLoader.ModdedIsAValidEquipmentSlotForIteration(slot);
-			this.PreDrawCustom();
+			this.PreDrawCustomization(dPlayer);
 			if (flag3)
 				Main.inventoryBack = color2;
 		}
 
 		/// <summary>
-		/// Is run in this.PreDraw. 
-		/// Will provide default assignment to fields color2, yLoc, and/or xLoc if empty based on vanilla:
-		/// <para>this.color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);</para>
-		/// <para>this.yLoc = (int) ((float)(num20) + (float) (slot* 56) * Main.inventoryScale);</para>
-		/// <para>this.xLoc = Main.screenWidth - 64 - 28 - 47 * 3 * xColumn - 50;</para>
+		/// Is run in this.PreDraw(). Applies Xloc and Yloc data for the slot, based on ModPlayer.scrollSlots
 		/// </summary>
-		public void PreDrawCustom() {
-			if (this.color2 == null) 
-				this.color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
-			if (this.yLoc == 0)
-				this.yLoc = (int)((float)(num20) + (float)((yRow + 1) * 56) * Main.inventoryScale);
-			if (this.xLoc == 0)
-				this.xLoc = Main.screenWidth - 64 - 28 - 47 * 3 * xColumn - 50; // 47*3 is per column, 50 adjusts to not overlap vanilla UI
-		}
+		internal void PreDrawCustomization(ModPlayer dPlayer) {
+			this.color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
+			if (ModPlayer.scrollSlots) {
+				int row = yRow + (xColumn - 1) * accessoryPerColumn - ModPlayer.scrollbarSlotPosition;
 
+				this.yLoc = (int)((float)(num20) + (float)((row + 3) * 56) * Main.inventoryScale) + 4;
+				int chkMax = (int)((float)(num20) + (float)((5 + 3) * 56) * Main.inventoryScale) + 4;
+				int chkMin = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
+
+				if (yLoc > chkMax || yLoc < chkMin) {
+					flag3 = true;
+					return;
+				}
+
+				this.xLoc = Main.screenWidth - 64 - 28 - 47 * 3 - 50;
+			}
+
+			else {
+				this.yLoc = (int)((float)(num20) + (float)((yRow + 3) * 56) * Main.inventoryScale) + 4;
+				this.xLoc = Main.screenWidth - 64 - 28 - 47 * 3 * xColumn - 50; // 47*3 is per column, 50 adjusts to not overlap vanilla UI
+			}
+		}
+		
 		/// <summary>
 		/// Is run in this.Draw. 
 		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
 		/// Also includes creating hidevisibilitybutton.
 		/// </summary>
-		public void DrawFunctional() {
-			ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
+		internal void DrawFunctional(ModPlayer dPlayer) {
 			int yLoc2 = yLoc - 2;
 			int xLoc1 = xLoc;
 			int xLoc2 = xLoc1 - 58 + 64 + 28;
@@ -138,10 +155,11 @@ namespace Terraria.ModLoader
 
 				ItemSlot.MouseHover(dPlayer.exAccessorySlot, Math.Abs(context), slot);
 			}
-
+			
 			this.DrawRedirect(dPlayer.exAccessorySlot, context, slot, new Vector2(xLoc1, yLoc));
-
+			
 			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Microsoft.Xna.Framework.Color.White * 0.7f);
+
 			if (num45 > 0) {
 				Main.HoverItem = new Item();
 				Main.hoverItemName = Lang.inter[58 + num45].Value;
@@ -153,8 +171,7 @@ namespace Terraria.ModLoader
 		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
 		/// </summary>
-		public void DrawVanity() {
-			ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
+		internal void DrawVanity(ModPlayer dPlayer) {
 			bool flag7 = flag3 && !Main.mouseItem.IsAir;
 			int vSlot = slot + ModPlayer.moddedAccSlots.Count;
 			int xLoc1 = xLoc - 47;
@@ -181,8 +198,7 @@ namespace Terraria.ModLoader
 		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
 		/// </summary>
-		public void DrawDye() {
-			ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
+		internal void DrawDye(ModPlayer dPlayer) {
 			bool flag8 = flag3 && !Main.mouseItem.IsAir;
 			int xLoc1 = xLoc - 47 * 2;
 			int context = -12;
@@ -204,14 +220,14 @@ namespace Terraria.ModLoader
 			this.DrawRedirect(dPlayer.exDyesAccessory, context, slot, new Vector2(xLoc1, yLoc));
 		}
 
-		public void DrawRedirect(Item[] inv, int context, int slot, Vector2 position) {
+		internal void DrawRedirect(Item[] inv, int context, int slot, Vector2 position) {
 			if (!this.DrawModded(inv, context, slot, position))
 				EquipLoader.DefaultDrawModSlots(Main.spriteBatch, inv, context, slot, position); 
 		}
 
 		/// <summary>
-		/// If overrideVanillaDrawing is true, then this method will be called to draw instead. 
-		/// Note that this should be treated as an alternative to EquipLoader.DefaultDrawModSlots. Return True if you used custom drawing.
+		/// This function allows for custom textures and colours to be drawn for the accessory slot. Called for Dyes, Vanity, and Functionals.
+		/// Runs in place of EquipLoader.DefaultDrawModSlots if this returns true.
 		/// Receives data:
 		/// <para><paramref name="inv"/> :: the array containing all accessory slots, yours is inv[slot] </para>
 		/// <para><paramref name="slot"/> :: which is the index for inventory that you were assigned </para>

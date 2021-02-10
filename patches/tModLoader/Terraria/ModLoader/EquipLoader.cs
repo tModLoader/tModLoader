@@ -13,6 +13,7 @@ using Terraria.GameInput;
 using Terraria.UI.Chat;
 using Terraria.UI.Gamepad;
 using Terraria.ModLoader.Default;
+using Terraria.GameContent.UI.Elements;
 
 namespace Terraria.ModLoader
 {
@@ -310,10 +311,60 @@ namespace Terraria.ModLoader
 		}
 
 		public static void DrawModAccSlots(int num20) {
+			DrawScrollSwitch(num20);
+			
+			if (ModPlayer.scrollSlots) {
+				DrawScrollbar(num20);
+			}
+
 			for (int modSlot = 0; modSlot < ModPlayer.moddedAccSlots.Count; modSlot++) {
 				ModAccessorySlot mAccSlot = GetModAccessorySlot(modSlot);
 				mAccSlot.Draw(num20);
 			}
+		}
+
+		//TODO: Change the tooltip to be Scroll/Stack and put a custom sprite instead of reusing visibility.
+		internal static void DrawScrollSwitch(int num20) {
+			Texture2D value4 = TextureAssets.InventoryTickOn.Value;
+			if (ModPlayer.scrollSlots)
+				value4 = TextureAssets.InventoryTickOff.Value;
+
+			int xLoc2 = Main.screenWidth - 64 - 28 - 47 * 3 - 50 - 24;
+			int yLoc2 = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) - 28;
+
+			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Microsoft.Xna.Framework.Color.White * 0.7f);
+
+			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc2, yLoc2, value4.Width, value4.Height);
+			if (!(rectangle.Contains(new Microsoft.Xna.Framework.Point(Main.mouseX, Main.mouseY)) && !PlayerInput.IgnoreMouseInterface)) {
+				return;
+			}
+
+			Player player = Main.LocalPlayer;
+			player.mouseInterface = true;
+			if (Main.mouseLeft && Main.mouseLeftRelease) {
+				ModPlayer.scrollSlots = !ModPlayer.scrollSlots;
+				SoundEngine.PlaySound(12);
+			}
+
+			int num45 = ((!ModPlayer.scrollSlots) ? 1 : 2);
+			Main.HoverItem = new Item();
+			Main.hoverItemName = Lang.inter[58 + num45].Value;
+		}
+
+		//TODO: Actually implement this.
+		internal static void DrawScrollbar(int num20) {
+			int xLoc = Main.screenWidth - 64 - 28 - 47 * 3 - 50;
+			int chkMax = (int)((float)(num20) + (float)((ModAccessorySlot.accessoryPerColumn + 3) * 56) * Main.inventoryScale) + 4;
+			int chkMin = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
+
+			//Replace below code fragments with a scrollbar that modifies ModPlayer.scrollbarPosition, from min 0 to max ModPlayer.moddedAccSlots.Count - 1. 
+			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc - 47 * 3, chkMin, 47 * 3, chkMax - chkMin);
+			if (!(rectangle.Contains(new Microsoft.Xna.Framework.Point(Main.mouseX, Main.mouseY)) && !PlayerInput.IgnoreMouseInterface)) {
+				return;
+			}
+
+			UIScrollbar uIScrollbar = new UIScrollbar();
+
 		}
 
 		public static bool ModdedIsAValidEquipmentSlotForIteration(int index) {

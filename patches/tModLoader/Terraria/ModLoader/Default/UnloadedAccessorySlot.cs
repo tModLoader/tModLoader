@@ -2,7 +2,7 @@ namespace Terraria.ModLoader.Default
 {
 	public class UnloadedAccessorySlot : ModAccessorySlot
 	{
-		public override void Initialize() {	}
+		internal override bool skipRegister => true;
 
 		public override bool CanUseSlot() { 
 			return false; // Don't display slot

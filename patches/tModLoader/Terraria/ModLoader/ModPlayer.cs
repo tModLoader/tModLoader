@@ -25,10 +25,15 @@ namespace Terraria.ModLoader
 
 		// List of registered identifiers for modded accessory slots. Used in DefaultPlayer.
 		internal static List<ModAccessorySlot> moddedAccSlots = new List<ModAccessorySlot>();
+
 		// Arrays for modded accessory slot save/load/usage. Used in DefaultPlayer.
 		internal Item[] exAccessorySlot = new Item[2];
 		internal Item[] exDyesAccessory = new Item[1];
 		internal bool[] exHideAccessory = new bool[1];
+		//TODO:Move this setting?
+		// Setting toggle for stack or scroll accessories/npcHousing
+		internal static bool scrollSlots = true;
+		internal static int scrollbarSlotPosition = 0;
 
 		internal ModPlayer CreateFor(Player newPlayer) {
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
@@ -48,7 +53,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool CloneNewInstances => true;
 		
-		protected override void Register() { //TODO: put this back to be sealed by separating ModAccessSlot to derive from ModType
+		protected sealed override void Register() {
 			ModTypeLookup<ModPlayer>.Register(this);
 			PlayerHooks.Add(this);
 		}
