@@ -24,7 +24,7 @@ namespace Terraria.ModLoader
 		internal int index;
 
 		// List of registered identifiers for modded accessory slots. Used in DefaultPlayer.
-		internal static List<ModAccessorySlot> moddedAccSlots = new List<ModAccessorySlot>();
+		internal static List<string> moddedAccSlots = new List<string>();
 
 		// Arrays for modded accessory slot save/load/usage. Used in DefaultPlayer.
 		internal Item[] exAccessorySlot = new Item[2];

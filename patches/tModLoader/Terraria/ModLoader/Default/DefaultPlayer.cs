@@ -18,7 +18,7 @@ namespace Terraria.ModLoader.Default
 		//TODO BUG: This default? uses LocalPlayer instead of playerX. This leads to if you swap characters, the new takes the accessories you had.
 		public override TagCompound Save() {
 			return new TagCompound {
-				["size"] = moddedAccSlots.Count,
+				["size"] = ModPlayer.moddedAccSlots.Count,
 				["items"] = exAccessorySlot.Select(ItemIO.Save).ToList(),
 				["dyes"] = exDyesAccessory.Select(ItemIO.Save).ToList(),
 				["visible"] = exHideAccessory.ToList()
@@ -42,16 +42,12 @@ namespace Terraria.ModLoader.Default
 				exAccessorySlot[i * 2 + 1] = new Item();
 			}
 
-
-			if (moddedAccSlots.Count == newSize)
+			if (newSize == moddedAccSlots.Count) {
 				return;
-
-			//Create and apply unloadedSlot where there was one last time.
-			ModContent.TryFind<ModAccessorySlot>("ModLoader/UnloadedAccessorySlot", out ModAccessorySlot unloadedSlot);
-			unloadedSlot.xColumn = (int)((newSize - 1) / ModAccessorySlot.accessoryPerColumn) + 1;
-			unloadedSlot.yRow = (newSize - 1) % ModAccessorySlot.accessoryPerColumn;
-			unloadedSlot.slot = newSize - 1;
-			moddedAccSlots.Add(unloadedSlot);
+			}
+			for (int i = oldLen; i < newSize; i++) {
+				moddedAccSlots.Add("unloaded");
+			}
 		}
 
 		public override void Load(TagCompound tag) {

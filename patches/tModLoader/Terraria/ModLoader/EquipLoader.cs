@@ -307,14 +307,22 @@ namespace Terraria.ModLoader
 		}
 
 		internal static ModAccessorySlot GetModAccessorySlot(int slot) {
-			return ModPlayer.moddedAccSlots[slot];
+			ModContent.TryFind<ModAccessorySlot>(ModPlayer.moddedAccSlots[slot], out ModAccessorySlot mAccSlot);
+			if (mAccSlot == null) {
+				mAccSlot = new UnloadedAccessorySlot(slot);
+			}
+
+			return mAccSlot;
 		}
 
 		public static void DrawModAccSlots(int num20) {
-			DrawScrollSwitch(num20);
-			
-			if (ModPlayer.scrollSlots) {
-				DrawScrollbar(num20);
+
+			if (ModPlayer.moddedAccSlots.Count > ModAccessorySlot.accessoryPerColumn) {
+				DrawScrollSwitch(num20);
+
+				if (ModPlayer.scrollSlots) {
+					DrawScrollbar(num20);
+				}
 			}
 
 			for (int modSlot = 0; modSlot < ModPlayer.moddedAccSlots.Count; modSlot++) {
@@ -351,20 +359,27 @@ namespace Terraria.ModLoader
 			Main.hoverItemName = Lang.inter[58 + num45].Value;
 		}
 
-		//TODO: Actually implement this.
+		//TODO: Actually implement a UI properly.
 		internal static void DrawScrollbar(int num20) {
 			int xLoc = Main.screenWidth - 64 - 28 - 47 * 3 - 50;
-			int chkMax = (int)((float)(num20) + (float)((ModAccessorySlot.accessoryPerColumn + 3) * 56) * Main.inventoryScale) + 4;
+			int chkMax = (int)((float)(num20) + (float)(((ModAccessorySlot.accessoryPerColumn) + 3) * 56) * Main.inventoryScale) + 4;
 			int chkMin = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
 
-			//Replace below code fragments with a scrollbar that modifies ModPlayer.scrollbarPosition, from min 0 to max ModPlayer.moddedAccSlots.Count - 1. 
-			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc - 47 * 3, chkMin, 47 * 3, chkMax - chkMin);
+			UIScrollbar scrollbar = new UIScrollbar();
+			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc - 47 * 2 - 6, chkMin, 5, chkMax - chkMin);
+
+			scrollbar.DrawBar(Main.spriteBatch, Main.Assets.Request<Texture2D>("Images/UI/Scrollbar").Value, rectangle, Color.White);
+
+			rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc - 47 * 2, chkMin, 47 * 3, chkMax - chkMin);
 			if (!(rectangle.Contains(new Microsoft.Xna.Framework.Point(Main.mouseX, Main.mouseY)) && !PlayerInput.IgnoreMouseInterface)) {
 				return;
 			}
 
-			UIScrollbar uIScrollbar = new UIScrollbar();
-
+			int scrollDelta = ModPlayer.scrollbarSlotPosition + (int)PlayerInput.ScrollWheelDelta / 120;
+			scrollDelta = Math.Min(scrollDelta, ModPlayer.moddedAccSlots.Count - ModAccessorySlot.accessoryPerColumn);
+			scrollDelta = Math.Max(scrollDelta, 0);
+			ModPlayer.scrollbarSlotPosition = scrollDelta;
+			PlayerInput.ScrollWheelDelta = 0;
 		}
 
 		public static bool ModdedIsAValidEquipmentSlotForIteration(int index) {

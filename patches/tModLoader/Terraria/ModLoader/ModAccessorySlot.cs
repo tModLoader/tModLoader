@@ -42,10 +42,10 @@ namespace Terraria.ModLoader
 				return;
 			}
 
-			int pendingID = ModPlayer.moddedAccSlots.IndexOf(this);
+			int pendingID = ModPlayer.moddedAccSlots.IndexOf(this.FullName);
 			if (pendingID < 0) {
 				pendingID = ModPlayer.moddedAccSlots.Count;
-				ModPlayer.moddedAccSlots.Add(this);
+				ModPlayer.moddedAccSlots.Add(this.FullName);
 			}
 
 			this.xColumn = (int)(pendingID / accessoryPerColumn) + 1;
@@ -84,20 +84,17 @@ namespace Terraria.ModLoader
 			this.num20 = num20;
 			this.flag3 = !EquipLoader.ModdedIsAValidEquipmentSlotForIteration(slot);
 			this.PreDrawCustomization(dPlayer);
-			if (flag3)
-				Main.inventoryBack = color2;
 		}
 
 		/// <summary>
 		/// Is run in this.PreDraw(). Applies Xloc and Yloc data for the slot, based on ModPlayer.scrollSlots
 		/// </summary>
 		internal void PreDrawCustomization(ModPlayer dPlayer) {
-			this.color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
 			if (ModPlayer.scrollSlots) {
 				int row = yRow + (xColumn - 1) * accessoryPerColumn - ModPlayer.scrollbarSlotPosition;
 
 				this.yLoc = (int)((float)(num20) + (float)((row + 3) * 56) * Main.inventoryScale) + 4;
-				int chkMax = (int)((float)(num20) + (float)((5 + 3) * 56) * Main.inventoryScale) + 4;
+				int chkMax = (int)((float)(num20) + (float)(((accessoryPerColumn - 1) + 3) * 56) * Main.inventoryScale) + 4;
 				int chkMin = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
 
 				if (yLoc > chkMax || yLoc < chkMin) {
@@ -112,6 +109,8 @@ namespace Terraria.ModLoader
 				this.yLoc = (int)((float)(num20) + (float)((yRow + 3) * 56) * Main.inventoryScale) + 4;
 				this.xLoc = Main.screenWidth - 64 - 28 - 47 * 3 * xColumn - 50; // 47*3 is per column, 50 adjusts to not overlap vanilla UI
 			}
+
+			this.color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
 		}
 		
 		/// <summary>
@@ -159,6 +158,9 @@ namespace Terraria.ModLoader
 			this.DrawRedirect(dPlayer.exAccessorySlot, context, slot, new Vector2(xLoc1, yLoc));
 			
 			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Microsoft.Xna.Framework.Color.White * 0.7f);
+
+			//TODO: Have the slot number show up in bottom left corner.
+			//Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Microsoft.Xna.Framework.Color.White * 0.7f);
 
 			if (num45 > 0) {
 				Main.HoverItem = new Item();
@@ -253,22 +255,5 @@ namespace Terraria.ModLoader
 		public virtual bool LimitWhatCanGoInSlot(Item checkItem) {
 			return true;
 		}
-
-		public override bool Equals(object obj) {
-			ModAccessorySlot other = obj as ModAccessorySlot;
-			if (other == null) {
-				return false;
-			}
-			if (this.FullName != other.FullName) {
-				return false;
-			}
-			return true;
-		}
-
-		public override int GetHashCode() {
-			int hash = FullName.GetHashCode();
-			return hash;
-		}
-
 	}
 }
