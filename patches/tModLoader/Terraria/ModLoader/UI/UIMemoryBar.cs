@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -181,13 +182,21 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public static long GetAvailableMemory() {
-			var pc = new PerformanceCounter("Mono Memory", "Available Physical Memory");
-			return pc.RawValue;
+			if(Platform.IsWindows) {
+				var pc = new PerformanceCounter("Mono Memory", "Available Physical Memory");
+				return pc.RawValue;
+			}
+			//TODO: Support for other platforms
+			return 0;
 		}
 
 		public static long GetTotalMemory() {
-			var pc = new PerformanceCounter("Mono Memory", "Total Physical Memory");
-			return pc.RawValue;
+			if(Platform.IsWindows) {
+				var pc = new PerformanceCounter("Mono Memory", "Total Physical Memory");
+				return pc.RawValue;
+			}
+			//TODO: Support for other platforms
+			return 0;
 		}
 
 		/*

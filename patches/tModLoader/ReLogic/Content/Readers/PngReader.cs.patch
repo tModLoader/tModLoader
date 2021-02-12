@@ -14,9 +14,9 @@
  			return texture2D as T;
 +#else
 +			// Screw off FNA, let the big boys handle this one
-+			throw new NotImplementedException("System.Drawing isn't crossplatform on NetCore");
-+			/*
-+			using var bmp = new D.Bitmap(stream);
++			//throw new NotImplementedException("System.Drawing isn't crossplatform on NetCore");
++			
++			using var bmp = new System.Drawing.Bitmap(stream);
 +			var colors = new Color[bmp.Width * bmp.Height];
 +			for (int i = 0; i < bmp.Width; i++) {
 +				for (int j = 0; j < bmp.Height; j ++) {
@@ -27,7 +27,7 @@
 +
 +			Texture2D texture2D = new Texture2D(_graphicsDevice, bmp.Width, bmp.Height);
 +			texture2D.SetData(colors);
-+			*/
++			return texture2D as T;
 +#endif
  		}
  

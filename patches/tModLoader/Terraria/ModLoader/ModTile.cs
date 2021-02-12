@@ -193,7 +193,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to set the properties of ttile.his titile.le. Many properties are stored as arrays throughout Terraria's code.
+		/// Allows you to set the properties of this tile. Many properties are stored as arrays throughout Terraria's code.
 		/// </summary>
 		public virtual void SetDefaults() {
 		}

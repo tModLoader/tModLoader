@@ -35,10 +35,24 @@ namespace Terraria.ModLoader
 		static BuildInfo() {
 			var parts = BuildIdentifier.Substring(BuildIdentifier.IndexOf('+')+1).Split('-');
 			tMLVersion = new Version(parts[0]);
-			BranchName = parts[1];
-			Enum.TryParse(parts[2], true, out Purpose);
-			CommitSHA = parts[3];
-			BuildDate = DateTime.FromBinary(long.Parse(parts[4])).ToLocalTime();
+			if (parts.Length>=2) {
+				BranchName = parts[1];
+			}
+			else {
+				BranchName = "unknown";
+			}
+			if (parts.Length>=3) {
+				Enum.TryParse(parts[2], true, out Purpose);
+			}
+			if (parts.Length>=4) {
+				CommitSHA = parts[3];
+			}
+			else {
+				CommitSHA = "unknown";
+			}
+			if (parts.Length>=5) {
+				BuildDate = DateTime.FromBinary(long.Parse(parts[4])).ToLocalTime();
+			}
 
 
 			versionedName = $"tModLoader v{tMLVersion}";

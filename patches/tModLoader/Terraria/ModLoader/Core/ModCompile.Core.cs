@@ -110,11 +110,11 @@ namespace Terraria.ModLoader.Core
 		internal static bool ModCompileVersionCheck(out string msg)
 		{
 			var version = GetModCompileVersion();
-			if (version > ModLoader.version) {
-				Logging.tML.Warn($"ModCompile version is above ModLoader version: {version} vs {ModLoader.version}" +
+			if (version > BuildInfo.tMLVersion) {
+				Logging.tML.Warn($"ModCompile version is above ModLoader version: {version} vs {BuildInfo.tMLVersion}" +
 					$"\nThis not necessarily an issue, this log is for troubleshooting purposes.");
 			}
-			if (version.Major == ModLoader.version.Major && version.Minor == ModLoader.version.Minor && version.Build == ModLoader.version.Build) {
+			if (version.Major == BuildInfo.tMLVersion.Major && version.Minor == BuildInfo.tMLVersion.Minor && version.Build == BuildInfo.tMLVersion.Build) {
 				msg = Language.GetTextValue("tModLoader.DMModCompileSatisfied");
 				return true;
 			}

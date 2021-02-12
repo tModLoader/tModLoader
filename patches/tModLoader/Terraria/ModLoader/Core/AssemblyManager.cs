@@ -199,7 +199,7 @@ namespace Terraria.ModLoader.Core
 				Assembly asm;
 				using (var codeStrm = new MemoryStream(code, false))
 				using (var pdbStrm = new MemoryStream(pdb, false))
-					asm = ModLoader.modContext.LoadFromStream(codeStrm, pdbStrm);
+					asm = modContext.LoadFromStream(codeStrm, pdbStrm);
 #else
 				Assembly asm = Assembly.Load(code, pdb);
 #endif

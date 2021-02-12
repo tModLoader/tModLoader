@@ -1,6 +1,6 @@
 --- src/Terraria/ReLogic/ReLogicNetCore.csproj
 +++ src/tModLoader/ReLogic/ReLogicNetCore.csproj
-@@ -10,7 +_,7 @@
+@@ -11,7 +_,7 @@
      <TargetFramework>net5.0</TargetFramework>
    </PropertyGroup>
    <ItemGroup>
@@ -9,3 +9,12 @@
      <Reference Include="../Terraria/Libraries/FNA/FNA.dll" />
      <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
      <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
+@@ -21,5 +_,8 @@
+ 	<Compile Remove="Localization/IME/WindowsIme.cs" />
+ 	<Compile Remove="OS/Windows/WindowsMessageHook.cs" />
+     <EmbeddedResource Include="Microsoft/**" />
++  </ItemGroup>
++  <ItemGroup>
++    <PackageReference Include="System.Drawing.Common" Version="5.0.1" />
+   </ItemGroup>
+ </Project>
