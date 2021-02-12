@@ -7,8 +7,7 @@ using Terraria.GameContent;
 using Terraria.UI;
 using Terraria.Audio;
 
-//TODO: Does not Support: ItemLoader.GetGamepadInstructions
-//TODO: Does not Support: Multiplayer
+//TODO: Does not Support: ItemLoader.GetGamepadInstructions and related gamepad stuff.
 
 namespace Terraria.ModLoader
 {
