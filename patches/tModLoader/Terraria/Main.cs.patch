@@ -2478,7 +2478,7 @@
  				}
  
  				inventoryBack = color;
-+				int chkMax = (int)((float)(num20) + (float)((ModAccessorySlot.accessoryPerColumn + 2) * 56) * Main.inventoryScale) + 4;
++				int chkMax = (int)((float)(num20) + (float)((EquipLoader.GetAccessorySlotPerColumn(num20) + 1) * 56) * Main.inventoryScale) + 4;
 +				int randomLocationX = screenWidth - 64 - 28;
 +
 +				if (num39 == num38 && !_achievementAdvisor.CanDrawAboveCoins) {

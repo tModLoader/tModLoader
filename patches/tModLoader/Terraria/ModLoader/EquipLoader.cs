@@ -315,6 +315,20 @@ namespace Terraria.ModLoader
 			return mAccSlot;
 		}
 
+		internal static int GetAccessorySlotPerColumn(int num20) {
+			int accessoryPerColumn = 5;
+
+			accessoryPerColumn += Player.GetAmountOfExtraAccessorySlotsToShow();
+
+			int chkMax = (int)((float)(num20) + (float)(((accessoryPerColumn - 1) + 3) * 56) * Main.inventoryScale) + 4;
+			float possibleSpace = (Main.screenHeight - chkMax) / (56 * Main.inventoryScale) - 1.8f;
+			if (possibleSpace >= 1) {
+				accessoryPerColumn += (int)possibleSpace;
+			}
+
+			return accessoryPerColumn;
+		}
+
 		public static void DrawAccSlots(int num20) {
 			int skip = 0;
 			for (int vanillaSlot = 3; vanillaSlot < Player.dye.Length; vanillaSlot++) {
@@ -347,7 +361,7 @@ namespace Terraria.ModLoader
 			if (ModPlayer.scrollSlots)
 				value4 = TextureAssets.InventoryTickOff.Value;
 
-			int xLoc2 = Main.screenWidth - 64 - 28 - 47 * 3 + 24;
+			int xLoc2 = Main.screenWidth - 64 - 28 + 47 + 9;
 			int yLoc2 = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) - 10;
 
 			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Microsoft.Xna.Framework.Color.White * 0.7f);
@@ -373,17 +387,18 @@ namespace Terraria.ModLoader
 		// This is a hacky solution to make it very vanilla-esque, at the cost of not actually using a UI proper. 
 		internal static void DrawScrollbar(int num20, int skip) {
 			int xLoc = Main.screenWidth - 64 - 28;
-			int chkMax = (int)((float)(num20) + (float)(((ModAccessorySlot.accessoryPerColumn) + 3) * 56) * Main.inventoryScale) + 4;
+			int accessoryPerColumn = GetAccessorySlotPerColumn(num20);
+			int chkMax = (int)((float)(num20) + (float)(((accessoryPerColumn) + 3) * 56) * Main.inventoryScale) + 4;
 			int chkMin = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
 
 			UIScrollbar scrollbar = new UIScrollbar();
-			int correctedSlotCount = ModPlayer.moddedAccSlots.Count + (Player.dye.Length - 3) - skip - ModAccessorySlot.accessoryPerColumn;
+			int correctedSlotCount = ModPlayer.moddedAccSlots.Count + (Player.dye.Length - 3) - skip - accessoryPerColumn;
 
-			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc - 47 * 2 - 6, chkMin, 5, chkMax - chkMin);
+			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc + 47 + 6, chkMin, 5, chkMax - chkMin);
 			scrollbar.DrawBar(Main.spriteBatch, Main.Assets.Request<Texture2D>("Images/UI/Scrollbar").Value, rectangle, Color.White);
 
 			int barSize = (chkMax - chkMin) / (correctedSlotCount + 1);
-			rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc - 47 * 2 - 5, chkMin + ModPlayer.scrollbarSlotPosition * barSize, 3, barSize);
+			rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc + 47 + 5, chkMin + ModPlayer.scrollbarSlotPosition * barSize, 3, barSize);
 			scrollbar.DrawBar(Main.spriteBatch, Main.Assets.Request<Texture2D>("Images/UI/ScrollbarInner").Value, rectangle, Color.White);
 
 			rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc - 47 * 2, chkMin, 47 * 3, chkMax - chkMin);
@@ -442,16 +457,17 @@ namespace Terraria.ModLoader
 		/// Is run in this.PreDraw(). Applies Xloc and Yloc data for the slot, based on ModPlayer.scrollSlots
 		/// </summary>
 		internal static bool PreDrawCustomization(int num20, int trueSlot, int skip, ref int xLoc, ref int yLoc) {
-			int xColumn = (int)(trueSlot / ModAccessorySlot.accessoryPerColumn);
-			int yRow = trueSlot % ModAccessorySlot.accessoryPerColumn;
-
+			int accessoryPerColumn = GetAccessorySlotPerColumn(num20);
+			int xColumn = (int)(trueSlot / accessoryPerColumn);
+			int yRow = trueSlot % accessoryPerColumn;
+						
 			if (ModPlayer.scrollSlots) {
 
-				int row = yRow + (xColumn) * ModAccessorySlot.accessoryPerColumn - ModPlayer.scrollbarSlotPosition - skip;
+				int row = yRow + (xColumn) * accessoryPerColumn - ModPlayer.scrollbarSlotPosition - skip;
 
 				yLoc = (int)((float)(num20) + (float)((row + 3) * 56) * Main.inventoryScale) + 4;
-				int chkMax = (int)((float)(num20) + (float)(((ModAccessorySlot.accessoryPerColumn - 1) + 3) * 56) * Main.inventoryScale) + 4;
 				int chkMin = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
+				int chkMax = (int)((float)(num20) + (float)(((accessoryPerColumn - 1) + 3) * 56) * Main.inventoryScale) + 4;
 
 				if (yLoc > chkMax || yLoc < chkMin) {
 					return false;
@@ -464,8 +480,8 @@ namespace Terraria.ModLoader
 				int row = yRow, tempSlot = trueSlot, col = xColumn;
 				if (skip > 0) {
 					tempSlot -= skip;
-					row = tempSlot % ModAccessorySlot.accessoryPerColumn;
-					col = tempSlot / ModAccessorySlot.accessoryPerColumn;
+					row = tempSlot % accessoryPerColumn;
+					col = tempSlot / accessoryPerColumn;
 				}
 
 				yLoc = (int)((float)(num20) + (float)((row + 3) * 56) * Main.inventoryScale) + 4;
@@ -651,7 +667,7 @@ namespace Terraria.ModLoader
 			ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
 			for (int num = ModPlayer.moddedAccSlots.Count * 2 - 1; num >= 0; num--) {
 				if (ModdedIsAValidEquipmentSlotForIteration(num)) {
-					_ = num % 10;
+					_ = num % ModPlayer.moddedAccSlots.Count;
 					Item item2 = dPlayer.exAccessorySlot[num];
 					if (!item2.IsAir && item2.shoot > 0 && ProjectileID.Sets.IsAGolfBall[item2.shoot]) {
 						projType = item2.shoot;

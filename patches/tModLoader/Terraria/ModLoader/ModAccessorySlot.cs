@@ -20,8 +20,7 @@ namespace Terraria.ModLoader
 
 		internal int slot;
 		internal int index;
-		internal static int accessoryPerColumn = 5;
-
+		
 		/// <summary>
 		/// Called when loading characters from parent ModPlayer.
 		/// Requests for a modded Slot, and stores assigned Slot. DefaultPlayer will auto-manage slots.
