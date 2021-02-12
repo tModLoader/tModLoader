@@ -1,6 +1,7 @@
 using System.Linq;
 using Terraria.ModLoader.IO;
 using System;
+using System.IO;
 
 namespace Terraria.ModLoader.Default
 {
@@ -10,12 +11,11 @@ namespace Terraria.ModLoader.Default
 
 		public DefaultPlayer() {
 			exAccessorySlot = new Item[2] { new Item(), new Item() };
-			exDyesAccessory = new Item[1] { new Item() }; 
+			exDyesAccessory = new Item[1] { new Item() };
 			exHideAccessory = new bool[1] { false };
 			this.ResizeAccesoryArrays(ModPlayer.moddedAccSlots.Count);
 		}
-
-		//TODO BUG: This default? uses LocalPlayer instead of playerX. This leads to if you swap characters, the new takes the accessories you had.
+		
 		public override TagCompound Save() {
 			return new TagCompound {
 				["size"] = ModPlayer.moddedAccSlots.Count,
@@ -58,10 +58,9 @@ namespace Terraria.ModLoader.Default
 			tag.GetList<bool>("visible").ToList().CopyTo(exHideAccessory);
 		}
 
-		//The below code won't work... because there's nothing implemented for it.
-		/*
+		// The following netcode is adapted from Chicken-Bone's UtilitySlots:
 		public override void clientClone(ModPlayer clientClone) {
-			var defaultInv = (DefaultPlayer) clientClone;
+			var defaultInv = (DefaultPlayer)clientClone;
 			for (int i = 0; i < exAccessorySlot.Length; i++)
 				defaultInv.exAccessorySlot[i] = exAccessorySlot[i].Clone();
 			for (int i = 0; i < exDyesAccessory.Length; i++) {
@@ -76,24 +75,104 @@ namespace Terraria.ModLoader.Default
 
 			for (int i = 0; i < exDyesAccessory.Length; i++) {
 				NetHandler.SendSlot(toWho, Player.whoAmI, i, exDyesAccessory[i]);
-				NetHandler.SendSlot(toWho, Player.whoAmI, i, exHideAccessory[i]);
+				NetHandler.SendVisualState(toWho, Player.whoAmI, i, exHideAccessory[i]);
 			}
 		}
 
 		public override void SendClientChanges(ModPlayer clientPlayer) {
-			var clientInv = (DefaultPlayer) clientPlayer;
+			var clientInv = (DefaultPlayer)clientPlayer;
 			for (int i = 0; i < exAccessorySlot.Length; i++)
 				if (exAccessorySlot[i].IsNotTheSameAs(clientInv.exAccessorySlot[i]))
 					NetHandler.SendSlot(-1, Player.whoAmI, i, exAccessorySlot[i]);
 
 			for (int i = 0; i < exDyesAccessory.Length; i++) {
 				if (exDyesAccessory[i].IsNotTheSameAs(clientInv.exDyesAccessory[i]))
-					NetHandler.SendSlot(-1, Player.whoAmI, i, exDyesAccessory[i]);
+					NetHandler.SendSlot(-1, Player.whoAmI, -i - 1, exDyesAccessory[i]);
 
 				if (exHideAccessory[i] != clientInv.exHideAccessory[i])
-					NetHandler.SendSlot(-1, Player.whoAmI, i, exHideAccessory[i]);
+					NetHandler.SendVisualState(-1, Player.whoAmI, i, exHideAccessory[i]);
 			}
 		}
-		*/
+
+		internal class NetHandler
+		{
+			public const byte InventorySlot = 1;
+			public const byte VisualState = 2;
+
+			public static void SendSlot(int toWho, int plr, int slot, Item item) {
+				var p = ModContent.GetInstance<ModLoaderMod>().GetPacket();
+
+				p.Write(InventorySlot);
+
+				if (Main.netMode == 2)
+					p.Write((sbyte)plr);
+
+				p.Write((sbyte)slot);
+
+				ItemIO.Send(item, p, true);
+				p.Send(toWho, plr);
+			}
+
+			private static void HandleSlot(BinaryReader r, int fromWho) {
+				if (Main.netMode == 1)
+					fromWho = r.ReadByte();
+
+				ModPlayer dPlayer = Main.player[fromWho].GetModPlayer<DefaultPlayer>();
+
+				sbyte slot = r.ReadSByte();
+				var item = ItemIO.Receive(r, true);
+
+				NetHandler.SetSlot(slot, item, dPlayer);
+
+				if (Main.netMode == 2)
+					SendSlot(-1, fromWho, slot, item);
+			}
+
+			public static void SendVisualState(int toWho, int plr, int slot, bool hideVisual) {
+				var p = ModContent.GetInstance<ModLoaderMod>().GetPacket();
+
+				p.Write(VisualState);
+
+				if (Main.netMode == 2)
+					p.Write((byte)plr);
+
+				p.Write((sbyte)slot);
+
+				p.Write(hideVisual);
+				p.Send(toWho, plr);
+			}
+
+			private static void HandleVisualState(BinaryReader r, int fromWho) {
+				if (Main.netMode == 1)
+					fromWho = r.ReadByte();
+
+				ModPlayer dPlayer = Main.player[fromWho].GetModPlayer<DefaultPlayer>();
+
+				sbyte slot = r.ReadSByte();
+				
+				dPlayer.exHideAccessory[slot] = r.ReadBoolean();
+
+				if (Main.netMode == 2)
+					SendVisualState(-1, fromWho, slot, dPlayer.exHideAccessory[slot]);
+			}
+
+			public static void HandlePacket(BinaryReader r, int fromWho) {
+				switch (r.ReadByte()) {
+					case InventorySlot:
+						HandleSlot(r, fromWho);
+						break;
+					case VisualState:
+						HandleVisualState(r, fromWho);
+						break;
+				}
+			}
+
+			public static void SetSlot(sbyte slot, Item item, ModPlayer dPlayer) {
+				if (slot < 0)
+					dPlayer.exDyesAccessory[-(slot + 1)] = item;
+				else
+					dPlayer.exAccessorySlot[slot] = item;
+			}
+		}
 	}
 }
