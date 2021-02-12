@@ -48,18 +48,6 @@
  		public OverheadMessage chatOverhead;
  		public SelectionRadial DpadRadial = new SelectionRadial();
  		public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
-@@ -438,8 +_,9 @@
- 		public Vector2 lastDeathPostion;
- 		public DateTime lastDeathTime;
- 		public bool showLastDeath;
--		public int extraAccessorySlots = 2;
--		public bool extraAccessory;
-+		internal int extraAccessorySlots = 2; 
-+		internal ref bool extraAccessory => ref demonHeartUsed; // Minimize modder confusion by using a good name
-+		public bool demonHeartUsed;
- 		private bool dontConsumeWand;
- 		public int tankPet = -1;
- 		public bool tankPetReset;
 @@ -694,7 +_,7 @@
  		public bool poundRelease;
  		public float ghostFade;
@@ -1526,7 +1514,7 @@
  				if (IsAValidEquipmentSlotForIteration(l))
 -					ApplyEquipFunctional(l, armor[l]);
 +					ApplyEquipFunctional(armor[l], hideVisibleAccessory[l]);
-+				//TODO: Figure out why ModernMak wanted this line
++				
 +				if (SoundLoader.itemToMusic.ContainsKey(armor[l].type))
 +					Main.musicBox2 = SoundLoader.itemToMusic[armor[l].type];
  			}
@@ -1565,7 +1553,7 @@
  			for (int m = 3; m < 10; m++) {
  				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
  					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
-@@ -9305,11 +_,14 @@
+@@ -9305,12 +_,15 @@
  					wingsLogic = armor[m].wingSlot;
  				}
  			}
@@ -1575,11 +1563,12 @@
  				if (IsAValidEquipmentSlotForIteration(n))
  					ApplyEquipVanity(n, armor[n]);
  			}
-+			
-+			PlayerHooks.UpdateVanityAccessories(this);
  
++			PlayerHooks.UpdateVanityAccessories(this);
++
  			if (wet && ShouldFloatInWater)
  				accFlipper = true;
+ 
 @@ -9482,6 +_,10 @@
  		}
  
@@ -1940,19 +1929,6 @@
  
  			if (torchLuck < 0f)
  				torchLuck = 0f;
-@@ -12689,10 +_,12 @@
- 		public static float GetClosestRollLuck(int x, int y, int range) => Main.player[FindClosest(new Vector2(x * 16, y * 16), 1, 1)].RollLuck(range);
- 
- 		public void ResetEffects() {
-+			/*
- 			if (extraAccessory && (Main.expertMode || Main.gameMenu))
- 				extraAccessorySlots = 1;
- 			else
- 				extraAccessorySlots = 0;
-+			*/
- 
- 			fairyBoots = false;
- 			moonLordLegs = false;
 @@ -12711,6 +_,9 @@
  			lifeRegen = 0;
  			manaCost = 1f;
@@ -4206,15 +4182,6 @@
  			player.extraAccessory = extraAccessory;
  			player.MinionRestTargetPoint = MinionRestTargetPoint;
  			player.MinionAttackTargetNPC = MinionAttackTargetNPC;
-@@ -37233,7 +_,7 @@
- 			player.hideVisibleAccessory = hideVisibleAccessory;
- 			player.hideMisc = hideMisc;
- 			player.shieldRaised = shieldRaised;
--			for (int i = 0; i < 59; i++) {
-+			for (int i = 0; i < 58 + 1; i++) {
- 				player.inventory[i] = inventory[i].Clone();
- 				if (i < armor.Length)
- 					player.armor[i] = armor[i].Clone();
 @@ -37261,13 +_,14 @@
  			}
  
