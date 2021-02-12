@@ -315,15 +315,20 @@ namespace Terraria.ModLoader
 			return mAccSlot;
 		}
 
-		public static void DrawModAccSlots(int num20) {
+		public static void DrawAccSlots(int num20) {
 			int skip = 0;
+			for (int vanillaSlot = 3; vanillaSlot < Player.dye.Length; vanillaSlot++) {
+				if (!EquipLoader.Draw(num20, skip, false, vanillaSlot)) {
+					skip++;
+				}
+			}
+
 			for (int modSlot = 0; modSlot < ModPlayer.moddedAccSlots.Count; modSlot++) {
-				ModAccessorySlot mAccSlot = GetModAccessorySlot(modSlot);
-				if (!mAccSlot.Draw(num20, skip))
+				if (!EquipLoader.Draw(num20, skip, true, modSlot))
 					skip++;
 			}
 
-			if (ModPlayer.moddedAccSlots.Count - skip > ModAccessorySlot.accessoryPerColumn) {
+			if (!(ModPlayer.moddedAccSlots.Count == 0)) {
 				DrawScrollSwitch(num20);
 
 				if (ModPlayer.scrollSlots) {
@@ -342,7 +347,7 @@ namespace Terraria.ModLoader
 			if (ModPlayer.scrollSlots)
 				value4 = TextureAssets.InventoryTickOff.Value;
 
-			int xLoc2 = Main.screenWidth - 64 - 28 - 47 * 3 - 50 + 12;
+			int xLoc2 = Main.screenWidth - 64 - 28 - 47 * 3 + 24;
 			int yLoc2 = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) - 10;
 
 			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Microsoft.Xna.Framework.Color.White * 0.7f);
@@ -367,12 +372,12 @@ namespace Terraria.ModLoader
 
 		// This is a hacky solution to make it very vanilla-esque, at the cost of not actually using a UI proper. 
 		internal static void DrawScrollbar(int num20, int skip) {
-			int xLoc = Main.screenWidth - 64 - 28 - 47 * 3 - 50;
+			int xLoc = Main.screenWidth - 64 - 28;
 			int chkMax = (int)((float)(num20) + (float)(((ModAccessorySlot.accessoryPerColumn) + 3) * 56) * Main.inventoryScale) + 4;
 			int chkMin = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
 
 			UIScrollbar scrollbar = new UIScrollbar();
-			int correctedSlotCount = ModPlayer.moddedAccSlots.Count - skip - ModAccessorySlot.accessoryPerColumn;
+			int correctedSlotCount = ModPlayer.moddedAccSlots.Count + (Player.dye.Length - 3) - skip - ModAccessorySlot.accessoryPerColumn;
 
 			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc - 47 * 2 - 6, chkMin, 5, chkMax - chkMin);
 			scrollbar.DrawBar(Main.spriteBatch, Main.Assets.Request<Texture2D>("Images/UI/Scrollbar").Value, rectangle, Color.White);
@@ -391,6 +396,201 @@ namespace Terraria.ModLoader
 			scrollDelta = Math.Max(scrollDelta, 0);
 			ModPlayer.scrollbarSlotPosition = scrollDelta;
 			PlayerInput.ScrollWheelDelta = 0;
+		}
+
+		static Player Player => Main.LocalPlayer;
+
+		/// <summary>
+		/// Is run after vanilla draws normal accessory slots. Currently doesn't get called.
+		/// Creates new accessory slots in a column to the left of vanilla.  
+		/// </summary>
+		public static bool Draw(int num20, int skip, bool modded, int slot) {
+			bool flag3 = false;
+			if (modded)
+				flag3 = !EquipLoader.ModdedIsAValidEquipmentSlotForIteration(slot);
+			else
+				flag3 = !Player.IsAValidEquipmentSlotForIteration(slot);
+
+			if (flag3) {
+				return false;
+			}
+
+			int yLoc = 0, xLoc = 0;
+			
+			if (modded) {
+				if (!EquipLoader.PreDrawCustomization(num20, slot + Player.dye.Length - 3, skip, ref xLoc, ref yLoc))
+					return true;
+
+				ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
+				EquipLoader.DrawFunctional(dPlayer.exAccessorySlot, dPlayer.exHideAccessory, -10, slot, flag3, xLoc, yLoc);
+				EquipLoader.DrawVanity(dPlayer.exAccessorySlot, -11, slot + ModPlayer.moddedAccSlots.Count, flag3, xLoc, yLoc);
+				EquipLoader.DrawDye(dPlayer.exDyesAccessory, -12, slot, flag3, xLoc, yLoc);
+			}
+			else {
+				if (!EquipLoader.PreDrawCustomization(num20, slot - 3, skip, ref xLoc, ref yLoc))
+					return true;
+
+				EquipLoader.DrawFunctional(Player.armor, Player.hideVisibleAccessory, 10, slot, flag3, xLoc, yLoc);
+				EquipLoader.DrawVanity(Player.armor, 11, slot + Player.dye.Length, flag3, xLoc, yLoc);
+				EquipLoader.DrawDye(Player.dye, 12, slot, flag3, xLoc, yLoc);
+			}
+
+			return true;
+		}
+
+		/// <summary>
+		/// Is run in this.PreDraw(). Applies Xloc and Yloc data for the slot, based on ModPlayer.scrollSlots
+		/// </summary>
+		internal static bool PreDrawCustomization(int num20, int trueSlot, int skip, ref int xLoc, ref int yLoc) {
+			int xColumn = (int)(trueSlot / ModAccessorySlot.accessoryPerColumn);
+			int yRow = trueSlot % ModAccessorySlot.accessoryPerColumn;
+
+			if (ModPlayer.scrollSlots) {
+
+				int row = yRow + (xColumn) * ModAccessorySlot.accessoryPerColumn - ModPlayer.scrollbarSlotPosition - skip;
+
+				yLoc = (int)((float)(num20) + (float)((row + 3) * 56) * Main.inventoryScale) + 4;
+				int chkMax = (int)((float)(num20) + (float)(((ModAccessorySlot.accessoryPerColumn - 1) + 3) * 56) * Main.inventoryScale) + 4;
+				int chkMin = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
+
+				if (yLoc > chkMax || yLoc < chkMin) {
+					return false;
+				}
+
+				xLoc = Main.screenWidth - 64 - 28;
+			}
+
+			else {
+				int row = yRow, tempSlot = trueSlot, col = xColumn;
+				if (skip > 0) {
+					tempSlot -= skip;
+					row = tempSlot % ModAccessorySlot.accessoryPerColumn;
+					col = tempSlot / ModAccessorySlot.accessoryPerColumn;
+				}
+
+				yLoc = (int)((float)(num20) + (float)((row + 3) * 56) * Main.inventoryScale) + 4;
+				if (col > 0) {
+					xLoc = Main.screenWidth - 64 - 28 - 47 * 3 * col - 50;
+				}
+				else {
+					xLoc = Main.screenWidth - 64 - 28 - 47 * 3 * col;
+				}
+			}
+
+			
+			return true;
+		}
+
+		/// <summary>
+		/// Is run in this.Draw. 
+		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
+		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
+		/// Also includes creating hidevisibilitybutton.
+		/// </summary>
+		internal static void DrawFunctional(Item[] access, bool[] visbility, int context, int slot, bool flag3, int xLoc, int yLoc) {
+			int yLoc2 = yLoc - 2;
+			int xLoc1 = xLoc;
+			int xLoc2 = xLoc1 - 58 + 64 + 28;
+
+			Texture2D value4 = TextureAssets.InventoryTickOn.Value;
+			if (visbility[slot])
+				value4 = TextureAssets.InventoryTickOff.Value;
+
+			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc2, yLoc2, value4.Width, value4.Height);
+			int num45 = 0;
+			if (rectangle.Contains(new Microsoft.Xna.Framework.Point(Main.mouseX, Main.mouseY)) && !PlayerInput.IgnoreMouseInterface) {
+				Player.mouseInterface = true;
+				if (Main.mouseLeft && Main.mouseLeftRelease) {
+					visbility[slot] = !visbility[slot];
+					SoundEngine.PlaySound(12);
+					if (Main.netMode == 1)
+						NetMessage.SendData(4, -1, -1, null, Player.whoAmI); //blindly called, won't work
+				}
+
+				num45 = ((!visbility[slot]) ? 1 : 2);
+			}
+
+			else if (Main.mouseX >= xLoc1 && (float)Main.mouseX <= (float)xLoc1 + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
+				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
+
+				Main.armorHide = true;
+				Player.mouseInterface = true;
+				ItemSlot.OverrideHover(access, Math.Abs(context), slot);
+				if (!flag3 || Main.mouseItem.IsAir)
+					ItemSlot.LeftClick(access, context, slot);
+
+				ItemSlot.MouseHover(access, Math.Abs(context), slot);
+			}
+
+			DrawRedirect(access, context, slot, new Vector2(xLoc1, yLoc));
+
+			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Microsoft.Xna.Framework.Color.White * 0.7f);
+
+			if (num45 > 0) {
+				Main.HoverItem = new Item();
+				Main.hoverItemName = Lang.inter[58 + num45].Value;
+			}
+		}
+
+		/// <summary>
+		/// Is run in this.Draw. 
+		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
+		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
+		/// </summary>
+		internal static void DrawVanity(Item[] vAccess, int context, int vSlot, bool flag3, int xLoc, int yLoc) {
+			bool flag7 = flag3 && !Main.mouseItem.IsAir;
+			int xLoc1 = xLoc - 47;
+
+			if (Main.mouseX >= xLoc1 && (float)Main.mouseX <= (float)xLoc1 + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
+				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
+				Player.mouseInterface = true;
+				Main.armorHide = true;
+				ItemSlot.OverrideHover(vAccess, Math.Abs(context), vSlot);
+				if (!flag7) {
+					ItemSlot.LeftClick(vAccess, context, vSlot);
+					ItemSlot.RightClick(vAccess, Math.Abs(context), vSlot);
+				}
+
+				ItemSlot.MouseHover(vAccess, Math.Abs(context), vSlot);
+			}
+
+			DrawRedirect(vAccess, context, vSlot, new Vector2(xLoc1, yLoc));
+		}
+
+		/// <summary>
+		/// Is run in ModAccessorySlot.Draw. 
+		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
+		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
+		/// </summary>
+		internal static void DrawDye(Item[] dyes, int context, int slot, bool flag3, int xLoc, int yLoc) {
+			bool flag8 = flag3 && !Main.mouseItem.IsAir;
+			int xLoc1 = xLoc - 47 * 2;
+
+			if (Main.mouseX >= xLoc1 && (float)Main.mouseX <= (float)xLoc1 + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
+				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
+				Player.mouseInterface = true;
+				Main.armorHide = true;
+				ItemSlot.OverrideHover(dyes, Math.Abs(context), slot);
+				if (!flag8) {
+					if (Main.mouseRightRelease && Main.mouseRight)
+						ItemSlot.RightClick(dyes, Math.Abs(context), slot);
+
+					ItemSlot.LeftClick(dyes, context, slot);
+				}
+
+				ItemSlot.MouseHover(dyes, Math.Abs(context), slot);
+			}
+			DrawRedirect(dyes, context, slot, new Vector2(xLoc1, yLoc));
+		}
+
+		internal static void DrawRedirect(Item[] inv, int context, int slot, Vector2 location) {
+			if (context < 0) {
+				int tempSlot = slot % ModPlayer.moddedAccSlots.Count;
+				ModAccessorySlot mAccSlot = GetModAccessorySlot(tempSlot);
+				mAccSlot.DrawRedirect(inv, context, slot, location);
+			} else {
+				ItemSlot.Draw(Main.spriteBatch, inv, context, slot, location);
+			}
 		}
 
 		public static bool ModdedIsAValidEquipmentSlotForIteration(int index) {
