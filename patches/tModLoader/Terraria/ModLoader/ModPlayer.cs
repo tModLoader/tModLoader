@@ -23,14 +23,14 @@ namespace Terraria.ModLoader
 
 		internal int index;
 
+		//TODO: Move these?
 		// List of registered identifiers for modded accessory slots. Used in DefaultPlayer.
 		internal static List<string> moddedAccSlots = new List<string>();
-
 		// Arrays for modded accessory slot save/load/usage. Used in DefaultPlayer.
 		internal Item[] exAccessorySlot = new Item[2];
 		internal Item[] exDyesAccessory = new Item[1];
 		internal bool[] exHideAccessory = new bool[1];
-		//TODO:Move this setting?
+		
 		// Setting toggle for stack or scroll accessories/npcHousing
 		internal static bool scrollSlots = true;
 		internal static int scrollbarSlotPosition = 0;

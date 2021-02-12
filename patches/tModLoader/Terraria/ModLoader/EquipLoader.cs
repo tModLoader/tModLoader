@@ -316,29 +316,34 @@ namespace Terraria.ModLoader
 		}
 
 		public static void DrawModAccSlots(int num20) {
+			int skip = 0;
+			for (int modSlot = 0; modSlot < ModPlayer.moddedAccSlots.Count; modSlot++) {
+				ModAccessorySlot mAccSlot = GetModAccessorySlot(modSlot);
+				if (!mAccSlot.Draw(num20, skip))
+					skip++;
+			}
 
-			if (ModPlayer.moddedAccSlots.Count > ModAccessorySlot.accessoryPerColumn) {
+			if (ModPlayer.moddedAccSlots.Count - skip > ModAccessorySlot.accessoryPerColumn) {
 				DrawScrollSwitch(num20);
 
 				if (ModPlayer.scrollSlots) {
-					DrawScrollbar(num20);
+					DrawScrollbar(num20, skip);
 				}
 			}
-
-			for (int modSlot = 0; modSlot < ModPlayer.moddedAccSlots.Count; modSlot++) {
-				ModAccessorySlot mAccSlot = GetModAccessorySlot(modSlot);
-				mAccSlot.Draw(num20);
-			}
+			else
+				ModPlayer.scrollbarSlotPosition = 0;
 		}
 
-		//TODO: Change the tooltip to be Scroll/Stack and put a custom sprite instead of reusing visibility.
+		//TODO: this should be localizable
+		public static string[] scrollStackLang = { "Stack", "Scroll" }; 
+
 		internal static void DrawScrollSwitch(int num20) {
 			Texture2D value4 = TextureAssets.InventoryTickOn.Value;
 			if (ModPlayer.scrollSlots)
 				value4 = TextureAssets.InventoryTickOff.Value;
 
-			int xLoc2 = Main.screenWidth - 64 - 28 - 47 * 3 - 50 - 24;
-			int yLoc2 = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) - 28;
+			int xLoc2 = Main.screenWidth - 64 - 28 - 47 * 3 - 50 + 12;
+			int yLoc2 = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) - 10;
 
 			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Microsoft.Xna.Framework.Color.White * 0.7f);
 
@@ -349,26 +354,32 @@ namespace Terraria.ModLoader
 
 			Player player = Main.LocalPlayer;
 			player.mouseInterface = true;
+			player.mouseInterface = true;
 			if (Main.mouseLeft && Main.mouseLeftRelease) {
 				ModPlayer.scrollSlots = !ModPlayer.scrollSlots;
 				SoundEngine.PlaySound(12);
 			}
 
-			int num45 = ((!ModPlayer.scrollSlots) ? 1 : 2);
+			int num45 = ((!ModPlayer.scrollSlots) ? 0 : 1);
 			Main.HoverItem = new Item();
-			Main.hoverItemName = Lang.inter[58 + num45].Value;
+			Main.hoverItemName = scrollStackLang[num45];
 		}
 
-		//TODO: Actually implement a UI properly.
-		internal static void DrawScrollbar(int num20) {
+		// This is a hacky solution to make it very vanilla-esque, at the cost of not actually using a UI proper. 
+		internal static void DrawScrollbar(int num20, int skip) {
 			int xLoc = Main.screenWidth - 64 - 28 - 47 * 3 - 50;
 			int chkMax = (int)((float)(num20) + (float)(((ModAccessorySlot.accessoryPerColumn) + 3) * 56) * Main.inventoryScale) + 4;
 			int chkMin = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
 
 			UIScrollbar scrollbar = new UIScrollbar();
-			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc - 47 * 2 - 6, chkMin, 5, chkMax - chkMin);
+			int correctedSlotCount = ModPlayer.moddedAccSlots.Count - skip - ModAccessorySlot.accessoryPerColumn;
 
+			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc - 47 * 2 - 6, chkMin, 5, chkMax - chkMin);
 			scrollbar.DrawBar(Main.spriteBatch, Main.Assets.Request<Texture2D>("Images/UI/Scrollbar").Value, rectangle, Color.White);
+
+			int barSize = (chkMax - chkMin) / (correctedSlotCount + 1);
+			rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc - 47 * 2 - 5, chkMin + ModPlayer.scrollbarSlotPosition * barSize, 3, barSize);
+			scrollbar.DrawBar(Main.spriteBatch, Main.Assets.Request<Texture2D>("Images/UI/ScrollbarInner").Value, rectangle, Color.White);
 
 			rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc - 47 * 2, chkMin, 47 * 3, chkMax - chkMin);
 			if (!(rectangle.Contains(new Microsoft.Xna.Framework.Point(Main.mouseX, Main.mouseY)) && !PlayerInput.IgnoreMouseInterface)) {
@@ -376,7 +387,7 @@ namespace Terraria.ModLoader
 			}
 
 			int scrollDelta = ModPlayer.scrollbarSlotPosition + (int)PlayerInput.ScrollWheelDelta / 120;
-			scrollDelta = Math.Min(scrollDelta, ModPlayer.moddedAccSlots.Count - ModAccessorySlot.accessoryPerColumn);
+			scrollDelta = Math.Min(scrollDelta, correctedSlotCount);
 			scrollDelta = Math.Max(scrollDelta, 0);
 			ModPlayer.scrollbarSlotPosition = scrollDelta;
 			PlayerInput.ScrollWheelDelta = 0;
@@ -554,7 +565,7 @@ namespace Terraria.ModLoader
 
 		public static bool ModSlotCheck(Item checkItem, int slot) {
 			ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
-			int index = slot % ModPlayer.moddedAccSlots.Count;
+			int index = slot % dPlayer.exDyesAccessory.Length;
 			ModAccessorySlot mAccSlot = GetModAccessorySlot(index);
 			return mAccSlot.LimitWhatCanGoInSlot(checkItem) && !ItemSlot.AccCheck(dPlayer.exAccessorySlot, checkItem, slot);
 		}

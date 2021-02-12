@@ -32,6 +32,7 @@ namespace Terraria.ModLoader
 		internal int yRow;
 		internal static int accessoryPerColumn = 5;
 		internal bool flag3;
+		internal bool flag4;
 
 		/// <summary>
 		/// Called when loading characters from parent ModPlayer.
@@ -63,16 +64,22 @@ namespace Terraria.ModLoader
 		/// Is run after vanilla draws normal accessory slots. Currently doesn't get called.
 		/// Creates new accessory slots in a column to the left of vanilla.  
 		/// </summary>
-		public void Draw(int num20) {
+		public bool Draw(int num20, int skip) {
 			ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
-			this.PreDraw(num20, dPlayer);
+			
+			this.PreDraw(num20, dPlayer, skip);
+			
 			if (flag3) {
-				return;
+				return false;
+			}
+			if (flag4) {
+				return true;
 			}
 
 			this.DrawFunctional(dPlayer);
 			this.DrawVanity(dPlayer);
 			this.DrawDye(dPlayer);
+			return true;
 		}
 
 		/// <summary>
@@ -80,25 +87,27 @@ namespace Terraria.ModLoader
 		/// Initializes all fields that are used in subsequent draw events.
 		/// For Overriding fields see this.PreDrawCustom
 		/// </summary>
-		internal void PreDraw(int num20, ModPlayer dPlayer) {
+		internal void PreDraw(int num20, ModPlayer dPlayer, int skip) {
 			this.num20 = num20;
 			this.flag3 = !EquipLoader.ModdedIsAValidEquipmentSlotForIteration(slot);
-			this.PreDrawCustomization(dPlayer);
+			this.PreDrawCustomization(dPlayer, skip);
 		}
 
 		/// <summary>
 		/// Is run in this.PreDraw(). Applies Xloc and Yloc data for the slot, based on ModPlayer.scrollSlots
 		/// </summary>
-		internal void PreDrawCustomization(ModPlayer dPlayer) {
+		internal void PreDrawCustomization(ModPlayer dPlayer, int skip) {
+			flag4 = false;
+
 			if (ModPlayer.scrollSlots) {
-				int row = yRow + (xColumn - 1) * accessoryPerColumn - ModPlayer.scrollbarSlotPosition;
+				int row = yRow + (xColumn - 1) * accessoryPerColumn - ModPlayer.scrollbarSlotPosition - skip;
 
 				this.yLoc = (int)((float)(num20) + (float)((row + 3) * 56) * Main.inventoryScale) + 4;
 				int chkMax = (int)((float)(num20) + (float)(((accessoryPerColumn - 1) + 3) * 56) * Main.inventoryScale) + 4;
 				int chkMin = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
 
 				if (yLoc > chkMax || yLoc < chkMin) {
-					flag3 = true;
+					flag4 = true;
 					return;
 				}
 
@@ -106,8 +115,15 @@ namespace Terraria.ModLoader
 			}
 
 			else {
-				this.yLoc = (int)((float)(num20) + (float)((yRow + 3) * 56) * Main.inventoryScale) + 4;
-				this.xLoc = Main.screenWidth - 64 - 28 - 47 * 3 * xColumn - 50; // 47*3 is per column, 50 adjusts to not overlap vanilla UI
+				int row = yRow, tempSlot = slot, col = xColumn;
+				if (skip > 0) {
+					tempSlot -= skip;
+					row = tempSlot % accessoryPerColumn;
+					col = tempSlot / accessoryPerColumn + 1;
+				}
+
+				this.yLoc = (int)((float)(num20) + (float)((row + 3) * 56) * Main.inventoryScale) + 4;
+				this.xLoc = Main.screenWidth - 64 - 28 - 47 * 3 * col - 50; // 47*3 is per column, 50 adjusts to not overlap vanilla UI
 			}
 
 			this.color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
@@ -158,9 +174,6 @@ namespace Terraria.ModLoader
 			this.DrawRedirect(dPlayer.exAccessorySlot, context, slot, new Vector2(xLoc1, yLoc));
 			
 			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Microsoft.Xna.Framework.Color.White * 0.7f);
-
-			//TODO: Have the slot number show up in bottom left corner.
-			//Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Microsoft.Xna.Framework.Color.White * 0.7f);
 
 			if (num45 > 0) {
 				Main.HoverItem = new Item();
