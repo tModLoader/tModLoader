@@ -2540,7 +2540,7 @@
  								PopupText.NewText(PopupTextContext.ItemReforge, reforgeItem, reforgeItem.stack, noStack: true);
  								SoundEngine.PlaySound(SoundID.Item37);
  							}
-@@ -30421,13 +_,18 @@
+@@ -30421,13 +_,15 @@
  						ItemSlot.MouseHover(ref guideItem, 7);
  					}
  
@@ -2549,9 +2549,6 @@
  				}
  			}
  
-+
-+			///// Working here downwards for figuring out scrolling.
-+			
 +			hidePlayerCraftingMenu = false;
  			CreativeMenu.Draw(spriteBatch);
  			bool flag9 = CreativeMenu.Enabled && !CreativeMenu.Blocked;

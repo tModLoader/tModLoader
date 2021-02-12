@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameInput;
-using Terraria.ID;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -22,18 +21,6 @@ namespace Terraria.ModLoader
 		public Player Player { get; internal set; }
 
 		internal int index;
-
-		//TODO: Move these?
-		// List of registered identifiers for modded accessory slots. Used in DefaultPlayer.
-		internal static List<string> moddedAccSlots = new List<string>();
-		// Arrays for modded accessory slot save/load/usage. Used in DefaultPlayer.
-		internal Item[] exAccessorySlot = new Item[2];
-		internal Item[] exDyesAccessory = new Item[1];
-		internal bool[] exHideAccessory = new bool[1];
-		
-		// Setting toggle for stack or scroll accessories/npcHousing
-		internal static bool scrollSlots = true;
-		internal static int scrollbarSlotPosition = 0;
 
 		internal ModPlayer CreateFor(Player newPlayer) {
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));

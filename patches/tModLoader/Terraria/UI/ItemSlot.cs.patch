@@ -276,6 +276,60 @@
  			}
  		}
  
+@@ -1342,6 +_,21 @@
+ 						if (inv == player.miscDyes)
+ 							num = 185 + slot;
+ 						break;
++					case -10:
++					case -11:
++						int num3M = slot;
++						if (!EquipLoader.ModdedIsAValidEquipmentSlotForIteration(slot))
++							num3M--;
++
++						num = 100 + num3M;
++						break;
++					case -12:
++						int num4M = slot;
++						if (!EquipLoader.ModdedIsAValidEquipmentSlotForIteration(slot))
++							num4M--;
++
++						num = 120 + num4M;
++						break;
+ 					case 19:
+ 						num = 180;
+ 						break;
+@@ -1468,6 +_,15 @@
+ 					case 27:
+ 						value = TextureAssets.InventoryBack12.Value;
+ 						break;
++					case -10:
++						value = TextureAssets.InventoryBack3.Value;
++						break;
++					case -11:
++						value = TextureAssets.InventoryBack8.Value;
++						break;
++					case -12:
++						value = TextureAssets.InventoryBack12.Value;
++						break;
+ 					case 3:
+ 						value = TextureAssets.InventoryBack5.Value;
+ 						break;
+@@ -1588,6 +_,15 @@
+ 				case 27:
+ 					num10 = 1;
+ 					break;
++				case -10:
++					num10 = 11;
++					break;
++				case -11:
++					num10 = 2;
++					break;
++				case -12:
++					num10 = 1;
++					break;
+ 				case 16:
+ 					num10 = 4;
+ 					break;
 @@ -1628,10 +_,15 @@
  				num11 *= inventoryScale;
  				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num11 / 2f;

@@ -16,21 +16,6 @@ namespace ExampleMod.Common.Players
 		// If the class is empty, everything will default to a basic vanilla slot.
 	}
 
-	public class ExampleModAccessorySlot3 : ModAccessorySlot
-	{
-		// If the class is empty, everything will default to a basic vanilla slot.
-	}
-
-	public class ExampleModAccessorySlot4 : ModAccessorySlot
-	{
-		// If the class is empty, everything will default to a basic vanilla slot.
-	}
-
-	public class ExampleModAccessorySlot5 : ModAccessorySlot
-	{
-		// If the class is empty, everything will default to a basic vanilla slot.
-	}
-
 	public class ExampleModWingSlot : ModAccessorySlot
 	{
 		public override bool LimitWhatCanGoInSlot(Item checkItem) {

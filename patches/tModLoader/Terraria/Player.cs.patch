@@ -3766,7 +3766,7 @@
  				return;
  			}
  
-+			if (EquipLoader.VanillaPreferredGolfBall(ref projType, this))
++			if (EquipLoader.VanillaPreferredGolfBallMirror(ref projType, this))
 +				return;
 +
  			for (int num = 19; num >= 0; num--) {

@@ -9,16 +9,21 @@ namespace Terraria.ModLoader.Default
 	{
 		public override bool CloneNewInstances => false;
 
+		// Arrays for modded accessory slot save/load/usage. Used in DefaultPlayer.
+		internal Item[] exAccessorySlot = new Item[2];
+		internal Item[] exDyesAccessory = new Item[1];
+		internal bool[] exHideAccessory = new bool[1];
+
 		public DefaultPlayer() {
 			exAccessorySlot = new Item[2] { new Item(), new Item() };
 			exDyesAccessory = new Item[1] { new Item() };
 			exHideAccessory = new bool[1] { false };
-			this.ResizeAccesoryArrays(ModPlayer.moddedAccSlots.Count);
+			this.ResizeAccesoryArrays(ModAccessorySlot.moddedAccSlots.Count);
 		}
 		
 		public override TagCompound Save() {
 			return new TagCompound {
-				["size"] = ModPlayer.moddedAccSlots.Count,
+				["size"] = ModAccessorySlot.moddedAccSlots.Count,
 				["items"] = exAccessorySlot.Select(ItemIO.Save).ToList(),
 				["dyes"] = exDyesAccessory.Select(ItemIO.Save).ToList(),
 				["visible"] = exHideAccessory.ToList()
@@ -42,11 +47,11 @@ namespace Terraria.ModLoader.Default
 				exAccessorySlot[i * 2 + 1] = new Item();
 			}
 
-			if (newSize == moddedAccSlots.Count) {
+			if (newSize == ModAccessorySlot.moddedAccSlots.Count) {
 				return;
 			}
 			for (int i = oldLen; i < newSize; i++) {
-				moddedAccSlots.Add("unloaded");
+				ModAccessorySlot.moddedAccSlots.Add("unloaded");
 			}
 		}
 
@@ -117,7 +122,7 @@ namespace Terraria.ModLoader.Default
 				if (Main.netMode == 1)
 					fromWho = r.ReadByte();
 
-				ModPlayer dPlayer = Main.player[fromWho].GetModPlayer<DefaultPlayer>();
+				DefaultPlayer dPlayer = Main.player[fromWho].GetModPlayer<DefaultPlayer>();
 
 				sbyte slot = r.ReadSByte();
 				var item = ItemIO.Receive(r, true);
@@ -146,7 +151,7 @@ namespace Terraria.ModLoader.Default
 				if (Main.netMode == 1)
 					fromWho = r.ReadByte();
 
-				ModPlayer dPlayer = Main.player[fromWho].GetModPlayer<DefaultPlayer>();
+				DefaultPlayer dPlayer = Main.player[fromWho].GetModPlayer<DefaultPlayer>();
 
 				sbyte slot = r.ReadSByte();
 				
@@ -167,7 +172,7 @@ namespace Terraria.ModLoader.Default
 				}
 			}
 
-			public static void SetSlot(sbyte slot, Item item, ModPlayer dPlayer) {
+			public static void SetSlot(sbyte slot, Item item, DefaultPlayer dPlayer) {
 				if (slot < 0)
 					dPlayer.exDyesAccessory[-(slot + 1)] = item;
 				else

@@ -307,7 +307,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static ModAccessorySlot GetModAccessorySlot(int slot) {
-			ModContent.TryFind<ModAccessorySlot>(ModPlayer.moddedAccSlots[slot], out ModAccessorySlot mAccSlot);
+			ModContent.TryFind<ModAccessorySlot>(ModAccessorySlot.moddedAccSlots[slot], out ModAccessorySlot mAccSlot);
 			if (mAccSlot == null) {
 				mAccSlot = new UnloadedAccessorySlot(slot);
 			}
@@ -337,20 +337,20 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			for (int modSlot = 0; modSlot < ModPlayer.moddedAccSlots.Count; modSlot++) {
+			for (int modSlot = 0; modSlot < ModAccessorySlot.moddedAccSlots.Count; modSlot++) {
 				if (!EquipLoader.Draw(num20, skip, true, modSlot))
 					skip++;
 			}
 
-			if (!(ModPlayer.moddedAccSlots.Count == 0)) {
+			if (!(ModAccessorySlot.moddedAccSlots.Count == 0)) {
 				DrawScrollSwitch(num20);
 
-				if (ModPlayer.scrollSlots) {
+				if (ModAccessorySlot.scrollSlots) {
 					DrawScrollbar(num20, skip);
 				}
 			}
 			else
-				ModPlayer.scrollbarSlotPosition = 0;
+				ModAccessorySlot.scrollbarSlotPosition = 0;
 		}
 
 		//TODO: this should be localizable
@@ -358,7 +358,7 @@ namespace Terraria.ModLoader
 
 		internal static void DrawScrollSwitch(int num20) {
 			Texture2D value4 = TextureAssets.InventoryTickOn.Value;
-			if (ModPlayer.scrollSlots)
+			if (ModAccessorySlot.scrollSlots)
 				value4 = TextureAssets.InventoryTickOff.Value;
 
 			int xLoc2 = Main.screenWidth - 64 - 28 + 47 + 9;
@@ -375,11 +375,11 @@ namespace Terraria.ModLoader
 			player.mouseInterface = true;
 			player.mouseInterface = true;
 			if (Main.mouseLeft && Main.mouseLeftRelease) {
-				ModPlayer.scrollSlots = !ModPlayer.scrollSlots;
+				ModAccessorySlot.scrollSlots = !ModAccessorySlot.scrollSlots;
 				SoundEngine.PlaySound(12);
 			}
 
-			int num45 = ((!ModPlayer.scrollSlots) ? 0 : 1);
+			int num45 = ((!ModAccessorySlot.scrollSlots) ? 0 : 1);
 			Main.HoverItem = new Item();
 			Main.hoverItemName = scrollStackLang[num45];
 		}
@@ -392,13 +392,13 @@ namespace Terraria.ModLoader
 			int chkMin = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
 
 			UIScrollbar scrollbar = new UIScrollbar();
-			int correctedSlotCount = ModPlayer.moddedAccSlots.Count + (Player.dye.Length - 3) - skip - accessoryPerColumn;
+			int correctedSlotCount = ModAccessorySlot.moddedAccSlots.Count + (Player.dye.Length - 3) - skip - accessoryPerColumn;
 
 			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc + 47 + 6, chkMin, 5, chkMax - chkMin);
 			scrollbar.DrawBar(Main.spriteBatch, Main.Assets.Request<Texture2D>("Images/UI/Scrollbar").Value, rectangle, Color.White);
 
 			int barSize = (chkMax - chkMin) / (correctedSlotCount + 1);
-			rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc + 47 + 5, chkMin + ModPlayer.scrollbarSlotPosition * barSize, 3, barSize);
+			rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc + 47 + 5, chkMin + ModAccessorySlot.scrollbarSlotPosition * barSize, 3, barSize);
 			scrollbar.DrawBar(Main.spriteBatch, Main.Assets.Request<Texture2D>("Images/UI/ScrollbarInner").Value, rectangle, Color.White);
 
 			rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc - 47 * 2, chkMin, 47 * 3, chkMax - chkMin);
@@ -406,10 +406,10 @@ namespace Terraria.ModLoader
 				return;
 			}
 
-			int scrollDelta = ModPlayer.scrollbarSlotPosition + (int)PlayerInput.ScrollWheelDelta / 120;
+			int scrollDelta = ModAccessorySlot.scrollbarSlotPosition + (int)PlayerInput.ScrollWheelDelta / 120;
 			scrollDelta = Math.Min(scrollDelta, correctedSlotCount);
 			scrollDelta = Math.Max(scrollDelta, 0);
-			ModPlayer.scrollbarSlotPosition = scrollDelta;
+			ModAccessorySlot.scrollbarSlotPosition = scrollDelta;
 			PlayerInput.ScrollWheelDelta = 0;
 		}
 
@@ -436,9 +436,9 @@ namespace Terraria.ModLoader
 				if (!EquipLoader.PreDrawCustomization(num20, slot + Player.dye.Length - 3, skip, ref xLoc, ref yLoc))
 					return true;
 
-				ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
+				DefaultPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
 				EquipLoader.DrawFunctional(dPlayer.exAccessorySlot, dPlayer.exHideAccessory, -10, slot, flag3, xLoc, yLoc);
-				EquipLoader.DrawVanity(dPlayer.exAccessorySlot, -11, slot + ModPlayer.moddedAccSlots.Count, flag3, xLoc, yLoc);
+				EquipLoader.DrawVanity(dPlayer.exAccessorySlot, -11, slot + ModAccessorySlot.moddedAccSlots.Count, flag3, xLoc, yLoc);
 				EquipLoader.DrawDye(dPlayer.exDyesAccessory, -12, slot, flag3, xLoc, yLoc);
 			}
 			else {
@@ -461,9 +461,9 @@ namespace Terraria.ModLoader
 			int xColumn = (int)(trueSlot / accessoryPerColumn);
 			int yRow = trueSlot % accessoryPerColumn;
 						
-			if (ModPlayer.scrollSlots) {
+			if (ModAccessorySlot.scrollSlots) {
 
-				int row = yRow + (xColumn) * accessoryPerColumn - ModPlayer.scrollbarSlotPosition - skip;
+				int row = yRow + (xColumn) * accessoryPerColumn - ModAccessorySlot.scrollbarSlotPosition - skip;
 
 				yLoc = (int)((float)(num20) + (float)((row + 3) * 56) * Main.inventoryScale) + 4;
 				int chkMin = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
@@ -519,8 +519,8 @@ namespace Terraria.ModLoader
 				if (Main.mouseLeft && Main.mouseLeftRelease) {
 					visbility[slot] = !visbility[slot];
 					SoundEngine.PlaySound(12);
-					if (Main.netMode == 1)
-						NetMessage.SendData(4, -1, -1, null, Player.whoAmI); //blindly called, won't work
+					if (Main.netMode == 1 && context > 0)
+						NetMessage.SendData(4, -1, -1, null, Player.whoAmI);
 				}
 
 				num45 = ((!visbility[slot]) ? 1 : 2);
@@ -601,7 +601,7 @@ namespace Terraria.ModLoader
 
 		internal static void DrawRedirect(Item[] inv, int context, int slot, Vector2 location) {
 			if (context < 0) {
-				int tempSlot = slot % ModPlayer.moddedAccSlots.Count;
+				int tempSlot = slot % ModAccessorySlot.moddedAccSlots.Count;
 				ModAccessorySlot mAccSlot = GetModAccessorySlot(tempSlot);
 				mAccSlot.DrawRedirect(inv, context, slot, location);
 			} else {
@@ -610,19 +610,19 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool ModdedIsAValidEquipmentSlotForIteration(int index) {
-			index = index % ModPlayer.moddedAccSlots.Count;
+			index = index % ModAccessorySlot.moddedAccSlots.Count;
 			ModAccessorySlot mAccSlot = GetModAccessorySlot(index);
 			return mAccSlot.CanUseSlot();
 		}
 
 		public static void VanillaUpdateEquipsMirror(Player player) {
-			ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
+			DefaultPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
 			Item item = null;
 			Item vItem = null;
-			for (int k = 0; k < ModPlayer.moddedAccSlots.Count; k++) {
+			for (int k = 0; k < ModAccessorySlot.moddedAccSlots.Count; k++) {
 				if (ModdedIsAValidEquipmentSlotForIteration(k)) {
 					item = dPlayer.exAccessorySlot[k];
-					vItem = dPlayer.exAccessorySlot[k + ModPlayer.moddedAccSlots.Count];
+					vItem = dPlayer.exAccessorySlot[k + ModAccessorySlot.moddedAccSlots.Count];
 					player.VanillaUpdateEquip(item);
 					player.ApplyEquipFunctional(item, dPlayer.exHideAccessory[k]);
 					if (SoundLoader.itemToMusic.ContainsKey(item.type))
@@ -633,7 +633,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void VanillaVanityEquipMirror(Item item, Item vItem, Player player, int k, ModPlayer dPlayer) {
+		public static void VanillaVanityEquipMirror(Item item, Item vItem, Player player, int k, DefaultPlayer dPlayer) {
 			if (player.eocDash > 0 && player.shield == -1 && item.shieldSlot != -1) {
 				player.shield = item.shieldSlot;
 				if (player.cShieldFallback != -1)
@@ -663,11 +663,11 @@ namespace Terraria.ModLoader
 				player.UpdateVisibleAccessory(vItem);
 		}
 
-		public static bool VanillaPreferredGolfBall(ref int projType, Player player) {
-			ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
-			for (int num = ModPlayer.moddedAccSlots.Count * 2 - 1; num >= 0; num--) {
+		public static bool VanillaPreferredGolfBallMirror(ref int projType, Player player) {
+			DefaultPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
+			for (int num = ModAccessorySlot.moddedAccSlots.Count * 2 - 1; num >= 0; num--) {
 				if (ModdedIsAValidEquipmentSlotForIteration(num)) {
-					_ = num % ModPlayer.moddedAccSlots.Count;
+					_ = num % ModAccessorySlot.moddedAccSlots.Count;
 					Item item2 = dPlayer.exAccessorySlot[num];
 					if (!item2.IsAir && item2.shoot > 0 && ProjectileID.Sets.IsAGolfBall[item2.shoot]) {
 						projType = item2.shoot;
@@ -679,18 +679,18 @@ namespace Terraria.ModLoader
 		}
 
 		public static Item VanillaDyeSwapMirror(Item item, out bool success) {
-			ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
+			DefaultPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
 			Item item2 = item;
-			int dyeSlotCount = ModPlayer.moddedAccSlots.Count;
+			int dyeSlotCount = ModAccessorySlot.moddedAccSlots.Count;
 
-			for (int i = 0; i < ModPlayer.moddedAccSlots.Count; i++) {
+			for (int i = 0; i < ModAccessorySlot.moddedAccSlots.Count; i++) {
 				if (dPlayer.exDyesAccessory[i].type == 0) {
 					dyeSlotCount = i;
 					break;
 				}
 			}
 
-			if (dyeSlotCount >= ModPlayer.moddedAccSlots.Count) {
+			if (dyeSlotCount >= ModAccessorySlot.moddedAccSlots.Count) {
 				success = false;
 				return item2;
 			}
@@ -705,12 +705,12 @@ namespace Terraria.ModLoader
 		}
 
 		public static Item VanillaArmorSwapMirror(Item item, out bool success) {
-			ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
+			DefaultPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
 			int num2 = 0;
-			int accSlotToSwapTo = ModPlayer.moddedAccSlots.Count;
+			int accSlotToSwapTo = ModAccessorySlot.moddedAccSlots.Count;
 			success = false;
 
-			for (int i = 0; i < ModPlayer.moddedAccSlots.Count; i++) {
+			for (int i = 0; i < ModAccessorySlot.moddedAccSlots.Count; i++) {
 				if (ModdedIsAValidEquipmentSlotForIteration(i)) {
 					num2 = i;
 					if (dPlayer.exAccessorySlot[i].type == 0) {
@@ -724,7 +724,7 @@ namespace Terraria.ModLoader
 				if (item.IsTheSameAs(dPlayer.exAccessorySlot[j]))
 					accSlotToSwapTo = j;
 
-				if (j < ModPlayer.moddedAccSlots.Count && item.wingSlot > 0 && dPlayer.exAccessorySlot[j].wingSlot > 0)
+				if (j < ModAccessorySlot.moddedAccSlots.Count && item.wingSlot > 0 && dPlayer.exAccessorySlot[j].wingSlot > 0)
 					accSlotToSwapTo = j;
 			}
 
@@ -760,8 +760,8 @@ namespace Terraria.ModLoader
 		}
 
 		public static void VanillaLastMinuteFixesMirror(Player newPlayer) {
-			ModPlayer dPlayer = newPlayer.GetModPlayer<DefaultPlayer>();
-			for (int i = 0; i < ModPlayer.moddedAccSlots.Count; i++) {
+			DefaultPlayer dPlayer = newPlayer.GetModPlayer<DefaultPlayer>();
+			for (int i = 0; i < ModAccessorySlot.moddedAccSlots.Count; i++) {
 				int type = dPlayer.exAccessorySlot[i].type;
 				if (type == 908 || type == 4874 || type == 5000)
 					newPlayer.lavaMax += 420;
@@ -780,149 +780,10 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool ModSlotCheck(Item checkItem, int slot) {
-			ModPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
+			DefaultPlayer dPlayer = Main.LocalPlayer.GetModPlayer<DefaultPlayer>();
 			int index = slot % dPlayer.exDyesAccessory.Length;
 			ModAccessorySlot mAccSlot = GetModAccessorySlot(index);
 			return mAccSlot.LimitWhatCanGoInSlot(checkItem) && !ItemSlot.AccCheck(dPlayer.exAccessorySlot, checkItem, slot);
-		}
-
-		public static void DefaultDrawModSlots(SpriteBatch spriteBatch, Item[] inv, int context, int slot, Vector2 position, Color lightColor = default(Color)) {
-			Item item = inv[slot];
-			float inventoryScale = Main.inventoryScale;
-			Color color = Color.White;
-			if (lightColor != Color.Transparent)
-				color = lightColor;
-
-			int num = -1;
-			bool flag = false;
-			int num2 = 0;
-			if (PlayerInput.UsingGamepadUI) {
-				switch (context) {
-					case -10:
-					case -11:
-						int num3 = slot;
-						if (!ModdedIsAValidEquipmentSlotForIteration(slot))
-							num3--;
-
-						num = 100 + num3;
-						break;
-					case -12:
-						int num4 = slot;
-						if (!ModdedIsAValidEquipmentSlotForIteration(slot))
-							num4--;
-
-						num = 120 + num4;
-						break;
-				}
-
-				flag = (UILinkPointNavigator.CurrentPoint == num);
-			}
-
-			Texture2D value = TextureAssets.InventoryBack.Value;
-			Color color2 = Main.inventoryBack;
-			bool flag2 = false;
-
-			if (item.type > 0 && item.stack > 0 && item.favorited) {
-				value = TextureAssets.InventoryBack10.Value;
-			}
-
-			else if (item.type > 0 && item.stack > 0 && ItemSlot.Options.HighlightNewItems && item.newAndShiny) {
-				value = TextureAssets.InventoryBack15.Value;
-				float num5 = (float)(int)Main.mouseTextColor / 255f;
-				num5 = num5 * 0.2f + 0.8f;
-				color2 = color2.MultiplyRGBA(new Color(num5, num5, num5));
-			}
-
-			else if (PlayerInput.UsingGamepadUI && item.type > 0 && item.stack > 0 && num2 != 0) {
-				value = TextureAssets.InventoryBack15.Value;
-				float num6 = (float)(int)Main.mouseTextColor / 255f;
-				num6 = num6 * 0.2f + 0.8f;
-				color2 = ((num2 != 1) ? color2.MultiplyRGBA(new Color(num6 / 2f, num6, num6 / 2f)) : color2.MultiplyRGBA(new Color(num6, num6 / 2f, num6 / 2f)));
-			}
-
-			else {
-				switch (context) {
-					case -10:
-						value = TextureAssets.InventoryBack3.Value;
-						break;
-					case -11:
-						value = TextureAssets.InventoryBack8.Value;
-						break;
-					case -12:
-						value = TextureAssets.InventoryBack12.Value;
-						break;
-				}
-			}
-
-			if (flag) {
-				value = TextureAssets.InventoryBack14.Value;
-				color2 = Color.White;
-			}
-
-			if (!flag2)
-				spriteBatch.Draw(value, position, null, color2, 0f, default(Vector2), inventoryScale, SpriteEffects.None, 0f);
-
-			int num10 = -1;
-			switch (context) {
-				case -10:
-					num10 = 11;
-					break;
-				case -11:
-					num10 = 2;
-					break;
-				case -12:
-					num10 = 1;
-					break;
-			}
-
-			if ((item.type <= 0 || item.stack <= 0) && num10 != -1) {
-				Texture2D value6 = TextureAssets.Extra[54].Value;
-				Rectangle rectangle = value6.Frame(3, 6, num10 % 3, num10 / 3);
-				rectangle.Width -= 2;
-				rectangle.Height -= 2;
-				spriteBatch.Draw(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f);
-			}
-
-			Vector2 vector = value.Size() * inventoryScale;
-			if (item.type > 0 && item.stack > 0) {
-				Main.instance.LoadItem(item.type);
-				Texture2D value7 = TextureAssets.Item[item.type].Value;
-				Rectangle rectangle2 = (Main.itemAnimations[item.type] == null) ? value7.Frame() : Main.itemAnimations[item.type].GetFrame(value7);
-				Color currentColor = color;
-				float scale3 = 1f;
-				ItemSlot.GetItemLight(ref currentColor, ref scale3, item);
-				float num11 = 1f;
-				if (rectangle2.Width > 32 || rectangle2.Height > 32)
-					num11 = ((rectangle2.Width <= rectangle2.Height) ? (32f / (float)rectangle2.Height) : (32f / (float)rectangle2.Width));
-
-				num11 *= inventoryScale;
-				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num11 / 2f;
-				Vector2 origin = rectangle2.Size() * (scale3 / 2f - 0.5f);
-				if (!ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num11 * scale3))
-					goto skip;
-
-				spriteBatch.Draw(value7, position2, rectangle2, item.GetAlpha(currentColor), 0f, origin, num11 * scale3, SpriteEffects.None, 0f);
-				if (item.color != Color.Transparent)
-					spriteBatch.Draw(value7, position2, rectangle2, item.GetColor(color), 0f, origin, num11 * scale3, SpriteEffects.None, 0f);
-
-				skip:
-				ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num11 * scale3);
-				if (ItemID.Sets.TrapSigned[item.type])
-					spriteBatch.Draw(TextureAssets.Wire.Value, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle(4, 58, 8, 8), color, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
-
-				if (item.stack > 1)
-					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, item.stack.ToString(), position + new Vector2(10f, 26f) * inventoryScale, color, 0f, Vector2.Zero, new Vector2(inventoryScale), -1f, inventoryScale);
-
-				//TODO: Something needs to be done with this code block from a modded slot perspective, I think. Not sure what, so leave as does nothing
-				if ((context == 10) && ((item.expertOnly && !Main.expertMode) || (item.masterOnly && !Main.masterMode))) {
-					Vector2 position4 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
-					Color white = Color.White;
-					spriteBatch.Draw(TextureAssets.Cd.Value, position4, null, white, 0f, default(Vector2), num11, SpriteEffects.None, 0f);
-				}
-			}
-
-			if (num != -1)
-				UILinkPointNavigator.SetPosition(num, position + vector * 0.75f);
 		}
 	}
 }

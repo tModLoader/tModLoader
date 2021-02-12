@@ -12,7 +12,7 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override bool CanUseSlot() { 
-			return false; //TODO: Don't display slot unless has items in it
+			return false;
 		}
 	}
 }

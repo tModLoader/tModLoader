@@ -32,7 +32,7 @@ namespace Terraria.ModLoader
 		internal static readonly int vanillaQuestFishCount = 41;
 		internal static readonly int[] vanillaWings = new int[Main.maxWings];
 
-		internal class HookList
+		private class HookList
 		{
 			public GlobalItem[] arr = new GlobalItem[0];
 			public readonly MethodInfo method;
@@ -44,7 +44,7 @@ namespace Terraria.ModLoader
 
 		private static List<HookList> hooks = new List<HookList>();
 
-		internal static HookList AddHook<F>(Expression<Func<GlobalItem, F>> func) {
+		private static HookList AddHook<F>(Expression<Func<GlobalItem, F>> func) {
 			var hook = new HookList(ModLoader.Method(func));
 			hooks.Add(hook);
 			return hook;
