@@ -67,7 +67,7 @@ namespace Terraria.ModLoader.Default
 				name.SetDefault("Unloaded Chest");
 				AddMapEntry(new Color(200, 200, 200), name, MapChestName);
 
-				name = CreateMapEntryName(Name + "_Locked"); // With multiple map entries, you need unique translation keys.
+				name = CreateMapEntryName(Name + "_Locked");
 				name.SetDefault("Locked Unloaded Chest");
 				AddMapEntry(new Color(0, 141, 63), name, MapChestName);
 			}
@@ -95,7 +95,7 @@ namespace Terraria.ModLoader.Default
 			var modSystem = ModContent.GetInstance<UnloadedTilesSystem>();
 			var posIndex = new UnloadedPosIndexing(i, j);
 
-			//NOTE: Onwards only works in singleplayer.
+			//NOTE: Onwards only works in singleplayer, as the lists aren't synced afaik.
 			int infoID = posIndex.FloorGetValue(TileIO.tileInfoMap.ToArray());
 			var infos = modSystem.tileInfos;
 

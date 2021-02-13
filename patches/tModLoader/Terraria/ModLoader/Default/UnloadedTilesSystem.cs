@@ -7,12 +7,12 @@ namespace Terraria.ModLoader.Default
 	[LegacyName("UnloadedTilesWorld")]
 	internal class UnloadedTilesSystem : ModSystem {
 		/// <summary>
-		/// Tile-<see cref="UnloadedTileInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
+		/// Tile-<see cref="UnloadedInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
 		/// </summary>
 		internal List<UnloadedInfo> tileInfos = new List<UnloadedInfo>();
 
 		/// <summary>
-		/// Wall-<see cref="UnloadedWallInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
+		/// Wall-<see cref="UnloadedInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
 		/// </summary>
 		internal List<UnloadedInfo> wallInfos = new List<UnloadedInfo>();
 
@@ -36,12 +36,18 @@ namespace Terraria.ModLoader.Default
 			Updater.UpdateInfos(tag.GetList<TagCompound>("tileInfos"));
 			Updater.Restore(TileIO.tileInfoMap);
 
+			TileIO.tileInfos.Clear();
+			TileIO.prevTileInfoMap.Clear();
+
 			// Process Walls
 			wallInfos.AddRange(TileIO.wallInfos);
 			
 			Updater = new UpdateUnloaded(wallInfos, TileIO.WallsContext);
 			Updater.UpdateInfos(tag.GetList<TagCompound>("wallInfos"));
 			Updater.Restore(TileIO.wallInfoMap);
+
+			TileIO.wallInfos.Clear();
+			TileIO.prevWallInfoMap.Clear();
 		}
 	}
 }

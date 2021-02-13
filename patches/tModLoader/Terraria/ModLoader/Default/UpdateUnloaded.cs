@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using Terraria.ModLoader.IO;
 
+//TODO: Refactor this later when looking at locational NBT systems.
+
 namespace Terraria.ModLoader.Default
 {
-	internal class UpdateUnloaded //TODO: Make better use of this.
+	internal class UpdateUnloaded
 	{
 		internal static bool canRestoreFlag;
 		internal readonly List<ushort> canRestore = new List<ushort>();
@@ -33,7 +35,7 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public void UpdateInfos(IList<TagCompound> prevList) {
-			//NOTE: infos and canRestore lists are same length so the indices match later for RestoreTilesAndWalls
+			// infos and canRestore lists are same length so the indices match later for Restore()
 			
 			foreach (var uInfo in infos) {
 				ushort type = 0;
@@ -63,7 +65,7 @@ namespace Terraria.ModLoader.Default
 
 				infos.Add(info);
 
-				//TODO: find a way to remove the typing sensitivity so this class is truly generic and can eliminate index
+				//NOTE: find a way to remove the typing sensitivity so this class is truly generic and can eliminate context
 				ushort type = 0;
 
 				if (context == TileIO.TilesContext)

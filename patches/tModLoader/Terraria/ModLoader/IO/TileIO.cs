@@ -70,7 +70,7 @@ namespace Terraria.ModLoader.IO
 		internal static byte WallsContext = 1;
 
 		/// <summary>
-		/// Tile-<see cref="UnloadedTileInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
+		/// Tile-<see cref="UnloadedInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
 		/// </summary>
 		internal static List<UnloadedInfo> tileInfos = new List<UnloadedInfo>();
 
@@ -81,7 +81,7 @@ namespace Terraria.ModLoader.IO
 		internal static List<posMap> prevTileInfoMap = new List<posMap>();
 
 		/// <summary>
-		/// Wall-<see cref="UnloadedWallInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
+		/// Wall-<see cref="UnloadedInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
 		/// </summary>
 		internal static List<UnloadedInfo> wallInfos = new List<UnloadedInfo>();
 
@@ -258,7 +258,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal static void WriteTileData(BinaryWriter writer, bool[] hasTile, bool[] hasWall) {
-			byte skip = 0; //Track amount of tiles that don't contain mod data
+			byte skip = 0; // Track amount of tiles that don't contain mod data
 			bool nextModTile = false;
 			int i = 0;
 			int j = 0;

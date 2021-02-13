@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using Terraria.ModLoader.IO;
 
+//TODO: Refactor this and make static later when looking at locational NBT systems.
+
 namespace Terraria.ModLoader.Default
 {
-	internal class UnloadedPosIndexing //Requires identity to enable adding support of labelling to multiplayer. Should make static otherwise.
+	internal class UnloadedPosIndexing
 	{
 		public int posID;
 

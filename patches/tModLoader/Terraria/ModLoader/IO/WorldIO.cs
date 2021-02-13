@@ -63,7 +63,7 @@ namespace Terraria.ModLoader.IO
 				customDataFail = e;
 				throw;
 			}
-			LoadChestInventory(tag.GetList<TagCompound>("chests"));// Must occur after tiles are loaded
+			LoadChestInventory(tag.GetList<TagCompound>("chests")); // Must occur after tiles are loaded
 			LoadNPCKillCounts(tag.GetList<TagCompound>("killCounts"));
 			LoadAnglerQuest(tag.GetCompound("anglerQuest"));
 			LoadTownManager(tag.GetList<TagCompound>("townManager"));
@@ -86,7 +86,7 @@ namespace Terraria.ModLoader.IO
 				if (chest == null) // chest doesn't exist
 					continue;
 
-				var itemTagListModded = PlayerIO.SaveInventory(chest.item); //list of mod only items in inventory
+				var itemTagListModded = PlayerIO.SaveInventory(chest.item); // list of mod only items in inventory
 				if (itemTagListModded == null) // Doesn't need additional saving beyond vanilla
 					continue;
 
