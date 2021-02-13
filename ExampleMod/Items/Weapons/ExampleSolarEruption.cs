@@ -8,14 +8,12 @@ namespace ExampleMod.Items.Weapons
 {
     public class ExampleSolarEruption : ModItem
     {
-        public override void SetStaticDefaults()
-        {
+        public override void SetStaticDefaults() {
             DisplayName.SetDefault("Example Solar Eruption");
             Tooltip.SetDefault("Less powerful than the Solar Eruption, but more explosively potent");
         }
 
-        public override void SetDefaults()
-        {
+        public override void SetDefaults() {
             item.width = 16;
             item.height = 16;
             item.useStyle = ItemUseStyleID.HoldingOut;
@@ -34,8 +32,7 @@ namespace ExampleMod.Items.Weapons
             item.damage = 12;
         }
 
-        public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
-        {
+        public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
             // How far out the inaccuracy of the shot chain can be.
             float radius = 90f;
             // Sets ai[1] to the following value to determine the firing direction.
@@ -54,8 +51,7 @@ namespace ExampleMod.Items.Weapons
             return false;
         }
 
-        public override void AddRecipes()
-        {
+        public override void AddRecipes() {
             ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.Chain, 10);
             recipe.AddIngredient(ModContent.ItemType<ExampleItem>(), 5);
