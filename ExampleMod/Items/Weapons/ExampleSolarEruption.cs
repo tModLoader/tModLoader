@@ -41,7 +41,7 @@ namespace ExampleMod.Items.Weapons
 			// Sets ai[1] to the following value to determine the firing direction.
 			// The smaller the value of NextFloat(), the more accurate the shot will be. The larger, the less accurate. This changes depending on your radius.
 			// NextBool().ToDirectionInt() will have a 50% chance to make it negative instead of positive.
-			// The Solar Eruption uses this calculation: Main.rand.NextFloat(0f, 0.5f) * Main.rand.NextBool().ToDirectionInt() * MathHelper.ToRadians(90f);
+			// The Solar Eruption uses this calculation: Main.rand.NextFloat(0f, 0.5f) * Main.rand.NextBool().ToDirectionInt() * MathHelper.ToRadians(45f);
 			float direction = Main.rand.NextFloat(0.25f, 1f) * Main.rand.NextBool().ToDirectionInt() * MathHelper.ToRadians(radius);
 			Projectile projectile = Projectile.NewProjectileDirect(player.RotatedRelativePoint(player.MountedCenter), new Vector2(speedX, speedY), type, damage, knockBack, player.whoAmI, 0f, direction);
 			// Extra logic for the chain to adjust to item stats, unlike the Solar Eruption.
@@ -53,5 +53,15 @@ namespace ExampleMod.Items.Weapons
             }
 			return false;
         }
+		
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.Chain, 10);
+			recipe.AddIngredient(ModContent.ItemType<ExampleItem>(), 5);
+			recipe.AddTile(TileID.WorkBenches);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
     }
 }
