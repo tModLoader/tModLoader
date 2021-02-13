@@ -32,6 +32,7 @@ namespace ExampleMod.Projectiles
 			projectile.usesLocalNPCImmunity = true;
 		}
 
+		// This projectile uses advanced calculation for its motion.
 		public override void AI()
 		{
 			Player player = Main.player[projectile.owner];
@@ -51,28 +52,38 @@ namespace ExampleMod.Projectiles
 			// Makes some dust and light.
 			for (int i = 0; i < 3; i++)
 			{
-				Dust dust1 = Dust.NewDustPerfect(chainHeadPosition, DustID.Smoke, new Vector2(0f, -1f).RotatedByRandom(MathHelper.ToRadians(360f)), 150, Color.White, 1.5f);
+				// This velocity vector sends the smoke out at a speed of 1 upward, then rotated randomly across all 360 degrees.
+				Vector2 velocity = new Vector2(0f, -1f).RotatedByRandom(MathHelper.ToRadians(360f));
+				Dust dust1 = Dust.NewDustPerfect(chainHeadPosition, DustID.Smoke, velocity, 150, Color.White, 1.5f);
 				dust1.noGravity = true;
 			}
+			// Like with the explosion projectile's lighting, Color.White can be any color you want, and 0.4f at the end is a radius multiplier.
             Lighting.AddLight(chainHeadPosition, Color.White.ToVector3() * 0.4f);
 
-			// Increment the cooldown timer for spawning explosions.
+			// Use one of the projectile's localAI slot as a cooldown timer for spawning explosions. When an explosion is spawned, this gets set to 4, so it takes 4 ticks to reach 0 again.
 			if (projectile.localAI[1] > 0f)
 			{
 				projectile.localAI[1] -= 1f;
 			}
 
 			// The projectile's swerving motion.
+			
+			// If this localAI slot is 0, meaning it doesn't have an assigned value, then set it to the projectile's rotation so that we can get the rotation it had on its first tick of being spawned.
 			if (projectile.localAI[0] == 0f)
 			{
 				projectile.localAI[0] = projectile.rotation;
 			}
 
+			// If localAI[0] (the localAI slot we use to store initial rotation)'s X value is greater than 0, then direction is 1. Otherwise, -1.
 			float direction = (projectile.localAI[0].ToRotationVector2().X >= 0f).ToDirectionInt();
-			Vector2 rotation = (direction * (projectile.ai[0] / firingAnimation * MathHelper.ToRadians(360f) - MathHelper.ToRadians(90f))).ToRotationVector2();
+			
+			// Use a sine calculation to rotate the Solar Eruption around to form an ovular motion.
+			Vector2 rotation = (direction * (projectile.ai[0] / firingAnimation * MathHelper.ToRadians(360f) + MathHelper.ToRadians(-90f))).ToRotationVector2();
 			rotation.Y *= (float)Math.Sin(projectile.ai[1]);
 
 			rotation = rotation.RotatedBy(projectile.localAI[0]);
+			
+			// Use the ai[0] slot as a timer to increment how long the projectile has been alive.
 			projectile.ai[0] += 1f;
 			if (projectile.ai[0] < firingTime)
 			{
@@ -80,20 +91,24 @@ namespace ExampleMod.Projectiles
 			}
 			else
 			{
+				// If past the firingTime variable we set in the item's Shoot() hook, kill it.
 				projectile.Kill();
 			}
 
 			// Manages the positioning for the chain's handle.
 			Vector2 offset = Main.OffsetsPlayerOnhand[player.bodyFrame.Y / 56] * 2f;
+			
+			// Flip the offset horizontally if the player is facing left instead of right.
 			if (player.direction == -1)
 			{
 				offset.X = player.bodyFrame.Width - offset.X;
 			}
+			// Flip the offset vetically if the player is using gravity (such as a Gravity Globe or Gravitation Potion.)
 			if (player.gravDir == -1f)
 			{
 				offset.Y = player.bodyFrame.Height - offset.Y;
 			}
-			// This line is a custom offset that you can change to move the handle around. Default is 0f, 0f.
+			// This line is a custom offset that you can change to move the handle around. Default is 0f, 0f. This projectile uses 4f, -6f.
 			offset += new Vector2(4f, -6f) * new Vector2(player.direction, player.gravDir);
 			offset -= new Vector2(player.bodyFrame.Width - projectile.width, player.bodyFrame.Height - 42) * 0.5f;
 			projectile.Center = player.RotatedRelativePoint(player.position + offset) - projectile.velocity;
@@ -114,18 +129,21 @@ namespace ExampleMod.Projectiles
 			projectile.localNPCImmunity[target.whoAmI] = 6;
 			target.immune[projectile.owner] = cooldown;
 		}
-
+		
+		// Set to true so the projectile can break tiles like grass, pots, vines, etc.
 		public override bool? CanCutTiles()
 		{
 			return true;
 		}
-
+		
+		// Plot a line from the start of the Solar Eruption to the end of it, to change the tile-cutting collision logic. (Don't change this.)
 		public override void CutTiles()
 		{
 			DelegateMethods.tilecut_0 = TileCuttingContext.AttackProjectile;
 			Utils.PlotTileLine(projectile.Center, projectile.Center + projectile.velocity, (projectile.width + projectile.height) * 0.5f * projectile.scale, DelegateMethods.CutTiles);
 		}
-
+		
+		// Plot a line from the start of the Solar Eruption to the end of it, and check if any hitboxes are intersected by it for the entity collision logic. (Don't change this.)
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
 		{
 			// Custom collision so all chains across the flail can cause impact.
