@@ -143,7 +143,7 @@ namespace Terraria.ModLoader
 				if (!modWall.KillSound(i, j)) {
 					return false;
 				}
-				SoundEngine.PlaySound(modWall.soundType, i * 16, j * 16, modWall.soundStyle);
+				SoundEngine.PlaySound(modWall.SoundType, i * 16, j * 16, modWall.SoundStyle);
 				return false;
 			}
 			return true;

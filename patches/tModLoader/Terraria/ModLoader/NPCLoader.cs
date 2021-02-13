@@ -203,9 +203,9 @@ namespace Terraria.ModLoader
 		public static void NPCAI(NPC npc) {
 			if (PreAI(npc)) {
 				int type = npc.type;
-				bool useAiType = npc.ModNPC != null && npc.ModNPC.aiType > 0;
+				bool useAiType = npc.ModNPC != null && npc.ModNPC.AIType > 0;
 				if (useAiType) {
-					npc.type = npc.ModNPC.aiType;
+					npc.type = npc.ModNPC.AIType;
 				}
 				npc.VanillaAI();
 				if (useAiType) {
@@ -283,8 +283,8 @@ namespace Terraria.ModLoader
 
 		public static void FindFrame(NPC npc, int frameHeight) {
 			int type = npc.type;
-			if (npc.ModNPC != null && npc.ModNPC.animationType > 0) {
-				npc.type = npc.ModNPC.animationType;
+			if (npc.ModNPC != null && npc.ModNPC.AnimationType > 0) {
+				npc.type = npc.ModNPC.AnimationType;
 			}
 			npc.VanillaFindFrame(frameHeight);
 			npc.type = type;
@@ -414,7 +414,7 @@ namespace Terraria.ModLoader
 
 		public static void BossBag(NPC npc, ref int bagType) {
 			if (npc.ModNPC != null) {
-				bagType = npc.ModNPC.bossBag;
+				bagType = npc.ModNPC.BossBag;
 			}
 		}
 

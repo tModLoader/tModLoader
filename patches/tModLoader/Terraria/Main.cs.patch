@@ -877,7 +877,7 @@
  						num2 = 1;
  
 -					if (num2 == 0)
-+					if (num2 == 0 && (npc[i].ModNPC == null || npc[i].ModNPC.music < 0))
++					if (num2 == 0 && (npc[i].ModNPC == null || npc[i].ModNPC.Music < 0))
  						continue;
  
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[i].position.X + (float)(npc[i].width / 2)) - num, (int)(npc[i].position.Y + (float)(npc[i].height / 2)) - num, num * 2, num * 2);
@@ -904,9 +904,9 @@
  
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[j].position.X + (float)(npc[j].width / 2)) - num2, (int)(npc[j].position.Y + (float)(npc[j].height / 2)) - num2, num2 * 2, num2 * 2);
  					if (rectangle.Intersects(value)) {
-+						if (npc[j].ModNPC != null && npc[j].ModNPC.music >= 0 && (modMusic < 0 || npc[j].ModNPC.musicPriority > modPriority)) {
-+							modMusic = npc[j].ModNPC.music;
-+							modPriority = npc[j].ModNPC.musicPriority;
++						if (npc[j].ModNPC != null && npc[j].ModNPC.Music >= 0 && (modMusic < 0 || npc[j].ModNPC.MusicPriority > modPriority)) {
++							modMusic = npc[j].ModNPC.Music;
++							modPriority = npc[j].ModNPC.MusicPriority;
 +						}
  						switch (num3) {
  							case 1:
@@ -2079,7 +2079,7 @@
  			if (theNPC.type == 125)
  				num = 30f;
 +			else if (theNPC.ModNPC != null)
-+				num = theNPC.ModNPC.drawOffsetY;
++				num = theNPC.ModNPC.DrawOffsetY;
  			else if (theNPC.type == 54)
  				num = 2f;
  			else if (theNPC.type == 205)
@@ -2798,7 +2798,7 @@
 +					else {
 +						Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
 +						SoundEngine.PlaySound(SoundID.MenuOpen);
-+						Utils.OpenFolder(Logging.LogPath);
++						Utils.OpenFolder(Logging.LogDir);
 +					}
 +
  					netMode = 0;
@@ -2829,7 +2829,7 @@
 +					else {
 +						Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
 +						SoundEngine.PlaySound(SoundID.MenuOpen);
-+						Utils.OpenFolder(Logging.LogPath);
++						Utils.OpenFolder(Logging.LogDir);
 +					}
 +
  					menuMode = 0;
