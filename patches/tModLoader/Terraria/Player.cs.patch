@@ -2254,7 +2254,7 @@
  					if (controlInv) {
  						if (releaseInventory)
  							ToggleInv();
-@@ -17401,11 +_,14 @@
+@@ -17401,7 +_,10 @@
  							CaptureManager.Instance.Scrolling();
  						}
  						else if (!flag8) {
@@ -2266,11 +2266,6 @@
  								HandleHotbar();
  							}
  							else {
--								int num8 = GetMouseScrollDelta();
-+								int num8 = PlayerInput.ScrollWheelDelta / 120;
- 								bool flag9 = true;
- 								if (Main.recBigList) {
- 									int num9 = 42;
 @@ -17633,12 +_,6 @@
  						}
  					}

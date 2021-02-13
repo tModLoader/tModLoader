@@ -7,7 +7,6 @@ using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 
-
 namespace Terraria.ModLoader.UI
 {
 	internal class UIMessageBox : UIPanel
