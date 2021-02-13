@@ -18,11 +18,12 @@
  			"Up",
  			"Down",
  			"Left",
-@@ -107,6 +_,7 @@
+@@ -106,7 +_,7 @@
+ 		public static int ScrollWheelValue;
  		public static int ScrollWheelValueOld;
  		public static int ScrollWheelDelta;
- 		public static int ScrollWheelDeltaForUI;
-+		public static int ScrollWheelDeltaForHotbar;
+-		public static int ScrollWheelDeltaForUI;
++		public static int ScrollWheelDeltaForUI; 
  		public static bool GamepadAllowScrolling;
  		public static int GamepadScrollValue;
  		public static Vector2 GamepadThumbstickLeft = Vector2.Zero;
@@ -187,3 +188,23 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Up"].Add("Up");
  							c.KeyStatus["Down"].Add("S");
+@@ -1935,6 +_,19 @@
+ 			Main.mouseY = (int)((float)_originalMouseY * scale);
+ 			Main.screenWidth = (int)((float)_originalScreenWidth * scale);
+ 			Main.screenHeight = (int)((float)_originalScreenHeight * scale);
++		}
++
++		internal static string MouseInModdedUI = null;
++		/// <summary>
++		/// Applies the inUse boolean to prevent vanilla scroll events. Recc: Use if the mouse location is within your UI. True cancels Vanilla events, false clears the lock if you are the owner.
++		/// The reservationID locks the cancel scroll so only you can clear the boolean. Recc: ModDisplayName.
++		/// <param name="reservationID"></param>
++		/// <param name="inUse"></param> 
++		public static void SetModUIMouseScroll(string reservationID, bool inUse) {
++			if (!(MouseInModdedUI == null) && inUse)
++				MouseInModdedUI = reservationID;
++			else if (MouseInModdedUI == reservationID && !inUse)
++				MouseInModdedUI = null;
+ 		}
+ 	}
+ }

@@ -2254,12 +2254,20 @@
  					if (controlInv) {
  						if (releaseInventory)
  							ToggleInv();
-@@ -17405,7 +_,7 @@
+@@ -17401,11 +_,14 @@
+ 							CaptureManager.Instance.Scrolling();
+ 						}
+ 						else if (!flag8) {
++							if (!(PlayerInput.MouseInModdedUI == null)) {
++								//Do nothing
++							}
+-							if (!Main.playerInventory) {
++							else if (!Main.playerInventory) {
  								HandleHotbar();
  							}
  							else {
 -								int num8 = GetMouseScrollDelta();
-+								int num8 = PlayerInput.ScrollWheelDeltaForHotbar / 120;
++								int num8 = PlayerInput.ScrollWheelDelta / 120;
  								bool flag9 = true;
  								if (Main.recBigList) {
  									int num9 = 42;
@@ -2485,11 +2493,9 @@
  			if (tongued) {
  				base.position += base.velocity;
  				flag28 = false;
-@@ -19731,7 +_,9 @@
- 			grappling[0] = -1;
+@@ -19732,6 +_,7 @@
  			grapCount = 0;
  			UpdateReleaseUseTile();
-+			PlayerInput.ScrollWheelDeltaForHotbar = PlayerInput.ScrollWheelDelta;
  			UpdateAdvancedShadows();
 +			PlayerHooks.PostUpdate(this);
  		}
@@ -2602,15 +2608,6 @@
  			if (!controlUseItem && altFunctionUse == 1)
  				altFunctionUse = 0;
  
-@@ -21437,7 +_,7 @@
- 			}
- 
- 			if (!Main.inFancyUI && !Main.ingameOptionsWindow)
--				HotbarOffset += PlayerInput.ScrollWheelDelta / -120;
-+				HotbarOffset += PlayerInput.ScrollWheelDeltaForHotbar / -120;
- 
- 			ScrollHotbar(HotbarOffset);
- 			HotbarOffset = 0;
 @@ -21518,6 +_,9 @@
  		}
  
