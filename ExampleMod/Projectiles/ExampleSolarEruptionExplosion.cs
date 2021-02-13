@@ -11,20 +11,30 @@ namespace ExampleMod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
+			// The English name of this projectile.
 			DisplayName.SetDefault("Example Solar Eruption Explosion");
+			// How many vertical animation frames its spritesheet has.
 			Main.projFrames[projectile.type] = 5;
 		}
 
 		public override void SetDefaults()
 		{
+			// Initial hitbox size. When we manually spawn it in OnHitNPC of ExampleSolarEruptionProjectile, we increase this as necessary.
 			projectile.width = 52;
 			projectile.height = 52;
+			// The projectile is spawned by a player.
 			projectile.friendly = true;
+			// The projectile starts at alpha 255, meaning its invisible. 0 alpha is visible, 255 is invisible.
 			projectile.alpha = 255;
+			// The projectile doesn't move anyways, but ignore water physics as necessary.
 			projectile.ignoreWater = true;
+			// Spawn and exist for 60 ticks, or 1 full second.
 			projectile.timeLeft = 60;
+			// Don't despawn upon tile collision
 			projectile.tileCollide = false;
+			// Never despawn upon hurting an enemy
 			projectile.penetrate = -1;
+			// Important for changing cooldowns of hit enemies.
 			projectile.usesLocalNPCImmunity = true;
 		}
 
@@ -38,7 +48,7 @@ namespace ExampleMod.Projectiles
 			projectile.ai[1] += 0.01f;
 			projectile.scale = projectile.ai[1];
 
-			// When it spawns, play an explosion sound and 
+			// When it spawns, play an explosion sound.
 			if (projectile.ai[0] == 0)
             {
 				Main.PlaySound(SoundID.Item14, projectile.Center);
@@ -75,18 +85,21 @@ namespace ExampleMod.Projectiles
 			int dusts = 5;
 			for (int i = 0; i < dusts; i++)
 			{
+				// If a random number including 0, 1, 2, and 3, lands 0, (basically 25% chance), spawn the dust.
 				if (Main.rand.NextBool(3))
 				{
 					float speed = 6f;
-					Dust dust1 = Dust.NewDustPerfect(projectile.Center, DustID.Smoke, new Vector2(0f, -speed * Main.rand.NextFloat(0.5f, 1.2f)).RotatedBy(MathHelper.ToRadians(360f / i * dusts + Main.rand.NextFloat(-50f, 50f))), 150, Color.White, 1.5f);
+					// This velocity takes the speed, multiplies it by a random number from 0.5, to 1.2, then rotates it to be evenly spread like a circle based on what dusts is set to, and then randomly offsets it.
+					Vector2 velocity = new Vector2(0f, -speed * Main.rand.NextFloat(0.5f, 1.2f)).RotatedBy(MathHelper.ToRadians(360f / i * dusts + Main.rand.NextFloat(-50f, 50f)));
+					Dust dust1 = Dust.NewDustPerfect(projectile.Center, DustID.Smoke, velocity, 150, Color.White, 1.5f);
 					dust1.noGravity = true;
-					dust1.shader = GameShaders.Armor.GetSecondaryShader(player.cPet, player);
 				}
 			}
 		}
 
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
+			// The Solar Eruption's explosions make use of NPC hit-cooldown timers.
 			int cooldown = 4;
 			projectile.localNPCImmunity[target.whoAmI] = 6;
 			target.immune[projectile.owner] = cooldown;
