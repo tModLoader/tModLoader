@@ -46,7 +46,7 @@ namespace Terraria.ID
 		public const short GoblinInvasion = 39;
 		public const short Sandstorm = 40;
 		public const short OldOnesArmy = 41;
-				public const short SpaceDay = 42;
+		public const short SpaceDay = 42;
 		public const short OceanNight = 43;
 		public const short WindyDay = 44;
 		public const short TownDay = 46;
