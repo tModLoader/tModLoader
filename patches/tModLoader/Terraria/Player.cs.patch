@@ -2250,6 +2250,18 @@
  					if (controlInv) {
  						if (releaseInventory)
  							ToggleInv();
+@@ -17401,7 +_,10 @@
+ 							CaptureManager.Instance.Scrolling();
+ 						}
+ 						else if (!flag8) {
++							if (!(PlayerInput.MouseInModdedUI == null)) {
++								// Do Nothing
++							}
+-							if (!Main.playerInventory) {
++							else if (!Main.playerInventory) {
+ 								HandleHotbar();
+ 							}
+ 							else {
 @@ -17633,12 +_,6 @@
  						}
  					}

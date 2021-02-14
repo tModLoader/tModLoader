@@ -403,9 +403,11 @@ namespace Terraria.ModLoader
 
 			rectangle = new Microsoft.Xna.Framework.Rectangle(xLoc - 47 * 2, chkMin, 47 * 3, chkMax - chkMin);
 			if (!(rectangle.Contains(new Microsoft.Xna.Framework.Point(Main.mouseX, Main.mouseY)) && !PlayerInput.IgnoreMouseInterface)) {
+				PlayerInput.LockVanillaMouseScroll("ModLoader:Acessory", false);
 				return;
 			}
 
+			PlayerInput.LockVanillaMouseScroll("ModLoader:Acessory", true);
 			int scrollDelta = ModAccessorySlot.scrollbarSlotPosition + (int)PlayerInput.ScrollWheelDelta / 120;
 			scrollDelta = Math.Min(scrollDelta, correctedSlotCount);
 			scrollDelta = Math.Max(scrollDelta, 0);
