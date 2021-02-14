@@ -1,6 +1,6 @@
 ﻿namespace Terraria.ModLoader
 {
-	public class ModEvent : ModType
+	public abstract class ModEvent : ModType
 	{
 		public int Type { get; internal set; }
 
@@ -8,12 +8,18 @@
 
 		protected virtual void StartEvent() { }
 
-		protected virtual void StopEvent() { }
+		protected virtual void EndEvent() { }
 
 		protected internal virtual void Update() { }
 
 		public void Start() {
 			Active = true;
+			StartEvent();
+		}
+
+		public void End() {
+			EndEvent();
+			Active = false;
 		}
 
 		protected override void Register() {
