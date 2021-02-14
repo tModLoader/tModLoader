@@ -15,13 +15,11 @@ namespace ExampleMod.Projectiles
         public float firingAnimation;
         public float firingTime;
 
-        public override void SetStaticDefaults()
-        {
+        public override void SetStaticDefaults() {
             DisplayName.SetDefault("Example Solar Eruption");
         }
 
-        public override void SetDefaults()
-        {
+        public override void SetDefaults() {
             projectile.width = 16;
             projectile.height = 16;
             projectile.friendly = true;
@@ -33,8 +31,7 @@ namespace ExampleMod.Projectiles
         }
 
         // This projectile uses advanced calculation for its motion.
-        public override void AI()
-        {
+        public override void AI() {
             Player player = Main.player[projectile.owner];
 
             // Face the projectile towards its movement direction, offset by 90 degrees counterclockwise because the sprite faces downward.
@@ -50,8 +47,7 @@ namespace ExampleMod.Projectiles
             player.itemRotation = (projectile.velocity * projectile.direction).ToRotation();
 
             // Makes some dust and light.
-            for (int i = 0; i < 3; i++)
-            {
+            for (int i = 0; i < 3; i++) {
                 // This velocity vector sends the smoke out at a speed of 1 upward, then rotated randomly across all 360 degrees.
                 Vector2 velocity = new Vector2(0f, -1f).RotatedByRandom(MathHelper.ToRadians(360f));
                 Dust dust1 = Dust.NewDustPerfect(chainHeadPosition, DustID.Smoke, velocity, 150, Color.White, 1.5f);
@@ -61,16 +57,14 @@ namespace ExampleMod.Projectiles
             Lighting.AddLight(chainHeadPosition, Color.White.ToVector3() * 0.4f);
 
             // Use one of the projectile's localAI slot as a cooldown timer for spawning explosions. When an explosion is spawned, this gets set to 4, so it takes 4 ticks to reach 0 again.
-            if (projectile.localAI[1] > 0f)
-            {
+            if (projectile.localAI[1] > 0f) {
                 projectile.localAI[1] -= 1f;
             }
 
             // The projectile's swerving motion.
 
             // If this localAI slot is 0, meaning it doesn't have an assigned value, then set it to the projectile's rotation so that we can get the rotation it had on its first tick of being spawned.
-            if (projectile.localAI[0] == 0f)
-            {
+            if (projectile.localAI[0] == 0f) {
                 projectile.localAI[0] = projectile.rotation;
             }
 
@@ -85,12 +79,10 @@ namespace ExampleMod.Projectiles
 
             // Use the ai[0] slot as a timer to increment how long the projectile has been alive.
             projectile.ai[0] += 1f;
-            if (projectile.ai[0] < firingTime)
-            {
+            if (projectile.ai[0] < firingTime) {
                 projectile.velocity += (firingSpeed * rotation).RotatedBy(MathHelper.ToRadians(90f));
             }
-            else
-            {
+            else {
                 // If past the firingTime variable we set in the item's Shoot() hook, kill it.
                 projectile.Kill();
             }
@@ -99,13 +91,11 @@ namespace ExampleMod.Projectiles
             Vector2 offset = Main.OffsetsPlayerOnhand[player.bodyFrame.Y / 56] * 2f;
 
             // Flip the offset horizontally if the player is facing left instead of right.
-            if (player.direction == -1)
-            {
+            if (player.direction == -1) {
                 offset.X = player.bodyFrame.Width - offset.X;
             }
             // Flip the offset vetically if the player is using gravity (such as a Gravity Globe or Gravitation Potion.)
-            if (player.gravDir == -1f)
-            {
+            if (player.gravDir == -1f) {
                 offset.Y = player.bodyFrame.Height - offset.Y;
             }
             // This line is a custom offset that you can change to move the handle around. Default is 0f, 0f. This projectile uses 4f, -6f.
@@ -114,12 +104,10 @@ namespace ExampleMod.Projectiles
             projectile.Center = player.RotatedRelativePoint(player.position + offset) - projectile.velocity;
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-        {
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
             // Spawns an explosion when it hits an NPC.
             int cooldown = 3;
-            if (projectile.localAI[1] <= 0f)
-            {
+            if (projectile.localAI[1] <= 0f) {
                 Projectile explosion = Projectile.NewProjectileDirect(target.Center, Vector2.Zero, ModContent.ProjectileType<ExampleSolarEruptionExplosion>(), damage, 10f, projectile.owner, 0f, 1f);
                 // Expand the hitbox of the explosion when it spawns.
                 Vector2 radius = new Vector2(90f, 90f);
@@ -131,32 +119,27 @@ namespace ExampleMod.Projectiles
         }
 
         // Set to true so the projectile can break tiles like grass, pots, vines, etc.
-        public override bool? CanCutTiles()
-        {
+        public override bool? CanCutTiles() {
             return true;
         }
 
         // Plot a line from the start of the Solar Eruption to the end of it, to change the tile-cutting collision logic. (Don't change this.)
-        public override void CutTiles()
-        {
+        public override void CutTiles() {
             DelegateMethods.tilecut_0 = TileCuttingContext.AttackProjectile;
             Utils.PlotTileLine(projectile.Center, projectile.Center + projectile.velocity, (projectile.width + projectile.height) * 0.5f * projectile.scale, DelegateMethods.CutTiles);
         }
 
         // Plot a line from the start of the Solar Eruption to the end of it, and check if any hitboxes are intersected by it for the entity collision logic. (Don't change this.)
-        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
-        {
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
             // Custom collision so all chains across the flail can cause impact.
             float collisionPoint = 0f;
-            if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center, projectile.Center + projectile.velocity, (projectile.width + projectile.height) * 0.5f * projectile.scale, ref collisionPoint))
-            {
+            if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center, projectile.Center + projectile.velocity, (projectile.width + projectile.height) * 0.5f * projectile.scale, ref collisionPoint)) {
                 return true;
             }
             return false;
         }
 
-        public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
-        {
+        public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
             Texture2D texture = Main.projectileTexture[projectile.type];
             Color color = lightColor;
 
@@ -167,8 +150,7 @@ namespace ExampleMod.Projectiles
             Rectangle chainHead = new Rectangle(0, 90, texture.Width, 48);
 
             // If the chain isn't moving, stop drawing all of its components.
-            if (projectile.velocity == Vector2.Zero)
-            {
+            if (projectile.velocity == Vector2.Zero) {
                 return false;
             }
 			
@@ -186,13 +168,10 @@ namespace ExampleMod.Projectiles
             Vector2 position = projectile.Center;
             position += direction * projectile.scale * 24f;
             rectangle = chainLinkEnd;
-            if (chainDistance > 0f)
-            {
+            if (chainDistance > 0f) {
                 float chains = 0f;
-                while (chains + 1f < chainDistance)
-                {
-                    if (chainDistance - chains < rectangle.Height)
-                    {
+                while (chains + 1f < chainDistance) {
+                    if (chainDistance - chains < rectangle.Height) {
                         rectangle.Height = (int)(chainDistance - chains);
                     }
 					// Draws the chain links between the handle and the head. This is the "line," or the third piece in the sprite.
@@ -207,17 +186,14 @@ namespace ExampleMod.Projectiles
             rectangle = chainLink;
             int offset = distanceCheck ? 9 : 18;
             float chainLinkDistance = chainDistance;
-            if (chainDistance > 0f)
-            {
+            if (chainDistance > 0f) {
                 float chains = 0f;
                 float increment = chainLinkDistance / offset;
                 chains += increment * 0.25f;
                 position += direction * increment * 0.25f;
-                for (int i = 0; i < offset; i++)
-                {
+                for (int i = 0; i < offset; i++) {
                     float spacing = increment;
-                    if (i == 0)
-                    {
+                    if (i == 0) {
                         spacing *= 0.75f;
                     }
 					// Draws the actual chain link spikes between the handle and the head. These are the "spikes," or the second piece in the sprite.
