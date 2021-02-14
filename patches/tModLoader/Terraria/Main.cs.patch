@@ -3425,6 +3425,14 @@
  		public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue) {
  			chatMonitor.NewText(newText, R, G, B);
  			SoundEngine.PlaySound(12);
+@@ -49417,6 +_,7 @@
+ 			CreditsRollEvent.UpdateTime();
+ 			WorldGen.mysticLogsEvent.UpdateTime();
+ 			PylonSystem.Update();
++			ModEventLoader.UpdateActiveEvents();
+ #if CLIENT
+ 			if (NPC.MoonLordCountdown > 0) {
+ 				float num4 = MathHelper.Clamp((float)Math.Sin((float)NPC.MoonLordCountdown / 60f * 0.5f) * 2f, 0f, 1f);
 @@ -49830,7 +_,7 @@
  					num++;
  			}
