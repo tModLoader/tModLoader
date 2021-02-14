@@ -192,7 +192,7 @@
 +		/// <param name="reservationID"></param>
 +		/// <param name="inUse"></param> 
 +		public static void LockVanillaMouseScroll(string reservationID, bool inUse) {
-+			if (!(MouseInModdedUI == null) && inUse)
++			if (MouseInModdedUI == null && inUse)
 +				MouseInModdedUI = reservationID;
 +			else if (MouseInModdedUI == reservationID && !inUse)
 +				MouseInModdedUI = null;
