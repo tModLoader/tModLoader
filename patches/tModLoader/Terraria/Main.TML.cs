@@ -62,7 +62,7 @@ namespace Terraria
 				int height = (int)(45f * scale);
 				Vector2 offset = (height + 50) * i * Vector2.UnitY;
 
-				if (invasionType != -1)
+				if (invasionType != 0 && invasionProgressAlpha > 0f)
 					offset.Y += height + 50;
 
 				Vector2 uiPosition = new Vector2(screenWidth - 120, screenHeight - 40) - offset;
