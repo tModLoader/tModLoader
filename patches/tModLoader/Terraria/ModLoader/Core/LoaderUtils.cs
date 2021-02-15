@@ -13,7 +13,7 @@ namespace Terraria.ModLoader.Core
 			if (typeInitializer != null) {
 				var field = typeInitializer
 					.GetType()
-					.GetField("m_invocationFlags", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+					.GetField("m_invocationFlags", BindingFlags.NonPublic | BindingFlags.Instance);
 
 				object previousValue = field.GetValue(typeInitializer);
 
