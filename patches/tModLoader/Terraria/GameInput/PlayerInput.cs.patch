@@ -191,7 +191,7 @@
 +		/// Takes a string to denote that your UI has registered to lock vanilla scrolling.
 +		/// </summary>
 +		public static void LockVanillaMouseScroll(string myUI) {
-+           if (!MouseInModdedUI.Contains(myUI))
++			if (!MouseInModdedUI.Contains(myUI))
 +				MouseInModdedUI.Add(myUI);
  		}
  	}
