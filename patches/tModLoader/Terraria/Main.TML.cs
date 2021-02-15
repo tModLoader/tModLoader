@@ -37,7 +37,7 @@ namespace Terraria
 			foreach (ModInvasion modInvasion in ModEventLoader.ModInvasions) {
 				invasionDisplays.TryGetValue(modInvasion.Type, out ModInvasion.ModInvasionProgressDisplay progressDisplay);
 
-				if (!modInvasion.Active && (progressDisplay == null || progressDisplay.DisplayLeft == 0))
+				if (!modInvasion.Active && (progressDisplay == null || progressDisplay.Alpha == 0))
 					continue;
 
 				if (!gamePaused && !modInvasion.Active)
@@ -49,7 +49,7 @@ namespace Terraria
 					progressDisplay.Alpha -= 0.05f;
 
 				if (progressDisplay.Alpha <= 0f)
-					return;
+					continue;
 
 				if (progressDisplay.Alpha >= 1f)
 					progressDisplay.Alpha = 1f;
