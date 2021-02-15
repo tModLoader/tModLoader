@@ -42,6 +42,9 @@
 		"ModsShowAllMods": "Show all mods",
 		"ModsShowEnabledMods": "Show only enabled mods",
 		"ModsShowDisabledMods": "Show only disabled mods",
+		"ModsXModsFilteredByEnabled": "{0} {^0:mod;mods} filtered by enabled filter.",
+		"ModsXModsFilteredByModSide": "{0} {^0:mod;mods} filtered by enabled mod side filter.",
+		"ModsXModsFilteredBySearch": "{0} {^0:mod;mods} filtered by enabled search filter.",
 		"ModsXItems": "{0} {^0:item;items}",
 		"ModsXNPCs": "{0} {^0:NPC;NPCs}",
 		"ModsXTiles": "{0} {^0:tile;tiles}",
@@ -342,7 +345,7 @@
 		"WorldGenError": "A problem was encountered during world generation",
 		"WorldIODataException": "The game encountered a mod data problem for a world.",
 		"ServerCrash": "Server crash: {0}\n{1}\n\nPlease check server.log to determine if a mod is responsible, otherwise head to #support in the tModLoader Discord",
-		
+
 		// MessageBox
 		"ContentFolderNotFound": "Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.",
 		"MissingServerExecutable": "Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.",
