@@ -56,7 +56,7 @@
  		private static void OpenPort(int port) {
  #if SERVER
  			string localIPAddress = GetLocalIPAddress();
-@@ -422,6 +_,7 @@
+@@ -425,6 +_,7 @@
  		}
  
  		private static void ClientLoopSetup(RemoteAddress address) {
@@ -64,7 +64,7 @@
  			Connection.ResetSpecialFlags();
  			ResetNetDiag();
  			Main.ServerSideCharacter = false;
-@@ -442,9 +_,11 @@
+@@ -445,9 +_,11 @@
  
  			Disconnect = false;
  			Connection = new RemoteServer();
@@ -77,7 +77,7 @@
  		private static void InnerClientLoop() {
  			try {
  				NetMessage.buffer[256].Reset();
-@@ -479,6 +_,7 @@
+@@ -482,6 +_,7 @@
  							Cloud.resetClouds();
  							Main.cloudAlpha = Main.maxRaining;
  							WorldGen.clearWorld();
@@ -85,7 +85,7 @@
  							if (Main.mapEnabled)
  								Main.Map.Load();
  						}
-@@ -490,6 +_,7 @@
+@@ -493,6 +_,7 @@
  						else if (Connection.State == 5 && WorldGen.worldCleared) {
  							Connection.State = 6;
  							Main.player[Main.myPlayer].FindSpawn();
@@ -93,7 +93,7 @@
  							NetMessage.SendData(8, -1, -1, null, Main.player[Main.myPlayer].SpawnX, Main.player[Main.myPlayer].SpawnY);
  						}
  
-@@ -523,6 +_,7 @@
+@@ -526,6 +_,7 @@
  					num = Connection.State;
  				}
  
@@ -101,7 +101,7 @@
  				try {
  					Connection.Socket.Close();
  				}
-@@ -530,6 +_,10 @@
+@@ -533,6 +_,10 @@
  				}
  
  				if (!Main.gameMenu) {
