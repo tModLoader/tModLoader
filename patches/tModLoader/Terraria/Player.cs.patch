@@ -2258,7 +2258,7 @@
  							CaptureManager.Instance.Scrolling();
  						}
  						else if (!flag8) {
-+							if (!(PlayerInput.MouseInModdedUI.Count > 0)) {
++							if (PlayerInput.MouseInModdedUI.Count > 0) {
 +								//Do nothing
 +							}
 -							if (!Main.playerInventory) {
@@ -2266,14 +2266,14 @@
  								HandleHotbar();
  							}
  							else {
-@@ -17446,6 +_,7 @@
+@@ -17445,6 +_,7 @@
+ 										Main.focusRecipe = 0;
  								}
  							}
++							PlayerInput.MouseInModdedUI.Clear();
  						}
-+						PlayerInput.MouseInModdedUI.Clear();
  					}
  					else {
- 						bool flag10 = false;
 @@ -17633,12 +_,6 @@
  						}
  					}

@@ -179,14 +179,20 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Up"].Add("Up");
  							c.KeyStatus["Down"].Add("S");
-@@ -1936,5 +_,10 @@
+@@ -1935,6 +_,16 @@
+ 			Main.mouseY = (int)((float)_originalMouseY * scale);
  			Main.screenWidth = (int)((float)_originalScreenWidth * scale);
  			Main.screenHeight = (int)((float)_originalScreenHeight * scale);
- 		}
++		}
 +
-+		internal static List<byte> MouseInModdedUI = new List<byte>();
++		internal static List<string> MouseInModdedUI = new List<string>();
 +		/// <summary>
 +		/// Locks the vanilla scrollbar for the upcoming cycle when called. Autoclears in Player.
-+		public static void LockVanillaMouseScroll() => MouseInModdedUI.Add((byte)0);
++		/// Takes a string to denote that your UI has registered to lock vanilla scrolling.
++		/// </summary>
++		public static void LockVanillaMouseScroll(string myUI) {
++           if (!MouseInModdedUI.Contains(myUI))
++				MouseInModdedUI.Add(myUI);
+ 		}
  	}
  }
