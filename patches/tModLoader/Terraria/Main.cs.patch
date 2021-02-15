@@ -2644,6 +2644,15 @@
  						if ((!expertMode || type != 266) && ((type != 439 && type != 440) || npc[num2].ai[0] != 5f)) {
  							if (type >= 134 && type <= 136) {
  								scale = 1.5f;
+@@ -35548,6 +_,8 @@
+ 		}
+ 
+ 		public static void DrawInvasionProgress() {
++			DrawModdedInvasionUI();
++
+ 			if (invasionProgress == -1)
+ 				return;
+ 
 @@ -35983,8 +_,10 @@
  			screenLastPosition = screenPosition;
  			screenPosition.Y = (float)(worldSurface * 16.0 - (double)screenHeight);

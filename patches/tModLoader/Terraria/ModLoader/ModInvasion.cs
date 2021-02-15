@@ -1,17 +1,30 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 
 namespace Terraria.ModLoader
 {
-	public class ModInvasion : ModEvent
+	public abstract class ModInvasion : ModEvent
 	{
-		public virtual Texture2D Icon { get; }
+		internal class ModInvasionProgressDisplay
+		{
+			public int DisplayLeft;
+			public float Alpha;
+
+			public ModInvasionProgressDisplay(int displayLeft, float alpha) {
+				DisplayLeft = displayLeft;
+				Alpha = alpha;
+			}
+		}
 
 		public float Progress { get; set; }
 
-		IDictionary<int, float> spawnPool = new Dictionary<int, float>();
+		public abstract string Title { get; }
 
+		public abstract string ProgressText { get; }
 
+		public virtual Color TitleUIColor => new Color(63, 65, 151, 255) * 0.785f;
+
+		public virtual Color ProgressUIColor => new Color(63, 65, 151, 255) * 0.785f;
+
+		public virtual Color ProgressBarColor => new Color(255, 241, 51);
 	}
 }

@@ -1,10 +1,14 @@
-﻿namespace Terraria.ModLoader
+﻿using Microsoft.Xna.Framework.Graphics;
+
+namespace Terraria.ModLoader
 {
 	public abstract class ModEvent : ModType
 	{
 		public int Type { get; internal set; }
 
 		public bool Active { get; internal set; }
+
+		public abstract Texture2D Icon { get; }
 
 		protected virtual void StartEvent() { }
 
@@ -14,6 +18,7 @@
 
 		public void Start() {
 			Active = true;
+			Main.invasionDisplays[Type] = new ModInvasion.ModInvasionProgressDisplay(160, 0f);
 			StartEvent();
 		}
 
@@ -24,6 +29,10 @@
 
 		protected override void Register() {
 			ModTypeLookup<ModEvent>.Register(this);
+
+			if (this is ModInvasion modInvasion)
+				ModTypeLookup<ModInvasion>.Register(modInvasion);
+
 			Type = ModEventLoader.Register(this);
 		}
 	}
