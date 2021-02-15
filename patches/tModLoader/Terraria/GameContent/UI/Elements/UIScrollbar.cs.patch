@@ -1,9 +1,24 @@
 --- src/Terraria/Terraria/GameContent/UI/Elements/UIScrollbar.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIScrollbar.cs
-@@ -102,4 +_,27 @@
+@@ -2,6 +_,7 @@
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
+ using Terraria.Audio;
++using Terraria.GameInput;
+ using Terraria.UI;
+ 
+ namespace Terraria.GameContent.UI.Elements
+@@ -100,6 +_,34 @@
+ 		public override void MouseUp(UIMouseEvent evt) {
+ 			base.MouseUp(evt);
  			_isDragging = false;
- 		}
- 	}
++		}
++
++		public override void MouseOver(UIMouseEvent evt) {
++			base.MouseOver(evt);
++			PlayerInput.LockVanillaMouseScroll();
++		}
++	}
 +
 +	public class FixedUIScrollbar : UIScrollbar
 +	{
@@ -25,6 +40,6 @@
 +			UserInterface.ActiveInstance = userInterface;
 +			base.MouseDown(evt);
 +			UserInterface.ActiveInstance = temp;
-+		}
-+	}
+ 		}
+ 	}
  }
