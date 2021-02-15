@@ -179,23 +179,19 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Up"].Add("Up");
  							c.KeyStatus["Down"].Add("S");
-@@ -1935,6 +_,19 @@
+@@ -1935,6 +_,15 @@
  			Main.mouseY = (int)((float)_originalMouseY * scale);
  			Main.screenWidth = (int)((float)_originalScreenWidth * scale);
  			Main.screenHeight = (int)((float)_originalScreenHeight * scale);
 +		}
 +
-+		internal static string MouseInModdedUI = null;
++		internal static List<string> MouseInModdedUI = new List<string>();
 +		/// <summary>
-+		/// Applies the inUse boolean to prevent vanilla scroll events. Recc: Use if the mouse location is within your UI. True cancels Vanilla events, false clears the lock if you are the owner.
-+		/// The reservationID locks the cancel scroll so only you can clear the boolean. Recc: ModDisplayName.
-+		/// <param name="reservationID"></param>
-+		/// <param name="inUse"></param> 
-+		public static void LockVanillaMouseScroll(string reservationID, bool inUse) {
-+           if (MouseInModdedUI == null && inUse)
-+				MouseInModdedUI = reservationID;
-+           else if (MouseInModdedUI == reservationID && !inUse)
-+				MouseInModdedUI = null;
++		/// Locks the vanilla scrollbar for the upcoming cycle when called. Autoclears in Player.
++		/// Takes parameter myUI which is used to 
++		public static void LockVanillaMouseScroll(string myUI) {
++			if (!MouseInModdedUI.Contains(myUI))
++				MouseInModdedUI.Add(myUI);
  		}
  	}
  }
