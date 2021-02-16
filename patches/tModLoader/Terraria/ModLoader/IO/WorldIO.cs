@@ -29,7 +29,8 @@ namespace Terraria.ModLoader.IO
 				["killCounts"] = SaveNPCKillCounts(),
 				["anglerQuest"] = SaveAnglerQuest(),
 				["townManager"] = SaveTownManager(),
-				["modData"] = SaveModData()
+				["modData"] = SaveModSystemData(),
+				["eventData"] = SaveModEventData()
 			};
 
 			var stream = new MemoryStream();
@@ -68,7 +69,8 @@ namespace Terraria.ModLoader.IO
 			LoadAnglerQuest(tag.GetCompound("anglerQuest"));
 			LoadTownManager(tag.GetList<TagCompound>("townManager"));
 			try {
-				LoadModData(tag.GetList<TagCompound>("modData"));
+				LoadModSystemData(tag.GetList<TagCompound>("modData"));
+				LoadModEventData(tag.GetList<TagCompound>("eventData"));
 			}
 			catch (CustomModDataException e) {
 				customDataFail = e;
@@ -255,7 +257,7 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static List<TagCompound> SaveModData() {
+		internal static List<TagCompound> SaveModSystemData() {
 			var list = new List<TagCompound>();
 
 			foreach (var system in SystemHooks.Systems) {
@@ -274,7 +276,7 @@ namespace Terraria.ModLoader.IO
 			return list;
 		}
 
-		internal static void LoadModData(IList<TagCompound> list) {
+		internal static void LoadModSystemData(IList<TagCompound> list) {
 			foreach (var tag in list) {
 				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModSystem system)) {
 					try {
@@ -287,6 +289,70 @@ namespace Terraria.ModLoader.IO
 				}
 				else {
 					ModContent.GetInstance<UnloadedSystem>().data.Add(tag);
+				}
+			}
+		}
+
+		internal static List<TagCompound> SaveModEventData() {
+			var list = new List<TagCompound>();
+
+			foreach (var modEvent in ModEventLoader.ModEvents) {
+				var data = modEvent.Save();
+
+				ModInvasion modInvasion = modEvent as ModInvasion;
+
+				list.Add(new TagCompound {
+					["mod"] = modEvent.Mod.Name,
+					["name"] = modEvent.Name,
+					["active"] = modEvent.Active,
+					["isInvasion"] = modInvasion != null,
+					["progress"] = modInvasion != null ? modInvasion.Progress : -1f,
+					["data"] = data
+				});
+			}
+
+			return list;
+		}
+
+		internal static void LoadModEventData(IList<TagCompound> list) {
+			UnloadedEvent unloadedEvent = ModContent.GetInstance<UnloadedEvent>();
+
+			if (unloadedEvent.data == null)
+				unloadedEvent.data = new List<TagCompound>();
+
+			foreach (var tag in list) {
+				bool isInvasion = tag.GetBool("isInvasion");
+
+				if (isInvasion) {
+					if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModInvasion modInvasion)) {
+						try {
+							modInvasion.Active = tag.GetBool("active");
+							modInvasion.Progress = tag.GetFloat("progress");
+							modInvasion.Load(tag.GetCompound("data"));
+						}
+						catch (Exception e) {
+							throw new CustomModDataException(modInvasion.Mod,
+								"Error in reading custom invasion data for " + modInvasion.Mod.Name, e);
+						}
+					}
+					else {
+						ModContent.GetInstance<UnloadedEvent>().data.Add(tag);
+					}
+				}
+				else {
+					if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModEvent modEvent)) {
+						try {
+							modEvent.Active = tag.GetBool("active");
+							modEvent.Load(tag.GetCompound("data"));
+						}
+						catch (Exception e) {
+							throw new CustomModDataException(modEvent.Mod,
+								"Error in reading custom event data for " + modEvent.Mod.Name, e);
+						}
+					}
+					else {
+						ModContent.GetInstance<UnloadedEvent>().data.Add(tag);
+					}
 				}
 			}
 		}

@@ -25,7 +25,7 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void LoadWorldData(TagCompound tag) {
-			WorldIO.LoadModData(tag.GetList<TagCompound>("list"));
+			WorldIO.LoadModSystemData(tag.GetList<TagCompound>("list"));
 			WorldIO.LoadNPCs(tag.GetList<TagCompound>("unloadedNPCs"));
 			WorldIO.LoadNPCKillCounts(tag.GetList<TagCompound>("unloadedKillCounts"));
 		}

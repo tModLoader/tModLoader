@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
@@ -15,6 +16,10 @@ namespace Terraria.ModLoader
 		protected virtual void EndEvent() { }
 
 		protected internal virtual void Update() { }
+
+		public virtual TagCompound Save() => null;
+
+		public virtual void Load(TagCompound tag) { }
 
 		public void Start() {
 			Active = true;
