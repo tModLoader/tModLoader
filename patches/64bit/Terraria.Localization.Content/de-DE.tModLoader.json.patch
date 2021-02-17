@@ -5,7 +5,7 @@
  		"ServerCrash": "Server crash: {0}\n{1}\n\nBitte checke server.log um festzustellen ob eine Mod daran schuld ist, ansonsten gehe in den #support Kanal im tModLoader Discord!"
  
 +		// Misc. 64bit
-+		//"XL": "XL",
++		//"XL": "Extra Large",
 +		//"Support": "Support",
 +		//"64bitDiscord": "tModLoader 64bit Discord",
 +		//"tModDiscord": "Official tModLoader Discord",
