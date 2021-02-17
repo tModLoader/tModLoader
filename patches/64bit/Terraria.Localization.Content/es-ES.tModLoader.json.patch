@@ -5,7 +5,7 @@
  		"ServerCrash": "Servidor caído: {0}\n{1}\n\nPor favor, comprueba server.log para determinar si el responsable es un mod. En caso contrario, dirígete a #support en el Discord de tModLoader",
  
 +		// Misc. 64bit
-+		//"XL": "XL",
++		//"XL": "Extra Large",
 +		//"Support": "Support",
 +		//"64bitDiscord": "tModLoader 64bit Discord",
 +		//"tModDiscord": "Official tModLoader Discord",
