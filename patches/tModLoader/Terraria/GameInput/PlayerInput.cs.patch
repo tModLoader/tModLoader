@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameInput/PlayerInput.cs
 +++ src/tModLoader/Terraria/GameInput/PlayerInput.cs
-@@ -8,6 +_,7 @@
+@@ -8,13 +_,14 @@
  using Terraria.GameContent.UI.Chat;
  using Terraria.GameContent.UI.States;
  using Terraria.ID;
@@ -8,6 +8,14 @@
  using Terraria.Social;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
+ 
+ namespace Terraria.GameInput
+ {
+-	public class PlayerInput
++	public partial class PlayerInput
+ 	{
+ 		public class MiscSettingsTEMP
+ 		{
 @@ -26,6 +_,9 @@
  		public static List<string> KnownTriggers = new List<string> {
  			"MouseLeft",
@@ -179,20 +187,3 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Up"].Add("Up");
  							c.KeyStatus["Down"].Add("S");
-@@ -1935,6 +_,16 @@
- 			Main.mouseY = (int)((float)_originalMouseY * scale);
- 			Main.screenWidth = (int)((float)_originalScreenWidth * scale);
- 			Main.screenHeight = (int)((float)_originalScreenHeight * scale);
-+		}
-+
-+		internal static List<string> MouseInModdedUI = new List<string>();
-+		/// <summary>
-+		/// Locks the vanilla scrollbar for the upcoming cycle when called. Autoclears in Player.
-+		/// Takes a string to denote that your UI has registered to lock vanilla scrolling.
-+		/// </summary>
-+		public static void LockVanillaMouseScroll(string myUI) {
-+			if (!MouseInModdedUI.Contains(myUI))
-+				MouseInModdedUI.Add(myUI);
- 		}
- 	}
- }

@@ -1,45 +1,11 @@
 --- src/Terraria/Terraria/GameContent/UI/Elements/UIScrollbar.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIScrollbar.cs
-@@ -2,6 +_,7 @@
- using Microsoft.Xna.Framework.Graphics;
- using ReLogic.Content;
- using Terraria.Audio;
-+using Terraria.GameInput;
- using Terraria.UI;
+@@ -6,7 +_,7 @@
  
  namespace Terraria.GameContent.UI.Elements
-@@ -100,6 +_,34 @@
- 		public override void MouseUp(UIMouseEvent evt) {
- 			base.MouseUp(evt);
- 			_isDragging = false;
-+		}
-+
-+		public override void MouseOver(UIMouseEvent evt) {
-+			base.MouseOver(evt);
-+			PlayerInput.LockVanillaMouseScroll();
-+		}
-+	}
-+
-+	public class FixedUIScrollbar : UIScrollbar
-+	{
-+		UserInterface userInterface;
-+
-+		public FixedUIScrollbar(UserInterface userInterface) {
-+			this.userInterface = userInterface;
-+		}
-+
-+		protected override void DrawSelf(SpriteBatch spriteBatch) {
-+			UserInterface temp = UserInterface.ActiveInstance;
-+			UserInterface.ActiveInstance = userInterface;
-+			base.DrawSelf(spriteBatch);
-+			UserInterface.ActiveInstance = temp;
-+		}
-+
-+		public override void MouseDown(UIMouseEvent evt) {
-+			UserInterface temp = UserInterface.ActiveInstance;
-+			UserInterface.ActiveInstance = userInterface;
-+			base.MouseDown(evt);
-+			UserInterface.ActiveInstance = temp;
- 		}
- 	}
- }
+ {
+-	public class UIScrollbar : UIElement
++	public partial class UIScrollbar : UIElement
+ 	{
+ 		private float _viewPosition;
+ 		private float _viewSize = 1f;

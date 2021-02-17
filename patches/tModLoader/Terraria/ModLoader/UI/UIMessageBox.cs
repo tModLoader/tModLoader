@@ -103,7 +103,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void MouseOver(UIMouseEvent evt) {
 			base.MouseOver(evt);
-			PlayerInput.LockVanillaMouseScroll();
+			PlayerInput.LockVanillaMouseScroll("modloader/UIMessageBox");
 		}
 
 		public override void ScrollWheel(UIScrollWheelEvent evt) {

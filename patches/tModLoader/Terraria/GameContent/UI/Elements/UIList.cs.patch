@@ -1,62 +1,23 @@
 --- src/Terraria/Terraria/GameContent/UI/Elements/UIList.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIList.cs
-@@ -3,6 +_,7 @@
- using System;
- using System.Collections;
- using System.Collections.Generic;
-+using Terraria.GameInput;
- using Terraria.UI;
+@@ -7,7 +_,7 @@
  
  namespace Terraria.GameContent.UI.Elements
+ {
+-	public class UIList : UIElement, IEnumerable<UIElement>, IEnumerable
++	public partial class UIList : UIElement, IEnumerable<UIElement>, IEnumerable
+ 	{
+ 		public delegate bool ElementSearchMethod(UIElement element);
+ 
 @@ -29,9 +_,9 @@
  			public override Rectangle GetViewCullingArea() => base.Parent.GetDimensions().ToRectangle();
  		}
  
 -		protected List<UIElement> _items = new List<UIElement>();
-+		public List<UIElement> _items = new List<UIElement>();
++		internal List<UIElement> _items = new List<UIElement>();
  		protected UIScrollbar _scrollbar;
 -		private UIElement _innerList = new UIInnerList();
 +		internal UIElement _innerList = new UIInnerList();
  		private float _innerListHeight;
  		public float ListPadding = 5f;
  		public Action<List<UIElement>> ManualSortMethod;
-@@ -65,6 +_,11 @@
- 			_scrollbar.ViewPosition = _items[num].Top.Pixels;
- 		}
- 
-+		public float ViewPosition {
-+			get => _scrollbar.ViewPosition;
-+			set => _scrollbar.ViewPosition = value;
-+		}
-+
- 		public virtual void Add(UIElement item) {
- 			_items.Add(item);
- 			_innerList.Append(item);
-@@ -72,6 +_,15 @@
- 			_innerList.Recalculate();
- 		}
- 
-+		public virtual void AddRange(IEnumerable<UIElement> items) {
-+			_items.AddRange(items);
-+			foreach (var item in items)
-+				_innerList.Append(item);
-+
-+			UpdateOrder();
-+			_innerList.Recalculate();
-+		}
-+
- 		public virtual bool Remove(UIElement item) {
- 			_innerList.RemoveChild(item);
- 			UpdateOrder();
-@@ -86,6 +_,11 @@
- 		public override void Recalculate() {
- 			base.Recalculate();
- 			UpdateScrollbar();
-+		}
-+
-+		public override void MouseOver(UIMouseEvent evt) {
-+			base.MouseOver(evt);
-+			PlayerInput.LockVanillaMouseScroll();
- 		}
- 
- 		public override void ScrollWheel(UIScrollWheelEvent evt) {
