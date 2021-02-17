@@ -329,6 +329,9 @@ namespace Terraria.ModLoader.IO
 							modInvasion.Active = tag.GetBool("active");
 							modInvasion.Progress = tag.GetFloat("progress");
 							modInvasion.Load(tag.GetCompound("data"));
+
+							if (modInvasion.Active)
+								Main.invasionDisplays[modInvasion.Type] = new ModInvasion.ModInvasionProgressDisplay(160, 0f);
 						}
 						catch (Exception e) {
 							throw new CustomModDataException(modInvasion.Mod,
