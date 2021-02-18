@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameInput;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
@@ -55,6 +56,11 @@ namespace Terraria.ModLoader.Config.UI
 	{
 		public NestedUIList() {
 			//OverflowHidden = false;
+		}
+
+		public override void MouseOver(UIMouseEvent evt) {
+			base.MouseOver(evt);
+			PlayerInput.LockVanillaMouseScroll("ModLoader/ListElement");
 		}
 
 		public override void ScrollWheel(UIScrollWheelEvent evt) {
