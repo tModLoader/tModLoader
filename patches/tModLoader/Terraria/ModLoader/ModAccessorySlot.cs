@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria.UI;
 
 //NOTE: Does not fully support: ItemLoader.GetGamepadInstructions and related gamepad stuff.
@@ -11,44 +10,30 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModAccessorySlot : ModType
 	{
-		internal virtual bool skipRegister => false;
+		// Suppresses adding it to AccessorySlotLoader.moddedAccSlots. Used internally for UnloadedSlots
+		internal virtual bool suppressUnloadedSlot => false;
 
 		internal int slot;
 		internal int index;
 
-		// Setting toggle for stack or scroll accessories/npcHousing
-		internal static bool scrollSlots = true;
-		internal static int scrollbarSlotPosition = 0;
+		// Fields to preset a location for the accessory slot
+		public virtual int XLoc => 0;
+		public virtual int YLoc => 0;
+				
+		protected sealed override void Register() {
+			ModTypeLookup<ModAccessorySlot>.Register(this);
 
-		// List of registered identifiers for modded accessory slots. Used in DefaultPlayer.
-		internal static List<string> moddedAccSlots = new List<string>();
-
-		/// <summary>
-		/// Called when the ModAccessorySlot is registered. Registers to parent list.
-		/// Requests for a modded Slot, and stores assigned Slot. DefaultPlayer will auto-manage the items themselves.
-		/// </summary>
-		internal protected void Initialize() {
-			if (skipRegister) {
+			if (suppressUnloadedSlot) {
 				return;
 			}
 
-			int pendingID = ModAccessorySlot.moddedAccSlots.IndexOf(this.FullName);
+			int pendingID = AccessorySlotLoader.moddedAccSlots.IndexOf(this.FullName);
 			if (pendingID < 0) {
-				pendingID = ModAccessorySlot.moddedAccSlots.Count;
-				ModAccessorySlot.moddedAccSlots.Add(this.FullName);
+				pendingID = AccessorySlotLoader.moddedAccSlots.Count;
+				AccessorySlotLoader.moddedAccSlots.Add(this.FullName);
 			}
 
 			this.slot = pendingID;
-		}
-
-		protected sealed override void Register() {
-			ModTypeLookup<ModAccessorySlot>.Register(this);
-			this.Initialize();
-		}
-
-		internal void DrawRedirect(Item[] inv, int context, int slot, Vector2 position) {
-			if (!this.DrawModded(inv, context, slot, position))
-				ItemSlot.Draw(Main.spriteBatch, inv, context, slot, position); 
 		}
 
 		/// <summary>
@@ -60,14 +45,15 @@ namespace Terraria.ModLoader
 		/// <para><paramref name="position"/> :: is the position of where the ItemSlot will be drawn </para>
 		/// <para><paramref name="context"/> :: 12 => dye; 11 => vanity; 10 => functional </para>
 		/// </summary>
-		public virtual bool DrawModded(Item[] inv, int context, int slot, Vector2 position) {
-			return false;
+		public virtual void DrawModded(Item[] inv, int context, int slot, Vector2 position) {
+			ItemSlot.Draw(Main.spriteBatch, inv, context, slot, position);
 		}
 
 		/// <summary>
-		/// Override to set conditions on when the slot is available, Example: the demonHeart is consumed and in Expert mode in Vanilla.
+		/// Override to set conditions on when the slot is visible. Does not force visbility if an item is in the slot by default.
+		/// Example: the demonHeart is consumed and in Expert mode in Vanilla.
 		/// </summary>
-		public virtual bool CanUseSlot() {
+		public virtual bool IsSlotVisible() {
 			return true;
 		}
 
@@ -76,7 +62,7 @@ namespace Terraria.ModLoader
 		/// Receives data:
 		/// <para><paramref name="checkItem"/> :: the item that is attempting to enter the slot </para>
 		/// </summary>
-		public virtual bool LimitWhatCanGoInSlot(Item checkItem) {
+		public virtual bool SlotCanAcceptItem(Item checkItem) {
 			return true;
 		}
 	}

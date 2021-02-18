@@ -2,7 +2,7 @@ namespace Terraria.ModLoader.Default
 {
 	public class UnloadedAccessorySlot : ModAccessorySlot
 	{
-		internal override bool skipRegister => true;
+		internal override bool suppressUnloadedSlot => true;
 
 		public override string Name { get; }
 
@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.Default
 			this.Name = "UnloadedAccessorySlot" + slot.ToString();
 		}
 
-		public override bool CanUseSlot() { 
+		public override bool IsSlotVisible() { 
 			return false;
 		}
 	}

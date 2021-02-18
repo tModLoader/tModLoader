@@ -50,10 +50,12 @@
  					return;
  			}
  
-@@ -437,6 +_,8 @@
+@@ -437,6 +_,10 @@
  			if (num != 3 && !flag)
  				return;
  
++			// context is received as signed integer; negative numbers are modded, positive are vanilla. Zero is mouse
++			// As the code to follow is independant of modded or vanilla, we use absolute to minimize patch size.
 +			context = Math.Abs(context);
 +
  			switch (num) {
@@ -116,7 +118,7 @@
  					break;
 +				case -10:
 +				case -11:
-+					if (checkItem.type == 0 || (checkItem.accessory && EquipLoader.ModSlotCheck(checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && AccessorySlotLoader.ModSlotCheck(checkItem, slot)))
 +						result = 1;
 +					break;
  				case 24:
@@ -283,14 +285,14 @@
 +					case -10:
 +					case -11:
 +						int num3M = slot;
-+						if (!EquipLoader.ModdedIsAValidEquipmentSlotForIteration(slot))
++						if (!AccessorySlotLoader.ModdedIsAValidEquipmentSlotForIteration(slot))
 +							num3M--;
 +
 +						num = 100 + num3M;
 +						break;
 +					case -12:
 +						int num4M = slot;
-+						if (!EquipLoader.ModdedIsAValidEquipmentSlotForIteration(slot))
++						if (!AccessorySlotLoader.ModdedIsAValidEquipmentSlotForIteration(slot))
 +							num4M--;
 +
 +						num = 120 + num4M;
@@ -399,7 +401,7 @@
  
  			if (dyeSlotCount >= 10)
 +			{
-+				item2 = EquipLoader.VanillaDyeSwapMirror(item, out success);
++				item2 = AccessorySlotLoader.VanillaDyeSwapMirror(item, out success);
 +				if (success)
 +					return item2;
 +
@@ -424,7 +426,7 @@
 +
  				if (accSlotToSwapTo > num2)
 +				{
-+					result = EquipLoader.VanillaArmorSwapMirror(item, out success);
++					result = AccessorySlotLoader.VanillaArmorSwapMirror(item, out success);
 +					if (success) {
 +						return result;
 +					}

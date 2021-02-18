@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Terraria.ModLoader.Default
 {
-	public class DefaultPlayer : ModPlayer
+	public class ModAccessorySlotPlayer : ModPlayer
 	{
 		public override bool CloneNewInstances => false;
 
@@ -14,16 +14,20 @@ namespace Terraria.ModLoader.Default
 		internal Item[] exDyesAccessory = new Item[1];
 		internal bool[] exHideAccessory = new bool[1];
 
-		public DefaultPlayer() {
+		// Setting toggle for stack or scroll accessories/npcHousing
+		internal bool scrollSlots = true;
+		internal int scrollbarSlotPosition = 0;
+
+		public ModAccessorySlotPlayer() {
 			exAccessorySlot = new Item[2] { new Item(), new Item() };
 			exDyesAccessory = new Item[1] { new Item() };
 			exHideAccessory = new bool[1] { false };
-			this.ResizeAccesoryArrays(ModAccessorySlot.moddedAccSlots.Count);
+			this.ResizeAccesoryArrays(AccessorySlotLoader.moddedAccSlots.Count);
 		}
 		
 		public override TagCompound Save() {
 			return new TagCompound {
-				["size"] = ModAccessorySlot.moddedAccSlots.Count,
+				["size"] = AccessorySlotLoader.moddedAccSlots.Count,
 				["items"] = exAccessorySlot.Select(ItemIO.Save).ToList(),
 				["dyes"] = exDyesAccessory.Select(ItemIO.Save).ToList(),
 				["visible"] = exHideAccessory.ToList()
@@ -47,11 +51,11 @@ namespace Terraria.ModLoader.Default
 				exAccessorySlot[i * 2 + 1] = new Item();
 			}
 
-			if (newSize == ModAccessorySlot.moddedAccSlots.Count) {
+			if (newSize == AccessorySlotLoader.moddedAccSlots.Count) {
 				return;
 			}
 			for (int i = oldLen; i < newSize; i++) {
-				ModAccessorySlot.moddedAccSlots.Add("unloaded");
+				AccessorySlotLoader.moddedAccSlots.Add("unloaded");
 			}
 		}
 
@@ -65,7 +69,7 @@ namespace Terraria.ModLoader.Default
 
 		// The following netcode is adapted from Chicken-Bone's UtilitySlots:
 		public override void clientClone(ModPlayer clientClone) {
-			var defaultInv = (DefaultPlayer)clientClone;
+			var defaultInv = (ModAccessorySlotPlayer)clientClone;
 			for (int i = 0; i < exAccessorySlot.Length; i++)
 				defaultInv.exAccessorySlot[i] = exAccessorySlot[i].Clone();
 			for (int i = 0; i < exDyesAccessory.Length; i++) {
@@ -85,7 +89,7 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void SendClientChanges(ModPlayer clientPlayer) {
-			var clientInv = (DefaultPlayer)clientPlayer;
+			var clientInv = (ModAccessorySlotPlayer)clientPlayer;
 			for (int i = 0; i < exAccessorySlot.Length; i++)
 				if (exAccessorySlot[i].IsNotTheSameAs(clientInv.exAccessorySlot[i]))
 					NetHandler.SendSlot(-1, Player.whoAmI, i, exAccessorySlot[i]);
@@ -122,7 +126,7 @@ namespace Terraria.ModLoader.Default
 				if (Main.netMode == 1)
 					fromWho = r.ReadByte();
 
-				DefaultPlayer dPlayer = Main.player[fromWho].GetModPlayer<DefaultPlayer>();
+				var dPlayer = Main.player[fromWho].GetModPlayer<ModAccessorySlotPlayer>();
 
 				sbyte slot = r.ReadSByte();
 				var item = ItemIO.Receive(r, true);
@@ -151,7 +155,7 @@ namespace Terraria.ModLoader.Default
 				if (Main.netMode == 1)
 					fromWho = r.ReadByte();
 
-				DefaultPlayer dPlayer = Main.player[fromWho].GetModPlayer<DefaultPlayer>();
+				var dPlayer = Main.player[fromWho].GetModPlayer<ModAccessorySlotPlayer>();
 
 				sbyte slot = r.ReadSByte();
 				
@@ -172,7 +176,7 @@ namespace Terraria.ModLoader.Default
 				}
 			}
 
-			public static void SetSlot(sbyte slot, Item item, DefaultPlayer dPlayer) {
+			public static void SetSlot(sbyte slot, Item item, ModAccessorySlotPlayer dPlayer) {
 				if (slot < 0)
 					dPlayer.exDyesAccessory[-(slot + 1)] = item;
 				else
