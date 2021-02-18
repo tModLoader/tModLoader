@@ -104,7 +104,7 @@ namespace Terraria.ModLoader.UI.Elements
 
 		public override void MouseOver(UIMouseEvent evt) {
 			base.MouseOver(evt);
-			PlayerInput.LockVanillaMouseScroll("modloader/UIGrid");
+			PlayerInput.LockVanillaMouseScroll("ModLoader/UIGrid");
 		}
 
 		public override void ScrollWheel(UIScrollWheelEvent evt) {

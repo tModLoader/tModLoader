@@ -23,7 +23,7 @@ namespace Terraria.GameContent.UI.Elements
 
 		public override void MouseOver(UIMouseEvent evt) {
 			base.MouseOver(evt);
-			PlayerInput.LockVanillaMouseScroll("modloader/UIList");
+			PlayerInput.LockVanillaMouseScroll("ModLoader/UIList");
 		}
 	}
 }
