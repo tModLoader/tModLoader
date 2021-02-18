@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameInput/PlayerInput.cs
 +++ src/tModLoader/Terraria/GameInput/PlayerInput.cs
-@@ -8,6 +_,7 @@
+@@ -8,13 +_,14 @@
  using Terraria.GameContent.UI.Chat;
  using Terraria.GameContent.UI.States;
  using Terraria.ID;
@@ -8,6 +8,14 @@
  using Terraria.Social;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
+ 
+ namespace Terraria.GameInput
+ {
+-	public class PlayerInput
++	public partial class PlayerInput
+ 	{
+ 		public class MiscSettingsTEMP
+ 		{
 @@ -26,6 +_,9 @@
  		public static List<string> KnownTriggers = new List<string> {
  			"MouseLeft",

@@ -2255,7 +2255,7 @@
  						}
  						else if (!flag8) {
 +							if (PlayerInput.MouseInModdedUI.Count > 0) {
-+								// Do Nothing
++								//Do nothing
 +							}
 -							if (!Main.playerInventory) {
 +							else if (!Main.playerInventory) {

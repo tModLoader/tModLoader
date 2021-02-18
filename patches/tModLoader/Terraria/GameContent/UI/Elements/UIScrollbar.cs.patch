@@ -1,41 +1,11 @@
 --- src/Terraria/Terraria/GameContent/UI/Elements/UIScrollbar.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIScrollbar.cs
-@@ -56,7 +_,7 @@
- 			return new Rectangle((int)innerDimensions.X, (int)(innerDimensions.Y + innerDimensions.Height * (_viewPosition / _maxViewSize)) - 3, 20, (int)(innerDimensions.Height * (_viewSize / _maxViewSize)) + 7);
- 		}
+@@ -6,7 +_,7 @@
  
--		private void DrawBar(SpriteBatch spriteBatch, Texture2D texture, Rectangle dimensions, Color color) {
-+		internal void DrawBar(SpriteBatch spriteBatch, Texture2D texture, Rectangle dimensions, Color color) {
- 			spriteBatch.Draw(texture, new Rectangle(dimensions.X, dimensions.Y - 6, dimensions.Width, 6), new Rectangle(0, 0, texture.Width, 6), color);
- 			spriteBatch.Draw(texture, new Rectangle(dimensions.X, dimensions.Y, dimensions.Width, dimensions.Height), new Rectangle(0, 6, texture.Width, 4), color);
- 			spriteBatch.Draw(texture, new Rectangle(dimensions.X, dimensions.Y + dimensions.Height, dimensions.Width, 6), new Rectangle(0, texture.Height - 6, texture.Width, 6), color);
-@@ -100,6 +_,29 @@
- 		public override void MouseUp(UIMouseEvent evt) {
- 			base.MouseUp(evt);
- 			_isDragging = false;
-+		}
-+	}
-+
-+	public class FixedUIScrollbar : UIScrollbar
-+	{
-+		UserInterface userInterface;
-+
-+		public FixedUIScrollbar(UserInterface userInterface) {
-+			this.userInterface = userInterface;
-+		}
-+
-+		protected override void DrawSelf(SpriteBatch spriteBatch) {
-+			UserInterface temp = UserInterface.ActiveInstance;
-+			UserInterface.ActiveInstance = userInterface;
-+			base.DrawSelf(spriteBatch);
-+			UserInterface.ActiveInstance = temp;
-+		}
-+
-+		public override void MouseDown(UIMouseEvent evt) {
-+			UserInterface temp = UserInterface.ActiveInstance;
-+			UserInterface.ActiveInstance = userInterface;
-+			base.MouseDown(evt);
-+			UserInterface.ActiveInstance = temp;
- 		}
- 	}
- }
+ namespace Terraria.GameContent.UI.Elements
+ {
+-	public class UIScrollbar : UIElement
++	public partial class UIScrollbar : UIElement
+ 	{
+ 		private float _viewPosition;
+ 		private float _viewSize = 1f;
