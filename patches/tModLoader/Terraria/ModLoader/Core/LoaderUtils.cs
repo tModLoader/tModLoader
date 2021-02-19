@@ -25,7 +25,7 @@ namespace Terraria.ModLoader.Core
 				field.SetValue(typeInitializer, previousValue);
 			}
 #else
-			type.TypeInitializer.Invoke(null, null);
+			type.TypeInitializer?.Invoke(null, null);
 #endif
 
 			if (recursive) {
