@@ -125,6 +125,7 @@ jobs:
           ls -l
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
           
       - uses: actions/upload-artifact@v2
         with:
