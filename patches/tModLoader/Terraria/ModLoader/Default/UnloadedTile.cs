@@ -96,7 +96,7 @@ namespace Terraria.ModLoader.Default
 			var posIndex = new UnloadedPosIndexing(i, j);
 
 			//NOTE: Onwards only works in singleplayer, as the lists aren't synced afaik.
-			int infoID = posIndex.FloorGetValue(TileIO.tileInfoMap.ToArray());
+			int infoID = posIndex.FloorGetValue(TileIO.tileInfoMap);
 			var infos = modSystem.tileInfos;
 
 			if (infoID < infos.Count) {

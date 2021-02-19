@@ -77,8 +77,8 @@ namespace Terraria.ModLoader.IO
 		/// <summary>
 		/// Use a dictionary mapping coordinates of tile infos from <see cref="tileInfos"/>
 		/// </summary>
-		internal static List<posMap> tileInfoMap = new List<posMap>();
-		internal static List<posMap> prevTileInfoMap = new List<posMap>();
+		internal static posMap[] tileInfoMap;
+		internal static posMap[] prevTileInfoMap;
 
 		/// <summary>
 		/// Wall-<see cref="UnloadedInfo"/>s that are not able to be restored in the current state of the world (and saved for the next world load)
@@ -88,8 +88,8 @@ namespace Terraria.ModLoader.IO
 		/// <summary>
 		/// Use a dictionary mapping coordinates of walls infos from <see cref="wallInfos"/>
 		/// </summary>
-		internal static List<posMap> wallInfoMap = new List<posMap>();
-		internal static List<posMap> prevWallInfoMap = new List<posMap>();
+		internal static posMap[] wallInfoMap;
+		internal static posMap[] prevWallInfoMap;
 
 		internal static int[] unloadedTileIDs = new int[5];
 
@@ -244,16 +244,21 @@ namespace Terraria.ModLoader.IO
 			}
 
 			if (tag.ContainsKey("tileInfoMap")) {
-				UpdateMaps(tag.GetList<TagCompound>("tileInfoMap"), prevTileInfoMap);
-				UpdateMaps(tag.GetList<TagCompound>("wallInfoMap"), prevWallInfoMap);
+				UpdateMaps(tag.GetList<TagCompound>("tileInfoMap"), ref prevTileInfoMap);
+				UpdateMaps(tag.GetList<TagCompound>("wallInfoMap"), ref prevWallInfoMap);
 			}
+
+			List<posMap> wallMap = new List<posMap>();
+			List<posMap> tileMap = new List<posMap>();
 
 			// Retrieve Locational-Specific Data from 'Data' and apply
 			using (var memoryStream = new MemoryStream(tag.GetByteArray("data")))
 			using (var reader = new BinaryReader(memoryStream))
-				ReadTileData(reader, tables);
+				ReadTileData(reader, tables, ref wallMap, ref tileMap);
 
 			// Validate Load
+			wallInfoMap = wallMap.ToArray();
+			tileInfoMap = tileMap.ToArray();
 			WorldIO.ValidateSigns();
 		}
 
@@ -295,7 +300,7 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static void ReadTileData(BinaryReader reader, TileTables tables) {
+		internal static void ReadTileData(BinaryReader reader, TileTables tables, ref List<posMap> wallMap, ref List<posMap> tileMap) {
 			int i = 0;
 			int j = 0;
 			byte skip;
@@ -328,7 +333,7 @@ namespace Terraria.ModLoader.IO
 				}
 
 				// Load modded tiles
-				ReadModTile(ref i, ref j, tables, reader, ref nextModTile);
+				ReadModTile(ref i, ref j, tables, reader, ref nextModTile, ref wallMap, ref tileMap);
 			}
 			while (NextTile(ref i, ref j));
 		}
@@ -425,7 +430,7 @@ namespace Terraria.ModLoader.IO
 			writer.Write(data, 0, index);
 		}
 
-		internal static void ReadModTile(ref int i, ref int j, TileTables tables, BinaryReader reader, ref bool nextModTile) {
+		internal static void ReadModTile(ref int i, ref int j, TileTables tables, BinaryReader reader, ref bool nextModTile, ref List<posMap> wallMap, ref List<posMap> tileMap) {
 			// Access Stored 8bit Flags
 			byte flags;
 			flags = reader.ReadByte();
@@ -474,10 +479,10 @@ namespace Terraria.ModLoader.IO
 					// Update Unloaded Tile Position Map
 					if (tabData.name != null) {
 						info = new UnloadedInfo(tabData.modName, tabData.name, tabData.fallbackID);
-						posIndexer.MapPosToInfo(tileInfos, tileInfoMap, info: info);
+						posIndexer.MapPosToInfo(tileInfos, tileMap, info: info);
 					}
 					else {
-						posIndexer.MapPosToInfo(tileInfos, tileInfoMap, prevTileInfoMap); 
+						posIndexer.MapPosToInfo(tileInfos, tileMap, prevTileInfoMap); 
 					}
 				}
 
@@ -498,10 +503,10 @@ namespace Terraria.ModLoader.IO
 					// Update Unloaded Wall Position Map
 					if (tabData.name != null) {
 						info = new UnloadedInfo(tabData.modName, tabData.name, tabData.fallbackID);
-						posIndexer.MapPosToInfo(wallInfos, wallInfoMap, info: info);
+						posIndexer.MapPosToInfo(wallInfos, wallMap, info: info);
 					}
 					else {
-						posIndexer.MapPosToInfo(wallInfos, wallInfoMap, prevWallInfoMap);
+						posIndexer.MapPosToInfo(wallInfos, wallMap, prevWallInfoMap);
 					}
 				}
 			}
@@ -554,14 +559,15 @@ namespace Terraria.ModLoader.IO
 			return "ModLoader/UnloadedTile";
 		}
 
-		public static void UpdateMaps(IList<TagCompound> list, List<posMap> prevPosMap) {
-			prevPosMap.Clear();
+		public static void UpdateMaps(IList<TagCompound> list, ref posMap[] prevPosMap) {
+			List<posMap> tempList = new List<posMap>();
 			foreach (var posTag in list) {
-				prevPosMap.Add(new posMap {
+				tempList.Add(new posMap {
 					posID = posTag.Get<int>("posID"),
 					infoID = posTag.Get<ushort>("infoID")
 				});
 			}
+			prevPosMap = tempList.ToArray();
 		}
 
 		//*********** Containers (*annequin) Save, Load, and Placeholder Implementations ***********************************//

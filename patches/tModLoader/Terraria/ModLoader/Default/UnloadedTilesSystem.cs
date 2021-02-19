@@ -37,7 +37,7 @@ namespace Terraria.ModLoader.Default
 			Updater.Restore(TileIO.tileInfoMap);
 
 			TileIO.tileInfos.Clear();
-			TileIO.prevTileInfoMap.Clear();
+			TileIO.prevTileInfoMap = null;
 
 			// Process Walls
 			wallInfos.AddRange(TileIO.wallInfos);
@@ -47,7 +47,7 @@ namespace Terraria.ModLoader.Default
 			Updater.Restore(TileIO.wallInfoMap);
 
 			TileIO.wallInfos.Clear();
-			TileIO.prevWallInfoMap.Clear();
+			TileIO.prevWallInfoMap = null;
 		}
 	}
 }

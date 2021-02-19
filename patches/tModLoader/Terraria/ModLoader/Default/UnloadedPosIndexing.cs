@@ -23,10 +23,10 @@ namespace Terraria.ModLoader.Default
 			posX = posID / Main.maxTilesY;
 		}
 
-		public void MapPosToInfo(List<UnloadedInfo> infos, List<TileIO.posMap> posMap, List<TileIO.posMap> prevPosMap = null, UnloadedInfo info = null)  {
+		public void MapPosToInfo(List<UnloadedInfo> infos, List<TileIO.posMap> posMap, TileIO.posMap[] prevPosMap = null, UnloadedInfo info = null)  {
 			ushort pendingID = 0;
-			if (info == null && prevPosMap.Count > 0) {
-				pendingID = (ushort) (FloorGetValue(prevPosMap.ToArray()) + infos.Count);
+			if (info == null && prevPosMap != null) {
+				pendingID = (ushort) (FloorGetValue(prevPosMap) + infos.Count);
 			}
 			else {
 				pendingID = (ushort) infos.IndexOf(info);

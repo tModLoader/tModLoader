@@ -7,7 +7,7 @@ namespace Terraria.ModLoader.Default
 {
 	internal class UpdateUnloaded
 	{
-		internal static bool canRestoreFlag;
+		internal bool canRestoreFlag = false;
 		internal readonly List<ushort> canRestore = new List<ushort>();
 		internal readonly List<UnloadedInfo> infos;
 		private byte context;
@@ -84,23 +84,21 @@ namespace Terraria.ModLoader.Default
 		}
 
 		//NOTE: Can this be simplified further?
-		public void Restore(List<TileIO.posMap> posMap ) {
+		public void Restore(TileIO.posMap[] posMap ) {
 			if (!canRestoreFlag)
 				return;
 
-			var posMapArray = posMap.ToArray();
-
-			for (int i = 0; i < posMapArray.Length; i++) {
-				var posIndex = new UnloadedPosIndexing(posMapArray[i].posID);
+			for (int i = 0; i < posMap.Length; i++) {
+				var posIndex = new UnloadedPosIndexing(posMap[i].posID);
 				posIndex.GetCoords(out int x, out int y);
 
 				int nextX = 0, nextY = 0;
-				if (i < posMapArray.Length - 1) {
-					posIndex = new UnloadedPosIndexing(posMapArray[i + 1].posID);
+				if (i < posMap.Length - 1) {
+					posIndex = new UnloadedPosIndexing(posMap[i + 1].posID);
 					posIndex.GetCoords(out nextX, out nextY);
 				}
 
-				int infoID = posMapArray[i].infoID;
+				int infoID = posMap[i].infoID;
 
 				ushort restoreID = canRestore[infoID];
 				if (restoreID <= 0) {
@@ -133,37 +131,28 @@ namespace Terraria.ModLoader.Default
 							break;
 
 						tile = Main.tile[x, y];
+
 					} while (tile.wall == uID && !(x == nextX && y == nextY));
 				}
 			}
 
-			this.CleanupMaps(posMap);
+			this.CleanupMaps(ref posMap);
 			this.CleanupInfos();
 		}
 				
-		public void CleanupMaps(List<TileIO.posMap> posMap) {
-			if (!canRestoreFlag) {
-				return;
-			}
+		public void CleanupMaps(ref TileIO.posMap[] posMap) {
+			var temp = new List<TileIO.posMap>();
 
-			var nullable = new List<TileIO.posMap>();
-
-			foreach (var entry in posMap) {
-				if (canRestore[entry.infoID] > 0) {
-					nullable.Add(entry);
+			for (int i = 0; i < posMap.Length; i++) {
+				if (canRestore[posMap[i].infoID] <= 0) {
+					temp.Add(posMap[i]);
 				}
 			}
 
-			foreach (var entry in nullable) {
-				posMap.Remove(entry);
-			}
+			posMap = temp.ToArray();
 		}
 
 		public void CleanupInfos() {
-			if (!canRestoreFlag) {
-				return;
-			}
-
 			for (int k = 0; k < canRestore.Count; k++) {
 				if (canRestore[k] > 0)
 					infos[k] = null;
