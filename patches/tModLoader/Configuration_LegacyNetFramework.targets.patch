@@ -1,5 +1,5 @@
---- src/Terraria/Configuration.targets
-+++ src/tModLoader/Configuration.targets
+--- src/Terraria/Configuration_LegacyNetFramework.targets
++++ src/tModLoader/Configuration_LegacyNetFramework.targets
 @@ -1,6 +_,6 @@
  <Project>
    <PropertyGroup>
