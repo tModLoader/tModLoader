@@ -189,6 +189,17 @@ namespace Terraria.ModLoader.Setup
 			string branch = "";
 			RunCmd("", "git", "rev-parse --abbrev-ref HEAD", s => branch = s.Trim());
 
+			string GITHUB_HEAD_REF = Environment.GetEnvironmentVariable("GITHUB_HEAD_REF");
+			if (GITHUB_HEAD_REF != null) {
+				Console.WriteLine($"GITHUB_HEAD_REF found: {GITHUB_HEAD_REF}");
+				branch = GITHUB_HEAD_REF;
+			}
+			string BASE_SHA = Environment.GetEnvironmentVariable("GITHUB_EVENT_PULL_REQUEST_BASE_SHA");
+			if (BASE_SHA != null) {
+				Console.WriteLine($"BASE_SHA found: {BASE_SHA}");
+				gitsha = BASE_SHA;
+			}
+
 			string targetsText =
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
