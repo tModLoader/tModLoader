@@ -36,6 +36,7 @@ jobs:
           repository: ${{github.event.pull_request.head.repo.full_name}}
           path: pullrequest
           persist-credentials: false
+        # TODO: build doesn't have right branch I assume
 
       - name: Copy over pull request patches folder
         if: github.event_name == 'pull_request_target'
@@ -125,7 +126,7 @@ jobs:
           ls -l
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           
       - uses: actions/upload-artifact@v2
         with:
