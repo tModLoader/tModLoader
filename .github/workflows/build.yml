@@ -150,9 +150,21 @@ jobs:
           path: |
             ./artifacts/Mods/ExampleMod.tmod
         
-      - uses: sarisia/actions-status-discord@v1
-        if: always()
+      - name: Post push report to 1-4-beta-builds on Discord
+        uses: sarisia/actions-status-discord@v1
+        if: always() && github.event_name == 'push'
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
           description: |
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view.
+
+      - name: Post pull request report to 1-4-beta-builds on Discord
+        uses: sarisia/actions-status-discord@v1
+        if: always() && github.event_name == 'pull_request_target'
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
+          color: ${{ fromJSON('["success":"0x186b2b", "failure":"0x80161e", "cancelled":"0x9c7a08"]')[github.status] }}
+          description: |
+            Pull Request: ${{github.event.pull_request.head.ref}} from ${{github.event.pull_request.head.repo.full_name}}
+            Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
+            Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
