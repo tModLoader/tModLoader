@@ -4,10 +4,10 @@ name: Build tModLoader
 on:
   # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4]
+    branches: [1.4, 1.4_mergedtesting]
   pull_request_target:
     types: [labeled]
-    branches: [1.4]
+    branches: [1.4, 1.4_mergedtesting]
   # Allows you to run this workflow manually from the Actions tab
   # workflow_dispatch:
 
@@ -163,7 +163,7 @@ jobs:
         if: always() && github.event_name == 'pull_request_target'
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
-          color: ${{ fromJSON('{"success":"0x186b2b", "failure":"0x80161e", "cancelled":"0x9c7a08"}')['github.status'] }}
+          color: ${{ fromJSON('{"success":1600299, "failure":8394270, "cancelled":10254856}')[github.status] }}
           description: |
             Pull Request: ${{github.event.pull_request.head.ref}} from ${{github.event.pull_request.head.repo.full_name}}
             Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
