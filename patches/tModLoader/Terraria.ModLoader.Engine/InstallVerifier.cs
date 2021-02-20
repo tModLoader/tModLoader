@@ -132,12 +132,13 @@ namespace Terraria.ModLoader.Engine
 				// GOG installs to /Applications/Terraria.app, Steam installs to /Applications/Terraria/Terraria.app
 				// working directory is /Applications/tModLoader/tModLoader.app/Contents/MacOS/ for steam manual installs
 				// working directory is /Applications/tModLoader.app/Contents/MacOS/ for GOG installs
+				// Vanilla .exe files are in /Contents/Resources/, not /Contents/MacOS/
 				if (Directory.Exists("../../../../Terraria/Terraria.app/")) {
-					vanillaPath = "../../../../Terraria/Terraria.app/Contents/MacOS/";
+					vanillaPath = "../../../../Terraria/Terraria.app/Contents/Resources/";
 					Logging.tML.Info($"Mac installation location found at {vanillaPath}, assuming Steam manual install");
 				}
 				else if (Directory.Exists("../../../Terraria.app/")) {
-					vanillaPath = "../../../Terraria.app/Contents/MacOS/";
+					vanillaPath = "../../../Terraria.app/Contents/Resources/";
 					Logging.tML.Info($"Mac installation location found at {vanillaPath}, assuming GOG manual install");
 				}
 				else {
