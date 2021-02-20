@@ -27,13 +27,13 @@ namespace ExampleMod.Items.Weapons
             item.noMelee = true;
 
             item.melee = true;
-            item.damage = 11;
+            item.damage = 37;
             item.crit = 11; //Critcal damage increased instead of critical strike chance.
             item.knockBack = 5f;
             item.shoot = mod.ProjectileType("ExampleWhipProj");
             item.shootSpeed = 1f;
 
-            item.rare = 0;
+            item.rare = 2;
             item.value = Item.sellPrice(0, 25); //Platinum coins is 0 and 25 is gold coins.
         }
 
