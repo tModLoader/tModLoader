@@ -37,10 +37,8 @@ namespace Terraria.ModLoader
 		public virtual bool InstanceForEntity(Item item) => true;
 
 		public GlobalItem Instance(Item item) {
-			var globalItems = item.globalItems;
-
-			for (int i = 0; i < globalItems.Length; i++) {
-				var g = globalItems[i];
+			for (int i = 0; i < item.globalItems.Length; i++) {
+				var g = item.globalItems[i];
 
 				if (g.index == index) {
 					return g.instance;

@@ -24,38 +24,6 @@ namespace Terraria
 			set => _damageClass = value ?? throw new ArgumentException("DamageType cannot be null");
 		}
 
-		public T AddGlobalItem<T>() where T : GlobalItem
-			=> AddGlobalItem(ModContent.GetInstance<T>());
-
-		public T AddGlobalItem<T>(T baseInstance) where T : GlobalItem {
-			int index = baseInstance.index;
-			int insertAt = globalItems.Length;
-
-			for (int i = 0; i < globalItems.Length; i++) {
-				if (index <= globalItems[i].index) {
-					insertAt = i;
-					break;
-				}
-			}
-
-			var result = (T)(baseInstance.InstancePerEntity ? baseInstance.Clone(this, this) : baseInstance);
-			var newGlobals = new Instanced<GlobalItem>[globalItems.Length + 1];
-
-			newGlobals[insertAt] = new Instanced<GlobalItem>(baseInstance.index, result);
-
-			if (insertAt > 0) {
-				Array.Copy(globalItems, 0, newGlobals, 0, insertAt);
-			}
-
-			if (insertAt < globalItems.Length) {
-				Array.Copy(globalItems, insertAt, newGlobals, insertAt + 1, globalItems.Length - insertAt);
-			}
-
-			globalItems = newGlobals;
-
-			return result;
-		}
-
 		/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		/// <exception cref="IndexOutOfRangeException"/>
