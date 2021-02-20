@@ -783,7 +783,7 @@
  		}
  
  		public static void Sundialing() {
-@@ -4105,7 +_,40 @@
+@@ -4105,7 +_,48 @@
  			instance = this;
  #if CLIENT
  			graphics = new GraphicsDeviceManager(this);
@@ -799,7 +799,15 @@
 +				vanillaContentFolder = "../Content"; // Nested Manual Install
 +			}
 +#if MAC
-+			vanillaContentFolder = "../../../../Terraria/Terraria.app/Contents/Resources/Content";
++			if (Directory.Exists("../../../../Terraria/Terraria.app/")) {
++				vanillaContentFolder = "../../../../Terraria/Terraria.app/Contents/Resources/Content";
++			}
++			else if (Directory.Exists("../../../Terraria.app/")) {
++				vanillaContentFolder = "../../../Terraria.app/Contents/Resources/Content";
++			}
++			else {
++				Logging.tML.Info($"Mac Terraria content folder location not found.");
++			}
 +#endif
 +			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
 +				var appID = ModLoader.Engine.Steam.TerrariaAppId_t;
