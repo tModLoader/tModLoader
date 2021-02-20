@@ -12,7 +12,7 @@ namespace ExampleMod.Items.Weapons
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Example Whip");
-            Tooltip.SetDefault("Only deals critical hits at the tip\nCritical strike chance boosts critical damage");
+            Tooltip.SetDefault("Only deals critical hits at the tip\nCritical strike chance boosts critical damage\nThis is a modded whip");
         }
         public override void SetDefaults()
         {
