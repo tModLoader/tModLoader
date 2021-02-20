@@ -4,10 +4,10 @@ name: Build tModLoader
 on:
   # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4]
+    branches: [1.4, 1.4_mergedtesting]
   pull_request_target:
     types: [labeled]
-    branches: [1.4]
+    branches: [1.4, 1.4_mergedtesting]
   # Allows you to run this workflow manually from the Actions tab
   # workflow_dispatch:
 
@@ -36,6 +36,7 @@ jobs:
           repository: ${{github.event.pull_request.head.repo.full_name}}
           path: pullrequest
           persist-credentials: false
+        # TODO: build doesn't have right branch I assume
 
       - name: Copy over pull request patches folder
         if: github.event_name == 'pull_request_target'
@@ -125,6 +126,7 @@ jobs:
           ls -l
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           
       - uses: actions/upload-artifact@v2
         with:
@@ -148,9 +150,21 @@ jobs:
           path: |
             ./artifacts/Mods/ExampleMod.tmod
         
-      - uses: sarisia/actions-status-discord@v1
-        if: always()
+      - name: Post push report to 1-4-beta-builds on Discord
+        uses: sarisia/actions-status-discord@v1
+        if: always() && github.event_name == 'push'
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
           description: |
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view.
+
+      - name: Post pull request report to 1-4-beta-builds on Discord
+        uses: sarisia/actions-status-discord@v1
+        if: always() && github.event_name == 'pull_request_target'
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
+          color: ${{ fromJSON('{"success":1600299, "failure":8394270, "cancelled":10254856}')[job.status] }}
+          description: |
+            Pull Request: ${{github.event.pull_request.head.ref}} from ${{github.event.pull_request.head.repo.full_name}}
+            Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
+            Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
