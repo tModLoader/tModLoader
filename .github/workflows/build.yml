@@ -163,7 +163,7 @@ jobs:
         if: always() && github.event_name == 'pull_request_target'
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
-          color: ${{ fromJSON('{"success":1600299, "failure":8394270, "cancelled":10254856}')[github.status] }}
+          color: ${{ fromJSON('{"success":1600299, "failure":8394270, "cancelled":10254856}')[job.status] }}
           description: |
             Pull Request: ${{github.event.pull_request.head.ref}} from ${{github.event.pull_request.head.repo.full_name}}
             Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
