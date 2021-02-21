@@ -72,7 +72,7 @@
  
  						if (Main.tileFrameImportant[tile.type]) {
 +							short frameX = tile.frameX;
-+							TileIO_Basic.VanillaSaveFrames(tile, ref frameX);
++							TileIO.VanillaSaveFrames(tile, ref frameX);
 -							array[num3] = (byte)(tile.frameX & 0xFF);
 +							array[num3] = (byte)(frameX & 0xFF);
  							num3++;

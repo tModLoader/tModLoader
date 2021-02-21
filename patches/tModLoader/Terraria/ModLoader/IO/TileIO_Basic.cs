@@ -8,7 +8,7 @@ namespace Terraria.ModLoader.IO
 {
 	internal static partial class TileIO
 	{
-		internal static void LoadMaster(TagCompound tag) {
+		internal static void LoadBasics(TagCompound tag) {
 			legacyLoad = false; uTileList.Clear(); uWallList.Clear();
 
 			IOSaveLoadSet<TileEntry> tiles = IOSaveLoadSet<TileEntry>.Create();
@@ -28,7 +28,7 @@ namespace Terraria.ModLoader.IO
 			WorldIO.ValidateSigns(); //call this at end
 		}
 
-		internal static TagCompound SaveMaster() {
+		internal static TagCompound SaveBasics() {
 			//TODO: Finish implementing this
 
 			IOSaveLoadSet<TileEntry> tiles = IOSaveLoadSet<TileEntry>.Create();
@@ -43,10 +43,10 @@ namespace Terraria.ModLoader.IO
 		internal static bool canPurgeOldData => false; //for deleting unloaded mod data in a save; should point to UI flag; temp false
 
 		//TODO: Merge in to one persistent object for each entry type.
-		static List<TileEntry> uTileList = new List<TileEntry>();
-		static PosIndexer.PosKey[] uTilePosMap;
-		static List<WallEntry> uWallList = new List<WallEntry>();
-		static PosIndexer.PosKey[] uWallPosMap;
+		internal static List<TileEntry> uTileList = new List<TileEntry>();
+		internal static PosIndexer.PosKey[] uTilePosMap;
+		internal static List<WallEntry> uWallList = new List<WallEntry>();
+		internal static PosIndexer.PosKey[] uWallPosMap;
 
 		internal struct ListAndKeys<T> {
 			internal List<T> list;
