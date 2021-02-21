@@ -22,10 +22,10 @@ namespace Terraria.ModLoader.IO
 
 			var tag = new TagCompound {
 				["chests"] = SaveChestInventory(),
-				["tiles"] = TileIO.SaveTiles(),
-				["containers"] = TileIO.SaveContainers(),
+				["tiles"] = TileIO_Basic.SaveTiles(),
+				["containers"] = TileIO_Basic.SaveContainers(),
 				["npcs"] = SaveNPCs(),
-				["tileEntities"] = TileIO.SaveTileEntities(),
+				["tileEntities"] = TileIO_Basic.SaveTileEntities(),
 				["killCounts"] = SaveNPCKillCounts(),
 				["anglerQuest"] = SaveAnglerQuest(),
 				["townManager"] = SaveTownManager(),
@@ -53,11 +53,11 @@ namespace Terraria.ModLoader.IO
 			}
 
 			var tag = TagIO.FromStream(new MemoryStream(buf));
-			TileIO.LoadTiles(tag.GetCompound("tiles"));
-			TileIO.LoadContainers(tag.GetCompound("containers"));
+			TileIO_Basic.LoadTiles(tag.GetCompound("tiles"));
+			TileIO_Basic.LoadContainers(tag.GetCompound("containers"));
 			LoadNPCs(tag.GetList<TagCompound>("npcs"));
 			try {
-				TileIO.LoadTileEntities(tag.GetList<TagCompound>("tileEntities"));
+				TileIO_Basic.LoadTileEntities(tag.GetList<TagCompound>("tileEntities"));
 			}
 			catch (CustomModDataException e) {
 				customDataFail = e;
