@@ -31,7 +31,7 @@ namespace Terraria.ModLoader.IO
 		internal static TagCompound SaveBasics() {
 			//TODO: Finish implementing this
 
-			IOSaveLoadSet<TileEntry> tiles = IOSaveLoadSet<TileEntry>.Create();
+			ListAndKeys<TileEntry> tiles = ListAndKeys<TileEntry>.Create();
 			return new TagCompound {
 				["tileMap"] = PreSave<TileEntry>(ref tiles),
 				["unloadedTileEntries"] = uTileList.Select(entry => entry?.Save() ?? new TagCompound()).ToList(),
@@ -51,6 +51,10 @@ namespace Terraria.ModLoader.IO
 		internal struct ListAndKeys<T> {
 			internal List<T> list;
 			internal Dictionary<short, ushort> keyDict;
+
+			internal static ListAndKeys<T> Create() {
+				return new ListAndKeys<T> { list = new List<T>(), keyDict = new Dictionary<short, ushort>() };
+			}
 		}
 
 		internal struct IOSaveLoadSet<T> {
@@ -60,14 +64,14 @@ namespace Terraria.ModLoader.IO
 
 			internal static IOSaveLoadSet<T> Create() {
 				return new IOSaveLoadSet<T> {
-					unloaded = new ListAndKeys<T> { list = new List<T>(), keyDict = new Dictionary<short, ushort>() },
-					loaded = new ListAndKeys<T> { list = new List<T>(), keyDict = new Dictionary<short, ushort>() },
-					restored = new ListAndKeys<T> { list = new List<T>(), keyDict = new Dictionary<short, ushort>() }
+					unloaded = ListAndKeys<T>.Create(),
+					loaded = ListAndKeys<T>.Create(),
+					restored = ListAndKeys<T>.Create()
 				};
 			}
 		}
 
-		internal static List<TagCompound> PreSave<T>(ref IOSaveLoadSet<T> table) where T : ModEntry {
+		internal static List<TagCompound> PreSave<T>(ref ListAndKeys<T> table) where T : ModEntry {
 			bool[] hasTile = new bool[TileLoader.TileCount];
 
 			ushort count = 0;
@@ -80,16 +84,16 @@ namespace Terraria.ModLoader.IO
 
 				T entry = new TileEntry((ushort)type, modTile.Mod.Name, modTile.Name, modTile.vanillaFallbackOnModDeletion, true, GetUnloadedType<T>(type));
 
-				table.loaded.list.Add(entry);
+				table.list.Add(entry);
 				
-				table.loaded.keyDict.Add((short)type, count++);
+				table.keyDict.Add((short)type, count++);
 			}
 
 			// Return if null
-			if (table.loaded.list.Count == 0)
+			if (table.list.Count == 0)
 				return null;
 
-			return table.loaded.list.Select(entry => entry?.Save() ?? new TagCompound()).ToList();
+			return table.list.Select(entry => entry?.Save() ?? new TagCompound()).ToList();
 		}
 
 		internal static void PreLoad<T>(TagCompound tag, ref IOSaveLoadSet<T> table) where T : ModEntry {
@@ -182,8 +186,13 @@ namespace Terraria.ModLoader.IO
 
 					writer.Write(tile.color());
 
-					//TODO: This probably would still break in the case of loaded, unframed -> unloaded -> loaded, unframed as is.
-					if (Main.tileFrameImportant[tile.type]) {
+					if (unloadedTileIDs.Contains(tile.type)) {
+						if (uTileList[PosIndexer.FloorGetKeyFromPos(uTilePosMap, x, y)].frameImportant) {
+							writer.WriteVarInt(tile.frameX);
+							writer.WriteVarInt(tile.frameY);
+						}
+					}
+					else if (Main.tileFrameImportant[tile.type]) {
 						writer.WriteVarInt(tile.frameX);
 						writer.WriteVarInt(tile.frameY);
 					}
@@ -223,6 +232,7 @@ namespace Terraria.ModLoader.IO
 		internal static void LoadData<T>(BinaryReader reader, ref IOSaveLoadSet<T> table) where T : ModEntry {
 			short sameCount = 0;
 			List<PosIndexer.PosKey> posMapList = new List<PosIndexer.PosKey>();
+			T entry;
 
 			for (int x = 0; x < Main.maxTilesX; x++) {
 				for (int y = 0; y < Main.maxTilesY; y++) {
@@ -243,7 +253,8 @@ namespace Terraria.ModLoader.IO
 
 					// Access tile information
 					if (table.loaded.keyDict.TryGetValue((short)saveType, out ushort key)) {
-						tile.type = table.loaded.list[key].id;
+						entry = table.loaded.list[key];
+						tile.type = entry.id;
 					}
 					else { // Is currently unloaded
 						if (!table.unloaded.keyDict.TryGetValue((short)saveType, out key)) { // Loading previously unloaded tile
@@ -251,27 +262,30 @@ namespace Terraria.ModLoader.IO
 							
 							// If it can be restored, restore it using key.
 							if (table.restored.keyDict.TryGetValue((short)key, out ushort rKey)) {
-								tile.type = table.restored.list[rKey].id;
+								entry = table.restored.list[rKey];
+								tile.type = entry.id;
 							}
 
 							// If it can't be restored, re-setup unloaded
 							else {
 								table.unloaded.keyDict.TryGetValue((short)-key, out ushort uKey);
-								tile.type = ModContent.Find<ModTile>(table.unloaded.list[uKey].unloadedType).Type;
+								entry = table.unloaded.list[uKey];
+								tile.type = ModContent.Find<ModTile>(entry.unloadedType).Type;
 								PosIndexer.MapPosToInfo(posMapList, uKey, x, y);
 							}
 						}
 
 						// Else Create new unloaded setup
 						else {
-							tile.type = ModContent.Find<ModTile>(table.unloaded.list[key].unloadedType).Type;
+							entry = table.unloaded.list[key];
+							tile.type = ModContent.Find<ModTile>(entry.unloadedType).Type;
 							PosIndexer.MapPosToInfo(posMapList, key, x, y);
 						}
 					}
 
 					tile.color(reader.ReadByte());
 
-					if (Main.tileFrameImportant[tile.type]) {
+					if (entry.frameImportant) {
 						tile.frameX = reader.ReadInt16();
 						tile.frameY = reader.ReadInt16();
 					}
@@ -301,9 +315,8 @@ namespace Terraria.ModLoader.IO
 			return true;
 		}
 
-		internal static ushort[] unloadedTileIDs => new ushort[6] {
+		internal static ushort[] unloadedTileIDs => new ushort[5] {
 			ModContent.Find<ModTile>("ModLoader/UnloadedTile").Type,
-			ModContent.Find<ModTile>("ModLoader/UnloadedNoFrameTile").Type,
 			ModContent.Find<ModTile>("ModLoader/UnloadedNonSolidTile").Type,
 			ModContent.Find<ModTile>("ModLoader/UnloadedSemiSolidTile").Type,
 			ModContent.Find<ModTile>("ModLoader/UnloadedChest").Type,
@@ -325,9 +338,6 @@ namespace Terraria.ModLoader.IO
 
 			if (!Main.tileSolid[type])
 				return "ModLoader/UnloadedNonSolidTile";
-
-			if (!Main.tileFrameImportant[type])
-				return "ModLoader/UnloadedNoFrameTile";
 
 			return "ModLoader/UnloadedTile";
 		}

@@ -15,23 +15,21 @@ namespace Terraria.ModLoader.Default
 		internal bool isSemi;
 		internal bool isChest;
 		internal bool isDresser;
-		internal bool isFramed;
 
 		public override string Texture => "ModLoader/UnloadedTile";
 
-		public UnloadedTile(string name = null, bool isSolid = true, bool isSemi = false, bool isChest = false, bool isDresser = false, bool isFramed = true) {
+		public UnloadedTile(string name = null, bool isSolid = true, bool isSemi = false, bool isChest = false, bool isDresser = false) {
 			Name = name ?? base.Name;
 
 			this.isSolid = isSolid;
 			this.isSemi = isSemi;
 			this.isChest = isChest;
 			this.isDresser = isDresser;
-			this.isFramed = isFramed;
 		}
 
 		public override void SetDefaults() {
 			//common
-			Main.tileFrameImportant[Type] = isFramed;
+			Main.tileFrameImportant[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 
 			Main.tileSolid[Type] = isSolid && !isChest;
