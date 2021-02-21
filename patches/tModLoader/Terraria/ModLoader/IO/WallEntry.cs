@@ -4,11 +4,12 @@ namespace Terraria.ModLoader.Default
 {
 	internal class WallEntry : ModEntry
 	{
-		internal WallEntry(ushort id, string modName, string name, ushort fallbackID) : base(id, modName, name, fallbackID) {
+		internal WallEntry(ushort id, string modName, string name, ushort fallbackID, string unloadedType) : base(id, modName, name, fallbackID, unloadedType) {
 			this.id = id;
 			this.modName = modName;
 			this.name = name;
 			this.fallbackID = fallbackID;
+			this.unloadedType = unloadedType;
 		}
 
 		internal WallEntry(TagCompound tag) : base(tag) {
@@ -16,6 +17,7 @@ namespace Terraria.ModLoader.Default
 			modName = tag.Get<string>("mod");
 			name = tag.Get<string>("name");
 			fallbackID = tag.Get<ushort>("fallbackID");
+			unloadedType = tag.Get<string>("uType");
 		}
 
 		public override TagCompound Save() {
@@ -23,7 +25,8 @@ namespace Terraria.ModLoader.Default
 				["id"] = id,
 				["mod"] = modName,
 				["name"] = name,
-				["fallbackID"] = fallbackID
+				["fallbackID"] = fallbackID,
+				["uType"] = unloadedType
 			};
 		}
 	}

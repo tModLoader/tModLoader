@@ -8,12 +8,14 @@ namespace Terraria.ModLoader.Default
 		internal string modName;
 		internal string name;
 		internal ushort fallbackID;
+		internal string unloadedType;
 
-		public ModEntry(ushort id, string modName, string name, ushort fallbackID) {
+		public ModEntry(ushort id, string modName, string name, ushort fallbackID, string unloadedType) {
 			this.id = id;
 			this.modName = modName;
 			this.name = name;
 			this.fallbackID = fallbackID;
+			this.unloadedType = unloadedType;
 		}
 
 		public ModEntry(TagCompound tag) {
@@ -21,6 +23,7 @@ namespace Terraria.ModLoader.Default
 			modName = tag.Get<string>("mod");
 			name = tag.Get<string>("name");
 			fallbackID = tag.Get<ushort>("fallbackID");
+			unloadedType = tag.Get<string>("uType");
 		}
 
 		public virtual TagCompound Save() {

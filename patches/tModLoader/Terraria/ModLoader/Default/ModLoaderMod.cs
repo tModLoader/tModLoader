@@ -40,6 +40,8 @@ namespace Terraria.ModLoader.Default
 
 			AddContent(new UnloadedTile("UnloadedSemiSolidTile", isSemi: true));
 
+			AddContent(new UnloadedTile("UnloadedNoFrameTile", isFramed: false));
+
 			AddContent(new UnloadedTile("UnloadedChest", isChest: true));
 			
 			AddContent(new UnloadedTile("UnloadedDresser", isDresser: true));

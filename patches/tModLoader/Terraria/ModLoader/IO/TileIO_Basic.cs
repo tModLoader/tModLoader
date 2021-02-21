@@ -66,14 +66,6 @@ namespace Terraria.ModLoader.IO
 				};
 			}
 		}
-		
-		internal static ushort[] unloadedTileIDs => new ushort[5] {
-			ModContent.Find<ModTile>("ModLoader/UnloadedTile").Type,
-			ModContent.Find<ModTile>("ModLoader/UnloadedNonSolidTile").Type,
-			ModContent.Find<ModTile>("ModLoader/UnloadedSemiSolidTile").Type,
-			ModContent.Find<ModTile>("ModLoader/UnloadedChest").Type,
-			ModContent.Find<ModTile>("ModLoader/UnloadedDresser").Type
-		};
 
 		internal static List<TagCompound> PreSave<T>(ref IOSaveLoadSet<T> table) where T : ModEntry {
 			bool[] hasTile = new bool[TileLoader.TileCount];
@@ -86,7 +78,9 @@ namespace Terraria.ModLoader.IO
 
 				var modTile = TileLoader.GetTile(type);
 
-				table.loaded.list.Add(new TileEntry((ushort)type, modTile.Mod.Name, modTile.Name, modTile.vanillaFallbackOnModDeletion, Main.tileFrameImportant[type], GetUnloadedTileType(type)));
+				T entry = new TileEntry((ushort)type, modTile.Mod.Name, modTile.Name, modTile.vanillaFallbackOnModDeletion, true, GetUnloadedType<T>(type));
+
+				table.loaded.list.Add(entry);
 				
 				table.loaded.keyDict.Add((short)type, count++);
 			}
@@ -107,7 +101,8 @@ namespace Terraria.ModLoader.IO
 
 			// Retrieve Basic Tile Type Data from saved Tile Map, and store in table
 			foreach (var tileTag in tag.GetList<TagCompound>("tileMap")) {
-				T entry = new TileEntry(tileTag);
+				T entry = new TileEntry(tag);
+
 				ushort saveType = entry.id;
 
 				ushort newID = ModContent.TryFind(entry.modName, entry.name, out ModTile tile) ? tile.Type : (ushort)0;
@@ -136,7 +131,8 @@ namespace Terraria.ModLoader.IO
 			// infos and canRestore lists are same length so the indices match later for Restore()
 			short uCount = 1;
 			foreach (var tileTag in tag.GetList<TagCompound>("unloadedTileEntries")) {
-				T entry = new TileEntry(tileTag);
+				T entry = new TileEntry(tag);
+
 				ushort restoreType = ModContent.TryFind(entry.modName, entry.name, out ModTile tile) ? tile.Type : (ushort)0;
 				if (restoreType == 0 && canPurgeOldData)
 					restoreType = entry.fallbackID;
@@ -186,6 +182,7 @@ namespace Terraria.ModLoader.IO
 
 					writer.Write(tile.color());
 
+					//TODO: This probably would still break in the case of loaded, unframed -> unloaded -> loaded, unframed as is.
 					if (Main.tileFrameImportant[tile.type]) {
 						writer.WriteVarInt(tile.frameX);
 						writer.WriteVarInt(tile.frameY);
@@ -304,7 +301,19 @@ namespace Terraria.ModLoader.IO
 			return true;
 		}
 
-		internal static string GetUnloadedTileType(int type) {
+		internal static ushort[] unloadedTileIDs => new ushort[6] {
+			ModContent.Find<ModTile>("ModLoader/UnloadedTile").Type,
+			ModContent.Find<ModTile>("ModLoader/UnloadedNoFrameTile").Type,
+			ModContent.Find<ModTile>("ModLoader/UnloadedNonSolidTile").Type,
+			ModContent.Find<ModTile>("ModLoader/UnloadedSemiSolidTile").Type,
+			ModContent.Find<ModTile>("ModLoader/UnloadedChest").Type,
+			ModContent.Find<ModTile>("ModLoader/UnloadedDresser").Type
+		};
+
+		internal static string GetUnloadedType<T>(int type) {
+			if (typeof(T) == typeof(WallEntry))
+				return "ModLoader/UnloadedWall";
+			
 			if (TileID.Sets.BasicChest[type])
 				return "ModLoader/UnloadedChest";
 
@@ -316,6 +325,9 @@ namespace Terraria.ModLoader.IO
 
 			if (!Main.tileSolid[type])
 				return "ModLoader/UnloadedNonSolidTile";
+
+			if (!Main.tileFrameImportant[type])
+				return "ModLoader/UnloadedNoFrameTile";
 
 			return "ModLoader/UnloadedTile";
 		}

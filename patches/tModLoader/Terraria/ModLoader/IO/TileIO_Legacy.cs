@@ -75,6 +75,8 @@ namespace Terraria.ModLoader.IO
 			byte flags;
 			flags = reader.ReadByte();
 
+			TileEntry tEntry;
+			WallEntry wEntry;
 			ushort saveType, key;
 
 			// Read Tiles
@@ -86,16 +88,24 @@ namespace Terraria.ModLoader.IO
 				saveType = (ushort)(reader.ReadUInt16());
 
 				if (tiles.loaded.keyDict.TryGetValue((short)saveType, out key)) {
-					tile.type = tiles.loaded.list[key].id;
+					tEntry = tiles.loaded.list[key];
+					tile.type = tEntry.id;
 				}
 				else {
 					tiles.unloaded.keyDict.TryGetValue((short)saveType, out key);
-					tile.type = unloadedTileIDs[0];
+					tEntry = tiles.unloaded.list[key];
+					if (tEntry.frameImportant) {
+						tile.type = unloadedTileIDs[0];
+					}
+					else {
+						tile.type = unloadedTileIDs[1];
+					}
+					
 					PosIndexer.MapPosToInfo(tilePosMapList, key, i, j);
 				}
 
 				// Implement tile frames
-				if (Main.tileFrameImportant[tile.type]) {
+				if (tEntry.frameImportant) {
 					if ((flags & TileIOFlags.FrameXInt16) == TileIOFlags.FrameXInt16) {
 						tile.frameX = reader.ReadInt16();
 					}
@@ -130,7 +140,7 @@ namespace Terraria.ModLoader.IO
 				}
 				else {
 					walls.unloaded.keyDict.TryGetValue((short)saveType, out key);
-					tile.wall = ModContent.Find<ModWall>("ModLoader/UnloadedWall").Type;
+					tile.wall = ModContent.Find<ModWall>(walls.unloaded.list[key].unloadedType).Type;
 					PosIndexer.MapPosToInfo(wallPosMapList, key, i, j);
 				}
 
