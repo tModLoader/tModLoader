@@ -1,4 +1,5 @@
 ﻿using ExampleMod.Common.Systems;
+using ExampleMod.Content.BossBars;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.Projectiles;
@@ -143,7 +144,11 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			//NPC.buffImmune[BuffID.Confused] = true;
 			//immunities are handled via dictionaries through NPCID.Sets.DebuffImmunitySets
 
-			NPC.aiStyle = -1; //Custom AI, 0 has some very basic spriteDirection code we don't need
+			//Custom AI, 0 has some very basic spriteDirection code we don't need
+			NPC.aiStyle = -1;
+
+			//Custom boss bar
+			NPC.BossBar = ModContent.GetInstance<MinionBossBossBar>();
 
 			//Important if this boss has a treasure bag
 			BossBag = ModContent.ItemType<MinionBossBag>();
