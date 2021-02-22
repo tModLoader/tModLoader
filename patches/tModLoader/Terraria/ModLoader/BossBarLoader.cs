@@ -51,8 +51,6 @@ namespace Terraria.ModLoader
 		//Saves repopulating the list again if we just remove all but the by-default styles on unload
 		internal static readonly int defaultStyleCount = bossBarStyles.Count;
 
-		internal static readonly Dictionary<int, int> npcToBossBarType = new Dictionary<int, int>();
-
 		/// <summary>
 		/// Only contains textures that exist.
 		/// </summary>
@@ -67,7 +65,6 @@ namespace Terraria.ModLoader
 			lock (bossBarStyles) {
 				bossBarStyles.RemoveRange(defaultStyleCount, bossBarStyles.Count - defaultStyleCount);
 			}
-			npcToBossBarType.Clear();
 			bossBarTextures.Clear();
 		}
 
@@ -138,30 +135,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets the ModBossBar associated with this NPC
 		/// </summary>
-		/// <param name="npcType">The NPC type</param>
-		/// <param name="value">When this method returns, contains the ModBossBar associated with the specified NPC type</param>
-		/// <returns><see langword="true"/> if ModBossBar exists; otherwise, <see langword="false"/>.</returns>
-		public static bool NpcToBossBar(int npcType, out ModBossBar value) {
+		/// <param name="npc">The NPC</param>
+		/// <param name="value">When this method returns, contains the ModBossBar associated with the specified NPC</param>
+		/// <returns><see langword="true"/> if a ModBossBar is assigned to it; otherwise, <see langword="false"/>.</returns>
+		public static bool NpcToBossBar(NPC npc, out ModBossBar value) {
 			value = null;
-			if (npcToBossBarType.TryGetValue(npcType, out int index))
-				value = bossBars[index];
+			if (npc.BossBar is ModBossBar bossBar)
+				value = bossBar;
 			return value != null;
-		}
-
-		/// <summary>
-		/// Matches NPC types to their ModBossBar
-		/// </summary>
-		internal static void BuildReverseLookup() {
-			for (int i = 0; i < bossBars.Count; i++) {
-				ModBossBar bossBar = bossBars[i];
-				var validNPCs = bossBar.ValidNPCs;
-
-				//The same NPC can exist in multiple bars. In that case, only take the first found occurence
-				foreach (int npcType in validNPCs) {
-					if (!npcToBossBarType.ContainsKey(npcType))
-						npcToBossBarType.Add(npcType, i);
-				}
-			}
 		}
 
 		/// <summary>
@@ -197,7 +178,7 @@ namespace Terraria.ModLoader
 
 			NPC npc = Main.npc[index];
 
-			bool isModded = NpcToBossBar(npc.type, out ModBossBar bossBar);
+			bool isModded = NpcToBossBar(npc, out ModBossBar bossBar);
 
 			if (isModded)
 				drawParams.barTexture = GetTexture(bossBar).Value;
@@ -221,8 +202,8 @@ namespace Terraria.ModLoader
 
 			NPC npc = Main.npc[index];
 
-			if (NpcToBossBar(npc.type, out ModBossBar value))
-				value.PostDraw(skipped, spriteBatch, npc, drawParams);
+			if (NpcToBossBar(npc, out ModBossBar bossBar))
+				bossBar.PostDraw(skipped, spriteBatch, npc, drawParams);
 
 			foreach (GlobalBossBar globalBossBar in globalBossBars) {
 				globalBossBar.PostDraw(skipped, spriteBatch, npc, drawParams);

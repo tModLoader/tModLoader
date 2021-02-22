@@ -50,9 +50,9 @@
  			BigProgressBarInfo info = bigProgressBarInfo;
  			IBigProgressBar bigProgressBar = _bossBar;
 +
-+			//ModBossBars take priority
-+			if (BossBarLoader.NpcToBossBar(nPC.netID, out ModBossBar bossBar)) {
-+				bigProgressBar = bossBar;
++			//BossBars assigned by mods take priority
++			if (nPC.BossBar != null) {
++				bigProgressBar = nPC.BossBar;
 +			}
 -			if (_bossBarsByNpcNetId.TryGetValue(nPC.netID, out IBigProgressBar value))
 +			else if (_bossBarsByNpcNetId.TryGetValue(nPC.netID, out IBigProgressBar value))

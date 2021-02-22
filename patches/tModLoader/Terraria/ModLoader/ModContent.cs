@@ -407,7 +407,6 @@ namespace Terraria.ModLoader
 			RefreshModLanguage(Language.ActiveCulture);
 			MapLoader.SetupModMap();
 			RarityLoader.Initialize();
-			BossBarLoader.BuildReverseLookup();
 			
 			ContentSamples.Initialize();
 			PlayerInput.reinitialize = true;
