@@ -2254,6 +2254,26 @@
  					if (controlInv) {
  						if (releaseInventory)
  							ToggleInv();
+@@ -17401,7 +_,10 @@
+ 							CaptureManager.Instance.Scrolling();
+ 						}
+ 						else if (!flag8) {
++							if (PlayerInput.MouseInModdedUI.Count > 0) {
++								//Do nothing
++							}
+-							if (!Main.playerInventory) {
++							else if (!Main.playerInventory) {
+ 								HandleHotbar();
+ 							}
+ 							else {
+@@ -17445,6 +_,7 @@
+ 										Main.focusRecipe = 0;
+ 								}
+ 							}
++							PlayerInput.MouseInModdedUI.Clear();
+ 						}
+ 					}
+ 					else {
 @@ -17633,12 +_,6 @@
  						}
  					}
