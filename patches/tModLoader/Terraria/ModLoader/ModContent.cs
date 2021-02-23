@@ -416,6 +416,7 @@ namespace Terraria.ModLoader
 			ItemSorting.SetupWhiteLists();
 
 			MenuLoader.GotoSavedModMenu();
+			BossBarLoader.GotoSavedStyle();
 		}
 		
 		private static void CacheVanillaState() {
@@ -518,6 +519,7 @@ namespace Terraria.ModLoader
 			ProjectileLoader.Unload();
 			NPCLoader.Unload();
 			NPCHeadLoader.Unload();
+			BossBarLoader.Unload();
 			PlayerHooks.Unload();
 			BuffLoader.Unload();
 			MountLoader.Unload();
