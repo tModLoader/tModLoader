@@ -34,15 +34,15 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void Load() {
-			AddContent(new UnloadedTile());
+			AddContent(new UnloadedSolidTile());
 
-			AddContent(new UnloadedTile("UnloadedNonSolidTile", isSolid:false));
+			AddContent(new UnloadedNonSolidTile());
 
-			AddContent(new UnloadedTile("UnloadedSemiSolidTile", isSemi: true));
+			AddContent(new UnloadedSemiSolidTile());
 
-			AddContent(new UnloadedTile("UnloadedChest", isChest: true));
+			AddContent(new UnloadedChest());
 			
-			AddContent(new UnloadedTile("UnloadedDresser", isDresser: true));
+			AddContent(new UnloadedDresser());
 			
 			AddContent(new UnloadedWall());
 			

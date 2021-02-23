@@ -473,7 +473,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		private static ushort[] unloadedTileIDs => new ushort[5] {
-			ModContent.Find<ModTile>("ModLoader/UnloadedTile").Type,
+			ModContent.Find<ModTile>("ModLoader/UnloadedSolidTile").Type,
 			ModContent.Find<ModTile>("ModLoader/UnloadedNonSolidTile").Type,
 			ModContent.Find<ModTile>("ModLoader/UnloadedSemiSolidTile").Type,
 			ModContent.Find<ModTile>("ModLoader/UnloadedChest").Type,
@@ -498,7 +498,7 @@ namespace Terraria.ModLoader.IO
 			if (!Main.tileSolid[type])
 				return "ModLoader/UnloadedNonSolidTile";
 
-			return "ModLoader/UnloadedTile";
+			return "ModLoader/UnloadedSolidTile";
 		}
 	}
 }

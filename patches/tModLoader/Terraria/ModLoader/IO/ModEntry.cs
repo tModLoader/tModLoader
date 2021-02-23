@@ -44,7 +44,7 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override int GetHashCode() {
-			int hash = name.GetHashCode() + modName.GetHashCode();
+			int hash = name.GetHashCode() ^ modName.GetHashCode();
 			return hash;
 		}
 	}
