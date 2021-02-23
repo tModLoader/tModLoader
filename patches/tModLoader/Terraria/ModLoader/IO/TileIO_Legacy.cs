@@ -43,7 +43,7 @@ namespace Terraria.ModLoader.IO
 					
 					while (skip == 255) {
 						for (byte k = 0; k < 255; k++) {
-							if (!NextTile(ref i, ref j)) {
+							if (!NextLocation(ref i, ref j)) {
 								return; //Skip over vanilla tiles
 							}
 						}
@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.IO
 					}
 
 					for (byte k = 0; k < skip; k++) {
-						if (!NextTile(ref i, ref j)) {
+						if (!NextLocation(ref i, ref j)) {
 							return;
 						}
 					}
@@ -64,7 +64,7 @@ namespace Terraria.ModLoader.IO
 				// Load modded tiles
 				ReadModTile(ref i, ref j, reader, ref nextModTile, tilePosMapList, wallPosMapList, tiles, walls);
 			}
-			while (NextTile(ref i, ref j));
+			while (NextLocation(ref i, ref j));
 
 			uTilePosMap = tilePosMapList.ToArray();
 			uWallPosMap = wallPosMapList.ToArray();
@@ -76,7 +76,6 @@ namespace Terraria.ModLoader.IO
 			flags = reader.ReadByte();
 
 			TileEntry tEntry;
-			WallEntry wEntry;
 			ushort saveType, key;
 
 			// Read Tiles
@@ -154,7 +153,7 @@ namespace Terraria.ModLoader.IO
 				byte sameCount = reader.ReadByte(); //how many are the same
 
 				for (byte k = 0; k < sameCount; k++) { // for all copy-paste tiles
-					NextTile(ref i, ref j); // move i,j to the next tile, with vertical being priority
+					NextLocation(ref i, ref j); // move i,j to the next tile, with vertical being priority
 
 					Main.tile[i, j].CopyFrom(tile);
 					WorldGen.tileCounts[tile.type] += j <= Main.worldSurface ? 5 : 1;

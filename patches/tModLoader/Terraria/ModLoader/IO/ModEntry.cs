@@ -21,7 +21,7 @@ namespace Terraria.ModLoader.Default
 		}
 
 		internal virtual void LoadData(TagCompound tag) {
-			id = tag.Get<ushort>("id");
+			id = tag.Get<ushort>("value");
 			modName = tag.Get<string>("mod");
 			name = tag.Get<string>("name");
 			fallbackID = tag.Get<ushort>("fallbackID");

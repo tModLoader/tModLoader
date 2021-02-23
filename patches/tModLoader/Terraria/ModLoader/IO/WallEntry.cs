@@ -8,7 +8,7 @@ namespace Terraria.ModLoader.Default
 
 		public override TagCompound Save() {
 			return new TagCompound {
-				["id"] = id,
+				["value"] = id,
 				["mod"] = modName,
 				["name"] = name,
 				["fallbackID"] = fallbackID,

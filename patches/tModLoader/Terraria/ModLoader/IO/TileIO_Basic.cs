@@ -7,16 +7,14 @@ using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader.IO
 {
-	internal static partial class TileIO
-	{
+	internal static partial class TileIO {
 		static string tileEntries = "tileMap";
 		static string wallEntries = "wallMap";
 		static string tileData = "tileData";
 		static string wallData = "wallData";
 
 		internal static void LoadBasics(TagCompound tag) {
-			//TODO: Finish implementing this, and possibly refactor
-			legacyLoad = false; uTileList.Clear(); uWallList.Clear();
+			legacyLoad = false; uTileList.Clear(); uWallList.Clear(); // call at beginning to remove previous world artifacts
 
 			IOSaveLoadSet<TileEntry> tiles = IOSaveLoadSet<TileEntry>.Create();
 			IOSaveLoadSet<WallEntry> walls = IOSaveLoadSet<WallEntry>.Create();
@@ -40,18 +38,17 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal static TagCompound SaveBasics() {
-			//TODO: Finish implementing this, and possibly refactor.
 			bool[] hasTiles = new bool[TileLoader.TileCount];
 			bool[] hasWalls = new bool[WallLoader.WallCount];
 
 			ListAndKeys<TileEntry> tiles = ListAndKeys<TileEntry>.Create();
 			ListAndKeys<WallEntry> walls = ListAndKeys<WallEntry>.Create();
 
-			TagCompound tag =  new TagCompound {
+			TagCompound tag = new TagCompound {
 				[tileData] = SaveData<TileEntry>(hasTiles),
 				[tileEntries] = PostSave<TileEntry>(tiles, hasTiles),
 				["u" + tileEntries] = uTileList.Select(entry => entry?.Save() ?? new TagCompound()).ToList(),
-				
+
 				[wallData] = SaveData<WallEntry>(hasWalls),
 				[wallEntries] = PostSave<WallEntry>(walls, hasWalls),
 				["u" + wallEntries] = uWallList.Select(entry => entry?.Save() ?? new TagCompound()).ToList()
@@ -120,9 +117,9 @@ namespace Terraria.ModLoader.IO
 					var obj = WallLoader.GetWall(type);
 					entry.SetData((ushort)type, obj.Mod.Name, obj.Name, obj.vanillaFallbackOnModDeletion, GetUnloadedType<T>(type));
 				}
-				
+
 				table.list.Add(entry);
-				
+
 				table.keyDict.Add((short)type, count++);
 			}
 
@@ -133,7 +130,7 @@ namespace Terraria.ModLoader.IO
 			return table.list.Select(entry => entry?.Save() ?? new TagCompound()).ToList();
 		}
 
-		internal static void PreLoad<T, O>(TagCompound tag, ref IOSaveLoadSet<T> table, string dataRef) where T : ModEntry, new() where O : ModBlockType  {
+		internal static void PreLoad<T, O>(TagCompound tag, ref IOSaveLoadSet<T> table, string dataRef) where T : ModEntry, new() where O : ModBlockType {
 			LoadUnloaded<T, O>(tag, ref table, dataRef);
 
 			// If there is no modded data saved, skip
@@ -158,7 +155,7 @@ namespace Terraria.ModLoader.IO
 					table.loaded.list.Add(entry);
 				}
 
-				if (!legacyLoad && entry.unloadedType == null) {
+				if (!legacyLoad && entry.unloadedType.Length == 0) {
 					legacyLoad = true;
 				}
 			}
@@ -231,18 +228,14 @@ namespace Terraria.ModLoader.IO
 					if (isTile) {
 						while (!tile.active() || tile.type < TileID.Count) {
 							sameCount++;
-							if (!NextTile(ref i, ref j))
+							if (NextTile(ref i, ref j, ref tile))
 								break;
-
-							tile = Main.tile[i, j];
 						}
 					} else if (isWall) {
 						while (tile.wall < WallID.Count) {
 							sameCount++;
-							if (!NextTile(ref i, ref j))
+							if (NextTile(ref i, ref j, ref tile))
 								break;
-
-							tile = Main.tile[i, j];
 						}
 					}
 					if (sameCount >= 0) {
@@ -256,42 +249,44 @@ namespace Terraria.ModLoader.IO
 
 					WriteKey(writer, type, x, y, posMap, unloadedTypes);
 
-					if (isTile) 
+					if (isTile)
 						writer.Write(tile.color());
-					else if (isWall) 
+					else if (isWall)
 						writer.Write(tile.wallColor());
 
 					if (isTile) {
 						if (unloadedTileIDs.Contains(type)) {
 							if (uTileList[PosIndexer.FloorGetKeyFromPos(posMap, x, y)].frameImportant) {
-								writer.WriteVarInt(tile.frameX);
-								writer.WriteVarInt(tile.frameY);
+								writer.Write(tile.frameX);
+								writer.Write(tile.frameY);
 							}
 						}
 						else if (Main.tileFrameImportant[type]) {
-							writer.WriteVarInt(tile.frameX);
-							writer.WriteVarInt(tile.frameY);
+							writer.Write(tile.frameX);
+							writer.Write(tile.frameY);
 						}
 					}
 
 					// Skip like-for-like tiles
 					i = x; j = y;
-					Tile currTile = Main.tile[i, j];
+					
 					int m = -1, n = -1;
-
 					if (unloadedTypes.Contains(type)) {
 						m = i;
 						n = j;
 						PosIndexer.MoveToNextCoordsInMap(posMap, ref m, ref n);
 					}
 
-					while (areSame(currTile, tile, isTile, isWall) && !(i == m && j == n)) {
-						sameCount++;
-						if (!NextTile(ref i, ref j))
+					Tile currTile = Main.tile[i, j];
+					do {
+						if (NextTile(ref i, ref j, ref currTile))
 							break;
-
-						currTile = Main.tile[i, j];
-					}
+						if (!(i == m && j == n))
+							break;
+						
+						sameCount++;
+					} while (areSame(currTile, tile, isTile, isWall));
+					
 					writer.Write(sameCount);
 				}
 			}
@@ -376,7 +371,7 @@ namespace Terraria.ModLoader.IO
 					else { // Is currently unloaded
 						if (!table.unloaded.keyDict.TryGetValue((short)saveType, out key)) { // Loading previously unloaded tile
 							key = reader.ReadUInt16(); // Get the stored key
-							
+
 							// If it can be restored, restore it using key.
 							if (table.restored.keyDict.TryGetValue((short)key, out ushort rKey)) {
 								entry = table.restored.list[rKey];
@@ -413,14 +408,14 @@ namespace Terraria.ModLoader.IO
 						tile.wall = type;
 						tile.wallColor(reader.ReadByte());
 					}
-					
+
 					sameCount = reader.ReadInt32();
 					int i = x, j = y;
+					Tile currTile = Main.tile[i, j];
 					for (int c = 0; c < sameCount; c++) {
-						if (!NextTile(ref i, ref j))
+						if (!NextTile(ref i, ref j, ref currTile))
 							break;
 
-						Tile currTile = Main.tile[i, j];
 						objCopy<T>(currTile, tile, entry, isWall, isTile);
 					}
 				}
@@ -430,18 +425,6 @@ namespace Terraria.ModLoader.IO
 				uTilePosMap = posMapList.ToArray();
 			else if (isWall)
 				uWallPosMap = posMapList.ToArray();
-		}
-
-		private static bool NextTile(ref int i, ref int j) {
-			j++;
-			if (j >= Main.maxTilesY) {
-				j = 0;
-				i++;
-				if (i >= Main.maxTilesX) {
-					return false;
-				}
-			}
-			return true;
 		}
 
 		private static void objCopy<T>(Tile currTile, Tile tile, T entry, bool isWall, bool isTile) {
@@ -460,7 +443,27 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static ushort[] unloadedTileIDs => new ushort[5] {
+		private static bool NextTile(ref int i, ref int j, ref Tile tile) {
+			if (!NextLocation(ref i, ref j))
+				return false;
+
+			tile = Main.tile[i, j];
+			return true;
+		}
+
+		private static bool NextLocation(ref int i, ref int j) {
+			j++;
+			if (j >= Main.maxTilesY) {
+				j = 0;
+				i++;
+				if (i >= Main.maxTilesX) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		private static ushort[] unloadedTileIDs => new ushort[5] {
 			ModContent.Find<ModTile>("ModLoader/UnloadedTile").Type,
 			ModContent.Find<ModTile>("ModLoader/UnloadedNonSolidTile").Type,
 			ModContent.Find<ModTile>("ModLoader/UnloadedSemiSolidTile").Type,
@@ -468,9 +471,9 @@ namespace Terraria.ModLoader.IO
 			ModContent.Find<ModTile>("ModLoader/UnloadedDresser").Type
 		};
 
-		internal static ushort[] unloadedWallIDs => new ushort[1] { ModContent.Find<ModWall>("ModLoader/UnloadedWall").Type };
+		private static ushort[] unloadedWallIDs => new ushort[1] { ModContent.Find<ModWall>("ModLoader/UnloadedWall").Type };
 
-		internal static string GetUnloadedType<T>(int type) {
+		private static string GetUnloadedType<T>(int type) {
 			if (typeof(T) == typeof(WallEntry))
 				return "ModLoader/UnloadedWall";
 			

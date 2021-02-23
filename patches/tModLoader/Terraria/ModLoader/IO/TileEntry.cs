@@ -9,21 +9,21 @@ namespace Terraria.ModLoader.Default
 		public TileEntry() { }
 
 		internal override void LoadData(TagCompound tag) {
-			id = tag.Get<ushort>("id");
+			id = tag.Get<ushort>("value");
 			modName = tag.Get<string>("mod");
 			name = tag.Get<string>("name");
 			fallbackID = tag.Get<ushort>("fallbackID");
 			unloadedType = tag.Get<string>("uType");
-			frameImportant = tag.Get<bool>("frameI");
+			frameImportant = tag.Get<bool>("framed");
 		}
 
 		public override TagCompound Save() {
 			return new TagCompound {
-				["id"] = id,
+				["value"] = id,
 				["mod"] = modName,
 				["name"] = name,
 				["fallbackID"] = fallbackID,
-				["frameI"] = frameImportant,
+				["framed"] = frameImportant,
 				["uType"] = unloadedType
 			};
 		}
