@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,34 +9,55 @@ namespace Terraria.ModLoader.IO
 {
 	internal static partial class TileIO
 	{
+		static string tileEntries = "tileMap";
+		static string wallEntries = "wallMap";
+		static string tileData = "tileData";
+		static string wallData = "wallData";
+
 		internal static void LoadBasics(TagCompound tag) {
+			//TODO: Finish implementing this, and possibly refactor
 			legacyLoad = false; uTileList.Clear(); uWallList.Clear();
 
 			IOSaveLoadSet<TileEntry> tiles = IOSaveLoadSet<TileEntry>.Create();
 			IOSaveLoadSet<WallEntry> walls = IOSaveLoadSet<WallEntry>.Create();
 
-			PreLoad<TileEntry>(tag, ref tiles);
+			PreLoad<TileEntry, ModTile>(tag, ref tiles, tileEntries);
+			PreLoad<WallEntry, ModWall>(tag, ref walls, wallEntries);
 
 			if (legacyLoad) {
 				LoadLegacy(tag, tiles, walls);
 			}
 			else {
-				var reader = new BinaryReader(new MemoryStream(tag.GetByteArray("tileData")));
-				LoadData<TileEntry>(reader, ref tiles);
+				var reader = new BinaryReader(new MemoryStream(tag.GetByteArray(tileData)));
+				LoadData<TileEntry, ModTile>(reader, ref tiles);
+				reader = new BinaryReader(new MemoryStream(tag.GetByteArray(wallData)));
+				LoadData<WallEntry, ModWall>(reader, ref walls);
 			}
 
 			uTileList.AddRange(tiles.unloaded.list);
+			uWallList.AddRange(walls.unloaded.list);
 			WorldIO.ValidateSigns(); //call this at end
 		}
 
 		internal static TagCompound SaveBasics() {
-			//TODO: Finish implementing this
+			//TODO: Finish implementing this, and possibly refactor.
+			bool[] hasTiles = new bool[TileLoader.TileCount];
+			bool[] hasWalls = new bool[WallLoader.WallCount];
 
 			ListAndKeys<TileEntry> tiles = ListAndKeys<TileEntry>.Create();
-			return new TagCompound {
-				["tileMap"] = PreSave<TileEntry>(ref tiles),
-				["unloadedTileEntries"] = uTileList.Select(entry => entry?.Save() ?? new TagCompound()).ToList(),
+			ListAndKeys<WallEntry> walls = ListAndKeys<WallEntry>.Create();
+
+			TagCompound tag =  new TagCompound {
+				[tileData] = SaveData<TileEntry>(hasTiles),
+				[tileEntries] = PostSave<TileEntry>(tiles, hasTiles),
+				["u" + tileEntries] = uTileList.Select(entry => entry?.Save() ?? new TagCompound()).ToList(),
+				
+				[wallData] = SaveData<WallEntry>(hasWalls),
+				[wallEntries] = PostSave<WallEntry>(walls, hasWalls),
+				["u" + wallEntries] = uWallList.Select(entry => entry?.Save() ?? new TagCompound()).ToList()
 			};
+
+			return tag;
 		}
 
 		static bool legacyLoad = false;
@@ -71,19 +93,34 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static List<TagCompound> PreSave<T>(ref ListAndKeys<T> table) where T : ModEntry {
-			bool[] hasTile = new bool[TileLoader.TileCount];
-
+		internal static List<TagCompound> PostSave<T>(ListAndKeys<T> table, bool[] hasObj) where T : ModEntry, new() {
 			ushort count = 0;
-			for (ushort type = TileID.Count; type < hasTile.Length; type++) {
+
+			ushort vanillaCount = 0;
+			bool isTile = typeof(T) == typeof(TileEntry);
+			bool isWall = typeof(T) == typeof(WallEntry);
+
+			if (isWall)
+				vanillaCount = WallID.Count;
+			else if (isTile)
+				vanillaCount = TileID.Count;
+
+			for (ushort type = vanillaCount; type < hasObj.Length; type++) {
 				// Skip Tile Types that aren't active in world
-				if (!hasTile[type] || unloadedTileIDs.Contains(type))
+				if (!hasObj[type])
 					continue;
+				T entry = new T();
 
-				var modTile = TileLoader.GetTile(type);
-
-				T entry = new TileEntry((ushort)type, modTile.Mod.Name, modTile.Name, modTile.vanillaFallbackOnModDeletion, true, GetUnloadedType<T>(type));
-
+				if (isTile) {
+					var obj = TileLoader.GetTile(type);
+					entry.SetData((ushort)type, obj.Mod.Name, obj.Name, obj.vanillaFallbackOnModDeletion, GetUnloadedType<T>(type));
+					(entry as TileEntry).frameImportant = Main.tileFrameImportant[type];
+				}
+				else if (isWall) {
+					var obj = WallLoader.GetWall(type);
+					entry.SetData((ushort)type, obj.Mod.Name, obj.Name, obj.vanillaFallbackOnModDeletion, GetUnloadedType<T>(type));
+				}
+				
 				table.list.Add(entry);
 				
 				table.keyDict.Add((short)type, count++);
@@ -96,20 +133,20 @@ namespace Terraria.ModLoader.IO
 			return table.list.Select(entry => entry?.Save() ?? new TagCompound()).ToList();
 		}
 
-		internal static void PreLoad<T>(TagCompound tag, ref IOSaveLoadSet<T> table) where T : ModEntry {
-			LoadUnloaded<T>(tag, ref table);
+		internal static void PreLoad<T, O>(TagCompound tag, ref IOSaveLoadSet<T> table, string dataRef) where T : ModEntry, new() where O : ModBlockType  {
+			LoadUnloaded<T, O>(tag, ref table, dataRef);
 
 			// If there is no modded data saved, skip
-			if (!tag.ContainsKey("tileMap"))
+			if (!tag.ContainsKey(dataRef))
 				return;
 
 			// Retrieve Basic Tile Type Data from saved Tile Map, and store in table
-			foreach (var tileTag in tag.GetList<TagCompound>("tileMap")) {
-				T entry = new TileEntry(tag);
-
+			foreach (var objTag in tag.GetList<TagCompound>(dataRef)) {
+				T entry = new T();
+				entry.LoadData(objTag);
 				ushort saveType = entry.id;
 
-				ushort newID = ModContent.TryFind(entry.modName, entry.name, out ModTile tile) ? tile.Type : (ushort)0;
+				ushort newID = ModContent.TryFind<O>(entry.modName, entry.name, out O obj) ? obj.Type : (ushort)0;
 
 				if (newID == 0) {
 					table.unloaded.keyDict.Add((short)saveType, (ushort)table.unloaded.list.Count);
@@ -127,17 +164,17 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static void LoadUnloaded<T>(TagCompound tag, ref IOSaveLoadSet<T> table) where T : ModEntry {
+		internal static void LoadUnloaded<T, O>(TagCompound tag, ref IOSaveLoadSet<T> table, string dataRef) where T : ModEntry, new() where O : ModBlockType {
 			// If there is no unloaded data saved, skip
-			if (!tag.ContainsKey("unloadedTileEntries"))
+			if (!tag.ContainsKey("u" + dataRef))
 				return;
 
-			// infos and canRestore lists are same length so the indices match later for Restore()
 			short uCount = 1;
-			foreach (var tileTag in tag.GetList<TagCompound>("unloadedTileEntries")) {
-				T entry = new TileEntry(tag);
+			foreach (var objTag in tag.GetList<TagCompound>("u" + dataRef)) {
+				T entry = new T();
+				entry.LoadData(objTag);
 
-				ushort restoreType = ModContent.TryFind(entry.modName, entry.name, out ModTile tile) ? tile.Type : (ushort)0;
+				ushort restoreType = ModContent.TryFind(entry.modName, entry.name, out O obj) ? obj.Type : (ushort)0;
 				if (restoreType == 0 && canPurgeOldData)
 					restoreType = entry.fallbackID;
 
@@ -153,11 +190,29 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static void SaveTileData(BinaryWriter writer, bool[] hasTile) {
-			short sameCount = 0;
+		internal static byte[] SaveData<T>(bool[] hasObj) {
+			var ms = new MemoryStream();
+			var writer = new BinaryWriter(ms);
+
+			bool isWall = typeof(T) == typeof(WallEntry);
+			bool isTile = typeof(T) == typeof(TileEntry);
+			ushort type = 0;
+			ushort[] unloadedTypes = null;
+			PosIndexer.PosKey[] posMap = null;
+
+			if (isTile) {
+				unloadedTypes = unloadedTileIDs;
+				posMap = uTilePosMap;
+			}
+			else if (isWall) {
+				unloadedTypes = unloadedWallIDs;
+				posMap = uWallPosMap;
+			}
+
+			int sameCount = 0;
 			for (int x = 0; x < Main.maxTilesX; x++) {
 				for (int y = 0; y < Main.maxTilesY; y++) {
-					// Skip accounted for tiles
+					// Skip accounted for
 					if (sameCount > 0) {
 						sameCount--;
 						continue;
@@ -167,11 +222,28 @@ namespace Terraria.ModLoader.IO
 					Tile tile = Main.tile[x, y];
 					int i = x, j = y;
 
+					if (isTile)
+						type = tile.type;
+					else if (isWall)
+						type = tile.wall;
+
 					// Skip Vanilla tiles
-					while (!tile.active() || tile.type < TileID.Count) {
-						NextTile(ref i, ref j);
-						tile = Main.tile[i, j];
-						sameCount++;
+					if (isTile) {
+						while (!tile.active() || tile.type < TileID.Count) {
+							sameCount++;
+							if (!NextTile(ref i, ref j))
+								break;
+
+							tile = Main.tile[i, j];
+						}
+					} else if (isWall) {
+						while (tile.wall < WallID.Count) {
+							sameCount++;
+							if (!NextTile(ref i, ref j))
+								break;
+
+							tile = Main.tile[i, j];
+						}
 					}
 					if (sameCount >= 0) {
 						writer.Write((ushort)0);
@@ -180,63 +252,107 @@ namespace Terraria.ModLoader.IO
 					}
 
 					// Write Locational data
-					hasTile[tile.type] = true;
+					hasObj[type] = true;
 
-					WriteTileKey(writer, tile.type, x, y);
+					WriteKey(writer, type, x, y, posMap, unloadedTypes);
 
-					writer.Write(tile.color());
+					if (isTile) 
+						writer.Write(tile.color());
+					else if (isWall) 
+						writer.Write(tile.wallColor());
 
-					if (unloadedTileIDs.Contains(tile.type)) {
-						if (uTileList[PosIndexer.FloorGetKeyFromPos(uTilePosMap, x, y)].frameImportant) {
+					if (isTile) {
+						if (unloadedTileIDs.Contains(type)) {
+							if (uTileList[PosIndexer.FloorGetKeyFromPos(posMap, x, y)].frameImportant) {
+								writer.WriteVarInt(tile.frameX);
+								writer.WriteVarInt(tile.frameY);
+							}
+						}
+						else if (Main.tileFrameImportant[type]) {
 							writer.WriteVarInt(tile.frameX);
 							writer.WriteVarInt(tile.frameY);
 						}
 					}
-					else if (Main.tileFrameImportant[tile.type]) {
-						writer.WriteVarInt(tile.frameX);
-						writer.WriteVarInt(tile.frameY);
-					}
 
-					//TODO: Reimplement same count to be not be doubling work of both walls and tiles and fundamentally flawed.
 					// Skip like-for-like tiles
-					Tile prevTile = tile;
+					i = x; j = y;
+					Tile currTile = Main.tile[i, j];
 					int m = -1, n = -1;
 
-					if (unloadedTileIDs.Contains(tile.type)) {
+					if (unloadedTypes.Contains(type)) {
 						m = i;
 						n = j;
-						PosIndexer.MoveToNextCoordsInMap(uTilePosMap, ref m, ref n);
+						PosIndexer.MoveToNextCoordsInMap(posMap, ref m, ref n);
 					}
 
-					while (prevTile.isTheSameAs(tile) && !(i == m && j == n)) {
-						NextTile(ref i, ref j);
-						tile = Main.tile[i, j];
+					while (areSame(currTile, tile, isTile, isWall) && !(i == m && j == n)) {
 						sameCount++;
+						if (!NextTile(ref i, ref j))
+							break;
+
+						currTile = Main.tile[i, j];
 					}
 					writer.Write(sameCount);
 				}
 			}
+
+			return ms.ToArray();
 		}
 
-		internal static void WriteTileKey(BinaryWriter writer, ushort type, int x, int y) {
-			if (!unloadedTileIDs.Contains(type)) {
+		internal static void WriteKey(BinaryWriter writer, ushort type, int x, int y, PosIndexer.PosKey[] posMap, ushort[] unloadTypes) {
+			if (!unloadTypes.Contains(type)) {
 				writer.Write(type);
 				return;
 			}
 
 			writer.Write((ushort)ushort.MaxValue);
 
-			writer.Write(PosIndexer.FloorGetKeyFromPos(uTilePosMap, x, y));
+			writer.Write(PosIndexer.FloorGetKeyFromPos(posMap, x, y));
 		}
 
-		internal static void LoadData<T>(BinaryReader reader, ref IOSaveLoadSet<T> table) where T : ModEntry {
-			short sameCount = 0;
+		private static bool areSame(Tile currTile, Tile tile, bool isTile, bool isWall) {
+			if (isTile) {
+				if (tile.type != currTile.type)
+					return false;
+				else if (Main.tileFrameImportant[currTile.type] != Main.tileFrameImportant[tile.type])
+					return false;
+
+				if (Main.tileFrameImportant[currTile.type]) {
+					if (currTile.frameX != tile.frameX || currTile.frameY != tile.frameY) {
+						return false;
+					}
+				}
+
+				if (tile.color() != currTile.color())
+					return false;
+
+				return true;
+			}
+
+			else if (isWall) {
+				if (tile.wall != currTile.wall)
+					return false;
+
+				if (tile.wallColor() != currTile.wallColor())
+					return false;
+
+				return true;
+			}
+
+			return false;
+		}
+
+		internal static void LoadData<T, O>(BinaryReader reader, ref IOSaveLoadSet<T> table) where T : ModEntry where O : ModBlockType {
+			int sameCount = 0;
 			List<PosIndexer.PosKey> posMapList = new List<PosIndexer.PosKey>();
 			T entry;
 
+			bool isWall = typeof(T) == typeof(WallEntry);
+			bool isTile = typeof(T) == typeof(TileEntry);
+
 			for (int x = 0; x < Main.maxTilesX; x++) {
 				for (int y = 0; y < Main.maxTilesY; y++) {
-					// Skip vanilla tiles
+					// Skip handled tiles
 					if (sameCount > 0) {
 						sameCount--;
 						continue;
@@ -247,14 +363,15 @@ namespace Terraria.ModLoader.IO
 
 					// Skip over vanilla
 					if (saveType == 0) {
-						sameCount = reader.ReadInt16();
+						sameCount = reader.ReadInt32();
 						continue;
 					}
 
-					// Access tile information
+					// Access tile information to set the type.
+					ushort type = 0;
 					if (table.loaded.keyDict.TryGetValue((short)saveType, out ushort key)) {
 						entry = table.loaded.list[key];
-						tile.type = entry.id;
+						type = entry.id;
 					}
 					else { // Is currently unloaded
 						if (!table.unloaded.keyDict.TryGetValue((short)saveType, out key)) { // Loading previously unloaded tile
@@ -263,14 +380,14 @@ namespace Terraria.ModLoader.IO
 							// If it can be restored, restore it using key.
 							if (table.restored.keyDict.TryGetValue((short)key, out ushort rKey)) {
 								entry = table.restored.list[rKey];
-								tile.type = entry.id;
+								type = entry.id;
 							}
 
 							// If it can't be restored, re-setup unloaded
 							else {
 								table.unloaded.keyDict.TryGetValue((short)-key, out ushort uKey);
 								entry = table.unloaded.list[uKey];
-								tile.type = ModContent.Find<ModTile>(entry.unloadedType).Type;
+								type = ModContent.Find<O>(entry.unloadedType).Type;
 								PosIndexer.MapPosToInfo(posMapList, uKey, x, y);
 							}
 						}
@@ -278,32 +395,44 @@ namespace Terraria.ModLoader.IO
 						// Else Create new unloaded setup
 						else {
 							entry = table.unloaded.list[key];
-							tile.type = ModContent.Find<ModTile>(entry.unloadedType).Type;
+							type = ModContent.Find<O>(entry.unloadedType).Type;
 							PosIndexer.MapPosToInfo(posMapList, key, x, y);
 						}
 					}
 
-					tile.color(reader.ReadByte());
-
-					if (entry.frameImportant) {
-						tile.frameX = reader.ReadInt16();
-						tile.frameY = reader.ReadInt16();
+					if (isTile) {
+						tile.active(true);
+						tile.type = type;
+						tile.color(reader.ReadByte());
+						if ((entry as TileEntry).frameImportant) {
+							tile.frameX = reader.ReadInt16();
+							tile.frameY = reader.ReadInt16();
+						}
 					}
-
-					//TODO: Reimplement same count to be not be doubling work of both walls and tiles and fundamentally flawed.
-					sameCount = reader.ReadInt16();
+					else if (isWall) {
+						tile.wall = type;
+						tile.wallColor(reader.ReadByte());
+					}
+					
+					sameCount = reader.ReadInt32();
 					int i = x, j = y;
 					for (int c = 0; c < sameCount; c++) {
-						NextTile(ref i, ref j);
-						Main.tile[i, j].CopyFrom(tile);
+						if (!NextTile(ref i, ref j))
+							break;
+
+						Tile currTile = Main.tile[i, j];
+						objCopy<T>(currTile, tile, entry, isWall, isTile);
 					}
 				}
 			}
 
-			uTilePosMap = posMapList.ToArray();
+			if (isTile)
+				uTilePosMap = posMapList.ToArray();
+			else if (isWall)
+				uWallPosMap = posMapList.ToArray();
 		}
 
-		internal static bool NextTile(ref int i, ref int j) {
+		private static bool NextTile(ref int i, ref int j) {
 			j++;
 			if (j >= Main.maxTilesY) {
 				j = 0;
@@ -315,6 +444,22 @@ namespace Terraria.ModLoader.IO
 			return true;
 		}
 
+		private static void objCopy<T>(Tile currTile, Tile tile, T entry, bool isWall, bool isTile) {
+			if (isTile) {
+				currTile.active(true);
+				currTile.color(tile.color());
+				currTile.type = tile.type;
+				if ((entry as TileEntry).frameImportant) {
+					currTile.frameX = tile.frameX;
+					currTile.frameY = tile.frameY;
+				}
+			}
+			else if (isWall) {
+				currTile.wallColor(tile.wallColor());
+				currTile.wall = tile.wall;
+			}
+		}
+
 		internal static ushort[] unloadedTileIDs => new ushort[5] {
 			ModContent.Find<ModTile>("ModLoader/UnloadedTile").Type,
 			ModContent.Find<ModTile>("ModLoader/UnloadedNonSolidTile").Type,
@@ -322,6 +467,8 @@ namespace Terraria.ModLoader.IO
 			ModContent.Find<ModTile>("ModLoader/UnloadedChest").Type,
 			ModContent.Find<ModTile>("ModLoader/UnloadedDresser").Type
 		};
+
+		internal static ushort[] unloadedWallIDs => new ushort[1] { ModContent.Find<ModWall>("ModLoader/UnloadedWall").Type };
 
 		internal static string GetUnloadedType<T>(int type) {
 			if (typeof(T) == typeof(WallEntry))

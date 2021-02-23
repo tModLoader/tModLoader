@@ -130,17 +130,5 @@ namespace Terraria.ModLoader.Default
 			} while (posMap[split].posID !=  posID);
 			return split;
 		}
-
-		internal static void CleanupMap(ref PosKey[] posMap, bool[] keepCondition) {
-			var temp = new List<PosKey>();
-
-			for (int i = 0; i < posMap.Length; i++) {
-				if (keepCondition[i]) {
-					temp.Add(posMap[i]);
-				}
-			}
-
-			posMap = temp.ToArray();
-		}
 	}
 }

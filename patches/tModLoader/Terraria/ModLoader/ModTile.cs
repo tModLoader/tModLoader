@@ -12,23 +12,8 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.
 	/// </summary>
-	public abstract class ModTile : ModTexturedType
+	public abstract class ModTile : ModBlockType
 	{
-		/// <summary> The internal ID of this type of tile. </summary>
-		public ushort Type { get; internal set; }
-
-		/// <summary> The default type of sound made when this tile is hit. Defaults to 0. </summary>
-		public int SoundType { get; set; }
-
-		/// <summary> The default style of sound made when this tile is hit. Defaults to 1. </summary>
-		public int SoundStyle { get; set; } = 1;
-
-		/// <summary> The default type of dust made when this tile is hit. Defaults to 0. </summary>
-		public int DustType { get; set; }
-
-		/// <summary> The default type of item dropped when this tile is killed. Defaults to 0, which means no item. </summary>
-		public int ItemDrop { get; set; }
-
 		/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations. </summary>
 		public int AnimationFrameHeight { get; set; }
 
@@ -52,9 +37,6 @@ namespace Terraria.ModLoader
 
 		/// <summary> The ID of the item that drops when this dresser is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server. </summary>
 		public int DresserDrop { get; set; }
-
-		/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>
-		public ushort vanillaFallbackOnModDeletion { get; set; } = 0;
 
 		/// <summary> The translations for the name that is displayed when this tile is opened as a chest or dresser. This won't be used if you don't add your tile to <see cref="TileID.Sets.BasicChest"/> or <see cref="TileID.Sets.BasicDresser"/>. </summary>
 		public ModTranslation ContainerName { get; internal set; }
@@ -83,18 +65,6 @@ namespace Terraria.ModLoader
 				}
 				MapLoader.tileEntries[Type].Add(entry);
 			}
-		}
-
-		/// <summary>
-		/// Creates a ModTranslation object that you can use in AddMapEntry.
-		/// </summary>
-		/// <param name="key">The key for the ModTranslation. The full key will be MapObject.ModName.key</param>
-		/// <returns></returns>
-		public ModTranslation CreateMapEntryName(string key = null) {
-			if (string.IsNullOrEmpty(key)) {
-				key = Name;
-			}
-			return Mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", Mod.Name, key));
 		}
 
 		/// <summary>
@@ -196,12 +166,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to set the properties of ttile.his titile.le. Many properties are stored as arrays throughout Terraria's code.
-		/// </summary>
-		public virtual void SetDefaults() {
-		}
-
-		/// <summary>
 		/// Allows you to override some default properties of this tile, such as Main.tileNoSunLight and Main.tileObsidianKill.
 		/// </summary>
 		public virtual void PostSetDefaults() {
@@ -213,33 +177,6 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public virtual bool HasSmartInteract() {
 			return false;
-		}
-
-		/// <summary>
-		/// Allows you to customize which sound you want to play when the tile at the given coordinates is hit. Return false to stop the game from playing its default sound for the tile. Returns true by default.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool KillSound(int i, int j) {
-			return true;
-		}
-
-		/// <summary>
-		/// Allows you to change how many dust particles are created when the tile at the given coordinates is hit.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void NumDust(int i, int j, bool fail, ref int num) {
-		}
-
-		/// <summary>
-		/// Allows you to modify the default type of dust created when the tile at the given coordinates is hit. Return false to stop the default dust (the type parameter) from being created. Returns true by default.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool CreateDust(int i, int j, ref int type) {
-			type = DustType;
-			return true;
 		}
 
 		/// <summary>
@@ -282,15 +219,6 @@ namespace Terraria.ModLoader
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
 		public virtual void KillMultiTile(int i, int j, int frameX, int frameY) {
-		}
-
-		/// <summary>
-		/// Whether or not the tile at the given coordinates can be killed by an explosion (ie. bombs). Returns true by default; return false to stop an explosion from destroying it.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool CanExplode(int i, int j) {
-			return true;
 		}
 
 		/// <summary>
@@ -371,15 +299,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind the tile at the given coordinates. Return false to stop the game from drawing the tile normally. Returns true by default.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
-			return true;
-		}
-
-		/// <summary>
 		/// Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
@@ -389,36 +308,11 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things in front of the tile at the given coordinates. This can also be used to do things such as creating dust.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void PostDraw(int i, int j, SpriteBatch spriteBatch) {
-		}
-
-		/// <summary>
 		/// Special Draw. Only called if coordinates are placed in Main.specX/Y during DrawEffects. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
 		/// </summary>
 		/// <param name="i">The i.</param>
 		/// <param name="j">The j.</param>
 		public virtual void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
-		}
-
-		/// <summary>
-		/// Allows you to choose which minimap entry the tile at the given coordinates will use. 0 is the first entry added by AddMapEntry, 1 is the second entry, etc. Returns 0 by default.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual ushort GetMapOption(int i, int j) {
-			return 0;
-		}
-
-		/// <summary>
-		/// Called whenever the world randomly decides to update this tile in a given tick. Useful for things such as growing or spreading.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void RandomUpdate(int i, int j) {
 		}
 
 		/// <summary>
@@ -528,15 +422,6 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public virtual int SaplingGrowthType(ref int style) {
 			return -1;
-		}
-
-		/// <summary>
-		/// Allows you to do something when this tile is placed. Called on the local Client and Single Player.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates. Equal to Player.tileTargetX</param>
-		/// <param name="j">The y position in tile coordinates. Equal to Player.tileTargetY</param>
-		/// <param name="item">The item used to place this tile.</param>
-		public virtual void PlaceInWorld(int i, int j, Item item) {
 		}
 
 		/// <summary>
