@@ -180,12 +180,12 @@ namespace Terraria.ModLoader.IO
 
 				uCount--;
 				if (restoreType != 0) {
-					table.restored.list.Add(entry);
 					table.restored.keyDict.Add((short)-uCount, (ushort)table.restored.list.Count);
+					table.restored.list.Add(entry);
 				}
 				else {
-					table.unloaded.list.Add(entry);
 					table.unloaded.keyDict.Add(uCount, (ushort)uTileList.Count); // Use negative for existing entries to avoid conflicts
+					table.unloaded.list.Add(entry);
 				}
 			}
 		}

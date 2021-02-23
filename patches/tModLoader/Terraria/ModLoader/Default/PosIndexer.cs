@@ -79,7 +79,7 @@ namespace Terraria.ModLoader.Default
 		/// <param name="y"></param>
 		public static void MoveToNextCoordsInMap(PosKey[] posMap, ref int x, ref int y) {
 			int index = FloorBinarySearchPosMap(posMap, GetPosID(x, y));
-			index = System.Math.Min(index + 1, posMap.Length);
+			index = System.Math.Min(index + 1, posMap.Length - 1);
 			GetCoords(posMap[index].posID, out x, out y);
 		}
 
