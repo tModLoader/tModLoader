@@ -7,19 +7,19 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModBlockType : ModTexturedType
 	{
-		/// <summary> The internal ID of this type of tile. </summary>
+		/// <summary> The internal ID of this type of tile/wall. </summary>
 		public ushort Type { get; internal set; }
 
-		/// <summary> The default type of sound made when this tile is hit. Defaults to 0. </summary>
+		/// <summary> The default type of sound made when this tile/wall is hit. Defaults to 0. </summary>
 		public int SoundType { get; set; }
 
-		/// <summary> The default style of sound made when this tile is hit. Defaults to 1. </summary>
+		/// <summary> The default style of sound made when this tile/wall is hit. Defaults to 1. </summary>
 		public int SoundStyle { get; set; } = 1;
 
-		/// <summary> The default type of dust made when this tile is hit. Defaults to 0. </summary>
+		/// <summary> The default type of dust made when this tile/wall is hit. Defaults to 0. </summary>
 		public int DustType { get; set; }
 
-		/// <summary> The default type of item dropped when this tile is killed. Defaults to 0, which means no item. </summary>
+		/// <summary> The default type of item dropped when this tile/wall is killed. Defaults to 0, which means no item. </summary>
 		public int ItemDrop { get; set; }
 
 		/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>
@@ -38,7 +38,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to choose which minimap entry the tile at the given coordinates will use. 0 is the first entry added by AddMapEntry, 1 is the second entry, etc. Returns 0 by default.
+		/// Allows you to choose which minimap entry the tile/wall at the given coordinates will use. 0 is the first entry added by AddMapEntry, 1 is the second entry, etc. Returns 0 by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
@@ -53,7 +53,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to customize which sound you want to play when the tile at the given coordinates is hit. Return false to stop the game from playing its default sound for the tile. Returns true by default.
+		/// Allows you to customize which sound you want to play when the tile/wall at the given coordinates is hit. Return false to stop the game from playing its default sound for the tile/wall. Returns true by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
@@ -62,7 +62,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to change how many dust particles are created when the tile at the given coordinates is hit.
+		/// Allows you to change how many dust particles are created when the tile/wall at the given coordinates is hit.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
@@ -70,7 +70,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the default type of dust created when the tile at the given coordinates is hit. Return false to stop the default dust (the type parameter) from being created. Returns true by default.
+		/// Allows you to modify the default type of dust created when the tile/wall at the given coordinates is hit. Return false to stop the default dust (the type parameter) from being created. Returns true by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
@@ -80,7 +80,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not the tile at the given coordinates can be killed by an explosion (ie. bombs). Returns true by default; return false to stop an explosion from destroying it.
+		/// Whether or not the tile/wall at the given coordinates can be killed by an explosion (ie. bombs). Returns true by default; return false to stop an explosion from destroying it.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
@@ -89,7 +89,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind the tile at the given coordinates. Return false to stop the game from drawing the tile normally. Returns true by default.
+		/// Allows you to draw things behind the tile/wall at the given coordinates. Return false to stop the game from drawing the tile normally. Returns true by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
@@ -98,7 +98,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things in front of the tile at the given coordinates. This can also be used to do things such as creating dust.
+		/// Allows you to draw things in front of the tile/wall at the given coordinates. This can also be used to do things such as creating dust.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
@@ -106,7 +106,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Called whenever the world randomly decides to update this tile in a given tick. Useful for things such as growing or spreading.
+		/// Called whenever the world randomly decides to update this tile/wall in a given tick. Useful for things such as growing or spreading.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
@@ -114,7 +114,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to do something when this tile is placed. Called on the local Client and Single Player.
+		/// Allows you to do something when this tile/wall is placed. Called on the local Client and Single Player.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates. Equal to Player.tileTargetX</param>
 		/// <param name="j">The y position in tile coordinates. Equal to Player.tileTargetY</param>

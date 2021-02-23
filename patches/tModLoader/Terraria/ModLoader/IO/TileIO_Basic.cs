@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +12,7 @@ namespace Terraria.ModLoader.IO
 		static string tileData = "tileData";
 		static string wallData = "wallData";
 
+		//NOTE: LoadBasics can't be separated into LoadWalls() and LoadTiles() because of LoadLegacy.
 		internal static void LoadBasics(TagCompound tag) {
 			legacyLoad = false; uTileList.Clear(); uWallList.Clear(); // call at beginning to remove previous world artifacts
 
@@ -37,6 +37,7 @@ namespace Terraria.ModLoader.IO
 			WorldIO.ValidateSigns(); //call this at end
 		}
 
+		//TODO: This can likely be refactored to be SaveWalls() and SaveTiles(), but is left as is to mirror LoadBasics()
 		internal static TagCompound SaveBasics() {
 			bool[] hasTiles = new bool[TileLoader.TileCount];
 			bool[] hasWalls = new bool[WallLoader.WallCount];
@@ -61,11 +62,11 @@ namespace Terraria.ModLoader.IO
 
 		internal static bool canPurgeOldData => false; //for deleting unloaded mod data in a save; should point to UI flag; temp false
 
-		//TODO: Merge in to one persistent object for each entry type.
+		//TODO: In the future, merge in to one persistent object for each entry type.
 		internal static List<TileEntry> uTileList = new List<TileEntry>();
-		internal static PosIndexer.PosKey[] uTilePosMap;
+		internal static PosIndexer.PosIndex[] uTilePosMap;
 		internal static List<WallEntry> uWallList = new List<WallEntry>();
-		internal static PosIndexer.PosKey[] uWallPosMap;
+		internal static PosIndexer.PosIndex[] uWallPosMap;
 
 		internal struct ListAndKeys<T> {
 			internal List<T> list;
@@ -106,8 +107,10 @@ namespace Terraria.ModLoader.IO
 				// Skip Tile Types that aren't active in world
 				if (!hasObj[type])
 					continue;
+
 				T entry = new T();
 
+				// Create an entry representing the required data for restoration associated with the object
 				if (isTile) {
 					var obj = TileLoader.GetTile(type);
 					entry.SetData((ushort)type, obj.Mod.Name, obj.Name, obj.vanillaFallbackOnModDeletion, GetUnloadedType<T>(type));
@@ -118,12 +121,12 @@ namespace Terraria.ModLoader.IO
 					entry.SetData((ushort)type, obj.Mod.Name, obj.Name, obj.vanillaFallbackOnModDeletion, GetUnloadedType<T>(type));
 				}
 
+				// Add entries to list, and add to dictionairy if needing to lookup the entry.
 				table.list.Add(entry);
-
 				table.keyDict.Add((short)type, count++);
 			}
 
-			// Return if null
+			// Return null if no entries.
 			if (table.list.Count == 0)
 				return null;
 
@@ -137,24 +140,28 @@ namespace Terraria.ModLoader.IO
 			if (!tag.ContainsKey(dataRef))
 				return;
 
-			// Retrieve Basic Tile Type Data from saved Tile Map, and store in table
+			// Retrieve Basic Data and store in entries list
 			foreach (var objTag in tag.GetList<TagCompound>(dataRef)) {
 				T entry = new T();
 				entry.LoadData(objTag);
 				ushort saveType = entry.id;
 
+				// Check if object exists in loaded mods
 				ushort newID = ModContent.TryFind<O>(entry.modName, entry.name, out O obj) ? obj.Type : (ushort)0;
 
+				// If doesn't exist, store in unloaded list
 				if (newID == 0) {
 					table.unloaded.keyDict.Add((short)saveType, (ushort)table.unloaded.list.Count);
 					table.unloaded.list.Add(entry);
 				}
+				// If exists, store in loaded list
 				else {
 					entry.id = newID;
 					table.loaded.keyDict.Add((short)saveType, (ushort)table.loaded.list.Count);
 					table.loaded.list.Add(entry);
 				}
 
+				// If the unloadedType field doesn't exist, then we know it is from pre-#1266 and should use Load-Legacy
 				if (!legacyLoad && entry.unloadedType.Length == 0) {
 					legacyLoad = true;
 				}
@@ -170,16 +177,19 @@ namespace Terraria.ModLoader.IO
 			foreach (var objTag in tag.GetList<TagCompound>("u" + dataRef)) {
 				T entry = new T();
 				entry.LoadData(objTag);
-
+				
+				// Determine if object exists, and if not, checks if we're purging old unloaded data to force a vanilla restoration
 				ushort restoreType = ModContent.TryFind(entry.modName, entry.name, out O obj) ? obj.Type : (ushort)0;
 				if (restoreType == 0 && canPurgeOldData)
 					restoreType = entry.fallbackID;
 
 				uCount--;
+				// if the object is loaded, add to restore list so it gets restored
 				if (restoreType != 0) {
 					table.restored.keyDict.Add((short)-uCount, (ushort)table.restored.list.Count);
 					table.restored.list.Add(entry);
 				}
+				// if the object is unloaded, then re-add to unloaded list
 				else {
 					table.unloaded.keyDict.Add(uCount, (ushort)uTileList.Count); // Use negative for existing entries to avoid conflicts
 					table.unloaded.list.Add(entry);
@@ -195,8 +205,9 @@ namespace Terraria.ModLoader.IO
 			bool isTile = typeof(T) == typeof(TileEntry);
 			ushort type = 0;
 			ushort[] unloadedTypes = null;
-			PosIndexer.PosKey[] posMap = null;
+			PosIndexer.PosIndex[] posMap = null;
 
+			// Use pathing flags to pre-fetch variables.
 			if (isTile) {
 				unloadedTypes = unloadedTileIDs;
 				posMap = uTilePosMap;
@@ -225,6 +236,7 @@ namespace Terraria.ModLoader.IO
 						type = tile.wall;
 
 					// Skip Vanilla tiles
+					//TODO: Check if can simplify this somehow in the future. The issue is the condition tile.active() 
 					if (isTile) {
 						while (!tile.active() || tile.type < TileID.Count) {
 							sameCount++;
@@ -267,7 +279,7 @@ namespace Terraria.ModLoader.IO
 						}
 					}
 
-					// Skip like-for-like tiles
+					// Setup skipping/compressing for like-for-like tiles
 					i = x; j = y;
 					
 					int m = -1, n = -1;
@@ -294,7 +306,7 @@ namespace Terraria.ModLoader.IO
 			return ms.ToArray();
 		}
 
-		internal static void WriteKey(BinaryWriter writer, ushort type, int x, int y, PosIndexer.PosKey[] posMap, ushort[] unloadTypes) {
+		private static void WriteKey(BinaryWriter writer, ushort type, int x, int y, PosIndexer.PosIndex[] posMap, ushort[] unloadTypes) {
 			if (!unloadTypes.Contains(type)) {
 				writer.Write(type);
 				return;
@@ -339,9 +351,10 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadData<T, O>(BinaryReader reader, ref IOSaveLoadSet<T> table) where T : ModEntry where O : ModBlockType {
 			int sameCount = 0;
-			List<PosIndexer.PosKey> posMapList = new List<PosIndexer.PosKey>();
+			List<PosIndexer.PosIndex> posMapList = new List<PosIndexer.PosIndex>();
 			T entry;
 
+			// Create pathing flags based on type of T
 			bool isWall = typeof(T) == typeof(WallEntry);
 			bool isTile = typeof(T) == typeof(TileEntry);
 
@@ -362,15 +375,20 @@ namespace Terraria.ModLoader.IO
 						continue;
 					}
 
-					// Access tile information to set the type.
+					// Access tile information to get the type.
+					//WARNING: This section is a logical challenge to read without using the comments. 
 					ushort type = 0;
+					// Attempt to load the object as a loaded mod object
 					if (table.loaded.keyDict.TryGetValue((short)saveType, out ushort key)) {
 						entry = table.loaded.list[key];
 						type = entry.id;
 					}
-					else { // Is currently unloaded
-						if (!table.unloaded.keyDict.TryGetValue((short)saveType, out key)) { // Loading previously unloaded tile
-							key = reader.ReadUInt16(); // Get the stored key
+					// Else, it is currently an unloaded object
+					else {
+						// If the tile did not become unloaded during this load cycle, then
+						if (!table.unloaded.keyDict.TryGetValue((short)saveType, out key)) {
+							// Get the stored key
+							key = reader.ReadUInt16(); 
 
 							// If it can be restored, restore it using key.
 							if (table.restored.keyDict.TryGetValue((short)key, out ushort rKey)) {
@@ -378,7 +396,7 @@ namespace Terraria.ModLoader.IO
 								type = entry.id;
 							}
 
-							// If it can't be restored, re-setup unloaded
+							// If it can't be restored, re-setup as unloaded
 							else {
 								table.unloaded.keyDict.TryGetValue((short)-key, out ushort uKey);
 								entry = table.unloaded.list[uKey];
@@ -387,7 +405,7 @@ namespace Terraria.ModLoader.IO
 							}
 						}
 
-						// Else Create new unloaded setup
+						// Else create new unloaded setup for this newly unloaded object
 						else {
 							entry = table.unloaded.list[key];
 							type = ModContent.Find<O>(entry.unloadedType).Type;
@@ -395,6 +413,7 @@ namespace Terraria.ModLoader.IO
 						}
 					}
 
+					// Set data
 					if (isTile) {
 						tile.active(true);
 						tile.type = type;
@@ -409,6 +428,7 @@ namespace Terraria.ModLoader.IO
 						tile.wallColor(reader.ReadByte());
 					}
 
+					// Loop through carbon clones
 					sameCount = reader.ReadInt32();
 					int i = x, j = y;
 					Tile currTile = Main.tile[i, j];
@@ -421,6 +441,7 @@ namespace Terraria.ModLoader.IO
 				}
 			}
 
+			// Store the position maps in array format so that future searches are faster.
 			if (isTile)
 				uTilePosMap = posMapList.ToArray();
 			else if (isWall)
@@ -444,22 +465,10 @@ namespace Terraria.ModLoader.IO
 		}
 
 		private static bool NextTile(ref int i, ref int j, ref Tile tile) {
-			if (!NextLocation(ref i, ref j))
+			if (!PosIndexer.NextLocation(ref i, ref j))
 				return false;
 
 			tile = Main.tile[i, j];
-			return true;
-		}
-
-		private static bool NextLocation(ref int i, ref int j) {
-			j++;
-			if (j >= Main.maxTilesY) {
-				j = 0;
-				i++;
-				if (i >= Main.maxTilesX) {
-					return false;
-				}
-			}
 			return true;
 		}
 

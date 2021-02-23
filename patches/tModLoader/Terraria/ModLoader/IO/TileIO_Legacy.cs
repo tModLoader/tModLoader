@@ -32,8 +32,8 @@ namespace Terraria.ModLoader.IO
 			int j = 0;
 			byte skip;
 			bool nextModTile = false;
-			List<PosIndexer.PosKey> tilePosMapList = new List<PosIndexer.PosKey>();
-			List<PosIndexer.PosKey> wallPosMapList = new List<PosIndexer.PosKey>();
+			List<PosIndexer.PosIndex> tilePosMapList = new List<PosIndexer.PosIndex>();
+			List<PosIndexer.PosIndex> wallPosMapList = new List<PosIndexer.PosIndex>();
 
 			// Access indexed shortlist of all tile locations with mod data on either of wall or tiles
 			do {
@@ -43,7 +43,7 @@ namespace Terraria.ModLoader.IO
 					
 					while (skip == 255) {
 						for (byte k = 0; k < 255; k++) {
-							if (!NextLocation(ref i, ref j)) {
+							if (!PosIndexer.NextLocation(ref i, ref j)) {
 								return; //Skip over vanilla tiles
 							}
 						}
@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.IO
 					}
 
 					for (byte k = 0; k < skip; k++) {
-						if (!NextLocation(ref i, ref j)) {
+						if (!PosIndexer.NextLocation(ref i, ref j)) {
 							return;
 						}
 					}
@@ -64,13 +64,13 @@ namespace Terraria.ModLoader.IO
 				// Load modded tiles
 				ReadModTile(ref i, ref j, reader, ref nextModTile, tilePosMapList, wallPosMapList, tiles, walls);
 			}
-			while (NextLocation(ref i, ref j));
+			while (PosIndexer.NextLocation(ref i, ref j));
 
 			uTilePosMap = tilePosMapList.ToArray();
 			uWallPosMap = wallPosMapList.ToArray();
 		}
 
-		internal static void ReadModTile(ref int i, ref int j, BinaryReader reader, ref bool nextModTile, List<PosIndexer.PosKey> wallPosMapList, List<PosIndexer.PosKey> tilePosMapList, IOSaveLoadSet<TileEntry> tiles, IOSaveLoadSet<WallEntry> walls) {
+		internal static void ReadModTile(ref int i, ref int j, BinaryReader reader, ref bool nextModTile, List<PosIndexer.PosIndex> wallPosMapList, List<PosIndexer.PosIndex> tilePosMapList, IOSaveLoadSet<TileEntry> tiles, IOSaveLoadSet<WallEntry> walls) {
 			// Access Stored 8bit Flags
 			byte flags;
 			flags = reader.ReadByte();
@@ -153,7 +153,7 @@ namespace Terraria.ModLoader.IO
 				byte sameCount = reader.ReadByte(); //how many are the same
 
 				for (byte k = 0; k < sameCount; k++) { // for all copy-paste tiles
-					NextLocation(ref i, ref j); // move i,j to the next tile, with vertical being priority
+					PosIndexer.NextLocation(ref i, ref j); // move i,j to the next tile, with vertical being priority
 
 					Main.tile[i, j].CopyFrom(tile);
 					WorldGen.tileCounts[tile.type] += j <= Main.worldSurface ? 5 : 1;

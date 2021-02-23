@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 
-namespace Terraria.ModLoader.Default
+namespace Terraria.ModLoader
 {
 	public static class PosIndexer
 	{
-		public struct PosKey
+		public struct PosIndex
 		{
 			public int posID;
-			public ushort infoID;
+			public ushort indexID;
 		}
 
 		/// <summary>
-		/// Gets a Position ID based on the x,y position. If using in an order sensitive case, y increases before x.
+		/// Gets a Position ID based on the x,y position. If using in an order sensitive case, see NextLocation.
 		/// </summary>
 		/// <param name="posX"></param>
 		/// <param name="posY"></param>
@@ -32,15 +32,34 @@ namespace Terraria.ModLoader.Default
 		}
 
 		/// <summary>
+		/// Increases the provided x and y coordinates to the next location in accordance with order-sensitive position IDs.
+		/// Typically used in clustering duplicate data across multiple consecutive locations, such as in ModLoader.TileIO 
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns> False if x and y cannot be increased further (end of the world)  </returns>
+		public static bool NextLocation(ref int x, ref int y) {
+			y++;
+			if (y >= Main.maxTilesY) {
+				y = 0;
+				x++;
+				if (x >= Main.maxTilesX) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		/// <summary>
 		/// Adds the x,y position and key to the position map. Receives posMap as a list.
 		/// </summary>
 		/// <param name="posMap"></param>
 		/// <param name="posID"></param>
 		/// <param name="key"></param>
-		public static void MapPosToInfo(List<PosKey> posMap, ushort key, int x, int y) {
-			posMap.Add(new PosKey {
+		public static void MapPosToInfo(List<PosIndex> posMap, ushort key, int x, int y) {
+			posMap.Add(new PosIndex {
 				posID = GetPosID(x, y),
-				infoID = key
+				indexID = key
 			});
 		}
 
@@ -51,10 +70,10 @@ namespace Terraria.ModLoader.Default
 		/// <param name="posMap"></param>
 		/// <param name="posID"></param>
 		/// <returns></returns>
-		public static ushort GetKeyFromPos(PosKey[] posMap, int x, int y) {
+		public static ushort GetKeyFromPos(PosIndex[] posMap, int x, int y) {
 			int index = BinarySearchPosMap(posMap, GetPosID(x, y));
 
-			return posMap[index].infoID;
+			return posMap[index].indexID;
 		}
 
 		/// <summary>
@@ -65,10 +84,10 @@ namespace Terraria.ModLoader.Default
 		/// <param name="posMap"></param>
 		/// <param name="posID"></param>
 		/// <returns></returns>
-		public static ushort FloorGetKeyFromPos(PosKey[] posMap, int x, int y) {
+		public static ushort FloorGetKeyFromPos(PosIndex[] posMap, int x, int y) {
 			int index = FloorBinarySearchPosMap(posMap, GetPosID(x, y));	
 
-			return posMap[index].infoID;
+			return posMap[index].indexID;
 		}
 
 		/// <summary>
@@ -77,7 +96,7 @@ namespace Terraria.ModLoader.Default
 		/// <param name="posMap"></param>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
-		public static void MoveToNextCoordsInMap(PosKey[] posMap, ref int x, ref int y) {
+		public static void MoveToNextCoordsInMap(PosIndex[] posMap, ref int x, ref int y) {
 			int index = FloorBinarySearchPosMap(posMap, GetPosID(x, y));
 			index = System.Math.Min(index + 1, posMap.Length - 1);
 			GetCoords(posMap[index].posID, out x, out y);
@@ -89,7 +108,7 @@ namespace Terraria.ModLoader.Default
 		/// <param name="posMap"></param>
 		/// <param name="posID"></param>
 		/// <returns></returns>
-		private static int FloorBinarySearchPosMap (PosKey[] posMap, int posID) {
+		private static int FloorBinarySearchPosMap (PosIndex[] posMap, int posID) {
 			int minimum = 0, maximum = posMap.Length;
 			while (maximum - minimum > 1) {
 				int split = (minimum + maximum) / 2;
@@ -116,7 +135,7 @@ namespace Terraria.ModLoader.Default
 		/// <param name="posMap"></param>
 		/// <param name="posID"></param>
 		/// <returns></returns>
-		private static int BinarySearchPosMap(PosKey[] posMap, int posID) {
+		private static int BinarySearchPosMap(PosIndex[] posMap, int posID) {
 			int minimum = 0, maximum = posMap.Length, split;
 			do {
 				split = (minimum + maximum) / 2;
