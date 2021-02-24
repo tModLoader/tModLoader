@@ -34,8 +34,10 @@ namespace Terraria.ModLoader
 		public virtual bool InstancePerEntity => false;
 
 		/// <summary>
-		/// Whether or not this GlobalItem is created after ModItems.
-		/// <para/> You'll want to set this to true for cases where your <see cref="InstanceForEntity(Item)"/> overload relies on values modifiable by ModItems.
+		/// Whether or not this GlobalItem is created after the ModItem.SetDefaults call, or before it.
+		/// <para/> Return true here if your <see cref="InstanceForEntity(Item)"/> overload relies on values modifiable by ModItems.
+		/// <br/> Return false here if you want this global to be accessible in ModItem.SetDefaults calls.
+		/// <para/> Returns false by default.
 		/// </summary>
 		public virtual bool LateInstantiation => false;
 
