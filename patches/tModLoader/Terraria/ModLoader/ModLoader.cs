@@ -233,9 +233,6 @@ namespace Terraria.ModLoader
 		{
 			try {
 				Mods_Unload();
-#if NETCORE
-				AssemblyManager.Asms_Unload();
-#endif
 				WarnModsStillLoaded();
 				return true;
 			}
@@ -267,10 +264,10 @@ namespace Terraria.ModLoader
 			Mods = new Mod[0];
 			modsByName.Clear();
 			ModContent.Unload();
-			AssemblyManager.Unload();
-
 			MemoryTracking.Clear();
 			Thread.MemoryBarrier();
+
+			AssemblyManager.Unload();
 		}
 
 		internal static List<string> badUnloaders = new List<string>();

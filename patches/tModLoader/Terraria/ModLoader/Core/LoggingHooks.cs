@@ -1,10 +1,8 @@
 ﻿using MonoMod.RuntimeDetour;
-using MonoMod.Utils;
 using System;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace Terraria.ModLoader.Core
