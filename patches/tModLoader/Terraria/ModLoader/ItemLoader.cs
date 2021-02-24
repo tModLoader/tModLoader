@@ -144,12 +144,21 @@ namespace Terraria.ModLoader
 				item.ModItem = GetItem(item.type).Clone(item);
 
 			item.globalItems = globalItems
-				.Where(g => g.InstanceForEntity(item))
+				.Where(g => !g.LateInstantiation && g.InstanceForEntity(item))
 				.Select(g => new Instanced<GlobalItem>(g.index, g.InstancePerEntity ? g.Clone(item, item) : g))
 				.ToArray();
 
 			item.ModItem?.AutoDefaults();
 			item.ModItem?.SetDefaults();
+
+			var lateInitGlobals = globalItems
+				.Where(g => g.LateInstantiation && g.InstanceForEntity(item))
+				.Select(g => new Instanced<GlobalItem>(g.index, g.InstancePerEntity ? g.Clone(item, item) : g));
+
+			item.globalItems = item.globalItems
+				.Union(lateInitGlobals)
+				.OrderBy(i => i.index)
+				.ToArray();
 
 			foreach (var g in HookSetDefaults.Enumerate(item.globalItems)) {
 				g.SetDefaults(item);
