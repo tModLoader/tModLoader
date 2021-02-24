@@ -360,6 +360,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("ShowModMenuNotifications", notifyNewMainMenuThemes);
 			Main.Configuration.Put("LastSelectedModMenu", MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Put("KnownMenuThemes", MenuLoader.KnownMenuSaveString);
+			Main.Configuration.Put("BossBarStyle", BossBarLoader.lastSelectedStyle);
 
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", BuildInfo.tMLVersion.ToString());
 		}
@@ -381,6 +382,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("ShowModMenuNotifications", ref notifyNewMainMenuThemes);
 			Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
+			Main.Configuration.Get("BossBarStyle", ref BossBarLoader.lastSelectedStyle);
 
 			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get(nameof(LastLaunchedTModLoaderVersion), "0.0"));
 		}
