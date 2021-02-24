@@ -385,5 +385,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void GrappleTargetPoint(Projectile projectile, Player player, ref float grappleX, ref float grappleY) {
 		}
+
+		/// <summary>
+		/// Allows you to modify the settings of a whip. Defaults to 20 segments and a range multiplier of 1.
+		/// </summary>
+		public virtual void GetWhipSettings(Projectile projectile, Player player, ref float timeToFlyOut, ref int segments, ref float rangeMultiplier) {
+		}
 	}
 }

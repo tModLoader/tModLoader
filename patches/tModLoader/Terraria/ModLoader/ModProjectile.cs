@@ -408,6 +408,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the settings of a whip. Defaults to 20 segments and a range multiplier of 1.
+		/// </summary>
+		public virtual void GetWhipSettings(Player player, ref float timeToFlyOut, ref int segments, ref float rangeMultiplier) {
+		}
+
+		/// <summary>
 		/// When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
 		/// </summary>
 		public virtual void DrawBehind(int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {
