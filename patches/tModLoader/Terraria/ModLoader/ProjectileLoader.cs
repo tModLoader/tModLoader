@@ -618,6 +618,17 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate void DelegateGetWhipSettings(Projectile projectile, Player player, ref float timeToFlyOut, ref int segments, ref float rangeMultiplier);
+		private static HookList HookGetWhipSettings = AddHook<DelegateGetWhipSettings>(g => g.GetWhipSettings);
+
+		public static void GetWhipSettings(Projectile projectile, Player player, ref float timeToFlyOut, ref int segments, ref float rangeMultiplier) {
+			projectile.ModProjectile?.GetWhipSettings(player, ref timeToFlyOut, ref segments, ref rangeMultiplier);
+
+			foreach (GlobalProjectile g in HookGetWhipSettings.arr) {
+				g.Instance(projectile).GetWhipSettings(projectile, player, ref timeToFlyOut, ref segments, ref rangeMultiplier);
+			}
+		}
+
 		private static HookList HookDrawBehind = AddHook<Action<Projectile, int, List<int>, List<int>, List<int>, List<int>>>(g => g.DrawBehind);
 
 		internal static void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {

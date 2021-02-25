@@ -562,6 +562,14 @@
  								int num = damage;
  								position = base.Center;
  								int num2 = 0;
+@@ -29816,6 +_,7 @@
+ 					rangeMultiplier *= 0.95f;
+ 					break;
+ 			}
++			ProjectileLoader.GetWhipSettings(proj, Main.player[proj.owner], ref timeToFlyOut, ref segments, ref rangeMultiplier);
+ 		}
+ 
+ 		private void AI_160_Kites() {
 @@ -32211,6 +_,9 @@
  					if (num3 > (float)num9)
  						ai[0] = 1f;
