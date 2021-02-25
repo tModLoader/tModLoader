@@ -31,8 +31,16 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool InstancePerEntity => false;
 
-		/// <summary> Return whether to create a GlobalNPC instance for the provided NPC instance. </summary>
-		public virtual bool InstanceForEntity(NPC npc) => true;
+		/// <summary>
+		/// Use this to control whether or not a GlobalNPC instance should be created for the provided NPC instance.
+		/// </summary>
+		/// <param name="npc"> The npc for which the global instantion is being checked. </param>
+		/// <param name="lateInstantiation">
+		/// Whether this check occurs before or after the ModNPC.SetDefaults call.
+		/// <br/> If you're relying on NPC values that can be changed by that call, you should likely prefix your return value with the following:
+		/// <code> lateInstantiation &amp;&amp; ... </code>
+		/// </param>
+		public virtual bool InstanceForEntity(NPC npc, bool lateInstantiation) => true;
 
 		public GlobalNPC Instance(NPC npc) {
 			for (int i = 0; i < npc.globalNPCs.Length; i++) {
