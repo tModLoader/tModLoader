@@ -52,9 +52,6 @@ namespace Terraria.ModLoader.Core
 
 		public static readonly string ModSourcePath = Path.Combine(Program.SavePath, "Mod Sources");
 
-		internal static readonly string modCompileDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModCompile");
-		internal static readonly string modCompileVersionPath = Path.Combine(modCompileDir, "version");
-
 		internal static string[] FindModSources()
 		{
 			Directory.CreateDirectory(ModSourcePath);
@@ -64,88 +61,7 @@ namespace Terraria.ModLoader.Core
 		// Silence exception reporting in the chat unless actively modding.
 		public static bool activelyModding;
 
-		public static bool DeveloperMode {
-			get {
-				return Debugger.IsAttached || File.Exists(modCompileVersionPath) || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
-			}
-		}
-
-		internal static bool DeveloperModeReady(out string msg)
-		{
-			return RoslynCompatibleFrameworkCheck(out msg) &&
-				ModCompileVersionCheck(out msg) &&
-				ReferenceAssembliesCheck(out msg);
-		}
-
-		private static Version GetModCompileVersion()
-		{
-			string modCompileVersionText;
-
-			try {
-				if (!File.Exists(modCompileVersionPath))
-					return new Version();
-				
-				modCompileVersionText = File.ReadAllText(modCompileVersionPath);
-			}
-			catch (Exception e) {
-				Logging.tML.Error(e);
-				
-				return new Version();
-			}
-
-			var match = Regex.Match(modCompileVersionText, @"v([\d.]+)");
-
-			if (!match.Success)
-				return new Version();
-
-			return new Version(match.Groups[1].Value);
-		}
-
-		internal static bool ModCompileVersionCheck(out string msg)
-		{
-			var version = GetModCompileVersion();
-			if (version > BuildInfo.tMLVersion) {
-				Logging.tML.Warn($"ModCompile version is above ModLoader version: {version} vs {BuildInfo.tMLVersion}" +
-					$"\nThis not necessarily an issue, this log is for troubleshooting purposes.");
-			}
-			if (version.Major == BuildInfo.tMLVersion.Major && version.Minor == BuildInfo.tMLVersion.Minor && version.Build == BuildInfo.tMLVersion.Build) {
-				msg = Language.GetTextValue("tModLoader.DMModCompileSatisfied");
-				return true;
-			}
-
-#if DEBUG
-			msg = Language.GetTextValue("tModLoader.DMModCompileDev", Path.GetFileName(Assembly.GetExecutingAssembly().Location));
-#else
-			if (version == default(Version))
-				msg = Language.GetTextValue("tModLoader.DMModCompileMissing");
-			else
-				msg = Language.GetTextValue("tModLoader.DMModCompileUpdate", ModLoader.versionTag, version);
-#endif
-			return false;
-		}
-
-		internal static readonly Version minDotNetVersion = new Version(3, 1);
-		internal static bool RoslynCompatibleFrameworkCheck(out string msg)
-		{
-			if (FrameworkVersion.Version >= minDotNetVersion) {
-				// TODO update for .NET 5 soon
-				msg = Language.GetTextValue("tModLoader.DMDotNetSatisfied", $".NET Core {FrameworkVersion.Version}");
-				return true;
-			}
-
-			msg = Language.GetTextValue("tModLoader.DMDotNetUpdateRequired", minDotNetVersion);
-
-			return false;
-		}
-
-		private static string referenceAssembliesPath;
-		internal static bool ReferenceAssembliesCheck(out string msg)
-		{
-			// TODO what to do for other core platforms?
-			msg = Language.GetTextValue("tModLoader.DMReferenceAssembliesSatisfied");
-			referenceAssembliesPath = @"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\5.0.0\ref\net5.0";
-			return true;
-		}
+		public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
 
 		internal static readonly string modReferencesPath = Path.Combine(Program.SavePath, "references");
 		private static bool referencesUpdated = false;
@@ -272,10 +188,6 @@ namespace Terraria.ModLoader.Core
 		internal static void BuildModCommandLine(string modFolder)
 		{
 			// Once we get to this point, the application is guaranteed to exit
-			if (!DeveloperModeReady(out string msg)) {
-				Console.Error.WriteLine("Developer Mode is not ready: " + msg);
-				Environment.Exit(1);
-			}
 			var lockFile = AcquireConsoleBuildLock();
 			try {
 				new ModCompile(new ConsoleBuildStatus()).Build(modFolder);
@@ -507,24 +419,22 @@ namespace Terraria.ModLoader.Core
 			UpdateReferencesFolder();
 
 			status.SetStatus(Language.GetTextValue("tModLoader.Compiling", Path.GetFileName(outputPath)));
-			if (!DeveloperModeReady(out string msg))
-				throw new BuildException(msg);
-
-			var refMods = FindReferencedMods(mod.properties);
 
 			var refs = new List<string>();
 
 			//everything used to compile the tModLoader for the target platform
 			refs.AddRange(GetTerrariaReferences());
 
+			// TODO: do we need to always compile against reference assemblies?
 			// add framework assemblies
-			refs.AddRange(Directory.GetFiles(referenceAssembliesPath, "*.dll", SearchOption.AllDirectories));
+			var frameworkAssembliesPath = Path.GetDirectoryName(typeof(File).Assembly.Location);
+			refs.AddRange(Directory.GetFiles(frameworkAssembliesPath, "*.dll", SearchOption.AllDirectories));
 
 			//libs added by the mod
 			refs.AddRange(mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)));
 
 			//all dlls included in all referenced mods
-			foreach (var refMod in refMods) {
+			foreach (var refMod in FindReferencedMods(mod.properties)) {
 				using (refMod.modFile.Open()) {
 					var path = Path.Combine(tempDir, refMod + ".dll");
 					File.WriteAllBytes(path, refMod.modFile.GetModAssembly());
@@ -640,7 +550,7 @@ namespace Terraria.ModLoader.Core
 
 		private static FileStream AcquireConsoleBuildLock()
 		{
-			var path = Path.Combine(modCompileDir, "buildlock");
+			var path = Path.Combine(modReferencesPath, "buildlock");
 			bool first = true;
 			while (true) {
 				try {

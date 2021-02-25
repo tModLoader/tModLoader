@@ -93,7 +93,6 @@ namespace Terraria.ModLoader
 
 		internal static void EngineInit()
 		{
-			DotNetCheck();
 			FileAssociationSupport.UpdateFileAssociation();
 			GLCallLocker.Init();
 			HiDefGraphicsIssues.Init();
@@ -198,27 +197,6 @@ namespace Terraria.ModLoader
 				skipLoad = false;
 				ModNet.NetReloadActive = false;
 			}
-		}
-
-		private static void DotNetCheck()
-		{
-			if (FrameworkVersion.Version >= ModCompile.minDotNetVersion)
-				return;
-
-			// TODO CORE language update
-			// TODO will need updated for .NET 5
-			var msg = Language.GetTextValue("tModLoader.LoadErrorDotNet45Required");
-#if CLIENT
-			Interface.MessageBoxShow(msg);
-			Process.Start("https://dotnet.microsoft.com/download/dotnet-core/current/runtime");
-#else
-			Console.ForegroundColor = ConsoleColor.Red;
-			Console.WriteLine(msg);
-			Console.ResetColor();
-			Console.WriteLine("Press any key to exit...");
-			Console.ReadKey();
-#endif
-			Environment.Exit(-1);
 		}
 
 		internal static void Reload()

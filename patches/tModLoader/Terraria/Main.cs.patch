@@ -2957,7 +2957,7 @@
 +							d_color = mouseover ? highVersionColor : new Color(120, 120, 120, 76);
 +							if (mouseover && mouseLeftRelease && mouseLeft) {
 +								SoundEngine.PlaySound(SoundID.MenuOpen);
-+								menuMode = Interface.developerModeHelpID;
++								menuMode = Interface.modSourcesID;
 +							}
 +						}
 +						spriteBatch.DrawString(FontAssets.MouseText.Value, text, pos, d_color, 0f, textSize, 1f, SpriteEffects.None, 0f);
