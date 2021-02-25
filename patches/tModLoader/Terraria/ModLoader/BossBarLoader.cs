@@ -195,7 +195,7 @@ namespace Terraria.ModLoader
 			return modify;
 		}
 
-		public static void PostDraw(bool skipped, SpriteBatch spriteBatch, BigProgressBarInfo info, BossBarDrawParams drawParams) {
+		public static void PostDraw(SpriteBatch spriteBatch, BigProgressBarInfo info, BossBarDrawParams drawParams) {
 			int index = info.npcIndexToAimAt;
 			if (index < 0 || index > Main.maxNPCs)
 				return; //Invalid data, abort
@@ -203,10 +203,10 @@ namespace Terraria.ModLoader
 			NPC npc = Main.npc[index];
 
 			if (NpcToBossBar(npc, out ModBossBar bossBar))
-				bossBar.PostDraw(skipped, spriteBatch, npc, drawParams);
+				bossBar.PostDraw(spriteBatch, npc, drawParams);
 
 			foreach (GlobalBossBar globalBossBar in globalBossBars) {
-				globalBossBar.PostDraw(skipped, spriteBatch, npc, drawParams);
+				globalBossBar.PostDraw(spriteBatch, npc, drawParams);
 			}
 		}
 

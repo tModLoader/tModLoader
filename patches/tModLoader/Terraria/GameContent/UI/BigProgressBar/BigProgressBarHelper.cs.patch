@@ -40,7 +40,7 @@
 +				if (!skipped)
 +					BossBarLoader.DrawFancyBar_TML(spriteBatch, drawParams);
 +
-+				BossBarLoader.PostDraw(skipped, spriteBatch, info, drawParams);
++				BossBarLoader.PostDraw(spriteBatch, info, drawParams);
 +
 +				return;
 +			}
