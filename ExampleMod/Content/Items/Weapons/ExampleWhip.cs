@@ -1,5 +1,6 @@
 ﻿using ExampleMod.Content.Projectiles;
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -7,6 +8,11 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleWhip : ModItem
 	{
+		public override void SetStaticDefaults() {
+			ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[Type] = true; // This makes the item be affected by the user's melee speed.
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		}
+
 		public override void SetDefaults() {
 			// Item.DefaultToWhip(ModContent.ProjectileType<ExampleWhipProjectile>(), 20, 2, 4); // Call this method to quickly set the whip's properties.
 
