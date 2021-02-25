@@ -11,7 +11,7 @@ namespace ExampleMod.Common.GlobalItems
 	public class ExampleGlobalItem : GlobalItem
 	{
 		// Here we make sure to only instance this GlobalItem for the Copper Shortsword, by checking item.type
-		public override bool InstanceForEntity(Item item) {
+		public override bool InstanceForEntity(Item item, bool lateInstatiation) {
 			return item.type == ItemID.CopperShortsword;
 		}
 
