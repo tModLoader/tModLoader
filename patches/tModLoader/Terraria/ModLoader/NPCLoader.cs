@@ -154,14 +154,15 @@ namespace Terraria.ModLoader
 			}
 
 			npc.globalNPCs = globalNPCs
-				.Where(g => !g.LateInstantiation && g.InstanceForEntity(npc))
+				.Where(g => g.InstanceForEntity(npc, false))
 				.Select(g => new Instanced<GlobalNPC>(g.index, g.InstancePerEntity ? g.NewInstance(npc) : g))
 				.ToArray();
 
 			npc.ModNPC?.SetDefaults();
 
+			//Could potentially be sped up.
 			var lateInitGlobals = globalNPCs
-				.Where(g => g.LateInstantiation && g.InstanceForEntity(npc))
+				.Where(g => !npc.globalNPCs.Any(i => i.index == g.index) && g.InstanceForEntity(npc, true))
 				.Select(g => new Instanced<GlobalNPC>(g.index, g.InstancePerEntity ? g.NewInstance(npc) : g));
 
 			npc.globalNPCs = npc.globalNPCs
