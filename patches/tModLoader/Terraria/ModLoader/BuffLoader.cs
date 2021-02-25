@@ -35,7 +35,7 @@ namespace Terraria.ModLoader
 		private static Action<string, SpriteBatch, int, int>[] HookDrawCustomBuffTip;
 		private delegate bool DelegatePreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref BuffDrawParams drawParams);
 		private static DelegatePreDraw[] HookPreDraw;
-		private delegate void DelegatePostDraw(bool skipped, SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams);
+		private delegate void DelegatePostDraw(SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams);
 		private static DelegatePostDraw[] HookPostDraw;
 
 		static BuffLoader() {
@@ -213,12 +213,12 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
-		public static void PostDraw(bool skipped, SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams) {
+		public static void PostDraw(SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams) {
 			if (IsModBuff(type)) {
-				GetBuff(type).PostDraw(skipped, spriteBatch, buffIndex, drawParams);
+				GetBuff(type).PostDraw(spriteBatch, buffIndex, drawParams);
 			}
 			foreach (var hook in HookPostDraw) {
-				hook(skipped, spriteBatch, type, buffIndex, drawParams);
+				hook(spriteBatch, type, buffIndex, drawParams);
 			}
 		}
 	}

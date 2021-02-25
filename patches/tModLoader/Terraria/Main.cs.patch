@@ -2635,7 +2635,7 @@
 +			if (!skipped)
 +				spriteBatch.Draw(texture, drawPosition, sourceRectangle, drawColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
 +
-+			BuffLoader.PostDraw(skipped, spriteBatch, num, buffSlotOnPlayer, drawParams);
++			BuffLoader.PostDraw(spriteBatch, num, buffSlotOnPlayer, drawParams);
 +
  			if (TryGetBuffTime(buffSlotOnPlayer, out int buffTimeValue) && buffTimeValue > 2) {
  				string text = Lang.LocalizedDuration(new TimeSpan(0, 0, buffTimeValue / 60), abbreviated: true, showAllAvailableUnits: false);
