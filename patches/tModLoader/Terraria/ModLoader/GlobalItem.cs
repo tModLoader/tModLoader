@@ -58,14 +58,10 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Create a copy of this instanced GlobalItem. Called when an item is cloned.
-		/// Defaults to NewInstance(item)
 		/// </summary>
 		/// <param name="item">The item being cloned</param>
 		/// <param name="itemClone">The new item</param>
-		public virtual GlobalItem Clone(Item item, Item itemClone) {
-			GlobalItem clone = (GlobalItem)MemberwiseClone();
-			return clone;
-		}
+		public virtual GlobalItem Clone(Item item, Item itemClone) => (GlobalItem)MemberwiseClone();
 
 		/// <summary>
 		/// Allows you to set the properties of any and every item that gets created.
