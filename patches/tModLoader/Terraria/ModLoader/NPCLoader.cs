@@ -120,7 +120,7 @@ namespace Terraria.ModLoader
 				.ToArray();
 
 			foreach (var hook in hooks) {
-				hook.registeredGlobalIndices = ModLoader.BuildGlobalHookNew(globalNPCs, hook.method);
+				hook.Update(globalNPCs);
 			}
 
 			if (!unloading) {

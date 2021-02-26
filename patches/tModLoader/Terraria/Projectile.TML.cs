@@ -8,7 +8,7 @@ namespace Terraria
 	{
 		public ModProjectile ModProjectile { get; internal set; }
 
-		internal GlobalProjectile[] globalProjectiles = new GlobalProjectile[0];
+		internal Instanced<GlobalProjectile>[] globalProjectiles = new Instanced<GlobalProjectile>[0];
 
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>

@@ -10,15 +10,14 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class GlobalProjectile : ModType
 	{
-		internal int index;
-		internal int instanceIndex;
+		internal short index;
 
 		protected sealed override void Register() {
 			ProjectileLoader.VerifyGlobalProjectile(this);
 
 			ModTypeLookup<GlobalProjectile>.Register(this);
 
-			index = ProjectileLoader.globalProjectiles.Count;
+			index = (short)ProjectileLoader.globalProjectiles.Count;
 
 			ProjectileLoader.globalProjectiles.Add(this);
 		}
@@ -30,7 +29,28 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool InstancePerEntity => false;
 
-		public GlobalProjectile Instance(Projectile projectile) => InstancePerEntity ? projectile.globalProjectiles[instanceIndex] : this;
+		/// <summary>
+		/// Use this to control whether or not a GlobalProjectile instance should be created for the provided Projectile instance.
+		/// </summary>
+		/// <param name="projectile"> The projectile for which the global instantion is being checked. </param>
+		/// <param name="lateInstantiation">
+		/// Whether this check occurs before or after the ModProjectile.SetDefaults call.
+		/// <br/> If you're relying on Projectile values that can be changed by that call, you should likely prefix your return value with the following:
+		/// <code> lateInstantiation &amp;&amp; ... </code>
+		/// </param>
+		public virtual bool InstanceForEntity(Projectile projectile, bool lateInstantiation) => true;
+
+		public GlobalProjectile Instance(Projectile projectile) {
+			for (int i = 0; i < projectile.globalProjectiles.Length; i++) {
+				var g = projectile.globalProjectiles[i];
+
+				if (g.index == index) {
+					return g.instance;
+				}
+			}
+
+			return null;
+		}
 
 		/// <summary>
 		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
@@ -55,10 +75,11 @@ namespace Terraria.ModLoader
 			if (CloneNewInstances) {
 				return Clone();
 			}
+
 			GlobalProjectile copy = (GlobalProjectile)Activator.CreateInstance(GetType());
 			copy.Mod = Mod;
 			copy.index = index;
-			copy.instanceIndex = instanceIndex;
+
 			return copy;
 		}
 

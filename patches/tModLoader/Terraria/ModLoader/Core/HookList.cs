@@ -34,5 +34,7 @@ namespace Terraria.ModLoader.Core
 				}
 			}
 		}
+
+		public void Update(IList<T> instances) => registeredGlobalIndices = ModLoader.BuildGlobalHookNew(instances, method);
 	}
 }

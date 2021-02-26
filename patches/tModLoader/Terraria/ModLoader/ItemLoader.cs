@@ -116,8 +116,9 @@ namespace Terraria.ModLoader
 
 			NetGlobals = ModLoader.BuildGlobalHook<GlobalItem, Action<Item, BinaryWriter>>(globalItems, g => g.NetSend);
 
-			foreach (var hook in hooks)
-				hook.registeredGlobalIndices = ModLoader.BuildGlobalHookNew(globalItems, hook.method);
+			foreach (var hook in hooks) {
+				hook.Update(globalItems);
+			}
 		}
 
 		internal static void Unload() {
