@@ -2915,15 +2915,6 @@
  					if ((double)itemAnimation < (double)itemAnimationMax * 0.333)
  						bodyFrame.Y = bodyFrame.Height * 3;
  					else if ((double)itemAnimation < (double)itemAnimationMax * 0.666)
-@@ -25525,7 +_,7 @@
- 								bodyFrame.Y = bodyFrame.Height * 2;
- 						}
- 					}
--				}
-+				}	
- 			}
- 			else if (pulley) {
- 				if (pulleyDir == 2)
 @@ -25550,6 +_,8 @@
  				_ = bodyFrame;
  				reference6.Y = 0;
