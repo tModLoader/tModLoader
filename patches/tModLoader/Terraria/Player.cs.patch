@@ -2905,12 +2905,22 @@
  			if (mount.Active) {
  				legFrameCounter = 0.0;
  				legFrame.Y = legFrame.Height * 6;
-@@ -25526,6 +_,8 @@
+@@ -25444,7 +_,8 @@
+ 				reference5.Y = 0;
+ 			}
+ 			else if (itemAnimation > 0 && inventory[selectedItem].useStyle != 10 && flag4) {
++				if (ItemLoader.UseItemFrame(this.inventory[this.selectedItem], this)) { /* Did custom framing */ } 
+-				if (inventory[selectedItem].useStyle == 1 || inventory[selectedItem].type == 0) {
++				else if (inventory[selectedItem].useStyle == 1 || inventory[selectedItem].type == 0) {
+ 					if ((double)itemAnimation < (double)itemAnimationMax * 0.333)
+ 						bodyFrame.Y = bodyFrame.Height * 3;
+ 					else if ((double)itemAnimation < (double)itemAnimationMax * 0.666)
+@@ -25525,7 +_,7 @@
+ 								bodyFrame.Y = bodyFrame.Height * 2;
  						}
  					}
- 				}
-+				else
-+					ItemLoader.UseItemFrame(this.inventory[this.selectedItem], this); //TODO: does this method need to return bool? Should it run before the rest of the useStyle code?
+-				}
++				}	
  			}
  			else if (pulley) {
  				if (pulleyDir == 2)
