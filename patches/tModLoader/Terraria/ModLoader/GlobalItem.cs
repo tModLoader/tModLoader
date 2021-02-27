@@ -92,14 +92,18 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify the location and rotation of any item in its use animation.
 		/// </summary>
-		public virtual void UseStyle(Item item, Player player) {
-		}
+		/// <param name="item"> The item. </param>
+		/// <param name="player"> The player. </param>
+		/// <param name="heldItemFrame"> The source rectangle for the held item's texture. </param>
+		public virtual void UseStyle(Item item, Player player, Rectangle heldItemFrame) { }
 
 		/// <summary>
 		/// Allows you to modify the location and rotation of the item the player is currently holding.
 		/// </summary>
-		public virtual void HoldStyle(Item item, Player player) {
-		}
+		/// <param name="item"> The item. </param>
+		/// <param name="player"> The player. </param>
+		/// <param name="heldItemFrame"> The source rectangle for the held item's texture. </param>
+		public virtual void HoldStyle(Item item, Player player, Rectangle heldItemFrame) { }
 
 		/// <summary>
 		/// Allows you to make things happen when the player is holding an item (for example, torches make light and water candles increase spawn rate).
