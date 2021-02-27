@@ -66,11 +66,10 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to draw things after the bar has been drawn. skipped is true if you or another mod has skipped drawing the bar in PreDraw (possibly hiding it or in favor of new visuals).
 		/// </summary>
-		/// <param name="skipped"><see langword="true"/> if you or another mod has skipped drawing the bar (possibly hiding it or in favor of new visuals)</param>
 		/// <param name="spriteBatch">The spriteBatch that is drawn on</param>
 		/// <param name="npc">The NPC this ModBossBar is focused on</param>
 		/// <param name="drawParams">The draw parameters for the boss bar</param>
-		public virtual void PostDraw(bool skipped, SpriteBatch spriteBatch, NPC npc, BossBarDrawParams drawParams) {
+		public virtual void PostDraw(SpriteBatch spriteBatch, NPC npc, BossBarDrawParams drawParams) {
 		}
 
 		public bool ValidateAndCollectNecessaryInfo(ref BigProgressBarInfo info) {

@@ -3795,12 +3795,14 @@
  					int num178 = Projectile.NewProjectile(pointPoisition.X, pointPoisition.Y, num2, num3, projToShoot, Damage, KnockBack, i);
  					if (sItem.type == 726)
  						Main.projectile[num178].magic = true;
-@@ -34427,6 +_,8 @@
+@@ -34427,6 +_,10 @@
  		}
  
  		private void ItemCheck_ApplyHoldStyle(float mountOffset, Item sItem, Rectangle heldItemFrame) {
-+			ItemLoader.HoldStyle(sItem, this);
-+			
++			ItemCheck_ApplyHoldStyle_Inner(mountOffset, sItem, heldItemFrame);
++			ItemLoader.HoldStyle(sItem, this, heldItemFrame);
++		}
++		private void ItemCheck_ApplyHoldStyle_Inner(float mountOffset, Item sItem, Rectangle heldItemFrame) {
  			if (isPettingAnimal) {
  				int num = miscCounter % 14 / 7;
  				CompositeArmStretchAmount stretch = CompositeArmStretchAmount.ThreeQuarters;
@@ -3818,12 +3820,14 @@
  				manaRegenDelay = (int)maxRegenDelay;
  		}
  
-@@ -34733,6 +_,8 @@
+@@ -34733,6 +_,10 @@
  		}
  
  		public void ItemCheck_ApplyUseStyle(float mountOffset, Item sItem, Rectangle heldItemFrame) {
-+			ItemLoader.UseStyle(sItem, this); //Do we need this to run on servers?
-+
++			ItemCheck_ApplyUseStyle_Inner(mountOffset, sItem, heldItemFrame);
++			ItemLoader.UseStyle(sItem, this, heldItemFrame);
++		}
++		public void ItemCheck_ApplyUseStyle_Inner(float mountOffset, Item sItem, Rectangle heldItemFrame) {
  			if (Main.dedServ)
  				return;
  

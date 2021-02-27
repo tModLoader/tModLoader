@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace ExampleMod.Content.Pets.ExampleLightPet
 {
@@ -37,7 +38,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 				.Register();
 		}
 
-		public override void UseStyle(Player player) {
+		public override void UseStyle(Player player, Rectangle heldItemFrame) {
 			if (player.whoAmI == Main.myPlayer && player.itemTime == 0) {
 				player.AddBuff(Item.buffType, 3600);
 			}

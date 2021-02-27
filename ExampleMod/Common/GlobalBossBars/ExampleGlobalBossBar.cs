@@ -20,8 +20,8 @@ namespace ExampleMod.Common.GlobalBossBars
 			return true;
 		}
 
-		public override void PostDraw(bool skipped, SpriteBatch spriteBatch, NPC npc, BossBarDrawParams drawParams) {
-			if (!skipped && npc.type == NPCID.EyeofCthulhu) {
+		public override void PostDraw(SpriteBatch spriteBatch, NPC npc, BossBarDrawParams drawParams) {
+			if (npc.type == NPCID.EyeofCthulhu) {
 				string text = "GlobalBossBar Showcase";
 				var font = FontAssets.MouseText.Value;
 				Vector2 size = font.MeasureString(text);
