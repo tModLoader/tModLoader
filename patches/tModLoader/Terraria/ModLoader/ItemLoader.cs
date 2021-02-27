@@ -288,35 +288,36 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 
-		private static HookList HookUseStyle = AddHook<Action<Item, Player>>(g => g.UseStyle);
+		private static HookList HookUseStyle = AddHook<Action<Item, Player, Rectangle>>(g => g.UseStyle);
 		//in Terraria.Player.ItemCheck after useStyle if/else chain call ItemLoader.UseStyle(item, this)
 		/// <summary>
 		/// Calls ModItem.UseStyle and all GlobalItem.UseStyle hooks.
 		/// </summary>
-		public static void UseStyle(Item item, Player player) {
+		public static void UseStyle(Item item, Player player, Rectangle heldItemFrame) {
 			if (item.IsAir)
 				return;
 
-			item.ModItem?.UseStyle(player);
+			item.ModItem?.UseStyle(player, heldItemFrame);
 
 			foreach (var g in HookUseStyle.Enumerate(item.globalItems)) {
-				g.UseStyle(item, player);
+				g.UseStyle(item, player, heldItemFrame);
 			}
 		}
 
-		private static HookList HookHoldStyle = AddHook<Action<Item, Player>>(g => g.HoldStyle);
+		private static HookList HookHoldStyle = AddHook<Action<Item, Player, Rectangle>>(g => g.HoldStyle);
 		//in Terraria.Player.ItemCheck after holdStyle if/else chain call ItemLoader.HoldStyle(item, this)
 		/// <summary>
 		/// If the player is not holding onto a rope and is not in the middle of using an item, calls ModItem.HoldStyle and all GlobalItem.HoldStyle hooks.
+		/// <br/> Returns whether or not the vanilla logic should be skipped.
 		/// </summary>
-		public static void HoldStyle(Item item, Player player) {
+		public static void HoldStyle(Item item, Player player, Rectangle heldItemFrame) {
 			if (item.IsAir || player.pulley || player.itemAnimation > 0)
 				return;
 
-			item.ModItem?.HoldStyle(player);
+			item.ModItem?.HoldStyle(player, heldItemFrame);
 
 			foreach (var g in HookHoldStyle.Enumerate(item.globalItems)) {
-				g.HoldStyle(item, player);
+				g.HoldStyle(item, player, heldItemFrame);
 			}
 		}
 
