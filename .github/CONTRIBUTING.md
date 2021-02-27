@@ -33,6 +33,12 @@ For Notepad++:
 
 If you use another editor, please find these settings yourself and adjust them accordingly.
 
+## You follow our style guide
+The number one rule of collaborative development is pick a style and stick to it. 
+Please be mindful of past developers and don't reformat code/change styles just for the sake of it.
+
+[Our Style Guide](https://github.com/tModLoader/tModLoader/wiki/tModLoader-Style-Guide)
+
 ## You edit in the tModLoader solution
 The chance is very slim that you need either of the other workspaces. If you did use them, **please be absolutely sure that you had to work in them**. If you are unsure, feel free to ask us before proposing your contribution.
 

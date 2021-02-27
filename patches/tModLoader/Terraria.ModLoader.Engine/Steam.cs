@@ -38,7 +38,7 @@ namespace Terraria.ModLoader.Engine
 		{
 			SteamApps.GetAppInstallDir(TerrariaAppId_t, out string terrariaInstallLocation, 1000);
 #if MAC
-				terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "Terraria.app/Contents/MacOS");
+				terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "Terraria.app/Contents/Resources");
 #endif
 			return terrariaInstallLocation;
 		}
