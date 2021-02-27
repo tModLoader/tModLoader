@@ -22,8 +22,19 @@ namespace Terraria
 		/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		/// <exception cref="IndexOutOfRangeException"/>
-		public T GetGlobalProjectile<T>() where T : GlobalProjectile
-			=> GetGlobalProjectile(ModContent.GetInstance<T>());
+		public T GetGlobalProjectile<T>(bool exactType = true) where T : GlobalProjectile {
+			if (exactType) {
+				return GetGlobalProjectile(ModContent.GetInstance<T>());
+			}
+
+			for (int i = 0; i < globalProjectiles.Length; i++) {
+				if (globalProjectiles[i].instance is T result) {
+					return result;
+				}
+			}
+
+			throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current projectile.");
+		}
 
 		/// <summary> Gets the local instance of the type of the specified GlobalProjectile instance. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
@@ -34,8 +45,23 @@ namespace Terraria
 		// TryGet
 
 		/// <summary> Gets the instance of the specified GlobalProjectile type. </summary>
-		public bool TryGetGlobalProjectile<T>(out T result) where T : GlobalProjectile
-			=> TryGetGlobalProjectile(ModContent.GetInstance<T>(), out result);
+		public bool TryGetGlobalProjectile<T>(out T result, bool exactType = true) where T : GlobalProjectile {
+			if (exactType) {
+				return TryGetGlobalProjectile(ModContent.GetInstance<T>(), out result);
+			}
+
+			for (int i = 0; i < globalProjectiles.Length; i++) {
+				if (globalProjectiles[i].instance is T t) {
+					result = t;
+
+					return true;
+				}
+			}
+
+			result = default;
+
+			return false;
+		}
 
 		/// <summary> Safely attempts to get the local instance of the type of the specified GlobalProjectile instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
