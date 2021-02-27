@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Items.Tools
 		}
 
 		// UseStyle is called each frame that the item is being actively used.
-		public override void UseStyle(Player player) {
+		public override bool UseStyle(Player player, Rectangle heldItemFrame) {
 			// Each frame, make some dust
 			if (Main.rand.NextBool()) {
 				Dust.NewDust(player.position, player.width, player.height, 15, 0f, 0f, 150, Color.White, 1.1f); // Makes dust from the player's position and copies the hitbox of which the dust may spawn. Change these arguments if needed.
@@ -57,6 +57,8 @@ namespace ExampleMod.Content.Items.Tools
 					Dust.NewDust(player.position, player.width, player.height, 15, 0f, 0f, 150, default, 1.5f);
 				}
 			}
+
+			return false;
 		}
 
 		private Color[] itemNameCycleColors = { new Color(254, 105, 47), new Color(190, 30, 209), new Color(34, 221, 151), new Color(0, 106, 185) };
