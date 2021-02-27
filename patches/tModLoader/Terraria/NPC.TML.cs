@@ -26,8 +26,19 @@ namespace Terraria
 		/// <summary> Gets the instance of the specified GlobalNPC type. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		/// <exception cref="IndexOutOfRangeException"/>
-		public T GetGlobalNPC<T>() where T : GlobalNPC
-			=> GetGlobalNPC(ModContent.GetInstance<T>());
+		public T GetGlobalNPC<T>(bool exactType = true) where T : GlobalNPC {
+			if (exactType) {
+				return GetGlobalNPC(ModContent.GetInstance<T>());
+			}
+
+			for (int i = 0; i < globalNPCs.Length; i++) {
+				if (globalNPCs[i].instance is T result) {
+					return result;
+				}
+			}
+
+			throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current npc.");
+		}
 
 		/// <summary> Gets the local instance of the type of the specified GlobalNPC instance. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
@@ -38,8 +49,23 @@ namespace Terraria
 		// TryGet
 
 		/// <summary> Gets the instance of the specified GlobalNPC type. </summary>
-		public bool TryGetGlobalNPC<T>(out T result) where T : GlobalNPC
-			=> TryGetGlobalNPC(ModContent.GetInstance<T>(), out result);
+		public bool TryGetGlobalNPC<T>(out T result, bool exactType = true) where T : GlobalNPC {
+			if (exactType) {
+				return TryGetGlobalNPC(ModContent.GetInstance<T>(), out result);
+			}
+
+			for (int i = 0; i < globalNPCs.Length; i++) {
+				if (globalNPCs[i].instance is T t) {
+					result = t;
+
+					return true;
+				}
+			}
+
+			result = default;
+
+			return false;
+		}
 
 		/// <summary> Safely attempts to get the local instance of the type of the specified GlobalNPC instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>

@@ -27,20 +27,46 @@ namespace Terraria
 		/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		/// <exception cref="IndexOutOfRangeException"/>
-		public T GetGlobalItem<T>() where T : GlobalItem
-			=> GetGlobalItem(ModContent.GetInstance<T>());
+		public T GetGlobalItem<T>(bool exactType = true) where T : GlobalItem {
+			if (exactType) {
+				return GetGlobalItem(ModContent.GetInstance<T>());
+			}
+
+			for (int i = 0; i < globalItems.Length; i++) {
+				if (globalItems[i].instance is T result) {
+					return result;
+				}
+			}
+
+			throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current item.");
+		}
 
 		/// <summary> Gets the local instance of the type of the specified GlobalItem instance. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		/// <exception cref="NullReferenceException"/>
 		public T GetGlobalItem<T>(T baseInstance) where T : GlobalItem
 			=> baseInstance.Instance(this) as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current item.");
-		
+
 		// TryGet
 
 		/// <summary> Gets the instance of the specified GlobalItem type. </summary>
-		public bool TryGetGlobalItem<T>(out T result) where T : GlobalItem
-			=> TryGetGlobalItem(ModContent.GetInstance<T>(), out result);
+		public bool TryGetGlobalItem<T>(out T result, bool exactType = true) where T : GlobalItem {
+			if (exactType) {
+				return TryGetGlobalItem(ModContent.GetInstance<T>(), out result);
+			}
+
+			for (int i = 0; i < globalItems.Length; i++) {
+				if (globalItems[i].instance is T t) {
+					result = t;
+
+					return true;
+				}
+			}
+
+			result = default;
+
+			return false;
+		}
 
 		/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
