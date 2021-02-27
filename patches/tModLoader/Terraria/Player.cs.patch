@@ -167,11 +167,11 @@
 -		private void ApplyItemAnimation(Item sItem, float multiplier, int itemReuseDelay = 0) {
 -			SetItemAnimation((int)((float)sItem.useAnimation * multiplier));
 -			reuseDelay = itemReuseDelay;
-+		public void ApplyItemAnimation(Item sItem, float multiplier, int itemReuseDelay = 0) {
++		public void ApplyItemAnimation(Item sItem, float multiplier, int? itemReuseDelay = null) {
 +			ItemLoader.UseAnimation(sItem, this);
 +
 +			SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * multiplier, this, sItem));
-+			reuseDelay = (int)(itemReuseDelay / PlayerHooks.TotalUseTimeMultiplier(this, sItem));
++			reuseDelay = (int)((itemReuseDelay ?? sItem.reuseDelay) / PlayerHooks.TotalUseTimeMultiplier(this, sItem));
  		}
  
 -		private void ApplyItemAnimation(Item sItem) {
