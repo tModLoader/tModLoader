@@ -3754,11 +3754,13 @@
  					int num178 = Projectile.NewProjectile(pointPoisition.X, pointPoisition.Y, num2, num3, projToShoot, Damage, KnockBack, i);
  					if (sItem.type == 726)
  						Main.projectile[num178].magic = true;
-@@ -34427,6 +_,8 @@
+@@ -34427,6 +_,10 @@
  		}
  
  		private void ItemCheck_ApplyHoldStyle(float mountOffset, Item sItem, Rectangle heldItemFrame) {
-+			ItemLoader.HoldStyle(sItem, this);
++			if (ItemLoader.HoldStyle(sItem, this, heldItemFrame)) { //Do we need this to run on servers?
++				return;
++			}
 +			
  			if (isPettingAnimal) {
  				int num = miscCounter % 14 / 7;
@@ -3777,11 +3779,13 @@
  				manaRegenDelay = (int)maxRegenDelay;
  		}
  
-@@ -34733,6 +_,8 @@
+@@ -34733,6 +_,10 @@
  		}
  
  		public void ItemCheck_ApplyUseStyle(float mountOffset, Item sItem, Rectangle heldItemFrame) {
-+			ItemLoader.UseStyle(sItem, this); //Do we need this to run on servers?
++			if (ItemLoader.UseStyle(sItem, this, heldItemFrame)) { //Do we need this to run on servers?
++				return;
++			}
 +
  			if (Main.dedServ)
  				return;
