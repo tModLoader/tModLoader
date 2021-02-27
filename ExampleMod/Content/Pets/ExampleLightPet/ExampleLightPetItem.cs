@@ -38,12 +38,10 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 				.Register();
 		}
 
-		public override bool UseStyle(Player player, Rectangle heldItemFrame) {
+		public override void UseStyle(Player player, Rectangle heldItemFrame) {
 			if (player.whoAmI == Main.myPlayer && player.itemTime == 0) {
 				player.AddBuff(Item.buffType, 3600);
 			}
-
-			return false;
 		}
 	}
 }

@@ -282,40 +282,35 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 
-		private static HookList HookUseStyle = AddHook<Func<Item, Player, Rectangle, bool>>(g => g.UseStyle);
+		private static HookList HookUseStyle = AddHook<Action<Item, Player, Rectangle>>(g => g.UseStyle);
 		//in Terraria.Player.ItemCheck after useStyle if/else chain call ItemLoader.UseStyle(item, this)
 		/// <summary>
 		/// Calls ModItem.UseStyle and all GlobalItem.UseStyle hooks.
-		/// <br/> Returns whether or not the vanilla logic should be skipped.
 		/// </summary>
-		public static bool UseStyle(Item item, Player player, Rectangle heldItemFrame) {
+		public static void UseStyle(Item item, Player player, Rectangle heldItemFrame) {
 			if (item.IsAir)
-				return false;
+				return;
 
-			bool result = item.ModItem?.UseStyle(player, heldItemFrame) == true;
+			item.ModItem?.UseStyle(player, heldItemFrame);
 
 			foreach (var g in HookUseStyle.arr)
-				result |= g.Instance(item).UseStyle(item, player, heldItemFrame);
-
-			return result;
+				g.Instance(item).UseStyle(item, player, heldItemFrame);
 		}
 
-		private static HookList HookHoldStyle = AddHook<Func<Item, Player, Rectangle, bool>>(g => g.HoldStyle);
+		private static HookList HookHoldStyle = AddHook<Action<Item, Player, Rectangle>>(g => g.HoldStyle);
 		//in Terraria.Player.ItemCheck after holdStyle if/else chain call ItemLoader.HoldStyle(item, this)
 		/// <summary>
 		/// If the player is not holding onto a rope and is not in the middle of using an item, calls ModItem.HoldStyle and all GlobalItem.HoldStyle hooks.
 		/// <br/> Returns whether or not the vanilla logic should be skipped.
 		/// </summary>
-		public static bool HoldStyle(Item item, Player player, Rectangle heldItemFrame) {
+		public static void HoldStyle(Item item, Player player, Rectangle heldItemFrame) {
 			if (item.IsAir || player.pulley || player.itemAnimation > 0)
-				return false;
+				return;
 
-			bool result = item.ModItem?.HoldStyle(player, heldItemFrame) == true;
+			item.ModItem?.HoldStyle(player, heldItemFrame);
 
 			foreach (var g in HookHoldStyle.arr)
-				result |= g.Instance(item).HoldStyle(item, player, heldItemFrame);
-
-			return result;
+				g.Instance(item).HoldStyle(item, player, heldItemFrame);
 		}
 
 		private static HookList HookHoldItem = AddHook<Action<Item, Player>>(g => g.HoldItem);
