@@ -331,18 +331,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the player's animation when an item is being used. Return true if you modify the player's animation. Returns false by default.
+		/// Allows you to modify the player's animation when an item is being used.
 		/// </summary>
-		public virtual bool UseItemFrame(Item item, Player player) {
-			return false;
-		}
+		public virtual void UseItemFrame(Item item, Player player) { }
 
 		/// <summary>
-		/// Allows you to modify the player's animation when the player is holding an item. Return true if you modify the player's animation. Returns false by default.
+		/// Allows you to modify the player's animation when the player is holding an item.
 		/// </summary>
-		public virtual bool HoldItemFrame(Item item, Player player) {
-			return false;
-		}
+		public virtual void HoldItemFrame(Item item, Player player) { }
 
 		/// <summary>
 		/// Allows you to make an item usable by right-clicking. Returns false by default. When the item is used by right-clicking, player.altFunctionUse will be set to 2.
