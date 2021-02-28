@@ -2,7 +2,7 @@
 {
 	public static partial class DustID
 	{
-		//Naming is based on the best approximation of earliest implimentation/most popular
+		//Naming is based on the best approximation of the earliest or most popular implementation.
 		public const short Grass_Small = 3;
 		public const short HeartCrystal = 12;
 		public const short Glass = 13;
