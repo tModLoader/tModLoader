@@ -243,28 +243,34 @@ namespace Terraria.ModLoader
 			return texture;
 		}
 
-		private static HookList HookUpdateBadLifeRegen = AddHook<Action>(p => p.UpdateBadLifeRegen);
+		internal static void CalculateStats(Player player) {
+			player.modManaRegen.ResetVals();
+			ModifyManaRegen(player);
+			player.modLifeRegen.ResetVals();
+			ModifyLifeRegen(player);
+		}
 
-		public static void UpdateBadLifeRegen(Player player) {
-			foreach (int index in HookUpdateBadLifeRegen.arr) {
-				player.modPlayers[index].UpdateBadLifeRegen();
+		internal static void UpdateRegen(ModPlayer.Regen val, ref ModPlayer.Regen player) {
+			player.deltaRegen += val.deltaRegen;
+			player.deltaRate += val.deltaRate;
+			player.maxZeroRegen |= val.maxZeroRegen;
+			player.multiplyRegen *= val.multiplyRegen;
+			
+		}
+
+		private static HookList HookModifyLifeRegen = AddHook<Func<ModPlayer.Regen>>(p => p.ModifyLifeRegen);
+
+		public static void ModifyLifeRegen(Player player) {
+			foreach (int index in HookModifyLifeRegen.arr) {
+				UpdateRegen(player.modPlayers[index].ModifyLifeRegen(), ref player.modLifeRegen);
 			}
 		}
 
-		private static HookList HookUpdateLifeRegen = AddHook<Action>(p => p.UpdateLifeRegen);
+		private static HookList HookModifyManaRegen = AddHook<Func<ModPlayer.Regen>>(p => p.ModifyManaRegen);
 
-		public static void UpdateLifeRegen(Player player) {
-			foreach (int index in HookUpdateLifeRegen.arr) {
-				player.modPlayers[index].UpdateLifeRegen();
-			}
-		}
-
-		private delegate void DelegateNaturalLifeRegen(ref float regen);
-		private static HookList HookNaturalLifeRegen = AddHook<DelegateNaturalLifeRegen>(p => p.NaturalLifeRegen);
-
-		public static void NaturalLifeRegen(Player player, ref float regen) {
-			foreach (int index in HookNaturalLifeRegen.arr) {
-				player.modPlayers[index].NaturalLifeRegen(ref regen);
+		public static void ModifyManaRegen(Player player) {
+			foreach (int index in HookModifyManaRegen.arr) {
+				UpdateRegen(player.modPlayers[index].ModifyManaRegen(), ref player.modManaRegen);
 			}
 		}
 

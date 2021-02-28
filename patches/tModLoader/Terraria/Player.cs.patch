@@ -1979,30 +1979,52 @@
  		}
  
  		private void UpdateLadyBugLuckTime() {
-@@ -13234,6 +_,7 @@
+@@ -13234,6 +_,13 @@
  				lifeRegen -= 100;
  			}
  
-+			PlayerHooks.UpdateBadLifeRegen(this);
++			lifeRegenTime += (int)modLifeRegen.deltaRate;
++			lifeRegen += (int)modLifeRegen.deltaRegen;
++			if (modLifeRegen.maxZeroRegen) {
++				lifeRegenTime = Math.Min(lifeRegenTime, 0);
++				lifeRegen = Math.Min(lifeRegen, 0);
++			}
++
  			if (honey && lifeRegen < 0) {
  				lifeRegen += 4;
  				if (lifeRegen > 0)
-@@ -13278,6 +_,7 @@
- 			if (whoAmI == Main.myPlayer && Main.SceneMetrics.HasHeartLantern)
- 				lifeRegen += 2;
- 
-+			PlayerHooks.UpdateLifeRegen(this);
- 			if (bleed)
- 				lifeRegenTime = 0;
- 
-@@ -13342,6 +_,7 @@
- 			if (rabid)
- 				num2 = ((!shinyStone) ? (num2 / 2f) : (num2 * 0.75f));
- 
-+			PlayerHooks.NaturalLifeRegen(this, ref num2);
+@@ -13345,7 +_,7 @@
  			float num4 = (float)statLifeMax2 / 400f * 0.85f + 0.15f;
  			num2 *= num4;
  			lifeRegen += (int)Math.Round(num2);
+-			lifeRegenCount += lifeRegen;
++			lifeRegenCount += (int)(lifeRegen * modLifeRegen.multiplyRegen);
+ 			if (palladiumRegen)
+ 				lifeRegenCount += 4;
+ 
+@@ -13455,7 +_,7 @@
+ 
+ 			if (manaRegenDelay > 0) {
+ 				manaRegenDelay--;
+-				manaRegenDelay -= manaRegenDelayBonus;
++				manaRegenDelay -= manaRegenDelayBonus + (int)modManaRegen.deltaRate;
+ 				if ((velocity.X == 0f && velocity.Y == 0f) || grappling[0] >= 0 || manaRegenBuff)
+ 					manaRegenDelay--;
+ 			}
+@@ -13479,7 +_,12 @@
+ 				manaRegen = 0;
+ 			}
+ 
+-			manaRegenCount += manaRegen;
++			manaRegen += (int)modManaRegen.deltaRegen;
++			if (modManaRegen.maxZeroRegen) {
++				manaRegen = Math.Min(manaRegen, 0);
++			}
++
++			manaRegenCount += (int)(manaRegen * modManaRegen.multiplyRegen);
+ 			while (manaRegenCount >= 120) {
+ 				bool flag = false;
+ 				manaRegenCount -= 120;
 @@ -13507,8 +_,8 @@
  
  		public void UpdateJumpHeight() {
@@ -2380,11 +2402,12 @@
  					aggro -= (int)((1f - stealth) * 1200f);
  					accRunSpeed *= 0.3f;
  					maxRunSpeed *= 0.3f;
-@@ -18095,6 +_,7 @@
+@@ -18095,6 +_,8 @@
  			}
  
  			meleeSpeed = 1f / meleeSpeed;
 +			PlayerHooks.PostUpdateMiscEffects(this);
++			PlayerHooks.CalculateStats(this);
  			UpdateLifeRegen();
  			soulDrain = 0;
  			UpdateManaRegen();

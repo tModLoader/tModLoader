@@ -171,25 +171,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time). This is typically done by setting player.lifeRegen to 0 if it is positive, setting player.lifeRegenTime to 0, and subtracting a number from player.lifeRegen. The player will take damage at a rate of half the number you subtract per second.
-		/// </summary>
-		public virtual void UpdateBadLifeRegen() {
-		}
-
-		/// <summary>
-		/// Allows you to increase the player's life regeneration based on its state. This can be done by incrementing player.lifeRegen by a certain number. The player will recover life at a rate of half the number you add per second. You can also increment player.lifeRegenTime to increase the speed at which the player reaches its maximum natural life regeneration.
-		/// </summary>
-		public virtual void UpdateLifeRegen() {
-		}
-
-		/// <summary>
-		/// Allows you to modify the power of the player's natural life regeneration. This can be done by multiplying the regen parameter by any number. For example, campfires multiply it by 1.1, while walking multiplies it by 0.5.
-		/// </summary>
-		/// <param name="regen"></param>
-		public virtual void NaturalLifeRegen(ref float regen) {
-		}
-
-		/// <summary>
 		/// Allows you to modify the player's stats while the game is paused due to the autopause setting being on.
 		/// This is called in single player only, some time before the player's tick update would happen when the game isn't paused.
 		/// </summary>
@@ -913,6 +894,50 @@ namespace Terraria.ModLoader
 		/// <param name="itemsByMod">The items that will be added. Each key is the internal mod name of the mod adding the items. Vanilla items use the "Terraria" key.</param>
 		/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
 		public virtual void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
+		}
+
+		public struct Regen
+		{
+			/// <summary>
+			/// Corresponds to incrementing or decrementing player.xRegen. The player will recover life/mana at a rate of half the number you add per second. 
+			/// </summary>
+			public float deltaRegen;
+			/// <summary>
+			/// Corresponds to incrementing or decrementing player.LifeRegenTime or player.manaRegenDelayBonus depending on context. Changes the speed at which the player reaches its maximum natural life regeneration or time to begin regenerating mana.
+			/// </summary>
+			public float deltaRate;
+			/// <summary>
+			/// Allows you to modify the power of the player's natural life/mana regeneration. This can be done by setting a multiplication value. For example, campfires multiply it by 1.1, while walking multiplies it by 0.5.
+			/// </summary>
+			public float multiplyRegen;
+			/// <summary>
+			/// Allows you to force no positive regeneration to occur. For example, the "On Fire!" debuff prevents positive life regenaration.
+			/// </summary>
+			public bool maxZeroRegen;
+
+			public static Regen Create() {
+				return new Regen { deltaRegen = 0, deltaRate = 0, multiplyRegen = 1, maxZeroRegen = false };
+			}
+			public void ResetVals() {
+				deltaRate = 0;
+				deltaRegen = 0;
+				multiplyRegen = 1;
+				maxZeroRegen = false;
+			}
+		}
+
+		/// <summary>
+		/// Allows you to modify a player's life regeneration based on returned structure ModPlayer.Regen.
+		/// </summary>
+		public virtual Regen ModifyLifeRegen() {
+			return Regen.Create();
+		}
+
+		/// <summary>
+		/// Allows you to modify a player's mana regeneration based on returned structure ModPlayer.Regen.
+		/// </summary>
+		public virtual Regen ModifyManaRegen() {
+			return Regen.Create();
 		}
 	}
 }

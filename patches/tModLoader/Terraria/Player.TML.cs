@@ -11,6 +11,9 @@ namespace Terraria
 
 		public HashSet<int> nearbyModTorch = new HashSet<int>();
 
+		internal ModPlayer.Regen modManaRegen = ModPlayer.Regen.Create();
+		internal ModPlayer.Regen modLifeRegen = ModPlayer.Regen.Create();
+
 		// Get
 
 		/// <summary> Gets the instance of the specified ModPlayer type. This will throw exceptions on failure. </summary>
