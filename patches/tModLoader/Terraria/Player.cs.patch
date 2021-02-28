@@ -2941,20 +2941,22 @@
  						}
  					}
  				}
-+				else
-+					ItemLoader.UseItemFrame(this.inventory[this.selectedItem], this); //TODO: does this method need to return bool? Should it run before the rest of the useStyle code?
++
++				ItemLoader.UseItemFrame(inventory[selectedItem], this);
  			}
  			else if (pulley) {
  				if (pulleyDir == 2)
-@@ -25550,6 +_,8 @@
- 				_ = bodyFrame;
- 				reference6.Y = 0;
+@@ -25659,6 +_,10 @@
+ 				reference9.Y = 0;
  			}
-+			else if (ItemLoader.HoldItemFrame(inventory[selectedItem], this)) {
+ 
++			if (flag3 && itemAnimation <= 0) {
++				ItemLoader.HoldItemFrame(inventory[selectedItem], this);
 +			}
- 			else if (shieldRaised) {
- 				bodyFrame.Y = bodyFrame.Height * 10;
- 			}
++
+ 			if (legs == 140) {
+ 				legFrameCounter = 0.0;
+ 				legFrame.Y = legFrame.Height * (velocity.Y != 0f).ToInt();
 @@ -25787,7 +_,7 @@
  			}
  		}
