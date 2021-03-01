@@ -1,4 +1,6 @@
 ReLogic\Microsoft\Xna\Framework.RuntimeProfile
+Terraria\Libraries\DotNetZip\Ionic.Zip.CF.dll
+Terraria\Libraries\JSON.NET\Newtonsoft.Json.dll
 Terraria\Libraries\RailSDK.Windows\RailSDK.Net.dll
 Terraria\Libraries\Steamworks.NET.Windows\Steamworks.NET.dll
 Terraria\Microsoft\Xna\Framework.RuntimeProfile

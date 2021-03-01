@@ -219,7 +219,7 @@ namespace Terraria.ModLoader.UI
 						_items.Add(new UIModSourceItem(sourcePath, builtMod));
 					}
 					_updateNeeded = true;
-				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.Current);
 		}
 
 		public override void Update(GameTime gameTime) {

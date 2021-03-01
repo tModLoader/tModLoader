@@ -29,6 +29,18 @@
  			ThrowIfDisposed();
  			assetName = AssetPathHelper.CleanPath(assetName);
  			lock (_requestLock) {
+@@ -82,9 +_,9 @@
+ 
+ 		public void TransferCompletedAssets() {
+ 			ThrowIfDisposed();
+-			lock (_requestLock) {
++			//lock (_requestLock) {
+ 				_asyncLoader.TransferCompleted();
+-			}
++			//}
+ 		}
+ 
+ 		private void ReloadAssetsIfSourceChanged(AssetRequestMode mode) {
 @@ -187,7 +_,7 @@
  			LoadAsset(asset2, mode);
  		}

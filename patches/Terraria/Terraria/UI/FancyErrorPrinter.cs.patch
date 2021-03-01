@@ -4,7 +4,7 @@
  using System.Collections.Generic;
  using System.IO;
  using System.Text;
-+#if WINDOWS && CLIENT
++#if CLIENT
  using System.Windows.Forms;
 +#endif
  
@@ -14,7 +14,7 @@
  		}
  
  		private static void ShowTheBox(string preparedMessage) {
-+#if WINDOWS && CLIENT
++#if CLIENT
  			MessageBox.Show(preparedMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
 +#endif
  		}

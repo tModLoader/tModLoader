@@ -53,7 +53,8 @@ namespace Terraria.ModLoader
 
 		internal void UnloadContent() {
 			Unload();
-			foreach(var loadable in content.Reverse()) {
+
+			foreach (var loadable in content.Reverse()) {
 				loadable.Unload();
 			}
 			content.Clear();
@@ -79,7 +80,7 @@ namespace Terraria.ModLoader
 			musics.Clear();
 
 			Assets?.Dispose();
-		} 
+		}
 
 		internal void Autoload() {
 			if (Code == null)

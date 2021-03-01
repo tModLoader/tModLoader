@@ -1,11 +1,6 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -2,25 +_,30 @@
- using ReLogic.OS;
- using System;
- using System.Collections.Generic;
-+
- #if CLIENT
+@@ -6,6 +_,7 @@
  using System.Diagnostics;
  #endif
  using System.IO;
@@ -13,11 +8,8 @@
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
- using System.Threading;
-+
- #if CLIENT
+@@ -13,12 +_,14 @@
  using System.Windows.Forms;
- #endif
  using Terraria.Initializers;
  using Terraria.Localization;
 +using Terraria.ModLoader;
@@ -30,26 +22,23 @@
 -	public static class Program
 +	public static partial class Program
  	{
- #if CLIENT
+ 		/* hide unused consts
  		public const bool IsServer = false;
-@@ -64,23 +_,18 @@
- 		public static void ForceLoadThread(object threadContext) {
- 			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
+@@ -57,21 +_,15 @@
  			LoadedEverything = true;
-+			Logging.Terraria.Info("JIT loading finished");
  		}
  
 -		private static void ForceJITOnAssembly(Assembly assembly) {
 -			Type[] types = assembly.GetTypes();
 -			for (int i = 0; i < types.Length; i++) {
--#if WINDOWS
+-#if WINDOWS || NETCORE
 -				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 -#else
 -				MethodInfo[] methods = types[i].GetMethods();
 -#endif
 -				foreach (MethodInfo methodInfo in methods) {
 -					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
--#if WINDOWS
+-#if WINDOWS || NETCORE
 -						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
 -#else
 -						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
@@ -66,7 +55,7 @@
  				}
  
  				ThingsLoaded++;
-@@ -96,10 +_,13 @@
+@@ -87,10 +_,13 @@
  		}
  
  		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
@@ -84,7 +73,7 @@
  		}
  
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -151,27 +_,52 @@
+@@ -142,27 +_,52 @@
  			}
  		}
  
@@ -128,10 +117,10 @@
  			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
  			InitializeConsoleOutput();
 -			SetupLogging();
++			//Program.SetupLogging();
  			Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
 -			using (Main main = new Main()) {
 -				try {
-+			//Program.SetupLogging();
 +			try {
 +				ModLoader.ModLoader.EngineInit();
 +				using (Main main = new Main()) {
@@ -141,7 +130,7 @@
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
  #if CLIENT
-@@ -180,9 +_,10 @@
+@@ -171,9 +_,10 @@
  					main.DedServ();
  #endif
  				}
@@ -155,11 +144,13 @@
  			}
  		}
  
-@@ -217,9 +_,21 @@
+@@ -208,9 +_,22 @@
  				}
  
- #if CLIENT
--				MessageBox.Show(e.ToString(), Language.GetTextValue("Error.Error"));
+ #if SERVER
+-				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
++				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
++#else
 +				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
 +
 +				if (e is FolderCreationFailedException)
@@ -173,9 +164,8 @@
 +
 +					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
 +				}
- #else
--				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
-+				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
  #endif
+-				MessageBox.Show(text, "Terraria: Error");
  			}
  			catch {
+ 			}

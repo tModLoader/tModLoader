@@ -48,7 +48,7 @@ namespace Terraria.ModLoader.Engine
 			var f_MaxTextureSize = t_ProfileCapabilities.GetField("MaxTextureSize", BindingFlags.NonPublic | BindingFlags.Instance);
 			f_MaxTextureSize.SetValue(f_ProfileCapabilities_Reach.GetValue(null), 4096);
 #endif
-#if DEBUG
+#if XNA && DEBUG
 	        mainThreadId = Thread.CurrentThread.ManagedThreadId;
 	        new Hook(typeof(Texture2D).FindMethod("ValidateCreationParameters"), new hook_ValidateCreationParameters(HookValidateCreationParameters));
 #endif

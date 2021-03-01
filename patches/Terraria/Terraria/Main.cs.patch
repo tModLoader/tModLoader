@@ -10,11 +10,13 @@
  using ReLogic.Graphics;
  using ReLogic.Localization.IME;
  using ReLogic.OS;
-@@ -15,15 +_,19 @@
+@@ -15,15 +_,22 @@
  using System.Collections.Concurrent;
  using System.Collections.Generic;
  using System.Diagnostics;
--using System.Drawing;
++#if WINDOWS
+ using System.Drawing;
++#endif
  using System.IO;
  using System.Linq;
  using System.Reflection;
@@ -101,6 +103,19 @@
  		public static int sundialCooldown;
  		public static bool fastForwardTime;
  		private static Stopwatch splashTimer = new Stopwatch();
+@@ -3102,10 +_,12 @@
+ 
+ 		protected void CheckBunny() {
+ 			try {
++#if WINDOWS //TODO: <https://www.nuget.org/packages/Microsoft.Win32.Registry/>?
+ 				RegistryKey currentUser = Registry.CurrentUser;
+ 				currentUser = currentUser.CreateSubKey("Software\\Terraria");
+ 				if (currentUser != null && currentUser.GetValue("Bunny") != null && currentUser.GetValue("Bunny").ToString() == "1")
+ 					runningCollectorsEdition = true;
++#endif
+ 			}
+ 			catch {
+ 				runningCollectorsEdition = false;
 @@ -3146,6 +_,7 @@
  
  			PendingBorderlessState = screenBorderless;
@@ -147,7 +162,7 @@
  				}
  				else if (SocialAPI.Cloud != null) {
  					SocialAPI.Cloud.Delete(WorldList[i].Path);
-@@ -3908,12 +_,16 @@
+@@ -3908,12 +_,17 @@
  		}
  
  		public void NeverSleep() {
@@ -161,6 +176,7 @@
  			if (previousExecutionState != 0)
  				NativeMethods.SetThreadExecutionState(previousExecutionState);
 +#endif
++			Netplay.WaitForClosePortClose();
  		}
  
  		public void DedServ() {
@@ -340,7 +356,7 @@
  
  				UpdateOldNPCShop();
  				hasFocus = base.IsActive;
-+#if CLIENT && XNA
++#if CLIENT && WINDOWS
  				Form form = Control.FromHandle(base.Window.Handle) as Form;
  				bool num2 = form.WindowState == FormWindowState.Minimized;
  				bool flag = Form.ActiveForm == form;
@@ -418,7 +434,7 @@
  			_uiScaleWanted = uiScaleWanted;
  		}
  
-+#if !WINDOWS
++#if FNA
 +		private static bool IsBorderlessDisplayAvailable() => false;
 +#else
  		private static bool IsBorderlessDisplayAvailable() => true;
@@ -523,8 +539,7 @@
  			int num4;
  			if (screenBorderless || screenMaximized || graphics.IsFullScreen || fullscreen) {
 +#if WINDOWS
--				form.MinimumSize = new Size(0, 0);
-+				form.MinimumSize = new System.Drawing.Size(0, 0);
+ 				form.MinimumSize = new Size(0, 0);
  				if (!fullscreen)
  					SetDisplayModeAsBorderless(ref width, ref height, form);
 +#endif
@@ -539,8 +554,7 @@
  			else {
  				PlayerInput.RawMouseScale = Vector2.One;
 +#if WINDOWS
--				form.MinimumSize = new Size(minScreenW, minScreenH);
-+				form.MinimumSize = new System.Drawing.Size(minScreenW, minScreenH);
+ 				form.MinimumSize = new Size(minScreenW, minScreenH);
  				if (flag) {
  					width = displayWidth[0];
  					height = displayHeight[0];
@@ -553,7 +567,7 @@
  				flag2 = (graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height);
  			}
  
-+#if WINDOWS
++#if XNA
  			if (!fullscreen && !flag2) {
  				if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  					width = form.ClientSize.Width;

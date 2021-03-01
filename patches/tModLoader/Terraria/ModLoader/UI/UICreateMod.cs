@@ -233,12 +233,12 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
   <Import Project=""..\..\references\tModLoader.targets"" />
   <PropertyGroup>
     <AssemblyName>{modNameTrimmed}</AssemblyName>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <Target Name=""BuildMod"" AfterTargets=""Build"">
-    <Exec Command=""&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks)"" />
+    <Exec Command=""dotnet &quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)"" />
   </Target>
   <ItemGroup>
     <PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />
@@ -250,7 +250,9 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 		{
 			if (!fileContents.Contains("tModLoader.targets"))
 				return true;
-			if (fileContents.Contains("<LangVersion>latest</LangVersion>"))
+			if (!fileContents.Contains("<TargetFramework>netcoreapp3.1</TargetFramework>"))
+				return true;
+			if (!fileContents.Contains("<LangVersion>latest</LangVersion>") && !fileContents.Contains("<LangVersion>preview</LangVersion>"))
 				return true;
 			if (!fileContents.Contains(@"<PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />"))
 				return true;
