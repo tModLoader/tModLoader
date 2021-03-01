@@ -899,7 +899,7 @@ namespace Terraria.ModLoader
 		public struct Regen
 		{
 			/// <summary>
-			/// Corresponds to incrementing or decrementing player.xRegen. The player will recover life/mana at a rate of half the number you add per second. 
+			/// Corresponds to incrementing or decrementing player.xRegen. The player will recover life/mana based primairly on this value.
 			/// </summary>
 			public float deltaRegen;
 			/// <summary>
@@ -907,7 +907,7 @@ namespace Terraria.ModLoader
 			/// </summary>
 			public float deltaRate;
 			/// <summary>
-			/// Allows you to modify the power of the player's natural life/mana regeneration. This can be done by setting a multiplication value. For example, campfires multiply it by 1.1, while walking multiplies it by 0.5.
+			/// Allows you to modify the power of the player's natural life/mana regeneration. This can be done by setting a multiplication value.
 			/// </summary>
 			public float multiplyRegen;
 			/// <summary>
