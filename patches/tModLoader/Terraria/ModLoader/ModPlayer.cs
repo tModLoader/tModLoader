@@ -899,30 +899,29 @@ namespace Terraria.ModLoader
 		public struct Regen
 		{
 			/// <summary>
-			/// Corresponds to incrementing or decrementing player.xRegen. The player will recover life/mana based primairly on this value.
+			/// Modifies the time until player reaches maximum natural life regeneration by 1 / N per player update. Bounded -2 < N < -0.5 and 0.05 < N < 2 by vanilla. Positives for buffs, negatives for debuffs.
 			/// </summary>
 			public float deltaRegen;
 			/// <summary>
-			/// Corresponds to incrementing or decrementing player.LifeRegenTime or player.manaRegenDelayBonus depending on context. Changes the speed at which the player reaches its maximum natural life regeneration or time to begin regenerating mana.
+			/// Changes the speed at which the player reaches its maximum natural life regeneration or time to begin regenerating mana.
 			/// </summary>
 			public float deltaRate;
 			/// <summary>
-			/// Allows you to modify the power of the player's natural life/mana regeneration. This can be done by setting a multiplication value.
+			/// Allows you to modify the potency of the player's life/mana regeneration. This can be done by setting a multiplication value.
 			/// </summary>
 			public float multiplyRegen;
 			/// <summary>
-			/// Allows you to force no positive regeneration to occur. For example, the "On Fire!" debuff prevents positive life regenaration.
+			/// Set to true to declare that you want regen, after handling all debuffs to be <= 0. Typically true for damaging debuffs, false for buffs. For example, the "On Fire!" debuff prevents positive life regenaration.
 			/// </summary>
-			public bool maxZeroRegen;
+			public bool disablePositiveRegen;
 
-			public static Regen Create() {
-				return new Regen { deltaRegen = 0, deltaRate = 0, multiplyRegen = 1, maxZeroRegen = false };
-			}
-			public void ResetVals() {
-				deltaRate = 0;
-				deltaRegen = 0;
-				multiplyRegen = 1;
-				maxZeroRegen = false;
+			public static readonly Regen defaultRegen = new Regen { deltaRegen = 0, deltaRate = 0, multiplyRegen = 1, disablePositiveRegen = false };
+
+			public static void Combine(Regen fromTarget, ref Regen toTarget) {
+				toTarget.deltaRegen += fromTarget.deltaRegen;
+				toTarget.deltaRate += fromTarget.deltaRate;
+				toTarget.disablePositiveRegen |= fromTarget.disablePositiveRegen;
+				toTarget.multiplyRegen *= fromTarget.multiplyRegen;
 			}
 		}
 
@@ -930,14 +929,14 @@ namespace Terraria.ModLoader
 		/// Allows you to modify a player's life regeneration based on returned structure ModPlayer.Regen.
 		/// </summary>
 		public virtual Regen ModifyLifeRegen() {
-			return Regen.Create();
+			return Regen.defaultRegen;
 		}
 
 		/// <summary>
 		/// Allows you to modify a player's mana regeneration based on returned structure ModPlayer.Regen.
 		/// </summary>
 		public virtual Regen ModifyManaRegen() {
-			return Regen.Create();
+			return Regen.defaultRegen;
 		}
 	}
 }

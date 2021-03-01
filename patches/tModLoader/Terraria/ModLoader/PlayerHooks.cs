@@ -243,34 +243,21 @@ namespace Terraria.ModLoader
 			return texture;
 		}
 
-		internal static void CalculateStats(Player player) {
-			player.modManaRegen.ResetVals();
-			ModifyManaRegen(player);
-			player.modLifeRegen.ResetVals();
-			ModifyLifeRegen(player);
-		}
+		private static HookList HookModifyManaRegen = AddHook<Func<ModPlayer.Regen>>(p => p.ModifyManaRegen);
 
-		internal static void UpdateRegen(ModPlayer.Regen val, ref ModPlayer.Regen player) {
-			player.deltaRegen += val.deltaRegen;
-			player.deltaRate += val.deltaRate;
-			player.maxZeroRegen |= val.maxZeroRegen;
-			player.multiplyRegen *= val.multiplyRegen;
-			
+		internal static void CalculateModdedManaRegen(Player player, out ModPlayer.Regen modManaRegen) {
+			modManaRegen = ModPlayer.Regen.defaultRegen;
+			foreach (int index in HookModifyManaRegen.arr) {
+				ModPlayer.Regen.Combine(player.modPlayers[index].ModifyManaRegen(), ref modManaRegen);
+			}
 		}
 
 		private static HookList HookModifyLifeRegen = AddHook<Func<ModPlayer.Regen>>(p => p.ModifyLifeRegen);
 
-		public static void ModifyLifeRegen(Player player) {
+		internal static void CalculateModdedLifeRegen(Player player, out ModPlayer.Regen modLifeRegen) {
+			modLifeRegen = ModPlayer.Regen.defaultRegen;
 			foreach (int index in HookModifyLifeRegen.arr) {
-				UpdateRegen(player.modPlayers[index].ModifyLifeRegen(), ref player.modLifeRegen);
-			}
-		}
-
-		private static HookList HookModifyManaRegen = AddHook<Func<ModPlayer.Regen>>(p => p.ModifyManaRegen);
-
-		public static void ModifyManaRegen(Player player) {
-			foreach (int index in HookModifyManaRegen.arr) {
-				UpdateRegen(player.modPlayers[index].ModifyManaRegen(), ref player.modManaRegen);
+				ModPlayer.Regen.Combine(player.modPlayers[index].ModifyLifeRegen(), ref modLifeRegen);
 			}
 		}
 
