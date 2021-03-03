@@ -1,5 +1,5 @@
 --- src/decompiled/Configuration.targets
-+++ src/Terraria/Configuration.targets
++++ src/Terraria/Configuration_LegacyNetFramework.targets
 @@ -1,11 +_,19 @@
  <Project>
    <PropertyGroup>

@@ -282,34 +282,35 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 
-		private static HookList HookUseStyle = AddHook<Action<Item, Player>>(g => g.UseStyle);
+		private static HookList HookUseStyle = AddHook<Action<Item, Player, Rectangle>>(g => g.UseStyle);
 		//in Terraria.Player.ItemCheck after useStyle if/else chain call ItemLoader.UseStyle(item, this)
 		/// <summary>
 		/// Calls ModItem.UseStyle and all GlobalItem.UseStyle hooks.
 		/// </summary>
-		public static void UseStyle(Item item, Player player) {
+		public static void UseStyle(Item item, Player player, Rectangle heldItemFrame) {
 			if (item.IsAir)
 				return;
 
-			item.ModItem?.UseStyle(player);
+			item.ModItem?.UseStyle(player, heldItemFrame);
 
 			foreach (var g in HookUseStyle.arr)
-				g.Instance(item).UseStyle(item, player);
+				g.Instance(item).UseStyle(item, player, heldItemFrame);
 		}
 
-		private static HookList HookHoldStyle = AddHook<Action<Item, Player>>(g => g.HoldStyle);
+		private static HookList HookHoldStyle = AddHook<Action<Item, Player, Rectangle>>(g => g.HoldStyle);
 		//in Terraria.Player.ItemCheck after holdStyle if/else chain call ItemLoader.HoldStyle(item, this)
 		/// <summary>
 		/// If the player is not holding onto a rope and is not in the middle of using an item, calls ModItem.HoldStyle and all GlobalItem.HoldStyle hooks.
+		/// <br/> Returns whether or not the vanilla logic should be skipped.
 		/// </summary>
-		public static void HoldStyle(Item item, Player player) {
+		public static void HoldStyle(Item item, Player player, Rectangle heldItemFrame) {
 			if (item.IsAir || player.pulley || player.itemAnimation > 0)
 				return;
 
-			item.ModItem?.HoldStyle(player);
+			item.ModItem?.HoldStyle(player, heldItemFrame);
 
 			foreach (var g in HookHoldStyle.arr)
-				g.Instance(item).HoldStyle(item, player);
+				g.Instance(item).HoldStyle(item, player, heldItemFrame);
 		}
 
 		private static HookList HookHoldItem = AddHook<Action<Item, Player>>(g => g.HoldItem);
@@ -762,41 +763,36 @@ namespace Terraria.ModLoader
 				g.Instance(item).OnConsumeItem(item, player);
 		}
 
-		private static HookList HookUseItemFrame = AddHook<Func<Item, Player, bool>>(g => g.UseItemFrame);
+		private static HookList HookUseItemFrame = AddHook<Action<Item, Player>>(g => g.UseItemFrame);
 		//in Terraria.Player.PlayerFrame at end of useStyle if/else chain
 		//  call if(ItemLoader.UseItemFrame(this.inventory[this.selectedItem], this)) { return; }
 		/// <summary>
 		/// Calls ModItem.UseItemFrame, then all GlobalItem.UseItemFrame hooks, until one of them returns true. Returns whether any of the hooks returned true.
 		/// </summary>
-		public static bool UseItemFrame(Item item, Player player) {
-			if (item.ModItem != null && item.ModItem.UseItemFrame(player))
-				return true;
+		public static void UseItemFrame(Item item, Player player) {
+			if (item.IsAir)
+				return;
+
+			item.ModItem?.UseItemFrame(player);
 
 			foreach (var g in HookUseItemFrame.arr)
-				if (g.Instance(item).UseItemFrame(item, player))
-					return true;
-
-			return false;
+				g.Instance(item).UseItemFrame(item, player);
 		}
 
-		private static HookList HookHoldItemFrame = AddHook<Func<Item, Player, bool>>(g => g.HoldItemFrame);
+		private static HookList HookHoldItemFrame = AddHook<Action<Item, Player>>(g => g.HoldItemFrame);
 		//in Terraria.Player.PlayerFrame at end of holdStyle if statements
 		//  call if(ItemLoader.HoldItemFrame(this.inventory[this.selectedItem], this)) { return; }
 		/// <summary>
 		/// Calls ModItem.HoldItemFrame, then all GlobalItem.HoldItemFrame hooks, until one of them returns true. Returns whether any of the hooks returned true.
 		/// </summary>
-		public static bool HoldItemFrame(Item item, Player player) {
+		public static void HoldItemFrame(Item item, Player player) {
 			if (item.IsAir)
-				return false;
+				return;
 
-			if (item.ModItem != null && item.ModItem.HoldItemFrame(player))
-				return true;
+			item.ModItem?.HoldItemFrame(player);
 
 			foreach (var g in HookHoldItemFrame.arr)
-				if (g.Instance(item).HoldItemFrame(item, player))
-					return true;
-
-			return false;
+				g.Instance(item).HoldItemFrame(item, player);
 		}
 
 		private static HookList HookAltFunctionUse = AddHook<Func<Item, Player, bool>>(g => g.AltFunctionUse);

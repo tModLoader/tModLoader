@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/UI/BigProgressBar/IBigProgressBar.cs
++++ src/tModLoader/Terraria/GameContent/UI/BigProgressBar/IBigProgressBar.cs
+@@ -2,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.BigProgressBar
+ {
+-	internal interface IBigProgressBar
++	public interface IBigProgressBar
+ 	{
+ 		bool ValidateAndCollectNecessaryInfo(ref BigProgressBarInfo info);
+ 

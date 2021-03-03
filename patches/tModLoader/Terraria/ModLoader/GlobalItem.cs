@@ -92,14 +92,18 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify the location and rotation of any item in its use animation.
 		/// </summary>
-		public virtual void UseStyle(Item item, Player player) {
-		}
+		/// <param name="item"> The item. </param>
+		/// <param name="player"> The player. </param>
+		/// <param name="heldItemFrame"> The source rectangle for the held item's texture. </param>
+		public virtual void UseStyle(Item item, Player player, Rectangle heldItemFrame) { }
 
 		/// <summary>
 		/// Allows you to modify the location and rotation of the item the player is currently holding.
 		/// </summary>
-		public virtual void HoldStyle(Item item, Player player) {
-		}
+		/// <param name="item"> The item. </param>
+		/// <param name="player"> The player. </param>
+		/// <param name="heldItemFrame"> The source rectangle for the held item's texture. </param>
+		public virtual void HoldStyle(Item item, Player player, Rectangle heldItemFrame) { }
 
 		/// <summary>
 		/// Allows you to make things happen when the player is holding an item (for example, torches make light and water candles increase spawn rate).
@@ -327,18 +331,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the player's animation when an item is being used. Return true if you modify the player's animation. Returns false by default.
+		/// Allows you to modify the player's animation when an item is being used.
 		/// </summary>
-		public virtual bool UseItemFrame(Item item, Player player) {
-			return false;
-		}
+		public virtual void UseItemFrame(Item item, Player player) { }
 
 		/// <summary>
-		/// Allows you to modify the player's animation when the player is holding an item. Return true if you modify the player's animation. Returns false by default.
+		/// Allows you to modify the player's animation when the player is holding an item.
 		/// </summary>
-		public virtual bool HoldItemFrame(Item item, Player player) {
-			return false;
-		}
+		public virtual void HoldItemFrame(Item item, Player player) { }
 
 		/// <summary>
 		/// Allows you to make an item usable by right-clicking. Returns false by default. When the item is used by right-clicking, player.altFunctionUse will be set to 2.
