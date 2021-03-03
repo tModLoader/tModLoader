@@ -1,24 +1,43 @@
 --- src/decompiled/Configuration.targets
 +++ src/Terraria/Configuration.targets
-@@ -1,11 +_,19 @@
+@@ -1,20 +_,22 @@
  <Project>
-   <PropertyGroup>
-     <TargetFramework>net40</TargetFramework>
+-  <PropertyGroup>
++	<PropertyGroup>
+-    <TargetFramework>net40</TargetFramework>
++		<TargetFramework>netcoreapp3.1</TargetFramework>
 -    <Configurations>Debug;Release;ServerDebug;ServerRelease</Configurations>
++		<Configurations>Debug;Release;ServerDebug;ServerRelease</Configurations>
 -    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
-+    <Configurations>WindowsDebug;WindowsRelease;WindowsServerDebug;WindowsServerRelease;LinuxRelease;LinuxServerRelease;MacRelease;MacServerRelease</Configurations>
-     <PlatformTarget>x86</PlatformTarget>
-     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-     <Optimize>true</Optimize>
-+  </PropertyGroup>
-+  <PropertyGroup Condition="$(Configuration.Contains('Windows'))">
-+    <DefineConstants>$(DefineConstants);WINDOWS;XNA</DefineConstants>
-+  </PropertyGroup>
-+  <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
-+    <DefineConstants>$(DefineConstants);LINUX;FNA;MONO</DefineConstants>
-+  </PropertyGroup>
-+  <PropertyGroup Condition="$(Configuration.Contains('Mac'))">
-+    <DefineConstants>$(DefineConstants);MAC;FNA;MONO</DefineConstants>
-   </PropertyGroup>
-   <PropertyGroup Condition="$(Configuration.Contains('Server'))">
-     <DefineConstants>$(DefineConstants);SERVER</DefineConstants>
+-    <PlatformTarget>x86</PlatformTarget>
++		<PlatformTarget>AnyCPU</PlatformTarget>
+-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
++		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+-    <Optimize>true</Optimize>
++		<Optimize>true</Optimize>
+-  </PropertyGroup>
++	</PropertyGroup>
++	<PropertyGroup>
++		<DefineConstants>$(DefineConstants);FNA;NETCORE</DefineConstants>
++	</PropertyGroup>
+-  <PropertyGroup Condition="$(Configuration.Contains('Server'))">
++	<PropertyGroup Condition="$(Configuration.Contains('Server'))">
+-    <DefineConstants>$(DefineConstants);SERVER</DefineConstants>
++		<DefineConstants>$(DefineConstants);SERVER</DefineConstants>
+-  </PropertyGroup>
++	</PropertyGroup>
+-  <PropertyGroup Condition="!$(Configuration.Contains('Server'))">
++	<PropertyGroup Condition="!$(Configuration.Contains('Server'))">
+-    <DefineConstants>$(DefineConstants);CLIENT</DefineConstants>
++		<DefineConstants>$(DefineConstants);CLIENT</DefineConstants>
+-  </PropertyGroup>
++	</PropertyGroup>
+-  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
++	<PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+-    <Optimize>false</Optimize>
++		<Optimize>false</Optimize>
+-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
++		<DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+-  </PropertyGroup>
++	</PropertyGroup>
+ </Project>
