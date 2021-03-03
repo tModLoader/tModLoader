@@ -8,7 +8,7 @@ namespace ExampleMod.Common.GlobalNPCs
 {
 	public class GuideGlobalNPC : GlobalNPC
 	{
-		public override bool InstanceForEntity(NPC npc, bool lateInstatiation) {
+		public override bool AppliesToEntity(NPC npc, bool lateInstatiation) {
 			return npc.type == NPCID.Guide;
 		}
 
