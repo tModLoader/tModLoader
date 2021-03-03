@@ -2,55 +2,26 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this.
 	/// </summary>
-	public abstract class GlobalProjectile : ModType
+	public abstract class GlobalProjectile : GlobalType<Projectile>
 	{
-		internal short index;
-
 		protected sealed override void Register() {
 			ProjectileLoader.VerifyGlobalProjectile(this);
 
 			ModTypeLookup<GlobalProjectile>.Register(this);
 
-			index = (short)ProjectileLoader.globalProjectiles.Count;
+			index = (ushort)ProjectileLoader.globalProjectiles.Count;
 
 			ProjectileLoader.globalProjectiles.Add(this);
 		}
 
-		/// <summary>
-		/// Whether to create a new GlobalProjectile instance for every Projectile that exists. 
-		/// Useful for storing information on a projectile. Defaults to false. 
-		/// Return true if you need to store information (have non-static fields).
-		/// </summary>
-		public virtual bool InstancePerEntity => false;
-
-		/// <summary>
-		/// Use this to control whether or not a GlobalProjectile instance should be created for the provided Projectile instance.
-		/// </summary>
-		/// <param name="projectile"> The projectile for which the global instantion is being checked. </param>
-		/// <param name="lateInstantiation">
-		/// Whether this check occurs before or after the ModProjectile.SetDefaults call.
-		/// <br/> If you're relying on Projectile values that can be changed by that call, you should likely prefix your return value with the following:
-		/// <code> lateInstantiation &amp;&amp; ... </code>
-		/// </param>
-		public virtual bool InstanceForEntity(Projectile projectile, bool lateInstantiation) => true;
-
-		public GlobalProjectile Instance(Projectile projectile) {
-			for (int i = 0; i < projectile.globalProjectiles.Length; i++) {
-				var g = projectile.globalProjectiles[i];
-
-				if (g.index == index) {
-					return g.instance;
-				}
-			}
-
-			return null;
-		}
+		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
 
 		/// <summary>
 		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()). 

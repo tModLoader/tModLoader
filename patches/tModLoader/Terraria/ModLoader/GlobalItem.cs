@@ -6,55 +6,26 @@ using System.IO;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this.
 	/// </summary>
-	public abstract class GlobalItem : ModType
+	public abstract class GlobalItem : GlobalType<Item>
 	{
-		internal short index;
-
 		protected sealed override void Register() {
 			ItemLoader.VerifyGlobalItem(this);
 
 			ModTypeLookup<GlobalItem>.Register(this);
 			
-			index = (short)ItemLoader.globalItems.Count;
+			index = (ushort)ItemLoader.globalItems.Count;
 
 			ItemLoader.globalItems.Add(this);
 		}
 
-		/// <summary>
-		/// Whether to create a new GlobalItem instance for every Item that exists. 
-		/// Useful for storing information on an item. Defaults to false. 
-		/// Return true if you need to store information (have non-static fields).
-		/// </summary>
-		public virtual bool InstancePerEntity => false;
-
-		/// <summary>
-		/// Use this to control whether or not a GlobalItem instance should be created for the provided Item instance.
-		/// </summary>
-		/// <param name="item"> The item for which the global instantion is being checked. </param>
-		/// <param name="lateInstantiation">
-		/// Whether this check occurs before or after the ModItem.SetDefaults call.
-		/// <br/> If you're relying on Item values that can be changed by that call, you should likely prefix your return value with the following:
-		/// <code> lateInstantiation &amp;&amp; ... </code>
-		/// </param>
-		public virtual bool InstanceForEntity(Item item, bool lateInstantiation) => true;
-
-		public GlobalItem Instance(Item item) {
-			for (int i = 0; i < item.globalItems.Length; i++) {
-				var g = item.globalItems[i];
-
-				if (g.index == index) {
-					return g.instance;
-				}
-			}
-
-			return null;
-		}
+		public GlobalItem Instance(Item item) => Instance(item.globalItems, index);
 
 		/// <summary>
 		/// Create a copy of this instanced GlobalItem. Called when an item is cloned.

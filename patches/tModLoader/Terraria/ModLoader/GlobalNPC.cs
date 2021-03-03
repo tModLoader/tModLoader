@@ -4,55 +4,26 @@ using System;
 using System.Collections.Generic;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.
 	/// </summary>
-	public abstract class GlobalNPC : ModType
+	public abstract class GlobalNPC : GlobalType<NPC>
 	{
-		internal short index;
-
 		protected sealed override void Register() {
 			NPCLoader.VerifyGlobalNPC(this);
 
 			ModTypeLookup<GlobalNPC>.Register(this);
 			
-			index = (short)NPCLoader.globalNPCs.Count;
+			index = (ushort)NPCLoader.globalNPCs.Count;
 
 			NPCLoader.globalNPCs.Add(this);
 		}
 
-		/// <summary>
-		/// Whether to create a new GlobalNPC instance for every NPC that exists. 
-		/// Useful for storing information on an npc. Defaults to false. 
-		/// Return true if you need to store information (have non-static fields).
-		/// </summary>
-		public virtual bool InstancePerEntity => false;
-
-		/// <summary>
-		/// Use this to control whether or not a GlobalNPC instance should be created for the provided NPC instance.
-		/// </summary>
-		/// <param name="npc"> The npc for which the global instantion is being checked. </param>
-		/// <param name="lateInstantiation">
-		/// Whether this check occurs before or after the ModNPC.SetDefaults call.
-		/// <br/> If you're relying on NPC values that can be changed by that call, you should likely prefix your return value with the following:
-		/// <code> lateInstantiation &amp;&amp; ... </code>
-		/// </param>
-		public virtual bool InstanceForEntity(NPC npc, bool lateInstantiation) => true;
-
-		public GlobalNPC Instance(NPC npc) {
-			for (int i = 0; i < npc.globalNPCs.Length; i++) {
-				var g = npc.globalNPCs[i];
-
-				if (g.index == index) {
-					return g.instance;
-				}
-			}
-
-			return null;
-		}
+		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
 
 		/// <summary>
 		/// Whether instances of this GlobalNPC are created through Clone or constructor (by default implementations of NewInstance and Clone()). 

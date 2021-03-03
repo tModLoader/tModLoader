@@ -27,60 +27,23 @@ namespace Terraria
 		/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		/// <exception cref="IndexOutOfRangeException"/>
-		public T GetGlobalItem<T>(bool exactType = true) where T : GlobalItem {
-			if (exactType) {
-				return GetGlobalItem(ModContent.GetInstance<T>());
-			}
-
-			for (int i = 0; i < globalItems.Length; i++) {
-				if (globalItems[i].instance is T result) {
-					return result;
-				}
-			}
-
-			throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current item.");
-		}
+		public T GetGlobalItem<T>(bool exactType = true) where T : GlobalItem
+			=> GlobalType.GetGlobal<Item, GlobalItem, T>(globalItems, exactType);
 
 		/// <summary> Gets the local instance of the type of the specified GlobalItem instance. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		/// <exception cref="NullReferenceException"/>
 		public T GetGlobalItem<T>(T baseInstance) where T : GlobalItem
-			=> baseInstance.Instance(this) as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current item.");
-
-		// TryGet
+			=> GlobalType.GetGlobal<Item, GlobalItem, T>(globalItems, baseInstance);
 
 		/// <summary> Gets the instance of the specified GlobalItem type. </summary>
-		public bool TryGetGlobalItem<T>(out T result, bool exactType = true) where T : GlobalItem {
-			if (exactType) {
-				return TryGetGlobalItem(ModContent.GetInstance<T>(), out result);
-			}
-
-			for (int i = 0; i < globalItems.Length; i++) {
-				if (globalItems[i].instance is T t) {
-					result = t;
-
-					return true;
-				}
-			}
-
-			result = default;
-
-			return false;
-		}
+		public bool TryGetGlobalItem<T>(out T result, bool exactType = true) where T : GlobalItem
+			=> GlobalType.TryGetGlobal<Item, GlobalItem, T>(globalItems, exactType, out result);
 
 		/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
-		public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem {
-			if (baseInstance == null) {
-				result = default;
-
-				return false;
-			}
-
-			result = baseInstance.Instance(this) as T;
-
-			return result != null;
-		}
+		public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem
+			=> GlobalType.TryGetGlobal<Item, GlobalItem, T>(globalItems, baseInstance, out result);
 
 		public TagCompound SerializeData() => ItemIO.Save(this);
 
