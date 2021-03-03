@@ -6,6 +6,7 @@ using System.IO;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
@@ -24,17 +25,7 @@ namespace Terraria.ModLoader
 			ItemLoader.globalItems.Add(this);
 		}
 
-		public GlobalItem Instance(Item item) {
-			for (int i = 0; i < item.globalItems.Length; i++) {
-				var g = item.globalItems[i];
-
-				if (g.index == index) {
-					return g.instance;
-				}
-			}
-
-			return null;
-		}
+		public GlobalItem Instance(Item item) => GlobalUtils.Instance(item.globalItems, index);
 
 		/// <summary>
 		/// Create a copy of this instanced GlobalItem. Called when an item is cloned.

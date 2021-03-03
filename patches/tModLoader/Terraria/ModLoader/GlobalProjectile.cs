@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
@@ -20,17 +21,7 @@ namespace Terraria.ModLoader
 			ProjectileLoader.globalProjectiles.Add(this);
 		}
 
-		public GlobalProjectile Instance(Projectile projectile) {
-			for (int i = 0; i < projectile.globalProjectiles.Length; i++) {
-				var g = projectile.globalProjectiles[i];
-
-				if (g.index == index) {
-					return g.instance;
-				}
-			}
-
-			return null;
-		}
+		public GlobalProjectile Instance(Projectile projectile) => GlobalUtils.Instance(projectile.globalProjectiles, index);
 
 		/// <summary>
 		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()). 

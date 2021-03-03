@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
@@ -22,17 +23,7 @@ namespace Terraria.ModLoader
 			NPCLoader.globalNPCs.Add(this);
 		}
 
-		public GlobalNPC Instance(NPC npc) {
-			for (int i = 0; i < npc.globalNPCs.Length; i++) {
-				var g = npc.globalNPCs[i];
-
-				if (g.index == index) {
-					return g.instance;
-				}
-			}
-
-			return null;
-		}
+		public GlobalNPC Instance(NPC npc) => GlobalUtils.Instance(npc.globalNPCs, index);
 
 		/// <summary>
 		/// Whether instances of this GlobalNPC are created through Clone or constructor (by default implementations of NewInstance and Clone()). 

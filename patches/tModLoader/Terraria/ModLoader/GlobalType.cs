@@ -1,6 +1,8 @@
+using Terraria.ModLoader.Core;
+
 namespace Terraria.ModLoader
 {
-	public abstract class GlobalType<TEntity> : ModType
+	public abstract class GlobalType : ModType
 	{
 		internal ushort index;
 
@@ -11,6 +13,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool InstancePerEntity => false;
 
+		internal GlobalType() { }
+	}
+
+	public abstract class GlobalType<TEntity> : GlobalType
+	{
 		/// <summary>
 		/// Use this to control whether or not this global should be associated with the provided entity instance.
 		/// </summary>
