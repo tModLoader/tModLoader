@@ -1111,7 +1111,8 @@ namespace Terraria.ModLoader
 			var type = npc.GetType();
 
 			bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-				.Any(f => f.DeclaringType != typeof(GlobalNPC));
+				.Any(f => f.DeclaringType.IsSubclassOf(typeof(GlobalNPC)));
+
 			if (hasInstanceFields) {
 				if (!npc.InstancePerEntity) {
 					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");

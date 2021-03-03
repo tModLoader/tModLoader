@@ -1811,7 +1811,7 @@ namespace Terraria.ModLoader
 				throw new Exception(type + " must override both of (NetSend/NetReceive) or none");
 
 			bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-				.Any(f => f.DeclaringType != typeof(GlobalItem));
+				.Any(f => f.DeclaringType.IsSubclassOf(typeof(GlobalItem)));
 
 			if (hasInstanceFields) {
 				if (!item.InstancePerEntity)
