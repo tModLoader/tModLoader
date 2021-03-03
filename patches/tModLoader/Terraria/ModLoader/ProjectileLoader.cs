@@ -671,7 +671,8 @@ namespace Terraria.ModLoader
 			var type = projectile.GetType();
 
 			bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-				.Any(f => f.DeclaringType != typeof(GlobalProjectile));
+				.Any(f => f.DeclaringType.IsSubclassOf(typeof(GlobalProjectile)));
+
 			if (hasInstanceFields) {
 				if (!projectile.InstancePerEntity) {
 					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
