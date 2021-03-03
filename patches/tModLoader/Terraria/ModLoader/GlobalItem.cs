@@ -25,7 +25,7 @@ namespace Terraria.ModLoader
 			ItemLoader.globalItems.Add(this);
 		}
 
-		public GlobalItem Instance(Item item) => GlobalUtils.Instance(item.globalItems, index);
+		public GlobalItem Instance(Item item) => Instance(item.globalItems, index);
 
 		/// <summary>
 		/// Create a copy of this instanced GlobalItem. Called when an item is cloned.

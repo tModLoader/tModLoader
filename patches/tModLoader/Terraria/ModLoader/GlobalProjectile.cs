@@ -21,7 +21,7 @@ namespace Terraria.ModLoader
 			ProjectileLoader.globalProjectiles.Add(this);
 		}
 
-		public GlobalProjectile Instance(Projectile projectile) => GlobalUtils.Instance(projectile.globalProjectiles, index);
+		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
 
 		/// <summary>
 		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()). 

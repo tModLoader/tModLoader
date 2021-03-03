@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 			NPCLoader.globalNPCs.Add(this);
 		}
 
-		public GlobalNPC Instance(NPC npc) => GlobalUtils.Instance(npc.globalNPCs, index);
+		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
 
 		/// <summary>
 		/// Whether instances of this GlobalNPC are created through Clone or constructor (by default implementations of NewInstance and Clone()). 

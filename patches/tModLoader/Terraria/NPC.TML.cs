@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Core;
 
 namespace Terraria
 {
@@ -28,21 +24,21 @@ namespace Terraria
 		/// <exception cref="KeyNotFoundException"/>
 		/// <exception cref="IndexOutOfRangeException"/>
 		public T GetGlobalNPC<T>(bool exactType = true) where T : GlobalNPC
-			=> GlobalUtils.GetGlobal<NPC, GlobalNPC, T>(globalNPCs, exactType);
+			=> GlobalType.GetGlobal<NPC, GlobalNPC, T>(globalNPCs, exactType);
 
 		/// <summary> Gets the local instance of the type of the specified GlobalNPC instance. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		/// <exception cref="NullReferenceException"/>
 		public T GetGlobalNPC<T>(T baseInstance) where T : GlobalNPC
-			=> GlobalUtils.GetGlobal<NPC, GlobalNPC, T>(globalNPCs, baseInstance);
+			=> GlobalType.GetGlobal<NPC, GlobalNPC, T>(globalNPCs, baseInstance);
 
 		/// <summary> Gets the instance of the specified GlobalNPC type. </summary>
 		public bool TryGetGlobalNPC<T>(out T result, bool exactType = true) where T : GlobalNPC
-			=> GlobalUtils.TryGetGlobal<NPC, GlobalNPC, T>(globalNPCs, exactType, out result);
+			=> GlobalType.TryGetGlobal<NPC, GlobalNPC, T>(globalNPCs, exactType, out result);
 
 		/// <summary> Safely attempts to get the local instance of the type of the specified GlobalNPC instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
-			=> GlobalUtils.TryGetGlobal<NPC, GlobalNPC, T>(globalNPCs, baseInstance, out result);
+			=> GlobalType.TryGetGlobal<NPC, GlobalNPC, T>(globalNPCs, baseInstance, out result);
 	}
 }

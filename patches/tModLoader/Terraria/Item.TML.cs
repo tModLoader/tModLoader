@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria
@@ -29,22 +28,22 @@ namespace Terraria
 		/// <exception cref="KeyNotFoundException"/>
 		/// <exception cref="IndexOutOfRangeException"/>
 		public T GetGlobalItem<T>(bool exactType = true) where T : GlobalItem
-			=> GlobalUtils.GetGlobal<Item, GlobalItem, T>(globalItems, exactType);
+			=> GlobalType.GetGlobal<Item, GlobalItem, T>(globalItems, exactType);
 
 		/// <summary> Gets the local instance of the type of the specified GlobalItem instance. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		/// <exception cref="NullReferenceException"/>
 		public T GetGlobalItem<T>(T baseInstance) where T : GlobalItem
-			=> GlobalUtils.GetGlobal<Item, GlobalItem, T>(globalItems, baseInstance);
+			=> GlobalType.GetGlobal<Item, GlobalItem, T>(globalItems, baseInstance);
 
 		/// <summary> Gets the instance of the specified GlobalItem type. </summary>
 		public bool TryGetGlobalItem<T>(out T result, bool exactType = true) where T : GlobalItem
-			=> GlobalUtils.TryGetGlobal<Item, GlobalItem, T>(globalItems, exactType, out result);
+			=> GlobalType.TryGetGlobal<Item, GlobalItem, T>(globalItems, exactType, out result);
 
 		/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem
-			=> GlobalUtils.TryGetGlobal<Item, GlobalItem, T>(globalItems, baseInstance, out result);
+			=> GlobalType.TryGetGlobal<Item, GlobalItem, T>(globalItems, baseInstance, out result);
 
 		public TagCompound SerializeData() => ItemIO.Save(this);
 
