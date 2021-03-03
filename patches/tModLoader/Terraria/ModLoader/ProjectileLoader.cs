@@ -103,22 +103,12 @@ namespace Terraria.ModLoader
 				projectile.ModProjectile = GetProjectile(projectile.type).NewInstance(projectile);
 			}
 
-			projectile.globalProjectiles = globalProjectiles
-				.Where(g => g.InstanceForEntity(projectile, false))
-				.Select(g => new Instanced<GlobalProjectile>(g.index, g.InstancePerEntity ? g.NewInstance(projectile) : g))
-				.ToArray();
+			GlobalProjectile Instantiate(GlobalProjectile g)
+				=> g.InstancePerEntity ? g.NewInstance(projectile) : g;
 
-			projectile.ModProjectile?.SetDefaults();
-
-			//Could potentially be sped up.
-			var lateInitGlobals = globalProjectiles
-				.Where(g => !projectile.globalProjectiles.Any(i => i.index == g.index) && g.InstanceForEntity(projectile, true))
-				.Select(g => new Instanced<GlobalProjectile>(g.index, g.InstancePerEntity ? g.NewInstance(projectile) : g));
-
-			projectile.globalProjectiles = projectile.globalProjectiles
-				.Union(lateInitGlobals)
-				.OrderBy(i => i.index)
-				.ToArray();
+			LoaderUtils.InstantiateGlobals(projectile, globalProjectiles, ref projectile.globalProjectiles, Instantiate, () => {
+				projectile.ModProjectile?.SetDefaults();
+			});
 
 			foreach (GlobalProjectile g in HookSetDefaults.Enumerate(projectile.globalProjectiles)) {
 				g.SetDefaults(projectile);
