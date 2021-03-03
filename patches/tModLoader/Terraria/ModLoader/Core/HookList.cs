@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Terraria.ModLoader.Core
 {
-	internal class HookList<T>
+	internal class HookList<T> where T : GlobalType
 	{
 		public readonly MethodInfo method;
 
