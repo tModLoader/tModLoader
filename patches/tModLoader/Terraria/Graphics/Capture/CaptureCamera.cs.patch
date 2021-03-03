@@ -6,7 +6,7 @@
  			using (FileStream fileStream = File.Create(filename)) {
 +#if !NETCORE
  				PlatformUtilities.SavePng(fileStream, width, height, width, height, _outputData);
-+#else
++#elif CLIENT
 +				var tex = new Texture2D(Main.graphics.GraphicsDevice, width, height);
 +				tex.SetData(_outputData);
 +				tex.SaveAsPng(fileStream, width, height);
