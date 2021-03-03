@@ -6,10 +6,10 @@ namespace Terraria.ModLoader
 	[StructLayout(LayoutKind.Sequential, Pack = 2)]
 	internal readonly struct Instanced<T>
 	{
-		public readonly short index;
+		public readonly ushort index;
 		public readonly T instance;
 
-		public Instanced(short index, T instance) {
+		public Instanced(ushort index, T instance) {
 			this.index = index;
 			this.instance = instance;
 		}
