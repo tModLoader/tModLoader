@@ -86,6 +86,6 @@ namespace Terraria.ModLoader
 		/// <br/> If you're relying on entity values that can be changed by that call, you should likely prefix your return value with the following:
 		/// <code> lateInstantiation &amp;&amp; ... </code>
 		/// </param>
-		public virtual bool InstanceForEntity(TEntity entity, bool lateInstantiation) => true;
+		public virtual bool AppliesToEntity(TEntity entity, bool lateInstantiation) => true;
 	}
 }
