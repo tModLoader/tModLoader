@@ -15,7 +15,7 @@ namespace Terraria.ModLoader
 
 		internal GlobalType() { }
 
-		internal static T Instance<T>(Instanced<T>[] globals, ushort index) where T : GlobalType {
+		public static T Instance<T>(Instanced<T>[] globals, ushort index) where T : GlobalType {
 			for (int i = 0; i < globals.Length; i++) {
 				var g = globals[i];
 
@@ -27,10 +27,10 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
-		internal static TResult GetGlobal<TEntity, TGlobal, TResult>(Instanced<TGlobal>[] globals, TResult baseInstance) where TGlobal : GlobalType<TEntity> where TResult : TGlobal
+		public static TResult GetGlobal<TEntity, TGlobal, TResult>(Instanced<TGlobal>[] globals, TResult baseInstance) where TGlobal : GlobalType<TEntity> where TResult : TGlobal
 			=> Instance(globals, baseInstance.index) as TResult ?? throw new KeyNotFoundException($"Instance of '{typeof(TResult).Name}' does not exist on the current {typeof(TEntity).Name}.");
 
-		internal static TResult GetGlobal<TEntity, TGlobal, TResult>(Instanced<TGlobal>[] globals, bool exactType) where TGlobal : GlobalType<TEntity> where TResult : TGlobal {
+		public static TResult GetGlobal<TEntity, TGlobal, TResult>(Instanced<TGlobal>[] globals, bool exactType) where TGlobal : GlobalType<TEntity> where TResult : TGlobal {
 			if (exactType) {
 				return GetGlobal<TEntity, TGlobal, TResult>(globals, ModContent.GetInstance<TResult>());
 			}
@@ -44,7 +44,7 @@ namespace Terraria.ModLoader
 			throw new KeyNotFoundException($"Instance of '{typeof(TResult).Name}' does not exist on the current {typeof(TEntity).Name}.");
 		}
 
-		internal static bool TryGetGlobal<TEntity, TGlobal, TResult>(Instanced<TGlobal>[] globals, TResult baseInstance, out TResult result) where TGlobal : GlobalType<TEntity> where TResult : TGlobal {
+		public static bool TryGetGlobal<TGlobal, TResult>(Instanced<TGlobal>[] globals, TResult baseInstance, out TResult result) where TGlobal : GlobalType where TResult : TGlobal {
 			if (baseInstance == null) {
 				result = default;
 
@@ -56,9 +56,9 @@ namespace Terraria.ModLoader
 			return result != null;
 		}
 
-		internal static bool TryGetGlobal<TEntity, TGlobal, TResult>(Instanced<TGlobal>[] globals, bool exactType, out TResult result) where TGlobal : GlobalType<TEntity> where TResult : TGlobal {
+		public static bool TryGetGlobal<TGlobal, TResult>(Instanced<TGlobal>[] globals, bool exactType, out TResult result) where TGlobal : GlobalType where TResult : TGlobal {
 			if (exactType) {
-				return TryGetGlobal<TEntity, TGlobal, TResult>(globals, ModContent.GetInstance<TResult>(), out result);
+				return TryGetGlobal(globals, ModContent.GetInstance<TResult>(), out result);
 			}
 
 			for (int i = 0; i < globals.Length; i++) {

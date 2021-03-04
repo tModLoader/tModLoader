@@ -34,11 +34,11 @@ namespace Terraria
 
 		/// <summary> Gets the instance of the specified GlobalNPC type. </summary>
 		public bool TryGetGlobalNPC<T>(out T result, bool exactType = true) where T : GlobalNPC
-			=> GlobalType.TryGetGlobal<NPC, GlobalNPC, T>(globalNPCs, exactType, out result);
+			=> GlobalType.TryGetGlobal<GlobalNPC, T>(globalNPCs, exactType, out result);
 
 		/// <summary> Safely attempts to get the local instance of the type of the specified GlobalNPC instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
-			=> GlobalType.TryGetGlobal<NPC, GlobalNPC, T>(globalNPCs, baseInstance, out result);
+			=> GlobalType.TryGetGlobal<GlobalNPC, T>(globalNPCs, baseInstance, out result);
 	}
 }

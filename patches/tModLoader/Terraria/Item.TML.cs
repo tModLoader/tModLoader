@@ -38,12 +38,12 @@ namespace Terraria
 
 		/// <summary> Gets the instance of the specified GlobalItem type. </summary>
 		public bool TryGetGlobalItem<T>(out T result, bool exactType = true) where T : GlobalItem
-			=> GlobalType.TryGetGlobal<Item, GlobalItem, T>(globalItems, exactType, out result);
+			=> GlobalType.TryGetGlobal<GlobalItem, T>(globalItems, exactType, out result);
 
 		/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem
-			=> GlobalType.TryGetGlobal<Item, GlobalItem, T>(globalItems, baseInstance, out result);
+			=> GlobalType.TryGetGlobal<GlobalItem, T>(globalItems, baseInstance, out result);
 
 		public TagCompound SerializeData() => ItemIO.Save(this);
 

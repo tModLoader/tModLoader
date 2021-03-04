@@ -33,12 +33,12 @@ namespace Terraria
 
 		/// <summary> Gets the instance of the specified GlobalProjectile type. </summary>
 		public bool TryGetGlobalProjectile<T>(out T result, bool exactType = true) where T : GlobalProjectile
-			=> GlobalType.TryGetGlobal<Projectile, GlobalProjectile, T>(globalProjectiles, exactType, out result);
+			=> GlobalType.TryGetGlobal<GlobalProjectile, T>(globalProjectiles, exactType, out result);
 
 		/// <summary> Safely attempts to get the local instance of the type of the specified GlobalProjectile instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
-			=> GlobalType.TryGetGlobal<Projectile, GlobalProjectile, T>(globalProjectiles, baseInstance, out result);
+			=> GlobalType.TryGetGlobal<GlobalProjectile, T>(globalProjectiles, baseInstance, out result);
 
 		public bool CountsAsClass(DamageClass damageClass) => DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
 	}
