@@ -9,12 +9,13 @@
      <Reference Include="../Terraria/Libraries/FNA/FNA.dll" />
      <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
      <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
-@@ -19,5 +_,8 @@
+@@ -19,5 +_,9 @@
  	<Compile Remove="Localization/IME/WindowsIme.cs" />
  	<Compile Remove="OS/Windows/WindowsMessageHook.cs" />
      <EmbeddedResource Include="Microsoft/**" />
 +  </ItemGroup>
 +  <ItemGroup>
 +    <PackageReference Include="System.Drawing.Common" Version="5.0.1" />
++	<PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
    </ItemGroup>
  </Project>

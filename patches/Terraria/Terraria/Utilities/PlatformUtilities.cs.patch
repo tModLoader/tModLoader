@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Utilities/PlatformUtilities.cs
 +++ src/Terraria/Terraria/Utilities/PlatformUtilities.cs
-@@ -1,11 +_,90 @@
+@@ -1,11 +_,88 @@
 +#if !XNA
 +using SDL2;
 +using System;
@@ -63,7 +63,7 @@
  		public const bool IsLinux = false;
 +#endif
 +
-+#if !XNA
++#if !XNA && !NETCORE
 +		public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data) {
 +#if CLIENT
 +			IntPtr intPtr = SDL.SDL_CreateRGBSurface(0u, imgWidth, imgHeight, 32, 255u, 65280u, 16711680u, 4278190080u);
@@ -80,11 +80,9 @@
 +			}
 +
 +			byte[] array = new byte[width * height * 4 + 41 + 57 + 256];
-+			GCHandle arrHandle = GCHandle.Alloc(array, GCHandleType.Pinned);
-+			IntPtr intPtr3 = SDL.SDL_RWFromMem(arrHandle.AddrOfPinnedObject(), array.Length);
++			IntPtr intPtr3 = SDL.SDL_RWFromMem(array, array.Length);
 +			SDL_image.IMG_SavePNG_RW(intPtr, intPtr3, 1);
 +			SDL.SDL_FreeSurface(intPtr);
-+			arrHandle.Free();
 +			int count = ((int)array[33] << 24 | (int)array[34] << 16 | (int)array[35] << 8 | (int)array[36]) + 41 + 57;
 +			stream.Write(array, 0, count);
 +#endif

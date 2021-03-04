@@ -1,5 +1,5 @@
---- src/Terraria/ReLogic/Content/Readers/PngReader.cs
-+++ src/tModLoader/ReLogic/Content/Readers/PngReader.cs
+--- src/decompiled/ReLogic/Content/Readers/PngReader.cs
++++ src/Terraria/ReLogic/Content/Readers/PngReader.cs
 @@ -1,5 +_,6 @@
 -using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
