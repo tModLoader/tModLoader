@@ -421,6 +421,7 @@ namespace Terraria.ModLoader.Core
 			status.SetStatus(Language.GetTextValue("tModLoader.Compiling", Path.GetFileName(outputPath)));
 
 			var refs = new List<string>();
+			var nativeRefs = new List<string>();
 
 			//everything used to compile the tModLoader for the target platform
 			refs.AddRange(GetTerrariaReferences());
@@ -458,7 +459,7 @@ namespace Terraria.ModLoader.Core
 			if (Program.LaunchParameters.TryGetValue("-define", out var defineParam))
 				preprocessorSymbols.AddRange(defineParam.Split(';', ' '));
 
-			var results = RoslynCompile(mod.Name, outputPath, refs.ToArray(), files, preprocessorSymbols.ToArray(), mod.properties.includePDB, allowUnsafe);
+			var results = RoslynCompile(mod.Name, outputPath, refs, files, preprocessorSymbols.ToArray(), mod.properties.includePDB, allowUnsafe);
 
 			int numWarnings = results.Count(e => e.Severity == DiagnosticSeverity.Warning);
 			int numErrors = results.Length - numWarnings;
@@ -516,9 +517,9 @@ namespace Terraria.ModLoader.Core
 		}
 
 		/// <summary>
-		/// Invoke the Roslyn compiler via reflection to avoid a .NET 4.6 dependency
+		/// Compile a dll for the mod based on required includes.
 		/// </summary>
-		private static Diagnostic[] RoslynCompile(string name, string outputPath, string[] references, string[] files, string[] preprocessorSymbols, bool includePdb, bool allowUnsafe)
+		private static Diagnostic[] RoslynCompile(string name, string outputPath, List<string> references, string[] files, string[] preprocessorSymbols, bool includePdb, bool allowUnsafe)
 		{
 			var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
 				assemblyIdentityComparer: DesktopAssemblyIdentityComparer.Default,
@@ -529,9 +530,26 @@ namespace Terraria.ModLoader.Core
 
 			var emitOptions = new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb);
 
-			var refs = references.Select(s => MetadataReference.CreateFromFile(s));
+			// Separate native and managed assemblies, at a heavy cost to performance. There is no available methods to detect managed vs unmanaged until it is loaded, but loading it crashes, so we split on the exception. Alternatively, could try string magic to filter the problem files.
+			List<string> refManaged = new List<string>();
+			List<string> refNative = new List<string>();
+
+			foreach (string test in references) {
+				try {
+					var a = Assembly.LoadFile(test);
+					refManaged.Add(test);
+				}
+				catch (Exception) {
+					refNative.Add(test);
+				}
+			}
+
+			var managedRefs = refManaged.Select(s => MetadataReference.CreateFromFile(s));
+			var unmanagedRefs = refNative.Select(s => MetadataReference.CreateFromFile(s));
+			
 			var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
-			var comp = CSharpCompilation.Create(name, src, refs, options);
+			
+			var comp = CSharpCompilation.Create(name, src, managedRefs, options);
 
 			using var peStream = File.OpenWrite(outputPath);
 			using var pdbStream = includePdb ? File.OpenWrite(Path.ChangeExtension(outputPath, "pdb")) : null;

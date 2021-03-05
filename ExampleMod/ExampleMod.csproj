@@ -10,8 +10,8 @@
   <Import Project= "$(tMLWindows)\tModLoader.targets" />
   <PropertyGroup>
 	<AssemblyName>ExampleMod</AssemblyName>
-	<TargetFramework>netcoreapp5.0</TargetFramework>
-	<PlatformTarget>x86</PlatformTarget>
+	<TargetFramework>netcoreapp3.1</TargetFramework>
+	<PlatformTarget>AnyCPU</PlatformTarget>
 	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <Target Name="BuildMod" AfterTargets="Build">
