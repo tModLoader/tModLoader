@@ -530,54 +530,27 @@ namespace Terraria.ModLoader.Core
 
 			var emitOptions = new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb);
 
-
-			
-			List<string> refManaged = new List<string>();
-			List<string> refNative = new List<string>();
-
-			/* // Separate native and managed assemblies, at a heavy toll on performance. There is no available methods to detect managed vs unmanaged until it is loaded, but loading it crashes, so we split on the exception
-			foreach (string test in references) {
-				try {
-					var a = Assembly.LoadFile(test);
-					refManaged.Add(test);
-				}
-				catch (Exception) {
-					refNative.Add(test);
-				}
-			} */
-
-			// Separate native and managed assemblies via string whitelisting.
-			string[] unmanagedDLLs = new string[] { "clrcompression.dll", "clretwrc.dll", "clrjit.dll", "coreclr.dll", "dbgshim.dll", "Microsoft.DiaSymReader.Native.amd64.dll", "mscordaccore.dll", "mscordaccore_amd64_amd64_5.0.321.7212.dll", "mscordbi.dll", "mscorrc.dll", "System.Private.CoreLib.dll", "ucrtbase.dll" , "hostpolicy.dll"};
-
-			foreach (string test in references) {
-				if (test.Contains("api-ms")) {
-					refNative.Add(test);
-				}
-				else {
-					bool found = false;
-					for (int i = 0; i < unmanagedDLLs.Length; i++) {
-						if (test.Contains(unmanagedDLLs[i])) {
-							refNative.Add(test);
-							found = true;
-							break;
-						}
-					}
-					if (!found) {
-						refManaged.Add(test);
-					}
-				}
+			List<string> refs, assemblies;
+			if (false) {
+				SplitRefsByException(references, out refs, out assemblies);
+			} else {
+				SplitRefsByWhiteList(references, out refs, out assemblies);
 			}
 
-			var managedRefs = refManaged.Select(s => MetadataReference.CreateFromFile(s));
-			var unmanagedRefs = refNative.Select(s => MetadataReference.CreateFromFile(s));
-			
+			var managedRefs = refs.Select(s => MetadataReference.CreateFromFile(s));
+			var assemblyRefs = assemblies.Select(s => MetadataReference.CreateFromFile(s));
+
 			var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
-			
-			var comp = CSharpCompilation.Create(name, src, managedRefs, options);
+
+			var comp = CSharpCompilation.Create(name, src, managedRefs, options)
+				.AddReferences(assemblyRefs);
 
 			using var peStream = File.OpenWrite(outputPath);
 			using var pdbStream = includePdb ? File.OpenWrite(Path.ChangeExtension(outputPath, "pdb")) : null;
 			var results = comp.Emit(peStream, pdbStream, options: emitOptions);
+
+			peStream.Dispose();
+			pdbStream.Dispose();
 
 			return results.Diagnostics.Where(d => d.Severity >= DiagnosticSeverity.Warning).ToArray();
 			/*errors.Add(new CompilerError {
@@ -588,6 +561,63 @@ namespace Terraria.ModLoader.Core
 				Line = loc.StartLinePosition.Line + 1,
 				Column = loc.StartLinePosition.Character
 			});*/
+		}
+
+		private static void SplitRefsByException(List<string> refs, out List<string> managed, out List<string> natives) {
+			managed = new List<string>();
+			List<string> unmanaged = new List<string>();
+
+			// Separate native and managed assemblies, at a heavy toll on performance. There is no available methods to detect managed vs unmanaged until it is loaded, but loading it crashes, so we split on the exception
+			foreach (string test in refs) {
+				try {
+					var a = Assembly.LoadFile(test);
+					managed.Add(test);
+				}
+				catch (Exception) {
+					unmanaged.Add(test);
+				}
+			}
+
+			GetNativeRefsOfUnmanaged(unmanaged, out natives);
+		}
+
+		private static void SplitRefsByWhiteList(List<string> refs, out List<string> managed, out List<string> natives) {
+			managed = new List<string>();
+			List<string> unmanaged = new List<string>();
+
+			// Separate native and managed assemblies via string whitelisting.
+			string[] unmanagedDLLs = new string[] { "clrcompression.dll", "clretwrc.dll", "clrjit.dll", "coreclr.dll", "dbgshim.dll", "Microsoft.DiaSymReader.Native.amd64.dll", "mscordaccore.dll", "mscordaccore_amd64_amd64_5.0.321.7212.dll", "mscordbi.dll", "mscorrc.dll", "System.Private.CoreLib.dll", "ucrtbase.dll", "hostpolicy.dll" };
+
+			foreach (string test in refs) {
+				if (test.Contains("api-ms")) {
+					unmanaged.Add(test);
+				}
+				else {
+					bool found = false;
+					for (int i = 0; i < unmanagedDLLs.Length; i++) {
+						if (test.Contains(unmanagedDLLs[i])) {
+							unmanaged.Add(test);
+							found = true;
+							break;
+						}
+					}
+					if (!found) {
+						managed.Add(test);
+					}
+				}
+			}
+
+			GetNativeRefsOfUnmanaged(unmanaged, out natives);
+		}
+
+		private static void GetNativeRefsOfUnmanaged(List<string> unmanaged, out List<string> natives) {
+			natives = new List<string>();
+
+			foreach (var item in unmanaged) {
+				if (item.Contains("System.Private.CoreLib.dll")) {
+					natives.Add(item);
+				}
+			}
 		}
 
 		private static FileStream AcquireConsoleBuildLock()
