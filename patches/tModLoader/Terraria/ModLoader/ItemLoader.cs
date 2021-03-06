@@ -1402,8 +1402,7 @@ namespace Terraria.ModLoader
 		{
 			bool? canBurnInLava = null;
 			foreach (var g in HookCanBurnInLava.Enumerate(item.globalItems)) {
-				bool? globalCanBurnInLava = g.CanBurnInLava(item);
-				switch (globalCanBurnInLava) {
+				switch (g.CanBurnInLava(item)) {
 					case null:
 						continue;
 					case false:
