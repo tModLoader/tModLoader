@@ -1,0 +1,27 @@
+--- src/Terraria/Terraria/Graphics/Capture/CaptureCamera.cs
++++ src/tModLoader/Terraria/Graphics/Capture/CaptureCamera.cs
+@@ -1,12 +_,12 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+-using SixLabors.ImageSharp;
+ using System;
+-using System.Collections.Generic;
+ using System.IO;
++using System.Runtime.InteropServices;
+ using System.Threading;
+ using Terraria.Graphics.Effects;
+ using Terraria.Localization;
++using Terraria.Utilities;
+ 
+ namespace Terraria.Graphics.Capture
+ {
+@@ -98,8 +_,7 @@
+ 					num = Math.Min(num, 4096f / (float)(area.Height * 16));
+ 
+ 				num = Math.Min(1f, num);
+-				_outputImageSize.Width = (int)MathHelper.Clamp((int)(num * (float)(area.Width * 16)), 1f, 4096f);
+-				_outputImageSize.Height = (int)MathHelper.Clamp((int)(num * (float)(area.Height * 16)), 1f, 4096f);
++				_outputImageSize = new Size((int)MathHelper.Clamp((int)(num * (float)(area.Width * 16)), 1f, 4096f), (int)MathHelper.Clamp((int)(num * (float)(area.Height * 16)), 1f, 4096f));
+ 				_outputData = new byte[4 * _outputImageSize.Width * _outputImageSize.Height];
+ 				int num2 = (int)Math.Floor(num * 2048f);
+ 				_scaledFrameData = new byte[4 * num2 * num2];

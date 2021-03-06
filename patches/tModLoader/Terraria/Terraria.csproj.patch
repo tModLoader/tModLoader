@@ -51,7 +51,7 @@
      </EmbeddedResource>
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
-@@ -40,29 +_,42 @@
+@@ -40,29 +_,41 @@
      </Reference>
    </ItemGroup>
    <ItemGroup>
@@ -87,7 +87,6 @@
 +    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
 +    <PackageReference Include="System.CodeDom" Version="5.0.0" />
 +    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.1" />
-+    <PackageReference Include="System.Drawing.Common" Version="5.0.1" />
 +  </ItemGroup>
    <Target Name="CopyToSteamDir" AfterTargets="Build">
      <ItemGroup>

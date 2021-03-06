@@ -1,0 +1,10 @@
+--- src/Terraria/ReLogic/OS/Windows/WindowService.cs
++++ src/tModLoader/ReLogic/OS/Windows/WindowService.cs
+@@ -1,7 +_,5 @@
+ using Microsoft.Xna.Framework;
+ using System;
+-using System.Drawing;
+-using System.Runtime.InteropServices;
+ 
+ namespace ReLogic.OS.Windows
+ {

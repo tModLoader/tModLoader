@@ -421,7 +421,6 @@ namespace Terraria.ModLoader.Core
 			status.SetStatus(Language.GetTextValue("tModLoader.Compiling", Path.GetFileName(outputPath)));
 
 			var refs = new List<string>();
-			var nativeRefs = new List<string>();
 
 			//everything used to compile the tModLoader for the target platform
 			refs.AddRange(GetTerrariaReferences());
@@ -530,12 +529,12 @@ namespace Terraria.ModLoader.Core
 
 			var emitOptions = new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb);
 
-			SplitRefsByWhiteList(references, out var refs);
-			var managedRefs = refs.Select(s => MetadataReference.CreateFromFile(s));
+			SplitRefsByWhiteList(references, out var actualRefs);
+			var refs = actualRefs.Select(s => MetadataReference.CreateFromFile(s));
 
 			var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
 
-			var comp = CSharpCompilation.Create(name, src, managedRefs, options);
+			var comp = CSharpCompilation.Create(name, src, refs, options);
 
 			using var peStream = File.OpenWrite(outputPath);
 			using var pdbStream = includePdb ? File.OpenWrite(Path.ChangeExtension(outputPath, "pdb")) : null;
@@ -552,45 +551,41 @@ namespace Terraria.ModLoader.Core
 			});*/
 		}
 
-		private static void SplitRefsByException(List<string> refs, out List<string> managed) {
-			managed = new List<string>();
-			List<string> unmanaged = new List<string>();
+		private static void SplitRefsByException(List<string> refs, out List<string> actualAssemblies) {
+			actualAssemblies = new List<string>();
+			List<string> forwarderAssemblies = new List<string>();
 
-			// Separate native and managed assemblies, at a heavy toll on performance. Will generate the full list to blacklist; Useful for maintenance.
+			// Separate assemblies into complete assemblies and assemblies that forward to an assembly, at a heavy toll on performance. Will generate the full list of forwarding assemblies to blacklist; Useful for maintenance.
 			foreach (string test in refs) {
 				try {
 					var a = Assembly.LoadFile(test);
-					managed.Add(test);
+					actualAssemblies.Add(test);
 				}
 				catch (Exception) {
-					unmanaged.Add(test);
+					if (test.Contains("Private.CoreLib")) { // This assembly can't be loaded directly, but isn't a forwarding assembly and instead is the recipient of forwarding.
+						actualAssemblies.Add(test);
+					}
+					forwarderAssemblies.Add(test);
 				}
 			}
 		}
 
-		private static void SplitRefsByWhiteList(List<string> refs, out List<string> managed) {
-			managed = new List<string>();
-			List<string> unmanaged = new List<string>();
+		private static void SplitRefsByWhiteList(List<string> refs, out List<string> actualAssemblies) {
+			actualAssemblies = new List<string>();
 
 			// Separate out known forward-only assemblies via string blacklisting.
-			string[] unmanagedDLLs = new string[] { "clrcompression", "clretwrc", "clrjit", "coreclr", "dbgshim", "Microsoft.DiaSymReader.Native.amd64", "mscordaccore", "mscordaccore_amd64_amd64", "mscordbi", "mscorrc", "ucrtbase", "hostpolicy" };
+			string[] unmanagedDLLs = new string[] { "api-ms", "clrcompression", "clretwrc", "clrjit", "coreclr", "dbgshim", "Microsoft.DiaSymReader.Native.amd64", "mscordaccore", "mscordaccore_amd64_amd64", "mscordbi", "mscorrc", "ucrtbase", "hostpolicy" };
 
 			foreach (string test in refs) {
-				if (test.Contains("api-ms")) {
-					unmanaged.Add(test);
+				bool found = false;
+				for (int i = 0; i < unmanagedDLLs.Length; i++) {
+					if (test.Contains(unmanagedDLLs[i])) {
+						found = true;
+						break;
+					}
 				}
-				else {
-					bool found = false;
-					for (int i = 0; i < unmanagedDLLs.Length; i++) {
-						if (test.Contains(unmanagedDLLs[i])) {
-							unmanaged.Add(test);
-							found = true;
-							break;
-						}
-					}
-					if (!found) {
-						managed.Add(test);
-					}
+				if (!found) {
+					actualAssemblies.Add(test);
 				}
 			}
 		}

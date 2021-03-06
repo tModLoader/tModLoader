@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	<tMLDefault> ..\..\references </tMLDefault>
-	<tMLWindowsDeviance>Users\$(USERNAME)\OneDrive\</tMLWindowsDeviance>
-	<tMLWindows> C:\$(tMLWindowsDeviance)Documents\My Games\Terraria\ModLoader\Beta\references</tMLWindows>
-	<DefaultLocation Condition="Exists($(tMLTargetsDefault))"> </DefaultLocation>
-	<tML> $if$ '$(DefaultLocation)' tMLDefault $else$ tMLWindows </tML>
+	  <tMLDefault> ..\..\references </tMLDefault>
+	  <tMLOneDrive>C:\Users\$(USERNAME)\OneDrive\Documents\My Games\Terraria\ModLoader\Beta\references</tMLOneDrive>
+	  <OneDriveLocation Condition="Exists($(tMLOneDrive))">
+		  <Import Project= "$(tMLOneDrive)\tModLoader.targets" />
+	  </OneDriveLocation>
+	  <DefaultLocation Condition="Exists($(tMLDefault))">
+		  <Import Project= "$(tMLDefault)\tModLoader.targets" />
+	  </DefaultLocation>
   </PropertyGroup>
-  <Import Project= "$(tMLWindows)\tModLoader.targets" />
+  
   <PropertyGroup>
 	<AssemblyName>ExampleMod</AssemblyName>
 	<TargetFramework>netcoreapp3.1</TargetFramework>
