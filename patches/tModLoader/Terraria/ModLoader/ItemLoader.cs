@@ -1394,18 +1394,27 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookCanBurnInLava = AddHook<Func<Item, bool>>(g => g.CanBurnInLava);
+		private static HookList HookCanBurnInLava = AddHook<Func<Item, bool?>>(g => g.CanBurnInLava);
 		/// <summary>
 		/// Calls ModItem.CanBurnInLava.
 		/// </summary>
-		public static bool CanBurnInLava(Item item)
+		public static bool? CanBurnInLava(Item item)
 		{
+			bool? canBurnInLava = null;
 			foreach (var g in HookCanBurnInLava.Enumerate(item.globalItems)) {
-				if (g.CanBurnInLava(item))
-					return true;
+				bool? globalCanBurnInLava = g.CanBurnInLava(item);
+				switch (globalCanBurnInLava) {
+					case null:
+						continue;
+					case false:
+						canBurnInLava = false;
+						continue;
+					case true:
+						return true;
+				}
 			}
 
-			return item.ModItem?.CanBurnInLava() ?? false;
+			return canBurnInLava ?? item.ModItem?.CanBurnInLava();
 		}
 		
 		private static HookList HookPostUpdate = AddHook<Action<Item>>(g => g.PostUpdate);
