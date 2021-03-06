@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.IO
 		//TODO: This can probably be cleaned up with change to using ImageSharp instead of System.Drawing.
 		public static bool ToRaw(Stream src, Stream dst) {
 			var og = Image.Load(src);
-			using (var img = og.CloneAs<Argb32>()) {
+			using (var img = og.CloneAs<Rgba32>()) {
 				// now that the hi-def profile is always enabled, the max texture size is 4096
 				// if we get bug reports with old graphics cards forcing fallback to Reach and failing to load
 				// large textures, we can implement a slower path where the rawimg is converted to png before loading
@@ -30,25 +30,19 @@ namespace Terraria.ModLoader.IO
 					w.Write(img.Width);
 					w.Write(img.Height);
 					foreach (var c in span) {
-						//Bitmap is in ABGR
-						int a = c.A;
-						int b = c.B;
-						int g = c.G;
-						int r = c.R;
-
 						//special note, mirror XNA behaviour of zeroing out textures with full alpha zero
 						//this means that an author doesn't have to set their fully transparent pixels to black
 						//if they want additive blending they need to use alpha 1/255
-						if (a == 0) {
+						if (c.A == 0) {
 							w.Write(0);
 							continue;
 						}
 
-						//write ARGB, note that the texture is assumed pre-multiplied, allowing for extra blending effects
-						w.Write((byte)b);
-						w.Write((byte)g);
-						w.Write((byte)r);
-						w.Write((byte)a);
+						//write RGBA, note that the texture is assumed pre-multiplied, allowing for extra blending effects
+						w.Write(c.R);
+						w.Write(c.G);
+						w.Write(c.B);
+						w.Write(c.A);
 					}
 
 					return true;
