@@ -2,15 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	  <tMLDefault> ..\..\references </tMLDefault>
-	  <tMLOneDrive>C:\Users\$(USERNAME)\OneDrive\Documents\My Games\Terraria\ModLoader\Beta\references</tMLOneDrive>
-	  <OneDriveLocation Condition="Exists($(tMLOneDrive))">
-		  <Import Project= "$(tMLOneDrive)\tModLoader.targets" />
-	  </OneDriveLocation>
-	  <DefaultLocation Condition="Exists($(tMLDefault))">
-		  <Import Project= "$(tMLDefault)\tModLoader.targets" />
-	  </DefaultLocation>
   </PropertyGroup>
-  
+  <Import Project= "$(tMLDefault)\tModLoader.targets" />
   <PropertyGroup>
 	<AssemblyName>ExampleMod</AssemblyName>
 	<TargetFramework>netcoreapp3.1</TargetFramework>
