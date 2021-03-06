@@ -530,27 +530,16 @@ namespace Terraria.ModLoader.Core
 
 			var emitOptions = new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb);
 
-			List<string> refs, assemblies;
-			if (false) {
-				SplitRefsByException(references, out refs, out assemblies);
-			} else {
-				SplitRefsByWhiteList(references, out refs, out assemblies);
-			}
-
+			SplitRefsByWhiteList(references, out var refs);
 			var managedRefs = refs.Select(s => MetadataReference.CreateFromFile(s));
-			var assemblyRefs = assemblies.Select(s => MetadataReference.CreateFromFile(s));
 
 			var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
 
-			var comp = CSharpCompilation.Create(name, src, managedRefs, options)
-				.AddReferences(assemblyRefs);
+			var comp = CSharpCompilation.Create(name, src, managedRefs, options);
 
 			using var peStream = File.OpenWrite(outputPath);
 			using var pdbStream = includePdb ? File.OpenWrite(Path.ChangeExtension(outputPath, "pdb")) : null;
 			var results = comp.Emit(peStream, pdbStream, options: emitOptions);
-
-			peStream.Dispose();
-			pdbStream.Dispose();
 
 			return results.Diagnostics.Where(d => d.Severity >= DiagnosticSeverity.Warning).ToArray();
 			/*errors.Add(new CompilerError {
@@ -563,11 +552,11 @@ namespace Terraria.ModLoader.Core
 			});*/
 		}
 
-		private static void SplitRefsByException(List<string> refs, out List<string> managed, out List<string> natives) {
+		private static void SplitRefsByException(List<string> refs, out List<string> managed) {
 			managed = new List<string>();
 			List<string> unmanaged = new List<string>();
 
-			// Separate native and managed assemblies, at a heavy toll on performance. There is no available methods to detect managed vs unmanaged until it is loaded, but loading it crashes, so we split on the exception
+			// Separate native and managed assemblies, at a heavy toll on performance. Will generate the full list to blacklist; Useful for maintenance.
 			foreach (string test in refs) {
 				try {
 					var a = Assembly.LoadFile(test);
@@ -577,16 +566,14 @@ namespace Terraria.ModLoader.Core
 					unmanaged.Add(test);
 				}
 			}
-
-			GetNativeRefsOfUnmanaged(unmanaged, out natives);
 		}
 
-		private static void SplitRefsByWhiteList(List<string> refs, out List<string> managed, out List<string> natives) {
+		private static void SplitRefsByWhiteList(List<string> refs, out List<string> managed) {
 			managed = new List<string>();
 			List<string> unmanaged = new List<string>();
 
-			// Separate native and managed assemblies via string whitelisting.
-			string[] unmanagedDLLs = new string[] { "clrcompression.dll", "clretwrc.dll", "clrjit.dll", "coreclr.dll", "dbgshim.dll", "Microsoft.DiaSymReader.Native.amd64.dll", "mscordaccore.dll", "mscordaccore_amd64_amd64_5.0.321.7212.dll", "mscordbi.dll", "mscorrc.dll", "System.Private.CoreLib.dll", "ucrtbase.dll", "hostpolicy.dll" };
+			// Separate out known forward-only assemblies via string blacklisting.
+			string[] unmanagedDLLs = new string[] { "clrcompression", "clretwrc", "clrjit", "coreclr", "dbgshim", "Microsoft.DiaSymReader.Native.amd64", "mscordaccore", "mscordaccore_amd64_amd64", "mscordbi", "mscorrc", "ucrtbase", "hostpolicy" };
 
 			foreach (string test in refs) {
 				if (test.Contains("api-ms")) {
@@ -606,20 +593,7 @@ namespace Terraria.ModLoader.Core
 					}
 				}
 			}
-
-			GetNativeRefsOfUnmanaged(unmanaged, out natives);
 		}
-
-		private static void GetNativeRefsOfUnmanaged(List<string> unmanaged, out List<string> natives) {
-			natives = new List<string>();
-
-			foreach (var item in unmanaged) {
-				if (item.Contains("System.Private.CoreLib.dll")) {
-					natives.Add(item);
-				}
-			}
-		}
-
 		private static FileStream AcquireConsoleBuildLock()
 		{
 			var path = Path.Combine(modReferencesPath, "buildlock");
