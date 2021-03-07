@@ -52,6 +52,8 @@ namespace Terraria
 			set => SetBit(ref sTileHeader, 6, value);
 		}
 
+		public bool IsActiveUnactuated => IsActive && !IsActuated;
+
 		public bool HasActuator {
 			get => IsBitSet(sTileHeader, 11);
 			set => SetBit(ref sTileHeader, 11, value);
