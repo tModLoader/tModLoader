@@ -68,46 +68,50 @@
  			}
  
  			if (x < roomX1)
-@@ -2121,6 +_,7 @@
- 		}
- 
- 		public static bool meteor(int i, int j, bool ignorePlayers = false) {
-+			var meteorTasks = new List<GenPass>();
- 			if (i < 50 || i > Main.maxTilesX - 50)
- 				return false;
- 
-@@ -2163,7 +_,7 @@
+@@ -2163,8 +_,10 @@
  				}
  			}
  
 -			stopDrops = true;
-+			meteorTasks.Add(new PassLegacy("Meteor Spawn", (progress, config) => {
- 			num = genRand.Next(17, 23);
+-			num = genRand.Next(17, 23);
++			return Meteor_End(i, j, ignorePlayers);
++		}
++		private static void Meteor_SpawnGenTask(int i, int j, bool ignorePlayers) {
++			int num = genRand.Next(17, 23);
  			for (int num2 = i - num; num2 < i + num; num2++) {
  				for (int num3 = j - num; num3 < j + num; num3++) {
-@@ -2252,8 +_,9 @@
+ 					if (num3 <= j + Main.rand.Next(-2, 3) - 5)
+@@ -2252,8 +_,8 @@
  					}
  				}
  			}
-+		}));
- 
+-
 -			stopDrops = false;
-+			meteorTasks.Add(new PassLegacy("Meteor Announcement", (progress, config) => {
++		}
++		private static void Meteor_AnnouncementGenTask(int i, int j, bool ignorePlayers) {
  			if (Main.netMode == 0)
  				Main.NewText(Lang.gen[59].Value, 50, byte.MaxValue, 130);
  			else if (Main.netMode == 2)
-@@ -2261,6 +_,15 @@
+@@ -2261,6 +_,23 @@
  
  			if (Main.netMode != 1)
  				NetMessage.SendTileSquare(-1, i, j, 40);
-+			}));
++		}
++		private static bool Meteor_End(int i, int j, bool ignorePlayers) {
++			//
++			var meteorTasks = new List<GenPass> {
++				new PassLegacy("Meteor Spawn", (progress, config) => Meteor_SpawnGenTask(i, j, ignorePlayers)),
++				new PassLegacy("Meteor Announcement", (progress, config) => Meteor_AnnouncementGenTask(i, j, ignorePlayers)),
++			};
 +
 +			GenerationHooks.ModifyMeteorTasks(meteorTasks);
 +
 +			stopDrops = true;
++
 +			foreach (GenPass task in meteorTasks) {
 +				task.Apply(null, null);
 +			}
++
 +			stopDrops = false;
  
  			return true;
