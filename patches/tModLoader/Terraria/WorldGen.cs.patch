@@ -470,46 +470,51 @@
  				flag4 = true;
  
  			if (!flag3) {
-@@ -16220,6 +_,7 @@
- 		}
- 
- 		public static void smCallBack(object threadContext) {
-+			var hardmodeTasks = new List<GenPass>();
- 			IsGeneratingHardMode = true;
- 			if (Main.rand == null)
- 				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
-@@ -16252,8 +_,15 @@
+@@ -16252,8 +_,21 @@
  				num3 = (int)((float)Main.maxTilesX * (1f - num2));
  			}
  
 -			GERunner(num3, 0, 3 * num5, 5f);
 -			GERunner(num4, 0, 3 * -num5, 5f, good: false);
-+			hardmodeTasks.Add(new PassLegacy("Hardmode Good", (progress, config) => {
-+				GERunner(num3, 0, 3 * num5, 5f, true);
-+			}));
++			smCallBack_End(num3, num4, num5);
++		}
++		private static void smCallBack_GoodGenTask(int x, float xSpeedScale) {
++			int num3 = x;
++			float num5 = xSpeedScale;
 +
-+			hardmodeTasks.Add(new PassLegacy("Hardmode Evil", (progress, config) => {
-+				GERunner(num4, 0, 3 * -(float)num5, 5f, false);
-+			}));
++			GERunner(num3, 0, 3 * num5, 5f, true);
++		}
++		private static void smCallBack_EvilGenTask(int x, float xSpeedScale) {
++			int num4 = x;
++			float num5 = xSpeedScale;
 +
-+			hardmodeTasks.Add(new PassLegacy("Hardmode Walls", (progress, config) => {
++			GERunner(num4, 0, 3 * -(float)num5, 5f, false);
++		}
++		private static void smCallBack_HardmodeWallsGenTask() {
  			float num7 = (float)Main.maxTilesX / 4200f;
  			int num8 = (int)(25f * num7);
  			ShapeData shapeData = new ShapeData();
-@@ -16283,13 +_,23 @@
+@@ -16283,13 +_,29 @@
  					shapeData.Clear();
  				}
  			}
-+			}));
- 
-+			hardmodeTasks.Add(new PassLegacy("Hardmode Announcment", (progress, config) => {
+-
++		}
++		private static void smCallBack_HardmodeAnnouncementGenTask() {
  			if (Main.netMode == 0)
  				Main.NewText(Lang.misc[15].Value, 50, byte.MaxValue, 130);
  			else if (Main.netMode == 2)
  				ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[15].Key), new Color(50, 255, 130));
  
  			AchievementsHelper.NotifyProgressionEvent(9);
-+			}));
++		}
++		private static void smCallBack_End(int goodX, int evilX, float xSpeedScale) {
++			var hardmodeTasks = new List<GenPass> {
++				new PassLegacy("Hardmode Good", (progress, config) => smCallBack_GoodGenTask(goodX, xSpeedScale)),
++				new PassLegacy("Hardmode Evil", (progress, config) => smCallBack_EvilGenTask(evilX, xSpeedScale)),
++				new PassLegacy("Hardmode Walls", (progress, config) => smCallBack_HardmodeWallsGenTask()),
++				new PassLegacy("Hardmode Announcement", (progress, config) => smCallBack_HardmodeAnnouncementGenTask()),
++			};
 +
 +			GenerationHooks.ModifyHardmodeTasks(hardmodeTasks);
 +
