@@ -458,7 +458,7 @@ namespace Terraria.ModLoader.Core
 			if (Program.LaunchParameters.TryGetValue("-define", out var defineParam))
 				preprocessorSymbols.AddRange(defineParam.Split(';', ' '));
 
-			var results = RoslynCompile(mod.Name, outputPath, refs.ToArray(), files, preprocessorSymbols.ToArray(), mod.properties.includePDB, allowUnsafe);
+			var results = RoslynCompile(mod.Name, outputPath, refs, files, preprocessorSymbols.ToArray(), mod.properties.includePDB, allowUnsafe);
 
 			int numWarnings = results.Count(e => e.Severity == DiagnosticSeverity.Warning);
 			int numErrors = results.Length - numWarnings;
@@ -516,9 +516,9 @@ namespace Terraria.ModLoader.Core
 		}
 
 		/// <summary>
-		/// Invoke the Roslyn compiler via reflection to avoid a .NET 4.6 dependency
+		/// Compile a dll for the mod based on required includes.
 		/// </summary>
-		private static Diagnostic[] RoslynCompile(string name, string outputPath, string[] references, string[] files, string[] preprocessorSymbols, bool includePdb, bool allowUnsafe)
+		private static Diagnostic[] RoslynCompile(string name, string outputPath, List<string> references, string[] files, string[] preprocessorSymbols, bool includePdb, bool allowUnsafe)
 		{
 			var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
 				assemblyIdentityComparer: DesktopAssemblyIdentityComparer.Default,
@@ -529,8 +529,11 @@ namespace Terraria.ModLoader.Core
 
 			var emitOptions = new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb);
 
-			var refs = references.Select(s => MetadataReference.CreateFromFile(s));
+			SplitRefsByWhiteList(references, out var actualRefs);
+			var refs = actualRefs.Select(s => MetadataReference.CreateFromFile(s));
+
 			var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
+
 			var comp = CSharpCompilation.Create(name, src, refs, options);
 
 			using var peStream = File.OpenWrite(outputPath);
@@ -548,6 +551,44 @@ namespace Terraria.ModLoader.Core
 			});*/
 		}
 
+		private static void SplitRefsByException(List<string> refs, out List<string> actualAssemblies) {
+			actualAssemblies = new List<string>();
+			List<string> forwarderAssemblies = new List<string>();
+
+			// Separate assemblies into complete assemblies and assemblies that forward to an assembly, at a heavy toll on performance. Will generate the full list of forwarding assemblies to blacklist; Useful for maintenance.
+			foreach (string test in refs) {
+				try {
+					var a = Assembly.LoadFile(test);
+					actualAssemblies.Add(test);
+				}
+				catch (Exception) {
+					if (test.Contains("Private.CoreLib")) { // This assembly can't be loaded directly, but isn't a forwarding assembly and instead is the recipient of forwarding.
+						actualAssemblies.Add(test);
+					}
+					forwarderAssemblies.Add(test);
+				}
+			}
+		}
+
+		private static void SplitRefsByWhiteList(List<string> refs, out List<string> actualAssemblies) {
+			actualAssemblies = new List<string>();
+
+			// Separate out known forward-only assemblies via string blacklisting.
+			string[] unmanagedDLLs = new string[] { "api-ms", "clrcompression", "clretwrc", "clrjit", "coreclr", "dbgshim", "Microsoft.DiaSymReader.Native.amd64", "mscordaccore", "mscordaccore_amd64_amd64", "mscordbi", "mscorrc", "ucrtbase", "hostpolicy" };
+
+			foreach (string test in refs) {
+				bool found = false;
+				for (int i = 0; i < unmanagedDLLs.Length; i++) {
+					if (test.Contains(unmanagedDLLs[i])) {
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					actualAssemblies.Add(test);
+				}
+			}
+		}
 		private static FileStream AcquireConsoleBuildLock()
 		{
 			var path = Path.Combine(modReferencesPath, "buildlock");

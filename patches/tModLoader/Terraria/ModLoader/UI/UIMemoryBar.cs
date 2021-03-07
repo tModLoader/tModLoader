@@ -182,20 +182,21 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public static long GetAvailableMemory() {
-			if(Platform.IsWindows) {
+			//TODO: Implement for all platforms
+			/*if(Platform.IsWindows) {
 				var pc = new PerformanceCounter("Mono Memory", "Available Physical Memory");
 				return pc.RawValue;
-			}
-			//TODO: Support for other platforms
+			}*/
+
 			return 0;
 		}
 
 		public static long GetTotalMemory() {
-			if(Platform.IsWindows) {
+			//TODO: Implement for all platforms
+			/*if(Platform.IsWindows) {
 				var pc = new PerformanceCounter("Mono Memory", "Total Physical Memory");
 				return pc.RawValue;
-			}
-			//TODO: Support for other platforms
+			}*/
 			return 0;
 		}
 
