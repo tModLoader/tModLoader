@@ -57,7 +57,7 @@ namespace Terraria
 			set => SetBit(ref sTileHeader, 11, value);
 		}
 
-		public bool IsHalfBrick {
+		public bool IsHalfBlock {
 			get => IsBitSet(sTileHeader, 10);
 			set => SetBit(ref sTileHeader, 10, value);
 		}
@@ -109,7 +109,7 @@ namespace Terraria
 
 		public BlockType BlockType {
 			get {
-				if (IsHalfBrick) {
+				if (IsHalfBlock) {
 					return BlockType.HalfBlock;
 				}
 
@@ -122,7 +122,7 @@ namespace Terraria
 				return (BlockType)slopeId;
 			}
 			set {
-				IsHalfBrick = value != BlockType.HalfBlock;
+				IsHalfBlock = value != BlockType.HalfBlock;
 				Slope = value > BlockType.HalfBlock ? (SlopeType)(value - 1) : SlopeType.Solid;
 			}
 		}
@@ -152,7 +152,7 @@ namespace Terraria
 				if (!IsActive)
 					return 0;
 
-				if (IsHalfBrick)
+				if (IsHalfBlock)
 					return 2;
 
 				if (Slope != SlopeType.Solid)
