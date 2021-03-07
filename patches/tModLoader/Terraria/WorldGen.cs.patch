@@ -474,21 +474,19 @@
  				num3 = (int)((float)Main.maxTilesX * (1f - num2));
  			}
  
--			GERunner(num3, 0, 3 * num5, 5f);
--			GERunner(num4, 0, 3 * -num5, 5f, good: false);
 +			smCallBack_End(num3, num4, num5);
 +		}
 +		private static void smCallBack_GoodGenTask(int x, float xSpeedScale) {
 +			int num3 = x;
 +			float num5 = xSpeedScale;
 +
-+			GERunner(num3, 0, 3 * num5, 5f, true);
+ 			GERunner(num3, 0, 3 * num5, 5f);
 +		}
 +		private static void smCallBack_EvilGenTask(int x, float xSpeedScale) {
 +			int num4 = x;
 +			float num5 = xSpeedScale;
 +
-+			GERunner(num4, 0, 3 * -(float)num5, 5f, false);
+ 			GERunner(num4, 0, 3 * -num5, 5f, good: false);
 +		}
 +		private static void smCallBack_HardmodeWallsGenTask() {
  			float num7 = (float)Main.maxTilesX / 4200f;
