@@ -604,10 +604,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns whether or not this item burns when it is thrown into lava despite item.rare not being 0. Returns false by default.
+		/// Returns whether or not this item will burn in lava regardless of any conditions. Returns null by default (follow vanilla behaviour).
 		/// </summary>
-		public virtual bool CanBurnInLava(Item item) {
-			return false;
+		public virtual bool? CanBurnInLava(Item item) {
+			return null;
 		}
 
 		/// <summary>

@@ -650,12 +650,22 @@
  			if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
  				timeSinceTheItemHasBeenReservedForSomeone++;
  				if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
-@@ -45395,7 +_,7 @@
+@@ -45376,6 +_,7 @@
+ 		}
+ 
+ 		private void CheckLavaDeath(int i) {
++			bool? canBurnInLava = ItemLoader.CanBurnInLava(this);
+ 			if (type == 267) {
+ 				if (Main.netMode == 1)
+ 					return;
+@@ -45395,7 +_,9 @@
  
  				NetMessage.SendData(21, -1, -1, null, i);
  			}
++			else if (canBurnInLava == false)
++				return;
 -			else if (playerIndexTheItemIsReservedFor == Main.myPlayer && type != 312 && type != 318 && type != 173 && type != 174 && type != 4422 && type != 175 && type != 2701 && rare == 0) {
-+			else if (playerIndexTheItemIsReservedFor == Main.myPlayer && type != 312 && type != 318 && type != 173 && type != 174 && type != 4422 && type != 175 && type != 2701 && rare == 0 || ItemLoader.CanBurnInLava(this)) {
++			else if (canBurnInLava == true || (playerIndexTheItemIsReservedFor == Main.myPlayer && type != 312 && type != 318 && type != 173 && type != 174 && type != 4422 && type != 175 && type != 2701 && rare == 0)) {
  				active = false;
  				type = 0;
  				stack = 0;

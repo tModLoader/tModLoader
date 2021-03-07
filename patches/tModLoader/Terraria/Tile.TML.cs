@@ -26,7 +26,7 @@ namespace Terraria
 		public int LiquidType {
 			get => (bTileHeader & 0x60) >> 5;
 			set {
-				if (value >= LiquidID.Count)
+				if (value < 0 || value >= LiquidID.Count)
 					throw new Exception($"The liquid with type {value} does not exist");
 
 				bTileHeader = (byte)((bTileHeader & 0x9F) | (32 * value));
@@ -52,12 +52,14 @@ namespace Terraria
 			set => SetBit(ref sTileHeader, 6, value);
 		}
 
+		public bool IsActiveUnactuated => IsActive && !IsActuated;
+
 		public bool HasActuator {
 			get => IsBitSet(sTileHeader, 11);
 			set => SetBit(ref sTileHeader, 11, value);
 		}
 
-		public bool IsHalfBrick {
+		public bool IsHalfBlock {
 			get => IsBitSet(sTileHeader, 10);
 			set => SetBit(ref sTileHeader, 10, value);
 		}
@@ -102,9 +104,29 @@ namespace Terraria
 			set => bTileHeader3 = (byte)((bTileHeader3 & 0xF8) | ((value / 36) & 7));
 		}
 
-		public SlopeID Slope {
-			get => (SlopeID)((sTileHeader & 0x7000) >> 12);
+		public SlopeType Slope {
+			get => (SlopeType)((sTileHeader & 0x7000) >> 12);
 			set => sTileHeader = (ushort)((sTileHeader & 0x8FFF) | (((byte)value & 7) << 12));
+		}
+
+		public BlockType BlockType {
+			get {
+				if (IsHalfBlock) {
+					return BlockType.HalfBlock;
+				}
+
+				int slopeId = (int)Slope;
+
+				if (slopeId != 0) {
+					slopeId++;
+				}
+
+				return (BlockType)slopeId;
+			}
+			set {
+				IsHalfBlock = value != BlockType.HalfBlock;
+				Slope = value > BlockType.HalfBlock ? (SlopeType)(value - 1) : SlopeType.Solid;
+			}
 		}
 
 		public byte FrameNumber {
@@ -132,10 +154,10 @@ namespace Terraria
 				if (!IsActive)
 					return 0;
 
-				if (IsHalfBrick)
+				if (IsHalfBlock)
 					return 2;
 
-				if (Slope != SlopeID.Solid)
+				if (Slope != SlopeType.Solid)
 					return 2 + (int)Slope;
 
 				if (Main.tileSolid[type] && !Main.tileSolidTop[type])
