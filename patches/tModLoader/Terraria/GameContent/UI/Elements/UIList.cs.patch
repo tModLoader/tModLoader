@@ -1,38 +1,23 @@
 --- src/Terraria/Terraria/GameContent/UI/Elements/UIList.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIList.cs
+@@ -7,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.Elements
+ {
+-	public class UIList : UIElement, IEnumerable<UIElement>, IEnumerable
++	public partial class UIList : UIElement, IEnumerable<UIElement>, IEnumerable
+ 	{
+ 		public delegate bool ElementSearchMethod(UIElement element);
+ 
 @@ -29,9 +_,9 @@
  			public override Rectangle GetViewCullingArea() => base.Parent.GetDimensions().ToRectangle();
  		}
  
 -		protected List<UIElement> _items = new List<UIElement>();
-+		public List<UIElement> _items = new List<UIElement>();
++		internal List<UIElement> _items = new List<UIElement>();
  		protected UIScrollbar _scrollbar;
 -		private UIElement _innerList = new UIInnerList();
 +		internal UIElement _innerList = new UIInnerList();
  		private float _innerListHeight;
  		public float ListPadding = 5f;
  		public Action<List<UIElement>> ManualSortMethod;
-@@ -65,9 +_,23 @@
- 			_scrollbar.ViewPosition = _items[num].Top.Pixels;
- 		}
- 
-+		public float ViewPosition {
-+			get => _scrollbar.ViewPosition;
-+			set => _scrollbar.ViewPosition = value;
-+		}
-+
- 		public virtual void Add(UIElement item) {
- 			_items.Add(item);
- 			_innerList.Append(item);
-+			UpdateOrder();
-+			_innerList.Recalculate();
-+		}
-+
-+		public virtual void AddRange(IEnumerable<UIElement> items) {
-+			_items.AddRange(items);
-+			foreach (var item in items)
-+				_innerList.Append(item);
-+
- 			UpdateOrder();
- 			_innerList.Recalculate();
- 		}

@@ -2,35 +2,26 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this.
 	/// </summary>
-	public abstract class GlobalProjectile : ModType
+	public abstract class GlobalProjectile : GlobalType<Projectile>
 	{
-		internal int index;
-		internal int instanceIndex;
-
 		protected sealed override void Register() {
 			ProjectileLoader.VerifyGlobalProjectile(this);
 
 			ModTypeLookup<GlobalProjectile>.Register(this);
 
-			index = ProjectileLoader.globalProjectiles.Count;
+			index = (ushort)ProjectileLoader.globalProjectiles.Count;
 
 			ProjectileLoader.globalProjectiles.Add(this);
 		}
 
-		/// <summary>
-		/// Whether to create a new GlobalProjectile instance for every Projectile that exists. 
-		/// Useful for storing information on a projectile. Defaults to false. 
-		/// Return true if you need to store information (have non-static fields).
-		/// </summary>
-		public virtual bool InstancePerEntity => false;
-
-		public GlobalProjectile Instance(Projectile projectile) => InstancePerEntity ? projectile.globalProjectiles[instanceIndex] : this;
+		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
 
 		/// <summary>
 		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
@@ -55,10 +46,11 @@ namespace Terraria.ModLoader
 			if (CloneNewInstances) {
 				return Clone();
 			}
+
 			GlobalProjectile copy = (GlobalProjectile)Activator.CreateInstance(GetType());
 			copy.Mod = Mod;
 			copy.index = index;
-			copy.instanceIndex = instanceIndex;
+
 			return copy;
 		}
 

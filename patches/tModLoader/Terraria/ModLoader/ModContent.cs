@@ -416,10 +416,12 @@ namespace Terraria.ModLoader
 			ItemSorting.SetupWhiteLists();
 
 			MenuLoader.GotoSavedModMenu();
+			BossBarLoader.GotoSavedStyle();
 		}
 		
 		private static void CacheVanillaState() {
 			EffectsTracker.CacheVanillaState();
+			DamageClassLoader.RegisterDefaultClasses();
 		}
 
 		internal static Mod LoadingMod { get; private set; }
@@ -517,6 +519,7 @@ namespace Terraria.ModLoader
 			ProjectileLoader.Unload();
 			NPCLoader.Unload();
 			NPCHeadLoader.Unload();
+			BossBarLoader.Unload();
 			PlayerHooks.Unload();
 			BuffLoader.Unload();
 			MountLoader.Unload();
@@ -565,6 +568,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static void ResizeArrays(bool unloading = false) {
+			DamageClassLoader.ResizeArrays();
 			ItemLoader.ResizeArrays(unloading);
 			EquipLoader.ResizeAndFillArrays();
 			ModPrefix.ResizeArrays();
