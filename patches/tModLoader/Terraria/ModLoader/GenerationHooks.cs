@@ -4,91 +4,82 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Terraria.WorldBuilding;
 
-
-
 namespace Terraria.ModLoader
 {
 	public static class GenerationHooks
 	{
-		internal static readonly List<ModGeneration> Generation = new List<ModGeneration>();
+		internal static readonly List<Generation> generations = new List<Generation>();
+		internal static readonly List<GlobalGeneration> globalGenerations = new List<GlobalGeneration>();
 
-		internal static void Add(ModGeneration modGeneration) => Generation.Add(modGeneration);
-
-		internal static void Unload() => Generation.Clear();
+		internal static void Unload() => generations.Clear();
 
 		private class HookList
 		{
 			public readonly MethodInfo method;
-
-			public ModGeneration[] arr = new ModGeneration[0];
+			public GlobalGeneration[] arr = new GlobalGeneration[0];
 
 			public HookList(MethodInfo method) {
 				this.method = method;
 			}
 		}
 
-		private static readonly List<HookList> hooks = new List<HookList>();
+		private delegate void DelegateModifyGenerationTasks(Generation generation, List<GenPass> passes, ref float totalWeight);
 
-		private static HookList AddHook<F>(Expression<Func<ModGeneration, F>> func) {
+		private static readonly List<HookList> hooks = new List<HookList>();
+		//HookLists
+		private static readonly HookList HookSetWorldGenDefaults = AddHook<Action<Generation>>(s => s.SetWorldGenDefaults);
+		private static readonly HookList HookPreWorldGen = AddHook<Action<Generation>>(s => s.PreWorldGen);
+		private static readonly HookList HookModifyGenerationTasks = AddHook<DelegateModifyGenerationTasks>(s => s.ModifyGenerationTasks);
+		private static readonly HookList HookPostWorldGen = AddHook<Action<Generation>>(s => s.PostWorldGen);
+
+		private static HookList AddHook<F>(Expression<Func<GlobalGeneration, F>> func) {
 			var hook = new HookList(ModLoader.Method(func));
 
 			hooks.Add(hook);
 
 			return hook;
 		}
+
 		internal static void RebuildHooks() {
 			foreach (var hook in hooks) {
-				hook.arr = ModLoader.BuildGlobalHook(Generation, hook.method);
+				hook.arr = ModLoader.BuildGlobalHook(globalGenerations, hook.method);
 			}
 		}
 
-		private static HookList HookSetWorldGenDefaults = AddHook<Action>(s => s.SetWorldGenDefaults);
-		public static void SetWorldGenDefaults() {
-			foreach (ModGeneration worldGen in HookSetWorldGenDefaults.arr) {
-				worldGen.SetWorldGenDefaults();
+		public static void SetWorldGenDefaults(Generation generation) {
+			foreach (var globalGeneration in HookSetWorldGenDefaults.arr) {
+				globalGeneration.SetWorldGenDefaults(generation);
 			}
 		}
 
-		private static HookList HookPreWorldGen = AddHook<Action>(s => s.PreWorldGen);
-		public static void PreWorldGen() {
-			foreach (ModGeneration worldGen in HookPreWorldGen.arr) {
-				worldGen.PreWorldGen();
+		public static void PreWorldGen(Generation generation) {
+			foreach (var globalGeneration in HookPreWorldGen.arr) {
+				globalGeneration.PreWorldGen(generation);
 			}
 		}
 
-		private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight);
-		private static HookList HookModifyWorldGenTasks = AddHook<DelegateModifyWorldGenTasks>(s => s.ModifyWorldGenTasks);
-		public static void ModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight) {
-			foreach (ModGeneration worldGen in HookModifyWorldGenTasks.arr) {
-				worldGen.ModifyWorldGenTasks(passes, ref totalWeight);
+		public static List<GenPass> GetGenerationTasks(Generation generation) {
+			var passes = new List<GenPass>();
+			float totalWeight = 0f;
+
+			generation.ModifyGenerationTasks(passes, ref totalWeight);
+
+			foreach (var globalGeneration in HookModifyGenerationTasks.arr) {
+				globalGeneration.ModifyGenerationTasks(generation, passes, ref totalWeight);
+			}
+
+			return passes;
+		}
+
+		public static void PostWorldGen(Generation generation) {
+			foreach (var globalGeneration in HookPostWorldGen.arr) {
+				globalGeneration.PostWorldGen(generation);
 			}
 		}
 
-		private static HookList HookPostWorldGen = AddHook<Action>(s => s.PostWorldGen);
-		public static void PostWorldGen() {
-			foreach (ModGeneration worldGen in HookPostWorldGen.arr) {
-				worldGen.PostWorldGen();
-			}
-		}
-
-		private static HookList HookModifyMeteorTasks = AddHook<Action<List<GenPass>>>(s => s.ModifyMeteorTasks);
-		public static void ModifyMeteorTasks(List<GenPass> passes) {
-			foreach (ModGeneration worldGen in HookModifyMeteorTasks.arr) {
-				worldGen.ModifyMeteorTasks(passes);
-			}
-		}
-
-		private static HookList HookModifyHardmodeTasks = AddHook<Action<List<GenPass>>>(s => s.ModifyHardmodeTasks);
-		public static void ModifyHardmodeTasks(List<GenPass> passes) {
-			foreach (ModGeneration worldGen in HookModifyHardmodeTasks.arr) {
-				worldGen.ModifyHardmodeTasks(passes);
-			}
-		}
-
-		private static HookList HookModifyAltarTasks = AddHook<Action<List<GenPass>>>(s => s.ModifyAltarTasks);
-		public static void ModifyAltarTasks(List<GenPass> passes) {
-			foreach (ModGeneration worldGen in HookModifyAltarTasks.arr) {
-				worldGen.ModifyAltarTasks(passes);
+		public static void RunGeneration(Generation generation) {
+			foreach (var task in GetGenerationTasks(generation)) {
+				task.Apply(null, null);
 			}
 		}
 	}
