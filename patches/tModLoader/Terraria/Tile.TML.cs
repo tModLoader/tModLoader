@@ -102,9 +102,29 @@ namespace Terraria
 			set => bTileHeader3 = (byte)((bTileHeader3 & 0xF8) | ((value / 36) & 7));
 		}
 
-		public SlopeID Slope {
-			get => (SlopeID)((sTileHeader & 0x7000) >> 12);
+		public SlopeType Slope {
+			get => (SlopeType)((sTileHeader & 0x7000) >> 12);
 			set => sTileHeader = (ushort)((sTileHeader & 0x8FFF) | (((byte)value & 7) << 12));
+		}
+
+		public BlockType BlockType {
+			get {
+				if (IsHalfBrick) {
+					return BlockType.HalfBlock;
+				}
+
+				int slopeId = (int)Slope;
+
+				if (slopeId != 0) {
+					slopeId++;
+				}
+
+				return (BlockType)slopeId;
+			}
+			set {
+				IsHalfBrick = value != BlockType.HalfBlock;
+				Slope = value > BlockType.HalfBlock ? (SlopeType)(value - 1) : SlopeType.Solid;
+			}
 		}
 
 		public byte FrameNumber {
@@ -135,7 +155,7 @@ namespace Terraria
 				if (IsHalfBrick)
 					return 2;
 
-				if (Slope != SlopeID.Solid)
+				if (Slope != SlopeType.Solid)
 					return 2 + (int)Slope;
 
 				if (Main.tileSolid[type] && !Main.tileSolidTop[type])

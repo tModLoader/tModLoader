@@ -1,6 +1,6 @@
 ﻿namespace Terraria.ID
 {
-	public enum SlopeID
+	public enum SlopeType
 	{
 		Solid = 0,
 		SlopeDownLeft = 1,

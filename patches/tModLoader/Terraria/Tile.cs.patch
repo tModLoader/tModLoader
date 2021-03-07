@@ -51,6 +51,15 @@
  			if (compTile == null)
  				return false;
  
+@@ -150,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		public int blockType() {
++		internal int blockType() {
+ 			if (halfBrick())
+ 				return 1;
+ 
 @@ -161,7 +_,7 @@
  			return num;
  		}
