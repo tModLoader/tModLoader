@@ -911,58 +911,65 @@
  							Main.tile[k, l].type = type;
  							SquareTileFrame(k, l);
  							if (Main.netMode == 2)
-@@ -29092,6 +_,8 @@
- 		}
- 
- 		public static void SmashAltar(int i, int j) {
-+			var altarTasks = new List<GenPass>();
+@@ -29102,6 +_,14 @@
+ 			num3 = num3 * 310f - (float)(85 * num);
+ 			num3 *= 0.85f;
+ 			num3 /= (float)num2;
++			
++			SmashAltar_End(i, j, num, num3, num4);
++		}
++		private static void SmashAltar_DecideOreGenTask(int i, int j, ref int oreType, ref float oreCount) {
++			//Mapping
++			ref int num = ref oreType;
++			ref float num3 = ref oreCount;
 +
- 			if (Main.netMode == 1 || !Main.hardMode || noTileActions || gen)
- 				return;
- 
-@@ -29109,7 +_,7 @@
- 				else if (SavedOreTiers.Adamantite == 223)
- 					SavedOreTiers.Adamantite = 111;
- 			}
--
-+			altarTasks.Add(new PassLegacy("Altar Decide Ore", (progress, config) => {
- 			switch (num) {
- 				case 0: {
- 						if (SavedOreTiers.Cobalt == -1) {
-@@ -29196,7 +_,9 @@
+ 			bool flag = false;
+ 			if (Main.drunkWorld) {
+ 				if (SavedOreTiers.Adamantite == 111)
+@@ -29196,6 +_,12 @@
  
  			if (flag)
  				NetMessage.SendData(7);
-+			}));
++		}
++		private static void SmashAltar_SpawnOreGenTask(int i, int j, int oreType, float oreCount, int oreTierOffset) {
++			//Mapping
++			int num = oreType;
++			float num3 = oreCount;
++			int num4 = oreTierOffset;
  
-+			altarTasks.Add(new PassLegacy("Altar Spawn Ore", (progress, config) => {
  			for (int k = 0; (float)k < num3; k++) {
  				int i2 = genRand.Next(100, Main.maxTilesX - 100);
- 				double num8 = Main.worldSurface;
-@@ -29209,7 +_,9 @@
+@@ -29209,7 +_,8 @@
  				int j2 = genRand.Next((int)num8, Main.maxTilesY - 150);
  				OreRunner(i2, j2, genRand.Next(5, 9 + num4), genRand.Next(5, 9 + num4), (ushort)num);
  			}
-+			}));
- 
-+			altarTasks.Add(new PassLegacy("Altar Convert Stone", (progress, config) => {
+-
++		}
++		private static void SmashAltar_ConvertStoneGenTask(int i, int j) {
  			int num9 = genRand.Next(3);
  			int num10 = 0;
  			while (num9 != 2 && num10++ < 1000) {
-@@ -29233,13 +_,22 @@
+@@ -29233,13 +_,28 @@
  
  				break;
  			}
-+			}));
- 
-+			altarTasks.Add(new PassLegacy("Altar Spawn Wraith", (progress, config) => {
+-
++		}
++		private static void SmashAltar_SpawnWraithGenTask(int i, int j) {
  			if (Main.netMode != 1) {
  				int num13 = Main.rand.Next(2) + 1;
  				for (int l = 0; l < num13; l++) {
  					NPC.SpawnOnPlayer(Player.FindClosest(new Vector2(i * 16, j * 16), 16, 16), 82);
  				}
  			}
-+			}));
++		}
++		private static void SmashAltar_End(int i, int j, int oreType, float oreCount, int oreTierOffset) {
++			var altarTasks = new List<GenPass> {
++				new PassLegacy("Altar Decide Ore", (progress, config) => SmashAltar_DecideOreGenTask(i, j, ref oreType, ref oreCount)),
++				new PassLegacy("Altar Spawn Ore", (progress, config) => SmashAltar_SpawnOreGenTask(i, j, oreType, oreCount, oreTierOffset)),
++				new PassLegacy("Altar Convert Stone", (progress, config) => SmashAltar_ConvertStoneGenTask(i, j)),
++				new PassLegacy("Altar Spawn Wraith", (progress, config) => SmashAltar_SpawnWraithGenTask(i, j)),
++			};
 +
 +			GenerationHooks.ModifyAltarTasks(altarTasks);
 +
