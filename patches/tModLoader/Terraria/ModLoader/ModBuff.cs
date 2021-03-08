@@ -24,6 +24,11 @@ namespace Terraria.ModLoader
 		/// <summary> Whether or not it is always safe to call Player.DelBuff on this buff. Setting this to false will prevent the nurse from being able to remove this debuff. Defaults to true. </summary>
 		public bool CanBeCleared { get; set; } = true;
 
+		/// <summary>
+		/// The life and mana player regeneration/damaging effects associated with this buff. See Player.TML.cs for vanilla examples. Includes a delegate for additional effects when active because vanilla needed that.
+		/// </summary>
+		public virtual Player.RegenEffect MyRegenEffects => new Player.RegenEffect(FullName, Player.RegenEffect.ByStatStruct.nullStruct, Player.RegenEffect.ByStatStruct.nullStruct);
+
 		protected override sealed void Register() {
 			ModTypeLookup<ModBuff>.Register(this);
 
@@ -32,6 +37,7 @@ namespace Terraria.ModLoader
 			Description = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BuffDescription.{Name}");
 
 			BuffLoader.buffs.Add(this);
+			Player.RegenEffect.effects.Add(MyRegenEffects);
 		}
 
 		public sealed override void SetupContent() {
