@@ -56,6 +56,9 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void SetupPlayer(Player player) {
+			//TODO: find a better place for this line.
+			Player.RegenEffect.RegisterVanilla();
+			
 			player.modPlayers = players.Select(modPlayer => modPlayer.CreateFor(player)).ToArray();
 		}
 

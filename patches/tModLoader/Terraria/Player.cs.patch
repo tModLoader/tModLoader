@@ -2003,6 +2003,14 @@
  			float num4 = (float)statLifeMax2 / 400f * 0.85f + 0.15f;
  			num2 *= num4;
  			lifeRegen += (int)Math.Round(num2);
+@@ -13439,6 +_,7 @@
+ 		}
+ 
+ 		public void UpdateManaRegen() {
++			tMLUpdateManaRegen(); return;
+ 			if (nebulaLevelMana > 0) {
+ 				int num = 6;
+ 				nebulaManaCounter += nebulaLevelMana;
 @@ -13507,8 +_,8 @@
  
  		public void UpdateJumpHeight() {
