@@ -212,6 +212,10 @@ namespace Terraria
 				public bool overrideDelta;
 				public bool useANDForForcePositiveRegenElseOR;
 				public bool overrideAdditionalEffects;
+
+				public static CombinationFlags Create(bool b0, bool b1, bool b2, bool b3, bool b4) {
+					return new CombinationFlags { overrideCondition = b0, useANDForConditionElseOR = b1, overrideDelta = b2, useANDForForcePositiveRegenElseOR = b3, overrideAdditionalEffects = b4 };
+				}
 			};
 
 			public struct ByStatStruct
@@ -269,6 +273,7 @@ namespace Terraria
 			public readonly static RegenEffect manaRegenBonus3 = new RegenEffect("manaRegenBonus3", ByStatStruct.Create((obj) => true, (obj) => 0, additionalEffects: (obj, delta) => delta *= (int)(obj.manaRegenBuff ? 1.15f : 1.15f * ((float)obj.statMana / (float)obj.statManaMax2 * 0.8f + 0.2f))));
 
 			internal static void RegisterVanilla() {
+				effectsDict.Clear(); effects.Clear();
 				Register(manaRegenBonus3);
 				Register(manaRegenBonus2);
 				Register(manaRegenBonus1);
@@ -286,13 +291,20 @@ namespace Terraria
 				}
 			}
 
+			public struct ModifyRegenEffectStruct
+			{
+				public string targetEffect;
+				public ByStatStruct modifyWith;
+				public CombinationFlags flags;
+			}
+
 			//TODO: different logging and not an exception please.
-			public static void ModifyEffect(string targetEffect, ByStatStruct modifyWith, CombinationFlags flags) {
-				if (effectsDict.TryGetValue(targetEffect, out short index)) {
-					ByStatStruct.Combine(effects[index].mana, modifyWith, flags);
+			internal static void ModifyEffect(ModifyRegenEffectStruct r) {
+				if (effectsDict.TryGetValue(r.targetEffect, out short index)) {
+					ByStatStruct.Combine(effects[index].mana, r.modifyWith, r.flags);
 				}
 				else {
-					throw new ArgumentOutOfRangeException(targetEffect, "Mana regen effect targeted to modify does not exist!");
+					throw new ArgumentOutOfRangeException(r.targetEffect, "Mana regen effect targeted to modify does not exist!");
 				}
 			}
 		}

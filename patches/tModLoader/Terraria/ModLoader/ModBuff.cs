@@ -29,7 +29,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual Player.RegenEffect MyManaRegenEffects => new Player.RegenEffect(FullName, Player.RegenEffect.ByStatStruct.nullStruct);
 
-
 		protected override sealed void Register() {
 			ModTypeLookup<ModBuff>.Register(this);
 
