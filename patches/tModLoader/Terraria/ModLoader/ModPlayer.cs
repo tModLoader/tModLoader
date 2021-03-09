@@ -895,5 +895,48 @@ namespace Terraria.ModLoader
 		/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
 		public virtual void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
 		}
+
+		public struct Regen
+		{
+			/// <summary>
+			/// Modifies the time until player reaches maximum natural life regeneration by 1 / N per player update. Bounded -2 < N < -0.5 and 0.05 < N < 2 by vanilla. Positives for buffs, negatives for debuffs.
+			/// </summary>
+			public float deltaRegen;
+			/// <summary>
+			/// Changes the speed at which the player reaches its maximum natural life regeneration or time to begin regenerating mana.
+			/// </summary>
+			public float deltaRate;
+			/// <summary>
+			/// Allows you to modify the potency of the player's life/mana regeneration. This can be done by setting a multiplication value.
+			/// </summary>
+			public float multiplyRegen;
+			/// <summary>
+			/// Set to true to declare that you want regen, after handling all debuffs to be <= 0. Typically true for damaging debuffs, false for buffs. For example, the "On Fire!" debuff prevents positive life regenaration.
+			/// </summary>
+			public bool disablePositiveRegen;
+
+			public static readonly Regen defaultRegen = new Regen { deltaRegen = 0, deltaRate = 0, multiplyRegen = 1, disablePositiveRegen = false };
+
+			public static void Combine(Regen fromTarget, ref Regen toTarget) {
+				toTarget.deltaRegen += fromTarget.deltaRegen;
+				toTarget.deltaRate += fromTarget.deltaRate;
+				toTarget.disablePositiveRegen |= fromTarget.disablePositiveRegen;
+				toTarget.multiplyRegen *= fromTarget.multiplyRegen;
+			}
+		}
+
+		/// <summary>
+		/// Allows you to modify a player's life regeneration based on returned structure ModPlayer.Regen.
+		/// </summary>
+		public virtual Regen ModifyLifeRegen() {
+			return Regen.defaultRegen;
+		}
+
+		/// <summary>
+		/// Allows you to modify a player's mana regeneration based on returned structure ModPlayer.Regen.
+		/// </summary>
+		public virtual Regen ModifyManaRegen() {
+			return Regen.defaultRegen;
+		}
 	}
 }

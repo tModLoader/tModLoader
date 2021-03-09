@@ -1979,30 +1979,68 @@
  		}
  
  		private void UpdateLadyBugLuckTime() {
-@@ -13139,6 +_,7 @@
- 		}
+@@ -13234,6 +_,14 @@
+ 				lifeRegen -= 100;
+ 			}
  
- 		public void UpdateLifeRegen() {
-+			tMLUpdateLifeRegen(); return;
- 			bool flag = false;
- 			if (shinyStone && (double)Math.Abs(velocity.X) < 0.05 && (double)Math.Abs(velocity.Y) < 0.05 && itemAnimation == 0)
- 				flag = true;
-@@ -13346,6 +_,7 @@
++			PlayerHooks.CalculateModdedLifeRegen(this, out var modLifeRegen);
++			lifeRegen += (int)modLifeRegen.deltaRegen;
++			lifeRegenTime += (modLifeRegen.deltaRate <= -0.5 || modLifeRegen.deltaRate >= 0.05) ? (int)(1 / modLifeRegen.deltaRate) : 0;
++			if (modLifeRegen.disablePositiveRegen) {
++				lifeRegen = Math.Min(lifeRegen, 0);
++				lifeRegenTime = 0;
++			}
++
+ 			if (honey && lifeRegen < 0) {
+ 				lifeRegen += 4;
+ 				if (lifeRegen > 0)
+@@ -13345,7 +_,9 @@
+ 			float num4 = (float)statLifeMax2 / 400f * 0.85f + 0.15f;
  			num2 *= num4;
  			lifeRegen += (int)Math.Round(num2);
++			lifeRegen = (int)(modLifeRegen.multiplyRegen * lifeRegen);
  			lifeRegenCount += lifeRegen;
 +			
  			if (palladiumRegen)
  				lifeRegenCount += 4;
  
-@@ -13439,6 +_,7 @@
- 		}
+@@ -13453,9 +_,12 @@
+ 				nebulaManaCounter = 0;
+ 			}
  
- 		public void UpdateManaRegen() {
-+			tMLUpdateManaRegen(); return;
- 			if (nebulaLevelMana > 0) {
- 				int num = 6;
- 				nebulaManaCounter += nebulaLevelMana;
++			PlayerHooks.CalculateModdedManaRegen(this, out var modManaRegen);
++
+ 			if (manaRegenDelay > 0) {
+ 				manaRegenDelay--;
+ 				manaRegenDelay -= manaRegenDelayBonus;
++				manaRegenDelay -= (modManaRegen.deltaRate <= -1 / (manaRegenDelayBonus + 1) || modManaRegen.deltaRate >= 0.05) ? (int) (1 / modManaRegen.deltaRate) : 0;  
+ 				if ((velocity.X == 0f && velocity.Y == 0f) || grappling[0] >= 0 || manaRegenBuff)
+ 					manaRegenDelay--;
+ 			}
+@@ -13479,13 +_,21 @@
+ 				manaRegen = 0;
+ 			}
+ 
+-			manaRegenCount += manaRegen;
++			manaRegen += (int)(modManaRegen.deltaRegen * ((float)statMana / (float)statManaMax2 * 0.8f + 0.2f) * 1.15);
++			if (modManaRegen.disablePositiveRegen) {
++				manaRegen = Math.Min(manaRegen, 0);
++			}
++
++			manaRegenCount += (int)Math.Abs((manaRegen * modManaRegen.multiplyRegen));
+ 			while (manaRegenCount >= 120) {
+ 				bool flag = false;
+ 				manaRegenCount -= 120;
+-				if (statMana < statManaMax2) {
++				if (statMana < statManaMax2 && manaRegen > 0) {
+ 					statMana++;
+ 					flag = true;
++				}
++				else if (manaRegen < 0) {
++					statMana = Math.Max(--statMana, 0);
+ 				}
+ 
+ 				if (statMana < statManaMax2)
 @@ -13507,8 +_,8 @@
  
  		public void UpdateJumpHeight() {

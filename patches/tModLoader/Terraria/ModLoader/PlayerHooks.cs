@@ -243,6 +243,24 @@ namespace Terraria.ModLoader
 			return texture;
 		}
 
+		private static HookList HookModifyManaRegen = AddHook<Func<ModPlayer.Regen>>(p => p.ModifyManaRegen);
+
+		internal static void CalculateModdedManaRegen(Player player, out ModPlayer.Regen modManaRegen) {
+			modManaRegen = ModPlayer.Regen.defaultRegen;
+			foreach (int index in HookModifyManaRegen.arr) {
+				ModPlayer.Regen.Combine(player.modPlayers[index].ModifyManaRegen(), ref modManaRegen);
+			}
+		}
+
+		private static HookList HookModifyLifeRegen = AddHook<Func<ModPlayer.Regen>>(p => p.ModifyLifeRegen);
+
+		internal static void CalculateModdedLifeRegen(Player player, out ModPlayer.Regen modLifeRegen) {
+			modLifeRegen = ModPlayer.Regen.defaultRegen;
+			foreach (int index in HookModifyLifeRegen.arr) {
+				ModPlayer.Regen.Combine(player.modPlayers[index].ModifyLifeRegen(), ref modLifeRegen);
+			}
+		}
+
 		private static HookList HookUpdateAutopause = AddHook<Action>(p => p.UpdateAutopause);
 
 		public static void UpdateAutopause(Player player) {
