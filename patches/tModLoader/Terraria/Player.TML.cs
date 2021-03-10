@@ -160,7 +160,8 @@ namespace Terraria
 
 			manaRegenDelay--;
 			manaRegenDelay -= manaRegenDelayBonus;
-			if ((velocity.X == 0f && velocity.Y == 0f) || grappling[0] >= 0 || manaRegenBuff)
+			RegenEffect.effectsDict.TryGetValue("manaRegenBonus2", out var index);
+			if (RegenEffect.effects[index].mana.isActive(this))
 				manaRegenDelay--;
 
 			if (manaRegenBuff && manaRegenDelay > 20) {
