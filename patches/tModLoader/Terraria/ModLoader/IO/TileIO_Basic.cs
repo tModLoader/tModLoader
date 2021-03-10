@@ -197,74 +197,53 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
+		internal delegate byte GetColour(Tile t);
+		internal delegate ushort GetBlockType(Tile t);
+		internal delegate bool BlockIsIgnorable(Tile t);
+
 		internal static byte[] SaveData<T>(bool[] hasObj) {
 			var ms = new MemoryStream();
 			var writer = new BinaryWriter(ms);
 
-			bool isWall = typeof(T) == typeof(WallEntry);
-			bool isTile = typeof(T) == typeof(TileEntry);
-			ushort type = 0;
 			ushort[] unloadedTypes = null;
 			PosIndexer.PosIndex[] posMap = null;
+			GetColour colour = null;
+			GetBlockType oType = null;
+			BlockIsIgnorable isIgnorable = null;
 
+			bool isWall = typeof(T) == typeof(WallEntry);
+			bool isTile = typeof(T) == typeof(TileEntry);
 			// Use pathing flags to pre-fetch variables.
 			if (isTile) {
 				unloadedTypes = unloadedTileIDs;
 				posMap = uTilePosMap;
+				colour = (t) => t.color();
+				oType = (t) => t.type;
+				isIgnorable = (t) => !t.active() || t.type < TileID.Count;
 			}
 			else if (isWall) {
 				unloadedTypes = unloadedWallIDs;
 				posMap = uWallPosMap;
+				colour = (t) => t.wallColor();
+				oType = (t) => t.wall;
+				isIgnorable = (t) => t.wall < WallID.Count;
 			}
 
-			int sameCount = 0;
 			for (int x = 0; x < Main.maxTilesX; x++) {
 				for (int y = 0; y < Main.maxTilesY; y++) {
-					// Skip accounted for
-					if (sameCount > 0) {
-						sameCount--;
-						continue;
-					}
-
-					sameCount = -1;
 					Tile tile = Main.tile[x, y];
-					int i = x, j = y;
-
-					if (isTile)
-						type = tile.type;
-					else if (isWall)
-						type = tile.wall;
+					ushort type = oType(tile);
 
 					// Skip Vanilla tiles
-					//TODO: Check if can simplify this somehow in the future. The issue is the condition tile.active() 
-					if (isTile) {
-						while (!tile.active() || tile.type < TileID.Count) {
-							sameCount++;
-							if (NextTile(ref i, ref j, ref tile))
-								break;
-						}
-					} else if (isWall) {
-						while (tile.wall < WallID.Count) {
-							sameCount++;
-							if (NextTile(ref i, ref j, ref tile))
-								break;
-						}
-					}
-					if (sameCount >= 0) {
+					if (isIgnorable(tile)) {
 						writer.Write((ushort)0);
-						writer.Write(sameCount);
 						continue;
 					}
 
 					// Write Locational data
 					hasObj[type] = true;
-
 					WriteKey(writer, type, x, y, posMap, unloadedTypes);
-
-					if (isTile)
-						writer.Write(tile.color());
-					else if (isWall)
-						writer.Write(tile.wallColor());
+					writer.Write(colour(tile));
 
 					if (isTile) {
 						if (unloadedTileIDs.Contains(type)) {
@@ -278,28 +257,6 @@ namespace Terraria.ModLoader.IO
 							writer.Write(tile.frameY);
 						}
 					}
-
-					// Setup skipping/compressing for like-for-like tiles
-					i = x; j = y;
-					
-					int m = -1, n = -1;
-					if (unloadedTypes.Contains(type)) {
-						m = i;
-						n = j;
-						PosIndexer.MoveToNextCoordsInMap(posMap, ref m, ref n);
-					}
-
-					Tile currTile = Main.tile[i, j];
-					do {
-						if (NextTile(ref i, ref j, ref currTile))
-							break;
-						if (!(i == m && j == n))
-							break;
-						
-						sameCount++;
-					} while (areSame(currTile, tile, isTile, isWall));
-					
-					writer.Write(sameCount);
 				}
 			}
 
@@ -317,126 +274,48 @@ namespace Terraria.ModLoader.IO
 			writer.Write(PosIndexer.FloorGetKeyFromPos(posMap, x, y));
 		}
 
-		private static bool areSame(Tile currTile, Tile tile, bool isTile, bool isWall) {
-			if (isTile) {
-				if (tile.type != currTile.type)
-					return false;
-				else if (Main.tileFrameImportant[currTile.type] != Main.tileFrameImportant[tile.type])
-					return false;
-
-				if (Main.tileFrameImportant[currTile.type]) {
-					if (currTile.frameX != tile.frameX || currTile.frameY != tile.frameY) {
-						return false;
-					}
-				}
-
-				if (tile.color() != currTile.color())
-					return false;
-
-				return true;
-			}
-
-			else if (isWall) {
-				if (tile.wall != currTile.wall)
-					return false;
-
-				if (tile.wallColor() != currTile.wallColor())
-					return false;
-
-				return true;
-			}
-
-			return false;
-		}
+		internal delegate void SetColour(Tile t, byte val);
+		internal delegate void SetBlockType(Tile t, ushort val);
 
 		internal static void LoadData<T, O>(BinaryReader reader, ref IOSaveLoadSet<T> table) where T : ModEntry where O : ModBlockType {
-			int sameCount = 0;
 			List<PosIndexer.PosIndex> posMapList = new List<PosIndexer.PosIndex>();
-			T entry;
+			ushort prevUnloadedKey = ushort.MaxValue;
+			ushort prevKey = ushort.MaxValue;
+			SetColour colour = null;
+			SetBlockType oType = null;
 
 			// Create pathing flags based on type of T
 			bool isWall = typeof(T) == typeof(WallEntry);
 			bool isTile = typeof(T) == typeof(TileEntry);
+			// Use pathing flags to pre-fetch variables.
+			if (isWall) {
+				colour = (t, val) => t.wallColor(val);
+				oType = (t, val) => t.wall = val;
+			}
+			else if (isTile) {
+				colour = (t, val) => t.color(val);
+				oType = (t, val) => t.type = val;
+			}
 
 			for (int x = 0; x < Main.maxTilesX; x++) {
 				for (int y = 0; y < Main.maxTilesY; y++) {
-					// Skip handled tiles
-					if (sameCount > 0) {
-						sameCount--;
-						continue;
-					}
-
 					ushort saveType = reader.ReadUInt16();
-					Tile tile = Main.tile[x, y];
-
-					// Skip over vanilla
 					if (saveType == 0) {
-						sameCount = reader.ReadInt32();
 						continue;
 					}
 
-					// Access tile information to get the type.
-					//WARNING: This section is a logical challenge to read without using the comments. 
-					ushort type = 0;
-					// Attempt to load the object as a loaded mod object
-					if (table.loaded.keyDict.TryGetValue((short)saveType, out ushort key)) {
-						entry = table.loaded.list[key];
-						type = entry.id;
-					}
-					// Else, it is currently an unloaded object
-					else {
-						// If the tile did not become unloaded during this load cycle, then
-						if (!table.unloaded.keyDict.TryGetValue((short)saveType, out key)) {
-							// Get the stored key
-							key = reader.ReadUInt16(); 
+					Tile tile = Main.tile[x, y];
+					LoadType<T, O>(saveType, reader, x, y, ref prevUnloadedKey, ref prevKey, ref posMapList, ref table, out var type, out var entry);
+					oType(tile, type);
+					colour(tile, reader.ReadByte());
 
-							// If it can be restored, restore it using key.
-							if (table.restored.keyDict.TryGetValue((short)key, out ushort rKey)) {
-								entry = table.restored.list[rKey];
-								type = entry.id;
-							}
-
-							// If it can't be restored, re-setup as unloaded
-							else {
-								table.unloaded.keyDict.TryGetValue((short)-key, out ushort uKey);
-								entry = table.unloaded.list[uKey];
-								type = ModContent.Find<O>(entry.unloadedType).Type;
-								PosIndexer.MapPosToInfo(posMapList, uKey, x, y);
-							}
-						}
-
-						// Else create new unloaded setup for this newly unloaded object
-						else {
-							entry = table.unloaded.list[key];
-							type = ModContent.Find<O>(entry.unloadedType).Type;
-							PosIndexer.MapPosToInfo(posMapList, key, x, y);
-						}
-					}
-
-					// Set data
+					// Set remaining tile data
 					if (isTile) {
 						tile.active(true);
-						tile.type = type;
-						tile.color(reader.ReadByte());
 						if ((entry as TileEntry).frameImportant) {
 							tile.frameX = reader.ReadInt16();
 							tile.frameY = reader.ReadInt16();
 						}
-					}
-					else if (isWall) {
-						tile.wall = type;
-						tile.wallColor(reader.ReadByte());
-					}
-
-					// Loop through carbon clones
-					sameCount = reader.ReadInt32();
-					int i = x, j = y;
-					Tile currTile = Main.tile[i, j];
-					for (int c = 0; c < sameCount; c++) {
-						if (!NextTile(ref i, ref j, ref currTile))
-							break;
-
-						objCopy<T>(currTile, tile, entry, isWall, isTile);
 					}
 				}
 			}
@@ -448,28 +327,60 @@ namespace Terraria.ModLoader.IO
 				uWallPosMap = posMapList.ToArray();
 		}
 
-		private static void objCopy<T>(Tile currTile, Tile tile, T entry, bool isWall, bool isTile) {
-			if (isTile) {
-				currTile.active(true);
-				currTile.color(tile.color());
-				currTile.type = tile.type;
-				if ((entry as TileEntry).frameImportant) {
-					currTile.frameX = tile.frameX;
-					currTile.frameY = tile.frameY;
+		private static void LoadType<T, O>(ushort saveType, BinaryReader reader, int x, int y, ref ushort prevUnloadedKey, ref ushort prevKey, ref List<PosIndexer.PosIndex> posMapList, ref IOSaveLoadSet<T> table, out ushort type, out T entry) where T : ModEntry where O : ModBlockType {
+			type = 0;
+			//WARNING: This section is a logical challenge to read without using the comments. 
+			// Attempt to load the object as a loaded mod object
+			if (table.loaded.keyDict.TryGetValue((short)saveType, out ushort key)) {
+				entry = table.loaded.list[key];
+				type = entry.id;
+			}
+			// Else, it is currently an unloaded object
+			else {
+				// If the tile did not become unloaded during this load cycle, then
+				if (!table.unloaded.keyDict.TryGetValue((short)saveType, out key)) {
+					// Get the stored key
+					key = reader.ReadUInt16();
+
+					// If it can be restored, restore it using key.
+					if (table.restored.keyDict.TryGetValue((short)key, out ushort rKey)) {
+						entry = table.restored.list[rKey];
+						type = entry.id;
+					}
+
+					// If it can't be restored, re-setup as unloaded
+					else {
+						// If an indexer has already been made for this same tile, use the prev key.
+						if (-key == prevUnloadedKey) {
+							entry = table.unloaded.list[prevUnloadedKey];
+							type = ModContent.Find<O>(entry.unloadedType).Type;
+						}
+						// Else create the indexer.
+						else {
+							table.unloaded.keyDict.TryGetValue((short)-key, out ushort uKey);
+							prevUnloadedKey = uKey;
+							entry = table.unloaded.list[uKey];
+							type = ModContent.Find<O>(entry.unloadedType).Type;
+							PosIndexer.MapPosToInfo(posMapList, uKey, x, y);
+						}
+					}
+				}
+				// Else create new unloaded setup for this newly unloaded object
+				else {
+					// If an indexer has already been made for this same tile, use the prev key.
+					if (key == prevKey) {
+						entry = table.unloaded.list[prevKey];
+						type = ModContent.Find<O>(entry.unloadedType).Type;
+					}
+					// Else create the indexer.
+					else {
+						prevKey = key;
+						entry = table.unloaded.list[key];
+						type = ModContent.Find<O>(entry.unloadedType).Type;
+						PosIndexer.MapPosToInfo(posMapList, key, x, y);
+					}
 				}
 			}
-			else if (isWall) {
-				currTile.wallColor(tile.wallColor());
-				currTile.wall = tile.wall;
-			}
-		}
-
-		private static bool NextTile(ref int i, ref int j, ref Tile tile) {
-			if (!PosIndexer.NextLocation(ref i, ref j))
-				return false;
-
-			tile = Main.tile[i, j];
-			return true;
 		}
 
 		private static ushort[] unloadedTileIDs => new ushort[5] {
