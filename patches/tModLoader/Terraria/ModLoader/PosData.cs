@@ -100,7 +100,7 @@ namespace Terraria.ModLoader
 					minimum = split;
 
 					// The important early exit condition
-					if (pos <= posMap[split + 1].pos ) {
+					if (pos < posMap[split + 1].pos ) {
 						break;
 					}
 				}

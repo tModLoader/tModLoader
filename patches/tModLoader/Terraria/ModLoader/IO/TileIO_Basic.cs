@@ -51,12 +51,18 @@ namespace Terraria.ModLoader.IO
 				wallEntries = CreateEntries<WallEntry, ModWall>().ToArray();
 			}
 
-			return new TagCompound {
-				[tileDataKey] = SaveData(tileEntries, unloadedTileLookup, out var hasTiles),
-				[tileEntriesKey] = tileEntries.Where(e => e != null && hasTiles[e.type]).ToList(),
+			var tDK = SaveData(tileEntries, unloadedTileLookup, out var hasTiles);
+			var tEK = tileEntries.Where(e => hasTiles[e != null ? (e.unloadedIndex > 0 ? e.unloadedIndex : e.type) : 0]);
+			var wDK = SaveData(wallEntries, unloadedWallLookup, out var hasWalls);
+			var wEK = wallEntries.Where(e => hasWalls[e != null ? (e.unloadedIndex > 0 ? e.unloadedIndex : e.type) : 0]);
 
-				[wallDataKey] = SaveData(wallEntries, unloadedWallLookup, out var hasWalls),
-				[wallEntriesKey] = wallEntries.Where(e => e != null && hasWalls[e.type]).ToList(),
+
+			return new TagCompound {
+				[tileDataKey] = tDK,
+				[tileEntriesKey] = tEK.ToList(), // Unfortunately, using Where and ToList in the same line seems to toss an index out of bounds error
+
+				[wallDataKey] = wDK,
+				[wallEntriesKey] = wEK.ToList(),
 			};
 		}
 
@@ -85,14 +91,17 @@ namespace Terraria.ModLoader.IO
 
 				// If the saved entry can be found among the loaded blocks, then add it to the loaded blocks lookup directly
 				if (ModContent.TryFind(entry.modName, entry.name, out B block)) {
-					savedEntryLookup[entry.type] = entries[block.Type];
+					ushort id = entry.unloadedIndex > 0 ? entry.unloadedIndex : entry.type;
+					entry.unloadedIndex = 0;
+					savedEntryLookup[id] = entries[block.Type];
 				}
 
 				// If it can't be found, than set the save entry to say its unloaded, and add entry to the end of the entries list
 				else {
+					ushort id = entry.unloadedIndex > 0 ? entry.unloadedIndex : entry.type;
 					entries.Add(entry);
 					entry.unloadedIndex = (ushort)(entries.Count - 1);
-					savedEntryLookup[entry.type] = entries[entries.Count - 1];
+					savedEntryLookup[id] = entries[entries.Count - 1];
 				}
 			}
 
@@ -249,7 +258,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal static string GetUnloadedType<B>(int type) {
-			if (typeof(B) == typeof(WallEntry))
+			if (typeof(B) == typeof(ModWall))
 				return "ModLoader/UnloadedWall";
 
 			if (TileID.Sets.BasicChest[type])

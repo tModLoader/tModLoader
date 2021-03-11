@@ -9,14 +9,14 @@ namespace Terraria.ModLoader.IO
 		public string name;
 		public ushort vanillaReplacementType;
 		public string unloadedType;
-		public ushort unloadedIndex = 0;
+		public ushort unloadedIndex;
 
-		internal virtual void SetData<T>(T block) where T : ModBlockType {
+		internal virtual void SetData<B>(B block) where B : ModBlockType {
 			type = block.Type;
 			modName = block.Mod.Name;
 			name = block.Name;
 			vanillaReplacementType = block.vanillaFallbackOnModDeletion;
-			unloadedType = TileIO.GetUnloadedType<T>(block.Type);
+			unloadedType = TileIO.GetUnloadedType<B>(block.Type);
 		}
 
 		internal virtual void LoadData(TagCompound tag) {
@@ -25,6 +25,7 @@ namespace Terraria.ModLoader.IO
 			name = tag.Get<string>("name");
 			vanillaReplacementType = tag.Get<ushort>("fallbackID");
 			unloadedType = tag.Get<string>("uType");
+			unloadedIndex = tag.Get<ushort>("uValue");
 		}
 
 		public virtual TagCompound SerializeData() {
@@ -33,7 +34,8 @@ namespace Terraria.ModLoader.IO
 				["mod"] = modName,
 				["name"] = name,
 				["fallbackID"] = vanillaReplacementType,
-				["uType"] = unloadedType
+				["uType"] = unloadedType,
+				["uValue"] = unloadedIndex
 			};
 		}
 	}
