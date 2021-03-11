@@ -1,51 +1,41 @@
-﻿using Terraria.ModLoader.IO;
+﻿using System;
 
-namespace Terraria.ModLoader.Default
+namespace Terraria.ModLoader.IO
 {
-	internal class ModEntry
+	public abstract class ModEntry : TagSerializable
 	{
-		internal ushort id;
-		internal string modName;
-		internal string name;
-		internal ushort fallbackID;
-		internal string unloadedType;
+		public ushort type;
+		public string modName;
+		public string name;
+		public ushort vanillaReplacementType;
+		public string unloadedType;
+		public ushort loadedType;
 
-		public ModEntry() {	}
-
-		internal void SetData(ushort id, string modName, string name, ushort fallbackID, string unloadedType) {
-			this.id = id;
-			this.modName = modName;
-			this.name = name;
-			this.fallbackID = fallbackID;
-			this.unloadedType = unloadedType;
-		}
-
-		internal virtual void LoadData(TagCompound tag) {
-			id = tag.Get<ushort>("value");
+		public ModEntry(TagCompound tag) {
+			type = tag.Get<ushort>("value");
 			modName = tag.Get<string>("mod");
 			name = tag.Get<string>("name");
-			fallbackID = tag.Get<ushort>("fallbackID");
+			vanillaReplacementType = tag.Get<ushort>("fallbackID");
 			unloadedType = tag.Get<string>("uType");
 		}
 
-		public virtual TagCompound Save() {
-			return null;
+		public ModEntry(ModBlockType block) {
+			type = block.Type;
+			modName = block.Mod.Name;
+			name = block.Name;
+			vanillaReplacementType = block.vanillaFallbackOnModDeletion;
+			throw new NotImplementedException();// unloadedType = ?
+			loadedType = type;
 		}
 
-		public override bool Equals(object obj) {
-			ModEntry other = obj as ModEntry;
-			if (other == null) {
-				return false;
-			}
-			if (modName != other.modName || name != other.name) {
-				return false;
-			}
-			return true;
-		}
-
-		public override int GetHashCode() {
-			int hash = name.GetHashCode() ^ modName.GetHashCode();
-			return hash;
+		public virtual TagCompound SerializeData() {
+			return new TagCompound {
+				["value"] = type,
+				["mod"] = modName,
+				["name"] = name,
+				["fallbackID"] = vanillaReplacementType,
+				["uType"] = unloadedType
+			};
 		}
 	}
 }

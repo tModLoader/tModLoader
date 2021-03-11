@@ -33,19 +33,7 @@ namespace Terraria.ModLoader.Default
 			sources.Add(new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly(), "Terraria.ModLoader.Default."));
 		}
 
-		public override void Load() {
-			AddContent(new UnloadedSolidTile());
-
-			AddContent(new UnloadedNonSolidTile());
-
-			AddContent(new UnloadedSemiSolidTile());
-
-			AddContent(new UnloadedChest());
-			
-			AddContent(new UnloadedDresser());
-			
-			AddContent(new UnloadedWall());
-			
+		public override void Load() {			
 			PatronSets = GetContent<PatreonItem>().GroupBy(t => t.InternalSetName).Select(set => set.ToArray()).ToArray();
 			DeveloperSets = GetContent<DeveloperItem>().GroupBy(t => t.InternalSetName).Select(set => set.ToArray()).ToArray();
 		}

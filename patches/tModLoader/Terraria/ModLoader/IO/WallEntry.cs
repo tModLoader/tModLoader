@@ -1,19 +1,12 @@
-﻿using Terraria.ModLoader.IO;
+﻿using System;
 
-namespace Terraria.ModLoader.Default
+namespace Terraria.ModLoader.IO
 {
 	internal class WallEntry : ModEntry
 	{
-		public WallEntry() { }
+		public static Func<TagCompound, WallEntry> DESERIALIZER = tag => new WallEntry(tag);
 
-		public override TagCompound Save() {
-			return new TagCompound {
-				["value"] = id,
-				["mod"] = modName,
-				["name"] = name,
-				["fallbackID"] = fallbackID,
-				["uType"] = unloadedType
-			};
-		}
+		public WallEntry(TagCompound tag) : base(tag) { }
+		public WallEntry(ModWall wall) : base(wall) { }
 	}
 }

@@ -1,13 +1,14 @@
 using Terraria.ID;
+using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
 
 namespace Terraria.ModLoader.Default
 {
-	[Autoload(false)] // need multiple versions, all subclassed
 	public class UnloadedNonSolidTile : UnloadedTile {
 		public override string Texture => "ModLoader/UnloadedNonSolidTile";
 
 		public override void SetDefaults() {
+			TileIO.IsUnloadedTile[Type] = true;
 			//common
 			Main.tileFrameImportant[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;

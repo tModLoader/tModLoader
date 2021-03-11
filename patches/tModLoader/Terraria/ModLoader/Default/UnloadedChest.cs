@@ -2,15 +2,17 @@ using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Terraria.Localization;
 using Terraria.ObjectData;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
-	[Autoload(false)] // need multiple versions, all subclassed
 	public class UnloadedChest : UnloadedTile {
 
 		public override string Texture => "ModLoader/UnloadedChest";
 
 		public override void SetDefaults() {
+			TileIO.IsUnloadedTile[Type] = true;
+
 			//common
 			Main.tileFrameImportant[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;

@@ -32,8 +32,8 @@ namespace Terraria.ModLoader.IO
 			int j = 0;
 			byte skip;
 			bool nextModTile = false;
-			List<PosIndexer.PosIndex> tilePosMapList = new List<PosIndexer.PosIndex>();
-			List<PosIndexer.PosIndex> wallPosMapList = new List<PosIndexer.PosIndex>();
+			List<PosDataLookup.PosIndex> tilePosMapList = new List<PosDataLookup.PosIndex>();
+			List<PosDataLookup.PosIndex> wallPosMapList = new List<PosDataLookup.PosIndex>();
 
 			// Access indexed shortlist of all tile locations with mod data on either of wall or tiles
 			do {
@@ -43,7 +43,7 @@ namespace Terraria.ModLoader.IO
 					
 					while (skip == 255) {
 						for (byte k = 0; k < 255; k++) {
-							if (!PosIndexer.NextLocation(ref i, ref j)) {
+							if (!PosDataLookup.NextLocation(ref i, ref j)) {
 								return; //Skip over vanilla tiles
 							}
 						}
@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.IO
 					}
 
 					for (byte k = 0; k < skip; k++) {
-						if (!PosIndexer.NextLocation(ref i, ref j)) {
+						if (!PosDataLookup.NextLocation(ref i, ref j)) {
 							return;
 						}
 					}
@@ -64,13 +64,13 @@ namespace Terraria.ModLoader.IO
 				// Load modded tiles
 				ReadModTile(ref i, ref j, reader, ref nextModTile, tilePosMapList, wallPosMapList, tiles, walls);
 			}
-			while (PosIndexer.NextLocation(ref i, ref j));
+			while (PosDataLookup.NextLocation(ref i, ref j));
 
 			uTilePosMap = tilePosMapList.ToArray();
 			uWallPosMap = wallPosMapList.ToArray();
 		}
 
-		internal static void ReadModTile(ref int i, ref int j, BinaryReader reader, ref bool nextModTile, List<PosIndexer.PosIndex> wallPosMapList, List<PosIndexer.PosIndex> tilePosMapList, IOSaveLoadSet<TileEntry> tiles, IOSaveLoadSet<WallEntry> walls) {
+		internal static void ReadModTile(ref int i, ref int j, BinaryReader reader, ref bool nextModTile, List<PosDataLookup.PosIndex> wallPosMapList, List<PosDataLookup.PosIndex> tilePosMapList, IOSaveLoadSet<TileEntry> tiles, IOSaveLoadSet<WallEntry> walls) {
 			// Access Stored 8bit Flags
 			byte flags;
 			flags = reader.ReadByte();
@@ -100,7 +100,7 @@ namespace Terraria.ModLoader.IO
 						tile.type = unloadedTileIDs[1];
 					}
 					
-					PosIndexer.MapPosToInfo(tilePosMapList, key, i, j);
+					PosDataLookup.MapPosToInfo(tilePosMapList, key, i, j);
 				}
 
 				// Implement tile frames
@@ -140,7 +140,7 @@ namespace Terraria.ModLoader.IO
 				else {
 					walls.unloaded.keyDict.TryGetValue((short)saveType, out key);
 					tile.wall = ModContent.Find<ModWall>(walls.unloaded.list[key].unloadedType).Type;
-					PosIndexer.MapPosToInfo(wallPosMapList, key, i, j);
+					PosDataLookup.MapPosToInfo(wallPosMapList, key, i, j);
 				}
 
 				if ((flags & TileIOFlags.WallColor) == TileIOFlags.WallColor) {
@@ -153,7 +153,7 @@ namespace Terraria.ModLoader.IO
 				byte sameCount = reader.ReadByte(); //how many are the same
 
 				for (byte k = 0; k < sameCount; k++) { // for all copy-paste tiles
-					PosIndexer.NextLocation(ref i, ref j); // move i,j to the next tile, with vertical being priority
+					PosDataLookup.NextLocation(ref i, ref j); // move i,j to the next tile, with vertical being priority
 
 					Main.tile[i, j].CopyFrom(tile);
 					WorldGen.tileCounts[tile.type] += j <= Main.worldSurface ? 5 : 1;
