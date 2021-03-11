@@ -1561,7 +1561,8 @@
  			}
 +			*/
  
- 			for (int n = 13; n < 20; n++) {
+-			for (int n = 13; n < 20; n++) {
++			for (int n = SupportedSlotSets; n < armor.Length; n++) {
  				if (IsAValidEquipmentSlotForIteration(n))
  					ApplyEquipVanity(n, armor[n]);
  			}
