@@ -20,20 +20,20 @@ namespace Terraria.ModLoader.IO
 			internal const byte NextModTile = 128;
 		}
 
-		internal static void LoadLegacy(TagCompound tag, IOSaveLoadSet<TileEntry> tiles, IOSaveLoadSet<WallEntry> walls) { 
+		internal static void LoadLegacy(TagCompound tag, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup) { 
 			// Retrieve Locational-Specific Data from 'Data' and apply
 			using (var memoryStream = new MemoryStream(tag.GetByteArray("data")))
 			using (var reader = new BinaryReader(memoryStream))
-				ReadTileData(reader, tiles, walls);
+				ReadTileData(reader, tileEntriesLookup, wallEntriesLookup);
 		}
 
-		internal static void ReadTileData(BinaryReader reader, IOSaveLoadSet<TileEntry> tiles, IOSaveLoadSet<WallEntry> walls) {
+		internal static void ReadTileData(BinaryReader reader, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup) {
 			int i = 0;
 			int j = 0;
 			byte skip;
 			bool nextModTile = false;
-			List<PosDataLookup.PosIndex> tilePosMapList = new List<PosDataLookup.PosIndex>();
-			List<PosDataLookup.PosIndex> wallPosMapList = new List<PosDataLookup.PosIndex>();
+			List<PosData<ushort>> tilePosMapList = new List<PosData<ushort>>();
+			List<PosData<ushort>> wallPosMapList = new List<PosData<ushort>>();
 
 			// Access indexed shortlist of all tile locations with mod data on either of wall or tiles
 			do {
@@ -43,7 +43,7 @@ namespace Terraria.ModLoader.IO
 					
 					while (skip == 255) {
 						for (byte k = 0; k < 255; k++) {
-							if (!PosDataLookup.NextLocation(ref i, ref j)) {
+							if (!NextLocation(ref i, ref j)) {
 								return; //Skip over vanilla tiles
 							}
 						}
@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.IO
 					}
 
 					for (byte k = 0; k < skip; k++) {
-						if (!PosDataLookup.NextLocation(ref i, ref j)) {
+						if (!NextLocation(ref i, ref j)) {
 							return;
 						}
 					}
@@ -62,21 +62,19 @@ namespace Terraria.ModLoader.IO
 				}
 
 				// Load modded tiles
-				ReadModTile(ref i, ref j, reader, ref nextModTile, tilePosMapList, wallPosMapList, tiles, walls);
+				ReadModTile(ref i, ref j, reader, ref nextModTile, tilePosMapList, wallPosMapList, tileEntriesLookup, wallEntriesLookup);
 			}
-			while (PosDataLookup.NextLocation(ref i, ref j));
+			while (NextLocation(ref i, ref j));
 
-			uTilePosMap = tilePosMapList.ToArray();
-			uWallPosMap = wallPosMapList.ToArray();
+			unloadedTileLookup = tilePosMapList.ToArray();
+			unloadedWallLookup = wallPosMapList.ToArray();
 		}
 
-		internal static void ReadModTile(ref int i, ref int j, BinaryReader reader, ref bool nextModTile, List<PosDataLookup.PosIndex> wallPosMapList, List<PosDataLookup.PosIndex> tilePosMapList, IOSaveLoadSet<TileEntry> tiles, IOSaveLoadSet<WallEntry> walls) {
+		internal static void ReadModTile(ref int i, ref int j, BinaryReader reader, ref bool nextModTile, List<PosData<ushort>> wallPosMapList, List<PosData<ushort>> tilePosMapList, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup) {
 			// Access Stored 8bit Flags
 			byte flags;
+			ushort saveType;
 			flags = reader.ReadByte();
-
-			TileEntry tEntry;
-			ushort saveType, key;
 
 			// Read Tiles
 			Tile tile = Main.tile[i, j];
@@ -86,21 +84,12 @@ namespace Terraria.ModLoader.IO
 
 				saveType = (ushort)(reader.ReadUInt16());
 
-				if (tiles.loaded.keyDict.TryGetValue((short)saveType, out key)) {
-					tEntry = tiles.loaded.list[key];
-					tile.type = tEntry.id;
-				}
-				else {
-					tiles.unloaded.keyDict.TryGetValue((short)saveType, out key);
-					tEntry = tiles.unloaded.list[key];
-					if (tEntry.frameImportant) {
-						tile.type = unloadedTileIDs[0];
-					}
-					else {
-						tile.type = unloadedTileIDs[1];
-					}
-					
-					PosDataLookup.MapPosToInfo(tilePosMapList, key, i, j);
+				var tEntry = tileEntriesLookup[saveType];
+				tile.type = tEntry.type;
+
+				if (tEntry.unloadedIndex > 0) {
+					tile.type = ModContent.Find<ModTile>("ModLoader/UnloadedSolidTile").Type;
+					tilePosMapList.Add(new PosData<ushort>(PosData.CoordsToPos(i, j), tEntry.unloadedIndex));
 				}
 
 				// Implement tile frames
@@ -133,14 +122,12 @@ namespace Terraria.ModLoader.IO
 			if ((flags & TileIOFlags.ModWall) == TileIOFlags.ModWall) {
 				saveType = (ushort)(reader.ReadUInt16());
 
-				
-				if (walls.loaded.keyDict.TryGetValue((short)saveType, out key))	{
-					tile.wall = walls.loaded.list[key].id;
-				}
-				else {
-					walls.unloaded.keyDict.TryGetValue((short)saveType, out key);
-					tile.wall = ModContent.Find<ModWall>(walls.unloaded.list[key].unloadedType).Type;
-					PosDataLookup.MapPosToInfo(wallPosMapList, key, i, j);
+				var wEntry = wallEntriesLookup[saveType];
+				tile.wall = wEntry.type;
+
+				if (wEntry.unloadedIndex > 0) {
+					tile.wall = ModContent.Find<ModTile>("ModLoader/UnloadedWall").Type;
+					wallPosMapList.Add(new PosData<ushort>(PosData.CoordsToPos(i, j), wEntry.unloadedIndex));
 				}
 
 				if ((flags & TileIOFlags.WallColor) == TileIOFlags.WallColor) {
@@ -153,7 +140,7 @@ namespace Terraria.ModLoader.IO
 				byte sameCount = reader.ReadByte(); //how many are the same
 
 				for (byte k = 0; k < sameCount; k++) { // for all copy-paste tiles
-					PosDataLookup.NextLocation(ref i, ref j); // move i,j to the next tile, with vertical being priority
+					NextLocation(ref i, ref j); // move i,j to the next tile, with vertical being priority
 
 					Main.tile[i, j].CopyFrom(tile);
 					WorldGen.tileCounts[tile.type] += j <= Main.worldSurface ? 5 : 1;
@@ -163,6 +150,25 @@ namespace Terraria.ModLoader.IO
 			if ((flags & TileIOFlags.NextModTile) == TileIOFlags.NextModTile) {
 				nextModTile = true;
 			}
+		}
+
+		/// <summary>
+		/// Increases the provided x and y coordinates to the next location in accordance with order-sensitive position IDs.
+		/// Typically used in clustering duplicate data across multiple consecutive locations, such as in ModLoader.TileIO 
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns> False if x and y cannot be increased further (end of the world)  </returns>
+		private static bool NextLocation(ref int x, ref int y) {
+			y++;
+			if (y >= Main.maxTilesY) {
+				y = 0;
+				x++;
+				if (x >= Main.maxTilesX) {
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 }

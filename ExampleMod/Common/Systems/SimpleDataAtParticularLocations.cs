@@ -18,14 +18,12 @@ namespace ExampleMod.Common.Systems
 	//Saving and loading requires TagCompounds, a guide exists on the wiki: https://github.com/tModLoader/tModLoader/wiki/Saving-and-loading-using-TagCompound
 	public class SimpleDataAtParticularLocations : ModSystem
 	{
-		// Create the two main data sets - the array that will hold our map during run time, and the list containing our data.
-		public PosIndexer.PosIndex[] myMap;
-		public List<byte> myData;
+		// Create our map. Uses generics for whatever type you want of the data to store.
+		public PosData<byte>[] myMap;
 
-		// Next, we ensure we initialize the data sets on world load.
+		// Next, we ensure we initialize the map on world load to an empty map.
 		public override void OnWorldLoad() {
-			myMap = new PosIndexer.PosIndex[0];
-			myData = new List<byte>();
+			myMap = new PosData<byte>[0];
 		}
 
 		// We save our data sets using TagCompounds.
@@ -37,29 +35,26 @@ namespace ExampleMod.Common.Systems
 			else {
 				tag = new TagCompound {
 					["myMap"] = myMap.Select(info => new TagCompound {
-						["pos"] = info.posID,
-						["index"] = info.indexID
+						["pos"] = info.pos,
+						["data"] = info.value
 					}).ToList(),
-					["myData"] = myData
 				};
 			}
-			// We discard our datasets after saving, because we don't need them anymore.
+			// We discard our map after saving, because we don't need it anymore.
 			myMap = null;
-			myData = null;
 
 			return tag;
 		}
 
 		// We load our data sets using the provided TagCompound. Should mirror SaveWorldData()
 		public override void LoadWorldData(TagCompound tag) {
-			myData = tag.GetList<byte>("myData").ToList();
 
-			List<PosIndexer.PosIndex> list = new List<PosIndexer.PosIndex>();
+			List<PosData<byte>> list = new List<PosData<byte>>();
 			foreach (var entry in tag.GetList<TagCompound>("myMap")) {
-				list.Add(new PosIndexer.PosIndex {
-					posID = entry.GetInt("pos"),
-					indexID = entry.Get<ushort>("index")
-				});
+				list.Add(new PosData<byte>(
+					entry.GetInt("pos"), 
+					entry.Get<byte>("data")
+				));
 			}
 			myMap = list.ToArray();
 		}
@@ -67,15 +62,18 @@ namespace ExampleMod.Common.Systems
 		// We define what we want to generate as additional location data, for this example, in PostWorldGen. 
 		// We will create a simple column of byte data going down the horizontal center of the world that we will later use in PreUpdateWorld.
 		public override void PostWorldGen() {
-			myData = new List<byte>();
+			var builder = new PosData<byte>.OrderedSparseLookupBuilder();
+
 			int xCenter = Main.maxTilesX / 2;
-			List<PosIndexer.PosIndex> list = new List<PosIndexer.PosIndex>();
+
 			for (int y = 0; y < Main.maxTilesY ; y++) {
-				PosIndexer.MapPosToInfo(list, (ushort)myData.Count, xCenter, y);
-				
-				myData.Add((byte)(y % 255));
+				builder.Add(
+					xCenter, y, // The locations
+					(byte)(y % 255) // The data we want to store at the location
+				);
 			}
-			myMap = list.ToArray();
+
+			myMap = builder.Build();
 		}
 
 		// We call our custom method after testing that our map isn't empty - this ensures safe-loading on previous generated worlds!
@@ -96,16 +94,16 @@ namespace ExampleMod.Common.Systems
 			// Get player position in tile coordinates
 			Point z = player.position.ToTileCoordinates();
 			// Search for an entry within 32 tiles of our player
-			if (PosIndexer.NearbyBinarySearchPosMap(myMap, z, 32, out int mapIndex)) {
-				// If found, we grab the entry from the corresponding output index
-				var entry = myMap[mapIndex];
+			if (PosData.NearbySearchOrderedPosMap(myMap, z, 32, out int mapIndex)) {
+				// If found, we grab the data from the corresponding output index
+				var data = myMap[mapIndex].value;
 
 				// We then proceed to paint a 3x3 area around the player position with our locational custom values.
 				for (int i = -1; i < 2; i++) {
 					for (int j = -1; j < 2; j++) {
 						Tile tile = Main.tile[z.X + i, z.Y + j];
 						if (tile.active()) {
-							tile.color(myData[entry.indexID]);
+							tile.color(data);
 						}
 					}
 				}

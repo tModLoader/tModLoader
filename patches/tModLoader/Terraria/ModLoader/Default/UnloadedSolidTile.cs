@@ -8,7 +8,7 @@ namespace Terraria.ModLoader.Default
 		public override string Texture => "ModLoader/UnloadedSolidTile";
 
 		public override void SetDefaults() {
-			TileIO.IsUnloadedTile[Type] = true;
+			TileIO.IsUnloadedTile.Add(Type);
 
 			Main.tileFrameImportant[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;

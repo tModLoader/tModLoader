@@ -8,7 +8,7 @@ namespace Terraria.ModLoader.Default
 		public override string Texture => "ModLoader/UnloadedDresser";
 
 		public override void SetDefaults() {
-			TileIO.IsUnloadedTile[Type] = true;
+			TileIO.IsUnloadedTile.Add(Type);
 
 			//common
 			Main.tileFrameImportant[Type] = true;

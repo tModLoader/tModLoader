@@ -5,21 +5,29 @@ namespace Terraria.ModLoader.IO
 {
 	public class TileEntry : ModEntry
 	{
-		public static Func<TagCompound, TileEntry> DESERIALIZER = tag => new TileEntry(tag);
+		public static Func<TagCompound, TileEntry> DESERIALIZER = tag => DeserializeTag(tag);
+
+		public static TileEntry DeserializeTag(TagCompound tag) {
+			var entry = new TileEntry();
+			entry.LoadData(tag);
+			return entry;
+		}
 
 		public bool frameImportant;
 
-		public TileEntry(TagCompound tag) : base(tag) {
-			frameImportant = tag.Get<bool>("framed");
+		internal override void SetData<T>(T block) {
+			base.SetData<T>(block);
+			this.frameImportant = Main.tileFrameImportant[block.Type];
 		}
 
-		public TileEntry(ModTile tile) : base(tile) {
-			frameImportant = TileID.Sets.FrameImportant[tile.Type];
+		internal override void LoadData(TagCompound tag) {
+			base.LoadData(tag);
+			frameImportant = tag.GetBool("framed");
 		}
 
 		public override TagCompound SerializeData() {
 			var tag = base.SerializeData();
-			tag["frameImportant"] = frameImportant;
+			tag["framed"] = frameImportant;
 			return tag;
 		}
 	}
