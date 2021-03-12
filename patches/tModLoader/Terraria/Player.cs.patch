@@ -1555,11 +1555,15 @@
  			for (int m = 3; m < 10; m++) {
  				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
  					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
-@@ -9305,12 +_,15 @@
+@@ -9305,12 +_,19 @@
  					wingsLogic = armor[m].wingSlot;
  				}
  			}
 +			*/
++
++			for (int n = 10; n < 13; n++) {
++				ApplyEquipVanity(n, armor[n]);
++			}
  
  			for (int n = 13; n < 20; n++) {
  				if (IsAValidEquipmentSlotForIteration(n))
