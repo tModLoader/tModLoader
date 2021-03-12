@@ -1562,7 +1562,7 @@
 +			*/
 +
 +			for (int n = 10; n < 13; n++) {
-+				ApplyEquipVanity(n, armor[n]);
++				ItemLoader.UpdateVanity(armor[n], this);
 +			}
  
  			for (int n = 13; n < 20; n++) {
