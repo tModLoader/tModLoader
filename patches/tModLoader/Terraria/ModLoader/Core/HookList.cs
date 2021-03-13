@@ -3,11 +3,11 @@ using System.Reflection;
 
 namespace Terraria.ModLoader.Core
 {
-	internal class HookList<T> where T : GlobalType
+	public class HookList<T> where T : GlobalType
 	{
 		public readonly MethodInfo method;
 
-		public int[] registeredGlobalIndices = new int[0];
+		private int[] registeredGlobalIndices = new int[0];
 
 		public HookList(MethodInfo method) {
 			this.method = method;
