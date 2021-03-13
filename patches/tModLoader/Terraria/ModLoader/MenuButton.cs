@@ -20,9 +20,14 @@ namespace Terraria.ModLoader
 		public string Name { get; }
 
 		/// <summary>
-		/// Allows you to tell the button what to do when it is clicked.
+		/// Allows you to tell the button what to do when it is left-clicked.
 		/// </summary>
-		public Action onClick;
+		public Action onLeftClick;
+
+		/// <summary>
+		/// Allows you to tell the button what to do when it is right-clicked;
+		/// </summary>
+		public Action onRightClick;
 
 		/// <summary>
 		/// Allows you to tell the button what to do when it's being hovered on.

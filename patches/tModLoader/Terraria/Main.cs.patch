@@ -2926,7 +2926,7 @@
  			}
  
 +			// Generate a list of MenuButton instances and modify existing arrays based on the modifications as well.
-+			List<MenuButton> buttons = MenuLoader.ModifyMenuButtons(ref num5, ref array, ref array2, ref array3, ref array4, ref array5, ref array6, ref array7, ref array8, ref array9, color, out Color[] buttonColor, out Action[] onClick, out Action[] onHover);
++			List<MenuButton> buttons = MenuLoader.ModifyMenuButtons(ref num5, ref array, ref array2, ref array3, ref array4, ref array5, ref array6, ref array7, ref array8, ref array9, color, out Color[] buttonColor, out Action[] onLeftClick, out Action[] onRightClick, out Action[] onHover);
  			bool flag11 = false;
  			for (int num95 = 0; num95 < num5; num95++) {
 +				//patch file: num5, array9, num95
@@ -2959,29 +2959,62 @@
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, origin, num104, SpriteEffects.None, 0f);
  					else
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, new Vector2(0f, origin.Y), num104, SpriteEffects.None, 0f);
-@@ -38974,6 +_,10 @@
+@@ -38952,6 +_,9 @@
+ 						continue;
+ 
+ 					focusMenu = num95;
++					// Call OnHover *after* focusMenu is set but before readonly and unhoverable buttons are skipped
++					// Modders should check for these themselves if they don't want their code to execute
++					buttons[num95].onHover?.Invoke();
+ 					if (array[num95] || array2[num95]) {
+ 						focusMenu = -1;
+ 						continue;
+@@ -38960,11 +_,15 @@
+ 					if (num45 != focusMenu)
+ 						flag11 = true;
+ 
+-					if (mouseLeftRelease && mouseLeft)
++					if (mouseLeftRelease && mouseLeft) {
+ 						selectedMenu = num95;
++						buttons[num95].onLeftClick?.Invoke();
++					}
+ 
+-					if (mouseRightRelease && mouseRight)
++					if (mouseRightRelease && mouseRight) {
+ 						selectedMenu2 = num95;
++						buttons[num95].onRightClick?.Invoke();
++					}
+ 
+ 					continue;
+ 				}
+@@ -38974,6 +_,9 @@
  					continue;
  
  				focusMenu = num95;
 +				// Call OnHover *after* focusMenu is set but before readonly and unhoverable buttons are skipped
 +				// Modders should check for these themselves if they don't want their code to execute
-+				// TODO: OnClick for rightclicks (selectedMenu2)
 +				buttons[num95].onHover?.Invoke();
  				if (array[num95] || array2[num95]) {
  					focusMenu = -1;
  					continue;
-@@ -38982,8 +_,10 @@
+@@ -38982,11 +_,15 @@
  				if (num45 != focusMenu)
  					flag11 = true;
  
 -				if (mouseLeftRelease && mouseLeft)
 +				if (mouseLeftRelease && mouseLeft) {
  					selectedMenu = num95;
-+					buttons[num95].onClick?.Invoke();
++					buttons[num95].onLeftClick?.Invoke();
 +				}
  
- 				if (mouseRightRelease && mouseRight)
+-				if (mouseRightRelease && mouseRight)
++				if (mouseRightRelease && mouseRight) {
  					selectedMenu2 = num95;
++					buttons[num95].onRightClick?.Invoke();
++				}
+ 			}
+ 
+ 			if (flag11 && num45 != focusMenu)
 @@ -39047,10 +_,47 @@
  					if (num107 == 3)
  						num109 = 2;
