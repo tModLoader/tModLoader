@@ -50,10 +50,9 @@ namespace ExampleMod.Content
 			buttons.First().color = Main.DiscoColor;
 
 			// Use a foreach loop to modify all buttons in the list
-			foreach (MenuButton button in buttons) {
+			foreach (MenuButton button in buttons)
 				// Forcefully set the yOffsetPos of every button to _globalButtonOffset, which is modified through our ExampleButton below
 				button.yOffsetPos = _globalButtonOffset;
-			}
 
 			// Make sure we're on the title screen menu
 			// If we aren't, then return and don't execute the code below

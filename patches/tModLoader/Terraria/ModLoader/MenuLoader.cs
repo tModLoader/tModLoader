@@ -147,9 +147,14 @@ namespace Terraria.ModLoader
 				if (text[i] == null)
 					continue;
 
+				string buttonText = text[i]; // Can't use ref params in lambdas
+
+				// Find the respective localization key for a button
+				// Fallback to <MenuMode>_<NumberInArray>Button if, for some reason, no value is found
+				string buttonName = LanguageManager.Instance._localizedTexts.Values.FirstOrDefault(x => x.Value == buttonText)?.Key ?? $"{Main.menuMode}_{i}Button";
+
 				// Create a vanilla menu button instance
-				// TODO: Reverse-lookup the translation dictionary to use the translation key as the name
-				MenuButton button = new MenuButton($"{Main.menuMode}_{i}Button", text[i]);
+				MenuButton button = new MenuButton(buttonName, text[i]);
 
 				// Copy all data over to the newly-created MenuButton instance
 				button.color = GetColorFromByte(button.colorByte = color[i], defaultColor); // Find the button's color based on the vanilla color byte
