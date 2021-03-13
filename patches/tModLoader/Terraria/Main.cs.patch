@@ -2942,12 +2942,13 @@
  						switch (array6[num95]) {
  							case 0:
  								color11 = color;
-@@ -38870,7 +_,7 @@
+@@ -38870,7 +_,8 @@
  								color11 = color;
  								break;
  						}
 -
 +						SkipColorSwitch:
++						color11 = buttonColor[num95];
  						color11.R = (byte)((255 + color11.R) / 2);
  						color11.G = (byte)((255 + color11.G) / 2);
  						color11.B = (byte)((255 + color11.B) / 2);

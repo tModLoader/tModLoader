@@ -140,7 +140,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static List<MenuButton> ModifyMenuButtons(ref int numButtons, ref bool[] readonlyText, ref bool[] unhoverableText, ref bool[] loweredAlpha, ref int[] yOffsetPos, ref int[] xOffsetPos, ref byte[] color, ref float[] scale, ref bool[] noCenterOffset, ref string[] text, Color defaultColor, out Color[] buttonColor, out Action[] onClick, out Action[] onHover) {
+		internal static List<MenuButton> ModifyMenuButtons(ref int numButtons, ref bool[] readonlyText, ref bool[] unhoverableText, ref bool[] loweredAlpha, ref int[] yOffsetPos, ref int[] xOffsetPos, ref byte[] color, ref float[] scale, ref bool[] noCenterOffset, ref string[] text, Color defaultColor, out Color[] buttonColor, out Action[] onLeftClick, out Action[] onRightClick, out Action[] onHover) {
 			List<MenuButton> buttons = new List<MenuButton>();
 
 			for (int i = 0; i < numButtons; i++) {
@@ -179,7 +179,8 @@ namespace Terraria.ModLoader
 			scale = new float[numButtons];
 			noCenterOffset = new bool[numButtons];
 			text = new string[numButtons];
-			onClick = new Action[numButtons];
+			onLeftClick = new Action[numButtons];
+			onRightClick = new Action[numButtons];
 			onHover = new Action[numButtons];
 			for (int i = 0; i < numButtons; i++) {
 				readonlyText[i] = buttons[i].readonlyText;
@@ -192,7 +193,8 @@ namespace Terraria.ModLoader
 				scale[i] = buttons[i].scale;
 				noCenterOffset[i] = buttons[i].noCenterOffset;
 				text[i] = buttons[i].text;
-				onClick[i] = buttons[i].onClick;
+				onLeftClick[i] = buttons[i].onLeftClick;
+				onRightClick[i] = buttons[i].onRightClick;
 				onHover[i] = buttons[i].onHover;
 			}
 
