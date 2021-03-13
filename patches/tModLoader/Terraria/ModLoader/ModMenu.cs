@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.UI;
 
@@ -85,6 +86,12 @@ namespace Terraria.ModLoader
 		/// Called just after the logo is drawn, and gives the values of some of the parameters of the logo draw code.
 		/// </summary>
 		public virtual void PostDrawLogo(SpriteBatch spriteBatch, Vector2 logoDrawCenter, float logoRotation, float logoScale, Color drawColor) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the buttons displayed on the main menu. These changes are only applied if your menu is selected.
+		/// </summary>
+		public virtual void ModifyMenuButtons(List<MenuButton> buttons) {
 		}
 	}
 }

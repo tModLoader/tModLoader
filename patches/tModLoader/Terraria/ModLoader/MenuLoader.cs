@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.Audio;
@@ -136,6 +137,90 @@ namespace Terraria.ModLoader
 			if (Main.menuMode == 0) {
 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, new Vector2(switchTextRect.X, switchTextRect.Y),
 					switchTextRect.Contains(Main.mouseX, Main.mouseY) ? Main.OurFavoriteColor : new Color(120, 120, 120, 76), 0, Vector2.Zero, Vector2.One);
+			}
+		}
+
+		internal static List<MenuButton> ModifyMenuButtons(ref int numButtons, ref bool[] readonlyText, ref bool[] unhoverableText, ref bool[] loweredAlpha, ref int[] yOffsetPos, ref int[] xOffsetPos, ref byte[] color, ref float[] scale, ref bool[] noCenterOffset, ref string[] text, Color defaultColor, out Color[] buttonColor, out Action[] onClick, out Action[] onHover) {
+			List<MenuButton> buttons = new List<MenuButton>();
+
+			for (int i = 0; i < numButtons; i++) {
+				if (text[i] == null)
+					continue;
+
+				// Create a vanilla menu button instance
+				// TODO: Reverse-lookup the translation dictionary to use the translation key as the name
+				MenuButton button = new MenuButton($"{Main.menuMode}_{i}Button", text[i]);
+
+				// Copy all data over to the newly-created MenuButton instance
+				button.color = GetColorFromByte(button.colorByte = color[i], defaultColor); // Find the button's color based on the vanilla color byte
+				button.loweredAlpha = loweredAlpha[i];
+				button.noCenterOffset = noCenterOffset[i];
+				button.readonlyText = readonlyText[i];
+				button.scale = scale[i];
+				button.text = text[i];
+				button.unhoverableText = unhoverableText[i];
+				button.xOffsetPos = xOffsetPos[i];
+				button.yOffsetPos = yOffsetPos[i];
+				buttons.Add(button);
+			}
+
+			// Modify buttons based on the currently-selected menu
+			currentMenu.ModifyMenuButtons(buttons);
+
+			// Resize and repopulate arrays with the new data
+			numButtons = buttons.Count;
+			readonlyText = new bool[numButtons];
+			unhoverableText = new bool[numButtons];
+			loweredAlpha = new bool[numButtons];
+			yOffsetPos = new int[numButtons];
+			xOffsetPos = new int[numButtons];
+			color = new byte[numButtons];
+			buttonColor = new Color[numButtons];
+			scale = new float[numButtons];
+			noCenterOffset = new bool[numButtons];
+			text = new string[numButtons];
+			onClick = new Action[numButtons];
+			onHover = new Action[numButtons];
+			for (int i = 0; i < numButtons; i++) {
+				readonlyText[i] = buttons[i].readonlyText;
+				unhoverableText[i] = buttons[i].readonlyText;
+				loweredAlpha[i] = buttons[i].loweredAlpha;
+				yOffsetPos[i] = buttons[i].yOffsetPos;
+				xOffsetPos[i] = buttons[i].xOffsetPos;
+				color[i] = buttons[i].colorByte;
+				buttonColor[i] = buttons[i].color;
+				scale[i] = buttons[i].scale;
+				noCenterOffset[i] = buttons[i].noCenterOffset;
+				text[i] = buttons[i].text;
+				onClick[i] = buttons[i].onClick;
+				onHover[i] = buttons[i].onHover;
+			}
+
+			return buttons;
+		}
+
+		/// <summary>
+		/// Returns a <see cref="Color"/> identical whatever color vanilla would use. <br />
+		/// This replaces the code vanilla uses for getting <see cref="MenuButton"/> colors.
+		/// </summary>
+		private static Color GetColorFromByte(byte color, Color defaultColor) {
+			switch (color) {
+				default:
+					return defaultColor;
+
+				case 1:
+					return Main.mcColor;
+
+				case 2:
+					return Main.hcColor;
+
+				case 3:
+					return Main.highVersionColor;
+
+				case 4:
+				case 5:
+				case 6:
+					return Main.errorColor;
 			}
 		}
 
