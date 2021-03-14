@@ -13,8 +13,10 @@ namespace Terraria.ModLoader.Core
 			this.method = method;
 		}
 
-		public IEnumerable<T> Enumerate(Instanced<T>[] instances) {
-			if (instances.Length == 0) {
+		public IEnumerable<T> Enumerate(IEntityWithGlobals<T> entity) => Enumerate(entity.Globals);
+
+		public IEnumerable<T> Enumerate(RefReadOnlyArray<Instanced<T>> instances) {
+			if (instances.Count == 0) {
 				yield break;
 			}
 
@@ -23,7 +25,7 @@ namespace Terraria.ModLoader.Core
 
 			foreach (int globalIndex in registeredGlobalIndices) {
 				while (instance.index < globalIndex) {
-					if (++i == instances.Length)
+					if (++i == instances.Count)
 						yield break;
 
 					instance = instances[i];

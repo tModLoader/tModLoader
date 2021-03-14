@@ -36,11 +36,20 @@ namespace Terraria.ModLoader
 		public static readonly IList<int> blockLoot = new List<int>();
 
 		private static Instanced<GlobalNPC>[] globalNPCsArray = new Instanced<GlobalNPC>[0];
-		private static List<HookList> hooks = new List<HookList>();
+		private static readonly List<HookList> hooks = new List<HookList>();
+		private static readonly List<HookList> modHooks = new List<HookList>();
 
 		private static HookList AddHook<F>(Expression<Func<GlobalNPC, F>> func) {
 			var hook = new HookList(ModLoader.Method(func));
+
 			hooks.Add(hook);
+
+			return hook;
+		}
+
+		public static HookList AddModHook(HookList hook) {
+			modHooks.Add(hook);
+
 			return hook;
 		}
 
@@ -119,7 +128,7 @@ namespace Terraria.ModLoader
 				.Select(g => new Instanced<GlobalNPC>(g.index, g))
 				.ToArray();
 
-			foreach (var hook in hooks) {
+			foreach (var hook in hooks.Union(modHooks)) {
 				hook.Update(globalNPCs);
 			}
 
@@ -134,6 +143,7 @@ namespace Terraria.ModLoader
 			nextNPC = NPCID.Count;
 			globalNPCs.Clear();
 			bannerToItem.Clear();
+			modHooks.Clear();
 		}
 
 		internal static bool IsModNPC(NPC npc) {
