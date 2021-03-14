@@ -3,18 +3,20 @@ using System.Reflection;
 
 namespace Terraria.ModLoader.Core
 {
-	internal class HookList<T> where T : GlobalType
+	public class HookList<T> where T : GlobalType
 	{
 		public readonly MethodInfo method;
 
-		public int[] registeredGlobalIndices = new int[0];
+		private int[] registeredGlobalIndices = new int[0];
 
 		public HookList(MethodInfo method) {
 			this.method = method;
 		}
 
-		public IEnumerable<T> Enumerate(Instanced<T>[] instances) {
-			if (instances.Length == 0) {
+		public IEnumerable<T> Enumerate(IEntityWithGlobals<T> entity) => Enumerate(entity.Globals);
+
+		public IEnumerable<T> Enumerate(RefReadOnlyArray<Instanced<T>> instances) {
+			if (instances.Count == 0) {
 				yield break;
 			}
 
@@ -23,7 +25,7 @@ namespace Terraria.ModLoader.Core
 
 			foreach (int globalIndex in registeredGlobalIndices) {
 				while (instance.index < globalIndex) {
-					if (++i == instances.Length)
+					if (++i == instances.Count)
 						yield break;
 
 					instance = instances[i];
