@@ -428,9 +428,12 @@ namespace Terraria.ModLoader
 
 			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
 			var list = new List<int>();
+			var baseDeclaringType = method.DeclaringType;
 
 			for (int i = 0; i < providers.Count; i++) {
-				if (providers[i].GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)) {
+				var currentMethod = providers[i].GetType().GetMethod(method.Name, argTypes);
+
+				if (currentMethod != null && currentMethod.DeclaringType != baseDeclaringType) {
 					list.Add(i);
 				}
 			}
