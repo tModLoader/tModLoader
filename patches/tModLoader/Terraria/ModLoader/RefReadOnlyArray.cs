@@ -5,7 +5,7 @@ namespace Terraria.ModLoader
 	//TODO: When .NET Core arrives, remove this and use ReadOnlySpan<T>
 	public ref struct RefReadOnlyArray<T>
 	{
-		private readonly T[] array;
+		internal readonly T[] array;
 
 		public int Count => array.Length;
 
