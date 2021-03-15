@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Terraria.ModLoader.Core
@@ -9,13 +10,13 @@ namespace Terraria.ModLoader.Core
 
 		private int[] registeredGlobalIndices = new int[0];
 
-		public HookList(MethodInfo method) {
+		internal HookList(MethodInfo method) {
 			this.method = method;
 		}
 
-		public IEnumerable<T> Enumerate(IEntityWithGlobals<T> entity) => Enumerate(entity.Globals.array);
+		protected internal IEnumerable<T> Enumerate(IEntityWithGlobals<T> entity) => Enumerate(entity.Globals.array);
 
-		public IEnumerable<T> Enumerate(Instanced<T>[] instances) {
+		protected internal IEnumerable<T> Enumerate(Instanced<T>[] instances) {
 			if (instances.Length == 0) {
 				yield break;
 			}
@@ -38,5 +39,16 @@ namespace Terraria.ModLoader.Core
 		}
 
 		public void Update(IList<T> instances) => registeredGlobalIndices = ModLoader.BuildGlobalHookNew(instances, method);
+	}
+
+	public class HookList<TGlobal, TDelegate> : HookList<TGlobal>
+		where TGlobal : GlobalType
+		where TDelegate : Delegate
+	{
+		public TDelegate Invoke { get; private set; }
+
+		public HookList(MethodInfo method, Func<HookList<TGlobal>, TDelegate> getInvoker) : base(method) {
+			Invoke = getInvoker(this);
+		}
 	}
 }
