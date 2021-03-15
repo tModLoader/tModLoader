@@ -15,9 +15,9 @@ namespace Terraria.ModLoader.Core
 			this.method = method;
 		}
 
-		protected internal IEnumerable<T> Enumerate(IEntityWithGlobals<T> entity) => Enumerate(entity.Globals.array);
+		public IEnumerable<T> Enumerate(IEntityWithGlobals<T> entity) => Enumerate(entity.Globals.array);
 
-		protected internal IEnumerable<T> Enumerate(Instanced<T>[] instances) {
+		public IEnumerable<T> Enumerate(Instanced<T>[] instances) {
 			if (instances.Length == 0) {
 				yield break;
 			}
