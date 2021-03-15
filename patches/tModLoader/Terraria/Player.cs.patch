@@ -2974,6 +2974,16 @@
  				dead = false;
  				immuneTime = 0;
  			}
+@@ -26441,6 +_,9 @@
+ 			}
+ 
+ 			if (whoAmI == Main.myPlayer) {
++				// Force updating biomes prior to completing spawn event, avoids any frames of delay on biome updates.
++				UpdateBiomes();
++
+ 				if (context == PlayerSpawnContext.SpawningIntoWorld)
+ 					Main.LocalGolfState.SetScoreTime();
+ 
 @@ -26589,7 +_,7 @@
  			if (whoAmI != Main.myPlayer)
  				return;
