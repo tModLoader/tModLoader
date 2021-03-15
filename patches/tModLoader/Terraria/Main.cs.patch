@@ -2955,7 +2955,7 @@
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, origin, num104, SpriteEffects.None, 0f);
  					else
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, new Vector2(0f, origin.Y), num104, SpriteEffects.None, 0f);
-@@ -39053,10 +_,47 @@
+@@ -39053,10 +_,51 @@
  					if (num107 == 3)
  						num109 = 2;
  
@@ -2999,7 +2999,11 @@
 +						spriteBatch.DrawString(font, patreonShortURL, new Vector2(origin2.X + num108 + 10f, screenHeight - origin2.Y + num109 - 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 +						if (num107 == 4 && mouseLeftRelease && mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)origin2.X + 10, screenHeight - (int)urlSize.Y - 2, (int)urlSize.X, (int)origin2.Y).Contains(new Microsoft.Xna.Framework.Point(mouseX, mouseY)) && hasFocus) {
 +							SoundEngine.PlaySound(SoundID.MenuOpen);
-+							Process.Start("https://www.patreon.com/tModLoader");
++							var ps = new ProcessStartInfo("https://www.patreon.com/tModLoader") {
++								UseShellExecute = true,
++								Verb = "open"
++							};
++							Process.Start(ps);
 +						}
 +					}
  				}
