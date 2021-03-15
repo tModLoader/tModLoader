@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq.Expressions;
 
 namespace Terraria.ModLoader.Core
 {
@@ -48,6 +49,10 @@ namespace Terraria.ModLoader.Core
 		public TDelegate Invoke { get; private set; }
 
 		public HookList(MethodInfo method, Func<HookList<TGlobal>, TDelegate> getInvoker) : base(method) {
+			Invoke = getInvoker(this);
+		}
+
+		internal HookList(Expression<Func<TGlobal, TDelegate>> method, Func<HookList<TGlobal>, TDelegate> getInvoker) : base(ModLoader.Method(method)) {
 			Invoke = getInvoker(this);
 		}
 	}
