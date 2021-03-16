@@ -92,17 +92,13 @@ namespace Terraria.ModLoader
 			if (posMap.Length == 0) {
 				throw new ArgumentException($"Can't find the index in an empty posMap. Please verify map is non-empty before calling.");
 			}
+
 			int minimum = -1, maximum = posMap.Length;
 			while (maximum - minimum > 1) {
 				int split = (minimum + maximum) / 2;
 				
 				if (posMap[split].pos <= pos) { 
 					minimum = split;
-
-					// The important early exit condition
-					if (pos < posMap[split + 1].pos ) {
-						break;
-					}
 				}
 
 				else {
