@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Linq.Expressions;
 
 namespace Terraria.ModLoader.Core
 {
@@ -9,7 +11,7 @@ namespace Terraria.ModLoader.Core
 
 		private int[] registeredGlobalIndices = new int[0];
 
-		public HookList(MethodInfo method) {
+		internal HookList(MethodInfo method) {
 			this.method = method;
 		}
 
@@ -38,5 +40,20 @@ namespace Terraria.ModLoader.Core
 		}
 
 		public void Update(IList<T> instances) => registeredGlobalIndices = ModLoader.BuildGlobalHookNew(instances, method);
+	}
+
+	public class HookList<TGlobal, TDelegate> : HookList<TGlobal>
+		where TGlobal : GlobalType
+		where TDelegate : Delegate
+	{
+		public TDelegate Invoke { get; private set; }
+
+		public HookList(MethodInfo method, Func<HookList<TGlobal>, TDelegate> getInvoker) : base(method) {
+			Invoke = getInvoker(this);
+		}
+
+		internal HookList(Expression<Func<TGlobal, TDelegate>> method, Func<HookList<TGlobal>, TDelegate> getInvoker) : base(ModLoader.Method(method)) {
+			Invoke = getInvoker(this);
+		}
 	}
 }
