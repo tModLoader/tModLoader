@@ -1,4 +1,5 @@
 ﻿using System;
+using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader.IO
 {
@@ -7,6 +8,8 @@ namespace Terraria.ModLoader.IO
 		public static Func<TagCompound, TileEntry> DESERIALIZER = tag => DeserializeTag<TileEntry>(tag);
 
 		public bool frameImportant;
+
+		public override string DefaultUnloadedType => ModContent.GetInstance<UnloadedSolidTile>().FullName;
 
 		internal override void SetData<T>(T block) {
 			base.SetData<T>(block);

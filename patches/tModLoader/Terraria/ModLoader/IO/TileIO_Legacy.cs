@@ -84,10 +84,10 @@ namespace Terraria.ModLoader.IO
 				saveType = (ushort)(reader.ReadUInt16());
 
 				var tEntry = tileEntriesLookup[saveType];
-				tile.type = tEntry.type;
+				tile.type = tEntry.loadedType;
 
-				if (tEntry.unloadedIndex > 0) {
-					tilePosMapList.Add(new PosData<ushort>(PosData.CoordsToPos(i, j), tEntry.unloadedIndex));
+				if (tEntry.IsUnloaded) {
+					tilePosMapList.Add(new PosData<ushort>(PosData.CoordsToPos(i, j), tEntry.type));
 				}
 
 				// Implement tile frames
@@ -121,10 +121,10 @@ namespace Terraria.ModLoader.IO
 				saveType = (ushort)(reader.ReadUInt16());
 
 				var wEntry = wallEntriesLookup[saveType];
-				tile.wall = wEntry.type;
+				tile.wall = wEntry.loadedType;
 
-				if (wEntry.unloadedIndex > 0) {
-					wallPosMapList.Add(new PosData<ushort>(PosData.CoordsToPos(i, j), wEntry.unloadedIndex));
+				if (wEntry.IsUnloaded) {
+					wallPosMapList.Add(new PosData<ushort>(PosData.CoordsToPos(i, j), wEntry.type));
 				}
 
 				if ((flags & TileIOFlags.WallColor) == TileIOFlags.WallColor) {

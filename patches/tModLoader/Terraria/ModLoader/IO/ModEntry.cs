@@ -7,10 +7,14 @@
 		public string name;
 		public ushort vanillaReplacementType;
 		public string unloadedType;
-		public ushort unloadedIndex;
+		public ushort loadedType;
+
+		public bool IsUnloaded => loadedType != type;
+
+		public abstract string DefaultUnloadedType { get; }
 
 		internal virtual void SetData<B>(B block) where B : ModBlockType {
-			type = block.Type;
+			type = loadedType = block.Type;
 			modName = block.Mod.Name;
 			name = block.Name;
 			vanillaReplacementType = block.vanillaFallbackOnModDeletion;
@@ -22,8 +26,7 @@
 			modName = tag.Get<string>("mod");
 			name = tag.Get<string>("name");
 			vanillaReplacementType = tag.Get<ushort>("fallbackID");
-			unloadedType = tag.Get<string>("uType");
-			unloadedIndex = tag.Get<ushort>("uValue");
+			unloadedType = tag.Get<string>("uType") ?? DefaultUnloadedType;
 		}
 
 		public virtual TagCompound SerializeData() {
@@ -32,8 +35,7 @@
 				["mod"] = modName,
 				["name"] = name,
 				["fallbackID"] = vanillaReplacementType,
-				["uType"] = unloadedType,
-				["uValue"] = unloadedIndex
+				["uType"] = unloadedType
 			};
 		}
 
