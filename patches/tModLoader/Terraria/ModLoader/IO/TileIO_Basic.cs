@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Terraria.ID;
-using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader.IO
 {
@@ -24,6 +23,8 @@ namespace Terraria.ModLoader.IO
 
 		//NOTE: LoadBasics can't be separated into LoadWalls() and LoadTiles() because of LoadLegacy.
 		internal static void LoadBasics(TagCompound tag) {
+			legacyLoad = !tag.ContainsKey("wallData");
+
 			tileEntries = LoadEntries<TileEntry, ModTile>(tag.GetList<TileEntry>(tileEntriesKey), out var tileEntriesLookup);
 			wallEntries = LoadEntries<WallEntry, ModWall>(tag.GetList<WallEntry>(wallEntriesKey), out var wallEntriesLookup);
 
@@ -51,22 +52,16 @@ namespace Terraria.ModLoader.IO
 				wallEntries = CreateEntries<WallEntry, ModWall>().ToArray();
 			}
 
-			var tDK = SaveData(tileEntries, unloadedTileLookup, out var hasTiles);
-			var tEK = tileEntries.Where(e => hasTiles[e != null ? (e.unloadedIndex > 0 ? e.unloadedIndex : e.type) : 0]);
-			var wDK = SaveData(wallEntries, unloadedWallLookup, out var hasWalls);
-			var wEK = wallEntries.Where(e => hasWalls[e != null ? (e.unloadedIndex > 0 ? e.unloadedIndex : e.type) : 0]);
-
-
 			return new TagCompound {
-				[tileDataKey] = tDK,
-				[tileEntriesKey] = tEK.ToList(), // Unfortunately, using Where and ToList in the same line seems to toss an index out of bounds error
+				[tileDataKey] = SaveData(tileEntries, unloadedTileLookup, out var hasTiles),
+				[tileEntriesKey] = tileEntries.Where(e => hasTiles[e != null ? (e.unloadedIndex > 0 ? e.unloadedIndex : e.type) : 0]).ToList(),
 
-				[wallDataKey] = wDK,
-				[wallEntriesKey] = wEK.ToList(),
+				[wallDataKey] = SaveData(wallEntries, unloadedWallLookup, out var hasWalls),
+				[wallEntriesKey] = wallEntries.Where(e => hasWalls[e != null ? (e.unloadedIndex > 0 ? e.unloadedIndex : e.type) : 0]).ToList(),
 			};
 		}
 
-		static bool legacyLoad = false;
+		static bool legacyLoad;
 
 		internal static bool canPurgeOldData => false; //for deleting unloaded mod data in a save; should point to UI flag; temp false
 
@@ -79,16 +74,13 @@ namespace Terraria.ModLoader.IO
 				return null;
 			}
 
-			// Load entries from save.
+			// Load entries from save, and pathing variables
 			savedEntryLookup = new T[savedEntryList.Max(e => e.type) + 1];
+			bool isWall = typeof(T) == typeof(WallEntry);
+			bool isTile = typeof(T) == typeof(TileEntry);
 
 			// Check saved entries
 			foreach (var entry in savedEntryList) {
-				// if the unloadedType doesn't exist (IE string length is 0) than set legacy flag
-				if (entry.unloadedType.Length == 0 && !legacyLoad) {
-					legacyLoad = true;
-				}
-
 				// If the saved entry can be found among the loaded blocks, then add it to the loaded blocks lookup directly
 				if (ModContent.TryFind(entry.modName, entry.name, out B block)) {
 					ushort id = entry.unloadedIndex > 0 ? entry.unloadedIndex : entry.type;
@@ -102,6 +94,17 @@ namespace Terraria.ModLoader.IO
 					entries.Add(entry);
 					entry.unloadedIndex = (ushort)(entries.Count - 1);
 					savedEntryLookup[id] = entries[entries.Count - 1];
+
+					if (legacyLoad) {
+						// Legacy doesn't have these fields, so we default them. Probably should default it elsewhere...
+						if (isWall) {
+							entry.unloadedType = "ModLoader/UnloadedWall";
+						}
+						if (isTile) {
+							entry.unloadedType = "ModLoader/UnloadedSolidTile";
+						}
+					}
+					entry.type = ModContent.Find<B>(entry.unloadedType).Type;
 				}
 			}
 
@@ -172,15 +175,12 @@ namespace Terraria.ModLoader.IO
 					var entry = savedEntryLookup[saveType];
 
 					// Set the type to either the existing type or the unloaded type
-					ushort type = entry.type;
 					if (entry.unloadedIndex > 0) {
 						builder.Add(x, y, entry.unloadedIndex);
-						// Because legacy load does not have a concept of unloadedType, we get the value of the unloaded Type here instead.
-						type = ModContent.Find<O>(entry.unloadedType).Type;
 					}
 
 					Tile tile = Main.tile[x, y];
-					oType(tile, type);
+					oType(tile, entry.type);
 					colour(tile, reader.ReadByte());
 
 					// Set remaining tile data

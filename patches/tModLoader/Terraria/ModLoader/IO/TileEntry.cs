@@ -1,17 +1,10 @@
 ﻿using System;
-using Terraria.ID;
 
 namespace Terraria.ModLoader.IO
 {
 	public class TileEntry : ModEntry
 	{
-		public static Func<TagCompound, TileEntry> DESERIALIZER = tag => DeserializeTag(tag);
-
-		public static TileEntry DeserializeTag(TagCompound tag) {
-			var entry = new TileEntry();
-			entry.LoadData(tag);
-			return entry;
-		}
+		public static Func<TagCompound, TileEntry> DESERIALIZER = tag => DeserializeTag<TileEntry>(tag);
 
 		public bool frameImportant;
 

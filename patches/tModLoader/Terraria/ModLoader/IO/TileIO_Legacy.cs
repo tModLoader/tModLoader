@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader.IO
 {
@@ -88,7 +87,6 @@ namespace Terraria.ModLoader.IO
 				tile.type = tEntry.type;
 
 				if (tEntry.unloadedIndex > 0) {
-					tile.type = ModContent.Find<ModTile>("ModLoader/UnloadedSolidTile").Type;
 					tilePosMapList.Add(new PosData<ushort>(PosData.CoordsToPos(i, j), tEntry.unloadedIndex));
 				}
 
@@ -126,7 +124,6 @@ namespace Terraria.ModLoader.IO
 				tile.wall = wEntry.type;
 
 				if (wEntry.unloadedIndex > 0) {
-					tile.wall = ModContent.Find<ModTile>("ModLoader/UnloadedWall").Type;
 					wallPosMapList.Add(new PosData<ushort>(PosData.CoordsToPos(i, j), wEntry.unloadedIndex));
 				}
 

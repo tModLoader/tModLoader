@@ -98,8 +98,8 @@ namespace ExampleMod.Common.Systems
 				// If found, we grab the data from the corresponding output index
 				var data = myMap[mapIndex].value;
 
-				// We then proceed to paint a 3x3 area around the player position with our locational custom values.
-				for (int i = -1; i < 2; i++) {
+				// We then proceed to paint a 5x3 area around the player position with our locational custom values.
+				for (int i = -2; i < 3; i++) {
 					for (int j = -1; j < 2; j++) {
 						Tile tile = Main.tile[z.X + i, z.Y + j];
 						if (tile.active()) {

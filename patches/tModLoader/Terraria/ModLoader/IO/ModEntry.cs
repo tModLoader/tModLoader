@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Terraria.ModLoader.IO
+﻿namespace Terraria.ModLoader.IO
 {
 	public abstract class ModEntry : TagSerializable
 	{
@@ -37,6 +35,12 @@ namespace Terraria.ModLoader.IO
 				["uType"] = unloadedType,
 				["uValue"] = unloadedIndex
 			};
+		}
+
+		public static T DeserializeTag<T>(TagCompound tag) where T : ModEntry, new() {
+			var entry = new T();
+			entry.LoadData(tag);
+			return entry;
 		}
 	}
 }
