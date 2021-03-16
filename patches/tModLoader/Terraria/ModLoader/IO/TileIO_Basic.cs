@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -54,11 +55,17 @@ namespace Terraria.ModLoader.IO
 
 			return new TagCompound {
 				[tileDataKey] = SaveData(tileEntries, unloadedTileLookup, out var hasTiles),
-				[tileEntriesKey] = tileEntries.Where(e => hasTiles[e != null ? (e.unloadedIndex > 0 ? e.unloadedIndex : e.type) : 0]).ToList(),
+				[tileEntriesKey] = SelectEntries(hasTiles, tileEntries).ToList(),
 
 				[wallDataKey] = SaveData(wallEntries, unloadedWallLookup, out var hasWalls),
-				[wallEntriesKey] = wallEntries.Where(e => hasWalls[e != null ? (e.unloadedIndex > 0 ? e.unloadedIndex : e.type) : 0]).ToList(),
+				[wallEntriesKey] = SelectEntries(hasWalls, wallEntries).ToList(),
 			};
+		}
+
+		private static IEnumerable<T> SelectEntries<T>(bool[] select, T[] entries) {
+			for (int i = 0; i < select.Length; i++)
+				if (select[i])
+					yield return entries[i];
 		}
 
 		static bool legacyLoad;
@@ -81,30 +88,15 @@ namespace Terraria.ModLoader.IO
 
 			// Check saved entries
 			foreach (var entry in savedEntryList) {
-				// If the saved entry can be found among the loaded blocks, then add it to the loaded blocks lookup directly
+				// If the saved entry can be found among the loaded blocks, then use the entry created for the loaded block
 				if (ModContent.TryFind(entry.modName, entry.name, out B block)) {
-					ushort id = entry.unloadedIndex > 0 ? entry.unloadedIndex : entry.type;
-					entry.unloadedIndex = 0;
-					savedEntryLookup[id] = entries[block.Type];
+					savedEntryLookup[entry.type] = entries[block.Type];
 				}
-
-				// If it can't be found, than set the save entry to say its unloaded, and add entry to the end of the entries list
-				else {
-					ushort id = entry.unloadedIndex > 0 ? entry.unloadedIndex : entry.type;
+				else { // If it can't be found, then add entry to the end of the entries list and set the loadedType to the unloaded placeholder
+					entry.type = (ushort)entries.Count;
+					entry.loadedType = ModContent.Find<B>(entry.unloadedType).Type;
 					entries.Add(entry);
-					entry.unloadedIndex = (ushort)(entries.Count - 1);
-					savedEntryLookup[id] = entries[entries.Count - 1];
-
-					if (legacyLoad) {
-						// Legacy doesn't have these fields, so we default them. Probably should default it elsewhere...
-						if (isWall) {
-							entry.unloadedType = "ModLoader/UnloadedWall";
-						}
-						if (isTile) {
-							entry.unloadedType = "ModLoader/UnloadedSolidTile";
-						}
-					}
-					entry.type = ModContent.Find<B>(entry.unloadedType).Type;
+					savedEntryLookup[entry.type] = entry;
 				}
 			}
 
@@ -175,12 +167,12 @@ namespace Terraria.ModLoader.IO
 					var entry = savedEntryLookup[saveType];
 
 					// Set the type to either the existing type or the unloaded type
-					if (entry.unloadedIndex > 0) {
-						builder.Add(x, y, entry.unloadedIndex);
+					if (entry.IsUnloaded) {
+						builder.Add(x, y, entry.type);
 					}
 
 					Tile tile = Main.tile[x, y];
-					oType(tile, entry.type);
+					oType(tile, entry.loadedType);
 					colour(tile, reader.ReadByte());
 
 					// Set remaining tile data
