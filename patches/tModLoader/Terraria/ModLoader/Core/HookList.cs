@@ -46,23 +46,14 @@ namespace Terraria.ModLoader.Core
 		where TGlobal : GlobalType
 		where TDelegate : Delegate
 	{
-		public delegate IEnumerable<TGlobal> Enumerator(IEntityWithGlobals<TGlobal> entity);
-
 		public TDelegate Invoke { get; private set; }
 
-		public HookList(MethodInfo method, Func<Enumerator, TDelegate> getInvoker) : base(method) {
-			Invoke = getInvoker(CreateEnumerator());
+		public HookList(MethodInfo method, Func<HookList<TGlobal>, TDelegate> getInvoker) : base(method) {
+			Invoke = getInvoker(this);
 		}
 
-		internal HookList(Expression<Func<TGlobal, TDelegate>> method, Func<Enumerator, TDelegate> getInvoker) : base(ModLoader.Method(method)) {
-			Invoke = getInvoker(CreateEnumerator());
-		}
-
-		private Enumerator CreateEnumerator() {
-			var enumerateMethod = typeof(HookList<TGlobal>).GetMethod(nameof(Enumerate));
-			var enumerateDelegate = (Enumerator)enumerateMethod.CreateDelegate(typeof(Enumerator), this);
-
-			return enumerateDelegate;
+		internal HookList(Expression<Func<TGlobal, TDelegate>> method, Func<HookList<TGlobal>, TDelegate> getInvoker) : base(ModLoader.Method(method)) {
+			Invoke = getInvoker(this);
 		}
 	}
 }
