@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -75,7 +76,7 @@ namespace Terraria.ModLoader.IO
 			}
 
 			// Load entries from save, and pathing variables
-			savedEntryLookup = new T[savedEntryList.Max(e => e.type) + 1];
+			savedEntryLookup = new T[savedEntryList.Max(e => Math.Max(e.type, e.unloadedIndex)) + 1];
 			bool isWall = typeof(T) == typeof(WallEntry);
 			bool isTile = typeof(T) == typeof(TileEntry);
 
