@@ -12,6 +12,13 @@ using Terraria.ModLoader.IO;
 /// Simple/Complex - Sorta arbitrary. Simple data will not contain methods, nor complicated functionality, and typically is just basic data types. Use TileEntities if working with complex data.
 /// </summary>
 
+///			Some other common use cases not exampled:
+/// Getting data for a particular tile type your mod added, that was placed in world:
+///		Trigger fetch of data using adjTiles[type]. If data is ordered, use appropriate version of PosData.Lookup. If data is not ordered, you will likely need to find via enumeration.
+///		If it is unordered additions, you may elect to build myMap yourself OR attempt to insert the data so it remains ordered. The latter will lead to better post-event performance.
+///	Clustering data to achieve sparsity:
+///		If your application has multiple repeat static data in a row, you should elect to use ClusteredAdd in the builder to compress it. Note that you should NOT use PosData.LookupExact in this case.
+
 //Future TODO: Improve documentation.
 namespace ExampleMod.Common.Systems
 {
@@ -94,9 +101,9 @@ namespace ExampleMod.Common.Systems
 			// Get player position in tile coordinates
 			Point z = player.position.ToTileCoordinates();
 			// Search for an entry within 32 tiles of our player
-			if (PosData.NearbySearchOrderedPosMap(myMap, z, 32, out int mapIndex)) {
+			if (PosData.NearbySearchOrderedPosMap<byte>(myMap, z, 32, out var entry)) {
 				// If found, we grab the data from the corresponding output index
-				var data = myMap[mapIndex].value;
+				var data = entry.value;
 
 				// We then proceed to paint a 5x2 area around the player position with our locational custom values.
 				for (int i = -2; i < 3; i++) {

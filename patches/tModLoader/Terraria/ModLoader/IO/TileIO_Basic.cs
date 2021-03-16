@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -82,7 +81,7 @@ namespace Terraria.ModLoader.IO
 			}
 
 			// Load entries from save, and pathing variables
-			savedEntryLookup = new T[savedEntryList.Max(e => Math.Max(e.type, e.unloadedIndex)) + 1];
+			savedEntryLookup = new T[savedEntryList.Max(e => e.type) + 1];
 			bool isWall = typeof(T) == typeof(WallEntry);
 			bool isTile = typeof(T) == typeof(TileEntry);
 
@@ -93,10 +92,10 @@ namespace Terraria.ModLoader.IO
 					savedEntryLookup[entry.type] = entries[block.Type];
 				}
 				else { // If it can't be found, then add entry to the end of the entries list and set the loadedType to the unloaded placeholder
+					savedEntryLookup[entry.type] = entry;
 					entry.type = (ushort)entries.Count;
 					entry.loadedType = ModContent.Find<B>(entry.unloadedType).Type;
 					entries.Add(entry);
-					savedEntryLookup[entry.type] = entry;
 				}
 			}
 
@@ -168,7 +167,7 @@ namespace Terraria.ModLoader.IO
 
 					// Set the type to either the existing type or the unloaded type
 					if (entry.IsUnloaded) {
-						builder.Add(x, y, entry.type);
+						builder.ClusteredAdd(x, y, entry.type);
 					}
 
 					Tile tile = Main.tile[x, y];
