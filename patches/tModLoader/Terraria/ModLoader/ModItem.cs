@@ -581,7 +581,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to decide if this item is allowed to stack with another of its type in the world
+		/// Allows you to decide if this item is allowed to stack with another of its type in the world.
+		/// This is only called when attempting to stack with an item of the same type.
 		/// </summary>
 		/// <param name="item2">The item this is trying to stack with</param>
 		/// <returns>Whether or not the item is allowed to stack</returns>
