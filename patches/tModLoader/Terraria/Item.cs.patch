@@ -676,6 +676,16 @@
  				base.velocity.Y += gravity;
  				if (base.velocity.Y > maxFallSpeed)
  					base.velocity.Y = maxFallSpeed;
+@@ -45614,6 +_,9 @@
+ 					num2 *= 2;
+ 
+ 				if (num < (float)num2) {
++					if (!ItemLoader.CanStackInWorld(this, item))
++						continue;
++
+ 					position = (position + item.position) / 2f;
+ 					velocity = (velocity + item.velocity) / 2f;
+ 					int num3 = item.stack;
 @@ -45935,6 +_,9 @@
  		}
  
