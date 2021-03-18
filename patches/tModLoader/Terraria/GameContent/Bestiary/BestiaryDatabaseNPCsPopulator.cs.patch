@@ -29,7 +29,7 @@
  			Register(BestiaryEntry.TownNPC(22));
  			Register(BestiaryEntry.TownNPC(17));
  			Register(BestiaryEntry.TownNPC(18));
-@@ -582,13 +_,18 @@
+@@ -582,13 +_,19 @@
  		}
  
  		private void AddEmptyEntries_CrittersAndEnemies_Automated() {
@@ -47,6 +47,7 @@
 -						Register(BestiaryEntry.Enemy(item.Key));
 +						bestiaryEntry = Register(BestiaryEntry.Enemy(item.Key));
 +
++					bestiaryEntry.Mod = item.Value.ModNPC?.Mod;
 +					NPCLoader.SetBestiary(item.Value, _currentDatabase, bestiaryEntry);
  				}
  			}

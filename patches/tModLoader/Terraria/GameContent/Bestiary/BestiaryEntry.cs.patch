@@ -1,0 +1,10 @@
+--- src/Terraria/Terraria/GameContent/Bestiary/BestiaryEntry.cs
++++ src/tModLoader/Terraria/GameContent/Bestiary/BestiaryEntry.cs
+@@ -9,6 +_,7 @@
+ 	{
+ 		public IEntryIcon Icon;
+ 		public IBestiaryUICollectionInfoProvider UIInfoProvider;
++		public ModLoader.Mod Mod;
+ 
+ 		public List<IBestiaryInfoElement> Info {
+ 			get;
