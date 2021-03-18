@@ -94,7 +94,7 @@ namespace Terraria.ModLoader.IO
 				else { // If it can't be found, then add entry to the end of the entries list and set the loadedType to the unloaded placeholder
 					savedEntryLookup[entry.type] = entry;
 					entry.type = (ushort)entries.Count;
-					entry.loadedType = ModContent.Find<B>(entry.unloadedType).Type;
+					entry.loadedType = canPurgeOldData ? entry.vanillaReplacementType : ModContent.Find<B>(entry.unloadedType).Type;
 					entries.Add(entry);
 				}
 			}
@@ -166,7 +166,7 @@ namespace Terraria.ModLoader.IO
 					var entry = savedEntryLookup[saveType];
 
 					// Set the type to either the existing type or the unloaded type
-					if (entry.IsUnloaded) {
+					if (entry.IsUnloaded && !canPurgeOldData) {
 						builder.ClusteredAdd(x, y, entry.type);
 					}
 
