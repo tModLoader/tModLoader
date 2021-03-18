@@ -56,11 +56,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void SetupPlayer(Player player) {
-			//TODO: find a better place for these lines.
-			Player.RegenEffect.RegisterVanilla();
-			ModifyManaRegenEffects(player);
-
-
+			Player.RegenEffect.RecalculateEffects(); //TODO: find a better location to recaculate maybe?
 			player.modPlayers = players.Select(modPlayer => modPlayer.CreateFor(player)).ToArray();
 		}
 
@@ -1132,19 +1128,6 @@ namespace Terraria.ModLoader
 				.OrderBy(kv => kv.Key == "Terraria" ? "" : kv.Key)
 				.SelectMany(kv => kv.Value)
 				.ToList();
-		}
-
-		private static HookList HookModifyManaRegenEffects = AddHook<Func<List<Player.RegenEffect.ModifyRegenEffectStruct>>> (p => p.ModifyManaRegenEffects);
-
-		internal static void ModifyManaRegenEffects(Player player) {
-			foreach (int index in HookModifyManaRegenEffects.arr) {
-				var list = player.modPlayers[index].ModifyManaRegenEffects();
-				foreach (var modify in list) {
-					if (modify.targetEffect != "null") {
-						Player.RegenEffect.ModifyEffect(modify);
-					}
-				}
-			}
 		}
 	}
 }

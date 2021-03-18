@@ -1,14 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Terraria.Audio;
 using Terraria.ModLoader;
 
 namespace Terraria
 {
-	public partial class Player
-	{
+	public partial class Player {
 		internal IList<string> usedMods;
 		internal ModPlayer[] modPlayers = new ModPlayer[0];
 
@@ -101,57 +97,6 @@ namespace Terraria
 		/// </summary>
 		public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
 
-		public void tMLUpdateManaRegen() {
-			if (nebulaLevelMana > 0) {
-				int num = 6;
-				nebulaManaCounter += nebulaLevelMana;
-				if (nebulaManaCounter >= num) {
-					nebulaManaCounter -= num;
-					statMana++;
-					if (statMana >= statManaMax2)
-						statMana = statManaMax2;
-				}
-			}
-			else {
-				nebulaManaCounter = 0;
-			}
-
-			CheckManaRegenDelay();
-
-			manaRegenCount += manaRegen;
-			while (manaRegenCount >= 120) {
-				bool flag = false;
-				manaRegenCount -= 120;
-				if (statMana < statManaMax2) {
-					statMana++;
-					flag = true;
-				}
-
-
-				if (statMana < statManaMax2)
-					continue;
-
-				if (whoAmI == Main.myPlayer && flag) {
-					SoundEngine.PlaySound(25);
-					for (int i = 0; i < 5; i++) {
-						int num3 = Dust.NewDust(position, width, height, 45, 0f, 0f, 255, default(Color), (float)Main.rand.Next(20, 26) * 0.1f);
-						Main.dust[num3].noLight = true;
-						Main.dust[num3].noGravity = true;
-						Main.dust[num3].velocity *= 0.5f;
-					}
-				}
-
-				statMana = statManaMax2;
-			}
-
-			while (manaRegenCount <= -120) {
-				manaRegenCount -= 120;
-				if (statMana > 0) {
-					statMana--;
-				}
-			}
-		}
-
 		public void CheckManaRegenDelay() {
 			if (manaRegenDelay == 0) {
 				SetManaRegen();
@@ -159,10 +104,15 @@ namespace Terraria
 			}
 
 			manaRegenDelay--;
-			manaRegenDelay -= manaRegenDelayBonus;
-			RegenEffect.effectsDict.TryGetValue("manaRegenBonus2", out var index);
-			if (RegenEffect.effects[index].mana.isActive(this))
-				manaRegenDelay--;
+
+			float delay = manaRegenDelay;
+			foreach (var entry in RegenEffect.effects) {
+				if (!entry.isActive(this))
+					continue;
+				if (!ProcessManaDelay(entry.manaDelay, ref delay))
+					break;
+			}
+			manaRegenDelay = (int)Math.Round(delay);
 
 			if (manaRegenBuff && manaRegenDelay > 20) {
 				manaRegenDelay = 20;
@@ -175,109 +125,199 @@ namespace Terraria
 			}
 		}
 
-		public void SetManaRegen() {
-			manaRegen = statManaMax2 / 7 + 1;
-
-			float delta = manaRegen;
-			foreach (var entry in RegenEffect.effects) {
-				ProcessManaEffects(this, entry.mana, ref delta);
+		internal bool ProcessManaDelay(RegenEffect.ManaRegenDelayStats entry, ref float delay) {
+			if (entry.resetDelayToZero != null) {
+				if (entry.resetDelayToZero(this)) {
+					delay = 0;
+					return false;
+				}
 			}
-			manaRegen = (int)Math.Round(delta);
+
+			if (entry.increaseDelaySpeed != null) {
+				delay = Math.Min(delay - entry.increaseDelaySpeed(this), this.maxRegenDelay);
+			}
+			return true;
 		}
 
-		internal static void ProcessManaEffects(Player player, RegenEffect.ByStatStruct entry, ref float delta) {
-			if (!entry.isActive(player))
-				return;
+		internal void RecalculateMaxRegenDelay() {
+			float maxDelayCap = float.MaxValue;
+			foreach (var entry in RegenEffect.effects) {
+				if (!entry.isActive(this))
+					continue;
 
-			float val = entry.deltaRegenPer120Frames(player);
-			bool prevStateDebuff = delta < 0;
-			delta += val;
+				if (entry.manaDelay.maxDelayCap != null) {
+					maxDelayCap = Math.Min(maxDelayCap, entry.manaDelay.maxDelayCap(this));
+				}
+				if (entry.manaDelay.increaseMaxDelay != null) {
+					maxRegenDelay = Math.Min(maxDelayCap, maxRegenDelay + entry.manaDelay.increaseMaxDelay(this));
+				}
+			}
+		}
+
+		public float manaRegenPotencyMultiplier;
+
+		public void SetManaRegen() {
+			manaRegen = statManaMax2 / 7 + 1;
+			manaRegenPotencyMultiplier = 1;
+
+			float regen = manaRegen;
+			foreach (var entry in RegenEffect.effects) {
+				if (!entry.isActive(this))
+					continue;
+				ProcessCommonRegen(entry.manaCommon, ref regen);
+			}
+			manaRegen = (int)Math.Round(regen * manaRegenPotencyMultiplier);
+		}
+
+		internal void ProcessCommonRegen(RegenEffect.CommonRegenStats entry, ref float regen) {
+			float val = entry.deltaRegenPer120Frames(this);
+			bool prevStateDebuff = regen < 0;
+			regen += val;
 
 			if ((prevStateDebuff || val < 0) && !entry.allowPositiveRegenWhileDebuffed) {
-				delta = Math.Min(delta, 0);
+				regen = Math.Min(regen, 0);
 			}
 
 			if (entry.additionalEffects != null)
-				entry.additionalEffects(player, delta);
+				entry.additionalEffects(this, regen);
 		}
 
 		public class RegenEffect
 		{
-			public delegate float DeltaRegenPer120Frames(Player player);
+			public delegate float DelegateFloat(Player player);
 			public delegate void AdditionalEffects(Player player, float regen);
 
-			public struct CombinationFlags
-			{
-				public bool overrideCondition;
-				public bool useANDForConditionElseOR;
-				public bool overrideDelta;
-				public bool useANDForForcePositiveRegenElseOR;
-				public bool overrideAdditionalEffects;
-
-				public static CombinationFlags Create(bool b0, bool b1, bool b2, bool b3, bool b4) {
-					return new CombinationFlags { overrideCondition = b0, useANDForConditionElseOR = b1, overrideDelta = b2, useANDForForcePositiveRegenElseOR = b3, overrideAdditionalEffects = b4 };
-				}
-			};
-
-			public struct ByStatStruct
-			{
-				public Predicate<Player> isActive;
-				public DeltaRegenPer120Frames deltaRegenPer120Frames;
+			public struct CommonRegenStats {
+				public DelegateFloat deltaRegenPer120Frames;
 				public bool allowPositiveRegenWhileDebuffed;
 				public AdditionalEffects additionalEffects;
 
-				public static ByStatStruct Create(Predicate<Player> isActive, DeltaRegenPer120Frames delta, bool forcePositiveRegen = false, AdditionalEffects additionalEffects = null) {
-					return new ByStatStruct { isActive = isActive, deltaRegenPer120Frames = delta, allowPositiveRegenWhileDebuffed = forcePositiveRegen, additionalEffects = additionalEffects };
+				public static CommonRegenStats Create(DelegateFloat delta = null, AdditionalEffects additionalEffects = null, bool forcePositiveRegen = false) {
+					return new CommonRegenStats {
+						deltaRegenPer120Frames = delta,
+						additionalEffects = additionalEffects, 
+						allowPositiveRegenWhileDebuffed = forcePositiveRegen 
+					};
 				}
 
-				public static readonly ByStatStruct nullStruct = ByStatStruct.Create(_ => false, _ => 0);
+				public struct CombinationFlags
+				{
+					public bool overrideDelta;
+					public bool overrideAdditionalEffects;
 
-				internal static void Combine(ByStatStruct origin, ByStatStruct combine, CombinationFlags flags) {
-					if (flags.overrideCondition) {
-						origin.isActive = combine.isActive;
+					public static CombinationFlags Create(bool b0 = false, bool b1 = false) {
+						return new CombinationFlags { overrideDelta = b0, overrideAdditionalEffects = b1 };
 					}
-					else if (flags.useANDForConditionElseOR) {
-						origin.isActive = (obj) => (combine.isActive(obj) && origin.isActive(obj));
+				};
+
+				internal static void Combine(CommonRegenStats origin, CommonRegenStats combine, CombinationFlags flags) {
+					origin.deltaRegenPer120Frames = FloatCombine(origin.deltaRegenPer120Frames, combine.deltaRegenPer120Frames, flags.overrideDelta);
+
+					if (flags.overrideAdditionalEffects || origin.additionalEffects == null) {
+						origin.additionalEffects = combine.additionalEffects;
 					}
-					else {
-						origin.isActive = (obj) => (combine.isActive(obj) || origin.isActive(obj));
-					}
-					
-					if (flags.overrideDelta) {
-						origin.deltaRegenPer120Frames = combine.deltaRegenPer120Frames;
-					} else {
-						origin.deltaRegenPer120Frames = (obj) => origin.deltaRegenPer120Frames(obj) + combine.deltaRegenPer120Frames(obj);
+					else if (combine.additionalEffects != null) {
+						origin.additionalEffects = (p, regen) => { origin.additionalEffects(p, regen); combine.additionalEffects(p, regen); };
 					}
 
 					origin.allowPositiveRegenWhileDebuffed = combine.allowPositiveRegenWhileDebuffed;
+				}
+			}
 
-					if (flags.overrideAdditionalEffects) {
-						origin.additionalEffects = combine.additionalEffects;
-					} else {
-						origin.additionalEffects = (obj, delta) => { origin.additionalEffects(obj, delta); combine.additionalEffects(obj, delta); };
+			public struct ManaRegenDelayStats {
+				public DelegateFloat maxDelayCap;
+				public DelegateFloat increaseMaxDelay;
+				public DelegateFloat increaseDelaySpeed;
+				public Predicate<Player> resetDelayToZero;
+
+				public static ManaRegenDelayStats Create(DelegateFloat maxDelayCap = null, DelegateFloat increaseMaxDelay = null, DelegateFloat increaseDelaySpeed = null, Predicate<Player> resetDelayToZero = null) {
+					return new ManaRegenDelayStats {
+						maxDelayCap = maxDelayCap,
+						increaseMaxDelay = increaseMaxDelay,
+						increaseDelaySpeed = increaseDelaySpeed,
+						resetDelayToZero = resetDelayToZero
+					};
+				}
+
+				public struct CombinationFlags
+				{
+					public bool overrideMaxDelayCap;
+					public bool overrideIncreaseMaxDelay;
+					public bool overrideIncreaseDelaySpeed;
+					public bool overrideResetDelayToZero;
+					public bool useANDForResetDelayElseOR;
+
+					public static CombinationFlags Create(bool b0 = false, bool b1 = false, bool b2 = false, bool b3 = false, bool b4 = false) {
+						return new CombinationFlags { overrideMaxDelayCap = b0, overrideIncreaseMaxDelay = b1, overrideIncreaseDelaySpeed = b2, overrideResetDelayToZero = b3, useANDForResetDelayElseOR = b4 };
+					}
+				};
+
+				internal static void Combine(ManaRegenDelayStats origin, ManaRegenDelayStats combine, CombinationFlags flags) {
+					origin.maxDelayCap = FloatCombine(origin.maxDelayCap, combine.maxDelayCap, flags.overrideMaxDelayCap);
+					origin.increaseMaxDelay = FloatCombine(origin.increaseMaxDelay, combine.increaseMaxDelay, flags.overrideIncreaseMaxDelay);
+					origin.increaseDelaySpeed = FloatCombine(origin.increaseDelaySpeed, combine.increaseDelaySpeed, flags.overrideIncreaseDelaySpeed);
+					origin.resetDelayToZero = BoolCombine(origin.resetDelayToZero, combine.resetDelayToZero, flags.overrideResetDelayToZero, flags.useANDForResetDelayElseOR);
+				}
+			}
+
+			private static DelegateFloat FloatCombine(DelegateFloat o, DelegateFloat c, bool flag) {
+				if (c == null) {
+					return o;
+				}
+				
+				if (flag || o == null) {
+					return c;
+				}
+				else {
+					return (p) => o(p) + c(p); //TODO: this doesn't appear to work, but should. BoolCombine works fine. Confusion.
+				}
+			}
+
+			private static Predicate<Player> BoolCombine(Predicate<Player> o, Predicate<Player> c, bool flag, bool hIsAnd) {
+				if (c == null) {
+					return o;
+				}
+				
+				if (flag) {
+					return c;
+				}
+				else {
+					if (hIsAnd) {
+						return (p) => (c(p) && o(p));
+					}
+					else {
+						return (p) => (c(p) || o(p));
 					}
 				}
 			}
 
+			public static readonly CommonRegenStats nullRegenStats = CommonRegenStats.Create();
+			public static readonly CommonRegenStats.CombinationFlags nullCommonRegenFlags = CommonRegenStats.CombinationFlags.Create();
+			public static readonly ManaRegenDelayStats nullManaDelayStats = ManaRegenDelayStats.Create();
+			public static readonly ManaRegenDelayStats.CombinationFlags nullManaDelayFlags = ManaRegenDelayStats.CombinationFlags.Create();
+			
 			public string name;
-			public ByStatStruct mana;
+			public Predicate<Player> isActive;
+			public CommonRegenStats manaCommon;
+			public ManaRegenDelayStats manaDelay;
 
-			public RegenEffect(string name, ByStatStruct mana) {
+			public RegenEffect(string name, Predicate<Player> isActive, CommonRegenStats manaCommon, ManaRegenDelayStats manaDelay) {
 				this.name = name;
-				this.mana = mana;
+				this.isActive = isActive;
+				this.manaCommon = manaCommon;
+				this.manaDelay = manaDelay;
 			}
 
 			#region VanillaEffects
 
-			public readonly static RegenEffect manaRegenBonus1 = new RegenEffect("manaRegenBonus1", ByStatStruct.Create(_ => true, (obj) => obj.manaRegenBonus));
-			public readonly static RegenEffect manaRegenBonus2 = new RegenEffect("manaRegenBonus2", ByStatStruct.Create((obj) => (obj.velocity.X == 0f && obj.velocity.Y == 0f) || obj.grappling[0] >= 0 || obj.manaRegenBuff, (obj) => obj.statManaMax2 / 2));
-			public readonly static RegenEffect manaRegenBonus3 = new RegenEffect("manaRegenBonus3", ByStatStruct.Create((obj) => true, (obj) => 0, additionalEffects: (obj, delta) => delta *= (int)(obj.manaRegenBuff ? 1.15f : 1.15f * ((float)obj.statMana / (float)obj.statManaMax2 * 0.8f + 0.2f))));
+			public readonly static RegenEffect vanillaManaRegenBonus = new RegenEffect("vanillaManaRegenBonus", (p) => true, CommonRegenStats.Create((p) => p.manaRegenBonus), ManaRegenDelayStats.Create(increaseDelaySpeed: (p) => p.manaRegenDelayBonus));
+			public readonly static RegenEffect stillPlayerMana = new RegenEffect("stillPlayerMana", (p) => (p.velocity.X == 0f && p.velocity.Y == 0f) || p.grappling[0] >= 0 || p.manaRegenBuff, CommonRegenStats.Create((p) => p.statManaMax2 / 2), ManaRegenDelayStats.Create(increaseDelaySpeed: _ => 1));
+			public readonly static RegenEffect manaRegenMaxStatScaleBonus = new RegenEffect("manaRegenMaxStatScaleBonus", (p) => true, CommonRegenStats.Create((p) => 0, (p, regen) => regen *= (int)(p.manaRegenBuff ? 1.15f : 1.15f * ((float)p.statMana / (float)p.statManaMax2 * 0.8f + 0.2f))), nullManaDelayStats);
 
 			internal static void RegisterVanilla() {
-				effectsDict.Clear(); effects.Clear();
-				Register(manaRegenBonus3);
-				Register(manaRegenBonus2);
-				Register(manaRegenBonus1);
+				Register(stillPlayerMana);
+				Register(manaRegenMaxStatScaleBonus);
+				Register(vanillaManaRegenBonus);
 			}
 
 			#endregion
@@ -292,21 +332,45 @@ namespace Terraria
 				}
 			}
 
-			public struct ModifyRegenEffectStruct
-			{
-				public string targetEffect;
-				public ByStatStruct modifyWith;
-				public CombinationFlags flags;
+			internal static void RecalculateEffects() {
+				effectsDict.Clear();
+				effects.Clear();
+				RegisterVanilla();
+				BuffLoader.RegisterModManaRegenEffect();
+				BuffLoader.ModifyManaRegenEffects();
 			}
 
-			//TODO: different logging and not an exception please.
-			internal static void ModifyEffect(ModifyRegenEffectStruct r) {
-				if (effectsDict.TryGetValue(r.targetEffect, out short index)) {
-					ByStatStruct.Combine(effects[index].mana, r.modifyWith, r.flags);
+			public struct ModifyFlags
+			{
+				public bool overrideCondition;
+				public bool useANDForConditionElseOR;
+				public CommonRegenStats.CombinationFlags manaRegenFlags;
+				public ManaRegenDelayStats.CombinationFlags manaDelayFlags;
+
+				public static ModifyFlags Create(CommonRegenStats.CombinationFlags manaRegenFlags, ManaRegenDelayStats.CombinationFlags manaDelayFlags, bool b0 = false, bool b1 = false) {
+					return new ModifyFlags { overrideCondition = b0, useANDForConditionElseOR = b1, manaRegenFlags = manaRegenFlags, manaDelayFlags = manaDelayFlags };
 				}
-				else {
-					throw new ArgumentOutOfRangeException(r.targetEffect, "Mana regen effect targeted to modify does not exist!");
+			}
+
+			public struct ModifyRegenEffectStruct {
+				public string targetEffect;
+				public Predicate<Player> isActive;
+				public CommonRegenStats modifyManaCommonWith;
+				public ManaRegenDelayStats modifyManaDelayWith;
+				public ModifyFlags flags;
+			}
+
+			internal static bool ModifyEffect(ModifyRegenEffectStruct r) {
+				if (!effectsDict.TryGetValue(r.targetEffect, out short index)) {
+					return false;
 				}
+
+				var effect = effects[index];
+				effect.isActive = BoolCombine(effect.isActive, r.isActive, r.flags.overrideCondition, r.flags.useANDForConditionElseOR);
+				CommonRegenStats.Combine(effect.manaCommon, r.modifyManaCommonWith, r.flags.manaRegenFlags);
+				ManaRegenDelayStats.Combine(effect.manaDelay, r.modifyManaDelayWith, r.flags.manaDelayFlags);
+
+				return true;
 			}
 		}
 	}

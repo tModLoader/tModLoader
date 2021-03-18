@@ -6,26 +6,46 @@ namespace ExampleMod.Content.Buffs
 {
 	public class ExampleRadiationDebuff : ModBuff
 	{
-		public override Player.RegenEffect MyManaRegenEffects => new Player.RegenEffect(
-			// The name you want this effect to be internally known and searchable by in RegenEffect.effects. Recommend using full name
-			FullName,
-
-			// The struct of the mana regen stat calculations to apply associated with this debuff, used every frame update.
-			Player.RegenEffect.ByStatStruct.Create(
+		public override Player.RegenEffect ModManaRegenEffects() {
+			return new Player.RegenEffect(
+				// The name you want this effect to be internally known and searchable by in RegenEffect.effects. Recommend using full name
+				name: FullName,
 
 				// Uses the available player instance, and returns if the debuff is active
-				(player) => player.buffType.Contains(Type),
+				isActive: (player) => player.buffType.Contains(Type),
 
-				// Does not use the available player instance, and returns an float corresponding to the mana drain the debuff does 
-				_ => -(0.5f + Main.rand.Next(32)), // Does between 0.5 and 32.5 drain every 120 seconds 
+				// The struct of the mana regen stat calculations to apply associated with this debuff, used every frame update.
+				manaCommon: Player.RegenEffect.CommonRegenStats.Create(
 
-				// Set to true to allow your entry to have net positive regen despite a damaging debuff being present.
-				false,
+					// Does not use the available player instance, and returns an float corresponding to the mana drain the debuff does 
+					delta: _ => -(0.5f + Main.rand.Next(32)), // Does between 0.5 and 32.5 drain every 120 seconds 
+					
+					// Can apply additional effects based on this void delegate, which receives parameters player and the regen calculated up to this point.
+					additionalEffects: (player, regen) => {
+						player.manaRegenPotencyMultiplier *= (85 + Main.rand.Next(30)) / 100; // randomly modifies the calculated regen multiplicatively in range of +/- 15%.
+					},
 
-				// Can apply additional effects based on this void delegate, which receives parameters player and the delta calculated up to this point.
-				(player, delta) => { player.onFire = Main.rand.Next(100) <= 33; delta *= (85 + Main.rand.Next(30)) / 100; } //Sets player on fire each frame at a 1/3 chance, and randomly modifies the drain in range of +/- 15%.
-			)
-		);
+					// Set to true to allow your entry to have net positive regen despite a damaging debuff being present.
+					forcePositiveRegen: false
+				),
+
+				// The struct of the mana delay calculations to apply associated with this debuff, used every frame update
+				Player.RegenEffect.ManaRegenDelayStats.Create(
+					
+					// Sets the maximum Maximum Delay that the player has to wait, in frames assuming a speed of one, for mana to begin regeneration/draining after mana usage. 
+					maxDelayCap: (player) => 120,
+					
+					// Attempts to increase the Maximum Delay by this in frames, assuming a speed of one. Won't increase above the lowest maxDelayCap of all active effects.
+					increaseMaxDelay: (player) => 35,
+					
+					// Increases the speed at which the Delay is consumed by this number for each frame.
+					increaseDelaySpeed: (player) => 5, // setting to 5 means that assuming the current speed is one frame per frame, we will now do 6 frames of elasping delay per frame.
+					
+					// This bool will forcefully reset mana delay to zero, bypassing all remaining calls to speed up mana delay. If you want to continuously drain mana in a debuff, set this to true.
+					resetDelayToZero: (player) => true // We have a debuff setup to drain mana, so we set it to true so it doesn't stop draining when player uses mana.
+				)
+			);
+		}
 
 		public override void SetDefaults() {
 			DisplayName.SetDefault("Radiated debuff");

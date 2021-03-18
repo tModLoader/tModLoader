@@ -2003,15 +2003,36 @@
  			float num4 = (float)statLifeMax2 / 400f * 0.85f + 0.15f;
  			num2 *= num4;
  			lifeRegen += (int)Math.Round(num2);
-@@ -13439,6 +_,7 @@
- 		}
+@@ -13453,6 +_,9 @@
+ 				nebulaManaCounter = 0;
+ 			}
  
- 		public void UpdateManaRegen() {
-+			tMLUpdateManaRegen(); return;
- 			if (nebulaLevelMana > 0) {
- 				int num = 6;
- 				nebulaManaCounter += nebulaLevelMana;
-@@ -13507,8 +_,8 @@
++			// Use our own mana Regen delay function
++			CheckManaRegenDelay();
++			/*
+ 			if (manaRegenDelay > 0) {
+ 				manaRegenDelay--;
+ 				manaRegenDelay -= manaRegenDelayBonus;
+@@ -13478,6 +_,7 @@
+ 			else {
+ 				manaRegen = 0;
+ 			}
++			*/
+ 
+ 			manaRegenCount += manaRegen;
+ 			while (manaRegenCount >= 120) {
+@@ -13503,12 +_,19 @@
+ 
+ 				statMana = statManaMax2;
+ 			}
++			// Handle draining mana debuff
++			while (manaRegenCount <= -120) {
++				manaRegenCount += 120;
++				if (statMana > 0) {
++					statMana--;
++				}
++			}
+ 		}
  
  		public void UpdateJumpHeight() {
  			if (mount.Active) {
@@ -2254,6 +2275,14 @@
  			infernoCounter++;
  			if (infernoCounter >= 180)
  				infernoCounter = 0;
+@@ -16954,6 +_,7 @@
+ 			gravity *= num5;
+ 			maxRegenDelay = (1f - (float)statMana / (float)statManaMax2) * 60f * 4f + 45f;
+ 			maxRegenDelay *= 0.7f;
++			RecalculateMaxRegenDelay();
+ 			UpdateSocialShadow();
+ 			UpdateTeleportVisuals();
+ 			whoAmI = i;
 @@ -17262,6 +_,7 @@
  						}
  					}

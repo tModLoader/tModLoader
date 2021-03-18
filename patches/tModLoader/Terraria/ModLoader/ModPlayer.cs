@@ -914,20 +914,5 @@ namespace Terraria.ModLoader
 		/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
 		public virtual void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
 		}
-
-		/// <summary>
-		/// The modifications to mana player regeneration/damaging effects associated with the named effects.
-		/// </summary>
-		public virtual List<Player.RegenEffect.ModifyRegenEffectStruct> ModifyManaRegenEffects() {
-			List<Player.RegenEffect.ModifyRegenEffectStruct> list = new List<Player.RegenEffect.ModifyRegenEffectStruct>();
-
-			list.Add(new Player.RegenEffect.ModifyRegenEffectStruct {
-				targetEffect = ("null"),
-				modifyWith = (Player.RegenEffect.ByStatStruct.nullStruct),
-				flags = Player.RegenEffect.CombinationFlags.Create(false, false, false, false, false)
-			});
-
-			return list;
-		}
 	}
 }
