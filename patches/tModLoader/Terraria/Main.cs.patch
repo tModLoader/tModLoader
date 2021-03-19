@@ -2648,6 +2648,143 @@
  						if ((!expertMode || type != 266) && ((type != 439 && type != 440) || npc[num2].ai[0] != 5f)) {
  							if (type >= 134 && type <= 136) {
  								scale = 1.5f;
+@@ -34675,6 +_,7 @@
+ 			if (!CanShowInfoAccs)
+ 				return;
+ 
++			/*
+ 			bool flag = false;
+ 			bool flag2 = false;
+ 			bool flag3 = false;
+@@ -34687,6 +_,7 @@
+ 			bool flag10 = false;
+ 			bool flag11 = false;
+ 			bool flag12 = false;
++			*/
+ 			int num = -1;
+ 			int num2 = -10;
+ 			int num3 = 0;
+@@ -34698,9 +_,11 @@
+ 				num4 += 50f;
+ 			}
+ 
+-			for (int i = 0; i < 12; i++) {
++			for (int i = 0; i < InfoDisplayLoader.InfoDisplayCount; i++) {
+ 				string text2 = "";
+ 				string text3 = "";
++
++				/*
+ 				if (player[myPlayer].accWatch > 0 && !flag && (!player[myPlayer].hideInfo[0] || playerInventory)) {
+ 					num = 0;
+ 					text3 = Lang.inter[95].Value;
+@@ -34941,33 +_,39 @@
+ 					text2 = text7 + " " + text6;
+ 					flag2 = true;
+ 				}
++				*/
++
++				InfoDisplay info = InfoDisplayLoader.InfoDisplays[i];
++				if (!info.Active() || (player[myPlayer].HideInfo[info.Type] && !playerInventory))
++					goto endThisIcon;
++
++				text2 = info.DisplayValue();
++				text3 = info.DisplayName;
+ 
+ 				if (!(text2 != ""))
+-					continue;
++					goto endThisIcon;
+ 
+ 				GetInfoAccIconPosition(num3, startX, out int X, out int Y);
+-				if (num >= 0) {
+-					num3++;
++				//if (info.Type >= 0) {
+ 					int num26 = 22;
+ 					if (screenHeight < 650)
+ 						num26 = 20;
+ 
+-					Vector2 vector2 = new Vector2(X, Y + 74 + num26 * i + 52);
++					Vector2 vector2 = new Vector2(X, Y + 74 + num26 * num3 + 52);
+-					int num27 = num;
++					int num27 = info.Type;
+-					if (num27 == 8)
+-						num27 = 7;
+ 
++					Texture2D icon = ModContent.GetTexture(info.Texture).Value;
+ 					Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.White;
+ 					bool flag14 = false;
+ 					if (playerInventory) {
+ 						vector2 = new Vector2(X, Y);
+-						if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)TextureAssets.InfoIcon[num].Width() && (float)mouseY <= vector2.Y + (float)TextureAssets.InfoIcon[num].Height() && !PlayerInput.IgnoreMouseInterface) {
++						if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)icon.Width && (float)mouseY <= vector2.Y + (float)icon.Height && !PlayerInput.IgnoreMouseInterface) {
+ 							flag14 = true;
+ 							player[myPlayer].mouseInterface = true;
+ 							if (mouseLeft && mouseLeftRelease) {
+ 								SoundEngine.PlaySound(12);
+ 								mouseLeftRelease = false;
+-								player[myPlayer].hideInfo[num27] = !player[myPlayer].hideInfo[num27];
++								player[myPlayer].HideInfo[num27] = !player[myPlayer].HideInfo[num27];
+ 							}
+ 
+ 							if (!mouseText) {
+@@ -34976,26 +_,27 @@
+ 							}
+ 						}
+ 
+-						if (player[myPlayer].hideInfo[num27])
++						if (player[myPlayer].HideInfo[num27])
+ 							color = new Microsoft.Xna.Framework.Color(80, 80, 80, 70);
+ 					}
+-					else if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)TextureAssets.InfoIcon[num].Width() && (float)mouseY <= vector2.Y + (float)TextureAssets.InfoIcon[num].Height() && !mouseText) {
++					else if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)icon.Width && (float)mouseY <= vector2.Y + (float)icon.Height && !mouseText) {
+-						num2 = i;
++						num2 = num3;
+ 						text = text3;
+ 						mouseText = true;
+ 					}
+ 
+-					UILinkPointNavigator.SetPosition(1558 + num3 - 1, vector2 + TextureAssets.InfoIcon[num].Value.Size() * 0.75f);
++					UILinkPointNavigator.SetPosition(1558 + num3 - 1, vector2 + icon.Size() * 0.75f);
+-					spriteBatch.Draw(TextureAssets.InfoIcon[num].Value, vector2, new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.InfoIcon[num].Width(), TextureAssets.InfoIcon[num].Height()), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++					spriteBatch.Draw(icon, vector2, new Microsoft.Xna.Framework.Rectangle(0, 0, icon.Width, icon.Height), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 					if (flag14)
+ 						spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, vector2 - Vector2.One * 2f, null, OurFavoriteColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 
+ 					X += 20;
+-				}
++				//}
+ 
+ 				UILinkPointNavigator.Shortcuts.INFOACCCOUNT = num3;
++
+ 				if (playerInventory)
+-					continue;
++					goto endThisIcon;
+ 
+ 				Vector2 scale = new Vector2(1f);
+ 				Vector2 vector3 = FontAssets.MouseText.Value.MeasureString(text2);
+@@ -35031,8 +_,11 @@
+ 					if (screenHeight < 650)
+ 						num30 = 20;
+ 
+-					spriteBatch.DrawString(FontAssets.MouseText.Value, text2, new Vector2(X + num28, Y + 74 + num30 * i + num29 + 48), color2, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
++					spriteBatch.DrawString(FontAssets.MouseText.Value, text2, new Vector2(X + num28, Y + 74 + num30 * num3 + num29 + 48), color2, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+ 				}
++
++				endThisIcon:
++				num3++; // moved here due to calculation changes
+ 			}
+ 
+ 			if (!string.IsNullOrEmpty(text)) {
+@@ -35051,8 +_,8 @@
+ 					Y += 261;
+ 			}
+ 			else if (ShouldDrawInfoIconsHorizontally) {
+-				X = screenWidth - 280 + 20 * drawnCount - 10;
+-				Y = 94;
++				X = screenWidth - 280 + 20 * (drawnCount % 12) - 10;
++				Y = 94 + (20 * (drawnCount / 12));
+ 				if (mapStyle == 1 && mapEnabled)
+ 					Y += 261;
+ 			}
 @@ -35983,8 +_,10 @@
  			screenLastPosition = screenPosition;
  			screenPosition.Y = (float)(worldSurface * 16.0 - (double)screenHeight);

@@ -48,6 +48,24 @@
  		public OverheadMessage chatOverhead;
  		public SelectionRadial DpadRadial = new SelectionRadial();
  		public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
+@@ -403,7 +_,16 @@
+ 		public int HotbarOffset;
+ 		public bool GoingDownWithGrapple;
+ 		public byte spelunkerTimer;
+-		public bool[] hideInfo = new bool[13];
++		private bool[] hideInfo = new bool[InfoDisplayLoader.InfoDisplayCount];
++		public bool[] HideInfo {
++			get {
++				if (hideInfo.Length != InfoDisplayLoader.InfoDisplayCount)
++					Array.Resize(ref hideInfo, InfoDisplayLoader.InfoDisplayCount);
++
++				return hideInfo;
++			}
++			set { hideInfo = value; }
++		}
+ 		public int[] builderAccStatus = new int[12] {
+ 			1,
+ 			0,
 @@ -438,7 +_,7 @@
  		public Vector2 lastDeathPostion;
  		public DateTime lastDeathTime;
@@ -4407,13 +4425,14 @@
  				}
  
  				return playerFileData;
-@@ -38226,7 +_,14 @@
+@@ -38226,7 +_,15 @@
  			return -1;
  		}
  
 -		public Player() {
 +		public Player(bool startupInventory = true) {
 +			ResetDamageClassData();
++			infoDisplayPage = 0;
 +			buffType = new int[MaxBuffs];
 +			buffTime = new int[MaxBuffs];
 +			buffImmune = new bool[BuffLoader.BuffCount]; // TODO: Move all these patches to field initializers.
