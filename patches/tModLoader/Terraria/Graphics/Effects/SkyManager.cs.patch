@@ -1,15 +1,29 @@
 --- src/Terraria/Terraria/Graphics/Effects/SkyManager.cs
 +++ src/tModLoader/Terraria/Graphics/Effects/SkyManager.cs
-@@ -88,5 +_,12 @@
+@@ -19,9 +_,9 @@
+ 		}
+ 
+ 		public void Update(GameTime gameTime) {
+-			int num = Main.dayRate;
++			double num = Main.dayRate;
+-			if (num < 1)
++			if (num < 0)
+-				num = 1;
++				num = 0;
+ 
+ 			for (int i = 0; i < num; i++) {
+ 				LinkedListNode<CustomSky> linkedListNode = _activeSkies.First;
+@@ -87,6 +_,13 @@
+ 			}
  
  			return MathHelper.Clamp(num, 0f, 1f);
- 		}
++		}
 +
 +		internal void DeactivateAll() {
 +			foreach (string key in _effects.Keys) {
 +				if (this[key].IsActive())
 +					this[key].Deactivate(new object[0]);
 +			}
-+		}
+ 		}
  	}
  }

@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/Events/Sandstorm.cs
++++ src/tModLoader/Terraria/GameContent/Events/Sandstorm.cs
+@@ -10,7 +_,7 @@
+ 		private const int SANDSTORM_DURATION_MINIMUM = 28800;
+ 		private const int SANDSTORM_DURATION_MAXIMUM = 86400;
+ 		public static bool Happening;
+-		public static int TimeLeft;
++		public static double TimeLeft;
+ 		public static float Severity;
+ 		public static float IntendedSeverity;
+ 		private static bool _effectsUp;

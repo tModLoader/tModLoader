@@ -48,7 +48,17 @@
  		public OverheadMessage chatOverhead;
  		public SelectionRadial DpadRadial = new SelectionRadial();
  		public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
-@@ -438,7 +_,7 @@
+@@ -430,15 +_,15 @@
+ 		private static SlotId _insideBlizzardSound = SlotId.Invalid;
+ 		public string name = "";
+ 		public int taxMoney;
+-		public int taxTimer;
++		public double taxTimer;
+-		public static int taxRate = 3600;
++		public static double taxRate = 3600;
+ 		public static int crystalLeafDamage = 100;
+ 		public static int crystalLeafKB = 10;
+ 		public float basiliskCharge;
  		public Vector2 lastDeathPostion;
  		public DateTime lastDeathTime;
  		public bool showLastDeath;
@@ -129,6 +139,15 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
+@@ -1351,7 +_,7 @@
+ 		private int[] unlitTorchY = new int[maxTorchAttacks];
+ 		private static int[] _torchAttackPosX = new int[400];
+ 		private static int[] _torchAttackPosY = new int[400];
+-		public int ladyBugLuckTimeLeft;
++		public double ladyBugLuckTimeLeft;
+ 		public float luck;
+ 		public float luckMinimumCap = -0.7f;
+ 		public float luckMaximumCap = 1f;
 @@ -2051,11 +_,13 @@
  		}
  

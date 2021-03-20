@@ -1,0 +1,13 @@
+--- src/Terraria/Terraria/GameContent/Events/CultistRitual.cs
++++ src/tModLoader/Terraria/GameContent/Events/CultistRitual.cs
+@@ -9,8 +_,8 @@
+ 		public const int respawnDelay = 43200;
+ 		private const int timePerCultist = 3600;
+ 		private const int recheckStart = 600;
+-		public static int delay;
++		public static double delay;
+-		public static int recheck;
++		public static double recheck;
+ 
+ 		public static void UpdateTime() {
+ 			if (Main.netMode == 1)

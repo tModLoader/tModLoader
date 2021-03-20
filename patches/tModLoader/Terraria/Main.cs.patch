@@ -52,6 +52,15 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		public static PingMapLayer Pings = new PingMapLayer();
+@@ -509,7 +_,7 @@
+ 		public static bool showSplash = true;
+ 		public static bool ignoreErrors = true;
+ 		public static string defaultIP = "";
+-		public static int dayRate = 1;
++		public static double dayRate = 1;
+ 		public static int desiredWorldTilesUpdateRate = 1;
+ 		public static int maxScreenW = 1920;
+ 		public static int maxScreenH = 1200;
 @@ -541,7 +_,7 @@
  		public static int instantBGTransitionCounter = 2;
  		public static int bgDelay;
@@ -135,6 +144,15 @@
  		public static string worldName = "";
  		public static int worldID;
  		public static int background;
+@@ -784,7 +_,7 @@
+ 		public static float cloudAlpha;
+ 		public static float maxRaining;
+ 		public static float oldMaxRaining;
+-		public static int rainTime;
++		public static double rainTime;
+ 		public static bool raining;
+ 		public static bool eclipse;
+ 		public static float eclipseLight;
 @@ -825,7 +_,11 @@
  		public static float invAlpha = 1f;
  		public static float invDir = 1f;
@@ -226,7 +244,7 @@
  		private static bool _settingsButtonIsPushedToSide;
  		private static bool _MouseOversCanClear;
  		private static Vector2 _itemIconCacheScreenPosition;
-@@ -2093,13 +_,13 @@
+@@ -2093,19 +_,19 @@
  		};
  		private static float backgroundLayerTransitionSpeed = 0.05f;
  		public static float atmo;
@@ -246,6 +264,13 @@
  		private float cTop;
  		private bool _isDrawingOrUpdating;
  		public static List<INeedRenderTargetContent> ContentThatNeedsRenderTargets = new List<INeedRenderTargetContent>();
+ 		private static string _oldNetplayStatusText;
+ 		private static TextSnippet[] _netplayStatusTextSnippets;
+-		public static int ladyBugRainBoost = 0;
++		public static double ladyBugRainBoost = 0;
+ 		private static bool _canShowMeteorFall;
+ 
+ 		public static Vector2 ViewPosition => screenPosition + GameViewMatrix.Translation;
 @@ -2257,7 +_,7 @@
  
  		public static int npcShop {
@@ -3182,6 +3207,19 @@
  		}
  
  		private void DoDraw(GameTime gameTime) {
+@@ -47097,9 +_,9 @@
+ 			if (gameMenu || netMode == 2)
+ 				bgTopY = -200;
+ 
+-			int num3 = dayRate;
++			double num3 = dayRate;
+-			if (num3 < 1)
++			if (num3 < 0)
+-				num3 = 1;
++				num3 = 0;
+ 
+ 			float num4 = 0.0005f * (float)num3;
+ 			if (gameMenu)
 @@ -47167,8 +_,8 @@
  			UpdateAtmosphereTransparencyToSkyColor();
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
@@ -3382,6 +3420,19 @@
  			Microsoft.Xna.Framework.Rectangle value3 = dayTime ? new Microsoft.Xna.Framework.Rectangle((int)((double)num3 - (double)TextureAssets.Sun.Width() * 0.5 * (double)num5), (int)((double)num4 - (double)TextureAssets.Sun.Height() * 0.5 * (double)num5 + (double)sunModY), (int)((float)TextureAssets.Sun.Width() * num5), (int)((float)TextureAssets.Sun.Width() * num5)) : new Microsoft.Xna.Framework.Rectangle((int)((double)num6 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8), (int)((double)num7 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8 + (double)moonModY), (int)((float)TextureAssets.Moon[num].Width() * num8), (int)((float)TextureAssets.Moon[num].Width() * num8));
  			value3.Offset((int)sceneArea.SceneLocalScreenPositionOffset.X, (int)sceneArea.SceneLocalScreenPositionOffset.Y);
  			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(mouseX, mouseY, 1, 1);
+@@ -48010,10 +_,10 @@
+ 				Vector2 origin = value.Size() / 2f;
+ 				if (star.falling) {
+ 					star.fadeIn = 0f;
+-					int num7 = star.fallTime;
++					double num7 = star.fallTime;
+ 					float num8 = 30f;
+ 					if ((float)num7 > num8)
+-						num7 = (int)num8;
++						num7 = (double)num8;
+ 
+ 					for (int j = 1; j < num7; j++) {
+ 						Vector2 value2 = star.fallSpeed * j * 0.4f;
 @@ -48036,6 +_,8 @@
  			tileColor.G = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.G * 7) / 10);
  			tileColor.B = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.B * 7) / 10);
@@ -3433,6 +3484,19 @@
  			if (invasionType <= 0)
  				return;
  
+@@ -48991,9 +_,9 @@
+ 			if (invasionX == (double)spawnTileX)
+ 				return;
+ 
+-			float num = dayRate;
++			double num = dayRate;
+-			if (num < 1f)
++			if (num < 0)
+-				num = 1f;
++				num = 0;
+ 
+ 			if (invasionX > (double)spawnTileX) {
+ 				invasionX -= num;
 @@ -49199,6 +_,15 @@
  			}
  		}
@@ -3449,6 +3513,61 @@
  		public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue) {
  			chatMonitor.NewText(newText, R, G, B);
  			SoundEngine.PlaySound(12);
+@@ -49250,7 +_,7 @@
+ 			if (rand.Next(5) == 0)
+ 				num4 += 0.2f;
+ 
+-			rainTime = (int)((float)num3 * num4);
++			rainTime = (double)((float)num3 * num4);
+ 			ChangeRain();
+ 			raining = true;
+ 		}
+@@ -49356,24 +_,24 @@
+ 						else {
+ 							rainTime -= dayRate;
+ 							if (dayRate > 0) {
+-								int num = 86400 / dayRate / 24;
++								double num = 86400 / dayRate / 24;
+ 								if (rainTime <= 0)
+ 									StopRain();
+-								else if (rand.Next(num * 2) == 0)
++								else if (rand.Next((int)(num * 2)) == 0)
+ 									ChangeRain();
+ 							}
+ 						}
+ 					}
+ 				}
+ 				else if (!slimeRain && !LanternNight.LanternsUp && !LanternNight.NextNightIsLanternNight) {
+-					int num2 = 86400;
++					double num2 = 86400;
+ 					num2 /= ((dayRate == 0) ? 1 : dayRate);
+ 					if (!CreativePowerManager.Instance.GetPower<CreativePowers.FreezeRainPower>().Enabled && dayRate != 0) {
+ 						if (rand.Next((int)((double)num2 * 5.75)) == 0)
+ 							StartRain();
+-						else if (cloudBGActive >= 1f && rand.Next((int)((double)num2 * 4.25)) == 0)
++						else if (cloudBGActive >= 1f && rand.Next((int)(num2 * 4.25)) == 0)
+ 							StartRain();
+-						else if (ladyBugRainBoost > 0 && rand.Next(num2) == 0)
++						else if (ladyBugRainBoost > 0 && rand.Next((int)num2) == 0)
+ 							StartRain();
+ 					}
+ 
+@@ -49454,11 +_,11 @@
+ 						WorldGen.UnspawnTravelNPC();
+ 				}
+ 				else if (!fastForwardTime && dayTime && time < 27000.0) {
+-					int num5 = dayRate;
++					double num5 = dayRate;
+-					if (num5 < 1)
++					if (num5 < 0)
+-						num5 = 1;
++						num5 = 0;
+ 
+-					int num6 = (int)(27000.0 / (double)num5);
++					int num6 = (int)(27000.0 / num5);
+ 					num6 *= 4;
+ 					if (rand.Next(num6) == 0) {
+ 						int num7 = 0;
 @@ -49830,7 +_,7 @@
  					num++;
  			}

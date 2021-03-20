@@ -10,6 +10,40 @@
  
  namespace Terraria.IO
  {
+@@ -23,12 +_,12 @@
+ 		private static double _tempTime = Main.time;
+ 		private static bool _tempRaining;
+ 		private static float _tempMaxRain;
+-		private static int _tempRainTime;
++		private static double _tempRainTime;
+ 		private static bool _tempDayTime = Main.dayTime;
+ 		private static bool _tempBloodMoon = Main.bloodMoon;
+ 		private static bool _tempEclipse = Main.eclipse;
+ 		private static int _tempMoonPhase = Main.moonPhase;
+-		private static int _tempCultistDelay = CultistRitual.delay;
++		private static double _tempCultistDelay = CultistRitual.delay;
+ 		private static int _versionNumber;
+ 		private static bool _isWorldOnCloud;
+ 		private static bool _tempPartyGenuine;
+@@ -41,15 +_,15 @@
+ 		private static int? _cachedMoonPhase;
+ 		private static bool? _cachedBloodMoon;
+ 		private static bool? _cachedEclipse;
+-		private static int? _cachedCultistDelay;
++		private static double? _cachedCultistDelay;
+ 		private static bool? _cachedPartyGenuine;
+ 		private static bool? _cachedPartyManual;
+ 		private static int? _cachedPartyDaysOnCooldown;
+ 		private static readonly List<int> CachedCelebratingNPCs = new List<int>();
+ 		private static bool? _cachedSandstormHappening;
+ 		private static bool _tempSandstormHappening;
+-		private static int? _cachedSandstormTimeLeft;
++		private static double? _cachedSandstormTimeLeft;
+-		private static int _tempSandstormTimeLeft;
++		private static double _tempSandstormTimeLeft;
+ 		private static float? _cachedSandstormSeverity;
+ 		private static float _tempSandstormSeverity;
+ 		private static float? _cachedSandstormIntendedSeverity;
 @@ -303,6 +_,7 @@
  			Main.checkXMas();
  			Main.checkHalloween();

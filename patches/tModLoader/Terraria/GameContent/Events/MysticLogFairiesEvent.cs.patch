@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/Events/MysticLogFairiesEvent.cs
++++ src/tModLoader/Terraria/GameContent/Events/MysticLogFairiesEvent.cs
+@@ -8,7 +_,7 @@
+ 	public class MysticLogFairiesEvent
+ 	{
+ 		private bool _canSpawnFairies;
+-		private int _delayUntilNextAttempt;
++		private double _delayUntilNextAttempt;
+ 		private const int DELAY_BETWEEN_ATTEMPTS = 60;
+ 		private List<Point> _stumpCoords = new List<Point>();
+ 

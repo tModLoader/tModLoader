@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/Ambience/AmbienceServer.cs
++++ src/tModLoader/Terraria/GameContent/Ambience/AmbienceServer.cs
+@@ -18,7 +_,7 @@
+ 		private const int MAXIMUM_SECONDS_BETWEEN_SPAWNS = 120;
+ 		private readonly Dictionary<SkyEntityType, Func<bool>> _spawnConditions = new Dictionary<SkyEntityType, Func<bool>>();
+ 		private readonly Dictionary<SkyEntityType, Func<Player, bool>> _secondarySpawnConditionsPerPlayer = new Dictionary<SkyEntityType, Func<Player, bool>>();
+-		private int _updatesUntilNextAttempt;
++		private double _updatesUntilNextAttempt;
+ 		private List<AmbienceSpawnInfo> _forcedSpawns = new List<AmbienceSpawnInfo>();
+ 
+ 		private static bool IsSunnyDay() {
