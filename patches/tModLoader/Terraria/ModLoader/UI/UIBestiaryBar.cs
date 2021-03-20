@@ -25,30 +25,12 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		private class ModEntries
-		{
-			internal readonly Mod Mod;
-			internal readonly List<BestiaryEntry> Entries;
-
-			public ModEntries(Mod mod, List<BestiaryEntry> entries) {
-				Mod = mod;
-				Entries = entries;
-			}
-		}
-
 		private BestiaryDatabase _db;
 		private List<BestiaryBarItem> _bestiaryBarItems;
-		private List<ModEntries> _entries;
 
 		public UIBestiaryBar(BestiaryDatabase db) {
 			_db = db;
 			_bestiaryBarItems = new List<BestiaryBarItem>();
-
-			_entries = db.Entries.GroupBy(
-				e => e.Mod,
-				e => e,
-				(mod, entries) => new ModEntries(mod, entries.ToList())
-				).ToList();
 
 			RecalculateBars();
 		}
@@ -63,13 +45,17 @@ namespace Terraria.ModLoader.UI
 		};
 
 		public void RecalculateBars() {
+			if (ModLoader.Mods.Length == 0) //Ensures that the mods have been loaded prior to accessing the db mod fields
+				return;
 			_bestiaryBarItems.Clear();
 
-			int i = 0;
-			foreach (var item in _entries) {
-				int collected = item.Entries.Count(oe => oe.UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0);
-				int total = item.Entries.Count;
-				_bestiaryBarItems.Add(new BestiaryBarItem($"{item.Mod?.DisplayName ?? "Terraria"}: {(float)collected / total * 100f:N2}% Collected", total, collected, _colors[i++ % _colors.Length]));
+			List<BestiaryEntry> items = _db.GetBestiaryEntriesByMod(null);
+			int collected = items.Count(oe => oe.UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0);
+			_bestiaryBarItems.Add(new BestiaryBarItem($"Terraria: {(float)collected / items.Count * 100f:N2}% Collected", items.Count, collected, _colors[0]));
+			for (int i = 1; i < ModLoader.Mods.Length; i++) {
+				items = _db.GetBestiaryEntriesByMod(ModLoader.Mods[i]);
+				collected = items.Count(oe => oe.UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0);
+				_bestiaryBarItems.Add(new BestiaryBarItem($"{ModLoader.Mods[i].DisplayName}: {(float)collected / items.Count * 100f:N2}% Collected", items.Count, collected, _colors[i++ % _colors.Length]));
 			}
 		}
 
