@@ -47,9 +47,16 @@ namespace Terraria.ModLoader.UI
 		public void RecalculateBars() {
 			_bestiaryBarItems.Clear();
 
+			//Add the bestiary total to the bar
+			int total = _db.Entries.Count;
+			int totalCollected = _db.Entries.Count(e => e.UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0);
+			_bestiaryBarItems.Add(new BestiaryBarItem($"Total: {(float)totalCollected / total * 100f:N2}% Collected", total, totalCollected, Main.OurFavoriteColor));
+
+			//Add Terraria's bestiary entries
 			List<BestiaryEntry> items = _db.GetTerrariaBestiaryEntires();
 			int collected = items.Count(oe => oe.UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0);
 			_bestiaryBarItems.Add(new BestiaryBarItem($"Terraria: {(float)collected / items.Count * 100f:N2}% Collected", items.Count, collected, _colors[0]));
+			//Add the mod's bestiary entries
 			for (int i = 1; i < ModLoader.Mods.Length; i++) {
 				items = _db.GetBestiaryEntriesByMod(ModLoader.Mods[i]);
 				collected = items.Count(oe => oe.UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0);
@@ -60,11 +67,14 @@ namespace Terraria.ModLoader.UI
 		protected override void DrawSelf(SpriteBatch sb) {
 			int xOffset = 0;
 			var rectangle = GetDimensions().ToRectangle();
+			const int bottomHeight = 3; //The height of the total completion bar
+			rectangle.Height -= bottomHeight;
 
 			bool drawHover = false;
 			BestiaryBarItem hoverData = null;
 
-			for (int i = 0; i < _bestiaryBarItems.Count; i++) {
+			//Draw the mod progess bars
+			for (int i = 1; i < _bestiaryBarItems.Count; i++) {
 				var barData = _bestiaryBarItems[i];
 
 				int offset = (int)(rectangle.Width * (barData.EntryCount / (float)_db.Entries.Count));
@@ -83,6 +93,17 @@ namespace Terraria.ModLoader.UI
 					drawHover = true;
 					hoverData = barData;
 				}
+			}
+			//Draw the bottom progress bar
+			var bottomData = _bestiaryBarItems[0];
+			int bottomWidth = (int)(rectangle.Width * (bottomData.CompletedCount / (float)bottomData.EntryCount));
+			var bottomDrawArea = new Rectangle(rectangle.X, rectangle.Bottom, bottomWidth, bottomHeight);
+			var bottomOutlineArea = new Rectangle(rectangle.X, rectangle.Bottom, rectangle.Width, bottomHeight);
+			sb.Draw(TextureAssets.MagicPixel.Value, bottomOutlineArea, bottomData.DrawColor * 0.3f);
+			sb.Draw(TextureAssets.MagicPixel.Value, bottomDrawArea, bottomData.DrawColor);
+			if (!drawHover && bottomOutlineArea.Contains(new Point(Main.mouseX, Main.mouseY))) {
+				drawHover = true;
+				hoverData = bottomData;
 			}
 
 			if(drawHover && hoverData != null) {
