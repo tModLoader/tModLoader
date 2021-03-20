@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameContent/Bestiary/BestiaryDatabase.cs
 +++ src/tModLoader/Terraria/GameContent/Bestiary/BestiaryDatabase.cs
-@@ -1,9 +_,10 @@
+@@ -1,16 +_,19 @@
  using System.Collections.Generic;
  using Terraria.GameContent.ItemDropRules;
 +using Terraria.ModLoader;
@@ -12,7 +12,8 @@
  	{
  		public delegate void BestiaryEntriesPass(BestiaryEntry entry);
  
-@@ -11,6 +_,7 @@
+ 		private List<BestiaryEntry> _entries = new List<BestiaryEntry>();
++		private List<BestiaryEntry> _vanillaEntries = new List<BestiaryEntry>();
  		private List<IBestiaryEntryFilter> _filters = new List<IBestiaryEntryFilter>();
  		private List<IBestiarySortStep> _sortSteps = new List<IBestiarySortStep>();
  		private Dictionary<int, BestiaryEntry> _byNpcId = new Dictionary<int, BestiaryEntry>();
@@ -24,13 +25,13 @@
  				if (nPCNetIdBestiaryInfoElement != null)
  					_byNpcId[nPCNetIdBestiaryInfoElement.NetId] = entry;
  			}
-+			if(ModLoader.ModLoader.Mods.Length > 0) {
-+				Mod mod = ID.ContentSamples.NpcsByNetId[((NPCNetIdBestiaryInfoElement)entry.Info[0]).NetId].ModNPC?.Mod;
-+				if (_byMod.ContainsKey(mod ?? ModLoader.ModLoader.Mods[0]))
-+					_byMod[mod ?? ModLoader.ModLoader.Mods[0]].Add(entry);
-+				else
-+					_byMod.Add(mod ?? ModLoader.ModLoader.Mods[0], new List<BestiaryEntry> { entry });
-+			}
++			Mod mod = ID.ContentSamples.NpcsByNetId[((NPCNetIdBestiaryInfoElement)entry.Info[0]).NetId].ModNPC?.Mod;
++			if (mod == null)
++				_vanillaEntries.Add(entry);
++			else if (_byMod.ContainsKey(mod))
++				_byMod[mod].Add(entry);
++			else
++				_byMod.Add(mod, new List<BestiaryEntry> { entry });
  
  			return entry;
  		}

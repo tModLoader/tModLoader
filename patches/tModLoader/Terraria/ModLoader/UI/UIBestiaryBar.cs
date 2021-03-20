@@ -45,11 +45,9 @@ namespace Terraria.ModLoader.UI
 		};
 
 		public void RecalculateBars() {
-			if (ModLoader.Mods.Length == 0) //Ensures that the mods have been loaded prior to accessing the db mod fields
-				return;
 			_bestiaryBarItems.Clear();
 
-			List<BestiaryEntry> items = _db.GetBestiaryEntriesByMod(null);
+			List<BestiaryEntry> items = _db.GetTerrariaBestiaryEntires();
 			int collected = items.Count(oe => oe.UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0);
 			_bestiaryBarItems.Add(new BestiaryBarItem($"Terraria: {(float)collected / items.Count * 100f:N2}% Collected", items.Count, collected, _colors[0]));
 			for (int i = 1; i < ModLoader.Mods.Length; i++) {
