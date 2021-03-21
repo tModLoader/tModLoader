@@ -165,6 +165,10 @@ namespace Terraria
 				if (!entry.isActive(this))
 					continue;
 				ProcessCommonRegen(entry.manaCommon, ref regen);
+
+				if (manaRegenPotencyMultiplier == 0) {
+					break;
+				}
 			}
 			manaRegen = (int)Math.Round(regen * manaRegenPotencyMultiplier);
 		}
@@ -205,8 +209,8 @@ namespace Terraria
 					public bool overrideDelta;
 					public bool overrideAdditionalEffects;
 
-					public static CombinationFlags Create(bool b0 = false, bool b1 = false) {
-						return new CombinationFlags { overrideDelta = b0, overrideAdditionalEffects = b1 };
+					public static CombinationFlags Create(bool overrideDelta = false, bool overrideAdditionalEffects = false) {
+						return new CombinationFlags { overrideDelta = overrideDelta, overrideAdditionalEffects = overrideAdditionalEffects };
 					}
 				};
 
@@ -247,8 +251,14 @@ namespace Terraria
 					public bool overrideResetDelayToZero;
 					public bool useANDForResetDelayElseOR;
 
-					public static CombinationFlags Create(bool b0 = false, bool b1 = false, bool b2 = false, bool b3 = false, bool b4 = false) {
-						return new CombinationFlags { overrideMaxDelayCap = b0, overrideIncreaseMaxDelay = b1, overrideIncreaseDelaySpeed = b2, overrideResetDelayToZero = b3, useANDForResetDelayElseOR = b4 };
+					public static CombinationFlags Create(bool overrideMaxDelayCap = false, bool overrideIncreaseMaxDelay = false, bool overrideIncreaseDelaySpeed = false, bool overrideResetDelayToZero = false, bool useANDForResetDelayElseOR = false) {
+						return new CombinationFlags {
+							overrideMaxDelayCap = overrideMaxDelayCap,
+							overrideIncreaseMaxDelay = overrideIncreaseMaxDelay,
+							overrideIncreaseDelaySpeed = overrideIncreaseDelaySpeed,
+							overrideResetDelayToZero = overrideResetDelayToZero,
+							useANDForResetDelayElseOR = useANDForResetDelayElseOR
+						};
 					}
 				};
 
@@ -269,7 +279,7 @@ namespace Terraria
 					return c;
 				}
 				else {
-					return (p) => o(p) + c(p); //TODO: this doesn't appear to work, but should. BoolCombine works fine. Confusion.
+					return o + c; //TODO: this doesn't appear to work, but should. BoolCombine works fine. Confusion.
 				}
 			}
 
@@ -277,7 +287,6 @@ namespace Terraria
 				if (c == null) {
 					return o;
 				}
-				
 				if (flag) {
 					return c;
 				}
@@ -290,18 +299,13 @@ namespace Terraria
 					}
 				}
 			}
-
-			public static readonly CommonRegenStats nullRegenStats = CommonRegenStats.Create();
-			public static readonly CommonRegenStats.CombinationFlags nullCommonRegenFlags = CommonRegenStats.CombinationFlags.Create();
-			public static readonly ManaRegenDelayStats nullManaDelayStats = ManaRegenDelayStats.Create();
-			public static readonly ManaRegenDelayStats.CombinationFlags nullManaDelayFlags = ManaRegenDelayStats.CombinationFlags.Create();
 			
 			public string name;
 			public Predicate<Player> isActive;
 			public CommonRegenStats manaCommon;
 			public ManaRegenDelayStats manaDelay;
 
-			public RegenEffect(string name, Predicate<Player> isActive, CommonRegenStats manaCommon, ManaRegenDelayStats manaDelay) {
+			public RegenEffect(string name, Predicate<Player> isActive, CommonRegenStats manaCommon = default(CommonRegenStats), ManaRegenDelayStats manaDelay = default(ManaRegenDelayStats)) {
 				this.name = name;
 				this.isActive = isActive;
 				this.manaCommon = manaCommon;
@@ -312,7 +316,7 @@ namespace Terraria
 
 			public readonly static RegenEffect vanillaManaRegenBonus = new RegenEffect("vanillaManaRegenBonus", (p) => true, CommonRegenStats.Create((p) => p.manaRegenBonus), ManaRegenDelayStats.Create(increaseDelaySpeed: (p) => p.manaRegenDelayBonus));
 			public readonly static RegenEffect stillPlayerMana = new RegenEffect("stillPlayerMana", (p) => (p.velocity.X == 0f && p.velocity.Y == 0f) || p.grappling[0] >= 0 || p.manaRegenBuff, CommonRegenStats.Create((p) => p.statManaMax2 / 2), ManaRegenDelayStats.Create(increaseDelaySpeed: _ => 1));
-			public readonly static RegenEffect manaRegenMaxStatScaleBonus = new RegenEffect("manaRegenMaxStatScaleBonus", (p) => true, CommonRegenStats.Create((p) => 0, (p, regen) => regen *= (int)(p.manaRegenBuff ? 1.15f : 1.15f * ((float)p.statMana / (float)p.statManaMax2 * 0.8f + 0.2f))), nullManaDelayStats);
+			public readonly static RegenEffect manaRegenMaxStatScaleBonus = new RegenEffect("manaRegenMaxStatScaleBonus", (p) => true, CommonRegenStats.Create((p) => 0, (p, regen) => regen *= (int)(p.manaRegenBuff ? 1.15f : 1.15f * ((float)p.statMana / (float)p.statManaMax2 * 0.8f + 0.2f))));
 
 			internal static void RegisterVanilla() {
 				Register(stillPlayerMana);
@@ -342,13 +346,13 @@ namespace Terraria
 
 			public struct ModifyFlags
 			{
-				public bool overrideCondition;
-				public bool useANDForConditionElseOR;
+				public bool overrideIsActive;
+				public bool useANDForIsActiveElseOR;
 				public CommonRegenStats.CombinationFlags manaRegenFlags;
 				public ManaRegenDelayStats.CombinationFlags manaDelayFlags;
 
-				public static ModifyFlags Create(CommonRegenStats.CombinationFlags manaRegenFlags, ManaRegenDelayStats.CombinationFlags manaDelayFlags, bool b0 = false, bool b1 = false) {
-					return new ModifyFlags { overrideCondition = b0, useANDForConditionElseOR = b1, manaRegenFlags = manaRegenFlags, manaDelayFlags = manaDelayFlags };
+				public static ModifyFlags Create(bool overrideIsActive = false, bool useANDForIsActiveElseOR = false, CommonRegenStats.CombinationFlags manaRegenFlags = default(CommonRegenStats.CombinationFlags), ManaRegenDelayStats.CombinationFlags manaDelayFlags = default(ManaRegenDelayStats.CombinationFlags)) {
+					return new ModifyFlags { overrideIsActive = overrideIsActive, useANDForIsActiveElseOR = useANDForIsActiveElseOR, manaRegenFlags = manaRegenFlags, manaDelayFlags = manaDelayFlags };
 				}
 			}
 
@@ -358,6 +362,16 @@ namespace Terraria
 				public CommonRegenStats modifyManaCommonWith;
 				public ManaRegenDelayStats modifyManaDelayWith;
 				public ModifyFlags flags;
+
+				public static ModifyRegenEffectStruct Create(string targetEffect, Predicate<Player> isActive = null, CommonRegenStats modifyManaCommonWith = default(CommonRegenStats), ManaRegenDelayStats modifyManaDelayWith = default(ManaRegenDelayStats), ModifyFlags flags = default(ModifyFlags)) {
+					return new ModifyRegenEffectStruct {
+						targetEffect = targetEffect,
+						isActive = isActive,
+						modifyManaCommonWith = modifyManaCommonWith,
+						modifyManaDelayWith = modifyManaDelayWith,
+						flags = flags
+					};
+				}
 			}
 
 			internal static bool ModifyEffect(ModifyRegenEffectStruct r) {
@@ -366,7 +380,7 @@ namespace Terraria
 				}
 
 				var effect = effects[index];
-				effect.isActive = BoolCombine(effect.isActive, r.isActive, r.flags.overrideCondition, r.flags.useANDForConditionElseOR);
+				effect.isActive = BoolCombine(effect.isActive, r.isActive, r.flags.overrideIsActive, r.flags.useANDForIsActiveElseOR);
 				CommonRegenStats.Combine(effect.manaCommon, r.modifyManaCommonWith, r.flags.manaRegenFlags);
 				ManaRegenDelayStats.Combine(effect.manaDelay, r.modifyManaDelayWith, r.flags.manaDelayFlags);
 

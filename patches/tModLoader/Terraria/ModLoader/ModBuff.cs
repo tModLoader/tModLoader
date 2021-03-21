@@ -90,7 +90,7 @@ namespace Terraria.ModLoader
 		/// The mana player regeneration/damaging effects associated with this buff. See Player.TML.cs for vanilla examples.
 		/// </summary>
 		public virtual Player.RegenEffect ModManaRegenEffects() {
-			return new Player.RegenEffect(FullName, _ => false, Player.RegenEffect.nullRegenStats, Player.RegenEffect.nullManaDelayStats);
+			return new Player.RegenEffect(FullName, _ => false);
 		}
 	}
 }
