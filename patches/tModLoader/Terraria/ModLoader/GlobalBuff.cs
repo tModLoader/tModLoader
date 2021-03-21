@@ -74,12 +74,11 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to draw things after the buff has been drawn. skipped is true if you or another mod has skipped drawing the buff (possibly hiding it or in favor of new visuals).
 		/// </summary>
-		/// <param name="skipped"><see langword="true"/> if you or another mod has skipped drawing the buff in PreDraw (possibly hiding it or in favor of new visuals)</param>
 		/// <param name="spriteBatch">The spriteBatch that is drawn on</param>
 		/// <param name="type">The buff type</param>
 		/// <param name="buffIndex">The index in Main.LocalPlayer.buffType and .buffTime of the buff</param>
 		/// <param name="drawParams">The draw parameters for the buff</param>
-		public virtual void PostDraw(bool skipped, SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams) {
+		public virtual void PostDraw(SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams) {
 		}
 	}
 }
