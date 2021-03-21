@@ -23,6 +23,14 @@
  		public static int tLeft;
  		public static int tRight;
  		public static int tTop;
+@@ -894,6 +_,7 @@
+ 		private static bool fossilBreak = false;
+ 		private const bool BUBBLES_SOLID_STATE_FOR_HOUSING = true;
+ 		private static bool skipFramingDuringGen = false;
++		private static double timePass = 0.0; // tML
+ 
+ 		public static UnifiedRandom genRand {
+ 			get {
 @@ -1214,7 +_,7 @@
  			}
  
@@ -1543,15 +1551,43 @@
  			AllowedToSpreadInfections = true;
  			CreativePowers.StopBiomeSpreadPower power = CreativePowerManager.Instance.GetPower<CreativePowers.StopBiomeSpreadPower>();
  			if (power != null && power.GetIsUnlocked())
-@@ -45669,7 +_,7 @@
+@@ -45623,7 +_,7 @@
+ 				Liquid.skipCount = 0;
+ 			}
+ 
+-			int worldUpdateRate = GetWorldUpdateRate();
++			double worldUpdateRate = GetWorldUpdateRate();
+ 			if (worldUpdateRate == 0)
  				return;
  
- 			for (int l = 0; l < Main.dayRate; l++) {
+@@ -45668,8 +_,14 @@
+ 			if (Main.dayTime)
+ 				return;
+ 
+-			for (int l = 0; l < Main.dayRate; l++) {
 -				float num6 = Main.maxTilesX / 4200;
++			timePass += Main.desiredWorldEventsUpdateRate;
++			if (timePass < 1)
++				return;
++
++			double timePassReference = timePass;
++			for (int l = 0; l < timePassReference; l++) {
++				timePass -= 1.0;
 +				float num6 = Main.maxTilesX / 4200f; // Selfish fix for falling stars on extra small worlds
  				num6 *= Star.starfallBoost;
  				if (!((float)Main.rand.Next(8000) < 10f * num6))
  					continue;
+@@ -45702,8 +_,8 @@
+ 			}
+ 		}
+ 
+-		public static int GetWorldUpdateRate() {
++		public static double GetWorldUpdateRate() {
+-			int result = Math.Min(Main.desiredWorldTilesUpdateRate, 24);
++			double result = Math.Min(Main.desiredWorldTilesUpdateRate, 24);
+ 			if (CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled)
+ 				result = 0;
+ 
 @@ -45711,6 +_,8 @@
  		}
  

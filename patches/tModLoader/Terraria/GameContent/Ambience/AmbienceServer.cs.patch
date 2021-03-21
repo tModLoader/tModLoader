@@ -9,3 +9,12 @@
  		private List<AmbienceSpawnInfo> _forcedSpawns = new List<AmbienceSpawnInfo>();
  
  		private static bool IsSunnyDay() {
+@@ -81,7 +_,7 @@
+ 		public void Update() {
+ 			SpawnForcedEntities();
+ 			if (_updatesUntilNextAttempt > 0) {
+-				_updatesUntilNextAttempt -= Main.dayRate;
++				_updatesUntilNextAttempt -= Main.desiredWorldEventsUpdateRate;
+ 				return;
+ 			}
+ 

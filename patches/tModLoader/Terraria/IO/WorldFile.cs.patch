@@ -151,6 +151,33 @@
  					writer.Write(nPC2.active);
  					writer.Write(nPC2.netID);
  					writer.WriteVector2(nPC2.position);
+@@ -1426,7 +_,7 @@
+ 				Main.sundialCooldown = reader.ReadByte();
+ 
+ 			_tempRaining = reader.ReadBoolean();
+-			_tempRainTime = reader.ReadInt32();
++			_tempRainTime = reader.ReadDouble();
+ 			_tempMaxRain = reader.ReadSingle();
+ 			WorldGen.SavedOreTiers.Cobalt = reader.ReadInt32();
+ 			WorldGen.SavedOreTiers.Mythril = reader.ReadInt32();
+@@ -1482,7 +_,7 @@
+ 			if (versionNumber < 108)
+ 				_tempCultistDelay = 86400;
+ 			else
+-				_tempCultistDelay = reader.ReadInt32();
++				_tempCultistDelay = reader.ReadDouble();
+ 
+ 			if (versionNumber < 109)
+ 				return;
+@@ -1561,7 +_,7 @@
+ 			}
+ 			else {
+ 				_tempSandstormHappening = reader.ReadBoolean();
+-				_tempSandstormTimeLeft = reader.ReadInt32();
++				_tempSandstormTimeLeft = reader.ReadDouble();
+ 				_tempSandstormSeverity = reader.ReadSingle();
+ 				_tempSandstormIntendedSeverity = reader.ReadSingle();
+ 			}
 @@ -1867,7 +_,7 @@
  				int num3 = reader.ReadInt32();
  				Tile tile = Main.tile[num2, num3];

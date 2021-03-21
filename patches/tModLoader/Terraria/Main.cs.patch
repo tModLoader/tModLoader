@@ -52,15 +52,17 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		public static PingMapLayer Pings = new PingMapLayer();
-@@ -509,7 +_,7 @@
+@@ -509,8 +_,8 @@
  		public static bool showSplash = true;
  		public static bool ignoreErrors = true;
  		public static string defaultIP = "";
 -		public static int dayRate = 1;
 +		public static double dayRate = 1;
- 		public static int desiredWorldTilesUpdateRate = 1;
+-		public static int desiredWorldTilesUpdateRate = 1;
++		public static double desiredWorldTilesUpdateRate = 1;
  		public static int maxScreenW = 1920;
  		public static int maxScreenH = 1200;
+ 		public static int minScreenW = 800;
 @@ -541,7 +_,7 @@
  		public static int instantBGTransitionCounter = 2;
  		public static int bgDelay;
@@ -758,22 +760,29 @@
  		}
  
  		public static void Sundialing() {
-@@ -4733,7 +_,7 @@
+@@ -4733,7 +_,8 @@
  			if (fastForwardTime) {
  				dayRate = 60;
  				desiredWorldTilesUpdateRate = 1;
 -				return;
++				desiredWorldEventsUpdateRate = 60;
 +				goto endVanillaMethod;
  			}
  
  			bool enabled = CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled;
-@@ -4752,6 +_,9 @@
+@@ -4748,10 +_,15 @@
+ 
+ 			dayRate = num;
+ 			desiredWorldTilesUpdateRate = num;
++			desiredWorldEventsUpdateRate = num;
+ 			if (gameMenu) {
  				dayRate = 1;
  				desiredWorldTilesUpdateRate = 1;
++				desiredWorldEventsUpdateRate = 1;
  			}
 +
 +			endVanillaMethod:
-+			SystemHooks.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate);
++			SystemHooks.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate, ref desiredWorldEventsUpdateRate);
  		}
  
  		public Main() {
@@ -3568,6 +3577,15 @@
  					num6 *= 4;
  					if (rand.Next(num6) == 0) {
  						int num7 = 0;
+@@ -49815,7 +_,7 @@
+ 		}
+ 
+ 		private static void UpdateTime_SpawnTownNPCs() {
+-			int worldUpdateRate = WorldGen.GetWorldUpdateRate();
++			double worldUpdateRate = WorldGen.GetWorldUpdateRate();
+ 			if (netMode == 1 || worldUpdateRate <= 0)
+ 				return;
+ 
 @@ -49830,7 +_,7 @@
  					num++;
  			}

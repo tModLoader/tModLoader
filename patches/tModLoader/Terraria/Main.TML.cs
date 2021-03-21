@@ -23,6 +23,7 @@ namespace Terraria
 		public static bool hidePlayerCraftingMenu;
 		public static bool showServerConsole;
 		public static bool Support8K = true; // provides an option to disable 8k (but leave 4k)
+		public static double desiredWorldEventsUpdateRate;
 
 		internal static TMLContentManager AlternateContentManager;
 

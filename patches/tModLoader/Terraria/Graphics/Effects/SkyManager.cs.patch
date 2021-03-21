@@ -1,18 +1,47 @@
 --- src/Terraria/Terraria/Graphics/Effects/SkyManager.cs
 +++ src/tModLoader/Terraria/Graphics/Effects/SkyManager.cs
-@@ -19,9 +_,9 @@
+@@ -9,6 +_,7 @@
+ 		public static SkyManager Instance = new SkyManager();
+ 		private float _lastDepth;
+ 		private LinkedList<CustomSky> _activeSkies = new LinkedList<CustomSky>();
++		private double _timePass;
+ 
+ 		public void Reset() {
+ 			foreach (CustomSky value in _effects.Values) {
+@@ -16,14 +_,22 @@
+ 			}
+ 
+ 			_activeSkies.Clear();
++			_timePass = 0.0;
  		}
  
  		public void Update(GameTime gameTime) {
--			int num = Main.dayRate;
-+			double num = Main.dayRate;
++			/*
+ 			int num = Main.dayRate;
 -			if (num < 1)
 +			if (num < 0)
 -				num = 1;
 +				num = 0;
++			*/
  
- 			for (int i = 0; i < num; i++) {
+-			for (int i = 0; i < num; i++) {
++			_timePass += Main.desiredWorldEventsUpdateRate;
++			if (_timePass < 1)
++				return;
++
++			double _timePassReference = _timePass;
++			for (int i = 0; i < _timePassReference; i++) {
  				LinkedListNode<CustomSky> linkedListNode = _activeSkies.First;
+ 				while (linkedListNode != null) {
+ 					CustomSky value = linkedListNode.Value;
+@@ -34,6 +_,7 @@
+ 
+ 					linkedListNode = next;
+ 				}
++				_timePass -= 1.0;
+ 			}
+ 		}
+ 
 @@ -87,6 +_,13 @@
  			}
  
