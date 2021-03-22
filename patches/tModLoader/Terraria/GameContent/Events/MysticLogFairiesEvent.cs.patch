@@ -34,7 +34,7 @@
  				if (_delayUntilNextAttempt == 0) {
  					_delayUntilNextAttempt = 60;
  					TrySpawningFairies();
-@@ -60,10 +_,16 @@
+@@ -60,10 +_,17 @@
  
  			int oneOverSpawnChance = GetOneOverSpawnChance();
  			bool flag = false;
@@ -49,6 +49,7 @@
 -					flag = true;
 +						flag = true;
 -					break;
++						_timePass -= Math.Floor(_timePass);
 +						break;
 +					}
 +					_timePass -= 1;
