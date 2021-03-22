@@ -18,13 +18,14 @@ namespace ExampleMod.Items.Accessories
 			item.width = 16;
 			item.height = 24;
 			item.accessory = true; // Makes this item an accessory.
-			item.color = Color.Red; // Makes the item's sprite color red.
+			item.color = Color.Red; // Tints the item's sprite red
 			item.rare = ItemRarityID.Blue;
 			item.value = Item.sellPrice(silver: 50); // Sets the item sell price to 50 silver coins.
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.doubleJumpCloud = true; 
+			player.doubleJumpCloud = true; // This is the same flag as the Cloud in a Bottle. Using this accessory and the Cloud in a Bottle will result in a single double jump, instead of two.
+
 			// Set player.jumpAgainCloud to true and you have infinite double jumps.
 			// Set player.doubleJumpSandstorm to true if you want something like the Sandstorm in a Bottle.
 		}

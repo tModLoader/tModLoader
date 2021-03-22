@@ -18,7 +18,7 @@ namespace ExampleMod.Items.Accessories
 			item.width = 28; 
 			item.height = 24;
 			item.accessory = true; // Makes this item an accessory.
-			item.color = Color.Orange; // Makes the item's sprite color orange.
+			item.color = Color.Orange; // Tints the item's sprite Orange
 			item.rare = ItemRarityID.Blue;
 			item.value = Item.sellPrice(gold: 1); // Sets the item sell price to one gold coin.
 		}
