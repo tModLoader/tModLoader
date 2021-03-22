@@ -72,7 +72,7 @@
 +    <DefineConstants>TRACE;DEBUG;CLIENT;XNA</DefineConstants>
 +    <OutputName>$(OutputName)Debug</OutputName>
 +    <ApplicationIcon>IconXNA.ico</ApplicationIcon>
-+    <OutputType>WinExe</OutputType>
++    <OutputType>Exe</OutputType>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="$(Configuration.Contains('FNADebug'))">
 +    <Optimize>false</Optimize>
@@ -81,7 +81,7 @@
 +    <DefineConstants>TRACE;DEBUG;CLIENT;FNA</DefineConstants>
 +    <OutputName>$(OutputName)Debug</OutputName>
 +    <ApplicationIcon>IconFNA.ico</ApplicationIcon>
-+    <OutputType>WinExe</OutputType>
++    <OutputType>Exe</OutputType>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="$(Configuration.Contains('XNARelease'))">
 +    <Optimize>true</Optimize>
@@ -89,7 +89,7 @@
 +    <DefineConstants>TRACE;CLIENT;XNA</DefineConstants>
 +    <OutputName>$(OutputName)Release</OutputName>
 +    <ApplicationIcon>IconXNA.ico</ApplicationIcon>
-+    <OutputType>Exe</OutputType>
++    <OutputType>WinExe</OutputType>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="$(Configuration.Contains('FNARelease'))">
 +    <Optimize>true</Optimize>
@@ -97,7 +97,7 @@
 +    <DefineConstants>TRACE;CLIENT;FNA</DefineConstants>
 +    <OutputName>$(OutputName)Release</OutputName>
 +    <ApplicationIcon>IconFNA.ico</ApplicationIcon>
-+    <OutputType>Exe</OutputType>
++    <OutputType>WinExe</OutputType>
    </PropertyGroup>
    <PropertyGroup>
      <PdbFile>bin\$(OutputName)</PdbFile>
