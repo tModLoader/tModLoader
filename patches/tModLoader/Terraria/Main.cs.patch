@@ -2648,6 +2648,34 @@
  				drawBuffText = buffSlotOnPlayer;
  				buffAlpha[buffSlotOnPlayer] += 0.1f;
  				bool flag = mouseRight && mouseRightRelease;
+@@ -31896,6 +_,13 @@
+ 					player[myPlayer].mouseInterface = true;
+ 				}
+ 
++				//This might be problematic with controllers, untested
++				if (mouseLeft && mouseLeftRelease && (!PlayerInput.UsingGamepad || playerInventory))
++					BuffLoader.LeftClick(num, buffSlotOnPlayer);
++
++				if (flag)
++					flag &= BuffLoader.RightClick(num, buffSlotOnPlayer);
++
+ 				if (flag)
+ 					TryRemovingBuff(buffSlotOnPlayer, num);
+ 			}
+@@ -31914,7 +_,12 @@
+ 			return drawBuffText;
+ 		}
+ 
++		/// <summary>
++		/// Calls Player.DelBuff with index i after checking Main.debuff of buff type b. Will toggle Player.hideMisc for pet and light pet.
++		/// </summary>
++		/// <param name="i">Index for buffType and buffTime</param>
++		/// <param name="b">Buff type</param>
+-		private static void TryRemovingBuff(int i, int b) {
++		public static void TryRemovingBuff(int i, int b) {
+ 			bool flag = false;
+ 			if (!debuff[b] && b != 60 && b != 151) {
+ 				if (player[myPlayer].mount.Active && player[myPlayer].mount.CheckBuff(b)) {
 @@ -33169,7 +_,9 @@
  				SetupDrawInterfaceLayers();
  

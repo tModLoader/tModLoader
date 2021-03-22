@@ -37,6 +37,10 @@ namespace Terraria.ModLoader
 		private static DelegatePreDraw[] HookPreDraw;
 		private delegate void DelegatePostDraw(SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams);
 		private static DelegatePostDraw[] HookPostDraw;
+		private delegate bool DelegateRightClick(int type, int buffIndex);
+		private static DelegateRightClick[] HookRightClick;
+		private delegate void DelegateLeftClick(int type, int buffIndex);
+		private static DelegateLeftClick[] HookLeftClick;
 
 		static BuffLoader() {
 			for (int k = 0; k < BuffID.Count; k++) {
@@ -121,6 +125,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookDrawCustomBuffTip, globalBuffs, g => g.DrawCustomBuffTip);
 			ModLoader.BuildGlobalHook(ref HookPreDraw, globalBuffs, g => g.PreDraw);
 			ModLoader.BuildGlobalHook(ref HookPostDraw, globalBuffs, g => g.PostDraw);
+			ModLoader.BuildGlobalHook(ref HookRightClick, globalBuffs, g => g.RightClick);
+			ModLoader.BuildGlobalHook(ref HookLeftClick, globalBuffs, g => g.LeftClick);
 		}
 
 		internal static void Unload() {
@@ -219,6 +225,26 @@ namespace Terraria.ModLoader
 			}
 			foreach (var hook in HookPostDraw) {
 				hook(spriteBatch, type, buffIndex, drawParams);
+			}
+		}
+
+		public static bool RightClick(int type, int buffIndex) {
+			bool result = true;
+			foreach (var hook in HookRightClick) {
+				result &= hook(type, buffIndex);
+			}
+			if (IsModBuff(type)) {
+				result &= GetBuff(type).RightClick(buffIndex);
+			}
+			return result;
+		}
+
+		public static void LeftClick(int type, int buffIndex) {
+			foreach (var hook in HookLeftClick) {
+				hook(type, buffIndex);
+			}
+			if (IsModBuff(type)) {
+				GetBuff(type).LeftClick(buffIndex);
 			}
 		}
 	}

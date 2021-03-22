@@ -80,5 +80,23 @@ namespace Terraria.ModLoader
 		/// <param name="drawParams">The draw parameters for the buff</param>
 		public virtual void PostDraw(SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams) {
 		}
+
+		/// <summary>
+		/// Allows you to make things happen when the buff icon is right-clicked. Return false to prevent the buff from being cancelled.
+		/// </summary>
+		/// <param name="type">The buff type</param>
+		/// <param name="buffIndex">The index in Main.LocalPlayer.buffType and .buffTime of the buff</param>
+		/// <returns><see langword="true"/> for allowing the buff to be cancelled, <see langword="false"/> to prevent the buff from being cancelled</returns>
+		public virtual bool RightClick(int type, int buffIndex) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the buff icon is left-clicked.
+		/// </summary>
+		/// <param name="type">The buff type</param>
+		/// <param name="buffIndex">The index in Main.LocalPlayer.buffType and .buffTime of the buff</param>
+		public virtual void LeftClick(int type, int buffIndex) {
+		}
 	}
 }
