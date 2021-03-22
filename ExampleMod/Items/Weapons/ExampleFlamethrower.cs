@@ -3,7 +3,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using ExampleMod.Projectiles;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Weapons
 {
@@ -32,28 +31,28 @@ namespace ExampleMod.Items.Weapons
 			item.rare = ItemRarityID.Green; //Sets the item's rarity.
 			item.UseSound = SoundID.Item34;
 			item.autoReuse = true;
-            item.shoot = ProjectileType<FlamethrowerProj>();
+			item.shoot = ModContent ProjectileType<FlamethrowerProj>();
 			item.shootSpeed = 21f; //How fast the flames will travel
 			item.useAmmo = AmmoID.Gel; //Makes the weapon use up Gel as ammo
 		}
 		public override bool ConsumeAmmo(Player player)
 		{
-			return Main.rand.NextFloat() >= .66f;
+			return Main.rand.NextFloat() >= .66f; //If Main.rand.NextFloat() is greater than 0.66, then it consumes gel. If not, then it won't consume gel.
 		}
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Flamethrower);
-			recipe.AddIngredient(ItemType<ExampleItem>(), 3);
+			recipe.AddIngredient(ModContent.ItemType<ExampleItem>(), 3);
 			recipe.AddIngredient(ItemID.CursedFlame, 15);
-			recipe.AddTile(TileType<Tiles.ExampleWorkbench>());
+			recipe.AddTile(ModContent.TileType<Tiles.ExampleWorkbench>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
 
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
-			Vector2 muzzleOffset = Vector2.Normalize(new Vector2(speedX, speedY)) * 54f;
+			Vector2 muzzleOffset = Vector2.Normalize(new Vector2(speedX, speedY)) * 54f; //This gets the direction of the flame projectile, makes its length to 1 by normalizing it. It then multiplies it by 54 (the item width) to get the position of the tip of the flamethrower.
 			if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0))
 			{
 				position += muzzleOffset;
@@ -62,6 +61,7 @@ namespace ExampleMod.Items.Weapons
 			return true;
         }
         public override Vector2? HoldoutOffset()
+		//HoldoutOffset has to return a Vector2 because it needs two values (an X and Y value) to move your flamethrower sprite. Think of it as moving a point on a cartesian plane.
 		{
 			return new Vector2(0, 0); //If your own flamethrower is being held wrong, edit these values. You can test out holdout offsets using Modder's Toolkit.
 		}
