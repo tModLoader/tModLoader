@@ -31,7 +31,7 @@ namespace ExampleMod.Items.Weapons
 			item.rare = ItemRarityID.Green; //Sets the item's rarity.
 			item.UseSound = SoundID.Item34;
 			item.autoReuse = true;
-			item.shoot = ModContent ProjectileType<FlamethrowerProj>();
+			item.shoot = ModContent.ProjectileType<FlamethrowerProj>();
 			item.shootSpeed = 21f; //How fast the flames will travel
 			item.useAmmo = AmmoID.Gel; //Makes the weapon use up Gel as ammo
 		}
