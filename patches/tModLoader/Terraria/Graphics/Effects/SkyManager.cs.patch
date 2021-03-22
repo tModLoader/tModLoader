@@ -30,7 +30,7 @@
 +				return;
 +
 +			double _timePassReference = _timePass;
-+			for (int i = 0; i < _timePassReference; i++) {
++			for (int i = 0; i < (int)_timePassReference; i++) {
  				LinkedListNode<CustomSky> linkedListNode = _activeSkies.First;
  				while (linkedListNode != null) {
  					CustomSky value = linkedListNode.Value;

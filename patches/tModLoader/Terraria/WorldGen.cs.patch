@@ -1564,16 +1564,16 @@
  			if (Main.dayTime)
  				return;
  
--			for (int l = 0; l < Main.dayRate; l++) {
--				float num6 = Main.maxTilesX / 4200;
 +			timePass += Main.desiredWorldEventsUpdateRate;
 +			if (timePass < 1)
 +				return;
 +
 +			double timePassReference = timePass;
-+			for (int l = 0; l < timePassReference; l++) {
+-			for (int l = 0; l < Main.dayRate; l++) {
++			for (int l = 0; l < (int)timePassReference; l++) {
 +				timePass -= 1.0;
-+				float num6 = Main.maxTilesX / 4200f; // Selfish fix for falling stars on extra small worlds
+-				float num6 = Main.maxTilesX / 4200;
++				float num6 = Main.maxTilesX / 4200f;
  				num6 *= Star.starfallBoost;
  				if (!((float)Main.rand.Next(8000) < 10f * num6))
  					continue;

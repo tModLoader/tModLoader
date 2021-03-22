@@ -27,7 +27,7 @@
 +						if (timePass >= 1) {
 +							double timePassReference = timePass;
 -						for (int i = 0; i < Main.dayRate; i++) {
-+							for (int i = 0; i < timePassReference; i++) {
++							for (int i = 0; i < (int)timePassReference; i++) {
 -							if (Main.rand.Next(num) == 0)
 +								if (Main.rand.Next(num) == 0)
 -								StartSandstorm();

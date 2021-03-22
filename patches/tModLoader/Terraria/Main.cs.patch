@@ -770,7 +770,7 @@
  			}
  
  			bool enabled = CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled;
-@@ -4748,10 +_,15 @@
+@@ -4748,10 +_,17 @@
  
  			dayRate = num;
  			desiredWorldTilesUpdateRate = num;
@@ -783,6 +783,8 @@
 +
 +			endVanillaMethod:
 +			SystemHooks.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate, ref desiredWorldEventsUpdateRate);
++			if (dayRate > 86400)
++				dayRate = 86400;
  		}
  
  		public Main() {
@@ -1054,6 +1056,15 @@
  			else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
  				if (player[myPlayer].ZoneHallow) {
  					newMusic = 11;
+@@ -9868,7 +_,7 @@
+ 			if (cloudBGActive > 0f)
+ 				cloudBGActive = 0f;
+ 
+-			if (cloudBGActive == 0f && rand.Next((int)((float)(num2 * 12 / ((dayRate == 0) ? 1 : dayRate)) / num3)) == 0) {
++			if (cloudBGActive == 0f && rand.Next((int)((float)(num2 * 12 / ((dayRate == 0) ? 1E-38 : dayRate)) / num3)) == 0) {
+ 				cloudBGActive = rand.Next(num2 * 3, num * 2);
+ 				if (netMode == 2)
+ 					NetMessage.SendData(7);
 @@ -12221,11 +_,16 @@
  		}
  
@@ -1116,6 +1127,27 @@
  				gamePaused = true;
  				return;
  			}
+@@ -12640,10 +_,19 @@
+ 			if (netMode != 1)
+ 				updateCloudLayer();
+ 
++			if (dayRate <= 0)
++				goto skipWeatherUpdates;
++
++			timePass += dayRate;
++			if (timePass < 1)
++				goto skipWeatherUpdates;
++			double timePassReference = timePass;
+-			for (int i = 0; i < dayRate; i++) {
++			for (int i = 0; i < (int)timePassReference; i++) {
+ 				UpdateWeather(gameTime);
++				timePass -= 1.0;
+ 			}
+ 
++			skipWeatherUpdates:
+ 			if ((timeForVisualEffects += 1.0) >= 216000.0)
+ 				timeForVisualEffects = 0.0;
+ 
 @@ -12661,6 +_,7 @@
  				Sandstorm.EmitDust();
  			}
@@ -3531,7 +3563,7 @@
  			ChangeRain();
  			raining = true;
  		}
-@@ -49356,24 +_,24 @@
+@@ -49356,29 +_,29 @@
  						else {
  							rainTime -= dayRate;
  							if (dayRate > 0) {
@@ -3549,7 +3581,8 @@
  				else if (!slimeRain && !LanternNight.LanternsUp && !LanternNight.NextNightIsLanternNight) {
 -					int num2 = 86400;
 +					double num2 = 86400;
- 					num2 /= ((dayRate == 0) ? 1 : dayRate);
+-					num2 /= ((dayRate == 0) ? 1 : dayRate);
++					num2 /= (dayRate == 0) ? 1E-38 : dayRate;
  					if (!CreativePowerManager.Instance.GetPower<CreativePowers.FreezeRainPower>().Enabled && dayRate != 0) {
  						if (rand.Next((int)((double)num2 * 5.75)) == 0)
  							StartRain();
@@ -3561,6 +3594,12 @@
  							StartRain();
  					}
  
+ 					if (!raining && !NPC.BusyWithAnyInvasionOfSorts()) {
+-						int num3 = (int)(1728000.0 / (double)dayRate);
++						int num3 = (int)(1728000.0 / (double)((dayRate == 0) ? 1E-38 : dayRate));
+ 						if (!NPC.downedSlimeKing)
+ 							num3 /= 2;
+ 
 @@ -49454,11 +_,11 @@
  						WorldGen.UnspawnTravelNPC();
  				}
@@ -3568,9 +3607,9 @@
 -					int num5 = dayRate;
 +					double num5 = dayRate;
 -					if (num5 < 1)
-+					if (num5 < 0)
++					if (num5 < 1E-38)
 -						num5 = 1;
-+						num5 = 0;
++						num5 = 1E-38;
  
 -					int num6 = (int)(27000.0 / (double)num5);
 +					int num6 = (int)(27000.0 / num5);
