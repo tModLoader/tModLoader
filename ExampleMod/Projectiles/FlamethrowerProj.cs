@@ -30,7 +30,7 @@ namespace ExampleMod.Projectiles
 		{
 			/*if (projectile.wet)
 			{
-				projectile.Kill(); //This kills the projectile when touching water. However, since our projectile is a cursed flame, we will comment this so that it won't run it. If you want to test this, feel free to uncomment this lol
+				projectile.Kill(); //This kills the projectile when touching water. However, since our projectile is a cursed flame, we will comment this so that it won't run it. If you want to test this, feel free to uncomment this.
 			}*/
 			for (int k = 0; k < 10; k++) 
 			{
