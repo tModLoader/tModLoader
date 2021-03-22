@@ -30,7 +30,8 @@ namespace Terraria.ModLoader.IO
 				["killCounts"] = SaveNPCKillCounts(),
 				["anglerQuest"] = SaveAnglerQuest(),
 				["townManager"] = SaveTownManager(),
-				["modData"] = SaveModData()
+				["modData"] = SaveModData(),
+				["alteredVanilla"] = SaveAlteredVanillaFields()
 			};
 
 			var stream = new MemoryStream();
@@ -75,6 +76,7 @@ namespace Terraria.ModLoader.IO
 				customDataFail = e;
 				throw;
 			}
+			LoadAlteredVanillaFields(tag.GetCompound("alteredVanilla"));
 		}
 
 		internal static List<TagCompound> SaveChests() {
