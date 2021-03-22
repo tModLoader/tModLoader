@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Buffs;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
@@ -64,6 +65,16 @@ namespace ExampleMod.Common.GlobalBuffs
 				string text = Lang.LocalizedDuration(new System.TimeSpan(0, 0, remainingTime / 60), abbreviated: false, showAllAvailableUnits: true);
 				tip += "\n[ExampleGlobalBuff] Remaining time: " + text;
 			}
+		}
+
+		public override bool RightClick(int type, int buffIndex) {
+			//This code makes it so while the player is standing still, he cannot remove the "ExampleDefenseBuff" by right clicking the icon
+			if (type == ModContent.BuffType<ExampleDefenseBuff>() && Main.LocalPlayer.velocity == Vector2.Zero) {
+				Main.NewText("Cannot cancel this buff while not moving!");
+				return false;
+			}
+
+			return base.RightClick(type, buffIndex);
 		}
 	}
 }
