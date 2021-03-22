@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameContent/Bestiary/BestiaryDatabase.cs
 +++ src/tModLoader/Terraria/GameContent/Bestiary/BestiaryDatabase.cs
-@@ -1,16 +_,19 @@
+@@ -1,9 +_,10 @@
  using System.Collections.Generic;
  using Terraria.GameContent.ItemDropRules;
 +using Terraria.ModLoader;
@@ -12,15 +12,6 @@
  	{
  		public delegate void BestiaryEntriesPass(BestiaryEntry entry);
  
- 		private List<BestiaryEntry> _entries = new List<BestiaryEntry>();
-+		private List<BestiaryEntry> _vanillaEntries = new List<BestiaryEntry>();
- 		private List<IBestiaryEntryFilter> _filters = new List<IBestiaryEntryFilter>();
- 		private List<IBestiarySortStep> _sortSteps = new List<IBestiarySortStep>();
- 		private Dictionary<int, BestiaryEntry> _byNpcId = new Dictionary<int, BestiaryEntry>();
-+		private Dictionary<Mod, List<BestiaryEntry>> _byMod = new Dictionary<Mod, List<BestiaryEntry>>();
- 		private BestiaryEntry _trashEntry = new BestiaryEntry();
- 
- 		public List<BestiaryEntry> Entries => _entries;
 @@ -26,6 +_,13 @@
  				if (nPCNetIdBestiaryInfoElement != null)
  					_byNpcId[nPCNetIdBestiaryInfoElement.NetId] = entry;

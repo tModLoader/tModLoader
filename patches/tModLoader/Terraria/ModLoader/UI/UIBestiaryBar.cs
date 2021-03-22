@@ -53,7 +53,7 @@ namespace Terraria.ModLoader.UI
 			_bestiaryBarItems.Add(new BestiaryBarItem($"Total: {(float)totalCollected / total * 100f:N2}% Collected", total, totalCollected, Main.OurFavoriteColor));
 
 			//Add Terraria's bestiary entries
-			List<BestiaryEntry> items = _db.GetTerrariaBestiaryEntires();
+			List<BestiaryEntry> items = _db.GetBestiaryEntriesByMod(null);
 			int collected = items.Count(oe => oe.UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0);
 			_bestiaryBarItems.Add(new BestiaryBarItem($"Terraria: {(float)collected / items.Count * 100f:N2}% Collected", items.Count, collected, _colors[0]));
 			//Add the mod's bestiary entries
