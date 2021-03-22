@@ -51,7 +51,7 @@
      </EmbeddedResource>
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
-@@ -40,29 +_,41 @@
+@@ -40,29 +_,46 @@
      </Reference>
    </ItemGroup>
    <ItemGroup>
@@ -96,4 +96,9 @@
 -    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)/%(RecursiveDir)" />
 +    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" />
    </Target>
++  <ItemDefinitionGroup>
++    <ReferenceCopyLocalPaths>
++      <DestinationSubDirectory>Libraries\NuGet\</DestinationSubDirectory>
++    </ReferenceCopyLocalPaths>
++  </ItemDefinitionGroup>
  </Project>

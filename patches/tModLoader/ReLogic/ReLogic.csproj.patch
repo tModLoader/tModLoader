@@ -9,3 +9,13 @@
      <Reference Include="../Terraria/Libraries/FNA/FNA.dll" />
      <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
      <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
+@@ -23,4 +_,9 @@
+   <ItemGroup>
+ 	  <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
+   </ItemGroup>
++  <ItemDefinitionGroup>
++    <ReferenceCopyLocalPaths>
++        <DestinationSubDirectory>Libraries\NuGet\</DestinationSubDirectory>
++    </ReferenceCopyLocalPaths>
++  </ItemDefinitionGroup>
+ </Project>
