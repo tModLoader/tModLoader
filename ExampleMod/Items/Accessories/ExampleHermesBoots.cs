@@ -24,8 +24,8 @@ namespace ExampleMod.Items.Accessories
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.accRunSpeed = 6f; // Max movement speed for mounts.
-			player.moveSpeed += 0.05f; // Increases the player movement speed, making it reach the max run speed faster.
+			player.accRunSpeed = 6f; // The player's maximum run speed with accessories
+			player.moveSpeed += 0.05f; // The acceleration multiplier of the player's movement speed
 		}
 	}
 }
