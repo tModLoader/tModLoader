@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +9,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
@@ -185,7 +188,36 @@ namespace Terraria.ModLoader.UI
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
+			DrawMigrationGuideLink();
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
+		}
+
+		//TODO: simplify this method
+		private void DrawMigrationGuideLink() {
+			string versionUpgradeMessage = Language.GetTextValue("tModLoader.VersionUpgrade");
+
+			var font = FontAssets.MouseText.Value;
+			Vector2 sizes = font.MeasureString(versionUpgradeMessage);
+			Color color = Color.Black;
+
+			int xLoc = (int)(Main.screenWidth / 2 + 134);
+			int yLoc = (int)(sizes.Y + 244f);
+
+			Main.spriteBatch.DrawString(font, versionUpgradeMessage, new Vector2(xLoc, yLoc), color, 0f, sizes, 1f, SpriteEffects.None, 0f);
+
+			var rect = new Rectangle(xLoc - (int)sizes.X, yLoc - (int)sizes.Y, (int)sizes.X, (int)sizes.Y);
+			if (!rect.Contains(new Point(Main.mouseX, Main.mouseY))) {
+				return;
+			}
+
+			if (Main.mouseLeftRelease && Main.mouseLeft) {
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+				var ps = new ProcessStartInfo("https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide") {
+					UseShellExecute = true,
+					Verb = "open"
+				};
+				Process.Start(ps);
+			}
 		}
 
 		public override void OnActivate() {
