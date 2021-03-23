@@ -2648,22 +2648,6 @@
  						if ((!expertMode || type != 266) && ((type != 439 && type != 440) || npc[num2].ai[0] != 5f)) {
  							if (type >= 134 && type <= 136) {
  								scale = 1.5f;
-@@ -34675,6 +_,7 @@
- 			if (!CanShowInfoAccs)
- 				return;
- 
-+			/*
- 			bool flag = false;
- 			bool flag2 = false;
- 			bool flag3 = false;
-@@ -34687,6 +_,7 @@
- 			bool flag10 = false;
- 			bool flag11 = false;
- 			bool flag12 = false;
-+			*/
- 			int num = -1;
- 			int num2 = -10;
- 			int num3 = 0;
 @@ -34698,9 +_,76 @@
  				num4 += 50f;
  			}
