@@ -14,6 +14,7 @@ namespace Terraria.ModLoader
 		public static InfoDisplay LifeformAnalyzer { get; private set; } = new LifeformAnalyzerInfoDisplay();
 		public static InfoDisplay Radar { get; private set; } = new RadarInfoDisplay();
 		public static InfoDisplay TallyCounter { get; private set; } = new TallyCounterInfoDisplay();
+		public static InfoDisplay Dummy { get; private set; } = new DummyInfoDisplay();
 		public static InfoDisplay DPSMeter { get; private set; } = new DPSMeterInfoDisplay();
 		public static InfoDisplay Stopwatch { get; private set; } = new StopwatchInfoDisplay();
 		public static InfoDisplay Compass { get; private set; } = new CompassInfoDisplay();
