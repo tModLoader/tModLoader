@@ -56,7 +56,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void SetupPlayer(Player player) {
-			Player.RegenEffect.RecalculateEffects(); //TODO: find a better location to recaculate maybe?
+			PlayerRegenEffects.RecalculateEffects(); //TODO: find a better location to recaculate maybe?
 			player.modPlayers = players.Select(modPlayer => modPlayer.CreateFor(player)).ToArray();
 		}
 

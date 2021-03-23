@@ -197,7 +197,7 @@ namespace Terraria.ModLoader
 
 		public static void RegisterModManaRegenEffect() {
 			foreach (var buff in buffs) {
-				Player.RegenEffect.Register(buff.ModManaRegenEffects());
+				PlayerRegenEffects.Register(buff.ModManaRegenEffects());
 			}
 		}
 
@@ -205,7 +205,7 @@ namespace Terraria.ModLoader
 			foreach (var globalBuff in globalBuffs) {
 				var list = globalBuff.ModifyManaRegenEffects();
 				foreach (var modify in list) {
-					if (!Player.RegenEffect.ModifyEffect(modify)) {
+					if (!PlayerRegenEffects.ModifyEffect(modify)) {
 						throw new ArgumentException($"The effect {modify.targetEffect} does not Exist!");
 					}
 				}

@@ -6,8 +6,8 @@ namespace ExampleMod.Content.Buffs
 {
 	public class ExampleRadiationDebuff : ModBuff
 	{
-		public override Player.RegenEffect ModManaRegenEffects() {
-			return new Player.RegenEffect(
+		public override PlayerRegenEffects.RegenEffect ModManaRegenEffects() {
+			return new PlayerRegenEffects.RegenEffect(
 				// The name you want this effect to be internally known and searchable by in RegenEffect.effects. Recommend using full name
 				name: FullName,
 
@@ -15,7 +15,7 @@ namespace ExampleMod.Content.Buffs
 				isActive: (player) => player.buffType.Contains(Type),
 
 				// The (optional) struct of the mana regen stat calculations to apply associated with this debuff, used every frame update.
-				manaCommon: Player.RegenEffect.CommonRegenStats.Create(
+				manaCommon: PlayerRegenEffects.CommonRegenStats.Create(
 
 					// (optional parameter) Returns a float corresponding to the mana drain this debuff does 
 					delta: _ => -(0.5f + Main.rand.Next(32)), // Does between 0.5 and 32.5 drain every 120 seconds 
@@ -30,7 +30,7 @@ namespace ExampleMod.Content.Buffs
 				),
 
 				// The (optional) struct of the mana delay calculations to apply associated with this debuff, used every frame update
-				Player.RegenEffect.ManaRegenDelayStats.Create(
+				PlayerRegenEffects.ManaRegenDelayStats.Create(
 
 					// (optional parameter) Sets the maximum Maximum Delay that the player has to wait, in frames assuming a speed of one, for mana to begin regeneration/draining after mana usage. 
 					maxDelayCap: (player) => 120,

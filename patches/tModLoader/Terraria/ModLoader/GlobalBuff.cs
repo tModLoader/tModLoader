@@ -61,8 +61,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The modifications to mana player regeneration/damaging effects associated with the named effects.
 		/// </summary>
-		public virtual List<Player.RegenEffect.ModifyRegenEffectStruct> ModifyManaRegenEffects() {
-			return new List<Player.RegenEffect.ModifyRegenEffectStruct>();
+		public virtual List<PlayerRegenEffects.ModifyRegenEffectStruct> ModifyManaRegenEffects() {
+			return new List<PlayerRegenEffects.ModifyRegenEffectStruct>();
 		}
 	}
 }
