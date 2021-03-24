@@ -4336,6 +4336,15 @@
  						}
  
  						for (int num6 = 0; num6 < 200; num6++) {
+@@ -37541,7 +_,7 @@
+ 						}
+ 
+ 						binaryWriter.Write(player.hbLocked);
+-						for (int num7 = 0; num7 < player.hideInfo.Length; num7++) {
++						for (int num7 = 0; num7 < 13; num7++) {
+ 							binaryWriter.Write(player.hideInfo[num7]);
+ 						}
+ 
 @@ -37570,9 +_,13 @@
  						stream.Flush();
  						if (isCloudSave && SocialAPI.Cloud != null)
