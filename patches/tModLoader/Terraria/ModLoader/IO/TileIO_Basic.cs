@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,37 +7,220 @@ using Terraria.ID;
 namespace Terraria.ModLoader.IO
 {
 	internal static partial class TileIO {
-		// todo, resize arrays or content tags
-		public static List<ushort> IsUnloadedTile = new List<ushort>();
-		public static List<ushort> IsUnloadedWall = new List<ushort>();
+		public abstract class IOImpl<TBlock, TEntry> where TBlock : ModBlockType where TEntry : ModEntry
+		{
+			public readonly string entriesKey;
+			public readonly string dataKey;
 
-		const string tileEntriesKey = "tileMap";
-		const string wallEntriesKey = "wallMap";
-		const string tileDataKey = "tileData";
-		const string wallDataKey = "wallData";
+			public TEntry[] entries;
+			public PosData<ushort>[] unloadedEntryLookup;
 
-		public static TileEntry[] tileEntries;
-		public static PosData<ushort>[] unloadedTileLookup;
+			public List<ushort> unloadedTypes = new List<ushort>();
 
-		public static WallEntry[] wallEntries;
-		public static PosData<ushort>[] unloadedWallLookup;
+			protected IOImpl(string entriesKey, string dataKey) {
+				this.entriesKey = entriesKey;
+				this.dataKey = dataKey;
+			}
+
+			protected abstract int LoadedBlockCount { get; }
+
+			protected abstract IEnumerable<TBlock> LoadedBlocks { get; }
+
+			protected abstract TEntry ConvertBlockToEntry(TBlock block);
+
+			private List<TEntry> CreateEntries() {
+				var entries = Enumerable.Repeat<TEntry>(null, LoadedBlockCount).ToList();
+				// Create entries for all loaded tiles (vanilla included?), and store in entries list.
+				foreach (var block in LoadedBlocks) {
+					if (!unloadedTypes.Contains(block.Type)) {
+						entries[block.Type] = ConvertBlockToEntry(block);
+					}
+				}
+
+				return entries;
+			}
+
+			public TEntry[] LoadEntries(TagCompound tag, out TEntry[] savedEntryLookup) {
+				var savedEntryList = tag.GetList<TEntry>(entriesKey);
+				var entries = CreateEntries();
+
+				// Return if there is no saved mod blocks in world.
+				if (savedEntryList.Count == 0) {
+					savedEntryLookup = null;
+					return null;
+				}
+
+				// Load entries from save, and pathing variables
+				savedEntryLookup = new TEntry[savedEntryList.Max(e => e.type) + 1];
+
+				// Check saved entries
+				foreach (var entry in savedEntryList) {
+					// If the saved entry can be found among the loaded blocks, then use the entry created for the loaded block
+					if (ModContent.TryFind(entry.modName, entry.name, out TBlock block)) {
+						savedEntryLookup[entry.type] = entries[block.Type];
+					}
+					else { // If it can't be found, then add entry to the end of the entries list and set the loadedType to the unloaded placeholder
+						savedEntryLookup[entry.type] = entry;
+						entry.type = (ushort)entries.Count;
+						entry.loadedType = canPurgeOldData ? entry.vanillaReplacementType : ModContent.Find<TBlock>(entry.unloadedType).Type;
+						entries.Add(entry);
+					}
+				}
+
+				return entries.ToArray();
+			}
+
+			protected abstract void ReadData(Tile tile, TEntry entry, BinaryReader reader);
+
+			public void LoadData(TagCompound tag, TEntry[] savedEntryLookup) {
+				using var reader = new BinaryReader(new MemoryStream(tag.GetByteArray(dataKey)));
+				var builder = new PosData<ushort>.OrderedSparseLookupBuilder();
+
+				for (int x = 0; x < Main.maxTilesX; x++) {
+					for (int y = 0; y < Main.maxTilesY; y++) {
+						ushort saveType = reader.ReadUInt16();
+						if (saveType == 0) {
+							continue;
+						}
+
+						var entry = savedEntryLookup[saveType];
+
+						// Set the type to either the existing type or the unloaded type
+						if (entry.IsUnloaded && !canPurgeOldData) {
+							builder.Add(x, y, entry.type);
+						}
+
+						ReadData(Main.tile[x, y], entry, reader);
+					}
+				}
+
+				unloadedEntryLookup = builder.Build();
+			}
+
+			public void Save(TagCompound tag) {
+				tag[dataKey] = SaveData(out var hasBlocks);
+				tag[entriesKey] = SelectEntries(hasBlocks, entries).ToList();
+			}
+
+			private static IEnumerable<T> SelectEntries<T>(bool[] select, T[] entries) {
+				for (int i = 0; i < select.Length; i++)
+					if (select[i])
+						yield return entries[i];
+			}
+
+			protected abstract ushort GetModBlockType(Tile tile);
+
+			protected abstract void WriteData(BinaryWriter writer, Tile tile, TEntry entry);
+
+			public byte[] SaveData(out bool[] hasObj) {
+				using var ms = new MemoryStream();
+				var writer = new BinaryWriter(ms); 
+
+				var unloadedReader = new PosData<ushort>.OrderedSparseLookupReader(unloadedEntryLookup);
+				hasObj = new bool[entries.Length];
+
+				for (int x = 0; x < Main.maxTilesX; x++) {
+					for (int y = 0; y < Main.maxTilesY; y++) {
+						Tile tile = Main.tile[x, y];
+
+						int type = GetModBlockType(tile);
+						// Skip Vanilla tiles
+						if (type == 0) {
+							writer.Write((ushort)0);
+							continue;
+						}
+
+						if (entries[type] == null) { // Is an unloaded block
+							type = unloadedReader.Get(x, y); // Get the "type", which is going to be outside the bounds of TileLoader.
+						}
+
+						// Write Locational data
+						hasObj[type] = true;
+						WriteData(writer, tile, entries[type]);
+					}
+				}
+
+				return ms.ToArray();
+			}
+
+			public void LoadNewWorld() {
+				// make sure data from the last loaded world doesn't carry over into this one
+				entries = CreateEntries().ToArray();
+				unloadedEntryLookup = null;
+			}
+		}
+
+		public class TileIOImpl : IOImpl<ModTile, TileEntry>
+		{
+			public TileIOImpl() : base("tileMap", "tileData") { }
+
+			protected override int LoadedBlockCount => TileLoader.TileCount;
+
+			protected override IEnumerable<ModTile> LoadedBlocks => TileLoader.tiles;
+
+			protected override TileEntry ConvertBlockToEntry(ModTile tile) => new TileEntry(tile);
+
+			protected override ushort GetModBlockType(Tile tile) => tile.active() && tile.type >= TileID.Count ? tile.type : (ushort)0;
+
+			protected override void ReadData(Tile tile, TileEntry entry, BinaryReader reader) {
+				tile.type = entry.loadedType;
+				tile.color(reader.ReadByte());
+
+				// Set remaining tile data
+				tile.active(true);
+				if (entry.frameImportant) {
+					tile.frameX = reader.ReadInt16();
+					tile.frameY = reader.ReadInt16();
+				}
+			}
+
+			protected override void WriteData(BinaryWriter writer, Tile tile, TileEntry entry) {
+				writer.Write(entry.type);
+				writer.Write(tile.color());
+
+				if (entry.frameImportant) {
+					writer.Write(tile.frameX);
+					writer.Write(tile.frameY);
+				}
+			}
+		}
+
+		public class WallIOImpl : IOImpl<ModWall, WallEntry>
+		{
+			public WallIOImpl() : base("wallMap", "wallData") { }
+
+			protected override int LoadedBlockCount => WallLoader.WallCount;
+
+			protected override IEnumerable<ModWall> LoadedBlocks => WallLoader.walls;
+
+			protected override WallEntry ConvertBlockToEntry(ModWall wall) => new WallEntry(wall);
+			protected override ushort GetModBlockType(Tile tile) => tile.wall >= WallID.Count ? tile.wall : (ushort)0;
+
+			protected override void ReadData(Tile tile, WallEntry entry, BinaryReader reader) {
+				tile.wall = entry.loadedType;
+				tile.wallColor(reader.ReadByte());
+			}
+
+			protected override void WriteData(BinaryWriter writer, Tile tile, WallEntry entry) {
+				writer.Write(entry.type);
+				writer.Write(tile.wallColor());
+			}
+		}
+
+		internal static TileIOImpl Tiles = new TileIOImpl();
+		internal static WallIOImpl Walls = new WallIOImpl();
 
 		//NOTE: LoadBasics can't be separated into LoadWalls() and LoadTiles() because of LoadLegacy.
 		internal static void LoadBasics(TagCompound tag) {
-			legacyLoad = !tag.ContainsKey("wallData");
+			Tiles.LoadEntries(tag, out var tileEntriesLookup);
+			Walls.LoadEntries(tag, out var wallEntriesLookup);
 
-			tileEntries = LoadEntries<TileEntry, ModTile>(tag.GetList<TileEntry>(tileEntriesKey), out var tileEntriesLookup);
-			wallEntries = LoadEntries<WallEntry, ModWall>(tag.GetList<WallEntry>(wallEntriesKey), out var wallEntriesLookup);
-
-			if (legacyLoad) {
+			if (!tag.ContainsKey("wallData")) {
 				LoadLegacy(tag, tileEntriesLookup, wallEntriesLookup);
 			}
 			else {
-				var reader = new BinaryReader(new MemoryStream(tag.GetByteArray(tileDataKey)));
-				unloadedTileLookup = LoadData<TileEntry, ModTile>(reader, tileEntriesLookup);
-
-				reader = new BinaryReader(new MemoryStream(tag.GetByteArray(wallDataKey)));
-				unloadedWallLookup = LoadData<WallEntry, ModWall>(reader, wallEntriesLookup);
+				Tiles.LoadData(tag, tileEntriesLookup);
+				Walls.LoadData(tag, wallEntriesLookup);
 			}
 
 			WorldIO.ValidateSigns(); //call this at end
@@ -44,227 +228,22 @@ namespace Terraria.ModLoader.IO
 
 		//TODO: This can likely be refactored to be SaveWalls() and SaveTiles(), but is left as is to mirror LoadBasics()
 		internal static TagCompound SaveBasics() {
-			// Handle worldgen
-			if (tileEntries == null) {
-				tileEntries = CreateEntries<TileEntry, ModTile>().ToArray();
-			}
-			if (wallEntries == null) {
-				wallEntries = CreateEntries<WallEntry, ModWall>().ToArray();
-			}
-
-			return new TagCompound {
-				[tileDataKey] = SaveData(tileEntries, unloadedTileLookup, out var hasTiles),
-				[tileEntriesKey] = SelectEntries(hasTiles, tileEntries).ToList(),
-
-				[wallDataKey] = SaveData(wallEntries, unloadedWallLookup, out var hasWalls),
-				[wallEntriesKey] = SelectEntries(hasWalls, wallEntries).ToList(),
-			};
+			var tag = new TagCompound();
+			Tiles.Save(tag);
+			Walls.Save(tag);
+			return tag;
 		}
-
-		private static IEnumerable<T> SelectEntries<T>(bool[] select, T[] entries) {
-			for (int i = 0; i < select.Length; i++)
-				if (select[i])
-					yield return entries[i];
-		}
-
-		static bool legacyLoad;
 
 		internal static bool canPurgeOldData => false; //for deleting unloaded mod data in a save; should point to UI flag; temp false
 
-		internal static T[] LoadEntries<T, B>(IList<T> savedEntryList, out T[] savedEntryLookup) where T : ModEntry, new() where B : ModBlockType {
-			var entries = CreateEntries<T, B>();
-
-			// Return if there is no saved mod blocks in world.
-			if (savedEntryList.Count == 0) {
-				savedEntryLookup = null;
-				return null;
-			}
-
-			// Load entries from save, and pathing variables
-			savedEntryLookup = new T[savedEntryList.Max(e => e.type) + 1];
-			bool isWall = typeof(T) == typeof(WallEntry);
-			bool isTile = typeof(T) == typeof(TileEntry);
-
-			// Check saved entries
-			foreach (var entry in savedEntryList) {
-				// If the saved entry can be found among the loaded blocks, then use the entry created for the loaded block
-				if (ModContent.TryFind(entry.modName, entry.name, out B block)) {
-					savedEntryLookup[entry.type] = entries[block.Type];
-				}
-				else { // If it can't be found, then add entry to the end of the entries list and set the loadedType to the unloaded placeholder
-					savedEntryLookup[entry.type] = entry;
-					entry.type = (ushort)entries.Count;
-					entry.loadedType = canPurgeOldData ? entry.vanillaReplacementType : ModContent.Find<B>(entry.unloadedType).Type;
-					entries.Add(entry);
-				}
-			}
-
-			return entries.ToArray();
+		internal static void ResizeArrays() {
+			Tiles.unloadedTypes.Clear();
+			Walls.unloadedTypes.Clear();
 		}
 
-		internal static List<T> CreateEntries<T, B>() where T : ModEntry, new() where B : ModBlockType {
-			bool isWall = typeof(T) == typeof(WallEntry);
-			bool isTile = typeof(T) == typeof(TileEntry);
-
-			int count = 0;
-			List<B> list = new List<B>();
-			List<ushort> unloadedTypes = new List<ushort>();
-
-			if (isTile) {
-				count = TileLoader.TileCount;
-				list = (List<B>)TileLoader.tiles;
-				unloadedTypes = IsUnloadedTile;
-			}
-			else if (isWall) {
-				count = WallLoader.WallCount;
-				list = (List<B>)WallLoader.walls;
-				unloadedTypes = IsUnloadedWall;
-			}
-
-			var entries = Enumerable.Repeat<T>(null, count).ToList();
-			// Create entries for all loaded tiles (vanilla included?), and store in entries list.
-			foreach (var block in list) {
-				if (!unloadedTypes.Contains(block.Type)) {
-					T temp = new T();
-					temp.SetData<B>(block);
-					entries[block.Type] = temp;
-				}
-			}
-
-			return entries;
-		}
-
-		internal delegate void SetColour(Tile t, byte val);
-		internal delegate void SetBlockType(Tile t, ushort val);
-
-		internal static PosData<ushort>[] LoadData<T, O>(BinaryReader reader, T[] savedEntryLookup) where T : ModEntry where O : ModBlockType {
-			var builder = new PosData<ushort>.OrderedSparseLookupBuilder();
-
-			SetColour colour = null;
-			SetBlockType oType = null;
-
-			// Create pathing flags based on type of T
-			bool isWall = typeof(T) == typeof(WallEntry);
-			bool isTile = typeof(T) == typeof(TileEntry);
-			// Use pathing flags to pre-fetch variables.
-			if (isWall) {
-				colour = (t, val) => t.wallColor(val);
-				oType = (t, val) => t.wall = val;
-			}
-			else if (isTile) {
-				colour = (t, val) => t.color(val);
-				oType = (t, val) => t.type = val;
-			}
-
-			for (int x = 0; x < Main.maxTilesX; x++) {
-				for (int y = 0; y < Main.maxTilesY; y++) {
-					ushort saveType = reader.ReadUInt16();
-					if (saveType == 0) {
-						continue;
-					}
-
-					var entry = savedEntryLookup[saveType];
-
-					// Set the type to either the existing type or the unloaded type
-					if (entry.IsUnloaded && !canPurgeOldData) {
-						builder.Add(x, y, entry.type);
-					}
-
-					Tile tile = Main.tile[x, y];
-					oType(tile, entry.loadedType);
-					colour(tile, reader.ReadByte());
-
-					// Set remaining tile data
-					if (isTile) {
-						tile.active(true);
-						if ((entry as TileEntry).frameImportant) {
-							tile.frameX = reader.ReadInt16();
-							tile.frameY = reader.ReadInt16();
-						}
-					}
-				}
-			}
-
-			return builder.Build();
-		}
-
-
-		internal delegate byte GetColour(Tile t);
-		internal delegate ushort GetBlockType(Tile t);
-		internal delegate bool BlockIsIgnorable(Tile t);
-
-		internal static byte[] SaveData<T>(T[] entries, PosData<ushort>[] unloadedLookup, out bool[] hasObj) where T : ModEntry {
-			var ms = new MemoryStream();
-			var writer = new BinaryWriter(ms);
-
-			GetColour colour = null;
-			GetBlockType oType = null;
-			BlockIsIgnorable isIgnorable = null;
-
-			bool isWall = typeof(T) == typeof(WallEntry);
-			bool isTile = typeof(T) == typeof(TileEntry);
-			// Use pathing flags to pre-fetch variables.
-			if (isTile) {
-				colour = (t) => t.color();
-				oType = (t) => t.type;
-				isIgnorable = (t) => !t.active() || t.type < TileID.Count;
-			}
-			else if (isWall) {
-				colour = (t) => t.wallColor();
-				oType = (t) => t.wall;
-				isIgnorable = (t) => t.wall < WallID.Count;
-			}
-
-			var unloadedReader = new PosData<ushort>.OrderedSparseLookupReader(unloadedLookup);
-			hasObj = new bool[entries.Length];
-
-			for (int x = 0; x < Main.maxTilesX; x++) {
-				for (int y = 0; y < Main.maxTilesY; y++) {
-					Tile tile = Main.tile[x, y];
-					ushort type = oType(tile);
-
-					// Skip Vanilla tiles
-					if (isIgnorable(tile)) {
-						writer.Write((ushort)0);
-						continue;
-					}
-
-					if (entries[type] == null) { // Is an unloaded block
-						type = unloadedReader.Get(x, y); // Get the "type", which is going to be outside the bounds of TileLoader.
-					}
-					
-					// Write Locational data
-					hasObj[type] = true;
-					writer.Write(type);
-					writer.Write(colour(tile));
-
-					if (isTile && (entries[type] as TileEntry).frameImportant) {
-						writer.Write(tile.frameX);
-						writer.Write(tile.frameY);
-					}
-				}
-			}
-
-			return ms.ToArray();
-		}
-
-		internal static string GetUnloadedType<B>(int type) {
-			if (typeof(B) == typeof(ModWall))
-				return "ModLoader/UnloadedWall";
-
-			if (TileID.Sets.BasicChest[type])
-				return "ModLoader/UnloadedChest";
-
-			if (TileID.Sets.BasicDresser[type])
-				return "ModLoader/UnloadedDresser";
-
-			if (Main.tileSolidTop[type])
-				return "ModLoader/UnloadedSemiSolidTile";
-
-			if (!Main.tileSolid[type])
-				return "ModLoader/UnloadedNonSolidTile";
-
-			return "ModLoader/UnloadedSolidTile";
+		internal static void LoadNewWorld() {
+			Tiles.LoadNewWorld();
+			Walls.LoadNewWorld();
 		}
 	}
 }

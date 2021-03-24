@@ -65,8 +65,8 @@ namespace Terraria.ModLoader.IO
 			}
 			while (NextLocation(ref i, ref j));
 
-			unloadedTileLookup = tilePosMapList.ToArray();
-			unloadedWallLookup = wallPosMapList.ToArray();
+			Tiles.unloadedEntryLookup = tilePosMapList.ToArray();
+			Walls.unloadedEntryLookup = wallPosMapList.ToArray();
 		}
 
 		internal static void ReadModTile(ref int i, ref int j, BinaryReader reader, ref bool nextModTile, List<PosData<ushort>> wallPosMapList, List<PosData<ushort>> tilePosMapList, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup) {

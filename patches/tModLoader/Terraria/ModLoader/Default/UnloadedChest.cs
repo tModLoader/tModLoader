@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.Default
 		public override string Texture => "ModLoader/UnloadedChest";
 
 		public override void SetDefaults() {
-			TileIO.IsUnloadedTile.Add(Type);
+			TileIO.Tiles.unloadedTypes.Add(Type);
 
 			//common
 			Main.tileFrameImportant[Type] = true;

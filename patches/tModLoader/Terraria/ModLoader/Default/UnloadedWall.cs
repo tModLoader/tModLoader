@@ -7,7 +7,7 @@ namespace Terraria.ModLoader.Default
 		public override string Texture => "ModLoader/UnloadedWall";
 
 		public override void SetDefaults() {
-			TileIO.IsUnloadedWall.Add(Type);
+			TileIO.Tiles.unloadedTypes.Add(Type);
 		}
 	}
 }

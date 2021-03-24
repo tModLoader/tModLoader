@@ -13,8 +13,8 @@ namespace Terraria.ModLoader.Default
 			Player player = Main.LocalPlayer;
 
 			//NOTE: Onwards only works in singleplayer, as the lists aren't synced afaik.
-			var type = TileIO.unloadedTileLookup.Lookup(i, j);
-			var info = TileIO.tileEntries[type];
+			ushort type = TileIO.Tiles.unloadedEntryLookup.Lookup(i, j);
+			var info = TileIO.Tiles.entries[type];
 			player.cursorItemIconEnabled = true;
 			player.cursorItemIconID = -1;
 			player.cursorItemIconText = $"{info.modName}: {info.name}";

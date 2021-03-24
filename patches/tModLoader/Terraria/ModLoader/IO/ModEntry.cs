@@ -9,25 +9,27 @@
 		public string unloadedType;
 		public ushort loadedType;
 
-		public bool IsUnloaded => loadedType != type;
-
-		public abstract string DefaultUnloadedType { get; }
-
-		internal virtual void SetData<B>(B block) where B : ModBlockType {
+		protected ModEntry(ModBlockType block) {
 			type = loadedType = block.Type;
 			modName = block.Mod.Name;
 			name = block.Name;
 			vanillaReplacementType = block.vanillaFallbackOnModDeletion;
-			unloadedType = TileIO.GetUnloadedType<B>(block.Type);
+			unloadedType = GetUnloadedType(block.Type);
 		}
 
-		internal virtual void LoadData(TagCompound tag) {
+		protected abstract string GetUnloadedType(ushort type);
+
+		protected ModEntry(TagCompound tag) {
 			type = tag.Get<ushort>("value");
 			modName = tag.Get<string>("mod");
 			name = tag.Get<string>("name");
 			vanillaReplacementType = tag.Get<ushort>("fallbackID");
 			unloadedType = tag.Get<string>("uType") ?? DefaultUnloadedType;
 		}
+
+		public bool IsUnloaded => loadedType != type;
+
+		public abstract string DefaultUnloadedType { get; }
 
 		public virtual TagCompound SerializeData() {
 			return new TagCompound {
@@ -37,12 +39,6 @@
 				["fallbackID"] = vanillaReplacementType,
 				["uType"] = unloadedType
 			};
-		}
-
-		public static T DeserializeTag<T>(TagCompound tag) where T : ModEntry, new() {
-			var entry = new T();
-			entry.LoadData(tag);
-			return entry;
 		}
 	}
 }
