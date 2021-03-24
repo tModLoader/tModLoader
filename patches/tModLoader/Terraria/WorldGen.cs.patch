@@ -1560,25 +1560,24 @@
  			if (worldUpdateRate == 0)
  				return;
  
-@@ -45668,8 +_,14 @@
+@@ -45668,8 +_,10 @@
  			if (Main.dayTime)
  				return;
  
 +			timePass += Main.desiredWorldEventsUpdateRate;
-+			if (timePass < 1)
-+				return;
-+
-+			double timePassReference = timePass;
 -			for (int l = 0; l < Main.dayRate; l++) {
-+			for (int l = 0; l < (int)timePassReference; l++) {
++			for (int l = 1; l < (int)timePass; l++) {
 +				timePass -= 1.0;
 -				float num6 = Main.maxTilesX / 4200;
 +				float num6 = Main.maxTilesX / 4200f;
  				num6 *= Star.starfallBoost;
  				if (!((float)Main.rand.Next(8000) < 10f * num6))
  					continue;
-@@ -45702,8 +_,8 @@
+@@ -45700,10 +_,11 @@
+ 					Projectile.NewProjectile(position.X, position.Y, num13, num14, 720, 0, 0f, Main.myPlayer, 0f, num10);
+ 				}
  			}
++			timePass %= 1.0;
  		}
  
 -		public static int GetWorldUpdateRate() {

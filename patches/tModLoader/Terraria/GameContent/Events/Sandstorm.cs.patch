@@ -19,21 +19,17 @@
  		}
  
  		public static void UpdateTime() {
-@@ -41,9 +_,14 @@
+@@ -41,10 +_,12 @@
  					int num = 21600;
  					num = ((!Main.hardMode) ? (num * 3) : (num * 2));
  					if (HasSufficientWind()) {
 +						timePass += Main.desiredWorldEventsUpdateRate;
-+						if (timePass >= 1) {
-+							double timePassReference = timePass;
 -						for (int i = 0; i < Main.dayRate; i++) {
-+							for (int i = 0; i < (int)timePassReference; i++) {
--							if (Main.rand.Next(num) == 0)
-+								if (Main.rand.Next(num) == 0)
--								StartSandstorm();
-+									StartSandstorm();
-+								timePass -= 1.0;
-+							}
++						for (int i = 1; i < (int)timePass; i++) {
+ 							if (Main.rand.Next(num) == 0)
+ 								StartSandstorm();
  						}
++						timePass %= 1.0;
  					}
  				}
+ 

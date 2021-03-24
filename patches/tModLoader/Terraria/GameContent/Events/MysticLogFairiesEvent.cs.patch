@@ -34,25 +34,20 @@
  				if (_delayUntilNextAttempt == 0) {
  					_delayUntilNextAttempt = 60;
  					TrySpawningFairies();
-@@ -60,10 +_,17 @@
+@@ -60,12 +_,15 @@
  
  			int oneOverSpawnChance = GetOneOverSpawnChance();
  			bool flag = false;
 +
 +			_timePass += Main.desiredWorldEventsUpdateRate;
-+			if (_timePass >= 1) {
-+				double _timePassReference = _timePass;
 -			for (int i = 0; i < Main.dayRate; i++) {
-+				for (int i = 0; i < (int)_timePassReference; i++) {
--				if (Main.rand.Next(oneOverSpawnChance) == 0) {
-+					if (Main.rand.Next(oneOverSpawnChance) == 0) {
--					flag = true;
-+						flag = true;
--					break;
-+						_timePass -= Math.Floor(_timePass);
-+						break;
-+					}
-+					_timePass -= 1;
++			for (int i = 1; i < (int)_timePass; i++) {
+ 				if (Main.rand.Next(oneOverSpawnChance) == 0) {
+ 					flag = true;
+ 					break;
  				}
  			}
++			_timePass %= 1.0;
  
+ 			if (!flag)
+ 				return;

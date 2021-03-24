@@ -1056,15 +1056,6 @@
  			else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
  				if (player[myPlayer].ZoneHallow) {
  					newMusic = 11;
-@@ -9868,7 +_,7 @@
- 			if (cloudBGActive > 0f)
- 				cloudBGActive = 0f;
- 
--			if (cloudBGActive == 0f && rand.Next((int)((float)(num2 * 12 / ((dayRate == 0) ? 1 : dayRate)) / num3)) == 0) {
-+			if (cloudBGActive == 0f && rand.Next((int)((float)(num2 * 12 / ((dayRate == 0) ? 1E-38 : dayRate)) / num3)) == 0) {
- 				cloudBGActive = rand.Next(num2 * 3, num * 2);
- 				if (netMode == 2)
- 					NetMessage.SendData(7);
 @@ -12221,11 +_,16 @@
  		}
  
@@ -1127,7 +1118,7 @@
  				gamePaused = true;
  				return;
  			}
-@@ -12640,10 +_,19 @@
+@@ -12640,10 +_,16 @@
  			if (netMode != 1)
  				updateCloudLayer();
  
@@ -1135,14 +1126,11 @@
 +				goto skipWeatherUpdates;
 +
 +			timePass += dayRate;
-+			if (timePass < 1)
-+				goto skipWeatherUpdates;
-+			double timePassReference = timePass;
 -			for (int i = 0; i < dayRate; i++) {
-+			for (int i = 0; i < (int)timePassReference; i++) {
++			for (int i = 0; i < (int)timePass; i++) {
  				UpdateWeather(gameTime);
-+				timePass -= 1.0;
  			}
++			timePass %= 1.0;
  
 +			skipWeatherUpdates:
  			if ((timeForVisualEffects += 1.0) >= 216000.0)
@@ -3248,15 +3236,17 @@
  		}
  
  		private void DoDraw(GameTime gameTime) {
-@@ -47097,9 +_,9 @@
+@@ -47097,9 +_,14 @@
  			if (gameMenu || netMode == 2)
  				bgTopY = -200;
  
--			int num3 = dayRate;
++			/*
+ 			int num3 = dayRate;
+ 			if (num3 < 1)
+ 				num3 = 1;
++			*/
 +			double num3 = dayRate;
--			if (num3 < 1)
 +			if (num3 < 0)
--				num3 = 1;
 +				num3 = 0;
  
  			float num4 = 0.0005f * (float)num3;
@@ -3525,15 +3515,20 @@
  			if (invasionType <= 0)
  				return;
  
-@@ -48991,9 +_,9 @@
+@@ -48991,9 +_,14 @@
  			if (invasionX == (double)spawnTileX)
  				return;
  
++			/*
 -			float num = dayRate;
-+			double num = dayRate;
++			int num = dayRate;
 -			if (num < 1f)
-+			if (num < 0)
++			if (num < 1)
 -				num = 1f;
++				num = 1;
++			*/
++			double num = dayRate;
++			if (num < 0)
 +				num = 0;
  
  			if (invasionX > (double)spawnTileX) {
@@ -3582,7 +3577,7 @@
 -					int num2 = 86400;
 +					double num2 = 86400;
 -					num2 /= ((dayRate == 0) ? 1 : dayRate);
-+					num2 /= (dayRate == 0) ? 1E-38 : dayRate;
++					num2 /= (dayRate == 0) ? 1 : dayRate;
  					if (!CreativePowerManager.Instance.GetPower<CreativePowers.FreezeRainPower>().Enabled && dayRate != 0) {
  						if (rand.Next((int)((double)num2 * 5.75)) == 0)
  							StartRain();
@@ -3596,20 +3591,22 @@
  
  					if (!raining && !NPC.BusyWithAnyInvasionOfSorts()) {
 -						int num3 = (int)(1728000.0 / (double)dayRate);
-+						int num3 = (int)(1728000.0 / (double)((dayRate == 0) ? 1E-38 : dayRate));
++						int num3 = (int)(1728000.0 / (double)((dayRate == 0) ? 1 : dayRate));
  						if (!NPC.downedSlimeKing)
  							num3 /= 2;
  
-@@ -49454,11 +_,11 @@
+@@ -49454,11 +_,16 @@
  						WorldGen.UnspawnTravelNPC();
  				}
  				else if (!fastForwardTime && dayTime && time < 27000.0) {
--					int num5 = dayRate;
++					/*
+ 					int num5 = dayRate;
+ 					if (num5 < 1)
+ 						num5 = 1;
++					*/
 +					double num5 = dayRate;
--					if (num5 < 1)
-+					if (num5 < 1E-38)
--						num5 = 1;
-+						num5 = 1E-38;
++					if (num5 == 0)
++						num5 = 1;
  
 -					int num6 = (int)(27000.0 / (double)num5);
 +					int num6 = (int)(27000.0 / num5);

@@ -8,7 +8,7 @@
  
  		public void Reset() {
  			foreach (CustomSky value in _effects.Values) {
-@@ -16,14 +_,22 @@
+@@ -16,14 +_,18 @@
  			}
  
  			_activeSkies.Clear();
@@ -24,24 +24,20 @@
 +				num = 0;
 +			*/
  
--			for (int i = 0; i < num; i++) {
 +			_timePass += Main.desiredWorldEventsUpdateRate;
-+			if (_timePass < 1)
-+				return;
-+
-+			double _timePassReference = _timePass;
-+			for (int i = 0; i < (int)_timePassReference; i++) {
+-			for (int i = 0; i < num; i++) {
++			for (int i = 1; i < (int)_timePass; i++) {
  				LinkedListNode<CustomSky> linkedListNode = _activeSkies.First;
  				while (linkedListNode != null) {
  					CustomSky value = linkedListNode.Value;
-@@ -34,6 +_,7 @@
- 
+@@ -35,6 +_,7 @@
  					linkedListNode = next;
  				}
-+				_timePass -= 1.0;
  			}
++			_timePass %= 1.0;
  		}
  
+ 		public void Draw(SpriteBatch spriteBatch) {
 @@ -87,6 +_,13 @@
  			}
  
