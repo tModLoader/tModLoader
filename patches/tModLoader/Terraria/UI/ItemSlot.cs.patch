@@ -112,19 +112,26 @@
  					}
  				}
  			}
-@@ -864,6 +_,11 @@
- 					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
+@@ -861,7 +_,12 @@
  						result = 1;
  					break;
-+				case -10:
-+				case -11:
-+					if (checkItem.type == 0 || (checkItem.accessory && AccessorySlotLoader.ModSlotCheck(checkItem, slot)))
+ 				case 10:
++					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.dPlayer.exAccessorySlot).ToArray(), checkItem, slot)))
 +						result = 1;
 +					break;
- 				case 24:
- 					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(inv, checkItem, slot)))
++				case -10:
++				case -11:
+-					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && AccessorySlotLoader.ModSlotCheck(checkItem, slot)))
  						result = 1;
-@@ -873,6 +_,7 @@
+ 					break;
+ 				case 24:
+@@ -869,10 +_,11 @@
+ 						result = 1;
+ 					break;
+ 				case 11:
+-					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.dPlayer.exAccessorySlot).ToArray(), checkItem, slot)))
  						result = 1;
  					break;
  				case 12:
@@ -396,11 +403,12 @@
  		}
  
  		private static Item DyeSwap(Item item, out bool success) {
-@@ -1935,8 +_,14 @@
+@@ -1934,9 +_,14 @@
+ 				}
  			}
  
- 			if (dyeSlotCount >= 10)
-+			{
+-			if (dyeSlotCount >= 10)
++			if (dyeSlotCount >= 10) {
 +				item2 = AccessorySlotLoader.VanillaDyeSwapMirror(item, out success);
 +				if (success)
 +					return item2;
@@ -412,10 +420,56 @@
  			if (dyeSlotCount < 0)
  				dyeSlotCount = 9;
  
-@@ -1993,8 +_,24 @@
- 						accSlotToSwapTo = j - 3;
+@@ -1974,6 +_,8 @@
+ 				player.armor[num + 2] = item.Clone();
+ 			}
+ 			else if (item.accessory) {
++				bool isModded = false;
++
+ 				int num2 = 3;
+ 				for (int i = 3; i < 10; i++) {
+ 					if (player.IsAValidEquipmentSlotForIteration(i)) {
+@@ -1985,16 +_,84 @@
+ 					}
  				}
  
++				int num2Mod = 0;
++				if (accSlotToSwapTo == 0) {
++					for (int i = 0; i < AccessorySlotLoader.moddedAccSlots.Count; i++) {
++						if (AccessorySlotLoader.ModdedIsAValidEquipmentSlotForIteration(i)) {
++							num2Mod = i;
++							if (AccessorySlotLoader.dPlayer.exAccessorySlot[i].type == 0) {
++								accSlotToSwapTo = i;
++								isModded = true;
++								break;
++							}
++						}
++					}
++				}
++
+ 				for (int j = 0; j < player.armor.Length; j++) {
+ 					if (item.IsTheSameAs(player.armor[j]))
+-						accSlotToSwapTo = j - 3;
++						accSlotToSwapTo = j - 3; isModded = false;
+ 
+ 					if (j < 10 && item.wingSlot > 0 && player.armor[j].wingSlot > 0)
+-						accSlotToSwapTo = j - 3;
++						accSlotToSwapTo = j - 3; isModded = false;
+ 				}
+ 
+-				if (accSlotToSwapTo > num2)
++				for (int j = 0; j < AccessorySlotLoader.moddedAccSlots.Count * 2; j++) {
++					if (item.IsTheSameAs(AccessorySlotLoader.dPlayer.exAccessorySlot[j])) {
++						accSlotToSwapTo = j;
++						isModded = true;
++					}
++
++					if (j < AccessorySlotLoader.moddedAccSlots.Count && item.wingSlot > 0 && AccessorySlotLoader.dPlayer.exAccessorySlot[j].wingSlot > 0) {
++						accSlotToSwapTo = j;
++						isModded = true;
++					}
++				}
++
 +				for (int k = 0; k < num2; k++) {
 +					int index = 3 + (accSlotToSwapTo + num2) % num2;
 +					if (ItemLoader.CanEquipAccessory(item, index)) {
@@ -424,16 +478,42 @@
 +					}
 +				}
 +
- 				if (accSlotToSwapTo > num2)
-+				{
-+					result = AccessorySlotLoader.VanillaArmorSwapMirror(item, out success);
-+					if (success) {
-+						return result;
++				for (int k = 0; k < num2Mod; k++) {
++					int index = (accSlotToSwapTo + num2Mod) % num2Mod;
++					if (ItemLoader.CanEquipAccessory(item, index)) {
++						accSlotToSwapTo = index;
++						break;
 +					}
++				}
 +
++				if ((!isModded && accSlotToSwapTo > num2) || (isModded && accSlotToSwapTo > num2Mod)) {
  					return item;
 +				}
-+					
++
++				if (isModded) {
++					if (accSlotToSwapTo < 0)
++						accSlotToSwapTo = num2Mod;
++
++					int num3Mod = accSlotToSwapTo;
++					if (isEquipLocked(AccessorySlotLoader.dPlayer.exAccessorySlot[num3Mod].type))
++						return item;
++
++					for (int k = 0; k < AccessorySlotLoader.moddedAccSlots.Count * 2; k++) {
++						if (item.IsTheSameAs(AccessorySlotLoader.dPlayer.exAccessorySlot[k]))
++							num3Mod = k;
++					}
++
++					if (!ItemLoader.CanEquipAccessory(item, num3Mod))
++						return item;
++
++					result = AccessorySlotLoader.dPlayer.exAccessorySlot[num3Mod].Clone();
++					AccessorySlotLoader.dPlayer.exAccessorySlot[num3Mod] = item.Clone();
++					accSlotToSwapTo = 0;
++					SoundEngine.PlaySound(7);
++					Recipe.FindRecipes();
++					success = true;
++					return result;
++				}
  
  				if (accSlotToSwapTo < 0)
  					accSlotToSwapTo = num2 - 3;

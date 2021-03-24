@@ -8,6 +8,7 @@ namespace Terraria
 	public partial class Player {
 		internal IList<string> usedMods;
 		internal ModPlayer[] modPlayers = new ModPlayer[0];
+		public Item equippedWings = null;
 
 		public HashSet<int> nearbyModTorch = new HashSet<int>();
 

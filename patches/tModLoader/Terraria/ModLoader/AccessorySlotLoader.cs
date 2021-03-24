@@ -1,12 +1,14 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.UI;
 using Terraria.Audio;
 using Microsoft.Xna.Framework;
 using Terraria.GameInput;
+using Terraria.Localization;
 using Terraria.ModLoader.Default;
 using Terraria.GameContent.UI.Elements;
 
@@ -21,7 +23,7 @@ namespace Terraria.ModLoader
 		internal static List<string> moddedAccSlots = new List<string>();
 
 		static Player Player => Main.LocalPlayer;
-		static ModAccessorySlotPlayer dPlayer => Main.LocalPlayer.GetModPlayer<ModAccessorySlotPlayer>();
+		static internal ModAccessorySlotPlayer dPlayer => Main.LocalPlayer.GetModPlayer<ModAccessorySlotPlayer>();
 
 		internal static ModAccessorySlot GetModAccessorySlot(int slot) {
 			ModContent.TryFind<ModAccessorySlot>(moddedAccSlots[slot], out ModAccessorySlot mAccSlot);
@@ -48,16 +50,16 @@ namespace Terraria.ModLoader
 
 		public static void DrawAccSlots(int num20) {
 			int skip = 0;
-
+			Color color = Main.inventoryBack;
 
 			for (int vanillaSlot = 3; vanillaSlot < Player.dye.Length; vanillaSlot++) {
-				if (!AccessorySlotLoader.Draw(num20, skip, false, vanillaSlot)) {
+				if (!Draw(num20, skip, false, vanillaSlot, color)) {
 					skip++;
 				}
 			}
 
 			for (int modSlot = 0; modSlot < moddedAccSlots.Count; modSlot++) {
-				if (!AccessorySlotLoader.Draw(num20, skip, true, modSlot))
+				if (!Draw(num20, skip, true, modSlot, color))
 					skip++;
 			}
 
@@ -72,8 +74,7 @@ namespace Terraria.ModLoader
 				dPlayer.scrollbarSlotPosition = 0;
 		}
 
-		//TODO: this should be localizable
-		public static string[] scrollStackLang = { "Stack", "Scroll" }; 
+		public static string[] scrollStackLang = { Language.GetTextValue("tModLoader.slotStack"), Language.GetTextValue("tModLoader.slotScroll") }; 
 
 		internal static void DrawScrollSwitch(int num20) {
 			Texture2D value4 = TextureAssets.InventoryTickOn.Value;
@@ -91,7 +92,6 @@ namespace Terraria.ModLoader
 			}
 
 			Player player = Main.LocalPlayer;
-			player.mouseInterface = true;
 			player.mouseInterface = true;
 			if (Main.mouseLeft && Main.mouseLeftRelease) {
 				dPlayer.scrollSlots = !dPlayer.scrollSlots;
@@ -136,19 +136,31 @@ namespace Terraria.ModLoader
 		
 
 		/// <summary>
-		/// Is run after vanilla draws normal accessory slots. Currently doesn't get called.
-		/// Creates new accessory slots in a column to the left of vanilla.  
+		/// Draws Vanilla and Modded Accessory Slots
 		/// </summary>
-		public static bool Draw(int num20, int skip, bool modded, int slot) {
-			bool flag3 = false;
-			if (modded)
+		public static bool Draw(int num20, int skip, bool modded, int slot, Color color) {
+			bool flag3;
+			bool flag4 = false;
+			if (modded) {
 				flag3 = !ModdedIsAValidEquipmentSlotForIteration(slot);
-			else
+				flag4 = !ModdedCanSlotBeShown(slot);
+			}
+			else {
 				flag3 = !Player.IsAValidEquipmentSlotForIteration(slot);
+				if (slot == 8) {
+					flag4 = !Player.CanDemonHeartAccessoryBeShown();
+				}
+				if (slot == 9) {
+					flag4 = !Player.CanMasterModeAccessoryBeShown();
+				}
+			}
 
-			if (flag3) {
+			if (flag4 && flag3) {
 				return false;
 			}
+
+			Main.inventoryBack = flag3 ? new Microsoft.Xna.Framework.Color(80, 80, 80, 80) : color;
+		
 
 			int yLoc = 0, xLoc = 0;
 			bool customLoc = false;
@@ -338,7 +350,13 @@ namespace Terraria.ModLoader
 		public static bool ModdedIsAValidEquipmentSlotForIteration(int index) {
 			index = index % moddedAccSlots.Count;
 			ModAccessorySlot mAccSlot = GetModAccessorySlot(index);
-			return mAccSlot.IsSlotVisible();
+			return mAccSlot.IsSlotValid();
+		}
+
+		public static bool ModdedCanSlotBeShown(int index) {
+			index = index % moddedAccSlots.Count;
+			ModAccessorySlot mAccSlot = GetModAccessorySlot(index);
+			return mAccSlot.IsSlotVisibleButNotValid();
 		}
 
 		public static void VanillaUpdateEquipsMirror(Player player) {
@@ -354,7 +372,6 @@ namespace Terraria.ModLoader
 						Main.musicBox2 = SoundLoader.itemToMusic[item.type];
 					VanillaVanityEquipMirror(item, vItem, player, k);
 				}
-
 			}
 		}
 
@@ -382,13 +399,13 @@ namespace Terraria.ModLoader
 			}
 
 			if (!dPlayer.exHideAccessory[k])
-				player.UpdateVisibleAccessory(item);
+				player.UpdateVisibleAccessory(k, item);
 
 			if (!player.ItemIsVisuallyIncompatible(vItem))
-				player.UpdateVisibleAccessory(vItem);
+				player.UpdateVisibleAccessory(k, vItem);
 		}
 
-		public static bool VanillaPreferredGolfBallMirror(ref int projType, Player player) {
+		public static bool VanillaPreferredGolfBallMirror(ref int projType) {
 			for (int num = moddedAccSlots.Count * 2 - 1; num >= 0; num--) {
 				if (ModdedIsAValidEquipmentSlotForIteration(num)) {
 					_ = num % moddedAccSlots.Count;
@@ -427,60 +444,6 @@ namespace Terraria.ModLoader
 			return item2;
 		}
 
-		public static Item VanillaArmorSwapMirror(Item item, out bool success) {
-			int num2 = 0;
-			int accSlotToSwapTo = moddedAccSlots.Count;
-			success = false;
-
-			for (int i = 0; i < moddedAccSlots.Count; i++) {
-				if (ModdedIsAValidEquipmentSlotForIteration(i)) {
-					num2 = i;
-					if (dPlayer.exAccessorySlot[i].type == 0) {
-						accSlotToSwapTo = i;
-						break;
-					}
-				}
-			}
-
-			for (int j = 0; j < dPlayer.exAccessorySlot.Length; j++) {
-				if (item.IsTheSameAs(dPlayer.exAccessorySlot[j]))
-					accSlotToSwapTo = j;
-
-				if (j < moddedAccSlots.Count && item.wingSlot > 0 && dPlayer.exAccessorySlot[j].wingSlot > 0)
-					accSlotToSwapTo = j;
-			}
-
-			for (int k = 0; k < num2; k++) {
-				int index = (accSlotToSwapTo + num2) % num2;
-				if (ItemLoader.CanEquipAccessory(item, index)) {
-					accSlotToSwapTo = index;
-					break;
-				}
-			}
-
-			if (accSlotToSwapTo > num2)
-				return item;
-
-			if (ItemSlot.isEquipLocked(dPlayer.exAccessorySlot[accSlotToSwapTo].type))
-				return item;
-
-			for (int k = 0; k < dPlayer.exAccessorySlot.Length; k++) {
-				if (item.IsTheSameAs(dPlayer.exAccessorySlot[k]))
-					accSlotToSwapTo = k;
-			}
-
-			if (!ItemLoader.CanEquipAccessory(item, accSlotToSwapTo))
-				return item;
-
-			Item result = dPlayer.exAccessorySlot[accSlotToSwapTo].Clone();
-			dPlayer.exAccessorySlot[accSlotToSwapTo] = item.Clone();
-
-			SoundEngine.PlaySound(7);
-			Recipe.FindRecipes();
-			success = true;
-			return result;
-		}
-
 		public static void VanillaLastMinuteFixesMirror(Player newPlayer) {
 			ModAccessorySlotPlayer dPlayer = newPlayer.GetModPlayer<ModAccessorySlotPlayer>();
 			for (int i = 0; i < moddedAccSlots.Count; i++) {
@@ -491,9 +454,11 @@ namespace Terraria.ModLoader
 				if (type == 906 || type == 4038)
 					newPlayer.lavaMax += 420;
 
-				if (newPlayer.wingsLogic == 0 && dPlayer.exAccessorySlot[i].wingSlot >= 0)
+				if (newPlayer.wingsLogic == 0 && dPlayer.exAccessorySlot[i].wingSlot >= 0) {
 					newPlayer.wingsLogic = dPlayer.exAccessorySlot[i].wingSlot;
-
+					newPlayer.equippedWings = dPlayer.exAccessorySlot[i];
+				}
+				
 				if (type == 158 || type == 396 || type == 1250 || type == 1251 || type == 1252)
 					newPlayer.noFallDmg = true;
 
@@ -504,7 +469,7 @@ namespace Terraria.ModLoader
 		public static bool ModSlotCheck(Item checkItem, int slot) {
 			int index = slot % dPlayer.exDyesAccessory.Length;
 			ModAccessorySlot mAccSlot = GetModAccessorySlot(index);
-			return mAccSlot.SlotCanAcceptItem(checkItem) && !ItemSlot.AccCheck(dPlayer.exAccessorySlot, checkItem, slot);
+			return mAccSlot.SlotCanAcceptItem(checkItem) && !ItemSlot.AccCheck(Player.armor.Concat(dPlayer.exAccessorySlot).ToArray(), checkItem, slot + Player.armor.Length);
 		}
 	}
 }

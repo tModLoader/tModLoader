@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Terraria.ModLoader.Default;
 using Terraria.UI;
 
 //NOTE: Does not fully support: ItemLoader.GetGamepadInstructions and related gamepad stuff.
@@ -19,7 +20,7 @@ namespace Terraria.ModLoader
 		// Fields to preset a location for the accessory slot
 		public virtual int XLoc => 0;
 		public virtual int YLoc => 0;
-				
+
 		protected sealed override void Register() {
 			ModTypeLookup<ModAccessorySlot>.Register(this);
 
@@ -27,13 +28,18 @@ namespace Terraria.ModLoader
 				return;
 			}
 
-			int pendingID = AccessorySlotLoader.moddedAccSlots.IndexOf(this.FullName);
+			int pendingID = AccessorySlotLoader.moddedAccSlots.IndexOf(FullName);
 			if (pendingID < 0) {
 				pendingID = AccessorySlotLoader.moddedAccSlots.Count;
-				AccessorySlotLoader.moddedAccSlots.Add(this.FullName);
+				AccessorySlotLoader.moddedAccSlots.Add(FullName);
 			}
 
 			this.slot = pendingID;
+		}
+
+		public bool MySlotContainsAnItem() {
+			ModAccessorySlotPlayer dPlayer = Main.LocalPlayer.GetModPlayer<ModAccessorySlotPlayer>();
+			return !(dPlayer.exAccessorySlot[slot].IsAir && dPlayer.exAccessorySlot[slot + AccessorySlotLoader.moddedAccSlots.Count].IsAir);
 		}
 
 		/// <summary>
@@ -50,10 +56,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Override to set conditions on when the slot is visible. Does not force visbility if an item is in the slot by default.
+		/// Override to set conditions on when the slot is valid.
 		/// Example: the demonHeart is consumed and in Expert mode in Vanilla.
 		/// </summary>
-		public virtual bool IsSlotVisible() {
+		public virtual bool IsSlotValid() {
 			return true;
 		}
 
@@ -64,6 +70,15 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool SlotCanAcceptItem(Item checkItem) {
 			return true;
+		}
+
+		/// <summary>
+		/// Override to change the condition on when the slot is visible but non-functional.
+		/// Defaults to check 'property' MySlotContainsAnItem()
+		/// </summary>
+		/// <returns></returns>
+		public virtual bool IsSlotVisibleButNotValid() {
+			return MySlotContainsAnItem();
 		}
 	}
 }

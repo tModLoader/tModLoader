@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.Default
 			this.Name = "UnloadedAccessorySlot" + slot.ToString();
 		}
 
-		public override bool IsSlotVisible() { 
+		public override bool IsSlotValid() { 
 			return false;
 		}
 	}

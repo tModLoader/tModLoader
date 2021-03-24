@@ -338,6 +338,10 @@
 		"MouseXButton1": "Mouse 4",
 		"MouseXButton2": "Mouse 5",
 
+		// In Game UI additions
+		"slotStack": "Stack",
+		"slotScroll": "Scroll",
+
 		// Misc
 		"OK": "OK",
 		"Continue": "Continue",

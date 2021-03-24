@@ -1674,7 +1674,7 @@
  			}
  
  			if (currentItem.wingSlot != -1)
-@@ -10378,10 +_,19 @@
+@@ -10378,10 +_,20 @@
  				manaCost -= 0.08f;
  			}
  
@@ -1683,6 +1683,7 @@
 +					wings = currentItem.wingSlot;
 +
 +				wingsLogic = currentItem.wingSlot;
++				equippedWings = currentItem;
 +			}
 +
 +			ItemLoader.UpdateAccessory(currentItem, this, hideVisual);
@@ -1816,6 +1817,14 @@
  			if (!dead) {
  				Point point2 = base.Center.ToTileCoordinates();
  				if (WorldGen.InWorld(point2.X, point2.Y, 1)) {
+@@ -11848,6 +_,7 @@
+ 			ResetFloorFlags();
+ 			wings = 0;
+ 			wingsLogic = 0;
++			equippedWings = null;
+ 			ResetVisibleAccessories();
+ 			poisoned = false;
+ 			venom = false;
 @@ -11889,8 +_,9 @@
  			hasGingerBeard = false;
  			hasRainbowCursor = false;
@@ -1965,6 +1974,14 @@
  			coolWhipBuff = false;
  			yoraiz0rEye = 0;
  			yoraiz0rDarkness = false;
+@@ -12989,6 +_,7 @@
+ 			slowOgreSpit = false;
+ 			wings = 0;
+ 			wingsLogic = 0;
++			equippedWings = null;
+ 			wingTimeMax = 0;
+ 			brokenArmor = false;
+ 			silence = false;
 @@ -13093,7 +_,9 @@
  				}
  			}
@@ -2928,7 +2945,7 @@
  			if (compositeBackArm.enabled && item.shieldSlot > 0)
  				return true;
  
-@@ -25813,6 +_,12 @@
+@@ -25813,7 +_,13 @@
  			return false;
  		}
  
@@ -2938,9 +2955,11 @@
 +		/// <param name="item"></param>
 +		public void UpdateVisibleAccessory(Item item) => UpdateVisibleAccessory(-1, item);
 +
- 		private void UpdateVisibleAccessory(int itemSlot, Item item) {
+-		private void UpdateVisibleAccessory(int itemSlot, Item item) {
++		internal void UpdateVisibleAccessory(int itemSlot, Item item) {
  			if (item.stringColor > 0)
  				stringColor = item.stringColor;
+ 
 @@ -26035,6 +_,8 @@
  			if (drawPlayer.head == 267)
  				yoraiz0rDarkness = true;
@@ -3762,7 +3781,7 @@
  				return;
  			}
  
-+			if (AccessorySlotLoader.VanillaPreferredGolfBallMirror(ref projType, this))
++			if (AccessorySlotLoader.VanillaPreferredGolfBallMirror(ref projType))
 +				return;
 +
  			for (int num = 19; num >= 0; num--) {
@@ -4388,7 +4407,19 @@
  			for (int i = 3; i < 10; i++) {
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 4874 || type == 5000)
-@@ -38162,6 +_,8 @@
+@@ -38154,14 +_,19 @@
+ 				if (type == 906 || type == 4038)
+ 					newPlayer.lavaMax += 420;
+ 
+-				if (newPlayer.wingsLogic == 0 && newPlayer.armor[i].wingSlot >= 0)
++				if (newPlayer.wingsLogic == 0 && newPlayer.armor[i].wingSlot >= 0) {
+ 					newPlayer.wingsLogic = newPlayer.armor[i].wingSlot;
++					newPlayer.equippedWings = newPlayer.armor[i];
++				}
++					
+ 
+ 				if (type == 158 || type == 396 || type == 1250 || type == 1251 || type == 1252)
+ 					newPlayer.noFallDmg = true;
  
  				newPlayer.lavaTime = newPlayer.lavaMax;
  			}
