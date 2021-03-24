@@ -3502,9 +3502,73 @@
  		}
  
  		public static int DamageVar(float dmg, float luck = 0f) {
-@@ -50399,7 +_,9 @@
- 			}
+@@ -50332,8 +_,9 @@
+ 		}
  
+ 		public static void SetDisplayMode(int width, int height, bool fullscreen) {
+-			bool flag = false;
++			//bool flag = false;
+ #if WINDOWS
++			bool flag = false;
+ 			Form form = (Form)Control.FromHandle(instance.Window.Handle);
+ 			screenMaximized = (form.WindowState == FormWindowState.Maximized);
+ 			if (screenBorderless && screenMaximized && !graphics.IsFullScreen) {
+@@ -50341,13 +_,14 @@
+ 				form.WindowState = FormWindowState.Normal;
+ 			}
+ #else
+-			Main.screenMaximized = false;
++			screenMaximized = false;
++			screenBorderless = PendingBorderlessState = fullscreen;
+ #endif
+ 
+ #if WINDOWS
+ 			flag = (form.FormBorderStyle == FormBorderStyle.None);
+ #endif
+-			bool flag2 = false;
++			//bool flag2 = false;
+ 			int num3;
+ 			int num4;
+ 			if (screenBorderless || screenMaximized || graphics.IsFullScreen || fullscreen) {
+@@ -50356,7 +_,6 @@
+ 				if (!fullscreen)
+ 					SetDisplayModeAsBorderless(ref width, ref height, form);
+ #endif
+-
+ 				if(width > maxScreenW) {
+ 					float num = (float)height / (float)width;
+ 					width = maxScreenW;
+@@ -50371,10 +_,12 @@
+ 
+ 				PlayerInput.RawMouseScale = new Vector2((float)width / (float)instance.Window.ClientBounds.Width, (float)height / (float)instance.Window.ClientBounds.Height);
+ 				if (!graphics.IsFullScreen) {
+-					num3 = Math.Max(graphics.PreferredBackBufferWidth, graphics.GraphicsDevice.Viewport.Width);
++					//num3 = Math.Max(graphics.PreferredBackBufferWidth, graphics.GraphicsDevice.Viewport.Width);
+-					num4 = Math.Max(graphics.PreferredBackBufferHeight, graphics.GraphicsDevice.Viewport.Height);
++					//num4 = Math.Max(graphics.PreferredBackBufferHeight, graphics.GraphicsDevice.Viewport.Height);
+-					if (num3 != graphics.PreferredBackBufferWidth || num4 != graphics.PreferredBackBufferHeight)
++					//if (num3 != graphics.PreferredBackBufferWidth || num4 != graphics.PreferredBackBufferHeight)
+-						flag2 = true;
++					//	flag2 = true;
++					num3 = graphics.GraphicsDevice.Viewport.Width;
++					num4 = graphics.GraphicsDevice.Viewport.Height;
+ 				}
+ 				else {
+ 					num3 = graphics.PreferredBackBufferWidth;
+@@ -50390,16 +_,17 @@
+ 					height = displayHeight[0];
+ 				}
+ #endif
+-
+ 				width = Math.Min(width, maxScreenW);
+ 				height = Math.Min(height, maxScreenH);
+ 				num3 = graphics.GraphicsDevice.Viewport.Width;
+ 				num4 = graphics.GraphicsDevice.Viewport.Height;
+-				flag2 = (graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height);
++				//flag2 = (graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height);
+ 			}
+-
++			bool flag2 = (graphics.PreferredBackBufferWidth != num3 || graphics.PreferredBackBufferHeight != num4);
  #if XNA
 +			// appears redundant. Just causes the window to fight the user when attempting to resize too small
 +			// with this disabled, the window will just snap back to minimum size when released
@@ -3529,13 +3593,20 @@
  			width = Math.Max(width, minScreenW);
  			height = Math.Max(height, minScreenH);
  			if (graphics.IsFullScreen != fullscreen) {
+@@ -50423,6 +_,7 @@
+ 				graphics.ToggleFullScreen();
+ 			}
+ 
++			// Runs if Graphics Device needs a reset to match backBuffer to Viewport, or if target resolution is diff than current
+ 			if (width != num3 || height != num4 || flag2) {
+ 				mapTime = 0;
+ 				if (gamePaused)
 @@ -50432,7 +_,9 @@
  				screenHeight = height;
  				graphics.PreferredBackBufferWidth = screenWidth;
  				graphics.PreferredBackBufferHeight = screenHeight;
-+				if (width != num3 || height != num4) //avoid resetting the device when it doesn't need resizing
--				graphics.ApplyChanges();
-+					graphics.ApplyChanges();
++				//if (width != num3 || height != num4) //avoid resetting the device when it doesn't need resizing
+ 				graphics.ApplyChanges();
 +
  				PlayerInput.CacheOriginalScreenDimensions();
  				FixUIScale();
