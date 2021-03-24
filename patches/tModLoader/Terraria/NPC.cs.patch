@@ -113,7 +113,7 @@
  			}
  
 +			ModNPC = null;
-+			globalNPCs = new GlobalNPC[0];
++			globalNPCs = new Instanced<GlobalNPC>[0];
  			waterMovementSpeed = (lavaMovementSpeed = 0.5f);
  			honeyMovementSpeed = 0.25f;
  			netOffset *= 0f;

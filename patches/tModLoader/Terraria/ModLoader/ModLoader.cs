@@ -360,6 +360,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("ShowModMenuNotifications", notifyNewMainMenuThemes);
 			Main.Configuration.Put("LastSelectedModMenu", MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Put("KnownMenuThemes", MenuLoader.KnownMenuSaveString);
+			Main.Configuration.Put("BossBarStyle", BossBarLoader.lastSelectedStyle);
 
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", BuildInfo.tMLVersion.ToString());
 		}
@@ -381,6 +382,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("ShowModMenuNotifications", ref notifyNewMainMenuThemes);
 			Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
+			Main.Configuration.Get("BossBarStyle", ref BossBarLoader.lastSelectedStyle);
 
 			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get(nameof(LastLaunchedTModLoaderVersion), "0.0"));
 		}
@@ -416,7 +418,24 @@ namespace Terraria.ModLoader
 		{
 			if (!method.IsVirtual) throw new ArgumentException("Cannot build hook for non-virtual method " + method);
 			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
+
 			return providers.Where(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)).ToArray();
+		}
+
+		internal static int[] BuildGlobalHookNew<T>(IList<T> providers, MethodInfo method) {
+			if (!method.IsVirtual)
+				throw new ArgumentException("Cannot build hook for non-virtual method " + method);
+
+			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
+			var list = new List<int>();
+
+			for (int i = 0; i < providers.Count; i++) {
+				if (providers[i].GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)) {
+					list.Add(i);
+				}
+			}
+
+			return list.ToArray();
 		}
 
 		internal static MethodInfo Method<T, F>(Expression<Func<T, F>> expr)
