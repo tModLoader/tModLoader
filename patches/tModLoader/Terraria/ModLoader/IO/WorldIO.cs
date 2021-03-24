@@ -36,6 +36,8 @@ namespace Terraria.ModLoader.IO
 			TagIO.ToStream(tag, stream);
 			var data = stream.ToArray();
 			FileUtilities.Write(path, data, data.Length, isCloudSave);
+
+			TileIO.PostExitWorldCleanup();
 		}
 		//add near end of Terraria.IO.WorldFile.loadWorld before setting failure and success
 		internal static void Load(string path, bool isCloudSave) {

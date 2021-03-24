@@ -97,6 +97,10 @@ namespace Terraria.ModLoader.IO
 			}
 
 			public void Save(TagCompound tag) {
+				if (entries == null) {
+					entries = CreateEntries().ToArray();
+				}
+
 				tag[dataKey] = SaveData(out var hasBlocks);
 				tag[entriesKey] = SelectEntries(hasBlocks, entries).ToList();
 			}
@@ -140,6 +144,12 @@ namespace Terraria.ModLoader.IO
 				}
 
 				return ms.ToArray();
+			}
+
+			public void PostExitWorldCleanup() {
+				// make sure data from the last loaded world doesn't carry over into the next one
+				entries = null;
+				unloadedEntryLookup = null;
 			}
 		}
 
@@ -233,6 +243,11 @@ namespace Terraria.ModLoader.IO
 		internal static void ResizeArrays() {
 			Tiles.unloadedTypes.Clear();
 			Walls.unloadedTypes.Clear();
+		}
+
+		internal static void PostExitWorldCleanup() {
+			Tiles.PostExitWorldCleanup();
+			Walls.PostExitWorldCleanup();
 		}
 	}
 }
