@@ -56,6 +56,7 @@ namespace Terraria.ModLoader.UI
 			List<BestiaryEntry> items = _db.GetBestiaryEntriesByMod(null);
 			int collected = items.Count(oe => oe.UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0);
 			_bestiaryBarItems.Add(new BestiaryBarItem($"Terraria: {(float)collected / items.Count * 100f:N2}% Collected", items.Count, collected, _colors[0]));
+
 			//Add the mod's bestiary entries
 			for (int i = 1; i < ModLoader.Mods.Length; i++) {
 				items = _db.GetBestiaryEntriesByMod(ModLoader.Mods[i]);
@@ -73,7 +74,7 @@ namespace Terraria.ModLoader.UI
 			bool drawHover = false;
 			BestiaryBarItem hoverData = null;
 
-			//Draw the mod progess bars
+			//Draw the mod progress bars
 			for (int i = 1; i < _bestiaryBarItems.Count; i++) {
 				var barData = _bestiaryBarItems[i];
 
@@ -86,6 +87,7 @@ namespace Terraria.ModLoader.UI
 				var drawArea = new Rectangle(rectangle.X + xOffset, rectangle.Y, width, rectangle.Height);
 				var outlineArea = new Rectangle(rectangle.X + xOffset, rectangle.Y, offset, rectangle.Height);
 				xOffset += offset;
+
 				sb.Draw(TextureAssets.MagicPixel.Value, outlineArea, barData.DrawColor * 0.3f);
 				sb.Draw(TextureAssets.MagicPixel.Value, drawArea, barData.DrawColor);
 
@@ -99,8 +101,10 @@ namespace Terraria.ModLoader.UI
 			int bottomWidth = (int)(rectangle.Width * (bottomData.CompletedCount / (float)bottomData.EntryCount));
 			var bottomDrawArea = new Rectangle(rectangle.X, rectangle.Bottom, bottomWidth, bottomHeight);
 			var bottomOutlineArea = new Rectangle(rectangle.X, rectangle.Bottom, rectangle.Width, bottomHeight);
+
 			sb.Draw(TextureAssets.MagicPixel.Value, bottomOutlineArea, bottomData.DrawColor * 0.3f);
 			sb.Draw(TextureAssets.MagicPixel.Value, bottomDrawArea, bottomData.DrawColor);
+
 			if (!drawHover && bottomOutlineArea.Contains(new Point(Main.mouseX, Main.mouseY))) {
 				drawHover = true;
 				hoverData = bottomData;
