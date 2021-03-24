@@ -752,7 +752,7 @@
  		}
  
  		public Main() {
-@@ -4761,7 +_,46 @@
+@@ -4761,7 +_,48 @@
  #if CLIENT
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
@@ -795,7 +795,9 @@
 +				Environment.Exit(1);
 +			}
 +
-+			AlternateContentManager = new TMLContentManager(Content.ServiceProvider, "Content", null);
++			if (Directory.Exists(InstallVerifier.TmlContentDirectory))
++				AlternateContentManager = new TMLContentManager(Content.ServiceProvider, InstallVerifier.TmlContentDirectory, null);
++
 +			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
  #endif
  		}
@@ -1112,13 +1114,15 @@
  
  				Main.player[myPlayer].dropItemCheck();
  			}
-@@ -12806,8 +_,12 @@
+@@ -12806,8 +_,14 @@
  			if (InGameUI != null)
  				InGameUI.Update(gameTime);
  
 +			SystemHooks.UpdateUI(gameTime);
 +			PlayerInput.ScrollWheelDeltaForUI = 0; //TODO: Should this be before PlayerInput.ResetInputsOnActiveStateChange()?
  			CreativeMenu.Update(gameTime);
++
++			BossBarLoader.HandleStyle(); //Has to be outside of the !gameMenu check because it deals with switching and saving the boss style in menus, including the main menu
 +
 +			if (!gameMenu) //Don't update IBigProgressBars in the main menu to avoid IOOB during unload when modded NPCs were alive --direwolf420
 -			BigBossProgressBar.Update();
@@ -2974,6 +2978,26 @@
 +					num20++;
  					array9[num20] = Lang.menu[5].Value;
  					if (selectedMenu == num20 || flag5) {
+ 						flag5 = false;
+@@ -37361,6 +_,7 @@
+ 					num2 = 210;
+ 					num4 = 36;
+ 					num5 = 9;
++					num5++; // Room for tModLoader BossBarStyle option.
+ 					array4[num5 - 1] = 18;
+ 					for (int num23 = 0; num23 < num5; num23++) {
+ 						array7[num23] = 0.75f;
+@@ -37458,6 +_,11 @@
+ 						ActivePlayerResourcesSet = playerResourcesDisplaySet;
+ 
+ 					num24++;
++					array9[num24] = BossBarLoader.InsertMenu(out Action onClick);
++					if (selectedMenu == num24)
++						onClick();
++
++					num24++;
+ 					array9[num24] = Lang.menu[5].Value;
+ 					if (selectedMenu == num24 || flag5) {
  						flag5 = false;
 @@ -38316,7 +_,12 @@
  						netMode = 0;

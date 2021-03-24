@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/IngameOptions.cs
 +++ src/tModLoader/Terraria/IngameOptions.cs
-@@ -4,10 +_,13 @@
+@@ -4,13 +_,17 @@
  using System.Collections.Generic;
  using System.Linq;
  using Terraria.Audio;
@@ -14,6 +14,10 @@
  using Terraria.Social;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
++using Terraria.ModLoader;
+ 
+ namespace Terraria
+ {
 @@ -18,7 +_,8 @@
  	{
  		public const int width = 670;
@@ -73,3 +77,26 @@
  			if (DrawLeftSide(sb, Lang.menu[118].Value, num10, vector, vector2, leftScale)) {
  				leftHover = num10;
  				if (flag4)
+@@ -301,6 +_,7 @@
+ 					break;
+ 				case 1:
+ 					num12 = 10;
++					num12++; // Room for tModLoader BossBarStyle option.
+ 					num4 = 1f;
+ 					num5 = 1.001f;
+ 					num6 = 0.001f;
+@@ -730,6 +_,14 @@
+ 					rightHover = num16;
+ 					if (flag4)
+ 						Main.ActivePlayerResourcesSet = playerResourcesDisplaySet;
++				}
++
++				num16++;
++				string text = BossBarLoader.InsertMenu(out Action onClick);
++				if (DrawRightSide(sb, text, num16, vector3, vector4, rightScale[num16], (rightScale[num16] - num4) / (num5 - num4))) {
++					rightHover = num16;
++					if (flag4)
++						onClick();
+ 				}
+ 
+ 				num16++;
