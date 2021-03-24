@@ -14,7 +14,7 @@ namespace Terraria.ModLoader
 		public static InfoDisplay LifeformAnalyzer { get; private set; } = new LifeformAnalyzerInfoDisplay();
 		public static InfoDisplay Radar { get; private set; } = new RadarInfoDisplay();
 		public static InfoDisplay TallyCounter { get; private set; } = new TallyCounterInfoDisplay();
-		public static InfoDisplay Dummy { get; private set; } = new DummyInfoDisplay();
+		internal static InfoDisplay Dummy { get; private set; } = new DummyInfoDisplay();
 		public static InfoDisplay DPSMeter { get; private set; } = new DPSMeterInfoDisplay();
 		public static InfoDisplay Stopwatch { get; private set; } = new StopwatchInfoDisplay();
 		public static InfoDisplay Compass { get; private set; } = new CompassInfoDisplay();
@@ -45,7 +45,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// This is the value that will show up when viewing this display in normal play, right next to the icon.
 		/// </summary>
-		public virtual string DisplayValue() => null;
+		public virtual string DisplayValue() => "";
 
 		protected override void Register() {
 			InfoName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.InfoDisplayName.{Name}");

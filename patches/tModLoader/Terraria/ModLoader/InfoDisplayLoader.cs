@@ -10,22 +10,24 @@ namespace Terraria.ModLoader
 		internal static readonly List<InfoDisplay> InfoDisplays = new List<InfoDisplay>() {
 			InfoDisplay.Watches,
 			InfoDisplay.WeatherRadio,
-			InfoDisplay.Sextant,
 			InfoDisplay.FishFinder,
-			InfoDisplay.MetalDetector,
-			InfoDisplay.LifeformAnalyzer,
+			InfoDisplay.Compass,
+			InfoDisplay.DepthMeter,
 			InfoDisplay.Radar,
 			InfoDisplay.TallyCounter,
+			InfoDisplay.Sextant,
 			InfoDisplay.Dummy,
-			InfoDisplay.DPSMeter,
 			InfoDisplay.Stopwatch,
-			InfoDisplay.Compass,
-			InfoDisplay.DepthMeter
+			InfoDisplay.MetalDetector,
+			InfoDisplay.LifeformAnalyzer,
+			InfoDisplay.DPSMeter
 		};
 
 		private static readonly int DefaultDisplayCount = InfoDisplays.Count;
 
 		public static int InfoDisplayPage = 0;
+
+		internal static readonly IList<GlobalInfoDisplay> globalInfoDisplays = new List<GlobalInfoDisplay>();
 
 		static InfoDisplayLoader() {
 			RegisterDefaultDisplays();
@@ -38,6 +40,7 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			InfoDisplays.RemoveRange(DefaultDisplayCount, InfoDisplays.Count - DefaultDisplayCount);
+			globalInfoDisplays.Clear();
 		}
 
 		internal static void RegisterDefaultDisplays() {
@@ -58,17 +61,43 @@ namespace Terraria.ModLoader
 			return activeDisplays;
 		}
 
+		public static void AddGlobalInfoDisplay(GlobalInfoDisplay globalInfoDisplay)
+		{
+			globalInfoDisplays.Add(globalInfoDisplay);
+			ModTypeLookup<GlobalInfoDisplay>.Register(globalInfoDisplay);
+		}
+
 		public static int ActivePages() {
 			int activePages = 1;
 			int activeDisplays = ActiveDisplays();
 
-			keepChecking:
-			if (activeDisplays > 12) {
+			while (activeDisplays > 12) {
 				activePages += 1;
 				activeDisplays -= 12;
-				goto keepChecking;
 			}
 			return activePages;
+		}
+
+
+		public static bool Active(InfoDisplay info) {
+			bool active = info.Active();
+			foreach (GlobalInfoDisplay global in globalInfoDisplays) {
+				if (global.Active(info).HasValue)
+					active &= global.Active(info).Value;
+			}
+			return active;
+		}
+
+		public static void ModifyDisplayName(InfoDisplay info, ref string displayName) {
+			foreach (GlobalInfoDisplay global in globalInfoDisplays) {
+				global.ModifyDisplayName(info, ref displayName);
+			}
+		}
+
+		public static void ModifyDisplayValue(InfoDisplay info, ref string displayName) {
+			foreach (GlobalInfoDisplay global in globalInfoDisplays) {
+				global.ModifyDisplayValue(info, ref displayName);
+			}
 		}
 	}
 }
