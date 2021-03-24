@@ -39,6 +39,10 @@ namespace Terraria.ModLoader.Setup
 			Func<SetupOperation> task = () =>
 				new SetupTask(this, new[] { buttonDecompile, buttonRegenSource }
 					.Select(b => b()).ToArray());
+			if (Directory.Exists("src/decompiled")) {
+				Console.WriteLine("decompiled folder found, skipping decompile step");
+				task = () => new SetupTask(this, buttonRegenSource());
+			}
 
 			cancelSource = new CancellationTokenSource();
 			DoAuto2(task());
