@@ -45,7 +45,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// This is the value that will show up when viewing this display in normal play, right next to the icon.
 		/// </summary>
-		public virtual string DisplayValue() => "";
+		public abstract string DisplayValue();
 
 		protected override void Register() {
 			InfoName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.InfoDisplayName.{Name}");

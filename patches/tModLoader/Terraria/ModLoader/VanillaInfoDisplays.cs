@@ -15,6 +15,8 @@ namespace Terraria.ModLoader
 		internal protected override string DisplayNameInternal => Language.GetTextValue(LangKey);
 
 		protected abstract string LangKey { get; }
+
+		public override string DisplayValue() => "";
 	}
 
 	public class WatchesInfoDisplay : VanillaInfoDisplay
