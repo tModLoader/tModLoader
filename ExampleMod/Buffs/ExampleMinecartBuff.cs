@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Buffs
 {
-	public class ExampleMinecartBuff : ModBuff
+	public class ExampleMinecartBuff : ModBuff //this buff serves the smae purpose as for car.cs or any minion - disabling the buff disables the mount
 	{ 
 		public override void SetDefaults()
 		{
