@@ -17,10 +17,10 @@ namespace ExampleMod.Mounts
 	{
 		public override void SetDefaults()
 		{
-			//what separates mounts and minecarts are these 2 lines
+			//what separates mounts and minecarts are these 3 lines
 			mountData.Minecart = true;
 			mountData.MinecartDust = new Action<Vector2>(DelegateMethods.Minecart.Sparks); // this will make the minecart spawn dust when slowing down
-			MountID.Sets.Cart[ModContent.MountType<ExampleMinecart>()] = true;
+			MountID.Sets.Cart[ModContent.MountType<ExampleMinecart>()] = true; //this makes the minecarts item autoequip in the minecart slot
 
 			int[] array = new int[3];
 			for (int i = 0; i < array.Length; i++) 
