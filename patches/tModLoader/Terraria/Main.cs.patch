@@ -1088,85 +1088,26 @@
  			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
  				Star.UpdateStars();
  				Cloud.UpdateClouds();
-@@ -12724,45 +_,49 @@
+@@ -12724,6 +_,10 @@
  
  			if (playerInventory) {
  				Recipe.GetThroughDelayedFindRecipes();
 +
-+				if (PlayerInput.MouseInModdedUI.Count == 0) {
--				int num = PlayerInput.ScrollWheelDelta / 120;
-+					int num = PlayerInput.ScrollWheelDelta / 120;
--				bool flag = true;
-+					bool flag = true;
--				if (recBigList) {
-+					if (recBigList) {
--					int num2 = 42;
-+						int num2 = 42;
--					int num3 = 340;
-+						int num3 = 340;
--					int num4 = 310;
-+						int num4 = 310;
--					PlayerInput.SetZoom_UI();
-+						PlayerInput.SetZoom_UI();
--					int num5 = (screenWidth - num4 - 280) / num2;
-+						int num5 = (screenWidth - num4 - 280) / num2;
--					int num6 = (screenHeight - num3 - 20) / num2;
-+						int num6 = (screenHeight - num3 - 20) / num2;
--					if (new Microsoft.Xna.Framework.Rectangle(num4, num3, num5 * num2, num6 * num2).Contains(MouseScreen.ToPoint())) {
-+						if (new Microsoft.Xna.Framework.Rectangle(num4, num3, num5 * num2, num6 * num2).Contains(MouseScreen.ToPoint())) {
--						int num7 = Math.Sign(num);
-+							int num7 = Math.Sign(num);
--						while (num != 0) {
-+							while (num != 0) {
--							if (num < 0) {
-+								if (num < 0) {
--								recStart -= num5;
-+									recStart -= num5;
--								if (recStart < 0)
-+									if (recStart < 0)
--									recStart = 0;
-+										recStart = 0;
--							}
-+								}
--							else {
-+								else {
--								recStart += num5;
-+									recStart += num5;
--								SoundEngine.PlaySound(12);
-+									SoundEngine.PlaySound(12);
--								if (recStart > numAvailableRecipes - num5)
-+									if (recStart > numAvailableRecipes - num5)
--									recStart = numAvailableRecipes - num5;
-+										recStart = numAvailableRecipes - num5;
--							}
-+								}
++				if (PlayerInput.MouseInModdedUI.Count == 0)
++					goto noScrollOnLocked;
++
+ 				int num = PlayerInput.ScrollWheelDelta / 120;
+ 				bool flag = true;
+ 				if (recBigList) {
+@@ -12761,8 +_,11 @@
+ 						focusRecipe = numAvailableRecipes - 1;
  
--							num -= num7;
-+								num -= num7;
-+							}
- 						}
--					}
- 
--					PlayerInput.SetZoom_World();
-+						PlayerInput.SetZoom_World();
--				}
-+					}
- 
--				if (flag) {
-+					if (flag) {
--					focusRecipe += num;
-+						focusRecipe += num;
--					if (focusRecipe > numAvailableRecipes - 1)
-+						if (focusRecipe > numAvailableRecipes - 1)
--						focusRecipe = numAvailableRecipes - 1;
-+							focusRecipe = numAvailableRecipes - 1;
- 
--					if (focusRecipe < 0)
-+						if (focusRecipe < 0)
+ 					if (focusRecipe < 0)
 -						focusRecipe = 0;
-+							focusRecipe = 0;
-+					}
++						focusRecipe = 0;		
  				}
++
++			noScrollOnLocked:
 +				PlayerInput.MouseInModdedUI.Clear();
  
  				Main.player[myPlayer].dropItemCheck();
