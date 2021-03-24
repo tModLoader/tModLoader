@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Accessories
 {
+	[AutoloadEquip(EquipType.Shoes)]
 	public class ExampleHermesBoots : ModItem
 	{
 		public override void SetStaticDefaults() {
