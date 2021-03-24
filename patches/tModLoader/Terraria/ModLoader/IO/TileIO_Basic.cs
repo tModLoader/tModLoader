@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -40,34 +39,34 @@ namespace Terraria.ModLoader.IO
 				return entries;
 			}
 
-			public TEntry[] LoadEntries(TagCompound tag, out TEntry[] savedEntryLookup) {
+			public void LoadEntries(TagCompound tag, out TEntry[] savedEntryLookup) {
 				var savedEntryList = tag.GetList<TEntry>(entriesKey);
 				var entries = CreateEntries();
 
 				// Return if there is no saved mod blocks in world.
 				if (savedEntryList.Count == 0) {
 					savedEntryLookup = null;
-					return null;
+				}
+				else {
+					// Load entries from save, and pathing variables
+					savedEntryLookup = new TEntry[savedEntryList.Max(e => e.type) + 1];
+
+					// Check saved entries
+					foreach (var entry in savedEntryList) {
+						// If the saved entry can be found among the loaded blocks, then use the entry created for the loaded block
+						if (ModContent.TryFind(entry.modName, entry.name, out TBlock block)) {
+							savedEntryLookup[entry.type] = entries[block.Type];
+						}
+						else { // If it can't be found, then add entry to the end of the entries list and set the loadedType to the unloaded placeholder
+							savedEntryLookup[entry.type] = entry;
+							entry.type = (ushort)entries.Count;
+							entry.loadedType = canPurgeOldData ? entry.vanillaReplacementType : ModContent.Find<TBlock>(entry.unloadedType).Type;
+							entries.Add(entry);
+						}
+					}
 				}
 
-				// Load entries from save, and pathing variables
-				savedEntryLookup = new TEntry[savedEntryList.Max(e => e.type) + 1];
-
-				// Check saved entries
-				foreach (var entry in savedEntryList) {
-					// If the saved entry can be found among the loaded blocks, then use the entry created for the loaded block
-					if (ModContent.TryFind(entry.modName, entry.name, out TBlock block)) {
-						savedEntryLookup[entry.type] = entries[block.Type];
-					}
-					else { // If it can't be found, then add entry to the end of the entries list and set the loadedType to the unloaded placeholder
-						savedEntryLookup[entry.type] = entry;
-						entry.type = (ushort)entries.Count;
-						entry.loadedType = canPurgeOldData ? entry.vanillaReplacementType : ModContent.Find<TBlock>(entry.unloadedType).Type;
-						entries.Add(entry);
-					}
-				}
-
-				return entries.ToArray();
+				this.entries =  entries.ToArray();
 			}
 
 			protected abstract void ReadData(Tile tile, TEntry entry, BinaryReader reader);
@@ -102,7 +101,7 @@ namespace Terraria.ModLoader.IO
 				tag[entriesKey] = SelectEntries(hasBlocks, entries).ToList();
 			}
 
-			private static IEnumerable<T> SelectEntries<T>(bool[] select, T[] entries) {
+			private IEnumerable<TEntry> SelectEntries(bool[] select, TEntry[] entries) {
 				for (int i = 0; i < select.Length; i++)
 					if (select[i])
 						yield return entries[i];
@@ -141,12 +140,6 @@ namespace Terraria.ModLoader.IO
 				}
 
 				return ms.ToArray();
-			}
-
-			public void LoadNewWorld() {
-				// make sure data from the last loaded world doesn't carry over into this one
-				entries = CreateEntries().ToArray();
-				unloadedEntryLookup = null;
 			}
 		}
 
@@ -236,14 +229,10 @@ namespace Terraria.ModLoader.IO
 
 		internal static bool canPurgeOldData => false; //for deleting unloaded mod data in a save; should point to UI flag; temp false
 
+		// Called to ensure proper loading/unloaded behaviour with respect to Unloaded Placeholders
 		internal static void ResizeArrays() {
 			Tiles.unloadedTypes.Clear();
 			Walls.unloadedTypes.Clear();
-		}
-
-		internal static void LoadNewWorld() {
-			Tiles.LoadNewWorld();
-			Walls.LoadNewWorld();
 		}
 	}
 }

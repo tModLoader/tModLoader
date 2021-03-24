@@ -24,7 +24,7 @@ namespace Terraria.ModLoader
 			/// </summary>
 			/// <param name="capacity">Defaults to 1M entries to reduce reallocations. Final built collection will be smaller. </param>
 			/// <param name="compressEqualValues">Reduces the size of the map, but gives unspecified positions a value.</param>
-			/// <param name="insertDefaultEntries">Ensures unspecified positions are given a default value when used with <paramref name="compressEqualValues"/></param>
+			/// <param name="insertDefaultEntries">Ensures unspecified positions are assigned a default value when used with <paramref name="compressEqualValues"/></param>
 			public OrderedSparseLookupBuilder(int capacity = 1048576, bool compressEqualValues = true, bool insertDefaultEntries = false) {
 				list = new List<PosData<T>>(capacity);
 				last = nullPosData;
@@ -38,14 +38,18 @@ namespace Terraria.ModLoader
 				if (pos <= last.pos)
 					throw new ArgumentException($"Must build in ascending index order. Prev: {last.pos}, pos: {pos}");
 
-				if (compressEqualValues && !insertDefaultEntries && pos > last.pos+1) {
-					// make sure the values between last.pos and pos are 'empty'. 
-					// note that this won't make a new entry if last.value is default, and will update last if it does make a new value
-					Add(last.pos + 1, default);
+				if (compressEqualValues) {
+					if (insertDefaultEntries && pos >= last.pos + 2) {
+						// make sure the values between last.pos and pos are 'empty' by ensuring at two positions later than last. 
+						// note that this won't make a new entry if last.value is default, and will update last if it does make a new value
+						Add(last.pos + 1, default);
+					}
+
+					if (EqualityComparer<T>.Default.Equals(value, last.value))
+						return;
 				}
 
-				if (!compressEqualValues || !EqualityComparer<T>.Default.Equals(value, last.value))
-					list.Add(last = new PosData<T>(pos, value));
+				list.Add(last = new PosData<T>(pos, value));
 			}
 
 			public PosData<T>[] Build() => list.ToArray();
@@ -130,6 +134,10 @@ namespace Terraria.ModLoader
 			return minimum;
 		}
 
+
+		/// <summary>
+		/// Raw lookup function. Always returns the raw entry in the position map. Use if default values returned are a concern, as negative position returned are ~'null'
+		/// </summary>
 		public static PosData<T> Find<T>(this PosData<T>[] posMap, int pos) => posMap.FindIndex(pos) switch {
 			int i => i < 0 ? PosData<T>.nullPosData : posMap[i]
 		};

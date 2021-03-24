@@ -17,7 +17,7 @@ using Terraria.ModLoader.IO;
 ///		Trigger fetch of data using adjTiles[type]. If data is ordered, use appropriate version of PosData.Lookup. If data is not ordered, you will likely need to find via enumeration.
 ///		If it is unordered additions, you may elect to build myMap yourself OR attempt to insert the data so it remains ordered. The latter will lead to better post-event performance.
 ///	Clustering data to achieve sparsity:
-///		If your application has multiple repeat static data in a row, you should elect to use ClusteredAdd in the builder to compress it. Note that you should NOT use PosData.LookupExact in this case.
+///		If your application has multiple repeat static data in a row, you should elect to use Clustered mode in the builder to compress it. Note that you should NOT use PosData.LookupExact in this case.
 
 //Future TODO: Improve documentation.
 namespace ExampleMod.Common.Systems
