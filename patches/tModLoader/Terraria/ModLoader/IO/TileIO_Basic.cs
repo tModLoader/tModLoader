@@ -167,7 +167,7 @@ namespace Terraria.ModLoader.IO
 
 					// Set the type to either the existing type or the unloaded type
 					if (entry.IsUnloaded && !canPurgeOldData) {
-						builder.ClusteredAdd(x, y, entry.type);
+						builder.Add(x, y, entry.type);
 					}
 
 					Tile tile = Main.tile[x, y];

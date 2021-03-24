@@ -69,7 +69,7 @@ namespace ExampleMod.Common.Systems
 		// We define what we want to generate as additional location data, for this example, in PostWorldGen. 
 		// We will create a simple column of byte data going down the horizontal center of the world that we will later use in PreUpdateWorld.
 		public override void PostWorldGen() {
-			var builder = new PosData<byte>.OrderedSparseLookupBuilder();
+			var builder = new PosData<byte>.OrderedSparseLookupBuilder(compressEqualValues: false);
 
 			int xCenter = Main.maxTilesX / 2;
 
@@ -101,7 +101,7 @@ namespace ExampleMod.Common.Systems
 			// Get player position in tile coordinates
 			Point z = player.position.ToTileCoordinates();
 			// Search for an entry within 32 tiles of our player
-			if (PosData.NearbySearchOrderedPosMap<byte>(myMap, z, 32, out var entry)) {
+			if (PosData.NearbySearchOrderedPosMap(myMap, z, 32, out var entry)) {
 				// If found, we grab the data from the corresponding output index
 				var data = entry.value;
 

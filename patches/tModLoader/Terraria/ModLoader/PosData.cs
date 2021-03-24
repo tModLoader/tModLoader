@@ -6,15 +6,30 @@ namespace Terraria.ModLoader
 {
 	public struct PosData<T>
 	{
-		// Enumeration class to build an Ordered Sparse Lookup system
+		/// <summary>
+		/// Efficient builder for <see cref="PosData{T}"/>[] lookups covering the whole world.
+		/// Must add elements in ascending pos order.
+		/// </summary>
 		public class OrderedSparseLookupBuilder 
 		{
 			private readonly List<PosData<T>> list;
+			private readonly bool compressEqualValues;
+			private readonly bool insertDefaultEntries;
 			private PosData<T> last;
 
-			public OrderedSparseLookupBuilder(int capacity = 1048576) {
+			/// <summary>
+			/// Use <paramref name="compressEqualValues"/> to produce a smaller lookup which won't work with <see cref="PosData.LookupExact"/>
+			/// When using <paramref name="compressEqualValues"/> without <paramref name="insertDefaultEntries"/>,
+			/// unspecified positions will default to the value of the previous specified position
+			/// </summary>
+			/// <param name="capacity">Defaults to 1M entries to reduce reallocations. Final built collection will be smaller. </param>
+			/// <param name="compressEqualValues">Reduces the size of the map, but gives unspecified positions a value.</param>
+			/// <param name="insertDefaultEntries">Ensures unspecified positions are given a default value when used with <paramref name="compressEqualValues"/></param>
+			public OrderedSparseLookupBuilder(int capacity = 1048576, bool compressEqualValues = true, bool insertDefaultEntries = false) {
 				list = new List<PosData<T>>(capacity);
 				last = nullPosData;
+				this.compressEqualValues = compressEqualValues;
+				this.insertDefaultEntries = insertDefaultEntries;
 			}
 
 			public void Add(int x, int y, T value) => Add(PosData.CoordsToPos(x, y), value);
@@ -23,16 +38,13 @@ namespace Terraria.ModLoader
 				if (pos <= last.pos)
 					throw new ArgumentException($"Must build in ascending index order. Prev: {last.pos}, pos: {pos}");
 
-				list.Add(new PosData<T>(pos, value));
-			}
+				if (compressEqualValues && !insertDefaultEntries && pos > last.pos+1) {
+					// make sure the values between last.pos and pos are 'empty'. 
+					// note that this won't make a new entry if last.value is default, and will update last if it does make a new value
+					Add(last.pos + 1, default);
+				}
 
-			public void ClusteredAdd(int x, int y, T value) => ClusteredAdd(PosData.CoordsToPos(x, y), value);
-
-			public void ClusteredAdd(int pos, T value) {
-				if (pos <= last.pos)
-					throw new ArgumentException($"Must build in ascending index order. Prev: {last.pos}, pos: {pos}");
-
-				if (!EqualityComparer<T>.Default.Equals(value, last.value))
+				if (!compressEqualValues || !EqualityComparer<T>.Default.Equals(value, last.value))
 					list.Add(last = new PosData<T>(pos, value));
 			}
 
@@ -43,11 +55,13 @@ namespace Terraria.ModLoader
 		public class OrderedSparseLookupReader
 		{
 			private readonly PosData<T>[] data;
+			private readonly bool hasEqualValueCompression;
 			private PosData<T> current;
 			private int nextIdx;
 
-			public OrderedSparseLookupReader(PosData<T>[] data) {
+			public OrderedSparseLookupReader(PosData<T>[] data, bool hasEqualValueCompression = true) {
 				this.data = data;
+				this.hasEqualValueCompression = hasEqualValueCompression;
 				current = nullPosData;
 				nextIdx = 0;
 			}
@@ -60,6 +74,9 @@ namespace Terraria.ModLoader
 
 				while (nextIdx < data.Length && data[nextIdx].pos <= pos)
 					current = data[nextIdx++];
+
+				if (!hasEqualValueCompression && current.pos != pos)
+					throw new KeyNotFoundException($"Position does not exist in map. {pos} (X: {current.X}, Y: {current.Y})");
 
 				return current.value;
 			}
@@ -94,11 +111,9 @@ namespace Terraria.ModLoader
 		public static int FindIndex<T>(this PosData<T>[] posMap, int x, int y) => posMap.FindIndex(CoordsToPos(x, y));
 
 		/// <summary>
-		/// Searches for the interval posMap[i].posID < provided posID < posMap[i + 1].posID.
+		/// Searches for the value i for which <code>posMap[i].pos &lt; pos &lt; posMap[i + 1].pos</code>
 		/// </summary>
-		/// <param name="posMap"></param>
-		/// <param name="posID"></param>
-		/// <returns></returns>
+		/// <returns>The index of the nearest entry with <see cref="PosData{T}.pos"/> &lt;= <paramref name="pos"/> or -1 if <paramref name="pos"/> &lt; <paramref name="posMap"/>[0].pos</returns>
 		public static int FindIndex<T>(this PosData<T>[] posMap, int pos) {
 			int minimum = -1, maximum = posMap.Length;
 			while (maximum - minimum > 1) {
@@ -107,7 +122,6 @@ namespace Terraria.ModLoader
 				if (posMap[split].pos <= pos) { 
 					minimum = split;
 				}
-
 				else {
 					maximum = split;
 				}
@@ -116,26 +130,44 @@ namespace Terraria.ModLoader
 			return minimum;
 		}
 
-		public static bool Lookup<T>(this PosData<T>[] posMap, int x, int y, out T data) => posMap.Lookup<T>(CoordsToPos(x, y), out data);
+		public static PosData<T> Find<T>(this PosData<T>[] posMap, int pos) => posMap.FindIndex(pos) switch {
+			int i => i < 0 ? PosData<T>.nullPosData : posMap[i]
+		};
 
-		public static bool Lookup<T>(this PosData<T>[] posMap, int pos, out T data) {
-			var i = posMap.FindIndex(pos);
-			bool fail = i == -1;
-			data = fail ? default : posMap[i].value;
-			return !fail;
-		}
+		/// <summary>
+		/// General purpose lookup function. Always returns a value (even if that value is `default`).
+		/// See <see cref="PosData{T}.OrderedSparseLookupBuilder.OrderedSparseLookupBuilder(int, bool, bool)"/>for more info
+		/// </summary>
+		public static T Lookup<T>(this PosData<T>[] posMap, int x, int y) => posMap.Lookup(CoordsToPos(x, y));
 
-		public static bool LookupExact<T>(this PosData<T>[] posMap, int x, int y, out T data) => posMap.LookupExact<T>(CoordsToPos(x, y), out data);
+		/// <summary>
+		/// General purpose lookup function. Always returns a value (even if that value is `default`).
+		/// See <see cref="PosData{T}.OrderedSparseLookupBuilder.OrderedSparseLookupBuilder(int, bool, bool)"/>for more info
+		/// </summary>
+		public static T Lookup<T>(this PosData<T>[] posMap, int pos) => posMap.Find(pos).value;
 
+		/// <summary>
+		/// For use with uncompressed sparse data lookups. Checks that the exact position exists in the lookup table.
+		/// </summary>
+		public static bool LookupExact<T>(this PosData<T>[] posMap, int x, int y, out T data) => posMap.LookupExact(CoordsToPos(x, y), out data);
+
+		/// <summary>
+		/// For use with uncompressed sparse data lookups. Checks that the exact position exists in the lookup table.
+		/// </summary>
 		public static bool LookupExact<T>(this PosData<T>[] posMap, int pos, out T data) {
-			var i = posMap.FindIndex(pos);
-			bool fail = (i == -1) || (posMap[i].pos != pos);
-			data = fail ? default : posMap[i].value;
-			return !fail;
+			var posData = posMap.Find(pos);
+			if (posData.pos != pos) {
+				data = default;
+				return false;
+			}
+
+			data = posData.value;
+			return true;
 		}
 
 		/// <summary>
 		/// Searches around the provided point to check for the nearest entry in the map for OrdereredSparse data
+		/// Doesn't work with 'compressed' lookups from <see cref="PosData{T}.OrderedSparseLookupBuilder"/>
 		/// </summary>
 		/// <param name="posMap"></param>
 		/// <param name="pt"></param>
