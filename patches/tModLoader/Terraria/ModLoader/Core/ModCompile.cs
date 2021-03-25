@@ -65,7 +65,7 @@ namespace Terraria.ModLoader.Core
 
 		internal static readonly string modReferencesPath = Path.Combine(Program.SavePath, "references");
 		private static bool referencesUpdated = false;
-		internal static void UpdateReferencesFolder()
+		internal static void UpdateReferencesFolder(bool forceRefUpdates = false)
 		{
 			if (referencesUpdated)
 				return;
@@ -79,7 +79,7 @@ namespace Terraria.ModLoader.Core
 			string touchStamp = BuildInfo.BuildIdentifier;
 			string touchFile = Path.Combine(modReferencesPath, "touch");
 			string lastTouch = File.Exists(touchFile) ? File.ReadAllText(touchFile) : null;
-			if (touchStamp == lastTouch && false) { // TODO remove && false. this is temp
+			if (touchStamp == lastTouch && !forceRefUpdates) {
 				referencesUpdated = true;
 				return;
 			}
@@ -112,17 +112,17 @@ namespace Terraria.ModLoader.Core
 
 			char s = Path.DirectorySeparatorChar;
 			string tModLoaderTargets = $@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
-  <PropertyGroup>
-    <TerrariaSteamPath>{System.Security.SecurityElement.Escape(tMLDir)}</TerrariaSteamPath>
-    <tMLPath>$(TerrariaSteamPath){s}tModLoader.exe</tMLPath>
-    <tMLServerPath>$(TerrariaSteamPath){s}tModLoaderServer.exe</tMLServerPath>
-    <tMLBuildServerPath>$(TerrariaSteamPath){s}tModLoaderServer.dll</tMLBuildServerPath>
-  </PropertyGroup>
-  <ItemGroup>
-{string.Join("\n", referencesXMLList)}
-  </ItemGroup>
-</Project>";
+				<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+				  <PropertyGroup>
+					<TerrariaSteamPath>{System.Security.SecurityElement.Escape(tMLDir)}</TerrariaSteamPath>
+					<tMLPath>$(TerrariaSteamPath){s}tModLoader.exe</tMLPath>
+					<tMLServerPath>$(TerrariaSteamPath){s}tModLoaderServer.exe</tMLServerPath>
+					<tMLBuildServerPath>$(TerrariaSteamPath){s}tModLoaderServer.dll</tMLBuildServerPath>
+				  </PropertyGroup>
+				  <ItemGroup>
+				{string.Join("\n", referencesXMLList)}
+				  </ItemGroup>
+				</Project>";
 
 			File.WriteAllText(Path.Combine(modReferencesPath, "tModLoader.targets"), tModLoaderTargets);
 			File.WriteAllText(touchFile, touchStamp);
@@ -416,7 +416,7 @@ namespace Terraria.ModLoader.Core
 
 		private void CompileMod(BuildingMod mod, string outputPath)
 		{
-			UpdateReferencesFolder();
+			UpdateReferencesFolder(true);
 
 			status.SetStatus(Language.GetTextValue("tModLoader.Compiling", Path.GetFileName(outputPath)));
 
