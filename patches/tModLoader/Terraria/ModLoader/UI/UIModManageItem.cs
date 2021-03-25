@@ -84,7 +84,7 @@ namespace Terraria.ModLoader.UI
 		internal void UnpublishMod(UIMouseEvent evt, UIElement listeningElement) {
 			if (ModLoader.modBrowserPassphrase == string.Empty) {
 				Main.menuMode = Interface.enterPassphraseMenuID;
-				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID);
+				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID, Interface.modSourcesID);
 				return;
 			}
 			SoundEngine.PlaySound(12);

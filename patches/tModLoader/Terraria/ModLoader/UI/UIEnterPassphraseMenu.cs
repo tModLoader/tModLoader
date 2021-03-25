@@ -14,6 +14,7 @@ namespace Terraria.ModLoader.UI
 		public UITextPanel<string> UITextPanel;
 		internal UIInputTextField PasscodeTextField;
 		private int _gotoMenu;
+		private int _backMenu;
 
 		public override void OnInitialize() {
 			var uIElement = new UIElement {
@@ -88,7 +89,7 @@ namespace Terraria.ModLoader.UI
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(11);
-			Main.menuMode = _gotoMenu;
+			Main.menuMode = _backMenu;
 		}
 
 		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {
@@ -100,8 +101,9 @@ namespace Terraria.ModLoader.UI
 		private void OnTextChange(object sender, EventArgs e) {
 		}
 
-		internal void SetGotoMenu(int gotoMenu) {
+		internal void SetGotoMenu(int gotoMenu, int backMenu) {
 			_gotoMenu = gotoMenu;
+			_backMenu = backMenu;
 		}
 	}
 }
