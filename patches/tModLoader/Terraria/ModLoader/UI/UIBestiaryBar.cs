@@ -60,6 +60,8 @@ namespace Terraria.ModLoader.UI
 			//Add the mod's bestiary entries
 			for (int i = 1; i < ModLoader.Mods.Length; i++) {
 				items = _db.GetBestiaryEntriesByMod(ModLoader.Mods[i]);
+				if (items == null) // No NPCs added by mod.
+					continue;
 				collected = items.Count(oe => oe.UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0);
 				_bestiaryBarItems.Add(new BestiaryBarItem($"{ModLoader.Mods[i].DisplayName}: {(float)collected / items.Count * 100f:N2}% Collected", items.Count, collected, _colors[i++ % _colors.Length]));
 			}
