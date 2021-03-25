@@ -3467,6 +3467,18 @@
  		public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue) {
  			chatMonitor.NewText(newText, R, G, B);
  			SoundEngine.PlaySound(12);
+@@ -49799,6 +_,11 @@
+ 		}
+ 
+ 		public static BestiaryUnlockProgressReport GetBestiaryProgressReport() {
++			List<BestiaryEntry> terEntries = BestiaryDB.GetBestiaryEntriesByMod(null);
++			return new BestiaryUnlockProgressReport() {
++				EntriesTotal = terEntries.Count,
++				CompletionAmountTotal = terEntries.Count(e => e.UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0)
++			};
+ 			float num = 0f;
+ 			int num2 = 0;
+ 			List<BestiaryEntry> entries = BestiaryDB.Entries;
 @@ -49836,7 +_,7 @@
  					num++;
  			}

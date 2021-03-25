@@ -155,7 +155,7 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.managePublishedID;
 			if (ModLoader.modBrowserPassphrase == string.Empty) {
 				Main.menuMode = Interface.enterPassphraseMenuID;
-				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID);
+				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID, Interface.modSourcesID);
 			}
 		}
 

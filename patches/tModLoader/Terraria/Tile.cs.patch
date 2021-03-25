@@ -1,24 +1,250 @@
 --- src/Terraria/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -14,7 +_,7 @@
+@@ -9,28 +_,28 @@
+ #if !WINDOWS
+ 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+ #endif
+-	public class Tile
++	public partial class Tile
+ 	{
  		public ushort type;
  		public ushort wall;
- 		public byte liquid;
+-		public byte liquid;
 -		public short sTileHeader;
++		internal byte liquid;
 +		public ushort sTileHeader; //For easier bitwise manipulations
  		public byte bTileHeader;
  		public byte bTileHeader2;
  		public byte bTileHeader3;
-@@ -329,7 +_,7 @@
- 		public byte color() => (byte)(sTileHeader & 0x1F);
+ 		public short frameX;
+ 		public short frameY;
+-		public const int Type_Solid = 0;
++		internal const int Type_Solid = 0;
+-		public const int Type_Halfbrick = 1;
++		internal const int Type_Halfbrick = 1;
+-		public const int Type_SlopeDownRight = 2;
++		internal const int Type_SlopeDownRight = 2;
+-		public const int Type_SlopeDownLeft = 3;
++		internal const int Type_SlopeDownLeft = 3;
+-		public const int Type_SlopeUpRight = 4;
++		internal const int Type_SlopeUpRight = 4;
+-		public const int Type_SlopeUpLeft = 5;
++		internal const int Type_SlopeUpLeft = 5;
+-		public const int Liquid_Water = 0;
++		internal const int Liquid_Water = 0;
+-		public const int Liquid_Lava = 1;
++		internal const int Liquid_Lava = 1;
+-		public const int Liquid_Honey = 2;
++		internal const int Liquid_Honey = 2;
  
- 		public void color(byte color) {
+-		public int collisionType {
++		internal int collisionType {
+ 			get {
+ 				if (!active())
+ 					return 0;
+@@ -118,7 +_,7 @@
+ 			frameY = from.frameY;
+ 		}
+ 
+-		public bool isTheSameAs(Tile compTile) {
++		internal bool isTheSameAs(Tile compTile) {
+ 			if (compTile == null)
+ 				return false;
+ 
+@@ -150,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		public int blockType() {
++		internal int blockType() {
+ 			if (halfBrick())
+ 				return 1;
+ 
+@@ -161,7 +_,7 @@
+ 			return num;
+ 		}
+ 
+-		public void liquidType(int liquidType) {
++		internal void liquidType(int liquidType) {
+ 			switch (liquidType) {
+ 				case 0:
+ 					bTileHeader &= 159;
+@@ -175,9 +_,9 @@
+ 			}
+ 		}
+ 
+-		public byte liquidType() => (byte)((bTileHeader & 0x60) >> 5);
++		internal byte liquidType() => (byte)((bTileHeader & 0x60) >> 5);
+ 
+-		public bool nactive() {
++		internal bool nactive() {
+ 			if ((sTileHeader & 0x60) == 32)
+ 				return true;
+ 
+@@ -205,7 +_,7 @@
+ 			frameY = 0;
+ 		}
+ 
+-		public Color actColor(Color oldColor) {
++		internal Color actColor(Color oldColor) {
+ 			if (!inActive())
+ 				return oldColor;
+ 
+@@ -213,12 +_,12 @@
+ 			return new Color((byte)(num * (double)(int)oldColor.R), (byte)(num * (double)(int)oldColor.G), (byte)(num * (double)(int)oldColor.B), oldColor.A);
+ 		}
+ 
+-		public void actColor(ref Vector3 oldColor) {
++		internal void actColor(ref Vector3 oldColor) {
+ 			if (inActive())
+ 				oldColor *= 0.4f;
+ 		}
+ 
+-		public bool topSlope() {
++		internal bool topSlope() {
+ 			byte b = slope();
+ 			if (b != 1)
+ 				return b == 2;
+@@ -226,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		public bool bottomSlope() {
++		internal bool bottomSlope() {
+ 			byte b = slope();
+ 			if (b != 3)
+ 				return b == 4;
+@@ -234,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		public bool leftSlope() {
++		internal bool leftSlope() {
+ 			byte b = slope();
+ 			if (b != 2)
+ 				return b == 4;
+@@ -242,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		public bool rightSlope() {
++		internal bool rightSlope() {
+ 			byte b = slope();
+ 			if (b != 1)
+ 				return b == 3;
+@@ -251,154 +_,154 @@
+ 		}
+ 
+ 		public bool HasSameSlope(Tile tile) => (sTileHeader & 0x7400) == (tile.sTileHeader & 0x7400);
+-		public byte wallColor() => (byte)(bTileHeader & 0x1F);
++		internal byte wallColor() => (byte)(bTileHeader & 0x1F);
+ 
+-		public void wallColor(byte wallColor) {
++		internal void wallColor(byte wallColor) {
+ 			bTileHeader = (byte)((bTileHeader & 0xE0) | wallColor);
+ 		}
+ 
+-		public bool lava() => (bTileHeader & 0x20) == 32;
++		internal bool lava() => (bTileHeader & 0x20) == 32;
+ 
+-		public void lava(bool lava) {
++		internal void lava(bool lava) {
+ 			if (lava)
+ 				bTileHeader = (byte)((bTileHeader & 0x9F) | 0x20);
+ 			else
+ 				bTileHeader &= 223;
+ 		}
+ 
+-		public bool honey() => (bTileHeader & 0x40) == 64;
++		internal bool honey() => (bTileHeader & 0x40) == 64;
+ 
+-		public void honey(bool honey) {
++		internal void honey(bool honey) {
+ 			if (honey)
+ 				bTileHeader = (byte)((bTileHeader & 0x9F) | 0x40);
+ 			else
+ 				bTileHeader &= 191;
+ 		}
+ 
+-		public bool wire4() => (bTileHeader & 0x80) == 128;
++		internal bool wire4() => (bTileHeader & 0x80) == 128;
+ 
+-		public void wire4(bool wire4) {
++		internal void wire4(bool wire4) {
+ 			if (wire4)
+ 				bTileHeader |= 128;
+ 			else
+ 				bTileHeader &= 127;
+ 		}
+ 
+-		public int wallFrameX() => (bTileHeader2 & 0xF) * 36;
++		internal int wallFrameX() => (bTileHeader2 & 0xF) * 36;
+ 
+-		public void wallFrameX(int wallFrameX) {
++		internal void wallFrameX(int wallFrameX) {
+ 			bTileHeader2 = (byte)((bTileHeader2 & 0xF0) | ((wallFrameX / 36) & 0xF));
+ 		}
+ 
+-		public byte frameNumber() => (byte)((bTileHeader2 & 0x30) >> 4);
++		internal byte frameNumber() => (byte)((bTileHeader2 & 0x30) >> 4);
+ 
+-		public void frameNumber(byte frameNumber) {
++		internal void frameNumber(byte frameNumber) {
+ 			bTileHeader2 = (byte)((bTileHeader2 & 0xCF) | ((frameNumber & 3) << 4));
+ 		}
+ 
+-		public byte wallFrameNumber() => (byte)((bTileHeader2 & 0xC0) >> 6);
++		internal byte wallFrameNumber() => (byte)((bTileHeader2 & 0xC0) >> 6);
+ 
+-		public void wallFrameNumber(byte wallFrameNumber) {
++		internal void wallFrameNumber(byte wallFrameNumber) {
+ 			bTileHeader2 = (byte)((bTileHeader2 & 0x3F) | ((wallFrameNumber & 3) << 6));
+ 		}
+ 
+-		public int wallFrameY() => (bTileHeader3 & 7) * 36;
++		internal int wallFrameY() => (bTileHeader3 & 7) * 36;
+ 
+-		public void wallFrameY(int wallFrameY) {
++		internal void wallFrameY(int wallFrameY) {
+ 			bTileHeader3 = (byte)((bTileHeader3 & 0xF8) | ((wallFrameY / 36) & 7));
+ 		}
+ 
+-		public bool checkingLiquid() => (bTileHeader3 & 8) == 8;
++		internal bool checkingLiquid() => (bTileHeader3 & 8) == 8;
+ 
+-		public void checkingLiquid(bool checkingLiquid) {
++		internal void checkingLiquid(bool checkingLiquid) {
+ 			if (checkingLiquid)
+ 				bTileHeader3 |= 8;
+ 			else
+ 				bTileHeader3 &= 247;
+ 		}
+ 
+-		public bool skipLiquid() => (bTileHeader3 & 0x10) == 16;
++		internal bool skipLiquid() => (bTileHeader3 & 0x10) == 16;
+ 
+-		public void skipLiquid(bool skipLiquid) {
++		internal void skipLiquid(bool skipLiquid) {
+ 			if (skipLiquid)
+ 				bTileHeader3 |= 16;
+ 			else
+ 				bTileHeader3 &= 239;
+ 		}
+ 
+-		public byte color() => (byte)(sTileHeader & 0x1F);
++		internal byte color() => (byte)(sTileHeader & 0x1F);
+ 
+-		public void color(byte color) {
++		internal void color(byte color) {
 -			sTileHeader = (short)((sTileHeader & 0xFFE0) | color);
 +			sTileHeader = (ushort)((sTileHeader & 0xFFE0) | color);
  		}
  
- 		public bool active() => (sTileHeader & 0x20) == 32;
-@@ -338,7 +_,7 @@
+-		public bool active() => (sTileHeader & 0x20) == 32;
++		internal bool active() => (sTileHeader & 0x20) == 32;
+ 
+-		public void active(bool active) {
++		internal void active(bool active) {
  			if (active)
  				sTileHeader |= 32;
  			else
@@ -26,8 +252,11 @@
 +				sTileHeader = (ushort)(sTileHeader & 0xFFDF);
  		}
  
- 		public bool inActive() => (sTileHeader & 0x40) == 64;
-@@ -347,7 +_,7 @@
+-		public bool inActive() => (sTileHeader & 0x40) == 64;
++		internal bool inActive() => (sTileHeader & 0x40) == 64;
+ 
+-		public void inActive(bool inActive) {
++		internal void inActive(bool inActive) {
  			if (inActive)
  				sTileHeader |= 64;
  			else
@@ -35,8 +264,11 @@
 +				sTileHeader = (ushort)(sTileHeader & 0xFFBF);
  		}
  
- 		public bool wire() => (sTileHeader & 0x80) == 128;
-@@ -356,7 +_,7 @@
+-		public bool wire() => (sTileHeader & 0x80) == 128;
++		internal bool wire() => (sTileHeader & 0x80) == 128;
+ 
+-		public void wire(bool wire) {
++		internal void wire(bool wire) {
  			if (wire)
  				sTileHeader |= 128;
  			else
@@ -44,8 +276,11 @@
 +				sTileHeader = (ushort)(sTileHeader & 0xFF7F);
  		}
  
- 		public bool wire2() => (sTileHeader & 0x100) == 256;
-@@ -365,7 +_,7 @@
+-		public bool wire2() => (sTileHeader & 0x100) == 256;
++		internal bool wire2() => (sTileHeader & 0x100) == 256;
+ 
+-		public void wire2(bool wire2) {
++		internal void wire2(bool wire2) {
  			if (wire2)
  				sTileHeader |= 256;
  			else
@@ -53,8 +288,11 @@
 +				sTileHeader = (ushort)(sTileHeader & 0xFEFF);
  		}
  
- 		public bool wire3() => (sTileHeader & 0x200) == 512;
-@@ -374,7 +_,7 @@
+-		public bool wire3() => (sTileHeader & 0x200) == 512;
++		internal bool wire3() => (sTileHeader & 0x200) == 512;
+ 
+-		public void wire3(bool wire3) {
++		internal void wire3(bool wire3) {
  			if (wire3)
  				sTileHeader |= 512;
  			else
@@ -62,8 +300,11 @@
 +				sTileHeader = (ushort)(sTileHeader & 0xFDFF);
  		}
  
- 		public bool halfBrick() => (sTileHeader & 0x400) == 1024;
-@@ -383,7 +_,7 @@
+-		public bool halfBrick() => (sTileHeader & 0x400) == 1024;
++		internal bool halfBrick() => (sTileHeader & 0x400) == 1024;
+ 
+-		public void halfBrick(bool halfBrick) {
++		internal void halfBrick(bool halfBrick) {
  			if (halfBrick)
  				sTileHeader |= 1024;
  			else
@@ -71,8 +312,11 @@
 +				sTileHeader = (ushort)(sTileHeader & 0xFBFF);
  		}
  
- 		public bool actuator() => (sTileHeader & 0x800) == 2048;
-@@ -392,13 +_,13 @@
+-		public bool actuator() => (sTileHeader & 0x800) == 2048;
++		internal bool actuator() => (sTileHeader & 0x800) == 2048;
+ 
+-		public void actuator(bool actuator) {
++		internal void actuator(bool actuator) {
  			if (actuator)
  				sTileHeader |= 2048;
  			else
@@ -80,9 +324,11 @@
 +				sTileHeader = (ushort)(sTileHeader & 0xF7FF);
  		}
  
- 		public byte slope() => (byte)((sTileHeader & 0x7000) >> 12);
+-		public byte slope() => (byte)((sTileHeader & 0x7000) >> 12);
++		internal byte slope() => (byte)((sTileHeader & 0x7000) >> 12);
  
- 		public void slope(byte slope) {
+-		public void slope(byte slope) {
++		internal void slope(byte slope) {
 -			sTileHeader = (short)((sTileHeader & 0x8FFF) | ((slope & 7) << 12));
 +			sTileHeader = (ushort)((sTileHeader & 0x8FFF) | ((slope & 7) << 12));
  		}

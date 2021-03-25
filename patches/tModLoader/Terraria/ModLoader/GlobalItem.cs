@@ -6,46 +6,33 @@ using System.IO;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this.
 	/// </summary>
-	public abstract class GlobalItem : ModType
+	public abstract class GlobalItem : GlobalType<Item>
 	{
-		internal int index;
-		internal int instanceIndex;
-
 		protected sealed override void Register() {
 			ItemLoader.VerifyGlobalItem(this);
 
 			ModTypeLookup<GlobalItem>.Register(this);
 			
-			index = ItemLoader.globalItems.Count;
+			index = (ushort)ItemLoader.globalItems.Count;
 
 			ItemLoader.globalItems.Add(this);
 		}
 
-		/// <summary>
-		/// Whether to create a new GlobalItem instance for every Item that exists. 
-		/// Useful for storing information on an item. Defaults to false. 
-		/// Return true if you need to store information (have non-static fields).
-		/// </summary>
-		public virtual bool InstancePerEntity => false;
-
-		public GlobalItem Instance(Item item) => InstancePerEntity ? item.globalItems[instanceIndex] : this;
+		public GlobalItem Instance(Item item) => Instance(item.globalItems, index);
 
 		/// <summary>
 		/// Create a copy of this instanced GlobalItem. Called when an item is cloned.
-		/// Defaults to NewInstance(item)
 		/// </summary>
 		/// <param name="item">The item being cloned</param>
 		/// <param name="itemClone">The new item</param>
-		public virtual GlobalItem Clone(Item item, Item itemClone) {
-			GlobalItem clone = (GlobalItem)MemberwiseClone();
-			return clone;
-		}
+		public virtual GlobalItem Clone(Item item, Item itemClone) => (GlobalItem)MemberwiseClone();
 
 		/// <summary>
 		/// Allows you to set the properties of any and every item that gets created.
@@ -494,6 +481,17 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to prevent vanilla items from stacking in the world.
+		/// This is only called when two items of the same type attempt to stack.
+		/// </summary>
+		/// <param name="item1">The item that is attempting to stack</param>
+		/// <param name="item2">The item that the other item is attempting to stack with</param>
+		/// <returns>Whether or not the items are allowed to stack</returns>
+		public virtual bool CanStackInWorld(Item item1, Item item2) {
+			return true;
+		}
+
+		/// <summary>
 		/// Returns if the normal reforge pricing is applied. 
 		/// If true or false is returned and the price is altered, the price will equal the altered price.
 		/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
@@ -611,10 +609,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns whether or not this item burns when it is thrown into lava despite item.rare not being 0. Returns false by default.
+		/// Returns whether or not this item will burn in lava regardless of any conditions. Returns null by default (follow vanilla behaviour).
 		/// </summary>
-		public virtual bool CanBurnInLava(Item item) {
-			return false;
+		public virtual bool? CanBurnInLava(Item item) {
+			return null;
 		}
 
 		/// <summary>
