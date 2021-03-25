@@ -21,8 +21,8 @@ namespace Terraria.ModLoader.IO
 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
 			var tag = new TagCompound {
-				["chests"] = SaveChests(),
-				["tiles"] = TileIO.SaveTiles(),
+				["chests"] = SaveChestInventory(),
+				["tiles"] = TileIO.SaveBasics(),
 				["containers"] = TileIO.SaveContainers(),
 				["npcs"] = SaveNPCs(),
 				["tileEntities"] = TileIO.SaveTileEntities(),
@@ -36,6 +36,8 @@ namespace Terraria.ModLoader.IO
 			TagIO.ToStream(tag, stream);
 			var data = stream.ToArray();
 			FileUtilities.Write(path, data, data.Length, isCloudSave);
+
+			TileIO.PostExitWorldCleanup();
 		}
 		//add near end of Terraria.IO.WorldFile.loadWorld before setting failure and success
 		internal static void Load(string path, bool isCloudSave) {
@@ -53,8 +55,7 @@ namespace Terraria.ModLoader.IO
 			}
 
 			var tag = TagIO.FromStream(new MemoryStream(buf));
-			LoadChests(tag.GetList<TagCompound>("chests"));
-			TileIO.LoadTiles(tag.GetCompound("tiles"));
+			TileIO.LoadBasics(tag.GetCompound("tiles"));
 			TileIO.LoadContainers(tag.GetCompound("containers"));
 			LoadNPCs(tag.GetList<TagCompound>("npcs"));
 			try {
@@ -64,6 +65,7 @@ namespace Terraria.ModLoader.IO
 				customDataFail = e;
 				throw;
 			}
+			LoadChestInventory(tag.GetList<TagCompound>("chests")); // Must occur after tiles are loaded
 			LoadNPCKillCounts(tag.GetList<TagCompound>("killCounts"));
 			LoadAnglerQuest(tag.GetCompound("anglerQuest"));
 			LoadTownManager(tag.GetList<TagCompound>("townManager"));
@@ -76,35 +78,41 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static List<TagCompound> SaveChests() {
+		internal static List<TagCompound> SaveChestInventory() {
 			var list = new List<TagCompound>();
-			for (int k = 0; k < 1000; k++) {
+
+			const short MaxChestSaveCount = 8000; //As of Vanilla 1.4.0.1
+
+			for (int k = 0; k < MaxChestSaveCount; k++) {
 				var chest = Main.chest[k];
-				if (chest == null)
+				if (chest == null) // chest doesn't exist
 					continue;
 
-				var itemTagList = PlayerIO.SaveInventory(chest.item);
-				if (itemTagList == null) //doesn't need mod saving
+				var itemTagListModded = PlayerIO.SaveInventory(chest.item); // list of mod only items in inventory
+				if (itemTagListModded == null) // Doesn't need additional saving beyond vanilla
 					continue;
 
-				list.Add(new TagCompound {
-					["items"] = itemTagList,
+				TagCompound tag = new TagCompound {
+					["items"] = itemTagListModded,
 					["x"] = chest.x,
-					["y"] = chest.y
-				});
+					["y"] = chest.y,
+				};
+
+				list.Add(tag);
 			}
+
 			return list;
 		}
 
-		internal static void LoadChests(IList<TagCompound> list) {
+		internal static void LoadChestInventory(IList<TagCompound> list) {
 			foreach (var tag in list) {
-				int x = tag.GetInt("x");
-				int y = tag.GetInt("y");
-				int chest = Chest.FindChest(x, y);
-				if (chest < 0)
-					chest = Chest.CreateChest(x, y);
-				if (chest >= 0)
-					PlayerIO.LoadInventory(Main.chest[chest].item, tag.GetList<TagCompound>("items"));
+				int cID = Chest.FindChest(tag.GetInt("x"), tag.GetInt("y"));
+
+				if (cID >= 0) {
+					var chest = Main.chest[cID];
+
+					PlayerIO.LoadInventory(chest.item, tag.GetList<TagCompound>("items"));
+				}
 			}
 		}
 
