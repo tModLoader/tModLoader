@@ -574,6 +574,7 @@ namespace Terraria.ModLoader
 			ModDust.ResizeArrays();
 			TileLoader.ResizeArrays(unloading);
 			WallLoader.ResizeArrays(unloading);
+			TileIO.ResizeArrays();
 			ProjectileLoader.ResizeArrays();
 			NPCLoader.ResizeArrays(unloading);
 			NPCHeadLoader.ResizeAndFillArrays();
