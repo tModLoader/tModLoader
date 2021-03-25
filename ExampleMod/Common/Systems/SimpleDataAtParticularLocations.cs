@@ -109,8 +109,8 @@ namespace ExampleMod.Common.Systems
 				for (int i = -2; i < 3; i++) {
 					for (int j = 0; j < 2; j++) {
 						Tile tile = Main.tile[z.X + i, z.Y + j];
-						if (tile.active()) {
-							tile.color(data);
+						if (tile.IsActive) {
+							tile.Color = data;
 						}
 					}
 				}
