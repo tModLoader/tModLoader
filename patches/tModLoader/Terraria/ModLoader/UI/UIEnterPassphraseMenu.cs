@@ -81,7 +81,7 @@ namespace Terraria.ModLoader.UI
 			Main.SaveSettings();
 			if (Engine.InstallVerifier.IsGoG) {
 				Main.menuMode = Interface.enterSteamIDMenuID;
-				Interface.enterSteamIDMenu.SetGotoMenu(_gotoMenu);
+				Interface.enterSteamIDMenu.SetGotoMenu(_gotoMenu, _backMenu);
 			}
 			else
 				Main.menuMode = _gotoMenu;
