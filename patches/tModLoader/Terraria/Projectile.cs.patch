@@ -124,7 +124,7 @@
 +
  		public void SetDefaults(int Type) {
 +			ModProjectile = null;
-+			globalProjectiles = new GlobalProjectile[0];
++			globalProjectiles = new Instanced<GlobalProjectile>[0];
 +			DamageType = DamageClass.Generic;
 +			nameOverride = null;
  			ownerHitCheckDistance = 1000f;

@@ -56,6 +56,10 @@
 		"AskForModIndex": "Escribe un número para cambiar entre activado/desactivado",
 		"AskForCommand": "Escribe un comando: ",
 
+		// Interface
+		"BossBarStyle": "Estilo de barra de jefes: {0}",
+		"BossBarStyleNoOptions": "Sin opciones",
+
 		// Mod Errors
 		"LoadError": "Se ha producido un error al cargar {0}",
 		"LoadErrorDisabled": "Los mods se han desactivado automáticamente.",
