@@ -2603,7 +2603,7 @@
  				controlUseItem = true;
  			}
  
-+			if (flag && altFunctionUse == 0 && ItemLoader.AltFunctionUse(inventory[selectedItem], this)) {
++			if (flag2 && altFunctionUse == 0 && ItemLoader.AltFunctionUse(inventory[selectedItem], this)) {
 +				altFunctionUse = 1;
 +				controlUseItem = true;
 +			}

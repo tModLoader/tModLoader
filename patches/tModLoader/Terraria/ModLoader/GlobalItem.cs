@@ -520,6 +520,17 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to prevent vanilla items from stacking in the world.
+		/// This is only called when two items of the same type attempt to stack.
+		/// </summary>
+		/// <param name="item1">The item that is attempting to stack</param>
+		/// <param name="item2">The item that the other item is attempting to stack with</param>
+		/// <returns>Whether or not the items are allowed to stack</returns>
+		public virtual bool CanStackInWorld(Item item1, Item item2) {
+			return true;
+		}
+
+		/// <summary>
 		/// Returns if the normal reforge pricing is applied. 
 		/// If true or false is returned and the price is altered, the price will equal the altered price.
 		/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.

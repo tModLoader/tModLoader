@@ -1175,6 +1175,21 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookCanStackInWorld = AddHook<Func<Item, Item, bool>>(g => g.CanStackInWorld);
+		//in Terraria.Item.CombineWithNearbyItems after num comparison
+		// if(!ItemLoader.CanStackInWorld(this, item)) { continue; }
+		/// <summary>
+		/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
+		/// </summary>
+		public static bool CanStackInWorld(Item item1, Item item2) {
+			foreach (var g in HookCanStackInWorld.Enumerate(globalItemsArray)) {
+				if (!g.CanStackInWorld(item1, item2))
+					return false;
+			}
+
+			return item1.ModItem?.CanStackInWorld(item2) ?? true;
+		}
+
 		private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);
 		private static HookList HookReforgePrice = AddHook<DelegateReforgePrice>(g => g.ReforgePrice);
 		/// <summary>

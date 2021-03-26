@@ -100,6 +100,14 @@
  			Main.invasionProgress = -1;
  			Main.invasionProgressDisplayLeft = 0;
  			Main.invasionProgressAlpha = 0f;
+@@ -2354,6 +_,7 @@
+ 			Rain.ClearRain();
+ 			if (netMode == 0) {
+ 				WorldFile.SaveWorld();
++				TileIO.PostExitWorldCleanup();
+ 				SoundEngine.PlaySound(10);
+ 			}
+ 			else {
 @@ -2370,10 +_,21 @@
  
  		public static void SaveAndQuit(Action callback = null) {
