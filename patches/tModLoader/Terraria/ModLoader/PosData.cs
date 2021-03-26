@@ -74,6 +74,7 @@ namespace Terraria.ModLoader
 			
 			private readonly PosData<T>[] target;
 			private readonly int yTop, yBottom;
+			private readonly int finalPos;
 
 			private int lastIndex;
 
@@ -90,22 +91,24 @@ namespace Terraria.ModLoader
 				this.target = target;
 				this.yTop = yTop;
 				this.yBottom = yBottom;
+				finalPos = PosData.CoordsToPos(xRight, yBottom);
 				list = new List<PosData<T>>(1048576 - target.Length);
 
 				int lowerLoc = PosData.CoordsToPos(xLeft, yTop);
 				lastIndex = PosData.FindIndex(target, lowerLoc);
-				targetListLower = target.Take(lastIndex).ToList();
-
+				targetListLower = new List<PosData<T>>();
+				if (lastIndex >= 0) {
+					targetListLower = target.Take(lastIndex).ToList();
+				}
+				
 				int upperLoc = PosData.CoordsToPos(xRight, yBottom);
 				var upper = PosData.FindIndex(target, upperLoc);
 				targetListUpper = new List<PosData<T>>();
-
-				if (target[upper].pos <= upperLoc) {
-					targetListUpper.Add(new PosData<T>(upperLoc + 1, target[upper].value));
+				if (upper >= 0) {
+					targetListUpper = target.Skip(upper + 1).ToList();
 				}
-				targetListUpper.AddRange(target.Skip(upper).ToList());
 
-				last = insertedDefaultEntries ? new PosData<T>(lowerLoc, default) : target[lastIndex];
+				last = insertedDefaultEntries || lastIndex < 0 ? new PosData<T>(lowerLoc, default) : target[lastIndex];
 				compressEqualValues = compressedEqualValues;
 				insertDefaultEntries = insertedDefaultEntries;
 			}
@@ -114,27 +117,32 @@ namespace Terraria.ModLoader
 				if (pos <= last.pos)
 					throw new ArgumentException($"Must build in ascending index order. Prev: {last.pos}, pos: {pos}");
 
-				while (target[lastIndex + 1].pos <= pos) {
-					int y = target[lastIndex + 1].Y;
-					if (!(y >= yTop && y <= yBottom)) { // Not inside the rectangle, re-add direct
-						lastIndex++;
-						Add(target[lastIndex].pos, target[lastIndex].value);
-					}
-					else {
-						while (target[lastIndex + 1].Y <= yBottom) { // Find the last entry within the rectangle
-							lastIndex++;
-						}
-						Add(PosData.CoordsToPos(target[lastIndex].X, yBottom + 1), target[lastIndex].value); // Place the last entry outside rectangle in case is still used
-					}
-				}
+				MergeOldEntries(pos);
 
 				Add(pos, value);
 			}
 
 			public override PosData<T>[] Build() {
+				MergeOldEntries(finalPos);
 				targetListLower.AddRange(list);
 				targetListLower.AddRange(targetListUpper);
 				return targetListLower.ToArray();
+			}
+
+			private void MergeOldEntries(int pos) {
+				int y = target[lastIndex + 1].Y;
+				while (target[lastIndex + 1].pos <= pos) {
+					if (!(y >= yTop && y <= yBottom)) { // Not inside the rectangle, re-add direct
+						y = target[++lastIndex + 1].Y;
+						Add(target[lastIndex].pos, target[lastIndex].value);
+					}
+					else {
+						while (y <= yBottom && y >= yTop) { // Find the last entry within the rectangle
+							y = target[++lastIndex + 1].Y;
+						}
+						Add(PosData.CoordsToPos(target[lastIndex].X, yBottom + 1), target[lastIndex].value); // Place the last entry outside rectangle in case is still used
+					}
+				}
 			}
 		}
 
