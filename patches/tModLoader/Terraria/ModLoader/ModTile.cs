@@ -32,12 +32,6 @@ namespace Terraria.ModLoader
 		/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations. </summary>
 		public int AnimationFrameHeight { get; set; }
 
-		/// <summary> A multiplier describing how much this block resists harvesting. Higher values will make it take longer to harvest. Defaults to 1f. </summary>
-		public float MineResist { get; set; } = 1f;
-
-		/// <summary> The minimum pickaxe power required for pickaxes to mine this block. Defaults to 0. </summary>
-		public int MinPick { get; set; }
-
 		/// <summary> An array of the IDs of tiles that this tile can be considered as when looking for crafting stations. </summary>
 		public int[] AdjTiles { get; set; } = new int[0];
 
@@ -254,6 +248,27 @@ namespace Terraria.ModLoader
 		/// <param name="j">The y position in tile coordinates.</param>
 		public virtual bool Drop(int i, int j) {
 			return true;
+		}
+
+		/// <summary>
+		/// Whether a tool that has a given ToolType can be used on this tile. Returns null by default (follow vanilla behavior).
+		/// </summary>
+		/// <param name="i"> The x position in tile coordinates. </param>
+		/// <param name="j"> The y position in tile coordinates. </param>
+		/// <param name="item"> The item being used. </param>
+		/// <param name="toolType"> The ToolType being used. </param>
+		public virtual bool? CanUseTool(int i, int j, Item item, ToolType toolType) => null;
+
+		/// <summary>
+		/// Allows you to modify the damage taken by this tile when an item with a specific ToolType is used on it.
+		/// </summary>
+		/// <param name="i"> The x position in tile coordinates. </param>
+		/// <param name="j"> The y position in tile coordinates. </param>
+		/// <param name="item"> The item being used. </param>
+		/// <param name="toolType"> The ToolType being used. </param>
+		/// <param name="minePower"> The damage the tile will take, before any modifiers are applied. </param>
+		/// <param name="powerMod"> The modifier that will be applied to the damage. Multiplying it by 0 will effectively render the tile unmineable by a tool. </param>
+		public virtual void MineDamage(int i, int j, Item item, ToolType toolType, int minePower, ref StatModifier powerMod) {
 		}
 
 		/// <summary>

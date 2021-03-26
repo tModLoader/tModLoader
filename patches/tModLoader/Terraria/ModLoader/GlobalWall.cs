@@ -48,6 +48,29 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Whether a tool that has a given ToolType can be used on a wall. Returns null by default (follow vanilla behavior).
+		/// </summary>
+		/// <param name="i"> The x position in tile coordinates. </param>
+		/// <param name="j"> The y position in tile coordinates. </param>
+		/// <param name="type"> The type of wall being affected. </param>
+		/// <param name="item"> The item being used. </param>
+		/// <param name="toolType"> The ToolType being used. </param>
+		public virtual bool? CanUseTool(int i, int j, int type, Item item, ToolType toolType) => null;
+
+		/// <summary>
+		/// Allows you to modify the damage taken by a wall when an item with a specific ToolType is used on it.
+		/// </summary>
+		/// <param name="i"> The x position in tile coordinates. </param>
+		/// <param name="j"> The y position in tile coordinates. </param>
+		/// <param name="type"> The type of wall being affected. </param>
+		/// <param name="item"> The item being used. </param>
+		/// <param name="toolType"> The ToolType being used. </param>
+		/// <param name="minePower"> The damage the wall will take, before any modifiers are applied. </param>
+		/// <param name="powerMod"> The modifier that will be applied to the damage. Multiplying it by 0 will effectively render the wall unmineable by a tool. </param>
+		public virtual void MineDamage(int i, int j, int type, Item item, ToolType toolType, int minePower, ref StatModifier powerMod) {
+		}
+
+		/// <summary>
 		/// Allows you to determine what happens when the wall at the given coordinates is killed or hit with a hammer. Fail determines whether the wall is mined (whether it is killed).
 		/// </summary>
 		public virtual void KillWall(int i, int j, int type, ref bool fail) {

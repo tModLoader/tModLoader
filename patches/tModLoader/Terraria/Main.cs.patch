@@ -1578,7 +1578,7 @@
  					if (num6 == 0f)
  						toolTipLine[numLines] = Lang.tip[14].Value;
  					else if ((double)num6 <= 1.5)
-@@ -15175,67 +_,80 @@
+@@ -15175,69 +_,95 @@
  					else
  						toolTipLine[numLines] = Lang.tip[22].Value;
  
@@ -1643,6 +1643,18 @@
  					numLines++;
  				}
  
++				if (item.IsTool) {
++					foreach (var toolType in item.GetToolTypes()) {
++						if (!toolType.ShowsOnTooltip)
++							continue;
++
++						toolTipLine[numLines] = (int)(item.GetToolPower(toolType) * toolType.TooltipToolPowerMultiplier) + new LocalizedText("", toolType.DisplayName).Value;
++						toolTipNames[numLines] = toolType.TooltipName;
++						numLines++;
++					}
++				}
++
++				/*
  				if (item.pick > 0) {
  					toolTipLine[numLines] = item.pick + Lang.tip[26].Value;
 +					toolTipNames[numLines] = "PickPower";
@@ -1660,7 +1672,10 @@
 +					toolTipNames[numLines] = "HammerPower";
  					numLines++;
  				}
++				*/
  
+ 				if (item.tileBoost != 0) {
+ 					int tileBoost = item.tileBoost;
 @@ -15246,41 +_,49 @@
  					else
  						toolTipLine[numLines] = tileBoost + Lang.tip[54].Value;

@@ -28,7 +28,16 @@ namespace ExampleMod.Content.Items.Tools
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
 
-			Item.pick = 220; // How strong the pickaxe is, see https://terraria.gamepedia.com/Pickaxe_power for a list of common values
+			Item.SetToolPower(ToolType.Pickaxe, 220); // How strong the pickaxe is, see https://terraria.gamepedia.com/Pickaxe_power for a list of common values
+		}
+
+		public override void ModifyToolPower(Player player, ToolType toolType, Tile tile, int x, int y, int power, ref StatModifier powerMod) {
+			//This tool increases its effective power the lower the tile being mined is from the surface, up to 2 times at the very bottom of the world.
+			//This increase in power will not dynamically show on the tooltip, nor will it count towards minimum mining power required to mine certain tiles.
+			if (x > Main.worldSurface) {
+				float percentDownFromSurface = (float)((x - Main.worldSurface) / (Main.maxTilesY - Main.worldSurface));
+				powerMod *= 1 + percentDownFromSurface;
+			}
 		}
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {

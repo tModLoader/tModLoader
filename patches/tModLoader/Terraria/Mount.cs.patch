@@ -116,6 +116,16 @@
  			return num;
  		}
  
+@@ -2182,7 +_,8 @@
+ 						flag2 = false;
+ 
+ 					if (flag2)
+-						mountedPlayer.PickTile(point.X, point.Y, pickPower);
++						// Temporary fix for DCU using new PickTile method signature. Could be handled better.
++						mountedPlayer.PickTile(point.X, point.Y, pickPower, ContentSamples.ItemsByType[ItemID.DrillContainmentUnit]);
+ 				}
+ 
+ 				Vector2 vector = new Vector2((float)(point.X << 4) + 8f, (float)(point.Y << 4) + 8f);
 @@ -2480,6 +_,9 @@
  		private Vector2 GetWitchBroomTrinketOriginOffset(Player player) => new Vector2(27 * player.direction, 5f);
  

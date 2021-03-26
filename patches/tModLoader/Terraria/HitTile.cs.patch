@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/HitTile.cs
 +++ src/tModLoader/Terraria/HitTile.cs
-@@ -2,6 +_,7 @@
+@@ -2,11 +_,12 @@
  using Microsoft.Xna.Framework.Graphics;
  using System;
  using Terraria.GameContent;
@@ -8,6 +8,39 @@
  using Terraria.Utilities;
  
  namespace Terraria
+ {
+-	public class HitTile
++	public partial class HitTile
+ 	{
+ 		public class HitTileObject
+ 		{
+@@ -117,7 +_,8 @@
+ 					break;
+ 				}
+ 			}
+-
++			
++			OnHitObject();
+ 			hitTileObject = data[bufferLocation];
+ 			hitTileObject.X = x;
+ 			hitTileObject.Y = y;
+@@ -210,6 +_,8 @@
+ 				}
+ 
+ 				hitTileObject.timeToLive--;
++				if (pauseDuration > 0)
++					goto PostDamageDecay;
+ 				if ((double)hitTileObject.timeToLive < 12.0)
+ 					hitTileObject.damage -= 10;
+ 				else if ((double)hitTileObject.timeToLive < 24.0)
+@@ -219,6 +_,7 @@
+ 				else if ((double)hitTileObject.timeToLive < 48.0)
+ 					hitTileObject.damage -= 2;
+ 
++				PostDamageDecay:
+ 				if (hitTileObject.damage < 0) {
+ 					hitTileObject.Clear();
+ 					flag = true;
 @@ -291,7 +_,7 @@
  
  				bool flag2 = false;

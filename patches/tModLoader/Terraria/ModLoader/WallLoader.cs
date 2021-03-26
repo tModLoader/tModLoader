@@ -27,6 +27,9 @@ namespace Terraria.ModLoader
 		private static DelegateCreateDust[] HookCreateDust;
 		private delegate bool DelegateDrop(int i, int j, int type, ref int dropType);
 		private static DelegateDrop[] HookDrop;
+		private static Func<int, int, int, Item, ToolType, bool?>[] HookCanUseTool;
+		private delegate void DelegateMineDamage(int i, int j, int type, Item item, ToolType toolType, int minePower, ref StatModifier powerMod);
+		private static DelegateMineDamage[] HookMineDamage;
 		private delegate void DelegateKillWall(int i, int j, int type, ref bool fail);
 		private static DelegateKillWall[] HookKillWall;
 		private static Func<int, int, int, bool>[] HookCanExplode;
@@ -86,6 +89,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookNumDust, globalWalls, g => g.NumDust);
 			ModLoader.BuildGlobalHook(ref HookCreateDust, globalWalls, g => g.CreateDust);
 			ModLoader.BuildGlobalHook(ref HookDrop, globalWalls, g => g.Drop);
+			ModLoader.BuildGlobalHook(ref HookCanUseTool, globalWalls, g => g.CanUseTool);
+			ModLoader.BuildGlobalHook(ref HookMineDamage, globalWalls, g => g.MineDamage);
 			ModLoader.BuildGlobalHook(ref HookKillWall, globalWalls, g => g.KillWall);
 			ModLoader.BuildGlobalHook(ref HookCanExplode, globalWalls, g => g.CanExplode);
 			ModLoader.BuildGlobalHook(ref HookModifyLight, globalWalls, g => g.ModifyLight);
@@ -176,6 +181,35 @@ namespace Terraria.ModLoader
 				}
 			}
 			return GetWall(type)?.Drop(i, j, ref dropType) ?? true;
+		}
+		public static bool? CanUseTool(int i, int j, int type, Item item, ToolType toolType) {
+			bool? canUse = null;
+			foreach (var hook in HookCanUseTool) {
+				switch (hook(i, j, type, item, toolType)) {
+					case null:
+						continue;
+					case true:
+						canUse = true;
+						continue;
+					case false:
+						return false;
+				}
+			}
+
+			return canUse ?? GetWall(type)?.CanUseTool(i, j, item, toolType);
+		}
+		//in Terraria.Player.ItemCheck_UseMiningTools_TryHittingWall
+		// after a few lines replacing int num = (int)((float)sItem.hammer * 1.5f);
+		// WallLoader.MineDamage(wX, wY, Main.tile[wX, wY].wall, sItem, ToolType.HammerWall, sItem.GetToolPower(ToolType.HammerWall), powerMod, ref num);
+		public static void MineDamage(int i, int j, int type, Item item, ToolType toolType, int minePower, StatModifier powerMod, ref int damage) {
+			GetWall(type)?.MineDamage(i, j, item, toolType, minePower, ref powerMod);
+			foreach (var hook in HookMineDamage) {
+				hook(i, j, type, item, toolType, minePower, ref powerMod);
+			}
+			if ((float)powerMod <= 0)
+				damage = 0;
+			else
+				damage += Math.Max((int)(minePower * (float)powerMod), 1);
 		}
 		//in Terraria.WorldGen.KillWall after if statements setting fail to true call
 		//  WallLoader.KillWall(i, j, tile.wall, ref fail);

@@ -28,8 +28,22 @@ namespace ExampleMod.Content.Tiles
 			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleOre>();
 			SoundType = SoundID.Tink;
 			SoundStyle = 1;
-			//mineResist = 4f;
-			//minPick = 200;
+		}
+
+		// Stops this tile from being affected by drills in any way. This stops the dust and sound that happens when hitting tiles.
+		public override bool? CanUseTool(int i, int j, Item item, ToolType toolType) => ItemID.Sets.IsDrill[item.type] ? (bool?)false : null;
+
+		public override void MineDamage(int i, int j, Item item, ToolType toolType, int minePower, ref StatModifier powerMod) {
+			//Only allow the copper pickaxe or a tool with 100 mining power or higher to break this tile.
+			if (item.type != ItemID.CopperPickaxe) {
+				if (minePower < 100) {
+					powerMod *= 0;
+				}
+				else {
+					//Make it so it takes 8 hits minimum for a tool that isn't the copper pickaxe to mine this tile.
+					powerMod /= 8;
+				}
+			}
 		}
 	}
 

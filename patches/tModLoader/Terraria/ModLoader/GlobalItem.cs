@@ -335,6 +335,45 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Whether one of this tool's ToolTypes can be used at the given tile coordinates, regardless of any conditions. Returns null by default (follow vanilla behavior).
+		/// </summary>
+		/// <param name="item"> The tool being used. </param>
+		/// <param name="player"> The player using the tool. </param>
+		/// <param name="toolType"> The ToolType being checked. </param>
+		/// <param name="tile"> The target tile. </param>
+		/// <param name="x"> The x coordinate of the target tile.</param>
+		/// <param name="y"> The y coordinate of the target tile.</param>
+		public virtual bool? CanUseTool(Item item, Player player, ToolType toolType, Tile tile, int x, int y) => null;
+
+		/// <summary>
+		/// Allows modifying the damage a tile will take from one of the tool's ToolTypes.
+		/// </summary>
+		/// <param name="item"> The tool being used. </param>
+		/// <param name="player"> The player using the tool. </param>
+		/// <param name="toolType"> The ToolType being checked. </param>
+		/// <param name="tile"> The target tile. </param>
+		/// <param name="x"> The x coordinate of the target tile. </param>
+		/// <param name="y"> The y coordinate of the target tile. </param>
+		/// <param name="power"> The damage the tile will take from the tool, if no modifiers are applied. </param>
+		/// <param name="powerMod"> The modifier that will be applied to the tool's power. </param>
+		public virtual void ModifyToolPower(Item item, Player player, ToolType toolType, Tile tile, int x, int y, int power, ref StatModifier powerMod) {
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when one of the tool's ToolTypes deals damage to a tile.
+		/// </summary>
+		/// <param name="item"> The tool being used. </param>
+		/// <param name="player"> The player using the tool. </param>
+		/// <param name="toolType"> The ToolType being checked. </param>
+		/// <param name="tile"> The target tile. </param>
+		/// <param name="x"> The x coordinate of the target tile. </param>
+		/// <param name="y"> The y coordinate of the target tile. </param>
+		/// <param name="damage"> The damage the tile took from the tool, after modifers were applied. </param>
+		/// <param name="fullDamage"> Whether the tile took enough damage for the ToolType's effect to be applied. </param>
+		public virtual void OnDamageTile(Item item, Player player, ToolType tooltype, Tile tile, int x, int y, int damage, bool fullDamage) {
+		}
+
+		/// <summary>
 		/// Allows you to make things happen when an item is in the player's inventory (for example, how the cell phone makes information display).
 		/// </summary>
 		public virtual void UpdateInventory(Item item, Player player) {
