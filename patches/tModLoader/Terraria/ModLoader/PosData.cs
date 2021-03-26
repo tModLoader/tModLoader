@@ -7,17 +7,39 @@ namespace Terraria.ModLoader
 {
 	public struct PosData<T>
 	{
+		public abstract class OrderedSparseInserter {
+			internal PosData<T> last;
+			internal List<PosData<T>> list;
+			internal bool compressEqualValues;
+			internal bool insertDefaultEntries;
+
+			public void SafeAdd(int x, int y, T value) => SafeAdd(PosData.CoordsToPos(x, y), value);
+			public virtual void SafeAdd(int pos, T Value) { }
+
+			internal void Add(int pos, T value) {
+				if (compressEqualValues) {
+					if (insertDefaultEntries && pos >= last.pos + 2) {
+						// make sure the values between last.pos and pos are 'empty' by ensuring at two positions later than last. 
+						// note that this won't make a new entry if last.value is default, and will update last if it does make a new value
+						Add(last.pos + 1, default);
+					}
+
+					if (EqualityComparer<T>.Default.Equals(value, last.value))
+						return;
+				}
+
+				list.Add(last = new PosData<T>(pos, value));
+			}
+
+			public virtual PosData<T>[] Build() => list.ToArray();
+		}
+
 		/// <summary>
 		/// Efficient builder for <see cref="PosData{T}"/>[] lookups covering the whole world.
 		/// Must add elements in ascending pos order.
 		/// </summary>
-		public class OrderedSparseLookupBuilder 
+		public class OrderedSparseLookupBuilder : OrderedSparseInserter
 		{
-			private readonly List<PosData<T>> list;
-			private readonly bool compressEqualValues;
-			private readonly bool insertDefaultEntries;
-			private PosData<T> last;
-
 			/// <summary>
 			/// Use <paramref name="compressEqualValues"/> to produce a smaller lookup which won't work with <see cref="PosData.LookupExact"/>
 			/// When using <paramref name="compressEqualValues"/> without <paramref name="insertDefaultEntries"/>,
@@ -33,44 +55,26 @@ namespace Terraria.ModLoader
 				this.insertDefaultEntries = insertDefaultEntries;
 			}
 
-			public void Add(int x, int y, T value) => Add(PosData.CoordsToPos(x, y), value);
-
-			public void Add(int pos, T value) {
+			public override void SafeAdd(int pos, T value) {
 				if (pos <= last.pos)
 					throw new ArgumentException($"Must build in ascending index order. Prev: {last.pos}, pos: {pos}");
 
-				if (compressEqualValues) {
-					if (insertDefaultEntries && pos >= last.pos + 2) {
-						// make sure the values between last.pos and pos are 'empty' by ensuring at two positions later than last. 
-						// note that this won't make a new entry if last.value is default, and will update last if it does make a new value
-						Add(last.pos + 1, default);
-					}
-
-					if (EqualityComparer<T>.Default.Equals(value, last.value))
-						return;
-				}
-
-				list.Add(last = new PosData<T>(pos, value));
+				Add(pos, value);
 			}
-
-			public PosData<T>[] Build() => list.ToArray();
 		}
 
 		/// <summary>
 		/// Efficient inserter for <see cref="PosData{T}"/>[] merging on an existing lookup array.
 		/// Must add new elements in ascending pos order.
 		/// </summary>
-		public class OrderedSparseLookupInserter
+		public class OrderedSparseLookupMerger : OrderedSparseInserter
 		{
 			private readonly List<PosData<T>> targetListUpper;
 			private readonly List<PosData<T>> targetListLower;
-			private readonly List<PosData<T>> targetList;
+			
 			private readonly PosData<T>[] target;
 			private readonly int yTop, yBottom;
 
-			private readonly bool compressEqualValues;
-			private readonly bool insertDefaultEntries;
-			private PosData<T> last;
 			private int lastIndex;
 
 			/// <summary>
@@ -82,11 +86,11 @@ namespace Terraria.ModLoader
 			/// <param name="target"> The original array that you wish to merge new entries in to </param>
 			/// <param name="compressedEqualValues"> Reduces the size of the map, but gives unspecified positions a value.</param>
 			/// <param name="insertedDefaultEntries">Ensures unspecified positions are assigned a default value when used with <paramref name="compressEqualValues"/></param>
-			public OrderedSparseLookupInserter(PosData<T>[] target, int xLeft, int xRight, int yTop, int yBottom, bool compressedEqualValues = true, bool insertedDefaultEntries = false) {
+			public OrderedSparseLookupMerger(PosData<T>[] target, int xLeft, int xRight, int yTop, int yBottom, bool compressedEqualValues = true, bool insertedDefaultEntries = false) {
 				this.target = target;
 				this.yTop = yTop;
 				this.yBottom = yBottom;
-				targetList = new List<PosData<T>>(1048576 - target.Length);
+				list = new List<PosData<T>>(1048576 - target.Length);
 
 				int lowerLoc = PosData.CoordsToPos(xLeft, yTop);
 				lastIndex = PosData.FindIndex(target, lowerLoc);
@@ -106,41 +110,29 @@ namespace Terraria.ModLoader
 				insertDefaultEntries = insertedDefaultEntries;
 			}
 
-			public void SafeAdd(int x, int y, T value) => SafeAdd(PosData.CoordsToPos(x, y), value);
-
-			private void Add(int pos, T value) {
-				if (compressEqualValues) {
-					if (insertDefaultEntries && pos >= last.pos + 2) {
-						// make sure the values between last.pos and pos are 'empty' by ensuring at two positions later than last. 
-						// note that this won't make a new entry if last.value is default, and will update last if it does make a new value
-						Add(last.pos + 1, default);
-					}
-
-					if (EqualityComparer<T>.Default.Equals(value, last.value))
-						return;
-				}
-
-				targetList.Add(last = new PosData<T>(pos, value));
-			}
-
-			public void SafeAdd(int pos, T value) {
+			public override void SafeAdd(int pos, T value) {
 				if (pos <= last.pos)
 					throw new ArgumentException($"Must build in ascending index order. Prev: {last.pos}, pos: {pos}");
 
 				while (target[lastIndex + 1].pos <= pos) {
 					int y = target[lastIndex + 1].Y;
-					if (!(y <= yTop && y >= yBottom)) {
-						Add(target[lastIndex + 1].pos, target[lastIndex + 1].value);
+					if (!(y >= yTop && y <= yBottom)) { // Not inside the rectangle, re-add direct
+						lastIndex++;
+						Add(target[lastIndex].pos, target[lastIndex].value);
 					}
-
-					lastIndex++;
+					else {
+						while (target[lastIndex + 1].Y <= yBottom) { // Find the last entry within the rectangle
+							lastIndex++;
+						}
+						Add(PosData.CoordsToPos(target[lastIndex].X, yBottom + 1), target[lastIndex].value); // Place the last entry outside rectangle in case is still used
+					}
 				}
 
 				Add(pos, value);
 			}
 
-			public PosData<T>[] Build() {
-				targetListLower.AddRange(targetList);
+			public override PosData<T>[] Build() {
+				targetListLower.AddRange(list);
 				targetListLower.AddRange(targetListUpper);
 				return targetListLower.ToArray();
 			}

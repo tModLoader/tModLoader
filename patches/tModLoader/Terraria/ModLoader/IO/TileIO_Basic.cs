@@ -10,15 +10,19 @@ namespace Terraria.ModLoader.IO
 		{
 			public readonly string entriesKey;
 			public readonly string dataKey;
+			public readonly string chunkXKey;
+			public readonly string chunkYKey;
 
 			public TEntry[] entries;
 			public PosData<ushort>[] unloadedEntryLookup;
 
 			public List<ushort> unloadedTypes = new List<ushort>();
 
-			protected IOImpl(string entriesKey, string dataKey) {
+			protected IOImpl(string entriesKey, string dataKey, string chunkXKey, string chunkYKey) {
 				this.entriesKey = entriesKey;
 				this.dataKey = dataKey;
+				this.chunkYKey = chunkYKey;
+				this.chunkXKey = chunkXKey;
 			}
 
 			protected abstract int LoadedBlockCount { get; }
@@ -27,7 +31,7 @@ namespace Terraria.ModLoader.IO
 
 			protected abstract TEntry ConvertBlockToEntry(TBlock block);
 
-			private List<TEntry> CreateEntries() {
+			internal List<TEntry> CreateEntries() {
 				var entries = Enumerable.Repeat<TEntry>(null, LoadedBlockCount).ToList();
 				// Create entries for all loaded tiles (vanilla included?), and store in entries list.
 				foreach (var block in LoadedBlocks) {
@@ -39,9 +43,8 @@ namespace Terraria.ModLoader.IO
 				return entries;
 			}
 
-			public void LoadEntries(TagCompound tag, out TEntry[] savedEntryLookup) {
+			public void LoadEntries(TagCompound tag, out TEntry[] savedEntryLookup, List<TEntry> entries) {
 				var savedEntryList = tag.GetList<TEntry>(entriesKey);
-				var entries = CreateEntries();
 
 				// Return if there is no saved mod blocks in world.
 				if (savedEntryList.Count == 0) {
@@ -71,12 +74,17 @@ namespace Terraria.ModLoader.IO
 
 			protected abstract void ReadData(Tile tile, TEntry entry, BinaryReader reader);
 
-			public void LoadData(TagCompound tag, TEntry[] savedEntryLookup) {
+			public void LoadData<TInserter>(TagCompound tag, TEntry[] savedEntryLookup, TInserter inserter, int xL = 0, int xR = -1, int yT = 0, int yB = -1) where TInserter : PosData<ushort>.OrderedSparseInserter {
 				using var reader = new BinaryReader(new MemoryStream(tag.GetByteArray(dataKey)));
-				var builder = new PosData<ushort>.OrderedSparseLookupBuilder();
+				if (xR < 0) {
+					xR = Main.maxTilesX;
+				}
+				if (yB < 0) {
+					yB = Main.maxTilesY;
+				}
 
-				for (int x = 0; x < Main.maxTilesX; x++) {
-					for (int y = 0; y < Main.maxTilesY; y++) {
+				for (int x = xL; x < xR; x++) {
+					for (int y = yT; y < yB; y++) {
 						ushort saveType = reader.ReadUInt16();
 						if (saveType == 0) {
 							continue;
@@ -86,19 +94,20 @@ namespace Terraria.ModLoader.IO
 
 						// Set the type to either the existing type or the unloaded type
 						if (entry.IsUnloaded && !canPurgeOldData) {
-							builder.Add(x, y, entry.type);
+							inserter.SafeAdd(x, y, entry.type);
 						}
 
 						ReadData(Main.tile[x, y], entry, reader);
 					}
 				}
 
-				unloadedEntryLookup = builder.Build();
+				unloadedEntryLookup = inserter.Build();
 			}
 
 			public void Save(TagCompound tag) {
 				if (entries == null) {
 					entries = CreateEntries().ToArray();
+					// Something something Run LoadEntries for all schmatics used in world gen here
 				}
 
 				tag[dataKey] = SaveData(out var hasBlocks);
@@ -115,15 +124,22 @@ namespace Terraria.ModLoader.IO
 
 			protected abstract void WriteData(BinaryWriter writer, Tile tile, TEntry entry);
 
-			public byte[] SaveData(out bool[] hasObj) {
+			public byte[] SaveData(out bool[] hasObj, int xL = 0, int xR = -1, int yT = 0, int yB = -1) {
 				using var ms = new MemoryStream();
-				var writer = new BinaryWriter(ms); 
+				var writer = new BinaryWriter(ms);
+
+				if (xR < 0) {
+					xR = Main.maxTilesX;
+				}
+				if (yB < 0) {
+					yB = Main.maxTilesY;
+				}
 
 				var unloadedReader = new PosData<ushort>.OrderedSparseLookupReader(unloadedEntryLookup);
 				hasObj = new bool[entries.Length];
 
-				for (int x = 0; x < Main.maxTilesX; x++) {
-					for (int y = 0; y < Main.maxTilesY; y++) {
+				for (int x = xL; x < xR; x++) {
+					for (int y = yT; y < yB; y++) {
 						Tile tile = Main.tile[x, y];
 
 						int type = GetModBlockType(tile);
@@ -151,11 +167,33 @@ namespace Terraria.ModLoader.IO
 				entries = null;
 				unloadedEntryLookup = null;
 			}
+
+			public void LoadChunk(int xLeft, int yTop, TagCompound tag) {
+				LoadEntries(tag, out var tileEntriesLookup, entries.ToList());
+				int xRight = tag.Get<int>(chunkXKey) + xLeft;
+				int yBottom = tag.Get<int>(chunkYKey) + yTop;
+
+				LoadData(tag, tileEntriesLookup, 
+					new PosData<ushort>.OrderedSparseLookupMerger(
+						unloadedEntryLookup, xLeft, xRight, yTop, yBottom 
+					), 
+					xLeft, xRight, yTop, yBottom
+				);
+
+				WorldIO.ValidateSigns(); //call this at end
+			}
+
+			public void SaveChunk(TagCompound tag, int xLeft, int yTop, int xSize, int ySize) {
+				tag[chunkXKey] = xSize;
+				tag[chunkYKey] = ySize;
+				tag[dataKey] = SaveData(out var hasBlocks, xLeft, yTop, xSize + xLeft, ySize + yTop);
+				tag[entriesKey] = SelectEntries(hasBlocks, entries).ToList();
+			}
 		}
 
 		public class TileIOImpl : IOImpl<ModTile, TileEntry>
 		{
-			public TileIOImpl() : base("tileMap", "tileData") { }
+			public TileIOImpl() : base("tileMap", "tileData", "tileXSize", "tileYSize") { }
 
 			protected override int LoadedBlockCount => TileLoader.TileCount;
 
@@ -190,7 +228,7 @@ namespace Terraria.ModLoader.IO
 
 		public class WallIOImpl : IOImpl<ModWall, WallEntry>
 		{
-			public WallIOImpl() : base("wallMap", "wallData") { }
+			public WallIOImpl() : base("wallMap", "wallData", "wallXSize", "wallYSize") { }
 
 			protected override int LoadedBlockCount => WallLoader.WallCount;
 
@@ -213,17 +251,20 @@ namespace Terraria.ModLoader.IO
 		internal static TileIOImpl Tiles = new TileIOImpl();
 		internal static WallIOImpl Walls = new WallIOImpl();
 
+		internal static bool canPurgeOldData => false; //for deleting unloaded mod data in a save; should point to UI flag; temp false
+
 		//NOTE: LoadBasics can't be separated into LoadWalls() and LoadTiles() because of LoadLegacy.
 		internal static void LoadBasics(TagCompound tag) {
-			Tiles.LoadEntries(tag, out var tileEntriesLookup);
-			Walls.LoadEntries(tag, out var wallEntriesLookup);
+
+			Tiles.LoadEntries(tag, out var tileEntriesLookup, Tiles.CreateEntries());
+			Walls.LoadEntries(tag, out var wallEntriesLookup, Walls.CreateEntries());
 
 			if (!tag.ContainsKey("wallData")) {
 				LoadLegacy(tag, tileEntriesLookup, wallEntriesLookup);
 			}
 			else {
-				Tiles.LoadData(tag, tileEntriesLookup);
-				Walls.LoadData(tag, wallEntriesLookup);
+				Tiles.LoadData(tag, tileEntriesLookup, new PosData<ushort>.OrderedSparseLookupBuilder());
+				Walls.LoadData(tag, wallEntriesLookup, new PosData<ushort>.OrderedSparseLookupBuilder());
 			}
 
 			WorldIO.ValidateSigns(); //call this at end
@@ -237,7 +278,17 @@ namespace Terraria.ModLoader.IO
 			return tag;
 		}
 
-		internal static bool canPurgeOldData => false; //for deleting unloaded mod data in a save; should point to UI flag; temp false
+		internal static void LoadChunk(TagCompound tag, int xLeft, int yTop) {
+			Tiles.LoadChunk(xLeft, yTop, tag);
+			Walls.LoadChunk(xLeft, yTop, tag);
+		}
+
+		internal static TagCompound SaveChunk(int xLeft, int yTop, int xSize, int ySize) {
+			TagCompound tag = new TagCompound();
+			Tiles.SaveChunk(tag, xLeft, yTop, xSize, ySize);
+			Walls.SaveChunk(tag, xLeft, yTop, xSize, ySize);
+			return tag;
+		}
 
 		// Called to ensure proper loading/unloaded behaviour with respect to Unloaded Placeholders
 		internal static void ResizeArrays() {
