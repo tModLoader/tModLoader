@@ -20,7 +20,9 @@ namespace ExampleMod.Content.ToolTypes
 
 		// Use this to prevent this ToolType from mining specific tiles. This ToolType will only mine snow and ice (but not slush).
 		// Note that there are other restrictions applied depending on a ToolType's priority.
-		public override bool CanUseTool(Player player, Item item, Tile tile, int x, int y) => TileID.Sets.IcesSnow[tile.type];
+		public override bool CanUseTool(Player player, Item item, Tile tile, int x, int y) {
+			return TileID.Sets.IcesSnow[tile.type];
+		}
 
 		// Use this to program how this ToolType behaves, whether it is mining tiles or something else.
 		// This one will mine tiles in a 3x3 area, pushed 1 tile away from the player.

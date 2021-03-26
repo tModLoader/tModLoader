@@ -14,12 +14,10 @@
  	{
  		public class HitTileObject
  		{
-@@ -117,7 +_,8 @@
- 					break;
+@@ -118,6 +_,7 @@
  				}
  			}
--
-+			
+ 
 +			OnHitObject();
  			hitTileObject = data[bufferLocation];
  			hitTileObject.X = x;

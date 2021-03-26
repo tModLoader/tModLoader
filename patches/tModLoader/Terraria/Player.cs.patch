@@ -4079,7 +4079,7 @@
  			if (Main.dedServ)
  				return;
  
-@@ -35318,10 +_,13 @@
+@@ -35318,8 +_,11 @@
  		}
  
  		private void ItemCheck_StartActualUse(Item sItem) {
@@ -4089,11 +4089,8 @@
 +			*/
 +			if (sItem.IsTool)
  				toolTime = 1;
--
-+			
+ 
  			if (grappling[0] > -1) {
- 				pulley = false;
- 				pulleyDir = 1;
 @@ -35456,6 +_,9 @@
  		}
  
