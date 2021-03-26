@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Terraria.ModLoader
 {
@@ -53,6 +54,96 @@ namespace Terraria.ModLoader
 			}
 
 			public PosData<T>[] Build() => list.ToArray();
+		}
+
+		/// <summary>
+		/// Efficient inserter for <see cref="PosData{T}"/>[] merging on an existing lookup array.
+		/// Must add new elements in ascending pos order.
+		/// </summary>
+		public class OrderedSparseLookupInserter
+		{
+			private readonly List<PosData<T>> targetListUpper;
+			private readonly List<PosData<T>> targetListLower;
+			private readonly List<PosData<T>> targetList;
+			private readonly PosData<T>[] target;
+			private readonly int yTop, yBottom;
+
+			private readonly bool compressEqualValues;
+			private readonly bool insertDefaultEntries;
+			private PosData<T> last;
+			private int lastIndex;
+
+			/// <summary>
+			/// Used <paramref name="compressedEqualValues"/> to produce a smaller lookup which won't work with <see cref="PosData.LookupExact"/>
+			/// When used <paramref name="compressedEqualValues"/> without <paramref name="insertDefaultEntries"/>,
+			/// unspecified positions will default to the value of the previous specified position
+			/// The x,y parameters will define the rectangle over which you are inserting new entries - the smaller the rectangle, the faster it runs.
+			/// </summary>
+			/// <param name="target"> The original array that you wish to merge new entries in to </param>
+			/// <param name="compressedEqualValues"> Reduces the size of the map, but gives unspecified positions a value.</param>
+			/// <param name="insertedDefaultEntries">Ensures unspecified positions are assigned a default value when used with <paramref name="compressEqualValues"/></param>
+			public OrderedSparseLookupInserter(PosData<T>[] target, int xLeft, int xRight, int yTop, int yBottom, bool compressedEqualValues = true, bool insertedDefaultEntries = false) {
+				this.target = target;
+				this.yTop = yTop;
+				this.yBottom = yBottom;
+				targetList = new List<PosData<T>>(1048576 - target.Length);
+
+				int lowerLoc = PosData.CoordsToPos(xLeft, yTop);
+				lastIndex = PosData.FindIndex(target, lowerLoc);
+				targetListLower = target.Take(lastIndex).ToList();
+
+				int upperLoc = PosData.CoordsToPos(xRight, yBottom);
+				var upper = PosData.FindIndex(target, upperLoc);
+				targetListUpper = new List<PosData<T>>();
+
+				if (target[upper].pos <= upperLoc) {
+					targetListUpper.Add(new PosData<T>(upperLoc + 1, target[upper].value));
+				}
+				targetListUpper.AddRange(target.Skip(upper).ToList());
+
+				last = insertedDefaultEntries ? new PosData<T>(lowerLoc, default) : target[lastIndex];
+				compressEqualValues = compressedEqualValues;
+				insertDefaultEntries = insertedDefaultEntries;
+			}
+
+			public void SafeAdd(int x, int y, T value) => SafeAdd(PosData.CoordsToPos(x, y), value);
+
+			private void Add(int pos, T value) {
+				if (compressEqualValues) {
+					if (insertDefaultEntries && pos >= last.pos + 2) {
+						// make sure the values between last.pos and pos are 'empty' by ensuring at two positions later than last. 
+						// note that this won't make a new entry if last.value is default, and will update last if it does make a new value
+						Add(last.pos + 1, default);
+					}
+
+					if (EqualityComparer<T>.Default.Equals(value, last.value))
+						return;
+				}
+
+				targetList.Add(last = new PosData<T>(pos, value));
+			}
+
+			public void SafeAdd(int pos, T value) {
+				if (pos <= last.pos)
+					throw new ArgumentException($"Must build in ascending index order. Prev: {last.pos}, pos: {pos}");
+
+				while (target[lastIndex + 1].pos <= pos) {
+					int y = target[lastIndex + 1].Y;
+					if (!(y <= yTop && y >= yBottom)) {
+						Add(target[lastIndex + 1].pos, target[lastIndex + 1].value);
+					}
+
+					lastIndex++;
+				}
+
+				Add(pos, value);
+			}
+
+			public PosData<T>[] Build() {
+				targetListLower.AddRange(targetList);
+				targetListLower.AddRange(targetListUpper);
+				return targetListLower.ToArray();
+			}
 		}
 
 		// Enumeration class to access data in a Sparse Lookup System
