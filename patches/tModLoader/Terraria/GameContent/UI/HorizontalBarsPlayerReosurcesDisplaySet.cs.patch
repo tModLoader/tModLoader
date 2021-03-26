@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/UI/HorizontalBarsPlayerReosurcesDisplaySet.cs
++++ src/tModLoader/Terraria/GameContent/UI/HorizontalBarsPlayerReosurcesDisplaySet.cs
+@@ -36,6 +_,8 @@
+ 			_panelRightMP = Main.Assets.Request<Texture2D>(str + "\\MP_Panel_Right", mode);
+ 		}
+ 
++		public string SetName => "HorizontalBars";
++
+ 		public void Draw() {
+ 			PrepareFields(Main.LocalPlayer);
+ 			SpriteBatch spriteBatch = Main.spriteBatch;

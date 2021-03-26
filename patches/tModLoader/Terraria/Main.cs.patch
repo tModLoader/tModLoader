@@ -2896,6 +2896,17 @@
  					array4[num5 - 1] = 18;
  					for (int num23 = 0; num23 < num5; num23++) {
  						array7[num23] = 0.75f;
+@@ -37442,6 +_,10 @@
+ 					IPlayerResourcesDisplaySet playerResourcesDisplaySet = null;
+ 					foreach (KeyValuePair<string, IPlayerResourcesDisplaySet> playerResourcesSet in PlayerResourcesSets) {
+ 						IPlayerResourcesDisplaySet value2 = playerResourcesSet.Value;
++						if (Main.ActivePlayerResourcesSet is ModResourceDisplaySet moddedSet) {
++							arg2 = moddedSet.DisplayName;
++							break;
++						}
+ 						if (value2 == ActivePlayerResourcesSet) {
+ 							arg2 = Language.GetTextValue("UI.HealthManaStyle_" + playerResourcesSet.Key);
+ 							break;
 @@ -37458,6 +_,11 @@
  						ActivePlayerResourcesSet = playerResourcesDisplaySet;
  

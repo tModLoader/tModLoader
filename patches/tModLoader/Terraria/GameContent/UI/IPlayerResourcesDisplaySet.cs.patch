@@ -1,0 +1,14 @@
+--- src/Terraria/Terraria/GameContent/UI/IPlayerResourcesDisplaySet.cs
++++ src/tModLoader/Terraria/GameContent/UI/IPlayerResourcesDisplaySet.cs
+@@ -2,6 +_,11 @@
+ {
+ 	public interface IPlayerResourcesDisplaySet
+ 	{
++		/// <summary>
++		/// The name of the display set. Used for identification.
++		/// </summary>
++		string SetName { get; }
++
+ 		void Draw();
+ 
+ 		void TryToHover();

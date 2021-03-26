@@ -85,6 +85,17 @@
  					num4 = 1f;
  					num5 = 1.001f;
  					num6 = 0.001f;
+@@ -716,6 +_,10 @@
+ 				foreach (KeyValuePair<string, IPlayerResourcesDisplaySet> playerResourcesSet in Main.PlayerResourcesSets) {
+ 					IPlayerResourcesDisplaySet value6 = playerResourcesSet.Value;
+ 					if (value6 == Main.ActivePlayerResourcesSet) {
++						if (Main.ActivePlayerResourcesSet is ModResourceDisplaySet moddedSet) {
++							arg2 = moddedSet.DisplayName;
++							break;
++						}
+ 						arg2 = Language.GetTextValue("UI.HealthManaStyle_" + playerResourcesSet.Key);
+ 						break;
+ 					}
 @@ -730,6 +_,14 @@
  					rightHover = num16;
  					if (flag4)

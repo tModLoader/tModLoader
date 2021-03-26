@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/UI/FancyClassicPlayerResourcesDisplaySet.cs
++++ src/tModLoader/Terraria/GameContent/UI/FancyClassicPlayerResourcesDisplaySet.cs
+@@ -49,6 +_,8 @@
+ 			_starFill = Main.Assets.Request<Texture2D>(str + "\\Star_Fill", mode);
+ 		}
+ 
++		public string SetName => "New";
++
+ 		public void Draw() {
+ 			Player localPlayer = Main.LocalPlayer;
+ 			SpriteBatch spriteBatch = Main.spriteBatch;

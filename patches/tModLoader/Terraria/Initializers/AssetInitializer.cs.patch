@@ -28,3 +28,11 @@
  		}
  
  		private static void LoadMinimapFrames(AssetRequestMode mode) {
+@@ -647,6 +_,7 @@
+ 				text = "New";
+ 
+ 			obj.Put("PlayerResourcesSet", text);
++			obj.Put("RequestedResourcesSet", text);
+ 		}
+ 
+ 		private static Asset<T> LoadAsset<T>(string assetName, AssetRequestMode mode) where T : class => Main.Assets.Request<T>(assetName, mode);
