@@ -12,9 +12,13 @@ namespace ExampleMod.Content.DisplayStyles
 	// the ResourceDrawSettings struct instead.
 	public class ExampleManualDrawDisplayStyle : ModResourcesDisplayStyle
 	{
-		// Change the display name shown in the settings menu
-		// This is entirely irrelevant to the internal name of a style, which is "ModName:Name"
-		public override string DisplayName => "Text Example";
+		public override void SetupContent() {
+			base.SetupContent();
+			
+			// Change the display name shown in the settings menu
+			// This is entirely irrelevant to the internal name of a style, which is "ModName/Name"
+			DisplayName.SetDefault("Text Example");
+		}
 
 		// Here we have an example of manually drawing the value of a player's HP and mana through text
 		public override void Draw() {

@@ -13,10 +13,6 @@ namespace ExampleMod.Content.DisplayStyles
 	// In this example, we mimic the Fancy-Classic style but swap mana and heart textures with item textures, while also cleaning up the code
 	public class ExampleDrawSettingsDisplayStyle : ModResourcesDisplayStyle
 	{
-		// Change the display name shown in the settings menu
-		// This is entirely irrelevant to the internal name of a style, which is "ModName:Name"
-		public override string DisplayName => "DrawSettings Example";
-
 		public int playerLifeFruit;
 		public int lastHeartIndex;
 		public int heartRow1Count;
@@ -29,6 +25,14 @@ namespace ExampleMod.Content.DisplayStyles
 		public float playerLife;
 		public bool hoveringOverLife;
 		public bool hoveringOverMana;
+		
+		public override void SetupContent() {
+			base.SetupContent();
+			
+			// Change the display name shown in the settings menu
+			// This is entirely irrelevant to the internal name of a style, which is "ModName/Name"
+			DisplayName.SetDefault("DrawSettings Example");
+		}
 		
 		public Asset<Texture2D> heart = TextureAssets.Item[ItemID.ClayBlock];
 		public Asset<Texture2D> lifeFruitHeart = TextureAssets.Item[ItemID.Hive];
