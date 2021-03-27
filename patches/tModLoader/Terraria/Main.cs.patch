@@ -2909,7 +2909,7 @@
  						IPlayerResourcesDisplaySet value2 = playerResourcesSet.Value;
  						if (value2 == ActivePlayerResourcesSet) {
 +							if (playerResourcesSet.Value is ModResourcesDisplayStyle moddedSet) {
-+								arg2 = moddedSet.DisplayName;
++								arg2 = moddedSet.DisplayName.GetTranslation(Language.ActiveCulture);
 +								break;
 +							}
  							arg2 = Language.GetTextValue("UI.HealthManaStyle_" + playerResourcesSet.Key);

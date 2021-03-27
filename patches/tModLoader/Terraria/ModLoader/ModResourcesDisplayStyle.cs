@@ -9,12 +9,16 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<ModResourcesDisplayStyle>.Register(this);
 			Type = ResourcesDisplayStyleLoader.Add(this);
+			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.DisplayStyleName.{Name}");
 		}
 
 		/// <summary>
 		/// The visible name shown in the settings menu. If this isn't overwritten then it defaults to the <see cref="Mod"/>'s display name.
 		/// </summary>
-		public virtual string DisplayName => Mod.Name;
+		public virtual ModTranslation DisplayName {
+			get;
+			internal set;
+		}
 
 		public string SetName => FullName;
 
