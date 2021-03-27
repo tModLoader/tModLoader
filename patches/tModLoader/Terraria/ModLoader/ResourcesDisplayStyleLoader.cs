@@ -30,9 +30,8 @@ namespace Terraria.ModLoader
 
 		internal static void GotoSavedDisplayStyle() {
 			string reqSet = Main.Configuration.Get("RequestedResourcesSet", "Default");
-			ModContent.TryFind(reqSet, out ModResourcesDisplayStyle moddedStyle);
 
-			if (Main.PlayerResourcesSets.TryGetValue(moddedStyle.SetName, out IPlayerResourcesDisplaySet set))
+			if (ModContent.TryFind(reqSet, out ModResourcesDisplayStyle moddedStyle) && Main.PlayerResourcesSets.TryGetValue(moddedStyle.SetName, out IPlayerResourcesDisplaySet set))
 				Main.ActivePlayerResourcesSet = set;
 		}
 
