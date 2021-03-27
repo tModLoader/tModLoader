@@ -3183,7 +3183,7 @@
  						dontConsumeWand = true;
  						ApplyItemTime(bestPickaxe, pickSpeed);
 -						SetItemAnimation((int)((float)bestPickaxe.useTime * pickSpeed));
-+						ApplyItemAnimation(bestPickaxe, pickSpeed);
++						SetItemAnimation(PlayerHooks.TotalUseTime(bestPickaxe.useTime * pickSpeed, this, bestPickaxe));
  						return false;
  					}
  
@@ -3520,7 +3520,7 @@
  						ApplyItemTime(item);
  					}
 -					else if (itemTime == item.useTime / 2) {
-+					else if (itemTime == itemTimeMax / 2) {
++					else if (itemTime == PlayerHooks.TotalUseTime(item.useTime * 0.5f, this, item)) {
  						for (int k = 0; k < 70; k++) {
  							Dust.NewDust(base.position, width, height, 15, velocity.X * 0.5f, velocity.Y * 0.5f, 150, default(Color), 1.5f);
  						}
@@ -3529,7 +3529,7 @@
  						}
  					}
 -					else if (itemTime == 20) {
-+					else if (itemTime == (int)(itemTimeMax * 0.67f)/* was 20, useTime of recall potion is 30 */) {
++					else if (itemTime == PlayerHooks.TotalUseTime(item.useTime * 0.67f, this, item)/* was 20, useTime of recall potion is 30 */) {
  						SoundEngine.PlaySound(HeldItem.UseSound, base.position);
  						for (int num4 = 0; num4 < 70; num4++) {
  							Main.dust[Dust.NewDust(base.position, width, height, 15, velocity.X * 0.2f, velocity.Y * 0.2f, 150, Color.Cyan, 1.2f)].velocity *= 0.5f;
@@ -3547,7 +3547,7 @@
  						}
  					}
 -					else if (itemTime == 20) {
-+					else if (itemTime == (int)(itemTimeMax * 0.67f)/* was 20, useTime of potion of return is 30 */) {
++					else if (itemTime == PlayerHooks.TotalUseTime(item.useTime * 0.67f, this, item)/* was 20, useTime of potion of return is 30 */) {
  						SoundEngine.PlaySound(HeldItem.UseSound, base.position);
  						for (int num8 = 0; num8 < 70; num8++) {
  							Main.dust[Dust.NewDust(base.position, width, height, 15, velocity.X * 0.2f, velocity.Y * 0.2f, 150, Color.Cyan, 1.2f)].velocity *= 0.5f;
