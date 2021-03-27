@@ -9,33 +9,31 @@ namespace Terraria.ModLoader
 	{
 		// There are no display set IDs, they're stored in their own list
 		// There are 3 of them
-		public const int VanillaDisplaySetCount = 4;
+		public const int VanillaDisplayStyleCount = 4;
 
-		public static int DisplaySetCount => VanillaDisplaySetCount + displayStyles.Count;
+		public static int DisplayStyleCount => VanillaDisplayStyleCount + displayStyles.Count;
 		internal static readonly List<ModResourcesDisplayStyle> displayStyles = new List<ModResourcesDisplayStyle>();
 
 		internal static int Add(ModResourcesDisplayStyle displayStyle) {
 			if (ModNet.AllowVanillaClients)
-				throw new Exception("Adding display sets breaks vanilla client compatibility");
+				throw new Exception("Adding display styles breaks vanilla client compatibility");
 
 			displayStyles.Add(displayStyle);
 			Main.PlayerResourcesSets.Add(displayStyle.SetName, displayStyle);
 
-			// Check to see if the requested set has been registered yet
-			// If it has, switch back to it
-			GotoSavedDisplaySet();
-			return DisplaySetCount - 1;
+			return DisplayStyleCount - 1;
 		}
 
 		internal static ModResourcesDisplayStyle GetResourceDisplayStyle(int type) {
-			return type >= VanillaDisplaySetCount && type < DisplaySetCount ? displayStyles[type - VanillaDisplaySetCount] : null;
+			return type >= VanillaDisplayStyleCount && type < DisplayStyleCount ? displayStyles[type - VanillaDisplayStyleCount] : null;
 		}
 
-		private static void GotoSavedDisplaySet() {
+		internal static void GotoSavedDisplayStyle() {
 			string reqSet = Main.Configuration.Get("RequestedResourcesSet", "Default");
+			ModContent.TryFind(reqSet, out ModResourcesDisplayStyle moddedStyle);
 
-			if (Main.PlayerResourcesSets.ContainsKey(reqSet))
-				Main.ActivePlayerResourcesSet = Main.PlayerResourcesSets[reqSet];
+			if (Main.PlayerResourcesSets.TryGetValue(moddedStyle.SetName, out IPlayerResourcesDisplaySet set))
+				Main.ActivePlayerResourcesSet = set;
 		}
 
 		internal static void Unload() {

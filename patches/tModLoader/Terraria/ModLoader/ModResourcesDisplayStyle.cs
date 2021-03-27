@@ -2,7 +2,6 @@
 
 namespace Terraria.ModLoader
 {
-
 	public abstract class ModResourcesDisplayStyle : ModType, IPlayerResourcesDisplaySet
 	{
 		public int Type { get; internal set; }
@@ -17,7 +16,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual string DisplayName => Mod.Name;
 
-		public string SetName => $"{Mod.Name}:{Name}";
+		public string SetName => FullName;
 
 		/// <summary>
 		/// Constantly called when this set is selected. Drawn at the very beginning of <see cref="Main.GUIBarsDrawInner"/>.

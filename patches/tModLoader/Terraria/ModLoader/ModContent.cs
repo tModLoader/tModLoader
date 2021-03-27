@@ -417,6 +417,7 @@ namespace Terraria.ModLoader
 
 			MenuLoader.GotoSavedModMenu();
 			BossBarLoader.GotoSavedStyle();
+			ResourcesDisplayStyleLoader.GotoSavedDisplayStyle();
 		}
 		
 		private static void CacheVanillaState() {
