@@ -89,7 +89,7 @@
  				foreach (KeyValuePair<string, IPlayerResourcesDisplaySet> playerResourcesSet in Main.PlayerResourcesSets) {
  					IPlayerResourcesDisplaySet value6 = playerResourcesSet.Value;
  					if (value6 == Main.ActivePlayerResourcesSet) {
-+						if (Main.ActivePlayerResourcesSet is ModResourceDisplaySet moddedSet) {
++						if (Main.ActivePlayerResourcesSet is ModResourcesDisplayStyle moddedSet) {
 +							arg2 = moddedSet.DisplayName;
 +							break;
 +						}

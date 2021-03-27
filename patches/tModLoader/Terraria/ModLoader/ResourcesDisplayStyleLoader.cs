@@ -5,21 +5,21 @@ using Terraria.GameContent.UI;
 
 namespace Terraria.ModLoader
 {
-	public class ResourceDisplaySetLoader
+	public class ResourcesDisplayStyleLoader
 	{
 		// There are no display set IDs, they're stored in their own list
 		// There are 3 of them
 		public const int VanillaDisplaySetCount = 4;
 
-		public static int DisplaySetCount => VanillaDisplaySetCount + displaySets.Count;
-		internal static readonly List<ModResourceDisplaySet> displaySets = new List<ModResourceDisplaySet>();
+		public static int DisplaySetCount => VanillaDisplaySetCount + displayStyles.Count;
+		internal static readonly List<ModResourcesDisplayStyle> displayStyles = new List<ModResourcesDisplayStyle>();
 
-		internal static int Add(ModResourceDisplaySet displaySet) {
+		internal static int Add(ModResourcesDisplayStyle displayStyle) {
 			if (ModNet.AllowVanillaClients)
 				throw new Exception("Adding display sets breaks vanilla client compatibility");
 
-			displaySets.Add(displaySet);
-			Main.PlayerResourcesSets.Add(displaySet.SetName, displaySet);
+			displayStyles.Add(displayStyle);
+			Main.PlayerResourcesSets.Add(displayStyle.SetName, displayStyle);
 
 			// Check to see if the requested set has been registered yet
 			// If it has, switch back to it
@@ -27,8 +27,8 @@ namespace Terraria.ModLoader
 			return DisplaySetCount - 1;
 		}
 
-		internal static ModResourceDisplaySet GetResourceDisplaySet(int type) {
-			return type >= VanillaDisplaySetCount && type < DisplaySetCount ? displaySets[type - VanillaDisplaySetCount] : null;
+		internal static ModResourcesDisplayStyle GetResourceDisplayStyle(int type) {
+			return type >= VanillaDisplaySetCount && type < DisplaySetCount ? displayStyles[type - VanillaDisplaySetCount] : null;
 		}
 
 		private static void GotoSavedDisplaySet() {
@@ -39,11 +39,11 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void Unload() {
-			if (Main.ActivePlayerResourcesSet is ModResourceDisplaySet)
+			if (Main.ActivePlayerResourcesSet is ModResourcesDisplayStyle)
 				Main.ActivePlayerResourcesSet = Main.PlayerResourcesSets["Default"];
 
 			// Clear list of every modded display set
-			foreach (ModResourceDisplaySet set in Main.PlayerResourcesSets.Values.ToList().OfType<ModResourceDisplaySet>())
+			foreach (ModResourcesDisplayStyle set in Main.PlayerResourcesSets.Values.ToList().OfType<ModResourcesDisplayStyle>())
 				Main.PlayerResourcesSets.Remove(((IPlayerResourcesDisplaySet) set).SetName);
 		}
 	}

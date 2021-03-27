@@ -551,7 +551,7 @@ namespace Terraria.ModLoader
 			TagSerializer.Reload();
 			ModNet.Unload();
 			Config.ConfigManager.Unload();
-			ResourceDisplaySetLoader.Unload();
+			ResourcesDisplayStyleLoader.Unload();
 			CustomCurrencyManager.Initialize();
 			EffectsTracker.RemoveModEffects();
 			

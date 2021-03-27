@@ -3,13 +3,13 @@
 namespace Terraria.ModLoader
 {
 
-	public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySet
+	public abstract class ModResourcesDisplayStyle : ModType, IPlayerResourcesDisplaySet
 	{
 		public int Type { get; internal set; }
 
 		protected sealed override void Register() {
-			ModTypeLookup<ModResourceDisplaySet>.Register(this);
-			Type = ResourceDisplaySetLoader.Add(this);
+			ModTypeLookup<ModResourcesDisplayStyle>.Register(this);
+			Type = ResourcesDisplayStyleLoader.Add(this);
 		}
 
 		/// <summary>

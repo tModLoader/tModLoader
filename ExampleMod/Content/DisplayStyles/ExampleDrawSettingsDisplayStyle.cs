@@ -7,14 +7,14 @@ using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Content.DisplaySets
+namespace ExampleMod.Content.DisplayStyles
 {
-	// Example of a ModResourceDisplaySet utilizing ResourceDrawSettings
+	// Example of a ModResourcesDisplayStyle utilizing ResourceDrawSettings
 	// In this example, we mimic the Fancy-Classic style but swap mana and heart textures with item textures, while also cleaning up the code
-	public class ExampleDrawSettingsDisplaySet : ModResourceDisplaySet
+	public class ExampleDrawSettingsDisplayStyle : ModResourcesDisplayStyle
 	{
 		// Change the display name shown in the settings menu
-		// This is entirely irrelevant to the internal name of a set, which is "ModName:Name"
+		// This is entirely irrelevant to the internal name of a style, which is "ModName:Name"
 		public override string DisplayName => "DrawSettings Example";
 
 		public int playerLifeFruit;

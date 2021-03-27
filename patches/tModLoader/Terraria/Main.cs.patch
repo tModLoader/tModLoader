@@ -2908,7 +2908,7 @@
  					IPlayerResourcesDisplaySet playerResourcesDisplaySet = null;
  					foreach (KeyValuePair<string, IPlayerResourcesDisplaySet> playerResourcesSet in PlayerResourcesSets) {
  						IPlayerResourcesDisplaySet value2 = playerResourcesSet.Value;
-+						if (Main.ActivePlayerResourcesSet is ModResourceDisplaySet moddedSet) {
++						if (Main.ActivePlayerResourcesSet is ModResourcesDisplayStyle moddedSet) {
 +							arg2 = moddedSet.DisplayName;
 +							break;
 +						}

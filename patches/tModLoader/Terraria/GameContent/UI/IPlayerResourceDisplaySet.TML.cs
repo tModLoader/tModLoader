@@ -1,6 +1,6 @@
 ﻿namespace Terraria.GameContent.UI
 {
-	partial interface IPlayerResourceDisplaySet
+	partial interface IPlayerResourcesDisplaySet
 	{
 		/// <summary>
 		/// The name of the display set. Used for identification.

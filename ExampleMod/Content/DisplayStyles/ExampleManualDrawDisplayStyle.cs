@@ -5,15 +5,15 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Content.DisplaySets
+namespace ExampleMod.Content.DisplayStyles
 {
-	// Example of a ModResourceDisplaySet with entirely manual drawing
-	// See ExampleDrawSettingsDisplaySet for an example of a ModResourceDisplaySet that uses
+	// Example of a ModResourceDisplayStyle with entirely manual drawing
+	// See ExampleDrawSettingsDisplayStyle for an example of a ModResourcesDisplayStyle that uses
 	// the ResourceDrawSettings struct instead.
-	public class ExampleManualDrawDisplaySet : ModResourceDisplaySet
+	public class ExampleManualDrawDisplayStyle : ModResourcesDisplayStyle
 	{
 		// Change the display name shown in the settings menu
-		// This is entirely irrelevant to the internal name of a set, which is "ModName:Name"
+		// This is entirely irrelevant to the internal name of a style, which is "ModName:Name"
 		public override string DisplayName => "Text Example";
 
 		// Here we have an example of manually drawing the value of a player's HP and mana through text
