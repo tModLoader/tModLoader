@@ -51,7 +51,7 @@
      </EmbeddedResource>
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
-@@ -40,29 +_,46 @@
+@@ -40,29 +_,56 @@
      </Reference>
    </ItemGroup>
    <ItemGroup>
@@ -95,10 +95,20 @@
      <Message Text="Copying $(AssemblyName) to Steam Dir..." Importance="high" />
 -    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)/%(RecursiveDir)" />
 +    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" />
-   </Target>
++  </Target>
 +  <ItemDefinitionGroup>
 +    <ReferenceCopyLocalPaths>
-+      <DestinationSubDirectory>Libraries\NuGet\</DestinationSubDirectory>
++      <DestinationSubDirectory>NuGet\</DestinationSubDirectory>
 +    </ReferenceCopyLocalPaths>
 +  </ItemDefinitionGroup>
++  <Target Name="RedirectRuntimeFilesToLib" AfterTargets="ResolveLockFileCopyLocalFiles">
++    <ItemGroup>
++      <ReferenceCopyLocalPaths Condition=" '%(ReferenceCopyLocalPaths.AssetType)' == 'runtime' ">
++        <DestinationSubDirectory>Libraries\%(DestinationSubDirectory)</DestinationSubDirectory>
++      </ReferenceCopyLocalPaths>
++      <ReferenceCopyLocalPaths Condition=" '%(ReferenceCopyLocalPaths.AssetType)' == 'resources' ">
++        <DestinationSubDirectory>Libraries\Resources\%(DestinationSubDirectory)</DestinationSubDirectory>
++      </ReferenceCopyLocalPaths>
++    </ItemGroup>
+   </Target>
  </Project>
