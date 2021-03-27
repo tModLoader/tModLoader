@@ -1,11 +1,11 @@
 --- src/Terraria/Terraria/GameContent/UI/ClassicPlayerResourcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ClassicPlayerResourcesDisplaySet.cs
-@@ -10,6 +_,8 @@
- 		private float UIDisplay_LifePerHeart = 20f;
- 		private int UI_ScreenAnchorX;
+@@ -4,7 +_,7 @@
  
-+		public string SetName => "Default";
-+
- 		public void Draw() {
- 			UI_ScreenAnchorX = Main.screenWidth - 800;
- 			DrawLife();
+ namespace Terraria.GameContent.UI
+ {
+-	public class ClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet
++	public partial class ClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet
+ 	{
+ 		private int UIDisplay_ManaPerStar = 20;
+ 		private float UIDisplay_LifePerHeart = 20f;

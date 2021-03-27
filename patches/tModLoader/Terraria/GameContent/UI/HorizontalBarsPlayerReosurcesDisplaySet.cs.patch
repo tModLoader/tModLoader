@@ -1,11 +1,11 @@
 --- src/Terraria/Terraria/GameContent/UI/HorizontalBarsPlayerReosurcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/HorizontalBarsPlayerReosurcesDisplaySet.cs
-@@ -36,6 +_,8 @@
- 			_panelRightMP = Main.Assets.Request<Texture2D>(str + "\\MP_Panel_Right", mode);
- 		}
+@@ -5,7 +_,7 @@
  
-+		public string SetName => "HorizontalBars";
-+
- 		public void Draw() {
- 			PrepareFields(Main.LocalPlayer);
- 			SpriteBatch spriteBatch = Main.spriteBatch;
+ namespace Terraria.GameContent.UI
+ {
+-	public class HorizontalBarsPlayerReosurcesDisplaySet : IPlayerResourcesDisplaySet
++	public partial class HorizontalBarsPlayerReosurcesDisplaySet : IPlayerResourcesDisplaySet
+ 	{
+ 		private int _maxSegmentCount;
+ 		private int _hpSegmentsCount;
