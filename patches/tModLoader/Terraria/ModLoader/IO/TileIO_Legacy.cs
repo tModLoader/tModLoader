@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader.IO
 {
@@ -19,20 +21,23 @@ namespace Terraria.ModLoader.IO
 			internal const byte NextModTile = 128;
 		}
 
-		internal static void LoadLegacy(TagCompound tag, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup) { 
+		internal static void LoadLegacy(TagCompound tag, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup) {
 			// Retrieve Locational-Specific Data from 'Data' and apply
 			using (var memoryStream = new MemoryStream(tag.GetByteArray("data")))
-			using (var reader = new BinaryReader(memoryStream))
-				ReadTileData(reader, tileEntriesLookup, wallEntriesLookup);
+			using (var reader = new BinaryReader(memoryStream)) {
+				ReadTileData(reader, tileEntriesLookup, wallEntriesLookup, out var tilePosMapList, out var wallPosMapList);
+				Tiles.unloadedEntryLookup = tilePosMapList.ToArray();
+				Walls.unloadedEntryLookup = wallPosMapList.ToArray();
+			}
 		}
 
-		internal static void ReadTileData(BinaryReader reader, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup) {
+		internal static void ReadTileData(BinaryReader reader, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup, out List<PosData<ushort>> wallPosMapList, out List<PosData<ushort>> tilePosMapList) {
 			int i = 0;
 			int j = 0;
 			byte skip;
 			bool nextModTile = false;
-			List<PosData<ushort>> tilePosMapList = new List<PosData<ushort>>();
-			List<PosData<ushort>> wallPosMapList = new List<PosData<ushort>>();
+			tilePosMapList = new List<PosData<ushort>>();
+			wallPosMapList = new List<PosData<ushort>>();
 
 			// Access indexed shortlist of all tile locations with mod data on either of wall or tiles
 			do {
@@ -64,9 +69,6 @@ namespace Terraria.ModLoader.IO
 				ReadModTile(ref i, ref j, reader, ref nextModTile, tilePosMapList, wallPosMapList, tileEntriesLookup, wallEntriesLookup);
 			}
 			while (NextLocation(ref i, ref j));
-
-			Tiles.unloadedEntryLookup = tilePosMapList.ToArray();
-			Walls.unloadedEntryLookup = wallPosMapList.ToArray();
 		}
 
 		internal static void ReadModTile(ref int i, ref int j, BinaryReader reader, ref bool nextModTile, List<PosData<ushort>> wallPosMapList, List<PosData<ushort>> tilePosMapList, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup) {
@@ -85,10 +87,6 @@ namespace Terraria.ModLoader.IO
 
 				var tEntry = tileEntriesLookup[saveType];
 				tile.type = tEntry.loadedType;
-
-				if (tEntry.IsUnloaded) {
-					tilePosMapList.Add(new PosData<ushort>(PosData.CoordsToPos(i, j), tEntry.type));
-				}
 
 				// Implement tile frames
 				if (tEntry.frameImportant) {
@@ -112,6 +110,10 @@ namespace Terraria.ModLoader.IO
 
 				if ((flags & TileIOFlags.TileColor) == TileIOFlags.TileColor) {
 					tile.color(reader.ReadByte());
+				}
+
+				if (tEntry.IsUnloaded) {
+					tilePosMapList.Add(new PosData<ushort>(PosData.CoordsToPos(i, j), tEntry.type));
 				}
 
 				WorldGen.tileCounts[tile.type] += j <= Main.worldSurface ? 5 : 1;

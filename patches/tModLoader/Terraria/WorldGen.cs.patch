@@ -89,25 +89,18 @@
  			if (Main.menuMode == 10 || Main.menuMode == 888)
  				Main.menuMode = 6;
  
-@@ -2340,6 +_,10 @@
- 			if (netMode == 0)
- 				WorldFile.CacheSaveTime();
+@@ -2361,6 +_,11 @@
+ 				Main.netMode = 0;
+ 			}
  
 +			//This is only called in case of a manual quit or disconnect.
-+			//There is a less common call to this in Netplay.InnerClientLoop.
++			//There is a less common (client) call to this in Netplay.InnerClientLoop.
 +			SystemHooks.OnWorldUnload();
++			TileIO.PostExitWorldCleanup();
 +
- 			Main.invasionProgress = -1;
- 			Main.invasionProgressDisplayLeft = 0;
- 			Main.invasionProgressAlpha = 0f;
-@@ -2354,6 +_,7 @@
- 			Rain.ClearRain();
- 			if (netMode == 0) {
- 				WorldFile.SaveWorld();
-+				TileIO.PostExitWorldCleanup();
- 				SoundEngine.PlaySound(10);
- 			}
- 			else {
+ 			Main.fastForwardTime = false;
+ 			Main.UpdateTimeRate();
+ 			Main.menuMode = 0;
 @@ -2370,10 +_,21 @@
  
  		public static void SaveAndQuit(Action callback = null) {
