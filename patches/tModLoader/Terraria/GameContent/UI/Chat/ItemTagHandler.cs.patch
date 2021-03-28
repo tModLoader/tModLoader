@@ -51,7 +51,7 @@
  						case 'p': {
  								if (int.TryParse(array[i].Substring(1), out int result2))
 -									item.Prefix((byte)Utils.Clamp(result2, 0, 85));
-+									item.Prefix((byte)Utils.Clamp(result2, 0, ModPrefix.PrefixCount));
++									item.Prefix((byte)Utils.Clamp(result2, 0, PrefixLoader.PrefixCount));
  
  								break;
  							}
