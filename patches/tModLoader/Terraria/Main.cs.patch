@@ -444,7 +444,7 @@
  				string lpWindowName = Console.Title = "terraria" + rand.Next(int.MaxValue);
  #if WINDOWS
  				IntPtr intPtr = FindWindow(null, lpWindowName);
-@@ -3969,17 +_,31 @@
+@@ -3969,17 +_,30 @@
  #endif
  			}
  			else {
@@ -456,14 +456,13 @@
  			showSplash = false;
  			Initialize();
 +
-+			while (true) {
-+				ModLoader.ModLoader.Reload();
-+				DedServ_PostModLoad(out bool reloadMods);
++			bool reloadMods;
 +
-+				if (!reloadMods) {
-+					break;
-+				}
++			do {
++				ModLoader.ModLoader.Reload();
++				DedServ_PostModLoad(out reloadMods);
 +			}
++			while (reloadMods);
 +		}
 +		//The split and the boolean shenanigans are here to allow mods to hook into this method with MonoMod correctly. At any load-time.
 +		private void DedServ_PostModLoad(out bool reloadMods) {
