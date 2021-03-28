@@ -453,7 +453,7 @@
  				string lpWindowName = Console.Title = "terraria" + rand.Next(int.MaxValue);
  #if WINDOWS
  				IntPtr intPtr = FindWindow(null, lpWindowName);
-@@ -3975,17 +_,18 @@
+@@ -3975,17 +_,30 @@
  #endif
  			}
  			else {
@@ -464,7 +464,19 @@
  			dedServ = true;
  			showSplash = false;
  			Initialize();
-+			ModLoader.ModLoader.Reload();
++			
++			bool reloadMods;
++			
++			do {
++				ModLoader.ModLoader.Reload();
++				DedServ_PostModLoad(out reloadMods);
++			}
++			while (reloadMods);
++		}
++		//The split and the boolean shenanigans are here to allow mods to hook into this method with MonoMod correctly. At any load-time.
++		private void DedServ_PostModLoad(out bool reloadMods) {
++			reloadMods = false;
++			
  			while (worldPathName == null || worldPathName == "") {
  				bool flag = true;
  				while (flag) {
@@ -537,12 +549,17 @@
  						while (flag2) {
  							Console.WriteLine("");
  							Console.Write(Language.GetTextValue("CLI.EnterSeed"));
-@@ -4251,6 +_,14 @@
+@@ -4251,6 +_,19 @@
  
  						continue;
  					}
 +					else if (text2 == "m" || text2 == "M") {
-+						Interface.ServerModMenu();
++						Interface.ServerModMenu(out reloadMods);
++						
++						if (reloadMods) {
++							return;
++						}
++						
 +						continue;
 +					}
 +					else if (text2 == "b" || text2 == "b") {
@@ -701,7 +718,7 @@
  								num = text3.Length;
  						}
  
-+						var modHelpList = CommandManager.GetHelp(CommandType.Console);
++						var modHelpList = CommandLoader.GetHelp(CommandType.Console);
 +						foreach (var entry in modHelpList)
 +							if (entry.Item1.Length > num)
 +								num = entry.Item1.Length;
@@ -715,14 +732,15 @@
 +						foreach (var entry in modHelpList)
 +							Console.WriteLine(entry.Item1 + new string('\t', num2 - entry.Item1.Length / 8) + entry.Item2);
  					}
-+					else if (CommandManager.HandleCommand(text, commandCaller)) { }
++					else if (CommandLoader.HandleCommand(text, commandCaller)) { }
  					else if (text == Language.GetTextValue("CLI.Settle_Command")) {
  						if (!Liquid.panicMode)
  							Liquid.StartPanic();
-@@ -4540,6 +_,7 @@
+@@ -4540,6 +_,8 @@
  					}
  					else if (text == Language.GetTextValue("CLI.Exit_Command")) {
  						WorldFile.SaveWorld();
++						SystemHooks.OnWorldUnload();
 +						TileIO.PostExitWorldCleanup();
  						Netplay.Disconnect = true;
  						SocialAPI.Shutdown();
@@ -1263,7 +1281,7 @@
  				return;
  
 -			if (chatText != "") {
-+			var handled = chatText.Length > 0 && chatText[0] == '/' && CommandManager.HandleCommand(chatText, new ChatCommandCaller());
++			var handled = chatText.Length > 0 && chatText[0] == '/' && CommandLoader.HandleCommand(chatText, new ChatCommandCaller());
 +			if (chatText != "" && !handled) {
  				ChatMessage message = ChatManager.Commands.CreateOutgoingMessage(chatText);
  				if (netMode == 1)
@@ -2302,11 +2320,12 @@
  		}
  
  		public void DrawItems() {
-@@ -28060,6 +_,12 @@
+@@ -28060,6 +_,13 @@
  					if (dust.type == 213)
  						scale = 1f;
  
-+					ModDust modDust = ModDust.GetDust(dust.type);
++					ModDust modDust = DustLoader.GetDust(dust.type);
++					
 +					if (modDust != null) {
 +						modDust.Draw(dust, newColor, scale);
 +						continue;
@@ -2585,7 +2604,7 @@
 -			if (mouseItem.type > 0 || r.createItem.type > 0)
 +			if (mouseItem.type > 0 || r.createItem.type > 0) {
 +				ItemLoader.OnCreate(mouseItem, new RecipeCreationContext {recipe = r});
-+				RecipeHooks.OnCraft(mouseItem, r);
++				RecipeLoader.OnCraft(mouseItem, r);
  				SoundEngine.PlaySound(7);
 +			}
  		}
