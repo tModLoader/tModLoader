@@ -7,7 +7,7 @@
 	{
 		protected sealed override void Register() {
 			ModTypeLookup<GlobalRecipe>.Register(this);
-			RecipeHooks.Add(this);
+			RecipeLoader.Add(this);
 		}
 
 		/// <summary>

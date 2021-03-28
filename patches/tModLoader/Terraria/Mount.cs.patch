@@ -15,7 +15,7 @@
 -		private class MountData
 +		public class MountData
  		{
-+			public ModMountData ModMountData { get; set; }
++			public ModMount ModMount { get; set; }
 +
  			public Asset<Texture2D> backTexture = Asset<Texture2D>.Empty;
  			public Asset<Texture2D> backTextureGlow = Asset<Texture2D>.Empty;

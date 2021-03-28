@@ -9,25 +9,25 @@ namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each mount. Create instances of ModMoundData (preferably overriding this class) to pass as parameters to Mod.AddMount.
-	/// Only one instance of ModMountData will exist for each mount, so storing player specific data on the ModMountData is not good. 
+	/// Only one instance of ModMount will exist for each mount, so storing player specific data on the ModMount is not good. 
 	/// Modders can use player.mount._mountSpecificData or a ModPlayer class to store player specific data relating to a mount. Use SetMount to assign these fields.
 	/// </summary>
-	public abstract class ModMountData : ModTexturedType
+	public abstract class ModMount : ModTexturedType
 	{
 		/// <summary>
-		/// The vanilla MountData object that is controlled by this ModMountData.
+		/// The vanilla MountData object that is controlled by this ModMount.
 		/// </summary>
 		public Mount.MountData MountData { get; internal set; }
 
 		/// <summary>
-		/// The index of this ModMountData in the Mount.mounts array.
+		/// The index of this ModMount in the Mount.mounts array.
 		/// </summary>
 		public int Type { get; internal set; }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ModMountData() {
+		public ModMount() {
 			MountData = new Mount.MountData();
 		}
 
@@ -37,7 +37,7 @@ namespace Terraria.ModLoader
 
 			Type = MountLoader.ReserveMountID();
 
-			ModTypeLookup<ModMountData>.Register(this);
+			ModTypeLookup<ModMount>.Register(this);
 			MountLoader.mountDatas[Type] = this;
 
 			foreach (MountTextureType textureType in Enum.GetValues(typeof(MountTextureType))) {
@@ -77,7 +77,7 @@ namespace Terraria.ModLoader
 		}
 
 		public sealed override void SetupContent() {
-			MountData.ModMountData = this;
+			MountData.ModMount = this;
 			MountLoader.SetupMount(MountData);
 			Mount.mounts[Type] = MountData;
 		}
@@ -85,9 +85,9 @@ namespace Terraria.ModLoader
 		protected virtual string GetExtraTexture(MountTextureType textureType) => Texture + "_" + textureType;
 
 		internal void SetupMount(Mount.MountData mountData) {
-			ModMountData newMountData = (ModMountData)MemberwiseClone();
+			ModMount newMountData = (ModMount)MemberwiseClone();
 			newMountData.MountData = mountData;
-			mountData.ModMountData = newMountData;
+			mountData.ModMount = newMountData;
 			newMountData.Mod = Mod;
 			newMountData.SetDefaults();
 		}
@@ -157,7 +157,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this mount is spawned in. Useful for player-specific initialization, utilizing player.mount._mountSpecificData or a ModPlayer class since ModMountData is shared between all players.
+		/// Allows you to make things happen when this mount is spawned in. Useful for player-specific initialization, utilizing player.mount._mountSpecificData or a ModPlayer class since ModMount is shared between all players.
 		/// Custom dust spawning logic is also possible via the skipDust parameter.
 		/// </summary>
 		/// <param name="player"></param>

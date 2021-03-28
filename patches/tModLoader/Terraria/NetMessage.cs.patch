@@ -254,13 +254,14 @@
  #endif
  					num2 = 0;
  					num = 0;
-@@ -2303,8 +_,9 @@
+@@ -2303,8 +_,10 @@
  			}
  
  			if (!flag) {
 -				Console.WriteLine(Language.GetTextValue("Net.ServerAutoShutdown"));
 +				Logging.ServerConsoleLine(Language.GetTextValue("Net.ServerAutoShutdown"));
  				WorldFile.SaveWorld();
++				SystemHooks.OnWorldUnload();
 +				TileIO.PostExitWorldCleanup();
  				Netplay.Disconnect = true;
  			}

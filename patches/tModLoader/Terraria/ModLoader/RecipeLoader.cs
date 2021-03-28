@@ -7,7 +7,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This is where all Recipe and GlobalRecipe hooks are gathered and called.
 	/// </summary>
-	public static class RecipeHooks
+	public static class RecipeLoader
 	{
 		internal static readonly IList<GlobalRecipe> globalRecipes = new List<GlobalRecipe>();
 

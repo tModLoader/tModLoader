@@ -21,37 +21,48 @@ namespace Terraria.ModLoader.Config.UI
 
 		protected override List<DefinitionOptionElement<PrefixDefinition>> CreateDefinitionOptionElementList() {
 			optionScale = 0.8f;
+			
 			var options = new List<DefinitionOptionElement<PrefixDefinition>>();
-			for (int i = 0; i < ModPrefix.PrefixCount; i++) {
+
+			for (int i = 0; i < PrefixLoader.PrefixCount; i++) {
 				PrefixDefinitionOptionElement optionElement;
+
 				if(i == 0)
 					optionElement = new PrefixDefinitionOptionElement(new PrefixDefinition("Terraria", "None"), optionScale);
 				else
 					optionElement = new PrefixDefinitionOptionElement(new PrefixDefinition(i), optionScale);
+				
 				optionElement.OnClick += (a, b) => {
 					Value = optionElement.definition;
 					updateNeeded = true;
 					selectionExpanded = false;
 				};
+				
 				options.Add(optionElement);
 			}
+
 			return options;
 		}
 
 		protected override List<DefinitionOptionElement<PrefixDefinition>> GetPassedOptionElements() {
 			var passed = new List<DefinitionOptionElement<PrefixDefinition>>();
+
 			foreach (var option in options) {
 				// Should this be the localized Prefix name?
 				if (Lang.prefix[option.type].Value.IndexOf(chooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;
+
 				string modname = option.definition.mod;
-				if (option.type > PrefixID.Count) {
-					modname = ModPrefix.GetPrefix((byte)option.type).Mod.DisplayName; // or internal name?
-				}
+
+				if (option.type > PrefixID.Count)
+					modname = PrefixLoader.GetPrefix((byte)option.type).Mod.DisplayName; // or internal name?
+
 				if (modname.IndexOf(chooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;
+
 				passed.Add(option);
 			}
+
 			return passed;
 		}
 	}
