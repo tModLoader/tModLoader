@@ -511,7 +511,7 @@ namespace Terraria.ModLoader
 			ModTypeLookup.Clear();
 			ItemLoader.Unload();
 			EquipLoader.Unload();
-			ModPrefix.Unload();
+			PrefixLoader.Unload();
 			DustLoader.Unload();
 			TileLoader.Unload();
 			TileEntity.manager.Reset();
@@ -570,7 +570,7 @@ namespace Terraria.ModLoader
 			DamageClassLoader.ResizeArrays();
 			ItemLoader.ResizeArrays(unloading);
 			EquipLoader.ResizeAndFillArrays();
-			ModPrefix.ResizeArrays();
+			PrefixLoader.ResizeArrays();
 			DustLoader.ResizeArrays();
 			TileLoader.ResizeArrays(unloading);
 			WallLoader.ResizeArrays(unloading);
@@ -602,6 +602,7 @@ namespace Terraria.ModLoader
 
 		public static void RefreshModLanguage(GameCulture culture) {
 			Dictionary<string, LocalizedText> dict = LanguageManager.Instance._localizedTexts;
+
 			foreach (ModItem item in ItemLoader.items) {
 				LocalizedText text = new LocalizedText(item.DisplayName.Key, item.DisplayName.GetTranslation(culture));
 				Lang._itemNameCache[item.Item.type] = SetLocalizedText(dict, text);
@@ -611,10 +612,12 @@ namespace Terraria.ModLoader
 					Lang._itemTooltipCache[item.Item.type] = ItemTooltip.FromLanguageKey(text.Key);
 				}
 			}
-			foreach (ModPrefix prefix in ModPrefix.prefixes) {
+
+			foreach (ModPrefix prefix in PrefixLoader.prefixes) {
 				LocalizedText text = new LocalizedText(prefix.DisplayName.Key, prefix.DisplayName.GetTranslation(culture));
 				Lang.prefix[prefix.Type] = SetLocalizedText(dict, text);
 			}
+
 			foreach (var keyValuePair in MapLoader.tileEntries) {
 				foreach (MapEntry entry in keyValuePair.Value) {
 					if (entry.translation != null) {
@@ -623,6 +626,7 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
+
 			foreach (var keyValuePair in MapLoader.wallEntries) {
 				foreach (MapEntry entry in keyValuePair.Value) {
 					if (entry.translation != null) {
@@ -631,26 +635,31 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
+
 			foreach (ModProjectile proj in ProjectileLoader.projectiles) {
 				LocalizedText text = new LocalizedText(proj.DisplayName.Key, proj.DisplayName.GetTranslation(culture));
 				Lang._projectileNameCache[proj.Projectile.type] = SetLocalizedText(dict, text);
 			}
+
 			foreach (ModNPC npc in NPCLoader.npcs) {
 				LocalizedText text = new LocalizedText(npc.DisplayName.Key, npc.DisplayName.GetTranslation(culture));
 				Lang._npcNameCache[npc.NPC.type] = SetLocalizedText(dict, text);
 			}
+
 			foreach (ModBuff buff in BuffLoader.buffs) {
 				LocalizedText text = new LocalizedText(buff.DisplayName.Key, buff.DisplayName.GetTranslation(culture));
 				Lang._buffNameCache[buff.Type] = SetLocalizedText(dict, text);
 				text = new LocalizedText(buff.Description.Key, buff.Description.GetTranslation(culture));
 				Lang._buffDescriptionCache[buff.Type] = SetLocalizedText(dict, text);
 			}
+
 			foreach (Mod mod in ModLoader.Mods) {
 				foreach (ModTranslation translation in mod.translations.Values) {
 					LocalizedText text = new LocalizedText(translation.Key, translation.GetTranslation(culture));
 					SetLocalizedText(dict, text);
 				}
 			}
+
 			LanguageManager.Instance.ProcessCopyCommandsInTexts();
 		}
 
