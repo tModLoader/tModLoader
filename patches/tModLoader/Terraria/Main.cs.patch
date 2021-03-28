@@ -709,7 +709,7 @@
  								num = text3.Length;
  						}
  
-+						var modHelpList = CommandManager.GetHelp(CommandType.Console);
++						var modHelpList = CommandLoader.GetHelp(CommandType.Console);
 +						foreach (var entry in modHelpList)
 +							if (entry.Item1.Length > num)
 +								num = entry.Item1.Length;
@@ -723,7 +723,7 @@
 +						foreach (var entry in modHelpList)
 +							Console.WriteLine(entry.Item1 + new string('\t', num2 - entry.Item1.Length / 8) + entry.Item2);
  					}
-+					else if (CommandManager.HandleCommand(text, commandCaller)) { }
++					else if (CommandLoader.HandleCommand(text, commandCaller)) { }
  					else if (text == Language.GetTextValue("CLI.Settle_Command")) {
  						if (!Liquid.panicMode)
  							Liquid.StartPanic();
@@ -1262,7 +1262,7 @@
  				return;
  
 -			if (chatText != "") {
-+			var handled = chatText.Length > 0 && chatText[0] == '/' && CommandManager.HandleCommand(chatText, new ChatCommandCaller());
++			var handled = chatText.Length > 0 && chatText[0] == '/' && CommandLoader.HandleCommand(chatText, new ChatCommandCaller());
 +			if (chatText != "" && !handled) {
  				ChatMessage message = ChatManager.Commands.CreateOutgoingMessage(chatText);
  				if (netMode == 1)
