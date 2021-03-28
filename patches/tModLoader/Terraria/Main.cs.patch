@@ -2660,7 +2660,7 @@
 +
 +				InfoDisplay info = InfoDisplayLoader.InfoDisplays[i];
 +
-+				if (!InfoDisplayLoader.Active(info) || (player[myPlayer].HideInfo[info.Type] && !playerInventory))
++				if (!InfoDisplayLoader.Active(info) || (player[myPlayer].hideInfo[info.Type] && !playerInventory))
 +					continue;
 +
 -				if (player[myPlayer].accWatch > 0 && !flag && (!player[myPlayer].hideInfo[0] || playerInventory)) {
@@ -2779,7 +2779,7 @@
  					text3 = Lang.inter[99].Value;
  					int num22 = (int)((double)((player[myPlayer].position.Y + (float)player[myPlayer].height) * 2f / 16f) - worldSurface * 2.0);
  					string text6 = "";
-@@ -34941,33 +_,39 @@
+@@ -34941,27 +_,33 @@
  					text2 = text7 + " " + text6;
  					flag2 = true;
  				}
@@ -2819,19 +2819,8 @@
  							flag14 = true;
  							player[myPlayer].mouseInterface = true;
  							if (mouseLeft && mouseLeftRelease) {
- 								SoundEngine.PlaySound(12);
- 								mouseLeftRelease = false;
--								player[myPlayer].hideInfo[num27] = !player[myPlayer].hideInfo[num27];
-+								player[myPlayer].HideInfo[num27] = !player[myPlayer].HideInfo[num27];
- 							}
- 
- 							if (!mouseText) {
-@@ -34976,17 +_,20 @@
- 							}
- 						}
- 
--						if (player[myPlayer].hideInfo[num27])
-+						if (player[myPlayer].HideInfo[num27])
+@@ -34979,14 +_,17 @@
+ 						if (player[myPlayer].hideInfo[num27])
  							color = new Microsoft.Xna.Framework.Color(80, 80, 80, 70);
  					}
 -					else if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)TextureAssets.InfoIcon[num].Width() && (float)mouseY <= vector2.Y + (float)TextureAssets.InfoIcon[num].Height() && !mouseText) {

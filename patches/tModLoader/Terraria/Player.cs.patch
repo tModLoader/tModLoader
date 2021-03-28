@@ -48,21 +48,12 @@
  		public OverheadMessage chatOverhead;
  		public SelectionRadial DpadRadial = new SelectionRadial();
  		public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
-@@ -403,7 +_,16 @@
+@@ -403,7 +_,7 @@
  		public int HotbarOffset;
  		public bool GoingDownWithGrapple;
  		public byte spelunkerTimer;
 -		public bool[] hideInfo = new bool[13];
-+		private bool[] hideInfo = new bool[InfoDisplayLoader.InfoDisplayCount];
-+		public bool[] HideInfo {
-+			get {
-+				if (hideInfo.Length != InfoDisplayLoader.InfoDisplayCount)
-+					Array.Resize(ref hideInfo, InfoDisplayLoader.InfoDisplayCount);
-+
-+				return hideInfo;
-+			}
-+			set { hideInfo = value; }
-+		}
++		public bool[] hideInfo = new bool[InfoDisplayLoader.InfoDisplayCount];
  		public int[] builderAccStatus = new int[12] {
  			1,
  			0,

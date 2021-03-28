@@ -253,7 +253,7 @@ namespace Terraria.ModLoader.IO
 			var hidden = new List<string>();
 			for (int i = 0; i < InfoDisplayLoader.InfoDisplays.Count; i++) {
 				if(!(InfoDisplayLoader.InfoDisplays[i] is VanillaInfoDisplay)) {
-					if (player.HideInfo[i])
+					if (player.hideInfo[i])
 						hidden.Add(InfoDisplayLoader.InfoDisplays[i].FullName);
 				}
 			}
@@ -264,7 +264,7 @@ namespace Terraria.ModLoader.IO
 			for (int i = 0; i < InfoDisplayLoader.InfoDisplays.Count; i++) {
 				if (!(InfoDisplayLoader.InfoDisplays[i] is VanillaInfoDisplay)) {
 					if (hidden.Contains(InfoDisplayLoader.InfoDisplays[i].FullName))
-						player.HideInfo[i] = true;
+						player.hideInfo[i] = true;
 				}
 			}
 		}
