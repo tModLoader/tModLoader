@@ -2301,11 +2301,12 @@
  		}
  
  		public void DrawItems() {
-@@ -28054,6 +_,12 @@
+@@ -28054,6 +_,13 @@
  					if (dust.type == 213)
  						scale = 1f;
  
-+					ModDust modDust = ModDust.GetDust(dust.type);
++					ModDust modDust = DustLoader.GetDust(dust.type);
++
 +					if (modDust != null) {
 +						modDust.Draw(dust, newColor, scale);
 +						continue;

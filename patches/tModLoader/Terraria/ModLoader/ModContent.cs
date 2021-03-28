@@ -235,7 +235,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets the ModDust instance with the given type. Returns null if no ModDust with the given type exists.
 		/// </summary>
-		public static ModDust GetModDust(int type) => ModDust.GetDust(type);
+		public static ModDust GetModDust(int type) => DustLoader.GetDust(type);
 
 		/// <summary>
 		/// Gets the ModProjectile instance corresponding to the specified type.
@@ -512,7 +512,7 @@ namespace Terraria.ModLoader
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			ModPrefix.Unload();
-			ModDust.Unload();
+			DustLoader.Unload();
 			TileLoader.Unload();
 			TileEntity.manager.Reset();
 			WallLoader.Unload();
@@ -571,7 +571,7 @@ namespace Terraria.ModLoader
 			ItemLoader.ResizeArrays(unloading);
 			EquipLoader.ResizeAndFillArrays();
 			ModPrefix.ResizeArrays();
-			ModDust.ResizeArrays();
+			DustLoader.ResizeArrays();
 			TileLoader.ResizeArrays(unloading);
 			WallLoader.ResizeArrays(unloading);
 			TileIO.ResizeArrays();
