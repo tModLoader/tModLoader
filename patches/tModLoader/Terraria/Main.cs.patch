@@ -444,7 +444,7 @@
  				string lpWindowName = Console.Title = "terraria" + rand.Next(int.MaxValue);
  #if WINDOWS
  				IntPtr intPtr = FindWindow(null, lpWindowName);
-@@ -3969,17 +_,18 @@
+@@ -3969,17 +_,30 @@
  #endif
  			}
  			else {
@@ -455,7 +455,19 @@
  			dedServ = true;
  			showSplash = false;
  			Initialize();
-+			ModLoader.ModLoader.Reload();
++
++			bool reloadMods;
++
++			do {
++				ModLoader.ModLoader.Reload();
++				DedServ_PostModLoad(out reloadMods);
++			}
++			while (reloadMods);
++		}
++		//The split and the boolean shenanigans are here to allow mods to hook into this method with MonoMod correctly. At any load-time.
++		private void DedServ_PostModLoad(out bool reloadMods) {
++			reloadMods = false;
++
  			while (worldPathName == null || worldPathName == "") {
  				bool flag = true;
  				while (flag) {
@@ -528,12 +540,17 @@
  						while (flag2) {
  							Console.WriteLine("");
  							Console.Write(Language.GetTextValue("CLI.EnterSeed"));
-@@ -4245,6 +_,14 @@
+@@ -4245,6 +_,19 @@
  
  						continue;
  					}
 +					else if (text2 == "m" || text2 == "M") {
-+						Interface.ServerModMenu();
++						Interface.ServerModMenu(out reloadMods);
++
++						if (reloadMods) {
++							return;
++						}
++
 +						continue;
 +					}
 +					else if (text2 == "b" || text2 == "b") {
