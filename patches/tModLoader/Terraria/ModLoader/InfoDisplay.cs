@@ -47,6 +47,10 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public abstract string DisplayValue();
 
+		public override void SetupContent() {
+			ModContent.GetTexture(Texture);
+		}
+
 		protected override void Register() {
 			InfoName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.InfoDisplayName.{Name}");
 
