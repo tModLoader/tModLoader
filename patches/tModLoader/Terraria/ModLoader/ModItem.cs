@@ -438,22 +438,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the player's animation when this item is being used. Return true if you modify the player's animation. Returns false by default.
+		/// Allows you to modify the player's animation when this item is being used.
 		/// </summary>
 		/// <param name="player">The player.</param>
-		/// <returns></returns>
-		public virtual bool UseItemFrame(Player player) {
-			return false;
-		}
+		public virtual void UseItemFrame(Player player) { }
 
 		/// <summary>
-		/// Allows you to modify the player's animation when the player is holding this item. Return true if you modify the player's animation. Returns false by default.
+		/// Allows you to modify the player's animation when the player is holding this item.
 		/// </summary>
 		/// <param name="player">The player.</param>
-		/// <returns></returns>
-		public virtual bool HoldItemFrame(Player player) {
-			return false;
-		}
+		public virtual void HoldItemFrame(Player player) { }
 
 		/// <summary>
 		/// Allows you to make this item usable by right-clicking. Returns false by default. When this item is used by right-clicking, player.altFunctionUse will be set to 2.
@@ -595,6 +589,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to decide if this item is allowed to stack with another of its type in the world.
+		/// This is only called when attempting to stack with an item of the same type.
+		/// </summary>
+		/// <param name="item2">The item this is trying to stack with</param>
+		/// <returns>Whether or not the item is allowed to stack</returns>
+		public virtual bool CanStackInWorld(Item item2) {
+			return true;
+		}
+
+		/// <summary>
 		/// Returns if the normal reforge pricing is applied. 
 		/// If true or false is returned and the price is altered, the price will equal the altered price.
 		/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
@@ -721,11 +725,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns whether or not this item burns when it is thrown into lava despite item.rare not being 0. Returns false by default.
+		/// Returns whether or not this item will burn in lava regardless of any conditions. Returns null by default (follow vanilla behaviour).
 		/// </summary>
-		public virtual bool CanBurnInLava()
-		{
-			return false;
+		public virtual bool? CanBurnInLava() {
+			return null;
 		}
 		
 		/// <summary>

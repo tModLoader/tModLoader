@@ -2623,7 +2623,7 @@
  				controlUseItem = true;
  			}
  
-+			if (flag && altFunctionUse == 0 && ItemLoader.AltFunctionUse(inventory[selectedItem], this)) {
++			if (flag2 && altFunctionUse == 0 && ItemLoader.AltFunctionUse(inventory[selectedItem], this)) {
 +				altFunctionUse = 1;
 +				controlUseItem = true;
 +			}
@@ -2929,20 +2929,22 @@
  						}
  					}
  				}
-+				else
-+					ItemLoader.UseItemFrame(this.inventory[this.selectedItem], this); //TODO: does this method need to return bool? Should it run before the rest of the useStyle code?
++
++				ItemLoader.UseItemFrame(inventory[selectedItem], this);
  			}
  			else if (pulley) {
  				if (pulleyDir == 2)
-@@ -25550,6 +_,8 @@
- 				_ = bodyFrame;
- 				reference6.Y = 0;
+@@ -25659,6 +_,10 @@
+ 				reference9.Y = 0;
  			}
-+			else if (ItemLoader.HoldItemFrame(inventory[selectedItem], this)) {
+ 
++			if (flag3 && itemAnimation <= 0) {
++				ItemLoader.HoldItemFrame(inventory[selectedItem], this);
 +			}
- 			else if (shieldRaised) {
- 				bodyFrame.Y = bodyFrame.Height * 10;
- 			}
++
+ 			if (legs == 140) {
+ 				legFrameCounter = 0.0;
+ 				legFrame.Y = legFrame.Height * (velocity.Y != 0f).ToInt();
 @@ -25787,7 +_,7 @@
  			}
  		}
@@ -3365,13 +3367,16 @@
  		}
  
  		public float GetAdjustedItemScale(Item item) {
-@@ -29702,6 +_,9 @@
+@@ -29702,6 +_,12 @@
  		}
  
  		public void ItemCheck(int i) {
-+			if (!PlayerHooks.PreItemCheck(this))
-+				return;
++			if (PlayerHooks.PreItemCheck(this))
++				ItemCheck_Inner(i);
 +
++			PlayerHooks.PostItemCheck(this);
++		}
++		private void ItemCheck_Inner(int i) {
  			if (CCed) {
  				channel = false;
  				itemAnimation = (itemAnimationMax = 0);
@@ -3576,7 +3581,7 @@
  							if (item.stack > 0)
  								item.stack--;
  
-@@ -30284,8 +_,13 @@
+@@ -30284,6 +_,9 @@
  				}
  			}
  
@@ -3585,11 +3590,7 @@
 +
  			if (itemAnimation == 0)
  				JustDroppedAnItem = false;
-+
-+			PlayerHooks.PostItemCheck(this);
  		}
- 
- 		private void ItemCheck_EmitFoodParticles(Item sItem) {
 @@ -30538,11 +_,18 @@
  				if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
  					continue;

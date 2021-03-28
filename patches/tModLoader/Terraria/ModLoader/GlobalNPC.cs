@@ -4,35 +4,26 @@ using System;
 using System.Collections.Generic;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.
 	/// </summary>
-	public abstract class GlobalNPC : ModType
+	public abstract class GlobalNPC : GlobalType<NPC>
 	{
-		internal int index;
-		internal int instanceIndex;
-
 		protected sealed override void Register() {
 			NPCLoader.VerifyGlobalNPC(this);
 
 			ModTypeLookup<GlobalNPC>.Register(this);
 			
-			index = NPCLoader.globalNPCs.Count;
+			index = (ushort)NPCLoader.globalNPCs.Count;
 
 			NPCLoader.globalNPCs.Add(this);
 		}
 
-		/// <summary>
-		/// Whether to create a new GlobalNPC instance for every NPC that exists. 
-		/// Useful for storing information on an npc. Defaults to false. 
-		/// Return true if you need to store information (have non-static fields).
-		/// </summary>
-		public virtual bool InstancePerEntity => false;
-
-		public GlobalNPC Instance(NPC npc) => InstancePerEntity ? npc.globalNPCs[instanceIndex] : this;
+		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
 
 		/// <summary>
 		/// Whether instances of this GlobalNPC are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
@@ -60,7 +51,6 @@ namespace Terraria.ModLoader
 			GlobalNPC copy = (GlobalNPC)Activator.CreateInstance(GetType());
 			copy.Mod = Mod;
 			copy.index = index;
-			copy.instanceIndex = instanceIndex;
 			return copy;
 		}
 

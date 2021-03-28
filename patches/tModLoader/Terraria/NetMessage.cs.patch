@@ -254,15 +254,17 @@
  #endif
  					num2 = 0;
  					num = 0;
-@@ -2303,7 +_,7 @@
+@@ -2303,8 +_,9 @@
  			}
  
  			if (!flag) {
 -				Console.WriteLine(Language.GetTextValue("Net.ServerAutoShutdown"));
 +				Logging.ServerConsoleLine(Language.GetTextValue("Net.ServerAutoShutdown"));
  				WorldFile.SaveWorld();
++				TileIO.PostExitWorldCleanup();
  				Netplay.Disconnect = true;
  			}
+ 		}
 @@ -2354,11 +_,12 @@
  					SendData(5, toWho, fromWho, null, plr, 94 + m, (int)Main.player[plr].miscDyes[m].prefix);
  				}

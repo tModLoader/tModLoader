@@ -710,6 +710,14 @@
  					else if (text == Language.GetTextValue("CLI.Settle_Command")) {
  						if (!Liquid.panicMode)
  							Liquid.StartPanic();
+@@ -4534,6 +_,7 @@
+ 					}
+ 					else if (text == Language.GetTextValue("CLI.Exit_Command")) {
+ 						WorldFile.SaveWorld();
++						TileIO.PostExitWorldCleanup();
+ 						Netplay.Disconnect = true;
+ 						SocialAPI.Shutdown();
+ 					}
 @@ -4587,11 +_,12 @@
  						Console.WriteLine(Language.GetTextValue("CLI.Port", Netplay.ListenPort));
  					}
@@ -3449,6 +3457,18 @@
  		public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue) {
  			chatMonitor.NewText(newText, R, G, B);
  			SoundEngine.PlaySound(12);
+@@ -49799,6 +_,11 @@
+ 		}
+ 
+ 		public static BestiaryUnlockProgressReport GetBestiaryProgressReport() {
++			List<BestiaryEntry> terEntries = BestiaryDB.GetBestiaryEntriesByMod(null);
++			return new BestiaryUnlockProgressReport() {
++				EntriesTotal = terEntries.Count,
++				CompletionAmountTotal = terEntries.Count(e => e.UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0)
++			};
+ 			float num = 0f;
+ 			int num2 = 0;
+ 			List<BestiaryEntry> entries = BestiaryDB.Entries;
 @@ -49830,7 +_,7 @@
  					num++;
  			}
