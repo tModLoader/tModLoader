@@ -254,14 +254,16 @@
  #endif
  					num2 = 0;
  					num = 0;
-@@ -2303,8 +_,9 @@
+@@ -2303,8 +_,11 @@
  			}
  
  			if (!flag) {
 -				Console.WriteLine(Language.GetTextValue("Net.ServerAutoShutdown"));
 +				Logging.ServerConsoleLine(Language.GetTextValue("Net.ServerAutoShutdown"));
  				WorldFile.SaveWorld();
-+				TileIO.PostExitWorldCleanup();
++				//This is only called in case of a manual quit or disconnect.
++				//There is a less common call to this in Netplay.InnerClientLoop.
++				SystemHooks.OnWorldUnload();
  				Netplay.Disconnect = true;
  			}
  		}

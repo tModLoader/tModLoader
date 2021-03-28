@@ -71,6 +71,7 @@ namespace Terraria.ModLoader
 			foreach (var system in HookOnWorldUnload.arr) {
 				system.OnWorldUnload();
 			}
+			IO.TileIO.PostExitWorldCleanup();
 		}
 
 		public static void UpdateMusic(ref int music, ref MusicPriority priority) {
