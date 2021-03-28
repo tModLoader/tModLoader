@@ -6,7 +6,7 @@ using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace Terraria.ModLoader
 {
-	public static class PlayerDrawLayerHooks
+	public static class PlayerDrawLayerLoader
 	{
 		private static List<PlayerDrawLayer> _layers = new List<PlayerDrawLayer>(PlayerDrawLayers.VanillaLayers);
 		public static IReadOnlyList<PlayerDrawLayer> Layers => _layers;
