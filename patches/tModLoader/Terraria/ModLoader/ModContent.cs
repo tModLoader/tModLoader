@@ -258,11 +258,11 @@ namespace Terraria.ModLoader
 		public static EquipTexture GetEquipTexture(EquipType type, int slot) => EquipLoader.GetEquipTexture(type, slot);
 
 		/// <summary>
-		/// Gets the ModMountData instance corresponding to the given type. Returns null if no ModMountData has the given type.
+		/// Gets the ModMount instance corresponding to the given type. Returns null if no ModMount has the given type.
 		/// </summary>
 		/// <param name="type">The type of the mount.</param>
-		/// <returns>Null if not found, otherwise the ModMountData associated with the mount.</returns>
-		public static ModMountData GetModMountData(int type) => MountLoader.GetMount(type);
+		/// <returns>Null if not found, otherwise the ModMount associated with the mount.</returns>
+		public static ModMount GetModMount(int type) => MountLoader.GetMount(type);
 
 		/// <summary>
 		/// Gets the ModTile instance with the given type. If no ModTile with the given type exists, returns null.
@@ -357,9 +357,9 @@ namespace Terraria.ModLoader
 		public static int BuffType<T>() where T : ModBuff => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
-		/// Get the id (type) of a ModMountData by class. Assumes one instance per class.
+		/// Get the id (type) of a ModMount by class. Assumes one instance per class.
 		/// </summary>
-		public static int MountType<T>() where T : ModMountData => GetInstance<T>()?.Type ?? 0;
+		public static int MountType<T>() where T : ModMount => GetInstance<T>()?.Type ?? 0;
 
 		private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value) {
 			if (dict.ContainsKey(value.Key)) {
