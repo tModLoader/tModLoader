@@ -57,13 +57,12 @@
  		private static void OpenPort(int port) {
  #if SERVER && WINDOWS
  			string localIPAddress = GetLocalIPAddress();
-@@ -286,6 +_,9 @@
+@@ -286,6 +_,8 @@
  				Main.netMode = 0;
  				Main.menuMode = 10;
  				WorldFile.SaveWorld();
-+				//This is only called in case of a manual quit or disconnect.
-+				//There is a less common call to this in Netplay.InnerClientLoop.
 +				SystemHooks.OnWorldUnload();
++				TileIO.PostExitWorldCleanup();
  				Main.menuMode = 0;
  			}
  			else {
@@ -117,9 +116,9 @@
  
  				if (!Main.gameMenu) {
 +					//This is only called in case of kicks and other sudden disconnects.
-+					//The more common call to this is in Main.SaveAndQuitCallback
-+					//TODO: should this be OnPlayerUnload()?, world is also on the server side...
++					//The more common (client) call to this is in WorldGen.SaveAndQuitCallback
 +					SystemHooks.OnWorldUnload();
++					TileIO.PostExitWorldCleanup();
 +
  					Main.gameMenu = true;
  					Main.SwitchNetMode(0);

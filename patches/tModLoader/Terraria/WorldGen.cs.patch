@@ -89,16 +89,18 @@
  			if (Main.menuMode == 10 || Main.menuMode == 888)
  				Main.menuMode = 6;
  
-@@ -2354,6 +_,9 @@
- 			Rain.ClearRain();
- 			if (netMode == 0) {
- 				WorldFile.SaveWorld();
-+				//This is only called in case of a manual quit or disconnect.
-+				//There is a less common call to this in Netplay.InnerClientLoop.
-+				SystemHooks.OnWorldUnload();
- 				SoundEngine.PlaySound(10);
+@@ -2361,6 +_,11 @@
+ 				Main.netMode = 0;
  			}
- 			else {
+ 
++			//This is only called in case of a manual quit or disconnect.
++			//There is a less common (client) call to this in Netplay.InnerClientLoop.
++			SystemHooks.OnWorldUnload();
++			TileIO.PostExitWorldCleanup();
++
+ 			Main.fastForwardTime = false;
+ 			Main.UpdateTimeRate();
+ 			Main.menuMode = 0;
 @@ -2370,10 +_,21 @@
  
  		public static void SaveAndQuit(Action callback = null) {

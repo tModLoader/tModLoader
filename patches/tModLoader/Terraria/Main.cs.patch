@@ -727,13 +727,12 @@
  					else if (text == Language.GetTextValue("CLI.Settle_Command")) {
  						if (!Liquid.panicMode)
  							Liquid.StartPanic();
-@@ -4534,6 +_,9 @@
+@@ -4534,6 +_,8 @@
  					}
  					else if (text == Language.GetTextValue("CLI.Exit_Command")) {
  						WorldFile.SaveWorld();
-+						//This is only called in case of a manual quit or disconnect.
-+						//There is a less common call to this in Netplay.InnerClientLoop.
 +						SystemHooks.OnWorldUnload();
++						TileIO.PostExitWorldCleanup();
  						Netplay.Disconnect = true;
  						SocialAPI.Shutdown();
  					}
