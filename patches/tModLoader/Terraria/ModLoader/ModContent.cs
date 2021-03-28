@@ -479,9 +479,9 @@ namespace Terraria.ModLoader
 
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();
-			RecipeHooks.setupRecipes = true;
+			RecipeLoader.setupRecipes = true;
 			Recipe.SetupRecipes();
-			RecipeHooks.setupRecipes = false;
+			RecipeLoader.setupRecipes = false;
 		}
 
 		internal static void UnloadModContent() {
@@ -546,7 +546,7 @@ namespace Terraria.ModLoader
 			MapLoader.UnloadModMap();
 			ItemSorting.SetupWhiteLists();
 			HotKeyLoader.Unload();
-			RecipeHooks.Unload();
+			RecipeLoader.Unload();
 			CommandLoader.Unload();
 			TagSerializer.Reload();
 			ModNet.Unload();
