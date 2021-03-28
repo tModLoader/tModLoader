@@ -506,6 +506,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		//TODO: Unhardcode ALL of this.
 		internal static void Unload() {
 			ContentInstance.Clear();
 			ModTypeLookup.Clear();
@@ -566,6 +567,7 @@ namespace Terraria.ModLoader
 			CleanupModReferences();
 		}
 
+		//TODO: Unhardcode ALL of this.
 		private static void ResizeArrays(bool unloading = false) {
 			DamageClassLoader.ResizeArrays();
 			ItemLoader.ResizeArrays(unloading);
@@ -600,6 +602,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		//TODO: Unhardcode ALL of this.
 		public static void RefreshModLanguage(GameCulture culture) {
 			Dictionary<string, LocalizedText> dict = LanguageManager.Instance._localizedTexts;
 
