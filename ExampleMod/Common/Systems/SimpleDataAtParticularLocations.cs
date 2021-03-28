@@ -47,8 +47,6 @@ namespace ExampleMod.Common.Systems
 					}).ToList(),
 				};
 			}
-			// We discard our map after saving, because we don't need it anymore.
-			myMap = null;
 
 			return tag;
 		}
@@ -65,7 +63,12 @@ namespace ExampleMod.Common.Systems
 			}
 			myMap = list.ToArray();
 		}
-		
+
+		public override void OnWorldUnload() {
+			// We discard our map after unloading, because we don't need it anymore.
+			myMap = null;
+		}
+
 		// We define what we want to generate as additional location data, for this example, in PostWorldGen. 
 		// We will create a simple column of byte data going down the horizontal center of the world that we will later use in PreUpdateWorld.
 		public override void PostWorldGen() {

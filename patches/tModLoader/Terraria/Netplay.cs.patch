@@ -6,7 +6,7 @@
  using System.IO;
  using System.Linq;
  using System.Net;
-@@ -7,10 +_,12 @@
+@@ -7,21 +_,23 @@
  using System.Runtime.CompilerServices;
  #endif
  using System.Threading;
@@ -19,7 +19,11 @@
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
-@@ -21,7 +_,6 @@
+ using Terraria.Utilities;
+ #if !XNA
+ using Terraria.Social.Base;
++using Terraria.ModLoader.IO;
+ #endif
  #if SERVER
  using NATUPNPLib;
  #endif
@@ -56,6 +60,14 @@
  		private static void OpenPort(int port) {
  #if SERVER
  			string localIPAddress = GetLocalIPAddress();
+@@ -287,6 +_,7 @@
+ 				Main.netMode = 0;
+ 				Main.menuMode = 10;
+ 				WorldFile.SaveWorld();
++				TileIO.PostExitWorldCleanup();
+ 				Main.menuMode = 0;
+ 			}
+ 			else {
 @@ -425,6 +_,7 @@
  		}
  

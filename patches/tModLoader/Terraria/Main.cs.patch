@@ -719,6 +719,14 @@
  					else if (text == Language.GetTextValue("CLI.Settle_Command")) {
  						if (!Liquid.panicMode)
  							Liquid.StartPanic();
+@@ -4540,6 +_,7 @@
+ 					}
+ 					else if (text == Language.GetTextValue("CLI.Exit_Command")) {
+ 						WorldFile.SaveWorld();
++						TileIO.PostExitWorldCleanup();
+ 						Netplay.Disconnect = true;
+ 						SocialAPI.Shutdown();
+ 					}
 @@ -4593,11 +_,12 @@
  						Console.WriteLine(Language.GetTextValue("CLI.Port", Netplay.ListenPort));
  					}
