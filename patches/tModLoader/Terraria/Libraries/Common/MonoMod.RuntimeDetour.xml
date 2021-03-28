@@ -64,6 +64,19 @@
             Undo the native detour without freeing the detour native data, allowing you to reapply it later.
             </summary>
         </member>
+        <member name="M:MonoMod.RuntimeDetour.NativeDetour.ChangeSource(System.IntPtr)">
+            <summary>
+            Changes the source of this native detour to a new source address. This does not repair the old source location.
+            This also assumes that <paramref name="newSource"/> is simply a new address for the same method as this was constructed with.
+            </summary>
+            <param name="newSource">The new source location.</param>
+        </member>
+        <member name="M:MonoMod.RuntimeDetour.NativeDetour.ChangeTarget(System.IntPtr)">
+            <summary>
+            Changed the target of this native detour to a new target.
+            </summary>
+            <param name="newTarget">The new target address.</param>
+        </member>
         <member name="M:MonoMod.RuntimeDetour.NativeDetour.Free">
             <summary>
             Free the detour's data without undoing it. This makes any further operations on this detour invalid.

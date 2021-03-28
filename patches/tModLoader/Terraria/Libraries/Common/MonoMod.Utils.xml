@@ -728,6 +728,13 @@
             <param name="method">The method creating the state machine.</param>
             <returns>The "main" method in the state machine.</returns>
         </member>
+        <member name="M:MonoMod.Utils.Extensions.GetActualGenericMethodDefinition(System.Reflection.MethodInfo)">
+            <summary>
+            Gets the <i>actual</i> generic method definition of a method, as defined on the fully open type.
+            </summary>
+            <param name="method">The potentially instantiated method to find the definition of.</param>
+            <returns>The original method definition, with no generic arguments filled in.</returns>
+        </member>
         <member name="M:MonoMod.Utils.Extensions.SafeResolve(Mono.Cecil.TypeReference)">
             <summary>
             Safely resolve a reference, silently discarding any exceptions.
@@ -1092,6 +1099,15 @@
             Relink the given type reference.
             </summary>
             <param name="type">The reference to relink.</param>
+            <param name="relinker">The relinker to use during the relinking process.</param>
+            <param name="context">The generic context provided to relink generic references.</param>
+            <returns>A relinked reference.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.Relink(Mono.Cecil.GenericParameterConstraint,MonoMod.Utils.Relinker,Mono.Cecil.IGenericParameterProvider)">
+            <summary>
+            Relink the given type reference.
+            </summary>
+            <param name="constraint">The reference to relink.</param>
             <param name="relinker">The relinker to use during the relinking process.</param>
             <param name="context">The generic context provided to relink generic references.</param>
             <returns>A relinked reference.</returns>
