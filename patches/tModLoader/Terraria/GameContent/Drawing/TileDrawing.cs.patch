@@ -8,7 +8,7 @@
  using Terraria.ObjectData;
  using Terraria.UI;
  using Terraria.Utilities;
-@@ -2744,6 +_,9 @@
+@@ -2741,6 +_,9 @@
  						AddSpecialPoint(tileX, tileY, TileCounterType.Tree);
  					break;
  			}
@@ -18,7 +18,7 @@
  		}
  
  		private static Color GetFinalLight(Tile tileCache, ushort typeCache, Color tileLight, Color tint) {
-@@ -4444,7 +_,7 @@
+@@ -4441,7 +_,7 @@
  			AddSpecialLegacyPoint(p.X, p.Y);
  		}
  
@@ -27,7 +27,7 @@
  			_specialTileX[_specialTilesCount] = x;
  			_specialTileY[_specialTilesCount] = y;
  			_specialTilesCount++;
-@@ -5418,6 +_,8 @@
+@@ -5415,6 +_,8 @@
  
  					Main.spriteBatch.Draw(value9, vector, value10, new Color(255, 255, 255, 0) * 0.1f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
  				}
