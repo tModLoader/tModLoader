@@ -64,7 +64,7 @@ namespace ExampleMod.Content.Items.Weapons
 				heading *= new Vector2(speedX, speedY).Length();
 				speedX = heading.X;
 				speedY = heading.Y + (Main.rand.Next(-40, 41) * 0.02f);
-				Projectile.NewProjectile(player.GetProjectileSource_Item(this), position.X, position.Y, speedX, speedY, type, damage * 2, knockBack, player.whoAmI, 0f, ceilingLimit);
+				Projectile.NewProjectile(player.GetProjectileSource_Item(Item), position.X, position.Y, speedX, speedY, type, damage * 2, knockBack, player.whoAmI, 0f, ceilingLimit);
 			}
 
 			return false;

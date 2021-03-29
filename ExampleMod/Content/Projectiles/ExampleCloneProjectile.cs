@@ -45,7 +45,7 @@ namespace ExampleMod.Content.Projectiles
 				launchVelocity = launchVelocity.RotatedBy(MathHelper.PiOver4);
 
 				//Spawn new projectile with the newly rotated velocity, belonging the the original projectile owner.
-				Projectile.NewProjectile(Projectile.InheritSource(this), Projectile.Center, launchVelocity, ProjectileID.Meowmere, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+				Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center, launchVelocity, ProjectileID.Meowmere, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
 			}
 		}
 
