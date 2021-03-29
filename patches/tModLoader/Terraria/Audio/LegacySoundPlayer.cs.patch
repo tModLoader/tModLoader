@@ -1,21 +1,13 @@
 --- src/Terraria/Terraria/Audio/LegacySoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/LegacySoundPlayer.cs
-@@ -38,12 +_,12 @@
- 		private SoundEffectInstance _soundInstanceGrab;
- 		private Asset<SoundEffect> _soundPixie;
- 		private SoundEffectInstance _soundInstancePixie;
--		private Asset<SoundEffect>[] _soundItem = new Asset<SoundEffect>[SoundID.ItemSoundCount];
-+		internal Asset<SoundEffect>[] _soundItem = new Asset<SoundEffect>[SoundID.ItemSoundCount];
--		private SoundEffectInstance[] _soundInstanceItem = new SoundEffectInstance[SoundID.ItemSoundCount];
-+		internal SoundEffectInstance[] _soundInstanceItem = new SoundEffectInstance[SoundID.ItemSoundCount];
--		private Asset<SoundEffect>[] _soundNpcHit = new Asset<SoundEffect>[58];
-+		internal Asset<SoundEffect>[] _soundNpcHit = new Asset<SoundEffect>[SoundID.NPCHitCount];
--		private SoundEffectInstance[] _soundInstanceNpcHit = new SoundEffectInstance[58];
-+		internal SoundEffectInstance[] _soundInstanceNpcHit = new SoundEffectInstance[SoundID.NPCHitCount];
--		private Asset<SoundEffect>[] _soundNpcKilled = new Asset<SoundEffect>[SoundID.NPCDeathCount];
-+		internal Asset<SoundEffect>[] _soundNpcKilled = new Asset<SoundEffect>[SoundID.NPCDeathCount];
--		private SoundEffectInstance[] _soundInstanceNpcKilled = new SoundEffectInstance[SoundID.NPCDeathCount];
-+		internal SoundEffectInstance[] _soundInstanceNpcKilled = new SoundEffectInstance[SoundID.NPCDeathCount];
- 		private SoundEffectInstance _soundInstanceMoonlordCry;
- 		private Asset<SoundEffect> _soundDoorOpen;
- 		private SoundEffectInstance _soundInstanceDoorOpen;
+@@ -40,8 +_,8 @@
+ 		public SoundEffectInstance SoundInstancePixie;
+ 		public Asset<SoundEffect>[] SoundItem = new Asset<SoundEffect>[SoundID.ItemSoundCount];
+ 		public SoundEffectInstance[] SoundInstanceItem = new SoundEffectInstance[SoundID.ItemSoundCount];
+-		public Asset<SoundEffect>[] SoundNpcHit = new Asset<SoundEffect>[58];
+-		public SoundEffectInstance[] SoundInstanceNpcHit = new SoundEffectInstance[58];
++		public Asset<SoundEffect>[] SoundNpcHit = new Asset<SoundEffect>[SoundID.NPCHitCount];
++		public SoundEffectInstance[] SoundInstanceNpcHit = new SoundEffectInstance[SoundID.NPCHitCount];
+ 		public Asset<SoundEffect>[] SoundNpcKilled = new Asset<SoundEffect>[SoundID.NPCDeathCount];
+ 		public SoundEffectInstance[] SoundInstanceNpcKilled = new SoundEffectInstance[SoundID.NPCDeathCount];
+ 		public SoundEffectInstance SoundInstanceMoonlordCry;
