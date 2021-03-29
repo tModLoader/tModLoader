@@ -21,7 +21,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 
 			//If the player is local, and there hasn't been a pet projectile spawned yet - spawn it.
 			if (player.whoAmI == Main.myPlayer && player.ownedProjectileCounts[projType] <= 0) {
-				Projectile.NewProjectile(player.Center, Vector2.Zero, projType, 0, 0f, player.whoAmI);
+				Projectile.NewProjectile(, player.Center, Vector2.Zero, projType, 0, 0f, player.whoAmI);
 			}
 		}
 	}

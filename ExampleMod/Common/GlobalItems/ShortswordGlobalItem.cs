@@ -21,7 +21,7 @@ namespace ExampleMod.Common.GlobalItems
 
 		public override bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
 			// Make it shoot grenades for no reason
-			Projectile.NewProjectileDirect(player.Center, new Vector2(speedX, speedY) * 5f, ProjectileID.Grenade, damage, knockBack, player.whoAmI);
+			Projectile.NewProjectileDirect(, player.Center, new Vector2(speedX, speedY) * 5f, ProjectileID.Grenade, damage, knockBack, player.whoAmI);
 
 			return true;
 		}
