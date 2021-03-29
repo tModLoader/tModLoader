@@ -3094,7 +3094,7 @@
  					menuMode = 0;
  					netMode = 0;
  				}
-@@ -36561,6 +_,9 @@
+@@ -36561,14 +_,20 @@
  					menuMode = 12;
  				}
  
@@ -3103,7 +3103,18 @@
 +
  				num11++;
  				array9[num11] = Lang.menu[131].Value;
++				//* A comment to join two patches into one *
  				if (selectedMenu == num11) {
+ 					SoundEngine.PlaySound(10);
+ 					menuMode = 888;
+ 					MenuUI.SetState(AchievementsMenu);
+ 				}
+ 
++				SkipAchievements:
++
+ 				num11++;
+ 				if (SocialAPI.Workshop != null) {
+ 					array9[num11] = Language.GetText("UI.Workshop").Value;
 @@ -36589,6 +_,7 @@
  				}
  

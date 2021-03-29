@@ -2733,7 +2733,7 @@
  												continue;
  
  											if (num72 != 329) {
-+												if (ItemLoader.ConsumeItem(inventory[num76], this))
++												if (ItemLoader.ConsumeItem(inventory[num75], this))
 -												inventory[num75].stack--;
 +													inventory[num75].stack--;
 +

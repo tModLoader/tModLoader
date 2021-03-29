@@ -16,7 +16,7 @@
 -			SoundBank = new SoundBank(Engine, "Content\\Sound Bank.xsb");
 +			var contentManager = (TMLContentManager)Main.instance.Content;
 +
-+			engine = new AudioEngine(contentManager.GetPath("TerrariaMusic.xgs"));
++			Engine = new AudioEngine(contentManager.GetPath("TerrariaMusic.xgs"));
 +			SoundBank = new SoundBank(Engine, contentManager.GetPath("Sound Bank.xsb"));
  			Engine.Update();
 -			WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb", 0, 512);
@@ -29,7 +29,7 @@
  			}
  		}
 +
-+		internal Cue GetCueInternal(string cueName) => soundBank.GetCue(cueName);
++		internal Cue GetCueInternal(string cueName) => SoundBank.GetCue(cueName);
  
  		public void LoadCue(int cueIndex, string cueName) {
  			CueAudioTrack cueAudioTrack = new CueAudioTrack(SoundBank, cueName);

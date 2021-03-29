@@ -19,7 +19,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -18,17 +_,25 @@
+@@ -18,17 +_,23 @@
    </PropertyGroup>
    <PropertyGroup>
      <PdbFile>bin\$(OutputName)</PdbFile>
@@ -39,8 +39,6 @@
 +    <Reference Include="Mono.Cecil" />
 +    <Reference Include="Mono.Cecil.Pdb" />
 +    <Reference Include="Mono.Cecil.Mdb" />
-+    <Reference Include="MP3Sharp" />
-+    <Reference Include="NVorbis" />
 +    <Reference Include="log4net" />
 +    <Reference Include="MonoMod.RuntimeDetour" />
 +    <Reference Include="MonoMod.Utils" />
