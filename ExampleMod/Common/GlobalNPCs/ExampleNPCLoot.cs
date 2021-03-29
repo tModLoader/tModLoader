@@ -3,6 +3,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using ExampleMod.Content.Items;
+using ExampleMod.Common.ItemDropRules.Conditions;
 
 namespace ExampleMod.Common.GlobalNPCs
 {
@@ -38,6 +39,25 @@ namespace ExampleMod.Common.GlobalNPCs
 				npcLoot.Add(ItemDropRule.Common(ItemID.GreenCap, 1)); //In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
+			if (npc.type == NPCID.Crimera || npc.type == NPCID.Corruptor) {
+				//Here we make use of our own special rule we created: drop during daytime
+				ExampleDropCondition exampleDropCondition = new ExampleDropCondition();
+				IItemDropRule conditionalRule = new LeadingConditionRule(exampleDropCondition);
+
+				int itemType = ItemID.Vertebrae;
+				if (npc.type == NPCID.Crimera) {
+					itemType = ItemID.RottenChunk;
+				}
+				//33% chance to drop other corresponding item in addition
+				IItemDropRule rule = ItemDropRule.Common(itemType, dropsOutOfY: 3, dropsXoutofY: 1);
+
+				//Apply our item drop rule to the conditional rule
+				conditionalRule.OnSuccess(rule);
+				//Add the rule
+				npcLoot.Add(conditionalRule);
+				//It will result in the drop being shown in the bestiary, but only drop if the condition is true.
+			}
+      
 			//TODO: Add the rest of the vanilla drop rules!!
 		}
 

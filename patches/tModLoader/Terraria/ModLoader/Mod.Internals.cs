@@ -90,6 +90,8 @@ namespace Terraria.ModLoader
 				AsyncLoadQueue.Dequeue().Wait();
 
 			AutoloadLocalization();
+			ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName, Assets);
+
 			IList<Type> modSounds = new List<Type>();
 
 			Type modType = GetType();

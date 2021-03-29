@@ -156,8 +156,8 @@ namespace Terraria.DataStructures
 		public static readonly PlayerDrawLayer HeldItem = new VanillaPlayerDrawLayer(nameof(HeldItem), DrawPlayer_27_HeldItem,
 			position: new Multiple() {
 				{ new Between(BalloonAcc, Skin), drawinfo => drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindBackArm },
-				{ new Between(SolarShield, ArmOverItem), drawinfo => drawinfo.weaponDrawOrder == WeaponDrawOrder.OverFrontArm },
-				{ new Between(BladedGlove, ProjectileOverArm), drawinfo => drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindFrontArm }
+				{ new Between(SolarShield, ArmOverItem), drawinfo => drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindFrontArm },
+				{ new Between(BladedGlove, ProjectileOverArm), drawinfo => drawinfo.weaponDrawOrder == WeaponDrawOrder.OverFrontArm }
 			});
 
 

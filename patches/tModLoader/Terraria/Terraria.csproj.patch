@@ -2,7 +2,7 @@
 +++ src/tModLoader/Terraria/Terraria.csproj
 @@ -7,7 +_,17 @@
      <Company>Re-Logic</Company>
-     <Copyright>Copyright © 2020 Re-Logic</Copyright>
+     <Copyright>Copyright © 2021 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
 -	<OutputName>Terraria</OutputName>
 +	<OutputName>tModLoader</OutputName>
@@ -19,7 +19,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -18,15 +_,23 @@
+@@ -18,19 +_,25 @@
    </PropertyGroup>
    <PropertyGroup>
      <PdbFile>bin\$(OutputName)</PdbFile>
@@ -27,8 +27,11 @@
 +    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
    </PropertyGroup>
    <ItemGroup>
+     <Reference Include="CsvHelper" />
      <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))" />
 -    <Reference Include="Ionic.Zip.CF" />
+-    <Reference Include="MP3Sharp" Condition="$(DefineConstants.Contains('CLIENT'))" />
++    <Reference Include="MP3Sharp" />
 +    <Reference Include="Ionic.Zip.Reduced" />
      <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
      <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))" />
@@ -37,15 +40,16 @@
 +    <Reference Include="Mono.Cecil" />
 +    <Reference Include="Mono.Cecil.Pdb" />
 +    <Reference Include="Mono.Cecil.Mdb" />
-+    <Reference Include="MP3Sharp" />
-+    <Reference Include="NVorbis" />
 +    <Reference Include="log4net" />
 +    <Reference Include="MonoMod.RuntimeDetour" />
 +    <Reference Include="MonoMod.Utils" />
      <Reference Include="Newtonsoft.Json" />
+-    <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
++    <Reference Include="NVorbis" />
+     <Reference Include="NVorbis.System.ValueTuple" />
      <Reference Include="RailSDK.Net">
        <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/RailSDK.Net.dll</HintPath>
-@@ -35,8 +_,8 @@
+@@ -39,8 +_,8 @@
      </Reference>
      <ProjectReference Include="../ReLogic/ReLogic.csproj" />
      <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
@@ -56,7 +60,7 @@
      </EmbeddedResource>
      <Reference Include="SteelSeriesEngineWrapper" />
      <Reference Include="Steamworks.NET">
-@@ -48,23 +_,31 @@
+@@ -52,23 +_,31 @@
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
      <Reference Include="System.Runtime.Serialization" />
@@ -91,7 +95,7 @@
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
-@@ -83,7 +_,11 @@
+@@ -87,7 +_,11 @@
    </Target>
    <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
      <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />

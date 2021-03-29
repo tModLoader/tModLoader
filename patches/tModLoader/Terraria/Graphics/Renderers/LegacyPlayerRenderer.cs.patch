@@ -54,7 +54,7 @@
 +			*/
 +			PlayerHooks.ModifyDrawInfo(ref drawinfo);
 +
-+			foreach (var layer in PlayerDrawLayerHooks.GetDrawLayers(drawinfo)) {
++			foreach (var layer in PlayerDrawLayerLoader.GetDrawLayers(drawinfo)) {
 +				if (!headOnly || layer.IsHeadLayer) {
 +					layer.DrawWithTransformationAndChildren(ref drawinfo);
 +				}
