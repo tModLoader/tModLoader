@@ -10,6 +10,7 @@ namespace Terraria
 		internal ModPlayer[] modPlayers = new ModPlayer[0];
 		public Item equippedWings = null;
 
+		public int infoDisplayPage;
 		public HashSet<int> nearbyModTorch = new HashSet<int>();
 
 		// Get
