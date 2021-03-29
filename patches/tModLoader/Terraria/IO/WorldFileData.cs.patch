@@ -1,8 +1,6 @@
 --- src/Terraria/Terraria/IO/WorldFileData.cs
 +++ src/tModLoader/Terraria/IO/WorldFileData.cs
-@@ -2,8 +_,9 @@
- using System;
- using System.Collections;
+@@ -4,6 +_,7 @@
  using System.IO;
  using Terraria.Audio;
  using Terraria.Localization;

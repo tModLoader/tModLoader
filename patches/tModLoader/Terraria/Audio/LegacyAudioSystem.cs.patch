@@ -1,8 +1,6 @@
 --- src/Terraria/Terraria/Audio/LegacyAudioSystem.cs
 +++ src/tModLoader/Terraria/Audio/LegacyAudioSystem.cs
-@@ -1,8 +_,9 @@
- using Microsoft.Xna.Framework.Audio;
- using ReLogic.Content.Sources;
+@@ -3,6 +_,7 @@
  using System;
  using System.Collections;
  using System.Collections.Generic;
@@ -10,7 +8,7 @@
  
  namespace Terraria.Audio
  {
-@@ -96,9 +_,11 @@
+@@ -96,10 +_,12 @@
  		}
  
  		public LegacyAudioSystem() {
@@ -25,7 +23,8 @@
 +			WaveBank = new WaveBank(Engine, contentManager.GetPath("Wave Bank.xwb"), 0, 512);
  			Engine.Update();
  			AudioTracks = new IAudioTrack[90];
-@@ -112,5 +_,7 @@
+ 			TrackNamesByIndex = new Dictionary<int, string>();
+@@ -112,6 +_,8 @@
  				yield return null;
  			}
  		}
@@ -33,3 +32,4 @@
 +		internal Cue GetCueInternal(string cueName) => soundBank.GetCue(cueName);
  
  		public void LoadCue(int cueIndex, string cueName) {
+ 			CueAudioTrack cueAudioTrack = new CueAudioTrack(SoundBank, cueName);

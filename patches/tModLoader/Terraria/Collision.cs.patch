@@ -44,7 +44,7 @@
  						if (vector.X + (float)Width - 2f >= vector2.X && vector.X + 2f <= vector2.X + 16f && vector.Y + (float)Height - 2f >= vector2.Y && vector.Y + 2f <= vector2.Y + (float)num6) {
  							int num8 = 1;
  							if (vector.X + (float)(Width / 2) < vector2.X + 8f)
-@@ -2117,21 +_,19 @@
+@@ -2117,14 +_,11 @@
  						if (vector.X + (float)(Width / 2) < vector2.X + 8f)
  							num9 = -1;
  
@@ -62,7 +62,7 @@
  
  						if (type == 484)
  							num5 = 25;
- 
+@@ -2132,6 +_,7 @@
  						if (num5 > 0)
  							return new Vector2(num9, num5);
  					}

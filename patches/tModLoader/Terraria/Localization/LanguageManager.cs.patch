@@ -1,7 +1,6 @@
 --- src/Terraria/Terraria/Localization/LanguageManager.cs
 +++ src/tModLoader/Terraria/Localization/LanguageManager.cs
-@@ -11,7 +_,8 @@
- using System.Text.RegularExpressions;
+@@ -12,6 +_,7 @@
  using System.Threading;
  using Terraria.GameContent;
  using Terraria.Initializers;

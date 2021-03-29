@@ -3154,8 +3154,7 @@
  					array9[num24] = Lang.menu[5].Value;
  					if (selectedMenu == num24 || flag5) {
  						flag5 = false;
-@@ -38331,8 +_,13 @@
- 							netMode = 0;
+@@ -38332,7 +_,12 @@
  						}
  					}
  				}

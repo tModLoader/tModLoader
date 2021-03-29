@@ -32,7 +32,7 @@
  			_canBePlayed = canBePlayed;
  			LoadTextures();
  			InitializeAppearance();
-@@ -87,5 +_,16 @@
+@@ -87,6 +_,17 @@
  				num += 24f;
  			}
  
@@ -49,6 +49,7 @@
 +			//}
  			UIImageButton uIImageButton5 = new UIImageButton(_buttonRenameTexture);
  			uIImageButton5.VAlign = 1f;
+ 			uIImageButton5.Left.Set(num, 0f);
 @@ -136,6 +_,7 @@
  			_buttonSeedTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonSeed");
  			_buttonRenameTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonRename");

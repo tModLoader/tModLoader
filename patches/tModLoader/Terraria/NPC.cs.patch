@@ -150,9 +150,7 @@
  			defDefense = defense;
  			defDamage = damage;
  			life = lifeMax;
-@@ -11808,8 +_,12 @@
- 		}
- 
+@@ -11810,6 +_,10 @@
  		public IProjectileSource GetProjectileSpawnSource() => new ProjectileSource_NPC(this);
  
  		public void AI() {

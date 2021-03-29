@@ -3178,7 +3178,8 @@
  					PlaceThing_Tiles_BlockPlacementIfOverPlayers(ref canPlace, ref objectData);
  					PlaceThing_Tiles_BlockPlacementForRepeatedPigronatas(ref canPlace, ref objectData);
  					PlaceThing_Tiles_BlockPlacementForRepeatedPumpkins(ref canPlace, ref objectData);
-@@ -27783,6 +_,6 @@
+@@ -27782,7 +_,7 @@
+ 
  				if (0 == 0) {
  					if (hitReplace.AddDamage(num, pickaxeDamage) < 100) {
 -						int num2 = WorldGen.KillTile_GetTileDustAmount(fail: true, tile);
@@ -4634,7 +4635,7 @@
  					if (buffType[i] >= 170 && buffType[i] <= 172)
  						DelBuff(i);
  				}
-@@ -39132,8 +_,8 @@
+@@ -39132,7 +_,7 @@
  				}
  			}
  
@@ -4643,7 +4644,6 @@
  			IProjectileSource projectileSource_SetBonus = GetProjectileSource_SetBonus(3);
  			_ = Main.projectile[Projectile.NewProjectile(projectileSource_SetBonus, MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer)];
  		}
- 
 @@ -39251,7 +_,7 @@
  				return;
  

@@ -5,8 +5,8 @@
  		public Asset<SoundEffect>[] SoundItem = new Asset<SoundEffect>[SoundID.ItemSoundCount];
  		public SoundEffectInstance[] SoundInstanceItem = new SoundEffectInstance[SoundID.ItemSoundCount];
 -		public Asset<SoundEffect>[] SoundNpcHit = new Asset<SoundEffect>[58];
--		public SoundEffectInstance[] SoundInstanceNpcHit = new SoundEffectInstance[58];
 +		public Asset<SoundEffect>[] SoundNpcHit = new Asset<SoundEffect>[SoundID.NPCHitCount];
+-		public SoundEffectInstance[] SoundInstanceNpcHit = new SoundEffectInstance[58];
 +		public SoundEffectInstance[] SoundInstanceNpcHit = new SoundEffectInstance[SoundID.NPCHitCount];
  		public Asset<SoundEffect>[] SoundNpcKilled = new Asset<SoundEffect>[SoundID.NPCDeathCount];
  		public SoundEffectInstance[] SoundInstanceNpcKilled = new SoundEffectInstance[SoundID.NPCDeathCount];
