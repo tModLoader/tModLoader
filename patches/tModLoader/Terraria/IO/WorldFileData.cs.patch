@@ -1,14 +1,14 @@
 --- src/Terraria/Terraria/IO/WorldFileData.cs
 +++ src/tModLoader/Terraria/IO/WorldFileData.cs
-@@ -2,6 +_,7 @@
- using System;
+@@ -4,6 +_,7 @@
  using System.IO;
+ using Terraria.Audio;
  using Terraria.Localization;
 +using Terraria.ModLoader.IO;
  using Terraria.Utilities;
  
  namespace Terraria.IO
-@@ -136,6 +_,7 @@
+@@ -138,6 +_,7 @@
  			if (!base.IsCloudSave) {
  				string worldPathFromName = Main.GetWorldPathFromName(Name, cloudSave: true);
  				if (FileUtilities.MoveToCloud(base.Path, worldPathFromName)) {
@@ -16,7 +16,7 @@
  					Main.LocalFavoriteData.ClearEntry(this);
  					_isCloudSave = true;
  					_path = worldPathFromName;
-@@ -148,6 +_,7 @@
+@@ -150,6 +_,7 @@
  			if (base.IsCloudSave) {
  				string worldPathFromName = Main.GetWorldPathFromName(Name, cloudSave: false);
  				if (FileUtilities.MoveToLocal(base.Path, worldPathFromName)) {
