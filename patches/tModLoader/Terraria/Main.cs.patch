@@ -2675,6 +2675,234 @@
  						if ((!expertMode || type != 266) && ((type != 439 && type != 440) || npc[num2].ai[0] != 5f)) {
  							if (type >= 134 && type <= 136) {
  								scale = 1.5f;
+@@ -34698,10 +_,18 @@
+ 				num4 += 50f;
+ 			}
+ 
++			InfoDisplayPageHandler(startX, ref text, out int startingDisplay, out int endingDisplay);
+-			for (int i = 0; i < 12; i++) {
++			for (int i = startingDisplay; i < endingDisplay; i++) {
+ 				string text2 = "";
+ 				string text3 = "";
++
++				InfoDisplay info = InfoDisplayLoader.InfoDisplays[i];
++
++				if (!InfoDisplayLoader.Active(info) || (player[myPlayer].hideInfo[info.Type] && !playerInventory))
++					continue;
++
+-				if (player[myPlayer].accWatch > 0 && !flag && (!player[myPlayer].hideInfo[0] || playerInventory)) {
++				//if (player[myPlayer].accWatch > 0 && !flag && (!player[myPlayer].hideInfo[0] || playerInventory)) {
++				if (info == InfoDisplay.Watches) {
+ 					num = 0;
+ 					text3 = Lang.inter[95].Value;
+ 					string textValue = Language.GetTextValue("GameUI.TimeAtMorning");
+@@ -34739,7 +_,8 @@
+ 					text2 = num7 + ":" + text4 + " " + textValue;
+ 					flag = true;
+ 				}
+-				else if (player[myPlayer].accWeatherRadio && !flag5 && (!player[myPlayer].hideInfo[1] || playerInventory)) {
++				//else if (player[myPlayer].accWeatherRadio && !flag5 && (!player[myPlayer].hideInfo[1] || playerInventory)) {
++				else if (info == InfoDisplay.WeatherRadio) {
+ 					num = 1;
+ 					text3 = Lang.inter[96].Value;
+ 					string text5 = "";
+@@ -34753,7 +_,8 @@
+ 
+ 					flag5 = true;
+ 				}
+-				else if (player[myPlayer].accCalendar && !flag8 && (!player[myPlayer].hideInfo[7] || playerInventory)) {
++				//else if (player[myPlayer].accCalendar && !flag8 && (!player[myPlayer].hideInfo[7] || playerInventory)) {
++				else if (info == InfoDisplay.Sextant) {
+ 					num = ((bloodMoon && !dayTime) ? 8 : ((!eclipse || !dayTime) ? 7 : 8));
+ 					text3 = Lang.inter[102].Value;
+ 					if (moonPhase == 0)
+@@ -34775,7 +_,8 @@
+ 
+ 					flag8 = true;
+ 				}
+-				else if (player[myPlayer].accFishFinder && !flag4 && (!player[myPlayer].hideInfo[2] || playerInventory)) {
++				//else if (player[myPlayer].accFishFinder && !flag4 && (!player[myPlayer].hideInfo[2] || playerInventory)) {
++				else if (info == InfoDisplay.FishFinder) {
+ 					bool flag13 = false;
+ 					num = 2;
+ 					text3 = Lang.inter[97].Value;
+@@ -34796,7 +_,8 @@
+ 
+ 					flag4 = true;
+ 				}
+-				else if (player[myPlayer].accOreFinder && !flag10 && (!player[myPlayer].hideInfo[10] || playerInventory)) {
++				//else if (player[myPlayer].accOreFinder && !flag10 && (!player[myPlayer].hideInfo[10] || playerInventory)) {
++				else if (info == InfoDisplay.MetalDetector) {
+ 					num = 10;
+ 					text3 = Lang.inter[104].Value;
+ 					if (SceneMetrics.bestOre <= 0) {
+@@ -34821,7 +_,8 @@
+ 
+ 					flag10 = true;
+ 				}
+-				else if (player[myPlayer].accCritterGuide && !flag11 && (!player[myPlayer].hideInfo[11] || playerInventory)) {
++				//else if (player[myPlayer].accCritterGuide && !flag11 && (!player[myPlayer].hideInfo[11] || playerInventory)) {
++				else if (info == InfoDisplay.LifeformAnalyzer) {
+ 					flag11 = true;
+ 					num = 11;
+ 					text3 = Lang.inter[105].Value;
+@@ -34846,7 +_,8 @@
+ 
+ 					text2 = ((num13 < 0 || num13 >= 200 || !npc[num13].active || npc[num13].rarity <= 0) ? Language.GetTextValue("GameUI.NoRareCreatures") : npc[num13].GivenOrTypeName);
+ 				}
+-				else if (player[myPlayer].accThirdEye && !flag6 && (!player[myPlayer].hideInfo[5] || playerInventory)) {
++				//else if (player[myPlayer].accThirdEye && !flag6 && (!player[myPlayer].hideInfo[5] || playerInventory)) {
++				else if (info == InfoDisplay.Radar) {
+ 					flag6 = true;
+ 					num = 5;
+ 					text3 = Lang.inter[100].Value;
+@@ -34865,14 +_,16 @@
+ 
+ 					text2 = ((player[myPlayer].accThirdEyeNumber == 0) ? Language.GetTextValue("GameUI.NoEnemiesNearby") : ((player[myPlayer].accThirdEyeNumber != 1) ? Language.GetTextValue("GameUI.EnemiesNearby", player[myPlayer].accThirdEyeNumber) : Language.GetTextValue("GameUI.OneEnemyNearby")));
+ 				}
+-				else if (player[myPlayer].accJarOfSouls && !flag7 && (!player[myPlayer].hideInfo[6] || playerInventory)) {
++				//else if (player[myPlayer].accJarOfSouls && !flag7 && (!player[myPlayer].hideInfo[6] || playerInventory)) {
++				else if (info == InfoDisplay.TallyCounter) {
+ 					flag7 = true;
+ 					num = 6;
+ 					text3 = Lang.inter[101].Value;
+ 					int lastCreatureHit = player[myPlayer].lastCreatureHit;
+ 					text2 = ((lastCreatureHit > 0) ? (Lang.GetNPCNameValue(Item.BannerToNPC(lastCreatureHit)) + ": " + NPC.killCount[lastCreatureHit]) : Language.GetTextValue("GameUI.NoKillCount"));
+ 				}
+-				else if (player[myPlayer].accDreamCatcher && !flag12 && (!player[myPlayer].hideInfo[12] || playerInventory)) {
++				//else if (player[myPlayer].accDreamCatcher && !flag12 && (!player[myPlayer].hideInfo[12] || playerInventory)) {
++				else if (info == InfoDisplay.DPSMeter) {
+ 					num = 12;
+ 					text3 = Lang.inter[106].Value;
+ 					player[myPlayer].checkDPSTime();
+@@ -34880,7 +_,8 @@
+ 					flag12 = true;
+ 					text2 = ((dPS != 0) ? Language.GetTextValue("GameUI.DPS", player[myPlayer].getDPS()) : Language.GetTextValue("GameUI.NoDPS"));
+ 				}
+-				else if (player[myPlayer].accStopwatch && !flag9 && (!player[myPlayer].hideInfo[9] || playerInventory)) {
++				//else if (player[myPlayer].accStopwatch && !flag9 && (!player[myPlayer].hideInfo[9] || playerInventory)) {
++				else if (info == InfoDisplay.Stopwatch) {
+ 					num = 9;
+ 					text3 = Lang.inter[103].Value;
+ 					Vector2 vector = player[myPlayer].velocity + player[myPlayer].instantMovementAccumulatedThisFrame;
+@@ -34918,15 +_,17 @@
+ 					text2 = Language.GetTextValue("GameUI.Speed", Math.Round(num20));
+ 					flag9 = true;
+ 				}
+-				else if (player[myPlayer].accCompass > 0 && !flag3 && (!player[myPlayer].hideInfo[3] || playerInventory)) {
++				//else if (player[myPlayer].accCompass > 0 && !flag3 && (!player[myPlayer].hideInfo[3] || playerInventory)) {
++				else if (info == InfoDisplay.Compass) {
+ 					num = 3;
+ 					text3 = Lang.inter[98].Value;
+ 					int num21 = (int)((player[myPlayer].position.X + (float)(player[myPlayer].width / 2)) * 2f / 16f - (float)maxTilesX);
+ 					text2 = ((num21 > 0) ? Language.GetTextValue("GameUI.CompassEast", num21) : ((num21 >= 0) ? Language.GetTextValue("GameUI.CompassCenter") : Language.GetTextValue("GameUI.CompassWest", -num21)));
+ 					flag3 = true;
+ 				}
+-				else if (player[myPlayer].accDepthMeter > 0 && !flag2 && (!player[myPlayer].hideInfo[4] || playerInventory)) {
++				//else if (player[myPlayer].accDepthMeter > 0 && !flag2 && (!player[myPlayer].hideInfo[4] || playerInventory)) {
++				else if (info == InfoDisplay.DepthMeter) {
+-					num = 4;
++				num = 4;
+ 					text3 = Lang.inter[99].Value;
+ 					int num22 = (int)((double)((player[myPlayer].position.Y + (float)player[myPlayer].height) * 2f / 16f) - worldSurface * 2.0);
+ 					string text6 = "";
+@@ -34941,27 +_,33 @@
+ 					text2 = text7 + " " + text6;
+ 					flag2 = true;
+ 				}
++				else {
++					num = info.Type;
++					text2 = info.DisplayValue();
++					text3 = info.DisplayName;
++				}
++
++				InfoDisplayLoader.ModifyDisplayValue(info, ref text2);
++				InfoDisplayLoader.ModifyDisplayName(info, ref text3);
+ 
+ 				if (!(text2 != ""))
+ 					continue;
+ 
+ 				GetInfoAccIconPosition(num3, startX, out int X, out int Y);
+ 				if (num >= 0) {
+-					num3++;
+ 					int num26 = 22;
+ 					if (screenHeight < 650)
+ 						num26 = 20;
+ 
+-					Vector2 vector2 = new Vector2(X, Y + 74 + num26 * i + 52);
++					Vector2 vector2 = new Vector2(X, Y + 74 + num26 * num3 + 52);
+-					int num27 = num;
++					int num27 = info.Type;
+-					if (num27 == 8)
+-						num27 = 7;
+ 
++					Texture2D icon = ModContent.GetTexture(info.Texture).Value;
+ 					Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.White;
+ 					bool flag14 = false;
+ 					if (playerInventory) {
+ 						vector2 = new Vector2(X, Y);
+-						if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)TextureAssets.InfoIcon[num].Width() && (float)mouseY <= vector2.Y + (float)TextureAssets.InfoIcon[num].Height() && !PlayerInput.IgnoreMouseInterface) {
++						if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)icon.Width && (float)mouseY <= vector2.Y + (float)icon.Height && !PlayerInput.IgnoreMouseInterface) {
+ 							flag14 = true;
+ 							player[myPlayer].mouseInterface = true;
+ 							if (mouseLeft && mouseLeftRelease) {
+@@ -34979,14 +_,17 @@
+ 						if (player[myPlayer].hideInfo[num27])
+ 							color = new Microsoft.Xna.Framework.Color(80, 80, 80, 70);
+ 					}
+-					else if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)TextureAssets.InfoIcon[num].Width() && (float)mouseY <= vector2.Y + (float)TextureAssets.InfoIcon[num].Height() && !mouseText) {
++					else if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)icon.Width && (float)mouseY <= vector2.Y + (float)icon.Height && !mouseText) {
+-						num2 = i;
++						//num2 = i;
++						num2 = num3;
++						if (i >= 7)
++							num2 += 1;
+ 						text = text3;
+ 						mouseText = true;
+ 					}
+ 
+-					UILinkPointNavigator.SetPosition(1558 + num3 - 1, vector2 + TextureAssets.InfoIcon[num].Value.Size() * 0.75f);
++					UILinkPointNavigator.SetPosition(1558 + num3 - 1, vector2 + icon.Size() * 0.75f);
+-					spriteBatch.Draw(TextureAssets.InfoIcon[num].Value, vector2, new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.InfoIcon[num].Width(), TextureAssets.InfoIcon[num].Height()), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++					spriteBatch.Draw(icon, vector2, new Microsoft.Xna.Framework.Rectangle(0, 0, icon.Width, icon.Height), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 					if (flag14)
+ 						spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, vector2 - Vector2.One * 2f, null, OurFavoriteColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 
+@@ -34994,8 +_,9 @@
+ 				}
+ 
+ 				UILinkPointNavigator.Shortcuts.INFOACCCOUNT = num3;
++
+ 				if (playerInventory)
+-					continue;
++					goto endThisIcon;
+ 
+ 				Vector2 scale = new Vector2(1f);
+ 				Vector2 vector3 = FontAssets.MouseText.Value.MeasureString(text2);
+@@ -35031,8 +_,11 @@
+ 					if (screenHeight < 650)
+ 						num30 = 20;
+ 
+-					spriteBatch.DrawString(FontAssets.MouseText.Value, text2, new Vector2(X + num28, Y + 74 + num30 * i + num29 + 48), color2, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
++					spriteBatch.DrawString(FontAssets.MouseText.Value, text2, new Vector2(X + num28, Y + 74 + num30 * num3 + num29 + 48), color2, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+ 				}
++
++				endThisIcon:
++				num3++; // moved here due to calculation changes
+ 			}
+ 
+ 			if (!string.IsNullOrEmpty(text)) {
+@@ -35051,8 +_,8 @@
+ 					Y += 261;
+ 			}
+ 			else if (ShouldDrawInfoIconsHorizontally) {
+-				X = screenWidth - 280 + 20 * drawnCount - 10;
+-				Y = 94;
++				X = screenWidth - 280 + 20 * (drawnCount % 12) - 10;
++				Y = 94 + (20 * (drawnCount / 12));
+ 				if (mapStyle == 1 && mapEnabled)
+ 					Y += 261;
+ 			}
 @@ -35983,8 +_,10 @@
  			screenLastPosition = screenPosition;
  			screenPosition.Y = (float)(worldSurface * 16.0 - (double)screenHeight);

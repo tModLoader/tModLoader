@@ -48,6 +48,15 @@
  		public OverheadMessage chatOverhead;
  		public SelectionRadial DpadRadial = new SelectionRadial();
  		public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
+@@ -403,7 +_,7 @@
+ 		public int HotbarOffset;
+ 		public bool GoingDownWithGrapple;
+ 		public byte spelunkerTimer;
+-		public bool[] hideInfo = new bool[13];
++		public bool[] hideInfo = new bool[InfoDisplayLoader.InfoDisplayCount];
+ 		public int[] builderAccStatus = new int[12] {
+ 			1,
+ 			0,
 @@ -438,7 +_,7 @@
  		public Vector2 lastDeathPostion;
  		public DateTime lastDeathTime;
@@ -4317,6 +4326,15 @@
  						}
  
  						for (int num6 = 0; num6 < 200; num6++) {
+@@ -37541,7 +_,7 @@
+ 						}
+ 
+ 						binaryWriter.Write(player.hbLocked);
+-						for (int num7 = 0; num7 < player.hideInfo.Length; num7++) {
++						for (int num7 = 0; num7 < 13; num7++) {
+ 							binaryWriter.Write(player.hideInfo[num7]);
+ 						}
+ 
 @@ -37570,9 +_,13 @@
  						stream.Flush();
  						if (isCloudSave && SocialAPI.Cloud != null)
@@ -4406,13 +4424,14 @@
  				}
  
  				return playerFileData;
-@@ -38226,7 +_,14 @@
+@@ -38226,7 +_,15 @@
  			return -1;
  		}
  
 -		public Player() {
 +		public Player(bool startupInventory = true) {
 +			ResetDamageClassData();
++			infoDisplayPage = 0;
 +			buffType = new int[MaxBuffs];
 +			buffTime = new int[MaxBuffs];
 +			buffImmune = new bool[BuffLoader.BuffCount]; // TODO: Move all these patches to field initializers.
