@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Collision.cs
 +++ src/tModLoader/Terraria/Collision.cs
-@@ -1982,7 +_,7 @@
+@@ -2062,7 +_,7 @@
  			Vector2 vector2 = default(Vector2);
  			for (int i = num; i < num2; i++) {
  				for (int j = num3; j < num4; j++) {
@@ -9,7 +9,7 @@
  						continue;
  
  					vector2.X = i * 16;
-@@ -1995,7 +_,7 @@
+@@ -2075,7 +_,7 @@
  						num6 -= 8;
  					}
  
@@ -18,7 +18,7 @@
  						if (!(vector.X + (float)Width > vector2.X) || !(vector.X < vector2.X + 16f) || !(vector.Y + (float)Height > vector2.Y) || !(vector.Y < vector2.Y + (float)num6 + 0.011f))
  							continue;
  
-@@ -2003,15 +_,7 @@
+@@ -2083,15 +_,7 @@
  						if (vector.X + (float)(Width / 2) < vector2.X + 8f)
  							num7 = -1;
  
@@ -35,7 +35,7 @@
  
  						if (type == 32 || type == 69 || type == 352) {
  							WorldGen.KillTile(i, j);
-@@ -2022,7 +_,7 @@
+@@ -2102,7 +_,7 @@
  						return new Vector2(num7, num5);
  					}
  
@@ -44,7 +44,7 @@
  						if (vector.X + (float)Width - 2f >= vector2.X && vector.X + 2f <= vector2.X + 16f && vector.Y + (float)Height - 2f >= vector2.Y && vector.Y + 2f <= vector2.Y + (float)num6) {
  							int num8 = 1;
  							if (vector.X + (float)(Width / 2) < vector2.X + 8f)
-@@ -2037,20 +_,18 @@
+@@ -2117,14 +_,11 @@
  						if (vector.X + (float)(Width / 2) < vector2.X + 8f)
  							num9 = -1;
  
@@ -62,14 +62,15 @@
  
  						if (type == 484)
  							num5 = 25;
- 
- 						return new Vector2(num9, num5);
+@@ -2132,6 +_,7 @@
+ 						if (num5 > 0)
+ 							return new Vector2(num9, num5);
  					}
 +					//TODO - New Hook - ModTile.HurtPlayer
  				}
  			}
  
-@@ -2477,7 +_,7 @@
+@@ -2558,7 +_,7 @@
  				if (tile.active()) {
  					if (Main.tileSolid[tile.type]) {
  						int num5 = tile.blockType();
