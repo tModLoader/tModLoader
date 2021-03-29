@@ -481,7 +481,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 				int type = ModContent.ProjectileType<MinionBossEye>();
 				int damage = NPC.damage / 2;
-				Projectile.NewProjectile(, position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
+				Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
 			}
 		}
 	}

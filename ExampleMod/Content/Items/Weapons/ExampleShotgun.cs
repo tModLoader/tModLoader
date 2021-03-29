@@ -49,7 +49,7 @@ namespace ExampleMod.Content.Items.Weapons
 				velocity *= 1f - Main.rand.NextFloat(0.3f);
 
 				//Create a projectile.
-				Projectile.NewProjectileDirect(, position, velocity, type, damage, knockback, player.whoAmI);
+				Projectile.NewProjectileDirect(player.GetProjectileSource_Item_WithPotentialAmmo(this, AmmoID.Bullet), position, velocity, type, damage, knockback, player.whoAmI);
 			}
 
 			return false; // Return false because we don't want tModLoader to shoot projectile
