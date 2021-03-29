@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Terraria.csproj
 +++ src/Terraria/Terraria/Terraria.csproj
-@@ -1,38 +_,59 @@
+@@ -1,38 +_,60 @@
  <Project Sdk="Microsoft.NET.Sdk">
    <Import Project="../Configuration.targets" />
 +  <Import Project="../../WorkspaceInfo.targets" />
@@ -38,6 +38,7 @@
 +    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />
      <Reference Include="Newtonsoft.Json" />
      <Reference Include="NVorbis" />
++    <Reference Include="NVorbis.System.ValueTuple" />
 -    <Reference Include="RailSDK.Net" />
 +    <Reference Include="RailSDK.Net">
 +      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/RailSDK.Net.dll</HintPath>
