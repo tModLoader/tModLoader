@@ -39,5 +39,16 @@ namespace Terraria.ModLoader.Assets
 
 			ClearRejections();
 		}
+
+		public List<string> GetAllAssetsStartingWith(string assetNameStart) {
+			var list = new List<string>();
+
+			foreach (string path in EnumerateFiles()) {
+				if (path.StartsWith(assetNameStart, StringComparison.CurrentCultureIgnoreCase))
+					list.Add(path);
+			}
+
+			return list;
+		}
 	}
 }

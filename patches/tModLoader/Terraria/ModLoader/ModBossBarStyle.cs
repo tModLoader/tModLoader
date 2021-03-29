@@ -13,6 +13,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public bool IsSelected => BossBarLoader.CurrentStyle == this;
 
+		//TODO Localization
 		/// <summary>
 		/// Controls the name that shows up in the menu selection. If not overridden, it will use this mod's display name.
 		/// </summary>
