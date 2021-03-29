@@ -31,13 +31,15 @@
 -    <Reference Include="Microsoft.Xna.Framework.Game" />
 -    <Reference Include="Microsoft.Xna.Framework.Graphics" />
 -    <Reference Include="Microsoft.Xna.Framework.Xact" />
-     <Reference Include="MP3Sharp" />
+-    <Reference Include="MP3Sharp" />
++    <Reference Include="MP3Sharp" Condition="$(DefineConstants.Contains('CLIENT'))" />
 +    <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
 +    <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))" />
 +    <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
 +    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />
      <Reference Include="Newtonsoft.Json" />
-     <Reference Include="NVorbis" />
++    <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
+-    <Reference Include="NVorbis" />
 +    <Reference Include="NVorbis.System.ValueTuple" />
 -    <Reference Include="RailSDK.Net" />
 +    <Reference Include="RailSDK.Net">
