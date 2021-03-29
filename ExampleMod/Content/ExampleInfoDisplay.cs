@@ -7,7 +7,7 @@ namespace ExampleMod.Content
 {
 	class ExampleInfoDisplay : InfoDisplay
 	{
-		public override void SetupContent() {
+		public override void SetDefaults() {
 			InfoName.SetDefault("Minion Count");
 		}
 
