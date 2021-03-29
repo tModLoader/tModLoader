@@ -13,7 +13,8 @@ namespace Terraria.ModLoader.Engine
 {
 	internal static class InstallVerifier
 	{
-		const string ContentDirectory = "Content";
+		public const string TmlContentDirectory = "Content";
+		public const bool RequireContentDirectory = false; // Not currently needed, due to tML matching vanilla's version.
 
 		private static bool? isValid;
 		public static bool IsValid => isValid ?? (isValid = InstallCheck()).Value;
@@ -72,12 +73,13 @@ namespace Terraria.ModLoader.Engine
 
 		private static bool InstallCheck() {
 #if CLIENT
-			// Check if the content directory is present which is required
-			if (!Directory.Exists(ContentDirectory)) {
-				Exit(Language.GetTextValue("tModLoader.ContentFolderNotFoundInstallCheck", ContentDirectory), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
+			// Check if the content directory is present, if it's required
+			if (RequireContentDirectory && !Directory.Exists(TmlContentDirectory)) {
+				Exit(Language.GetTextValue("tModLoader.ContentFolderNotFoundInstallCheck", TmlContentDirectory), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
 				return false;
 			}
 #endif
+
 			// Whether the steam_api file exists, indicating we'd have to check steam installation
 			if (File.Exists(steamAPIPath))
 				return CheckSteam();
@@ -92,7 +94,7 @@ namespace Terraria.ModLoader.Engine
 #if CLIENT
 			SocialAPI.LoadSteam();
 			string terrariaInstallLocation = Steam.GetSteamTerrariaInstallDir();
-			string terrariaContentLocation = Path.Combine(terrariaInstallLocation, ContentDirectory);
+			string terrariaContentLocation = Path.Combine(terrariaInstallLocation, TmlContentDirectory);
 #if MAC
 			terrariaContentLocation = Path.Combine(terrariaInstallLocation, "../Resources/Content");
 #endif

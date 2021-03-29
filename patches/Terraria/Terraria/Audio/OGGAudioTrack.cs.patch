@@ -1,0 +1,12 @@
+--- src/decompiled/Terraria/Audio/OGGAudioTrack.cs
++++ src/Terraria/Terraria/Audio/OGGAudioTrack.cs
+@@ -1,3 +_,4 @@
++#if CLIENT
+ using Microsoft.Xna.Framework.Audio;
+ using NVorbis;
+ using System.IO;
+@@ -67,3 +_,4 @@
+ 		}
+ 	}
+ }
++#endif
