@@ -44,7 +44,7 @@ namespace ExampleMod.Content.Projectiles
 				//(Remember that all rotation in Terraria is based on Radians, NOT Degrees!)
 				launchVelocity = launchVelocity.RotatedBy(MathHelper.PiOver4);
 
-				//Spawn new projectile with the newly rotated velocity, belonging the the original projectile owner.
+				//Spawn a new projectile with the newly rotated velocity, belonging to the original projectile owner. The new projectile will inherit the spawning source of this projectile.
 				Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center, launchVelocity, ProjectileID.Meowmere, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
 			}
 		}
