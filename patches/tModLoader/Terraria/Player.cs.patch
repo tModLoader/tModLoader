@@ -180,9 +180,8 @@
  				return;
  			}
  
--			SetItemAnimation(sItem.useAnimation);
+ 			SetItemAnimation(sItem.useAnimation);
 -			reuseDelay = sItem.reuseDelay;
-+			SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation, this, sItem));
 +			reuseDelay = (int)(sItem.reuseDelay / PlayerHooks.TotalUseTimeMultiplier(this, sItem));
  		}
  
@@ -3183,7 +3182,7 @@
  						dontConsumeWand = true;
  						ApplyItemTime(bestPickaxe, pickSpeed);
 -						SetItemAnimation((int)((float)bestPickaxe.useTime * pickSpeed));
-+						SetItemAnimation(PlayerHooks.TotalUseTime(bestPickaxe.useTime * pickSpeed, this, bestPickaxe));
++						ApplyItemAnimation(bestPickaxe.useTime * pickSpeed, this, bestPickaxe);
  						return false;
  					}
  
