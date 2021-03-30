@@ -11,7 +11,7 @@
  using Terraria.GameContent.UI.Elements;
  using Terraria.GameInput;
  using Terraria.ID;
-@@ -24,6 +_,7 @@
+@@ -25,6 +_,7 @@
  		private bool _isScrollbarAttached;
  		private List<Tuple<string, bool>> favoritesCache = new List<Tuple<string, bool>>();
  		private bool skipDraw;
@@ -19,7 +19,7 @@
  
  		public override void OnInitialize() {
  			UIElement uIElement = new UIElement();
-@@ -130,6 +_,49 @@
+@@ -132,6 +_,49 @@
  			int num = 0;
  			foreach (WorldFileData item in orderedEnumerable) {
  				_worldList.Add(new UIWorldListItem(item, num++, CanWorldBePlayed(item)));
