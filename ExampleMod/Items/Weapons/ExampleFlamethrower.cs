@@ -6,6 +6,8 @@ using ExampleMod.Projectiles;
 
 namespace ExampleMod.Items.Weapons
 {
+	// Flamethrowers have some special characteristics, such as shooting several projectiles in one click, and only consuming ammo on the first projectile
+	// The most important characteristics, however, are explained in the FlamethrowerProjectile code.
 	public class ExampleFlamethrower : ModItem
 	{
 		public override string Texture => "Terraria/Item_" + ItemID.Flamethrower;
@@ -17,28 +19,39 @@ namespace ExampleMod.Items.Weapons
 
 		public override void SetDefaults()
 		{
-			item.damage = 69; //The item's damage.
+			item.damage = 69; // The item's damage.
 			item.ranged = true;
-			item.width = 54;
-			item.height = 16;
+			item.width = 50;
+			item.height = 18;
+			// A useTime of 4 with a useAnimation of 20 means this weapon will shoot out 5 jets of fire in one shot.
+			// Vanilla Flamethrower uses values of 6 and 30 respectively, which is also 5 jets in one shot, but over 30 frames instead of 20.
 			item.useTime = 4;
-			item.useAnimation = 20; //Shoots out 5 jets of fire in one shot
+			item.useAnimation = 20; 
 			item.useStyle = ItemUseStyleID.HoldingOut;
-			item.noMelee = true; //So the item's animation doesn't do damage
-			item.knockBack = 2;
+			item.noMelee = true; // So the item's animation doesn't do damage
+			item.knockBack = 2; // A high knockback. Vanilla Flamethrower uses 0.3f for a weak knockback.
 			item.value = 10000;
-			item.color = new Color(61, 252, 3); //Makes the item color green.
-			item.rare = ItemRarityID.Green; //Sets the item's rarity.
+			item.color = new Color(61, 252, 3); // Makes the item color green, since we are reusing vanilla sprites for simplicity.
+			item.rare = ItemRarityID.Green; // Sets the item's rarity.
 			item.UseSound = SoundID.Item34;
 			item.autoReuse = true;
 			item.shoot = ModContent.ProjectileType<FlamethrowerProjectile>();
-			item.shootSpeed = 21f; //How fast the flames will travel
-			item.useAmmo = AmmoID.Gel; //Makes the weapon use up Gel as ammo
+			item.shootSpeed = 9f; // How fast the flames will travel. Vanilla Flamethrower uses 7f and consequentially has less reach. item.shootSpeed and projectile.timeLeft together control the range.
+			item.useAmmo = AmmoID.Gel; // Makes the weapon use up Gel as ammo
 		}
+
+		// Vanilla Flamethrower uses the commented out code below to prevent shooting while underwater, but this weapon can shoot underwater, so we don't use this code. The projectile also is specifically programmed to survive underwater.
+		/*public override bool CanUseItem(Player player)
+		{
+			return !player.wet;
+		}*/
+
 		public override bool ConsumeAmmo(Player player)
 		{
-			return Main.rand.NextFloat() >= .66f; //If Main.rand.NextFloat() is greater than 0.66, then it consumes gel. If not, then it won't consume gel.
+			// To make this item only consume ammo during the first jet, we check to make sure the animation just started. ConsumeAmmo is called 5 times because of item.useTime and item.useAnimation values in SetDefaults above.
+			return player.itemAnimation >= player.itemAnimationMax - 4;
 		}
+
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
@@ -53,17 +66,17 @@ namespace ExampleMod.Items.Weapons
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
 			Vector2 muzzleOffset = Vector2.Normalize(new Vector2(speedX, speedY)) * 54f; //This gets the direction of the flame projectile, makes its length to 1 by normalizing it. It then multiplies it by 54 (the item width) to get the position of the tip of the flamethrower.
-			if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0))
+			if (Collision.CanHit(position, 6, 6, position + muzzleOffset, 6, 6))
 			{
 				position += muzzleOffset;
 			}
-			//This is to prevent shooting through blocks and to make the fire shoot from the muzzle.
+			// This is to prevent shooting through blocks and to make the fire shoot from the muzzle.
 			return true;
         }
         public override Vector2? HoldoutOffset()
-		//HoldoutOffset has to return a Vector2 because it needs two values (an X and Y value) to move your flamethrower sprite. Think of it as moving a point on a cartesian plane.
+		// HoldoutOffset has to return a Vector2 because it needs two values (an X and Y value) to move your flamethrower sprite. Think of it as moving a point on a cartesian plane.
 		{
-			return new Vector2(0, 0); //If your own flamethrower is being held wrong, edit these values. You can test out holdout offsets using Modder's Toolkit.
+			return new Vector2(0, -2); // If your own flamethrower is being held wrong, edit these values. You can test out holdout offsets using Modder's Toolkit.
 		}
 	}
 }
