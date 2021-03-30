@@ -15,7 +15,7 @@
 -		private class MountData
 +		public class MountData
  		{
-+			public ModMountData ModMountData { get; set; }
++			public ModMount ModMount { get; set; }
 +
  			public Asset<Texture2D> backTexture = Asset<Texture2D>.Empty;
  			public Asset<Texture2D> backTextureGlow = Asset<Texture2D>.Empty;
@@ -79,7 +79,7 @@
  		private MountDelegatesData _defaultDelegatesData = new MountDelegatesData();
  
  		public bool Active => _active;
-@@ -2003,13 +_,13 @@
+@@ -2002,13 +_,13 @@
  		}
  
  		public static int GetHeightBoost(int MountType) {
@@ -95,7 +95,7 @@
  			int num = _data.jumpHeight;
  			switch (_type) {
  				case 0:
-@@ -2025,10 +_,11 @@
+@@ -2024,10 +_,11 @@
  					break;
  			}
  
@@ -108,7 +108,7 @@
  			float num = _data.jumpSpeed;
  			switch (_type) {
  				case 0:
-@@ -2042,6 +_,7 @@
+@@ -2041,6 +_,7 @@
  					break;
  			}
  
@@ -126,7 +126,7 @@
  				}
  
  				Vector2 vector = new Vector2((float)(point.X << 4) + 8f, (float)(point.Y << 4) + 8f);
-@@ -2480,6 +_,9 @@
+@@ -2482,6 +_,9 @@
  		private Vector2 GetWitchBroomTrinketOriginOffset(Player player) => new Vector2(27 * player.direction, 5f);
  
  		public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity) {
@@ -136,7 +136,7 @@
  			if (_frameState != state) {
  				_frameState = state;
  				if (_type != 48 || (state != 1 && state != 2))
-@@ -3216,7 +_,7 @@
+@@ -3218,7 +_,7 @@
  
  			Tile tileSafely = Framing.GetTileSafely(p.X, p.Y);
  			if (WorldGen.SolidTile(p)) {
@@ -145,7 +145,7 @@
  				if (num > 1)
  					num = 1;
  
-@@ -3325,6 +_,7 @@
+@@ -3327,6 +_,7 @@
  
  		public void UpdateEffects(Player mountedPlayer) {
  			mountedPlayer.autoJump = AutoJump;
@@ -153,7 +153,7 @@
  			switch (_type) {
  				case 13:
  				case 15:
-@@ -3493,10 +_,13 @@
+@@ -3495,10 +_,13 @@
  						else
  							Lighting.AddLight(mountedPlayer.Center + Vector2.UnitX * mountedPlayer.direction * 20f, vector7.X, vector7.Y, vector7.Z);
  
@@ -167,7 +167,7 @@
  					}
  					if (mountedPlayer.statLife <= mountedPlayer.statLifeMax2 / 2)
  						mountedPlayer.MountFishronSpecialCounter = 60f;
-@@ -3672,7 +_,7 @@
+@@ -3674,7 +_,7 @@
  			if (_type == -1)
  				return;
  
@@ -176,7 +176,7 @@
  				if (mountedPlayer.buffType[i] == _data.buff || (Cart && mountedPlayer.buffType[i] == _data.extraBuff))
  					return;
  			}
-@@ -3726,6 +_,7 @@
+@@ -3728,6 +_,7 @@
  
  		public bool AimAbility(Player mountedPlayer, Vector2 mousePosition) {
  			_aiming = true;
@@ -184,7 +184,7 @@
  			switch (_type) {
  				case 9: {
  						int frameExtra = _frameExtra;
-@@ -4168,6 +_,7 @@
+@@ -4169,6 +_,7 @@
  					break;
  			}
  
@@ -192,7 +192,7 @@
  			if (!flag2) {
  				item = new DrawData(texture2D, Position, value, drawColor, num8, origin, scale, spriteEffects, 0);
  				item.shader = currentShader;
-@@ -4306,6 +_,8 @@
+@@ -4307,6 +_,8 @@
  				bool cart = Cart;
  				_active = false;
  				mountedPlayer.ClearBuff(_data.buff);
@@ -201,7 +201,7 @@
  				_mountSpecificData = null;
  				_ = _type;
  				if (cart) {
-@@ -4316,7 +_,8 @@
+@@ -4317,7 +_,8 @@
  
  				mountedPlayer.fullRotation = 0f;
  				mountedPlayer.fullRotationOrigin = Vector2.Zero;
@@ -211,7 +211,7 @@
  				Reset();
  				mountedPlayer.position.Y += mountedPlayer.height;
  				mountedPlayer.height = 42;
-@@ -4327,7 +_,7 @@
+@@ -4328,7 +_,7 @@
  		}
  
  		public void SetMount(int m, Player mountedPlayer, bool faceLeft = false) {
@@ -220,7 +220,7 @@
  				return;
  
  			if (_active) {
-@@ -4394,7 +_,10 @@
+@@ -4395,7 +_,10 @@
  			if (_type == 35)
  				_mountSpecificData = new ExtraFrameMountData();
  

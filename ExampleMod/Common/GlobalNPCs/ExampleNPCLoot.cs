@@ -31,9 +31,9 @@ namespace ExampleMod.Common.GlobalNPCs
 				npcLoot.RemoveWhere(
 					// The following expression returns true if the following conditions are met:
 					rule => rule is ItemDropWithConditionRule drop // If the rule is an ItemDropWithConditionRule instance
-						&& drop._itemId == ItemID.GreenCap // And that instance drops a green cap
-						&& drop._condition is Conditions.NamedNPC npcNameCondition // ..And if its condition is that an npc name must match some string
-						&& npcNameCondition._neededName == "Andrew" // And the condition's string is "Andrew". 
+						&& drop.itemId == ItemID.GreenCap // And that instance drops a green cap
+						&& drop.condition is Conditions.NamedNPC npcNameCondition // ..And if its condition is that an npc name must match some string
+						&& npcNameCondition.neededName == "Andrew" // And the condition's string is "Andrew". 
 				);
 				
 				npcLoot.Add(ItemDropRule.Common(ItemID.GreenCap, 1)); //In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
@@ -49,7 +49,7 @@ namespace ExampleMod.Common.GlobalNPCs
 					itemType = ItemID.RottenChunk;
 				}
 				//33% chance to drop other corresponding item in addition
-				IItemDropRule rule = ItemDropRule.Common(itemType, dropsOutOfY: 3, dropsXoutofY: 1);
+				IItemDropRule rule = ItemDropRule.Common(itemType, chanceDenominator: 3);
 
 				//Apply our item drop rule to the conditional rule
 				conditionalRule.OnSuccess(rule);
