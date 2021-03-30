@@ -51,7 +51,7 @@
      </EmbeddedResource>
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
-@@ -40,29 +_,70 @@
+@@ -40,29 +_,64 @@
      </Reference>
    </ItemGroup>
    <ItemGroup>
@@ -98,31 +98,25 @@
 +    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" />
    </Target>
 +
-+  <ItemDefinitionGroup>
-+    <ReferenceCopyLocalPaths>
-+      <DestinationSubDirectory>NuGet\</DestinationSubDirectory>
-+    </ReferenceCopyLocalPaths>
-+  </ItemDefinitionGroup>
 +  <Target Name="RedirectBuildFilesToLib" AfterTargets="ResolveLockFileCopyLocalFiles">
 +    <ItemGroup>
-+      <ReferenceCopyLocalPaths Condition=" '%(ReferenceCopyLocalPaths.AssetType)' == 'runtime' ">
-+        <DestinationSubDirectory>Libraries\%(DestinationSubDirectory)</DestinationSubDirectory>
++      <ReferenceCopyLocalPaths>
++        <DirectoryInPackage>$([System.String]::Copy('%(PathInPackage)').Remove($([System.String]::Copy('%(PathInPackage)').LastIndexOf('/'))))</DirectoryInPackage>
 +      </ReferenceCopyLocalPaths>
-+      <ReferenceCopyLocalPaths Condition=" '%(ReferenceCopyLocalPaths.AssetType)' == 'resources' ">
-+        <DestinationSubDirectory>Libraries\Resources\%(DestinationSubDirectory)</DestinationSubDirectory>
++    </ItemGroup>
++    <ItemGroup>
++      <ReferenceCopyLocalPaths>
++        <DestinationSubDirectory>Libraries\%(NuGetPackageID)\%(NuGetPackageVersion)\%(DirectoryInPackage)\</DestinationSubDirectory>
 +      </ReferenceCopyLocalPaths>
 +    </ItemGroup>
 +  </Target>
 +
-+  <Target Name="RedirectPublishFilesToLib" AfterTargets="ComputeResolvedFilesToPublishList">
++  <!--Target Name="RedirectPublishFilesToLib" AfterTargets="ComputeResolvedFilesToPublishList">
 +    <ItemGroup>
-+      <ResolvedFileToPublish Condition=" '%(ResolvedFileToPublish.AssetType)' == 'runtime' ">
-+        <RelativePath>%(RelativePath)</RelativePath>
-+      </ResolvedFileToPublish>
-+      <ResolvedFileToPublish Condition=" '%(ResolvedFileToPublish.AssetType)' == 'resources' ">
-+        <RelativePath>Libraries\Resources\%(RelativePath)</RelativePath>
++      <ResolvedFileToPublish Condition=" '%(ResolvedFileToPublish.AssetType)' == 'runtime' OR '%(ResolvedFileToPublish.AssetType)' == 'resources' ">
++        <RelativePath>Libraries\%(ResolvedFileToPublish.NuGetPackageId)\%(ResolvedFileToPublish.NuGetPackageVersion)\%(ResolvedFileToPublish.PathInPackage)</RelativePath>
 +      </ResolvedFileToPublish>
 +    </ItemGroup>
-+  </Target>
-+  
++  </Target-->
++
  </Project>
