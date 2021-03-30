@@ -26,6 +26,7 @@ namespace ExampleMod
 	{
 		public int score;
 		public bool eFlames;
+		public bool eFlamesImbue;
 		public bool elementShield;
 		public int elementShields;
 		private int elementShieldTimer;
@@ -88,6 +89,21 @@ namespace ExampleMod
 			player.statLifeMax2 += exampleLifeFruits * 2;
 		}
 
+		public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
+		{
+			if (eFlamesImbue && item.melee) //Checks if the player has the flask buff and if the item is a melee weapon.
+			{
+				target.AddBuff(ModContent.BuffType<EtherealFlames>(), 300); //if the condition is true, then apply the ethereal flames debuff to the targeted NPC for 5 seconds.
+			}
+		}
+
+		public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit) //This is the same as the one in OnHitNPC, but for melee projectiles.
+		{
+			if (eFlamesImbue && proj.melee) //Checks if the player has the flask buff and if the projectile is a melee projectile.
+			{
+				target.AddBuff(ModContent.BuffType<EtherealFlames>(), 300); //if the condition is true, then apply the ethereal flames debuff to the targeted NPC for 5 seconds.
+			}
+		}
 		public override void OnEnterWorld(Player player) {
 			// We can refresh UI using OnEnterWorld. OnEnterWorld happens after Load, so nonStopParty is the correct value.
 			ModContent.GetInstance<ExampleMod>().ExampleUI.ExampleButton.HoverText = "SendClientChanges Example: Non-Stop Party " + (nonStopParty ? "On" : "Off");
