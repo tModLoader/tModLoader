@@ -51,7 +51,7 @@ namespace Terraria.ModLoader
 		public virtual string Description => "";
 
 		protected override sealed void Register() {
-			CommandManager.Add(this);
+			CommandLoader.Add(this);
 		}
 
 		/// <summary>The code that is executed when the command is triggered.</summary>

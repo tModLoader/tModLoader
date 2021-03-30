@@ -33,7 +33,7 @@ namespace Terraria.ModLoader.Setup
 				return;
 			}*/
 #if AUTO
-			Settings.Default.TMLSteamDir = Settings.Default.SteamDir = @".\1412\Windows";
+			Settings.Default.TMLSteamDir = Settings.Default.SteamDir = @".\142\Windows";
 #else
 			UpdateTmlSteamDir();
 #endif
