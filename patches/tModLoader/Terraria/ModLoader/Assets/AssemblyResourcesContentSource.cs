@@ -59,16 +59,5 @@ namespace Terraria.ModLoader.Assets
 		public void ClearRejections() => Rejections.Clear();
 		public void RejectAsset(string assetName, IRejectionReason reason) => Rejections.Reject(assetName, reason);
 		public bool TryGetRejections(List<string> rejectionReasons) => Rejections.TryGetRejections(rejectionReasons);
-
-		public List<string> GetAllAssetsStartingWith(string assetNameStart) {
-			var list = new List<string>();
-
-			foreach (string path in EnumerateFiles()) {
-				if (path.StartsWith(assetNameStart, StringComparison.CurrentCultureIgnoreCase))
-					list.Add(path);
-			}
-
-			return list;
-		}
 	}
 }

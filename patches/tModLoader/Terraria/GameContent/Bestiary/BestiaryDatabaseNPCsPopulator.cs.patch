@@ -8,15 +8,6 @@
  
  namespace Terraria.GameContent.Bestiary
  {
-@@ -193,7 +_,7 @@
- 					SpawnConditions.Biomes.SolarPillar,
- 					SpawnConditions.Biomes.VortexPillar,
- 					SpawnConditions.Biomes.StardustPillar
--				};
-+				}.Concat(ModLoader.ModLoader.Mods.Where(mod => NPCLoader.npcs.Any(npc => npc.Mod == mod)).Select(mod => mod.ModSourceBestiaryInfoElement)).ToList();
- 			}
- 		}
- 
 @@ -268,9 +_,10 @@
  			public const int ItemSpawn = 61;
  		}

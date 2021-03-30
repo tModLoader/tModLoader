@@ -125,8 +125,8 @@ namespace Terraria.ModLoader.UI
 						(string)o["name"],
 						(string)o["version"],
 						(string)o["author"],
-						(int)o["downloads"],
-						(int)o["downloadsversion"],
+						(string)o["downloads"],
+						(string)o["downloadsversion"],
 						(string)o["modloaderversion"]
 					);
 					_myPublishedMods.Add(modItem);

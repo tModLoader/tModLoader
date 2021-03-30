@@ -1,6 +1,4 @@
 ﻿using ExampleMod.Content.Items;
-using ExampleMod.Content.Items.Placeable.Furniture;
-using ExampleMod.Content.Items.Placeable;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -25,13 +23,7 @@ namespace ExampleMod.Common.Players
 
 			return new[] {
 				new Item(ModContent.ItemType<ExampleItem>()),
-				new Item(ItemID.GoldOre, 256),
-				new Item(ModContent.ItemType<ExampleBlock>(), 256),
-				new Item(ModContent.ItemType<ExampleWall>(), 256),
-				new Item(ModContent.ItemType<ExampleOre>(), 256),
-				new Item(ModContent.ItemType<ExampleChair>(), 256),
-				new Item(ModContent.ItemType<ExampleChest>(), 256),
-				new Item(ModContent.ItemType<ExamplePlatform>(), 256)
+				new Item(ItemID.GoldOre, 256)
 			};
 		}
 

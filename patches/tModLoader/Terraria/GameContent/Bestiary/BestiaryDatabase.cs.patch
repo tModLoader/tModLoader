@@ -1,31 +1,12 @@
 --- src/Terraria/Terraria/GameContent/Bestiary/BestiaryDatabase.cs
 +++ src/tModLoader/Terraria/GameContent/Bestiary/BestiaryDatabase.cs
-@@ -1,9 +_,10 @@
+@@ -1,5 +_,6 @@
  using System.Collections.Generic;
  using Terraria.GameContent.ItemDropRules;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.Bestiary
  {
--	public class BestiaryDatabase
-+	public partial class BestiaryDatabase
- 	{
- 		public delegate void BestiaryEntriesPass(BestiaryEntry entry);
- 
-@@ -26,6 +_,13 @@
- 				if (nPCNetIdBestiaryInfoElement != null)
- 					_byNpcId[nPCNetIdBestiaryInfoElement.NetId] = entry;
- 			}
-+			Mod mod = ID.ContentSamples.NpcsByNetId[((NPCNetIdBestiaryInfoElement)entry.Info[0]).NetId].ModNPC?.Mod;
-+			if (mod == null)
-+				_vanillaEntries.Add(entry);
-+			else if (_byMod.ContainsKey(mod))
-+				_byMod[mod].Add(entry);
-+			else
-+				_byMod.Add(mod, new List<BestiaryEntry> { entry });
- 
- 			return entry;
- 		}
 @@ -49,7 +_,7 @@
  		}
  

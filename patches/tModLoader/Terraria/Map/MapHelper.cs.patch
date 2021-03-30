@@ -38,7 +38,7 @@
  		}
  
  		public static void GetTileBaseOption(int y, Tile tileCache, ref int baseOption) {
-@@ -2259,7 +_,7 @@
+@@ -2251,7 +_,7 @@
  								byte b5 = 0;
  								int num7;
  								ushort num8;
@@ -47,7 +47,7 @@
  									flag2 = false;
  									flag = false;
  									num7 = 0;
-@@ -2403,7 +_,9 @@
+@@ -2395,7 +_,9 @@
  
  						deflateStream.Dispose();
  						FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);

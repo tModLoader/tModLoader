@@ -15,7 +15,6 @@ namespace Terraria.ModLoader.UI
 		public UITextPanel<string> UiTextPanel;
 		internal UIInputTextField SteamIdTextField;
 		private int _gotoMenu;
-		private int _backMenu;
 
 		public override void OnInitialize() {
 			var uIElement = new UIElement {
@@ -41,22 +40,22 @@ namespace Terraria.ModLoader.UI
 			}.WithPadding(15f);
 			uIElement.Append(UiTextPanel);
 
-			var buttonBack = new UITextPanel<string>(Language.GetTextValue("UI.Back")) {
+			var button = new UITextPanel<string>(Language.GetTextValue("UI.Back")) {
 				Width = { Pixels = -10, Percent = 0.5f },
 				Height = { Pixels = 25 },
 				VAlign = 1f,
 				Top = { Pixels = -65 }
 			};
-			buttonBack.WithFadedMouseOver();
-			buttonBack.OnClick += BackClick;
-			uIElement.Append(buttonBack);
+			button.WithFadedMouseOver();
+			button.OnClick += BackClick;
+			uIElement.Append(button);
 
-			var buttonSubmit = new UITextPanel<string>(Language.GetTextValue("UI.Submit"));
-			buttonSubmit.CopyStyle(buttonBack);
-			buttonSubmit.HAlign = 1f;
-			buttonSubmit.WithFadedMouseOver();
-			buttonSubmit.OnClick += SubmitSteamID;
-			uIElement.Append(buttonSubmit);
+			button = new UITextPanel<string>(Language.GetTextValue("UI.Submit"));
+			button.CopyStyle(button);
+			button.HAlign = 1f;
+			button.WithFadedMouseOver();
+			button.OnClick += SubmitSteamID;
+			uIElement.Append(button);
 
 			// TODO Commented code, yuck
 			//UITextPanel<string> button3 = new UITextPanel<string>("Visit Website to Generate Passphrase");
@@ -88,7 +87,7 @@ namespace Terraria.ModLoader.UI
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(11);
-			Main.menuMode = _backMenu;
+			Main.menuMode = _gotoMenu;
 		}
 
 		//TODO unused
@@ -102,9 +101,8 @@ namespace Terraria.ModLoader.UI
 		}
 		
 		//TODO unused
-		internal void SetGotoMenu(int gotoMenu, int backMenu) {
+		internal void SetGotoMenu(int gotoMenu) {
 			_gotoMenu = gotoMenu;
-			_backMenu = backMenu;
 		}
 	}
 }

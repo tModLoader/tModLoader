@@ -49,7 +49,6 @@ namespace Terraria.ModLoader
 		internal static void Add(ModMenu modMenu) {
 			lock (menus) {
 				menus.Add(modMenu);
-				ModTypeLookup<ModMenu>.Register(modMenu);
 			}
 		}
 
@@ -67,10 +66,7 @@ namespace Terraria.ModLoader
 				Main.instance.playOldTile = true; // If the previous menu was the 1.3.5.3 one, automatically reactivate it.
 			}
 
-			switchToMenu = MenutML;
-			if (ModContent.TryFind(LastSelectedModMenu, out ModMenu value) && value.IsAvailable)
-				switchToMenu = value;
-
+			switchToMenu = menus.SingleOrDefault(m => m.FullName == LastSelectedModMenu && m.IsAvailable) ?? MenutML;
 			loading = false;
 		}
 
@@ -144,8 +140,6 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void Unload() {
-			currentMenu = MenutML; // Prevent asset disposed exceptions by disallowing modded menus during the unload process.
-
 			loading = true;
 			if (menus.IndexOf(currentMenu) >= DefaultMenuCount) {
 				switchToMenu = MenutML;

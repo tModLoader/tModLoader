@@ -14,7 +14,6 @@ namespace Terraria.ModLoader.UI
 		public UITextPanel<string> UITextPanel;
 		internal UIInputTextField PasscodeTextField;
 		private int _gotoMenu;
-		private int _backMenu;
 
 		public override void OnInitialize() {
 			var uIElement = new UIElement {
@@ -81,7 +80,7 @@ namespace Terraria.ModLoader.UI
 			Main.SaveSettings();
 			if (Engine.InstallVerifier.IsGoG) {
 				Main.menuMode = Interface.enterSteamIDMenuID;
-				Interface.enterSteamIDMenu.SetGotoMenu(_gotoMenu, _backMenu);
+				Interface.enterSteamIDMenu.SetGotoMenu(_gotoMenu);
 			}
 			else
 				Main.menuMode = _gotoMenu;
@@ -89,7 +88,7 @@ namespace Terraria.ModLoader.UI
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(11);
-			Main.menuMode = _backMenu;
+			Main.menuMode = _gotoMenu;
 		}
 
 		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {
@@ -101,9 +100,8 @@ namespace Terraria.ModLoader.UI
 		private void OnTextChange(object sender, EventArgs e) {
 		}
 
-		internal void SetGotoMenu(int gotoMenu, int backMenu) {
+		internal void SetGotoMenu(int gotoMenu) {
 			_gotoMenu = gotoMenu;
-			_backMenu = backMenu;
 		}
 	}
 }
