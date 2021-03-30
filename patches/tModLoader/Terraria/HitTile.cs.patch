@@ -14,19 +14,11 @@
  	{
  		public class HitTileObject
  		{
-@@ -118,6 +_,7 @@
- 				}
- 			}
- 
-+			OnHitObject();
- 			hitTileObject = data[bufferLocation];
- 			hitTileObject.X = x;
- 			hitTileObject.Y = y;
 @@ -210,6 +_,8 @@
  				}
  
  				hitTileObject.timeToLive--;
-+				if (pauseDuration > 0)
++				if (decayPaused)
 +					goto PostDamageDecay;
  				if ((double)hitTileObject.timeToLive < 12.0)
  					hitTileObject.damage -= 10;

@@ -28,7 +28,7 @@ namespace ExampleMod.Content.Items.Tools
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
 
-			Item.SetToolPower(ToolType.Pickaxe, 220); // How strong the pickaxe is, see https://terraria.gamepedia.com/Pickaxe_power for a list of common values
+			Item.ToolPower[ToolType.Pickaxe] = 220; // How strong the pickaxe is, see https://terraria.gamepedia.com/Pickaxe_power for a list of common values
 		}
 
 		public override void ModifyToolPower(Player player, ToolType toolType, Tile tile, int x, int y, int power, ref StatModifier powerMod) {

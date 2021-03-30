@@ -31,7 +31,9 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		// Stops this tile from being affected by drills in any way. This stops the dust and sound that happens when hitting tiles.
-		public override bool? CanUseTool(int i, int j, Item item, ToolType toolType) => ItemID.Sets.IsDrill[item.type] ? (bool?)false : null;
+		public override bool? CanUseTool(int i, int j, Item item, ToolType toolType) {
+			return ItemID.Sets.IsDrill[item.type] ? (bool?)false : null;
+		}
 
 		public override void MineDamage(int i, int j, Item item, ToolType toolType, int minePower, ref StatModifier powerMod) {
 			//Only allow the copper pickaxe or a tool with 100 mining power or higher to break this tile.

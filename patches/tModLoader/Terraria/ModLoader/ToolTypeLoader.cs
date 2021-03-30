@@ -57,20 +57,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Goes through all ToolTypes of a specific ToolPriority that an item has, if any, then calls ToolTypeLoader.CanUseTool and ToolType.UseTool for each of them.
+		/// Goes through all Modded ToolTypes of a specific ToolPriority that an item has, if any, then calls ToolTypeLoader.CanUseTool and ToolType.UseTool for each of them.
 		/// </summary>
 		public static bool TryUseTool(Player player, Item item, ToolPriority priority, Tile tile, int x, int y) {
 			if (item.IsAir)
 				return false;
 
-			foreach (var toolType in item.GetToolTypes(priority)) {
+			foreach (var toolType in item.ToolPower.GetToolTypes(priority)) {
 				if (!IsModToolType(toolType))
 					continue;
 
 				if (!CanUseTool(toolType, player, item, tile, x, y))
 					continue;
 
-				if (toolType.UseTool(player, item, tile, x, y, item.GetToolPower(toolType))) {
+				if (toolType.UseTool(player, item, tile, x, y, item.ToolPower[toolType])) {
 					player.ApplyItemTime(item);
 					return true;
 				}

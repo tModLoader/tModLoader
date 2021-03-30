@@ -2,27 +2,24 @@ namespace Terraria
 {
 	public partial class HitTile
 	{
-		private int pauseDuration;
+		private bool decayPaused;
 
 		/// <summary>
 		/// Pauses HitObject damage decay when hitting tiles. Useful when hitting multiple tiles at the same time.
 		/// </summary>
-		/// <param name="hits"> The amount of times `HitObject` can be called before damage decay is automatically continued. </param>
-		public void PauseDecay(int hits) {
-			pauseDuration = hits + 1;
+		public void PauseDecay() {
+			decayPaused = true;
 		}
 
 		/// <summary>
 		/// Continues HitObject damage decay when hitting tiles.
 		/// </summary>
 		public void ContinueDecay() {
-			pauseDuration = 0;
-			Prune();
-		}
+			if (!decayPaused)
+				return;
 
-		private void OnHitObject() {
-			if (pauseDuration > 0)
-				pauseDuration--;
+			decayPaused = false;
+			Prune();
 		}
 	}
 }

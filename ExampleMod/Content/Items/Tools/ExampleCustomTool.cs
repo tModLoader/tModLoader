@@ -29,9 +29,9 @@ namespace ExampleMod.Content.Items.Tools
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
 			//This tool acts as an axe, with a tool power of 20. Note that axes will display power * 5 (100 in this case) on their tooltip.
-			Item.SetToolPower(ToolType.Axe, 20);
+			Item.ToolPower[ToolType.Axe] = 20;
 			//This tool uses custom behavior for tiles that axes can't mine. Check ExampleToolType for more info.
-			Item.SetToolPower(ModContent.GetInstance<ExampleToolType>(), 45);
+			Item.ToolPower[ModContent.GetInstance<ExampleToolType>()] = 45;
 		}
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
