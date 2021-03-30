@@ -9,8 +9,8 @@
  		private bool _didClickSomething;
  		private bool _didClickSearchBar;
  
-@@ -139,16 +_,12 @@
- 				TextOriginX = 0f
+@@ -140,16 +_,12 @@
+ 				TextOriginY = 0f
  			};
  
 -			UIColoredSliderSimple uIColoredSliderSimple = new UIColoredSliderSimple {
@@ -27,7 +27,7 @@
  			_unlocksProgressBar = uIColoredSliderSimple;
  			container.Append(uIColoredSliderSimple);
  		}
-@@ -454,7 +_,7 @@
+@@ -482,7 +_,7 @@
  			_progressReport = GetUnlockProgress();
  			string completionPercentText = GetCompletionPercentText();
  			_progressPercentText.SetText(completionPercentText);

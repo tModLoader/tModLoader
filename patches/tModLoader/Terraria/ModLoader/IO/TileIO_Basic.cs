@@ -63,7 +63,7 @@ namespace Terraria.ModLoader.IO
 						else { // If it can't be found, then add entry to the end of the entries list and set the loadedType to the unloaded placeholder
 							savedEntryLookup[entry.type] = entry;
 							entry.type = (ushort)entries.Count;
-							entry.loadedType = canPurgeOldData ? entry.vanillaReplacementType : ModContent.Find<TBlock>(entry.unloadedType).Type;
+							entry.loadedType = canPurgeOldData ? entry.vanillaReplacementType : ModContent.Find<TBlock>(string.IsNullOrEmpty(entry.unloadedType) ? entry.DefaultUnloadedType : entry.unloadedType).Type;
 							entries.Add(entry);
 						}
 					}
