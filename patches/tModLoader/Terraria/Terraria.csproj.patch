@@ -51,7 +51,7 @@
      </EmbeddedResource>
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
-@@ -40,29 +_,56 @@
+@@ -40,29 +_,70 @@
      </Reference>
    </ItemGroup>
    <ItemGroup>
@@ -88,6 +88,7 @@
 +    <PackageReference Include="System.CodeDom" Version="5.0.0" />
 +    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.1" />
 +  </ItemGroup>
++  
    <Target Name="CopyToSteamDir" AfterTargets="Build">
      <ItemGroup>
        <BinFiles Include="$(TargetDir)**" />
@@ -95,13 +96,14 @@
      <Message Text="Copying $(AssemblyName) to Steam Dir..." Importance="high" />
 -    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)/%(RecursiveDir)" />
 +    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" />
-+  </Target>
+   </Target>
++
 +  <ItemDefinitionGroup>
 +    <ReferenceCopyLocalPaths>
 +      <DestinationSubDirectory>NuGet\</DestinationSubDirectory>
 +    </ReferenceCopyLocalPaths>
 +  </ItemDefinitionGroup>
-+  <Target Name="RedirectRuntimeFilesToLib" AfterTargets="ResolveLockFileCopyLocalFiles">
++  <Target Name="RedirectBuildFilesToLib" AfterTargets="ResolveLockFileCopyLocalFiles">
 +    <ItemGroup>
 +      <ReferenceCopyLocalPaths Condition=" '%(ReferenceCopyLocalPaths.AssetType)' == 'runtime' ">
 +        <DestinationSubDirectory>Libraries\%(DestinationSubDirectory)</DestinationSubDirectory>
@@ -110,5 +112,17 @@
 +        <DestinationSubDirectory>Libraries\Resources\%(DestinationSubDirectory)</DestinationSubDirectory>
 +      </ReferenceCopyLocalPaths>
 +    </ItemGroup>
-   </Target>
++  </Target>
++
++  <Target Name="RedirectPublishFilesToLib" AfterTargets="ComputeResolvedFilesToPublishList">
++    <ItemGroup>
++      <ResolvedFileToPublish Condition=" '%(ResolvedFileToPublish.AssetType)' == 'runtime' ">
++        <RelativePath>%(RelativePath)</RelativePath>
++      </ResolvedFileToPublish>
++      <ResolvedFileToPublish Condition=" '%(ResolvedFileToPublish.AssetType)' == 'resources' ">
++        <RelativePath>Libraries\Resources\%(RelativePath)</RelativePath>
++      </ResolvedFileToPublish>
++    </ItemGroup>
++  </Target>
++  
  </Project>
