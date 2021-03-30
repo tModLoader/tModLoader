@@ -4,6 +4,7 @@ using Terraria.ID;
 
 namespace ExampleMod.Content.Items.Armor
 {
+	// Automatically attaches an equip texture to this item. Providing the EquipType.Legs value here will result in TML expecting a X_Legs.png file to be placed next to the item's main texture.
 	[AutoloadEquip(EquipType.Legs)]
 	public class ExampleLeggings : ModItem
 	{
@@ -27,7 +28,7 @@ namespace ExampleMod.Content.Items.Armor
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient<ExampleItem>(45) // this item needs 45 ExampleItem's to craft
-				.AddTile<Tiles.Furniture.ExampleWorkbench>() // craft the item in an ExampleWorkbench
+				.AddTile<Tiles.Furniture.ExampleWorkbench>() // craft the item at an ExampleWorkbench
 				.Register();
 		}
 	}

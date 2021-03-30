@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Armor
 {
+	// Automatically attaches an equip texture to this item. Providing the EquipType.Body value here will result in TML expecting X_Arms.png, X_Body.png and X_FemaleBody.png sprite-sheet files to be placed next to the item's main texture.
 	[AutoloadEquip(EquipType.Body)]
 	public class ExampleBreastplate : ModItem
 	{
@@ -31,7 +32,7 @@ namespace ExampleMod.Content.Items.Armor
 
 		public override void AddRecipes() {
 			CreateRecipe().AddIngredient<ExampleItem>(60) // this item needs 60 ExampleItem's to craft
-				.AddTile<Tiles.Furniture.ExampleWorkbench>() // craft the item in an ExampleWorkbench
+				.AddTile<Tiles.Furniture.ExampleWorkbench>() // craft the item at an ExampleWorkbench
 				.Register();
 		}
 	}
