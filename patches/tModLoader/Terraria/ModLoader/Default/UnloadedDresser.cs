@@ -19,7 +19,7 @@ namespace Terraria.ModLoader.Default
 			Main.tileSolidTop[Type] = true;
 			TileID.Sets.BasicDresser[Type] = true;
 
-			TileObjectData.newTile.CopyFrom(TileObjectData.Style1x1); // Disables hammering
+			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2); // Disables hammering
 			TileObjectData.addTile(Type);
 		}
 	}
