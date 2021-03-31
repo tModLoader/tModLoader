@@ -41,7 +41,7 @@ namespace ExampleMod
 		public int healHurt;
 		public bool nullified;
 		public int purityDebuffCooldown;
-		public bool purityMinion;
+		public bool exampleHoveringMinion;
 		public bool examplePet;
 		public bool exampleLightPet;
 		public bool exampleShield;
