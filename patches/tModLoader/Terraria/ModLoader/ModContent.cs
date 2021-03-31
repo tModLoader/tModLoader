@@ -422,6 +422,7 @@ namespace Terraria.ModLoader
 		private static void CacheVanillaState() {
 			EffectsTracker.CacheVanillaState();
 			DamageClassLoader.RegisterDefaultClasses();
+			InfoDisplayLoader.RegisterDefaultDisplays();
 		}
 
 		internal static Mod LoadingMod { get; private set; }
@@ -525,6 +526,7 @@ namespace Terraria.ModLoader
 			MountLoader.Unload();
 			RarityLoader.Unload();
 			DamageClassLoader.Unload();
+			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
 			SoundLoader.Unload();
 			DisposeMusic();

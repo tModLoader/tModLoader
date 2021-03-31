@@ -100,7 +100,7 @@
  						continue;
  					}
 @@ -1164,7 +_,7 @@
- 		private static int SaveNPCs(BinaryWriter writer) {
+ 		public static int SaveNPCs(BinaryWriter writer) {
  			for (int i = 0; i < Main.npc.Length; i++) {
  				NPC nPC = Main.npc[i];
 -				if (nPC.active && nPC.townNPC && nPC.type != 368) {
@@ -136,7 +136,7 @@
  					streamWriter.WriteLine(value);
 @@ -2207,8 +_,8 @@
  
- 		private static int SaveTileEntities(BinaryWriter writer) {
+ 		public static int SaveTileEntities(BinaryWriter writer) {
  			lock (TileEntity.EntityCreationLock) {
 -				writer.Write(TileEntity.ByID.Count);
 -				foreach (KeyValuePair<int, TileEntity> item in TileEntity.ByID) {
