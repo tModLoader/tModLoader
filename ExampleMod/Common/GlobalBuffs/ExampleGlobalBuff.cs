@@ -30,8 +30,8 @@ namespace ExampleMod.Common.GlobalBuffs
 				drawParams.textPosition += shake;
 			}
 
-			//If the buff is one of the three specified:
-			if (type == BuffID.Regeneration || type == BuffID.Ironskin || type == BuffID.Swiftness) {
+			//If the buff is not drawn in the hook/mount/pet equip page, and the buff is one of the three specified:
+			if (Main.EquipPage != 2 && (type == BuffID.Regeneration || type == BuffID.Ironskin || type == BuffID.Swiftness)) {
 				//Make text go up and down 6 pixels on each buff, offset by 4 ticks for each.
 				int interval = 60;
 				float time = ((int)Main.GameUpdateCount + 4 * buffIndex) % interval / (float)interval;
