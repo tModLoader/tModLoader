@@ -33,7 +33,7 @@
 -    <Reference Include="MP3Sharp" Condition="$(DefineConstants.Contains('CLIENT'))" />
 +    <Reference Include="MP3Sharp" />
 +    <Reference Include="Ionic.Zip.Reduced" />
--      <Reference Include="Newtonsoft.Json" />
+-    <Reference Include="Newtonsoft.Json" />
 +    <Reference Include="Mono.Cecil" />
 +    <Reference Include="Mono.Cecil.Pdb" />
 +    <Reference Include="Mono.Cecil.Mdb" />

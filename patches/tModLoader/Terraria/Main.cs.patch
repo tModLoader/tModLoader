@@ -157,7 +157,7 @@
  		public static bool allChestStackHover;
  		public static bool inventorySortMouseOver;
  		public static float GraveyardVisualIntensity;
-@@ -1158,9 +_,9 @@
+@@ -1161,9 +_,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
  		public static string WorldPath = Path.Combine(SavePath, "Worlds");
@@ -860,9 +860,10 @@
  			}
  
  			for (int n = 0; n < 1001; n++) {
-@@ -8322,7 +_,7 @@
+@@ -8322,8 +_,8 @@
  			GameViewMatrix = new SpriteViewMatrix(base.GraphicsDevice);
  			BackgroundViewMatrix = new SpriteViewMatrix(base.GraphicsDevice);
+ 			audioSystem = new LegacyAudioSystem();
  			AssetSourceController = new AssetSourceController(Assets, new IContentSource[1] {
 -				new XnaContentSource(base.Content.RootDirectory)
 +				new XnaDirectContentSource(base.Content.RootDirectory)
@@ -1788,7 +1789,7 @@
  					toolTipLine[numLines] = text;
  					numLines++;
  				}
-@@ -15342,6 +_,7 @@
+@@ -15344,6 +_,7 @@
  				if (item.type == 3262 || item.type == 3282 || item.type == 3283 || item.type == 3284 || item.type == 3285 || item.type == 3286 || item.type == 3316 || item.type == 3315 || item.type == 3317 || item.type == 3291 || item.type == 3389) {
  					toolTipLine[numLines] = " ";
  					yoyoLogo = numLines;
@@ -2693,7 +2694,7 @@
  						if ((!expertMode || type != 266) && ((type != 439 && type != 440) || npc[num2].ai[0] != 5f)) {
  							if (type >= 134 && type <= 136) {
  								scale = 1.5f;
-@@ -34672,8 +_,10 @@
+@@ -34682,10 +_,18 @@
  				num4 += 50f;
  			}
  
@@ -2724,7 +2725,7 @@
  					num = 1;
  					text3 = Lang.inter[96].Value;
  					string text5 = "";
-@@ -34738,7 +_,8 @@
+@@ -34737,7 +_,8 @@
  
  					flag5 = true;
  				}
@@ -3112,7 +3113,7 @@
  					menuMode = 0;
  					netMode = 0;
  				}
-@@ -36567,6 +_,20 @@
+@@ -36567,14 +_,20 @@
  					menuMode = 12;
  				}
  
@@ -3121,7 +3122,7 @@
 +
  				num11++;
  				array9[num11] = Lang.menu[131].Value;
-+				//* A comment to join two patches into one *
++				// A comment to join two patches into one
  				if (selectedMenu == num11) {
  					SoundEngine.PlaySound(10);
  					menuMode = 888;
@@ -3391,7 +3392,7 @@
  				for (int i = 0; i < 13; i++) {
  					if (IsLiquidStyleWater(waterStyle)) {
  						if (waterStyle != i)
-@@ -43589,6 +_,7 @@
+@@ -43587,6 +_,7 @@
  							liquidAlpha[i] = Math.Min(liquidAlpha[i] + 0.2f, 1f);
  					}
  				}
@@ -3799,7 +3800,7 @@
  			int num3;
  			int num4;
  			if (screenBorderless || screenMaximized || graphics.IsFullScreen || fullscreen) {
-@@ -50356,7 +_,6 @@
+@@ -50389,7 +_,6 @@
  				if (!fullscreen)
  					SetDisplayModeAsBorderless(ref width, ref height, form);
  #endif
@@ -3862,7 +3863,7 @@
  			width = Math.Max(width, minScreenW);
  			height = Math.Max(height, minScreenH);
  			if (graphics.IsFullScreen != fullscreen) {
-@@ -50456,6 +_,9 @@
+@@ -50456,6 +_,7 @@
  				graphics.ToggleFullScreen();
  			}
  
