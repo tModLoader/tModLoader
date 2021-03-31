@@ -33,17 +33,16 @@
 -    <Reference Include="MP3Sharp" Condition="$(DefineConstants.Contains('CLIENT'))" />
 +    <Reference Include="MP3Sharp" />
 +    <Reference Include="Ionic.Zip.Reduced" />
--    <Reference Include="Newtonsoft.Json" />
 +    <Reference Include="Mono.Cecil" />
 +    <Reference Include="Mono.Cecil.Pdb" />
 +    <Reference Include="Mono.Cecil.Mdb" />
 +    <Reference Include="log4net" />
 +    <Reference Include="MonoMod.RuntimeDetour" />
 +    <Reference Include="MonoMod.Utils" />
++    <Reference Include="NVorbis" />    
+     <Reference Include="Newtonsoft.Json" />
 -    <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
 -    <Reference Include="NVorbis.System.ValueTuple" />
-+    <Reference Include="NVorbis" />    
-+    <Reference Include="Newtonsoft.Json" />
      <Reference Include="RailSDK.Net" />
      <ProjectReference Include="../ReLogic/ReLogic.csproj">
        <Private>false</Private>
@@ -55,7 +54,7 @@
      </EmbeddedResource>
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
-@@ -44,29 +_,64 @@
+@@ -44,29 +_,73 @@
      </Reference>
    </ItemGroup>
    <ItemGroup>
@@ -69,7 +68,16 @@
 +    <EmbeddedResource Include="Libraries/Common/**">
 +      <LogicalName>%(Filename)%(Extension)</LogicalName>
 +    </EmbeddedResource>
++    <EmbeddedResource Include="Libraries/CsvHelper/**">
++      <LogicalName>%(Filename)%(Extension)</LogicalName>
++    </EmbeddedResource>
 +    <EmbeddedResource Include="Libraries/FNA/**">
++      <LogicalName>%(Filename)%(Extension)</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="Libraries/MP3Sharp/**">
++      <LogicalName>%(Filename)%(Extension)</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="Libraries/NVorbis/**">
 +      <LogicalName>%(Filename)%(Extension)</LogicalName>
 +    </EmbeddedResource>
      <EmbeddedResource Include="Localization/Content/**" />
