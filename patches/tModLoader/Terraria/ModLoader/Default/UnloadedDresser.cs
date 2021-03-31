@@ -19,7 +19,8 @@ namespace Terraria.ModLoader.Default
 			Main.tileSolidTop[Type] = true;
 			Main.tileContainer[Type] = true;
 			TileID.Sets.BasicDresser[Type] = true;
-			
+			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
+
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2); // Disables hammering
 			TileObjectData.addTile(Type);
 
