@@ -6,16 +6,16 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Projectiles.Minions
 {
-	// PurityWisp uses inheritace as an example of how it can be useful in modding.
+	// ExampleHoveringMinion uses inheritace as an example of how it can be useful in modding.
 	// HoverShooter and Minion classes help abstract common functionality away, which is useful for mods that have many similar behaviors.
 	// Inheritance is an advanced topic and could be confusing to new programmers, see ExampleSimpleMinion.cs for a simpler minion example.
-	public class PurityWisp : HoverShooter
+	public class ExampleHoveringMinion : HoverShooter
 	{
 		public override void SetStaticDefaults() {
 			Main.projFrames[projectile.type] = 3;
 			Main.projPet[projectile.type] = true;
-			ProjectileID.Sets.MinionSacrificable[projectile.type] = true;
-			ProjectileID.Sets.Homing[projectile.type] = true;
+			ProjectileID.Sets.MinionSacrificable[projectile.type] = true; //can cancel the minion
+			ProjectileID.Sets.Homing[projectile.type] = true; //minion homes into enemies
 			ProjectileID.Sets.MinionTargettingFeature[projectile.type] = true; //This is necessary for right-click targeting
 		}
 
@@ -23,30 +23,32 @@ namespace ExampleMod.Projectiles.Minions
 			projectile.netImportant = true;
 			projectile.width = 24;
 			projectile.height = 32;
-			projectile.friendly = true;
-			projectile.minion = true;
-			projectile.minionSlots = 1;
+			projectile.friendly = true; //ExampleHoveringMinion can't harm player
+			projectile.minion = true; //sets the ExampleHoveringMinion to a minion
+			projectile.minionSlots = 1; //ExampleHoveringMinion takes one minion slot
 			projectile.penetrate = -1;
 			projectile.timeLeft = 18000;
-			projectile.tileCollide = false;
+			projectile.tileCollide = false; //ExampleHoveringMinion can move through blocks
 			projectile.ignoreWater = true;
 			inertia = 20f;
-			shoot = ModContent.ProjectileType<PurityBolt>();
+			shoot = ModContent.ProjectileType<PurityBolt>(); //ExampleHoveringMinion fires PurityBolt
 			shootSpeed = 12f;
 		}
 
 		public override void CheckActive() {
 			Player player = Main.player[projectile.owner];
 			ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>();
+			
 			if (player.dead) {
-				modPlayer.purityMinion = false;
+				modPlayer.exampleHoveringMinion = false; 
 			}
-			if (modPlayer.purityMinion) { // Make sure you are resetting this bool in ModPlayer.ResetEffects. See ExamplePlayer.ResetEffects
+			if (modPlayer.exampleHoveringMinion) { // Make sure you are resetting this bool in ModPlayer.ResetEffects. See ExamplePlayer.ResetEffects
 				projectile.timeLeft = 2;
 			}
 		}
 
 		public override void CreateDust() {
+			//creates the dust effect
 			if (projectile.ai[0] == 0f) {
 				if (Main.rand.NextBool(5)) {
 					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height / 2, ModContent.DustType<PuriumFlame>());
@@ -63,6 +65,7 @@ namespace ExampleMod.Projectiles.Minions
 					Main.dust[dust].velocity -= 1.2f * dustVel;
 				}
 			}
+			//causes the ExampleHoveringMinion to emit light
 			Lighting.AddLight((int)(projectile.Center.X / 16f), (int)(projectile.Center.Y / 16f), 0.6f, 0.9f, 0.3f);
 		}
 
