@@ -2643,7 +2643,37 @@
  			}
  		}
  
-@@ -31855,13 +_,31 @@
+@@ -31838,6 +_,13 @@
+ 			return text;
+ 		}
+ 
++		/// <summary>
++		/// Checks if the buff at index <paramref name="buffSlotOnPlayer"/> is allowed to draw a "remaining time" text, and sets <paramref name="buffTimeValue"/> to it.
++		/// <para>Check <paramref name="buffTimeValue"/> > 2 afterwards if you want to mirror text draw logic.</para>
++		/// </summary>
++		/// <param name="buffSlotOnPlayer">The index for buffType and buffTime</param>
++		/// <param name="buffTimeValue">The "remaining time" in ticks</param>
++		/// <returns><see langword="true"/> if <paramref name="buffTimeValue"/> is set, otherwise <see langword="false"/></returns>
+ 		public static bool TryGetBuffTime(int buffSlotOnPlayer, out int buffTimeValue) {
+ 			int num = player[myPlayer].buffType[buffSlotOnPlayer];
+ 			buffTimeValue = 0;
+@@ -31849,19 +_,47 @@
+ 			return false;
+ 		}
+ 
++		/// <summary>
++		/// Draws the buff icon corresponding to the buff in Main.LocalPlayer.buffType[<paramref name="buffSlotOnPlayer"/>].
++		/// <para>Calls TML hooks related to drawing and clicking.</para>
++		/// <para>Has two exclusive contexts: Below the accessory slots (Main.EquipPage == 2), and regular under-the-inventory.</para>
++		/// </summary>
++		/// <param name="drawBuffText">The return from a previous DrawBuffIcon call, -1 if first drawn buff</param>
++		/// <param name="buffSlotOnPlayer">The index for buffType and buffTime</param>
++		/// <param name="x">Top-left draw position on the x-axis</param>
++		/// <param name="y">Top-left draw position on the y-axis</param>
++		/// <returns>The index of the currently mouseovered buff icon, equal to <paramref name="buffSlotOnPlayer"/> if it's currently mouseovered, -1 otherwise</returns>
+ 		public static int DrawBuffIcon(int drawBuffText, int buffSlotOnPlayer, int x, int y) {
+ 			int num = player[myPlayer].buffType[buffSlotOnPlayer];
+ 			if (num == 0)
  				return drawBuffText;
  
  			Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color(buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer]);
@@ -2700,8 +2730,8 @@
 +		/// <summary>
 +		/// Calls Player.DelBuff with index i after checking Main.debuff of buff type b. Will toggle Player.hideMisc for pet and light pet.
 +		/// </summary>
-+		/// <param name="i">Index for buffType and buffTime</param>
-+		/// <param name="b">Buff type</param>
++		/// <param name="i">The index for buffType and buffTime</param>
++		/// <param name="b">The buff type</param>
  		public static void TryRemovingBuff(int i, int b) {
  			bool flag = false;
  			if (!debuff[b] && b != 60 && b != 151) {
