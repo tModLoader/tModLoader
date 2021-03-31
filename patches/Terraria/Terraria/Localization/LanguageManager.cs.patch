@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Localization/LanguageManager.cs
 +++ src/Terraria/Terraria/Localization/LanguageManager.cs
-@@ -57,7 +_,7 @@
+@@ -60,7 +_,7 @@
  
  		private string[] GetLanguageFilesForCulture(GameCulture culture) {
  			Assembly.GetExecutingAssembly();
@@ -9,12 +9,3 @@
  		}
  
  		public void SetLanguage(GameCulture culture) {
-@@ -92,7 +_,7 @@
- 				try {
- 					string text2 = Utils.ReadEmbeddedResource(text);
- 					if (text2 == null || text2.Length < 2)
--						throw new FileFormatException();
-+						throw new FormatException();
- 
- 					LoadLanguageFromFileText(text2);
- 				}
