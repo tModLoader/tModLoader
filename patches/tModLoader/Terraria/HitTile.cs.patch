@@ -14,23 +14,32 @@
  	{
  		public class HitTileObject
  		{
-@@ -210,6 +_,8 @@
- 				}
+@@ -134,6 +_,16 @@
+ 		}
  
- 				hitTileObject.timeToLive--;
-+				if (decayPaused)
-+					goto PostDamageDecay;
- 				if ((double)hitTileObject.timeToLive < 12.0)
- 					hitTileObject.damage -= 10;
- 				else if ((double)hitTileObject.timeToLive < 24.0)
-@@ -219,6 +_,7 @@
- 				else if ((double)hitTileObject.timeToLive < 48.0)
- 					hitTileObject.damage -= 2;
+ 		public int AddDamage(int tileId, int damageAmount, bool updateAmount = true) {
++			int damage = AddDamage_Inner(tileId, damageAmount, updateAmount);
++			if (!updateAmount || !decayPaused || damageAmount == 0)
++				return damage;
++			if (neededPrune < 2 && damage >= 100)
++				neededPrune = 2;
++			else if (neededPrune < 1)
++				neededPrune = 1;
++			return damage;
++		}
++		private int AddDamage_Inner(int tileId, int damageAmount, bool updateAmount) {
+ 			if (tileId < 0 || tileId > 500)
+ 				return 0;
  
-+				PostDamageDecay:
- 				if (hitTileObject.damage < 0) {
- 					hitTileObject.Clear();
- 					flag = true;
+@@ -196,6 +_,8 @@
+ 		}
+ 
+ 		public void Prune() {
++			if (decayPaused)
++				return;
+ 			bool flag = false;
+ 			for (int i = 0; i <= 500; i++) {
+ 				HitTileObject hitTileObject = data[i];
 @@ -291,7 +_,7 @@
  
  				bool flag2 = false;

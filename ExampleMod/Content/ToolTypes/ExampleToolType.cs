@@ -42,9 +42,6 @@ namespace ExampleMod.Content.ToolTypes
 			else
 				dirY = 0;
 
-			// Then we pause the damage decay of tiles, so tiles in the area don't remain unbroken.
-			player.hitTile.PauseDecay();
-
 			// Lastly we mine each tile in the area
 			for (int i = x + dirX - 1; i <= x + dirX + 1; i++) {
 				for (int j = y + dirY - 1; j <= y + dirY + 1; j++) {
@@ -62,9 +59,6 @@ namespace ExampleMod.Content.ToolTypes
 					player.PickTile(i, j, power, item);
 				}
 			}
-
-			// We continue the damage decay of tiles.
-			player.hitTile.ContinueDecay();
 
 			// We return true to tell the game this ToolType did something. This stops other ToolTypes with lower priority from running their code.
 			// This is required if you want there to be a delay between each hit (use time).

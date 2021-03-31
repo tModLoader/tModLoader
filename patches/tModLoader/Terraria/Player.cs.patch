@@ -3717,28 +3717,14 @@
  			if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
  				int num = -1;
  				float x = itemRectangle.X + Main.rand.Next(itemRectangle.Width);
-@@ -31481,37 +_,46 @@
- 		}
- 
- 		private void UseShovel(Player user, Item item, int sX, int sY) {
-+			hitTile.PauseDecay();
- 			for (int i = sX - 1; i <= sX + 1; i++) {
- 				for (int j = sY - 1; j <= sY + 1; j++) {
- 					DamageTileWithShovel(user, item, i, j);
- 				}
- 			}
-+			hitTile.ContinueDecay();
- 
- 			itemTime = (int)((float)item.useTime * pickSpeed);
- 		}
+@@ -31492,39 +_,54 @@
  
  		private void DamageTileWithShovel(Player user, Item item, int x, int y) {
  			Tile tileSafely = Framing.GetTileSafely(x, y);
 -			if (TileID.Sets.CanBeDugByShovel[tileSafely.type]) {
 -				int pickPower = 30;
 +			if (CombinedHooks.CanUseTool(this, item, ToolType.Shovel, tileSafely, x, y).GetValueOrDefault(TileID.Sets.CanBeDugByShovel[tileSafely.type])) {
-+				//Gravedigger's Shovel (ID 4711) toolpower (30) now set in Item.SetDefaults
-+				int pickPower = item.ToolPower[ToolType.Shovel];
++				int pickPower = item.ToolPower[ToolType.Shovel]; //Gravedigger's Shovel (ID 4711) toolpower (30) now set in Item.SetDefaults
  				if (tileSafely.active() && TileID.Sets.Conversion.Grass[tileSafely.type])
 -					PickTile(x, y, 100);
 +					PickTile(x, y, 100, item);
@@ -3749,14 +3735,16 @@
  		}
  
  		private void ItemCheck_UseMiningTools(Item sItem) {
-+			//Check if the item has any ToolTypes associated with it.
 +			if (!sItem.IsTool)
 +				return;
-+			Tile tileTarget = Main.tile[tileTargetX, tileTargetY];
++			hitTile.PauseDecay();
++			ItemCheck_UseMiningTools_Inner(sItem);
++			hitTile.ContinueDecay();
++		}
++		private void ItemCheck_UseMiningTools_Inner(Item sItem) {
  			SpecialToolUsageSettings specialToolUsageSettings = default(SpecialToolUsageSettings);
 -			if (sItem.type == 4711) {
-+			//if (sItem.type == 4711) {
-+			if (sItem.ToolPower[ToolType.Shovel] > 0) {
++			if (sItem.ToolPower[ToolType.Shovel] > 0 /*sItem.type == 4711*/) {
  				SpecialToolUsageSettings specialToolUsageSettings2 = default(SpecialToolUsageSettings);
  				specialToolUsageSettings2.IsAValidTool = true;
  				specialToolUsageSettings2.UsageAction = UseShovel;
@@ -3771,7 +3759,13 @@
  
  			bool flag = IsTargetTileInItemRange(sItem);
  			if (noBuilding)
-@@ -31520,11 +_,13 @@
+ 				flag = false;
+ 
++			Tile tileTarget = Main.tile[tileTargetX, tileTargetY];
++			if (flag && toolTime == 0 && itemAnimation > 0 && controlUseItem) {
++				flag = !ToolTypeLoader.TryUseTool(this, sItem, ToolPriority.First, tileTarget, tileTargetX, tileTargetY);
++			}
++
  			if (flag && specialToolUsageSettings.UsageCondition != null)
  				flag = specialToolUsageSettings.UsageCondition(this, sItem, tileTargetX, tileTargetY);
  
@@ -3785,15 +3779,6 @@
  
  			if (!flag)
  				return;
-@@ -31536,6 +_,8 @@
- 
- 			bool canHitWalls = false;
- 			if (toolTime == 0 && itemAnimation > 0 && controlUseItem) {
-+				if (ToolTypeLoader.TryUseTool(this, sItem, ToolPriority.First, tileTarget, tileTargetX, tileTargetY))
-+					return;
- 				if (specialToolUsageSettings.UsageAction != null) {
- 					specialToolUsageSettings.UsageAction(this, sItem, tileTargetX, tileTargetY);
- 					return;
 @@ -31549,8 +_,14 @@
  
  			if (toolTime == 0 && itemAnimation > 0 && controlUseItem && canHitWalls) {
