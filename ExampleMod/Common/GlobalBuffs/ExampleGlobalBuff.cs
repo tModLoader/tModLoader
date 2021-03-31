@@ -55,14 +55,8 @@ namespace ExampleMod.Common.GlobalBuffs
 				return;
 			}
 
-			if (!Main.vanityPet[type] && !Main.lightPet[type] && !Main.buffNoTimeDisplay[type] && (!player.honeyWet || type != BuffID.Honey) && (!player.wet || !Main.expertMode || type != BuffID.Chilled)) {
-				int remainingTime = player.buffTime[buffIndex];
-				if (remainingTime <= 2) {
-					//Terraria doesn't display times for buffs with no initial duration (hardcoded as 2 ticks).
-					return;
-				}
-
-				string text = Lang.LocalizedDuration(new System.TimeSpan(0, 0, remainingTime / 60), abbreviated: false, showAllAvailableUnits: true);
+			if (Main.TryGetBuffTime(buffIndex, out int buffTimeValue) && buffTimeValue > 2) {
+				string text = Lang.LocalizedDuration(new System.TimeSpan(0, 0, buffTimeValue / 60), abbreviated: false, showAllAvailableUnits: true);
 				tip += "\n[ExampleGlobalBuff] Remaining time: " + text;
 			}
 		}
