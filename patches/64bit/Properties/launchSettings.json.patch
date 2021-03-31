@@ -8,7 +8,7 @@
 -      "executablePath": "$(tModLoaderSteamPath)/$(OutputName).exe",
 -      "workingDirectory": "$(tModLoaderSteamPath)"
 +      "commandName": "Project",
-+      "workingDirectory": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\tModLoader"
++      "workingDirectory": "D:\\SteamLibrary\\steamapps\\common\\tModLoader"
      }
    }
  }
