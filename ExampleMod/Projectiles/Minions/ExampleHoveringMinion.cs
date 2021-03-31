@@ -12,7 +12,7 @@ namespace ExampleMod.Projectiles.Minions
 	public class ExampleHoveringMinion : HoverShooter
 	{
 		public override void SetStaticDefaults() {
-			Main.projFrames[projectile.type] = 3;
+			Main.projFrames[projectile.type] = 3; //how many frames there are in ExampleHoveringMinion's animation
 			Main.projPet[projectile.type] = true;
 			ProjectileID.Sets.MinionSacrificable[projectile.type] = true; //can cancel the minion
 			ProjectileID.Sets.Homing[projectile.type] = true; //minion homes into enemies
@@ -29,7 +29,7 @@ namespace ExampleMod.Projectiles.Minions
 			projectile.penetrate = -1;
 			projectile.timeLeft = 18000;
 			projectile.tileCollide = false; //ExampleHoveringMinion can move through blocks
-			projectile.ignoreWater = true;
+			projectile.ignoreWater = true; //ExampleHoveringMinion's movement ignores water
 			inertia = 20f;
 			shoot = ModContent.ProjectileType<PurityBolt>(); //ExampleHoveringMinion fires PurityBolt
 			shootSpeed = 12f;
@@ -38,7 +38,7 @@ namespace ExampleMod.Projectiles.Minions
 		public override void CheckActive() {
 			Player player = Main.player[projectile.owner];
 			ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>();
-			
+			//makes sure ExampleHoveringMinion despawns when the player dies
 			if (player.dead) {
 				modPlayer.exampleHoveringMinion = false; 
 			}
@@ -49,9 +49,9 @@ namespace ExampleMod.Projectiles.Minions
 
 		public override void CreateDust() {
 			//creates the dust effect
-			if (projectile.ai[0] == 0f) {
+			if (projectile.ai[0] == 0f) { //if ExampleHoveringMinion isn't moving
 				if (Main.rand.NextBool(5)) {
-					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height / 2, ModContent.DustType<PuriumFlame>());
+					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height / 2, ModContent.DustType<PuriumFlame>()); //ExampleHoveringMinion uses the PuriumFlame dust
 					Main.dust[dust].velocity.Y -= 1.2f;
 				}
 			}
@@ -61,8 +61,8 @@ namespace ExampleMod.Projectiles.Minions
 					if (dustVel != Vector2.Zero) {
 						dustVel.Normalize();
 					}
-					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, ModContent.DustType<PuriumFlame>());
-					Main.dust[dust].velocity -= 1.2f * dustVel;
+					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, ModContent.DustType<PuriumFlame>()); //ExampleHoveringMinion uses the PuriumFlame dust
+					Main.dust[dust].velocity -= 1.2f * dustVel; //this makes the dust effect take into account the movement of ExampleHoveringMinion
 				}
 			}
 			//causes the ExampleHoveringMinion to emit light
@@ -70,6 +70,7 @@ namespace ExampleMod.Projectiles.Minions
 		}
 
 		public override void SelectFrame() {
+			//creates the projectile animation
 			projectile.frameCounter++;
 			if (projectile.frameCounter >= 8) {
 				projectile.frameCounter = 0;
