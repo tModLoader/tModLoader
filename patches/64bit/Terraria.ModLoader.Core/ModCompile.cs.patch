@@ -1,29 +1,39 @@
 --- src/tModLoader/Terraria.ModLoader.Core/ModCompile.cs
 +++ src/64bit/Terraria.ModLoader.Core/ModCompile.cs
-@@ -183,12 +_,20 @@
- 			if (referenceAssembliesPath != null)
- 				return true;
+@@ -55,6 +_,7 @@
  
--			if (Platform.IsWindows)
--				referenceAssembliesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + @"\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
--			else if (Platform.IsOSX)
--				referenceAssembliesPath = "/Library/Frameworks/Mono.framework/Versions/Current/lib/mono/4.5-api";
--			else if (Platform.IsLinux)
--				referenceAssembliesPath = "/usr/lib/mono/4.5-api";
-+
-+			switch (PlatformUtilities.RunningPlatform()) {
-+				case PlatformID.Win32NT:
-+					referenceAssembliesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + @"\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
-+					break;
-+				case PlatformID.MacOSX:
-+					referenceAssembliesPath = "/Library/Frameworks/Mono.framework/Versions/Current/lib/mono/4.5-api";
-+					break;
-+				default:
-+					referenceAssembliesPath = "/usr/lib/mono/4.5-api";
-+					break;
-+			}
-+
-+			Logging.tML.Info(referenceAssembliesPath);
+ 		public static readonly string ModSourcePath = Path.Combine(Program.SavePath, "Mod Sources");
  
- 			if (Directory.Exists(referenceAssembliesPath))
- 				return true;
++		// Use ModCompile64 instead of ModCompile
+ 		internal static readonly string modCompileDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModCompile64");
+ 		internal static readonly string modCompileVersionPath = Path.Combine(modCompileDir, "version");
+ 
+@@ -224,6 +_,7 @@
+ 			if (!Directory.Exists(modReferencesPath))
+ 				Directory.CreateDirectory(modReferencesPath);
+ 
++			// tModLoader64bit.exe
+ 			var tMLPath = Assembly.GetExecutingAssembly().Location;
+ 			var touchStamp = $"{tMLPath} @ {File.GetLastWriteTime(tMLPath)}";
+ 			var touchFile = Path.Combine(modReferencesPath, "touch");
+@@ -246,16 +_,16 @@
+ 
+ 			var tMLDir = Path.GetDirectoryName(tMLPath);
+ #if CLIENT
+-			var tMLServerName = Path.GetFileName(tMLPath).Replace("tModLoader", "tModLoaderServer");
++			var tMLServerName = Path.GetFileName(tMLPath).Replace("tModLoader64bit", "tModLoader64bitServer");
+ 			if (tMLServerName == "Terraria.exe")
+-				tMLServerName = "tModLoaderServer.exe";
++				tMLServerName = "tModLoader64bitServer.exe";
+ 			var tMLServerPath = Path.Combine(tMLDir, tMLServerName);
+ #else
+ 			var tMLServerPath = tMLPath;
+-			var tMLClientName = Path.GetFileName(tMLPath).Replace("tModLoaderServer", "tModLoader");
++			var tMLClientName = Path.GetFileName(tMLPath).Replace("tModLoader64bit", "tModLoader64bitServer");
+ 			tMLPath = Path.Combine(tMLDir, tMLClientName);
+ 			if (!File.Exists(tMLPath))
+-				tMLPath = Path.Combine(tMLDir, "Terraria.exe");
++				tMLPath = Path.Combine(tMLDir, "tModLoader64bit.exe");
+ #endif
+ 			var tMLBuildServerPath = tMLServerPath;
+ 			if (FrameworkVersion.Framework == Framework.Mono)
