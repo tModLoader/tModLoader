@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Terraria.csproj
 +++ src/Terraria/Terraria/Terraria.csproj
-@@ -1,47 +_,68 @@
+@@ -1,47 +_,72 @@
  <Project Sdk="Microsoft.NET.Sdk">
    <Import Project="../Configuration.targets" />
 +  <Import Project="../../WorkspaceInfo.targets" />
