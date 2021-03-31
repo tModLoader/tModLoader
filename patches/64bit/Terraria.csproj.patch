@@ -13,51 +13,61 @@
 +    <Configurations>XNADebug;XNAServerDebug;XNARelease;XNAServerRelease;FNARelease;FNADebug;FNAServerRelease;FNAServerDebug</Configurations>
      <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-     <LangVersion>7.3</LangVersion>
-+    <OutputType>WinExe</OutputType>
-     <PlatformTarget>AnyCPU</PlatformTarget>
-     <Optimize>true</Optimize>
+-    <LangVersion>7.3</LangVersion>
+-    <PlatformTarget>AnyCPU</PlatformTarget>
+-    <Optimize>true</Optimize>
 -    <OutputName>tModLoader</OutputName>
-+    <OutputName>tModLoader64Bit</OutputName>
-   </PropertyGroup>
+-  </PropertyGroup>
 -  <PropertyGroup Condition="$(Configuration.Contains('Server'))">
-+  <PropertyGroup Condition="$(Configuration.Contains('FNAServerRelease'))">
-     <OutputType>Exe</OutputType>
+-    <OutputType>Exe</OutputType>
 -    <DefineConstants>$(DefineConstants);SERVER</DefineConstants>
-+    <DefineConstants>TRACE;SERVER;FNA</DefineConstants>
-+    <ApplicationIcon>IconFNAServer.ico</ApplicationIcon>
-     <OutputName>$(OutputName)Server</OutputName>
-   </PropertyGroup>
+-    <OutputName>$(OutputName)Server</OutputName>
+-  </PropertyGroup>
 -  <PropertyGroup Condition="!$(Configuration.Contains('Server'))">
-+  <PropertyGroup Condition="$(Configuration.Contains('XNAServerRelease'))">
 -    <DefineConstants>$(DefineConstants);CLIENT</DefineConstants>
 -  </PropertyGroup>
-+  <OutputType>Exe</OutputType>
 -  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
-+    <DefineConstants>DEBUG;TRACE;SERVER;XNA</DefineConstants>
 -    <Optimize>false</Optimize>
-+    <ApplicationIcon>IconXNA.ico</ApplicationIcon>
 -    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
 -    <OutputName>$(OutputName)Debug</OutputName>
-+    <OutputName>$(OutputName)Server</OutputName>
-   </PropertyGroup>
+-  </PropertyGroup>
 -  <PropertyGroup Condition="$(Configuration.Contains('Windows'))">
-+  <PropertyGroup Condition="$(Configuration.Contains('XNAServerDebug'))">
-+    <Optimize>false</Optimize>
-     <PlatformTarget>x86</PlatformTarget>
+-    <PlatformTarget>x86</PlatformTarget>
 -    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
 -    <DefineConstants>$(DefineConstants);WINDOWS;XNA</DefineConstants>
-+    <DefineConstants>TRACE;DEBUG;SERVER;XNA</DefineConstants>
 -  </PropertyGroup>
-+    <OutputName>$(OutputName)Debug</OutputName>
 -  <PropertyGroup Condition="$(Configuration.Contains('Mac'))">
-+    <ApplicationIcon>IconXNA.ico</ApplicationIcon>
 -    <DefineConstants>$(DefineConstants);MAC;FNA</DefineConstants>
-+    <OutputType>Exe</OutputType>
-   </PropertyGroup>
+-  </PropertyGroup>
 -  <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
-+  <PropertyGroup Condition="$(Configuration.Contains('FNAServerDebug'))">
 -    <DefineConstants>$(DefineConstants);LINUX;FNA</DefineConstants>
++    <LangVersion>9</LangVersion>
++    <OutputType>WinExe</OutputType>
++    <PlatformTarget>AnyCPU</PlatformTarget>
++    <Optimize>true</Optimize>
++    <OutputName>tModLoader64Bit</OutputName>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('FNAServerRelease'))">
++    <OutputType>Exe</OutputType>
++    <DefineConstants>TRACE;SERVER;FNA</DefineConstants>
++    <ApplicationIcon>IconFNAServer.ico</ApplicationIcon>
++    <OutputName>$(OutputName)Server</OutputName>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('XNAServerRelease'))">
++  <OutputType>Exe</OutputType>
++    <DefineConstants>DEBUG;TRACE;SERVER;XNA</DefineConstants>
++    <ApplicationIcon>IconXNA.ico</ApplicationIcon>
++    <OutputName>$(OutputName)Server</OutputName>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('XNAServerDebug'))">
++    <Optimize>false</Optimize>
++    <PlatformTarget>x86</PlatformTarget>
++    <DefineConstants>TRACE;DEBUG;SERVER;XNA</DefineConstants>
++    <OutputName>$(OutputName)Debug</OutputName>
++    <ApplicationIcon>IconXNA.ico</ApplicationIcon>
++    <OutputType>Exe</OutputType>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('FNAServerDebug'))">
 +    <Optimize>false</Optimize>
 +    <PlatformTarget>AnyCPU</PlatformTarget>
 +    <DefineConstants>TRACE;DEBUG;DSERVER;FNA</DefineConstants>
@@ -97,7 +107,7 @@
 +    <DefineConstants>TRACE;CLIENT;FNA</DefineConstants>
 +    <OutputName>$(OutputName)Release</OutputName>
 +    <ApplicationIcon>IconFNA.ico</ApplicationIcon>
-+    <OutputType>WinExe</OutputType>
++    <OutputType>Exe</OutputType>
    </PropertyGroup>
    <PropertyGroup>
      <PdbFile>bin\$(OutputName)</PdbFile>

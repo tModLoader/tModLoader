@@ -1,14 +1,16 @@
 --- src/tModLoader/Properties/launchSettings.json
 +++ src/64bit/Properties/launchSettings.json
-@@ -1,9 +_,8 @@
+@@ -1,9 +_,9 @@
  {
    "profiles": {
      "Terraria": {
 -      "commandName": "Executable",
 -      "executablePath": "$(tModLoaderSteamPath)/$(OutputName).exe",
 -      "workingDirectory": "$(tModLoaderSteamPath)"
+-    }
 +      "commandName": "Project",
-+      "workingDirectory": "D:\\SteamLibrary\\steamapps\\common\\tModLoader"
-     }
++      "workingDirectory": "D:\\SteamLibrary\\steamapps\\common\\tModLoader",
++					 "commandLineArgs": "-console"
++				}
    }
  }

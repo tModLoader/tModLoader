@@ -1,6 +1,14 @@
 --- src/tModLoader/Terraria/Program.cs
 +++ src/64bit/Terraria/Program.cs
-@@ -20,10 +_,12 @@
+@@ -11,6 +_,7 @@
+ using System.Reflection;
+ using System.Runtime.CompilerServices;
+ using System.Runtime.ExceptionServices;
++using System.Runtime.InteropServices;
+ using System.Text;
+ using System.Threading;
+ 
+@@ -20,17 +_,18 @@
  using Terraria.Initializers;
  using Terraria.Localization;
  using Terraria.ModLoader;
@@ -13,6 +21,13 @@
  namespace Terraria
  {
  	public static class Program
+ 	{
+ #if CLIENT
+ 		public const bool IsServer = false;
+-
+ #else
+ 		public const bool IsServer = true;
+ #endif
 @@ -104,7 +_,7 @@
  
  		private static void ForceJITOnMethod(MethodInfo method)
@@ -31,7 +46,7 @@
  			return type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
  #else
  			return type.GetMethods();
-@@ -204,89 +_,137 @@
+@@ -204,89 +_,147 @@
  		// some versions of the .NET runtime will run the Main static initilizer as soon as LaunchGame is invoked
  		// causing Main.SavePath to be initialized before LaunchParameters is parsed.
  		// moving arg parsing to a separate function avoids this
@@ -158,6 +173,16 @@
 -					Main.OnEnginePreload += StartForceLoad;
 +						Main.OnEnginePreload += StartForceLoad;
  #if CLIENT
++						[DllImport("kernel32.dll")]
++						static extern IntPtr GetConsoleWindow();
++				
++						// 0 to hide, 5 to show
++						[DllImport("user32.dll")]
++						static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
++
++						if (!LaunchParameters.ContainsKey("-console"))
++							ShowWindow(GetConsoleWindow(), 0);
++
 -					main.Run();
 +						main.Run();
  #else
