@@ -860,8 +860,7 @@
  			}
  
  			for (int n = 0; n < 1001; n++) {
-@@ -8322,8 +_,8 @@
- 			GameViewMatrix = new SpriteViewMatrix(base.GraphicsDevice);
+@@ -8323,7 +_,7 @@
  			BackgroundViewMatrix = new SpriteViewMatrix(base.GraphicsDevice);
  			audioSystem = new LegacyAudioSystem();
  			AssetSourceController = new AssetSourceController(Assets, new IContentSource[1] {
@@ -3113,26 +3112,25 @@
  					menuMode = 0;
  					netMode = 0;
  				}
-@@ -36567,14 +_,20 @@
+@@ -36567,14 +_,18 @@
  					menuMode = 12;
  				}
  
-+				if(Steam.IsSteamApp)
++				if (Steam.IsSteamApp)
 +					goto SkipAchievements;
 +
  				num11++;
  				array9[num11] = Lang.menu[131].Value;
-+				// A comment to join two patches into one
++				//Comment to join two patches.
  				if (selectedMenu == num11) {
  					SoundEngine.PlaySound(10);
  					menuMode = 888;
  					MenuUI.SetState(AchievementsMenu);
  				}
- 
-+				SkipAchievements:
-+
+-
++	SkipAchievements:
  				num11++;
-                if (SocialAPI.Workshop != null) {
+ 				if (SocialAPI.Workshop != null) {
  					array9[num11] = Language.GetText("UI.Workshop").Value;
 @@ -36595,6 +_,7 @@
  				}
