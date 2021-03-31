@@ -1,0 +1,53 @@
+Projectile.cs:
+@@ -11780,17 +11929,21 @@
+ 					overrideHeight = 4;
+ 				}
+ 
++				if (!ProjectileLoader.TileCollideStyle(this, ref overrideWidth, ref overrideHeight, ref flag6)) {
++				}
+-				if (((type != 440 && type != 449 && type != 606) || ai[1] != 1f) && (type != 466 || localAI[1] != 1f) && (type != 580 || !(localAI[1] > 0f)) && (type != 640 || !(localAI[1] > 0f))) {
++				else if ((type != 440 && type != 449 && type != 606 || ai[1] != 1f) && (type != 466 || localAI[1] != 1f) && (type != 580 || localAI[1] <= 0f) && (type != 640 || localAI[1] <= 0f)) {
+ 					if (aiStyle == 10) {
+ 						if (type >= 736 && type <= 738)
+ 							base.velocity = Collision.TileCollision(base.position, base.velocity, base.width, base.height, flag6, flag6);
+ 						else if (type == 42 || type == 65 || type == 68 || type == 354 || (type == 31 && ai[0] == 2f))
++							//patch file: flag6
+ 							base.velocity = Collision.TileCollision(base.position, base.velocity, base.width, base.height, flag6, flag6);
+ 						else
+ 							base.velocity = Collision.TileCollision(base.position, base.velocity, base.width, base.height, flag6, flag6);
+ 					}
+ 					else {
+ 						Vector2 vector2 = base.position;
++						//patch file: overrideWidth, overrideHeight
+ 						int num = (overrideWidth != -1) ? overrideWidth : base.width;
+ 						int num2 = (overrideHeight != -1) ? overrideHeight : base.height;
+ 						if (overrideHeight != -1 || overrideWidth != -1)
+						
+//WorldGen.cs:
+
+@@ -2370,10 +2397,21 @@
+ 
+ 		public static void SaveAndQuit(Action callback = null) {
+ 			SoundEngine.PlaySound(11);
++			SystemHooks.PreSaveAndQuit();
+ 			ThreadPool.QueueUserWorkItem(SaveAndQuitCallBack, callback);
+ 		}
+ 
+ 		public static void playWorldCallBack(object threadContext) {
+
++			try {
++				Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave);
++				do_playWorldCallBack(threadContext);
++			}
++			catch (Exception e) {
++				Logging.Terraria.Error(Language.GetTextValue("tModLoader.PlayerLoadWorldFail"), e);
++			}
++		}
++
++		public static void do_playWorldCallBack(object threadContext) {
+ 			if (Main.rand == null)
+ 				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
+
+
+
+ 

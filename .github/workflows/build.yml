@@ -2,10 +2,14 @@ name: Build tModLoader
 
 # Controls when the action will run. 
 on:
+  # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4]
+    branches: [1.4, 1.4_mergedtesting]
+  pull_request_target:
+    types: [labeled]
+    branches: [1.4, 1.4_mergedtesting]
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  # workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -13,22 +17,73 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: windows-latest
+    # Make sure not to run this job on other labels
+    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Safe to Test')
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Check out base branch
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Check out pull request code to separate folder
+        uses: actions/checkout@v2
+        if: github.event_name == 'pull_request_target'
+        with:
+          ref: ${{github.event.pull_request.head.ref}}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+          path: pullrequest
+          persist-credentials: false
+        # TODO: build doesn't have right branch I assume
+
+      - name: Copy over pull request patches folder
+        if: github.event_name == 'pull_request_target'
+        shell: bash
+        run: |
+          ls -l
+          cd pullrequest
+          ls -l
+          cd ..
+          rm -r patches
+          cp -fR pullrequest/patches patches
+
+      # A cache allows the build to skip the decompile step
+      - name: Retrieve encrypted decompiled zip cache
+        id: cache-decompiled
+        uses: actions/cache@v2
+        with:
+          path: decompiled.zip.gpg
+          # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
+          key: 142-A
+
+      - name: Restore decompiled folder from cache
+        if: steps.cache-decompiled.outputs.cache-hit == 'true'
+        shell: bash
+        run: |
+          echo Restoring decompiled folder from cache
+          ls -l
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output decompiled.zip decompiled.zip.gpg
+          ls -l
+          unzip -o decompiled.zip -d src
+          cd src
+          ls -l
+          cd ..
+        env:
+          SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
 
       # Runs a set of commands using the runners shell
       - name: Build script
+        if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Safe to Test')
         shell: bash
         run: |
           echo Downloading Terraraia Server zip
-          curl -s -L https://terraria.org/system/dedicated_servers/archives/000/000/042/original/terraria-server-1412.zip -o terrariaserver.zip
+          curl -s -L https://terraria.org/system/dedicated_servers/archives/000/000/043/original/terraria-server-142.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
           echo Extracting Setup Secret Assets
-          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1412/Windows/Terraria.exe ./setup/SecretAssets/SetupAsset1.gpg
-          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1412/Windows/SteelSeriesEngineWrapper.dll ./setup/SecretAssets/SetupAsset2.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./142/Windows/Terraria.exe ./setup/SecretAssets/SetupAsset1.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./142/Windows/SteelSeriesEngineWrapper.dll ./setup/SecretAssets/SetupAsset2.gpg
           echo ls -l is:
           ls -l
           echo Installing XNA
@@ -60,13 +115,18 @@ jobs:
           mv ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderDebug.pdb  ./artifacts/Windows/tModLoaderDebug.pdb
           mv ./src/tModLoader/Terraria/bin/WindowsServerDebug/net45/Terraria.exe  ./artifacts/Windows/tModLoaderServerDebug.exe
           mv ./src/tModLoader/Terraria/bin/WindowsServerDebug/net45/tModLoaderServerDebug.pdb  ./artifacts/Windows/tModLoaderServerDebug.pdb
-          mv ./1412/Windows/ReLogic.Native.dll ./artifacts/Windows/ReLogic.Native.dll
+          mv ./142/Windows/ReLogic.Native.dll ./artifacts/Windows/ReLogic.Native.dll
           mv ./solutions/ReleaseExtras/Content/ ./artifacts/Windows/
-          mv ./1412/Windows/ModCompile/ ./artifacts/Windows/
+          mv ./142/Windows/ModCompile/ ./artifacts/Windows/
           mv ./src/tModLoader/Terraria/bin/MacRelease/net45/Terraria.exe ./artifacts/Windows/ModCompile/tModLoader.FNA.exe
           mv ./src/tModLoader/Terraria/bin/MacRelease/net45/FNA.dll ./artifacts/Windows/ModCompile/FNA.dll
+          echo Creating decompiled cache zip file
+          7z a decompiled.zip ./src/decompiled/
+          gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
+          ls -l
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           
       - uses: actions/upload-artifact@v2
         with:
@@ -90,9 +150,21 @@ jobs:
           path: |
             ./artifacts/Mods/ExampleMod.tmod
         
-      - uses: sarisia/actions-status-discord@v1
-        if: always()
+      - name: Post push report to 1-4-beta-builds on Discord
+        uses: sarisia/actions-status-discord@v1
+        if: always() && github.event_name == 'push'
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
           description: |
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view.
+
+      - name: Post pull request report to 1-4-beta-builds on Discord
+        uses: sarisia/actions-status-discord@v1
+        if: always() && github.event_name == 'pull_request_target'
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
+          color: ${{ fromJSON('{"success":1600299, "failure":8394270, "cancelled":10254856}')[job.status] }}
+          description: |
+            Pull Request: ${{github.event.pull_request.head.ref}} from ${{github.event.pull_request.head.repo.full_name}}
+            Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
+            Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
