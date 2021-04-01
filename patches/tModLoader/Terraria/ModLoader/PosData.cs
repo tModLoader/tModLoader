@@ -13,7 +13,16 @@ namespace Terraria.ModLoader
 			internal bool compressEqualValues;
 			internal bool insertDefaultEntries;
 
+
+			/// <summary>
+			/// Safely adds the provided value to the lookups at the given (x,y) position.
+			/// </summary>
 			public void SafeAdd(int x, int y, T value) => SafeAdd(PosData.CoordsToPos(x, y), value);
+
+			/// <summary>
+			/// Safely adds the provided value to the lookups at the given (pos) position.
+			/// To get the pos, <see cref="PosData.CoordsToPos(int, int)"/>
+			/// </summary>
 			public virtual void SafeAdd(int pos, T Value) { }
 
 			internal void Add(int pos, T value) {
@@ -31,6 +40,10 @@ namespace Terraria.ModLoader
 				list.Add(last = new PosData<T>(pos, value));
 			}
 
+			/// <summary>
+			/// Constructs the lookups array based on items added to the builders in <see cref="PosData{T}"/>.
+			/// Returns <see cref="PosData{T}"/>[] for lookups
+			/// </summary>
 			public virtual PosData<T>[] Build() => list.ToArray();
 		}
 
@@ -64,7 +77,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Efficient inserter for <see cref="PosData{T}"/>[] merging on an existing lookup array.
+		/// Efficient Merger for <see cref="PosData{T}"/>[] lookups merging on an existing lookup array.
 		/// Must add new elements in ascending pos order.
 		/// </summary>
 		public class OrderedSparseLookupMerger : OrderedSparseInserter
@@ -203,6 +216,10 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public static int CoordsToPos(int x, int y) => x * Main.maxTilesY + y;
 
+		/// <summary>
+		/// Searches for the value i for which <code>posMap[i].pos &lt; CoordsToPos(x, y) &lt; posMap[i + 1].pos</code>
+		/// </summary>
+		/// <returns>The index of the nearest entry with <see cref="PosData{T}.pos"/> &lt;= CoordsToPos(x, y) or -1 if CoordsToPos(x, y) &lt; <paramref name="posMap"/>[0].pos</returns>
 		public static int FindIndex<T>(this PosData<T>[] posMap, int x, int y) => posMap.FindIndex(CoordsToPos(x, y));
 
 		/// <summary>
@@ -225,9 +242,8 @@ namespace Terraria.ModLoader
 			return minimum;
 		}
 
-
 		/// <summary>
-		/// Raw lookup function. Always returns the raw entry in the position map. Use if default values returned are a concern, as negative position returned are ~'null'
+		/// Raw lookup function. Always returns the raw entry in the position map, or <see cref="PosData{T}.nullPosData"/> if it wasn't found.
 		/// </summary>
 		public static PosData<T> Find<T>(this PosData<T>[] posMap, int pos) => posMap.FindIndex(pos) switch {
 			int i => i < 0 ? PosData<T>.nullPosData : posMap[i]

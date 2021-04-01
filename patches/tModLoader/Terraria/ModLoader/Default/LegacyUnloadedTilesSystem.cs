@@ -64,7 +64,7 @@ namespace Terraria.ModLoader.Default
 							ConvertTile(tile, legacyEntries, out type);
 						}
 
-						builder.Add(x, y, type);
+						builder.SafeAdd(x, y, type);
 					}
 
 				}
