@@ -5,10 +5,10 @@
  		public static readonly string ModSourcePath = Path.Combine(Program.SavePath, "Mod Sources");
  
 +		// Use ModCompile64 instead of ModCompile
- 		internal static readonly string modCompileDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModCompile64");
+ 		internal static readonly string modCompileDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModCompile");
  		internal static readonly string modCompileVersionPath = Path.Combine(modCompileDir, "version");
  
-@@ -224,6 +_,7 @@
+@@ -216,6 +_,7 @@
  			if (!Directory.Exists(modReferencesPath))
  				Directory.CreateDirectory(modReferencesPath);
  
@@ -16,7 +16,7 @@
  			var tMLPath = Assembly.GetExecutingAssembly().Location;
  			var touchStamp = $"{tMLPath} @ {File.GetLastWriteTime(tMLPath)}";
  			var touchFile = Path.Combine(modReferencesPath, "touch");
-@@ -246,16 +_,16 @@
+@@ -238,16 +_,16 @@
  
  			var tMLDir = Path.GetDirectoryName(tMLPath);
  #if CLIENT

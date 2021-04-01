@@ -30,20 +30,20 @@ namespace Terraria.ModLoader.Engine
 			if (Platform.IsWindows) {
 				steamAPIPath = "steam_api.dll";
 				steamAPIHash = ToByteArray("7B857C897BC69313E4936DC3DCCE5193");
-				gogHash = ToByteArray("bd38e2c11df154bcecee8ab3191927ab");
-				steamHash = ToByteArray("6ebb2e222126aaae302d34a3a2c82cb9");
+				gogHash = ToByteArray("ff61b96a07894a9e65f880fb9608fb37"); // Don't forget to update CheckExe in CheckGoG
+				steamHash = ToByteArray("4fd8072ca82ded3d9da1be577a478788");
 			}
 			else if (Platform.IsOSX) {
 				steamAPIPath = "osx/libsteam_api.dylib";
 				steamAPIHash = ToByteArray("4EECD26A0CDF89F90D4FF26ECAD37BE0");
-				gogHash = ToByteArray("35aaadbe74ea4568bcc656e47d195224");
-				steamHash = ToByteArray("dc252bb25a6109687f15c3d3b1ae5542");
+				gogHash = ToByteArray("181c586d0fe64156adb0ecd4b9fabf9d");
+				steamHash = ToByteArray("12c8d2ac5af6c8505bd1a9339dc75231");
 			}
 			else if (Platform.IsLinux) {
 				steamAPIPath = "lib/libsteam_api.so";
 				steamAPIHash = ToByteArray("7B74FD4C207D22DB91B4B649A44467F6");
-				gogHash = ToByteArray("2a46360324905fbd26bbc9ae9f68d25d");
-				steamHash = ToByteArray("89a6dc94a2e14f5dcd92f7f54476c062");
+				gogHash = ToByteArray("4a051352dd6ecc323c5a0a15e5b598fb");
+				steamHash = ToByteArray("debcc318ca4e14295e3ac22e380e289b");
 			}
 			else {
 				string message = Language.GetTextValue("tModLoader.UnknownVerificationOS");
@@ -122,7 +122,7 @@ namespace Terraria.ModLoader.Engine
 			IsGoG = true;
 
 			const string DefaultExe = "Terraria.exe";
-			string CheckExe = $"Terraria_1.4.1.2.exe"; // {Main.versionNumber}
+			string CheckExe = $"Terraria_1.4.2.1.exe"; // This should match the hashes. {Main.versionNumber}
 			string vanillaPath = File.Exists(CheckExe) ? CheckExe : DefaultExe;
 
 			// If .exe not present, check Terraria directory (Side-by-Side Manual Install)
@@ -147,13 +147,13 @@ namespace Terraria.ModLoader.Engine
 #endif
 				string defaultExe = Path.Combine(vanillaPath, DefaultExe);
 				string checkExe = Path.Combine(vanillaPath, CheckExe);
-				vanillaPath = File.Exists(defaultExe) ? defaultExe : checkExe;
+				vanillaPath = File.Exists(checkExe) ? checkExe : defaultExe;
 			}
 			// If .exe not present check parent directory (Nested Manual Install)
 			if (!File.Exists(vanillaPath)) {
 				string defaultExe = Path.Combine("..", DefaultExe);
 				string checkExe = Path.Combine("..", CheckExe);
-				vanillaPath = File.Exists(defaultExe) ? defaultExe : checkExe;
+				vanillaPath = File.Exists(checkExe) ? checkExe : defaultExe;
 			}
 
 			if (!File.Exists(vanillaPath)) {
@@ -168,6 +168,12 @@ namespace Terraria.ModLoader.Engine
 			if (!HashMatchesFile(vanillaPath, gogHash)) {
 				Exit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaPath), string.Empty);
 				return false;
+			}
+
+			if (Path.GetFileName(vanillaPath) != CheckExe) {
+				string pathToCheckExe = Path.Combine(Path.GetDirectoryName(vanillaPath), CheckExe);
+				Logging.tML.Info($"Backing up {Path.GetFileName(vanillaPath)} to {CheckExe}");
+				File.Copy(vanillaPath, pathToCheckExe);
 			}
 
 			Logging.tML.Info("GOG or manual installation OK.");
