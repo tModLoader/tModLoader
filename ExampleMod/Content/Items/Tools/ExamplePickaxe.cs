@@ -15,20 +15,20 @@ namespace ExampleMod.Content.Items.Tools
 		}
 
 		public override void SetDefaults() {
-			item.damage = 20;
-			item.DamageType = DamageClass.Melee;
-			item.width = 40;
-			item.height = 40;
-			item.useTime = 10;
-			item.useAnimation = 10;
-			item.useStyle = ItemUseStyleID.Swing;
-			item.knockBack = 6;
-			item.value = Item.buyPrice(gold: 1); // Buy this item for one gold - change gold to any coin and change the value to any number <= 100
-			item.rare = ItemRarityID.Green;
-			item.UseSound = SoundID.Item1;
-			item.autoReuse = true;
+			Item.damage = 20;
+			Item.DamageType = DamageClass.Melee;
+			Item.width = 40;
+			Item.height = 40;
+			Item.useTime = 10;
+			Item.useAnimation = 10;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.knockBack = 6;
+			Item.value = Item.buyPrice(gold: 1); // Buy this item for one gold - change gold to any coin and change the value to any number <= 100
+			Item.rare = ItemRarityID.Green;
+			Item.UseSound = SoundID.Item1;
+			Item.autoReuse = true;
 
-			item.pick = 220; // How strong the pickaxe is, see https://terraria.gamepedia.com/Pickaxe_power for a list of common values
+			Item.pick = 220; // How strong the pickaxe is, see https://terraria.gamepedia.com/Pickaxe_power for a list of common values
 		}
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {

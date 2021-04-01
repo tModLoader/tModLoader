@@ -19,8 +19,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.IsValidSpawnPoint[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 
-			dustType = ModContent.DustType<Sparkle>();
-			adjTiles = new int[] { TileID.Beds };
+			DustType = ModContent.DustType<Sparkle>();
+			AdjTiles = new int[] { TileID.Beds };
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style4x2); //this style already takes care of direction for us

@@ -160,7 +160,7 @@ namespace Terraria.ModLoader.UI
 		private void PublishMod(UIMouseEvent evt, UIElement listeningElement) {
 			if (ModLoader.modBrowserPassphrase == "") {
 				Main.menuMode = Interface.enterPassphraseMenuID;
-				Interface.enterPassphraseMenu.SetGotoMenu(Interface.modSourcesID);
+				Interface.enterPassphraseMenu.SetGotoMenu(Interface.modSourcesID, Interface.modSourcesID);
 				return;
 			}
 			SoundEngine.PlaySound(10);
@@ -228,20 +228,20 @@ namespace Terraria.ModLoader.UI
 			}
 			//if (bp.beta)
 			//	throw new WebException(Language.GetTextValue("tModLoader.BetaModCantPublishError"));
-			if (bp.buildVersion != modFile.tModLoaderVersion)
+			if (bp.buildVersion != modFile.TModLoaderVersion)
 				throw new WebException(Language.GetTextValue("OutdatedModCantPublishError.BetaModCantPublishError"));
 
 			var values = new NameValueCollection
 			{
 					{ "displayname", bp.displayName },
 					{ "displaynameclean", string.Join("", ChatManager.ParseMessage(bp.displayName, Color.White).Where(x=> x.GetType() == typeof(TextSnippet)).Select(x => x.Text)) },
-					{ "name", modFile.name },
+					{ "name", modFile.Name },
 					{ "version", "v"+bp.version },
 					{ "author", bp.author },
 					{ "homepage", bp.homepage },
 					{ "description", bp.description },
 					{ "steamid64", ModLoader.SteamID64 },
-					{ "modloaderversion", "tModLoader v"+modFile.tModLoaderVersion },
+					{ "modloaderversion", "tModLoader v"+modFile.TModLoaderVersion },
 					{ "passphrase", ModLoader.modBrowserPassphrase },
 					{ "modreferences", String.Join(", ", bp.modReferences.Select(x => x.mod)) },
 					{ "modside", bp.side.ToFriendlyString() },
@@ -254,7 +254,7 @@ namespace Terraria.ModLoader.UI
 			string url = "http://javid.ddns.net/tModLoader/publishmod.php";
 			using (PatientWebClient client = new PatientWebClient()) {
 				ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => true;
-				Interface.progress.Show(displayText: $"Uploading: {modFile.name}", gotoMenu: Interface.modSourcesID, cancel: client.CancelAsync);
+				Interface.progress.Show(displayText: $"Uploading: {modFile.Name}", gotoMenu: Interface.modSourcesID, cancel: client.CancelAsync);
 
 				var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", System.Globalization.NumberFormatInfo.InvariantInfo);
 				client.Headers["Content-Type"] = "multipart/form-data; boundary=" + boundary;
@@ -286,7 +286,7 @@ namespace Terraria.ModLoader.UI
 				return;
 			}
 
-			if (ModLoader.TryGetMod(theTModFile.name, out var mod))
+			if (ModLoader.TryGetMod(theTModFile.Name, out var mod))
 				mod.Close();
 
 			var result = e.Result;

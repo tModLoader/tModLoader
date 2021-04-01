@@ -30,7 +30,7 @@
  		public bool isAShopItem;
  		public short hairDye = -1;
  		public byte paint;
-@@ -147,10 +_,22 @@
+@@ -147,10 +_,42 @@
  		public int netID;
  		public int crit;
  		public byte prefix;
@@ -39,32 +39,56 @@
 -		public bool ranged;
 -		public bool summon;
 +		internal bool melee {
-+			get => DamageType == DamageClass.Melee;
-+			set => DamageType = value ? DamageClass.Melee : (melee ? null : DamageType);
++			get => CountsAsClass(DamageClass.Melee);
++			set {
++				if (value)
++					DamageType = DamageClass.Melee;
++				else if (DamageType == DamageClass.Melee)
++					DamageType = DamageClass.Generic;
++			}
 +		}
 +		internal bool magic {
-+			get => DamageType == DamageClass.Magic;
-+			set => DamageType = value ? DamageClass.Magic : (magic ? null : DamageType);
++			get => CountsAsClass(DamageClass.Magic);
++			set {
++				if (value)
++					DamageType = DamageClass.Magic;
++				else if (DamageType == DamageClass.Magic)
++					DamageType = DamageClass.Generic;
++			}
 +		}
 +		internal bool ranged {
-+			get => DamageType == DamageClass.Ranged;
-+			set => DamageType = value ? DamageClass.Ranged : (ranged ? null : DamageType);
++			get => CountsAsClass(DamageClass.Ranged);
++			set {
++				if (value)
++					DamageType = DamageClass.Ranged;
++				else if (DamageType == DamageClass.Ranged)
++					DamageType = DamageClass.Generic;
++			}
 +		}
 +		internal bool summon {
-+			get => DamageType == DamageClass.Summon;
-+			set => DamageType = value ? DamageClass.Summon : (summon ? null : DamageType);
++			get => CountsAsClass(DamageClass.Summon);
++			set {
++				if (value)
++					DamageType = DamageClass.Summon;
++				else if (DamageType == DamageClass.Summon)
++					DamageType = DamageClass.Generic;
++			}
 +		}
  		public bool sentry;
  		public int reuseDelay;
  		public bool newAndShiny;
-@@ -158,6 +_,12 @@
+@@ -158,6 +_,16 @@
  		public const int WALL_PLACEMENT_USETIME = 7;
  		public static int numberOfNewItems = 0;
  
 +		public Item() { } // EntryFilter complains if item doesn't have a parameterless constructor (even when the parameter is optional).
 +
-+		public Item(int setDefaultsToType) {
++		public Item(int setDefaultsToType, int stack = 1) {
 +			SetDefaults(setDefaultsToType);
++
++			if (setDefaultsToType > 0) {
++				this.stack = stack;
++			}
 +		}
 +
  		public string Name => _nameOverride ?? Lang.GetItemNameValue(type);
@@ -126,7 +150,7 @@
  						if (num9 == 39)
  							num = 81;
 +
-+						ModPrefix.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon, PrefixCategory.Melee);
++						PrefixLoader.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon, PrefixCategory.Melee);
  					}
 -					else if (type == 162 || type == 5011 || type == 5012 || type == 160 || type == 163 || type == 220 || type == 274 || type == 277 || type == 280 || type == 383 || type == 384 || type == 385 || type == 386 || type == 387 || type == 388 || type == 389 || type == 390 || type == 406 || type == 537 || type == 550 || type == 579 || type == 756 || type == 759 || type == 801 || type == 802 || type == 1186 || type == 1189 || type == 1190 || type == 1193 || type == 1196 || type == 1197 || type == 1200 || type == 1203 || type == 1204 || type == 1228 || type == 1231 || type == 1232 || type == 1259 || type == 1262 || type == 1297 || type == 1314 || type == 1325 || type == 1947 || type == 2332 || type == 2331 || type == 2342 || type == 2424 || type == 2611 || type == 2798 || type == 3012 || type == 3473 || type == 3098 || type == 3368 || type == 3835 || type == 3836 || type == 3858 || type == 4061 || type == 4144 || type == 4272 || type == 2774 || type == 2773 || type == 2779 || type == 2778 || type == 2784 || type == 2783 || type == 3464 || type == 3463 || type == 4788 || type == 4789 || type == 4790) {
 +					else if (type == 162 || type == 5011 || type == 5012 || type == 160 || type == 163 || type == 220 || type == 274 || type == 277 || type == 280 || type == 383 || type == 384 || type == 385 || type == 386 || type == 387 || type == 388 || type == 389 || type == 390 || type == 406 || type == 537 || type == 550 || type == 579 || type == 756 || type == 759 || type == 801 || type == 802 || type == 1186 || type == 1189 || type == 1190 || type == 1193 || type == 1196 || type == 1197 || type == 1200 || type == 1203 || type == 1204 || type == 1228 || type == 1231 || type == 1232 || type == 1259 || type == 1262 || type == 1297 || type == 1314 || type == 1325 || type == 1947 || type == 2332 || type == 2331 || type == 2342 || type == 2424 || type == 2611 || type == 2798 || type == 3012 || type == 3473 || type == 3098 || type == 3368 || type == 3835 || type == 3836 || type == 3858 || type == 4061 || type == 4144 || type == 4272 || type == 2774 || type == 2773 || type == 2779 || type == 2778 || type == 2784 || type == 2783 || type == 3464 || type == 3463 || ItemLoader.WeaponPrefix(this)) {
@@ -141,7 +165,7 @@
  						if (num10 == 13)
  							num = 61;
 +
-+						ModPrefix.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon);
++						PrefixLoader.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon);
  					}
 -					else if (type == 39 || type == 44 || type == 95 || type == 96 || type == 98 || type == 99 || type == 120 || type == 164 || type == 197 || type == 219 || type == 266 || type == 281 || type == 434 || type == 435 || type == 436 || type == 481 || type == 506 || type == 533 || type == 534 || type == 578 || type == 655 || type == 658 || type == 661 || type == 679 || type == 682 || type == 725 || type == 758 || type == 759 || type == 760 || type == 796 || type == 800 || type == 905 || type == 923 || type == 964 || type == 986 || type == 1156 || type == 1187 || type == 1194 || type == 1201 || type == 1229 || type == 1254 || type == 1255 || type == 1258 || type == 1265 || type == 1319 || type == 1553 || type == 1782 || type == 1784 || type == 1835 || type == 1870 || type == 1910 || type == 1929 || type == 1946 || type == 2223 || type == 2269 || type == 2270 || type == 2624 || type == 2515 || type == 2747 || type == 2796 || type == 2797 || type == 3052 || type == 2888 || type == 3019 || type == 3029 || type == 3007 || type == 3008 || type == 3210 || type == 3107 || type == 3475 || type == 3540 || type == 3854 || type == 3859 || type == 3821 || type == 3930 || type == 3480 || type == 3486 || type == 3492 || type == 3498 || type == 3504 || type == 3510 || type == 3516 || type == 3350 || type == 3546 || type == 3788 || type == 4058 || type == 4060 || type == 4381 || type == 4703 || type == 4953) {
 +					else if (type == 39 || type == 44 || type == 95 || type == 96 || type == 98 || type == 99 || type == 120 || type == 164 || type == 197 || type == 219 || type == 266 || type == 281 || type == 434 || type == 435 || type == 436 || type == 481 || type == 506 || type == 533 || type == 534 || type == 578 || type == 655 || type == 658 || type == 661 || type == 679 || type == 682 || type == 725 || type == 758 || type == 759 || type == 760 || type == 796 || type == 800 || type == 905 || type == 923 || type == 964 || type == 986 || type == 1156 || type == 1187 || type == 1194 || type == 1201 || type == 1229 || type == 1254 || type == 1255 || type == 1258 || type == 1265 || type == 1319 || type == 1553 || type == 1782 || type == 1784 || type == 1835 || type == 1870 || type == 1910 || type == 1929 || type == 1946 || type == 2223 || type == 2269 || type == 2270 || type == 2624 || type == 2515 || type == 2747 || type == 2796 || type == 2797 || type == 3052 || type == 2888 || type == 3019 || type == 3029 || type == 3007 || type == 3008 || type == 3210 || type == 3107 || type == 3475 || type == 3540 || type == 3854 || type == 3859 || type == 3821 || type == 3930 || type == 3480 || type == 3486 || type == 3492 || type == 3498 || type == 3504 || type == 3510 || type == 3516 || type == 3350 || type == 3546 || type == 3788 || type == 4058 || type == 4060 || type == 4381 || type == 4703 || type == 4953 || ItemLoader.RangedPrefix(this)) {
@@ -156,7 +180,7 @@
  						if (num11 == 34)
  							num = 82;
 +
-+						ModPrefix.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon, PrefixCategory.Ranged);
++						PrefixLoader.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon, PrefixCategory.Ranged);
  					}
 -					else if (type == 64 || type == 112 || type == 113 || type == 127 || type == 157 || type == 165 || type == 218 || type == 272 || type == 494 || type == 495 || type == 496 || type == 514 || type == 517 || type == 518 || type == 519 || type == 683 || type == 726 || type == 739 || type == 740 || type == 741 || type == 742 || type == 743 || type == 744 || type == 788 || type == 1121 || type == 1155 || type == 1157 || type == 1178 || type == 1244 || type == 1256 || type == 1260 || type == 1264 || type == 1266 || type == 1295 || type == 1296 || type == 1308 || type == 1309 || type == 1313 || type == 1336 || type == 1444 || type == 1445 || type == 1446 || type == 1572 || type == 1801 || type == 1802 || type == 1930 || type == 1931 || type == 2188 || type == 2622 || type == 2621 || type == 2584 || type == 2551 || type == 2366 || type == 2535 || type == 2365 || type == 2364 || type == 2623 || type == 2750 || type == 2795 || type == 3053 || type == 3051 || type == 3209 || type == 3014 || type == 3105 || type == 2882 || type == 3269 || type == 3006 || type == 3377 || type == 3069 || type == 2749 || type == 3249 || type == 3476 || type == 3474 || type == 3531 || type == 3541 || type == 3542 || type == 3569 || type == 3570 || type == 3571 || type == 3779 || type == 3787 || type == 3531 || type == 3852 || type == 3870 || type == 4269 || type == 4273 || type == 4281 || type == 4347 || type == 4348 || type == 4270 || type == 4758 || type == 4715 || type == 4952 || type == 4607 || type == 5005 || type == 5065 || type == 5069 || type == 3824 || type == 3818 || type == 3829 || type == 3832 || type == 3825 || type == 3819 || type == 3830 || type == 3833 || type == 3826 || type == 3820 || type == 3831 || type == 3834 || type == 4062) {
 +					else if (type == 64 || type == 112 || type == 113 || type == 127 || type == 157 || type == 165 || type == 218 || type == 272 || type == 494 || type == 495 || type == 496 || type == 514 || type == 517 || type == 518 || type == 519 || type == 683 || type == 726 || type == 739 || type == 740 || type == 741 || type == 742 || type == 743 || type == 744 || type == 788 || type == 1121 || type == 1155 || type == 1157 || type == 1178 || type == 1244 || type == 1256 || type == 1260 || type == 1264 || type == 1266 || type == 1295 || type == 1296 || type == 1308 || type == 1309 || type == 1313 || type == 1336 || type == 1444 || type == 1445 || type == 1446 || type == 1572 || type == 1801 || type == 1802 || type == 1930 || type == 1931 || type == 2188 || type == 2622 || type == 2621 || type == 2584 || type == 2551 || type == 2366 || type == 2535 || type == 2365 || type == 2364 || type == 2623 || type == 2750 || type == 2795 || type == 3053 || type == 3051 || type == 3209 || type == 3014 || type == 3105 || type == 2882 || type == 3269 || type == 3006 || type == 3377 || type == 3069 || type == 2749 || type == 3249 || type == 3476 || type == 3474 || type == 3531 || type == 3541 || type == 3542 || type == 3569 || type == 3570 || type == 3571 || type == 3779 || type == 3787 || type == 3531 || type == 3852 || type == 3870 || type == 4269 || type == 4273 || type == 4281 || type == 4347 || type == 4348 || type == 4270 || type == 4758 || type == 4715 || type == 4952 || type == 4607 || type == 5005 || type == 5065 || type == 5069 || type == 3824 || type == 3818 || type == 3829 || type == 3832 || type == 3825 || type == 3819 || type == 3830 || type == 3833 || type == 3826 || type == 3820 || type == 3831 || type == 3834 || type == 4062 || ItemLoader.MagicPrefix(this)) {
@@ -171,7 +195,7 @@
  						if (num12 == 35)
  							num = 83;
 +
-+						ModPrefix.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon, PrefixCategory.Magic);
++						PrefixLoader.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon, PrefixCategory.Magic);
  					}
 -					else if (type == 55 || type == 119 || type == 191 || type == 284 || type == 670 || type == 1122 || type == 1513 || type == 1569 || type == 1571 || type == 1825 || type == 1918 || type == 3054 || type == 3262 || (type >= 3278 && type <= 3292) || (type >= 3315 && type <= 3317) || type == 3389 || type == 3030 || type == 3543 || type == 4764 || type == 4818 || type == 4760) {
 +					else if (type == 55 || type == 119 || type == 191 || type == 284 || type == 670 || type == 1122 || type == 1513 || type == 1569 || type == 1571 || type == 1825 || type == 1918 || type == 3054 || type == 3262 || (type >= 3278 && type <= 3292) || (type >= 3315 && type <= 3317) || type == 3389 || type == 3030 || type == 3543 || type == 4764 || type == 4818 || type == 4760 || ItemLoader.WeaponPrefix(this)) {
@@ -186,14 +210,14 @@
  						if (num13 == 14)
  							num = 84;
 +
-+						ModPrefix.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon);
++						PrefixLoader.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon);
  					}
  					else {
  						if (!IsAPrefixableAccessory())
  							return false;
  
  						num = unifiedRandom.Next(62, 81);
-+						ModPrefix.Roll(this, ref num, 81 - 62, PrefixCategory.Accessory);
++						PrefixLoader.Roll(this, ref num, 81 - 62, PrefixCategory.Accessory);
  					}
  				}
  
@@ -211,7 +235,7 @@
  						break;
  				}
 +				if (num >= PrefixID.Count)
-+					ModPrefix.GetPrefix((byte)num)?.SetStats(ref num2, ref num3, ref num4, ref num5, ref num6, ref num7, ref num8);
++					PrefixLoader.GetPrefix((byte)num)?.SetStats(ref num2, ref num3, ref num4, ref num5, ref num6, ref num7, ref num8);
  
  				if (num2 != 1f && Math.Round((float)damage * num2) == (double)damage) {
  					flag = true;
@@ -220,7 +244,7 @@
  				}
  
 +				if (num >= PrefixID.Count)
-+					ModPrefix.GetPrefix((byte)num)?.ValidateItem(this, ref flag);
++					PrefixLoader.GetPrefix((byte)num)?.ValidateItem(this, ref flag);
 +
  				if (pre == -2 && num == 0) {
  					num = -1;
@@ -237,7 +261,7 @@
  			shootSpeed *= num6;
  			crit += num8;
 +			if (num >= PrefixID.Count)
-+				ModPrefix.GetPrefix((byte)num)?.Apply(this);
++				PrefixLoader.GetPrefix((byte)num)?.Apply(this);
 +
  			float num14 = 1f * num2 * (2f - num4) * (2f - num7) * num5 * num3 * num6 * (1f + (float)num8 * 0.02f);
  			if (num == 62 || num == 69 || num == 73 || num == 77)
@@ -247,7 +271,7 @@
  				num14 *= 1.2f;
  
 +			if (num >= PrefixID.Count)
-+				ModPrefix.GetPrefix((byte)num)?.ModifyValue(ref num14);
++				PrefixLoader.GetPrefix((byte)num)?.ModifyValue(ref num14);
 +
 +			int baseRarity = rare;
  			if ((double)num14 >= 1.2)
@@ -298,7 +322,7 @@
 -					return 0;
  			}
 +			if (i >= NPCID.Count) // in NPCtoBanner method
-+				return NPCLoader.GetNPC(i).banner;
++				return NPCLoader.GetNPC(i).Banner;
 +			return 0;
  		}
  
@@ -316,24 +340,211 @@
  		}
  
  		public bool FitsAmmoSlot() {
-@@ -44688,6 +_,16 @@
+@@ -44081,7 +_,7 @@
+ 			return false;
+ 		}
+ 
+-		private void DefaultToSeaShelll() {
++		public void DefaultToSeaShelll() {
+ 			useStyle = 1;
+ 			autoReuse = true;
+ 			useAnimation = 15;
+@@ -44114,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private void DefaultToCapturedCritter(short npcIdToSpawnOnUse) {
++		public void DefaultToCapturedCritter(short npcIdToSpawnOnUse) {
+ 			useStyle = 1;
+ 			autoReuse = true;
+ 			useTurn = true;
+@@ -44128,7 +_,7 @@
+ 			makeNPC = npcIdToSpawnOnUse;
+ 		}
+ 
+-		private void DefaultToStaff(int projType, float pushForwardSpeed, int singleShotTime, int manaPerShot) {
++		public void DefaultToStaff(int projType, float pushForwardSpeed, int singleShotTime, int manaPerShot) {
+ 			DefaultToMagicWeapon(projType, singleShotTime, pushForwardSpeed, hasAutoReuse: true);
+ 			mana = manaPerShot;
+ 			width = 40;
+@@ -44136,7 +_,7 @@
+ 			UseSound = SoundID.Item43;
+ 		}
+ 
+-		private void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime) {
++		public void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime) {
+ 			useStyle = 5;
+ 			useAnimation = 31;
+ 			useTime = 31;
+@@ -44479,13 +_,13 @@
+ 			rare = (int)(num / 4f);
+ 		}
+ 
+-		private void DefaultToMount(int mount) {
++		public void DefaultToMount(int mount) {
+ 			width = 36;
+ 			height = 26;
+ 			mountType = mount;
+ 		}
+ 
+-		private void DefaultToPlacableWall(ushort wallToPlace) {
++		public void DefaultToPlacableWall(ushort wallToPlace) {
+ 			useStyle = 1;
+ 			useTurn = true;
+ 			useAnimation = 15;
+@@ -44498,20 +_,20 @@
+ 			height = 12;
+ 		}
+ 
+-		private void SetWeaponValues(int dmg, float knockback, int bonusCritChance = 0) {
++		public void SetWeaponValues(int dmg, float knockback, int bonusCritChance = 0) {
+ 			damage = dmg;
+ 			knockBack = knockback;
+ 			crit = bonusCritChance;
+ 		}
+ 
+-		private void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
++		public void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
+ 			DefaultToRangedWeapon(1, AmmoID.Arrow, singleShotTime, shotVelocity, hasAutoReuse);
+ 			width = 14;
+ 			height = 30;
+ 			UseSound = SoundID.Item5;
+ 		}
+ 
+-		private void DefaultToMagicWeapon(int projType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
++		public void DefaultToMagicWeapon(int projType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
+ 			autoReuse = hasAutoReuse;
+ 			useStyle = 5;
+ 			useAnimation = singleShotTime;
+@@ -44522,7 +_,7 @@
+ 			magic = true;
+ 		}
+ 
+-		private void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
++		public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
+ 			autoReuse = hasAutoReuse;
+ 			useStyle = 5;
+ 			useAnimation = singleShotTime;
+@@ -44534,7 +_,7 @@
+ 			ranged = true;
+ 		}
+ 
+-		private void DefaultToThrownWeapon(int baseProjType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
++		public void DefaultToThrownWeapon(int baseProjType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
+ 			autoReuse = hasAutoReuse;
+ 			useStyle = 1;
+ 			useAnimation = singleShotTime;
+@@ -44547,7 +_,7 @@
+ 			maxStack = 999;
+ 		}
+ 
+-		private void DefaultToTorch(int tileStyleToPlace, bool allowWaterPlacement = false) {
++		public void DefaultToTorch(int tileStyleToPlace, bool allowWaterPlacement = false) {
+ 			flame = true;
+ 			noWet = !allowWaterPlacement;
+ 			holdStyle = 1;
+@@ -44565,11 +_,11 @@
+ 			useTime = 10;
+ 		}
+ 
+-		private void DefaultToPlacableTile(int tileIDToPlace, int tileStyleToPlace = 0) {
++		public void DefaultToPlacableTile(int tileIDToPlace, int tileStyleToPlace = 0) {
+ 			DefaultToPlacableTile((ushort)tileIDToPlace, tileStyleToPlace);
+ 		}
+ 
+-		private void DefaultToPlacableTile(ushort tileIDToPlace, int tileStyleToPlace = 0) {
++		public void DefaultToPlacableTile(ushort tileIDToPlace, int tileStyleToPlace = 0) {
+ 			createTile = tileIDToPlace;
+ 			placeStyle = tileStyleToPlace;
+ 			width = 14;
+@@ -44583,7 +_,7 @@
+ 			consumable = true;
+ 		}
+ 
+-		private void DefaultToGolfClub(int newwidth, int newheight) {
++		public void DefaultToGolfClub(int newwidth, int newheight) {
+ 			width = newwidth;
+ 			height = newheight;
+ 			channel = true;
+@@ -44596,7 +_,7 @@
+ 			noMelee = true;
+ 		}
+ 
+-		private void DefaultToLawnMower(int newwidth, int newheight) {
++		public void DefaultToLawnMower(int newwidth, int newheight) {
+ 			width = newwidth;
+ 			height = newheight;
+ 			holdStyle = 1;
+@@ -44607,7 +_,7 @@
+ 			autoReuse = true;
+ 		}
+ 
+-		private void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17) {
++		public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17) {
+ 			if (useGulpSound)
+ 				UseSound = SoundID.Item3;
+ 			else
+@@ -44630,7 +_,7 @@
+ 			value = buyPrice(0, 0, 20);
+ 		}
+ 
+-		private void DefaultToHealingPotion(int newwidth, int newheight, int healingAmount, int animationTime = 17) {
++		public void DefaultToHealingPotion(int newwidth, int newheight, int healingAmount, int animationTime = 17) {
+ 			UseSound = SoundID.Item3;
+ 			useStyle = 9;
+ 			useTurn = true;
+@@ -44645,7 +_,7 @@
+ 			healLife = healingAmount;
+ 		}
+ 
+-		private void SetShopValues(ItemRarityColor rarity, int coinValue) {
++		public void SetShopValues(ItemRarityColor rarity, int coinValue) {
+ 			rare = (int)rarity;
+ 			value = coinValue;
+ 		}
+@@ -44656,13 +_,13 @@
+ 			headSlot = helmetArtID;
+ 		}
+ 
+-		private void DefaultToAccessory(int newwidth = 24, int newheight = 24) {
++		public void DefaultToAccessory(int newwidth = 24, int newheight = 24) {
+ 			width = newwidth;
+ 			height = newheight;
+ 			accessory = true;
+ 		}
+ 
+-		private void DefaultToGuitar(int newwidth = 24, int newheight = 24) {
++		public void DefaultToGuitar(int newwidth = 24, int newheight = 24) {
+ 			width = newwidth;
+ 			height = newheight;
+ 			autoReuse = true;
+@@ -44671,7 +_,7 @@
+ 			useAnimation = (useTime = 12);
+ 		}
+ 
+-		private void DefaultToMusicBox(int style) {
++		public void DefaultToMusicBox(int style) {
+ 			useStyle = 1;
+ 			useTurn = true;
+ 			useAnimation = 15;
+@@ -44692,6 +_,16 @@
  			SetDefaults(Type, noMatCheck: false);
  		}
  
 +		public void CloneDefaults(int TypeToClone) {
 +			int originalType = type;
 +			int originalNetID = netID;
-+			ModItem originalModItem = modItem;
++			ModItem originalModItem = ModItem;
 +			SetDefaults(TypeToClone);
 +			type = originalType;
 +			netID = originalNetID;
-+			modItem = originalModItem;
++			ModItem = originalModItem;
 +		}
 +
  		public void SetDefaults(int Type, bool noMatCheck = false) {
  			if (Type < 0) {
  				netDefaults(Type);
-@@ -44700,9 +_,6 @@
+@@ -44704,9 +_,6 @@
  				playerIndexTheItemIsReservedFor = Main.myPlayer;
  
  			ResetStats(Type);
@@ -343,7 +554,7 @@
  			if (type == 0) {
  				netID = 0;
  				stack = 0;
-@@ -44726,6 +_,20 @@
+@@ -44730,6 +_,20 @@
  				SetDefaults5(type);
  			}
  
@@ -364,7 +575,7 @@
  			dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(type);
  			if (hairDye != 0)
  				hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
-@@ -44875,11 +_,12 @@
+@@ -44879,11 +_,12 @@
  				maxStack = 999;
  
  			netID = type;
@@ -378,12 +589,13 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -44889,14 +_,18 @@
+@@ -44893,14 +_,19 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
-+			modItem = null;
-+			globalItems = new GlobalItem[0];
++			ModItem = null;
++			globalItems = new Instanced<GlobalItem>[0];
++			DamageType = DamageClass.Generic;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
  			DD2Summon = false;
@@ -397,7 +609,20 @@
  			instanced = false;
  			questItem = false;
  			fishingPole = 0;
-@@ -44991,6 +_,10 @@
+@@ -44917,10 +_,12 @@
+ 			mech = false;
+ 			flame = false;
+ 			reuseDelay = 0;
++			/*
+ 			melee = false;
+ 			magic = false;
+ 			ranged = false;
+ 			summon = false;
++			*/
+ 			placeStyle = 0;
+ 			buffTime = 0;
+ 			buffType = 0;
+@@ -44995,6 +_,10 @@
  		}
  
  		public Color GetAlpha(Color newColor) {
@@ -408,7 +633,7 @@
  			switch (type) {
  				case 3318:
  				case 3319:
-@@ -45296,6 +_,7 @@
+@@ -45300,6 +_,7 @@
  				timeSinceItemSpawned += num3;
  			}
  
@@ -416,16 +641,26 @@
  			if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
  				timeSinceTheItemHasBeenReservedForSomeone++;
  				if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
-@@ -45395,7 +_,7 @@
+@@ -45380,6 +_,7 @@
+ 		}
+ 
+ 		private void CheckLavaDeath(int i) {
++			bool? canBurnInLava = ItemLoader.CanBurnInLava(this);
+ 			if (type == 267) {
+ 				if (Main.netMode == 1)
+ 					return;
+@@ -45399,7 +_,9 @@
  
  				NetMessage.SendData(21, -1, -1, null, i);
  			}
++			else if (canBurnInLava == false)
++				return;
 -			else if (playerIndexTheItemIsReservedFor == Main.myPlayer && type != 312 && type != 318 && type != 173 && type != 174 && type != 4422 && type != 175 && type != 2701 && rare == 0) {
-+			else if (playerIndexTheItemIsReservedFor == Main.myPlayer && type != 312 && type != 318 && type != 173 && type != 174 && type != 4422 && type != 175 && type != 2701 && rare == 0 || ItemLoader.CanBurnInLava(this)) {
++			else if (canBurnInLava == true || (playerIndexTheItemIsReservedFor == Main.myPlayer && type != 312 && type != 318 && type != 173 && type != 174 && type != 4422 && type != 175 && type != 2701 && rare == 0)) {
  				active = false;
  				type = 0;
  				stack = 0;
-@@ -45405,6 +_,7 @@
+@@ -45409,6 +_,7 @@
  		}
  
  		private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity) {
@@ -433,7 +668,7 @@
  			if (ItemID.Sets.ItemNoGravity[type]) {
  				base.velocity.X *= 0.95f;
  				if ((double)base.velocity.X < 0.1 && (double)base.velocity.X > -0.1)
-@@ -45415,6 +_,7 @@
+@@ -45419,6 +_,7 @@
  					base.velocity.Y = 0f;
  			}
  			else {
@@ -441,25 +676,17 @@
  				base.velocity.Y += gravity;
  				if (base.velocity.Y > maxFallSpeed)
  					base.velocity.Y = maxFallSpeed;
-@@ -45935,6 +_,9 @@
- 		}
+@@ -45618,6 +_,9 @@
+ 					num2 *= 2;
  
- 		public static Rectangle GetDrawHitbox(int type, Player user) {
-+#if SERVER
-+			return Rectangle.Empty;
-+#else
- 			Main.instance.LoadItem(type);
- 			if (ItemID.Sets.IsFood[type])
- 				return TextureAssets.Item[type].Frame(1, 3, 0, 1);
-@@ -45960,6 +_,7 @@
- 				default:
- 					return TextureAssets.Item[type].Frame();
- 			}
-+#endif
- 		}
- 
- 		public static int NewItem(Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem((int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
-@@ -45972,6 +_,9 @@
+ 				if (num < (float)num2) {
++					if (!ItemLoader.CanStackInWorld(this, item))
++						continue;
++
+ 					position = (position + item.position) / 2f;
+ 					velocity = (velocity + item.velocity) / 2f;
+ 					int num3 = item.stack;
+@@ -45979,6 +_,9 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom();
  
@@ -469,7 +696,7 @@
  			if (Main.halloween) {
  				if (Type == 58)
  					Type = 1734;
-@@ -46094,14 +_,17 @@
+@@ -46101,14 +_,17 @@
  						continue;
  
  					Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
@@ -490,7 +717,7 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -46120,8 +_,23 @@
+@@ -46127,8 +_,31 @@
  			}
  		}
  
@@ -498,8 +725,12 @@
 -		public Item DeepClone() => (Item)MemberwiseClone();
 +		public Item Clone() {
 +			Item newItem = (Item)MemberwiseClone();
-+			newItem.modItem = modItem?.Clone(newItem);
-+			newItem.globalItems = globalItems.Select(g => g.Clone(this, newItem)).ToArray();
++
++			newItem.ModItem = ModItem?.Clone(newItem);
++			newItem.globalItems = globalItems
++				.Select(g => new Instanced<GlobalItem>(g.index, g.instance?.Clone(this, newItem)))
++				.ToArray();
++
 +			return newItem;
 +		}
 +
@@ -507,8 +738,12 @@
 +		// specifically needed for reforging
 +		public Item CloneWithModdedDataFrom(Item dataSource) {
 +			Item newItem = (Item)MemberwiseClone();
-+			newItem.modItem = dataSource.modItem?.Clone(newItem);
-+			newItem.globalItems = dataSource.globalItems.Select(g => g.Clone(dataSource, newItem)).ToArray();
++
++			newItem.ModItem = dataSource.ModItem?.Clone(newItem);
++			newItem.globalItems = globalItems
++				.Select(g => new Instanced<GlobalItem>(g.index, g.instance?.Clone(this, newItem)))
++				.ToArray();
++
 +			return newItem;
 +		}
 +
@@ -516,12 +751,21 @@
  
  		public bool IsTheSameAs(Item compareItem) {
  			if (netID == compareItem.netID)
-@@ -46152,6 +_,8 @@
+@@ -46159,6 +_,8 @@
  			dye = 0;
  			shoot = 0;
  			mountType = -1;
-+			modItem = null;
-+			globalItems = new GlobalItem[0];
++			ModItem = null;
++			globalItems = new Instanced<GlobalItem>[0];
  		}
  
  		public void OnPurchase(Item item) {
+@@ -46190,7 +_,7 @@
+ 				Prefix(reader.ReadByte());
+ 			}
+ 
+-			if (type >= 5088)
++			if (type >= ItemLoader.ItemCount)
+ 				TurnToAir();
+ 		}
+ 

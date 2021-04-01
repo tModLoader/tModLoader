@@ -1,0 +1,103 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Terraria.ModLoader
+{
+	public static class InfoDisplayLoader
+	{
+		public static int InfoDisplayCount => InfoDisplays.Count;
+
+		internal static readonly List<InfoDisplay> InfoDisplays = new List<InfoDisplay>() {
+			InfoDisplay.Watches,
+			InfoDisplay.WeatherRadio,
+			InfoDisplay.FishFinder,
+			InfoDisplay.Compass,
+			InfoDisplay.DepthMeter,
+			InfoDisplay.Radar,
+			InfoDisplay.TallyCounter,
+			InfoDisplay.Sextant,
+			InfoDisplay.Dummy,
+			InfoDisplay.Stopwatch,
+			InfoDisplay.MetalDetector,
+			InfoDisplay.LifeformAnalyzer,
+			InfoDisplay.DPSMeter
+		};
+
+		private static readonly int DefaultDisplayCount = InfoDisplays.Count;
+
+		public static int InfoDisplayPage = 0;
+
+		internal static readonly IList<GlobalInfoDisplay> globalInfoDisplays = new List<GlobalInfoDisplay>();
+
+		static InfoDisplayLoader() {
+			RegisterDefaultDisplays();
+		}
+
+		internal static int Add(InfoDisplay infoDisplay) {
+			InfoDisplays.Add(infoDisplay);
+			return InfoDisplays.Count - 1;
+		}
+
+		internal static void Unload() {
+			InfoDisplays.RemoveRange(DefaultDisplayCount, InfoDisplays.Count - DefaultDisplayCount);
+			globalInfoDisplays.Clear();
+		}
+
+		internal static void RegisterDefaultDisplays() {
+			int i = 0;
+			foreach (var infoDisplay in InfoDisplays) {
+				infoDisplay.Type = i++;
+				ContentInstance.Register(infoDisplay);
+				ModTypeLookup<InfoDisplay>.Register(infoDisplay);
+			}
+		}
+
+		public static int ActiveDisplays() {
+			int activeDisplays = 0;
+			for (int i = 0; i < InfoDisplays.Count; i++) {
+				if (InfoDisplays[i].Active())
+					activeDisplays += 1;
+			}
+			return activeDisplays;
+		}
+
+		public static void AddGlobalInfoDisplay(GlobalInfoDisplay globalInfoDisplay)
+		{
+			globalInfoDisplays.Add(globalInfoDisplay);
+			ModTypeLookup<GlobalInfoDisplay>.Register(globalInfoDisplay);
+		}
+
+		public static int ActivePages() {
+			int activePages = 1;
+			int activeDisplays = ActiveDisplays();
+
+			while (activeDisplays > 12) {
+				activePages += 1;
+				activeDisplays -= 12;
+			}
+			return activePages;
+		}
+
+
+		public static bool Active(InfoDisplay info) {
+			bool active = info.Active();
+			foreach (GlobalInfoDisplay global in globalInfoDisplays) {
+				if (global.Active(info).HasValue)
+					active &= global.Active(info).Value;
+			}
+			return active;
+		}
+
+		public static void ModifyDisplayName(InfoDisplay info, ref string displayName) {
+			foreach (GlobalInfoDisplay global in globalInfoDisplays) {
+				global.ModifyDisplayName(info, ref displayName);
+			}
+		}
+
+		public static void ModifyDisplayValue(InfoDisplay info, ref string displayName) {
+			foreach (GlobalInfoDisplay global in globalInfoDisplays) {
+				global.ModifyDisplayValue(info, ref displayName);
+			}
+		}
+	}
+}

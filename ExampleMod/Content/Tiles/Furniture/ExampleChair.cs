@@ -19,8 +19,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChair);
 
-			dustType = ModContent.DustType<Sparkle>();
-			adjTiles = new int[] { TileID.Chairs };
+			DustType = ModContent.DustType<Sparkle>();
+			AdjTiles = new int[] { TileID.Chairs };
 
 			// Names
 			ModTranslation name = CreateMapEntryName();

@@ -1,0 +1,35 @@
+--- src/Terraria/Terraria/GameContent/ItemDropRules/CommonCode.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonCode.cs
+@@ -1,12 +_,13 @@
+ using Microsoft.Xna.Framework;
+ using Terraria.Utilities;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.ItemDropRules
+ {
+ 	public static class CommonCode
+ 	{
+ 		public static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
+-			if (itemId > 0 && itemId < 5088) {
++			if (itemId > 0 && itemId < ItemLoader.ItemCount) {
+ 				int x = (int)npc.position.X + npc.width / 2;
+ 				int y = (int)npc.position.Y + npc.height / 2;
+ 				if (scattered) {
+@@ -20,7 +_,7 @@
+ 		}
+ 
+ 		public static void DropItemLocalPerClientAndSetNPCMoneyTo0(NPC npc, int itemId, int stack, bool interactionRequired = true) {
+-			if (itemId <= 0 || itemId >= 5088)
++			if (itemId <= 0 || itemId >= ItemLoader.ItemCount)
+ 				return;
+ 
+ 			if (Main.netMode == 2) {
+@@ -41,7 +_,7 @@
+ 		}
+ 
+ 		public static void DropItemForEachInteractingPlayerOnThePlayer(NPC npc, int itemId, UnifiedRandom rng, int chanceNumerator, int chanceDenominator, int stack = 1, bool interactionRequired = true) {
+-			if (itemId <= 0 || itemId >= 5088)
++			if (itemId <= 0 || itemId >= ItemLoader.ItemCount)
+ 				return;
+ 
+ 			if (Main.netMode == 2) {

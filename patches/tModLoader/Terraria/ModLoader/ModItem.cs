@@ -19,37 +19,32 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModItem : ModTexturedType
 	{
-		//add modItem property to Terraria.Item (internal set)
-		//set modItem to null at beginning of Terraria.Item.ResetStats		
 		/// <summary>
 		/// The item object that this ModItem controls.
 		/// </summary>
-		/// <value>
-		/// The item.
-		/// </value>
-		public Item item {get;internal set;}
+		public Item Item { get; internal set; }
 
 		/// <summary>
 		/// Shorthand for item.type;
 		/// </summary>
-		public int Type => item.type;
+		public int Type => Item.type;
 
 		/// <summary>
 		/// The translations for the display name of this item.
 		/// </summary>
-		public ModTranslation DisplayName {get;internal set;}
+		public ModTranslation DisplayName { get; internal set; }
 
 		/// <summary>
 		/// The translations for the display name of this tooltip.
 		/// </summary>
-		public ModTranslation Tooltip {get;internal set;}
+		public ModTranslation Tooltip { get; internal set; }
 
 		public virtual string ArmTexture => Texture + "_Arms";
 
 		public virtual string FemaleTexture => Texture + "_FemaleBody";
 
 		public ModItem() {
-			item = new Item { modItem = this };
+			Item = new Item { ModItem = this };
 		}
 
 		protected sealed override void Register() {
@@ -58,8 +53,8 @@ namespace Terraria.ModLoader
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemName.{Name}");
 			Tooltip = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemTooltip.{Name}", true);
 
-			item.ResetStats(ItemLoader.ReserveItemID());
-			item.modItem = this;
+			Item.ResetStats(ItemLoader.ReserveItemID());
+			Item.ModItem = this;
 
 			ItemLoader.items.Add(this);
 
@@ -73,8 +68,8 @@ namespace Terraria.ModLoader
 			OnCreate(new InitializationContext());
 		}
 
-		public override void SetupContent() {
-			ItemLoader.SetDefaults(item, false);
+		public sealed override void SetupContent() {
+			ItemLoader.SetDefaults(Item, false);
 			AutoStaticDefaults();
 			SetStaticDefaults();
 			ItemID.Search.Add(FullName, Type);
@@ -86,7 +81,7 @@ namespace Terraria.ModLoader
 		/// <param name="item">The new item</param>
 		public virtual ModItem Clone(Item item) {
 			ModItem clone = (ModItem)MemberwiseClone();
-			clone.item = item;
+			clone.Item = item;
 			return clone;
 		}
 
@@ -104,7 +99,7 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoDefaults() {
-			EquipLoader.SetSlot(item);
+			EquipLoader.SetSlot(Item);
 		}
 
 		/// <summary>
@@ -118,12 +113,12 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			TextureAssets.Item[item.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Item[Item.type] = ModContent.GetTexture(Texture);
 
 			string flameTexture = Texture + "_Flame";
 
 			if (ModContent.TextureExists(flameTexture)) {
-				TextureAssets.ItemFlame[item.type] = ModContent.GetTexture(flameTexture);
+				TextureAssets.ItemFlame[Item.type] = ModContent.GetTexture(flameTexture);
 			}
 
 			if (DisplayName.IsDefault())
@@ -167,16 +162,16 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify the location and rotation of this item in its use animation.
 		/// </summary>
-		/// <param name="player">The player.</param>
-		public virtual void UseStyle(Player player) {
-		}
+		/// <param name="player"> The player. </param>
+		/// <param name="heldItemFrame"> The source rectangle for the held item's texture. </param>
+		public virtual void UseStyle(Player player, Rectangle heldItemFrame) { }
 
 		/// <summary>
 		/// Allows you to modify the location and rotation of this item when the player is holding it.
 		/// </summary>
-		/// <param name="player">The player.</param>
-		public virtual void HoldStyle(Player player) {
-		}
+		/// <param name="player"> The player. </param>
+		/// <param name="heldItemFrame"> The source rectangle for the held item's texture. </param>
+		public virtual void HoldStyle(Player player, Rectangle heldItemFrame) { }
 
 		/// <summary>
 		/// Allows you to make things happen when the player is holding this item (for example, torches make light and water candles increase spawn rate).
@@ -252,10 +247,9 @@ namespace Terraria.ModLoader
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// </summary>
 		/// <param name="player">The player using the item</param>
-		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05f`</param>
-		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
+		/// <param name="damage">Use to directly multiply the player's effective damage.</param>
 		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
-		public virtual void ModifyWeaponDamage(Player player, ref Modifier damage, ref float flat) {
+		public virtual void ModifyWeaponDamage(Player player, ref StatModifier damage, ref float flat) {
 		}
 
 		/// <summary>
@@ -267,27 +261,18 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
-		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
-		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
-		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, summon
-		/// So if you set both melee class and another class to true, only the melee knockback will actually be used.
 		/// </summary>
 		/// <param name="player">The player using the item</param>
 		/// <param name="knockback">The knockback</param>
-		public virtual void GetWeaponKnockback(Player player, ref float knockback) {
+		public virtual void ModifyWeaponKnockback(Player player, ref StatModifier knockback, ref float flat) {
 		}
 
 		/// <summary>
 		/// Allows you to temporarily modify this weapon's crit chance based on player buffs, etc.
-		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
-		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
-		/// If you use a custom damage class, the crit value will equal item.crit
-		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, and summon cannot crit.
-		/// So if you set both melee class and another class to true, only the melee crit will actually be used.
 		/// </summary>
 		/// <param name="player">The player using this item</param>
 		/// <param name="crit">The critical strike chance, at 0 it will never trigger a crit and at 100 or above it will always trigger a crit</param>
-		public virtual void GetWeaponCrit(Player player, ref int crit) {
+		public virtual void ModifyWeaponCrit(Player player, ref int crit) {
 		}
 
 		/// <summary>
@@ -445,22 +430,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the player's animation when this item is being used. Return true if you modify the player's animation. Returns false by default.
+		/// Allows you to modify the player's animation when this item is being used.
 		/// </summary>
 		/// <param name="player">The player.</param>
-		/// <returns></returns>
-		public virtual bool UseItemFrame(Player player) {
-			return false;
-		}
+		public virtual void UseItemFrame(Player player) { }
 
 		/// <summary>
-		/// Allows you to modify the player's animation when the player is holding this item. Return true if you modify the player's animation. Returns false by default.
+		/// Allows you to modify the player's animation when the player is holding this item.
 		/// </summary>
 		/// <param name="player">The player.</param>
-		/// <returns></returns>
-		public virtual bool HoldItemFrame(Player player) {
-			return false;
-		}
+		public virtual void HoldItemFrame(Player player) { }
 
 		/// <summary>
 		/// Allows you to make this item usable by right-clicking. Returns false by default. When this item is used by right-clicking, player.altFunctionUse will be set to 2.
@@ -602,6 +581,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to decide if this item is allowed to stack with another of its type in the world.
+		/// This is only called when attempting to stack with an item of the same type.
+		/// </summary>
+		/// <param name="item2">The item this is trying to stack with</param>
+		/// <returns>Whether or not the item is allowed to stack</returns>
+		public virtual bool CanStackInWorld(Item item2) {
+			return true;
+		}
+
+		/// <summary>
 		/// Returns if the normal reforge pricing is applied. 
 		/// If true or false is returned and the price is altered, the price will equal the altered price.
 		/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
@@ -728,11 +717,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns whether or not this item burns when it is thrown into lava despite item.rare not being 0. Returns false by default.
+		/// Returns whether or not this item will burn in lava regardless of any conditions. Returns null by default (follow vanilla behaviour).
 		/// </summary>
-		public virtual bool CanBurnInLava()
-		{
-			return false;
+		public virtual bool? CanBurnInLava() {
+			return null;
 		}
 		
 		/// <summary>
@@ -931,11 +919,6 @@ namespace Terraria.ModLoader
 		public virtual int BossBagNPC => 0;
 
 		/// <summary>
-		/// Set this to true to prevent this weapon or ammo item from being adjusted by damage modifiers.
-		/// </summary>
-		public virtual bool IgnoreDamageModifiers => false;
-
-		/// <summary>
 		/// Allows you to save custom data for this item. Returns null by default.
 		/// </summary>
 		/// <returns></returns>
@@ -1019,6 +1002,6 @@ namespace Terraria.ModLoader
 		public virtual void ModifyTooltips(List<TooltipLine> tooltips) {
 		}
 
-		public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Mod, item.type, amount);
+		public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Mod, Item.type, amount);
 	}
 }

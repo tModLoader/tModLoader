@@ -12,7 +12,7 @@ namespace ExampleMod.Common.GlobalItems
 		//Here we add both every item in this mod to a single custom sorting group, as well as add an existing item, the copper shortsword, to a vanilla sorting group.
 		//These can be interchanged, modded items can go in vanilla sorting groups and vice versa.
 		public override void ModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
-			if (item.modItem?.Mod == Mod) {
+			if (item.ModItem?.Mod == Mod) {
 				itemGroup = (ContentSamples.CreativeHelper.ItemGroup)1337; //This number is where the item sort is in relation to any other sorts added by vanilla or mods; 1337 set here is in between the Critters and Keys sorts. To know where your custom group relates to the vanilla sorting numbers, refer to the vanilla ItemGroup class, which you can easily get to by pressing f12 if using Visual Studio.
 			}
 

@@ -51,30 +51,33 @@
  						case 'p': {
  								if (int.TryParse(array[i].Substring(1), out int result2))
 -									item.Prefix((byte)Utils.Clamp(result2, 0, 85));
-+									item.Prefix((byte)Utils.Clamp(result2, 0, ModPrefix.PrefixCount));
++									item.Prefix((byte)Utils.Clamp(result2, 0, PrefixLoader.PrefixCount));
  
  								break;
  							}
-@@ -97,13 +_,22 @@
+@@ -97,13 +_,25 @@
  			};
  		}
  
 +		// we do not alter vanilla ways of doing things
 +		// this can lead to trouble in future patches
  		public static string GenerateTag(Item I) {
- 			string text = "[i";
+ 			string str = "[i";
 +			// assuming we have modded data, simply write the item as base64
 +			// do not write other option, base64 holds all the info.
-+			if (I.modItem != null || I.globalItems.Any()) {
-+				text = text + "/d" + ItemIO.ToBase64(I);
++			if (I.ModItem != null || I.globalItems.Any()) {
++				str = str + "/d" + ItemIO.ToBase64(I);
++				
++				goto End;
 +			}
-+			else {
++
  			if (I.prefix != 0)
- 				text = text + "/p" + I.prefix;
+ 				str = str + "/p" + I.prefix;
  
  			if (I.stack != 1)
- 				text = text + "/s" + I.stack;
-+			}
+ 				str = str + "/s" + I.stack;
++
++			End:
  
- 			return text + ":" + I.netID + "]";
+ 			return str + ":" + I.netID + "]";
  		}
