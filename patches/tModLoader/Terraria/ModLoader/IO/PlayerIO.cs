@@ -40,6 +40,7 @@ namespace Terraria.ModLoader.IO
 				["research"] = SaveResearch(player),
 				["modData"] = SaveModData(player),
 				["modBuffs"] = SaveModBuffs(player),
+				["infoDisplays"] = SaveInfoDisplays(player),
 				["usedMods"] = SaveUsedMods(player)
 			};
 
@@ -77,6 +78,7 @@ namespace Terraria.ModLoader.IO
 			LoadResearch(player, tag.GetList<TagCompound>("research"));
 			LoadModData(player, tag.GetList<TagCompound>("modData"));
 			LoadModBuffs(player, tag.GetList<TagCompound>("modBuffs"));
+			LoadInfoDisplays(player, tag.GetList<string>("infoDisplays"));
 			LoadUsedMods(player, tag.GetList<string>("usedMods"));
 		}
 
@@ -244,6 +246,26 @@ namespace Terraria.ModLoader.IO
 				Array.Copy(player.buffTime, index, player.buffTime, index + 1, Player.MaxBuffs - index - 1);
 				player.buffType[index] = buff.Type;
 				player.buffTime[index] = tag.GetInt("time");
+			}
+		}
+
+		internal static List<string> SaveInfoDisplays(Player player) {
+			var hidden = new List<string>();
+			for (int i = 0; i < InfoDisplayLoader.InfoDisplays.Count; i++) {
+				if(!(InfoDisplayLoader.InfoDisplays[i] is VanillaInfoDisplay)) {
+					if (player.hideInfo[i])
+						hidden.Add(InfoDisplayLoader.InfoDisplays[i].FullName);
+				}
+			}
+			return hidden;
+		}
+
+		internal static void LoadInfoDisplays(Player player, IList<string> hidden) {
+			for (int i = 0; i < InfoDisplayLoader.InfoDisplays.Count; i++) {
+				if (!(InfoDisplayLoader.InfoDisplays[i] is VanillaInfoDisplay)) {
+					if (hidden.Contains(InfoDisplayLoader.InfoDisplays[i].FullName))
+						player.hideInfo[i] = true;
+				}
 			}
 		}
 
