@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="SteamDir" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Program Files (x86)\Steam\steamapps\common\terraria</Value>
+      <Value Profile="(Default)">C:\Program Files (x86)\Steam\steamapps\common\Terraria</Value>
     </Setting>
     <Setting Name="TerrariaDiffCutoff" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)">2015-01-01</Value>
@@ -12,10 +12,10 @@
       <Value Profile="(Default)">2015-01-01</Value>
     </Setting>
     <Setting Name="ClientVersion" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">1.4.1.2</Value>
+      <Value Profile="(Default)">1.4.2.0</Value>
     </Setting>
     <Setting Name="ServerVersion" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">1.4.1.2</Value>
+      <Value Profile="(Default)">1.4.2.0</Value>
     </Setting>
     <Setting Name="PatchMode" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -24,10 +24,13 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SteamClientWinMD5" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">6b85b2a8ea384384c1090d784f3fcff6</Value>
+      <Value Profile="(Default)">6ebb2e222126aaae302d34a3a2c82cb9</Value>
     </Setting>
     <Setting Name="GoGClientWinMD5" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">bd8c6736cf4e33e4adf304ef9f492b98</Value>
+      <Value Profile="(Default)">bd38e2c11df154bcecee8ab3191927ab</Value>
+    </Setting>
+    <Setting Name="TMLSteamDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Program Files (x86)\Steam\steamapps\common\tModLoader</Value>
     </Setting>
   </Settings>
 </SettingsFile>

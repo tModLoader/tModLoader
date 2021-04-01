@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameInput;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI.Elements
@@ -99,6 +100,11 @@ namespace Terraria.ModLoader.UI.Elements
 		public override void Recalculate() {
 			base.Recalculate();
 			this.UpdateScrollbar();
+		}
+
+		public override void MouseOver(UIMouseEvent evt) {
+			base.MouseOver(evt);
+			PlayerInput.LockVanillaMouseScroll("ModLoader/UIGrid");
 		}
 
 		public override void ScrollWheel(UIScrollWheelEvent evt) {

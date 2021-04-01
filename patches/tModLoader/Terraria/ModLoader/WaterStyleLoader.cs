@@ -60,7 +60,8 @@ namespace Terraria.ModLoader
 					style = waterStyle.Type;
 				}
 			}
-			WorldHooks.ChooseWaterStyle(ref style);
+
+			SystemHooks.ChooseWaterStyle(ref style);
 		}
 
 		public static void UpdateLiquidAlphas() {

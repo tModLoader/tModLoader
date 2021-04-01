@@ -5,8 +5,8 @@
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
-			item.width = 28;
-			item.height = 20;
+			Item.width = 28;
+			Item.height = 20;
 		}
 	}
 
@@ -15,8 +15,8 @@
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
-			item.width = 28;
-			item.height = 24;
+			Item.width = 28;
+			Item.height = 24;
 		}
 	}
 
@@ -25,8 +25,8 @@
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
-			item.width = 22;
-			item.height = 18;
+			Item.width = 22;
+			Item.height = 18;
 		}
 	}
 
@@ -35,10 +35,10 @@
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
-			item.vanity = false;
-			item.width = 24;
-			item.height = 8;
-			item.accessory = true;
+			Item.vanity = false;
+			Item.width = 24;
+			Item.height = 8;
+			Item.accessory = true;
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {

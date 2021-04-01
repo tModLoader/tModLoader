@@ -87,7 +87,7 @@ namespace Terraria.ModLoader
 				Item bag = new Item();
 				bag.SetDefaults(ModContent.ItemType<StartBag>());
 				for (int k = 49; k < items.Count; k++) {
-					((StartBag)bag.modItem).AddItem(items[k]);
+					((StartBag)bag.ModItem).AddItem(items[k]);
 				}
 				player.inventory[49] = bag;
 			}
@@ -331,6 +331,28 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate bool DelegatePreModifyLuck(ref float luck);
+		private static HookList HookPreModifyLuck = AddHook<DelegatePreModifyLuck>(p => p.PreModifyLuck);
+
+		public static bool PreModifyLuck(Player player, ref float luck) {
+			bool flag = true;
+			foreach (int index in HookPreModifyLuck.arr) {
+				if (!player.modPlayers[index].PreModifyLuck(ref luck)) {
+					flag = false;
+				}
+			}
+			return flag;
+		}
+
+		private delegate void DelegateModifyLuck(ref float luck);
+		private static HookList HookModifyLuck = AddHook<DelegateModifyLuck>(p => p.ModifyLuck);
+
+		public static void ModifyLuck(Player player, ref float luck) {
+			foreach (int index in HookModifyLuck.arr) {
+				player.modPlayers[index].ModifyLuck(ref luck);
+			}
+		}
+
 		private static HookList HookPreItemCheck = AddHook<Func<bool>>(p => p.PreItemCheck);
 
 		public static bool PreItemCheck(Player player) {
@@ -446,12 +468,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyWeaponDamage(Item item, ref Modifier damage, ref float flat);
+		private delegate void DelegateModifyWeaponDamage(Item item, ref StatModifier damage, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(p => p.ModifyWeaponDamage);
 		/// <summary>
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
 		/// </summary>
-		public static void ModifyWeaponDamage(Player player, Item item, ref Modifier damage, ref float flat) {
+		public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage, ref float flat) {
 			if (item.IsAir)
 				return;
 
@@ -468,25 +490,25 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateGetWeaponKnockback(Item item, ref float knockback);
-		private static HookList HookGetWeaponKnockback = AddHook<DelegateGetWeaponKnockback>(p => p.GetWeaponKnockback);
+		private delegate void DelegateModifyWeaponKnockback(Item item, ref StatModifier knockback, ref float flat);
+		private static HookList HookModifyWeaponKnockback = AddHook<DelegateModifyWeaponKnockback>(p => p.ModifyWeaponKnockback);
 
-		public static void GetWeaponKnockback(Player player, Item item, ref float knockback) {
+		public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback, ref float flat) {
 			if (item.IsAir)
 				return;
 
-			foreach (int index in HookGetWeaponKnockback.arr) {
-				player.modPlayers[index].GetWeaponKnockback(item, ref knockback);
+			foreach (int index in HookModifyWeaponKnockback.arr) {
+				player.modPlayers[index].ModifyWeaponKnockback(item, ref knockback, ref flat);
 			}
 		}
 
-		private delegate void DelegateGetWeaponCrit(Item item, ref int crit);
-		private static HookList HookGetWeaponCrit = AddHook<DelegateGetWeaponCrit>(p => p.GetWeaponCrit);
+		private delegate void DelegateModifyWeaponCrit(Item item, ref int crit);
+		private static HookList HookModifyWeaponCrit = AddHook<DelegateModifyWeaponCrit>(p => p.ModifyWeaponCrit);
 
-		public static void GetWeaponCrit(Player player, Item item, ref int crit) {
+		public static void ModifyWeaponCrit(Player player, Item item, ref int crit) {
 			if (item.IsAir) return;
-			foreach (int index in HookGetWeaponCrit.arr) {
-				player.modPlayers[index].GetWeaponCrit(item, ref crit);
+			foreach (int index in HookModifyWeaponCrit.arr) {
+				player.modPlayers[index].ModifyWeaponCrit(item, ref crit);
 			}
 		}
 
@@ -540,15 +562,19 @@ namespace Terraria.ModLoader
 
 		public static bool? CanHitNPC(Player player, Item item, NPC target) {
 			bool? flag = null;
+
 			foreach (int index in HookCanHitNPC.arr) {
 				bool? canHit = player.modPlayers[index].CanHitNPC(item, target);
-				if (canHit.HasValue && !canHit.Value) {
-					return false;
-				}
+
 				if (canHit.HasValue) {
-					flag = canHit.Value;
+					if (!canHit.Value) {
+						return false;
+					}
+
+					flag = true;
 				}
 			}
+
 			return flag;
 		}
 
@@ -771,96 +797,40 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateDrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright);
+		private delegate void DelegateDrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright);
 		private static HookList HookDrawEffects = AddHook<DelegateDrawEffects>(p => p.DrawEffects);
 
-		public static void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
+		public static void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
 			ModPlayer[] modPlayers = drawInfo.drawPlayer.modPlayers;
 			foreach (int index in HookDrawEffects.arr) {
 				modPlayers[index].DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
 			}
 		}
 
-		private delegate void DelegateModifyDrawInfo(ref PlayerDrawInfo drawInfo);
+		private delegate void DelegateModifyDrawInfo(ref PlayerDrawSet drawInfo);
 		private static HookList HookModifyDrawInfo = AddHook<DelegateModifyDrawInfo>(p => p.ModifyDrawInfo);
 
-		public static void ModifyDrawInfo(ref PlayerDrawInfo drawInfo) {
+		public static void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
 			ModPlayer[] modPlayers = drawInfo.drawPlayer.modPlayers;
 			foreach (int index in HookModifyDrawInfo.arr) {
 				modPlayers[index].ModifyDrawInfo(ref drawInfo);
 			}
 		}
 
-		private static HookList HookModifyDrawLayers = AddHook<Action<List<PlayerLayer>>>(p => p.ModifyDrawLayers);
+		private static HookList HookModifyDrawLayerOrdering = AddHook<Action<IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position>>>(p => p.ModifyDrawLayerOrdering);
 
-		public static List<PlayerLayer> GetDrawLayers(Player drawPlayer) {
-			List<PlayerLayer> layers = new List<PlayerLayer> {
-				PlayerLayer.HairBack,
-				PlayerLayer.MountBack,
-				PlayerLayer.MiscEffectsBack,
-				PlayerLayer.BackAcc,
-				PlayerLayer.Wings,
-				PlayerLayer.BalloonAcc,
-				PlayerLayer.Skin
-			};
-			if (drawPlayer.wearsRobe) {
-				layers.Add(PlayerLayer.ShoeAcc);
-				layers.Add(PlayerLayer.Legs);
+		public static void ModifyDrawLayerOrdering(IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position> positions) {
+			foreach (int index in HookModifyDrawLayerOrdering.arr) {
+				players[index].ModifyDrawLayerOrdering(positions);
 			}
-			else {
-				layers.Add(PlayerLayer.Legs);
-				layers.Add(PlayerLayer.ShoeAcc);
-			}
-			layers.Add(PlayerLayer.Body);
-			layers.Add(PlayerLayer.HandOffAcc);
-			layers.Add(PlayerLayer.WaistAcc);
-			layers.Add(PlayerLayer.NeckAcc);
-			layers.Add(PlayerLayer.Face);
-			layers.Add(PlayerLayer.Hair);
-			layers.Add(PlayerLayer.Head);
-			layers.Add(PlayerLayer.FaceAcc);
-			if (drawPlayer.mount.Cart) {
-				layers.Add(PlayerLayer.ShieldAcc);
-				layers.Add(PlayerLayer.MountFront);
-			}
-			else {
-				layers.Add(PlayerLayer.MountFront);
-				layers.Add(PlayerLayer.ShieldAcc);
-			}
-			layers.Add(PlayerLayer.SolarShield);
-			layers.Add(PlayerLayer.HeldProjBack);
-			layers.Add(PlayerLayer.HeldItem);
-			layers.Add(PlayerLayer.Arms);
-			layers.Add(PlayerLayer.HandOnAcc);
-			layers.Add(PlayerLayer.HeldProjFront);
-			layers.Add(PlayerLayer.FrontAcc);
-			layers.Add(PlayerLayer.MiscEffectsFront);
-			foreach (PlayerLayer layer in layers) {
-				layer.visible = true;
-			}
-			foreach (int index in HookModifyDrawLayers.arr) {
-				drawPlayer.modPlayers[index].ModifyDrawLayers(layers);
-			}
-			return layers;
 		}
 
-		private static HookList HookModifyDrawHeadLayers = AddHook<Action<List<PlayerHeadLayer>>>(p => p.ModifyDrawHeadLayers);
+		private static HookList HookModifyDrawLayers = AddHook<Action<PlayerDrawSet>>(p => p.HideDrawLayers);
 
-		public static List<PlayerHeadLayer> GetDrawHeadLayers(Player drawPlayer) {
-			List<PlayerHeadLayer> layers = new List<PlayerHeadLayer> {
-				PlayerHeadLayer.Head,
-				PlayerHeadLayer.Hair,
-				PlayerHeadLayer.AltHair,
-				PlayerHeadLayer.Armor,
-				PlayerHeadLayer.FaceAcc
-			};
-			foreach (PlayerHeadLayer layer in layers) {
-				layer.visible = true;
+		public static void HideDrawLayers(PlayerDrawSet drawInfo) {
+			foreach (int index in HookModifyDrawLayers.arr) {
+				drawInfo.drawPlayer.modPlayers[index].HideDrawLayers(drawInfo);
 			}
-			foreach (int index in HookModifyDrawHeadLayers.arr) {
-				drawPlayer.modPlayers[index].ModifyDrawHeadLayers(layers);
-			}
-			return layers;
 		}
 
 		private static HookList HookModifyScreenPosition = AddHook<Action>(p => p.ModifyScreenPosition);

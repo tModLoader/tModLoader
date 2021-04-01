@@ -17,8 +17,8 @@ namespace Terraria.ModLoader.Default.Developer
 		}
 
 		public override void SetDefaults() {
-			item.rare = 11;
-			item.vanity = true;
+			Item.rare = 11;
+			Item.vanity = true;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
