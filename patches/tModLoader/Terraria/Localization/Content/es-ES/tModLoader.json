@@ -345,6 +345,7 @@
 		// Misc
 		"OK": "OK",
 		"Continue": "Continuar",
+		"DeleteModConfirm": "¿Estás seguro de eliminar permanentemente este mod?",
 		"PatreonSetTooltip": "¡Gracias por tu apoyo!",
 		"WorldGenError": "Se ha producido un fallo durante la generación del mundo",
 		"WorldIODataException": "Se ha encontrado un error en los datos de un mod para un mundo.",
