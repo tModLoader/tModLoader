@@ -81,6 +81,28 @@ namespace Terraria.ModLoader.Engine
 
 			return orig(self, newDeviceInfo);
 		}
+
+		internal static byte frameNum = 0;
+
+		internal static void LogDeviceStatus(GraphicsDeviceManager gm, string context) {
+			LogGraphicsDevice();
+
+			// Width and height
+			string viewportX = "vX " + gm.GraphicsDevice.Viewport.Width + "\n";
+			string viewportY = "vY" + gm.GraphicsDevice.Viewport.Height + "\n";
+			string backbufferX = "bX" + gm.PreferredBackBufferWidth + "\n";
+			string backbufferY = "bY" + gm.PreferredBackBufferHeight + "\n";
+
+			// Fullscreen
+			string fullscreen = "fs" + gm.IsFullScreen + "\n";
+			string vSync = "vS" + gm.SynchronizeWithVerticalRetrace + "\n";
+
+			Logging.Terraria.Debug(context + " Device Reset #" + frameNum + "\n" + viewportX + backbufferX + viewportY + backbufferY + fullscreen + vSync);
+
+			if (context == "after") {
+				frameNum++;
+			}
+		}
 			    
 		private delegate void orig_ValidateCreationParameters(object profile, int width, int height, SurfaceFormat format, [MarshalAs(UnmanagedType.U1)] bool mipMap);
 		private delegate void hook_ValidateCreationParameters(orig_ValidateCreationParameters orig, object profile, int width, int height, SurfaceFormat format, [MarshalAs(UnmanagedType.U1)] bool mipMap);

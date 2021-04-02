@@ -3845,7 +3845,7 @@
  				if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  					width = form.ClientSize.Width;
  					flag2 = true;
-@@ -50442,11 +_,12 @@
+@@ -50442,21 +_,26 @@
  					height = form.ClientSize.Height;
  					flag2 = true;
  				}
@@ -3861,14 +3861,20 @@
  			width = Math.Max(width, minScreenW);
  			height = Math.Max(height, minScreenH);
  			if (graphics.IsFullScreen != fullscreen) {
-@@ -50456,6 +_,7 @@
++				HiDefGraphicsIssues.LogDeviceStatus(graphics, "before");
+ 				graphics.PreferredBackBufferWidth = width;
+ 				graphics.PreferredBackBufferHeight = height;
+ 				graphics.ApplyChanges();
  				graphics.ToggleFullScreen();
++				HiDefGraphicsIssues.LogDeviceStatus(graphics, "after");
  			}
  
 +			// Runs if Graphics Device needs a reset to match backBuffer to Viewport, or if target resolution is diff than current
  			if (width != num3 || height != num4 || flag2) {
++				HiDefGraphicsIssues.LogDeviceStatus(graphics, "before");
  				mapTime = 0;
  				if (gamePaused)
+ 					renderNow = true;
 @@ -50465,7 +_,9 @@
  				screenHeight = height;
  				graphics.PreferredBackBufferWidth = screenWidth;
@@ -3879,3 +3885,18 @@
  				PlayerInput.CacheOriginalScreenDimensions();
  				FixUIScale();
  				if (Main.OnResolutionChanged != null)
+@@ -50497,11 +_,14 @@
+ 				instance._needsMenuUIRecalculation = true;
+ 				Console.WriteLine(Language.GetTextValue("Misc.ResolutionChanged", width, height));
+ 				chatMonitor.OnResolutionChange();
++				HiDefGraphicsIssues.LogDeviceStatus(graphics, "after");
+ 			}
+ 
+ 			if (!graphics.SynchronizeWithVerticalRetrace) {
++				HiDefGraphicsIssues.LogDeviceStatus(graphics, "before");
+ 				graphics.SynchronizeWithVerticalRetrace = true;
+ 				graphics.ApplyChanges();
++				HiDefGraphicsIssues.LogDeviceStatus(graphics, "after");
+ 			}
+ 		}
+ 
