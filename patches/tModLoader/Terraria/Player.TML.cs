@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.ModLoader;
@@ -99,17 +100,26 @@ namespace Terraria
 		/// </summary>
 		public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
 
-		internal bool[] modBiomeFlags = new bool[0];
+		public int lastPrimaryBiomeID = 0;
 
-		/// <summary> Gets the instance of the specified ModBiome type. This will throw exceptions on failure. </summary>
-		/// <exception cref="IndexOutOfRangeException"/>
-		public bool IsModBiomeActive<T>() where T : ModBiome
-			=> IsModBiomeActive(ModContent.GetInstance<T>());
+		internal BitArray modBiomeFlags = new BitArray(0);
 
-		/// <summary> Gets the local instance of the type of the specified ModBiome instance. This will throw exceptions on failure. </summary>
+		/// <summary> 
+		/// Gets the instance of the specified ModBiome type. Returns false if biome couldn't be found OR the biome is inactive. 
+		/// </summary>
+		public bool TryCheckIfInBiome(string mod, string internalName) {
+			if (!ModContent.TryFind<ModBiome>(mod, internalName, out var value)) {
+				return false;
+			}
+			return CheckIfInBiome(value);
+		}
+
+		/// <summary> 
+		/// Gets the local instance of the type of the specified ModBiome instance. This will throw exceptions on failure. 
+		/// </summary>
 		/// <exception cref="IndexOutOfRangeException"/>
 		/// <exception cref="NullReferenceException"/>
-		public bool IsModBiomeActive<T>(T baseInstance) where T : ModBiome
+		public bool CheckIfInBiome<T>(T baseInstance) where T : ModBiome
 			=> modBiomeFlags[baseInstance.index];
 	}
 }

@@ -138,6 +138,14 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
+@@ -2034,6 +_,7 @@
+ 		public void SetTalkNPC(int npcIndex, bool fromNet = false) {
+ 			talkNPC = npcIndex;
+ 			if (Main.netMode != 1 && npcIndex >= 0 && npcIndex < 200)
++				// Gut feeling there is a to do on the above conditional
+ 				Main.BestiaryTracker.Chats.RegisterChatStartWith(Main.npc[npcIndex]);
+ 
+ 			if (talkNPC == -1)
 @@ -2051,11 +_,13 @@
  		}
  
@@ -1812,6 +1820,16 @@
  		}
  
  		public void UpdateSocialShadow() {
+@@ -11390,6 +_,9 @@
+ 		}
+ 
+ 		public int GetPrimaryBiome() {
++			// Hijack this for modded:
++			return lastPrimaryBiomeID = BiomeLoader.GetPrimaryBiome(this);
++
+ 			if (ZoneDungeon)
+ 				return 8;
+ 
 @@ -11553,6 +_,8 @@
  			bool flag6 = ZoneRain && ZoneSnow;
  			bool flag7 = point.Y > Main.maxTilesY - 320;
@@ -1821,11 +1839,13 @@
  			ManageSpecialBiomeVisuals("Stardust", ZoneTowerStardust, value4 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Nebula", ZoneTowerNebula, value3 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Vortex", ZoneTowerVortex, value2 - new Vector2(0f, 10f));
-@@ -11691,6 +_,7 @@
+@@ -11691,6 +_,9 @@
  				}
  			}
  
-+			BiomeLoader.UpdateBiomeVisuals(this);
++			BiomeLoader.SetBiomeAtmosphere(this);
++
++			BiomeLoader.PostUpdateBiome(this);
  			if (!dead) {
  				Point point2 = base.Center.ToTileCoordinates();
  				if (WorldGen.InWorld(point2.X, point2.Y, 1)) {
