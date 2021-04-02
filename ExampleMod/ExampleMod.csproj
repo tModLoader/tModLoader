@@ -6,7 +6,7 @@
   <Import Project= "$(tMLDefault)\tModLoader.targets" />
   <PropertyGroup>
 	<AssemblyName>ExampleMod</AssemblyName>
-	<TargetFramework>netcoreapp3.1</TargetFramework>
+	<TargetFramework>net5.0</TargetFramework>
 	<PlatformTarget>AnyCPU</PlatformTarget>
 	<LangVersion>latest</LangVersion>
   </PropertyGroup>

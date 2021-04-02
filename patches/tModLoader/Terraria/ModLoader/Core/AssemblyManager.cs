@@ -125,7 +125,10 @@ namespace Terraria.ModLoader.Core
 
 			AppDomain.CurrentDomain.AssemblyResolve += (_, args) => {
 				string name = new AssemblyName(args.Name).Name;
-				return name == "Terraria" ? Assembly.GetExecutingAssembly() : null;
+				if (name == "Terraria" || name == "tModLoader" || name == "tModLoaderServer" || name == "tModLoaderDebug" || name == "tModLoaderServerDebug")
+					return Assembly.GetExecutingAssembly();
+
+				return null;
 			};
 		}
 
