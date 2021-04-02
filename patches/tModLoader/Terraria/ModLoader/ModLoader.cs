@@ -95,7 +95,6 @@ namespace Terraria.ModLoader
 		{
 			FileAssociationSupport.UpdateFileAssociation();
 			GLCallLocker.Init();
-			HiDefGraphicsIssues.Init();
 			MonoModHooks.Initialize();
 			ZipExtractFix.Init();
 			XnaTitleContainerRelativePathFix.Init();

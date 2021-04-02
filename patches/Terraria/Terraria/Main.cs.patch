@@ -516,14 +516,15 @@
  
  			if (NPC.MoonLordCountdown > 0) {
  				NPC.MoonLordCountdown--;
-@@ -50242,23 +_,31 @@
+@@ -50241,6 +_,7 @@
+ 		}
  
  		public static void SetDisplayMode(int width, int height, bool fullscreen) {
- 			bool flag = false;
 +#if WINDOWS
+ 			bool flag = false;
  			Form form = (Form)Control.FromHandle(instance.Window.Handle);
  			screenMaximized = (form.WindowState == FormWindowState.Maximized);
- 			if (screenBorderless && screenMaximized && !graphics.IsFullScreen) {
+@@ -50248,17 +_,24 @@
  				screenMaximized = false;
  				form.WindowState = FormWindowState.Normal;
  			}
@@ -571,14 +572,20 @@
  			if (!fullscreen && !flag2) {
  				if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  					width = form.ClientSize.Width;
-@@ -50308,6 +_,7 @@
+@@ -50308,9 +_,10 @@
  					flag2 = true;
  				}
  			}
+-
+-			width &= 0x7FFFFFFE;
+-			height &= 0x7FFFFFFE;
 +#endif
- 
- 			width &= 0x7FFFFFFE;
- 			height &= 0x7FFFFFFE;
++			//unknown justification for preventing odd window sizes. Causes excessive device resets. - ChickenBones
++			//width &= 0x7FFFFFFE;
++			//height &= 0x7FFFFFFE;
+ 			width = Math.Max(width, minScreenW);
+ 			height = Math.Max(height, minScreenH);
+ 			if (graphics.IsFullScreen != fullscreen) {
 @@ -50338,6 +_,7 @@
  				PendingResolutionWidth = screenWidth;
  				PendingResolutionHeight = screenHeight;
