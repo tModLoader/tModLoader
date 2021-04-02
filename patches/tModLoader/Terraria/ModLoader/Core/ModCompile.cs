@@ -11,7 +11,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Localization;
@@ -73,8 +72,6 @@ namespace Terraria.ModLoader.Core
 			if (!Directory.Exists(modReferencesPath))
 				Directory.CreateDirectory(modReferencesPath);
 
-			var tMLDir = Assembly.GetExecutingAssembly().Location;
-
 			// Version checking
 			string touchStamp = BuildInfo.BuildIdentifier;
 			string touchFile = Path.Combine(modReferencesPath, "touch");
@@ -108,16 +105,23 @@ namespace Terraria.ModLoader.Core
 
 			var referencesXMLList = libs.Select(p => MakeRef(p)).ToList();
 
-			referencesXMLList.Insert(0, MakeRef("$(tMLPath)", "Terraria"));
+			referencesXMLList.Insert(0, MakeRef("$(tMLBuildPath)", "Terraria"));
 
+			var tMLDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+#if DEBUG
+			var tMLSuffix = "Debug";
+#else
+			var tMLSuffix = "";
+#endif
 			char s = Path.DirectorySeparatorChar;
 			string tModLoaderTargets = $@"<?xml version=""1.0"" encoding=""utf-8""?>
 				<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
 				  <PropertyGroup>
 					<TerrariaSteamPath>{System.Security.SecurityElement.Escape(tMLDir)}</TerrariaSteamPath>
-					<tMLPath>$(TerrariaSteamPath){s}tModLoader.exe</tMLPath>
-					<tMLServerPath>$(TerrariaSteamPath){s}tModLoaderServer.exe</tMLServerPath>
-					<tMLBuildServerPath>$(TerrariaSteamPath){s}tModLoaderServer.dll</tMLBuildServerPath>
+					<tMLPath>$(TerrariaSteamPath){s}tModLoader{tMLSuffix}.exe</tMLPath>
+					<tMLServerPath>$(TerrariaSteamPath){s}tModLoaderServer{tMLSuffix}.exe</tMLServerPath>
+					<tMLBuildPath>$(TerrariaSteamPath){s}tModLoader{tMLSuffix}.dll</tMLBuildPath>
+					<tMLBuildServerPath>$(TerrariaSteamPath){s}tModLoaderServer{tMLSuffix}.dll</tMLBuildServerPath>
 				  </PropertyGroup>
 				  <ItemGroup>
 				{string.Join("\n", referencesXMLList)}
@@ -187,6 +191,9 @@ namespace Terraria.ModLoader.Core
 
 		internal static void BuildModCommandLine(string modFolder)
 		{
+			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
+			Lang.InitializeLegacyLocalization();
+
 			// Once we get to this point, the application is guaranteed to exit
 			var lockFile = AcquireConsoleBuildLock();
 			try {
@@ -314,6 +321,8 @@ namespace Terraria.ModLoader.Core
 
 		private void VerifyModAssembly(string modName, string dllPath)
 		{
+			AssemblyManager.AddAssemblyResolver();
+
 			var newContext = new AssemblyLoadContext($"{modName} compile checks", true);
 			try {
 				var asm = newContext.LoadFromAssemblyPath(dllPath);

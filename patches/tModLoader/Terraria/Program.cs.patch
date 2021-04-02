@@ -8,11 +8,12 @@
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
-@@ -13,12 +_,14 @@
+@@ -13,12 +_,15 @@
  using System.Windows.Forms;
  using Terraria.Initializers;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Core;
 +using Terraria.ModLoader.Exceptions;
  using Terraria.Social;
  using Terraria.Utilities;
@@ -73,7 +74,7 @@
  		}
  
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -142,27 +_,52 @@
+@@ -142,27 +_,57 @@
  			}
  		}
  
@@ -101,6 +102,11 @@
 +				DisplayException(e);
 +				return;
 +			}
++
++			if (LaunchInitializer.TryParameter("-build") is string build)
++				// Inside the build from command line, the application exits
++				// Anything beyond this point will not be executed
++				ModCompile.BuildModCommandLine(build);
 +
 +			LaunchGame_();
 +		}

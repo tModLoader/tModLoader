@@ -51,18 +51,10 @@
  		}
  
  		private static void LoadServerParameters(Main game) {
-@@ -100,6 +_,24 @@
+@@ -100,6 +_,16 @@
  			if ((s2 = TryParameter("-language")) != null)
  				LanguageManager.Instance.SetLanguage(s2);
  
-+			// We handle the build parameter this far in
-+			// so vanilla can take care of loading the appropriate localization keys beforehand
-+			string build;
-+			if ((build = TryParameter("-build")) != null)
-+				// Inside the build from command line, the application exits
-+				// Anything beyond this point will not be executed
-+				ModCompile.BuildModCommandLine(build);
-+
 +			string publish;
 +			if ((publish = LaunchInitializer.TryParameter("-publish")) != null) {
 +				ModLoader.UI.UIModSourceItem.PublishModCommandLine(publish, TryParameter("-passphrase"), TryParameter("-steamid64"));
@@ -76,11 +68,10 @@
  			string worldName;
  			if ((worldName = TryParameter("-worldname")) != null)
  				game.SetWorldName(worldName);
-@@ -107,6 +_,15 @@
- 			string newMOTD;
+@@ -108,6 +_,15 @@
  			if ((newMOTD = TryParameter("-motd")) != null)
  				game.NewMOTD(newMOTD);
-+
+ 
 +			string modPath;
 +			if ((modPath = TryParameter(new string[] {
 +				"-modpath"
@@ -89,6 +80,16 @@
 +
 +			if (HasParameter("-showserverconsole"))
 +				Main.showServerConsole = true;
- 
++
  			string banFilePath;
  			if ((banFilePath = TryParameter("-banlist")) != null)
+ 				Netplay.BanFilePath = banFilePath;
+@@ -156,7 +_,7 @@
+ 			return false;
+ 		}
+ 
+-		private static string TryParameter(params string[] keys) {
++		public static string TryParameter(params string[] keys) {
+ 			for (int i = 0; i < keys.Length; i++) {
+ 				if (Program.LaunchParameters.TryGetValue(keys[i], out string value)) {
+ 					if (value == null)
