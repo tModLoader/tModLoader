@@ -18,7 +18,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -18,24 +_,29 @@
+@@ -18,23 +_,29 @@
    </PropertyGroup>
    <PropertyGroup>
      <OutputName>$(AssemblyName)</OutputName>
@@ -42,7 +42,6 @@
 +    <Reference Include="NVorbis" />    
      <Reference Include="Newtonsoft.Json" />
 -    <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
--    <Reference Include="NVorbis.System.ValueTuple" />
      <Reference Include="RailSDK.Net" />
      <ProjectReference Include="../ReLogic/ReLogic.csproj">
        <Private>false</Private>
@@ -54,7 +53,7 @@
      </EmbeddedResource>
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
-@@ -44,29 +_,73 @@
+@@ -43,29 +_,73 @@
      </Reference>
    </ItemGroup>
    <ItemGroup>

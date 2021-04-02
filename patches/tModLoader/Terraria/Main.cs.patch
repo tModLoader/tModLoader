@@ -45,8 +45,8 @@
  		public delegate void OnPlayerSelected(PlayerFileData player);
 @@ -241,7 +_,7 @@
  		public static NPCHeadRenderer BossNPCHeadRenderer = null;
- 		public static string versionNumber = "v1.4.2";
- 		public static string versionNumber2 = "v1.4.2";
+ 		public static string versionNumber = "v1.4.2.1";
+ 		public static string versionNumber2 = "v1.4.2.1";
 -		public static string SavePath = Program.LaunchParameters.ContainsKey("-savedirectory") ? Program.LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria");
 +		public static string SavePath = Program.SavePath;
  		public static bool AnnouncementBoxDisabled;
@@ -392,8 +392,8 @@
  			mouseColorSlider.SetHSL(mouseColor);
  			mouseBorderColorSlider.SetHSL(MouseBorderColor);
  			mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
--			if (currentValue != 235)
-+			if (currentValue != 235 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
+-			if (currentValue != 236)
++			if (currentValue != 236 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 +				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
 +			}

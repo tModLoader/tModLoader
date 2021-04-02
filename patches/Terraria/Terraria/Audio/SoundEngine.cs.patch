@@ -8,7 +8,7 @@
  		private static LegacySoundPlayer _legacyPlayer;
  		private static SoundPlayer _player;
  		private static bool _areSoundsPaused;
-@@ -59,31 +_,52 @@
+@@ -69,31 +_,52 @@
  		}
  
  		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
@@ -64,7 +64,7 @@
  		}
  
  		public static void StopTrackedSounds() {
-@@ -92,10 +_,14 @@
+@@ -102,10 +_,14 @@
  		}
  
  		public static SoundEffect GetTrackableSoundByStyleId(int id) {
@@ -79,7 +79,7 @@
  		}
  
  		public static void StopAmbientSounds() {
-@@ -104,10 +_,14 @@
+@@ -114,10 +_,14 @@
  		}
  
  		public static ActiveSound FindActiveSound(SoundStyle style) {
