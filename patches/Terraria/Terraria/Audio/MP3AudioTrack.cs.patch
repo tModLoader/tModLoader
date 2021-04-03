@@ -1,11 +1,12 @@
 --- src/decompiled/Terraria/Audio/MP3AudioTrack.cs
 +++ src/Terraria/Terraria/Audio/MP3AudioTrack.cs
-@@ -1,3 +_,4 @@
+@@ -1,4 +_,5 @@
 +#if CLIENT
  using Microsoft.Xna.Framework.Audio;
  using MP3Sharp;
+ using MP3Sharp.Decoding;
  using System.IO;
-@@ -34,3 +_,4 @@
+@@ -48,3 +_,4 @@
  		}
  	}
  }
