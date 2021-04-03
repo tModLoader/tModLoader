@@ -1,7 +1,6 @@
 --- src/Terraria/Terraria/Audio/LegacyAudioSystem.cs
 +++ src/tModLoader/Terraria/Audio/LegacyAudioSystem.cs
-@@ -3,7 +_,8 @@
- using System;
+@@ -4,6 +_,7 @@
  using System.Collections;
  using System.Collections.Generic;
  using System.IO;

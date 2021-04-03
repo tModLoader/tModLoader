@@ -39,8 +39,8 @@
 +    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />
      <Reference Include="Newtonsoft.Json" />
 -    <Reference Include="NVorbis" />
-+    <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
 -    <Reference Include="RailSDK.Net" />
++    <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
 +    <Reference Include="RailSDK.Net">
 +      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/RailSDK.Net.dll</HintPath>
 +      <HintPath Condition="$(DefineConstants.Contains('MAC'))">Libraries/Mac/RailSDK.Net.dll</HintPath>
