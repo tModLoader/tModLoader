@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/Graphics/Capture/CaptureBiome.cs
++++ src/tModLoader/Terraria/Graphics/Capture/CaptureBiome.cs
+@@ -164,7 +_,7 @@
+ 				case 9:
+ 					return Styles.Mushroom;
+ 				default:
+-					return null;
++					return Main.LocalPlayer.currentModBiomeAtmosphere.captureStyle;
+ 			}
+ 		}
+ 

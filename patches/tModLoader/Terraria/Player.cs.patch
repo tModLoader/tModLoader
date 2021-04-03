@@ -1825,7 +1825,7 @@
  
  		public int GetPrimaryBiome() {
 +			// Hijack this for modded:
-+			return lastPrimaryBiomeID = BiomeLoader.GetPrimaryBiome(this);
++			return BiomeLoader.GetPrimaryBiome(this);
 +
  			if (ZoneDungeon)
  				return 8;
@@ -1839,12 +1839,13 @@
  			ManageSpecialBiomeVisuals("Stardust", ZoneTowerStardust, value4 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Nebula", ZoneTowerNebula, value3 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Vortex", ZoneTowerVortex, value2 - new Vector2(0f, 10f));
-@@ -11691,6 +_,9 @@
+@@ -11691,6 +_,10 @@
  				}
  			}
  
 +			BiomeLoader.SetBiomeAtmosphere(this);
 +
++			zonePurity = InZonePurity();
 +			BiomeLoader.PostUpdateBiome(this);
  			if (!dead) {
  				Point point2 = base.Center.ToTileCoordinates();

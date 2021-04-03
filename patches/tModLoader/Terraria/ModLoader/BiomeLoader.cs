@@ -8,6 +8,7 @@ using System.Reflection;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.Personalities;
+using Terraria.Graphics.Capture;
 
 namespace Terraria.ModLoader
 {
@@ -110,31 +111,30 @@ namespace Terraria.ModLoader
 		}
 
 		public struct BiomeAtmosphere {
-			internal Func<IAudioTrack> music;
+			internal bool anyActive;
+			internal Func<int> music;
 			internal Func<Texture2D> mapBG;
-			internal Func<Texture2D> worldBG;
+			internal CaptureBiome captureStyle;
 			internal byte weight;
 		}
 
-		public static bool SetBiomeAtmosphere(Player player) {
-			BiomeAtmosphere result;
+		public static void SetBiomeAtmosphere(Player player) {
+			BiomeAtmosphere result = new BiomeAtmosphere();
 			var weight = 0;
 
 			for (int i = 0; i < biomes.Count; i++ ) {
 				var tst = biomes[i].GetBiomeAtmosphere(player);
-				if (tst.weight > weight) {
+				byte tmp = Math.Max(Math.Min(tst.weight, (byte)199), (byte)0);
+				if (tmp > weight) {
 					result = tst;
-					weight = tst.weight;
+					weight = tmp;
 				}
 			}
 
 			if (weight == 0)
-				return false;
+				result.anyActive = false;
 
-
-			//TODO: Do some stuff to actually load textures, music
-
-			return true;
+			player.currentModBiomeAtmosphere = result;
 		}
 
 		internal struct BiomeWeight

@@ -592,7 +592,6 @@ namespace Terraria.ModLoader
 			if (!Main.dedServ) {
 				SoundLoader.ResizeAndFillArrays();
 				BackgroundTextureLoader.ResizeAndFillArrays();
-				UgBgStyleLoader.ResizeAndFillArrays();
 				SurfaceBgStyleLoader.ResizeAndFillArrays();
 				GlobalBgStyleLoader.ResizeAndFillArrays(unloading);
 				GoreLoader.ResizeAndFillArrays();

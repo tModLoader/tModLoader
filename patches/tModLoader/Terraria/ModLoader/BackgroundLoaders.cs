@@ -7,6 +7,53 @@ using Terraria.Graphics.Effects;
 
 namespace Terraria.ModLoader
 {
+	public static class BackgroundLoader {
+		internal static int ReserveBackgroundSlot(ref int nextBackground) {
+			int reserve = nextBackground;
+			nextBackground++;
+			return reserve;
+		}
+	}
+	
+	//todo: further documentation
+	/// <summary>
+	/// This is the class that keeps track of all modded background textures and their slots/IDs.
+	/// </summary>
+	public static class BackgroundTextureLoader
+	{
+		public const int vanillaBackgroundTextureCount = Main.maxBackgrounds;
+		private static int nextBackground = vanillaBackgroundTextureCount;
+		internal static IDictionary<string, int> backgrounds = new Dictionary<string, int>();
+
+		internal static int ReserveBackgroundSlot() => BackgroundLoader.ReserveBackgroundSlot(ref nextBackground);
+
+		/// <summary>
+		/// Returns the slot/ID of the background texture with the given name.
+		/// </summary>
+		public static int GetBackgroundSlot(string texture) => backgrounds.TryGetValue(texture, out int slot) ? slot : -1;
+
+		internal static void ResizeAndFillArrays() {
+			Array.Resize(ref TextureAssets.Background, nextBackground);
+			Array.Resize(ref Main.backgroundHeight, nextBackground);
+			Array.Resize(ref Main.backgroundWidth, nextBackground);
+
+			foreach (string texture in backgrounds.Keys) {
+				int slot = backgrounds[texture];
+				var tex = ModContent.GetTexture(texture);
+
+				TextureAssets.Background[slot] = tex;
+				Main.backgroundWidth[slot] = tex.Width();
+				Main.backgroundHeight[slot] = tex.Height();
+			}
+		}
+
+		internal static void Unload() {
+			nextBackground = vanillaBackgroundTextureCount;
+			backgrounds.Clear();
+		}
+	}
+
+
 	//todo: further documentation
 	/// <summary>
 	/// This serves as the central class from which ModUgBgStyle functions are supported and carried out.
@@ -17,11 +64,7 @@ namespace Terraria.ModLoader
 		private static int nextUgBgStyle = vanillaUgBgStyleCount;
 		internal static readonly IList<ModUgBgStyle> ugBgStyles = new List<ModUgBgStyle>();
 
-		internal static int ReserveBackgroundSlot() {
-			int reserve = nextUgBgStyle;
-			nextUgBgStyle++;
-			return reserve;
-		}
+		internal static int ReserveBackgroundSlot() => BackgroundLoader.ReserveBackgroundSlot(ref nextUgBgStyle);
 
 		/// <summary>
 		/// Returns the ModUgBgStyle object with the given ID.
@@ -29,9 +72,6 @@ namespace Terraria.ModLoader
 		public static ModUgBgStyle GetUgBgStyle(int style) {
 			return style >= vanillaUgBgStyleCount && style < nextUgBgStyle
 				? ugBgStyles[style - vanillaUgBgStyleCount] : null;
-		}
-
-		internal static void ResizeAndFillArrays() {
 		}
 
 		internal static void Unload() {
@@ -72,16 +112,12 @@ namespace Terraria.ModLoader
 		public const int VanillaSurfaceBgStyleCount = Main.BG_STYLES_COUNT;
 
 		private static int nextSurfaceBgStyle = VanillaSurfaceBgStyleCount;
-		
+
 		internal static readonly IList<ModSurfaceBgStyle> surfaceBgStyles = new List<ModSurfaceBgStyle>();
 
 		//public static int SurfaceStyleCount => nextSurfaceBackgroundStyle;
 
-		internal static int ReserveBackgroundSlot() {
-			int reserve = nextSurfaceBgStyle;
-			nextSurfaceBgStyle++;
-			return reserve;
-		}
+		internal static int ReserveBackgroundSlot() => BackgroundLoader.ReserveBackgroundSlot(ref nextSurfaceBgStyle);
 
 		/// <summary>
 		/// Returns the ModSurfaceBgStyle object with the given ID.
@@ -228,7 +264,7 @@ namespace Terraria.ModLoader
 
 					Main.instance.bgStartX = (int)(-Math.IEEERemainder(Main.screenPosition.X * Main.instance.bgParallax, Main.bgWidthScaled) - (Main.bgWidthScaled / 2));
 					Main.instance.bgTopY = (int)((-Main.screenPosition.Y + Main.instance.screenOff / 2f) / (Main.worldSurface * 16.0) * a + b) + (int)Main.instance.scAdj;
-					
+
 					if (Main.gameMenu) {
 						Main.instance.bgTopY = 320;
 					}

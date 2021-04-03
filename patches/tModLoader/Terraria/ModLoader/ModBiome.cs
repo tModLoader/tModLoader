@@ -4,24 +4,36 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.Personalities;
+using Terraria.Graphics.Capture;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class represents a biome added by a mod. It exists to centralize various biome related hooks, handling a lot of biome boilerplate. Use its various logic hooks act as if they were in ModPlayer, and use ModifyWorldGenTasks as if it were in ModWorld.
 	/// </summary>
-	public abstract class ModBiome : ModType
+	public abstract class ModBiome : ModSystem
 	{
 		internal int index;
 
-		// Biome information
-
+		// Basic Biome information
 		public bool isPrimaryBiome = false;
+
+		// Capture Camera
+		public virtual CaptureBiome.TileColorStyle tileColorStyle => CaptureBiome.TileColorStyle.Normal;
+		public virtual int waterStyle => 0;
+		internal int backgroundTextureSlot => BackgroundTextureLoader.GetBackgroundSlot(biomeTexture);
+
+		// Biome Atmosphere
+		public virtual string biomeTexture => null;
+		public virtual Texture2D GetBiomeMapBackground() => null;
+		public virtual int biomeMusic() => 0;
+
+
+		// Bestiary properties
 		public virtual string translatedNPCMoodBiome => "the UnknownBiome";
 		public virtual string translatedBiome => "UnknownBiome";
 		public virtual string translatedBiomeActiveCondition => "SomeUnknownCondition";
 		public virtual List<string> namesOfYourMusicTracks => new List<string>() { "SomeUnknownAudio" };
-
 
 		protected override void Register() {
 			ModTypeLookup<ModBiome>.Register(this);
@@ -75,10 +87,11 @@ namespace Terraria.ModLoader
 
 		internal BiomeLoader.BiomeAtmosphere GetBiomeAtmosphere(Player player) {
 			var result = new BiomeLoader.BiomeAtmosphere() {
+				anyActive = true,
 				mapBG = GetBiomeMapBackground,
-				music = GetBiomeMusic,
-				worldBG = GetBiomeBackground,
-				weight = GetBiomeStrength(player)
+				music = biomeMusic,
+				weight = GetBiomeStrength(player),
+				captureStyle = new CaptureBiome(backgroundTextureSlot, waterStyle, tileColorStyle)
 			};
 
 			if (!player.modBiomeFlags[index]) {
@@ -87,11 +100,5 @@ namespace Terraria.ModLoader
 
 			return result;
 		} 
-
-		public virtual Texture2D GetBiomeBackground() => null;
-
-		public virtual Texture2D GetBiomeMapBackground() => null;
-
-		public virtual IAudioTrack GetBiomeMusic() => null;
 	}
 }
