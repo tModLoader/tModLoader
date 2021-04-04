@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -62,50 +63,20 @@ namespace Terraria.ModLoader.Core
 
 		public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
 
-		internal static readonly string modReferencesPath = Path.Combine(Program.SavePath, "references");
+		private static readonly string oldModReferencesPath = Path.Combine(Program.SavePath, "references");
+		private static readonly string modTargetsPath = Path.Combine(ModSourcePath, "tModLoader.targets");
 		private static bool referencesUpdated = false;
-		internal static void UpdateReferencesFolder(bool forceRefUpdates = false)
+		internal static void UpdateReferencesFolder()
 		{
 			if (referencesUpdated)
 				return;
 
-			if (!Directory.Exists(modReferencesPath))
-				Directory.CreateDirectory(modReferencesPath);
-
-			// Version checking
-			string touchStamp = BuildInfo.BuildIdentifier;
-			string touchFile = Path.Combine(modReferencesPath, "touch");
-			string lastTouch = File.Exists(touchFile) ? File.ReadAllText(touchFile) : null;
-			if (touchStamp == lastTouch && !forceRefUpdates) {
-				referencesUpdated = true;
-				return;
+			try {
+				if (Directory.Exists(oldModReferencesPath))
+					Directory.Delete(oldModReferencesPath, true);
+			} catch (Exception e) {
+				Logging.tML.Error("Failed to delete old /references dir", e);
 			}
-
-			// this will extract all the embedded dlls, and grab a reference to the GAC assemblies
-			var libs = GetTerrariaReferences();
-
-			// delete any extra references that no-longer exist
-			foreach (string file in Directory.GetFiles(modReferencesPath, "*.dll"))
-				if (!libs.Any(lib => Path.GetFileName(lib) == Path.GetFileName(file)))
-					File.Delete(file);
-
-			// replace tML lib with inferred paths based on names 
-			libs.RemoveAt(0);
-
-			string MakeRef(string path, string name = null)
-			{
-				if (name == null)
-					name = Path.GetFileNameWithoutExtension(path);
-
-				if (Path.GetDirectoryName(path) == modReferencesPath)
-					path = "$(MSBuildThisFileDirectory)" + Path.GetFileName(path);
-
-				return $"    <Reference Include=\"{System.Security.SecurityElement.Escape(name)}\">\n      <HintPath>{System.Security.SecurityElement.Escape(path)}</HintPath>\n    </Reference>";
-			}
-
-			var referencesXMLList = libs.Select(p => MakeRef(p)).ToList();
-
-			referencesXMLList.Insert(0, MakeRef("$(tMLBuildPath)", "Terraria"));
 
 			var tMLDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 #if DEBUG
@@ -113,23 +84,33 @@ namespace Terraria.ModLoader.Core
 #else
 			var tMLSuffix = "";
 #endif
-			char s = Path.DirectorySeparatorChar;
-			string tModLoaderTargets = $@"<?xml version=""1.0"" encoding=""utf-8""?>
-				<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
-				  <PropertyGroup>
-					<TerrariaSteamPath>{System.Security.SecurityElement.Escape(tMLDir)}</TerrariaSteamPath>
-					<tMLPath>$(TerrariaSteamPath){s}tModLoader{tMLSuffix}.exe</tMLPath>
-					<tMLServerPath>$(TerrariaSteamPath){s}tModLoaderServer{tMLSuffix}.exe</tMLServerPath>
-					<tMLBuildPath>$(TerrariaSteamPath){s}tModLoader{tMLSuffix}.dll</tMLBuildPath>
-					<tMLBuildServerPath>$(TerrariaSteamPath){s}tModLoaderServer{tMLSuffix}.dll</tMLBuildServerPath>
-				  </PropertyGroup>
-				  <ItemGroup>
-				{string.Join("\n", referencesXMLList)}
-				  </ItemGroup>
-				</Project>";
 
-			File.WriteAllText(Path.Combine(modReferencesPath, "tModLoader.targets"), tModLoaderTargets);
-			File.WriteAllText(touchFile, touchStamp);
+			char s = Path.DirectorySeparatorChar;
+			string tModLoaderTargets = $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+	<PropertyGroup>
+		<TerrariaSteamPath>{SecurityElement.Escape(tMLDir)}</TerrariaSteamPath>
+		<tMLLibraryPath>$(TerrariaSteamPath){s}Libraries</tMLLibraryPath>
+		<tMLName>tModLoader{tMLSuffix}</tMLName>
+		<tMLServerName>tModLoaderServer{tMLSuffix}</tMLServerName>
+		<tMLPath>$(TerrariaSteamPath){s}$(tMLName).exe</tMLPath>
+		<tMLServerPath>$(TerrariaSteamPath){s}$(tMLServerName).exe</tMLServerPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include=""$(TerrariaSteamPath)/$(tMLName).dll"" />
+		<Reference Include=""$(tMLLibraryPath)/**/*.dll"" />
+		<Reference Remove=""$(tMLLibraryPath)/Native/**"" />
+		<Reference Remove=""$(tMLLibraryPath)/**/runtime*/**"" />
+		<Reference Remove=""$(tMLLibraryPath)/**/*.resources.dll"" />
+	</ItemGroup>
+	<Target Name=""BuildMod"" AfterTargets=""Build"">
+		<Exec Command=""dotnet $(tMLServerName).dll -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)"" WorkingDirectory=""$(TerrariaSteamPath)""/>
+	</Target>
+</Project>";
+
+			var bytes = Encoding.UTF8.GetBytes(tModLoaderTargets);
+			if (!File.Exists(modTargetsPath) || !Enumerable.SequenceEqual(bytes, File.ReadAllBytes(modTargetsPath)))
+				File.WriteAllBytes(modTargetsPath, bytes);
+
 			referencesUpdated = true;
 		}
 
@@ -195,7 +176,6 @@ namespace Terraria.ModLoader.Core
 			Lang.InitializeLegacyLocalization();
 
 			// Once we get to this point, the application is guaranteed to exit
-			var lockFile = AcquireConsoleBuildLock();
 			try {
 				new ModCompile(new ConsoleBuildStatus()).Build(modFolder);
 			}
@@ -208,9 +188,6 @@ namespace Terraria.ModLoader.Core
 			catch (Exception e) {
 				Console.Error.WriteLine(e);
 				Environment.Exit(1);
-			}
-			finally {
-				lockFile.Close();
 			}
 			// Mod was built with success, exit code 0 indicates success.
 			Environment.Exit(0);
@@ -425,8 +402,6 @@ namespace Terraria.ModLoader.Core
 
 		private void CompileMod(BuildingMod mod, string outputPath)
 		{
-			UpdateReferencesFolder(true);
-
 			status.SetStatus(Language.GetTextValue("tModLoader.Compiling", Path.GetFileName(outputPath)));
 
 			var refs = new List<string>();
@@ -505,21 +480,9 @@ namespace Terraria.ModLoader.Core
 				executingAssembly.Location
 			};
 
-			// avoid a double extract of the embedded dlls
-			if (referencesUpdated) {
-				refs.AddRange(Directory.GetFiles(modReferencesPath, "*.dll"));
-				return refs;
-			}
-
-			// extract embedded resource dlls to the references path rather than the tempDir
-			foreach (string resName in executingAssembly.GetManifestResourceNames().Where(n => n.EndsWith(".dll"))) {
-				string path = Path.Combine(modReferencesPath, Path.GetFileName(resName));
-
-				using (Stream res = executingAssembly.GetManifestResourceStream(resName), file = File.Create(path))
-					res.CopyTo(file);
-
-				refs.Add(path);
-			}
+			throw new NotImplementedException();
+			
+			// iterate the libs folder with the appropriate filters
 
 			return refs;
 		}
@@ -550,14 +513,6 @@ namespace Terraria.ModLoader.Core
 			var results = comp.Emit(peStream, pdbStream, options: emitOptions);
 
 			return results.Diagnostics.Where(d => d.Severity >= DiagnosticSeverity.Warning).ToArray();
-			/*errors.Add(new CompilerError {
-				ErrorNumber = d.Id,
-				IsWarning = d.Severity == DiagnosticSeverity.Warning,
-				ErrorText = d.GetMessage(),
-				FileName = loc.Path ?? "",
-				Line = loc.StartLinePosition.Line + 1,
-				Column = loc.StartLinePosition.Character
-			});*/
 		}
 
 		private static void SplitRefsByException(List<string> refs, out List<string> actualAssemblies) {
@@ -595,22 +550,6 @@ namespace Terraria.ModLoader.Core
 				}
 				if (!found) {
 					actualAssemblies.Add(test);
-				}
-			}
-		}
-		private static FileStream AcquireConsoleBuildLock()
-		{
-			var path = Path.Combine(modReferencesPath, "buildlock");
-			bool first = true;
-			while (true) {
-				try {
-					return new FileStream(path, FileMode.OpenOrCreate);
-				}
-				catch (IOException) {
-					if (first) {
-						Console.WriteLine("Waiting for other builds to complete");
-						first = false;
-					}
 				}
 			}
 		}
