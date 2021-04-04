@@ -95,9 +95,9 @@ namespace Terraria.ModLoader.Engine
 			SocialAPI.LoadSteam();
 			string terrariaInstallLocation = Steam.GetSteamTerrariaInstallDir();
 			string terrariaContentLocation = Path.Combine(terrariaInstallLocation, TmlContentDirectory);
-#if MAC
-			terrariaContentLocation = Path.Combine(terrariaInstallLocation, "../Resources/Content");
-#endif
+			if (Platform.IsOSX) {
+				terrariaContentLocation = Path.Combine(terrariaInstallLocation, "../Resources/Content");
+			}
 
 			if (!Directory.Exists(terrariaContentLocation)) {
 				Exit(Language.GetTextValue("tModLoader.VanillaSteamInstallationNotFound"), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
@@ -126,23 +126,25 @@ namespace Terraria.ModLoader.Engine
 			// If .exe not present, check Terraria directory (Side-by-Side Manual Install)
 			if (!File.Exists(vanillaPath)) {
 				vanillaPath = Path.Combine("..", "Terraria");
-#if MAC
-				// GOG installs to /Applications/Terraria.app, Steam installs to /Applications/Terraria/Terraria.app
-				// working directory is /Applications/tModLoader/tModLoader.app/Contents/MacOS/ for steam manual installs
-				// working directory is /Applications/tModLoader.app/Contents/MacOS/ for GOG installs
-				// Vanilla .exe files are in /Contents/Resources/, not /Contents/MacOS/
-				if (Directory.Exists("../../../../Terraria/Terraria.app/")) {
-					vanillaPath = "../../../../Terraria/Terraria.app/Contents/Resources/";
-					Logging.tML.Info($"Mac installation location found at {vanillaPath}, assuming Steam manual install");
+
+				if (Platform.IsOSX) {
+					// GOG installs to /Applications/Terraria.app, Steam installs to /Applications/Terraria/Terraria.app
+					// working directory is /Applications/tModLoader/tModLoader.app/Contents/MacOS/ for steam manual installs
+					// working directory is /Applications/tModLoader.app/Contents/MacOS/ for GOG installs
+					// Vanilla .exe files are in /Contents/Resources/, not /Contents/MacOS/
+					if (Directory.Exists("../../../../Terraria/Terraria.app/")) {
+						vanillaPath = "../../../../Terraria/Terraria.app/Contents/Resources/";
+						Logging.tML.Info($"Mac installation location found at {vanillaPath}, assuming Steam manual install");
+					}
+					else if (Directory.Exists("../../../Terraria.app/")) {
+						vanillaPath = "../../../Terraria.app/Contents/Resources/";
+						Logging.tML.Info($"Mac installation location found at {vanillaPath}, assuming GOG manual install");
+					}
+					else {
+						Logging.tML.Info($"Mac installation location not found.");
+					}
 				}
-				else if (Directory.Exists("../../../Terraria.app/")) {
-					vanillaPath = "../../../Terraria.app/Contents/Resources/";
-					Logging.tML.Info($"Mac installation location found at {vanillaPath}, assuming GOG manual install");
-				}
-				else {
-					Logging.tML.Info($"Mac installation location not found.");
-				}
-#endif
+
 				string defaultExe = Path.Combine(vanillaPath, DefaultExe);
 				string checkExe = Path.Combine(vanillaPath, CheckExe);
 				vanillaPath = File.Exists(checkExe) ? checkExe : defaultExe;
