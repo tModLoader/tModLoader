@@ -12,20 +12,24 @@ namespace ExampleMod.Content.Mounts
 	public class ExampleCarMount : ModMount
 	{
 		public override void SetDefaults() {
-			MountData.spawnDust = ModContent.DustType<Dusts.Sparkle>();
-			MountData.buff = ModContent.BuffType<Buffs.ExampleCarMountBuff>();
-			MountData.heightBoost = 20;
-			MountData.fallDamage = 0.5f;
-			MountData.runSpeed = 11f;
-			MountData.dashSpeed = 8f;
-			MountData.flightTimeMax = 0;
+			MountData.spawnDust = ModContent.DustType<Dusts.Sparkle>(); // The ID of the dust spawned when mounted or dismounted.
+			MountData.buff = ModContent.BuffType<Buffs.ExampleCarMountBuff>(); // The ID number of the buff assigned to the mount.
+			MountData.heightBoost = 20; // height between the mount and the ground
+			MountData.fallDamage = 0.5f; // fall damage multiplier.
+			MountData.runSpeed = 11f; // The speed of the mount
+			MountData.dashSpeed = 8f; // The speed the mount moves when in the state of dashing.
+			MountData.flightTimeMax = 0; // The amount of time in frames a mount can be in the state of flying.
 			MountData.fatigueMax = 0;
-			MountData.jumpHeight = 5;
-			MountData.acceleration = 0.19f;
-			MountData.jumpSpeed = 4f;
-			MountData.blockExtraJumps = false;
-			MountData.totalFrames = 4;
-			MountData.constantJump = true;
+			MountData.jumpHeight = 5; // How high the mount can jump.
+			MountData.acceleration = 0.19f; // The rate at which the mount speeds up.
+			MountData.jumpSpeed = 4f; // The rate at which the player and mount ascend towards (negative y velocity) the jump height when the jump button is presssed.
+			MountData.blockExtraJumps = false; // determines whether or not you can use a double jump (like cloud in a bottle) while in the mount.
+			MountData.constantJump = true; // Allows you to hold the jump button down.
+
+			// frame data and player offsets
+
+			MountData.totalFrames = 4; // amount of animation frames for the mount
+			// fills an array with values for less repeating code
 			int[] array = new int[MountData.totalFrames];
 			for (int l = 0; l < array.Length; l++) {
 				array[l] = 20;
