@@ -19,7 +19,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -18,51 +_,55 @@
+@@ -18,54 +_,58 @@
    </PropertyGroup>
    <PropertyGroup>
      <PdbFile>bin\$(OutputName)</PdbFile>
@@ -27,9 +27,11 @@
 +    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
    </PropertyGroup>
    <ItemGroup>
+     <Reference Include="CsvHelper" />
 -    <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))" />
 -    <Reference Include="Ionic.Zip.CF" />
 +    <Reference Include="Ionic.Zip.Reduced" />
+     <Reference Include="MP3Sharp" Condition="$(DefineConstants.Contains('CLIENT'))" />
      <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
      <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))" />
      <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
@@ -43,6 +45,7 @@
 +    <Reference Include="MonoMod.RuntimeDetour" />
 +    <Reference Include="MonoMod.Utils" />
      <Reference Include="Newtonsoft.Json" />
+     <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
      <Reference Include="RailSDK.Net" />
      <ProjectReference Include="../ReLogic/ReLogic_LegacyNetFramework.csproj" />
      <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
@@ -51,10 +54,10 @@
 +      <LogicalName>ReLogic.dll</LogicalName>
      </EmbeddedResource>
 -    <Reference Include="Steamworks.NET">
-+    <Reference Include="Steamworks.NET" />
 -      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/Steamworks.NET.dll</HintPath>
 -      <HintPath Condition="$(DefineConstants.Contains('MONO'))">Libraries/Mono/Steamworks.NET.dll</HintPath>
 -    </Reference>
++    <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
      <Reference Include="System" />
      <Reference Include="System.Core" />
@@ -90,7 +93,7 @@
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
-@@ -84,7 +_,11 @@
+@@ -87,7 +_,11 @@
    </Target>
    <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
      <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />

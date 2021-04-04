@@ -1,28 +1,17 @@
 --- src/decompiled/ReLogic/Content/Readers/PngReader.cs
 +++ src/Terraria/ReLogic/Content/Readers/PngReader.cs
-@@ -1,5 +_,6 @@
+@@ -1,5 +_,9 @@
 -using Microsoft.Xna.Framework;
++using Color = Microsoft.Xna.Framework.Color;
  using Microsoft.Xna.Framework.Graphics;
++#if NETCORE
 +using SixLabors.ImageSharp;
 +using SixLabors.ImageSharp.PixelFormats;
++#endif
  using System;
  using System.IO;
  using System.Threading;
-@@ -9,18 +_,19 @@
- 	public class PngReader : IAssetReader, IDisposable
- 	{
- 		private readonly GraphicsDevice _graphicsDevice;
--		private readonly ThreadLocal<Color[]> _colorProcessingCache;
-+		private readonly ThreadLocal<Microsoft.Xna.Framework.Color[]> _colorProcessingCache;
- 		private bool _disposedValue;
- 
- 		public PngReader(GraphicsDevice graphicsDevice) {
- 			_graphicsDevice = graphicsDevice;
--			_colorProcessingCache = new ThreadLocal<Color[]>();
-+			_colorProcessingCache = new ThreadLocal<Microsoft.Xna.Framework.Color[]>();
- 		}
- 
- 		public T FromStream<T>(Stream stream) where T : class {
+@@ -21,6 +_,7 @@
  			if (typeof(T) != typeof(Texture2D))
  				throw AssetLoadException.FromInvalidReader<PngReader, T>();
  

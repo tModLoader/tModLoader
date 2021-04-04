@@ -1,18 +1,18 @@
 --- src/decompiled/Terraria/Graphics/Capture/CaptureCamera.cs
 +++ src/Terraria/Terraria/Graphics/Capture/CaptureCamera.cs
-@@ -1,11 +_,9 @@
- using Microsoft.Xna.Framework;
+@@ -2,8 +_,12 @@
  using Microsoft.Xna.Framework.Graphics;
-+using SixLabors.ImageSharp;
  using System;
  using System.Collections.Generic;
--using System.Drawing;
--using System.Drawing.Imaging;
++#if NETCORE
++using SixLabors.ImageSharp;
++#else
+ using System.Drawing;
+ using System.Drawing.Imaging;
++#endif
  using System.IO;
--using System.Runtime.InteropServices;
+ using System.Runtime.InteropServices;
  using System.Threading;
- using Terraria.Graphics.Effects;
- using Terraria.Localization;
 @@ -14,6 +_,11 @@
  {
  	internal class CaptureCamera

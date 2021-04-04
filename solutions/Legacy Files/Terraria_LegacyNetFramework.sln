@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terraria", "..\src\Terraria\Terraria\Terraria_LegacyNetFramework.csproj", "{630BE316-5EDD-4F27-9983-B3B07662A34E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terraria", "..\..\src\Terraria\Terraria\Terraria_LegacyNetFramework.csproj", "{630BE316-5EDD-4F27-9983-B3B07662A34E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReLogic", "..\src\Terraria\ReLogic\ReLogic_LegacyNetFramework.csproj", "{359B7CB0-9706-4008-8CF9-EB81F8021D59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReLogic", "..\..\src\Terraria\ReLogic\ReLogic_LegacyNetFramework.csproj", "{359B7CB0-9706-4008-8CF9-EB81F8021D59}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
