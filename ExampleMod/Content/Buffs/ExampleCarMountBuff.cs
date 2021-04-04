@@ -1,10 +1,9 @@
 using Terraria;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Buffs
+namespace ExampleMod.Content.Buffs
 {
-	public class CarMount : ModBuff
+	public class ExampleCarMountBuff : ModBuff
 	{
 		public override void SetDefaults() {
 			DisplayName.SetDefault("Car");
@@ -14,7 +13,7 @@ namespace ExampleMod.Buffs
 		}
 
 		public override void Update(Player player, ref int buffIndex) {
-			player.mount.SetMount(MountType<Mounts.Car>(), player);
+			player.mount.SetMount(ModContent.MountType<Mounts.ExampleCarMount>(), player);
 			player.buffTime[buffIndex] = 10;
 		}
 	}

@@ -3,9 +3,8 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
+namespace ExampleMod.Content.Projectiles.Minions
 {
 	/*
 		This file contains all the code necessary for a minion
@@ -21,7 +20,7 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 		This is NOT an in-depth guide to advanced minion AI
 	*/
 
-	public class ExampleMinionBuff : ModBuff
+	public class ExampleSimpleMinionBuff : ModBuff
 	{
 		public override void SetDefaults() {
 			DisplayName.SetDefault("Example Minion");
@@ -31,7 +30,7 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 		}
 
 		public override void Update(Player player, ref int buffIndex) {
-			if (player.ownedProjectileCounts[ProjectileType<ExampleMinion>()] > 0) {
+			if (player.ownedProjectileCounts[ModContent.ProjectileType<ExampleSimpleMinion>()] > 0) {
 				player.buffTime[buffIndex] = 18000;
 			}
 			else {
@@ -41,39 +40,39 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 		}
 	}
 
-	public class ExampleMinionItem : ModItem
+	public class ExampleSimpleMinionItem : ModItem
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Minion Item");
 			Tooltip.SetDefault("Summons an example minion to fight for you");
-			ItemID.Sets.GamepadWholeScreenUseRange[item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
-			ItemID.Sets.LockOnIgnoresCollision[item.type] = true;
+			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
+			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}
 
 		public override void SetDefaults() {
-			item.damage = 30;
-			item.knockBack = 3f;
-			item.mana = 10;
-			item.width = 32;
-			item.height = 32;
-			item.useTime = 36;
-			item.useAnimation = 36;
-			item.useStyle = ItemUseStyleID.SwingThrow;
-			item.value = Item.buyPrice(0, 30, 0, 0);
-			item.rare = ItemRarityID.Cyan;
-			item.UseSound = SoundID.Item44;
+			Item.damage = 30;
+			Item.knockBack = 3f;
+			Item.mana = 10; // mana cost
+			Item.width = 32;
+			Item.height = 32;
+			Item.useTime = 36;
+			Item.useAnimation = 36;
+			Item.useStyle = ItemUseStyleID.Swing; // how the player's arm moves when using the item
+			Item.sellPrice(gold: 30);
+			Item.rare = ItemRarityID.Cyan;
+			Item.UseSound = SoundID.Item44; // What sound should play when using the item
 
 			// These below are needed for a minion weapon
-			item.noMelee = true;
-			item.summon = true;
-			item.buffType = BuffType<ExampleMinionBuff>();
+			Item.noMelee = true; // this item doesn't do any melee damage
+			Item.DamageType = DamageClass.Summon; // Makes the damage register as summon. If your item does not have any damage type, it becomes true damage (which means that damage scalars will not affect it). Be sure to have a damage type.
+			Item.buffType = ModContent.BuffType<ExampleSimpleMinionBuff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
-			item.shoot = ProjectileType<ExampleMinion>();
+			Item.shoot = ModContent.ProjectileType<ExampleSimpleMinion>();
 		}
 
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
-			player.AddBuff(item.buffType, 2);
+			player.AddBuff(Item.buffType, 2);
 
 			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position.
 			position = Main.MouseWorld;
@@ -81,11 +80,10 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 		}
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.SoulofFright, 25);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient(ItemID.SoulofFright, 25)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
 		}
 	}
 
@@ -95,39 +93,39 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 	* If the player targets a certain NPC with right-click, it will fly through tiles to it
 	* If it isn't attacking, it will float near the player with minimal movement
 	*/
-	public class ExampleMinion : ModProjectile
+	public class ExampleSimpleMinion : ModProjectile
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Minion");
 			// Sets the amount of frames this minion has on its spritesheet
-			Main.projFrames[projectile.type] = 4;
+			Main.projFrames[Projectile.type] = 4;
 			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[projectile.type] = true;
+			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
 
 			// These below are needed for a minion
 			// Denotes that this projectile is a pet or minion
-			Main.projPet[projectile.type] = true;
+			Main.projPet[Projectile.type] = true;
 			// This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-			ProjectileID.Sets.MinionSacrificable[projectile.type] = true;
+			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
 			// Don't mistake this with "if this is true, then it will automatically home". It is just for damage reduction for certain NPCs
-			ProjectileID.Sets.Homing[projectile.type] = true;
+			ProjectileID.Sets.CountsAsHoming[Projectile.type] = true;
 		}
 
 		public sealed override void SetDefaults() {
-			projectile.width = 18;
-			projectile.height = 28;
+			Projectile.width = 18;
+			Projectile.height = 28;
 			// Makes the minion go through tiles freely
-			projectile.tileCollide = false;
+			Projectile.tileCollide = false;
 
 			// These below are needed for a minion weapon
 			// Only controls if it deals damage to enemies on contact (more on that later)
-			projectile.friendly = true;
+			Projectile.friendly = true;
 			// Only determines the damage type
-			projectile.minion = true;
+			Projectile.minion = true;
 			// Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-			projectile.minionSlots = 1f;
+			Projectile.minionSlots = 1f;
 			// Needed so the minion doesn't despawn on collision with enemies or tiles
-			projectile.penetrate = -1;
+			Projectile.penetrate = -1;
 		}
 
 		// Here you can decide if your minion breaks things like grass or pots
@@ -141,15 +139,15 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 		}
 
 		public override void AI() {
-			Player player = Main.player[projectile.owner];
+			Player player = Main.player[Projectile.owner];
 
 			#region Active check
 			// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
 			if (player.dead || !player.active) {
-				player.ClearBuff(BuffType<ExampleMinionBuff>());
+				player.ClearBuff(ModContent.BuffType<ExampleSimpleMinionBuff>());
 			}
-			if (player.HasBuff(BuffType<ExampleMinionBuff>())) {
-				projectile.timeLeft = 2;
+			if (player.HasBuff(ModContent.BuffType<ExampleSimpleMinionBuff>())) {
+				Projectile.timeLeft = 2;
 			}
 			#endregion
 
@@ -159,20 +157,20 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 
 			// If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
 			// The index is projectile.minionPos
-			float minionPositionOffsetX = (10 + projectile.minionPos * 40) * -player.direction;
+			float minionPositionOffsetX = (10 + Projectile.minionPos * 40) * -player.direction;
 			idlePosition.X += minionPositionOffsetX; // Go behind the player
 
 			// All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
 
 			// Teleport to player if distance is too big
-			Vector2 vectorToIdlePosition = idlePosition - projectile.Center;
+			Vector2 vectorToIdlePosition = idlePosition - Projectile.Center;
 			float distanceToIdlePosition = vectorToIdlePosition.Length();
 			if (Main.myPlayer == player.whoAmI && distanceToIdlePosition > 2000f) {
 				// Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
 				// and then set netUpdate to true
-				projectile.position = idlePosition;
-				projectile.velocity *= 0.1f;
-				projectile.netUpdate = true;
+				Projectile.position = idlePosition;
+				Projectile.velocity *= 0.1f;
+				Projectile.netUpdate = true;
 			}
 
 			// If your minion is flying, you want to do this independently of any conditions
@@ -180,12 +178,12 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 			for (int i = 0; i < Main.maxProjectiles; i++) {
 				// Fix overlap with other minions
 				Projectile other = Main.projectile[i];
-				if (i != projectile.whoAmI && other.active && other.owner == projectile.owner && Math.Abs(projectile.position.X - other.position.X) + Math.Abs(projectile.position.Y - other.position.Y) < projectile.width) {
-					if (projectile.position.X < other.position.X) projectile.velocity.X -= overlapVelocity;
-					else projectile.velocity.X += overlapVelocity;
+				if (i != Projectile.whoAmI && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
+					if (Projectile.position.X < other.position.X) Projectile.velocity.X -= overlapVelocity;
+					else Projectile.velocity.X += overlapVelocity;
 
-					if (projectile.position.Y < other.position.Y) projectile.velocity.Y -= overlapVelocity;
-					else projectile.velocity.Y += overlapVelocity;
+					if (Projectile.position.Y < other.position.Y) Projectile.velocity.Y -= overlapVelocity;
+					else Projectile.velocity.Y += overlapVelocity;
 				}
 			}
 			#endregion
@@ -193,13 +191,13 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 			#region Find target
 			// Starting search distance
 			float distanceFromTarget = 700f;
-			Vector2 targetCenter = projectile.position;
+			Vector2 targetCenter = Projectile.position;
 			bool foundTarget = false;
 
 			// This code is required if your minion weapon has the targeting feature
 			if (player.HasMinionAttackTargetNPC) {
 				NPC npc = Main.npc[player.MinionAttackTargetNPC];
-				float between = Vector2.Distance(npc.Center, projectile.Center);
+				float between = Vector2.Distance(npc.Center, Projectile.Center);
 				// Reasonable distance away so it doesn't target across multiple screens
 				if (between < 2000f) {
 					distanceFromTarget = between;
@@ -212,10 +210,10 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 				for (int i = 0; i < Main.maxNPCs; i++) {
 					NPC npc = Main.npc[i];
 					if (npc.CanBeChasedBy()) {
-						float between = Vector2.Distance(npc.Center, projectile.Center);
-						bool closest = Vector2.Distance(projectile.Center, targetCenter) > between;
+						float between = Vector2.Distance(npc.Center, Projectile.Center);
+						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
 						bool inRange = between < distanceFromTarget;
-						bool lineOfSight = Collision.CanHitLine(projectile.position, projectile.width, projectile.height, npc.position, npc.width, npc.height);
+						bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
 						// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
 						// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
 						bool closeThroughWall = between < 100f;
@@ -232,7 +230,7 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 			// friendly needs to be set to false so it doesn't damage things like target dummies while idling
 			// Both things depend on if it has a target or not, so it's just one assignment here
 			// You don't need this assignment if your minion is shooting things instead of dealing contact damage
-			projectile.friendly = foundTarget;
+			Projectile.friendly = foundTarget;
 			#endregion
 
 			#region Movement
@@ -245,10 +243,10 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 				// Minion has a target: attack (here, fly towards the enemy)
 				if (distanceFromTarget > 40f) {
 					// The immediate range around the target (so it doesn't latch onto it when close)
-					Vector2 direction = targetCenter - projectile.Center;
+					Vector2 direction = targetCenter - Projectile.Center;
 					direction.Normalize();
 					direction *= speed;
-					projectile.velocity = (projectile.velocity * (inertia - 1) + direction) / inertia;
+					Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
 				}
 			}
 			else {
@@ -269,33 +267,33 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 					// This is a simple movement formula using the two parameters and its desired direction to create a "homing" movement
 					vectorToIdlePosition.Normalize();
 					vectorToIdlePosition *= speed;
-					projectile.velocity = (projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
+					Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
 				}
-				else if (projectile.velocity == Vector2.Zero) {
+				else if (Projectile.velocity == Vector2.Zero) {
 					// If there is a case where it's not moving at all, give it a little "poke"
-					projectile.velocity.X = -0.15f;
-					projectile.velocity.Y = -0.05f;
+					Projectile.velocity.X = -0.15f;
+					Projectile.velocity.Y = -0.05f;
 				}
 			}
 			#endregion
 
 			#region Animation and visuals
 			// So it will lean slightly towards the direction it's moving
-			projectile.rotation = projectile.velocity.X * 0.05f;
+			Projectile.rotation = Projectile.velocity.X * 0.05f;
 
 			// This is a simple "loop through all frames from top to bottom" animation
 			int frameSpeed = 5;
-			projectile.frameCounter++;
-			if (projectile.frameCounter >= frameSpeed) {
-				projectile.frameCounter = 0;
-				projectile.frame++;
-				if (projectile.frame >= Main.projFrames[projectile.type]) {
-					projectile.frame = 0;
+			Projectile.frameCounter++;
+			if (Projectile.frameCounter >= frameSpeed) {
+				Projectile.frameCounter = 0;
+				Projectile.frame++;
+				if (Projectile.frame >= Main.projFrames[Projectile.type]) {
+					Projectile.frame = 0;
 				}
 			}
 
 			// Some visuals here
-			Lighting.AddLight(projectile.Center, Color.White.ToVector3() * 0.78f);
+			Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
 			#endregion
 		}
 	}

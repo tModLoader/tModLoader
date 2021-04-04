@@ -479,7 +479,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				float kitingOffsetX = Utils.Clamp(player.velocity.X * 16, -100, 100);
 				Vector2 position = player.Bottom + new Vector2(kitingOffsetX + Main.rand.Next(-100, 100), Main.rand.Next(50, 100));
 
-				int type = ModContent.ProjectileType<MinionBossEye>();
+				int type = ModContent.ProjectileType<Projectiles.Minions.MinionBossEye>();
 				int damage = NPC.damage / 2;
 				Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
 			}
