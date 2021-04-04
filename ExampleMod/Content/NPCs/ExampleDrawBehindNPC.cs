@@ -7,7 +7,7 @@ namespace ExampleMod.Content.NPCs
 	// This NPC is simply an exhibition of the DrawBehind method.
 	// The npc cycles between all the available "layers" that a ModNPC can be drawn at.
 	// Spawn this NPC with something like Cheat Sheet or Hero's Mod to view the effect.
-	public class DrawBehindNPC : ModNPC
+	public class ExampleDrawBehindNPC : ModNPC
 	{
 		public override void SetStaticDefaults() {
 			// Total count animation frames
