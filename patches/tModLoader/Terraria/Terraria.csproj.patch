@@ -18,7 +18,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -18,23 +_,29 @@
+@@ -18,54 +_,111 @@
    </PropertyGroup>
    <PropertyGroup>
      <OutputName>$(AssemblyName)</OutputName>
@@ -33,28 +33,27 @@
 -    <Reference Include="MP3Sharp" Condition="$(DefineConstants.Contains('CLIENT'))" />
 +    <Reference Include="MP3Sharp" />
 +    <Reference Include="Ionic.Zip.Reduced" />
-+    <Reference Include="Mono.Cecil" />
-+    <Reference Include="Mono.Cecil.Pdb" />
-+    <Reference Include="Mono.Cecil.Mdb" />
 +    <Reference Include="log4net" />
-+    <Reference Include="MonoMod.RuntimeDetour" />
-+    <Reference Include="MonoMod.Utils" />
 +    <Reference Include="NVorbis" />    
      <Reference Include="Newtonsoft.Json" />
 -    <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
      <Reference Include="RailSDK.Net" />
-     <ProjectReference Include="../ReLogic/ReLogic.csproj">
-       <Private>false</Private>
-     </ProjectReference>
-     <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
-       <Link>Libraries/ReLogic/ReLogic.dll</Link>
+-    <ProjectReference Include="../ReLogic/ReLogic.csproj">
+-      <Private>false</Private>
+-    </ProjectReference>
+-    <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
+-      <Link>Libraries/ReLogic/ReLogic.dll</Link>
 -      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
-+      <LogicalName>ReLogic.dll</LogicalName>
-     </EmbeddedResource>
+-    </EmbeddedResource>
++	<ProjectReference Include="../ReLogic/ReLogic.csproj">
++		<!--Version has to match deps.json and project version. Hardcode here as resolving from metadata is difficult without custom Task. Specifically, getting the pdb to output in the right directory-->
++	    <DestinationSubDirectory>Libraries/ReLogic/1.0.0/</DestinationSubDirectory>
++	</ProjectReference>
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
-@@ -43,29 +_,73 @@
-     </Reference>
+-    <Reference Update="@(Reference)">
+-      <Private>False</Private>
+-    </Reference>
    </ItemGroup>
    <ItemGroup>
 +    <EmbeddedResource Include="**\*.png" />
@@ -64,24 +63,10 @@
      <EmbeddedResource Include="IO/Data/*" />
 -    <EmbeddedResource Include="Libraries/Common/**" />
 -    <EmbeddedResource Include="Libraries/FNA/**" />
-+    <EmbeddedResource Include="Libraries/Common/**">
-+      <LogicalName>%(Filename)%(Extension)</LogicalName>
-+    </EmbeddedResource>
-+    <EmbeddedResource Include="Libraries/CsvHelper/**">
-+      <LogicalName>%(Filename)%(Extension)</LogicalName>
-+    </EmbeddedResource>
-+    <EmbeddedResource Include="Libraries/FNA/**">
-+      <LogicalName>%(Filename)%(Extension)</LogicalName>
-+    </EmbeddedResource>
-+    <EmbeddedResource Include="Libraries/MP3Sharp/**">
-+      <LogicalName>%(Filename)%(Extension)</LogicalName>
-+    </EmbeddedResource>
-+    <EmbeddedResource Include="Libraries/NVorbis/**">
-+      <LogicalName>%(Filename)%(Extension)</LogicalName>
-+    </EmbeddedResource>
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
-   </ItemGroup>
+-  </ItemGroup>
++  </ItemGroup> 
    <ItemGroup>
      <Compile Remove="Social/WeGame/AsyncTaskHelper.cs" />
      <Compile Remove="Social/WeGame/CurrentThreadRunner.cs" />
@@ -92,6 +77,7 @@
      <None Update="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
    </ItemGroup>
 +  <ItemGroup>
++	<PackageReference Include="MonoMod.RuntimeDetour" Version="21.04.02.03" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.7.0" />
 +    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
@@ -99,7 +85,6 @@
 +    <PackageReference Include="System.CodeDom" Version="5.0.0" />
 +    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.1" />
 +  </ItemGroup>
-+  
    <Target Name="CopyToSteamDir" AfterTargets="Build">
      <ItemGroup>
        <BinFiles Include="$(TargetDir)**" />
@@ -107,9 +92,14 @@
      <Message Text="Copying $(AssemblyName) to Steam Dir..." Importance="high" />
 -    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)/%(RecursiveDir)" />
 +    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" />
-   </Target>
-+
-+  <Target Name="RedirectBuildFilesToLib" AfterTargets="ResolveLockFileCopyLocalFiles">
++  </Target>
++  <ItemDefinitionGroup>
++	<ReferenceCopyLocalPaths>
++		<DestinationSubDirectory>Libraries\</DestinationSubDirectory>
++	</ReferenceCopyLocalPaths>
++  </ItemDefinitionGroup>
++  <!--See first answer in https://stackoverflow.com/questions/55946010/how-to-specify-output-folder-for-the-referenced-nuget-packages for how this was created-->
++  <Target Name="RedirectNugetFilesToLib" AfterTargets="ResolveLockFileCopyLocalFiles">
 +    <ItemGroup>
 +      <ReferenceCopyLocalPaths>
 +        <DirectoryInPackage>$([System.String]::Copy('%(PathInPackage)').Remove($([System.String]::Copy('%(PathInPackage)').LastIndexOf('/'))))</DirectoryInPackage>
@@ -121,13 +111,41 @@
 +      </ReferenceCopyLocalPaths>
 +    </ItemGroup>
 +  </Target>
-+
-+  <!--Target Name="RedirectPublishFilesToLib" AfterTargets="ComputeResolvedFilesToPublishList">
++  <!-- In order to get pdbs/xmls while waiting for NET6, we use https://github.com/dotnet/sdk/issues/1458#issuecomment-420456386 -->
++  <Target Name="_ResolveCopyLocalNuGetPackagePdbsAndXml" Condition="$(CopyLocalLockFileAssemblies) == true" AfterTargets="ResolveReferences">
 +    <ItemGroup>
-+      <ResolvedFileToPublish Condition=" '%(ResolvedFileToPublish.AssetType)' == 'runtime' OR '%(ResolvedFileToPublish.AssetType)' == 'resources' ">
-+        <RelativePath>Libraries\%(ResolvedFileToPublish.NuGetPackageId)\%(ResolvedFileToPublish.NuGetPackageVersion)\%(ResolvedFileToPublish.PathInPackage)</RelativePath>
-+      </ResolvedFileToPublish>
++      <ReferenceCopyLocalPaths
++        Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).pdb')"
++        Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' and Exists('%(RootDir)%(Directory)%(Filename).pdb')" />
++      <ReferenceCopyLocalPaths
++        Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).xml')"
++        Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' and Exists('%(RootDir)%(Directory)%(Filename).xml')" />
 +    </ItemGroup>
-+  </Target-->
-+
++  </Target>
++  <Target Name="RedirectAssemblyReferencesToLib" AfterTargets="ResolveAssemblyReferences">
++    <ItemGroup>
++      <!--To match deps.json for runtime resolving, paths must be of the form Libraries/<name>/<version>-->
++      <!--Note that associated files, like pdbs/xmls won't be resolved properly here. Prefer nuget packages for that-->
++      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
++        <DirectoryVersion>$([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').Remove($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(", C"))).Substring($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(","))).Substring(10))</DirectoryVersion>
++	</ReferenceCopyLocalPaths>
++      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
++        <DestinationSubDirectory>Libraries\%(ReferenceCopyLocalPaths.OriginalItemSpec)\%(ReferenceCopyLocalPaths.DirectoryVersion)\</DestinationSubDirectory>
++      </ReferenceCopyLocalPaths>
++    </ItemGroup>
++  </Target>
++  <Target Name="OverwriteDevRuntimeTargets" AfterTargets="GenerateBuildRuntimeConfigurationFiles">
++    <PropertyGroup>
++      <DevRuntimeConfig>
++{
++  "runtimeOptions": {
++    "additionalProbingPaths": [
++        "Libraries"
++    ]
++  }
++}
++      </DevRuntimeConfig>
++	</PropertyGroup>
++    <WriteLinesToFile File="$(ProjectRuntimeConfigDevFilePath)" Lines="$(DevRuntimeConfig)" Overwrite="true" Encoding="UTF-8" />
+   </Target>
  </Project>
