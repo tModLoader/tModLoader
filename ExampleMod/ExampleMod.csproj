@@ -18,4 +18,4 @@
     <EmbeddedResource Remove="Old\**" />
     <None Remove="Old\**" />
   </ItemGroup>
-</Project>
+</Project> 

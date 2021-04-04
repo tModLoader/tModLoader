@@ -10,6 +10,7 @@ using System.Threading;
 using Terraria.ModLoader.UI;
 using System.Runtime.Loader;
 using System.Runtime.CompilerServices;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.Core
 {
@@ -134,12 +135,7 @@ namespace Terraria.ModLoader.Core
 
 		private static Mod Instantiate(ModLoadContext mod) {
 			try {
-				Type modType = mod.assembly.GetTypes().SingleOrDefault(t => t.IsSubclassOf(typeof(Mod)));
-				if (modType == null)
-					throw new Exception(mod.Name + " does not have a class extending Mod. Mods need a Mod class to function.") {
-						HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#sequence-contains-no-matching-element-error"
-					};
-
+				VerifyMod(mod.Name, mod.assembly, out var modType);
 				var m = (Mod)Activator.CreateInstance(modType);
 				m.File = mod.modFile;
 				m.Code = mod.assembly;
@@ -156,6 +152,26 @@ namespace Terraria.ModLoader.Core
 			finally {
 				MemoryTracking.Update(mod.Name).code += mod.bytesLoaded;
 			}
+		}
+
+		private static void VerifyMod(string modName, Assembly assembly, out Type modType) {
+			var asmName = new AssemblyName(assembly.FullName).Name;
+			if (asmName != modName)
+				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorModNameDoesntMatchAssemblyName", modName, asmName));
+
+			// at least one of the types must be in a namespace that starts with the mod name
+			if (!assembly.GetTypes().Any(t => t.Namespace.StartsWith(modName))) 
+				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorNamespaceFolderDontMatch"));
+
+			var modTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Mod))).ToArray();
+			if (modTypes.Length > 2)
+				throw new Exception(modName + " has multiple classes extending Mod. Only one Mod per mod is supported at the moment");
+
+			// if a mod has a Mod class, it must have the same internal name as the mod
+			if (modTypes.Length == 1 && modTypes[0].Name != modName) // todo, separate localisation key?
+				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorModNameDoesntMatchAssemblyName", modName, asmName));
+
+			modType = modTypes.SingleOrDefault() ?? typeof(Mod); // Mods don't really need a class extending Mod, we can always just make one for them
 		}
 
 		internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad, CancellationToken token) {

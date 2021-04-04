@@ -219,12 +219,10 @@ namespace Terraria.ModLoader.Core
 			try {
 				status.SetStatus(Language.GetTextValue("tModLoader.Building", mod.Name));
 
-				BuildModForPlatform(mod);
-
-				if (Program.LaunchParameters.TryGetValue("-eac", out var eacValue)) {
-					mod.properties.eacPath = Path.ChangeExtension(eacValue, "pdb");
-					status.SetStatus(Language.GetTextValue("tModLoader.EnabledEAC", mod.properties.eacPath));
-				}
+				BuildMod(mod, out var code, out var pdb);
+				mod.modFile.AddFile(mod.Name+".dll", code);
+				if (pdb != null)
+					mod.modFile.AddFile(mod.Name + ".pdb", pdb);
 
 				PackageMod(mod);
 
@@ -296,35 +294,6 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		private void VerifyModAssembly(string modName, string dllPath)
-		{
-			AssemblyManager.AddAssemblyResolver();
-
-			var newContext = new AssemblyLoadContext($"{modName} compile checks", true);
-			try {
-				var asm = newContext.LoadFromAssemblyPath(dllPath);
-
-				var asmName = new AssemblyName(asm.FullName).Name;
-				if (asmName != modName)
-					throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorModNameDoesntMatchAssemblyName", modName, asmName));
-
-				if (modName.Equals("Terraria", StringComparison.InvariantCultureIgnoreCase))
-					throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorModNamedTerraria"));
-
-				// Verify that folder and namespace match up
-				var modClassType = asm.DefinedTypes.SingleOrDefault(x => x.BaseType?.FullName == "Terraria.ModLoader.Mod");
-				if (modClassType == null)
-					throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorNoModClass"));
-
-				string topNamespace = modClassType.Namespace.Split('.')[0];
-				if (topNamespace != modName)
-					throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorNamespaceFolderDontMatch"));
-			}
-			finally {
-				newContext.Unload();
-			}
-		}
-
 		private List<LocalMod> FindReferencedMods(BuildProperties properties)
 		{
 			var mods = new Dictionary<string, LocalMod>();
@@ -357,52 +326,43 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		private string tempDir = Path.Combine(ModLoader.ModPath, "compile_temp");
-		private void BuildModForPlatform(BuildingMod mod)
-		{
-			try {
-				if (Directory.Exists(tempDir))
-					Directory.Delete(tempDir, true);
-				Directory.CreateDirectory(tempDir);
+		private void BuildMod(BuildingMod mod, out byte[] code, out byte[] pdb) {
+			string dllName = mod.Name + ".dll";
+			string dllPath = null;
+			string pdbPath() => Path.ChangeExtension(dllPath, "pdb");
 
-				string dllName = mod.Name + ".dll";
-				string dllPath = null;
-
-				// look for pre-compiled paths
-				if (mod.properties.noCompile) {
-					dllPath = Path.Combine(mod.path, dllName);
-				}
-				else if (Program.LaunchParameters.TryGetValue("-eac", out var eacValue)) {
-					dllPath = eacValue;
-				}
-
-				// precompiled load, or fallback to Roslyn compile
-				if (File.Exists(dllPath))
-					status.SetStatus(Language.GetTextValue("tModLoader.LoadingPrecompiled", dllName, Path.GetFileName(dllPath)));
-				else if (dllPath != null)
-					throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorLoadingPrecompiled", dllPath));
-				else {
-					dllPath = Path.Combine(tempDir, dllName);
-					CompileMod(mod, dllPath);
-				}
-
-				VerifyModAssembly(mod.Name, dllPath);
-
-				// add mod assembly to file
-				mod.modFile.AddFile(dllName, File.ReadAllBytes(dllPath));
+			// look for pre-compiled paths
+			if (mod.properties.noCompile) {
+				dllPath = Path.Combine(mod.path, dllName);
 			}
-			finally {
-				try {
-					if (Directory.Exists(tempDir))
-						Directory.Delete(tempDir, true);
-				}
-				catch { }
+			else if (Program.LaunchParameters.TryGetValue("-eac", out var eacValue)) {
+				dllPath = eacValue;
+
+				mod.properties.eacPath = pdbPath();
+				status.SetStatus(Language.GetTextValue("tModLoader.EnabledEAC", mod.properties.eacPath));
+			}
+
+			// precompiled load, or fallback to Roslyn compile
+			if (dllPath != null) {
+				if (!File.Exists(dllPath))
+					throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorLoadingPrecompiled", dllPath));
+
+				status.SetStatus(Language.GetTextValue("tModLoader.LoadingPrecompiled", dllName, Path.GetFileName(dllPath)));
+				code = File.ReadAllBytes(dllPath);
+				pdb = File.Exists(pdbPath()) ? File.ReadAllBytes(pdbPath()) : null;
+			}
+			else {
+				CompileMod(mod, out code, out pdb);
 			}
 		}
 
-		private void CompileMod(BuildingMod mod, string outputPath)
+		private void CompileMod(BuildingMod mod, out byte[] code, out byte[] pdb)
 		{
-			status.SetStatus(Language.GetTextValue("tModLoader.Compiling", Path.GetFileName(outputPath)));
+			status.SetStatus(Language.GetTextValue("tModLoader.Compiling", mod.Name+".dll"));
+			var tempDir = Path.Combine(mod.path, "compile_temp");
+			if (Directory.Exists(tempDir))
+				Directory.Delete(tempDir, true);
+			Directory.CreateDirectory(tempDir);
 
 			var refs = new List<string>();
 
@@ -411,8 +371,7 @@ namespace Terraria.ModLoader.Core
 
 			// TODO: do we need to always compile against reference assemblies?
 			// add framework assemblies
-			var frameworkAssembliesPath = Path.GetDirectoryName(typeof(File).Assembly.Location);
-			refs.AddRange(Directory.GetFiles(frameworkAssembliesPath, "*.dll", SearchOption.AllDirectories));
+			refs.AddRange(GetFrameworkReferences());
 
 			//libs added by the mod
 			refs.AddRange(mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)));
@@ -442,7 +401,7 @@ namespace Terraria.ModLoader.Core
 			if (Program.LaunchParameters.TryGetValue("-define", out var defineParam))
 				preprocessorSymbols.AddRange(defineParam.Split(';', ' '));
 
-			var results = RoslynCompile(mod.Name, outputPath, refs, files, preprocessorSymbols.ToArray(), mod.properties.includePDB, allowUnsafe);
+			var results = RoslynCompile(mod.Name, refs, files, preprocessorSymbols.ToArray(), allowUnsafe, out code, out pdb);
 
 			int numWarnings = results.Count(e => e.Severity == DiagnosticSeverity.Warning);
 			int numErrors = results.Length - numWarnings;
@@ -450,9 +409,15 @@ namespace Terraria.ModLoader.Core
 			foreach (var line in results)
 				status.LogCompilerLine(line.ToString(), line.Severity == DiagnosticSeverity.Warning ? Level.Warn : Level.Error);
 
+			try {
+				if (Directory.Exists(tempDir))
+					Directory.Delete(tempDir, true);
+			}
+			catch (Exception) { }
+
 			if (numErrors > 0) {
 				var firstError = results.First(e => e.Severity == DiagnosticSeverity.Error);
-				throw new BuildException(Language.GetTextValue("tModLoader.CompileError", Path.GetFileName(outputPath), numErrors, numWarnings) + $"\nError: {firstError}");
+				throw new BuildException(Language.GetTextValue("tModLoader.CompileError", mod.Name+".dll", numErrors, numWarnings) + $"\nError: {firstError}");
 			}
 		}
 
@@ -473,24 +438,25 @@ namespace Terraria.ModLoader.Core
 			throw new BuildException("Missing dll reference: " + path);
 		}
 
-		private static IList<string> GetTerrariaReferences() {
+		private static IEnumerable<string> GetTerrariaReferences() {
 			var executingAssembly = Assembly.GetExecutingAssembly();
+			yield return executingAssembly.Location;
 
-			var refs = new List<string> {
-				executingAssembly.Location
-			};
-
-			throw new NotImplementedException();
-			
-			// iterate the libs folder with the appropriate filters
-
-			return refs;
+			// same filters as the <Reference> elements in the generated .targets file
+			var libsDir = Path.Combine(Path.GetDirectoryName(executingAssembly.Location), "Libraries");
+			foreach (var f in Directory.EnumerateFiles(libsDir, "*.dll", SearchOption.AllDirectories)) {
+				var path = f.Replace('\\', '/');
+				if (!path.EndsWith(".resources.dll") &&
+					!path.Contains("/Native/") &&
+					!path.Contains("/runtime"))
+					yield return f;
+			}
 		}
 
 		/// <summary>
 		/// Compile a dll for the mod based on required includes.
 		/// </summary>
-		private static Diagnostic[] RoslynCompile(string name, string outputPath, List<string> references, string[] files, string[] preprocessorSymbols, bool includePdb, bool allowUnsafe)
+		private static Diagnostic[] RoslynCompile(string name, List<string> references, string[] files, string[] preprocessorSymbols, bool allowUnsafe, out byte[] code, out byte[] pdb)
 		{
 			var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
 				assemblyIdentityComparer: DesktopAssemblyIdentityComparer.Default,
@@ -501,23 +467,29 @@ namespace Terraria.ModLoader.Core
 
 			var emitOptions = new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb);
 
-			SplitRefsByWhiteList(references, out var actualRefs);
-			var refs = actualRefs.Select(s => MetadataReference.CreateFromFile(s));
+			var refs = references.Select(s => MetadataReference.CreateFromFile(s));
 
 			var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
 
 			var comp = CSharpCompilation.Create(name, src, refs, options);
 
-			using var peStream = File.OpenWrite(outputPath);
-			using var pdbStream = includePdb ? File.OpenWrite(Path.ChangeExtension(outputPath, "pdb")) : null;
+			using var peStream = new MemoryStream();
+			using var pdbStream = new MemoryStream();
 			var results = comp.Emit(peStream, pdbStream, options: emitOptions);
 
+			code = peStream.ToArray();
+			pdb = pdbStream.ToArray();
 			return results.Diagnostics.Where(d => d.Severity >= DiagnosticSeverity.Warning).ToArray();
 		}
 
-		private static void SplitRefsByException(List<string> refs, out List<string> actualAssemblies) {
-			actualAssemblies = new List<string>();
-			List<string> forwarderAssemblies = new List<string>();
+		private static IEnumerable<string> GetFrameworkReferences() {
+			var frameworkAssembliesPath = Path.GetDirectoryName(typeof(File).Assembly.Location);
+			return FilterUnmanagedFrameworkDllsViaBlacklist(Directory.GetFiles(frameworkAssembliesPath, "*.dll", SearchOption.AllDirectories));
+		}
+
+		private static IEnumerable<string> FilterUnmanagedFrameworkDlls(IEnumerable<string> refs) {
+			var actualAssemblies = new List<string>();
+			var forwarderAssemblies = new List<string>();
 
 			// Separate assemblies into complete assemblies and assemblies that forward to an assembly, at a heavy toll on performance. Will generate the full list of forwarding assemblies to blacklist; Useful for maintenance.
 			foreach (string test in refs) {
@@ -532,26 +504,14 @@ namespace Terraria.ModLoader.Core
 					forwarderAssemblies.Add(test);
 				}
 			}
+
+			return actualAssemblies;
 		}
 
-		private static void SplitRefsByWhiteList(List<string> refs, out List<string> actualAssemblies) {
-			actualAssemblies = new List<string>();
-
+		private static IEnumerable<string> FilterUnmanagedFrameworkDllsViaBlacklist(IEnumerable<string> refs) {
 			// Separate out known forward-only assemblies via string blacklisting.
 			string[] unmanagedDLLs = new string[] { "api-ms", "clrcompression", "clretwrc", "clrjit", "coreclr", "dbgshim", "Microsoft.DiaSymReader.Native.amd64", "mscordaccore", "mscordaccore_amd64_amd64", "mscordbi", "mscorrc", "ucrtbase", "hostpolicy" };
-
-			foreach (string test in refs) {
-				bool found = false;
-				for (int i = 0; i < unmanagedDLLs.Length; i++) {
-					if (test.Contains(unmanagedDLLs[i])) {
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					actualAssemblies.Add(test);
-				}
-			}
+			return refs.Where(r => !unmanagedDLLs.Any(r.Contains));
 		}
 	}
 }

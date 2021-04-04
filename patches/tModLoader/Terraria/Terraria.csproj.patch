@@ -19,7 +19,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -18,54 +_,111 @@
+@@ -18,54 +_,113 @@
    </PropertyGroup>
    <PropertyGroup>
      <OutputName>$(AssemblyName)</OutputName>
@@ -66,8 +66,7 @@
 -    <EmbeddedResource Include="Libraries/FNA/**" />
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
--  </ItemGroup>
-+  </ItemGroup> 
+   </ItemGroup>
    <ItemGroup>
      <Compile Remove="Social/WeGame/AsyncTaskHelper.cs" />
      <Compile Remove="Social/WeGame/CurrentThreadRunner.cs" />
@@ -75,8 +74,10 @@
      <None Remove="Libraries/Windows/**" />
      <None Remove="Libraries/XNA/**" />
      <None Remove="Libraries/net40/**" />
-     <None Update="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
-   </ItemGroup>
+-    <None Update="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
++	<Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest"/>
++	<Content Include="Libraries/Common/TerrariaHooks.dll" CopyToOutputDirectory="PreserveNewest"/>
++  </ItemGroup>
 +  <ItemGroup>
 +	<PackageReference Include="MonoMod.RuntimeDetour" Version="21.04.02.03" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" />
@@ -85,14 +86,20 @@
 +    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
 +    <PackageReference Include="System.CodeDom" Version="5.0.0" />
 +    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.1" />
-+  </ItemGroup>
+   </ItemGroup>
    <Target Name="CopyToSteamDir" AfterTargets="Build">
      <ItemGroup>
-       <BinFiles Include="$(TargetDir)**" />
+-      <BinFiles Include="$(TargetDir)**" />
++      <BinFiles Include="$(TargetDir)*" />
      </ItemGroup>
      <Message Text="Copying $(AssemblyName) to Steam Dir..." Importance="high" />
 -    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)/%(RecursiveDir)" />
-+    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" />
++    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" SkipUnchangedFiles="True"/>
++	<!-- todo, purge old libraries on other platforms -->
++	<Exec Command="robocopy $(TargetDir)/Libraries $(tModLoaderSteamPath)/Libraries /MIR" ContinueOnError="true" StandardOutputImportance="low" Condition="'$(OS)' == 'Windows_NT'">
++      <Output TaskParameter="ExitCode" PropertyName="PurgeExitCode"/>
++	</Exec>
++	<Warning Text="/Libraries file purge failed (robocopy /MIR Exit Code: $(PurgeExitCode)). Old files may not be removed." Condition="'$(PurgeExitCode)' != 2 AND '$(PurgeExitCode)' != 0" />
 +  </Target>
 +  <ItemDefinitionGroup>
 +	<ReferenceCopyLocalPaths>
@@ -115,12 +122,8 @@
 +  <!-- In order to get pdbs/xmls while waiting for NET6, we use https://github.com/dotnet/sdk/issues/1458#issuecomment-420456386 -->
 +  <Target Name="_ResolveCopyLocalNuGetPackagePdbsAndXml" Condition="$(CopyLocalLockFileAssemblies) == true" AfterTargets="ResolveReferences">
 +    <ItemGroup>
-+      <ReferenceCopyLocalPaths
-+        Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).pdb')"
-+        Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' and Exists('%(RootDir)%(Directory)%(Filename).pdb')" />
-+      <ReferenceCopyLocalPaths
-+        Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).xml')"
-+        Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' and Exists('%(RootDir)%(Directory)%(Filename).xml')" />
++      <ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).pdb')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' and Exists('%(RootDir)%(Directory)%(Filename).pdb')" />
++      <ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).xml')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' and Exists('%(RootDir)%(Directory)%(Filename).xml')" />
 +    </ItemGroup>
 +  </Target>
 +  <Target Name="RedirectAssemblyReferencesToLib" AfterTargets="ResolveAssemblyReferences">
