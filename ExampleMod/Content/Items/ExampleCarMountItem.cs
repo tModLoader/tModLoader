@@ -26,8 +26,8 @@ namespace ExampleMod.Content.Items
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ModContent.ItemType<ExampleItem>(), 10)
-				.AddTile<Tiles.Furniture.ExampleWorkbench>()
+				.AddIngredient(ModContent.ItemType<ExampleItem>(), 10) // this item needs 10 ExampleItems to craft
+				.AddTile<Tiles.Furniture.ExampleWorkbench>() // craft the item at an ExampleWorkbench
 				.Register();
 		}
 	}

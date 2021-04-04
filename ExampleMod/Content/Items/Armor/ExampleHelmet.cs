@@ -34,7 +34,7 @@ namespace ExampleMod.Content.Items.Armor
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<ExampleItem>(30) // this item needs 30 ExampleItem's to craft
+				.AddIngredient<ExampleItem>(30) // this item needs 30 ExampleItems to craft
 				.AddTile<Tiles.Furniture.ExampleWorkbench>() // craft the item at an ExampleWorkbench
 				.Register();
 		}
