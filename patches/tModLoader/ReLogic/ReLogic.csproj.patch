@@ -1,7 +1,10 @@
 --- src/Terraria/ReLogic/ReLogic.csproj
 +++ src/tModLoader/ReLogic/ReLogic.csproj
-@@ -9,7 +_,7 @@
+@@ -7,9 +_,10 @@
+     <Copyright>Copyright © Re-Logic 2017</Copyright>
+     <RootNamespace>ReLogic</RootNamespace>
      <TargetFramework>net5.0</TargetFramework>
++	<GenerateDocumentationFile>true</GenerateDocumentationFile>
    </PropertyGroup>
    <ItemGroup>
 -    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />

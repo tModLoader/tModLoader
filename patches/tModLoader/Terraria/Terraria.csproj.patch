@@ -1,11 +1,12 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -7,7 +_,16 @@
+@@ -7,7 +_,17 @@
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2021 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
 -    <AssemblyName>Terraria</AssemblyName>
 +    <AssemblyName>tModLoader</AssemblyName>
++	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 +  </PropertyGroup>
 +  <PropertyGroup>
 +    <tMLVersion>0.12</tMLVersion>
