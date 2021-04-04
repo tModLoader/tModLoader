@@ -57,6 +57,10 @@
 		"AskForModIndex": "输入模组序号以启用/禁用模组",
 		"AskForCommand": "请输入命令: ",
 
+		// Interface
+		// "BossBarStyle": "Boss Bar Style: {0}",
+		// "BossBarStyleNoOptions": "No Options",
+
 		// Mod Errors
 		"LoadError": "该模组加载时发生错误 {0}",
 		"LoadErrorDisabled": "该模组已被自动禁用.",
@@ -342,6 +346,7 @@
 		// Misc
 		"OK": "好的",
 		"Continue": "继续",
+		// "DeleteModConfirm": "Are you sure you want to delete this mod permanently?",
 		"PatreonSetTooltip": "感谢您的支持!",
 		"WorldGenError": "生成世界时遇到问题",
 		"WorldIODataException": "游戏遇到一个关于地图的模组数据问题.",
