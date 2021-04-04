@@ -19,7 +19,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -18,54 +_,113 @@
+@@ -18,54 +_,110 @@
    </PropertyGroup>
    <PropertyGroup>
      <OutputName>$(AssemblyName)</OutputName>
@@ -46,10 +46,11 @@
 -      <Link>Libraries/ReLogic/ReLogic.dll</Link>
 -      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
 -    </EmbeddedResource>
-+	<ProjectReference Include="../ReLogic/ReLogic.csproj">
-+		<!--Version has to match deps.json and project version. Hardcode here as resolving from metadata is difficult without custom Task. Specifically, getting the pdb to output in the right directory-->
-+	    <DestinationSubDirectory>Libraries/ReLogic/1.0.0/</DestinationSubDirectory>
-+	</ProjectReference>
++    <Reference Include="TerrariaHooks" />
++	  <ProjectReference Include="../ReLogic/ReLogic.csproj">
++		  <!--Version has to match deps.json and project version. Hardcode here as resolving from metadata is difficult without custom Task. Specifically, getting the pdb to output in the right directory-->
++	      <DestinationSubDirectory>Libraries/ReLogic/1.0.0/</DestinationSubDirectory>
++	  </ProjectReference>
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
 -    <Reference Update="@(Reference)">
@@ -71,15 +72,15 @@
      <Compile Remove="Social/WeGame/AsyncTaskHelper.cs" />
      <Compile Remove="Social/WeGame/CurrentThreadRunner.cs" />
 -    <None Remove="Libraries/Mono/**" />
++    <Compile Remove="Libraries/Common/TerrariaHooks.dll" />
      <None Remove="Libraries/Windows/**" />
      <None Remove="Libraries/XNA/**" />
      <None Remove="Libraries/net40/**" />
 -    <None Update="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
-+	<Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest"/>
-+	<Content Include="Libraries/Common/TerrariaHooks.dll" CopyToOutputDirectory="PreserveNewest"/>
++	  <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest"/>
 +  </ItemGroup>
 +  <ItemGroup>
-+	<PackageReference Include="MonoMod.RuntimeDetour" Version="21.04.02.03" />
++	  <PackageReference Include="MonoMod.RuntimeDetour" Version="21.04.02.03" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.7.0" />
 +    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
@@ -88,24 +89,19 @@
 +    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.1" />
    </ItemGroup>
    <Target Name="CopyToSteamDir" AfterTargets="Build">
++    <!-- todo, purge old libraries on other platforms -->
++    <Exec Command="robocopy $(TargetDir)/Libraries $(tModLoaderSteamPath)/Libraries /MIR" ContinueOnError="true" StandardOutputImportance="low" Condition="'$(OS)' == 'Windows_NT'">
++      <Output TaskParameter="ExitCode" PropertyName="PurgeExitCode"/>
++    </Exec>
++    <Warning Text="/Libraries file purge failed (robocopy /MIR Exit Code: $(PurgeExitCode)). Old files may not be removed." Condition="'$(PurgeExitCode)' != 2 AND '$(PurgeExitCode)' != 0" />
++    <!-- copy files systematically to output folder -->
      <ItemGroup>
--      <BinFiles Include="$(TargetDir)**" />
-+      <BinFiles Include="$(TargetDir)*" />
+       <BinFiles Include="$(TargetDir)**" />
      </ItemGroup>
      <Message Text="Copying $(AssemblyName) to Steam Dir..." Importance="high" />
 -    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)/%(RecursiveDir)" />
 +    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" SkipUnchangedFiles="True"/>
-+	<!-- todo, purge old libraries on other platforms -->
-+	<Exec Command="robocopy $(TargetDir)/Libraries $(tModLoaderSteamPath)/Libraries /MIR" ContinueOnError="true" StandardOutputImportance="low" Condition="'$(OS)' == 'Windows_NT'">
-+      <Output TaskParameter="ExitCode" PropertyName="PurgeExitCode"/>
-+	</Exec>
-+	<Warning Text="/Libraries file purge failed (robocopy /MIR Exit Code: $(PurgeExitCode)). Old files may not be removed." Condition="'$(PurgeExitCode)' != 2 AND '$(PurgeExitCode)' != 0" />
 +  </Target>
-+  <ItemDefinitionGroup>
-+	<ReferenceCopyLocalPaths>
-+		<DestinationSubDirectory>Libraries\</DestinationSubDirectory>
-+	</ReferenceCopyLocalPaths>
-+  </ItemDefinitionGroup>
 +  <!--See first answer in https://stackoverflow.com/questions/55946010/how-to-specify-output-folder-for-the-referenced-nuget-packages for how this was created-->
 +  <Target Name="RedirectNugetFilesToLib" AfterTargets="ResolveLockFileCopyLocalFiles">
 +    <ItemGroup>
@@ -132,7 +128,7 @@
 +      <!--Note that associated files, like pdbs/xmls won't be resolved properly here. Prefer nuget packages for that-->
 +      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
 +        <DirectoryVersion>$([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').Remove($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(", C"))).Substring($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(","))).Substring(10))</DirectoryVersion>
-+	</ReferenceCopyLocalPaths>
++	    </ReferenceCopyLocalPaths>
 +      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
 +        <DestinationSubDirectory>Libraries\%(ReferenceCopyLocalPaths.OriginalItemSpec)\%(ReferenceCopyLocalPaths.DirectoryVersion)\</DestinationSubDirectory>
 +      </ReferenceCopyLocalPaths>
