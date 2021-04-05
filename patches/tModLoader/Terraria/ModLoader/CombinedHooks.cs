@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Terraria.ModLoader
+﻿namespace Terraria.ModLoader
 {
 	public static class CombinedHooks
 	{
@@ -34,7 +32,7 @@ namespace Terraria.ModLoader
 			PlayerHooks.OnMissingMana(player, item, neededMana);
 		}
 
-		//TODO: Fix various inconsistencies with calls of UseItem, and then make this and its inner methods use short-circuiting.
+		//TODO: Fix various inconsistencies with calls of UseItem
 		public static bool CanUseItem(Player player, Item item) {
 			return PlayerHooks.CanUseItem(player, item) & ItemLoader.CanUseItem(item, player);
 		}
@@ -63,6 +61,15 @@ namespace Terraria.ModLoader
 			}
 
 			return result;
+		}
+
+		public static bool ConsumeAmmo(Player player, Item weapon, Item ammo) {
+			return PlayerHooks.ConsumeAmmo(player, weapon, ammo) & ItemLoader.ConsumeAmmo(weapon, ammo, player);
+		}
+
+		public static void OnConsumeAmmo(Player player, Item weapon, Item ammo) {
+			PlayerHooks.OnConsumeAmmo(player, weapon, ammo);
+			ItemLoader.OnConsumeAmmo(weapon, ammo, player);
 		}
 	}
 }

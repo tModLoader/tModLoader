@@ -13,7 +13,6 @@ using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.GameContent.ItemDropRules;
 using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalNPC>;
 
 namespace Terraria.ModLoader
@@ -849,6 +848,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookCanChat = AddHook<Func<NPC, bool?>>(g => g.CanChat);
 
+		// Main.DrawMouseOver, after flag = SmartInteractShowingGenuine && SmartInteractNPC == k
 		public static bool CanChat(NPC npc, bool vanillaCanChat) {
 			bool defaultCanChat = npc.ModNPC?.CanChat() ?? vanillaCanChat;
 

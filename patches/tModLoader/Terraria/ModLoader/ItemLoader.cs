@@ -267,15 +267,16 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item.</param>
 		/// <param name="player">The player holding the item.</param>
 		public static bool CanUseItem(Item item, Player player) {
-			bool flag = true;
-			if (item.ModItem != null)
-				flag &= item.ModItem.CanUseItem(player);
+			if (item.ModItem != null && !item.ModItem.CanUseItem(player))
+				return false;
+
+			bool result = true;
 
 			foreach (var g in HookCanUseItem.Enumerate(item.globalItems)) {
-				flag &= g.CanUseItem(item, player);
+				result &= g.CanUseItem(item, player);
 			}
 
-			return flag;
+			return result;
 		}
 
 		private static HookList HookUseStyle = AddHook<Action<Item, Player, Rectangle>>(g => g.UseStyle);

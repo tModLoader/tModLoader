@@ -66,15 +66,21 @@
  		public bool extraAccessory;
  		private bool dontConsumeWand;
  		public int tankPet = -1;
-@@ -694,7 +_,7 @@
+@@ -694,10 +_,10 @@
  		public bool poundRelease;
  		public float ghostFade;
  		public float ghostDir = 1f;
 -		public const int maxBuffs = 22;
 +		public static int MaxBuffs => 22 + BuffLoader.extraPlayerBuffCount;
- 		public int[] buffType = new int[22];
- 		public int[] buffTime = new int[22];
- 		public bool[] buffImmune = new bool[327];
+-		public int[] buffType = new int[22];
++		public int[] buffType = new int[MaxBuffs];
+-		public int[] buffTime = new int[22];
++		public int[] buffTime = new int[MaxBuffs];
+-		public bool[] buffImmune = new bool[327];
++		public bool[] buffImmune = new bool[BuffLoader.BuffCount];
+ 		public int heldProj = -1;
+ 		public int breathCD;
+ 		public int breathMax = 200;
 @@ -1059,18 +_,21 @@
  		public bool parryDamageBuff;
  		public bool ballistaPanic;
@@ -138,6 +144,17 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
+@@ -1306,8 +_,8 @@
+ 		public int cGingerBeard;
+ 		public int cMinion;
+ 		public int cLeinShampoo;
+-		public int[] ownedProjectileCounts = new int[956];
++		public int[] ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount];
+-		public bool[] npcTypeNoAggro = new bool[665];
++		public bool[] npcTypeNoAggro = new bool[NPCLoader.NPCCount];
+ 		public int lastPortalColorIndex;
+ 		public int _portalPhysicsTime;
+ 		public bool portalPhysicsFlag;
 @@ -2051,11 +_,13 @@
  		}
  
@@ -3994,14 +4011,13 @@
  				flag2 = true;
  
  			if (sItem.type == 4953 && itemAnimation > sItem.useAnimation - 8)
-@@ -36626,7 +_,10 @@
+@@ -36626,7 +_,9 @@
  			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
  				flag2 = true;
  
-+			flag2 |= !PlayerHooks.ConsumeAmmo(this, sItem, item) | !ItemLoader.ConsumeAmmo(sItem, item, this);
++			flag2 |= !CombinedHooks.ConsumeAmmo(this, sItem, item);
  			if (!flag2 && item.consumable) {
-+				PlayerHooks.OnConsumeAmmo(this, sItem, item);
-+				ItemLoader.OnConsumeAmmo(sItem, item, this);
++				CombinedHooks.OnConsumeAmmo(this, sItem, item);
  				item.stack--;
  				if (item.stack <= 0) {
  					item.active = false;

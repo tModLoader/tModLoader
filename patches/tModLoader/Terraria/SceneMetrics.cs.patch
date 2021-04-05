@@ -17,15 +17,6 @@
  		private readonly World _world;
  		private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  		public int bestOre;
-@@ -198,6 +_,8 @@
- 			if (settings.ScanOreFinderData)
- 				_oreFinderTileLocations.Clear();
- 
-+			SystemHooks.ResetNearbyTileEffects();
-+
- 			if (settings.BiomeScanCenterPositionInWorld.HasValue) {
- 				Point point = settings.BiomeScanCenterPositionInWorld.Value.ToTileCoordinates();
- 				Rectangle rectangle = WorldUtils.ClampToWorld(tileRectangle: new Rectangle(point.X - Main.buffScanAreaWidth / 2, point.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight), world: _world);
 @@ -251,6 +_,8 @@
  
  						if (settings.ScanOreFinderData && Main.tileOreFinderPriority[tile.type] != 0)
@@ -44,11 +35,13 @@
  							HasClock = true;
  
  						switch (tile2.type) {
-@@ -324,6 +_,8 @@
+@@ -324,6 +_,10 @@
  									BloodMoonMonolith = true;
  								break;
  						}
 +
++						if(TileLoader.IsModMusicBox(tile2) && tile2.frameX >= 36)
++							ActiveMusicBox = SoundLoader.tileToMusic[tile2.type][tile2.frameY / 36 * 36];
 +						TileLoader.NearbyEffects(k, l, tile2.type, true);
  					}
  				}
@@ -62,12 +55,13 @@
  		}
  
  		private void ExportTileCountsToMain() {
-@@ -420,6 +_,8 @@
+@@ -420,6 +_,9 @@
  			Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
  			hasBanner = false;
  			CanPlayCreditsRoll = false;
-+			if(NPCBannerBuff.Length<ModLoader.NPCLoader.NPCCount)
-+				Array.Resize(ref NPCBannerBuff, ModLoader.NPCLoader.NPCCount);
++			if(NPCBannerBuff.Length < NPCLoader.NPCCount)
++				Array.Resize(ref NPCBannerBuff, NPCLoader.NPCCount);
++			SystemHooks.ResetNearbyTileEffects();
  		}
  
  		private void UpdateOreFinderData() {

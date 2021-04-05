@@ -932,13 +932,12 @@
  			destroyObject = false;
  			for (int num7 = num; num7 < num + 4; num7++) {
  				for (int num8 = num3; num8 < num3 + 3; num8++) {
-@@ -30900,7 +_,8 @@
+@@ -30900,7 +_,7 @@
  					if (Main.tile[k, l] == null)
  						Main.tile[k, l] = new Tile();
  
 -					if (Main.tile[k, l].active() && (Main.tile[k, l].type == 139 || Main.tile[k, l].type == 35)) {
-+					if (Main.tile[k, l].active() && (Main.tile[k, l].type == 139 || Main.tile[k, l].type == 35
-+						|| TileLoader.IsModMusicBox(Main.tile[k, l]))) {
++					if (Main.tile[k, l].active() && (Main.tile[k, l].type == 139 || Main.tile[k, l].type == 35 || TileLoader.IsModMusicBox(Main.tile[k, l]))) {
  						if (Main.tile[k, l].frameX < 36)
  							Main.tile[k, l].frameX += 36;
  						else
@@ -1497,17 +1496,15 @@
  				if (tileCache.type == 518) {
  					int num14 = (int)tileCache.liquid / 16;
  					num14 -= 3;
-@@ -44087,6 +_,10 @@
+@@ -44087,7 +_,7 @@
  			if (t.type == 10 && t.frameY >= 594 && t.frameY <= 646)
  				return t.frameX < 54;
  
-+			// something might be meant to go here but it's not this - Chicken Bones (I don't know what a "locked door" even is)
-+			//if (TileLoader.OpenDoorID(t) < 0)
-+			//	return true;
-+
- 			return false;
+-			return false;
++			return TileLoader.IsClosedDoor(t);
  		}
  
+ 		public static void DropDoorItem(int x, int y, int doorStyle) {
 @@ -45694,6 +_,13 @@
  			if (gen)
  				return;

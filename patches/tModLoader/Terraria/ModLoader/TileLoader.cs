@@ -350,6 +350,14 @@ namespace Terraria.ModLoader
 
 			return -1;
 		}
+		//DoorOpeningHelper.CommonDoorOpeningInfo.TryCloseDoor, tile.active() || IsCloseDoor
+		//HitTile.DrawFreshAnimations, before tileSolid check, set flag2 to false if IscloseDoor is true
+		//Main.DrawTileCracks, same as DrawFreshAnimations
+		//NPC.AI_003_Fighters
+		//NPC.AI_107_Improvedwalkers, if (flag8 && tileSafely4.nactive() && (TileLoader.IsClosedDoor(tileSafely4) || tileSafely4.type == 388))
+		//NPC.AI_107_Improvedwalkers,
+		//if (TileLoader.IsClosedDoor(tileSafely4)) {
+		//   bool flag38 = WorldGen.OpenDoor(num64, num65 - 1, direction);
 		public static bool IsClosedDoor(Tile tile) {
 			ModTile modTile = GetTile(tile.type);
 
@@ -362,15 +370,21 @@ namespace Terraria.ModLoader
 
 		public static string ContainerName(int type) => GetTile(type)?.ContainerName?.GetTranslation(Language.ActiveCulture) ?? string.Empty;
 
+		// Player.TileInteractionUse, type == 139
+		// Wiring.HitWireSingle, case 139:
+		// WorldGen.SwitchMB, type == 139 || 35
+		// SceneMetrics.ScanAndExport,
+		//if(TileLoader.IsModMusicBox(tile2) && tile2.frameX >= 36)
+		//	ActiveMusicBox = SoundLoader.tileToMusic[tile2.type][tile2.frameY / 36 * 36];
 		public static bool IsModMusicBox(Tile tile) {
 			return SoundLoader.tileToMusic.ContainsKey(tile.type)
 			&& SoundLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
 		}
-
+		// TileSmartInteractCandidateProvider.FillPotentialTargetTiles
 		public static bool HasSmartInteract(int type) {
 			return GetTile(type)?.HasSmartInteract() ?? false;
 		}
-
+		// TileSmartInteractCandidateProvider.ProvideCandidate, right before the if with two Collision.InTileBounds calls.
 		public static void FixSmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraX, ref int extraY) {
 			ModTile modTile = GetTile(type);
 			if (modTile != null) {
@@ -492,6 +506,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		//SceneMetrics.ScanAndExportToMain, see documentation for closer parameter
 		public static void NearbyEffects(int i, int j, int type, bool closer) {
 			GetTile(type)?.NearbyEffects(i, j, closer);
 
@@ -510,6 +525,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		//SceneMetrics.DrawSingleTile_SlicedBlock, after GetFinalLight calls
 		public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b) {
 			if (!Main.tileLighted[type]) {
 				return;
@@ -533,8 +549,8 @@ namespace Terraria.ModLoader
 			}
 			return false;
 		}
-		//in Terraria.Main.DrawTiles after if statement setting effects call
-		//  TileLoader.SetSpriteEffects(j, i, type, ref effects);
+
+		//TileDrawing.GetTileDrawData, right at the end
 		public static void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects) {
 			GetTile(type)?.SetSpriteEffects(i, j, ref spriteEffects);
 
@@ -542,6 +558,7 @@ namespace Terraria.ModLoader
 				hook(i, j, type, ref spriteEffects);
 			}
 		}
+
 		//in Terraria.Main.DrawTiles after if statements setting num11 and num12 call
 		//  TileLoader.SetDrawPositions(j, i, ref num9, ref num11, ref num12);
 		public static void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) {
@@ -562,6 +579,7 @@ namespace Terraria.ModLoader
 				GetTile(tile.type).SetDrawPositions(i, j, ref width, ref offsetY, ref height);
 			}
 		}
+
 		//in Terraria.Main.Update after vanilla tile animations call TileLoader.AnimateTiles();
 		public static void AnimateTiles() {
 			if (loaded) {

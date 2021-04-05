@@ -1,0 +1,35 @@
+--- src/Terraria/Terraria/GameContent/Drawing/TileDrawing.cs
++++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
+@@ -9,6 +_,7 @@
+ using Terraria.GameContent.Tile_Entities;
+ using Terraria.Graphics.Capture;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.ObjectData;
+ using Terraria.UI;
+ using Terraria.Utilities;
+@@ -2135,6 +_,7 @@
+ 					tileLight.Y = (slices[i].Y + vector.Y) * 0.5f;
+ 					tileLight.Z = (slices[i].Z + vector.Z) * 0.5f;
+ 					GetFinalLight(drawData.tileCache, drawData.typeCache, ref tileLight, ref tint);
++					TileLoader.ModifyLight(tileX, tileY, drawData.typeCache, ref tileLight.X, ref tileLight.Y, ref tileLight.Z);
+ 					position.X = normalTilePosition.X + (float)value.X;
+ 					position.Y = normalTilePosition.Y + (float)value.Y;
+ 					value.X += drawData.tileFrameX + drawData.addFrX;
+@@ -2187,6 +_,7 @@
+ 					tileLight.Y = (slices2[j].Y + vector2.Y) * 0.5f;
+ 					tileLight.Z = (slices2[j].Z + vector2.Z) * 0.5f;
+ 					GetFinalLight(drawData.tileCache, drawData.typeCache, ref tileLight, ref tint2);
++					TileLoader.ModifyLight(tileX, tileY, drawData.typeCache, ref tileLight.X, ref tileLight.Y, ref tileLight.Z);
+ 					position.X = normalTilePosition.X + (float)value.X;
+ 					position.Y = normalTilePosition.Y + (float)value.Y;
+ 					value.X += drawData.tileFrameX + drawData.addFrX;
+@@ -4370,6 +_,8 @@
+ 						break;
+ 					}
+ 			}
++
++			TileLoader.SetSpriteEffects(x, y, typeCache, ref tileSpriteEffect);
+ 		}
+ 
+ 		private bool IsWindBlocked(int x, int y) {

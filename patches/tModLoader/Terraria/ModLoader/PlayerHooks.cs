@@ -75,24 +75,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void SetStartInventory(Player player, IList<Item> items) {
-			if (items.Count <= 50) {
-				for (int k = 0; k < items.Count && k < 49; k++)
-					player.inventory[k] = items[k];
-			}
-			else {
-				for (int k = 0; k < 49; k++) {
-					player.inventory[k] = items[k];
-				}
-				Item bag = new Item();
-				bag.SetDefaults(ModContent.ItemType<StartBag>());
-				for (int k = 49; k < items.Count; k++) {
-					((StartBag)bag.ModItem).AddItem(items[k]);
-				}
-				player.inventory[49] = bag;
-			}
-		}
-
 		private static HookList HookPreSavePlayer = AddHook<Action>(p => p.PreSavePlayer);
 
 		public static void PreSavePlayer(Player player) {
@@ -612,11 +594,12 @@ namespace Terraria.ModLoader
 		private static HookList HookConsumeAmmo = AddHook<Func<Item, Item, bool>>(p => p.ConsumeAmmo);
 
 		public static bool ConsumeAmmo(Player player, Item weapon, Item ammo) {
+			bool result = true;
+
 			foreach (int index in HookConsumeAmmo.arr) {
-				if (!player.modPlayers[index].ConsumeAmmo(weapon, ammo)) {
-					return false;
-				}
+				result &= player.modPlayers[index].ConsumeAmmo(weapon, ammo);
 			}
+
 			return true;
 		}
 
@@ -1069,13 +1052,11 @@ namespace Terraria.ModLoader
 		private static HookList HookCanUseItem = AddHook<Func<Item, bool>>(p => p.CanUseItem);
 
 		public static bool CanUseItem(Player player, Item item) {
-			bool result = true;
-
 			foreach (int index in HookCanUseItem.arr) {
-				result &= player.modPlayers[index].CanUseItem(item);
+				if (!player.modPlayers[index].CanUseItem(item))
+					return false;
 			}
-
-			return result;
+			return true;
 		}
 
 		private delegate bool DelegateModifyNurseHeal(NPC npc, ref int health, ref bool removeDebuffs, ref string chatText);
@@ -1103,6 +1084,25 @@ namespace Terraria.ModLoader
 		public static void PostNurseHeal(Player player, NPC npc, int health, bool removeDebuffs, int price) {
 			foreach (int index in HookPostNurseHeal.arr) {
 				player.modPlayers[index].PostNurseHeal(npc, health, removeDebuffs, price);
+			}
+		}
+
+		public static void SetStartInventory(Player player, IList<Item> items) {
+			if (items.Count <= 50) {
+				for (int k = 0; k < items.Count && k < 49; k++)
+					player.inventory[k] = items[k];
+			}
+			else {
+				for (int k = 0; k < 49; k++) {
+					player.inventory[k] = items[k];
+				}
+				Item item = new Item();
+				StartBag bag = (StartBag)item.ModItem;
+				item.SetDefaults(ModContent.ItemType<StartBag>());
+				for (int k = 49; k < items.Count; k++) {
+					bag.AddItem(items[k]);
+				}
+				player.inventory[49] = item;
 			}
 		}
 
