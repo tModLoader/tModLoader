@@ -21,12 +21,10 @@ namespace ExampleMod.Content.NPCs
 			NPC.damage = 7;
 			NPC.defense = 2;
 			NPC.lifeMax = 25;
-			NPC.HitSound = SoundID.NPCHit1;
-			NPC.DeathSound = SoundID.NPCDeath1;
-			//npc.alpha = 175;
-			//npc.color = new Color(0, 80, 255, 100);
-			NPC.value = 25f;
-			NPC.buffImmune[BuffID.Poisoned] = true;
+			NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
+			NPC.DeathSound = SoundID.NPCDeath1; // The sound the NPC will make when it dies.
+			NPC.value = 25f; // How many copper coins the NPC will drop when killed.
+			NPC.buffImmune[BuffID.Poisoned] = true; // This NPC will be immune to the Poisoned debuff.
 			NPC.buffImmune[BuffID.Confused] = false; // npc default to being immune to the Confused debuff. Allowing confused could be a little more work depending on the AI. npc.confused is true while the npc is confused.
 		}
 
@@ -82,6 +80,7 @@ namespace ExampleMod.Content.NPCs
 			if (AI_State == State_Asleep) {
 				// TargetClosest sets npc.target to the player.whoAmI of the closest player. the faceTarget parameter means that npc.direction will automatically be 1 or -1 if the targeted player is to the right or left. This is also automatically flipped if npc.confused
 				NPC.TargetClosest(true);
+
 				// Now we check the make sure the target is still valid and within our specified notice range (500)
 				if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 500f) {
 					// Since we have a target in range, we change to the Notice state. (and zero out the Timer for good measure)
@@ -124,9 +123,9 @@ namespace ExampleMod.Content.NPCs
 			}
 			// In this state, our npc starts to flutter/fly a little to make it's movement a little bit interesting.
 			else if (AI_State == State_Hover) {
-				AI_Timer += 1;
+				AI_Timer++;
 				// Here we make a decision on how long this flutter will last. We check netmode != 1 to prevent Multiplayer Clients from running this code. (similarly, spawning projectiles should also be wrapped like this)
-				// netmode == 0 is SP, netmode == 1 is MP Client, netmode == 2 is MP Server. 
+				// netMode == 0 is SP, netMode == 1 is MP Client, netMode == 2 is MP Server. 
 				// Typically in MP, Client and Server maintain the same state by running deterministic code individually. When we want to do something random, we must do that on the server and then inform MP Clients.
 				// Informing MP Clients is done automatically by syncing the npc.ai array over the network whenever npc.netUpdate is set. Don't set netUpdate unless you do something non-deterministic ("random")
 				if (AI_Timer == 1 && Main.netMode != NetmodeID.MultiplayerClient) {
@@ -134,14 +133,16 @@ namespace ExampleMod.Content.NPCs
 					AI_FlutterTime = Main.rand.NextBool() ? 100 : 50;
 					NPC.netUpdate = true;
 				}
+
 				// Here we add a tiny bit of upward velocity to our npc.
 				NPC.velocity += new Vector2(0, -.35f);
 				// ... and some additional X velocity when traveling slow.
 				if (Math.Abs(NPC.velocity.X) < 2) {
 					NPC.velocity += new Vector2(NPC.direction * .05f, 0);
 				}
+
+				// after fluttering for 100 ticks (1.66 seconds), our Flutter Slime is tired, so he decides to go into the Fall state.
 				if (AI_Timer > AI_FlutterTime) {
-					// after fluttering for 100 ticks (1.66 seconds), our Flutter Slime is tired, so he decides to go into the Fall state.
 					AI_State = State_Fall;
 					AI_Timer = 0;
 				}
@@ -156,7 +157,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		// Our texture is 32x32 with 2 pixels of padding vertically, so 34 is the vertical spacing.  These are for my benefit and the numbers could easily be used directly in the code below, but this is how I keep code organized.
+		// Our texture is 32x32 with 2 pixels of padding vertically, so 34 is the vertical spacing. These are for my benefit and the numbers could easily be used directly in the code below, but this is how I keep code organized.
 		private const int Frame_Asleep = 0;
 		private const int Frame_Notice = 1;
 		private const int Frame_Falling = 2;

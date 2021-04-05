@@ -1,101 +1,111 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Mounts
 {
+	//TODO: Provide a description of this mount's behavior.
 	public class ExampleCarMount : ModMount
 	{
+		// Since only a single instance of ModMountData ever exists, we can use player.mount._mountSpecificData to store additional data related to a specific mount.
+		// Using something like this for gameplay effects would require ModPlayer syncing, but this example is purely visual.
+		protected class CarSpecificData
+		{
+			internal static float[] offsets = new float[] { 0, 14, -14 };
+
+			internal int count; // Tracks how many balloons are still left.
+			internal float[] rotations;
+
+			public CarSpecificData() {
+				count = 3;
+				rotations = new float[count];
+			}
+		}
+
 		public override void SetDefaults() {
-			MountData.spawnDust = ModContent.DustType<Dusts.Sparkle>(); // The ID of the dust spawned when mounted or dismounted.
-			MountData.buff = ModContent.BuffType<Buffs.ExampleCarMountBuff>(); // The ID number of the buff assigned to the mount.
-			MountData.heightBoost = 20; // height between the mount and the ground
-			MountData.fallDamage = 0.5f; // fall damage multiplier.
-			MountData.runSpeed = 11f; // The speed of the mount
-			MountData.dashSpeed = 8f; // The speed the mount moves when in the state of dashing.
-			MountData.flightTimeMax = 0; // The amount of time in frames a mount can be in the state of flying.
-			MountData.fatigueMax = 0;
+			// Movement
 			MountData.jumpHeight = 5; // How high the mount can jump.
 			MountData.acceleration = 0.19f; // The rate at which the mount speeds up.
 			MountData.jumpSpeed = 4f; // The rate at which the player and mount ascend towards (negative y velocity) the jump height when the jump button is presssed.
-			MountData.blockExtraJumps = false; // determines whether or not you can use a double jump (like cloud in a bottle) while in the mount.
+			MountData.blockExtraJumps = false; // Determines whether or not you can use a double jump (like cloud in a bottle) while in the mount.
 			MountData.constantJump = true; // Allows you to hold the jump button down.
+			MountData.heightBoost = 20; // Height between the mount and the ground
+			MountData.fallDamage = 0.5f; // Fall damage multiplier.
+			MountData.runSpeed = 11f; // The speed of the mount
+			MountData.dashSpeed = 8f; // The speed the mount moves when in the state of dashing.
+			MountData.flightTimeMax = 0; // The amount of time in frames a mount can be in the state of flying.
 
-			// frame data and player offsets
+			// Misc
+			MountData.fatigueMax = 0;
+			MountData.buff = ModContent.BuffType<Buffs.ExampleCarMountBuff>(); // The ID number of the buff assigned to the mount.
 
-			MountData.totalFrames = 4; // amount of animation frames for the mount
-			// fills an array with values for less repeating code
-			int[] array = new int[MountData.totalFrames];
-			for (int l = 0; l < array.Length; l++) {
-				array[l] = 20;
-			}
-			MountData.playerYOffsets = array;
+			// Effects
+			MountData.spawnDust = ModContent.DustType<Dusts.Sparkle>(); // The ID of the dust spawned when mounted or dismounted.
+
+			// Frame data and player offsets
+			MountData.totalFrames = 4; // Amount of animation frames for the mount
+			MountData.playerYOffsets = Enumerable.Repeat(20, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code
 			MountData.xOffset = 13;
-			MountData.bodyFrame = 3;
 			MountData.yOffset = -12;
 			MountData.playerHeadOffset = 22;
+			MountData.bodyFrame = 3;
+			// Standing
 			MountData.standingFrameCount = 4;
 			MountData.standingFrameDelay = 12;
 			MountData.standingFrameStart = 0;
+			// Running
 			MountData.runningFrameCount = 4;
 			MountData.runningFrameDelay = 12;
 			MountData.runningFrameStart = 0;
+			// Flying
 			MountData.flyingFrameCount = 0;
 			MountData.flyingFrameDelay = 0;
 			MountData.flyingFrameStart = 0;
+			// In-air
 			MountData.inAirFrameCount = 1;
 			MountData.inAirFrameDelay = 12;
 			MountData.inAirFrameStart = 0;
+			// Idle
 			MountData.idleFrameCount = 4;
 			MountData.idleFrameDelay = 12;
 			MountData.idleFrameStart = 0;
 			MountData.idleFrameLoop = true;
+			// Swim
 			MountData.swimFrameCount = MountData.inAirFrameCount;
 			MountData.swimFrameDelay = MountData.inAirFrameDelay;
 			MountData.swimFrameStart = MountData.inAirFrameStart;
-			if (Main.netMode == NetmodeID.Server) {
-				return;
-			}
 
-			MountData.textureWidth = MountData.backTexture.Width() + 20;
-			MountData.textureHeight = MountData.backTexture.Height();
+			if (!Main.dedServ) {
+				MountData.textureWidth = MountData.backTexture.Width() + 20;
+				MountData.textureHeight = MountData.backTexture.Height();
+			}
 		}
 
 		public override void UpdateEffects(Player player) {
 			// This code simulates some wind resistance for the balloons. 
 			var balloons = (CarSpecificData)player.mount._mountSpecificData;
 			float ballonMovementScale = 0.05f;
+
 			for (int i = 0; i < balloons.count; i++) {
-				if (Math.Abs(balloons.rotations[i]) > Math.PI / 2)
+				ref float rotation = ref balloons.rotations[i]; // This is a reference variable. It's set to point directly to the 'i' index in the rotations array, so it works like an alias here.
+
+				if (Math.Abs(rotation) > MathHelper.PiOver2)
 					ballonMovementScale *= -1;
-				balloons.rotations[i] += -player.velocity.X * ballonMovementScale * Main.rand.NextFloat();
-				balloons.rotations[i] = balloons.rotations[i].AngleLerp(0, 0.05f);
+
+				rotation += -player.velocity.X * ballonMovementScale * Main.rand.NextFloat();
+				rotation = rotation.AngleLerp(0, 0.05f);
 			}
 
 			// This code spawns some dust if we are moving fast enough.
-			if (!(Math.Abs(player.velocity.X) > 4f)) {
-				return;
-			}
-			Rectangle rect = player.getRect();
-			Dust.NewDust(new Vector2(rect.X, rect.Y), rect.Width, rect.Height, ModContent.DustType<Dusts.Sparkle>());
-		}
+			if (Math.Abs(player.velocity.X) > 4f) {
+				Rectangle rect = player.getRect();
 
-		// Since only a single instance of ModMountData ever exists, we can use player.mount._mountSpecificData to store additional data related to a specific mount.
-		// Using something like this for gameplay effects would require ModPlayer syncing, but this example is purely visual.
-		internal class CarSpecificData
-		{
-			// count tracks how many balloons are still left. See ExamplePerson.Hurt to see how count decreases whenever damage is taken.
-			internal int count;
-			internal float[] rotations;
-			internal static float[] offsets = new float[] { 0, 14, -14 };
-			public CarSpecificData() {
-				count = 3;
-				rotations = new float[count];
+				Dust.NewDust(new Vector2(rect.X, rect.Y), rect.Width, rect.Height, ModContent.DustType<Dusts.Sparkle>());
 			}
 		}
 
@@ -104,10 +114,13 @@ namespace ExampleMod.Content.Mounts
 			player.mount._mountSpecificData = new CarSpecificData();
 
 			// This code bypasses the normal mount spawning dust and replaces it with our own visual.
-			for (int i = 0; i < 16; i++) {
-				Dust.NewDustPerfect(player.Center + new Vector2(80, 0).RotatedBy(i * Math.PI * 2 / 16f), MountData.spawnDust);
+			if (!Main.dedServ) {
+				for (int i = 0; i < 16; i++) {
+					Dust.NewDustPerfect(player.Center + new Vector2(80, 0).RotatedBy(i * Math.PI * 2 / 16f), MountData.spawnDust);
+				}
+
+				skipDust = true;
 			}
-			skipDust = true;
 		}
 
 		public override bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow) {
@@ -117,10 +130,17 @@ namespace ExampleMod.Content.Mounts
 				var balloons = (CarSpecificData)drawPlayer.mount._mountSpecificData;
 				int timer = DateTime.Now.Millisecond % 800 / 200;
 				Texture2D balloonTexture = Mod.GetTexture("Content/Items/Armor/SimpleAccessory_Balloon").Value;
+
 				for (int i = 0; i < balloons.count; i++) {
-					playerDrawData.Add(new DrawData(balloonTexture, drawPosition + new Vector2((-36 + CarSpecificData.offsets[i]) * drawPlayer.direction, 14), new Rectangle(28, balloonTexture.Height / 4 * ((timer + i) % 4), 28, 42), drawColor, rotation + balloons.rotations[i], new Vector2(14 + drawPlayer.direction * 7, 42), drawScale, spriteEffects ^ SpriteEffects.FlipHorizontally, 0));
+					var position = drawPosition + new Vector2((-36 + CarSpecificData.offsets[i]) * drawPlayer.direction, 14);
+					var srcRect = new Rectangle(28, balloonTexture.Height / 4 * ((timer + i) % 4), 28, 42);
+					float drawRotation = rotation + balloons.rotations[i];
+					var origin = new Vector2(14 + drawPlayer.direction * 7, 42);
+
+					playerDrawData.Add(new DrawData(balloonTexture, position, srcRect, drawColor, drawRotation, origin, drawScale, spriteEffects ^ SpriteEffects.FlipHorizontally, 0));
 				}
 			}
+
 			// by returning true, the regular drawing will still happen.
 			return true;
 		}

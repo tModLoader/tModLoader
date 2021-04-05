@@ -38,9 +38,11 @@ namespace ExampleMod.Content.Items
 				overrideColor = new Color(100, 100, 255)
 			};
 			tooltips.Add(line);
+
+			// Here we give the item name a rainbow effect.
 			foreach (TooltipLine line2 in tooltips) {
 				if (line2.mod == "Terraria" && line2.Name == "ItemName") {
-					line2.overrideColor = new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB);
+					line2.overrideColor = Main.DiscoColor;
 				}
 			}
 
