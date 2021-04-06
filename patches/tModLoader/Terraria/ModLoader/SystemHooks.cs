@@ -73,7 +73,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void UpdateMusic(ref int music, ref MusicPriority priority) {
+		public static void UpdateMusic(ref int music, ref AtmosphericPriority priority) {
 			foreach (var system in HookUpdateMusic.arr) {
 				system.UpdateMusic(ref music, ref priority);
 			}

@@ -110,33 +110,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public struct BiomeAtmosphere {
-			internal bool anyActive;
-			internal Func<int> music;
-			internal Func<Texture2D> mapBG;
-			internal CaptureBiome captureStyle;
-			internal byte weight;
-		}
-
-		public static void SetBiomeAtmosphere(Player player) {
-			BiomeAtmosphere result = new BiomeAtmosphere();
-			var weight = 0;
-
-			for (int i = 0; i < biomes.Count; i++ ) {
-				var tst = biomes[i].GetBiomeAtmosphere(player);
-				byte tmp = Math.Max(Math.Min(tst.weight, (byte)199), (byte)0);
-				if (tmp > weight) {
-					result = tst;
-					weight = tmp;
-				}
-			}
-
-			if (weight == 0)
-				result.anyActive = false;
-
-			player.currentModBiomeAtmosphere = result;
-		}
-
 		internal struct BiomeWeight
 		{
 			internal Predicate<Player> isActiveCondition;
@@ -177,7 +150,7 @@ namespace Terraria.ModLoader
 
 			for (int i = 0; i < biomes.Count; i++) {
 				bool active = biomes[i].IsBiomeActive(player) && biomes[i].isPrimaryBiome;
-				byte tst = biomes[i].GetBiomeStrength(player);
+				byte tst = biomes[i].GetWeight(player);
 				if (active && tst > weight) {
 					index = i + vanillaPrimaryBiomes.Count;
 					weight = tst;

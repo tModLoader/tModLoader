@@ -7,14 +7,6 @@ using Terraria.Graphics.Effects;
 
 namespace Terraria.ModLoader
 {
-	public static class BackgroundLoader {
-		internal static int ReserveBackgroundSlot(ref int nextBackground) {
-			int reserve = nextBackground;
-			nextBackground++;
-			return reserve;
-		}
-	}
-	
 	//todo: further documentation
 	/// <summary>
 	/// This is the class that keeps track of all modded background textures and their slots/IDs.
@@ -25,7 +17,11 @@ namespace Terraria.ModLoader
 		private static int nextBackground = vanillaBackgroundTextureCount;
 		internal static IDictionary<string, int> backgrounds = new Dictionary<string, int>();
 
-		internal static int ReserveBackgroundSlot() => BackgroundLoader.ReserveBackgroundSlot(ref nextBackground);
+		internal static int ReserveBackgroundSlot() {
+			int reserve = nextBackground;
+			nextBackground++;
+			return reserve;
+		}
 
 		/// <summary>
 		/// Returns the slot/ID of the background texture with the given name.
@@ -53,37 +49,19 @@ namespace Terraria.ModLoader
 		}
 	}
 
-
 	//todo: further documentation
 	/// <summary>
 	/// This serves as the central class from which ModUgBgStyle functions are supported and carried out.
 	/// </summary>
-	public static class UgBgStyleLoader
+	public class UgBgStyles : AtmosphericLoader<ModUgBgStyle>
 	{
-		public const int vanillaUgBgStyleCount = 18;
-		private static int nextUgBgStyle = vanillaUgBgStyleCount;
-		internal static readonly IList<ModUgBgStyle> ugBgStyles = new List<ModUgBgStyle>();
+		public UgBgStyles(int vanillaCount = 18) : base(vanillaCount) { }
 
-		internal static int ReserveBackgroundSlot() => BackgroundLoader.ReserveBackgroundSlot(ref nextUgBgStyle);
-
-		/// <summary>
-		/// Returns the ModUgBgStyle object with the given ID.
-		/// </summary>
-		public static ModUgBgStyle GetUgBgStyle(int style) {
-			return style >= vanillaUgBgStyleCount && style < nextUgBgStyle
-				? ugBgStyles[style - vanillaUgBgStyleCount] : null;
-		}
-
-		internal static void Unload() {
-			nextUgBgStyle = vanillaUgBgStyleCount;
-			ugBgStyles.Clear();
-		}
-
-		public static void ChooseStyle(ref int style) {
+		public override void ChooseStyle(ref int style) {
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
 			}
-			foreach (var ugBgStyle in ugBgStyles) {
+			foreach (var ugBgStyle in list) {
 				if (ugBgStyle.ChooseBgStyle()) {
 					style = ugBgStyle.Slot;
 				}
@@ -93,11 +71,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void FillTextureArray(int style, int[] textureSlots) {
+		public void FillTextureArray(int style, int[] textureSlots) {
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
 			}
-			var ugBgStyle = GetUgBgStyle(style);
+			var ugBgStyle = Get(style);
 			if (ugBgStyle != null) {
 				ugBgStyle.FillTextureArray(textureSlots);
 			}
@@ -107,41 +85,20 @@ namespace Terraria.ModLoader
 		}
 	}
 
-	public static class SurfaceBgStyleLoader
+	public class SurfaceBgStyles : AtmosphericLoader<ModSurfaceBgStyle>
 	{
-		public const int VanillaSurfaceBgStyleCount = Main.BG_STYLES_COUNT;
+		public SurfaceBgStyles(int vanillaCount = Main.BG_STYLES_COUNT) : base(vanillaCount) { }
 
-		private static int nextSurfaceBgStyle = VanillaSurfaceBgStyleCount;
-
-		internal static readonly IList<ModSurfaceBgStyle> surfaceBgStyles = new List<ModSurfaceBgStyle>();
-
-		//public static int SurfaceStyleCount => nextSurfaceBackgroundStyle;
-
-		internal static int ReserveBackgroundSlot() => BackgroundLoader.ReserveBackgroundSlot(ref nextSurfaceBgStyle);
-
-		/// <summary>
-		/// Returns the ModSurfaceBgStyle object with the given ID.
-		/// </summary>
-		public static ModSurfaceBgStyle GetSurfaceBgStyle(int style) {
-			return style >= VanillaSurfaceBgStyleCount && style < nextSurfaceBgStyle
-				? surfaceBgStyles[style - VanillaSurfaceBgStyleCount] : null;
+		internal override void ResizeArrays() {
+			Array.Resize(ref Main.bgAlphaFrontLayer, totalCount);
+			Array.Resize(ref Main.bgAlphaFarBackLayer, totalCount);
 		}
 
-		internal static void ResizeAndFillArrays() {
-			Array.Resize(ref Main.bgAlphaFrontLayer, nextSurfaceBgStyle);
-			Array.Resize(ref Main.bgAlphaFarBackLayer, nextSurfaceBgStyle);
-		}
-
-		internal static void Unload() {
-			nextSurfaceBgStyle = VanillaSurfaceBgStyleCount;
-			surfaceBgStyles.Clear();
-		}
-
-		public static void ChooseStyle(ref int style) {
+		public override void ChooseStyle(ref int style) {
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
 			}
-			foreach (var surfaceBgStyle in surfaceBgStyles) {
+			foreach (var surfaceBgStyle in list) {
 				if (surfaceBgStyle.ChooseBgStyle()) {
 					style = surfaceBgStyle.Slot;
 				}
@@ -151,11 +108,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void ModifyFarFades(int style, float[] fades, float transitionSpeed) {
+		public void ModifyFarFades(int style, float[] fades, float transitionSpeed) {
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
 			}
-			var surfaceBgStyle = GetSurfaceBgStyle(style);
+			var surfaceBgStyle = Get(style);
 			if (surfaceBgStyle != null) {
 				surfaceBgStyle.ModifyFarFades(fades, transitionSpeed);
 			}
@@ -164,13 +121,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void DrawFarTexture() {
+		public void DrawFarTexture() {
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
 			}
 
 			// TODO: Causes background to flicker during load because Main.bgAlpha2 is resized after surfaceBgStyles is added to in AutoLoad.
-			foreach (var style in surfaceBgStyles) {
+			foreach (var style in list) {
 				int slot = style.Slot;
 				float alpha = Main.bgAlphaFarBackLayer[slot];
 
@@ -200,12 +157,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void DrawMiddleTexture() {
+		//TODO: This hook is missing in 1.4 main branch
+		public void DrawMiddleTexture() {
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
 			}
 
-			foreach (var style in surfaceBgStyles) {
+			foreach (var style in list) {
 				int slot = style.Slot;
 				float alpha = Main.bgAlphaFarBackLayer[slot];
 
@@ -235,7 +193,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void DrawCloseBackground(int style) {
+		//TODO: This hook is missing in 1.4 main branch
+		public void DrawCloseBackground(int style) {
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
 			}
@@ -244,7 +203,7 @@ namespace Terraria.ModLoader
 				return;
 			}
 
-			var surfaceBgStyle = GetSurfaceBgStyle(style);
+			var surfaceBgStyle = Get(style);
 
 			if (surfaceBgStyle != null && surfaceBgStyle.PreDrawCloseBackground(Main.spriteBatch)) {
 				Main.bgScale = 1.25f;
@@ -290,6 +249,7 @@ namespace Terraria.ModLoader
 			}
 		}
 	}
+
 
 	internal static class GlobalBgStyleLoader
 	{

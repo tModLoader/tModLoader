@@ -45,7 +45,7 @@ namespace Terraria.ModLoader
 		public int Music { get; set; } = -1;
 		
 		/// <summary> The priority of the music that plays when this NPC is on or near the screen. </summary>
-		public MusicPriority MusicPriority { get; set; } = MusicPriority.BossLow;
+		public AtmosphericPriority AtmosphericPriority { get; set; } = AtmosphericPriority.BossLow;
 		
 		/// <summary> The vertical offset used for drawing this NPC. Defaults to 0. </summary>
 		public float DrawOffsetY { get; set; }

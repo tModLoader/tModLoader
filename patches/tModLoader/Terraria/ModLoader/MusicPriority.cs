@@ -1,10 +1,10 @@
 ﻿namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// This enum dictates from low to high which music selections take priority. 
-	/// Setting appropriate MusicPriority values in Mod.UpdateMusic is important so that your mod works well with other mods and vanilla music selections.
+	/// This enum dictates from low to high which Atmospheric selections take priority. 
+	/// Setting appropriate AtmosphericPriority values in Mod.UpdateMusic is important so that your mod works well with other mods and vanilla atmospheric selections.
 	/// </summary>
-	public enum MusicPriority
+	public enum AtmosphericPriority
 	{
 		/// <summary>Represents no priority</summary>
 		None,

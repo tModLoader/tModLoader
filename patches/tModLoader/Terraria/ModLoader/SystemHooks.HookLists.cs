@@ -45,7 +45,7 @@ namespace Terraria.ModLoader
 
 		//Delegates
 
-		private delegate void DelegateUpdateMusic(ref int music, ref MusicPriority priority);
+		private delegate void DelegateUpdateMusic(ref int music, ref AtmosphericPriority priority);
 		
 		private delegate void DelegateModifyTransformMatrix(ref SpriteViewMatrix Transform);
 		

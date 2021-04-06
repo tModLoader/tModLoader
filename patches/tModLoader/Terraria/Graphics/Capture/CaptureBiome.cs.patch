@@ -1,11 +1,20 @@
 --- src/Terraria/Terraria/Graphics/Capture/CaptureBiome.cs
 +++ src/tModLoader/Terraria/Graphics/Capture/CaptureBiome.cs
-@@ -164,7 +_,7 @@
+@@ -1,3 +_,4 @@
++using Terraria.ModLoader;
+ namespace Terraria.Graphics.Capture
+ {
+ 	public class CaptureBiome
+@@ -164,7 +_,11 @@
  				case 9:
  					return Styles.Mushroom;
  				default:
 -					return null;
-+					return Main.LocalPlayer.currentModBiomeAtmosphere.captureStyle;
++					var atmos = Main.LocalPlayer.currentModAtmosphere;
++					if (atmos.surfaceBG > AtmosphericHelper.SurfaceBg.vanillaCount || atmos.waterStyle > AtmosphericHelper.Waters.vanillaCount) {
++						return new CaptureBiome(atmos.surfaceBG, atmos.waterStyle, atmos.tileColorStyle);
++					}
++					return null; 	
  			}
  		}
  

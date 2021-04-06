@@ -100,8 +100,12 @@ namespace Terraria
 		/// </summary>
 		public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
 
+		/// <summary>
+		/// Container for current atmospheric client properties such as: Backgrounds, music, and water styling
+		/// </summary>
+		public AtmosphericLoader.ModAtmosphere currentModAtmosphere = new AtmosphericLoader.ModAtmosphere();
+
 		internal BitArray modBiomeFlags = new BitArray(0);
-		public BiomeLoader.BiomeAtmosphere currentModBiomeAtmosphere = new BiomeLoader.BiomeAtmosphere() {anyActive = false};
 
 		/// <summary> 
 		/// Determines if the player is in specified ModBiome. This will throw exceptions on failure. 

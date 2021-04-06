@@ -11,23 +11,12 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a biome added by a mod. It exists to centralize various biome related hooks, handling a lot of biome boilerplate. Use its various logic hooks act as if they were in ModPlayer, and use ModifyWorldGenTasks as if it were in ModWorld.
 	/// </summary>
-	public abstract class ModBiome : ModSystem
+	public abstract class ModBiome : IAtmosphericType
 	{
 		internal int index;
 
 		// Basic Biome information
 		public bool isPrimaryBiome = false;
-
-		// Capture Camera
-		public virtual CaptureBiome.TileColorStyle tileColorStyle => CaptureBiome.TileColorStyle.Normal;
-		public virtual int waterStyle => 0;
-		internal int backgroundTextureSlot => BackgroundTextureLoader.GetBackgroundSlot(biomeTexture);
-
-		// Biome Atmosphere
-		public virtual string biomeTexture => null;
-		public virtual Texture2D GetBiomeMapBackground() => null;
-		public virtual int biomeMusic() => 0;
-
 
 		// Bestiary properties
 		public virtual string translatedNPCMoodBiome => "the UnknownBiome";
@@ -36,22 +25,18 @@ namespace Terraria.ModLoader
 		public virtual List<string> namesOfYourMusicTracks => new List<string>() { "SomeUnknownAudio" };
 
 		protected override void Register() {
+			RegisterAtmosphere();
 			ModTypeLookup<ModBiome>.Register(this);
 			BiomeLoader.Add(this);
 		}
+
+		public sealed override bool IsActive(Player player) => player.modBiomeFlags[index];
 
 		/// <summary>
 		/// Return true if the player is in the biome.
 		/// </summary>
 		/// <returns></returns>
 		public virtual bool IsBiomeActive(Player player) => false;
-
-		/// <summary>
-		/// Returns the strength to which this biome is active. 0% < val < 200%. Defaults to 100% (ie 100) 
-		/// Typically based on how many tiles are present relative to requisite.
-		/// </summary>
-		/// <returns></returns>
-		public virtual byte GetBiomeStrength(Player player) => 100;
 
 		/// <summary>
 		/// Override this hook to make things happen when the player enters the biome.
@@ -84,21 +69,5 @@ namespace Terraria.ModLoader
 		public virtual void ModifyShopPrices(HelperInfo helperInfo, ShopHelper shopHelperInstance) {
 
 		}
-
-		internal BiomeLoader.BiomeAtmosphere GetBiomeAtmosphere(Player player) {
-			var result = new BiomeLoader.BiomeAtmosphere() {
-				anyActive = true,
-				mapBG = GetBiomeMapBackground,
-				music = biomeMusic,
-				weight = GetBiomeStrength(player),
-				captureStyle = new CaptureBiome(backgroundTextureSlot, waterStyle, tileColorStyle)
-			};
-
-			if (!player.modBiomeFlags[index]) {
-				result.weight = 0;  
-			}
-
-			return result;
-		} 
 	}
 }

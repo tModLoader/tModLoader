@@ -12,20 +12,20 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The ID of the water style.
 		/// </summary>
-		public int Type { get; internal set; }
+		public int Slot { get; internal set; }
 
 		public virtual string BlockTexture => Texture + "_Block";
 
 		protected sealed override void Register() {
-			Type = WaterStyleLoader.ReserveStyle();
+			Slot = AtmosphericHelper.Waters.Reserve();
 
 			ModTypeLookup<ModWaterStyle>.Register(this);
-			WaterStyleLoader.waterStyles.Add(this);
+			AtmosphericHelper.Waters.list.Add(this);
 		}
 
 		public sealed override void SetupContent() {
-			LiquidRenderer.Instance._liquidTextures[Type] = ModContent.GetTexture(Texture);
-			TextureAssets.Liquid[Type] = ModContent.GetTexture(BlockTexture);
+			LiquidRenderer.Instance._liquidTextures[Slot] = ModContent.GetTexture(Texture);
+			TextureAssets.Liquid[Slot] = ModContent.GetTexture(BlockTexture);
 		}
 
 		/// <summary>
@@ -75,17 +75,17 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The ID of this waterfall style.
 		/// </summary>
-		public int Type { get; internal set; }
+		public int Slot { get; internal set; }
 
 		protected sealed override void Register() {
-			Type = WaterfallStyleLoader.ReserveStyle();
+			Slot = AtmosphericHelper.Waterfalls.Reserve();
 
 			ModTypeLookup<ModWaterfallStyle>.Register(this);
-			WaterfallStyleLoader.waterfallStyles.Add(this);
+			AtmosphericHelper.Waterfalls.list.Add(this);
 		}
 
 		public sealed override void SetupContent() {
-			Main.instance.waterfallManager.waterfallTexture[Type] = ModContent.GetTexture(Texture);
+			Main.instance.waterfallManager.waterfallTexture[Slot] = ModContent.GetTexture(Texture);
 		}
 
 		/// <summary>

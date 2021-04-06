@@ -1839,17 +1839,23 @@
  			ManageSpecialBiomeVisuals("Stardust", ZoneTowerStardust, value4 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Nebula", ZoneTowerNebula, value3 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Vortex", ZoneTowerVortex, value2 - new Vector2(0f, 10f));
-@@ -11691,6 +_,10 @@
+@@ -11691,6 +_,8 @@
  				}
  			}
  
-+			BiomeLoader.SetBiomeAtmosphere(this);
-+
 +			zonePurity = InZonePurity();
 +			BiomeLoader.PostUpdateBiome(this);
  			if (!dead) {
  				Point point2 = base.Center.ToTileCoordinates();
  				if (WorldGen.InWorld(point2.X, point2.Y, 1)) {
+@@ -11721,6 +_,7 @@
+ 			else {
+ 				_funkytownAchievementCheckCooldown = 100;
+ 			}
++			AtmosphericLoader.UpdateModAtmosphere(this);
+ 		}
+ 
+ 		public void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = default(Vector2)) {
 @@ -11916,8 +_,9 @@
  			hasGingerBeard = false;
  			hasRainbowCursor = false;
