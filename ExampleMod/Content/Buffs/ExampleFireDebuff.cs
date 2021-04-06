@@ -5,12 +5,12 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Buffs
 {
-	// Ethereal Flames is an example of a buff that causes constant loss of life.
+	// Fire debuff is an example of a buff that causes constant loss of life.
 	// See ExamplePlayer.UpdateBadLifeRegen for more information.
-	public class ExampleEtherealFlames : ModBuff
+	public class ExampleFireDebuff : ModBuff
 	{
 		public override void SetDefaults() {
-			DisplayName.SetDefault("Ethereal Flames"); // Buff display name
+			DisplayName.SetDefault("Fire debuff"); // Buff display name
 			Description.SetDefault("Losing life"); // Buff description
 			Main.debuff[Type] = true;  // Is it a debuff?
 			Main.pvpBuff[Type] = true; // Players can give other players buffs, which are listed as pvpBuff
@@ -20,7 +20,7 @@ namespace ExampleMod.Content.Buffs
 
 		// Allows you to make this buff give certain effects to the given player
 		public override void Update(Player player, ref int buffIndex) {
-			player.GetModPlayer<ExamplePlayer>().eFlames = true;
+			player.GetModPlayer<ExamplePlayer>().FireDebuff = true;
 		}
 	}
 }
