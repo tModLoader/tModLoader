@@ -627,16 +627,33 @@ namespace Terraria.ModLoader
 				player.modPlayers[index].OnConsumeAmmo(weapon, ammo);
 		}
 
-		private delegate bool DelegateShoot(Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack);
-		private static HookList HookShoot = AddHook<DelegateShoot>(p => p.Shoot);
+		private static HookList HookCanShoot = AddHook<Func<Item, bool>>(p => p.CanShoot);
 
-		public static bool Shoot(Player player, Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
-			foreach (int index in HookShoot.arr) {
-				if (!player.modPlayers[index].Shoot(item, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack)) {
-					return false;
-				}
+		public static bool CanShoot(Player player, Item item) {
+			bool canShoot = true;
+
+			foreach (int index in HookCanShoot.arr) {
+				canShoot &= player.modPlayers[index].CanShoot(item);
 			}
-			return true;
+
+			return canShoot;
+		}
+
+		private delegate void DelegateModifyShootStats(Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack);
+		private static HookList HookModifyShootStats = AddHook<DelegateModifyShootStats>(p => p.ModifyShootStats);
+
+		public static void ModifyShootStats(Player player, Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
+			foreach (int index in HookModifyShootStats.arr) {
+				player.modPlayers[index].ModifyShootStats(item, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
+			}
+		}
+
+		private static HookList HookShoot = AddHook<Action<Item, IProjectileSource, Vector2, float, float, int, int, float>>(p => p.Shoot);
+
+		public static void Shoot(Player player, Item item, IProjectileSource source, Vector2 position, float speedX, float speedY, int type, int damage, float knockBack) {
+			foreach (int index in HookShoot.arr) {
+				player.modPlayers[index].Shoot(item, source, position, speedX, speedY, type, damage, knockBack);
+			}
 		}
 
 		private static HookList HookMeleeEffects = AddHook<Action<Item, Rectangle>>(p => p.MeleeEffects);

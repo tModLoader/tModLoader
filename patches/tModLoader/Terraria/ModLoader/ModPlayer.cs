@@ -86,13 +86,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. 
+		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.
 		/// </summary>
 		public virtual void PreSavePlayer() {
 		}
 
 		/// <summary>
-		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. 
+		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.
 		/// </summary>
 		public virtual void PostSavePlayer() {
 		}
@@ -203,7 +203,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Use this to check on hotkeys you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay. 
+		/// Use this to check on hotkeys you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay.
 		/// </summary>
 		/// <param name="triggersSet"></param>
 		public virtual void ProcessTriggers(TriggersSet triggersSet) {
@@ -480,18 +480,39 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// This is called before this player's weapon creates a projectile. You can use it to create special effects, such as changing the speed, changing the initial position, and/or firing multiple projectiles. Return false to stop the game from shooting the default projectile (do this if you manually spawn your own projectile). Returns true by default.
+		/// Allows you to prevent an item from shooting a projectile on use. Returns true by default.
 		/// </summary>
-		/// <param name="item"></param>
-		/// <param name="position"></param>
-		/// <param name="speedX"></param>
-		/// <param name="speedY"></param>
-		/// <param name="type"></param>
-		/// <param name="damage"></param>
-		/// <param name="knockBack"></param>
+		/// <param name="item"> The item being used. </param>
 		/// <returns></returns>
-		public virtual bool Shoot(Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
+		public virtual bool CanShoot(Item item) {
 			return true;
+		}
+
+		/// <summary>
+		/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by an item.
+		/// </summary>
+		/// <param name="item"> The item being used. </param>
+		/// <param name="position"> The center position of the projectile. </param>
+		/// <param name="speedX"> The X velocity of the projectile. </param>
+		/// <param name="speedY"> The Y velocity of the projectile. </param>
+		/// <param name="type"> The ID of the projectile. </param>
+		/// <param name="damage"> The damage of the projectile. </param>
+		/// <param name="knockBack"> The knockback of the projectile. </param>
+		public virtual void ModifyShootStats(Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
+		}
+
+		/// <summary>
+		/// Allows you to add additional projectiles to an item's shooting mechanism.
+		/// </summary>
+		/// <param name="item"> The item being used. </param>
+		/// <param name="source"> The projectile source's information. </param>
+		/// <param name="position"> The center position of the projectile. </param>
+		/// <param name="speedX"> The X velocity of the projectile. </param>
+		/// <param name="speedY"> The Y velocity of the projectile. </param>
+		/// <param name="type"> The ID of the projectile. </param>
+		/// <param name="damage"> The damage of the projectile. </param>
+		/// <param name="knockBack"> The knockback of the projectile. </param>
+		public virtual void Shoot(Item item, IProjectileSource source, Vector2 position, float speedX, float speedY, int type, int damage, float knockBack) {
 		}
 
 		/// <summary>

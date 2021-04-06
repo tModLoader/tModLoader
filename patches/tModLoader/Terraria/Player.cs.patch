@@ -3755,16 +3755,27 @@
  				if (sItem.stack <= 0)
  					sItem.SetDefaults();
  			}
-@@ -33903,7 +_,8 @@
- 					Main.projectile[num177].originalDamage = damage;
- 					UpdateMaxTurrets();
+@@ -32508,6 +_,9 @@
+ 		}
+ 
+ 		private void ItemCheck_Shoot(int i, Item sItem, int weaponDamage) {
++			if (!CombinedHooks.CanShoot(this, sItem))
++				return;
++
+ 			int projToShoot = sItem.shoot;
+ 			float speed = sItem.shootSpeed;
+ 			int damage = sItem.damage;
+@@ -32764,6 +_,10 @@
+ 					LimitPointToPlayerReachableArea(ref pointPoisition);
  				}
--				else {
-+				else if (PlayerHooks.Shoot(this, sItem, ref pointPoisition, ref num2, ref num3, ref projToShoot, ref Damage, ref KnockBack)
-+					&& ItemLoader.Shoot(sItem, this, ref pointPoisition, ref num2, ref num3, ref projToShoot, ref Damage, ref KnockBack)) {
- 					int num178 = Projectile.NewProjectile(projectileSource_Item_WithPotentialAmmo, pointPoisition.X, pointPoisition.Y, num2, num3, projToShoot, Damage, KnockBack, i);
- 					if (sItem.type == 726)
- 						Main.projectile[num178].magic = true;
+ 
++				CombinedHooks.ModifyShootStats(this, sItem, ref pointPoisition, ref num2, ref num3, ref projToShoot, ref Damage, ref KnockBack);
++				if (!CombinedHooks.Shoot(this, sItem, projectileSource_Item_WithPotentialAmmo, pointPoisition, num2, num3, projToShoot, Damage, KnockBack))
++					return;
++
+ 				if (projToShoot == 76) {
+ 					projToShoot += Main.rand.Next(3);
+ 					float num7 = (float)Main.screenHeight / Main.GameViewMatrix.Zoom.Y;
 @@ -34460,6 +_,10 @@
  		}
  
