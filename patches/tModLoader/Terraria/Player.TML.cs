@@ -114,7 +114,7 @@ namespace Terraria
 		/// <exception cref="NullReferenceException"/>
 		public bool InModBiome(ModBiome baseInstance)=> modBiomeFlags[baseInstance.index];
 
-		bool zonePurity = false;
+		public bool zonePurity = false;
 		public bool InZonePurity() {
 			bool one = ZoneBeach || ZoneCorrupt || ZoneCrimson || ZoneDesert || ZoneDungeon || ZoneGemCave;
 			bool two = ZoneGlowshroom || ZoneGranite || ZoneGraveyard || ZoneHallow || ZoneHive || ZoneJungle;

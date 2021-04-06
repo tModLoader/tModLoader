@@ -61,13 +61,10 @@ namespace Terraria.ModLoader
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
 			}
-			foreach (var ugBgStyle in list) {
-				if (ugBgStyle.ChooseBgStyle()) {
-					style = ugBgStyle.Slot;
-				}
-			}
-			foreach (var hook in GlobalBgStyleLoader.HookChooseUgBgStyle) {
-				hook(ref style);
+
+			int tst = Main.LocalPlayer.currentModAtmosphere.ugBG;
+			if (tst > vanillaCount) {
+				style = tst;
 			}
 		}
 
@@ -98,13 +95,9 @@ namespace Terraria.ModLoader
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
 			}
-			foreach (var surfaceBgStyle in list) {
-				if (surfaceBgStyle.ChooseBgStyle()) {
-					style = surfaceBgStyle.Slot;
-				}
-			}
-			foreach (var hook in GlobalBgStyleLoader.HookChooseSurfaceBgStyle) {
-				hook(ref style);
+			int tst = Main.LocalPlayer.currentModAtmosphere.surfaceBG;
+			if (tst > vanillaCount) {
+				style = tst;
 			}
 		}
 
@@ -255,16 +248,10 @@ namespace Terraria.ModLoader
 	{
 		internal static readonly IList<GlobalBgStyle> globalBgStyles = new List<GlobalBgStyle>();
 		internal static bool loaded = false;
-		internal delegate void DelegateChooseUgBgStyle(ref int style);
-		internal static DelegateChooseUgBgStyle[] HookChooseUgBgStyle;
-		internal delegate void DelegateChooseSurfaceBgStyle(ref int style);
-		internal static DelegateChooseSurfaceBgStyle[] HookChooseSurfaceBgStyle;
 		internal static Action<int, int[]>[] HookFillUgTextureArray;
 		internal static Action<int, float[], float>[] HookModifyFarSurfaceFades;
 
 		internal static void ResizeAndFillArrays(bool unloading = false) {
-			ModLoader.BuildGlobalHook(ref HookChooseUgBgStyle, globalBgStyles, g => g.ChooseUgBgStyle);
-			ModLoader.BuildGlobalHook(ref HookChooseSurfaceBgStyle, globalBgStyles, g => g.ChooseSurfaceBgStyle);
 			ModLoader.BuildGlobalHook(ref HookFillUgTextureArray, globalBgStyles, g => g.FillUgTextureArray);
 			ModLoader.BuildGlobalHook(ref HookModifyFarSurfaceFades, globalBgStyles, g => g.ModifyFarSurfaceFades);
 

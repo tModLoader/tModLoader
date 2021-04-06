@@ -29,13 +29,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether the conditions have been met for this water style to be used. Typically Main.bgStyle is checked to determine whether a water style should be used. Returns false by default.
-		/// </summary>
-		public virtual bool ChooseWaterStyle() {
-			return false;
-		}
-
-		/// <summary>
 		/// The ID of the waterfall style the game should use when this water style is in use.
 		/// </summary>
 		public abstract int ChooseWaterfallStyle();

@@ -1,14 +1,11 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.Personalities;
-using Terraria.Graphics.Capture;
 
 namespace Terraria.ModLoader
 {

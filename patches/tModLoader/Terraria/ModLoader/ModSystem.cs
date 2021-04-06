@@ -267,13 +267,6 @@ namespace Terraria.ModLoader
 		public virtual void ModifyHardmodeTasks(List<GenPass> list) { }
 
 		/// <summary>
-		/// Allows you to determine what music should currently play.
-		/// </summary>
-		/// <param name="music">The music.</param>
-		/// <param name="priority">The music priority.</param>
-		public virtual void UpdateMusic(ref int music, ref AtmosphericPriority priority) { }
-
-		/// <summary>
 		/// Allows you to modify color of light the sun emits.
 		/// </summary>
 		/// <param name="tileColor">Tile lighting color</param>
@@ -290,10 +283,5 @@ namespace Terraria.ModLoader
 		/// Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are. The tileCounts parameter stores the tile count indexed by tile type.
 		/// </summary>
 		public virtual void TileCountsAvailable(int[] tileCounts) { }
-
-		/// <summary>
-		/// Allows you to change the water style (determines water color) that is currently being used.
-		/// </summary>
-		public virtual void ChooseWaterStyle(ref int style) { }
 	}
 }

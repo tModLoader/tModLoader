@@ -1,22 +1,19 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.Personalities;
-using Terraria.Graphics.Capture;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class represents a biome added by a mod. It exists to centralize various biome related hooks, handling a lot of biome boilerplate. Use its various logic hooks act as if they were in ModPlayer, and use ModifyWorldGenTasks as if it were in ModWorld.
 	/// </summary>
-	public abstract class ModBiome : IAtmosphericType
+	public abstract class ModBiome : ModAtmosphericType
 	{
 		internal int index;
 
 		// Basic Biome information
 		public bool isPrimaryBiome = false;
+		public override AtmosphericPriority Priority => AtmosphericPriority.BiomeLow;
 
 		// Bestiary properties
 		public virtual string translatedNPCMoodBiome => "the UnknownBiome";
@@ -25,9 +22,9 @@ namespace Terraria.ModLoader
 		public virtual List<string> namesOfYourMusicTracks => new List<string>() { "SomeUnknownAudio" };
 
 		protected override void Register() {
-			RegisterAtmosphere();
 			ModTypeLookup<ModBiome>.Register(this);
 			BiomeLoader.Add(this);
+			RegisterAtmosphere(this);
 		}
 
 		public sealed override bool IsActive(Player player) => player.modBiomeFlags[index];

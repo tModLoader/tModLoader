@@ -8,13 +8,6 @@ namespace Terraria.ModLoader
 		/// The ID of this underground background style.
 		/// </summary>
 		public int Slot { get; internal set; }
-
-		/// <summary>
-		/// Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default.
-		/// </summary>
-		public virtual bool ChooseBgStyle() {
-			return false;
-		}
 	}
 	
 	/// <summary>

@@ -51,14 +51,13 @@ namespace Terraria.ModLoader
 
 	public static class AtmosphericLoader
 	{
-		internal static List<IAtmosphericType> atmosphericTypes = new List<IAtmosphericType>();
+		internal static List<ModAtmosphericType> atmosphericTypes = new List<ModAtmosphericType>();
 
 		public class ModAtmosphere
 		{
 			public bool anyActive;
 			public AtmosphericPriority priority;
 			public int waterStyle;
-			public int waterfallStyle;
 			public int ugBG;
 			public int surfaceBG;
 			public CaptureBiome.TileColorStyle tileColorStyle;
@@ -67,16 +66,17 @@ namespace Terraria.ModLoader
 			public ModAtmosphere() {
 				anyActive = false;
 				priority = AtmosphericPriority.None;
-				waterStyle = waterfallStyle = ugBG = surfaceBG = music = 0;
+				waterStyle = ugBG = surfaceBG = 0;
+				music = -1;
 				tileColorStyle = CaptureBiome.TileColorStyle.Normal;
 			}
 		}
 
 		internal struct AtmosWeight{
 			internal int weight;
-			internal IAtmosphericType type;
+			internal ModAtmosphericType type;
 
-			internal AtmosWeight(int weight, IAtmosphericType type) {
+			internal AtmosWeight(int weight, ModAtmosphericType type) {
 				this.weight = weight;
 				this.type = type;
 			}
@@ -110,7 +110,6 @@ namespace Terraria.ModLoader
 
 						//TODO: de:Terrible Hardcode
 						result.waterStyle = atmos.type.WaterStyle != null ? atmos.type.WaterStyle.Slot : result.waterStyle;
-						result.waterfallStyle = atmos.type.WaterfallStyle != null ? atmos.type.WaterfallStyle.Slot : result.waterfallStyle;
 						result.ugBG = atmos.type.UndergroundBackgroundStyle != null ? atmos.type.UndergroundBackgroundStyle.Slot : result.ugBG;
 						result.surfaceBG = atmos.type.SurfaceBackgroundStyle != null ? atmos.type.SurfaceBackgroundStyle.Slot : result.surfaceBG;
 						result.tileColorStyle = atmos.type.tileColorStyle != CaptureBiome.TileColorStyle.Normal ? atmos.type.tileColorStyle : result.tileColorStyle;
@@ -121,6 +120,14 @@ namespace Terraria.ModLoader
 			}
 
 			player.currentModAtmosphere = result;
+		}
+
+		public static void UpdateMusic(ref int music, ref AtmosphericPriority priority) {
+			int tst = Main.LocalPlayer.currentModAtmosphere.music;
+			if (tst > -1) {
+				music = tst;
+				priority = Main.LocalPlayer.currentModAtmosphere.priority;
+			}
 		}
 
 		internal static void Unload() {

@@ -944,7 +944,7 @@
  					}
  				}
 +
-+				SystemHooks.UpdateMusic(ref modMusic, ref modPriority);
++				AtmosphericLoader.UpdateMusic(ref modMusic, ref modPriority);
  			}
  
  			_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;

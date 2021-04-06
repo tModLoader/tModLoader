@@ -29,13 +29,10 @@ namespace Terraria.ModLoader
 		}
 
 		public override void ChooseStyle(ref int style) {
-			foreach (ModWaterStyle waterStyle in list) {
-				if (waterStyle.ChooseWaterStyle()) {
-					style = waterStyle.Slot;
-				}
+			int tst = Main.LocalPlayer.currentModAtmosphere.waterStyle;
+			if (tst > vanillaCount) {
+				style = tst;
 			}
-
-			SystemHooks.ChooseWaterStyle(ref style);
 		}
 
 		public void UpdateLiquidAlphas() {

@@ -73,12 +73,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void UpdateMusic(ref int music, ref AtmosphericPriority priority) {
-			foreach (var system in HookUpdateMusic.arr) {
-				system.UpdateMusic(ref music, ref priority);
-			}
-		}
-
 		public static void ModifyScreenPosition() {
 			foreach (var system in HookModifyScreenPosition.arr) {
 				system.ModifyScreenPosition();
@@ -322,12 +316,6 @@ namespace Terraria.ModLoader
 		public static void TileCountsAvailable(int[] tileCounts) {
 			foreach (var system in HookTileCountsAvailable.arr) {
 				system.TileCountsAvailable(tileCounts);
-			}
-		}
-
-		public static void ChooseWaterStyle(ref int style) {
-			foreach (var system in HookChooseWaterStyle.arr) {
-				system.ChooseWaterStyle(ref style);
 			}
 		}
 
