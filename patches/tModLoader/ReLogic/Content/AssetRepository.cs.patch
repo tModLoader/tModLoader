@@ -1,9 +1,18 @@
 --- src/Terraria/ReLogic/Content/AssetRepository.cs
 +++ src/tModLoader/ReLogic/Content/AssetRepository.cs
-@@ -7,8 +_,8 @@
+@@ -2,13 +_,17 @@
+ using System;
+ using System.Collections.Generic;
+ using System.Linq;
++using System.Threading;
+ 
+ namespace ReLogic.Content
  {
  	public class AssetRepository : IAssetRepository, IDisposable
  	{
++		// to allow texture loading on multiple threads without deadlocks, tML replaces this with a function that performs texture loading if the main thread is attempting to grab the lock and another thread has it (GLCallLocker)
++		public static Action<object> SafelyAcquireResourceLock = Monitor.Enter;
++
 -		private readonly Dictionary<string, IAsset> _assets = new Dictionary<string, IAsset>();
 +		protected readonly Dictionary<string, IAsset> _assets = new Dictionary<string, IAsset>();
 -		private IEnumerable<IContentSource> _sources = new IContentSource[0];
@@ -11,25 +20,48 @@
  		private readonly Dictionary<Type, Action<IAsset, AssetRequestMode>> _typeSpecificReloadActions = new Dictionary<Type, Action<IAsset, AssetRequestMode>>();
  		private readonly IAsyncAssetLoader _asyncLoader;
  		private readonly IAssetLoader _loader;
-@@ -47,7 +_,7 @@
+@@ -47,9 +_,11 @@
  				_asyncLoader.Start();
  		}
  
 -		public void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) {
 +		public virtual void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) {
  			ThrowIfDisposed();
- 			lock (_requestLock) {
+-			lock (_requestLock) {
++			//lock (_requestLock) {
++			try {
++				SafelyAcquireResourceLock(_requestLock);
  				while (_asyncLoader.Remaining > 0) {
-@@ -59,7 +_,7 @@
+ 					_asyncLoader.TransferCompleted();
+ 				}
+@@ -57,12 +_,17 @@
+ 				_sources = sources.ToList();
+ 				ReloadAssetsIfSourceChanged(mode);
  			}
++			finally {
++				Monitor.Exit(_requestLock);
++			}
  		}
  
 -		public Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class {
 +		public virtual Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class {
  			ThrowIfDisposed();
  			assetName = AssetPathHelper.CleanPath(assetName);
- 			lock (_requestLock) {
-@@ -82,9 +_,9 @@
+-			lock (_requestLock) {
++			//lock (_requestLock) {
++			try {
++				SafelyAcquireResourceLock(_requestLock);
+ 				Asset<T> asset = null;
+ 				if (_assets.TryGetValue(assetName, out IAsset value))
+ 					asset = (value as Asset<T>);
+@@ -78,13 +_,16 @@
+ 				LoadAsset(asset, mode);
+ 				return asset;
+ 			}
++			finally {
++				Monitor.Exit(_requestLock);
++			}
+ 		}
  
  		public void TransferCompletedAssets() {
  			ThrowIfDisposed();

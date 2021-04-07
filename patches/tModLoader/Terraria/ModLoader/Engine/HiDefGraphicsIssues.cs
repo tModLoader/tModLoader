@@ -82,8 +82,9 @@ namespace Terraria.ModLoader.Engine
 
 		private static int mainThreadId;
 
-		public static void Init()
-        {
+		public static void Init() {
+			Main.graphics.DeviceCreated += (s, e) => GLCallLocker.Init();
+
 			Main.graphics.DeviceReset += LogDeviceReset;
 			//Main.graphics.DeviceReset += UpdateBackbufferSizes;
 			Main.graphics.DeviceCreated += (s, e) => creating = true;
