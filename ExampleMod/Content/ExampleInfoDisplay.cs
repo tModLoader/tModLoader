@@ -27,19 +27,24 @@ namespace ExampleMod.Content
 		}
 	}
 
-	class ExampleInfoDisplayPlayer : ModPlayer
+			player.GetModPlayer<ExampleLifeRegenDebuffPlayer>().lifeRegenDebuff= true;
+		}
+	}
+
+	public class ExampleLifeRegenDebuffPlayer : ModPlayer
 	{
-		// Flag checking when information display should be activated
-		public bool ShowMinionCount;
+		// Flag checking when life regen debuff should be activated
+		public bool lifeRegenDebuff;
 
 		public override void ResetEffects() {
-			ShowMinionCount = false;
+			lifeRegenDebuff = false;
 		}
-		
-		public override void UpdateEquips() {
-			// The information display is only activated when a Radar is present
-			if (Player.accThirdEye)
-				ShowMinionCount = true;
+
+		// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time)
+		// This is typically done by setting player.lifeRegen to 0 if it is positive, setting player.lifeRegenTime to 0, and subtracting a number from player.lifeRegen
+		// The player will take damage at a rate of half the number you subtract per second
+		public override void UpdateBadLifeRegen() {
+			if (lifeRegenDebuff) {
 		}
 	}
 }
