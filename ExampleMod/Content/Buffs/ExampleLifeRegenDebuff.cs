@@ -4,8 +4,8 @@ using Terraria.ModLoader;
 namespace ExampleMod.Content.Buffs
 {
 	// Fire debuff is an example of a buff that causes constant loss of life
-	// See ExampleFireDebuffPlayer.UpdateBadLifeRegen at the end of the file for more information
-	public class ExampleFireDebuff : ModBuff
+	// See ExampleLifeRegenDebuffPlayer.UpdateBadLifeRegen at the end of the file for more information
+	public class ExampleLifeRegenDebuff : ModBuff
 	{
 		public override void SetDefaults() {
 			DisplayName.SetDefault("Fire debuff"); // Buff display name
@@ -18,11 +18,11 @@ namespace ExampleMod.Content.Buffs
 
 		// Allows you to make this buff give certain effects to the given player
 		public override void Update(Player player, ref int buffIndex) {
-			player.GetModPlayer<ExampleFireDebuffPlayer>().FireDebuff = true;
+			player.GetModPlayer<ExampleLifeRegenDebuffPlayer>().FireDebuff = true;
 		}
 	}
 
-	class ExampleFireDebuffPlayer: ModPlayer
+	class ExampleLifeRegenDebuffPlayer: ModPlayer
 	{
 		// Flag checking when Fire Debuff should be activated
 		public bool FireDebuff;
