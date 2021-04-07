@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Buffs
 {
-	// Fire debuff is an example of a buff that causes constant loss of life
+	// This class serves as an example of a debuff that causes constant loss of life
 	// See ExampleLifeRegenDebuffPlayer.UpdateBadLifeRegen at the end of the file for more information
 	public class ExampleLifeRegenDebuff : ModBuff
 	{
