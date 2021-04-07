@@ -18,22 +18,23 @@ namespace ExampleMod.Content.Items.Armor
 		}
 
 		public override void SetDefaults() {
-			Item.width = 18; // width of the item
-			Item.height = 18; // height of the item
-			Item.sellPrice(gold: 1); // how many coins the item is worth
-			Item.rare = ItemRarityID.Green; // the rarity of the item
-			Item.defense = 6; // the amount of defense the item will give when equipped
+			Item.width = 18; // Width of the item
+			Item.height = 18; // Height of the item
+			Item.sellPrice(gold: 1); // How many coins the item is worth
+			Item.rare = ItemRarityID.Green; // The rarity of the item
+			Item.defense = 6; // The amount of defense the item will give when equipped
 		}
 
 		public override void UpdateEquip(Player player) {
-			player.buffImmune[BuffID.OnFire] = true; // make the player immune to Fire
-			player.statManaMax2 += 20; // increase how many mana points the player can have by 20
-			player.maxMinions++; // increase how many minions the player can have by one
+			player.buffImmune[BuffID.OnFire] = true; // Make the player immune to Fire
+			player.statManaMax2 += 20; // Increase how many mana points the player can have by 20
+			player.maxMinions++; // Increase how many minions the player can have by one
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
-			CreateRecipe().AddIngredient<ExampleItem>(60) // this item needs 60 ExampleItems to craft
-				.AddTile<Tiles.Furniture.ExampleWorkbench>() // craft the item at an ExampleWorkbench
+			CreateRecipe().AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

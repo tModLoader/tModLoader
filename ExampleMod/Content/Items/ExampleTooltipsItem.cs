@@ -57,10 +57,11 @@ namespace ExampleMod.Content.Items
 			//tooltips.Remove(tooltipLine);
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ModContent.ItemType<ExampleItem>()) // this item needs 1 ExampleItem to craft
-				.AddTile<Tiles.Furniture.ExampleWorkbench>() // craft the item at an ExampleWorkbench
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

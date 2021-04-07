@@ -3,14 +3,10 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Content.Items
+namespace ExampleMod.Content.Items.Tools
 {
 	public class ExampleFishingRod : ModItem
 	{
-		// You can use vanilla textures by using the format: Terraria/Item_<ID>
-		public override string Texture => "Terraria/Images/Item_" + ItemID.WoodFishingPole;
-		public Color OverrideColor = Color.Coral;
-
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Fishing Rod");
 			Tooltip.SetDefault("Fires multiple lines at once. Can fish in lava.\n" +
@@ -32,7 +28,6 @@ namespace ExampleMod.Content.Items
 			Item.fishingPole = 30; // Sets the poles fishing power		
 			Item.shootSpeed = 12f; // Sets the speed in which the bobbers are launched. Wooden Fishing Pole is 9f and Golden Fishing Rod is 17f.
 			Item.shoot = ModContent.ProjectileType<Projectiles.ExampleBobber>(); // The Bobber projectile.
-			Item.color = OverrideColor; // Change the item's draw color so that it is visually distinct from the vanilla Wooden Fishing Rod.
 		}
 
 		// Grants the High Test Fishing Line bool if holding the item.
@@ -57,10 +52,11 @@ namespace ExampleMod.Content.Items
 			return false;
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ModContent.ItemType<ExampleItem>(), 10) // This items needs 10 ExampleItems to craft
-				.AddTile<Tiles.Furniture.ExampleWorkbench>() // You need to craft this item on a ExampleWorkbench
+				.AddIngredient<ExampleItem>(10)
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}

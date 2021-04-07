@@ -80,6 +80,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 			return true;
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ItemID.SoulofFright, 25)

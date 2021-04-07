@@ -24,10 +24,11 @@ namespace ExampleMod.Content.Items
 			Item.mountType = ModContent.MountType<Mounts.ExampleMount>();
 		}
 
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ModContent.ItemType<ExampleItem>(), 10) // this item needs 10 ExampleItems to craft
-				.AddTile<Tiles.Furniture.ExampleWorkbench>() // craft the item at an ExampleWorkbench
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
 	}
