@@ -42,7 +42,8 @@ namespace ExampleMod.Content.Projectiles
 				return;
 
 			// If found, change the velocity of the projectile and turn it in the direction of the target
-			Projectile.velocity = Vector2.Normalize(closestNPC.Center - Projectile.Center) * projSpeed;
+			// Use the SafeNormalize extension method to avoid NaNs returned by Vector2.Normalize when the vector is zero 
+			Projectile.velocity =  (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
 			Projectile.rotation = Projectile.velocity.ToRotation();
 		}
 
@@ -50,6 +51,7 @@ namespace ExampleMod.Content.Projectiles
 		// If not found then returns null
 		public NPC FindClosestNPC(float maxDetectDistance) {
 			NPC closestNPC = null;
+
 			// Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
 			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 			
@@ -64,8 +66,10 @@ namespace ExampleMod.Content.Projectiles
 				// 5. hostile (!friendly)
 				// 6. not immortal (e.g. not a target dummy)
 				if (target.CanBeChasedBy()) {
+					
 					// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
 					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
+					
 					// Check if it is within the radius
 					if (sqrDistanceToTarget < sqrMaxDetectDistance) {
 						sqrMaxDetectDistance = sqrDistanceToTarget;
