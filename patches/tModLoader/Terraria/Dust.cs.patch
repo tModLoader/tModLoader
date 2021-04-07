@@ -17,11 +17,12 @@
  
  		public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
  			Dust dust = Main.dust[NewDust(Position, 0, 0, Type, 0f, 0f, Alpha, newColor, Scale)];
-@@ -160,6 +_,7 @@
+@@ -160,6 +_,8 @@
  				if (dust.type == 80)
  					dust.alpha = 50;
  
-+				ModDust.SetupDust(dust);
++				DustLoader.SetupDust(dust);
++
  				if (dust.type == 34 || dust.type == 35 || dust.type == 152) {
  					dust.velocity *= 0.1f;
  					dust.velocity.Y = -0.5f;
@@ -35,14 +36,17 @@
  			switch (Main.waterStyle) {
  				case 2:
  					return 98;
-@@ -285,6 +_,13 @@
+@@ -285,6 +_,16 @@
  						continue;
  
  					dCount += 1f;
-+					ModDust.SetupUpdateType(dust);
-+					ModDust modDust = ModDust.GetDust(dust.type);
++
++					DustLoader.SetupUpdateType(dust);
++
++					ModDust modDust = DustLoader.GetDust(dust.type);
++
 +					if (modDust != null && !modDust.Update(dust)) {
-+						ModDust.TakeDownUpdateType(dust);
++						DustLoader.TakeDownUpdateType(dust);
 +						continue;
 +					}
 +
@@ -63,15 +67,16 @@
  					if (dust.scale < num109)
  						dust.active = false;
 +
-+					ModDust.TakeDownUpdateType(dust);
++					DustLoader.TakeDownUpdateType(dust);
  				}
  				else {
  					dust.active = false;
-@@ -1806,6 +_,13 @@
+@@ -1806,6 +_,14 @@
  		}
  
  		public Color GetAlpha(Color newColor) {
-+			ModDust modDust = ModDust.GetDust(type);
++			ModDust modDust = DustLoader.GetDust(type);
++
 +			if (modDust != null) {
 +				Color? modColor = modDust.GetAlpha(this, newColor);
 +				if (modColor.HasValue)
