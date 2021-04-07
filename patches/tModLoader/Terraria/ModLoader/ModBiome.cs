@@ -7,13 +7,13 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a biome added by a mod. It exists to centralize various biome related hooks, handling a lot of biome boilerplate. Use its various logic hooks act as if they were in ModPlayer, and use ModifyWorldGenTasks as if it were in ModWorld.
 	/// </summary>
-	public abstract class ModBiome : ModAtmosphericType
+	public abstract class ModBiome : ModAVFX
 	{
 		internal int index;
 
 		// Basic Biome information
-		public bool isPrimaryBiome = false;
-		public override AtmosphericPriority Priority => AtmosphericPriority.BiomeLow;
+		public virtual bool IsPrimaryBiome => false;
+		public override AVFXPriority Priority => AVFXPriority.BiomeLow;
 
 		// Bestiary properties
 		public virtual string translatedNPCMoodBiome => "the UnknownBiome";

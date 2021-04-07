@@ -5,7 +5,7 @@ using Terraria.GameContent.Liquid;
 
 namespace Terraria.ModLoader
 {
-	public class WaterFallStyles : AtmosphericLoader<ModWaterfallStyle>
+	public class WaterFallStyles : AVFXLoader<ModWaterfallStyle>
 	{
 		internal WaterFallStyles(int vanillaCount = WaterfallManager.maxTypes) : base(vanillaCount) { }
 
@@ -15,7 +15,7 @@ namespace Terraria.ModLoader
 		}
 	}
 
-	public class WaterStyles : AtmosphericLoader<ModWaterStyle>
+	public class WaterStyles : AVFXLoader<ModWaterStyle>
 	{
 		internal WaterStyles(int vanillaCount = Main.maxLiquidTypes) : base(vanillaCount) { }
 

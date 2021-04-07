@@ -30,8 +30,8 @@
  		}
  
  		public static int dustWater() {
-+			if (Main.waterStyle >= AtmosphericHelper.Waters.vanillaCount)
-+				return AtmosphericHelper.Waters.Get(Main.waterStyle).GetSplashDust();
++			if (Main.waterStyle >= AVFXHelper.Waters.vanillaCount)
++				return AVFXHelper.Waters.Get(Main.waterStyle).GetSplashDust();
 +
  			switch (Main.waterStyle) {
  				case 2:

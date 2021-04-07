@@ -1852,7 +1852,7 @@
  			else {
  				_funkytownAchievementCheckCooldown = 100;
  			}
-+			AtmosphericLoader.UpdateModAtmosphere(this);
++			AVFXLoader.UpdateModAtmosphere(this);
  		}
  
  		public void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = default(Vector2)) {

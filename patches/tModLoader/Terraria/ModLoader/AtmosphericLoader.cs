@@ -5,16 +5,16 @@ namespace Terraria.ModLoader
 {
 	//todo: further documentation
 	/// <summary>
-	/// This serves as the central class from which Atmospheric functions are supported and carried out.
+	/// This serves as the central class from which AVFX functions are supported and carried out.
 	/// </summary>
-	public abstract class AtmosphericLoader<T>
+	public abstract class AVFXLoader<T>
 	{
 		public int vanillaCount { get; internal set; }
 		public int totalCount { get; internal set; }
 
 		internal List<T> list = new List<T>();
 
-		protected AtmosphericLoader(int vanillaCount) {
+		protected AVFXLoader(int vanillaCount) {
 			this.vanillaCount = vanillaCount;
 			totalCount = vanillaCount;
 		}
@@ -42,21 +42,21 @@ namespace Terraria.ModLoader
 		public virtual void ChooseStyle(ref int style) { }
 	}
 
-	public static class AtmosphericHelper {
+	public static class AVFXHelper {
 		public static WaterFallStyles Waterfalls = new WaterFallStyles();
 		public static WaterStyles Waters = new WaterStyles();
 		public static UgBgStyles UgBg = new UgBgStyles();
 		public static SurfaceBgStyles SurfaceBg = new SurfaceBgStyles();
 	}
 
-	public static class AtmosphericLoader
+	public static class AVFXLoader
 	{
-		internal static List<ModAtmosphericType> atmosphericTypes = new List<ModAtmosphericType>();
+		internal static List<ModAVFX> AVFXs = new List<ModAVFX>();
 
 		public class ModAtmosphere
 		{
 			public bool anyActive;
-			public AtmosphericPriority priority;
+			public AVFXPriority priority;
 			public int waterStyle;
 			public int ugBG;
 			public int surfaceBG;
@@ -65,7 +65,7 @@ namespace Terraria.ModLoader
 
 			public ModAtmosphere() {
 				anyActive = false;
-				priority = AtmosphericPriority.None;
+				priority = AVFXPriority.None;
 				waterStyle = ugBG = surfaceBG = 0;
 				music = -1;
 				tileColorStyle = CaptureBiome.TileColorStyle.Normal;
@@ -74,9 +74,9 @@ namespace Terraria.ModLoader
 
 		internal struct AtmosWeight{
 			internal int weight;
-			internal ModAtmosphericType type;
+			internal ModAVFX type;
 
-			internal AtmosWeight(int weight, ModAtmosphericType type) {
+			internal AtmosWeight(int weight, ModAVFX type) {
 				this.weight = weight;
 				this.type = type;
 			}
@@ -86,7 +86,7 @@ namespace Terraria.ModLoader
 			var result = new ModAtmosphere();
 			List<AtmosWeight> shortList = new List<AtmosWeight>();
 
-			foreach (var atmos in atmosphericTypes) {
+			foreach (var atmos in AVFXs) {
 				int corrWeight = atmos.GetCorrWeight(player);
 				if (corrWeight == 0)
 					continue;
@@ -122,7 +122,7 @@ namespace Terraria.ModLoader
 			player.currentModAtmosphere = result;
 		}
 
-		public static void UpdateMusic(ref int music, ref AtmosphericPriority priority) {
+		public static void UpdateMusic(ref int music, ref AVFXPriority priority) {
 			int tst = Main.LocalPlayer.currentModAtmosphere.music;
 			if (tst > -1) {
 				music = tst;
@@ -131,7 +131,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void Unload() {
-			atmosphericTypes.Clear();
+			AVFXs.Clear();
 		} 
 	}
 }

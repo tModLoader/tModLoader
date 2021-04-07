@@ -53,7 +53,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This serves as the central class from which ModUgBgStyle functions are supported and carried out.
 	/// </summary>
-	public class UgBgStyles : AtmosphericLoader<ModUgBgStyle>
+	public class UgBgStyles : AVFXLoader<ModUgBgStyle>
 	{
 		public UgBgStyles(int vanillaCount = 18) : base(vanillaCount) { }
 
@@ -82,7 +82,7 @@ namespace Terraria.ModLoader
 		}
 	}
 
-	public class SurfaceBgStyles : AtmosphericLoader<ModSurfaceBgStyle>
+	public class SurfaceBgStyles : AVFXLoader<ModSurfaceBgStyle>
 	{
 		public SurfaceBgStyles(int vanillaCount = Main.BG_STYLES_COUNT) : base(vanillaCount) { }
 

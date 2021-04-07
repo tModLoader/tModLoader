@@ -911,9 +911,9 @@
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[i].position.X + (float)(npc[i].width / 2)) - num, (int)(npc[i].position.Y + (float)(npc[i].height / 2)) - num, num * 2, num * 2);
  					if (rectangle.Intersects(value)) {
 +						//TODO: Implement modMusic and modPriority
-+						//if (npc[i].modNPC != null && npc[i].modNPC.music >= 0 && (modMusic < 0 || npc[i].modNPC.AtmosphericPriority > modPriority)) {
++						//if (npc[i].modNPC != null && npc[i].modNPC.music >= 0 && (modMusic < 0 || npc[i].modNPC.AVFXPriority > modPriority)) {
 +						//	modMusic = npc[i].modNPC.music;
-+						//	modPriority = npc[i].modNPC.AtmosphericPriority;
++						//	modPriority = npc[i].modNPC.AVFXPriority;
 +						//}
  						switch (num2) {
  							case 1:
@@ -923,7 +923,7 @@
  				musicNoCrossFade[51] = true;
  
 +			int modMusic = -1;
-+			ModLoader.AtmosphericPriority modPriority = ModLoader.AtmosphericPriority.None;
++			ModLoader.AVFXPriority modPriority = ModLoader.AVFXPriority.None;
 +
  			if (!showSplash) {
  				Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)screenPosition.X, (int)screenPosition.Y, screenWidth, screenHeight);
@@ -932,9 +932,9 @@
  
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[j].position.X + (float)(npc[j].width / 2)) - num2, (int)(npc[j].position.Y + (float)(npc[j].height / 2)) - num2, num2 * 2, num2 * 2);
  					if (rectangle.Intersects(value)) {
-+						if (npc[j].ModNPC != null && npc[j].ModNPC.Music >= 0 && (modMusic < 0 || npc[j].ModNPC.AtmosphericPriority > modPriority)) {
++						if (npc[j].ModNPC != null && npc[j].ModNPC.Music >= 0 && (modMusic < 0 || npc[j].ModNPC.AVFXPriority > modPriority)) {
 +							modMusic = npc[j].ModNPC.Music;
-+							modPriority = npc[j].ModNPC.AtmosphericPriority;
++							modPriority = npc[j].ModNPC.AVFXPriority;
 +						}
  						switch (num3) {
  							case 1:
@@ -944,7 +944,7 @@
  					}
  				}
 +
-+				AtmosphericLoader.UpdateMusic(ref modMusic, ref modPriority);
++				AVFXLoader.UpdateMusic(ref modMusic, ref modPriority);
  			}
  
  			_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
@@ -971,7 +971,7 @@
  			if (CreditsRollEvent.IsEventOngoing) {
  				newMusic = 89;
  			}
-+			else if (modPriority >= AtmosphericPriority.BossHigh) { //Should this be before credits or nah?
++			else if (modPriority >= AVFXPriority.BossHigh) { //Should this be before credits or nah?
 +				newMusic = modMusic;
 +			}
  			else if (player[myPlayer].happyFunTorchTime) {
@@ -980,7 +980,7 @@
  			else if (flag7) {
  				newMusic = 38;
  			}
-+			else if (modPriority >= AtmosphericPriority.BossMedium) {
++			else if (modPriority >= AVFXPriority.BossMedium) {
 +				newMusic = modMusic;
 +			}
  			else if (flag9) {
@@ -990,7 +990,7 @@
  			else if (flag6) {
  				newMusic = 24;
  			}
-+			else if (modPriority >= AtmosphericPriority.BossLow) {
++			else if (modPriority >= AVFXPriority.BossLow) {
 +				newMusic = modMusic;
 +			}
  			else if (flag14) {
@@ -1000,7 +1000,7 @@
  			else if (flag5) {
  				newMusic = 25;
  			}
-+			else if (modPriority >= AtmosphericPriority.Event) {
++			else if (modPriority >= AVFXPriority.Event) {
 +				newMusic = modMusic;
 +			}
  			else if (flag13) {
@@ -1010,7 +1010,7 @@
  			else if (flag12) {
  				newMusic = 41;
  			}
-+			else if (modPriority >= AtmosphericPriority.Environment) {
++			else if (modPriority >= AVFXPriority.Environment) {
 +				newMusic = modMusic;
 +			}
  			else if (eclipse && (double)player[myPlayer].position.Y < worldSurface * 16.0 + (double)(screenHeight / 2)) {
@@ -1020,7 +1020,7 @@
  			else if (num5 < 1f) {
  				newMusic = (dayTime ? 42 : 15);
  			}
-+			else if (modPriority >= AtmosphericPriority.BiomeHigh) {
++			else if (modPriority >= AVFXPriority.BiomeHigh) {
 +				newMusic = modMusic;
 +			}
  			else if (tile[(int)(player[myPlayer].Center.X / 16f), (int)(player[myPlayer].Center.Y / 16f)].wall == 87) {
@@ -1030,7 +1030,7 @@
  				else
  					newMusic = 16;
  			}
-+			else if (modPriority >= AtmosphericPriority.BiomeMedium) {
++			else if (modPriority >= AVFXPriority.BiomeMedium) {
 +				newMusic = modMusic;
 +			}
  			else if (player[myPlayer].ZoneMeteor) {
@@ -1040,7 +1040,7 @@
  				else
  					newMusic = 14;
  			}
-+			else if (modPriority >= AtmosphericPriority.BiomeLow) {
++			else if (modPriority >= AVFXPriority.BiomeLow) {
 +				newMusic = modMusic;
 +			}
  			else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
@@ -3290,7 +3290,7 @@
  			if (SceneMetrics.MushroomTileCount > SceneMetrics.MushroomTileMax)
  				num8 = 2;
  
-+			AtmosphericHelper.UgBg.ChooseStyle(ref num8);
++			AVFXHelper.UgBg.ChooseStyle(ref num8);
  			if (num8 != undergroundBackground) {
  				oldUndergroundBackground = undergroundBackground;
  				undergroundBackground = num8;
@@ -3298,7 +3298,7 @@
  					array3[5] = 127;
  
  				array3[6] = 185 + hellBackStyle;
-+				AtmosphericHelper.UgBg.FillTextureArray(num9, array3);
++				AVFXHelper.UgBg.FillTextureArray(num9, array3);
  				LoadBackground(array3[0]);
  				LoadBackground(array3[1]);
  				LoadBackground(array3[2]);
@@ -3374,7 +3374,7 @@
  			drewLava = false;
  			if (!isBackground) {
  				waterStyle = CalculateWaterStyle();
-+				AtmosphericHelper.Waters.ChooseStyle(ref waterStyle);
++				AVFXHelper.Waters.ChooseStyle(ref waterStyle);
  				for (int i = 0; i < 13; i++) {
  					if (IsLiquidStyleWater(waterStyle)) {
  						if (waterStyle != i)
@@ -3382,7 +3382,7 @@
  							liquidAlpha[i] = Math.Min(liquidAlpha[i] + 0.2f, 1f);
  					}
  				}
-+				AtmosphericHelper.Waters.UpdateLiquidAlphas();
++				AVFXHelper.Waters.UpdateLiquidAlphas();
  			}
  
  			if (!drawToScreen && !isBackground) {
@@ -3392,7 +3392,7 @@
  			DrawWater(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
 +			
 +		postWaterDraw:
-+			AtmosphericHelper.Waters.DrawWatersToScreen(isBackground);
++			AVFXHelper.Waters.DrawWatersToScreen(isBackground);
  		}
  
 -		protected void DrawWater(bool bg = false, int Style = 0, float Alpha = 1f) {
@@ -3415,7 +3415,7 @@
  				DrawSurfaceBG_DrawBackMountainsLayer(246);
  			}
  
-+			AtmosphericHelper.SurfaceBg.DrawFarTexture();
++			AVFXHelper.SurfaceBg.DrawFarTexture();
  			SkyManager.Instance.DrawToDepth(spriteBatch, 5f);
  		}
  
@@ -3661,15 +3661,15 @@
  
  			UpdateBGVisibility_BackLayer(null, null);
  			UpdateBGVisibility_FrontLayer(null, null);
-+			if (bgStyle < AtmosphericHelper.SurfaceBg.vanillaCount) {
-+				for (int i = AtmosphericHelper.SurfaceBg.vanillaCount; i < bgAlphaFrontLayer.Length /*SurfaceBackgroundStyleLoader.SurfaceStyleCount*/; i++) {
++			if (bgStyle < AVFXHelper.SurfaceBg.vanillaCount) {
++				for (int i = AVFXHelper.SurfaceBg.vanillaCount; i < bgAlphaFrontLayer.Length /*SurfaceBackgroundStyleLoader.SurfaceStyleCount*/; i++) {
 +					bgAlphaFrontLayer[i] -= backgroundLayerTransitionSpeed;
 +					if (bgAlphaFrontLayer[i] < 0f)
 +						bgAlphaFrontLayer[i] = 0f;
 +				}
 +			}
 +
-+			AtmosphericHelper.SurfaceBg.ModifyFarFades(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
++			AVFXHelper.SurfaceBg.ModifyFarFades(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
  			try {
  				DrawSurfaceBG();
  				if (BackgroundEnabled)
@@ -3681,7 +3681,7 @@
  				}
  			}
  
-+			AtmosphericHelper.SurfaceBg.ChooseStyle(ref num);
++			AVFXHelper.SurfaceBg.ChooseStyle(ref num);
  			return num;
  		}
  

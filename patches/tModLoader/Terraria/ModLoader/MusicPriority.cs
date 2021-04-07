@@ -1,10 +1,10 @@
 ﻿namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// This enum dictates from low to high which Atmospheric selections take priority. 
-	/// Setting appropriate AtmosphericPriority values in Mod.UpdateMusic is important so that your mod works well with other mods and vanilla atmospheric selections.
+	/// This enum dictates from low to high which AVFX selections take priority. 
+	/// Setting appropriate AVFXPriority values in Mod.UpdateMusic is important so that your mod works well with other mods and vanilla AVFX selections.
 	/// </summary>
-	public enum AtmosphericPriority
+	public enum AVFXPriority
 	{
 		/// <summary>Represents no priority</summary>
 		None,

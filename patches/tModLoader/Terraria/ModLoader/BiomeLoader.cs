@@ -103,7 +103,9 @@ namespace Terraria.ModLoader
 
 		public static void ModifyShopPrices(HelperInfo h, ShopHelper s) {
 			foreach (int index in HookModifyShopPrices.arr) {
-				biomes[index].ModifyShopPrices(h, s);
+				if (Main.LocalPlayer.modBiomeFlags[index]) {
+					biomes[index].ModifyShopPrices(h, s);
+				}
 			}
 		}
 
@@ -146,7 +148,7 @@ namespace Terraria.ModLoader
 			}
 
 			for (int i = 0; i < biomes.Count; i++) {
-				bool active = biomes[i].IsBiomeActive(player) && biomes[i].isPrimaryBiome;
+				bool active = biomes[i].IsBiomeActive(player) && biomes[i].IsPrimaryBiome;
 				byte tst = biomes[i].GetWeight(player);
 				if (active && tst > weight) {
 					index = i + vanillaPrimaryBiomes.Count;
