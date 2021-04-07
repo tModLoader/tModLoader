@@ -38,7 +38,7 @@
  				writer.Write((byte)msgType);
  				switch (msgType) {
  					case 1:
--						writer.Write("Terraria" + 235);
+-						writer.Write("Terraria" + 236);
 +						writer.Write(BuildInfo.versionedName);
  						break;
  					case 2:
