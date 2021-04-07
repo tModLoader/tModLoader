@@ -9,8 +9,8 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Mounts
 {
-	//TODO: Provide a description of this mount's behavior.
-	public class ExampleCarMount : ModMount
+	// This mount is a car with wheels which behaves simillarly to the unicorn mount. The car has 3 baloons attached to the back.
+	public class ExampleMount : ModMount
 	{
 		// Since only a single instance of ModMountData ever exists, we can use player.mount._mountSpecificData to store additional data related to a specific mount.
 		// Using something like this for gameplay effects would require ModPlayer syncing, but this example is purely visual.
@@ -42,7 +42,7 @@ namespace ExampleMod.Content.Mounts
 
 			// Misc
 			MountData.fatigueMax = 0;
-			MountData.buff = ModContent.BuffType<Buffs.ExampleCarMountBuff>(); // The ID number of the buff assigned to the mount.
+			MountData.buff = ModContent.BuffType<Buffs.ExampleMountBuff>(); // The ID number of the buff assigned to the mount.
 
 			// Effects
 			MountData.spawnDust = ModContent.DustType<Dusts.Sparkle>(); // The ID of the dust spawned when mounted or dismounted.

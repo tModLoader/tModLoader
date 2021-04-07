@@ -4,10 +4,11 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
 {
-	public class ExampleCarMountItem : ModItem
+	public class ExampleMountItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded mount.");
+			DisplayName.SetDefault("ExampleMount Car key");
+			Tooltip.SetDefault("This summons a modded mount.");
 		}
 
 		public override void SetDefaults() {
@@ -20,7 +21,7 @@ namespace ExampleMod.Content.Items
 			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item79; // What sound should play when using the item
 			Item.noMelee = true; // this item doesn't do any melee damage
-			Item.mountType = ModContent.MountType<Mounts.ExampleCarMount>();
+			Item.mountType = ModContent.MountType<Mounts.ExampleMount>();
 		}
 
 		public override void AddRecipes() {
