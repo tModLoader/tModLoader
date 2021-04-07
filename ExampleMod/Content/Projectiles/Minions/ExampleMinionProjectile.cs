@@ -3,9 +3,9 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Projectiles.Minions
+namespace ExampleMod.Content.Projectiles.Minions
 {
-	public class PurityBolt : ModProjectile
+	public class ExampleMinionProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.Homing[projectile.type] = true;
@@ -13,19 +13,21 @@ namespace ExampleMod.Projectiles.Minions
 		}
 
 		public override void SetDefaults() {
-			projectile.width = 16;
-			projectile.height = 16;
+			projectile.width = 16; // Sets the width of the projectile
+			projectile.height = 16; // Sets the height of the projectile
 			projectile.alpha = 255;
-			projectile.penetrate = 1;
+			projectile.penetrate = 1; // The projectile will be destroyed on contact with enemies and tiles
 			projectile.friendly = true;
-			projectile.ignoreWater = true;
+			projectile.ignoreWater = true; // The projectile's movement ignores water
 		}
 
 		public override void AI() {
 			if (projectile.localAI[0] == 0f) {
-				SoundEngine.PlaySound(SoundID.Item20, projectile.position);
+				SoundEngine.PlaySound(SoundID.Item20, projectile.position); // Plays the projectile's sound
 				projectile.localAI[0] = 1f;
 			}
+
+			// Creates a dust effect for the projectile
 			int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, 66, 0f, 0f, 100, new Color(0, 255, 0), 1.5f);
 			Main.dust[dust].velocity *= 0.1f;
 			if (projectile.velocity == Vector2.Zero) {

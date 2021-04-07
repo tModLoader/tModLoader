@@ -2,9 +2,9 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 
-namespace ExampleMod.Projectiles.Minions
+namespace ExampleMod.Content.Projectiles.Minions
 {
-	public abstract class HoverShooter : Minion
+	public abstract class ExampleHoveringShooter : ExampleMinion
 	{
 		protected float idleAccel = 0.05f;
 		protected float spacingMult = 1f;
