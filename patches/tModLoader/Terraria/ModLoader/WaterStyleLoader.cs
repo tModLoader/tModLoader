@@ -29,7 +29,7 @@ namespace Terraria.ModLoader
 		}
 
 		public override void ChooseStyle(ref int style) {
-			int tst = Main.LocalPlayer.currentModAtmosphere.waterStyle;
+			int tst = Main.LocalPlayer.currentAVFX.waterStyle;
 			if (tst > vanillaCount) {
 				style = tst;
 			}

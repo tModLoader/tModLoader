@@ -904,14 +904,6 @@ namespace Terraria.ModLoader
 		internal static void VerifyGlobalItem(ModPlayer player) {
 			var type = player.GetType();
 
-			int netCustomBiomeMethods = 0;
-			if (HasMethod(type, "CustomBiomesMatch", typeof(Player))) netCustomBiomeMethods++;
-			if (HasMethod(type, "CopyCustomBiomesTo", typeof(Player))) netCustomBiomeMethods++;
-			if (HasMethod(type, "SendCustomBiomes", typeof(BinaryWriter))) netCustomBiomeMethods++;
-			if (HasMethod(type, "ReceiveCustomBiomes", typeof(BinaryReader))) netCustomBiomeMethods++;
-			if (netCustomBiomeMethods > 0 && netCustomBiomeMethods < 4)
-				throw new Exception(type + " must override all of (CustomBiomesMatch/CopyCustomBiomesTo/SendCustomBiomes/ReceiveCustomBiomes) or none");
-
 			int netClientMethods = 0;
 			if (HasMethod(type, "clientClone", typeof(ModPlayer))) netClientMethods++;
 			if (HasMethod(type, "SyncPlayer", typeof(int), typeof(int), typeof(bool))) netClientMethods++;

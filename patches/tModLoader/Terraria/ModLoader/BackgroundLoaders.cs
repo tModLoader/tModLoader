@@ -62,7 +62,7 @@ namespace Terraria.ModLoader
 				return;
 			}
 
-			int tst = Main.LocalPlayer.currentModAtmosphere.ugBG;
+			int tst = Main.LocalPlayer.currentAVFX.ugBG;
 			if (tst > vanillaCount) {
 				style = tst;
 			}
@@ -95,7 +95,7 @@ namespace Terraria.ModLoader
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
 			}
-			int tst = Main.LocalPlayer.currentModAtmosphere.surfaceBG;
+			int tst = Main.LocalPlayer.currentAVFX.surfaceBG;
 			if (tst > vanillaCount) {
 				style = tst;
 			}

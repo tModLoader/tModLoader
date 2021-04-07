@@ -100,10 +100,11 @@ namespace Terraria
 		/// </summary>
 		public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
 
+
 		/// <summary>
 		/// Container for current AVFX client properties such as: Backgrounds, music, and water styling
 		/// </summary>
-		public AVFXLoader.ModAtmosphere currentModAtmosphere = new AVFXLoader.ModAtmosphere();
+		public AVFXLoader.AVFXInstance currentAVFX = new AVFXLoader.AVFXInstance();
 
 		internal BitArray modBiomeFlags = new BitArray(0);
 

@@ -10,7 +10,7 @@
  					return Styles.Mushroom;
  				default:
 -					return null;
-+					var atmos = Main.LocalPlayer.currentModAtmosphere;
++					var atmos = Main.LocalPlayer.currentAVFX;
 +					if (atmos.surfaceBG > AVFXHelper.SurfaceBg.vanillaCount || atmos.waterStyle > AVFXHelper.Waters.vanillaCount) {
 +						return new CaptureBiome(atmos.surfaceBG, atmos.waterStyle, atmos.tileColorStyle);
 +					}

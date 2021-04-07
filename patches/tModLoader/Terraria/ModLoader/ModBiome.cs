@@ -21,7 +21,7 @@ namespace Terraria.ModLoader
 		public virtual string translatedBiomeActiveCondition => "SomeUnknownCondition";
 		public virtual List<string> namesOfYourMusicTracks => new List<string>() { "SomeUnknownAudio" };
 
-		protected override void Register() {
+		protected sealed override void Register() {
 			ModTypeLookup<ModBiome>.Register(this);
 			BiomeLoader.Add(this);
 			RegisterAtmosphere(this);
@@ -55,16 +55,16 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to create special visual effects in the area around the player. For example, the blood moon's red filter on the screen or the slime rain's falling slime in the background. You must create classes that override Terraria.Graphics.Shaders.ScreenShaderData or Terraria.Graphics.Effects.CustomSky, add them in your mod's Load hook, then call Player.ManageSpecialBiomeVisuals. See the ExampleMod if you do not have access to the source code.
 		/// </summary>
-		public virtual void PostUpdateBiome(Player player) {
+		public virtual void BiomeVisuals(Player player) {
 		}
 
 		/// <summary>
 		/// Allows you to modify the prices of NPC shops while in this biome.
 		/// Use shopHelperInstance.LikeBiome, LoveBiome, etc on your NPC of choice in helperInfo.npc.type
 		/// </summary>
+		/// <param name="helperInfo"></param>
 		/// <param name="shopHelperInstance"></param>
 		public virtual void ModifyShopPrices(HelperInfo helperInfo, ShopHelper shopHelperInstance) {
-
 		}
 	}
 }

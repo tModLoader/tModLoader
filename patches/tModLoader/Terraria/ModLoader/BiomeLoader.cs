@@ -91,30 +91,30 @@ namespace Terraria.ModLoader
 
 		// Hooks
 
-		private static HookList HookPostUpdateBiome = AddHook<Action<Player>>(b => b.PostUpdateBiome);
+		private static HookList HookPostUpdateBiome = AddHook<Action<Player>>(b => b.BiomeVisuals);
 
 		public static void PostUpdateBiome(Player player) {
 			foreach (int index in HookPostUpdateBiome.arr) {
-				biomes[index].PostUpdateBiome(player);
+				biomes[index].BiomeVisuals(player);
 			}
 		}
 
 		private static HookList HookModifyShopPrices = AddHook<Action<HelperInfo, ShopHelper>>(b => b.ModifyShopPrices);
 
-		public static void ModifyShopPrices(HelperInfo h, ShopHelper s) {
+		public static void ModifyShopPrices(HelperInfo info, ShopHelper s) {
 			foreach (int index in HookModifyShopPrices.arr) {
-				if (Main.LocalPlayer.modBiomeFlags[index]) {
-					biomes[index].ModifyShopPrices(h, s);
+				if (info.player.modBiomeFlags[index]) {
+					biomes[index].ModifyShopPrices(info, s);
 				}
 			}
 		}
 
 		internal struct BiomeWeight
 		{
-			internal Predicate<Player> isActiveCondition;
-			internal byte weight;
+			public Predicate<Player> isActiveCondition;
+			public byte weight;
 
-			internal BiomeWeight(Predicate<Player> isActiveCondition, byte weight) {
+			public BiomeWeight(Predicate<Player> isActiveCondition, byte weight) {
 				this.isActiveCondition = isActiveCondition;
 				this.weight = weight;
 			}

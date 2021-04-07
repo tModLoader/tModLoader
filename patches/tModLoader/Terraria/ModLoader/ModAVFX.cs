@@ -38,9 +38,6 @@ namespace Terraria.ModLoader
 		public virtual byte GetWeight(Player player) => 100;
 
 		internal int GetCorrWeight(Player player) {
-			if (!IsActive(player)) {
-				return 0;
-			}
 			return Math.Min(GetWeight(player), (byte)200) + 200 * (byte)Priority;
 		}
 
