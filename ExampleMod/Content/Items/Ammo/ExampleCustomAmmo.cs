@@ -26,7 +26,7 @@ namespace ExampleMod.Content.Items.Ammo
 			Item.rare = ItemRarityID.Yellow; // The color that the item's name will be in-game.
 			Item.shoot = ModContent.ProjectileType<Projectiles.ExampleHomingProjectile>(); // The projectile that weapons fire when using this item as ammunition.
 			
-			Item.ammo = Item.type; // Imortant. The first item in an ammo class sets the AmmoID to it's type
+			Item.ammo = Item.type; // Important. The first item in an ammo class sets the AmmoID to its type
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
