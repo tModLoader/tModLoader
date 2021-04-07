@@ -21,30 +21,25 @@ namespace ExampleMod.Content
 		// Here we can change the value that will be displayed in the game
 		public override string DisplayValue() {
 			// Counting how many minions we have
-			int minionCount = Main.projectile.Count(x =>x.active && x.minion && x.owner == Main.LocalPlayer.whoAmI);
+			int minionCount = Main.projectile.Count(x => x.active && x.minion && x.owner == Main.LocalPlayer.whoAmI);
 			// This is the value that will show up when viewing this display in normal play, right next to the icon
 			return minionCount > 0 ? $"{minionCount} minions." : "No minions";
 		}
 	}
 
-			player.GetModPlayer<ExampleLifeRegenDebuffPlayer>().lifeRegenDebuff= true;
-		}
-	}
-
-	public class ExampleLifeRegenDebuffPlayer : ModPlayer
+	public class ExampleInfoDisplayPlayer : ModPlayer
 	{
-		// Flag checking when life regen debuff should be activated
-		public bool lifeRegenDebuff;
+		// Flag checking when information display should be activated
+		public bool showMinionCount;
 
 		public override void ResetEffects() {
-			lifeRegenDebuff = false;
+			showMinionCount = false;
 		}
 
-		// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time)
-		// This is typically done by setting player.lifeRegen to 0 if it is positive, setting player.lifeRegenTime to 0, and subtracting a number from player.lifeRegen
-		// The player will take damage at a rate of half the number you subtract per second
-		public override void UpdateBadLifeRegen() {
-			if (lifeRegenDebuff) {
+		public override void UpdateEquips() {
+			// The information display is only activated when a Radar is present
+			if (Player.accThirdEye)
+				showMinionCount = true;
 		}
 	}
 }
