@@ -152,7 +152,7 @@ namespace ExampleMod.Content.Projectiles
 				float rotation = playerToProjectile.ToRotation() - MathHelper.PiOver2;
 				var origin = new Vector2(texture.Width * 0.5f, 0f);
 
-				Main.spriteBatch.Draw(texture, linePos, sourceRectangle, lineColor, rotation, origin, 1f, SpriteEffects.None, 0f);
+				spriteBatch.Draw(texture, linePos, sourceRectangle, lineColor, rotation, origin, 1f, SpriteEffects.None, 0f);
 			}
 			
 			return false;
