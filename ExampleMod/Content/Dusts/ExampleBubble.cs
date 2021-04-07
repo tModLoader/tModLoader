@@ -14,8 +14,10 @@ namespace ExampleMod.Content.Dusts
 		}
 
 		public override bool Update(Dust dust) {
+			// Move the dust based on its velocity and reduce its size to then remove it, as the 'return false;' at the end will prevent vanilla logic.
 			dust.position += dust.velocity;
 			dust.scale -= 0.01f;
+
 			if (dust.scale < 0.75f) 
 				dust.active = false;
 
