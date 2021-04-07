@@ -137,11 +137,10 @@ namespace ExampleMod.Content.Projectiles
 		}
 	}
 
-	// This is a simple class based on the NebulaBlaze item and creates PiercingProjeciles.
-	// It doesn't add anything new at all
-	internal class ExampleAdvancedAnimated : ModItem
+	// This is a simple item that is based on the NebulaBlaze and shoots ExampleAdvancedAnimatedProjectile to showcase it.
+	internal class ExampleAdvancedAnimatedProjectileItem : ModItem
 	{
-		public override string Texture => "Terraria/Images/Item_" + ItemID.NebulaBlaze;
+		public override string Texture => $"Terraria/Images/Item_{ItemID.NebulaBlaze}";
 
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.NebulaBlaze);
