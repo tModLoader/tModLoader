@@ -66,7 +66,6 @@ namespace ExampleMod.Content.Projectiles
 				// 5. hostile (!friendly)
 				// 6. not immortal (e.g. not a target dummy)
 				if (target.CanBeChasedBy()) {
-					
 					// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
 					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
 					
