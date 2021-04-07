@@ -66,11 +66,10 @@ namespace ExampleMod.Content.Projectiles
 		}
 	}
 
-	// This is a simple class based on the Flintlock Pistol item and creates PiercingProjeciles.
-	// It doesn't add anything new at all 
-	internal class ExamplePierce : ModItem
+	// This is a simple item that is based on the FlintlockPistol and shoots ExamplePiercingProjectile to showcase it.
+	internal class ExamplePiercingProjectileItem : ModItem
 	{
-		public override string Texture => "Terraria/Images/Item_" + ItemID.FlintlockPistol;
+		public override string Texture => $"Terraria/Images/Item_{ItemID.FlintlockPistol}";
 
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.FlintlockPistol);
