@@ -18,24 +18,24 @@ namespace ExampleMod.Content.Buffs
 
 		// Allows you to make this buff give certain effects to the given player
 		public override void Update(Player player, ref int buffIndex) {
-			player.GetModPlayer<ExampleLifeRegenDebuffPlayer>().FireDebuff = true;
+			player.GetModPlayer<ExampleLifeRegenDebuffPlayer>().lifeRegenDebuff= true;
 		}
 	}
 
-	class ExampleLifeRegenDebuffPlayer: ModPlayer
+	public class ExampleLifeRegenDebuffPlayer : ModPlayer
 	{
-		// Flag checking when Fire Debuff should be activated
-		public bool FireDebuff;
+		// Flag checking when life regen debuff should be activated
+		public bool lifeRegenDebuff;
 
 		public override void ResetEffects() {
-			FireDebuff = false;
+			lifeRegenDebuff = false;
 		}
 
-		// Allows you to give the player a negative life regeneration based on its state(for example, the "On Fire!" debuff makes the player take damage-over-time)
+		// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time)
 		// This is typically done by setting player.lifeRegen to 0 if it is positive, setting player.lifeRegenTime to 0, and subtracting a number from player.lifeRegen
 		// The player will take damage at a rate of half the number you subtract per second
 		public override void UpdateBadLifeRegen() {
-			if (FireDebuff) {
+			if (lifeRegenDebuff) {
 				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects
 				if (Player.lifeRegen > 0)
 					Player.lifeRegen = 0;
