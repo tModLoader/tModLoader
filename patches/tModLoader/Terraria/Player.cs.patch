@@ -4429,7 +4429,7 @@
  			for (int i = 3; i < 10; i++) {
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 4874 || type == 5000)
-@@ -38190,14 +_,19 @@
+@@ -38198,14 +_,19 @@
  				if (type == 906 || type == 4038)
  					newPlayer.lavaMax += 420;
  
