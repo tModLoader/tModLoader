@@ -90,6 +90,11 @@ namespace Terraria.ModLoader.Setup
 			if (File.Exists(TerrariaPath) && File.Exists(TerrariaServerPath))
 				return true;
 
+#if AUTO
+			Console.WriteLine($"Automatic setup critical failure, can't find both {TerrariaPath} and {TerrariaServerPath}");
+			Environment.Exit(1);
+#endif
+
 			return (bool) taskInterface.Invoke(new Func<bool>(SelectTerrariaDialog));
 		}
 

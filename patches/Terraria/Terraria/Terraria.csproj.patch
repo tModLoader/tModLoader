@@ -1,12 +1,12 @@
 --- src/decompiled/Terraria/Terraria.csproj
 +++ src/Terraria/Terraria/Terraria.csproj
-@@ -1,38 +_,60 @@
+@@ -1,38 +_,59 @@
  <Project Sdk="Microsoft.NET.Sdk">
    <Import Project="../Configuration.targets" />
 +  <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
      <OutputType>WinExe</OutputType>
-     <Version>1.4.2.0</Version>
+     <Version>1.4.2.1</Version>
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2021 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
@@ -38,10 +38,9 @@
 +    <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
 +    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />
      <Reference Include="Newtonsoft.Json" />
-+    <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
 -    <Reference Include="NVorbis" />
-+    <Reference Include="NVorbis.System.ValueTuple" />
 -    <Reference Include="RailSDK.Net" />
++    <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
 +    <Reference Include="RailSDK.Net">
 +      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/RailSDK.Net.dll</HintPath>
 +      <HintPath Condition="$(DefineConstants.Contains('MAC'))">Libraries/Mac/RailSDK.Net.dll</HintPath>
