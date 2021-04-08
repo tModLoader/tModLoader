@@ -22,7 +22,7 @@ namespace Terraria.ModLoader.Default
 
 			TileID.Sets.BasicChest[Type] = true;
 
-			TileObjectData.newTile.CopyFrom(TileObjectData.Style1x1); // Disables hammering
+			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2); // Disables hammering
 			TileObjectData.addTile(Type);
 				
 			Main.tileSpelunker[Type] = true;
