@@ -1,8 +1,8 @@
 ﻿namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// This enum dictates from low to high which AVFX selections take priority. 
-	/// Setting appropriate AVFXPriority values in Mod.UpdateMusic is important so that your mod works well with other mods and vanilla AVFX selections.
+	/// This enum dictates from low to high which AVFX selections take priority.
+	/// Setting appropriate priority values is important so that your mod works well with other mods and vanilla selections.
 	/// </summary>
 	public enum AVFXPriority
 	{

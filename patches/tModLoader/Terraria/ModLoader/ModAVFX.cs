@@ -16,19 +16,19 @@ namespace Terraria.ModLoader
 		public virtual AVFXPriority Priority => AVFXPriority.None;
 
 		// Capture Camera property
-		public virtual CaptureBiome.TileColorStyle tileColorStyle => CaptureBiome.TileColorStyle.Normal;
+		public virtual CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Normal;
 
 		// Interface Methods
 		protected override void Register() {
 			ModTypeLookup<ModAVFX>.Register(this);
-			RegisterAtmosphere(this);
+			RegisterAVFX(this);
 		}
 
 		/// <summary>
 		/// Forcefully registers this ModAVFX to AVFXLoader.
 		/// ModBiome and direct implementations call this.
 		/// </summary>
-		internal void RegisterAtmosphere(ModAVFX type) {
+		internal void RegisterAVFX(ModAVFX type) {
 			AVFXLoader.AVFXs.Add(type);
 		}
 

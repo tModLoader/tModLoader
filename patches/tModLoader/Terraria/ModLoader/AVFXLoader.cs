@@ -131,8 +131,8 @@ namespace Terraria.ModLoader
 					avfxFields++;
 				}
 
-				if (result.tileColorStyle == CaptureBiome.TileColorStyle.Normal && avfx.tileColorStyle != CaptureBiome.TileColorStyle.Normal) {
-					result.tileColorStyle = avfx.tileColorStyle;
+				if (result.tileColorStyle == CaptureBiome.TileColorStyle.Normal && avfx.TileColorStyle != CaptureBiome.TileColorStyle.Normal) {
+					result.tileColorStyle = avfx.TileColorStyle;
 					avfxFields++;
 				}
 
