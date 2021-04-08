@@ -14,6 +14,7 @@ namespace Terraria.ModLoader.Engine
 	internal static class InstallVerifier
 	{
 		public const string TmlContentDirectory = "Content";
+		public const string SteamAppIDPath = "steam_appid.txt";
 		public const bool RequireContentDirectory = false; // Not currently needed, due to tML matching vanilla's version.
 
 		private static bool? isValid;
@@ -28,19 +29,19 @@ namespace Terraria.ModLoader.Engine
 
 		static InstallVerifier() {
 			if (Platform.IsWindows) {
-				steamAPIPath = "steam_api.dll"; //"Libraries/Native/Windows32/steam_api.dll"; //Steam will hijack release testing/break debug testing if we don't have these comments
+				steamAPIPath = "Libraries/Native/Windows32/steam_api.dll";
 				steamAPIHash = ToByteArray("7B857C897BC69313E4936DC3DCCE5193");
 				gogHash = ToByteArray("ff61b96a07894a9e65f880fb9608fb37"); // Don't forget to update CheckExe in CheckGoG
 				steamHash = ToByteArray("4fd8072ca82ded3d9da1be577a478788");
 			}
 			else if (Platform.IsOSX) {
-				steamAPIPath = "libsteam_api.dylib"; //"Libraries/Native/OSX/libsteam_api.dylib";
+				steamAPIPath = "Libraries/Native/OSX/libsteam_api.dylib";
 				steamAPIHash = ToByteArray("4EECD26A0CDF89F90D4FF26ECAD37BE0");
 				gogHash = ToByteArray("181c586d0fe64156adb0ecd4b9fabf9d");
 				steamHash = ToByteArray("12c8d2ac5af6c8505bd1a9339dc75231");
 			}
 			else if (Platform.IsLinux) {
-				steamAPIPath = "libsteam_api.so"; //"Libaries/Native/Linux/libsteam_api.so";
+				steamAPIPath = "Libaries/Native/Linux/libsteam_api.so";
 				steamAPIHash = ToByteArray("7B74FD4C207D22DB91B4B649A44467F6");
 				gogHash = ToByteArray("4a051352dd6ecc323c5a0a15e5b598fb");
 				steamHash = ToByteArray("debcc318ca4e14295e3ac22e380e289b");
@@ -80,8 +81,8 @@ namespace Terraria.ModLoader.Engine
 			}
 #endif
 
-			// Whether the steam_api file exists, indicating we'd have to check steam installation
-			if (File.Exists(steamAPIPath))
+			// Whether the steam_appid.txt file exists, indicating we'd have to check steam installation
+			if (File.Exists(SteamAppIDPath))
 				return CheckSteam();
 
 			return CheckGoG();
@@ -105,7 +106,10 @@ namespace Terraria.ModLoader.Engine
 			}
 #endif
 			if (!HashMatchesFile(steamAPIPath, steamAPIHash)) {
-				Process.Start(@"https://terraria.org");
+				Process.Start(new ProcessStartInfo("https://terraria.org") {
+					UseShellExecute = true,
+					Verb = "open"
+				});
 				Exit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"), string.Empty);
 				return false;
 			}

@@ -40,18 +40,40 @@
  									num4 += array3[m].Length + 1;
  								}
  
-@@ -515,10 +_,7 @@
+@@ -514,18 +_,22 @@
+ 
  		public static void OpenFolder(string folderPath) {
  			if (TryCreatingDirectory(folderPath)) {
- #if !LINUX
+-#if !LINUX
 -				if (Platform.IsWindows)
 -					Process.Start("explorer.exe", folderPath);
 -				else
 -					Process.Start(folderPath);
+-#else
+-				Process.Start(new ProcessStartInfo(folderPath) {
+-					FileName = "open-folder",
+-					Arguments = folderPath,
+-					UseShellExecute = true,
+-					CreateNoWindow = true
++#if !LINUX && !NETCORE
 +				Process.Start(folderPath);
- #else
- 				Process.Start(new ProcessStartInfo(folderPath) {
- 					FileName = "open-folder",
++#elif LINUX
++				Process.Start(
++					new ProcessStartInfo(folderPath) {
++						FileName = "open-folder",
++						Arguments = folderPath,
++						UseShellExecute = true,
++						CreateNoWindow = true
+ 				});
++#else
++				Process.Start(
++					new ProcessStartInfo(folderPath) {
++						UseShellExecute = true
++					}
++				);
+ #endif
+ 			}
+ 		}
 @@ -1124,14 +_,17 @@
  				text.Substring(0, maxCharactersDisplayed);
  

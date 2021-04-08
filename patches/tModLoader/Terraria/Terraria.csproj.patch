@@ -97,16 +97,16 @@
 -    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)/%(RecursiveDir)" />
 +    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" SkipUnchangedFiles="True"/>
 +    <!-- todo, purge old libraries on other platforms -->
-+    <Exec Command="robocopy $(TargetDir)/Libraries $(tModLoaderSteamPath)/Libraries /MIR" ContinueOnError="true" StandardOutputImportance="low" Condition="'$(OS)' == 'Windows_NT'">
++    <Exec Command="robocopy $(TargetDir)Libraries $(tModLoaderSteamPath)\Libraries /MIR" ContinueOnError="true" StandardOutputImportance="low" Condition="'$(OS)' == 'Windows_NT'">
 +      <Output TaskParameter="ExitCode" PropertyName="PurgeExitCode"/>
 +    </Exec>
-+    <Warning Text="/Libraries file purge failed (robocopy /MIR Exit Code: $(PurgeExitCode)). Old files may not be removed." Condition="'$(PurgeExitCode)' != 2 AND '$(PurgeExitCode)' != 0" />
++    <Warning Text="\Libraries file purge failed (robocopy /MIR Exit Code: $(PurgeExitCode)). Old files may not be removed." Condition="'$(PurgeExitCode)' != 2 AND '$(PurgeExitCode)' != 0" />
 +  </Target>
 +  <!--See first answer in https://stackoverflow.com/questions/55946010/how-to-specify-output-folder-for-the-referenced-nuget-packages for how this was created-->
-+  <Target Name="RedirectNugetFilesToLib" AfterTargets="ResolveLockFileCopyLocalFiles">
++  <Target Name="BuildRedirectNugetFilesToLib" AfterTargets="ResolveLockFileCopyLocalFiles">
 +    <ItemGroup>
 +      <ReferenceCopyLocalPaths>
-+        <DirectoryInPackage>$([System.String]::Copy('%(PathInPackage)').Remove($([System.String]::Copy('%(PathInPackage)').LastIndexOf('/'))))</DirectoryInPackage>
++        <DirectoryInPackage>$([System.String]::Copy('%(PathInPackage)').Remove($([System.String]::Copy('%(PathInPackage)').LastIndexOf('/'))).Replace('/', '\'))</DirectoryInPackage>
 +      </ReferenceCopyLocalPaths>
 +    </ItemGroup>
 +    <ItemGroup>
