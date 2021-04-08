@@ -9,7 +9,7 @@
  	{
  		private float _viewPosition;
  		private float _viewSize = 1f;
-@@ -56,7 +_,7 @@
+@@ -60,7 +_,7 @@
  			return new Rectangle((int)innerDimensions.X, (int)(innerDimensions.Y + innerDimensions.Height * (_viewPosition / _maxViewSize)) - 3, 20, (int)(innerDimensions.Height * (_viewSize / _maxViewSize)) + 7);
  		}
  

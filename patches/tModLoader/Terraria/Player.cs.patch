@@ -1492,7 +1492,7 @@
  				}
  
  				if (armor[k].prefix == 73)
-@@ -9276,7 +_,25 @@
+@@ -9276,6 +_,24 @@
  
  				if (armor[k].prefix == 80)
  					meleeSpeed += 0.04f;
@@ -1683,7 +1683,7 @@
  			}
  
  			if (currentItem.wingSlot != -1)
-@@ -10390,10 +_,20 @@
+@@ -10390,9 +_,19 @@
  			}
  
 +			if (currentItem.wingSlot > 0) {
@@ -2955,7 +2955,7 @@
  			if (compositeBackArm.enabled && item.shieldSlot > 0)
  				return true;
  
-@@ -25835,7 +_,13 @@
+@@ -25835,6 +_,12 @@
  			return false;
  		}
  

@@ -1116,7 +1116,7 @@
  			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
  				Star.UpdateStars();
  				Cloud.UpdateClouds();
-@@ -12748,6 +_,10 @@
+@@ -12746,6 +_,10 @@
  
  			if (playerInventory) {
  				Recipe.GetThroughDelayedFindRecipes();
@@ -1127,7 +1127,7 @@
  				int num = PlayerInput.ScrollWheelDelta / 120;
  				bool flag = true;
  				if (recBigList) {
-@@ -12785,8 +_,11 @@
+@@ -12783,8 +_,11 @@
  						focusRecipe = numAvailableRecipes - 1;
  
  					if (focusRecipe < 0)
@@ -2482,7 +2482,7 @@
  					}
  				}
  			}
-@@ -30128,7 +_,7 @@
+@@ -30088,7 +_,7 @@
  				Microsoft.Xna.Framework.Color color = inventoryBack;
  				Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
  				int num39 = -1;
@@ -2491,7 +2491,7 @@
  					if ((num40 == 8 && !flag4) || (num40 == 9 && !flag5))
  						continue;
  
-@@ -30149,6 +_,7 @@
+@@ -30109,6 +_,7 @@
  						context2 = 10;
  					}
  
@@ -2499,7 +2499,7 @@
  					if (num39 == num38 && !_achievementAdvisor.CanDrawAboveCoins) {
  						_achievementAdvisor.DrawOneAchievement(spriteBatch, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8), large: false);
  						UILinkPointNavigator.SetPosition(1570, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8) + new Vector2(20f) * inventoryScale);
-@@ -30156,6 +_,7 @@
+@@ -30116,6 +_,7 @@
  
  					if (num39 == num37)
  						DrawDefenseCounter(num41, num42);
@@ -2507,7 +2507,7 @@
  
  					Texture2D value4 = TextureAssets.InventoryTickOn.Value;
  					if (player[myPlayer].hideVisibleAccessory[num40])
-@@ -30202,10 +_,10 @@
+@@ -30162,10 +_,10 @@
  					player[myPlayer].mouseInterface = true;
  
  				num39 = -1;
@@ -2520,7 +2520,7 @@
  					num39++;
  					bool num47 = LocalPlayer.IsAValidEquipmentSlotForIteration(num46);
  					flag3 = !num47;
-@@ -30243,7 +_,7 @@
+@@ -30203,7 +_,7 @@
  					player[myPlayer].mouseInterface = true;
  
  				num39 = -1;
@@ -2529,7 +2529,7 @@
  					if ((num50 == 8 && !flag4) || (num50 == 9 && !flag5))
  						continue;
  
-@@ -30278,6 +_,19 @@
+@@ -30238,6 +_,19 @@
  				}
  
  				inventoryBack = color;
@@ -2549,7 +2549,7 @@
  				inventoryScale = num36;
  			}
  
-@@ -30324,11 +_,17 @@
+@@ -30284,11 +_,17 @@
  					string text = Lang.inter[46].Value + ": ";
  					if (reforgeItem.type > 0) {
  						int num58 = reforgeItem.value;
