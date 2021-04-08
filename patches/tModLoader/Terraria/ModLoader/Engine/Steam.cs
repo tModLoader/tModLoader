@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReLogic.OS;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,9 +35,9 @@ namespace Terraria.ModLoader.Engine
 
 		public static string GetSteamTerrariaInstallDir() {
 			SteamApps.GetAppInstallDir(TerrariaAppId_t, out string terrariaInstallLocation, 1000);
-#if MAC
-			terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "Terraria.app/Contents/MacOS");
-#endif
+			if (Platform.IsOSX) {
+				terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "Terraria.app/Contents");
+			}
 			return terrariaInstallLocation;
 		}
 

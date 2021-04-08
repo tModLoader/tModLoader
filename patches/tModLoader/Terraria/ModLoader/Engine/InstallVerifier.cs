@@ -97,7 +97,8 @@ namespace Terraria.ModLoader.Engine
 			string terrariaInstallLocation = Steam.GetSteamTerrariaInstallDir();
 			string terrariaContentLocation = Path.Combine(terrariaInstallLocation, TmlContentDirectory);
 			if (Platform.IsOSX) {
-				terrariaContentLocation = Path.Combine(terrariaInstallLocation, "../Resources/Content");
+				terrariaContentLocation = Path.Combine(terrariaInstallLocation, "/Resources/Content");
+				//terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "/MacOS");
 			}
 
 			if (!Directory.Exists(terrariaContentLocation)) {
