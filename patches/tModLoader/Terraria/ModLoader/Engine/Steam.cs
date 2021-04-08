@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Steamworks;
 using Terraria.Social;
+using Terraria.ModLoader;
 
 namespace Terraria.ModLoader.Engine
 {
@@ -36,8 +37,9 @@ namespace Terraria.ModLoader.Engine
 		public static string GetSteamTerrariaInstallDir() {
 			SteamApps.GetAppInstallDir(TerrariaAppId_t, out string terrariaInstallLocation, 1000);
 			if (Platform.IsOSX) {
-				terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "Terraria.app/Contents");
+				terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "Terraria.app" + Path.DirectorySeparatorChar + "Contents" + Path.DirectorySeparatorChar + "Resources");
 			}
+
 			return terrariaInstallLocation;
 		}
 

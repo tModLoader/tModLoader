@@ -96,10 +96,6 @@ namespace Terraria.ModLoader.Engine
 			SocialAPI.LoadSteam();
 			string terrariaInstallLocation = Steam.GetSteamTerrariaInstallDir();
 			string terrariaContentLocation = Path.Combine(terrariaInstallLocation, TmlContentDirectory);
-			if (Platform.IsOSX) {
-				terrariaContentLocation = Path.Combine(terrariaInstallLocation, "/Resources/Content");
-				//terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "/MacOS");
-			}
 
 			if (!Directory.Exists(terrariaContentLocation)) {
 				Exit(Language.GetTextValue("tModLoader.VanillaSteamInstallationNotFound"), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
