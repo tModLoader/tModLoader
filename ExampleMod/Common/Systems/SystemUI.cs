@@ -23,7 +23,7 @@ namespace ExampleMod.Common.Systems
 		}
 
 		public override void UpdateUI(GameTime gameTime) {
-			// Here will call .Update on custom UI and propagate it to its state and underlying elements
+			// Here we call .Update on our custom UI and propagate it to its state and underlying elements
 			if (exampleCoinUserInterface?.CurrentState != null) 
 				exampleCoinUserInterface?.Update(gameTime);
 		}
