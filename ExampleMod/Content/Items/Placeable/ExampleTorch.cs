@@ -38,10 +38,11 @@ namespace ExampleMod.Content.Items.Placeable
 		}
 
 		public override void TorchVFX(out float R, out float G, out float B, out int DustType) {
+			//Set the color of the light
 			R = 1f;
 			G = 1f;
 			B = 1f;
-			DustType = ModContent.DustType<Sparkle>();
+			DustType = ModContent.DustType<Sparkle>(); //Set the type of particles the torch should emit
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
