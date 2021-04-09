@@ -23,8 +23,8 @@
  
 -			return Language.GetTextValue("TownNPCMoodBiomes." + text);
 +			string result = Language.GetTextValue("TownNPCMoodBiomes." + text);
-+			if (biomeID >= BiomeLoader.vanillaPrimaryBiomes.Count) {
-+				string key = BiomeLoader.biomes[biomeID - BiomeLoader.vanillaPrimaryBiomes.Count].DisplayName.Key;
++			if (biomeID >= BiomeLoader.VanillaPrimaryBiomeCount) {
++				string key = BiomeLoader.biomes[biomeID - BiomeLoader.VanillaPrimaryBiomeCount].DisplayName.Key;
 +				result = Language.GetTextValue(key);
 +			}
 +

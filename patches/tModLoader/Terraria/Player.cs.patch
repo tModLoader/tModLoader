@@ -1820,15 +1820,37 @@
  		}
  
  		public void UpdateSocialShadow() {
-@@ -11390,6 +_,9 @@
+@@ -11390,6 +_,11 @@
  		}
  
  		public int GetPrimaryBiome() {
-+			// Hijack this for modded:
-+			return BiomeLoader.GetPrimaryBiome(this);
++			int modID = BiomeLoader.GetPrimaryModBiome(this, out var priority);
 +
++			if (priority >= AVFXPriority.BiomeHigh)
++				return modID;
++			
  			if (ZoneDungeon)
  				return 8;
+ 
+@@ -11399,6 +_,9 @@
+ 			if (ZoneCrimson)
+ 				return 10;
+ 
++			if (priority >= AVFXPriority.BiomeMedium)
++				return modID;
++
+ 			if (ZoneGlowshroom)
+ 				return 7;
+ 
+@@ -11411,6 +_,9 @@
+ 			if (ZoneSnow)
+ 				return 2;
+ 
++			if (priority >= AVFXPriority.BiomeLow)
++				return modID;
++
+ 			if (ZoneBeach)
+ 				return 5;
  
 @@ -11553,6 +_,8 @@
  			bool flag6 = ZoneRain && ZoneSnow;

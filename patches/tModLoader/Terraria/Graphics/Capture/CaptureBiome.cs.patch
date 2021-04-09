@@ -11,7 +11,7 @@
  				default:
 -					return null;
 +					var atmos = Main.LocalPlayer.currentAVFX;
-+					if (atmos.surfaceBG > AVFXHelper.SurfaceBg.vanillaCount || atmos.waterStyle > AVFXHelper.Waters.vanillaCount) {
++					if (atmos.surfaceBG > AVFXLoader.SurfaceBg.vanillaCount || atmos.waterStyle > AVFXLoader.Waters.vanillaCount) {
 +						return new CaptureBiome(atmos.surfaceBG, atmos.waterStyle, atmos.tileColorStyle);
 +					}
 +					return null; 	

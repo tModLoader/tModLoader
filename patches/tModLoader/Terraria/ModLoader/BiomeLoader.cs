@@ -109,49 +109,18 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal struct BiomeWeight
-		{
-			public Predicate<Player> isActiveCondition;
-			public byte weight;
+		public const int VanillaPrimaryBiomeCount = 11;
 
-			public BiomeWeight(Predicate<Player> isActiveCondition, byte weight) {
-				this.isActiveCondition = isActiveCondition;
-				this.weight = weight;
-			}
-		}
-
-		internal static List<BiomeWeight> vanillaPrimaryBiomes = new List<BiomeWeight>() { 
-			// Weighted and ordered per Player.GetPrimaryBiome()
-			new BiomeWeight(_ => true, 1), // purity
-			new BiomeWeight((p) => p.position.Y > Main.worldSurface * 16.0, 2), //TBD
-			new BiomeWeight((p) => p.ZoneSnow, 104),
-			new BiomeWeight((p) => p.ZoneDesert, 102),
-			new BiomeWeight((p) => p.ZoneJungle, 105),
-			new BiomeWeight((p) => p.ZoneBeach, 103),
-			new BiomeWeight((p) => p.ZoneHallow, 110),
-			new BiomeWeight((p) => p.ZoneGlowshroom, 120),
-			new BiomeWeight((p) => p.ZoneDungeon, 195),
-			new BiomeWeight((p) => p.ZoneCorrupt, 131),
-			new BiomeWeight((p) => p.ZoneCrimson, 130),
-		};
-
-		public static int GetPrimaryBiome(Player player) {
-			int index = 0;
-			byte weight = 0;
-			for (int i = 0; i < vanillaPrimaryBiomes.Count; i++) {
-				bool active = vanillaPrimaryBiomes[i].isActiveCondition(player);
-				byte tst = vanillaPrimaryBiomes[i].weight;
-				if (active && tst > weight) {
-					index = i;
-					weight = tst;
-				}
-			}
+		public static int GetPrimaryModBiome(Player player, out AVFXPriority priority) {
+			int index = 0, weight = 0;
+			priority = AVFXPriority.None;
 
 			for (int i = 0; i < biomes.Count; i++) {
-				bool active = biomes[i].IsBiomeActive(player) && biomes[i].IsPrimaryBiome;
-				byte tst = biomes[i].GetWeight(player);
+				bool active = player.modBiomeFlags[i] && biomes[i].IsPrimaryBiome;
+				int tst = biomes[i].GetCorrWeight(player);
 				if (active && tst > weight) {
-					index = i + vanillaPrimaryBiomes.Count;
+					index = i + VanillaPrimaryBiomeCount;
+					priority = biomes[i].Priority;
 					weight = tst;
 				}
 			}

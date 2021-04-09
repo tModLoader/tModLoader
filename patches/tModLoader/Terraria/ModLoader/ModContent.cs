@@ -279,12 +279,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns the ModWaterStyle with the given ID.
 		/// </summary>
-		public static ModWaterStyle GetModWaterStyle(int style) => AVFXHelper.Waters.Get(style);
+		public static ModWaterStyle GetModWaterStyle(int style) => AVFXLoader.Waters.Get(style);
 
 		/// <summary>
 		/// Returns the ModWaterfallStyle with the given ID.
 		/// </summary>
-		public static ModWaterfallStyle GetModWaterfallStyle(int style) => AVFXHelper.Waterfalls.Get(style);
+		public static ModWaterfallStyle GetModWaterfallStyle(int style) => AVFXLoader.Waterfalls.Get(style);
 
 		/// <summary>
 		/// Returns the slot/ID of the background texture with the given name.
@@ -294,12 +294,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns the ModSurfaceBgStyle object with the given ID.
 		/// </summary>
-		public static ModSurfaceBgStyle GetModSurfaceBgStyle(int style) => AVFXHelper.SurfaceBg.Get(style);
+		public static ModSurfaceBgStyle GetModSurfaceBgStyle(int style) => AVFXLoader.SurfaceBg.Get(style);
 
 		/// <summary>
 		/// Returns the ModUgBgStyle object with the given ID.
 		/// </summary>
-		public static ModUgBgStyle GetModUgBgStyle(int style) => AVFXHelper.UgBg.Get(style);
+		public static ModUgBgStyle GetModUgBgStyle(int style) => AVFXLoader.UgBg.Get(style);
 
 		/// <summary>
 		/// Get the id (type) of a ModGore by class. Assumes one instance per class.
@@ -532,11 +532,11 @@ namespace Terraria.ModLoader
 			SoundLoader.Unload();
 			DisposeMusic();
 			BackgroundTextureLoader.Unload();
-			AVFXHelper.UgBg.Unload();
-			AVFXHelper.SurfaceBg.Unload();
+			AVFXLoader.UgBg.Unload();
+			AVFXLoader.SurfaceBg.Unload();
 			GlobalBgStyleLoader.Unload();
-			AVFXHelper.Waters.Unload();
-			AVFXHelper.Waterfalls.Unload();
+			AVFXLoader.Waters.Unload();
+			AVFXLoader.Waterfalls.Unload();
 			AVFXLoader.Unload();
 			PlayerDrawLayerLoader.Unload();
 			SystemHooks.Unload();
@@ -593,11 +593,11 @@ namespace Terraria.ModLoader
 			if (!Main.dedServ) {
 				SoundLoader.ResizeAndFillArrays();
 				BackgroundTextureLoader.ResizeAndFillArrays();
-				AVFXHelper.SurfaceBg.ResizeArrays();
+				AVFXLoader.SurfaceBg.ResizeArrays();
 				GlobalBgStyleLoader.ResizeAndFillArrays(unloading);
 				GoreLoader.ResizeAndFillArrays();
-				AVFXHelper.Waters.ResizeArrays();
-				AVFXHelper.Waterfalls.ResizeArrays();
+				AVFXLoader.Waters.ResizeArrays();
+				AVFXLoader.Waterfalls.ResizeArrays();
 			}
 
 			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values) {

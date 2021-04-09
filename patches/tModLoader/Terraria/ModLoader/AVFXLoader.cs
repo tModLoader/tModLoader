@@ -42,13 +42,6 @@ namespace Terraria.ModLoader
 		public virtual void ChooseStyle(ref int style) { }
 	}
 
-	public static class AVFXHelper {
-		public static WaterFallStyles Waterfalls = new WaterFallStyles();
-		public static WaterStyles Waters = new WaterStyles();
-		public static UgBgStyles UgBg = new UgBgStyles();
-		public static SurfaceBgStyles SurfaceBg = new SurfaceBgStyles();
-	}
-
 	public static class AVFXLoader
 	{
 		public class AVFXInstance
@@ -113,7 +106,7 @@ namespace Terraria.ModLoader
 			shortList.Sort(AtmosWeight.InvertedCompare);
 			int avfxFields = 0;
 
-			for (int i = 0; avfxFields < 7 && i < shortList.Count; i++) {
+			for (int i = 0; avfxFields < 5 && i < shortList.Count; i++) {
 				ModAVFX avfx = shortList[i].type;
 
 				if (result.waterStyle == 0 && avfx.WaterStyle != null) {

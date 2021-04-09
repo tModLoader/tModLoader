@@ -3290,7 +3290,7 @@
  			if (SceneMetrics.MushroomTileCount > SceneMetrics.MushroomTileMax)
  				num8 = 2;
  
-+			AVFXHelper.UgBg.ChooseStyle(ref num8);
++			AVFXLoader.UgBg.ChooseStyle(ref num8);
  			if (num8 != undergroundBackground) {
  				oldUndergroundBackground = undergroundBackground;
  				undergroundBackground = num8;
@@ -3298,7 +3298,7 @@
  					array3[5] = 127;
  
  				array3[6] = 185 + hellBackStyle;
-+				AVFXHelper.UgBg.FillTextureArray(num9, array3);
++				AVFXLoader.UgBg.FillTextureArray(num9, array3);
  				LoadBackground(array3[0]);
  				LoadBackground(array3[1]);
  				LoadBackground(array3[2]);
@@ -3374,7 +3374,7 @@
  			drewLava = false;
  			if (!isBackground) {
  				waterStyle = CalculateWaterStyle();
-+				AVFXHelper.Waters.ChooseStyle(ref waterStyle);
++				AVFXLoader.Waters.ChooseStyle(ref waterStyle);
  				for (int i = 0; i < 13; i++) {
  					if (IsLiquidStyleWater(waterStyle)) {
  						if (waterStyle != i)
@@ -3382,7 +3382,7 @@
  							liquidAlpha[i] = Math.Min(liquidAlpha[i] + 0.2f, 1f);
  					}
  				}
-+				AVFXHelper.Waters.UpdateLiquidAlphas();
++				AVFXLoader.Waters.UpdateLiquidAlphas();
  			}
  
  			if (!drawToScreen && !isBackground) {
@@ -3392,7 +3392,7 @@
  			DrawWater(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
 +			
 +		postWaterDraw:
-+			AVFXHelper.Waters.DrawWatersToScreen(isBackground);
++			AVFXLoader.Waters.DrawWatersToScreen(isBackground);
  		}
  
 -		protected void DrawWater(bool bg = false, int Style = 0, float Alpha = 1f) {
@@ -3415,7 +3415,7 @@
  				DrawSurfaceBG_DrawBackMountainsLayer(246);
  			}
  
-+			AVFXHelper.SurfaceBg.DrawFarTexture();
++			AVFXLoader.SurfaceBg.DrawFarTexture();
  			SkyManager.Instance.DrawToDepth(spriteBatch, 5f);
  		}
  
@@ -3661,15 +3661,15 @@
  
  			UpdateBGVisibility_BackLayer(null, null);
  			UpdateBGVisibility_FrontLayer(null, null);
-+			if (bgStyle < AVFXHelper.SurfaceBg.vanillaCount) {
-+				for (int i = AVFXHelper.SurfaceBg.vanillaCount; i < bgAlphaFrontLayer.Length /*SurfaceBackgroundStyleLoader.SurfaceStyleCount*/; i++) {
++			if (bgStyle < AVFXLoader.SurfaceBg.vanillaCount) {
++				for (int i = AVFXLoader.SurfaceBg.vanillaCount; i < bgAlphaFrontLayer.Length /*SurfaceBackgroundStyleLoader.SurfaceStyleCount*/; i++) {
 +					bgAlphaFrontLayer[i] -= backgroundLayerTransitionSpeed;
 +					if (bgAlphaFrontLayer[i] < 0f)
 +						bgAlphaFrontLayer[i] = 0f;
 +				}
 +			}
 +
-+			AVFXHelper.SurfaceBg.ModifyFarFades(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
++			AVFXLoader.SurfaceBg.ModifyFarFades(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
  			try {
  				DrawSurfaceBG();
  				if (BackgroundEnabled)
@@ -3681,7 +3681,7 @@
  				}
  			}
  
-+			AVFXHelper.SurfaceBg.ChooseStyle(ref num);
++			AVFXLoader.SurfaceBg.ChooseStyle(ref num);
  			return num;
  		}
  
