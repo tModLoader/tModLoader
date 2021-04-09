@@ -13,7 +13,7 @@ namespace ExampleMod.Common.Systems
 		internal ExampleCoinsUI exampleCoinsUI;
 
 		public override void Load() {
-			// Create custom interface wich can swap between difrent UIStates
+			// Create custom interface which can swap between different UIStates
 			exampleCoinUserInterface = new UserInterface();
 			// Creating custom UIState
 			exampleCoinsUI = new ExampleCoinsUI();
