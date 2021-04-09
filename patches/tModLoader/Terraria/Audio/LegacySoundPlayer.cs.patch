@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Audio/LegacySoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/LegacySoundPlayer.cs
-@@ -40,8 +_,8 @@
+@@ -41,8 +_,8 @@
  		public SoundEffectInstance SoundInstancePixie;
  		public Asset<SoundEffect>[] SoundItem = new Asset<SoundEffect>[SoundID.ItemSoundCount];
  		public SoundEffectInstance[] SoundInstanceItem = new SoundEffectInstance[SoundID.ItemSoundCount];
