@@ -1,14 +1,14 @@
 --- src/Terraria/Terraria/Audio/LegacyAudioSystem.cs
 +++ src/tModLoader/Terraria/Audio/LegacyAudioSystem.cs
-@@ -3,6 +_,7 @@
- using System;
+@@ -4,6 +_,7 @@
  using System.Collections;
  using System.Collections.Generic;
+ using System.IO;
 +using Terraria.ModLoader.Engine;
  
  namespace Terraria.Audio
  {
-@@ -96,10 +_,12 @@
+@@ -97,10 +_,12 @@
  		}
  
  		public LegacyAudioSystem() {
@@ -24,7 +24,7 @@
  			Engine.Update();
  			AudioTracks = new IAudioTrack[90];
  			TrackNamesByIndex = new Dictionary<int, string>();
-@@ -112,6 +_,8 @@
+@@ -113,6 +_,8 @@
  				yield return null;
  			}
  		}
