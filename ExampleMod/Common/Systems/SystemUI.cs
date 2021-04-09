@@ -7,7 +7,7 @@ using Terraria.UI;
 
 namespace ExampleMod.Common.Systems
 {
-	public class SystemUI: ModSystem
+	public class SystemUI : ModSystem
 	{
 		private UserInterface exampleCoinUserInterface;
 		internal ExampleCoinsUI exampleCoinsUI;
