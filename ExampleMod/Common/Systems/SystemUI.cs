@@ -11,6 +11,15 @@ namespace ExampleMod.Common.Systems
 	{
 		private UserInterface exampleCoinUserInterface;
 		internal ExampleCoinsUI exampleCoinsUI;
+        
+        // This two methods will set the state to custom UI, causing it to show or hide(if we pass null into the method call)
+		public void ShowMyUI() {
+			exampleCoinUserInterface?.SetState(exampleCoinsUI);
+		}
+		
+		public void HideMyUI() {
+			exampleCoinUserInterface?.SetState(null);
+		}
 
 		public override void Load() {
 			// Create custom interface which can swap between different UIStates
@@ -26,15 +35,6 @@ namespace ExampleMod.Common.Systems
 			// Here we call .Update on our custom UI and propagate it to its state and underlying elements
 			if (exampleCoinUserInterface?.CurrentState != null) 
 				exampleCoinUserInterface?.Update(gameTime);
-		}
-
-		// This two methods will set the state to custom UI, causing it to show or hide(if we pass null into the method call)
-		public void ShowMyUI() {
-			exampleCoinUserInterface?.SetState(exampleCoinsUI);
-		}
-		
-		public void HideMyUI() {
-			exampleCoinUserInterface?.SetState(null);
 		}
 
 		// Adding a custom layer to the vanilla layer list that will call .Draw on your interface if it has a state
