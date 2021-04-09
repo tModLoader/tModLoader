@@ -1,0 +1,9 @@
+To prevent exposing some files to non-owners of the game, the files in this directory are encrypted using a secret passphrase. These files are essentially large github actions secrets.
+
+See https://docs.github.com/en/actions/reference/encrypted-secrets#limits-for-secrets
+
+When one of these files updates, the file needs to be pushed to the repo by someone with the passphrase.
+
+These files are used by github actions in the main branch. Someone could make use of Github Actions on a fork by pushing their own versions of the files from their own copy of the game and setting their own SETUP_ASSETS_PASSPHRASE secret on their fork:
+
+gpg --symmetric --cipher-algo AES256 Terraria.exe
