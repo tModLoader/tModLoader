@@ -686,6 +686,27 @@
  					position = (position + item.position) / 2f;
  					velocity = (velocity + item.velocity) / 2f;
  					int num3 = item.stack;
+@@ -45781,10 +_,17 @@
+ 			else if (type == 2701) {
+ 				Lighting.AddLight((int)((position.X + (float)(width / 2)) / 16f), (int)((position.Y + (float)(height / 2)) / 16f), 0.7f, 0.65f, 0.55f);
+ 			}
+-			else if (createTile == 4) {
++			else if (createTile >= 0 && TileID.Sets.Torch[createTile]) {
+ 				int torchID = placeStyle;
+-				if ((!wet && ItemID.Sets.Torches[type]) || ItemID.Sets.WaterTorches[type])
++				if ((!wet && ItemID.Sets.Torches[type]) || ItemID.Sets.WaterTorches[type]) {
++					if (ModItem == null) {
+-					Lighting.AddLight(base.Center, torchID);
++						Lighting.AddLight(base.Center, torchID);
++					}
++					else {
++						ModItem.TorchVFX(out float R, out float G, out float B, out int _);
++						Lighting.AddLight(base.Center, R, G, B);
++					}
++				}
+ 			}
+ 			else if (type == 3114) {
+ 				if (!wet)
 @@ -45979,6 +_,9 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom();

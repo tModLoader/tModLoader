@@ -12,6 +12,8 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded torch.");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
+
+			ItemID.Sets.Torches[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -35,27 +37,11 @@ namespace ExampleMod.Content.Items.Placeable
 			itemGroup = ContentSamples.CreativeHelper.ItemGroup.Torches; //Vanilla usually matches sorting methods with the right type of item, but sometimes, like with torches, it doesn't. Make sure to set whichever items manually if need be. 
 		}
 
-		public override void HoldItem(Player player) {
-			// Randomly spawn sparkles when the torch is held. Twice bigger chance to spawn them when swinging the torch.
-			if (Main.rand.Next(player.itemAnimation > 0 ? 40 : 80) == 0) {
-				Dust.NewDust(new Vector2(player.itemLocation.X + 16f * player.direction, player.itemLocation.Y - 14f * player.gravDir), 4, 4, ModContent.DustType<Sparkle>());
-			}
-
-			// Create a white (1.0, 1.0, 1.0) light at the torch's approximate position, when the item is held.
-			Vector2 position = player.RotatedRelativePoint(new Vector2(player.itemLocation.X + 12f * player.direction + player.velocity.X, player.itemLocation.Y - 14f + player.velocity.Y), true);
-
-			Lighting.AddLight(position, 1f, 1f, 1f);
-		}
-
-		public override void PostUpdate() {
-			// Create a white (1.0, 1.0, 1.0) light when the item is in world, and isn't underwater.
-			if (!Item.wet) {
-				Lighting.AddLight(Item.Center, 1f, 1f, 1f);
-			}
-		}
-
-		public override void AutoLightSelect(ref bool dryTorch, ref bool wetTorch, ref bool glowstick) {
-			dryTorch = true; // This makes our item eligible for being selected with smart select at a short distance when not underwater.
+		public override void TorchVFX(out float R, out float G, out float B, out int DustType) {
+			R = 1f;
+			G = 1f;
+			B = 1f;
+			DustType = ModContent.DustType<Sparkle>();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

@@ -871,12 +871,17 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to tell the game whether this item is a torch that cannot be placed in liquid, a torch that can be placed in liquid, or a glowstick. This information is used for when the player is holding down the auto-select hotkey.
+		/// Allows you to determine the color of light and dust that this torch emits when held or dropped on the ground
 		/// </summary>
-		/// <param name="dryTorch">if set to <c>true</c> [dry torch].</param>
-		/// <param name="wetTorch">if set to <c>true</c> [wet torch].</param>
-		/// <param name="glowstick">if set to <c>true</c> [glowstick].</param>
-		public virtual void AutoLightSelect(ref bool dryTorch, ref bool wetTorch, ref bool glowstick) {
+		/// <param name="R">The red component of the torch light (0-1)</param>
+		/// <param name="G">The green component of the torch light (0-1)</param>
+		/// <param name="B">The blue component of the torch light (0-1)</param>
+		/// <param name="dustId">The id of the dust that the torch emits</param>
+		public virtual void TorchVFX(out float R, out float G, out float B, out int dustId) {
+			R = 0;
+			G = 0;
+			B = 0;
+			dustId = DustID.Torch;
 		}
 
 		/// <summary>
