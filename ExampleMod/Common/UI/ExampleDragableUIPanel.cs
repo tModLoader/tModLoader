@@ -19,8 +19,8 @@ namespace ExampleMod.Common.UI
 
 
 		public override void MouseDown(UIMouseEvent evt) {
-			// When you override UIElements methods don't forget call base method
-			// This helps keep the basic behavior of the UIElement
+			// When you override UIElement methods, don't forget call the base method
+			// This helps to keep the basic behavior of the UIElement
 			base.MouseDown(evt);
 			// When the mouse button is down, then we start dragging
 			DragStart(evt);

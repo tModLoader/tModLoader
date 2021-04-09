@@ -32,6 +32,7 @@ namespace ExampleMod.Common.Systems
 		public void ShowMyUI() {
 			exampleCoinUserInterface?.SetState(exampleCoinsUI);
 		}
+		
 		public void HideMyUI() {
 			exampleCoinUserInterface?.SetState(null);
 		}
