@@ -19,7 +19,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -18,54 +_,110 @@
+@@ -18,54 +_,111 @@
    </PropertyGroup>
    <PropertyGroup>
      <OutputName>$(AssemblyName)</OutputName>
@@ -103,6 +103,7 @@
 +    <Warning Text="\Libraries file purge failed (robocopy /MIR Exit Code: $(PurgeExitCode)). Old files may not be removed." Condition="'$(PurgeExitCode)' != 2 AND '$(PurgeExitCode)' != 0" />
 +  </Target>
 +  <!--See first answer in https://stackoverflow.com/questions/55946010/how-to-specify-output-folder-for-the-referenced-nuget-packages for how this was created-->
++  <!--Dotnet Core 3.0 and later don't support subdirectory searching; so we use workaround https://github.com/dotnet/sdk/issues/10366#issuecomment-508854737 -->
 +  <Target Name="BuildRedirectNugetFilesToLib" AfterTargets="ResolveLockFileCopyLocalFiles">
 +    <ItemGroup>
 +      <ReferenceCopyLocalPaths>
