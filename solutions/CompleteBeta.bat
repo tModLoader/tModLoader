@@ -28,6 +28,8 @@ robocopy /S ReleaseExtras\Content "%rls%\Content"
 robocopy /S ..\src\tModLoader\Terraria\bin\Debug\net5.0 "%rls%"
 robocopy /S ..\src\tModLoader\Terraria\bin\ServerDebug\net5.0 "%rls%"
 robocopy /S ReleaseExtras\RuntimeFiles "%rls%"
+del "%rls%\tModLoaderServerDebug.exe"
+del "%rls%\tModLoaderDebug.exe"
 
 call python ZipAndMakeExecutable.py "%rls%" "%rls%.zip"
 call python ZipAndMakeExecutable.py "%rls%" "%rls%.tar.gz"
