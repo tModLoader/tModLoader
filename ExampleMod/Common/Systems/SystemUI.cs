@@ -12,7 +12,7 @@ namespace ExampleMod.Common.Systems
 		private UserInterface exampleCoinUserInterface;
 		internal ExampleCoinsUI exampleCoinsUI;
         
-        // This two methods will set the state to custom UI, causing it to show or hide(if we pass null into the method call)
+		// These two methods will set the state of our custom UI, causing it to show or hide
 		public void ShowMyUI() {
 			exampleCoinUserInterface?.SetState(exampleCoinsUI);
 		}
