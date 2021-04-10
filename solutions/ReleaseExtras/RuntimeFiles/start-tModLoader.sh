@@ -1,30 +1,29 @@
-# TODO: Can't test install script on windows
-# Set all the parameters for the install script
-set CHANNELSEL=5.0
-set VERSIONSEL=5.0.5
-set RUNTIMESELECT=dotnet
+#!/bin/sh
+script_path=$(readlink -f "$0")
 
-# Set the old version so we know what to delete when updating versions of NET
-set OLDVERSION=0.0.0
+script_dir=$(dirname "$script_path")
 
-#install directories
-set INSTALLDIR="NET_$VERSIONSEL"
-set NEWINSTALL=`find -type d -name "$INSTALLDIR"`
-set OLDDIR="NET_$OLDVERSION"
-set CLEANUP=`find -type d -name "$OLDDIR"`
+cd "$script_dir"
 
-# Check if the install for our target NET already exists, and install if not
-if [-n $NEWINSTALL]
-else
-	curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin <--channel $CHANNELSEL --install-dir $INSTALLDIR --runtime $RUNTIMESELECT --version $VERSIONSEL>
+channel="5.0"
+version="5.0.5"
+dotnet_dir="$script_dir/dotnet"
+install_dir="$dotnet_dir/$version"
+
+if [ -d "$dotnet_dir" ]; then
+  for folder in $(ls $script_dir/dotnet/); do
+    if [ ! $version = "$folder" ]; then
+      old_version="$script_dir/dotnet/$folder"
+      echo "Cleaning $old_version"
+      rm -rf "$old_version"
+    fi
+  done
 fi
 
-# Check if old install exists and delete if so
-if [-n $CLEANUP]
-then
-	rmdir oldDir
+if [ ! -d "$install_dir" ]; then
+  curl -sLo dotnet-install.sh https://dot.net/v1/dotnet-install.sh
+  chmod +x dotnet-install.sh
+  ./dotnet-install.sh --channel "$channel" --install-dir "$install_dir" --runtime "dotnet" --version "$version"
 fi
 
-# Run the game
-dotnet tModLoader.dll
-
+"$install_dir"/dotnet tModLoader.dll

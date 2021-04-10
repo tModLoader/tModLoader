@@ -36,4 +36,4 @@ if Not exist %INSTALLDIR%\dotnet.exe (
 
 REM Run the game
 echo NowRunning
-dotnet tModLoader.dll
+dotnet tModLoaderServer.dll
