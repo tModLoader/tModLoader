@@ -7,9 +7,9 @@ namespace ExampleMod.Content.Biomes
 {
 	public class ExampleUndergroundBiome : ModBiome
 	{
-		public override ModUgBgStyle UndergroundBackgroundStyle => base.UndergroundBackgroundStyle;
+		public override ModUgBgStyle UndergroundBackgroundStyle => ModContent.Find<ModUgBgStyle>("ExampleMod/ExampleUgBgStyle");
 
-		public override int Music => base.Music;
+		public override int Music => Mod.GetSoundSlot(SoundType.Music, "Assets/Sounds/Music/MarbleGallery");
 
 		public override AVFXPriority Priority => AVFXPriority.BiomeHigh;
 
@@ -18,6 +18,7 @@ namespace ExampleMod.Content.Biomes
 		}
 
 		public override bool IsBiomeActive(Player player) {
+			return false;
 			return ModContent.GetInstance<ExampleBiomeTileCount>().exampleBlockCount >= 40 && Math.Abs(player.position.X - Main.maxTilesX / 2) < 40;
 		}
 

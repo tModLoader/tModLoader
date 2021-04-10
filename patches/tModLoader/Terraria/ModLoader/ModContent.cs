@@ -538,6 +538,7 @@ namespace Terraria.ModLoader
 			AVFXLoader.Waters.Unload();
 			AVFXLoader.Waterfalls.Unload();
 			AVFXLoader.Unload();
+			BiomeLoader.Unload();
 			PlayerDrawLayerLoader.Unload();
 			SystemHooks.Unload();
 			ResizeArrays(true);

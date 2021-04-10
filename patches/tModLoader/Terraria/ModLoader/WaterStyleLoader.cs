@@ -32,7 +32,7 @@ namespace Terraria.ModLoader
 			int tst = Main.LocalPlayer.currentAVFX.waterStyle;
 			style = -1; priority = AVFXPriority.None;
 
-			if (tst > vanillaCount) {
+			if (tst >= vanillaCount) {
 				style = tst;
 				priority = Main.LocalPlayer.currentAVFX.priority;
 			}

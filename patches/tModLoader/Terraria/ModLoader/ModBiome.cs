@@ -17,6 +17,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool IsPrimaryBiome => false;
 		public override AVFXPriority Priority => AVFXPriority.BiomeLow;
+		public override int Music => 0;
 
 		// Bestiary properties
 		/// <summary>
@@ -36,7 +37,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual Color? BackgroundColor => null;
 
-		public GameContent.Bestiary.ModBiomeBestiaryInfoElement ModBiomeBestiaryInfoElement;
+		public GameContent.Bestiary.ModBiomeBestiaryInfoElement ModBiomeBestiaryInfoElement { get; internal set; }
 
 		protected sealed override void Register() {
 			ModTypeLookup<ModBiome>.Register(this);

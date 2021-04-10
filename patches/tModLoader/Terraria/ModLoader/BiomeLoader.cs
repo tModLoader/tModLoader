@@ -36,6 +36,10 @@ namespace Terraria.ModLoader
 			biomes.Add(biome);
 		}
 
+		internal static void Unload() {
+			biomes.Clear();
+		}
+
 		internal static void RebuildHooks() {
 			foreach (var hook in hooks) {
 				hook.arr = ModLoader.BuildGlobalHook(biomes, hook.method).Select(p => p.index).ToArray();

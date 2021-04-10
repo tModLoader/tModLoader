@@ -1,14 +1,9 @@
-using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Backgrounds
 {
 	public class ExampleSurfaceBgStyle : ModSurfaceBgStyle
 	{
-		public override bool ChooseBgStyle() {
-			return !Main.gameMenu && Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample;
-		}
-
 		// Use this to keep far Backgrounds like the mountains.
 		public override void ModifyFarFades(float[] fades, float transitionSpeed) {
 			for (int i = 0; i < fades.Length; i++) {
@@ -28,7 +23,7 @@ namespace ExampleMod.Backgrounds
 		}
 
 		public override int ChooseFarTexture() {
-			return mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceFar");
+			return Mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceFar");
 		}
 
 		private static int SurfaceFrameCounter;
@@ -40,20 +35,20 @@ namespace ExampleMod.Backgrounds
 			}
 			switch (SurfaceFrame) {
 				case 0:
-					return mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceMid0");
+					return Mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceMid0");
 				case 1:
-					return mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceMid1");
+					return Mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceMid1");
 				case 2:
-					return mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceMid2");
+					return Mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceMid2");
 				case 3:
-					return mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceMid3");
+					return Mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceMid3");
 				default:
 					return -1;
 			}
 		}
 
 		public override int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b) {
-			return mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceClose");
+			return Mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceClose");
 		}
 	}
 }

@@ -64,8 +64,9 @@ namespace Terraria.ModLoader
 			}
 
 			int tst = Main.LocalPlayer.currentAVFX.ugBG;
-			if (tst > vanillaCount) {
+			if (tst >= vanillaCount) {
 				style = tst;
+				priority = Main.LocalPlayer.currentAVFX.priority;
 			}
 		}
 
@@ -98,7 +99,7 @@ namespace Terraria.ModLoader
 				return;
 			}
 			int tst = Main.LocalPlayer.currentAVFX.surfaceBG;
-			if (tst > vanillaCount) {
+			if (tst >= vanillaCount) {
 				style = tst;
 				priority = Main.LocalPlayer.currentAVFX.priority;
 			}
