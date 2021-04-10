@@ -39,7 +39,7 @@ namespace Terraria.ModLoader
 
 		internal virtual void ResizeArrays() { }
 
-		public virtual void ChooseStyle(ref int style) { }
+		public virtual void ChooseStyle(out int style, out AVFXPriority priority) { style = -1; priority = AVFXPriority.None; }
 	}
 
 	public static class AVFXLoader
@@ -139,6 +139,7 @@ namespace Terraria.ModLoader
 			player.currentAVFX = result;
 		}
 
+		// Ref or out? MusicLoader?
 		public static void UpdateMusic(ref int music, ref AVFXPriority priority) {
 			int tst = Main.LocalPlayer.currentAVFX.music;
 			if (tst > -1) {

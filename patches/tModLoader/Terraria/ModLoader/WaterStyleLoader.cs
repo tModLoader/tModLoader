@@ -28,10 +28,13 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.liquidAlpha, totalCount);
 		}
 
-		public override void ChooseStyle(ref int style) {
+		public override void ChooseStyle(out int style, out AVFXPriority priority) {
 			int tst = Main.LocalPlayer.currentAVFX.waterStyle;
+			style = -1; priority = AVFXPriority.None;
+
 			if (tst > vanillaCount) {
 				style = tst;
+				priority = Main.LocalPlayer.currentAVFX.priority;
 			}
 		}
 

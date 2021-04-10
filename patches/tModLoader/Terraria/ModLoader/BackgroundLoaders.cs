@@ -57,7 +57,8 @@ namespace Terraria.ModLoader
 	{
 		public UgBgStyles(int vanillaCount = 18) : base(vanillaCount) { }
 
-		public override void ChooseStyle(ref int style) {
+		public override void ChooseStyle(out int style, out AVFXPriority priority) {
+			priority = AVFXPriority.None; style = -1;
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
 			}
@@ -91,13 +92,15 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.bgAlphaFarBackLayer, totalCount);
 		}
 
-		public override void ChooseStyle(ref int style) {
+		public override void ChooseStyle(out int style, out AVFXPriority priority) {
+			priority = AVFXPriority.None; style = -1;
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
 			}
 			int tst = Main.LocalPlayer.currentAVFX.surfaceBG;
 			if (tst > vanillaCount) {
 				style = tst;
+				priority = Main.LocalPlayer.currentAVFX.priority;
 			}
 		}
 
