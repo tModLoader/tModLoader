@@ -873,14 +873,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to determine the color of light and dust that this torch emits when held or dropped on the ground
 		/// </summary>
-		/// <param name="R">The red component of the torch light (0-1)</param>
-		/// <param name="G">The green component of the torch light (0-1)</param>
-		/// <param name="B">The blue component of the torch light (0-1)</param>
+		/// <param name="r">The red component of the torch light (0-1)</param>
+		/// <param name="g">The green component of the torch light (0-1)</param>
+		/// <param name="b">The blue component of the torch light (0-1)</param>
 		/// <param name="dustId">The id of the dust that the torch emits</param>
-		public virtual void TorchVFX(out float R, out float G, out float B, out int dustId) {
-			R = 0;
-			G = 0;
-			B = 0;
+		public virtual void TorchVFX(out float r, out float g, out float b, out int dustId) {
+			r = 0;
+			g = 0;
+			b = 0;
 			dustId = DustID.Torch;
 		}
 

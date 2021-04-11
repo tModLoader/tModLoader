@@ -3770,7 +3770,7 @@
  					num = num2 - 426;
  
 +				int num3 = 0;
-+				if (num >= 22) {
++				if (sItem.ModItem != null) {
 +					sItem.ModItem.TorchVFX(out R, out G, out B, out num3);
 +				}
 +				else {
