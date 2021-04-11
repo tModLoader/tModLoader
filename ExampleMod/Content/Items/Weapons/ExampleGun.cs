@@ -56,7 +56,7 @@ namespace ExampleMod.Content.Items.Weapons
 
 		// What if I wanted it to work like Uzi, replacing regular bullets with High Velocity Bullets?
 		// Uzi/Molten Fury style: Replace normal Bullets with High Velocity
-		/*public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockBack) {
+		/*public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (type == ProjectileID.Bullet) { // or ProjectileID.WoodenArrowFriendly
 				type = ProjectileID.BulletHighVelocity; // or ProjectileID.FireArrow;
 			}
@@ -64,7 +64,7 @@ namespace ExampleMod.Content.Items.Weapons
 
 		// What if I wanted multiple projectiles in a even spread? (Vampire Knives) 
 		// Even Arc style: Multiple Projectile, Even Spread 
-		/*public override bool Shoot(Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack) {
+		/*public override bool Shoot(Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			float numberProjectiles = 3 + Main.rand.Next(3); // 3, 4, or 5 shots
 			float rotation = MathHelper.ToRadians(45);
 
@@ -72,7 +72,7 @@ namespace ExampleMod.Content.Items.Weapons
 
 			for (int i = 0; i < numberProjectiles; i++) {
 				Vector2 perturbedSpeed = velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .2f; // Watch out for dividing by 0 if there is only 1 projectile.
-				Projectile.NewProjectile(source, position, perturbedSpeed, type, damage, knockBack, player.whoAmI);
+				Projectile.NewProjectile(source, position, perturbedSpeed, type, damage, knockback, player.whoAmI);
 			}
 
 			return false; // return false to stop vanilla from calling Projectile.NewProjectile.
@@ -80,7 +80,7 @@ namespace ExampleMod.Content.Items.Weapons
 
 		// How can I make the shots appear out of the muzzle exactly?
 		// Also, when I do this, how do I prevent shooting through tiles?
-		/*public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockBack) {
+		/*public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			Vector2 muzzleOffset = Vector2.Normalize(velocity) * 25f;
 		
 			if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0)) {
@@ -101,16 +101,16 @@ namespace ExampleMod.Content.Items.Weapons
 		}*/
 
 		// How can I shoot 2 different projectiles at the same time?
-		/*public override bool Shoot(Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack) {
+		/*public override bool Shoot(Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			// Here we manually spawn the 2nd projectile, manually specifying the projectile type that we wish to shoot.
-			Projectile.NewProjectile(source, position, velocity, ProjectileID.GrenadeI, damage, knockBack, player.whoAmI);
+			Projectile.NewProjectile(source, position, velocity, ProjectileID.GrenadeI, damage, knockback, player.whoAmI);
 			
 			// By returning true, the vanilla behavior will take place, which will shoot the 1st projectile, the one determined by the ammo.
 			return true;
 		}*/
 
 		// How can I choose between several projectiles randomly?
-		/*public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockBack) {
+		/*public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			// Here we randomly set type to either the original (as defined by the ammo), a vanilla projectile, or a mod projectile.
 			type = Main.rand.Next(new int[] { type, ProjectileID.GoldenBullet, ProjectileType<Projectiles.ExampleBullet>() });
 		}*/

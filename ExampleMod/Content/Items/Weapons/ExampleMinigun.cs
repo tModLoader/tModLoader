@@ -50,7 +50,7 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		// The following method makes the gun slightly inaccurate
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockBack) {
+		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			velocity = velocity.RotatedByRandom(MathHelper.ToRadians(10));
 		}
 

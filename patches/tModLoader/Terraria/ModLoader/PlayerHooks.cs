@@ -639,20 +639,20 @@ namespace Terraria.ModLoader
 			return canShoot;
 		}
 
-		private delegate void DelegateModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockBack);
+		private delegate void DelegateModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback);
 		private static HookList HookModifyShootStats = AddHook<DelegateModifyShootStats>(p => p.ModifyShootStats);
 
-		public static void ModifyShootStats(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockBack) {
+		public static void ModifyShootStats(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			foreach (int index in HookModifyShootStats.arr) {
-				player.modPlayers[index].ModifyShootStats(item, ref position, ref velocity, ref type, ref damage, ref knockBack);
+				player.modPlayers[index].ModifyShootStats(item, ref position, ref velocity, ref type, ref damage, ref knockback);
 			}
 		}
 
 		private static HookList HookShoot = AddHook<Action<Item, IProjectileSource, Vector2, Vector2, int, int, float>>(p => p.Shoot);
 
-		public static void Shoot(Player player, Item item, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack) {
+		public static void Shoot(Player player, Item item, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			foreach (int index in HookShoot.arr) {
-				player.modPlayers[index].Shoot(item, source, position, velocity, type, damage, knockBack);
+				player.modPlayers[index].Shoot(item, source, position, velocity, type, damage, knockback);
 			}
 		}
 

@@ -20,9 +20,9 @@ namespace ExampleMod.Common.GlobalItems
 			item.damage = 50; // Change damage to 50!
 		}
 
-		public override void Shoot(Item item, Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack) {
+		public override void Shoot(Item item, Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			// Make it shoot grenades for no reason
-			Projectile.NewProjectileDirect(player.GetProjectileSource_Item(item), player.Center, velocity * 5f, ProjectileID.Grenade, damage, knockBack, player.whoAmI);
+			Projectile.NewProjectileDirect(source, player.Center, velocity * 5f, ProjectileID.Grenade, damage, knockBack, player.whoAmI);
 		}
 	}
 }

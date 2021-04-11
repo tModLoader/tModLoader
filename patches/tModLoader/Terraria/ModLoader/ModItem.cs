@@ -323,8 +323,8 @@ namespace Terraria.ModLoader
 		/// <param name="velocity"> The velocity of the projectile. </param>
 		/// <param name="type"> The ID of the projectile. </param>
 		/// <param name="damage"> The damage of the projectile. </param>
-		/// <param name="knockBack"> The knockback of the projectile. </param>
-		public virtual void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockBack) {
+		/// <param name="knockback"> The knockback of the projectile. </param>
+		public virtual void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		}
 
 		/// <summary>
@@ -336,9 +336,9 @@ namespace Terraria.ModLoader
 		/// <param name="velocity"> The velocity of the projectile. </param>
 		/// <param name="type"> The ID of the projectile. </param>
 		/// <param name="damage"> The damage of the projectile. </param>
-		/// <param name="knockBack"> The knockback of the projectile. </param>
+		/// <param name="knockback"> The knockback of the projectile. </param>
 		/// <returns></returns>
-		public virtual bool Shoot(Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack) {
+		public virtual bool Shoot(Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			return true;
 		}
 
