@@ -20,7 +20,7 @@ namespace ExampleMod.Prefixes
 
 			public void Unload() { }
 		}
-		public override string Name => _displayName;
+		public override string Name => _name;
 		private readonly int _power;
 		private readonly string _name;
 
