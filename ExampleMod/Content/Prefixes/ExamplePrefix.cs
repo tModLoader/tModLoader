@@ -8,21 +8,15 @@ namespace ExampleMod.Prefixes
 	public class ExamplePrefix : ModPrefix
 	{
 		// This it the class that will be Autoloaded, and then it will load and register each of the prefixes.
-		public class ExamplePrefixLoader : ModType
+		public class ExamplePrefixLoader : ILoadable
 		{
-			List<ExamplePrefix> prefixes = new List<ExamplePrefix>();
-
 			// This constructor puts values into the prefix list, which will be used in the next two functions.
-			public ExamplePrefixLoader() {
-				prefixes.Add(new ExamplePrefix(1, "Awesome"));
-				prefixes.Add(new ExamplePrefix(2, "ReallyAwesome"));
+			public void Load(Mod mod) {
+				mod.AddContent(new ExamplePrefix(1, "Awesome"));
+				mod.AddContent(new ExamplePrefix(2, "Really_Awesome"));
 			}
 
-			// Called when this class is loaded, loads and registers the prefixes.
-			protected override void Register() => prefixes.ForEach(prefix => Mod.AddContent(prefix));
-
-			// It's currently pretty important to unload your static fields like this, to avoid having parts of your mod remain in memory when it's been unloaded.
-			public override void Unload() => prefixes = null;
+			public void Unload() { }
 		}
 		public override string Name => _displayName;
 		private readonly byte _power;
@@ -51,7 +45,7 @@ namespace ExampleMod.Prefixes
 			=> PrefixCategory.AnyWeapon;
 
 		// Set the display name and translations of this prefix with this function.
-		public override void SetDefaults() => DisplayName.SetDefault(_displayName);
+		public override void SetDefaults() => DisplayName.SetDefault(_displayName.Replace("_", " "));
 
 		// Use this function to modify these stats for items which have this prefix: Damage Multiplier, Knockback Multiplier, Use Time Multiplier,
 		//			Scale Multiplier (Size), Shoot Speed Multiplier, Mana Multiplier (Mana cost), Crit Bonus.
