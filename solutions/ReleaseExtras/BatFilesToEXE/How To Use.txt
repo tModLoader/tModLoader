@@ -1,0 +1,4 @@
+1) Create the bat file
+2) Drag and drop the bat file on to Bat2ExelEXP.bat
+3) Edit the resulting exe using Resource Hacker so it has correct icon.
+4) Copy the exe in to RuntimeFiles

@@ -16,34 +16,20 @@ set destinationFolder=.\tModLoader %tModLoaderVersion% Release
 :: Folder for release
 mkdir "%destinationFolder%"
 
-:: Temp Folders
-set rls=%destinationFolder%\tModLoader %tModLoaderVersion%
-mkdir "%rls%"
-
-set steam=%destinationFolder%\tModLoaderSteam %tModLoaderVersion%
-mkdir "%steam%"
-
 :: Generic release
-robocopy /S ReleaseExtras\Content "%rls%\Content"
-robocopy /S ..\src\tModLoader\Terraria\bin\Release\net5.0 "%rls%"
-robocopy /S ..\src\tModLoader\Terraria\bin\ServerRelease\net5.0 "%rls%"
-robocopy /S ReleaseExtras\RuntimeFiles "%rls%"
+robocopy /S ReleaseExtras\Content "%destinationFolder%\Content"
+robocopy /S ..\src\tModLoader\Terraria\bin\Release\net5.0 "%destinationFolder%"
+robocopy /S ..\src\tModLoader\Terraria\bin\ServerRelease\net5.0 "%destinationFolder%"
+robocopy /S ReleaseExtras\RuntimeFiles "%destinationFolder%"
+robocopy /S ReleaseExtras\SteamFiles "%destinationFolder%"
 del "%rls%\tModLoaderServer.exe"
 del "%rls%\tModLoader.exe"
 
-call python ZipAndMakeExecutable.py "%rls%" "%rls%.zip"
-call python ZipAndMakeExecutable.py "%rls%" "%rls%.tar.gz"
-
-:: Steam release
-robocopy /S "%rls%" "%steam%"
-robocopy /S ReleaseExtras\SteamFiles "%steam%"
-
-call python ZipAndMakeExecutable.py "%steam%" "%steam%.zip"
-call python ZipAndMakeExecutable.py "%steam%" "%steam%.tar.gz"
+call python ZipAndMakeExecutable.py "%destinationFolder%" "%destinationFolder%.zip"
+call python ZipAndMakeExecutable.py "%destinationFolder%" "%destinationFolder%.tar.gz"
 
 :: CleanUp, Delete temp Folders
-:: rmdir "%rls%" /S /Q
-:: rmdir "%steam%" /S /Q
+:: rmdir "%destinationFolder%" /S /Q
 
 :: ExampleMod.zip (TODO, other parts of ExampleMod release)
 ::rmdir ..\ExampleMod\bin /S /Q
@@ -55,7 +41,7 @@ echo(
 echo(
 echo(
 echo tModLoader %tModLoaderVersion% ready to release.
-echo Upload the 2ish zip files to github/discord.
+echo Upload the 1ish zip files to github/discord.
 echo(
 echo(
 pause
