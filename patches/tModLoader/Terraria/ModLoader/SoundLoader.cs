@@ -143,11 +143,11 @@ namespace Terraria.ModLoader
 				case SoundType.Custom:
 					return 0;
 				case SoundType.Item:
-					return SoundID.ItemSoundCount + 1;
+					return SoundID.ItemSoundCount;
 				case SoundType.NPCHit:
-					return SoundID.NPCHitCount + 1;
+					return SoundID.NPCHitCount;
 				case SoundType.NPCKilled:
-					return SoundID.NPCDeathCount + 1;
+					return SoundID.NPCDeathCount;
 				case SoundType.Music:
 					return Main.maxMusic;
 			}
