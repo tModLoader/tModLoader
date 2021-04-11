@@ -3,19 +3,17 @@ Look for tModLoader in the Steam Store and install.
 
 Manual installation:
 Make a 'tModLoader' folder next to the Terraria install folder and place the .zip contents in it. 
-Launch the provided 'start-tModLoader.sh'/'tModLoader.exe' file instead of the regular one.
-
+Launch the provided 'start-tModLoader.sh'/'start-tModLoader.bat' file.
+For GoG users -> delete Steam_appid.txt to switch from Steam to GoG
 
 Run tModLoader:
-Just launch the provided tModLoader file (start-tModLoader.sh/tModLoader.exe) or launch through Steam. 
+Just launch the provided tModLoader file (start-tModLoader.sh/start-tModLoader.bat) or launch through Steam. 
 If you see Mods or Mod Browser on the main menu in Terraria, you have successfully installed tModLoader.
-
 
 Uninstall/Switch back to un-modded Terraria:
 In Steam, right click tModLoader in your library -> manage -> uninstall
 If you installed manually, simply remove the tModLoader folder.
 Note: If you want to play un-modded Terraria or join an un-modded Terraria server, you can't use tModLoader.
-
 
 Dedicated tModLoader server:
 If you are installing tModLoader onto a machine that will be running a dedicated server, 
