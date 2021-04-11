@@ -246,12 +246,11 @@ namespace Terraria.ModLoader
 		/// <param name="item"> The item being used. </param>
 		/// <param name="player"> The player using the item. </param>
 		/// <param name="position"> The center position of the projectile. </param>
-		/// <param name="speedX"> The X velocity of the projectile. </param>
-		/// <param name="speedY"> The Y velocity of the projectile. </param>
+		/// <param name="velocity"> The velocity of the projectile. </param>
 		/// <param name="type"> The ID of the projectile. </param>
 		/// <param name="damage"> The damage of the projectile. </param>
 		/// <param name="knockBack"> The knockback of the projectile. </param>
-		public virtual void ModifyShootStats(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
+		public virtual void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockBack) {
 		}
 
 		/// <summary>
@@ -261,12 +260,11 @@ namespace Terraria.ModLoader
 		/// <param name="player"> The player using the item. </param>
 		/// <param name="source"> The projectile source's information. </param>
 		/// <param name="position"> The center position of the projectile. </param>
-		/// <param name="speedX"> The X velocity of the projectile. </param>
-		/// <param name="speedY"> The Y velocity of the projectile. </param>
+		/// <param name="velocity"> The velocity of the projectile. </param>
 		/// <param name="type"> The ID of the projectile. </param>
 		/// <param name="damage"> The damage of the projectile. </param>
 		/// <param name="knockBack"> The knockback of the projectile. </param>
-		public virtual void Shoot(Item item, Player player, IProjectileSource source, Vector2 position, float speedX, float speedY, int type, int damage, float knockBack) {
+		public virtual void Shoot(Item item, Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack) {
 		}
 
 		/// <summary>

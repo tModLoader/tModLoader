@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
@@ -40,7 +41,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.shootSpeed = 8f; // Speed of the projectiles the sword will shoot
 		}
 		// This method gets called when firing your weapon/sword.
-		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
+		public override bool Shoot(Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack) {
 			Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
 			float ceilingLimit = target.Y;
 			if (ceilingLimit > player.Center.Y - 200f) {
@@ -61,10 +62,9 @@ namespace ExampleMod.Content.Items.Weapons
 				}
 
 				heading.Normalize();
-				heading *= new Vector2(speedX, speedY).Length();
-				speedX = heading.X;
-				speedY = heading.Y + (Main.rand.Next(-40, 41) * 0.02f);
-				Projectile.NewProjectile(player.GetProjectileSource_Item(Item), position.X, position.Y, speedX, speedY, type, damage * 2, knockBack, player.whoAmI, 0f, ceilingLimit);
+				heading *= velocity.Length();
+				heading.Y += Main.rand.Next(-40, 41) * 0.02f;
+				Projectile.NewProjectile(source, position, heading, type, damage * 2, knockBack, player.whoAmI, 0f, ceilingLimit);
 			}
 
 			return false;

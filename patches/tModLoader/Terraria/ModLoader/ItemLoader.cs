@@ -569,29 +569,29 @@ namespace Terraria.ModLoader
 			return item.ModItem?.CanShoot(player) ?? true;
 		}
 
-		private delegate void DelegateModifyShootStats(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack);
+		private delegate void DelegateModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockBack);
 		private static HookList HookModifyShootStats = AddHook<DelegateModifyShootStats>(g => g.ModifyShootStats);
 		/// <summary>
 		/// Calls ModItem.ModifyShootStats, then each GlobalItem.ModifyShootStats hook.
 		/// </summary>
-		public static void ModifyShootStats(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
-			item.ModItem?.ModifyShootStats(player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
+		public static void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockBack) {
+			item.ModItem?.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockBack);
 
 			foreach (var g in HookModifyShootStats.Enumerate(item.globalItems)) {
-				g.ModifyShootStats(item, player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
+				g.ModifyShootStats(item, player, ref position, ref velocity, ref type, ref damage, ref knockBack);
 			}
 		}
 
-		private static HookList HookShoot = AddHook<Action<Item, Player, IProjectileSource, Vector2, float, float, int, int, float>>(g => g.Shoot);
+		private static HookList HookShoot = AddHook<Action<Item, Player, IProjectileSource, Vector2, Vector2, int, int, float>>(g => g.Shoot);
 		/// <summary>
 		/// Calls each GlobalItem.Shoot hook, then calls ModItem.Shoot and returns its value.
 		/// </summary>
-		public static bool Shoot(Item item, Player player, IProjectileSource source, Vector2 position, float speedX, float speedY, int type, int damage, float knockBack) {
+		public static bool Shoot(Item item, Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack) {
 			foreach (var g in HookShoot.Enumerate(item.globalItems)) {
-				g.Shoot(item, player, source, position, speedX, speedY, type, damage, knockBack);
+				g.Shoot(item, player, source, position, velocity, type, damage, knockBack);
 			}
 
-			return item.ModItem?.Shoot(player, source, position, speedX, speedY, type, damage, knockBack) ?? true;
+			return item.ModItem?.Shoot(player, source, position, velocity, type, damage, knockBack) ?? true;
 		}
 
 		private delegate void DelegateUseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox);

@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -55,43 +56,36 @@ namespace ExampleMod.Content.Items.Weapons
 
 		// What if I wanted it to work like Uzi, replacing regular bullets with High Velocity Bullets?
 		// Uzi/Molten Fury style: Replace normal Bullets with High Velocity
-		/*public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
-		{
+		/*public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockBack) {
 			if (type == ProjectileID.Bullet) { // or ProjectileID.WoodenArrowFriendly
 				type = ProjectileID.BulletHighVelocity; // or ProjectileID.FireArrow;
 			}
-
-			return true; // return true to allow tmodloader to call Projectile.NewProjectile as normal
 		}*/
 
 		// What if I wanted multiple projectiles in a even spread? (Vampire Knives) 
 		// Even Arc style: Multiple Projectile, Even Spread 
-		/*public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
-		{
+		/*public override bool Shoot(Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack) {
 			float numberProjectiles = 3 + Main.rand.Next(3); // 3, 4, or 5 shots
 			float rotation = MathHelper.ToRadians(45);
 
-			position += Vector2.Normalize(new Vector2(speedX, speedY)) * 45f;
+			position += Vector2.Normalize(velocity) * 45f;
 
 			for (int i = 0; i < numberProjectiles; i++) {
-				Vector2 perturbedSpeed = new Vector2(speedX, speedY).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .2f; // Watch out for dividing by 0 if there is only 1 projectile.
-				Projectile.NewProjectile(position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockBack, player.whoAmI);
+				Vector2 perturbedSpeed = velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .2f; // Watch out for dividing by 0 if there is only 1 projectile.
+				Projectile.NewProjectile(source, position, perturbedSpeed, type, damage, knockBack, player.whoAmI);
 			}
 
-			return false;
+			return false; // return false to stop vanilla from calling Projectile.NewProjectile.
 		}*/
 
 		// How can I make the shots appear out of the muzzle exactly?
 		// Also, when I do this, how do I prevent shooting through tiles?
-		/*public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
-		{
-			Vector2 muzzleOffset = Vector2.Normalize(new Vector2(speedX, speedY)) * 25f;
+		/*public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockBack) {
+			Vector2 muzzleOffset = Vector2.Normalize(velocity) * 25f;
 		
 			if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0)) {
 				position += muzzleOffset;
 			}
-
-			return true;
 		}*/
 
 		// How can I get a "Clockwork Assault Rifle" effect?
@@ -100,30 +94,25 @@ namespace ExampleMod.Content.Items.Weapons
 			item.useAnimation = 12;
 			item.useTime = 4; // one third of useAnimation
 			item.reuseDelay = 14;
-		public override bool ConsumeAmmo(Player player)
-		{
+		public override bool ConsumeAmmo(Player player)	{
 			// Because of how the game works, player.itemAnimation will be 11, 7, and finally 3. (useAnimation - 1, then - useTime until less than 0.) 
 			// We can get the Clockwork Assault Riffle Effect by not consuming ammo when itemAnimation is lower than the first shot.
 			return !(player.itemAnimation < item.useAnimation - 2);
 		}*/
 
 		// How can I shoot 2 different projectiles at the same time?
-		/*public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
-		{
+		/*public override bool Shoot(Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack) {
 			// Here we manually spawn the 2nd projectile, manually specifying the projectile type that we wish to shoot.
-			Projectile.NewProjectile(position.X, position.Y, speedX, speedY, ProjectileID.GrenadeI, damage, knockBack, player.whoAmI);
+			Projectile.NewProjectile(source, position, velocity, ProjectileID.GrenadeI, damage, knockBack, player.whoAmI);
 			
 			// By returning true, the vanilla behavior will take place, which will shoot the 1st projectile, the one determined by the ammo.
 			return true;
 		}*/
 
 		// How can I choose between several projectiles randomly?
-		/*public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
-		{
+		/*public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockBack) {
 			// Here we randomly set type to either the original (as defined by the ammo), a vanilla projectile, or a mod projectile.
 			type = Main.rand.Next(new int[] { type, ProjectileID.GoldenBullet, ProjectileType<Projectiles.ExampleBullet>() });
-			
-			return true;
 		}*/
 	}
 }

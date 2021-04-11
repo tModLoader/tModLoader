@@ -45,14 +45,14 @@ namespace Terraria.ModLoader
 			return PlayerHooks.CanShoot(player, item) & ItemLoader.CanShoot(item, player);
 		}
 
-		public static void ModifyShootStats(Player player, Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int Damage, ref float KnockBack) {
-			ItemLoader.ModifyShootStats(item, player, ref position, ref speedX, ref speedY, ref type, ref Damage, ref KnockBack);
-			PlayerHooks.ModifyShootStats(player, item, ref position, ref speedX, ref speedY, ref type, ref Damage, ref KnockBack);
+		public static void ModifyShootStats(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int Damage, ref float KnockBack) {
+			ItemLoader.ModifyShootStats(item, player, ref position, ref velocity, ref type, ref Damage, ref KnockBack);
+			PlayerHooks.ModifyShootStats(player, item, ref position, ref velocity, ref type, ref Damage, ref KnockBack);
 		}
 
-		public static bool Shoot(Player player, Item item, IProjectileSource source, Vector2 position, float speedX, float speedY, int type, int Damage, float KnockBack) {
-			PlayerHooks.Shoot(player, item, source, position, speedX, speedY, type, Damage, KnockBack);
-			return ItemLoader.Shoot(item, player, source, position, speedX, speedY, type, Damage, KnockBack);
+		public static bool Shoot(Player player, Item item, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int Damage, float KnockBack) {
+			PlayerHooks.Shoot(player, item, source, position, velocity, type, Damage, KnockBack);
+			return ItemLoader.Shoot(item, player, source, position, velocity, type, Damage, KnockBack);
 		}
 
 		public static bool? CanPlayerHitNPCWithItem(Player player, Item item, NPC npc) {

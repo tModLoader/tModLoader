@@ -3765,17 +3765,41 @@
  			int projToShoot = sItem.shoot;
  			float speed = sItem.shootSpeed;
  			int damage = sItem.damage;
-@@ -32764,6 +_,10 @@
- 					LimitPointToPlayerReachableArea(ref pointPoisition);
+@@ -32719,6 +_,13 @@
+ 					num3 = vector4.Y;
  				}
  
-+				CombinedHooks.ModifyShootStats(this, sItem, ref pointPoisition, ref num2, ref num3, ref projToShoot, ref Damage, ref KnockBack);
-+				if (!CombinedHooks.Shoot(this, sItem, projectileSource_Item_WithPotentialAmmo, pointPoisition, num2, num3, projToShoot, Damage, KnockBack))
++				goto DirtBallShoot;
++				ShootHook:
++				Vector2 velocity = new Vector2(num2, num3);
++				CombinedHooks.ModifyShootStats(this, sItem, ref pointPoisition, ref velocity, ref projToShoot, ref Damage, ref KnockBack);
++				num2 = velocity.X;
++				num3 = velocity.Y;
++
+ 				if (sItem.useStyle == 5) {
+ 					if (sItem.type == 3029) {
+ 						Vector2 vector5 = new Vector2(num2, num3);
+@@ -32755,6 +_,11 @@
+ 					NetMessage.SendData(41, -1, -1, null, whoAmI);
+ 				}
+ 
++				if (!CombinedHooks.Shoot(this, sItem, projectileSource_Item_WithPotentialAmmo, pointPoisition, velocity, projToShoot, Damage, KnockBack))
 +					return;
 +
++				goto ShootProj;
++				DirtBallShoot:
+ 				if (projToShoot == 17) {
+ 					pointPoisition.X = (float)Main.mouseX + Main.screenPosition.X;
+ 					pointPoisition.Y = (float)Main.mouseY + Main.screenPosition.Y;
+@@ -32763,6 +_,8 @@
+ 
+ 					LimitPointToPlayerReachableArea(ref pointPoisition);
+ 				}
++				goto ShootHook;
++				ShootProj:
+ 
  				if (projToShoot == 76) {
  					projToShoot += Main.rand.Next(3);
- 					float num7 = (float)Main.screenHeight / Main.GameViewMatrix.Zoom.Y;
 @@ -34460,6 +_,10 @@
  		}
  
