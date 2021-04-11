@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -38,16 +39,15 @@ namespace ExampleMod.Content.Items.Tools
 
 		// Overrides the default shooting method to fire multiple bobbers.
 		// NOTE: This will allow the fishing rod to summon multiple Duke Fishrons with multiple Truffle Worms in the inventory.
-		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
+		public override bool Shoot(Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			int bobberAmount = Main.rand.Next(3, 6); // 3 to 5 bobbers
 			float spreadAmount = 75f; // how much the different bobbers are spread out.
 
 			for (int index = 0; index < bobberAmount; ++index) {
-				float bobberSpeedX = speedX + Main.rand.NextFloat(-spreadAmount, spreadAmount) * 0.05f;
-				float bobberSpeedY = speedY + Main.rand.NextFloat(-spreadAmount, spreadAmount) * 0.05f;
+				Vector2 bobberSpeed = velocity + new Vector2(Main.rand.NextFloat(-spreadAmount, spreadAmount) * 0.05f, Main.rand.NextFloat(-spreadAmount, spreadAmount) * 0.05f);
 
 				// Generate new bobbers
-				Projectile.NewProjectile(player.GetProjectileSource_Item(Item), position.X, position.Y, bobberSpeedX, bobberSpeedY, type, 0, 0f, player.whoAmI, 0f, 0f);
+				Projectile.NewProjectile(source, position, bobberSpeed, type, 0, 0f, player.whoAmI);
 			}
 			return false;
 		}
