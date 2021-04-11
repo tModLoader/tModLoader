@@ -4,13 +4,15 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Prefixes
 {
+	// We want to load 2 similar but slightly different versions of the prefix. 
+	// To do this, we'll disable autoloading, and then in a separate ILoadable class, add the two variants directly
 	[Autoload(false)]
 	public class ExamplePrefix : ModPrefix
 	{
-		// This it the class that will be Autoloaded, and then it will load and register each of the prefixes.
+		// This class will be Autoloaded because it imlements ILoadable.
+		// We use it to add the two variants of the prefix
 		public class ExamplePrefixLoader : ILoadable
 		{
-			// This constructor puts values into the prefix list, which will be used in the next two functions.
 			public void Load(Mod mod) {
 				mod.AddContent(new ExamplePrefix(1, "Awesome"));
 				mod.AddContent(new ExamplePrefix(2, "Really_Awesome"));
@@ -19,13 +21,13 @@ namespace ExampleMod.Prefixes
 			public void Unload() { }
 		}
 		public override string Name => _displayName;
-		private readonly byte _power;
-		private readonly string _displayName;
+		private readonly int _power;
+		private readonly string _name;
 
-		// The prefix' constructor. Here we use it for setting the prefix's power.
+		// The prefix' constructor. Here we use it for setting the prefix's power and name.
 		public ExamplePrefix(byte power, string name) {
 			_power = power;
-			_displayName = name;
+			_name = name;
 		}
 
 		// See documentation for vanilla weights and more information.
@@ -44,8 +46,10 @@ namespace ExampleMod.Prefixes
 		public override PrefixCategory Category
 			=> PrefixCategory.AnyWeapon;
 
-		// Set the display name and translations of this prefix with this function.
-		public override void SetDefaults() => DisplayName.SetDefault(_displayName.Replace("_", " "));
+		// Set the translations of this prefix with this function.
+		public override void SetDefaults() {
+			DisplayName.SetDefault(Name.Replace("_", " "));
+		}
 
 		// Use this function to modify these stats for items which have this prefix: Damage Multiplier, Knockback Multiplier, Use Time Multiplier,
 		//			Scale Multiplier (Size), Shoot Speed Multiplier, Mana Multiplier (Mana cost), Crit Bonus.
