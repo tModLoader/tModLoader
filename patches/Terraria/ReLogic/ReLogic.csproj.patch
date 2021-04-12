@@ -1,10 +1,7 @@
 --- src/decompiled/ReLogic/ReLogic.csproj
 +++ src/Terraria/ReLogic/ReLogic.csproj
-@@ -6,20 +_,21 @@
-     <Company>Re-Logic</Company>
-     <Copyright>Copyright © Re-Logic 2017</Copyright>
+@@ -8,18 +_,18 @@
      <RootNamespace>ReLogic</RootNamespace>
-+    <TargetFramework>net5.0</TargetFramework>
    </PropertyGroup>
    <ItemGroup>
 -    <Reference Include="Ionic.Zip.CF" />
@@ -23,12 +20,12 @@
 +    <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
    </ItemGroup>
    <ItemGroup>
-+	<Compile Remove="Localization/IME/Windows/*" />
-+	<Compile Remove="Localization/IME/WindowsIme.cs" />
-+	<Compile Remove="OS/Windows/WindowsMessageHook.cs" />
++    <Compile Remove="Localization/IME/Windows/*" />
++    <Compile Remove="Localization/IME/WindowsIme.cs" />
++    <Compile Remove="OS/Windows/WindowsMessageHook.cs" />
      <EmbeddedResource Include="Microsoft/**" />
 +  </ItemGroup>
 +  <ItemGroup>
-+	  <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
++      <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
    </ItemGroup>
  </Project>

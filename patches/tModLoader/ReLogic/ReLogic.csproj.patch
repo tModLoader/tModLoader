@@ -1,10 +1,10 @@
 --- src/Terraria/ReLogic/ReLogic.csproj
 +++ src/tModLoader/ReLogic/ReLogic.csproj
-@@ -7,9 +_,10 @@
+@@ -6,9 +_,10 @@
+     <Company>Re-Logic</Company>
      <Copyright>Copyright © Re-Logic 2017</Copyright>
      <RootNamespace>ReLogic</RootNamespace>
-     <TargetFramework>net5.0</TargetFramework>
-+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
++    <GenerateDocumentationFile>true</GenerateDocumentationFile>
    </PropertyGroup>
    <ItemGroup>
 -    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />
@@ -12,9 +12,9 @@
      <Reference Include="../Terraria/Libraries/FNA/FNA.dll" />
      <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
      <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
-@@ -23,4 +_,9 @@
+@@ -22,4 +_,9 @@
    <ItemGroup>
- 	  <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
+       <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
    </ItemGroup>
 +  <ItemDefinitionGroup>
 +    <ReferenceCopyLocalPaths>

@@ -19,13 +19,12 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -18,54 +_,111 @@
+@@ -18,53 +_,110 @@
    </PropertyGroup>
    <PropertyGroup>
      <OutputName>$(AssemblyName)</OutputName>
 -    <ApplicationIcon>Icon.ico</ApplicationIcon>
 +    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
-     <TargetFramework>net5.0</TargetFramework>
    </PropertyGroup>
    <ItemGroup>
      <Reference Include="CsvHelper" />

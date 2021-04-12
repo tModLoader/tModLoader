@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Terraria.csproj
 +++ src/Terraria/Terraria/Terraria.csproj
-@@ -1,47 +_,71 @@
+@@ -1,47 +_,70 @@
  <Project Sdk="Microsoft.NET.Sdk">
    <Import Project="../Configuration.targets" />
 +  <Import Project="../../WorkspaceInfo.targets" />
@@ -23,7 +23,6 @@
 -    <OutputName>$(OutputName)Server</OutputName>
 +    <OutputName>$(AssemblyName)</OutputName>
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
-+    <TargetFramework>net5.0</TargetFramework>
    </PropertyGroup>
    <ItemGroup>
      <Reference Include="CsvHelper" />
