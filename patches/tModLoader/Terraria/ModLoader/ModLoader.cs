@@ -415,10 +415,25 @@ namespace Terraria.ModLoader
 
 			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
 			var list = new List<int>();
+			var baseDeclaringType = method.DeclaringType;
+			bool isInterface = baseDeclaringType.IsInterface;
 
 			for (int i = 0; i < providers.Count; i++) {
-				if (providers[i].GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)) {
-					list.Add(i);
+				var currentType = providers[i].GetType();
+
+				if (isInterface) {
+					// In case of interfaces, we can skip shenanigans that 'explicit interface method implementations' bring,
+					// and just check if the provider implements the interface.
+					if (baseDeclaringType.IsAssignableFrom(currentType)) {
+						list.Add(i);
+					}
+				}
+				else {
+					var currentMethod = currentType.GetMethod(method.Name, argTypes);
+
+					if (currentMethod != null && currentMethod.DeclaringType != baseDeclaringType) {
+						list.Add(i);
+					}
 				}
 			}
 
