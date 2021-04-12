@@ -19,7 +19,7 @@ set "version=%version: =%"
 
 REM Set all the parameters for the install script
 set CHANNELSEL=%version:~0,3%"
-set VERSIONSEL=%version%
+set VERSIONSEL=5.0.5
 set RUNTIMESELECT=dotnet
 
 REM install directories

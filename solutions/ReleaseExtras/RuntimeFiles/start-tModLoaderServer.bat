@@ -1,6 +1,5 @@
 @echo off
-set BatPath=%~dp0
-cd batPath
+cd /D "%~dp0"
 
 call InstallNetFramework.bat
 cls
