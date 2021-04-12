@@ -22,6 +22,7 @@ robocopy /S ..\src\tModLoader\Terraria\bin\Release\net5.0 "%destinationFolder%"
 robocopy /S ..\src\tModLoader\Terraria\bin\ServerRelease\net5.0 "%destinationFolder%"
 del "%destinationFolder%\tModLoaderServer.exe"
 del "%destinationFolder%\tModLoader.exe"
+rmdir /S /Q "%destinationFolder%\ref"
 robocopy /S ReleaseExtras\RuntimeFiles "%destinationFolder%"
 robocopy /S ReleaseExtras\SteamFiles "%destinationFolder%"
 
