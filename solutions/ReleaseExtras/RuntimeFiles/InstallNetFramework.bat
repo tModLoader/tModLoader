@@ -1,3 +1,5 @@
+::Author: Solxanich
+:: Created for tModLoader deployment. 
 @echo off
 REM Read file "tModLoader.runtimeconfig.json" into variable string, removing line breaks.
 setlocal EnableDelayedExpansion
@@ -19,7 +21,7 @@ set "version=%version: =%"
 
 REM Set all the parameters for the install script
 set CHANNELSEL=%version:~0,3%"
-set VERSIONSEL=5.0.5
+set VERSIONSEL=%version%
 set RUNTIMESELECT=dotnet
 
 REM install directories

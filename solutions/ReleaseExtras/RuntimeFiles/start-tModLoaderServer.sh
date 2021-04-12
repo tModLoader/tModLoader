@@ -3,8 +3,7 @@ script_path=$(readlink -f "$0")
 script_dir=$(dirname "$script_path")
 cd "$script_dir"
 
-chmod +x InstallNetFramework.sh
-./InstallNetFramework.sh
+. InstallNetFramework.sh
 clear
 
 read -p "Use Steam Server (y)/(n) " steam

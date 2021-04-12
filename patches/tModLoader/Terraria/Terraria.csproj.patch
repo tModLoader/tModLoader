@@ -111,7 +111,7 @@
 +    </ItemGroup>
 +    <ItemGroup>
 +      <ReferenceCopyLocalPaths>
-+        <DestinationSubDirectory>Libraries\%(NuGetPackageID)\%(NuGetPackageVersion)\%(DirectoryInPackage)\</DestinationSubDirectory>
++        <DestinationSubDirectory>Libraries\$([System.String]::Copy('%(NuGetPackageID)').ToLower())\%(NuGetPackageVersion)\%(DirectoryInPackage)\</DestinationSubDirectory>
 +      </ReferenceCopyLocalPaths>
 +    </ItemGroup>
 +  </Target>

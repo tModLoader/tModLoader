@@ -41,7 +41,7 @@ namespace Terraria.ModLoader.Engine
 				steamHash = ToByteArray("12c8d2ac5af6c8505bd1a9339dc75231");
 			}
 			else if (Platform.IsLinux) {
-				steamAPIPath = "Libaries/Native/Linux/libsteam_api.so";
+				steamAPIPath = "Libraries/Native/Linux/libsteam_api.so";
 				steamAPIHash = ToByteArray("8915306857EEF2A516956A2398845EA2");
 				gogHash = ToByteArray("4a051352dd6ecc323c5a0a15e5b598fb");
 				steamHash = ToByteArray("debcc318ca4e14295e3ac22e380e289b");
