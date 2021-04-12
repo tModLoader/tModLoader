@@ -3782,20 +3782,6 @@
  				if (!graphics.IsFullScreen) {
  					num3 = Math.Max(graphics.PreferredBackBufferWidth, graphics.GraphicsDevice.Viewport.Width);
  					num4 = Math.Max(graphics.PreferredBackBufferHeight, graphics.GraphicsDevice.Viewport.Height);
-@@ -50444,9 +_,10 @@
- 				}
- 			}
- #endif
-+
--			//unknown justification for preventing odd window sizes. Causes excessive device resets. - ChickenBones
-+			// unknown justification for preventing odd window sizes. Causes excessive device resets.
--			//width &= 0x7FFFFFFE;
-+			// width &= 2147483646;
--			//height &= 0x7FFFFFFE;
-+			// height &= 2147483646;
- 			width = Math.Max(width, minScreenW);
- 			height = Math.Max(height, minScreenH);
- 			if (graphics.IsFullScreen != fullscreen) {
 @@ -50456,6 +_,7 @@
  				graphics.ToggleFullScreen();
  			}
