@@ -17,7 +17,6 @@ set destinationFolder=.\tModLoader %tModLoaderVersion% Release
 mkdir "%destinationFolder%"
 
 :: Generic release
-robocopy /S ReleaseExtras\Content "%destinationFolder%\Content"
 robocopy /S ..\src\tModLoader\Terraria\bin\Release\net5.0 "%destinationFolder%"
 robocopy /S ..\src\tModLoader\Terraria\bin\ServerRelease\net5.0 "%destinationFolder%"
 del "%destinationFolder%\tModLoaderServer.exe"

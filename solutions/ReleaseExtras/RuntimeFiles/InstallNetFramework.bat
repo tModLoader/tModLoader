@@ -25,7 +25,7 @@ set VERSIONSEL=%version%
 set RUNTIMESELECT=dotnet
 
 REM install directories
-set INSTALLDIR=.\dotnet\%VERSIONSEL%
+set INSTALLDIR=.\NetFramework\dotnet\%VERSIONSEL%
 
 REM Check if the install for our target NET already exists, and install if not
 if Not exist %INSTALLDIR%\dotnet.exe (
@@ -34,4 +34,7 @@ if Not exist %INSTALLDIR%\dotnet.exe (
 	
 	echo Installing_NewFramework
 	powershell -NoProfile -ExecutionPolicy unrestricted -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel %CHANNELSEL% -InstallDir %INSTALLDIR%\ -Version %VERSIONSEL% -Runtime %RUNTIMESELECT%"
+
+	NetFramework\resource_hacker\ResourceHacker.exe -open %INSTALLDIR%\dotnet.exe -save %INSTALLDIR%\dotnet.exe -action add -res Libraries\Native\tModLoader.ico -mask ICONGROUP,MAINICON
 )
+

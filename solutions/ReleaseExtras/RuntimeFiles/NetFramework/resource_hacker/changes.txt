@@ -1,0 +1,84 @@
+Changes in 5.1.8 (158) 
+  Bugfix:  Some PNG files were no longer being displayed
+Changes in 5.1.8
+  Added:   Zooming/scrolling views of image resources
+  Update:  Enabled scrolling for very tall dialogs
+  Bugfix:  Very large binary resources (>>100Mb) could crash the hex editor
+  Bugfix:  Occasional bug decompiling dialogs styles (WS_TABSTOP)
+  Bugfix:  RC file missing when extracting a binary resource type from commandline
+Changes in 5.1.7
+  Bugfix:  incorrect editor fonts when displaying multibyte characters
+  Added:   support for multi-line comments /* ... */
+  Update:  internal links in context help
+Changes in 5.1.6
+  Bugfix:  Fixed broken Accelerator compiling.
+Changes in 5.1.6
+  Bugfix:  Commandline syntax bug (some commas required trailing spaces)
+Changes in 5.1.5
+  Bugfix:  Comments within some resource definitions would not compile
+Changes in 5.1.4
+  Bugfix:  Editor font preferences not being applied on restart
+  Bugfix:  Minor buges in commandline processing
+Changes in 5.1.2
+  Update:  Update to commandline sytax and & bugfixes
+Changes in 5.1.1
+  Bugfix:  incorrect editor fonts when displaying multibyte characters
+  Bugfix:  compiler mishandled hex. escape chars with ambiguous trailing text.
+  Bugfix:  incorrect handling of #define directive
+  Bugfix:  incorrect handling of statusbar alignment in dialog resources
+  Bugfix:  line numbering broken when swapping between editing and binary views
+  Bugfix:  relative paths in filenames was broken
+  Bugfix:  incorrect error reporting while parsing some #include files
+  Bugfix:  extracting resources using commandline scripts was buggy.
+  Added:   added support for multi-line comments /* ... */
+  Updated: can now open and save non-resource type text files
+  Updated: context help improved 
+Changes in 5.0.42
+  Added : a new menu resource designer.
+  Update: the dialog resource designer has had a major update
+  Added : a optional binary view for every resource type
+  Update: improved searching (with more context sensitive dialogs)
+  Bugfix: many bugfixes
+Changes in 4.7.34
+  Update: The dialog editor has been improved significantly.
+  Update; The menu editor has had a minor update too.
+  Bigfix: Saving RC files was saving the compiled script instead.
+  Other:  A number of other minor updates and fixes too.
+Changes in 4.6.32
+  Bugfix: Fixed bugs when extracting text resources to RC files from the 
+          commandline (related to ansi/unicode conversion). 
+  Update: More logical naming of binary files when extracting to RC files.
+  Bugfix: Occasionally the pop-up display of menu resources was too narrow
+          to show all the menu items.
+  Update: Other minor cosmetic changes and fixes.
+Changes in 4.5.28
+  Update: Major changes (and improvements) to the commandline syntax
+Changes in 4.5.28
+  Update: Numerous changes and improvements to command line support.
+  Update: Filenames in resource scripts are no longer required to be 
+          enclosed within double quotes unless they contain spaces.
+Changes in 4.4.24
+  Bugfix: The toolbar state wasn't being preserved between sessions
+Changes in 4.3.20
+  Bugfixes: Numerous fixes to commandline processing
+  Bugfixes: Other minor fixes
+Changes in 4.2.5
+  Bugfix: Compiling Delphi form resources was buggy.
+  Bugfix: Adding a resource to a file without any resources was broken
+  New: Can now change a text resource's format (unicode, UTF-8, ANSI)
+Changes in 4.2.4
+  Bugfix: Error when compiling ansi encoded *.rc files 
+	Bugfix: RCDATA resources not displayed in their optimal format
+	Bugfix: Error when trying to display 'compressed' resources
+	Bugfix: 'Compressed' files can no longer be modified and saved
+Changes in 4.2.3
+  Bugfix: Significant bug in the recompiler
+  Bugfix: Minor bug displaying animated cursors
+Changes in 4.2.2
+  Bugfix: Some monochrome images weren't being displayed
+  Bugfix: Removed extraneous button in "Import Resources" dialog
+  Bugfix: Manifest resources were being converted to UCS-2 format.
+  Modified: Increased font sizes in all dialogs
+Changes in 4.2.1 (from 4.2.0)
+  Bugfix: occasional Delphi form was not being decompiled
+  Bugfix: hiding the toolbar disabled hide/show dialogs/menus.

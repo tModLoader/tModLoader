@@ -5,4 +5,4 @@ cd "$script_dir"
 
 . InstallNetFramework.sh
 
-dotnet tModLoader.dll
+dotnet\5.0.0\dotnet tModLoader.dll
