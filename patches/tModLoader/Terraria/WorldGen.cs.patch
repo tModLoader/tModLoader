@@ -222,7 +222,7 @@
  			Main.ladyBugRainBoost = 0;
  			Main.getGoodWorld = false;
  			Main.drunkWorld = false;
-@@ -5396,17 +_,18 @@
+@@ -5467,17 +_,18 @@
  			Main.lockMenuBGChange = true;
  			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
  			Hooks.ProcessWorldGenConfig(ref configuration);
@@ -454,7 +454,7 @@
  				flag4 = true;
  
  			if (!flag3) {
-@@ -16252,8 +_,21 @@
+@@ -16315,6 +_,7 @@
  		}
  
  		public static void smCallBack(object threadContext) {
@@ -970,7 +970,8 @@
  
  			altarCount++;
  			AchievementsHelper.NotifyProgressionEvent(6);
-@@ -29266,7 +_,7 @@
+
+@@ -29361,7 +_,7 @@
  				if (!Main.tile[k, j].active() || Main.tile[k, j].type != type || Main.tile[k, j].frameX != (k - num) * 18 + num3 || Main.tile[k, j].frameY != 0)
  					flag = true;
  
