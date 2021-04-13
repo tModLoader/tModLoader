@@ -17,3 +17,12 @@
  				foreach (NPC item in nearbyResidentNPCs) {
  					array[item.type] = true;
  				}
+@@ -186,7 +_,7 @@
+ 		}
+ 
+ 		private void AddHappinessReportText(string textKeyInCategory, object substitutes = null) {
+-			string str = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
++			string str = (_currentNPCBeingTalkedTo.type > 664 ? "Mods." + _currentNPCBeingTalkedTo.ModNPC.Mod.Name + "." : "") + "TownNPCMood_"  + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID); //Temporary until localization rework
+ 			if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2)
+ 				str += "Transformed";
+ 
