@@ -348,7 +348,7 @@
  					}
  				}
  
-+				progress.Message = Lang.gen[76].Value + "..Lava Traps";
++				progress.Message = Lang.gen[76].Value+"..Lava Traps";
  				progress.Set(9f / num31);
  				if (!notTheBees) {
  					double num49 = (double)Main.maxTilesX * 0.02;
