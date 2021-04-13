@@ -51,7 +51,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool IsAvailable => true;
 
-		//TODO Localization
 		/// <summary>
 		/// Controls the name that shows up at the base of the screen when this ModMenu is active. If not overridden, it will use this mod's display name.
 		/// </summary>

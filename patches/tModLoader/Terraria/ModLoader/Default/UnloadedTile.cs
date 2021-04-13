@@ -1,27 +1,37 @@
-using Terraria.ModLoader.IO;
-
 namespace Terraria.ModLoader.Default
 {
-	public abstract class UnloadedTile : ModTile { 
-		public override void MouseOver(int i, int j) {
-			var tile = Main.tile[i, j];
+	[Autoload(false)] // need two named versions
+	public class UnloadedTile : ModTile
+	{
+		public override string Name{get;}
 
-			if (tile == null || tile.type != Type) {
-				return;
-			}
+		public override string Texture => "ModLoader/UnloadedTile";
 
-			Player player = Main.LocalPlayer;
-
-			//NOTE: Onwards only works in singleplayer, as the lists aren't synced afaik.
-			if (TileIO.Tiles.unloadedEntryLookup != null) {
-				ushort type = TileIO.Tiles.unloadedEntryLookup.Lookup(i, j);
-				var info = TileIO.Tiles.entries[type];
-				player.cursorItemIconEnabled = true;
-				player.cursorItemIconID = -1;
-				player.cursorItemIconText = $"{info.modName}: {info.name}";
-			}
+		public UnloadedTile(string name = null) {
+			Name = name ?? base.Name;
 		}
 
-		public override void MouseOverFar(int i, int j) => MouseOver(i, j);
+		public override void SetDefaults() {
+			Main.tileSolid[Type] = true;
+			Main.tileFrameImportant[Type] = true;
+		}
+
+		public override void MouseOver(int i, int j)
+		{
+			var tile = Main.tile[i, j];
+			if(tile != null && tile.type == Type) {
+				var frame = new UnloadedTileFrame(tile.frameX, tile.frameY);
+				var infos = ModContent.GetInstance<UnloadedTilesSystem>().infos;
+				int frameID = frame.FrameID;
+				if (frameID >= 0 && frameID < infos.Count) { // This only works in SP
+					var info = infos[frameID];
+					if (info != null) {
+						Main.LocalPlayer.cursorItemIconEnabled = true;
+						Main.LocalPlayer.cursorItemIconID = -1;
+						Main.LocalPlayer.cursorItemIconText = $"{info.modName}: {info.name}";
+					}
+				}
+			}
+		}
 	}
 }

@@ -1,6 +1,6 @@
 --- src/Terraria/ReLogic/Content/Sources/IContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/IContentSource.cs
-@@ -23,5 +_,9 @@
+@@ -21,5 +_,9 @@
  		void ClearRejections();
  
  		bool TryGetRejections(List<string> rejectionReasons);

@@ -293,11 +293,8 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		internal static void ServerModMenu(out bool reloadMods) {
+		internal static void ServerModMenu() {
 			bool exit = false;
-
-			reloadMods = false;
-
 			while (!exit) {
 				Console.WriteLine("Terraria Server " + Main.versionNumber2 + " - " + ModLoader.versionedName);
 				Console.WriteLine();
@@ -334,8 +331,7 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 				else if (command == "r") {
-					//Do not reload mods here, just to ensure that Main.DedServ_PostModLoad isn't in the call stack during mod reload, to allow hooking into it.
-					reloadMods = true;
+					ModLoader.Reload();
 					exit = true;
 				}
 				else if (int.TryParse(command, out int value) && value > 0 && value <= mods.Length) {

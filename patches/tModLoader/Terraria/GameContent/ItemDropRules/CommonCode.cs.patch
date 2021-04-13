@@ -27,7 +27,7 @@
 @@ -41,7 +_,7 @@
  		}
  
- 		public static void DropItemForEachInteractingPlayerOnThePlayer(NPC npc, int itemId, UnifiedRandom rng, int chanceNumerator, int chanceDenominator, int stack = 1, bool interactionRequired = true) {
+ 		public static void DropItemForEachInteractingPlayerOnThePlayer(NPC npc, int itemId, UnifiedRandom rng, int dropsAtXOutOfY_TheX, int dropsAtXOutOfY_TheY, int stack = 1, bool interactionRequired = true) {
 -			if (itemId <= 0 || itemId >= 5088)
 +			if (itemId <= 0 || itemId >= ItemLoader.ItemCount)
  				return;

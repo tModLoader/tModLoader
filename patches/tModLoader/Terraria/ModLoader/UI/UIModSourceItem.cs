@@ -160,7 +160,7 @@ namespace Terraria.ModLoader.UI
 		private void PublishMod(UIMouseEvent evt, UIElement listeningElement) {
 			if (ModLoader.modBrowserPassphrase == "") {
 				Main.menuMode = Interface.enterPassphraseMenuID;
-				Interface.enterPassphraseMenu.SetGotoMenu(Interface.modSourcesID, Interface.modSourcesID);
+				Interface.enterPassphraseMenu.SetGotoMenu(Interface.modSourcesID);
 				return;
 			}
 			SoundEngine.PlaySound(10);
