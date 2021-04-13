@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameContent/UI/Elements/UICharacterListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UICharacterListItem.cs
-@@ -7,6 +_,10 @@
+@@ -8,6 +_,10 @@
  using Terraria.Localization;
  using Terraria.Social;
  using Terraria.UI;
@@ -11,9 +11,9 @@
  
  namespace Terraria.GameContent.UI.Elements
  {
-@@ -24,6 +_,9 @@
- 		private Asset<Texture2D> _buttonFavoriteInactiveTexture;
+@@ -26,6 +_,9 @@
  		private Asset<Texture2D> _buttonPlayTexture;
+ 		private Asset<Texture2D> _buttonRenameTexture;
  		private Asset<Texture2D> _buttonDeleteTexture;
 +		private Asset<Texture2D> _errorTexture;
 +		private Asset<Texture2D> _configTexture;
@@ -21,9 +21,9 @@
  		private UIImageButton _deleteButton;
  
  		public bool IsFavorite => _data.IsFavorite;
-@@ -38,6 +_,9 @@
- 			_buttonFavoriteInactiveTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonFavoriteInactive");
+@@ -41,6 +_,9 @@
  			_buttonPlayTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonPlay");
+ 			_buttonRenameTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonRename");
  			_buttonDeleteTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete");
 +			_errorTexture = UICommon.ButtonErrorTexture;
 +			_configTexture = UICommon.ButtonConfigTexture;
@@ -31,19 +31,19 @@
  			Height.Set(96f, 0f);
  			Width.Set(0f, 1f);
  			SetPadding(6f);
-@@ -85,15 +_,82 @@
- 			uIImageButton4.OnMouseOut += DeleteMouseOut;
- 			_deleteButton = uIImageButton4;
- 			Append(uIImageButton4);
+@@ -101,15 +_,82 @@
+ 			_deleteButton = uIImageButton5;
+ 			Append(uIImageButton5);
+ 			num += 4f;
 +			if (data.customDataFail != null) {
-+				UIImageButton uIImageButton5 = new UIImageButton(_errorTexture);
-+				uIImageButton5.VAlign = 1f;
-+				uIImageButton5.HAlign = 1f;
-+				uIImageButton5.Left.Set(-24f, 0f);
-+				uIImageButton5.OnClick += new MouseEvent(ErrorButtonClick);
-+				uIImageButton5.OnMouseOver += new MouseEvent(ErrorMouseOver);
-+				uIImageButton5.OnMouseOut += new MouseEvent(DeleteMouseOut);
-+				Append(uIImageButton5);
++				UIImageButton errorButton = new UIImageButton(_errorTexture);
++				errorButton.VAlign = 1f;
++				errorButton.HAlign = 1f;
++				errorButton.Left.Set(-24f, 0f);
++				errorButton.OnClick += new MouseEvent(ErrorButtonClick);
++				errorButton.OnMouseOver += new MouseEvent(ErrorMouseOver);
++				errorButton.OnMouseOut += new MouseEvent(DeleteMouseOut);
++				Append(errorButton);
 +			}
 +
 +			if (data.Player.usedMods != null) {
@@ -104,7 +104,7 @@
 +			//}
  			_buttonLabel = new UIText("");
  			_buttonLabel.VAlign = 1f;
--			_buttonLabel.Left.Set(80f, 0f);
+-			_buttonLabel.Left.Set(num, 0f);
 +			_buttonLabel.Left.Set(buttonLabelLeft, 0f);
  			_buttonLabel.Top.Set(-3f, 0f);
  			Append(_buttonLabel);
@@ -116,7 +116,7 @@
  			_deleteButtonLabel.Top.Set(-3f, 0f);
  			Append(_deleteButtonLabel);
  			uIImageButton.SetSnapPoint("Play", snapPointIndex);
-@@ -111,8 +_,12 @@
+@@ -132,8 +_,12 @@
  		private void CloudMouseOver(UIMouseEvent evt, UIElement listeningElement) {
  			if (_data.IsCloudSave)
  				_buttonLabel.SetText(Language.GetTextValue("UI.MoveOffCloud"));
@@ -131,7 +131,7 @@
  		}
  
  		private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement) {
-@@ -126,6 +_,14 @@
+@@ -147,6 +_,14 @@
  				_deleteButtonLabel.SetText(Language.GetTextValue("UI.Delete"));
  		}
  
@@ -146,7 +146,7 @@
  		private void DeleteMouseOut(UIMouseEvent evt, UIElement listeningElement) {
  			_deleteButtonLabel.SetText("");
  		}
-@@ -137,8 +_,12 @@
+@@ -178,8 +_,12 @@
  		private void CloudButtonClick(UIMouseEvent evt, UIElement listeningElement) {
  			if (_data.IsCloudSave)
  				_data.MoveToLocal();
@@ -160,7 +160,7 @@
  
  			((UIImageButton)evt.Target).SetImage(_data.IsCloudSave ? _buttonCloudActiveTexture : _buttonCloudInactiveTexture);
  			if (_data.IsCloudSave)
-@@ -187,6 +_,13 @@
+@@ -228,6 +_,13 @@
  			(base.Parent.Parent as UIList)?.UpdateOrder();
  		}
  
@@ -174,7 +174,7 @@
  		public override int CompareTo(object obj) {
  			UICharacterListItem uICharacterListItem = obj as UICharacterListItem;
  			if (uICharacterListItem != null) {
-@@ -238,11 +_,11 @@
+@@ -279,11 +_,11 @@
  			DrawPanel(spriteBatch, vector2, num2);
  			spriteBatch.Draw(TextureAssets.Heart.Value, vector2 + new Vector2(5f, 2f), Color.White);
  			vector2.X += 10f + (float)TextureAssets.Heart.Width();
