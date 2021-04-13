@@ -841,7 +841,7 @@ namespace Terraria.ModLoader
 		public static void NPCHappiness(NPC npc, ref ShopHelper shopHelperInstance, ref int primaryPlayerBiome, ref bool[] nearbyNPCsByType) {
 			npc.ModNPC?.NPCHappiness(ref shopHelperInstance, ref primaryPlayerBiome, ref nearbyNPCsByType);
 
-			foreach (GlobalNPC g in HookNPCHappiness.arr) {
+			foreach (GlobalNPC g in HookNPCHappiness.Enumerate(globalNPCsArray)) {
 				g.Instance(npc).NPCHappiness(npc, ref shopHelperInstance, ref primaryPlayerBiome, ref nearbyNPCsByType);
 			}
 		}
