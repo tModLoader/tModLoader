@@ -462,7 +462,7 @@
  			IsGeneratingHardMode = true;
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
-@@ -16347,8 +_,15 @@
+@@ -16347,8 +_,21 @@
  				num3 = (int)((float)Main.maxTilesX * (1f - num2));
  			}
  
