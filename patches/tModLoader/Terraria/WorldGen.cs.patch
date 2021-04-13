@@ -68,7 +68,7 @@
  			}
  
  			if (x < roomX1)
-@@ -2163,8 +_,10 @@
+@@ -2173,8 +_,10 @@
  				}
  			}
  
@@ -81,7 +81,7 @@
  			for (int num2 = i - num; num2 < i + num; num2++) {
  				for (int num3 = j - num; num3 < j + num; num3++) {
  					if (num3 <= j + Main.rand.Next(-2, 3) - 5)
-@@ -2252,8 +_,8 @@
+@@ -2262,8 +_,8 @@
  					}
  				}
  			}
@@ -92,7 +92,7 @@
  			if (Main.netMode == 0)
  				Main.NewText(Lang.gen[59].Value, 50, byte.MaxValue, 130);
  			else if (Main.netMode == 2)
-@@ -2261,6 +_,20 @@
+@@ -2271,6 +_,20 @@
  
  			if (Main.netMode != 1)
  				NetMessage.SendTileSquare(-1, i, j, 40);
@@ -113,7 +113,7 @@
  
  			return true;
  		}
-@@ -2273,10 +_,21 @@
+@@ -2283,10 +_,21 @@
  		}
  
  		public static void worldGenCallback(object threadContext) {
@@ -206,7 +206,7 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
-@@ -2522,6 +_,15 @@
+@@ -2564,6 +_,15 @@
  		public static Task serverLoadWorld() => Task.Factory.StartNew(serverLoadWorldCallBack);
  
  		public static void clearWorld() {
@@ -348,11 +348,11 @@
  					}
  				}
  
-+				progress.Message = Lang.gen[76].Value+"..Lava Traps";
++				progress.Message = Lang.gen[76].Value + "..Lava Traps";
  				progress.Set(9f / num31);
  				if (!notTheBees) {
- 					double num45 = (double)Main.maxTilesX * 0.02;
-@@ -11808,11 +_,22 @@
+ 					double num49 = (double)Main.maxTilesX * 0.02;
+@@ -11910,11 +_,22 @@
  				progress.Message = Lang.gen[87].Value;
  			});
  
@@ -484,7 +484,7 @@
  			float num7 = (float)Main.maxTilesX / 4200f;
  			int num8 = (int)(25f * num7);
  			ShapeData shapeData = new ShapeData();
-@@ -16283,13 +_,27 @@
+@@ -16378,13 +_,27 @@
  					shapeData.Clear();
  				}
  			}
@@ -904,7 +904,7 @@
  							Main.tile[k, l].type = type;
  							SquareTileFrame(k, l);
  							if (Main.netMode == 2)
-@@ -29102,6 +_,14 @@
+@@ -29197,6 +_,14 @@
  			num3 = num3 * 310f - (float)(85 * num);
  			num3 *= 0.85f;
  			num3 /= (float)num2;
@@ -919,7 +919,7 @@
  			bool flag = false;
  			if (Main.drunkWorld) {
  				if (SavedOreTiers.Adamantite == 111)
-@@ -29196,6 +_,12 @@
+@@ -29291,6 +_,12 @@
  
  			if (flag)
  				NetMessage.SendData(7);
@@ -932,7 +932,7 @@
  
  			for (int k = 0; (float)k < num3; k++) {
  				int i2 = genRand.Next(100, Main.maxTilesX - 100);
-@@ -29209,7 +_,8 @@
+@@ -29304,7 +_,8 @@
  				int j2 = genRand.Next((int)num8, Main.maxTilesY - 150);
  				OreRunner(i2, j2, genRand.Next(5, 9 + num4), genRand.Next(5, 9 + num4), (ushort)num);
  			}
@@ -942,7 +942,7 @@
  			int num9 = genRand.Next(3);
  			int num10 = 0;
  			while (num9 != 2 && num10++ < 1000) {
-@@ -29233,13 +_,26 @@
+@@ -29328,13 +_,26 @@
  
  				break;
  			}
@@ -970,7 +970,6 @@
  
  			altarCount++;
  			AchievementsHelper.NotifyProgressionEvent(6);
-
 @@ -29361,7 +_,7 @@
  				if (!Main.tile[k, j].active() || Main.tile[k, j].type != type || Main.tile[k, j].frameX != (k - num) * 18 + num3 || Main.tile[k, j].frameY != 0)
  					flag = true;
