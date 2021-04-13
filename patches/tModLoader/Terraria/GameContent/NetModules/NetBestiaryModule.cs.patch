@@ -1,0 +1,32 @@
+--- src/Terraria/Terraria/GameContent/NetModules/NetBestiaryModule.cs
++++ src/tModLoader/Terraria/GameContent/NetModules/NetBestiaryModule.cs
+@@ -1,7 +_,5 @@
+ using System.IO;
+-#if CLIENT
+ using Terraria.ID;
+-#endif
+ using Terraria.Net;
+ 
+ namespace Terraria.GameContent.NetModules
+@@ -38,9 +_,10 @@
+ 		}
+ 
+ 		public override bool Deserialize(BinaryReader reader, int userId) {
+-#if SERVER
+-			return false;
+-#else
++			if (Main.dedServ) {
++				return false;
++			}
++
+ 			switch (reader.ReadByte()) {
+ 				case 0: {
+ 						short key3 = reader.ReadInt16();
+@@ -64,7 +_,6 @@
+ 			}
+ 
+ 			return true;
+-#endif
+ 		}
+ 	}
+ }

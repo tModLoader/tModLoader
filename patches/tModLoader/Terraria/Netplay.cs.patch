@@ -6,7 +6,7 @@
  using System.IO;
  using System.Linq;
  using System.Net;
-@@ -7,21 +_,23 @@
+@@ -7,20 +_,21 @@
  using System.Runtime.CompilerServices;
  #endif
  using System.Threading;
@@ -24,13 +24,23 @@
  using Terraria.Social.Base;
 +using Terraria.ModLoader.IO;
  #endif
- #if SERVER
+-#if SERVER
  using NATUPNPLib;
- #endif
--
+-#endif
+ 
  namespace Terraria
  {
- 	public class Netplay
+@@ -49,10 +_,8 @@
+ 		public static bool SpamCheck = false;
+ 		public static bool HasClients;
+ 		private static Thread _serverThread;
+-#if SERVER
+ 		public static UPnPNAT _upnpnat;
+ 		public static IStaticPortMappingCollection _mappings;
+-#endif
+ 		public static MessageBuffer fullBuffer = new MessageBuffer();
+ 		private static int _currentRequestId;
+ 		private static UdpClient BroadcastClient = null;
 @@ -82,6 +_,7 @@
  
  		private static void ResetNetDiag() {
@@ -39,7 +49,7 @@
  		}
  
  		public static void ResetSections() {
-@@ -121,6 +_,20 @@
+@@ -121,8 +_,24 @@
  			return false;
  		}
  
@@ -58,8 +68,36 @@
 +		}
 +
  		private static void OpenPort(int port) {
- #if SERVER
+-#if SERVER
++			if (!Main.dedServ) {
++				return;
++			}
  			string localIPAddress = GetLocalIPAddress();
+ 			if (_upnpnat == null) {
+ 				_upnpnat = new UPnPNAT();//(UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
+@@ -140,11 +_,12 @@
+ 
+ 			if (!flag)
+ 				_mappings.Add(port, "TCP", port, localIPAddress, bEnabled: true, "Terraria Server");
+-#endif
+ 		}
+ 
+ 		private static void ClosePort(int port) {
+-#if SERVER
++			if (!Main.dedServ) {
++				return;
++			}
+ 			string localIPAddress = GetLocalIPAddress();
+ 			bool flag = false;
+ 			if (_mappings == null)
+@@ -157,7 +_,6 @@
+ 
+ 			if (!flag)
+ 				_mappings.Remove(port, "TCP");
+-#endif
+ 		}
+ 
+ 		private static void ServerFullWriteCallBack(object state) {
 @@ -287,6 +_,8 @@
  				Main.netMode = 0;
  				Main.menuMode = 10;
@@ -126,3 +164,48 @@
  					Main.gameMenu = true;
  					Main.SwitchNetMode(0);
  					MapHelper.noStatusText = true;
+@@ -671,26 +_,28 @@
+ 		}
+ 
+ 		public static void Initialize() {
+-#if CLIENT
++			if (!Main.dedServ) {
+-			NetMessage.buffer[256] = new MessageBuffer();
++				NetMessage.buffer[256] = new MessageBuffer();
+-			NetMessage.buffer[256].whoAmI = 256;
++				NetMessage.buffer[256].whoAmI = 256;
+-#else
++			}
++			else {
+-			for (int i = 0; i < 257; i++) {
++				for (int i = 0; i < 257; i++) {
+-				if (i < 256)
++					if (i < 256)
+-					Netplay.Clients[i] = new RemoteClient();
++						Netplay.Clients[i] = new RemoteClient();
+-				
++
+-				NetMessage.buffer[i] = new MessageBuffer();
++					NetMessage.buffer[i] = new MessageBuffer();
+-				NetMessage.buffer[i].whoAmI = i;
++					NetMessage.buffer[i].whoAmI = i;
++				}
+ 			}
+-#endif
+ 		}
+ 
+ 		public static void UpdateInMainThread() {
+-#if CLIENT
+-			UpdateClientInMainThread();
+-#else
+-			UpdateServerInMainThread();
+-#endif
++			if (!Main.dedServ) {
++				UpdateClientInMainThread();
++			}
++			else {
++				UpdateServerInMainThread();
++			}
+ 		}
+ 
+ 		public static int GetSectionX(int x) => x / 200;

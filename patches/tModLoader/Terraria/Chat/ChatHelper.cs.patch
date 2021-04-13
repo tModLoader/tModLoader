@@ -1,0 +1,61 @@
+--- src/Terraria/Terraria/Chat/ChatHelper.cs
++++ src/tModLoader/Terraria/Chat/ChatHelper.cs
+@@ -13,12 +_,13 @@
+ 		private static List<Tuple<string, Color>> _cachedMessages = new List<Tuple<string, Color>>();
+ 
+ 		public static void DisplayMessageOnClient(NetworkText text, Color color, int playerId) {
+-#if CLIENT
+-			DisplayMessage(text, color, byte.MaxValue);
+-#else
+-			NetPacket packet = NetTextModule.SerializeServerMessage(text,color,byte.MaxValue);
+-			NetManager.Instance.SendToClient(packet,playerId);
+-#endif
++			if (!Main.dedServ) {
++				DisplayMessage(text, color, byte.MaxValue);
++			}
++			else {
++				NetPacket packet = NetTextModule.SerializeServerMessage(text, color, byte.MaxValue);
++				NetManager.Instance.SendToClient(packet, playerId);
++			}
+ 		}
+ 
+ 		public static void SendChatMessageToClient(NetworkText text, Color color, int playerId) {
+@@ -26,10 +_,11 @@
+ 		}
+ 
+ 		public static void SendChatMessageToClientAs(byte messageAuthor, NetworkText text, Color color, int playerId) {
+-#if SERVER
+-			NetPacket packet = NetTextModule.SerializeServerMessage(text,color,messageAuthor);
+-			NetManager.Instance.SendToClient(packet,playerId);
+-#endif
++			if (Main.dedServ) {
++				NetPacket packet = NetTextModule.SerializeServerMessage(text, color, messageAuthor);
++				NetManager.Instance.SendToClient(packet, playerId);
++			}
++
+ 			if (playerId == Main.myPlayer)
+ 				DisplayMessage(text, color, messageAuthor);
+ 		}
+@@ -39,13 +_,15 @@
+ 		}
+ 
+ 		public static void BroadcastChatMessageAs(byte messageAuthor, NetworkText text, Color color, int excludedPlayer = -1) {
+-#if CLIENT
+-			if (excludedPlayer != Main.myPlayer)
+-				DisplayMessage(text, color, messageAuthor);
+-#else
+-			NetPacket packet = NetTextModule.SerializeServerMessage(text,color,messageAuthor);
+-			NetManager.Instance.Broadcast(packet,OnlySendToPlayersWhoAreLoggedIn,excludedPlayer);
+-#endif
++			if (!Main.dedServ) {
++				if (excludedPlayer != Main.myPlayer)
++					DisplayMessage(text, color, messageAuthor);
++			}
++
++			else {
++				NetPacket packet = NetTextModule.SerializeServerMessage(text, color, messageAuthor);
++				NetManager.Instance.Broadcast(packet, OnlySendToPlayersWhoAreLoggedIn, excludedPlayer);
++			}
+ 		}
+ 
+ 		public static bool OnlySendToPlayersWhoAreLoggedIn(int clientIndex) => Netplay.Clients[clientIndex].State == 10;

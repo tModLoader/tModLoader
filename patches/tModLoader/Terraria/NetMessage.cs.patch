@@ -257,15 +257,53 @@
  						Netplay.Disconnect = true;
  					}
  					else {
-@@ -2096,7 +_,7 @@
+@@ -2062,13 +_,12 @@
+ 
+ 		public static void CheckBytes(int bufferIndex = 256) {
+ 			lock (buffer[bufferIndex]) {
+-#if SERVER
+-				if (Netplay.Clients[bufferIndex].PendingTermination) {
++				if (Main.dedServ && Netplay.Clients[bufferIndex].PendingTermination) {
+ 					Netplay.Clients[bufferIndex].PendingTerminationApproved = true;
+ 					buffer[bufferIndex].checkBytes = false;
+ 					return;
+ 				}
+-#endif
++
+ 				int num = 0;
+ 				int num2 = buffer[bufferIndex].totalData;
+ 				try {
+@@ -2077,13 +_,13 @@
+ 						if (num2 >= num3) {
+ 							long position = buffer[bufferIndex].reader.BaseStream.Position;
+ 							buffer[bufferIndex].GetData(num + 2, num3 - 2, out int _);
+-#if SERVER
+-							if (Netplay.Clients[bufferIndex].PendingTermination) {
++
++							if (Main.dedServ && Netplay.Clients[bufferIndex].PendingTermination) {
+ 								Netplay.Clients[bufferIndex].PendingTerminationApproved = true;
+ 								buffer[bufferIndex].checkBytes = false;
+ 								break;
+ 							}
+-#endif
++
+ 							buffer[bufferIndex].reader.BaseStream.Position = position + num3;
+ 							num2 -= num3;
+ 							num += num3;
+@@ -2094,10 +_,9 @@
+ 					}
+ 				}
  				catch (Exception) {
- #if SERVER
- 					if (num < NetMessage.buffer.Length - 100)
+-#if SERVER
+-					if (num < NetMessage.buffer.Length - 100)
 -						Console.WriteLine("Error on message " + NetMessage.buffer[num + 2]);
+-#endif
++					if (Main.dedServ && num < NetMessage.buffer.Length - 100)
 +						Logging.ServerConsoleLine("Error on message " + NetMessage.buffer[num + 2], Level.Warn);
- #endif
++
  					num2 = 0;
  					num = 0;
+ 				}
 @@ -2306,8 +_,10 @@
  			}
  

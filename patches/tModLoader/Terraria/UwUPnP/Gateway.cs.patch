@@ -1,0 +1,12 @@
+--- src/Terraria/Terraria/UwUPnP/Gateway.cs
++++ src/tModLoader/Terraria/UwUPnP/Gateway.cs
+@@ -1,4 +_,3 @@
+-#if SERVER
+ using System;
+ using System.Collections.Generic;
+ using System.IO;
+@@ -263,4 +_,3 @@
+ 		);
+ 	}
+ }
+-#endif

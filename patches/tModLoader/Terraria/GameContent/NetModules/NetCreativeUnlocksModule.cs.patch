@@ -1,0 +1,30 @@
+--- src/Terraria/Terraria/GameContent/NetModules/NetCreativeUnlocksModule.cs
++++ src/tModLoader/Terraria/GameContent/NetModules/NetCreativeUnlocksModule.cs
+@@ -1,7 +_,5 @@
+ using System.IO;
+-#if CLIENT
+ using Terraria.ID;
+-#endif
+ using Terraria.Net;
+ 
+ namespace Terraria.GameContent.NetModules
+@@ -16,15 +_,15 @@
+ 		}
+ 
+ 		public override bool Deserialize(BinaryReader reader, int userId) {
+-#if SERVER
+-			return false;
+-#else
++			if (Main.dedServ) {
++				return false;
++			}
++
+ 			short key = reader.ReadInt16();
+ 			string persistentId = ContentSamples.ItemPersistentIdsByNetIds[key];
+ 			ushort sacrificeCount = reader.ReadUInt16();
+ 			Main.LocalPlayerCreativeTracker.ItemSacrifices.SetSacrificeCountDirectly(persistentId, sacrificeCount);
+ 			return true;
+-#endif
+ 		}
+ 	}
+ }

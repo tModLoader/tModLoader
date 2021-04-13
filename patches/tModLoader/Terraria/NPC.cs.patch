@@ -161,6 +161,26 @@
  			if (aiStyle == 0) {
  				if (Main.netMode != 1) {
  					for (int i = 0; i < 255; i++) {
+@@ -25538,8 +_,8 @@
+ 						float num1181 = 1f + Main.rand.NextFloat();
+ 						float fadeIn = 0.4f + Main.rand.NextFloat();
+ 						int num1182 = Utils.SelectRandom<int>(Main.rand, 31, 229);
+-#if CLIENT
+-						if (flag76) {
++
++						if (!Main.dedServ && flag76) {
+ 							MoonlordDeathDrama.AddExplosion(vector146);
+ 							for (float num1183 = 0f; num1183 < num1178 * 2f; num1183++) {
+ 								Dust dust6 = Main.dust[Dust.NewDust(vector146, 0, 0, 229)];
+@@ -25551,8 +_,6 @@
+ 							}
+ 						}
+ 
+-#endif
+-
+ 						for (float num1184 = 0f; num1184 < this.ai[1] / 60f; num1184++) {
+ 							Vector2 vector147 = Utils.RandomVector2(Main.rand, -1f, 1f);
+ 							if (vector147 != Vector2.Zero)
 @@ -37247,6 +_,7 @@
  			if (type == 638 || type == 656)
  				num = 0;

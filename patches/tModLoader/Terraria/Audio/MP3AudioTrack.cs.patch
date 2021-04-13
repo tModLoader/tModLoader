@@ -1,0 +1,12 @@
+--- src/Terraria/Terraria/Audio/MP3AudioTrack.cs
++++ src/tModLoader/Terraria/Audio/MP3AudioTrack.cs
+@@ -1,4 +_,3 @@
+-#if CLIENT
+ using Microsoft.Xna.Framework.Audio;
+ using MP3Sharp;
+ using MP3Sharp.Decoding;
+@@ -49,4 +_,3 @@
+ 		}
+ 	}
+ }
+-#endif

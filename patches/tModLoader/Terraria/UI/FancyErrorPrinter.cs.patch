@@ -1,0 +1,25 @@
+--- src/Terraria/Terraria/UI/FancyErrorPrinter.cs
++++ src/tModLoader/Terraria/UI/FancyErrorPrinter.cs
+@@ -3,9 +_,7 @@
+ using System.Collections.Generic;
+ using System.IO;
+ using System.Text;
+-#if CLIENT
+ using System.Windows.Forms;
+-#endif
+ 
+ namespace Terraria.UI
+ {
+@@ -122,9 +_,9 @@
+ 		}
+ 
+ 		private static void ShowTheBox(string preparedMessage) {
+-#if CLIENT
+-			MessageBox.Show(preparedMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+-#endif
++			if (!Main.dedServ) {
++				MessageBox.Show(preparedMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
++			}
+ 		}
+ 	}
+ }

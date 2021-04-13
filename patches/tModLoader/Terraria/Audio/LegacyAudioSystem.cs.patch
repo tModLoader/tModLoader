@@ -8,7 +8,76 @@
  
  namespace Terraria.Audio
  {
-@@ -97,10 +_,12 @@
+@@ -58,49 +_,52 @@
+ 		private IAudioTrack FindReplacementTrack(List<IContentSource> sources, string assetPath) {
+ 			IAudioTrack audioTrack = null;
+ 			for (int i = 0; i < sources.Count; i++) {
+-#if SERVER
++				if (Main.dedServ) {
+-				sources[i].HasAsset(assetPath);
++					sources[i].HasAsset(assetPath);
+-#else
++				}
++				else {
+-				IContentSource contentSource = sources[i];
++					IContentSource contentSource = sources[i];
+-				if (!contentSource.HasAsset(assetPath))
++					if (!contentSource.HasAsset(assetPath))
+-					continue;
++						continue;
+ 
+-				string extension = contentSource.GetExtension(assetPath);
++					string extension = contentSource.GetExtension(assetPath);
+-				try {
++					try {
+-					IAudioTrack audioTrack2 = null;
++						IAudioTrack audioTrack2 = null;
+-					switch (extension) {
++						switch (extension) {
+-						case ".ogg":
++							case ".ogg":
+-							audioTrack2 = new OGGAudioTrack(contentSource.OpenStream(assetPath));
++								audioTrack2 = new OGGAudioTrack(contentSource.OpenStream(assetPath));
+-							break;
++								break;
+-						case ".wav":
++							case ".wav":
+-							audioTrack2 = new WAVAudioTrack(contentSource.OpenStream(assetPath));
++								audioTrack2 = new WAVAudioTrack(contentSource.OpenStream(assetPath));
+-							break;
++								break;
+-						case ".mp3":
++							case ".mp3":
+-							audioTrack2 = new MP3AudioTrack(contentSource.OpenStream(assetPath));
++								audioTrack2 = new MP3AudioTrack(contentSource.OpenStream(assetPath));
+-							break;
++								break;
+-					}
++						}
+ 
+-					if (audioTrack2 != null) {
++						if (audioTrack2 != null) {
+-						audioTrack?.Dispose();
++							audioTrack?.Dispose();
+-						audioTrack = audioTrack2;
++							audioTrack = audioTrack2;
++						}
+ 					}
+-				}
+-				catch {
++					catch {
+-					string textToShow = "A resource pack failed to load " + assetPath + "!";
++						string textToShow = "A resource pack failed to load " + assetPath + "!";
+-					Main.IssueReporter.AddReport(textToShow);
++						Main.IssueReporter.AddReport(textToShow);
+-					Main.IssueReporterIndicator.AttemptLettingPlayerKnow();
++						Main.IssueReporterIndicator.AttemptLettingPlayerKnow();
++					}
+ 				}
+-#endif
+ 			}
+ 
+ 			return audioTrack;
  		}
  
  		public LegacyAudioSystem() {

@@ -1,0 +1,20 @@
+--- src/Terraria/Terraria/GameContent/NetModules/NetPingModule.cs
++++ src/tModLoader/Terraria/GameContent/NetModules/NetPingModule.cs
+@@ -14,11 +_,12 @@
+ 
+ 		public override bool Deserialize(BinaryReader reader, int userId) {
+ 			Vector2 position = reader.ReadVector2();
+-#if CLIENT
+-			Main.Pings.Add(position);
+-#else
+-			NetManager.Instance.Broadcast(Serialize(position),userId);
+-#endif
++			if (!Main.dedServ) {
++				Main.Pings.Add(position);
++			}
++			else {
++				NetManager.Instance.Broadcast(Serialize(position), userId);
++			}
+ 			return true;
+ 		}
+ 	}

@@ -79,11 +79,7 @@ namespace Terraria.ModLoader.Core
 			}
 
 			var tMLDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-#if DEBUG
-			var tMLSuffix = "Debug";
-#else
 			var tMLSuffix = "";
-#endif
 
 			char s = Path.DirectorySeparatorChar;
 			string tModLoaderTargets = $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
