@@ -100,10 +100,7 @@ namespace Terraria.ModLoader
 		/// Sets the saved style that should be switched to, handles possibly unloaded/invalid ones and defaults to the vanilla style
 		/// </summary>
 		internal static void GotoSavedStyle() {
-			switchToStyle = vanillaStyle;
-			if (ModContent.TryFind(lastSelectedStyle, out ModBossBarStyle value))
-				switchToStyle = value;
-
+			switchToStyle = bossBarStyles.SingleOrDefault(m => m.FullName == lastSelectedStyle) ?? vanillaStyle;
 			styleLoading = false;
 		}
 

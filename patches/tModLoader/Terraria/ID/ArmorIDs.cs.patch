@@ -34,7 +34,7 @@
  				public static List<int> MannequinIncompatible = new List<int>();
  				public static bool[] IncompatibleWithFrogLeg = Factory.CreateBoolSet(106, 143, 217, 222, 226, 228);
  			}
-@@ -780,7 +_,7 @@
+@@ -778,7 +_,7 @@
  		{
  			public class Sets
  			{
@@ -43,7 +43,7 @@
  				public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22);
  				public static bool[] UsesOldFramingTexturesForWalking = Factory.CreateBoolSet(false, 12, 8, 17);
  			}
-@@ -816,7 +_,7 @@
+@@ -814,7 +_,7 @@
  		{
  			public class Sets
  			{
@@ -52,7 +52,7 @@
  				public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
  			}
  
-@@ -843,7 +_,7 @@
+@@ -841,7 +_,7 @@
  		{
  			public class Sets
  			{
@@ -61,7 +61,7 @@
  				public static bool[] DrawInBackpackLayer = Factory.CreateBoolSet(false, 7, 8, 9, 10, 15, 16, 32, 33);
  				public static bool[] DrawInTailLayer = Factory.CreateBoolSet(false, 18, 19, 21, 25, 26, 27, 28);
  			}
-@@ -889,7 +_,7 @@
+@@ -887,7 +_,7 @@
  		{
  			public class Sets
  			{
@@ -70,7 +70,7 @@
  				public static bool[] DrawsInNeckLayer = Factory.CreateBoolSet(false, 6);
  			}
  
-@@ -911,7 +_,7 @@
+@@ -909,7 +_,7 @@
  		{
  			public class Sets
  			{
@@ -79,7 +79,7 @@
  				public static int[] MaleToFemaleID = Factory.CreateIntSet(-1, 25, 26);
  			}
  
-@@ -949,7 +_,7 @@
+@@ -947,7 +_,7 @@
  		{
  			public class Sets
  			{
@@ -88,7 +88,7 @@
  				public static bool[] UsesTorsoFraming = Factory.CreateBoolSet(false, 5, 10, 10, 12);
  				public static bool[] IsABelt = Factory.CreateBoolSet(false, 5, 10, 10, 12);
  			}
-@@ -1063,7 +_,7 @@
+@@ -1061,7 +_,7 @@
  		{
  			public class Sets
  			{
@@ -97,7 +97,7 @@
  				public static bool[] PreventHairDraw = Factory.CreateBoolSet(false, 2, 3, 4);
  				public static bool[] OverrideHelmet = Factory.CreateBoolSet(false, 2, 3, 4);
  				public static bool[] DrawInFaceUnderHairLayer = Factory.CreateBoolSet(false, 5);
-@@ -1097,7 +_,7 @@
+@@ -1095,7 +_,7 @@
  		{
  			public class Sets
  			{

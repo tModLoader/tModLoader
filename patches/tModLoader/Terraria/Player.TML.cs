@@ -9,7 +9,6 @@ namespace Terraria
 		internal IList<string> usedMods;
 		internal ModPlayer[] modPlayers = new ModPlayer[0];
 
-		public int infoDisplayPage;
 		public HashSet<int> nearbyModTorch = new HashSet<int>();
 
 		// Get

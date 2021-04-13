@@ -67,8 +67,6 @@ namespace Terraria.ModLoader
 
 		private IDisposable fileHandle;
 
-		public GameContent.Bestiary.ModSourceBestiaryInfoElement ModSourceBestiaryInfoElement;
-
 		internal void AutoloadConfig()
 		{
 			if (Code == null)

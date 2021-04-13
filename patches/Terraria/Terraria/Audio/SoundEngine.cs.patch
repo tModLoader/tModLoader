@@ -18,7 +18,7 @@
  				SoundInstanceGarbageCollector.Update();
  				bool flag = (!Main.hasFocus || Main.gamePaused) && Main.netMode == 0;
  				if (!_areSoundsPaused && flag)
-@@ -69,31 +_,52 @@
+@@ -59,31 +_,52 @@
  		}
  
  		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
@@ -74,7 +74,7 @@
  		}
  
  		public static void StopTrackedSounds() {
-@@ -102,10 +_,14 @@
+@@ -92,10 +_,14 @@
  		}
  
  		public static SoundEffect GetTrackableSoundByStyleId(int id) {
@@ -89,7 +89,7 @@
  		}
  
  		public static void StopAmbientSounds() {
-@@ -114,10 +_,14 @@
+@@ -104,10 +_,14 @@
  		}
  
  		public static ActiveSound FindActiveSound(SoundStyle style) {

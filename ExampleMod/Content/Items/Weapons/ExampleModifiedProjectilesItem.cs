@@ -25,7 +25,7 @@ namespace ExampleMod.Content.Items.Weapons
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
 			// NewProjectile returns the index of the projectile it creates in the NewProjectile array.
 			// Here we are using it to gain access to the projectile object.
-			int projectileID = Projectile.NewProjectile(player.GetProjectileSource_Item_WithPotentialAmmo(Item, AmmoID.Bullet), position, new Vector2(speedX, speedY), type, damage, knockBack, player.whoAmI);
+			int projectileID = Projectile.NewProjectile(position, new Vector2(speedX, speedY), type, damage, knockBack, player.whoAmI);
 			Projectile projectile = Main.projectile[projectileID];
 
 			ExampleProjectileModifications globalProjectile = projectile.GetGlobalProjectile<ExampleProjectileModifications>();
