@@ -10,7 +10,7 @@
  
  namespace Terraria.Audio
  {
-@@ -55,6 +_,9 @@
+@@ -59,6 +_,9 @@
  		}
  
  		public void Update() {
@@ -20,7 +20,7 @@
  			foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
  				try {
  					item.Value.Update();
-@@ -65,6 +_,9 @@
+@@ -69,6 +_,9 @@
  					_trackedSounds.Remove(item.Id);
  				}
  			}

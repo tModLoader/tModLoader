@@ -178,8 +178,8 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			//We make 12-15 ExampleItems spawn randomly in all directions, like the lunar pillar fragments. Hereby we need the DropOneByOne rule,
 			//which requires these parameters to be defined
 			var parameters = new DropOneByOne.Parameters() {
-				DropsXOutOfYTimes_TheX = 1,
-				DropsXOutOfYTimes_TheY = 1,
+				ChanceNumerator = 1,
+				ChanceDenominator = 1,
 				MinimumStackPerChunkBase = 1,
 				MaximumStackPerChunkBase = 1,
 				MinimumItemDropsCount = 12,
@@ -481,7 +481,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 				int type = ModContent.ProjectileType<MinionBossEye>();
 				int damage = NPC.damage / 2;
-				Projectile.NewProjectile(position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
+				Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
 			}
 		}
 	}
