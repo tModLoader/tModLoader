@@ -1,10 +1,10 @@
 # Here we see that we can simplify some translation work using substitutions. 
-# Even though ItemName.ExamplePet isn't defined here, it is defined in en.US.lang as {$ExampleMod.Common.PaperAirplane}
+# Even though ItemName.ExamplePet isn't defined here, it is defined in en.US.lang as {$Mods.ExampleMod.Common.PaperAirplane}
 # Since we define the Chinese for Common.PaperAirplane, ItemName.ExamplePet will take the Chinese value, if available, for its substitutions.
 
-ExampleMod.Common.PaperAirplane=纸飞机
+Common.PaperAirplane=纸飞机
 
-ExampleMod.NPCName.Octopus=章鱼
+NPCName.Octopus=章鱼
 
 # Content/Items/ExampleItem.cs
-ExampleMod.RecipeConditions.LowHealth=身体欠佳
+RecipeConditions.LowHealth=身体欠佳

@@ -57,7 +57,7 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaultStats(Player player) {}
 
 		protected override void Register() {
-			ClassName = Mod.GetOrCreateTranslation($"{Mod.Name}.DamageClassName.{Name}");
+			ClassName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.DamageClassName.{Name}");
 
 			ModTypeLookup<DamageClass>.Register(this);
 

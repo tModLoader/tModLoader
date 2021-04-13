@@ -28,8 +28,8 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModBuff>.Register(this);
 
 			Type = BuffLoader.ReserveBuffID();
-			DisplayName = Mod.GetOrCreateTranslation($"{Mod.Name}.BuffName.{Name}");
-			Description = Mod.GetOrCreateTranslation($"{Mod.Name}.BuffDescription.{Name}");
+			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BuffName.{Name}");
+			Description = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BuffDescription.{Name}");
 
 			BuffLoader.buffs.Add(this);
 		}

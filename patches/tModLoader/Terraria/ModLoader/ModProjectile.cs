@@ -52,7 +52,7 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModProjectile>.Register(this);
 
 			Projectile.type = ProjectileLoader.ReserveProjectileID();
-			DisplayName = Mod.GetOrCreateTranslation($"{Mod.Name}.ProjectileName.{Name}");
+			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ProjectileName.{Name}");
 
 			ProjectileLoader.projectiles.Add(this);
 		}

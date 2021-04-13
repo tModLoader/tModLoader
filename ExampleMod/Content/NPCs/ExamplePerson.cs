@@ -76,7 +76,7 @@ namespace ExampleMod.Content.NPCs
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("ExampleMod.Bestiary.ExamplePerson")
+				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExamplePerson")
 			});
 		}
 
