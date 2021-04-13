@@ -36,7 +36,8 @@ namespace Terraria.ModLoader.IO
 				tag.Set("prefix", item.prefix);
 
 			if (item.prefix >= PrefixID.Count) {
-				ModPrefix modPrefix = ModPrefix.GetPrefix(item.prefix);
+				ModPrefix modPrefix = PrefixLoader.GetPrefix(item.prefix);
+
 				if (modPrefix != null) {
 					tag.Set("modPrefixMod", modPrefix.Mod.Name);
 					tag.Set("modPrefixName", modPrefix.Name);
@@ -102,7 +103,7 @@ namespace Terraria.ModLoader.IO
 			var list = new List<TagCompound>();
 			foreach (var globalItem in ItemLoader.globalItems) {
 				var globalItemInstance = globalItem.Instance(item);
-				if (!globalItemInstance.NeedsSaving(item))
+				if (globalItemInstance == null || !globalItemInstance.NeedsSaving(item))
 					continue;
 
 				list.Add(new TagCompound {

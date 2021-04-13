@@ -1,0 +1,61 @@
+--- src/Terraria/Terraria/GameContent/UI/BigProgressBar/BigProgressBarSystem.cs
++++ src/tModLoader/Terraria/GameContent/UI/BigProgressBar/BigProgressBarSystem.cs
+@@ -1,10 +_,11 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using System.Collections.Generic;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.UI.BigProgressBar
+ {
+-	public class BigProgressBarSystem
++	public partial class BigProgressBarSystem
+ 	{
+ 		private IBigProgressBar _currentBar;
+ 		private CommonBossBigProgressBar _bossBar = new CommonBossBigProgressBar();
+@@ -48,16 +_,30 @@
+ 			{ 68, _neverValid }		};
+ 
+ 		public void Update() {
++			if (BossBarLoader.CurrentStyle.PreventUpdate)
++				goto endUpdate;
++
+ 			if (_currentBar == null)
+ 				TryFindingNPCToTrack();
+ 
+ 			if (_currentBar != null && !_currentBar.ValidateAndCollectNecessaryInfo(ref _info))
+ 				_currentBar = null;
++
++			endUpdate:
++			BossBarLoader.CurrentStyle.Update(_currentBar, ref _info);
+ 		}
+ 
+ 		public void Draw(SpriteBatch spriteBatch) {
++			if (BossBarLoader.CurrentStyle.PreventDraw)
++				goto endDraw;
++
+-			if (_currentBar != null)
++			if (_currentBar != null) {
++				BossBarLoader.drawingInfo = _info;
+ 				_currentBar.Draw(ref _info, spriteBatch);
++			}
++
++			endDraw:
++			BossBarLoader.CurrentStyle.Draw(spriteBatch, _currentBar, _info);
+ 		}
+ 
+ 		private void TryFindingNPCToTrack() {
+@@ -86,7 +_,12 @@
+ 			bigProgressBarInfo.npcIndexToAimAt = npcIndex;
+ 			BigProgressBarInfo info = bigProgressBarInfo;
+ 			IBigProgressBar bigProgressBar = _bossBar;
++
++			//BossBars assigned by mods take priority
++			if (nPC.BossBar != null) {
++				bigProgressBar = nPC.BossBar;
++			}
+-			if (_bossBarsByNpcNetId.TryGetValue(nPC.netID, out IBigProgressBar value))
++			else if (_bossBarsByNpcNetId.TryGetValue(nPC.netID, out IBigProgressBar value))
+ 				bigProgressBar = value;
+ 
+ 			if (!bigProgressBar.ValidateAndCollectNecessaryInfo(ref info))

@@ -47,7 +47,7 @@
  
  			ModifyNPCIds();
  			ProjectilesByType.Clear();
--			for (int j = 0; j < 954; j++) {
+-			for (int j = 0; j < 956; j++) {
 +			for (int j = 0; j < ProjectileLoader.ProjectileCount; j++) {
  				Projectile projectile = new Projectile();
  				projectile.SetDefaults(j);

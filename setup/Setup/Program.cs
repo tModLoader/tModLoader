@@ -33,7 +33,7 @@ namespace Terraria.ModLoader.Setup
 				return;
 			}*/
 #if AUTO
-			Settings.Default.TMLSteamDir = Settings.Default.SteamDir = @".\1412\Windows";
+			Settings.Default.TMLSteamDir = Settings.Default.SteamDir = @".\1421\Windows";
 #else
 			UpdateTmlSteamDir();
 #endif
@@ -161,13 +161,21 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
-		private static void UpdateTmlSteamDir(bool reset = false) {
-			if (reset || !Directory.Exists(TMLSteamDir)) {
+		private static void UpdateTmlSteamDir(bool manualSet = false) {
+			if (manualSet || !Directory.Exists(TMLSteamDir)) {
 				Settings.Default.TMLSteamDir = Path.GetFullPath(Path.Combine(Settings.Default.SteamDir, "..", "tModLoader"));
 				Settings.Default.Save();
 			}
 
-			Directory.CreateDirectory(TMLSteamDir);
+			//Lame.
+			if (manualSet && !Directory.Exists(TMLSteamDir)) {
+				try {
+					Directory.CreateDirectory(TMLSteamDir);
+				}
+				catch(Exception e) {
+					Console.WriteLine($"{e.GetType().Name}: {e.Message}");
+				}
+			}
 		}
 
 		private static readonly string targetsFilePath = Path.Combine("src", "WorkspaceInfo.targets");
@@ -180,6 +188,17 @@ namespace Terraria.ModLoader.Setup
 
 			string branch = "";
 			RunCmd("", "git", "rev-parse --abbrev-ref HEAD", s => branch = s.Trim());
+
+			string GITHUB_HEAD_REF = Environment.GetEnvironmentVariable("GITHUB_HEAD_REF");
+			if (!string.IsNullOrWhiteSpace(GITHUB_HEAD_REF)) {
+				Console.WriteLine($"GITHUB_HEAD_REF found: {GITHUB_HEAD_REF}");
+				branch = GITHUB_HEAD_REF;
+			}
+			string HEAD_SHA = Environment.GetEnvironmentVariable("HEAD_SHA");
+			if (!string.IsNullOrWhiteSpace(HEAD_SHA)) {
+				Console.WriteLine($"HEAD_SHA found: {HEAD_SHA}");
+				gitsha = HEAD_SHA;
+			}
 
 			string targetsText =
 $@"<?xml version=""1.0"" encoding=""utf-8""?>

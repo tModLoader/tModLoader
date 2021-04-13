@@ -244,7 +244,7 @@
  					}
  
 -					if (flag) {
-+					if (flag && RecipeHooks.RecipeAvailable(Main.recipe[n])) {
++					if (flag && RecipeLoader.RecipeAvailable(Main.recipe[n])) {
  						Main.availableRecipe[Main.numAvailableRecipes] = n;
  						Main.numAvailableRecipes++;
  					}
@@ -261,8 +261,8 @@
  			AddRecipe();
  			CreateReverseWallRecipes();
  			CreateReversePlatformRecipes();
-+			RecipeHooks.AddRecipes();
-+			RecipeHooks.PostAddRecipes();
++			RecipeLoader.AddRecipes();
++			RecipeLoader.PostAddRecipes();
  			UpdateWhichItemsAreMaterials();
 +			Item.PopulateMaterialCache();
  			UpdateMaterialFieldForAllRecipes();
