@@ -8,7 +8,7 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -79,6 +_,7 @@
+@@ -81,6 +_,7 @@
  
  			if (!FileUtilities.Exists(text, isCloudSave)) {
  				Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map);
@@ -16,7 +16,7 @@
  				return;
  			}
  
-@@ -93,6 +_,7 @@
+@@ -95,6 +_,7 @@
  								MapHelper.LoadMapVersion2(binaryReader, num);
  
  							ClearEdges();

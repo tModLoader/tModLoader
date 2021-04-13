@@ -16,8 +16,8 @@
 +		public static MapLegend _mapLegendCache;
 -		private static LocalizedText[] _itemNameCache = new LocalizedText[5088];
 +		internal static LocalizedText[] _itemNameCache = new LocalizedText[5088];
--		private static LocalizedText[] _projectileNameCache = new LocalizedText[954];
-+		internal static LocalizedText[] _projectileNameCache = new LocalizedText[954];
+-		private static LocalizedText[] _projectileNameCache = new LocalizedText[956];
++		internal static LocalizedText[] _projectileNameCache = new LocalizedText[956];
 -		private static LocalizedText[] _npcNameCache = new LocalizedText[665];
 +		internal static LocalizedText[] _npcNameCache = new LocalizedText[665];
  		private static LocalizedText[] _negativeNpcNameCache = new LocalizedText[65];
