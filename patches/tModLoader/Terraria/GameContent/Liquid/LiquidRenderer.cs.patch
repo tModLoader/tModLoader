@@ -18,17 +18,16 @@
  
  		public event Action<Color[], Rectangle> WaveFilters;
  
-@@ -96,11 +_,11 @@
+@@ -96,11 +_,12 @@
  		}
  
  		private void PrepareAssets() {
 -#if CLIENT
-+			if (!Main.dedServ) {
--			for (int i = 0; i < _liquidTextures.Length; i++) {
-+				for (int i = 0; i < _liquidTextures.Length; i++) {
--				_liquidTextures[i] = Main.Assets.Request<Texture2D>("Images/Misc/water_" + i);
-+					_liquidTextures[i] = Main.Assets.Request<Texture2D>("Images/Misc/water_" + i);
-+				}
++			if (Main.dedServ)
++				return;
++
+ 			for (int i = 0; i < _liquidTextures.Length; i++) {
+ 				_liquidTextures[i] = Main.Assets.Request<Texture2D>("Images/Misc/water_" + i);
  			}
 -#endif
  		}
