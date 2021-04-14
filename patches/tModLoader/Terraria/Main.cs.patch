@@ -1082,7 +1082,7 @@
  		}
  
  		public static void QueueMainThreadAction(Action action) {
-@@ -12267,7 +_,14 @@
+@@ -12269,7 +_,14 @@
  
  			if (!_isDrawingOrUpdating) {
  				_isDrawingOrUpdating = true;
