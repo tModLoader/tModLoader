@@ -1082,24 +1082,22 @@
  		}
  
  		public static void QueueMainThreadAction(Action action) {
-@@ -12270,6 +_,17 @@
- 					Main.OnEnginePreload();
- 			}
+@@ -12272,7 +_,14 @@
  
-+			try {
-+				Update_Inner(gameTime);
-+				
-+				base.Update(gameTime); //Vanilla bug, moved from DoUpdate. Early returns fail to call base.Update, and prevent streaming audio from playing
-+			}
-+			catch (Exception e) {
-+				Logging.Terraria.Error(e);
-+			}
-+		}
-+		
-+		private void Update_Inner(GameTime gameTime) {
  			if (!_isDrawingOrUpdating) {
  				_isDrawingOrUpdating = true;
- 				DoUpdate(ref gameTime);
++
++				try {
+-				DoUpdate(ref gameTime);
++					DoUpdate(ref gameTime);
++				}
++				catch (Exception e) {
++					Logging.Terraria.Error(e);
++				}
++
+ 				CinematicManager.Instance.Update(gameTime);
+ 				if (netMode == 2) {
+ 					for (int i = 0; i < 256; i++) {
 @@ -12375,6 +_,7 @@
  				_hasPendingNetmodeChange = false;
  			}
