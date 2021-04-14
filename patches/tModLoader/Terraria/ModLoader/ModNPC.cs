@@ -552,7 +552,7 @@ namespace Terraria.ModLoader
 		/// <param name="shopHelperInstance"></param>
 		/// <param name="primaryPlayerBiome"></param>
 		/// <param name="nearbyNPCsByType"></param>
-		public virtual void NPCHappiness(ref ShopHelper shopHelperInstance, ref int primaryPlayerBiome, ref bool[] nearbyNPCsByType) {
+		public virtual void NPCHappiness(int primaryPlayerBiome, ref ShopHelper shopHelperInstance, ref bool[] nearbyNPCsByType) {
 		}
 
 		/// <summary>
