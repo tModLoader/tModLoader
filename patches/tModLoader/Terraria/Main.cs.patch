@@ -846,7 +846,7 @@
  			}
  
  			bool enabled = CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled;
-@@ -4769,17 +_,65 @@
+@@ -4769,17 +_,64 @@
  				dayRate = 1;
  				desiredWorldTilesUpdateRate = 1;
  			}
@@ -860,14 +860,14 @@
  			UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
  			base.Exiting += Main_Exiting;
 -#if CLIENT
-+			if (dedServ)
-+				return;
-+			
- 			Configuration.Load();
+-			Configuration.Load();
 -			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
-+			graphics = new GraphicsDeviceManager(this as Microsoft.Xna.Framework.Game);
-+			HiDefGraphicsIssues.Init();
++			if (!dedServ) {
++				Configuration.Load();
++				graphics = new GraphicsDeviceManager(this as Microsoft.Xna.Framework.Game);
++				HiDefGraphicsIssues.Init();
++			}
 +		}
 +
 +		internal void PostSocialInitialize() {

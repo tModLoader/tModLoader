@@ -1,32 +1,35 @@
 --- src/Terraria/Terraria/GameContent/Profiles.cs
 +++ src/tModLoader/Terraria/GameContent/Profiles.cs
-@@ -17,10 +_,11 @@
+@@ -17,10 +_,10 @@
  			public LegacyNPCProfile(string npcFileTitleFilePath, int defaultHeadIndex) {
  				_rootFilePath = npcFileTitleFilePath;
  				_defaultVariationHeadIndex = defaultHeadIndex;
 -#if CLIENT
-+				if (Main.dedServ)
-+					return;
-+					
- 				_defaultNoAlt = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default", AssetRequestMode.DoNotLoad);
- 				_defaultParty = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default_Party", AssetRequestMode.DoNotLoad);
+-				_defaultNoAlt = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default", AssetRequestMode.DoNotLoad);
+-				_defaultParty = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default_Party", AssetRequestMode.DoNotLoad);
 -#endif
++				if (!Main.dedServ) {
++					_defaultNoAlt = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default", AssetRequestMode.DoNotLoad);
++					_defaultParty = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default_Party", AssetRequestMode.DoNotLoad);
++				}
  			}
  
  			public int RollVariation() => 0;
-@@ -50,11 +_,13 @@
+@@ -50,11 +_,12 @@
  			public TransformableNPCProfile(string npcFileTitleFilePath, int defaultHeadIndex) {
  				_rootFilePath = npcFileTitleFilePath;
  				_defaultVariationHeadIndex = defaultHeadIndex;
++
 -#if CLIENT
-+
-+				if (Main.dedServ)
-+					return;
-+
- 				_defaultNoAlt = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default", AssetRequestMode.DoNotLoad);
- 				_defaultTransformed = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default_Transformed", AssetRequestMode.DoNotLoad);
- 				_defaultCredits = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default_Credits", AssetRequestMode.DoNotLoad);
++				if (!Main.dedServ) {
+-				_defaultNoAlt = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default", AssetRequestMode.DoNotLoad);
++					_defaultNoAlt = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default", AssetRequestMode.DoNotLoad);
+-				_defaultTransformed = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default_Transformed", AssetRequestMode.DoNotLoad);
++					_defaultTransformed = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default_Transformed", AssetRequestMode.DoNotLoad);
+-				_defaultCredits = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default_Credits", AssetRequestMode.DoNotLoad);
++					_defaultCredits = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default_Credits", AssetRequestMode.DoNotLoad);
 -#endif
++				}
  			}
  
  			public int RollVariation() => 0;

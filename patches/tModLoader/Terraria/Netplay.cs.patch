@@ -164,26 +164,32 @@
  					Main.gameMenu = true;
  					Main.SwitchNetMode(0);
  					MapHelper.noStatusText = true;
-@@ -671,26 +_,27 @@
+@@ -671,26 +_,28 @@
  		}
  
  		public static void Initialize() {
 -#if CLIENT
--			NetMessage.buffer[256] = new MessageBuffer();
--			NetMessage.buffer[256].whoAmI = 256;
--#else
 +			if (!Main.dedServ) {
+-			NetMessage.buffer[256] = new MessageBuffer();
 +				NetMessage.buffer[256] = new MessageBuffer();
+-			NetMessage.buffer[256].whoAmI = 256;
 +				NetMessage.buffer[256].whoAmI = 256;
-+				return;
+-#else
 +			}
- 			for (int i = 0; i < 257; i++) {
- 				if (i < 256)
- 					Netplay.Clients[i] = new RemoteClient();
++			else {
+-			for (int i = 0; i < 257; i++) {
++				for (int i = 0; i < 257; i++) {
+-				if (i < 256)
++					if (i < 256)
+-					Netplay.Clients[i] = new RemoteClient();
++						Netplay.Clients[i] = new RemoteClient();
 -				
 +
- 				NetMessage.buffer[i] = new MessageBuffer();
- 				NetMessage.buffer[i].whoAmI = i;
+-				NetMessage.buffer[i] = new MessageBuffer();
++					NetMessage.buffer[i] = new MessageBuffer();
+-				NetMessage.buffer[i].whoAmI = i;
++					NetMessage.buffer[i].whoAmI = i;
++				}
  			}
 -#endif
  		}
