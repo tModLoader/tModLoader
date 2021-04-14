@@ -30,6 +30,7 @@ namespace ExampleMod.Content.Items
 
 		public override void PostUpdate() => Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale); // Makes this item glow when thrown out of inventory.
 	}
+
 	// todo: implement
 	// public class SoulGlobalNPC : GlobalNPC
 	// {
