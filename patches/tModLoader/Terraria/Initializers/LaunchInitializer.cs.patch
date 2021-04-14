@@ -10,25 +10,7 @@
  using Terraria.Social;
  
  namespace Terraria.Initializers
-@@ -9,11 +_,12 @@
- 	{
- 		public static void LoadParameters(Main game) {
- 			LoadSharedParameters(game);
--#if CLIENT
--			LoadClientParameters(game);
--#else
--			LoadServerParameters(game);
--#endif
-+			if (!Main.dedServ) {
-+				LoadClientParameters(game);
-+			}
-+			else {
-+				LoadServerParameters(game);
-+			}
- 		}
- 
- 		private static void LoadSharedParameters(Main game) {
-@@ -24,6 +_,14 @@
+@@ -24,6 +_,10 @@
  			string s;
  			if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out int result))
  				Netplay.ListenPort = result;
@@ -36,10 +18,6 @@
 +			string modPack;
 +			if ((modPack = TryParameter("-modpack")) != null)
 +				ModOrganizer.commandLineModPack = modPack;
-+
-+			if (HasParameter("-server")) {
-+				Main.dedServ = true;
-+			}
  		}
  
  		private static void LoadClientParameters(Main game) {

@@ -1,12 +1,8 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -2,10 +_,9 @@
- using ReLogic.OS;
- using System;
- using System.Collections.Generic;
--#if CLIENT
+@@ -6,6 +_,7 @@
  using System.Diagnostics;
--#endif
+ #endif
  using System.IO;
 +using System.Linq;
  using System.Reflection;
@@ -78,19 +74,7 @@
  		}
  
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -126,10 +_,8 @@
- 		}
- 
- 		private static void InitializeConsoleOutput() {
--#if CLIENT
--			if (Debugger.IsAttached)
-+			if (!Main.dedServ && Debugger.IsAttached)
- 				return;
--#endif
- 
- 			try {
- 				Console.OutputEncoding = Encoding.UTF8;
-@@ -142,38 +_,72 @@
+@@ -142,27 +_,57 @@
  			}
  		}
  
@@ -107,8 +91,6 @@
 +				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
 +				LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
 +				Platform.Get<IPathService>().GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader{(!BuildInfo.IsRelease ? Path.DirectorySeparatorChar + "Beta" : "")}");
-+			Main.dedServ = LaunchParameters.ContainsKey("-server");
-+
 +
 +			if (File.Exists("savehere.txt"))
 +				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
@@ -153,22 +135,14 @@
 +					main.PostSocialInitialize();
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
--#if CLIENT
--					main.Run();
--#else
--					main.DedServ();
--#endif
--				}
+ #if CLIENT
+@@ -171,9 +_,10 @@
+ 					main.DedServ();
+ #endif
+ 				}
 -				catch (Exception e) {
 -					DisplayException(e);
 -				}
-+					if (!Main.dedServ) {
-+						main.Run();
-+					}
-+					else {
-+						main.DedServ();
-+					}
-+				}
 +			}
 +			catch (Exception e) {
 +				Logging.Terraria.Fatal("Main engine crash", e);
@@ -176,19 +150,13 @@
  			}
  		}
  
-@@ -207,10 +_,24 @@
- 					streamWriter.WriteLine("");
+@@ -208,9 +_,22 @@
  				}
  
--#if SERVER
+ #if SERVER
 -				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
--#endif
--				MessageBox.Show(text, "Terraria: Error");
-+				if (Main.dedServ) {
-+					Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
-+					return;
-+				}
-+
++				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
++#else
 +				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
 +
 +				if (e is FolderCreationFailedException)
@@ -202,6 +170,8 @@
 +
 +					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
 +				}
+ #endif
+-				MessageBox.Show(text, "Terraria: Error");
  			}
  			catch {
  			}

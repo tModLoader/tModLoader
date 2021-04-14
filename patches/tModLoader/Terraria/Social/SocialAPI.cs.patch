@@ -6,25 +6,24 @@
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
-@@ -20,18 +_,19 @@
+@@ -20,10 +_,15 @@
  		public static SocialMode Mode => _mode;
  
  		public static void Initialize(SocialMode? mode = null) {
 +			_modules = new List<ISocialModule>();
  			if (!mode.HasValue) {
  				mode = SocialMode.None;
--#if CLIENT
--				mode = SocialMode.Steam;
--#else
--				if (Program.LaunchParameters.ContainsKey("-steam"))
--					mode = SocialMode.Steam;
+ #if CLIENT
 +#if DEBUG
-+				if (!Main.dedServ && !Program.LaunchParameters.ContainsKey("-nosteam"))
- #endif
-+				if (!Main.dedServ && InstallVerifier.IsValid && InstallVerifier.IsSteam)
++				if (!Program.LaunchParameters.ContainsKey("-nosteam"))
++#endif
++				if (InstallVerifier.IsValid && InstallVerifier.IsSteam)
+-				mode = SocialMode.Steam;
 +					mode = SocialMode.Steam;
-+				if (Main.dedServ && Program.LaunchParameters.ContainsKey("-steam"))
-+					mode = SocialMode.Steam;
+ #else
+ 				if (Program.LaunchParameters.ContainsKey("-steam"))
+ 					mode = SocialMode.Steam;
+@@ -31,7 +_,6 @@
  			}
  
  			_mode = mode.Value;
@@ -44,7 +43,7 @@
  		}
  
  		public static void Shutdown() {
-@@ -69,32 +_,51 @@
+@@ -69,10 +_,15 @@
  		private static void LoadDiscord() {
  		}
  
@@ -62,20 +61,10 @@
  			Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
  			Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
  			Workshop = LoadModule<Terraria.Social.Steam.WorkshopSocialModule>();
--#if CLIENT
--			Network = LoadModule<Terraria.Social.Steam.NetClientSocialModule>();
--			WeGameHelper.WriteDebugString("LoadSteam modules");
--#else
--			Network = LoadModule<Terraria.Social.Steam.NetServerSocialModule>();
--#endif
-+			if (!Main.dedServ) {
-+				Network = LoadModule<Terraria.Social.Steam.NetClientSocialModule>();
-+				WeGameHelper.WriteDebugString("LoadSteam modules");
-+			}
-+			else {
-+				Network = LoadModule<Terraria.Social.Steam.NetServerSocialModule>();
-+			}
-+
+@@ -82,9 +_,15 @@
+ #else
+ 			Network = LoadModule<Terraria.Social.Steam.NetServerSocialModule>();
+ #endif
 +			foreach (ISocialModule module in _modules) {
 +				module.Initialize();
 +			}
@@ -88,21 +77,10 @@
  			LoadModule<Terraria.Social.WeGame.CoreSocialModule>();
  			Cloud = LoadModule<Terraria.Social.WeGame.CloudSocialModule>();
  			Friends = LoadModule<Terraria.Social.WeGame.FriendsSocialModule>();
- 			Overlay = LoadModule<Terraria.Social.WeGame.OverlaySocialModule>();
--#if CLIENT
--			Network = LoadModule<Terraria.Social.WeGame.NetClientSocialModule>();
--			WeGameHelper.WriteDebugString("LoadWeGame modules");
--#else
--			Network = LoadModule<Terraria.Social.WeGame.NetServerSocialModule>();
--#endif
-+			if (!Main.dedServ) {
-+				Network = LoadModule<Terraria.Social.WeGame.NetClientSocialModule>();
-+				WeGameHelper.WriteDebugString("LoadWeGame modules");
-+			}
-+			else {
-+				Network = LoadModule<Terraria.Social.WeGame.NetServerSocialModule>();
-+			}
-+
+@@ -95,6 +_,10 @@
+ #else
+ 			Network = LoadModule<Terraria.Social.WeGame.NetServerSocialModule>();
+ #endif
 +			foreach (ISocialModule module in _modules) {
 +				module.Initialize();
 +			}

@@ -1381,15 +1381,17 @@
  			if (gen)
  				noItem = true;
  
-@@ -39840,7 +_,7 @@
+@@ -39840,8 +_,10 @@
  				if (!noItem && FixExploitManEaters.SpotProtected(i, j))
  					return;
  
--				if (!gen && !Main.gameMenu)
-+				if (!Main.dedServ && !gen && !Main.gameMenu)
++#if CLIENT
+ 				if (!gen && !Main.gameMenu)
  					KillTile_PlaySounds(i, j, fail, tile);
++#endif
  			}
  
+ 			if (tile.type == 128 || tile.type == 269) {
 @@ -39974,7 +_,7 @@
  			if ((tile.type == 470 && (CheckTileBreakability2_ShouldTileSurvive(i, j) || fail)) || (tile.type == 475 && (CheckTileBreakability2_ShouldTileSurvive(i, j) || fail)))
  				return;
@@ -1556,15 +1558,22 @@
  						switch (Main.tile[x, y - 1].type) {
  							case 21:
  							case 26:
-@@ -51612,7 +_,7 @@
+@@ -51612,6 +_,7 @@
  
  		public static bool UpdateMapTile(int i, int j, bool addToList = true) {
  			bool result = false;
--			if (Main.mapEnabled && !noMapUpdate && !gen && Main.Map[i, j].Light > 0 && Main.Map.UpdateType(i, j) && addToList) {
-+			if (!Main.dedServ && Main.mapEnabled && !noMapUpdate && !gen && Main.Map[i, j].Light > 0 && Main.Map.UpdateType(i, j) && addToList) {
++#if CLIENT
+ 			if (Main.mapEnabled && !noMapUpdate && !gen && Main.Map[i, j].Light > 0 && Main.Map.UpdateType(i, j) && addToList) {
  				result = true;
  				if (MapHelper.numUpdateTile < MapHelper.maxUpdateTile - 1) {
- 					MapHelper.updateTileX[MapHelper.numUpdateTile] = (short)i;
+@@ -51623,6 +_,7 @@
+ 					Main.refreshMap = true;
+ 				}
+ 			}
++#endif
+ 
+ 			return result;
+ 		}
 @@ -51897,7 +_,10 @@
  						Liquid.AddWater(i, j);
  

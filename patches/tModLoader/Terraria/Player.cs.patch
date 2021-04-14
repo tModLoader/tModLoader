@@ -3341,17 +3341,22 @@
  			if (inventory[num].stack <= 0)
  				inventory[num].SetDefaults();
  		}
-@@ -29706,6 +_,10 @@
+@@ -29706,11 +_,15 @@
  		}
  
  		public Rectangle GetItemDrawFrame(int type) {
-+			if (Main.dedServ) {
-+				return Rectangle.Empty;
-+			}
-+
++#if SERVER
++			return Rectangle.Empty;
++#else
  			Main.instance.LoadItem(type);
  			if (type == 75)
  				return TextureAssets.Item[type].Frame(1, 8);
+ 
+ 			return TextureAssets.Item[type].Frame();
++#endif
+ 		}
+ 
+ 		public float GetAdjustedItemScale(Item item) {
 @@ -29733,6 +_,12 @@
  		}
  
@@ -4009,7 +4014,7 @@
  						NetMessage.SendData(34, -1, -1, null, 1, x, y);
  
  					if (Main.tile[x, y].type == 467)
-@@ -36676,11 +_,20 @@
+@@ -36676,13 +_,23 @@
  
  					if (Main.tile[x, y].type == 88)
  						NetMessage.SendData(34, -1, -1, null, 3, x, y);
@@ -4025,12 +4030,14 @@
  				else {
  					bool num3 = Main.tile[x, y].active();
  					WorldGen.KillTile(x, y);
--					if (num3 && !Main.tile[x, y].active())
-+
-+					if (!Main.dedServ && num3 && !Main.tile[x, y].active())
++#if CLIENT
+ 					if (num3 && !Main.tile[x, y].active())
  						AchievementsHelper.HandleMining();
  
++#endif
  					if (Main.netMode == 1)
+ 						NetMessage.SendData(17, -1, -1, null, 0, x, y);
+ 				}
 @@ -36750,7 +_,24 @@
  			if (Main.tileNoFail[tileTarget.type])
  				num = 100;
