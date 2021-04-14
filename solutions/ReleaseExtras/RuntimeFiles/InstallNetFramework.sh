@@ -12,7 +12,7 @@ cd "$script_dir"
 version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <tModLoader.runtimeconfig.json) #sed, go die plskthx
 #Cut everything before the second dot
 channel=$(echo "$version" | cut -f1,2 -d'.')
-dotnet_dir="$script_dir/Libraries/dotnet"
+dotnet_dir="$script_dir/Netframework/dotnet"
 install_dir="$dotnet_dir/$version"
 
 #If the dotnet dir exists, we need to do some cleanup
@@ -33,4 +33,8 @@ if [ ! -d "$install_dir" ]; then
   curl -sLo dotnet-install.sh https://dot.net/v1/dotnet-install.sh
   chmod +x dotnet-install.sh
   ./dotnet-install.sh --channel "$channel" --install-dir "$install_dir" --runtime "dotnet" --version "$version"
+  
+  #TODO: Attempt to change icon of dotnet for legacy, current
+  #gvfs-set-attribute -t string "NetFramework/dotnet/$version/dotnet" metadata::custom-icon file:"Libraries/Native/tModLoader.png"
+  #gio set "NetFramework/dotnet/$version/dotnet" metadata::custom-icon file:"Libraries/Native/tModLoader.png"
 fi
