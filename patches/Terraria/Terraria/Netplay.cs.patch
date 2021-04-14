@@ -10,27 +10,23 @@
  using System.Threading;
  using Terraria.Audio;
  using Terraria.IO;
-@@ -12,6 +_,12 @@
+@@ -12,6 +_,10 @@
  using Terraria.Net.Sockets;
  using Terraria.Social;
  using Terraria.Utilities;
 +#if !XNA
 +using Terraria.Social.Base;
 +#endif
-+#if SERVER
 +using NATUPNPLib;
-+#endif
  
  namespace Terraria
  {
-@@ -40,6 +_,10 @@
+@@ -40,6 +_,8 @@
  		public static bool SpamCheck = false;
  		public static bool HasClients;
  		private static Thread _serverThread;
-+#if SERVER
 +		public static UPnPNAT _upnpnat;
 +		public static IStaticPortMappingCollection _mappings;
-+#endif
  		public static MessageBuffer fullBuffer = new MessageBuffer();
  		private static int _currentRequestId;
  		private static UdpClient BroadcastClient = null;
@@ -38,7 +34,8 @@
  		}
  
  		private static void OpenPort(int port) {
-+#if SERVER
++			if (!Main.dedServ)
++				return;
 +			string localIPAddress = GetLocalIPAddress();
 +			if (_upnpnat == null) {
 +				_upnpnat = new UPnPNAT();//(UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
@@ -56,11 +53,11 @@
 +
 +			if (!flag)
 +				_mappings.Add(port, "TCP", port, localIPAddress, bEnabled: true, "Terraria Server");
-+#endif
  		}
  
  		private static void ClosePort(int port) {
-+#if SERVER
++			if (!Main.dedServ)
++				return;
 +			string localIPAddress = GetLocalIPAddress();
 +			bool flag = false;
 +			if (_mappings == null)
@@ -73,7 +70,6 @@
 +
 +			if (!flag)
 +				_mappings.Remove(port, "TCP");
-+#endif
  		}
  
  		private static void ServerFullWriteCallBack(object state) {
@@ -113,14 +109,15 @@
  					if (!Disconnect && Main.gameMenu)
  						flag = true;
  				}
-@@ -617,17 +_,32 @@
+@@ -617,17 +_,31 @@
  		}
  
  		public static void Initialize() {
-+#if CLIENT
++			if (!Main.dedServ) {
  			NetMessage.buffer[256] = new MessageBuffer();
  			NetMessage.buffer[256].whoAmI = 256;
-+#else
++			return;
++			}
 +			for (int i = 0; i < 257; i++) {
 +				if (i < 256)
 +					Netplay.Clients[i] = new RemoteClient();
@@ -128,15 +125,13 @@
 +				NetMessage.buffer[i] = new MessageBuffer();
 +				NetMessage.buffer[i].whoAmI = i;
 +			}
-+#endif
  		}
  
  		public static void UpdateInMainThread() {
-+#if CLIENT
++			if(!Main.dedServ)
  			UpdateClientInMainThread();
-+#else
++			else
 +			UpdateServerInMainThread();
-+#endif
  		}
  
  		public static int GetSectionX(int x) => x / 200;

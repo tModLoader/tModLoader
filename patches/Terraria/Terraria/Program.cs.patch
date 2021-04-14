@@ -1,15 +1,5 @@
 --- src/decompiled/Terraria/Program.cs
 +++ src/Terraria/Terraria/Program.cs
-@@ -2,7 +_,9 @@
- using ReLogic.OS;
- using System;
- using System.Collections.Generic;
-+#if CLIENT
- using System.Diagnostics;
-+#endif
- using System.IO;
- using System.Reflection;
- using System.Runtime.CompilerServices;
 @@ -18,10 +_,12 @@
  {
  	public static class Program
@@ -42,36 +32,45 @@
  				}
  
  				ThingsLoaded++;
-@@ -114,8 +_,10 @@
+@@ -114,7 +_,7 @@
  		}
  
  		private static void InitializeConsoleOutput() {
-+#if CLIENT
- 			if (Debugger.IsAttached)
+-			if (Debugger.IsAttached)
++			if (!Main.dedServ && Debugger.IsAttached)
  				return;
-+#endif
  
  			try {
- 				Console.OutputEncoding = Encoding.UTF8;
-@@ -151,7 +_,11 @@
+@@ -140,6 +_,11 @@
+ 			}
+ 
+ 			LaunchParameters = Utils.ParseArguements(args);
++#if SERVER
++			Main.dedServ = true;
++#else
++			Main.dedServ = LaunchParameters.ContainsKey("-server");
++#endif
+ 			ThreadPool.SetMinThreads(8, 8);
+ 			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
+ 			InitializeConsoleOutput();
+@@ -151,7 +_,10 @@
  					SocialAPI.Initialize();
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
-+#if CLIENT
++					if(!Main.dedServ)
  					main.Run();
-+#else
++					else
 +					main.DedServ();
-+#endif
  				}
  				catch (Exception e) {
  					DisplayException(e);
-@@ -189,6 +_,9 @@
+@@ -188,6 +_,9 @@
+ 					streamWriter.WriteLine(text);
  					streamWriter.WriteLine("");
  				}
- 
-+#if SERVER
++
++				if(Main.dedServ)
 +				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
-+#endif
+ 
  				MessageBox.Show(text, "Terraria: Error");
  			}
- 			catch {

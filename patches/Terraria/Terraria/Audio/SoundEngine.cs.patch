@@ -12,9 +12,9 @@
  		}
  
  		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
-+#if SERVER
++			if (Main.dedServ)
 +			return null;
-+#else
++
  			if (!IsAudioSupported)
  				return null;
  
@@ -23,44 +23,44 @@
 +#endif
 -			return _legacyPlayer.PlaySound(type, x, y, Style, volumeScale, pitchOffset);
 +				return _legacyPlayer.PlaySound(type, x, y, Style, volumeScale, pitchOffset);
-+#endif
++
  		}
  
  		public static ActiveSound GetActiveSound(SlotId id) {
-+#if SERVER
++			if (Main.dedServ)
 +			return null;
-+#else
++
  			if (!IsAudioSupported)
  				return null;
  
  			return _player.GetActiveSound(id);
-+#endif
++
  		}
  
 -		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position) {
 +		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position)
 +		{
-+#if SERVER
++			if(Main.dedServ)
 +			return SlotId.Invalid;
-+#else
++
  			if (!IsAudioSupported)
  				return SlotId.Invalid;
  
  			return _player.Play(style, position);
-+#endif
++
  		}
  
 -		public static SlotId PlayTrackedSound(SoundStyle style) {
 +		public static SlotId PlayTrackedSound(SoundStyle style)
 +		{
-+#if SERVER
++			if(Main.dedServ)
 +			return SlotId.Invalid;
-+#else
++
  			if (!IsAudioSupported)
  				return SlotId.Invalid;
  
  			return _player.Play(style);
-+#endif
++
  		}
  
  		public static void StopTrackedSounds() {
@@ -68,14 +68,14 @@
  		}
  
  		public static SoundEffect GetTrackableSoundByStyleId(int id) {
-+#if SERVER
++			if(Main.dedServ)
 +			return null;
-+#else
++
  			if (!IsAudioSupported)
  				return null;
  
  			return _legacyPlayer.GetTrackableSoundByStyleId(id);
-+#endif
++
  		}
  
  		public static void StopAmbientSounds() {
@@ -83,14 +83,14 @@
  		}
  
  		public static ActiveSound FindActiveSound(SoundStyle style) {
-+#if SERVER
++			if(Main.dedServ)
 +			return null;
-+#else
++
  			if (!IsAudioSupported)
  				return null;
  
  			return _player.FindActiveSound(style);
-+#endif
++
  		}
  
  		private static bool TestAudioSupport() {

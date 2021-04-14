@@ -1,7 +1,7 @@
 --- src/decompiled/Terraria/NATUPNPLib/UPnPNAT.cs
 +++ src/Terraria/Terraria/NATUPNPLib/UPnPNAT.cs
-@@ -1,9 +_,13 @@
- #if SERVER
+@@ -1,9 +_,12 @@
+-#if SERVER
 +using System;
 +using System.Collections;
  using System.Runtime.CompilerServices;
@@ -14,11 +14,10 @@
  	[ComImport]
  	[CompilerGenerated]
  	[Guid("B171C812-CC76-485A-94D8-B6B3A2794E99")]
-@@ -11,6 +_,53 @@
- 	[TypeIdentifier]
+@@ -12,5 +_,51 @@
  	public interface UPnPNAT : IUPnPNAT
  	{
-+	}
+ 	}
 +	*/
 +
 +	public sealed class UPnPNAT : IUPnPNAT
@@ -65,6 +64,6 @@
 +				}
 +			}
 +		}
- 	}
++	}
  }
- #endif
+-#endif
