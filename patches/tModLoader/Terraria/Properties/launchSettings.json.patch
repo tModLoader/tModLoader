@@ -6,7 +6,7 @@
        "commandName": "Executable",
 +      "executablePath": "dotnet",
 -      "executablePath": "$(TerrariaSteamPath)/$(OutputName).exe",
-+      "commandLineArgs": "$(tModLoaderSteamPath)/$(OutputName).dll",
++      "commandLineArgs": "$(OutputName).dll",
 -      "workingDirectory": "$(TerrariaSteamPath)"
 +      "workingDirectory": "$(tModLoaderSteamPath)"
      }
