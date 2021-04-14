@@ -1,14 +1,13 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -6,6 +_,7 @@
+@@ -5,5 +_,6 @@
  using System.Diagnostics;
- #endif
  using System.IO;
 +using System.Linq;
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
-@@ -13,12 +_,15 @@
+@@ -11,12 +_,15 @@
  using System.Windows.Forms;
  using Terraria.Initializers;
  using Terraria.Localization;
@@ -25,7 +24,7 @@
  	{
  		/* hide unused consts
  		public const bool IsServer = false;
-@@ -57,21 +_,15 @@
+@@ -55,21 +_,15 @@
  			LoadedEverything = true;
  		}
  
@@ -56,7 +55,7 @@
  				}
  
  				ThingsLoaded++;
-@@ -87,10 +_,13 @@
+@@ -85,10 +_,13 @@
  		}
  
  		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
@@ -74,7 +73,7 @@
  		}
  
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -142,27 +_,57 @@
+@@ -138,31 +_,61 @@
  			}
  		}
  
@@ -119,6 +118,11 @@
  			}
  
 -			LaunchParameters = Utils.ParseArguements(args);
+ #if SERVER
+ 			Main.dedServ = true;
+ #else
+ 			Main.dedServ = LaunchParameters.ContainsKey("-server");
+ #endif
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
  			InitializeConsoleOutput();
@@ -135,10 +139,8 @@
 +					main.PostSocialInitialize();
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
- #if CLIENT
-@@ -171,9 +_,10 @@
+@@ -172,8 +_,9 @@
  					main.DedServ();
- #endif
  				}
 -				catch (Exception e) {
 -					DisplayException(e);
@@ -153,7 +155,7 @@
 @@ -208,9 +_,22 @@
  				}
  
- #if SERVER
+ 				if(Main.dedServ)
 -				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
 +				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
 +#else
@@ -170,7 +172,7 @@
 +
 +					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
 +				}
- #endif
+ 
 -				MessageBox.Show(text, "Terraria: Error");
  			}
  			catch {

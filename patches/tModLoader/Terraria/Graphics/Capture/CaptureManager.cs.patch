@@ -5,7 +5,7 @@
  	public class CaptureManager
  	{
 +#if SERVER
- 		public static CaptureManager Instance = new CaptureManager();
+ 		private static CaptureManager _instance;
 +#else //client initialization has been moved to LoadContent to prevent FNA deadlocks
 +		public static CaptureManager Instance;
 +#endif
