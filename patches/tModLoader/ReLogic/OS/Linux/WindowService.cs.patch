@@ -1,0 +1,11 @@
+--- src/Terraria/ReLogic/OS/Linux/WindowService.cs
++++ src/tModLoader/ReLogic/OS/Linux/WindowService.cs
+@@ -18,5 +_,8 @@
+ 
+ 		public void SetQuickEditEnabled(bool enabled) {
+ 		}
++
++		public void HideConsole() {
++		}
+ 	}
+ }

@@ -74,7 +74,14 @@
  		}
  
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -138,18 +_,46 @@
+@@ -125,4 +_,6 @@
+ 			if (Debugger.IsAttached)
+ 				return;
++
++			Platform.Get<IWindowService>().HideConsole();
+ 
+ 			try {
+@@ -138,27 +_,57 @@
  			}
  		}
  

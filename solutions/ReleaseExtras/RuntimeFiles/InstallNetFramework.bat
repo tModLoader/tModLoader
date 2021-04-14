@@ -1,6 +1,15 @@
 ::Author: Solxanich
 :: Created for tModLoader deployment. 
 @echo off
+cd /D "%~dp0"
+set LOGFILE=NetFramework\install.log
+echo Verifying Net Framework....
+echo Logging to NetFramework\install.log
+echo This may take a few moments....
+call :LOG > %LOGFILE%
+exit /B
+
+:LOG
 REM Read file "tModLoader.runtimeconfig.json" into variable string, removing line breaks.
 setlocal EnableDelayedExpansion
 
@@ -35,6 +44,7 @@ if Not exist %INSTALLDIR%\dotnet.exe (
 	echo Installing_NewFramework
 	powershell -NoProfile -ExecutionPolicy unrestricted -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel %CHANNELSEL% -InstallDir %INSTALLDIR%\ -Version %VERSIONSEL% -Runtime %RUNTIMESELECT%"
 
-	NetFramework\resource_hacker\ResourceHacker.exe -open %INSTALLDIR%\dotnet.exe -save %INSTALLDIR%\dotnet.exe -action add -res Libraries\Native\tModLoader.ico -mask ICONGROUP,MAINICON
+	echo ChangingTheIcon
+	call .\NetFramework\resource_hacker\ResourceHacker.exe -open %INSTALLDIR%\dotnet.exe -save %INSTALLDIR%\dotnet.exe -action add -res Libraries\Native\tModLoader.ico -mask ICONGROUP,MAINICON
 )
 

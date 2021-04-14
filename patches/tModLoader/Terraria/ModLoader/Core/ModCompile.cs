@@ -85,15 +85,14 @@ namespace Terraria.ModLoader.Core
 			var tMLSuffix = "";
 #endif
 
-			char s = Path.DirectorySeparatorChar;
 			string tModLoaderTargets = $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
 	<PropertyGroup>
 		<TerrariaSteamPath>{SecurityElement.Escape(tMLDir)}</TerrariaSteamPath>
-		<tMLLibraryPath>$(TerrariaSteamPath){s}Libraries</tMLLibraryPath>
+		<tMLLibraryPath>$(TerrariaSteamPath)/Libraries</tMLLibraryPath>
 		<tMLName>tModLoader{tMLSuffix}</tMLName>
 		<tMLServerName>tModLoaderServer{tMLSuffix}</tMLServerName>
-		<tMLPath>$(TerrariaSteamPath){s}$(tMLName).exe</tMLPath>
-		<tMLServerPath>$(TerrariaSteamPath){s}$(tMLServerName).exe</tMLServerPath>
+		<tMLPath>$(TerrariaSteamPath)/$(tMLName).dll</tMLPath>
+		<tMLServerPath>$(TerrariaSteamPath)/$(tMLServerName).dll</tMLServerPath>
 	</PropertyGroup>
 	<ItemGroup>
 		<Reference Include=""$(TerrariaSteamPath)/$(tMLName).dll"" />
