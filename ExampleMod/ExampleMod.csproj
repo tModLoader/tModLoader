@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../tModLoader.targets" />
   <PropertyGroup>
-	  <tMLDefault>..</tMLDefault>
-  </PropertyGroup>
-  <Import Project="$(tMLDefault)\tModLoader.targets" />
-  <PropertyGroup>
-	<AssemblyName>ExampleMod</AssemblyName>
-	<TargetFramework>net5.0</TargetFramework>
-	<PlatformTarget>AnyCPU</PlatformTarget>
-	<LangVersion>latest</LangVersion>
+    <AssemblyName>ExampleMod</AssemblyName>
+    <TargetFramework>net5.0</TargetFramework>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-	<PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
+    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Old\**" />

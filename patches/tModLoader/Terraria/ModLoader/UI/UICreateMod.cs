@@ -230,16 +230,13 @@ namespace {modNameTrimmed}
 			return
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project Sdk=""Microsoft.NET.Sdk"">
-  <Import Project=""..\..\references\tModLoader.targets"" />
+  <Import Project=""../tModLoader.targets"" />
   <PropertyGroup>
     <AssemblyName>{modNameTrimmed}</AssemblyName>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PlatformTarget>x86</PlatformTarget>
+    <TargetFramework>net5.0</TargetFramework>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <Target Name=""BuildMod"" AfterTargets=""Build"">
-    <Exec Command=""dotnet &quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)"" />
-  </Target>
   <ItemGroup>
     <PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />
   </ItemGroup>
@@ -248,15 +245,9 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 
 		internal bool CsprojUpdateNeeded(string fileContents)
 		{
-			if (!fileContents.Contains("tModLoader.targets"))
+			if (!fileContents.Contains("../tModLoader.targets"))
 				return true;
-			if (!fileContents.Contains("<TargetFramework>netcoreapp3.1</TargetFramework>"))
-				return true;
-			if (!fileContents.Contains("<LangVersion>latest</LangVersion>") && !fileContents.Contains("<LangVersion>preview</LangVersion>"))
-				return true;
-			if (!fileContents.Contains(@"<PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />"))
-				return true;
-			if (!fileContents.Contains(@"-define &quot;$(DefineConstants)&quot;") && !ReLogic.OS.Platform.IsWindows)
+			if (!fileContents.Contains("<TargetFramework>net5.0</TargetFramework>"))
 				return true;
 
 			return false;
@@ -269,12 +260,14 @@ $@"{{
   ""profiles"": {{
     ""Terraria"": {{
       ""commandName"": ""Executable"",
-      ""executablePath"": ""$(tMLPath)"",
+      ""executablePath"": ""dotnet"",
+      ""commandLineArgs"": ""$(tMLPath)"",
       ""workingDirectory"": ""$(TerrariaSteamPath)""
     }},
     ""TerrariaServer"": {{
       ""commandName"": ""Executable"",
-      ""executablePath"": ""$(tMLServerPath)"",
+      ""executablePath"": ""dotnet"",
+      ""commandLineArgs"": ""$(tMLServerPath)"",
       ""workingDirectory"": ""$(TerrariaSteamPath)""
     }}
   }}
