@@ -73,13 +73,11 @@ namespace Terraria.ModLoader.Engine
 		}
 
 		private static bool InstallCheck() {
-#if CLIENT
 			// Check if the content directory is present, if it's required
-			if (RequireContentDirectory && !Directory.Exists(TmlContentDirectory)) {
+			if (!Main.dedServ && RequireContentDirectory && !Directory.Exists(TmlContentDirectory)) {
 				Exit(Language.GetTextValue("tModLoader.ContentFolderNotFoundInstallCheck", TmlContentDirectory), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
 				return false;
 			}
-#endif
 
 			// Whether the steam_appid.txt file exists, indicating we'd have to check steam installation
 			if (File.Exists(SteamAppIDPath))
@@ -92,16 +90,17 @@ namespace Terraria.ModLoader.Engine
 		private static bool CheckSteam() {
 			Logging.tML.Info("Checking Steam installation...");
 			IsSteam = true;
-#if CLIENT
-			SocialAPI.LoadSteam();
-			string terrariaInstallLocation = Steam.GetSteamTerrariaInstallDir();
-			string terrariaContentLocation = Path.Combine(terrariaInstallLocation, TmlContentDirectory);
+			if (!Main.dedServ) {
+				SocialAPI.LoadSteam();
+				string terrariaInstallLocation = Steam.GetSteamTerrariaInstallDir();
+				string terrariaContentLocation = Path.Combine(terrariaInstallLocation, TmlContentDirectory);
 
-			if (!Directory.Exists(terrariaContentLocation)) {
-				Exit(Language.GetTextValue("tModLoader.VanillaSteamInstallationNotFound"), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
-				return false;
+				if (!Directory.Exists(terrariaContentLocation)) {
+					Exit(Language.GetTextValue("tModLoader.VanillaSteamInstallationNotFound"), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
+					return false;
+				}
 			}
-#endif
+
 			if (!HashMatchesFile(steamAPIPath, steamAPIHash)) {
 				Process.Start(new ProcessStartInfo("https://terraria.org") {
 					UseShellExecute = true,
@@ -158,12 +157,11 @@ namespace Terraria.ModLoader.Engine
 			}
 
 			if (!File.Exists(vanillaPath)) {
-#if SERVER
-				return false;
-#else
+				if(Main.dedServ)
+					return false;
+
 				Exit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaPath, CheckExe), string.Empty);
 				return false;
-#endif
 			}
 
 			if (!HashMatchesFile(vanillaPath, gogHash) && !HashMatchesFile(vanillaPath, steamHash)) {

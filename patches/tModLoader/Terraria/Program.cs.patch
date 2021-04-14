@@ -1,6 +1,7 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -5,5 +_,6 @@
+@@ -4,6 +_,7 @@
+ using System.Collections.Generic;
  using System.Diagnostics;
  using System.IO;
 +using System.Linq;
@@ -73,7 +74,7 @@
  		}
  
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -138,31 +_,61 @@
+@@ -138,18 +_,46 @@
  			}
  		}
  
@@ -121,8 +122,7 @@
  #if SERVER
  			Main.dedServ = true;
  #else
- 			Main.dedServ = LaunchParameters.ContainsKey("-server");
- #endif
+@@ -158,12 +_,14 @@
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
  			InitializeConsoleOutput();
@@ -139,7 +139,9 @@
 +					main.PostSocialInitialize();
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
-@@ -172,8 +_,9 @@
+ 					if(!Main.dedServ)
+@@ -171,9 +_,10 @@
+ 					else
  					main.DedServ();
  				}
 -				catch (Exception e) {
@@ -158,7 +160,8 @@
  				if(Main.dedServ)
 -				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
 +				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
-+#else
+ 
+-				MessageBox.Show(text, "Terraria: Error");
 +				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
 +
 +				if (e is FolderCreationFailedException)
@@ -172,8 +175,7 @@
 +
 +					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
 +				}
- 
--				MessageBox.Show(text, "Terraria: Error");
++
  			}
  			catch {
  			}

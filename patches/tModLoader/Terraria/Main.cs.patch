@@ -369,14 +369,15 @@
  			if (Configuration.Save())
  				return PlayerInput.Save();
  
-@@ -3213,6 +_,10 @@
+@@ -3213,6 +_,11 @@
  				TryPickingDefaultUIScale(currentValue3);
  			}
  
-+#if SERVER
-+			ModLoader.ModLoader.LoadConfiguration();
-+			return;
-+#endif
++			if (Main.dedServ) {
++				ModLoader.ModLoader.LoadConfiguration();
++				return;
++			}
++
  			Configuration.Get("SmartCursorToggle", ref cSmartCursorModeIsToggleAndNotHold);
  			Configuration.Get("MapEnabled", ref mapEnabled);
  			Configuration.Get("InvasionBarMode", ref invasionProgressMode);
@@ -433,14 +434,12 @@
  						if (text.Length >= 5 && text.Substring(0, 5).ToLower() == "seed=")
  							AutogenSeedName = text.Substring(5);
  
-@@ -3965,6 +_,10 @@
+@@ -3965,6 +_,8 @@
  		}
  
  		public void YouCanSleepNow() {
-+#if CLIENT
-+			if (audioSystem == null) //supress extra exceptions from audio engine failing to load
++			if (!dedServ && audioSystem == null) //supress extra exceptions from audio engine failing to load
 +				return;
-+#endif
  #if WINDOWS
  			if (previousExecutionState != 0)
  				NativeMethods.SetThreadExecutionState(previousExecutionState);
@@ -787,17 +786,18 @@
  		}
  
  		public Main() {
-@@ -4779,6 +_,48 @@
+@@ -4779,7 +_,50 @@
  
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
 +			HiDefGraphicsIssues.Init();
-+#endif
 +		}
 +
 +		internal void PostSocialInitialize() {
-+#if CLIENT
++			if (dedServ) {
++				return;
++			}
 +			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
 +
 +			if (!Directory.Exists(vanillaContentFolder)) {
@@ -837,7 +837,8 @@
 +			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
  		}
  
-@@ -4853,5 +_,12 @@
+ 		private void Main_Exiting(object sender, EventArgs e) {
+@@ -4853,6 +_,13 @@
  		}
  
  		protected override void Initialize() {
@@ -850,6 +851,7 @@
 +
  			if(dedServ)
  			netMode = 2;
+ 
 @@ -5053,7 +_,7 @@
  			}
  
@@ -2990,7 +2992,14 @@
  				num5 = 2;
  				array9[0] = statusText;
  				array[0] = true;
-@@ -36354,11 +_,15 @@
+@@ -36348,17 +_,21 @@
+ 					Netplay.ServerPassword = "";
+ 				}
+ 				else if (selectedMenu == 2 || inputTextEnter || autoPass) {
+-					string str = "-autoshutdown -password \"" + ConvertToSafeArgument(Netplay.ServerPassword) + "\" -lang " + Language.ActiveCulture.LegacyId;
++					string str = "tModLoader.dll -server" + "-autoshutdown -password \"" + ConvertToSafeArgument(Netplay.ServerPassword) + "\" -lang " + Language.ActiveCulture.LegacyId;
+ #if LINUX
+ 					str += IntPtr.Size == 8 ? " -x64": " -x86";
  #endif
  					str = ((!ActiveWorldFileData.IsCloudSave) ? (str + " -world \"" + worldPathName + "\"") : (str + " -cloudworld \"" + worldPathName + "\""));
  					str = str + " -worldrollbackstokeep " + WorldRollingBackupsCountToKeep;
@@ -3004,7 +3013,7 @@
 +					tServer.StartInfo.FileName = "tModLoaderServer.exe";
  #else
 -					tServer.StartInfo.FileName = "TerrariaServer";
-+					tServer.StartInfo.FileName = "tModLoaderServer";
++					tServer.StartInfo.FileName = "NetFramework\\dotnet\\5.0.0\\dotnet";
  #endif
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {
