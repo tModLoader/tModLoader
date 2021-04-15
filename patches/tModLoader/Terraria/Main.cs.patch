@@ -2990,12 +2990,12 @@
  				num5 = 2;
  				array9[0] = statusText;
  				array[0] = true;
-@@ -36348,17 +_,21 @@
+@@ -36348,17 +_,27 @@
  					Netplay.ServerPassword = "";
  				}
  				else if (selectedMenu == 2 || inputTextEnter || autoPass) {
 -					string str = "-autoshutdown -password \"" + ConvertToSafeArgument(Netplay.ServerPassword) + "\" -lang " + Language.ActiveCulture.LegacyId;
-+					string str = "tModLoader.dll -server" + "-autoshutdown -password \"" + ConvertToSafeArgument(Netplay.ServerPassword) + "\" -lang " + Language.ActiveCulture.LegacyId;
++					string str = "tModLoader.dll -server " + "-autoshutdown -password \"" + ConvertToSafeArgument(Netplay.ServerPassword) + "\" -lang " + Language.ActiveCulture.LegacyId;
  #if LINUX
  					str += IntPtr.Size == 8 ? " -x64": " -x86";
  #endif
@@ -3010,8 +3010,14 @@
 -					tServer.StartInfo.FileName = "TerrariaServer.exe";
 +					tServer.StartInfo.FileName = "tModLoaderServer.exe";
  #else
++					if (Debugger.IsAttached) {
 -					tServer.StartInfo.FileName = "TerrariaServer";
-+					tServer.StartInfo.FileName = "NetFramework\\dotnet\\5.0.0\\dotnet";
++						tServer.StartInfo.FileName = "dotnet";
++					}
++					else {
++						tServer.StartInfo.FileName = "NetFramework\\dotnet\\5.0.0\\dotnet";
++					}
++					
  #endif
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {
