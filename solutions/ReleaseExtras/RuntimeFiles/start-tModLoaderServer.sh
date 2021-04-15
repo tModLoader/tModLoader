@@ -10,7 +10,7 @@ read -p "Use Steam Server (y)/(n) " steam
 
 if [ ! $steam == "y" ]; then
 	clear
-	dotnet\5.0.0\dotnet tModLoaderServer.dll -config serverconfig.txt
+	NetFramework\dotnet\5.0.0\dotnet tModLoaderServer.dll -server -config serverconfig.txt
 	exit
 fi
 
@@ -18,8 +18,8 @@ read -p "Select Lobby Type (f)riends/(p)rivate " lobby
 clear
 
 if [ $lobby == "f" ]; then 
-	dotnet\5.0.0\dotnet tModLoaderServer.dll -steam -lobby friends -config serverconfig.txt
+	NetFramework\dotnet\5.0.0\dotnet tModLoaderServer.dll -server -steam -lobby friends -config serverconfig.txt
 	exit
 fi
 
-dotnet\5.0.0\dotnet tModLoaderServer.dll -steam -lobby private -config serverconfig.txt
+NetFramework\dotnet\5.0.0\dotnet tModLoaderServer.dll -server -steam -lobby private -config serverconfig.txt
