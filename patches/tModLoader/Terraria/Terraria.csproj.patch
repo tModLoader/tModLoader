@@ -1,10 +1,23 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -7,7 +_,18 @@
+@@ -2,69 +_,130 @@
+   <Import Project="../Configuration.targets" />
+   <Import Project="../../WorkspaceInfo.targets" />
+   <PropertyGroup>
+-    <OutputType>WinExe</OutputType>
++    <OutputType>Exe</OutputType>
+     <Version>1.4.2.1</Version>
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2021 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
 -    <AssemblyName>Terraria</AssemblyName>
+-  </PropertyGroup>
+-  <PropertyGroup Condition="$(Configuration.Contains('Server'))">
+-    <OutputType>Exe</OutputType>
+-    <AssemblyName>$(AssemblyName)Server</AssemblyName>
+-  </PropertyGroup>
+-  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+-    <AssemblyName>$(AssemblyName)Debug</AssemblyName>
 +    <AssemblyName>tModLoader</AssemblyName>
 +    <GenerateDocumentationFile>true</GenerateDocumentationFile>
 +    <UseAppHost>false</UseAppHost>
@@ -17,10 +30,6 @@
 +    <CommitSHA Condition="'$(CommitSHA)' == ''">unknown</CommitSHA>
 +    <BuildDate>$([System.DateTime]::UtcNow.ToBinary())</BuildDate>
 +    <SourceRevisionId>$(tMLVersion)-$(BranchName)-$(BuildPurpose)-$(CommitSHA)-$(BuildDate)</SourceRevisionId>
-   </PropertyGroup>
-   <PropertyGroup Condition="$(Configuration.Contains('Server'))">
-     <OutputType>Exe</OutputType>
-@@ -18,53 +_,110 @@
    </PropertyGroup>
    <PropertyGroup>
      <OutputName>$(AssemblyName)</OutputName>
