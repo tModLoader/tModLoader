@@ -3765,13 +3765,16 @@
  					int num178 = Projectile.NewProjectile(projectileSource_Item_WithPotentialAmmo, pointPoisition.X, pointPoisition.Y, num2, num3, projToShoot, Damage, KnockBack, i);
  					if (sItem.type == 726)
  						Main.projectile[num178].magic = true;
-@@ -34203,8 +_,14 @@
+@@ -34203,8 +_,17 @@
  				else if (num2 >= 427)
  					num = num2 - 426;
  
 +				int num3 = 0;
 +				if (sItem.ModItem != null) {
-+					sItem.ModItem.TorchVFX(out R, out G, out B, out num3);
++					sItem.ModItem.ModifyTorchEffects(out Vector3 color, out num3);
++					R = color.X;
++					G = color.Y;
++					B = color.Z;
 +				}
 +				else {
 -				TorchID.TorchColor(num, out R, out G, out B);

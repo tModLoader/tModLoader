@@ -700,8 +700,8 @@
 +						Lighting.AddLight(base.Center, torchID);
 +					}
 +					else {
-+						ModItem.TorchVFX(out float R, out float G, out float B, out int _);
-+						Lighting.AddLight(base.Center, R, G, B);
++						ModItem.ModifyTorchEffects(out Vector3 color, out int _);
++						Lighting.AddLight(base.Center, color);
 +					}
 +				}
  			}

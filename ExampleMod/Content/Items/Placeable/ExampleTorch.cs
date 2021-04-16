@@ -37,11 +37,10 @@ namespace ExampleMod.Content.Items.Placeable
 			itemGroup = ContentSamples.CreativeHelper.ItemGroup.Torches; //Vanilla usually matches sorting methods with the right type of item, but sometimes, like with torches, it doesn't. Make sure to set whichever items manually if need be. 
 		}
 
-		public override void TorchVFX(out float r, out float g, out float b, out int dustId) {
-			//Set the color of the light
-			r = 1f;
-			g = 1f;
-			b = 1f;
+		public override void ModifyTorchEffects(out Vector3 lightColor, out int dustId) {
+			lightColor.X = 1.0f; //R
+			lightColor.Y = 1.0f; //G
+			lightColor.Z = 1.0f; //B
 			dustId = ModContent.DustType<Sparkle>(); //Set the type of particles the torch should emit
 		}
 
