@@ -1,5 +1,4 @@
-﻿#if SERVER
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,7 +6,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-
+using Terraria;
 
 namespace UwUPnP
 {
@@ -29,7 +28,8 @@ namespace UwUPnP
 
 		static UPnP()
 		{
-			FindGateway();
+			if(Main.dedServ)
+				FindGateway();
 		}
 
 		private static Gateway Gateway
@@ -90,4 +90,3 @@ namespace UwUPnP
 			.Where(a => a.AddressFamily == AddressFamily.InterNetwork || a.AddressFamily == AddressFamily.InterNetworkV6);
 	}
 }
-#endif

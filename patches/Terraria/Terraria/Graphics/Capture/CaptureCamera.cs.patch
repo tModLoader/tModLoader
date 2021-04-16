@@ -73,7 +73,7 @@
  
  				return true;
  			}
-@@ -217,25 +_,52 @@
+@@ -217,25 +_,53 @@
  			}
  		}
  
@@ -82,13 +82,14 @@
 +			using (FileStream fileStream = File.Create(filename)) {
 +#if !NETCORE
 +				PlatformUtilities.SavePng(fileStream, width, height, width, height, _outputData);
-+#elif CLIENT
-+				//var tex = new Texture2D(Main.graphics.GraphicsDevice, width, height);
-+				//tex.SetData(_outputData);
-+				//tex.SaveAsPng(fileStream, width, height);
-+				var image = Image.LoadPixelData<Rgba32>(_outputData, width, height);
-+				image.SaveAsPng(fileStream);
 +#endif
++				if (!Main.dedServ) {
++					//var tex = new Texture2D(Main.graphics.GraphicsDevice, width, height);
++					//tex.SetData(_outputData);
++					//tex.SaveAsPng(fileStream, width, height);
++					var image = Image.LoadPixelData<Rgba32>(_outputData, width, height);
++					image.SaveAsPng(fileStream);
++				}
 +			}
 +		}
 +#endif
@@ -145,19 +146,13 @@
  		}
  
  		private void FinishCapture() {
-@@ -279,6 +_,7 @@
+@@ -279,6 +_,9 @@
  		}
  
  		public void Dispose() {
-+#if CLIENT
++			if (Main.dedServ)
++				return;
++
  			Monitor.Enter(_captureLock);
  			if (!_isDisposed) {
  				_frameBuffer.Dispose();
-@@ -293,6 +_,7 @@
- 				_isDisposed = true;
- 				Monitor.Exit(_captureLock);
- 			}
-+#endif
- 		}
- 	}
- }

@@ -29,11 +29,7 @@ namespace Terraria.ModLoader
 		internal static ILog Terraria { get; } = LogManager.GetLogger("Terraria");
 		internal static ILog tML { get; } = LogManager.GetLogger("tML");
 
-#if CLIENT
-		internal const string side = "client";
-#else
-		internal const string side = "server";
-#endif
+		internal static string side => Main.dedServ ? "server" : "client";
 
 		private static List<string> initWarnings = new List<string>();
 		internal static void Init() {
@@ -72,12 +68,12 @@ namespace Terraria.ModLoader
 			layout.ActivateOptions();
 
 			var appenders = new List<IAppender>();
-#if CLIENT
-			appenders.Add(new ConsoleAppender {
-				Name = "ConsoleAppender",
-				Layout = layout
-			});
-#endif
+			if (!Main.dedServ) { 
+				appenders.Add(new ConsoleAppender {
+					Name = "ConsoleAppender",
+					Layout = layout
+				});
+			}
 			appenders.Add(new DebugAppender {
 				Name = "DebugAppender",
 				Layout = layout
@@ -224,14 +220,15 @@ namespace Terraria.ModLoader
 
 				previousException = args.Exception;
 				var msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
-	#if CLIENT
-				if (ModCompile.activelyModding)
+
+				if (!Main.dedServ && ModCompile.activelyModding)
 					AddChatMessage(msg, Color.OrangeRed);
-	#else
-				Console.ForegroundColor = ConsoleColor.DarkMagenta;
-				Console.WriteLine(msg);
-				Console.ResetColor();
-	#endif
+				else {
+					Console.ForegroundColor = ConsoleColor.DarkMagenta;
+					Console.WriteLine(msg);
+					Console.ResetColor();
+				}
+
 				tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
 
 				if (oom) {

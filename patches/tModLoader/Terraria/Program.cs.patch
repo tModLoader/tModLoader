@@ -1,14 +1,14 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -6,6 +_,7 @@
+@@ -4,6 +_,7 @@
+ using System.Collections.Generic;
  using System.Diagnostics;
- #endif
  using System.IO;
 +using System.Linq;
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
-@@ -13,12 +_,15 @@
+@@ -11,12 +_,15 @@
  using System.Windows.Forms;
  using Terraria.Initializers;
  using Terraria.Localization;
@@ -25,7 +25,7 @@
  	{
  		/* hide unused consts
  		public const bool IsServer = false;
-@@ -57,21 +_,15 @@
+@@ -55,21 +_,15 @@
  			LoadedEverything = true;
  		}
  
@@ -56,7 +56,7 @@
  				}
  
  				ThingsLoaded++;
-@@ -87,10 +_,13 @@
+@@ -85,10 +_,13 @@
  		}
  
  		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
@@ -74,16 +74,17 @@
  		}
  
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -129,6 +_,8 @@
- #if CLIENT
- 			if (Debugger.IsAttached)
+@@ -127,6 +_,9 @@
+ 			if (!Main.dedServ && Debugger.IsAttached)
  				return;
-+
-+			Platform.Get<IWindowService>().HideConsole();
- #endif
  
++			if (!Main.dedServ)
++				Platform.Get<IWindowService>().HideConsole();
++
  			try {
-@@ -142,27 +_,57 @@
+ 				Console.OutputEncoding = Encoding.UTF8;
+ 				if (Platform.IsWindows)
+@@ -138,18 +_,46 @@
  			}
  		}
  
@@ -128,6 +129,10 @@
  			}
  
 -			LaunchParameters = Utils.ParseArguements(args);
+ #if SERVER
+ 			Main.dedServ = true;
+ #else
+@@ -158,12 +_,14 @@
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
  			InitializeConsoleOutput();
@@ -144,10 +149,10 @@
 +					main.PostSocialInitialize();
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
- #if CLIENT
+ 					if(!Main.dedServ)
 @@ -171,9 +_,10 @@
+ 					else
  					main.DedServ();
- #endif
  				}
 -				catch (Exception e) {
 -					DisplayException(e);
@@ -162,10 +167,11 @@
 @@ -208,9 +_,22 @@
  				}
  
- #if SERVER
+ 				if(Main.dedServ)
 -				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
 +				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
-+#else
+ 
+-				MessageBox.Show(text, "Terraria: Error");
 +				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
 +
 +				if (e is FolderCreationFailedException)
@@ -179,8 +185,7 @@
 +
 +					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
 +				}
- #endif
--				MessageBox.Show(text, "Terraria: Error");
++
  			}
  			catch {
  			}

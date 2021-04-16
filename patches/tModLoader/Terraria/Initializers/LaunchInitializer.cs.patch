@@ -10,7 +10,7 @@
  using Terraria.Social;
  
  namespace Terraria.Initializers
-@@ -24,6 +_,10 @@
+@@ -23,6 +_,10 @@
  			string s;
  			if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out int result))
  				Netplay.ListenPort = result;
@@ -21,7 +21,7 @@
  		}
  
  		private static void LoadClientParameters(Main game) {
-@@ -39,6 +_,29 @@
+@@ -38,6 +_,29 @@
  
  			if (HasParameter("-host"))
  				game.AutoHost();
@@ -51,7 +51,7 @@
  		}
  
  		private static void LoadServerParameters(Main game) {
-@@ -100,6 +_,16 @@
+@@ -99,6 +_,16 @@
  			if ((s2 = TryParameter("-language")) != null)
  				LanguageManager.Instance.SetLanguage(s2);
  
@@ -68,7 +68,7 @@
  			string worldName;
  			if ((worldName = TryParameter("-worldname")) != null)
  				game.SetWorldName(worldName);
-@@ -108,6 +_,15 @@
+@@ -107,6 +_,15 @@
  			if ((newMOTD = TryParameter("-motd")) != null)
  				game.NewMOTD(newMOTD);
  
@@ -84,7 +84,7 @@
  			string banFilePath;
  			if ((banFilePath = TryParameter("-banlist")) != null)
  				Netplay.BanFilePath = banFilePath;
-@@ -156,7 +_,7 @@
+@@ -155,7 +_,7 @@
  			return false;
  		}
  

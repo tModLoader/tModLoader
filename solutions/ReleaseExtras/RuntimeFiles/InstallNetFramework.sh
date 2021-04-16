@@ -8,11 +8,14 @@ script_dir=$(dirname "$script_path")
 #CD to the script location.
 cd "$script_dir"
 
+echo "Verifying Net Framework...."
+echo "This may take a few moments."
+
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <tModLoader.runtimeconfig.json) #sed, go die plskthx
 #Cut everything before the second dot
 channel=$(echo "$version" | cut -f1,2 -d'.')
-dotnet_dir="$script_dir/Netframework/dotnet"
+dotnet_dir="$script_dir/NetFramework/dotnet"
 install_dir="$dotnet_dir/$version"
 
 #If the dotnet dir exists, we need to do some cleanup
@@ -20,7 +23,7 @@ if [ -d "$dotnet_dir" ]; then
   # Find all folders inside the dotnet dir that don't match our target version and nuke it
   for folder in $(ls $script_dir/Libraries/dotnet/); do
     if [ ! $version = "$folder" ]; then
-      old_version="$script_dir/Libraries/dotnet/$folder"
+      old_version="$script_dir/NetFramework/dotnet/$folder"
       echo "Cleaning $old_version"
       rm -rf "$old_version"
     fi
