@@ -1,6 +1,7 @@
 --- src/Terraria/Terraria/Lang.cs
 +++ src/tModLoader/Terraria/Lang.cs
-@@ -8,5 +_,6 @@
+@@ -7,6 +_,7 @@
+ using Terraria.ID;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
@@ -62,8 +63,7 @@
  			return Language.GetTextValueWith("AnglerQuestText.Quest_" + ItemID.Search.GetName(id), obj);
  		}
  
-@@ -417,8 +_,8 @@
- 
+@@ -418,7 +_,7 @@
  		public static void BuildMapAtlas() {
  			if (Main.dedServ)
  				return;

@@ -257,7 +257,8 @@
  						Netplay.Disconnect = true;
  					}
  					else {
-@@ -2095,6 +_,6 @@
+@@ -2094,7 +_,7 @@
+ 				}
  				catch (Exception) {
  					if (Main.dedServ && num < NetMessage.buffer.Length - 100)
 -						Console.WriteLine("Error on message " + NetMessage.buffer[num + 2]);

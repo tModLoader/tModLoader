@@ -17,7 +17,8 @@
  		private bool IsSteamValid;
  		private object _steamTickLock = new object();
  		private object _steamCallbackLock = new object();
-@@ -25,12 +_,14 @@
+@@ -24,13 +_,15 @@
+ 
  		public void Initialize() {
  			_instance = this;
 -			if (!Main.dedServ && SteamAPI.RestartAppIfNecessary(new AppId_t(105600u))) {
