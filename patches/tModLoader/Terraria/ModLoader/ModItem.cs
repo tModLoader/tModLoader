@@ -338,7 +338,7 @@ namespace Terraria.ModLoader
 		/// <param name="damage"> The damage of the projectile. </param>
 		/// <param name="knockback"> The knockback of the projectile. </param>
 		/// <returns></returns>
-		public virtual bool Shoot(Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public virtual bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			return true;
 		}
 

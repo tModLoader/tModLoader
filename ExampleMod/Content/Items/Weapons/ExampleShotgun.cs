@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.useAmmo = AmmoID.Bullet; // The "ammo Id" of the ammo item that this weapon uses. Ammo IDs are magic numbers that usually correspond to the item id of one item that most commonly represent the ammo type.
 		}
 
-		public override bool Shoot(Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			const int NumProjectiles = 8; //The humber of projectiles that this gun will shoot.
 
 			for (int i = 0; i < NumProjectiles; i++) {

@@ -41,7 +41,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.shootSpeed = 8f; // Speed of the projectiles the sword will shoot
 		}
 		// This method gets called when firing your weapon/sword.
-		public override bool Shoot(Player player, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
 			float ceilingLimit = target.Y;
 			if (ceilingLimit > player.Center.Y - 200f) {

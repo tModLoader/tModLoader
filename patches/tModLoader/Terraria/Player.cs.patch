@@ -3783,7 +3783,7 @@
  					NetMessage.SendData(41, -1, -1, null, whoAmI);
  				}
  
-+				if (!CombinedHooks.Shoot(this, sItem, projectileSource_Item_WithPotentialAmmo, pointPoisition, velocity, projToShoot, Damage, KnockBack))
++				if (!CombinedHooks.Shoot(this, sItem, (ProjectileSource_Item_WithAmmo)projectileSource_Item_WithPotentialAmmo, pointPoisition, velocity, projToShoot, Damage, KnockBack))
 +					return;
 +
 +				goto ShootProj;

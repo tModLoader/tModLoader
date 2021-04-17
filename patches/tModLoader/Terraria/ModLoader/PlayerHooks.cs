@@ -648,9 +648,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookShoot = AddHook<Action<Item, IProjectileSource, Vector2, Vector2, int, int, float>>(p => p.Shoot);
+		private static HookList HookShoot = AddHook<Action<Item, ProjectileSource_Item_WithAmmo, Vector2, Vector2, int, int, float>>(p => p.Shoot);
 
-		public static void Shoot(Player player, Item item, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public static void Shoot(Player player, Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			foreach (int index in HookShoot.arr) {
 				player.modPlayers[index].Shoot(item, source, position, velocity, type, damage, knockback);
 			}

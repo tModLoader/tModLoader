@@ -510,7 +510,7 @@ namespace Terraria.ModLoader
 		/// <param name="type"> The ID of the projectile. </param>
 		/// <param name="damage"> The damage of the projectile. </param>
 		/// <param name="knockback"> The knockback of the projectile. </param>
-		public virtual void Shoot(Item item, IProjectileSource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public virtual void Shoot(Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		}
 
 		/// <summary>
