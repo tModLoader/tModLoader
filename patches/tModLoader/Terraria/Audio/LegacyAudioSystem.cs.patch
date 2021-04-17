@@ -1,35 +1,35 @@
 --- src/Terraria/Terraria/Audio/LegacyAudioSystem.cs
 +++ src/tModLoader/Terraria/Audio/LegacyAudioSystem.cs
-@@ -1,6 +_,7 @@
- using Microsoft.Xna.Framework.Audio;
- using System;
+@@ -4,6 +_,7 @@
  using System.Collections;
+ using System.Collections.Generic;
+ using System.IO;
 +using Terraria.ModLoader.Engine;
  
  namespace Terraria.Audio
  {
-@@ -13,10 +_,12 @@
- 		private WaveBank waveBank;
+@@ -97,10 +_,12 @@
+ 		}
  
  		public LegacyAudioSystem() {
--			engine = new AudioEngine("Content\\TerrariaMusic.xgs");
--			soundBank = new SoundBank(engine, "Content\\Sound Bank.xsb");
+-			Engine = new AudioEngine("Content\\TerrariaMusic.xgs");
+-			SoundBank = new SoundBank(Engine, "Content\\Sound Bank.xsb");
 +			var contentManager = (TMLContentManager)Main.instance.Content;
 +
-+			engine = new AudioEngine(contentManager.GetPath("TerrariaMusic.xgs"));
-+			soundBank = new SoundBank(engine, contentManager.GetPath("Sound Bank.xsb"));
- 			engine.Update();
--			waveBank = new WaveBank(engine, "Content\\Wave Bank.xwb", 0, 512);
-+			waveBank = new WaveBank(engine, contentManager.GetPath("Wave Bank.xwb"), 0, 512);
- 			engine.Update();
- 			music = new Cue[90];
- 		}
-@@ -27,6 +_,8 @@
++			Engine = new AudioEngine(contentManager.GetPath("TerrariaMusic.xgs"));
++			SoundBank = new SoundBank(Engine, contentManager.GetPath("Sound Bank.xsb"));
+ 			Engine.Update();
+-			WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb", 0, 512);
++			WaveBank = new WaveBank(Engine, contentManager.GetPath("Wave Bank.xwb"), 0, 512);
+ 			Engine.Update();
+ 			AudioTracks = new IAudioTrack[90];
+ 			TrackNamesByIndex = new Dictionary<int, string>();
+@@ -113,6 +_,8 @@
  				yield return null;
  			}
  		}
 +
-+		internal Cue GetCueInternal(string cueName) => soundBank.GetCue(cueName);
++		internal Cue GetCueInternal(string cueName) => SoundBank.GetCue(cueName);
  
  		public void LoadCue(int cueIndex, string cueName) {
- 			music[cueIndex] = soundBank.GetCue(cueName);
+ 			CueAudioTrack cueAudioTrack = new CueAudioTrack(SoundBank, cueName);
