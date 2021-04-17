@@ -20,7 +20,7 @@ namespace Terraria.ModLoader.Setup
 
 		public override void Run()
 		{
-			string targetExePath = @"src/tModLoader/Terraria/bin/WindowsDebug/net45/Terraria.exe";
+			string targetExePath = @"src/tModLoader/Terraria/bin/Debug/net5.0/tModLoader.dll";
 			if (!File.Exists(targetExePath)) {
 				var result = MessageBox.Show($"\"{targetExePath}\" does not exist. Use Vanilla exe instead?", "tML exe not found", MessageBoxButton.YesNo);
 				if (result != MessageBoxResult.Yes) {
@@ -33,23 +33,18 @@ namespace Terraria.ModLoader.Setup
 
 				targetExePath = TerrariaPath;
 			}
-			var outputPath = Path.Combine(libsPath, "XNA", "TerrariaHooks.dll");
+			var outputPath = Path.Combine(libsPath, "Common", "TerrariaHooks.dll");
 			if (File.Exists(outputPath))
 				File.Delete(outputPath);
 
-			taskInterface.SetStatus($"Hooking: Terraria.exe -> XNA/TerrariaHooks.dll");
+			taskInterface.SetStatus($"Hooking: tModLoader.dll -> TerrariaHooks.dll");
 			HookGen(targetExePath, outputPath);
 
-			taskInterface.SetStatus($"XnaToFna: XNA/TerrariaHooks.dll -> FNA/TerrariaHooks.dll");
+			taskInterface.SetStatus($"XnaToFna: XNA:TerrariaHooks.dll -> FNA:TerrariaHooks.dll");
 
-			var fnaPath = Path.Combine(libsPath, "FNA", "TerrariaHooks.dll");
-			if (File.Exists(fnaPath))
-				File.Delete(fnaPath);
+			XnaToFna(outputPath);
 
-			File.Copy(outputPath, fnaPath);
-			XnaToFna(fnaPath);
-
-			File.Delete(Path.ChangeExtension(fnaPath, "pdb"));
+			File.Delete(Path.ChangeExtension(outputPath, "pdb"));
 
 			MessageBox.Show("Success. Make sure you diff tModLoader after this");
 		}
@@ -60,9 +55,10 @@ namespace Terraria.ModLoader.Setup
 				InputPath = inputPath,
 				OutputPath = outputPath,
 				ReadingMode = ReadingMode.Deferred,
-				
-				DependencyDirs = { 
-					Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + @"\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5",
+
+				DependencyDirs = {
+					//TODO: Fix Hardcode on version
+					Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + @"\dotnet\Microsoft.NETCore.app\5.0.5",
 					Path.Combine(libsPath, "Common")
 				},
 				MissingDependencyThrow = false,
