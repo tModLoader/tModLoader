@@ -13,6 +13,7 @@ namespace Terraria.ModLoader.Setup
 		private const string libsPath = "src/tModLoader/Terraria/Libraries";
 		private const string binLibsPath = "src/tModLoader/Terraria/bin/Debug/net5.0/Libraries";
 		private const string tmlAssemblyPath = @"src/tModLoader/Terraria/bin/Debug/net5.0/tModLoader.dll";
+		private const string installedNetRefs = @"\dotnet\packs\Microsoft.NETCore.App.Ref\5.0.0\ref\net5.0";
 
 		public HookGenTask(ITaskInterface taskInterface) : base(taskInterface)
 		{
@@ -48,8 +49,7 @@ namespace Terraria.ModLoader.Setup
 				ReadingMode = ReadingMode.Deferred,
 
 				DependencyDirs = {
-					//TODO: Fix Hardcode on version
-					Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + @"\dotnet\Microsoft.NETCore.app\5.0.5",
+					Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + installedNetRefs
 				},
 				MissingDependencyThrow = false,
 			};
