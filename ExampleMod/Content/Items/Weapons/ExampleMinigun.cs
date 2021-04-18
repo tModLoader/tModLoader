@@ -50,13 +50,8 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		// The following method makes the gun slightly inaccurate
-		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
-			Vector2 velocity = new Vector2(speedX, speedY).RotatedByRandom(MathHelper.ToRadians(10));
-			
-			speedX = velocity.X;
-			speedY = velocity.Y;
-
-			return true;
+		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			velocity = velocity.RotatedByRandom(MathHelper.ToRadians(10));
 		}
 
 		// This method lets you adjust position of the gun in the player's hands. Play with these values until it looks good with your graphics.
