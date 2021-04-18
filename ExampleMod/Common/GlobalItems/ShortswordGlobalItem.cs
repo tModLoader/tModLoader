@@ -22,7 +22,7 @@ namespace ExampleMod.Common.GlobalItems
 
 		public override void Shoot(Item item, Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			// Make it shoot grenades for no reason
-			Projectile.NewProjectileDirect(source, player.Center, velocity * 5f, ProjectileID.Grenade, damage, knockBack, player.whoAmI);
+			Projectile.NewProjectileDirect(source, player.Center, velocity * 5f, ProjectileID.Grenade, damage, knockback, player.whoAmI);
 		}
 	}
 }

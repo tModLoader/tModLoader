@@ -41,16 +41,14 @@ namespace ExampleMod.Content.Items.Weapons
 			const int NumProjectiles = 8; //The humber of projectiles that this gun will shoot.
 
 			for (int i = 0; i < NumProjectiles; i++) {
-				Vector2 newVelocity = velocity;
-
 				// Rotate the velocity randomly by 30 degrees at max.
-				newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
+				Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
 
 				// Decrease velocity randomly for nicer visuals.
 				newVelocity *= 1f - Main.rand.NextFloat(0.3f);
 
 				//Create a projectile.
-				Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
+				Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
 			}
 
 			return false; // Return false because we don't want tModLoader to shoot projectile
