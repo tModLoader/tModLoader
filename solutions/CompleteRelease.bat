@@ -22,6 +22,7 @@ del "%destinationFolder%\tModLoader.exe"
 rmdir /S /Q "%destinationFolder%\ref"
 robocopy /S ReleaseExtras\RuntimeFiles "%destinationFolder%"
 robocopy /S ReleaseExtras\SteamFiles "%destinationFolder%"
+copy ReleaseExtras\tModLoader.png "%destinationFolder%\Libraries\Native\tModLoader.png"
 
 call python ZipAndMakeExecutable.py "%destinationFolder%" "%destinationFolder%.zip"
 call python ZipAndMakeExecutable.py "%destinationFolder%" "%destinationFolder%.tar.gz"
