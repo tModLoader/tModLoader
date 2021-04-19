@@ -85,9 +85,8 @@ namespace Terraria.ModLoader.Core
 		<TerrariaSteamPath>{SecurityElement.Escape(tMLDir)}</TerrariaSteamPath>
 		<tMLLibraryPath>$(TerrariaSteamPath)/Libraries</tMLLibraryPath>
 		<tMLName>tModLoader</tMLName>
-		<tMLServerName>tModLoader.dll -server</tMLServerName>
 		<tMLPath>$(tMLName).dll</tMLPath>
-		<tMLServerPath>$(tMLServerName)</tMLServerPath>
+		<tMLServerPath>tModLoader.dll -server</tMLServerPath>
 	</PropertyGroup>
 	<ItemGroup>
 		<Reference Include=""$(TerrariaSteamPath)/$(tMLName).dll"" />
