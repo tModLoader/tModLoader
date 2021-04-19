@@ -167,10 +167,6 @@ namespace Terraria.ModLoader.Core
 			if (modTypes.Length > 2)
 				throw new Exception(modName + " has multiple classes extending Mod. Only one Mod per mod is supported at the moment");
 
-			// if a mod has a Mod class, it must have the same internal name as the mod
-			if (modTypes.Length == 1 && modTypes[0].Name != modName) // todo, separate localisation key?
-				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorModNameDoesntMatchAssemblyName", modName, asmName));
-
 			modType = modTypes.SingleOrDefault() ?? typeof(Mod); // Mods don't really need a class extending Mod, we can always just make one for them
 		}
 
