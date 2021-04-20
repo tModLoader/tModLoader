@@ -143,7 +143,7 @@ namespace Terraria.ModLoader
 		public sealed override void SetupContent() {
 			TextureAssets.Tile[Type] = ModContent.GetTexture(Texture);
 
-			SetDefaults();
+			SetStaticDefaults();
 
 			//in Terraria.ObjectData.TileObject data make the following public:
 			//  newTile, newSubTile, newAlternate, addTile, addSubTile, addAlternate

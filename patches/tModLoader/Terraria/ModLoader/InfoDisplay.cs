@@ -49,13 +49,13 @@ namespace Terraria.ModLoader
 
 		public sealed override void SetupContent() {
 			ModContent.GetTexture(Texture);
-			SetDefaults();
+			SetStaticDefaults();
 		}
 
 		/// <summary>
 		/// You can assign values to InfoName here.
 		/// </summary>
-		public virtual void SetDefaults() {
+		public virtual void SetStaticDefaults() {
 		}
 
 		protected override void Register() {

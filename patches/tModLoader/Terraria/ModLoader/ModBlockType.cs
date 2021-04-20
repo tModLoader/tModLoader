@@ -49,7 +49,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to set the properties of this tile/wall. Many properties are stored as arrays throughout Terraria's code.
 		/// </summary>
-		public virtual void SetDefaults() {
+		public virtual void SetStaticDefaults() {
 		}
 
 		/// <summary>

@@ -36,7 +36,7 @@ namespace Terraria.ModLoader
 
 		public sealed override void SetupContent() {
 			TextureAssets.Buff[Type] = ModContent.GetTexture(Texture);
-			SetDefaults();
+			SetStaticDefaults();
 			BuffID.Search.Add(FullName, Type);
 		}
 
@@ -51,7 +51,7 @@ namespace Terraria.ModLoader
 		/// <item>Main.lightPet[Type] = true;</item>
 		/// </list>
 		/// </summary>
-		public virtual void SetDefaults() {
+		public virtual void SetStaticDefaults() {
 		}
 
 		/// <summary>
