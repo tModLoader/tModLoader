@@ -1,6 +1,6 @@
 --- src/tModLoader/Terraria.csproj
 +++ src/64bit/Terraria.csproj
-@@ -2,65 +_,120 @@
+@@ -2,65 +_,121 @@
    <Import Project="..\TerrariaSteamPath.targets" />
    <PropertyGroup>
      <TargetFramework>net45</TargetFramework>
@@ -113,6 +113,7 @@
      <PdbFile>bin\$(OutputName)</PdbFile>
 -    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
 +    <AssemblyName>tModLoader</AssemblyName>
++    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='XNADebug|AnyCPU'">
 +    <Prefer32Bit>false</Prefer32Bit>
