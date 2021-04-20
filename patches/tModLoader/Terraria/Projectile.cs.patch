@@ -451,6 +451,17 @@
  				}
  
  				if (minion && numUpdates == -1 && type != 625 && type != 628) {
+@@ -11831,7 +_,9 @@
+ 					overrideHeight = 4;
+ 				}
+ 
++				if (!ProjectileLoader.TileCollideStyle(this, ref overrideWidth, ref overrideHeight, ref flag6, ref vector)) {
++				}
+-				if (((type != 440 && type != 449 && type != 606) || ai[1] != 1f) && (type != 466 || localAI[1] != 1f) && (type != 580 || !(localAI[1] > 0f)) && (type != 640 || !(localAI[1] > 0f))) {
++				else if (((type != 440 && type != 449 && type != 606) || ai[1] != 1f) && (type != 466 || localAI[1] != 1f) && (type != 580 || !(localAI[1] > 0f)) && (type != 640 || !(localAI[1] > 0f))) {
+ 					if (aiStyle == 10) {
+ 						if (type >= 736 && type <= 738) {
+ 							base.velocity = Collision.TileCollision(base.position, base.velocity, base.width, base.height, flag6, flag6);
 @@ -12105,7 +_,9 @@
  						}
  					}

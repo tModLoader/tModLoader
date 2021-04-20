@@ -94,14 +94,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine how a projectile interacts with tiles. Width and height determine the projectile's hitbox for tile collision, and default to -1. Leave them as -1 to use the projectile's real size. Fallthrough determines whether the projectile can fall through platforms, etc., and defaults to true.
+		/// Allows you to determine how a projectile interacts with tiles. Return false if you completely override a projectile's tile collision behavior. Returns true by default.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="width"></param>
-		/// <param name="height"></param>
-		/// <param name="fallThrough"></param>
+		/// <param name="projectile"> The projectile. </param>
+		/// <param name="width"> The width of the hitbox the projectile will use for tile collision. If vanilla or a mod don't modify it, defaults to -1. Leave it as -1 to use the projectile's real width. </param>
+		/// <param name="height"> The height of the hitbox the projectile will use for tile collision. If vanilla or a mod don't modify it, defaults to -1. Leave it as -1 to use the projectile's real height. </param>
+		/// <param name="fallThrough"> Whether or not the projectile falls through platforms and similar tiles. </param>
+		/// <param name="hitboxOffsetMult"> If either width or height isn't -1, this determines by how much the tile collision hitbox will be offset from the projectile's real center. If set to null, the position will be offset by half the width and height, making the tile collision hitbox center align with the real center. </param>
 		/// <returns></returns>
-		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough) {
+		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2? hitboxOffsetMult) {
 			return true;
 		}
 
