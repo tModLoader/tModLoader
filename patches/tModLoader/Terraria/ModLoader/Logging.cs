@@ -26,8 +26,13 @@ namespace Terraria.ModLoader
 		public static readonly string LogArchiveDir = Path.Combine(LogDir, "Old");
 		public static string LogPath { get; private set; }
 
-		public static ILog Terraria { get; } = LogManager.GetLogger("Terraria");
+		internal static ILog Terraria { get; } = LogManager.GetLogger("Terraria");
 		internal static ILog tML { get; } = LogManager.GetLogger("tML");
+
+		/// <summary>
+		/// Available for logging when Mod.Logging is not available, such as field initialization
+		/// </summary>
+		public static ILog publicLogger { get; } = LogManager.GetLogger("publicLogger");
 
 		internal static string side => Main.dedServ ? "server" : "client";
 

@@ -1,42 +1,10 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using System;
-using System.Linq;
 
 namespace ExampleMod.Common.Players
 {
 	public class ExampleLuckPlayer : ModPlayer
 	{
-		public void DoStuff(int context) {
-			Logging.Terraria.Debug($"Regen Hook called. ExampleInventoryPlayer hashcode: {typeof(ExampleInventoryPlayer).GetHashCode()}, context: {context}");
-			var t = ModContent.GetInstance<ExampleInventoryPlayer>();
-			var n = t.FullName;
-		}
-
-		public override void Initialize() {
-			var context = typeof(ExampleInventoryPlayer).GetHashCode();
-			Logging.Terraria.Debug($"Registering hook. ExampleInventoryPlayer hashcode: {context}");
-
-			Action<int> lambda = (con) => {
-				Logging.Terraria.Debug($"Biome Hook called. ExampleInventoryPlayer hashcode: {typeof(ExampleInventoryPlayer).GetHashCode()}, context: {context}");
-				var t = ModContent.GetInstance<ExampleInventoryPlayer>();
-				var n = t.FullName;
-			};
-
-			// This local variable version works fine. No null issues.
-			On.Terraria.Player.UpdateBiomes += (orig, player) => lambda(context);
-
-			// This class method version does not work. It tosses an error as t is returned as null.
-			//On.Terraria.Player.UpdateLifeRegen += (orig, player) => DoStuff(context);
-
-			// This compact style does not work. It tosses an error as t is returned as null.
-			//On.Terraria.Player.UpdateManaRegen += (orig, player) => {
-			//	Logging.Terraria.Debug($"Biome Hook called. ExampleInventoryPlayer hashcode: {typeof(ExampleInventoryPlayer).GetHashCode()}, context: {context}");
-			//	var t = ModContent.GetInstance<ExampleInventoryPlayer>();
-			//	var n = t.FullName;
-			//};
-		}
-
 		public override void ModifyLuck(ref float luck) { // ModifyLuck is what you'll normally use for any modded content that wants to modify luck.
 			// Luck in total has a vanilla soft cap of 1. You can technically go above that value, but theres no benefit to be gained with vanilla luck calculations.
 			// However, modders can use the luck value however they want, so going above 1 may be beneficial. Decimal values are still recommended, though.
