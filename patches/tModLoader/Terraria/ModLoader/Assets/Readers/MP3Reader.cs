@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Audio;
-using MP3Sharp;
 using ReLogic.Content;
 using ReLogic.Content.Readers;
 using System;
 using System.IO;
+using XPT.Core.Audio.MP3Sharp;
 
 namespace Terraria.ModLoader.Assets
 {
@@ -18,7 +18,8 @@ namespace Terraria.ModLoader.Assets
 
 			mp3Stream.CopyTo(ms);
 
-			return new SoundEffect(ms.ToArray(), mp3Stream.Frequency, (AudioChannels)mp3Stream.ChannelCount) as T;
+			//TODO: The MP3Sharp library changed much, and no longer has a ChannelCount property. Investigate.
+			return new SoundEffect(ms.ToArray(), mp3Stream.Frequency, AudioChannels.Stereo) as T;
 		}
 
 		public void Dispose() {
