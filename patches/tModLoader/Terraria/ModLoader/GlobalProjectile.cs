@@ -322,11 +322,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <param name="index"></param>
-		/// <param name="drawCacheProjsBehindNPCsAndTiles"></param>
-		/// <param name="drawCacheProjsBehindNPCs"></param>
-		/// <param name="drawCacheProjsBehindProjectiles"></param>
-		/// <param name="drawCacheProjsOverWiresUI"></param>
-		public virtual void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {
+		/// <param name="behindNPCsAndTiles"></param>
+		/// <param name="behindNPCs"></param>
+		/// <param name="behindProjectiles"></param>
+		/// <param name="overPlayers"></param>
+		/// <param name="overWiresUI"></param>
+		public virtual void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
 		}
 
 		/// <summary>
