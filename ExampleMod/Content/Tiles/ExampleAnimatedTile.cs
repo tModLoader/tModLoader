@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Items;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
@@ -24,7 +25,7 @@ namespace ExampleMod.Content.Tiles
 			// The names of styles are self explanatory usually (you can see all existing templates at the link mentioned earlier)
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1x2Top);
 			// This last call adds a new tile
-			// Before that, you can make some changes to newTile like height etc.
+			// Before that, you can make some changes to newTile like height, origin and etc.
 			TileObjectData.addTile(Type);
 
 			// AddMapEntry is for setting the color and optional text associated with the Tile when viewed on the map
@@ -33,7 +34,7 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(238, 145, 105), name);
 
 			// Can't use this since texture is vertical
-			//animationFrameHeight = 56;
+			//AnimationFrameHeight = 56;
 		}
 
 		// Our textures animation frames are arranged horizontally, which isn't typical, so here we specify animationFrameWidth which we use later in AnimateIndividualTile
@@ -63,9 +64,9 @@ namespace ExampleMod.Content.Tiles
 			if (i % 4 == 0)
 				uniqueAnimationFrame += 3;
 			uniqueAnimationFrame %= 6;
-			
+
 			// frameYOffset = modTile.animationFrameHeight * Main.tileFrame [type] will already be set before this hook is called
-			// But we have a horizontal animated texture, so we overwrite this variable to use width instead of height
+			// But we have a horizontal animated texture, so we use frameXOffset instead of frameYOffset
 			frameXOffset = uniqueAnimationFrame * animationFrameWidth;
 		}
 
@@ -105,7 +106,7 @@ namespace ExampleMod.Content.Tiles
 				new Rectangle(tile.frameX + frameXOffset, tile.frameY, 16, 16),
 				Lighting.GetColor(i, j), 0f, default, 1f, effects, 0f);
 
-			return false; // return false to stop vanilla draw.
+			return false; // return false to stop vanilla draw
 		}*/
 
 		public override void AnimateTile(ref int frame, ref int frameCounter) {
@@ -124,7 +125,7 @@ namespace ExampleMod.Content.Tiles
 				frame = ++frame % 6;
 			}*/
 
-			// Above code works, but since we are just mimicking another tile, we can just use the same value.
+			// Above code works, but since we are just mimicking another tile, we can just use the same value
 			frame = Main.tileFrame[TileID.FireflyinaBottle];
 		}
 
@@ -142,6 +143,13 @@ namespace ExampleMod.Content.Tiles
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.FireflyinaBottle);
 			Item.createTile = ModContent.TileType<ExampleAnimatedTile>();
+		}
+
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Furniture.ExampleWorkbench>()
+				.Register();
 		}
 	}
 }
