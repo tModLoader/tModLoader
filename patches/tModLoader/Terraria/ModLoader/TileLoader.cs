@@ -542,8 +542,8 @@ namespace Terraria.ModLoader
 				hook(i, j, type, ref spriteEffects);
 			}
 		}
-		//in Terraria.Main.DrawTiles after if statements setting num11 and num12 call
-		//  TileLoader.SetDrawPositions(j, i, ref num9, ref num11, ref num12);
+		//in Terraria.GameContent.Drawing.TileDrawing.GetTileDrawData before if statements checking tileCache.halfBrick()
+		//  TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight);
 		public static void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) {
 			Tile tile = Main.tile[i, j];
 			if (tile.type >= TileID.Count) {
@@ -575,8 +575,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		//in Terraria.Main.Draw after small if statements setting num15 call
-		//  TileLoader.SetAnimationFrame(type, ref num15);
+		//in Terraria.GameContent.Drawing.TileDrawing.DrawSingleTile after GetTileDrawData() call
+		//  TileLoader.SetAnimationFrame(drawData.typeCache, tileX, tileY, ref drawData.addFrX, ref drawData.addFrY);
 		/// <summary>
 		/// Sets the animation frame. Sets frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type]; and then calls ModTile.AnimateIndividualTile
 		/// </summary>
@@ -593,9 +593,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		//in Terraria.Main.Draw after calling SetAnimationFrame call
-		//  if(!TileLoader.PreDraw(j, i, type, Main.spriteBatch))
-		//  { TileLoader.PostDraw(j, i, type, Main.spriteBatch); continue; }
+		//in Terraria.GameContent.Drawing.TileDrawing.DrawSingleTile after calling SetAnimationFrame call
+		//  if (!TileLoader.PreDraw(tileX, tileY, drawData.typeCache, Main.spriteBatch))
+		//  { TileLoader.PostDraw(tileX, tileY, drawData.typeCache, Main.spriteBatch); return; }
 		public static bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch) {
 			foreach (var hook in HookPreDraw) {
 				if (!hook(i, j, type, spriteBatch)) {
@@ -611,7 +611,7 @@ namespace Terraria.ModLoader
 				hook(i, j, type, spriteBatch, ref drawColor, ref nextSpecialDrawIndex);
 			}
 		}
-		//in Terraria.Main.Draw after if statement checking whether texture2D is null call
+		//in Terraria.GameContent.Drawing.TileDrawing.DrawSingleTile after if statement checking whether highlightTexture is null call
 		//  TileLoader.PostDraw(j, i, type, Main.spriteBatch);
 		public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch) {
 			GetTile(type)?.PostDraw(i, j, spriteBatch);
