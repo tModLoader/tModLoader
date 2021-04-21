@@ -5,7 +5,7 @@
  	public class CaptureManager
  	{
 -		public static CaptureManager Instance = new CaptureManager();
-+		private static CaptureManager _instance;
++		private static CaptureManager _instance = new CaptureManager();
  		private CaptureInterface _interface;
  		private CaptureCamera _camera;
  
