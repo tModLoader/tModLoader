@@ -38,7 +38,7 @@
  				writer.Write((byte)msgType);
  				switch (msgType) {
  					case 1:
--						writer.Write("Terraria" + 236);
+-						writer.Write("Terraria" + 237);
 +						writer.Write(BuildInfo.versionedName);
  						break;
  					case 2:
@@ -97,7 +97,7 @@
  								}
  							}
  
--							if (nPC2.type >= 0 && nPC2.type < 665 && Main.npcCatchable[nPC2.type])
+-							if (nPC2.type >= 0 && nPC2.type < 667 && Main.npcCatchable[nPC2.type])
 +							if (nPC2.type >= 0 && Main.npcCatchable[nPC2.type])
  								writer.Write((byte)nPC2.releaseOwner);
  

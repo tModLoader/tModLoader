@@ -307,20 +307,6 @@
  
  									if (flag7 && !hostile && num8 > 0)
  										num18 += nPC.checkArmorPenetration(num8);
-@@ -9734,10 +_,11 @@
- 										localAI[0] = 1f;
- 
- 									if (Main.netMode != 0) {
-+										// Vanilla doesn't sync knockback properly, probably a bug
- 										if (flag6)
--											NetMessage.SendData(28, -1, -1, null, i, num18, knockBack, num31, 1);
-+											NetMessage.SendData(28, -1, -1, null, i, num18, num7, num31, 1);
- 										else
--											NetMessage.SendData(28, -1, -1, null, i, num18, knockBack, num31);
-+											NetMessage.SendData(28, -1, -1, null, i, num18, num7, num31);
- 									}
- 
- 									if (type == 916)
 @@ -9901,6 +_,9 @@
  									if (type == 710)
  										BetsySharpnel(i);
