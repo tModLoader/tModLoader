@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -2,69 +_,140 @@
+@@ -2,69 +_,139 @@
    <Import Project="../Configuration.targets" />
    <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
@@ -101,8 +101,7 @@
 +    <!-- Export the ReleaseExtras files to bin -->
 +    <ItemGroup>
 +      <RuntimeFiles Include="../../../solutions\ReleaseExtras\RuntimeFiles\**" />
-+        <!-- NOTE: Currently steam does NOT like launching it for debugging. Have to look into -->
-+      <!--SteamFiles Include="../../../solutions\ReleaseExtras\SteamFiles\**" /-->
++      <SteamFiles Include="../../../solutions\ReleaseExtras\SteamFiles\**" />
 +    </ItemGroup>
 +    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True"/>
 +    <Copy SourceFiles="@(SteamFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True"/>
