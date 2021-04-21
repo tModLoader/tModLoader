@@ -293,33 +293,28 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind a projectile. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
+		/// Allows you to draw things behind a projectile. Use the Main.EntitySpriteDraw method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="spriteBatch"></param>
-		/// <returns></returns>
-		public virtual bool PreDrawExtras(Projectile projectile, SpriteBatch spriteBatch) {
+		/// <param name="projectile"> The projectile. </param>
+		public virtual bool PreDrawExtras(Projectile projectile) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Return false to stop the game from drawing the projectile (useful if you're manually drawing the projectile). Returns true by default.
+		/// Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Use the Main.EntitySpriteDraw method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="spriteBatch"></param>
-		/// <param name="lightColor"></param>
-		/// <returns></returns>
-		public virtual bool PreDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
+		/// <param name="projectile"> The projectile. </param>
+		/// <param name="lightColor"> The color of the light at the projectile's center. </param>
+		public virtual bool PreDraw(Projectile projectile, ref Color lightColor) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw things in front of a projectile. This method is called even if PreDraw returns false.
+		/// Allows you to draw things in front of a projectile. Use the Main.EntitySpriteDraw method for drawing. This method is called even if PreDraw returns false.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="spriteBatch"></param>
-		/// <param name="lightColor"></param>
-		public virtual void PostDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
+		/// <param name="projectile"> The projectile. </param>
+		/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
+		public virtual void PostDraw(Projectile projectile, Color lightColor) {
 		}
 
 		/// <summary>

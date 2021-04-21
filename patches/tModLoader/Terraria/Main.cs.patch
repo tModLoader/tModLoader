@@ -2176,15 +2176,86 @@
  				Tuple<Vector2, float> swingStats = n.GetSwingStats(NPCID.Sets.AttackTime[n.type] * 2, (int)n.ai[1], n.spriteDirection, num11, num11);
  				Vector2 vector4 = swingStats.Item1 + (swingStats.Item1 - n.Center) * scaleFactor + zero;
  				Vector2 origin4 = value9.Size() * new Vector2((n.spriteDirection != 1) ? 1 : 0, 1f);
-@@ -21663,6 +_,11 @@
+@@ -20302,6 +_,9 @@
+ 				return;
+ 
+ 			Projectile projectile = Main.projectile[i];
++			DrawProj_Inner(i, projectile);
++		}
++		private void DrawProj_DrawVoidLens(Projectile projectile, ref bool earlyReturn) {
+ 			if (projectile.type == 734) {
+ 				VoidLensHelper voidLensHelper = new VoidLensHelper(projectile);
+ 				_voidLensData.Clear();
+@@ -20314,10 +_,20 @@
+ 				return;
+ 			}
+ 
++			earlyReturn = false;
++		}
++		private void DrawProj_Inner(int i, Projectile projectile) {
+ 			float polePosX = 0f;
+ 			float polePosY = 0f;
+ 			LoadProjectile(projectile.type);
+ 			Vector2 mountedCenter = Main.player[projectile.owner].MountedCenter;
++			if (ProjectileLoader.PreDrawExtras(projectile)) {
++				DrawProj_DrawYoyoString(projectile, mountedCenter);
++				DrawProj_DrawExtras(projectile, mountedCenter, ref polePosX, ref polePosY);
++			}
++			DrawProj_Inner_DoDrawProj(i, projectile, mountedCenter, polePosX, polePosY);
++		}
++		private void DrawProj_DrawYoyoString(Projectile projectile, Vector2 mountedCenter) {
+ 			if (projectile.aiStyle == 99) {
+ 				Vector2 vector = mountedCenter;
+ 				vector.Y += Main.player[projectile.owner].gfxOffY;
+@@ -20416,7 +_,9 @@
+ 					EntitySpriteDraw(color: new Microsoft.Xna.Framework.Color((byte)((float)(int)white.R * num12), (byte)((float)(int)white.G * num12), (byte)((float)(int)white.B * num12), (byte)((float)(int)white.A * num12)), texture: TextureAssets.FishingLine.Value, position: new Vector2(vector.X - screenPosition.X + (float)TextureAssets.FishingLine.Width() * 0.5f, vector.Y - screenPosition.Y + (float)TextureAssets.FishingLine.Height() * 0.5f) - new Vector2(6f, 0f), sourceRectangle: new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.FishingLine.Width(), (int)num7), rotation: num4, origin: new Vector2((float)TextureAssets.FishingLine.Width() * 0.5f, 0f), scale: 1f, effects: SpriteEffects.None, worthless: 0);
+ 				}
+ 			}
+-			else {
++		}
++		private void DrawProj_DrawSpecialProjs(Projectile projectile, ref bool earlyReturn) {
++			/*else*/ {
+ 				if (projectile.aiStyle == 160) {
+ 					DrawKite(projectile);
+ 					return;
+@@ -20585,6 +_,9 @@
+ 				return;
+ 			}
+ 
++			earlyReturn = false;
++		}
++		private void DrawProj_DrawExtras(Projectile projectile, Vector2 mountedCenter, ref float polePosX, ref float polePosY) {
+ 			if (projectile.bobber && Main.player[projectile.owner].inventory[Main.player[projectile.owner].selectedItem].holdStyle != 0) {
+ 				DrawProj_FishingLine(projectile, ref polePosX, ref polePosY, mountedCenter);
+ 			}
+@@ -21656,6 +_,8 @@
+ 				DrawProj_FlailChains(projectile, mountedCenter);
+ 			}
+ 
++		}
++		private void DrawProj_Inner_DoDrawProj(int i, Projectile projectile, Vector2 mountedCenter, float polePosX, float polePosY) {
+ 			Microsoft.Xna.Framework.Color color31 = Lighting.GetColor((int)((double)projectile.position.X + (double)projectile.width * 0.5) / 16, (int)(((double)projectile.position.Y + (double)projectile.height * 0.5) / 16.0));
+ 			if (projectile.hide && !ProjectileID.Sets.DontAttachHideToAlpha[projectile.type])
+ 				color31 = Lighting.GetColor((int)mountedCenter.X / 16, (int)(mountedCenter.Y / 16f));
+@@ -21663,6 +_,21 @@
  			if (projectile.type == 14)
  				color31 = Microsoft.Xna.Framework.Color.White;
  
-+			if (!ProjectileLoader.PreDraw(projectile, spriteBatch, color31)) {
-+				ProjectileLoader.PostDraw(projectile, spriteBatch, color31);
-+				return;
++			if (ProjectileLoader.PreDraw(projectile, ref color31)) {
++				bool earlyReturn = true;
++				DrawProj_DrawVoidLens(projectile, ref earlyReturn);
++				if (earlyReturn)
++					goto PostDraw;
++				earlyReturn = true;
++				DrawProj_DrawSpecialProjs(projectile, ref earlyReturn);
++				if (earlyReturn)
++					goto PostDraw;
++				DrawProj_DrawNormalProjs(i, projectile, polePosX, polePosY, mountedCenter, ref color31);
 +			}
-+
++			PostDraw:
++			ProjectileLoader.PostDraw(projectile, color31);
++		}
++		private void DrawProj_DrawNormalProjs(int i, Projectile projectile, float polePosX, float polePosY, Vector2 mountedCenter, ref Color color31) {
  			int num136 = 0;
  			int num137 = 0;
  			if (projectile.type == 175)

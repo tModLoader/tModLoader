@@ -520,45 +520,46 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookPreDrawExtras = AddHook<Func<Projectile, SpriteBatch, bool>>(g => g.PreDrawExtras);
+		private static HookList HookPreDrawExtras = AddHook<Func<Projectile, bool>>(g => g.PreDrawExtras);
 
-		public static bool PreDrawExtras(Projectile projectile, SpriteBatch spriteBatch) {
+		public static bool PreDrawExtras(Projectile projectile) {
 			bool result = true;
 
 			foreach (GlobalProjectile g in HookPreDrawExtras.Enumerate(projectile.globalProjectiles)) {
-				result &= g.PreDrawExtras(projectile, spriteBatch);
+				result &= g.PreDrawExtras(projectile);
 			}
 
 			if (result && projectile.ModProjectile != null) {
-				return projectile.ModProjectile.PreDrawExtras(spriteBatch);
+				return projectile.ModProjectile.PreDrawExtras();
 			}
 
 			return result;
 		}
 
-		private static HookList HookPreDraw = AddHook<Func<Projectile, SpriteBatch, Color, bool>>(g => g.PreDraw);
+		private delegate bool DelegatePreDraw(Projectile projectile, ref Color lightColor);
+		private static HookList HookPreDraw = AddHook<DelegatePreDraw>(g => g.PreDraw);
 
-		public static bool PreDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
+		public static bool PreDraw(Projectile projectile, ref Color lightColor) {
 			bool result = true;
 
 			foreach (GlobalProjectile g in HookPreDraw.Enumerate(projectile.globalProjectiles)) {
-				result &= g.PreDraw(projectile, spriteBatch, lightColor);
+				result &= g.PreDraw(projectile, ref lightColor);
 			}
 
 			if (result && projectile.ModProjectile != null) {
-				return projectile.ModProjectile.PreDraw(spriteBatch, lightColor);
+				return projectile.ModProjectile.PreDraw(ref lightColor);
 			}
 
 			return result;
 		}
 
-		private static HookList HookPostDraw = AddHook<Action<Projectile, SpriteBatch, Color>>(g => g.PostDraw);
+		private static HookList HookPostDraw = AddHook<Action<Projectile, Color>>(g => g.PostDraw);
 
-		public static void PostDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
-			projectile.ModProjectile?.PostDraw(spriteBatch, lightColor);
+		public static void PostDraw(Projectile projectile, Color lightColor) {
+			projectile.ModProjectile?.PostDraw(lightColor);
 
 			foreach (GlobalProjectile g in HookPostDraw.Enumerate(projectile.globalProjectiles)) {
-				g.PostDraw(projectile, spriteBatch, lightColor);
+				g.PostDraw(projectile, lightColor);
 			}
 		}
 
