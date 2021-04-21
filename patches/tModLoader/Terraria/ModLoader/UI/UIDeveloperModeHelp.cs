@@ -165,13 +165,13 @@ namespace Terraria.ModLoader.UI
 				foreach (var monoPath in new[] { "tModLoader", "tModLoaderServer" })
 					File.Copy("tModLoader-mono", monoPath, true);
 
-				// vanilla start scripts need to be upgraded to copy back the sys/ folder
+/*				// vanilla start scripts need to be upgraded to copy back the sys/ folder
 				var kickPaths = new List<string> { "TerrariaServer" };
 				if (!File.ReadAllText("Terraria").Contains("forwarder"))
 					kickPaths.Add("Terraria");
 
 				foreach (var kickPath in kickPaths)
-					File.Copy("tModLoader-kick", kickPath, true);
+					File.Copy("tModLoader-kick", kickPath, true);*/
 
 				monoStartScriptsUpdated = true;
 				_updateRequired = true;
@@ -185,8 +185,8 @@ namespace Terraria.ModLoader.UI
 		private void DownloadModCompile() {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 			// download the ModCompile for the platform we don't have
-			string url = $"https://github.com/tModLoader/tModLoader/releases/download/{ModLoader.versionTag}/ModCompile_{(PlatformUtilities.IsXNA ? "FNA" : "XNA")}.zip";
-			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{ModLoader.versionedName}.zip");
+			string url = $"https://github.com/tModLoader/tModLoader/releases/download/{BuildInfo.versionTag}/ModCompile_{(PlatformUtilities.IsXNA ? "FNA" : "XNA")}.zip";
+			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{BuildInfo.versionedName}.zip");
 			Directory.CreateDirectory(ModCompile.modCompileDir);
 			Interface.downloadProgress.OnDownloadsComplete += () => {
 				Main.menuMode = Interface.developerModeHelpID;
@@ -197,13 +197,17 @@ namespace Terraria.ModLoader.UI
 					var currentEXEFilename = Process.GetCurrentProcess().ProcessName;
 					string originalXMLFile = Path.Combine(ModCompile.modCompileDir, "tModLoader.xml");
 					string correctXMLFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"{currentEXEFilename}.xml");
-					File.Copy(originalXMLFile, correctXMLFile, true);
-					File.Delete(originalXMLFile);
+					if (originalXMLFile != correctXMLFile) {
+						File.Copy(originalXMLFile, correctXMLFile, true);
+						File.Delete(originalXMLFile);
+					}
 					string originalPDBFilename = ReLogic.OS.Platform.IsWindows ? "tModLoader.pdb" : (ReLogic.OS.Platform.IsLinux ? "tModLoader_Linux.pdb" : "tModLoader_Mac.pdb");
 					string originalPDBFile = Path.Combine(ModCompile.modCompileDir, originalPDBFilename);
 					string correctPDBFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"{currentEXEFilename}.pdb");
-					File.Copy(originalPDBFile, correctPDBFile, true);
-					File.Delete(originalPDBFile);
+					if (originalPDBFile != correctPDBFile) {
+						File.Copy(originalPDBFile, correctPDBFile, true);
+						File.Delete(originalPDBFile);
+					}
 					// Move the remaining XML documentation files to references folder.
 					if (!Directory.Exists(ModCompile.modReferencesPath))
 						Directory.CreateDirectory(ModCompile.modReferencesPath);

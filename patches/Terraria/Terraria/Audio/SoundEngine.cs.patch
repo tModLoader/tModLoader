@@ -8,17 +8,17 @@
  		private static LegacySoundPlayer _legacyPlayer;
  		private static SoundPlayer _player;
  		private static bool _areSoundsPaused;
-@@ -30,6 +_,9 @@
+@@ -33,6 +_,9 @@
+ 				if (Main.audioSystem != null)
+ 					Main.audioSystem.UpdateAudioEngine();
  
- 		public static void Update() {
- 			if (IsAudioSupported) {
 +#if FNA
 +				Main.engine?.Update();
 +#endif
  				SoundInstanceGarbageCollector.Update();
  				bool flag = (!Main.hasFocus || Main.gamePaused) && Main.netMode == 0;
  				if (!_areSoundsPaused && flag)
-@@ -56,31 +_,52 @@
+@@ -69,31 +_,52 @@
  		}
  
  		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
@@ -74,7 +74,7 @@
  		}
  
  		public static void StopTrackedSounds() {
-@@ -89,10 +_,14 @@
+@@ -102,10 +_,14 @@
  		}
  
  		public static SoundEffect GetTrackableSoundByStyleId(int id) {
@@ -89,7 +89,7 @@
  		}
  
  		public static void StopAmbientSounds() {
-@@ -101,10 +_,14 @@
+@@ -114,10 +_,14 @@
  		}
  
  		public static ActiveSound FindActiveSound(SoundStyle style) {

@@ -1,34 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
 
 namespace Terraria.ModLoader.Default.Developer
 {
-	internal abstract class DeveloperItem : ModItem
+	internal abstract class DeveloperItem : ModLoaderModItem
 	{
-		public override string Name => $"{SetName}_{ItemEquipType}";
-
 		public virtual string TooltipBrief { get; }
-		public abstract string SetName { get; }
-		public abstract EquipType ItemEquipType { get; }
 		public virtual string SetSuffix => "'s";
 
-		protected string EquipTypeSuffix
-			=> Enum.GetName(typeof(EquipType), ItemEquipType);
-
-		public override string Texture => $"ModLoader/Developer.{SetName}_{EquipTypeSuffix}";
+		public string InternalSetName => GetType().Name.Split('_')[0];
 
 		public override void SetStaticDefaults() {
-			string displayName =
-				EquipTypeSuffix != null
-				? $"{SetName}{SetSuffix} {EquipTypeSuffix}"
-				: "ITEM NAME ERROR";
+			var displayName = Name.Replace('_', ' ');
+			displayName.Insert(displayName.IndexOf(' '), SetSuffix);
 			DisplayName.SetDefault(displayName);
 		}
 
 		public override void SetDefaults() {
-			item.rare = 11;
-			item.vanity = true;
+			Item.rare = 11;
+			Item.vanity = true;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {

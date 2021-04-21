@@ -2,55 +2,46 @@ using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader.Default.Patreon
 {
+	[AutoloadEquip(EquipType.Head)]
 	internal class Saethar_Head : PatreonItem
 	{
-		public override string SetName => "Saethar";
-		public override EquipType ItemEquipType => EquipType.Head;
-
 		public override void SetDefaults() {
 			base.SetDefaults();
-			item.Size = new Vector2(34);
+			Item.Size = new Vector2(34);
 		}
 	}
 
+	[AutoloadEquip(EquipType.Body)]
 	internal class Saethar_Body : PatreonItem
 	{
-		public override string SetName => "Saethar";
-		public override EquipType ItemEquipType => EquipType.Body;
-
 		public override void SetDefaults() {
 			base.SetDefaults();
-			item.Size = new Vector2(30, 18);
+			Item.Size = new Vector2(30, 18);
 		}
 	}
 
+	[AutoloadEquip(EquipType.Legs)]
 	internal class Saethar_Legs : PatreonItem
 	{
-		public override string SetName => "Saethar";
-		public override EquipType ItemEquipType => EquipType.Legs;
-
 		public override void SetDefaults() {
 			base.SetDefaults();
-			item.Size = new Vector2(22, 18);
+			Item.Size = new Vector2(22, 18);
 		}
 	}
 
+	[AutoloadEquip(EquipType.Wings)]
 	internal class Saethar_Wings : PatreonItem
 	{
-		public override string SetName => "Saethar";
-		public override EquipType ItemEquipType => EquipType.Wings;
-
 		public override void SetDefaults() {
 			base.SetDefaults();
-			item.vanity = false;
-			item.width = 24;
-			item.height = 8;
-			item.accessory = true;
+			Item.vanity = false;
+			Item.width = 24;
+			Item.height = 8;
+			Item.accessory = true;
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
 			player.wingTimeMax = 150;
 		}
-
 	}
 }

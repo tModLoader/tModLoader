@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Engine
@@ -112,7 +113,7 @@ namespace Terraria.ModLoader.Engine
 			Logging.tML.Debug("Disabled Main.Support4K");
 			*/
 
-			string reportStatus = "Unknown";
+			string reportStatus = Language.GetTextValue("tModLoader.GraphicsEngineReportUnknown");
 			log4net.LogManager.Shutdown();
 			string logContents = System.IO.File.ReadAllText(Logging.LogPath);
 			try {
@@ -121,7 +122,7 @@ namespace Terraria.ModLoader.Engine
 				var values = new NameValueCollection
 				{
 					{ "steamid64", ModLoader.SteamID64 },
-					{ "modloaderversion", ModLoader.versionedName },
+					{ "modloaderversion", BuildInfo.versionedName },
 					{ "category", "ReportFatalEngineReload" },
 					{ "logcontents", logContents },
 				};
@@ -130,15 +131,15 @@ namespace Terraria.ModLoader.Engine
 			}
 			catch {
 				// Can't log since log4net.LogManager.Shutdown happened.
-				reportStatus = "Failure";
+				reportStatus = Language.GetTextValue("tModLoader.GraphicsEngineReportFailure");
 			}
 
 			//var modsAffected = ModContent.HiDefMods.Count == 0 ? "No mods will be affected." : $"The following mods will be affected {string.Join(", ", ModContent.HiDefMods.Select(m => m.DisplayName))}";
-			string message = $"tML encountered a crash when testing some experimental graphics features. If this issue persists consistently, you may have to edit config.json and set the Support4K setting to false. \nPlease restart your game.\nReport Status: {reportStatus}";
+			string message = Language.GetTextValue("tModLoader.GraphicsEngineFailureMessage", reportStatus);
 #if !MAC
-			MessageBox.Show(message, "Graphics Engine Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			MessageBox.Show(message, Language.GetTextValue("tModLoader.GraphicsEngineFailure"), MessageBoxButtons.OK, MessageBoxIcon.Error);
 #else
-			UI.Interface.MessageBoxShow(message, "Graphics Engine Failure");
+			UI.Interface.MessageBoxShow(message, Language.GetTextValue("tModLoader.GraphicsEngineFailure"));
 #endif
 			Environment.Exit(1);
 		}

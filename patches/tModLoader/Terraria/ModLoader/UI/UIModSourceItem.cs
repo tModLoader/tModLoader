@@ -14,6 +14,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;
@@ -25,6 +26,7 @@ namespace Terraria.ModLoader.UI
 	internal class UIModSourceItem : UIPanel
 	{
 		private readonly string _mod;
+		internal readonly string modName;
 		private readonly Asset<Texture2D> _dividerTexture;
 		private readonly UIText _modName;
 		private readonly LocalMod _builtMod;
@@ -41,7 +43,8 @@ namespace Terraria.ModLoader.UI
 			SetPadding(6f);
 
 			string addendum = Path.GetFileName(mod).Contains(" ") ? $"  [c/FF0000:{Language.GetTextValue("tModLoader.MSModSourcesCantHaveSpaces")}]" : "";
-			_modName = new UIText(Path.GetFileName(mod) + addendum) {
+			modName = Path.GetFileName(mod);
+			_modName = new UIText(modName + addendum) {
 				Left = { Pixels = 10 },
 				Top = { Pixels = 5 }
 			};
@@ -157,7 +160,7 @@ namespace Terraria.ModLoader.UI
 		private void PublishMod(UIMouseEvent evt, UIElement listeningElement) {
 			if (ModLoader.modBrowserPassphrase == "") {
 				Main.menuMode = Interface.enterPassphraseMenuID;
-				Interface.enterPassphraseMenu.SetGotoMenu(Interface.modSourcesID);
+				Interface.enterPassphraseMenu.SetGotoMenu(Interface.modSourcesID, Interface.modSourcesID);
 				return;
 			}
 			SoundEngine.PlaySound(10);
@@ -175,76 +178,105 @@ namespace Terraria.ModLoader.UI
 				var modFile = _builtMod.modFile;
 				var bp = _builtMod.properties;
 
-				var files = new List<UploadFile>();
-				files.Add(new UploadFile {
-					Name = "file",
-					Filename = Path.GetFileName(modFile.path),
-					//    ContentType = "text/plain",
-					Content = File.ReadAllBytes(modFile.path)
-				});
-				if (modFile.HasFile("icon.png")) {
-					using (modFile.Open())
-						files.Add(new UploadFile {
-							Name = "iconfile",
-							Filename = "icon.png",
-							Content = modFile.GetBytes("icon.png")
-						});
-				}
-				if (bp.beta)
-					throw new WebException(Language.GetTextValue("tModLoader.BetaModCantPublishError"));
-				if (bp.buildVersion != modFile.tModLoaderVersion)
-					throw new WebException(Language.GetTextValue("OutdatedModCantPublishError.BetaModCantPublishError"));
+				PublishModInner(modFile, bp);
+			} catch (WebException e) {
+				UIModBrowser.LogModBrowserException(e);
+			}
+		}
 
-				var values = new NameValueCollection
-				{
+		internal static void PublishModCommandLine(string modName, string passphrase, string steamid64) {
+			try {
+				InstallVerifier.IsGoG = true;
+				ModLoader.SteamID64 = steamid64;
+				ModLoader.modBrowserPassphrase = passphrase;
+
+				if (string.IsNullOrWhiteSpace(ModLoader.modBrowserPassphrase) || string.IsNullOrWhiteSpace(ModLoader.SteamID64)) {
+					throw new Exception("-passphrase and -steamid64 are required for publishing via command line");
+				}
+
+				LocalMod localMod;
+				var modPath = Path.Combine(ModLoader.ModPath, modName + ".tmod");
+				var modFile = new TmodFile(modPath);
+				using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
+					localMod = new LocalMod(modFile);
+
+				PublishModInner(modFile, localMod.properties, true);
+			}
+			catch (Exception e) {
+				Console.WriteLine("Something went wrong with command line mod publishing.");
+				Console.WriteLine(e.ToString());
+				Environment.Exit(1);
+			}
+			Environment.Exit(0);
+		}
+
+		private static void PublishModInner(TmodFile modFile, BuildProperties bp, bool commandLine = false) {
+			var files = new List<UploadFile>();
+			files.Add(new UploadFile {
+				Name = "file",
+				Filename = Path.GetFileName(modFile.path),
+				//    ContentType = "text/plain",
+				Content = File.ReadAllBytes(modFile.path)
+			});
+			if (modFile.HasFile("icon.png")) { // Test this on server
+				using (modFile.Open())
+					files.Add(new UploadFile {
+						Name = "iconfile",
+						Filename = "icon.png",
+						Content = modFile.GetBytes("icon.png")
+					});
+			}
+			//if (bp.beta)
+			//	throw new WebException(Language.GetTextValue("tModLoader.BetaModCantPublishError"));
+			if (bp.buildVersion != modFile.TModLoaderVersion)
+				throw new WebException(Language.GetTextValue("OutdatedModCantPublishError.BetaModCantPublishError"));
+
+			var values = new NameValueCollection
+			{
 					{ "displayname", bp.displayName },
 					{ "displaynameclean", string.Join("", ChatManager.ParseMessage(bp.displayName, Color.White).Where(x=> x.GetType() == typeof(TextSnippet)).Select(x => x.Text)) },
-					{ "name", modFile.name },
+					{ "name", modFile.Name },
 					{ "version", "v"+bp.version },
 					{ "author", bp.author },
 					{ "homepage", bp.homepage },
 					{ "description", bp.description },
 					{ "steamid64", ModLoader.SteamID64 },
-					{ "modloaderversion", "tModLoader v"+modFile.tModLoaderVersion },
+					{ "modloaderversion", "tModLoader v"+modFile.TModLoaderVersion },
 					{ "passphrase", ModLoader.modBrowserPassphrase },
 					{ "modreferences", String.Join(", ", bp.modReferences.Select(x => x.mod)) },
 					{ "modside", bp.side.ToFriendlyString() },
 				};
-				if (values["steamid64"].Length != 17)
-					throw new WebException($"The steamid64 '{values["steamid64"]}' is invalid, verify that you are logged into Steam and don't have a pirated copy of Terraria.");
-				if (string.IsNullOrEmpty(values["author"]))
-					throw new WebException($"You need to specify an author in build.txt");
-				ServicePointManager.Expect100Continue = false;
-				string url = "http://javid.ddns.net/tModLoader/publishmod.php";
-				uploadTimer = new Stopwatch();
-				uploadTimer.Start();
-				using (PatientWebClient client = new PatientWebClient()) {
-					ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => true;
-					Interface.progress.Show(displayText: $"Uploading: {modFile.name}", gotoMenu: Interface.modSourcesID, cancel: client.CancelAsync);
-					client.UploadProgressChanged += (s, e) => {
-						double elapsedSeconds = uploadTimer.Elapsed.TotalSeconds;
-						double speed = elapsedSeconds > 0.0 ? e.BytesSent / elapsedSeconds : 0.0;
+			if (values["steamid64"].Length != 17)
+				throw new WebException($"The steamid64 '{values["steamid64"]}' is invalid, verify that you are logged into Steam and don't have a pirated copy of Terraria.");
+			if (string.IsNullOrEmpty(values["author"]))
+				throw new WebException($"You need to specify an author in build.txt");
+			ServicePointManager.Expect100Continue = false;
+			string url = "http://javid.ddns.net/tModLoader/publishmod.php";
+			using (PatientWebClient client = new PatientWebClient()) {
+				ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => true;
+				Interface.progress.Show(displayText: $"Uploading: {modFile.Name}", gotoMenu: Interface.modSourcesID, cancel: client.CancelAsync);
 
-						Interface.progress.SubProgressText = $"{UIMemoryBar.SizeSuffix(e.BytesSent, 2)} / {UIMemoryBar.SizeSuffix(e.TotalBytesToSend, 2)} " + 
-						$"({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
-
-						Interface.progress.Progress = (float)e.BytesSent / e.TotalBytesToSend;
-					};
+				var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", System.Globalization.NumberFormatInfo.InvariantInfo);
+				client.Headers["Content-Type"] = "multipart/form-data; boundary=" + boundary;
+				//boundary = "--" + boundary;
+				byte[] data = UploadFile.GetUploadFilesRequestData(files, values, boundary);
+				if (commandLine) {
+					var result = client.UploadData(new Uri(url), data); // could use async version for progress output maybe
+					string response = HandlePublishResponse(modFile, result);
+					Console.WriteLine(Language.GetTextValue("tModLoader.MBServerResponse", response));
+					if (result.Length <= 256 || result[result.Length - 256 - 1] != '~') {
+						throw new Exception("Publish failed due to invalid response from server");
+					}
+				}
+				else {
 					client.UploadDataCompleted += (s, e) => PublishUploadDataComplete(s, e, modFile);
-
-					var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", System.Globalization.NumberFormatInfo.InvariantInfo);
-					client.Headers["Content-Type"] = "multipart/form-data; boundary=" + boundary;
-					//boundary = "--" + boundary;
-					byte[] data = UploadFile.GetUploadFilesRequestData(files, values, boundary);
+					client.UploadProgressChanged += (s, e) => Interface.progress.Progress = (float)e.BytesSent / e.TotalBytesToSend;
 					client.UploadDataAsync(new Uri(url), data);
 				}
 			}
-			catch (WebException e) {
-				UIModBrowser.LogModBrowserException(e);
-			}
 		}
 
-		private void PublishUploadDataComplete(object s, UploadDataCompletedEventArgs e, TmodFile theTModFile) {
+		private static void PublishUploadDataComplete(object s, UploadDataCompletedEventArgs e, TmodFile theTModFile) {
 			if (e.Error != null) {
 				if (e.Cancelled) {
 					Main.menuMode = Interface.modSourcesID;
@@ -254,10 +286,15 @@ namespace Terraria.ModLoader.UI
 				return;
 			}
 
-			if (ModLoader.TryGetMod(theTModFile.name, out var mod))
+			if (ModLoader.TryGetMod(theTModFile.Name, out var mod))
 				mod.Close();
 
 			var result = e.Result;
+			string response = HandlePublishResponse(theTModFile, result);
+			UIModBrowser.LogModPublishInfo(response);
+		}
+
+		private static string HandlePublishResponse(TmodFile theTModFile, byte[] result) {
 			int responseLength = result.Length;
 			if (result.Length > 256 && result[result.Length - 256 - 1] == '~') {
 				using (var fileStream = File.Open(theTModFile.path, FileMode.Open, FileAccess.ReadWrite))
@@ -272,7 +309,7 @@ namespace Terraria.ModLoader.UI
 				responseLength -= 257;
 			}
 			string response = Encoding.UTF8.GetString(result, 0, responseLength);
-			UIModBrowser.LogModPublishInfo(response);
+			return response;
 		}
 
 		private class PatientWebClient : WebClient

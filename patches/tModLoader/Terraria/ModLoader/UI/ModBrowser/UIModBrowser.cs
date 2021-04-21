@@ -241,7 +241,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 					ServicePointManager.Expect100Continue = false;
 					string url = "http://javid.ddns.net/tModLoader/listmods.php";
 					var values = new NameValueCollection {
-						{"modloaderversion", ModLoader.versionedName},
+						{"modloaderversion", BuildInfo.versionedName},
 						{"platform", ModLoader.CompressedPlatformRepresentation},
 						{"netversion", FrameworkVersion.Version.ToString()},
 						{"EarlyAutoUpdate", EarlyAutoUpdate.ToString()}
@@ -316,7 +316,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				}
 
 				var updateObject = (JObject)jsonObject["update"];
-				if (updateObject != null) {
+				if (updateObject != null && !Engine.Steam.IsSteamApp) {
 					_updateAvailable = true;
 					_updateText = (string)updateObject["message"];
 					_updateUrl = (string)updateObject["url"];

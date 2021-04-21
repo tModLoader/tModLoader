@@ -10,14 +10,13 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The ID of this underground background style.
 		/// </summary>
-		public int Slot {get;internal set;}
+		public int Slot { get; internal set; }
 
 		protected override sealed void Register() {
 			Slot = UgBgStyleLoader.ReserveBackgroundSlot();
 
 			ModTypeLookup<ModUgBgStyle>.Register(this);
 			UgBgStyleLoader.ugBgStyles.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>
@@ -41,7 +40,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The ID of this surface background style.
 		/// </summary>
-		public int Slot {get;internal set;}
+		public int Slot { get; internal set; }
 
 		protected override sealed void Register() {
 			Slot = SurfaceBgStyleLoader.ReserveBackgroundSlot();
@@ -99,7 +98,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves to collect functions that operate on any kind of background style, without being specific to one single background style.
 	/// </summary>
-	public class GlobalBgStyle:ModType
+	public abstract class GlobalBgStyle : ModType
 	{
 		protected override sealed void Register() {
 			ModTypeLookup<GlobalBgStyle>.Register(this);

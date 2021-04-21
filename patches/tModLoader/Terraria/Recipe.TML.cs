@@ -98,15 +98,16 @@ namespace Terraria
 		public readonly Mod Mod;
 		public readonly List<Condition> Conditions = new List<Condition>();
 
-		private int numIngredients = 0;
-		private int numTiles = 0;
-		
 		public delegate void OnCraftCallback(Recipe recipe, Item item);
 		public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
 		
 		internal OnCraftCallback OnCraftHooks { get; private set; }
 		internal ConsumeItemCallback ConsumeItemHooks { get; private set; }
 
+		private void AddGroup(int id) {
+			acceptedGroups.Add(id);
+		}
+		
 		/// <summary>
 		/// The index of the recipe in the Main.recipe array.
 		/// </summary>
@@ -118,13 +119,7 @@ namespace Terraria
 		/// <param name="itemID">The item identifier.</param>
 		/// <param name="stack">The stack.</param>
 		public Recipe AddIngredient(int itemID, int stack = 1) {
-			if (numIngredients >= maxRequirements)
-				throw new RecipeException($"Recipe already has the maximum number of ingredients, which is {maxRequirements}.");
-			
-			requiredItem[numIngredients].SetDefaults(itemID, false);
-			requiredItem[numIngredients].stack = stack;
-			
-			numIngredients++;
+			requiredItem.Add(new Item(itemID) { stack = stack });
 			
 			return this;
 		}
@@ -174,7 +169,7 @@ namespace Terraria
 			var group = RecipeGroup.recipeGroups[id];
 			
 			AddIngredient(group.IconicItemId, stack);
-			RequireGroup(name);
+			AddGroup(id);
 
 			return this;
 		}
@@ -192,7 +187,7 @@ namespace Terraria
 			RecipeGroup rec = RecipeGroup.recipeGroups[recipeGroupId];
 			
 			AddIngredient(rec.IconicItemId, stack);
-			RequireGroup(recipeGroupId);
+			AddGroup(recipeGroupId);
 
 			return this;
 		}
@@ -203,7 +198,7 @@ namespace Terraria
 		/// <param name="recipeGroup">The RecipeGroup.</param>
 		public Recipe AddRecipeGroup(RecipeGroup recipeGroup, int stack = 1) {
 			AddIngredient(recipeGroup.IconicItemId, stack);
-			RequireGroup(recipeGroup.ID);
+			AddGroup(recipeGroup.ID);
 
 			return this;
 		}
@@ -214,13 +209,10 @@ namespace Terraria
 		/// <param name="tileID">The tile identifier.</param>
 		/// <exception cref="RecipeException">No tile has ID " + tileID</exception>
 		public Recipe AddTile(int tileID) {
-			if (numTiles >= maxRequirements)
-				throw new RecipeException($"Recipe already has the maximum number of required tiles, which is {maxRequirements}.");
-
 			if (tileID < 0 || tileID >= TileLoader.TileCount)
 				throw new RecipeException($"No tile has ID '{tileID}'.");
 			
-			requiredTile[numTiles++] = tileID;
+			requiredTile.Add(tileID);
 
 			return this;
 		}
@@ -324,6 +316,9 @@ namespace Terraria
 
 		internal static Recipe Create(Mod mod, int result, int amount) {
 			var recipe = new Recipe(mod);
+
+			if (!RecipeLoader.setupRecipes)
+				throw new RecipeException("A Recipe can only be created inside recipe related methods");
 
 			recipe.createItem.SetDefaults(result, false);
 			recipe.createItem.stack = amount;

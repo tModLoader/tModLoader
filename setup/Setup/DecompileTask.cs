@@ -90,6 +90,11 @@ namespace Terraria.ModLoader.Setup
 			if (File.Exists(TerrariaPath) && File.Exists(TerrariaServerPath))
 				return true;
 
+#if AUTO
+			Console.WriteLine($"Automatic setup critical failure, can't find both {TerrariaPath} and {TerrariaServerPath}");
+			Environment.Exit(1);
+#endif
+
 			return (bool) taskInterface.Invoke(new Func<bool>(SelectTerrariaDialog));
 		}
 
@@ -130,6 +135,10 @@ namespace Terraria.ModLoader.Setup
 			items.Add(WriteTerrariaProjectFile(mainModule, files, resources, decompiledLibraries));
 			items.Add(WriteCommonConfigurationFile());
 
+#if AUTO
+			ExecuteParallel(items, true, 1);
+			return;
+#endif
 			ExecuteParallel(items);
 		}
 
@@ -160,9 +169,12 @@ namespace Terraria.ModLoader.Setup
 
 		protected PEFile ReadModule(string path, Version version)
 		{
+			bool usingVersionedPath = false;
 			var versionedPath = path.Insert(path.LastIndexOf('.'), $"_v{version}");
-			if (File.Exists(versionedPath))
+			if (File.Exists(versionedPath)) {
 				path = versionedPath;
+				usingVersionedPath = true;
+			}
 
 			taskInterface.SetStatus("Loading " + Path.GetFileName(path));
 			using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
@@ -171,6 +183,11 @@ namespace Terraria.ModLoader.Setup
 				var assemblyName = new AssemblyName(module.FullName);
 				if (assemblyName.Version != version)
 					throw new Exception($"{assemblyName.Name} version {assemblyName.Version}. Expected {version}");
+
+				if (!usingVersionedPath) {
+					taskInterface.SetStatus("Backup up " + Path.GetFileName(path) + " to " + Path.GetFileName(versionedPath));
+					File.Copy(path, versionedPath);
+				}
 
 				return module;
 			}

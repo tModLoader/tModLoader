@@ -2,35 +2,28 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.
 	/// </summary>
-	public class GlobalNPC:ModType
+	public abstract class GlobalNPC : GlobalType<NPC>
 	{
-		internal int index;
-		internal int instanceIndex;
-
 		protected sealed override void Register() {
 			NPCLoader.VerifyGlobalNPC(this);
 
 			ModTypeLookup<GlobalNPC>.Register(this);
 			
-			index = NPCLoader.globalNPCs.Count;
+			index = (ushort)NPCLoader.globalNPCs.Count;
 
 			NPCLoader.globalNPCs.Add(this);
 		}
 
-		/// <summary>
-		/// Whether to create a new GlobalNPC instance for every NPC that exists. 
-		/// Useful for storing information on an npc. Defaults to false. 
-		/// Return true if you need to store information (have non-static fields).
-		/// </summary>
-		public virtual bool InstancePerEntity => false;
-
-		public GlobalNPC Instance(NPC npc) => InstancePerEntity ? npc.globalNPCs[instanceIndex] : this;
+		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
 
 		/// <summary>
 		/// Returns a clone of this GlobalNPC. 
@@ -58,6 +51,15 @@ namespace Terraria.ModLoader
 		/// <param name="numPlayers"></param>
 		/// <param name="bossLifeScale"></param>
 		public virtual void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale) {
+		}
+
+		/// <summary>
+		/// Allows you to set an NPC's information in the Bestiary.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="database"></param>
+		/// <param name="bestiaryEntry"></param>
+		public virtual void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 		}
 
 		/// <summary>
@@ -134,27 +136,27 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to call NPCLoot on your own when the NPC dies, rather then letting vanilla call it on its own. Useful for things like dropping loot from the nearest segment of a worm boss. Returns false by default.
+		/// Allows you to call OnKill on your own when the NPC dies, rather then letting vanilla call it on its own. Returns false by default.
 		/// </summary>
-		/// <returns>Return true to stop vanilla from calling NPCLoot on its own. Do this if you call NPCLoot yourself.</returns>
-		public virtual bool SpecialNPCLoot(NPC npc) {
+		/// <returns>Return true to stop vanilla from calling OnKill on its own. Do this if you call OnKill yourself.</returns>
+		public virtual bool SpecialOnKill(NPC npc) {
 			return false;
 		}
 
 		/// <summary>
-		/// Allows you to determine whether or not the NPC will drop anything at all. Return false to stop the NPC from dropping anything. Returns true by default.
+		/// Allows you to determine whether or not NPC from doing anything on death (besides die). Return false to stop the NPC from doing anything special. Returns true by default.
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <returns></returns>
-		public virtual bool PreNPCLoot(NPC npc) {
+		public virtual bool PreKill(NPC npc) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when an NPC dies (for example, dropping items and setting ModWorld fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
+		/// Allows you to make things happen when an NPC dies (for example, setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
 		/// </summary>
 		/// <param name="npc"></param>
-		public virtual void NPCLoot(NPC npc) {
+		public virtual void OnKill(NPC npc) {
 		}
 
         /// <summary>
@@ -164,6 +166,21 @@ namespace Terraria.ModLoader
         /// <param name="player">The player catching the NPC</param>
         /// <param name="item">The item that will be spawned</param>
         public virtual void OnCatchNPC(NPC npc, Player player, Item item) {
+		}
+
+		/// <summary>
+		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="npcLoot"></param>
+		public virtual void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
+		}
+
+		/// <summary>
+		/// Allows you to add and modify global loot rules that are conditional, i.e. vanilla's biome keys and souls.
+		/// </summary>
+		/// <param name="globalLoot"></param>
+		public virtual void ModifyGlobalLoot(GlobalLoot globalLoot) {
 		}
 
 		/// <summary>
@@ -312,10 +329,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to customize the boss head texture used by an NPC based on its state.
+		/// Allows you to customize the boss head texture used by an NPC based on its state. Set index to -1 to stop the texture from being displayed.
 		/// </summary>
 		/// <param name="npc"></param>
-		/// <param name="index"></param>
+		/// <param name="index">The index for NPCID.Sets.BossHeadTextures</param>
 		public virtual void BossHeadSlot(NPC npc, ref int index) {
 		}
 

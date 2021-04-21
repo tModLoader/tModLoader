@@ -80,8 +80,8 @@ namespace Terraria.ModLoader.UI
 			}
 
 			var uIScrollbar = new UIScrollbar {
-				Height = { Pixels = -50, Percent = 1f },
-				Top = { Pixels = 50 },
+				Height = { Pixels = ModLoader.showMemoryEstimates ? -72 : -50, Percent = 1f },
+				Top = { Pixels = ModLoader.showMemoryEstimates ? 72 : 50 },
 				HAlign = 1f
 			}.WithView(100f, 1000f);
 			uIPanel.Append(uIScrollbar);
@@ -291,7 +291,30 @@ namespace Terraria.ModLoader.UI
 			updateNeeded = false;
 			filter = filterTextBox.Text;
 			modList.Clear();
-			modList.AddRange(items.Where(item => item.PassFilters()));
+			var filterResults = new UIModsFilterResults();
+			var visibleItems = items.Where(item => item.PassFilters(filterResults)).ToList();
+			if (filterResults.AnyFiltered) {
+				var panel = new UIPanel();
+				panel.Width.Set(0, 1f);
+				modList.Add(panel);
+				var filterMessages = new List<string>();
+				if (filterResults.filteredByEnabled > 0)
+					filterMessages.Add(Language.GetTextValue("tModLoader.ModsXModsFilteredByEnabled", filterResults.filteredByEnabled));
+				if (filterResults.filteredByModSide > 0)
+					filterMessages.Add(Language.GetTextValue("tModLoader.ModsXModsFilteredByModSide", filterResults.filteredByModSide));
+				if (filterResults.filteredBySearch > 0)
+					filterMessages.Add(Language.GetTextValue("tModLoader.ModsXModsFilteredBySearch", filterResults.filteredBySearch));
+				string filterMessage = string.Join("\n", filterMessages);
+				var text = new UIText(filterMessage);
+				text.Width.Set(0, 1f);
+				text.IsWrapped = true;
+				text.WrappedTextBottomPadding = 0;
+				text.TextOriginX = 0f;
+				text.Recalculate();
+				panel.Append(text);
+				panel.Height.Set(text.MinHeight.Pixels + panel.PaddingTop, 0f);
+			}
+			modList.AddRange(visibleItems);
 			Recalculate();
 			modList.ViewPosition = modListViewPosition;
 		}
@@ -358,6 +381,14 @@ namespace Terraria.ModLoader.UI
 					loading = false;
 				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
 		}
+	}
+
+	public class UIModsFilterResults
+	{
+		public int filteredBySearch;
+		public int filteredByModSide;
+		public int filteredByEnabled;
+		public bool AnyFiltered => filteredBySearch > 0 || filteredByModSide > 0 || filteredByEnabled > 0;
 	}
 
 	public static class ModsMenuSortModesExtensions

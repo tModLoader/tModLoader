@@ -12,72 +12,53 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of ModProjectile (preferably overriding this class) to pass as parameters to Mod.AddProjectile.
 	/// </summary>
-	public class ModProjectile : ModTexturedType
+	public abstract class ModProjectile : ModTexturedType
 	{
-		//add modProjectile property to Terraria.Projectile (internal set)
-		//set modProjectile to null at beginning of Terraria.Projectile.SetDefaults
-		/// <summary>
-		/// The projectile object that this ModProjectile controls.
-		/// </summary>
-		/// <value>
-		/// The projectile.
-		/// </value>
-		public Projectile projectile { get; internal set; }
+		/// <summary> The projectile object that this ModProjectile controls. </summary>
+		public Projectile Projectile { get; internal set; }
 
-		/// <summary>
-		/// Shorthand for projectile.type;
-		/// </summary>
-		public int Type => projectile.type;
-
-		/// <summary>
-		/// The translations for the display name of this projectile.
-		/// </summary>
+		/// <summary> The translations for the display name of this projectile. </summary>
 		public ModTranslation DisplayName { get; internal set; }
 
-		/// <summary>
-		/// The file name of this projectile's glow texture file in the mod loader's file space. If it does not exist it is ignored.
-		/// </summary>
+		/// <summary> Determines which type of vanilla projectile this ModProjectile will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0. </summary>
+		public int AIType { get; set; }
+
+		/// <summary> Determines which of the player's cooldown counters to use (-1, 0, or 1) when this projectile damages it. Defaults to -1. </summary>
+		public int CooldownSlot { get; set; } = -1;
+
+		/// <summary> How far to the right of its position this projectile should be drawn. Defaults to 0. </summary>
+		public int DrawOffsetX { get; set; }
+
+		/// <summary> The vertical origin offset from the projectile's center when it is drawn. The origin is essentially the point of rotation. This field will also determine the vertical drawing offset of the projectile. </summary>
+		public int DrawOriginOffsetY { get; set; }
+
+		/// <summary> The horizontal origin offset from the projectile's center when it is drawn. </summary>
+		public float DrawOriginOffsetX { get; set; }
+
+		/// <summary> If this projectile is held by the player, determines whether it is drawn in front of or behind the player's arms. Defaults to false. </summary>
+		public bool DrawHeldProjInFrontOfHeldItemAndArms { get; set; }
+
+		/// <summary> The file name of this projectile's glow texture file in the mod loader's file space. If it does not exist it is ignored. </summary>
 		public virtual string GlowTexture => Texture + "_Glow";
-		/// <summary>
-		/// Determines which type of vanilla projectile this ModProjectile will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0.
-		/// </summary>
-		public int aiType = 0;
-		/// <summary>
-		/// Determines which of the player's cooldown counters to use (-1, 0, or 1) when this projectile damages it. Defaults to -1.
-		/// </summary>
-		public int cooldownSlot = -1;
-		/// <summary>
-		/// How far to the right of its position this projectile should be drawn. Defaults to 0.
-		/// </summary>
-		public int drawOffsetX = 0;
-		/// <summary>
-		/// The vertical origin offset from the projectile's center when it is drawn. The origin is essentially the point of rotation. This field will also determine the vertical drawing offset of the projectile.
-		/// </summary>
-		public int drawOriginOffsetY = 0;
-		/// <summary>
-		/// The horizontal origin offset from the projectile's center when it is drawn.
-		/// </summary>
-		public float drawOriginOffsetX = 0f;
-		/// <summary>
-		/// If this projectile is held by the player, determines whether it is drawn in front of or behind the player's arms. Defaults to false.
-		/// </summary>
-		public bool drawHeldProjInFrontOfHeldItemAndArms = false;
+
+		/// <summary>  Shorthand for projectile.type; </summary>
+		public int Type => Projectile.type;
 
 		public ModProjectile() {
-			projectile = new Projectile { modProjectile = this };
+			Projectile = new Projectile { ModProjectile = this };
 		}
 
 		protected sealed override void Register() {
 			ModTypeLookup<ModProjectile>.Register(this);
 
-			projectile.type = ProjectileLoader.ReserveProjectileID();
+			Projectile.type = ProjectileLoader.ReserveProjectileID();
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ProjectileName.{Name}");
 
 			ProjectileLoader.projectiles.Add(this);
 		}
 
-		public override void SetupContent() {
-			ProjectileLoader.SetDefaults(projectile, false);
+		public sealed override void SetupContent() {
+			ProjectileLoader.SetDefaults(Projectile, false);
 			AutoStaticDefaults();
 			SetStaticDefaults();
 
@@ -117,13 +98,13 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			TextureAssets.Projectile[projectile.type] = ModContent.GetTexture(Texture);
-			Main.projFrames[projectile.type] = 1;
-			if (projectile.hostile) {
-				Main.projHostile[projectile.type] = true;
+			TextureAssets.Projectile[Projectile.type] = ModContent.GetTexture(Texture);
+			Main.projFrames[Projectile.type] = 1;
+			if (Projectile.hostile) {
+				Main.projHostile[Projectile.type] = true;
 			}
-			if (projectile.aiStyle == 7) {
-				Main.projHook[projectile.type] = true;
+			if (Projectile.aiStyle == 7) {
+				Main.projHook[Projectile.type] = true;
 			}
 			if (DisplayName.IsDefault())
 				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
@@ -213,10 +194,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not this projectile is capable of killing tiles (such as grass) and damaging NPCs/players. Return false to prevent it from doing any sort of damage. Returns true by default.
+		/// Whether or not this projectile is capable of killing tiles (such as grass) and damaging NPCs/players.
+		/// Return false to prevent it from doing any sort of damage.
+		/// Return true if you want the projectile to do damage regardless of the default blacklist.
+		/// Return null to let the projectile follow vanilla can-damage-anything rules. This is what happens by default.
 		/// </summary>
-		public virtual bool CanDamage() {
-			return true;
+		public virtual bool? CanDamage() {
+			return null;
 		}
 
 		/// <summary>
@@ -394,6 +378,12 @@ namespace Terraria.ModLoader
 		/// The speed at which the grapple pulls the player after hitting something. Defaults to 11, but the Bat Hook uses 16.
 		/// </summary>
 		public virtual void GrapplePullSpeed(Player player, ref float speed) {
+		}
+
+		/// <summary>
+		/// The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile.
+		/// </summary>
+		public virtual void GrappleTargetPoint(Player player, ref float grappleX, ref float grappleY) {
 		}
 
 		/// <summary>

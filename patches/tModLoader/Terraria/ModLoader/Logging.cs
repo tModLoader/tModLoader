@@ -45,8 +45,9 @@ namespace Terraria.ModLoader
 
 			ConfigureAppenders();
 
-			tML.InfoFormat("Starting {0} {1} {2} ({3})", ModLoader.versionedName, ReLogic.OS.Platform.Current.Type, side, DateTime.Now.ToString("d"));
-			tML.InfoFormat("Running on {0} {1}", FrameworkVersion.Framework, FrameworkVersion.Version);
+			tML.InfoFormat("Starting tModLoader {0} {1}", side, BuildInfo.BuildIdentifier);
+			tML.InfoFormat("Log date: {0}", DateTime.Now.ToString("d"));
+			tML.InfoFormat("Running on {0} {1} {2}", ReLogic.OS.Platform.Current.Type, FrameworkVersion.Framework, FrameworkVersion.Version);
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
 			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
 			tML.InfoFormat("Launch Parameters: {0}", string.Join(" ", Program.LaunchParameters.Select(p => (p.Key + " " + p.Value).Trim())));
@@ -238,7 +239,7 @@ namespace Terraria.ModLoader
 				tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
 
 				if (oom) {
-					const string error = "Game ran out of memory. You'll have to find which mod is consuming lots of memory, and contact the devs or remove it.";
+					string error = Language.GetTextValue("tModLoader.OutOfMemory");
 					Logging.tML.Fatal(error);
 					Interface.MessageBoxShow(error);
 					Environment.Exit(1);

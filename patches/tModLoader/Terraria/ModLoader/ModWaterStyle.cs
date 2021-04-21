@@ -7,12 +7,12 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Represents a style of water that gets drawn, based on factors such as the background. This is used to determine the color of the water, as well as other things as determined by the hooks below.
 	/// </summary>
-	public abstract class ModWaterStyle:ModTexturedType
+	public abstract class ModWaterStyle : ModTexturedType
 	{
 		/// <summary>
 		/// The ID of the water style.
 		/// </summary>
-		public int Type {get;internal set;}
+		public int Type { get; internal set; }
 
 		public virtual string BlockTexture => Texture + "_Block";
 
@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 			WaterStyleLoader.waterStyles.Add(this);
 		}
 
-		public override void SetupContent() {
+		public sealed override void SetupContent() {
 			LiquidRenderer.Instance._liquidTextures[Type] = ModContent.GetTexture(Texture);
 			TextureAssets.Liquid[Type] = ModContent.GetTexture(BlockTexture);
 		}
@@ -70,12 +70,12 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Represents a style of waterfalls that gets drawn. This is mostly used to determine the color of the waterfall.
 	/// </summary>
-	public class ModWaterfallStyle:ModTexturedType
+	public abstract class ModWaterfallStyle : ModTexturedType
 	{
 		/// <summary>
 		/// The ID of this waterfall style.
 		/// </summary>
-		public int Type {get;internal set;}
+		public int Type { get; internal set; }
 
 		protected sealed override void Register() {
 			Type = WaterfallStyleLoader.ReserveStyle();
@@ -84,7 +84,7 @@ namespace Terraria.ModLoader
 			WaterfallStyleLoader.waterfallStyles.Add(this);
 		}
 
-		public override void SetupContent() {
+		public sealed override void SetupContent() {
 			Main.instance.waterfallManager.waterfallTexture[Type] = ModContent.GetTexture(Texture);
 		}
 

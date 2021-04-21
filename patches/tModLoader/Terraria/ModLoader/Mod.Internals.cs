@@ -90,20 +90,18 @@ namespace Terraria.ModLoader
 				AsyncLoadQueue.Dequeue().Wait();
 
 			AutoloadLocalization();
-			IList<Type> modGores = new List<Type>();
-			IList<Type> modSounds = new List<Type>();
+			ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName, Assets);
 
+			IList<Type> modSounds = new List<Type>();
 
 			Type modType = GetType();
 			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName, StringComparer.InvariantCulture)) {
-				if (type == modType){continue;}
-				if (type.IsAbstract){continue;}
-				if (type.GetConstructor(new Type[0]) == null){continue;}//don't autoload things with no default constructor
+				if (type == modType) continue;
+				if (type.IsAbstract) continue;
+				if (type.ContainsGenericParameters) continue;
+				if (type.GetConstructor(new Type[0]) == null) continue;//don't autoload things with no default constructor
 
-				if (type.IsSubclassOf(typeof(ModGore))) {
-					modGores.Add(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModSound))) {
+				if (type.IsSubclassOf(typeof(ModSound))) {
 					modSounds.Add(type);
 				}
 				else if (typeof(ILoadable).IsAssignableFrom(type)) {
@@ -114,7 +112,7 @@ namespace Terraria.ModLoader
 				}
 			}
 			if (Properties.AutoloadGores) {
-				AutoloadGores(modGores);
+				GoreLoader.AutoloadGores(this);
 			}
 			if (Properties.AutoloadSounds) {
 				AutoloadSounds(modSounds);
@@ -181,18 +179,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private void AutoloadGores(IList<Type> modGores) {
-			var modGoreNames = modGores.ToDictionary(t => t.FullName);
-
-			foreach (string texturePath in Assets.EnumeratePaths<Texture2D>().Where(t => t.StartsWith("Gores/"))) {
-				ModGore modGore = null;
-				if (modGoreNames.TryGetValue($"{Name}.{texturePath.Replace('/', '.')}", out Type t))
-					modGore = (ModGore)Activator.CreateInstance(t);
-
-				AddGore($"{Name}/{texturePath}", modGore);
-			}
-		}
-
 		private void AutoloadSounds(IList<Type> modSounds) {
 			var modSoundNames = modSounds.ToDictionary(t => t.FullName);
 
@@ -232,6 +218,9 @@ namespace Terraria.ModLoader
 		/// Loads .lang files
 		/// </summary>
 		private void AutoloadLocalization() {
+			if (File == null)
+				return;
+
 			var modTranslationDictionary = new Dictionary<string, ModTranslation>();
 			foreach (var translationFile in File.Where(entry => Path.GetExtension(entry.Name) == ".lang")) {
 				// .lang files need to be UTF8 encoded.

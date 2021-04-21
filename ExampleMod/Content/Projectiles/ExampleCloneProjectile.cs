@@ -13,7 +13,6 @@ namespace ExampleMod.Content.Projectiles
 	/// </summary>
 	public class ExampleCloneProjectile : ModProjectile
 	{
-
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Meowmere V2");
 		}
@@ -24,16 +23,16 @@ namespace ExampleMod.Content.Projectiles
 			//so we don't have to go into the source and copy the stats ourselves. It saves a lot of time and looks much cleaner;
 			//if you're going to copy the stats of a projectile, use CloneDefaults().
 
-			projectile.CloneDefaults(ProjectileID.Meowmere);
+			Projectile.CloneDefaults(ProjectileID.Meowmere);
 
-			//To further the Cloning process, we can also copy the ai of any given projectile using aiType, since we want
+			//To further the Cloning process, we can also copy the ai of any given projectile using AIType, since we want
 			//the projectile to essentially behave the same way as the vanilla projectile.
-			aiType = ProjectileID.Meowmere;
+			AIType = ProjectileID.Meowmere;
 
 			//After CloneDefaults has been called, we can now modify the stats to our wishes, or keep them as they are.
 			//For the sake of example, lets make our projectile penetrate enemies a few more times than the vanilla projectile.
 			//This can be done by modifying projectile.penetrate
-			projectile.penetrate += 3;
+			Projectile.penetrate += 3;
 		}
 
 		//While there are several different ways to change how our projectile could behave differently, lets make it so
@@ -45,8 +44,8 @@ namespace ExampleMod.Content.Projectiles
 				//(Remember that all rotation in Terraria is based on Radians, NOT Degrees!)
 				launchVelocity = launchVelocity.RotatedBy(MathHelper.PiOver4);
 
-				//Spawn new projectile with the newly rotated velocity, belonging the the original projectile owner.
-				Projectile.NewProjectile(projectile.Center, launchVelocity, ProjectileID.Meowmere, projectile.damage / 2, projectile.knockBack, projectile.owner);
+				//Spawn a new projectile with the newly rotated velocity, belonging to the original projectile owner. The new projectile will inherit the spawning source of this projectile.
+				Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center, launchVelocity, ProjectileID.Meowmere, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
 			}
 		}
 
@@ -56,7 +55,7 @@ namespace ExampleMod.Content.Projectiles
 		public override bool OnTileCollide(Vector2 oldVelocity) {
 			//Since there are two Richochet sounds for the Meowmere, we can randomly choose between them like this:
 
-			SoundEngine.PlaySound(Main.rand.NextBool() ? SoundID.Item57 : SoundID.Item58, projectile.position);
+			SoundEngine.PlaySound(Main.rand.NextBool() ? SoundID.Item57 : SoundID.Item58, Projectile.position);
 
 			//Essentially, using ? and : is a glorified and shortened method of creating a simple if statement in
 			//a single line. If Main.rand.NextBool() reurns true, it plays SoundID.Item57. If it returns false, then it

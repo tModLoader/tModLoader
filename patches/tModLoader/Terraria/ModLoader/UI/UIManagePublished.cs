@@ -83,7 +83,8 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate() {
 			_myPublishedMods.Clear();
-			TextPanel.SetText(Language.GetTextValue("tModLoader.MBMyPublishedMods"), 0.8f, true);
+			string text = Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBUnknown"));
+			TextPanel.SetText(text, 0.8f, true);
 			string response = string.Empty;
 			try {
 				ServicePointManager.Expect100Continue = false;
@@ -91,7 +92,7 @@ namespace Terraria.ModLoader.UI
 				var values = new NameValueCollection
 				{
 					{ "steamid64", ModLoader.SteamID64 },
-					{ "modloaderversion", ModLoader.versionedName },
+					{ "modloaderversion", BuildInfo.versionedName },
 					{ "passphrase", ModLoader.modBrowserPassphrase },
 				};
 				byte[] result = IO.UploadFile.UploadFiles(url, null, values);
@@ -124,8 +125,8 @@ namespace Terraria.ModLoader.UI
 						(string)o["name"],
 						(string)o["version"],
 						(string)o["author"],
-						(string)o["downloads"],
-						(string)o["downloadsversion"],
+						(int)o["downloads"],
+						(int)o["downloadsversion"],
 						(string)o["modloaderversion"]
 					);
 					_myPublishedMods.Add(modItem);

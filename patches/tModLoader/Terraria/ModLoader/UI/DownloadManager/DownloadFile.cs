@@ -120,7 +120,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 
 			Request.Method = WebRequestMethods.Http.Get;
 			Request.ProtocolVersion = ProtocolVersion;
-			Request.UserAgent = $"tModLoader/{ModLoader.versionTag}";
+			Request.UserAgent = $"tModLoader/{BuildInfo.versionTag}";
 			Request.KeepAlive = true;
 		}
 

@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Items.Consumables
 		public const int MaxExampleLifeFruits = 10;
 		public const int LifePerFruit = 10;
 
-		public override string Texture => "Terraria/Item_" + ItemID.LifeFruit;
+		public override string Texture => "Terraria/Images/Item_" + ItemID.LifeFruit;
 
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault($"Permanently increases maximum life by {LifePerFruit}\nUp to {MaxExampleLifeFruits} can be used");
@@ -24,8 +24,8 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void SetDefaults() {
-			item.CloneDefaults(ItemID.LifeFruit);
-			item.color = Color.Purple;
+			Item.CloneDefaults(ItemID.LifeFruit);
+			Item.color = Color.Purple;
 		}
 
 		public override bool CanUseItem(Player player) {
@@ -65,13 +65,13 @@ namespace ExampleMod.Content.Items.Consumables
 		public int exampleLifeFruits;
 
 		public override void ResetEffects() {
-			player.statLifeMax2 += exampleLifeFruits * ExampleLifeFruit.LifePerFruit;
+			Player.statLifeMax2 += exampleLifeFruits * ExampleLifeFruit.LifePerFruit;
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 			ModPacket packet = Mod.GetPacket();
 			packet.Write((byte)ExampleModMessageType.ExamplePlayerSyncPlayer);
-			packet.Write((byte)player.whoAmI);
+			packet.Write((byte)Player.whoAmI);
 			packet.Write(exampleLifeFruits);
 			packet.Send(toWho, fromWho);
 		}

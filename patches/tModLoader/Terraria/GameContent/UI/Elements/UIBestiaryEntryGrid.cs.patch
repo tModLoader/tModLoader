@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/UI/Elements/UIBestiaryEntryGrid.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/UIBestiaryEntryGrid.cs
+@@ -100,7 +_,7 @@
+ 		}
+ 
+ 		private void FixBestiaryRange(int offset, int maxEntriesToHave) {
+-			_atEntryIndex = Utils.Clamp(_atEntryIndex + offset, 0, Math.Max(0, _lastEntry - maxEntriesToHave));
++			_atEntryIndex = Utils.Clamp(_atEntryIndex + offset, 0, _lastEntry); //Required to make modded bestiary entries appear correctly.
+ 			if (this.OnGridContentsChanged != null)
+ 				this.OnGridContentsChanged();
+ 		}

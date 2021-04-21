@@ -1,6 +1,6 @@
 --- src/Terraria/ReLogic/Content/Sources/ZipContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/ZipContentSource.cs
-@@ -113,5 +_,7 @@
+@@ -132,5 +_,7 @@
  		}
  
  		public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);

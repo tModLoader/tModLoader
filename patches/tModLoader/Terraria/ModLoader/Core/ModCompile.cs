@@ -105,11 +105,11 @@ namespace Terraria.ModLoader.Core
 		internal static bool ModCompileVersionCheck(out string msg)
 		{
 			var version = GetModCompileVersion();
-			if (version > ModLoader.version) {
-				Logging.tML.Warn($"ModCompile version is above ModLoader version: {version} vs {ModLoader.version}" +
+			if (version > BuildInfo.tMLVersion) {
+				Logging.tML.Warn($"ModCompile version is above ModLoader version: {version} vs {BuildInfo.tMLVersion}" +
 					$"\nThis not necessarily an issue, this log is for troubleshooting purposes.");
 			}
-			if (version.Major == ModLoader.version.Major && version.Minor == ModLoader.version.Minor && version.Build == ModLoader.version.Build) {
+			if (version.Major == BuildInfo.tMLVersion.Major && version.Minor == BuildInfo.tMLVersion.Minor && version.Build == BuildInfo.tMLVersion.Build) {
 				msg = Language.GetTextValue("tModLoader.DMModCompileSatisfied");
 				return true;
 			}
@@ -120,7 +120,7 @@ namespace Terraria.ModLoader.Core
 			if (version == default(Version))
 				msg = Language.GetTextValue("tModLoader.DMModCompileMissing");
 			else
-				msg = Language.GetTextValue("tModLoader.DMModCompileUpdate", ModLoader.versionTag, version);
+				msg = Language.GetTextValue("tModLoader.DMModCompileUpdate", BuildInfo.versionTag, version);
 #endif
 			return false;
 		}
@@ -488,9 +488,11 @@ namespace Terraria.ModLoader.Core
 				throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorModNamedTerraria"));
 
 			// Verify that folder and namespace match up
-			var modClassType = asmDef.MainModule.Types.SingleOrDefault(x => x.BaseType?.FullName == "Terraria.ModLoader.Mod");
-			if (modClassType == null)
-				throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorNoModClass"));
+			var modClassTypes = asmDef.MainModule.Types.Where(x => x.BaseType?.FullName == "Terraria.ModLoader.Mod");
+			if (modClassTypes.Count() != 1) {
+				throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorNoModClass") + $"\nFound: {(modClassTypes.Any() ? string.Join(", ", modClassTypes.Select(x => x.FullName)) : "No Mod classes")}");
+			}
+			var modClassType = modClassTypes.Single();
 
 			string topNamespace = modClassType.Namespace.Split('.')[0];
 			if (topNamespace != modName)
@@ -655,7 +657,8 @@ namespace Terraria.ModLoader.Core
 
 			var preprocessorSymbols = new List<string> { xna ? "XNA" : "FNA" };
 			if (Program.LaunchParameters.TryGetValue("-define", out var defineParam))
-				preprocessorSymbols.AddRange(defineParam.Split(';', ' '));
+				preprocessorSymbols.AddRange(defineParam.Trim(';').Split(';', ' '));
+			preprocessorSymbols.RemoveAll(string.IsNullOrWhiteSpace);
 
 			var results = RoslynCompile(mod.Name, outputPath, refs.ToArray(), files, preprocessorSymbols.ToArray(), mod.properties.includePDB, allowUnsafe);
 
