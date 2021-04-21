@@ -498,6 +498,21 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static void ModifyFishingLine(Projectile projectile, ref float polePosX, ref float polePosY, ref Color lineColor) {
+			if (projectile.ModProjectile == null)
+				return;
+
+			Vector2 lineOriginOffset = Vector2.Zero;
+			Player player = Main.player[projectile.owner];
+
+			projectile.ModProjectile?.ModifyFishingLine(ref lineOriginOffset, ref lineColor);
+
+			polePosX += lineOriginOffset.X * player.direction;
+			if (player.direction < 0)
+				polePosX -= 13f;
+			polePosY += lineOriginOffset.Y * player.gravDir;
+		}
+
 		private static HookList HookGetAlpha = AddHook<Func<Projectile, Color, Color?>>(g => g.GetAlpha);
 
 		public static Color? GetAlpha(Projectile projectile, Color lightColor) {

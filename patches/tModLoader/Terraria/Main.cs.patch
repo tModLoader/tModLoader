@@ -2224,6 +2224,14 @@
  					if (projectile.type == 312) {
  						ulong seed3 = TileFrameSeed;
  						for (int num389 = 0; num389 < 4; num389++) {
+@@ -25599,6 +_,7 @@
+ 			if (type == 4442)
+ 				stringColor = new Microsoft.Xna.Framework.Color(100, 100, 200, 100);
+ 
++			ProjectileLoader.ModifyFishingLine(proj, ref polePosX, ref polePosY, ref stringColor);
+ 			stringColor = TryApplyingPlayerStringColor(player[proj.owner].stringColor, stringColor);
+ 			float gravDir = player[proj.owner].gravDir;
+ 			switch (type) {
 @@ -27378,10 +_,13 @@
  				}
  				else if (npc[i].type == 516 || npc[i].type == 519) {
