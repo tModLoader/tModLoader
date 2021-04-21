@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -2,69 +_,130 @@
+@@ -2,69 +_,140 @@
    <Import Project="../Configuration.targets" />
    <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
@@ -98,6 +98,16 @@
 +    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.1" />
    </ItemGroup>
    <Target Name="CopyToSteamDir" AfterTargets="Build">
++    <!-- Export the ReleaseExtras files to bin -->
++    <ItemGroup>
++      <RuntimeFiles Include="../../../solutions\ReleaseExtras\RuntimeFiles\**" />
++        <!-- NOTE: Currently steam does NOT like launching it for debugging. Have to look into -->
++      <!--SteamFiles Include="../../../solutions\ReleaseExtras\SteamFiles\**" /-->
++    </ItemGroup>
++    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True"/>
++    <Copy SourceFiles="@(SteamFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True"/>
++    <!-- NOTE: below only works on the second time that debugging is run. Can delete directory in CompleteRelease.bat for now-->
++    <!--RemoveDir Directories="$(TargetDir)\ref" /-->
 +    <!-- copy files systematically to output folder -->
      <ItemGroup>
        <BinFiles Include="$(TargetDir)**" />
