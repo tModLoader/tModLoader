@@ -1,0 +1,10 @@
+--- src/Terraria/ReLogic/OS/IWindowService.cs
++++ src/tModLoader/ReLogic/OS/IWindowService.cs
+@@ -13,5 +_,7 @@
+ 		float GetScaling();
+ 
+ 		void SetQuickEditEnabled(bool enabled);
++
++		void HideConsole();
+ 	}
+ }

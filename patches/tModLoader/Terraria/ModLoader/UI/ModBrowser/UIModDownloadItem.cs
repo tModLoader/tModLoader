@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
 using ReLogic.Content;
+using ReLogic.Content.Readers;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -330,15 +331,17 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				if (!e.Cancelled && e.Error == null) {
 					byte[] data = e.Result;
 
-					using (var buffer = new MemoryStream(data)) {
-						var iconTexture = ModLoader.ManifestAssets.CreateAsset($"{ModName}/icon.png", Texture2D.FromStream(Main.instance.GraphicsDevice, buffer));
+					using (var reader = new PngReader(Main.instance.GraphicsDevice)) {
+						using (var buffer = new MemoryStream(data)) {
+							var iconTexture = ModLoader.ManifestAssets.CreateAsset($"{ModName}/icon.png", reader.FromStream<Texture2D>(buffer));
 
-						_modIcon = new UIImage(iconTexture) {
-							Left = { Percent = 0f },
-							Top = { Percent = 0f }
-						};
-						_modIconStatus = ModIconStatus.READY;
-						success = true;
+							_modIcon = new UIImage(iconTexture) {
+								Left = { Percent = 0f },
+								Top = { Percent = 0f }
+							};
+							_modIconStatus = ModIconStatus.READY;
+							success = true;
+						}
 					}
 				}
 			}

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace>Terraria.ModLoader</RootNamespace>
     <TestProjectType>UnitTest</TestProjectType>
@@ -14,16 +14,16 @@
   <ItemGroup>
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.1" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.1" />
-    <Reference Include="Microsoft.Xna.Framework">
+    <Reference Include="../src/tModLoader/Terraria/Libraries/Native/Windows32/Microsoft.Xna.Framework.dll">
       <Private>true</Private>
     </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Game">
+    <Reference Include="../src/tModLoader/Terraria/Libraries/Native/Windows32/Microsoft.Xna.Framework.Game.dll">
       <Private>true</Private>
     </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Graphics">
+    <Reference Include="../src/tModLoader/Terraria/Libraries/Native/Windows32/Microsoft.Xna.Framework.Graphics.dll">
       <Private>true</Private>
     </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Xact">
+    <Reference Include="../src/tModLoader/Terraria/Libraries/Native/Windows32/Microsoft.Xna.Framework.Xact.dll">
       <Private>true</Private>
     </Reference>
   </ItemGroup>

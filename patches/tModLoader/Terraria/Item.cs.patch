@@ -686,7 +686,7 @@
  					position = (position + item.position) / 2f;
  					velocity = (velocity + item.velocity) / 2f;
  					int num3 = item.stack;
-@@ -45979,6 +_,9 @@
+@@ -45978,6 +_,9 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom();
  
@@ -696,7 +696,7 @@
  			if (Main.halloween) {
  				if (Type == 58)
  					Type = 1734;
-@@ -46101,14 +_,17 @@
+@@ -46100,14 +_,17 @@
  						continue;
  
  					Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
@@ -717,7 +717,7 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -46127,8 +_,31 @@
+@@ -46126,8 +_,31 @@
  			}
  		}
  
@@ -751,7 +751,7 @@
  
  		public bool IsTheSameAs(Item compareItem) {
  			if (netID == compareItem.netID)
-@@ -46159,6 +_,8 @@
+@@ -46158,6 +_,8 @@
  			dye = 0;
  			shoot = 0;
  			mountType = -1;
@@ -760,7 +760,7 @@
  		}
  
  		public void OnPurchase(Item item) {
-@@ -46190,7 +_,7 @@
+@@ -46189,7 +_,7 @@
  				Prefix(reader.ReadByte());
  			}
  
