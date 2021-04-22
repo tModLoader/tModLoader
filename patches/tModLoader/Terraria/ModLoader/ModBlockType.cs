@@ -47,12 +47,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to set the properties of this tile/wall. Many properties are stored as arrays throughout Terraria's code.
-		/// </summary>
-		public virtual void SetStaticDefaults() {
-		}
-
-		/// <summary>
 		/// Allows you to customize which sound you want to play when the tile/wall at the given coordinates is hit. Return false to stop the game from playing its default sound for the tile/wall. Returns true by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>

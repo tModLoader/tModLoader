@@ -41,20 +41,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// This is where all buff related assignments go. For example:
-		/// <list type="bullet">
-		/// <item>Main.buffName[Type] = "Display Name";</item>
-		/// <item>Main.buffTip[Type] = "Buff Tooltip";</item>
-		/// <item>Main.debuff[Type] = true;</item>
-		/// <item>Main.buffNoTimeDisplay[Type] = true;</item>
-		/// <item>Main.vanityPet[Type] = true;</item>
-		/// <item>Main.lightPet[Type] = true;</item>
-		/// </list>
-		/// </summary>
-		public virtual void SetStaticDefaults() {
-		}
-
-		/// <summary>
 		/// Allows you to make this buff give certain effects to the given player. If you remove the buff from the player, make sure the decrement the buffIndex parameter by 1.
 		/// </summary>
 		public virtual void Update(Player player, ref int buffIndex) {

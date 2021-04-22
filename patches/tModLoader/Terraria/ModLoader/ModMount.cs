@@ -93,12 +93,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to set the properties of this type of mount.
-		/// </summary>
-		public virtual void SetStaticDefaults() {
-		}
-
-		/// <summary>
 		/// Allows you to modify the mount's jump height based on its state.
 		/// </summary>
 		/// <param name="mountedPlayer"></param>
