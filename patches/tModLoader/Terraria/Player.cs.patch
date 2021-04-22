@@ -3770,16 +3770,51 @@
  				if (sItem.stack <= 0)
  					sItem.SetDefaults();
  			}
-@@ -33903,7 +_,8 @@
- 					Main.projectile[num177].originalDamage = damage;
- 					UpdateMaxTurrets();
+@@ -32508,6 +_,9 @@
+ 		}
+ 
+ 		private void ItemCheck_Shoot(int i, Item sItem, int weaponDamage) {
++			if (!CombinedHooks.CanShoot(this, sItem))
++				return;
++
+ 			int projToShoot = sItem.shoot;
+ 			float speed = sItem.shootSpeed;
+ 			int damage = sItem.damage;
+@@ -32719,6 +_,13 @@
+ 					num3 = vector4.Y;
  				}
--				else {
-+				else if (PlayerHooks.Shoot(this, sItem, ref pointPoisition, ref num2, ref num3, ref projToShoot, ref Damage, ref KnockBack)
-+					&& ItemLoader.Shoot(sItem, this, ref pointPoisition, ref num2, ref num3, ref projToShoot, ref Damage, ref KnockBack)) {
- 					int num178 = Projectile.NewProjectile(projectileSource_Item_WithPotentialAmmo, pointPoisition.X, pointPoisition.Y, num2, num3, projToShoot, Damage, KnockBack, i);
- 					if (sItem.type == 726)
- 						Main.projectile[num178].magic = true;
+ 
++				goto DirtBallShoot;
++				ShootHook:
++				Vector2 velocity = new Vector2(num2, num3);
++				CombinedHooks.ModifyShootStats(this, sItem, ref pointPoisition, ref velocity, ref projToShoot, ref Damage, ref KnockBack);
++				num2 = velocity.X;
++				num3 = velocity.Y;
++
+ 				if (sItem.useStyle == 5) {
+ 					if (sItem.type == 3029) {
+ 						Vector2 vector5 = new Vector2(num2, num3);
+@@ -32755,6 +_,11 @@
+ 					NetMessage.SendData(41, -1, -1, null, whoAmI);
+ 				}
+ 
++				if (!CombinedHooks.Shoot(this, sItem, (ProjectileSource_Item_WithAmmo)projectileSource_Item_WithPotentialAmmo, pointPoisition, velocity, projToShoot, Damage, KnockBack))
++					return;
++
++				goto ShootProj;
++				DirtBallShoot:
+ 				if (projToShoot == 17) {
+ 					pointPoisition.X = (float)Main.mouseX + Main.screenPosition.X;
+ 					pointPoisition.Y = (float)Main.mouseY + Main.screenPosition.Y;
+@@ -32763,6 +_,8 @@
+ 
+ 					LimitPointToPlayerReachableArea(ref pointPoisition);
+ 				}
++				goto ShootHook;
++				ShootProj:
+ 
+ 				if (projToShoot == 76) {
+ 					projToShoot += Main.rand.Next(3);
 @@ -34107,6 +_,9 @@
  				return;
  			}

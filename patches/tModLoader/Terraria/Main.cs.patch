@@ -1138,7 +1138,7 @@
  			if (playerInventory) {
  				Recipe.GetThroughDelayedFindRecipes();
 +
-+				if (PlayerInput.MouseInModdedUI.Count == 0)
++				if (PlayerInput.MouseInModdedUI.Count != 0)
 +					goto noScrollOnLocked;
 +
  				int num = PlayerInput.ScrollWheelDelta / 120;
