@@ -129,7 +129,7 @@ jobs:
           mkdir -p ModLoader/Mods
           echo pwd is: ${PWD}
           echo Building ExampleMod
-          dotnet tModLoader.dll -server -build ..\..\ExampleMod -tmlsavedirectory ./ModLoader
+          dotnet tModLoader.dll -server -build ../../ExampleMod -tmlsavedirectory ./ModLoader
           cd ../..
           mkdir -p artifacts/Mods
           mv ./artifacts/Windows/ModLoader/Mods/ExampleMod.tmod ./artifacts/Mods/ExampleMod.tmod
