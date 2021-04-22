@@ -8,6 +8,8 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract partial class ModAVFX : ModType
 	{
+		public int Type { get; internal set; }
+
 		// AVFX properties
 		public virtual ModWaterStyle WaterStyle => null;
 		public virtual ModSurfaceBgStyle SurfaceBackgroundStyle => null;
@@ -18,18 +20,18 @@ namespace Terraria.ModLoader
 		// Capture Camera property
 		public virtual CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Normal;
 
-		// Interface Methods
+		// Methods
 		protected override void Register() {
-			ModTypeLookup<ModAVFX>.Register(this);
 			RegisterAVFX(this);
 		}
 
 		/// <summary>
-		/// Forcefully registers this ModAVFX to AVFXLoader.
+		/// Forcefully registers the provided ModAVFX to AVFXLoader.
 		/// ModBiome and direct implementations call this.
 		/// </summary>
-		internal void RegisterAVFX(ModAVFX type) {
-			AVFXLoader.AVFXs.Add(type);
+		internal void RegisterAVFX(ModAVFX modAVFX) {
+			modAVFX.Type = Loaders.AVFXs.Register(this);
+
 		}
 
 		/// <summary>

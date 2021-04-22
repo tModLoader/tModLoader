@@ -1,8 +1,0 @@
---- src/Terraria/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
-+++ src/tModLoader/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
-@@ -1,4 +_,5 @@
- using System.Collections.Generic;
-+using Terraria.ModLoader;
- 
- namespace Terraria.GameContent.Personalities
- {
