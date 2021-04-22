@@ -1,13 +1,25 @@
 --- src/decompiled/Terraria/Utils.cs
 +++ src/Terraria/Terraria/Utils.cs
-@@ -512,8 +_,18 @@
+@@ -4,6 +_,7 @@
+ using Microsoft.Xna.Framework.Input;
+ using ReLogic.Content;
+ using ReLogic.Graphics;
++using ReLogic.OS;
+ using System;
+ using System.Collections;
+ using System.Collections.Generic;
+@@ -513,8 +_,21 @@
  		}
  
  		public static void OpenFolder(string folderPath) {
 -			if (TryCreatingDirectory(folderPath))
+-				Process.Start(folderPath);
 +			if (TryCreatingDirectory(folderPath)) {
 +#if !LINUX
- 				Process.Start(folderPath);
++				if (Platform.IsWindows)
++					Process.Start("explorer.exe", folderPath);
++				else
++					Process.Start(folderPath);
 +#else
 +				Process.Start(new ProcessStartInfo(folderPath) {
 +					FileName = "open-folder",

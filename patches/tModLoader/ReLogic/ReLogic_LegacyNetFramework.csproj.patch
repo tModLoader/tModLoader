@@ -1,0 +1,11 @@
+--- src/Terraria/ReLogic/ReLogic_LegacyNetFramework.csproj
++++ src/tModLoader/ReLogic/ReLogic_LegacyNetFramework.csproj
+@@ -10,7 +_,7 @@
+     <AssemblyName>ReLogic</AssemblyName>
+   </PropertyGroup>
+   <ItemGroup>
+-    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />
++    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.Reduced.dll" />
+     <Reference Include="../Terraria/Libraries/FNA/FNA.dll" Condition="$(DefineConstants.Contains('FNA'))" />
+     <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.dll" Condition="$(DefineConstants.Contains('XNA'))" />
+     <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.Game.dll" Condition="$(DefineConstants.Contains('XNA'))" />

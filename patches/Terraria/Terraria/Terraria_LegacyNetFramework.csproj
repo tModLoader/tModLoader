@@ -1,0 +1,93 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../Configuration_LegacyNetFramework.targets" />
+  <Import Project="../../WorkspaceInfo.targets" />
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <Version>1.4.1.2</Version>
+    <Company>Re-Logic</Company>
+    <Copyright>Copyright © 2020 Re-Logic</Copyright>
+    <RootNamespace>Terraria</RootNamespace>
+    <OutputName>Terraria_LegacyNetFramework</OutputName>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('Server'))">
+    <OutputType>Exe</OutputType>
+    <OutputName>$(OutputName)Server</OutputName>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+    <OutputName>$(OutputName)Debug</OutputName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PdbFile>bin\$(OutputName)</PdbFile>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CsvHelper" />
+    <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))" />
+    <Reference Include="Ionic.Zip.CF" />
+    <Reference Include="MP3Sharp" Condition="$(DefineConstants.Contains('CLIENT'))" />
+    <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
+    <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))" />
+    <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
+    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />
+    <Reference Include="Newtonsoft.Json" />
+    <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
+    <Reference Include="RailSDK.Net" />
+    <ProjectReference Include="../ReLogic/ReLogic_LegacyNetFramework.csproj" />
+    <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
+      <Link>Libraries/ReLogic/ReLogic.dll</Link>
+      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
+    </EmbeddedResource>
+    <Reference Include="Steamworks.NET">
+      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/Steamworks.NET.dll</HintPath>
+      <HintPath Condition="$(DefineConstants.Contains('MONO'))">Libraries/Mono/Steamworks.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="SteelSeriesEngineWrapper" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms">
+      <HintPath Condition="$(DefineConstants.Contains('Mono'))">Libraries/Mono/System.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GameContent/Creative/Content/*" />
+    <EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
+    <EmbeddedResource Include="GameContent/WorldBuilding/*" />
+    <EmbeddedResource Include="IO/Data/*" />
+    <EmbeddedResource Include="Libraries/**" />
+    <EmbeddedResource Remove="Libraries/Common/Steamworks.NET.dll" />
+    <EmbeddedResource Remove="Libraries/Common/Newtonsoft.Json.dll" />
+    <None Remove="Libraries/Common/Steamworks.NET.dll" />
+    <None Remove="Libraries/Common/Newtonsoft.Json.dll" />
+    <EmbeddedResource Remove="Libraries/FNA/**" />
+    <EmbeddedResource Remove="Libraries/XNA/**" />
+    <EmbeddedResource Remove="Libraries/Native/**" />
+    <EmbeddedResource Remove="Libraries/Windows/**" Condition="!$(DefineConstants.Contains('WINDOWS'))" />
+    <EmbeddedResource Remove="Libraries/Mono/**" Condition="!$(DefineConstants.Contains('MONO'))" />
+    <EmbeddedResource Include="Localization/Content/**" />
+    <EmbeddedResource Include="Microsoft/**" />
+  </ItemGroup>
+    <ItemGroup>
+      <None Remove="Libraries/Native/**" />
+    </ItemGroup>
+  <Target Name="EditBin" AfterTargets="Build">
+    <PropertyGroup>
+      <EditBinOpts>/largeaddressaware</EditBinOpts>
+      <DumpBin>/headers</DumpBin>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(DefineConstants.Contains('DEBUG'))">
+      <EditBinOpts>$(EditBinOpts) /stack:0x800000</EditBinOpts>
+    </PropertyGroup>
+    <Message Text="Applying editbin $(EditBinOpts)" Importance="high" />
+    <Exec Command="..\largeaddresstool\editbin $(EditBinOpts) &quot;$(TargetPath)&quot;" />
+    <Message Text="Checking headers with dumpbin." Importance="high" />
+    <Exec Command="..\largeaddresstool\dumpbin $(DumpBin) &quot;$(TargetPath)&quot; | findstr &quot;large&quot;" />
+  </Target>
+  <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
+    <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\$(OutputName).exe" />
+    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(TerrariaSteamPath)" />
+  </Target>
+</Project>

@@ -30,24 +30,31 @@ namespace Terraria.ModLoader.Engine
 			while (true) {
 				Thread.Sleep(1000);
 				if (DateTime.Now - lastCheckin.Value > TIMEOUT) {
-					if (FrameworkVersion.Framework == Framework.Mono) {
-						//Stacktrace.cs: [MonoLimitation ("Not possible to create StackTraces from other threads")]
-						Logging.ServerConsoleLine("Server hung for more than 10 seconds. Cannot determine cause on Mono", Level.Warn, log: Logging.tML);
-						Checkin();
-						continue;
-					}
+					// TODO. https://github.com/dotnet/runtime/issues/31508
+#if NETCORE
+					Logging.ServerConsoleLine("Server hung for more than 10 seconds. Cannot determine cause from watchdog thread", Level.Warn, log: Logging.tML);
+					Checkin();
+					continue;
+#elif WINDOWS
+					//Stacktrace.cs: [MonoLimitation ("Not possible to create StackTraces from other threads")]
+					Logging.ServerConsoleLine("Server hung for more than 10 seconds. Cannot determine cause on Mono", Level.Warn, log: Logging.tML);
+					Checkin();
+					continue;
+#else
 					var st = GetStackTrace(mainThread);
 					Logging.PrettifyStackTraceSources(st.GetFrames());
 					Logging.ServerConsoleLine("Server hung for more than 10 seconds:\n" + st, Level.Error, log: Logging.tML);
 					mainThread.Abort();
 					return;
+#endif
 				}
 			}
 		}
 
+#if !NETCORE
 		//https://stackoverflow.com/questions/285031/how-to-get-non-current-threads-stacktrace
-		
-		#pragma warning disable CS0618 // Type or member is obsolete
+
+#pragma warning disable CS0618 // Type or member is obsolete
 		private static StackTrace GetStackTrace(Thread targetThread) {
 			using (ManualResetEvent fallbackThreadReady = new ManualResetEvent(false), exitedSafely = new ManualResetEvent(false)) {
 				Thread fallbackThread = new Thread(delegate () {
@@ -90,5 +97,6 @@ namespace Terraria.ModLoader.Engine
 				}
 			}
 		}
+#endif
 	}
 }

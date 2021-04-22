@@ -1,0 +1,75 @@
+#this is an example config file for TerrariaServer.exe
+#use the command 'TerrariaServer.exe -config serverconfig.txt' to use this configuration or run start-server.bat
+#please report crashes by emailing crashlog.txt to support@terraria.org
+
+#the following is a list of available command line parameters:
+
+#-config <config file>				            Specifies the configuration file to use.
+#-port <port number>				              Specifies the port to listen on.
+#-players <number> / -maxplayers <number>	Sets the max number of players
+#-pass <password> / -password <password>	Sets the server password
+#-world <world file>				              Load a world and automatically start the server.
+#-autocreate <#>			                  	Creates a world if none is found in the path specified by -world. World size is specified by: 1(small), 2(medium), and 3(large).
+#-banlist <path>			                  	Specifies the location of the banlist. Defaults to "banlist.txt" in the working directory.
+#-worldname <world name>             			Sets the name of the world when using -autocreate.
+#-secure			                        		Adds addition cheat protection to the server.
+#-noupnp				                        	Disables automatic port forwarding
+#-steam                         					Enables Steam Support
+#-lobby <friends> or <private>             Allows friends to join the server or sets it to private if Steam is enabled
+#-ip <ip address>	Sets the IP address for the server to listen on
+#-forcepriority <priority>	Sets the process priority for this task. If this is used the "priority" setting below will be ignored.
+#-disableannouncementbox   Disables the text announcements Announcement Box makes when pulsed from wire.
+#-announcementboxrange <number>   Sets the announcement box text messaging range in pixels, -1 for serverwide announcements.
+#-seed <seed> Specifies the world seed when using -autocreate
+
+#remove the # in front of commands to enable them.
+
+#Load a world and automatically start the server.
+#world=C:\Users\YOUR_USERNAME_HERE\My Documents\My Games\Terraria\Worlds\world1.wld
+
+#Creates a new world if none is found. World size is specified by: 1(small), 2(medium), and 3(large).
+#autocreate=1
+
+#Sets the world seed when using autocreate
+#seed=AwesomeSeed
+
+#Sets the name of the world when using autocreate
+#worldname=Terraria
+
+#Sets the difficulty of the world when using autocreate 0(normal), 1(expert)
+#difficulty=1
+
+#Sets the max number of players allowed on a server.  Value must be between 1 and 255
+#maxplayers=8
+
+#Set the port number
+#port=7777
+
+#Set the server password
+#password=p@55w0rd
+
+#Set the message of the day
+#motd=Please don’t cut the purple trees!
+
+#Sets the folder where world files will be stored
+#worldpath=C:\Users\Defaults\My Documents\My Games\Terraria\Worlds\
+
+#The location of the banlist. Defaults to "banlist.txt" in the working directory.
+#banlist=banlist.txt
+
+#Adds addition cheat protection.
+#secure=1
+
+#Sets the server language from its language code. 
+#English = en-US, German = de-DE, Italian = it-IT, French = fr-FR, Spanish = es-ES, Russian = ru-RU, Chinese = zh-Hans, Portuguese = pt-BR, Polish = pl-PL,
+#language=en-US
+
+#Automatically forward ports with uPNP
+#upnp=1
+
+#Reduces enemy skipping but increases bandwidth usage. The lower the number the less skipping will happen, but more data is sent. 0 is off.
+#npcstream=60
+
+#Default system priority 0:Realtime, 1:High, 2:AboveNormal, 3:Normal, 4:BelowNormal, 5:Idle
+priority=1
+
