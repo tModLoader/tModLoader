@@ -1,30 +1,29 @@
 --- src/decompiled/Terraria/GameContent/NetModules/NetTeleportPylonModule.cs
 +++ src/Terraria/Terraria/GameContent/NetModules/NetTeleportPylonModule.cs
-@@ -34,19 +_,27 @@
+@@ -34,6 +_,9 @@
  		public override bool Deserialize(BinaryReader reader, int userId) {
  			switch (reader.ReadByte()) {
  				case 0: {
-+#if SERVER
++					if(Main.dedServ)
 +					return false;
-+#else
++
  						TeleportPylonInfo info3 = default(TeleportPylonInfo);
  						info3.PositionInTiles = new Point16(reader.ReadInt16(), reader.ReadInt16());
  						info3.TypeOfPylon = (TeleportPylonType)reader.ReadByte();
- 						Main.PylonSystem.AddForClient(info3);
+@@ -41,12 +_,16 @@
  						break;
-+#endif
  					}
  				case 1: {
-+#if SERVER
++					if(Main.dedServ)
 +					return false;
-+#else
++
  						TeleportPylonInfo info2 = default(TeleportPylonInfo);
  						info2.PositionInTiles = new Point16(reader.ReadInt16(), reader.ReadInt16());
  						info2.TypeOfPylon = (TeleportPylonType)reader.ReadByte();
  						Main.PylonSystem.RemoveForClient(info2);
  						break;
 -					}
-+#endif
++
 +				}
  				case 2: {
  						TeleportPylonInfo info = default(TeleportPylonInfo);

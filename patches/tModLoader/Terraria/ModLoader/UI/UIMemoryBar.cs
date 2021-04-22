@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -111,8 +112,8 @@ namespace Terraria.ModLoader.UI
 			_maxMemory = Environment.Is64BitOperatingSystem ? 4294967296 : 3221225472;
 			long availableMemory = _maxMemory; // CalculateAvailableMemory(maxMemory); This is wrong, 4GB is not shared.
 #else
-			long maxMemory = GetTotalMemory();
-			long availableMemory = GetAvailableMemory();
+			_maxMemory = GetTotalMemory();
+			long availableMemory = _maxMemory; //This is wrong; this is assuming tML is the only thing running. Can't find an alternative, but is less likely to confuse users under current design
 #endif
 
 			long totalModMemory = 0;
@@ -180,14 +181,19 @@ namespace Terraria.ModLoader.UI
 				SizeSuffixes[mag]);
 		}
 
+		/*
 		public static long GetAvailableMemory() {
-			var pc = new PerformanceCounter("Mono Memory", "Available Physical Memory");
-			return pc.RawValue;
+			//TODO: Implement for all platforms
+			if(Platform.IsWindows) {
+				var pc = new PerformanceCounter("Mono Memory", "Available Physical Memory");
+				return pc.RawValue;
+			}
 		}
+		*/
 
 		public static long GetTotalMemory() {
-			var pc = new PerformanceCounter("Mono Memory", "Total Physical Memory");
-			return pc.RawValue;
+			var gcMemInfo = GC.GetGCMemoryInfo();
+			return gcMemInfo.TotalAvailableMemoryBytes;
 		}
 
 		/*

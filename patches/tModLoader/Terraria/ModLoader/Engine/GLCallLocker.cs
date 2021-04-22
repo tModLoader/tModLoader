@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using MonoMod.RuntimeDetour;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,12 +18,41 @@ namespace Terraria.ModLoader.Engine
 	/// </summary>
 	public static class GLCallLocker
 	{
+#if FNA
 		private static int mainThreadId;
 
+		private static FieldInfo f_GLDevice = typeof(GraphicsDevice).GetField("GLDevice", BindingFlags.Instance | BindingFlags.NonPublic);
+		private static FieldInfo f_actions;
+		private static MethodInfo m_RunActions;
+
+		// if the main thread is going to devote extra time to integrating GL calls from other threads asap through SpeedrunActions
+		// disables warning during mod loading
+		internal static bool ActionsAreSpeedrun;
+		private static AutoResetEvent actionQueuedEvent = new AutoResetEvent(false);
+
+		private static bool init = false;
+		internal static void Init() {
+			if (init)
+				return;
+			init = true;
+
+			mainThreadId = Thread.CurrentThread.ManagedThreadId;
+
+			AssetRepository.SafelyAcquireResourceLock = Enter;
+
+			// for FNA 20.8, ForceToMainThread and RunActions exist on OpenGLDevice, ModernGLDevice
+			// if we get reports of crashes because of a different device type, we can re-investigate
+			var glDeviceType = f_GLDevice.GetValue(Main.instance.GraphicsDevice).GetType();
+			Logging.tML.Debug("Graphics Device Type: " + glDeviceType);
+
+			f_actions = glDeviceType.GetField("actions", BindingFlags.Instance | BindingFlags.NonPublic);
+			m_RunActions = glDeviceType.GetMethod("RunActions", BindingFlags.Instance | BindingFlags.NonPublic);
+
+			var m_ForceToMainThread = glDeviceType.GetMethod("ForceToMainThread", BindingFlags.Instance | BindingFlags.NonPublic);
+			new Hook(m_ForceToMainThread, new hook_ForceToMainThread(HookForceToMainThread));
+		}
+
 		public static void Enter(object lockObj) {
-#if XNA
-			Monitor.Enter(lockObj);
-#else
 			if (Thread.CurrentThread.ManagedThreadId != mainThreadId) {
 				Monitor.Enter(lockObj);
 				return;
@@ -31,18 +61,8 @@ namespace Terraria.ModLoader.Engine
 			while (!Monitor.TryEnter(lockObj)) {
 				RunGLActions();
 			}
-#endif
 		}
-
-		internal static void Init() {
-			mainThreadId = Thread.CurrentThread.ManagedThreadId;
-#if FNA
-			var t_OpenGLDevice = typeof(GraphicsDevice).Assembly.GetType("Microsoft.Xna.Framework.Graphics.OpenGLDevice");
-			var m_ForceToMainThread = t_OpenGLDevice.GetMethod("ForceToMainThread", BindingFlags.Instance | BindingFlags.NonPublic);
-
-			new Hook(m_ForceToMainThread, new hook_ForceToMainThread(HookForceToMainThread));
 #endif
-		}
 
 		internal static Task<T> InvokeAsync<T>(Func<T> task) {
 #if XNA
@@ -55,9 +75,6 @@ namespace Terraria.ModLoader.Engine
 			}
 
 			var glDevice = f_GLDevice.GetValue(Main.instance.GraphicsDevice);
-			if (f_actions == null)
-				f_actions = glDevice.GetType().GetField("actions", BindingFlags.Instance | BindingFlags.NonPublic);
-
 			var actions = (IList<Action>)f_actions.GetValue(glDevice);
 			lock (actions) {
 				actions.Add(() => {
@@ -74,11 +91,8 @@ namespace Terraria.ModLoader.Engine
 #endif
 		}
 
-		// if the main thread is going to devote extra time to integrating GL calls from other threads asap through SpeedrunActions
-		// disables warning during mod loading
-		internal static bool ActionsAreSpeedrun;
-		internal static void SpeedrunActions() {
 #if FNA
+		internal static void SpeedrunActions() {
 			var sw = new Stopwatch();
 			sw.Start();
 
@@ -88,23 +102,12 @@ namespace Terraria.ModLoader.Engine
 				if (actionQueuedEvent.WaitOne(wait))
 					RunGLActions();
 			}
-#endif
 		}
-
-#if FNA
-		private static FieldInfo f_GLDevice = typeof(GraphicsDevice).GetField("GLDevice", BindingFlags.Instance | BindingFlags.NonPublic);
-		private static FieldInfo f_actions;
-		private static MethodInfo m_RunActions;
 
 		private static void RunGLActions() {
 			var glDevice = f_GLDevice.GetValue(Main.instance.GraphicsDevice);
-			if (m_RunActions == null)
-				m_RunActions = glDevice.GetType().GetMethod("RunActions", BindingFlags.Instance | BindingFlags.NonPublic);
-
 			m_RunActions.Invoke(glDevice, new object[0]);
 		}
-
-		private static AutoResetEvent actionQueuedEvent = new AutoResetEvent(false);
 
 		private static HashSet<string> pastStackTraces = new HashSet<string>();
 		private delegate void orig_ForceToMainThread(object self, Action action);

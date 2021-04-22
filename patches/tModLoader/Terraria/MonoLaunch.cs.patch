@@ -1,0 +1,36 @@
+--- src/Terraria/Terraria/MonoLaunch.cs
++++ src/tModLoader/Terraria/MonoLaunch.cs
+@@ -5,11 +_,13 @@
+ using System.Linq;
+ using System.Reflection;
+ using System.Runtime.InteropServices;
++using System.Runtime.Loader;
+ using Terraria;
+ 
+ internal static class MonoLaunch
+ {
+ 	private static void Main(string[] args) {
++		/*
+ 		// FNA is requested by both Terraria and ReLogic.dll
+ 		var loaded = new Dictionary<string, Assembly>();
+ 
+@@ -32,12 +_,18 @@
+ 				return assembly;
+ 			}
+ 		};
++		*/
++
++#if NETCORE
++		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
++#endif
++
+ 		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
+ 		Program.LaunchGame(args, monoArgs: true);
+ 	}
+ 
+ #if NETCORE
+-	private static IntPtr ResolveNativeLibrary(string name, Assembly assembly, DllImportSearchPath? searchPath) {
++	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name) {
+ 		try {
+ 			if (assemblies.TryGetValue(name, out var handle)) {
+ 				return handle;
