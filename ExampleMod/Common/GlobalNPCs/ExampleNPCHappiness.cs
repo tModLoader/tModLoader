@@ -5,17 +5,16 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Common.GlobalNPCs
 {
-	//TODO: documentation
 	public class ExampleNPCHappiness : GlobalNPC 
 	{
-		public override void NPCHappiness(NPC npc, ref ShopHelper shopHelperInstance, ref int primaryPlayerBiome, ref bool[] nearbyNPCsByType) 
+		public override void NPCHappiness(NPC npc, int primaryPlayerBiome, ref ShopHelper shopHelperInstance, ref bool[] nearbyNPCsByType) 
 		{
-			int ExamplePersonType = ModContent.NPCType<Content.NPCs.ExamplePerson>();
+			int ExamplePersonType = ModContent.NPCType<Content.NPCs.ExamplePerson>(); //Get ExamplePerson's type
 			switch (npc.type) 
 			{
-				case NPCID.Guide:
-					if (nearbyNPCsByType[ExamplePersonType]) {
-						shopHelperInstance.LikeNPC(ExamplePersonType);
+				case NPCID.Guide: // If the NPC is the Guide
+					if (nearbyNPCsByType[ExamplePersonType]) { //If ExamplePerson is nearby
+						shopHelperInstance.LikeNPC(ExamplePersonType); //Make the Guide like ExamplePerson!
 					}
 					break;
 			}
