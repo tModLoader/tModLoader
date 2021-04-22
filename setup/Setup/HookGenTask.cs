@@ -3,16 +3,17 @@ using MonoMod;
 using MonoMod.RuntimeDetour.HookGen;
 using System;
 using System.IO;
-using System.Reflection;
 using System.Windows;
-using XnaToFna;
 using static Terraria.ModLoader.Setup.Program;
 
 namespace Terraria.ModLoader.Setup
 {
 	internal class HookGenTask : SetupOperation
 	{
-		const string libsPath = "src/tModLoader/Terraria/Libraries";
+		private const string libsPath = "src/tModLoader/Terraria/Libraries";
+		private const string binLibsPath = "src/tModLoader/Terraria/bin/Debug/net5.0/Libraries";
+		private const string tmlAssemblyPath = @"src/tModLoader/Terraria/bin/Debug/net5.0/tModLoader.dll";
+		private const string installedNetRefs = @"\dotnet\packs\Microsoft.NETCore.App.Ref\5.0.0\ref\net5.0";
 
 		public HookGenTask(ITaskInterface taskInterface) : base(taskInterface)
 		{
@@ -20,36 +21,22 @@ namespace Terraria.ModLoader.Setup
 
 		public override void Run()
 		{
-			string targetExePath = @"src/tModLoader/Terraria/bin/WindowsDebug/net45/Terraria.exe";
-			if (!File.Exists(targetExePath)) {
-				var result = MessageBox.Show($"\"{targetExePath}\" does not exist. Use Vanilla exe instead?", "tML exe not found", MessageBoxButton.YesNo);
-				if (result != MessageBoxResult.Yes) {
-					taskInterface.SetStatus("Cancelled");
-					return;
-				}
-
-				if (!File.Exists(TerrariaPath))
-					throw new FileNotFoundException(TerrariaPath);
-
-				targetExePath = TerrariaPath;
+			if (!File.Exists(tmlAssemblyPath)) {
+				MessageBox.Show($"\"{tmlAssemblyPath}\" does not exist.", "tML exe not found", MessageBoxButton.OK);
+				taskInterface.SetStatus("Cancelled");
+				return;
 			}
-			var outputPath = Path.Combine(libsPath, "XNA", "TerrariaHooks.dll");
+
+			string outputPath = Path.Combine(libsPath, "Common", "TerrariaHooks.dll");
+
 			if (File.Exists(outputPath))
 				File.Delete(outputPath);
 
-			taskInterface.SetStatus($"Hooking: Terraria.exe -> XNA/TerrariaHooks.dll");
-			HookGen(targetExePath, outputPath);
+			taskInterface.SetStatus($"Hooking: tModLoader.dll -> TerrariaHooks.dll");
 
-			taskInterface.SetStatus($"XnaToFna: XNA/TerrariaHooks.dll -> FNA/TerrariaHooks.dll");
+			HookGen(tmlAssemblyPath, outputPath);
 
-			var fnaPath = Path.Combine(libsPath, "FNA", "TerrariaHooks.dll");
-			if (File.Exists(fnaPath))
-				File.Delete(fnaPath);
-
-			File.Copy(outputPath, fnaPath);
-			XnaToFna(fnaPath);
-
-			File.Delete(Path.ChangeExtension(fnaPath, "pdb"));
+			File.Delete(Path.ChangeExtension(outputPath, "pdb"));
 
 			MessageBox.Show("Success. Make sure you diff tModLoader after this");
 		}
@@ -60,13 +47,14 @@ namespace Terraria.ModLoader.Setup
 				InputPath = inputPath,
 				OutputPath = outputPath,
 				ReadingMode = ReadingMode.Deferred,
-				
-				DependencyDirs = { 
-					Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + @"\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5",
-					Path.Combine(libsPath, "Common")
+
+				DependencyDirs = {
+					Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + installedNetRefs
 				},
 				MissingDependencyThrow = false,
 			};
+
+			mm.DependencyDirs.AddRange(Directory.GetDirectories(binLibsPath, "*", SearchOption.AllDirectories));
 
 			mm.Read();
 			mm.MapDependencies();
@@ -84,24 +72,6 @@ namespace Terraria.ModLoader.Setup
 			for (int i = module.Types.Count - 1; i >= 0; i--)
 				if (module.Types[i].FullName.Contains("Terraria.ModLoader"))
 					module.Types.RemoveAt(i);
-		}
-
-		public static void XnaToFna(string inputPath)
-		{
-			using var xnaToFnaUtil = new XnaToFnaUtil {
-				HookCompat = false,
-				HookHacks = false,
-				HookEntryPoint = false,
-				HookBinaryFormatter = false,
-				HookReflection = false,
-				AddAssemblyReference = false
-			};
-			var fnaPath = Path.Combine(libsPath, "FNA", "FNA.dll");
-			xnaToFnaUtil.ScanPath(fnaPath);
-			xnaToFnaUtil.ScanPath(inputPath);
-
-			AppDomain.CurrentDomain.AssemblyResolve += (sender, resArgs) => new AssemblyName(resArgs.Name).Name == "FNA" ? Assembly.Load(File.ReadAllBytes(fnaPath)) : null;
-			xnaToFnaUtil.RelinkAll();
 		}
 	}
 }

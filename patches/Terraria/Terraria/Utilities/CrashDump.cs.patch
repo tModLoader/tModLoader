@@ -1,14 +1,10 @@
 --- src/decompiled/Terraria/Utilities/CrashDump.cs
 +++ src/Terraria/Terraria/Utilities/CrashDump.cs
-@@ -55,7 +_,12 @@
+@@ -55,7 +_,8 @@
  
  		private static string CreateDumpName() {
  			DateTime dateTime = DateTime.Now.ToLocalTime();
-+#if CLIENT
-+			const string Name = "Terraria";
-+#else
-+			const string Name = "TerrariaServer";
-+#endif
++			string Name = Main.dedServ ? "TerrariaServer" : "Terraria";
 -			return string.Format("{0}_{1}_{2}_{3}.dmp", "Terraria", Main.versionNumber, dateTime.ToString("MM-dd-yy_HH-mm-ss-ffff", CultureInfo.InvariantCulture), Thread.CurrentThread.ManagedThreadId);
 +			return string.Format("{0}_{1}_{2}_{3}.dmp", Name, Main.versionNumber, dateTime.ToString("MM-dd-yy_HH-mm-ss-ffff", CultureInfo.InvariantCulture), Thread.CurrentThread.ManagedThreadId);
  		}
