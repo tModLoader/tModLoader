@@ -31,10 +31,9 @@ namespace Terraria.ModLoader.Setup
 			Func<SetupOperation> buttonDecompile = () => new DecompileTask(this, "src/decompiled");
 			Func<SetupOperation> buttonPatchTerraria = () => new PatchTask(this, "src/decompiled", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
 			Func<SetupOperation> buttonPatchModLoader = () => new PatchTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
-			Func<SetupOperation> buttonSetupDebugging = () => new SetupDebugTask(this);
 
 			Func<SetupOperation> buttonRegenSource = () =>
-				new RegenSourceTask(this, new[] { buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
+				new RegenSourceTask(this, new[] { buttonPatchTerraria, buttonPatchModLoader }
 					.Select(b => b()).ToArray());
 			Func<SetupOperation> task = () =>
 				new SetupTask(this, new[] { buttonDecompile, buttonRegenSource }

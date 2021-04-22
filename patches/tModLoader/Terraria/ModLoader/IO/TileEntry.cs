@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
 
@@ -32,6 +33,13 @@ namespace Terraria.ModLoader.IO
 
 			if (TileID.Sets.BasicDresser[type])
 				return ModContent.GetInstance<UnloadedDresser>().FullName;
+
+			if (TileID.Sets.RoomNeeds.CountsAsChair.Contains(type) ||
+				TileID.Sets.RoomNeeds.CountsAsDoor.Contains(type) ||
+				TileID.Sets.RoomNeeds.CountsAsTable.Contains(type) ||
+				TileID.Sets.RoomNeeds.CountsAsTorch.Contains(type)) {
+				return ModContent.GetInstance<UnloadedSupremeFurniture>().FullName;
+			}
 
 			if (Main.tileSolidTop[type])
 				return ModContent.GetInstance<UnloadedSemiSolidTile>().FullName;

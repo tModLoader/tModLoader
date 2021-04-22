@@ -38,7 +38,7 @@
  				writer.Write((byte)msgType);
  				switch (msgType) {
  					case 1:
--						writer.Write("Terraria" + 235);
+-						writer.Write("Terraria" + 237);
 +						writer.Write(BuildInfo.versionedName);
  						break;
  					case 2:
@@ -97,7 +97,7 @@
  								}
  							}
  
--							if (nPC2.type >= 0 && nPC2.type < 665 && Main.npcCatchable[nPC2.type])
+-							if (nPC2.type >= 0 && nPC2.type < 667 && Main.npcCatchable[nPC2.type])
 +							if (nPC2.type >= 0 && Main.npcCatchable[nPC2.type])
  								writer.Write((byte)nPC2.releaseOwner);
  
@@ -257,16 +257,16 @@
  						Netplay.Disconnect = true;
  					}
  					else {
-@@ -2096,7 +_,7 @@
+@@ -2094,7 +_,7 @@
+ 				}
  				catch (Exception) {
- #if SERVER
- 					if (num < NetMessage.buffer.Length - 100)
+ 					if (Main.dedServ && num < NetMessage.buffer.Length - 100)
 -						Console.WriteLine("Error on message " + NetMessage.buffer[num + 2]);
 +						Logging.ServerConsoleLine("Error on message " + NetMessage.buffer[num + 2], Level.Warn);
- #endif
+ 
  					num2 = 0;
  					num = 0;
-@@ -2306,8 +_,10 @@
+@@ -2304,8 +_,10 @@
  			}
  
  			if (!flag) {
@@ -278,7 +278,7 @@
  				Netplay.Disconnect = true;
  			}
  		}
-@@ -2357,11 +_,12 @@
+@@ -2355,11 +_,12 @@
  					SendData(5, toWho, fromWho, null, plr, 94 + m, (int)Main.player[plr].miscDyes[m].prefix);
  				}
  
@@ -292,7 +292,7 @@
  				}
  
  				return;
-@@ -2373,7 +_,7 @@
+@@ -2371,7 +_,7 @@
  				Netplay.Clients[plr].IsAnnouncementCompleted = false;
  				ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[20].Key, Netplay.Clients[plr].Name), new Color(255, 240, 20), plr);
  				if (Main.dedServ)

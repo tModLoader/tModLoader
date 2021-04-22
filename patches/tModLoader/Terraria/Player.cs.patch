@@ -3341,22 +3341,16 @@
  			if (inventory[num].stack <= 0)
  				inventory[num].SetDefaults();
  		}
-@@ -29706,11 +_,15 @@
+@@ -29706,6 +_,9 @@
  		}
  
  		public Rectangle GetItemDrawFrame(int type) {
-+#if SERVER
-+			return Rectangle.Empty;
-+#else
++			if(Main.dedServ)
++				return Rectangle.Empty;
++
  			Main.instance.LoadItem(type);
  			if (type == 75)
  				return TextureAssets.Item[type].Frame(1, 8);
- 
- 			return TextureAssets.Item[type].Frame();
-+#endif
- 		}
- 
- 		public float GetAdjustedItemScale(Item item) {
 @@ -29733,6 +_,12 @@
  		}
  
@@ -3755,16 +3749,51 @@
  				if (sItem.stack <= 0)
  					sItem.SetDefaults();
  			}
-@@ -33903,7 +_,8 @@
- 					Main.projectile[num177].originalDamage = damage;
- 					UpdateMaxTurrets();
+@@ -32508,6 +_,9 @@
+ 		}
+ 
+ 		private void ItemCheck_Shoot(int i, Item sItem, int weaponDamage) {
++			if (!CombinedHooks.CanShoot(this, sItem))
++				return;
++
+ 			int projToShoot = sItem.shoot;
+ 			float speed = sItem.shootSpeed;
+ 			int damage = sItem.damage;
+@@ -32719,6 +_,13 @@
+ 					num3 = vector4.Y;
  				}
--				else {
-+				else if (PlayerHooks.Shoot(this, sItem, ref pointPoisition, ref num2, ref num3, ref projToShoot, ref Damage, ref KnockBack)
-+					&& ItemLoader.Shoot(sItem, this, ref pointPoisition, ref num2, ref num3, ref projToShoot, ref Damage, ref KnockBack)) {
- 					int num178 = Projectile.NewProjectile(projectileSource_Item_WithPotentialAmmo, pointPoisition.X, pointPoisition.Y, num2, num3, projToShoot, Damage, KnockBack, i);
- 					if (sItem.type == 726)
- 						Main.projectile[num178].magic = true;
+ 
++				goto DirtBallShoot;
++				ShootHook:
++				Vector2 velocity = new Vector2(num2, num3);
++				CombinedHooks.ModifyShootStats(this, sItem, ref pointPoisition, ref velocity, ref projToShoot, ref Damage, ref KnockBack);
++				num2 = velocity.X;
++				num3 = velocity.Y;
++
+ 				if (sItem.useStyle == 5) {
+ 					if (sItem.type == 3029) {
+ 						Vector2 vector5 = new Vector2(num2, num3);
+@@ -32755,6 +_,11 @@
+ 					NetMessage.SendData(41, -1, -1, null, whoAmI);
+ 				}
+ 
++				if (!CombinedHooks.Shoot(this, sItem, (ProjectileSource_Item_WithAmmo)projectileSource_Item_WithPotentialAmmo, pointPoisition, velocity, projToShoot, Damage, KnockBack))
++					return;
++
++				goto ShootProj;
++				DirtBallShoot:
+ 				if (projToShoot == 17) {
+ 					pointPoisition.X = (float)Main.mouseX + Main.screenPosition.X;
+ 					pointPoisition.Y = (float)Main.mouseY + Main.screenPosition.Y;
+@@ -32763,6 +_,8 @@
+ 
+ 					LimitPointToPlayerReachableArea(ref pointPoisition);
+ 				}
++				goto ShootHook;
++				ShootProj:
+ 
+ 				if (projToShoot == 76) {
+ 					projToShoot += Main.rand.Next(3);
 @@ -34460,6 +_,10 @@
  		}
  
@@ -4014,7 +4043,7 @@
  						NetMessage.SendData(34, -1, -1, null, 1, x, y);
  
  					if (Main.tile[x, y].type == 467)
-@@ -36676,13 +_,23 @@
+@@ -36676,11 +_,20 @@
  
  					if (Main.tile[x, y].type == 88)
  						NetMessage.SendData(34, -1, -1, null, 3, x, y);
@@ -4030,14 +4059,12 @@
  				else {
  					bool num3 = Main.tile[x, y].active();
  					WorldGen.KillTile(x, y);
-+#if CLIENT
- 					if (num3 && !Main.tile[x, y].active())
+-					if (num3 && !Main.tile[x, y].active())
++
++					if (!Main.dedServ && num3 && !Main.tile[x, y].active())
  						AchievementsHelper.HandleMining();
  
-+#endif
  					if (Main.netMode == 1)
- 						NetMessage.SendData(17, -1, -1, null, 0, x, y);
- 				}
 @@ -36750,7 +_,24 @@
  			if (Main.tileNoFail[tileTarget.type])
  				num = 100;
@@ -4219,7 +4246,7 @@
  			return player;
  		}
  
-@@ -37314,7 +_,7 @@
+@@ -37322,7 +_,7 @@
  			if (Main.tile[x, y - 1] == null)
  				return false;
  
@@ -4228,7 +4255,7 @@
  				return false;
  
  			for (int i = x - 1; i <= x + 1; i++) {
-@@ -37446,6 +_,7 @@
+@@ -37454,6 +_,7 @@
  			if (path == null || path == "")
  				return;
  
@@ -4236,12 +4263,12 @@
  			if (FileUtilities.Exists(path, isCloudSave))
  				FileUtilities.Copy(path, path + ".bak", isCloudSave);
  
-@@ -37453,13 +_,14 @@
+@@ -37461,13 +_,14 @@
  			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write)) {
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream)) {
 +						PlayerHooks.PreSavePlayer(player);
- 						binaryWriter.Write(235);
+ 						binaryWriter.Write(237);
  						playerFile.Metadata.Write(binaryWriter);
  						binaryWriter.Write(player.name);
  						binaryWriter.Write(player.difficulty);
@@ -4252,7 +4279,7 @@
  						BitsByte bb = (byte)0;
  						for (int i = 0; i < 8; i++) {
  							bb[i] = player.hideVisibleAccessory[i];
-@@ -37505,63 +_,57 @@
+@@ -37513,63 +_,57 @@
  						binaryWriter.Write(player.shoeColor.G);
  						binaryWriter.Write(player.shoeColor.B);
  						for (int k = 0; k < player.armor.Length; k++) {
@@ -4327,7 +4354,7 @@
  						}
  
  						for (int num6 = 0; num6 < 200; num6++) {
-@@ -37577,7 +_,7 @@
+@@ -37585,7 +_,7 @@
  						}
  
  						binaryWriter.Write(player.hbLocked);
@@ -4336,7 +4363,7 @@
  							binaryWriter.Write(player.hideInfo[num7]);
  						}
  
-@@ -37606,9 +_,13 @@
+@@ -37614,9 +_,13 @@
  						stream.Flush();
  						if (isCloudSave && SocialAPI.Cloud != null)
  							SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
@@ -4350,7 +4377,7 @@
  		}
  
  		private void SaveTemporaryItemSlotContents(BinaryWriter writer) {
-@@ -37711,7 +_,7 @@
+@@ -37719,7 +_,7 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
@@ -4359,7 +4386,7 @@
  			try {
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
  				rijndaelManaged.Padding = PaddingMode.None;
-@@ -38050,7 +_,7 @@
+@@ -38058,7 +_,7 @@
  							if (num >= 11) {
  								int num28 = 22;
  								if (num < 74)
@@ -4368,7 +4395,7 @@
  
  								for (int num29 = 0; num29 < num28; num29++) {
  									player.buffType[num29] = binaryReader.ReadInt32();
-@@ -38140,7 +_,7 @@
+@@ -38148,7 +_,7 @@
  							if (num >= 220)
  								CreativePowerManager.Instance.LoadToPlayer(player, binaryReader, num);
  
@@ -4377,7 +4404,7 @@
  						}
  					}
  				}
-@@ -38150,6 +_,9 @@
+@@ -38158,6 +_,9 @@
  				playerFileData.Player = player;
  				return playerFileData;
  			}
@@ -4387,7 +4414,7 @@
  			catch {
  			}
  
-@@ -38180,8 +_,9 @@
+@@ -38188,8 +_,9 @@
  			}
  		}
  
@@ -4398,7 +4425,7 @@
  			for (int i = 3; i < 10; i++) {
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 4874 || type == 5000)
-@@ -38198,6 +_,7 @@
+@@ -38206,6 +_,7 @@
  
  				newPlayer.lavaTime = newPlayer.lavaMax;
  			}
@@ -4406,7 +4433,7 @@
  		}
  
  		public static PlayerFileData GetFileData(string file, bool cloudSave) {
-@@ -38207,12 +_,17 @@
+@@ -38215,12 +_,17 @@
  			PlayerFileData playerFileData = LoadPlayer(file, cloudSave);
  			if (playerFileData.Player != null) {
  				if (playerFileData.Player.loadStatus != 0 && playerFileData.Player.loadStatus != 1) {
@@ -4425,7 +4452,7 @@
  				}
  
  				return playerFileData;
-@@ -38262,7 +_,15 @@
+@@ -38270,7 +_,15 @@
  			return -1;
  		}
  
@@ -4442,7 +4469,7 @@
  			width = 20;
  			height = 42;
  			name = string.Empty;
-@@ -38303,7 +_,7 @@
+@@ -38311,7 +_,7 @@
  			grappling[0] = -1;
  			statManaMax = 20;
  			extraAccessory = false;
@@ -4451,7 +4478,7 @@
  				adjTile[n] = false;
  				oldAdjTile[n] = false;
  			}
-@@ -38531,6 +_,7 @@
+@@ -38539,6 +_,7 @@
  		}
  
  		public void GetAnglerReward() {
@@ -4459,7 +4486,7 @@
  			Item item = new Item();
  			item.type = 0;
  			int num = anglerQuestsFinished;
-@@ -38716,56 +_,23 @@
+@@ -38724,56 +_,23 @@
  					}
  			}
  
@@ -4521,7 +4548,7 @@
  			}
  
  			Item item7 = new Item();
-@@ -38797,16 +_,9 @@
+@@ -38805,16 +_,9 @@
  				item7.stack = num3;
  			}
  
@@ -4540,7 +4567,7 @@
  
  			Item item8 = new Item();
  			if (Main.rand.Next((int)(15f * num2)) == 0)
-@@ -38834,12 +_,18 @@
+@@ -38842,12 +_,18 @@
  			if (Main.rand.Next(250) <= num)
  				item8.stack++;
  
@@ -4565,7 +4592,7 @@
  			}
  		}
  
-@@ -38967,6 +_,7 @@
+@@ -38975,6 +_,7 @@
  					list.Add(3024);
  			}
  
@@ -4573,7 +4600,7 @@
  			num = list[Main.rand.Next(list.Count)];
  			Item item = new Item();
  			item.SetDefaults(num);
-@@ -38980,6 +_,52 @@
+@@ -38988,6 +_,52 @@
  			}
  		}
  
@@ -4626,7 +4653,7 @@
  		public bool CheckMana(int amount, bool pay = false, bool blockQuickMana = false) {
  			int num = (int)((float)amount * manaCost);
  			if (statMana >= num) {
-@@ -39012,7 +_,7 @@
+@@ -39020,7 +_,7 @@
  		public bool ConsumeSolarFlare() {
  			if (setSolar && solarShields > 0) {
  				solarShields--;
@@ -4635,7 +4662,7 @@
  					if (buffType[i] >= 170 && buffType[i] <= 172)
  						DelBuff(i);
  				}
-@@ -39132,7 +_,7 @@
+@@ -39140,7 +_,7 @@
  				}
  			}
  
@@ -4644,7 +4671,7 @@
  			IProjectileSource projectileSource_SetBonus = GetProjectileSource_SetBonus(3);
  			_ = Main.projectile[Projectile.NewProjectile(projectileSource_SetBonus, MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer)];
  		}
-@@ -39251,7 +_,7 @@
+@@ -39259,7 +_,7 @@
  				return;
  
  			int timeToAdd = 480;
