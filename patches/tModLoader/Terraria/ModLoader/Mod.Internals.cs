@@ -48,7 +48,6 @@ namespace Terraria.ModLoader
 		internal void SetupContent() {
 			foreach (var e in content.OfType<ModType>()) {
 				e.SetupContent();
-				e.SetStaticDefaults();
 			}
 		}
 
