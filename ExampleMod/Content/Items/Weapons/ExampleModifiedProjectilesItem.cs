@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
@@ -22,10 +23,10 @@ namespace ExampleMod.Content.Items.Weapons
 			// This Ammo is nonspecific. I want to modify what it shoots, however.
 			Item.useAmmo = AmmoID.Bullet;
 		}
-		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
+		public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			// NewProjectile returns the index of the projectile it creates in the NewProjectile array.
 			// Here we are using it to gain access to the projectile object.
-			int projectileID = Projectile.NewProjectile(player.GetProjectileSource_Item_WithPotentialAmmo(Item, AmmoID.Bullet), position, new Vector2(speedX, speedY), type, damage, knockBack, player.whoAmI);
+			int projectileID = Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
 			Projectile projectile = Main.projectile[projectileID];
 
 			ExampleProjectileModifications globalProjectile = projectile.GetGlobalProjectile<ExampleProjectileModifications>();

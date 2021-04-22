@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader
 {
@@ -37,6 +39,20 @@ namespace Terraria.ModLoader
 		//TODO: Fix various inconsistencies with calls of UseItem, and then make this and its inner methods use short-circuiting.
 		public static bool CanUseItem(Player player, Item item) {
 			return PlayerHooks.CanUseItem(player, item) & ItemLoader.CanUseItem(item, player);
+		}
+
+		public static bool CanShoot(Player player, Item item) {
+			return PlayerHooks.CanShoot(player, item) & ItemLoader.CanShoot(item, player);
+		}
+
+		public static void ModifyShootStats(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			ItemLoader.ModifyShootStats(item, player, ref position, ref velocity, ref type, ref damage, ref knockback);
+			PlayerHooks.ModifyShootStats(player, item, ref position, ref velocity, ref type, ref damage, ref knockback);
+		}
+
+		public static bool Shoot(Player player, Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			PlayerHooks.Shoot(player, item, source, position, velocity, type, damage, knockback);
+			return ItemLoader.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
 
 		public static bool? CanPlayerHitNPCWithItem(Player player, Item item, NPC npc) {

@@ -163,7 +163,7 @@ namespace Terraria.ModLoader.Setup
 
 		private static void UpdateTmlSteamDir(bool manualSet = false) {
 			if (manualSet || !Directory.Exists(TMLSteamDir)) {
-				Settings.Default.TMLSteamDir = Path.GetFullPath(Path.Combine(Settings.Default.SteamDir, "..", "tModLoader"));
+				Settings.Default.TMLSteamDir = Path.GetFullPath(Path.Combine(Settings.Default.SteamDir, "..", "tModLoaderDev"));
 				Settings.Default.Save();
 			}
 

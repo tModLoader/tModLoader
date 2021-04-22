@@ -1,0 +1,101 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30128.36
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terraria_LegacyNetFramework", "..\src\tModLoader\Terraria\Terraria_LegacyNetFramework.csproj", "{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReLogic_LegacyNetFramework", "..\src\tModLoader\ReLogic\ReLogic_LegacyNetFramework.csproj", "{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		LinuxRelease|Any CPU = LinuxRelease|Any CPU
+		LinuxRelease|Auto = LinuxRelease|Auto
+		LinuxServerRelease|Any CPU = LinuxServerRelease|Any CPU
+		LinuxServerRelease|Auto = LinuxServerRelease|Auto
+		MacRelease|Any CPU = MacRelease|Any CPU
+		MacRelease|Auto = MacRelease|Auto
+		MacServerRelease|Any CPU = MacServerRelease|Any CPU
+		MacServerRelease|Auto = MacServerRelease|Auto
+		WindowsDebug|Any CPU = WindowsDebug|Any CPU
+		WindowsDebug|Auto = WindowsDebug|Auto
+		WindowsRelease|Any CPU = WindowsRelease|Any CPU
+		WindowsRelease|Auto = WindowsRelease|Auto
+		WindowsServerDebug|Any CPU = WindowsServerDebug|Any CPU
+		WindowsServerDebug|Auto = WindowsServerDebug|Auto
+		WindowsServerRelease|Any CPU = WindowsServerRelease|Any CPU
+		WindowsServerRelease|Auto = WindowsServerRelease|Auto
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxRelease|Any CPU.ActiveCfg = LinuxRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxRelease|Any CPU.Build.0 = LinuxRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxRelease|Auto.ActiveCfg = LinuxRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxRelease|Auto.Build.0 = LinuxRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxServerRelease|Any CPU.ActiveCfg = LinuxServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxServerRelease|Any CPU.Build.0 = LinuxServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxServerRelease|Auto.ActiveCfg = LinuxServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxServerRelease|Auto.Build.0 = LinuxServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacRelease|Any CPU.ActiveCfg = MacRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacRelease|Any CPU.Build.0 = MacRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacRelease|Auto.ActiveCfg = MacRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacRelease|Auto.Build.0 = MacRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacServerRelease|Any CPU.ActiveCfg = MacServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacServerRelease|Any CPU.Build.0 = MacServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacServerRelease|Auto.ActiveCfg = MacServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacServerRelease|Auto.Build.0 = MacServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsDebug|Any CPU.ActiveCfg = WindowsDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsDebug|Any CPU.Build.0 = WindowsDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsDebug|Auto.ActiveCfg = WindowsDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsDebug|Auto.Build.0 = WindowsDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsRelease|Any CPU.ActiveCfg = WindowsRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsRelease|Any CPU.Build.0 = WindowsRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsRelease|Auto.ActiveCfg = WindowsRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsRelease|Auto.Build.0 = WindowsRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerDebug|Any CPU.ActiveCfg = WindowsServerDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerDebug|Any CPU.Build.0 = WindowsServerDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerDebug|Auto.ActiveCfg = WindowsServerDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerDebug|Auto.Build.0 = WindowsServerDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerRelease|Any CPU.ActiveCfg = WindowsServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerRelease|Any CPU.Build.0 = WindowsServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerRelease|Auto.ActiveCfg = WindowsServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerRelease|Auto.Build.0 = WindowsServerRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.LinuxRelease|Any CPU.ActiveCfg = LinuxRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.LinuxRelease|Any CPU.Build.0 = LinuxRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.LinuxRelease|Auto.ActiveCfg = LinuxRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.LinuxRelease|Auto.Build.0 = LinuxRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.LinuxServerRelease|Any CPU.ActiveCfg = LinuxServerRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.LinuxServerRelease|Any CPU.Build.0 = LinuxServerRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.LinuxServerRelease|Auto.ActiveCfg = LinuxServerRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.LinuxServerRelease|Auto.Build.0 = LinuxServerRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.MacRelease|Any CPU.ActiveCfg = MacRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.MacRelease|Any CPU.Build.0 = MacRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.MacRelease|Auto.ActiveCfg = MacRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.MacRelease|Auto.Build.0 = MacRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.MacServerRelease|Any CPU.ActiveCfg = MacServerRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.MacServerRelease|Any CPU.Build.0 = MacServerRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.MacServerRelease|Auto.ActiveCfg = MacServerRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.MacServerRelease|Auto.Build.0 = MacServerRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsDebug|Any CPU.ActiveCfg = WindowsDebug|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsDebug|Any CPU.Build.0 = WindowsDebug|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsDebug|Auto.ActiveCfg = WindowsDebug|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsDebug|Auto.Build.0 = WindowsDebug|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsRelease|Any CPU.ActiveCfg = WindowsRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsRelease|Any CPU.Build.0 = WindowsRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsRelease|Auto.ActiveCfg = WindowsRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsRelease|Auto.Build.0 = WindowsRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsServerDebug|Any CPU.ActiveCfg = WindowsServerDebug|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsServerDebug|Any CPU.Build.0 = WindowsServerDebug|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsServerDebug|Auto.ActiveCfg = WindowsServerDebug|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsServerDebug|Auto.Build.0 = WindowsServerDebug|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsServerRelease|Any CPU.ActiveCfg = WindowsServerRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsServerRelease|Any CPU.Build.0 = WindowsServerRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsServerRelease|Auto.ActiveCfg = WindowsServerRelease|Any CPU
+		{99CBDCCD-8498-4424-A7E8-FE8D03373F1D}.WindowsServerRelease|Auto.Build.0 = WindowsServerRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8CD10756-D995-430C-B9A0-5A890EB963CC}
+	EndGlobalSection
+EndGlobal
