@@ -30,19 +30,19 @@ namespace Terraria.ModLoader.Engine
 		static InstallVerifier() {
 			if (Platform.IsWindows) {
 				steamAPIPath = "Libraries/Native/Windows32/steam_api.dll";
-				steamAPIHash = ToByteArray("73688FFCBC2E5F0980B055C1D93B2FB2");
+				steamAPIHash = ToByteArray("9084E3645F0601810362084DA53203DB");
 				gogHash = ToByteArray("ff61b96a07894a9e65f880fb9608fb37"); // Don't forget to update CheckExe in CheckGoG
 				steamHash = ToByteArray("4fd8072ca82ded3d9da1be577a478788");
 			}
 			else if (Platform.IsOSX) {
 				steamAPIPath = "Libraries/Native/OSX/libsteam_api.dylib";
-				steamAPIHash = ToByteArray("FB32124B2E07ED2AAE54FE8823D069B3");
+				steamAPIHash = ToByteArray("69C98EC9C3179D52A7FE75BD8405D8FC");
 				gogHash = ToByteArray("181c586d0fe64156adb0ecd4b9fabf9d");
 				steamHash = ToByteArray("12c8d2ac5af6c8505bd1a9339dc75231");
 			}
 			else if (Platform.IsLinux) {
 				steamAPIPath = "Libraries/Native/Linux/libsteam_api.so";
-				steamAPIHash = ToByteArray("8915306857EEF2A516956A2398845EA2");
+				steamAPIHash = ToByteArray("25BF523623B5EE8E82B047327F9C1341");
 				gogHash = ToByteArray("4a051352dd6ecc323c5a0a15e5b598fb");
 				steamHash = ToByteArray("debcc318ca4e14295e3ac22e380e289b");
 			}
