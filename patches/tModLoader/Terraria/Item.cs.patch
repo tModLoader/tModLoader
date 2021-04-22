@@ -696,7 +696,7 @@
  			if (Main.halloween) {
  				if (Type == 58)
  					Type = 1734;
-@@ -46024,6 +_,8 @@
+@@ -46038,6 +_,8 @@
  			if (ItemSlot.Options.HighlightNewItems && item.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[item.type])
  				item.newAndShiny = true;
  
@@ -705,7 +705,7 @@
  			if (Main.netMode == 2 && !noBroadcast)
  				NetMessage.SendData(21, -1, -1, null, num, noGrabDelay.ToInt());
  			else if (Main.netMode == 0)
-@@ -46095,14 +_,17 @@
+@@ -46109,14 +_,17 @@
  						continue;
  
  					Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
