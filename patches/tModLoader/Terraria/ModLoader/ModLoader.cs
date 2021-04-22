@@ -23,6 +23,11 @@ using Terraria.Initializers;
 using Terraria.ModLoader.Assets;
 using ReLogic.Content;
 using ReLogic.Graphics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+#if NETCORE
+using System.Runtime.Loader;
+#endif
 
 namespace Terraria.ModLoader
 {
@@ -38,7 +43,11 @@ namespace Terraria.ModLoader
 
 		public static string versionedName => ModCompile.DeveloperMode ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
 
-		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (InstallVerifier.IsGoG ? "g" : "s") + (FrameworkVersion.Framework == Framework.NetFramework ? "n" : (FrameworkVersion.Framework == Framework.Mono ? "o" : "u"));
+#if NETCORE
+		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (InstallVerifier.IsGoG ? "g" : "s") + "c";
+#else
+		public static string CompressedPlatformRepresentation => "w" + (InstallVerifier.IsGoG ? "g" : "s") + "n";
+#endif
 
 		public static string ModPath => ModOrganizer.modPath;
 
@@ -84,10 +93,7 @@ namespace Terraria.ModLoader
 
 		internal static void EngineInit()
 		{
-			DotNet45Check();
 			FileAssociationSupport.UpdateFileAssociation();
-			GLCallLocker.Init();
-			HiDefGraphicsIssues.Init();
 			MonoModHooks.Initialize();
 			ZipExtractFix.Init();
 			XnaTitleContainerRelativePathFix.Init();
@@ -191,25 +197,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void DotNet45Check()
-		{
-			if (FrameworkVersion.Framework != Framework.NetFramework || FrameworkVersion.Version >= new Version(4, 5))
-				return;
-
-			var msg = Language.GetTextValue("tModLoader.LoadErrorDotNet45Required");
-#if CLIENT
-			Interface.MessageBoxShow(msg);
-			Process.Start("https://dotnet.microsoft.com/download/dotnet-framework");
-#else
-			Console.ForegroundColor = ConsoleColor.Red;
-			Console.WriteLine(msg);
-			Console.ResetColor();
-			Console.WriteLine("Press any key to exit...");
-			Console.ReadKey();
-#endif
-			Environment.Exit(-1);
-		}
-
 		internal static void Reload()
 		{
 			if (Main.dedServ)
@@ -221,8 +208,7 @@ namespace Terraria.ModLoader
 		private static bool Unload()
 		{
 			try {
-				// have to move unload logic to a separate method so the stack frame is cleared. Otherwise unloading can capture mod instances in local variables, even with memory barriers (thanks compiler weirdness)
-				do_Unload();
+				Mods_Unload();
 				WarnModsStillLoaded();
 				return true;
 			}
@@ -239,7 +225,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void do_Unload()
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static void Mods_Unload()
 		{
 			Logging.tML.Info("Unloading mods");
 			if (Main.dedServ) {
@@ -253,10 +240,10 @@ namespace Terraria.ModLoader
 			Mods = new Mod[0];
 			modsByName.Clear();
 			ModContent.Unload();
-
 			MemoryTracking.Clear();
 			Thread.MemoryBarrier();
-			GC.Collect();
+
+			AssemblyManager.Unload();
 		}
 
 		internal static List<string> badUnloaders = new List<string>();
