@@ -290,18 +290,16 @@
  									int num31 = base.direction;
  									switch (type) {
  										case 697:
-@@ -9624,11 +_,24 @@
+@@ -9624,6 +_,16 @@
  										if (ai[0] == 6f)
  											num7 *= 0.5f;
  									}
 +									// Moved up ]]
 +									// TODO: Actually, make a weird goto sequence instead of straight up cutting and pasting code.
 +
-+									float knockback = knockBack;
-+
-+									ProjectileLoader.ModifyHitNPC(this, nPC, ref num18, ref knockback, ref flag6, ref num31);
-+									NPCLoader.ModifyHitByProjectile(nPC, this, ref num18, ref knockback, ref flag6, ref num31);
-+									PlayerHooks.ModifyHitNPCWithProj(this, nPC, ref num18, ref knockback, ref flag6, ref num31);
++									ProjectileLoader.ModifyHitNPC(this, nPC, ref num18, ref num7, ref flag6, ref num31);
++									NPCLoader.ModifyHitByProjectile(nPC, this, ref num18, ref num7, ref flag6, ref num31);
++									PlayerHooks.ModifyHitNPCWithProj(this, nPC, ref num18, ref num7, ref flag6, ref num31);
 +									
 +									goto VanillaOnHitEffectsStart;
 +									
@@ -309,34 +307,13 @@
  
  									if (flag7 && !hostile && num8 > 0)
  										num18 += nPC.checkArmorPenetration(num8);
- 
-+									// patch note: use local variable 'knockback', not knockBack / num7
--									int num32 = (!flag7) ? ((int)nPC.StrikeNPCNoInteraction(num18, num7, num31, flag6)) : ((int)nPC.StrikeNPC(num18, num7, num31, flag6));
-+ 									int num32 = (!flag7) ? ((int)nPC.StrikeNPCNoInteraction(num18, knockback, num31, flag6)) : ((int)nPC.StrikeNPC(num18, knockback, num31, flag6));
- 									if (flag7 && Main.player[owner].accDreamCatcher)
- 										Main.player[owner].addDPS(num32);
- 
-@@ -9734,10 +_,11 @@
- 										localAI[0] = 1f;
- 
- 									if (Main.netMode != 0) {
-+										// patch note: use local variable 'knockback', not knockBack
- 										if (flag6)
--											NetMessage.SendData(28, -1, -1, null, i, num18, knockBack, num31, 1);
-+											NetMessage.SendData(28, -1, -1, null, i, num18, knockback, num31, 1);
- 										else
--											NetMessage.SendData(28, -1, -1, null, i, num18, knockBack, num31);
-+											NetMessage.SendData(28, -1, -1, null, i, num18, knockback, num31);
- 									}
- 
- 									if (type == 916)
 @@ -9901,6 +_,9 @@
  									if (type == 710)
  										BetsySharpnel(i);
  
-+									ProjectileLoader.OnHitNPC(this, Main.npc[i], num32, knockback, flag6);
-+									NPCLoader.OnHitByProjectile(Main.npc[i], this, num32, knockback, flag6);
-+									PlayerHooks.OnHitNPCWithProj(this, Main.npc[i], num32, knockback, flag6);
++									ProjectileLoader.OnHitNPC(this, Main.npc[i], num32, num7, flag6);
++									NPCLoader.OnHitByProjectile(Main.npc[i], this, num32, num7, flag6);
++									PlayerHooks.OnHitNPCWithProj(this, Main.npc[i], num32, num7, flag6);
  									if (penetrate > 0 && type != 317 && type != 866) {
  										if (type == 357)
  											damage = (int)((double)damage * 0.8);

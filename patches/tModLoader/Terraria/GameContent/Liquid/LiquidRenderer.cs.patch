@@ -18,7 +18,7 @@
  
  		public event Action<Color[], Rectangle> WaveFilters;
  
-@@ -122,7 +_,7 @@
+@@ -123,7 +_,7 @@
  				ptr2 = ptr;
  				for (int i = rectangle.X; i < rectangle.X + rectangle.Width; i++) {
  					for (int j = rectangle.Y; j < rectangle.Y + rectangle.Height; j++) {

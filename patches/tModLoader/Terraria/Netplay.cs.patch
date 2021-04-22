@@ -6,7 +6,7 @@
  using System.IO;
  using System.Linq;
  using System.Net;
-@@ -7,10 +_,13 @@
+@@ -7,19 +_,21 @@
  using System.Runtime.CompilerServices;
  #endif
  using System.Threading;
@@ -16,19 +16,20 @@
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
-+using Terraria.ModLoader.IO;
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
-@@ -21,7 +_,6 @@
- #if SERVER && WINDOWS
- using NATUPNPLib;
+ using Terraria.Utilities;
+ #if !XNA
+ using Terraria.Social.Base;
++using Terraria.ModLoader.IO;
  #endif
+ using NATUPNPLib;
 -
  namespace Terraria
  {
  	public class Netplay
-@@ -82,6 +_,7 @@
+@@ -78,6 +_,7 @@
  
  		private static void ResetNetDiag() {
  			Main.ActiveNetDiagnosticsUI.Reset();
@@ -36,7 +37,7 @@
  		}
  
  		public static void ResetSections() {
-@@ -121,6 +_,20 @@
+@@ -117,6 +_,20 @@
  			return false;
  		}
  
@@ -55,9 +56,9 @@
 +		}
 +
  		private static void OpenPort(int port) {
- #if SERVER && WINDOWS
- 			string localIPAddress = GetLocalIPAddress();
-@@ -286,6 +_,8 @@
+ 			if (!Main.dedServ)
+ 				return;
+@@ -283,6 +_,8 @@
  				Main.netMode = 0;
  				Main.menuMode = 10;
  				WorldFile.SaveWorld();
@@ -66,7 +67,7 @@
  				Main.menuMode = 0;
  			}
  			else {
-@@ -422,6 +_,7 @@
+@@ -421,6 +_,7 @@
  		}
  
  		private static void ClientLoopSetup(RemoteAddress address) {
@@ -74,7 +75,7 @@
  			Connection.ResetSpecialFlags();
  			ResetNetDiag();
  			Main.ServerSideCharacter = false;
-@@ -442,9 +_,11 @@
+@@ -441,9 +_,11 @@
  
  			Disconnect = false;
  			Connection = new RemoteServer();
@@ -87,7 +88,7 @@
  		private static void InnerClientLoop() {
  			try {
  				NetMessage.buffer[256].Reset();
-@@ -479,6 +_,7 @@
+@@ -478,6 +_,7 @@
  							Cloud.resetClouds();
  							Main.cloudAlpha = Main.maxRaining;
  							WorldGen.clearWorld();
@@ -95,7 +96,7 @@
  							if (Main.mapEnabled)
  								Main.Map.Load();
  						}
-@@ -490,6 +_,7 @@
+@@ -489,6 +_,7 @@
  						else if (Connection.State == 5 && WorldGen.worldCleared) {
  							Connection.State = 6;
  							Main.player[Main.myPlayer].FindSpawn();
@@ -103,7 +104,7 @@
  							NetMessage.SendData(8, -1, -1, null, Main.player[Main.myPlayer].SpawnX, Main.player[Main.myPlayer].SpawnY);
  						}
  
-@@ -523,6 +_,7 @@
+@@ -522,6 +_,7 @@
  					num = Connection.State;
  				}
  
@@ -111,12 +112,12 @@
  				try {
  					Connection.Socket.Close();
  				}
-@@ -530,6 +_,11 @@
+@@ -529,6 +_,11 @@
  				}
  
  				if (!Main.gameMenu) {
 +					//This is only called in case of kicks and other sudden disconnects.
-+					//The more common (client) call to this is in WorldGen.SaveAndQuitCallback
++					//The more common (client) call to this is in Main.SaveAndQuitCallback
 +					SystemHooks.OnWorldUnload();
 +					TileIO.PostExitWorldCleanup();
 +
