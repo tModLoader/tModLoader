@@ -5,7 +5,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds.
 	/// </summary>
-	public abstract class ModUgBgStyle:ModType
+	public abstract class ModUgBgStyle : ModType
 	{
 		/// <summary>
 		/// The ID of this underground background style.
@@ -18,6 +18,8 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModUgBgStyle>.Register(this);
 			UgBgStyleLoader.ugBgStyles.Add(this);
 		}
+
+		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default.
@@ -35,7 +37,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for above-ground backgrounds.
 	/// </summary>
-	public abstract class ModSurfaceBgStyle:ModType
+	public abstract class ModSurfaceBgStyle : ModType
 	{
 		/// <summary>
 		/// The ID of this surface background style.
@@ -48,6 +50,8 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModSurfaceBgStyle>.Register(this);
 			SurfaceBgStyleLoader.surfaceBgStyles.Add(this);
 		}
+
+		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default.
@@ -104,6 +108,8 @@ namespace Terraria.ModLoader
 			ModTypeLookup<GlobalBgStyle>.Register(this);
 			GlobalBgStyleLoader.globalBgStyles.Add(this);
 		}
+
+		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Allows you to change which underground background style is being used.

@@ -15,12 +15,6 @@ namespace Terraria.ModLoader
 		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
-		/// Allows you to modify the properties of any wall in the game. Most properties are stored as arrays throughout the Terraria code.
-		/// </summary>
-		public virtual void SetStaticDefaults() {
-		}
-
-		/// <summary>
 		/// Allows you to customize which sound you want to play when the wall at the given coordinates is hit. Return false to stop the game from playing its default sound for the wall. Returns true by default.
 		/// </summary>
 		public virtual bool KillSound(int i, int j, int type) {

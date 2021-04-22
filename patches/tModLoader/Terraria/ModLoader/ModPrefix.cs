@@ -56,11 +56,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to set the prefix's name/translations and to set its category.
-		/// </summary>
-		public virtual void SetStaticDefaults() { }
-
-		/// <summary>
 		/// The roll chance of your prefix relative to a vanilla prefix, 1f by default. 
 		/// </summary>
 		public virtual float RollChance(Item item) => 1f;

@@ -141,12 +141,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to set all your NPC's static properties, such as names/translations and the arrays in NPCID.Sets.
-		/// </summary>
-		public virtual void SetStaticDefaults() {
-		}
-
-		/// <summary>
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {

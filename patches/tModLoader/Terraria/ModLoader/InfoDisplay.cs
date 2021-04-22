@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using System.Linq;
-using Terraria.Localization;
+﻿using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -52,13 +50,7 @@ namespace Terraria.ModLoader
 			SetStaticDefaults();
 		}
 
-		/// <summary>
-		/// You can assign values to InfoName here.
-		/// </summary>
-		public virtual void SetStaticDefaults() {
-		}
-
-		protected override void Register() {
+		protected sealed override void Register() {
 			InfoName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.InfoDisplayName.{Name}");
 
 			ModTypeLookup<InfoDisplay>.Register(this);

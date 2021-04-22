@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
@@ -19,6 +20,8 @@ namespace Terraria.ModLoader
 			SystemHooks.Add(this);
 			ModTypeLookup<ModSystem>.Register(this);
 		}
+
+		public sealed override void SetupContent() => SetStaticDefaults(); //Possible overlap with PostSetupContent?
 
 		//Hooks
 
