@@ -964,7 +964,7 @@
  					}
  				}
 +
-+				AVFXLoader.UpdateMusic(ref modMusic, ref modPriority);
++				Loaders.AVFXs.UpdateMusic(ref modMusic, ref modPriority);
  			}
  
  			_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
@@ -3325,7 +3325,7 @@
  			value3 = MathHelper.Clamp(value3, 0f, 1f);
  			int num7 = (int)((screenPosition.X + (float)(screenWidth / 2)) / 16f);
 +
-+			AVFXLoader.UgBg.ChooseStyle(out var modBG, out var priority);
++			Loaders.UgBgs.ChooseStyle(out var modBG, out var priority);
  			int num8 = 3;
  			num8 = ((num7 <= caveBackX[0]) ? caveBackStyle[0] : ((num7 <= caveBackX[1]) ? caveBackStyle[1] : ((num7 > caveBackX[2]) ? caveBackStyle[3] : caveBackStyle[2])));
  			num8 += 3;
@@ -3363,7 +3363,7 @@
  					array3[5] = 127;
  
  				array3[6] = 185 + hellBackStyle;
-+				AVFXLoader.UgBg.FillTextureArray(num9, array3);
++				Loaders.UgBgs.FillTextureArray(num9, array3);
  				LoadBackground(array3[0]);
  				LoadBackground(array3[1]);
  				LoadBackground(array3[2]);
@@ -3439,7 +3439,7 @@
  						return 12;
  					return 6;
  				default:
-+					AVFXLoader.Waters.ChooseStyle(out var waterStyle, out var priority);
++					Loaders.Waters.ChooseStyle(out var waterStyle, out var priority);
 +					if (priority >= AVFXPriority.BiomeLow) {
 +						return waterStyle;
 +					}
@@ -3450,7 +3450,7 @@
  							liquidAlpha[i] = Math.Min(liquidAlpha[i] + 0.2f, 1f);
  					}
  				}
-+				AVFXLoader.Waters.UpdateLiquidAlphas();
++				Loaders.Waters.UpdateLiquidAlphas();
  			}
  
  			if (!drawToScreen && !isBackground) {
@@ -3460,7 +3460,7 @@
  			DrawWater(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
 +			
 +		postWaterDraw:
-+			AVFXLoader.Waters.DrawWatersToScreen(isBackground);
++			Loaders.Waters.DrawWatersToScreen(isBackground);
  		}
  
 -		protected void DrawWater(bool bg = false, int Style = 0, float Alpha = 1f) {
@@ -3483,7 +3483,7 @@
  				DrawSurfaceBG_DrawBackMountainsLayer(246);
  			}
  
-+			AVFXLoader.SurfaceBg.DrawFarTexture();
++			Loaders.SurfaceBgs.DrawFarTexture();
  			SkyManager.Instance.DrawToDepth(spriteBatch, 5f);
  		}
  
@@ -3729,15 +3729,15 @@
  
  			UpdateBGVisibility_BackLayer(null, null);
  			UpdateBGVisibility_FrontLayer(null, null);
-+			if (bgStyle < AVFXLoader.SurfaceBg.vanillaCount) {
-+				for (int i = AVFXLoader.SurfaceBg.vanillaCount; i < bgAlphaFrontLayer.Length /*SurfaceBackgroundStyleLoader.SurfaceStyleCount*/; i++) {
++			if (bgStyle < Loaders.SurfaceBgs.vanillaCount) {
++				for (int i = Loaders.SurfaceBgs.vanillaCount; i < bgAlphaFrontLayer.Length /*SurfaceBackgroundStyleLoader.SurfaceStyleCount*/; i++) {
 +					bgAlphaFrontLayer[i] -= backgroundLayerTransitionSpeed;
 +					if (bgAlphaFrontLayer[i] < 0f)
 +						bgAlphaFrontLayer[i] = 0f;
 +				}
 +			}
 +
-+			AVFXLoader.SurfaceBg.ModifyFarFades(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
++			Loaders.SurfaceBgs.ModifyFarFades(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
  			try {
  				DrawSurfaceBG();
  				if (BackgroundEnabled)
@@ -3745,7 +3745,7 @@
  		public static int GetPreferredBGStyleForPlayer() {
  			int num = bgStyle;
  			int num2 = (int)((screenPosition.X + (float)(screenWidth / 2)) / 16f);
-+			AVFXLoader.SurfaceBg.ChooseStyle(out var modBG, out var priority);
++			Loaders.SurfaceBgs.ChooseStyle(out var modBG, out var priority);
 +
 +			if (priority >= AVFXPriority.BiomeHigh) {
 +				num = modBG;
