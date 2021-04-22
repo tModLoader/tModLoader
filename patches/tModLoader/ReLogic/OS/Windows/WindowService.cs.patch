@@ -1,0 +1,12 @@
+--- src/Terraria/ReLogic/OS/Windows/WindowService.cs
++++ src/tModLoader/ReLogic/OS/Windows/WindowService.cs
+@@ -46,5 +_,9 @@
+ 			NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStop(window.Handle);
+ 			NativeMethods.FlashWindowEx(ref flashInfo);
+ 		}
++
++		public void HideConsole() {
++			NativeMethods.HideConsole();
++		}
+ 	}
+ }
