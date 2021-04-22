@@ -127,6 +127,7 @@ jobs:
           echo "displayName = Example Mod (${GITHUB_REF##*/}-${{ github.sha }})" >> ./ExampleMod/build.txt
           cd artifacts/Windows
           mkdir -p ModLoader/Mods
+          echo pwd is: ${PWD}
           echo Building ExampleMod
           dotnet tModLoader.dll -server -build ..\..\ExampleMod -tmlsavedirectory ./ModLoader
           cd ../..
