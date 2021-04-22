@@ -1,14 +1,10 @@
 --- src/decompiled/Terraria/Testing/PacketHistory.cs
 +++ src/Terraria/Terraria/Testing/PacketHistory.cs
-@@ -79,7 +_,12 @@
+@@ -79,7 +_,8 @@
  
  		private string CreateDumpFileName() {
  			DateTime dateTime = DateTime.Now.ToLocalTime();
-+#if CLIENT
-+			const string Name = "Terraria";
-+#else
-+			const string Name = "TerrariaServer";
-+#endif
++			string Name = Main.dedServ ? "TerrariaServer" : "Terraria";
 -			return string.Format("Net_{0}_{1}_{2}_{3}.txt", "Terraria", Main.versionNumber, dateTime.ToString("MM-dd-yy_HH-mm-ss-ffff", CultureInfo.InvariantCulture), Thread.CurrentThread.ManagedThreadId);
 +			return string.Format("Net_{0}_{1}_{2}_{3}.txt", Name, Main.versionNumber, dateTime.ToString("MM-dd-yy_HH-mm-ss-ffff", CultureInfo.InvariantCulture), Thread.CurrentThread.ManagedThreadId);
  		}

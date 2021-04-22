@@ -271,6 +271,7 @@
 		"MSPublish": "Publish",
 		"MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
 		"MSCreateMod": "Create Mod",
+		"VersionUpgrade": "LINK: Learn about Mod Migration for Latest Update",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
