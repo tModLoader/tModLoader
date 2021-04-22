@@ -105,7 +105,7 @@ jobs:
           echo CompleteRelease.bat Done
           cd ..
           mkdir -p artifacts/Windows
-          mv ./solutions/Release/Shared/. ./artifacts/Windows/
+          cp -R ./solutions/Release/Shared/. ./artifacts/Windows/
           echo Creating decompiled cache zip file
           7z a decompiled.zip ./src/decompiled/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
