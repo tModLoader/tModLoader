@@ -32,8 +32,14 @@
 		/// </summary>
 		public virtual void Load(){}
 
+		/// <summary>
+		/// If you make a new ModType, seal this override.
+		/// </summary>
 		protected abstract void Register();
 
+		/// <summary>
+		/// If you make a new ModType, seal this override, and call <see cref="SetStaticDefaults"/> in it.
+		/// </summary>
 		public virtual void SetupContent(){}
 
 		/// <summary>
