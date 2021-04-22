@@ -85,5 +85,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void ModifyBuffTip(ref string tip, ref int rare) {
 		}
+
+		/// <summary>
+		/// The mana player regeneration/damaging effects associated with this buff. See Player.TML.cs for vanilla examples.
+		/// </summary>
+		public virtual PlayerRegenEffects.RegenEffect ModManaRegenEffects() {
+			return new PlayerRegenEffects.RegenEffect(FullName, _ => false);
+		}
 	}
 }

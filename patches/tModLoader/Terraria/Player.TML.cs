@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria.ModLoader;
 
 namespace Terraria
@@ -98,5 +97,94 @@ namespace Terraria
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary>
 		public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
+
+		public void CheckManaRegenDelay() {
+			if (manaRegenDelay == 0) {
+				SetManaRegen();
+				return;
+			}
+
+			manaRegenDelay--;
+
+			float delay = manaRegenDelay;
+			foreach (var entry in PlayerRegenEffects.effects) {
+				if (!entry.isActive(this))
+					continue;
+				if (!ProcessManaDelay(entry.manaDelay, ref delay))
+					break;
+			}
+			manaRegenDelay = (int)Math.Round(delay);
+
+			if (manaRegenBuff && manaRegenDelay > 20) {
+				manaRegenDelay = 20;
+				return;
+			}
+
+			if (manaRegenDelay <= 0) {
+				manaRegenDelay = 0;
+				SetManaRegen();
+			}
+		}
+
+		internal bool ProcessManaDelay(PlayerRegenEffects.ManaRegenDelayStats entry, ref float delay) {
+			if (entry.resetDelayToZero != null) {
+				if (entry.resetDelayToZero(this)) {
+					delay = 0;
+					return false;
+				}
+			}
+
+			if (entry.increaseDelaySpeed != null) {
+				delay = Math.Min(delay - entry.increaseDelaySpeed(this), this.maxRegenDelay);
+			}
+			return true;
+		}
+
+		internal void RecalculateMaxRegenDelay() {
+			float maxDelayCap = float.MaxValue;
+			foreach (var entry in PlayerRegenEffects.effects) {
+				if (!entry.isActive(this))
+					continue;
+
+				if (entry.manaDelay.maxDelayCap != null) {
+					maxDelayCap = Math.Min(maxDelayCap, entry.manaDelay.maxDelayCap(this));
+				}
+				if (entry.manaDelay.increaseMaxDelay != null) {
+					maxRegenDelay = Math.Min(maxDelayCap, maxRegenDelay + entry.manaDelay.increaseMaxDelay(this));
+				}
+			}
+		}
+
+		public float manaRegenPotencyMultiplier;
+
+		public void SetManaRegen() {
+			manaRegen = statManaMax2 / 7 + 1;
+			manaRegenPotencyMultiplier = 1;
+
+			float regen = manaRegen;
+			foreach (var entry in PlayerRegenEffects.effects) {
+				if (!entry.isActive(this))
+					continue;
+				ProcessCommonRegen(entry.manaCommon, ref regen);
+
+				if (manaRegenPotencyMultiplier == 0) {
+					break;
+				}
+			}
+			manaRegen = (int)Math.Round(regen * manaRegenPotencyMultiplier);
+		}
+
+		internal void ProcessCommonRegen(PlayerRegenEffects.CommonRegenStats entry, ref float regen) {
+			float val = entry.deltaRegenPer120Frames(this);
+			bool prevStateDebuff = regen < 0;
+			regen += val;
+
+			if ((prevStateDebuff || val < 0) && !entry.allowPositiveRegenWhileDebuffed) {
+				regen = Math.Min(regen, 0);
+			}
+
+			if (entry.additionalEffects != null)
+				entry.additionalEffects(this, regen);
+		}
 	}
 }

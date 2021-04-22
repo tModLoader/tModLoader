@@ -194,5 +194,22 @@ namespace Terraria.ModLoader
 				hook(buffTip, spriteBatch, originX, originY);
 			}
 		}
+
+		public static void RegisterModManaRegenEffect() {
+			foreach (var buff in buffs) {
+				PlayerRegenEffects.Register(buff.ModManaRegenEffects());
+			}
+		}
+
+		internal static void ModifyManaRegenEffects() {
+			foreach (var globalBuff in globalBuffs) {
+				var list = globalBuff.ModifyManaRegenEffects();
+				foreach (var modify in list) {
+					if (!PlayerRegenEffects.ModifyEffect(modify)) {
+						throw new ArgumentException($"The effect {modify.targetEffect} does not Exist!");
+					}
+				}
+			}
+		}
 	}
 }

@@ -57,5 +57,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void DrawCustomBuffTip(string buffTip, SpriteBatch spriteBatch, int originX, int originY) {
 		}
+
+		/// <summary>
+		/// The modifications to mana player regeneration/damaging effects associated with the named effects.
+		/// </summary>
+		public virtual List<PlayerRegenEffects.ModifyRegenEffectStruct> ModifyManaRegenEffects() {
+			return new List<PlayerRegenEffects.ModifyRegenEffectStruct>();
+		}
 	}
 }
