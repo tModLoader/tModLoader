@@ -1,0 +1,38 @@
+--- src/decompiled/ReLogic/OS/Windows/WindowsPlatform.cs
++++ src/Terraria/ReLogic/OS/Windows/WindowsPlatform.cs
+@@ -5,8 +_,10 @@
+ {
+ 	internal class WindowsPlatform : Platform
+ 	{
++#if WINDOWS
+ 		private WindowsMessageHook _wndProcHook;
+ 		private bool _disposedValue;
++#endif
+ 
+ 		public WindowsPlatform()
+ 			: base(PlatformType.Windows) {
+@@ -17,12 +_,17 @@
+ 		}
+ 
+ 		public override void InitializeClientServices(IntPtr windowHandle) {
++#if !WINDOWS
++			RegisterService((IImeService)new FnaIme());
++#else
+ 			if (_wndProcHook == null)
+ 				_wndProcHook = new WindowsMessageHook(windowHandle);
+ 
+ 			RegisterService((IImeService)new WindowsIme(_wndProcHook, windowHandle));
++#endif
+ 		}
+ 
++#if WINDOWS
+ 		protected override void Dispose(bool disposing) {
+ 			if (!_disposedValue) {
+ 				if (disposing && _wndProcHook != null) {
+@@ -34,5 +_,6 @@
+ 				base.Dispose(disposing);
+ 			}
+ 		}
++#endif
+ 	}
+ }

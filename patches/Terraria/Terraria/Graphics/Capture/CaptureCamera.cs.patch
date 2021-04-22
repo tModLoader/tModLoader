@@ -1,28 +1,47 @@
 --- src/decompiled/Terraria/Graphics/Capture/CaptureCamera.cs
 +++ src/Terraria/Terraria/Graphics/Capture/CaptureCamera.cs
-@@ -5,10 +_,15 @@
+@@ -2,8 +_,13 @@
+ using Microsoft.Xna.Framework.Graphics;
+ using System;
+ using System.Collections.Generic;
++#if NETCORE
++using SixLabors.ImageSharp;
++using SixLabors.ImageSharp.PixelFormats;
++#else
  using System.Drawing;
  using System.Drawing.Imaging;
++#endif
  using System.IO;
-+#if WINDOWS
  using System.Runtime.InteropServices;
-+#endif
  using System.Threading;
- using Terraria.Graphics.Effects;
- using Terraria.Localization;
-+#if !WINDOWS
-+using Terraria.Utilities;
-+#endif
- 
- namespace Terraria.Graphics.Capture
+@@ -14,6 +_,11 @@
  {
+ 	internal class CaptureCamera
+ 	{
++#if FNA
++		// ninja hack to reduce patch size
++		enum ImageFormat { Png }
++#endif
++
+ 		private class CaptureChunk
+ 		{
+ 			public readonly Microsoft.Xna.Framework.Rectangle Area;
+@@ -95,7 +_,8 @@
+ 					num = Math.Min(num, 4096f / (float)(area.Height * 16));
+ 
+ 				num = Math.Min(1f, num);
+-				_outputImageSize = new Size((int)MathHelper.Clamp((int)(num * (float)(area.Width * 16)), 1f, 4096f), (int)MathHelper.Clamp((int)(num * (float)(area.Height * 16)), 1f, 4096f));
++				_outputImageSize.Width = (int)MathHelper.Clamp((int)(num * (float)(area.Width * 16)), 1f, 4096f);
++				_outputImageSize.Height = (int)MathHelper.Clamp((int)(num * (float)(area.Height * 16)), 1f, 4096f);
+ 				_outputData = new byte[4 * _outputImageSize.Width * _outputImageSize.Height];
+ 				int num2 = (int)Math.Floor(num * 2048f);
+ 				_scaledFrameData = new byte[4 * num2 * num2];
 @@ -177,10 +_,17 @@
  					byte* ptr4 = ptr3 + (destinationBufferWidth * area.Y + area.X << 2);
  					for (int i = 0; i < area.Height; i++) {
  						for (int j = 0; j < area.Width; j++) {
-+#if WINDOWS
--							ptr4[2] = *ptr2;
-+							ptr4[2] = ptr2[0];
++#if XNA
+ 							ptr4[2] = *ptr2;
  							ptr4[1] = ptr2[1];
 -							*ptr4 = ptr2[2];
 +							ptr4[0] = ptr2[2];
@@ -40,27 +59,48 @@
  				return false;
  
  			try {
-+#if WINDOWS
++#if XNA
  				using (Bitmap bitmap = new Bitmap(width, height)) {
  					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
  					BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
-@@ -208,6 +_,11 @@
+@@ -208,6 +_,9 @@
  					bitmap.Save(filename, imageFormat);
  					bitmap.Dispose();
  				}
 +#else
-+				using (FileStream fileStream = File.Create(filename)) {
-+					PlatformUtilities.SavePng(fileStream, width, height, width, height, _outputData);
-+				}
++				SavePng(width, height, filename);
 +#endif
  
  				return true;
  			}
-@@ -223,19 +_,30 @@
+@@ -217,25 +_,53 @@
+ 			}
+ 		}
+ 
++#if FNA
++		private void SavePng(int width, int height, string filename) {
++			using (FileStream fileStream = File.Create(filename)) {
++#if !NETCORE
++				PlatformUtilities.SavePng(fileStream, width, height, width, height, _outputData);
++#endif
++				if (!Main.dedServ) {
++					//var tex = new Texture2D(Main.graphics.GraphicsDevice, width, height);
++					//tex.SetData(_outputData);
++					//tex.SaveAsPng(fileStream, width, height);
++					var image = Image.LoadPixelData<Rgba32>(_outputData, width, height);
++					image.SaveAsPng(fileStream);
++				}
++			}
++		}
++#endif
++
+ 		private void SaveImage(Texture2D texture, int width, int height, ImageFormat imageFormat, string foldername, string filename) {
+ 			string text = Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar + foldername;
+ 			string filename2 = Path.Combine(text, filename);
  			if (!Utils.TryCreatingDirectory(text))
  				return;
  
-+#if WINDOWS
++#if XNA
  			using (Bitmap bitmap = new Bitmap(width, height)) {
  				System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
 +#else
@@ -72,7 +112,7 @@
  				int num2 = 0;
  				for (int i = 0; i < height; i++) {
  					for (int j = 0; j < width; j++) {
-+#if WINDOWS
++#if XNA
  						byte b = _outputData[num + 2];
  						_outputData[num2 + 2] = _outputData[num];
  						_outputData[num2] = b;
@@ -87,11 +127,11 @@
  						num += 4;
  						num2 += 4;
  					}
-@@ -243,12 +_,20 @@
+@@ -243,12 +_,18 @@
  					num += texture.Width - width << 2;
  				}
  
-+#if WINDOWS
++#if XNA
  				BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
  				IntPtr scan = bitmapData.Scan0;
  				Marshal.Copy(_outputData, 0, scan, width * height * 4);
@@ -101,26 +141,18 @@
 +#else
 +			}
 +
-+			using (FileStream fileStream = File.Create(filename2)) {
-+				PlatformUtilities.SavePng(fileStream, width, height, width, height, this._outputData);
-+			}
++			SavePng(width, height, filename);
 +#endif
  		}
  
  		private void FinishCapture() {
-@@ -279,6 +_,7 @@
+@@ -279,6 +_,9 @@
  		}
  
  		public void Dispose() {
-+#if CLIENT
++			if (Main.dedServ)
++				return;
++
  			Monitor.Enter(_captureLock);
  			if (!_isDisposed) {
  				_frameBuffer.Dispose();
-@@ -293,6 +_,7 @@
- 				_isDisposed = true;
- 				Monitor.Exit(_captureLock);
- 			}
-+#endif
- 		}
- 	}
- }
