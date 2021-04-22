@@ -4,12 +4,12 @@
  		}
  
  		private void ResetState() {
-+#if CLIENT
++			if (!Main.dedServ) {
  			GetMousePosition();
  			_wasMouseDown = Main.mouseLeft;
  			if (_lastElementHover != null)
  				_lastElementHover.MouseOut(new UIMouseEvent(_lastElementHover, MousePosition));
-+#endif
++			}
  
  			_lastElementHover = null;
  			_lastElementDown = null;

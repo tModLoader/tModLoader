@@ -1,17 +1,15 @@
 --- src/decompiled/Terraria/Utilities/PlatformUtilities.cs
 +++ src/Terraria/Terraria/Utilities/PlatformUtilities.cs
-@@ -1,11 +_,87 @@
-+#if !WINDOWS
+@@ -1,11 +_,86 @@
++#if !XNA
 +using SDL2;
 +using System;
-+using System.IO;
-+using System.Runtime.InteropServices;
 +#endif
  namespace Terraria.Utilities
  {
  	public static class PlatformUtilities
  	{
-+#if !WINDOWS
++#if !XNA
 +		private struct SDL_Surface
 +		{
 +			private uint flags;
@@ -39,17 +37,19 @@
 +			private int refcount;
 +		}
 +#endif
-+#if WINDOWS
++#if XNA
  		public const bool IsXNA = true;
- 		public const bool IsFNA = false;
++#else
+-		public const bool IsFNA = false;
++		public const bool IsXNA = false;
++#endif
++		public const bool IsFNA = !IsXNA;
++
++#if WINDOWS
  		public const bool IsWindows = true;
 +#else
-+		public const bool IsXNA = false;
-+		public const bool IsFNA = true;
-+
 +		public const bool IsWindows = false;
 +#endif
-+
 +#if MAC
 +		public const bool IsOSX = true;
 +#else
@@ -61,7 +61,7 @@
  		public const bool IsLinux = false;
 +#endif
 +
-+#if !WINDOWS
++#if !XNA && !NETCORE
 +		public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data) {
 +#if CLIENT
 +			IntPtr intPtr = SDL.SDL_CreateRGBSurface(0u, imgWidth, imgHeight, 32, 255u, 65280u, 16711680u, 4278190080u);
