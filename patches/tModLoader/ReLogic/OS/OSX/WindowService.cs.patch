@@ -1,0 +1,11 @@
+--- src/Terraria/ReLogic/OS/OSX/WindowService.cs
++++ src/tModLoader/ReLogic/OS/OSX/WindowService.cs
+@@ -18,5 +_,8 @@
+ 
+ 		public void StopFlashingIcon(GameWindow window) {
+ 		}
++
++		public void HideConsole() {
++		}
+ 	}
+ }

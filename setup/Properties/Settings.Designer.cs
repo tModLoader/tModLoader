@@ -103,15 +103,6 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4fd8072ca82ded3d9da1be577a478788")]
-        public string SteamClientWinMD5 {
-            get {
-                return ((string)(this["SteamClientWinMD5"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ff61b96a07894a9e65f880fb9608fb37")]
         public string GoGClientWinMD5 {
             get {
@@ -121,13 +112,22 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Steam\\steamapps\\common\\tModLoader")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Steam\\steamapps\\common\\tModLoaderDev")]
         public string TMLSteamDir {
             get {
                 return ((string)(this["TMLSteamDir"]));
             }
             set {
                 this["TMLSteamDir"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6ebb2e222126aaae302d34a3a2c82cb9")]
+        public string SteamClientWinMD5 {
+            get {
+                return ((string)(this["SteamClientWinMD5"]));
             }
         }
     }

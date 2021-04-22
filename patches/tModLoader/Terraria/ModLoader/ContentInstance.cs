@@ -56,8 +56,11 @@ namespace Terraria.ModLoader
 		public static void Register(object obj) => contentByType.GetOrAdd(obj.GetType(), Factory).Register(obj);
 
 		internal static void Clear() {
-			foreach (var entry in contentByType)
+			foreach (var entry in contentByType) {
 				entry.Value.Clear();
+				if (entry.Key.Assembly != typeof(ContentEntry).Assembly)
+					contentByType.TryRemove(entry.Key, out _);
+			}
 		}
 	}
 
