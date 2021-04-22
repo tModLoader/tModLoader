@@ -132,7 +132,7 @@ jobs:
           dotnet tModLoader.dll -server -build ..\..\ExampleMod -tmlsavedirectory ./ModLoader
           cd ../..
           mkdir -p artifacts/Mods
-          mv .artifacts/Windows/ModLoader/Mods/ExampleMod.tmod ./artifacts/Mods/ExampleMod.tmod
+          mv ./artifacts/Windows/ModLoader/Mods/ExampleMod.tmod ./artifacts/Mods/ExampleMod.tmod
           
       - uses: actions/upload-artifact@v2
         with:
