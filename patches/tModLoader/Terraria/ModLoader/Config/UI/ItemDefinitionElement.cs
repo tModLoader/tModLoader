@@ -32,20 +32,21 @@ namespace Terraria.ModLoader.Config.UI
 		protected override List<DefinitionOptionElement<ItemDefinition>> GetPassedOptionElements() {
 			var passed = new List<DefinitionOptionElement<ItemDefinition>>();
 			foreach (var option in options) {
-				if (ItemID.Sets.Deprecated[option.type])
+				if (option.type < 0)
 					continue;
 				// Should this be the localized item name?
 				if (Lang.GetItemNameValue(option.type).IndexOf(chooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;
+				Main.instance.LoadItem(option.type);
 				string modname = "Terraria";
 				if (option.type > ItemID.Count) {
 					modname = ItemLoader.GetItem(option.type).Mod.DisplayName; // or internal name?
 				}
-				if (modname.IndexOf(chooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
+				if (!modname.Contains(chooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase))
 					continue;
 				passed.Add(option);
 			}
-			return passed;
+			return passed;	
 		}
 	}
 
@@ -68,13 +69,14 @@ namespace Terraria.ModLoader.Config.UI
 				spriteBatch.Draw(backgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 				if (!item.IsAir || unloaded) {
 					int type = unloaded ? ItemID.Count : this.item.type;
+					Main.instance.LoadItem(type);
 					Texture2D itemTexture = TextureAssets.Item[type].Value;
 					Rectangle rectangle2;
 					if (Main.itemAnimations[type] != null) {
 						rectangle2 = Main.itemAnimations[type].GetFrame(itemTexture);
 					}
 					else {
-						rectangle2 = itemTexture.Frame(1, 1, 0, 0);
+						rectangle2 = itemTexture.Frame();
 					}
 					Color newColor = Color.White;
 					float pulseScale = 1f;

@@ -155,8 +155,8 @@ namespace Terraria.ModLoader.Config.UI
 			SetItem(definition);
 
 			this.scale = scale;
-			this.Width.Set(defaultBackgroundTexture.Width() * scale, 0f);
-			this.Height.Set(defaultBackgroundTexture.Height() * scale, 0f);
+			this.Width.Set(defaultBackgroundTexture.Value.Width * scale, 0f);
+			this.Height.Set(defaultBackgroundTexture.Value.Height * scale, 0f);
 		}
 
 		public virtual void SetItem(T item) {
@@ -172,8 +172,8 @@ namespace Terraria.ModLoader.Config.UI
 
 		public virtual void SetScale(float scale) {
 			this.scale = scale;
-			this.Width.Set(defaultBackgroundTexture.Width() * scale, 0f);
-			this.Height.Set(defaultBackgroundTexture.Height() * scale, 0f);
+			this.Width.Set(defaultBackgroundTexture.Value.Width * scale, 0f);
+			this.Height.Set(defaultBackgroundTexture.Value.Height * scale, 0f);
 		}
 
 		public override int CompareTo(object obj) {

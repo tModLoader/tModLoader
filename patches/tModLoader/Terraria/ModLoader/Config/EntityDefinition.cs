@@ -31,10 +31,14 @@ namespace Terraria.ModLoader.Config
 		public EntityDefinition(string key) {
 			this.mod = "";
 			this.name = "";
-			string[] parts = key.Split(new char[] { ' ' }, 2);
+			string[] parts = key.Split('/', 2);
 			if (parts.Length == 2) {
 				mod = parts[0];
 				name = parts[1];
+			}
+			else {
+				mod = "Terraria";
+				name = parts[0];
 			}
 		}
 
@@ -75,7 +79,7 @@ namespace Terraria.ModLoader.Config
 	{
 		public ItemDefinition() : base() {
 		}
-		public ItemDefinition(int type) : base(ItemID.Search.GetName(type)) {
+		public ItemDefinition(int type) : base(ItemID.Search.TryGetName(type, out string name) ? name : "None") {
 		}
 		public ItemDefinition(string key) : base(key) {
 		}
