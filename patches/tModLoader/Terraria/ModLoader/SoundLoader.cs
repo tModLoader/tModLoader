@@ -73,12 +73,12 @@ namespace Terraria.ModLoader
 			customSounds = new Asset<SoundEffect>[nextSound[SoundType.Custom]];
 			customSoundInstances = new SoundEffectInstance[nextSound[SoundType.Custom]];
 			
-			Array.Resize(ref SoundEngine._legacyPlayer.SoundItem,				nextSound[SoundType.Item]);
-			Array.Resize(ref SoundEngine._legacyPlayer.SoundInstanceItem,		nextSound[SoundType.Item]);
-			Array.Resize(ref SoundEngine._legacyPlayer.SoundNpcHit,				nextSound[SoundType.NPCHit]);
-			Array.Resize(ref SoundEngine._legacyPlayer.SoundInstanceNpcHit,		nextSound[SoundType.NPCHit]);
-			Array.Resize(ref SoundEngine._legacyPlayer.SoundNpcKilled,			nextSound[SoundType.NPCKilled]);
-			Array.Resize(ref SoundEngine._legacyPlayer.SoundInstanceNpcKilled,	nextSound[SoundType.NPCKilled]);
+			Array.Resize(ref SoundEngine.LegacySoundPlayer.SoundItem,				nextSound[SoundType.Item]);
+			Array.Resize(ref SoundEngine.LegacySoundPlayer.SoundInstanceItem,		nextSound[SoundType.Item]);
+			Array.Resize(ref SoundEngine.LegacySoundPlayer.SoundNpcHit,				nextSound[SoundType.NPCHit]);
+			Array.Resize(ref SoundEngine.LegacySoundPlayer.SoundInstanceNpcHit,		nextSound[SoundType.NPCHit]);
+			Array.Resize(ref SoundEngine.LegacySoundPlayer.SoundNpcKilled,			nextSound[SoundType.NPCKilled]);
+			Array.Resize(ref SoundEngine.LegacySoundPlayer.SoundInstanceNpcKilled,	nextSound[SoundType.NPCKilled]);
 			//Array.Resize(ref Main.music, nextSound[SoundType.Music]);
 			//Array.Resize(ref Main.musicFade, nextSound[SoundType.Music]);
 
@@ -143,11 +143,11 @@ namespace Terraria.ModLoader
 				case SoundType.Custom:
 					return 0;
 				case SoundType.Item:
-					return SoundID.ItemSoundCount + 1;
+					return SoundID.ItemSoundCount;
 				case SoundType.NPCHit:
-					return SoundID.NPCHitCount + 1;
+					return SoundID.NPCHitCount;
 				case SoundType.NPCKilled:
-					return SoundID.NPCDeathCount + 1;
+					return SoundID.NPCDeathCount;
 				case SoundType.Music:
 					return Main.maxMusic;
 			}
@@ -160,11 +160,11 @@ namespace Terraria.ModLoader
 				case SoundType.Custom:
 					return customSounds;
 				case SoundType.Item:
-					return SoundEngine._legacyPlayer.SoundItem;
+					return SoundEngine.LegacySoundPlayer.SoundItem;
 				case SoundType.NPCHit:
-					return SoundEngine._legacyPlayer.SoundNpcHit;
+					return SoundEngine.LegacySoundPlayer.SoundNpcHit;
 				case SoundType.NPCKilled:
-					return SoundEngine._legacyPlayer.SoundNpcKilled;
+					return SoundEngine.LegacySoundPlayer.SoundNpcKilled;
 			}
 
 			return null;
@@ -175,11 +175,11 @@ namespace Terraria.ModLoader
 				case SoundType.Custom:
 					return customSoundInstances;
 				case SoundType.Item:
-					return SoundEngine._legacyPlayer.SoundInstanceItem;
+					return SoundEngine.LegacySoundPlayer.SoundInstanceItem;
 				case SoundType.NPCHit:
-					return SoundEngine._legacyPlayer.SoundInstanceNpcHit;
+					return SoundEngine.LegacySoundPlayer.SoundInstanceNpcHit;
 				case SoundType.NPCKilled:
-					return SoundEngine._legacyPlayer.SoundInstanceNpcKilled;
+					return SoundEngine.LegacySoundPlayer.SoundInstanceNpcKilled;
 			}
 
 			return null;

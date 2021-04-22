@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria.ModLoader.Engine;
@@ -14,8 +13,10 @@ namespace Terraria.ModLoader.IO
 	{
 		public const int VERSION = 1;
 
+		//TODO: This can probably be cleaned up with change to using ImageSharp instead of System.Drawing.
 		public static bool ToRaw(Stream src, Stream dst) {
-			using (var img = new Bitmap(src)) {
+			var og = Image.Load(src);
+			using (var img = og.CloneAs<Rgba32>()) {
 				// now that the hi-def profile is always enabled, the max texture size is 4096
 				// if we get bug reports with old graphics cards forcing fallback to Reach and failing to load
 				// large textures, we can implement a slower path where the rawimg is converted to png before loading
@@ -23,36 +24,32 @@ namespace Terraria.ModLoader.IO
 				//if (img.Width > 2048 || img.Height > 2048)
 				//	return false;
 
-				var bitmapData = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-				var rawdata = new int[img.Width * img.Height];
-				Marshal.Copy(bitmapData.Scan0, rawdata, 0, rawdata.Length);
-				var w = new BinaryWriter(dst);
-				w.Write(VERSION);
-				w.Write(img.Width);
-				w.Write(img.Height);
-				foreach (int c in rawdata) {
-					//Bitmap is in ABGR
-					int a = c >> 24 & 0xFF;
-					int b = c >> 16 & 0xFF;
-					int g = c >> 8 & 0xFF;
-					int r = c >> 0 & 0xFF;
+				if (img.TryGetSinglePixelSpan(out var span)) {
+					var w = new BinaryWriter(dst);
+					w.Write(VERSION);
+					w.Write(img.Width);
+					w.Write(img.Height);
+					foreach (var c in span) {
+						//special note, mirror XNA behaviour of zeroing out textures with full alpha zero
+						//this means that an author doesn't have to set their fully transparent pixels to black
+						//if they want additive blending they need to use alpha 1/255
+						if (c.A == 0) {
+							w.Write(0);
+							continue;
+						}
 
-					//special note, mirror XNA behaviour of zeroing out textures with full alpha zero
-					//this means that an author doesn't have to set their fully transparent pixels to black
-					//if they want additive blending they need to use alpha 1/255
-					if (a == 0) {
-						w.Write(0);
-						continue;
+						//write RGBA, note that the texture is assumed pre-multiplied, allowing for extra blending effects
+						w.Write(c.R);
+						w.Write(c.G);
+						w.Write(c.B);
+						w.Write(c.A);
 					}
 
-					//write ARGB, note that the texture is assumed pre-multiplied, allowing for extra blending effects
-					w.Write((byte)b);
-					w.Write((byte)g);
-					w.Write((byte)r);
-					w.Write((byte)a);
+					return true;
 				}
-
-				return true;
+				else {
+					return false;
+				}
 			}
 		}
 

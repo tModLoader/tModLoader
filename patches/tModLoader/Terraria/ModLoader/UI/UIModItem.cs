@@ -14,6 +14,7 @@ using Terraria.UI.Chat;
 using Terraria.Audio;
 using Terraria.GameContent;
 using ReLogic.Content;
+using ReLogic.Content.Readers;
 using ReLogic.OS;
 using System.IO;
 using Microsoft.Xna.Framework.Input;
@@ -69,22 +70,21 @@ namespace Terraria.ModLoader.UI
 
 			if (_mod.modFile.HasFile("icon.png")) {
 				try {
-					Asset<Texture2D> modIconTexture;
-
+					using (var reader = new PngReader(Main.instance.GraphicsDevice))
 					using (_mod.modFile.Open())
-					using (var s = _mod.modFile.GetStream("icon.png"))
-						modIconTexture = ModLoader.ManifestAssets.CreateUntrackedAsset(
+					using (var s = _mod.modFile.GetStream("icon.png")) {
+						Asset<Texture2D> modIconTexture = ModLoader.ManifestAssets.CreateUntrackedAsset(
 							$"Terraria.ModLoader.UI.Browser.{_mod.Name}.icon.png",
-							Texture2D.FromStream(Main.instance.GraphicsDevice, s)
+							reader.FromStream<Texture2D>(s)
 						);
-
-					if (modIconTexture.Width() == 80 && modIconTexture.Height() == 80) {
-						_modIcon = new UIImage(modIconTexture) {
-							Left = { Percent = 0f },
-							Top = { Percent = 0f }
-						};
-						Append(_modIcon);
-						_modIconAdjust += 85;
+						if (modIconTexture.Width() == 80 && modIconTexture.Height() == 80) {
+							_modIcon = new UIImage(modIconTexture) {
+								Left = { Percent = 0f },
+								Top = { Percent = 0f }
+							};
+							Append(_modIcon);
+							_modIconAdjust += 85;
+						}
 					}
 				}
 				catch (Exception e) {

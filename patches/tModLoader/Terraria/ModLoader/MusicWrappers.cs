@@ -1,9 +1,9 @@
-using System;
 using Microsoft.Xna.Framework.Audio;
-using System.IO;
-using MP3Sharp;
 using NVorbis;
+using System;
+using System.IO;
 using Terraria.Audio;
+using XPT.Core.Audio.MP3Sharp;
 
 //TODO refactor to Terraria.ModLoader, delayed due to breaking change (public in Mod[Content].GetMusic)
 namespace Terraria.ModLoader.Audio
@@ -190,7 +190,8 @@ namespace Terraria.ModLoader.Audio
 
 			var mp3Stream = new MP3Stream(stream);
 			sampleRate = mp3Stream.Frequency;
-			channels = (AudioChannels)mp3Stream.ChannelCount;
+			//TODO: The MP3Sharp library changed much, and no longer has a ChannelCount property. Investigate.
+			channels = AudioChannels.Stereo; //(AudioChannels)mp3Stream.ChannelCount;
 			stream = mp3Stream;
 		}
 

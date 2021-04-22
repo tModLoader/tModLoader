@@ -3390,22 +3390,16 @@
  			if (inventory[num].stack <= 0)
  				inventory[num].SetDefaults();
  		}
-@@ -29706,11 +_,15 @@
+@@ -29706,6 +_,9 @@
  		}
  
  		public Rectangle GetItemDrawFrame(int type) {
-+#if SERVER
-+			return Rectangle.Empty;
-+#else
++			if(Main.dedServ)
++				return Rectangle.Empty;
++
  			Main.instance.LoadItem(type);
  			if (type == 75)
  				return TextureAssets.Item[type].Frame(1, 8);
- 
- 			return TextureAssets.Item[type].Frame();
-+#endif
- 		}
- 
- 		public float GetAdjustedItemScale(Item item) {
 @@ -29733,6 +_,12 @@
  		}
  
@@ -3804,16 +3798,51 @@
  				if (sItem.stack <= 0)
  					sItem.SetDefaults();
  			}
-@@ -33903,7 +_,8 @@
- 					Main.projectile[num177].originalDamage = damage;
- 					UpdateMaxTurrets();
+@@ -32508,6 +_,9 @@
+ 		}
+ 
+ 		private void ItemCheck_Shoot(int i, Item sItem, int weaponDamage) {
++			if (!CombinedHooks.CanShoot(this, sItem))
++				return;
++
+ 			int projToShoot = sItem.shoot;
+ 			float speed = sItem.shootSpeed;
+ 			int damage = sItem.damage;
+@@ -32719,6 +_,13 @@
+ 					num3 = vector4.Y;
  				}
--				else {
-+				else if (PlayerHooks.Shoot(this, sItem, ref pointPoisition, ref num2, ref num3, ref projToShoot, ref Damage, ref KnockBack)
-+					&& ItemLoader.Shoot(sItem, this, ref pointPoisition, ref num2, ref num3, ref projToShoot, ref Damage, ref KnockBack)) {
- 					int num178 = Projectile.NewProjectile(projectileSource_Item_WithPotentialAmmo, pointPoisition.X, pointPoisition.Y, num2, num3, projToShoot, Damage, KnockBack, i);
- 					if (sItem.type == 726)
- 						Main.projectile[num178].magic = true;
+ 
++				goto DirtBallShoot;
++				ShootHook:
++				Vector2 velocity = new Vector2(num2, num3);
++				CombinedHooks.ModifyShootStats(this, sItem, ref pointPoisition, ref velocity, ref projToShoot, ref Damage, ref KnockBack);
++				num2 = velocity.X;
++				num3 = velocity.Y;
++
+ 				if (sItem.useStyle == 5) {
+ 					if (sItem.type == 3029) {
+ 						Vector2 vector5 = new Vector2(num2, num3);
+@@ -32755,6 +_,11 @@
+ 					NetMessage.SendData(41, -1, -1, null, whoAmI);
+ 				}
+ 
++				if (!CombinedHooks.Shoot(this, sItem, (ProjectileSource_Item_WithAmmo)projectileSource_Item_WithPotentialAmmo, pointPoisition, velocity, projToShoot, Damage, KnockBack))
++					return;
++
++				goto ShootProj;
++				DirtBallShoot:
+ 				if (projToShoot == 17) {
+ 					pointPoisition.X = (float)Main.mouseX + Main.screenPosition.X;
+ 					pointPoisition.Y = (float)Main.mouseY + Main.screenPosition.Y;
+@@ -32763,6 +_,8 @@
+ 
+ 					LimitPointToPlayerReachableArea(ref pointPoisition);
+ 				}
++				goto ShootHook;
++				ShootProj:
+ 
+ 				if (projToShoot == 76) {
+ 					projToShoot += Main.rand.Next(3);
 @@ -34460,6 +_,10 @@
  		}
  
@@ -4063,7 +4092,7 @@
  						NetMessage.SendData(34, -1, -1, null, 1, x, y);
  
  					if (Main.tile[x, y].type == 467)
-@@ -36676,13 +_,23 @@
+@@ -36676,11 +_,20 @@
  
  					if (Main.tile[x, y].type == 88)
  						NetMessage.SendData(34, -1, -1, null, 3, x, y);
@@ -4079,14 +4108,12 @@
  				else {
  					bool num3 = Main.tile[x, y].active();
  					WorldGen.KillTile(x, y);
-+#if CLIENT
- 					if (num3 && !Main.tile[x, y].active())
+-					if (num3 && !Main.tile[x, y].active())
++
++					if (!Main.dedServ && num3 && !Main.tile[x, y].active())
  						AchievementsHelper.HandleMining();
  
-+#endif
  					if (Main.netMode == 1)
- 						NetMessage.SendData(17, -1, -1, null, 0, x, y);
- 				}
 @@ -36750,7 +_,24 @@
  			if (Main.tileNoFail[tileTarget.type])
  				num = 100;
@@ -4290,7 +4317,7 @@
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write)) {
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream)) {
 +						PlayerHooks.PreSavePlayer(player);
- 						binaryWriter.Write(236);
+ 						binaryWriter.Write(237);
  						playerFile.Metadata.Write(binaryWriter);
  						binaryWriter.Write(player.name);
  						binaryWriter.Write(player.difficulty);

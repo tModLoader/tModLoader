@@ -33,7 +33,7 @@ namespace Terraria.ModLoader
 		};
 
 		private static DetourModManager manager = new DetourModManager();
-		private static HashSet<Assembly> NativeDetouringGranted = new HashSet<Assembly>();
+		private static HashSet<Assembly> NativeDetouringGranted = new HashSet<Assembly> { Assembly.GetExecutingAssembly() };
 
 		private static bool isInitialized;
 		internal static void Initialize() {
