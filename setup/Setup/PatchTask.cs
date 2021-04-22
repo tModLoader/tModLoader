@@ -109,7 +109,7 @@ namespace Terraria.ModLoader.Setup
 
 			//Show patch reviewer if there were any fuzzy patches.
 
-			if (fuzzy > 0)
+			if (fuzzy > 0 || mode == Patcher.Mode.FUZZY && failures > 0)
 				taskInterface.Invoke(new Action(() => ShowReviewWindow(results)));
 		}
 

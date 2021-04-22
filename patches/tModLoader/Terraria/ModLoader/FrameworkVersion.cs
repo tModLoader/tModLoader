@@ -7,6 +7,7 @@ namespace Terraria.ModLoader
 {
 	public enum Framework
 	{
+		NetCore,
 		NetFramework,
 		Mono,
 		Unknown
@@ -14,30 +15,22 @@ namespace Terraria.ModLoader
 
 	public static class FrameworkVersion
 	{
-		public static readonly Framework Framework;
-		public static readonly Version Version;
+#if NETCORE
+		public static readonly Framework Framework = Framework.NetCore;
+#else
+		public static readonly Framework Framework = Framework.NetFramework;
+#endif
 
-		static FrameworkVersion() {
-			var monoRuntimeType = Type.GetType("Mono.Runtime");
-			if (monoRuntimeType != null) {
-				string displayName = (string)monoRuntimeType.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, null);
-				Framework = Framework.Mono;
-				Version = new Version(displayName.Substring(0, displayName.IndexOf(' ')));
-				return;
-			}
+		public static readonly Version Version = GetVersion();
 
-			if (!Platform.IsWindows)
-				Framework = Framework.Unknown;
-
-			Framework = Framework.NetFramework;
-
+		private static Version GetVersion() {
+#if !NETCORE
 			const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
 			using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
 				if (ndpKey != null && ndpKey.GetValue("Release") is int releaseKey)
-					Version = CheckFor45PlusVersion(releaseKey);
-
-			if (Version == null)
-				Version = new Version(4, 0);
+					return CheckFor45PlusVersion(releaseKey);
+#endif
+			return Environment.Version;
 		}
 
 		// Checking the version using >= will enable forward compatibility.

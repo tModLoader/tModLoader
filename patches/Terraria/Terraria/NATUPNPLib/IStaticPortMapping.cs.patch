@@ -1,0 +1,27 @@
+--- src/decompiled/Terraria/NATUPNPLib/IStaticPortMapping.cs
++++ src/Terraria/Terraria/NATUPNPLib/IStaticPortMapping.cs
+@@ -1,9 +_,9 @@
+-#if SERVER
+ using System.Runtime.CompilerServices;
+ using System.Runtime.InteropServices;
+ 
+ namespace NATUPNPLib
+ {
++	/*
+ 	[ComImport]
+ 	[CompilerGenerated]
+ 	[Guid("6F10711F-729B-41E5-93B8-F21D0F818DF1")]
+@@ -35,5 +_,12 @@
+ 
+ 		void _VtblGap1_2();
+ 	}
++	*/
++
++	public interface IStaticPortMapping
++	{
++		public abstract int InternalPort { get; }
++		public abstract string Protocol { get; }
++		public abstract string InternalClient { get; }
++	}
+ }
+-#endif

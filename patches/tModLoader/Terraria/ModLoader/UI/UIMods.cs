@@ -379,7 +379,7 @@ namespace Terraria.ModLoader.UI
 					needToRemoveLoading = true;
 					updateNeeded = true;
 					loading = false;
-				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.Current);
 		}
 	}
 

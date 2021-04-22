@@ -22,11 +22,7 @@ namespace Terraria
 		public static string SavePath { get; private set; } // moved from Main to avoid triggering the Main static constructor before logging initializes
 
 		private static IEnumerable<MethodInfo> GetMethodsCrossPlatform(Type type) {
-#if WINDOWS
-			return type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-#else
 			return type.GetMethods();
-#endif
 		}
 
 		private static IEnumerable<MethodInfo> CollectMethodsToJIT(IEnumerable<Type> types) =>

@@ -10,7 +10,7 @@
  using Terraria.Social;
  
  namespace Terraria.Initializers
-@@ -24,6 +_,10 @@
+@@ -23,6 +_,10 @@
  			string s;
  			if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out int result))
  				Netplay.ListenPort = result;
@@ -21,7 +21,7 @@
  		}
  
  		private static void LoadClientParameters(Main game) {
-@@ -39,6 +_,29 @@
+@@ -38,6 +_,29 @@
  
  			if (HasParameter("-host"))
  				game.AutoHost();
@@ -51,18 +51,10 @@
  		}
  
  		private static void LoadServerParameters(Main game) {
-@@ -100,6 +_,24 @@
+@@ -99,6 +_,16 @@
  			if ((s2 = TryParameter("-language")) != null)
  				LanguageManager.Instance.SetLanguage(s2);
  
-+			// We handle the build parameter this far in
-+			// so vanilla can take care of loading the appropriate localization keys beforehand
-+			string build;
-+			if ((build = TryParameter("-build")) != null)
-+				// Inside the build from command line, the application exits
-+				// Anything beyond this point will not be executed
-+				ModCompile.BuildModCommandLine(build);
-+
 +			string publish;
 +			if ((publish = LaunchInitializer.TryParameter("-publish")) != null) {
 +				ModLoader.UI.UIModSourceItem.PublishModCommandLine(publish, TryParameter("-passphrase"), TryParameter("-steamid64"));
@@ -77,10 +69,9 @@
  			if ((worldName = TryParameter("-worldname")) != null)
  				game.SetWorldName(worldName);
 @@ -107,6 +_,15 @@
- 			string newMOTD;
  			if ((newMOTD = TryParameter("-motd")) != null)
  				game.NewMOTD(newMOTD);
-+
+ 
 +			string modPath;
 +			if ((modPath = TryParameter(new string[] {
 +				"-modpath"
@@ -89,6 +80,16 @@
 +
 +			if (HasParameter("-showserverconsole"))
 +				Main.showServerConsole = true;
- 
++
  			string banFilePath;
  			if ((banFilePath = TryParameter("-banlist")) != null)
+ 				Netplay.BanFilePath = banFilePath;
+@@ -155,7 +_,7 @@
+ 			return false;
+ 		}
+ 
+-		private static string TryParameter(params string[] keys) {
++		public static string TryParameter(params string[] keys) {
+ 			for (int i = 0; i < keys.Length; i++) {
+ 				if (Program.LaunchParameters.TryGetValue(keys[i], out string value)) {
+ 					if (value == null)
