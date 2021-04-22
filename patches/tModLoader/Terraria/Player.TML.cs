@@ -113,7 +113,7 @@ namespace Terraria
 		/// </summary>
 		/// <exception cref="IndexOutOfRangeException"/>
 		/// <exception cref="NullReferenceException"/>
-		public bool InModBiome(ModBiome baseInstance)=> modBiomeFlags[baseInstance.GetBool];
+		public bool InModBiome(ModBiome baseInstance)=> modBiomeFlags[baseInstance.index];
 
 		public bool zonePurity = false;
 		public bool InZonePurity() {

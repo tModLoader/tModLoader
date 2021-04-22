@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Terraria.GameContent;
+using Terraria.GameContent.Personalities;
 
 namespace Terraria.ModLoader
 {
@@ -7,6 +9,8 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModBiome : ModAVFX
 	{
+		internal int index;
+
 		// Basic Biome information
 		/// <summary>
 		/// Whether or not this biome impacts NPC shop prices.
@@ -15,7 +19,7 @@ namespace Terraria.ModLoader
 		public override AVFXPriority Priority => AVFXPriority.BiomeLow;
 		public override int Music => 0;
 
-		internal int GetBool => Type - BiomeLoader.VanillaPrimaryBiomeCount; 
+		public int GetPrimaryID => IsPrimaryBiome ? index + BiomeLoader.VanillaPrimaryBiomeCount : -1; 
 
 		// Bestiary properties
 		/// <summary>
@@ -38,7 +42,8 @@ namespace Terraria.ModLoader
 		public GameContent.Bestiary.ModBiomeBestiaryInfoElement ModBiomeBestiaryInfoElement { get; internal set; }
 
 		protected sealed override void Register() {
-			Type = Loaders.Biomes.Register(this);
+			ModTypeLookup<ModBiome>.Register(this);
+			BiomeLoader.Add(this);
 			RegisterAVFX(this);
 
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BiomeName.{Name}");
@@ -50,7 +55,7 @@ namespace Terraria.ModLoader
 			SetStaticDefaults();
 		}
 
-		public sealed override bool IsActive(Player player) => player.modBiomeFlags[Type];
+		public sealed override bool IsActive(Player player) => player.modBiomeFlags[index];
 
 		/// <summary>
 		/// This is where you can set values for DisplayName.

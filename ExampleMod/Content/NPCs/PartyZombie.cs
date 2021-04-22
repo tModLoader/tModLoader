@@ -36,8 +36,6 @@ namespace ExampleMod.Content.NPCs
 			AnimationType = NPCID.Zombie; // Use vanilla zombie's type when executing animation code. Important to also match Main.npcFrameCount[NPC.type] in SetStaticDefaults.
 			Banner = Item.NPCtoBanner(NPCID.Zombie); // Makes this NPC get affected by the normal zombie banner.
 			BannerItem = Item.BannerToItem(Banner); // Makes kills of this NPC go towards dropping the banner it's associated with.
-
-			SpawnModBiomes = new int[1] { ModContent.Find<ModBiome>("ExampleMod/ExampleSurfaceBiome").Type };
 		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot) { 

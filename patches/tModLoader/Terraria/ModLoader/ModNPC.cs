@@ -56,10 +56,6 @@ namespace Terraria.ModLoader
 		/// <summary> The type of the item this NPC drops for every 50 times it is defeated. For any ModNPC whose banner field is set to the type of this NPC, that ModNPC will drop this banner. </summary>
 		public int BannerItem { get; set; }
 
-		// TODO: Find a better solution in the future.
-		/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary </summary>
-		public int[] SpawnModBiomes { get; set; } = new int[0];
-
 		public ModNPC() {
 			NPC = new NPC{ModNPC = this};
 		}

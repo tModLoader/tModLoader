@@ -4,14 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Terraria.GameContent;
+using Terraria.GameContent.Personalities;
 
 namespace Terraria.ModLoader
 {
-	public class BiomeLoader : Loader<ModBiome>
+	public static class BiomeLoader
 	{
-		public const int VanillaPrimaryBiomeCount = 11;
-
-		public BiomeLoader(int vanillaCount = VanillaPrimaryBiomeCount) : base(vanillaCount) { }
+		internal static readonly IList<ModBiome> biomes = new List<ModBiome>();
 
 		private class HookList
 		{
@@ -31,30 +31,39 @@ namespace Terraria.ModLoader
 			return hook;
 		}
 
-		internal void RebuildHooks() {
+		internal static void Add(ModBiome biome) {
+			biome.index = biomes.Count;
+			biomes.Add(biome);
+		}
+
+		internal static void Unload() {
+			biomes.Clear();
+		}
+
+		internal static void RebuildHooks() {
 			foreach (var hook in hooks) {
-				hook.arr = ModLoader.BuildGlobalHook(list, hook.method).Select(p => p.Type).ToArray();
+				hook.arr = ModLoader.BuildGlobalHook(biomes, hook.method).Select(p => p.index).ToArray();
 			}
 		}
 
 		// Internal boilerplate
 
-		internal void SetupPlayer(Player player) {
-			player.modBiomeFlags = new System.Collections.BitArray(list.Count);
+		internal static void SetupPlayer(Player player) {
+			player.modBiomeFlags = new System.Collections.BitArray(biomes.Count);
 		}
 
-		public void UpdateBiomes(Player player) {
+		public static void UpdateBiomes(Player player) {
 			for (int i = 0; i < player.modBiomeFlags.Length; i++) {
 				bool prev = player.modBiomeFlags[i];
-				bool value = player.modBiomeFlags[i] = list[i].IsBiomeActive(player);
+				bool value = player.modBiomeFlags[i] = biomes[i].IsBiomeActive(player);
 
 				if (!prev && value)
-					list[i].OnEnter(player);
+					biomes[i].OnEnter(player);
 				else if (!value && prev)
-					list[i].OnLeave(player);
+					biomes[i].OnLeave(player);
 
 				if (value)
-					list[i].OnInBiome(player);
+					biomes[i].OnInBiome(player);
 			}
 		}
 
@@ -86,24 +95,26 @@ namespace Terraria.ModLoader
 
 		// Hooks
 
-		private HookList HookPostUpdateBiome = AddHook<Action<Player>>(b => b.BiomeVisuals);
+		private static HookList HookPostUpdateBiome = AddHook<Action<Player>>(b => b.BiomeVisuals);
 
-		public void PostUpdateBiome(Player player) {
+		public static void PostUpdateBiome(Player player) {
 			foreach (int index in HookPostUpdateBiome.arr) {
-				list[index].BiomeVisuals(player);
+				biomes[index].BiomeVisuals(player);
 			}
 		}
 
-		public int GetPrimaryModBiome(Player player, out AVFXPriority priority) {
+		public const int VanillaPrimaryBiomeCount = 11;
+
+		public static int GetPrimaryModBiome(Player player, out AVFXPriority priority) {
 			int index = 0, weight = 0;
 			priority = AVFXPriority.None;
 
-			for (int i = 0; i < list.Count; i++) {
-				bool active = player.modBiomeFlags[i] && list[i].IsPrimaryBiome;
-				int tst = list[i].GetCorrWeight(player);
+			for (int i = 0; i < biomes.Count; i++) {
+				bool active = player.modBiomeFlags[i] && biomes[i].IsPrimaryBiome;
+				int tst = biomes[i].GetCorrWeight(player);
 				if (active && tst > weight) {
-					index = i + vanillaCount;
-					priority = list[i].Priority;
+					index = i + VanillaPrimaryBiomeCount;
+					priority = biomes[i].Priority;
 					weight = tst;
 				}
 			}

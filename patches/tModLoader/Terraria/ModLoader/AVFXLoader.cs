@@ -7,17 +7,43 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This serves as the central class from which AVFX functions are supported and carried out.
 	/// </summary>
-	public abstract class AVFXLoader<T> : Loader<T> where T : ModType
+	public abstract class AVFXLoader<T>
 	{
-		protected AVFXLoader(int vanillaCount) : base(vanillaCount) { }
+		public int vanillaCount { get; internal set; }
+		public int totalCount { get; internal set; }
+
+		internal List<T> list = new List<T>();
+
+		protected AVFXLoader(int vanillaCount) {
+			this.vanillaCount = vanillaCount;
+			totalCount = vanillaCount;
+		}
+
+		public int Reserve() {
+			int reserve = totalCount;
+			totalCount++;
+			return reserve;
+		}
+
+		public T Get(int id) {
+			if (id < vanillaCount || id >= totalCount) {
+				return default;
+			}
+			return list[id - vanillaCount];
+		}
+
+		internal void Unload() {
+			totalCount = vanillaCount;
+			list.Clear();
+		}
+
+		internal virtual void ResizeArrays() { }
 
 		public virtual void ChooseStyle(out int style, out AVFXPriority priority) { style = -1; priority = AVFXPriority.None; }
 	}
 
-	public class AVFXLoader : Loader<ModAVFX>
+	public static class AVFXLoader
 	{
-		public AVFXLoader(int vanillaCount = 0) : base(vanillaCount) { }
-
 		public class AVFXInstance
 		{
 			public bool anyActive;
@@ -50,12 +76,19 @@ namespace Terraria.ModLoader
 			public static int InvertedCompare(AtmosWeight a, AtmosWeight b) => -a.weight.CompareTo(b.weight);
 		}
 
-		public void UpdateAVFX(Player player) {
+		public static WaterFallStyles Waterfalls = new WaterFallStyles();
+		public static WaterStyles Waters = new WaterStyles();
+		public static UgBgStyles UgBg = new UgBgStyles();
+		public static SurfaceBgStyles SurfaceBg = new SurfaceBgStyles();
+
+		internal static List<ModAVFX> AVFXs = new List<ModAVFX>();
+
+		public static void UpdateAVFX(Player player) {
 			var result = new AVFXInstance();
 			List<AtmosWeight> shortList = new List<AtmosWeight>();
 
-			for (int i = 0; i < list.Count; i++) {
-				ModAVFX avfx = list[i];
+			for (int i = 0; i < AVFXs.Count; i++) {
+				ModAVFX avfx = AVFXs[i];
 
 				if (!avfx.IsActive(player))
 					continue;
@@ -107,12 +140,16 @@ namespace Terraria.ModLoader
 		}
 
 		// Ref or out? MusicLoader?
-		public void UpdateMusic(ref int music, ref AVFXPriority priority) {
+		public static void UpdateMusic(ref int music, ref AVFXPriority priority) {
 			int tst = Main.LocalPlayer.currentAVFX.music;
 			if (tst > -1) {
 				music = tst;
 				priority = Main.LocalPlayer.currentAVFX.priority;
 			}
+		}
+
+		internal static void Unload() {
+			AVFXs.Clear();
 		}
 	}
 }

@@ -16,7 +16,10 @@ namespace Terraria.ModLoader
 	public abstract class ModUgBgStyle:ModBgStyle
 	{
 		protected override sealed void Register() {
-			Slot = Loaders.UgBgs.Register(this);
+			Slot = AVFXLoader.UgBg.Reserve();
+
+			ModTypeLookup<ModUgBgStyle>.Register(this);
+			AVFXLoader.UgBg.list.Add(this);
 		}
 
 		/// <summary>
@@ -31,7 +34,10 @@ namespace Terraria.ModLoader
 	public abstract class ModSurfaceBgStyle:ModBgStyle
 	{ 
 		protected override sealed void Register() {
-			Slot = Loaders.SurfaceBgs.Register(this);
+			Slot = AVFXLoader.SurfaceBg.Reserve();
+
+			ModTypeLookup<ModSurfaceBgStyle>.Register(this);
+			AVFXLoader.SurfaceBg.list.Add(this);
 		}
 
 		/// <summary>
