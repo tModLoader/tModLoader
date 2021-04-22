@@ -171,7 +171,7 @@
  			if (Main.netMode != 0 && Owner == Main.myPlayer)
  				NetMessage.SendData(27, -1, -1, null, num);
  
-@@ -8831,6 +_,12 @@
+@@ -8831,7 +_,18 @@
  		public void Damage() {
 +			bool? shouldHitAnything = ProjectileLoader.CanDamage(this);
 +			if (shouldHitAnything.HasValue) {
