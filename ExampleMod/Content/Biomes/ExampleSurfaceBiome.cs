@@ -18,7 +18,7 @@ namespace ExampleMod.Content.Biomes
 		// Select all the scenery
 		public override ModWaterStyle WaterStyle => ModContent.Find<ModWaterStyle>("ExampleMod/ExampleWaterStyle"); // Sets a water style for when inside this biome
 		public override ModSurfaceBgStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBgStyle>("ExampleMod/ExampleSurfaceBgStyle");
-		public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Mushroom;
+		public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Crimson;
 
 		// Select Music
 		public override int Music => Mod.GetSoundSlot(SoundType.Music, "Assets/Sounds/Music/MarbleGallery");
@@ -35,17 +35,6 @@ namespace ExampleMod.Content.Biomes
 		public override bool IsBiomeActive(Player player) {
 			return true;
 			return ModContent.GetInstance<ExampleBiomeTileCount>().exampleBlockCount >= 40 && Math.Abs(player.position.X - Main.maxTilesX / 2) < 40;
-		}
-
-		public override void ModifyShopPrices(HelperInfo helperInfo, ShopHelper shopHelperInstance) {
-			switch (helperInfo.npc.type) {
-				case NPCID.Merchant: // The merchant does not like the example surface biome
-					shopHelperInstance.DislikeBiome(helperInfo.PrimaryPlayerBiome);
-					break;
-				case NPCID.Cyborg: // The cyborg loves this biome
-					shopHelperInstance.LoveBiome(helperInfo.PrimaryPlayerBiome);
-					break;
-			}
 		}
 	}
 }

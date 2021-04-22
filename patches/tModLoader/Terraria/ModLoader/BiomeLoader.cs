@@ -103,16 +103,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookModifyShopPrices = AddHook<Action<HelperInfo, ShopHelper>>(b => b.ModifyShopPrices);
-
-		public static void ModifyShopPrices(HelperInfo info, ShopHelper s) {
-			foreach (int index in HookModifyShopPrices.arr) {
-				if (info.player.modBiomeFlags[index]) {
-					biomes[index].ModifyShopPrices(info, s);
-				}
-			}
-		}
-
 		public const int VanillaPrimaryBiomeCount = 11;
 
 		public static int GetPrimaryModBiome(Player player, out AVFXPriority priority) {

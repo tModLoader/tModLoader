@@ -6,12 +6,3 @@
  
  namespace Terraria.GameContent.Personalities
  {
-@@ -112,6 +_,8 @@
- 						shopHelperInstance.DislikeBiome(primaryPlayerBiome);
- 					break;
- 			}
-+
-+			BiomeLoader.ModifyShopPrices(info, shopHelperInstance);
- 
- 			if (info.npc.type == 663) {
- 				List<int> list = new List<int>();
