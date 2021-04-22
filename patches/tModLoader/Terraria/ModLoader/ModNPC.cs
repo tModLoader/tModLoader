@@ -87,14 +87,6 @@ namespace Terraria.ModLoader
 			NPCID.Search.Add(FullName, Type);
 		}
 
-		internal void SetupNPC(NPC npc) {
-			ModNPC newNPC = (ModNPC)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
-			newNPC.NPC = npc;
-			npc.ModNPC = newNPC;
-			newNPC.Mod = Mod;
-			newNPC.SetDefaults();
-		}
-
 		/// <summary>
 		/// Returns a clone of this ModNPC. 
 		/// Allows you to decide which fields of your ModNPC class are copied over when a new NPC is created. 
@@ -102,7 +94,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual ModNPC Clone(NPC npc) {
 			ModNPC clone = (ModNPC)MemberwiseClone();
-			clone.npc = npc;
+			clone.NPC = npc;
 			return clone;
 		}
 

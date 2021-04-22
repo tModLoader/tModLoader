@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
@@ -24,11 +25,11 @@ namespace Terraria.ModLoader
 		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
 
 		/// <summary>
-		/// Returns a clone of this GlobalProjectile. 
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalProjectile contains object references. 
-		/// Only called if CloneNewInstances && InstancePerEntity
+		/// Create a copy of this instanced GlobalProjectile. Called when a projectile is cloned.
 		/// </summary>
-		public virtual GlobalProjectile Clone() => (GlobalProjectile)MemberwiseClone();
+		/// <param name="projectile">The projectile being cloned</param>
+		/// <param name="projectileClone">The new projectile</param>
+		public virtual GlobalProjectile Clone(Projectile projectile, Projectile projectileClone) => (GlobalProjectile)MemberwiseClone();
 
 		/// <summary>
 		/// Allows you to set the properties of any and every projectile that gets created.
@@ -40,7 +41,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets called when any projectiles spawns in world
 		/// </summary>
-		public virtual void OnSpawn(Projectile projectile, EntitySpawnData data) {
+		public virtual void OnSpawn(Projectile projectile, IProjectileSource data) {
 		}
 		
 		/// <summary>

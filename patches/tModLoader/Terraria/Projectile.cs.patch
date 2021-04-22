@@ -162,16 +162,18 @@
  				if (ProjectileID.Sets.NeedsUUID[Type])
  					projectile.projUUID = projectile.identity;
  
-@@ -8016,6 +_,8 @@
+@@ -8042,6 +_,8 @@
  				}
  			}
  
-+			ProjectileLoader.OnSpawn(projectile, null);
++			ProjectileLoader.OnSpawn(projectile, spawnSource);
 +
  			if (Main.netMode != 0 && Owner == Main.myPlayer)
  				NetMessage.SendData(27, -1, -1, null, num);
  
-@@ -8831,7 +_,18 @@
+@@ -8872,9 +_,20 @@
+ 		}
+ 
  		public void Damage() {
 +			bool? shouldHitAnything = ProjectileLoader.CanDamage(this);
 +			if (shouldHitAnything.HasValue) {

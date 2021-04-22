@@ -161,9 +161,9 @@ namespace Terraria.ModLoader
 		private static HookList HookOnSpawn = AddHook<Action<Item, EntitySpawnData>>(g => g.OnSpawn);
 
 		internal static void OnSpawn(Item item, EntitySpawnData data) {
-			item.modItem?.OnSpawn(data);
+			item.ModItem?.OnSpawn(data);
 
-			foreach (GlobalItem g in HookOnSpawn.arr) {
+			foreach (GlobalItem g in HookOnSpawn.Enumerate(item.globalItems)) {
 				g.Instance(item).OnSpawn(item, data);
 			}
 		}

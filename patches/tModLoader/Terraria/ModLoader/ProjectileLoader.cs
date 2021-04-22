@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
@@ -100,11 +101,11 @@ namespace Terraria.ModLoader
 
 		internal static void SetDefaults(Projectile projectile, bool createModProjectile = true) {
 			if (IsModProjectile(projectile) && createModProjectile) {
-				projectile.modProjectile = GetProjectile(projectile.type).Clone(projectile);
+				projectile.ModProjectile = GetProjectile(projectile.type).Clone(projectile);
 			}
 
 			GlobalProjectile Instantiate(GlobalProjectile g)
-				=> g.InstancePerEntity ? g.NewInstance(projectile) : g;
+				=> g.InstancePerEntity ? g.Clone(projectile, projectile) : g;
 
 			LoaderUtils.InstantiateGlobals(projectile, globalProjectiles, ref projectile.globalProjectiles, Instantiate, () => {
 				projectile.ModProjectile?.SetDefaults();
@@ -115,13 +116,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookOnSpawn = AddHook<Action<Projectile, EntitySpawnData>>(g => g.OnSpawn);
+		private static HookList HookOnSpawn = AddHook<Action<Projectile, IProjectileSource>>(g => g.OnSpawn);
 
-		internal static void OnSpawn(Projectile projectile, EntitySpawnData data) {
-			projectile.modProjectile?.OnSpawn(data);
+		internal static void OnSpawn(Projectile projectile, IProjectileSource data) {
+			projectile.ModProjectile?.OnSpawn(data);
 
-			foreach (GlobalProjectile g in HookOnSpawn.arr) {
-				g.Instance(projectile).OnSpawn(projectile, data);
+			foreach (GlobalProjectile g in HookOnSpawn.Enumerate(projectile.globalProjectiles)) {
+				g.OnSpawn(projectile, data);
 			}
 		}
 		

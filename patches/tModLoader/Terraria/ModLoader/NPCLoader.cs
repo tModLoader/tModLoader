@@ -145,7 +145,7 @@ namespace Terraria.ModLoader
 		internal static void SetDefaults(NPC npc, bool createModNPC = true) {
 			if (IsModNPC(npc)) {
 				if (createModNPC) {
-					npc.modNPC = GetNPC(npc.type).Clone(npc);
+					npc.ModNPC = GetNPC(npc.type).Clone(npc);
 				}
 				else //the default NPCs created and bound to ModNPCs are initialized before ResizeArrays. They come here during SetupContent.
 				{
@@ -154,7 +154,7 @@ namespace Terraria.ModLoader
 			}
 
 			GlobalNPC Instantiate(GlobalNPC g)
-				=> g.InstancePerEntity ? g.NewInstance(npc) : g;
+				=> g.InstancePerEntity ? g.Clone(npc, npc) : g;
 
 			LoaderUtils.InstantiateGlobals(npc, globalNPCs, ref npc.globalNPCs, Instantiate, () => {
 				npc.ModNPC?.SetDefaults();
@@ -168,10 +168,10 @@ namespace Terraria.ModLoader
 		private static HookList HookOnSpawn = AddHook<Action<NPC, EntitySpawnData>>(g => g.OnSpawn);
 
 		internal static void OnSpawn(NPC npc, EntitySpawnData data) {
-			npc.modNPC?.OnSpawn(data);
+			npc.ModNPC?.OnSpawn(data);
 			
-			foreach (GlobalNPC g in HookOnSpawn.arr) {
-				g.Instance(npc).OnSpawn(npc, data);
+			foreach (GlobalNPC g in HookOnSpawn.Enumerate(npc.globalNPCs)) {
+				g.OnSpawn(npc, data);
 			}
 		}
 

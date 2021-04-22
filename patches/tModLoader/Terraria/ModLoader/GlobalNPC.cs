@@ -26,10 +26,11 @@ namespace Terraria.ModLoader
 		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
 
 		/// <summary>
-		/// Returns a clone of this GlobalNPC. 
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalNPC contains object references. 
+		/// Create a copy of this instanced GlobalNPC. Called when an npc is cloned.
 		/// </summary>
-		public virtual GlobalNPC Clone() => (GlobalNPC)MemberwiseClone();
+		/// <param name="npc">The npc being cloned</param>
+		/// <param name="npcClone">The new npc</param>
+		public virtual GlobalNPC Clone(NPC npc, NPC npcClone) => (GlobalNPC)MemberwiseClone();
 
 		/// <summary>
 		/// Allows you to set the properties of any and every NPC that gets created.

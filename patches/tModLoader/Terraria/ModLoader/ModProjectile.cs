@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 
@@ -72,7 +73,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual ModProjectile Clone(Projectile projectile) {
 			ModProjectile clone = (ModProjectile)MemberwiseClone();
-			clone.projectile = projectile;
+			clone.Projectile = projectile;
 			return clone;
 		}
 
@@ -85,7 +86,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets called when your projectiles spawns in world
 		/// </summary>
-		public virtual void OnSpawn(EntitySpawnData data) {
+		public virtual void OnSpawn(IProjectileSource data) {
 		}
 		
 		/// <summary>
