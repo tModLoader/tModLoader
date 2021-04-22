@@ -8,7 +8,7 @@
  
  namespace Terraria.Audio
  {
-@@ -97,10 +_,12 @@
+@@ -98,10 +_,12 @@
  		}
  
  		public LegacyAudioSystem() {
@@ -24,7 +24,7 @@
  			Engine.Update();
  			AudioTracks = new IAudioTrack[90];
  			TrackNamesByIndex = new Dictionary<int, string>();
-@@ -113,6 +_,8 @@
+@@ -114,6 +_,8 @@
  				yield return null;
  			}
  		}

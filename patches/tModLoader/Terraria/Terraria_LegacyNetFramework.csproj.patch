@@ -1,0 +1,109 @@
+--- src/Terraria/Terraria/Terraria_LegacyNetFramework.csproj
++++ src/tModLoader/Terraria/Terraria_LegacyNetFramework.csproj
+@@ -7,7 +_,17 @@
+     <Company>Re-Logic</Company>
+     <Copyright>Copyright © 2020 Re-Logic</Copyright>
+     <RootNamespace>Terraria</RootNamespace>
+-    <OutputName>Terraria_LegacyNetFramework</OutputName>
++    <OutputName>tModLoader_LegacyNetFramework</OutputName>
++    <LangVersion>latest</LangVersion>
++  </PropertyGroup>
++  <PropertyGroup>
++    <tMLVersion>0.12</tMLVersion>
++	<BuildPurpose Condition="'$(BuildPurpose)' == ''">dev</BuildPurpose>
++	<BranchName Condition="'$(BranchName)' == ''">unknown</BranchName>
++  <BranchName>$(BranchName.Replace("-",""))</BranchName>
++	<CommitSHA Condition="'$(CommitSHA)' == ''">unknown</CommitSHA>
++    <BuildDate>$([System.DateTime]::UtcNow.ToBinary())</BuildDate>
++    <SourceRevisionId>$(tMLVersion)-$(BranchName)-$(BuildPurpose)-$(CommitSHA)-$(BuildDate)</SourceRevisionId>
+   </PropertyGroup>
+   <PropertyGroup Condition="$(Configuration.Contains('Server'))">
+     <OutputType>Exe</OutputType>
+@@ -18,54 +_,58 @@
+   </PropertyGroup>
+   <PropertyGroup>
+     <PdbFile>bin\$(OutputName)</PdbFile>
+-    <ApplicationIcon>Icon.ico</ApplicationIcon>
++    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
+   </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="CsvHelper" />
+-    <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))" />
+-    <Reference Include="Ionic.Zip.CF" />
++    <Reference Include="Ionic.Zip.Reduced" />
+     <Reference Include="MP3Sharp" Condition="$(DefineConstants.Contains('CLIENT'))" />
+     <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
+     <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))" />
+     <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
+     <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />
++    <Reference Include="Mono.Cecil" />
++    <Reference Include="Mono.Cecil.Pdb" />
++    <Reference Include="Mono.Cecil.Mdb" />
++    <Reference Include="MP3Sharp" />
++    <Reference Include="NVorbis" />
++    <Reference Include="log4net" />
++    <Reference Include="MonoMod.RuntimeDetour" />
++    <Reference Include="MonoMod.Utils" />
+     <Reference Include="Newtonsoft.Json" />
+     <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
+     <Reference Include="RailSDK.Net" />
+     <ProjectReference Include="../ReLogic/ReLogic_LegacyNetFramework.csproj" />
+     <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
+       <Link>Libraries/ReLogic/ReLogic.dll</Link>
+-      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
++      <LogicalName>ReLogic.dll</LogicalName>
+     </EmbeddedResource>
+-    <Reference Include="Steamworks.NET">
++    <Reference Include="Steamworks.NET" />
+-      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/Steamworks.NET.dll</HintPath>
+-      <HintPath Condition="$(DefineConstants.Contains('MONO'))">Libraries/Mono/Steamworks.NET.dll</HintPath>
+-    </Reference>
+     <Reference Include="SteelSeriesEngineWrapper" />
+     <Reference Include="System" />
+     <Reference Include="System.Core" />
+     <Reference Include="System.Drawing" />
+     <Reference Include="System.Runtime.Serialization" />
+-    <Reference Include="System.Windows.Forms">
+-      <HintPath Condition="$(DefineConstants.Contains('Mono'))">Libraries/Mono/System.Windows.Forms.dll</HintPath>
+-    </Reference>
++    <Reference Include="System.ValueTuple" />
++    <Reference Include="System.XML" />
++    <Reference Include="System.Windows.Forms" />
+     <Reference Include="WindowsBase" />
+   </ItemGroup>
+   <ItemGroup>
++    <EmbeddedResource Include="**\*.png" />
+     <EmbeddedResource Include="GameContent/Creative/Content/*" />
+     <EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
+     <EmbeddedResource Include="GameContent/WorldBuilding/*" />
+     <EmbeddedResource Include="IO/Data/*" />
+-    <EmbeddedResource Include="Libraries/**" />
++    <EmbeddedResource Include="Libraries/**">
++      <LogicalName>%(Filename)%(Extension)</LogicalName>
++    </EmbeddedResource>
+     <EmbeddedResource Remove="Libraries/Common/Steamworks.NET.dll" />
+     <EmbeddedResource Remove="Libraries/Common/Newtonsoft.Json.dll" />
+     <None Remove="Libraries/Common/Steamworks.NET.dll" />
+     <None Remove="Libraries/Common/Newtonsoft.Json.dll" />
+     <EmbeddedResource Remove="Libraries/FNA/**" />
+-    <EmbeddedResource Remove="Libraries/XNA/**" />
+     <EmbeddedResource Remove="Libraries/Native/**" />
+-    <EmbeddedResource Remove="Libraries/Windows/**" Condition="!$(DefineConstants.Contains('WINDOWS'))" />
+-    <EmbeddedResource Remove="Libraries/Mono/**" Condition="!$(DefineConstants.Contains('MONO'))" />
+     <EmbeddedResource Include="Localization/Content/**" />
+     <EmbeddedResource Include="Microsoft/**" />
+   </ItemGroup>
+@@ -87,7 +_,11 @@
+   </Target>
+   <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
+     <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
+-    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\$(OutputName).exe" />
++    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(tModLoaderSteamPath)\$(OutputName).exe" />
+-    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(TerrariaSteamPath)" />
++    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(tModLoaderSteamPath)" />
++  </Target>
++  <Target Name="CopyToModCompile" AfterTargets="EditBin" Condition="$(Configuration)==MacRelease">
++    <Message Text="Copying tModLoaderMac to ModCompile..." Importance="high" />
++    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(tModLoaderSteamPath)\ModCompile\tModLoader.FNA.exe" />
+   </Target>
+ </Project>
