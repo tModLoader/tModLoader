@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using Terraria.DataStructures;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.ID;
@@ -230,19 +231,40 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// This is called before the weapon creates a projectile. You can use it to create special effects, such as changing the speed, changing the initial position, and/or firing multiple projectiles. Return false to stop the game from shooting the default projectile (do this if you manually spawn your own projectile). Returns true by default.
+		/// Allows you to prevent an item from shooting a projectile on use. Returns true by default.
 		/// </summary>
-		/// <param name="item">The weapon item.</param>
-		/// <param name="player">The player.</param>
-		/// <param name="position">The shoot spawn position.</param>
-		/// <param name="speedX">The speed x calculated from shootSpeed and mouse position.</param>
-		/// <param name="speedY">The speed y calculated from shootSpeed and mouse position.</param>
-		/// <param name="type">The projectile type chosen by ammo and weapon.</param>
-		/// <param name="damage">The projectile damage.</param>
-		/// <param name="knockBack">The projectile knock back.</param>
+		/// <param name="item"> The item being used. </param>
+		/// <param name="player"> The player using the item. </param>
 		/// <returns></returns>
-		public virtual bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
+		public virtual bool CanShoot(Item item, Player player) {
 			return true;
+		}
+
+		/// <summary>
+		/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by an item.
+		/// </summary>
+		/// <param name="item"> The item being used. </param>
+		/// <param name="player"> The player using the item. </param>
+		/// <param name="position"> The center position of the projectile. </param>
+		/// <param name="velocity"> The velocity of the projectile. </param>
+		/// <param name="type"> The ID of the projectile. </param>
+		/// <param name="damage"> The damage of the projectile. </param>
+		/// <param name="knockback"> The knockback of the projectile. </param>
+		public virtual void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		}
+
+		/// <summary>
+		/// Allows you to add additional projectiles to an item's shooting mechanism.
+		/// </summary>
+		/// <param name="item"> The item being used. </param>
+		/// <param name="player"> The player using the item. </param>
+		/// <param name="source"> The projectile source's information. </param>
+		/// <param name="position"> The center position of the projectile. </param>
+		/// <param name="velocity"> The velocity of the projectile. </param>
+		/// <param name="type"> The ID of the projectile. </param>
+		/// <param name="damage"> The damage of the projectile. </param>
+		/// <param name="knockback"> The knockback of the projectile. </param>
+		public virtual void Shoot(Item item, Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		}
 
 		/// <summary>

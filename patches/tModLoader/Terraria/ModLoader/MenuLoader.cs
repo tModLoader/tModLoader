@@ -122,9 +122,9 @@ namespace Terraria.ModLoader
 			Vector2 size = FontAssets.MouseText.Value.MeasureString(text);
 
 			Rectangle switchTextRect = Main.menuMode == 0 ? new Rectangle((int)(Main.screenWidth / 2 - (size.X / 2)), (int)(Main.screenHeight - 2 - size.Y), (int)size.X, (int)size.Y) : Rectangle.Empty;
-			Rectangle logoRect = new Rectangle((int)logoDrawPos.X - (logo.Width / 2), (int)logoDrawPos.Y - (logo.Height / 2), logo.Width, logo.Height);
+			//Rectangle logoRect = new Rectangle((int)logoDrawPos.X - (logo.Width / 2), (int)logoDrawPos.Y - (logo.Height / 2), logo.Width, logo.Height);
 
-			bool mouseover = switchTextRect.Contains(Main.mouseX, Main.mouseY) || logoRect.Contains(Main.mouseX, Main.mouseY);
+			bool mouseover = switchTextRect.Contains(Main.mouseX, Main.mouseY); // || logoRect.Contains(Main.mouseX, Main.mouseY);
 
 			if (mouseover && !Main.alreadyGrabbingSunOrMoon) {
 				if (Main.mouseLeftRelease && Main.mouseLeft) {

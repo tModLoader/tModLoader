@@ -4,11 +4,11 @@
  
  		public override bool Deserialize(BinaryReader reader, int userId) {
  			Vector2 position = reader.ReadVector2();
-+#if CLIENT
++			if(!Main.dedServ)
  			Main.Pings.Add(position);
-+#else
++			else
 +			NetManager.Instance.Broadcast(Serialize(position),userId);
-+#endif
++
  			return true;
  		}
  	}
