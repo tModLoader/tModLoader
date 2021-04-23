@@ -46,7 +46,7 @@ namespace Terraria.ModLoader
 			return hook;
 		}
 
-		public static HookList AddModHook(HookList hook) {
+		public static T AddModHook<T>(T hook) where T : HookList {
 			hook.Update(globalItems);
 
 			modHooks.Add(hook);
