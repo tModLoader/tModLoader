@@ -3334,6 +3334,16 @@
  				LoadBackground(array3[0]);
  				LoadBackground(array3[1]);
  				LoadBackground(array3[2]);
+@@ -41681,8 +_,8 @@
+ 			}
+ 
+ 			TimeLogger.DetailedDrawReset();
+-			spriteBatch.End();
+ 			tileBatch.End();
++			spriteBatch.End();
+ 			TimeLogger.DetailedDrawTime(33);
+ 			base.GraphicsDevice.SetRenderTarget(null);
+ 		}
 @@ -42135,8 +_,22 @@
  				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
  				flag = true;
