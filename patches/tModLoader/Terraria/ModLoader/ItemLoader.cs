@@ -513,6 +513,10 @@ namespace Terraria.ModLoader
 
 		private delegate bool? DelegateConsumeBait(Item bait, Player player);
 		private static HookList HookConsumeBait = AddHook<DelegateConsumeBait>(p => p.ConsumeBait);
+
+		/// <summary>
+		/// Hook that decides if bait is consumed or not. True stops the code and immediately forces consumption. False is only valid if no True is found.
+		/// </summary>
 		public static bool? ConsumeBait(Player player, Item bait) {
 			if (bait.IsAir)
 				return null;
@@ -523,11 +527,11 @@ namespace Terraria.ModLoader
 				bool? consumeBait = g.Instance(bait).ConsumeBait(bait, player);
 
 				if (consumeBait.HasValue) {
-					if (!consumeBait.Value) {
-						return false;
+					if (consumeBait.Value) {
+						return true;
 					}
 
-					result = true;
+					result = false;
 				}
 			}
 

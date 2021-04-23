@@ -246,6 +246,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to change an item bait's rate of consumption, being able to force it to be consumed or stop it from being consumed or return null for unchanged vanilla behaviour.
+		/// Forcing to be consumed takes precedence over not being consumed, over vanilla usage.
 		/// </summary>
 		/// <param name="bait">The bait item being targeted</param>
 		/// <param name="player">The player using this bait</param>

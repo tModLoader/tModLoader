@@ -424,7 +424,7 @@
 +
  			if (fisher.rolledItemDrop > 0) {
 -				if (Main.player[owner].sonarPotion) {
-+				if (Main.player[owner].sonarPotion && (sonarText == null || sonarText.Trim().Length > 0)) {
++				if (Main.player[owner].sonarPotion && sonarText != "") {
  					Item item = new Item();
  					item.SetDefaults(fisher.rolledItemDrop);
  					item.position = position;
@@ -439,10 +439,12 @@
  					if (PopupText.sonarText > -1)
  						Main.popupText[PopupText.sonarText].sonar = true;
  				}
-@@ -13093,13 +_,20 @@
+@@ -13093,13 +_,22 @@
  				float num3 = fisher.fishingLevel;
  				ai[1] = (float)Main.rand.Next(-240, -90) - num3;
  				localAI[1] = fisher.rolledItemDrop;
++				//localAI[0] was written to (up to 100), but never read other than to check if it had reached 100 and stop writing to it.
++				//As we needed a place to store the Item stack size for this extra functionality, and there was no other place available, we overwrote localAI[0] and removed the useless code.
 +				localAI[0] = fisher.rolledItemStack;
  				netUpdate = true;
  				flag = true;
@@ -539,6 +541,15 @@
  						for (int l = 0; l < num4; l++) {
  							Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(j, k, tileSafely)];
  							obj.velocity.Y -= 3f + (float)num3 * 1.5f;
+@@ -32984,6 +_,8 @@
+ 					AI_061_FishingBobber_DoASplash();
+ 			}
+ 
++			//localAI[0] increase removed because it was not being read anywhere and we needed a space for allowing the modders to add an stack size to their items, if they want to
++
+ 			if (ai[0] >= 1f) {
+ 				if (ai[0] == 2f) {
+ 					ai[0] += 1f;
 @@ -32992,9 +_,6 @@
  						AI_061_FishingBobber_DoASplash();
  				}
@@ -549,18 +560,17 @@
  				if (frameCounter == 0) {
  					frameCounter = 1;
  					ReduceRemainingChumsInPool();
-@@ -33158,7 +_,10 @@
+@@ -33158,6 +_,10 @@
  		private void AI_061_FishingBobber_GiveItemToPlayer(Player thePlayer, int itemType) {
  			Item item = new Item();
  			item.SetDefaults(itemType);
 +			if (localAI[0] > 0) {
 +				item.stack = (int)localAI[0];
 +			}
--			if (itemType == 3196) {
-+			else if (itemType == 3196) {
++			else { 
+ 			if (itemType == 3196) {
  				int finalFishingLevel = thePlayer.GetFishingConditions().FinalFishingLevel;
  				int minValue = (finalFishingLevel / 20 + 3) / 2;
- 				int num = (finalFishingLevel / 10 + 6) / 2;
 @@ -33177,7 +_,7 @@
  				int num2 = item.stack = Main.rand.Next(minValue, num + 1);
  			}
@@ -570,11 +580,12 @@
  				int finalFishingLevel2 = thePlayer.GetFishingConditions().FinalFishingLevel;
  				int minValue2 = (finalFishingLevel2 / 4 + 15) / 2;
  				int num3 = (finalFishingLevel2 / 2 + 30) / 2;
-@@ -33195,7 +_,7 @@
+@@ -33195,7 +_,8 @@
  
  				int num4 = item.stack = Main.rand.Next(minValue2, num3 + 1);
  			}
 -
++			}
 +			ItemLoader.CaughtFishStack(item);
  			item.newAndShiny = true;
  			Item item2 = thePlayer.GetItem(owner, item, default(GetItemSettings));

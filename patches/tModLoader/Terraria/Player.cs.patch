@@ -3111,11 +3111,10 @@
  			int whoAmI = base.whoAmI;
  			bool flag = true;
  			int num = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
-@@ -35712,10 +_,13 @@
- 					NPC.SpawnOnPlayer(whoAmI, 370);
+@@ -35713,9 +_,13 @@
  				else
  					NetMessage.SendData(61, -1, -1, null, whoAmI, 370f);
--
+ 
 +				PlayerHooks.OnFishedNPCSummon(this, 370, bobber, baitTypeUsed);
  				bobber.ai[0] = 2f;
 +				bobber.netUpdate = true;
@@ -3139,9 +3138,10 @@
  			baitTypeUsed = item.type;
  			if (baitTypeUsed == 2673)
  				flag = true;
-+			bool? baitOverride = PlayerHooks.ConsumeBait(this, item) ?? ItemLoader.ConsumeBait(this, item);
- 
+-
 -			if (flag) {
++			bool? baitOverride = PlayerHooks.ConsumeBait(this, item) ?? ItemLoader.ConsumeBait(this, item);
++			//bait vanilla behaviour is to be consumed, but using == null or true allows for mods to force bait to be consumed even if some other mods added bait-saving mechanics
 +			if (flag && (baitOverride == null || baitOverride.Value)) {
  				if (item.type == 4361 || item.type == 4362)
  					NPC.LadyBugKilled(base.Center, item.type == 4362);

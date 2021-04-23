@@ -863,13 +863,20 @@ namespace Terraria.ModLoader
 
 		private delegate bool? DelegateConsumeBait(Item bait);
 		private static HookList HookConsumeBait = AddHook<DelegateConsumeBait>(p => p.ConsumeBait);
+		/// <summary>
+		/// Just like ItemLoader.ConsumeBait, true forces the bait to be consumed, false will stop bait consumption and null will return vanilla behaviour
+		/// </summary>
 		public static bool? ConsumeBait(Player player, Item bait) {
+			bool? result = null;
 			foreach (int index in HookConsumeBait.arr) {
 				bool? ans = player.modPlayers[index].ConsumeBait(bait);
-				if (ans != null)
-					return ans;
+				if (ans.HasValue)
+					if (ans.Value)
+						return ans;
+					else
+						result = false;
 			}
-			return null;
+			return result;
 		}
 
 		private static HookList HookGetDyeTraderReward = AddHook<Action<List<int>>>(p => p.GetDyeTraderReward);
