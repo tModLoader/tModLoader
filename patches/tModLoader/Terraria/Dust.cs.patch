@@ -1,6 +1,10 @@
 --- src/Terraria/Terraria/Dust.cs
 +++ src/tModLoader/Terraria/Dust.cs
-@@ -4,6 +_,8 @@
+@@ -1,9 +_,12 @@
+ using Microsoft.Xna.Framework;
+ using System;
++using Terraria.DataStructures;
+ using Terraria.GameContent;
  using Terraria.GameContent.Events;
  using Terraria.Graphics.Shaders;
  using Terraria.Utilities;
@@ -17,11 +21,20 @@
  
  		public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
  			Dust dust = Main.dust[NewDust(Position, 0, 0, Type, 0f, 0f, Alpha, newColor, Scale)];
+@@ -47,7 +_,7 @@
+ 			return dust;
+ 		}
+ 
+-		public static int NewDust(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
++		public static int NewDust(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f, IDustSource source = null) {
+ 			if (Main.gameMenu)
+ 				return 6000;
+ 
 @@ -160,6 +_,8 @@
  				if (dust.type == 80)
  					dust.alpha = 50;
  
-+				DustLoader.SetupDust(dust);
++				DustLoader.SetupDust(dust, source);
 +
  				if (dust.type == 34 || dust.type == 35 || dust.type == 152) {
  					dust.velocity *= 0.1f;

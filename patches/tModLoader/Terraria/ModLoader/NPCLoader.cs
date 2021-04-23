@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.UI;
 using Terraria.GameContent.Bestiary;
@@ -165,13 +166,13 @@ namespace Terraria.ModLoader
 			}
 		}
 		
-		private static HookList HookOnSpawn = AddHook<Action<NPC, EntitySpawnData>>(g => g.OnSpawn);
+		private static HookList HookOnSpawn = AddHook<Action<NPC, INPCSource>>(g => g.OnSpawn);
 
-		internal static void OnSpawn(NPC npc, EntitySpawnData data) {
-			npc.ModNPC?.OnSpawn(data);
+		internal static void OnSpawn(NPC npc, INPCSource source) {
+			npc.ModNPC?.OnSpawn(source);
 			
 			foreach (GlobalNPC g in HookOnSpawn.Enumerate(npc.globalNPCs)) {
-				g.OnSpawn(npc, data);
+				g.OnSpawn(npc, source);
 			}
 		}
 

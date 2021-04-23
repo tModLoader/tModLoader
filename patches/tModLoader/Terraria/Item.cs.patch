@@ -1,13 +1,15 @@
 --- src/Terraria/Terraria/Item.cs
 +++ src/tModLoader/Terraria/Item.cs
-@@ -1,6 +_,7 @@
+@@ -1,7 +_,9 @@
  using Microsoft.Xna.Framework;
  using System;
  using System.IO;
 +using System.Linq;
  using Terraria.Audio;
++using Terraria.DataStructures;
  using Terraria.Enums;
  using Terraria.GameContent;
+ using Terraria.GameContent.Events;
 @@ -10,10 +_,11 @@
  using Terraria.ID;
  using Terraria.UI;
@@ -686,7 +688,15 @@
  					position = (position + item.position) / 2f;
  					velocity = (velocity + item.velocity) / 2f;
  					int num3 = item.stack;
-@@ -45987,6 +_,9 @@
+@@ -45980,13 +_,16 @@
+ 		public static int NewItem(Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem((int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
+ 		public static int NewItem(Vector2 pos, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem((int)pos.X, (int)pos.Y, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
+ 
+-		public static int NewItem(int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false) {
++		public static int NewItem(int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false, IItemSource source = null) {
+ 			if (WorldGen.gen)
+ 				return 0;
+ 
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom();
  
@@ -700,7 +710,7 @@
  			if (ItemSlot.Options.HighlightNewItems && item.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[item.type])
  				item.newAndShiny = true;
  
-+			ItemLoader.OnSpawn(item, null);
++			ItemLoader.OnSpawn(item, source);
 +			
  			if (Main.netMode == 2 && !noBroadcast)
  				NetMessage.SendData(21, -1, -1, null, num, noGrabDelay.ToInt());

@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader.Core;
@@ -42,7 +43,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets called when any NPC spawns in world
 		/// </summary>
-		public virtual void OnSpawn(NPC npc, EntitySpawnData data) {
+		public virtual void OnSpawn(NPC npc, INPCSource source) {
 		}
 
 		/// <summary>

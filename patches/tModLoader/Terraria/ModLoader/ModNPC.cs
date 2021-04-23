@@ -4,6 +4,7 @@ using ReLogic.Utilities;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
@@ -107,7 +108,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets called when your NPC spawns in world
 		/// </summary>
-		public virtual void OnSpawn(EntitySpawnData data) {
+		public virtual void OnSpawn(INPCSource source) {
 		}
 
 		/// <summary>

@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 
@@ -54,7 +55,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify a dust's fields when it is created.
 		/// </summary>
-		public virtual void OnSpawn(Dust dust) { }
+		public virtual void OnSpawn(Dust dust, IDustSource source) { }
 
 		/// <summary>
 		/// Allows you to customize how you want this type of dust to behave. Return true to allow for vanilla dust updating to also take place; will return true by default. Normally you will want this to return false.

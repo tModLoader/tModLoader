@@ -162,14 +162,14 @@
  				if (ProjectileID.Sets.NeedsUUID[Type])
  					projectile.projUUID = projectile.identity;
  
-@@ -8042,6 +_,8 @@
- 				}
- 			}
+@@ -8158,6 +_,8 @@
+ 			if (Type == 249)
+ 				projectile.frame = Main.rand.Next(5);
  
 +			ProjectileLoader.OnSpawn(projectile, spawnSource);
 +
- 			if (Main.netMode != 0 && Owner == Main.myPlayer)
- 				NetMessage.SendData(27, -1, -1, null, num);
+ 			return num;
+ 		}
  
 @@ -8872,9 +_,20 @@
  		}

@@ -118,11 +118,11 @@ namespace Terraria.ModLoader
 
 		private static HookList HookOnSpawn = AddHook<Action<Projectile, IProjectileSource>>(g => g.OnSpawn);
 
-		internal static void OnSpawn(Projectile projectile, IProjectileSource data) {
-			projectile.ModProjectile?.OnSpawn(data);
+		internal static void OnSpawn(Projectile projectile, IProjectileSource source) {
+			projectile.ModProjectile?.OnSpawn(source);
 
 			foreach (GlobalProjectile g in HookOnSpawn.Enumerate(projectile.globalProjectiles)) {
-				g.OnSpawn(projectile, data);
+				g.OnSpawn(projectile, source);
 			}
 		}
 		

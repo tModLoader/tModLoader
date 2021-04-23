@@ -47,7 +47,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets called when any item spawns in world
 		/// </summary>
-		public virtual void OnSpawn(Item item, EntitySpawnData data) {
+		public virtual void OnSpawn(Item item, IItemSource source) {
 		}
 
 		/// <summary>

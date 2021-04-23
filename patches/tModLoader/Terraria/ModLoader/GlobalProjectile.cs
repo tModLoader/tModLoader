@@ -41,7 +41,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets called when any projectiles spawns in world
 		/// </summary>
-		public virtual void OnSpawn(Projectile projectile, IProjectileSource data) {
+		public virtual void OnSpawn(Projectile projectile, IProjectileSource source) {
 		}
 		
 		/// <summary>

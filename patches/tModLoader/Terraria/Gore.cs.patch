@@ -32,6 +32,15 @@
  		}
  
  		private void Gore_UpdateLeaf() {
+@@ -998,7 +_,7 @@
+ 
+ 		public static Gore NewGoreDirect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) => Main.gore[NewGore(Position, Velocity, Type, Scale)];
+ 
+-		public static int NewGore(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
++		public static int NewGore(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f, IGoreSource source = null) {
+ 			if (Main.netMode == 2)
+ 				return 600;
+ 
 @@ -1035,6 +_,13 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
@@ -41,7 +50,7 @@
 +			gore.ResetNewFields();
 +			
 +			gore.ModGore = GoreLoader.GetModGore(gore.type);
-+			gore.ModGore?.OnSpawn(gore);
++			gore.ModGore?.OnSpawn(gore, source);
 +			
  			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
  				Main.gore[num].type = Main.rand.Next(11, 14);

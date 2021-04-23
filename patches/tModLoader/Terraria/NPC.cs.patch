@@ -706,6 +706,24 @@
  			if (Main.npc[newNPC].type == 1 && Main.player[num7].RollLuck(180) == 0)
  				Main.npc[newNPC].SetDefaults(-4);
  
+@@ -62468,7 +_,7 @@
+ 				ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[num].GetTypeNetName()), new Color(175, 75, 255));
+ 		}
+ 
+-		public static int NewNPC(int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255) {
++		public static int NewNPC(int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255, INPCSource source = null) {
+ 			if (Main.getGoodWorld) {
+ 				if (Type == 46)
+ 					Type = 614;
+@@ -62517,6 +_,8 @@
+ 						ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[num].GetTypeNetName()), new Color(175, 75, 255));
+ 				}
+ 
++				NPCLoader.OnSpawn(Main.npc[num], source);
++
+ 				return num;
+ 			}
+ 
 @@ -62721,12 +_,14 @@
  			if (num2 < 0)
  				num2 = 0;

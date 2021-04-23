@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 
@@ -34,13 +35,13 @@ namespace Terraria.ModLoader
 			DustCount = DustID.Count;
 		}
 
-		internal static void SetupDust(Dust dust) {
+		internal static void SetupDust(Dust dust, IDustSource source) {
 			ModDust modDust = GetDust(dust.type);
 
 			if (modDust != null) {
 				dust.frame.X = 0;
 				dust.frame.Y %= 30;
-				modDust.OnSpawn(dust);
+				modDust.OnSpawn(dust, source);
 			}
 		}
 
