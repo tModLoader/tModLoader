@@ -221,6 +221,9 @@ namespace Terraria.ModLoader
 		/// Sets if an item can be researched, regardless of vanilla behaviour. If true, item will be researched no matter what, false will block it from being researched, null is vanilla behaviour.
 		/// </summary>
 		/// <param name="item">The item being researched</param>
+		/// <returns>True takes precedence, and will consume the item, even if vanilla would not allow it
+		/// False will stop the item from being consumed and the rest of the research code to run.
+		/// Null is the default vanilla behaviour</returns>
 		public virtual bool? CanResearch(Item item) {
 			return null;
 		}

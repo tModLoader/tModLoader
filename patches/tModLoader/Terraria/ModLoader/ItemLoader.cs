@@ -427,22 +427,29 @@ namespace Terraria.ModLoader
 
 		private delegate bool? DelegateCanResearch(Item item);
 		private static HookList HookCanResearch = AddHook<DelegateCanResearch>(g => g.CanResearch);
+		/// <summary>
+		/// Hook that determines if an item will be consumed by the research function. 
+		/// </summary>
+		/// <param name="item">The item to be consumed or not</param>
+		/// <returns>True takes precedence, and will consume the item, even if vanilla would not allow it
+		/// False will stop the item from being consumed and the rest of the research code to run.
+		/// Null is the default vanilla behaviour</returns>
 		public static bool? CanResearch(Item item) {
 			if (item.IsAir)
 				return null;
 
-			bool? canResearch = item.modItem?.CanResearch();
-
-			if (canResearch != null)
-				return canResearch;
-
+			bool? canResearch = null;
 			foreach (var g in HookCanResearch.arr) {
-				canResearch = g.Instance(item).CanResearch(item);
-				
-				if (canResearch != null)
-					return canResearch;
+				bool? ans = g.Instance(item).CanResearch(item);
+
+				if (ans.HasValue) {
+					if (ans.Value)
+						return true;
+					else
+						canResearch = ans.Value;
+				}
 			}
-			return null;
+			return canResearch ?? item.modItem?.CanResearch();
 		}
 
 		private delegate void DelegateOnResearched(Item item, bool fullyResearched);
