@@ -336,7 +336,7 @@
  			int num = 0;
  			if (banner >= 276)
  				return 4965 + banner - 276;
-@@ -2073,9 +_,10 @@
+@@ -2082,9 +_,10 @@
  					return 287;
  				case 133:
  					return 288;
@@ -349,7 +349,7 @@
  		}
  
  		public static int BannerToNPC(int i) {
-@@ -2644,9 +_,10 @@
+@@ -2653,9 +_,10 @@
  					return 176;
  				case 288:
  					return 133;
@@ -362,7 +362,7 @@
  		}
  
  		public bool FitsAmmoSlot() {
-@@ -41919,6 +_,7 @@
+@@ -41928,6 +_,7 @@
  					rare = 1;
  					value = sellPrice(0, 0, 10);
  					melee = true;
@@ -370,7 +370,7 @@
  					break;
  				case 4712:
  					DefaultToPlacableTile((ushort)467, 12);
-@@ -44081,7 +_,7 @@
+@@ -44090,7 +_,7 @@
  			return false;
  		}
  
@@ -379,7 +379,7 @@
  			useStyle = 1;
  			autoReuse = true;
  			useAnimation = 15;
-@@ -44114,7 +_,7 @@
+@@ -44123,7 +_,7 @@
  			}
  		}
  
@@ -388,7 +388,7 @@
  			useStyle = 1;
  			autoReuse = true;
  			useTurn = true;
-@@ -44128,7 +_,7 @@
+@@ -44137,7 +_,7 @@
  			makeNPC = npcIdToSpawnOnUse;
  		}
  
@@ -397,7 +397,7 @@
  			DefaultToMagicWeapon(projType, singleShotTime, pushForwardSpeed, hasAutoReuse: true);
  			mana = manaPerShot;
  			width = 40;
-@@ -44136,7 +_,7 @@
+@@ -44145,7 +_,7 @@
  			UseSound = SoundID.Item43;
  		}
  
@@ -406,7 +406,7 @@
  			useStyle = 5;
  			useAnimation = 31;
  			useTime = 31;
-@@ -44479,13 +_,13 @@
+@@ -44488,13 +_,13 @@
  			rare = (int)(num / 4f);
  		}
  
@@ -422,7 +422,7 @@
  			useStyle = 1;
  			useTurn = true;
  			useAnimation = 15;
-@@ -44498,20 +_,20 @@
+@@ -44507,20 +_,20 @@
  			height = 12;
  		}
  
@@ -446,7 +446,7 @@
  			autoReuse = hasAutoReuse;
  			useStyle = 5;
  			useAnimation = singleShotTime;
-@@ -44522,7 +_,7 @@
+@@ -44531,7 +_,7 @@
  			magic = true;
  		}
  
@@ -455,7 +455,7 @@
  			autoReuse = hasAutoReuse;
  			useStyle = 5;
  			useAnimation = singleShotTime;
-@@ -44534,7 +_,7 @@
+@@ -44543,7 +_,7 @@
  			ranged = true;
  		}
  
@@ -464,7 +464,7 @@
  			autoReuse = hasAutoReuse;
  			useStyle = 1;
  			useAnimation = singleShotTime;
-@@ -44547,7 +_,7 @@
+@@ -44556,7 +_,7 @@
  			maxStack = 999;
  		}
  
@@ -473,7 +473,7 @@
  			flame = true;
  			noWet = !allowWaterPlacement;
  			holdStyle = 1;
-@@ -44565,11 +_,11 @@
+@@ -44574,11 +_,11 @@
  			useTime = 10;
  		}
  
@@ -487,7 +487,7 @@
  			createTile = tileIDToPlace;
  			placeStyle = tileStyleToPlace;
  			width = 14;
-@@ -44583,7 +_,7 @@
+@@ -44592,7 +_,7 @@
  			consumable = true;
  		}
  
@@ -496,7 +496,7 @@
  			width = newwidth;
  			height = newheight;
  			channel = true;
-@@ -44596,7 +_,7 @@
+@@ -44605,7 +_,7 @@
  			noMelee = true;
  		}
  
@@ -505,7 +505,7 @@
  			width = newwidth;
  			height = newheight;
  			holdStyle = 1;
-@@ -44607,7 +_,7 @@
+@@ -44616,7 +_,7 @@
  			autoReuse = true;
  		}
  
@@ -514,7 +514,7 @@
  			if (useGulpSound)
  				UseSound = SoundID.Item3;
  			else
-@@ -44630,7 +_,7 @@
+@@ -44639,7 +_,7 @@
  			value = buyPrice(0, 0, 20);
  		}
  
@@ -523,7 +523,7 @@
  			UseSound = SoundID.Item3;
  			useStyle = 9;
  			useTurn = true;
-@@ -44645,7 +_,7 @@
+@@ -44654,7 +_,7 @@
  			healLife = healingAmount;
  		}
  
@@ -532,7 +532,7 @@
  			rare = (int)rarity;
  			value = coinValue;
  		}
-@@ -44656,13 +_,13 @@
+@@ -44665,13 +_,13 @@
  			headSlot = helmetArtID;
  		}
  
@@ -548,7 +548,7 @@
  			width = newwidth;
  			height = newheight;
  			autoReuse = true;
-@@ -44671,7 +_,7 @@
+@@ -44680,7 +_,7 @@
  			useAnimation = (useTime = 12);
  		}
  
@@ -557,7 +557,7 @@
  			useStyle = 1;
  			useTurn = true;
  			useAnimation = 15;
-@@ -44692,6 +_,16 @@
+@@ -44701,6 +_,16 @@
  			SetDefaults(Type, noMatCheck: false);
  		}
  
@@ -574,7 +574,7 @@
  		public void SetDefaults(int Type, bool noMatCheck = false) {
  			if (Type < 0) {
  				netDefaults(Type);
-@@ -44704,9 +_,6 @@
+@@ -44713,9 +_,6 @@
  				playerIndexTheItemIsReservedFor = Main.myPlayer;
  
  			ResetStats(Type);
@@ -584,7 +584,7 @@
  			if (type == 0) {
  				netID = 0;
  				stack = 0;
-@@ -44730,6 +_,20 @@
+@@ -44739,6 +_,20 @@
  				SetDefaults5(type);
  			}
  
@@ -605,7 +605,7 @@
  			dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(type);
  			if (hairDye != 0)
  				hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
-@@ -44879,11 +_,12 @@
+@@ -44888,11 +_,12 @@
  				maxStack = 999;
  
  			netID = type;
@@ -619,7 +619,7 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -44893,14 +_,20 @@
+@@ -44902,14 +_,20 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
@@ -640,7 +640,7 @@
  			instanced = false;
  			questItem = false;
  			fishingPole = 0;
-@@ -44917,10 +_,12 @@
+@@ -44926,10 +_,12 @@
  			mech = false;
  			flame = false;
  			reuseDelay = 0;
@@ -653,7 +653,7 @@
  			placeStyle = 0;
  			buffTime = 0;
  			buffType = 0;
-@@ -44946,7 +_,7 @@
+@@ -44955,7 +_,7 @@
  			useAmmo = AmmoID.None;
  			autoReuse = false;
  			accessory = false;
@@ -662,7 +662,7 @@
  			healMana = 0;
  			bodySlot = -1;
  			legSlot = -1;
-@@ -44959,12 +_,12 @@
+@@ -44968,12 +_,12 @@
  			createWall = -1;
  			damage = -1;
  			defense = 0;
@@ -677,7 +677,7 @@
  			rare = 0;
  			scale = 1f;
  			shoot = 0;
-@@ -44995,6 +_,10 @@
+@@ -45004,6 +_,10 @@
  		}
  
  		public Color GetAlpha(Color newColor) {
@@ -688,7 +688,7 @@
  			switch (type) {
  				case 3318:
  				case 3319:
-@@ -45300,6 +_,7 @@
+@@ -45309,6 +_,7 @@
  				timeSinceItemSpawned += num3;
  			}
  
@@ -696,7 +696,7 @@
  			if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
  				timeSinceTheItemHasBeenReservedForSomeone++;
  				if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
-@@ -45380,6 +_,7 @@
+@@ -45389,6 +_,7 @@
  		}
  
  		private void CheckLavaDeath(int i) {
@@ -704,7 +704,7 @@
  			if (type == 267) {
  				if (Main.netMode == 1)
  					return;
-@@ -45399,7 +_,9 @@
+@@ -45408,7 +_,9 @@
  
  				NetMessage.SendData(21, -1, -1, null, i);
  			}
@@ -715,7 +715,7 @@
  				active = false;
  				type = 0;
  				stack = 0;
-@@ -45409,6 +_,7 @@
+@@ -45418,6 +_,7 @@
  		}
  
  		private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity) {
@@ -723,7 +723,7 @@
  			if (ItemID.Sets.ItemNoGravity[type]) {
  				base.velocity.X *= 0.95f;
  				if ((double)base.velocity.X < 0.1 && (double)base.velocity.X > -0.1)
-@@ -45419,6 +_,7 @@
+@@ -45428,6 +_,7 @@
  					base.velocity.Y = 0f;
  			}
  			else {
@@ -731,7 +731,7 @@
  				base.velocity.Y += gravity;
  				if (base.velocity.Y > maxFallSpeed)
  					base.velocity.Y = maxFallSpeed;
-@@ -45618,6 +_,9 @@
+@@ -45627,6 +_,9 @@
  					num2 *= 2;
  
  				if (num < (float)num2) {
@@ -741,7 +741,7 @@
  					position = (position + item.position) / 2f;
  					velocity = (velocity + item.velocity) / 2f;
  					int num3 = item.stack;
-@@ -45979,6 +_,9 @@
+@@ -45987,6 +_,9 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom();
  
@@ -751,7 +751,7 @@
  			if (Main.halloween) {
  				if (Type == 58)
  					Type = 1734;
-@@ -46101,14 +_,17 @@
+@@ -46109,14 +_,17 @@
  						continue;
  
  					Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
@@ -772,7 +772,7 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -46127,8 +_,33 @@
+@@ -46135,8 +_,33 @@
  			}
  		}
  
@@ -808,7 +808,7 @@
  
  		public bool IsTheSameAs(Item compareItem) {
  			if (netID == compareItem.netID)
-@@ -46159,6 +_,8 @@
+@@ -46167,6 +_,8 @@
  			dye = 0;
  			shoot = 0;
  			mountType = -1;
@@ -817,7 +817,7 @@
  		}
  
  		public void OnPurchase(Item item) {
-@@ -46190,7 +_,7 @@
+@@ -46198,7 +_,7 @@
  				Prefix(reader.ReadByte());
  			}
  

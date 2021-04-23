@@ -1,0 +1,24 @@
+--- src/decompiled/Configuration.targets
++++ src/Terraria/Configuration_LegacyNetFramework.targets
+@@ -1,11 +_,19 @@
+ <Project>
+   <PropertyGroup>
+     <TargetFramework>net40</TargetFramework>
+-    <Configurations>Debug;Release;ServerDebug;ServerRelease</Configurations>
+-    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
++    <Configurations>WindowsDebug;WindowsRelease;WindowsServerDebug;WindowsServerRelease;LinuxRelease;LinuxServerRelease;MacRelease;MacServerRelease</Configurations>
+     <PlatformTarget>x86</PlatformTarget>
+     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+     <Optimize>true</Optimize>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('Windows'))">
++    <DefineConstants>$(DefineConstants);WINDOWS;XNA</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
++    <DefineConstants>$(DefineConstants);LINUX;FNA;MONO</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('Mac'))">
++    <DefineConstants>$(DefineConstants);MAC;FNA;MONO</DefineConstants>
+   </PropertyGroup>
+   <PropertyGroup Condition="$(Configuration.Contains('Server'))">
+     <DefineConstants>$(DefineConstants);SERVER</DefineConstants>

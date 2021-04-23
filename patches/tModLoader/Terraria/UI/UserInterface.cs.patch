@@ -38,7 +38,7 @@
  
  		public void EscapeElements() {
 @@ -59,14 +_,25 @@
- #if CLIENT
+ 			if (!Main.dedServ) {
  			GetMousePosition();
  			_wasMouseDown = Main.mouseLeft;
 +			_wasMouseRightDown = Main.mouseRight;
@@ -48,7 +48,7 @@
 +
  			if (_lastElementHover != null)
  				_lastElementHover.MouseOut(new UIMouseEvent(_lastElementHover, MousePosition));
- #endif
+ 			}
  
  			_lastElementHover = null;
  			_lastElementDown = null;
