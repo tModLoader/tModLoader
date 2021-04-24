@@ -15,7 +15,7 @@ namespace Terraria.ModLoader
 		public override AVFXPriority Priority => AVFXPriority.BiomeLow;
 		public override int Music => 0;
 
-		internal int GetBool => Type - BiomeLoader.VanillaPrimaryBiomeCount; 
+		internal int ZeroIndexType => Type - Loaders.Biomes.vanillaCount; 
 
 		// Bestiary properties
 		/// <summary>
@@ -33,7 +33,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The color of the bestary background.
 		/// </summary>
-		public virtual Color? BackgroundColor => Color.MediumPurple;
+		public virtual Color? BackgroundColor => null;
 
 		public GameContent.Bestiary.ModBiomeBestiaryInfoElement ModBiomeBestiaryInfoElement { get; internal set; }
 
@@ -50,7 +50,7 @@ namespace Terraria.ModLoader
 			SetStaticDefaults();
 		}
 
-		public sealed override bool IsActive(Player player) => player.modBiomeFlags[Type];
+		public sealed override bool IsActive(Player player) => player.modBiomeFlags[ZeroIndexType];
 
 		/// <summary>
 		/// This is where you can set values for DisplayName.

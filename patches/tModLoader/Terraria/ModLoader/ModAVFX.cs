@@ -22,16 +22,16 @@ namespace Terraria.ModLoader
 
 		// Methods
 		protected override void Register() {
-			RegisterAVFX(this);
+			Type = Loaders.AVFXs.Register(this);
 		}
 
 		/// <summary>
-		/// Forcefully registers the provided ModAVFX to AVFXLoader.
+		/// Forcefully registers the provided ModAVFX to Loaders.
 		/// ModBiome and direct implementations call this.
+		/// Does NOT cache the return type
 		/// </summary>
 		internal void RegisterAVFX(ModAVFX modAVFX) {
-			modAVFX.Type = Loaders.AVFXs.Register(this);
-
+			Loaders.AVFXs.Register(this);
 		}
 
 		/// <summary>
