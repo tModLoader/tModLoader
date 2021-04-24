@@ -1,26 +1,29 @@
 --- src/decompiled/Terraria/Chat/ChatHelper.cs
 +++ src/Terraria/Terraria/Chat/ChatHelper.cs
-@@ -13,7 +_,12 @@
+@@ -13,7 +_,13 @@
  		private static List<Tuple<string, Color>> _cachedMessages = new List<Tuple<string, Color>>();
  
  		public static void DisplayMessageOnClient(NetworkText text, Color color, int playerId) {
-+#if CLIENT
- 			DisplayMessage(text, color, byte.MaxValue);
-+#else
++			if (!Main.dedServ) {
+-			DisplayMessage(text, color, byte.MaxValue);
++				DisplayMessage(text, color, byte.MaxValue);
++				return;
++			}
++
 +			NetPacket packet = NetTextModule.SerializeServerMessage(text,color,byte.MaxValue);
 +			NetManager.Instance.SendToClient(packet,playerId);
-+#endif
  		}
  
  		public static void SendChatMessageToClient(NetworkText text, Color color, int playerId) {
-@@ -21,6 +_,10 @@
+@@ -21,6 +_,11 @@
  		}
  
  		public static void SendChatMessageToClientAs(byte messageAuthor, NetworkText text, Color color, int playerId) {
-+#if SERVER
-+			NetPacket packet = NetTextModule.SerializeServerMessage(text,color,messageAuthor);
-+			NetManager.Instance.SendToClient(packet,playerId);
-+#endif
++			if (Main.dedServ) {
++				NetPacket packet = NetTextModule.SerializeServerMessage(text, color, messageAuthor);
++				NetManager.Instance.SendToClient(packet, playerId);
++			}
++			
  			if (playerId == Main.myPlayer)
  				DisplayMessage(text, color, messageAuthor);
  		}
@@ -28,13 +31,14 @@
  		}
  
  		public static void BroadcastChatMessageAs(byte messageAuthor, NetworkText text, Color color, int excludedPlayer = -1) {
-+#if CLIENT
- 			if (excludedPlayer != Main.myPlayer)
+-			if (excludedPlayer != Main.myPlayer)
++			if (!Main.dedServ && excludedPlayer != Main.myPlayer) {
  				DisplayMessage(text, color, messageAuthor);
-+#else
++				return;
++			}
++
 +			NetPacket packet = NetTextModule.SerializeServerMessage(text,color,messageAuthor);
 +			NetManager.Instance.Broadcast(packet,OnlySendToPlayersWhoAreLoggedIn,excludedPlayer);
-+#endif
  		}
  
  		public static bool OnlySendToPlayersWhoAreLoggedIn(int clientIndex) => Netplay.Clients[clientIndex].State == 10;

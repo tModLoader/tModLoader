@@ -516,7 +516,6 @@ namespace Terraria.ModLoader
 			PrefixLoader.Unload();
 			DustLoader.Unload();
 			TileLoader.Unload();
-			TileEntity.manager.Reset();
 			WallLoader.Unload();
 			ProjectileLoader.Unload();
 			NPCLoader.Unload();
@@ -540,6 +539,8 @@ namespace Terraria.ModLoader
 			PlayerDrawLayerLoader.Unload();
 			SystemHooks.Unload();
 			GenerationHooks.Unload();
+			TileEntity.manager.Reset();
+
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
 				Main.recipe[k] = new Recipe();

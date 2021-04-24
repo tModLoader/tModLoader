@@ -171,7 +171,7 @@ namespace Terraria.ModLoader.UI
 						}
 					}
 					_scrollPanel.RemoveChild(_uiLoader);
-				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.Current);
 		}
 	}
 }
