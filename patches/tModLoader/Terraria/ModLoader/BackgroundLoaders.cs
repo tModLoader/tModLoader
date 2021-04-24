@@ -105,6 +105,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		//TODO: This whole class from here onwards appears to be brokens. Have to fix it.
+
 		public void ModifyFarFades(int style, float[] fades, float transitionSpeed) {
 			if (!GlobalBgStyleLoader.loaded) {
 				return;

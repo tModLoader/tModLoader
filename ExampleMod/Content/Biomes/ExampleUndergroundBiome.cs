@@ -18,12 +18,11 @@ namespace ExampleMod.Content.Biomes
 		}
 
 		public override bool IsBiomeActive(Player player) {
-			return false;
-			return ModContent.GetInstance<ExampleBiomeTileCount>().exampleBlockCount >= 40 && Math.Abs(player.position.X - Main.maxTilesX / 2) < 40;
+			return (player.ZoneRockLayerHeight || player.ZoneDirtLayerHeight) && ModContent.GetInstance<ExampleBiomeTileCount>().exampleBlockCount >= 40 && Math.Abs(player.position.ToTileCoordinates().X - Main.maxTilesX / 2) < 40;
 		}
 
 		public override byte GetWeight(Player player) {
-			return (byte)Math.Max(0, 100 - Math.Abs(player.position.X - Main.maxTilesX / 2));
+			return (byte)Math.Max(0, 100 - Math.Abs(player.position.ToTileCoordinates().X - Main.maxTilesX / 2));
 		}
 	}
 }

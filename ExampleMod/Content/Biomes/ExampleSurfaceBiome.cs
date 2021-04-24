@@ -33,8 +33,10 @@ namespace ExampleMod.Content.Biomes
 		}
 
 		public override bool IsBiomeActive(Player player) {
-			return true;
-			return ModContent.GetInstance<ExampleBiomeTileCount>().exampleBlockCount >= 40 && Math.Abs(player.position.X - Main.maxTilesX / 2) < 40;
+			bool b1 = ModContent.GetInstance<ExampleBiomeTileCount>().exampleBlockCount >= 40;
+			bool b2 = Math.Abs(player.position.ToTileCoordinates().X - Main.maxTilesX / 2) < 40;
+			bool b3 = player.ZoneSkyHeight || player.ZoneOverworldHeight;
+			return b1 && b2 && b3;
 		}
 	}
 }

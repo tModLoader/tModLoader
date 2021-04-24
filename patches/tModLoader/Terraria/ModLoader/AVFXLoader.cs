@@ -91,7 +91,7 @@ namespace Terraria.ModLoader
 
 				if (result.ugBG.priority == 0 && avfx.UndergroundBackgroundStyle != null) {
 					result.ugBG.value = avfx.UndergroundBackgroundStyle.Slot;
-					result.waterStyle.priority = avfx.Priority;
+					result.ugBG.priority = avfx.Priority;
 					avfxFields++;
 				}
 
