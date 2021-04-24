@@ -5,14 +5,30 @@
  namespace Terraria.Graphics.Capture
  {
  	public class CaptureBiome
-@@ -164,7 +_,11 @@
+@@ -132,6 +_,13 @@
+ 					return captureBiome;
+ 			}
+ 
++			var atmos = Main.LocalPlayer.currentAVFX;
++			if (atmos.waterStyle.value >= Loaders.Waters.vanillaCount) {
++				// This makes the capture match whatever the end result is of all modded effects, but that isn't quite right.
++				//TODO: Future improvement should be using the AVFX layer associated to background.
++				return new CaptureBiome(atmos.surfaceBG.value, atmos.waterStyle.value, atmos.tileColorStyle);
++			}
++
+ 			return null;
+ 		}
+ 
+@@ -164,7 +_,13 @@
  				case 9:
  					return Styles.Mushroom;
  				default:
 -					return null;
 +					var atmos = Main.LocalPlayer.currentAVFX;
-+					if (atmos.surfaceBG >= Loaders.SurfaceBgs.vanillaCount || atmos.waterStyle >= Loaders.Waters.vanillaCount) {
-+						return new CaptureBiome(atmos.surfaceBG, atmos.waterStyle, atmos.tileColorStyle);
++					if (atmos.surfaceBG.value >= Loaders.SurfaceBgs.vanillaCount) {
++						// This makes the capture match whatever the end result is of all modded effects, but that isn't quite right.
++						//TODO: Future improvement should be using the AVFX layer associated to background.
++						return new CaptureBiome(atmos.surfaceBG.value, atmos.waterStyle.value, atmos.tileColorStyle);
 +					}
 +					return null; 	
  			}

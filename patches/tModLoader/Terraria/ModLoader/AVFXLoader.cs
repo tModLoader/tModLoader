@@ -20,19 +20,24 @@ namespace Terraria.ModLoader
 
 		public class AVFXInstance
 		{
+			public struct PrioritizedPair
+			{
+				public int value;
+				public AVFXPriority priority;
+			}
+
 			public bool anyActive;
-			public AVFXPriority priority;
-			public int waterStyle;
-			public int ugBG;
-			public int surfaceBG;
+
+			public PrioritizedPair waterStyle;
+			public PrioritizedPair ugBG;
+			public PrioritizedPair surfaceBG;
+			public PrioritizedPair music;
+
 			public CaptureBiome.TileColorStyle tileColorStyle;
-			public int music;
 
 			public AVFXInstance() {
 				anyActive = false;
-				priority = AVFXPriority.None;
-				waterStyle = ugBG = surfaceBG = 0;
-				music = -1;
+				waterStyle = ugBG = surfaceBG = music = new PrioritizedPair();
 				tileColorStyle = CaptureBiome.TileColorStyle.Normal;
 			}
 		}
@@ -65,8 +70,10 @@ namespace Terraria.ModLoader
 				);
 			}
 
-			if (shortList.Count == 0)
+			if (shortList.Count == 0) {
+				player.currentAVFX = result;
 				return;
+			}
 
 			result.anyActive = true;
 
@@ -76,29 +83,32 @@ namespace Terraria.ModLoader
 			for (int i = 0; avfxFields < 5 && i < shortList.Count; i++) {
 				ModAVFX avfx = shortList[i].type;
 
-				if (result.waterStyle == 0 && avfx.WaterStyle != null) {
-					result.waterStyle = avfx.WaterStyle.Slot;
+				if (result.waterStyle.priority == 0 && avfx.WaterStyle != null) {
+					result.waterStyle.value = avfx.WaterStyle.Slot;
+					result.waterStyle.priority = avfx.Priority;
 					avfxFields++;
 				}
 
-				if (result.ugBG == 0 && avfx.UndergroundBackgroundStyle != null) {
-					result.ugBG = avfx.UndergroundBackgroundStyle.Slot;
+				if (result.ugBG.priority == 0 && avfx.UndergroundBackgroundStyle != null) {
+					result.ugBG.value = avfx.UndergroundBackgroundStyle.Slot;
+					result.waterStyle.priority = avfx.Priority;
 					avfxFields++;
 				}
 
-				if (result.surfaceBG == 0 && avfx.SurfaceBackgroundStyle != null) {
-					result.surfaceBG = avfx.SurfaceBackgroundStyle.Slot;
+				if (result.surfaceBG.priority == 0 && avfx.SurfaceBackgroundStyle != null) {
+					result.surfaceBG.value = avfx.SurfaceBackgroundStyle.Slot;
+					result.surfaceBG.priority = avfx.Priority;
+					avfxFields++;
+				}
+
+				if (result.music.priority == 0 && avfx.Music != -1) {
+					result.music.value = avfx.Music;
+					result.music.priority = avfx.Priority;
 					avfxFields++;
 				}
 
 				if (result.tileColorStyle == CaptureBiome.TileColorStyle.Normal && avfx.TileColorStyle != CaptureBiome.TileColorStyle.Normal) {
 					result.tileColorStyle = avfx.TileColorStyle;
-					avfxFields++;
-				}
-
-				if (result.music == -1 && avfx.Music != -1) {
-					result.priority = avfx.Priority;
-					result.music = avfx.Music;
 					avfxFields++;
 				}
 			}
@@ -108,10 +118,10 @@ namespace Terraria.ModLoader
 
 		// Ref or out? MusicLoader?
 		public void UpdateMusic(ref int music, ref AVFXPriority priority) {
-			int tst = Main.LocalPlayer.currentAVFX.music;
+			int tst = Main.LocalPlayer.currentAVFX.music.value;
 			if (tst > -1) {
 				music = tst;
-				priority = Main.LocalPlayer.currentAVFX.priority;
+				priority = Main.LocalPlayer.currentAVFX.music.priority;
 			}
 		}
 	}

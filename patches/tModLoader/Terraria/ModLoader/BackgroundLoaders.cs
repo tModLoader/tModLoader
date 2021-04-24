@@ -63,10 +63,10 @@ namespace Terraria.ModLoader
 				return;
 			}
 
-			int tst = Main.LocalPlayer.currentAVFX.ugBG;
+			int tst = Main.LocalPlayer.currentAVFX.ugBG.value;
 			if (tst >= vanillaCount) {
 				style = tst;
-				priority = Main.LocalPlayer.currentAVFX.priority;
+				priority = Main.LocalPlayer.currentAVFX.ugBG.priority;
 			}
 		}
 
@@ -98,10 +98,10 @@ namespace Terraria.ModLoader
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
 			}
-			int tst = Main.LocalPlayer.currentAVFX.surfaceBG;
+			int tst = Main.LocalPlayer.currentAVFX.surfaceBG.value;
 			if (tst >= vanillaCount) {
 				style = tst;
-				priority = Main.LocalPlayer.currentAVFX.priority;
+				priority = Main.LocalPlayer.currentAVFX.surfaceBG.priority;
 			}
 		}
 
