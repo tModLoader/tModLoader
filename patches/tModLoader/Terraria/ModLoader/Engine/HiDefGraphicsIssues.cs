@@ -1,17 +1,15 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.RuntimeDetour;
-using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Engine
@@ -34,51 +32,92 @@ namespace Terraria.ModLoader.Engine
 	/// </summary>
 	internal static class HiDefGraphicsIssues
 	{
+		private abstract class DeviceParam
+		{
+			public readonly string name;
+
+			public DeviceParam(string name) {
+				this.name = name;
+			}
+
+			public abstract void LogChange(GraphicsDevice g, StringBuilder sb, bool creating);
+		}
+
+		private class DeviceParam<T> : DeviceParam
+		{
+			private readonly Func<GraphicsDevice, T> getter;
+			private readonly Func<T, string> getDescription;
+			private T value;
+
+			private string Desc => getDescription?.Invoke(value) ?? value.ToString();
+
+			public DeviceParam(string name, Func<GraphicsDevice, T> getter, Func<T, string> getDescription = null) : base(name) {
+				this.getter = getter;
+				this.getDescription = getDescription;
+			}
+
+			public override void LogChange(GraphicsDevice g, StringBuilder changes, bool creating) {
+				if (creating)
+					value = getter(g);
+
+				changes.Append(", ").Append(name).Append(": ").Append(Desc);
+
+				var newValue = getter(g);
+				if (!EqualityComparer<T>.Default.Equals(value, newValue)) {
+					value = newValue;
+					changes.Append(" -> ").Append(Desc);
+				}
+			}
+		}
+
+		private static List<DeviceParam> Params = new List<DeviceParam>() {
+			new DeviceParam<GraphicsAdapter>("Adapter", g => g.Adapter, a => a.Description),
+			new DeviceParam<DisplayMode>("DisplayMode", g => g.Adapter.CurrentDisplayMode),
+			new DeviceParam<GraphicsProfile>("Profile", g => g.GraphicsProfile),
+			new DeviceParam<int>("Width", g => g.PresentationParameters.BackBufferWidth),
+			new DeviceParam<int>("Height", g => g.PresentationParameters.BackBufferHeight),
+			new DeviceParam<bool>("Fullscreen", g => g.PresentationParameters.IsFullScreen),
+			new DeviceParam<string>("Display", g => g.Adapter.DeviceName)
+		};
+
 		private static int mainThreadId;
 
-		public static void Init()
-        {
-#if XNA
-            new Hook(typeof(GraphicsDeviceManager).FindMethod("CanResetDevice"), new hook_CanResetDevice(HookCanResetDevice));
-            
-			// attempt to stealthily allow high-res textures on Reach (XNA does this internally when loading from pngs)
-			var t_ProfileCapabilities = typeof(Texture).Assembly.GetType("Microsoft.Xna.Framework.Graphics.ProfileCapabilities");
-			var f_ProfileCapabilities_Reach = t_ProfileCapabilities.GetField("Reach", BindingFlags.NonPublic | BindingFlags.Static);
-			var f_MaxTextureSize = t_ProfileCapabilities.GetField("MaxTextureSize", BindingFlags.NonPublic | BindingFlags.Instance);
-			f_MaxTextureSize.SetValue(f_ProfileCapabilities_Reach.GetValue(null), 4096);
-#endif
-#if DEBUG
+		public static void Init() {
+			Main.graphics.DeviceCreated += (s, e) => GLCallLocker.Init();
+
+			Main.graphics.DeviceReset += LogDeviceReset;
+			//Main.graphics.DeviceReset += UpdateBackbufferSizes;
+			Main.graphics.DeviceCreated += (s, e) => creating = true;
+
+			//var clientSizeChangedEventInfo = typeof(GameWindow).GetField("ClientSizeChanged", BindingFlags.NonPublic | BindingFlags.Instance);
+			//clientSizeChangedEventInfo.SetValue(Main.instance.Window, null);
+#if XNA && DEBUG
 	        mainThreadId = Thread.CurrentThread.ManagedThreadId;
 	        new Hook(typeof(Texture2D).FindMethod("ValidateCreationParameters"), new hook_ValidateCreationParameters(HookValidateCreationParameters));
 #endif
-        }
+		}
 
-		private delegate bool orig_CanResetDevice(GraphicsDeviceManager self, GraphicsDeviceInformation newDeviceInfo);
-		private delegate bool hook_CanResetDevice(orig_CanResetDevice orig, GraphicsDeviceManager self, GraphicsDeviceInformation newDeviceInfo);
-		private static bool HookCanResetDevice(orig_CanResetDevice orig, GraphicsDeviceManager self, GraphicsDeviceInformation newDeviceInfo)
-		{
-			LogGraphicsDevice();
-			
-			var changes = new StringBuilder();
-			void AddParam<T>(string name, T t1, T t2)
-			{
-				changes.Append(", ").Append(name).Append(": ").Append(t1);
-				if (!EqualityComparer<T>.Default.Equals(t1, t2))
-					changes.Append(" -> ").Append(t2);
-			}
-			
-			AddParam("Profile", self.GraphicsDevice.GraphicsProfile, newDeviceInfo.GraphicsProfile);
-			AddParam("Width", self.GraphicsDevice.PresentationParameters.BackBufferWidth, newDeviceInfo.PresentationParameters.BackBufferWidth);
-			AddParam("Height", self.GraphicsDevice.PresentationParameters.BackBufferHeight, newDeviceInfo.PresentationParameters.BackBufferHeight);
-			AddParam("Fullscreen", self.GraphicsDevice.PresentationParameters.IsFullScreen, newDeviceInfo.PresentationParameters.IsFullScreen);
-			AddParam("Display", self.GraphicsDevice.Adapter.DeviceName, newDeviceInfo.Adapter.DeviceName);
-			
-			Logging.Terraria.Debug("Device Reset"+changes);
+		// Main.SetDisplayMode runs every frame and if it detects a display size which doesn't match the PreferredBackBufferWidth/Height then it triggers a device reset via ApplyChanges
+		// If the window is resized, the backbuffer sizes are updated, but the PreferredBackBufferWidth/Height fields on GraphicsDeviceManager are not, so Terraria thinks it needs to update them and reset the device.
 
-			// we can force a device recreation, to 'simulate' the bug as it's not very reproducible
-			//return false;
+		private static FieldInfo INTERNAL_preferredBackBufferWidth = typeof(GraphicsDeviceManager).GetField("INTERNAL_preferredBackBufferWidth", BindingFlags.Instance | BindingFlags.NonPublic);
+		private static FieldInfo INTERNAL_preferredBackBufferHeight = typeof(GraphicsDeviceManager).GetField("INTERNAL_preferredBackBufferHeight", BindingFlags.Instance | BindingFlags.NonPublic);
+		private static void UpdateBackbufferSizes(object sender, EventArgs e) {
+			//INTERNAL_preferredBackBufferWidth.SetValue(Main.graphics, ((GraphicsDevice)sender).PresentationParameters.BackBufferWidth);
+			//INTERNAL_preferredBackBufferHeight.SetValue(Main.graphics, ((GraphicsDevice)sender).PresentationParameters.BackBufferHeight);
+		} 
 
-			return orig(self, newDeviceInfo);
+		private static bool creating;
+
+		private static void LogDeviceReset(object sender, EventArgs e) {
+			var g = (GraphicsDevice)sender;
+
+			var sb = new StringBuilder($"Device {(creating ? "Created" : "Reset")}");
+			foreach (var param in Params)
+				param.LogChange(g, sb, creating);
+
+			Logging.Terraria.Debug(sb);
+			creating = false;
 		}
 			    
 		private delegate void orig_ValidateCreationParameters(object profile, int width, int height, SurfaceFormat format, [MarshalAs(UnmanagedType.U1)] bool mipMap);
@@ -88,83 +127,6 @@ namespace Terraria.ModLoader.Engine
 				throw new Exception("Texture created on worker thread before graphics device is finalised");
 			
 			orig(profile, width, height, format, mipMap);
-		}
-
-		/// <summary>
-		/// Main.ContentLoad is called every time the device is recreated. Some small modifications have been made to allow Terraria to recover (re-acquire textures)
-		/// if the device is recreated early enough, but once JIT finishes and tML loading begins further recreations cannot be silently handled, and will require disabling HiDef graphics.
-		/// </summary>
-		public static void OnLoadContent()
-		{
-			LogGraphicsDevice();
-#if XNA
-			if (Program.LoadedEverything)
-				ReportFatalEngineReload();
-#endif
-		}
-
-		private static void ReportFatalEngineReload()
-		{
-			Logging.tML.Fatal("Graphics device reset after main engine load");
-			/*
-			Main.Support4K = false;
-			Main.SaveSettings();
-			Logging.tML.Debug("Disabled Main.Support4K");
-			*/
-
-			string reportStatus = "Unknown";
-			log4net.LogManager.Shutdown();
-			string logContents = System.IO.File.ReadAllText(Logging.LogPath);
-			try {
-				ServicePointManager.Expect100Continue = false;
-				string url = "http://javid.ddns.net/tModLoader/errorreport.php";
-				var values = new NameValueCollection
-				{
-					{ "steamid64", ModLoader.SteamID64 },
-					{ "modloaderversion", ModLoader.versionedName },
-					{ "category", "ReportFatalEngineReload" },
-					{ "logcontents", logContents },
-				};
-				byte[] result = UploadFile.UploadFiles(url, null, values);
-				reportStatus = Encoding.UTF8.GetString(result, 0, result.Length);
-			}
-			catch {
-				// Can't log since log4net.LogManager.Shutdown happened.
-				reportStatus = "Failure";
-			}
-
-			//var modsAffected = ModContent.HiDefMods.Count == 0 ? "No mods will be affected." : $"The following mods will be affected {string.Join(", ", ModContent.HiDefMods.Select(m => m.DisplayName))}";
-			string message = $"tML encountered a crash when testing some experimental graphics features. If this issue persists consistently, you may have to edit config.json and set the Support4K setting to false. \nPlease restart your game.\nReport Status: {reportStatus}";
-#if !MAC
-			MessageBox.Show(message, "Graphics Engine Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
-#else
-			UI.Interface.MessageBoxShow(message, "Graphics Engine Failure");
-#endif
-			Environment.Exit(1);
-		}
-
-#if XNA
-		private static int CurrentDevice = -1;
-#else
-		// FNA doesn't implement GraphicsDevice.DeviceId so use Description as the next best option for tracking devices.
-		// won't tell us if the user swaps between two identical graphics cards but that's probably okay
-		private static string CurrentDeviceDescription;
-#endif
-		private static void LogGraphicsDevice()
-		{
-			var adapter = Main.graphics.GraphicsDevice.Adapter;
-#if XNA
-			if (CurrentDevice == adapter.DeviceId)
-				return;
-
-			CurrentDevice = adapter.DeviceId;
-#else
-			if (CurrentDeviceDescription == adapter.Description)
-				return;
-
-			CurrentDeviceDescription = adapter.Description;
-#endif
-			Logging.Terraria.Debug($"Graphics Device: {adapter.Description} {adapter.CurrentDisplayMode}");
 		}
     }
 }

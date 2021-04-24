@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +9,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
@@ -20,9 +23,11 @@ namespace Terraria.ModLoader.UI
 	{
 		private readonly List<UIModSourceItem> _items = new List<UIModSourceItem>();
 		private UIList _modList;
+		private float modListViewPosition;
 		private bool _updateNeeded;
 		private UIElement _uIElement;
 		private UIPanel _uIPanel;
+		private UIInputTextField filterTextBox;
 		private UILoaderAnimatedImage _uiLoader;
 		private CancellationTokenSource _cts;
 
@@ -38,21 +43,48 @@ namespace Terraria.ModLoader.UI
 			_uIPanel = new UIPanel {
 				Width = { Percent = 1f },
 				Height = { Pixels = -110, Percent = 1f },
-				BackgroundColor = UICommon.MainPanelBackground
+				BackgroundColor = UICommon.MainPanelBackground,
+				PaddingTop = 0f
 			};
 			_uIElement.Append(_uIPanel);
 
 			_uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
+			var upperMenuContainer = new UIElement {
+				Width = { Percent = 1f },
+				Height = { Pixels = 32 },
+				Top = { Pixels = 10 }
+			};
+			var filterTextBoxBackground = new UIPanel {
+				Top = { Percent = 0f },
+				Left = { Pixels = -135, Percent = 1f },
+				Width = { Pixels = 135 },
+				Height = { Pixels = 40 }
+			};
+			filterTextBoxBackground.OnRightClick += (a, b) => filterTextBox.Text = "";
+			upperMenuContainer.Append(filterTextBoxBackground);
+
+			filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch")) {
+				Top = { Pixels = 5 },
+				Left = { Pixels = -125, Percent = 1f },
+				Width = { Pixels = 120 },
+				Height = { Pixels = 20 }
+			};
+			filterTextBox.OnTextChange += (a, b) => _updateNeeded = true;
+			upperMenuContainer.Append(filterTextBox);
+			_uIPanel.Append(upperMenuContainer);
+
 			_modList = new UIList {
 				Width = { Pixels = -25, Percent = 1f },
-				Height = { Percent = 1f },
+				Height = { Pixels = -50, Percent = 1f },
+				Top = { Pixels = 50 },
 				ListPadding = 5f
 			};
 			_uIPanel.Append(_modList);
 
 			var uIScrollbar = new UIScrollbar {
-				Height = { Percent = 1f },
+				Height = { Pixels = -50, Percent = 1f },
+				Top = { Pixels = 50 },
 				HAlign = 1f
 			}.WithView(100f, 1000f);
 			_uIPanel.Append(uIScrollbar);
@@ -73,14 +105,14 @@ namespace Terraria.ModLoader.UI
 			};
 			buttonBA.WithFadedMouseOver();
 			buttonBA.OnClick += BuildMods;
-			_uIElement.Append(buttonBA);
+			//_uIElement.Append(buttonBA);
 
 			var buttonBRA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReloadAll"));
 			buttonBRA.CopyStyle(buttonBA);
 			buttonBRA.HAlign = 0.5f;
 			buttonBRA.WithFadedMouseOver();
 			buttonBRA.OnClick += BuildAndReload;
-			_uIElement.Append(buttonBRA);
+			//_uIElement.Append(buttonBRA);
 
 			var buttonCreateMod = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSCreateMod"));
 			buttonCreateMod.CopyStyle(buttonBA);
@@ -123,7 +155,7 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.managePublishedID;
 			if (ModLoader.modBrowserPassphrase == string.Empty) {
 				Main.menuMode = Interface.enterPassphraseMenuID;
-				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID);
+				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID, Interface.modSourcesID);
 			}
 		}
 
@@ -156,7 +188,36 @@ namespace Terraria.ModLoader.UI
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
+			DrawMigrationGuideLink();
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
+		}
+
+		//TODO: simplify this method
+		private void DrawMigrationGuideLink() {
+			string versionUpgradeMessage = Language.GetTextValue("tModLoader.VersionUpgrade");
+
+			var font = FontAssets.MouseText.Value;
+			Vector2 sizes = font.MeasureString(versionUpgradeMessage);
+			Color color = Color.Black;
+
+			int xLoc = (int)(Main.screenWidth / 2 + 134);
+			int yLoc = (int)(sizes.Y + 244f);
+
+			Main.spriteBatch.DrawString(font, versionUpgradeMessage, new Vector2(xLoc, yLoc), color, 0f, sizes, 1f, SpriteEffects.None, 0f);
+
+			var rect = new Rectangle(xLoc - (int)sizes.X, yLoc - (int)sizes.Y, (int)sizes.X, (int)sizes.Y);
+			if (!rect.Contains(new Point(Main.mouseX, Main.mouseY))) {
+				return;
+			}
+
+			if (Main.mouseLeftRelease && Main.mouseLeft) {
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+				var ps = new ProcessStartInfo("https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide") {
+					UseShellExecute = true,
+					Verb = "open"
+				};
+				Process.Start(ps);
+			}
 		}
 
 		public override void OnActivate() {
@@ -172,6 +233,7 @@ namespace Terraria.ModLoader.UI
 			_cts?.Cancel(false);
 			_cts?.Dispose();
 			_cts = null;
+			modListViewPosition = _modList.ViewPosition;
 		}
 
 		internal void Populate() {
@@ -189,7 +251,7 @@ namespace Terraria.ModLoader.UI
 						_items.Add(new UIModSourceItem(sourcePath, builtMod));
 					}
 					_updateNeeded = true;
-				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.Current);
 		}
 
 		public override void Update(GameTime gameTime) {
@@ -198,7 +260,10 @@ namespace Terraria.ModLoader.UI
 			_updateNeeded = false;
 			_uIPanel.RemoveChild(_uiLoader);
 			_modList.Clear();
-			_modList.AddRange(_items);
+			string filter = filterTextBox.Text;
+			_modList.AddRange(_items.Where(item => filter.Length > 0 ? item.modName.IndexOf(filter, StringComparison.OrdinalIgnoreCase) != -1 : true));
+			Recalculate();
+			_modList.ViewPosition = modListViewPosition;
 		}
 	}
 }

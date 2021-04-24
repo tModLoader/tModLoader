@@ -57,8 +57,8 @@ namespace Terraria.ModLoader.Config
 		{
 			ConfigManager.Load(config);
 
-			if (!Configs.TryGetValue(config.mod, out List<ModConfig> configList))
-				Configs.Add(config.mod, configList = new List<ModConfig>());
+			if (!Configs.TryGetValue(config.Mod, out List<ModConfig> configList))
+				Configs.Add(config.Mod, configList = new List<ModConfig>());
 			configList.Add(config);
 
 			FieldInfo instance = config.GetType().GetField("Instance", BindingFlags.Static | BindingFlags.Public);
@@ -69,8 +69,8 @@ namespace Terraria.ModLoader.Config
 			config.OnChanged();
 
 			// Maintain a backup of LoadTime Configs.
-			if (!LoadTimeConfigs.TryGetValue(config.mod, out List<ModConfig> configList2))
-				LoadTimeConfigs.Add(config.mod, configList2 = new List<ModConfig>());
+			if (!LoadTimeConfigs.TryGetValue(config.Mod, out List<ModConfig> configList2))
+				LoadTimeConfigs.Add(config.Mod, configList2 = new List<ModConfig>());
 			configList2.Add(GeneratePopulatedClone(config));
 		}
 
@@ -96,11 +96,11 @@ namespace Terraria.ModLoader.Config
 
 		internal static void Load(ModConfig config)
 		{
-			string filename = config.mod.Name + "_" + config.Name + ".json";
+			string filename = config.Mod.Name + "_" + config.Name + ".json";
 			string path = Path.Combine(ModConfigPath, filename);
-			if (config.Mode == ConfigScope.ServerSide && Main.netMode == 1)
+			if (config.Mode == ConfigScope.ServerSide && ModNet.NetReloadActive) // #999: Main.netMode isn't 1 at this point due to #770 fix.
 			{
-				string netJson = ModNet.pendingConfigs.Single(x => x.modname == config.mod.Name && x.configname == config.Name).json;
+				string netJson = ModNet.pendingConfigs.Single(x => x.modname == config.Mod.Name && x.configname == config.Name).json;
 				JsonConvert.PopulateObject(netJson, config, serializerSettingsCompact);
 				return;
 			}
@@ -110,7 +110,7 @@ namespace Terraria.ModLoader.Config
 				JsonConvert.PopulateObject(json, config, serializerSettings);
 			}
 			catch (Exception e) when (jsonFileExists && (e is JsonReaderException || e is JsonSerializationException)) {
-				Logging.tML.Warn($"Then config file {config.Name} from the mod {config.mod.Name} located at {path} failed to load. The file was likely corrupted somehow, so the defaults will be loaded and the file deleted.");
+				Logging.tML.Warn($"Then config file {config.Name} from the mod {config.Mod.Name} located at {path} failed to load. The file was likely corrupted somehow, so the defaults will be loaded and the file deleted.");
 				File.Delete(path);
 				JsonConvert.PopulateObject("{}", config, serializerSettings);
 			}
@@ -125,7 +125,7 @@ namespace Terraria.ModLoader.Config
 		internal static void Save(ModConfig config)
 		{
 			Directory.CreateDirectory(ModConfigPath);
-			string filename = config.mod.Name + "_" + config.Name + ".json";
+			string filename = config.Mod.Name + "_" + config.Name + ".json";
 			string path = Path.Combine(ModConfigPath, filename);
 			string json = JsonConvert.SerializeObject(config, serializerSettings);
 			File.WriteAllText(path, json);

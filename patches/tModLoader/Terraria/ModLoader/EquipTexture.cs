@@ -10,59 +10,41 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The name and folders of the texture file used by this equipment texture.
 		/// </summary>
-		public string Texture {
-			get;
-			internal set;
-		}
+		public string Texture { get; internal set; }
 
 		/// <summary>
 		/// The mod that added this equipment texture.
 		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
+		public Mod Mod { get; internal set; }
 
 		/// <summary>
 		/// The internal name of this equipment texture.
 		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
+		public string Name { get; internal set; }
 
 		/// <summary>
 		/// The type of equipment that this equipment texture is used as.
 		/// </summary>
-		public EquipType Type {
-			get;
-			internal set;
-		}
+		public EquipType Type { get; internal set; }
 
 		/// <summary>
 		/// The slot (internal ID) of this equipment texture.
 		/// </summary>
-		public int Slot {
-			get;
-			internal set;
-		}
+		public int Slot { get; internal set; }
 
 		/// <summary>
 		/// The item that is associated with this equipment texture. Null if no item is associated with this.
 		/// </summary>
-		public ModItem item {
-			get;
-			internal set;
-		}
+		public ModItem Item { get; internal set; }
 
 		/// <summary>
 		/// Allows you to create special effects (such as dust) when this equipment texture is displayed on the player under the given equipment type. By default this will call the associated ModItem's UpdateVanity if there is an associated ModItem.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="type"></param>
-		public virtual void UpdateVanity(Player player, EquipType type) {
-			if (item != null) {
-				item.UpdateVanity(player, type);
+		public virtual void FrameEffects(Player player, EquipType type) {
+			if (Item != null) {
+				Item.EquipFrameEffects(player, type);
 			}
 		}
 
@@ -74,10 +56,10 @@ namespace Terraria.ModLoader
 		/// <param name="legs"></param>
 		/// <returns></returns>
 		public virtual bool IsVanitySet(int head, int body, int legs) {
-			if (item == null) {
+			if (Item == null) {
 				return false;
 			}
-			return item.IsVanitySet(head, body, legs);
+			return Item.IsVanitySet(head, body, legs);
 		}
 
 		/// <summary>
@@ -85,8 +67,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player"></param>
 		public virtual void PreUpdateVanitySet(Player player) {
-			if (item != null) {
-				item.PreUpdateVanitySet(player);
+			if (Item != null) {
+				Item.PreUpdateVanitySet(player);
 			}
 		}
 
@@ -95,8 +77,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player"></param>
 		public virtual void UpdateVanitySet(Player player) {
-			if (item != null) {
-				item.UpdateVanitySet(player);
+			if (Item != null) {
+				Item.UpdateVanitySet(player);
 			}
 		}
 
@@ -105,8 +87,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player"></param>
 		public virtual void ArmorSetShadows(Player player) {
-			if (item != null) {
-				item.ArmorSetShadows(player);
+			if (Item != null) {
+				Item.ArmorSetShadows(player);
 			}
 		}
 
@@ -119,8 +101,8 @@ namespace Terraria.ModLoader
 		/// <param name="equipSlot"></param>
 		/// <param name="robes"></param>
 		public virtual void SetMatch(bool male, ref int equipSlot, ref bool robes) {
-			if (item != null) {
-				item.SetMatch(male, ref equipSlot, ref robes);
+			if (Item != null) {
+				Item.SetMatch(male, ref equipSlot, ref robes);
 			}
 		}
 
@@ -130,8 +112,8 @@ namespace Terraria.ModLoader
 		/// <param name="drawHands"></param>
 		/// <param name="drawArms"></param>
 		public virtual void DrawHands(ref bool drawHands, ref bool drawArms) {
-			if (item != null) {
-				item.DrawHands(ref drawHands, ref drawArms);
+			if (Item != null) {
+				Item.DrawHands(ref drawHands, ref drawArms);
 			}
 		}
 
@@ -141,8 +123,8 @@ namespace Terraria.ModLoader
 		/// <param name="drawHair"></param>
 		/// <param name="drawAltHair"></param>
 		public virtual void DrawHair(ref bool drawHair, ref bool drawAltHair) {
-			if (item != null) {
-				item.DrawHair(ref drawHair, ref drawAltHair);
+			if (Item != null) {
+				Item.DrawHair(ref drawHair, ref drawAltHair);
 			}
 		}
 
@@ -151,7 +133,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <returns></returns>
 		public virtual bool DrawHead() {
-			return item == null || item.DrawHead();
+			return Item == null || Item.DrawHead();
 		}
 
 		/// <summary>
@@ -159,7 +141,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <returns></returns>
 		public virtual bool DrawBody() {
-			return item == null || item.DrawBody();
+			return Item == null || Item.DrawBody();
 		}
 
 		/// <summary>
@@ -167,7 +149,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <returns></returns>
 		public virtual bool DrawLegs() {
-			return item == null || item.DrawLegs();
+			return Item == null || Item.DrawLegs();
 		}
 
 		/// <summary>
@@ -179,8 +161,8 @@ namespace Terraria.ModLoader
 		/// <param name="glowMask"></param>
 		/// <param name="glowMaskColor"></param>
 		public virtual void DrawArmorColor(Player drawPlayer, float shadow, ref Color color, ref int glowMask, ref Color glowMaskColor) {
-			if (item != null) {
-				item.DrawArmorColor(drawPlayer, shadow, ref color, ref glowMask, ref glowMaskColor);
+			if (Item != null) {
+				Item.DrawArmorColor(drawPlayer, shadow, ref color, ref glowMask, ref glowMaskColor);
 			}
 		}
 
@@ -192,8 +174,8 @@ namespace Terraria.ModLoader
 		/// <param name="glowMask"></param>
 		/// <param name="color"></param>
 		public virtual void ArmorArmGlowMask(Player drawPlayer, float shadow, ref int glowMask, ref Color color) {
-			if (item != null) {
-				item.ArmorArmGlowMask(drawPlayer, shadow, ref glowMask, ref color);
+			if (Item != null) {
+				Item.ArmorArmGlowMask(drawPlayer, shadow, ref glowMask, ref color);
 			}
 		}
 
@@ -208,8 +190,8 @@ namespace Terraria.ModLoader
 		/// <param name="constantAscend"></param>
 		public virtual void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
 	ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend) {
-			if (item != null) {
-				item.VerticalWingSpeeds(player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier,
+			if (Item != null) {
+				Item.VerticalWingSpeeds(player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier,
 					ref maxAscentMultiplier, ref constantAscend);
 			}
 		}
@@ -221,8 +203,8 @@ namespace Terraria.ModLoader
 		/// <param name="speed"></param>
 		/// <param name="acceleration"></param>
 		public virtual void HorizontalWingSpeeds(Player player, ref float speed, ref float acceleration) {
-			if (item != null) {
-				item.HorizontalWingSpeeds(player, ref speed, ref acceleration);
+			if (Item != null) {
+				Item.HorizontalWingSpeeds(player, ref speed, ref acceleration);
 			}
 		}
 
@@ -233,7 +215,7 @@ namespace Terraria.ModLoader
 		/// <param name="inUse"></param>
 		/// <returns></returns>
 		public virtual bool WingUpdate(Player player, bool inUse) {
-			return item?.WingUpdate(player, inUse) ?? false;
+			return Item?.WingUpdate(player, inUse) ?? false;
 		}
 	}
 }

@@ -1,0 +1,50 @@
+--- src/Terraria/Terraria/GameContent/UI/BigProgressBar/BigProgressBarHelper.cs
++++ src/tModLoader/Terraria/GameContent/UI/BigProgressBar/BigProgressBarHelper.cs
+@@ -1,5 +_,7 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
++using Terraria.DataStructures;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.UI.BigProgressBar
+ {
+@@ -21,6 +_,12 @@
+ 		}
+ 
+ 		public static void DrawFancyBar(SpriteBatch spriteBatch, float lifePercent, Texture2D barIconTexture, Rectangle barIconFrame) {
++			if (BossBarLoader.drawingInfo.HasValue) {
++				//Code of the shieldPercent overload is nearly identical
++				DrawFancyBar(spriteBatch, lifePercent, barIconTexture, barIconFrame, 0f);
++				return;
++			}
++
+ 			Texture2D value = Main.Assets.Request<Texture2D>("Images/UI/UI_BossBar").Value;
+ 			Point p = new Point(456, 22);
+ 			Point p2 = new Point(32, 24);
+@@ -52,6 +_,26 @@
+ 
+ 		public static void DrawFancyBar(SpriteBatch spriteBatch, float lifePercent, Texture2D barIconTexture, Rectangle barIconFrame, float shieldPercent) {
+ 			Texture2D value = Main.Assets.Request<Texture2D>("Images/UI/UI_BossBar").Value;
++			if (BossBarLoader.drawingInfo.HasValue) {
++				//Only the case if called through BigProgressBarSystem.Draw, and not skipped by a custom style
++				BigProgressBarInfo info = BossBarLoader.drawingInfo.Value;
++				BossBarLoader.drawingInfo = null;
++
++				Vector2 barCenter = Main.ScreenSize.ToVector2() * new Vector2(0.5f, 1f) + new Vector2(0f, -50f);
++				Color iconColor = Color.White;
++				float iconScale = 1f;
++
++				BossBarDrawParams drawParams = new BossBarDrawParams(value, barCenter, barIconTexture, barIconFrame, iconColor, lifePercent, shieldPercent, iconScale);
++
++				bool skipped = !BossBarLoader.PreDraw(spriteBatch, info, ref drawParams);
++				if (!skipped)
++					BossBarLoader.DrawFancyBar_TML(spriteBatch, drawParams);
++
++				BossBarLoader.PostDraw(spriteBatch, info, drawParams);
++
++				return;
++			}
++
+ 			Point p = new Point(456, 22);
+ 			Point p2 = new Point(32, 24);
+ 			int verticalFrames = 6;

@@ -17,8 +17,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileFrameImportant[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 
-			dustType = ModContent.DustType<Dusts.Sparkle>();
-			adjTiles = new int[] { TileID.WorkBenches };
+			DustType = ModContent.DustType<Dusts.Sparkle>();
+			AdjTiles = new int[] { TileID.WorkBenches };
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x1);

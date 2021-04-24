@@ -2,35 +2,26 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this.
 	/// </summary>
-	public class GlobalProjectile:ModType
+	public abstract class GlobalProjectile : GlobalType<Projectile>
 	{
-		internal int index;
-		internal int instanceIndex;
-
 		protected sealed override void Register() {
 			ProjectileLoader.VerifyGlobalProjectile(this);
 
 			ModTypeLookup<GlobalProjectile>.Register(this);
 
-			index = ProjectileLoader.globalProjectiles.Count;
+			index = (ushort)ProjectileLoader.globalProjectiles.Count;
 
 			ProjectileLoader.globalProjectiles.Add(this);
 		}
 
-		/// <summary>
-		/// Whether to create a new GlobalProjectile instance for every Projectile that exists. 
-		/// Useful for storing information on a projectile. Defaults to false. 
-		/// Return true if you need to store information (have non-static fields).
-		/// </summary>
-		public virtual bool InstancePerEntity => false;
-
-		public GlobalProjectile Instance(Projectile projectile) => InstancePerEntity ? projectile.globalProjectiles[instanceIndex] : this;
+		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
 
 		/// <summary>
 		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
@@ -55,10 +46,11 @@ namespace Terraria.ModLoader
 			if (CloneNewInstances) {
 				return Clone();
 			}
+
 			GlobalProjectile copy = (GlobalProjectile)Activator.CreateInstance(GetType());
 			copy.Mod = Mod;
 			copy.index = index;
-			copy.instanceIndex = instanceIndex;
+
 			return copy;
 		}
 
@@ -158,12 +150,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not the given projectile is capable of killing tiles (such as grass) and damaging NPCs/players. Return false to prevent it from doing any sort of damage. Returns true by default.
+		/// Whether or not the given projectile is capable of killing tiles (such as grass) and damaging NPCs/players.
+		/// Return false to prevent it from doing any sort of damage.
+		/// Return true if you want the projectile to do damage regardless of the default blacklist.
+		/// Return null to let the projectile follow vanilla can-damage-anything rules. This is what happens by default.
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <returns></returns>
-		public virtual bool CanDamage(Projectile projectile) {
-			return true;
+		public virtual bool? CanDamage(Projectile projectile) {
+			return null;
 		}
 
 		/// <summary>
@@ -375,6 +370,12 @@ namespace Terraria.ModLoader
 		/// The speed at which the grapple pulls the player after hitting something. Defaults to 11, but the Bat Hook uses 16.
 		/// </summary>
 		public virtual void GrapplePullSpeed(Projectile projectile, Player player, ref float speed) {
+		}
+
+		/// <summary>
+		/// The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile.
+		/// </summary>
+		public virtual void GrappleTargetPoint(Projectile projectile, Player player, ref float grappleX, ref float grappleY) {
 		}
 	}
 }

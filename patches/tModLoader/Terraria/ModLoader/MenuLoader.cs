@@ -33,8 +33,8 @@ namespace Terraria.ModLoader
 
 		private static bool loading = true;
 
-		internal static string LastSelectedModMenu = MenutML.MenuName;
-		internal static string KnownMenuSaveString = string.Join(",", menus.Select(m => m.MenuName));
+		internal static string LastSelectedModMenu = MenutML.FullName;
+		internal static string KnownMenuSaveString = string.Join(",", menus.Select(m => m.FullName));
 
 		private static string[] KnownMenus => KnownMenuSaveString.Split(',');
 
@@ -49,6 +49,7 @@ namespace Terraria.ModLoader
 		internal static void Add(ModMenu modMenu) {
 			lock (menus) {
 				menus.Add(modMenu);
+				ModTypeLookup<ModMenu>.Register(modMenu);
 			}
 		}
 
@@ -62,11 +63,14 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void GotoSavedModMenu() {
-			if (LastSelectedModMenu == MenuOldVanilla.MenuName) {
+			if (LastSelectedModMenu == MenuOldVanilla.FullName) {
 				Main.instance.playOldTile = true; // If the previous menu was the 1.3.5.3 one, automatically reactivate it.
 			}
 
-			switchToMenu = menus.SingleOrDefault(m => m.MenuName == LastSelectedModMenu && m.IsAvailable) ?? MenutML;
+			switchToMenu = MenutML;
+			if (ModContent.TryFind(LastSelectedModMenu, out ModMenu value) && value.IsAvailable)
+				switchToMenu = value;
+
 			loading = false;
 		}
 
@@ -81,13 +85,13 @@ namespace Terraria.ModLoader
 				currentMenu.OnSelected();
 				if (currentMenu.IsNew) {
 					currentMenu.IsNew = false;
-					AddKnownMenu(currentMenu.MenuName);
+					AddKnownMenu(currentMenu.FullName);
 				}
 			}
 			switchToMenu = null;
 
-			if (!loading && currentMenu.MenuName != LastSelectedModMenu) {
-				LastSelectedModMenu = currentMenu.MenuName;
+			if (!loading && currentMenu.FullName != LastSelectedModMenu) {
+				LastSelectedModMenu = currentMenu.FullName;
 				Main.SaveSettings();
 			}
 
@@ -108,7 +112,7 @@ namespace Terraria.ModLoader
 			lock (menus) {
 				var knownMenus = KnownMenus;
 				foreach (ModMenu menu in menus) {
-					menu.IsNew = menu.IsAvailable && !knownMenus.Contains(menu.MenuName);
+					menu.IsNew = menu.IsAvailable && !knownMenus.Contains(menu.FullName);
 				}
 				newMenus = menus.Count(m => m.IsNew);
 			}
@@ -118,9 +122,9 @@ namespace Terraria.ModLoader
 			Vector2 size = FontAssets.MouseText.Value.MeasureString(text);
 
 			Rectangle switchTextRect = Main.menuMode == 0 ? new Rectangle((int)(Main.screenWidth / 2 - (size.X / 2)), (int)(Main.screenHeight - 2 - size.Y), (int)size.X, (int)size.Y) : Rectangle.Empty;
-			Rectangle logoRect = new Rectangle((int)logoDrawPos.X - (logo.Width / 2), (int)logoDrawPos.Y - (logo.Height / 2), logo.Width, logo.Height);
+			//Rectangle logoRect = new Rectangle((int)logoDrawPos.X - (logo.Width / 2), (int)logoDrawPos.Y - (logo.Height / 2), logo.Width, logo.Height);
 
-			bool mouseover = switchTextRect.Contains(Main.mouseX, Main.mouseY) || logoRect.Contains(Main.mouseX, Main.mouseY);
+			bool mouseover = switchTextRect.Contains(Main.mouseX, Main.mouseY); // || logoRect.Contains(Main.mouseX, Main.mouseY);
 
 			if (mouseover && !Main.alreadyGrabbingSunOrMoon) {
 				if (Main.mouseLeftRelease && Main.mouseLeft) {
@@ -140,6 +144,8 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void Unload() {
+			currentMenu = MenutML; // Prevent asset disposed exceptions by disallowing modded menus during the unload process.
+
 			loading = true;
 			if (menus.IndexOf(currentMenu) >= DefaultMenuCount) {
 				switchToMenu = MenutML;

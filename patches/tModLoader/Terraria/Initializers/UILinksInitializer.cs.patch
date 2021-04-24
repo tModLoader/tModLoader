@@ -28,10 +28,10 @@
  					cp14.LinkMap[600 + num57].Up = ((num57 % num56 == 0) ? (-1) : (600 + num57 - 1));
  					if (cp14.LinkMap[600 + num57].Up == -1) {
  						if (num57 >= num56 * 2)
-@@ -1581,6 +_,13 @@
+@@ -1584,6 +_,13 @@
  					break;
- 				case 6:
- 					UIVirtualKeyboard.Cancel();
+ 				case 7:
+ 					(Main.MenuUI.CurrentState as IHaveBackButtonCommand)?.HandleBackButtonUsage();
 +					break;
 +				case 100:
 +					SoundEngine.PlaySound(11, -1, -1, 1, 1f, 0f);

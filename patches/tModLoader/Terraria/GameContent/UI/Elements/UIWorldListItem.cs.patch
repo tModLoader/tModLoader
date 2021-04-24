@@ -1,28 +1,38 @@
 --- src/Terraria/Terraria/GameContent/UI/Elements/UIWorldListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIWorldListItem.cs
-@@ -2,10 +_,13 @@
+@@ -2,11 +_,14 @@
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
  using ReLogic.OS;
 +using System;
  using Terraria.Audio;
  using Terraria.DataStructures;
+ using Terraria.GameContent.UI.States;
  using Terraria.IO;
  using Terraria.Localization;
-+using Terraria.ModLoader;
++using Terraria.Utilities;
 +using Terraria.ModLoader.Config;
  using Terraria.Social;
  using Terraria.UI;
  
-@@ -28,6 +_,7 @@
+@@ -30,6 +_,8 @@
  		private Asset<Texture2D> _buttonDeleteTexture;
  		private UIImageButton _deleteButton;
  		private int _orderInList;
 +		private Asset<Texture2D> _configTexture;
++		private ulong _fileSize;
  		private bool _canBePlayed;
  
  		public bool IsFavorite => _data.IsFavorite;
-@@ -85,6 +_,17 @@
+@@ -37,6 +_,7 @@
+ 		public UIWorldListItem(WorldFileData data, int orderInList, bool canBePlayed) {
+ 			_orderInList = orderInList;
+ 			_data = data;
++			_fileSize = (ulong)FileUtilities.GetFileSize(data.Path, data.IsCloudSave);
+ 			_canBePlayed = canBePlayed;
+ 			LoadTextures();
+ 			InitializeAppearance();
+@@ -87,6 +_,17 @@
  				num += 24f;
  			}
  
@@ -37,29 +47,60 @@
 +			//	Append(configButton);
 +			//	num += 24f;
 +			//}
- 			UIImageButton uIImageButton5 = new UIImageButton(_buttonDeleteTexture) {
- 				VAlign = 1f,
- 				HAlign = 1f
-@@ -124,6 +_,7 @@
- 			_buttonPlayTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonPlay");
+ 			UIImageButton uIImageButton5 = new UIImageButton(_buttonRenameTexture);
+ 			uIImageButton5.VAlign = 1f;
+ 			uIImageButton5.Left.Set(num, 0f);
+@@ -136,6 +_,7 @@
  			_buttonSeedTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonSeed");
+ 			_buttonRenameTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonRename");
  			_buttonDeleteTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete");
 +			_configTexture = ModLoader.UI.UICommon.ButtonConfigTexture;
  		}
  
  		private void InitializeAppearance() {
-@@ -172,6 +_,10 @@
- 				_buttonLabel.SetText(Language.GetTextValue("UI.MoveToCloud"));
- 		}
- 
-+		private void ConfigMouseOver(UIMouseEvent evt, UIElement listeningElement) {
-+			_buttonLabel.SetText("Edit World Config");
+@@ -184,8 +_,16 @@
+ 		private void CloudMouseOver(UIMouseEvent evt, UIElement listeningElement) {
+ 			if (_data.IsCloudSave)
+ 				_buttonLabel.SetText(Language.GetTextValue("UI.MoveOffCloud"));
+-			else
+-				_buttonLabel.SetText(Language.GetTextValue("UI.MoveToCloud"));
++			else {
++				if (!ModLoader.Engine.Steam.CheckSteamCloudStorageSufficient(_fileSize))
++					_buttonLabel.SetText(Language.GetTextValue("tModLoader.CloudWarning"));
++				else
++					_buttonLabel.SetText(Language.GetTextValue("UI.MoveToCloud"));
++			}
 +		}
 +
- 		private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement) {
- 			_buttonLabel.SetText(Language.GetTextValue("UI.Play"));
++		private void ConfigMouseOver(UIMouseEvent evt, UIElement listeningElement) {
++			_buttonLabel.SetText("Edit World Config");
  		}
-@@ -239,9 +_,29 @@
+ 
+ 		private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement) {
+@@ -214,8 +_,12 @@
+ 		private void CloudButtonClick(UIMouseEvent evt, UIElement listeningElement) {
+ 			if (_data.IsCloudSave)
+ 				_data.MoveToLocal();
+-			else
++			else {
++				ModLoader.Engine.Steam.RecalculateAvailableSteamCloudStorage(); //Only recalculate when about to put the file to cloud
++				if (!ModLoader.Engine.Steam.CheckSteamCloudStorageSufficient(_fileSize))
++					return; //Don't allow both the move to cloud, and the setting of the label
+ 				_data.MoveToCloud();
++			}
+ 
+ 			((UIImageButton)evt.Target).SetImage(_data.IsCloudSave ? _buttonCloudActiveTexture : _buttonCloudInactiveTexture);
+ 			if (_data.IsCloudSave)
+@@ -244,7 +_,7 @@
+ 		}
+ 
+ 		private void PlayGame(UIMouseEvent evt, UIElement listeningElement) {
+-			if (listeningElement == evt.Target && !TryMovingToRejectionMenuIfNeeded(_data.GameMode)) {
++			if (listeningElement == evt.Target && _data.IsValid && !TryMovingToRejectionMenuIfNeeded(_data.GameMode)) {
+ 				_data.SetAsActive();
+ 				SoundEngine.PlaySound(10);
+ 				Main.GetInputText("");
+@@ -255,9 +_,29 @@
  				else
  					Main.menuMode = 10;
  
@@ -90,7 +131,7 @@
  		}
  
  		private bool TryMovingToRejectionMenuIfNeeded(int worldGameMode) {
-@@ -290,6 +_,9 @@
+@@ -325,6 +_,9 @@
  		private void SeedButtonClick(UIMouseEvent evt, UIElement listeningElement) {
  			Platform.Get<IClipboard>().Value = _data.GetFullSeedText();
  			_buttonLabel.SetText(Language.GetTextValue("UI.SeedCopied"));

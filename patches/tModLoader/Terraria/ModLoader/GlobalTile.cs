@@ -7,7 +7,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify the behavior of any tile in the game. Create an instance of an overriding class then call Mod.AddGlobalTile to use this.
 	/// </summary>
-	public class GlobalTile:ModType
+	public abstract class GlobalTile : ModType
 	{
 		/// <summary>
 		/// A convenient method for adding an integer to the end of an array. This can be used with the arrays in TileID.Sets.RoomNeeds.
@@ -51,9 +51,7 @@ namespace Terraria.ModLoader
 			TileLoader.globalTiles.Add(this);
 		}
 
-		public override void SetupContent() {
-			SetDefaults();
-		}
+		public sealed override void SetupContent() => SetDefaults();
 
 		/// <summary>
 		/// Allows you to modify the properties of any tile in the game. Most properties are stored as arrays throughout the Terraria code.
@@ -127,7 +125,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe. Fail determines whether the tile is mined, effectOnly makes it so that only dust is created, and noItem stops items from dropping.
+		/// Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe. If <paramref name="fail"/> is true, the tile will not be mined; <paramref name="effectOnly"/> makes it so that only dust is created; <paramref name="noItem"/> stops items from dropping.
 		/// </summary>
 		/// <param name="i"></param>
 		/// <param name="j"></param>
@@ -224,7 +222,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things in front of the tile at the given coordinates. This can also be used to do things such as creating dust. Called on active tiles. See also ModWorld.PostDrawTiles.
+		/// Allows you to draw things in front of the tile at the given coordinates. This can also be used to do things such as creating dust. Called on active tiles. See also ModSystem.PostDrawTiles.
 		/// </summary>
 		/// <param name="i"></param>
 		/// <param name="j"></param>

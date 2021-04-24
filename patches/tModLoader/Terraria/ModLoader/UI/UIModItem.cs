@@ -14,7 +14,10 @@ using Terraria.UI.Chat;
 using Terraria.Audio;
 using Terraria.GameContent;
 using ReLogic.Content;
+using ReLogic.Content.Readers;
 using ReLogic.OS;
+using System.IO;
+using Microsoft.Xna.Framework.Input;
 
 namespace Terraria.ModLoader.UI
 {
@@ -29,6 +32,12 @@ namespace Terraria.ModLoader.UI
 		private UIText _modName;
 		private UIModStateText _uiModStateText;
 		private UIHoverImage _modReferenceIcon;
+		private UIImage _deleteModButton;
+		private UIAutoScaleTextTextPanel<string> _dialogYesButton;
+		private UIAutoScaleTextTextPanel<string> _dialogNoButton;
+		private UIText _dialogText;
+		private UIImage _blockInput;
+		private UIPanel _deleteModDialog;
 		private readonly LocalMod _mod;
 
 		private bool _configChangesRequireReload;
@@ -54,29 +63,28 @@ namespace Terraria.ModLoader.UI
 		public override void OnInitialize() {
 			base.OnInitialize();
 
-			string text = _mod.DisplayName + " v" + _mod.modFile.version;
+			string text = _mod.DisplayName + " v" + _mod.modFile.Version;
 			if (_mod.tModLoaderVersion < new Version(0, 10)) {
 				text += $" [c/FF0000:({Language.GetTextValue("tModLoader.ModOldWarning")})]";
 			}
 
 			if (_mod.modFile.HasFile("icon.png")) {
 				try {
-					Asset<Texture2D> modIconTexture;
-
+					using (var reader = new PngReader(Main.instance.GraphicsDevice))
 					using (_mod.modFile.Open())
-					using (var s = _mod.modFile.GetStream("icon.png"))
-						modIconTexture = ModLoader.ManifestAssets.CreateUntrackedAsset(
+					using (var s = _mod.modFile.GetStream("icon.png")) {
+						Asset<Texture2D> modIconTexture = ModLoader.ManifestAssets.CreateUntrackedAsset(
 							$"Terraria.ModLoader.UI.Browser.{_mod.Name}.icon.png",
-							Texture2D.FromStream(Main.instance.GraphicsDevice, s)
+							reader.FromStream<Texture2D>(s)
 						);
-
-					if (modIconTexture.Width() == 80 && modIconTexture.Height() == 80) {
-						_modIcon = new UIImage(modIconTexture) {
-							Left = { Percent = 0f },
-							Top = { Percent = 0f }
-						};
-						Append(_modIcon);
-						_modIconAdjust += 85;
+						if (modIconTexture.Width() == 80 && modIconTexture.Height() == 80) {
+							_modIcon = new UIImage(modIconTexture) {
+								Left = { Percent = 0f },
+								Top = { Percent = 0f }
+							};
+							Append(_modIcon);
+							_modIconAdjust += 85;
+						}
 					}
 				}
 				catch (Exception e) {
@@ -164,7 +172,7 @@ namespace Terraria.ModLoader.UI
 			if (loadedMod != null) {
 				_loaded = true;
 				// TODO: refactor and add nicer icons (and maybe not iterate 6 times)
-				int[] values = { loadedMod.GetContent<ModItem>().Count(), loadedMod.GetContent<ModNPC>().Count(), loadedMod.GetContent<ModTile>().Count(), loadedMod.GetContent<ModWall>().Count(), loadedMod.GetContent<ModBuff>().Count(), loadedMod.GetContent<ModMountData>().Count() };
+				int[] values = { loadedMod.GetContent<ModItem>().Count(), loadedMod.GetContent<ModNPC>().Count(), loadedMod.GetContent<ModTile>().Count(), loadedMod.GetContent<ModWall>().Count(), loadedMod.GetContent<ModBuff>().Count(), loadedMod.GetContent<ModMount>().Count() };
 				string[] localizationKeys = { "ModsXItems", "ModsXNPCs", "ModsXTiles", "ModsXWalls", "ModsXBuffs", "ModsXMounts" };
 				int xOffset = -40;
 
@@ -185,6 +193,17 @@ namespace Terraria.ModLoader.UI
 				if (e.Target.GetType() != typeof(UIModStateText))
 					_uiModStateText.Click(e);
 			};
+
+			if (!_loaded) {
+				_deleteModButton = new UIImage(TextureAssets.Trash) {
+					Width = { Pixels = 36 },
+					Height = { Pixels = 36 },
+					Left = { Pixels = _moreInfoButton.Left.Pixels - 36 - PADDING, Precent = 1 },
+					Top = { Pixels = 42.5f }
+				};
+				_deleteModButton.OnClick += QuickModDelete;
+				Append(_deleteModButton);
+			}
 		}
 
 		// TODO: "Generate Language File Template" button in upcoming "Miscellaneous Tools" menu.
@@ -243,6 +262,9 @@ namespace Terraria.ModLoader.UI
 
 			if (_moreInfoButton?.IsMouseHovering == true) {
 				_tooltip = Language.GetTextValue("tModLoader.ModsMoreInfo");
+			}
+			else if (_deleteModButton?.IsMouseHovering == true) {
+				_tooltip = Language.GetTextValue("UI.Delete");
 			}
 			else if (_modName?.IsMouseHovering == true && _mod?.properties.author.Length > 0) {
 				_tooltip = Language.GetTextValue("tModLoader.ModsByline", _mod.properties.author);
@@ -329,7 +351,9 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override int CompareTo(object obj) {
-			var item = (UIModItem)obj;
+			var item = obj as UIModItem;
+			if (item == null)
+				return 1;
 			string name = DisplayNameClean;
 			string othername = item.DisplayNameClean;
 			switch (Interface.modsMenu.sortMode) {
@@ -344,32 +368,110 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		public bool PassFilters() {
+		public bool PassFilters(UIModsFilterResults filterResults) {
 			if (Interface.modsMenu.filter.Length > 0) {
 				if (Interface.modsMenu.searchFilterMode == SearchFilter.Author) {
 					if (_mod.properties.author.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1) {
+						filterResults.filteredBySearch++;
 						return false;
 					}
 				}
 				else {
 					if (DisplayNameClean.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1 && ModName.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1) {
+						filterResults.filteredBySearch++;
 						return false;
 					}
 				}
 			}
 			if (Interface.modsMenu.modSideFilterMode != ModSideFilter.All) {
-				if ((int)_mod.properties.side != (int)Interface.modsMenu.modSideFilterMode - 1)
+				if ((int)_mod.properties.side != (int)Interface.modsMenu.modSideFilterMode - 1) {
+					filterResults.filteredByModSide++;
 					return false;
+				}
 			}
 			switch (Interface.modsMenu.enabledFilterMode) {
 				default:
 				case EnabledFilter.All:
 					return true;
 				case EnabledFilter.EnabledOnly:
+					if (!_mod.Enabled)
+						filterResults.filteredByEnabled++;
 					return _mod.Enabled;
 				case EnabledFilter.DisabledOnly:
+					if (_mod.Enabled)
+						filterResults.filteredByEnabled++;
 					return !_mod.Enabled;
 			}
+		}
+
+		private void QuickModDelete(UIMouseEvent evt, UIElement listeningElement) {
+			bool shiftPressed = Main.keyState.PressingShift();
+
+			if (!shiftPressed) {
+				SoundEngine.PlaySound(10, -1, -1, 1);
+				_blockInput = new UIImage(TextureAssets.Extra[190]) {
+					Width = { Percent = 1 },
+					Height = { Percent = 1 },
+					Color = new Color(0, 0, 0, 0),
+					ScaleToFit = true
+				};
+				_blockInput.OnMouseDown += CloseDialog;
+				Interface.modsMenu.Append(_blockInput);
+
+				_deleteModDialog = new UIPanel() {
+					Width = { Percent = .20f },
+					Height = { Percent = .20f },
+					HAlign = .5f,
+					VAlign = .5f,
+					BackgroundColor = new Color(63, 82, 151),
+					BorderColor = Color.Black
+				};
+				_deleteModDialog.SetPadding(6f);
+				Interface.modsMenu.Append(_deleteModDialog);
+
+				_dialogYesButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("LegacyMenu.104")) {
+					TextColor = Color.White,
+					Width = new StyleDimension(-10f, 1f / 3f),
+					Height = { Pixels = 40 },
+					VAlign = .85f,
+					HAlign = .15f
+				}.WithFadedMouseOver();
+				_dialogYesButton.OnClick += DeleteMod;
+				_deleteModDialog.Append(_dialogYesButton);
+
+				_dialogNoButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("LegacyMenu.105")) {
+					TextColor = Color.White,
+					Width = new StyleDimension(-10f, 1f / 3f),
+					Height = { Pixels = 40 },
+					VAlign = .85f,
+					HAlign = .85f
+				}.WithFadedMouseOver();
+				_dialogNoButton.OnClick += CloseDialog;
+				_deleteModDialog.Append(_dialogNoButton);
+
+				_dialogText = new UIText(Language.GetTextValue("tModLoader.DeleteModConfirm")) {
+					Width = { Percent = .75f },
+					HAlign = .5f,
+					VAlign = .3f,
+					IsWrapped = true
+				};
+				_deleteModDialog.Append(_dialogText);
+			}
+			else {
+				DeleteMod(evt, listeningElement);
+			}
+		}
+
+		private void CloseDialog(UIMouseEvent evt, UIElement listeningElement) {
+			SoundEngine.PlaySound(SoundID.MenuClose);
+			_blockInput?.Remove();
+			_deleteModDialog?.Remove();
+		}
+
+		private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
+			File.Delete(_mod.modFile.path);
+			CloseDialog(evt, listeningElement);
+			Interface.modsMenu.Activate();
 		}
 	}
 }

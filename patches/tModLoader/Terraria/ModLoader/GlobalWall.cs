@@ -5,16 +5,14 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify the behavior of any wall in the game (although admittedly walls don't have much behavior). Create an instance of an overriding class then call Mod.AddGlobalWall to use this.
 	/// </summary>
-	public class GlobalWall:ModType
+	public abstract class GlobalWall : ModType
 	{
 		protected sealed override void Register() {
 			ModTypeLookup<GlobalWall>.Register(this);
 			WallLoader.globalWalls.Add(this);
 		}
 
-		public override void SetupContent() {
-			SetDefaults();
-		}
+		public sealed override void SetupContent() => SetDefaults();
 
 		/// <summary>
 		/// Allows you to modify the properties of any wall in the game. Most properties are stored as arrays throughout the Terraria code.

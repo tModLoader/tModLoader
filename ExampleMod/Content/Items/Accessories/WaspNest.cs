@@ -47,11 +47,11 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void SetDefaults() {
-			sbyte realBackSlot = item.backSlot;
-			item.CloneDefaults(ItemID.HiveBackpack);
-			item.value = Item.sellPrice(0, 5);
+			sbyte realBackSlot = Item.backSlot;
+			Item.CloneDefaults(ItemID.HiveBackpack);
+			Item.value = Item.sellPrice(0, 5);
 			// CloneDefaults will clear out the autoloaded Back slot, so we need to preserve it this way.
-			item.backSlot = realBackSlot;
+			Item.backSlot = realBackSlot;
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {

@@ -3,9 +3,9 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader.Default
 {
-	public class AprilFools : ModItem
+	public class AprilFools : ModLoaderModItem
 	{
-		public override string Texture => "Terraria/Item_3389";
+		public override string Texture => "Terraria/Images/Item_3389";
 
 		public static bool CheckAprilFools() {
 			DateTime now = DateTime.Now;
@@ -18,19 +18,19 @@ namespace Terraria.ModLoader.Default
 
 		public override void SetDefaults() {
 			if (CheckAprilFools()) {
-				item.SetNameOverride(Lang.GetItemNameValue(ItemID.Terrarian) + "...?");
+				Item.SetNameOverride(Lang.GetItemNameValue(ItemID.Terrarian) + "...?");
 			}
-			item.useStyle = 4;
-			item.width = 24;
-			item.height = 24;
-			item.UseSound = SoundID.Item2;
-			item.melee = true;
-			item.noMelee = true;
-			item.useAnimation = 25;
-			item.useTime = 25;
-			item.damage = 190;
-			item.knockBack = 6.5f;
-			item.rare = 10;
+			Item.useStyle = 4;
+			Item.width = 24;
+			Item.height = 24;
+			Item.UseSound = SoundID.Item2;
+			Item.melee = true;
+			Item.noMelee = true;
+			Item.useAnimation = 25;
+			Item.useTime = 25;
+			Item.damage = 190;
+			Item.knockBack = 6.5f;
+			Item.rare = 10;
 		}
 
 		public override bool UseItem(Player player) {

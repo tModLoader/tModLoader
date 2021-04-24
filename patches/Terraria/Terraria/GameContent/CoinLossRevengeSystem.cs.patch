@@ -1,20 +1,21 @@
 --- src/decompiled/Terraria/GameContent/CoinLossRevengeSystem.cs
 +++ src/Terraria/Terraria/GameContent/CoinLossRevengeSystem.cs
-@@ -349,6 +_,9 @@
+@@ -349,6 +_,8 @@
  
  						revengeMarker.SpawnEnemy();
  						list2.Add(revengeMarker);
-+#if SERVER
++						if(Main.dedServ)
 +						NetMessage.SendData(127, -1, -1, null, revengeMarker.UniqueID);
-+#endif
  					}
  				}
  
-@@ -362,6 +_,15 @@
+@@ -362,6 +_,16 @@
  				IEnumerable<RevengeMarker> enumerable2 = _markers.Where((RevengeMarker x) => x.IsInvalid());
  				_markers.RemoveAll((RevengeMarker x) => x.IsInvalid());
  				_markers.RemoveAll((RevengeMarker x) => x.IsExpired(_gameTime));
-+#if SERVER
++				if (!Main.dedServ)
++					return;
++
 +				foreach (RevengeMarker item in enumerable) {
 +					NetMessage.SendData(127, -1, -1, null, item.UniqueID);
 +				}
@@ -22,7 +23,6 @@
 +				foreach (RevengeMarker item2 in enumerable2) {
 +					NetMessage.SendData(127, -1, -1, null, item2.UniqueID);
 +				}
-+#endif
  			}
  		}
  

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -82,19 +83,14 @@ namespace Terraria.ModLoader.UI
 			}
 
 			if (drawHover && hoverData != null) {
-				if(_hoverPanel.Parent!=Parent) {
-					_hoverPanel.Remove();
-					Parent.Append(_hoverPanel);
-				}
-
-				_hoverPanel.Width.Set(hoverRect.Width + 5, 0);
+				_hoverPanel.Width.Set(hoverRect.Width + 10, 0);
 				_hoverPanel.Height.Set(hoverRect.Height + 5, 0);
-				_hoverPanel.Top.Set(Math.Abs(Parent.GetDimensions().Y - hoverRect.Y) - 10, 0);
-				_hoverPanel.Left.Set(Math.Abs(Parent.GetDimensions().X - hoverRect.X) - 20, 0);
+				_hoverPanel.Top.Set(hoverRect.Y - 10, 0);
+				_hoverPanel.Left.Set(hoverRect.X - 8, 0);
 				_hoverPanel.Recalculate();
 				_hoverPanel.Draw(spriteBatch);
 
-				Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, hoverData.Tooltip, hoverRect.X, hoverRect.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+				Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, hoverData.Tooltip, hoverRect.X + 5, hoverRect.Y + 2, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
 			}
 		}
 
@@ -116,8 +112,8 @@ namespace Terraria.ModLoader.UI
 			_maxMemory = Environment.Is64BitOperatingSystem ? 4294967296 : 3221225472;
 			long availableMemory = _maxMemory; // CalculateAvailableMemory(maxMemory); This is wrong, 4GB is not shared.
 #else
-			long maxMemory = GetTotalMemory();
-			long availableMemory = GetAvailableMemory();
+			_maxMemory = GetTotalMemory();
+			long availableMemory = _maxMemory; //This is wrong; this is assuming tML is the only thing running. Can't find an alternative, but is less likely to confuse users under current design
 #endif
 
 			long totalModMemory = 0;
@@ -185,14 +181,19 @@ namespace Terraria.ModLoader.UI
 				SizeSuffixes[mag]);
 		}
 
+		/*
 		public static long GetAvailableMemory() {
-			var pc = new PerformanceCounter("Mono Memory", "Available Physical Memory");
-			return pc.RawValue;
+			//TODO: Implement for all platforms
+			if(Platform.IsWindows) {
+				var pc = new PerformanceCounter("Mono Memory", "Available Physical Memory");
+				return pc.RawValue;
+			}
 		}
+		*/
 
 		public static long GetTotalMemory() {
-			var pc = new PerformanceCounter("Mono Memory", "Total Physical Memory");
-			return pc.RawValue;
+			var gcMemInfo = GC.GetGCMemoryInfo();
+			return gcMemInfo.TotalAvailableMemoryBytes;
 		}
 
 		/*

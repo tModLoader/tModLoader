@@ -1,0 +1,19 @@
+--- src/Terraria/Terraria/GameContent/ShopHelper.cs
++++ src/tModLoader/Terraria/GameContent/ShopHelper.cs
+@@ -3,6 +_,7 @@
+ using System.Collections.Generic;
+ using Terraria.GameContent.Personalities;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.Localization;
+ 
+ namespace Terraria.GameContent
+@@ -118,7 +_,7 @@
+ 					_currentPriceAdjustment *= 0.95f;
+ 				}
+ 
+-				bool[] array = new bool[667];
++				bool[] array = new bool[NPCLoader.NPCCount];
+ 				foreach (NPC item in nearbyResidentNPCs) {
+ 					array[item.type] = true;
+ 				}

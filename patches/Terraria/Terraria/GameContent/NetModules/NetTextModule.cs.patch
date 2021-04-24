@@ -1,16 +1,15 @@
 --- src/decompiled/Terraria/GameContent/NetModules/NetTextModule.cs
 +++ src/Terraria/Terraria/GameContent/NetModules/NetTextModule.cs
-@@ -39,6 +_,12 @@
+@@ -39,6 +_,11 @@
  			return true;
  		}
  
 -		public override bool Deserialize(BinaryReader reader, int senderPlayerId) => DeserializeAsClient(reader, senderPlayerId);
 +		public override bool Deserialize(BinaryReader reader, int senderPlayerId) {
-+#if CLIENT
++			if(!Main.dedServ)
 +			return DeserializeAsClient(reader, senderPlayerId);
-+#else
++			else
 +			return DeserializeAsServer(reader, senderPlayerId);
-+#endif
 +		}
  	}
  }

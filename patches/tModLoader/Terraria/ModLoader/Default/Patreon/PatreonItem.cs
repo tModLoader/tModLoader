@@ -1,35 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader.Default.Patreon
 {
-	internal abstract class PatreonItem : ModItem
+	internal abstract class PatreonItem : ModLoaderModItem
 	{
-		public override string Name => $"{SetName}_{ItemEquipType}";
-
-		// Make sure the name and classname prefix match exactly.
-		public abstract string SetName { get; }
-		public abstract EquipType ItemEquipType { get; }
 		public virtual string SetSuffix => "'s";
 
-		protected string EquipTypeSuffix
-			=> Enum.GetName(typeof(EquipType), ItemEquipType);
-
-		public override string Texture => $"ModLoader/Patreon.{SetName}_{EquipTypeSuffix}";
+		public string InternalSetName => GetType().Name.Split('_')[0];
 
 		public override void SetStaticDefaults() {
-			string displayName =
-				EquipTypeSuffix != null
-					? $"{SetName}{SetSuffix} {EquipTypeSuffix}"
-					: "ITEM NAME ERROR";
+			var displayName = Name.Replace('_', ' ');
+			displayName.Insert(displayName.IndexOf(' '), SetSuffix);
 			DisplayName.SetDefault(displayName);
 		}
 
 		public override void SetDefaults() {
-			item.rare = 9;
-			item.vanity = true;
+			Item.rare = 9;
+			Item.vanity = true;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {

@@ -16,38 +16,44 @@ namespace Terraria.ModLoader.Core
 	{
 		private const int MAX_LOGS = 20;
 
+#if NETCORE
+		// Register support for encodings not present on .NET Core (necessary to port from .NET Framework)
+		static LogArchiver() {
+			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+		}
+#endif
+
 		/// <summary>
 		/// Attempt archiving logs.
 		/// </summary>
 		internal static void ArchiveLogs()
 		{
 			SetupLogDirs();
+            MoveZipsToArchiveDir();
 			MoveOldLogs();
 			DeleteOldArchives();
 		}
 
-		private static IEnumerable<string> GetLogs()
+		private static IEnumerable<string> GetArchivedLogs()
 		{
 			try {
-				return Directory.GetFiles(Logging.LogDir, "*.zip").AsEnumerable();
+				return Directory.EnumerateFiles(Logging.LogArchiveDir, "*.zip");
 			}
 			catch (Exception e) {
-				// Intermediate problem, try logging
 				Logging.tML.Error(e);
+				return Enumerable.Empty<string>();
 			}
-			return new string[0];
 		}
 
 		private static IEnumerable<string> GetOldLogs()
 		{
 			try {
-				return Directory.GetFiles(Logging.LogDir, "*.old*").AsEnumerable();
+				return Directory.EnumerateFiles(Logging.LogDir, "*.old*");
 			}
 			catch (Exception e) {
-				// Intermediate problem, try logging
 				Logging.tML.Error(e);
+                return Enumerable.Empty<string>();
 			}
-			return new string[0];
 		}
 
 		private static void SetupLogDirs()
@@ -62,17 +68,25 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		private static void MoveOldLogs()
+		private static void MoveZipsToArchiveDir()
 		{
-			foreach (string log in GetLogs()) {
+			// this should only need to happen once, when someone upgrades from a tML version which used the Logs directory for zips, to one which stores zips in Old
+			// if logs have been archived in the past, and somehow there's new zips in the log dir, just delete them
+			bool justdelete = GetArchivedLogs().Any();
+			foreach (var path in Directory.EnumerateFiles(Logging.LogDir, "*.zip")) {
 				try {
-					File.Move(log, Path.Combine(Logging.LogArchiveDir, Path.GetFileName(log)));
+					if (justdelete)
+						File.Delete(path);
+					else
+						File.Move(path, Path.Combine(Logging.LogArchiveDir, Path.GetFileName(path)));
 				}
 				catch (Exception e) {
 					Logging.tML.Error(e);
 				}
 			}
+		}
 
+		private static void MoveOldLogs() {
 			foreach (string log in GetOldLogs()) {
 				Archive(log, Path.GetFileNameWithoutExtension(log));
 			}
@@ -122,7 +136,7 @@ namespace Terraria.ModLoader.Core
 
 		private static void DeleteOldArchives()
 		{
-			var existingLogs = GetLogs().OrderBy(File.GetCreationTime).ToList();
+			var existingLogs = GetArchivedLogs().OrderBy(File.GetCreationTime).ToList();
 
 			foreach (string f in existingLogs.Take(existingLogs.Count - MAX_LOGS)) {
 				try {

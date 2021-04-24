@@ -17,9 +17,9 @@ namespace ExampleMod.Content.Items.Tools
 
 		public override void SetDefaults() {
 			// Copy values from the Amethyst Hook
-			item.CloneDefaults(ItemID.AmethystHook);
-			item.shootSpeed = 18f; // This defines how quickly the hook is shot.
-			item.shoot = ModContent.ProjectileType<ExampleHookProjectile>(); // Makes the item shoot the hook's projectile when used.
+			Item.CloneDefaults(ItemID.AmethystHook);
+			Item.shootSpeed = 18f; // This defines how quickly the hook is shot.
+			Item.shoot = ModContent.ProjectileType<ExampleHookProjectile>(); // Makes the item shoot the hook's projectile when used.
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -55,14 +55,14 @@ namespace ExampleMod.Content.Items.Tools
 		}
 
 		public override void SetDefaults() {
-			projectile.CloneDefaults(ProjectileID.GemHookAmethyst); // Copies the attributes of the Amethyst hook's projectile.
+			Projectile.CloneDefaults(ProjectileID.GemHookAmethyst); // Copies the attributes of the Amethyst hook's projectile.
 		}
 
 		// Use this hook for hooks that can have multiple hooks mid-flight: Dual Hook, Web Slinger, Fish Hook, Static Hook, Lunar Hook.
 		public override bool? CanUseGrapple(Player player) {
 			int hooksOut = 0;
 			for (int l = 0; l < 1000; l++) {
-				if (Main.projectile[l].active && Main.projectile[l].owner == Main.myPlayer && Main.projectile[l].type == projectile.type) {
+				if (Main.projectile[l].active && Main.projectile[l].owner == Main.myPlayer && Main.projectile[l].type == Projectile.type) {
 					hooksOut++;
 				}
 			}
@@ -118,11 +118,19 @@ namespace ExampleMod.Content.Items.Tools
 		public override void GrapplePullSpeed(Player player, ref float speed) {
 			speed = 10; // How fast you get pulled to the grappling hook projectile's landing position
 		}
+		
+		// Comments needed for this one
+		public override void GrappleTargetPoint(Player player, ref float grappleX, ref float grappleY) {
+			Vector2 dirToPlayer = Projectile.DirectionTo(player.Center);
+			float hangDist = 50f;
+			grappleX += dirToPlayer.X * hangDist;
+			grappleY += dirToPlayer.Y * hangDist;
+		}
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
-			Vector2 playerCenter = Main.player[projectile.owner].MountedCenter;
-			Vector2 center = projectile.Center;
-			Vector2 distToProj = playerCenter - projectile.Center;
+			Vector2 playerCenter = Main.player[Projectile.owner].MountedCenter;
+			Vector2 center = Projectile.Center;
+			Vector2 distToProj = playerCenter - Projectile.Center;
 			float projRotation = distToProj.ToRotation() - MathHelper.PiOver2;
 			float distance = distToProj.Length();
 

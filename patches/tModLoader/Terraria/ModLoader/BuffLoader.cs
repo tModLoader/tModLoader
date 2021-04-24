@@ -170,9 +170,9 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
-		public static bool LongerExpertDebuff(int buff) => GetBuff(buff)?.longerExpertDebuff ?? vanillaLongerExpertDebuff[buff];
+		public static bool LongerExpertDebuff(int buff) => GetBuff(buff)?.LongerExpertDebuff ?? vanillaLongerExpertDebuff[buff];
 
-		public static bool CanBeCleared(int buff) => GetBuff(buff)?.canBeCleared ?? vanillaCanBeCleared[buff];
+		public static bool CanBeCleared(int buff) => GetBuff(buff)?.CanBeCleared ?? vanillaCanBeCleared[buff];
 
 		public static void ModifyBuffTip(int buff, ref string tip, ref int rare) {
 			if (IsModBuff(buff)) {
