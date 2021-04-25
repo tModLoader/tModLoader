@@ -100,7 +100,10 @@ namespace Terraria.ModLoader.Core
 	</Target>
 </Project>";
 
-			var bytes = Encoding.UTF8.GetBytes(tModLoaderTargets);
+			byte[] bytes = Encoding.UTF8.GetBytes(tModLoaderTargets);
+
+			Directory.CreateDirectory(ModSourcePath);
+
 			if (!File.Exists(modTargetsPath) || !Enumerable.SequenceEqual(bytes, File.ReadAllBytes(modTargetsPath)))
 				File.WriteAllBytes(modTargetsPath, bytes);
 
