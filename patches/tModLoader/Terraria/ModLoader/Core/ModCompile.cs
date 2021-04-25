@@ -102,7 +102,7 @@ namespace Terraria.ModLoader.Core
 
 			byte[] bytes = Encoding.UTF8.GetBytes(tModLoaderTargets);
 
-			Directory.CreateDirectory(ModSourcePath);
+			Directory.CreateDirectory(Path.GetDirectoryName(modTargetsPath));
 
 			if (!File.Exists(modTargetsPath) || !Enumerable.SequenceEqual(bytes, File.ReadAllBytes(modTargetsPath)))
 				File.WriteAllBytes(modTargetsPath, bytes);
