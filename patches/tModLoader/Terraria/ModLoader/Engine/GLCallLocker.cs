@@ -42,14 +42,14 @@ namespace Terraria.ModLoader.Engine
 
 			// for FNA 20.8, ForceToMainThread and RunActions exist on OpenGLDevice, ModernGLDevice
 			// if we get reports of crashes because of a different device type, we can re-investigate
-			var glDeviceType = f_GLDevice.GetValue(Main.instance.GraphicsDevice).GetType();
+			/*var glDeviceType = f_GLDevice.GetValue(Main.instance.GraphicsDevice).GetType();
 			Logging.tML.Debug("Graphics Device Type: " + glDeviceType);
 
 			f_actions = glDeviceType.GetField("actions", BindingFlags.Instance | BindingFlags.NonPublic);
 			m_RunActions = glDeviceType.GetMethod("RunActions", BindingFlags.Instance | BindingFlags.NonPublic);
 
 			var m_ForceToMainThread = glDeviceType.GetMethod("ForceToMainThread", BindingFlags.Instance | BindingFlags.NonPublic);
-			new Hook(m_ForceToMainThread, new hook_ForceToMainThread(HookForceToMainThread));
+			new Hook(m_ForceToMainThread, new hook_ForceToMainThread(HookForceToMainThread));*/
 		}
 
 		public static void Enter(object lockObj) {
