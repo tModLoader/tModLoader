@@ -3479,6 +3479,17 @@
  				Assets.Request<Texture2D>(TextureAssets.Background[i].Name);
  				backgroundWidth[i] = TextureAssets.Background[i].Width();
  				backgroundHeight[i] = TextureAssets.Background[i].Height();
+@@ -45396,6 +_,10 @@
+ 							DrawSurfaceBG_Mushroom(num4, num5, num6, bgTexIndexes7);
+ 							DrawSurfaceBG_DrawChangeOverlay(11);
+ 						}
++
++						if (num20 >= Loaders.SurfaceBgs.vanillaCount) {
++							Loaders.SurfaceBgs.DrawCloseBackground(num20);
++						}
+ 					}
+ 				}
+ 			}
 @@ -45560,6 +_,7 @@
  				DrawSurfaceBG_DrawBackMountainsLayer(246);
  			}
@@ -3487,6 +3498,15 @@
  			SkyManager.Instance.DrawToDepth(spriteBatch, 5f);
  		}
  
+@@ -45630,6 +_,8 @@
+ 				if (treeMntBGSet4[1] > -1)
+ 					DrawSurfaceBG_DrawBackMountainsLayer(treeMntBGSet4[1]);
+ 			}
++
++			Loaders.SurfaceBgs.DrawMiddleTexture();
+ 		}
+ 
+ 		private void UpdateOceanWaterLineForAmbience() {
 @@ -46820,7 +_,7 @@
  
  				bool flag2 = false;
@@ -3725,22 +3745,26 @@
  		}
  
  		private static void UpdateAtmosphereTransparencyToSkyColor() {
-@@ -48810,6 +_,15 @@
+@@ -48810,6 +_,8 @@
  
  			UpdateBGVisibility_BackLayer(null, null);
  			UpdateBGVisibility_FrontLayer(null, null);
-+			if (bgStyle < Loaders.SurfaceBgs.vanillaCount) {
-+				for (int i = Loaders.SurfaceBgs.vanillaCount; i < bgAlphaFrontLayer.Length /*SurfaceBackgroundStyleLoader.SurfaceStyleCount*/; i++) {
-+					bgAlphaFrontLayer[i] -= backgroundLayerTransitionSpeed;
-+					if (bgAlphaFrontLayer[i] < 0f)
-+						bgAlphaFrontLayer[i] = 0f;
-+				}
-+			}
 +
 +			Loaders.SurfaceBgs.ModifyFarFades(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
  			try {
  				DrawSurfaceBG();
  				if (BackgroundEnabled)
+@@ -48895,6 +_,10 @@
+ 					DrawBG_ModifyBGFarBackLayerAlpha(value, null, transitionAmountOverride);
+ 					break;
+ 				default:
++					if (value >= Loaders.SurfaceBgs.vanillaCount) {
++						DrawBG_ModifyBGFarBackLayerAlpha(value, null, transitionAmountOverride);
++						break;
++					}
+ 					DrawBG_ModifyBGFarBackLayerAlpha(0, null, transitionAmountOverride);
+ 					break;
+ 			}
 @@ -48903,7 +_,12 @@
  		public static int GetPreferredBGStyleForPlayer() {
  			int num = bgStyle;

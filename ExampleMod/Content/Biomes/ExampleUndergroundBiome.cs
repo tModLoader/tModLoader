@@ -9,7 +9,7 @@ namespace ExampleMod.Content.Biomes
 	{
 		public override ModUgBgStyle UndergroundBackgroundStyle => ModContent.Find<ModUgBgStyle>("ExampleMod/ExampleUgBgStyle");
 
-		public override int Music => Mod.GetSoundSlot(SoundType.Music, "Assets/Sounds/Music/MarbleGallery");
+		public override int Music => Mod.GetSoundSlot(SoundType.Music, "Assets/Sounds/Music/MarbleGallery.ogg");
 
 		public override AVFXPriority Priority => AVFXPriority.BiomeHigh;
 

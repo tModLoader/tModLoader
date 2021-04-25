@@ -23,7 +23,7 @@ namespace ExampleMod.Backgrounds
 		}
 
 		public override int ChooseFarTexture() {
-			return Mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceFar");
+			return Mod.GetBackgroundSlot("Assets/Textures/Backgrounds/ExampleBiomeSurfaceFar.rawimg");
 		}
 
 		private static int SurfaceFrameCounter;
@@ -35,20 +35,20 @@ namespace ExampleMod.Backgrounds
 			}
 			switch (SurfaceFrame) {
 				case 0:
-					return Mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceMid0");
+					return Mod.GetBackgroundSlot("Assets/Textures/Backgrounds/ExampleBiomeSurfaceMid0.rawimg");
 				case 1:
-					return Mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceMid1");
+					return Mod.GetBackgroundSlot("Assets/Textures/Backgrounds/ExampleBiomeSurfaceMid1.rawimg");
 				case 2:
-					return Mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceMid2");
+					return Mod.GetBackgroundSlot("Assets/Textures/Backgrounds/ExampleBiomeSurfaceMid2.rawimg");
 				case 3:
-					return Mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceMid3");
+					return Mod.GetBackgroundSlot("Assets/Textures/Backgrounds/ExampleBiomeSurfaceMid3.rawimg");
 				default:
 					return -1;
 			}
 		}
 
 		public override int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b) {
-			return Mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceClose");
+			return Mod.GetBackgroundSlot("Assets/Textures/Backgrounds/ExampleBiomeSurfaceClose.rawimg");
 		}
 	}
 }

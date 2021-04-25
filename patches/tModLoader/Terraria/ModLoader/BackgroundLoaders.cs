@@ -105,8 +105,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		//TODO: This whole class from here onwards appears to be brokens. Have to fix it.
-
 		public void ModifyFarFades(int style, float[] fades, float transitionSpeed) {
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
@@ -156,7 +154,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		//TODO: This hook is missing in 1.4 main branch
 		public void DrawMiddleTexture() {
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
@@ -192,7 +189,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		//TODO: This hook is missing in 1.4 main branch
 		public void DrawCloseBackground(int style) {
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
