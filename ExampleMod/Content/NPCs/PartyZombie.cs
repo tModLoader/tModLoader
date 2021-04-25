@@ -17,7 +17,6 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
 				Velocity = 1f //Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 			};
-			SpawnModBiomes = new int[1] { ModContent.Find<ModBiome>("ExampleMod/ExampleSurfaceBiome").Type };
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, value);
 		}
 
@@ -37,6 +36,7 @@ namespace ExampleMod.Content.NPCs
 			AnimationType = NPCID.Zombie; // Use vanilla zombie's type when executing animation code. Important to also match Main.npcFrameCount[NPC.type] in SetStaticDefaults.
 			Banner = Item.NPCtoBanner(NPCID.Zombie); // Makes this NPC get affected by the normal zombie banner.
 			BannerItem = Item.BannerToItem(Banner); // Makes kills of this NPC go towards dropping the banner it's associated with.
+			SpawnModBiomes = new int[1] { ModContent.Find<ModBiome>("ExampleMod/ExampleSurfaceBiome").Type }; // Associates this NPC with the ExampleSurfaceBiome in Bestiary
 		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot) { 

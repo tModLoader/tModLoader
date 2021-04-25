@@ -178,9 +178,13 @@ namespace Terraria.ModLoader
 		private delegate void DelegateSetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry);
 		private static HookList HookSetBestiary = AddHook<DelegateSetBestiary>(g => g.SetBestiary);
 		public static void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
-			if(npc.ModNPC != null) {
+			if(IsModNPC(npc)) {
 				bestiaryEntry.Info.Add(npc.ModNPC.Mod.ModSourceBestiaryInfoElement);
+				foreach (var type in npc.ModNPC.SpawnModBiomes) {
+					bestiaryEntry.Info.Add(Loaders.Biomes.Get(type).ModBiomeBestiaryInfoElement);
+				}
 			}
+
 			npc.ModNPC?.SetBestiary(database, bestiaryEntry);
 
 			foreach (GlobalNPC g in HookSetBestiary.Enumerate(npc.globalNPCs)) {
