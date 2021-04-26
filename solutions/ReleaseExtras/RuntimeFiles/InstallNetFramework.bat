@@ -50,8 +50,5 @@ if Not exist %INSTALLDIR%\dotnet.exe (
 	)
 	echo Installing_NewFramework
 	powershell -NoProfile -ExecutionPolicy unrestricted -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel %CHANNELSEL% -InstallDir %INSTALLDIR%\ -Version %VERSIONSEL% -Runtime %RUNTIMESELECT%"
-
-	echo ChangingTheIcon
-	call resource_hacker\ResourceHacker.exe -open %INSTALLDIR%\dotnet.exe -save %INSTALLDIR%\dotnet.exe -action add -res Libraries\Native\tModLoader.ico -mask ICONGROUP,MAINICON
 )
 

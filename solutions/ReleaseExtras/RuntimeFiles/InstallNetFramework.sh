@@ -40,8 +40,4 @@ if [ ! -d "$install_dir" ]; then
   curl -sLo dotnet-install.sh https://dot.net/v1/dotnet-install.sh
   chmod +x dotnet-install.sh
   ./dotnet-install.sh --channel "$channel" --install-dir "$install_dir" --runtime "dotnet" --version "$version"
-  
-  #TODO: Attempt to change icon of dotnet for legacy, current
-  #gvfs-set-attribute -t string "dotnet/$version/dotnet" metadata::custom-icon file:"Libraries/Native/tModLoader.png"
-  #gio set "dotnet/$version/dotnet" metadata::custom-icon file:"Libraries/Native/tModLoader.png"
 fi
