@@ -34,12 +34,12 @@
 @@ -83,9 +_,9 @@
  namespace Terraria
  {
- #if CLIENT
--	public class Main : Game
-+	public partial class Main : Game
- #else
+ #if SERVER
 -	public class Main : Terraria.Server.Game
 +	public partial class Main : Terraria.Server.Game
+ #else
+-	public class Main : Game
++	public partial class Main : Game
  #endif
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
@@ -838,6 +838,14 @@
  		}
  
  		private void Main_Exiting(object sender, EventArgs e) {
+@@ -4817,6 +_,7 @@
+ 
+ 			_cachedTitle = Lang.GetRandomGameTitle();
+ 			Platform.Get<IWindowService>().SetUnicodeTitle(base.Window, _cachedTitle);
++			Platform.Get<IWindowService>().SetIcon(base.Window);
+ 		}
+ 
+ 		private static void SetTileValue() {
 @@ -4855,6 +_,13 @@
  		}
  

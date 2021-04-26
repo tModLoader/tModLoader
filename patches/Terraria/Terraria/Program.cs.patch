@@ -57,10 +57,11 @@
  					SocialAPI.Initialize();
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
-+					if(!Main.dedServ)
- 					main.Run();
++					if (!Main.dedServ)
+-					main.Run();
++						main.Run();
 +					else
-+					main.DedServ();
++						main.DedServ();
  				}
  				catch (Exception e) {
  					DisplayException(e);
@@ -69,8 +70,8 @@
  					streamWriter.WriteLine("");
  				}
 +
-+				if(Main.dedServ)
-+				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
++				if (Main.dedServ)
++					Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
  
  				MessageBox.Show(text, "Terraria: Error");
  			}
