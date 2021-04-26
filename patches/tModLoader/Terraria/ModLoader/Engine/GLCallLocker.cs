@@ -105,8 +105,8 @@ namespace Terraria.ModLoader.Engine
 		}
 
 		private static void RunGLActions() {
-			var glDevice = f_GLDevice.GetValue(Main.instance.GraphicsDevice);
-			m_RunActions.Invoke(glDevice, new object[0]);
+			/*var glDevice = f_GLDevice.GetValue(Main.instance.GraphicsDevice);
+			m_RunActions.Invoke(glDevice, new object[0]);*/
 		}
 
 		private static HashSet<string> pastStackTraces = new HashSet<string>();
