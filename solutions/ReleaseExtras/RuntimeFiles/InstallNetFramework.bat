@@ -2,11 +2,12 @@
 :: Created for tModLoader deployment. 
 @echo off
 cd /D "%~dp0"
-set LOGFILE=NetFramework\install.log
-echo Verifying Net Framework....
-echo Logging to NetFramework\install.log
+set LOGFILE=dotnet\install.log
+if Not exist dotnet (mkdir dotnet)
+echo Verifying dotnet....
+echo Logging to dotnet\install.log
 echo This may take a few moments....
-call :LOG > %LOGFILE%
+call :LOG 1> %LOGFILE% 2>&1
 exit /B
 
 :LOG
@@ -34,17 +35,23 @@ set VERSIONSEL=%version%
 set RUNTIMESELECT=dotnet
 
 REM install directories
-set INSTALLDIR=.\NetFramework\dotnet\%VERSIONSEL%
+set INSTALLDIR=dotnet\%VERSIONSEL%
 
 REM Check if the install for our target NET already exists, and install if not
 if Not exist %INSTALLDIR%\dotnet.exe (
 	echo RemovingOldInstalls
-	rmdir /S /Q .\dotnet\
-	
+	if exist NetFramework (
+		echo Removing NetFramework
+		rmdir /S /Q NetFramework\
+	)
+	for /d %%i in (dotnet/*) do (
+		echo Removing dotnet/%%i
+		rmdir /S /Q "dotnet/%%i"
+	)
 	echo Installing_NewFramework
 	powershell -NoProfile -ExecutionPolicy unrestricted -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel %CHANNELSEL% -InstallDir %INSTALLDIR%\ -Version %VERSIONSEL% -Runtime %RUNTIMESELECT%"
 
 	echo ChangingTheIcon
-	call .\NetFramework\resource_hacker\ResourceHacker.exe -open %INSTALLDIR%\dotnet.exe -save %INSTALLDIR%\dotnet.exe -action add -res Libraries\Native\tModLoader.ico -mask ICONGROUP,MAINICON
+	call resource_hacker\ResourceHacker.exe -open %INSTALLDIR%\dotnet.exe -save %INSTALLDIR%\dotnet.exe -action add -res Libraries\Native\tModLoader.ico -mask ICONGROUP,MAINICON
 )
 

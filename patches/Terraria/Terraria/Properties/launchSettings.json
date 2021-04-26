@@ -4,6 +4,12 @@
       "commandName": "Executable",
       "executablePath": "$(TerrariaSteamPath)/$(OutputName).exe",
       "workingDirectory": "$(TerrariaSteamPath)"
+    },
+    "Terraria Server": {
+      "commandName": "Executable",
+      "executablePath": "dotnet",
+      "commandLineArgs": "$(OutputName).dll -server",
+      "workingDirectory": "$(TerrariaSteamPath)"
     }
   }
 }

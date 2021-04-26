@@ -5,7 +5,7 @@ call InstallNetFramework.bat
 cls
 
 set Server=tModLoader.dll -server
-set net=NetFramework\dotnet\5.0.0\dotnet.exe
+set net=dotnet\5.0.0\dotnet.exe
 
 set /P steam=Use Steam Server (y)/(n) steam:
 
