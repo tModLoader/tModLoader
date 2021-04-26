@@ -8,7 +8,7 @@ namespace Terraria.ModLoader.Core
 {
 	public class HookList<T> where T : GlobalType
 	{
-		// Don't change a single line without performance testing and checking the disassembly. As of NET 5.0.0, this is the fastest implementation acheivable short of hand-coding
+		// Don't change a single line without performance testing and checking the disassembly. As of NET 5.0.0, this is the fastest implementation achievable short of hand-coding
 		public ref struct InstanceEnumerator
 		{
 			private readonly ReadOnlySpan<Instanced<T>> instances;
