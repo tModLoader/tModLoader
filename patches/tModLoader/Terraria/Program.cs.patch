@@ -65,7 +65,7 @@
 -			if (initializeStaticMembers)
 -				ForceStaticInitializers(assembly);
 +			var types = assembly.GetTypes();
-+			ThingsToLoad = types.Select(type => GetMethodsCrossPlatform(type).Count()).Sum();
++			ThingsToLoad = types.Select(type => GetAllMethods(type).Count()).Sum();
 +
 +			ForceJITOnAssembly(types);
 +			if (initializeStaticMembers) {
@@ -152,10 +152,10 @@
 +					main.PostSocialInitialize();
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
- 					if(!Main.dedServ)
+ 					if (!Main.dedServ)
 @@ -171,9 +_,10 @@
  					else
- 					main.DedServ();
+ 						main.DedServ();
  				}
 -				catch (Exception e) {
 -					DisplayException(e);
@@ -170,8 +170,8 @@
 @@ -208,9 +_,22 @@
  				}
  
- 				if(Main.dedServ)
--				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
+ 				if (Main.dedServ)
+-					Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
 +				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
  
 -				MessageBox.Show(text, "Terraria: Error");
