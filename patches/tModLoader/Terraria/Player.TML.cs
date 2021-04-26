@@ -1,31 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria.ModLoader;
 
 namespace Terraria
 {
-	public partial class Player {
+	public partial class Player : IEntityWithGlobals<ModPlayer>
+	{
 		internal IList<string> usedMods;
-		internal ModPlayer[] modPlayers = new ModPlayer[0];
+		internal Instanced<ModPlayer>[] modPlayers = Array.Empty<Instanced<ModPlayer>>();
 
 		public int infoDisplayPage;
 		public HashSet<int> nearbyModTorch = new HashSet<int>();
+
+		public ReadOnlySpan<Instanced<ModPlayer>> Globals => modPlayers;
 
 		// Get
 
 		/// <summary> Gets the instance of the specified ModPlayer type. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		/// <exception cref="IndexOutOfRangeException"/>
-		public T GetModPlayer<T>() where T : ModPlayer
-			=> GetModPlayer(ModContent.GetInstance<T>());
+		public T GetModPlayer<T>(bool exactType = true) where T : ModPlayer
+			=> GlobalType.GetGlobal<Player, ModPlayer, T>(modPlayers, exactType);
 
 		/// <summary> Gets the local instance of the type of the specified ModPlayer instance. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		/// <exception cref="IndexOutOfRangeException"/>
 		/// <exception cref="NullReferenceException"/>
 		public T GetModPlayer<T>(T baseInstance) where T : ModPlayer
-			=> modPlayers[baseInstance.index] as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current player.");
+			=> GlobalType.GetGlobal<Player, ModPlayer, T>(modPlayers, baseInstance);
 
 		/*
 		// TryGet

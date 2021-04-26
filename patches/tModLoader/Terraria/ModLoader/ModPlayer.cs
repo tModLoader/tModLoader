@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameInput;
-using Terraria.ID;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -14,14 +13,12 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
 	/// </summary>
-	public abstract class ModPlayer : ModType
+	public abstract class ModPlayer : GlobalType<Player>
 	{
 		/// <summary>
 		/// The Player instance that this ModPlayer instance is attached to.
 		/// </summary>
 		public Player Player { get; internal set; }
-
-		internal int index;
 
 		internal ModPlayer CreateFor(Player newPlayer) {
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
