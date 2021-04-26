@@ -1817,7 +1817,18 @@ namespace Terraria.ModLoader
 
 		private static HookList HookNeedsSaving = AddHook<Func<Item, bool>>(g => g.NeedsSaving);
 		public static bool NeedsModSaving(Item item) {
-			return item.type != 0 && (item.ModItem != null || item.prefix >= PrefixID.Count || HookNeedsSaving.Enumerate(item.globalItems).Count(g => g.NeedsSaving(item)) > 0);
+			if (item.type <= ItemID.None)
+				return false;
+
+			if (item.ModItem != null || item.prefix >= PrefixID.Count)
+				return true;
+
+			foreach (var g in HookNeedsSaving.Enumerate(item.globalItems)) {
+				if (g.NeedsSaving(item))
+					return true;
+			}
+
+			return false;
 		}
 
 		internal static void WriteNetGlobalOrder(BinaryWriter w) {
