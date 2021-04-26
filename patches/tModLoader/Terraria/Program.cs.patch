@@ -84,7 +84,7 @@
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
  				if (Platform.IsWindows)
-@@ -138,18 +_,46 @@
+@@ -138,32 +_,59 @@
  			}
  		}
  
@@ -105,8 +105,9 @@
 +			if (File.Exists("savehere.txt"))
 +				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
 +
++			bool dedServ = LaunchParameters.ContainsKey("-server");
 +			try {
-+				Logging.Init();
++				Logging.Init(dedServ);
 +			}
 +			catch (Exception e) {
 +				DisplayException(e);
@@ -118,10 +119,10 @@
 +				// Anything beyond this point will not be executed
 +				ModCompile.BuildModCommandLine(build);
 +
-+			LaunchGame_();
++			LaunchGame_(dedServ);
 +		}
 +
-+		public static void LaunchGame_() {
++		public static void LaunchGame_(bool dedServ) {
  			if (Platform.IsOSX) {
  				Main.OnEngineLoad += delegate {
  					Main.instance.IsMouseVisible = false;
@@ -129,10 +130,12 @@
  			}
  
 -			LaunchParameters = Utils.ParseArguements(args);
- #if SERVER
- 			Main.dedServ = true;
- #else
-@@ -158,12 +_,14 @@
+-#if SERVER
+-			Main.dedServ = true;
++			Main.dedServ = dedServ;
+-#else
+-			Main.dedServ = LaunchParameters.ContainsKey("-server");
+-#endif
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
  			InitializeConsoleOutput();

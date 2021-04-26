@@ -43,10 +43,10 @@
  
  namespace Terraria
  {
-+#if CLIENT
- 	public class Main : Game
-+#else
++#if SERVER
 +	public class Main : Terraria.Server.Game
++#else
+ 	public class Main : Game
 +#endif
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
