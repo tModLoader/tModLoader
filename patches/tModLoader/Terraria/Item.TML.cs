@@ -13,7 +13,7 @@ namespace Terraria
 
 		public ModItem ModItem { get; internal set; }
 
-		internal Instanced<GlobalItem>[] globalItems = new Instanced<GlobalItem>[0];
+		internal Instanced<GlobalItem>[] globalItems = Array.Empty<Instanced<GlobalItem>>();
 
 		public ReadOnlySpan<Instanced<GlobalItem>> Globals => globalItems;
 

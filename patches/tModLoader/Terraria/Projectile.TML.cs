@@ -8,7 +8,7 @@ namespace Terraria
 	{
 		public ModProjectile ModProjectile { get; internal set; }
 
-		internal Instanced<GlobalProjectile>[] globalProjectiles = new Instanced<GlobalProjectile>[0];
+		internal Instanced<GlobalProjectile>[] globalProjectiles = Array.Empty<Instanced<GlobalProjectile>>();
 
 		public ReadOnlySpan<Instanced<GlobalProjectile>> Globals => globalProjectiles;
 

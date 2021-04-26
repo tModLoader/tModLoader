@@ -9,7 +9,7 @@ namespace Terraria
 	{
 		public ModNPC ModNPC { get; internal set; }
 
-		internal Instanced<GlobalNPC>[] globalNPCs = new Instanced<GlobalNPC>[0];
+		internal Instanced<GlobalNPC>[] globalNPCs = Array.Empty<Instanced<GlobalNPC>>();
 
 		public ReadOnlySpan<Instanced<GlobalNPC>> Globals => globalNPCs;
 
