@@ -13,6 +13,10 @@ echo "This may take a few moments."
 
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <tModLoader.runtimeconfig.json) #sed, go die plskthx
+version=${version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name
+echo $version
+# use this to check the output of sed. Expected output: "00000000 35 2e 30 2e 30 0a |5.0.0.| 00000006"
+# echo $(hexdump -C <<< "$version")
 #Cut everything before the second dot
 channel=$(echo "$version" | cut -f1,2 -d'.')
 dotnet_dir="$script_dir/NetFramework/dotnet"
@@ -21,7 +25,7 @@ install_dir="$dotnet_dir/$version"
 #If the dotnet dir exists, we need to do some cleanup
 if [ -d "$dotnet_dir" ]; then
   # Find all folders inside the dotnet dir that don't match our target version and nuke it
-  for folder in $(ls $script_dir/Libraries/dotnet/); do
+  for folder in $(ls $script_dir/NetFramework/dotnet/); do
     if [ ! $version = "$folder" ]; then
       old_version="$script_dir/NetFramework/dotnet/$folder"
       echo "Cleaning $old_version"
