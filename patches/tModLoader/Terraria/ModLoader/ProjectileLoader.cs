@@ -24,21 +24,31 @@ namespace Terraria.ModLoader
 		internal static readonly IList<GlobalProjectile> globalProjectiles = new List<GlobalProjectile>();
 
 		private static int nextProjectile = ProjectileID.Count;
-		private static List<HookList> hooks = new List<HookList>();
+		private static readonly List<HookList> hooks = new List<HookList>();
+		private static readonly List<HookList> modHooks = new List<HookList>();
 		private static Instanced<GlobalProjectile>[] globalProjectilesArray = new Instanced<GlobalProjectile>[0];
 
 		private static HookList AddHook<F>(Expression<Func<GlobalProjectile, F>> func) {
 			var hook = new HookList(ModLoader.Method(func));
+
 			hooks.Add(hook);
+
+			return hook;
+		}
+
+		public static T AddModHook<T>(T hook) where T : HookList {
+			hook.Update(globalProjectiles);
+
+			modHooks.Add(hook);
+
 			return hook;
 		}
 
 		internal static int ReserveProjectileID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding projectiles breaks vanilla client compatibility");
+			if (ModNet.AllowVanillaClients)
+				throw new Exception("Adding projectiles breaks vanilla client compatibility");
 
-			int reserveID = nextProjectile;
-			nextProjectile++;
-			return reserveID;
+			return nextProjectile++;
 		}
 
 		public static int ProjectileCount => nextProjectile;
@@ -81,7 +91,7 @@ namespace Terraria.ModLoader
 				.Select(g => new Instanced<GlobalProjectile>(g.index, g))
 				.ToArray();
 
-			foreach (var hook in hooks) {
+			foreach (var hook in hooks.Union(modHooks)) {
 				hook.Update(globalProjectiles);
 			}
 		}
@@ -90,6 +100,7 @@ namespace Terraria.ModLoader
 			projectiles.Clear();
 			nextProjectile = ProjectileID.Count;
 			globalProjectiles.Clear();
+			modHooks.Clear();
 		}
 
 		internal static bool IsModProjectile(Projectile projectile) {
