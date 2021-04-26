@@ -17,6 +17,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader.UI;
+using Terraria.ModLoader.Engine;
 
 namespace Terraria.ModLoader
 {
@@ -62,6 +63,8 @@ namespace Terraria.ModLoader
 			AssemblyResolving.Init();
 			LoggingHooks.Init();
 			LogArchiver.ArchiveLogs();
+			if (!dedServ)
+				GLCallLocker.RedirectLogs();
 		}
 
 		private static void ConfigureAppenders(bool dedServ) {
