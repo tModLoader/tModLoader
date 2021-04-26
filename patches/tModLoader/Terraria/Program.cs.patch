@@ -74,16 +74,19 @@
  		}
  
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -127,6 +_,9 @@
- 			if (!Main.dedServ && Debugger.IsAttached)
- 				return;
+@@ -124,8 +_,11 @@
+ 		}
  
+ 		private static void InitializeConsoleOutput() {
+-			if (!Main.dedServ && Debugger.IsAttached)
++			if (!Main.dedServ && (Debugger.IsAttached || LaunchParameters.ContainsKey("-console")))
+ 				return;
++
 +			if (!Main.dedServ)
 +				Platform.Get<IWindowService>().HideConsole();
-+
+ 
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
- 				if (Platform.IsWindows)
 @@ -138,32 +_,59 @@
  			}
  		}

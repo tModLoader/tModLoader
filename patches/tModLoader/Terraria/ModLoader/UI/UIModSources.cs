@@ -198,7 +198,7 @@ namespace Terraria.ModLoader.UI
 
 			var font = FontAssets.MouseText.Value;
 			Vector2 sizes = font.MeasureString(versionUpgradeMessage);
-			Color color = Color.Black;
+			Color color = Color.Red;
 
 			int xLoc = (int)(Main.screenWidth / 2 + 134);
 			int yLoc = (int)(sizes.Y + 244f);

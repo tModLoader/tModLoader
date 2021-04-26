@@ -838,6 +838,14 @@
  		}
  
  		private void Main_Exiting(object sender, EventArgs e) {
+@@ -4817,6 +_,7 @@
+ 
+ 			_cachedTitle = Lang.GetRandomGameTitle();
+ 			Platform.Get<IWindowService>().SetUnicodeTitle(base.Window, _cachedTitle);
++			Platform.Get<IWindowService>().SetIcon(base.Window);
+ 		}
+ 
+ 		private static void SetTileValue() {
 @@ -4855,6 +_,13 @@
  		}
  
