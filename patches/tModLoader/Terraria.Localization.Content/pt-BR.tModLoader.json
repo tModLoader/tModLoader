@@ -6,7 +6,7 @@
 		"MenuMods": "Mods",
 		"MenuModSources": "Fontes de Mods",
 		"MenuEnableDeveloperMode": "Habilitar Modo Desenvolvedor",
-		"FirstLaunchWelcomeMessage": "Bem-vindo ao tModLoader.\n\nVocê instalou com sucesso o tModLoader. Use o Navegador de Mods para encontrar mods que você deseja baixar. Use o menu Mods para alterar quais mods estão ativos no momento. Depois de alterar os mods, certifique-se de clicar no botão Recarregar Mods para recarregá-los.",
+		"FirstLaunchWelcomeMessage": "Bem-vindo ao tModLoader.\n\nVocê instalou com sucesso o tModLoader. Use o menu Navegador de Mods para encontrar mods que você deseja baixar. Use o menu Mods para alterar quais mods estão ativos no momento. Depois de alterar os mods, certifique-se de clicar no botão Recarregar Mods para recarregá-los.",
 		"tModLoaderSettings": "Configurações do tModLoader",
 
 		// Mods Menu
