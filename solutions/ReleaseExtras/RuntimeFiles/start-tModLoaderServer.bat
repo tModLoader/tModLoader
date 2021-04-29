@@ -12,4 +12,4 @@ set /p lobby=Select Lobby Type (f)riends/(p)rivate lobby:
 if NOT %lobby%=="p" ( set Args=%Args% -lobby friends )
 if %lobby%=="f" ( set Args=%Args% -lobby private )
 
-call InstallNetFramework.bat
+call VerifyAndRunDotnet.bat
