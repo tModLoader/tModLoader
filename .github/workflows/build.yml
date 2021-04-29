@@ -100,12 +100,12 @@ jobs:
           echo pwd is: ${PWD}
           echo ls -l is:
           ls -l
-          echo Running CompleteRelease.bat
-          ./CompleteRelease.bat skipzip
-          echo CompleteRelease.bat Done
+          echo Running CompleteDebugRelease.bat
+          ./CompleteDebugRelease.bat skipzip
+          echo CompleteDebugRelease.bat Done
           cd ..
           mkdir -p artifacts/Debug
-          cp -R ./solutions/Release/Shared/. ./artifacts/Debug/
+          cp -R ./solutions/Debug/Shared/. ./artifacts/Debug/
           echo Creating decompiled cache zip file
           7z a decompiled.zip ./src/decompiled/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
