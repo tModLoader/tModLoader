@@ -77,7 +77,7 @@ namespace ExampleMod.Common.Systems
 			int xCenter = Main.maxTilesX / 2;
 
 			for (int y = 0; y < Main.maxTilesY ; y++) {
-				builder.Add(
+				builder.SafeAdd(
 					xCenter, y, // The locations
 					(byte)(y % 255) // The data we want to store at the location
 				);

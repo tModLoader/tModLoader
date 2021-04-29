@@ -1,22 +1,58 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Terraria.ModLoader
 {
 	public struct PosData<T>
 	{
+		public abstract class OrderedSparseInserter {
+			internal PosData<T> last;
+			internal List<PosData<T>> list;
+			internal bool compressEqualValues;
+			internal bool insertDefaultEntries;
+
+
+			/// <summary>
+			/// Safely adds the provided value to the lookups at the given (x,y) position.
+			/// </summary>
+			public void SafeAdd(int x, int y, T value) => SafeAdd(PosData.CoordsToPos(x, y), value);
+
+			/// <summary>
+			/// Safely adds the provided value to the lookups at the given (pos) position.
+			/// To get the pos, <see cref="PosData.CoordsToPos(int, int)"/>
+			/// </summary>
+			public virtual void SafeAdd(int pos, T Value) { }
+
+			internal void Add(int pos, T value) {
+				if (compressEqualValues) {
+					if (insertDefaultEntries && pos >= last.pos + 2) {
+						// make sure the values between last.pos and pos are 'empty' by ensuring at two positions later than last. 
+						// note that this won't make a new entry if last.value is default, and will update last if it does make a new value
+						Add(last.pos + 1, default);
+					}
+
+					if (EqualityComparer<T>.Default.Equals(value, last.value))
+						return;
+				}
+
+				list.Add(last = new PosData<T>(pos, value));
+			}
+
+			/// <summary>
+			/// Constructs the lookups array based on items added to the builders in <see cref="PosData{T}"/>.
+			/// Returns <see cref="PosData{T}"/>[] for lookups
+			/// </summary>
+			public virtual PosData<T>[] Build() => list.ToArray();
+		}
+
 		/// <summary>
 		/// Efficient builder for <see cref="PosData{T}"/>[] lookups covering the whole world.
 		/// Must add elements in ascending pos order.
 		/// </summary>
-		public class OrderedSparseLookupBuilder 
+		public class OrderedSparseLookupBuilder : OrderedSparseInserter
 		{
-			private readonly List<PosData<T>> list;
-			private readonly bool compressEqualValues;
-			private readonly bool insertDefaultEntries;
-			private PosData<T> last;
-
 			/// <summary>
 			/// Use <paramref name="compressEqualValues"/> to produce a smaller lookup which won't work with <see cref="PosData.LookupExact"/>
 			/// When using <paramref name="compressEqualValues"/> without <paramref name="insertDefaultEntries"/>,
@@ -32,27 +68,95 @@ namespace Terraria.ModLoader
 				this.insertDefaultEntries = insertDefaultEntries;
 			}
 
-			public void Add(int x, int y, T value) => Add(PosData.CoordsToPos(x, y), value);
-
-			public void Add(int pos, T value) {
+			public override void SafeAdd(int pos, T value) {
 				if (pos <= last.pos)
 					throw new ArgumentException($"Must build in ascending index order. Prev: {last.pos}, pos: {pos}");
 
-				if (compressEqualValues) {
-					if (insertDefaultEntries && pos >= last.pos + 2) {
-						// make sure the values between last.pos and pos are 'empty' by ensuring at two positions later than last. 
-						// note that this won't make a new entry if last.value is default, and will update last if it does make a new value
-						Add(last.pos + 1, default);
-					}
+				Add(pos, value);
+			}
+		}
 
-					if (EqualityComparer<T>.Default.Equals(value, last.value))
-						return;
+		/// <summary>
+		/// Efficient Merger for <see cref="PosData{T}"/>[] lookups merging on an existing lookup array.
+		/// Must add new elements in ascending pos order.
+		/// </summary>
+		public class OrderedSparseLookupMerger : OrderedSparseInserter
+		{
+			private readonly List<PosData<T>> targetListUpper;
+			private readonly List<PosData<T>> targetListLower;
+			
+			private readonly PosData<T>[] target;
+			private readonly int yTop, yBottom;
+			private readonly int finalPos;
+
+			private int lastIndex;
+
+			/// <summary>
+			/// Used <paramref name="compressedEqualValues"/> to produce a smaller lookup which won't work with <see cref="PosData.LookupExact"/>
+			/// When used <paramref name="compressedEqualValues"/> without <paramref name="insertDefaultEntries"/>,
+			/// unspecified positions will default to the value of the previous specified position
+			/// The x,y parameters will define the rectangle over which you are inserting new entries - the smaller the rectangle, the faster it runs.
+			/// </summary>
+			/// <param name="target"> The original array that you wish to merge new entries in to </param>
+			/// <param name="compressedEqualValues"> Reduces the size of the map, but gives unspecified positions a value.</param>
+			/// <param name="insertedDefaultEntries">Ensures unspecified positions are assigned a default value when used with <paramref name="compressEqualValues"/></param>
+			public OrderedSparseLookupMerger(PosData<T>[] target, int xLeft, int xRight, int yTop, int yBottom, bool compressedEqualValues = true, bool insertedDefaultEntries = false) {
+				this.target = target;
+				this.yTop = yTop;
+				this.yBottom = yBottom;
+				finalPos = PosData.CoordsToPos(xRight, yBottom);
+				list = new List<PosData<T>>(1048576 - target.Length);
+
+				int lowerLoc = PosData.CoordsToPos(xLeft, yTop);
+				lastIndex = PosData.FindIndex(target, lowerLoc);
+				targetListLower = new List<PosData<T>>();
+				if (lastIndex >= 0) {
+					targetListLower = target.Take(lastIndex).ToList();
+				}
+				
+				int upperLoc = PosData.CoordsToPos(xRight, yBottom);
+				var upper = PosData.FindIndex(target, upperLoc);
+				targetListUpper = new List<PosData<T>>();
+				if (upper >= 0) {
+					targetListUpper = target.Skip(upper + 1).ToList();
 				}
 
-				list.Add(last = new PosData<T>(pos, value));
+				last = insertedDefaultEntries || lastIndex < 0 ? new PosData<T>(lowerLoc, default) : target[lastIndex];
+				compressEqualValues = compressedEqualValues;
+				insertDefaultEntries = insertedDefaultEntries;
 			}
 
-			public PosData<T>[] Build() => list.ToArray();
+			public override void SafeAdd(int pos, T value) {
+				if (pos <= last.pos)
+					throw new ArgumentException($"Must build in ascending index order. Prev: {last.pos}, pos: {pos}");
+
+				MergeOldEntries(pos);
+
+				Add(pos, value);
+			}
+
+			public override PosData<T>[] Build() {
+				MergeOldEntries(finalPos);
+				targetListLower.AddRange(list);
+				targetListLower.AddRange(targetListUpper);
+				return targetListLower.ToArray();
+			}
+
+			private void MergeOldEntries(int pos) {
+				int y = target[lastIndex + 1].Y;
+				while (target[lastIndex + 1].pos <= pos) {
+					if (!(y >= yTop && y <= yBottom)) { // Not inside the rectangle, re-add direct
+						y = target[++lastIndex + 1].Y;
+						Add(target[lastIndex].pos, target[lastIndex].value);
+					}
+					else {
+						while (y <= yBottom && y >= yTop) { // Find the last entry within the rectangle
+							y = target[++lastIndex + 1].Y;
+						}
+						Add(PosData.CoordsToPos(target[lastIndex].X, yBottom + 1), target[lastIndex].value); // Place the last entry outside rectangle in case is still used
+					}
+				}
+			}
 		}
 
 		// Enumeration class to access data in a Sparse Lookup System
@@ -112,6 +216,10 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public static int CoordsToPos(int x, int y) => x * Main.maxTilesY + y;
 
+		/// <summary>
+		/// Searches for the value i for which <code>posMap[i].pos &lt; CoordsToPos(x, y) &lt; posMap[i + 1].pos</code>
+		/// </summary>
+		/// <returns>The index of the nearest entry with <see cref="PosData{T}.pos"/> &lt;= CoordsToPos(x, y) or -1 if CoordsToPos(x, y) &lt; <paramref name="posMap"/>[0].pos</returns>
 		public static int FindIndex<T>(this PosData<T>[] posMap, int x, int y) => posMap.FindIndex(CoordsToPos(x, y));
 
 		/// <summary>
@@ -134,9 +242,8 @@ namespace Terraria.ModLoader
 			return minimum;
 		}
 
-
 		/// <summary>
-		/// Raw lookup function. Always returns the raw entry in the position map. Use if default values returned are a concern, as negative position returned are ~'null'
+		/// Raw lookup function. Always returns the raw entry in the position map, or <see cref="PosData{T}.nullPosData"/> if it wasn't found.
 		/// </summary>
 		public static PosData<T> Find<T>(this PosData<T>[] posMap, int pos) => posMap.FindIndex(pos) switch {
 			int i => i < 0 ? PosData<T>.nullPosData : posMap[i]
