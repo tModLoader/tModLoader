@@ -24,4 +24,4 @@ if [ $steam == "y" ]; then
 fi
 
 clear
-./dotnet/5.0.0/dotnet tModLoader.dll -server $launch_args -config serverconfig.txt
+./dotnet/5.0.5/dotnet tModLoader.dll -server $launch_args -config serverconfig.txt
