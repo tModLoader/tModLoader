@@ -51,4 +51,8 @@ if Not exist %INSTALLDIR%\dotnet.exe (
 	)
 	echo Installing_NewFramework
 	powershell -NoProfile -ExecutionPolicy unrestricted -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel %CHANNELSEL% -InstallDir %INSTALLDIR%\ -Version %VERSIONSEL% -Runtime %RUNTIMESELECT%"
+	
+	if Not Exist %INSTALLDIR%\dotnet.exe ( 
+		echo "Portable dotnet installation failed. You will need to manually install .Net Runtime %VERSIONSEL% or higher from: https://dotnet.microsoft.com/download/visual-studio-sdks"
+	)
 )

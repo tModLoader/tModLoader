@@ -13,4 +13,4 @@ if %lobby%==p ( set Args=%Args% -lobby private )
 
 :start
 call InstallNetFramework.bat
-start dotnet\%VERSIONSEL%\dotnet.exe tModLoader.dll %Args%
+if exist %INSTALLDIR%\dotnet.exe ( start dotnet\%VERSIONSEL%\dotnet.exe tModLoader.dll %Args% ) else ( start dotnet tModLoader.dll %Args% )
