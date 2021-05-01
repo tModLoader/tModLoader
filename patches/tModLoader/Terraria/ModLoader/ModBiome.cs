@@ -50,7 +50,10 @@ namespace Terraria.ModLoader
 			SetStaticDefaults();
 		}
 
-		public sealed override bool IsActive(Player player) => player.modBiomeFlags[ZeroIndexType];
+		/// <summary>
+		/// 
+		/// </summary>
+		public sealed override bool IsAVFXActive(Player player) => player.modBiomeFlags[ZeroIndexType];
 
 		/// <summary>
 		/// This is where you can set values for DisplayName.

@@ -106,6 +106,9 @@ namespace Terraria
 		/// </summary>
 		public AVFXLoader.AVFXInstance currentAVFX = new AVFXLoader.AVFXInstance();
 
+		/// <summary>
+		/// Stores whether or not the player is in a modbiome using boolean bits.
+		/// </summary>
 		internal BitArray modBiomeFlags = new BitArray(0);
 
 		/// <summary> 
@@ -115,7 +118,14 @@ namespace Terraria
 		/// <exception cref="NullReferenceException"/>
 		public bool InModBiome(ModBiome baseInstance)=> modBiomeFlags[baseInstance.ZeroIndexType];
 
-		public bool zonePurity = false;
+		/// <summary>
+		/// The zone field storing if the player is in the purity/forest biome. Updated in <see cref="UpdateBiomes"/>
+		/// </summary>
+		public bool zonePurity { get; set; } = false;
+
+		/// <summary>
+		/// Calculates whether or not the player is in the purity/forest biome.
+		/// </summary>
 		public bool InZonePurity() {
 			bool one = ZoneBeach || ZoneCorrupt || ZoneCrimson || ZoneDesert || ZoneDungeon || ZoneGemCave;
 			bool two = ZoneGlowshroom || ZoneGranite || ZoneGraveyard || ZoneHallow || ZoneHive || ZoneJungle;
