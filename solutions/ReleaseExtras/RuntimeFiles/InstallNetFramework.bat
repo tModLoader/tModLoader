@@ -7,13 +7,12 @@ if Not exist dotnet (mkdir dotnet)
 echo Verifying dotnet....
 echo Logging to dotnet\install.log
 echo This may take a few moments....
+
 call :LOG 1> %LOGFILE% 2>&1
 exit /B
 
 :LOG
 REM Read file "tModLoader.runtimeconfig.json" into variable string, removing line breaks.
-setlocal EnableDelayedExpansion
-
 set string=
 for /f "delims=" %%x in (tModLoader.runtimeconfig.json) do set "string=!string!%%x"
 
@@ -30,9 +29,11 @@ set version=%version:}=%
 set "version=%version: =%"
 
 REM Set all the parameters for the install script
-set CHANNELSEL=%version:~0,3%"
+set CHANNELSEL=%version:~0,3%
 set VERSIONSEL=%version%
 set RUNTIMESELECT=dotnet
+
+echo PatchV=%VERSIONSEL%
 
 REM install directories
 set INSTALLDIR=dotnet\%VERSIONSEL%
@@ -51,4 +52,3 @@ if Not exist %INSTALLDIR%\dotnet.exe (
 	echo Installing_NewFramework
 	powershell -NoProfile -ExecutionPolicy unrestricted -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel %CHANNELSEL% -InstallDir %INSTALLDIR%\ -Version %VERSIONSEL% -Runtime %RUNTIMESELECT%"
 )
-
