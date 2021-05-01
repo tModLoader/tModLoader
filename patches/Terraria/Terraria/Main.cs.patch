@@ -433,6 +433,17 @@
  			try {
  				DrawWaters(isBackground: true);
  			}
+@@ -41574,8 +_,9 @@
+ 			}
+ 
+ 			TimeLogger.DetailedDrawReset();
+-			spriteBatch.End();
++			//Vanilla bug fix: These 2 end calls were in the wrong order, causing horrible graphical glitches on FNA's DirectX and Vulkan renderers. But not OpenGL.
+ 			tileBatch.End();
++			spriteBatch.End();
+ 			TimeLogger.DetailedDrawTime(33);
+ 			base.GraphicsDevice.SetRenderTarget(null);
+ 		}
 @@ -42914,6 +_,8 @@
  		}
  
