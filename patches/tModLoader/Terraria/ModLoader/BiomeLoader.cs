@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -40,7 +41,7 @@ namespace Terraria.ModLoader
 		// Internal boilerplate
 
 		internal void SetupPlayer(Player player) {
-			player.modBiomeFlags = new System.Collections.BitArray(list.Count);
+			player.modBiomeFlags = new BitArray(list.Count);
 		}
 
 		public void UpdateBiomes(Player player) {
@@ -60,28 +61,22 @@ namespace Terraria.ModLoader
 
 		public static bool CustomBiomesMatch(Player player, Player other) {
 			for (int i = 0; i < player.modBiomeFlags.Length; i++) {
-				if (player.modBiomeFlags[i] ^ other.modBiomeFlags[i])
+				if (player.modBiomeFlags[i] != other.modBiomeFlags[i])
 					return false;
 			}
 			return true;
 		}
 
 		public static void CopyCustomBiomesTo(Player player, Player other) {
-			for (int i = 0; i < player.modBiomeFlags.Length; i++) {
-				other.modBiomeFlags[i] = player.modBiomeFlags[i];
-			}
+			other.modBiomeFlags = (BitArray)player.modBiomeFlags.Clone();
 		}
 
 		public static void SendCustomBiomes(Player player, BinaryWriter writer) {
-			for (int i = 0; i < player.modBiomeFlags.Length; i++) {
-				writer.Write(player.modBiomeFlags[i]);
-			}
+			Utils.SendBitArray(player.modBiomeFlags, writer);
 		}
 
 		public static void ReceiveCustomBiomes(Player player, BinaryReader reader) {
-			for (int i = 0; i < player.modBiomeFlags.Length; i++) {
-				player.modBiomeFlags[i] = reader.ReadBoolean();
-			}
+			player.modBiomeFlags = Utils.ReceiveBitArray(player.modBiomeFlags.Length, reader);
 		}
 
 		// Hooks

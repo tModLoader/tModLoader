@@ -42,7 +42,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Is invoked when two or more modded AVFX layers are active within the same Priority group to attempt to determine which one should take precedence, if it matters.
+		/// Is invoked when two or more modded AVFX layers are active within the same <see cref="Priority"/> group to attempt to determine which one should take precedence, if it matters.
 		/// Analogously, if AVFX were competing in a wrestling match, this would be how likely the AVFX should win within its weight class.
 		/// Is intentionally bounded as a byte between 0 to 200 to reduce complexity. Defaults to 100%.
 		/// Typical calculations may include: 1) how many tiles are present as a percentage of target amount; 2) how far away you are from the cause of the AVFX

@@ -51,7 +51,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// 
+		/// IsAVFXActive is auto-forwarded to read the result of IsBiomeActive.
+		/// Do not need to implement when creating your ModBiome.
 		/// </summary>
 		public sealed override bool IsAVFXActive(Player player) => player.modBiomeFlags[ZeroIndexType];
 

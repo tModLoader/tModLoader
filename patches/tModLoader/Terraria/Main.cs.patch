@@ -2062,15 +2062,6 @@
  				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.Black;
  				switch (k) {
  					case 0:
-@@ -15679,7 +_,7 @@
- 						break;
- 					case 2:
- 						num12 -= 2;
--						break;
-+					break;
- 					case 3:
- 						num12 += 2;
- 						break;
 @@ -15695,7 +_,7 @@
  				return;
  

@@ -62,7 +62,7 @@ namespace Terraria.ModLoader
 			for (int i = 0; i < list.Count; i++) {
 				ModAVFX avfx = list[i];
 
-				if (!avfx.IsActive(player))
+				if (!avfx.IsAVFXActive(player))
 					continue;
 
 				shortList.Add(
