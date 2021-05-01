@@ -7,13 +7,15 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria
 {
-	public partial class Item : TagSerializable
+	public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	{
 		public static readonly Func<TagCompound, Item> DESERIALIZER = ItemIO.Load;
 
 		public ModItem ModItem { get; internal set; }
 
-		internal Instanced<GlobalItem>[] globalItems = new Instanced<GlobalItem>[0];
+		internal Instanced<GlobalItem>[] globalItems = Array.Empty<Instanced<GlobalItem>>();
+
+		public ReadOnlySpan<Instanced<GlobalItem>> Globals => globalItems;
 
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
