@@ -90,12 +90,12 @@ namespace Terraria.ModLoader
 		}
 
 		public int GetPrimaryModBiome(Player player, out AVFXPriority priority) {
-			int index = 0, weight = 0;
+			int index = 0; float weight = 0;
 			priority = AVFXPriority.None;
 
 			for (int i = 0; i < list.Count; i++) {
 				bool active = player.modBiomeFlags[i] && list[i].IsPrimaryBiome;
-				int tst = list[i].GetCorrWeight(player);
+				float tst = list[i].GetCorrWeight(player);
 				if (active && tst > weight) {
 					index = i + vanillaCount;
 					priority = list[i].Priority;

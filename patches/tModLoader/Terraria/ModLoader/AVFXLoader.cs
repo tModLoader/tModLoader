@@ -44,10 +44,10 @@ namespace Terraria.ModLoader
 
 		private struct AtmosWeight
 		{
-			public int weight;
+			public float weight;
 			public ModAVFX type;
 
-			public AtmosWeight(int weight, ModAVFX type) {
+			public AtmosWeight(float weight, ModAVFX type) {
 				this.weight = weight;
 				this.type = type;
 			}

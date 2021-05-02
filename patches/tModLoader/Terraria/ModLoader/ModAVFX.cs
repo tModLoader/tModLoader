@@ -43,19 +43,20 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Is invoked when two or more modded AVFX layers are active within the same <see cref="Priority"/> group to attempt to determine which one should take precedence, if it matters.
+		/// It's uncommon that need to assign a weight - you'd have to specifically believe that you don't need higher AVFXPriority, but do need to be the active AVFX within the priority you designated
 		/// Analogously, if AVFX were competing in a wrestling match, this would be how likely the AVFX should win within its weight class.
-		/// Is intentionally bounded as a byte between 0 to 200 to reduce complexity. Defaults to 100%.
+		/// Is intentionally bounded at a max of 100% (1) to reduce complexity. Defaults to 50% (0.5).
 		/// Typical calculations may include: 1) how many tiles are present as a percentage of target amount; 2) how far away you are from the cause of the AVFX
 		/// </summary>
-		public virtual byte GetWeight(Player player) => 100;
+		public virtual float GetWeight(Player player) => 0.5f;
 
 		/// <summary>
 		/// Combines Priority and Weight to determine what AVFX should be active. 
 		/// Priority is used to do primary sorting with respect to vanilla AVFX. 
 		/// Weight will be used if multiple AVFX have the same AVFXPriority so as to attempt to distinguish them based on their needs.
 		/// </summary>
-		internal int GetCorrWeight(Player player) {
-			return Math.Min(GetWeight(player), (byte)200) + 200 * (byte)Priority;
+		internal float GetCorrWeight(Player player) {
+			return Math.Max(Math.Min(GetWeight(player), 1), 0) + (float)Priority;
 		}
 
 		public virtual bool IsAVFXActive(Player player) => false;
