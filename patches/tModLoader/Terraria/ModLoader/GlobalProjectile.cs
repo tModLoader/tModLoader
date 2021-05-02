@@ -94,15 +94,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine how a projectile interacts with tiles. Return false if you completely override a projectile's tile collision behavior. Returns true by default.
+		/// Allows you to determine how a projectile interacts with tiles. Return false if you completely override or cancel a projectile's tile collision behavior. Returns true by default.
 		/// </summary>
 		/// <param name="projectile"> The projectile. </param>
-		/// <param name="width"> The width of the hitbox the projectile will use for tile collision. If vanilla or a mod don't modify it, defaults to -1. Leave it as -1 to use the projectile's real width. </param>
-		/// <param name="height"> The height of the hitbox the projectile will use for tile collision. If vanilla or a mod don't modify it, defaults to -1. Leave it as -1 to use the projectile's real height. </param>
+		/// <param name="width"> The width of the hitbox the projectile will use for tile collision. If vanilla or a mod don't modify it, defaults to projectile.width. </param>
+		/// <param name="height"> The height of the hitbox the projectile will use for tile collision. If vanilla or a mod don't modify it, defaults to projectile.height. </param>
 		/// <param name="fallThrough"> Whether or not the projectile falls through platforms and similar tiles. </param>
-		/// <param name="hitboxOffsetMult"> If either width or height isn't -1, this determines by how much the tile collision hitbox will be offset from the projectile's real center. If set to null, the position will be offset by half the width and height, making the tile collision hitbox center align with the real center. </param>
+		/// <param name="hitboxCenterFrac"> Determines by how much the tile collision hitbox's position (top left corner) will be offset from the projectile's real center. If vanilla or a mod don't modify it, defaults to half the hitbox size (new Vector2(0.5f, 0.5f)). </param>
 		/// <returns></returns>
-		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2? hitboxOffsetMult) {
+		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
 			return true;
 		}
 

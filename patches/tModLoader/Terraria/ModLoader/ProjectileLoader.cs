@@ -233,16 +233,16 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		private delegate bool DelegateTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2? hitboxOffsetMult);
+		private delegate bool DelegateTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac);
 		private static HookList HookTileCollideStyle = AddHook<DelegateTileCollideStyle>(g => g.TileCollideStyle);
 
-		public static bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2? hitboxOffsetMult) {
-			if (IsModProjectile(projectile) && !projectile.ModProjectile.TileCollideStyle(ref width, ref height, ref fallThrough, ref hitboxOffsetMult)) {
+		public static bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
+			if (IsModProjectile(projectile) && !projectile.ModProjectile.TileCollideStyle(ref width, ref height, ref fallThrough, ref hitboxCenterFrac)) {
 				return false;
 			}
 
 			foreach (GlobalProjectile g in HookTileCollideStyle.Enumerate(projectile.globalProjectiles)) {
-				if (!g.TileCollideStyle(projectile, ref width, ref height, ref fallThrough, ref hitboxOffsetMult)) {
+				if (!g.TileCollideStyle(projectile, ref width, ref height, ref fallThrough, ref hitboxCenterFrac)) {
 					return false;
 				}
 			}
