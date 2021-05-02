@@ -100,12 +100,12 @@ jobs:
           echo pwd is: ${PWD}
           echo ls -l is:
           ls -l
-          echo Running CompleteRelease.bat
-          ./CompleteRelease.bat skipzip
-          echo CompleteRelease.bat Done
+          echo Running CompleteDebugRelease.bat
+          ./CompleteDebugRelease.bat skipzip
+          echo CompleteDebugRelease.bat Done
           cd ..
-          mkdir -p artifacts/Windows
-          cp -R ./solutions/Release/Shared/. ./artifacts/Windows/
+          mkdir -p artifacts/Debug
+          cp -R ./solutions/Debug/Shared/. ./artifacts/Debug/
           echo Creating decompiled cache zip file
           7z a decompiled.zip ./src/decompiled/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
@@ -116,23 +116,23 @@ jobs:
           
       - uses: actions/upload-artifact@v2
         with:
-          name: Windows Debug Build
+          name: Debug Build
           path: |
-            ./artifacts/Windows/
+            ./artifacts/Debug/
             
       - name: Build ExampleMod
         shell: bash
         run: |
           echo Adding build info to ExampleMod displayName
           echo "displayName = Example Mod (${GITHUB_REF##*/}-${{ github.sha }})" >> ./ExampleMod/build.txt
-          cd artifacts/Windows
+          cd artifacts/Debug
           mkdir -p ModLoader/Mods
           echo pwd is: ${PWD}
           echo Building ExampleMod
           dotnet tModLoader.dll -server -build ../../ExampleMod -tmlsavedirectory ./ModLoader
           cd ../..
           mkdir -p artifacts/Mods
-          mv ./artifacts/Windows/ModLoader/Mods/ExampleMod.tmod ./artifacts/Mods/ExampleMod.tmod
+          mv ./artifacts/Debug/ModLoader/Mods/ExampleMod.tmod ./artifacts/Mods/ExampleMod.tmod
           
       - uses: actions/upload-artifact@v2
         with:

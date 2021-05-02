@@ -356,7 +356,7 @@
  						if (Main.netMode != 0)
  							NetMessage.SendPlayerHurt(num45, playerDeathReason, num46, base.direction, flag17, pvp: true, -1);
  
-@@ -10209,14 +_,23 @@
+@@ -10209,9 +_,15 @@
  
  			if (Main.getGoodWorld && type == 281)
  				flag18 = true;
@@ -372,20 +372,15 @@
  
  			int direction = base.direction;
  			direction = ((!(Main.player[myPlayer2].position.X + (float)(Main.player[myPlayer2].width / 2) < base.position.X + (float)(width / 2))) ? 1 : (-1));
- 			if (!Main.player[myPlayer2].CanParryAgainst(Main.player[myPlayer2].Hitbox, base.Hitbox, velocity)) {
- 				int num52 = Main.DamageVar(damage, 0f - Main.player[owner].luck);
-+				bool crit = false;
-+				ProjectileLoader.ModifyHitPlayer(this, Main.player[myPlayer2], ref num52, ref crit);
-+				PlayerHooks.ModifyHitByProjectile(Main.player[myPlayer2], this, ref num52, ref crit);
- 				int num53 = bannerIdToRespondTo;
- 				if (num53 > 0 && Main.player[myPlayer2].HasNPCBannerBuff(num53)) {
- 					ItemID.BannerEffect bannerEffect = ItemID.Sets.BannerStrength[Item.BannerToItem(num53)];
-@@ -10235,7 +_,9 @@
+@@ -10235,7 +_,12 @@
  
  				num52 = (int)((float)num52 * num54);
  				int num55 = num52 * 2;
 -				if (Main.player[myPlayer2].Hurt(PlayerDeathReason.ByProjectile(-1, whoAmI), num55, direction, pvp: false, quiet: false, Crit: false, num51) > 0.0 && !Main.player[myPlayer2].dead)
-+				int realDamage = (int)Main.player[myPlayer2].Hurt(PlayerDeathReason.ByProjectile(-1, whoAmI), num55, direction, pvp: false, quiet: false, Crit: false, num51);
++				bool crit = false;
++				ProjectileLoader.ModifyHitPlayer(this, Main.player[myPlayer2], ref num55, ref crit);
++				PlayerHooks.ModifyHitByProjectile(Main.player[myPlayer2], this, ref num55, ref crit);
++				int realDamage = (int)Main.player[myPlayer2].Hurt(PlayerDeathReason.ByProjectile(-1, whoAmI), num55, direction, pvp: false, quiet: false, Crit: crit, num51);
 +
 +				if (realDamage > 0 && !Main.player[myPlayer2].dead)
  					StatusPlayer(myPlayer2);

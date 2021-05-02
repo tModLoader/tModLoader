@@ -24,21 +24,31 @@ namespace Terraria.ModLoader
 		internal static readonly IList<GlobalProjectile> globalProjectiles = new List<GlobalProjectile>();
 
 		private static int nextProjectile = ProjectileID.Count;
-		private static List<HookList> hooks = new List<HookList>();
+		private static readonly List<HookList> hooks = new List<HookList>();
+		private static readonly List<HookList> modHooks = new List<HookList>();
 		private static Instanced<GlobalProjectile>[] globalProjectilesArray = new Instanced<GlobalProjectile>[0];
 
 		private static HookList AddHook<F>(Expression<Func<GlobalProjectile, F>> func) {
 			var hook = new HookList(ModLoader.Method(func));
+
 			hooks.Add(hook);
+
+			return hook;
+		}
+
+		public static T AddModHook<T>(T hook) where T : HookList {
+			hook.Update(globalProjectiles);
+
+			modHooks.Add(hook);
+
 			return hook;
 		}
 
 		internal static int ReserveProjectileID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding projectiles breaks vanilla client compatibility");
+			if (ModNet.AllowVanillaClients)
+				throw new Exception("Adding projectiles breaks vanilla client compatibility");
 
-			int reserveID = nextProjectile;
-			nextProjectile++;
-			return reserveID;
+			return nextProjectile++;
 		}
 
 		public static int ProjectileCount => nextProjectile;
@@ -81,7 +91,7 @@ namespace Terraria.ModLoader
 				.Select(g => new Instanced<GlobalProjectile>(g.index, g))
 				.ToArray();
 
-			foreach (var hook in hooks) {
+			foreach (var hook in hooks.Union(modHooks)) {
 				hook.Update(globalProjectiles);
 			}
 		}
@@ -90,6 +100,7 @@ namespace Terraria.ModLoader
 			projectiles.Clear();
 			nextProjectile = ProjectileID.Count;
 			globalProjectiles.Clear();
+			modHooks.Clear();
 		}
 
 		internal static bool IsModProjectile(Projectile projectile) {
@@ -498,6 +509,21 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static void ModifyFishingLine(Projectile projectile, ref float polePosX, ref float polePosY, ref Color lineColor) {
+			if (projectile.ModProjectile == null)
+				return;
+
+			Vector2 lineOriginOffset = Vector2.Zero;
+			Player player = Main.player[projectile.owner];
+
+			projectile.ModProjectile?.ModifyFishingLine(ref lineOriginOffset, ref lineColor);
+
+			polePosX += lineOriginOffset.X * player.direction;
+			if (player.direction < 0)
+				polePosX -= 13f;
+			polePosY += lineOriginOffset.Y * player.gravDir;
+		}
+
 		private static HookList HookGetAlpha = AddHook<Func<Projectile, Color, Color?>>(g => g.GetAlpha);
 
 		public static Color? GetAlpha(Projectile projectile, Color lightColor) {
@@ -520,45 +546,46 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookPreDrawExtras = AddHook<Func<Projectile, SpriteBatch, bool>>(g => g.PreDrawExtras);
+		private static HookList HookPreDrawExtras = AddHook<Func<Projectile, bool>>(g => g.PreDrawExtras);
 
-		public static bool PreDrawExtras(Projectile projectile, SpriteBatch spriteBatch) {
+		public static bool PreDrawExtras(Projectile projectile) {
 			bool result = true;
 
 			foreach (GlobalProjectile g in HookPreDrawExtras.Enumerate(projectile.globalProjectiles)) {
-				result &= g.PreDrawExtras(projectile, spriteBatch);
+				result &= g.PreDrawExtras(projectile);
 			}
 
 			if (result && projectile.ModProjectile != null) {
-				return projectile.ModProjectile.PreDrawExtras(spriteBatch);
+				return projectile.ModProjectile.PreDrawExtras();
 			}
 
 			return result;
 		}
 
-		private static HookList HookPreDraw = AddHook<Func<Projectile, SpriteBatch, Color, bool>>(g => g.PreDraw);
+		private delegate bool DelegatePreDraw(Projectile projectile, ref Color lightColor);
+		private static HookList HookPreDraw = AddHook<DelegatePreDraw>(g => g.PreDraw);
 
-		public static bool PreDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
+		public static bool PreDraw(Projectile projectile, ref Color lightColor) {
 			bool result = true;
 
 			foreach (GlobalProjectile g in HookPreDraw.Enumerate(projectile.globalProjectiles)) {
-				result &= g.PreDraw(projectile, spriteBatch, lightColor);
+				result &= g.PreDraw(projectile, ref lightColor);
 			}
 
 			if (result && projectile.ModProjectile != null) {
-				return projectile.ModProjectile.PreDraw(spriteBatch, lightColor);
+				return projectile.ModProjectile.PreDraw(ref lightColor);
 			}
 
 			return result;
 		}
 
-		private static HookList HookPostDraw = AddHook<Action<Projectile, SpriteBatch, Color>>(g => g.PostDraw);
+		private static HookList HookPostDraw = AddHook<Action<Projectile, Color>>(g => g.PostDraw);
 
-		public static void PostDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
-			projectile.ModProjectile?.PostDraw(spriteBatch, lightColor);
+		public static void PostDraw(Projectile projectile, Color lightColor) {
+			projectile.ModProjectile?.PostDraw(lightColor);
 
 			foreach (GlobalProjectile g in HookPostDraw.Enumerate(projectile.globalProjectiles)) {
-				g.PostDraw(projectile, spriteBatch, lightColor);
+				g.PostDraw(projectile, lightColor);
 			}
 		}
 
@@ -653,13 +680,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookDrawBehind = AddHook<Action<Projectile, int, List<int>, List<int>, List<int>, List<int>>>(g => g.DrawBehind);
+		private static HookList HookDrawBehind = AddHook<Action<Projectile, int, List<int>, List<int>, List<int>, List<int>, List<int>>>(g => g.DrawBehind);
 
-		internal static void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {
-			projectile.ModProjectile?.DrawBehind(index, drawCacheProjsBehindNPCsAndTiles, drawCacheProjsBehindNPCs, drawCacheProjsBehindProjectiles, drawCacheProjsOverWiresUI);
+		internal static void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
+			projectile.ModProjectile?.DrawBehind(index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
 
 			foreach (GlobalProjectile g in HookDrawBehind.Enumerate(projectile.globalProjectiles)) {
-				g.DrawBehind(projectile, index, drawCacheProjsBehindNPCsAndTiles, drawCacheProjsBehindNPCs, drawCacheProjsBehindProjectiles, drawCacheProjsOverWiresUI);
+				g.DrawBehind(projectile, index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
 			}
 		}
 
