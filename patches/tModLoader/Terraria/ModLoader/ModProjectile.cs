@@ -330,6 +330,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// If this projectile is a bobber, allows you to modify the origin of the fisihing line that's connecting to the fishing pole, as well as the fishing line's color.
+		/// </summary>
+		/// <param name="lineOriginOffset"> The offset of the fishing line's origin from the player's center. </param>
+		/// <param name="lineColor"> The fishing line's color, before being overridden by string color accessories. </param>
+		public virtual void ModifyFishingLine(ref Vector2 lineOriginOffset, ref Color lineColor) {
+		}
+
+		/// <summary>
 		/// Allows you to determine the color and transparency in which this projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default.
 		/// </summary>
 		public virtual Color? GetAlpha(Color lightColor) {
