@@ -49,7 +49,7 @@ namespace ExampleMod.Content.Projectiles
 			}
 		}
 
-		public override bool PreDrawExtras(SpriteBatch spriteBatch) {
+		public override bool PreDrawExtras() {
 			// Change these two values in order to change the origin of where the line is being drawn
 			const int XPositionAdditive = 45;
 			const float YPositionAdditive = 35f;
@@ -152,7 +152,7 @@ namespace ExampleMod.Content.Projectiles
 				float rotation = playerToProjectile.ToRotation() - MathHelper.PiOver2;
 				var origin = new Vector2(texture.Width * 0.5f, 0f);
 
-				spriteBatch.Draw(texture, linePos, sourceRectangle, lineColor, rotation, origin, 1f, SpriteEffects.None, 0f);
+				Main.EntitySpriteDraw(texture, linePos, sourceRectangle, lineColor, rotation, origin, 1f, SpriteEffects.None, 0);
 			}
 			
 			return false;
