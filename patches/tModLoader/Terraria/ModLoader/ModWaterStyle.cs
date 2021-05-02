@@ -12,27 +12,17 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The ID of the water style.
 		/// </summary>
-		public int Type { get; internal set; }
+		public int Slot { get; internal set; }
 
 		public virtual string BlockTexture => Texture + "_Block";
 
 		protected sealed override void Register() {
-			Type = WaterStyleLoader.ReserveStyle();
-
-			ModTypeLookup<ModWaterStyle>.Register(this);
-			WaterStyleLoader.waterStyles.Add(this);
+			Slot = Loaders.Waters.Register(this);
 		}
 
 		public sealed override void SetupContent() {
-			LiquidRenderer.Instance._liquidTextures[Type] = ModContent.GetTexture(Texture);
-			TextureAssets.Liquid[Type] = ModContent.GetTexture(BlockTexture);
-		}
-
-		/// <summary>
-		/// Whether the conditions have been met for this water style to be used. Typically Main.bgStyle is checked to determine whether a water style should be used. Returns false by default.
-		/// </summary>
-		public virtual bool ChooseWaterStyle() {
-			return false;
+			LiquidRenderer.Instance._liquidTextures[Slot] = ModContent.GetTexture(Texture);
+			TextureAssets.Liquid[Slot] = ModContent.GetTexture(BlockTexture);
 		}
 
 		/// <summary>
@@ -75,17 +65,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The ID of this waterfall style.
 		/// </summary>
-		public int Type { get; internal set; }
+		public int Slot { get; internal set; }
 
 		protected sealed override void Register() {
-			Type = WaterfallStyleLoader.ReserveStyle();
-
-			ModTypeLookup<ModWaterfallStyle>.Register(this);
-			WaterfallStyleLoader.waterfallStyles.Add(this);
+			Slot = Loaders.Waterfalls.Register(this);
 		}
 
 		public sealed override void SetupContent() {
-			Main.instance.waterfallManager.waterfallTexture[Type] = ModContent.GetTexture(Texture);
+			Main.instance.waterfallManager.waterfallTexture[Slot] = ModContent.GetTexture(Texture);
 		}
 
 		/// <summary>
