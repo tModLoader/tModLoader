@@ -61,7 +61,7 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.4.2.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.4.2.2")]
         public string ClientVersion {
             get {
                 return ((string)(this["ClientVersion"]));
@@ -70,7 +70,7 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.4.2.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.4.2.2")]
         public string ServerVersion {
             get {
                 return ((string)(this["ServerVersion"]));
@@ -103,7 +103,7 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ff61b96a07894a9e65f880fb9608fb37")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00d7f0d6590efadeed6393d00e59f777")]
         public string GoGClientWinMD5 {
             get {
                 return ((string)(this["GoGClientWinMD5"]));
@@ -112,19 +112,19 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Steam\\steamapps\\common\\tModLoaderDev")]
-        public string TMLSteamDir {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TMLDevSteamDir {
             get {
-                return ((string)(this["TMLSteamDir"]));
+                return ((string)(this["TMLDevSteamDir"]));
             }
             set {
-                this["TMLSteamDir"] = value;
+                this["TMLDevSteamDir"] = value;
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6ebb2e222126aaae302d34a3a2c82cb9")]
+        [global::System.Configuration.DefaultSettingValueAttribute("acfd53772989dbbd7231f98d38669651")]
         public string SteamClientWinMD5 {
             get {
                 return ((string)(this["SteamClientWinMD5"]));

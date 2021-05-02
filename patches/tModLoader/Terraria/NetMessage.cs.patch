@@ -163,7 +163,7 @@
  							writer.Write(player3.zone3);
  							writer.Write(player3.zone4);
 +							if (!ModNet.AllowVanillaClients)
-+								PlayerHooks.SendCustomBiomes(player3, writer);
++								BiomeLoader.SendCustomBiomes(player3, writer);
 +
  							break;
  						}

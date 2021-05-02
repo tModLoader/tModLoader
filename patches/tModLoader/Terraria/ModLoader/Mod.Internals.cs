@@ -172,7 +172,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void AutoloadBackgrounds() {
-			foreach (string texture in Assets.EnumeratePaths<Texture2D>().Where(t => t.StartsWith("Backgrounds/"))) {
+			foreach (string texture in Assets.EnumeratePaths<Texture2D>().Where(t => t.Contains("Backgrounds/"))) {
 				AddBackgroundTexture($"{Name}/{texture}");
 			}
 		}
@@ -182,8 +182,8 @@ namespace Terraria.ModLoader
 
 			const string SoundFolder = "Sounds/";
 
-			foreach (string soundPath in Assets.EnumeratePaths<SoundEffect>().Where(t => t.StartsWith(SoundFolder))) {
-				string substring = soundPath.Substring(SoundFolder.Length);
+			foreach (string soundPath in Assets.EnumeratePaths<SoundEffect>().Where(t => t.Contains(SoundFolder))) {
+				string substring = soundPath.Substring(soundPath.IndexOf(SoundFolder) + SoundFolder.Length);
 				SoundType soundType = SoundType.Custom;
 
 				if (substring.StartsWith("Item/")) {
