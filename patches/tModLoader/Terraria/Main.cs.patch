@@ -3572,7 +3572,7 @@
  							DrawSurfaceBG_DrawChangeOverlay(11);
  						}
 +
-+						if (num20 >= LoaderManager.Get<SurfaceBgStylesLoader>().VanillaCount) {
++						if (num20 >= BG_STYLES_COUNT) {
 +							LoaderManager.Get<SurfaceBgStylesLoader>().DrawCloseBackground(num20);
 +						}
  					}
@@ -3846,7 +3846,7 @@
  					DrawBG_ModifyBGFarBackLayerAlpha(value, null, transitionAmountOverride);
  					break;
  				default:
-+					if (value >= LoaderManager.Get<SurfaceBgStylesLoader>().VanillaCount) {
++					if (value >= BG_STYLES_COUNT) {
 +						DrawBG_ModifyBGFarBackLayerAlpha(value, null, transitionAmountOverride);
 +						break;
 +					}

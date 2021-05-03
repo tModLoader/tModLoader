@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Terraria.ModLoader
 {
@@ -9,8 +10,8 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class Loader<T> : ILoader where T : ModType
 	{
-		public int VanillaCount { get; internal set; }
-		public int TotalCount { get; internal set; }
+		public int VanillaCount { get; set; }
+		internal int TotalCount { get; set; }
 
 		internal List<T> list = new List<T>();
 
@@ -18,11 +19,11 @@ namespace Terraria.ModLoader
 		/// Initilizes the loader based on the vanilla count of the ModType.
 		/// </summary>
 		internal void Initialize(int vanillaCount) {
-			this.VanillaCount = vanillaCount;
+			VanillaCount = vanillaCount;
 			TotalCount = vanillaCount;
 		}
 
-		public int Reserve() {
+		private int Reserve() {
 			int reserve = TotalCount;
 			TotalCount++;
 			return reserve;
@@ -61,44 +62,32 @@ namespace Terraria.ModLoader
 	}
 
 	public static class LoaderManager {
-		private static Dictionary<Type, object> list = new Dictionary<Type, object>();
+		private static Dictionary<Type, ILoader> dict = new Dictionary<Type, ILoader>();
 
 		internal static void AutoLoad() {
 			List<Type> allSubTypes = new List<Type>();
-			foreach (var assem in AppDomain.CurrentDomain.GetAssemblies()) {
-				if (!assem.FullName.Contains("tModLoader"))
-					continue;
-
-				foreach (var subtype in assem.GetTypes()) {
-					if (typeof(ILoader).IsAssignableFrom(subtype) && !subtype.IsAbstract && subtype.IsClass) {
-						allSubTypes.Add(subtype);
-					}
+			foreach (var subtype in Assembly.GetExecutingAssembly().GetTypes()) {
+				if (typeof(ILoader).IsAssignableFrom(subtype) && !subtype.IsAbstract && subtype.IsClass) {
+					dict.Add(subtype, (ILoader)Activator.CreateInstance(subtype));
 				}
-			}
-
-			foreach (var type in allSubTypes) {
-				object instance = Activator.CreateInstance(type);
-				list.Add(type, instance);
 			}
 		}
 
 		public static T Get<T>() {
-			if (!list.TryGetValue(typeof(T), out object result))
-				return Activator.CreateInstance<T>();
+			if (!dict.TryGetValue(typeof(T), out var result))
+				return Activator.CreateInstance<T>(); // Return empty instance in case of static Player constructor or similar
 
 			return (T)result;
 		}
 
-		public static void Unload() {
-			foreach (var item in list.Values) {
-				ILoader loader = (ILoader)item;
+		internal static void Unload() {
+			foreach (var loader in dict.Values) {
 				loader.Unload();
 			}
 		}
 
-		public static void ResizeArrays() {
-			foreach (var item in list.Values) {
-				ILoader loader = (ILoader)item;
+		internal static void ResizeArrays() {
+			foreach (var loader in dict.Values) {
 				loader.ResizeArrays();
 			}
 		}

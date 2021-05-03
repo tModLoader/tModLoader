@@ -10,7 +10,7 @@
  			}
  
 +			var atmos = Main.LocalPlayer.currentAvfx;
-+			if (atmos.waterStyle.value >= LoaderManager.Get<WaterStylesLoader>().VanillaCount) {
++			if (atmos.waterStyle.value >= Main.maxLiquidTypes) {
 +				// This makes the capture match whatever the end result is of all modded effects, but that isn't quite right.
 +				//TODO: Future improvement should be using the Avfx layer associated to background.
 +				return new CaptureBiome(atmos.surfaceBG.value, atmos.waterStyle.value, atmos.tileColorStyle);
@@ -25,7 +25,7 @@
  				default:
 -					return null;
 +					var atmos = Main.LocalPlayer.currentAvfx;
-+					if (atmos.surfaceBG.value >= LoaderManager.Get<SurfaceBgStylesLoader>().VanillaCount) {
++					if (atmos.surfaceBG.value >= Main.BG_STYLES_COUNT) {
 +						// This makes the capture match whatever the end result is of all modded effects, but that isn't quite right.
 +						//TODO: Future improvement should be using the Avfx layer associated to background.
 +						return new CaptureBiome(atmos.surfaceBG.value, atmos.waterStyle.value, atmos.tileColorStyle);

@@ -44,7 +44,7 @@
  								break;
  							}
  					}
-+					if (num12 >= LoaderManager.Get<WaterFallStylesLoader>().VanillaCount)
++					if (num12 >= maxTypes)
 +						LoaderManager.Get<WaterFallStylesLoader>().Get(num12).AddLight(num13, num14);
  
  					int num31 = 0;
@@ -63,7 +63,7 @@
  							break;
  					}
  
-+					if (num12 >= LoaderManager.Get<WaterFallStylesLoader>().VanillaCount)
++					if (num12 >= maxTypes)
 +						LoaderManager.Get<WaterFallStylesLoader>().Get(num12).ColorMultiplier(ref num38, ref num39, ref num40, num37);
 +
  					color5 = new Color((int)num38, (int)num39, (int)num40, (int)num41);

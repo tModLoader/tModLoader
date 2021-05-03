@@ -15,7 +15,7 @@ namespace Terraria.ModLoader
 		public override AvfxPriority Priority => AvfxPriority.BiomeLow;
 		public override int Music => 0;
 
-		internal int ZeroIndexType => Type - LoaderManager.Get<BiomeLoader>().VanillaCount; 
+		internal int ZeroIndexType => Type - BiomeLoader.VanillaPrimaryBiomeCount; 
 
 		// Bestiary properties
 		/// <summary>
