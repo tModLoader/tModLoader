@@ -1,10 +1,8 @@
 ﻿using MonoMod.RuntimeDetour;
-using MonoMod.Utils;
 using System;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace Terraria.ModLoader.Core
@@ -33,33 +31,11 @@ namespace Terraria.ModLoader.Core
 				Logging.PrettifyStackTraceSources(self.GetFrames());
 		}
 
-		// On Mono, hook Exception.StackTrace, generate a StackTrace, and edit it with source and line info
-		private static readonly Regex trimParamTypes = new Regex(@"([([,] ?)(?:[\w.+]+[.+])", RegexOptions.Compiled);
-		private static readonly Regex dropOffset = new Regex(@" \[.+?\](?![^:]+:-1)", RegexOptions.Compiled);
-		private static readonly Regex dropGenericTicks = new Regex(@"`\d+", RegexOptions.Compiled);
-
-		private delegate string orig_GetStackTrace(Exception self, bool fNeedFileInfo);
-		private delegate string hook_GetStackTrace(orig_GetStackTrace orig, Exception self, bool fNeedFileInfo);
-		private static string HookGetStackTrace(orig_GetStackTrace orig, Exception self, bool fNeedFileInfo) {
-			var stackTrace = new StackTrace(self, true);
-			MdbManager.Symbolize(stackTrace.GetFrames());
-			Logging.PrettifyStackTraceSources(stackTrace.GetFrames());
-			var s = stackTrace.ToString();
-			s = trimParamTypes.Replace(s, "$1");
-			s = dropGenericTicks.Replace(s, "");
-			s = dropOffset.Replace(s, "");
-			s = s.Replace(":-1", "");
-			return s;
-		}
-
 		private static void PrettifyStackTraceSources() {
 			if (Logging.f_fileName == null)
 				return;
 
-			if (FrameworkVersion.Framework == Framework.NetFramework)
-				new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
-			else if (FrameworkVersion.Framework == Framework.Mono)
-				new Hook(typeof(Exception).FindMethod("GetStackTrace"), new hook_GetStackTrace(HookGetStackTrace));
+			new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
 		}
 
 		private delegate EventHandler SendRequest(object self, HttpWebRequest request);
@@ -77,45 +53,11 @@ namespace Terraria.ModLoader.Core
 		/// </summary>
 		private static void HookWebRequests() {
 			try {
-				// .NET 4.7.2
-				MethodBase met = typeof(HttpWebRequest).Assembly
-					.GetType("System.Net.Connection")
-					?.FindMethod("SubmitRequest");
-				if (met != null) {
-					new Hook(met, new SubmitRequestHook((orig, self, request, forcedsubmit) => {
-						Logging.tML.Debug($"Web Request: " + request.Address);
-						return orig(self, request, forcedsubmit);
-					}));
-					return;
-				}
-
-				// Mono 5.20
-				met = typeof(HttpWebRequest).Assembly
-					.GetType("System.Net.WebOperation")
-					?.GetConstructors()[0];
-				if (met != null && met.GetParameters().Length == 4) {
-					new Hook(met, new WebOperation_ctorHook((orig, self, request, buffer, challenge, token) => {
-						Logging.tML.Debug($"Web Request: " + request.Address);
-						orig(self, request, buffer, challenge, token);
-					}));
-					return;
-				}
-
-				// Mono 4.6.1
-				met = typeof(HttpWebRequest).Assembly
-					.GetType("System.Net.WebConnection")
-					?.FindMethod("SendRequest");
-				if (met != null) {
-					new Hook(met, new SendRequestHook((orig, self, request) => {
-						Logging.tML.Debug($"Web Request: " + request.Address);
-						return orig(self, request);
-					}));
-					return;
-				}
+				// TODO re-implement for Core?
 			}
-			catch { }
-
-			Logging.tML.Warn("HttpWebRequest send/submit method not found");
+			catch {
+				Logging.tML.Warn("HttpWebRequest send/submit method not found");
+			}
 		}
 	}
 }

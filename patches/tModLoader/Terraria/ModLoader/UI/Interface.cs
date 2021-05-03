@@ -35,7 +35,6 @@ namespace Terraria.ModLoader.UI
 		internal const int enterSteamIDMenuID = 10018;
 		internal const int extractModID = 10019;
 		internal const int downloadProgressID = 10020;
-		internal const int developerModeHelpID = 10022;
 		internal const int progressID = 10023;
 		internal const int modConfigID = 10024;
 		internal const int createModID = 10025;
@@ -54,7 +53,6 @@ namespace Terraria.ModLoader.UI
 		internal static UIModPacks modPacksMenu = new UIModPacks();
 		internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
 		internal static UIExtractMod extractMod = new UIExtractMod();
-		internal static UIDeveloperModeHelp developerModeHelp = new UIDeveloperModeHelp();
 		internal static UIModConfig modConfig = new UIModConfig();
 		internal static UIModConfigList modConfigList = new UIModConfigList();
 		internal static UICreateMod createMod = new UICreateMod();
@@ -75,7 +73,7 @@ namespace Terraria.ModLoader.UI
 				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModSources");
 				if (selectedMenu == buttonIndex) {
 					SoundEngine.PlaySound(10, -1, -1, 1);
-					Main.menuMode = ModCompile.DeveloperModeReady(out var _) ? modSourcesID : developerModeHelpID;
+					Main.menuMode = modSourcesID;
 				}
 				buttonIndex++;
 				numButtons++;
@@ -141,10 +139,6 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (Main.menuMode == createModID) {
 				Main.MenuUI.SetState(createMod);
-				Main.menuMode = 888;
-			}
-			else if (Main.menuMode == developerModeHelpID) {
-				Main.MenuUI.SetState(developerModeHelp);
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == loadModsID) {

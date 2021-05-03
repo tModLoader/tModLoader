@@ -1,26 +1,19 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -2,25 +_,30 @@
- using ReLogic.OS;
- using System;
+@@ -4,6 +_,7 @@
  using System.Collections.Generic;
-+
- #if CLIENT
  using System.Diagnostics;
- #endif
  using System.IO;
 +using System.Linq;
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
- using System.Threading;
-+
- #if CLIENT
+@@ -11,12 +_,15 @@
  using System.Windows.Forms;
- #endif
  using Terraria.Initializers;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Core;
 +using Terraria.ModLoader.Exceptions;
  using Terraria.Social;
  using Terraria.Utilities;
@@ -30,26 +23,23 @@
 -	public static class Program
 +	public static partial class Program
  	{
- #if CLIENT
+ 		/* hide unused consts
  		public const bool IsServer = false;
-@@ -64,23 +_,18 @@
- 		public static void ForceLoadThread(object threadContext) {
- 			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
+@@ -55,21 +_,15 @@
  			LoadedEverything = true;
-+			Logging.Terraria.Info("JIT loading finished");
  		}
  
 -		private static void ForceJITOnAssembly(Assembly assembly) {
 -			Type[] types = assembly.GetTypes();
 -			for (int i = 0; i < types.Length; i++) {
--#if WINDOWS
+-#if WINDOWS || NETCORE
 -				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 -#else
 -				MethodInfo[] methods = types[i].GetMethods();
 -#endif
 -				foreach (MethodInfo methodInfo in methods) {
 -					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
--#if WINDOWS
+-#if WINDOWS || NETCORE
 -						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
 -#else
 -						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
@@ -66,7 +56,7 @@
  				}
  
  				ThingsLoaded++;
-@@ -96,10 +_,13 @@
+@@ -85,10 +_,13 @@
  		}
  
  		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
@@ -75,7 +65,7 @@
 -			if (initializeStaticMembers)
 -				ForceStaticInitializers(assembly);
 +			var types = assembly.GetTypes();
-+			ThingsToLoad = types.Select(type => GetMethodsCrossPlatform(type).Count()).Sum();
++			ThingsToLoad = types.Select(type => GetAllMethods(type).Count()).Sum();
 +
 +			ForceJITOnAssembly(types);
 +			if (initializeStaticMembers) {
@@ -84,7 +74,20 @@
  		}
  
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -151,27 +_,52 @@
+@@ -124,8 +_,11 @@
+ 		}
+ 
+ 		private static void InitializeConsoleOutput() {
+-			if (!Main.dedServ && Debugger.IsAttached)
++			if (!Main.dedServ && (Debugger.IsAttached || LaunchParameters.ContainsKey("-console")))
+ 				return;
++
++			if (!Main.dedServ)
++				Platform.Get<IWindowService>().HideConsole();
+ 
+ 			try {
+ 				Console.OutputEncoding = Encoding.UTF8;
+@@ -138,32 +_,59 @@
  			}
  		}
  
@@ -105,18 +108,24 @@
 +			if (File.Exists("savehere.txt"))
 +				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
 +
++			bool dedServ = LaunchParameters.ContainsKey("-server");
 +			try {
-+				Logging.Init();
++				Logging.Init(dedServ);
 +			}
 +			catch (Exception e) {
 +				DisplayException(e);
 +				return;
 +			}
 +
-+			LaunchGame_();
++			if (LaunchInitializer.TryParameter("-build") is string build)
++				// Inside the build from command line, the application exits
++				// Anything beyond this point will not be executed
++				ModCompile.BuildModCommandLine(build);
++
++			LaunchGame_(dedServ);
 +		}
 +
-+		public static void LaunchGame_() {
++		public static void LaunchGame_(bool dedServ) {
  			if (Platform.IsOSX) {
  				Main.OnEngineLoad += delegate {
  					Main.instance.IsMouseVisible = false;
@@ -124,14 +133,20 @@
  			}
  
 -			LaunchParameters = Utils.ParseArguements(args);
+-#if SERVER
+-			Main.dedServ = true;
++			Main.dedServ = dedServ;
+-#else
+-			Main.dedServ = LaunchParameters.ContainsKey("-server");
+-#endif
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
  			InitializeConsoleOutput();
 -			SetupLogging();
++			//Program.SetupLogging();
  			Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
 -			using (Main main = new Main()) {
 -				try {
-+			//Program.SetupLogging();
 +			try {
 +				ModLoader.ModLoader.EngineInit();
 +				using (Main main = new Main()) {
@@ -140,10 +155,10 @@
 +					main.PostSocialInitialize();
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
- #if CLIENT
-@@ -180,9 +_,10 @@
- 					main.DedServ();
- #endif
+ 					if (!Main.dedServ)
+@@ -171,9 +_,10 @@
+ 					else
+ 						main.DedServ();
  				}
 -				catch (Exception e) {
 -					DisplayException(e);
@@ -155,11 +170,14 @@
  			}
  		}
  
-@@ -217,9 +_,21 @@
+@@ -208,9 +_,22 @@
  				}
  
- #if CLIENT
--				MessageBox.Show(e.ToString(), Language.GetTextValue("Error.Error"));
+ 				if (Main.dedServ)
+-					Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
++				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
+ 
+-				MessageBox.Show(text, "Terraria: Error");
 +				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
 +
 +				if (e is FolderCreationFailedException)
@@ -173,9 +191,7 @@
 +
 +					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
 +				}
- #else
--				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
-+				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
- #endif
++
  			}
  			catch {
+ 			}

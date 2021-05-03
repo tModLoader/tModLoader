@@ -1,6 +1,12 @@
 --- src/Terraria/Terraria/DataStructures/PlayerDrawSet.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDrawSet.cs
-@@ -10,6 +_,15 @@
+@@ -5,11 +_,21 @@
+ using Terraria.GameContent.Golf;
+ using Terraria.Graphics.Shaders;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.DataStructures
  {
  	public struct PlayerDrawSet
  	{
@@ -27,6 +33,15 @@
  			DrawDataCache = drawData;
  			DustCache = dust;
  			GoreCache = gore;
+@@ -226,6 +_,8 @@
+ 				type = Main.projectile[drawPlayer.heldProj].type;
+ 				if (type == 460 || type == 535 || type == 600)
+ 					heldProjOverHand = true;
++
++				ProjectileLoader.DrawHeldProjInFrontOfHeldItemAndArms(Main.projectile[drawPlayer.heldProj], ref heldProjOverHand);
+ 			}
+ 
+ 			drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
 @@ -253,7 +_,7 @@
  
  			playerEffect = SpriteEffects.None;

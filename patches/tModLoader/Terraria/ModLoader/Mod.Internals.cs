@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using MP3Sharp;
-using NVorbis;
 using ReLogic.Content;
 using ReLogic.Content.Readers;
 using ReLogic.Content.Sources;
@@ -16,7 +14,6 @@ using Terraria.Localization;
 using Terraria.ModLoader.Assets;
 using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Exceptions;
-using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
@@ -53,7 +50,8 @@ namespace Terraria.ModLoader
 
 		internal void UnloadContent() {
 			Unload();
-			foreach(var loadable in content.Reverse()) {
+
+			foreach (var loadable in content.Reverse()) {
 				loadable.Unload();
 			}
 			content.Clear();
@@ -79,7 +77,7 @@ namespace Terraria.ModLoader
 			musics.Clear();
 
 			Assets?.Dispose();
-		} 
+		}
 
 		internal void Autoload() {
 			if (Code == null)
@@ -174,7 +172,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void AutoloadBackgrounds() {
-			foreach (string texture in Assets.EnumeratePaths<Texture2D>().Where(t => t.StartsWith("Backgrounds/"))) {
+			foreach (string texture in Assets.EnumeratePaths<Texture2D>().Where(t => t.Contains("Backgrounds/"))) {
 				AddBackgroundTexture($"{Name}/{texture}");
 			}
 		}
@@ -184,8 +182,8 @@ namespace Terraria.ModLoader
 
 			const string SoundFolder = "Sounds/";
 
-			foreach (string soundPath in Assets.EnumeratePaths<SoundEffect>().Where(t => t.StartsWith(SoundFolder))) {
-				string substring = soundPath.Substring(SoundFolder.Length);
+			foreach (string soundPath in Assets.EnumeratePaths<SoundEffect>().Where(t => t.Contains(SoundFolder))) {
+				string substring = soundPath.Substring(soundPath.IndexOf(SoundFolder) + SoundFolder.Length);
 				SoundType soundType = SoundType.Custom;
 
 				if (substring.StartsWith("Item/")) {

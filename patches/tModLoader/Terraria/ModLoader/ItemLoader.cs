@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
@@ -34,11 +35,22 @@ namespace Terraria.ModLoader
 		private static int nextItem = ItemID.Count;
 		private static Instanced<GlobalItem>[] globalItemsArray = new Instanced<GlobalItem>[0];
 
-		private static List<HookList> hooks = new List<HookList>();
+		private static readonly List<HookList> hooks = new List<HookList>();
+		private static readonly List<HookList> modHooks = new List<HookList>();
 
 		private static HookList AddHook<F>(Expression<Func<GlobalItem, F>> func) {
 			var hook = new HookList(ModLoader.Method(func));
+
 			hooks.Add(hook);
+
+			return hook;
+		}
+
+		public static T AddModHook<T>(T hook) where T : HookList {
+			hook.Update(globalItems);
+
+			modHooks.Add(hook);
+
 			return hook;
 		}
 
@@ -116,7 +128,7 @@ namespace Terraria.ModLoader
 
 			NetGlobals = ModLoader.BuildGlobalHook<GlobalItem, Action<Item, BinaryWriter>>(globalItems, g => g.NetSend);
 
-			foreach (var hook in hooks) {
+			foreach (var hook in hooks.Union(modHooks)) {
 				hook.Update(globalItems);
 			}
 		}
@@ -126,6 +138,7 @@ namespace Terraria.ModLoader
 			nextItem = ItemID.Count;
 			globalItems.Clear();
 			animations.Clear();
+			modHooks.Clear();
 		}
 
 		internal static bool IsModItem(int index) => index >= ItemID.Count;
@@ -555,34 +568,42 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate bool DelegateShoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack);
-		private static HookList HookShoot = AddHook<DelegateShoot>(g => g.Shoot);
-		//in Terraria.Player.ItemCheck at end of if/else chain for shooting place if on last else
-		//  if(ItemLoader.Shoot(item, this, ref vector2, ref num78, ref num79, ref num71, ref num73, ref num74))
+		private static HookList HookCanShoot = AddHook<Func<Item, Player, bool>>(g => g.CanShoot);
 		/// <summary>
-		/// Calls each GlobalItem.Shoot hook, then ModItem.Shoot, until one of them returns false. If all of them return true, returns true.
+		/// Calls each GlobalItem.CanShoot hook, then ModItem.CanShoot, until one of them returns false. If all of them return true, returns true.
 		/// </summary>
-		/// <param name="item">The weapon item.</param>
-		/// <param name="player">The player.</param>
-		/// <param name="position">The shoot spawn position.</param>
-		/// <param name="speedX">The speed x calculated from shootSpeed and mouse position.</param>
-		/// <param name="speedY">The speed y calculated from shootSpeed and mouse position.</param>
-		/// <param name="type">The projectile type choosen by ammo and weapon.</param>
-		/// <param name="damage">The projectile damage.</param>
-		/// <param name="knockBack">The projectile knock back.</param>
-		/// <returns></returns>
-		public static bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
-			bool result = true;
+		public static bool CanShoot(Item item, Player player) {
+			foreach (var g in HookCanShoot.Enumerate(item.globalItems)) {
+				if (!g.CanShoot(item, player))
+					return false;
+			}
 
+			return item.ModItem?.CanShoot(player) ?? true;
+		}
+
+		private delegate void DelegateModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockBack);
+		private static HookList HookModifyShootStats = AddHook<DelegateModifyShootStats>(g => g.ModifyShootStats);
+		/// <summary>
+		/// Calls ModItem.ModifyShootStats, then each GlobalItem.ModifyShootStats hook.
+		/// </summary>
+		public static void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			item.ModItem?.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
+
+			foreach (var g in HookModifyShootStats.Enumerate(item.globalItems)) {
+				g.ModifyShootStats(item, player, ref position, ref velocity, ref type, ref damage, ref knockback);
+			}
+		}
+
+		private static HookList HookShoot = AddHook<Action<Item, Player, ProjectileSource_Item_WithAmmo, Vector2, Vector2, int, int, float>>(g => g.Shoot);
+		/// <summary>
+		/// Calls each GlobalItem.Shoot hook, then calls ModItem.Shoot and returns its value.
+		/// </summary>
+		public static bool Shoot(Item item, Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			foreach (var g in HookShoot.Enumerate(item.globalItems)) {
-				result &= g.Shoot(item, player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
+				g.Shoot(item, player, source, position, velocity, type, damage, knockback);
 			}
 
-			if (result && item.ModItem != null) {
-				return item.ModItem.Shoot(player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
-			}
-
-			return result;
+			return item.ModItem?.Shoot(player, source, position, velocity, type, damage, knockback) ?? true;
 		}
 
 		private delegate void DelegateUseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox);
@@ -1796,7 +1817,18 @@ namespace Terraria.ModLoader
 
 		private static HookList HookNeedsSaving = AddHook<Func<Item, bool>>(g => g.NeedsSaving);
 		public static bool NeedsModSaving(Item item) {
-			return item.type != 0 && (item.ModItem != null || item.prefix >= PrefixID.Count || HookNeedsSaving.Enumerate(item.globalItems).Count(g => g.NeedsSaving(item)) > 0);
+			if (item.type <= ItemID.None)
+				return false;
+
+			if (item.ModItem != null || item.prefix >= PrefixID.Count)
+				return true;
+
+			foreach (var g in HookNeedsSaving.Enumerate(item.globalItems)) {
+				if (g.NeedsSaving(item))
+					return true;
+			}
+
+			return false;
 		}
 
 		internal static void WriteNetGlobalOrder(BinaryWriter w) {
