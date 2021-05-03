@@ -5,17 +5,17 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a biome added by a mod. It exists to centralize various biome related hooks, handling a lot of biome boilerplate.
 	/// </summary>
-	public abstract class ModBiome : ModAVFX
+	public abstract class ModBiome : ModAvfx
 	{
 		// Basic Biome information
 		/// <summary>
 		/// Whether or not this biome impacts NPC shop prices.
 		/// </summary>
 		public virtual bool IsPrimaryBiome => false;
-		public override AVFXPriority Priority => AVFXPriority.BiomeLow;
+		public override AvfxPriority Priority => AvfxPriority.BiomeLow;
 		public override int Music => 0;
 
-		internal int ZeroIndexType => Type - Loaders.Biomes.vanillaCount; 
+		internal int ZeroIndexType => Type - Loaders.Biomes.VanillaCount; 
 
 		// Bestiary properties
 		/// <summary>
@@ -39,7 +39,7 @@ namespace Terraria.ModLoader
 
 		protected sealed override void Register() {
 			Type = Loaders.Biomes.Register(this);
-			RegisterAVFX(this);
+			RegisterAvfx(this);
 
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BiomeName.{Name}");
 
@@ -51,10 +51,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// IsAVFXActive is auto-forwarded to read the result of IsBiomeActive.
+		/// IsAvfxActive is auto-forwarded to read the result of IsBiomeActive.
 		/// Do not need to implement when creating your ModBiome.
 		/// </summary>
-		public sealed override bool IsAVFXActive(Player player) => player.modBiomeFlags[ZeroIndexType];
+		public sealed override bool IsAvfxActive(Player player) => player.modBiomeFlags[ZeroIndexType];
 
 		/// <summary>
 		/// This is where you can set values for DisplayName.

@@ -1826,7 +1826,7 @@
  		public int GetPrimaryBiome() {
 +			int modID = Loaders.Biomes.GetPrimaryModBiome(this, out var priority);
 +
-+			if (priority >= AVFXPriority.BiomeHigh)
++			if (priority >= AvfxPriority.BiomeHigh)
 +				return modID;
 +			
  			if (ZoneDungeon)
@@ -1836,7 +1836,7 @@
  			if (ZoneCrimson)
  				return 10;
  
-+			if (priority >= AVFXPriority.BiomeMedium)
++			if (priority >= AvfxPriority.BiomeMedium)
 +				return modID;
 +
  			if (ZoneGlowshroom)
@@ -1846,7 +1846,7 @@
  			if (ZoneSnow)
  				return 2;
  
-+			if (priority >= AVFXPriority.BiomeLow)
++			if (priority >= AvfxPriority.BiomeLow)
 +				return modID;
 +
  			if (ZoneBeach)
@@ -1865,7 +1865,7 @@
  				}
  			}
  
-+			zonePurity = InZonePurity();
++			ZonePurity = InZonePurity();
 +			Loaders.Biomes.PostUpdateBiome(this);
  			if (!dead) {
  				Point point2 = base.Center.ToTileCoordinates();
@@ -1874,7 +1874,7 @@
  			else {
  				_funkytownAchievementCheckCooldown = 100;
  			}
-+			Loaders.AVFXs.UpdateAVFX(this);
++			Loaders.Avfxs.UpdateAvfx(this);
  		}
  
  		public void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = default(Vector2)) {

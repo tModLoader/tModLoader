@@ -5,42 +5,42 @@ using Terraria.GameContent.Liquid;
 
 namespace Terraria.ModLoader
 {
-	public class WaterFallStyles : AVFXLoader<ModWaterfallStyle>
+	public class WaterFallStyles : AvfxLoader<ModWaterfallStyle>
 	{
 		internal WaterFallStyles(int vanillaCount = WaterfallManager.maxTypes) : base(vanillaCount) { }
 
 		internal override void ResizeArrays() {
 			//Textures
-			Array.Resize(ref Main.instance.waterfallManager.waterfallTexture, totalCount);
+			Array.Resize(ref Main.instance.waterfallManager.waterfallTexture, TotalCount);
 		}
 	}
 
-	public class WaterStyles : AVFXLoader<ModWaterStyle>
+	public class WaterStyles : AvfxLoader<ModWaterStyle>
 	{
 		internal WaterStyles(int vanillaCount = Main.maxLiquidTypes) : base(vanillaCount) { }
 
 		internal override void ResizeArrays() {
 			//Textures
-			Array.Resize(ref TextureAssets.Liquid, totalCount);
-			Array.Resize(ref LiquidRenderer.Instance._liquidTextures, totalCount);
+			Array.Resize(ref TextureAssets.Liquid, TotalCount);
+			Array.Resize(ref LiquidRenderer.Instance._liquidTextures, TotalCount);
 
 			//Etc
-			Array.Resize(ref Main.liquidAlpha, totalCount);
+			Array.Resize(ref Main.liquidAlpha, TotalCount);
 		}
 
-		public override void ChooseStyle(out int style, out AVFXPriority priority) {
-			int tst = Main.LocalPlayer.currentAVFX.waterStyle.value;
-			style = -1; priority = AVFXPriority.None;
+		public override void ChooseStyle(out int style, out AvfxPriority priority) {
+			int tst = Main.LocalPlayer.currentAvfx.waterStyle.value;
+			style = -1; priority = AvfxPriority.None;
 
-			if (tst >= vanillaCount) {
+			if (tst >= VanillaCount) {
 				style = tst;
-				priority = Main.LocalPlayer.currentAVFX.waterStyle.priority;
+				priority = Main.LocalPlayer.currentAvfx.waterStyle.priority;
 			}
 		}
 
 		public void UpdateLiquidAlphas() {
-			if (Main.waterStyle >= vanillaCount) {
-				for (int k = 0; k < vanillaCount; k++) {
+			if (Main.waterStyle >= VanillaCount) {
+				for (int k = 0; k < VanillaCount; k++) {
 					if (k == 1 || k == 11) {
 						continue;
 					}
@@ -68,7 +68,7 @@ namespace Terraria.ModLoader
 		}
 
 		public void DrawWatersToScreen(bool bg) {
-			for (int k = vanillaCount; k < totalCount; k++) {
+			for (int k = VanillaCount; k < TotalCount; k++) {
 				if (Main.liquidAlpha[k] > 0f) {
 					if (bg) {
 						if (Main.waterStyle < k) {

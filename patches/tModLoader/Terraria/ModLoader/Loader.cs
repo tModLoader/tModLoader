@@ -8,23 +8,23 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class Loader<T> where T : ModType
 	{
-		public int vanillaCount { get; internal set; }
-		public int totalCount { get; internal set; }
+		public int VanillaCount { get; internal set; }
+		public int TotalCount { get; internal set; }
 
 		internal List<T> list = new List<T>();
 
 		protected Loader(int vanillaCount) {
-			this.vanillaCount = vanillaCount;
-			totalCount = vanillaCount;
+			this.VanillaCount = vanillaCount;
+			TotalCount = vanillaCount;
 		}
 
 		public int Reserve() {
-			int reserve = totalCount;
-			totalCount++;
+			int reserve = TotalCount;
+			TotalCount++;
 			return reserve;
 		}
 
-		// TODO: Possibly convert all ModTypes to have 'int Type' as their indexing field.
+		//TODO: Possibly convert all ModTypes to have 'int Type' as their indexing field.
 		public int Register(T obj) {
 			int type = Reserve();
 			ModTypeLookup<T>.Register(obj);
@@ -33,14 +33,14 @@ namespace Terraria.ModLoader
 		}
 
 		public T Get(int id) {
-			if (id < vanillaCount || id >= totalCount) {
+			if (id < VanillaCount || id >= TotalCount) {
 				return default;
 			}
-			return list[id - vanillaCount];
+			return list[id - VanillaCount];
 		}
 
 		internal virtual void Unload() {
-			totalCount = vanillaCount;
+			TotalCount = VanillaCount;
 			list.Clear();
 		}
 
@@ -48,11 +48,11 @@ namespace Terraria.ModLoader
 	}
 
 	public static class Loaders {
-		public static WaterFallStyles Waterfalls = new WaterFallStyles();
-		public static WaterStyles Waters = new WaterStyles();
-		public static UgBgStyles UgBgs = new UgBgStyles();
-		public static SurfaceBgStyles SurfaceBgs = new SurfaceBgStyles();
-		public static AVFXLoader AVFXs = new AVFXLoader();
-		public static BiomeLoader Biomes = new BiomeLoader();
+		public static WaterFallStyles Waterfalls { get; private set; } = new WaterFallStyles();
+		public static WaterStyles Waters { get; private set; } = new WaterStyles();
+		public static UgBgStyles UgBgs { get; private set; } = new UgBgStyles();
+		public static SurfaceBgStyles SurfaceBgs { get; private set; } = new SurfaceBgStyles();
+		public static AvfxLoader Avfxs { get; private set; } = new AvfxLoader();
+		public static BiomeLoader Biomes { get; private set; } = new BiomeLoader();
 	}
 }

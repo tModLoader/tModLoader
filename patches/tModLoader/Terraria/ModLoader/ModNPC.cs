@@ -40,12 +40,14 @@ namespace Terraria.ModLoader
 
 		/// <summary> The item type of the boss bag that is dropped when DropBossBags is called for this NPC. </summary>
 		public int BossBag { get; set; } = -1;
-		
+
 		/// <summary> The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally. </summary>
+		/// Will be superceded by ModAvfx. Kept for legacy.
 		public int Music { get; set; } = -1;
 		
 		/// <summary> The priority of the music that plays when this NPC is on or near the screen. </summary>
-		public AVFXPriority AVFXPriority { get; set; } = AVFXPriority.BossLow;
+		/// Will be superceded by ModAvfx. Kept for legacy.
+		public AvfxPriority AvfxPriority { get; set; } = AvfxPriority.BossLow;
 		
 		/// <summary> The vertical offset used for drawing this NPC. Defaults to 0. </summary>
 		public float DrawOffsetY { get; set; }
@@ -56,7 +58,7 @@ namespace Terraria.ModLoader
 		/// <summary> The type of the item this NPC drops for every 50 times it is defeated. For any ModNPC whose banner field is set to the type of this NPC, that ModNPC will drop this banner. </summary>
 		public int BannerItem { get; set; }
 
-		// TODO: Find a better solution in the future.
+		//TODO: Find a better solution in the future.
 		/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary </summary>
 		public int[] SpawnModBiomes { get; set; } = new int[0];
 

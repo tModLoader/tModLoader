@@ -15,7 +15,7 @@ namespace ExampleMod.Content.Biomes
 		public override int Music => Mod.GetSoundSlot(SoundType.Music, "Assets/Sounds/Music/MarbleGallery.ogg");
 
 		// Sets how the AVFX associated with this biome will be displayed with respect to vanilla AVFX. For more information see AVFXPriority & its values.
-		public override AVFXPriority Priority => AVFXPriority.BiomeLow; // We have set the AVFXPriority to be BiomeLow for purpose of example, however default behavour is BiomeLow.
+		public override AvfxPriority Priority => AvfxPriority.BiomeLow; // We have set the AVFXPriority to be BiomeLow for purpose of example, however default behavour is BiomeLow.
 
 		// Populate the Bestiary Filter
 		public override string BestiaryIcon => base.BestiaryIcon;

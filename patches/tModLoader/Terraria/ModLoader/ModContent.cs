@@ -536,7 +536,7 @@ namespace Terraria.ModLoader
 			GlobalBgStyleLoader.Unload();
 			Loaders.Waters.Unload();
 			Loaders.Waterfalls.Unload();
-			Loaders.AVFXs.Unload();
+			Loaders.Avfxs.Unload();
 			Loaders.Biomes.Unload();
 			PlayerDrawLayerLoader.Unload();
 			SystemHooks.Unload();

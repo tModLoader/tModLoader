@@ -938,9 +938,9 @@
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[i].position.X + (float)(npc[i].width / 2)) - num, (int)(npc[i].position.Y + (float)(npc[i].height / 2)) - num, num * 2, num * 2);
  					if (rectangle.Intersects(value)) {
 +						//TODO: Implement modMusic and modPriority
-+						//if (npc[i].modNPC != null && npc[i].modNPC.music >= 0 && (modMusic < 0 || npc[i].modNPC.AVFXPriority > modPriority)) {
++						//if (npc[i].modNPC != null && npc[i].modNPC.music >= 0 && (modMusic < 0 || npc[i].modNPC.AvfxPriority > modPriority)) {
 +						//	modMusic = npc[i].modNPC.music;
-+						//	modPriority = npc[i].modNPC.AVFXPriority;
++						//	modPriority = npc[i].modNPC.AvfxPriority;
 +						//}
  						switch (num2) {
  							case 1:
@@ -950,7 +950,7 @@
  				musicNoCrossFade[51] = true;
  
 +			int modMusic = -1;
-+			ModLoader.AVFXPriority modPriority = ModLoader.AVFXPriority.None;
++			ModLoader.AvfxPriority modPriority = ModLoader.AvfxPriority.None;
 +
  			if (!showSplash) {
  				Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)screenPosition.X, (int)screenPosition.Y, screenWidth, screenHeight);
@@ -959,10 +959,10 @@
  
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[j].position.X + (float)(npc[j].width / 2)) - num2, (int)(npc[j].position.Y + (float)(npc[j].height / 2)) - num2, num2 * 2, num2 * 2);
  					if (rectangle.Intersects(value)) {
-+						//TODO: Should this be wrapped inside the new AVFX stuff?
-+						if (npc[j].ModNPC != null && npc[j].ModNPC.Music >= 0 && (modMusic < 0 || npc[j].ModNPC.AVFXPriority > modPriority)) {
++						//TODO: Should this be wrapped inside the new Avfx stuff? Not at this time, left for legacy.
++						if (npc[j].ModNPC != null && npc[j].ModNPC.Music >= 0 && (modMusic < 0 || npc[j].ModNPC.AvfxPriority > modPriority)) {
 +							modMusic = npc[j].ModNPC.Music;
-+							modPriority = npc[j].ModNPC.AVFXPriority;
++							modPriority = npc[j].ModNPC.AvfxPriority;
 +						}
  						switch (num3) {
  							case 1:
@@ -972,7 +972,7 @@
  					}
  				}
 +
-+				Loaders.AVFXs.UpdateMusic(ref modMusic, ref modPriority);
++				Loaders.Avfxs.UpdateMusic(ref modMusic, ref modPriority);
  			}
  
  			_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
@@ -999,7 +999,7 @@
  			if (CreditsRollEvent.IsEventOngoing) {
  				newMusic = 89;
  			}
-+			else if (modPriority >= AVFXPriority.BossHigh) { //Should this be before credits or nah?
++			else if (modPriority >= AvfxPriority.BossHigh) { //Should this be before credits or nah?
 +				newMusic = modMusic;
 +			}
  			else if (player[myPlayer].happyFunTorchTime) {
@@ -1008,7 +1008,7 @@
  			else if (flag7) {
  				newMusic = 38;
  			}
-+			else if (modPriority >= AVFXPriority.BossMedium) {
++			else if (modPriority >= AvfxPriority.BossMedium) {
 +				newMusic = modMusic;
 +			}
  			else if (flag9) {
@@ -1018,7 +1018,7 @@
  			else if (flag6) {
  				newMusic = 24;
  			}
-+			else if (modPriority >= AVFXPriority.BossLow) {
++			else if (modPriority >= AvfxPriority.BossLow) {
 +				newMusic = modMusic;
 +			}
  			else if (flag14) {
@@ -1028,7 +1028,7 @@
  			else if (flag5) {
  				newMusic = 25;
  			}
-+			else if (modPriority >= AVFXPriority.Event) {
++			else if (modPriority >= AvfxPriority.Event) {
 +				newMusic = modMusic;
 +			}
  			else if (flag13) {
@@ -1038,7 +1038,7 @@
  			else if (flag12) {
  				newMusic = 41;
  			}
-+			else if (modPriority >= AVFXPriority.Environment) {
++			else if (modPriority >= AvfxPriority.Environment) {
 +				newMusic = modMusic;
 +			}
  			else if (eclipse && (double)player[myPlayer].position.Y < worldSurface * 16.0 + (double)(screenHeight / 2)) {
@@ -1048,7 +1048,7 @@
  			else if (num5 < 1f) {
  				newMusic = (dayTime ? 42 : 15);
  			}
-+			else if (modPriority >= AVFXPriority.BiomeHigh) {
++			else if (modPriority >= AvfxPriority.BiomeHigh) {
 +				newMusic = modMusic;
 +			}
  			else if (tile[(int)(player[myPlayer].Center.X / 16f), (int)(player[myPlayer].Center.Y / 16f)].wall == 87) {
@@ -1058,7 +1058,7 @@
  				else
  					newMusic = 16;
  			}
-+			else if (modPriority >= AVFXPriority.BiomeMedium) {
++			else if (modPriority >= AvfxPriority.BiomeMedium) {
 +				newMusic = modMusic;
 +			}
  			else if (player[myPlayer].ZoneMeteor) {
@@ -1068,7 +1068,7 @@
  				else
  					newMusic = 14;
  			}
-+			else if (modPriority >= AVFXPriority.BiomeLow) {
++			else if (modPriority >= AvfxPriority.BiomeLow) {
 +				newMusic = modMusic;
 +			}
  			else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
@@ -3418,7 +3418,7 @@
  			num8 = ((num7 <= caveBackX[0]) ? caveBackStyle[0] : ((num7 <= caveBackX[1]) ? caveBackStyle[1] : ((num7 > caveBackX[2]) ? caveBackStyle[3] : caveBackStyle[2])));
  			num8 += 3;
 +
-+			if (priority == AVFXPriority.BiomeLow) {
++			if (priority == AvfxPriority.BiomeLow) {
 +				num8 = modBG;
 +			}
 +
@@ -3429,7 +3429,7 @@
  				}
  			}
  
-+			if (priority == AVFXPriority.BiomeMedium) {
++			if (priority == AvfxPriority.BiomeMedium) {
 +				num8 = modBG;
 +			}
 +
@@ -3440,7 +3440,7 @@
  			if (SceneMetrics.MushroomTileCount > SceneMetrics.MushroomTileMax)
  				num8 = 2;
  
-+			if (priority >= AVFXPriority.BiomeHigh) {
++			if (priority >= AvfxPriority.BiomeHigh) {
 +				num8 = modBG;
 +			}
 +
@@ -3528,7 +3528,7 @@
  					return 6;
  				default:
 +					Loaders.Waters.ChooseStyle(out var waterStyle, out var priority);
-+					if (priority >= AVFXPriority.BiomeLow) {
++					if (priority >= AvfxPriority.BiomeLow) {
 +						return waterStyle;
 +					}
  					if ((double)(screenPosition.Y / 16f) > rockLayer + 40.0) {
@@ -3572,7 +3572,7 @@
  							DrawSurfaceBG_DrawChangeOverlay(11);
  						}
 +
-+						if (num20 >= Loaders.SurfaceBgs.vanillaCount) {
++						if (num20 >= Loaders.SurfaceBgs.VanillaCount) {
 +							Loaders.SurfaceBgs.DrawCloseBackground(num20);
 +						}
  					}
@@ -3846,7 +3846,7 @@
  					DrawBG_ModifyBGFarBackLayerAlpha(value, null, transitionAmountOverride);
  					break;
  				default:
-+					if (value >= Loaders.SurfaceBgs.vanillaCount) {
++					if (value >= Loaders.SurfaceBgs.VanillaCount) {
 +						DrawBG_ModifyBGFarBackLayerAlpha(value, null, transitionAmountOverride);
 +						break;
 +					}
@@ -3859,7 +3859,7 @@
  			int num2 = (int)((screenPosition.X + (float)(screenWidth / 2)) / 16f);
 +			Loaders.SurfaceBgs.ChooseStyle(out var modBG, out var priority);
 +
-+			if (priority >= AVFXPriority.BiomeHigh) {
++			if (priority >= AvfxPriority.BiomeHigh) {
 +				num = modBG;
 +			}
 -			if (WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
@@ -3871,7 +3871,7 @@
  			else if (player[myPlayer].ZoneCrimson) {
  				num = 8;
  			}
-+			else if (priority >= AVFXPriority.BiomeMedium) {
++			else if (priority >= AvfxPriority.BiomeMedium) {
 +				num = modBG;
 +			}
  			else if (player[myPlayer].ZoneJungle) {
@@ -3880,7 +3880,7 @@
  			else if (player[myPlayer].ZoneSnow) {
  				num = 7;
  			}
-+			else if (priority >= AVFXPriority.BiomeLow) {
++			else if (priority >= AvfxPriority.BiomeLow) {
 +				num = modBG;
 +			}
  			else {
