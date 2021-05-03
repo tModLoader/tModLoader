@@ -17,7 +17,7 @@ namespace Terraria.ModLoader
 		public virtual string BlockTexture => Texture + "_Block";
 
 		protected sealed override void Register() {
-			Slot = Loaders.Waters.Register(this);
+			Slot = LoaderManager.Get<WaterStylesLoader>().Register(this);
 		}
 
 		public sealed override void SetupContent() {
@@ -68,7 +68,7 @@ namespace Terraria.ModLoader
 		public int Slot { get; internal set; }
 
 		protected sealed override void Register() {
-			Slot = Loaders.Waterfalls.Register(this);
+			Slot = LoaderManager.Get<WaterFallStylesLoader>().Register(this);
 		}
 
 		public sealed override void SetupContent() {

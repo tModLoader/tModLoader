@@ -12,7 +12,7 @@ namespace Terraria.ModLoader
 	{
 		public const int VanillaPrimaryBiomeCount = 11;
 
-		public BiomeLoader(int vanillaCount = VanillaPrimaryBiomeCount) : base(vanillaCount) { }
+		public BiomeLoader() => Initialize(VanillaPrimaryBiomeCount);
 
 		private class HookList
 		{
@@ -32,7 +32,7 @@ namespace Terraria.ModLoader
 			return hook;
 		}
 
-		internal void RebuildHooks() {
+		internal override void ResizeArrays() {
 			foreach (var hook in hooks) {
 				hook.arr = ModLoader.BuildGlobalHook(list, hook.method).Select(p => p.Type).ToArray();
 			}

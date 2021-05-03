@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Terraria.ModLoader
@@ -6,14 +7,17 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This serves as the highest-level class for loaders
 	/// </summary>
-	public abstract class Loader<T> where T : ModType
+	public abstract class Loader<T> : ILoader where T : ModType
 	{
 		public int VanillaCount { get; internal set; }
 		public int TotalCount { get; internal set; }
 
 		internal List<T> list = new List<T>();
 
-		protected Loader(int vanillaCount) {
+		/// <summary>
+		/// Initilizes the loader based on the vanilla count of the ModType.
+		/// </summary>
+		internal void Initialize(int vanillaCount) {
 			this.VanillaCount = vanillaCount;
 			TotalCount = vanillaCount;
 		}
@@ -39,20 +43,64 @@ namespace Terraria.ModLoader
 			return list[id - VanillaCount];
 		}
 
+		void ILoader.ResizeArrays() => ResizeArrays();
+		internal virtual void ResizeArrays() { }
+
+		void ILoader.Unload() => Unload();
 		internal virtual void Unload() {
 			TotalCount = VanillaCount;
 			list.Clear();
 		}
-
-		internal virtual void ResizeArrays() { }
 	}
 
-	public static class Loaders {
-		public static WaterFallStyles Waterfalls { get; private set; } = new WaterFallStyles();
-		public static WaterStyles Waters { get; private set; } = new WaterStyles();
-		public static UgBgStyles UgBgs { get; private set; } = new UgBgStyles();
-		public static SurfaceBgStyles SurfaceBgs { get; private set; } = new SurfaceBgStyles();
-		public static AvfxLoader Avfxs { get; private set; } = new AvfxLoader();
-		public static BiomeLoader Biomes { get; private set; } = new BiomeLoader();
+	public interface ILoader
+	{
+		internal void ResizeArrays() { }
+
+		internal void Unload() { }
+	}
+
+	public static class LoaderManager {
+		private static Dictionary<Type, object> list = new Dictionary<Type, object>();
+
+		internal static void AutoLoad() {
+			List<Type> allSubTypes = new List<Type>();
+			foreach (var assem in AppDomain.CurrentDomain.GetAssemblies()) {
+				if (!assem.FullName.Contains("tModLoader"))
+					continue;
+
+				foreach (var subtype in assem.GetTypes()) {
+					if (typeof(ILoader).IsAssignableFrom(subtype) && !subtype.IsAbstract && subtype.IsClass) {
+						allSubTypes.Add(subtype);
+					}
+				}
+			}
+
+			foreach (var type in allSubTypes) {
+				object instance = Activator.CreateInstance(type);
+				list.Add(type, instance);
+			}
+		}
+
+		public static T Get<T>() {
+			if (!list.TryGetValue(typeof(T), out object result))
+				return Activator.CreateInstance<T>();
+
+			return (T)result;
+		}
+
+		public static void Unload() {
+			foreach (var item in list.Values) {
+				ILoader loader = (ILoader)item;
+				loader.Unload();
+			}
+		}
+
+		public static void ResizeArrays() {
+			foreach (var item in list.Values) {
+				ILoader loader = (ILoader)item;
+				loader.ResizeArrays();
+			}
+		}
 	}
 }

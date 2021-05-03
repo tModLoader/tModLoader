@@ -5,9 +5,9 @@ using Terraria.GameContent.Liquid;
 
 namespace Terraria.ModLoader
 {
-	public class WaterFallStyles : AvfxLoader<ModWaterfallStyle>
+	public class WaterFallStylesLoader : AvfxLoader<ModWaterfallStyle>
 	{
-		internal WaterFallStyles(int vanillaCount = WaterfallManager.maxTypes) : base(vanillaCount) { }
+		public WaterFallStylesLoader() => Initialize(WaterfallManager.maxTypes);
 
 		internal override void ResizeArrays() {
 			//Textures
@@ -15,9 +15,9 @@ namespace Terraria.ModLoader
 		}
 	}
 
-	public class WaterStyles : AvfxLoader<ModWaterStyle>
+	public class WaterStylesLoader : AvfxLoader<ModWaterStyle>
 	{
-		internal WaterStyles(int vanillaCount = Main.maxLiquidTypes) : base(vanillaCount) { }
+		public WaterStylesLoader() => Initialize(Main.maxLiquidTypes);
 
 		internal override void ResizeArrays() {
 			//Textures

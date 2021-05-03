@@ -1824,7 +1824,7 @@
  		}
  
  		public int GetPrimaryBiome() {
-+			int modID = Loaders.Biomes.GetPrimaryModBiome(this, out var priority);
++			int modID = LoaderManager.Get<BiomeLoader>().GetPrimaryModBiome(this, out var priority);
 +
 +			if (priority >= AvfxPriority.BiomeHigh)
 +				return modID;
@@ -1857,7 +1857,7 @@
  			bool flag7 = point.Y > Main.maxTilesY - 320;
  			bool flag8 = ZoneOverworldHeight && (point.X < 380 || point.X > Main.maxTilesX - 380);
 +			// TODO, are these flags a problem?
-+			Loaders.Biomes.UpdateBiomes(this);
++			LoaderManager.Get<BiomeLoader>().UpdateBiomes(this);
  			ManageSpecialBiomeVisuals("Stardust", ZoneTowerStardust, value4 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Nebula", ZoneTowerNebula, value3 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Vortex", ZoneTowerVortex, value2 - new Vector2(0f, 10f));
@@ -1866,7 +1866,7 @@
  			}
  
 +			ZonePurity = InZonePurity();
-+			Loaders.Biomes.PostUpdateBiome(this);
++			LoaderManager.Get<BiomeLoader>().PostUpdateBiome(this);
  			if (!dead) {
  				Point point2 = base.Center.ToTileCoordinates();
  				if (WorldGen.InWorld(point2.X, point2.Y, 1)) {
@@ -1874,7 +1874,7 @@
  			else {
  				_funkytownAchievementCheckCooldown = 100;
  			}
-+			Loaders.Avfxs.UpdateAvfx(this);
++			LoaderManager.Get<AvfxLoader>().UpdateAvfx(this);
  		}
  
  		public void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = default(Vector2)) {
@@ -4515,7 +4515,7 @@
 +			ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount];
 +			npcTypeNoAggro = new bool[NPCLoader.NPCCount];
 +			PlayerHooks.SetupPlayer(this);
-+			Loaders.Biomes.SetupPlayer(this);
++			LoaderManager.Get<BiomeLoader>().SetupPlayer(this);
  			width = 20;
  			height = 42;
  			name = string.Empty;

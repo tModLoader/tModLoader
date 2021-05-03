@@ -9,14 +9,13 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class AvfxLoader<T> : Loader<T> where T : ModType
 	{
-		protected AvfxLoader(int vanillaCount) : base(vanillaCount) { }
-
 		public virtual void ChooseStyle(out int style, out AvfxPriority priority) { style = -1; priority = AvfxPriority.None; }
 	}
 
 	public class AvfxLoader : Loader<ModAvfx>
 	{
-		public AvfxLoader(int vanillaCount = 0) : base(vanillaCount) { }
+		public const int VanillaAvfxCount = 0;
+		public AvfxLoader() => Initialize(VanillaAvfxCount);
 
 		public class AvfxInstance
 		{

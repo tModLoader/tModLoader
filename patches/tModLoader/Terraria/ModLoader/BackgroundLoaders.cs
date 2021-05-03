@@ -53,9 +53,10 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This serves as the central class from which ModUgBgStyle functions are supported and carried out.
 	/// </summary>
-	public class UgBgStyles : AvfxLoader<ModUgBgStyle>
+	public class UgBgStylesLoader : AvfxLoader<ModUgBgStyle>
 	{
-		public UgBgStyles(int vanillaCount = 18) : base(vanillaCount) { }
+		public const int VanillaUgBgStylesCount = 18;
+		public UgBgStylesLoader() => Initialize(VanillaUgBgStylesCount);
 
 		public override void ChooseStyle(out int style, out AvfxPriority priority) {
 			priority = AvfxPriority.None; style = -1;
@@ -84,9 +85,9 @@ namespace Terraria.ModLoader
 		}
 	}
 
-	public class SurfaceBgStyles : AvfxLoader<ModSurfaceBgStyle>
+	public class SurfaceBgStylesLoader : AvfxLoader<ModSurfaceBgStyle>
 	{
-		public SurfaceBgStyles(int vanillaCount = Main.BG_STYLES_COUNT) : base(vanillaCount) { }
+		public SurfaceBgStylesLoader() => Initialize(Main.BG_STYLES_COUNT);
 
 		internal override void ResizeArrays() {
 			Array.Resize(ref Main.bgAlphaFrontLayer, TotalCount);

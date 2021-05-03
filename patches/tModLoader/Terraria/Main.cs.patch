@@ -972,7 +972,7 @@
  					}
  				}
 +
-+				Loaders.Avfxs.UpdateMusic(ref modMusic, ref modPriority);
++				LoaderManager.Get<AvfxLoader>().UpdateMusic(ref modMusic, ref modPriority);
  			}
  
  			_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
@@ -3413,7 +3413,7 @@
  			value3 = MathHelper.Clamp(value3, 0f, 1f);
  			int num7 = (int)((screenPosition.X + (float)(screenWidth / 2)) / 16f);
 +
-+			Loaders.UgBgs.ChooseStyle(out var modBG, out var priority);
++			LoaderManager.Get<UgBgStylesLoader>().ChooseStyle(out var modBG, out var priority);
  			int num8 = 3;
  			num8 = ((num7 <= caveBackX[0]) ? caveBackStyle[0] : ((num7 <= caveBackX[1]) ? caveBackStyle[1] : ((num7 > caveBackX[2]) ? caveBackStyle[3] : caveBackStyle[2])));
  			num8 += 3;
@@ -3451,7 +3451,7 @@
  					array3[5] = 127;
  
  				array3[6] = 185 + hellBackStyle;
-+				Loaders.UgBgs.FillTextureArray(num9, array3);
++				LoaderManager.Get<UgBgStylesLoader>().FillTextureArray(num9, array3);
  				LoadBackground(array3[0]);
  				LoadBackground(array3[1]);
  				LoadBackground(array3[2]);
@@ -3527,7 +3527,7 @@
  						return 12;
  					return 6;
  				default:
-+					Loaders.Waters.ChooseStyle(out var waterStyle, out var priority);
++					LoaderManager.Get<WaterStylesLoader>().ChooseStyle(out var waterStyle, out var priority);
 +					if (priority >= AvfxPriority.BiomeLow) {
 +						return waterStyle;
 +					}
@@ -3538,7 +3538,7 @@
  							liquidAlpha[i] = Math.Min(liquidAlpha[i] + 0.2f, 1f);
  					}
  				}
-+				Loaders.Waters.UpdateLiquidAlphas();
++				LoaderManager.Get<WaterStylesLoader>().UpdateLiquidAlphas();
  			}
  
  			if (!drawToScreen && !isBackground) {
@@ -3548,7 +3548,7 @@
  			DrawWater(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
 +			
 +		postWaterDraw:
-+			Loaders.Waters.DrawWatersToScreen(isBackground);
++			LoaderManager.Get<WaterStylesLoader>().DrawWatersToScreen(isBackground);
  		}
  
 -		protected void DrawWater(bool bg = false, int Style = 0, float Alpha = 1f) {
@@ -3572,8 +3572,8 @@
  							DrawSurfaceBG_DrawChangeOverlay(11);
  						}
 +
-+						if (num20 >= Loaders.SurfaceBgs.VanillaCount) {
-+							Loaders.SurfaceBgs.DrawCloseBackground(num20);
++						if (num20 >= LoaderManager.Get<SurfaceBgStylesLoader>().VanillaCount) {
++							LoaderManager.Get<SurfaceBgStylesLoader>().DrawCloseBackground(num20);
 +						}
  					}
  				}
@@ -3582,7 +3582,7 @@
  				DrawSurfaceBG_DrawBackMountainsLayer(246);
  			}
  
-+			Loaders.SurfaceBgs.DrawFarTexture();
++			LoaderManager.Get<SurfaceBgStylesLoader>().DrawFarTexture();
  			SkyManager.Instance.DrawToDepth(spriteBatch, 5f);
  		}
  
@@ -3591,7 +3591,7 @@
  					DrawSurfaceBG_DrawBackMountainsLayer(treeMntBGSet4[1]);
  			}
 +
-+			Loaders.SurfaceBgs.DrawMiddleTexture();
++			LoaderManager.Get<SurfaceBgStylesLoader>().DrawMiddleTexture();
  		}
  
  		private void UpdateOceanWaterLineForAmbience() {
@@ -3838,7 +3838,7 @@
  			UpdateBGVisibility_BackLayer(null, null);
  			UpdateBGVisibility_FrontLayer(null, null);
 +
-+			Loaders.SurfaceBgs.ModifyFarFades(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
++			LoaderManager.Get<SurfaceBgStylesLoader>().ModifyFarFades(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
  			try {
  				DrawSurfaceBG();
  				if (BackgroundEnabled)
@@ -3846,7 +3846,7 @@
  					DrawBG_ModifyBGFarBackLayerAlpha(value, null, transitionAmountOverride);
  					break;
  				default:
-+					if (value >= Loaders.SurfaceBgs.VanillaCount) {
++					if (value >= LoaderManager.Get<SurfaceBgStylesLoader>().VanillaCount) {
 +						DrawBG_ModifyBGFarBackLayerAlpha(value, null, transitionAmountOverride);
 +						break;
 +					}
@@ -3857,7 +3857,7 @@
  		public static int GetPreferredBGStyleForPlayer() {
  			int num = bgStyle;
  			int num2 = (int)((screenPosition.X + (float)(screenWidth / 2)) / 16f);
-+			Loaders.SurfaceBgs.ChooseStyle(out var modBG, out var priority);
++			LoaderManager.Get<SurfaceBgStylesLoader>().ChooseStyle(out var modBG, out var priority);
 +
 +			if (priority >= AvfxPriority.BiomeHigh) {
 +				num = modBG;

@@ -279,12 +279,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns the ModWaterStyle with the given ID.
 		/// </summary>
-		public static ModWaterStyle GetModWaterStyle(int style) => Loaders.Waters.Get(style);
+		public static ModWaterStyle GetModWaterStyle(int style) => LoaderManager.Get<WaterStylesLoader>().Get(style);
 
 		/// <summary>
 		/// Returns the ModWaterfallStyle with the given ID.
 		/// </summary>
-		public static ModWaterfallStyle GetModWaterfallStyle(int style) => Loaders.Waterfalls.Get(style);
+		public static ModWaterfallStyle GetModWaterfallStyle(int style) => LoaderManager.Get<WaterFallStylesLoader>().Get(style);
 
 		/// <summary>
 		/// Returns the slot/ID of the background texture with the given name.
@@ -294,12 +294,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns the ModSurfaceBgStyle object with the given ID.
 		/// </summary>
-		public static ModSurfaceBgStyle GetModSurfaceBgStyle(int style) => Loaders.SurfaceBgs.Get(style);
+		public static ModSurfaceBgStyle GetModSurfaceBgStyle(int style) => LoaderManager.Get<SurfaceBgStylesLoader>().Get(style);
 
 		/// <summary>
 		/// Returns the ModUgBgStyle object with the given ID.
 		/// </summary>
-		public static ModUgBgStyle GetModUgBgStyle(int style) => Loaders.UgBgs.Get(style);
+		public static ModUgBgStyle GetModUgBgStyle(int style) => LoaderManager.Get<UgBgStylesLoader>().Get(style);
 
 		/// <summary>
 		/// Get the id (type) of a ModGore by class. Assumes one instance per class.
@@ -531,13 +531,10 @@ namespace Terraria.ModLoader
 			SoundLoader.Unload();
 			DisposeMusic();
 			BackgroundTextureLoader.Unload();
-			Loaders.UgBgs.Unload();
-			Loaders.SurfaceBgs.Unload();
+
+			LoaderManager.Unload();
+
 			GlobalBgStyleLoader.Unload();
-			Loaders.Waters.Unload();
-			Loaders.Waterfalls.Unload();
-			Loaders.Avfxs.Unload();
-			Loaders.Biomes.Unload();
 			PlayerDrawLayerLoader.Unload();
 			SystemHooks.Unload();
 			TileEntity.manager.Reset();
@@ -588,18 +585,16 @@ namespace Terraria.ModLoader
 			BuffLoader.ResizeArrays();
 			PlayerHooks.RebuildHooks();
 			PlayerDrawLayerLoader.ResizeArrays();
-			Loaders.Biomes.RebuildHooks();
 			SystemHooks.ResizeArrays();
 
 			if (!Main.dedServ) {
 				SoundLoader.ResizeAndFillArrays();
 				BackgroundTextureLoader.ResizeAndFillArrays();
-				Loaders.SurfaceBgs.ResizeArrays();
 				GlobalBgStyleLoader.ResizeAndFillArrays(unloading);
 				GoreLoader.ResizeAndFillArrays();
-				Loaders.Waters.ResizeArrays();
-				Loaders.Waterfalls.ResizeArrays();
 			}
+
+			LoaderManager.ResizeArrays();
 
 			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values) {
 				text.Override = null;
