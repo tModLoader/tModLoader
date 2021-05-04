@@ -1,4 +1,6 @@
+using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -48,6 +50,18 @@ namespace ExampleMod.Content.Items.Weapons
 		// This method lets you adjust position of the gun in the player's hands. Play with these values until it looks good with your graphics.
 		public override Vector2? HoldoutOffset() {
 			return new Vector2(2f, -2f);
+		}
+
+		// Every 3rd projectile this gun shoots will be an ExampleInstancedProjectile
+		public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (Main.rand.NextBool(3))
+			{
+				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ExampleInstancedProjectile>(), damage, knockback, player.whoAmI);
+
+				return false;
+			}
+			
+			return true;
 		}
 
 		/*

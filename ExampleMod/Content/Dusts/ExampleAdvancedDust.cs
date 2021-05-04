@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Dusts
@@ -19,7 +20,7 @@ namespace ExampleMod.Content.Dusts
 		*/
 		public override string Texture => null; // If we want to use vanilla texture
 
-		public override void OnSpawn(Dust dust) {
+		public override void OnSpawn(Dust dust, IDustSource source) {
 			dust.noGravity = true;
 
 			// Since the vanilla dust texture has all the dust in 1 file, we'll need to do some math.
