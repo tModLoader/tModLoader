@@ -347,7 +347,7 @@
 		"PatreonSetTooltip": "Obrigado pelo seu apoio!",
 		"WorldGenError": "Um problema ocorreu na geração de mundo",
 		"WorldIODataException": "O jogo encontrou um problema de dados para um mundo.",
-		"ServerCrash": "Crash do servidor: {0}\n{1}\n\nCheque o server.log para determinar se é culpa de um mod, caso contrário, visite o #support no Discord do tModLoader"
+		"ServerCrash": "Crash do servidor: {0}\n{1}\n\nCheque o server.log para determinar se é culpa de um mod, caso contrário, visite o #support no Discord do tModLoader",
     
     // MessageBox/Caixa de Mensagens (?)
 		"ContentFolderNotFound": "Pasta de cunteúdo (Content) do Terraria não encontrada. Se você instalou o tModLoader pela Steam, cheque se o Terraria está instalado. Caso contrário, instale o tModLoader numa pasta dentro ou ao lado do diretório de instalação do Terraria.",
