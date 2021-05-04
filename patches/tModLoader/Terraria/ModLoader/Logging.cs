@@ -17,6 +17,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader.UI;
+using Terraria.ModLoader.Engine;
 
 namespace Terraria.ModLoader
 {
@@ -29,24 +30,24 @@ namespace Terraria.ModLoader
 		internal static ILog Terraria { get; } = LogManager.GetLogger("Terraria");
 		internal static ILog tML { get; } = LogManager.GetLogger("tML");
 
-#if CLIENT
-		internal const string side = "client";
-#else
-		internal const string side = "server";
-#endif
+		/// <summary>
+		/// Available for logging when Mod.Logging is not available, such as field initialization
+		/// </summary>
+		public static ILog publicLogger { get; } = LogManager.GetLogger("publicLogger");
 
 		private static List<string> initWarnings = new List<string>();
-		internal static void Init() {
+		internal static void Init(bool dedServ) {
 			if (Program.LaunchParameters.ContainsKey("-build"))
 				return;
 
 			// This is the first file we attempt to use.
 			Utils.TryCreatingDirectory(LogDir);
 
-			ConfigureAppenders();
+			ConfigureAppenders(dedServ);
 
-			tML.InfoFormat("Starting {0} {1} {2} ({3})", ModLoader.versionedName, ReLogic.OS.Platform.Current.Type, side, DateTime.Now.ToString("d"));
-			tML.InfoFormat("Running on {0} {1}", FrameworkVersion.Framework, FrameworkVersion.Version);
+			tML.InfoFormat("Starting tModLoader {0} {1}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier);
+			tML.InfoFormat("Log date: {0}", DateTime.Now.ToString("d"));
+			tML.InfoFormat("Running on {0} {1} {2}", ReLogic.OS.Platform.Current.Type, FrameworkVersion.Framework, FrameworkVersion.Version);
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
 			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
 			tML.InfoFormat("Launch Parameters: {0}", string.Join(" ", Program.LaunchParameters.Select(p => (p.Key + " " + p.Value).Trim())));
@@ -59,25 +60,26 @@ namespace Terraria.ModLoader
 
 				AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
 			LogFirstChanceExceptions();
-			EnablePortablePDBTraces();
 			AssemblyResolving.Init();
 			LoggingHooks.Init();
 			LogArchiver.ArchiveLogs();
+			if (!dedServ)
+				GLCallLocker.RedirectLogs();
 		}
 
-		private static void ConfigureAppenders() {
+		private static void ConfigureAppenders(bool dedServ) {
 			var layout = new PatternLayout {
 				ConversionPattern = "[%d{HH:mm:ss}] [%t/%level] [%logger]: %m%n"
 			};
 			layout.ActivateOptions();
 
 			var appenders = new List<IAppender>();
-#if CLIENT
-			appenders.Add(new ConsoleAppender {
-				Name = "ConsoleAppender",
-				Layout = layout
-			});
-#endif
+			if (!dedServ) { 
+				appenders.Add(new ConsoleAppender {
+					Name = "ConsoleAppender",
+					Layout = layout
+				});
+			}
 			appenders.Add(new DebugAppender {
 				Name = "DebugAppender",
 				Layout = layout
@@ -85,7 +87,7 @@ namespace Terraria.ModLoader
 
 			var fileAppender = new FileAppender {
 				Name = "FileAppender",
-				File = LogPath = Path.Combine(LogDir, GetNewLogFile(side)),
+				File = LogPath = Path.Combine(LogDir, GetNewLogFile(dedServ ? "server" : "client")),
 				AppendToFile = false,
 				Encoding = Encoding.UTF8,
 				Layout = layout
@@ -136,9 +138,6 @@ namespace Terraria.ModLoader
 		}
 
 		private static void LogFirstChanceExceptions() {
-			if (FrameworkVersion.Framework == Framework.Mono)
-				tML.Warn("First-chance exception reporting is not implemented on Mono");
-
 			AppDomain.CurrentDomain.FirstChanceException += FirstChanceExceptionHandler;
 		}
 
@@ -227,18 +226,19 @@ namespace Terraria.ModLoader
 
 				previousException = args.Exception;
 				var msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
-	#if CLIENT
-				if (ModCompile.activelyModding)
+
+				if (!Main.dedServ && ModCompile.activelyModding)
 					AddChatMessage(msg, Color.OrangeRed);
-	#else
-				Console.ForegroundColor = ConsoleColor.DarkMagenta;
-				Console.WriteLine(msg);
-				Console.ResetColor();
-	#endif
+				else {
+					Console.ForegroundColor = ConsoleColor.DarkMagenta;
+					Console.WriteLine(msg);
+					Console.ResetColor();
+				}
+
 				tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
 
 				if (oom) {
-					const string error = "Game ran out of memory. You'll have to find which mod is consuming lots of memory, and contact the devs or remove it.";
+					string error = Language.GetTextValue("tModLoader.OutOfMemory");
 					Logging.tML.Fatal(error);
 					Interface.MessageBoxShow(error);
 					Environment.Exit(1);
@@ -286,8 +286,8 @@ namespace Terraria.ModLoader
 		}
 
 		internal static readonly FieldInfo f_fileName =
-			typeof(StackFrame).GetField("strFileName", BindingFlags.Instance | BindingFlags.NonPublic) ??
-			typeof(StackFrame).GetField("fileName", BindingFlags.Instance | BindingFlags.NonPublic);
+			typeof(StackFrame).GetField("_fileName", BindingFlags.Instance | BindingFlags.NonPublic) ??
+			typeof(StackFrame).GetField("strFileName", BindingFlags.Instance | BindingFlags.NonPublic);
 
 		private static readonly Assembly TerrariaAssembly = Assembly.GetExecutingAssembly();
 
@@ -315,11 +315,6 @@ namespace Terraria.ModLoader
 					f_fileName.SetValue(frame, filename);
 				}
 			}
-		}
-
-		private static void EnablePortablePDBTraces() {
-			if (FrameworkVersion.Framework == Framework.NetFramework && FrameworkVersion.Version >= new Version(4, 7, 2))
-				Type.GetType("System.AppContextSwitches").GetField("_ignorePortablePDBsInStackTraces", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, -1);
 		}
 	}
 }

@@ -68,7 +68,7 @@
  			if (Main.netMode == 1)
  				return;
  
-@@ -784,6 +_,9 @@
+@@ -786,6 +_,9 @@
  			if (!tile.active())
  				return;
  
@@ -78,7 +78,7 @@
  			switch (type) {
  				case 144:
  					HitSwitch(i, j);
-@@ -1143,14 +_,14 @@
+@@ -1145,14 +_,14 @@
  				return;
  			}
  
@@ -95,7 +95,7 @@
  				int num69 = 1;
  				if (Main.rand.Next(2) == 0)
  					num69 = -1;
-@@ -1236,7 +_,7 @@
+@@ -1240,7 +_,7 @@
  
  						break;
  					}
@@ -104,7 +104,7 @@
  					if (tile.frameX < 66)
  						tile.frameX += 66;
  					else
-@@ -1719,6 +_,7 @@
+@@ -1723,6 +_,7 @@
  					}
  				case 35:
  				case 139:
@@ -112,7 +112,7 @@
  					WorldGen.SwitchMB(i, j);
  					break;
  				case 207:
-@@ -2107,14 +_,13 @@
+@@ -2111,14 +_,13 @@
  											break;
  
  										int num145 = 50;
@@ -131,7 +131,7 @@
  											}
  										}
  
-@@ -2123,6 +_,7 @@
+@@ -2127,6 +_,7 @@
  											Main.npc[num148].position.X = num137 - Main.npc[num148].width / 2;
  											Main.npc[num148].position.Y = num138 - Main.npc[num148].height - 1;
  											NetMessage.SendData(23, -1, -1, null, num148);
@@ -139,7 +139,7 @@
  										}
  
  										break;
-@@ -2132,14 +_,13 @@
+@@ -2136,14 +_,13 @@
  											break;
  
  										int num141 = 50;
@@ -147,9 +147,9 @@
 +										List<int> array = new List<int>();
  										int num142 = 0;
  										for (int num143 = 0; num143 < 200; num143++) {
--											if (Main.npc[num143].active && (Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353 || Main.npc[num143].type == 633)) {
+-											if (Main.npc[num143].active && (Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353 || Main.npc[num143].type == 633 || Main.npc[num143].type == 663)) {
 -												array[num142] = num143;
-+											bool vanillaCanGo = Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353 || Main.npc[num143].type == 633;
++											bool vanillaCanGo = Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353 || Main.npc[num143].type == 633 || Main.npc[num143].type == 663;
 +											if (Main.npc[num143].active && NPCLoader.CanGoToStatue(Main.npc[num143], false, vanillaCanGo)) {
 +												array.Add(num143);
  												num142++;
@@ -158,7 +158,7 @@
  											}
  										}
  
-@@ -2148,6 +_,7 @@
+@@ -2152,6 +_,7 @@
  											Main.npc[num144].position.X = num137 - Main.npc[num144].width / 2;
  											Main.npc[num144].position.Y = num138 - Main.npc[num144].height - 1;
  											NetMessage.SendData(23, -1, -1, null, num144);
@@ -166,15 +166,15 @@
  										}
  
  										break;
-@@ -2229,6 +_,7 @@
- 					NetMessage.SendTileSquare(-1, i, j, 1);
+@@ -2233,6 +_,7 @@
+ 					NetMessage.SendTileSquare(-1, i, j);
  					break;
  			}
 +			TileLoader.HitWire(i, j, type);
  		}
  
  		private static void GeyserTrap(int i, int j) {
-@@ -2318,7 +_,7 @@
+@@ -2322,7 +_,7 @@
  			return false;
  		}
  
@@ -183,7 +183,7 @@
  			if (!Main.tile[i, j].active() || (Main.tile[i, j].type == 226 && (double)j > Main.worldSurface && !NPC.downedPlantBoss))
  				return;
  
-@@ -2335,7 +_,7 @@
+@@ -2339,7 +_,7 @@
  			}
  		}
  

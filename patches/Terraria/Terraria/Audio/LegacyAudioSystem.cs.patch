@@ -1,0 +1,23 @@
+--- src/decompiled/Terraria/Audio/LegacyAudioSystem.cs
++++ src/Terraria/Terraria/Audio/LegacyAudioSystem.cs
+@@ -58,6 +_,11 @@
+ 		private IAudioTrack FindReplacementTrack(List<IContentSource> sources, string assetPath) {
+ 			IAudioTrack audioTrack = null;
+ 			for (int i = 0; i < sources.Count; i++) {
++				if (Main.dedServ) {
++					sources[i].HasAsset(assetPath);
++					continue;
++				}
++				
+ 				IContentSource contentSource = sources[i];
+ 				if (!contentSource.HasAsset(assetPath))
+ 					continue;
+@@ -96,7 +_,7 @@
+ 			Engine = new AudioEngine("Content\\TerrariaMusic.xgs");
+ 			SoundBank = new SoundBank(Engine, "Content\\Sound Bank.xsb");
+ 			Engine.Update();
+-			WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb", 0, 512);
++			WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb"); //, 0, 512); // Removing those 2 parameters fixes music not looping on FNA.
+ 			Engine.Update();
+ 			AudioTracks = new IAudioTrack[90];
+ 			TrackNamesByIndex = new Dictionary<int, string>();

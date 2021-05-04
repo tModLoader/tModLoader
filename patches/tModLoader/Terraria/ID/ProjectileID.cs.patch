@@ -10,15 +10,15 @@
  	{
  		public static class Sets
  		{
--			public static SetFactory Factory = new SetFactory(950);
+-			public static SetFactory Factory = new SetFactory(956);
 +			public static SetFactory Factory = new SetFactory(ProjectileLoader.ProjectileCount);
  			public static bool[] DontApplyParryDamageBuff = Factory.CreateBoolSet(false, 524, 321, 181, 566);
- 			public static bool[] IsAWhip = Factory.CreateBoolSet(false, 847, 841, 848, 849, 912, 913, 914, 915);
+ 			public static bool[] IsAWhip = Factory.CreateBoolSet(false, 847, 841, 848, 849, 912, 913, 914, 915, 952);
  			public static bool[] ImmediatelyUpdatesNPCBuffFlags = Factory.CreateBoolSet(636);
-@@ -1210,5 +_,6 @@
- 		public const short FlamingMace = 948;
- 		public const short TorchGod = 949;
- 		public const short Count = 950;
+@@ -1218,5 +_,6 @@
+ 		public const short WandOfSparkingSpark = 954;
+ 		public const short StarCannonStar = 955;
+ 		public const short Count = 956;
 +		public static readonly IdDictionary Search = IdDictionary.Create<ProjectileID, short>();
  	}
  }

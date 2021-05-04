@@ -1,4 +1,5 @@
-﻿using ReLogic.OS;
+﻿/* Unused class for future considerations?
+using ReLogic.OS;
 using Steamworks;
 using System;
 using System.Diagnostics;
@@ -37,17 +38,17 @@ namespace Terraria.ModLoader.Engine
 			// but I can't really make it more effort than just nuking the steam check with dnspy (which could be done before we added GoG support)
 			if (Platform.IsWindows) {
 				steamAPIpath = "steam_api.dll";
-				steamAPIhash = ToByteArray("7B857C897BC69313E4936DC3DCCE5193");
+				steamAPIhash = ToByteArray("73688FFCBC2E5F0980B055C1D93B2FB2");
 				vanillaGoGhash = ToByteArray("81ef4a9337ae6d7a1698fdeb3137580d");
 			}
 			else if (Platform.IsOSX) {
 				steamAPIpath = "osx/libsteam_api.dylib";
-				steamAPIhash = ToByteArray("4EECD26A0CDF89F90D4FF26ECAD37BE0");
+				steamAPIhash = ToByteArray("FB32124B2E07ED2AAE54FE8823D069B3");
 				vanillaGoGhash = ToByteArray("e8dfb127721edc4ceb32381f41ece7b8");
 			}
 			else if (Platform.IsLinux) {
 				steamAPIpath = "lib/libsteam_api.so";
-				steamAPIhash = ToByteArray("7B74FD4C207D22DB91B4B649A44467F6");
+				steamAPIhash = ToByteArray("8915306857EEF2A516956A2398845EA2");
 				vanillaGoGhash = ToByteArray("942ab061e854c74db3a6b1efe2dc24d0");
 			}
 			else {
@@ -73,10 +74,10 @@ namespace Terraria.ModLoader.Engine
 			// TODO These steam checks should not be here, but I'm afraid to move stuff around right now -Jof
 			bool checkSteam = File.Exists(steamAPIpath);
 #if !SERVER
-			/*if (!Directory.Exists(ContentDirectory)) {
-				Exit($"{ContentDirectory} directory could not be found.\r\n\r\nDid you forget to extract tModLoader's Content directory into the tModLoader folder?\r\n\r\nEnsure tModLoader is installed in a separate folder from Terraria.");
-				return false;
-			}*/
+			//if (!Directory.Exists(ContentDirectory)) {
+			//	Exit($"{ContentDirectory} directory could not be found.\r\n\r\nDid you forget to extract tModLoader's Content directory into the tModLoader folder?\r\n\r\nEnsure tModLoader is installed in a separate folder from Terraria.");
+			//	return false;
+			//}
 			if (checkSteam) {
 				SocialAPI.LoadSteam();
 				SteamApps.GetAppInstallDir(Steam.TerrariaAppId_t, out string terrariaInstallLocation, 1000);
@@ -125,3 +126,4 @@ namespace Terraria.ModLoader.Engine
 		}
 	}
 }
+*/

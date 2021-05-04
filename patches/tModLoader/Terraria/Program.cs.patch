@@ -1,62 +1,50 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -2,19 +_,24 @@
- using ReLogic.OS;
- using System;
+@@ -4,6 +_,7 @@
  using System.Collections.Generic;
-+
- #if CLIENT
  using System.Diagnostics;
- #endif
  using System.IO;
 +using System.Linq;
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
- using System.Threading;
-+
- #if CLIENT
+@@ -11,12 +_,15 @@
  using System.Windows.Forms;
- #endif
  using Terraria.Initializers;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Core;
 +using Terraria.ModLoader.Exceptions;
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -40,6 +_,7 @@
- 		private static int ThingsLoaded;
- 		public static bool LoadedEverything;
- 		public static IntPtr JitForcedMethodCache;
-+		public static string SavePath { get; private set; } // moved from Main to avoid triggering the Main static constructor before logging initializes
- 
- 		public static float LoadedPercentage {
- 			get {
-@@ -64,27 +_,68 @@
- 		public static void ForceLoadThread(object threadContext) {
- 			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
+ namespace Terraria
+ {
+-	public static class Program
++	public static partial class Program
+ 	{
+ 		/* hide unused consts
+ 		public const bool IsServer = false;
+@@ -55,21 +_,15 @@
  			LoadedEverything = true;
-+			Logging.Terraria.Info("JIT loading finished");
  		}
  
 -		private static void ForceJITOnAssembly(Assembly assembly) {
 -			Type[] types = assembly.GetTypes();
 -			for (int i = 0; i < types.Length; i++) {
--#if WINDOWS
+-#if WINDOWS || NETCORE
 -				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 -#else
 -				MethodInfo[] methods = types[i].GetMethods();
 -#endif
 -				foreach (MethodInfo methodInfo in methods) {
 -					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
--#if WINDOWS
+-#if WINDOWS || NETCORE
 -						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
 -#else
 -						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
 -#endif
-+		private static void ForceJITOnAssembly(IEnumerable<Type> types)
-+		{
++		private static void ForceJITOnAssembly(IEnumerable<Type> types) {
 +			var methodsToJIT = CollectMethodsToJIT(types);
 +
 +			if (Environment.ProcessorCount > 1) {
@@ -66,75 +54,40 @@
 +				foreach (var method in methodsToJIT) {
 +					ForceJITOnMethod(method);
  				}
--
--				ThingsLoaded++;
--			}
-+			}
-+		}
-+
-+		private static void ForceStaticInitializers(Type[] types)
-+		{
-+			foreach (Type type in types) {
-+				if (!type.IsGenericType)
-+					RuntimeHelpers.RunClassConstructor(type.TypeHandle);
-+			}
-+		}
-+
-+		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers)
-+		{
+ 
+ 				ThingsLoaded++;
+@@ -85,10 +_,13 @@
+ 		}
+ 
+ 		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
+-			ThingsToLoad = assembly.GetTypes().Length;
+-			ForceJITOnAssembly(assembly);
+-			if (initializeStaticMembers)
+-				ForceStaticInitializers(assembly);
 +			var types = assembly.GetTypes();
-+			ThingsToLoad = types.Select(type => GetMethodsCrossPlatform(type).Count()).Sum();
++			ThingsToLoad = types.Select(type => GetAllMethods(type).Count()).Sum();
 +
 +			ForceJITOnAssembly(types);
 +			if (initializeStaticMembers) {
 +				ForceStaticInitializers(types);
 +			}
-+		}
-+
-+		private static IEnumerable<MethodInfo> CollectMethodsToJIT(IEnumerable<Type> types) =>
-+			from type in types
-+			from method in GetMethodsCrossPlatform(type)
-+			where !method.IsAbstract && !method.ContainsGenericParameters && method.GetMethodBody() != null
-+			select method;
-+
-+		private static void ForceJITOnMethod(MethodInfo method)
-+		{
-+#if WINDOWS
-+			RuntimeHelpers.PrepareMethod(method.MethodHandle);
-+#else
-+			// We don't synchronize access to JitForcedMethodCache because no one ever needs to read its value.
-+			var methodPointer = method.MethodHandle.GetFunctionPointer();
-+			JitForcedMethodCache = methodPointer;
-+#endif
-+
-+			Interlocked.Increment(ref ThingsLoaded);
-+		}
-+
-+		private static IEnumerable<MethodInfo> GetMethodsCrossPlatform(Type type)
-+		{
-+#if WINDOWS
-+			return type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-+#else
-+			return type.GetMethods();
-+#endif
  		}
  
- 		private static void ForceStaticInitializers(Assembly assembly) {
-@@ -95,13 +_,6 @@
- 			}
- 		}
- 
--		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
--			ThingsToLoad = assembly.GetTypes().Length;
--			ForceJITOnAssembly(assembly);
--			if (initializeStaticMembers)
--				ForceStaticInitializers(assembly);
--		}
--
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
- 			Assembly assembly = null;
- 			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-@@ -151,27 +_,52 @@
+@@ -124,8 +_,11 @@
+ 		}
+ 
+ 		private static void InitializeConsoleOutput() {
+-			if (!Main.dedServ && Debugger.IsAttached)
++			if (!Main.dedServ && (Debugger.IsAttached || LaunchParameters.ContainsKey("-console")))
+ 				return;
++
++			if (!Main.dedServ)
++				Platform.Get<IWindowService>().HideConsole();
+ 
+ 			try {
+ 				Console.OutputEncoding = Encoding.UTF8;
+@@ -138,32 +_,59 @@
  			}
  		}
  
@@ -150,23 +103,29 @@
 +			SavePath =
 +				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
 +				LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
-+				Platform.Get<IPathService>().GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader{(ModLoader.ModLoader.IsBeta ? Path.DirectorySeparatorChar + "Beta" : "")}");
++				Platform.Get<IPathService>().GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader{(!BuildInfo.IsRelease ? Path.DirectorySeparatorChar + "Beta" : "")}");
 +
 +			if (File.Exists("savehere.txt"))
 +				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
 +
++			bool dedServ = LaunchParameters.ContainsKey("-server");
 +			try {
-+				Logging.Init();
++				Logging.Init(dedServ);
 +			}
 +			catch (Exception e) {
 +				DisplayException(e);
 +				return;
 +			}
 +
-+			LaunchGame_();
++			if (LaunchInitializer.TryParameter("-build") is string build)
++				// Inside the build from command line, the application exits
++				// Anything beyond this point will not be executed
++				ModCompile.BuildModCommandLine(build);
++
++			LaunchGame_(dedServ);
 +		}
 +
-+		public static void LaunchGame_() {
++		public static void LaunchGame_(bool dedServ) {
  			if (Platform.IsOSX) {
  				Main.OnEngineLoad += delegate {
  					Main.instance.IsMouseVisible = false;
@@ -174,14 +133,20 @@
  			}
  
 -			LaunchParameters = Utils.ParseArguements(args);
+-#if SERVER
+-			Main.dedServ = true;
++			Main.dedServ = dedServ;
+-#else
+-			Main.dedServ = LaunchParameters.ContainsKey("-server");
+-#endif
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
  			InitializeConsoleOutput();
 -			SetupLogging();
++			//Program.SetupLogging();
  			Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
 -			using (Main main = new Main()) {
 -				try {
-+			//Program.SetupLogging();
 +			try {
 +				ModLoader.ModLoader.EngineInit();
 +				using (Main main = new Main()) {
@@ -190,10 +155,10 @@
 +					main.PostSocialInitialize();
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
- #if CLIENT
-@@ -180,9 +_,10 @@
- 					main.DedServ();
- #endif
+ 					if (!Main.dedServ)
+@@ -171,9 +_,10 @@
+ 					else
+ 						main.DedServ();
  				}
 -				catch (Exception e) {
 -					DisplayException(e);
@@ -205,12 +170,15 @@
  			}
  		}
  
-@@ -204,9 +_,21 @@
+@@ -208,9 +_,22 @@
  				}
  
- #if CLIENT
+ 				if (Main.dedServ)
+-					Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
++				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
+ 
 -				MessageBox.Show(text, "Terraria: Error");
-+				ModLoader.UI.Interface.MessageBoxShow(text);
++				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
 +
 +				if (e is FolderCreationFailedException)
 +					Process.Start(e.HelpLink);
@@ -219,13 +187,11 @@
 +					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
 +
 +				if (e.StackTrace.Contains("LaunchLocalServer")) {
-+					ModLoader.UI.Interface.MessageBoxShow("Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.");
++					ModLoader.UI.Interface.MessageBoxShow(Language.GetTextValue("tModLoader.MissingServerExecutable"));
 +
 +					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
 +				}
- #else
--				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
-+				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
- #endif
++
  			}
  			catch {
+ 			}

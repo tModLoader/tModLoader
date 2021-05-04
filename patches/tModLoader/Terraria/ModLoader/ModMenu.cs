@@ -17,9 +17,6 @@ namespace Terraria.ModLoader
 
 		public bool IsNew { get; internal set; }
 
-		//TODO: change this to use FullName when #1034 is merged
-		public string MenuName => $"{Mod?.Name ?? "Terraria"}/{Name}";
-
 		protected sealed override void Register() {
 			MenuLoader.Add(this);
 		}
@@ -54,6 +51,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool IsAvailable => true;
 
+		//TODO Localization
 		/// <summary>
 		/// Controls the name that shows up at the base of the screen when this ModMenu is active. If not overridden, it will use this mod's display name.
 		/// </summary>

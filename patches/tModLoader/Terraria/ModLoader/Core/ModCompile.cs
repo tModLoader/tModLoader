@@ -1,22 +1,21 @@
+#if NETCORE
 using log4net.Core;
-using Mono.Cecil;
-using Mono.Cecil.Mdb;
-using Mono.Cecil.Pdb;
-using ReLogic.OS;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
+using System.Runtime.Loader;
+using System.Security;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader.Exceptions;
-using Terraria.ModLoader.UI;
-using Terraria.Utilities;
 
 namespace Terraria.ModLoader.Core
 {
@@ -53,9 +52,6 @@ namespace Terraria.ModLoader.Core
 
 		public static readonly string ModSourcePath = Path.Combine(Program.SavePath, "Mod Sources");
 
-		internal static readonly string modCompileDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModCompile");
-		internal static readonly string modCompileVersionPath = Path.Combine(modCompileDir, "version");
-
 		internal static string[] FindModSources()
 		{
 			Directory.CreateDirectory(ModSourcePath);
@@ -65,227 +61,52 @@ namespace Terraria.ModLoader.Core
 		// Silence exception reporting in the chat unless actively modding.
 		public static bool activelyModding;
 
-		public static bool DeveloperMode {
-			get {
-				return Debugger.IsAttached || File.Exists(modCompileVersionPath) || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
-			}
-		}
+		public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
 
-		internal static bool DeveloperModeReady(out string msg)
-		{
-			return RoslynCompatibleFrameworkCheck(out msg) &&
-				ModCompileVersionCheck(out msg) &&
-				ReferenceAssembliesCheck(out msg);
-		}
-
-		private static Version GetModCompileVersion()
-		{
-			string modCompileVersionText;
-
-			try {
-				if (!File.Exists(modCompileVersionPath))
-					return new Version();
-				
-				modCompileVersionText = File.ReadAllText(modCompileVersionPath);
-			}
-			catch (Exception e) {
-				Logging.tML.Error(e);
-				
-				return new Version();
-			}
-
-			var match = Regex.Match(modCompileVersionText, @"v([\d.]+)");
-
-			if (!match.Success)
-				return new Version();
-
-			return new Version(match.Groups[1].Value);
-		}
-
-		internal static bool ModCompileVersionCheck(out string msg)
-		{
-			var version = GetModCompileVersion();
-			if (version > ModLoader.version) {
-				Logging.tML.Warn($"ModCompile version is above ModLoader version: {version} vs {ModLoader.version}" +
-					$"\nThis not necessarily an issue, this log is for troubleshooting purposes.");
-			}
-			if (version.Major == ModLoader.version.Major && version.Minor == ModLoader.version.Minor && version.Build == ModLoader.version.Build) {
-				msg = Language.GetTextValue("tModLoader.DMModCompileSatisfied");
-				return true;
-			}
-
-#if DEBUG
-			msg = Language.GetTextValue("tModLoader.DMModCompileDev", Path.GetFileName(Assembly.GetExecutingAssembly().Location));
-#else
-			if (version == default(Version))
-				msg = Language.GetTextValue("tModLoader.DMModCompileMissing");
-			else
-				msg = Language.GetTextValue("tModLoader.DMModCompileUpdate", ModLoader.versionTag, version);
-#endif
-			return false;
-		}
-
-		private static readonly Version minDotNetVersion = new Version(4, 6);
-		private static readonly Version minMonoVersion = new Version(5, 20);
-		internal static bool RoslynCompatibleFrameworkCheck(out string msg)
-		{
-			// mono 5.20 is required due to https://github.com/mono/mono/issues/12362
-			if (FrameworkVersion.Framework == Framework.NetFramework && FrameworkVersion.Version >= minDotNetVersion ||
-				FrameworkVersion.Framework == Framework.Mono && FrameworkVersion.Version >= minMonoVersion) {
-
-				msg = Language.GetTextValue("tModLoader.DMDotNetSatisfied", $"{FrameworkVersion.Framework} {FrameworkVersion.Version}");
-				return true;
-			}
-
-			if (FrameworkVersion.Framework == Framework.NetFramework)
-				msg = Language.GetTextValue("tModLoader.DMDotNetUpdateRequired", minDotNetVersion);
-			else if (SystemMonoCheck())
-				msg = Language.GetTextValue("tModLoader.DMMonoRuntimeRequired", minMonoVersion);
-			else
-				msg = Language.GetTextValue("tModLoader.DMMonoUpdateRequired", minMonoVersion);
-
-			return false;
-		}
-
-		internal static bool systemMonoSuitable;
-		private static bool SystemMonoCheck()
-		{
-			try {
-				var monoPath = "mono";
-				if (Platform.IsOSX) //mono installs on OSX don't resolve properly outside of terminal
-					monoPath = "/Library/Frameworks/Mono.framework/Versions/Current/Commands/mono";
-
-				string output = Process.Start(new ProcessStartInfo {
-					FileName = monoPath,
-					Arguments = "--version",
-					UseShellExecute = false,
-					RedirectStandardOutput = true
-				}).StandardOutput.ReadToEnd();
-
-				var monoVersion = new Version(new Regex("version (.+?) ").Match(output).Groups[1].Value);
-				return systemMonoSuitable = monoVersion >= minMonoVersion;
-
-			}
-			catch (Exception e) {
-				Logging.tML.Debug("System mono check failed: ", e);
-				return false;
-			}
-		}
-
-		internal static bool PlatformSupportsVisualStudio => !Platform.IsLinux;
-
-		private static string referenceAssembliesPath;
-		internal static bool ReferenceAssembliesCheck(out string msg)
-		{
-			msg = Language.GetTextValue("tModLoader.DMReferenceAssembliesSatisfied");
-			if (referenceAssembliesPath != null)
-				return true;
-
-			if (Platform.IsWindows)
-				referenceAssembliesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + @"\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
-			else if (Platform.IsOSX)
-				referenceAssembliesPath = "/Library/Frameworks/Mono.framework/Versions/Current/lib/mono/4.5-api";
-			else if (Platform.IsLinux)
-				referenceAssembliesPath = "/usr/lib/mono/4.5-api";
-
-			if (Directory.Exists(referenceAssembliesPath))
-				return true;
-
-			referenceAssembliesPath = Path.Combine(modCompileDir, "v4.5 Reference Assemblies");
-			if (Directory.Exists(referenceAssembliesPath) && Directory.EnumerateFiles(referenceAssembliesPath).Any(x => Path.GetExtension(x) != ".tmp"))
-				return true;
-
-			if (FrameworkVersion.Framework == Framework.Mono)
-				msg = Language.GetTextValue("tModLoader.DMReferenceAssembliesMissingMono", "lib/mono/4.5-api");
-			else
-				msg = Language.GetTextValue("tModLoader.DMReferenceAssembliesMissing");
-
-			referenceAssembliesPath = null;
-			return false;
-		}
-
-		internal static readonly string modReferencesPath = Path.Combine(Program.SavePath, "references");
+		private static readonly string oldModReferencesPath = Path.Combine(Program.SavePath, "references");
+		private static readonly string modTargetsPath = Path.Combine(ModSourcePath, "tModLoader.targets");
 		private static bool referencesUpdated = false;
 		internal static void UpdateReferencesFolder()
 		{
 			if (referencesUpdated)
 				return;
 
-			if (!Directory.Exists(modReferencesPath))
-				Directory.CreateDirectory(modReferencesPath);
-
-			string tMLPath = Assembly.GetExecutingAssembly().Location;
-			string touchStamp = $"{tMLPath} @ {File.GetLastWriteTime(tMLPath)}";
-			string touchFile = Path.Combine(modReferencesPath, "touch");
-			string lastTouch = File.Exists(touchFile) ? File.ReadAllText(touchFile) : null;
-
-			if (touchStamp == lastTouch) {
-				referencesUpdated = true;
-				return;
+			try {
+				if (Directory.Exists(oldModReferencesPath))
+					Directory.Delete(oldModReferencesPath, true);
+			} catch (Exception e) {
+				Logging.tML.Error("Failed to delete old /references dir", e);
 			}
 
-			// this will extract all the embedded dlls, and grab a reference to the GAC assemblies
-			var libs = GetTerrariaReferences(null, PlatformUtilities.IsXNA).ToList();
+			var tMLDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-			// delete any extra references that no-longer exist
-			foreach (string file in Directory.GetFiles(modReferencesPath, "*.dll"))
-				if (!libs.Any(lib => Path.GetFileName(lib) == Path.GetFileName(file)))
-					File.Delete(file);
-
-			// replace tML lib with inferred paths based on names 
-			libs.RemoveAt(0);
-
-			string tMLDir = Path.GetDirectoryName(tMLPath);
-
-#if CLIENT
-			string tMLServerName = Path.GetFileName(tMLPath).Replace("tModLoader", "tModLoaderServer");
-
-			if (tMLServerName == "Terraria.exe")
-				tMLServerName = "tModLoaderServer.exe";
-
-			string tMLServerPath = Path.Combine(tMLDir, tMLServerName);
-#else
-			var tMLServerPath = tMLPath;
-			var tMLClientName = Path.GetFileName(tMLPath).Replace("tModLoaderServer", "tModLoader");
-			tMLPath = Path.Combine(tMLDir, tMLClientName);
-			if (!File.Exists(tMLPath))
-				tMLPath = Path.Combine(tMLDir, "Terraria.exe");
-#endif
-			string tMLBuildServerPath = tMLServerPath;
-
-			if (FrameworkVersion.Framework == Framework.Mono)
-				tMLBuildServerPath = tMLServerPath.Substring(0, tMLServerPath.Length - 4);
-
-			string MakeRef(string path, string name = null)
-			{
-				if (name == null)
-					name = Path.GetFileNameWithoutExtension(path);
-
-				if (Path.GetDirectoryName(path) == modReferencesPath)
-					path = "$(MSBuildThisFileDirectory)" + Path.GetFileName(path);
-
-				return $"    <Reference Include=\"{System.Security.SecurityElement.Escape(name)}\">\n      <HintPath>{System.Security.SecurityElement.Escape(path)}</HintPath>\n    </Reference>";
-			}
-
-			var referencesXMLList = libs.Select(p => MakeRef(p)).ToList();
-
-			referencesXMLList.Insert(0, MakeRef("$(tMLPath)", "Terraria"));
-
-			string tModLoaderTargets = $@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
-  <PropertyGroup>
-    <TerrariaSteamPath>{System.Security.SecurityElement.Escape(tMLDir)}</TerrariaSteamPath>
-    <tMLPath>{System.Security.SecurityElement.Escape(tMLPath)}</tMLPath>
-    <tMLServerPath>{System.Security.SecurityElement.Escape(tMLServerPath)}</tMLServerPath>
-    <tMLBuildServerPath>{System.Security.SecurityElement.Escape(tMLBuildServerPath)}</tMLBuildServerPath>
-  </PropertyGroup>
-  <ItemGroup>
-{string.Join("\n", referencesXMLList)}
-  </ItemGroup>
+			string tModLoaderTargets = $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+	<PropertyGroup>
+		<TerrariaSteamPath>{SecurityElement.Escape(tMLDir)}</TerrariaSteamPath>
+		<tMLLibraryPath>$(TerrariaSteamPath)/Libraries</tMLLibraryPath>
+		<tMLName>tModLoader</tMLName>
+		<tMLPath>$(tMLName).dll</tMLPath>
+		<tMLServerPath>tModLoader.dll -server</tMLServerPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include=""$(TerrariaSteamPath)/$(tMLName).dll"" />
+		<Reference Include=""$(tMLLibraryPath)/**/*.dll"" />
+		<Reference Remove=""$(tMLLibraryPath)/Native/**"" />
+		<Reference Remove=""$(tMLLibraryPath)/**/runtime*/**"" />
+		<Reference Remove=""$(tMLLibraryPath)/**/*.resources.dll"" />
+	</ItemGroup>
+	<Target Name=""BuildMod"" AfterTargets=""Build"">
+		<Exec Command=""dotnet $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)"" WorkingDirectory=""$(TerrariaSteamPath)""/>
+	</Target>
 </Project>";
 
-			File.WriteAllText(Path.Combine(modReferencesPath, "tModLoader.targets"), tModLoaderTargets);
-			File.WriteAllText(touchFile, touchStamp);
+			byte[] bytes = Encoding.UTF8.GetBytes(tModLoaderTargets);
+
+			Directory.CreateDirectory(Path.GetDirectoryName(modTargetsPath));
+
+			if (!File.Exists(modTargetsPath) || !Enumerable.SequenceEqual(bytes, File.ReadAllBytes(modTargetsPath)))
+				File.WriteAllBytes(modTargetsPath, bytes);
+
 			referencesUpdated = true;
 		}
 
@@ -347,12 +168,10 @@ namespace Terraria.ModLoader.Core
 
 		internal static void BuildModCommandLine(string modFolder)
 		{
+			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
+			Lang.InitializeLegacyLocalization();
+
 			// Once we get to this point, the application is guaranteed to exit
-			if (!DeveloperModeReady(out string msg)) {
-				Console.Error.WriteLine("Developer Mode is not ready: " + msg);
-				Environment.Exit(1);
-			}
-			var lockFile = AcquireConsoleBuildLock();
 			try {
 				new ModCompile(new ConsoleBuildStatus()).Build(modFolder);
 			}
@@ -365,9 +184,6 @@ namespace Terraria.ModLoader.Core
 			catch (Exception e) {
 				Console.Error.WriteLine(e);
 				Environment.Exit(1);
-			}
-			finally {
-				lockFile.Close();
 			}
 			// Mod was built with success, exit code 0 indicates success.
 			Environment.Exit(0);
@@ -399,14 +215,10 @@ namespace Terraria.ModLoader.Core
 			try {
 				status.SetStatus(Language.GetTextValue("tModLoader.Building", mod.Name));
 
-				List<LocalMod> refMods = null;
-				BuildModForPlatform(mod, ref refMods, true);
-				BuildModForPlatform(mod, ref refMods, false);
-
-				if (Program.LaunchParameters.TryGetValue("-eac", out var eacValue)) {
-					mod.properties.eacPath = Path.ChangeExtension(eacValue, "pdb");
-					status.SetStatus(Language.GetTextValue("tModLoader.EnabledEAC", mod.properties.eacPath));
-				}
+				BuildMod(mod, out var code, out var pdb);
+				mod.modFile.AddFile(mod.Name+".dll", code);
+				if (pdb != null)
+					mod.modFile.AddFile(mod.Name + ".pdb", pdb);
 
 				PackageMod(mod);
 
@@ -439,7 +251,7 @@ namespace Terraria.ModLoader.Core
 
 			// add dll references from the -eac bin folder
 			var libFolder = Path.Combine(mod.path, "lib");
-			foreach (var dllPath in mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName, null)))
+			foreach (var dllPath in mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)))
 				if (!dllPath.StartsWith(libFolder))
 					mod.modFile.AddFile("lib/" + Path.GetFileName(dllPath), File.ReadAllBytes(dllPath));
 		}
@@ -478,25 +290,6 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		private void VerifyModAssembly(string modName, AssemblyDefinition asmDef)
-		{
-			var asmName = asmDef.Name.Name;
-			if (asmName != modName)
-				throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorModNameDoesntMatchAssemblyName", modName, asmName));
-
-			if (modName.Equals("Terraria", StringComparison.InvariantCultureIgnoreCase))
-				throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorModNamedTerraria"));
-
-			// Verify that folder and namespace match up
-			var modClassType = asmDef.MainModule.Types.SingleOrDefault(x => x.BaseType?.FullName == "Terraria.ModLoader.Mod");
-			if (modClassType == null)
-				throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorNoModClass"));
-
-			string topNamespace = modClassType.Namespace.Split('.')[0];
-			if (topNamespace != modName)
-				throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorNamespaceFolderDontMatch"));
-		}
-
 		private List<LocalMod> FindReferencedMods(BuildProperties properties)
 		{
 			var mods = new Dictionary<string, LocalMod>();
@@ -529,114 +322,61 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		private string tempDir = Path.Combine(ModLoader.ModPath, "compile_temp");
-		private void BuildModForPlatform(BuildingMod mod, ref List<LocalMod> refMods, bool xna)
-		{
-			status.SetProgress(xna ? 0 : 1, 2);
-			try {
-				if (Directory.Exists(tempDir))
-					Directory.Delete(tempDir, true);
-				Directory.CreateDirectory(tempDir);
+		private void BuildMod(BuildingMod mod, out byte[] code, out byte[] pdb) {
+			string dllName = mod.Name + ".dll";
+			string dllPath = null;
+			string pdbPath() => Path.ChangeExtension(dllPath, "pdb");
 
-				string dllName = mod.Name + (xna ? ".XNA.dll" : ".FNA.dll");
-				string dllPath = null;
-
-				// look for pre-compiled paths
-				if (mod.properties.noCompile) {
-					var allPath = Path.Combine(mod.path, mod.Name + ".All.dll");
-					dllPath = File.Exists(allPath) ? allPath : Path.Combine(mod.path, dllName);
-				}
-				else if (xna == PlatformUtilities.IsXNA && Program.LaunchParameters.TryGetValue("-eac", out var eacValue)) {
-					dllPath = eacValue;
-				}
-
-				// precompiled load, or fallback to Roslyn compile
-				if (File.Exists(dllPath))
-					status.SetStatus(Language.GetTextValue("tModLoader.LoadingPrecompiled", dllName, Path.GetFileName(dllPath)));
-				else if (dllPath != null)
-					throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorLoadingPrecompiled", dllPath));
-				else {
-					dllPath = Path.Combine(tempDir, dllName);
-					CompileMod(mod, dllPath, ref refMods, xna);
-				}
-
-				// add mod assembly to file
-				mod.modFile.AddFile(dllName, File.ReadAllBytes(dllPath));
-
-				// read mod assembly using cecil for verification and pdb processing
-				using (var asmResolver = new BuildAssemblyResolver(xna)) {
-					asmResolver.AddSearchDirectory(Path.GetDirectoryName(dllPath));
-
-					var asm = AssemblyDefinition.ReadAssembly(dllPath, new ReaderParameters { InMemory = true, ReadSymbols = mod.properties.includePDB, AssemblyResolver = asmResolver });
-					VerifyModAssembly(mod.Name, asm);
-
-					if (!mod.properties.includePDB)
-						return;
-
-					// when reading and writing a module with cecil, the debug sequence points need regenerating, even if the methods are not changed
-					// write out the pdb file using cecil because doing it at runtime is difficult
-					var tempDllPath = Path.Combine(tempDir, dllName); //use the temp dir to avoid overwriting a precompiled dll
-
-					// force the native pdb writer when possible, to support stack traces on older .NET frameworks
-					asm.Write(tempDllPath, new WriterParameters {
-						WriteSymbols = true,
-						SymbolWriterProvider = FrameworkVersion.Framework == Framework.NetFramework ? new NativePdbWriterProvider() : null
-					});
-
-					mod.modFile.AddFile(Path.ChangeExtension(dllName, "pdb"), File.ReadAllBytes(Path.ChangeExtension(tempDllPath, "pdb")));
-
-					if (dllPath == tempDllPath) { // load the cecil produced dll, which has the correct debug header
-						mod.modFile.AddFile(dllName, File.ReadAllBytes(dllPath));
-					}
-					else { // with a pre-loaded dll, the symbols won't match cecil symbols unless we splice in the cecil debug header
-						using (var cecilAsmDef = AssemblyDefinition.ReadAssembly(tempDllPath))
-							mod.modFile.AddFile(dllName + ".cecildebugheader", cecilAsmDef.MainModule.GetDebugHeader().GetBytes());
-					}
-
-					// make an mdb for FNA
-					if (!xna) {
-						asm.Write(tempDllPath, new WriterParameters { WriteSymbols = true, SymbolWriterProvider = new MdbWriterProvider() });
-						mod.modFile.AddFile(dllName + ".mdb", File.ReadAllBytes(tempDllPath + ".mdb"));
-					}
-				}
+			// look for pre-compiled paths
+			if (mod.properties.noCompile) {
+				dllPath = Path.Combine(mod.path, dllName);
 			}
-			finally {
-				try {
-					if (Directory.Exists(tempDir))
-						Directory.Delete(tempDir, true);
-				}
-				catch { }
+			else if (Program.LaunchParameters.TryGetValue("-eac", out var eacValue)) {
+				dllPath = eacValue;
+
+				mod.properties.eacPath = pdbPath();
+				status.SetStatus(Language.GetTextValue("tModLoader.EnabledEAC", mod.properties.eacPath));
+			}
+
+			// precompiled load, or fallback to Roslyn compile
+			if (dllPath != null) {
+				if (!File.Exists(dllPath))
+					throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorLoadingPrecompiled", dllPath));
+
+				status.SetStatus(Language.GetTextValue("tModLoader.LoadingPrecompiled", dllName, Path.GetFileName(dllPath)));
+				code = File.ReadAllBytes(dllPath);
+				pdb = File.Exists(pdbPath()) ? File.ReadAllBytes(pdbPath()) : null;
+			}
+			else {
+				CompileMod(mod, out code, out pdb);
 			}
 		}
 
-		private void CompileMod(BuildingMod mod, string outputPath, ref List<LocalMod> refMods, bool xna)
+		private void CompileMod(BuildingMod mod, out byte[] code, out byte[] pdb)
 		{
-			UpdateReferencesFolder();
-
-			status.SetStatus(Language.GetTextValue("tModLoader.Compiling", Path.GetFileName(outputPath)));
-			if (!DeveloperModeReady(out string msg))
-				throw new BuildException(msg);
-
-			if (refMods == null)
-				refMods = FindReferencedMods(mod.properties);
+			status.SetStatus(Language.GetTextValue("tModLoader.Compiling", mod.Name+".dll"));
+			var tempDir = Path.Combine(mod.path, "compile_temp");
+			if (Directory.Exists(tempDir))
+				Directory.Delete(tempDir, true);
+			Directory.CreateDirectory(tempDir);
 
 			var refs = new List<string>();
 
 			//everything used to compile the tModLoader for the target platform
-			refs.AddRange(GetTerrariaReferences(tempDir, xna));
+			refs.AddRange(GetTerrariaReferences());
 
+			// TODO: do we need to always compile against reference assemblies?
 			// add framework assemblies
-			refs.AddRange(Directory.GetFiles(referenceAssembliesPath, "*.dll", SearchOption.AllDirectories)
-				.Where(path => !path.EndsWith("Thunk.dll") && !path.EndsWith("Wrapper.dll")));
+			refs.AddRange(GetFrameworkReferences());
 
 			//libs added by the mod
-			refs.AddRange(mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName, xna)));
+			refs.AddRange(mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)));
 
 			//all dlls included in all referenced mods
-			foreach (var refMod in refMods) {
+			foreach (var refMod in FindReferencedMods(mod.properties)) {
 				using (refMod.modFile.Open()) {
 					var path = Path.Combine(tempDir, refMod + ".dll");
-					File.WriteAllBytes(path, refMod.modFile.GetModAssembly(xna));
+					File.WriteAllBytes(path, refMod.modFile.GetModAssembly());
 					refs.Add(path);
 
 					foreach (var refDll in refMod.properties.dllReferences) {
@@ -653,36 +393,33 @@ namespace Terraria.ModLoader.Core
 				Program.LaunchParameters.TryGetValue("-unsafe", out var unsafeParam) &&
 				bool.TryParse(unsafeParam, out var _allowUnsafe) && _allowUnsafe;
 
-			var preprocessorSymbols = new List<string> { xna ? "XNA" : "FNA" };
+			var preprocessorSymbols = new List<string> { "FNA" };
 			if (Program.LaunchParameters.TryGetValue("-define", out var defineParam))
 				preprocessorSymbols.AddRange(defineParam.Split(';', ' '));
 
-			var results = RoslynCompile(mod.Name, outputPath, refs.ToArray(), files, preprocessorSymbols.ToArray(), mod.properties.includePDB, allowUnsafe);
+			var results = RoslynCompile(mod.Name, refs, files, preprocessorSymbols.ToArray(), allowUnsafe, out code, out pdb);
 
-			int numWarnings = results.Cast<CompilerError>().Count(e => e.IsWarning);
-			int numErrors = results.Count - numWarnings;
+			int numWarnings = results.Count(e => e.Severity == DiagnosticSeverity.Warning);
+			int numErrors = results.Length - numWarnings;
 			status.LogCompilerLine(Language.GetTextValue("tModLoader.CompilationResult", numErrors, numWarnings), Level.Info);
-			foreach (CompilerError line in results)
-				status.LogCompilerLine(line.ToString(), line.IsWarning ? Level.Warn : Level.Error);
+			foreach (var line in results)
+				status.LogCompilerLine(line.ToString(), line.Severity == DiagnosticSeverity.Warning ? Level.Warn : Level.Error);
 
-			if (results.HasErrors) {
-				var firstError = results.Cast<CompilerError>().First(e => !e.IsWarning);
-				throw new BuildException(Language.GetTextValue("tModLoader.CompileError", Path.GetFileName(outputPath), numErrors, numWarnings) + $"\nError: {firstError}");
+			try {
+				if (Directory.Exists(tempDir))
+					Directory.Delete(tempDir, true);
+			}
+			catch (Exception) { }
+
+			if (numErrors > 0) {
+				var firstError = results.First(e => e.Severity == DiagnosticSeverity.Error);
+				throw new BuildException(Language.GetTextValue("tModLoader.CompileError", mod.Name+".dll", numErrors, numWarnings) + $"\nError: {firstError}");
 			}
 		}
 
-		private string DllRefPath(BuildingMod mod, string dllName, bool? xna)
+		private string DllRefPath(BuildingMod mod, string dllName)
 		{
-			string pathWithoutExtension = Path.Combine(mod.path, "lib", dllName);
-
-			if (xna.HasValue) { //check for platform specific dll
-				string engineSpecificPath = pathWithoutExtension + (xna.Value ? ".XNA.dll" : ".FNA.dll");
-
-				if (File.Exists(engineSpecificPath))
-					return engineSpecificPath;
-			}
-
-			string path = pathWithoutExtension + ".dll";
+			string path = Path.Combine(mod.path, "lib", dllName) + ".dll";
 
 			if (File.Exists(path))
 				return path;
@@ -697,117 +434,81 @@ namespace Terraria.ModLoader.Core
 			throw new BuildException("Missing dll reference: " + path);
 		}
 
-		private static string GetTerrariaReference(bool xna)
-		{
-			if (xna == PlatformUtilities.IsXNA)
-				return Assembly.GetExecutingAssembly().Location;
+		private static IEnumerable<string> GetTerrariaReferences() {
+			var executingAssembly = Assembly.GetExecutingAssembly();
+			yield return executingAssembly.Location;
 
-			return Path.Combine(modCompileDir, xna ? "tModLoader.XNA.exe" : "tModLoader.FNA.exe");
-		}
-
-		private static IEnumerable<string> GetTerrariaReferences(string tempDir, bool xna) {
-			var refs = new List<string> {
-				GetTerrariaReference(xna)
-			};
-
-			if (xna == PlatformUtilities.IsXNA) {
-				var executingAssembly = Assembly.GetExecutingAssembly();
-
-				// avoid a double extract of the embedded dlls
-				if (referencesUpdated) {
-					refs.AddRange(Directory.GetFiles(modReferencesPath, "*.dll"));
-					return refs;
-				}
-
-				//extract embedded resource dlls to the references path rather than the tempDir
-				foreach (string resName in executingAssembly.GetManifestResourceNames().Where(n => n.EndsWith(".dll"))) {
-					string path = Path.Combine(modReferencesPath, Path.GetFileName(resName));
-
-					using (Stream res = executingAssembly.GetManifestResourceStream(resName), file = File.Create(path))
-						res.CopyTo(file);
-
-					refs.Add(path);
-				}
-			}
-			else {
-				//extract embedded resource dlls to a temporary folder
-				var terrariaModule = AssemblyDefinition.ReadAssembly(refs[0]).MainModule;
-
-				foreach (var res in terrariaModule.Resources.OfType<EmbeddedResource>().Where(res => res.Name.EndsWith(".dll"))) {
-					string path = Path.Combine(tempDir, Path.GetFileName(res.Name));
-
-					using (Stream s = res.GetResourceStream(), file = File.Create(path))
-						s.CopyTo(file);
-
-					refs.Add(path);
-				}
-			}
-
-			return refs;
-		}
-
-		private static Type roslynWrapper;
-		private static Type RoslynWrapper {
-			get {
-				if (roslynWrapper == null) {
-					AppDomain.CurrentDomain.AssemblyResolve += (o, args) => {
-						var name = new AssemblyName(args.Name).Name;
-						var f = Path.Combine(modCompileDir, name + ".dll");
-						return File.Exists(f) ? Assembly.LoadFile(f) : null;
-					};
-					roslynWrapper = Assembly.LoadFile(Path.Combine(modCompileDir, "RoslynWrapper.dll")).GetType("Terraria.ModLoader.RoslynWrapper");
-				}
-				return roslynWrapper;
+			// same filters as the <Reference> elements in the generated .targets file
+			var libsDir = Path.Combine(Path.GetDirectoryName(executingAssembly.Location), "Libraries");
+			foreach (var f in Directory.EnumerateFiles(libsDir, "*.dll", SearchOption.AllDirectories)) {
+				var path = f.Replace('\\', '/');
+				if (!path.EndsWith(".resources.dll") &&
+					!path.Contains("/Native/") &&
+					!path.Contains("/runtime"))
+					yield return f;
 			}
 		}
 
 		/// <summary>
-		/// Invoke the Roslyn compiler via reflection to avoid a .NET 4.6 dependency
+		/// Compile a dll for the mod based on required includes.
 		/// </summary>
-		private static CompilerErrorCollection RoslynCompile(string name, string outputPath, string[] references, string[] files, string[] preprocessorSymbols, bool includePdb, bool allowUnsafe)
+		private static Diagnostic[] RoslynCompile(string name, List<string> references, string[] files, string[] preprocessorSymbols, bool allowUnsafe, out byte[] code, out byte[] pdb)
 		{
-			return (CompilerErrorCollection)RoslynWrapper.GetMethod("Compile")
-				.Invoke(null, new object[] { name, outputPath, references, files, preprocessorSymbols, includePdb, allowUnsafe });
+			var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
+				assemblyIdentityComparer: DesktopAssemblyIdentityComparer.Default,
+				optimizationLevel: preprocessorSymbols.Contains("DEBUG") ? OptimizationLevel.Debug : OptimizationLevel.Release,
+				allowUnsafe: allowUnsafe);
+
+			var parseOptions = new CSharpParseOptions(LanguageVersion.Preview, preprocessorSymbols: preprocessorSymbols);
+
+			var emitOptions = new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb);
+
+			var refs = references.Select(s => MetadataReference.CreateFromFile(s));
+
+			var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
+
+			var comp = CSharpCompilation.Create(name, src, refs, options);
+
+			using var peStream = new MemoryStream();
+			using var pdbStream = new MemoryStream();
+			var results = comp.Emit(peStream, pdbStream, options: emitOptions);
+
+			code = peStream.ToArray();
+			pdb = pdbStream.ToArray();
+			return results.Diagnostics.Where(d => d.Severity >= DiagnosticSeverity.Warning).ToArray();
 		}
 
-		private static FileStream AcquireConsoleBuildLock()
-		{
-			var path = Path.Combine(modCompileDir, "buildlock");
-			bool first = true;
-			while (true) {
+		private static IEnumerable<string> GetFrameworkReferences() {
+			var frameworkAssembliesPath = Path.GetDirectoryName(typeof(File).Assembly.Location);
+			return FilterUnmanagedFrameworkDllsViaBlacklist(Directory.GetFiles(frameworkAssembliesPath, "*.dll", SearchOption.AllDirectories));
+		}
+
+		private static IEnumerable<string> FilterUnmanagedFrameworkDlls(IEnumerable<string> refs) {
+			var actualAssemblies = new List<string>();
+			var forwarderAssemblies = new List<string>();
+
+			// Separate assemblies into complete assemblies and assemblies that forward to an assembly, at a heavy toll on performance. Will generate the full list of forwarding assemblies to blacklist; Useful for maintenance.
+			foreach (string test in refs) {
 				try {
-					return new FileStream(path, FileMode.OpenOrCreate);
+					var a = Assembly.LoadFile(test);
+					actualAssemblies.Add(test);
 				}
-				catch (IOException) {
-					if (first) {
-						Console.WriteLine("Waiting for other builds to complete");
-						first = false;
+				catch (Exception) {
+					if (test.Contains("Private.CoreLib")) { // This assembly can't be loaded directly, but isn't a forwarding assembly and instead is the recipient of forwarding.
+						actualAssemblies.Add(test);
 					}
+					forwarderAssemblies.Add(test);
 				}
 			}
+
+			return actualAssemblies;
 		}
 
-		// Workaround for #896
-		// really we should bring all the references here, but that's likely to defeat half the point of no-compile
-		// when we move to .NET Core we shouldn't need to generate pdbs/mdbs with cecil anymore, so this won't be necessary
-		private class BuildAssemblyResolver : DefaultAssemblyResolver
-		{
-			private readonly AssemblyNameReference tMLAssemblyName;
-
-			public BuildAssemblyResolver(bool xna)
-			{
-				var tMLAssembly = AssemblyDefinition.ReadAssembly(GetTerrariaReference(xna));
-				RegisterAssembly(tMLAssembly);
-				tMLAssemblyName = tMLAssembly.Name;;
-			}
-
-			public override AssemblyDefinition Resolve(AssemblyNameReference name)
-			{
-				if (name.Name == "Terraria")
-					name = tMLAssemblyName;
-
-				return base.Resolve(name);
-			}
+		private static IEnumerable<string> FilterUnmanagedFrameworkDllsViaBlacklist(IEnumerable<string> refs) {
+			// Separate out known forward-only assemblies via string blacklisting.
+			string[] unmanagedDLLs = new string[] { "api-ms", "clrcompression", "clretwrc", "clrjit", "coreclr", "dbgshim", "Microsoft.DiaSymReader.Native.amd64", "mscordaccore", "mscordaccore_amd64_amd64", "mscordbi", "mscorrc", "ucrtbase", "hostpolicy" };
+			return refs.Where(r => !unmanagedDLLs.Any(r.Contains));
 		}
 	}
 }
+#endif

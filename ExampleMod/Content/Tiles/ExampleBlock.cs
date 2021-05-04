@@ -2,7 +2,6 @@ using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Tiles
 {
@@ -13,8 +12,8 @@ namespace ExampleMod.Content.Tiles
 			Main.tileMergeDirt[Type] = true;
 			Main.tileBlockLight[Type] = true;
 			Main.tileLighted[Type] = true;
-			dustType = DustType<Sparkle>();
-			drop = ItemType<Items.Placeable.ExampleBlock>();
+			DustType = ModContent.DustType<Sparkle>();
+			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleBlock>();
 			AddMapEntry(new Color(200, 200, 200));
 
 			// todo: implement

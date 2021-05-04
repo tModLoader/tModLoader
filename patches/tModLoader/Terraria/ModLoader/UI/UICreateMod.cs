@@ -125,6 +125,7 @@ namespace Terraria.ModLoader.UI
 		{
 			base.OnActivate();
 			_modName.SetText("");
+			_basicSword.SetText("");
 			_modDiplayName.SetText("");
 			_modAuthor.SetText("");
 			_messagePanel.SetText("");
@@ -229,16 +230,13 @@ namespace {modNameTrimmed}
 			return
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project Sdk=""Microsoft.NET.Sdk"">
-  <Import Project=""..\..\references\tModLoader.targets"" />
+  <Import Project=""../tModLoader.targets"" />
   <PropertyGroup>
     <AssemblyName>{modNameTrimmed}</AssemblyName>
-    <TargetFramework>net45</TargetFramework>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <TargetFramework>net5.0</TargetFramework>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <Target Name=""BuildMod"" AfterTargets=""Build"">
-    <Exec Command=""&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks)"" />
-  </Target>
   <ItemGroup>
     <PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />
   </ItemGroup>
@@ -247,13 +245,9 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 
 		internal bool CsprojUpdateNeeded(string fileContents)
 		{
-			if (!fileContents.Contains("tModLoader.targets"))
+			if (!fileContents.Contains("../tModLoader.targets"))
 				return true;
-			if (fileContents.Contains("<LangVersion>latest</LangVersion>"))
-				return true;
-			if (!fileContents.Contains(@"<PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />"))
-				return true;
-			if (!fileContents.Contains(@"-define &quot;$(DefineConstants)&quot;") && !ReLogic.OS.Platform.IsWindows)
+			if (!fileContents.Contains("<TargetFramework>net5.0</TargetFramework>"))
 				return true;
 
 			return false;
@@ -266,12 +260,14 @@ $@"{{
   ""profiles"": {{
     ""Terraria"": {{
       ""commandName"": ""Executable"",
-      ""executablePath"": ""$(tMLPath)"",
+      ""executablePath"": ""dotnet"",
+      ""commandLineArgs"": ""$(tMLPath)"",
       ""workingDirectory"": ""$(TerrariaSteamPath)""
     }},
     ""TerrariaServer"": {{
       ""commandName"": ""Executable"",
-      ""executablePath"": ""$(tMLServerPath)"",
+      ""executablePath"": ""dotnet"",
+      ""commandLineArgs"": ""$(tMLServerPath)"",
       ""workingDirectory"": ""$(TerrariaSteamPath)""
     }}
   }}
@@ -281,7 +277,8 @@ $@"{{
 		internal string GetBasicSword(string modNameTrimmed, string basicSwordName)
 		{
 			return
-$@"using Terraria.ID;
+$@"using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace {modNameTrimmed}.Items
@@ -296,27 +293,26 @@ namespace {modNameTrimmed}.Items
 
 		public override void SetDefaults() 
 		{{
-			item.damage = 50;
-			item.melee = true;
-			item.width = 40;
-			item.height = 40;
-			item.useTime = 20;
-			item.useAnimation = 20;
-			item.useStyle = 1;
-			item.knockBack = 6;
-			item.value = 10000;
-			item.rare = 2;
-			item.UseSound = SoundID.Item1;
-			item.autoReuse = true;
+			Item.damage = 50;
+			Item.DamageType = DamageClass.Melee;
+			Item.width = 40;
+			Item.height = 40;
+			Item.useTime = 20;
+			Item.useAnimation = 20;
+			Item.useStyle = 1;
+			Item.knockBack = 6;
+			Item.value = 10000;
+			Item.rare = 2;
+			Item.UseSound = SoundID.Item1;
+			Item.autoReuse = true;
 		}}
 
 		public override void AddRecipes() 
 		{{
-			Recipe recipe = new Recipe(mod);
+			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.DirtBlock, 10);
 			recipe.AddTile(TileID.WorkBenches);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			recipe.Register();
 		}}
 	}}
 }}";

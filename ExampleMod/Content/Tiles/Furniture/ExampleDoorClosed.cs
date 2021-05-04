@@ -7,7 +7,6 @@ using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
@@ -28,9 +27,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 
-			dustType = DustType<Sparkle>();
-			adjTiles = new int[] { TileID.ClosedDoor };
-			openDoorID = TileType<ExampleDoorOpen>();
+			DustType = ModContent.DustType<Sparkle>();
+			AdjTiles = new int[] { TileID.ClosedDoor };
+			OpenDoorID = ModContent.TileType<ExampleDoorOpen>();
 
 			// Names
 			ModTranslation name = CreateMapEntryName();
@@ -61,13 +60,13 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int i, int j, bool fail, ref int num) => num = 1;
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 16, 48, ItemType<ExampleDoor>());
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 16, 48, ModContent.ItemType<ExampleDoor>());
 
 		public override void MouseOver(int i, int j) {
 			Player player = Main.LocalPlayer;
 			player.noThrow = 2;
 			player.cursorItemIconEnabled = true;
-			player.cursorItemIconID = ItemType<ExampleDoor>();
+			player.cursorItemIconID = ModContent.ItemType<ExampleDoor>();
 		}
 	}
 }

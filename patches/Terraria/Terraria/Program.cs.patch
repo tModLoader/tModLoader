@@ -1,54 +1,30 @@
 --- src/decompiled/Terraria/Program.cs
 +++ src/Terraria/Terraria/Program.cs
-@@ -2,13 +_,17 @@
- using ReLogic.OS;
- using System;
- using System.Collections.Generic;
-+#if CLIENT
- using System.Diagnostics;
-+#endif
- using System.IO;
- using System.Reflection;
- using System.Runtime.CompilerServices;
- using System.Text;
- using System.Threading;
-+#if CLIENT
- using System.Windows.Forms;
-+#endif
- using Terraria.Initializers;
- using Terraria.Localization;
- using Terraria.Social;
-@@ -18,9 +_,18 @@
+@@ -18,10 +_,12 @@
  {
  	public static class Program
  	{
-+#if CLIENT
++		/* hide unused consts
  		public const bool IsServer = false;
-+#else
-+		public const bool IsServer = true;
-+#endif
-+#if XNA
  		public const bool IsXna = true;
  		public const bool IsFna = false;
-+#else
-+		public const bool IsXna = false;
-+		public const bool IsFna = true;
-+#endif
  		public const bool IsDebug = false;
++		*/
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  		private static int ThingsToLoad;
+ 		private static int ThingsLoaded;
 @@ -56,10 +_,18 @@
  		private static void ForceJITOnAssembly(Assembly assembly) {
  			Type[] types = assembly.GetTypes();
  			for (int i = 0; i < types.Length; i++) {
-+#if WINDOWS
++#if WINDOWS || NETCORE
  				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 +#else
 +				MethodInfo[] methods = types[i].GetMethods();
 +#endif
  				foreach (MethodInfo methodInfo in methods) {
  					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
-+#if WINDOWS
++#if WINDOWS || NETCORE
  						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
 +#else
 +						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
@@ -56,38 +32,46 @@
  				}
  
  				ThingsLoaded++;
-@@ -114,8 +_,10 @@
+@@ -114,7 +_,7 @@
  		}
  
  		private static void InitializeConsoleOutput() {
-+#if CLIENT
- 			if (Debugger.IsAttached)
+-			if (Debugger.IsAttached)
++			if (!Main.dedServ && Debugger.IsAttached)
  				return;
-+#endif
  
  			try {
- 				Console.OutputEncoding = Encoding.UTF8;
-@@ -151,7 +_,11 @@
+@@ -140,6 +_,11 @@
+ 			}
+ 
+ 			LaunchParameters = Utils.ParseArguements(args);
++#if SERVER
++			Main.dedServ = true;
++#else
++			Main.dedServ = LaunchParameters.ContainsKey("-server");
++#endif
+ 			ThreadPool.SetMinThreads(8, 8);
+ 			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
+ 			InitializeConsoleOutput();
+@@ -151,7 +_,10 @@
  					SocialAPI.Initialize();
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
-+#if CLIENT
- 					main.Run();
-+#else
-+					main.DedServ();
-+#endif
++					if (!Main.dedServ)
+-					main.Run();
++						main.Run();
++					else
++						main.DedServ();
  				}
  				catch (Exception e) {
  					DisplayException(e);
-@@ -176,7 +_,11 @@
+@@ -188,6 +_,9 @@
+ 					streamWriter.WriteLine(text);
  					streamWriter.WriteLine("");
  				}
++
++				if (Main.dedServ)
++					Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
  
-+#if CLIENT
  				MessageBox.Show(text, "Terraria: Error");
-+#else
-+				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
-+#endif
- 			}
- 			catch {
  			}

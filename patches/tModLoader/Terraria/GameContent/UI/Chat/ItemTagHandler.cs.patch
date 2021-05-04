@@ -18,7 +18,7 @@
  			public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f) {
  				float num = 1f;
  				float num2 = 1f;
-@@ -54,20 +_,26 @@
+@@ -55,20 +_,26 @@
  
  		TextSnippet ITagHandler.Parse(string text, Color baseColor, string options) {
  			Item item = new Item();
@@ -46,35 +46,38 @@
  						case 's':
  						case 'x': {
  								if (int.TryParse(array[i].Substring(1), out int result3))
-@@ -77,7 +_,7 @@
+@@ -78,7 +_,7 @@
  							}
  						case 'p': {
  								if (int.TryParse(array[i].Substring(1), out int result2))
 -									item.Prefix((byte)Utils.Clamp(result2, 0, 85));
-+									item.Prefix((byte)Utils.Clamp(result2, 0, ModPrefix.PrefixCount));
++									item.Prefix((byte)Utils.Clamp(result2, 0, PrefixLoader.PrefixCount));
  
  								break;
  							}
-@@ -96,13 +_,22 @@
+@@ -97,13 +_,25 @@
  			};
  		}
  
 +		// we do not alter vanilla ways of doing things
 +		// this can lead to trouble in future patches
  		public static string GenerateTag(Item I) {
- 			string text = "[i";
+ 			string str = "[i";
 +			// assuming we have modded data, simply write the item as base64
 +			// do not write other option, base64 holds all the info.
-+			if (I.modItem != null || I.globalItems.Any()) {
-+				text = text + "/d" + ItemIO.ToBase64(I);
++			if (I.ModItem != null || I.globalItems.Any()) {
++				str = str + "/d" + ItemIO.ToBase64(I);
++				
++				goto End;
 +			}
-+			else {
++
  			if (I.prefix != 0)
- 				text = text + "/p" + I.prefix;
+ 				str = str + "/p" + I.prefix;
  
  			if (I.stack != 1)
- 				text = text + "/s" + I.stack;
-+			}
+ 				str = str + "/s" + I.stack;
++
++			End:
  
- 			return text + ":" + I.netID + "]";
+ 			return str + ":" + I.netID + "]";
  		}

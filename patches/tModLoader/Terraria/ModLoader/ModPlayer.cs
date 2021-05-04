@@ -14,19 +14,19 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
 	/// </summary>
-	public class ModPlayer:ModType
+	public abstract class ModPlayer : ModType
 	{
 		/// <summary>
 		/// The Player instance that this ModPlayer instance is attached to.
 		/// </summary>
-		public Player player {get;internal set;}
+		public Player Player { get; internal set; }
 
 		internal int index;
 
 		internal ModPlayer CreateFor(Player newPlayer) {
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
 			modPlayer.Mod = Mod;
-			modPlayer.player = newPlayer;
+			modPlayer.Player = newPlayer;
 			modPlayer.index = index;
 			modPlayer.Initialize();
 			return modPlayer;
@@ -86,57 +86,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. 
+		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.
 		/// </summary>
 		public virtual void PreSavePlayer() {
 		}
 
 		/// <summary>
-		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. 
+		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.
 		/// </summary>
 		public virtual void PostSavePlayer() {
-		}
-
-		/// <summary>
-		/// Allows you to set biome variables in your ModPlayer class based on tile counts.
-		/// </summary>
-		public virtual void UpdateBiomes() {
-		}
-
-		/// <summary>
-		/// Whether or not this player and the other player parameter have the same custom biome variables. This hook is used to help with client/server syncing. Returns true by default.
-		/// </summary>
-		/// <param name="other"></param>
-		/// <returns></returns>
-		public virtual bool CustomBiomesMatch(Player other) {
-			return true;
-		}
-
-		/// <summary>
-		/// In this hook, you should copy the custom biome variables from this player to the other player parameter. This hook is used to help with client/server syncing.
-		/// </summary>
-		/// <param name="other"></param>
-		public virtual void CopyCustomBiomesTo(Player other) {
-		}
-
-		/// <summary>
-		/// Allows you to send custom biome information between client and server.
-		/// </summary>
-		/// <param name="writer"></param>
-		public virtual void SendCustomBiomes(BinaryWriter writer) {
-		}
-
-		/// <summary>
-		/// Allows you to do things with the custom biome information you send between client and server.
-		/// </summary>
-		/// <param name="reader"></param>
-		public virtual void ReceiveCustomBiomes(BinaryReader reader) {
-		}
-
-		/// <summary>
-		/// Allows you to create special visual effects in the area around the player. For example, the blood moon's red filter on the screen or the slime rain's falling slime in the background. You must create classes that override Terraria.Graphics.Shaders.ScreenShaderData or Terraria.Graphics.Effects.CustomSky, add them in your mod's Load hook, then call Player.ManageSpecialBiomeVisuals. See the ExampleMod if you do not have access to the source code.
-		/// </summary>
-		public virtual void UpdateBiomeVisuals() {
 		}
 
 		/// <summary>
@@ -203,7 +161,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Use this to check on hotkeys you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay. 
+		/// Use this to check on hotkeys you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay.
 		/// </summary>
 		/// <param name="triggersSet"></param>
 		public virtual void ProcessTriggers(TriggersSet triggersSet) {
@@ -230,10 +188,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Called after Update Accessories. 
 		/// </summary>
-		/// <param name="wallSpeedBuff"></param>
-		/// <param name="tileSpeedBuff"></param>
-		/// <param name="tileRangeBuff"></param>
-		public virtual void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff) {
+		public virtual void UpdateEquips() {
 		}
 
 		/// <summary>
@@ -344,6 +299,21 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Called before vanilla makes any luck calculations. Return false to prevent vanilla from making their luck calculations. Returns true by default.
+		/// </summary>
+		/// <param name="luck"></param>
+		public virtual bool PreModifyLuck(ref float luck) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to modify a player's luck amount.
+		/// </summary>
+		/// <param name="luck"></param>
+		public virtual void ModifyLuck(ref float luck) {
+		}
+
+		/// <summary>
 		/// Allows you to do anything before the update code for the player's held item is run. Return false to stop the held item update code from being run (for example, if the player is frozen). Returns true by default.
 		/// </summary>
 		/// <returns></returns>
@@ -424,10 +394,10 @@ namespace Terraria.ModLoader
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// </summary>
 		/// <param name="item">The item being used</param>
-		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05`</param>
+		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05f`</param>
 		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
 		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
-		public virtual void ModifyWeaponDamage(Item item, ref float add, ref float mult, ref float flat) {
+		public virtual void ModifyWeaponDamage(Item item, ref StatModifier damage, ref float flat) {
 		}
 
 		/// <summary>
@@ -435,7 +405,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item"></param>
 		/// <param name="knockback"></param>
-		public virtual void GetWeaponKnockback(Item item, ref float knockback) {
+		public virtual void ModifyWeaponKnockback(Item item, ref StatModifier knockback, ref float flat) {
 		}
 
 		/// <summary>
@@ -443,7 +413,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item">The item</param>
 		/// <param name="crit">The crit chance, ranging from 0 to 100</param>
-		public virtual void GetWeaponCrit(Item item, ref int crit) {
+		public virtual void ModifyWeaponCrit(Item item, ref int crit) {
 		}
 
 		/// <summary>
@@ -468,18 +438,37 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// This is called before this player's weapon creates a projectile. You can use it to create special effects, such as changing the speed, changing the initial position, and/or firing multiple projectiles. Return false to stop the game from shooting the default projectile (do this if you manually spawn your own projectile). Returns true by default.
+		/// Allows you to prevent an item from shooting a projectile on use. Returns true by default.
 		/// </summary>
-		/// <param name="item"></param>
-		/// <param name="position"></param>
-		/// <param name="speedX"></param>
-		/// <param name="speedY"></param>
-		/// <param name="type"></param>
-		/// <param name="damage"></param>
-		/// <param name="knockBack"></param>
+		/// <param name="item"> The item being used. </param>
 		/// <returns></returns>
-		public virtual bool Shoot(Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
+		public virtual bool CanShoot(Item item) {
 			return true;
+		}
+
+		/// <summary>
+		/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by an item.
+		/// </summary>
+		/// <param name="item"> The item being used. </param>
+		/// <param name="position"> The center position of the projectile. </param>
+		/// <param name="velocity"> The velocity of the projectile. </param>
+		/// <param name="type"> The ID of the projectile. </param>
+		/// <param name="damage"> The damage of the projectile. </param>
+		/// <param name="knockback"> The knockback of the projectile. </param>
+		public virtual void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		}
+
+		/// <summary>
+		/// Allows you to add additional projectiles to an item's shooting mechanism.
+		/// </summary>
+		/// <param name="item"> The item being used. </param>
+		/// <param name="source"> The projectile source's information. </param>
+		/// <param name="position"> The center position of the projectile. </param>
+		/// <param name="velocity"> The velocity of the projectile. </param>
+		/// <param name="type"> The ID of the projectile. </param>
+		/// <param name="damage"> The damage of the projectile. </param>
+		/// <param name="knockback"> The knockback of the projectile. </param>
+		public virtual void Shoot(Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		}
 
 		/// <summary>
@@ -726,28 +715,30 @@ namespace Terraria.ModLoader
 		/// <param name="b"></param>
 		/// <param name="a"></param>
 		/// <param name="fullBright"></param>
-		public virtual void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
+		public virtual void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
 		}
 
 		/// <summary>
 		/// Allows you to modify the drawing parameters of the player before drawing begins.
 		/// </summary>
 		/// <param name="drawInfo"></param>
-		public virtual void ModifyDrawInfo(ref PlayerDrawInfo drawInfo) {
+		public virtual void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
 		}
 
 		/// <summary>
-		/// Allows you to modify the drawing of the player. This is done by removing from, adding to, or rearranging the list, by setting some of the layers' visible field to false, etc.
+		/// Allows you to reorder the player draw layers. 
+		/// This is called once at the end of mod loading, not during the game.
+		/// Use with extreme caution, or risk breaking other mods.
 		/// </summary>
-		/// <param name="layers"></param>
-		public virtual void ModifyDrawLayers(List<PlayerLayer> layers) {
+		/// <param name="positions">Add/remove/change the positions applied to each layer here</param>
+		public virtual void ModifyDrawLayerOrdering(IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position> positions) {
 		}
 
 		/// <summary>
-		/// Allows you to modify the drawing of the player head on the minimap. This is done by removing from, adding to, or rearranging the list, by setting some of the layers' visible field to false, etc.
+		/// Allows you to modify the visiblity of layers about to be drawn
 		/// </summary>
 		/// <param name="layers"></param>
-		public virtual void ModifyDrawHeadLayers(List<PlayerHeadLayer> layers) {
+		public virtual void HideDrawLayers(PlayerDrawSet drawInfo) {
 		}
 
 		/// <summary>
@@ -792,12 +783,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Called whenever the player shift-clicks an item slot. This can be used to override default clicking behavior (ie. selling or trashing items).
+		/// Called whenever the player shift-clicks an item slot. This can be used to override default clicking behavior (ie. selling, trashing, moving items).
 		/// </summary>
 		/// <param name="inventory">The array of items the slot is part of.</param>
 		/// <param name="context">The Terraria.UI.ItemSlot.Context of the inventory.</param>
 		/// <param name="slot">The index in the inventory of the clicked slot.</param>
-		/// <returns>Whether or not to block the default code (sell and trash) from running. Returns false by default.</returns>
+		/// <returns>Whether or not to block the default code (sell, trash, move, etc) from running. Returns false by default.</returns>
 		public virtual bool ShiftClickSlot(Item[] inventory, int context, int slot) {
 			return false;
 		}

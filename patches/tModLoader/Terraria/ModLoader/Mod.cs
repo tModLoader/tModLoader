@@ -40,15 +40,15 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Stores the name of the mod. This name serves as the mod's identification, and also helps with saving everything your mod adds. By default this returns the name of the folder that contains all your code and stuff.
 		/// </summary>
-		public virtual string Name => File.name;
+		public virtual string Name => File.Name;
 		/// <summary>
 		/// The version of tModLoader that was being used when this mod was built.
 		/// </summary>
-		public Version tModLoaderVersion { get; internal set; }
+		public Version TModLoaderVersion { get; internal set; }
 		/// <summary>
 		/// This version number of this mod.
 		/// </summary>
-		public virtual Version Version => File.version;
+		public virtual Version Version => File.Version;
 
 		public ModProperties Properties { get; protected set; } = ModProperties.AutoLoadAll;
 		/// <summary>
@@ -66,6 +66,8 @@ namespace Terraria.ModLoader
 		public bool IsNetSynced => netID >= 0;
 
 		private IDisposable fileHandle;
+
+		public GameContent.Bestiary.ModSourceBestiaryInfoElement ModSourceBestiaryInfoElement;
 
 		internal void AutoloadConfig()
 		{
@@ -87,7 +89,7 @@ namespace Terraria.ModLoader
 						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is ServerSide but this Mods ModSide isn't Both or Server");
 					if (mc.Mode == ConfigScope.ClientSide && Side == ModSide.Server) // Doesn't make sense. 
 						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is ClientSide but this Mods ModSide is Server");
-					mc.mod = this;
+					mc.Mod = this;
 					var name = type.Name;
 					if (mc.Autoload(ref name))
 						AddConfig(name, mc);
@@ -98,7 +100,7 @@ namespace Terraria.ModLoader
 		public void AddConfig(string name, ModConfig mc)
 		{
 			mc.Name = name;
-			mc.mod = this;
+			mc.Mod = this;
 
 			ConfigManager.Add(mc);
 			ContentInstance.Register(mc);
@@ -156,10 +158,10 @@ namespace Terraria.ModLoader
 			ModContent.GetTexture(texture); //ensure texture exists
 
 			equipTexture.Texture = texture;
-			equipTexture.mod = this;
+			equipTexture.Mod = this;
 			equipTexture.Name = item.Name;
 			equipTexture.Type = type;
-			equipTexture.item = item;
+			equipTexture.Item = item;
 			int slot = equipTexture.Slot = EquipLoader.ReserveEquipID(type);
 
 			EquipLoader.equipTextures[type][slot] = equipTexture;
@@ -224,8 +226,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npcType">Type of the NPC.</param>
 		/// <param name="texture">The texture.</param>
+		/// <returns>The boss head txture slot</returns>
 		/// <exception cref="MissingResourceException"></exception>
-		public void AddNPCHeadTexture(int npcType, string texture) {
+		public int AddNPCHeadTexture(int npcType, string texture) {
 			if (!loading)
 				throw new Exception("AddNPCHeadTexture can only be called from Mod.Load or Mod.Autoload");
 
@@ -243,6 +246,7 @@ namespace Terraria.ModLoader
 
 			NPCHeadLoader.npcToHead[npcType] = slot;
 			NPCHeadLoader.headToNPC[slot] = npcType;
+			return slot;
 		}
 
 		/// <summary>
@@ -250,7 +254,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="texture">The texture.</param>
 		/// <param name="npcType">An optional npc id for NPCID.Sets.BossHeadTextures</param>
-		public void AddBossHeadTexture(string texture, int npcType = -1) {
+		/// <returns>The boss head txture slot</returns>
+		public int AddBossHeadTexture(string texture, int npcType = -1) {
 			if (!loading)
 				throw new Exception("AddBossHeadTexture can only be called from Mod.Load or Mod.Autoload");
 
@@ -260,38 +265,8 @@ namespace Terraria.ModLoader
 			if (npcType >= 0) {
 				NPCHeadLoader.npcToBossHead[npcType] = slot;
 			}
+			return slot;
 		}
-
-		/// <summary>
-		/// Adds the given texture to the game as a custom gore, with the given custom gore behavior. If no custom gore behavior is provided, the custom gore will have the default vanilla behavior.
-		/// </summary>
-		/// <param name="texture">The texture.</param>
-		/// <param name="modGore">The mod gore.</param>
-		public void AddGore(string texture, ModGore modGore = null) {
-			if (!loading)
-				throw new Exception("AddGore can only be called from Mod.Load or Mod.Autoload");
-
-			int id = ModGore.ReserveGoreID();
-			ModGore.gores[texture] = id;
-			if (modGore != null) {
-				ModGore.modGores[id] = modGore;
-				ContentInstance.Register(modGore);
-			}
-		}
-
-		/// <summary>
-		/// Shorthand for calling ModGore.GetGoreSlot(this.Name + '/' + name).
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int GetGoreSlot(string name) => ModGore.GetGoreSlot(Name + '/' + name);
-
-		/// <summary>
-		/// Same as the other GetGoreSlot, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		public int GetGoreSlot<T>() where T : ModGore => GetGoreSlot(typeof(T).Name);
 
 		/// <summary>
 		/// Adds the given sound file to the game as the given type of sound and with the given custom sound playing. If no ModSound instance is provided, the custom sound will play in a similar manner as the default vanilla ones.
@@ -381,7 +356,7 @@ namespace Terraria.ModLoader
 			if (!loading)
 				throw new Exception("AddMusicBox can only be called from Mod.Load or Mod.Autoload");
 
-			if (Main.waveBank == null)
+			if (Main.audioSystem == null)
 				return;
 
 			if (musicSlot < Main.maxMusic) {

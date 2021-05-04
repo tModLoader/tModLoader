@@ -76,17 +76,17 @@
  				}
  			}
  
-@@ -504,14 +_,16 @@
+@@ -504,14 +_,15 @@
  			}
  		}
  
 -		public void AddItemToShop(Item newItem) {
 +		public int AddItemToShop(Item newItem) { //tML: Now returns the item's index.
  			int num = Main.shopSellbackHelper.Remove(newItem);
-+			/*
++			
  			if (num >= newItem.stack)
- 				return;
-+			*/
+-				return;
++				return 0;
  
  			int num2 = 0;
  			while (true) {
@@ -108,11 +108,11 @@
  			item[num2].stack -= num;
  			_ = item[num2].value;
  			_ = 0;
-+			return num;
++			return num2;
  		}
  
  		public static void SetupTravelShop() {
-@@ -877,9 +_,12 @@
+@@ -874,9 +_,12 @@
  							Main.travelShop[num2++] = 3636;
  							Main.travelShop[num2++] = 3641;
  							break;
@@ -125,7 +125,7 @@
  		}
  
  		public void SetupShop(int type) {
-@@ -2508,6 +_,7 @@
+@@ -2553,6 +_,7 @@
  					array[num++].SetDefaults(4921);
  			}
  

@@ -5,7 +5,6 @@ using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
@@ -20,8 +19,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChair);
 
-			dustType = DustType<Sparkle>();
-			adjTiles = new int[] { TileID.Chairs };
+			DustType = ModContent.DustType<Sparkle>();
+			AdjTiles = new int[] { TileID.Chairs };
 
 			// Names
 			ModTranslation name = CreateMapEntryName();
@@ -43,6 +42,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int i, int j, bool fail, ref int num) => num = fail ? 1 : 3;
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 16, 32, ItemType<Items.Placeable.Furniture.ExampleChair>());
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 16, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleChair>());
 	}
 }

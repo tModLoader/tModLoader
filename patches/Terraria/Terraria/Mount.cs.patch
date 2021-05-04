@@ -1,26 +1,26 @@
 --- src/decompiled/Terraria/Mount.cs
 +++ src/Terraria/Terraria/Mount.cs
-@@ -977,9 +_,11 @@
+@@ -979,9 +_,11 @@
  			}
  
  			drillTextureSize = new Vector2(80f, 80f);
-+#if CLIENT
++			if (!Main.dedServ) {
  			Vector2 value = new Vector2(mountData.textureWidth, mountData.textureHeight / mountData.totalFrames);
  			if (drillTextureSize != value)
  				throw new Exception("Be sure to update the Drill texture origin to match the actual texture size of " + mountData.textureWidth + ", " + mountData.textureHeight + ".");
-+#endif
++			}
  
  			mountData = new MountData();
  			mounts[9] = mountData;
-@@ -1049,9 +_,11 @@
+@@ -1051,9 +_,11 @@
  			scutlixEyePositions[8] = new Vector2(70f, 34f);
  			scutlixEyePositions[9] = new Vector2(76f, 34f);
  			scutlixTextureSize = new Vector2(45f, 54f);
-+#if CLIENT
++			if (!Main.dedServ) {
  			Vector2 value2 = new Vector2(mountData.textureWidth / 2, mountData.textureHeight / mountData.totalFrames);
  			if (scutlixTextureSize != value2)
  				throw new Exception("Be sure to update the Scutlix texture origin to match the actual texture size of " + mountData.textureWidth + ", " + mountData.textureHeight + ".");
-+#endif
++			}
  
  			for (int num6 = 0; num6 < scutlixEyePositions.Length; num6++) {
  				scutlixEyePositions[num6] -= scutlixTextureSize;

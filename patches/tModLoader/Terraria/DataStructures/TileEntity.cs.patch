@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/DataStructures/TileEntity.cs
 +++ src/tModLoader/Terraria/DataStructures/TileEntity.cs
-@@ -4,6 +_,7 @@
+@@ -4,10 +_,11 @@
  using System.IO;
  using Terraria.Audio;
  using Terraria.GameInput;
@@ -8,7 +8,22 @@
  
  namespace Terraria.DataStructures
  {
-@@ -42,6 +_,7 @@
+-	public abstract class TileEntity
++	public abstract partial class TileEntity
+ 	{
+ 		public static TileEntitiesManager manager;
+ 		public const int MaxEntitiesPerChunk = 1000;
+@@ -22,6 +_,9 @@
+ 		public static event Action _UpdateStart;
+ 		public static event Action _UpdateEnd;
+ 
++		//Force modders to use ModTileEntity, to prevent them from messing with vanilla saving/loading.
++		internal TileEntity() { }
++
+ 		public static int AssignNewID() => TileEntitiesNextID++;
+ 
+ 		public static void Clear() {
+@@ -43,6 +_,7 @@
  		public static void InitializeAll() {
  			manager = new TileEntitiesManager();
  			manager.RegisterAll();
@@ -16,13 +31,75 @@
  		}
  
  		public static void PlaceEntityNet(int x, int y, int type) {
-@@ -60,6 +_,9 @@
- 		public static TileEntity Read(BinaryReader reader, bool networkSend = false) {
+@@ -53,34 +_,61 @@
+ 		public virtual void Update() {
+ 		}
+ 
++		// Vanilla's 'networkSend' actually meant that this isn't the TE's first synchronization.
++		// So I added lightSend parameters to have 'networkSend' in this method be true on initial syncs.
++		// - Mirsario
++
+-		public static void Write(BinaryWriter writer, TileEntity ent, bool networkSend = false) {
++		public static void Write(BinaryWriter writer, TileEntity ent, bool networkSend = false, bool lightSend = false) {
++			lightSend &= networkSend;
++
+ 			writer.Write(ent.type);
+-			ent.WriteInner(writer, networkSend);
++			ent.WriteInner(writer, networkSend, lightSend);
+ 		}
+ 
+-		public static TileEntity Read(BinaryReader reader, bool networkSend = false) {
++		public static TileEntity Read(BinaryReader reader, bool networkSend = false, bool lightSend = false) {
++			lightSend &= networkSend;
++
  			byte id = reader.ReadByte();
  			TileEntity tileEntity = manager.GenerateInstance(id);
 + 			if(tileEntity is null) {
 +				ModTileEntity.ConstructFromType(id);
 +			}
  			tileEntity.type = id;
- 			tileEntity.ReadInner(reader, networkSend);
+-			tileEntity.ReadInner(reader, networkSend);
++			tileEntity.ReadInner(reader, networkSend, lightSend);
  			return tileEntity;
+ 		}
+ 
+-		private void WriteInner(BinaryWriter writer, bool networkSend) {
++		private void WriteInner(BinaryWriter writer, bool networkSend, bool lightSend) {
+-			if (!networkSend)
++			if (!lightSend)
+ 				writer.Write(ID);
+ 
+ 			writer.Write(Position.X);
+ 			writer.Write(Position.Y);
++
++			//Call NetSend instead of the vanilla method when in modded contexts.
++			if (networkSend && !ModNet.AllowVanillaClients) {
++				NetSend(writer);
++
++				return;
++			}
++
+-			WriteExtraData(writer, networkSend);
++			WriteExtraData(writer, lightSend);
+ 		}
+ 
+-		private void ReadInner(BinaryReader reader, bool networkSend) {
++		private void ReadInner(BinaryReader reader, bool networkSend, bool lightSend) {
+-			if (!networkSend)
++			if (!lightSend)
+ 				ID = reader.ReadInt32();
+ 
+ 			Position = new Point16(reader.ReadInt16(), reader.ReadInt16());
++
++			//Call NetReceive instead of the vanilla method when in modded contexts.
++			if (networkSend && !ModNet.AllowVanillaClients) {
++				NetReceive(reader);
++
++				return;
++			}
++
+-			ReadExtraData(reader, networkSend);
++			ReadExtraData(reader, lightSend);
+ 		}
+ 
+ 		public virtual void WriteExtraData(BinaryWriter writer, bool networkSend) {

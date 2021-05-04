@@ -2,7 +2,6 @@ using ExampleMod.Content.Tiles.Furniture;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Placeable.Furniture
 {
@@ -14,17 +13,17 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		}
 
 		public override void SetDefaults() {
-			item.width = 14;
-			item.height = 28;
-			item.maxStack = 99;
-			item.useTurn = true;
-			item.autoReuse = true;
-			item.useAnimation = 15;
-			item.useTime = 10;
-			item.useStyle = ItemUseStyleID.Swing;
-			item.consumable = true;
-			item.value = 150;
-			item.createTile = TileType<ExampleDoorClosed>();
+			Item.width = 14;
+			Item.height = 28;
+			Item.maxStack = 99;
+			Item.useTurn = true;
+			Item.autoReuse = true;
+			Item.useAnimation = 15;
+			Item.useTime = 10;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.consumable = true;
+			Item.value = 150;
+			Item.createTile = ModContent.TileType<ExampleDoorClosed>();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

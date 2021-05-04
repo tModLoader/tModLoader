@@ -1,9 +1,9 @@
 --- src/Terraria/Terraria/ObjectData/TileObjectData.cs
 +++ src/tModLoader/Terraria/ObjectData/TileObjectData.cs
-@@ -4,13 +_,14 @@
+@@ -3,13 +_,14 @@
+ using Terraria.DataStructures;
  using Terraria.Enums;
  using Terraria.GameContent.Tile_Entities;
- using Terraria.ID;
 +using Terraria.ModLoader;
  using Terraria.Modules;
  
@@ -16,7 +16,7 @@
  		private bool _linkedAlternates;
  		private bool _usesCustomCanPlace;
  		private TileObjectAlternatesModule _alternates;
-@@ -35,34 +_,34 @@
+@@ -34,34 +_,34 @@
  		private bool _hasOwnTileObjectDraw;
  		private bool _hasOwnTileObjectStyle;
  		private bool _hasOwnTileObjectCoords;
@@ -76,7 +76,7 @@
  			get {
  				return _linkedAlternates;
  			}
-@@ -87,7 +_,7 @@
+@@ -86,7 +_,7 @@
  			}
  		}
  
@@ -85,7 +85,7 @@
  			get {
  				if (_alternates == null)
  					return _baseObject.Alternates;
-@@ -531,7 +_,7 @@
+@@ -530,7 +_,7 @@
  			}
  		}
  
@@ -94,7 +94,7 @@
  			get {
  				if (_subTiles == null)
  					return _baseObject.SubTiles;
-@@ -1340,6 +_,18 @@
+@@ -1339,6 +_,18 @@
  				if (_liquidDeath.water)
  					WaterPlacement = LiquidPlacement.NotAllowed;
  			}
@@ -102,7 +102,7 @@
 +			// Detect modder mistake: IndexOutOfRangeException
 +			if (Height != _tileObjectCoords.heights.Length) {
 +				// legacy compatibility, mismatch isn't a problem here
-+				if (Height < _tileObjectCoords.heights.Length && ModContent.LoadingMod.tModLoaderVersion < new Version(0, 11))
++				if (Height < _tileObjectCoords.heights.Length && ModContent.LoadingMod.TModLoaderVersion < new Version(0, 11))
 +					return;
 +
 +				FixNewTile();
@@ -113,7 +113,7 @@
  		}
  
  		private void WriteCheck() {
-@@ -1351,13 +_,15 @@
+@@ -1350,13 +_,15 @@
  			readOnlyData = true;
  		}
  
@@ -130,7 +130,7 @@
  						if (LavaPlacement == LiquidPlacement.NotAllowed)
  							return false;
  						if (LavaPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
-@@ -1365,6 +_,8 @@
+@@ -1364,6 +_,8 @@
  						break;
  					case 0:
  					case 2:
@@ -139,7 +139,7 @@
  						if (WaterPlacement == LiquidPlacement.NotAllowed)
  							return false;
  						if (WaterPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
-@@ -1468,13 +_,17 @@
+@@ -1467,13 +_,17 @@
  			newTile = new TileObjectData(_baseObject);
  		}
  
@@ -159,7 +159,7 @@
  			newSubTile.Calculate();
  			List<TileObjectData> list;
  			if (!newTile._hasOwnSubTiles) {
-@@ -1496,7 +_,7 @@
+@@ -1495,7 +_,7 @@
  			newSubTile = new TileObjectData(_baseObject);
  		}
  
@@ -168,7 +168,7 @@
  			newAlternate.Calculate();
  			if (!newTile._hasOwnAlternates)
  				newTile.Alternates = new List<TileObjectData>();
-@@ -4174,7 +_,6 @@
+@@ -4187,7 +_,6 @@
  			newTile.StyleMultiplier = 3;
  			newTile.StyleHorizontal = true;
  			addTile(615);
@@ -176,7 +176,7 @@
  		}
  
  		public static bool CustomPlace(int type, int style) {
-@@ -4328,6 +_,68 @@
+@@ -4341,6 +_,68 @@
  			TileObjectData tileData = GetTileData(type, style);
  			if (tileData != null)
  				baseCoords = new Point16(baseCoords.X - tileData.Origin.X, baseCoords.Y - tileData.Origin.Y);

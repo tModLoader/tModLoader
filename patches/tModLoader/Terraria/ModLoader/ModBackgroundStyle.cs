@@ -2,29 +2,21 @@
 
 namespace Terraria.ModLoader
 {
-	/// <summary>
-	/// Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds.
-	/// </summary>
-	public abstract class ModUgBgStyle:ModType
+	public abstract class ModBgStyle:ModType
 	{
 		/// <summary>
 		/// The ID of this underground background style.
 		/// </summary>
-		public int Slot {get;internal set;}
-
+		public int Slot { get; internal set; }
+	}
+	
+	/// <summary>
+	/// Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds.
+	/// </summary>
+	public abstract class ModUgBgStyle:ModBgStyle
+	{
 		protected override sealed void Register() {
-			Slot = UgBgStyleLoader.ReserveBackgroundSlot();
-
-			ModTypeLookup<ModUgBgStyle>.Register(this);
-			UgBgStyleLoader.ugBgStyles.Add(this);
-			ContentInstance.Register(this);
-		}
-
-		/// <summary>
-		/// Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default.
-		/// </summary>
-		public virtual bool ChooseBgStyle() {
-			return false;
+			Slot = Loaders.UgBgs.Register(this);
 		}
 
 		/// <summary>
@@ -36,25 +28,10 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for above-ground backgrounds.
 	/// </summary>
-	public abstract class ModSurfaceBgStyle:ModType
-	{
-		/// <summary>
-		/// The ID of this surface background style.
-		/// </summary>
-		public int Slot {get;internal set;}
-
+	public abstract class ModSurfaceBgStyle:ModBgStyle
+	{ 
 		protected override sealed void Register() {
-			Slot = SurfaceBgStyleLoader.ReserveBackgroundSlot();
-
-			ModTypeLookup<ModSurfaceBgStyle>.Register(this);
-			SurfaceBgStyleLoader.surfaceBgStyles.Add(this);
-		}
-
-		/// <summary>
-		/// Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default.
-		/// </summary>
-		public virtual bool ChooseBgStyle() {
-			return false;
+			Slot = Loaders.SurfaceBgs.Register(this);
 		}
 
 		/// <summary>
@@ -99,7 +76,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves to collect functions that operate on any kind of background style, without being specific to one single background style.
 	/// </summary>
-	public class GlobalBgStyle:ModType
+	public abstract class GlobalBgStyle : ModType
 	{
 		protected override sealed void Register() {
 			ModTypeLookup<GlobalBgStyle>.Register(this);

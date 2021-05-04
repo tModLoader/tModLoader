@@ -9,7 +9,6 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
@@ -28,9 +27,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.BasicChest[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 
-			dustType = DustType<Sparkle>();
-			adjTiles = new int[] { TileID.Containers };
-			chestDrop = ItemType<Items.Placeable.Furniture.ExampleChest>();
+			DustType = ModContent.DustType<Sparkle>();
+			AdjTiles = new int[] { TileID.Containers };
+			ChestDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
 
 			// Names
 			ContainerName.SetDefault("Example Chest");
@@ -67,7 +66,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				return false;
 			}
 
-			dustType = this.dustType;
+			DustType = dustType;
 			return true;
 		}
 
@@ -98,7 +97,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override void NumDust(int i, int j, bool fail, ref int num) => num = 1;
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 32, 32, chestDrop);
+			Item.NewItem(i * 16, j * 16, 32, 32, ChestDrop);
 			Chest.DestroyChest(i, j);
 		}
 
@@ -148,7 +147,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			}
 			else {
 				if (isLocked) {
-					int key = ItemType<ExampleChestKey>();
+					int key = ModContent.ItemType<ExampleChestKey>();
 					if (player.ConsumeItem(key) && Chest.Unlock(left, top)) {
 						if (Main.netMode == NetmodeID.MultiplayerClient) {
 							NetMessage.SendData(MessageID.Unlock, -1, -1, null, player.whoAmI, 1f, left, top);
@@ -200,9 +199,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 			else {
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : "Example Chest";
 				if (player.cursorItemIconText == "Example Chest") {
-					player.cursorItemIconID = ItemType<Items.Placeable.Furniture.ExampleChest>();
+					player.cursorItemIconID = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
 					if (Main.tile[left, top].frameX / 36 == 1) {
-						player.cursorItemIconID = ItemType<ExampleChestKey>();
+						player.cursorItemIconID = ModContent.ItemType<ExampleChestKey>();
 					}
 
 					player.cursorItemIconText = "";

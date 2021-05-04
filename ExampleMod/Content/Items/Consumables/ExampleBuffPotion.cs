@@ -2,7 +2,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -14,19 +13,19 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void SetDefaults() {
-			item.width = 20;
-			item.height = 26;
-			item.useStyle = ItemUseStyleID.EatFood;
-			item.useAnimation = 15;
-			item.useTime = 15;
-			item.useTurn = true;
-			item.UseSound = SoundID.Item3;
-			item.maxStack = 30;
-			item.consumable = true;
-			item.rare = ItemRarityID.Orange;
-			item.value = Item.buyPrice(gold: 1);
-			item.buffType = BuffType<Buffs.ExampleDefenseBuff>(); //Specify an existing buff to be applied when used.
-			item.buffTime = 5400; //The amount of time the buff declared in item.buffType will last in ticks. 5400 / 60 is 90, so this buff will last 90 seconds.
+			Item.width = 20;
+			Item.height = 26;
+			Item.useStyle = ItemUseStyleID.EatFood;
+			Item.useAnimation = 15;
+			Item.useTime = 15;
+			Item.useTurn = true;
+			Item.UseSound = SoundID.Item3;
+			Item.maxStack = 30;
+			Item.consumable = true;
+			Item.rare = ItemRarityID.Orange;
+			Item.value = Item.buyPrice(gold: 1);
+			Item.buffType = ModContent.BuffType<Buffs.ExampleDefenseBuff>(); //Specify an existing buff to be applied when used.
+			Item.buffTime = 5400; //The amount of time the buff declared in Item.buffType will last in ticks. 5400 / 60 is 90, so this buff will last 90 seconds.
 		}
 	}
 }

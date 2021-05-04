@@ -1,34 +1,30 @@
 --- src/decompiled/Terraria/GameContent/Profiles.cs
 +++ src/Terraria/Terraria/GameContent/Profiles.cs
-@@ -17,8 +_,10 @@
+@@ -17,6 +_,9 @@
  			public LegacyNPCProfile(string npcFileTitleFilePath, int defaultHeadIndex) {
  				_rootFilePath = npcFileTitleFilePath;
  				_defaultVariationHeadIndex = defaultHeadIndex;
-+#if CLIENT
++				if (Main.dedServ)
++					return;
++
  				_defaultNoAlt = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default", AssetRequestMode.DoNotLoad);
  				_defaultParty = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default_Party", AssetRequestMode.DoNotLoad);
-+#endif
  			}
- 
- 			public int RollVariation() => 0;
-@@ -47,8 +_,10 @@
+@@ -48,6 +_,9 @@
  			public TransformableNPCProfile(string npcFileTitleFilePath, int defaultHeadIndex) {
  				_rootFilePath = npcFileTitleFilePath;
  				_defaultVariationHeadIndex = defaultHeadIndex;
-+#if CLIENT
++				if (Main.dedServ)
++					return;
++
  				_defaultNoAlt = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default", AssetRequestMode.DoNotLoad);
  				_defaultTransformed = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default_Transformed", AssetRequestMode.DoNotLoad);
-+#endif
- 			}
- 
- 			public int RollVariation() => 0;
-@@ -83,7 +_,9 @@
+ 				_defaultCredits = Main.Assets.Request<Texture2D>(npcFileTitleFilePath + "_Default_Credits", AssetRequestMode.DoNotLoad);
+@@ -88,6 +_,7 @@
  				string[] variants = _variants;
  				foreach (string str in variants) {
  					string text = _rootFilePath + "_" + str;
-+#if CLIENT
++					if(!Main.dedServ)
  					_variantTextures[text] = Main.Assets.Request<Texture2D>(text, AssetRequestMode.DoNotLoad);
-+#endif
  				}
  			}
- 

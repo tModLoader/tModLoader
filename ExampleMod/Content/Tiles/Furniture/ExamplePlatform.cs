@@ -4,7 +4,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
@@ -25,9 +24,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 			AddMapEntry(new Color(200, 200, 200));
 
-			dustType = DustType<Sparkle>();
-			drop = ItemType<Items.Placeable.Furniture.ExamplePlatform>();
-			adjTiles = new int[] { TileID.Platforms };
+			DustType = ModContent.DustType<Sparkle>();
+			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.ExamplePlatform>();
+			AdjTiles = new int[] { TileID.Platforms };
 
 			// Placement
 			TileObjectData.newTile.CoordinateHeights = new[] { 16 };

@@ -3,11 +3,11 @@
 	/// <summary>
 	/// This class provides hooks that control all recipes in the game.
 	/// </summary>
-	public class GlobalRecipe:ModType
+	public abstract class GlobalRecipe : ModType
 	{
 		protected sealed override void Register() {
 			ModTypeLookup<GlobalRecipe>.Register(this);
-			RecipeHooks.Add(this);
+			RecipeLoader.Add(this);
 		}
 
 		/// <summary>

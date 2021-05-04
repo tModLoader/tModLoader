@@ -1,33 +1,29 @@
+using Terraria.ModLoader.IO;
+
 namespace Terraria.ModLoader.Default
 {
-	public class UnloadedTile : ModTile
-	{
-		public override string Name{get;}
-
-		public override string Texture => "ModLoader/UnloadedTile";
-
-		public UnloadedTile(string name = null) {
-			Name = name ?? base.Name;
-		}
-
-		public override void SetDefaults() {
-			Main.tileSolid[Type] = true;
-			Main.tileFrameImportant[Type] = true;
-		}
-
-		public override void MouseOver(int i, int j)
-		{
-			var tile = Main.tile[i, j];
-			if(tile != null && tile.type == Type) {
-				var frame = new UnloadedTileFrame(tile.frameX, tile.frameY);
-				var info = ModContent.GetInstance<UnloadedTilesWorld>().infos[frame.FrameID];
-
-				if(info != null) {
-					Main.LocalPlayer.cursorItemIconEnabled = true;
-					Main.LocalPlayer.cursorItemIconID = -1;
-					Main.LocalPlayer.cursorItemIconText = $"{info.modName}: {info.name}";
-				}
+	public abstract class UnloadedTile : ModTile { 
+		public override void MouseOver(int i, int j) {
+			if (Main.netMode != 0) {
+				return;
 			}
+
+			var tile = Main.tile[i, j];
+
+			if (tile == null || tile.type != Type) {
+				return;
+			}
+
+			Player player = Main.LocalPlayer;
+
+			//NOTE: Onwards only works in singleplayer
+			ushort type = TileIO.Tiles.unloadedEntryLookup.Lookup(i, j);
+			var info = TileIO.Tiles.entries[type];
+			player.cursorItemIconEnabled = true;
+			player.cursorItemIconID = -1;
+			player.cursorItemIconText = $"{info.modName}: {info.name}";
 		}
+
+		public override void MouseOverFar(int i, int j) => MouseOver(i, j);
 	}
 }

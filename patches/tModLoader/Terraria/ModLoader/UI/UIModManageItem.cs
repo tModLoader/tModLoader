@@ -26,7 +26,7 @@ namespace Terraria.ModLoader.UI
 		private readonly UIText _modName;
 		private readonly UITextPanel<string> _unpublishButton;
 
-		public UIModManageItem(string displayname, string name, string version, string author, string downloads, string downloadsversion, string modloaderversion) {
+		public UIModManageItem(string displayname, string name, string version, string author, int downloads, int downloadsversion, string modloaderversion) {
 			Displayname = displayname;
 			Version = version;
 			Author = author;
@@ -34,7 +34,7 @@ namespace Terraria.ModLoader.UI
 
 			BorderColor = new Color(89, 116, 213) * 0.7f;
 			_dividerTexture = UICommon.DividerTexture;
-			Height.Pixels = 90;
+			Height.Pixels = 128;
 			Width.Percent = 1f;
 			SetPadding(6f);
 
@@ -45,9 +45,8 @@ namespace Terraria.ModLoader.UI
 			};
 			Append(_modName);
 			var button = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBMyPublishedModsStats", downloads, downloadsversion)) {
-				Width = { Pixels = 260 },
+				Width = { Percent = 1f },
 				Height = { Pixels = 30 },
-				Left = { Pixels = 10 },
 				Top = { Pixels = 40 }
 			}.WithFadedMouseOver();
 			button.PaddingTop -= 2f;
@@ -55,8 +54,9 @@ namespace Terraria.ModLoader.UI
 			Append(button);
 			_unpublishButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBUnpublish"));
 			_unpublishButton.CopyStyle(button);
-			_unpublishButton.Width.Pixels = 150;
-			_unpublishButton.Left.Pixels = 360;
+			_unpublishButton.Width.Set(150, 0f);
+			_unpublishButton.Top.Pixels = 80;
+			_unpublishButton.HAlign = 1f;
 			_unpublishButton.WithFadedMouseOver();
 			_unpublishButton.OnClick += UnpublishMod;
 			Append(_unpublishButton);
@@ -82,9 +82,10 @@ namespace Terraria.ModLoader.UI
 		}
 
 		internal void UnpublishMod(UIMouseEvent evt, UIElement listeningElement) {
+			// TODO: Confimation window or change text to "Ctrl Click to Confirm"
 			if (ModLoader.modBrowserPassphrase == string.Empty) {
 				Main.menuMode = Interface.enterPassphraseMenuID;
-				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID);
+				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID, Interface.modSourcesID);
 				return;
 			}
 			SoundEngine.PlaySound(12);
@@ -95,7 +96,7 @@ namespace Terraria.ModLoader.UI
 				{
 					{ "name", Name },
 					{ "steamid64", ModLoader.SteamID64 },
-					{ "modloaderversion", ModLoader.versionedName },
+					{ "modloaderversion", BuildInfo.versionedName },
 					{ "passphrase", ModLoader.modBrowserPassphrase },
 				};
 				byte[] result = UploadFile.UploadFiles(UNPUBLISH_URL, null, values);

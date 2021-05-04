@@ -1,6 +1,7 @@
 --- src/Terraria/Terraria/Initializers/LaunchInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/LaunchInitializer.cs
-@@ -1,5 +_,8 @@
+@@ -1,6 +_,9 @@
+ using System;
  using System.Diagnostics;
 +using System.Linq;
 +using System.Text.RegularExpressions;
@@ -50,17 +51,15 @@
  		}
  
  		private static void LoadServerParameters(Main game) {
-@@ -96,6 +_,18 @@
- 			if ((s3 = TryParameter("-language")) != null)
- 				LanguageManager.Instance.SetLanguage(s3);
+@@ -99,6 +_,16 @@
+ 			if ((s2 = TryParameter("-language")) != null)
+ 				LanguageManager.Instance.SetLanguage(s2);
  
-+			// We handle the build parameter this far in
-+			// so vanilla can take care of loading the appropriate localization keys beforehand
-+			string build;
-+			if ((build = TryParameter("-build")) != null)
-+				// Inside the build from command line, the application exits
-+				// Anything beyond this point will not be executed
-+				ModCompile.BuildModCommandLine(build);
++			string publish;
++			if ((publish = LaunchInitializer.TryParameter("-publish")) != null) {
++				ModLoader.UI.UIModSourceItem.PublishModCommandLine(publish, TryParameter("-passphrase"), TryParameter("-steamid64"));
++				// Application Exits
++			}
 +
 +			string install;
 +			if ((install = TryParameter("-install")) != null)
@@ -69,11 +68,10 @@
  			string worldName;
  			if ((worldName = TryParameter("-worldname")) != null)
  				game.SetWorldName(worldName);
-@@ -103,6 +_,15 @@
- 			string newMOTD;
+@@ -107,6 +_,15 @@
  			if ((newMOTD = TryParameter("-motd")) != null)
  				game.NewMOTD(newMOTD);
-+
+ 
 +			string modPath;
 +			if ((modPath = TryParameter(new string[] {
 +				"-modpath"
@@ -82,6 +80,16 @@
 +
 +			if (HasParameter("-showserverconsole"))
 +				Main.showServerConsole = true;
- 
++
  			string banFilePath;
  			if ((banFilePath = TryParameter("-banlist")) != null)
+ 				Netplay.BanFilePath = banFilePath;
+@@ -155,7 +_,7 @@
+ 			return false;
+ 		}
+ 
+-		private static string TryParameter(params string[] keys) {
++		public static string TryParameter(params string[] keys) {
+ 			for (int i = 0; i < keys.Length; i++) {
+ 				if (Program.LaunchParameters.TryGetValue(keys[i], out string value)) {
+ 					if (value == null)

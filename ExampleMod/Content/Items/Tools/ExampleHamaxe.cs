@@ -4,7 +4,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Tools
 {
@@ -16,26 +15,26 @@ namespace ExampleMod.Content.Items.Tools
 		}
 
 		public override void SetDefaults() {
-			item.damage = 25;
-			item.melee = true;
-			item.width = 40;
-			item.height = 40;
-			item.useTime = 15;
-			item.useAnimation = 15;
-			item.useStyle = ItemUseStyleID.Swing;
-			item.knockBack = 6;
-			item.value = 10000;
-			item.rare = ItemRarityID.Green;
-			item.UseSound = SoundID.Item1;
-			item.autoReuse = true; // Automatically re-swing/re-use this item after its swinging animation is over.
+			Item.damage = 25;
+			Item.DamageType = DamageClass.Melee;
+			Item.width = 40;
+			Item.height = 40;
+			Item.useTime = 15;
+			Item.useAnimation = 15;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.knockBack = 6;
+			Item.value = 10000;
+			Item.rare = ItemRarityID.Green;
+			Item.UseSound = SoundID.Item1;
+			Item.autoReuse = true; // Automatically re-swing/re-use this item after its swinging animation is over.
 
-			item.axe = 30; //How much axe power the weapon has, note that the axe power displayed in-game is this value multiplied by 5
-			item.hammer = 100; //How much hammer power the weapon has
+			Item.axe = 30; //How much axe power the weapon has, note that the axe power displayed in-game is this value multiplied by 5
+			Item.hammer = 100; //How much hammer power the weapon has
 		}
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(10)) { // This creates a 1/10 chance that a dust will spawn every frame that this item is in its 'Swinging' animation.
-				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustType<Sparkle>()); //Creates a dust at the hitbox rectangle, following the rules of our 'if' conditional.
+				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Sparkle>()); //Creates a dust at the hitbox rectangle, following the rules of our 'if' conditional.
 			}
 		}
 

@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameContent/SmartCursorHelper.cs
 +++ src/tModLoader/Terraria/GameContent/SmartCursorHelper.cs
-@@ -192,7 +_,8 @@
+@@ -201,7 +_,8 @@
  					case 511:
  					case 573:
  					case 621:
@@ -10,3 +10,12 @@
  						break;
  					case 314:
  						if (providedInfo.player.gravDir == 1f)
+@@ -2149,7 +_,7 @@
+ 			int reachableEndY = providedInfo.reachableEndY;
+ 			_ = providedInfo.screenTargetX;
+ 			_ = providedInfo.screenTargetY;
+-			if (providedInfo.item.createTile != 4 || fX != -1 || fY != -1)
++			if (providedInfo.item.createTile < 0 || !TileID.Sets.Torch[providedInfo.item.createTile] || fX != -1 || fY != -1)
+ 				return;
+ 
+ 			_targets.Clear();

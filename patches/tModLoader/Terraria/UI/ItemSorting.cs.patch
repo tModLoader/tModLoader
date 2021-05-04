@@ -12,8 +12,25 @@
  			list.Add(ItemSortingLayers.LastTilesCommon);
  			list.Add(ItemSortingLayers.LastNotTrash);
  			list.Add(ItemSortingLayers.LastTrash);
--			for (int i = -48; i < 5045; i++) {
+-			for (int i = -48; i < 5088; i++) {
 +			for (int i = -48; i < ItemLoader.ItemCount; i++) {
  				Item item = new Item();
  				item.netDefaults(i);
  				list2.Add(item);
+@@ -831,14 +_,14 @@
+ 		private static void SetupSortingPriorities() {
+ 			Player player = Main.player[Main.myPlayer];
+ 			_layerList.Clear();
+-			List<float> list = new List<float> {
++			List<StatModifier> list = new List<StatModifier> {
+ 				player.meleeDamage,
+ 				player.rangedDamage,
+ 				player.magicDamage,
+ 				player.minionDamage
+ 			};
+ 
+-			list.Sort((float x, float y) => y.CompareTo(x));
++			list.Sort((x, y) => ((float)y).CompareTo((float)x));
+ 			for (int i = 0; i < 5; i++) {
+ 				if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
+ 					list.RemoveAt(0);

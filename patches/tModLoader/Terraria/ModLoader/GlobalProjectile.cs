@@ -2,35 +2,26 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this.
 	/// </summary>
-	public class GlobalProjectile:ModType
+	public abstract class GlobalProjectile : GlobalType<Projectile>
 	{
-		internal int index;
-		internal int instanceIndex;
-
 		protected sealed override void Register() {
 			ProjectileLoader.VerifyGlobalProjectile(this);
 
 			ModTypeLookup<GlobalProjectile>.Register(this);
 
-			index = ProjectileLoader.globalProjectiles.Count;
+			index = (ushort)ProjectileLoader.globalProjectiles.Count;
 
 			ProjectileLoader.globalProjectiles.Add(this);
 		}
 
-		/// <summary>
-		/// Whether to create a new GlobalProjectile instance for every Projectile that exists. 
-		/// Useful for storing information on a projectile. Defaults to false. 
-		/// Return true if you need to store information (have non-static fields).
-		/// </summary>
-		public virtual bool InstancePerEntity => false;
-
-		public GlobalProjectile Instance(Projectile projectile) => InstancePerEntity ? projectile.globalProjectiles[instanceIndex] : this;
+		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
 
 		/// <summary>
 		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
@@ -55,10 +46,11 @@ namespace Terraria.ModLoader
 			if (CloneNewInstances) {
 				return Clone();
 			}
+
 			GlobalProjectile copy = (GlobalProjectile)Activator.CreateInstance(GetType());
 			copy.Mod = Mod;
 			copy.index = index;
-			copy.instanceIndex = instanceIndex;
+
 			return copy;
 		}
 
@@ -158,12 +150,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not the given projectile is capable of killing tiles (such as grass) and damaging NPCs/players. Return false to prevent it from doing any sort of damage. Returns true by default.
+		/// Whether or not the given projectile is capable of killing tiles (such as grass) and damaging NPCs/players.
+		/// Return false to prevent it from doing any sort of damage.
+		/// Return true if you want the projectile to do damage regardless of the default blacklist.
+		/// Return null to let the projectile follow vanilla can-damage-anything rules. This is what happens by default.
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <returns></returns>
-		public virtual bool CanDamage(Projectile projectile) {
-			return true;
+		public virtual bool? CanDamage(Projectile projectile) {
+			return null;
 		}
 
 		/// <summary>
@@ -298,33 +293,28 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind a projectile. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
+		/// Allows you to draw things behind a projectile. Use the Main.EntitySpriteDraw method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="spriteBatch"></param>
-		/// <returns></returns>
-		public virtual bool PreDrawExtras(Projectile projectile, SpriteBatch spriteBatch) {
+		/// <param name="projectile"> The projectile. </param>
+		public virtual bool PreDrawExtras(Projectile projectile) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Return false to stop the game from drawing the projectile (useful if you're manually drawing the projectile). Returns true by default.
+		/// Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Use the Main.EntitySpriteDraw method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="spriteBatch"></param>
-		/// <param name="lightColor"></param>
-		/// <returns></returns>
-		public virtual bool PreDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
+		/// <param name="projectile"> The projectile. </param>
+		/// <param name="lightColor"> The color of the light at the projectile's center. </param>
+		public virtual bool PreDraw(Projectile projectile, ref Color lightColor) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw things in front of a projectile. This method is called even if PreDraw returns false.
+		/// Allows you to draw things in front of a projectile. Use the Main.EntitySpriteDraw method for drawing. This method is called even if PreDraw returns false.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="spriteBatch"></param>
-		/// <param name="lightColor"></param>
-		public virtual void PostDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
+		/// <param name="projectile"> The projectile. </param>
+		/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
+		public virtual void PostDraw(Projectile projectile, Color lightColor) {
 		}
 
 		/// <summary>
@@ -332,11 +322,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <param name="index"></param>
-		/// <param name="drawCacheProjsBehindNPCsAndTiles"></param>
-		/// <param name="drawCacheProjsBehindNPCs"></param>
-		/// <param name="drawCacheProjsBehindProjectiles"></param>
-		/// <param name="drawCacheProjsOverWiresUI"></param>
-		public virtual void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {
+		/// <param name="behindNPCsAndTiles"></param>
+		/// <param name="behindNPCs"></param>
+		/// <param name="behindProjectiles"></param>
+		/// <param name="overPlayers"></param>
+		/// <param name="overWiresUI"></param>
+		public virtual void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
 		}
 
 		/// <summary>
@@ -375,6 +366,12 @@ namespace Terraria.ModLoader
 		/// The speed at which the grapple pulls the player after hitting something. Defaults to 11, but the Bat Hook uses 16.
 		/// </summary>
 		public virtual void GrapplePullSpeed(Projectile projectile, Player player, ref float speed) {
+		}
+
+		/// <summary>
+		/// The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile.
+		/// </summary>
+		public virtual void GrappleTargetPoint(Projectile projectile, Player player, ref float grappleX, ref float grappleY) {
 		}
 	}
 }

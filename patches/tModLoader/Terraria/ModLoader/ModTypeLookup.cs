@@ -4,14 +4,14 @@ using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
-	internal class ModTypeLookup
+	internal static class ModTypeLookup
 	{
 		public static event Action OnClear;
 
 		public static void Clear() => OnClear?.Invoke();
 	}
 
-	internal class ModTypeLookup<T> where T : IModType
+	public static class ModTypeLookup<T> where T : IModType
 	{
 		private static readonly Dictionary<string, T> dict = new Dictionary<string, T>();
 		private static readonly Dictionary<string, Dictionary<string, T>> tieredDict = new Dictionary<string, Dictionary<string, T>>();
@@ -24,24 +24,35 @@ namespace Terraria.ModLoader
 		}
 
 		public static void Register(T instance) {
-			if (dict.ContainsKey(instance.FullName))
-				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorDuplicateName", typeof(T).Name, instance.FullName));
+			RegisterWithName(instance, instance.Name, instance.FullName);
 
-			dict[instance.FullName] = instance;
-
-			if (!tieredDict.TryGetValue(instance.Mod.Name, out var subDictionary))
-				tieredDict[instance.Mod.Name] = subDictionary = new Dictionary<string, T>();
-
-			subDictionary[instance.Name] = instance;
+			//Add legacy aliases, if the type has any.
+			foreach (string legacyName in LegacyNameAttribute.GetLegacyNamesOfType(instance.GetType())) {
+				RegisterWithName(instance, legacyName, $"{instance.Mod?.Name ?? "Terraria"}/{legacyName}");
+			}
 		}
 
-		public static T Get(string fullname) => dict[fullname];
+		private static void RegisterWithName(T instance, string name, string fullName) {
+			if (dict.ContainsKey(fullName))
+				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorDuplicateName", typeof(T).Name, fullName));
 
-		public static T Get(string modName, string contentName) => tieredDict[modName][contentName];
+			dict[fullName] = instance;
 
-		public static bool TryGetValue(string fullname, out T value) => dict.TryGetValue(fullname, out value);
+			string modName = instance.Mod?.Name ?? "Terraria";
 
-		public static bool TryGetValue(string modName, string contentName, out T value) {
+			if (!tieredDict.TryGetValue(modName, out var subDictionary))
+				tieredDict[modName] = subDictionary = new Dictionary<string, T>();
+
+			subDictionary[name] = instance;
+		}
+
+		internal static T Get(string fullName) => dict[fullName];
+
+		internal static T Get(string modName, string contentName) => tieredDict[modName][contentName];
+
+		internal static bool TryGetValue(string fullName, out T value) => dict.TryGetValue(fullName, out value);
+
+		internal static bool TryGetValue(string modName, string contentName, out T value) {
 			if (!tieredDict.TryGetValue(modName, out var subDictionary)) {
 				value = default;
 

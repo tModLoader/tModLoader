@@ -5,102 +5,82 @@
  	public static class SoundEngine
  	{
 +		public static readonly object AudioLock = new object();
- 		private static LegacySoundPlayer _legacyPlayer;
- 		private static SoundPlayer _player;
- 		private static bool _areSoundsPaused;
-@@ -30,6 +_,9 @@
- 
- 		public static void Update() {
- 			if (IsAudioSupported) {
-+#if FNA
-+				Main.engine?.Update();
-+#endif
- 				SoundInstanceGarbageCollector.Update();
- 				bool flag = (!Main.hasFocus || Main.gamePaused) && Main.netMode == 0;
- 				if (!_areSoundsPaused && flag)
-@@ -56,31 +_,52 @@
+ 		public static LegacySoundPlayer LegacySoundPlayer;
+ 		public static SoundPlayer SoundPlayer;
+ 		public static bool AreSoundsPaused;
+@@ -69,31 +_,52 @@
  		}
  
  		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
-+#if SERVER
-+			return null;
-+#else
++			if (Main.dedServ)
++				return null;
++
  			if (!IsAudioSupported)
  				return null;
  
 +#if FNA
 +			lock(AudioLock)
 +#endif
--			return _legacyPlayer.PlaySound(type, x, y, Style, volumeScale, pitchOffset);
-+				return _legacyPlayer.PlaySound(type, x, y, Style, volumeScale, pitchOffset);
-+#endif
+-			return LegacySoundPlayer.PlaySound(type, x, y, Style, volumeScale, pitchOffset);
++				return LegacySoundPlayer.PlaySound(type, x, y, Style, volumeScale, pitchOffset);
++
  		}
  
  		public static ActiveSound GetActiveSound(SlotId id) {
-+#if SERVER
-+			return null;
-+#else
++			if (Main.dedServ)
++				return null;
++
  			if (!IsAudioSupported)
  				return null;
  
- 			return _player.GetActiveSound(id);
-+#endif
+ 			return SoundPlayer.GetActiveSound(id);
++
  		}
  
 -		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position) {
 +		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position)
 +		{
-+#if SERVER
-+			return SlotId.Invalid;
-+#else
++			if(Main.dedServ)
++				return SlotId.Invalid;
++
  			if (!IsAudioSupported)
  				return SlotId.Invalid;
  
- 			return _player.Play(style, position);
-+#endif
+ 			return SoundPlayer.Play(style, position);
++
  		}
  
 -		public static SlotId PlayTrackedSound(SoundStyle style) {
 +		public static SlotId PlayTrackedSound(SoundStyle style)
 +		{
-+#if SERVER
-+			return SlotId.Invalid;
-+#else
++			if(Main.dedServ)
++				return SlotId.Invalid;
++
  			if (!IsAudioSupported)
  				return SlotId.Invalid;
  
- 			return _player.Play(style);
-+#endif
+ 			return SoundPlayer.Play(style);
++
  		}
  
  		public static void StopTrackedSounds() {
-@@ -89,10 +_,14 @@
+@@ -102,6 +_,9 @@
  		}
  
  		public static SoundEffect GetTrackableSoundByStyleId(int id) {
-+#if SERVER
-+			return null;
-+#else
++			if(Main.dedServ)
++				return null;
++
  			if (!IsAudioSupported)
  				return null;
  
- 			return _legacyPlayer.GetTrackableSoundByStyleId(id);
-+#endif
- 		}
- 
- 		public static void StopAmbientSounds() {
-@@ -101,10 +_,14 @@
+@@ -114,6 +_,9 @@
  		}
  
  		public static ActiveSound FindActiveSound(SoundStyle style) {
-+#if SERVER
-+			return null;
-+#else
++			if(Main.dedServ)
++				return null;
++
  			if (!IsAudioSupported)
  				return null;
  
- 			return _player.FindActiveSound(style);
-+#endif
- 		}
- 
- 		private static bool TestAudioSupport() {

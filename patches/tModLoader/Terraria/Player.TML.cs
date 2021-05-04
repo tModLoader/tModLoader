@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader;
 
 namespace Terraria
 {
-	public partial class Player
-	{
+	public partial class Player {
 		internal IList<string> usedMods;
 		internal ModPlayer[] modPlayers = new ModPlayer[0];
+
+		public int infoDisplayPage;
+		public HashSet<int> nearbyModTorch = new HashSet<int>();
 
 		// Get
 
@@ -48,5 +49,89 @@ namespace Terraria
 			return result != null;
 		}
 		*/
+
+		// Damage Classes
+
+		private DamageClassData[] damageData;
+
+		internal void ResetDamageClassData() {
+			damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
+
+			for (int i = 0; i < damageData.Length; i++) {
+				damageData[i] = new DamageClassData(StatModifier.One, 0, StatModifier.One);
+				DamageClassLoader.DamageClasses[i].SetDefaultStats(this);
+			}
+		}
+
+
+		/// <summary>
+		/// Gets the crit modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary> 
+		public ref int GetCritChance<T>() where T : DamageClass => ref GetCritChance(ModContent.GetInstance<T>());
+
+		/// <summary>
+		/// Gets the damage modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref StatModifier GetDamage<T>() where T : DamageClass => ref GetDamage(ModContent.GetInstance<T>());
+
+		/// <summary>
+		/// Gets the knockback modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref StatModifier GetKnockback<T>() where T : DamageClass => ref GetKnockback(ModContent.GetInstance<T>());
+
+		/// <summary>
+		/// Gets the crit modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref int GetCritChance(DamageClass damageClass) => ref damageData[damageClass.Type].critChance;
+
+		/// <summary>
+		/// Gets the damage modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref StatModifier GetDamage(DamageClass damageClass) => ref damageData[damageClass.Type].damage;
+
+		/// <summary>
+		/// Gets the knockback modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
+
+
+		/// <summary>
+		/// Container for current AVFX client properties such as: Backgrounds, music, and water styling
+		/// </summary>
+		public AVFXLoader.AVFXInstance currentAVFX = new AVFXLoader.AVFXInstance();
+
+		/// <summary>
+		/// Stores whether or not the player is in a modbiome using boolean bits.
+		/// </summary>
+		internal BitArray modBiomeFlags = new BitArray(0);
+
+		/// <summary> 
+		/// Determines if the player is in specified ModBiome. This will throw exceptions on failure. 
+		/// </summary>
+		/// <exception cref="IndexOutOfRangeException"/>
+		/// <exception cref="NullReferenceException"/>
+		public bool InModBiome(ModBiome baseInstance)=> modBiomeFlags[baseInstance.ZeroIndexType];
+
+		/// <summary>
+		/// The zone field storing if the player is in the purity/forest biome. Updated in <see cref="UpdateBiomes"/>
+		/// </summary>
+		public bool zonePurity { get; set; } = false;
+
+		/// <summary>
+		/// Calculates whether or not the player is in the purity/forest biome.
+		/// </summary>
+		public bool InZonePurity() {
+			bool one = ZoneBeach || ZoneCorrupt || ZoneCrimson || ZoneDesert || ZoneDungeon || ZoneGemCave;
+			bool two = ZoneGlowshroom || ZoneGranite || ZoneGraveyard || ZoneHallow || ZoneHive || ZoneJungle;
+			bool three = ZoneLihzhardTemple || ZoneMarble || ZoneMeteor || ZoneSnow || ZoneUnderworldHeight;
+			bool four = modBiomeFlags.Cast<bool>().Contains(true);
+			return !(one || two || three || four);
+		}
 	}
 }

@@ -1,0 +1,38 @@
+--- src/Terraria/Terraria/GameContent/UI/States/UIBestiaryTest.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UIBestiaryTest.cs
+@@ -34,7 +_,7 @@
+ 		private string _searchString;
+ 		private BestiaryUnlockProgressReport _progressReport;
+ 		private UIText _progressPercentText;
+-		private UIColoredSliderSimple _unlocksProgressBar;
++		private ModLoader.UI.UIBestiaryBar _unlocksProgressBar;
+ 		private bool _didClickSomething;
+ 		private bool _didClickSearchBar;
+ 
+@@ -140,16 +_,12 @@
+ 				TextOriginY = 0f
+ 			};
+ 
+-			UIColoredSliderSimple uIColoredSliderSimple = new UIColoredSliderSimple {
++			ModLoader.UI.UIBestiaryBar uIColoredSliderSimple = new ModLoader.UI.UIBestiaryBar(Main.BestiaryDB) {
+ 				Width = new StyleDimension(0f, 1f),
+ 				Height = new StyleDimension(15f, 0f),
+ 				VAlign = 1f,
+-				FilledColor = new Color(51, 137, 255),
+-				EmptyColor = new Color(35, 43, 81),
+-				FillPercent = 0f
+ 			};
+ 
+-			uIColoredSliderSimple.OnUpdate += ShowStats_Completion;
+ 			_unlocksProgressBar = uIColoredSliderSimple;
+ 			container.Append(uIColoredSliderSimple);
+ 		}
+@@ -482,7 +_,7 @@
+ 			_progressReport = GetUnlockProgress();
+ 			string completionPercentText = GetCompletionPercentText();
+ 			_progressPercentText.SetText(completionPercentText);
+-			_unlocksProgressBar.FillPercent = GetProgressPercent();
++			_unlocksProgressBar.RecalculateBars();
+ 		}
+ 
+ 		private void Click_CloseSortingGrid(UIMouseEvent evt, UIElement listeningElement) {

@@ -114,13 +114,11 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			ServicePointManager.SecurityProtocol = SecurityProtocol;
 			ServicePointManager.ServerCertificateValidationCallback = ServerCertificateValidation;
 			Request = WebRequest.CreateHttp(Url);
-			if (FrameworkVersion.Framework == Framework.NetFramework) {
-				Request.ServicePoint.ReceiveBufferSize = CHUNK_SIZE;
-			}
+			Request.ServicePoint.ReceiveBufferSize = CHUNK_SIZE;
 
 			Request.Method = WebRequestMethods.Http.Get;
 			Request.ProtocolVersion = ProtocolVersion;
-			Request.UserAgent = $"tModLoader/{ModLoader.versionTag}";
+			Request.UserAgent = $"tModLoader/{BuildInfo.versionTag}";
 			Request.KeepAlive = true;
 		}
 

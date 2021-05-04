@@ -5,7 +5,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Tools
 {
@@ -18,9 +17,9 @@ namespace ExampleMod.Content.Items.Tools
 
 		public override void SetDefaults() {
 			// Copy values from the Amethyst Hook
-			item.CloneDefaults(ItemID.AmethystHook);
-			item.shootSpeed = 18f; // This defines how quickly the hook is shot.
-			item.shoot = ProjectileType<ExampleHookProjectile>(); // Makes the item shoot the hook's projectile when used.
+			Item.CloneDefaults(ItemID.AmethystHook);
+			Item.shootSpeed = 18f; // This defines how quickly the hook is shot.
+			Item.shoot = ModContent.ProjectileType<ExampleHookProjectile>(); // Makes the item shoot the hook's projectile when used.
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -38,7 +37,7 @@ namespace ExampleMod.Content.Items.Tools
 
 		public override void Load() { //This is called once on mod (re)load when this piece of content is being loaded.
 			// This is the path to the texture that we'll use for the hook's chain. Make sure to update it.
-			chainTexture = GetTexture("ExampleMod/Content/Items/Tools/ExampleHookChain");
+			chainTexture = ModContent.GetTexture("ExampleMod/Content/Items/Tools/ExampleHookChain");
 		}
 
 		public override void Unload() { //This is called once on mod reload when this piece of content is being unloaded.
@@ -56,14 +55,14 @@ namespace ExampleMod.Content.Items.Tools
 		}
 
 		public override void SetDefaults() {
-			projectile.CloneDefaults(ProjectileID.GemHookAmethyst); // Copies the attributes of the Amethyst hook's projectile.
+			Projectile.CloneDefaults(ProjectileID.GemHookAmethyst); // Copies the attributes of the Amethyst hook's projectile.
 		}
 
 		// Use this hook for hooks that can have multiple hooks mid-flight: Dual Hook, Web Slinger, Fish Hook, Static Hook, Lunar Hook.
 		public override bool? CanUseGrapple(Player player) {
 			int hooksOut = 0;
 			for (int l = 0; l < 1000; l++) {
-				if (Main.projectile[l].active && Main.projectile[l].owner == Main.myPlayer && Main.projectile[l].type == projectile.type) {
+				if (Main.projectile[l].active && Main.projectile[l].owner == Main.myPlayer && Main.projectile[l].type == Projectile.type) {
 					hooksOut++;
 				}
 			}
@@ -119,30 +118,40 @@ namespace ExampleMod.Content.Items.Tools
 		public override void GrapplePullSpeed(Player player, ref float speed) {
 			speed = 10; // How fast you get pulled to the grappling hook projectile's landing position
 		}
+		
+		// Adjusts the position that the player will be pulled towards. This will make them hang 50 pixels away from the tile being grappled.
+		public override void GrappleTargetPoint(Player player, ref float grappleX, ref float grappleY) {
+			Vector2 dirToPlayer = Projectile.DirectionTo(player.Center);
+			float hangDist = 50f;
+			grappleX += dirToPlayer.X * hangDist;
+			grappleY += dirToPlayer.Y * hangDist;
+		}
 
-		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
-			Vector2 playerCenter = Main.player[projectile.owner].MountedCenter;
-			Vector2 center = projectile.Center;
-			Vector2 distToProj = playerCenter - projectile.Center;
-			float projRotation = distToProj.ToRotation() - MathHelper.PiOver2;
-			float distance = distToProj.Length();
+		// Draws the grappling hook's chain.
+		public override bool PreDrawExtras() {
+			Vector2 playerCenter = Main.player[Projectile.owner].MountedCenter;
+			Vector2 center = Projectile.Center;
+			Vector2 directionToPlayer = playerCenter - Projectile.Center;
+			float chainRotation = directionToPlayer.ToRotation() - MathHelper.PiOver2;
+			float distanceToPlayer = directionToPlayer.Length();
 
-			while (distance > 30f && !float.IsNaN(distance)) {
-				distToProj.Normalize(); //get unit vector
-				distToProj *= 24f; //speed = 24
+			while (distanceToPlayer > 20f && !float.IsNaN(distanceToPlayer)) {
+				directionToPlayer /= distanceToPlayer; //get unit vector
+				directionToPlayer *= chainTexture.Height(); //multiply by chain link length
 
-				center += distToProj; //update draw position
-				distToProj = playerCenter - center; //update distance
-				distance = distToProj.Length();
+				center += directionToPlayer; //update draw position
+				directionToPlayer = playerCenter - center; //update distance
+				distanceToPlayer = directionToPlayer.Length();
 
-				Color drawColor = lightColor;
+				Color drawColor = Lighting.GetColor((int)center.X / 16, (int)(center.Y / 16));
 
 				//Draw chain
-				spriteBatch.Draw(chainTexture.Value, new Vector2(center.X - Main.screenPosition.X, center.Y - Main.screenPosition.Y),
-					new Rectangle(0, 0, chainTexture.Width(), chainTexture.Height()), drawColor, projRotation,
-					chainTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0f);
+				Main.EntitySpriteDraw(chainTexture.Value, center - Main.screenPosition,
+					chainTexture.Value.Bounds, drawColor, chainRotation,
+					chainTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0);
 			}
-			return true;
+			// Stop vanilla from drawing the default chain.
+			return false;
 		}
 	}
 }

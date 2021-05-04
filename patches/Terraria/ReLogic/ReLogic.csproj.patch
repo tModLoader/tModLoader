@@ -1,6 +1,6 @@
 --- src/decompiled/ReLogic/ReLogic.csproj
 +++ src/Terraria/ReLogic/ReLogic.csproj
-@@ -8,11 +_,12 @@
+@@ -8,18 +_,18 @@
      <RootNamespace>ReLogic</RootNamespace>
    </PropertyGroup>
    <ItemGroup>
@@ -9,12 +9,23 @@
 -    <Reference Include="Microsoft.Xna.Framework.Game" />
 -    <Reference Include="Microsoft.Xna.Framework.Graphics" />
 -    <Reference Include="Newtonsoft.Json" />
-+    <Reference Include="../Terraria/Libraries/DotNetZip/Ionic.Zip.CF.dll" />
-+    <Reference Include="../Terraria/Libraries/FNA/FNA.dll" Condition="$(DefineConstants.Contains('FNA'))" />
-+    <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.dll" Condition="$(DefineConstants.Contains('XNA'))" />
-+    <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.Game.dll" Condition="$(DefineConstants.Contains('XNA'))" />
-+    <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.Graphics.dll" Condition="$(DefineConstants.Contains('XNA'))" />
-+    <Reference Include="../Terraria/Libraries/JSON.NET/Newtonsoft.Json.dll" />
-     <Reference Include="System" />
-     <Reference Include="System.Core" />
-     <Reference Include="System.Drawing" />
+-    <Reference Include="SteelSeriesEngineWrapper" />
+-    <Reference Include="System" />
+-    <Reference Include="System.Core" />
+-    <Reference Include="System.Drawing" />
+-    <Reference Include="System.Windows.Forms" />
++    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />
++    <Reference Include="../Terraria/Libraries/FNA/FNA.dll" />
++    <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
++    <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
+   </ItemGroup>
+   <ItemGroup>
++    <Compile Remove="Localization/IME/Windows/*" />
++    <Compile Remove="Localization/IME/WindowsIme.cs" />
++    <Compile Remove="OS/Windows/WindowsMessageHook.cs" />
+     <EmbeddedResource Include="Microsoft/**" />
++  </ItemGroup>
++  <ItemGroup>
++      <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
+   </ItemGroup>
+ </Project>

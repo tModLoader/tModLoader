@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Mono.Cecil.Cil.OpCodes;
+using Mono.Cecil.Cil;
 
 namespace ExampleMod.Content.Items.Accessories
 {
@@ -28,7 +28,7 @@ namespace ExampleMod.Content.Items.Accessories
 			// Move the cursor after 566 and onto the ret op.
 			c.Index++;
 			// Push the Player instance onto the stack
-			c.Emit(Ldarg_0);
+			c.Emit(OpCodes.Ldarg_0);
 			// Call a delegate using the int and Player from the stack.
 			c.EmitDelegate<Func<int, Player, int>>((returnValue, player) => {
 				// Regular c# code
@@ -47,11 +47,11 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void SetDefaults() {
-			sbyte realBackSlot = item.backSlot;
-			item.CloneDefaults(ItemID.HiveBackpack);
-			item.value = Item.sellPrice(0, 5);
+			sbyte realBackSlot = Item.backSlot;
+			Item.CloneDefaults(ItemID.HiveBackpack);
+			Item.value = Item.sellPrice(0, 5);
 			// CloneDefaults will clear out the autoloaded Back slot, so we need to preserve it this way.
-			item.backSlot = realBackSlot;
+			Item.backSlot = realBackSlot;
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {

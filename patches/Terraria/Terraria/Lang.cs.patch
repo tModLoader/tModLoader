@@ -1,28 +1,11 @@
 --- src/decompiled/Terraria/Lang.cs
 +++ src/Terraria/Terraria/Lang.cs
-@@ -6,7 +_,9 @@
- using Terraria.GameInput;
- using Terraria.ID;
- using Terraria.Localization;
-+#if CLIENT
- using Terraria.Map;
-+#endif
- using Terraria.UI;
- 
- namespace Terraria
-@@ -404,6 +_,7 @@
+@@ -416,6 +_,8 @@
  		}
  
  		public static void BuildMapAtlas() {
-+#if CLIENT
++			if (Main.dedServ)
++				return;
  			_mapLegendCache = new LocalizedText[MapHelper.LookupCount()];
  			for (int i = 0; i < _mapLegendCache.Length; i++) {
  				_mapLegendCache[i] = LocalizedText.Empty;
-@@ -804,6 +_,7 @@
- 			_mapLegendCache[MapHelper.TileToLookup(572, 4)] = _itemNameCache[4699];
- 			_mapLegendCache[MapHelper.TileToLookup(572, 5)] = _itemNameCache[4700];
- 			_mapLegendCache[MapHelper.TileToLookup(497, 0)] = Language.GetText("MapObject.Toilet");
-+#endif
- 		}
- 
- 		public static NetworkText CreateDeathMessage(string deadPlayerName, int plr = -1, int npc = -1, int proj = -1, int other = -1, int projType = 0, int plrItemType = 0) {
