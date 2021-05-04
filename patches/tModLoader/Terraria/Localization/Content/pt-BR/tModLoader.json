@@ -8,7 +8,7 @@
 		"MenuEnableDeveloperMode": "Ligar Modo de Desenvolvedor",
 		"FirstLaunchWelcomeMessage": "Bem-vindo ao tModLoader.\n\nVocê instalou o tModLoader com sucesso. Use o menu do Navegador de Mods para encontrar os mods que deseja baixar. Use o menu de Mods para modificar quais mods estão ativos. Depois, tenha certeza que clicou no botão Recarregar Mods para recarregá-los.",
 		"tModLoaderSettings": "Configurações do tModLoader",
-    "ModMenuSwap": "Trocar Tema do Menu",
+  "ModMenuSwap": "Trocar Tema do Menu",
 
 		// Mods Menu/Menu de Mods
 		"ModsModsList": "Lista de Mods",
@@ -42,7 +42,7 @@
 		"ModsShowAllMods": "Mostrar todos os mods",
 		"ModsShowEnabledMods": "Mostrar apenas mods ativados",
 		"ModsShowDisabledMods": "Mostrar apenas mods desativados",
-    "ModsXModsFilteredByEnabled": "{0} {^0:mod;mods} filtrados pelo filtro ligado.",
+  "ModsXModsFilteredByEnabled": "{0} {^0:mod;mods} filtrados pelo filtro ligado.",
 		"ModsXModsFilteredByModSide": "{0} {^0:mod;mods} filtrados por filtros do mod.",
 		"ModsXModsFilteredBySearch": "{0} {^0:mod;mods} filtrados pelo filtro de busca.",
 		"ModsXItems": "{0} {^0:item;itens}",
@@ -51,12 +51,12 @@
 		"ModsXWalls": "{0} {^0:parede;paredes}",
 		"ModsXBuffs": "{0} {^0:buff;buffs}",
 		"ModsXMounts": "{0} {^0:montaria;montarias}",
-    "ModsReloadAndReturn": "Recarregue e retorne para o menu do mundo",
+  "ModsReloadAndReturn": "Recarregue e retorne para o menu do mundo",
 		"ModsNotFoundServer": "Nenhum mod foi encontrado em: \"{0}\"\nSe você está rodando um servidor dedicado, Você pode querer usar o interruptor de linha de comando 'modpath' ou configurar a config do servidor para especificar um diretório de mods pessoal.\n",
 		"AskForModIndex": "Escreva um número para alternar entre habilitado/desabilitado",
 		"AskForCommand": "Escreva um comando: ",
 
-    // Interface/Interface
+  // Interface/Interface
 		"BossBarStyle": "Estilo da barra do Chefão: {0}",
 		"BossBarStyleNoOptions": "Sem Opções",
 
@@ -97,13 +97,13 @@
 		"LoadErrorUnknownXNBFileHint": "Arquivo xnb desconhecido {0}. Talvez ele deveria estar em Fonts/ ou Effects/",
 		"LoadErrorCannotLoadCompressedEffects": "Efeitos comprimidos não podem ser carregados.",
 		
-    "LoadErrorNotLoading": "Mod.AddContent só pode ser chamado durante o carregamento",
-    "LoadErrorDuplicateName": "Você tentou adiocionar 2 {0} com o mesmo nome: {1}. Talvez duas classes compartilhem um classname mas em diferentes namespaces enquanto autocarregando (autoloading) ou você manualmente chamou AddItem com 2 {0} de mesmo nome.",
+  "LoadErrorNotLoading": "Mod.AddContent só pode ser chamado durante o carregamento",
+  "LoadErrorDuplicateName": "Você tentou adiocionar 2 {0} com o mesmo nome: {1}. Talvez duas classes compartilhem um classname mas em diferentes namespaces enquanto autocarregando (autoloading) ou você manualmente chamou AddItem com 2 {0} de mesmo nome.",
 		
-    "LoadErrorResourceNotFoundPathHint": "Recurso esperado não encontrado:\n    {0}\nPalpite mais próximo: (Existe um erro de ortografia ou de localização de pasta?)\n    {1}",
-    "RuntimeErrorSilentlyCaughtException": "Excessão detectada silenciosamente: ",
+  "LoadErrorResourceNotFoundPathHint": "Recurso esperado não encontrado:\n    {0}\nPalpite mais próximo: (Existe um erro de ortografia ou de localização de pasta?)\n    {1}",
+  "RuntimeErrorSilentlyCaughtException": "Excessão detectada silenciosamente: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(veja {0} para o rastro completo)",
-    "OpenLogs": "Abrir Logs",
+  "OpenLogs": "Abrir Logs",
 		"OpenWebHelp": "Abrir Ajuda Web",
 		"SkipToMainMenu": "Pular Carregamento de Mods",
 		"Retry": "Tentar Novamente",
@@ -256,7 +256,7 @@
 		"NewModsListing": "Novos mods:\n{0}",
 		"PlayerCustomDataFail": "Um problema ocorreu carregando dados customizados para um jogador",
 		"PlayerLoadWorldFail": "Um problema ocorreu tentando caregar um mundo",
-    "CloudWarning": "Limite do armazenamento na nuvem atingido, não pôde mover para a nuvem",
+  "CloudWarning": "Limite do armazenamento na nuvem atingido, não pôde mover para a nuvem",
 
 		// Mod Sources/Fontes de Mods
 		"MSBuild": "Compilar",
@@ -343,13 +343,13 @@
 		// Misc
 		"OK": "OK",
 		"Continue": "Continuar",
-    "DeleteModConfirm": "Você tem certeza que deseja apagar esse mod permanentemente?",
+  "DeleteModConfirm": "Você tem certeza que deseja apagar esse mod permanentemente?",
 		"PatreonSetTooltip": "Obrigado pelo seu apoio!",
 		"WorldGenError": "Um problema ocorreu na geração de mundo",
 		"WorldIODataException": "O jogo encontrou um problema de dados para um mundo.",
 		"ServerCrash": "Crash do servidor: {0}\n{1}\n\nCheque o server.log para determinar se é culpa de um mod, caso contrário, visite o #support no Discord do tModLoader",
     
-    // MessageBox/Caixa de Mensagens (?)
+  // MessageBox/Caixa de Mensagens (?)
 		"ContentFolderNotFound": "Pasta de cunteúdo (Content) do Terraria não encontrada. Se você instalou o tModLoader pela Steam, cheque se o Terraria está instalado. Caso contrário, instale o tModLoader numa pasta dentro ou ao lado do diretório de instalação do Terraria.",
 		"MissingServerExecutable": "Parece que você não fez uma instalação completa. O tModLoaderServer.exe está faltando. Cheque o idretório de instalação e siga as intruções de instalação.",
 		"GraphicsEngineFailure": "Falha da Engine de Gráficos",
@@ -362,7 +362,7 @@
 		"SteamAPIHashMismatch": "Hash da Steam API hash incompatível, assumido pirateado.\n\ntModLoader precisa de uma instalação legítima do Terraria para funcionar.",
 		"VanillaGOGNotFound": "{0} não foi encontrado.\r\n\r\nInstalações GOG precisam do executável do Terraria não modificado para funcionar. Essa versão do tModLoader espera a versão {1} do Teraria, e você pode precisar de um downgrade ou upgrade do Terraria via a GOG Galaxy, ou esperar um update do tModLoader.",
 		"GOGHashMismatch": "{0} não é o executável não modificado do Terraria.\r\n\r\nInstalações GOG precisam do executável do Terraria não modificado para funcionar.\r\n\r\nSe você modificou o .exe, você pode criar uma cópia do .exe original e nomeá-la \"Terraria_v<VERSION>.exe\"",
-    "DefaultExtraMessage": "Por favor restaure sua instalação do Terraria, depois instale o tModLoader pela Steam ou seguindo as instruções do README.txt para a instalação manual.",
+  "DefaultExtraMessage": "Por favor restaure sua instalação do Terraria, depois instale o tModLoader pela Steam ou seguindo as instruções do README.txt para a instalação manual.",
 		"ClientLogHint": "{0}\n\nUm arquivo client.log contendo informações do erro foi gerado em\n{1}\n(Você vai precisar compartilhar esse arquivo se procurando ajuda)",
 		"OutOfMemoryHint": "\n\nDica: Tente rodar menos mods de uma vez só, ou determine se um mod está gastando memória demais. Opcionalmente, instale o tModLoader 64-bit",
 		"ModExceptionHint": "\n\nDica: Isso é provavelmente culpa de um mod. Desative mods um por um e veja se o problema persiste",
@@ -370,9 +370,9 @@
 		"AntivirusHint": "\n\nDica: Se você tem um antivírus, tente adicionar o Terraria à sua lista branca/lista de exclusão",
 		"TypeInitializationHint": "\n\nDica: Reinicie o jogo. Se o problema persistir, tente desisntalar o Terraria completamente, reinstalá-lo pela Steam e depois reinstalar o tModLoader"
 	},
-	"CommonItemTooltip": {
+	 "CommonItemTooltip": {
 		"PercentIncreasedDamage": "{0}% de aumento no dano"
-  },
+ },
   "RecipeConditions": {
 		"NearWater": "Precisa de água",
 		"NearLava": "Precisa de lava",
