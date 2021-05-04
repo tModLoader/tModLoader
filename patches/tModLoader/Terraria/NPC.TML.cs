@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ModLoader;
 
@@ -42,5 +43,8 @@ namespace Terraria
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
 			=> GlobalType.TryGetGlobal<GlobalNPC, T>(globalNPCs, baseInstance, out result);
+
+		public static NPC NewNPCDirect(int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255, INPCSource source = null)
+			=> Main.npc[NewNPC(X, Y, Type, Start, ai0, ai1, ai2, ai3, Target, source)];
 	}
 }

@@ -13,15 +13,30 @@
  
  namespace Terraria
  {
-@@ -29,6 +_,7 @@
+@@ -29,9 +_,10 @@
  		public ArmorShaderData shader;
  		public object customData;
  		public bool firstFrame;
 +		internal int realType = -1;
  
- 		public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
- 			Dust dust = Main.dust[NewDust(Position, 0, 0, Type, 0f, 0f, Alpha, newColor, Scale)];
-@@ -47,7 +_,7 @@
+-		public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
++		public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f, IDustSource source = null) {
+-			Dust dust = Main.dust[NewDust(Position, 0, 0, Type, 0f, 0f, Alpha, newColor, Scale)];
++			Dust dust = Main.dust[NewDust(Position, 0, 0, Type, 0f, 0f, Alpha, newColor, Scale, source)];
+ 			dust.position = Position;
+ 			if (Velocity.HasValue)
+ 				dust.velocity = Velocity.Value;
+@@ -39,15 +_,15 @@
+ 			return dust;
+ 		}
+ 
+-		public static Dust NewDustDirect(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
++		public static Dust NewDustDirect(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f, IDustSource source = null) {
+-			Dust dust = Main.dust[NewDust(Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale)];
++			Dust dust = Main.dust[NewDust(Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale, source)];
+ 			if (dust.velocity.HasNaNs())
+ 				dust.velocity = Vector2.Zero;
+ 
  			return dust;
  		}
  
