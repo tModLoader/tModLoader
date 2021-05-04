@@ -42,12 +42,12 @@ namespace Terraria.ModLoader
 		public int BossBag { get; set; } = -1;
 
 		/// <summary> The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally. </summary>
-		/// Will be superceded by ModAvfx. Kept for legacy.
+		/// Will be superceded by ModSceneEffect. Kept for legacy.
 		public int Music { get; set; } = -1;
 		
 		/// <summary> The priority of the music that plays when this NPC is on or near the screen. </summary>
-		/// Will be superceded by ModAvfx. Kept for legacy.
-		public AvfxPriority AvfxPriority { get; set; } = AvfxPriority.BossLow;
+		/// Will be superceded by ModSceneEffect. Kept for legacy.
+		public SceneEffectPriority SceneEffectPriority { get; set; } = SceneEffectPriority.BossLow;
 		
 		/// <summary> The vertical offset used for drawing this NPC. Defaults to 0. </summary>
 		public float DrawOffsetY { get; set; }

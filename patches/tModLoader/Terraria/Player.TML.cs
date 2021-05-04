@@ -102,9 +102,9 @@ namespace Terraria
 
 
 		/// <summary>
-		/// Container for current Avfx client properties such as: Backgrounds, music, and water styling
+		/// Container for current SceneEffect client properties such as: Backgrounds, music, and water styling
 		/// </summary>
-		public AvfxLoader.AvfxInstance currentAvfx = new AvfxLoader.AvfxInstance();
+		public SceneEffectLoader.SceneEffectInstance currentSceneEffect = new SceneEffectLoader.SceneEffectInstance();
 
 		/// <summary>
 		/// Stores whether or not the player is in a modbiome using boolean bits.

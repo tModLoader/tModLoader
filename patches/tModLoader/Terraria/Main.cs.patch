@@ -938,9 +938,9 @@
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[i].position.X + (float)(npc[i].width / 2)) - num, (int)(npc[i].position.Y + (float)(npc[i].height / 2)) - num, num * 2, num * 2);
  					if (rectangle.Intersects(value)) {
 +						//TODO: Implement modMusic and modPriority
-+						//if (npc[i].modNPC != null && npc[i].modNPC.music >= 0 && (modMusic < 0 || npc[i].modNPC.AvfxPriority > modPriority)) {
++						//if (npc[i].modNPC != null && npc[i].modNPC.music >= 0 && (modMusic < 0 || npc[i].modNPC.SceneEffectPriority > modPriority)) {
 +						//	modMusic = npc[i].modNPC.music;
-+						//	modPriority = npc[i].modNPC.AvfxPriority;
++						//	modPriority = npc[i].modNPC.SceneEffectPriority;
 +						//}
  						switch (num2) {
  							case 1:
@@ -950,7 +950,7 @@
  				musicNoCrossFade[51] = true;
  
 +			int modMusic = -1;
-+			ModLoader.AvfxPriority modPriority = ModLoader.AvfxPriority.None;
++			ModLoader.SceneEffectPriority modPriority = ModLoader.SceneEffectPriority.None;
 +
  			if (!showSplash) {
  				Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)screenPosition.X, (int)screenPosition.Y, screenWidth, screenHeight);
@@ -959,10 +959,10 @@
  
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[j].position.X + (float)(npc[j].width / 2)) - num2, (int)(npc[j].position.Y + (float)(npc[j].height / 2)) - num2, num2 * 2, num2 * 2);
  					if (rectangle.Intersects(value)) {
-+						//TODO: Should this be wrapped inside the new Avfx stuff? Not at this time, left for legacy.
-+						if (npc[j].ModNPC != null && npc[j].ModNPC.Music >= 0 && (modMusic < 0 || npc[j].ModNPC.AvfxPriority > modPriority)) {
++						//TODO: Should this be wrapped inside the new SceneEffect stuff? Not at this time, left for legacy.
++						if (npc[j].ModNPC != null && npc[j].ModNPC.Music >= 0 && (modMusic < 0 || npc[j].ModNPC.SceneEffectPriority > modPriority)) {
 +							modMusic = npc[j].ModNPC.Music;
-+							modPriority = npc[j].ModNPC.AvfxPriority;
++							modPriority = npc[j].ModNPC.SceneEffectPriority;
 +						}
  						switch (num3) {
  							case 1:
@@ -972,7 +972,7 @@
  					}
  				}
 +
-+				LoaderManager.Get<AvfxLoader>().UpdateMusic(ref modMusic, ref modPriority);
++				LoaderManager.Get<SceneEffectLoader>().UpdateMusic(ref modMusic, ref modPriority);
  			}
  
  			_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
@@ -999,7 +999,7 @@
  			if (CreditsRollEvent.IsEventOngoing) {
  				newMusic = 89;
  			}
-+			else if (modPriority >= AvfxPriority.BossHigh) { //Should this be before credits or nah?
++			else if (modPriority >= SceneEffectPriority.BossHigh) { //Should this be before credits or nah?
 +				newMusic = modMusic;
 +			}
  			else if (player[myPlayer].happyFunTorchTime) {
@@ -1008,7 +1008,7 @@
  			else if (flag7) {
  				newMusic = 38;
  			}
-+			else if (modPriority >= AvfxPriority.BossMedium) {
++			else if (modPriority >= SceneEffectPriority.BossMedium) {
 +				newMusic = modMusic;
 +			}
  			else if (flag9) {
@@ -1018,7 +1018,7 @@
  			else if (flag6) {
  				newMusic = 24;
  			}
-+			else if (modPriority >= AvfxPriority.BossLow) {
++			else if (modPriority >= SceneEffectPriority.BossLow) {
 +				newMusic = modMusic;
 +			}
  			else if (flag14) {
@@ -1028,7 +1028,7 @@
  			else if (flag5) {
  				newMusic = 25;
  			}
-+			else if (modPriority >= AvfxPriority.Event) {
++			else if (modPriority >= SceneEffectPriority.Event) {
 +				newMusic = modMusic;
 +			}
  			else if (flag13) {
@@ -1038,7 +1038,7 @@
  			else if (flag12) {
  				newMusic = 41;
  			}
-+			else if (modPriority >= AvfxPriority.Environment) {
++			else if (modPriority >= SceneEffectPriority.Environment) {
 +				newMusic = modMusic;
 +			}
  			else if (eclipse && (double)player[myPlayer].position.Y < worldSurface * 16.0 + (double)(screenHeight / 2)) {
@@ -1048,7 +1048,7 @@
  			else if (num5 < 1f) {
  				newMusic = (dayTime ? 42 : 15);
  			}
-+			else if (modPriority >= AvfxPriority.BiomeHigh) {
++			else if (modPriority >= SceneEffectPriority.BiomeHigh) {
 +				newMusic = modMusic;
 +			}
  			else if (tile[(int)(player[myPlayer].Center.X / 16f), (int)(player[myPlayer].Center.Y / 16f)].wall == 87) {
@@ -1058,7 +1058,7 @@
  				else
  					newMusic = 16;
  			}
-+			else if (modPriority >= AvfxPriority.BiomeMedium) {
++			else if (modPriority >= SceneEffectPriority.BiomeMedium) {
 +				newMusic = modMusic;
 +			}
  			else if (player[myPlayer].ZoneMeteor) {
@@ -1068,7 +1068,7 @@
  				else
  					newMusic = 14;
  			}
-+			else if (modPriority >= AvfxPriority.BiomeLow) {
++			else if (modPriority >= SceneEffectPriority.BiomeLow) {
 +				newMusic = modMusic;
 +			}
  			else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
@@ -3413,12 +3413,12 @@
  			value3 = MathHelper.Clamp(value3, 0f, 1f);
  			int num7 = (int)((screenPosition.X + (float)(screenWidth / 2)) / 16f);
 +
-+			LoaderManager.Get<UgBgStylesLoader>().ChooseStyle(out var modBG, out var priority);
++			LoaderManager.Get<UndergroundBackgroundStylesLoader>().ChooseStyle(out var modBG, out var priority);
  			int num8 = 3;
  			num8 = ((num7 <= caveBackX[0]) ? caveBackStyle[0] : ((num7 <= caveBackX[1]) ? caveBackStyle[1] : ((num7 > caveBackX[2]) ? caveBackStyle[3] : caveBackStyle[2])));
  			num8 += 3;
 +
-+			if (priority == AvfxPriority.BiomeLow) {
++			if (priority == SceneEffectPriority.BiomeLow) {
 +				num8 = modBG;
 +			}
 +
@@ -3429,7 +3429,7 @@
  				}
  			}
  
-+			if (priority == AvfxPriority.BiomeMedium) {
++			if (priority == SceneEffectPriority.BiomeMedium) {
 +				num8 = modBG;
 +			}
 +
@@ -3440,7 +3440,7 @@
  			if (SceneMetrics.MushroomTileCount > SceneMetrics.MushroomTileMax)
  				num8 = 2;
  
-+			if (priority >= AvfxPriority.BiomeHigh) {
++			if (priority >= SceneEffectPriority.BiomeHigh) {
 +				num8 = modBG;
 +			}
 +
@@ -3451,7 +3451,7 @@
  					array3[5] = 127;
  
  				array3[6] = 185 + hellBackStyle;
-+				LoaderManager.Get<UgBgStylesLoader>().FillTextureArray(num9, array3);
++				LoaderManager.Get<UndergroundBackgroundStylesLoader>().FillTextureArray(num9, array3);
  				LoadBackground(array3[0]);
  				LoadBackground(array3[1]);
  				LoadBackground(array3[2]);
@@ -3528,7 +3528,7 @@
  					return 6;
  				default:
 +					LoaderManager.Get<WaterStylesLoader>().ChooseStyle(out var waterStyle, out var priority);
-+					if (priority >= AvfxPriority.BiomeLow) {
++					if (priority >= SceneEffectPriority.BiomeLow) {
 +						return waterStyle;
 +					}
  					if ((double)(screenPosition.Y / 16f) > rockLayer + 40.0) {
@@ -3573,7 +3573,7 @@
  						}
 +
 +						if (num20 >= BG_STYLES_COUNT) {
-+							LoaderManager.Get<SurfaceBgStylesLoader>().DrawCloseBackground(num20);
++							LoaderManager.Get<SurfaceBackgroundStylesLoader>().DrawCloseBackground(num20);
 +						}
  					}
  				}
@@ -3582,7 +3582,7 @@
  				DrawSurfaceBG_DrawBackMountainsLayer(246);
  			}
  
-+			LoaderManager.Get<SurfaceBgStylesLoader>().DrawFarTexture();
++			LoaderManager.Get<SurfaceBackgroundStylesLoader>().DrawFarTexture();
  			SkyManager.Instance.DrawToDepth(spriteBatch, 5f);
  		}
  
@@ -3591,7 +3591,7 @@
  					DrawSurfaceBG_DrawBackMountainsLayer(treeMntBGSet4[1]);
  			}
 +
-+			LoaderManager.Get<SurfaceBgStylesLoader>().DrawMiddleTexture();
++			LoaderManager.Get<SurfaceBackgroundStylesLoader>().DrawMiddleTexture();
  		}
  
  		private void UpdateOceanWaterLineForAmbience() {
@@ -3838,7 +3838,7 @@
  			UpdateBGVisibility_BackLayer(null, null);
  			UpdateBGVisibility_FrontLayer(null, null);
 +
-+			LoaderManager.Get<SurfaceBgStylesLoader>().ModifyFarFades(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
++			LoaderManager.Get<SurfaceBackgroundStylesLoader>().ModifyFarFades(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
  			try {
  				DrawSurfaceBG();
  				if (BackgroundEnabled)
@@ -3857,9 +3857,9 @@
  		public static int GetPreferredBGStyleForPlayer() {
  			int num = bgStyle;
  			int num2 = (int)((screenPosition.X + (float)(screenWidth / 2)) / 16f);
-+			LoaderManager.Get<SurfaceBgStylesLoader>().ChooseStyle(out var modBG, out var priority);
++			LoaderManager.Get<SurfaceBackgroundStylesLoader>().ChooseStyle(out var modBG, out var priority);
 +
-+			if (priority >= AvfxPriority.BiomeHigh) {
++			if (priority >= SceneEffectPriority.BiomeHigh) {
 +				num = modBG;
 +			}
 -			if (WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
@@ -3871,7 +3871,7 @@
  			else if (player[myPlayer].ZoneCrimson) {
  				num = 8;
  			}
-+			else if (priority >= AvfxPriority.BiomeMedium) {
++			else if (priority >= SceneEffectPriority.BiomeMedium) {
 +				num = modBG;
 +			}
  			else if (player[myPlayer].ZoneJungle) {
@@ -3880,7 +3880,7 @@
  			else if (player[myPlayer].ZoneSnow) {
  				num = 7;
  			}
-+			else if (priority >= AvfxPriority.BiomeLow) {
++			else if (priority >= SceneEffectPriority.BiomeLow) {
 +				num = modBG;
 +			}
  			else {

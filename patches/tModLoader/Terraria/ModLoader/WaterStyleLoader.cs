@@ -5,7 +5,7 @@ using Terraria.GameContent.Liquid;
 
 namespace Terraria.ModLoader
 {
-	public class WaterFallStylesLoader : AvfxLoader<ModWaterfallStyle>
+	public class WaterFallStylesLoader : SceneEffectLoader<ModWaterfallStyle>
 	{
 		public WaterFallStylesLoader() => Initialize(WaterfallManager.maxTypes);
 
@@ -15,7 +15,7 @@ namespace Terraria.ModLoader
 		}
 	}
 
-	public class WaterStylesLoader : AvfxLoader<ModWaterStyle>
+	public class WaterStylesLoader : SceneEffectLoader<ModWaterStyle>
 	{
 		public WaterStylesLoader() => Initialize(Main.maxLiquidTypes);
 
@@ -28,13 +28,13 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.liquidAlpha, TotalCount);
 		}
 
-		public override void ChooseStyle(out int style, out AvfxPriority priority) {
-			int tst = Main.LocalPlayer.currentAvfx.waterStyle.value;
-			style = -1; priority = AvfxPriority.None;
+		public override void ChooseStyle(out int style, out SceneEffectPriority priority) {
+			int tst = Main.LocalPlayer.currentSceneEffect.waterStyle.value;
+			style = -1; priority = SceneEffectPriority.None;
 
 			if (tst >= VanillaCount) {
 				style = tst;
-				priority = Main.LocalPlayer.currentAvfx.waterStyle.priority;
+				priority = Main.LocalPlayer.currentSceneEffect.waterStyle.priority;
 			}
 		}
 

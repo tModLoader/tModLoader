@@ -292,14 +292,14 @@ namespace Terraria.ModLoader
 		public static int GetModBackgroundSlot(string texture) => BackgroundTextureLoader.GetBackgroundSlot(texture);
 
 		/// <summary>
-		/// Returns the ModSurfaceBgStyle object with the given ID.
+		/// Returns the ModSurfaceBackgroundStyle object with the given ID.
 		/// </summary>
-		public static ModSurfaceBgStyle GetModSurfaceBgStyle(int style) => LoaderManager.Get<SurfaceBgStylesLoader>().Get(style);
+		public static ModSurfaceBackgroundStyle GetModSurfaceBackgroundStyle(int style) => LoaderManager.Get<SurfaceBackgroundStylesLoader>().Get(style);
 
 		/// <summary>
-		/// Returns the ModUgBgStyle object with the given ID.
+		/// Returns the ModUndergroundBackgroundStyle object with the given ID.
 		/// </summary>
-		public static ModUgBgStyle GetModUgBgStyle(int style) => LoaderManager.Get<UgBgStylesLoader>().Get(style);
+		public static ModUndergroundBackgroundStyle GetModUndergroundBackgroundStyle(int style) => LoaderManager.Get<UndergroundBackgroundStylesLoader>().Get(style);
 
 		/// <summary>
 		/// Get the id (type) of a ModGore by class. Assumes one instance per class.
@@ -534,7 +534,7 @@ namespace Terraria.ModLoader
 
 			LoaderManager.Unload();
 
-			GlobalBgStyleLoader.Unload();
+			GlobalBackgroundStyleLoader.Unload();
 			PlayerDrawLayerLoader.Unload();
 			SystemHooks.Unload();
 			TileEntity.manager.Reset();
@@ -590,7 +590,7 @@ namespace Terraria.ModLoader
 			if (!Main.dedServ) {
 				SoundLoader.ResizeAndFillArrays();
 				BackgroundTextureLoader.ResizeAndFillArrays();
-				GlobalBgStyleLoader.ResizeAndFillArrays(unloading);
+				GlobalBackgroundStyleLoader.ResizeAndFillArrays(unloading);
 				GoreLoader.ResizeAndFillArrays();
 			}
 

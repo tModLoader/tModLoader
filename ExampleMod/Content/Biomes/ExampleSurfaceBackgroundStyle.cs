@@ -2,7 +2,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Backgrounds
 {
-	public class ExampleSurfaceBgStyle : ModSurfaceBgStyle
+	public class ExampleSurfaceBackgroundStyle : ModSurfaceBackgroundStyle
 	{
 		// Use this to keep far Backgrounds like the mountains.
 		public override void ModifyFarFades(float[] fades, float transitionSpeed) {

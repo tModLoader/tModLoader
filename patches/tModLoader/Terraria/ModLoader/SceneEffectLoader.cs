@@ -5,38 +5,38 @@ namespace Terraria.ModLoader
 {
 	//todo: further documentation
 	/// <summary>
-	/// This serves as the central class from which Avfx functions are supported and carried out.
+	/// This serves as the central class from which SceneEffect functions are supported and carried out.
 	/// </summary>
-	public abstract class AvfxLoader<T> : Loader<T> where T : ModType
+	public abstract class SceneEffectLoader<T> : Loader<T> where T : ModType
 	{
-		public virtual void ChooseStyle(out int style, out AvfxPriority priority) { style = -1; priority = AvfxPriority.None; }
+		public virtual void ChooseStyle(out int style, out SceneEffectPriority priority) { style = -1; priority = SceneEffectPriority.None; }
 	}
 
-	public class AvfxLoader : Loader<ModAvfx>
+	public class SceneEffectLoader : Loader<ModSceneEffect>
 	{
-		public const int VanillaAvfxCount = 0;
-		public AvfxLoader() => Initialize(VanillaAvfxCount);
+		public const int VanillaSceneEffectCount = 0;
+		public SceneEffectLoader() => Initialize(VanillaSceneEffectCount);
 
-		public class AvfxInstance
+		public class SceneEffectInstance
 		{
 			public struct PrioritizedPair
 			{
 				public int value;
-				public AvfxPriority priority;
+				public SceneEffectPriority priority;
 			}
 
 			public bool anyActive;
 
 			public PrioritizedPair waterStyle;
-			public PrioritizedPair ugBG;
-			public PrioritizedPair surfaceBG;
+			public PrioritizedPair undergroundBackground;
+			public PrioritizedPair surfaceBackground;
 			public PrioritizedPair music;
 
 			public CaptureBiome.TileColorStyle tileColorStyle;
 
-			public AvfxInstance() {
+			public SceneEffectInstance() {
 				anyActive = false;
-				waterStyle = ugBG = surfaceBG = music = new PrioritizedPair();
+				waterStyle = undergroundBackground = surfaceBackground = music = new PrioritizedPair();
 				tileColorStyle = CaptureBiome.TileColorStyle.Normal;
 			}
 		}
@@ -44,9 +44,9 @@ namespace Terraria.ModLoader
 		private struct AtmosWeight
 		{
 			public float weight;
-			public ModAvfx type;
+			public ModSceneEffect type;
 
-			public AtmosWeight(float weight, ModAvfx type) {
+			public AtmosWeight(float weight, ModSceneEffect type) {
 				this.weight = weight;
 				this.type = type;
 			}
@@ -54,14 +54,14 @@ namespace Terraria.ModLoader
 			public static int InvertedCompare(AtmosWeight a, AtmosWeight b) => -a.weight.CompareTo(b.weight);
 		}
 
-		public void UpdateAvfx(Player player) {
-			var result = new AvfxInstance();
+		public void UpdateSceneEffect(Player player) {
+			var result = new SceneEffectInstance();
 			List<AtmosWeight> shortList = new List<AtmosWeight>();
 
 			for (int i = 0; i < list.Count; i++) {
-				ModAvfx avfx = list[i];
+				ModSceneEffect avfx = list[i];
 
-				if (!avfx.IsAvfxActive(player))
+				if (!avfx.IsSceneEffectActive(player))
 					continue;
 
 				shortList.Add(
@@ -70,7 +70,7 @@ namespace Terraria.ModLoader
 			}
 
 			if (shortList.Count == 0) {
-				player.currentAvfx = result;
+				player.currentSceneEffect = result;
 				return;
 			}
 
@@ -80,7 +80,7 @@ namespace Terraria.ModLoader
 			int avfxFields = 0;
 
 			for (int i = 0; avfxFields < 5 && i < shortList.Count; i++) {
-				ModAvfx avfx = shortList[i].type;
+				ModSceneEffect avfx = shortList[i].type;
 
 				if (result.waterStyle.priority == 0 && avfx.WaterStyle != null) {
 					result.waterStyle.value = avfx.WaterStyle.Slot;
@@ -88,15 +88,15 @@ namespace Terraria.ModLoader
 					avfxFields++;
 				}
 
-				if (result.ugBG.priority == 0 && avfx.UndergroundBackgroundStyle != null) {
-					result.ugBG.value = avfx.UndergroundBackgroundStyle.Slot;
-					result.ugBG.priority = avfx.Priority;
+				if (result.undergroundBackground.priority == 0 && avfx.UndergroundBackgroundStyle != null) {
+					result.undergroundBackground.value = avfx.UndergroundBackgroundStyle.Slot;
+					result.undergroundBackground.priority = avfx.Priority;
 					avfxFields++;
 				}
 
-				if (result.surfaceBG.priority == 0 && avfx.SurfaceBackgroundStyle != null) {
-					result.surfaceBG.value = avfx.SurfaceBackgroundStyle.Slot;
-					result.surfaceBG.priority = avfx.Priority;
+				if (result.surfaceBackground.priority == 0 && avfx.SurfaceBackgroundStyle != null) {
+					result.surfaceBackground.value = avfx.SurfaceBackgroundStyle.Slot;
+					result.surfaceBackground.priority = avfx.Priority;
 					avfxFields++;
 				}
 
@@ -112,15 +112,15 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			player.currentAvfx = result;
+			player.currentSceneEffect = result;
 		}
 
 		// Ref or out? MusicLoader?
-		public void UpdateMusic(ref int music, ref AvfxPriority priority) {
-			int tst = Main.LocalPlayer.currentAvfx.music.value;
+		public void UpdateMusic(ref int music, ref SceneEffectPriority priority) {
+			int tst = Main.LocalPlayer.currentSceneEffect.music.value;
 			if (tst > -1) {
 				music = tst;
-				priority = Main.LocalPlayer.currentAvfx.music.priority;
+				priority = Main.LocalPlayer.currentSceneEffect.music.priority;
 			}
 		}
 	}
