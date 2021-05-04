@@ -138,6 +138,14 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
+@@ -2034,6 +_,7 @@
+ 		public void SetTalkNPC(int npcIndex, bool fromNet = false) {
+ 			talkNPC = npcIndex;
+ 			if (Main.netMode != 1 && npcIndex >= 0 && npcIndex < 200)
++				// Gut feeling there is a to do on the above conditional
+ 				Main.BestiaryTracker.Chats.RegisterChatStartWith(Main.npc[npcIndex]);
+ 
+ 			if (talkNPC == -1)
 @@ -2051,11 +_,13 @@
  		}
  
@@ -1812,23 +1820,64 @@
  		}
  
  		public void UpdateSocialShadow() {
+@@ -11390,6 +_,11 @@
+ 		}
+ 
+ 		public int GetPrimaryBiome() {
++			int modID = Loaders.Biomes.GetPrimaryModBiome(this, out var priority);
++
++			if (priority >= AVFXPriority.BiomeHigh)
++				return modID;
++			
+ 			if (ZoneDungeon)
+ 				return 8;
+ 
+@@ -11399,6 +_,9 @@
+ 			if (ZoneCrimson)
+ 				return 10;
+ 
++			if (priority >= AVFXPriority.BiomeMedium)
++				return modID;
++
+ 			if (ZoneGlowshroom)
+ 				return 7;
+ 
+@@ -11411,6 +_,9 @@
+ 			if (ZoneSnow)
+ 				return 2;
+ 
++			if (priority >= AVFXPriority.BiomeLow)
++				return modID;
++
+ 			if (ZoneBeach)
+ 				return 5;
+ 
 @@ -11553,6 +_,8 @@
  			bool flag6 = ZoneRain && ZoneSnow;
  			bool flag7 = point.Y > Main.maxTilesY - 320;
  			bool flag8 = ZoneOverworldHeight && (point.X < 380 || point.X > Main.maxTilesX - 380);
 +			// TODO, are these flags a problem?
-+			PlayerHooks.UpdateBiomes(this);
++			Loaders.Biomes.UpdateBiomes(this);
  			ManageSpecialBiomeVisuals("Stardust", ZoneTowerStardust, value4 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Nebula", ZoneTowerNebula, value3 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Vortex", ZoneTowerVortex, value2 - new Vector2(0f, 10f));
-@@ -11691,6 +_,7 @@
+@@ -11691,6 +_,8 @@
  				}
  			}
  
-+			PlayerHooks.UpdateBiomeVisuals(this);
++			zonePurity = InZonePurity();
++			Loaders.Biomes.PostUpdateBiome(this);
  			if (!dead) {
  				Point point2 = base.Center.ToTileCoordinates();
  				if (WorldGen.InWorld(point2.X, point2.Y, 1)) {
+@@ -11721,6 +_,7 @@
+ 			else {
+ 				_funkytownAchievementCheckCooldown = 100;
+ 			}
++			Loaders.AVFXs.UpdateAVFX(this);
+ 		}
+ 
+ 		public void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = default(Vector2)) {
 @@ -11916,8 +_,9 @@
  			hasGingerBeard = false;
  			hasRainbowCursor = false;
@@ -4226,7 +4275,7 @@
  			player.zone4 = zone4;
  			player.voidVaultInfo = voidVaultInfo;
  			player.luck = luck;
-+			PlayerHooks.CopyCustomBiomesTo(this, player);
++			BiomeLoader.CopyCustomBiomesTo(this, player);
  			player.extraAccessory = extraAccessory;
  			player.MinionRestTargetPoint = MinionRestTargetPoint;
  			player.MinionAttackTargetNPC = MinionAttackTargetNPC;
@@ -4452,7 +4501,7 @@
  				}
  
  				return playerFileData;
-@@ -38270,7 +_,15 @@
+@@ -38270,7 +_,16 @@
  			return -1;
  		}
  
@@ -4466,6 +4515,7 @@
 +			ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount];
 +			npcTypeNoAggro = new bool[NPCLoader.NPCCount];
 +			PlayerHooks.SetupPlayer(this);
++			Loaders.Biomes.SetupPlayer(this);
  			width = 20;
  			height = 42;
  			name = string.Empty;

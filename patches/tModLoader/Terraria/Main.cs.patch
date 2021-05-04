@@ -938,9 +938,9 @@
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[i].position.X + (float)(npc[i].width / 2)) - num, (int)(npc[i].position.Y + (float)(npc[i].height / 2)) - num, num * 2, num * 2);
  					if (rectangle.Intersects(value)) {
 +						//TODO: Implement modMusic and modPriority
-+						//if (npc[i].modNPC != null && npc[i].modNPC.music >= 0 && (modMusic < 0 || npc[i].modNPC.musicPriority > modPriority)) {
++						//if (npc[i].modNPC != null && npc[i].modNPC.music >= 0 && (modMusic < 0 || npc[i].modNPC.AVFXPriority > modPriority)) {
 +						//	modMusic = npc[i].modNPC.music;
-+						//	modPriority = npc[i].modNPC.musicPriority;
++						//	modPriority = npc[i].modNPC.AVFXPriority;
 +						//}
  						switch (num2) {
  							case 1:
@@ -950,18 +950,19 @@
  				musicNoCrossFade[51] = true;
  
 +			int modMusic = -1;
-+			ModLoader.MusicPriority modPriority = ModLoader.MusicPriority.None;
++			ModLoader.AVFXPriority modPriority = ModLoader.AVFXPriority.None;
 +
  			if (!showSplash) {
  				Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)screenPosition.X, (int)screenPosition.Y, screenWidth, screenHeight);
  				int num2 = 5000;
-@@ -9416,6 +_,10 @@
+@@ -9416,6 +_,11 @@
  
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[j].position.X + (float)(npc[j].width / 2)) - num2, (int)(npc[j].position.Y + (float)(npc[j].height / 2)) - num2, num2 * 2, num2 * 2);
  					if (rectangle.Intersects(value)) {
-+						if (npc[j].ModNPC != null && npc[j].ModNPC.Music >= 0 && (modMusic < 0 || npc[j].ModNPC.MusicPriority > modPriority)) {
++						//TODO: Should this be wrapped inside the new AVFX stuff?
++						if (npc[j].ModNPC != null && npc[j].ModNPC.Music >= 0 && (modMusic < 0 || npc[j].ModNPC.AVFXPriority > modPriority)) {
 +							modMusic = npc[j].ModNPC.Music;
-+							modPriority = npc[j].ModNPC.MusicPriority;
++							modPriority = npc[j].ModNPC.AVFXPriority;
 +						}
  						switch (num3) {
  							case 1:
@@ -971,7 +972,7 @@
  					}
  				}
 +
-+				SystemHooks.UpdateMusic(ref modMusic, ref modPriority);
++				Loaders.AVFXs.UpdateMusic(ref modMusic, ref modPriority);
  			}
  
  			_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
@@ -998,7 +999,7 @@
  			if (CreditsRollEvent.IsEventOngoing) {
  				newMusic = 89;
  			}
-+			else if (modPriority >= MusicPriority.BossHigh) { //Should this be before credits or nah?
++			else if (modPriority >= AVFXPriority.BossHigh) { //Should this be before credits or nah?
 +				newMusic = modMusic;
 +			}
  			else if (player[myPlayer].happyFunTorchTime) {
@@ -1007,7 +1008,7 @@
  			else if (flag7) {
  				newMusic = 38;
  			}
-+			else if (modPriority >= MusicPriority.BossMedium) {
++			else if (modPriority >= AVFXPriority.BossMedium) {
 +				newMusic = modMusic;
 +			}
  			else if (flag9) {
@@ -1017,7 +1018,7 @@
  			else if (flag6) {
  				newMusic = 24;
  			}
-+			else if (modPriority >= MusicPriority.BossLow) {
++			else if (modPriority >= AVFXPriority.BossLow) {
 +				newMusic = modMusic;
 +			}
  			else if (flag14) {
@@ -1027,7 +1028,7 @@
  			else if (flag5) {
  				newMusic = 25;
  			}
-+			else if (modPriority >= MusicPriority.Event) {
++			else if (modPriority >= AVFXPriority.Event) {
 +				newMusic = modMusic;
 +			}
  			else if (flag13) {
@@ -1037,7 +1038,7 @@
  			else if (flag12) {
  				newMusic = 41;
  			}
-+			else if (modPriority >= MusicPriority.Environment) {
++			else if (modPriority >= AVFXPriority.Environment) {
 +				newMusic = modMusic;
 +			}
  			else if (eclipse && (double)player[myPlayer].position.Y < worldSurface * 16.0 + (double)(screenHeight / 2)) {
@@ -1047,7 +1048,7 @@
  			else if (num5 < 1f) {
  				newMusic = (dayTime ? 42 : 15);
  			}
-+			else if (modPriority >= MusicPriority.BiomeHigh) {
++			else if (modPriority >= AVFXPriority.BiomeHigh) {
 +				newMusic = modMusic;
 +			}
  			else if (tile[(int)(player[myPlayer].Center.X / 16f), (int)(player[myPlayer].Center.Y / 16f)].wall == 87) {
@@ -1057,7 +1058,7 @@
  				else
  					newMusic = 16;
  			}
-+			else if (modPriority >= MusicPriority.BiomeMedium) {
++			else if (modPriority >= AVFXPriority.BiomeMedium) {
 +				newMusic = modMusic;
 +			}
  			else if (player[myPlayer].ZoneMeteor) {
@@ -1067,7 +1068,7 @@
  				else
  					newMusic = 14;
  			}
-+			else if (modPriority >= MusicPriority.BiomeLow) {
++			else if (modPriority >= AVFXPriority.BiomeLow) {
 +				newMusic = modMusic;
 +			}
  			else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
@@ -1161,7 +1162,7 @@
  			if ((byte)Main.player[myPlayer].zone4 != (byte)player.zone4)
  				flag2 = true;
  
-+			if (!PlayerHooks.CustomBiomesMatch(Main.player[myPlayer], player))
++			if (!BiomeLoader.CustomBiomesMatch(Main.player[myPlayer], player))
 +				flag2 = true;
 +
  			if (flag2)
@@ -2203,15 +2204,86 @@
  				Tuple<Vector2, float> swingStats = n.GetSwingStats(NPCID.Sets.AttackTime[n.type] * 2, (int)n.ai[1], n.spriteDirection, num11, num11);
  				Vector2 vector4 = swingStats.Item1 + (swingStats.Item1 - n.Center) * scaleFactor + zero;
  				Vector2 origin4 = value9.Size() * new Vector2((n.spriteDirection != 1) ? 1 : 0, 1f);
-@@ -21666,6 +_,11 @@
+@@ -20305,6 +_,9 @@
+ 				return;
+ 
+ 			Projectile projectile = Main.projectile[i];
++			DrawProj_Inner(i, projectile);
++		}
++		private void DrawProj_DrawVoidLens(Projectile projectile, ref bool earlyReturn) {
+ 			if (projectile.type == 734) {
+ 				VoidLensHelper voidLensHelper = new VoidLensHelper(projectile);
+ 				_voidLensData.Clear();
+@@ -20317,10 +_,20 @@
+ 				return;
+ 			}
+ 
++			earlyReturn = false;
++		}
++		private void DrawProj_Inner(int i, Projectile projectile) {
+ 			float polePosX = 0f;
+ 			float polePosY = 0f;
+ 			LoadProjectile(projectile.type);
+ 			Vector2 mountedCenter = Main.player[projectile.owner].MountedCenter;
++			if (ProjectileLoader.PreDrawExtras(projectile)) {
++				DrawProj_DrawYoyoString(projectile, mountedCenter);
++				DrawProj_DrawExtras(projectile, mountedCenter, ref polePosX, ref polePosY);
++			}
++			DrawProj_Inner_DoDrawProj(i, projectile, mountedCenter, polePosX, polePosY);
++		}
++		private void DrawProj_DrawYoyoString(Projectile projectile, Vector2 mountedCenter) {
+ 			if (projectile.aiStyle == 99) {
+ 				Vector2 vector = mountedCenter;
+ 				vector.Y += Main.player[projectile.owner].gfxOffY;
+@@ -20419,7 +_,9 @@
+ 					EntitySpriteDraw(color: new Microsoft.Xna.Framework.Color((byte)((float)(int)white.R * num12), (byte)((float)(int)white.G * num12), (byte)((float)(int)white.B * num12), (byte)((float)(int)white.A * num12)), texture: TextureAssets.FishingLine.Value, position: new Vector2(vector.X - screenPosition.X + (float)TextureAssets.FishingLine.Width() * 0.5f, vector.Y - screenPosition.Y + (float)TextureAssets.FishingLine.Height() * 0.5f) - new Vector2(6f, 0f), sourceRectangle: new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.FishingLine.Width(), (int)num7), rotation: num4, origin: new Vector2((float)TextureAssets.FishingLine.Width() * 0.5f, 0f), scale: 1f, effects: SpriteEffects.None, worthless: 0);
+ 				}
+ 			}
+-			else {
++		}
++		private void DrawProj_DrawSpecialProjs(Projectile projectile, ref bool earlyReturn) {
++			/*else*/ {
+ 				if (projectile.aiStyle == 160) {
+ 					DrawKite(projectile);
+ 					return;
+@@ -20588,6 +_,9 @@
+ 				return;
+ 			}
+ 
++			earlyReturn = false;
++		}
++		private void DrawProj_DrawExtras(Projectile projectile, Vector2 mountedCenter, ref float polePosX, ref float polePosY) {
+ 			if (projectile.bobber && Main.player[projectile.owner].inventory[Main.player[projectile.owner].selectedItem].holdStyle != 0) {
+ 				DrawProj_FishingLine(projectile, ref polePosX, ref polePosY, mountedCenter);
+ 			}
+@@ -21659,6 +_,8 @@
+ 				DrawProj_FlailChains(projectile, mountedCenter);
+ 			}
+ 
++		}
++		private void DrawProj_Inner_DoDrawProj(int i, Projectile projectile, Vector2 mountedCenter, float polePosX, float polePosY) {
+ 			Microsoft.Xna.Framework.Color color31 = Lighting.GetColor((int)((double)projectile.position.X + (double)projectile.width * 0.5) / 16, (int)(((double)projectile.position.Y + (double)projectile.height * 0.5) / 16.0));
+ 			if (projectile.hide && !ProjectileID.Sets.DontAttachHideToAlpha[projectile.type])
+ 				color31 = Lighting.GetColor((int)mountedCenter.X / 16, (int)(mountedCenter.Y / 16f));
+@@ -21666,6 +_,21 @@
  			if (projectile.type == 14)
  				color31 = Microsoft.Xna.Framework.Color.White;
  
-+			if (!ProjectileLoader.PreDraw(projectile, spriteBatch, color31)) {
-+				ProjectileLoader.PostDraw(projectile, spriteBatch, color31);
-+				return;
++			if (ProjectileLoader.PreDraw(projectile, ref color31)) {
++				bool earlyReturn = true;
++				DrawProj_DrawVoidLens(projectile, ref earlyReturn);
++				if (earlyReturn)
++					goto PostDraw;
++				earlyReturn = true;
++				DrawProj_DrawSpecialProjs(projectile, ref earlyReturn);
++				if (earlyReturn)
++					goto PostDraw;
++				DrawProj_DrawNormalProjs(i, projectile, polePosX, polePosY, mountedCenter, ref color31);
 +			}
-+
++			PostDraw:
++			ProjectileLoader.PostDraw(projectile, color31);
++		}
++		private void DrawProj_DrawNormalProjs(int i, Projectile projectile, float polePosX, float polePosY, Vector2 mountedCenter, ref Color color31) {
  			int num136 = 0;
  			int num137 = 0;
  			if (projectile.type == 175)
@@ -2231,6 +2303,16 @@
  			SpriteEffects spriteEffects = SpriteEffects.None;
  			if (projectile.spriteDirection == -1)
  				spriteEffects = SpriteEffects.FlipHorizontally;
+@@ -25009,6 +_,9 @@
+ 						alpha12.A = 127;
+ 
+ 					EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num363 - 1), alpha12, projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
++					ModProjectile modProjectile = projectile.ModProjectile;
++					if (modProjectile != null && ModContent.TryGetTexture(modProjectile.GlowTexture, out var glowTexture))
++						EntitySpriteDraw(glowTexture.Value, new Vector2(projectile.position.X - screenPosition.X + num138 + num137, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num363 - 1), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
+ 					if (projectile.type == 335)
+ 						EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num363 - 1), new Microsoft.Xna.Framework.Color(100, 100, 100, 0), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
+ 
 @@ -25219,7 +_,7 @@
  				}
  
@@ -2246,11 +2328,19 @@
  
 +					ModProjectile modProjectile = projectile.ModProjectile;
 +					if (modProjectile != null && ModContent.TryGetTexture(modProjectile.GlowTexture, out var glowTexture))
-+						spriteBatch.Draw(glowTexture.Value, new Vector2(projectile.position.X - screenPosition.X + num138 + num137, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height())), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0f);
++						EntitySpriteDraw(glowTexture.Value, new Vector2(projectile.position.X - screenPosition.X + num138 + num137, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height()), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
 +
  					if (projectile.type == 312) {
  						ulong seed3 = TileFrameSeed;
  						for (int num389 = 0; num389 < 4; num389++) {
+@@ -25602,6 +_,7 @@
+ 			if (type == 4442)
+ 				stringColor = new Microsoft.Xna.Framework.Color(100, 100, 200, 100);
+ 
++			ProjectileLoader.ModifyFishingLine(proj, ref polePosX, ref polePosY, ref stringColor);
+ 			stringColor = TryApplyingPlayerStringColor(player[proj.owner].stringColor, stringColor);
+ 			float gravDir = player[proj.owner].gravDir;
+ 			switch (type) {
 @@ -27381,10 +_,13 @@
  				}
  				else if (npc[i].type == 516 || npc[i].type == 519) {
@@ -2280,7 +2370,7 @@
  					DrawCacheProjsBehindProjectiles.Add(i);
 +				
 +				PostProjDrawCache:
-+				ProjectileLoader.DrawBehind(projectile[i], i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles, DrawCacheProjsOverWiresUI);
++				ProjectileLoader.DrawBehind(projectile[i], i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles, DrawCacheProjsOverPlayers, DrawCacheProjsOverWiresUI);
  			}
  		}
  
@@ -3318,11 +3408,42 @@
  		}
  
  		private static void PostDrawMenu(Microsoft.Xna.Framework.Point screenSizeCache, Microsoft.Xna.Framework.Point screenSizeCacheAfterScaling) {
-@@ -39709,6 +_,7 @@
+@@ -39667,9 +_,16 @@
+ 			float value3 = (float)((double)(screenPosition.Y - (float)(screenHeight / 2) + 200f) - rockLayer * 16.0) / 300f;
+ 			value3 = MathHelper.Clamp(value3, 0f, 1f);
+ 			int num7 = (int)((screenPosition.X + (float)(screenWidth / 2)) / 16f);
++
++			Loaders.UgBgs.ChooseStyle(out var modBG, out var priority);
+ 			int num8 = 3;
+ 			num8 = ((num7 <= caveBackX[0]) ? caveBackStyle[0] : ((num7 <= caveBackX[1]) ? caveBackStyle[1] : ((num7 > caveBackX[2]) ? caveBackStyle[3] : caveBackStyle[2])));
+ 			num8 += 3;
++
++			if (priority == AVFXPriority.BiomeLow) {
++				num8 = modBG;
++			}
++
+ 			if (SceneMetrics.SnowTileCount > SceneMetrics.SnowTileThreshold && (screenPosition.Y + (float)screenHeight + 1200f) / 16f < (float)(maxTilesY - 250))
+ 				num8 = 1;
+ 
+@@ -39683,6 +_,10 @@
+ 				}
+ 			}
+ 
++			if (priority == AVFXPriority.BiomeMedium) {
++				num8 = modBG;
++			}
++
+ 			if (WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenHeight / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
+ 				num8 = (player[myPlayer].ZoneCorrupt ? 19 : (player[myPlayer].ZoneCrimson ? 21 : ((!player[myPlayer].ZoneHallow) ? 18 : 20)));
+ 			}
+@@ -39709,6 +_,10 @@
  			if (SceneMetrics.MushroomTileCount > SceneMetrics.MushroomTileMax)
  				num8 = 2;
  
-+			UgBgStyleLoader.ChooseStyle(ref num8);
++			if (priority >= AVFXPriority.BiomeHigh) {
++				num8 = modBG;
++			}
++
  			if (num8 != undergroundBackground) {
  				oldUndergroundBackground = undergroundBackground;
  				undergroundBackground = num8;
@@ -3330,7 +3451,7 @@
  					array3[5] = 127;
  
  				array3[6] = 185 + hellBackStyle;
-+				UgBgStyleLoader.FillTextureArray(num9, array3);
++				Loaders.UgBgs.FillTextureArray(num9, array3);
  				LoadBackground(array3[0]);
  				LoadBackground(array3[1]);
  				LoadBackground(array3[2]);
@@ -3402,19 +3523,22 @@
  			Asset<Texture2D> asset = TextureAssets.MapBGs[0];
  			int num = -1;
  			Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.White;
-@@ -43577,6 +_,7 @@
- 			drewLava = false;
- 			if (!isBackground) {
- 				waterStyle = CalculateWaterStyle();
-+				WaterStyleLoader.ChooseWaterStyle(ref waterStyle);
- 				for (int i = 0; i < 13; i++) {
- 					if (IsLiquidStyleWater(waterStyle)) {
- 						if (waterStyle != i)
+@@ -43554,6 +_,10 @@
+ 						return 12;
+ 					return 6;
+ 				default:
++					Loaders.Waters.ChooseStyle(out var waterStyle, out var priority);
++					if (priority >= AVFXPriority.BiomeLow) {
++						return waterStyle;
++					}
+ 					if ((double)(screenPosition.Y / 16f) > rockLayer + 40.0) {
+ 						if (player[myPlayer].ZoneGlowshroom)
+ 							return 7;
 @@ -43585,6 +_,7 @@
  							liquidAlpha[i] = Math.Min(liquidAlpha[i] + 0.2f, 1f);
  					}
  				}
-+				WaterStyleLoader.UpdateLiquidAlphas();
++				Loaders.Waters.UpdateLiquidAlphas();
  			}
  
  			if (!drawToScreen && !isBackground) {
@@ -3424,7 +3548,7 @@
  			DrawWater(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
 +			
 +		postWaterDraw:
-+			WaterStyleLoader.DrawWatersToScreen(isBackground);
++			Loaders.Waters.DrawWatersToScreen(isBackground);
  		}
  
 -		protected void DrawWater(bool bg = false, int Style = 0, float Alpha = 1f) {
@@ -3443,14 +3567,34 @@
  				Assets.Request<Texture2D>(TextureAssets.Background[i].Name);
  				backgroundWidth[i] = TextureAssets.Background[i].Width();
  				backgroundHeight[i] = TextureAssets.Background[i].Height();
+@@ -45397,6 +_,10 @@
+ 							DrawSurfaceBG_Mushroom(num4, num5, num6, bgTexIndexes7);
+ 							DrawSurfaceBG_DrawChangeOverlay(11);
+ 						}
++
++						if (num20 >= Loaders.SurfaceBgs.vanillaCount) {
++							Loaders.SurfaceBgs.DrawCloseBackground(num20);
++						}
+ 					}
+ 				}
+ 			}
 @@ -45561,6 +_,7 @@
  				DrawSurfaceBG_DrawBackMountainsLayer(246);
  			}
  
-+			SurfaceBgStyleLoader.DrawFarTexture();
++			Loaders.SurfaceBgs.DrawFarTexture();
  			SkyManager.Instance.DrawToDepth(spriteBatch, 5f);
  		}
  
+@@ -45631,6 +_,8 @@
+ 				if (treeMntBGSet4[1] > -1)
+ 					DrawSurfaceBG_DrawBackMountainsLayer(treeMntBGSet4[1]);
+ 			}
++
++			Loaders.SurfaceBgs.DrawMiddleTexture();
+ 		}
+ 
+ 		private void UpdateOceanWaterLineForAmbience() {
 @@ -46821,7 +_,7 @@
  
  				bool flag2 = false;
@@ -3689,31 +3833,64 @@
  		}
  
  		private static void UpdateAtmosphereTransparencyToSkyColor() {
-@@ -48811,6 +_,15 @@
+@@ -48811,6 +_,8 @@
  
  			UpdateBGVisibility_BackLayer(null, null);
  			UpdateBGVisibility_FrontLayer(null, null);
-+			if (bgStyle < SurfaceBgStyleLoader.VanillaSurfaceBgStyleCount) {
-+				for (int i = SurfaceBgStyleLoader.VanillaSurfaceBgStyleCount; i < bgAlphaFrontLayer.Length /*SurfaceBackgroundStyleLoader.SurfaceStyleCount*/; i++) {
-+					bgAlphaFrontLayer[i] -= backgroundLayerTransitionSpeed;
-+					if (bgAlphaFrontLayer[i] < 0f)
-+						bgAlphaFrontLayer[i] = 0f;
-+				}
-+			}
 +
-+			SurfaceBgStyleLoader.ModifyFarFades(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
++			Loaders.SurfaceBgs.ModifyFarFades(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
  			try {
  				DrawSurfaceBG();
  				if (BackgroundEnabled)
-@@ -48937,9 +_,11 @@
- 						num = 11;
- 					else if (WorldGen.treeBG1 != WorldGen.treeBG4)
+@@ -48896,6 +_,10 @@
+ 					DrawBG_ModifyBGFarBackLayerAlpha(value, null, transitionAmountOverride);
+ 					break;
+ 				default:
++					if (value >= Loaders.SurfaceBgs.vanillaCount) {
++						DrawBG_ModifyBGFarBackLayerAlpha(value, null, transitionAmountOverride);
++						break;
++					}
+ 					DrawBG_ModifyBGFarBackLayerAlpha(0, null, transitionAmountOverride);
+ 					break;
+ 			}
+@@ -48904,7 +_,12 @@
+ 		public static int GetPreferredBGStyleForPlayer() {
+ 			int num = bgStyle;
+ 			int num2 = (int)((screenPosition.X + (float)(screenWidth / 2)) / 16f);
++			Loaders.SurfaceBgs.ChooseStyle(out var modBG, out var priority);
++
++			if (priority >= AVFXPriority.BiomeHigh) {
++				num = modBG;
++			}
+-			if (WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
++			else if (WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
+ 				num = (player[myPlayer].ZoneHallow ? 6 : (player[myPlayer].ZoneCorrupt ? ((SceneMetrics.BloodTileCount <= SceneMetrics.EvilTileCount) ? 1 : 8) : (player[myPlayer].ZoneCrimson ? 8 : ((SceneMetrics.HoneyBlockCount <= 400) ? 4 : 3))));
+ 			}
+ 			else if (player[myPlayer].ZoneGlowshroom) {
+@@ -48922,12 +_,18 @@
+ 			else if (player[myPlayer].ZoneCrimson) {
+ 				num = 8;
+ 			}
++			else if (priority >= AVFXPriority.BiomeMedium) {
++				num = modBG;
++			}
+ 			else if (player[myPlayer].ZoneJungle) {
+ 				num = 3;
+ 			}
+ 			else if (player[myPlayer].ZoneSnow) {
+ 				num = 7;
+ 			}
++			else if (priority >= AVFXPriority.BiomeLow) {
++				num = modBG;
++			}
+ 			else {
+ 				num = 0;
+ 				if (num2 >= treeX[0]) {
+@@ -48939,7 +_,6 @@
  						num = 12;
-+					//Patch context.
  				}
  			}
- 
-+			SurfaceBgStyleLoader.ChooseStyle(ref num);
+-
  			return num;
  		}
  

@@ -43,8 +43,8 @@
  		}
  
  		public static int dustWater() {
-+			if (Main.waterStyle >= WaterStyleLoader.vanillaWaterCount)
-+				return WaterStyleLoader.GetWaterStyle(Main.waterStyle).GetSplashDust();
++			if (Main.waterStyle >= Loaders.Waters.vanillaCount)
++				return Loaders.Waters.Get(Main.waterStyle).GetSplashDust();
 +
  			switch (Main.waterStyle) {
  				case 2:
