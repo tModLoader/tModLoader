@@ -20,7 +20,7 @@ namespace ExampleMod.Content
 
 		/*public override int Music => Mod.GetSoundSlot(SoundType.Music, ""); TODO: Reimplement music loading */
 
-		/*public override ModSurfaceBgStyle MenuBackgroundStyle => Mod.GetSurfaceBgStyle(""); TODO: Reimplement backgrounds */
+		/*public override ModSurfaceBackgroundStyle MenuBackgroundStyle => Mod.GetSurfaceBackgroundStyle(""); TODO: Reimplement backgrounds */
 
 		public override string DisplayName => "Example ModMenu";
 

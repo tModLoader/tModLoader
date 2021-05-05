@@ -97,6 +97,7 @@ namespace Terraria.ModLoader
 			MonoModHooks.Initialize();
 			ZipExtractFix.Init();
 			XnaTitleContainerRelativePathFix.Init();
+			LoaderManager.AutoLoad();
 		}
 
 		internal static void PrepareAssets()
