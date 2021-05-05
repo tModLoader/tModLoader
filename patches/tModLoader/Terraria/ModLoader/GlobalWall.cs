@@ -54,6 +54,17 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to stop a wall from being placed at the given coordinates. Return false to stop the wall from being placed. Returns true by default.
+		/// </summary>
+		/// <param name="i"></param>
+		/// <param name="j"></param>
+		/// <param name="type"></param>
+		/// <returns></returns>
+		public virtual bool CanPlace(int i, int j, int type) {
+			return true;
+		}
+
+		/// <summary>
 		/// Whether or not the wall at the given coordinates can be killed by an explosion (ie. bombs). Returns true by default; return false to stop an explosion from destroying it.
 		/// </summary>
 		public virtual bool CanExplode(int i, int j, int type) {

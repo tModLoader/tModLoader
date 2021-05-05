@@ -80,6 +80,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to stop this block from being placed at the given coordinates. Return false to stop the block from being placed. Returns true by default.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		public virtual bool CanPlace(int i, int j) {
+			return true;
+		}
+
+		/// <summary>
 		/// Whether or not the tile/wall at the given coordinates can be killed by an explosion (ie. bombs). Returns true by default; return false to stop an explosion from destroying it.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>

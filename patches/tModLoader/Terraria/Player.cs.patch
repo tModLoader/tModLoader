@@ -3188,6 +3188,15 @@
  			int num = 50;
  			if (newItem.IsACoin)
  				num = 54;
+@@ -27628,6 +_,8 @@
+ 				return;
+ 
+ 			bool flag = true;
++			flag &= WallLoader.CanPlace(tileTargetX, tileTargetY, inventory[selectedItem].createWall);
++
+ 			if (TileReplacementEnabled)
+ 				flag = PlaceThing_TryReplacingWalls(flag);
+ 
 @@ -27636,6 +_,7 @@
  
  			WorldGen.PlaceWall(tileTargetX, tileTargetY, inventory[selectedItem].createWall);
