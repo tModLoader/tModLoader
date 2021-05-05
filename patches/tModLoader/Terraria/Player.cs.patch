@@ -3236,8 +3236,13 @@
  					PlaceThing_Tiles_BlockPlacementIfOverPlayers(ref canPlace, ref objectData);
  					PlaceThing_Tiles_BlockPlacementForRepeatedPigronatas(ref canPlace, ref objectData);
  					PlaceThing_Tiles_BlockPlacementForRepeatedPumpkins(ref canPlace, ref objectData);
-@@ -27782,7 +_,7 @@
+@@ -27780,9 +_,12 @@
+ 				if (!WorldGen.IsTileReplacable(tileTargetX, tileTargetY))
+ 					return false;
  
++				if (!TileLoader.CanPlace(tileTargetX, tileTargetY, HeldItem.createTile))
++					return false;
++
  				if (0 == 0) {
  					if (hitReplace.AddDamage(num, pickaxeDamage) < 100) {
 -						int num2 = WorldGen.KillTile_GetTileDustAmount(fail: true, tile);
