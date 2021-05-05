@@ -21,6 +21,9 @@ namespace Terraria.ModLoader
 		}
 
 		public sealed override void SetupContent() {
+			if (Main.dedServ)
+				return; // Liquid Renderer.Instance is null on the server.
+
 			LiquidRenderer.Instance._liquidTextures[Slot] = ModContent.GetTexture(Texture);
 			TextureAssets.Liquid[Slot] = ModContent.GetTexture(BlockTexture);
 		}

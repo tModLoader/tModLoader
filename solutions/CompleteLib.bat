@@ -11,7 +11,7 @@ set tModLoaderVersion=v0.11.9.0
 call build%target%.bat
 
 set destinationFolder=.\tModLoader %tModLoaderVersion% %target%
-If "%1"=="skipzip" (
+If "%2"=="skipzip" (
 	set destinationFolder=.\%target%
 )
 @IF %ERRORLEVEL% NEQ 0 (
@@ -32,7 +32,7 @@ mkdir "%shared%"
 robocopy /S ..\src\tModLoader\Terraria\bin\%target%\net5.0 "%shared%"
 rmdir /S /Q "%shared%\ref"
 
-If "%1"=="skipzip" (
+If "%2"=="skipzip" (
 	echo Skipping zipping.
 ) Else (
 	:: Windows
@@ -56,6 +56,6 @@ echo tModLoader %tModLoaderVersion% ready to %target%.
 echo Upload the 2 zip files to github/discord.
 echo(
 echo(
-If NOT "%1"=="skipzip" (
+If NOT "%2"=="skipzip" (
 	pause
 )

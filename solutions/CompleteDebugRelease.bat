@@ -1,1 +1,0 @@
-call CompleteLib.bat Debug
