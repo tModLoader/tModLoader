@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Terraria.ModLoader
 {
@@ -6,25 +8,28 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This serves as the highest-level class for loaders
 	/// </summary>
-	public abstract class Loader<T> where T : ModType
+	public abstract class Loader<T> : ILoader where T : ModType
 	{
-		public int vanillaCount { get; internal set; }
-		public int totalCount { get; internal set; }
+		public int VanillaCount { get; set; }
+		internal int TotalCount { get; set; }
 
 		internal List<T> list = new List<T>();
 
-		protected Loader(int vanillaCount) {
-			this.vanillaCount = vanillaCount;
-			totalCount = vanillaCount;
+		/// <summary>
+		/// Initilizes the loader based on the vanilla count of the ModType.
+		/// </summary>
+		internal void Initialize(int vanillaCount) {
+			VanillaCount = vanillaCount;
+			TotalCount = vanillaCount;
 		}
 
-		public int Reserve() {
-			int reserve = totalCount;
-			totalCount++;
+		private int Reserve() {
+			int reserve = TotalCount;
+			TotalCount++;
 			return reserve;
 		}
 
-		// TODO: Possibly convert all ModTypes to have 'int Type' as their indexing field.
+		//TODO: Possibly convert all ModTypes to have 'int Type' as their indexing field.
 		public int Register(T obj) {
 			int type = Reserve();
 			ModTypeLookup<T>.Register(obj);
@@ -33,26 +38,58 @@ namespace Terraria.ModLoader
 		}
 
 		public T Get(int id) {
-			if (id < vanillaCount || id >= totalCount) {
+			if (id < VanillaCount || id >= TotalCount) {
 				return default;
 			}
-			return list[id - vanillaCount];
+			return list[id - VanillaCount];
 		}
 
+		void ILoader.ResizeArrays() => ResizeArrays();
+		internal virtual void ResizeArrays() { }
+
+		void ILoader.Unload() => Unload();
 		internal virtual void Unload() {
-			totalCount = vanillaCount;
+			TotalCount = VanillaCount;
 			list.Clear();
 		}
-
-		internal virtual void ResizeArrays() { }
 	}
 
-	public static class Loaders {
-		public static WaterFallStyles Waterfalls = new WaterFallStyles();
-		public static WaterStyles Waters = new WaterStyles();
-		public static UgBgStyles UgBgs = new UgBgStyles();
-		public static SurfaceBgStyles SurfaceBgs = new SurfaceBgStyles();
-		public static AVFXLoader AVFXs = new AVFXLoader();
-		public static BiomeLoader Biomes = new BiomeLoader();
+	public interface ILoader
+	{
+		internal void ResizeArrays() { }
+
+		internal void Unload() { }
+	}
+
+	public static class LoaderManager {
+		private static Dictionary<Type, ILoader> dict = new Dictionary<Type, ILoader>();
+
+		internal static void AutoLoad() {
+			List<Type> allSubTypes = new List<Type>();
+			foreach (var subtype in Assembly.GetExecutingAssembly().GetTypes()) {
+				if (typeof(ILoader).IsAssignableFrom(subtype) && !subtype.IsAbstract && subtype.IsClass) {
+					dict.Add(subtype, (ILoader)Activator.CreateInstance(subtype));
+				}
+			}
+		}
+
+		public static T Get<T>() {
+			if (!dict.TryGetValue(typeof(T), out var result))
+				return Activator.CreateInstance<T>(); // Return empty instance in case of static Player constructor or similar
+
+			return (T)result;
+		}
+
+		internal static void Unload() {
+			foreach (var loader in dict.Values) {
+				loader.Unload();
+			}
+		}
+
+		internal static void ResizeArrays() {
+			foreach (var loader in dict.Values) {
+				loader.ResizeArrays();
+			}
+		}
 	}
 }

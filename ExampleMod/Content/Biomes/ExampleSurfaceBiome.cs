@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Biomes
 
 		// Select all the scenery
 		public override ModWaterStyle WaterStyle => ModContent.Find<ModWaterStyle>("ExampleMod/ExampleWaterStyle"); // Sets a water style for when inside this biome
-		public override ModSurfaceBgStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBgStyle>("ExampleMod/ExampleSurfaceBgStyle");
+		public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBackgroundStyle>("ExampleMod/ExampleSurfaceBackgroundStyle");
 		public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Crimson;
 
 		// Select Music

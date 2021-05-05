@@ -51,79 +51,80 @@ namespace Terraria.ModLoader
 
 	//todo: further documentation
 	/// <summary>
-	/// This serves as the central class from which ModUgBgStyle functions are supported and carried out.
+	/// This serves as the central class from which ModUndergroundBackgroundStyle functions are supported and carried out.
 	/// </summary>
-	public class UgBgStyles : AVFXLoader<ModUgBgStyle>
+	public class UndergroundBackgroundStylesLoader : SceneEffectLoader<ModUndergroundBackgroundStyle>
 	{
-		public UgBgStyles(int vanillaCount = 18) : base(vanillaCount) { }
+		public const int VanillaUndergroundBackgroundStylesCount = 18;
+		public UndergroundBackgroundStylesLoader() => Initialize(VanillaUndergroundBackgroundStylesCount);
 
-		public override void ChooseStyle(out int style, out AVFXPriority priority) {
-			priority = AVFXPriority.None; style = -1;
-			if (!GlobalBgStyleLoader.loaded) {
+		public override void ChooseStyle(out int style, out SceneEffectPriority priority) {
+			priority = SceneEffectPriority.None; style = -1;
+			if (!GlobalBackgroundStyleLoader.loaded) {
 				return;
 			}
 
-			int tst = Main.LocalPlayer.currentAVFX.ugBG.value;
-			if (tst >= vanillaCount) {
+			int tst = Main.LocalPlayer.currentSceneEffect.undergroundBackground.value;
+			if (tst >= VanillaCount) {
 				style = tst;
-				priority = Main.LocalPlayer.currentAVFX.ugBG.priority;
+				priority = Main.LocalPlayer.currentSceneEffect.undergroundBackground.priority;
 			}
 		}
 
 		public void FillTextureArray(int style, int[] textureSlots) {
-			if (!GlobalBgStyleLoader.loaded) {
+			if (!GlobalBackgroundStyleLoader.loaded) {
 				return;
 			}
-			var ugBgStyle = Get(style);
-			if (ugBgStyle != null) {
-				ugBgStyle.FillTextureArray(textureSlots);
+			var undergroundBackgroundStyle = Get(style);
+			if (undergroundBackgroundStyle != null) {
+				undergroundBackgroundStyle.FillTextureArray(textureSlots);
 			}
-			foreach (var hook in GlobalBgStyleLoader.HookFillUgTextureArray) {
+			foreach (var hook in GlobalBackgroundStyleLoader.HookFillUndergroundTextureArray) {
 				hook(style, textureSlots);
 			}
 		}
 	}
 
-	public class SurfaceBgStyles : AVFXLoader<ModSurfaceBgStyle>
+	public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgroundStyle>
 	{
-		public SurfaceBgStyles(int vanillaCount = Main.BG_STYLES_COUNT) : base(vanillaCount) { }
+		public SurfaceBackgroundStylesLoader() => Initialize(Main.BG_STYLES_COUNT);
 
 		internal override void ResizeArrays() {
-			Array.Resize(ref Main.bgAlphaFrontLayer, totalCount);
-			Array.Resize(ref Main.bgAlphaFarBackLayer, totalCount);
+			Array.Resize(ref Main.bgAlphaFrontLayer, TotalCount);
+			Array.Resize(ref Main.bgAlphaFarBackLayer, TotalCount);
 		}
 
-		public override void ChooseStyle(out int style, out AVFXPriority priority) {
-			priority = AVFXPriority.None; style = -1;
-			if (!GlobalBgStyleLoader.loaded) {
+		public override void ChooseStyle(out int style, out SceneEffectPriority priority) {
+			priority = SceneEffectPriority.None; style = -1;
+			if (!GlobalBackgroundStyleLoader.loaded) {
 				return;
 			}
-			int tst = Main.LocalPlayer.currentAVFX.surfaceBG.value;
-			if (tst >= vanillaCount) {
+			int tst = Main.LocalPlayer.currentSceneEffect.surfaceBackground.value;
+			if (tst >= VanillaCount) {
 				style = tst;
-				priority = Main.LocalPlayer.currentAVFX.surfaceBG.priority;
+				priority = Main.LocalPlayer.currentSceneEffect.surfaceBackground.priority;
 			}
 		}
 
 		public void ModifyFarFades(int style, float[] fades, float transitionSpeed) {
-			if (!GlobalBgStyleLoader.loaded) {
+			if (!GlobalBackgroundStyleLoader.loaded) {
 				return;
 			}
-			var surfaceBgStyle = Get(style);
-			if (surfaceBgStyle != null) {
-				surfaceBgStyle.ModifyFarFades(fades, transitionSpeed);
+			var surfaceBackgroundStyle = Get(style);
+			if (surfaceBackgroundStyle != null) {
+				surfaceBackgroundStyle.ModifyFarFades(fades, transitionSpeed);
 			}
-			foreach (var hook in GlobalBgStyleLoader.HookModifyFarSurfaceFades) {
+			foreach (var hook in GlobalBackgroundStyleLoader.HookModifyFarSurfaceFades) {
 				hook(style, fades, transitionSpeed);
 			}
 		}
 
 		public void DrawFarTexture() {
-			if (!GlobalBgStyleLoader.loaded) {
+			if (!GlobalBackgroundStyleLoader.loaded) {
 				return;
 			}
 
-			// TODO: Causes background to flicker during load because Main.bgAlpha2 is resized after surfaceBgStyles is added to in AutoLoad.
+			// TODO: Causes background to flicker during load because Main.bgAlpha2 is resized after surfaceBackgroundStyles is added to in AutoLoad.
 			foreach (var style in list) {
 				int slot = style.Slot;
 				float alpha = Main.bgAlphaFarBackLayer[slot];
@@ -155,7 +156,7 @@ namespace Terraria.ModLoader
 		}
 
 		public void DrawMiddleTexture() {
-			if (!GlobalBgStyleLoader.loaded) {
+			if (!GlobalBackgroundStyleLoader.loaded) {
 				return;
 			}
 
@@ -190,7 +191,7 @@ namespace Terraria.ModLoader
 		}
 
 		public void DrawCloseBackground(int style) {
-			if (!GlobalBgStyleLoader.loaded) {
+			if (!GlobalBackgroundStyleLoader.loaded) {
 				return;
 			}
 
@@ -198,15 +199,15 @@ namespace Terraria.ModLoader
 				return;
 			}
 
-			var surfaceBgStyle = Get(style);
+			var surfaceBackgroundStyle = Get(style);
 
-			if (surfaceBgStyle != null && surfaceBgStyle.PreDrawCloseBackground(Main.spriteBatch)) {
+			if (surfaceBackgroundStyle != null && surfaceBackgroundStyle.PreDrawCloseBackground(Main.spriteBatch)) {
 				Main.bgScale = 1.25f;
 				Main.instance.bgParallax = 0.37;
 
 				float a = 1800.0f;
 				float b = 1750.0f;
-				int textureSlot = surfaceBgStyle.ChooseCloseTexture(ref Main.bgScale, ref Main.instance.bgParallax, ref a, ref b);
+				int textureSlot = surfaceBackgroundStyle.ChooseCloseTexture(ref Main.bgScale, ref Main.instance.bgParallax, ref a, ref b);
 
 				if (textureSlot >= 0 && textureSlot < TextureAssets.Background.Length) {
 					//Custom: bgScale, textureslot, patallaz, these 2 numbers...., Top and Start?
@@ -246,16 +247,16 @@ namespace Terraria.ModLoader
 	}
 
 
-	internal static class GlobalBgStyleLoader
+	internal static class GlobalBackgroundStyleLoader
 	{
-		internal static readonly IList<GlobalBgStyle> globalBgStyles = new List<GlobalBgStyle>();
+		internal static readonly IList<GlobalBackgroundStyle> globalBackgroundStyles = new List<GlobalBackgroundStyle>();
 		internal static bool loaded = false;
-		internal static Action<int, int[]>[] HookFillUgTextureArray;
+		internal static Action<int, int[]>[] HookFillUndergroundTextureArray;
 		internal static Action<int, float[], float>[] HookModifyFarSurfaceFades;
 
 		internal static void ResizeAndFillArrays(bool unloading = false) {
-			ModLoader.BuildGlobalHook(ref HookFillUgTextureArray, globalBgStyles, g => g.FillUgTextureArray);
-			ModLoader.BuildGlobalHook(ref HookModifyFarSurfaceFades, globalBgStyles, g => g.ModifyFarSurfaceFades);
+			ModLoader.BuildGlobalHook(ref HookFillUndergroundTextureArray, globalBackgroundStyles, g => g.FillUndergroundTextureArray);
+			ModLoader.BuildGlobalHook(ref HookModifyFarSurfaceFades, globalBackgroundStyles, g => g.ModifyFarSurfaceFades);
 
 			if (!unloading) {
 				loaded = true;
@@ -264,7 +265,7 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			loaded = false;
-			globalBgStyles.Clear();
+			globalBackgroundStyles.Clear();
 		}
 	}
 }

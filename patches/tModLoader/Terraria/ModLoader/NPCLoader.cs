@@ -191,7 +191,7 @@ namespace Terraria.ModLoader
 			if(IsModNPC(npc)) {
 				bestiaryEntry.Info.Add(npc.ModNPC.Mod.ModSourceBestiaryInfoElement);
 				foreach (var type in npc.ModNPC.SpawnModBiomes) {
-					bestiaryEntry.Info.Add(Loaders.Biomes.Get(type).ModBiomeBestiaryInfoElement);
+					bestiaryEntry.Info.Add(LoaderManager.Get<BiomeLoader>().Get(type).ModBiomeBestiaryInfoElement);
 				}
 			}
 

@@ -102,9 +102,9 @@ namespace Terraria
 
 
 		/// <summary>
-		/// Container for current AVFX client properties such as: Backgrounds, music, and water styling
+		/// Container for current SceneEffect client properties such as: Backgrounds, music, and water styling
 		/// </summary>
-		public AVFXLoader.AVFXInstance currentAVFX = new AVFXLoader.AVFXInstance();
+		public SceneEffectLoader.SceneEffectInstance currentSceneEffect = new SceneEffectLoader.SceneEffectInstance();
 
 		/// <summary>
 		/// Stores whether or not the player is in a modbiome using boolean bits.
@@ -119,9 +119,9 @@ namespace Terraria
 		public bool InModBiome(ModBiome baseInstance)=> modBiomeFlags[baseInstance.ZeroIndexType];
 
 		/// <summary>
-		/// The zone field storing if the player is in the purity/forest biome. Updated in <see cref="UpdateBiomes"/>
+		/// The zone property storing if the player is in the purity/forest biome. Updated in <see cref="UpdateBiomes"/>
 		/// </summary>
-		public bool zonePurity { get; set; } = false;
+		public bool ZonePurity { get; set; } = false;
 
 		/// <summary>
 		/// Calculates whether or not the player is in the purity/forest biome.

@@ -12,7 +12,7 @@ namespace Terraria.ModLoader
 	{
 		public const int VanillaPrimaryBiomeCount = 11;
 
-		public BiomeLoader(int vanillaCount = VanillaPrimaryBiomeCount) : base(vanillaCount) { }
+		public BiomeLoader() => Initialize(VanillaPrimaryBiomeCount);
 
 		private class HookList
 		{
@@ -32,7 +32,7 @@ namespace Terraria.ModLoader
 			return hook;
 		}
 
-		internal void RebuildHooks() {
+		internal override void ResizeArrays() {
 			foreach (var hook in hooks) {
 				hook.arr = ModLoader.BuildGlobalHook(list, hook.method).Select(p => p.Type).ToArray();
 			}
@@ -89,15 +89,15 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public int GetPrimaryModBiome(Player player, out AVFXPriority priority) {
+		public int GetPrimaryModBiome(Player player, out SceneEffectPriority priority) {
 			int index = 0; float weight = 0;
-			priority = AVFXPriority.None;
+			priority = SceneEffectPriority.None;
 
 			for (int i = 0; i < list.Count; i++) {
 				bool active = player.modBiomeFlags[i] && list[i].IsPrimaryBiome;
 				float tst = list[i].GetCorrWeight(player);
 				if (active && tst > weight) {
-					index = i + vanillaCount;
+					index = i + VanillaCount;
 					priority = list[i].Priority;
 					weight = tst;
 				}

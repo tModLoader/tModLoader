@@ -279,12 +279,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns the ModWaterStyle with the given ID.
 		/// </summary>
-		public static ModWaterStyle GetModWaterStyle(int style) => Loaders.Waters.Get(style);
+		public static ModWaterStyle GetModWaterStyle(int style) => LoaderManager.Get<WaterStylesLoader>().Get(style);
 
 		/// <summary>
 		/// Returns the ModWaterfallStyle with the given ID.
 		/// </summary>
-		public static ModWaterfallStyle GetModWaterfallStyle(int style) => Loaders.Waterfalls.Get(style);
+		public static ModWaterfallStyle GetModWaterfallStyle(int style) => LoaderManager.Get<WaterFallStylesLoader>().Get(style);
 
 		/// <summary>
 		/// Returns the slot/ID of the background texture with the given name.
@@ -292,14 +292,14 @@ namespace Terraria.ModLoader
 		public static int GetModBackgroundSlot(string texture) => BackgroundTextureLoader.GetBackgroundSlot(texture);
 
 		/// <summary>
-		/// Returns the ModSurfaceBgStyle object with the given ID.
+		/// Returns the ModSurfaceBackgroundStyle object with the given ID.
 		/// </summary>
-		public static ModSurfaceBgStyle GetModSurfaceBgStyle(int style) => Loaders.SurfaceBgs.Get(style);
+		public static ModSurfaceBackgroundStyle GetModSurfaceBackgroundStyle(int style) => LoaderManager.Get<SurfaceBackgroundStylesLoader>().Get(style);
 
 		/// <summary>
-		/// Returns the ModUgBgStyle object with the given ID.
+		/// Returns the ModUndergroundBackgroundStyle object with the given ID.
 		/// </summary>
-		public static ModUgBgStyle GetModUgBgStyle(int style) => Loaders.UgBgs.Get(style);
+		public static ModUndergroundBackgroundStyle GetModUndergroundBackgroundStyle(int style) => LoaderManager.Get<UndergroundBackgroundStylesLoader>().Get(style);
 
 		/// <summary>
 		/// Get the id (type) of a ModGore by class. Assumes one instance per class.
@@ -531,13 +531,10 @@ namespace Terraria.ModLoader
 			SoundLoader.Unload();
 			DisposeMusic();
 			BackgroundTextureLoader.Unload();
-			Loaders.UgBgs.Unload();
-			Loaders.SurfaceBgs.Unload();
-			GlobalBgStyleLoader.Unload();
-			Loaders.Waters.Unload();
-			Loaders.Waterfalls.Unload();
-			Loaders.AVFXs.Unload();
-			Loaders.Biomes.Unload();
+
+			LoaderManager.Unload();
+
+			GlobalBackgroundStyleLoader.Unload();
 			PlayerDrawLayerLoader.Unload();
 			SystemHooks.Unload();
 			TileEntity.manager.Reset();
@@ -588,18 +585,16 @@ namespace Terraria.ModLoader
 			BuffLoader.ResizeArrays();
 			PlayerHooks.RebuildHooks();
 			PlayerDrawLayerLoader.ResizeArrays();
-			Loaders.Biomes.RebuildHooks();
 			SystemHooks.ResizeArrays();
 
 			if (!Main.dedServ) {
 				SoundLoader.ResizeAndFillArrays();
 				BackgroundTextureLoader.ResizeAndFillArrays();
-				Loaders.SurfaceBgs.ResizeArrays();
-				GlobalBgStyleLoader.ResizeAndFillArrays(unloading);
+				GlobalBackgroundStyleLoader.ResizeAndFillArrays(unloading);
 				GoreLoader.ResizeAndFillArrays();
-				Loaders.Waters.ResizeArrays();
-				Loaders.Waterfalls.ResizeArrays();
 			}
+
+			LoaderManager.ResizeArrays();
 
 			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values) {
 				text.Override = null;

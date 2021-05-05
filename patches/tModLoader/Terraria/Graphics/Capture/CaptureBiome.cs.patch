@@ -9,11 +9,11 @@
  					return captureBiome;
  			}
  
-+			var atmos = Main.LocalPlayer.currentAVFX;
-+			if (atmos.waterStyle.value >= Loaders.Waters.vanillaCount) {
++			var atmos = Main.LocalPlayer.currentSceneEffect;
++			if (atmos.waterStyle.value >= Main.maxLiquidTypes) {
 +				// This makes the capture match whatever the end result is of all modded effects, but that isn't quite right.
-+				//TODO: Future improvement should be using the AVFX layer associated to background.
-+				return new CaptureBiome(atmos.surfaceBG.value, atmos.waterStyle.value, atmos.tileColorStyle);
++				//TODO: Future improvement should be using the SceneEffect layer associated to background.
++				return new CaptureBiome(atmos.surfaceBackground.value, atmos.waterStyle.value, atmos.tileColorStyle);
 +			}
 +
  			return null;
@@ -24,11 +24,11 @@
  					return Styles.Mushroom;
  				default:
 -					return null;
-+					var atmos = Main.LocalPlayer.currentAVFX;
-+					if (atmos.surfaceBG.value >= Loaders.SurfaceBgs.vanillaCount) {
++					var atmos = Main.LocalPlayer.currentSceneEffect;
++					if (atmos.surfaceBackground.value >= Main.BG_STYLES_COUNT) {
 +						// This makes the capture match whatever the end result is of all modded effects, but that isn't quite right.
-+						//TODO: Future improvement should be using the AVFX layer associated to background.
-+						return new CaptureBiome(atmos.surfaceBG.value, atmos.waterStyle.value, atmos.tileColorStyle);
++						//TODO: Future improvement should be using the SceneEffect layer associated to background.
++						return new CaptureBiome(atmos.surfaceBackground.value, atmos.waterStyle.value, atmos.tileColorStyle);
 +					}
 +					return null; 	
  			}
