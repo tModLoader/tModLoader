@@ -17,8 +17,8 @@ if exist %INSTALLDIR%\dotnet.exe ( start dotnet\%VERSIONSEL%\dotnet.exe tModLoad
 	echo Installation of dotnet portable failed. Launching manual installed Net runtimes.
 	echo Logs for manual install are located in LaunchLogs\runtime.log
 	call :LOG_R 1> LaunchLogs\runtime.log 2>&1
-	exit /B
 )
+exit /B
 
 :LOG_R
 echo Attempting Launch..

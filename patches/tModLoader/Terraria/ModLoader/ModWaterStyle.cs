@@ -21,6 +21,9 @@ namespace Terraria.ModLoader
 		}
 
 		public sealed override void SetupContent() {
+			if (Main.dedServ)
+				return; // LiquidRenderer.Instance is null for server && Loader is client sided.
+
 			LiquidRenderer.Instance._liquidTextures[Slot] = ModContent.GetTexture(Texture);
 			TextureAssets.Liquid[Slot] = ModContent.GetTexture(BlockTexture);
 		}
@@ -72,6 +75,9 @@ namespace Terraria.ModLoader
 		}
 
 		public sealed override void SetupContent() {
+			if (Main.dedServ)
+				return; // Loader is client sided
+
 			Main.instance.waterfallManager.waterfallTexture[Slot] = ModContent.GetTexture(Texture);
 		}
 
