@@ -43,10 +43,10 @@
  
  namespace Terraria
  {
-+#if CLIENT
- 	public class Main : Game
-+#else
++#if SERVER
 +	public class Main : Terraria.Server.Game
++#else
+ 	public class Main : Game
 +#endif
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
@@ -433,6 +433,17 @@
  			try {
  				DrawWaters(isBackground: true);
  			}
+@@ -41574,8 +_,9 @@
+ 			}
+ 
+ 			TimeLogger.DetailedDrawReset();
+-			spriteBatch.End();
++			//Vanilla bug fix: These 2 end calls were in the wrong order, causing horrible graphical glitches on FNA's DirectX and Vulkan renderers. But not OpenGL.
+ 			tileBatch.End();
++			spriteBatch.End();
+ 			TimeLogger.DetailedDrawTime(33);
+ 			base.GraphicsDevice.SetRenderTarget(null);
+ 		}
 @@ -42914,6 +_,8 @@
  		}
  
@@ -463,19 +474,23 @@
  
  			drawsCountedForFPS++;
  			screenLastPosition = screenPosition;
-@@ -49340,6 +_,7 @@
+@@ -49340,6 +_,10 @@
  			CreditsRollEvent.UpdateTime();
  			WorldGen.mysticLogsEvent.UpdateTime();
  			PylonSystem.Update();
-+			if (dedServ) { 
++			
++			if (dedServ)
++				goto SkipMoonLordEffects;
++			
  			if (NPC.MoonLordCountdown > 0) {
  				float num4 = MathHelper.Clamp((float)Math.Sin((float)NPC.MoonLordCountdown / 60f * 0.5f) * 2f, 0f, 1f);
  				num4 *= 0.75f - 0.5f * ((float)NPC.MoonLordCountdown / 3600f);
-@@ -49351,6 +_,7 @@
+@@ -49351,6 +_,8 @@
  			else if (Terraria.Graphics.Effects.Filters.Scene["MoonLordShake"].IsActive()) {
  				Terraria.Graphics.Effects.Filters.Scene.Deactivate("MoonLordShake");
  			}
-+			}
++			
++			SkipMoonLordEffects:
  
  			if (NPC.MoonLordCountdown > 0) {
  				NPC.MoonLordCountdown--;

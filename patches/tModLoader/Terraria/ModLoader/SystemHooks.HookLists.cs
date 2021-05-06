@@ -44,8 +44,6 @@ namespace Terraria.ModLoader
 		}
 
 		//Delegates
-
-		private delegate void DelegateUpdateMusic(ref int music, ref MusicPriority priority);
 		
 		private delegate void DelegateModifyTransformMatrix(ref SpriteViewMatrix Transform);
 		
@@ -59,6 +57,8 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateChooseWaterStyle(ref int style);
 
+		private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight);
+
 		private delegate bool DelegateHijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber);
 
 		//HookLists
@@ -66,8 +66,6 @@ namespace Terraria.ModLoader
 		private static HookList HookOnWorldLoad = AddHook<Action>(s => s.OnWorldLoad);
 
 		private static HookList HookOnWorldUnload = AddHook<Action>(s => s.OnWorldUnload);
-
-		private static HookList HookUpdateMusic = AddHook<DelegateUpdateMusic>(s => s.UpdateMusic);
 
 		private static HookList HookModifyScreenPosition = AddHook<Action>(s => s.ModifyScreenPosition);
 
@@ -138,6 +136,8 @@ namespace Terraria.ModLoader
 		private static HookList HookTileCountsAvailable = AddHook<Action<int[]>>(s => s.TileCountsAvailable);
 
 		private static HookList HookChooseWaterStyle = AddHook<DelegateChooseWaterStyle>(s => s.ChooseWaterStyle);
+
+		private static HookList HookModifyHardmodeTasks = AddHook<Action<List<GenPass>>>(s => s.ModifyHardmodeTasks);
 
 		private static HookList HookHijackGetData = AddHook<DelegateHijackGetData>(s => s.HijackGetData);
 
