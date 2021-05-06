@@ -1,19 +1,24 @@
 --- src/decompiled/Configuration.targets
 +++ src/Terraria/Configuration.targets
-@@ -1,11 +_,13 @@
+@@ -1,17 +_,11 @@
  <Project>
    <PropertyGroup>
 -    <TargetFramework>net40</TargetFramework>
-+    <TargetFramework>net5.0</TargetFramework>
-     <Configurations>Debug;Release;ServerDebug;ServerRelease</Configurations>
+-    <Configurations>Debug;Release;ServerDebug;ServerRelease</Configurations>
 -    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
 -    <PlatformTarget>x86</PlatformTarget>
++    <TargetFramework>net5.0</TargetFramework>
++    <Configurations>Debug;Release</Configurations>
 +    <PlatformTarget>AnyCPU</PlatformTarget>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
      <Optimize>true</Optimize>
-+  </PropertyGroup>
-+  <PropertyGroup>
+-  </PropertyGroup>
+-  <PropertyGroup Condition="$(Configuration.Contains('Server'))">
+-    <DefineConstants>$(DefineConstants);SERVER</DefineConstants>
 +    <DefineConstants>$(DefineConstants);FNA;NETCORE</DefineConstants>
+-  </PropertyGroup>
+-  <PropertyGroup Condition="!$(Configuration.Contains('Server'))">
+-    <DefineConstants>$(DefineConstants);CLIENT</DefineConstants>
    </PropertyGroup>
-   <PropertyGroup Condition="$(Configuration.Contains('Server'))">
-     <DefineConstants>$(DefineConstants);SERVER</DefineConstants>
+   <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+     <Optimize>false</Optimize>

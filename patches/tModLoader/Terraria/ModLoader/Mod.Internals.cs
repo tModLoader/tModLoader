@@ -173,7 +173,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void AutoloadBackgrounds() {
-			foreach (string texture in Assets.EnumeratePaths<Texture2D>().Where(t => t.StartsWith("Backgrounds/"))) {
+			foreach (string texture in Assets.EnumeratePaths<Texture2D>().Where(t => t.Contains("Backgrounds/"))) {
 				AddBackgroundTexture($"{Name}/{texture}");
 			}
 		}
