@@ -1,8 +1,9 @@
-using ExampleMod.Dusts;
+using ExampleMod.Content.Buffs;
+using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using static Terraria.ModLoader.ModContent;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles.Minions
 {
@@ -12,76 +13,76 @@ namespace ExampleMod.Content.Projectiles.Minions
 	public class ExampleHoveringMinion : ExampleHoveringShooter
 	{
 		public override void SetStaticDefaults() {
-			Main.projFrames[projectile.type] = 3; // Sets the number of frams in ExampleHoveringMinion's animation
-			Main.projPet[projectile.type] = true;
-			ProjectileID.Sets.MinionSacrificable[projectile.type] = true;
-			ProjectileID.Sets.Homing[projectile.type] = true;
-			ProjectileID.Sets.MinionTargettingFeature[projectile.type] = true; //This is necessary for right-click targeting
+			Main.projFrames[Projectile.type] = 3; // Sets the number of frams in ExampleHoveringMinion's animation
+			Main.projPet[Projectile.type] = true;
+			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
+			ProjectileID.Sets.CountsAsHoming[Projectile.type] = true;
+			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true; //This is necessary for right-click targeting
 		}
 
 		public override void SetDefaults() {
-			projectile.netImportant = true;
-			projectile.width = 24; // Sets the width of the projectile
-			projectile.height = 32; // Sets the height of the projectile
-			projectile.friendly = true;
-			projectile.minion = true; // Sets the damage type to minion
-			projectile.minionSlots = 1; // ExampleHoveringMinion takes one minion slot
-			projectile.penetrate = -1; // Needed so minion doesn't despawn on contact with enemies/tiles
-			projectile.timeLeft = 18000;
-			projectile.tileCollide = false; // ExampleHoveringMinion can move through blocks
-			projectile.ignoreWater = true; // ExampleHoveringMinion's movement ignores water
+			Projectile.netImportant = true;
+			Projectile.width = 24; // Sets the width of the projectile
+			Projectile.height = 32; // Sets the height of the projectile
+			Projectile.friendly = true;
+			Projectile.minion = true; // Sets the damage type to minion
+			Projectile.minionSlots = 1; // ExampleHoveringMinion takes one minion slot
+			Projectile.penetrate = -1; // Needed so minion doesn't despawn on contact with enemies/tiles
+			Projectile.timeLeft = 18000;
+			Projectile.tileCollide = false; // ExampleHoveringMinion can move through blocks
+			Projectile.ignoreWater = true; // ExampleHoveringMinion's movement ignores water
 			
 			inertia = 20f; // Defines how quickly ExampleHoveringMinion accelerates
-			shoot = ProjectileType<ExampleMinionProjectile>(); // ExampleHoveringMinion fires ExampleMinionProjectile
+			shoot = ModContent.ProjectileType<ExampleMinionProjectile>(); // ExampleHoveringMinion fires ExampleMinionProjectile
 			shootSpeed = 12f; // Defines how often the ExampleHoveringMinion can fire
 		}
 
 		public override void CheckActive() {
-			Player player = Main.player[projectile.owner];
+			Player player = Main.player[Projectile.owner];
 			
 			if (player.dead || !player.active) {
-				player.ClearBuff(ModContent.BuffType<ExampleHoveringMinion>()); // If player is dead or inactive the ExampleHoveringMinion buff is cleared
+				player.ClearBuff(ModContent.BuffType<ExampleHoveringMinionBuff>()); // If player is dead or inactive the ExampleHoveringMinion buff is cleared
 			}
 			
 			// If the player still has the buff, the projectile's timer is refreshed
-			if (player.HasBuff(ModContent.BuffType<ExampleHoveringMinion>()) {
-				projectile.timeLeft = 2;
+			if (player.HasBuff(ModContent.BuffType<ExampleHoveringMinionBuff>())) {
+				Projectile.timeLeft = 2;
 			}
 		}
 
 		public override void CreateDust() {
 			// Creates a dust effect
-			if (projectile.ai[0] == 0f) {
+			if (Projectile.ai[0] == 0f) {
 				if (Main.rand.NextBool(5)) {
-					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height / 2, DustType<ExampleMinionDust>()); // ExampleHoveringMinion uses the ExampleHoveringMinion dust
+					int dust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height / 2, ModContent.DustType<ExampleHoveringMinionDust>()); // ExampleHoveringMinion uses the ExampleHoveringMinion dust
 					Main.dust[dust].velocity.Y -= 1.2f;
 				}
 			}
 			else {
 				if (Main.rand.NextBool(3)) {
-					Vector2 dustVel = projectile.velocity;
+					Vector2 dustVel = Projectile.velocity;
 					
 					if (dustVel != Vector2.Zero) {
 						dustVel.Normalize();
 					}
 					
-					var dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustType<ExampleMinionDust>());
+					var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<ExampleHoveringMinionDust>());
 					
 					dust.velocity -= 1.2f * dustVel; // Makes the dust effect take into account the movement of ExampleHovering Minion
 				}
 			}
 			
 			// Make ExampleHoveringMinion emit light
-			Lighting.AddLight((int)(projectile.Center.X / 16f), (int)(projectile.Center.Y / 16f), 0.6f, 0.9f, 0.3f);
+			Lighting.AddLight((int)(Projectile.Center.X / 16f), (int)(Projectile.Center.Y / 16f), 0.6f, 0.9f, 0.3f);
 		}
 
 		public override void SelectFrame() {
 			// Creates the projectile animation
-			projectile.frameCounter++;
+			Projectile.frameCounter++;
 			
-			if (projectile.frameCounter >= 8) {
-				projectile.frameCounter = 0;
-				projectile.frame = (projectile.frame + 1) % 3;
+			if (Projectile.frameCounter >= 8) {
+				Projectile.frameCounter = 0;
+				Projectile.frame = (Projectile.frame + 1) % 3;
 			}
 		}
 	}

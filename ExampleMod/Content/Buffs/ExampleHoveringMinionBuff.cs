@@ -4,7 +4,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Buffs
 {
-	public class ExampleHoveringMinion : ModBuff
+	public class ExampleHoveringMinionBuff : ModBuff
 	{
 		public override void SetDefaults() {
 			DisplayName.SetDefault("Purity Wisp"); // Sets the English name of the buff
