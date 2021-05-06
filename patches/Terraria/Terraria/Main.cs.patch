@@ -474,19 +474,23 @@
  
  			drawsCountedForFPS++;
  			screenLastPosition = screenPosition;
-@@ -49340,6 +_,7 @@
+@@ -49340,6 +_,10 @@
  			CreditsRollEvent.UpdateTime();
  			WorldGen.mysticLogsEvent.UpdateTime();
  			PylonSystem.Update();
-+			if (dedServ) { 
++			
++			if (dedServ)
++				goto SkipMoonLordEffects;
++			
  			if (NPC.MoonLordCountdown > 0) {
  				float num4 = MathHelper.Clamp((float)Math.Sin((float)NPC.MoonLordCountdown / 60f * 0.5f) * 2f, 0f, 1f);
  				num4 *= 0.75f - 0.5f * ((float)NPC.MoonLordCountdown / 3600f);
-@@ -49351,6 +_,7 @@
+@@ -49351,6 +_,8 @@
  			else if (Terraria.Graphics.Effects.Filters.Scene["MoonLordShake"].IsActive()) {
  				Terraria.Graphics.Effects.Filters.Scene.Deactivate("MoonLordShake");
  			}
-+			}
++			
++			SkipMoonLordEffects:
  
  			if (NPC.MoonLordCountdown > 0) {
  				NPC.MoonLordCountdown--;

@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 
-namespace Terraria.ModLoader.Core
+namespace HookListPerformance
 {
-	public class HookList<T> where T : GlobalType
+	class StructEnumeratorUnpacked : Implementation
 	{
 		// Don't change a single line without performance testing and checking the disassembly. As of NET 5.0.0, this implementation is on par with hand-coding
 		// Disassembly checked using Relyze Desktop 3.3.0
-		public ref struct InstanceEnumerator
+		ref struct InstanceEnumerator<T>
 		{
 			// These have to be arrays rather than ReadOnlySpan as the JIT won't unpack/promote 'struct in struct' (or span in struct either)
 			// Revisit with .NET 6 https://github.com/dotnet/runtime/issues/37924
-			private readonly Instanced<T>[] instances;
+			private readonly InstancedUnpacked<T>[] instances;
 			private readonly int[] hookInds;
 
 			// ideally this would be Instanced<T> and drop the need for the ii variable in the MoveNext function
@@ -27,7 +24,7 @@ namespace Terraria.ModLoader.Core
 			//private int j;
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public InstanceEnumerator(Instanced<T>[] instances, int[] hookInds) {
+			public InstanceEnumerator(InstancedUnpacked<T>[] instances, int[] hookInds) {
 				this.instances = instances;
 				this.hookInds = hookInds;
 				current = default;
@@ -61,38 +58,22 @@ namespace Terraria.ModLoader.Core
 				return false;
 			}
 
-			public InstanceEnumerator GetEnumerator() => this;
+			public InstanceEnumerator<T> GetEnumerator() => this;
 		}
 
-		public readonly MethodInfo method;
+		private static float HookDoEffect(ref float input, InstancedUnpacked<GlobalItem>[] instances, int[] hookInds) {
+			float result = 0;
+			foreach (var globalItem in new InstanceEnumerator<GlobalItem>(instances, hookInds))
+				result += globalItem.DoEffect(ref input);
 
-		private int[] registeredGlobalIndices = Array.Empty<int>();
-
-		internal HookList(MethodInfo method) {
-			this.method = method;
+			return result;
 		}
 
-		public InstanceEnumerator Enumerate(IEntityWithGlobals<T> entity) => Enumerate(entity.Globals.array);
-
-		public InstanceEnumerator Enumerate(Instanced<T>[] instances) => new(instances, registeredGlobalIndices);
-
-		public void Update(IList<T> instances) {
-			registeredGlobalIndices = ModLoader.BuildGlobalHookNew(instances, method);
-		}
-	}
-
-	public class HookList<TGlobal, TDelegate> : HookList<TGlobal>
-		where TGlobal : GlobalType
-		where TDelegate : Delegate
-	{
-		public TDelegate Invoke { get; private set; }
-
-		public HookList(MethodInfo method, Func<HookList<TGlobal>, TDelegate> getInvoker) : base(method) {
-			Invoke = getInvoker(this);
-		}
-
-		internal HookList(Expression<Func<TGlobal, TDelegate>> method, Func<HookList<TGlobal>, TDelegate> getInvoker) : base(ModLoader.Method(method)) {
-			Invoke = getInvoker(this);
+		public override float HookDoEffect(float input, Item[] items, int[] hookInds) {
+			float result = 0;
+			foreach (var item in items)
+				result += HookDoEffect(ref input, item.instancedUnpackedGlobals, hookInds);
+			return result;
 		}
 	}
 }

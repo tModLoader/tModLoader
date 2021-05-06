@@ -26,12 +26,10 @@ namespace Terraria.ModLoader
 			}
 
 			public bool anyActive;
-
 			public PrioritizedPair waterStyle;
 			public PrioritizedPair undergroundBackground;
 			public PrioritizedPair surfaceBackground;
 			public PrioritizedPair music;
-
 			public CaptureBiome.TileColorStyle tileColorStyle;
 
 			public SceneEffectInstance() {
@@ -70,7 +68,7 @@ namespace Terraria.ModLoader
 			}
 
 			if (shortList.Count == 0) {
-				player.currentSceneEffect = result;
+				player.CurrentSceneEffect = result;
 				return;
 			}
 
@@ -112,15 +110,15 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			player.currentSceneEffect = result;
+			player.CurrentSceneEffect = result;
 		}
 
 		// Ref or out? MusicLoader?
 		public void UpdateMusic(ref int music, ref SceneEffectPriority priority) {
-			int tst = Main.LocalPlayer.currentSceneEffect.music.value;
+			int tst = Main.LocalPlayer.CurrentSceneEffect.music.value;
 			if (tst > -1) {
 				music = tst;
-				priority = Main.LocalPlayer.currentSceneEffect.music.priority;
+				priority = Main.LocalPlayer.CurrentSceneEffect.music.priority;
 			}
 		}
 	}
