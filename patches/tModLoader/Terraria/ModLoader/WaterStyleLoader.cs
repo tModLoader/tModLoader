@@ -31,12 +31,12 @@ namespace Terraria.ModLoader
 		}
 
 		public override void ChooseStyle(out int style, out SceneEffectPriority priority) {
-			int tst = Main.LocalPlayer.currentSceneEffect.waterStyle.value;
+			int tst = Main.LocalPlayer.CurrentSceneEffect.waterStyle.value;
 			style = -1; priority = SceneEffectPriority.None;
 
 			if (tst >= VanillaCount) {
 				style = tst;
-				priority = Main.LocalPlayer.currentSceneEffect.waterStyle.priority;
+				priority = Main.LocalPlayer.CurrentSceneEffect.waterStyle.priority;
 			}
 		}
 

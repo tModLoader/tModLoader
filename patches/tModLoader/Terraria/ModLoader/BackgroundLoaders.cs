@@ -57,18 +57,20 @@ namespace Terraria.ModLoader
 	public class UndergroundBackgroundStylesLoader : SceneEffectLoader<ModUndergroundBackgroundStyle>
 	{
 		public const int VanillaUndergroundBackgroundStylesCount = 18;
+
 		public UndergroundBackgroundStylesLoader() => Initialize(VanillaUndergroundBackgroundStylesCount);
 
 		public override void ChooseStyle(out int style, out SceneEffectPriority priority) {
 			priority = SceneEffectPriority.None; style = -1;
+
 			if (!GlobalBackgroundStyleLoader.loaded) {
 				return;
 			}
 
-			int tst = Main.LocalPlayer.currentSceneEffect.undergroundBackground.value;
+			int tst = Main.LocalPlayer.CurrentSceneEffect.undergroundBackground.value;
 			if (tst >= VanillaCount) {
 				style = tst;
-				priority = Main.LocalPlayer.currentSceneEffect.undergroundBackground.priority;
+				priority = Main.LocalPlayer.CurrentSceneEffect.undergroundBackground.priority;
 			}
 		}
 
@@ -76,10 +78,13 @@ namespace Terraria.ModLoader
 			if (!GlobalBackgroundStyleLoader.loaded) {
 				return;
 			}
+
 			var undergroundBackgroundStyle = Get(style);
+
 			if (undergroundBackgroundStyle != null) {
 				undergroundBackgroundStyle.FillTextureArray(textureSlots);
 			}
+
 			foreach (var hook in GlobalBackgroundStyleLoader.HookFillUndergroundTextureArray) {
 				hook(style, textureSlots);
 			}
@@ -98,13 +103,15 @@ namespace Terraria.ModLoader
 
 		public override void ChooseStyle(out int style, out SceneEffectPriority priority) {
 			priority = SceneEffectPriority.None; style = -1;
+
 			if (!GlobalBackgroundStyleLoader.loaded) {
 				return;
 			}
-			int tst = Main.LocalPlayer.currentSceneEffect.surfaceBackground.value;
+
+			int tst = Main.LocalPlayer.CurrentSceneEffect.surfaceBackground.value;
 			if (tst >= VanillaCount) {
 				style = tst;
-				priority = Main.LocalPlayer.currentSceneEffect.surfaceBackground.priority;
+				priority = Main.LocalPlayer.CurrentSceneEffect.surfaceBackground.priority;
 			}
 		}
 
