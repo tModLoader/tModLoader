@@ -53,6 +53,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This serves as the central class from which ModUndergroundBackgroundStyle functions are supported and carried out.
 	/// </summary>
+	[Autoload(Side = ModSide.Client)]
 	public class UndergroundBackgroundStylesLoader : SceneEffectLoader<ModUndergroundBackgroundStyle>
 	{
 		public const int VanillaUndergroundBackgroundStylesCount = 18;
@@ -85,6 +86,7 @@ namespace Terraria.ModLoader
 		}
 	}
 
+	[Autoload(Side = ModSide.Client)]
 	public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgroundStyle>
 	{
 		public SurfaceBackgroundStylesLoader() => Initialize(Main.BG_STYLES_COUNT);

@@ -5,6 +5,7 @@ using Terraria.GameContent.Liquid;
 
 namespace Terraria.ModLoader
 {
+	[Autoload(Side = ModSide.Client)]
 	public class WaterFallStylesLoader : SceneEffectLoader<ModWaterfallStyle>
 	{
 		public WaterFallStylesLoader() => Initialize(WaterfallManager.maxTypes);
@@ -15,6 +16,7 @@ namespace Terraria.ModLoader
 		}
 	}
 
+	[Autoload(Side = ModSide.Client)]
 	public class WaterStylesLoader : SceneEffectLoader<ModWaterStyle>
 	{
 		public WaterStylesLoader() => Initialize(Main.maxLiquidTypes);
