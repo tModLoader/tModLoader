@@ -16,21 +16,24 @@ namespace ExampleMod.Content.Dusts
 		}
 
 		public override bool Update(Dust dust) {
-
 			// Defines the movement of the dust
 			dust.rotation += dust.velocity.X / 3f;
 			dust.position += dust.velocity;
 
 			// Increases the alpha of the dust
 			int oldAlpha = dust.alpha;
+			
 			dust.alpha = (int)(dust.alpha * 1.2);
+			
 			if (dust.alpha == oldAlpha) {
 				dust.alpha++;
 			}
+			
 			if (dust.alpha >= 255) {
 				dust.alpha = 255;
 				dust.active = false; // When the alpha of the dust is 255 or greater, the dust is despawned
 			}
+			
 			return false;
 		}
 	}

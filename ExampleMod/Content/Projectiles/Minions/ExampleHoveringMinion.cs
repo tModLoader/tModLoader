@@ -30,6 +30,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 			projectile.timeLeft = 18000;
 			projectile.tileCollide = false; // ExampleHoveringMinion can move through blocks
 			projectile.ignoreWater = true; // ExampleHoveringMinion's movement ignores water
+			
 			inertia = 20f; // Defines how quickly ExampleHoveringMinion accelerates
 			shoot = ProjectileType<ExampleMinionProjectile>(); // ExampleHoveringMinion fires ExampleMinionProjectile
 			shootSpeed = 12f; // Defines how often the ExampleHoveringMinion can fire
@@ -59,13 +60,17 @@ namespace ExampleMod.Content.Projectiles.Minions
 			else {
 				if (Main.rand.NextBool(3)) {
 					Vector2 dustVel = projectile.velocity;
+					
 					if (dustVel != Vector2.Zero) {
 						dustVel.Normalize();
 					}
-					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, DustType<ExampleMinionDust>());
-					Main.dust[dust].velocity -= 1.2f * dustVel; // Makes the dust effect take into account the movement of ExampleHovering Minion
+					
+					var dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustType<ExampleMinionDust>());
+					
+					dust.velocity -= 1.2f * dustVel; // Makes the dust effect take into account the movement of ExampleHovering Minion
 				}
 			}
+			
 			// Make ExampleHoveringMinion emit light
 			Lighting.AddLight((int)(projectile.Center.X / 16f), (int)(projectile.Center.Y / 16f), 0.6f, 0.9f, 0.3f);
 		}
@@ -73,6 +78,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 		public override void SelectFrame() {
 			// Creates the projectile animation
 			projectile.frameCounter++;
+			
 			if (projectile.frameCounter >= 8) {
 				projectile.frameCounter = 0;
 				projectile.frame = (projectile.frame + 1) % 3;
