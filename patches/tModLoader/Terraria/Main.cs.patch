@@ -1,5 +1,13 @@
 --- src/Terraria/Terraria/Main.cs
 +++ src/tModLoader/Terraria/Main.cs
+@@ -3,6 +_,7 @@
+ using Microsoft.Xna.Framework.Content;
+ using Microsoft.Xna.Framework.Graphics;
+ using Microsoft.Xna.Framework.Input;
++using Newtonsoft.Json;
+ using ReLogic.Content;
+ using ReLogic.Content.Sources;
+ #if MAC
 @@ -19,7 +_,7 @@
  using System.Collections.Generic;
  using System.Diagnostics;
@@ -3088,7 +3096,7 @@
  				num5 = 2;
  				array9[0] = statusText;
  				array[0] = true;
-@@ -36354,17 +_,28 @@
+@@ -36354,17 +_,33 @@
  					Netplay.ServerPassword = "";
  				}
  				else if (selectedMenu == 2 || inputTextEnter || autoPass) {
@@ -3100,7 +3108,6 @@
  					str = ((!ActiveWorldFileData.IsCloudSave) ? (str + " -world \"" + worldPathName + "\"") : (str + " -cloudworld \"" + worldPathName + "\""));
  					str = str + " -worldrollbackstokeep " + WorldRollingBackupsCountToKeep;
 +					str += $@" -modpath ""{ModOrganizer.modPath}""";
-+					//TODO: This option needs rework, defaults to display as is today, would need to change it to be to hideconsole.
 +					if (showServerConsole)
 +						str += " -showserverconsole";
 +
@@ -3109,25 +3116,30 @@
 -					tServer.StartInfo.FileName = "TerrariaServer.exe";
 +					tServer.StartInfo.FileName = "tModLoaderServer.exe";
  #else
-+					if (Debugger.IsAttached || File.Exists("Logs\\runtime")) {
++					if (Debugger.IsAttached || File.Exists("Logs\\runtime")) 
++					{
 -					tServer.StartInfo.FileName = "TerrariaServer";
 +						tServer.StartInfo.FileName = "dotnet";
 +					}
 +					else {
-+						//TODO: This should be automated for the 5.0.5 value, using either runtimeconfig.json or build property "RuntimeFrameworkVersion" in configuration.targets
-+						tServer.StartInfo.FileName = Path.Combine("dotnet", "5.0.5", "dotnet");
++						// Dynamically read in the target runtime
++						using (StreamReader r = new StreamReader("tModLoader.runtimeconfig.json")) {
++							string json = r.ReadToEnd();
++							dynamic rConfigArr = JsonConvert.DeserializeObject(json);
++							string rVersion = rConfigArr.runtimeOptions.framework.version;
++							tServer.StartInfo.FileName = Path.Combine("dotnet", rVersion, "dotnet");
++						}
 +					}
  #endif
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {
-@@ -36372,8 +_,8 @@
+@@ -36372,8 +_,7 @@
  						startInfo.Arguments = startInfo.Arguments + " -loadlib " + libPath;
  					}
  
 -					tServer.StartInfo.UseShellExecute = false;
-+					tServer.StartInfo.UseShellExecute = true;
++					tServer.StartInfo.UseShellExecute = showServerConsole;
 -					tServer.StartInfo.CreateNoWindow = true;
-+					tServer.StartInfo.CreateNoWindow = !showServerConsole;
  					if (SocialAPI.Network != null)
  						SocialAPI.Network.LaunchLocalServer(tServer, MenuServerMode);
  					else
