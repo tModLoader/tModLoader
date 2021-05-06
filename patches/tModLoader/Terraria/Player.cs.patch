@@ -1979,7 +1979,7 @@
  
 +					if (tile.type > TileID.Count) {
 +						if (tile.active() && TileID.Sets.Torch[tile.type])
-+							nearbyModTorch.Add(tile.type);
++							NearbyModTorch.Add(tile.type);
 +
 +						continue;
 +					}
@@ -1992,7 +1992,7 @@
  				nearbyTorch[inventory[selectedItem].placeStyle] = true;
  
 +			if (TileLoader.GetTile(inventory[selectedItem].createTile) is ModTile modTile && TileID.Sets.Torch[modTile.Type])
-+				nearbyModTorch.Add(modTile.Type);
++				NearbyModTorch.Add(modTile.Type);
 +
  			float num = 0f;
  			float num2 = 0f;
@@ -2009,7 +2009,7 @@
  			for (int i = 0; i < 22; i++) {
  				nearbyTorch[i] = false;
  			}
-+			nearbyModTorch.Clear();
++			NearbyModTorch.Clear();
  
  			if (torchLuck < 0f)
  				torchLuck = 0f;
@@ -4523,14 +4523,13 @@
  				}
  
  				return playerFileData;
-@@ -38270,7 +_,16 @@
+@@ -38270,7 +_,15 @@
  			return -1;
  		}
  
 -		public Player() {
 +		public Player(bool startupInventory = true) {
 +			ResetDamageClassData();
-+			infoDisplayPage = 0;
 +			buffType = new int[MaxBuffs];
 +			buffTime = new int[MaxBuffs];
 +			buffImmune = new bool[BuffLoader.BuffCount]; // TODO: Move all these patches to field initializers.

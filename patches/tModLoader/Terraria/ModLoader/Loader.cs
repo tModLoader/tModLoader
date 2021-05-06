@@ -62,32 +62,37 @@ namespace Terraria.ModLoader
 	}
 
 	public static class LoaderManager {
-		private static Dictionary<Type, ILoader> dict = new Dictionary<Type, ILoader>();
+		private static readonly Dictionary<Type, ILoader> loadersByType = new Dictionary<Type, ILoader>();
 
 		internal static void AutoLoad() {
-			List<Type> allSubTypes = new List<Type>();
-			foreach (var subtype in Assembly.GetExecutingAssembly().GetTypes()) {
-				if (typeof(ILoader).IsAssignableFrom(subtype) && !subtype.IsAbstract && subtype.IsClass) {
-					dict.Add(subtype, (ILoader)Activator.CreateInstance(subtype));
+			foreach (var type in Assembly.GetExecutingAssembly().GetTypes()) {
+				if (!typeof(ILoader).IsAssignableFrom(type) || type.IsAbstract || !type.IsClass) {
+					continue;
+				}
+
+				var autoload = AutoloadAttribute.GetValue(type);
+
+				if(autoload.NeedsAutoloading) {
+					loadersByType.Add(type, (ILoader)Activator.CreateInstance(type));
 				}
 			}
 		}
 
 		public static T Get<T>() {
-			if (!dict.TryGetValue(typeof(T), out var result))
+			if (!loadersByType.TryGetValue(typeof(T), out var result))
 				return Activator.CreateInstance<T>(); // Return empty instance in case of static Player constructor or similar
 
 			return (T)result;
 		}
 
 		internal static void Unload() {
-			foreach (var loader in dict.Values) {
+			foreach (var loader in loadersByType.Values) {
 				loader.Unload();
 			}
 		}
 
 		internal static void ResizeArrays() {
-			foreach (var loader in dict.Values) {
+			foreach (var loader in loadersByType.Values) {
 				loader.ResizeArrays();
 			}
 		}
