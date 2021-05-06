@@ -160,6 +160,22 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
+@@ -2570,6 +_,15 @@
+ 		public static Task serverLoadWorld() => Task.Factory.StartNew(serverLoadWorldCallBack);
+ 
+ 		public static void clearWorld() {
++			Main.mapTargetX = Math.Max(Main.maxTilesX / 1680, 5);
++			Main.mapTargetY = Math.Max(Main.maxTilesY / 1200, 2);
++			Main.instance.mapTarget = new Microsoft.Xna.Framework.Graphics.RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
++			Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
++			Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
++
++			Main.Map = new WorldMap(Main.maxTilesX, Main.maxTilesY);
++			Main.tile = new Tile[Main.maxTilesX, Main.maxTilesY];
++
+ 			Main.ladyBugRainBoost = 0;
+ 			Main.getGoodWorld = false;
+ 			Main.drunkWorld = false;
 @@ -5473,17 +_,18 @@
  			Main.lockMenuBGChange = true;
  			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
