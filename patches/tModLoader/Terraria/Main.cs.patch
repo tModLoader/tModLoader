@@ -3920,7 +3920,7 @@
  		public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue) {
  			chatMonitor.NewText(newText, R, G, B);
  			SoundEngine.PlaySound(12);
-@@ -49836,6 +_,11 @@
+@@ -49840,6 +_,11 @@
  		}
  
  		public static BestiaryUnlockProgressReport GetBestiaryProgressReport() {
@@ -3932,7 +3932,7 @@
  			float num = 0f;
  			int num2 = 0;
  			List<BestiaryEntry> entries = BestiaryDB.Entries;
-@@ -49867,7 +_,7 @@
+@@ -49871,7 +_,7 @@
  					num++;
  			}
  
@@ -3941,7 +3941,7 @@
  				townNPCCanSpawn[j] = false;
  			}
  
-@@ -49998,6 +_,7 @@
+@@ -50002,6 +_,7 @@
  					if (npc[k].type == 663)
  						num31++;
  
@@ -3949,7 +3949,7 @@
  					num32++;
  				}
  			}
-@@ -50021,6 +_,7 @@
+@@ -50025,6 +_,7 @@
  						continue;
  
  					if (num33 < 2000000000) {
@@ -3957,7 +3957,7 @@
  						if (player[l].inventory[m].type == 71)
  							num33 += player[l].inventory[m].stack;
  
-@@ -50246,6 +_,9 @@
+@@ -50250,6 +_,9 @@
  				num37 = 663;
  
  			WorldGen.prioritizedTownNPCType = num37;
@@ -3967,7 +3967,7 @@
  		}
  
  		public static int DamageVar(float dmg, float luck = 0f) {
-@@ -50400,7 +_,9 @@
+@@ -50404,7 +_,9 @@
  					width = (int)(num2 * (float)height);
  				}
  
@@ -3978,7 +3978,7 @@
  				if (!graphics.IsFullScreen) {
  					num3 = Math.Max(graphics.PreferredBackBufferWidth, graphics.GraphicsDevice.Viewport.Width);
  					num4 = Math.Max(graphics.PreferredBackBufferHeight, graphics.GraphicsDevice.Viewport.Height);
-@@ -50454,6 +_,7 @@
+@@ -50458,6 +_,7 @@
  				graphics.ToggleFullScreen();
  			}
  
@@ -3986,7 +3986,7 @@
  			if (width != num3 || height != num4 || flag2) {
  				mapTime = 0;
  				if (gamePaused)
-@@ -50463,7 +_,9 @@
+@@ -50467,7 +_,9 @@
  				screenHeight = height;
  				graphics.PreferredBackBufferWidth = screenWidth;
  				graphics.PreferredBackBufferHeight = screenHeight;
