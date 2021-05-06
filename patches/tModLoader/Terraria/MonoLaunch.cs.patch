@@ -1,11 +1,12 @@
 --- src/Terraria/Terraria/MonoLaunch.cs
 +++ src/tModLoader/Terraria/MonoLaunch.cs
-@@ -5,11 +_,13 @@
+@@ -5,11 +_,14 @@
  using System.Linq;
  using System.Reflection;
  using System.Runtime.InteropServices;
 +using System.Runtime.Loader;
  using Terraria;
++using Terraria.ModLoader;
  
  internal static class MonoLaunch
  {
@@ -14,7 +15,7 @@
  		// FNA is requested by both Terraria and ReLogic.dll
  		var loaded = new Dictionary<string, Assembly>();
  
-@@ -32,12 +_,18 @@
+@@ -32,24 +_,30 @@
  				return assembly;
  			}
  		};
@@ -34,3 +35,18 @@
  		try {
  			if (assemblies.TryGetValue(name, out var handle)) {
  				return handle;
+ 			}
+-			Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
++			Logging.tML.Debug($"Native Resolve: {assembly.FullName} -> {name}");
+ 
+ 			var dir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", getNativeDir(name));
+ 			var files = Directory.GetFiles(dir, $"*{name}*", SearchOption.AllDirectories);
+ 			var match = files.FirstOrDefault();
+-			Console.WriteLine(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
++			Logging.tML.Debug(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
+ 			if (match != null && NativeLibrary.TryLoad(match, out handle)) {
+-				Console.WriteLine("\tsuccess");
++				Logging.tML.Debug("\tsuccess");
+ 				return assemblies[name] = handle;
+ 			}
+ 			return assemblies[name] = IntPtr.Zero;

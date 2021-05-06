@@ -1,25 +1,27 @@
 #!/bin/sh
 script_path=$(readlink -f "$0")
 script_dir=$(dirname "$script_path")
+launch_args=""
 cd "$script_dir"
 
-. InstallNetFramework.sh
+./InstallNetFramework.sh
 clear
 
 read -p "Use Steam Server (y)/(n) " steam
 
-if [ ! $steam == "y" ]; then
+if [ $steam == "y" ]; then
+	launch_args="$launch_args -steam"
+	
 	clear
-	NetFramework\dotnet\5.0.0\dotnet tModLoaderServer.dll -server -config serverconfig.txt
-	exit
+	read -p "Select Lobby Type (f)riends/(p)rivate " lobby
+	
+	if [ $lobby == "f" ]; then 
+		launch_args="$launch_args -lobby friends"
+	else
+		launch_args="$launch_args -lobby private"
+	fi
+	
 fi
 
-read -p "Select Lobby Type (f)riends/(p)rivate " lobby
 clear
-
-if [ $lobby == "f" ]; then 
-	NetFramework\dotnet\5.0.0\dotnet tModLoaderServer.dll -server -steam -lobby friends -config serverconfig.txt
-	exit
-fi
-
-NetFramework\dotnet\5.0.0\dotnet tModLoaderServer.dll -server -steam -lobby private -config serverconfig.txt
+./dotnet/5.0.5/dotnet tModLoader.dll -server $launch_args -config serverconfig.txt

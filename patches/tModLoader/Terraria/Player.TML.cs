@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.ModLoader;
@@ -98,5 +99,39 @@ namespace Terraria
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary>
 		public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
+
+
+		/// <summary>
+		/// Container for current SceneEffect client properties such as: Backgrounds, music, and water styling
+		/// </summary>
+		public SceneEffectLoader.SceneEffectInstance currentSceneEffect = new SceneEffectLoader.SceneEffectInstance();
+
+		/// <summary>
+		/// Stores whether or not the player is in a modbiome using boolean bits.
+		/// </summary>
+		internal BitArray modBiomeFlags = new BitArray(0);
+
+		/// <summary> 
+		/// Determines if the player is in specified ModBiome. This will throw exceptions on failure. 
+		/// </summary>
+		/// <exception cref="IndexOutOfRangeException"/>
+		/// <exception cref="NullReferenceException"/>
+		public bool InModBiome(ModBiome baseInstance)=> modBiomeFlags[baseInstance.ZeroIndexType];
+
+		/// <summary>
+		/// The zone property storing if the player is in the purity/forest biome. Updated in <see cref="UpdateBiomes"/>
+		/// </summary>
+		public bool ZonePurity { get; set; } = false;
+
+		/// <summary>
+		/// Calculates whether or not the player is in the purity/forest biome.
+		/// </summary>
+		public bool InZonePurity() {
+			bool one = ZoneBeach || ZoneCorrupt || ZoneCrimson || ZoneDesert || ZoneDungeon || ZoneGemCave;
+			bool two = ZoneGlowshroom || ZoneGranite || ZoneGraveyard || ZoneHallow || ZoneHive || ZoneJungle;
+			bool three = ZoneLihzhardTemple || ZoneMarble || ZoneMeteor || ZoneSnow || ZoneUnderworldHeight;
+			bool four = modBiomeFlags.Cast<bool>().Contains(true);
+			return !(one || two || three || four);
+		}
 	}
 }

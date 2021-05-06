@@ -138,7 +138,15 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
-@@ -2050,12 +_,20 @@
+@@ -2034,6 +_,7 @@
+ 		public void SetTalkNPC(int npcIndex, bool fromNet = false) {
+ 			talkNPC = npcIndex;
+ 			if (Main.netMode != 1 && npcIndex >= 0 && npcIndex < 200)
++				// Gut feeling there is a to do on the above conditional
+ 				Main.BestiaryTracker.Chats.RegisterChatStartWith(Main.npc[npcIndex]);
+ 
+ 			if (talkNPC == -1)
+@@ -2050,12 +_,21 @@
  			itemTimeMax = frames;
  		}
  
@@ -147,7 +155,7 @@
 +		public void ApplyItemTime(Item sItem, bool? callUseItem = null) {
 +			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
 +				return;
-+
++			
 +			int totalUseTime = PlayerHooks.TotalUseTime(sItem.useTime, this, sItem);
 +			SetItemTime(totalUseTime);
  		}
@@ -157,13 +165,14 @@
 +		public void ApplyItemTime(Item sItem, float multiplier, bool? callUseItem = null) {
 +			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
 +				return;
-+
++			
 +			int totalUseTime = PlayerHooks.TotalUseTime((int)(sItem.useTime * multiplier), this, sItem);
++
 +			SetItemTime(totalUseTime);
  		}
  
  		public void SetDummyItemTime(int frames) {
-@@ -2064,39 +_,40 @@
+@@ -2064,39 +_,41 @@
  			itemTimeMax = frames + 1;
  		}
  
@@ -178,8 +187,9 @@
 -			reuseDelay = itemReuseDelay;
 +		public void ApplyItemAnimation(Item sItem, float multiplier, int? itemReuseDelay = null) {
 +			ItemLoader.UseAnimation(sItem, this);
-+
++			
 +			SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * multiplier, this, sItem));
++
 +			reuseDelay = (int)((itemReuseDelay ?? sItem.reuseDelay) / PlayerHooks.TotalUseTimeMultiplier(this, sItem));
  		}
  
@@ -1832,23 +1842,64 @@
  		}
  
  		public void UpdateSocialShadow() {
+@@ -11390,6 +_,11 @@
+ 		}
+ 
+ 		public int GetPrimaryBiome() {
++			int modID = LoaderManager.Get<BiomeLoader>().GetPrimaryModBiome(this, out var priority);
++
++			if (priority >= SceneEffectPriority.BiomeHigh)
++				return modID;
++			
+ 			if (ZoneDungeon)
+ 				return 8;
+ 
+@@ -11399,6 +_,9 @@
+ 			if (ZoneCrimson)
+ 				return 10;
+ 
++			if (priority >= SceneEffectPriority.BiomeMedium)
++				return modID;
++
+ 			if (ZoneGlowshroom)
+ 				return 7;
+ 
+@@ -11411,6 +_,9 @@
+ 			if (ZoneSnow)
+ 				return 2;
+ 
++			if (priority >= SceneEffectPriority.BiomeLow)
++				return modID;
++
+ 			if (ZoneBeach)
+ 				return 5;
+ 
 @@ -11553,6 +_,8 @@
  			bool flag6 = ZoneRain && ZoneSnow;
  			bool flag7 = point.Y > Main.maxTilesY - 320;
  			bool flag8 = ZoneOverworldHeight && (point.X < 380 || point.X > Main.maxTilesX - 380);
 +			// TODO, are these flags a problem?
-+			PlayerHooks.UpdateBiomes(this);
++			LoaderManager.Get<BiomeLoader>().UpdateBiomes(this);
  			ManageSpecialBiomeVisuals("Stardust", ZoneTowerStardust, value4 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Nebula", ZoneTowerNebula, value3 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Vortex", ZoneTowerVortex, value2 - new Vector2(0f, 10f));
-@@ -11691,6 +_,7 @@
+@@ -11691,6 +_,8 @@
  				}
  			}
  
-+			PlayerHooks.UpdateBiomeVisuals(this);
++			ZonePurity = InZonePurity();
++			LoaderManager.Get<BiomeLoader>().PostUpdateBiome(this);
  			if (!dead) {
  				Point point2 = base.Center.ToTileCoordinates();
  				if (WorldGen.InWorld(point2.X, point2.Y, 1)) {
+@@ -11721,6 +_,7 @@
+ 			else {
+ 				_funkytownAchievementCheckCooldown = 100;
+ 			}
++			LoaderManager.Get<SceneEffectLoader>().UpdateSceneEffect(this);
+ 		}
+ 
+ 		public void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = default(Vector2)) {
 @@ -11916,8 +_,9 @@
  			hasGingerBeard = false;
  			hasRainbowCursor = false;
@@ -4246,7 +4297,7 @@
  			player.zone4 = zone4;
  			player.voidVaultInfo = voidVaultInfo;
  			player.luck = luck;
-+			PlayerHooks.CopyCustomBiomesTo(this, player);
++			BiomeLoader.CopyCustomBiomesTo(this, player);
  			player.extraAccessory = extraAccessory;
  			player.MinionRestTargetPoint = MinionRestTargetPoint;
  			player.MinionAttackTargetNPC = MinionAttackTargetNPC;
@@ -4472,7 +4523,7 @@
  				}
  
  				return playerFileData;
-@@ -38270,7 +_,15 @@
+@@ -38270,7 +_,16 @@
  			return -1;
  		}
  
@@ -4486,6 +4537,7 @@
 +			ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount];
 +			npcTypeNoAggro = new bool[NPCLoader.NPCCount];
 +			PlayerHooks.SetupPlayer(this);
++			LoaderManager.Get<BiomeLoader>().SetupPlayer(this);
  			width = 20;
  			height = 42;
  			name = string.Empty;

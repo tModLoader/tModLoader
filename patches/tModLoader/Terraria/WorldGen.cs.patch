@@ -384,6 +384,25 @@
  				flag4 = true;
  
  			if (!flag3) {
+@@ -16281,6 +_,7 @@
+ 						if (TileID.Sets.CommonSapling[Main.tile[i, j].type])
+ 							break;
+ 
++						/*
+ 						switch (Main.tile[i, j].type) {
+ 							case 3:
+ 							case 24:
+@@ -16304,6 +_,10 @@
+ 							case 530:
+ 								continue;
+ 						}
++						*/
++
++						if (TileID.Sets.IgnoredByGrowingSaplings[Main.tile[i, j].type])
++							continue;
+ 
+ 						return false;
+ 					}
 @@ -16321,6 +_,7 @@
  		}
  

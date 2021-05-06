@@ -72,6 +72,10 @@ namespace Terraria.ModLoader.IO
 			protected abstract void ReadData(Tile tile, TEntry entry, BinaryReader reader);
 
 			public void LoadData(TagCompound tag, TEntry[] savedEntryLookup) {
+				if (!tag.ContainsKey(dataKey)) {
+					return;
+				}
+
 				using var reader = new BinaryReader(new MemoryStream(tag.GetByteArray(dataKey)));
 				var builder = new PosData<ushort>.OrderedSparseLookupBuilder();
 
