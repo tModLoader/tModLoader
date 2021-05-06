@@ -3488,7 +3488,7 @@
  			if (itemTime > 0) {
  				itemTime--;
  				if (ItemTimeIsZero && whoAmI == Main.myPlayer) {
-@@ -29837,6 +_,9 @@
+@@ -29837,11 +_,16 @@
  				}
  			}
  
@@ -3498,6 +3498,14 @@
  			if (!JustDroppedAnItem) {
  				ItemCheck_EmitHeldItemLight(item);
  				ItemCheck_EmitFoodParticles(item);
+ 				ItemCheck_EmitDrinkParticles(item);
+-				if (whoAmI == Main.myPlayer) {
++
++				// TML attempts to make ApplyItemTime calls run on remote players, so this check is removed.
++				if (whoAmI == Main.myPlayer || true) {
+ 					bool flag4 = true;
+ 					int type2 = item.type;
+ 					if ((type2 == 65 || type2 == 676 || type2 == 723 || type2 == 724 || type2 == 757 || type2 == 674 || type2 == 675 || type2 == 989 || type2 == 1226 || type2 == 1227) && itemAnimation != itemAnimationMax - 1)
 @@ -29866,7 +_,7 @@
  
  					ItemCheck_TurretAltFeatureUse(item, flag4);
@@ -3830,6 +3838,30 @@
  			int projToShoot = sItem.shoot;
  			float speed = sItem.shootSpeed;
  			int damage = sItem.damage;
+@@ -32517,7 +_,9 @@
+ 			bool canShoot = false;
+ 			int Damage = weaponDamage;
+ 			float KnockBack = sItem.knockBack;
++
++			// WhoAmI check added by TML.
+-			if (projToShoot == 13 || projToShoot == 32 || projToShoot == 315 || (projToShoot >= 230 && projToShoot <= 235) || projToShoot == 331) {
++			if (whoAmI == Main.myPlayer && (projToShoot == 13 || projToShoot == 32 || projToShoot == 315 || (projToShoot >= 230 && projToShoot <= 235) || projToShoot == 331)) {
+ 				grappling[0] = -1;
+ 				grapCount = 0;
+ 				for (int j = 0; j < 1000; j++) {
+@@ -32587,6 +_,12 @@
+ 			}
+ 
+ 			if (canShoot) {
++				// Added by TML.
++				if (whoAmI != Main.myPlayer) {
++					ApplyItemTime(sItem);
++					return;
++				}
++
+ 				KnockBack = GetWeaponKnockback(sItem, KnockBack);
+ 				IProjectileSource projectileSource_Item_WithPotentialAmmo = GetProjectileSource_Item_WithPotentialAmmo(sItem, usedAmmoItemId);
+ 				if (projToShoot == 228)
 @@ -32719,6 +_,13 @@
  					num3 = vector4.Y;
  				}
@@ -3865,6 +3897,41 @@
  
  				if (projToShoot == 76) {
  					projToShoot += Main.rand.Next(3);
+@@ -33938,6 +_,10 @@
+ 				}
+ 			}
+ 			else if (sItem.useStyle == 5 || sItem.useStyle == 13) {
++				// Added by TML.
++				if (whoAmI != Main.myPlayer)
++					return;
++
+ 				itemRotation = 0f;
+ 				NetMessage.SendData(41, -1, -1, null, whoAmI);
+ 			}
+@@ -34139,6 +_,11 @@
+ 		private void ItemCheck_MinionAltFeatureUse(Item sItem, bool cShoot) {
+ 			if (sItem.shoot > 0 && ProjectileID.Sets.MinionTargettingFeature[sItem.shoot] && altFunctionUse == 2 && cShoot && ItemTimeIsZero) {
+ 				ApplyItemTime(sItem);
++
++				// Added by TML.
++				if (whoAmI != Main.myPlayer)
++					return;
++
+ 				MinionNPCTargetAim(doNotDisableIfTheTargetIsTheSame: false);
+ 			}
+ 		}
+@@ -34148,6 +_,11 @@
+ 				return;
+ 
+ 			ApplyItemTime(sItem);
++
++			// Added by TML.
++			if(whoAmI != Main.myPlayer)
++				return;
++
+ 			for (int i = 0; i < 1000; i++) {
+ 				Projectile projectile = Main.projectile[i];
+ 				if (projectile.active && projectile.owner == Main.myPlayer && ProjectileID.Sets.TurretFeature[projectile.type])
 @@ -34460,6 +_,10 @@
  		}
  
@@ -3923,18 +3990,33 @@
  			if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
  				if (statMana >= num) {
  					if (!flag2)
-@@ -36023,7 +_,10 @@
+@@ -36021,17 +_,23 @@
+ 		}
+ 
  		private void ItemCheck_HandleMPItemAnimation(Item sItem) {
++			//return;
++
  			if (sItem.autoReuse && !noItems) {
  				releaseUseItem = true;
 -				if (itemAnimation == 1 && sItem.stack > 0) {
+-					if (sItem.shoot > 0 && whoAmI != Main.myPlayer && controlUseItem && sItem.useStyle == 5 && sItem.reuseDelay == 0) {
 +				//The following code line has been changed to fix a half of the vanilla item use/anim desync bug.
 +				//In this exact case, itemAnim, which resets at 1, would desync from itemTime at the end of every tick, which resets at 0.
 +				//- Mirsario
 +				if (itemAnimation == 0 && sItem.stack > 0) { //if (itemAnimation == 1 && sItem.stack > 0) {
- 					if (sItem.shoot > 0 && whoAmI != Main.myPlayer && controlUseItem && sItem.useStyle == 5 && sItem.reuseDelay == 0) {
++					//itemAnimation = 0;
++					/*if (sItem.shoot > 0 && whoAmI != Main.myPlayer && controlUseItem && sItem.useStyle == 5 && sItem.reuseDelay == 0) {
  						ApplyItemAnimation(sItem);
  						if (sItem.UseSound != null)
+ 							SoundEngine.PlaySound(sItem.UseSound, base.Center);
+ 					}
+ 					else {
+ 						itemAnimation = 0;
+-					}
++					}*/
+ 				}
+ 			}
+ 
 @@ -36053,6 +_,7 @@
  			if (!mount.Active)
  				return;

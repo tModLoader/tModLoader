@@ -328,6 +328,14 @@
  							NetMessage.TrySendData(3, whoAmI);
  						}
  						else {
+@@ -1823,6 +_,7 @@
+ 						Player player9 = Main.player[num104];
+ 						float itemRotation = reader.ReadSingle();
+ 						int itemAnimation = reader.ReadInt16();
++						break;
+ 						player9.itemRotation = itemRotation;
+ 						player9.itemAnimation = itemAnimation;
+ 						player9.channel = player9.inventory[player9.selectedItem].channel;
 @@ -1972,7 +_,7 @@
  							break;
  
