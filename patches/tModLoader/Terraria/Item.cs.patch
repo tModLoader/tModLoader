@@ -30,6 +30,28 @@
  		public bool isAShopItem;
  		public short hairDye = -1;
  		public byte paint;
+@@ -78,9 +_,18 @@
+ 		public int useTime;
+ 		public int stack;
+ 		public int maxStack;
+-		public int pick;
+-		public int axe;
+-		public int hammer;
++		internal int pick {
++			get => ToolPower[ToolType.Pickaxe];
++			set => ToolPower[ToolType.Pickaxe] = value;
++		}
++		internal int axe {
++			get => ToolPower[ToolType.Axe];
++			set => ToolPower[ToolType.Axe] = value;
++		}
++		internal int hammer {
++			get => ToolPower[ToolType.HammerBlock];
++			set => ToolPower[ToolType.HammerBlock] = value;
++		}
+ 		public int tileBoost;
+ 		public int createTile = -1;
+ 		public int createWall = -1;
 @@ -147,10 +_,42 @@
  		public int netID;
  		public int crit;
@@ -340,6 +362,14 @@
  		}
  
  		public bool FitsAmmoSlot() {
+@@ -41928,6 +_,7 @@
+ 					rare = 1;
+ 					value = sellPrice(0, 0, 10);
+ 					melee = true;
++					ToolPower[ToolType.Shovel] = 30;
+ 					break;
+ 				case 4712:
+ 					DefaultToPlacableTile((ushort)467, 12);
 @@ -44090,7 +_,7 @@
  			return false;
  		}
@@ -589,13 +619,14 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -44902,14 +_,19 @@
+@@ -44902,14 +_,20 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
 +			ModItem = null;
 +			globalItems = new Instanced<GlobalItem>[0];
 +			DamageType = DamageClass.Generic;
++			ToolPower = new ToolBehavior();
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
  			DD2Summon = false;
@@ -622,6 +653,30 @@
  			placeStyle = 0;
  			buffTime = 0;
  			buffType = 0;
+@@ -44955,7 +_,7 @@
+ 			useAmmo = AmmoID.None;
+ 			autoReuse = false;
+ 			accessory = false;
+-			axe = 0;
++			//axe = 0;
+ 			healMana = 0;
+ 			bodySlot = -1;
+ 			legSlot = -1;
+@@ -44968,12 +_,12 @@
+ 			createWall = -1;
+ 			damage = -1;
+ 			defense = 0;
+-			hammer = 0;
++			//hammer = 0;
+ 			healLife = 0;
+ 			holdStyle = 0;
+ 			knockBack = 0f;
+ 			maxStack = 1;
+-			pick = 0;
++			//pick = 0;
+ 			rare = 0;
+ 			scale = 1f;
+ 			shoot = 0;
 @@ -45004,6 +_,10 @@
  		}
  
@@ -717,7 +772,7 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -46135,8 +_,31 @@
+@@ -46135,8 +_,33 @@
  			}
  		}
  
@@ -726,6 +781,7 @@
 +		public Item Clone() {
 +			Item newItem = (Item)MemberwiseClone();
 +
++			newItem.ToolPower = ToolPower.Clone();
 +			newItem.ModItem = ModItem?.Clone(newItem);
 +			newItem.globalItems = globalItems
 +				.Select(g => new Instanced<GlobalItem>(g.index, g.instance?.Clone(this, newItem)))
@@ -739,6 +795,7 @@
 +		public Item CloneWithModdedDataFrom(Item dataSource) {
 +			Item newItem = (Item)MemberwiseClone();
 +
++			newItem.ToolPower = ToolPower.Clone();
 +			newItem.ModItem = dataSource.ModItem?.Clone(newItem);
 +			newItem.globalItems = globalItems
 +				.Select(g => new Instanced<GlobalItem>(g.index, g.instance?.Clone(this, newItem)))

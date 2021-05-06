@@ -17,12 +17,6 @@ namespace Terraria.ModLoader
 		/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations. </summary>
 		public int AnimationFrameHeight { get; set; }
 
-		/// <summary> A multiplier describing how much this block resists harvesting. Higher values will make it take longer to harvest. Defaults to 1f. </summary>
-		public float MineResist { get; set; } = 1f;
-
-		/// <summary> The minimum pickaxe power required for pickaxes to mine this block. Defaults to 0. </summary>
-		public int MinPick { get; set; }
-
 		/// <summary> An array of the IDs of tiles that this tile can be considered as when looking for crafting stations. </summary>
 		public int[] AdjTiles { get; set; } = new int[0];
 

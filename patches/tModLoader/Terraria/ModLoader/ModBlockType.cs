@@ -89,6 +89,27 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Whether a tool that has a given ToolType can be used on the tile/wall. Returns null by default (follow vanilla behavior).
+		/// </summary>
+		/// <param name="i"> The x position in tile coordinates. </param>
+		/// <param name="j"> The y position in tile coordinates. </param>
+		/// <param name="item"> The item being used. </param>
+		/// <param name="toolType"> The ToolType being used. </param>
+		public virtual bool? CanUseTool(int i, int j, Item item, ToolType toolType) => null;
+
+		/// <summary>
+		/// Allows you to modify the damage taken by the tile/wall when an item with a specific ToolType is used on it.
+		/// </summary>
+		/// <param name="i"> The x position in tile coordinates. </param>
+		/// <param name="j"> The y position in tile coordinates. </param>
+		/// <param name="item"> The item being used. </param>
+		/// <param name="toolType"> The ToolType being used. </param>
+		/// <param name="minePower"> The damage the tile/wall will take, before any modifiers are applied. </param>
+		/// <param name="powerMod"> The modifier that will be applied to the damage. Multiplying it by 0 will effectively render the tile/wall unmineable by a tool. </param>
+		public virtual void MineDamage(int i, int j, Item item, ToolType toolType, int minePower, ref StatModifier powerMod) {
+		}
+
+		/// <summary>
 		/// Allows you to draw things behind the tile/wall at the given coordinates. Return false to stop the game from drawing the tile normally. Returns true by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>

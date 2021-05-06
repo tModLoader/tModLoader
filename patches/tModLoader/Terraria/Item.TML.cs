@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -25,6 +26,16 @@ namespace Terraria
 			get => _damageClass;
 			set => _damageClass = value ?? throw new ArgumentException("DamageType cannot be null");
 		}
+
+		/// <summary>
+		/// Defines how this item behaves when used as a tool, as well as the tool power it has for each ToolType.
+		/// </summary>
+		public ToolBehavior ToolPower { get; private set;} = new ToolBehavior();
+
+		/// <summary>
+		/// Whether this item has any ToolTypes as part of its behavior, and is therefore a tool.
+		/// </summary>
+		public bool IsTool => ToolPower.ToolCount > 0;
 
 		/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>

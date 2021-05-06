@@ -3227,6 +3227,23 @@
  					PlaceThing_Tiles_BlockPlacementIfOverPlayers(ref canPlace, ref objectData);
  					PlaceThing_Tiles_BlockPlacementForRepeatedPigronatas(ref canPlace, ref objectData);
  					PlaceThing_Tiles_BlockPlacementForRepeatedPumpkins(ref canPlace, ref objectData);
+@@ -27766,14 +_,14 @@
+ 				TileObject.objectPreview.Reset();
+ 
+ 			if (controlUseItem && canUse && Main.tile[tileTargetX, tileTargetY].active() && itemAnimation > 0 && ItemTimeIsZero && flag) {
+-				Item bestPickaxe = GetBestPickaxe();
++				Item bestPickaxe = GetBestPickaxe(tileTargetX, tileTargetY);
+ 				if (bestPickaxe == null)
+ 					return false;
+ 
+ 				Tile tile = Main.tile[tileTargetX, tileTargetY];
+ 				_ = tile.type;
+ 				int num = hitReplace.HitObject(tileTargetX, tileTargetY, 1);
+-				int pickaxeDamage = GetPickaxeDamage(tileTargetX, tileTargetY, bestPickaxe.pick, num, tile);
++				int pickaxeDamage = GetPickaxeDamage(tileTargetX, tileTargetY, bestPickaxe.pick, num, tile, bestPickaxe);
+ 				if (pickaxeDamage == 0)
+ 					return false;
+ 
 @@ -27782,7 +_,7 @@
  
  				if (0 == 0) {
@@ -3236,6 +3253,33 @@
  						for (int i = 0; i < num2; i++) {
  							WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
  						}
+@@ -27876,7 +_,7 @@
+ 			bool flag = TileID.Sets.Falling[tileTypeBeingPlaced];
+ 			bool flag2 = TileID.Sets.Falling[tileTypeCurrentlyPlaced] && !flag;
+ 			if (flag2) {
+-				Item bestPickaxe = GetBestPickaxe();
++				Item bestPickaxe = GetBestPickaxe(tileTargetX, tileTargetY);
+ 				if (bestPickaxe != null && bestPickaxe.pick >= 110)
+ 					flag2 = false;
+ 			}
+@@ -27899,10 +_,15 @@
+ 			return true;
+ 		}
+ 
+-		private Item GetBestPickaxe() {
++		//Added x and y parameters and made public
++		//All calls to this method were in contexts with tile coordinates available, some of which were not tileTargetX and tileTargetY.
++		//This was done to allow CombinedHooks.CanUseTool to be called from this method.
++		//-DarkLight
++		public Item GetBestPickaxe(int x, int y) {
+ 			Item item = null;
++			Tile tile = Main.tile[x, y];
+ 			for (int i = 0; i < 50; i++) {
+-				if (inventory[i].stack > 0 && inventory[i].pick > 0 && (item == null || inventory[i].pick > item.pick))
++				if (inventory[i].stack > 0 && inventory[i].pick > 0 && (item == null || inventory[i].pick > item.pick) && CombinedHooks.CanUseTool(this, inventory[i], ToolType.Pickaxe, tile, x, y) != false)
+ 					item = inventory[i];
+ 			}
+ 
 @@ -27952,6 +_,7 @@
  				PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches);
  				if (PlayerInput.UsingGamepad && ItemID.Sets.SingleUseInGamepad[inventory[selectedItem].type] && Main.myPlayer == whoAmI && !Main.SmartCursorEnabled)
@@ -3716,28 +3760,249 @@
  			if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
  				int num = -1;
  				float x = itemRectangle.X + Main.rand.Next(itemRectangle.Width);
-@@ -31571,7 +_,7 @@
- 			if (Main.tileHammer[tile.type]) {
+@@ -31492,39 +_,54 @@
+ 
+ 		private void DamageTileWithShovel(Player user, Item item, int x, int y) {
+ 			Tile tileSafely = Framing.GetTileSafely(x, y);
+-			if (TileID.Sets.CanBeDugByShovel[tileSafely.type]) {
+-				int pickPower = 30;
++			if (CombinedHooks.CanUseTool(this, item, ToolType.Shovel, tileSafely, x, y).GetValueOrDefault(TileID.Sets.CanBeDugByShovel[tileSafely.type])) {
++				int pickPower = item.ToolPower[ToolType.Shovel]; //Gravedigger's Shovel (ID 4711) toolpower (30) now set in Item.SetDefaults
+ 				if (tileSafely.active() && TileID.Sets.Conversion.Grass[tileSafely.type])
+-					PickTile(x, y, 100);
++					PickTile(x, y, 100, item);
+ 
+-				PickTile(x, y, pickPower);
++				PickTile(x, y, pickPower, item);
+ 			}
+ 		}
+ 
+ 		private void ItemCheck_UseMiningTools(Item sItem) {
++			if (!sItem.IsTool)
++				return;
++			hitTile.PauseDecay();
++			ItemCheck_UseMiningTools_Inner(sItem);
++			hitTile.ContinueDecay();
++		}
++		private void ItemCheck_UseMiningTools_Inner(Item sItem) {
+ 			SpecialToolUsageSettings specialToolUsageSettings = default(SpecialToolUsageSettings);
+-			if (sItem.type == 4711) {
++			if (sItem.ToolPower[ToolType.Shovel] > 0 /*sItem.type == 4711*/) {
+ 				SpecialToolUsageSettings specialToolUsageSettings2 = default(SpecialToolUsageSettings);
+ 				specialToolUsageSettings2.IsAValidTool = true;
+ 				specialToolUsageSettings2.UsageAction = UseShovel;
+ 				specialToolUsageSettings = specialToolUsageSettings2;
+ 			}
+-
++			/* This check is a less complete version of the `sItem.IsTool` check above.
+ 			if (sItem.pick <= 0 && sItem.axe <= 0 && sItem.hammer <= 0 && !specialToolUsageSettings.IsAValidTool)
+-				return;
++				return
++			*/
+ 
+ 			bool flag = IsTargetTileInItemRange(sItem);
+ 			if (noBuilding)
+ 				flag = false;
+ 
++			Tile tileTarget = Main.tile[tileTargetX, tileTargetY];
++			if (flag && toolTime == 0 && itemAnimation > 0 && controlUseItem) {
++				flag = !ToolTypeLoader.TryUseTool(this, sItem, ToolPriority.First, tileTarget, tileTargetX, tileTargetY);
++			}
++
+ 			if (flag && specialToolUsageSettings.UsageCondition != null)
+ 				flag = specialToolUsageSettings.UsageCondition(this, sItem, tileTargetX, tileTargetY);
+ 
++			/* This section is redundant, since the check it does to set poundRelease to false is also done in the place checking for the value of poundRelease later on.
+ 			if (toolTime == 0 && itemAnimation > 0 && controlUseItem) {
+ 				Tile tile = Main.tile[tileTargetX, tileTargetY];
+ 				if (!tile.active() || IsTilePoundable(tile))
+ 					poundRelease = false;
+ 			}
++			Commented out because CombineHooks.CanUseTool would also need to be called here to properly allow overriding the tile slope/half-brick condition. */
+ 
+ 			if (!flag)
+ 				return;
+@@ -31549,8 +_,14 @@
+ 
+ 			if (toolTime == 0 && itemAnimation > 0 && controlUseItem && canHitWalls) {
+ 				ItemCheck_UseMiningTools_TryFindingWallToHammer(out int wX, out int wY);
++				if (ToolTypeLoader.TryUseTool(this, sItem, ToolPriority.PreHitWall, Main.tile[wX, wY], wX, wY))
++					goto Last;
+ 				ItemCheck_UseMiningTools_TryHittingWall(sItem, wX, wY);
++				ToolTypeLoader.TryUseTool(this, sItem, ToolPriority.HitWall, Main.tile[wX, wY], wX, wY);
+ 			}
++			Last:
++			if (toolTime == 0 && itemAnimation > 0 && controlUseItem)
++				ToolTypeLoader.TryUseTool(this, sItem, ToolPriority.Last, tileTarget, tileTargetX, tileTargetY);
+ 		}
+ 
+ 		private void ItemCheck_UseMiningTools_ActuallyUseMiningTool(Item sItem, out bool canHitWalls, int x, int y) {
+@@ -31561,17 +_,26 @@
+ 			if (!tile.active())
+ 				return;
+ 
++			/* This check is equivalent to adding "canHitWalls = false" inside the tool power checks for each tool, which is more convenient
+ 			if ((sItem.pick > 0 && !Main.tileAxe[tile.type] && !Main.tileHammer[tile.type]) || (sItem.axe > 0 && Main.tileAxe[tile.type]) || (sItem.hammer > 0 && Main.tileHammer[tile.type]))
+ 				canHitWalls = false;
++			*/
+ 
+ 			num = hitTile.HitObject(x, y, 1);
+ 			if (Main.tileNoFail[tile.type])
+ 				num2 = 100;
+ 
+-			if (Main.tileHammer[tile.type]) {
++			if (ToolTypeLoader.TryUseTool(this, sItem, ToolPriority.PreMineBlock, tile, x, y)) {
++				canHitWalls = false;
++				goto PostMineBlock;
++			}
++			if (sItem.hammer > 0 && CombinedHooks.CanUseTool(this, sItem, ToolType.HammerBlock, tile, x, y).GetValueOrDefault(Main.tileHammer[tile.type])) {
  				canHitWalls = false;
  				if (sItem.hammer > 0) {
 -					num2 += sItem.hammer;
-+					TileLoader.MineDamage(sItem.hammer, ref num2);
++					//num2 += sItem.hammer;
++					var powerMod = StatModifier.One;
++					ItemLoader.ModifyToolPower(sItem, this, ToolType.HammerBlock, tile, x, y, sItem.hammer, ref powerMod);
++					TileLoader.MineDamage(x, y, tile.type, sItem, ToolType.HammerBlock, sItem.hammer, powerMod, ref num2);
  					if (!WorldGen.CanKillTile(x, y))
  						num2 = 0;
  
-@@ -31601,7 +_,10 @@
+@@ -31582,12 +_,14 @@
+ 
+ 					AchievementsHelper.CurrentlyMining = true;
+ 					if (hitTile.AddDamage(num, num2) >= 100) {
++						ItemLoader.OnDamageTile(sItem, this, ToolType.HammerBlock, tile, x, y, num2, true);
+ 						ClearMiningCacheAt(x, y, 1);
+ 						WorldGen.KillTile(x, y);
+ 						if (Main.netMode == 1)
+ 							NetMessage.SendData(17, -1, -1, null, 0, x, y);
+ 					}
+ 					else {
++						ItemLoader.OnDamageTile(sItem, this, ToolType.HammerBlock, tile, x, y, num2, false);
+ 						WorldGen.KillTile(x, y, fail: true);
+ 						if (Main.netMode == 1)
+ 							NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
+@@ -31599,15 +_,22 @@
+ 					ApplyItemTime(sItem);
+ 					AchievementsHelper.CurrentlyMining = false;
  				}
++				goto PostMineBlock;
  			}
- 			else if (Main.tileAxe[tile.type]) {
+-			else if (Main.tileAxe[tile.type]) {
 -				num2 = ((tile.type != 80) ? (num2 + (int)((float)sItem.axe * 1.2f)) : (num2 + (int)((float)(sItem.axe * 3) * 1.2f)));
-+				if (tile.type == 80)
-+					num2 += (int)(sItem.axe * 3 * 1.2f);
-+				else
-+					TileLoader.MineDamage(sItem.axe, ref num2);
++			if (sItem.axe > 0 && CombinedHooks.CanUseTool(this, sItem, ToolType.Axe, tile, x, y).GetValueOrDefault(!Main.tileHammer[tile.type] && Main.tileAxe[tile.type])) {
++				//num2 = ((tile.type != 80) ? (num2 + (int)((float)sItem.axe * 1.2f)) : (num2 + (int)((float)(sItem.axe * 3) * 1.2f)));
  				if (sItem.axe > 0) {
++					canHitWalls = false;
++					var powerMod = StatModifier.One;
++					powerMod = ((tile.type != 80) ? (powerMod * 1.2f) : (powerMod * 3 * 1.2f));
++					ItemLoader.ModifyToolPower(sItem, this, ToolType.Axe, tile, x, y, sItem.axe, ref powerMod);
++					TileLoader.MineDamage(x, y, tile.type, sItem, ToolType.Axe, sItem.axe, powerMod, ref num2);
  					AchievementsHelper.CurrentlyMining = true;
  					if (!WorldGen.CanKillTile(x, y))
-@@ -31749,7 +_,9 @@
+ 						num2 = 0;
+ 
+ 					if (hitTile.AddDamage(num, num2) >= 100) {
++						ItemLoader.OnDamageTile(sItem, this, ToolType.Axe, tile, x, y, num2, true);
+ 						ClearMiningCacheAt(x, y, 1);
+ 						WorldGen.KillTile(x, y);
+ 						if (Main.netMode == 1)
+@@ -31615,6 +_,7 @@
+ 					}
+ 					else {
+ 						WorldGen.KillTile(x, y, fail: true);
++						ItemLoader.OnDamageTile(sItem, this, ToolType.Axe, tile, x, y, num2, false);
+ 						if (Main.netMode == 1)
+ 							NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
+ 					}
+@@ -31625,15 +_,28 @@
+ 					ApplyItemTime(sItem);
+ 					AchievementsHelper.CurrentlyMining = false;
+ 				}
++				goto PostMineBlock;
+ 			}
+-			else if (sItem.pick > 0) {
++			if (sItem.pick > 0 && CombinedHooks.CanUseTool(this, sItem, ToolType.Pickaxe, tile, x, y).GetValueOrDefault(!Main.tileHammer[tile.type] && !Main.tileAxe[tile.type])) {
+-				PickTile(x, y, sItem.pick);
++				PickTile(x, y, sItem.pick, sItem);
++				canHitWalls = false;
++				goto PostMineBlock;
++			}
++			if (ToolTypeLoader.TryUseTool(this, sItem, ToolPriority.MineBlock, tile, x, y)) {
++				canHitWalls = false;
+ 			}
+ 
++			PostMineBlock:
+ 			if (sItem.pick > 0)
+ 				itemTime = (int)((float)sItem.useTime * pickSpeed);
+ 
++			if (canHitWalls && ToolTypeLoader.TryUseTool(this, sItem, ToolPriority.PreSlopeBlock, tile, x, y)) {
++				canHitWalls = false;
++				return;
++			}
+ 			ItemCheck_UseMiningTools_TryPoundingTile(sItem, num, ref canHitWalls, x, y);
++			if (canHitWalls && ToolTypeLoader.TryUseTool(this, sItem, ToolPriority.SlopeBlock, tile, x, y))
++				canHitWalls = false;
+ 		}
+ 
+ 		private static void ItemCheck_UseMiningTools_TryFindingWallToHammer(out int wX, out int wY) {
+@@ -31695,8 +_,12 @@
+ 		}
+ 
+ 		private void ItemCheck_UseMiningTools_TryHittingWall(Item sItem, int wX, int wY) {
++			Tile tile = Main.tile[wX, wY];
++			bool? canUse = CombinedHooks.CanUseTool(this, sItem, ToolType.HammerWall, tile, wX, wY);
+-			if (Main.tile[wX, wY].wall <= 0 || (Main.tile[wX, wY].active() && wX == tileTargetX && wY == tileTargetY && (Main.tileHammer[Main.tile[wX, wY].type] || poundRelease)) || toolTime != 0 || itemAnimation <= 0 || !controlUseItem || sItem.hammer <= 0)
++			if (canUse == false || Main.tile[wX, wY].wall <= 0 || (Main.tile[wX, wY].active() && wX == tileTargetX && wY == tileTargetY && (Main.tileHammer[Main.tile[wX, wY].type] || poundRelease)) || toolTime != 0 || itemAnimation <= 0 || !controlUseItem || sItem.ToolPower[ToolType.HammerWall] <= 0)
+ 				return;
++			if (canUse == true)
++				goto BreakWall;
+ 
+ 			bool flag = true;
+ 			if (!Main.wallHouse[Main.tile[wX, wY].wall]) {
+@@ -31714,9 +_,15 @@
+ 			if (!flag)
+ 				return;
+ 
++			BreakWall:
+ 			int tileId = hitTile.HitObject(wX, wY, 2);
+-			int num = (int)((float)sItem.hammer * 1.5f);
++			//int num = (int)((float)sItem.hammer * 1.5f);
++			int num = 0;
++			var powerMod = new StatModifier(1, 1.5f);
++			ItemLoader.ModifyToolPower(sItem, this, ToolType.HammerWall, tile, wX, wY, sItem.ToolPower[ToolType.HammerWall], ref powerMod);
++			WallLoader.MineDamage(wX, wY, tile.wall, sItem, ToolType.HammerWall, sItem.ToolPower[ToolType.HammerWall], powerMod, ref num);
+ 			if (hitTile.AddDamage(tileId, num) >= 100) {
++				ItemLoader.OnDamageTile(sItem, this, ToolType.HammerWall, tile, wX, wY, num, true);
+ 				hitTile.Clear(tileId);
+ 				ClearMiningCacheAt(wX, wY, 2);
+ 				WorldGen.KillWall(wX, wY);
+@@ -31724,6 +_,7 @@
+ 					NetMessage.SendData(17, -1, -1, null, 2, wX, wY);
+ 			}
+ 			else {
++				ItemLoader.OnDamageTile(sItem, this, ToolType.HammerWall, tile, wX, wY, num, false);
+ 				WorldGen.KillWall(wX, wY, fail: true);
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(17, -1, -1, null, 2, wX, wY, 1f);
+@@ -31737,19 +_,26 @@
+ 
+ 		private void ItemCheck_UseMiningTools_TryPoundingTile(Item sItem, int tileHitId, ref bool hitWall, int x, int y) {
+ 			Tile tile = Main.tile[x, y];
++			bool? canUse = CombinedHooks.CanUseTool(this, sItem, ToolType.HammerSlope, tile, x, y);
+-			if (sItem.hammer > 0 && tile.active() && (Main.tileSolid[tile.type] || tile.type == 314 || tile.type == 351 || tile.type == 424 || tile.type == 442) && poundRelease) {
++			if (canUse != false && sItem.ToolPower[ToolType.HammerSlope] > 0 && tile.active() && (canUse == true || Main.tileSolid[tile.type] || tile.type == 314 || tile.type == 351 || tile.type == 424 || tile.type == 442) && poundRelease) {
+ 				hitWall = false;
+ 				ApplyItemTime(sItem);
+ 				int damageAmount = 100;
++				var powerMod = StatModifier.One;
++				ItemLoader.ModifyToolPower(sItem, this, ToolType.HammerSlope, tile, x, y, sItem.ToolPower[ToolType.HammerSlope], ref powerMod);
++				TileLoader.MineDamage(x, y, tile.type, sItem, ToolType.HammerSlope, sItem.ToolPower[ToolType.HammerSlope], powerMod, ref damageAmount);
+ 				if (WorldGen.IsLockedDoor(x, y - 1) || WorldGen.IsLockedDoor(x, y + 1))
+ 					damageAmount = 0;
+ 
+ 				if (hitTile.AddDamage(tileHitId, damageAmount) >= 100) {
++					ItemLoader.OnDamageTile(sItem, this, ToolType.HammerSlope, tile, x, y, damageAmount, true);
+ 					ClearMiningCacheAt(x, y, 1);
  					if (!poundRelease)
  						return;
  
@@ -3748,6 +4013,14 @@
  						if (tile.halfBrick()) {
  							WorldGen.PoundTile(x, y);
  							if (Main.netMode == 1)
+@@ -31989,6 +_,7 @@
+ 					poundRelease = false;
+ 				}
+ 				else {
++					ItemLoader.OnDamageTile(sItem, this, ToolType.HammerSlope, tile, x, y, damageAmount, false);
+ 					WorldGen.KillTile(x, y, fail: true, effectOnly: true);
+ 					SoundEngine.PlaySound(0, x * 16, y * 16);
+ 				}
 @@ -32341,7 +_,8 @@
  				}
  
@@ -3879,6 +4152,18 @@
  			if (Main.dedServ)
  				return;
  
+@@ -35351,8 +_,11 @@
+ 		}
+ 
+ 		private void ItemCheck_StartActualUse(Item sItem) {
++			/*
+ 			bool flag = sItem.type == 4711;
+ 			if (sItem.pick > 0 || sItem.axe > 0 || sItem.hammer > 0 || flag)
++			*/
++			if (sItem.IsTool)
+ 				toolTime = 1;
+ 
+ 			if (grappling[0] > -1) {
 @@ -35489,6 +_,9 @@
  		}
  
@@ -4083,6 +4368,34 @@
  				item.stack--;
  				if (item.stack <= 0) {
  					item.active = false;
+@@ -36640,13 +_,17 @@
+ 			hitTile.AddDamage(tileId, pickDamage);
+ 		}
+ 
++		//Added Item parameter.
++		//Old method calls now include the item used in their context.
++		//The Drill Containment Unit mount code, being the only place where there's not an item to reference (as mounts are tied to specific buffs, not the item that summons them), now calls the method with a cached version of the DCU item.
++		//-DarkLight
+-		public void PickTile(int x, int y, int pickPower) {
++		public void PickTile(int x, int y, int pickPower, Item sItem) {
+ 			int num = hitTile.HitObject(x, y, 1);
+ 			Tile tile = Main.tile[x, y];
+ 			if (tile.type == 504)
+ 				return;
+ 
+-			int num2 = GetPickaxeDamage(x, y, pickPower, num, tile);
++			int num2 = GetPickaxeDamage(x, y, pickPower, num, tile, sItem);
+ 			if (!WorldGen.CanKillTile(x, y))
+ 				num2 = 0;
+ 
+@@ -36657,6 +_,7 @@
+ 				num2 = 0;
+ 
+ 			if (hitTile.AddDamage(num, num2) >= 100) {
++				ItemLoader.OnDamageTile(sItem, this, ToolType.Pickaxe, tile, x, y, num2, true);
+ 				AchievementsHelper.CurrentlyMining = true;
+ 				ClearMiningCacheAt(x, y, 1);
+ 				if (Main.netMode == 1 && Main.tileContainer[Main.tile[x, y].type]) {
 @@ -36668,7 +_,7 @@
  						NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
  					}
@@ -4114,42 +4427,71 @@
  						AchievementsHelper.HandleMining();
  
  					if (Main.netMode == 1)
-@@ -36750,7 +_,24 @@
+@@ -36690,6 +_,7 @@
+ 				AchievementsHelper.CurrentlyMining = false;
+ 			}
+ 			else {
++				ItemLoader.OnDamageTile(sItem, this, ToolType.Pickaxe, tile, x, y, num2, false);
+ 				WorldGen.KillTile(x, y, fail: true);
+ 				if (Main.netMode == 1) {
+ 					NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
+@@ -36732,25 +_,34 @@
+ 		}
+ 
+ 		public bool HasEnoughPickPowerToHurtTile(int x, int y) {
+-			Item bestPickaxe = GetBestPickaxe();
++			Item bestPickaxe = GetBestPickaxe(x, y);
+ 			if (bestPickaxe == null)
+ 				return false;
+ 
+ 			Tile tile = Main.tile[x, y];
+ 			_ = tile.type;
+ 			int hitBufferIndex = hitTile.HitObject(x, y, 1);
+-			if (GetPickaxeDamage(x, y, bestPickaxe.pick, hitBufferIndex, tile) == 0)
++			if (GetPickaxeDamage(x, y, bestPickaxe.pick, hitBufferIndex, tile, bestPickaxe) == 0)
+ 				return false;
+ 
+ 			return true;
+ 		}
+ 
++		//Added Item parameter and made public
++		//Done because this method is used by PickTile (which now also has a new Item parameter), as well as other places were there's an item in context.
++		//Also changed all calls to this method.
++		//- DarkLight
+-		private int GetPickaxeDamage(int x, int y, int pickPower, int hitBufferIndex, Tile tileTarget) {
++		public int GetPickaxeDamage(int x, int y, int pickPower, int hitBufferIndex, Tile tileTarget, Item sItem) {
+ 			int num = 0;
  			if (Main.tileNoFail[tileTarget.type])
  				num = 100;
  
 -			num = ((!Main.tileDungeon[tileTarget.type] && tileTarget.type != 25 && tileTarget.type != 58 && tileTarget.type != 117 && tileTarget.type != 203) ? ((tileTarget.type == 85) ? (num + pickPower / 3) : ((tileTarget.type != 48 && tileTarget.type != 232) ? ((tileTarget.type == 226) ? (num + pickPower / 4) : ((tileTarget.type != 107 && tileTarget.type != 221) ? ((tileTarget.type != 108 && tileTarget.type != 222) ? ((tileTarget.type == 111 || tileTarget.type == 223) ? (num + pickPower / 4) : ((tileTarget.type != 211) ? (num + pickPower) : (num + pickPower / 5))) : (num + pickPower / 3)) : (num + pickPower / 2))) : (num + pickPower * 2))) : (num + pickPower / 2));
-+			if(Main.tileDungeon[tileTarget.type] || tileTarget.type == 25 || tileTarget.type == 58 || tileTarget.type == 117 || tileTarget.type == 203)
-+				num += pickPower / 2;
-+			else if(tileTarget.type == 85)
-+				num += pickPower / 3;
-+			else if(tileTarget.type == 48 || tileTarget.type == 232)
-+				num += pickPower * 2;
-+			else if(tileTarget.type == 226)
-+				num += pickPower / 4;
-+			else if(tileTarget.type == 107 || tileTarget.type == 221)
-+				num += pickPower / 2;
-+			else if(tileTarget.type == 108 || tileTarget.type == 222)
-+				num += pickPower / 3;
-+			else if(tileTarget.type == 111 || tileTarget.type == 223)
-+				num += pickPower / 4;
-+			else if(tileTarget.type == 211)
-+				num += pickPower / 5;
-+			else
-+				TileLoader.MineDamage(pickPower, ref num);
++			//num = ((!Main.tileDungeon[tileTarget.type] && tileTarget.type != 25 && tileTarget.type != 58 && tileTarget.type != 117 && tileTarget.type != 203) ? ((tileTarget.type == 85) ? (num + pickPower / 3) : ((tileTarget.type != 48 && tileTarget.type != 232) ? ((tileTarget.type == 226) ? (num + pickPower / 4) : ((tileTarget.type != 107 && tileTarget.type != 221) ? ((tileTarget.type != 108 && tileTarget.type != 222) ? ((tileTarget.type == 111 || tileTarget.type == 223) ? (num + pickPower / 4) : ((tileTarget.type != 211) ? (num + pickPower) : (num + pickPower / 5))) : (num + pickPower / 3)) : (num + pickPower / 2))) : (num + pickPower * 2))) : (num + pickPower / 2));
++			var powerMod = StatModifier.One;
++			powerMod = ((!Main.tileDungeon[tileTarget.type] && tileTarget.type != 25 && tileTarget.type != 58 && tileTarget.type != 117 && tileTarget.type != 203) ? ((tileTarget.type == 85) ? (powerMod / 3) : ((tileTarget.type != 48 && tileTarget.type != 232) ? ((tileTarget.type == 226) ? (powerMod / 4) : ((tileTarget.type != 107 && tileTarget.type != 221) ? ((tileTarget.type != 108 && tileTarget.type != 222) ? ((tileTarget.type == 111 || tileTarget.type == 223) ? (powerMod / 4) : ((tileTarget.type != 211) ? powerMod : (powerMod / 5))) : (powerMod / 3)) : (powerMod / 2))) : (powerMod * 2))) : (powerMod / 2));
++			ItemLoader.ModifyToolPower(sItem, this, ToolType.Pickaxe, tileTarget, x, y, pickPower, ref powerMod);
++			num++; // At this point, num can only be either 0 or 100, so adding 1 allows differentiating it from it being set to 0 in the next section.
++
  			if (tileTarget.type == 211 && pickPower < 200)
  				num = 0;
  
-@@ -36805,6 +_,9 @@
- 			else if (tileTarget.type == 223 && pickPower < 150) {
- 				num = 0;
+@@ -36807,10 +_,16 @@
  			}
-+			else {
-+				TileLoader.PickPowerCheck(tileTarget, pickPower, ref num);
-+			}
  
  			if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
- 				num += pickPower;
+-				num += pickPower;
++				//num += pickPower;
++				powerMod *= 2; //multyplying by 2 as this is the second time pickPower ould have been added to num for the tile types.
+ 
+ 			if (tileTarget.type == 404)
+ 				num += 5;
++			if (num == 0) //Set the power modifier to 0 if num was set to 0 in the pickPower check section, otherwise undo the +1 from before
++				powerMod *= 0;
++			else
++				num--;
++			TileLoader.MineDamage(x, y, tileTarget.type, sItem, ToolType.Pickaxe, pickPower, powerMod, ref num);
+ 
+ 			if (tileTarget.type == 165 || Main.tileRope[tileTarget.type] || tileTarget.type == 199)
+ 				num = 100;
 @@ -37096,24 +_,47 @@
  		}
  

@@ -73,6 +73,9 @@ namespace Terraria.ModLoader
 		private static Action<int, int, int>[] HookRandomUpdate;
 		private delegate bool DelegateTileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak);
 		private static DelegateTileFrame[] HookTileFrame;
+		private static Func<int, int, int, Item, ToolType, bool?>[] HookCanUseTool;
+		private delegate void DelegateMineDamage(int i, int j, int type, Item item, ToolType toolType, int minePower, ref StatModifier powerMod);
+		private static DelegateMineDamage[] HookMineDamage;
 		private static Func<int, int, int, bool>[] HookCanPlace;
 		private static Func<int, int[]>[] HookAdjTiles;
 		private static Action<int, int, int>[] HookRightClick;
@@ -210,6 +213,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookSpecialDraw, globalTiles, g => g.SpecialDraw);
 			ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalTiles, g => g.RandomUpdate);
 			ModLoader.BuildGlobalHook(ref HookTileFrame, globalTiles, g => g.TileFrame);
+			ModLoader.BuildGlobalHook(ref HookCanUseTool, globalTiles, g => g.CanUseTool);
+			ModLoader.BuildGlobalHook(ref HookMineDamage, globalTiles, g => g.MineDamage);
 			ModLoader.BuildGlobalHook(ref HookCanPlace, globalTiles, g => g.CanPlace);
 			ModLoader.BuildGlobalHook(ref HookAdjTiles, globalTiles, g => g.AdjTiles);
 			ModLoader.BuildGlobalHook(ref HookRightClick, globalTiles, g => g.RightClick);
@@ -661,22 +666,35 @@ namespace Terraria.ModLoader
 
 			return flag;
 		}
+		public static bool? CanUseTool(int i, int j, int type, Item item, ToolType toolType) {
+			bool? canUse = null;
+			foreach (var hook in HookCanUseTool) {
+				switch (hook(i, j, type, item, toolType)) {
+					case null:
+						continue;
+					case true:
+						canUse = true;
+						continue;
+					case false:
+						return false;
+				}
+			}
+
+			return canUse ?? GetTile(type)?.CanUseTool(i, j, item, toolType);
+		}
 		//in Terraria.Player.ItemCheck in if statements for mining
 		//  replace num222 += item.hammer; with TileLoader.MineDamage(item.hammer, ref num222);
 		//  replace num222 += item.axe; with TileLoader.MineDamage(item.axe, ref num222);
 		//in Terraria.Player.PickTile replace num += pickPower; with TileLoader.MineDamage(pickPower, ref num);
-		public static void MineDamage(int minePower, ref int damage) {
-			Tile target = Main.tile[Player.tileTargetX, Player.tileTargetY];
-			ModTile modTile = GetTile(target.type);
-			damage += modTile != null ? (int)(1.2f * minePower / modTile.MineResist) : (int)(1.2f * minePower);
-		}
-		//in Terraria.Player.ItemCheck at end of else if chain setting num to 0 add
-		//  else { TileLoader.PickPowerCheck(tile, pickPower, ref num); }
-		public static void PickPowerCheck(Tile target, int pickPower, ref int damage) {
-			ModTile modTile = GetTile(target.type);
-			if (modTile != null && pickPower < modTile.MinPick) {
-				damage = 0;
+		public static void MineDamage(int i, int j, int type, Item item, ToolType toolType, int minePower, StatModifier powerMod, ref int damage) {
+			GetTile(type)?.MineDamage(i, j, item, toolType, minePower, ref powerMod);
+			foreach (var hook in HookMineDamage) {
+				hook(i, j, type, item, toolType, minePower, ref powerMod);
 			}
+			if ((float)powerMod <= 0)
+				damage = 0;
+			else
+				damage += Math.Max((int)(minePower * (float)powerMod), 1);
 		}
 		//in Terraria.Player.PlaceThing after tileObject is initalized add else to if statement and before add
 		//  if(!TileLoader.CanPlace(Player.tileTargetX, Player.tileTargetY)) { }

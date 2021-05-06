@@ -28,8 +28,8 @@ namespace ExampleMod.Content.Items.Tools
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true; // Automatically re-swing/re-use this item after its swinging animation is over.
 
-			Item.axe = 30; //How much axe power the weapon has, note that the axe power displayed in-game is this value multiplied by 5
-			Item.hammer = 100; //How much hammer power the weapon has
+			Item.ToolPower[ToolType.Axe] = 30; //How much axe power the tool has, note that the axe power displayed in-game is this value multiplied by 5
+			Item.ToolPower[ToolType.HammerBlock] = 100; //How much hammer power the tool has. Note that this will also add the "HammerSlope" and "HammerWall" ToolTypes to the tool, with the same tool power.
 		}
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {

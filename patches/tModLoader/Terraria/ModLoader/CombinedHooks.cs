@@ -80,5 +80,31 @@ namespace Terraria.ModLoader
 
 			return result;
 		}
+
+		public static bool? CanUseTool(Player player, Item item, ToolType toolType, Tile tile, int x, int y) {
+			bool? result = null;
+
+			bool ModifyResult(bool? nbool) {
+				if (nbool.HasValue) {
+					result = nbool.Value;
+				}
+
+				return result != false;
+			}
+
+			if (toolType.AffectsBlocks && (!tile.active() || !ModifyResult(TileLoader.CanUseTool(x, y, tile.type, item, toolType)))) {
+				return false;
+			}
+
+			if (toolType.AffectsWalls && (tile.wall <= 0 || !ModifyResult(WallLoader.CanUseTool(x, y, tile.wall, item, toolType)))) {
+				return false;
+			}
+
+			if (!ModifyResult(ItemLoader.CanUseTool(item, player, toolType, tile, x, y))) {
+				return false;
+			}
+
+			return result;
+		}
 	}
 }

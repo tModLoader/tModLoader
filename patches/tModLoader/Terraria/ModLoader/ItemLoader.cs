@@ -856,6 +856,64 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
+		private static HookList HookCanUseTool = AddHook<Func<Item, Player, ToolType, Tile, int, int, bool?>>(g => g.CanUseTool);
+		/// <summary>
+		/// Gathers the results of all GlobalItem.CanUseTool hooks. 
+		/// If any of them returns false, this returns false. 
+		/// Otherwise, if any of them returns true then this returns true. 
+		/// If all of them return null, this returns the result of ModItem.CanUseTool.
+		/// </summary>
+		public static bool? CanUseTool(Item item, Player player, ToolType toolType, Tile tile, int x, int y) {
+			if (item.IsAir)
+				return null;
+
+			bool? canUse = null;
+			foreach (var g in HookCanUseTool.Enumerate(item.globalItems)) {
+				switch (g.CanUseTool(item, player, toolType, tile, x, y)) {
+					case null:
+						continue;
+					case true:
+						canUse = true;
+						continue;
+					case false:
+						return false;
+				}
+			}
+
+			return canUse ?? item.ModItem?.CanUseTool(player, toolType, tile, x, y);
+		}
+
+		private delegate void DelegateModifyToolPower(Item item, Player player, ToolType tooltype, Tile tile, int x, int y, int power, ref StatModifier powerMod);
+		private static HookList HookModifyToolPower = AddHook<DelegateModifyToolPower>(g => g.ModifyToolPower);
+		/// <summary>
+		/// Calls ModItem.HookModifyToolPower, then all GlobalItem.HookModifyToolPower hooks.
+		/// </summary>
+		public static void ModifyToolPower(Item item, Player player, ToolType tooltype, Tile tile, int x, int y, int power, ref StatModifier powerMod) {
+			if (item.IsAir)
+				return;
+
+			item.ModItem?.ModifyToolPower(player, tooltype, tile, x, y, power, ref powerMod);
+
+			foreach (var g in HookModifyToolPower.Enumerate(item.globalItems)) {
+				g.ModifyToolPower(item, player, tooltype, tile, x, y, power, ref powerMod);
+			}
+		}
+
+		private static HookList HookOnDamageTile = AddHook<Action<Item, Player, ToolType, Tile, int, int, int, bool>>(g => g.OnDamageTile);
+		/// <summary>
+		/// Calls ModItem.OnDamageTile and all GlobalItem.OnDamageTile hooks.
+		/// </summary>
+		public static void OnDamageTile(Item item, Player player, ToolType tooltype, Tile tile, int x, int y, int damage, bool fullDamage) {
+			if (item.IsAir)
+				return;
+
+			item.ModItem?.OnDamageTile(player, tooltype, tile, x, y, damage, fullDamage);
+
+			foreach (var g in HookOnDamageTile.Enumerate(item.globalItems)) {
+				g.OnDamageTile(item, player, tooltype, tile, x, y, damage, fullDamage);
+			}
+		}
+
 		private static HookList HookUpdateInventory = AddHook<Action<Item, Player>>(g => g.UpdateInventory);
 		//place at end of first for loop in Terraria.Player.UpdateEquips
 		//  call ItemLoader.UpdateInventory(this.inventory[j], this)
