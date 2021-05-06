@@ -206,22 +206,6 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
-@@ -2564,6 +_,15 @@
- 		public static Task serverLoadWorld() => Task.Factory.StartNew(serverLoadWorldCallBack);
- 
- 		public static void clearWorld() {
-+			Main.mapTargetX = Math.Max(Main.maxTilesX / 1680, 5);
-+			Main.mapTargetY = Math.Max(Main.maxTilesY / 1200, 2);
-+			Main.instance.mapTarget = new Microsoft.Xna.Framework.Graphics.RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
-+			Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
-+			Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
-+
-+			Main.Map = new WorldMap(Main.maxTilesX, Main.maxTilesY);
-+			Main.tile = new Tile[Main.maxTilesX, Main.maxTilesY];
-+
- 			Main.ladyBugRainBoost = 0;
- 			Main.getGoodWorld = false;
- 			Main.drunkWorld = false;
 @@ -5473,17 +_,18 @@
  			Main.lockMenuBGChange = true;
  			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
@@ -923,7 +907,7 @@
  							Main.tile[k, l].type = type;
  							SquareTileFrame(k, l);
  							if (Main.netMode == 2)
-@@ -29197,6 +_,14 @@
+@@ -29203,6 +_,14 @@
  			num3 = num3 * 310f - (float)(85 * num);
  			num3 *= 0.85f;
  			num3 /= (float)num2;
@@ -938,7 +922,7 @@
  			bool flag = false;
  			if (Main.drunkWorld) {
  				if (SavedOreTiers.Adamantite == 111)
-@@ -29291,6 +_,12 @@
+@@ -29297,6 +_,12 @@
  
  			if (flag)
  				NetMessage.SendData(7);
@@ -951,7 +935,7 @@
  
  			for (int k = 0; (float)k < num3; k++) {
  				int i2 = genRand.Next(100, Main.maxTilesX - 100);
-@@ -29304,7 +_,8 @@
+@@ -29310,7 +_,8 @@
  				int j2 = genRand.Next((int)num8, Main.maxTilesY - 150);
  				OreRunner(i2, j2, genRand.Next(5, 9 + num4), genRand.Next(5, 9 + num4), (ushort)num);
  			}
@@ -961,7 +945,7 @@
  			int num9 = genRand.Next(3);
  			int num10 = 0;
  			while (num9 != 2 && num10++ < 1000) {
-@@ -29328,13 +_,26 @@
+@@ -29334,13 +_,26 @@
  
  				break;
  			}
