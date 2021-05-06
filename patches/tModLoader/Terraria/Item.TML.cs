@@ -15,7 +15,7 @@ namespace Terraria
 
 		internal Instanced<GlobalItem>[] globalItems = Array.Empty<Instanced<GlobalItem>>();
 
-		public ReadOnlySpan<Instanced<GlobalItem>> Globals => globalItems;
+		public Instanced<GlobalItem>[] Globals => globalItems;
 
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>

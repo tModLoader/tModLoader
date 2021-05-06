@@ -11,7 +11,7 @@ namespace Terraria
 
 		internal Instanced<GlobalNPC>[] globalNPCs = Array.Empty<Instanced<GlobalNPC>>();
 
-		public ReadOnlySpan<Instanced<GlobalNPC>> Globals => globalNPCs;
+		public Instanced<GlobalNPC>[] Globals => globalNPCs;
 
 		/// <summary>
 		/// Assign a special boss bar, vanilla or modded. Not used by vanilla.

@@ -4,6 +4,6 @@ namespace Terraria.ModLoader
 {
 	public interface IEntityWithGlobals<T> where T : GlobalType
 	{
-		ReadOnlySpan<Instanced<T>> Globals { get; }
+		Instanced<T>[] Globals { get; }
 	}
 }
