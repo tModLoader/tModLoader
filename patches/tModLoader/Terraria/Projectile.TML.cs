@@ -10,7 +10,7 @@ namespace Terraria
 
 		internal Instanced<GlobalProjectile>[] globalProjectiles = Array.Empty<Instanced<GlobalProjectile>>();
 
-		public Instanced<GlobalProjectile>[] Globals => globalProjectiles;
+		public RefReadOnlyArray<Instanced<GlobalProjectile>> Globals => new RefReadOnlyArray<Instanced<GlobalProjectile>>(globalProjectiles);
 
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>

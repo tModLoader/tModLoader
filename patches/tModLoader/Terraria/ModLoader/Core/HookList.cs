@@ -72,7 +72,7 @@ namespace Terraria.ModLoader.Core
 			this.method = method;
 		}
 
-		public InstanceEnumerator Enumerate(IEntityWithGlobals<T> entity) => Enumerate(entity.Globals);
+		public InstanceEnumerator Enumerate(IEntityWithGlobals<T> entity) => Enumerate(entity.Globals.array);
 
 		public InstanceEnumerator Enumerate(Instanced<T>[] instances) => new(instances, registeredGlobalIndices);
 
