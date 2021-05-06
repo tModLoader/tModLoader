@@ -4,7 +4,7 @@ using Terraria;
 
 namespace ExampleMod.Content.Projectiles.Minions
 {
-	public abstract class ExampleHoveringShooter : ExampleMinion
+	public abstract class ExampleHoveringShooterMinion : ExampleMinion
 	{
 		protected float idleAccel = 0.05f;
 		protected float spacingMult = 1f;
@@ -43,6 +43,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 				else {
 					Projectile.velocity.X += idleAccel;
 				}
+
 				if (Projectile.position.Y < Main.projectile[k].position.Y) {
 					Projectile.velocity.Y -= idleAccel;
 				}
@@ -69,6 +70,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 
 				for (int k = 0; k < 200; k++) {
 					NPC npc = Main.npc[k];
+
 					if (!npc.CanBeChasedBy(this, false)) {
 						continue;
 					}

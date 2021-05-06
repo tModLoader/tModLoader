@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 	// ExampleHoveringMinion uses inheritace as an example of how it can be useful in modding.
 	// ExampleHoveringShooter and Minion classes help abstract common functionality away, which is useful for mods that have many similar behaviors.
 	// Inheritance is an advanced topic and could be confusing to new programmers, see ExampleSimpleMinion.cs for a simpler minion example.
-	public class ExampleHoveringMinion : ExampleHoveringShooter
+	public class ExampleHoveringMinion : ExampleHoveringShooterMinion
 	{
 		public override void SetStaticDefaults() {
 			Main.projFrames[Projectile.type] = 3; // Sets the number of frams in ExampleHoveringMinion's animation
