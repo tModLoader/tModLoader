@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 		public int ItemDrop { get; set; }
 
 		/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>
-		public ushort vanillaFallbackOnModDeletion { get; set; } = 0;
+		public ushort VanillaFallbackOnModDeletion { get; set; } = 0;
 
 		/// <summary>
 		/// Creates a ModTranslation object that you can use in AddMapEntry.
