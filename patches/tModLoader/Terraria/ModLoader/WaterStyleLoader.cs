@@ -22,9 +22,6 @@ namespace Terraria.ModLoader
 		public WaterStylesLoader() => Initialize(Main.maxLiquidTypes);
 
 		internal override void ResizeArrays() {
-			if (Main.dedServ)
-				return; // LiquidRenderer.Instance is null for server.
-
 			//Textures
 			Array.Resize(ref TextureAssets.Liquid, TotalCount);
 			Array.Resize(ref LiquidRenderer.Instance._liquidTextures, TotalCount);
