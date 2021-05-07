@@ -3096,7 +3096,7 @@
  				num5 = 2;
  				array9[0] = statusText;
  				array[0] = true;
-@@ -36354,17 +_,33 @@
+@@ -36354,17 +_,32 @@
  					Netplay.ServerPassword = "";
  				}
  				else if (selectedMenu == 2 || inputTextEnter || autoPass) {
@@ -3116,10 +3116,9 @@
 -					tServer.StartInfo.FileName = "TerrariaServer.exe";
 +					tServer.StartInfo.FileName = "tModLoaderServer.exe";
  #else
-+					if (Debugger.IsAttached || File.Exists("Logs\\runtime")) 
-+					{
 -					tServer.StartInfo.FileName = "TerrariaServer";
-+						tServer.StartInfo.FileName = "dotnet";
++					if (Debugger.IsAttached || File.Exists("LaunchLogs\\runtime.log")) {
++						tServer.StartInfo.FileName = Process.GetCurrentProcess().MainModule.FileName;
 +					}
 +					else {
 +						// Dynamically read in the target runtime
