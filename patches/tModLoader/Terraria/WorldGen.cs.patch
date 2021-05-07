@@ -1382,6 +1382,15 @@
  			for (int i = 0; i < num; i++) {
  				KillTile_MakeTileDust(x, y, tileSafely);
  			}
+@@ -39233,7 +_,7 @@
+ 
+ 		public static bool WouldTileReplacementWork(ushort attemptingToReplaceWith, int x, int y) {
+ 			Tile tile = Main.tile[x, y];
+-			if (attemptingToReplaceWith >= 624)
++			if (attemptingToReplaceWith >= TileLoader.TileCount)
+ 				return false;
+ 
+ 			if (TileID.Sets.Conversion.Grass[attemptingToReplaceWith])
 @@ -39242,7 +_,7 @@
  			bool flag = !ReplaceTile_IsValidSolid(attemptingToReplaceWith) || !ReplaceTile_IsValidSolid(tile.type);
  			bool num = !ReplaceTile_IsValidPlatform(attemptingToReplaceWith) || !ReplaceTile_IsValidPlatform(tile.type);

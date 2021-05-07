@@ -325,15 +325,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to stop this tile from being placed at the given coordinates. Return false to block the tile from being placed. Returns true by default.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool CanPlace(int i, int j) {
-			return true;
-		}
-
-		/// <summary>
 		/// Allows you to make something happen when this tile is right-clicked by the player. Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targetting from happening. Returns false by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
