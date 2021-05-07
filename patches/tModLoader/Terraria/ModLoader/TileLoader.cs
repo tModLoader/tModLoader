@@ -87,7 +87,7 @@ namespace Terraria.ModLoader
 		private static DelegateChangeWaterfallStyle[] HookChangeWaterfallStyle;
 		private delegate int DelegateSaplingGrowthType(int type, ref int style);
 		private static DelegateSaplingGrowthType[] HookSaplingGrowthType;
-		private static Action<int, int, Item>[] HookPlaceInWorld;
+		private static Action<int, int, int, Item>[] HookPlaceInWorld;
 
 		internal static int ReserveTileID() {
 			if (ModNet.AllowVanillaClients) throw new Exception("Adding tiles breaks vanilla client compatibility");
@@ -932,7 +932,7 @@ namespace Terraria.ModLoader
 				return;
 
 			foreach (var hook in HookPlaceInWorld) {
-				hook(i, j, item);
+				hook(i, j, type, item);
 			}
 
 			GetTile(type)?.PlaceInWorld(i, j, item);
