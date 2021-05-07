@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/Graphics/Capture/CaptureInterface.cs
++++ src/tModLoader/Terraria/Graphics/Capture/CaptureInterface.cs
+@@ -1097,7 +_,7 @@
+ 			num2 = 0f - y + (float)(Main.screenHeight / 2);
+ 			num += num4 * num3;
+ 			num2 += num5 * num3;
+-			float num10 = Main.maxTilesX / 840;
++			float num10 = (((Main.maxTilesX / 840) + (Main.maxTilesY / 480)) / 2);
+ 			num10 *= Main.mapFullscreenScale;
+ 			float num11 = num;
+ 			float num12 = num2;

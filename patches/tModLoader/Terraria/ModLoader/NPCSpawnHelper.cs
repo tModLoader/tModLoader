@@ -370,7 +370,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static bool MartianProbeHelper(NPCSpawnInfo info) {
-			return (float)Math.Abs(info.spawnTileX - Main.maxTilesX / 2) / (float)(Main.maxTilesX / 2) > 0.33f
+			return (float)Math.Abs(info.spawnTileX - (Main.maxTilesX / 2)) / (float)(Main.maxTilesX / 2) > 0.33f
 				&& !NPC.AnyDanger();
 		}
 

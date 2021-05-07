@@ -453,6 +453,15 @@
  			if (wet)
  				position += wetVelocity;
  			else
+@@ -13099,7 +_,7 @@
+ 
+ 			Main.player[owner].displayedFishingInfo = Language.GetTextValue("GameUI.FishingPower", fisher.fishingLevel);
+ 			fisher.waterNeededToFish = 300;
+-			float num = Main.maxTilesX / 4200;
++			float num = Main.maxTilesY / 1200f;
+ 			num *= num;
+ 			fisher.atmo = (float)((double)(position.Y / 16f - (60f + 10f * num)) / (Main.worldSurface / 6.0));
+ 			if ((double)fisher.atmo < 0.25)
 @@ -13146,6 +_,9 @@
  			FishingCheck_RollEnemySpawns(ref fisher);
  			FishingCheck_RollItemDrop(ref fisher);

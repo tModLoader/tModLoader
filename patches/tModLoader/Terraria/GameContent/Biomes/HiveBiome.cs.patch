@@ -1,0 +1,14 @@
+--- src/Terraria/Terraria/GameContent/Biomes/HiveBiome.cs
++++ src/tModLoader/Terraria/GameContent/Biomes/HiveBiome.cs
+@@ -108,8 +_,9 @@
+ 			if (WorldGen.drunkWorldGen) {
+ 				num = random.Next(8, 26);
+ 				num2 = random.Next(10, 41);
+-				float num3 = Main.maxTilesX / 4200;
+-				num3 = (num3 + 1f) / 2f;
++				float num3 = Main.maxTilesX / 4200f;
++				float num3y = Main.maxTilesY / 1200f;
++				num3 = ((num3 + num3y) / 2f) / 2f;
+ 				num *= (double)num3;
+ 				num2 *= num3;
+ 			}

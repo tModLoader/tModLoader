@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/Generation/TrackGenerator.cs
++++ src/tModLoader/Terraria/GameContent/Generation/TrackGenerator.cs
+@@ -164,7 +_,7 @@
+ 		}
+ 
+ 		private void CreateTrackStart(Point origin) {
+-			_xDirection = ((origin.X <= Main.maxTilesX / 2) ? 1 : (-1));
++			_xDirection = ((origin.X <= (Main.maxTilesX / 2)) ? 1 : (-1));
+ 			_length = 1;
+ 			for (int i = 0; i < _history.Length; i++) {
+ 				_history[i] = new TrackHistory(origin.X + i * _xDirection, origin.Y + i, TrackSlope.Down);

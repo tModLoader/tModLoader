@@ -68,6 +68,15 @@
  			}
  
  			if (x < roomX1)
+@@ -2071,7 +_,7 @@
+ 			}
+ 
+ 			int num = 0;
+-			float num2 = Main.maxTilesX / 4200;
++			float num2 = (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
+ 			int num3 = (int)(400f * num2);
+ 			for (int j = 5; j < Main.maxTilesX - 5; j++) {
+ 				for (int k = 5; (double)k < Main.worldSurface; k++) {
 @@ -2283,10 +_,20 @@
  		}
  
@@ -160,12 +169,13 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
-@@ -2570,6 +_,15 @@
+@@ -2570,6 +_,16 @@
  		public static Task serverLoadWorld() => Task.Factory.StartNew(serverLoadWorldCallBack);
  
  		public static void clearWorld() {
-+			Main.mapTargetX = Math.Max(Main.maxTilesX / 1680, 5);
-+			Main.mapTargetY = Math.Max(Main.maxTilesY / 1200, 2);
++			//Large World Enabler stuff. I put this here since this is where the original Large World Enabler mod was hooked. There may be a better place to put it, need to look into
++			Main.mapTargetX = (int)Math.Max(Math.Round((double)(Main.maxTilesX / 840)), 5);
++			Main.mapTargetY = (int)Math.Max(Math.Round((double)(Main.maxTilesY / 600)), 2);
 +			Main.instance.mapTarget = new Microsoft.Xna.Framework.Graphics.RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
 +			Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
 +			Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
@@ -176,6 +186,41 @@
  			Main.ladyBugRainBoost = 0;
  			Main.getGoodWorld = false;
  			Main.drunkWorld = false;
+@@ -2715,6 +_,9 @@
+ 			noLiquidCheck = false;
+ 			Liquid.numLiquid = 0;
+ 			LiquidBuffer.numLiquidBuffer = 0;
++			lastMaxTilesX = Main.maxTilesX;
++			lastMaxTilesY = Main.maxTilesY;
++
+ 			if (Main.netMode == 1 || lastMaxTilesX > Main.maxTilesX || lastMaxTilesY > Main.maxTilesY) {
+ 				for (int j = 0; j < lastMaxTilesX; j++) {
+ 					float num = (float)j / (float)lastMaxTilesX;
+@@ -2725,8 +_,8 @@
+ 				}
+ 			}
+ 
+-			lastMaxTilesX = Main.maxTilesX;
++			//lastMaxTilesX = Main.maxTilesX;
+-			lastMaxTilesY = Main.maxTilesY;
++			//lastMaxTilesY = Main.maxTilesY;
+ 			if (Main.netMode != 2)
+ 				Main.sectionManager = new WorldSections(Main.maxTilesX / 200, Main.maxTilesY / 150);
+ 
+@@ -4614,10 +_,10 @@
+ 
+ 			double num = genRand.Next(60, 80);
+ 			double num2 = genRand.Next(30, 40);
+-			float num3 = Main.maxTilesX / 4200;
+-			if (getGoodWorldGen)
++			float num3 = (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
++			if (getGoodWorldGen) {
+ 				num3 *= 1.5f;
+-
++			}
+ 			num *= (double)num3;
+ 			num2 *= (double)num3;
+ 			while (num2 > 0.0) {
 @@ -5473,17 +_,18 @@
  			Main.lockMenuBGChange = true;
  			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
@@ -211,6 +256,141 @@
  			AddGenerationPass("Reset", delegate (GenerationProgress progress, GameConfiguration passConfig) {
  				numOceanCaveTreasure = 0;
  				skipDesertTileCheck = false;
+@@ -5656,7 +_,7 @@
+ 					dungeonSide *= -1;
+ 
+ 				int num919 = genRand.Next(50, 90);
+-				float num920 = Main.maxTilesX / 4200;
++				float num920 = (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
+ 				num919 += (int)((float)genRand.Next(20, 40) * num920);
+ 				num919 += (int)((float)genRand.Next(20, 40) * num920);
+ 				int num921 = num918 - num919;
+@@ -5685,10 +_,18 @@
+ 					rightBeachStart -= beachSandJungleExtraWidth;
+ 
+ 				int num923 = 50;
++				try { //This is ugly.
+-				if (dungeonSide == -1)
++					if (dungeonSide == -1)
+-					dungeonLocation = genRand.Next(leftBeachEnd + num923, (int)((double)Main.maxTilesX * 0.2));
++						dungeonLocation = genRand.Next(leftBeachEnd + num923, (int)((double)Main.maxTilesX * 0.2));
+-				else
++					else
+-					dungeonLocation = genRand.Next((int)((double)Main.maxTilesX * 0.8), rightBeachStart - num923);
++						dungeonLocation = genRand.Next((int)((double)Main.maxTilesX * 0.8), rightBeachStart - num923);
++				}
++				catch {
++					if (dungeonSide == -1)
++						dungeonLocation = genRand.Next((int)((double)Main.maxTilesX * 0.2), leftBeachEnd + num923);
++					else
++						dungeonLocation = genRand.Next(rightBeachStart - num923, (int)((double)Main.maxTilesX * 0.8));
++				}
+ 			});
+ 
+ 			AddGenerationPass(new TerrainPass().OnBegin(delegate (GenPass pass) {
+@@ -5714,7 +_,7 @@
+ 				if (drunkWorldGen)
+ 					num907 = 1f;
+ 
+-				float num908 = (float)Main.maxTilesX / 4200f;
++				float num908 = (float)(((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
+ 				PyrX = new int[random13 + 3];
+ 				PyrY = new int[random13 + 3];
+ 				DunesBiome dunesBiome = configuration.CreateBiome<DunesBiome>();
+@@ -5726,7 +_,7 @@
+ 					while (!flag59) {
+ 						origin5 = RandomWorldPoint(0, 500, 0, 500);
+ 						bool flag60 = Math.Abs(origin5.X - jungleOriginX) < (int)(600f * num908);
+-						bool flag61 = Math.Abs(origin5.X - Main.maxTilesX / 2) < 300;
++						bool flag61 = Math.Abs(origin5.X - (Main.maxTilesX / 2)) < 300;
+ 						bool flag62 = origin5.X > snowOriginLeft - 300 && origin5.X < snowOriginRight + 300;
+ 						num910++;
+ 						if (num910 >= Main.maxTilesX)
+@@ -5764,7 +_,7 @@
+ 
+ 					int num898 = genRand.Next(35, 90);
+ 					if (num896 == 1) {
+-						float num899 = Main.maxTilesX / 4200;
++						float num899 = (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
+ 						num898 += (int)((float)genRand.Next(20, 40) * num899);
+ 					}
+ 
+@@ -6169,7 +_,7 @@
+ 				}
+ 
+ 				progress.Set(0.8f);
+-				float num853 = Main.maxTilesX / 4200;
++				float num853 = (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
+ 				for (int num854 = 0; (float)num854 < 5f * num853; num854++) {
+ 					try {
+ 						Caverer(genRand.Next(surfaceCavesBeachAvoidance2, Main.maxTilesX - surfaceCavesBeachAvoidance2), genRand.Next((int)Main.rockLayer, Main.maxTilesY - 400));
+@@ -6206,6 +_,8 @@
+ 						num840--;
+ 					}
+ 
++					num839 = Utils.Clamp(num839, 0, Main.maxTilesX);
++					num840 = Utils.Clamp(num840, 0, Main.maxTilesX);
+ 					snowMinX[num842] = num839;
+ 					snowMaxX[num842] = num840;
+ 					for (int num843 = num839; num843 < num840; num843++) {
+@@ -6431,7 +_,7 @@
+ 
+ 			AddGenerationPass("Mushroom Patches", delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 				progress.Message = Lang.gen[13].Value;
+-				float num795 = Main.maxTilesX / 700;
++				float num795 = (((Main.maxTilesX / 700) + (Main.maxTilesY / 200)) / 2);
+ 				if (num795 > (float)maxMushroomBiomes)
+ 					num795 = maxMushroomBiomes;
+ 
+@@ -7325,8 +_,8 @@
+ 
+ 			AddGenerationPass("Lakes", delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 				progress.Message = Lang.gen[19].Value;
+-				int num664 = Main.maxTilesX / 4200;
+-				int num665 = genRand.Next(num664 * 3, num664 * 6);
++				float num664 = (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
++				int num665 = genRand.Next((int)(num664 * 3), (int)(num664 * 6));
+ 				for (int num666 = 0; num666 < num665; num666++) {
+ 					int num667 = Main.maxTilesX / 4;
+ 					if (numLakes >= maxLakes - 1)
+@@ -7464,8 +_,8 @@
+ 							case 59: {
+ 									bool flag43 = true;
+ 									int num656 = 3;
+-									for (int num657 = num655 - num656; num657 <= num655 + num656; num657++) {
+-										for (int num658 = num654 - num656; num658 <= num654 + num656; num658++) {
++									for (int num657 = Utils.Clamp(num655 - num656, 0, Main.maxTilesX); num657 <= num655 + num656; num657++) {
++										for (int num658 = Utils.Clamp(num654 - num656, 0, Main.maxTilesY); num658 <= num654 + num656; num658++) {
+ 											if (Main.tile[num657, num658].type == 60 || Main.tile[num657, num658].type == 70 || Main.tile[num657, num658].type == 71 || Main.tile[num657, num658].type == 72) {
+ 												flag43 = false;
+ 												break;
+@@ -7845,7 +_,7 @@
+ 
+ 			AddGenerationPass("Living Trees", delegate {
+ 				int num583 = 200;
+-				float num584 = Main.maxTilesX / 4200;
++				float num584 = (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
+ 				int num585 = genRand.Next(0, (int)(2f * num584) + 1);
+ 				if (num585 == 0 && genRand.Next(2) == 0)
+ 					num585++;
+@@ -8060,7 +_,7 @@
+ 
+ 			AddGenerationPass("Hives", delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 				progress.Message = Lang.gen[71].Value;
+-				float num558 = Main.maxTilesX / 4200;
++				float num558 = (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
+ 				float num559 = 1 + genRand.Next((int)(5f * num558), (int)(8f * num558));
+ 				if (drunkWorldGen)
+ 					num559 *= 0.667f;
+@@ -8095,7 +_,7 @@
+ 				int num532 = genRand.Next(40, Main.maxTilesX - 40);
+ 				int num533 = genRand.Next((int)(Main.worldSurface + Main.rockLayer) / 2, Main.maxTilesY - 400);
+ 				float num534 = genRand.Next(7, 12);
+-				num534 *= (float)(Main.maxTilesX / 4200);
++				num534 *= (float)(((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
+ 				int num535 = 0;
+ 				for (int num536 = 0; (float)num536 < num534; num536++) {
+ 					bool flag35 = true;
 @@ -8159,7 +_,7 @@
  								int num547 = genRand.Next(num532 - num540, num532 + num540 + 1);
  								int num548 = genRand.Next(num533 - num541, num533 + num541 - 2);
@@ -220,6 +400,95 @@
  									flag36 = true;
  							}
  
+@@ -8287,7 +_,7 @@
+ 			AddGenerationPass("Oasis", delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 				if (!notTheBees) {
+ 					progress.Set(1f);
+-					int num520 = Main.maxTilesX / 2100;
++					int num520 = (int)(((Main.maxTilesX / 2100f) + (Main.maxTilesY / 600f)) / 2);
+ 					num520 += genRand.Next(2);
+ 					for (int num521 = 0; num521 < num520; num521++) {
+ 						int num522 = beachDistance + 300;
+@@ -8618,7 +_,7 @@
+ 				if (notTheBees)
+ 					NotTheBees();
+ 
+-				dub2 = Main.maxTilesX / 4200;
++				dub2 = (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
+ 				progress.Message = Lang.gen[28].Value;
+ 				for (int num491 = 0; num491 < (int)((double)(Main.maxTilesX * Main.maxTilesY) * 2E-05); num491++) {
+ 					float value10 = (float)((double)num491 / ((double)(Main.maxTilesX * Main.maxTilesY) * 2E-05));
+@@ -8989,7 +_,7 @@
+ 				if (!notTheBees) {
+ 					progress.Message = Lang.gen[61].Value;
+ 					randMoss();
+-					int num411 = Main.maxTilesX / 2100;
++					int num411 = (int)(((Main.maxTilesX / 2100f) + (Main.maxTilesY / 600f)) / 2);
+ 					int num412 = 0;
+ 					int num413 = 0;
+ 					while (num413 < num411) {
+@@ -9397,7 +_,7 @@
+ 
+ 			AddGenerationPass("Hellforge", delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 				progress.Message = Lang.gen[36].Value;
+-				for (int num377 = 0; num377 < Main.maxTilesX / 200; num377++) {
++				for (int num377 = 0; num377 < (((Main.maxTilesX / 200f) + (Main.maxTilesY * 0.0175)) / 2); num377++) {
+ 					float value2 = num377 / (Main.maxTilesX / 200);
+ 					progress.Set(value2);
+ 					bool flag23 = false;
+@@ -9517,9 +_,9 @@
+ 
+ 			AddGenerationPass("Surface Ore and Stone", delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 				progress.Set(1f);
+-				int num358 = genRand.Next(Main.maxTilesX / 4200 * 5, Main.maxTilesX / 4200 * 10);
++				float num358 = genRand.Next((int)((((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2) * 5f), (int)((((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2) * 10f));
+ 				for (int num359 = 0; num359 < num358; num359++) {
+-					int num360 = Main.maxTilesX / 420;
++					int num360 = (int)(((Main.maxTilesX / 420f) + (Main.maxTilesY / 120f)) / 2);
+ 					while (num360 > 0) {
+ 						num360--;
+ 						int num361 = genRand.Next(beachDistance, Main.maxTilesX - beachDistance);
+@@ -9545,9 +_,9 @@
+ 					}
+ 				}
+ 
+-				num358 = genRand.Next(1, Main.maxTilesX / 4200 * 7);
++				num358 = genRand.Next(1, (int)((((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2) * 7));
+ 				for (int num363 = 0; num363 < num358; num363++) {
+-					int num364 = Main.maxTilesX / 420;
++					int num364 = (int)(((Main.maxTilesX / 420f) + (Main.maxTilesY / 120f)) / 2);
+ 					while (num364 > 0) {
+ 						num364--;
+ 						int num365 = genRand.Next(beachDistance, Main.maxTilesX - beachDistance);
+@@ -9570,7 +_,7 @@
+ 
+ 			AddGenerationPass("Place Fallen Log", delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 				progress.Message = Lang.gen[85].Value;
+-				int num344 = Main.maxTilesX / 2100;
++				int num344 = (int)(((Main.maxTilesX / 2100f) + (Main.maxTilesY / 600)) / 2);
+ 				num344 += genRand.Next(-1, 2);
+ 				for (int num345 = 0; num345 < num344; num345++) {
+ 					progress.Set((float)num345 / (float)num344);
+@@ -10321,7 +_,7 @@
+ 					progress.Set((float)num247 / (float)Main.maxTilesX * 0.002f);
+ 					int num248 = 0;
+ 					int num249 = 0;
+-					_ = Main.maxTilesX / 2;
++					_ = (Main.maxTilesX / 2);
+ 					int num250 = genRand.Next(Main.maxTilesX);
+ 					num248 = num250 - genRand.Next(10) - 7;
+ 					num249 = num250 + genRand.Next(10) + 7;
+@@ -10765,8 +_,8 @@
+ 						int num183 = genRand.Next(12);
+ 						int num184 = 0;
+ 						num184 = ((num183 >= 3) ? ((num183 < 6) ? 1 : ((num183 < 8) ? 2 : ((num183 < 10) ? 3 : ((num183 >= 11) ? 5 : 4)))) : 0);
+-						for (int num185 = num178 - num179; num185 < num178 + num180; num185++) {
+-							for (int num186 = num177 - num181; num186 < num177 + num182; num186++) {
++						for (int num185 = Utils.Clamp(num178 - num179, 0, Main.maxTilesX); num185 < num178 + num180; num185++) {
++							for (int num186 = Utils.Clamp(num177 - num181, 0, Main.maxTilesY); num186 < num177 + num182; num186++) {
+ 								if (!Main.tile[num185, num186].active())
+ 									PlaceTile(num185, num186, 178, mute: true, forced: false, -1, num184);
+ 							}
 @@ -11222,7 +_,7 @@
  							}
  						}
@@ -427,12 +696,13 @@
  			IsGeneratingHardMode = true;
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
-@@ -16353,8 +_,15 @@
+@@ -16353,9 +_,16 @@
  				num3 = (int)((float)Main.maxTilesX * (1f - num2));
  			}
  
 -			GERunner(num3, 0, 3 * num5, 5f);
 -			GERunner(num4, 0, 3 * -num5, 5f, good: false);
+-			float num7 = (float)Main.maxTilesX / 4200f;
 +			hardmodeTasks.Add(new PassLegacy("Hardmode Good", (progress, config) => {
 +				GERunner(num3, 0, 3 * num5, 5f, true);
 +			}));
@@ -442,9 +712,10 @@
 +			}));
 +
 +			hardmodeTasks.Add(new PassLegacy("Hardmode Walls", (progress, config) => {
- 			float num7 = (float)Main.maxTilesX / 4200f;
++			float num7 = (float)(((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
  			int num8 = (int)(25f * num7);
  			ShapeData shapeData = new ShapeData();
+ 			int num9 = 0;
 @@ -16384,13 +_,23 @@
  					shapeData.Clear();
  				}
@@ -494,6 +765,15 @@
  						Main.tile[l, m].frameX = (short)(genRand.Next(3) * 18 + num6);
  					}
  					else {
+@@ -16633,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			float num4 = Main.maxTilesX / 4200;
++			float num4 = (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
+ 			for (int j = 0; (float)j < 200f * num4; j++) {
+ 				int num5 = 0;
+ 				bool flag = false;
 @@ -16652,7 +_,7 @@
  							bool flag2 = false;
  							for (int k = num6 - 8; k < num6 + 8; k++) {
@@ -503,6 +783,66 @@
  										flag2 = true;
  										break;
  									}
+@@ -17682,8 +_,8 @@
+ 		}
+ 
+ 		public static void makeTemple(int x, int y) {
+-			Rectangle[] array = new Rectangle[100];
+-			float num = Main.maxTilesX / 4200;
++			Rectangle[] array = new Rectangle[1000]; //100 to 1000 for larger worlds
++			float num = (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
+ 			int num2 = genRand.Next((int)(num * 10f), (int)(num * 16f));
+ 			if (drunkWorldGen)
+ 				num2 *= 3;
+@@ -18700,7 +_,7 @@
+ 			int num17 = 0;
+ 			int num18 = 1000;
+ 			int num19 = 0;
+-			int num20 = Main.maxTilesX / 100;
++			int num20 = (int)(((Main.maxTilesX / 100f) + (Main.maxTilesY * 0.035f)) / 2);
+ 			if (getGoodWorldGen)
+ 				num20 *= 3;
+ 
+@@ -19195,7 +_,7 @@
+ 			num17 = 0;
+ 			num18 = 1000;
+ 			num19 = 0;
+-			while (num19 < Main.maxTilesX / 20) {
++			while (num19 < (((Main.maxTilesX / 20f) + (Main.maxTilesY * 0.175f)) / 2)) {
+ 				num17++;
+ 				int num86 = genRand.Next(dMinX, dMaxX);
+ 				int num87 = genRand.Next(dMinY, dMaxY);
+@@ -19385,7 +_,7 @@
+ 		}
+ 
+ 		private static void MakeDungeon_Traps(ref int failCount, int failMax, ref int numAdd) {
+-			while (numAdd < Main.maxTilesX / 500) {
++			while (numAdd < (((Main.maxTilesX / 2) + (Main.maxTilesY * 3.5)) / 2) / 500) {
+ 				failCount++;
+ 				int num = genRand.Next(dMinX, dMaxX);
+ 				int num2 = genRand.Next(dMinY, dMaxY);
+@@ -19419,7 +_,7 @@
+ 				array[2] = genRand.Next(7);
+ 			}
+ 
+-			while (numAdd < Main.maxTilesX / 150) {
++			while (numAdd < (((Main.maxTilesX / 2) + (Main.maxTilesY * 3.5)) / 2) / 150) {
+ 				failCount++;
+ 				int num = genRand.Next(dMinX, dMaxX);
+ 				int num2 = genRand.Next(dMinY, dMaxY);
+@@ -19874,9 +_,9 @@
+ 		}
+ 
+ 		private static float MakeDungeon_GroundFurniture(int wallType) {
+-			float num = 2000f * (float)Main.maxTilesX / 4200f;
+-			int num2 = 1 + Main.maxTilesX / 4200;
+-			int num3 = 1 + Main.maxTilesX / 4200;
++			float num = 2000f * (float)(((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
++			float num2 = 1f + Main.maxTilesX / 4200f;
++			float num3 = 1f + Main.maxTilesY / 1200f;
+ 			for (int i = 0; (float)i < num; i++) {
+ 				if (num2 > 0 || num3 > 0)
+ 					i--;
 @@ -23124,7 +_,7 @@
  				Main.tile[i, j] = new Tile();
  
@@ -679,6 +1019,24 @@
  				destroyObject = false;
  				return;
  			}
+@@ -26622,13 +_,15 @@
+ 				return;
+ 
+ 			int num3 = 15;
++			int num3y = num3;
+ 			int num4 = 5;
+ 			int num5 = 0;
+ 			num3 = (int)((float)num3 * ((float)Main.maxTilesX / 4200f));
++			num3y = (int)((float)num3 * ((float)Main.maxTilesY / 1200f));
+ 			int num6 = Utils.Clamp(num - num3, 4, Main.maxTilesX - 4);
+ 			int num7 = Utils.Clamp(num + num3, 4, Main.maxTilesX - 4);
+-			int num8 = Utils.Clamp(num2 - num3, 4, Main.maxTilesY - 4);
++			int num8 = Utils.Clamp(num2 - num3y, 4, Main.maxTilesY - 4);
+-			int num9 = Utils.Clamp(num2 + num3, 4, Main.maxTilesY - 4);
++			int num9 = Utils.Clamp(num2 + num3y, 4, Main.maxTilesY - 4);
+ 			for (int i = num6; i <= num7; i++) {
+ 				for (int j = num8; j <= num9; j++) {
+ 					if (Main.tileAlch[Main.tile[i, j].type])
 @@ -26788,6 +_,9 @@
  					KillTile(x, num + k);
  			}
@@ -860,6 +1218,15 @@
  							Main.tile[k, l].type = type;
  							SquareTileFrame(k, l);
  							if (Main.netMode == 2)
+@@ -29198,7 +_,7 @@
+ 
+ 			int num = altarCount % 3;
+ 			int num2 = altarCount / 3 + 1;
+-			float num3 = Main.maxTilesX / 4200;
++			float num3 = (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
+ 			int num4 = 1 - num;
+ 			num3 = num3 * 310f - (float)(85 * num);
+ 			num3 *= 0.85f;
 @@ -29367,7 +_,7 @@
  				if (!Main.tile[k, j].active() || Main.tile[k, j].type != type || Main.tile[k, j].frameX != (k - num) * 18 + num3 || Main.tile[k, j].frameY != 0)
  					flag = true;
@@ -1407,6 +1774,21 @@
  			bool flag4 = !ReplaceTile_IsValidDresser(attemptingToReplaceWith) || !ReplaceTile_IsValidDresser(tile.type);
  			return !(num && flag && flag2 && flag3 && flag4);
  		}
+@@ -39392,12 +_,12 @@
+ 						}
+ 						if (num2 == 2 || num2 == 3 || num2 == 32 || num2 == 4 || num2 == 42 || num2 == 5 || num2 == 7) {
+ 							if (num2 % 2 == 0) {
+-								if (i < Main.maxTilesX / 2)
++								if (i < (Main.maxTilesX / 2))
+ 									treeStyle = 16;
+ 								else
+ 									treeStyle = 17;
+ 							}
+-							else if (i > Main.maxTilesX / 2) {
++							else if (i > Main.maxTilesX / (Main.maxTilesX / 2)) {
+ 								treeStyle = 16;
+ 							}
+ 							else {
 @@ -39839,6 +_,8 @@
  			if (num == 2)
  				return;
@@ -1557,12 +1939,21 @@
  			AllowedToSpreadInfections = true;
  			CreativePowers.StopBiomeSpreadPower power = CreativePowerManager.Instance.GetPower<CreativePowers.StopBiomeSpreadPower>();
  			if (power != null && power.GetIsUnlocked())
+@@ -45757,7 +_,7 @@
+ 
+ 			float num3 = (float)(Main.maxTilesX * Main.maxTilesY) * num;
+ 			int num4 = 151;
+-			int num5 = (int)MathHelper.Lerp(num4, (float)num4 * 2.8f, MathHelper.Clamp((float)Main.maxTilesX / 4200f - 1f, 0f, 1f));
++			int num5 = (int)MathHelper.Lerp(num4, (float)num4 * 2.8f, MathHelper.Clamp((float)(((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2) - 1f, 0f, 1f));
+ 			for (int j = 0; (float)j < num3; j++) {
+ 				if (Main.rand.Next(num5 * 100) == 0)
+ 					PlantAlch();
 @@ -45777,7 +_,7 @@
  				return;
  
  			for (int l = 0; l < Main.dayRate; l++) {
 -				float num6 = Main.maxTilesX / 4200;
-+				float num6 = Main.maxTilesX / 4200f; // Selfish fix for falling stars on extra small worlds
++				float num6 = (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2); // Selfish fix for falling stars on extra small worlds
  				num6 *= Star.starfallBoost;
  				if (!((float)Main.rand.Next(8000) < 10f * num6))
  					continue;
@@ -1584,6 +1975,50 @@
  			int num = i - 1;
  			int num2 = i + 2;
  			int num3 = j - 1;
+@@ -48155,7 +_,7 @@
+ 				flag = true;
+ 
+ 			int num2 = genRand.Next(200, 250);
+-			float num3 = Main.maxTilesX / 4200;
++			float num3 = (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
+ 			num2 = (int)((float)num2 * num3);
+ 			double num4 = num2;
+ 			Vector2 vector = default(Vector2);
+@@ -50923,10 +_,10 @@
+ 		public static void ShroomPatch(int i, int j) {
+ 			double num = genRand.Next(80, 100);
+ 			float num2 = genRand.Next(20, 26);
+-			float num3 = Main.maxTilesX / 4200;
+-			if (getGoodWorldGen)
++			float num3 = (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
++			if (getGoodWorldGen) {
+ 				num3 *= 2f;
+-
++			}
+ 			num *= (double)num3;
+ 			num2 *= num3;
+ 			float num4 = num2 - 1f;
+@@ -50956,7 +_,8 @@
+ 				if (num9 > Main.maxTilesY)
+ 					num9 = Main.maxTilesY;
+ 
+-				num5 = num * (double)genRand.Next(80, 120) * 0.01;
++				double numran = (double)genRand.Next(80, 120);
++				num5 = num * numran * 0.01;
+ 				for (int k = num6; k < num7; k++) {
+ 					for (int l = num8; l < num9; l++) {
+ 						float num10 = Math.Abs((float)k - vector.X);
+@@ -51005,8 +_,8 @@
+ 					vector2.Y = -0.5f;
+ 
+ 				for (int m = 0; m < 2; m++) {
+-					int num13 = (int)vector.X + genRand.Next(-20, 20);
+-					int num14 = (int)vector.Y + genRand.Next(0, 20);
++					int num13 = Utils.Clamp((int)vector.X + genRand.Next(-20, 20), 0, Main.maxTilesX);
++					int num14 = Utils.Clamp((int)vector.Y + genRand.Next(0, 20), 0, Main.maxTilesY);
+ 					while (!Main.tile[num13, num14].active() && Main.tile[num13, num14].type != 59) {
+ 						num13 = (int)vector.X + genRand.Next(-20, 20);
+ 						num14 = (int)vector.Y + genRand.Next(0, 20);
 @@ -51455,6 +_,8 @@
  							return false;
  					}
