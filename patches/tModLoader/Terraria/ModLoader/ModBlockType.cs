@@ -130,5 +130,15 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item used to place this tile.</param>
 		public virtual void PlaceInWorld(int i, int j, Item item) {
 		}
+
+		/// <summary>
+		/// Allows you to determine how much light this block emits.
+		/// If it is a ModTile, make sure you set Main.tileLighted[Type] to true in SetDefaults for this to work.
+		/// If it is a ModWall, it can also let you light up the block in front of this wall.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
+		}
 	}
 }
