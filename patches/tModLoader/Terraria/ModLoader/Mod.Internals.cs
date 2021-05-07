@@ -109,15 +109,15 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
-			if (Properties.AutoloadGores) {
+			
+			if (Properties.AutoloadGores)
 				GoreLoader.AutoloadGores(this);
-			}
-			if (Properties.AutoloadSounds) {
+			
+			if (Properties.AutoloadSounds)
 				AutoloadSounds(modSounds);
-			}
-			if (Properties.AutoloadBackgrounds) {
-				AutoloadBackgrounds();
-			}
+
+			if (Properties.AutoloadBackgrounds)
+				BackgroundTextureLoader.AutoloadBackgrounds(this);
 		}
 
 		internal void PrepareAssets()
@@ -169,12 +169,6 @@ namespace Terraria.ModLoader
 			var assetLoader = new AssetLoader(assetReaderCollection);
 
 			Assets = new ModAssetRepository(assetReaderCollection, assetLoader, asyncAssetLoader, sources.ToArray());
-		}
-
-		private void AutoloadBackgrounds() {
-			foreach (string texture in Assets.EnumeratePaths<Texture2D>().Where(t => t.Contains("Backgrounds/"))) {
-				AddBackgroundTexture($"{Name}/{texture}");
-			}
 		}
 
 		private void AutoloadSounds(IList<Type> modSounds) {

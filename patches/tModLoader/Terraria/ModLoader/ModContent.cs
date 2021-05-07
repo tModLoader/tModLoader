@@ -530,7 +530,6 @@ namespace Terraria.ModLoader
 			GoreLoader.Unload();
 			SoundLoader.Unload();
 			DisposeMusic();
-			BackgroundTextureLoader.Unload();
 
 			LoaderManager.Unload();
 
@@ -589,7 +588,6 @@ namespace Terraria.ModLoader
 
 			if (!Main.dedServ) {
 				SoundLoader.ResizeAndFillArrays();
-				BackgroundTextureLoader.ResizeAndFillArrays();
 				GlobalBackgroundStyleLoader.ResizeAndFillArrays(unloading);
 				GoreLoader.ResizeAndFillArrays();
 			}
