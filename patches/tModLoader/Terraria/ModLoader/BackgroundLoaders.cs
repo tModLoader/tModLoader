@@ -167,7 +167,12 @@ namespace Terraria.ModLoader
 				return;
 			}
 
-			// TODO: Causes background to flicker during load because Main.bgAlpha2 is resized after surfaceBackgroundStyles is added to in AutoLoad.
+			//TODO: This suppresses an error instead of fixing it.
+			// Avoids background flicker during load because Main.bgAlphaFarBackLayer is resized after surfaceBackgroundStyles is added to in AutoLoad.
+			if (TotalCount != Main.bgAlphaFarBackLayer.Length) {
+				return;
+			}
+
 			foreach (var style in list) {
 				int slot = style.Slot;
 				float alpha = Main.bgAlphaFarBackLayer[slot];
