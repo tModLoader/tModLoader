@@ -84,11 +84,15 @@ namespace Terraria.ModLoader
 				for (int k = 0; k < 49; k++) {
 					player.inventory[k] = items[k];
 				}
+
 				Item bag = new Item();
-				bag.SetDefaults(ModContent.ItemType<StartBag>());
+
+				bag.SetDefaults(ModContent.GetId<StartBag>());
+
 				for (int k = 49; k < items.Count; k++) {
 					((StartBag)bag.ModItem).AddItem(items[k]);
 				}
+
 				player.inventory[49] = bag;
 			}
 		}

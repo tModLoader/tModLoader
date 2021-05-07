@@ -153,7 +153,7 @@ namespace Terraria
 		/// <param name="item">The item.</param>
 		/// <param name="stack">The stack.</param>
 		public Recipe AddIngredient<T>(int stack = 1) where T : ModItem
-			=> AddIngredient(ModContent.ItemType<T>(), stack);
+			=> AddIngredient(ModContent.GetId<T>(), stack);
 
 		/// <summary>
 		/// Adds a recipe group ingredient to this recipe with the given RecipeGroup name and stack size. Vanilla recipe groups consist of "Wood", "IronBar", "PresurePlate", "Sand", and "Fragment".
@@ -242,7 +242,7 @@ namespace Terraria
 		/// Adds a required crafting station to this recipe of the given type of tile.
 		/// </summary>
 		public Recipe AddTile<T>() where T : ModTile
-			=> AddTile(ModContent.TileType<T>());
+			=> AddTile(ModContent.GetId<T>());
 
 		/// <summary>
 		/// Sets a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time).

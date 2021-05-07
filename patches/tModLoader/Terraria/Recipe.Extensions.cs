@@ -20,7 +20,7 @@ namespace Terraria
 
 		public bool HasResult(ModItem item) => HasResult(item.Type);
 
-		public bool HasResult<T>() where T : ModItem => HasResult(ModContent.ItemType<T>());
+		public bool HasResult<T>() where T : ModItem => HasResult(ModContent.GetId<T>());
 
 		public bool HasIngredient(int itemID) => requiredItem.Any(item => item.type == itemID);
 
@@ -35,7 +35,7 @@ namespace Terraria
 
 		public bool HasIngredient(ModItem item) => HasIngredient(item.Type);
 
-		public bool HasIngredient<T>() where T : ModItem => HasIngredient(ModContent.ItemType<T>());
+		public bool HasIngredient<T>() where T : ModItem => HasIngredient(ModContent.GetId<T>());
 
 		public bool HasRecipeGroup(int id) => acceptedGroups.Contains(id);
 
@@ -62,7 +62,8 @@ namespace Terraria
 
 		public bool HasTile(ModTile tile) => HasTile(tile.Type);
 
-		public bool HasTile<T>() where T : ModTile => HasTile(ModContent.TileType<T>());
+		public bool HasTile<T>() where T : ModTile
+			=> HasTile(ModContent.GetId<T>());
 
 		public bool HasCondition(Condition condition) => Conditions.Contains(condition);
 		#endregion
@@ -89,7 +90,7 @@ namespace Terraria
 
 		public bool TryGetResult(ModItem item, out Item result) => TryGetResult(item.Type, out result);
 
-		public bool TryGetResult<T>(out Item result) where T : ModItem => TryGetResult(ModContent.ItemType<T>(), out result);
+		public bool TryGetResult<T>(out Item result) where T : ModItem => TryGetResult(ModContent.GetId<T>(), out result);
 
 		public bool TryGetIngredient(int itemID, out Item ingredient) {
 			foreach (Item item in requiredItem) {
@@ -114,7 +115,7 @@ namespace Terraria
 
 		public bool TryGetIngredient(ModItem item, out Item ingredient) => TryGetIngredient(item.Type, out ingredient);
 
-		public bool TryGetIngredient<T>(out Item ingredient) where T : ModItem => TryGetIngredient(ModContent.ItemType<T>(), out ingredient);
+		public bool TryGetIngredient<T>(out Item ingredient) where T : ModItem => TryGetIngredient(ModContent.GetId<T>(), out ingredient);
 		#endregion
 
 		#region RemoveX
@@ -157,7 +158,7 @@ namespace Terraria
 
 		public void ReplaceResult(ModItem item, int stack = 1) => ReplaceResult(item.Type, stack);
 
-		public void ReplaceResult<T>(int stack = 1) where T : ModItem => ReplaceResult(ModContent.ItemType<T>(), stack);
+		public void ReplaceResult<T>(int stack = 1) where T : ModItem => ReplaceResult(ModContent.GetId<T>(), stack);
 		#endregion
 	}
 }

@@ -5,7 +5,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.
 	/// </summary>
-	public abstract class ModBlockType : ModTexturedType
+	public abstract class ModBlockType : ModTexturedType, IModTypeWithId
 	{
 		/// <summary> The internal ID of this type of tile/wall. </summary>
 		public ushort Type { get; internal set; }
@@ -24,6 +24,8 @@ namespace Terraria.ModLoader
 
 		/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>
 		public ushort VanillaFallbackOnModDeletion { get; set; } = 0;
+
+		int IModTypeWithId.Type => Type;
 
 		/// <summary>
 		/// Creates a ModTranslation object that you can use in AddMapEntry.

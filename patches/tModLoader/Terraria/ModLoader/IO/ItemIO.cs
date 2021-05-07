@@ -72,7 +72,7 @@ namespace Terraria.ModLoader.IO
 					item.ModItem.Load(tag.GetCompound("data"));
 				}
 				else {
-					item.SetDefaults(ModContent.ItemType<UnloadedItem>());
+					item.SetDefaults(ModContent.GetId<UnloadedItem>());
 					((UnloadedItem)item.ModItem).Setup(tag);
 				}
 			}

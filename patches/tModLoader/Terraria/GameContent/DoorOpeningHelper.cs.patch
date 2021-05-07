@@ -46,7 +46,7 @@
  		private List<DoorOpenCloseTogglingInfo> _ongoingOpenDoors = new List<DoorOpenCloseTogglingInfo>();
  		private int _timeWeCanOpenDoorsUsingVelocityAlone;
  
-@@ -315,11 +_,12 @@
+@@ -315,11 +_,14 @@
  			Tile tile = Main.tile[tileCoords.X, tileCoords.Y];
  			if (tile == null)
  				return false;
@@ -57,8 +57,10 @@
 -			return true;
 +			int type = tile.type;
 +
-+			ModTile modTile = ModContent.GetModTile(type);
-+			if (modTile != null && modTile.OpenDoorID > 0) type = TileID.ClosedDoor;
++			ModTile modTile = TileLoader.GetTile(type);
++
++			if (modTile != null && modTile.OpenDoorID > 0)
++				type = TileID.ClosedDoor;
 +			
 +			return _handlerByTileType.TryGetValue(type, out infoProvider);
  		}

@@ -18,7 +18,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each item. Create instances of ModItem (preferably overriding this class) to pass as parameters to Mod.AddItem.
 	/// </summary>
-	public abstract class ModItem : ModTexturedType
+	public abstract class ModItem : ModTexturedType, IModTypeWithId
 	{
 		/// <summary>
 		/// The item object that this ModItem controls.

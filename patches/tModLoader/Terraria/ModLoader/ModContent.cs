@@ -34,17 +34,26 @@ namespace Terraria.ModLoader
 
 		/// <summary> Attempts to find the content instance with the specified full name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
-		public static T Find<T>(string fullname) where T : IModType => ModTypeLookup<T>.Get(fullname);
+		public static T Find<T>(string fullname) where T : IModType
+			=> ModTypeLookup<T>.Get(fullname);
+
 		/// <summary> Attempts to find the content instance with the specified name and mod name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
-		public static T Find<T>(string modName, string name) where T : IModType => ModTypeLookup<T>.Get(modName, name);
+		public static T Find<T>(string modName, string name) where T : IModType
+			=> ModTypeLookup<T>.Get(modName, name);
 
 		/// <summary> Safely attempts to find the content instance with the specified full name. Caching the result is recommended. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
-		public static bool TryFind<T>(string fullname, out T value) where T : IModType => ModTypeLookup<T>.TryGetValue(fullname, out value);
+		public static bool TryFind<T>(string fullname, out T value) where T : IModType
+			=> ModTypeLookup<T>.TryGetValue(fullname, out value);
+
 		/// <summary> Safely attempts to find the content instance with the specified name and mod name. Caching the result is recommended. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
-		public static bool TryFind<T>(string modName, string name, out T value) where T : IModType => ModTypeLookup<T>.TryGetValue(modName, name, out value);
+		public static bool TryFind<T>(string modName, string name, out T value) where T : IModType
+			=> ModTypeLookup<T>.TryGetValue(modName, name, out value);
+
+		public static int GetId<T>() where T : class, IModTypeWithId
+			=> GetInstance<T>().Type;
 
 		private static readonly char[] nameSplitters = new char[] { '/', ' ', ':' };
 		public static void SplitName(string name, out string domain, out string subName) {
@@ -205,161 +214,6 @@ namespace Terraria.ModLoader
 
 			return ModLoader.TryGetMod(modName, out var mod) && mod.MusicExists(subName);
 		}
-
-		/// <summary>
-		/// Gets the ModNPC instance corresponding to the specified type.
-		/// </summary>
-		/// <param name="type">The type of the npc</param>
-		/// <returns>The ModNPC instance in the npcs array, null if not found.</returns>
-		public static ModNPC GetModNPC(int type) => NPCLoader.GetNPC(type);
-
-		/// <summary>
-		/// Gets the index of the boss head texture corresponding to the given texture path.
-		/// </summary>
-		/// <param name="texture"></param>
-		/// <returns></returns>
-		public static int GetModBossHeadSlot(string texture) => NPCHeadLoader.GetBossHeadSlot(texture);
-
-		/// <summary>
-		/// Gets the index of the head texture corresponding to the given texture path.
-		/// </summary>
-		/// <param name="texture">Relative texture path</param>
-		/// <returns>The index of the texture in the heads array, -1 if not found.</returns>
-		public static int GetModHeadSlot(string texture) => NPCHeadLoader.GetHeadSlot(texture);
-
-		/// <summary>
-		/// Gets the ModItem instance corresponding to the specified type. Returns null if no modded item has the given type.
-		/// </summary>
-		public static ModItem GetModItem(int type) => ItemLoader.GetItem(type);
-
-		/// <summary>
-		/// Gets the ModDust instance with the given type. Returns null if no ModDust with the given type exists.
-		/// </summary>
-		public static ModDust GetModDust(int type) => DustLoader.GetDust(type);
-
-		/// <summary>
-		/// Gets the ModProjectile instance corresponding to the specified type.
-		/// </summary>
-		/// <param name="type">The type of the projectile</param>
-		/// <returns>The ModProjectile instance in the projectiles array, null if not found.</returns>
-		public static ModProjectile GetModProjectile(int type) => ProjectileLoader.GetProjectile(type);
-
-		/// <summary>
-		/// Gets the ModBuff instance with the given type. If no ModBuff with the given type exists, returns null.
-		/// </summary>
-		public static ModBuff GetModBuff(int type) => BuffLoader.GetBuff(type);
-
-		/// <summary>
-		/// Gets the equipment texture for the specified equipment type and ID.
-		/// </summary>
-		/// <param name="type"></param>
-		/// <param name="slot"></param>
-		/// <returns></returns>
-		public static EquipTexture GetEquipTexture(EquipType type, int slot) => EquipLoader.GetEquipTexture(type, slot);
-
-		/// <summary>
-		/// Gets the ModMount instance corresponding to the given type. Returns null if no ModMount has the given type.
-		/// </summary>
-		/// <param name="type">The type of the mount.</param>
-		/// <returns>Null if not found, otherwise the ModMount associated with the mount.</returns>
-		public static ModMount GetModMount(int type) => MountLoader.GetMount(type);
-
-		/// <summary>
-		/// Gets the ModTile instance with the given type. If no ModTile with the given type exists, returns null.
-		/// </summary>
-		/// <param name="type">The type of the ModTile</param>
-		/// <returns>The ModTile instance in the tiles array, null if not found.</returns>
-		public static ModTile GetModTile(int type) => TileLoader.GetTile(type);
-
-		/// <summary>
-		/// Gets the ModWall instance with the given type. If no ModWall with the given type exists, returns null.
-		/// </summary>
-		public static ModWall GetModWall(int type) => WallLoader.GetWall(type);
-
-		/// <summary>
-		/// Returns the ModWaterStyle with the given ID.
-		/// </summary>
-		public static ModWaterStyle GetModWaterStyle(int style) => LoaderManager.Get<WaterStylesLoader>().Get(style);
-
-		/// <summary>
-		/// Returns the ModWaterfallStyle with the given ID.
-		/// </summary>
-		public static ModWaterfallStyle GetModWaterfallStyle(int style) => LoaderManager.Get<WaterFallStylesLoader>().Get(style);
-
-		/// <summary>
-		/// Returns the slot/ID of the background texture with the given name.
-		/// </summary>
-		public static int GetModBackgroundSlot(string texture) => BackgroundTextureLoader.GetBackgroundSlot(texture);
-
-		/// <summary>
-		/// Returns the ModSurfaceBackgroundStyle object with the given ID.
-		/// </summary>
-		public static ModSurfaceBackgroundStyle GetModSurfaceBackgroundStyle(int style) => LoaderManager.Get<SurfaceBackgroundStylesLoader>().Get(style);
-
-		/// <summary>
-		/// Returns the ModUndergroundBackgroundStyle object with the given ID.
-		/// </summary>
-		public static ModUndergroundBackgroundStyle GetModUndergroundBackgroundStyle(int style) => LoaderManager.Get<UndergroundBackgroundStylesLoader>().Get(style);
-
-		/// <summary>
-		/// Get the id (type) of a ModGore by class. Assumes one instance per class.
-		/// </summary>
-		public static int GoreType<T>() where T : ModGore => GetInstance<T>()?.Type ?? 0;
-
-		/// <summary>
-		/// Get the id (type) of a ModItem by class. Assumes one instance per class.
-		/// </summary>
-		public static int ItemType<T>() where T : ModItem => GetInstance<T>()?.Type ?? 0;
-
-		/// <summary>
-		/// Get the id (type) of a ModPrefix by class. Assumes one instance per class.
-		/// </summary>
-		public static byte PrefixType<T>() where T : ModPrefix => GetInstance<T>()?.Type ?? 0;
-
-		/// <summary>
-		/// Get the id (type) of a ModRarity by class. Assumes one instance per class.
-		/// </summary>
-		public static int RarityType<T>() where T : ModRarity => GetInstance<T>()?.Type ?? 0;
-
-		/// <summary>
-		/// Get the id (type) of a ModDust by class. Assumes one instance per class.
-		/// </summary>
-		public static int DustType<T>() where T : ModDust => GetInstance<T>()?.Type ?? 0;
-
-		/// <summary>
-		/// Get the id (type) of a ModTile by class. Assumes one instance per class.
-		/// </summary>
-		public static int TileType<T>() where T : ModTile => GetInstance<T>()?.Type ?? 0;
-
-		/// <summary>
-		/// Get the id (type) of a ModTileEntity by class. Assumes one instance per class.
-		/// </summary>
-		public static int TileEntityType<T>() where T : ModTileEntity => GetInstance<T>()?.Type ?? 0;
-
-		/// <summary>
-		/// Get the id (type) of a ModWall by class. Assumes one instance per class.
-		/// </summary>
-		public static int WallType<T>() where T : ModWall => GetInstance<T>()?.Type ?? 0;
-
-		/// <summary>
-		/// Get the id (type) of a ModProjectile by class. Assumes one instance per class.
-		/// </summary>
-		public static int ProjectileType<T>() where T : ModProjectile => GetInstance<T>()?.Type ?? 0;
-
-		/// <summary>
-		/// Get the id (type) of a ModNPC by class. Assumes one instance per class.
-		/// </summary>
-		public static int NPCType<T>() where T : ModNPC => GetInstance<T>()?.Type ?? 0;
-
-		/// <summary>
-		/// Get the id (type) of a ModBuff by class. Assumes one instance per class.
-		/// </summary>
-		public static int BuffType<T>() where T : ModBuff => GetInstance<T>()?.Type ?? 0;
-
-		/// <summary>
-		/// Get the id (type) of a ModMount by class. Assumes one instance per class.
-		/// </summary>
-		public static int MountType<T>() where T : ModMount => GetInstance<T>()?.Type ?? 0;
 
 		private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value) {
 			if (dict.ContainsKey(value.Key)) {
