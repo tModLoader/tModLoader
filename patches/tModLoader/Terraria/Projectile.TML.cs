@@ -4,11 +4,13 @@ using Terraria.ModLoader;
 
 namespace Terraria
 {
-	public partial class Projectile
+	public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	{
 		public ModProjectile ModProjectile { get; internal set; }
 
-		internal Instanced<GlobalProjectile>[] globalProjectiles = new Instanced<GlobalProjectile>[0];
+		internal Instanced<GlobalProjectile>[] globalProjectiles = Array.Empty<Instanced<GlobalProjectile>>();
+
+		public RefReadOnlyArray<Instanced<GlobalProjectile>> Globals => new RefReadOnlyArray<Instanced<GlobalProjectile>>(globalProjectiles);
 
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>

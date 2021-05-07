@@ -501,7 +501,7 @@ namespace Terraria.ModLoader
 		}
 
 		public static void ModifyTorchLuck(Player player, ref float positiveLuck, ref float negativeLuck) {
-			foreach (int type in player.nearbyModTorch) {
+			foreach (int type in player.NearbyModTorch) {
 				float f = GetTile(type).GetTorchLuck(player);
 				if (f > 0)
 					positiveLuck += f;
@@ -678,8 +678,10 @@ namespace Terraria.ModLoader
 				damage = 0;
 			}
 		}
-		//in Terraria.Player.PlaceThing after tileObject is initalized add else to if statement and before add
+		//in Terraria.Player.PlaceThing_Tiles after tileObject is initalized add else to if statement and before add
 		//  if(!TileLoader.CanPlace(Player.tileTargetX, Player.tileTargetY)) { }
+		//and in Terraria.Player.PlaceThing_TryReplacingTiles after WorldGen.IsTileReplacable add
+		//  if (!TileLoader.CanPlace(tileTargetX, tileTargetY, HeldItem.createTile)) return false
 		public static bool CanPlace(int i, int j, int type) {
 			foreach (var hook in HookCanPlace) {
 				if (!hook(i, j, type)) {

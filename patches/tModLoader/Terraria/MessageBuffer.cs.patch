@@ -46,10 +46,10 @@
  						if (Netplay.Clients[whoAmI].State != 0)
  							break;
  
--						if (reader.ReadString() == "Terraria" + 236) {
+-						if (reader.ReadString() == "Terraria" + 237) {
 +						string clientVersion = reader.ReadString();
 +						ModNet.isModdedClient[whoAmI] = clientVersion == BuildInfo.versionedName;
-+						if (ModNet.isModdedClient[whoAmI] || clientVersion == "Terraria" + 236 && ModNet.AllowVanillaClients) {
++						if (ModNet.isModdedClient[whoAmI] || clientVersion == "Terraria" + Main.curRelease && ModNet.AllowVanillaClients) {
  							if (string.IsNullOrEmpty(Netplay.ServerPassword)) {
  								Netplay.Clients[whoAmI].State = 1;
 +								if (ModNet.isModdedClient[whoAmI]) {
@@ -153,7 +153,7 @@
  						if (num115 == 245)
  							NPC.golemBoss = num112;
  
--						if (nPC4.type >= 0 && nPC4.type < 665 && Main.npcCatchable[nPC4.type])
+-						if (nPC4.type >= 0 && nPC4.type < 667 && Main.npcCatchable[nPC4.type])
 +						if (nPC4.type >= 0 && nPC4.type < NPCLoader.NPCCount && Main.npcCatchable[nPC4.type])
  							nPC4.releaseOwner = reader.ReadByte();
  
@@ -311,7 +311,7 @@
  						obj7.zone3 = reader.ReadByte();
  						obj7.zone4 = reader.ReadByte();
 +						if (!ModNet.AllowVanillaClients)
-+							PlayerHooks.ReceiveCustomBiomes(obj7, reader);
++							BiomeLoader.ReceiveCustomBiomes(obj7, reader);
 +
  						if (Main.netMode == 2)
  							NetMessage.TrySendData(36, -1, whoAmI, null, num224);
@@ -341,7 +341,7 @@
  						if (Main.netMode != 2)
  							break;
  
--						if (num191 >= 0 && num191 < 665 && NPCID.Sets.MPAllowedEnemies[num191]) {
+-						if (num191 >= 0 && num191 < 667 && NPCID.Sets.MPAllowedEnemies[num191]) {
 +						if (num191 >= 0 && num191 < NPCID.Sets.MPAllowedEnemies.Length && NPCID.Sets.MPAllowedEnemies[num191]) {
  							if (!NPC.AnyNPCs(num191))
  								NPC.SpawnOnPlayer(plr, num191);
