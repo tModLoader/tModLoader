@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.
+	/// This is the superclass for ModTile and ModWall, combining common code
 	/// </summary>
 	public abstract class ModBlockType : ModTexturedType
 	{
@@ -80,7 +80,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to stop this block from being placed at the given coordinates. Return false to stop the block from being placed. Returns true by default.
+		/// Allows you to stop this tile/wall from being placed at the given coordinates. Return false to stop the tile/wall from being placed. Returns true by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
@@ -127,8 +127,18 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates. Equal to Player.tileTargetX</param>
 		/// <param name="j">The y position in tile coordinates. Equal to Player.tileTargetY</param>
-		/// <param name="item">The item used to place this tile.</param>
+		/// <param name="item">The item used to place this tile/wall.</param>
 		public virtual void PlaceInWorld(int i, int j, Item item) {
+		}
+
+		/// <summary>
+		/// Allows you to determine how much light this tile/wall emits.
+		/// If it is a tile, make sure you set Main.tileLighted[Type] to true in SetDefaults for this to work.
+		/// If it is a wall, it can also let you light up the block in front of this wall.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
 		}
 	}
 }
