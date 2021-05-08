@@ -7,6 +7,8 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class GlobalBlockType : ModType
 	{
+		internal GlobalBlockType() { }
+
 		/// <summary>
 		/// Allows you to modify the properties of any tile/wall in the game. Most properties are stored as arrays throughout the Terraria code.
 		/// </summary>
