@@ -8,6 +8,7 @@ using Terraria.GameContent.Biomes.CaveHouse;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
 
 namespace Terraria.ModLoader
@@ -919,7 +920,7 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool CanGrowModCactus(int type) {
-			return cacti.ContainsKey(type);
+			return cacti.ContainsKey(type) || TileIO.Tiles.unloadedTypes.Contains((ushort)type);
 		}
 
 		public static Texture2D GetCactusTexture(int type) {
