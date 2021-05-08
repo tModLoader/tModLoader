@@ -3096,7 +3096,7 @@
  				num5 = 2;
  				array9[0] = statusText;
  				array[0] = true;
-@@ -36354,17 +_,32 @@
+@@ -36354,17 +_,22 @@
  					Netplay.ServerPassword = "";
  				}
  				else if (selectedMenu == 2 || inputTextEnter || autoPass) {
@@ -3117,18 +3117,8 @@
 +					tServer.StartInfo.FileName = "tModLoaderServer.exe";
  #else
 -					tServer.StartInfo.FileName = "TerrariaServer";
-+					if (Debugger.IsAttached || File.Exists("LaunchLogs\\runtime.log")) {
-+						tServer.StartInfo.FileName = Process.GetCurrentProcess().MainModule.FileName;
-+					}
-+					else {
-+						// Dynamically read in the target runtime
-+						using (StreamReader r = new StreamReader("tModLoader.runtimeconfig.json")) {
-+							string json = r.ReadToEnd();
-+							dynamic rConfigArr = JsonConvert.DeserializeObject(json);
-+							string rVersion = rConfigArr.runtimeOptions.framework.version;
-+							tServer.StartInfo.FileName = Path.Combine("dotnet", rVersion, "dotnet");
-+						}
-+					}
++					var fileName = Process.GetCurrentProcess().MainModule.FileName;
++					tServer.StartInfo.FileName = fileName.Remove(fileName.LastIndexOf("."));
  #endif
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {
