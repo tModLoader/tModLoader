@@ -1,0 +1,16 @@
+--- src/Terraria/Terraria/GameContent/UI/States/UIResourcePackSelectionMenu.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UIResourcePackSelectionMenu.cs
+@@ -16,8 +_,11 @@
+ 
+ namespace Terraria.GameContent.UI.States
+ {
+-	public class UIResourcePackSelectionMenu : UIState, IHaveBackButtonCommand
+-	{
++	public class UIResourcePackSelectionMenu : UIState, IHaveBackButtonCommand {
++		public UIState PreviousUIState {
++			get => _uiStateToGoBackTo; 
++			set => _uiStateToGoBackTo = value;
++		}
+ 		private readonly AssetSourceController _sourceController;
+ 		private UIList _availablePacksList;
+ 		private UIList _enabledPacksList;

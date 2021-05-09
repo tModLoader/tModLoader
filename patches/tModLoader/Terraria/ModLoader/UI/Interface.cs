@@ -41,7 +41,7 @@ namespace Terraria.ModLoader.UI
 		internal const int exitID = 10026;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
-		private static UIModSources modSources = new UIModSources();
+		internal static UIModSources modSources = new UIModSources();
 		internal static UIBuildMod buildMod = new UIBuildMod();
 		internal static UIErrorMessage errorMessage = new UIErrorMessage();
 		internal static UIModBrowser modBrowser = new UIModBrowser();
@@ -62,6 +62,7 @@ namespace Terraria.ModLoader.UI
 		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons) {
+			/*
 			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuMods");
 			if (selectedMenu == buttonIndex) {
 				SoundEngine.PlaySound(10, -1, -1, 1);
@@ -85,6 +86,7 @@ namespace Terraria.ModLoader.UI
 			}
 			buttonIndex++;
 			numButtons++;
+			*/
 			offY = 220;
 			for (int k = 0; k < numButtons; k++) {
 				buttonScales[k] = 0.82f;
@@ -129,15 +131,7 @@ namespace Terraria.ModLoader.UI
 				//	infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage"), Main.menuMode);
 				//}
 			}
-			if (Main.menuMode == modsMenuID) {
-				Main.MenuUI.SetState(modsMenu);
-				Main.menuMode = 888;
-			}
-			else if (Main.menuMode == modSourcesID) {
-				Main.MenuUI.SetState(modSources);
-				Main.menuMode = 888;
-			}
-			else if (Main.menuMode == createModID) {
+			if (Main.menuMode == createModID) {
 				Main.MenuUI.SetState(createMod);
 				Main.menuMode = 888;
 			}
@@ -155,10 +149,6 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (Main.menuMode == reloadModsID) {
 				ModLoader.Reload();
-			}
-			else if (Main.menuMode == modBrowserID) {
-				Main.MenuUI.SetState(modBrowser);
-				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == modInfoID) {
 				Main.MenuUI.SetState(modInfo);

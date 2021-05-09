@@ -1,0 +1,13 @@
+--- src/Terraria/Terraria/GameContent/UI/States/UIWorkshopWorldImport.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UIWorkshopWorldImport.cs
+@@ -17,6 +_,10 @@
+ {
+ 	public class UIWorkshopWorldImport : UIState, IHaveBackButtonCommand
+ 	{
++		public UIState PreviousUIState {
++			get => _uiStateToGoBackTo;
++			set => _uiStateToGoBackTo = value;
++		}
+ 		private UIList _worldList;
+ 		private UITextPanel<LocalizedText> _backPanel;
+ 		private UIPanel _containerPanel;

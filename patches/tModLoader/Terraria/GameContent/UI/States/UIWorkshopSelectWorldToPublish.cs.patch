@@ -1,0 +1,13 @@
+--- src/Terraria/Terraria/GameContent/UI/States/UIWorkshopSelectWorldToPublish.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UIWorkshopSelectWorldToPublish.cs
+@@ -15,6 +_,10 @@
+ {
+ 	public class UIWorkshopSelectWorldToPublish : UIState, IHaveBackButtonCommand
+ 	{
++		public UIState PreviousUIState {
++			get => _menuToGoBackTo;
++			set => _menuToGoBackTo = value;
++		}
+ 		private UIList _entryList;
+ 		private UITextPanel<LocalizedText> _backPanel;
+ 		private UIPanel _containerPanel;

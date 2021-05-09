@@ -1,0 +1,13 @@
+--- src/Terraria/Terraria/GameContent/UI/States/AWorkshopPublishInfoState.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/AWorkshopPublishInfoState.cs
+@@ -20,6 +_,10 @@
+ {
+ 	public abstract class AWorkshopPublishInfoState<TPublishedObjectType> : UIState, IHaveBackButtonCommand
+ 	{
++		public UIState PreviousUIState { 
++			get => _previousUIState; 
++			set => _previousUIState = value; 
++		}
+ 		protected UIState _previousUIState;
+ 		protected TPublishedObjectType _dataObject;
+ 		protected string _publishedObjectNameDescriptorTexKey;

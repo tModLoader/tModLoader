@@ -1,0 +1,136 @@
+--- src/Terraria/Terraria/GameContent/UI/States/UIWorkshopHub.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UIWorkshopHub.cs
+@@ -10,9 +_,9 @@
+ 
+ namespace Terraria.GameContent.UI.States
+ {
+-	public class UIWorkshopHub : UIState, IHaveBackButtonCommand
++	public partial class UIWorkshopHub : UIState, IHaveBackButtonCommand
+ 	{
+-		private UIState _previousUIState;
++		public UIState PreviousUIState { get; set; }
+ 		private UIText _descriptionText;
+ 		private UIElement _buttonUseResourcePacks;
+ 		private UIElement _buttonPublishResourcePacks;
+@@ -24,8 +_,9 @@
+ 
+ 		public static event Action OnWorkshopHubMenuOpened;
+ 
+-		public UIWorkshopHub(UIState stateToGoBackTo) {
+-			_previousUIState = stateToGoBackTo;
++		public UIWorkshopHub(UIState stateToGoBackTo, bool tML = true) {
++			PreviousUIState = stateToGoBackTo;
++			_tML = tML;
+ 		}
+ 
+ 		public void EnterHub() {
+@@ -35,9 +_,9 @@
+ 		public override void OnInitialize() {
+ 			base.OnInitialize();
+ 			int num = 20;
+-			int num2 = 250;
++			int num2 = 220;
+ 			int num3 = 50 + num * 2;
+-			int num4 = 600;
++			int num4 = 570;
+ 			int num5 = num4 - num2 - num3;
+ 			UIElement uIElement = new UIElement();
+ 			uIElement.Width.Set(600f, 0f);
+@@ -63,7 +_,7 @@
+ 			uITextPanel2.Height.Set(50f, 0f);
+ 			uITextPanel2.VAlign = 1f;
+ 			uITextPanel2.HAlign = 0f;
+-			uITextPanel2.Top.Set(-num, 0f);
++			uITextPanel2.Top.Set(-num + 30, 0f);
+ 			uITextPanel2.OnMouseOver += FadedMouseOver;
+ 			uITextPanel2.OnMouseOut += FadedMouseOut;
+ 			uITextPanel2.OnClick += GoBackClick;
+@@ -75,26 +_,38 @@
+ 			uITextPanel3.Height.Set(50f, 0f);
+ 			uITextPanel3.VAlign = 1f;
+ 			uITextPanel3.HAlign = 1f;
+-			uITextPanel3.Top.Set(-num, 0f);
++			uITextPanel3.Top.Set(-num + 30, 0f);
+ 			uITextPanel3.OnMouseOver += FadedMouseOver;
+ 			uITextPanel3.OnMouseOut += FadedMouseOut;
+ 			uITextPanel3.OnClick += GoLogsClick;
+ 			uITextPanel3.SetSnapPoint("Logs", 0);
+ 			uIElement.Append(uITextPanel3);
+ 			_buttonLogs = uITextPanel3;
+-			UIElement uIElement3 = MakeButton_OpenWorkshopWorldsImportMenu();
++			UITextPanel<LocalizedText> uITextPanel4 = new UITextPanel<LocalizedText>(Language.GetText("SwitchWorkshopTo" + (_tML ? "Terraria" : "tModLoader")), 0.7f, large: true);
++			uITextPanel4.Width.Set(-10f, 0.5f);
++			uITextPanel4.Height.Set(20f, 0f);
++			uITextPanel4.Top.Set(-44f, 0f);
++			uITextPanel4.VAlign = 1f;
++			uITextPanel4.HAlign = 0.5f;
++			uITextPanel4.OnMouseOver += FadedMouseOver;
++			uITextPanel4.OnMouseOut += FadedMouseOut;
++			uITextPanel4.OnClick += GoWorkshopClick;
++			uITextPanel4.SetSnapPoint("WorkshopMode", 0);
++			uIElement.Append(uITextPanel4);
++			_buttonTML = uITextPanel4;
++			UIElement uIElement3 = _tML ? MakeButton_OpenModsMenu() : MakeButton_OpenWorkshopWorldsImportMenu();
+ 			uIElement3.HAlign = 0f;
+ 			uIElement3.VAlign = 0f;
+ 			uIElement2.Append(uIElement3);
+-			uIElement3 = MakeButton_OpenUseResourcePacksMenu();
++			uIElement3 = _tML ? MakeButton_OpenModSourcesMenu() : MakeButton_OpenUseResourcePacksMenu();
+ 			uIElement3.HAlign = 1f;
+ 			uIElement3.VAlign = 0f;
+ 			uIElement2.Append(uIElement3);
+-			uIElement3 = MakeButton_OpenPublishWorldsMenu();
++			uIElement3 = _tML ? MakeButton_OpenModBrowserMenu() : MakeButton_OpenPublishWorldsMenu();
+ 			uIElement3.HAlign = 0f;
+ 			uIElement3.VAlign = 1f;
+ 			uIElement2.Append(uIElement3);
+-			uIElement3 = MakeButton_OpenPublishResourcePacksMenu();
++			uIElement3 = _tML ? MakeButton_TBD() : MakeButton_OpenPublishResourcePacksMenu();
+ 			uIElement3.HAlign = 1f;
+ 			uIElement3.VAlign = 1f;
+ 			uIElement2.Append(uIElement3);
+@@ -165,6 +_,11 @@
+ 		}
+ 
+ 		public void ShowOptionDescription(UIMouseEvent evt, UIElement listeningElement) {
++			if (_tML) {
++				ShowOptionDescriptionTML(evt, listeningElement);
++				return;
++			}
++
+ 			LocalizedText localizedText = null;
+ 			if (listeningElement == _buttonUseResourcePacks)
+ 				localizedText = Language.GetText("Workshop.HubDescriptionUseResourcePacks");
+@@ -292,13 +_,13 @@
+ 		}
+ 
+ 		public void HandleBackButtonUsage() {
+-			if (_previousUIState == null) {
++			if (PreviousUIState == null) {
+ 				Main.menuMode = 0;
+ 				return;
+ 			}
+ 
+ 			Main.menuMode = 888;
+-			Main.MenuUI.SetState(_previousUIState);
++			Main.MenuUI.SetState(PreviousUIState);
+ 			SoundEngine.PlaySound(11);
+ 		}
+ 
+@@ -308,6 +_,8 @@
+ 		}
+ 
+ 		private void SetupGamepadPoints(SpriteBatch spriteBatch) {
++			//TODO: Gamepad support?
++			/*
+ 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
+ 			int num = 3000;
+ 			int idRangeEndExclusive = num;
+@@ -325,6 +_,7 @@
+ 			_helper.PairUpDown(linkPoint4, linkPoint5);
+ 			_helper.PairUpDown(linkPoint2, linkPoint6);
+ 			_helper.MoveToVisuallyClosestPoint(num, idRangeEndExclusive);
++			*/
+ 		}
+ 
+ 		static UIWorkshopHub() {

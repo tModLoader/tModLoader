@@ -3222,26 +3222,16 @@
  					menuMode = 0;
  					netMode = 0;
  				}
-@@ -36564,14 +_,18 @@
- 					menuMode = 12;
+@@ -36573,7 +_,8 @@
  				}
  
-+				if (Steam.IsSteamApp)
-+					goto SkipAchievements;
-+
  				num11++;
- 				array9[num11] = Lang.menu[131].Value;
-+				//Comment to join two patches.
- 				if (selectedMenu == num11) {
- 					SoundEngine.PlaySound(10);
- 					menuMode = 888;
- 					MenuUI.SetState(AchievementsMenu);
- 				}
--
-+	SkipAchievements:
- 				num11++;
- 				if (SocialAPI.Workshop != null) {
++				if (true) {
+-				if (SocialAPI.Workshop != null) {
++				//if (SocialAPI.Workshop != null) {
  					array9[num11] = Language.GetText("UI.Workshop").Value;
+ 					if (selectedMenu == num11) {
+ 						SoundEngine.PlaySound(10);
 @@ -36592,6 +_,7 @@
  				}
  
