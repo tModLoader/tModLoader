@@ -45,7 +45,7 @@
  			uITextPanel2.OnMouseOver += FadedMouseOver;
  			uITextPanel2.OnMouseOut += FadedMouseOut;
  			uITextPanel2.OnClick += GoBackClick;
-@@ -75,26 +_,38 @@
+@@ -75,26 +_,40 @@
  			uITextPanel3.Height.Set(50f, 0f);
  			uITextPanel3.VAlign = 1f;
  			uITextPanel3.HAlign = 1f;
@@ -58,7 +58,7 @@
  			uIElement.Append(uITextPanel3);
  			_buttonLogs = uITextPanel3;
 -			UIElement uIElement3 = MakeButton_OpenWorkshopWorldsImportMenu();
-+			UITextPanel<LocalizedText> uITextPanel4 = new UITextPanel<LocalizedText>(Language.GetText("SwitchWorkshopTo" + (_tML ? "Terraria" : "tModLoader")), 0.7f, large: true);
++			UITextPanel<LocalizedText> uITextPanel4 = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.WorkshopMode" + (_tML ? "tML" : "Terra")), 0.7f, large: true);
 +			uITextPanel4.Width.Set(-10f, 0.5f);
 +			uITextPanel4.Height.Set(20f, 0f);
 +			uITextPanel4.Top.Set(-44f, 0f);
@@ -66,6 +66,8 @@
 +			uITextPanel4.HAlign = 0.5f;
 +			uITextPanel4.OnMouseOver += FadedMouseOver;
 +			uITextPanel4.OnMouseOut += FadedMouseOut;
++			uITextPanel4.OnMouseOver += ShowOptionDescription;
++			uITextPanel4.OnMouseOut += ClearOptionDescription;
 +			uITextPanel4.OnClick += GoWorkshopClick;
 +			uITextPanel4.SetSnapPoint("WorkshopMode", 0);
 +			uIElement.Append(uITextPanel4);
@@ -89,18 +91,45 @@
  			uIElement3.HAlign = 1f;
  			uIElement3.VAlign = 1f;
  			uIElement2.Append(uIElement3);
-@@ -165,6 +_,11 @@
- 		}
+@@ -166,17 +_,36 @@
  
  		public void ShowOptionDescription(UIMouseEvent evt, UIElement listeningElement) {
-+			if (_tML) {
-+				ShowOptionDescriptionTML(evt, listeningElement);
-+				return;
-+			}
-+
  			LocalizedText localizedText = null;
++
++			if (listeningElement == _buttonMods)
++				localizedText = Language.GetText("tModLoader.MenuModsDescription");
++
++			if (listeningElement == _buttonModSources)
++				localizedText = Language.GetText("tModLoader.MenuModSourcesDescription");
++
++			if (listeningElement == _buttonModBrowser)
++				//localizedText = Language.GetText("tModLoader.MenuModBrowserDescription");
++				localizedText = Language.GetText("Not Implemented in tModLoader 1.4");
++
++			if (listeningElement == _buttonTBD)
++				localizedText = Language.GetText("In game Mod Config Menu? Not Implemented in tModLoader 1.4");
++
  			if (listeningElement == _buttonUseResourcePacks)
  				localizedText = Language.GetText("Workshop.HubDescriptionUseResourcePacks");
+ 
+ 			if (listeningElement == _buttonPublishResourcePacks)
+-				localizedText = Language.GetText("Workshop.HubDescriptionPublishResourcePacks");
++				//localizedText = Language.GetText("Workshop.HubDescriptionPublishResourcePacks");
++				localizedText = Language.GetText("Not Implemented in tModLoader 1.4");
+ 
+ 			if (listeningElement == _buttonImportWorlds)
+ 				localizedText = Language.GetText("Workshop.HubDescriptionImportWorlds");
+ 
+ 			if (listeningElement == _buttonPublishWorlds)
+-				localizedText = Language.GetText("Workshop.HubDescriptionPublishWorlds");
++				//localizedText = Language.GetText("Workshop.HubDescriptionPublishWorlds");
++				localizedText = Language.GetText("Not Implemented in tModLoader 1.4");
++
++			if (listeningElement == _buttonTML)
++				localizedText = Language.GetText("tModLoader.WorkshopModeDescription");
+ 
+ 			if (localizedText != null)
+ 				_descriptionText.SetText(localizedText);
 @@ -292,13 +_,13 @@
  		}
  
@@ -117,20 +146,19 @@
  			SoundEngine.PlaySound(11);
  		}
  
-@@ -308,6 +_,8 @@
- 		}
- 
- 		private void SetupGamepadPoints(SpriteBatch spriteBatch) {
-+			//TODO: Gamepad support?
-+			/*
+@@ -311,10 +_,11 @@
  			UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
  			int num = 3000;
  			int idRangeEndExclusive = num;
-@@ -325,6 +_,7 @@
- 			_helper.PairUpDown(linkPoint4, linkPoint5);
- 			_helper.PairUpDown(linkPoint2, linkPoint6);
- 			_helper.MoveToVisuallyClosestPoint(num, idRangeEndExclusive);
-+			*/
- 		}
- 
- 		static UIWorkshopHub() {
+-			UILinkPoint linkPoint = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonUseResourcePacks);
+-			UILinkPoint linkPoint2 = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonPublishResourcePacks);
+-			UILinkPoint linkPoint3 = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonImportWorlds);
+-			UILinkPoint linkPoint4 = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonPublishWorlds);
++			UILinkPoint linkPoint = _helper.GetLinkPoint(idRangeEndExclusive++, _tML ? _buttonModSources : _buttonUseResourcePacks);
++			UILinkPoint linkPoint2 = _helper.GetLinkPoint(idRangeEndExclusive++, _tML ? _buttonTBD : _buttonPublishResourcePacks);
++			UILinkPoint linkPoint3 = _helper.GetLinkPoint(idRangeEndExclusive++, _tML ? _buttonMods : _buttonImportWorlds);
++			UILinkPoint linkPoint4 = _helper.GetLinkPoint(idRangeEndExclusive++, _tML ? _buttonModBrowser : _buttonPublishWorlds);
++			//TODO: Add switch workshop mode gamepad link point
+ 			UILinkPoint linkPoint5 = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonBack);
+ 			UILinkPoint linkPoint6 = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonLogs);
+ 			_helper.PairLeftRight(linkPoint3, linkPoint);

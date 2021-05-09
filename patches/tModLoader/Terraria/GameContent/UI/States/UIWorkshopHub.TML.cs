@@ -39,7 +39,7 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private UIElement MakeButton_OpenModSourcesMenu() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubWorlds", "tModLoader.MenuModSources");
+			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishResourcepacks", "tModLoader.MenuModSources");
 			uIElement.OnClick += Click_OpenModSourcesMenu;
 			_buttonModSources = uIElement;
 			return uIElement;
@@ -52,7 +52,7 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private UIElement MakeButton_OpenModBrowserMenu() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishResourcepacks", "tModLoader.MenuModBrowser");
+			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubWorlds", "tModLoader.MenuModBrowser");
 			uIElement.OnClick += Click_OpenModBrowserMenu;
 			_buttonModBrowser = uIElement;
 			return uIElement;
@@ -65,7 +65,7 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private UIElement MakeButton_TBD() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishWorlds", "ToBeContinued");
+			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishWorlds", "ToBeDetermined");
 			uIElement.OnClick += Click_OpenTBDMenu;
 			_buttonTBD = uIElement;
 			return uIElement;
@@ -73,24 +73,6 @@ namespace Terraria.GameContent.UI.States
 
 		private void Click_OpenTBDMenu(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
-		}
-
-		public void ShowOptionDescriptionTML(UIMouseEvent evt, UIElement listeningElement) {
-			LocalizedText localizedText = null;
-			if (listeningElement == _buttonMods)
-				localizedText = Language.GetText("SampleDescription");
-
-			if (listeningElement == _buttonModSources)
-				localizedText = Language.GetText("SampleDescription");
-
-			if (listeningElement == _buttonModBrowser)
-				localizedText = Language.GetText("FeatureNotImplemented");
-
-			if (listeningElement == _buttonTBD)
-				localizedText = Language.GetText("SampleDescription");
-
-			if (localizedText != null)
-				_descriptionText.SetText(localizedText);
 		}
 	}
 }
