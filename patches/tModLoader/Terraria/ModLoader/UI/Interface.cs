@@ -115,7 +115,15 @@ namespace Terraria.ModLoader.UI
 				//	infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage"), Main.menuMode);
 				//}
 			}
-			if (Main.menuMode == createModID) {
+			if (Main.menuMode == modsMenuID) {
+				Main.MenuUI.SetState(modsMenu);
+				Main.menuMode = 888;
+			}
+			else if (Main.menuMode == modSourcesID) {
+				Main.MenuUI.SetState(modSources);
+				Main.menuMode = 888;
+			}
+			else if (Main.menuMode == createModID) {
 				Main.MenuUI.SetState(createMod);
 				Main.menuMode = 888;
 			}
@@ -133,6 +141,10 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (Main.menuMode == reloadModsID) {
 				ModLoader.Reload();
+			}
+			else if (Main.menuMode == modBrowserID) {
+				Main.MenuUI.SetState(modBrowser);
+				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == modInfoID) {
 				Main.MenuUI.SetState(modInfo);
