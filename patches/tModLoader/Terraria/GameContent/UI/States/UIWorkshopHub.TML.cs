@@ -13,7 +13,7 @@ namespace Terraria.GameContent.UI.States
 		private bool _tML;
 
 		private UIElement MakeButton_OpenModsMenu() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubResourcepacks", "tModLoader.MenuMods");
+			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubResourcepacks", "tModLoader.MenuEnableMods");
 			uIElement.OnClick += Click_OpenModsMenu;
 			_buttonMods = uIElement;
 			return uIElement;
@@ -26,7 +26,7 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private UIElement MakeButton_OpenModSourcesMenu() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishResourcepacks", "tModLoader.MenuModSources");
+			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishResourcepacks", "tModLoader.MenuDevelopMods");
 			uIElement.OnClick += Click_OpenModSourcesMenu;
 			_buttonModSources = uIElement;
 			return uIElement;

@@ -63,7 +63,7 @@ namespace Terraria.ModLoader.UI
 		// adds to Terraria.Main.DrawMenu in Main.menuMode == 0, after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons) {
-			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuWorkshop");
+			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuMods");
 			if (selectedMenu == buttonIndex) {
 				SoundEngine.PlaySound(10);
 				Main.menuMode = 888;
@@ -107,7 +107,8 @@ namespace Terraria.ModLoader.UI
 			if (Main.menuMode == loadModsID) {
 				if (ModLoader.ShowFirstLaunchWelcomeMessage) {
 					ModLoader.ShowFirstLaunchWelcomeMessage = false;
-					infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
+					//infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
+					infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessageBeta"), Main.menuMode);
 				}
 				//else if (ModLoader.ShowWhatsNew) {
 				//	// TODO: possibly pull from github

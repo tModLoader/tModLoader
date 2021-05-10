@@ -61,6 +61,15 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		public static PingMapLayer Pings = new PingMapLayer();
+@@ -514,7 +_,7 @@
+ 		public static int maxScreenW = 1920;
+ 		public static int maxScreenH = 1200;
+ 		public static int minScreenW = 800;
+-		public static int minScreenH = 600;
++		public static int minScreenH = 720;
+ 		public static float iS = 1f;
+ 		public static bool render;
+ 		public static int qaStyle;
 @@ -541,7 +_,7 @@
  		public static int instantBGTransitionCounter = 2;
  		public static int bgDelay;
@@ -3301,12 +3310,15 @@
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, origin, num104, SpriteEffects.None, 0f);
  					else
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, new Vector2(0f, origin.Y), num104, SpriteEffects.None, 0f);
-@@ -39066,10 +_,51 @@
+@@ -39066,10 +_,54 @@
  					if (num107 == 3)
  						num109 = 2;
  
 +					string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
 +					string patreonShortURL = @"patreon.com/tModLoader";
++					if (FontAssets.MouseText.Value.MeasureString(supportMessage + " " + patreonShortURL).X > screenWidth / 3) {
++						supportMessage += Environment.NewLine;
++					}
 +					bool showPatreon = !Steam.IsSteamApp;
 +					string drawVersion = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "");
 -					Vector2 origin2 = FontAssets.MouseText.Value.MeasureString(versionNumber);

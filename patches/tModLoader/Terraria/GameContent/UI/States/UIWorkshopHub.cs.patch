@@ -24,6 +24,15 @@
  		}
  
  		public void EnterHub() {
+@@ -53,7 +_,7 @@
+ 			uIElement2.Width.Set(0f, 1f);
+ 			uIElement2.Height.Set(num6, 0f);
+ 			uIElement2.SetPadding(0f);
+-			UITextPanel<LocalizedText> uITextPanel = new UITextPanel<LocalizedText>(Language.GetText("UI.WorkshopHub"), 0.8f, large: true);
++			UITextPanel<LocalizedText> uITextPanel = new UITextPanel<LocalizedText>(Language.GetText(_tML ? "tModLoader.ModsHub" : "UI.WorkshopHub"), 0.8f, large: true);
+ 			uITextPanel.HAlign = 0.5f;
+ 			uITextPanel.Top.Set(-46f, 0f);
+ 			uITextPanel.SetPadding(15f);
 @@ -82,19 +_,19 @@
  			uITextPanel3.SetSnapPoint("Logs", 0);
  			uIElement.Append(uITextPanel3);
@@ -54,17 +63,17 @@
  			LocalizedText localizedText = null;
 +
 +			if (listeningElement == _buttonMods)
-+				localizedText = Language.GetText("tModLoader.MenuModsDescription");
++				localizedText = Language.GetText("tModLoader.MenuEnableModsDescription");
 +
 +			if (listeningElement == _buttonModSources)
-+				localizedText = Language.GetText("tModLoader.MenuModSourcesDescription");
++				localizedText = Language.GetText("tModLoader.MenuDevelopModsDescription");
 +
 +			if (listeningElement == _buttonModBrowser)
 +				//localizedText = Language.GetText("tModLoader.MenuModBrowserDescription");
 +				localizedText = Language.GetText("Not Implemented in tModLoader 1.4");
 +
 +			if (listeningElement == _buttonTBD)
-+				localizedText = Language.GetText("In game Mod Config Menu? Not Implemented in tModLoader 1.4");
++				localizedText = Language.GetText("TBD; Not Implemented in tModLoader 1.4");
 +
  			if (listeningElement == _buttonUseResourcePacks)
  				localizedText = Language.GetText("Workshop.HubDescriptionUseResourcePacks");
