@@ -78,7 +78,13 @@ namespace Terraria.ModLoader.UI
 				buttonIndex++;
 				numButtons++;
 			}
-			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModBrowser");
+
+			if (ModLoader.modUpdatesAvailable == 0) {
+				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModBrowser");
+			}
+			else {
+				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModBrowserUpdates", ModLoader.modUpdatesAvailable);
+			}
 			if (selectedMenu == buttonIndex) {
 				SoundEngine.PlaySound(10, -1, -1, 1);
 				Main.menuMode = modBrowserID;

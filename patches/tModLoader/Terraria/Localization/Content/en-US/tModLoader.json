@@ -3,6 +3,7 @@
 		// Main Menu
 		"PatreonSupport": "Please show your support: ",
 		"MenuModBrowser": "Mod Browser",
+		"MenuModBrowserUpdates": "Mod Browser ({0} {^0:Update;Updates} Available)",
 		"MenuMods": "Mods",
 		"MenuModSources": "Mod Sources",
 		"MenuEnableDeveloperMode": "Enable Developer Mode",
@@ -15,7 +16,7 @@
 		"ModsEnableAll": "Enable All",
 		"ModsDisableAll": "Disable All",
 		"ModsReloadMods": "Reload All",
-		"ModsForceReloadAll":  "Force Reload All",
+		"ModsForceReloadAll": "Force Reload All",
 		"ModsOpenModsFolder": "Open Mods Folder",
 		"ModsModPacks": "Mod Packs",
 		"ModsDisable": "Click to disable",
