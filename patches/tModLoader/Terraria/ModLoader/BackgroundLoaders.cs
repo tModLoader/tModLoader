@@ -2,36 +2,60 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Terraria.GameContent;
 using Terraria.Graphics.Effects;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
-	//todo: further documentation
 	/// <summary>
 	/// This is the class that keeps track of all modded background textures and their slots/IDs.
 	/// </summary>
-	public static class BackgroundTextureLoader
+	//TODO: Further documentation.
+	[Autoload(Side = ModSide.Client)]
+	public sealed class BackgroundTextureLoader : Loader
 	{
-		public const int vanillaBackgroundTextureCount = Main.maxBackgrounds;
-		private static int nextBackground = vanillaBackgroundTextureCount;
+		public const int VanillaBackgroundTextureCount = Main.maxBackgrounds;
+
+		private static BackgroundTextureLoader Instance => LoaderManager.Get<BackgroundTextureLoader>();
+
 		internal static IDictionary<string, int> backgrounds = new Dictionary<string, int>();
 
-		internal static int ReserveBackgroundSlot() {
-			int reserve = nextBackground;
-			nextBackground++;
-			return reserve;
+		public BackgroundTextureLoader() {
+			Initialize(VanillaBackgroundTextureCount);
 		}
 
-		/// <summary>
-		/// Returns the slot/ID of the background texture with the given name.
-		/// </summary>
-		public static int GetBackgroundSlot(string texture) => backgrounds.TryGetValue(texture, out int slot) ? slot : -1;
+		/// <summary> Returns the slot/ID of the background texture with the given name. Throws exceptions on failure. </summary>
+		public static int GetBackgroundSlot(string texture) => backgrounds[texture];
 
-		internal static void ResizeAndFillArrays() {
-			Array.Resize(ref TextureAssets.Background, nextBackground);
-			Array.Resize(ref Main.backgroundHeight, nextBackground);
-			Array.Resize(ref Main.backgroundWidth, nextBackground);
+		/// <summary> Safely attempts to output the slot/ID of the background texture with the given name. </summary>
+		public static bool TryGetBackgroundSlot(string texture, out int slot) => backgrounds.TryGetValue(texture, out slot);
+
+		/// <summary>
+		/// Adds a texture to the list of background textures and assigns it a background texture slot.
+		/// </summary>
+		/// <param name="texture">The texture.</param>
+		public static void AddBackgroundTexture(Mod mod, string texture) {
+			if (mod == null)
+				throw new ArgumentNullException(nameof(mod));
+
+			if (texture == null)
+				throw new ArgumentNullException(nameof(texture));
+
+			if (!mod.loading)
+				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
+
+			ModContent.GetTexture(texture);
+
+			backgrounds[texture] = Instance.Reserve();
+		}
+
+		internal override void ResizeArrays() {
+			Array.Resize(ref TextureAssets.Background, TotalCount);
+			Array.Resize(ref Main.backgroundHeight, TotalCount);
+			Array.Resize(ref Main.backgroundWidth, TotalCount);
 
 			foreach (string texture in backgrounds.Keys) {
 				int slot = backgrounds[texture];
@@ -43,13 +67,22 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void Unload() {
-			nextBackground = vanillaBackgroundTextureCount;
+		internal override void Unload() {
+			base.Unload();
+
 			backgrounds.Clear();
+		}
+
+		internal static void AutoloadBackgrounds(Mod mod) {
+			foreach (string fullTexturePath in mod.Assets.EnumeratePaths<Texture2D>().Where(t => t.Contains("Backgrounds/"))) {
+				string texturePath = Path.ChangeExtension(fullTexturePath, null);
+				string textureKey = $"{mod.Name}/{texturePath}";
+
+				AddBackgroundTexture(mod, textureKey);
+			}
 		}
 	}
 
-	//todo: further documentation
 	/// <summary>
 	/// This serves as the central class from which ModUndergroundBackgroundStyle functions are supported and carried out.
 	/// </summary>
@@ -58,7 +91,9 @@ namespace Terraria.ModLoader
 	{
 		public const int VanillaUndergroundBackgroundStylesCount = 18;
 
-		public UndergroundBackgroundStylesLoader() => Initialize(VanillaUndergroundBackgroundStylesCount);
+		public UndergroundBackgroundStylesLoader() {
+			Initialize(VanillaUndergroundBackgroundStylesCount);
+		}
 
 		public override void ChooseStyle(out int style, out SceneEffectPriority priority) {
 			priority = SceneEffectPriority.None; style = -1;
@@ -67,9 +102,10 @@ namespace Terraria.ModLoader
 				return;
 			}
 
-			int tst = Main.LocalPlayer.CurrentSceneEffect.undergroundBackground.value;
-			if (tst >= VanillaCount) {
-				style = tst;
+			int playerUndergroundBackground = Main.LocalPlayer.CurrentSceneEffect.undergroundBackground.value;
+
+			if (playerUndergroundBackground >= VanillaCount) {
+				style = playerUndergroundBackground;
 				priority = Main.LocalPlayer.CurrentSceneEffect.undergroundBackground.priority;
 			}
 		}
@@ -79,11 +115,7 @@ namespace Terraria.ModLoader
 				return;
 			}
 
-			var undergroundBackgroundStyle = Get(style);
-
-			if (undergroundBackgroundStyle != null) {
-				undergroundBackgroundStyle.FillTextureArray(textureSlots);
-			}
+			Get(style)?.FillTextureArray(textureSlots);
 
 			foreach (var hook in GlobalBackgroundStyleLoader.HookFillUndergroundTextureArray) {
 				hook(style, textureSlots);
@@ -94,7 +126,9 @@ namespace Terraria.ModLoader
 	[Autoload(Side = ModSide.Client)]
 	public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgroundStyle>
 	{
-		public SurfaceBackgroundStylesLoader() => Initialize(Main.BG_STYLES_COUNT);
+		public SurfaceBackgroundStylesLoader() {
+			Initialize(Main.BG_STYLES_COUNT);
+		}
 
 		internal override void ResizeArrays() {
 			Array.Resize(ref Main.bgAlphaFrontLayer, TotalCount);
@@ -108,9 +142,10 @@ namespace Terraria.ModLoader
 				return;
 			}
 
-			int tst = Main.LocalPlayer.CurrentSceneEffect.surfaceBackground.value;
-			if (tst >= VanillaCount) {
-				style = tst;
+			int playerSurfaceBackground = Main.LocalPlayer.CurrentSceneEffect.surfaceBackground.value;
+
+			if (playerSurfaceBackground >= VanillaCount) {
+				style = playerSurfaceBackground;
 				priority = Main.LocalPlayer.CurrentSceneEffect.surfaceBackground.priority;
 			}
 		}
@@ -119,10 +154,9 @@ namespace Terraria.ModLoader
 			if (!GlobalBackgroundStyleLoader.loaded) {
 				return;
 			}
-			var surfaceBackgroundStyle = Get(style);
-			if (surfaceBackgroundStyle != null) {
-				surfaceBackgroundStyle.ModifyFarFades(fades, transitionSpeed);
-			}
+
+			Get(style)?.ModifyFarFades(fades, transitionSpeed);
+
 			foreach (var hook in GlobalBackgroundStyleLoader.HookModifyFarSurfaceFades) {
 				hook(style, fades, transitionSpeed);
 			}
@@ -133,33 +167,42 @@ namespace Terraria.ModLoader
 				return;
 			}
 
-			// TODO: Causes background to flicker during load because Main.bgAlpha2 is resized after surfaceBackgroundStyles is added to in AutoLoad.
+			//TODO: This suppresses an error instead of fixing it.
+			// Avoids background flicker during load because Main.bgAlphaFarBackLayer is resized after surfaceBackgroundStyles is added to in AutoLoad.
+			if (TotalCount != Main.bgAlphaFarBackLayer.Length) {
+				return;
+			}
+
 			foreach (var style in list) {
 				int slot = style.Slot;
 				float alpha = Main.bgAlphaFarBackLayer[slot];
 
 				Main.ColorOfSurfaceBackgroundsModified = Main.ColorOfSurfaceBackgroundsBase * alpha;
 
-				if (alpha > 0f) {
-					int textureSlot = style.ChooseFarTexture();
+				if (alpha <= 0f) {
+					continue;
+				}
 
-					if (textureSlot >= 0 && textureSlot < TextureAssets.Background.Length) {
-						Main.instance.LoadBackground(textureSlot);
+				int textureSlot = style.ChooseFarTexture();
 
-						for (int k = 0; k < Main.instance.bgLoops; k++) {
-							Main.spriteBatch.Draw(
-								TextureAssets.Background[textureSlot].Value,
-								new Vector2(Main.instance.bgStartX + Main.bgWidthScaled * k, Main.instance.bgTopY),
-								new Rectangle(0, 0, Main.backgroundWidth[textureSlot], Main.backgroundHeight[textureSlot]),
-								Main.ColorOfSurfaceBackgroundsModified,
-								0f,
-								default,
-								Main.bgScale,
-								SpriteEffects.None,
-								0f
-							);
-						}
-					}
+				if (textureSlot < 0 || textureSlot >= TextureAssets.Background.Length) {
+					continue;
+				}
+
+				Main.instance.LoadBackground(textureSlot);
+
+				for (int k = 0; k < Main.instance.bgLoops; k++) {
+					Main.spriteBatch.Draw(
+						TextureAssets.Background[textureSlot].Value,
+						new Vector2(Main.instance.bgStartX + Main.bgWidthScaled * k, Main.instance.bgTopY),
+						new Rectangle(0, 0, Main.backgroundWidth[textureSlot], Main.backgroundHeight[textureSlot]),
+						Main.ColorOfSurfaceBackgroundsModified,
+						0f,
+						default,
+						Main.bgScale,
+						SpriteEffects.None,
+						0f
+					);
 				}
 			}
 		}
@@ -175,26 +218,30 @@ namespace Terraria.ModLoader
 
 				Main.ColorOfSurfaceBackgroundsModified = Main.ColorOfSurfaceBackgroundsBase * alpha;
 
-				if (alpha > 0f) {
-					int textureSlot = style.ChooseMiddleTexture();
+				if (alpha <= 0f) {
+					continue;
+				}
 
-					if (textureSlot >= 0 && textureSlot < TextureAssets.Background.Length) {
-						Main.instance.LoadBackground(textureSlot);
+				int textureSlot = style.ChooseMiddleTexture();
 
-						for (int k = 0; k < Main.instance.bgLoops; k++) {
-							Main.spriteBatch.Draw(
-								TextureAssets.Background[textureSlot].Value,
-								new Vector2(Main.instance.bgStartX + Main.bgWidthScaled * k, Main.instance.bgTopY),
-								new Rectangle(0, 0, Main.backgroundWidth[textureSlot], Main.backgroundHeight[textureSlot]),
-								Main.ColorOfSurfaceBackgroundsModified,
-								0f,
-								default,
-								Main.bgScale,
-								SpriteEffects.None,
-								0f
-							);
-						}
-					}
+				if (textureSlot < 0 || textureSlot >= TextureAssets.Background.Length) {
+					continue;
+				}
+
+				Main.instance.LoadBackground(textureSlot);
+
+				for (int k = 0; k < Main.instance.bgLoops; k++) {
+					Main.spriteBatch.Draw(
+						TextureAssets.Background[textureSlot].Value,
+						new Vector2(Main.instance.bgStartX + Main.bgWidthScaled * k, Main.instance.bgTopY),
+						new Rectangle(0, 0, Main.backgroundWidth[textureSlot], Main.backgroundHeight[textureSlot]),
+						Main.ColorOfSurfaceBackgroundsModified,
+						0f,
+						default,
+						Main.bgScale,
+						SpriteEffects.None,
+						0f
+					);
 				}
 			}
 		}
@@ -210,55 +257,60 @@ namespace Terraria.ModLoader
 
 			var surfaceBackgroundStyle = Get(style);
 
-			if (surfaceBackgroundStyle != null && surfaceBackgroundStyle.PreDrawCloseBackground(Main.spriteBatch)) {
-				Main.bgScale = 1.25f;
-				Main.instance.bgParallax = 0.37;
+			if (surfaceBackgroundStyle == null || !surfaceBackgroundStyle.PreDrawCloseBackground(Main.spriteBatch)) {
+				return;
+			}
 
-				float a = 1800.0f;
-				float b = 1750.0f;
-				int textureSlot = surfaceBackgroundStyle.ChooseCloseTexture(ref Main.bgScale, ref Main.instance.bgParallax, ref a, ref b);
+			Main.bgScale = 1.25f;
+			Main.instance.bgParallax = 0.37;
 
-				if (textureSlot >= 0 && textureSlot < TextureAssets.Background.Length) {
-					//Custom: bgScale, textureslot, patallaz, these 2 numbers...., Top and Start?
-					Main.instance.LoadBackground(textureSlot);
-					Main.bgScale *= 2f;
-					Main.bgWidthScaled = (int)((float)Main.backgroundWidth[textureSlot] * Main.bgScale);
+			float a = 1800.0f;
+			float b = 1750.0f;
+			int textureSlot = surfaceBackgroundStyle.ChooseCloseTexture(ref Main.bgScale, ref Main.instance.bgParallax, ref a, ref b);
 
-					SkyManager.Instance.DrawToDepth(Main.spriteBatch, 1f / (float)Main.instance.bgParallax);
+			if (textureSlot < 0 || textureSlot >= TextureAssets.Background.Length) {
+				return;
+			}
 
-					Main.instance.bgStartX = (int)(-Math.IEEERemainder(Main.screenPosition.X * Main.instance.bgParallax, Main.bgWidthScaled) - (Main.bgWidthScaled / 2));
-					Main.instance.bgTopY = (int)((-Main.screenPosition.Y + Main.instance.screenOff / 2f) / (Main.worldSurface * 16.0) * a + b) + (int)Main.instance.scAdj;
+			//Custom: bgScale, textureslot, patallaz, these 2 numbers...., Top and Start?
+			Main.instance.LoadBackground(textureSlot);
 
-					if (Main.gameMenu) {
-						Main.instance.bgTopY = 320;
-					}
+			Main.bgScale *= 2f;
+			Main.bgWidthScaled = (int)((float)Main.backgroundWidth[textureSlot] * Main.bgScale);
 
-					Main.instance.bgLoops = Main.screenWidth / Main.bgWidthScaled + 2;
+			SkyManager.Instance.DrawToDepth(Main.spriteBatch, 1f / (float)Main.instance.bgParallax);
 
-					if (Main.screenPosition.Y < Main.worldSurface * 16.0 + 16.0) {
-						for (int k = 0; k < Main.instance.bgLoops; k++) {
-							Main.spriteBatch.Draw(
-								TextureAssets.Background[textureSlot].Value,
-								new Vector2(Main.instance.bgStartX + Main.bgWidthScaled * k, Main.instance.bgTopY),
-								new Rectangle(0, 0, Main.backgroundWidth[textureSlot], Main.backgroundHeight[textureSlot]),
-								Main.ColorOfSurfaceBackgroundsModified,
-								0f,
-								default,
-								Main.bgScale,
-								SpriteEffects.None,
-								0f
-							);
-						}
-					}
+			Main.instance.bgStartX = (int)(-Math.IEEERemainder(Main.screenPosition.X * Main.instance.bgParallax, Main.bgWidthScaled) - (Main.bgWidthScaled / 2));
+			Main.instance.bgTopY = (int)((-Main.screenPosition.Y + Main.instance.screenOff / 2f) / (Main.worldSurface * 16.0) * a + b) + (int)Main.instance.scAdj;
+
+			if (Main.gameMenu) {
+				Main.instance.bgTopY = 320;
+			}
+
+			Main.instance.bgLoops = Main.screenWidth / Main.bgWidthScaled + 2;
+
+			if (Main.screenPosition.Y < Main.worldSurface * 16.0 + 16.0) {
+				for (int k = 0; k < Main.instance.bgLoops; k++) {
+					Main.spriteBatch.Draw(
+						TextureAssets.Background[textureSlot].Value,
+						new Vector2(Main.instance.bgStartX + Main.bgWidthScaled * k, Main.instance.bgTopY),
+						new Rectangle(0, 0, Main.backgroundWidth[textureSlot], Main.backgroundHeight[textureSlot]),
+						Main.ColorOfSurfaceBackgroundsModified,
+						0f,
+						default,
+						Main.bgScale,
+						SpriteEffects.None,
+						0f
+					);
 				}
 			}
 		}
 	}
 
-
 	internal static class GlobalBackgroundStyleLoader
 	{
 		internal static readonly IList<GlobalBackgroundStyle> globalBackgroundStyles = new List<GlobalBackgroundStyle>();
+
 		internal static bool loaded = false;
 		internal static Action<int, int[]>[] HookFillUndergroundTextureArray;
 		internal static Action<int, float[], float>[] HookModifyFarSurfaceFades;

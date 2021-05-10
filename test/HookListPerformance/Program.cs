@@ -100,7 +100,7 @@ namespace HookListPerformance
 				var s = $"{headings[impl],-34}{perf:0}ns/item";
 				if (impl > 0) {
 					var basePerf = implPerfTimes[0];
-					s += $"{(perf-basePerf)/perf,8:+0.0%;0.0%}";
+					s += $"{(perf-basePerf)/perf,8:+0.0%;-0.0%}";
 				}
 				Console.WriteLine(s);
 			}
