@@ -119,7 +119,7 @@ namespace Terraria.ModLoader.UI
 
 			// Only show force reload button in developer mode
 			if (numButtonsVisible == 3) {
-				buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsForceReloadAll"));
+				buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsForceReload"));
 				buttonRM.CopyStyle(buttonEA);
 				buttonRM.HAlign = 1f;
 				buttonRM.WithFadedMouseOver();

@@ -16,7 +16,7 @@
 		"ModsEnableAll": "Enable All",
 		"ModsDisableAll": "Disable All",
 		"ModsReloadMods": "Reload All",
-		"ModsForceReloadAll": "Force Reload All",
+		"ModsForceReload": "Force Reload",
 		"ModsOpenModsFolder": "Open Mods Folder",
 		"ModsModPacks": "Mod Packs",
 		"ModsDisable": "Click to disable",
