@@ -18,60 +18,17 @@
  
 -		public UIWorkshopHub(UIState stateToGoBackTo) {
 -			_previousUIState = stateToGoBackTo;
-+		public UIWorkshopHub(UIState stateToGoBackTo, bool tML = true) {
++		public UIWorkshopHub(UIState stateToGoBackTo, bool tML = false) {
 +			PreviousUIState = stateToGoBackTo;
 +			_tML = tML;
  		}
  
  		public void EnterHub() {
-@@ -35,9 +_,9 @@
- 		public override void OnInitialize() {
- 			base.OnInitialize();
- 			int num = 20;
--			int num2 = 250;
-+			int num2 = 220;
- 			int num3 = 50 + num * 2;
--			int num4 = 600;
-+			int num4 = 570;
- 			int num5 = num4 - num2 - num3;
- 			UIElement uIElement = new UIElement();
- 			uIElement.Width.Set(600f, 0f);
-@@ -63,7 +_,7 @@
- 			uITextPanel2.Height.Set(50f, 0f);
- 			uITextPanel2.VAlign = 1f;
- 			uITextPanel2.HAlign = 0f;
--			uITextPanel2.Top.Set(-num, 0f);
-+			uITextPanel2.Top.Set(-num + 30, 0f);
- 			uITextPanel2.OnMouseOver += FadedMouseOver;
- 			uITextPanel2.OnMouseOut += FadedMouseOut;
- 			uITextPanel2.OnClick += GoBackClick;
-@@ -75,26 +_,40 @@
- 			uITextPanel3.Height.Set(50f, 0f);
- 			uITextPanel3.VAlign = 1f;
- 			uITextPanel3.HAlign = 1f;
--			uITextPanel3.Top.Set(-num, 0f);
-+			uITextPanel3.Top.Set(-num + 30, 0f);
- 			uITextPanel3.OnMouseOver += FadedMouseOver;
- 			uITextPanel3.OnMouseOut += FadedMouseOut;
- 			uITextPanel3.OnClick += GoLogsClick;
+@@ -82,19 +_,19 @@
  			uITextPanel3.SetSnapPoint("Logs", 0);
  			uIElement.Append(uITextPanel3);
  			_buttonLogs = uITextPanel3;
 -			UIElement uIElement3 = MakeButton_OpenWorkshopWorldsImportMenu();
-+			UITextPanel<LocalizedText> uITextPanel4 = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.WorkshopMode" + (_tML ? "tML" : "Terra")), 0.7f, large: true);
-+			uITextPanel4.Width.Set(-10f, 0.5f);
-+			uITextPanel4.Height.Set(20f, 0f);
-+			uITextPanel4.Top.Set(-44f, 0f);
-+			uITextPanel4.VAlign = 1f;
-+			uITextPanel4.HAlign = 0.5f;
-+			uITextPanel4.OnMouseOver += FadedMouseOver;
-+			uITextPanel4.OnMouseOut += FadedMouseOut;
-+			uITextPanel4.OnMouseOver += ShowOptionDescription;
-+			uITextPanel4.OnMouseOut += ClearOptionDescription;
-+			uITextPanel4.OnClick += GoWorkshopClick;
-+			uITextPanel4.SetSnapPoint("WorkshopMode", 0);
-+			uIElement.Append(uITextPanel4);
-+			_buttonTML = uITextPanel4;
 +			UIElement uIElement3 = _tML ? MakeButton_OpenModsMenu() : MakeButton_OpenWorkshopWorldsImportMenu();
  			uIElement3.HAlign = 0f;
  			uIElement3.VAlign = 0f;
@@ -91,7 +48,7 @@
  			uIElement3.HAlign = 1f;
  			uIElement3.VAlign = 1f;
  			uIElement2.Append(uIElement3);
-@@ -166,17 +_,36 @@
+@@ -166,17 +_,33 @@
  
  		public void ShowOptionDescription(UIMouseEvent evt, UIElement listeningElement) {
  			LocalizedText localizedText = null;
@@ -124,9 +81,6 @@
 -				localizedText = Language.GetText("Workshop.HubDescriptionPublishWorlds");
 +				//localizedText = Language.GetText("Workshop.HubDescriptionPublishWorlds");
 +				localizedText = Language.GetText("Not Implemented in tModLoader 1.4");
-+
-+			if (listeningElement == _buttonTML)
-+				localizedText = Language.GetText("tModLoader.WorkshopModeDescription");
  
  			if (localizedText != null)
  				_descriptionText.SetText(localizedText);

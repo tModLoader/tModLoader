@@ -10,6 +10,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.GameContent.UI.States;
 
 namespace Terraria.ModLoader.UI
 {
@@ -59,34 +60,17 @@ namespace Terraria.ModLoader.UI
 		internal static UIProgress progress = new UIProgress();
 		internal static UIDownloadProgress downloadProgress = new UIDownloadProgress();
 
-		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
+		// adds to Terraria.Main.DrawMenu in Main.menuMode == 0, after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons) {
-			/*
-			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuMods");
+			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuWorkshop");
 			if (selectedMenu == buttonIndex) {
-				SoundEngine.PlaySound(10, -1, -1, 1);
-				Main.menuMode = modsMenuID;
+				SoundEngine.PlaySound(10);
+				Main.menuMode = 888;
+				Main.MenuUI.SetState(new UIWorkshopHub(null, true));
 			}
 			buttonIndex++;
 			numButtons++;
-			if (ModCompile.DeveloperMode) {
-				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModSources");
-				if (selectedMenu == buttonIndex) {
-					SoundEngine.PlaySound(10, -1, -1, 1);
-					Main.menuMode = modSourcesID;
-				}
-				buttonIndex++;
-				numButtons++;
-			}
-			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModBrowser");
-			if (selectedMenu == buttonIndex) {
-				SoundEngine.PlaySound(10, -1, -1, 1);
-				Main.menuMode = modBrowserID;
-			}
-			buttonIndex++;
-			numButtons++;
-			*/
 			offY = 220;
 			for (int k = 0; k < numButtons; k++) {
 				buttonScales[k] = 0.82f;

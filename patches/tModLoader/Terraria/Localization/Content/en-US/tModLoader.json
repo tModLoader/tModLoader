@@ -11,9 +11,7 @@
 		"MenuEnableDeveloperMode": "Enable Developer Mode",
 		"FirstLaunchWelcomeMessage": "Welcome to tModLoader 1.4 Alpha.\n\nYou have successfully installed an unstable tModLoader that may contain game-breaking bugs. Use the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which development oriented mods are available for 1.4 tModLoader.",
 		"tModLoaderSettings": "tModLoader Settings",
-		"WorkshopModetML": "Current: tModLoader Workshop",
-		"WorkshopModeTerra": "Current: Terraria Workshop",
-		"WorkshopModeDescription": "Swap between Terraria(Resource packs, Worlds) and tModLoader(Mods) Workshop functionality",
+		"MenuWorkshop": "Mods Workshop",
 		"ModMenuSwap": "Switch Menu Theme",
 
 		// Mods Menu

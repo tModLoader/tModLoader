@@ -1,13 +1,6 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria.Audio;
-using Terraria.GameContent.UI.Elements;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
-using Terraria.UI.Gamepad;
 
 namespace Terraria.GameContent.UI.States
 {
@@ -17,13 +10,7 @@ namespace Terraria.GameContent.UI.States
 		private UIElement _buttonModSources;
 		private UIElement _buttonModBrowser;
 		private UIElement _buttonTBD;
-		private UIElement _buttonTML;
 		private bool _tML;
-
-		private void GoWorkshopClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.MenuUI.SetState(new UIWorkshopHub(PreviousUIState, !_tML));
-			SoundEngine.PlaySound(10);
-		}
 
 		private UIElement MakeButton_OpenModsMenu() {
 			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubResourcepacks", "tModLoader.MenuMods");

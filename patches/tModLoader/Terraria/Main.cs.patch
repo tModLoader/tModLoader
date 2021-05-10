@@ -3222,16 +3222,6 @@
  					menuMode = 0;
  					netMode = 0;
  				}
-@@ -36573,7 +_,8 @@
- 				}
- 
- 				num11++;
-+				if (true) {
--				if (SocialAPI.Workshop != null) {
-+				//if (SocialAPI.Workshop != null) {
- 					array9[num11] = Language.GetText("UI.Workshop").Value;
- 					if (selectedMenu == num11) {
- 						SoundEngine.PlaySound(10);
 @@ -36592,6 +_,7 @@
  				}
  
