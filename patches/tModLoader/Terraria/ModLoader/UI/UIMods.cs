@@ -95,9 +95,12 @@ namespace Terraria.ModLoader.UI
 			}.WithPadding(15f);
 			uIElement.Append(uIHeaderTexTPanel);
 
+			// Number of buttons visible in first row, dependent on developer mode
+			int numButtonsVisible = ModCompile.DeveloperMode ? 3 : 2;
+
 			buttonEA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsEnableAll")) {
 				TextColor = Color.Green,
-				Width = new StyleDimension(-10f, 1f / 3f),
+				Width = new StyleDimension(-10f, 1f / numButtonsVisible),
 				Height = { Pixels = 40 },
 				VAlign = 1f,
 				Top = { Pixels = -65 }
@@ -109,25 +112,30 @@ namespace Terraria.ModLoader.UI
 			buttonDA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsDisableAll"));
 			buttonDA.CopyStyle(buttonEA);
 			buttonDA.TextColor = Color.Red;
-			buttonDA.HAlign = 0.5f;
+			buttonDA.HAlign = numButtonsVisible == 3 ? 0.5f : 1f;
 			buttonDA.WithFadedMouseOver();
 			buttonDA.OnClick += DisableAll;
 			uIElement.Append(buttonDA);
 
-			buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsReloadMods"));
-			buttonRM.CopyStyle(buttonEA);
-			buttonRM.HAlign = 1f;
-			buttonRM.WithFadedMouseOver();
-			buttonRM.OnClick += ReloadMods;
-			uIElement.Append(buttonRM);
+			// Only show force reload button in developer mode
+			if (numButtonsVisible == 3) {
+				buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsReloadMods"));
+				buttonRM.CopyStyle(buttonEA);
+				buttonRM.HAlign = 1f;
+				buttonRM.WithFadedMouseOver();
+				buttonRM.OnClick += ReloadMods;
+				uIElement.Append(buttonRM);
+			}
 
-			buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"));
-			buttonB.CopyStyle(buttonEA);
-			buttonB.Top.Pixels = -20;
-			buttonB.WithFadedMouseOver();
+			buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
+				Width = new StyleDimension(-10f, 1f / 3f),
+				Height = { Pixels = 40 },
+				VAlign = 1f,
+				Top = { Pixels = -20 }
+			}.WithFadedMouseOver();
 			buttonB.OnClick += BackClick;
-
 			uIElement.Append(buttonB);
+
 			buttonOMF = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolder"));
 			buttonOMF.CopyStyle(buttonB);
 			buttonOMF.HAlign = 0.5f;
