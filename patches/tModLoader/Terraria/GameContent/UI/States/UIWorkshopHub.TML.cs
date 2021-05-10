@@ -10,10 +10,9 @@ namespace Terraria.GameContent.UI.States
 		private UIElement _buttonModSources;
 		private UIElement _buttonModBrowser;
 		private UIElement _buttonTBD;
-		private bool _tML;
 
 		private UIElement MakeButton_OpenModsMenu() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubResourcepacks", "tModLoader.MenuEnableMods");
+			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubResourcepacks", "tModLoader.MenuManageMods");
 			uIElement.OnClick += Click_OpenModsMenu;
 			_buttonMods = uIElement;
 			return uIElement;
@@ -39,7 +38,7 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private UIElement MakeButton_OpenModBrowserMenu() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubWorlds", "tModLoader.MenuModBrowser");
+			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubWorlds", "tModLoader.MenuDownloadMods");
 			uIElement.OnClick += Click_OpenModBrowserMenu;
 			_buttonModBrowser = uIElement;
 			return uIElement;
@@ -52,7 +51,7 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private UIElement MakeButton_TBD() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishWorlds", "ToBeDetermined");
+			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishWorlds", "To Be Determined");
 			uIElement.OnClick += Click_OpenTBDMenu;
 			_buttonTBD = uIElement;
 			return uIElement;
