@@ -594,16 +594,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookShoot = AddHook<Action<Item, Player, ProjectileSource_Item_WithAmmo, Vector2, Vector2, int, int, float>>(g => g.Shoot);
+		private static HookList HookShoot = AddHook<Func<Item, Player, ProjectileSource_Item_WithAmmo, Vector2, Vector2, int, int, float, bool>>(g => g.Shoot);
 		/// <summary>
-		/// Calls each GlobalItem.Shoot hook, then calls ModItem.Shoot and returns its value.
+		/// Calls each GlobalItem.Shoot hook then, if none of them returns false, calls the ModItem.Shoot hook and returns its value.
 		/// </summary>
-		public static bool Shoot(Item item, Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public static bool Shoot(Item item, Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, bool defaultResult = true) {
 			foreach (var g in HookShoot.Enumerate(item.globalItems)) {
-				g.Shoot(item, player, source, position, velocity, type, damage, knockback);
+				defaultResult &= g.Shoot(item, player, source, position, velocity, type, damage, knockback);
 			}
 
-			return item.ModItem?.Shoot(player, source, position, velocity, type, damage, knockback) ?? true;
+			return defaultResult && (item.ModItem?.Shoot(player, source, position, velocity, type, damage, knockback) ?? true);
 		}
 
 		private delegate void DelegateUseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox);

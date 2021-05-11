@@ -2,7 +2,7 @@
 
 namespace HookListPerformance
 {
-	class HandCoded : Implementation
+	class HandCodedUnpacked : Implementation
 	{
 		private static float HookDoEffect(ref float input, InstancedUnpacked<GlobalItem>[] instances, int[] hookInds) {
 			float result = 0;

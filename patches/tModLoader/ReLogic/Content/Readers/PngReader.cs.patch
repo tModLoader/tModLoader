@@ -1,0 +1,26 @@
+--- src/Terraria/ReLogic/Content/Readers/PngReader.cs
++++ src/tModLoader/ReLogic/Content/Readers/PngReader.cs
+@@ -42,10 +_,23 @@
+ #else
+ 			var img = Image.Load(stream);
+ 			Image<Rgba32> bmp = img.CloneAs<Rgba32>();
++
+ 			bmp.TryGetSinglePixelSpan(out Span<Rgba32> colors);
+ 
++			//Pre-multiply colors.
++			for (int i = 0; i < colors.Length; i++) {
++				ref var color = ref colors[i];
++				float alpha = color.A / (float)byte.MaxValue;
++
++				color.R = (byte)(color.R * alpha);
++				color.G = (byte)(color.G * alpha);
++				color.B = (byte)(color.B * alpha);
++			}
++
+ 			Texture2D texture2D = new Texture2D(_graphicsDevice, bmp.Width, bmp.Height);
++
+ 			texture2D.SetData(colors.ToArray());
++
+ 			return texture2D as T;
+ #endif
+ 		}

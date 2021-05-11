@@ -86,7 +86,7 @@ dotnet_diagnostic.CS1591.severity = none
 	# Prefer block bodies for constructors
 	csharp_style_expression_bodied_constructors = false:suggestion
 	# Prefer expression-bodied members for methods, properties, indexers and accessors when they will be a single line
-	csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+	csharp_style_expression_bodied_methods = when_on_single_line:silent
 	csharp_style_expression_bodied_properties = when_on_single_line:suggestion
 	csharp_style_expression_bodied_indexers = when_on_single_line:suggestion
 	csharp_style_expression_bodied_accessors = when_on_single_line:suggestion
