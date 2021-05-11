@@ -533,13 +533,12 @@ namespace Terraria.ModLoader
 		private static HookList HookCanShoot = AddHook<Func<Item, bool>>(p => p.CanShoot);
 
 		public static bool CanShoot(Player player, Item item) {
-			bool canShoot = true;
-
 			foreach (int index in HookCanShoot.arr) {
-				canShoot &= player.modPlayers[index].CanShoot(item);
+				if (!player.modPlayers[index].CanShoot(item))
+					return false;
 			}
 
-			return canShoot;
+			return true;
 		}
 
 		private delegate void DelegateModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback);
