@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
-@@ -3,6 +_,7 @@
+@@ -3,12 +_,13 @@
  using System.Collections.Generic;
  using System.IO;
  using Terraria.IO;
@@ -8,6 +8,13 @@
  using Terraria.Social.Base;
  using Terraria.Utilities;
  
+ namespace Terraria.Social.Steam
+ {
+-	public class WorkshopHelper
++	public partial class WorkshopHelper
+ 	{
+ 		public class UGCBased
+ 		{
 @@ -42,18 +_,30 @@
  				public static Downloader Create() => new Downloader();
  
