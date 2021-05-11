@@ -1,13 +1,17 @@
+using Ionic.Zlib;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
 using ReLogic.OS;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -26,10 +30,6 @@ using ReLogic.Graphics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Net;
-using System.Collections.Specialized;
-using System.Text;
-using Newtonsoft.Json.Linq;
-using Ionic.Zlib;
 using System.IO;
 #if NETCORE
 using System.Runtime.Loader;
@@ -145,7 +145,7 @@ namespace Terraria.ModLoader
 				modInstances.Insert(0, new ModLoaderMod());
 				Mods = modInstances.ToArray();
 				foreach (var mod in Mods)
-					modsByName[mod.Name] = mod;	
+					modsByName[mod.Name] = mod;
 
 				ModContent.Load(token);
 
@@ -211,10 +211,9 @@ namespace Terraria.ModLoader
 			modUpdatesAvailable = 0;
 
 			try {
-				var _cts = new CancellationTokenSource();
 				Task.Factory.StartNew(() => {
 					ServicePointManager.Expect100Continue = false;
-					string url = "http://javid.ddns.net/tModLoader/listmods.php";
+					const string url = "http://javid.ddns.net/tModLoader/listmods.php";
 					var values = new NameValueCollection {
 						{"modloaderversion", BuildInfo.versionedName},
 						{"platform", ModLoader.CompressedPlatformRepresentation},
@@ -226,7 +225,7 @@ namespace Terraria.ModLoader
 						client.UploadValuesCompleted += UpdateCheckComplete;
 						client.UploadValuesAsync(new Uri(url), "POST", values);
 					}
-				}, _cts.Token);
+				});
 			}
 			catch (Exception e) {
 				// Fail silently, it doesn't really matter if the update indicator is missing
