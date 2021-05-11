@@ -4919,10 +4919,10 @@
 +			Item item = ChooseAmmo(sItem);
 +			canShoot = item != null;
 +
++			bool shootWithNoAmmo = false;
 +			if (!canShoot && !ItemLoader.NeedsAmmo(sItem, this)) {
-+				canShoot = true;
++				canShoot = shootWithNoAmmo = true;
 +				item.SetDefaults(sItem.useAmmo);
-+				item.consumable = false;
 +			}
 +
  			if (!canShoot)
@@ -5006,7 +5006,7 @@
 +			ItemLoader.PickAmmo(sItem, item, this, ref projToShoot, ref speed, ref ammoDamage, ref KnockBack);
 +			totalDamage = (int)(ammoDamage.ApplyTo(item.damage) + 5E-06f);
 +
-+			if (!dontConsume && item.consumable && !IsAmmoFreeThisShot(sItem, item, projToShoot)) {
++			if (!dontConsume && !shootWithNoAmmo && item.consumable && !IsAmmoFreeThisShot(sItem, item, projToShoot)) {
 +				CombinedHooks.OnConsumeAmmo(this, sItem, item);
 +				item.stack--;
 +				if (item.stack <= 0) {
