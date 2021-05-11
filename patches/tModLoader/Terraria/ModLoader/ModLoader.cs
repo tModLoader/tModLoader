@@ -213,18 +213,22 @@ namespace Terraria.ModLoader
 			try {
 				Task.Factory.StartNew(() => {
 					ServicePointManager.Expect100Continue = false;
-					const string url = "http://javid.ddns.net/tModLoader/listmods.php";
+					
+					const string Url = "http://javid.ddns.net/tModLoader/listmods.php";
+					
 					var values = new NameValueCollection {
-						{"modloaderversion", BuildInfo.versionedName},
-						{"platform", ModLoader.CompressedPlatformRepresentation},
-						{"netversion", FrameworkVersion.Version.ToString()},
-						{"EarlyAutoUpdate", UI.ModBrowser.UIModBrowser.EarlyAutoUpdate.ToString()}
+						{ "modloaderversion", BuildInfo.versionedName },
+						{ "platform", ModLoader.CompressedPlatformRepresentation },
+						{ "netversion", FrameworkVersion.Version.ToString() },
+						{ "EarlyAutoUpdate", UI.ModBrowser.UIModBrowser.EarlyAutoUpdate.ToString() }
 					};
-					using (var client = new WebClient()) {
-						ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => { return true; };
-						client.UploadValuesCompleted += UpdateCheckComplete;
-						client.UploadValuesAsync(new Uri(url), "POST", values);
-					}
+					
+					using var client = new WebClient();
+					
+					ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => true;
+					client.UploadValuesCompleted += UpdateCheckComplete;
+					
+					client.UploadValuesAsync(new Uri(Url), "POST", values);
 				});
 			}
 			catch (Exception e) {
