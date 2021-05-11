@@ -14,7 +14,9 @@ if NOT %lobby%==p ( set Args=%Args% -lobby friends )
 if %lobby%==p ( set Args=%Args% -lobby private )
 
 :start
-if exist %INSTALLDIR%\dotnet.exe ( start dotnet\%VERSIONSEL%\dotnet.exe tModLoader.dll %Args% ) else (
+if exist %INSTALLDIR%\dotnet.exe ( 
+	start dotnet\%VERSIONSEL%\dotnet.exe tModLoader.dll %Args% 
+) else (
 	echo Installation of dotnet portable failed. Launching manual installed Net runtimes.
 	echo Logs for manual install are located in LaunchLogs\runtime.log
 	call :LOG_R 3> LaunchLogs\runtime.log 2>&3
