@@ -6,7 +6,7 @@
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
-@@ -20,16 +_,20 @@
+@@ -20,16 +_,22 @@
  		public static SocialMode Mode => _mode;
  
  		public static void Initialize(SocialMode? mode = null) {
@@ -24,6 +24,8 @@
  					mode = SocialMode.Steam;
  			}
  
++			WorkshopHelper.ModManager.Initialize();
++
  			_mode = mode.Value;
 -			_modules = new List<ISocialModule>();
  			JoinRequests = new ServerJoinRequestsManager();
