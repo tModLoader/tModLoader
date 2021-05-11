@@ -263,9 +263,10 @@ namespace Terraria.ModLoader
 						string modlist_compressed = (string)jsonObject["modlist_compressed"];
 						if (modlist_compressed != null) {
 							byte[] data = Convert.FromBase64String(modlist_compressed);
-							using (GZipStream zip = new GZipStream(new MemoryStream(data), CompressionMode.Decompress))
-							using (var reader = new StreamReader(zip))
-								modlist = JArray.Parse(reader.ReadToEnd());
+							using var zip = new GZipStream(new MemoryStream(data), CompressionMode.Decompress);
+							using var reader = new StreamReader(zip);
+							
+							modlist = JArray.Parse(reader.ReadToEnd());
 						}
 						else {
 							// Fallback if needed.
