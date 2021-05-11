@@ -582,6 +582,22 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookNeedsAmmo = AddHook<Func<Item, Player, bool>>(g => g.NeedsAmmo);
+		/// <summary>
+		/// Calls ModItem.NeedsAmmo, then all GlobalItem.NeedsAmmo hooks, until any of them returns false.
+		/// </summary>
+		public static bool NeedsAmmo(Item weapon, Player player) {
+			if (!weapon.ModItem?.NeedsAmmo(player) ?? false)
+				return false;
+
+			foreach (var g in HookNeedsAmmo.Enumerate(weapon.globalItems)) {
+				if (!g.NeedsAmmo(weapon, player))
+					return false;
+			}
+
+			return true;
+		}
+
 		private delegate void DelegatePickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback);
 		private static HookList HookPickAmmo = AddHook<DelegatePickAmmo>(g => g.PickAmmo);
 

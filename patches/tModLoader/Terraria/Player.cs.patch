@@ -4918,6 +4918,13 @@
 +			usedAmmoItemId = 0;
 +			Item item = ChooseAmmo(sItem);
 +			canShoot = item != null;
++
++			if (!canShoot && !ItemLoader.NeedsAmmo(sItem, this)) {
++				canShoot = true;
++				item.SetDefaults(sItem.useAmmo);
++				item.consumable = false;
++			}
++
  			if (!canShoot)
  				return;
  
