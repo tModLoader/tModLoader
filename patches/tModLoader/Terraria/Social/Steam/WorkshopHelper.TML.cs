@@ -1,13 +1,7 @@
-using Newtonsoft.Json;
 using Steamworks;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using Terraria.IO;
-using Terraria.ModLoader.Engine;
-using Terraria.Social.Base;
-using Terraria.Utilities;
 
 namespace Terraria.Social.Steam
 {
@@ -127,6 +121,15 @@ namespace Terraria.Social.Steam
 			}
 
 			public void Remove() {
+				//TODO: Add a warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
+				var installPath = GetInstallInfo().installPath;
+				if (!Directory.Exists(installPath)) {
+					return;
+				}
+
+				// Remove the files
+				Directory.Delete(installPath, true);
+
 				if (steamUser)
 					SteamUGC.UnsubscribeItem(itemID);
 				else
@@ -134,10 +137,26 @@ namespace Terraria.Social.Steam
 			}
 
 			private void RemoveGoG() {
-				// Remove the files
-				Directory.Delete(GetInstallInfo().installPath, true);
-				// Cleanup acf file
+				// Cleanup acf file by removing info on this itemID
 				string acfPath = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "appworkshop_" + thisApp.ToString() + ".acf");
+
+				var acf = File.ReadAllLines(acfPath);
+				using (StreamWriter w = new StreamWriter(acfPath)) {
+					int blockLines = 5;
+					int skip = 0;
+					for (int i = 0; i < acf.Length; i++) {
+						if (acf[i].Contains(itemID.ToString())) {
+							skip = blockLines;
+							continue;
+						}
+						else if (skip > 0) {
+							skip--;
+							continue;
+						}
+
+						w.WriteLine(acf[i]);
+					}
+				}
 			}
 
 			private uint GetState() {
