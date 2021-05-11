@@ -553,13 +553,13 @@ namespace Terraria.ModLoader
 		private static HookList HookShoot = AddHook<Func<Item, ProjectileSource_Item_WithAmmo, Vector2, Vector2, int, int, float, bool>>(p => p.Shoot);
 
 		public static bool Shoot(Player player, Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			bool vanillaShoot = true;
+			bool defaultResult = true;
 
 			foreach (int index in HookShoot.arr) {
-				vanillaShoot &= player.modPlayers[index].Shoot(item, source, position, velocity, type, damage, knockback);
+				defaultResult &= player.modPlayers[index].Shoot(item, source, position, velocity, type, damage, knockback);
 			}
 
-			return vanillaShoot;
+			return defaultResult;
 		}
 
 		private static HookList HookMeleeEffects = AddHook<Action<Item, Rectangle>>(p => p.MeleeEffects);

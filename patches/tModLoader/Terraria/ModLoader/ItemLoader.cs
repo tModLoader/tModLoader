@@ -598,12 +598,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Calls each GlobalItem.Shoot hook then, if none of them returns false, calls the ModItem.Shoot hook and returns its value.
 		/// </summary>
-		public static bool Shoot(Item item, Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, bool vanillaShoot) {
+		public static bool Shoot(Item item, Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, bool defaultResult = true) {
 			foreach (var g in HookShoot.Enumerate(item.globalItems)) {
-				vanillaShoot &= g.Shoot(item, player, source, position, velocity, type, damage, knockback);
+				defaultResult &= g.Shoot(item, player, source, position, velocity, type, damage, knockback);
 			}
 
-			return vanillaShoot && (item.ModItem?.Shoot(player, source, position, velocity, type, damage, knockback) ?? true);
+			return defaultResult && (item.ModItem?.Shoot(player, source, position, velocity, type, damage, knockback) ?? true);
 		}
 
 		private delegate void DelegateUseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox);
