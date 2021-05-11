@@ -3321,14 +3321,21 @@
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, origin, num104, SpriteEffects.None, 0f);
  					else
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, new Vector2(0f, origin.Y), num104, SpriteEffects.None, 0f);
-@@ -39066,10 +_,51 @@
+@@ -39066,10 +_,58 @@
  					if (num107 == 3)
  						num109 = 2;
  
 +					string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
 +					string patreonShortURL = @"patreon.com/tModLoader";
 +					bool showPatreon = !Steam.IsSteamApp;
-+					string drawVersion = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "");
++
++					// Show number of mods - 1 such as to show number of enabled mods that are not tModLoader itself
++					string modsMessage = Language.GetTextValue("tModLoader.MenuModsEnabled", ModLoader.ModLoader.Mods.Length - 1);
++					if (ModLoader.ModLoader.ModUpdatesAvailable > 0) {
++						modsMessage += " " + Language.GetTextValue("tModLoader.MenuModUpdatesAvailable", ModLoader.ModLoader.ModUpdatesAvailable);
++					}
++
++					string drawVersion = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + Environment.NewLine + modsMessage + (showPatreon ? Environment.NewLine + supportMessage : "");
 -					Vector2 origin2 = FontAssets.MouseText.Value.MeasureString(versionNumber);
 +					Vector2 origin2 = FontAssets.MouseText.Value.MeasureString(drawVersion);
  					origin2.X *= 0.5f;

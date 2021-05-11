@@ -3,13 +3,14 @@
 		// Main Menu
 		"PatreonSupport": "Please show your support: ",
 		"MenuModBrowser": "Mod Browser",
-		"MenuModBrowserUpdates": "Mod Browser ({0} {^0:Update;Updates} Available)",
 		"MenuMods": "Mods",
 		"MenuModSources": "Mod Sources",
 		"MenuEnableDeveloperMode": "Enable Developer Mode",
 		"FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
 		"tModLoaderSettings": "tModLoader Settings",
 		"ModMenuSwap": "Switch Menu Theme",
+		"MenuModsEnabled": "{0} {^0:Mod;Mods} Enabled",
+		"MenuModUpdatesAvailable": "({0} {^0:Update;Updates} Available!)",
 
 		// Mods Menu
 		"ModsModsList": "Mods List",
