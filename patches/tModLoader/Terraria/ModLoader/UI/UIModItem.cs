@@ -50,6 +50,7 @@ namespace Terraria.ModLoader.UI
 		private string ToggleModStateText => _mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable");
 
 		public string ModName => _mod.Name;
+		public bool NeedsReload => _mod.properties.side != ModSide.Server && (_mod.Enabled != _loaded || _configChangesRequireReload);
 
 		public UIModItem(LocalMod mod) {
 			_mod = mod;

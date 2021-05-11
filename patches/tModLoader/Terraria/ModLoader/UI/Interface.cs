@@ -234,6 +234,13 @@ namespace Terraria.ModLoader.UI
 				}
 
 				buttonIndex++;
+				buttonNames[buttonIndex] = (ModLoader.autoReloadRequiredModsLeavingModsScreen ? Language.GetTextValue("tModLoader.AutomaticallyReloadRequiredModsLeavingModsScreenYes") : Language.GetTextValue("tModLoader.AutomaticallyReloadRequiredModsLeavingModsScreenNo"));
+				if (selectedMenu == buttonIndex) {
+					SoundEngine.PlaySound(SoundID.MenuTick);
+					ModLoader.autoReloadRequiredModsLeavingModsScreen = !ModLoader.autoReloadRequiredModsLeavingModsScreen;
+				}
+
+				buttonIndex++;
 				buttonNames[buttonIndex] = (Main.UseExperimentalFeatures ? Language.GetTextValue("tModLoader.ExperimentalFeaturesYes") : Language.GetTextValue("tModLoader.ExperimentalFeaturesNo"));
 				if (selectedMenu == buttonIndex) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
