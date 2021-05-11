@@ -46,7 +46,7 @@ namespace Terraria.ModLoader
 		public static Version LastLaunchedTModLoaderVersion;
 		// public static bool ShowWhatsNew;
 		public static bool ShowFirstLaunchWelcomeMessage;
-		public static int modUpdatesAvailable;
+		public static int ModUpdatesAvailable;
 
 		public static string versionedName => ModCompile.DeveloperMode ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
 
@@ -208,7 +208,7 @@ namespace Terraria.ModLoader
 
 		internal static void CheckModUpdates()
 		{
-			modUpdatesAvailable = 0;
+			ModUpdatesAvailable = 0;
 
 			try {
 				Task.Factory.StartNew(() => {
@@ -233,7 +233,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void UpdateCheckComplete(object sender, UploadValuesCompletedEventArgs e) {
+		private static void UpdateCheckComplete(object sender, UploadValuesCompletedEventArgs e)
+		{
 			if (e.Error != null) {
 				// Fail silently, it doesn't really matter if the update indicator is missing
 				Logging.tML.Debug("Error checking for mod updates.");
@@ -276,7 +277,7 @@ namespace Terraria.ModLoader
 							if (installed != null) {
 								var cVersion = new Version(version.Substring(1));
 								if (cVersion > installed.modFile.Version) {
-									modUpdatesAvailable++;
+									ModUpdatesAvailable++;
 								}
 							}
 						}
