@@ -3330,7 +3330,7 @@
 +					bool showPatreon = !Steam.IsSteamApp;
 +
 +					// Show number of mods - 1 such as to show number of enabled mods that are not tModLoader itself
-+					string modsMessage = Language.GetTextValue("tModLoader.MenuModsEnabled", ModLoader.ModLoader.Mods.Length - 1);
++					string modsMessage = Language.GetTextValue("tModLoader.MenuModsEnabled", Math.Max(0, ModLoader.ModLoader.Mods.Length - 1));
 +					if (ModLoader.ModLoader.ModUpdatesAvailable > 0) {
 +						modsMessage += " " + Language.GetTextValue("tModLoader.MenuModUpdatesAvailable", ModLoader.ModLoader.ModUpdatesAvailable);
 +					}
