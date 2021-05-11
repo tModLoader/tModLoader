@@ -598,9 +598,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Calls each GlobalItem.Shoot hook then, if none of them returns false, calls the ModItem.Shoot hook and returns its value.
 		/// </summary>
-		public static bool Shoot(Item item, Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			bool vanillaShoot = true;
-
+		public static bool Shoot(Item item, Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, bool vanillaShoot) {
 			foreach (var g in HookShoot.Enumerate(item.globalItems)) {
 				vanillaShoot &= g.Shoot(item, player, source, position, velocity, type, damage, knockback);
 			}

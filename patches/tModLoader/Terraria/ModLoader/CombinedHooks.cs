@@ -51,7 +51,8 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool Shoot(Player player, Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			return PlayerHooks.Shoot(player, item, source, position, velocity, type, damage, knockback) & ItemLoader.Shoot(item, player, source, position, velocity, type, damage, knockback); 
+			bool vanillaShoot = PlayerHooks.Shoot(player, item, source, position, velocity, type, damage, knockback);
+			return ItemLoader.Shoot(item, player, source, position, velocity, type, damage, knockback, vanillaShoot); 
 		}
 
 		public static bool? CanPlayerHitNPCWithItem(Player player, Item item, NPC npc) {
