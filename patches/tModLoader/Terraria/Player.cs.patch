@@ -4819,7 +4819,7 @@
 +
 -		public bool HasAmmo(Item sItem, bool canUse) {
 +		internal bool HasAmmo(Item sItem, bool canUse) {
-+			return sItem.useAmmo == 0 || ChooseAmmo(sItem) != null;
++			return sItem.useAmmo == 0 || ChooseAmmo(sItem) != null || !ItemLoader.NeedsAmmo(sItem, this);
 +			/*
  			if (sItem.useAmmo > 0) {
  				canUse = false;
