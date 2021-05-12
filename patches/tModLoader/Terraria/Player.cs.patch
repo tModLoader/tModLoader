@@ -157,7 +157,7 @@
  
  		public void ApplyItemTime(Item sItem, float multiplier) {
 -			SetItemTime((int)((float)sItem.useTime * multiplier));
-+			int totalUseTime = PlayerHooks.TotalUseTime((int)(sItem.useTime * multiplier), this, sItem);
++			int totalUseTime = PlayerHooks.TotalUseTime(sItem.useTime * multiplier, this, sItem);
 +			SetItemTime(totalUseTime);
  		}
  
@@ -3250,6 +3250,15 @@
  						for (int i = 0; i < num2; i++) {
  							WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
  						}
+@@ -27793,7 +_,7 @@
+ 
+ 						dontConsumeWand = true;
+ 						ApplyItemTime(bestPickaxe, pickSpeed);
+-						SetItemAnimation((int)((float)bestPickaxe.useTime * pickSpeed));
++						ApplyItemAnimation(bestPickaxe.useTime * pickSpeed, this, bestPickaxe);
+ 						return false;
+ 					}
+ 
 @@ -27952,6 +_,7 @@
  				PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches);
  				if (PlayerInput.UsingGamepad && ItemID.Sets.SingleUseInGamepad[inventory[selectedItem].type] && Main.myPlayer == whoAmI && !Main.SmartCursorEnabled)
@@ -3490,6 +3499,15 @@
  			if (!JustDroppedAnItem) {
  				ItemCheck_EmitHeldItemLight(item);
  				ItemCheck_EmitFoodParticles(item);
+@@ -29855,7 +_,7 @@
+ 							flag4 = false;
+ 					}
+ 
+-					if (type2 == 4956 && itemAnimation < itemAnimationMax - 3 * item.useTime)
++					if (type2 == 4956 && itemAnimation < itemAnimationMax - 3 * PlayerHooks.TotalUseTime(item.useTime, this, item))
+ 						flag4 = false;
+ 
+ 					if (type2 == 4952 && itemAnimation < itemAnimationMax - 8)
 @@ -29866,7 +_,7 @@
  
  					ItemCheck_TurretAltFeatureUse(item, flag4);
@@ -3499,6 +3517,15 @@
  						ItemCheck_Shoot(i, item, weaponDamage);
  
  					ItemCheck_UseWiringTools(item);
+@@ -29879,7 +_,7 @@
+ 					else {
+ 						toolTime--;
+ 						if (toolTime < 0)
+-							toolTime = item.useTime;
++							toolTime = PlayerHooks.TotalUseTime(item.useTime, this, item);
+ 					}
+ 
+ 					ItemCheck_UseMiningTools(item);
 @@ -29929,7 +_,8 @@
  
  						if (Main.myPlayer == i && item.damage > 0) {
@@ -3559,10 +3586,19 @@
  						ApplyItemTime(item);
  					}
 -					else if (itemTime == item.useTime / 2) {
-+					else if (itemTime == PlayerHooks.TotalUseTime(item.useTime, this, item) / 2) {
++					else if (itemTime == PlayerHooks.TotalUseTime(item.useTime * 0.5f, this, item)) {
  						for (int k = 0; k < 70; k++) {
  							Dust.NewDust(base.position, width, height, 15, velocity.X * 0.5f, velocity.Y * 0.5f, 150, default(Color), 1.5f);
  						}
+@@ -30149,7 +_,7 @@
+ 							Main.dust[Dust.NewDust(base.position, width, height, 15, velocity.X * 0.2f, velocity.Y * 0.2f, 150, Color.Cyan, 1.2f)].velocity *= 0.5f;
+ 						}
+ 					}
+-					else if (itemTime == 20) {
++					else if (itemTime == PlayerHooks.TotalUseTime(item.useTime * 0.67f, this, item)/* was 20, useTime of recall potion is 30 */) {
+ 						SoundEngine.PlaySound(HeldItem.UseSound, base.position);
+ 						for (int num4 = 0; num4 < 70; num4++) {
+ 							Main.dust[Dust.NewDust(base.position, width, height, 15, velocity.X * 0.2f, velocity.Y * 0.2f, 150, Color.Cyan, 1.2f)].velocity *= 0.5f;
 @@ -30165,7 +_,7 @@
  							Main.dust[Dust.NewDust(base.position, width, height, 15, 0f, 0f, 150, Color.Cyan, 1.2f)].velocity *= 0.5f;
  						}
@@ -3572,6 +3608,15 @@
  							item.stack--;
  					}
  				}
+@@ -30178,7 +_,7 @@
+ 							Main.dust[Dust.NewDust(base.position, width, height, 15, velocity.X * 0.2f, velocity.Y * 0.2f, 150, Color.Cyan, 1.2f)].velocity *= 0.5f;
+ 						}
+ 					}
+-					else if (itemTime == 20) {
++					else if (itemTime == PlayerHooks.TotalUseTime(item.useTime * 0.67f, this, item)/* was 20, useTime of potion of return is 30 */) {
+ 						SoundEngine.PlaySound(HeldItem.UseSound, base.position);
+ 						for (int num8 = 0; num8 < 70; num8++) {
+ 							Main.dust[Dust.NewDust(base.position, width, height, 15, velocity.X * 0.2f, velocity.Y * 0.2f, 150, Color.Cyan, 1.2f)].velocity *= 0.5f;
 @@ -30191,7 +_,7 @@
  							Main.dust[Dust.NewDust(base.position, width, height, 15, 0f, 0f, 150, Color.Cyan, 1.2f)].velocity *= 0.5f;
  						}
@@ -3730,6 +3775,15 @@
  			if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
  				int num = -1;
  				float x = itemRectangle.X + Main.rand.Next(itemRectangle.Width);
+@@ -31487,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			itemTime = (int)((float)item.useTime * pickSpeed);
++			ApplyItemTime(item, pickSpeed);
+ 		}
+ 
+ 		private void DamageTileWithShovel(Player user, Item item, int x, int y) {
 @@ -31571,7 +_,7 @@
  			if (Main.tileHammer[tile.type]) {
  				canHitWalls = false;
@@ -3751,6 +3805,24 @@
  				if (sItem.axe > 0) {
  					AchievementsHelper.CurrentlyMining = true;
  					if (!WorldGen.CanKillTile(x, y))
+@@ -31631,7 +_,7 @@
+ 			}
+ 
+ 			if (sItem.pick > 0)
+-				itemTime = (int)((float)sItem.useTime * pickSpeed);
++				ApplyItemTime(sItem, pickSpeed);
+ 
+ 			ItemCheck_UseMiningTools_TryPoundingTile(sItem, num, ref canHitWalls, x, y);
+ 		}
+@@ -31732,7 +_,7 @@
+ 			if (num != 0)
+ 				hitTile.Prune();
+ 
+-			itemTime = sItem.useTime / 2;
++			ApplyItemTime(sItem, 0.5f);
+ 		}
+ 
+ 		private void ItemCheck_UseMiningTools_TryPoundingTile(Item sItem, int tileHitId, ref bool hitWall, int x, int y) {
 @@ -31749,7 +_,9 @@
  					if (!poundRelease)
  						return;
