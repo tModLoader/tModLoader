@@ -947,14 +947,6 @@
  					minionDamage += (float)num / 100f;
  				}
  				else if (buffType[j] == 2) {
-@@ -6558,6 +_,7 @@
- 				}
- 				else if (buffType[j] == 16) {
- 					archery = true;
-+					arrowDamage *= 1.2f; // moved from PickAmmo, as StatModifier allows multiplicative buffs to be 'registered' before additive ones
- 				}
- 				else if (buffType[j] == 17) {
- 					detectCreature = true;
 @@ -6682,9 +_,12 @@
  					endurance += 0.1f;
  				}
@@ -3980,7 +3972,7 @@
  			if (sItem.melee)
  				return meleeCrit;
  
-@@ -36397,9 +_,21 @@
+@@ -36397,9 +_,23 @@
  				return magicCrit;
  
  			return 0;
@@ -3997,12 +3989,15 @@
 +			return crit;
  		}
  
- 		public int GetWeaponDamage(Item sItem) {
+-		public int GetWeaponDamage(Item sItem) {
++		// Changed method signature to include whether the value returned will be shown on the tooltip of the item
++		// Moved tooltip-specific damage calculations into the method
++		public int GetWeaponDamage(Item sItem, bool forTooltip = false) {
 +			/*
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -36425,6 +_,29 @@
+@@ -36425,6 +_,36 @@
  			}
  
  			return num;
@@ -4016,18 +4011,25 @@
 +			}
 +
 +			// TODO: use an ItemID.Sets for arrow/bullet/rocket
-+			if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
-+				damage = damage.CombineWith(arrowDamage);
++			if (sItem.ranged) {
++				if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) {
++					damage *= (float)arrowDamage;
++					if (forTooltip && archery)
++						damage *= 1.2f;
++				}
 +
-+			if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn)
-+				damage = damage.CombineWith(bulletDamage);
++				if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn)
++					damage *= (float)bulletDamage;
 +
-+			if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly)
-+				damage = damage.CombineWith(rocketDamage);
++				if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly)
++					damage *= (float)rocketDamage;
++			}
 +
 +			float flat = 0f;
++			//TODO: pass to the method whether the damage is being calculated for the tooltip or not?
 +			CombinedHooks.ModifyWeaponDamage(this, sItem, ref damage, ref flat);
-+			int damageNum = (int)((sItem.damage * (float)damage) + flat);
++			int damageNum = forTooltip ? (int)(sItem.damage * ItemID.Sets.ToolTipDamageMultiplier[sItem.type]) : sItem.damage;
++			damageNum = (int)(damageNum * (float)damage + flat + 5E-06f);
 +			return Math.Max(0, damageNum);
  		}
  
@@ -4045,31 +4047,27 @@
  			else if (sItem.type == 3930)
  				projToShoot = 715 + item.type - AmmoID.Rocket;
  			else if (sItem.useAmmo == AmmoID.Rocket)
-@@ -36547,8 +_,14 @@
+@@ -36546,6 +_,7 @@
+ 			}
  
  			speed += item.shootSpeed;
++			/*
  			if (item.ranged) {
--				if (item.damage > 0)
--					Damage += (int)((float)item.damage * rangedDamage);
-+				if (item.damage > 0) {
-+					// determine damage multiplier using item base damage and apply to ammo
-+					// equivalent to Damage *= (item.damage + sItem.damage) / sItem.damage
-+					if (sItem.damage > 0) // coin gun fix.
-+						Damage += (int)(item.damage * Damage / (float)sItem.damage);
-+					else
-+						Damage += item.damage;
-+				}
- 			}
+ 				if (item.damage > 0)
+ 					Damage += (int)((float)item.damage * rangedDamage);
+@@ -36553,6 +_,11 @@
  			else {
  				Damage += item.damage;
-@@ -36560,11 +_,12 @@
- 					if (speed > 20f)
- 						speed = 20f;
- 				}
--
--				Damage = (int)((double)Damage * 1.2);
-+				// archery buff damage moved into UpdateBuffs
-+				// Damage = (int)((double)Damage * 1.2);
+ 			}
++			*/
++			// Removed ranged check, since vanilla only has ranged or unclassed ammo
++			// Used GetWeaponDamage to get the damage of the ammo after vanilla and modded damage modifiers are applied
++			if (item.damage > 0)
++				Damage += GetWeaponDamage(item);
+ 
+ 			if ((sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) && archery) {
+ 				if (speed < 20f) {
+@@ -36565,6 +_,7 @@
  			}
  
  			KnockBack += item.knockBack;
