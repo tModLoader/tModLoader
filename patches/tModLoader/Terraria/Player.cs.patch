@@ -2207,6 +2207,16 @@
  							SmartSelect_SelectItem(i);
  							return;
  						}
+@@ -12560,6 +_,9 @@
+ 								}
+ 							}
+ 
++							if (!flag2 && !ItemLoader.NeedsAmmo(inventory[i], this))
++								flag2 = true;
++
+ 							if (flag2) {
+ 								SmartSelect_SelectItem(i);
+ 								return;
 @@ -12571,7 +_,7 @@
  							if (nonTorch == -1)
  								nonTorch = selectedItem;
