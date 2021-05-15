@@ -485,6 +485,15 @@
  				}
  			}
  
+@@ -14147,7 +_,7 @@
+ 			tileCollide = false;
+ 		}
+ 
+-		private void Resize(int newWidth, int newHeight) {
++		public void Resize(int newWidth, int newHeight) {
+ 			position = base.Center;
+ 			width = newWidth;
+ 			height = newHeight;
 @@ -14155,6 +_,10 @@
  		}
  
@@ -514,6 +523,24 @@
  								int num = damage;
  								position = base.Center;
  								int num2 = 0;
+@@ -27717,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private NPC FindTargetWithinRange(float maxRange) {
++		public NPC FindTargetWithinRange(float maxRange) {
+ 			NPC result = null;
+ 			float num = maxRange;
+ 			for (int i = 0; i < 200; i++) {
+@@ -28093,7 +_,7 @@
+ 			return result;
+ 		}
+ 
+-		private int FindTargetWithLineOfSight(float maxRange = 800f) {
++		public int FindTargetWithLineOfSight(float maxRange = 800f) {
+ 			float num = maxRange;
+ 			int result = -1;
+ 			for (int i = 0; i < 200; i++) {
 @@ -32271,6 +_,9 @@
  					if (num3 > (float)num9)
  						ai[0] = 1f;
@@ -643,7 +670,21 @@
  			active = false;
  		}
  
-@@ -51336,6 +_,9 @@
+@@ -51311,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private bool ShouldWallExplode(Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ) {
++		public bool ShouldWallExplode(Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ) {
+ 			bool result = false;
+ 			for (int i = minI; i <= maxI; i++) {
+ 				for (int j = minJ; j <= maxJ; j++) {
+@@ -51332,10 +_,13 @@
+ 			return Main.hslToRgb(0.66f + 0.33f * num, 0.7f, 0.6f) * 0.7f;
+ 		}
+ 
+-		private bool CanExplodeTile(int x, int y) {
++		public bool CanExplodeTile(int x, int y) {
  			if (Main.tileDungeon[Main.tile[x, y].type] || TileID.Sets.BasicChest[Main.tile[x, y].type])
  				return false;
  
@@ -653,6 +694,15 @@
  			switch (Main.tile[x, y].type) {
  				case 26:
  				case 88:
+@@ -51372,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		private void ExplodeTiles(Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ, bool wallSplode) {
++		public void ExplodeTiles(Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ, bool wallSplode) {
+ 			AchievementsHelper.CurrentlyMining = true;
+ 			for (int i = minI; i <= maxI; i++) {
+ 				for (int j = minJ; j <= maxJ; j++) {
 @@ -51396,7 +_,7 @@
  
  					for (int k = i - 1; k <= i + 1; k++) {
@@ -662,6 +712,15 @@
  								WorldGen.KillWall(k, l);
  								if (Main.tile[k, l].wall == 0 && Main.netMode != 0)
  									NetMessage.SendData(17, -1, -1, null, 2, k, l);
+@@ -51409,7 +_,7 @@
+ 			AchievementsHelper.CurrentlyMining = false;
+ 		}
+ 
+-		private void ExplodeCrackedTiles(Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ) {
++		public void ExplodeCrackedTiles(Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ) {
+ 			AchievementsHelper.CurrentlyMining = true;
+ 			for (int i = minI; i <= maxI; i++) {
+ 				for (int j = minJ; j <= maxJ; j++) {
 @@ -51450,6 +_,10 @@
  		}
  
