@@ -241,22 +241,6 @@ namespace Terraria.ModLoader
 			=> false;
 
 		/// <summary>
-		/// Allows a mod to run code before a world is generated.
-		/// </summary>
-		public virtual void PreWorldGen() { }
-
-		/// <summary>
-		/// A more advanced option to PostWorldGen, this method allows you modify the list of Generation Passes before a new world begins to be generated. <para/>
-		/// For example, removing the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon.
-		/// </summary>
-		public virtual void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight) { }
-
-		/// <summary>
-		/// Use this method to place tiles in the world after world generation is complete.
-		/// </summary>
-		public virtual void PostWorldGen() { }
-
-		/// <summary>
 		/// Use this to reset any fields you set in any of your ModTile.NearbyEffects hooks back to their default values.
 		/// </summary>
 		public virtual void ResetNearbyTileEffects() { }
@@ -269,6 +253,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify color of light the sun emits.
 		/// </summary>
+		public virtual void ChooseWaterStyle(ref int style) { }
+
 		/// <param name="tileColor">Tile lighting color</param>
 		/// <param name="backgroundColor">Background lighting color</param>
 		public virtual void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) { }

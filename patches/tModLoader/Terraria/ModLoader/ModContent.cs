@@ -536,7 +536,9 @@ namespace Terraria.ModLoader
 			GlobalBackgroundStyleLoader.Unload();
 			PlayerDrawLayerLoader.Unload();
 			SystemHooks.Unload();
+			GenerationHooks.Unload();
 			TileEntity.manager.Reset();
+
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
 				Main.recipe[k] = new Recipe();
@@ -583,6 +585,7 @@ namespace Terraria.ModLoader
 			MountLoader.ResizeArrays();
 			BuffLoader.ResizeArrays();
 			PlayerHooks.RebuildHooks();
+			GenerationHooks.RebuildHooks();
 			PlayerDrawLayerLoader.ResizeArrays();
 			SystemHooks.ResizeArrays();
 
