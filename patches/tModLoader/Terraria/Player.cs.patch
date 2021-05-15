@@ -3762,6 +3762,15 @@
  						if (tile.halfBrick()) {
  							WorldGen.PoundTile(x, y);
  							if (Main.netMode == 1)
+@@ -31998,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private bool IsTargetTileInItemRange(Item sItem) {
++		public bool IsTargetTileInItemRange(Item sItem) {
+ 			if (position.X / 16f - (float)tileRangeX - (float)sItem.tileBoost <= (float)tileTargetX && (position.X + (float)width) / 16f + (float)tileRangeX + (float)sItem.tileBoost - 1f >= (float)tileTargetX && position.Y / 16f - (float)tileRangeY - (float)sItem.tileBoost <= (float)tileTargetY)
+ 				return (position.Y + (float)height) / 16f + (float)tileRangeY + (float)sItem.tileBoost - 2f >= (float)tileTargetY;
+ 
 @@ -32341,7 +_,8 @@
  				}
  
@@ -3857,6 +3866,15 @@
  
  				if (projToShoot == 76) {
  					projToShoot += Main.rand.Next(3);
+@@ -33969,7 +_,7 @@
+ 			return startPos;
+ 		}
+ 
+-		private int SpawnMinionOnCursor(IProjectileSource projectileSource, int ownerIndex, int minionProjectileId, int originalDamageNotScaledByMinionDamage, float KnockBack, Vector2 offsetFromCursor = default(Vector2), Vector2 velocityOnSpawn = default(Vector2)) {
++		public int SpawnMinionOnCursor(IProjectileSource projectileSource, int ownerIndex, int minionProjectileId, int originalDamageNotScaledByMinionDamage, float KnockBack, Vector2 offsetFromCursor = default(Vector2), Vector2 velocityOnSpawn = default(Vector2)) {
+ 			Vector2 pointPoisition = Main.MouseWorld;
+ 			pointPoisition += offsetFromCursor;
+ 			LimitPointToPlayerReachableArea(ref pointPoisition);
 @@ -34460,6 +_,10 @@
  		}
  
