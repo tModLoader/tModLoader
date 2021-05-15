@@ -4931,8 +4931,9 @@
 +
 +			bool shootWithNoAmmo = false;
 +			if (!canShoot && !ItemLoader.NeedsAmmo(sItem, this)) {
-+				canShoot = shootWithNoAmmo = true;
-+				item.SetDefaults(sItem.useAmmo);
++				item = ContentSamples.ItemsByType[sItem.useAmmo];
++				if (item.ammo == sItem.useAmmo)
++					canShoot = shootWithNoAmmo = true;
 +			}
 +
  			if (!canShoot)
