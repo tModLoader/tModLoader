@@ -1,5 +1,13 @@
 --- src/Terraria/Terraria/Main.cs
 +++ src/tModLoader/Terraria/Main.cs
+@@ -3,6 +_,7 @@
+ using Microsoft.Xna.Framework.Content;
+ using Microsoft.Xna.Framework.Graphics;
+ using Microsoft.Xna.Framework.Input;
++using Newtonsoft.Json;
+ using ReLogic.Content;
+ using ReLogic.Content.Sources;
+ #if MAC
 @@ -19,7 +_,7 @@
  using System.Collections.Generic;
  using System.Diagnostics;
@@ -3088,7 +3096,7 @@
  				num5 = 2;
  				array9[0] = statusText;
  				array[0] = true;
-@@ -36354,17 +_,27 @@
+@@ -36354,17 +_,22 @@
  					Netplay.ServerPassword = "";
  				}
  				else if (selectedMenu == 2 || inputTextEnter || autoPass) {
@@ -3108,23 +3116,19 @@
 -					tServer.StartInfo.FileName = "TerrariaServer.exe";
 +					tServer.StartInfo.FileName = "tModLoaderServer.exe";
  #else
-+					if (Debugger.IsAttached) {
 -					tServer.StartInfo.FileName = "TerrariaServer";
-+						tServer.StartInfo.FileName = "dotnet";
-+					}
-+					else {
-+						tServer.StartInfo.FileName = "NetFramework\\dotnet\\5.0.0\\dotnet";
-+					}
-+					
++					var fileName = Process.GetCurrentProcess().MainModule.FileName;
++					tServer.StartInfo.FileName = fileName.Remove(fileName.LastIndexOf("."));
  #endif
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {
-@@ -36373,7 +_,7 @@
+@@ -36372,8 +_,7 @@
+ 						startInfo.Arguments = startInfo.Arguments + " -loadlib " + libPath;
  					}
  
- 					tServer.StartInfo.UseShellExecute = false;
+-					tServer.StartInfo.UseShellExecute = false;
++					tServer.StartInfo.UseShellExecute = showServerConsole;
 -					tServer.StartInfo.CreateNoWindow = true;
-+					tServer.StartInfo.CreateNoWindow = !showServerConsole;
  					if (SocialAPI.Network != null)
  						SocialAPI.Network.LaunchLocalServer(tServer, MenuServerMode);
  					else
