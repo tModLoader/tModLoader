@@ -61,7 +61,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Performs a mod prefix roll. If the vanillaWeight wins the roll, then prefix is unchanged.
 		/// </summary>
-		internal static void Roll(Item item, ref int prefix, int vanillaWeight, params PrefixCategory[] categories) {
+		public static void Roll(Item item, ref int prefix, int vanillaWeight, params PrefixCategory[] categories) {
 			var wr = new WeightedRandom<byte>();
 
 			foreach (PrefixCategory category in categories) {
