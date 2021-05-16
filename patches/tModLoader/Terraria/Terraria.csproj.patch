@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -2,69 +_,139 @@
+@@ -2,69 +_,140 @@
    <Import Project="../Configuration.targets" />
    <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
@@ -95,6 +95,7 @@
 +    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
 +    <PackageReference Include="System.CodeDom" Version="5.0.0" />
 +    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.1" />
++    <PackageReference Include="Hjson" Version="3.0.0" />
    </ItemGroup>
    <Target Name="CopyToSteamDir" AfterTargets="Build">
 +    <!-- Export the ReleaseExtras files to bin -->

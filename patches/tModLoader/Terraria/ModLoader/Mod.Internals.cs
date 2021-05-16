@@ -1,5 +1,7 @@
-﻿using Microsoft.Xna.Framework.Audio;
+﻿using Hjson;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using ReLogic.Content.Readers;
 using ReLogic.Content.Sources;
@@ -213,6 +215,7 @@ namespace Terraria.ModLoader
 			if (File == null)
 				return;
 
+			// Process legacy ini-style .lang files
 			var modTranslationDictionary = new Dictionary<string, ModTranslation>();
 			foreach (var translationFile in File.Where(entry => Path.GetExtension(entry.Name) == ".lang")) {
 				// .lang files need to be UTF8 encoded.
@@ -239,7 +242,32 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
+			foreach (var value in modTranslationDictionary.Values) {
+				AddTranslation(value);
+			}
 
+			// Process .hjson files
+			modTranslationDictionary = new Dictionary<string, ModTranslation>();
+			foreach (var translationFile in File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
+				string translationFileContents = System.Text.Encoding.UTF8.GetString(File.GetBytes(translationFile));
+				GameCulture culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Name));
+
+				// Parse HJSON and convert to standard JSON
+				var jsonString = HjsonValue.Parse(translationFileContents).ToString();
+				// Parse JSON
+				var jsonObject = JObject.Parse(jsonString);
+				// Flatten JSON into dot seperated key and value
+				var flattened = jsonObject
+					.SelectTokens("$..*")
+					.Where(t => !t.HasValues)
+					.ToDictionary(t => t.Path, t => t.ToString());
+
+				foreach (var (key, value) in flattened) {
+					if (!modTranslationDictionary.TryGetValue(key, out ModTranslation mt))
+						modTranslationDictionary[key] = mt = CreateTranslation(key);
+					mt.AddTranslation(culture, value);
+				}
+			}
 			foreach (var value in modTranslationDictionary.Values) {
 				AddTranslation(value);
 			}
