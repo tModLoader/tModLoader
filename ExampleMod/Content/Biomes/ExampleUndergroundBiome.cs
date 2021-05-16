@@ -9,13 +9,13 @@ namespace ExampleMod.Content.Biomes
 	public class ExampleUndergroundBiome : ModBiome
 	{
 		// Select all the scenery
-		public override ModUgBgStyle UndergroundBackgroundStyle => ModContent.Find<ModUgBgStyle>("ExampleMod/ExampleUgBgStyle");
+		public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.Find<ModUndergroundBackgroundStyle>("ExampleMod/ExampleUndergroundBackgroundStyle");
 
 		// Select Music
 		public override int Music => Mod.GetSoundSlot(SoundType.Music, "Assets/Sounds/Music/MarbleGallery.ogg");
 
 		// Sets how the AVFX associated with this biome will be displayed with respect to vanilla AVFX. For more information see AVFXPriority & its values.
-		public override AVFXPriority Priority => AVFXPriority.BiomeLow; // We have set the AVFXPriority to be BiomeLow for purpose of example, however default behavour is BiomeLow.
+		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow; // We have set the AVFXPriority to be BiomeLow for purpose of example, however default behavour is BiomeLow.
 
 		// Populate the Bestiary Filter
 		public override string BestiaryIcon => base.BestiaryIcon;

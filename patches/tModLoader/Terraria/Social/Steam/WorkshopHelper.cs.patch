@@ -1,0 +1,60 @@
+--- src/Terraria/Terraria/Social/Steam/WorkshopHelper.cs
++++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
+@@ -3,6 +_,7 @@
+ using System.Collections.Generic;
+ using System.IO;
+ using Terraria.IO;
++using Terraria.ModLoader;
+ using Terraria.Social.Base;
+ using Terraria.Utilities;
+ 
+@@ -42,18 +_,30 @@
+ 				public static Downloader Create() => new Downloader();
+ 
+ 				public List<string> GetListOfSubscribedItemsPaths() {
++					List<string> list = new List<string>();
++
++					var array = new AppId_t[] { ModLoader.Engine.Steam.TerrariaAppId_t, ModLoader.Engine.Steam.TMLAppID_t };
++					foreach (var app in array) {
++						SteamApps.GetAppInstallDir(app, out string installLoc, 1000);
++						var workshopLoc = Path.Combine(Directory.GetParent(Directory.GetParent(installLoc).ToString()).ToString(),"workshop","content", app.m_AppId.ToString());
++						if (Directory.Exists(workshopLoc)) {
++							list.AddRange(Directory.EnumerateDirectories(workshopLoc));
++						}
++					}
++
++					/*
+ 					PublishedFileId_t[] array = new PublishedFileId_t[SteamUGC.GetNumSubscribedItems()];
+ 					SteamUGC.GetSubscribedItems(array, (uint)array.Length);
+ 					ulong punSizeOnDisk = 0uL;
+ 					string pchFolder = string.Empty;
+ 					uint punTimeStamp = 0u;
+-					List<string> list = new List<string>();
++					
+ 					PublishedFileId_t[] array2 = array;
+ 					for (int i = 0; i < array2.Length; i++) {
+ 						if (SteamUGC.GetItemInstallInfo(array2[i], out punSizeOnDisk, out pchFolder, 1024u, out punTimeStamp))
+ 							list.Add(pchFolder);
+ 					}
+-
++					*/
+ 					return list;
+ 				}
+ 
+@@ -178,6 +_,8 @@
+ 					if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out FoundWorkshopEntryInfo info))
+ 						num = info.workshopEntryId;
+ 
++					//TODO: Decide what to do with publishing. For now, this disables all in-game publishing.
++					/*
+ 					if (num.HasValue && finder.HasItemOfId(num.Value)) {
+ 						_publishedFileID = new PublishedFileId_t(num.Value);
+ 						PreventUpdatingCertainThings();
+@@ -186,6 +_,7 @@
+ 					else {
+ 						CreateItem();
+ 					}
++					*/
+ 				}
+ 
+ 				private void PreventUpdatingCertainThings() {

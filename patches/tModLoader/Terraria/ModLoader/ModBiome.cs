@@ -5,17 +5,17 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a biome added by a mod. It exists to centralize various biome related hooks, handling a lot of biome boilerplate.
 	/// </summary>
-	public abstract class ModBiome : ModAVFX
+	public abstract class ModBiome : ModSceneEffect
 	{
 		// Basic Biome information
 		/// <summary>
 		/// Whether or not this biome impacts NPC shop prices.
 		/// </summary>
 		public virtual bool IsPrimaryBiome => false;
-		public override AVFXPriority Priority => AVFXPriority.BiomeLow;
+		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow;
 		public override int Music => 0;
 
-		internal int ZeroIndexType => Type - Loaders.Biomes.vanillaCount; 
+		internal int ZeroIndexType => Type - BiomeLoader.VanillaPrimaryBiomeCount; 
 
 		// Bestiary properties
 		/// <summary>
@@ -38,8 +38,8 @@ namespace Terraria.ModLoader
 		public GameContent.Bestiary.ModBiomeBestiaryInfoElement ModBiomeBestiaryInfoElement { get; internal set; }
 
 		protected sealed override void Register() {
-			Type = Loaders.Biomes.Register(this);
-			RegisterAVFX(this);
+			Type = LoaderManager.Get<BiomeLoader>().Register(this);
+			RegisterSceneEffect(this);
 
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BiomeName.{Name}");
 
@@ -51,10 +51,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// IsAVFXActive is auto-forwarded to read the result of IsBiomeActive.
+		/// IsSceneEffectActive is auto-forwarded to read the result of IsBiomeActive.
 		/// Do not need to implement when creating your ModBiome.
 		/// </summary>
-		public sealed override bool IsAVFXActive(Player player) => player.modBiomeFlags[ZeroIndexType];
+		public sealed override bool IsSceneEffectActive(Player player) => player.modBiomeFlags[ZeroIndexType];
 
 		/// <summary>
 		/// This is where you can set values for DisplayName.

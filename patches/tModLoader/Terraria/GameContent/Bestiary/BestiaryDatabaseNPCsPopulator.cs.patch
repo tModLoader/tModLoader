@@ -16,7 +16,7 @@
 +
 +				}
 +				.Concat(ModLoader.ModLoader.Mods.Where(mod => NPCLoader.npcs.Any(npc => npc.Mod == mod)).Select(mod => mod.ModSourceBestiaryInfoElement))
-+				.Concat(Loaders.Biomes.list.Where(biome => NPCLoader.npcs.Any(npc => npc.SpawnModBiomes.Contains(biome.Type))).Select(biome => biome.ModBiomeBestiaryInfoElement))
++				.Concat(LoaderManager.Get<BiomeLoader>().list.Where(biome => NPCLoader.npcs.Any(npc => npc.SpawnModBiomes.Contains(biome.Type))).Select(biome => biome.ModBiomeBestiaryInfoElement))
 +				.ToList();
  			}
  		}

@@ -8,10 +8,9 @@ namespace Terraria
 {
 	public partial class Player {
 		internal IList<string> usedMods;
-		internal ModPlayer[] modPlayers = new ModPlayer[0];
+		internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();
 
-		public int infoDisplayPage;
-		public HashSet<int> nearbyModTorch = new HashSet<int>();
+		public HashSet<int> NearbyModTorch { get; private set; } = new HashSet<int>();
 
 		// Get
 
@@ -100,11 +99,10 @@ namespace Terraria
 		/// </summary>
 		public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
 
-
 		/// <summary>
-		/// Container for current AVFX client properties such as: Backgrounds, music, and water styling
+		/// Container for current SceneEffect client properties such as: Backgrounds, music, and water styling
 		/// </summary>
-		public AVFXLoader.AVFXInstance currentAVFX = new AVFXLoader.AVFXInstance();
+		public SceneEffectLoader.SceneEffectInstance CurrentSceneEffect { get; set; } = new SceneEffectLoader.SceneEffectInstance();
 
 		/// <summary>
 		/// Stores whether or not the player is in a modbiome using boolean bits.
@@ -116,12 +114,12 @@ namespace Terraria
 		/// </summary>
 		/// <exception cref="IndexOutOfRangeException"/>
 		/// <exception cref="NullReferenceException"/>
-		public bool InModBiome(ModBiome baseInstance)=> modBiomeFlags[baseInstance.ZeroIndexType];
+		public bool InModBiome(ModBiome baseInstance) => modBiomeFlags[baseInstance.ZeroIndexType];
 
 		/// <summary>
-		/// The zone field storing if the player is in the purity/forest biome. Updated in <see cref="UpdateBiomes"/>
+		/// The zone property storing if the player is in the purity/forest biome. Updated in <see cref="UpdateBiomes"/>
 		/// </summary>
-		public bool zonePurity { get; set; } = false;
+		public bool ZonePurity { get; set; } = false;
 
 		/// <summary>
 		/// Calculates whether or not the player is in the purity/forest biome.

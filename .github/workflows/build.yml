@@ -38,7 +38,7 @@ jobs:
           persist-credentials: false
         # TODO: build doesn't have right branch I assume
 
-      - name: Copy over pull request patches folder
+      - name: Copy over pull request patches folder and ExampleMod folder
         if: github.event_name == 'pull_request_target'
         shell: bash
         run: |
@@ -48,6 +48,8 @@ jobs:
           cd ..
           rm -r patches
           cp -fR pullrequest/patches patches
+          rm -r ExampleMod
+          cp -fR pullrequest/ExampleMod ExampleMod
 
       # A cache allows the build to skip the decompile step
       - name: Retrieve encrypted decompiled zip cache
@@ -100,12 +102,20 @@ jobs:
           echo pwd is: ${PWD}
           echo ls -l is:
           ls -l
-          echo Running CompleteDebugRelease.bat
-          ./CompleteDebugRelease.bat skipzip
-          echo CompleteDebugRelease.bat Done
+          echo Running CompleteLib.bat for Debug
+          ./CompleteLib.bat Debug skipzip
+          echo CompleteLib.bat Debug Done
           cd ..
           mkdir -p artifacts/Debug
           cp -R ./solutions/Debug/Shared/. ./artifacts/Debug/
+          cd solutions
+          echo pwd is: ${PWD}
+          echo Running CompleteLib.bat for Release
+          ./CompleteLib.bat Release skipzip
+          echo CompleteLib.bat Release Done
+          cd ..
+          mkdir -p artifacts/Release
+          cp -R ./solutions/Release/Shared/. ./artifacts/Release/
           echo Creating decompiled cache zip file
           7z a decompiled.zip ./src/decompiled/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
@@ -119,6 +129,12 @@ jobs:
           name: Debug Build
           path: |
             ./artifacts/Debug/
+            
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Release Build
+          path: |
+            ./artifacts/Release/
             
       - name: Build ExampleMod
         shell: bash

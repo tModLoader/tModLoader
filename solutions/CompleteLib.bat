@@ -2,14 +2,17 @@
 :: It will also create a zip for ExampleMod
 
 @ECHO off
-:: Compile/Build exe 
-echo "Building Release"
-set tModLoaderVersion=v0.11.9.0
-call buildRelease.bat
+:: Read param for target
+set target=%~1
 
-set destinationFolder=.\tModLoader %tModLoaderVersion% Release
-If "%1"=="skipzip" (
-	set destinationFolder=.\Release
+:: Compile/Build dll 
+echo "Building %target%"
+set tModLoaderVersion=v0.11.9.0
+call build%target%.bat
+
+set destinationFolder=.\tModLoader %tModLoaderVersion% %target%
+If "%2"=="skipzip" (
+	set destinationFolder=.\%target%
 )
 @IF %ERRORLEVEL% NEQ 0 (
 	pause
@@ -26,14 +29,10 @@ set win=%destinationFolder%\tModLoader Windows %tModLoaderVersion%
 mkdir "%shared%"
 
 :: Generic release
-robocopy /S ..\src\tModLoader\Terraria\bin\Release\net5.0 "%shared%"
-del "%shared%\tModLoader.exe"
+robocopy /S ..\src\tModLoader\Terraria\bin\%target%\net5.0 "%shared%"
 rmdir /S /Q "%shared%\ref"
-robocopy /S ReleaseExtras\RuntimeFiles "%shared%"
-robocopy /S ReleaseExtras\SteamFiles "%shared%"
-copy ReleaseExtras\tModLoader.png "%shared%\Libraries\Native\tModLoader.png"
 
-If "%1"=="skipzip" (
+If "%2"=="skipzip" (
 	echo Skipping zipping.
 ) Else (
 	:: Windows
@@ -53,10 +52,10 @@ If "%1"=="skipzip" (
 echo(
 echo(
 echo(
-echo tModLoader %tModLoaderVersion% ready to release.
+echo tModLoader %tModLoaderVersion% ready to %target%.
 echo Upload the 2 zip files to github/discord.
 echo(
 echo(
-If NOT "%1"=="skipzip" (
+If NOT "%2"=="skipzip" (
 	pause
 )

@@ -15,7 +15,7 @@ namespace Terraria
 
 		internal Instanced<GlobalItem>[] globalItems = Array.Empty<Instanced<GlobalItem>>();
 
-		public ReadOnlySpan<Instanced<GlobalItem>> Globals => globalItems;
+		public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new RefReadOnlyArray<Instanced<GlobalItem>>(globalItems);
 
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
@@ -68,11 +68,16 @@ namespace Terraria
 			ItemID.Sets.IsAMaterial[74] = false;
 		}
 
-		public static int NewItem(Rectangle rectangle, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => 
-			Item.NewItem(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
-		public static int NewItem(Vector2 position, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => 
-			NewItem((int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
+		public static int NewItem(Rectangle rectangle, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
+			=> Item.NewItem(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
-		public bool CountsAsClass(DamageClass damageClass) => DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
+		public static int NewItem(Vector2 position, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
+			=> NewItem((int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
+
+		public bool CountsAsClass<T>() where T : DamageClass
+			=> CountsAsClass(ModContent.GetInstance<T>());
+
+		public bool CountsAsClass(DamageClass damageClass)
+			=> DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
 	}
 }

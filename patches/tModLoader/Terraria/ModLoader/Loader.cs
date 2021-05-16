@@ -1,58 +1,111 @@
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Terraria.ModLoader
 {
-	//todo: further documentation
-	/// <summary>
-	/// This serves as the highest-level class for loaders
-	/// </summary>
-	public abstract class Loader<T> where T : ModType
-	{
-		public int vanillaCount { get; internal set; }
-		public int totalCount { get; internal set; }
+	//TODO: Further documentation.
 
+	/// <summary> Serves as a highest-level base for loaders. </summary>
+	public abstract class Loader : ILoader
+	{
+		public int VanillaCount { get; set; }
+		internal int TotalCount { get; set; }
+
+		/// <summary>
+		/// Initilizes the loader based on the vanilla count of the ModType.
+		/// </summary>
+		internal void Initialize(int vanillaCount) {
+			VanillaCount = vanillaCount;
+			TotalCount = vanillaCount;
+		}
+
+		protected int Reserve() => TotalCount++;
+
+		internal virtual void ResizeArrays() { }
+
+		internal virtual void Unload() {
+			TotalCount = VanillaCount;
+		}
+
+		void ILoader.ResizeArrays() => ResizeArrays();
+
+		void ILoader.Unload() => Unload();
+	}
+
+	/// <summary> Serves as a highest-level base for loaders of mod types. </summary>
+	public abstract class Loader<T> : Loader
+		where T : ModType
+	{
 		internal List<T> list = new List<T>();
 
-		protected Loader(int vanillaCount) {
-			this.vanillaCount = vanillaCount;
-			totalCount = vanillaCount;
-		}
-
-		public int Reserve() {
-			int reserve = totalCount;
-			totalCount++;
-			return reserve;
-		}
-
-		// TODO: Possibly convert all ModTypes to have 'int Type' as their indexing field.
+		//TODO: Possibly convert all ModTypes to have 'int Type' as their indexing field.
 		public int Register(T obj) {
 			int type = Reserve();
+
 			ModTypeLookup<T>.Register(obj);
 			list.Add(obj);
+
 			return type;
 		}
 
 		public T Get(int id) {
-			if (id < vanillaCount || id >= totalCount) {
+			if (id < VanillaCount || id >= TotalCount) {
 				return default;
 			}
-			return list[id - vanillaCount];
+
+			return list[id - VanillaCount];
 		}
 
-		internal virtual void Unload() {
-			totalCount = vanillaCount;
+		internal override void Unload() {
+			base.Unload();
+
 			list.Clear();
 		}
-
-		internal virtual void ResizeArrays() { }
 	}
 
-	public static class Loaders {
-		public static WaterFallStyles Waterfalls = new WaterFallStyles();
-		public static WaterStyles Waters = new WaterStyles();
-		public static UgBgStyles UgBgs = new UgBgStyles();
-		public static SurfaceBgStyles SurfaceBgs = new SurfaceBgStyles();
-		public static AVFXLoader AVFXs = new AVFXLoader();
-		public static BiomeLoader Biomes = new BiomeLoader();
+	public interface ILoader
+	{
+		internal void ResizeArrays() { }
+
+		internal void Unload() { }
+	}
+
+	public static class LoaderManager
+	{
+		private static readonly Dictionary<Type, ILoader> loadersByType = new Dictionary<Type, ILoader>();
+
+		internal static void AutoLoad() {
+			foreach (var type in Assembly.GetExecutingAssembly().GetTypes()) {
+				if (!typeof(ILoader).IsAssignableFrom(type) || type.IsAbstract || !type.IsClass) {
+					continue;
+				}
+
+				var autoload = AutoloadAttribute.GetValue(type);
+
+				if(autoload.NeedsAutoloading) {
+					loadersByType.Add(type, (ILoader)Activator.CreateInstance(type));
+				}
+			}
+		}
+
+		public static T Get<T>() {
+			if (!loadersByType.TryGetValue(typeof(T), out var result))
+				return Activator.CreateInstance<T>(); // Return empty instance in case of static Player constructor or similar
+
+			return (T)result;
+		}
+
+		internal static void Unload() {
+			foreach (var loader in loadersByType.Values) {
+				loader.Unload();
+			}
+		}
+
+		internal static void ResizeArrays() {
+			foreach (var loader in loadersByType.Values) {
+				loader.ResizeArrays();
+			}
+		}
 	}
 }
