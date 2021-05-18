@@ -29,9 +29,9 @@ namespace Terraria.ModLoader.Config
 		}
 
 		public EntityDefinition(string key) {
-			this.mod = "";
-			this.name = "";
-			string[] parts = key.Split(new char[] { ' ' }, 2);
+			this.mod = "Terraria";
+			this.name = key;
+			string[] parts = key.Split('/', 2);
 			if (parts.Length == 2) {
 				mod = parts[0];
 				name = parts[1];
@@ -71,8 +71,7 @@ namespace Terraria.ModLoader.Config
 	// JSONItemConverter should allow this to be used as a dictionary key.
 	[TypeConverter(typeof(ToFromStringConverter<ItemDefinition>))]
 	//[CustomModConfigItem(typeof(UIModConfigItemDefinitionItem))]
-	public class ItemDefinition : EntityDefinition
-	{
+	public class ItemDefinition : EntityDefinition {
 		public ItemDefinition() : base() {
 		}
 		public ItemDefinition(int type) : base(ItemID.Search.GetName(type)) {
@@ -82,7 +81,7 @@ namespace Terraria.ModLoader.Config
 		public ItemDefinition(string mod, string name) : base(mod, name) {
 		}
 
-		public override int Type => ItemID.Search.TryGetId($"{mod}/{name}", out int id) ? id : -1;
+		public override int Type => ItemID.Search.TryGetId(mod != "Terraria" ? $"{mod}/{name}" : name, out int id) ? id : -1;
 
 		public static ItemDefinition FromString(string s) => new ItemDefinition(s);
 
