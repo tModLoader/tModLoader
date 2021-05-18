@@ -71,7 +71,7 @@ namespace Terraria.ModLoader.Config
 	// JSONItemConverter should allow this to be used as a dictionary key.
 	[TypeConverter(typeof(ToFromStringConverter<ItemDefinition>))]
 	//[CustomModConfigItem(typeof(UIModConfigItemDefinitionItem))]
-	public class ItemDefinition : EntityDefinition 
+	public class ItemDefinition : EntityDefinition
 	{
 		public ItemDefinition() : base() {
 		}
