@@ -97,7 +97,7 @@ namespace Terraria.ModLoader.Config
 		public ProjectileDefinition(string key) : base(key) { }
 		public ProjectileDefinition(string mod, string name) : base(mod, name) { }
 
-		public override int Type => ProjectileID.Search.GetId($"{mod}/{name}");
+		public override int Type => ProjectileID.Search.GetId(mod != "Terraria" ? $"{mod}/{name}" : name);
 
 		public static ProjectileDefinition FromString(string s) => new ProjectileDefinition(s);
 
@@ -113,7 +113,7 @@ namespace Terraria.ModLoader.Config
 		public NPCDefinition(string key) : base(key) { }
 		public NPCDefinition(string mod, string name) : base(mod, name) { }
 
-		public override int Type => NPCID.Search.GetId($"{mod}/{name}");
+		public override int Type => NPCID.Search.GetId(mod != "Terraria" ? $"{mod}/{name}" : name);
 
 		public static NPCDefinition FromString(string s) => new NPCDefinition(s);
 
@@ -129,7 +129,7 @@ namespace Terraria.ModLoader.Config
 		public PrefixDefinition(string key) : base(key) { }
 		public PrefixDefinition(string mod, string name) : base(mod, name) { }
 
-		public override int Type => PrefixID.Search.GetId($"{mod}/{name}");
+		public override int Type => PrefixID.Search.GetId(mod != "Terraria" ? $"{mod}/{name}" : name);
 
 		public static PrefixDefinition FromString(string s) => new PrefixDefinition(s);
 
