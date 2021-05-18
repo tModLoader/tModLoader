@@ -98,48 +98,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to set biome variables in your ModPlayer class based on tile counts.
-		/// </summary>
-		public virtual void UpdateBiomes() {
-		}
-
-		/// <summary>
-		/// Whether or not this player and the other player parameter have the same custom biome variables. This hook is used to help with client/server syncing. Returns true by default.
-		/// </summary>
-		/// <param name="other"></param>
-		/// <returns></returns>
-		public virtual bool CustomBiomesMatch(Player other) {
-			return true;
-		}
-
-		/// <summary>
-		/// In this hook, you should copy the custom biome variables from this player to the other player parameter. This hook is used to help with client/server syncing.
-		/// </summary>
-		/// <param name="other"></param>
-		public virtual void CopyCustomBiomesTo(Player other) {
-		}
-
-		/// <summary>
-		/// Allows you to send custom biome information between client and server.
-		/// </summary>
-		/// <param name="writer"></param>
-		public virtual void SendCustomBiomes(BinaryWriter writer) {
-		}
-
-		/// <summary>
-		/// Allows you to do things with the custom biome information you send between client and server.
-		/// </summary>
-		/// <param name="reader"></param>
-		public virtual void ReceiveCustomBiomes(BinaryReader reader) {
-		}
-
-		/// <summary>
-		/// Allows you to create special visual effects in the area around the player. For example, the blood moon's red filter on the screen or the slime rain's falling slime in the background. You must create classes that override Terraria.Graphics.Shaders.ScreenShaderData or Terraria.Graphics.Effects.CustomSky, add them in your mod's Load hook, then call Player.ManageSpecialBiomeVisuals. See the ExampleMod if you do not have access to the source code.
-		/// </summary>
-		public virtual void UpdateBiomeVisuals() {
-		}
-
-		/// <summary>
 		/// Allows you to copy information about this player to the clientClone parameter. You should copy information that you intend to sync between server and client. This hook is called in the Player.clientClone method. See SendClientChanges for more info.
 		/// </summary>
 		/// <param name="clientClone"></param>
@@ -501,7 +459,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to add additional projectiles to an item's shooting mechanism.
+		/// Allows you to modify an item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.
 		/// </summary>
 		/// <param name="item"> The item being used. </param>
 		/// <param name="source"> The projectile source's information. </param>
@@ -510,7 +468,8 @@ namespace Terraria.ModLoader
 		/// <param name="type"> The ID of the projectile. </param>
 		/// <param name="damage"> The damage of the projectile. </param>
 		/// <param name="knockback"> The knockback of the projectile. </param>
-		public virtual void Shoot(Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public virtual bool Shoot(Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			return true;
 		}
 
 		/// <summary>

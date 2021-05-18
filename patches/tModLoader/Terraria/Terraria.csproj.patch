@@ -6,7 +6,7 @@
    <PropertyGroup>
 -    <OutputType>WinExe</OutputType>
 +    <OutputType>Exe</OutputType>
-     <Version>1.4.2.2</Version>
+     <Version>1.4.2.3</Version>
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2021 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
@@ -40,13 +40,12 @@
      <Reference Include="CsvHelper" />
      <Reference Include="FNA" />
 -    <Reference Include="Ionic.Zip.CF" />
--    <Reference Include="MP3Sharp" Condition="$(DefineConstants.Contains('CLIENT'))" />
-+    <Reference Include="MP3Sharp" />
+     <Reference Include="MP3Sharp" />
 +    <Reference Include="Ionic.Zip.Reduced" />
 +    <Reference Include="log4net" />
 +    <Reference Include="NVorbis" />    
      <Reference Include="Newtonsoft.Json" />
--    <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
+-    <Reference Include="NVorbis" />
      <Reference Include="RailSDK.Net" />
 -    <ProjectReference Include="../ReLogic/ReLogic.csproj">
 -      <Private>false</Private>
@@ -115,7 +114,7 @@
 -    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)/%(RecursiveDir)" />
 +    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" SkipUnchangedFiles="True"/>
 +    <!-- todo, purge old libraries on other platforms -->
-+    <Exec Command="robocopy $(TargetDir)Libraries $(tModLoaderSteamPath)\Libraries /MIR" ContinueOnError="true" StandardOutputImportance="low" Condition="'$(OS)' == 'Windows_NT'">
++    <Exec Command="robocopy &quot;$(TargetDir)Libraries&quot; &quot;$(tModLoaderSteamPath)\Libraries&quot; /MIR" ContinueOnError="true" StandardOutputImportance="low" Condition="'$(OS)' == 'Windows_NT'">
 +      <Output TaskParameter="ExitCode" PropertyName="PurgeExitCode"/>
 +    </Exec>
 +    <Warning Text="\Libraries file purge failed (robocopy /MIR Exit Code: $(PurgeExitCode)). Old files may not be removed." Condition="'$(PurgeExitCode)' != 2 AND '$(PurgeExitCode)' != 0" />
