@@ -78,13 +78,14 @@ namespace Terraria.ModLoader.UI
 				buttonIndex++;
 				numButtons++;
 			}
-			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModBrowser");
+			// Disable Mod Browser on 1.4 branch, until such time as it is safe to implement.
+			/*buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModBrowser");
 			if (selectedMenu == buttonIndex) {
 				SoundEngine.PlaySound(10, -1, -1, 1);
 				Main.menuMode = modBrowserID;
 			}
 			buttonIndex++;
-			numButtons++;
+			numButtons++;*/
 			offY = 220;
 			for (int k = 0; k < numButtons; k++) {
 				buttonScales[k] = 0.82f;
@@ -121,7 +122,9 @@ namespace Terraria.ModLoader.UI
 			if (Main.menuMode == loadModsID) {
 				if (ModLoader.ShowFirstLaunchWelcomeMessage) {
 					ModLoader.ShowFirstLaunchWelcomeMessage = false;
-					infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
+					// Temporary display for the alpha/beta version.
+					infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageBeta"), Main.menuMode);
+					//infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
 				}
 				//else if (ModLoader.ShowWhatsNew) {
 				//	// TODO: possibly pull from github

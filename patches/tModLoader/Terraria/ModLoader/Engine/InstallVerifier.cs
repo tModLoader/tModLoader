@@ -86,11 +86,12 @@ namespace Terraria.ModLoader.Engine
 				return false;
 			}
 
-			// Whether the steam_appid.txt file exists, indicating we'd have to check steam installation
-			if (File.Exists(SteamAppIDPath))
-				return CheckSteam();
+			// Check if we are within a steamapps subfolder OR are trying to force run as steam install; if not, return GoG.
+			if (!(Directory.GetCurrentDirectory().Contains("steamapps") || Program.LaunchParameters.ContainsKey("-steam"))) {
+				return CheckGoG();
+			}
 
-			return CheckGoG();
+			return CheckSteam();
 		}
 
 		// Check if steam installation is correct
