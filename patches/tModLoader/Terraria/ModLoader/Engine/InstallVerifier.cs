@@ -109,6 +109,7 @@ namespace Terraria.ModLoader.Engine
 			}
 
 			// If the steam_api file is present in the vanilla folder, than it is a Steam launch
+			if (File.Exists(Path.Combine(steamApiPath, vanillaSteamAPI)))
 				return CheckSteam();
 
 			return CheckGoG(exePath);
