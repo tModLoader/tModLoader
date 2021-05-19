@@ -99,27 +99,34 @@ namespace Terraria.ModLoader.Engine
 
 			Logging.tML.Info("Checking if GoG or Steam...");
 
-			// Find the vanilla Exe and path
-			var pathExe = ObtainVanillaExePath(out var vanillaPath);
-
-			// If can't find a GoG folder, or the steam_api file is present in the vanilla folder, than it is a Steam launch
-			if (String.IsNullOrEmpty(pathExe) || File.Exists(Path.Combine(vanillaPath, vanillaSteamAPI)))
+			// If can't find a GoG folder, than it is a Steam launch
+			if (!ObtainVanillaExePath(out var steamApiPath, out var exePath))
 				return CheckSteam();
 
-			return CheckGoG(pathExe);
+			// Handle the nonsense that is OSX installs. We want Terraria.app/Contents/MacOS/osx as the directory
+			if (Platform.IsOSX) {
+				steamApiPath = Path.Combine(Directory.GetParent(steamApiPath).FullName, "MacOS", "osx");
+			}
+
+			// If the steam_api file is present in the vanilla folder, than it is a Steam launch
+				return CheckSteam();
+
+			return CheckGoG(exePath);
 		}
 
-		private static string ObtainVanillaExePath(out string vanillaPath) {
+		private static bool ObtainVanillaExePath(out string vanillaPath, out string exePath) {
 			// Check if in the same folder somehow.
-			vanillaPath = "";
+			vanillaPath = Directory.GetCurrentDirectory();
+			if (CheckForExe(vanillaPath, out exePath))
+				return true;
 
-			if (File.Exists(CheckExe))
-				return CheckExe;
-			else if (File.Exists(DefaultExe))
-				return DefaultExe;
+			// If .exe not present check parent directory (Nested Manual Install)
+			vanillaPath = Directory.GetParent(vanillaPath).FullName;
+			if (CheckForExe(vanillaPath, out exePath))
+				return true;
 
 			// If .exe not present, check Terraria directory (Side-by-Side Manual Install)
-			vanillaPath = Path.Combine("..", "Terraria");
+			vanillaPath = Path.Combine(vanillaPath, "Terraria");
 			if (Platform.IsOSX) {
 				// GOG installs to /Applications/Terraria.app, Steam installs to /Applications/Terraria/Terraria.app
 				// working directory is /Applications/tModLoader/tModLoader.app/Contents/MacOS/ for steam manual installs
@@ -138,25 +145,23 @@ namespace Terraria.ModLoader.Engine
 				}
 			}
 
-			string defaultPath = Path.Combine(vanillaPath, DefaultExe);
-			string checkPath = Path.Combine(vanillaPath, CheckExe);
-			if (File.Exists(checkPath))
-				return checkPath;
-			else if (File.Exists(defaultPath))
-				return defaultPath;
+			if (CheckForExe(vanillaPath, out exePath))
+				return true;
 
-			// If .exe not present check parent directory (Nested Manual Install)
-			vanillaPath = "..";
-
-			defaultPath = Path.Combine(vanillaPath, DefaultExe);
-			checkPath = Path.Combine(vanillaPath, CheckExe);
-			if (File.Exists(checkPath))
-				return checkPath;
-			else if (File.Exists(defaultPath))
-				return defaultPath;
-
-			return null;
+			return false;
 		} 
+
+		private static bool CheckForExe(string vanillaPath, out string exePath) {
+			exePath = Path.Combine(vanillaPath, DefaultExe);
+			if (File.Exists(exePath))
+				return true;
+
+			exePath = Path.Combine(vanillaPath, CheckExe);
+			if (File.Exists(exePath))
+				return true;
+
+			return false;
+		}
 
 
 		// Check if Steam installation is correct
