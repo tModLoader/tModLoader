@@ -533,13 +533,12 @@ namespace Terraria.ModLoader
 		private static HookList HookCanShoot = AddHook<Func<Item, bool>>(p => p.CanShoot);
 
 		public static bool CanShoot(Player player, Item item) {
-			bool canShoot = true;
-
 			foreach (int index in HookCanShoot.arr) {
-				canShoot &= player.modPlayers[index].CanShoot(item);
+				if (!player.modPlayers[index].CanShoot(item))
+					return false;
 			}
 
-			return canShoot;
+			return true;
 		}
 
 		private delegate void DelegateModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback);
@@ -551,12 +550,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookShoot = AddHook<Action<Item, ProjectileSource_Item_WithAmmo, Vector2, Vector2, int, int, float>>(p => p.Shoot);
+		private static HookList HookShoot = AddHook<Func<Item, ProjectileSource_Item_WithAmmo, Vector2, Vector2, int, int, float, bool>>(p => p.Shoot);
 
-		public static void Shoot(Player player, Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public static bool Shoot(Player player, Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			bool defaultResult = true;
+
 			foreach (int index in HookShoot.arr) {
-				player.modPlayers[index].Shoot(item, source, position, velocity, type, damage, knockback);
+				defaultResult &= player.modPlayers[index].Shoot(item, source, position, velocity, type, damage, knockback);
 			}
+
+			return defaultResult;
 		}
 
 		private static HookList HookMeleeEffects = AddHook<Action<Item, Rectangle>>(p => p.MeleeEffects);
