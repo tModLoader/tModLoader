@@ -1,16 +1,16 @@
 {
 	"tModLoader": {
-		// Main Menu
+		// Main Menu // Głowne Menu
 		"PatreonSupport": "Wesprzyj nas: ",
 		"MenuModBrowser": "Przeglądarka Modów",
 		"MenuMods": "Mody",
 		"MenuModSources": "Źródła",
 		"MenuEnableDeveloperMode": "Włącz Tryb Dewelopera",
-		// "FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
+		"FirstLaunchWelcomeMessage": "Witaj w tModLoaderze.\n\nPomyślnie zainstalowałeś tModLoadera. Użyj Przeglądarki Modów, aby znaleźć mody, które chcesz pobrać. Użyj zakładki mody, aby zmienić, które mody są aktualnie aktywne. Po zmianie modów upewnij się, że klikniesz przycisk Przeładuj mody aby je załadować.",
 		"tModLoaderSettings": "Ustawienia tModLoadera",
 		"ModMenuSwap": "Przełącz Motyw Menu",
 		
-		// Mods Menu
+		// Mods Menu // Menu Modów
 		"ModsModsList": "Lista modów",
 		"ModsEnableAll": "Włącz wszystkie",
 		"ModsDisableAll": "Wyłącz wszystkie",
@@ -43,8 +43,8 @@
 		"ModsShowEnabledMods": "Pokaż tylko włączone",
 		"ModsShowDisabledMods": "Pokaż tylko wyłączone",
 		"ModsXModsFilteredByEnabled": "{0} {^0:mod;mods} filtrowanych przez filter włączonych.",
-		// "ModsXModsFilteredByModSide": "{0} {^0:mod;mods} filtered by enabled mod side filter.",
-		// "ModsXModsFilteredBySearch": "{0} {^0:mod;mods} filtered by enabled search filter.",
+		"ModsXModsFilteredByModSide": "{0} {^0:mod;mods} filtrowanych przez włączony filter stron.",
+		"ModsXModsFilteredBySearch": "{0} {^0:mod;mods} filtrowanych przez włączony filter wyszukiwania.",
 		"ModsXItems": "{0} {^0:Przedmiot;Przedmioty;Przedmiotów}",
 		"ModsXNPCs": "{0} {^0:NPC;NPCs;NPCs}",
 		"ModsXTiles": "{0} {^0:Blok;Bloki;Bloków}",
@@ -56,11 +56,11 @@
 		"AskForModIndex": "Wpisz liczbę, aby przełączać między włączonymi/wyłączonymi modami",
 		"AskForCommand": "Wpisz komende: ",
 
-		// Interface
+		// Interface // Interfejs
 		"BossBarStyle": "Styl Paska Bossa: {0}",
 		"BossBarStyleNoOptions": "Bez Opcji",
 
-		// Mod Errors
+		// Mod Errors // Błędy Modów
 		"LoadError": "Wystąpił błąd podczas ładowania {0}",
 		"LoadErrorDisabled": "Mod(y) zostały automatycznie wyłączone.",
 		"LoadErrorCulpritUnknown": "Mod odpowiedzialny jest nieznany i tModLoader musi zostać ponownie uruchomiony.",
@@ -70,17 +70,17 @@
 		"LoadErrorErrorReadingModFile": "Błąd podczas ładowania pliku moda {0}",
 		"LoadErrorHashMismatchCorrupted": "Niepoprawny hash, dane moda zostały zmodyfikowane lub uszkodzone",
 		"LoadErrorDependencyVersionTooLow": "{0} wymaga {2} w wersji {1}, ale zainstalowana jest {3}",
-		// "LoadErrorMajorVersionMismatch": "{0} targets {2} version {1} but you have a newer major version ({3}) which may not be compatible. {0} must be updated.",
-		// "LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {0} developers.",
-		// "UnloadError": "One or more errors occured while unloading and tModLoader must be restarted to prevent further issues.",
-		// "DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
+		"LoadErrorMajorVersionMismatch": "{0} celuje w {2} wersje {1} ale masz nowszą wersję główną ({3}) które mogą być niezgodne. {0} muszą zostać zaktualizowane.",
+		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. Ustawiłeś ModNPC.banner lub ModNPC.bannerItem, ale nie inne. Upewnij się, że ustawiasz oba, sprawdź pisownię i że element istnieje, jeśli używasz mod.ItemType(). Zgłoś to deweloperom {0}.",
+		"UnloadError": "Wystąpił jeden lub więcej błędów podczas rozładunku modów i tModLoader musi zostać ponownie uruchomiony, aby zapobiec dalszym problemom.",
+		"DefensiveUnload": "{0} nie był w stanie się prawidłowo rozładować. Moderzy muszą używać programowania defensywnego, aby zapewnić zakończenie rozładunku niezależnie od błędów podczas ładowania.",
 		"BuildError": "Wystąpił błąd podczas budowania {0}",
 		"CompileError": "Kompilowanie {0} nie powiodło się z {1} błędem i {2} ostrzeżeniami",
 		"BuildErrorModNameEmpty": "Nazwa moda nie może być pusta",
 		"BuildErrorModNamedTerraria": "Mody nie mogą się nazywać Terraria",
 		"BuildErrorModNameHasPeriod": "Wewnętrzna nazwa moda nie może zawierać kropki.",
 		"BuildErrorTwoModsSameName": "Kilka modów używa tej samej wewnętrznej nazwy {0}.",
-		// "BuildErrorModReference": "Failed to read mod reference {0}",
+		"BuildErrorModReference": "Nie udało się odczytać odwołania do modów {0}",
 		// "BuildErrorMissingNoCompile": "Missing dll files for noCompile: {0} or {1}\n\nAll.dll must not have any references to Microsoft.Xna.Framework or FNA\nXNA.dll must reference the appropriate tModLoader.exe and framework",
 		// "BuildErrorModNameDoesntMatchAssemblyName": "Mod name {0} does not match assembly name {1}",
 		// "BuildErrorNamespaceFolderDontMatch": "Namespace and Folder name do not match. The top level namespace must match the folder name.",
@@ -110,7 +110,7 @@
 		"Exit": "Wyjdz",
 		"ExitAndDisableAll": "Wyjdz i wyłącz wszystkie",
 
-		// Mod Info
+		// Mod Info // Informacje o modach
 		"ModInfoHeader": "Informacje o modzie: ",
 		"ModInfoVisitHomepage": "Odwiedź stronę moda po więcej informacji",
 		"ModInfoExtract": "Wypakuj",
@@ -118,7 +118,7 @@
 		"ModInfoProblemTryAgain": "Wystąpił problem, spróbuj ponownie",
 		"ModInfoDisableModToDelete": "Wyłącz Moda, by usunąć",
 
-		// Mod Packs
+		// Mod Packs // Paczki Modów
 		"ModPacksHeader": "Paczki modów",
 		"ModPacksSaveEnabledAsNewPack": "Zapisz włączone jako nowa paczka",
 		"ModPacksEnterModPackName": "Wpisz nazwę paczki",
@@ -136,7 +136,7 @@
 		"ModPackDoesNotExist": "Paczka modów {0} nie istnieje.",
 		"ModPackMalformed": "{0} paczka modów nie została prawidłowo odczytana, może być zniekształcona.",
 
-		// ModNet/Multiplayer
+		// ModNet/Multiplayer // Tryb Wieloosobowy
 		"MPSyncingMods": "Synchronizowanie modów",
 		"MPServerModsCantDownload": "Następujące mody są zainstalowane na serwerze, ale nie można ich pobrać",
 		"MPServerModsCantDownloadReasonSigned": "ponieważ akceptujesz tylko mody podpisane przez przeglądarkę modów",
@@ -149,7 +149,7 @@
 		"MPErrorModDownloadError": "Wystąpił błąd podczas pobierania {0}",
 		"MPPacketTooLarge": "Pakiet za duży {0} > {1}",
 
-		// Mod Browser
+		// Mod Browser // Przeglądarka Modów
 		"MBDownload": "Pobierz",
 		"MBDownloadAll": "Pobierz wszystkie",
 		"MBDownloadingMod": "Pobieranie: {0}",
@@ -202,7 +202,7 @@
 		"XMonthsAgo": "{0} {^0:miesiąc;miesiące} temu",
 		"XYearsAgo": "{0} {^0:rok;lata} temu",
 
-		// Mod Publishing
+		// Mod Publishing // Publikowanie Modów
 		"MBPublishEnterPassphrase": "Wpisz kod",
 		"MBPublishVisitWebsiteForPassphrase": "Odwiedź stronę by wygenerować kod",
 		"MBPublishPastePassphrase": "Wklej kod (Ctrl+V)",
@@ -213,7 +213,7 @@
 		"PasteSteamID": "Wklej SteamID (ctrl-v)",
 		"MBServerResponse": "Odpowiedź serwera Przeglądarki modów:\n\n{0}",
 
-		// TML Options
+		// TML Options // Ustawienia tModLoadera
 		"DownloadFromServersYes": "Pobieraj mody z serwerów: Tak",
 		"DownloadFromServersNo": "Pobieraj mody z serwerów: Nie",
 		"DownloadSignedYes": "Pobieraj tylko zaufane mody z serwerów: Tak",
@@ -242,7 +242,7 @@
 		"DontShowAgain": "Nie pokazuj więcej",
 		"ModControls": "Mody - sterowanie",
 
-		// Player and World Select
+		// Player and World Select // Wybór postaci i świata
 		"MigratePlayersMessage": "Nie masz żadnych postaci.\nJeśli chcesz zmigrować je z oficjalnej wersji do tModLoader,\nskopiuj ich pliki .plr z folderu /Terraria/Players do /Terraria/ModLoader/Players.\nKliknij, by otworzyć te foldery.\nPo skopiowaniu, kliknij Wróć.",
 		"MigratePlayersText": "Kliknij tutaj, aby zmigrować graczy...",
 		"MigratePlayersException": "Wystąpił problem podczas próby migracji plików graczy",
@@ -260,7 +260,7 @@
 		"PlayerLoadWorldFail": "Wystąpił problem podczas próby załadowania świata",
 		"CloudWarning": "Osiągnięto limit przestrzeni dyskowej w chmurze, nie można przenieść do chmury",
 
-		// Mod Sources
+		// Mod Sources // Żródła Modów
 		"MSBuild": "Zbuduj",
 		"MSBuildReload": "Zbuduj + Przeładuj",
 		"MSBuildAll": "Zbuduj wszystkie",
@@ -292,21 +292,21 @@
 		// "DMScriptsRequireRestart": "Start scripts have been updated and require tModLoader to be restarted.",
 		// "DMUpdateMonoToDownloadModCompile": "Extra libraries can be downloaded from github when running on an up-to-date version of Mono.",
 
-		// Extract Mod
+		// Extract Mod // Wypakuj Moda
 		// "ExtractErrorWhileExtractingMod": "An error occurred while extracting {0}",
 		// "ExtractHideCodeMessage": "The modder has chosen to hide the code from tModReader.",
 		// "ExtractNoSourceCodeMessage": "The modder has not chosen to include their source code.",
 		// "ExtractHideResourcesMessage": "The modder has chosen to hide resources (ie. images) from tModReader.",
 		"ExtractFileListing": "Pliki:",
 
-		// Mod Commands
+		// Mod Commands // Komendy Modów
 		"CommandModListDescription": "Wyświetla listę załadowanych modów.",
 		"CommandModListServerMods": "Mody Serwerowe:",
 		"CommandModListSyncedMods": "Synchronizowane Mody:",
 		"CommandModListClientMods": "Mody Klienta:",
 		"CommandModListModlist": "Lista Modów:",
 
-		// Mod Building
+		// Mod Building // Budowanie Modów
 		"Building": "Budowanie: {0}",
 		"ReadingProperties": "Czytanie właściwości: {0}",
 		"Compiling": "Kompilowanie {0}",
@@ -326,7 +326,7 @@
 		"MSAddingRecipes": "Dodawanie przepisów...",
 		"AddingModContent": "Dodawanie zawartości modów...",
 
-		// Mod Loader Mod
+		// Mod Loader Mod // 
 		"StartBagTooltip": "Niektóre początkowe przedmioty nie zmieściły się w twoim ekwipunku.",
 		"StartBagItemName": "Początkowy ekwipunek",
 		"UnloadedItemItemName": "Nieaktywny przedmiot",
@@ -337,12 +337,12 @@
 		// "DefaultTownNPCChat": "My modder forgot to give me a chat message.",
 		// "DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 
-		// Extra mouse buttons 
+		// Extra mouse buttons // Dodatkowe Przyciski Myszy
 		"MouseMiddle": "Środkowy Przycisk",
 		"MouseXButton1": "Czwarty Przycisk",
 		"MouseXButton2": "Piąty Przycisk",
 
-		// Misc
+		// Misc // Pozostałe
 		"OK": "OK",
 		"Continue": "Kontynuuj",
 		"DeleteModConfirm": "Czy na pewno chcesz usunąć ten mod na stałe?",
@@ -351,7 +351,7 @@
 		"WorldIODataException": "Gra napotkała problem z danymi moda dla świata.",
 		"ServerCrash": "Awaria serwera: {0}\n{1}\n\nProsze sprawdz server.log aby ustalić, czy mod jest odpowiedzialny za tą awarie, w przeciwnym razie napisz na #support na Discordzie tModLoadera",
 
-		// MessageBox
+		// MessageBox // Okno Dialogowe
 		// "ContentFolderNotFound": "Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.",
 		// "MissingServerExecutable": "Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.",
 		// "GraphicsEngineFailure": "Graphics Engine Failure",
