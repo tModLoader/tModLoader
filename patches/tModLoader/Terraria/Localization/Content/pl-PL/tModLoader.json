@@ -1,4 +1,3 @@
-// credits: EchoDuck and Shockah
 {
 	"tModLoader": {
 		// Main Menu
@@ -10,6 +9,7 @@
 		// "FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
 		"tModLoaderSettings": "Ustawienia tModLoadera",
 		"ModMenuSwap": "Przełącz Motyw Menu",
+		
 		// Mods Menu
 		"ModsModsList": "Lista modów",
 		"ModsEnableAll": "Włącz wszystkie",
@@ -287,8 +287,8 @@
 		// "DMReferenceAssembliesDownload": "Click to download just the targetting pack (not recommended)",
 		// "DMVisualStudio": "Visual Studio",
 		// "DMTutorialWelcome": "Welcome to modding with tModLoader. Check out the Wiki for more information and tutorials.",
-		// "DMTutorial": "Tutorial",
-		// "DMUpdateScripts": "Update Scripts",
+		"DMTutorial": "Poradnik",
+		"DMUpdateScripts": "Zaktualizuj Skrypty",
 		// "DMScriptsRequireRestart": "Start scripts have been updated and require tModLoader to be restarted.",
 		// "DMUpdateMonoToDownloadModCompile": "Extra libraries can be downloaded from github when running on an up-to-date version of Mono.",
 
@@ -307,13 +307,13 @@
 		"CommandModListModlist": "Lista Modów:",
 
 		// Mod Building
-		// "Building": "Building: {0}",
-		// "ReadingProperties": "Reading properties: {0}",
-		// "Compiling": "Compiling {0}",
+		"Building": "Budowanie: {0}",
+		"ReadingProperties": "Czytanie właściwości: {0}",
+		"Compiling": "Kompilowanie {0}",
 		// "CompilationResult": "Compilation finished with {0} errors and {1} warnings",
 		// "LoadingPrecompiled": "Loading pre-compiled {0} from {1}",
 		// "EnabledEAC": "Edit and continue path: {0}",
-		// "Packaging": "Packaging: {0}",
+		"Packaging": "Pakowanie: {0}",
 		// There should be ModName after ':'
 		"MSFinding": "Szukanie Modów...",
 		"MSInstantiating": "Inicjalizowanie Modów...",
@@ -337,7 +337,7 @@
 		// "DefaultTownNPCChat": "My modder forgot to give me a chat message.",
 		// "DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 
-		// Extra mouse buttons
+		// Extra mouse buttons 
 		"MouseMiddle": "Środkowy Przycisk",
 		"MouseXButton1": "Czwarty Przycisk",
 		"MouseXButton2": "Piąty Przycisk",
@@ -345,11 +345,11 @@
 		// Misc
 		"OK": "OK",
 		"Continue": "Kontynuuj",
-		// "DeleteModConfirm": "Are you sure you want to delete this mod permanently?",
+		"DeleteModConfirm": "Czy na pewno chcesz usunąć ten mod na stałe?",
 		"PatreonSetTooltip": "Dzięki za wsparcie!",
 		"WorldGenError": "Wystąpił problem podczas generacji świata",
-		// "WorldIODataException": "The game encountered a mod data problem for a world.",
-		// "ServerCrash": "Server crash: {0}\n{1}\n\nPlease check server.log to determine if a mod is responsible, otherwise head to #support in the tModLoader Discord",
+		"WorldIODataException": "Gra napotkała problem z danymi moda dla świata.",
+		"ServerCrash": "Awaria serwera: {0}\n{1}\n\nProsze sprawdz server.log aby ustalić, czy mod jest odpowiedzialny za tą awarie, w przeciwnym razie napisz na #support na Discordzie tModLoadera",
 
 		// MessageBox
 		// "ContentFolderNotFound": "Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.",
