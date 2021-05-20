@@ -31,9 +31,9 @@ namespace ExampleMod.Content.Items.Tools
 
 			// This sets up the itemTime correctly.
 			if (player.itemTime == 0) {
-				player.itemTime = (int)(Item.useTime / PlayerHooks.TotalUseTimeMultiplier(player, Item));
+				player.ApplyItemTime(Item);
 			}
-			else if (player.itemTime == (int)(Item.useTime / PlayerHooks.TotalUseTimeMultiplier(player, Item)) / 2) {
+			else if (player.itemTime == (int)(Item.useTime / CombinedHooks.TotalUseTimeMultiplier(player, Item)) / 2) {
 				// This code runs once halfway through the useTime of the Item. You'll notice with magic mirrors you are still holding the item for a little bit after you've teleported.
 
 				// Make dust 70 times for a cool effect.
@@ -44,6 +44,7 @@ namespace ExampleMod.Content.Items.Tools
 				// This code releases all grappling hooks and kills/despawns them.
 				player.grappling[0] = -1;
 				player.grapCount = 0;
+
 				for (int p = 0; p < 1000; p++) {
 					if (Main.projectile[p].active && Main.projectile[p].owner == player.whoAmI && Main.projectile[p].aiStyle == 7) {
 						Main.projectile[p].Kill();
@@ -52,6 +53,7 @@ namespace ExampleMod.Content.Items.Tools
 
 				// The actual method that moves the player back to bed/spawn.
 				player.Spawn(PlayerSpawnContext.RecallFromItem);
+
 				// Make dust 70 times for a cool effect. This dust is the dust at the destination.
 				for (int d = 0; d < 70; d++) {
 					Dust.NewDust(player.position, player.width, player.height, 15, 0f, 0f, 150, default, 1.5f);
