@@ -6,7 +6,7 @@
    <PropertyGroup>
 -    <OutputType>WinExe</OutputType>
 +    <OutputType>Exe</OutputType>
-     <Version>1.4.2.2</Version>
+     <Version>1.4.2.3</Version>
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2021 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
@@ -40,13 +40,12 @@
      <Reference Include="CsvHelper" />
      <Reference Include="FNA" />
 -    <Reference Include="Ionic.Zip.CF" />
--    <Reference Include="MP3Sharp" Condition="$(DefineConstants.Contains('CLIENT'))" />
-+    <Reference Include="MP3Sharp" />
+     <Reference Include="MP3Sharp" />
 +    <Reference Include="Ionic.Zip.Reduced" />
 +    <Reference Include="log4net" />
 +    <Reference Include="NVorbis" />    
      <Reference Include="Newtonsoft.Json" />
--    <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
+-    <Reference Include="NVorbis" />
      <Reference Include="RailSDK.Net" />
 -    <ProjectReference Include="../ReLogic/ReLogic.csproj">
 -      <Private>false</Private>

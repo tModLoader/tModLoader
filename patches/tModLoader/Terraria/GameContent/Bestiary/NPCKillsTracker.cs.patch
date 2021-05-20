@@ -1,0 +1,13 @@
+--- src/Terraria/Terraria/GameContent/Bestiary/NPCKillsTracker.cs
++++ src/tModLoader/Terraria/GameContent/Bestiary/NPCKillsTracker.cs
+@@ -77,7 +_,9 @@
+ 
+ 		public void OnPlayerJoining(int playerIndex) {
+ 			foreach (KeyValuePair<string, int> item in _killCountsByNpcId) {
+-				int npcNetId = ContentSamples.NpcNetIdsByPersistentIds[item.Key];
++				if (!ContentSamples.NpcNetIdsByPersistentIds.TryGetValue(item.Key, out int npcNetId))
++					continue;
++
+ 				NetManager.Instance.SendToClient(NetBestiaryModule.SerializeKillCount(npcNetId, item.Value), playerIndex);
+ 			}
+ 		}

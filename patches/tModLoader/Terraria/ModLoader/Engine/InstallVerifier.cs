@@ -29,8 +29,15 @@ namespace Terraria.ModLoader.Engine
 
 		static InstallVerifier() {
 			if (Platform.IsWindows) {
-				steamAPIPath = "Libraries/Native/Windows32/steam_api.dll";
-				steamAPIHash = ToByteArray("73688FFCBC2E5F0980B055C1D93B2FB2");
+				if (IntPtr.Size == 4) {
+					steamAPIPath = "Libraries/Native/Windows32/steam_api.dll";
+					steamAPIHash = ToByteArray("73688FFCBC2E5F0980B055C1D93B2FB2");
+				}
+				else {
+					steamAPIPath = "Libraries/Native/Windows/steam_api64.dll";
+					steamAPIHash = ToByteArray("8AFDE2D19C89D0BF1A9F6EC475AA0EBB");
+				}
+
 				gogHash = ToByteArray("ff61b96a07894a9e65f880fb9608fb37"); // Don't forget to update CheckExe in CheckGoG
 				steamHash = ToByteArray("4fd8072ca82ded3d9da1be577a478788");
 			}

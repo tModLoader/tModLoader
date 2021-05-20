@@ -30,8 +30,8 @@
  		}
  
  		public static int dustWater() {
-+			if (Main.waterStyle >= WaterStyleLoader.vanillaWaterCount)
-+				return WaterStyleLoader.GetWaterStyle(Main.waterStyle).GetSplashDust();
++			if (Main.waterStyle >= Main.maxLiquidTypes)
++				return LoaderManager.Get<WaterStylesLoader>().Get(Main.waterStyle).GetSplashDust();
 +
  			switch (Main.waterStyle) {
  				case 2:
@@ -53,7 +53,7 @@
  					if (dust.scale > 10f)
  						dust.active = false;
  
-@@ -1562,7 +_,7 @@
+@@ -1563,7 +_,7 @@
  
  						Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num100 * 0.7f, num100, num100 * 0.8f);
  					}
@@ -62,7 +62,7 @@
  						dust.velocity.X *= 0.99f;
  					}
  
-@@ -1784,6 +_,8 @@
+@@ -1785,6 +_,8 @@
  
  					if (dust.scale < num109)
  						dust.active = false;
@@ -71,7 +71,7 @@
  				}
  				else {
  					dust.active = false;
-@@ -1806,6 +_,14 @@
+@@ -1807,6 +_,14 @@
  		}
  
  		public Color GetAlpha(Color newColor) {

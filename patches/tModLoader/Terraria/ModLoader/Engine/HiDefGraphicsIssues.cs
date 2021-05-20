@@ -110,11 +110,12 @@ namespace Terraria.ModLoader.Engine
 		private static bool creating;
 
 		private static void LogDeviceReset(object sender, EventArgs e) {
-			var g = (GraphicsDevice)sender;
+			var graphicsDeviceManager = (GraphicsDeviceManager)sender;
+			var graphicsDevice = graphicsDeviceManager.GraphicsDevice;
 
 			var sb = new StringBuilder($"Device {(creating ? "Created" : "Reset")}");
 			foreach (var param in Params)
-				param.LogChange(g, sb, creating);
+				param.LogChange(graphicsDevice, sb, creating);
 
 			Logging.Terraria.Debug(sb);
 			creating = false;

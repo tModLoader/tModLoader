@@ -2,17 +2,12 @@
 :: Created for tModLoader deployment. 
 @echo off
 cd /D "%~dp0"
-set LOGFILE=NetFramework\install.log
-echo Verifying Net Framework....
-echo Logging to NetFramework\install.log
-echo This may take a few moments....
-call :LOG > %LOGFILE%
-exit /B
+set LOGFILE=LaunchLogs\install.log
+if Not exist LaunchLogs (mkdir LaunchLogs)
+echo Verifying dotnet....
+echo This may take a few minutes on first run.
 
-:LOG
 REM Read file "tModLoader.runtimeconfig.json" into variable string, removing line breaks.
-setlocal EnableDelayedExpansion
-
 set string=
 for /f "delims=" %%x in (tModLoader.runtimeconfig.json) do set "string=!string!%%x"
 
@@ -29,22 +24,34 @@ set version=%version:}=%
 set "version=%version: =%"
 
 REM Set all the parameters for the install script
-set CHANNELSEL=%version:~0,3%"
+set CHANNELSEL=%version:~0,3%
 set VERSIONSEL=%version%
 set RUNTIMESELECT=dotnet
 
 REM install directories
-set INSTALLDIR=.\NetFramework\dotnet\%VERSIONSEL%
+set INSTALLDIR=dotnet\%VERSIONSEL%
 
-REM Check if the install for our target NET already exists, and install if not
-if Not exist %INSTALLDIR%\dotnet.exe (
-	echo RemovingOldInstalls
-	rmdir /S /Q .\dotnet\
-	
-	echo Installing_NewFramework
-	powershell -NoProfile -ExecutionPolicy unrestricted -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel %CHANNELSEL% -InstallDir %INSTALLDIR%\ -Version %VERSIONSEL% -Runtime %RUNTIMESELECT%"
-
-	echo ChangingTheIcon
-	call .\NetFramework\resource_hacker\ResourceHacker.exe -open %INSTALLDIR%\dotnet.exe -save %INSTALLDIR%\dotnet.exe -action add -res Libraries\Native\tModLoader.ico -mask ICONGROUP,MAINICON
+REM Skip install check if runtime.log exists due to install having previously failed.
+if Not exist LaunchLogs\runtime.log (
+	REM Check if the install for our target NET already exists, and install if not
+	if Not exist %INSTALLDIR%\dotnet.exe  (
+		echo Logging to LaunchLogs\install.log
+		call :LOG 1> %LOGFILE% 2>&1
+	)
 )
+
+exit /B
+
+:LOG
+echo RemovingOldInstalls
+if exist NetFramework (
+	echo Removing NetFramework
+	rmdir /S /Q NetFramework\
+)
+for /d %%i in (dotnet/*) do (
+	echo Removing dotnet/%%i
+	rmdir /S /Q "dotnet/%%i"
+)
+echo Installing_NewFramework
+powershell -NoProfile -ExecutionPolicy unrestricted -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel %CHANNELSEL% -InstallDir %INSTALLDIR%\ -Version %VERSIONSEL% -Runtime %RUNTIMESELECT%"
 
