@@ -22,6 +22,10 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal static void LoadLegacy(TagCompound tag, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup) {
+			if (!tag.ContainsKey("data")) {
+				return;
+			}
+
 			// Retrieve Locational-Specific Data from 'Data' and apply
 			using (var memoryStream = new MemoryStream(tag.GetByteArray("data")))
 			using (var reader = new BinaryReader(memoryStream)) {

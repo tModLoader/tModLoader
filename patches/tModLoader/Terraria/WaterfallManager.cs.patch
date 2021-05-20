@@ -44,8 +44,8 @@
  								break;
  							}
  					}
-+					if (num12 >= WaterfallStyleLoader.vanillaWaterfallCount)
-+						WaterfallStyleLoader.GetWaterfallStyle(num12).AddLight(num13, num14);
++					if (num12 >= maxTypes)
++						LoaderManager.Get<WaterFallStylesLoader>().Get(num12).AddLight(num13, num14);
  
  					int num31 = 0;
  					int num32 = 0;
@@ -63,8 +63,8 @@
  							break;
  					}
  
-+					if (num12 >= WaterfallStyleLoader.vanillaWaterfallCount)
-+						WaterfallStyleLoader.GetWaterfallStyle(num12).ColorMultiplier(ref num38, ref num39, ref num40, num37);
++					if (num12 >= maxTypes)
++						LoaderManager.Get<WaterFallStylesLoader>().Get(num12).ColorMultiplier(ref num38, ref num39, ref num40, num37);
 +
  					color5 = new Color((int)num38, (int)num39, (int)num40, (int)num41);
  					if (num12 == 1) {
@@ -74,7 +74,7 @@
  			if (Main.liquidAlpha[12] > 0f)
  				DrawWaterfall(spriteBatch, 23, Main.liquidAlpha[12]);
 +
-+			WaterStyleLoader.DrawWaterfall(this, spriteBatch);
++			LoaderManager.Get<WaterStylesLoader>().DrawWaterfall(this, spriteBatch);
  		}
  	}
  }

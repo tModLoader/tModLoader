@@ -1,0 +1,36 @@
+--- src/Terraria/Terraria/Graphics/Capture/CaptureBiome.cs
++++ src/tModLoader/Terraria/Graphics/Capture/CaptureBiome.cs
+@@ -1,3 +_,4 @@
++using Terraria.ModLoader;
+ namespace Terraria.Graphics.Capture
+ {
+ 	public class CaptureBiome
+@@ -132,6 +_,13 @@
+ 					return captureBiome;
+ 			}
+ 
++			var atmos = Main.LocalPlayer.CurrentSceneEffect;
++			if (atmos.waterStyle.value >= Main.maxLiquidTypes) {
++				// This makes the capture match whatever the end result is of all modded effects, but that isn't quite right.
++				//TODO: Future improvement should be using the SceneEffect layer associated to background.
++				return new CaptureBiome(atmos.surfaceBackground.value, atmos.waterStyle.value, atmos.tileColorStyle);
++			}
++
+ 			return null;
+ 		}
+ 
+@@ -164,7 +_,13 @@
+ 				case 9:
+ 					return Styles.Mushroom;
+ 				default:
+-					return null;
++					var atmos = Main.LocalPlayer.CurrentSceneEffect;
++					if (atmos.surfaceBackground.value >= Main.BG_STYLES_COUNT) {
++						// This makes the capture match whatever the end result is of all modded effects, but that isn't quite right.
++						//TODO: Future improvement should be using the SceneEffect layer associated to background.
++						return new CaptureBiome(atmos.surfaceBackground.value, atmos.waterStyle.value, atmos.tileColorStyle);
++					}
++					return null; 	
+ 			}
+ 		}
+ 
