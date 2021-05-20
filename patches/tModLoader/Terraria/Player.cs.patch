@@ -146,7 +146,7 @@
  				Main.BestiaryTracker.Chats.RegisterChatStartWith(Main.npc[npcIndex]);
  
  			if (talkNPC == -1)
-@@ -2050,12 +_,21 @@
+@@ -2050,12 +_,18 @@
  			itemTimeMax = frames;
  		}
  
@@ -156,8 +156,7 @@
 +			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
 +				return;
 +			
-+			int totalUseTime = PlayerHooks.TotalUseTime(sItem.useTime, this, sItem);
-+			SetItemTime(totalUseTime);
++			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime, this, sItem));
  		}
  
 -		public void ApplyItemTime(Item sItem, float multiplier) {
@@ -166,9 +165,7 @@
 +			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
 +				return;
 +			
-+			int totalUseTime = PlayerHooks.TotalUseTime((int)(sItem.useTime * multiplier), this, sItem);
-+
-+			SetItemTime(totalUseTime);
++			SetItemTime(CombinedHooks.TotalUseTime((int)(sItem.useTime * multiplier), this, sItem));
  		}
  
  		public void SetDummyItemTime(int frames) {
@@ -188,9 +185,9 @@
 +		public void ApplyItemAnimation(Item sItem, float multiplier, int? itemReuseDelay = null) {
 +			ItemLoader.UseAnimation(sItem, this);
 +			
-+			SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * multiplier, this, sItem));
++			SetItemAnimation(CombinedHooks.TotalAnimationTime(sItem.useAnimation * multiplier, this, sItem));
 +
-+			reuseDelay = (int)((itemReuseDelay ?? sItem.reuseDelay) / PlayerHooks.TotalUseTimeMultiplier(this, sItem));
++			reuseDelay = (int)((itemReuseDelay ?? sItem.reuseDelay) / CombinedHooks.TotalUseSpeedMultiplier(this, sItem));
  		}
  
 -		private void ApplyItemAnimation(Item sItem) {
@@ -3506,15 +3503,19 @@
  					bool flag4 = true;
  					int type2 = item.type;
  					if ((type2 == 65 || type2 == 676 || type2 == 723 || type2 == 724 || type2 == 757 || type2 == 674 || type2 == 675 || type2 == 989 || type2 == 1226 || type2 == 1227) && itemAnimation != itemAnimationMax - 1)
-@@ -29891,7 +_,7 @@
+@@ -29891,8 +_,11 @@
  
  					ItemCheck_TurretAltFeatureUse(item, flag4);
  					ItemCheck_MinionAltFeatureUse(item, flag4);
 -					if (item.shoot > 0 && itemAnimation > 0 && ItemTimeIsZero && flag4)
 +					if (item.shoot > 0 && itemAnimation > 0 && ItemTimeIsZero && flag4 && ItemLoader.CheckProjOnSwing(this, item))
  						ItemCheck_Shoot(i, item, weaponDamage);
++					else if(controlUseItem) {
++						;
++					}
  
  					ItemCheck_UseWiringTools(item);
+ 					ItemCheck_UseLawnMower(item);
 @@ -29954,7 +_,8 @@
  
  						if (Main.myPlayer == i && item.damage > 0) {
@@ -3575,7 +3576,7 @@
  						ApplyItemTime(item);
  					}
 -					else if (itemTime == item.useTime / 2) {
-+					else if (itemTime == PlayerHooks.TotalUseTime(item.useTime, this, item) / 2) {
++					else if (itemTime == CombinedHooks.TotalUseTime(item.useTime, this, item) / 2) {
  						for (int k = 0; k < 70; k++) {
  							Dust.NewDust(base.position, width, height, 15, velocity.X * 0.5f, velocity.Y * 0.5f, 150, default(Color), 1.5f);
  						}
@@ -3616,7 +3617,7 @@
  					}
  					else {
 -						float num10 = item.useTime;
-+						float num10 = PlayerHooks.TotalUseTime(item.useTime, this, item);
++						float num10 = CombinedHooks.TotalUseTime(item.useTime, this, item);
  						num10 = (num10 - (float)itemTime) / num10;
  						float num11 = 44f;
  						float num12 = (float)Math.PI * 3f;
@@ -3625,7 +3626,7 @@
  
  				if (i == Main.myPlayer) {
 -					if (!dontConsumeWand && itemTime == (int)((float)item.useTime * tileSpeed) && item.tileWand > 0) {
-+					if (item.tileWand > 0 && !dontConsumeWand && itemTime == PlayerHooks.TotalUseTime(item.useTime * tileSpeed, this, item)) {
++					if (item.tileWand > 0 && !dontConsumeWand && itemTime == CombinedHooks.TotalUseTime(item.useTime * tileSpeed, this, item)) {
  						int tileWand = item.tileWand;
  						for (int num15 = 0; num15 < 58; num15++) {
  							if (tileWand == inventory[num15].type && inventory[num15].stack > 0) {
@@ -4172,7 +4173,7 @@
  				flag2 = true;
  
 -			if (sItem.type == 434 && itemAnimation < sItem.useAnimation - 2)
-+			if (sItem.type == 434 && itemAnimation < PlayerHooks.TotalMeleeTime(sItem.useAnimation, this, sItem) - 2)
++			if (sItem.type == 434 && itemAnimation < CombinedHooks.TotalAnimationTime(sItem.useAnimation, this, sItem) - 2)
  				flag2 = true;
  
  			if (sItem.type == 4953 && itemAnimation > sItem.useAnimation - 8)

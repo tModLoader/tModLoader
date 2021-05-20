@@ -341,6 +341,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookUseTimeMultiplier = AddHook<Func<Item, Player, float>>(g => g.UseTimeMultiplier);
+
 		public static float UseTimeMultiplier(Item item, Player player) {
 			if (item.IsAir)
 				return 1f;
@@ -354,15 +355,31 @@ namespace Terraria.ModLoader
 			return multiplier;
 		}
 
-		private static HookList HookMeleeSpeedMultiplier = AddHook<Func<Item, Player, float>>(g => g.MeleeSpeedMultiplier);
-		public static float MeleeSpeedMultiplier(Item item, Player player) {
+		private static HookList HookUseAnimationMultiplier = AddHook<Func<Item, Player, float>>(g => g.UseAnimationMultiplier);
+
+		public static float UseAnimationMultiplier(Item item, Player player) {
 			if (item.IsAir)
 				return 1f;
 
-			float multiplier = item.ModItem?.MeleeSpeedMultiplier(player) ?? 1f;
+			float multiplier = item.ModItem?.UseAnimationMultiplier(player) ?? 1f;
 
-			foreach (var g in HookMeleeSpeedMultiplier.Enumerate(item.globalItems)) {
-				multiplier *= g.MeleeSpeedMultiplier(item, player);
+			foreach (var g in HookUseAnimationMultiplier.Enumerate(item.globalItems)) {
+				multiplier *= g.UseAnimationMultiplier(item, player);
+			}
+
+			return multiplier;
+		}
+
+		private static HookList HookUseSpeedMultiplier = AddHook<Func<Item, Player, float>>(g => g.UseSpeedMultiplier);
+
+		public static float UseSpeedMultiplier(Item item, Player player) {
+			if (item.IsAir)
+				return 1f;
+
+			float multiplier = item.ModItem?.UseSpeedMultiplier(player) ?? 1f;
+
+			foreach (var g in HookUseSpeedMultiplier.Enumerate(item.globalItems)) {
+				multiplier *= g.UseSpeedMultiplier(item, player);
 			}
 
 			return multiplier;

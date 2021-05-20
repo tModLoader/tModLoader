@@ -80,5 +80,39 @@ namespace Terraria.ModLoader
 
 			return result;
 		}
+
+		public static float TotalUseSpeedMultiplier(Player player, Item item) {
+			return PlayerHooks.UseSpeedMultiplier(player, item) * ItemLoader.UseSpeedMultiplier(item, player);
+		}
+
+		public static float TotalUseTimeMultiplier(Player player, Item item) {
+			return PlayerHooks.UseTimeMultiplier(player, item) * ItemLoader.UseTimeMultiplier(item, player) / TotalUseSpeedMultiplier(player, item);
+		}
+
+		public static int TotalUseTime(float useTime, Player player, Item item) {
+			int result = Math.Max(1, (int)(useTime * TotalUseTimeMultiplier(player, item)));
+
+			return result;
+		}
+
+		public static float TotalUseAnimationMultiplier(Player player, Item item) {
+			float result = PlayerHooks.UseAnimationMultiplier(player, item) * ItemLoader.UseAnimationMultiplier(item, player);
+
+			// UseSpeedMultiplier tries to affect both useTime and useAnimation in a way that doesn't break their relativity.
+			// The code below multiplies useAnimation based on the difference that UseSpeedMultiplier makes on the item's useTime.
+			float timeAnimationFactor = (float)Math.Round(item.useAnimation / (float)item.useTime);
+			int multipliedUseTime = Math.Max(1, (int)(item.useTime / TotalUseSpeedMultiplier(player, item)));
+			int relativeUseAnimation = Math.Max(1, (int)(multipliedUseTime * timeAnimationFactor));
+
+			result *= relativeUseAnimation / (float)item.useAnimation;
+
+			return result;
+		}
+
+		public static int TotalAnimationTime(float useAnimation, Player player, Item item) {
+			int result = Math.Max(1, (int)(useAnimation * TotalUseAnimationMultiplier(player, item)));
+
+			return result;
+		}
 	}
 }
