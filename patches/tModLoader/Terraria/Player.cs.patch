@@ -3461,15 +3461,19 @@
  					FreeUpPetsAndMinions(item);
  
  				if (flag3)
-@@ -29843,12 +_,23 @@
- 				itemAnimation--;
- 			}
+@@ -29840,8 +_,10 @@
+ 					itemWidth = drawHitbox.Width;
+ 				}
  
-+			ItemLoader.HoldItem(item, this);
+-				itemAnimation--;
++				//itemAnimation--;
+ 			}
 +
++			ItemLoader.HoldItem(item, this);
+ 
  			if (itemAnimation > 0)
  				ItemCheck_ApplyUseStyle(heightOffsetHitboxCenter, item2, drawHitbox);
- 			else
+@@ -29849,6 +_,15 @@
  				ItemCheck_ApplyHoldStyle(heightOffsetHitboxCenter, item2, drawHitbox);
  
  			releaseUseItem = !controlUseItem;
@@ -3645,12 +3649,16 @@
  							if (item.stack > 0)
  								item.stack--;
  
-@@ -30340,6 +_,9 @@
+@@ -30340,6 +_,13 @@
  				}
  			}
  
 +			goto ReduceItemTime;
 +			PostReduceItemtime:
++
++			if (itemAnimation > 0) {
++				itemAnimation--;
++			}
 +
  			if (itemAnimation == 0)
  				JustDroppedAnItem = false;
