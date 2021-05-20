@@ -702,10 +702,10 @@
 +			if (NPCLoader.blockLoot.Contains(Type))
 +				return Main.maxItems;
 +
- 			if (Main.halloween) {
- 				if (Type == 58)
- 					Type = 1734;
-@@ -46109,14 +_,17 @@
+ 			if (Main.tenthAnniversaryWorld) {
+ 				if (Type == 58) {
+ 					Type = Main.rand.NextFromList(new short[3] {
+@@ -46127,14 +_,17 @@
  						continue;
  
  					Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
@@ -726,7 +726,7 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -46135,8 +_,31 @@
+@@ -46153,8 +_,31 @@
  			}
  		}
  
@@ -760,7 +760,7 @@
  
  		public bool IsTheSameAs(Item compareItem) {
  			if (netID == compareItem.netID)
-@@ -46167,6 +_,8 @@
+@@ -46185,6 +_,8 @@
  			dye = 0;
  			shoot = 0;
  			mountType = -1;
@@ -769,7 +769,7 @@
  		}
  
  		public void OnPurchase(Item item) {
-@@ -46198,7 +_,7 @@
+@@ -46216,7 +_,7 @@
  				Prefix(reader.ReadByte());
  			}
  
