@@ -328,15 +328,16 @@
  							NetMessage.TrySendData(3, whoAmI);
  						}
  						else {
-@@ -1824,6 +_,8 @@
- 						Player player9 = Main.player[num104];
+@@ -1825,7 +_,8 @@
  						float itemRotation = reader.ReadSingle();
  						int itemAnimation = reader.ReadInt16();
-+						// TML changes how item synchronization works, making it based on remote players' already-synchronized input. The actions of this packet would interfere with that.
-+						break;
  						player9.itemRotation = itemRotation;
- 						player9.itemAnimation = itemAnimation;
++						// TML changes how item synchronization works, making it based on remote players' already-synchronized input. Setting itemAnimation in this packet would interfere with that.
+-						player9.itemAnimation = itemAnimation;
++						//player9.itemAnimation = itemAnimation;
  						player9.channel = player9.inventory[player9.selectedItem].channel;
+ 						if (Main.netMode == 2)
+ 							NetMessage.TrySendData(41, -1, whoAmI, null, num104);
 @@ -1973,7 +_,7 @@
  							break;
  
