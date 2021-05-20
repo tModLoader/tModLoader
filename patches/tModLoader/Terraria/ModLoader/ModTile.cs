@@ -238,14 +238,6 @@ namespace Terraria.ModLoader
 		public virtual float GetTorchLuck(Player player) => 0f;
 
 		/// <summary>
-		/// Allows you to determine how much light this block emits. Make sure you set Main.tileLighted[Type] to true in SetDefaults for this to work.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
-		}
-
-		/// <summary>
 		/// Allows you to determine whether this block glows red when the given player has the Dangersense buff.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
@@ -321,15 +313,6 @@ namespace Terraria.ModLoader
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
 		public virtual bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) {
-			return true;
-		}
-
-		/// <summary>
-		/// Allows you to stop this tile from being placed at the given coordinates. Return false to block the tile from being placed. Returns true by default.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool CanPlace(int i, int j) {
 			return true;
 		}
 

@@ -30,7 +30,13 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class ModContent
 	{
-		public static T GetInstance<T>() where T : class => ContentInstance<T>.Instance;
+		/// <summary> Returns the base instance of the provided content type. </summary>
+		public static T GetInstance<T>() where T : class
+			=> ContentInstance<T>.Instance;
+
+		/// <summary> Returns all base content instances that derive from the provided content type across all currently loaded mods. </summary>
+		public static IEnumerable<T> GetContent<T>() where T : ILoadable
+			=> ModLoader.Mods.SelectMany(m => m.GetContent<T>());
 
 		/// <summary> Attempts to find the content instance with the specified full name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
@@ -530,7 +536,6 @@ namespace Terraria.ModLoader
 			GoreLoader.Unload();
 			SoundLoader.Unload();
 			DisposeMusic();
-			BackgroundTextureLoader.Unload();
 
 			LoaderManager.Unload();
 
@@ -589,7 +594,6 @@ namespace Terraria.ModLoader
 
 			if (!Main.dedServ) {
 				SoundLoader.ResizeAndFillArrays();
-				BackgroundTextureLoader.ResizeAndFillArrays();
 				GlobalBackgroundStyleLoader.ResizeAndFillArrays(unloading);
 				GoreLoader.ResizeAndFillArrays();
 			}
