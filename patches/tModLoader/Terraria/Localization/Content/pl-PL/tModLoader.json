@@ -195,12 +195,12 @@
 		// "MBUnknownMBError": "Unknown Mod Browser Error. Try again later.",
 		// "MBNoModsFound": "No mods found",
 		"MBBrowserError": "Przeglądarka modów napotkała błąd.",
-		"XSecondsAgo": "{0} {^0:sekunda;sekund} temu",
-		"XMinutesAgo": "{0} {^0:minuta;minut} temu",
-		"XHoursAgo": "{0} {^0:godzina;godzin} temu",
-		"XDaysAgo": "{0} {^0:dzień;dni} temu",
-		"XMonthsAgo": "{0} {^0:miesiąc;miesiące} temu",
-		"XYearsAgo": "{0} {^0:rok;lata} temu",
+		"XSecondsAgo": "{0} {^0:sekunda;sekundy;sekund} temu",
+		"XMinutesAgo": "{0} {^0:minuta;minuty;minut} temu",
+		"XHoursAgo": "{0} {^0:godzina;godziny;godzin} temu",
+		"XDaysAgo": "{0} {^0:dzień;dni;dni} temu",
+		"XMonthsAgo": "{0} {^0:miesiąc;miesiące;miesięcy} temu",
+		"XYearsAgo": "{0} {^0:rok;lata;lat} temu",
 
 		// Mod Publishing // Publikowanie Modów
 		"MBPublishEnterPassphrase": "Wpisz kod",
