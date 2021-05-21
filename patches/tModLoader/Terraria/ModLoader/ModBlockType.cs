@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.
+	/// This is the superclass for ModTile and ModWall, combining common code
 	/// </summary>
 	public abstract class ModBlockType : ModTexturedType
 	{
@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 		public int ItemDrop { get; set; }
 
 		/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>
-		public ushort vanillaFallbackOnModDeletion { get; set; } = 0;
+		public ushort VanillaFallbackOnModDeletion { get; set; } = 0;
 
 		/// <summary>
 		/// Creates a ModTranslation object that you can use in AddMapEntry.
@@ -80,6 +80,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to stop this tile/wall from being placed at the given coordinates. Return false to stop the tile/wall from being placed. Returns true by default.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		public virtual bool CanPlace(int i, int j) {
+			return true;
+		}
+
+		/// <summary>
 		/// Whether or not the tile/wall at the given coordinates can be killed by an explosion (ie. bombs). Returns true by default; return false to stop an explosion from destroying it.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
@@ -118,8 +127,18 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates. Equal to Player.tileTargetX</param>
 		/// <param name="j">The y position in tile coordinates. Equal to Player.tileTargetY</param>
-		/// <param name="item">The item used to place this tile.</param>
+		/// <param name="item">The item used to place this tile/wall.</param>
 		public virtual void PlaceInWorld(int i, int j, Item item) {
+		}
+
+		/// <summary>
+		/// Allows you to determine how much light this tile/wall emits.
+		/// If it is a tile, make sure you set Main.tileLighted[Type] to true in SetDefaults for this to work.
+		/// If it is a wall, it can also let you light up the block in front of this wall.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
 		}
 	}
 }

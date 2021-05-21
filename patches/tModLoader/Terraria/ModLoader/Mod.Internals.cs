@@ -109,15 +109,15 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
-			if (Properties.AutoloadGores) {
+			
+			if (Properties.AutoloadGores)
 				GoreLoader.AutoloadGores(this);
-			}
-			if (Properties.AutoloadSounds) {
+			
+			if (Properties.AutoloadSounds)
 				AutoloadSounds(modSounds);
-			}
-			if (Properties.AutoloadBackgrounds) {
-				AutoloadBackgrounds();
-			}
+
+			if (Properties.AutoloadBackgrounds)
+				BackgroundTextureLoader.AutoloadBackgrounds(this);
 		}
 
 		internal void PrepareAssets()
@@ -171,19 +171,13 @@ namespace Terraria.ModLoader
 			Assets = new ModAssetRepository(assetReaderCollection, assetLoader, asyncAssetLoader, sources.ToArray());
 		}
 
-		private void AutoloadBackgrounds() {
-			foreach (string texture in Assets.EnumeratePaths<Texture2D>().Where(t => t.StartsWith("Backgrounds/"))) {
-				AddBackgroundTexture($"{Name}/{texture}");
-			}
-		}
-
 		private void AutoloadSounds(IList<Type> modSounds) {
 			var modSoundNames = modSounds.ToDictionary(t => t.FullName);
 
 			const string SoundFolder = "Sounds/";
 
-			foreach (string soundPath in Assets.EnumeratePaths<SoundEffect>().Where(t => t.StartsWith(SoundFolder))) {
-				string substring = soundPath.Substring(SoundFolder.Length);
+			foreach (string soundPath in Assets.EnumeratePaths<SoundEffect>().Where(t => t.Contains(SoundFolder))) {
+				string substring = soundPath.Substring(soundPath.IndexOf(SoundFolder) + SoundFolder.Length);
 				SoundType soundType = SoundType.Custom;
 
 				if (substring.StartsWith("Item/")) {

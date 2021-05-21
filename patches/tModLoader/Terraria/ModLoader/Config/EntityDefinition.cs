@@ -29,9 +29,9 @@ namespace Terraria.ModLoader.Config
 		}
 
 		public EntityDefinition(string key) {
-			this.mod = "";
-			this.name = "";
-			string[] parts = key.Split(new char[] { ' ' }, 2);
+			this.mod = "Terraria";
+			this.name = key;
+			string[] parts = key.Split('/', 2);
 			if (parts.Length == 2) {
 				mod = parts[0];
 				name = parts[1];
@@ -82,7 +82,7 @@ namespace Terraria.ModLoader.Config
 		public ItemDefinition(string mod, string name) : base(mod, name) {
 		}
 
-		public override int Type => ItemID.Search.TryGetId($"{mod}/{name}", out int id) ? id : -1;
+		public override int Type => ItemID.Search.TryGetId(mod != "Terraria" ? $"{mod}/{name}" : name, out int id) ? id : -1;
 
 		public static ItemDefinition FromString(string s) => new ItemDefinition(s);
 
@@ -98,7 +98,7 @@ namespace Terraria.ModLoader.Config
 		public ProjectileDefinition(string key) : base(key) { }
 		public ProjectileDefinition(string mod, string name) : base(mod, name) { }
 
-		public override int Type => ProjectileID.Search.GetId($"{mod}/{name}");
+		public override int Type => ProjectileID.Search.GetId(mod != "Terraria" ? $"{mod}/{name}" : name);
 
 		public static ProjectileDefinition FromString(string s) => new ProjectileDefinition(s);
 
@@ -114,7 +114,7 @@ namespace Terraria.ModLoader.Config
 		public NPCDefinition(string key) : base(key) { }
 		public NPCDefinition(string mod, string name) : base(mod, name) { }
 
-		public override int Type => NPCID.Search.GetId($"{mod}/{name}");
+		public override int Type => NPCID.Search.GetId(mod != "Terraria" ? $"{mod}/{name}" : name);
 
 		public static NPCDefinition FromString(string s) => new NPCDefinition(s);
 
@@ -130,7 +130,7 @@ namespace Terraria.ModLoader.Config
 		public PrefixDefinition(string key) : base(key) { }
 		public PrefixDefinition(string mod, string name) : base(mod, name) { }
 
-		public override int Type => PrefixID.Search.GetId($"{mod}/{name}");
+		public override int Type => PrefixID.Search.GetId(mod != "Terraria" ? $"{mod}/{name}" : name);
 
 		public static PrefixDefinition FromString(string s) => new PrefixDefinition(s);
 
