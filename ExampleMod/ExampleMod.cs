@@ -58,7 +58,7 @@ namespace ExampleMod
 			Logger.InfoFormat("{0} example logging", Name);
 			// In older tModLoader versions we used: ErrorLogger.Log("blabla");
 			// Replace that with above
-			//This is for Example Dye #2, where it has similarities with the vanilla dye named Hades Dye, but it instead has red color.
+			// This is for Example Dye #2, where it has similarities with the vanilla dye named Hades Dye, but it instead has red color.
 			GameShaders.Armor.BindShader(ModContent.ItemType<ExampleDye2>(), new ArmorShaderData(Main.PixelShaderRef, "ArmorHades")).UseColor(Color.DarkRed).UseSecondaryColor(Color.Red);
 			// Registers a new hotkey
 			RandomBuffHotKey = RegisterHotKey("Random Buff", "P"); // See https://docs.microsoft.com/en-us/previous-versions/windows/xna/bb197781(v=xnagamestudio.41) for special keys
