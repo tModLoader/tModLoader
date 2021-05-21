@@ -1,6 +1,7 @@
 using ExampleMod.NPCs.PuritySpirit;
 using ExampleMod.Tiles;
 using ExampleMod.UI;
+using ExampleMod.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
