@@ -165,7 +165,7 @@
 +			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
 +				return;
 +			
-+			SetItemTime(CombinedHooks.TotalUseTime((int)(sItem.useTime * multiplier), this, sItem));
++			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime * multiplier, this, sItem));
  		}
  
  		public void SetDummyItemTime(int frames) {
