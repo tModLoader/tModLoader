@@ -31,7 +31,7 @@
  			Height.Set(96f, 0f);
  			Width.Set(0f, 1f);
  			SetPadding(6f);
-@@ -101,15 +_,82 @@
+@@ -101,6 +_,73 @@
  			_deleteButton = uIImageButton5;
  			Append(uIImageButton5);
  			num += 4f;
@@ -104,10 +104,8 @@
 +			//}
  			_buttonLabel = new UIText("");
  			_buttonLabel.VAlign = 1f;
--			_buttonLabel.Left.Set(num, 0f);
-+			_buttonLabel.Left.Set(buttonLabelLeft, 0f);
- 			_buttonLabel.Top.Set(-3f, 0f);
- 			Append(_buttonLabel);
+ 			_buttonLabel.Left.Set(num, 0f);
+@@ -109,7 +_,7 @@
  			_deleteButtonLabel = new UIText("");
  			_deleteButtonLabel.VAlign = 1f;
  			_deleteButtonLabel.HAlign = 1f;
