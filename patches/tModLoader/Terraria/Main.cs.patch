@@ -3335,8 +3335,8 @@
 +
 +					// Show number of mods - 1 such as to show number of enabled mods that are not tModLoader itself
 +					string modsMessage = Language.GetTextValue("tModLoader.MenuModsEnabled", Math.Max(0, ModLoader.ModLoader.Mods.Length - 1));
-+					if (ModLoader.ModLoader.ModUpdatesAvailable > 0) {
-+						modsMessage += " " + Language.GetTextValue("tModLoader.MenuModUpdatesAvailable", ModLoader.ModLoader.ModUpdatesAvailable);
++					if (ModLoader.Core.GOGModUpdateChecker.ModUpdatesAvailable > 0) {
++						modsMessage += " " + Language.GetTextValue("tModLoader.MenuModUpdatesAvailable", ModLoader.Core.GOGModUpdateChecker.ModUpdatesAvailable);
 +					}
 +
 +					string drawVersion = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + Environment.NewLine + modsMessage + (showPatreon ? Environment.NewLine + supportMessage : "");
