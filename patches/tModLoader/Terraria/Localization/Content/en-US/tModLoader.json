@@ -6,6 +6,7 @@
 		"MenuMods": "Mods",
 		"MenuModSources": "Mod Sources",
 		"MenuEnableDeveloperMode": "Enable Developer Mode",
+		"WelcomeMessageBeta": "Welcome to tModLoader 1.4 Alpha.\n\nYou have successfully installed an unstable tModLoader that may contain game-breaking bugs. \n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for 1.4 tModLoader as part of its 1.4 overhaul.",
 		"FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
 		"tModLoaderSettings": "tModLoader Settings",
 		"ModMenuSwap": "Switch Menu Theme",

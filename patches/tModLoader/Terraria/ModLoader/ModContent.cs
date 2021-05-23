@@ -30,7 +30,13 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class ModContent
 	{
-		public static T GetInstance<T>() where T : class => ContentInstance<T>.Instance;
+		/// <summary> Returns the base instance of the provided content type. </summary>
+		public static T GetInstance<T>() where T : class
+			=> ContentInstance<T>.Instance;
+
+		/// <summary> Returns all base content instances that derive from the provided content type across all currently loaded mods. </summary>
+		public static IEnumerable<T> GetContent<T>() where T : ILoadable
+			=> ModLoader.Mods.SelectMany(m => m.GetContent<T>());
 
 		/// <summary> Attempts to find the content instance with the specified full name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
@@ -487,22 +493,24 @@ namespace Terraria.ModLoader
 
 		internal static void UnloadModContent() {
 			MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
+			
 			int i = 0;
+			
 			foreach (var mod in ModLoader.Mods.Reverse()) {
+				if (Main.dedServ)
+					Console.WriteLine($"Unloading {mod.DisplayName}...");
+				else
+					Interface.loadMods.SetCurrentMod(i++, mod.DisplayName);
+				
+				MonoModHooks.RemoveAll(mod);
+				
 				try {
-					if (Main.dedServ)
-						Console.WriteLine($"Unloading {mod.DisplayName}...");
-					else
-						Interface.loadMods.SetCurrentMod(i++, mod.DisplayName);
 					mod.Close();
 					mod.UnloadContent();
 				}
 				catch (Exception e) {
 					e.Data["mod"] = mod.Name;
 					throw;
-				}
-				finally {
-					MonoModHooks.RemoveAll(mod);
 				}
 			}
 		}
