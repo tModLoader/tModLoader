@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Buffs;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
@@ -69,9 +70,9 @@ namespace ExampleMod.Content.Projectiles
 
 			if (Timer == timeToFlyOut / 2) {
 				// Plays a whipcrack sound at the tip of the whip.
-				List<Vector2> temp = new List<Vector2>();
-				Projectile.FillWhipControlPoints(Projectile, temp);
-				SoundEngine.PlaySound(SoundID.Item153, temp[temp.Count - 1]);
+				List<Vector2> points = Projectile.WhipPointsForCollision;
+				Projectile.FillWhipControlPoints(Projectile, points);
+				SoundEngine.PlaySound(SoundID.Item153, points[points.Count - 1]);
 			}
 		}
 
@@ -81,11 +82,12 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
+			target.AddBuff(ModContent.BuffType<ExampleWhipDebuff>(), 240);
 			Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
 		}
 
 		// This method draws a line between all points of the whip, in case there's empty space between the sprites.
-		private void DrawLine(SpriteBatch spriteBatch, List<Vector2> list) {
+		private void DrawLine(List<Vector2> list) {
 			Texture2D texture = TextureAssets.FishingLine.Value;
 			Rectangle frame = texture.Frame();
 			Vector2 origin = new Vector2(frame.Width / 2, 2);
@@ -99,24 +101,26 @@ namespace ExampleMod.Content.Projectiles
 				Color color = Lighting.GetColor(element.ToTileCoordinates(), Color.White);
 				Vector2 scale = new Vector2(1f, (diff.Length() + 2) / frame.Height);
 
-				spriteBatch.Draw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, SpriteEffects.None, 0f);
+				Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, SpriteEffects.None, 0);
 
 				pos += diff;
 			}
 		}
 
-		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
+		public override bool PreDraw(ref Color lightColor) {
 			List<Vector2> list = new List<Vector2>();
 			Projectile.FillWhipControlPoints(Projectile, list);
 
-			DrawLine(spriteBatch, list);
+			DrawLine(list);
 
 			// If you don't want to use custom code, you can instead call one of vanilla's DrawWhip methods. However, keep in mind that you must adhere to how they draw if you do.
 			// Main.DrawWhip_WhipBland(Projectile, list);
 
 			SpriteEffects flip = Projectile.spriteDirection < 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
+			Main.instance.LoadProjectile(Projectile.type);
 			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+
 			Vector2 pos = list[0];
 
 			// The frame and origin values in this loop were chosen to suit this projectile's sprite, but won't necessarily work for your own. Feel free to change them if they don't!
@@ -154,7 +158,7 @@ namespace ExampleMod.Content.Projectiles
 				float rotation = diff.ToRotation() - MathHelper.PiOver2; // This projectile's sprite faces down, so PiOver2 is again used to correct rotation.
 				Color color = Lighting.GetColor(element.ToTileCoordinates());
 
-				spriteBatch.Draw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, flip, 0);
+				Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, flip, 0);
 
 				pos += diff;
 			}

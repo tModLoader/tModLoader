@@ -541,6 +541,14 @@
  			float num = maxRange;
  			int result = -1;
  			for (int i = 0; i < 200; i++) {
+@@ -29878,6 +_,7 @@
+ 					rangeMultiplier *= 0.95f;
+ 					break;
+ 			}
++			ProjectileLoader.GetWhipSettings(proj, Main.player[proj.owner], ref timeToFlyOut, ref segments, ref rangeMultiplier);
+ 		}
+ 
+ 		private void AI_160_Kites() {
 @@ -32276,6 +_,9 @@
  					if (num3 > (float)num9)
  						ai[0] = 1f;
