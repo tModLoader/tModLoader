@@ -30,7 +30,13 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class ModContent
 	{
-		public static T GetInstance<T>() where T : class => ContentInstance<T>.Instance;
+		/// <summary> Returns the base instance of the provided content type. </summary>
+		public static T GetInstance<T>() where T : class
+			=> ContentInstance<T>.Instance;
+
+		/// <summary> Returns all base content instances that derive from the provided content type across all currently loaded mods. </summary>
+		public static IEnumerable<T> GetContent<T>() where T : ILoadable
+			=> ModLoader.Mods.SelectMany(m => m.GetContent<T>());
 
 		/// <summary> Attempts to find the content instance with the specified full name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
@@ -235,7 +241,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets the ModDust instance with the given type. Returns null if no ModDust with the given type exists.
 		/// </summary>
-		public static ModDust GetModDust(int type) => ModDust.GetDust(type);
+		public static ModDust GetModDust(int type) => DustLoader.GetDust(type);
 
 		/// <summary>
 		/// Gets the ModProjectile instance corresponding to the specified type.
@@ -258,11 +264,11 @@ namespace Terraria.ModLoader
 		public static EquipTexture GetEquipTexture(EquipType type, int slot) => EquipLoader.GetEquipTexture(type, slot);
 
 		/// <summary>
-		/// Gets the ModMountData instance corresponding to the given type. Returns null if no ModMountData has the given type.
+		/// Gets the ModMount instance corresponding to the given type. Returns null if no ModMount has the given type.
 		/// </summary>
 		/// <param name="type">The type of the mount.</param>
-		/// <returns>Null if not found, otherwise the ModMountData associated with the mount.</returns>
-		public static ModMountData GetModMountData(int type) => MountLoader.GetMount(type);
+		/// <returns>Null if not found, otherwise the ModMount associated with the mount.</returns>
+		public static ModMount GetModMount(int type) => MountLoader.GetMount(type);
 
 		/// <summary>
 		/// Gets the ModTile instance with the given type. If no ModTile with the given type exists, returns null.
@@ -279,12 +285,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns the ModWaterStyle with the given ID.
 		/// </summary>
-		public static ModWaterStyle GetModWaterStyle(int style) => WaterStyleLoader.GetWaterStyle(style);
+		public static ModWaterStyle GetModWaterStyle(int style) => LoaderManager.Get<WaterStylesLoader>().Get(style);
 
 		/// <summary>
 		/// Returns the ModWaterfallStyle with the given ID.
 		/// </summary>
-		public static ModWaterfallStyle GetModWaterfallStyle(int style) => WaterfallStyleLoader.GetWaterfallStyle(style);
+		public static ModWaterfallStyle GetModWaterfallStyle(int style) => LoaderManager.Get<WaterFallStylesLoader>().Get(style);
 
 		/// <summary>
 		/// Returns the slot/ID of the background texture with the given name.
@@ -292,14 +298,14 @@ namespace Terraria.ModLoader
 		public static int GetModBackgroundSlot(string texture) => BackgroundTextureLoader.GetBackgroundSlot(texture);
 
 		/// <summary>
-		/// Returns the ModSurfaceBgStyle object with the given ID.
+		/// Returns the ModSurfaceBackgroundStyle object with the given ID.
 		/// </summary>
-		public static ModSurfaceBgStyle GetModSurfaceBgStyle(int style) => SurfaceBgStyleLoader.GetSurfaceBgStyle(style);
+		public static ModSurfaceBackgroundStyle GetModSurfaceBackgroundStyle(int style) => LoaderManager.Get<SurfaceBackgroundStylesLoader>().Get(style);
 
 		/// <summary>
-		/// Returns the ModUgBgStyle object with the given ID.
+		/// Returns the ModUndergroundBackgroundStyle object with the given ID.
 		/// </summary>
-		public static ModUgBgStyle GetModUgBgStyle(int style) => UgBgStyleLoader.GetUgBgStyle(style);
+		public static ModUndergroundBackgroundStyle GetModUndergroundBackgroundStyle(int style) => LoaderManager.Get<UndergroundBackgroundStylesLoader>().Get(style);
 
 		/// <summary>
 		/// Get the id (type) of a ModGore by class. Assumes one instance per class.
@@ -357,9 +363,9 @@ namespace Terraria.ModLoader
 		public static int BuffType<T>() where T : ModBuff => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
-		/// Get the id (type) of a ModMountData by class. Assumes one instance per class.
+		/// Get the id (type) of a ModMount by class. Assumes one instance per class.
 		/// </summary>
-		public static int MountType<T>() where T : ModMountData => GetInstance<T>()?.Type ?? 0;
+		public static int MountType<T>() where T : ModMount => GetInstance<T>()?.Type ?? 0;
 
 		private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value) {
 			if (dict.ContainsKey(value.Key)) {
@@ -422,6 +428,7 @@ namespace Terraria.ModLoader
 		private static void CacheVanillaState() {
 			EffectsTracker.CacheVanillaState();
 			DamageClassLoader.RegisterDefaultClasses();
+			InfoDisplayLoader.RegisterDefaultDisplays();
 		}
 
 		internal static Mod LoadingMod { get; private set; }
@@ -479,20 +486,25 @@ namespace Terraria.ModLoader
 
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();
-			RecipeHooks.setupRecipes = true;
+			RecipeLoader.setupRecipes = true;
 			Recipe.SetupRecipes();
-			RecipeHooks.setupRecipes = false;
+			RecipeLoader.setupRecipes = false;
 		}
 
 		internal static void UnloadModContent() {
 			MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
+			
 			int i = 0;
+			
 			foreach (var mod in ModLoader.Mods.Reverse()) {
+				if (Main.dedServ)
+					Console.WriteLine($"Unloading {mod.DisplayName}...");
+				else
+					Interface.loadMods.SetCurrentMod(i++, mod.DisplayName);
+				
+				MonoModHooks.RemoveAll(mod);
+				
 				try {
-					if (Main.dedServ)
-						Console.WriteLine($"Unloading {mod.DisplayName}...");
-					else
-						Interface.loadMods.SetCurrentMod(i++, mod.DisplayName);
 					mod.Close();
 					mod.UnloadContent();
 				}
@@ -500,21 +512,18 @@ namespace Terraria.ModLoader
 					e.Data["mod"] = mod.Name;
 					throw;
 				}
-				finally {
-					MonoModHooks.RemoveAll(mod);
-				}
 			}
 		}
 
+		//TODO: Unhardcode ALL of this.
 		internal static void Unload() {
 			ContentInstance.Clear();
 			ModTypeLookup.Clear();
 			ItemLoader.Unload();
 			EquipLoader.Unload();
-			ModPrefix.Unload();
-			ModDust.Unload();
+			PrefixLoader.Unload();
+			DustLoader.Unload();
 			TileLoader.Unload();
-			TileEntity.manager.Reset();
 			WallLoader.Unload();
 			ProjectileLoader.Unload();
 			NPCLoader.Unload();
@@ -525,17 +534,17 @@ namespace Terraria.ModLoader
 			MountLoader.Unload();
 			RarityLoader.Unload();
 			DamageClassLoader.Unload();
+			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
 			SoundLoader.Unload();
 			DisposeMusic();
-			BackgroundTextureLoader.Unload();
-			UgBgStyleLoader.Unload();
-			SurfaceBgStyleLoader.Unload();
-			GlobalBgStyleLoader.Unload();
-			WaterStyleLoader.Unload();
-			WaterfallStyleLoader.Unload();
-			PlayerDrawLayerHooks.Unload();
+
+			LoaderManager.Unload();
+
+			GlobalBackgroundStyleLoader.Unload();
+			PlayerDrawLayerLoader.Unload();
 			SystemHooks.Unload();
+			TileEntity.manager.Reset();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
 				Main.recipe[k] = new Recipe();
@@ -546,8 +555,8 @@ namespace Terraria.ModLoader
 			MapLoader.UnloadModMap();
 			ItemSorting.SetupWhiteLists();
 			HotKeyLoader.Unload();
-			RecipeHooks.Unload();
-			CommandManager.Unload();
+			RecipeLoader.Unload();
+			CommandLoader.Unload();
 			TagSerializer.Reload();
 			ModNet.Unload();
 			Config.ConfigManager.Unload();
@@ -566,41 +575,42 @@ namespace Terraria.ModLoader
 			CleanupModReferences();
 		}
 
+		//TODO: Unhardcode ALL of this.
 		private static void ResizeArrays(bool unloading = false) {
 			DamageClassLoader.ResizeArrays();
 			ItemLoader.ResizeArrays(unloading);
 			EquipLoader.ResizeAndFillArrays();
-			ModPrefix.ResizeArrays();
-			ModDust.ResizeArrays();
+			PrefixLoader.ResizeArrays();
+			DustLoader.ResizeArrays();
 			TileLoader.ResizeArrays(unloading);
 			WallLoader.ResizeArrays(unloading);
+			TileIO.ResizeArrays();
 			ProjectileLoader.ResizeArrays();
 			NPCLoader.ResizeArrays(unloading);
 			NPCHeadLoader.ResizeAndFillArrays();
 			MountLoader.ResizeArrays();
 			BuffLoader.ResizeArrays();
 			PlayerHooks.RebuildHooks();
-			PlayerDrawLayerHooks.ResizeArrays();
+			PlayerDrawLayerLoader.ResizeArrays();
 			SystemHooks.ResizeArrays();
 
 			if (!Main.dedServ) {
 				SoundLoader.ResizeAndFillArrays();
-				BackgroundTextureLoader.ResizeAndFillArrays();
-				UgBgStyleLoader.ResizeAndFillArrays();
-				SurfaceBgStyleLoader.ResizeAndFillArrays();
-				GlobalBgStyleLoader.ResizeAndFillArrays(unloading);
+				GlobalBackgroundStyleLoader.ResizeAndFillArrays(unloading);
 				GoreLoader.ResizeAndFillArrays();
-				WaterStyleLoader.ResizeArrays();
-				WaterfallStyleLoader.ResizeArrays();
 			}
+
+			LoaderManager.ResizeArrays();
 
 			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values) {
 				text.Override = null;
 			}
 		}
 
+		//TODO: Unhardcode ALL of this.
 		public static void RefreshModLanguage(GameCulture culture) {
 			Dictionary<string, LocalizedText> dict = LanguageManager.Instance._localizedTexts;
+
 			foreach (ModItem item in ItemLoader.items) {
 				LocalizedText text = new LocalizedText(item.DisplayName.Key, item.DisplayName.GetTranslation(culture));
 				Lang._itemNameCache[item.Item.type] = SetLocalizedText(dict, text);
@@ -610,10 +620,12 @@ namespace Terraria.ModLoader
 					Lang._itemTooltipCache[item.Item.type] = ItemTooltip.FromLanguageKey(text.Key);
 				}
 			}
-			foreach (ModPrefix prefix in ModPrefix.prefixes) {
+
+			foreach (ModPrefix prefix in PrefixLoader.prefixes) {
 				LocalizedText text = new LocalizedText(prefix.DisplayName.Key, prefix.DisplayName.GetTranslation(culture));
 				Lang.prefix[prefix.Type] = SetLocalizedText(dict, text);
 			}
+
 			foreach (var keyValuePair in MapLoader.tileEntries) {
 				foreach (MapEntry entry in keyValuePair.Value) {
 					if (entry.translation != null) {
@@ -622,6 +634,7 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
+
 			foreach (var keyValuePair in MapLoader.wallEntries) {
 				foreach (MapEntry entry in keyValuePair.Value) {
 					if (entry.translation != null) {
@@ -630,26 +643,31 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
+
 			foreach (ModProjectile proj in ProjectileLoader.projectiles) {
 				LocalizedText text = new LocalizedText(proj.DisplayName.Key, proj.DisplayName.GetTranslation(culture));
 				Lang._projectileNameCache[proj.Projectile.type] = SetLocalizedText(dict, text);
 			}
+
 			foreach (ModNPC npc in NPCLoader.npcs) {
 				LocalizedText text = new LocalizedText(npc.DisplayName.Key, npc.DisplayName.GetTranslation(culture));
 				Lang._npcNameCache[npc.NPC.type] = SetLocalizedText(dict, text);
 			}
+
 			foreach (ModBuff buff in BuffLoader.buffs) {
 				LocalizedText text = new LocalizedText(buff.DisplayName.Key, buff.DisplayName.GetTranslation(culture));
 				Lang._buffNameCache[buff.Type] = SetLocalizedText(dict, text);
 				text = new LocalizedText(buff.Description.Key, buff.Description.GetTranslation(culture));
 				Lang._buffDescriptionCache[buff.Type] = SetLocalizedText(dict, text);
 			}
+
 			foreach (Mod mod in ModLoader.Mods) {
 				foreach (ModTranslation translation in mod.translations.Values) {
 					LocalizedText text = new LocalizedText(translation.Key, translation.GetTranslation(culture));
 					SetLocalizedText(dict, text);
 				}
 			}
+
 			LanguageManager.Instance.ProcessCopyCommandsInTexts();
 		}
 

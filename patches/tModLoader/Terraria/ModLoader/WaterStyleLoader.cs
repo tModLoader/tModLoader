@@ -1,72 +1,48 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
 
 namespace Terraria.ModLoader
 {
-	//todo: further documentation
-	/// <summary>
-	/// This serves as the central class from which WaterStyle functions are supported and carried out.
-	/// </summary>
-	public static class WaterStyleLoader
+	[Autoload(Side = ModSide.Client)]
+	public class WaterFallStylesLoader : SceneEffectLoader<ModWaterfallStyle>
 	{
-		/// <summary>
-		/// The maximum amount of liquids in vanilla.
-		/// </summary>
-		public const int vanillaWaterCount = Main.maxLiquidTypes;
-		private static int nextWaterStyle = vanillaWaterCount;
-		internal static readonly IList<ModWaterStyle> waterStyles = new List<ModWaterStyle>();
+		public WaterFallStylesLoader() => Initialize(WaterfallManager.maxTypes);
 
-		/// <summary>
-		/// The number of water styles that exist in the game, both vanilla and modded.
-		/// </summary>
-		public static int WaterStyleCount => nextWaterStyle;
-
-		internal static int ReserveStyle() {
-			int reserve = nextWaterStyle;
-			nextWaterStyle++;
-			return reserve;
-		}
-
-		/// <summary>
-		/// Returns the ModWaterStyle with the given ID.
-		/// </summary>
-		public static ModWaterStyle GetWaterStyle(int style) {
-			if (style < vanillaWaterCount || style >= nextWaterStyle) {
-				return null;
-			}
-			return waterStyles[style - vanillaWaterCount];
-		}
-
-		internal static void ResizeArrays() {
+		internal override void ResizeArrays() {
 			//Textures
-			Array.Resize(ref TextureAssets.Liquid, nextWaterStyle);
-			Array.Resize(ref LiquidRenderer.Instance._liquidTextures, nextWaterStyle);
+			Array.Resize(ref Main.instance.waterfallManager.waterfallTexture, TotalCount);
+		}
+	}
+
+	[Autoload(Side = ModSide.Client)]
+	public class WaterStylesLoader : SceneEffectLoader<ModWaterStyle>
+	{
+		public WaterStylesLoader() => Initialize(Main.maxLiquidTypes);
+
+		internal override void ResizeArrays() {
+			//Textures
+			Array.Resize(ref TextureAssets.Liquid, TotalCount);
+			Array.Resize(ref LiquidRenderer.Instance._liquidTextures, TotalCount);
 
 			//Etc
-			Array.Resize(ref Main.liquidAlpha, nextWaterStyle);
+			Array.Resize(ref Main.liquidAlpha, TotalCount);
 		}
 
-		internal static void Unload() {
-			nextWaterStyle = vanillaWaterCount;
-			waterStyles.Clear();
-		}
+		public override void ChooseStyle(out int style, out SceneEffectPriority priority) {
+			int tst = Main.LocalPlayer.CurrentSceneEffect.waterStyle.value;
+			style = -1; priority = SceneEffectPriority.None;
 
-		public static void ChooseWaterStyle(ref int style) {
-			foreach (ModWaterStyle waterStyle in waterStyles) {
-				if (waterStyle.ChooseWaterStyle()) {
-					style = waterStyle.Type;
-				}
+			if (tst >= VanillaCount) {
+				style = tst;
+				priority = Main.LocalPlayer.CurrentSceneEffect.waterStyle.priority;
 			}
-
-			SystemHooks.ChooseWaterStyle(ref style);
 		}
 
-		public static void UpdateLiquidAlphas() {
-			if (Main.waterStyle >= vanillaWaterCount) {
-				for (int k = 0; k < vanillaWaterCount; k++) {
+		public void UpdateLiquidAlphas() {
+			if (Main.waterStyle >= VanillaCount) {
+				for (int k = 0; k < VanillaCount; k++) {
 					if (k == 1 || k == 11) {
 						continue;
 					}
@@ -76,8 +52,8 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
-			foreach (ModWaterStyle waterStyle in waterStyles) {
-				int type = waterStyle.Type;
+			foreach (ModWaterStyle waterStyle in list) {
+				int type = waterStyle.Slot;
 				if (Main.waterStyle == type) {
 					Main.liquidAlpha[type] += 0.2f;
 					if (Main.liquidAlpha[type] > 1f) {
@@ -93,8 +69,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void DrawWatersToScreen(bool bg) {
-			for (int k = vanillaWaterCount; k < nextWaterStyle; k++) {
+		public void DrawWatersToScreen(bool bg) {
+			for (int k = VanillaCount; k < TotalCount; k++) {
 				if (Main.liquidAlpha[k] > 0f) {
 					if (bg) {
 						if (Main.waterStyle < k) {
@@ -111,17 +87,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void DrawWaterfall(WaterfallManager waterfallManager, SpriteBatch spriteBatch) {
-			foreach (ModWaterStyle waterStyle in waterStyles) {
-				if (Main.liquidAlpha[waterStyle.Type] > 0f) {
-					waterfallManager.DrawWaterfall(spriteBatch, waterStyle.ChooseWaterfallStyle(),
-						Main.liquidAlpha[waterStyle.Type]);
+		public void DrawWaterfall(WaterfallManager waterfallManager, SpriteBatch spriteBatch) {
+			foreach (ModWaterStyle waterStyle in list) {
+				if (Main.liquidAlpha[waterStyle.Slot] > 0f) {
+					waterfallManager.DrawWaterfall(spriteBatch, waterStyle.ChooseWaterfallStyle(), Main.liquidAlpha[waterStyle.Slot]);
 				}
 			}
 		}
 
-		public static void LightColorMultiplier(int style, ref float r, ref float g, ref float b) {
-			ModWaterStyle waterStyle = GetWaterStyle(style);
+		public void LightColorMultiplier(int style, ref float r, ref float g, ref float b) {
+			ModWaterStyle waterStyle = Get(style);
 
 			if (waterStyle != null) {
 				waterStyle.LightColorMultiplier(ref r, ref g, ref b);
@@ -132,39 +107,6 @@ namespace Terraria.ModLoader
 
 				//TODO: Make this work with the new lighting engine.
 			}
-		}
-	}
-
-	public static class WaterfallStyleLoader
-	{
-		public const int vanillaWaterfallCount = WaterfallManager.maxTypes;
-		private static int nextWaterfallStyle = vanillaWaterfallCount;
-		internal static readonly IList<ModWaterfallStyle> waterfallStyles = new List<ModWaterfallStyle>();
-
-		internal static int ReserveStyle() {
-			int reserve = nextWaterfallStyle;
-			nextWaterfallStyle++;
-			return reserve;
-		}
-
-		/// <summary>
-		/// Returns the ModWaterfallStyle with the given ID.
-		/// </summary>
-		public static ModWaterfallStyle GetWaterfallStyle(int style) {
-			if (style < vanillaWaterfallCount || style >= nextWaterfallStyle) {
-				return null;
-			}
-			return waterfallStyles[style - vanillaWaterfallCount];
-		}
-
-		internal static void ResizeArrays() {
-			//Textures
-			Array.Resize(ref Main.instance.waterfallManager.waterfallTexture, nextWaterfallStyle);
-		}
-
-		internal static void Unload() {
-			nextWaterfallStyle = vanillaWaterfallCount;
-			waterfallStyles.Clear();
 		}
 	}
 }

@@ -56,7 +56,6 @@ namespace Terraria.ModLoader.Core
 		internal bool hideCode = false;
 		internal bool hideResources = false;
 		internal bool includeSource = false;
-		internal bool includePDB = true;
 		internal string eacPath = "";
 		// This .tmod was built against a beta release, preventing publishing.
 		internal bool beta = false;
@@ -148,9 +147,6 @@ namespace Terraria.ModLoader.Core
 					case "includeSource":
 						properties.includeSource = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 						break;
-					case "includePDB":
-						properties.includePDB = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
-						break;
 					case "buildIgnore":
 						properties.buildIgnores = value.Split(',').Select(s => s.Trim().Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar)).Where(s => s.Length > 0).ToArray();
 						break;
@@ -225,9 +221,6 @@ namespace Terraria.ModLoader.Core
 					}
 					if (includeSource) {
 						writer.Write("includeSource");
-					}
-					if (includePDB) {
-						writer.Write("includePDB");
 					}
 					if (eacPath.Length > 0) {
 						writer.Write("eacPath");
@@ -304,9 +297,6 @@ namespace Terraria.ModLoader.Core
 					if (tag == "includeSource") {
 						properties.includeSource = true;
 					}
-					if (tag == "includePDB") {
-						properties.includePDB = true;
-					}
 					if (tag == "eacPath") {
 						properties.eacPath = reader.ReadString();
 					}
@@ -348,8 +338,6 @@ namespace Terraria.ModLoader.Core
 				sb.AppendLine($"hideResources = true");
 			if (properties.includeSource)
 				sb.AppendLine($"includeSource = true");
-			if (properties.includePDB)
-				sb.AppendLine($"includePDB = true");
 			// buildIgnores isn't preserved in Info, but it doesn't matter with extraction since the ignored files won't be present anyway.
 			// if (properties.buildIgnores.Length > 0)
 			//	sb.AppendLine($"buildIgnores = {string.Join(", ", properties.buildIgnores)}");

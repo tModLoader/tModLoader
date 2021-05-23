@@ -38,7 +38,7 @@
  			NpcNetIdsByPersistentIds.Clear();
  			NpcPersistentIdsByNetIds.Clear();
  			NpcBestiarySortingId.Clear();
--			for (int i = -65; i < 665; i++) {
+-			for (int i = -65; i < 668; i++) {
 +			for (int i = -65; i < NPCLoader.NPCCount; i++) {
  				NPC nPC = new NPC();
  				nPC.SetDefaults(i);
@@ -47,7 +47,7 @@
  
  			ModifyNPCIds();
  			ProjectilesByType.Clear();
--			for (int j = 0; j < 954; j++) {
+-			for (int j = 0; j < 956; j++) {
 +			for (int j = 0; j < ProjectileLoader.ProjectileCount; j++) {
  				Projectile projectile = new Projectile();
  				projectile.SetDefaults(j);
@@ -64,7 +64,7 @@
  			NPCSpawnParams nPCSpawnParams = default(NPCSpawnParams);
  			nPCSpawnParams.gameModeData = Main.RegisterdGameModes[0];
  			NPCSpawnParams spawnparams = nPCSpawnParams;
--			for (int i = -65; i < 665; i++) {
+-			for (int i = -65; i < 668; i++) {
 +			for (int i = -65; i < NPCLoader.NPCCount; i++) {
  				NPC nPC = new NPC();
  				nPC.SetDefaults(i, spawnparams);

@@ -67,6 +67,8 @@ namespace Terraria.ModLoader
 
 		private IDisposable fileHandle;
 
+		public GameContent.Bestiary.ModSourceBestiaryInfoElement ModSourceBestiaryInfoElement;
+
 		internal void AutoloadConfig()
 		{
 			if (Code == null)
@@ -302,25 +304,6 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public LegacySoundStyle GetLegacySoundSlot(SoundType type, string name) => SoundLoader.GetLegacySoundSlot(type, Name + '/' + name);
-
-		/// <summary>
-		/// Adds a texture to the list of background textures and assigns it a background texture slot.
-		/// </summary>
-		/// <param name="texture">The texture.</param>
-		public void AddBackgroundTexture(string texture) {
-			if (!loading)
-				throw new Exception("AddBackgroundTexture can only be called from Mod.Load or Mod.Autoload");
-
-			BackgroundTextureLoader.backgrounds[texture] = BackgroundTextureLoader.ReserveBackgroundSlot();
-			ModContent.GetTexture(texture);
-		}
-
-		/// <summary>
-		/// Gets the texture slot corresponding to the specified texture name. Shorthand for calling BackgroundTextureLoader.GetBackgroundSlot(this.Name + '/' + name).
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int GetBackgroundSlot(string name) => BackgroundTextureLoader.GetBackgroundSlot(Name + '/' + name);
 
 		/// <summary>
 		/// Allows you to tie a music ID, and item ID, and a tile ID together to form a music box. When music with the given ID is playing, equipped music boxes have a chance to change their ID to the given item type. When an item with the given item type is equipped, it will play the music that has musicSlot as its ID. When a tile with the given type and Y-frame is nearby, if its X-frame is >= 36, it will play the music that has musicSlot as its ID.

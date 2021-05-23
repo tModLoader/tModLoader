@@ -44,13 +44,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The background style that will be used when this ModMenu is active. If not overridden, it will use the vanilla background.
 		/// </summary>
-		public virtual ModSurfaceBgStyle MenuBackgroundStyle => null;
+		public virtual ModSurfaceBackgroundStyle MenuBackgroundStyle => null;
 
 		/// <summary>
 		/// Controls whether this ModMenu will be available to switch to. Useful if you want this menu to only be available at specific times.
 		/// </summary>
 		public virtual bool IsAvailable => true;
 
+		//TODO Localization
 		/// <summary>
 		/// Controls the name that shows up at the base of the screen when this ModMenu is active. If not overridden, it will use this mod's display name.
 		/// </summary>

@@ -109,103 +109,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookUpdateBiomes = AddHook<Action>(p => p.UpdateBiomes);
-
-		public static void UpdateBiomes(Player player) {
-			foreach (int index in HookUpdateBiomes.arr) {
-				player.modPlayers[index].UpdateBiomes();
-			}
-		}
-
-		private static HookList HookCustomBiomesMatch = AddHook<Func<Player, bool>>(p => p.CustomBiomesMatch);
-
-		public static bool CustomBiomesMatch(Player player, Player other) {
-			foreach (int index in HookCustomBiomesMatch.arr) {
-				if (!player.modPlayers[index].CustomBiomesMatch(other)) {
-					return false;
-				}
-			}
-			return true;
-		}
-
-		private static HookList HookCopyCustomBiomesTo = AddHook<Action<Player>>(p => p.CopyCustomBiomesTo);
-
-		public static void CopyCustomBiomesTo(Player player, Player other) {
-			foreach (int index in HookCopyCustomBiomesTo.arr) {
-				player.modPlayers[index].CopyCustomBiomesTo(other);
-			}
-		}
-
-		private static HookList HookSendCustomBiomes = AddHook<Action<BinaryWriter>>(p => p.SendCustomBiomes);
-
-		public static void SendCustomBiomes(Player player, BinaryWriter writer) {
-			ushort count = 0;
-			byte[] data;
-			using (MemoryStream stream = new MemoryStream()) {
-				using (BinaryWriter customWriter = new BinaryWriter(stream)) {
-					foreach (int index in HookSendCustomBiomes.arr) {
-						if (SendCustomBiomes(player.modPlayers[index], customWriter)) {
-							count++;
-						}
-					}
-					customWriter.Flush();
-					data = stream.ToArray();
-				}
-			}
-			writer.Write(count);
-			writer.Write(data);
-		}
-
-		private static bool SendCustomBiomes(ModPlayer modPlayer, BinaryWriter writer) {
-			byte[] data;
-			using (MemoryStream stream = new MemoryStream()) {
-				using (BinaryWriter customWriter = new BinaryWriter(stream)) {
-					modPlayer.SendCustomBiomes(customWriter);
-					customWriter.Flush();
-					data = stream.ToArray();
-				}
-			}
-			if (data.Length > 0) {
-				writer.Write(modPlayer.Mod.Name);
-				writer.Write(modPlayer.Name);
-				writer.Write((byte)data.Length);
-				writer.Write(data);
-				return true;
-			}
-			return false;
-		}
-
-		public static void ReceiveCustomBiomes(Player player, BinaryReader reader) {
-			int count = reader.ReadUInt16();
-
-			for (int k = 0; k < count; k++) {
-				string modName = reader.ReadString();
-				string name = reader.ReadString();
-				byte[] data = reader.ReadBytes(reader.ReadByte());
-
-				if (ModContent.TryFind<ModPlayer>(modName, name, out var modPlayerBase)) {
-					var modPlayer = player.GetModPlayer(modPlayerBase);
-
-					using MemoryStream stream = new MemoryStream(data);
-					using BinaryReader customReader = new BinaryReader(stream);
-
-					try {
-						modPlayer.ReceiveCustomBiomes(customReader);
-					}
-					catch {
-					}
-				}
-			}
-		}
-
-		private static HookList HookUpdateBiomeVisuals = AddHook<Action>(p => p.UpdateBiomeVisuals);
-
-		public static void UpdateBiomeVisuals(Player player) {
-			foreach (int index in HookUpdateBiomeVisuals.arr) {
-				player.modPlayers[index].UpdateBiomeVisuals();
-			}
-		}
-
 		private static HookList HookClientClone = AddHook<Action<ModPlayer>>(p => p.clientClone);
 
 		public static void clientClone(Player player, Player clientClone) {
@@ -627,16 +530,36 @@ namespace Terraria.ModLoader
 				player.modPlayers[index].OnConsumeAmmo(weapon, ammo);
 		}
 
-		private delegate bool DelegateShoot(Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack);
-		private static HookList HookShoot = AddHook<DelegateShoot>(p => p.Shoot);
+		private static HookList HookCanShoot = AddHook<Func<Item, bool>>(p => p.CanShoot);
 
-		public static bool Shoot(Player player, Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
-			foreach (int index in HookShoot.arr) {
-				if (!player.modPlayers[index].Shoot(item, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack)) {
+		public static bool CanShoot(Player player, Item item) {
+			foreach (int index in HookCanShoot.arr) {
+				if (!player.modPlayers[index].CanShoot(item))
 					return false;
-				}
 			}
+
 			return true;
+		}
+
+		private delegate void DelegateModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback);
+		private static HookList HookModifyShootStats = AddHook<DelegateModifyShootStats>(p => p.ModifyShootStats);
+
+		public static void ModifyShootStats(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			foreach (int index in HookModifyShootStats.arr) {
+				player.modPlayers[index].ModifyShootStats(item, ref position, ref velocity, ref type, ref damage, ref knockback);
+			}
+		}
+
+		private static HookList HookShoot = AddHook<Func<Item, ProjectileSource_Item_WithAmmo, Vector2, Vector2, int, int, float, bool>>(p => p.Shoot);
+
+		public static bool Shoot(Player player, Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			bool defaultResult = true;
+
+			foreach (int index in HookShoot.arr) {
+				defaultResult &= player.modPlayers[index].Shoot(item, source, position, velocity, type, damage, knockback);
+			}
+
+			return defaultResult;
 		}
 
 		private static HookList HookMeleeEffects = AddHook<Action<Item, Rectangle>>(p => p.MeleeEffects);
@@ -1000,14 +923,6 @@ namespace Terraria.ModLoader
 
 		internal static void VerifyGlobalItem(ModPlayer player) {
 			var type = player.GetType();
-
-			int netCustomBiomeMethods = 0;
-			if (HasMethod(type, "CustomBiomesMatch", typeof(Player))) netCustomBiomeMethods++;
-			if (HasMethod(type, "CopyCustomBiomesTo", typeof(Player))) netCustomBiomeMethods++;
-			if (HasMethod(type, "SendCustomBiomes", typeof(BinaryWriter))) netCustomBiomeMethods++;
-			if (HasMethod(type, "ReceiveCustomBiomes", typeof(BinaryReader))) netCustomBiomeMethods++;
-			if (netCustomBiomeMethods > 0 && netCustomBiomeMethods < 4)
-				throw new Exception(type + " must override all of (CustomBiomesMatch/CopyCustomBiomesTo/SendCustomBiomes/ReceiveCustomBiomes) or none");
 
 			int netClientMethods = 0;
 			if (HasMethod(type, "clientClone", typeof(ModPlayer))) netClientMethods++;

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
@@ -162,16 +163,16 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify the location and rotation of this item in its use animation.
 		/// </summary>
-		/// <param name="player">The player.</param>
-		public virtual void UseStyle(Player player) {
-		}
+		/// <param name="player"> The player. </param>
+		/// <param name="heldItemFrame"> The source rectangle for the held item's texture. </param>
+		public virtual void UseStyle(Player player, Rectangle heldItemFrame) { }
 
 		/// <summary>
 		/// Allows you to modify the location and rotation of this item when the player is holding it.
 		/// </summary>
-		/// <param name="player">The player.</param>
-		public virtual void HoldStyle(Player player) {
-		}
+		/// <param name="player"> The player. </param>
+		/// <param name="heldItemFrame"> The source rectangle for the held item's texture. </param>
+		public virtual void HoldStyle(Player player, Rectangle heldItemFrame) { }
 
 		/// <summary>
 		/// Allows you to make things happen when the player is holding this item (for example, torches make light and water candles increase spawn rate).
@@ -306,17 +307,38 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// This is called before the weapon creates a projectile. You can use it to create special effects, such as changing the speed, changing the initial position, and/or firing multiple projectiles. Return false to stop the game from shooting the default projectile (do this if you manually spawn your own projectile). Returns true by default.
+		/// Allows you to prevent this item from shooting a projectile on use. Returns true by default.
 		/// </summary>
-		/// <param name="player">The player.</param>
-		/// <param name="position">The shoot spawn position.</param>
-		/// <param name="speedX">The speed x calculated from shootSpeed and mouse position.</param>
-		/// <param name="speedY">The speed y calculated from shootSpeed and mouse position.</param>
-		/// <param name="type">The projectile type choosen by ammo and weapon.</param>
-		/// <param name="damage">The projectile damage.</param>
-		/// <param name="knockBack">The projectile knock back.</param>
+		/// <param name="player"> The player using the item. </param>
 		/// <returns></returns>
-		public virtual bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
+		public virtual bool CanShoot(Player player) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by this item.
+		/// </summary>
+		/// <param name="player"> The player using the item. </param>
+		/// <param name="position"> The center position of the projectile. </param>
+		/// <param name="velocity"> The velocity of the projectile. </param>
+		/// <param name="type"> The ID of the projectile. </param>
+		/// <param name="damage"> The damage of the projectile. </param>
+		/// <param name="knockback"> The knockback of the projectile. </param>
+		public virtual void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		}
+
+		/// <summary>
+		/// Allows you to modify this item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.
+		/// </summary>
+		/// <param name="player"> The player using the item. </param>
+		/// <param name="source"> The projectile source's information. </param>
+		/// <param name="position"> The center position of the projectile. </param>
+		/// <param name="velocity"> The velocity of the projectile. </param>
+		/// <param name="type"> The ID of the projectile. </param>
+		/// <param name="damage"> The damage of the projectile. </param>
+		/// <param name="knockback"> The knockback of the projectile. </param>
+		/// <returns></returns>
+		public virtual bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			return true;
 		}
 
@@ -430,22 +452,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the player's animation when this item is being used. Return true if you modify the player's animation. Returns false by default.
+		/// Allows you to modify the player's animation when this item is being used.
 		/// </summary>
 		/// <param name="player">The player.</param>
-		/// <returns></returns>
-		public virtual bool UseItemFrame(Player player) {
-			return false;
-		}
+		public virtual void UseItemFrame(Player player) { }
 
 		/// <summary>
-		/// Allows you to modify the player's animation when the player is holding this item. Return true if you modify the player's animation. Returns false by default.
+		/// Allows you to modify the player's animation when the player is holding this item.
 		/// </summary>
 		/// <param name="player">The player.</param>
-		/// <returns></returns>
-		public virtual bool HoldItemFrame(Player player) {
-			return false;
-		}
+		public virtual void HoldItemFrame(Player player) { }
 
 		/// <summary>
 		/// Allows you to make this item usable by right-clicking. Returns false by default. When this item is used by right-clicking, player.altFunctionUse will be set to 2.
@@ -587,6 +603,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to decide if this item is allowed to stack with another of its type in the world.
+		/// This is only called when attempting to stack with an item of the same type.
+		/// </summary>
+		/// <param name="item2">The item this is trying to stack with</param>
+		/// <returns>Whether or not the item is allowed to stack</returns>
+		public virtual bool CanStackInWorld(Item item2) {
+			return true;
+		}
+
+		/// <summary>
 		/// Returns if the normal reforge pricing is applied. 
 		/// If true or false is returned and the price is altered, the price will equal the altered price.
 		/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
@@ -713,11 +739,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns whether or not this item burns when it is thrown into lava despite item.rare not being 0. Returns false by default.
+		/// Returns whether or not this item will burn in lava regardless of any conditions. Returns null by default (follow vanilla behaviour).
 		/// </summary>
-		public virtual bool CanBurnInLava()
-		{
-			return false;
+		public virtual bool? CanBurnInLava() {
+			return null;
 		}
 		
 		/// <summary>

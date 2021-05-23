@@ -1,33 +1,25 @@
 --- src/decompiled/Terraria/Social/Steam/CoreSocialModule.cs
 +++ src/Terraria/Terraria/Social/Steam/CoreSocialModule.cs
-@@ -20,10 +_,12 @@
+@@ -24,7 +_,7 @@
  
  		public void Initialize() {
  			_instance = this;
-+#if CLIENT
- 			if (SteamAPI.RestartAppIfNecessary(new AppId_t(105600u))) {
+-			if (SteamAPI.RestartAppIfNecessary(new AppId_t(105600u))) {
++			if (!Main.dedServ && SteamAPI.RestartAppIfNecessary(new AppId_t(105600u))) {
  				Environment.Exit(1);
  				return;
  			}
-+#endif
- 
- 			if (!SteamAPI.Init()) {
- 				MessageBox.Show(Language.GetTextValue("Error.LaunchFromSteam"), Language.GetTextValue("Error.Error"));
-@@ -39,8 +_,13 @@
+@@ -43,7 +_,8 @@
  			thread2.Start();
  			Main.OnTickForThirdPartySoftwareOnly += PulseSteamTick;
  			Main.OnTickForThirdPartySoftwareOnly += PulseSteamCallback;
-+#if CLIENT
- 			if (Platform.IsOSX)
+-			if (Platform.IsOSX)
++
++			if (!Main.dedServ && Platform.IsOSX)
  				_onOverlayActivated = Callback<GameOverlayActivated_t>.Create(OnOverlayActivated);
-+#if MAC
-+			this._onOverlayActivated = Callback<GameOverlayActivated_t>.Create(new Callback<GameOverlayActivated_t>.DispatchDelegate(this.OnOverlayActivated));
-+#endif
-+#endif
  		}
  
- 		public void PulseSteamTick() {
-@@ -86,7 +_,12 @@
+@@ -100,7 +_,12 @@
  		}
  
  		public void Shutdown() {

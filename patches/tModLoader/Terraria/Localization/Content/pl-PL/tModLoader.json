@@ -57,6 +57,10 @@
 		// "AskForModIndex": "Type a number to switch between enabled/disabled",
 		// "AskForCommand": "Type a command: ",
 
+		// Interface
+		// "BossBarStyle": "Boss Bar Style: {0}",
+		// "BossBarStyleNoOptions": "No Options",
+
 		// Mod Errors
 		"LoadError": "Wystąpił błąd podczas ładowania {0}",
 		// "LoadErrorDisabled": "The mod(s) have been automatically disabled.",
@@ -342,6 +346,7 @@
 		// Misc
 		"OK": "OK",
 		"Continue": "Kontynuuj",
+		// "DeleteModConfirm": "Are you sure you want to delete this mod permanently?",
 		"PatreonSetTooltip": "Dzięki za wsparcie!",
 		// "WorldGenError": "A problem was encountered during world generation",
 		// "WorldIODataException": "The game encountered a mod data problem for a world.",

@@ -1,74 +1,69 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -7,7 +_,17 @@
+@@ -2,69 +_,139 @@
+   <Import Project="../Configuration.targets" />
+   <Import Project="../../WorkspaceInfo.targets" />
+   <PropertyGroup>
+-    <OutputType>WinExe</OutputType>
++    <OutputType>Exe</OutputType>
+     <Version>1.4.2.3</Version>
      <Company>Re-Logic</Company>
-     <Copyright>Copyright © 2020 Re-Logic</Copyright>
+     <Copyright>Copyright © 2021 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
--	<OutputName>Terraria</OutputName>
-+	<OutputName>tModLoader</OutputName>
-+    <LangVersion>8.0</LangVersion>
+-    <AssemblyName>Terraria</AssemblyName>
+-  </PropertyGroup>
+-  <PropertyGroup Condition="$(Configuration.Contains('Server'))">
+-    <OutputType>Exe</OutputType>
+-    <AssemblyName>$(AssemblyName)Server</AssemblyName>
+-  </PropertyGroup>
+-  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+-    <AssemblyName>$(AssemblyName)Debug</AssemblyName>
++    <AssemblyName>tModLoader</AssemblyName>
++    <GenerateDocumentationFile>true</GenerateDocumentationFile>
++    <UseAppHost>false</UseAppHost>
 +  </PropertyGroup>
 +  <PropertyGroup>
 +    <tMLVersion>0.12</tMLVersion>
-+	<BuildPurpose Condition="'$(BuildPurpose)' == ''">dev</BuildPurpose>
-+	<BranchName Condition="'$(BranchName)' == ''">unknown</BranchName>
++    <BuildPurpose Condition="'$(BuildPurpose)' == ''">dev</BuildPurpose>
++    <BranchName Condition="'$(BranchName)' == ''">unknown</BranchName>
 +  <BranchName>$(BranchName.Replace("-",""))</BranchName>
-+	<CommitSHA Condition="'$(CommitSHA)' == ''">unknown</CommitSHA>
++    <CommitSHA Condition="'$(CommitSHA)' == ''">unknown</CommitSHA>
 +    <BuildDate>$([System.DateTime]::UtcNow.ToBinary())</BuildDate>
 +    <SourceRevisionId>$(tMLVersion)-$(BranchName)-$(BuildPurpose)-$(CommitSHA)-$(BuildDate)</SourceRevisionId>
    </PropertyGroup>
-   <PropertyGroup Condition="$(Configuration.Contains('Server'))">
-     <OutputType>Exe</OutputType>
-@@ -18,15 +_,23 @@
-   </PropertyGroup>
    <PropertyGroup>
-     <PdbFile>bin\$(OutputName)</PdbFile>
+     <OutputName>$(AssemblyName)</OutputName>
 -    <ApplicationIcon>Icon.ico</ApplicationIcon>
 +    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
    </PropertyGroup>
    <ItemGroup>
-     <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))" />
+     <Reference Include="CsvHelper" />
+     <Reference Include="FNA" />
 -    <Reference Include="Ionic.Zip.CF" />
+     <Reference Include="MP3Sharp" />
 +    <Reference Include="Ionic.Zip.Reduced" />
-     <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
-     <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))" />
-     <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
-     <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />
-+    <Reference Include="Mono.Cecil" />
-+    <Reference Include="Mono.Cecil.Pdb" />
-+    <Reference Include="Mono.Cecil.Mdb" />
-+    <Reference Include="MP3Sharp" />
-+    <Reference Include="NVorbis" />
 +    <Reference Include="log4net" />
-+    <Reference Include="MonoMod.RuntimeDetour" />
-+    <Reference Include="MonoMod.Utils" />
++    <Reference Include="NVorbis" />    
      <Reference Include="Newtonsoft.Json" />
-     <Reference Include="RailSDK.Net">
-       <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/RailSDK.Net.dll</HintPath>
-@@ -35,8 +_,8 @@
-     </Reference>
-     <ProjectReference Include="../ReLogic/ReLogic.csproj" />
-     <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
--	  <Link>Libraries/ReLogic/ReLogic.dll</Link>
-+      <Link>Libraries/ReLogic/ReLogic.dll</Link>
+-    <Reference Include="NVorbis" />
+     <Reference Include="RailSDK.Net" />
+-    <ProjectReference Include="../ReLogic/ReLogic.csproj">
+-      <Private>false</Private>
+-    </ProjectReference>
+-    <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
+-      <Link>Libraries/ReLogic/ReLogic.dll</Link>
 -      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
-+      <LogicalName>ReLogic.dll</LogicalName>
-     </EmbeddedResource>
+-    </EmbeddedResource>
++    <Reference Include="TerrariaHooks" />
++      <ProjectReference Include="../ReLogic/ReLogic.csproj">
++          <!--Version has to match deps.json and project version. Hardcode here as resolving from metadata is difficult without custom Task. Specifically, getting the pdb to output in the right directory-->
++          <DestinationSubDirectory>Libraries/ReLogic/1.0.0/</DestinationSubDirectory>
++      </ProjectReference>
+     <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
-     <Reference Include="Steamworks.NET">
-@@ -48,23 +_,31 @@
-     <Reference Include="System.Core" />
-     <Reference Include="System.Drawing" />
-     <Reference Include="System.Runtime.Serialization" />
-+    <Reference Include="System.ValueTuple">
-+      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/System.ValueTuple.dll</HintPath>
-+      <HintPath Condition="$(DefineConstants.Contains('Mono'))">Libraries/Mono/System.ValueTuple.dll</HintPath>
-+    </Reference>
-+    <Reference Include="System.XML" />
-     <Reference Include="System.Windows.Forms">
-       <HintPath Condition="$(DefineConstants.Contains('Mono'))">Libraries/Mono/System.Windows.Forms.dll</HintPath>
-     </Reference>
-     <Reference Include="WindowsBase" />
+-    <Reference Update="@(Reference)">
+-      <Private>False</Private>
+-    </Reference>
    </ItemGroup>
    <ItemGroup>
 +    <EmbeddedResource Include="**\*.png" />
@@ -76,32 +71,99 @@
      <EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
      <EmbeddedResource Include="GameContent/WorldBuilding/*" />
      <EmbeddedResource Include="IO/Data/*" />
--    <EmbeddedResource Include="Libraries/**" />
-+    <EmbeddedResource Include="Libraries/**">
-+      <LogicalName>%(Filename)%(Extension)</LogicalName>
-+    </EmbeddedResource>
-     <EmbeddedResource Remove="Libraries/Windows/**" Condition="!$(DefineConstants.Contains('WINDOWS'))" />
-     <EmbeddedResource Remove="Libraries/Mac/**" Condition="!$(DefineConstants.Contains('MAC'))" />
-     <EmbeddedResource Remove="Libraries/Linux/**" Condition="!$(DefineConstants.Contains('LINUX'))" />
-     <EmbeddedResource Remove="Libraries/Mono/**" Condition="!$(DefineConstants.Contains('MONO'))" />
--    <EmbeddedResource Remove="Libraries/XNA/**"/>
--    <EmbeddedResource Remove="Libraries/FNA/**"/>
-+    <EmbeddedResource Remove="Libraries/XNA/**" Condition="!$(DefineConstants.Contains('XNA'))" />
-+    <EmbeddedResource Remove="Libraries/FNA/**" Condition="!$(DefineConstants.Contains('FNA'))" />
+-    <EmbeddedResource Include="Libraries/Common/**" />
+-    <EmbeddedResource Include="Libraries/FNA/**" />
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
-@@ -83,7 +_,11 @@
-   </Target>
-   <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
-     <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
--    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\$(OutputName).exe" />
-+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(tModLoaderSteamPath)\$(OutputName).exe" />
--    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(TerrariaSteamPath)" />
-+    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(tModLoaderSteamPath)" />
+   <ItemGroup>
+     <Compile Remove="Social/WeGame/AsyncTaskHelper.cs" />
+     <Compile Remove="Social/WeGame/CurrentThreadRunner.cs" />
+-    <None Remove="Libraries/Mono/**" />
++    <Compile Remove="Libraries/Common/TerrariaHooks.dll" />
+     <None Remove="Libraries/Windows/**" />
+     <None Remove="Libraries/XNA/**" />
+     <None Remove="Libraries/net40/**" />
+-    <None Update="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
++      <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest"/>
++  </ItemGroup>
++  <ItemGroup>
++    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.4.21.3" />
++    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" />
++    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.7.0" />
++    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
++    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
++    <PackageReference Include="System.CodeDom" Version="5.0.0" />
++    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.1" />
+   </ItemGroup>
+   <Target Name="CopyToSteamDir" AfterTargets="Build">
++    <!-- Export the ReleaseExtras files to bin -->
++    <ItemGroup>
++      <RuntimeFiles Include="../../../solutions\ReleaseExtras\RuntimeFiles\**" />
++      <SteamFiles Include="../../../solutions\ReleaseExtras\SteamFiles\**" />
++    </ItemGroup>
++    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True"/>
++    <Copy SourceFiles="@(SteamFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True"/>
++    <!-- NOTE: below only works on the second time that debugging is run. Can delete directory in CompleteRelease.bat for now-->
++    <!--RemoveDir Directories="$(TargetDir)\ref" /-->
++    <!-- copy files systematically to output folder -->
+     <ItemGroup>
+       <BinFiles Include="$(TargetDir)**" />
+     </ItemGroup>
+     <Message Text="Copying $(AssemblyName) to Steam Dir..." Importance="high" />
+-    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)/%(RecursiveDir)" />
++    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" SkipUnchangedFiles="True"/>
++    <!-- todo, purge old libraries on other platforms -->
++    <Exec Command="robocopy &quot;$(TargetDir)Libraries&quot; &quot;$(tModLoaderSteamPath)\Libraries&quot; /MIR" ContinueOnError="true" StandardOutputImportance="low" Condition="'$(OS)' == 'Windows_NT'">
++      <Output TaskParameter="ExitCode" PropertyName="PurgeExitCode"/>
++    </Exec>
++    <Warning Text="\Libraries file purge failed (robocopy /MIR Exit Code: $(PurgeExitCode)). Old files may not be removed." Condition="'$(PurgeExitCode)' != 2 AND '$(PurgeExitCode)' != 0" />
 +  </Target>
-+  <Target Name="CopyToModCompile" AfterTargets="EditBin" Condition="$(Configuration)==MacRelease">
-+    <Message Text="Copying tModLoaderMac to ModCompile..." Importance="high" />
-+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(tModLoaderSteamPath)\ModCompile\tModLoader.FNA.exe" />
++  <!--See first answer in https://stackoverflow.com/questions/55946010/how-to-specify-output-folder-for-the-referenced-nuget-packages for how this was created-->
++  <!--Dotnet Core 3.0 and later don't support subdirectory searching; so we use workaround https://github.com/dotnet/sdk/issues/10366#issuecomment-508854737 -->
++  <Target Name="BuildRedirectNugetFilesToLib" AfterTargets="ResolveLockFileCopyLocalFiles">
++    <ItemGroup>
++      <ReferenceCopyLocalPaths>
++        <DirectoryInPackage>$([System.String]::Copy('%(PathInPackage)').Remove($([System.String]::Copy('%(PathInPackage)').LastIndexOf('/'))).Replace('/', '\'))</DirectoryInPackage>
++      </ReferenceCopyLocalPaths>
++    </ItemGroup>
++    <ItemGroup>
++      <ReferenceCopyLocalPaths>
++        <DestinationSubDirectory>Libraries\$([System.String]::Copy('%(NuGetPackageID)').ToLower())\%(NuGetPackageVersion)\%(DirectoryInPackage)\</DestinationSubDirectory>
++      </ReferenceCopyLocalPaths>
++    </ItemGroup>
++  </Target>
++  <!-- In order to get pdbs/xmls while waiting for NET6, we use https://github.com/dotnet/sdk/issues/1458#issuecomment-420456386 -->
++  <Target Name="_ResolveCopyLocalNuGetPackagePdbsAndXml" Condition="$(CopyLocalLockFileAssemblies) == true" AfterTargets="ResolveReferences">
++    <ItemGroup>
++      <ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).pdb')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' and Exists('%(RootDir)%(Directory)%(Filename).pdb')" />
++      <ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).xml')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' and Exists('%(RootDir)%(Directory)%(Filename).xml')" />
++    </ItemGroup>
++  </Target>
++  <Target Name="RedirectAssemblyReferencesToLib" AfterTargets="ResolveAssemblyReferences">
++    <ItemGroup>
++      <!--To match deps.json for runtime resolving, paths must be of the form Libraries/<name>/<version>-->
++      <!--Note that associated files, like pdbs/xmls won't be resolved properly here. Prefer nuget packages for that-->
++      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
++        <DirectoryVersion>$([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').Remove($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(", C"))).Substring($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(","))).Substring(10))</DirectoryVersion>
++        </ReferenceCopyLocalPaths>
++      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
++        <DestinationSubDirectory>Libraries\%(ReferenceCopyLocalPaths.OriginalItemSpec)\%(ReferenceCopyLocalPaths.DirectoryVersion)\</DestinationSubDirectory>
++      </ReferenceCopyLocalPaths>
++    </ItemGroup>
++  </Target>
++  <Target Name="OverwriteDevRuntimeTargets" AfterTargets="GenerateBuildRuntimeConfigurationFiles">
++    <PropertyGroup>
++      <DevRuntimeConfig>
++{
++  "runtimeOptions": {
++    "additionalProbingPaths": [
++        "Libraries"
++    ]
++  }
++}
++      </DevRuntimeConfig>
++    </PropertyGroup>
++    <WriteLinesToFile File="$(ProjectRuntimeConfigDevFilePath)" Lines="$(DevRuntimeConfig)" Overwrite="true" Encoding="UTF-8" />
    </Target>
  </Project>

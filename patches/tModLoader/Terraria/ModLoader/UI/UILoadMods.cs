@@ -35,7 +35,9 @@ namespace Terraria.ModLoader.UI
 
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
+#if FNA
 			GLCallLocker.SpeedrunActions();
+#endif
 		}
 
 		public void SetLoadStage(string stageText, int modCount = -1) {
