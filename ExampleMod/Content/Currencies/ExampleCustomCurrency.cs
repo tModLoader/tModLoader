@@ -7,7 +7,7 @@ namespace ExampleMod
 {
 	public class ExampleCustomCurrency : CustomCurrencySingleCoin
 	{
-		public Color ExampleCustomCurrencyTextColor = Color.BlueViolet; // This variable is located in the GetPriceText hook.
+		public static readonly Color ExampleCustomCurrencyTextColor = Color.BlueViolet; // This variable is located in the GetPriceText hook.
 
 		public ExampleCustomCurrency(int coinItemID, long currencyCap) : base(coinItemID, currencyCap)
 		{
