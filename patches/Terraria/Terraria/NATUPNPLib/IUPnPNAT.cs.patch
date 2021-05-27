@@ -1,25 +1,45 @@
 --- src/decompiled/Terraria/NATUPNPLib/IUPnPNAT.cs
 +++ src/Terraria/Terraria/NATUPNPLib/IUPnPNAT.cs
-@@ -1,9 +_,9 @@
+@@ -1,22 +_,29 @@
 -#if SERVER
  using System.Runtime.CompilerServices;
  using System.Runtime.InteropServices;
  
  namespace NATUPNPLib
  {
-+	/*
- 	[ComImport]
- 	[CompilerGenerated]
- 	[Guid("B171C812-CC76-485A-94D8-B6B3A2794E99")]
-@@ -18,5 +_,10 @@
- 			get;
- 		}
- 	}
-+	*/
++#if !NETCORE
+-	[ComImport]
++    [ComImport]
+-	[CompilerGenerated]
++    [CompilerGenerated]
+-	[Guid("B171C812-CC76-485A-94D8-B6B3A2794E99")]
++    [Guid("B171C812-CC76-485A-94D8-B6B3A2794E99")]
+-	[TypeIdentifier]
++    [TypeIdentifier]
++    public interface IUPnPNAT
++    {
++        [DispId(1)]
++        IStaticPortMappingCollection StaticPortMappingCollection
++        {
++            [MethodImpl(MethodImplOptions.InternalCall)]
++            [DispId(1)]
++            [return: MarshalAs(UnmanagedType.Interface)]
++            get;
++        }
++    }
++#else
 +
-+	public interface IUPnPNAT
-+	{
+ 	public interface IUPnPNAT
+ 	{
+-		[DispId(1)]
+-		IStaticPortMappingCollection StaticPortMappingCollection {
+-			[MethodImpl(MethodImplOptions.InternalCall)]
+-			[DispId(1)]
+-			[return: MarshalAs(UnmanagedType.Interface)]
+-			get;
+-		}
 +		public abstract IStaticPortMappingCollection StaticPortMappingCollection { get; }
-+	}
- }
--#endif
+ 	}
+-}
+ #endif
++}

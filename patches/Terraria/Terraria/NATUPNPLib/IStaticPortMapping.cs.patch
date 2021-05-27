@@ -7,15 +7,16 @@
  
  namespace NATUPNPLib
  {
-+	/*
++#if !NETCORE
  	[ComImport]
  	[CompilerGenerated]
  	[Guid("6F10711F-729B-41E5-93B8-F21D0F818DF1")]
-@@ -35,5 +_,12 @@
+@@ -35,5 +_,13 @@
  
  		void _VtblGap1_2();
  	}
-+	*/
+-}
++#else
 +
 +	public interface IStaticPortMapping
 +	{
@@ -23,5 +24,5 @@
 +		public abstract string Protocol { get; }
 +		public abstract string InternalClient { get; }
 +	}
- }
--#endif
+ #endif
++}
