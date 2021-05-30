@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Biomes.CaveHouse;
 using Terraria.ID;
@@ -67,7 +68,7 @@ namespace Terraria.ModLoader
 		private static DelegateSetSpriteEffects[] HookSetSpriteEffects;
 		private static Action[] HookAnimateTile;
 		private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
-		private delegate void DelegateDrawEffects(int i, int j, int type);
+		private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData);
 		private static DelegateDrawEffects[] HookDrawEffects;
 		private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 		private static Action<int, int, int, SpriteBatch>[] HookSpecialDraw;
@@ -543,8 +544,8 @@ namespace Terraria.ModLoader
 				hook(i, j, type, ref spriteEffects);
 			}
 		}
-		//in Terraria.Main.DrawTiles after if statements setting num11 and num12 call
-		//  TileLoader.SetDrawPositions(j, i, ref num9, ref num11, ref num12);
+		//in Terraria.GameContent.Drawing.TileDrawing.GetTileDrawData before if statements checking tileCache.halfBrick()
+		//  TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight);
 		public static void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) {
 			Tile tile = Main.tile[i, j];
 			if (tile.type >= TileID.Count) {
@@ -576,8 +577,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		//in Terraria.Main.Draw after small if statements setting num15 call
-		//  TileLoader.SetAnimationFrame(type, ref num15);
+		//in Terraria.GameContent.Drawing.TileDrawing.DrawSingleTile after GetTileDrawData() call
+		//  TileLoader.SetAnimationFrame(drawData.typeCache, tileX, tileY, ref drawData.addFrX, ref drawData.addFrY);
 		/// <summary>
 		/// Sets the animation frame. Sets frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type]; and then calls ModTile.AnimateIndividualTile
 		/// </summary>
@@ -594,9 +595,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		//in Terraria.Main.Draw after calling SetAnimationFrame call
-		//  if(!TileLoader.PreDraw(j, i, type, Main.spriteBatch))
-		//  { TileLoader.PostDraw(j, i, type, Main.spriteBatch); continue; }
+		//in Terraria.GameContent.Drawing.TileDrawing.DrawSingleTile after calling SetAnimationFrame call
+		//  if (!TileLoader.PreDraw(tileX, tileY, drawData.typeCache, Main.spriteBatch))
+		//  { TileLoader.PostDraw(tileX, tileY, drawData.typeCache, Main.spriteBatch); return; }
 		public static bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch) {
 			foreach (var hook in HookPreDraw) {
 				if (!hook(i, j, type, spriteBatch)) {
@@ -606,13 +607,17 @@ namespace Terraria.ModLoader
 			return GetTile(type)?.PreDraw(i, j, spriteBatch) ?? true;
 		}
 
-		public static void DrawEffects(int i, int j, int type) {
-			GetTile(type)?.DrawEffects(i, j);
+		//in Terraria.GameContent.Drawing.TileDrawing after ShroomCap draw call, before color < check
+		//  TileLoader.DrawEffects(tileX, tileY, drawData.typeCache, Main.spriteBatch, ref drawData);
+		//1.3: drawColor corresponds to drawData.tileLight
+		public static void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
+			GetTile(type)?.DrawEffects(i, j, spriteBatch, ref drawData);
 			foreach (var hook in HookDrawEffects) {
-				hook(i, j, type);
+				hook(i, j, type, spriteBatch, ref drawData);
 			}
 		}
-		//in Terraria.Main.Draw after if statement checking whether texture2D is null call
+
+		//in Terraria.GameContent.Drawing.TileDrawing.DrawSingleTile after if statement checking whether highlightTexture is null call
 		//  TileLoader.PostDraw(j, i, type, Main.spriteBatch);
 		public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch) {
 			GetTile(type)?.PostDraw(i, j, spriteBatch);
@@ -622,14 +627,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		//in Terraria.GameContent.Drawing.TileDrawing at the end of the loop in DrawSpecialTilesLegacy call
+		//  TileLoader.SpecialDraw(type, num, num2, Main.spriteBatch);
 		/// <summary>
-		/// Special Draw calls ModTile and GlobalTile SpecialDraw methods. Special Draw is called from DrawTiles after the draw loop, allowing for basically another layer above tiles.  Main.specX and Main.specY are used to specify tiles to call SpecialDraw on. Use DrawEffects hook to queue for SpecialDraw. 
+		/// Special Draw calls ModTile and GlobalTile SpecialDraw methods. Special Draw is called at the end of the DrawSpecialTilesLegacy loop, allowing for basically another layer above tiles. Use DrawEffects hook to queue for SpecialDraw. 
 		/// </summary>
-		public static void SpecialDraw(int type, int specX, int specY, SpriteBatch spriteBatch) {
-			GetTile(type)?.SpecialDraw(specX, specY, spriteBatch);
+		public static void SpecialDraw(int type, int specialTileX, int specialTileY, SpriteBatch spriteBatch) {
+			GetTile(type)?.SpecialDraw(specialTileX, specialTileY, spriteBatch);
 
 			foreach (var hook in HookSpecialDraw) {
-				hook(specX, specY, type, spriteBatch);
+				hook(specialTileX, specialTileY, type, spriteBatch);
 			}
 		}
 

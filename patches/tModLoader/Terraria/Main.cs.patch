@@ -1150,13 +1150,12 @@
  			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
  				Star.UpdateStars();
  				Cloud.UpdateClouds();
-@@ -12835,8 +_,14 @@
- 			if (InGameUI != null)
+@@ -12836,7 +_,13 @@
  				InGameUI.Update(gameTime);
  
+ 			CreativeMenu.Update(gameTime);
 +			SystemHooks.UpdateUI(gameTime);
 +			PlayerInput.ScrollWheelDeltaForUI = 0; //TODO: Should this be before PlayerInput.ResetInputsOnActiveStateChange()?
- 			CreativeMenu.Update(gameTime);
 +
 +			BossBarLoader.HandleStyle(); //Has to be outside of the !gameMenu check because it deals with switching and saving the boss style in menus, including the main menu
 +

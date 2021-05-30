@@ -4305,15 +4305,7 @@
  			Main.mouseItem.TurnToAir();
  		}
  
-@@ -37265,13 +_,14 @@
- 		}
- 
- 		public object clientClone() {
--			Player player = new Player();
-+			Player player = new Player(false);
- 			player.zone1 = zone1;
- 			player.zone2 = zone2;
- 			player.zone3 = zone3;
+@@ -37272,6 +_,7 @@
  			player.zone4 = zone4;
  			player.voidVaultInfo = voidVaultInfo;
  			player.luck = luck;
@@ -4468,15 +4460,6 @@
  		}
  
  		private void SaveTemporaryItemSlotContents(BinaryWriter writer) {
-@@ -37744,7 +_,7 @@
- 			if (Main.rand == null)
- 				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
- 
--			Player player = new Player();
-+			Player player = new Player(false); // setup inventory is unnecessary
- 			try {
- 				RijndaelManaged rijndaelManaged = new RijndaelManaged();
- 				rijndaelManaged.Padding = PaddingMode.None;
 @@ -38083,7 +_,7 @@
  							if (num >= 11) {
  								int num28 = 22;
@@ -4543,12 +4526,10 @@
  				}
  
  				return playerFileData;
-@@ -38295,7 +_,15 @@
- 			return -1;
+@@ -38296,6 +_,14 @@
  		}
  
--		public Player() {
-+		public Player(bool startupInventory = true) {
+ 		public Player() {
 +			ResetDamageClassData();
 +			buffType = new int[MaxBuffs];
 +			buffTime = new int[MaxBuffs];

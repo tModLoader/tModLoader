@@ -408,7 +408,7 @@ namespace Terraria.ModLoader
 			if (Main.dedServ)
 				ModNet.AssignNetIDs();
 
-			Main.player[255] = new Player(false); // setup inventory is unnecessary 
+			Main.player[255] = new Player();
 
 			RefreshModLanguage(Language.ActiveCulture);
 			MapLoader.SetupModMap();
@@ -493,22 +493,24 @@ namespace Terraria.ModLoader
 
 		internal static void UnloadModContent() {
 			MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
+			
 			int i = 0;
+			
 			foreach (var mod in ModLoader.Mods.Reverse()) {
+				if (Main.dedServ)
+					Console.WriteLine($"Unloading {mod.DisplayName}...");
+				else
+					Interface.loadMods.SetCurrentMod(i++, mod.DisplayName);
+				
+				MonoModHooks.RemoveAll(mod);
+				
 				try {
-					if (Main.dedServ)
-						Console.WriteLine($"Unloading {mod.DisplayName}...");
-					else
-						Interface.loadMods.SetCurrentMod(i++, mod.DisplayName);
 					mod.Close();
 					mod.UnloadContent();
 				}
 				catch (Exception e) {
 					e.Data["mod"] = mod.Name;
 					throw;
-				}
-				finally {
-					MonoModHooks.RemoveAll(mod);
 				}
 			}
 		}
@@ -686,7 +688,7 @@ namespace Terraria.ModLoader
 				// player.whoAmI is only set for active players
 			}
 
-			Main.clientPlayer = new Player(false);
+			Main.clientPlayer = new Player();
 			Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
 			Main._characterSelectMenu._playerList?.Clear();
 			Main.PlayerList.Clear();

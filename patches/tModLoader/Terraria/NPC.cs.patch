@@ -746,6 +746,15 @@
  			if (!active)
  				return;
  
+@@ -63461,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			if (type >= 667) {
++			if (type == 667) {
+ 				int num23 = 7;
+ 				float num24 = 1.1f;
+ 				int num25 = 10;
 @@ -70233,6 +_,8 @@
  			return false;
  		}

@@ -15,6 +15,8 @@ namespace Terraria.ModLoader.Engine
 	{
 		public const string TmlContentDirectory = "Content";
 		public const string SteamAppIDPath = "steam_appid.txt";
+		private const string DefaultExe = "Terraria.exe";
+		private static string CheckExe = $"Terraria_1.4.2.3.exe"; // This should match the hashes. {Main.versionNumber}
 		public const bool RequireContentDirectory = false; // Not currently needed, due to tML matching vanilla's version.
 
 		private static bool? isValid;
@@ -23,6 +25,7 @@ namespace Terraria.ModLoader.Engine
 		public static bool IsSteam = false;
 
 		private static string steamAPIPath;
+		private static string vanillaSteamAPI;
 		private static byte[] steamAPIHash;
 		private static byte[] gogHash;
 		private static byte[] steamHash;
@@ -38,18 +41,21 @@ namespace Terraria.ModLoader.Engine
 					steamAPIHash = ToByteArray("8AFDE2D19C89D0BF1A9F6EC475AA0EBB");
 				}
 
+				vanillaSteamAPI = "steam_api.dll";
 				gogHash = ToByteArray("ff61b96a07894a9e65f880fb9608fb37"); // Don't forget to update CheckExe in CheckGoG
 				steamHash = ToByteArray("4fd8072ca82ded3d9da1be577a478788");
 			}
 			else if (Platform.IsOSX) {
 				steamAPIPath = "Libraries/Native/OSX/libsteam_api.dylib";
 				steamAPIHash = ToByteArray("FB32124B2E07ED2AAE54FE8823D069B3");
+				vanillaSteamAPI = "libsteam_api.dylib";
 				gogHash = ToByteArray("181c586d0fe64156adb0ecd4b9fabf9d");
 				steamHash = ToByteArray("12c8d2ac5af6c8505bd1a9339dc75231");
 			}
 			else if (Platform.IsLinux) {
 				steamAPIPath = "Libraries/Native/Linux/libsteam_api.so";
 				steamAPIHash = ToByteArray("8915306857EEF2A516956A2398845EA2");
+				vanillaSteamAPI = "libsteam_api.so";
 				gogHash = ToByteArray("4a051352dd6ecc323c5a0a15e5b598fb");
 				steamHash = ToByteArray("debcc318ca4e14295e3ac22e380e289b");
 			}
@@ -86,14 +92,73 @@ namespace Terraria.ModLoader.Engine
 				return false;
 			}
 
-			// Whether the steam_appid.txt file exists, indicating we'd have to check steam installation
-			if (File.Exists(SteamAppIDPath))
+			// If its clearly a steam install/launch, use Steam API.
+			if (Directory.GetCurrentDirectory().Contains("steamapps") || Program.LaunchParameters.ContainsKey("-steam"))
 				return CheckSteam();
 
-			return CheckGoG();
+			Logging.tML.Info("Checking if GoG or Steam...");
+
+			// If can't find a GoG folder, than assume it must be a Steam launch
+			if (!ObtainVanillaExePath(out var steamApiPath, out var exePath))
+				return CheckSteam();
+
+			// Handle uniqueness of OSX installs. We want Terraria.app/Contents/MacOS/osx as the directory for steam_api file
+			if (Platform.IsOSX)
+				steamApiPath = Path.Combine(Directory.GetParent(steamApiPath).FullName, "MacOS", "osx");
+
+			// If the steam_api file is present in the vanilla folder, than it is a Steam launch
+			if (File.Exists(Path.Combine(steamApiPath, vanillaSteamAPI)))
+				return CheckSteam();
+
+			return CheckGoG(exePath);
 		}
 
-		// Check if steam installation is correct
+		private static bool ObtainVanillaExePath(out string vanillaPath, out string exePath) {
+			// Check if in the same folder somehow.
+			vanillaPath = Directory.GetCurrentDirectory();
+			if (CheckForExe(vanillaPath, out exePath))
+				return true;
+
+			// If .exe not present check parent directory (Nested Manual Install)
+			vanillaPath = Directory.GetParent(vanillaPath).FullName;
+			if (CheckForExe(vanillaPath, out exePath))
+				return true;
+
+			// If .exe not present, check Terraria directory (Side-by-Side Manual Install)
+			vanillaPath = Path.Combine(vanillaPath, "Terraria");
+			if (Platform.IsOSX) {
+				// GOG installs to /Applications/Terraria.app, Steam installs to /Applications/Terraria/Terraria.app
+				// Vanilla .exe files are in /Contents/Resources/, not /Contents/MacOS/
+				if (Directory.Exists("../Terraria/Terraria.app/")) {
+					vanillaPath = "../Terraria/Terraria.app/Contents/Resources/";
+					Logging.tML.Info($"Mac installation location found at {vanillaPath}, assuming Steam install");
+				}
+				else if (Directory.Exists("../Terraria.app/")) {
+					vanillaPath = "../Terraria.app/Contents/Resources/";
+					Logging.tML.Info($"Mac installation location found at {vanillaPath}, assuming GOG install");
+				}
+			}
+
+			if (CheckForExe(vanillaPath, out exePath))
+				return true;
+
+			Logging.tML.Info($"No nearby installation location found. Presuming Steam");
+			return false;
+		} 
+
+		private static bool CheckForExe(string vanillaPath, out string exePath) {
+			exePath = Path.Combine(vanillaPath, CheckExe);
+			if (File.Exists(exePath))
+				return true;
+
+			exePath = Path.Combine(vanillaPath, DefaultExe);
+			if (File.Exists(exePath))
+				return true;
+
+			return false;
+		}
+
+		// Check if Steam installation is correct
 		private static bool CheckSteam() {
 			Logging.tML.Info("Checking Steam installation...");
 			IsSteam = true;
@@ -121,68 +186,31 @@ namespace Terraria.ModLoader.Engine
 			return true;
 		}
 
-		// Check if GOG install or manual install is correct
-		private static bool CheckGoG() {
-			Logging.tML.Info("Checking GOG or manual installation...");
+		// Check if GOG install is correct
+		private static bool CheckGoG(string vanillaExePath) {
+			Logging.tML.Info("Checking GOG installation...");
 			IsGoG = true;
 
-			const string DefaultExe = "Terraria.exe";
-			string CheckExe = $"Terraria_1.4.2.1.exe"; // This should match the hashes. {Main.versionNumber}
-			string vanillaPath = File.Exists(CheckExe) ? CheckExe : DefaultExe;
-
-			// If .exe not present, check Terraria directory (Side-by-Side Manual Install)
-			if (!File.Exists(vanillaPath)) {
-				vanillaPath = Path.Combine("..", "Terraria");
-
-				if (Platform.IsOSX) {
-					// GOG installs to /Applications/Terraria.app, Steam installs to /Applications/Terraria/Terraria.app
-					// working directory is /Applications/tModLoader/tModLoader.app/Contents/MacOS/ for steam manual installs
-					// working directory is /Applications/tModLoader.app/Contents/MacOS/ for GOG installs
-					// Vanilla .exe files are in /Contents/Resources/, not /Contents/MacOS/
-					if (Directory.Exists("../../../../Terraria/Terraria.app/")) {
-						vanillaPath = "../../../../Terraria/Terraria.app/Contents/Resources/";
-						Logging.tML.Info($"Mac installation location found at {vanillaPath}, assuming Steam manual install");
-					}
-					else if (Directory.Exists("../../../Terraria.app/")) {
-						vanillaPath = "../../../Terraria.app/Contents/Resources/";
-						Logging.tML.Info($"Mac installation location found at {vanillaPath}, assuming GOG manual install");
-					}
-					else {
-						Logging.tML.Info($"Mac installation location not found.");
-					}
-				}
-
-				string defaultExe = Path.Combine(vanillaPath, DefaultExe);
-				string checkExe = Path.Combine(vanillaPath, CheckExe);
-				vanillaPath = File.Exists(checkExe) ? checkExe : defaultExe;
-			}
-			// If .exe not present check parent directory (Nested Manual Install)
-			if (!File.Exists(vanillaPath)) {
-				string defaultExe = Path.Combine("..", DefaultExe);
-				string checkExe = Path.Combine("..", CheckExe);
-				vanillaPath = File.Exists(checkExe) ? checkExe : defaultExe;
-			}
-
-			if (!File.Exists(vanillaPath)) {
+			if (!File.Exists(vanillaExePath)) {
 				if(Main.dedServ)
 					return false;
 
-				Exit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaPath, CheckExe), string.Empty);
+				Exit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaExePath, CheckExe), string.Empty);
 				return false;
 			}
 
-			if (!HashMatchesFile(vanillaPath, gogHash) && !HashMatchesFile(vanillaPath, steamHash)) {
-				Exit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaPath), string.Empty);
+			if (!HashMatchesFile(vanillaExePath, gogHash) && !HashMatchesFile(vanillaExePath, steamHash)) {
+				Exit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath), string.Empty);
 				return false;
 			}
 
-			if (Path.GetFileName(vanillaPath) != CheckExe) {
-				string pathToCheckExe = Path.Combine(Path.GetDirectoryName(vanillaPath), CheckExe);
-				Logging.tML.Info($"Backing up {Path.GetFileName(vanillaPath)} to {CheckExe}");
-				File.Copy(vanillaPath, pathToCheckExe);
+			if (Path.GetFileName(vanillaExePath) != CheckExe) {
+				string pathToCheckExe = Path.Combine(Path.GetDirectoryName(vanillaExePath), CheckExe);
+				Logging.tML.Info($"Backing up {Path.GetFileName(vanillaExePath)} to {CheckExe}");
+				File.Copy(vanillaExePath, pathToCheckExe);
 			}
 
-			Logging.tML.Info("GOG or manual installation OK.");
+			Logging.tML.Info("GOG installation OK.");
 			return true;
 		}
 	}
