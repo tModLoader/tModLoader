@@ -46,10 +46,10 @@
  						if (Netplay.Clients[whoAmI].State != 0)
  							break;
  
--						if (reader.ReadString() == "Terraria" + 236) {
+-						if (reader.ReadString() == "Terraria" + 238) {
 +						string clientVersion = reader.ReadString();
 +						ModNet.isModdedClient[whoAmI] = clientVersion == BuildInfo.versionedName;
-+						if (ModNet.isModdedClient[whoAmI] || clientVersion == "Terraria" + 236 && ModNet.AllowVanillaClients) {
++						if (ModNet.isModdedClient[whoAmI] || clientVersion == "Terraria" + Main.curRelease && ModNet.AllowVanillaClients) {
  							if (string.IsNullOrEmpty(Netplay.ServerPassword)) {
  								Netplay.Clients[whoAmI].State = 1;
 +								if (ModNet.isModdedClient[whoAmI]) {
@@ -105,7 +105,7 @@
  							}
  
  							if (Main.netMode == 2 && num232 == whoAmI && num233 <= 58 + player12.armor.Length + player12.dye.Length + player12.miscEquips.Length + player12.miscDyes.Length)
-@@ -564,6 +_,8 @@
+@@ -565,6 +_,8 @@
  						Main.invasionType = reader.ReadSByte();
  						Main.LobbyId = reader.ReadUInt64();
  						Sandstorm.IntendedSeverity = reader.ReadSingle();
@@ -114,7 +114,7 @@
  						if (Netplay.Connection.State == 3) {
  							Main.windSpeedCurrent = Main.windSpeedTarget;
  							Netplay.Connection.State = 4;
-@@ -695,6 +_,9 @@
+@@ -696,6 +_,9 @@
  							NetMessage.TrySendData(83, whoAmI, -1, null, num176);
  						}
  
@@ -124,7 +124,7 @@
  						NetMessage.TrySendData(49, whoAmI);
  						NetMessage.TrySendData(57, whoAmI);
  						NetMessage.TrySendData(7, whoAmI);
-@@ -1150,7 +_,7 @@
+@@ -1151,7 +_,7 @@
  							Item item2 = Main.item[num180];
  							ItemSyncPersistentStats itemSyncPersistentStats = default(ItemSyncPersistentStats);
  							itemSyncPersistentStats.CopyFrom(item2);
@@ -133,7 +133,7 @@
  							item2.netDefaults(num179);
  							item2.newAndShiny = newAndShiny;
  							item2.Prefix(pre2);
-@@ -1158,6 +_,7 @@
+@@ -1159,6 +_,7 @@
  							item2.position = position3;
  							item2.velocity = velocity5;
  							item2.active = true;
@@ -141,7 +141,7 @@
  							if (b == 90) {
  								item2.instanced = true;
  								item2.playerIndexTheItemIsReservedFor = Main.myPlayer;
-@@ -1197,6 +_,7 @@
+@@ -1198,6 +_,7 @@
  							obj5.position = position3;
  							obj5.velocity = velocity5;
  							obj5.active = true;
@@ -149,11 +149,11 @@
  							obj5.playerIndexTheItemIsReservedFor = Main.myPlayer;
  							if (flag8) {
  								NetMessage.TrySendData(21, -1, -1, null, num177);
-@@ -1328,9 +_,10 @@
+@@ -1329,9 +_,10 @@
  						if (num115 == 245)
  							NPC.golemBoss = num112;
  
--						if (nPC4.type >= 0 && nPC4.type < 665 && Main.npcCatchable[nPC4.type])
+-						if (nPC4.type >= 0 && nPC4.type < 668 && Main.npcCatchable[nPC4.type])
 +						if (nPC4.type >= 0 && nPC4.type < NPCLoader.NPCCount && Main.npcCatchable[nPC4.type])
  							nPC4.releaseOwner = reader.ReadByte();
  
@@ -161,7 +161,7 @@
  						break;
  					}
  				case 24: {
-@@ -1370,7 +_,7 @@
+@@ -1371,7 +_,7 @@
  						int num133 = bitsByte12[7] ? reader.ReadInt16() : (-1);
  						if (num133 >= 1000)
  							num133 = -1;
@@ -170,7 +170,7 @@
  						if (Main.netMode == 2) {
  							if (num131 == 949) {
  								num130 = 255;
-@@ -1427,6 +_,7 @@
+@@ -1428,6 +_,7 @@
  							Main.projectileIdentity[num130, num133] = num134;
  						}
  
@@ -178,7 +178,7 @@
  						projectile.ProjectileFixDesperation();
  						if (Main.netMode == 2)
  							NetMessage.TrySendData(27, -1, whoAmI, null, num134);
-@@ -1435,7 +_,7 @@
+@@ -1436,7 +_,7 @@
  					}
  				case 28: {
  						int num4 = reader.ReadInt16();
@@ -187,7 +187,7 @@
  						float num6 = reader.ReadSingle();
  						int num7 = reader.ReadByte() - 1;
  						byte b2 = reader.ReadByte();
-@@ -1550,6 +_,7 @@
+@@ -1551,6 +_,7 @@
  							Main.chest[num259].item[num260].netDefaults(type17);
  							Main.chest[num259].item[num260].Prefix(pre3);
  							Main.chest[num259].item[num260].stack = stack8;
@@ -195,7 +195,7 @@
  							Recipe.FindRecipes(canDelayCheck: true);
  						}
  
-@@ -1607,6 +_,7 @@
+@@ -1608,6 +_,7 @@
  						break;
  					}
  				case 34: {
@@ -203,7 +203,7 @@
  						byte b3 = reader.ReadByte();
  						int num16 = reader.ReadInt16();
  						int num17 = reader.ReadInt16();
-@@ -1615,22 +_,32 @@
+@@ -1616,22 +_,32 @@
  						if (Main.netMode == 2)
  							num19 = 0;
  
@@ -243,7 +243,7 @@
  										Tile tile = Main.tile[num16, num17];
  										if (tile.frameX % 36 != 0)
  											num16--;
-@@ -1649,20 +_,25 @@
+@@ -1650,20 +_,25 @@
  							}
  
  							switch (b3) {
@@ -276,7 +276,7 @@
  										Tile tile2 = Main.tile[num16, num17];
  										num16 -= tile2.frameX % 54 / 18;
  										if (tile2.frameY % 36 != 0)
-@@ -1712,21 +_,25 @@
+@@ -1713,21 +_,25 @@
  						}
  
  						switch (b3) {
@@ -306,17 +306,17 @@
  								break;
  							case 4:
  								if (num19 == -1) {
-@@ -1768,6 +_,9 @@
+@@ -1769,6 +_,9 @@
  						obj7.zone2 = reader.ReadByte();
  						obj7.zone3 = reader.ReadByte();
  						obj7.zone4 = reader.ReadByte();
 +						if (!ModNet.AllowVanillaClients)
-+							PlayerHooks.ReceiveCustomBiomes(obj7, reader);
++							BiomeLoader.ReceiveCustomBiomes(obj7, reader);
 +
  						if (Main.netMode == 2)
  							NetMessage.TrySendData(36, -1, whoAmI, null, num224);
  
-@@ -1789,6 +_,11 @@
+@@ -1790,6 +_,11 @@
  					if (Main.netMode == 2) {
  						if (reader.ReadString() == Netplay.ServerPassword) {
  							Netplay.Clients[whoAmI].State = 1;
@@ -328,7 +328,7 @@
  							NetMessage.TrySendData(3, whoAmI);
  						}
  						else {
-@@ -1972,7 +_,7 @@
+@@ -1973,7 +_,7 @@
  							break;
  
  						Player player6 = Main.player[num55];
@@ -337,16 +337,16 @@
  							player6.buffType[num56] = reader.ReadUInt16();
  							if (player6.buffType[num56] > 0)
  								player6.buffTime[num56] = 60;
-@@ -2180,7 +_,7 @@
+@@ -2181,7 +_,7 @@
  						if (Main.netMode != 2)
  							break;
  
--						if (num191 >= 0 && num191 < 665 && NPCID.Sets.MPAllowedEnemies[num191]) {
+-						if (num191 >= 0 && num191 < 668 && NPCID.Sets.MPAllowedEnemies[num191]) {
 +						if (num191 >= 0 && num191 < NPCID.Sets.MPAllowedEnemies.Length && NPCID.Sets.MPAllowedEnemies[num191]) {
  							if (!NPC.AnyNPCs(num191))
  								NPC.SpawnOnPlayer(plr, num191);
  						}
-@@ -2468,6 +_,7 @@
+@@ -2469,6 +_,7 @@
  					break;
  				case 74:
  					if (Main.netMode == 1) {
@@ -354,7 +354,7 @@
  						Main.anglerQuest = reader.ReadByte();
  						Main.anglerQuestFinished = reader.ReadBoolean();
  					}
-@@ -2557,7 +_,7 @@
+@@ -2558,7 +_,7 @@
  					if (Main.netMode == 1) {
  						int num83 = reader.ReadInt16();
  						int num84 = reader.ReadInt32();
@@ -363,7 +363,7 @@
  							NPC.killCount[num83] = num84;
  					}
  					break;
-@@ -2593,7 +_,7 @@
+@@ -2594,7 +_,7 @@
  							}
  						}
  						else {
@@ -372,7 +372,7 @@
  							tileEntity.ID = num54;
  							TileEntity.ByID[tileEntity.ID] = tileEntity;
  							TileEntity.ByPosition[tileEntity.Position] = tileEntity;
-@@ -3347,6 +_,27 @@
+@@ -3348,6 +_,27 @@
  						CreditsRollEvent.SetRemainingTimeDirect(reader.ReadInt32());
  					}
  					break;

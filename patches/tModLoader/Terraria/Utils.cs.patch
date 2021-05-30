@@ -1,6 +1,14 @@
 --- src/Terraria/Terraria/Utils.cs
 +++ src/tModLoader/Terraria/Utils.cs
-@@ -22,7 +_,7 @@
+@@ -4,7 +_,6 @@
+ using Microsoft.Xna.Framework.Input;
+ using ReLogic.Content;
+ using ReLogic.Graphics;
+-using ReLogic.OS;
+ using System;
+ using System.Collections;
+ using System.Collections.Generic;
+@@ -24,7 +_,7 @@
  
  namespace Terraria
  {
@@ -9,7 +17,7 @@
  	{
  		public delegate bool TileActionAttempt(int x, int y);
  
-@@ -251,6 +_,12 @@
+@@ -253,6 +_,12 @@
  								num2 -= 16;
  
  							int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
@@ -22,7 +30,7 @@
  							if (num3 < 0)
  								num3 = 0;
  
-@@ -258,7 +_,8 @@
+@@ -260,7 +_,8 @@
  							int num4 = num3;
  							if (array3.Length > 1) {
  								num4 = 0;
@@ -32,7 +40,41 @@
  									num4 += array3[m].Length + 1;
  								}
  
-@@ -1120,14 +_,17 @@
+@@ -515,18 +_,22 @@
+ 
+ 		public static void OpenFolder(string folderPath) {
+ 			if (TryCreatingDirectory(folderPath)) {
+-#if !LINUX
+-				if (Platform.IsWindows)
+-					Process.Start("explorer.exe", folderPath);
+-				else
+-					Process.Start(folderPath);
+-#else
+-				Process.Start(new ProcessStartInfo(folderPath) {
+-					FileName = "open-folder",
+-					Arguments = folderPath,
+-					UseShellExecute = true,
+-					CreateNoWindow = true
++#if !LINUX && !NETCORE
++				Process.Start(folderPath);
++#elif LINUX
++				Process.Start(
++					new ProcessStartInfo(folderPath) {
++						FileName = "open-folder",
++						Arguments = folderPath,
++						UseShellExecute = true,
++						CreateNoWindow = true
+ 				});
++#else
++				Process.Start(
++					new ProcessStartInfo(folderPath) {
++						UseShellExecute = true
++					}
++				);
+ #endif
+ 			}
+ 		}
+@@ -1125,14 +_,17 @@
  				text.Substring(0, maxCharactersDisplayed);
  
  			DynamicSpriteFont value = FontAssets.DeathText.Value;

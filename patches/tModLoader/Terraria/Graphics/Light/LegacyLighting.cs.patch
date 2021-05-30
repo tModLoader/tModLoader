@@ -39,7 +39,7 @@
  							break;
  					}
 +
-+					WaterStyleLoader.LightColorMultiplier(Main.waterStyle, ref _wetLightR, ref _wetLightG, ref _wetLightB);
++					LoaderManager.Get<WaterStylesLoader>().LightColorMultiplier(Main.waterStyle, ref _wetLightR, ref _wetLightG, ref _wetLightB);
  				}
  				else {
  					_negLight = 0.9f;

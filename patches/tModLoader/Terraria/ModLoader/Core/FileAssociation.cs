@@ -26,13 +26,13 @@ namespace Terraria.ModLoader.Core
 		}
 
 		internal static void UpdateFileAssociation() {
-			if (Platform.IsWindows && System.Environment.OSVersion.Version.Major >= 6) // Approached used apparently only applicable to Vista and later
+			if (Platform.IsWindows && System.Environment.OSVersion.Version.Major >= 6) { // Approached used apparently only applicable to Vista and later
 				try {
 					// For some reason this has been reported as failing occasionally.
 					EnsureAssociationsSet();
 				}
-				catch (Exception) {
-				}
+				catch (Exception) { }
+			}
 		}
 
 		// Solution below adapted from https://stackoverflow.com/a/44816953
@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.Core
 		private const int SHCNF_FLUSH = 0x1000;
 
 		private static void EnsureAssociationsSet() {
-			var filePath = Path.Combine(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName), "tModLoaderServer.exe");
+			var filePath = Path.Combine(Directory.GetCurrentDirectory(), "tModLoader.dll");
 			EnsureAssociationsSet(
 				new FileAssociation {
 					Extension = ".tmod",
@@ -80,7 +80,8 @@ namespace Terraria.ModLoader.Core
 			bool madeChanges = false;
 			madeChanges |= SetKeyDefaultValue(@"Software\Classes\" + extension, progId);
 			madeChanges |= SetKeyDefaultValue(@"Software\Classes\" + progId, fileTypeDescription);
-			madeChanges |= SetKeyDefaultValue($@"Software\Classes\{progId}\shell\open\command", $"\"{applicationFilePath}\" -install \"%1\"");
+			//TODO: The following line is broken, running a .tmod file is not handled by .NET.
+			madeChanges |= SetKeyDefaultValue($@"Software\Classes\{progId}\shell\open\command", $"dotnet \"{applicationFilePath}\" -server -install \"%1\"");
 			return madeChanges;
 		}
 

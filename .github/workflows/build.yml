@@ -38,7 +38,7 @@ jobs:
           persist-credentials: false
         # TODO: build doesn't have right branch I assume
 
-      - name: Copy over pull request patches folder
+      - name: Copy over pull request patches folder and ExampleMod folder
         if: github.event_name == 'pull_request_target'
         shell: bash
         run: |
@@ -48,6 +48,8 @@ jobs:
           cd ..
           rm -r patches
           cp -fR pullrequest/patches patches
+          rm -r ExampleMod
+          cp -fR pullrequest/ExampleMod ExampleMod
 
       # A cache allows the build to skip the decompile step
       - name: Retrieve encrypted decompiled zip cache
@@ -56,7 +58,7 @@ jobs:
         with:
           path: decompiled.zip.gpg
           # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
-          key: 1421-A
+          key: 1423-A
 
       - name: Restore decompiled folder from cache
         if: steps.cache-decompiled.outputs.cache-hit == 'true'
@@ -79,11 +81,11 @@ jobs:
         shell: bash
         run: |
           echo Downloading Terraraia Server zip
-          curl -s -L https://terraria.org/system/dedicated_servers/archives/000/000/044/original/terraria-server-1421.zip -o terrariaserver.zip
+          curl -s -L https://terraria.org/system/dedicated_servers/archives/000/000/046/original/terraria-server-1423.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
           echo Extracting Setup Secret Assets
-          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1421/Windows/Terraria.exe ./setup/SecretAssets/SetupAsset1.gpg
-          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1421/Windows/SteelSeriesEngineWrapper.dll ./setup/SecretAssets/SetupAsset2.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1423/Windows/Terraria.exe ./setup/SecretAssets/SetupAsset1.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1423/Windows/SteelSeriesEngineWrapper.dll ./setup/SecretAssets/SetupAsset2.gpg
           echo ls -l is:
           ls -l
           echo Installing XNA
@@ -96,30 +98,24 @@ jobs:
           echo pwd is: ${PWD}
           echo ls -l is:
           ls -l
-          cd src
+          cd solutions
           echo pwd is: ${PWD}
           echo ls -l is:
           ls -l
-          cd tModLoader
+          echo Running CompleteLib.bat for Debug
+          ./CompleteLib.bat Debug skipzip
+          echo CompleteLib.bat Debug Done
+          cd ..
+          mkdir -p artifacts/Debug
+          cp -R ./solutions/Debug/Shared/. ./artifacts/Debug/
+          cd solutions
           echo pwd is: ${PWD}
-          echo ls -l is:
-          ls -l
-          cd Terraria
-          echo Building WindowsDebug [1/2]
-          dotnet build -c WindowsDebug --nologo -v q /clp:ErrorsOnly
-          echo Building WindowsServerDebug [2/2]
-          dotnet build -c WindowsServerDebug --nologo -v q /clp:ErrorsOnly
-          cd ../../..
-          mkdir -p artifacts/Windows
-          mv ./src/tModLoader/Terraria/bin/WindowsDebug/net45/Terraria.exe  ./artifacts/Windows/tModLoaderDebug.exe
-          mv ./src/tModLoader/Terraria/bin/WindowsDebug/net45/tModLoaderDebug.pdb  ./artifacts/Windows/tModLoaderDebug.pdb
-          mv ./src/tModLoader/Terraria/bin/WindowsServerDebug/net45/Terraria.exe  ./artifacts/Windows/tModLoaderServerDebug.exe
-          mv ./src/tModLoader/Terraria/bin/WindowsServerDebug/net45/tModLoaderServerDebug.pdb  ./artifacts/Windows/tModLoaderServerDebug.pdb
-          mv ./1421/Windows/ReLogic.Native.dll ./artifacts/Windows/ReLogic.Native.dll
-          mv ./solutions/ReleaseExtras/Content/ ./artifacts/Windows/
-          mv ./1421/Windows/ModCompile/ ./artifacts/Windows/
-          mv ./src/tModLoader/Terraria/bin/MacRelease/net45/Terraria.exe ./artifacts/Windows/ModCompile/tModLoader.FNA.exe
-          mv ./src/tModLoader/Terraria/bin/MacRelease/net45/FNA.dll ./artifacts/Windows/ModCompile/FNA.dll
+          echo Running CompleteLib.bat for Release
+          ./CompleteLib.bat Release skipzip
+          echo CompleteLib.bat Release Done
+          cd ..
+          mkdir -p artifacts/Release
+          cp -R ./solutions/Release/Shared/. ./artifacts/Release/
           echo Creating decompiled cache zip file
           7z a decompiled.zip ./src/decompiled/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
@@ -130,19 +126,29 @@ jobs:
           
       - uses: actions/upload-artifact@v2
         with:
-          name: Windows Debug Build
+          name: Debug Build
           path: |
-            ./artifacts/Windows/
+            ./artifacts/Debug/
+            
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Release Build
+          path: |
+            ./artifacts/Release/
             
       - name: Build ExampleMod
         shell: bash
         run: |
           echo Adding build info to ExampleMod displayName
           echo "displayName = Example Mod (${GITHUB_REF##*/}-${{ github.sha }})" >> ./ExampleMod/build.txt
+          cd artifacts/Debug
+          mkdir -p ModLoader/Mods
+          echo pwd is: ${PWD}
           echo Building ExampleMod
-          ./artifacts/Windows/tModLoaderServerDebug.exe -build ./ExampleMod/ -tmlsavedirectory ./ModLoader
+          dotnet tModLoader.dll -server -build ../../ExampleMod -tmlsavedirectory ./ModLoader
+          cd ../..
           mkdir -p artifacts/Mods
-          mv ./ModLoader/Mods/ExampleMod.tmod ./artifacts/Mods/ExampleMod.tmod
+          mv ./artifacts/Debug/ModLoader/Mods/ExampleMod.tmod ./artifacts/Mods/ExampleMod.tmod
           
       - uses: actions/upload-artifact@v2
         with:
