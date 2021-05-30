@@ -8,15 +8,33 @@
  using Terraria.ObjectData;
  using Terraria.UI;
  using Terraria.Utilities;
-@@ -547,6 +_,11 @@
+@@ -356,6 +_,9 @@
+ 						if (!TextureAssets.Tile[type].IsLoaded)
+ 							Main.instance.LoadTiles(type);
+ 
++						if (!TileLoader.PreDraw(j, i, type, Main.spriteBatch))
++							goto PostDraw;
++
+ 						switch (type) {
+ 							case 541:
+ 								if (!_shouldShowInvisibleBlocks)
+@@ -482,6 +_,9 @@
+ 						}
+ 
+ 						DrawSingleTile(value, solidLayer, waterStyleOverride, unscaledPosition, vector, j, i);
++
++						PostDraw:
++						TileLoader.PostDraw(j, i, type, Main.spriteBatch);
+ 					}
+ 				}
+ 			}
+@@ -547,6 +_,9 @@
  				return;
  
  			GetTileDrawData(tileX, tileY, drawData.tileCache, drawData.typeCache, ref drawData.tileFrameX, ref drawData.tileFrameY, out drawData.tileWidth, out drawData.tileHeight, out drawData.tileTop, out drawData.halfBrickHeight, out drawData.addFrX, out drawData.addFrY, out drawData.tileSpriteEffect, out drawData.glowTexture, out drawData.glowSourceRect, out drawData.glowColor);
++			
 +			TileLoader.SetAnimationFrame(drawData.typeCache, tileX, tileY, ref drawData.addFrX, ref drawData.addFrY);
-+			if (!TileLoader.PreDraw(tileX, tileY, drawData.typeCache, Main.spriteBatch)) {
-+				TileLoader.PostDraw(tileX, tileY, drawData.typeCache, Main.spriteBatch);
-+				return;
-+			}
++			
  			drawData.drawTexture = GetTileDrawTexture(drawData.tileCache, tileX, tileY);
  			Texture2D highlightTexture = null;
  			Rectangle empty = Rectangle.Empty;
@@ -28,14 +46,6 @@
  			if (drawData.tileLight.R < 1 && drawData.tileLight.G < 1 && drawData.tileLight.B < 1)
  				return;
  
-@@ -810,6 +_,7 @@
- 				int num13 = 0;
- 				Main.spriteBatch.Draw(highlightTexture, new Vector2((float)(tileX * 16 - (int)screenPosition.X) - ((float)drawData.tileWidth - 16f) / 2f + (float)num12, tileY * 16 - (int)screenPosition.Y + drawData.tileTop + num13) + screenOffset, empty, highlightColor, 0f, _zero, 1f, drawData.tileSpriteEffect, 0f);
- 			}
-+			TileLoader.PostDraw(tileX, tileY, drawData.typeCache, Main.spriteBatch);
- 		}
- 
- 		private Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY) {
 @@ -4007,6 +_,7 @@
  					break;
  			}
