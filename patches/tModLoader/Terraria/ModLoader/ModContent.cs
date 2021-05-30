@@ -408,7 +408,7 @@ namespace Terraria.ModLoader
 			if (Main.dedServ)
 				ModNet.AssignNetIDs();
 
-			Main.player[255] = new Player(false); // setup inventory is unnecessary 
+			Main.player[255] = new Player();
 
 			RefreshModLanguage(Language.ActiveCulture);
 			MapLoader.SetupModMap();
@@ -688,7 +688,7 @@ namespace Terraria.ModLoader
 				// player.whoAmI is only set for active players
 			}
 
-			Main.clientPlayer = new Player(false);
+			Main.clientPlayer = new Player();
 			Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
 			Main._characterSelectMenu._playerList?.Clear();
 			Main.PlayerList.Clear();
