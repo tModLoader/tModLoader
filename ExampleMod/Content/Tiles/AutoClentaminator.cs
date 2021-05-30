@@ -67,8 +67,10 @@ namespace ExampleMod.Content.Tiles
 			spriteBatch.Draw(Mask, position, null, Color.Purple, 0f, Mask.Size() * 0.5f, te.cleansingProgress * 1.5f, SpriteEffects.None, 0f);
 		}
 
-		public override void DrawEffects(int i, int j) {
-			Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
+		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
+			var point = TileEntityUtils.TileTopLeft(i, j);
+
+			Main.instance.TilesRenderer.AddSpecialLegacyPoint(point.X, point.Y);
 		}
 
 		public override void MouseOver(int i, int j) {
