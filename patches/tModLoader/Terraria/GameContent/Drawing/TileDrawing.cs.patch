@@ -8,7 +8,7 @@
  using Terraria.ObjectData;
  using Terraria.UI;
  using Terraria.Utilities;
-@@ -546,6 +_,11 @@
+@@ -547,6 +_,11 @@
  				return;
  
  			GetTileDrawData(tileX, tileY, drawData.tileCache, drawData.typeCache, ref drawData.tileFrameX, ref drawData.tileFrameY, out drawData.tileWidth, out drawData.tileHeight, out drawData.tileTop, out drawData.halfBrickHeight, out drawData.addFrX, out drawData.addFrY, out drawData.tileSpriteEffect, out drawData.glowTexture, out drawData.glowSourceRect, out drawData.glowColor);
@@ -20,7 +20,7 @@
  			drawData.drawTexture = GetTileDrawTexture(drawData.tileCache, tileX, tileY);
  			Texture2D highlightTexture = null;
  			Rectangle empty = Rectangle.Empty;
-@@ -607,6 +_,7 @@
+@@ -608,6 +_,7 @@
  
  			Rectangle normalTileRect = new Rectangle(drawData.tileFrameX + drawData.addFrX, drawData.tileFrameY + drawData.addFrY, drawData.tileWidth, drawData.tileHeight - drawData.halfBrickHeight);
  			Vector2 vector = new Vector2((float)(tileX * 16 - (int)screenPosition.X) - ((float)drawData.tileWidth - 16f) / 2f, tileY * 16 - (int)screenPosition.Y + drawData.tileTop + drawData.halfBrickHeight) + screenOffset;
@@ -28,7 +28,7 @@
  			if (drawData.tileLight.R < 1 && drawData.tileLight.G < 1 && drawData.tileLight.B < 1)
  				return;
  
-@@ -809,6 +_,7 @@
+@@ -810,6 +_,7 @@
  				int num13 = 0;
  				Main.spriteBatch.Draw(highlightTexture, new Vector2((float)(tileX * 16 - (int)screenPosition.X) - ((float)drawData.tileWidth - 16f) / 2f + (float)num12, tileY * 16 - (int)screenPosition.Y + drawData.tileTop + num13) + screenOffset, empty, highlightColor, 0f, _zero, 1f, drawData.tileSpriteEffect, 0f);
  			}
@@ -36,7 +36,7 @@
  		}
  
  		private Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY) {
-@@ -4006,6 +_,7 @@
+@@ -4007,6 +_,7 @@
  					break;
  			}
  
