@@ -28,12 +28,10 @@
  					}
  				}
  			}
-@@ -547,6 +_,9 @@
+@@ -547,6 +_,7 @@
  				return;
  
  			GetTileDrawData(tileX, tileY, drawData.tileCache, drawData.typeCache, ref drawData.tileFrameX, ref drawData.tileFrameY, out drawData.tileWidth, out drawData.tileHeight, out drawData.tileTop, out drawData.halfBrickHeight, out drawData.addFrX, out drawData.addFrY, out drawData.tileSpriteEffect, out drawData.glowTexture, out drawData.glowSourceRect, out drawData.glowColor);
-+			
-+			TileLoader.SetAnimationFrame(drawData.typeCache, tileX, tileY, ref drawData.addFrX, ref drawData.addFrY);
 +			
  			drawData.drawTexture = GetTileDrawTexture(drawData.tileCache, tileX, tileY);
  			Texture2D highlightTexture = null;
@@ -46,11 +44,13 @@
  			if (drawData.tileLight.R < 1 && drawData.tileLight.G < 1 && drawData.tileLight.B < 1)
  				return;
  
-@@ -4007,6 +_,7 @@
- 					break;
+@@ -4371,6 +_,9 @@
+ 						break;
+ 					}
  			}
- 
++
 +			TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight);
- 			if (tileCache.halfBrick())
- 				halfBrickHeight = 8;
++			TileLoader.SetAnimationFrame(typeCache, x, y, ref addFrX, ref addFrY);
+ 		}
  
+ 		private bool IsWindBlocked(int x, int y) {
