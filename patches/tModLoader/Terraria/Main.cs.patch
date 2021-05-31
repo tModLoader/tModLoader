@@ -2555,6 +2555,15 @@
  				if (npc[player[myPlayer].talkNPC].type == 20) {
  					SoundEngine.PlaySound(12);
  					npcChatText = Lang.GetDryadWorldStatusDialog();
+@@ -29565,6 +_,8 @@
+ 			editSign = false;
+ 			if (netMode == 1)
+ 				NetMessage.SendData(47, -1, -1, null, num);
++			Sign.TextDidChange();
++			
+ 		}
+ 
+ 		private int NPCBannerSorter(int npcIndex1, int npcIndex2) => -npc[npcIndex1].housingCategory.CompareTo(npc[npcIndex2].housingCategory);
 @@ -30063,7 +_,7 @@
  					num29++;
  
