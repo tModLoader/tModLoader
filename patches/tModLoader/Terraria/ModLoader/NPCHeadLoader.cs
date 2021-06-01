@@ -33,6 +33,8 @@ namespace Terraria.ModLoader
 
 		internal static int ReserveHeadSlot() => nextHead++;
 
+		public static int NPCHeadCount => nextHead;
+
 		internal static int ReserveBossHeadSlot(string texture) {
 			if (bossHeads.TryGetValue(texture, out int existing)) {
 				return existing;
@@ -83,6 +85,7 @@ namespace Terraria.ModLoader
 
 			//Etc
 
+			Array.Resize(ref NPCHeadID.Sets.CannotBeDrawnInHousingUI, nextHead);
 			Array.Resize(ref Main.instance._npcIndexWhoHoldsHeadIndex, nextHead);
 		}
 

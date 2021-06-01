@@ -2662,6 +2662,15 @@
  						inventoryBack = color5;
  					}
  				}
+@@ -30876,7 +_,7 @@
+ 				if (npc[j].active && !_npcTypesThatAlreadyDrewAHead.Contains(npc[j].type)) {
+ 					ITownNPCProfile profile;
+ 					int num4 = (!TownNPCProfiles.Instance.GetProfile(npc[j].type, out profile)) ? NPC.TypeToDefaultHeadIndex(npc[j].type) : profile.GetHeadTextureIndex(npc[j]);
+-					if (num4 > 0 && num4 <= 46 && !NPCHeadID.Sets.CannotBeDrawnInHousingUI[num4] && _npcIndexWhoHoldsHeadIndex[num4] == -1) {
++					if (num4 > 0 && num4 < NPCHeadLoader.NPCHeadCount && !NPCHeadID.Sets.CannotBeDrawnInHousingUI[num4] && _npcIndexWhoHoldsHeadIndex[num4] == -1) {
+ 						_npcIndexWhoHoldsHeadIndex[num4] = j;
+ 						_npcTypesThatAlreadyDrewAHead.Add(npc[j].type);
+ 					}
 @@ -30980,7 +_,7 @@
  			else {
  				text = Lang.inter[21].Value + " " + guideItem.Name;
