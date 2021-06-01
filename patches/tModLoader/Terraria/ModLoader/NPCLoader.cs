@@ -785,6 +785,17 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate void DelegateEditActiveRange(NPC npc, ref int activeRangeX, ref int activeRangeY,
+			ref int activeTime);
+		private static HookList HookEditActiveRange = AddHook<DelegateEditActiveRange>(g => g.EditActiveRange);
+
+		public static void EditActiveRange(NPC npc, ref int activeRangeX, ref int activeRangeY,
+			ref int activeTime) {
+			foreach (GlobalNPC g in HookEditActiveRange.Enumerate(globalNPCsArray)) {
+				g.EditActiveRange(npc, ref activeRangeX, ref activeRangeY, ref activeTime);
+			}
+		}
+
 		private static HookList HookEditSpawnPool = AddHook<Action<Dictionary<int, float>, NPCSpawnInfo>>(g => g.EditSpawnPool);
 
 		public static int? ChooseSpawn(NPCSpawnInfo spawnInfo) {

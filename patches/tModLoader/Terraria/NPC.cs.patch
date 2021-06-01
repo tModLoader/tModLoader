@@ -434,7 +434,7 @@
  					NetMessage.SendTileSquare(-1, x, y, 3);
  				}
  
-@@ -54744,6 +_,9 @@
+@@ -54744,12 +_,19 @@
  			if (!active || DoesntDespawnToInactivity())
  				return;
  
@@ -444,6 +444,26 @@
  			if (townNPC) {
  				AddIntoPlayersTownNPCSlots();
  				return;
+ 			}
+ 
+ 			bool flag = false;
++			int _oldActiveRangeX = activeRangeX;
++			int _oldActiveRangeY = activeRangeY;
++			int _oldActiveTime = activeTime;
++			NPCLoader.EditActiveRange(this, ref activeRangeX, ref activeRangeY, ref activeTime);
+ 			Rectangle rectangle = new Rectangle((int)(position.X + (float)(width / 2) - (float)activeRangeX), (int)(position.Y + (float)(height / 2) - (float)activeRangeY), activeRangeX * 2, activeRangeY * 2);
+ 			Rectangle rectangle2 = new Rectangle((int)((double)(position.X + (float)(width / 2)) - (double)sWidth * 0.5 - (double)width), (int)((double)(position.Y + (float)(height / 2)) - (double)sHeight * 0.5 - (double)height), sWidth + width * 2, sHeight + height * 2);
+ 			for (int i = 0; i < 255; i++) {
+@@ -54812,6 +_,9 @@
+ 						break;
+ 				}
+ 			}
++			activeRangeX = _oldActiveRangeX;
++			activeRangeY = _oldActiveRangeY;
++			activeTime = _oldActiveTime;
+ 
+ 			timeLeft--;
+ 			if (timeLeft <= 0)
 @@ -54903,6 +_,9 @@
  				return;
  			}

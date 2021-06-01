@@ -450,6 +450,17 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the range at which NPCs are considered active (activeRange) and the time they will linger when out of screen but in active range (activeTime).
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="activeRangeX"></param>
+		/// <param name="activeRangeY"></param>
+		/// <param name="activeTime"></param>
+		public virtual void EditActiveRange(NPC npc, ref int activeRangeX, ref int activeRangeY,
+			ref int activeTime) {
+		}
+
+		/// <summary>
 		/// Allows you to control which NPCs can spawn and how likely each one is to spawn. The pool parameter maps NPC types to their spawning weights (likelihood to spawn compared to other NPCs). A type of 0 in the pool represents the default vanilla NPC spawning.
 		/// </summary>
 		/// <param name="pool"></param>
