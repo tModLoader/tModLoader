@@ -15,15 +15,16 @@
  		public List<int> Dust;
  		public List<int> Gore;
  		public Player drawPlayer;
-@@ -48,12 +_,14 @@
+@@ -48,12 +_,15 @@
  				result.Height--;
  				return result;
  			}
 +		}*/
 +
 +		public void HeadOnlySetup(Player drawPlayer2, List<DrawData> drawData, List<int> dust, List<int> gore, float X, float Y, float Alpha, float Scale) {
--		}
 +			projectileDrawPosition = -1;
+-		}
++			headOnlyRender = true;
  
 -		public void BoringSetup(Player drawPlayer2, List<DrawData> drawData, List<int> dust, List<int> gore, float X, float Y, float Alpha, float Scale) {
 -			DrawData = drawData;

@@ -13,6 +13,15 @@
  	{
  		public List<DrawData> DrawDataCache;
  		public List<int> DustCache;
+@@ -129,6 +_,8 @@
+ 		public Vector2 Center => new Vector2(Position.X + (float)(drawPlayer.width / 2), Position.Y + (float)(drawPlayer.height / 2));
+ 
+ 		public void BoringSetup(Player player, List<DrawData> drawData, List<int> dust, List<int> gore, Vector2 drawPosition, float shadowOpacity, float rotation, Vector2 rotationOrigin) {
++			headOnlyRender = false;
++
+ 			DrawDataCache = drawData;
+ 			DustCache = dust;
+ 			GoreCache = gore;
 @@ -226,6 +_,8 @@
  				type = Main.projectile[drawPlayer.heldProj].type;
  				if (type == 460 || type == 535 || type == 600)
