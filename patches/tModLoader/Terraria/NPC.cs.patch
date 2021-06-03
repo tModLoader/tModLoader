@@ -773,6 +773,15 @@
  					if (buffTime[i] < time)
  						buffTime[i] = time;
  
+@@ -70294,7 +_,7 @@
+ 		}
+ 
+ 		public void RequestBuffRemoval(int buffTypeToRemove) {
+-			if (buffTypeToRemove < 0 || buffTypeToRemove >= 327 || !BuffID.Sets.CanBeRemovedByNetMessage[buffTypeToRemove])
++			if (buffTypeToRemove < 0 || buffTypeToRemove >= BuffLoader.BuffCount || !BuffID.Sets.CanBeRemovedByNetMessage[buffTypeToRemove])
+ 				return;
+ 
+ 			int num = FindBuffIndex(buffTypeToRemove);
 @@ -70482,7 +_,7 @@
  				if (NPCID.Sets.NoMultiplayerSmoothingByType[type]) {
  					netOffset *= 0f;
