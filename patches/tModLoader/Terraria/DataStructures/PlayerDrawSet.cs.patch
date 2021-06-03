@@ -31,3 +31,15 @@
  			}
  
  			drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
+@@ -1049,8 +_,10 @@
+ 				DustCache.Add(dust21.dustIndex);
+ 			}
+ 
++			bool fullBright = false;
++			PlayerHooks.DrawEffects(this, ref num12, ref num13, ref num14, ref num15, ref fullBright);
+ 			if (num12 != 1f || num13 != 1f || num14 != 1f || num15 != 1f) {
+-				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2) {
++				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2 || fullBright) {
+ 					colorEyeWhites = drawPlayer.GetImmuneAlpha(Color.White, shadow);
+ 					colorEyes = drawPlayer.GetImmuneAlpha(drawPlayer.eyeColor, shadow);
+ 					colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting: false), shadow);
