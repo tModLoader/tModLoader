@@ -17,6 +17,54 @@
  		private readonly World _world;
  		private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  		public int bestOre;
+@@ -110,32 +_,32 @@
+ 
+ 		public bool HasSunflower {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public bool HasGardenGnome {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public bool HasClock {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public bool HasCampfire {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public bool HasStarInBottle {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public bool HasHeartLantern {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public int ActiveFountainColor {
+@@ -160,7 +_,7 @@
+ 
+ 		public bool HasCatBast {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public int GraveyardTileCount {
 @@ -198,6 +_,8 @@
  			if (settings.ScanOreFinderData)
  				_oreFinderTileLocations.Clear();
