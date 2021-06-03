@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.Graphics.Renderers;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
@@ -78,14 +79,13 @@ namespace Terraria.ModLoader
 			}
 
 			//Sets. The arrays modified here are resized in NPCLoader.
+			LoaderUtils.ResetStaticMembers(typeof(NPCHeadID), true);
 
 			foreach (int npc in npcToBossHead.Keys) {
 				NPCID.Sets.BossHeadTextures[npc] = npcToBossHead[npc];
 			}
 
 			//Etc
-
-			Array.Resize(ref NPCHeadID.Sets.CannotBeDrawnInHousingUI, nextHead);
 			Array.Resize(ref Main.instance._npcIndexWhoHoldsHeadIndex, nextHead);
 		}
 
