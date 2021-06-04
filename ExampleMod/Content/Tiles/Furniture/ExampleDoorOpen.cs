@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 {
 	public class ExampleDoorOpen : ModTile
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// Properties
 			Main.tileFrameImportant[Type] = true;
 			Main.tileSolid[Type] = false;

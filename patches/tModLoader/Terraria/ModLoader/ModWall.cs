@@ -73,7 +73,7 @@ namespace Terraria.ModLoader
 
 		public sealed override void SetupContent() {
 			TextureAssets.Wall[Type] = ModContent.GetTexture(Texture);
-			SetDefaults();
+			SetStaticDefaults();
 			WallID.Search.Add(FullName, Type);
 		}
 

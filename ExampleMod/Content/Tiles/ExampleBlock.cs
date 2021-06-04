@@ -7,7 +7,7 @@ namespace ExampleMod.Content.Tiles
 {
 	public class ExampleBlock : ModTile
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			Main.tileSolid[Type] = true;
 			Main.tileMergeDirt[Type] = true;
 			Main.tileBlockLight[Type] = true;

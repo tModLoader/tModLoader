@@ -7,7 +7,7 @@ namespace ExampleMod.Content.Walls
 {
 	public class ExampleWall : ModWall
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			Main.wallHouse[Type] = true;
 			DustType = ModContent.DustType<Sparkle>();
 			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleWall>();

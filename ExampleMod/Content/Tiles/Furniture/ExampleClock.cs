@@ -9,7 +9,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 {
 	public class ExampleClock : ModTile
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// Properties
 			Main.tileFrameImportant[Type] = true;
 			Main.tileNoAttach[Type] = true;

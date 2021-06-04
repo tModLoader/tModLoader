@@ -5,7 +5,7 @@ namespace ExampleMod.Content.Buffs
 {
 	public class ExampleMountBuff : ModBuff
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("ExampleMount");
 			Description.SetDefault("Leather seats, 4 cup holders");
 			Main.buffNoTimeDisplay[Type] = true; // The time remaining won't display on this buff

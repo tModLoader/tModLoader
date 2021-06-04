@@ -89,13 +89,7 @@ namespace Terraria.ModLoader
 			newMountData.MountData = mountData;
 			mountData.ModMount = newMountData;
 			newMountData.Mod = Mod;
-			newMountData.SetDefaults();
-		}
-
-		/// <summary>
-		/// Allows you to set the properties of this type of mount.
-		/// </summary>
-		public virtual void SetDefaults() {
+			newMountData.SetStaticDefaults();
 		}
 
 		/// <summary>

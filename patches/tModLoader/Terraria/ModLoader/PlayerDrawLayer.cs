@@ -93,10 +93,12 @@ namespace Terraria.ModLoader
 			Transform?.PostDrawRecursive(ref drawInfo);
 		}
 
-		protected override void Register() {
+		protected sealed override void Register() {
 			ModTypeLookup<PlayerDrawLayer>.Register(this);
 			PlayerDrawLayerLoader.Add(this);
 		}
+
+		public sealed override void SetupContent() => SetStaticDefaults();
 
 		public override string ToString() => Name;
 	}

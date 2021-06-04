@@ -26,6 +26,8 @@ namespace Terraria.ModLoader
 			ItemLoader.globalItems.Add(this);
 		}
 
+		public sealed override void SetupContent() => SetStaticDefaults();
+
 		public GlobalItem Instance(Item item) => Instance(item.globalItems, index);
 
 		/// <summary>

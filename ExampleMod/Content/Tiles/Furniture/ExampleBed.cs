@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 {
 	public class ExampleBed : ModTile
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// Properties
 			Main.tileFrameImportant[Type] = true;
 			Main.tileLavaDeath[Type] = true;

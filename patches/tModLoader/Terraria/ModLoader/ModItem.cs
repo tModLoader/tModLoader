@@ -104,13 +104,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// This is where you set all your item's static properties, such as names/translations and the arrays in ItemID.Sets.
-		/// This is called after SetDefaults on the initial ModItem
-		/// </summary>
-		public virtual void SetStaticDefaults() {
-		}
-
-		/// <summary>
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {

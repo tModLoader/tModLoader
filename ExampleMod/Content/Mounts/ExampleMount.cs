@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Mounts
 			}
 		}
 
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// Movement
 			MountData.jumpHeight = 5; // How high the mount can jump.
 			MountData.acceleration = 0.19f; // The rate at which the mount speeds up.
