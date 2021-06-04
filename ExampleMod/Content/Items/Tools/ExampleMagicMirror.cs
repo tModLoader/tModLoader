@@ -33,7 +33,7 @@ namespace ExampleMod.Content.Items.Tools
 			if (player.itemTime == 0) {
 				player.ApplyItemTime(Item);
 			}
-			else if (player.itemTime == (int)(Item.useTime / CombinedHooks.TotalUseTimeMultiplier(player, Item)) / 2) {
+			else if (player.itemTime == player.itemTimeMax / 2) {
 				// This code runs once halfway through the useTime of the Item. You'll notice with magic mirrors you are still holding the item for a little bit after you've teleported.
 
 				// Make dust 70 times for a cool effect.
