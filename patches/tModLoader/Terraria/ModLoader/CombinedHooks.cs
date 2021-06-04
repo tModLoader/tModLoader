@@ -100,7 +100,7 @@ namespace Terraria.ModLoader
 
 			// UseSpeedMultiplier tries to affect both useTime and useAnimation in a way that doesn't break their relativity.
 			// The code below multiplies useAnimation based on the difference that UseSpeedMultiplier makes on the item's useTime.
-			float timeAnimationFactor = (float)Math.Round(item.useAnimation / (float)item.useTime);
+			float timeAnimationFactor = item.useAnimation / (float)item.useTime;
 			int multipliedUseTime = Math.Max(1, (int)(item.useTime / TotalUseSpeedMultiplier(player, item)));
 			int relativeUseAnimation = Math.Max(1, (int)(multipliedUseTime * timeAnimationFactor));
 
