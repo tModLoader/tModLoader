@@ -184,7 +184,7 @@
 -			reuseDelay = itemReuseDelay;
 +		public void ApplyItemAnimation(Item sItem, float multiplier, int? itemReuseDelay = null) {
 +			ItemLoader.UseAnimation(sItem, this);
-+			
++
 +			SetItemAnimation(CombinedHooks.TotalAnimationTime(sItem.useAnimation * multiplier, this, sItem));
 +
 +			reuseDelay = (int)((itemReuseDelay ?? sItem.reuseDelay) / CombinedHooks.TotalUseSpeedMultiplier(this, sItem));
@@ -2315,6 +2315,16 @@
  				if (!Falling) {
  					float num3 = Math.Abs(velocity.X) / 3f;
  					if ((float)Main.rand.Next(100) > num3 * 100f)
+@@ -16811,6 +_,9 @@
+ 		}
+ 
+ 		public void Update(int i) {
++			ItemTimePrev = itemTime;
++			ItemAnimationPrev = itemAnimation;
++
+ 			if (i == Main.myPlayer && Main.netMode != 2)
+ 				LockOnHelper.Update();
+ 
 @@ -16961,6 +_,7 @@
  
  			UpdateHairDyeDust();
@@ -2982,6 +2992,15 @@
  			if (mount.Active) {
  				legFrameCounter = 0.0;
  				legFrame.Y = legFrame.Height * 6;
+@@ -25493,7 +_,7 @@
+ 				_ = legFrame;
+ 				reference5.Y = 0;
+ 			}
+-			else if (itemAnimation > 0 && inventory[selectedItem].useStyle != 10 && flag4) {
++			else if (InItemAnimation && inventory[selectedItem].useStyle != 10 && flag4) {
+ 				if (inventory[selectedItem].useStyle == 1 || inventory[selectedItem].type == 0) {
+ 					if ((double)itemAnimation < (double)itemAnimationMax * 0.333)
+ 						bodyFrame.Y = bodyFrame.Height * 3;
 @@ -25576,6 +_,8 @@
  						}
  					}

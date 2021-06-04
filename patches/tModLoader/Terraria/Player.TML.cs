@@ -10,7 +10,16 @@ namespace Terraria
 		internal IList<string> usedMods;
 		internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();
 
+		/// <summary> The previous tick's <see cref="itemTime"/> value. </summary>
+		public int ItemTimePrev { get; private set; }
+		
+		/// <summary> The previous tick's <see cref="itemAnimation"/> value. </summary>
+		public int ItemAnimationPrev { get; private set; }
+
 		public HashSet<int> NearbyModTorch { get; private set; } = new HashSet<int>();
+
+		/// <summary> Returns true if the player's itemAnimation is more than 0, or if its been so in the previous tick. </summary>
+		public bool InItemAnimation => itemAnimation > 0 || ItemAnimationPrev > 0;
 
 		// Get
 
