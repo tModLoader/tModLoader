@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
@@ -280,8 +281,9 @@ namespace Terraria.ModLoader
 		public virtual void ModifyLightingBrightness(ref float scale) { }
 
 		/// <summary>
-		/// Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are. The tileCounts parameter stores the tile count indexed by tile type.
+		/// Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are.
+		/// <br/> The <paramref name="tileCounts"/> parameter is a read-only span (treat this as an array) that stores the tile count indexed by tile type.
 		/// </summary>
-		public virtual void TileCountsAvailable(int[] tileCounts) { }
+		public virtual void TileCountsAvailable(ReadOnlySpan<int> tileCounts) { }
 	}
 }

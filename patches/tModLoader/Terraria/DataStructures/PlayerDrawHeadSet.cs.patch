@@ -1,11 +1,94 @@
 --- src/Terraria/Terraria/DataStructures/PlayerDrawHeadSet.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDrawHeadSet.cs
-@@ -122,7 +_,7 @@
+@@ -5,9 +_,12 @@
+ 
+ namespace Terraria.DataStructures
+ {
+-	public struct PlayerDrawHeadSet
++	// This struct is basically deleted, and its BoringSetup() is moved into PlayerDrawSet under the name HeadOnlySetup()
++
++	//public struct PlayerDrawHeadSet
++	public partial struct PlayerDrawSet
+ 	{
+-		public List<DrawData> DrawData;
++		/*public List<DrawData> DrawData;
+ 		public List<int> Dust;
+ 		public List<int> Gore;
+ 		public Player drawPlayer;
+@@ -48,12 +_,15 @@
+ 				result.Height--;
+ 				return result;
+ 			}
++		}*/
++
++		public void HeadOnlySetup(Player drawPlayer2, List<DrawData> drawData, List<int> dust, List<int> gore, float X, float Y, float Alpha, float Scale) {
++			projectileDrawPosition = -1;
+-		}
++			headOnlyRender = true;
+ 
+-		public void BoringSetup(Player drawPlayer2, List<DrawData> drawData, List<int> dust, List<int> gore, float X, float Y, float Alpha, float Scale) {
+-			DrawData = drawData;
++			DrawDataCache = drawData;
+-			Dust = dust;
++			DustCache = dust;
+-			Gore = gore;
++			GoreCache = gore;
+ 			drawPlayer = drawPlayer2;
+ 			Position = drawPlayer.position;
+ 			cHead = 0;
+@@ -65,9 +_,9 @@
+ 			drawAngelHalo = false;
+ 			drawGingerBeard = false;
+ 			skinVar = drawPlayer.skinVariant;
+-			hairShaderPacked = PlayerDrawHelper.PackShader(drawPlayer.hairDye, PlayerDrawHelper.ShaderConfiguration.HairShader);
++			hairDyePacked = PlayerDrawHelper.PackShader(drawPlayer.hairDye, PlayerDrawHelper.ShaderConfiguration.HairShader);
+ 			if (drawPlayer.head == 0 && drawPlayer.hairDye == 0)
+-				hairShaderPacked = PlayerDrawHelper.PackShader(1, PlayerDrawHelper.ShaderConfiguration.HairShader);
++				hairDyePacked = PlayerDrawHelper.PackShader(1, PlayerDrawHelper.ShaderConfiguration.HairShader);
+ 
+ 			skinDyePacked = drawPlayer.skinDyePacked;
+ 			if (drawPlayer.face > 0 && drawPlayer.face < 19)
+@@ -84,7 +_,7 @@
+ 			drawAngelHalo = drawPlayer.hasAngelHalo;
+ 			drawGingerBeard = drawPlayer.hasGingerBeard;
+ 			Main.instance.LoadHair(drawPlayer.hair);
+-			scale = Scale;
++			//scale = Scale;
+ 			colorEyeWhites = Main.quickAlpha(Color.White, Alpha);
+ 			colorEyes = Main.quickAlpha(drawPlayer.eyeColor, Alpha);
+ 			colorHair = Main.quickAlpha(drawPlayer.GetHairColor(useLighting: false), Alpha);
+@@ -95,14 +_,21 @@
+ 				playerEffect = SpriteEffects.FlipHorizontally;
+ 
+ 			headVect = new Vector2((float)drawPlayer.legFrame.Width * 0.5f, (float)drawPlayer.legFrame.Height * 0.4f);
++			/*
+ 			bodyFrameMemory = drawPlayer.bodyFrame;
+ 			bodyFrameMemory.Y = 0;
+ 			Position = Main.screenPosition;
+ 			Position.X += X;
+ 			Position.Y += Y;
++			*/
++			Position = new Vector2(X, Y);
+ 			Position.X -= 6f;
+ 			Position.Y -= 4f;
+ 			Position.Y -= drawPlayer.HeightMapOffset;
++
++			// Workaround for movement bobbing affecting head-only rendering.
++			Position -= Main.OffsetsPlayerHeadgear[drawPlayer.bodyFrame.Y / drawPlayer.bodyFrame.Height];
++
+ 			if (drawPlayer.head > 0 && drawPlayer.head < 273) {
+ 				Main.instance.LoadArmorHead(drawPlayer.head);
+ 				int num = ArmorIDs.Head.Sets.FrontToBackID[drawPlayer.head];
+@@ -120,9 +_,9 @@
+ 				Main.instance.LoadAccFace(drawPlayer.faceFlower);
+ 
  			helmetOffset = drawPlayer.GetHelmetDrawOffset() * drawPlayer.Directions.Y;
- 			drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out bool _, out helmetIsOverFullHair);
- 			helmetIsTall = (drawPlayer.head == 14 || drawPlayer.head == 56 || drawPlayer.head == 158);
+-			drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out bool _, out helmetIsOverFullHair);
++			drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
+-			helmetIsTall = (drawPlayer.head == 14 || drawPlayer.head == 56 || drawPlayer.head == 158);
++			//helmetIsTall = (drawPlayer.head == 14 || drawPlayer.head == 56 || drawPlayer.head == 158);
 -			helmetIsNormal = (!helmetIsTall && !helmetIsOverFullHair && drawPlayer.head > 0 && drawPlayer.head < 273 && drawPlayer.head != 28);
-+			helmetIsNormal = (!helmetIsTall && !helmetIsOverFullHair && drawPlayer.head > 0 && drawPlayer.head != 28);
++			//helmetIsNormal = (!helmetIsTall && !helmetIsOverFullHair && drawPlayer.head > 0 && drawPlayer.head != 28);
  		}
  	}
  }
