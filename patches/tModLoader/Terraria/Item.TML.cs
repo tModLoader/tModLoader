@@ -11,6 +11,8 @@ namespace Terraria
 	{
 		public static readonly Func<TagCompound, Item> DESERIALIZER = ItemIO.Load;
 
+		private int currentUseAnimationCompensation;
+
 		public ModItem ModItem { get; internal set; }
 
 		internal Instanced<GlobalItem>[] globalItems = Array.Empty<Instanced<GlobalItem>>();
@@ -79,5 +81,21 @@ namespace Terraria
 
 		public bool CountsAsClass(DamageClass damageClass)
 			=> DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
+
+		private void ApplyItemAnimationCompensations() {
+			// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
+
+			currentUseAnimationCompensation = 0;
+
+			if (type < ItemID.Count && !noMelee) {
+				useAnimation++;
+				currentUseAnimationCompensation++;
+			}
+		}
+
+		private void UndoItemAnimationCompensations() {
+			useAnimation -= currentUseAnimationCompensation;
+			currentUseAnimationCompensation = 0;
+		}
 	}
 }

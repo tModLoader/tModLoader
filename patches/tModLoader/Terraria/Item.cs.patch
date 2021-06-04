@@ -239,7 +239,7 @@
  
  				if (num2 != 1f && Math.Round((float)damage * num2) == (double)damage) {
  					flag = true;
-@@ -1038,10 +_,16 @@
+@@ -1038,21 +_,35 @@
  					num = -1;
  				}
  
@@ -254,14 +254,23 @@
 +				if (!flag && !ItemLoader.AllowPrefix(this, num))
 +					flag = true;
  			}
++
++			UndoItemAnimationCompensations();
  
  			damage = (int)Math.Round((float)damage * num2);
-@@ -1053,6 +_,9 @@
+ 			useAnimation = (int)Math.Round((float)useAnimation * num4);
+ 			useTime = (int)Math.Round((float)useTime * num4);
+ 			reuseDelay = (int)Math.Round((float)reuseDelay * num4);
+ 			mana = (int)Math.Round((float)mana * num7);
++			//Patch context.
+ 			knockBack *= num3;
  			scale *= num5;
  			shootSpeed *= num6;
  			crit += num8;
 +			if (num >= PrefixID.Count)
 +				PrefixLoader.GetPrefix((byte)num)?.Apply(this);
++
++			ApplyItemAnimationCompensations();
 +
  			float num14 = 1f * num2 * (2f - num4) * (2f - num7) * num5 * num3 * num6 * (1f + (float)num8 * 0.02f);
  			if (num == 62 || num == 69 || num == 73 || num == 77)
@@ -554,18 +563,12 @@
  			if (type == 0) {
  				netID = 0;
  				stack = 0;
-@@ -44739,6 +_,20 @@
+@@ -44739,6 +_,14 @@
  				SetDefaults5(type);
  			}
  
-+			//Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
-+			if (type < ItemID.Count) {
-+				if (useTime == useAnimation) {
-+					useTime--;
-+				}
-+
-+				useAnimation--;
-+			}
++			// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
++			ApplyItemAnimationCompensations();
 +
 +			//Set 'master' bool for vanilla items with master rarity.
 +			if (type < ItemID.Count && rare == ItemRarityID.Master) {
