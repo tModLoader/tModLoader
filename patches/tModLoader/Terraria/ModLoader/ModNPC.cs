@@ -491,7 +491,7 @@ namespace Terraria.ModLoader
 		/// <param name="spriteBatch"></param>
 		/// <param name="drawColor"></param>
 		/// <returns></returns>
-		public virtual bool PreDraw(SpriteBatch spriteBatch, Color drawColor) {
+		public virtual bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 			return true;
 		}
 
@@ -500,7 +500,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="spriteBatch"></param>
 		/// <param name="drawColor"></param>
-		public virtual void PostDraw(SpriteBatch spriteBatch, Color drawColor) {
+		public virtual void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		}
 
 		/// <summary>

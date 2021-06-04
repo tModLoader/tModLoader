@@ -394,7 +394,7 @@ namespace Terraria.ModLoader
 		/// <param name="spriteBatch"></param>
 		/// <param name="drawColor"></param>
 		/// <returns></returns>
-		public virtual bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
+		public virtual bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 			return true;
 		}
 
@@ -404,7 +404,7 @@ namespace Terraria.ModLoader
 		/// <param name="npc"></param>
 		/// <param name="spriteBatch"></param>
 		/// <param name="drawColor"></param>
-		public virtual void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
+		public virtual void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		}
 
 		/// <summary>
