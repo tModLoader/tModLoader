@@ -1,0 +1,16 @@
+--- src/Terraria/Terraria/ID/NPCHeadID.cs
++++ src/tModLoader/Terraria/ID/NPCHeadID.cs
+@@ -1,10 +_,12 @@
++using Terraria.ModLoader;
++
+ namespace Terraria.ID
+ {
+ 	public class NPCHeadID
+ 	{
+ 		public static class Sets
+ 		{
+-			public static SetFactory Factory = new SetFactory(46);
++			public static SetFactory Factory = new SetFactory(NPCHeadLoader.NPCHeadCount);
+ 			public static bool[] CannotBeDrawnInHousingUI = Factory.CreateBoolSet(21);
+ 		}
+ 
