@@ -17,6 +17,117 @@
  		private readonly World _world;
  		private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  		public int bestOre;
+@@ -60,47 +_,47 @@
+ 
+ 		public int SandTileCount {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public int MushroomTileCount {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public int SnowTileCount {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public int WaterCandleCount {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public int PeaceCandleCount {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public int PartyMonolithCount {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public int MeteorTileCount {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public int BloodTileCount {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public int JungleTileCount {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public int DungeonTileCount {
+@@ -110,32 +_,32 @@
+ 
+ 		public bool HasSunflower {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public bool HasGardenGnome {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public bool HasClock {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public bool HasCampfire {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public bool HasStarInBottle {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public bool HasHeartLantern {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public int ActiveFountainColor {
+@@ -160,12 +_,12 @@
+ 
+ 		public bool HasCatBast {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public int GraveyardTileCount {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public bool EnoughTilesForJungle => JungleTileCount >= JungleTileThreshold;
 @@ -198,6 +_,8 @@
  			if (settings.ScanOreFinderData)
  				_oreFinderTileLocations.Clear();

@@ -6,7 +6,7 @@
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
-@@ -20,16 +_,20 @@
+@@ -20,16 +_,21 @@
  		public static SocialMode Mode => _mode;
  
  		public static void Initialize(SocialMode? mode = null) {
@@ -15,11 +15,12 @@
  				mode = SocialMode.None;
  				if(!Main.dedServ)
 +#if DEBUG
-+				if (!Program.LaunchParameters.ContainsKey("-nosteam"))
++					if (!Program.LaunchParameters.ContainsKey("-nosteam"))
 +#endif
-+				if (InstallVerifier.IsValid && InstallVerifier.IsSteam)
++						if (InstallVerifier.IsValid && InstallVerifier.IsSteam)
 -				mode = SocialMode.Steam;
-+					mode = SocialMode.Steam;
++							mode = SocialMode.Steam;
++
  				if (Main.dedServ && Program.LaunchParameters.ContainsKey("-steam"))
  					mode = SocialMode.Steam;
  			}
