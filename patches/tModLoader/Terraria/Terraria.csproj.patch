@@ -89,8 +89,8 @@
 +  </ItemGroup>
 +  <ItemGroup>
 +    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.4.21.3" />
-+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" />
-+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.7.0" />
++    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.9.0" />
++    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.9.0" />
 +    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
 +    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
 +    <PackageReference Include="System.CodeDom" Version="5.0.0" />
