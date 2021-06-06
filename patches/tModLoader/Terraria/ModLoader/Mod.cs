@@ -1,5 +1,6 @@
 using log4net;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using System;
@@ -385,11 +386,11 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <param name="defaultKey">The default key.</param>
 		/// <returns></returns>
-		public ModHotKey RegisterHotKey(string name, string defaultKey) {
+		public ModHotKey RegisterHotKey(string name, Keys defaultKey) {
 			if (!loading)
 				throw new Exception("RegisterHotKey can only be called from Mod.Load or Mod.Autoload");
 
-			return HotKeyLoader.RegisterHotKey(new ModHotKey(this, name, defaultKey));
+			return HotKeyLoader.RegisterHotKey(new ModHotKey(this, name, defaultKey.ToString()));
 		}
 
 		/// <summary>
