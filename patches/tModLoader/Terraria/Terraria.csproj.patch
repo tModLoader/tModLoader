@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -2,69 +_,139 @@
+@@ -2,69 +_,142 @@
    <Import Project="../Configuration.targets" />
    <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
@@ -38,7 +38,7 @@
    </PropertyGroup>
    <ItemGroup>
      <Reference Include="CsvHelper" />
-     <Reference Include="FNA" />
+-    <Reference Include="FNA" />
 -    <Reference Include="Ionic.Zip.CF" />
      <Reference Include="MP3Sharp" />
 +    <Reference Include="Ionic.Zip.Reduced" />
@@ -59,6 +59,11 @@
 +          <!--Version has to match deps.json and project version. Hardcode here as resolving from metadata is difficult without custom Task. Specifically, getting the pdb to output in the right directory-->
 +          <DestinationSubDirectory>Libraries/ReLogic/1.0.0/</DestinationSubDirectory>
 +      </ProjectReference>
++      <ProjectReference Include="..\..\..\FNA\FNA.csproj">
++          <!--Todo, extract version from FNA\src\Properties\AssemblyInfo.cs or some other way-->
++		  <!--Currently for whatever reason, the deps.json generates with version 1.0.0 as the referenced version. Even though the assembly has version 21.06.0.0-->
++          <DestinationSubDirectory>Libraries/FNA/1.0.0/</DestinationSubDirectory>
++	  </ProjectReference>
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
 -    <Reference Update="@(Reference)">
@@ -85,14 +90,13 @@
      <None Remove="Libraries/XNA/**" />
      <None Remove="Libraries/net40/**" />
 -    <None Update="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
-+      <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest"/>
++      <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
 +  </ItemGroup>
 +  <ItemGroup>
 +    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.4.21.3" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.7.0" />
 +    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
 +    <PackageReference Include="System.CodeDom" Version="5.0.0" />
 +    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.1" />
    </ItemGroup>
@@ -102,8 +106,8 @@
 +      <RuntimeFiles Include="../../../solutions\ReleaseExtras\RuntimeFiles\**" />
 +      <SteamFiles Include="../../../solutions\ReleaseExtras\SteamFiles\**" />
 +    </ItemGroup>
-+    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True"/>
-+    <Copy SourceFiles="@(SteamFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True"/>
++    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True" />
++    <Copy SourceFiles="@(SteamFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True" />
 +    <!-- NOTE: below only works on the second time that debugging is run. Can delete directory in CompleteRelease.bat for now-->
 +    <!--RemoveDir Directories="$(TargetDir)\ref" /-->
 +    <!-- copy files systematically to output folder -->
@@ -112,10 +116,10 @@
      </ItemGroup>
      <Message Text="Copying $(AssemblyName) to Steam Dir..." Importance="high" />
 -    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)/%(RecursiveDir)" />
-+    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" SkipUnchangedFiles="True"/>
++    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" SkipUnchangedFiles="True" />
 +    <!-- todo, purge old libraries on other platforms -->
 +    <Exec Command="robocopy &quot;$(TargetDir)Libraries&quot; &quot;$(tModLoaderSteamPath)\Libraries&quot; /MIR" ContinueOnError="true" StandardOutputImportance="low" Condition="'$(OS)' == 'Windows_NT'">
-+      <Output TaskParameter="ExitCode" PropertyName="PurgeExitCode"/>
++      <Output TaskParameter="ExitCode" PropertyName="PurgeExitCode" />
 +    </Exec>
 +    <Warning Text="\Libraries file purge failed (robocopy /MIR Exit Code: $(PurgeExitCode)). Old files may not be removed." Condition="'$(PurgeExitCode)' != 2 AND '$(PurgeExitCode)' != 0" />
 +  </Target>

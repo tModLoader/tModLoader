@@ -116,10 +116,8 @@ namespace Terraria.ModLoader
 		public virtual void AutoStaticDefaults() {
 			TextureAssets.Item[Item.type] = ModContent.GetTexture(Texture);
 
-			string flameTexture = Texture + "_Flame";
-
-			if (ModContent.TextureExists(flameTexture)) {
-				TextureAssets.ItemFlame[Item.type] = ModContent.GetTexture(flameTexture);
+			if (ModContent.RequestIfExists<Texture2D>(Texture + "_Flame", out var flameTexture)) {
+				TextureAssets.ItemFlame[Item.type] = flameTexture;
 			}
 
 			if (DisplayName.IsDefault())

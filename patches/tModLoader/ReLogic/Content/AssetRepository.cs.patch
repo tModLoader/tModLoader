@@ -1,46 +1,168 @@
 --- src/Terraria/ReLogic/Content/AssetRepository.cs
 +++ src/tModLoader/ReLogic/Content/AssetRepository.cs
-@@ -2,13 +_,17 @@
+@@ -1,89 +_,180 @@
++using ReLogic.Content.Readers;
+ using ReLogic.Content.Sources;
  using System;
++using System.Collections.Concurrent;
  using System.Collections.Generic;
++using System.IO;
  using System.Linq;
++using System.Runtime.CompilerServices;
 +using System.Threading;
++using System.Threading.Tasks;
  
  namespace ReLogic.Content
  {
++	/// <summary>
++	/// Async loading has been fully integrated into AssetRepository
++	/// Assets which are asynchronously loaded will:
++	///		- be deserialized on the thread pool
++	///		- return to the main thread if the asset can only be created there (for assets requiring GraphicsDevice)
++	///		- become loaded at a defined time:
++	///			- at the end of a frame or
++	///			- when content sources are changing or
++	///			- when requested by ImmediateLoad on the main thread
++	///	
++	/// Assets which require main thread creation, but are requested via ImmediateLoad on a worker thread will:
++	///		- be deserialized immediately on the worker thread
++	///		- transition to asynchronous loading for creation
++	///	
++	/// </summary>
  	public class AssetRepository : IAssetRepository, IDisposable
  	{
-+		// to allow texture loading on multiple threads without deadlocks, tML replaces this with a function that performs texture loading if the main thread is attempting to grab the lock and another thread has it (GLCallLocker)
-+		public static Action<object> SafelyAcquireResourceLock = Monitor.Enter;
-+
 -		private readonly Dictionary<string, IAsset> _assets = new Dictionary<string, IAsset>();
-+		protected readonly Dictionary<string, IAsset> _assets = new Dictionary<string, IAsset>();
 -		private IEnumerable<IContentSource> _sources = new IContentSource[0];
-+		protected IEnumerable<IContentSource> _sources { get; private set; } = new IContentSource[0];
++		internal struct ContinuationScheduler
++		{
++			public readonly IAsset asset;
++			public readonly AssetRepository repository;
++
++			internal ContinuationScheduler(IAsset asset, AssetRepository repository) {
++				this.asset = asset;
++				this.repository = repository;
++			}
++
++			public void OnCompleted(Action continuation) {
++				if (asset == null)
++					throw new Exception("Main thread transition requested without an asset");
++
++				continuation = continuation.OnlyRunnableOnce();
++				repository._assetTransferQueue.Enqueue(continuation);
++				asset.Continuation = continuation;
++			}
++		}
++
++		private struct SafeToTransferAwaitable : INotifyCompletion
++		{
++			public ContinuationScheduler ContinuationScheduler { private get; init; }
++			public SafeToTransferAwaitable GetAwaiter() => this;
++			public void OnCompleted(Action action) => ContinuationScheduler.OnCompleted(action);
++
++			public bool IsCompleted => Monitor.IsEntered(ContinuationScheduler.repository._requestLock);
++			public void GetResult() {}
++		}
++
++		private static Thread _mainThread;
++		public static void SetMainThread() {
++			if (_mainThread != null)
++				throw new InvalidOperationException("Main thread already set");
++
++			_mainThread = Thread.CurrentThread;
++		}
++
++		public static bool IsMainThread => Thread.CurrentThread == _mainThread;
++
++		public static void ThrowIfNotMainThread() {
++			if (!IsMainThread)
++				throw new Exception("Must be on main thread");
++		}
++
++		private void Invoke(Action action) {
++			var evt = new ManualResetEvent(false);
++			_assetTransferQueue.Enqueue(() => { action(); evt.Set(); });
++			evt.WaitOne();
++		}
++
++		protected readonly Dictionary<string, IAsset> _assets = new Dictionary<string, IAsset>();
++		protected IContentSource[] _sources { get; private set; }
  		private readonly Dictionary<Type, Action<IAsset, AssetRequestMode>> _typeSpecificReloadActions = new Dictionary<Type, Action<IAsset, AssetRequestMode>>();
- 		private readonly IAsyncAssetLoader _asyncLoader;
- 		private readonly IAssetLoader _loader;
-@@ -47,9 +_,11 @@
- 				_asyncLoader.Start();
+-		private readonly IAsyncAssetLoader _asyncLoader;
+-		private readonly IAssetLoader _loader;
++		protected readonly AssetReaderCollection _readers;
+ 		private readonly object _requestLock = new object();
++		internal readonly ConcurrentQueue<Action> _assetTransferQueue = new();
++
+ 		private bool _isDisposed;
++		public bool IsDisposed => _isDisposed;
+ 
++		private int _Remaining;
+-		public int PendingAssets => _asyncLoader.Remaining;
++		public int PendingAssets => _Remaining;
+ 
+ 		public int TotalAssets {
+ 			get;
+ 			private set;
  		}
  
+-		public int LoadedAssets {
+-			get;
+-			private set;
+-		}
++		public int LoadedAssets { get; private set; }
+ 
+-		public bool IsAsyncLoadingEnabled => _asyncLoader.IsRunning;
++		public bool IsAsyncLoadingEnabled => true;
+ 
+ 		public FailedToLoadAssetCustomAction AssetLoadFailHandler {
+ 			get;
+ 			set;
+ 		}
+ 
+-		public AssetRepository(IAssetLoader syncLoader, IAsyncAssetLoader asyncLoader) {
+-			_loader = syncLoader;
+-			_asyncLoader = asyncLoader;
+-			_asyncLoader.Start();
+-		}
+-
+-		internal AssetRepository(IAssetLoader syncLoader, IAsyncAssetLoader asyncLoader, bool useAsync) {
+-			_loader = syncLoader;
+-			_asyncLoader = asyncLoader;
+-			if (useAsync)
+-				_asyncLoader.Start();
+-		}
+-
 -		public void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) {
-+		public virtual void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) {
- 			ThrowIfDisposed();
--			lock (_requestLock) {
-+			//lock (_requestLock) {
-+			try {
-+				SafelyAcquireResourceLock(_requestLock);
- 				while (_asyncLoader.Remaining > 0) {
- 					_asyncLoader.TransferCompleted();
- 				}
-@@ -57,12 +_,17 @@
- 				_sources = sources.ToList();
- 				ReloadAssetsIfSourceChanged(mode);
- 			}
-+			finally {
-+				Monitor.Exit(_requestLock);
+-			ThrowIfDisposed();
++		public IAsset[] GetLoadedAssets() {
+ 			lock (_requestLock) {
+-				while (_asyncLoader.Remaining > 0) {
+-					_asyncLoader.TransferCompleted();
+-				}
+-
+-				_sources = sources.ToList();
++				return _assets.Values.ToArray();
 +			}
++		}
++
++		public AssetRepository(AssetReaderCollection readers, IEnumerable<IContentSource> sources = null) {
++			_readers = readers;
++			_sources = sources?.ToArray() ?? Array.Empty<IContentSource>();
++		}
++
++		public virtual void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) {
++			ThrowIfDisposed();
++			ThrowIfNotMainThread();
++
++			lock (_requestLock) { // prevent new assets being requested or loaded
++				TransferAllAssets();
++
++				_sources = sources.ToArray();
+ 				ReloadAssetsIfSourceChanged(mode);
++
++				if (mode == AssetRequestMode.ImmediateLoad && _Remaining > 0)
++					throw new Exception("Some assets loaded asynchronously, despite AssetRequestMode.ImmediateLoad on main thread");
+ 			}
  		}
  
 -		public Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class {
@@ -48,32 +170,271 @@
  			ThrowIfDisposed();
  			assetName = AssetPathHelper.CleanPath(assetName);
 -			lock (_requestLock) {
-+			//lock (_requestLock) {
-+			try {
-+				SafelyAcquireResourceLock(_requestLock);
- 				Asset<T> asset = null;
- 				if (_assets.TryGetValue(assetName, out IAsset value))
+-				Asset<T> asset = null;
+-				if (_assets.TryGetValue(assetName, out IAsset value))
++			Asset<T> asset = null;
++			lock (_requestLock) { // asset states can't change whole this lock is held
++				if (_assets.TryGetValue(assetName, out var value))
  					asset = (value as Asset<T>);
-@@ -78,13 +_,16 @@
- 				LoadAsset(asset, mode);
- 				return asset;
- 			}
-+			finally {
-+				Monitor.Exit(_requestLock);
+ 
+ 				if (asset == null) {
+ 					asset = new Asset<T>(assetName);
+ 					_assets[assetName] = asset;
+ 				}
+-				else if (asset.State != 0) {
+-					return asset;
++
++				if (asset.State == AssetState.NotLoaded) {
++					EnsureReloadActionExistsForType<T>();
++					LoadAsset(asset, mode);
+ 				}
 +			}
- 		}
++
++			if (mode == AssetRequestMode.ImmediateLoad)
++				asset.Wait();
  
- 		public void TransferCompletedAssets() {
- 			ThrowIfDisposed();
--			lock (_requestLock) {
-+			//lock (_requestLock) {
- 				_asyncLoader.TransferCompleted();
+-				LoadAsset(asset, mode);
+-				return asset;
++			return asset;
 -			}
-+			//}
  		}
  
- 		private void ReloadAssetsIfSourceChanged(AssetRequestMode mode) {
-@@ -187,7 +_,7 @@
+-		public void TransferCompletedAssets() {
++		public void TransferAllAssets() {
++			if (!IsMainThread) {
++				Invoke(TransferAllAssets);
++				return;
++			}
++
++			while (_Remaining > 0) {
++				TransferCompletedAssets();
++			}
++		}
++
++		public void TransferCompletedAssets() { // todo, allow partial transfers
+ 			ThrowIfDisposed();
++			ThrowIfNotMainThread();
++
+ 			lock (_requestLock) {
+-				_asyncLoader.TransferCompleted();
++				while (_assetTransferQueue.TryDequeue(out var action))
++					action();
+ 			}
+ 		}
+ 
+@@ -93,7 +_,7 @@
+ 				if (contentSource == null)
+ 					ForceReloadAsset(item, AssetRequestMode.DoNotLoad);
+ 				else if (item.Source != contentSource)
+-					ForceReloadAsset(item, (item.State != 0) ? mode : AssetRequestMode.DoNotLoad);
++					ForceReloadAsset(item, mode);
+ 			}
+ 		}
+ 
+@@ -101,79 +_,132 @@
+ 			if (mode == AssetRequestMode.DoNotLoad)
+ 				return;
+ 
+-			EnsureReloadActionExistsForType<T>();
+-			TotalAssets++;
+-			asset.SetToLoadingState();
++			var loadTask = LoadAssetWithPotentialAsync(asset, mode);
++			asset.Wait = () => SafelyWaitForLoad(asset, loadTask, tracked: true);
++		}
++
++		private async Task LoadAssetWithPotentialAsync<T>(Asset<T> asset, AssetRequestMode mode) where T : class {
+ 			try {
+-				TryLoadingAsset(asset, mode);
++				// request lock is held until we move to another thread/delayed callback
++				if (!Monitor.IsEntered(_requestLock))
++					throw new Exception($"Asset load started without holding {nameof(_requestLock)}");
++
++				TotalAssets++;
++				asset.SetToLoadingState();
++				Interlocked.Increment(ref _Remaining);
++
++				var rejectionReasons = new List<string>();
++				var asyncCtx = new ContinuationScheduler(asset, this);
++				foreach (var source in _sources) {
++					if (source.Rejections.IsRejected(asset.Name) || source.GetExtension(asset.Name) is not string extension)
++						continue;
++
++					if (!_readers.TryGetReader(extension, out var reader)) {
++						source.Rejections.Reject(asset.Name, new ContentRejectionNoCompatibleReader(extension, _readers.GetSupportedExtensions()));
++						continue;
++					}
++
++					if (mode == AssetRequestMode.AsyncLoad)
++						await Task.Yield(); // to the worker thread!
++
++					T resultAsset;
++					using (var stream = source.OpenStream(asset.Name + extension)) {
++						try {
++							resultAsset = await reader.FromStream<T>(stream, new MainThreadCreationContext() { ContinuationScheduler = asyncCtx });
++						} catch (Exception e) {
++							source.Rejections.Reject(asset.Name, new ContentRejectionAssetReaderException(e));
++							continue;
++						}
++					}
++
++					// continuation may be running on main thread
++					if (source.ContentValidator != null && !source.ContentValidator.AssetIsValid(resultAsset, asset.Name, out var rejectionReason)) {
++						source.Rejections.Reject(asset.Name, rejectionReason);
++						continue;
++					}
++
++					await new SafeToTransferAwaitable() { ContinuationScheduler = asyncCtx };
++					if (!Monitor.IsEntered(_requestLock)) // check async code is functioning as expected
++						throw new Exception($"Asset transfer started without holding {nameof(_requestLock)}");
++
++					asset.SubmitLoadedContent(resultAsset, source);
++					LoadedAssets++;
++					return;
++				}
++
++				throw AssetLoadException.FromMissingAsset(asset.Name);
+ 			}
+ 			catch (Exception e) {
+-				if (AssetLoadFailHandler != null)
+-					AssetLoadFailHandler(asset.Name, e);
++				AssetLoadFailHandler?.Invoke(asset.Name, e);
+ 
+-				throw;
++				if (mode == AssetRequestMode.ImmediateLoad)
++					throw;
++			}
++			finally {
++				Interlocked.Decrement(ref _Remaining);
+ 			}
+ 		}
+ 
+-		private void TryLoadingAsset<T>(Asset<T> asset, AssetRequestMode mode) where T : class {
+-			IContentSource source = FindSourceForAsset(asset.Name);
+-			switch (mode) {
+-				case AssetRequestMode.ImmediateLoad: {
+-						bool flag = true;
+-						IRejectionReason rejectionReason = null;
+-						if (!_loader.TryLoad(asset.Name, source, out T resultAsset)) {
+-							source.RejectAsset(asset.Name, new ContentRejectionFromFailedLoad_ByAssetExtensionType());
+-							TryLoadingAsset(asset, mode);
+-							break;
+-						}
+-
+-						if (source.ContentValidator != null)
+-							flag = source.ContentValidator.AssetIsValid(resultAsset, asset.Name, out rejectionReason);
+-
+-						if (flag) {
+-							asset.SubmitLoadedContent(resultAsset, source);
+-							LoadedAssets++;
+-						}
+-						else {
+-							source.RejectAsset(asset.Name, rejectionReason);
+-							TryLoadingAsset(asset, mode);
+-						}
+-
+-						break;
++		private void SafelyWaitForLoad<T>(Asset<T> asset, Task loadTask, bool tracked) where T : class {
++			if (asset.State == AssetState.Loaded)
++				return;
++
++			// Asset has been loaded asynchronously, and we need the result now.
++			// This specific mix of async and synchronous loading, combined with the requirement to load some assets on the main thread is rife with deadlock potential
++			// A careful understanding of the exact threading model and requirements is required, and there's no clean or best practice way to solve it
++			if (!loadTask.IsCompleted && IsMainThread) {
++				// the asset loading may be blocked on a continuation which is currently in our _assetTransferQueue
++				// given that this is the main thread, if we block, no-one else will process it
++				// rather than running the whole transfer queue, and potentially inducing stuttering, we run the continuation directly from the asset
++
++				// wait for a continuation to be scheduled (all async loads will schedule one)
++				while (asset.Continuation == null) {
++					Thread.Yield();
++				}
++
++				// running continuations requires the main thread (MainThreadAwaitable)
++				if (tracked) {
++					// and the request lock (SafeToTransferAwaitable) for tracked assets
++					lock (_requestLock) {
++						asset.Continuation();
+ 					}
+-				case AssetRequestMode.AsyncLoad:
+-					_asyncLoader.Load(asset.Name, source, delegate (bool proper, T content) {
+-						if (!proper) {
+-							source.RejectAsset(asset.Name, new ContentRejectionFromFailedLoad_ByAssetExtensionType());
+-							TryLoadingAsset(asset, mode);
+-						}
+-						else {
+-							bool flag2 = true;
+-							IRejectionReason rejectionReason2 = null;
+-							if (source.ContentValidator != null)
+-								flag2 = source.ContentValidator.AssetIsValid(content, asset.Name, out rejectionReason2);
++				}
++				else {
++					asset.Continuation();
++				}
+ 
+-							if (flag2) {
+-								asset.SubmitLoadedContent(content, source);
+-								int loadedAssets = LoadedAssets;
+-								LoadedAssets = loadedAssets + 1;
+-							}
+-							else {
+-								source.RejectAsset(asset.Name, rejectionReason2);
+-								TryLoadingAsset(asset, mode);
+-							}
+-						}
+-					});
+-					break;
+-				default:
+-					throw new ArgumentOutOfRangeException("mode", mode, null);
++				if (!loadTask.IsCompleted)
++					throw new Exception($"Load task not completed after running continuations on main thread?");
+ 			}
++
++			loadTask.GetAwaiter().GetResult(); // throw any exceptions (and wait for completion if this is not the worker thread)
++			if (asset.State != AssetState.Loaded)
++				throw new Exception("How did you get here?");
++		}
++
++		public Asset<T> CreateUntracked<T>(Stream stream, string name, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class {
++			var ext = Path.GetExtension(name);
++			if (!_readers.TryGetReader(ext, out var reader))
++				throw AssetLoadException.FromMissingReader(ext);
++
++			var asset = new Asset<T>(name[..^ext.Length]);
++			var loadTask = LoadUntracked(stream, reader, asset, mode);
++			asset.Wait = () => SafelyWaitForLoad(asset, loadTask, tracked: false);
++			if (mode == AssetRequestMode.ImmediateLoad)
++				asset.Wait();
++
++			return asset;
++		}
++
++		private async Task LoadUntracked<T>(Stream stream, IAssetReader reader, Asset<T> asset, AssetRequestMode mode) where T : class {
++			if (mode == AssetRequestMode.AsyncLoad)
++				await Task.Yield(); // to the worker thread!
++
++			var mainThreadCtx = new MainThreadCreationContext() { ContinuationScheduler = new ContinuationScheduler(asset, this) };
++			asset.SubmitLoadedContent(await reader.FromStream<T>(stream, mainThreadCtx), null);
+ 		}
+ 
+ 		private void ForceReloadAsset(IAsset asset, AssetRequestMode mode) {
+-			if (mode != 0)
+-				LoadedAssets--;
+-
+ 			_typeSpecificReloadActions[asset.GetType()](asset, mode);
+ 		}
+ 
+@@ -183,11 +_,17 @@
+ 
+ 		private void ForceReloadAsset<T>(IAsset asset, AssetRequestMode mode) where T : class {
+ 			Asset<T> asset2 = (Asset<T>)asset;
++			if (asset.IsLoaded)
++				LoadedAssets--;
++
++			if (asset.State != AssetState.NotLoaded)
++				TotalAssets--;
++
+ 			asset2.Unload();
  			LoadAsset(asset2, mode);
  		}
  
@@ -82,3 +443,23 @@
  
  		private void ThrowIfDisposed() {
  			if (_isDisposed)
+@@ -199,7 +_,6 @@
+ 				return;
+ 
+ 			if (disposing) {
+-				_asyncLoader.Dispose();
+ 				foreach (KeyValuePair<string, IAsset> asset in _assets) {
+ 					asset.Value.Dispose();
+ 				}
+@@ -209,6 +_,11 @@
+ 		}
+ 
+ 		public void Dispose() {
++			if(!IsMainThread) {
++				Invoke(Dispose);
++				return;
++			}
++				
+ 			Dispose(disposing: true);
+ 		}
+ 	}

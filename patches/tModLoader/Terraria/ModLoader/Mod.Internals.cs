@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using ReLogic.Content.Readers;
 using ReLogic.Content.Sources;
-using ReLogic.Graphics;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
@@ -11,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Terraria.Localization;
-using Terraria.ModLoader.Assets;
 using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
@@ -59,21 +55,6 @@ namespace Terraria.ModLoader
 			equipTextures.Clear();
 			translations.Clear();
 
-			if (!Main.dedServ) {
-				// TODO: restore this
-				// Manually Dispose IDisposables to free up unmanaged memory immediately
-				/* Skip this for now, too many mods don't unload properly and run into exceptions.
-				foreach (var sound in sounds)
-				{
-					sound.Value.Dispose();
-				}
-				foreach (var texture in textures)
-				{
-					texture.Value.Dispose();
-				}
-				*/
-			}
-
 			musics.Clear();
 
 			Assets?.Dispose();
@@ -88,7 +69,7 @@ namespace Terraria.ModLoader
 				AsyncLoadQueue.Dequeue().Wait();
 
 			AutoloadLocalization();
-			ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName, Assets);
+			ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName);
 
 			IList<Type> modSounds = new List<Type>();
 
@@ -122,53 +103,11 @@ namespace Terraria.ModLoader
 
 		internal void PrepareAssets()
 		{
-			//Open the file.
-
-			if (File != null)
-				fileHandle = File.Open();
-
-			//Create the asset repository
-
-			var sources = new List<IContentSource>();
-
-			if (File!=null) {
-				sources.Add(new TModContentSource(File));
-			}
-
-			var assetReaderCollection = new AssetReaderCollection();
-
-			if (!Main.dedServ) {
-				//TODO: Now, how do we unhardcode this?
-				
-				//Ambiguous
-				assetReaderCollection.RegisterReader(new XnbReader(Main.instance.Services), ".xnb");
-				//Textures
-				assetReaderCollection.RegisterReader(new PngReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
-				assetReaderCollection.RegisterReader(new RawImgReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".rawimg");
-				//Audio
-				assetReaderCollection.RegisterReader(new WavReader(), ".wav");
-				assetReaderCollection.RegisterReader(new MP3Reader(), ".mp3");
-				assetReaderCollection.RegisterReader(new OggReader(), ".ogg");
-			}
-
-			var delayedLoadTypes = new List<Type> {
-				typeof(Texture2D),
-				typeof(DynamicSpriteFont),
-				typeof(SpriteFont),
-				typeof(Effect)
+			fileHandle = File?.Open();
+			RootContentSource = CreateDefaultContentSource();
+			Assets = new AssetRepository(Main.instance.Services.Get<AssetReaderCollection>(), new[] { RootContentSource }) {
+				AssetLoadFailHandler = Main.OnceFailedLoadingAnAsset
 			};
-
-			SetupAssetRepository(sources, assetReaderCollection, delayedLoadTypes);
-
-			var asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
-
-			foreach (var type in delayedLoadTypes) {
-				asyncAssetLoader.RequireTypeCreationOnTransfer(type);
-			}
-
-			var assetLoader = new AssetLoader(assetReaderCollection);
-
-			Assets = new ModAssetRepository(assetReaderCollection, assetLoader, asyncAssetLoader, sources.ToArray());
 		}
 
 		private void AutoloadSounds(IList<Type> modSounds) {
@@ -176,7 +115,7 @@ namespace Terraria.ModLoader
 
 			const string SoundFolder = "Sounds/";
 
-			foreach (string soundPath in Assets.EnumeratePaths<SoundEffect>().Where(t => t.Contains(SoundFolder))) {
+			foreach (string soundPath in RootContentSource.EnumerateAssets().Where(t => t.Contains(SoundFolder))) {
 				string substring = soundPath.Substring(soundPath.IndexOf(SoundFolder) + SoundFolder.Length);
 				SoundType soundType = SoundType.Custom;
 
@@ -197,6 +136,7 @@ namespace Terraria.ModLoader
 				AddSound(soundType, $"{Name}/{soundPath}", modSound);
 			}
 
+			// todo: musics never set/added to
 			foreach (string music in musics.Keys.Where(t => t.StartsWith("Sounds/"))) {
 				string substring = music.Substring("Sounds/".Length);
 
@@ -243,6 +183,10 @@ namespace Terraria.ModLoader
 			foreach (var value in modTranslationDictionary.Values) {
 				AddTranslation(value);
 			}
+		}
+
+		internal void TransferAllAssets() {
+			Assets.TransferAllAssets();
 		}
 	}
 }

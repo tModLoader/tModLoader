@@ -74,7 +74,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void AutoloadBackgrounds(Mod mod) {
-			foreach (string fullTexturePath in mod.Assets.EnumeratePaths<Texture2D>().Where(t => t.Contains("Backgrounds/"))) {
+			foreach (string fullTexturePath in mod.RootContentSource.EnumerateAssets().Where(t => t.Contains("Backgrounds/"))) {
 				string texturePath = Path.ChangeExtension(fullTexturePath, null);
 				string textureKey = $"{mod.Name}/{texturePath}";
 
@@ -126,6 +126,8 @@ namespace Terraria.ModLoader
 	[Autoload(Side = ModSide.Client)]
 	public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgroundStyle>
 	{
+		internal static bool loaded = false;
+
 		public SurfaceBackgroundStylesLoader() {
 			Initialize(Main.BG_STYLES_COUNT);
 		}
@@ -133,12 +135,17 @@ namespace Terraria.ModLoader
 		internal override void ResizeArrays() {
 			Array.Resize(ref Main.bgAlphaFrontLayer, TotalCount);
 			Array.Resize(ref Main.bgAlphaFarBackLayer, TotalCount);
+			loaded = true;
+		}
+
+		internal override void Unload() {
+			loaded = false;
 		}
 
 		public override void ChooseStyle(out int style, out SceneEffectPriority priority) {
 			priority = SceneEffectPriority.None; style = -1;
 
-			if (!GlobalBackgroundStyleLoader.loaded) {
+			if (!loaded || !GlobalBackgroundStyleLoader.loaded) {
 				return;
 			}
 

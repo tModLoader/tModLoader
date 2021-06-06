@@ -41,13 +41,8 @@ namespace ExampleMod.Content.Items.Tools
 		}
 
 		public override void Unload() { //This is called once on mod reload when this piece of content is being unloaded.
-			// Disposes the texture, if it's not null.
 			// It's currently pretty important to unload your static fields like this, to avoid having parts of your mod remain in memory when it's been unloaded.
-			if (chainTexture != null) {
-				chainTexture.Dispose();
-
-				chainTexture = null;
-			}
+			chainTexture = null;
 		}
 
 		public override void SetStaticDefaults() {
