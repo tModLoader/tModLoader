@@ -3243,19 +3243,16 @@
  					menuMode = 0;
  					netMode = 0;
  				}
-@@ -36601,8 +_,10 @@
+@@ -36601,7 +_,8 @@
  				}
  
  				num11++;
 -				if (SocialAPI.Workshop != null) {
 +				//if (SocialAPI.Workshop != null) {
 +				if (true) {
--					array9[num11] = Language.GetText("UI.Workshop").Value;
-+					//array9[num11] = Language.GetText("UI.Workshop").Value;
-+					array9[num11] = Language.GetText("tModLoader.ModWorkshop").Value;
+ 					array9[num11] = Language.GetText("UI.Workshop").Value;
  					if (selectedMenu == num11) {
  						SoundEngine.PlaySound(10);
- 						menuMode = 888;
 @@ -36620,6 +_,7 @@
  				}
  

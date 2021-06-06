@@ -38,24 +38,27 @@
  			UIPanel uIPanel = new UIPanel();
  			uIPanel.Width.Set(0f, 1f);
  			uIPanel.Height.Set(num5, 0f);
-@@ -84,11 +_,11 @@
+@@ -84,12 +_,13 @@
  			_buttonLogs = uITextPanel3;
  			UIElement uIElement3 = MakeButton_OpenWorkshopWorldsImportMenu();
  			uIElement3.HAlign = 0f;
 -			uIElement3.VAlign = 0f;
-+			uIElement3.VAlign = 0.67f;
++			uIElement3.VAlign = 1f;
  			uIElement2.Append(uIElement3);
  			uIElement3 = MakeButton_OpenUseResourcePacksMenu();
  			uIElement3.HAlign = 1f;
 -			uIElement3.VAlign = 0f;
-+			uIElement3.VAlign = 0.67f;
++			uIElement3.VAlign = 1f;
  			uIElement2.Append(uIElement3);
++			/*
  			uIElement3 = MakeButton_OpenPublishWorldsMenu();
  			uIElement3.HAlign = 0f;
-@@ -98,6 +_,22 @@
+ 			uIElement3.VAlign = 1f;
+@@ -98,6 +_,23 @@
  			uIElement3.HAlign = 1f;
  			uIElement3.VAlign = 1f;
  			uIElement2.Append(uIElement3);
++			*/
 +			uIElement3 = MakeButton_OpenModsMenu();
 +			uIElement3.HAlign = 0f;
 +			uIElement3.VAlign = 0f;
@@ -66,34 +69,16 @@
 +			uIElement2.Append(uIElement3);
 +			uIElement3 = MakeButton_OpenModBrowserMenu();
 +			uIElement3.HAlign = 0f;
-+			uIElement3.VAlign = 0.33f;
++			uIElement3.VAlign = 0.5f;
 +			uIElement2.Append(uIElement3);
 +			uIElement3 = MakeButton_TBD();
 +			uIElement3.HAlign = 1f;
-+			uIElement3.VAlign = 0.33f;
++			uIElement3.VAlign = 0.5f;
 +			uIElement2.Append(uIElement3);
  			AddHorizontalSeparator(uIPanel, num6 + 6 + 6);
  			AddDescriptionPanel(uIPanel, num6 + 8 + 6 + 6, num5 - num6 - 12 - 12 - 8, "desc");
  			uIPanel.Append(uIElement2);
-@@ -139,7 +_,7 @@
- 
- 		private void Click_OpenResourcePackPublishMenu(UIMouseEvent evt, UIElement listeningElement) {
- 			SoundEngine.PlaySound(10);
--			Main.MenuUI.SetState(new UIWorkshopSelectResourcePackToPublish(this));
-+			//Main.MenuUI.SetState(new UIWorkshopSelectResourcePackToPublish(this));
- 		}
- 
- 		private UIElement MakeButton_OpenPublishWorldsMenu() {
-@@ -151,7 +_,7 @@
- 
- 		private void Click_OpenWorldPublishMenu(UIMouseEvent evt, UIElement listeningElement) {
- 			SoundEngine.PlaySound(10);
--			Main.MenuUI.SetState(new UIWorkshopSelectWorldToPublish(this));
-+			//Main.MenuUI.SetState(new UIWorkshopSelectWorldToPublish(this));
- 		}
- 
- 		private static void AddHorizontalSeparator(UIElement Container, float accumualtedHeight) {
-@@ -166,17 +_,33 @@
+@@ -166,6 +_,20 @@
  
  		public void ShowOptionDescription(UIMouseEvent evt, UIElement listeningElement) {
  			LocalizedText localizedText = null;
@@ -114,27 +99,12 @@
  			if (listeningElement == _buttonUseResourcePacks)
  				localizedText = Language.GetText("Workshop.HubDescriptionUseResourcePacks");
  
- 			if (listeningElement == _buttonPublishResourcePacks)
--				localizedText = Language.GetText("Workshop.HubDescriptionPublishResourcePacks");
-+				//localizedText = Language.GetText("Workshop.HubDescriptionPublishResourcePacks");
-+				localizedText = Language.GetText("Not Implemented in tModLoader 1.4");
- 
- 			if (listeningElement == _buttonImportWorlds)
- 				localizedText = Language.GetText("Workshop.HubDescriptionImportWorlds");
- 
- 			if (listeningElement == _buttonPublishWorlds)
--				localizedText = Language.GetText("Workshop.HubDescriptionPublishWorlds");
-+				//localizedText = Language.GetText("Workshop.HubDescriptionPublishWorlds");
-+				localizedText = Language.GetText("Not Implemented in tModLoader 1.4");
- 
- 			if (localizedText != null)
- 				_descriptionText.SetText(localizedText);
 @@ -221,7 +_,7 @@
  			int num = -3;
  			int num2 = -3;
  			uIPanel.Width = StyleDimension.FromPixelsAndPercent(num, 0.5f);
 -			uIPanel.Height = StyleDimension.FromPixelsAndPercent(num2, 0.5f);
-+			uIPanel.Height = StyleDimension.FromPixelsAndPercent(num2, 0.25f);
++			uIPanel.Height = StyleDimension.FromPixelsAndPercent(num2, 0.33f);
  			uIPanel.OnMouseOver += SetColorsToHovered;
  			uIPanel.OnMouseOut += SetColorsToNotHovered;
  			uIPanel.BackgroundColor = new Color(63, 82, 151) * 0.7f;
@@ -154,11 +124,20 @@
  			SoundEngine.PlaySound(11);
  		}
  
-@@ -315,6 +_,7 @@
- 			UILinkPoint linkPoint2 = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonPublishResourcePacks);
- 			UILinkPoint linkPoint3 = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonImportWorlds);
- 			UILinkPoint linkPoint4 = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonPublishWorlds);
+@@ -308,6 +_,8 @@
+ 		}
+ 
+ 		private void SetupGamepadPoints(SpriteBatch spriteBatch) {
 +			//TODO: Add workshop mod gamepad link point
- 			UILinkPoint linkPoint5 = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonBack);
- 			UILinkPoint linkPoint6 = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonLogs);
- 			_helper.PairLeftRight(linkPoint3, linkPoint);
++			/*
+ 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
+ 			int num = 3000;
+ 			int idRangeEndExclusive = num;
+@@ -325,6 +_,7 @@
+ 			_helper.PairUpDown(linkPoint4, linkPoint5);
+ 			_helper.PairUpDown(linkPoint2, linkPoint6);
+ 			_helper.MoveToVisuallyClosestPoint(num, idRangeEndExclusive);
++			*/
+ 		}
+ 
+ 		static UIWorkshopHub() {
