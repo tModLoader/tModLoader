@@ -3243,24 +3243,13 @@
  					menuMode = 0;
  					netMode = 0;
  				}
-@@ -36592,17 +_,19 @@
- 					menuMode = 12;
- 				}
--
-+				
- 				num11++;
- 				array9[num11] = Lang.menu[131].Value;
--				if (selectedMenu == num11) {
-+ 				if (selectedMenu == num11) {
- 					SoundEngine.PlaySound(10);
- 					menuMode = 888;
- 					MenuUI.SetState(AchievementsMenu);
+@@ -36601,8 +_,10 @@
  				}
  
  				num11++;
-+				if (true) {
 -				if (SocialAPI.Workshop != null) {
 +				//if (SocialAPI.Workshop != null) {
++				if (true) {
 -					array9[num11] = Language.GetText("UI.Workshop").Value;
 +					//array9[num11] = Language.GetText("UI.Workshop").Value;
 +					array9[num11] = Language.GetText("tModLoader.ModWorkshop").Value;

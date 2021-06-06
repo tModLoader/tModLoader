@@ -96,8 +96,7 @@ namespace Terraria.ModLoader.UI
 			if (Main.menuMode == loadModsID) {
 				if (ModLoader.ShowFirstLaunchWelcomeMessage) {
 					ModLoader.ShowFirstLaunchWelcomeMessage = false;
-					//infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
-					infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessageBeta"), Main.menuMode);
+					infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
 				}
 				//else if (ModLoader.ShowWhatsNew) {
 				//	// TODO: possibly pull from github
