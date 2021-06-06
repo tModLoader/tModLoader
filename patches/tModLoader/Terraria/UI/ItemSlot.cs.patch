@@ -102,8 +102,12 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1016,7 +_,9 @@
- 					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < 5088 && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
+@@ -1013,10 +_,12 @@
+ 							Recipe.FindRecipes();
+ 						}
+ 					}
+-					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < 5088 && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
++					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < ItemLoader.ItemCount && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
  						if (Main.mouseRightRelease) {
  							player.OpenFishingCrate(inv[slot].type);
 +							if (ItemLoader.ConsumeItem(inv[slot], player))

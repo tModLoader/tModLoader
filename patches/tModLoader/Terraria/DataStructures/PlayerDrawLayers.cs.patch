@@ -18,6 +18,17 @@
  				int num = ArmorIDs.Head.Sets.FrontToBackID[drawinfo.drawPlayer.head];
  				if (num >= 0) {
  					Vector2 helmetOffset = drawinfo.helmetOffset;
+@@ -273,6 +_,10 @@
+ 		}
+ 
+ 		public static void DrawPlayer_07_LeinforsHairShampoo(ref PlayerDrawSet drawinfo) {
++			if (drawinfo.headOnlyRender) {
++				return;
++			}
++
+ 			if (drawinfo.drawPlayer.leinforsHair && (drawinfo.fullHair || drawinfo.hatHair || drawinfo.drawPlayer.head == -1 || drawinfo.drawPlayer.head == 0) && drawinfo.drawPlayer.hair != 12 && drawinfo.shadow == 0f && Main.rgbToHsl(drawinfo.colorHead).Z > 0.2f) {
+ 				if (Main.rand.Next(20) == 0 && !drawinfo.hatHair) {
+ 					Rectangle r = Utils.CenteredRectangle(drawinfo.Position + drawinfo.drawPlayer.Size / 2f + new Vector2(0f, drawinfo.drawPlayer.gravDir * -20f), new Vector2(20f, 14f));
 @@ -348,7 +_,7 @@
  				drawinfo.DrawDataCache.Add(item);
  			}
@@ -103,6 +114,17 @@
  				return;
  
  			if (drawinfo.isSitting) {
+@@ -1267,6 +_,10 @@
+ 		}
+ 
+ 		public static void DrawPlayer_14_2_GlassSlipperSparkles(ref PlayerDrawSet drawinfo) {
++			if (drawinfo.headOnlyRender) {
++				return;
++			}
++
+ 			if (drawinfo.shadow == 0f) {
+ 				if (Main.rand.Next(60) == 0) {
+ 					Rectangle r = Utils.CenteredRectangle(drawinfo.Position + drawinfo.drawPlayer.Size / 2f + new Vector2(0f, drawinfo.drawPlayer.gravDir * 16f), new Vector2(20f, 8f));
 @@ -1291,7 +_,7 @@
  		}
  

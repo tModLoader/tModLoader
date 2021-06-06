@@ -59,6 +59,8 @@ namespace Terraria.ModLoader
 
 		private delegate bool DelegateHijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber);
 
+		private delegate void DelegateTileCountsAvailable(ReadOnlySpan<int> tileCounts);
+
 		//HookLists
 
 		private static HookList HookOnWorldLoad = AddHook<Action>(s => s.OnWorldLoad);
@@ -137,7 +139,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookResetNearbyTileEffects = AddHook<Action>(s => s.ResetNearbyTileEffects);
 
-		private static HookList HookTileCountsAvailable = AddHook<Action<int[]>>(s => s.TileCountsAvailable);
+		private static HookList HookTileCountsAvailable = AddHook<DelegateTileCountsAvailable>(s => s.TileCountsAvailable);
 
 		private static HookList HookModifyHardmodeTasks = AddHook<Action<List<GenPass>>>(s => s.ModifyHardmodeTasks);
 

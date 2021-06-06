@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/DataStructures/PlayerDrawSet.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDrawSet.cs
-@@ -5,11 +_,21 @@
+@@ -5,10 +_,11 @@
  using Terraria.GameContent.Golf;
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
@@ -8,27 +8,16 @@
  
  namespace Terraria.DataStructures
  {
- 	public struct PlayerDrawSet
+-	public struct PlayerDrawSet
++	public partial struct PlayerDrawSet
  	{
-+		//An absolutely utterly epic trick to avoid big patches for disabling lighting below.
-+		private class Lighting
-+		{
-+			public static bool enabled;
-+			public static Color GetColor(int x, int y) => enabled ? Terraria.Lighting.GetColor(x, y) : Color.White;
-+			public static Color GetColor(int x, int y, Color oldColor) => enabled ? Terraria.Lighting.GetColor(x, y, oldColor) : oldColor;
-+			public static Color GetColorClamped(int x, int y, Color oldColor) => enabled ? Terraria.Lighting.GetColorClamped(x, y, oldColor) : oldColor;
-+		}
-+
  		public List<DrawData> DrawDataCache;
  		public List<int> DustCache;
- 		public List<int> GoreCache;
-@@ -128,7 +_,9 @@
- 
+@@ -129,6 +_,8 @@
  		public Vector2 Center => new Vector2(Position.X + (float)(drawPlayer.width / 2), Position.Y + (float)(drawPlayer.height / 2));
  
--		public void BoringSetup(Player player, List<DrawData> drawData, List<int> dust, List<int> gore, Vector2 drawPosition, float shadowOpacity, float rotation, Vector2 rotationOrigin) {
-+		public void BoringSetup(Player player, List<DrawData> drawData, List<int> dust, List<int> gore, Vector2 drawPosition, float shadowOpacity, float rotation, Vector2 rotationOrigin, bool useLighting = true) {
-+			Lighting.enabled = useLighting;
+ 		public void BoringSetup(Player player, List<DrawData> drawData, List<int> dust, List<int> gore, Vector2 drawPosition, float shadowOpacity, float rotation, Vector2 rotationOrigin) {
++			headOnlyRender = false;
 +
  			DrawDataCache = drawData;
  			DustCache = dust;
@@ -42,21 +31,15 @@
  			}
  
  			drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
-@@ -253,7 +_,7 @@
+@@ -1049,8 +_,10 @@
+ 				DustCache.Add(dust21.dustIndex);
+ 			}
  
- 			playerEffect = SpriteEffects.None;
- 			itemEffect = SpriteEffects.FlipHorizontally;
--			colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(), shadow);
-+			colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting), shadow);
- 			colorEyeWhites = drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)((double)Position.X + (double)drawPlayer.width * 0.5) / 16, (int)(((double)Position.Y + (double)drawPlayer.height * 0.25) / 16.0), Color.White), shadow);
- 			colorEyes = drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)((double)Position.X + (double)drawPlayer.width * 0.5) / 16, (int)(((double)Position.Y + (double)drawPlayer.height * 0.25) / 16.0), drawPlayer.eyeColor), shadow);
- 			colorHead = drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)((double)Position.X + (double)drawPlayer.width * 0.5) / 16, (int)(((double)Position.Y + (double)drawPlayer.height * 0.25) / 16.0), drawPlayer.skinColor), shadow);
-@@ -1053,7 +_,7 @@
- 				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2) {
++			bool fullBright = false;
++			PlayerHooks.DrawEffects(this, ref num12, ref num13, ref num14, ref num15, ref fullBright);
+ 			if (num12 != 1f || num13 != 1f || num14 != 1f || num15 != 1f) {
+-				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2) {
++				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2 || fullBright) {
  					colorEyeWhites = drawPlayer.GetImmuneAlpha(Color.White, shadow);
  					colorEyes = drawPlayer.GetImmuneAlpha(drawPlayer.eyeColor, shadow);
--					colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting: false), shadow);
-+					colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting), shadow);
- 					colorHead = drawPlayer.GetImmuneAlpha(drawPlayer.skinColor, shadow);
- 					colorBodySkin = drawPlayer.GetImmuneAlpha(drawPlayer.skinColor, shadow);
- 					colorShirt = drawPlayer.GetImmuneAlpha(drawPlayer.shirtColor, shadow);
+ 					colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting: false), shadow);
