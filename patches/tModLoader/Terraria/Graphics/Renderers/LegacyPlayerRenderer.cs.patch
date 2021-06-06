@@ -22,7 +22,7 @@
  			}
 +			*/
 +
-+			DrawPlayerInternal(camera, drawPlayer, position + Main.screenPosition, 0f, Vector2.Zero, 0f, scale, useLighting: false, headOnly: true);
++			DrawPlayerInternal(camera, drawPlayer, position + Main.screenPosition, 0f, Vector2.Zero, alpha: alpha, scale: scale, headOnly: true);
  		}
  
  		private void CreateOutlines(float alpha, float scale, Color borderColor) {
@@ -33,16 +33,23 @@
 +			DrawPlayerInternal(camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
 +		}
 +
-+		private void DrawPlayerInternal(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f, bool useLighting = true, bool headOnly = false) {
++		private void DrawPlayerInternal(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float alpha = 1f, float scale = 1f, bool headOnly = false) {
  			if (drawPlayer.ShouldNotDraw)
  				return;
  
-@@ -117,7 +_,8 @@
+@@ -117,7 +_,15 @@
  			_drawData.Clear();
  			_dust.Clear();
  			_gore.Clear();
++
++			if (headOnly) {
++				drawinfo.HeadOnlySetup(drawPlayer, _drawData, _dust, _gore, position.X, position.Y, alpha, scale);
++			}
++			else {
 -			drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin);
-+			drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin, useLighting);
++				drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin);
++			}
++
 +			/*
  			PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawinfo);
  			PlayerDrawLayers.DrawPlayer_01_2_JimsCloak(ref drawinfo);

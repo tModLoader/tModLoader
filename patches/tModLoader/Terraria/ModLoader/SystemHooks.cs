@@ -313,7 +313,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void TileCountsAvailable(int[] tileCounts) {
+		public static void TileCountsAvailable(ReadOnlySpan<int> tileCounts) {
 			foreach (var system in HookTileCountsAvailable.arr) {
 				system.TileCountsAvailable(tileCounts);
 			}
