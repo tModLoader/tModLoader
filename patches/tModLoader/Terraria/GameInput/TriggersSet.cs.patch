@@ -58,7 +58,7 @@
  			if (HotbarScrollCD > 0 && (!(HotbarScrollCD == 1 && flag) || PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired <= 0))
  				HotbarScrollCD--;
 +
-+			PlayerHooks.ProcessTriggers(p, this);
++			PlayerLoader.ProcessTriggers(p, this);
  		}
  
  		public void CopyIntoDuringChat(Player p) {

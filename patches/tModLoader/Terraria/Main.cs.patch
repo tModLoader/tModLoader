@@ -1146,7 +1146,7 @@
  
  			if (CanPauseGame()) {
  				DoUpdate_WhilePaused();
-+				PlayerHooks.UpdateAutopause(player[myPlayer]);
++				PlayerLoader.UpdateAutopause(player[myPlayer]);
 +
  				gamePaused = true;
  				return;
@@ -1197,7 +1197,7 @@
  			if (flag)
  				NetMessage.SendData(138);
  
-+			PlayerHooks.SendClientChanges(Main.player[myPlayer], clientPlayer);
++			PlayerLoader.SendClientChanges(Main.player[myPlayer], clientPlayer);
 +
  			clientPlayer = (Player)Main.player[myPlayer].clientClone();
  		}
@@ -1641,7 +1641,7 @@
  						num6 += num6 * (1f - player[myPlayer].stealth);
  
 +					ItemLoader.GetWeaponKnockback(item, player[myPlayer], ref num6);
-+					PlayerHooks.GetWeaponKnockback(player[myPlayer], item, ref num6);
++					PlayerLoader.GetWeaponKnockback(player[myPlayer], item, ref num6);
 +					*/
  					if (num6 == 0f)
  						toolTipLine[numLines] = Lang.tip[14].Value;
@@ -2471,8 +2471,8 @@
  					num15 = 1;
  
 +				reason = Language.GetTextValue("tModLoader.DefaultNurseCantHealChat");
-+				canHeal = PlayerHooks.ModifyNurseHeal(player[myPlayer], npc[player[myPlayer].talkNPC], ref health, ref removeDebuffs, ref reason);
-+				PlayerHooks.ModifyNursePrice(player[myPlayer], npc[player[myPlayer].talkNPC], health, removeDebuffs, ref num15);
++				canHeal = PlayerLoader.ModifyNurseHeal(player[myPlayer], npc[player[myPlayer].talkNPC], ref health, ref removeDebuffs, ref reason);
++				PlayerLoader.ModifyNursePrice(player[myPlayer], npc[player[myPlayer].talkNPC], health, removeDebuffs, ref num15);
 +
  				if (num15 < 0)
  					num15 = 0;
@@ -2549,7 +2549,7 @@
  							}
 +							
 +							SkipDebuffRemoval:
-+							PlayerHooks.PostNurseHeal(LocalPlayer, npc[LocalPlayer.talkNPC], health, removeDebuffs, num4);
++							PlayerLoader.PostNurseHeal(LocalPlayer, npc[LocalPlayer.talkNPC], health, removeDebuffs, num4);
  						}
  						else {
  							int num25 = rand.Next(3);
@@ -3527,7 +3527,7 @@
  		}
  
  		private static void DrawMapFullscreenBackground(Vector2 screenPosition, int screenWidth, int screenHeight) {
-+			Texture2D modTexture = PlayerHooks.GetMapBackgroundImage(LocalPlayer);
++			Texture2D modTexture = PlayerLoader.GetMapBackgroundImage(LocalPlayer);
 +			if (modTexture != null) {
 +				spriteBatch.Draw(modTexture, new Microsoft.Xna.Framework.Rectangle(0, 0, screenWidth, screenHeight), Microsoft.Xna.Framework.Color.White);
 +				return;
@@ -3707,7 +3707,7 @@
  						else if (player.scope)
  							num5 = 0.5f;
  
-+						PlayerHooks.ModifyZoom(LocalPlayer, ref num5);
++						PlayerLoader.ModifyZoom(LocalPlayer, ref num5);
  						Vector2 vector3 = (MouseScreen - new Vector2(screenWidth, screenHeight) / 2f) / (new Vector2(screenWidth, screenHeight) / 2f);
  						num4 = 48f;
  						if (vector3 != Vector2.Zero && num5 != -1f) {
@@ -3718,7 +3718,7 @@
 -					vector2.X = (float)(num6 - screenWidth / 2) / 1.25f;
 -					vector2.Y = (float)(num7 - screenHeight / 2) / 1.25f;
 +					float zoom = 0.8f;
-+					PlayerHooks.ModifyZoom(LocalPlayer, ref zoom);
++					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
 +					vector2.X = (num6 - screenWidth / 2) * zoom;
 +					vector2.Y = (num7 - screenHeight / 2) * zoom;
  					flag = true;
@@ -3731,7 +3731,7 @@
 -					vector2.X = (float)(num8 - screenWidth / 2) / 1.5f;
 -					vector2.Y = (float)(num9 - screenHeight / 2) / 1.5f;
 +					float zoom = 3f/2f;
-+					PlayerHooks.ModifyZoom(LocalPlayer, ref zoom);
++					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
 +					vector2.X = (num8 - screenWidth / 2) * zoom;
 +					vector2.Y = (num9 - screenHeight / 2) * zoom;
  					flag = true;
@@ -3744,7 +3744,7 @@
 -					vector2.X = (float)(num10 - screenWidth / 2) / 1.5f;
 -					vector2.Y = (float)(num11 - screenHeight / 2) / 1.5f;
 +					float zoom = 3f/2f;
-+					PlayerHooks.ModifyZoom(LocalPlayer, ref zoom);
++					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
 +					vector2.X = (num10 - screenWidth / 2) * zoom;
 +					vector2.Y = (num11 - screenHeight / 2) * zoom;
  					flag = true;
@@ -3755,7 +3755,7 @@
  						num13 = 0;
  
 +					float zoom = 0.5f;
-+					PlayerHooks.ModifyZoom(player[myPlayer], ref zoom);
++					PlayerLoader.ModifyZoom(player[myPlayer], ref zoom);
 -					vector2.X = (float)(num12 - screenWidth / 2) / 2f;
 +					vector2.X = (num12 - screenWidth / 2) * zoom;
 -					vector2.Y = (float)(num13 - screenHeight / 2) / 2f;
@@ -3777,7 +3777,7 @@
 +						mouseYClamped = 0;
 +
 +					float zoom = -1f;
-+					PlayerHooks.ModifyZoom(LocalPlayer, ref zoom);
++					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
 +					if (zoom != -1f) {
 +						vector2.X = (mouseXClamped - screenWidth / 2) * zoom;
 +						vector2.Y = (mouseYClamped - screenHeight / 2) * zoom;
@@ -3789,7 +3789,7 @@
  
  			screenPosition.X = (int)screenPosition.X;
  			screenPosition.Y = (int)screenPosition.Y;
-+			PlayerHooks.ModifyScreenPosition(LocalPlayer);
++			PlayerLoader.ModifyScreenPosition(LocalPlayer);
 +			SystemHooks.ModifyScreenPosition();
  			ClampScreenPositionToWorld();
  		}

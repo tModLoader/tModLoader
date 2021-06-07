@@ -43,7 +43,7 @@ namespace Terraria.ModLoader
 		
 		protected sealed override void Register() {
 			ModTypeLookup<ModPlayer>.Register(this);
-			PlayerHooks.Add(this);
+			PlayerLoader.Add(this);
 		}
 
 		/// <summary>

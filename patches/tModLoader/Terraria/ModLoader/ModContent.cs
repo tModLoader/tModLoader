@@ -529,7 +529,7 @@ namespace Terraria.ModLoader
 			NPCLoader.Unload();
 			NPCHeadLoader.Unload();
 			BossBarLoader.Unload();
-			PlayerHooks.Unload();
+			PlayerLoader.Unload();
 			BuffLoader.Unload();
 			MountLoader.Unload();
 			RarityLoader.Unload();
@@ -590,7 +590,7 @@ namespace Terraria.ModLoader
 			NPCHeadLoader.ResizeAndFillArrays();
 			MountLoader.ResizeArrays();
 			BuffLoader.ResizeArrays();
-			PlayerHooks.RebuildHooks();
+			PlayerLoader.RebuildHooks();
 			PlayerDrawLayerLoader.ResizeArrays();
 			SystemHooks.ResizeArrays();
 
