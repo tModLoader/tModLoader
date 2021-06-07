@@ -69,6 +69,15 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		public static PingMapLayer Pings = new PingMapLayer();
+@@ -516,7 +_,7 @@
+ 		public static int maxScreenW = 1920;
+ 		public static int maxScreenH = 1200;
+ 		public static int minScreenW = 800;
+-		public static int minScreenH = 600;
++		public static int minScreenH = 720; // Used to be '600'
+ 		public static float iS = 1f;
+ 		public static bool render;
+ 		public static int qaStyle;
 @@ -543,7 +_,7 @@
  		public static int instantBGTransitionCounter = 2;
  		public static int bgDelay;
@@ -3234,26 +3243,17 @@
  					menuMode = 0;
  					netMode = 0;
  				}
-@@ -36592,14 +_,18 @@
- 					menuMode = 12;
+@@ -36601,7 +_,9 @@
  				}
  
-+				if (Steam.IsSteamApp)
-+					goto SkipAchievements;
+ 				num11++;
+-				if (SocialAPI.Workshop != null) {
 +
- 				num11++;
- 				array9[num11] = Lang.menu[131].Value;
-+				//Comment to join two patches.
- 				if (selectedMenu == num11) {
- 					SoundEngine.PlaySound(10);
- 					menuMode = 888;
- 					MenuUI.SetState(AchievementsMenu);
- 				}
--
-+	SkipAchievements:
- 				num11++;
- 				if (SocialAPI.Workshop != null) {
++				// The workshop hub itself will no longer be exclusive to Steam versions.
++				if (true) { //if (SocialAPI.Workshop != null) {
  					array9[num11] = Language.GetText("UI.Workshop").Value;
+ 					if (selectedMenu == num11) {
+ 						SoundEngine.PlaySound(10);
 @@ -36620,6 +_,7 @@
  				}
  
