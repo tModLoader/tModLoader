@@ -273,7 +273,7 @@
 -				Console.WriteLine(Language.GetTextValue("Net.ServerAutoShutdown"));
 +				Logging.ServerConsoleLine(Language.GetTextValue("Net.ServerAutoShutdown"));
  				WorldFile.SaveWorld();
-+				SystemHooks.OnWorldUnload();
++				SystemLoader.OnWorldUnload();
 +				TileIO.PostExitWorldCleanup();
  				Netplay.Disconnect = true;
  			}

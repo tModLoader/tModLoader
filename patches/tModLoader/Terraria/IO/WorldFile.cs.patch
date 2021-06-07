@@ -22,7 +22,7 @@
  							CheckSavedOreTiers();
  							binaryReader.Close();
  							memoryStream.Close();
-+							SystemHooks.OnWorldLoad();
++							SystemLoader.OnWorldLoad();
 +							WorldIO.Load(Main.worldPathName, flag);
  							if (num3 != 0)
  								WorldGen.loadFailed = true;

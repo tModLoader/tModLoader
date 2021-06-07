@@ -14,7 +14,7 @@ using Terraria.WorldBuilding;
 
 namespace Terraria.ModLoader
 {
-	partial class SystemHooks
+	partial class SystemLoader
 	{
 		private class HookList
 		{
