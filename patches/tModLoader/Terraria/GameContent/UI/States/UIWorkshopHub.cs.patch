@@ -1,26 +1,27 @@
 --- src/Terraria/Terraria/GameContent/UI/States/UIWorkshopHub.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorkshopHub.cs
-@@ -10,9 +_,9 @@
+@@ -10,7 +_,7 @@
  
  namespace Terraria.GameContent.UI.States
  {
 -	public class UIWorkshopHub : UIState, IHaveBackButtonCommand
 +	public partial class UIWorkshopHub : UIState, IHaveBackButtonCommand
  	{
--		private UIState _previousUIState;
-+		public UIState PreviousUIState { get; set; }
+ 		private UIState _previousUIState;
  		private UIText _descriptionText;
- 		private UIElement _buttonUseResourcePacks;
- 		private UIElement _buttonPublishResourcePacks;
-@@ -25,7 +_,7 @@
+@@ -24,6 +_,12 @@
+ 
  		public static event Action OnWorkshopHubMenuOpened;
  
++		// Added by TML.
++		public UIState PreviousUIState {
++			get => _previousUIState;
++			set => _previousUIState = value;
++		}
++
  		public UIWorkshopHub(UIState stateToGoBackTo) {
--			_previousUIState = stateToGoBackTo;
-+			PreviousUIState = stateToGoBackTo;
+ 			_previousUIState = stateToGoBackTo;
  		}
- 
- 		public void EnterHub() {
 @@ -37,14 +_,14 @@
  			int num = 20;
  			int num2 = 250;

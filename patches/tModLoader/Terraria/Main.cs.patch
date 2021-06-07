@@ -74,7 +74,7 @@
  		public static int maxScreenH = 1200;
  		public static int minScreenW = 800;
 -		public static int minScreenH = 600;
-+		public static int minScreenH = 720;
++		public static int minScreenH = 720; // Used to be '600'
  		public static float iS = 1f;
  		public static bool render;
  		public static int qaStyle;
@@ -3243,13 +3243,14 @@
  					menuMode = 0;
  					netMode = 0;
  				}
-@@ -36601,7 +_,8 @@
+@@ -36601,7 +_,9 @@
  				}
  
  				num11++;
 -				if (SocialAPI.Workshop != null) {
-+				//if (SocialAPI.Workshop != null) {
-+				if (true) {
++
++				// The workshop hub itself will no longer be exclusive to Steam versions.
++				if (true) { //if (SocialAPI.Workshop != null) {
  					array9[num11] = Language.GetText("UI.Workshop").Value;
  					if (selectedMenu == num11) {
  						SoundEngine.PlaySound(10);

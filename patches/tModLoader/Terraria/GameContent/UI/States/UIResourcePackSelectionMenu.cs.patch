@@ -1,16 +1,15 @@
 --- src/Terraria/Terraria/GameContent/UI/States/UIResourcePackSelectionMenu.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIResourcePackSelectionMenu.cs
-@@ -16,8 +_,11 @@
+@@ -35,6 +_,12 @@
+ 		private const string _snapPointName_openFolder = "OpenFolder";
+ 		private UIGamepadHelper _helper;
  
- namespace Terraria.GameContent.UI.States
- {
--	public class UIResourcePackSelectionMenu : UIState, IHaveBackButtonCommand
--	{
-+	public class UIResourcePackSelectionMenu : UIState, IHaveBackButtonCommand {
++		// Added by TML.
 +		public UIState PreviousUIState {
-+			get => _uiStateToGoBackTo; 
++			get => _uiStateToGoBackTo;
 +			set => _uiStateToGoBackTo = value;
 +		}
- 		private readonly AssetSourceController _sourceController;
- 		private UIList _availablePacksList;
- 		private UIList _enabledPacksList;
++
+ 		public UIResourcePackSelectionMenu(UIState uiStateToGoBackTo, AssetSourceController sourceController, ResourcePackList currentResourcePackList) {
+ 			_sourceController = sourceController;
+ 			_uiStateToGoBackTo = uiStateToGoBackTo;

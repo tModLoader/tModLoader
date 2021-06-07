@@ -1,13 +1,15 @@
 --- src/Terraria/Terraria/GameContent/UI/States/UIWorkshopSelectResourcePackToPublish.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorkshopSelectResourcePackToPublish.cs
-@@ -16,6 +_,10 @@
- {
- 	public class UIWorkshopSelectResourcePackToPublish : UIState, IHaveBackButtonCommand
- 	{
+@@ -25,6 +_,12 @@
+ 		private List<ResourcePack> _entries = new List<ResourcePack>();
+ 		private bool skipDraw;
+ 
++		// Added by TML.
 +		public UIState PreviousUIState {
 +			get => _menuToGoBackTo;
 +			set => _menuToGoBackTo = value;
 +		}
- 		private UIList _entryList;
- 		private UITextPanel<LocalizedText> _backPanel;
- 		private UIPanel _containerPanel;
++
+ 		public UIWorkshopSelectResourcePackToPublish(UIState menuToGoBackTo) {
+ 			_menuToGoBackTo = menuToGoBackTo;
+ 		}
