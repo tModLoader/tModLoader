@@ -47,7 +47,7 @@
  				KeyStatus.Add(knownTrigger, value: false);
  			}
 +
-+			foreach (var hotkey in HotKeyLoader.HotKeys) {
++			foreach (var hotkey in HotkeyLoader.Hotkeys) {
 +				KeyStatus.Add(hotkey.uniqueName, false);
 +			}
  		}
@@ -58,7 +58,7 @@
  			if (HotbarScrollCD > 0 && (!(HotbarScrollCD == 1 && flag) || PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired <= 0))
  				HotbarScrollCD--;
 +
-+			PlayerHooks.ProcessTriggers(p, this);
++			PlayerLoader.ProcessTriggers(p, this);
  		}
  
  		public void CopyIntoDuringChat(Player p) {

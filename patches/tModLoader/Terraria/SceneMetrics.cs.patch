@@ -132,7 +132,7 @@
  			if (settings.ScanOreFinderData)
  				_oreFinderTileLocations.Clear();
  
-+			SystemHooks.ResetNearbyTileEffects();
++			SystemLoader.ResetNearbyTileEffects();
 +
  			if (settings.BiomeScanCenterPositionInWorld.HasValue) {
  				Point point = settings.BiomeScanCenterPositionInWorld.Value.ToTileCoordinates();
@@ -169,7 +169,7 @@
  			if (settings.ScanOreFinderData)
  				UpdateOreFinderData();
 +
-+			SystemHooks.TileCountsAvailable(_tileCounts);
++			SystemLoader.TileCountsAvailable(_tileCounts);
  		}
  
  		private void ExportTileCountsToMain() {

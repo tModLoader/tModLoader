@@ -264,7 +264,7 @@ namespace Terraria.ModLoader.IO
 		internal static List<TagCompound> SaveModData() {
 			var list = new List<TagCompound>();
 
-			foreach (var system in SystemHooks.Systems) {
+			foreach (var system in SystemLoader.Systems) {
 				var data = system.SaveWorldData();
 
 				if (data == null)
@@ -298,12 +298,12 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static void SendModData(BinaryWriter writer) {
-			foreach (var system in SystemHooks.NetSystems)
+			foreach (var system in SystemLoader.NetSystems)
 				writer.SafeWrite(w => system.NetSend(w));
 		}
 
 		public static void ReceiveModData(BinaryReader reader) {
-			foreach (var system in SystemHooks.NetSystems) {
+			foreach (var system in SystemLoader.NetSystems) {
 				try {
 					reader.SafeRead(r => system.NetReceive(r));
 				}

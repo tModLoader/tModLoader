@@ -21,7 +21,7 @@
  				KeyStatus.Add(knownTrigger, new List<string>());
  			}
 +
-+			foreach (var current in HotKeyLoader.HotKeys) {
++			foreach (var current in HotkeyLoader.Hotkeys) {
 +				KeyStatus.Add(current.uniqueName, new List<string>());
 +			}
  		}

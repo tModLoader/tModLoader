@@ -59,7 +59,7 @@
  			PlayerDrawLayers.DrawPlayer_36_CTG(ref drawinfo);
  			PlayerDrawLayers.DrawPlayer_37_BeetleBuff(ref drawinfo);
 +			*/
-+			PlayerHooks.ModifyDrawInfo(ref drawinfo);
++			PlayerLoader.ModifyDrawInfo(ref drawinfo);
 +
 +			foreach (var layer in PlayerDrawLayerLoader.GetDrawLayers(drawinfo)) {
 +				if (!headOnly || layer.IsHeadLayer) {

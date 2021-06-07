@@ -14,7 +14,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This is where all <see cref="ModSystem"/> hooks are gathered and called.
 	/// </summary>
-	public static partial class SystemHooks
+	public static partial class SystemLoader
 	{
 		internal static readonly List<ModSystem> Systems = new List<ModSystem>();
 
