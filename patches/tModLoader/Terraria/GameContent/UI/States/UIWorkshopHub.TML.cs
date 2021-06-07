@@ -4,7 +4,7 @@ using Terraria.UI;
 
 namespace Terraria.GameContent.UI.States
 {
-	public partial class UIWorkshopHub : UIState, IHaveBackButtonCommand
+	partial class UIWorkshopHub
 	{
 		private UIElement _buttonMods;
 		private UIElement _buttonModSources;
@@ -58,7 +58,7 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private void Click_OpenTBDMenu(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(10);
+			//SoundEngine.PlaySound(10);
 		}
 	}
 }
