@@ -2,6 +2,7 @@ using Steamworks;
 using System;
 using System.IO;
 using System.Threading;
+using Terraria.Social.Base;
 
 namespace Terraria.Social.Steam
 {
@@ -13,16 +14,25 @@ namespace Terraria.Social.Steam
 			public UInt32 lastUpdatedTime;
 		}
 
+		public class ModPublisherInstance : UGCBased.APublisherInstance
+		{
+			protected override string GetHeaderText() => ModWorkshopEntry.GetHeaderTextFor(_publishedFileID.m_PublishedFileId, _entryData.Tags, _publicity, _entryData.PreviewImagePath);
+
+			protected override void PrepareContentForUpdate() {
+			}
+		}
+
+
 		internal class ModManager {
 			public static bool steamUser = true;
-			public static AppId_t thisApp = ModLoader.Engine.Steam.TerrariaAppId_t;
+			public static AppId_t thisApp = ModLoader.Engine.Steam.TMLAppID_t;
 
 			public static void Initialize() {
 				if (!ModLoader.Engine.Steam.IsSteamApp) {
 					steamUser = false;
 					GameServer.Init(0x7f000001, 7776, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0");
 					string currDir = Directory.GetCurrentDirectory();
-					SteamGameServer.SetModDir("D:\\Other");
+					SteamGameServer.SetModDir(currDir);
 					SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 					SteamGameServer.SetProduct(thisApp.ToString());
 
@@ -47,19 +57,14 @@ namespace Terraria.Social.Steam
 			/// Updates and/or Downloads the Item specified when generating the ModManager Instance.
 			/// </summary>
 			public bool Download() {
-				var currState = GetState();
-				if ((currState & (uint)EItemState.k_EItemStateNeedsUpdate) != 0 ||
-					(currState == (uint)EItemState.k_EItemStateNone) ||
-					(currState & (uint)EItemState.k_EItemStateDownloadPending) != 0 ) {
+				downloadResult = EResult.k_EResultOK;
+				if (NeedsUpdate()) {
+					downloadResult = EResult.k_EResultNone;
 					if (steamUser)
 						SteamDownload(); 
 					else
 						GoGDownload();
 				}
-				else if ((currState & (uint)EItemState.k_EItemStateInstalled) != 0) {
-					downloadResult = EResult.k_EResultOK;
-				}
-
 				return downloadResult == EResult.k_EResultOK;
 			}
 
@@ -120,16 +125,16 @@ namespace Terraria.Social.Steam
 				return new ItemInstallInfo() { installPath = installPath, lastUpdatedTime = lastUpdatedTime };
 			}
 
-			public void Remove() {
+			public void Uninstall() {
 				//TODO: Add a warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
 				var installPath = GetInstallInfo().installPath;
-				if (!Directory.Exists(installPath)) {
+				if (!Directory.Exists(installPath))
 					return;
-				}
 
 				// Remove the files
 				Directory.Delete(installPath, true);
 
+				// Unsubsribe
 				if (steamUser)
 					SteamUGC.UnsubscribeItem(itemID);
 				else
@@ -164,6 +169,15 @@ namespace Terraria.Social.Steam
 					return SteamUGC.GetItemState(itemID);
 				else
 					return SteamGameServerUGC.GetItemState(itemID);
+			}
+
+			public bool IsInstalled() => (GetState() & (uint)EItemState.k_EItemStateInstalled) != 0;
+
+			public bool NeedsUpdate() {
+				var currState = GetState();
+				return (currState & (uint)EItemState.k_EItemStateNeedsUpdate) != 0 ||
+					(currState == (uint)EItemState.k_EItemStateNone) ||
+					(currState & (uint)EItemState.k_EItemStateDownloadPending) != 0;
 			}
 		}
 	}

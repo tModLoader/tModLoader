@@ -15,7 +15,19 @@
  	{
  		public class UGCBased
  		{
-@@ -42,18 +_,30 @@
+@@ -34,6 +_,11 @@
+ 					private set;
+ 				}
+ 
++				public List<string> ModPaths {
++					get;
++					private set;
++				}
++
+ 				public Downloader() {
+ 					ResourcePackPaths = new List<string>();
+ 					WorldPaths = new List<string>();
+@@ -42,18 +_,35 @@
  				public static Downloader Create() => new Downloader();
  
  				public List<string> GetListOfSubscribedItemsPaths() {
@@ -28,6 +40,11 @@
 +						if (Directory.Exists(workshopLoc)) {
 +							list.AddRange(Directory.EnumerateDirectories(workshopLoc));
 +						}
++					}
++
++					string gogDirectory = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "content", ModManager.thisApp.ToString());
++					if (Directory.Exists(gogDirectory)) {
++						list.AddRange(Directory.EnumerateDirectories(gogDirectory));
 +					}
 +
 +					/*
@@ -48,20 +65,13 @@
  					return list;
  				}
  
-@@ -178,6 +_,8 @@
- 					if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out FoundWorkshopEntryInfo info))
- 						num = info.workshopEntryId;
- 
-+					//TODO: Decide what to do with publishing. For now, this disables all in-game publishing.
-+					/*
- 					if (num.HasValue && finder.HasItemOfId(num.Value)) {
- 						_publishedFileID = new PublishedFileId_t(num.Value);
- 						PreventUpdatingCertainThings();
-@@ -186,6 +_,7 @@
- 					else {
- 						CreateItem();
- 					}
-+					*/
- 				}
- 
- 				private void PreventUpdatingCertainThings() {
+@@ -75,6 +_,9 @@
+ 							if (!(a == "World")) {
+ 								if (a == "ResourcePack")
+ 									ResourcePackPaths.Add(listOfSubscribedItemsPath);
++								else if (a == "Mod") {
++									ModPaths.Add(listOfSubscribedItemsPath);
++								}
+ 							}
+ 							else {
+ 								WorldPaths.Add(listOfSubscribedItemsPath);
