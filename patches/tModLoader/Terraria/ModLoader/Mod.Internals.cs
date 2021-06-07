@@ -196,14 +196,6 @@ namespace Terraria.ModLoader
 
 				AddSound(soundType, $"{Name}/{soundPath}", modSound);
 			}
-
-			foreach (string music in musics.Keys.Where(t => t.StartsWith("Sounds/"))) {
-				string substring = music.Substring("Sounds/".Length);
-
-				if (substring.StartsWith("Music/")) {
-					AddSound(SoundType.Music, Name + '/' + music);
-				}
-			}
 		}
 
 		/// <summary>

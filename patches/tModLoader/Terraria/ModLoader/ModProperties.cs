@@ -18,6 +18,10 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public bool AutoloadSounds;
 		/// <summary>
+		/// Whether or not this mod will automatically add music in the Music folders to the game. Place music files in any folder named Music to autoload them as music.
+		/// </summary>
+		public bool AutoloadMusic;
+		/// <summary>
 		/// Whether or not this mod will automatically add images in the Backgrounds folder as background textures to the game. This means you do not need to manually call Mod.AddBackgroundTexture.
 		/// </summary>
 		public bool AutoloadBackgrounds;
