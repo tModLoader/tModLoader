@@ -30,7 +30,7 @@
 +		}
 +
 +		public void CopyModHotkeySettingsFrom(PlayerInputProfile profile, InputMode mode) {
-+			foreach (var modHotkey in HotKeyLoader.HotKeys) {
++			foreach (var modHotkey in HotkeyLoader.Hotkeys) {
 +				InputModes[mode].KeyStatus[modHotkey.uniqueName].Clear();
 +				if (!string.IsNullOrEmpty(modHotkey.defaultKey))
 +					InputModes[mode].KeyStatus[modHotkey.uniqueName].Add(modHotkey.defaultKey);
@@ -38,7 +38,7 @@
 +		}
 +
 +		public void CopyIndividualModHotkeySettingsFrom(PlayerInputProfile profile, InputMode mode, string uniqueName) {
-+			var modHotKey = HotKeyLoader.modHotKeys[uniqueName];
++			var modHotKey = HotkeyLoader.modHotkeys[uniqueName];
 +			InputModes[mode].KeyStatus[uniqueName].Clear();
 +			if (!string.IsNullOrEmpty(modHotKey.defaultKey))
 +				InputModes[mode].KeyStatus[uniqueName].Add(modHotKey.defaultKey);

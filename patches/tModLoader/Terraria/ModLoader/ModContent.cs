@@ -554,7 +554,6 @@ namespace Terraria.ModLoader
 			Recipe.SetupRecipes();
 			MapLoader.UnloadModMap();
 			ItemSorting.SetupWhiteLists();
-			HotKeyLoader.Unload();
 			RecipeLoader.Unload();
 			CommandLoader.Unload();
 			TagSerializer.Reload();

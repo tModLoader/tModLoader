@@ -8,18 +8,19 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Represents a loaded hotkey. It is suggested to access the hotkey status only in ModPlayer.ProcessTriggers. 
 	/// </summary>
-	public class ModHotKey
+	public class ModHotkey
 	{
 		internal readonly Mod mod;
 		internal readonly string name; // name from modder: "Random Buff"
 		internal readonly string uniqueName; // eg: "Example Mod: Random Buff" (currently also display name)
 		internal readonly string defaultKey; // from mod.Load
 
-		internal ModHotKey(Mod mod, string name, string defaultKey) {
+		internal ModHotkey(Mod mod, string name, string defaultKey) {
 			this.mod = mod;
 			this.name = name;
 			this.defaultKey = defaultKey;
-			this.uniqueName = mod.Name + ": " + name;
+			
+			uniqueName = mod.Name + ": " + name;
 		}
 
 		/// <summary>
