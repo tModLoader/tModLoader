@@ -48,6 +48,18 @@ namespace Terraria.ModLoader
 				return nextEquip[EquipType.Body]++;
 			}
 
+			if (type == EquipType.HandsOn || type == EquipType.HandsOnLegacy) {
+				nextEquip[EquipType.HandsOnLegacy]++;
+
+				return nextEquip[EquipType.HandsOn]++;
+			}
+
+			if (type == EquipType.HandsOff || type == EquipType.HandsOffLegacy) {
+				nextEquip[EquipType.HandsOffLegacy]++;
+
+				return nextEquip[EquipType.HandsOff]++;
+			}
+
 			return nextEquip[type]++;
 		}
 
@@ -120,13 +132,13 @@ namespace Terraria.ModLoader
 				Item.headType[entry.Key] = entry.Value;
 			}
 
-			Array.Resize(ref Item.bodyType, nextEquip[EquipType.BodyLegacy]);
+			Array.Resize(ref Item.bodyType, nextEquip[EquipType.Body]);
 
-			foreach (var entry in slotToId[EquipType.BodyLegacy]) {
+			foreach (var entry in slotToId[EquipType.Body]) {
 				Item.bodyType[entry.Key] = entry.Value;
 			}
 			
-			foreach (var entry in slotToId[EquipType.Body]) {
+			foreach (var entry in slotToId[EquipType.BodyLegacy]) {
 				Item.bodyType[entry.Key] = entry.Value;
 			}
 
@@ -230,7 +242,7 @@ namespace Terraria.ModLoader
 
 		internal static void SetSlot(Item item) {
 
-			if (!idToSlot.TryGetValue(item.type, out IDictionary<EquipType, int> slots))
+			if (!idToSlot.TryGetValue(item.type, out var slots))
 				return;
 
 			foreach (var entry in slots) {

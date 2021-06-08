@@ -6,13 +6,13 @@ namespace Terraria.ModLoader
 	public enum EquipType
 	{
 		Head,
-		BodyLegacy,
 		Body,
+		BodyLegacy,
 		Legs,
-		HandsOnLegacy,
 		HandsOn,
-		HandsOffLegacy,
+		HandsOnLegacy,
 		HandsOff,
+		HandsOffLegacy,
 		Back,
 		Front,
 		Shoes,

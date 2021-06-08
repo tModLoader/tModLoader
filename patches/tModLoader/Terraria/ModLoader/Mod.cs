@@ -147,10 +147,7 @@ namespace Terraria.ModLoader
 		/// <param name="equipTexture">The equip texture.</param>
 		/// <param name="item">The item.</param>
 		/// <param name="type">The type.</param>
-		/// <param name="name">The name.</param>
 		/// <param name="texture">The texture.</param>
-		/// <param name="armTexture">The arm texture (for body slots).</param>
-		/// <param name="femaleTexture">The female texture (for body slots), if missing the regular body texture is used.</param>
 		/// <returns></returns>
 		public int AddEquipTexture(EquipTexture equipTexture, ModItem item, EquipType type, string texture) {
 			if (!loading)
@@ -168,10 +165,11 @@ namespace Terraria.ModLoader
 			EquipLoader.equipTextures[type][slot] = equipTexture;
 			equipTextures[Tuple.Create(item.Name, type)] = equipTexture;
 
-			if (!EquipLoader.idToSlot.TryGetValue(item.Type, out IDictionary<EquipType, int> slots))
+			if (!EquipLoader.idToSlot.TryGetValue(item.Type, out var slots))
 				EquipLoader.idToSlot[item.Type] = slots = new Dictionary<EquipType, int>();
 
 			slots[type] = slot;
+
 			if (type == EquipType.Head || type == EquipType.BodyLegacy || type == EquipType.Body || type == EquipType.Legs)
 				EquipLoader.slotToId[type][slot] = item.Type;
 
