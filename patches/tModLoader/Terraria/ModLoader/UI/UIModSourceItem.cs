@@ -11,6 +11,7 @@ using System.Net;
 using System.Text;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -166,11 +167,15 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void PublishMod(UIMouseEvent evt, UIElement listeningElement) {
+			//TODO: Implement GoG publishing
+
+			/* This code is not utilized in workshop environment.
 			if (ModLoader.modBrowserPassphrase == "") {
 				Main.menuMode = Interface.enterPassphraseMenuID;
 				Interface.enterPassphraseMenu.SetGotoMenu(Interface.modSourcesID, Interface.modSourcesID);
 				return;
 			}
+			*/
 			SoundEngine.PlaySound(10);
 			try {
 				if (ModLoader.GetMod(_builtMod.Name) == null) {
@@ -186,13 +191,15 @@ namespace Terraria.ModLoader.UI
 				var modFile = _builtMod.modFile;
 				var bp = _builtMod.properties;
 
-				PublishModInner(modFile, bp);
+				PublishModInner(modFile, bp, Path.Combine(_mod, "icon.png"));
 			} catch (WebException e) {
 				UIModBrowser.LogModBrowserException(e);
 			}
 		}
 
 		internal static void PublishModCommandLine(string modName, string passphrase, string steamid64) {
+			//TODO: Implement GoG publishing
+			/*
 			try {
 				InstallVerifier.IsGoG = true;
 				ModLoader.SteamID64 = steamid64;
@@ -216,9 +223,11 @@ namespace Terraria.ModLoader.UI
 				Environment.Exit(1);
 			}
 			Environment.Exit(0);
+			*/
 		}
 
-		private static void PublishModInner(TmodFile modFile, BuildProperties bp, bool commandLine = false) {
+		private static void PublishModInner(TmodFile modFile, BuildProperties bp, string iconPath, bool commandLine = false) {
+			/* Old 1.3 Mod Browser code
 			var files = new List<UploadFile>();
 			files.Add(new UploadFile {
 				Name = "file",
@@ -234,6 +243,7 @@ namespace Terraria.ModLoader.UI
 						Content = modFile.GetBytes("icon.png")
 					});
 			}
+			*/
 			//if (bp.beta)
 			//	throw new WebException(Language.GetTextValue("tModLoader.BetaModCantPublishError"));
 			if (bp.buildVersion != modFile.TModLoaderVersion)
@@ -248,16 +258,21 @@ namespace Terraria.ModLoader.UI
 					{ "author", bp.author },
 					{ "homepage", bp.homepage },
 					{ "description", bp.description },
-					{ "steamid64", ModLoader.SteamID64 },
+					{ "iconpath", iconPath },
+					//{ "steamid64", ModLoader.SteamID64 },
 					{ "modloaderversion", "tModLoader v"+modFile.TModLoaderVersion },
-					{ "passphrase", ModLoader.modBrowserPassphrase },
+					//{ "passphrase", ModLoader.modBrowserPassphrase },
 					{ "modreferences", String.Join(", ", bp.modReferences.Select(x => x.mod)) },
 					{ "modside", bp.side.ToFriendlyString() },
 				};
-			if (values["steamid64"].Length != 17)
-				throw new WebException($"The steamid64 '{values["steamid64"]}' is invalid, verify that you are logged into Steam and don't have a pirated copy of Terraria.");
+			//if (values["steamid64"].Length != 17)
+			//	throw new WebException($"The steamid64 '{values["steamid64"]}' is invalid, verify that you are logged into Steam and don't have a pirated copy of Terraria.");
 			if (string.IsNullOrEmpty(values["author"]))
 				throw new WebException($"You need to specify an author in build.txt");
+
+			Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, modFile, values));
+
+			/* Old 1.3 Mod Browser code
 			ServicePointManager.Expect100Continue = false;
 			string url = "http://javid.ddns.net/tModLoader/publishmod.php";
 			using (PatientWebClient client = new PatientWebClient()) {
@@ -282,6 +297,7 @@ namespace Terraria.ModLoader.UI
 					client.UploadDataAsync(new Uri(url), data);
 				}
 			}
+			*/
 		}
 
 		private static void PublishUploadDataComplete(object s, UploadDataCompletedEventArgs e, TmodFile theTModFile) {

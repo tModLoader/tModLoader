@@ -1,0 +1,13 @@
+--- src/Terraria/Terraria/Social/Steam/SupportedWorkshopTags.cs
++++ src/tModLoader/Terraria/Social/Steam/SupportedWorkshopTags.cs
+@@ -29,6 +_,10 @@
+ 			AddResourcePackTag("WorkshopTags.Overhaul", "Overhaul");
+ 			AddResourcePackTag("WorkshopTags.Tweaks", "Tweaks");
+ 			AddResourcePackTag("WorkshopTags.OtherResourcePacks", "Other Packs");
++
++			// TML Added Mod Tags: [
++			AddModTag("WorkshopTags.Content", "Content");
++			// ]
+ 		}
+ 	}
+ }

@@ -22,7 +22,6 @@ namespace Terraria.Social.Steam
 			}
 		}
 
-
 		internal class ModManager {
 			public static bool steamUser = true;
 			public static AppId_t thisApp = ModLoader.Engine.Steam.TMLAppID_t;

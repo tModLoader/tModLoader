@@ -15,7 +15,7 @@
  	{
  		public class UGCBased
  		{
-@@ -34,6 +_,11 @@
+@@ -34,26 +_,49 @@
  					private set;
  				}
  
@@ -27,7 +27,9 @@
  				public Downloader() {
  					ResourcePackPaths = new List<string>();
  					WorldPaths = new List<string>();
-@@ -42,18 +_,35 @@
++					ModPaths = new List<string>();
+ 				}
+ 
  				public static Downloader Create() => new Downloader();
  
  				public List<string> GetListOfSubscribedItemsPaths() {
