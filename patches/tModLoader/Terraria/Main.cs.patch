@@ -2176,11 +2176,11 @@
  
 +			NPCLoader.DrawEffects(rCurrentNPC, ref npcColor); //TODO: Effects were previously done before drawing, here, but 1.4 moved them to updates in UpdateNPC_BuffApplyVFX(). Should this hook be moved and renamed? --Mirsario
 +			
-+			if (NPCLoader.PreDraw(rCurrentNPC, spriteBatch, npcColor)) {
++			if (NPCLoader.PreDraw(rCurrentNPC, spriteBatch, screenPos, npcColor)) {
 +				DrawNPCDirect_Inner(spriteBatch, rCurrentNPC, behindTiles, screenPos, ref npcColor);
 +			}
 +
-+			NPCLoader.PostDraw(rCurrentNPC, spriteBatch, npcColor);
++			NPCLoader.PostDraw(rCurrentNPC, spriteBatch, screenPos, npcColor);
 +		}
 +
 +		private void DrawNPCDirect_Inner(SpriteBatch mySpriteBatch, NPC rCurrentNPC, bool behindTiles, Vector2 screenPos, ref Color npcColor) {
