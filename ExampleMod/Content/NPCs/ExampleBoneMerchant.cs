@@ -57,10 +57,14 @@ namespace ExampleMod.Content.NPCs
 		//This hook is the most important part of this NPC. Since it is true, it tells the game that we want this NPC to act like a town NPC without being one.
 		//What that means is: the NPC will have the AI of a town NPC, will attack like a town NPC, and have a shop (or any other additional functionality if you wish) like a town NPC.
 		//However, the NPC will not have their head displayed on the map, will de-spawn when no players are nearby or the world is closed, will spawn like any other NPC, and have no happiness button when chatting.
-		public override bool ActsLikeATownNPC() => true;
-
+		public override bool ActsLikeATownNPC() {
+			return true;
+		}
+		
 		//Make sure to allow your NPC to chat, since being "like a town NPC" doesn't automatically allow for chatting.
-		public override bool CanChat() => true;
+		public override bool CanChat() {
+			return true;
+		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
