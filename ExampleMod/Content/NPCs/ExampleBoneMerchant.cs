@@ -13,7 +13,7 @@ namespace ExampleMod.Content.NPCs
 	/// <summary>
 	/// The main focus of this NPC is to show how to make something similar to the vanilla bone merchant;
 	/// which means that the NPC will act like any other town NPC but won't have a happiness button, won't appear on the minimap,
-	/// and will spawn like an enemy NPC. If you want a tradition town NPC instead, <see cref="ExamplePerson"/>.
+	/// and will spawn like an enemy NPC. If you want a traditional town NPC instead, <see cref="ExamplePerson"/>.
 	/// </summary>
 	public class ExampleBoneMerchant : ModNPC
 	{
@@ -32,8 +32,6 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
 				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 				Direction = 1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
-				// Rotation = MathHelper.ToRadians(180) // You can also change the rotation of an NPC. Rotation is measured in radians
-				// If you want to see an example of manually modifying these when the NPC is drawn, see PreDraw
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
