@@ -573,6 +573,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Whether or not this NPC will act like a town NPC in terms of AI, animations, and attacks; but not in other regards, like the bone merchant in vanilla. Defaults to false.
+		/// </summary>
+		/// <returns> </returns>
+		public virtual bool ActsLikeATownNPC() {
+			return false;
+		}
+
+		/// <summary>
 		/// Allows you to determine whether this town NPC wears a party hat during a party. Returns true by default.
 		/// </summary>
 		/// <returns></returns>

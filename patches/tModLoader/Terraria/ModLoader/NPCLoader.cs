@@ -857,6 +857,14 @@ namespace Terraria.ModLoader
 			return GetNPC(type)?.TownNPCName() ?? "";
 		}
 
+		public static bool ActsLikeATownNPC(NPC npc) {
+			return npc.ModNPC?.ActsLikeATownNPC() ?? false;
+		}
+
+		public static bool ActsLikeATownNPC(int type) {
+			return GetNPC(type)?.ActsLikeATownNPC() ?? false;
+		}
+
 		public static bool UsesPartyHat(NPC npc) {
 			return npc.ModNPC?.UsesPartyHat() ?? true;
 		}
