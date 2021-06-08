@@ -289,15 +289,6 @@
  			return result;
  		}
  
-@@ -2763,6 +_,8 @@
- 				itemAnimationsRegistered.Add(index);
- 
- 			itemAnimations[index] = animation;
-+			if (ItemLoader.IsModItem(index))
-+				ItemLoader.animations.Add(index);
- 		}
- 
- 		public static void InitializeItemAnimations() {
 @@ -2804,11 +_,13 @@
  			}
  		}
@@ -2405,18 +2396,6 @@
  			int num2 = item.glowMask;
  			if (!gamePaused && base.IsActive && (item.IsACoin || item.type == 58 || item.type == 109) && color.R > 60 && (float)rand.Next(500) - (Math.Abs(item.velocity.X) + Math.Abs(item.velocity.Y)) * 10f < (float)((int)color.R / 50)) {
  				int type = 43;
-@@ -27903,6 +_,11 @@
- 			if (item.type == 3779)
- 				num2 = -1;
- 
-+			if (ItemLoader.animations.Contains(item.type)) {
-+				ItemLoader.DrawAnimatedItem(item, whoami, color, currentColor, num, scale);
-+				goto PostDraw;
-+			}
-+
- 			spriteBatch.Draw(texture, vector2, frame, currentColor, num, vector, scale, SpriteEffects.None, 0f);
- 			if (item.color != Microsoft.Xna.Framework.Color.Transparent)
- 				spriteBatch.Draw(texture, vector2, frame, item.GetColor(color), num, vector, scale, SpriteEffects.None, 0f);
 @@ -27910,11 +_,15 @@
  			if (num2 != -1)
  				spriteBatch.Draw(TextureAssets.GlowMask[num2].Value, vector2, frame, new Microsoft.Xna.Framework.Color(250, 250, 250, item.alpha), num, vector, scale, SpriteEffects.None, 0f);
