@@ -346,7 +346,7 @@ namespace Terraria.ModLoader
 				mod.PrepareAssets();
 				mod.Autoload();
 				mod.Load();
-				SystemHooks.OnModLoad(mod);
+				SystemLoader.OnModLoad(mod);
 				mod.loading = false;
 			});
 
@@ -358,7 +358,7 @@ namespace Terraria.ModLoader
 			LoadModContent(token, mod => {
 				mod.SetupContent();
 				mod.PostSetupContent();
-				SystemHooks.PostSetupContent(mod);
+				SystemLoader.PostSetupContent(mod);
 				mod.TransferAllAssets();
 			});
 
@@ -367,7 +367,7 @@ namespace Terraria.ModLoader
 			if (Main.dedServ)
 				ModNet.AssignNetIDs();
 
-			Main.player[255] = new Player(false); // setup inventory is unnecessary 
+			Main.player[255] = new Player();
 
 			RefreshModLanguage(Language.ActiveCulture);
 			MapLoader.SetupModMap();
@@ -488,7 +488,7 @@ namespace Terraria.ModLoader
 			NPCLoader.Unload();
 			NPCHeadLoader.Unload();
 			BossBarLoader.Unload();
-			PlayerHooks.Unload();
+			PlayerLoader.Unload();
 			BuffLoader.Unload();
 			MountLoader.Unload();
 			RarityLoader.Unload();
@@ -502,7 +502,7 @@ namespace Terraria.ModLoader
 
 			GlobalBackgroundStyleLoader.Unload();
 			PlayerDrawLayerLoader.Unload();
-			SystemHooks.Unload();
+			SystemLoader.Unload();
 			TileEntity.manager.Reset();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
@@ -513,7 +513,6 @@ namespace Terraria.ModLoader
 			Recipe.SetupRecipes();
 			MapLoader.UnloadModMap();
 			ItemSorting.SetupWhiteLists();
-			HotKeyLoader.Unload();
 			RecipeLoader.Unload();
 			CommandLoader.Unload();
 			TagSerializer.Reload();
@@ -549,9 +548,9 @@ namespace Terraria.ModLoader
 			NPCHeadLoader.ResizeAndFillArrays();
 			MountLoader.ResizeArrays();
 			BuffLoader.ResizeArrays();
-			PlayerHooks.RebuildHooks();
+			PlayerLoader.RebuildHooks();
 			PlayerDrawLayerLoader.ResizeArrays();
-			SystemHooks.ResizeArrays();
+			SystemLoader.ResizeArrays();
 
 			if (!Main.dedServ) {
 				SoundLoader.ResizeAndFillArrays();
@@ -647,7 +646,7 @@ namespace Terraria.ModLoader
 				// player.whoAmI is only set for active players
 			}
 
-			Main.clientPlayer = new Player(false);
+			Main.clientPlayer = new Player();
 			Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
 			Main._characterSelectMenu._playerList?.Clear();
 			Main.PlayerList.Clear();

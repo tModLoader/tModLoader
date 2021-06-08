@@ -7,14 +7,9 @@
 		//Add call to PlayerHooks.SetStartInventory here. Moved from Player constructor.
 
 	//Player
-		//Check if Player constructor still needs startupInventory arg
 		//Make sure "22" replaced with "MaxBuffs" in 'for' and CountBuffs() == and !=.
 		//Ensure all blockLists are cleared everywhere that they need to be.
-		//Correct new allDamage increasing accessories
-		//Basically everywhere it would set itemTime and we would use PlayerHooks.TotalUseTime,
-			we can now let the game use ApplyItemTime, it has our hook built in.
 		//Fishing submethods will need to use Item instead of values.
-		//VanillaUpdateVanityAccessory --> ApplyEquipVanity
 
 	//Need reimplementing:
 		//TileLoader.HasSmartInteract
@@ -56,8 +51,6 @@
 		//Reimplement tree drawing. Search for modTree in Main.cs 1.3.5.3 tML diffs.
 		
 		//Reimplement these calls:
-			TileLoader.DrawEffects(j, i, type, spriteBatch, ref color, ref nextSpecialDrawIndex);
-			
 			TileLoader.PostDraw(x, y, type, spriteBatch);
 			
 	//Item:
@@ -71,31 +64,11 @@
 	//LegacySoundPlayer
 		//Re-add clamps for volume and pitch, 0.0..1.0 and -1.0..1.0 respectively?
 			
-		//In PlaySound, before any playing:
-			case int _ when SoundLoader.PlayModSound(type, num, num2, num3, ref soundEffectInstance):
-				// Modders can return null to not play anything (prevent overlap), return the original sound effect (restarts sound), or return a new sound effect instance to allow overlapping sound.
-				break;
-		
-		//In PlaySound, call this if the type is SoundLoader.customSoundType
-			// TODO, trackable sounds? verify working. return soundEffectInstance
-			SoundLoader.customSoundInstances[num].Stop();
-			SoundLoader.customSoundInstances[num] = SoundLoader.customSounds[num].CreateInstance();
-			SoundLoader.customSoundInstances[num].Volume = num2;
-			SoundLoader.customSoundInstances[num].Pan = num3;
-			//Main.PlaySoundInstance(SoundLoader.customSoundInstances[num]);
-			soundEffectInstance = SoundLoader.customSoundInstances[num];
-			
 		//Put this in somewhere:
 			if (waveBank == null) //Supress extra exceptions from the audio engine failing to load
 				return null;
 		
 	//LegacyPlayerRenderer:
-		//Reimplement all PlayerHeadDrawInfo & PlayerDrawInfo related stuff. Use 1.3.5.3 vanilla/tML diffs.
-		//There might need to be a redesign of the structs and the hooks that use it.
-		//Perhaps we won't even need the structs anymore.
-		
-		//Remove all 'id<vanilla count' checks.
-		
 		//Reimplement ItemLoader.DrawHair hook.
 		
 		//Reimplement these calls from Main.DrawPlayer:

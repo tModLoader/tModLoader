@@ -26,7 +26,7 @@ namespace Terraria.ModLoader
 		internal static void ResizeArrays() {
 			var positions = Layers.ToDictionary(l => l, l => l.GetDefaultPosition());
 
-			PlayerHooks.ModifyDrawLayerOrdering(positions);
+			PlayerLoader.ModifyDrawLayerOrdering(positions);
 
 			// net core please!!
 			//foreach (var (layer, pos) in positions.ToArray()) {
@@ -68,7 +68,7 @@ namespace Terraria.ModLoader
 				layer.ResetVisiblity(drawInfo);
 			}
 
-			PlayerHooks.HideDrawLayers(drawInfo);
+			PlayerLoader.HideDrawLayers(drawInfo);
 
 			return _drawOrder;
 		}
