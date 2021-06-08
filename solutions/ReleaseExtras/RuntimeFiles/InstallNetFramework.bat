@@ -2,16 +2,11 @@
 :: Created for tModLoader deployment. 
 @echo off
 cd /D "%~dp0"
-set LOGFILE=dotnet\install.log
-if Not exist dotnet (mkdir dotnet)
+set LOGFILE=LaunchLogs\install.log
+if Not exist LaunchLogs (mkdir LaunchLogs)
 echo Verifying dotnet....
-echo Logging to dotnet\install.log
-echo This may take a few moments....
+echo This may take a few minutes on first run.
 
-call :LOG 1> %LOGFILE% 2>&1
-exit /B
-
-:LOG
 REM Read file "tModLoader.runtimeconfig.json" into variable string, removing line breaks.
 set string=
 for /f "delims=" %%x in (tModLoader.runtimeconfig.json) do set "string=!string!%%x"
@@ -33,22 +28,30 @@ set CHANNELSEL=%version:~0,3%
 set VERSIONSEL=%version%
 set RUNTIMESELECT=dotnet
 
-echo PatchV=%VERSIONSEL%
-
 REM install directories
 set INSTALLDIR=dotnet\%VERSIONSEL%
 
-REM Check if the install for our target NET already exists, and install if not
-if Not exist %INSTALLDIR%\dotnet.exe (
-	echo RemovingOldInstalls
-	if exist NetFramework (
-		echo Removing NetFramework
-		rmdir /S /Q NetFramework\
+REM Skip install check if runtime.log exists due to install having previously failed.
+if Not exist LaunchLogs\runtime.log (
+	REM Check if the install for our target NET already exists, and install if not
+	if Not exist %INSTALLDIR%\dotnet.exe  (
+		echo Logging to LaunchLogs\install.log
+		call :LOG 1> %LOGFILE% 2>&1
 	)
-	for /d %%i in (dotnet/*) do (
-		echo Removing dotnet/%%i
-		rmdir /S /Q "dotnet/%%i"
-	)
-	echo Installing_NewFramework
-	powershell -NoProfile -ExecutionPolicy unrestricted -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel %CHANNELSEL% -InstallDir %INSTALLDIR%\ -Version %VERSIONSEL% -Runtime %RUNTIMESELECT%"
 )
+
+exit /B
+
+:LOG
+echo RemovingOldInstalls
+if exist NetFramework (
+	echo Removing NetFramework
+	rmdir /S /Q NetFramework\
+)
+for /d %%i in (dotnet/*) do (
+	echo Removing dotnet/%%i
+	rmdir /S /Q "dotnet/%%i"
+)
+echo Installing_NewFramework
+powershell -NoProfile -ExecutionPolicy unrestricted -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel %CHANNELSEL% -InstallDir %INSTALLDIR%\ -Version %VERSIONSEL% -Runtime %RUNTIMESELECT%"
+

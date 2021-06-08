@@ -1,0 +1,11 @@
+--- src/decompiled/ReLogic/Peripherals/RGB/Corsair/NativeMethods.cs
++++ src/Terraria/ReLogic/Peripherals/RGB/Corsair/NativeMethods.cs
+@@ -5,7 +_,7 @@
+ {
+ 	internal class NativeMethods
+ 	{
+-		private const string DLL_NAME = "CUESDK_2015.dll";
++		public const string DLL_NAME = "CUESDK_2015.dll";
+ 
+ 		[DllImport("CUESDK_2015.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+ 		[return: MarshalAs(UnmanagedType.I1)]

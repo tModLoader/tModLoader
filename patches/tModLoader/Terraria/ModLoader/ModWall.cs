@@ -92,12 +92,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine how much light this wall emits. This can also let you light up the block in front of this wall.
-		/// </summary>
-		public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
-		}
-
-		/// <summary>
 		/// Allows you to animate your wall. Use frameCounter to keep track of how long the current frame has been active, and use frame to change the current frame.
 		/// </summary>
 		public virtual void AnimateWall(ref byte frame, ref byte frameCounter) {

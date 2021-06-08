@@ -48,7 +48,7 @@
  					_negLight2 *= 0.85f;
  				}
 +
-+				SystemHooks.ModifyLightingBrightness(ref _negLight, ref _negLight2);
++				SystemLoader.ModifyLightingBrightness(ref _negLight, ref _negLight2);
  			}
  			else {
  				_negLight = 0.04f;
@@ -56,7 +56,7 @@
  					_negLight2 += 0.18f;
  				}
  
-+				SystemHooks.ModifyLightingBrightness(ref _negLight, ref _negLight2);
++				SystemLoader.ModifyLightingBrightness(ref _negLight, ref _negLight2);
  				_wetLightR = _negLight * 1.2f;
  				_wetLightG = _negLight * 1.1f;
  			}

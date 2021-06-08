@@ -380,19 +380,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Registers a hotkey with a name and defaultKey. Use the returned ModHotKey to detect when buttons are pressed. Do this in a ModPlayer.ProcessTriggers.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="defaultKey">The default key.</param>
-		/// <returns></returns>
-		public ModHotKey RegisterHotKey(string name, string defaultKey) {
-			if (!loading)
-				throw new Exception("RegisterHotKey can only be called from Mod.Load or Mod.Autoload");
-
-			return HotKeyLoader.RegisterHotKey(new ModHotKey(this, name, defaultKey));
-		}
-
-		/// <summary>
 		/// Creates a ModTranslation object that you can use in AddTranslation.
 		/// </summary>
 		/// <param name="key">The key for the ModTranslation. The full key will be Mods.ModName.key</param>
