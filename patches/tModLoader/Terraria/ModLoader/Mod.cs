@@ -68,6 +68,8 @@ namespace Terraria.ModLoader
 
 		private IDisposable fileHandle;
 
+		public GameContent.Bestiary.ModSourceBestiaryInfoElement ModSourceBestiaryInfoElement;
+
 		internal void AutoloadConfig()
 		{
 			if (Code == null)
@@ -294,25 +296,6 @@ namespace Terraria.ModLoader
 		public LegacySoundStyle GetLegacySoundSlot(SoundType type, string name) => SoundLoader.GetLegacySoundSlot(type, Name + '/' + name);
 
 		/// <summary>
-		/// Adds a texture to the list of background textures and assigns it a background texture slot.
-		/// </summary>
-		/// <param name="texture">The texture.</param>
-		public void AddBackgroundTexture(string texture) {
-			if (!loading)
-				throw new Exception("AddBackgroundTexture can only be called from Mod.Load or Mod.Autoload");
-
-			BackgroundTextureLoader.backgrounds[texture] = BackgroundTextureLoader.ReserveBackgroundSlot();
-			ModContent.GetTexture(texture);
-		}
-
-		/// <summary>
-		/// Gets the texture slot corresponding to the specified texture name. Shorthand for calling BackgroundTextureLoader.GetBackgroundSlot(this.Name + '/' + name).
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int GetBackgroundSlot(string name) => BackgroundTextureLoader.GetBackgroundSlot(Name + '/' + name);
-
-		/// <summary>
 		/// Allows you to tie a music ID, and item ID, and a tile ID together to form a music box. When music with the given ID is playing, equipped music boxes have a chance to change their ID to the given item type. When an item with the given item type is equipped, it will play the music that has musicSlot as its ID. When a tile with the given type and Y-frame is nearby, if its X-frame is >= 36, it will play the music that has musicSlot as its ID.
 		/// </summary>
 		/// <param name="musicSlot">The music slot.</param>
@@ -384,19 +367,6 @@ namespace Terraria.ModLoader
 			SoundLoader.musicToItem[musicSlot] = itemType;
 			SoundLoader.itemToMusic[itemType] = musicSlot;
 			SoundLoader.tileToMusic[tileType][tileFrameY] = musicSlot;
-		}
-
-		/// <summary>
-		/// Registers a hotkey with a name and defaultKey. Use the returned ModHotKey to detect when buttons are pressed. Do this in a ModPlayer.ProcessTriggers.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="defaultKey">The default key.</param>
-		/// <returns></returns>
-		public ModHotKey RegisterHotKey(string name, string defaultKey) {
-			if (!loading)
-				throw new Exception("RegisterHotKey can only be called from Mod.Load or Mod.Autoload");
-
-			return HotKeyLoader.RegisterHotKey(new ModHotKey(this, name, defaultKey));
 		}
 
 		/// <summary>

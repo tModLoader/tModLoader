@@ -17,18 +17,17 @@
  		private bool IsSteamValid;
  		private object _steamTickLock = new object();
  		private object _steamCallbackLock = new object();
-@@ -21,14 +_,16 @@
+@@ -24,13 +_,15 @@
+ 
  		public void Initialize() {
  			_instance = this;
- #if CLIENT
--			if (SteamAPI.RestartAppIfNecessary(new AppId_t(105600u))) {
+-			if (!Main.dedServ && SteamAPI.RestartAppIfNecessary(new AppId_t(105600u))) {
 +			if (System.Diagnostics.Debugger.IsAttached && !File.Exists("steam_appid.txt"))
 +				ModLoader.Engine.Steam.EnsureSteamAppIdTMLFile();
 +			if (SteamAPI.RestartAppIfNecessary(ModLoader.Engine.Steam.TMLAppID_t) && !System.Diagnostics.Debugger.IsAttached) {
  				Environment.Exit(1);
  				return;
  			}
- #endif
  
  			if (!SteamAPI.Init()) {
 -				MessageBox.Show(Language.GetTextValue("Error.LaunchFromSteam"), Language.GetTextValue("Error.Error"));

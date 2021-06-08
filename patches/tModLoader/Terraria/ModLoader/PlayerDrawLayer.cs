@@ -95,7 +95,7 @@ namespace Terraria.ModLoader
 
 		protected override void Register() {
 			ModTypeLookup<PlayerDrawLayer>.Register(this);
-			PlayerDrawLayerHooks.Add(this);
+			PlayerDrawLayerLoader.Add(this);
 		}
 
 		public override string ToString() => Name;

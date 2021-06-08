@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
@@ -16,7 +17,7 @@ namespace Terraria.ModLoader
 	public abstract partial class ModSystem : ModType
 	{
 		protected override void Register() {
-			SystemHooks.Add(this);
+			SystemLoader.Add(this);
 			ModTypeLookup<ModSystem>.Register(this);
 		}
 
@@ -41,13 +42,6 @@ namespace Terraria.ModLoader
 		/// Called whenever a world is unloaded. Use this to deinitialize world-related data structures, etc.
 		/// </summary>
 		public virtual void OnWorldUnload() { }
-
-		/// <summary>
-		/// Allows you to determine what music should currently play.
-		/// </summary>
-		/// <param name="music">The music.</param>
-		/// <param name="priority">The music priority.</param>
-		public virtual void UpdateMusic(ref int music, ref MusicPriority priority) { }
 
 		/// <summary>
 		/// Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place.
@@ -178,19 +172,6 @@ namespace Terraria.ModLoader
 		public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) { }
 
 		/// <summary>
-		/// Allows you to modify color of light the sun emits.
-		/// </summary>
-		/// <param name="tileColor">Tile lighting color</param>
-		/// <param name="backgroundColor">Background lighting color</param>
-		public virtual void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) { }
-
-		/// <summary>
-		/// Allows you to modify overall brightness of lights. Can be used to create effects similiar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03
-		/// </summary>
-		/// <param name="scale">Brightness scale</param>
-		public virtual void ModifyLightingBrightness(ref float scale) { }
-
-		/// <summary>
 		/// Called after interface is drawn but right before mouse and mouse hover text is drawn. Allows for drawing interface.
 		/// 
 		/// Note: This hook should no longer be used. It is better to use the ModifyInterfaceLayers hook.
@@ -282,18 +263,27 @@ namespace Terraria.ModLoader
 		public virtual void ResetNearbyTileEffects() { }
 
 		/// <summary>
-		/// Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are. The tileCounts parameter stores the tile count indexed by tile type.
-		/// </summary>
-		public virtual void TileCountsAvailable(int[] tileCounts) { }
-
-		/// <summary>
-		/// Allows you to change the water style (determines water color) that is currently being used.
-		/// </summary>
-		public virtual void ChooseWaterStyle(ref int style) { }
-
-		/// <summary>
 		/// Similar to ModifyWorldGenTasks, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 4 items, the vanilla hardmode tasks called "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcment"
 		/// </summary>
 		public virtual void ModifyHardmodeTasks(List<GenPass> list) { }
+
+		/// <summary>
+		/// Allows you to modify color of light the sun emits.
+		/// </summary>
+		/// <param name="tileColor">Tile lighting color</param>
+		/// <param name="backgroundColor">Background lighting color</param>
+		public virtual void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) { }
+
+		/// <summary>
+		/// Allows you to modify overall brightness of lights. Can be used to create effects similiar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03
+		/// </summary>
+		/// <param name="scale">Brightness scale</param>
+		public virtual void ModifyLightingBrightness(ref float scale) { }
+
+		/// <summary>
+		/// Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are.
+		/// <br/> The <paramref name="tileCounts"/> parameter is a read-only span (treat this as an array) that stores the tile count indexed by tile type.
+		/// </summary>
+		public virtual void TileCountsAvailable(ReadOnlySpan<int> tileCounts) { }
 	}
 }

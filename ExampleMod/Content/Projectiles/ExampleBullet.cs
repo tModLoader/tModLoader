@@ -31,7 +31,8 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.ignoreWater = true; //Does the projectile's speed be influenced by water?
 			Projectile.tileCollide = true; //Can the projectile collide with tiles?
 			Projectile.extraUpdates = 1; //Set to above 0 if you want the projectile to update multiple time in a frame
-			aiType = ProjectileID.Bullet; //Act exactly like default Bullet
+			
+			AIType = ProjectileID.Bullet; //Act exactly like default Bullet
 		}
 
 		public override bool OnTileCollide(Vector2 oldVelocity) {
@@ -59,7 +60,7 @@ namespace ExampleMod.Content.Projectiles
 			return false;
 		}
 
-		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
+		public override bool PreDraw(ref Color lightColor) {
 			Main.instance.LoadProjectile(Projectile.type);
 			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
@@ -68,7 +69,7 @@ namespace ExampleMod.Content.Projectiles
 			for (int k = 0; k < Projectile.oldPos.Length; k++) {
 				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
 				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				spriteBatch.Draw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
+				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
 			}
 
 			return true;

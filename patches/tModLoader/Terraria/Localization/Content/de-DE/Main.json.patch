@@ -154,7 +154,7 @@
  		"LightMode_White": "{$LegacyMenu.56}",
 @@ -676,7 +_,7 @@
  		"Author": "von {0}",
- 		"SpaceButton": "Raum",
+ 		"SpaceButton": "Weltraum",
  		"Submit": "Absenden",
 -		"Unfavorite": "Als Favorit löschen",
 +		"Unfavorite": "Als Favorit entfernen",
@@ -162,7 +162,7 @@
  		"WorldSizeFormat": "{0} Welt",
  		"WorldSizeLarge": "Groß",
 @@ -685,7 +_,7 @@
- 		"WorldSizeUnknown": "Unbekannt",
+ 		"WorldSizeUnknown": "Unbekannte(r/s)",
  		"BartenderHelp": "Eternia-Kristall",
  		"CopySeed": "Seed kopieren: {0}",
 -		"EnterSeed": "Gib Seed ein (für Zufallsseed freilassen)",
@@ -170,7 +170,7 @@
  		"LoadingCode": "Wird geladen:",
  		"SeedCopied": "Seed kopiert",
  		"ZoomIn": "{$LegacyMenu.168}",
-@@ -798,7 +_,7 @@
+@@ -807,7 +_,7 @@
  		"Drowned_2": "{0} schläft jetzt bei den Fischen.",
  		"Drowned_3": "{0} ist ertrunken.",
  		"Drowned_4": "{0} ist jetzt Haifischfutter.",
@@ -179,7 +179,7 @@
  		"Fell_1": "{0} ist zu Tode gestürzt.",
  		"Fell_2": "{0} ist nicht abgeprallt.",
  		"Lava_1": "{0} ist geschmolzen.",
-@@ -823,7 +_,7 @@
+@@ -832,7 +_,7 @@
  	"DeathTextGeneric": {
  		"ArmTornOff": "{0} wurden die Arme ausgerissen.",
  		"Chopped": "{0} wurde zerkleinert.",
@@ -188,7 +188,7 @@
  		"Decapitated": "{0} wurde geköpft.",
  		"Destroyed": "{0} wurde zerstört.",
  		"Dissected": "{0} wurde brutal seziert.",
-@@ -841,7 +_,7 @@
+@@ -850,7 +_,7 @@
  		"PileOfFlesh": "{0} hat sich in einen unansehnlichen Fleischhaufen verwandelt.",
  		"Removed": "{0} wurde aus {1} entfernt.",
  		"Ripped": "{0}s Fleisch wurde von den Knochen gerissen.",
@@ -197,7 +197,7 @@
  		"SkullCrushed": "{0}s Schädel wurde eingeschlagen",
  		"Slain": "{0} wurde ermordet.",
  		"Snapped": "{0} wurde in zwei Teile geteilt.",
-@@ -850,7 +_,7 @@
+@@ -859,7 +_,7 @@
  	},
  	"DungeonDefenders2": {
  		"BartenderWarning": "Der Eternia-Kristall sträubt sich gegen dieses Gebiet und teleportiert sich sofort weg. Der Tavernenwirt hatte erwähnt, dass er in einem großen, flachen und offenen Gebiet aufgestellt werden sollte ...",

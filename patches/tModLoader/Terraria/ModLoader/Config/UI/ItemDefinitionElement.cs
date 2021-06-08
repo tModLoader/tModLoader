@@ -68,6 +68,7 @@ namespace Terraria.ModLoader.Config.UI
 				spriteBatch.Draw(backgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 				if (!item.IsAir || unloaded) {
 					int type = unloaded ? ItemID.Count : this.item.type;
+					Main.instance.LoadItem(item.type);
 					Texture2D itemTexture = TextureAssets.Item[type].Value;
 					Rectangle rectangle2;
 					if (Main.itemAnimations[type] != null) {

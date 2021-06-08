@@ -377,7 +377,7 @@ namespace Terraria.ModLoader
 				p.Write(mod.Name);
 
 			ItemLoader.WriteNetGlobalOrder(p);
-			SystemHooks.WriteNetSystemOrder(p);
+			SystemLoader.WriteNetSystemOrder(p);
 			p.Write(Player.MaxBuffs);
 
 			p.Send(toClient);
@@ -402,7 +402,7 @@ namespace Terraria.ModLoader
 			SetupDiagnostics();
 
 			ItemLoader.ReadNetGlobalOrder(reader);
-			SystemHooks.ReadNetSystemOrder(reader);
+			SystemLoader.ReadNetSystemOrder(reader);
 
 			int serverMaxBuffs = reader.ReadInt32();
 
@@ -443,11 +443,11 @@ namespace Terraria.ModLoader
 				return false;
 			}
 
-			return SystemHooks.HijackGetData(ref messageType, ref reader, playerNumber);
+			return SystemLoader.HijackGetData(ref messageType, ref reader, playerNumber);
 		}
 
 		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
-			=> SystemHooks.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
+			=> SystemLoader.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
 
 		// Mirror of Main class network diagnostic fields, but mod specific.
 		// Potential improvements: separate page from vanilla messageIDs, track automatic/ModSystem/etc sends per class or mod, sort by most active, moving average, NetStats console command in ModLoaderMod

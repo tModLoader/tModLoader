@@ -2,7 +2,7 @@
 # Run this script after updating en-US.tModLoader.json with new keys. python 3.
 # Also make sure the file encodings are UTF-8 not UTF-8-BOM.
 
-filename = '../src/tModLoader/Terraria.Localization.Content.{0}.tModLoader.json'
+filename = '../src/tModLoader/Terraria/Localization/Content/{0}/tModLoader.json'
 
 languages = ['zh-Hans', 'ru-RU', 'pt-BR', 'pl-PL', 'it-IT', 'fr-FR', 'es-ES', 'de-DE']
 missings = []

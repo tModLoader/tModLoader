@@ -24,13 +24,12 @@ using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.UI.ModBrowser
 {
-	internal partial class UIModBrowser : UIState
+	internal partial class UIModBrowser : UIState, IHaveBackButtonCommand 
 	{
 		public static bool AvoidGithub;
 		public static bool AvoidImgur;
 		public static bool EarlyAutoUpdate;
-		public static bool PlatformSupportsTls12
-			=> FrameworkVersion.Framework != Framework.Mono || FrameworkVersion.Version >= new Version(5, 20);
+		public static bool PlatformSupportsTls12 => true;
 
 		public UIModDownloadItem SelectedItem;
 
@@ -51,6 +50,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		internal bool UpdateNeeded;
 		internal string Filter => FilterTextBox.Text;
+		public UIState PreviousUIState { get; set; }
 
 		/* Filters */
 		public ModBrowserSortMode SortMode {
@@ -157,8 +157,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		public void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			_cts?.Cancel(false);
-			SoundEngine.PlaySound(SoundID.MenuClose);
-			Main.menuMode = 0;
 
 			bool reloadModsNeeded = aNewModDownloaded && ModLoader.autoReloadAndEnableModsLeavingModBrowser || anEnabledModUpdated;
 			bool enableModsReminder = aNewModDownloaded && !ModLoader.dontRemindModBrowserDownloadEnable;
@@ -187,6 +185,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			anEnabledModUpdated = false;
 			aNewModDownloaded = false;
 			aDisabledModUpdated = false;
+
+			(this as IHaveBackButtonCommand).HandleBackButtonUsage();
 		}
 
 		private void ReloadList(UIMouseEvent evt, UIElement listeningElement) {

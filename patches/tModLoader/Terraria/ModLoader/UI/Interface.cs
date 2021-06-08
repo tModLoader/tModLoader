@@ -10,6 +10,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.GameContent.UI.States;
 
 namespace Terraria.ModLoader.UI
 {
@@ -35,14 +36,13 @@ namespace Terraria.ModLoader.UI
 		internal const int enterSteamIDMenuID = 10018;
 		internal const int extractModID = 10019;
 		internal const int downloadProgressID = 10020;
-		internal const int developerModeHelpID = 10022;
 		internal const int progressID = 10023;
 		internal const int modConfigID = 10024;
 		internal const int createModID = 10025;
 		internal const int exitID = 10026;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
-		private static UIModSources modSources = new UIModSources();
+		internal static UIModSources modSources = new UIModSources();
 		internal static UIBuildMod buildMod = new UIBuildMod();
 		internal static UIErrorMessage errorMessage = new UIErrorMessage();
 		internal static UIModBrowser modBrowser = new UIModBrowser();
@@ -54,44 +54,15 @@ namespace Terraria.ModLoader.UI
 		internal static UIModPacks modPacksMenu = new UIModPacks();
 		internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
 		internal static UIExtractMod extractMod = new UIExtractMod();
-		internal static UIDeveloperModeHelp developerModeHelp = new UIDeveloperModeHelp();
 		internal static UIModConfig modConfig = new UIModConfig();
 		internal static UIModConfigList modConfigList = new UIModConfigList();
 		internal static UICreateMod createMod = new UICreateMod();
 		internal static UIProgress progress = new UIProgress();
 		internal static UIDownloadProgress downloadProgress = new UIDownloadProgress();
 
-		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
+		// adds to Terraria.Main.DrawMenu in Main.menuMode == 0, after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons) {
-			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuMods");
-			if (selectedMenu == buttonIndex) {
-				SoundEngine.PlaySound(10, -1, -1, 1);
-				Main.menuMode = modsMenuID;
-			}
-			buttonIndex++;
-			numButtons++;
-			if (ModCompile.DeveloperMode) {
-				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModSources");
-				if (selectedMenu == buttonIndex) {
-					SoundEngine.PlaySound(10, -1, -1, 1);
-					Main.menuMode = ModCompile.DeveloperModeReady(out var _) ? modSourcesID : developerModeHelpID;
-				}
-				buttonIndex++;
-				numButtons++;
-			}
-			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModBrowser");
-			if (selectedMenu == buttonIndex) {
-				SoundEngine.PlaySound(10, -1, -1, 1);
-				Main.menuMode = modBrowserID;
-			}
-			buttonIndex++;
-			numButtons++;
-			offY = 220;
-			for (int k = 0; k < numButtons; k++) {
-				buttonScales[k] = 0.82f;
-			}
-			spacing = 45;
 		}
 
 		internal static void ResetData() {
@@ -117,6 +88,8 @@ namespace Terraria.ModLoader.UI
 		//	virticalSpacing[numButtons - 1] = 8;
 		//}
 
+		private static bool betaWelcomed = false;
+
 		//add to end of if else chain of Main.menuMode in Terraria.Main.DrawMenu
 		//Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, array4, ref num2, ref num4, ref num5, ref flag5);
 		internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons, ref bool backButtonDown) {
@@ -130,6 +103,14 @@ namespace Terraria.ModLoader.UI
 				//	ModLoader.ShowWhatsNew = false;
 				//	infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage"), Main.menuMode);
 				//}
+
+#if RELEASE
+				// Temporary display for the alpha/beta version.
+				if (!betaWelcomed) {
+					betaWelcomed = true;
+					infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageBeta"), Main.menuMode);
+				}
+#endif
 			}
 			if (Main.menuMode == modsMenuID) {
 				Main.MenuUI.SetState(modsMenu);
@@ -141,10 +122,6 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (Main.menuMode == createModID) {
 				Main.MenuUI.SetState(createMod);
-				Main.menuMode = 888;
-			}
-			else if (Main.menuMode == developerModeHelpID) {
-				Main.MenuUI.SetState(developerModeHelp);
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == loadModsID) {
@@ -293,8 +270,11 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		internal static void ServerModMenu() {
+		internal static void ServerModMenu(out bool reloadMods) {
 			bool exit = false;
+
+			reloadMods = false;
+
 			while (!exit) {
 				Console.WriteLine("Terraria Server " + Main.versionNumber2 + " - " + ModLoader.versionedName);
 				Console.WriteLine();
@@ -331,7 +311,8 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 				else if (command == "r") {
-					ModLoader.Reload();
+					//Do not reload mods here, just to ensure that Main.DedServ_PostModLoad isn't in the call stack during mod reload, to allow hooking into it.
+					reloadMods = true;
 					exit = true;
 				}
 				else if (int.TryParse(command, out int value) && value > 0 && value <= mods.Length) {

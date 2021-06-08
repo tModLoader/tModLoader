@@ -4,35 +4,26 @@ using System;
 using System.Collections.Generic;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.
 	/// </summary>
-	public abstract class GlobalNPC : ModType
+	public abstract class GlobalNPC : GlobalType<NPC>
 	{
-		internal int index;
-		internal int instanceIndex;
-
 		protected sealed override void Register() {
 			NPCLoader.VerifyGlobalNPC(this);
 
 			ModTypeLookup<GlobalNPC>.Register(this);
 			
-			index = NPCLoader.globalNPCs.Count;
+			index = (ushort)NPCLoader.globalNPCs.Count;
 
 			NPCLoader.globalNPCs.Add(this);
 		}
 
-		/// <summary>
-		/// Whether to create a new GlobalNPC instance for every NPC that exists. 
-		/// Useful for storing information on an npc. Defaults to false. 
-		/// Return true if you need to store information (have non-static fields).
-		/// </summary>
-		public virtual bool InstancePerEntity => false;
-
-		public GlobalNPC Instance(NPC npc) => InstancePerEntity ? npc.globalNPCs[instanceIndex] : this;
+		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
 
 		/// <summary>
 		/// Whether instances of this GlobalNPC are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
@@ -60,7 +51,6 @@ namespace Terraria.ModLoader
 			GlobalNPC copy = (GlobalNPC)Activator.CreateInstance(GetType());
 			copy.Mod = Mod;
 			copy.index = index;
-			copy.instanceIndex = instanceIndex;
 			return copy;
 		}
 
@@ -199,8 +189,15 @@ namespace Terraria.ModLoader
 		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.
 		/// </summary>
 		/// <param name="npc"></param>
-		/// <param name="dropRule"></param>
+		/// <param name="npcLoot"></param>
 		public virtual void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
+		}
+
+		/// <summary>
+		/// Allows you to add and modify global loot rules that are conditional, i.e. vanilla's biome keys and souls.
+		/// </summary>
+		/// <param name="globalLoot"></param>
+		public virtual void ModifyGlobalLoot(GlobalLoot globalLoot) {
 		}
 
 		/// <summary>
@@ -391,23 +388,25 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind an NPC, or to modify the way the NPC is drawn. Return false to stop the game from drawing the NPC (useful if you're manually drawing the NPC). Returns true by default.
+		/// Allows you to draw things behind an NPC, or to modify the way the NPC is drawn. Substract screenPos from the draw position before drawing. Return false to stop the game from drawing the NPC (useful if you're manually drawing the NPC). Returns true by default.
 		/// </summary>
-		/// <param name="npc"></param>
-		/// <param name="spriteBatch"></param>
-		/// <param name="drawColor"></param>
+		/// <param name="npc">The NPC that is being drawn</param>
+		/// <param name="spriteBatch">The spritebatch to draw on</param>
+		/// <param name="screenPos">The screen position used to translate world position into screen position</param>
+		/// <param name="drawColor">The color the NPC is drawn in</param>
 		/// <returns></returns>
-		public virtual bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
+		public virtual bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw things in front of this NPC. This method is called even if PreDraw returns false.
+		/// Allows you to draw things in front of this NPC. Substract screenPos from the draw position before drawing. This method is called even if PreDraw returns false.
 		/// </summary>
-		/// <param name="npc"></param>
-		/// <param name="spriteBatch"></param>
-		/// <param name="drawColor"></param>
-		public virtual void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
+		/// <param name="npc">The NPC that is being drawn</param>
+		/// <param name="spriteBatch">The spritebatch to draw on</param>
+		/// <param name="screenPos">The screen position used to translate world position into screen position</param>
+		/// <param name="drawColor">The color the NPC is drawn in</param>
+		public virtual void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		}
 
 		/// <summary>

@@ -1,14 +1,14 @@
 --- src/Terraria/Terraria/Localization/LanguageManager.cs
 +++ src/tModLoader/Terraria/Localization/LanguageManager.cs
-@@ -9,6 +_,7 @@
- using System.Text.RegularExpressions;
+@@ -12,6 +_,7 @@
  using System.Threading;
  using Terraria.GameContent;
+ using Terraria.Initializers;
 +using Terraria.ModLoader;
  using Terraria.Utilities;
  
  namespace Terraria.Localization
-@@ -16,7 +_,7 @@
+@@ -19,7 +_,7 @@
  	public class LanguageManager
  	{
  		public static LanguageManager Instance = new LanguageManager();
@@ -17,7 +17,7 @@
  		private readonly Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
  		private GameCulture _fallbackCulture = GameCulture.DefaultCulture;
  
-@@ -68,6 +_,9 @@
+@@ -71,6 +_,9 @@
  				}
  
  				LoadLanguage(culture);
@@ -27,7 +27,7 @@
  				ActiveCulture = culture;
  				Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
  				Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
-@@ -106,10 +_,13 @@
+@@ -112,10 +_,13 @@
  			}
  		}
  

@@ -1,10 +1,11 @@
 --- src/Terraria/Configuration.targets
 +++ src/tModLoader/Configuration.targets
-@@ -1,6 +_,6 @@
+@@ -1,6 +_,8 @@
  <Project>
    <PropertyGroup>
--    <TargetFramework>net40</TargetFramework>
-+    <TargetFramework>net45</TargetFramework>
-     <Configurations>WindowsDebug;WindowsRelease;WindowsServerDebug;WindowsServerRelease;LinuxRelease;LinuxServerRelease;MacRelease;MacServerRelease</Configurations>
-     <PlatformTarget>x86</PlatformTarget>
+     <TargetFramework>net5.0</TargetFramework>
++    <!-- Defines the Minimum patch version that is required to play. pre v5.0.5 has bugs in release for windows runtime-->
++    <RuntimeFrameworkVersion>5.0.5</RuntimeFrameworkVersion>
+     <Configurations>Debug;Release</Configurations>
+     <PlatformTarget>AnyCPU</PlatformTarget>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

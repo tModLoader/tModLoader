@@ -1,0 +1,29 @@
+--- src/decompiled/Terraria/NATUPNPLib/IStaticPortMappingCollection.cs
++++ src/Terraria/Terraria/NATUPNPLib/IStaticPortMappingCollection.cs
+@@ -1,4 +_,3 @@
+-#if SERVER
+ using System.Collections;
+ using System.Reflection;
+ using System.Runtime.CompilerServices;
+@@ -6,6 +_,7 @@
+ 
+ namespace NATUPNPLib
+ {
++	/*
+ 	[ComImport]
+ 	[CompilerGenerated]
+ 	[Guid("CD1F3E77-66D6-4664-82C7-36DBB641D0F1")]
+@@ -29,5 +_,12 @@
+ 		[return: MarshalAs(UnmanagedType.Interface)]
+ 		IStaticPortMapping Add([In] int lExternalPort, [In] [MarshalAs(UnmanagedType.BStr)] string bstrProtocol, [In] int lInternalPort, [In] [MarshalAs(UnmanagedType.BStr)] string bstrInternalClient, [In] bool bEnabled, [In] [MarshalAs(UnmanagedType.BStr)] string bstrDescription);
+ 	}
++	*/
++
++	public interface IStaticPortMappingCollection : IEnumerable
++	{
++		public abstract void Remove(int lExternalPort, string bstrProtocol);
++
++		public abstract IStaticPortMapping Add(int lExternalPort, string bstrProtocol, int lInternalPort, string bstrInternalClient, bool bEnabled, string bstrDescription);
++	}
+ }
+-#endif

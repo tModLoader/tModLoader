@@ -3,9 +3,16 @@
 		// Main Menu
 		"PatreonSupport": "Please show your support: ",
 		"MenuModBrowser": "Mod Browser",
+		"MenuDownloadMods": "Download Mods",
+		"MenuDownloadModsDescription": "The in-game Mod Browser to find, download, and update your Mods.",
 		"MenuMods": "Mods",
+		"MenuManageMods": "Manage Mods",
+		"MenuManageModsDescription": "Manage which Mods are active, delete Mods, and configure your Modpacks.",
 		"MenuModSources": "Mod Sources",
+		"MenuDevelopMods": "Develop Mods",
+		"MenuDevelopModsDescription": "Develop and publish Mods for others to use, using your Mod Source code",
 		"MenuEnableDeveloperMode": "Enable Developer Mode",
+		"WelcomeMessageBeta": "Welcome to tModLoader 1.4 Alpha.\n\nYou have successfully installed an unstable tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for 1.4 tModLoader as part of its 1.4 overhaul.",
 		"FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
 		"tModLoaderSettings": "tModLoader Settings",
 		"ModMenuSwap": "Switch Menu Theme",
@@ -42,6 +49,9 @@
 		"ModsShowAllMods": "Show all mods",
 		"ModsShowEnabledMods": "Show only enabled mods",
 		"ModsShowDisabledMods": "Show only disabled mods",
+		"ModsXModsFilteredByEnabled": "{0} {^0:mod;mods} filtered by enabled filter.",
+		"ModsXModsFilteredByModSide": "{0} {^0:mod;mods} filtered by enabled mod side filter.",
+		"ModsXModsFilteredBySearch": "{0} {^0:mod;mods} filtered by enabled search filter.",
 		"ModsXItems": "{0} {^0:item;items}",
 		"ModsXNPCs": "{0} {^0:NPC;NPCs}",
 		"ModsXTiles": "{0} {^0:tile;tiles}",
@@ -52,6 +62,10 @@
 		"ModsNotFoundServer": "No mods were found in: \"{0}\"\nIf you are running a dedicated server, you may wish to use the 'modpath' command line switch or server config setting to specify a custom mods directory.\n",
 		"AskForModIndex": "Type a number to switch between enabled/disabled",
 		"AskForCommand": "Type a command: ",
+
+		// Interface
+		"BossBarStyle": "Boss Bar Style: {0}",
+		"BossBarStyleNoOptions": "No Options",
 
 		// Mod Errors
 		"LoadError": "An error occurred while loading {0}",
@@ -264,6 +278,7 @@
 		"MSPublish": "Publish",
 		"MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
 		"MSCreateMod": "Create Mod",
+		"VersionUpgrade": "LINK: Learn about Mod Migration for Latest Update",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
@@ -338,11 +353,12 @@
 		// Misc
 		"OK": "OK",
 		"Continue": "Continue",
+		"DeleteModConfirm": "Are you sure you want to delete this mod permanently?",
 		"PatreonSetTooltip": "Thank you for your support!",
 		"WorldGenError": "A problem was encountered during world generation",
 		"WorldIODataException": "The game encountered a mod data problem for a world.",
 		"ServerCrash": "Server crash: {0}\n{1}\n\nPlease check server.log to determine if a mod is responsible, otherwise head to #support in the tModLoader Discord",
-		
+
 		// MessageBox
 		"ContentFolderNotFound": "Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.",
 		"MissingServerExecutable": "Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.",
@@ -376,7 +392,7 @@
 		"InDungeon": "Needs to be in Dungeon Biome",
 		"InCorrupt": "Needs to be in Corruption Biome",
 		"InHallow": "Needs to be in Hallow Biome",
-		"InMeteor": "Needs to be in Meteor Biome",
+		"InMeteor": "Needs to be in Meteorite Biome",
 		"InJungle": "Needs to be in Jungle Biome",
 		"InSnow": "Needs to be in Snow Biome",
 		"InCrimson": "Needs to be in Crimson Biome",
@@ -390,14 +406,14 @@
 		"InGlowshroom": "Needs to be in Mushroom Biome",
 		"InUndergroundDesert": "Needs to be in Underground Desert",
 		"InSkyHeight": "Needs to be in Sky",
-		"InOverworldHeight": "Needs to be in above ground",
-		"InDirtLayerHeight": "Needs to be in Dirt Layer",
-		"InRockLayerHeight": "Needs to be in Rock Layer",
+		"InOverworldHeight": "Needs to be in Surface Layer",
+		"InDirtLayerHeight": "Needs to be in Underground Layer",
+		"InRockLayerHeight": "Needs to be in Cavern Layer",
 		"InUnderworldHeight": "Needs to be in Underworld",
-		"InBeach": "Needs to be in Beach Biome",
+		"InBeach": "Needs to be in Ocean Biome",
 		"InRain": "Needs to be during rain",
 		"InSandstorm": "Needs to be during Sandstorm",
-		"InOldOneArmy": "Needs to be during Old One Army",
+		"InOldOneArmy": "Needs to be during Old One's Army",
 		"InGranite": "Needs to be in Granite Biome",
 		"InMarble": "Needs to be in Marble Biome",
 		"InHive": "Needs to be in Hive",

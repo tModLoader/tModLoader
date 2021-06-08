@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameInput/PlayerInput.cs
 +++ src/tModLoader/Terraria/GameInput/PlayerInput.cs
-@@ -8,6 +_,7 @@
+@@ -8,13 +_,14 @@
  using Terraria.GameContent.UI.Chat;
  using Terraria.GameContent.UI.States;
  using Terraria.ID;
@@ -8,6 +8,14 @@
  using Terraria.Social;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
+ 
+ namespace Terraria.GameInput
+ {
+-	public class PlayerInput
++	public partial class PlayerInput
+ 	{
+ 		public class MiscSettingsTEMP
+ 		{
 @@ -26,6 +_,9 @@
  		public static List<string> KnownTriggers = new List<string> {
  			"MouseLeft",
@@ -22,7 +30,7 @@
  			}
  		}
  
-+		// To allow mod hotkeys to load, need to reinitialize after load.
++		// To allow mod keybinds to load, need to reinitialize after load.
 +		internal static bool reinitialize;
 +		private static void ReInitialize() {
 +			Profiles.Clear();
@@ -95,7 +103,7 @@
  						int num = 6;
  						if (ItemSlot.IsABuildingItem(player.inventory[player.selectedItem]))
 -							num = player.inventory[player.selectedItem].useTime;
-+							num = PlayerHooks.TotalUseTime(player.inventory[player.selectedItem].useTime, player, player.inventory[player.selectedItem]);
++							num = PlayerLoader.TotalUseTime(player.inventory[player.selectedItem].useTime, player, player.inventory[player.selectedItem]);
  
  						DpadSnapCooldown[i] = num;
  						zero += vector;

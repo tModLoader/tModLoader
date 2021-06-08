@@ -17,8 +17,9 @@ using Terraria.Audio;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIMods : UIState
+	internal class UIMods : UIState, IHaveBackButtonCommand
 	{
+		public UIState PreviousUIState { get; set; }
 		private UIElement uIElement;
 		private UIPanel uIPanel;
 		private UILoaderAnimatedImage uiLoader;
@@ -229,15 +230,15 @@ namespace Terraria.ModLoader.UI
 			Append(uIElement);
 		}
 
-		private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(11, -1, -1, 1);
+		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			// To prevent entering the game with Configs that violate ReloadRequired
 			if (ConfigManager.AnyModNeedsReload()) {
 				Main.menuMode = Interface.reloadModsID;
 				return;
 			}
 			ConfigManager.OnChangedAll();
-			Main.menuMode = 0;
+
+			(this as IHaveBackButtonCommand).HandleBackButtonUsage();
 		}
 
 		private void ReloadMods(UIMouseEvent evt, UIElement listeningElement) {
@@ -291,7 +292,30 @@ namespace Terraria.ModLoader.UI
 			updateNeeded = false;
 			filter = filterTextBox.Text;
 			modList.Clear();
-			modList.AddRange(items.Where(item => item.PassFilters()));
+			var filterResults = new UIModsFilterResults();
+			var visibleItems = items.Where(item => item.PassFilters(filterResults)).ToList();
+			if (filterResults.AnyFiltered) {
+				var panel = new UIPanel();
+				panel.Width.Set(0, 1f);
+				modList.Add(panel);
+				var filterMessages = new List<string>();
+				if (filterResults.filteredByEnabled > 0)
+					filterMessages.Add(Language.GetTextValue("tModLoader.ModsXModsFilteredByEnabled", filterResults.filteredByEnabled));
+				if (filterResults.filteredByModSide > 0)
+					filterMessages.Add(Language.GetTextValue("tModLoader.ModsXModsFilteredByModSide", filterResults.filteredByModSide));
+				if (filterResults.filteredBySearch > 0)
+					filterMessages.Add(Language.GetTextValue("tModLoader.ModsXModsFilteredBySearch", filterResults.filteredBySearch));
+				string filterMessage = string.Join("\n", filterMessages);
+				var text = new UIText(filterMessage);
+				text.Width.Set(0, 1f);
+				text.IsWrapped = true;
+				text.WrappedTextBottomPadding = 0;
+				text.TextOriginX = 0f;
+				text.Recalculate();
+				panel.Append(text);
+				panel.Height.Set(text.MinHeight.Pixels + panel.PaddingTop, 0f);
+			}
+			modList.AddRange(visibleItems);
 			Recalculate();
 			modList.ViewPosition = modListViewPosition;
 		}
@@ -356,8 +380,16 @@ namespace Terraria.ModLoader.UI
 					needToRemoveLoading = true;
 					updateNeeded = true;
 					loading = false;
-				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.Current);
 		}
+	}
+
+	public class UIModsFilterResults
+	{
+		public int filteredBySearch;
+		public int filteredByModSide;
+		public int filteredByEnabled;
+		public bool AnyFiltered => filteredBySearch > 0 || filteredByModSide > 0 || filteredByEnabled > 0;
 	}
 
 	public static class ModsMenuSortModesExtensions

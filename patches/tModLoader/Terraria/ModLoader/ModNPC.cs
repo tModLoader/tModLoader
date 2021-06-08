@@ -17,76 +17,51 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModNPC : ModTexturedType
 	{
-		//add modNPC property to Terraria.NPC (internal set)
-		//set modNPC to null at beginning of Terraria.NPC.SetDefaults
-		/// <summary>
-		/// The NPC object that this ModNPC controls.
-		/// </summary>
+		/// <summary> The NPC object that this ModNPC controls. </summary>
 		public NPC NPC { get; internal set; }
 
-		/// <summary>
-		/// Shorthand for npc.type;
-		/// </summary>
+		/// <summary> Shorthand for npc.type; </summary>
 		public int Type => NPC.type;
 
-		/// <summary>
-		/// The translations for the display name of this NPC.
-		/// </summary>
+		/// <summary> The translations for the display name of this NPC. </summary>
 		public ModTranslation DisplayName { get; internal set; }
 
-		/// <summary>
-		/// The file name of this NPC's head texture file, to be used in autoloading.
-		/// </summary>
+		/// <summary> The file name of this NPC's head texture file, to be used in autoloading. </summary>
 		public virtual string HeadTexture => Texture + "_Head";
-		/// <summary>
-		/// This file name of this NPC's boss head texture file, to be used in autoloading.
-		/// </summary>
-		public virtual string BossHeadTexture => Texture + "_Head_Boss";
-		/// <summary>
-		/// Determines which type of vanilla NPC this ModNPC will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0.
-		/// </summary>
-		public int aiType = 0;
-		/// <summary>
-		/// Determines which type of vanilla NPC this ModNPC will copy the animation (FindFrame) of. Leave as 0 to not copy any animation. Defaults to 0.
-		/// </summary>
-		public int animationType = 0;
-		/// <summary>
-		/// The item type of the boss bag that is dropped when DropBossBags is called for this NPC.
-		/// </summary>
-		public int bossBag = -1;
-		//make changes to Terraria.Main.UpdateMusic (see patch files)
-		/// <summary>
-		/// The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally.
-		/// </summary>
-		public int music = -1;
-		/// <summary>
-		/// The priority of the music that plays when this NPC is on or near the screen.
-		/// </summary>
-		public MusicPriority musicPriority = MusicPriority.BossLow;
-		//in Terraria.Main.NPCAddHeight at end of else if chain add
-		//  else if(Main.npc[i].modNPC != null) { num = Main.npc[i].modNPC.drawOffsetY; }
-		/// <summary>
-		/// The vertical offset used for drawing this NPC. Defaults to 0.
-		/// </summary>
-		public float drawOffsetY = 0f;
-		//in Terraria.Item.NPCToBanner before returning 0 add
-		//  if(i >= NPCID.Count) { return NPCLoader.npcs[i].banner; }
-		//in Terraria.Item.BannerToNPC before returning 0 add
-		//  if(i >= NPCID.Count) { return i; }
-		/// <summary>
-		/// The type of NPC that this NPC will be considered as when determining banner drops and banner bonuses. By default this will be 0, which means this NPC is not associated with any banner. To give your NPC its own banner, set this field to the NPC's type.
-		/// </summary>
-		public int banner = 0;
-		//in Terraria.NPC.NPCLoot after if statements setting num6 add
-		//  if(num3 >= NPCID.Count) { num6 = NPCLoader.npcs[num3].bannerItem; }
-		/// <summary>
-		/// The type of the item this NPC drops for every 50 times it is defeated. For any ModNPC whose banner field is set to the type of this NPC, that ModNPC will drop this banner.
-		/// </summary>
-		public int bannerItem = 0;
 
-		/// <summary>
-		/// ModNPC constructor.
-		/// </summary>
+		/// <summary> This file name of this NPC's boss head texture file, to be used in autoloading. </summary>
+		public virtual string BossHeadTexture => Texture + "_Head_Boss";
+
+		/// <summary> Determines which type of vanilla NPC this ModNPC will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0. </summary>
+		public int AIType { get; set; }
+		
+		/// <summary> Determines which type of vanilla NPC this ModNPC will copy the animation (FindFrame) of. Leave as 0 to not copy any animation. Defaults to 0. </summary>
+		public int AnimationType { get; set; }
+
+		/// <summary> The item type of the boss bag that is dropped when DropBossBags is called for this NPC. </summary>
+		public int BossBag { get; set; } = -1;
+
+		/// <summary> The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally. </summary>
+		/// Will be superceded by ModSceneEffect. Kept for legacy.
+		public int Music { get; set; } = -1;
+		
+		/// <summary> The priority of the music that plays when this NPC is on or near the screen. </summary>
+		/// Will be superceded by ModSceneEffect. Kept for legacy.
+		public SceneEffectPriority SceneEffectPriority { get; set; } = SceneEffectPriority.BossLow;
+		
+		/// <summary> The vertical offset used for drawing this NPC. Defaults to 0. </summary>
+		public float DrawOffsetY { get; set; }
+		
+		/// <summary> The type of NPC that this NPC will be considered as when determining banner drops and banner bonuses. By default this will be 0, which means this NPC is not associated with any banner. To give your NPC its own banner, set this field to the NPC's type. </summary>
+		public int Banner { get; set; }
+
+		/// <summary> The type of the item this NPC drops for every 50 times it is defeated. For any ModNPC whose banner field is set to the type of this NPC, that ModNPC will drop this banner. </summary>
+		public int BannerItem { get; set; }
+
+		//TODO: Find a better solution in the future.
+		/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary </summary>
+		public int[] SpawnModBiomes { get; set; } = new int[0];
+
 		public ModNPC() {
 			NPC = new NPC{ModNPC = this};
 		}
@@ -155,13 +130,13 @@ namespace Terraria.ModLoader
 			ModNPC copy = (ModNPC)Activator.CreateInstance(GetType());
 			copy.NPC = npcClone;
 			copy.Mod = Mod;
-			copy.aiType = aiType;
-			copy.animationType = animationType;
-			copy.bossBag = bossBag;
-			copy.music = music;
-			copy.drawOffsetY = drawOffsetY;
-			copy.banner = banner;
-			copy.bannerItem = bannerItem;
+			copy.AIType = AIType;
+			copy.AnimationType = AnimationType;
+			copy.BossBag = BossBag;
+			copy.Music = Music;
+			copy.DrawOffsetY = DrawOffsetY;
+			copy.Banner = Banner;
+			copy.BannerItem = BannerItem;
 			return copy;
 		}
 
@@ -183,10 +158,10 @@ namespace Terraria.ModLoader
 		public virtual void AutoStaticDefaults() {
 			TextureAssets.Npc[NPC.type] = ModContent.GetTexture(Texture);
 
-			if (banner != 0 && bannerItem != 0) {
-				NPCLoader.bannerToItem[banner] = bannerItem;
+			if (Banner != 0 && BannerItem != 0) {
+				NPCLoader.bannerToItem[Banner] = BannerItem;
 			}
-			else if (banner != 0 || bannerItem != 0) {
+			else if (Banner != 0 || BannerItem != 0) {
 				Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", Mod.DisplayName, Name));
 			}
 
@@ -329,6 +304,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.
 		/// </summary>
+		/// <param name="npcLoot"></param>
 		public virtual void ModifyNPCLoot(NPCLoot npcLoot) {
 		}
 
@@ -510,21 +486,23 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind this NPC, or to modify the way this NPC is drawn. Return false to stop the game from drawing the NPC (useful if you're manually drawing the NPC). Returns true by default.
+		/// Allows you to draw things behind this NPC, or to modify the way this NPC is drawn. Substract screenPos from the draw position before drawing. Return false to stop the game from drawing the NPC (useful if you're manually drawing the NPC). Returns true by default.
 		/// </summary>
-		/// <param name="spriteBatch"></param>
-		/// <param name="drawColor"></param>
+		/// <param name="spriteBatch">The spritebatch to draw on</param>
+		/// <param name="screenPos">The screen position used to translate world position into screen position</param>
+		/// <param name="drawColor">The color the NPC is drawn in</param>
 		/// <returns></returns>
-		public virtual bool PreDraw(SpriteBatch spriteBatch, Color drawColor) {
+		public virtual bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw things in front of this NPC. This method is called even if PreDraw returns false.
+		/// Allows you to draw things in front of this NPC. Substract screenPos from the draw position before drawing. This method is called even if PreDraw returns false.
 		/// </summary>
-		/// <param name="spriteBatch"></param>
-		/// <param name="drawColor"></param>
-		public virtual void PostDraw(SpriteBatch spriteBatch, Color drawColor) {
+		/// <param name="spriteBatch">The spritebatch to draw on</param>
+		/// <param name="screenPos">The screen position used to translate world position into screen position</param>
+		/// <param name="drawColor">The color the NPC is drawn in</param>
+		public virtual void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		}
 
 		/// <summary>

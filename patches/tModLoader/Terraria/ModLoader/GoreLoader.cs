@@ -43,11 +43,15 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void AutoloadGores(Mod mod) {
-			foreach (string texturePath in mod.Assets.EnumeratePaths<Texture2D>().Where(t => t.StartsWith("Gores/"))) {
-				string textureKey = $"{mod.Name}/{texturePath}";
+			foreach (string fullTexturePath in mod.Assets.EnumeratePaths<Texture2D>().Where(t => t.Contains("Gores/"))) {
+				string texturePath = Path.ChangeExtension(fullTexturePath, null);
 
-				if (!mod.TryFind<ModGore>(Path.GetFileNameWithoutExtension(texturePath), out _)) //ModGore gores will already be loaded at this point.
+				// ModGore gores will already be loaded at this point.
+				if (!mod.TryFind<ModGore>(Path.GetFileName(texturePath), out _)) {
+					string textureKey = $"{mod.Name}/{texturePath}";
+
 					AddGoreFromTexture<SimpleModGore>(mod, textureKey);
+				}
 			}
 		}
 
@@ -83,9 +87,9 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void SetupUpdateType(Gore gore) {
-			if (gore.ModGore != null && gore.ModGore.updateType > 0) {
+			if (gore.ModGore != null && gore.ModGore.UpdateType > 0) {
 				gore.realType = gore.type;
-				gore.type = gore.ModGore.updateType;
+				gore.type = gore.ModGore.UpdateType;
 			}
 		}
 

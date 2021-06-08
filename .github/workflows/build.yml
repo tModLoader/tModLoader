@@ -1,0 +1,176 @@
+name: Build tModLoader
+
+# Controls when the action will run. 
+on:
+  # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
+  push:
+    branches: [1.4, 1.4_mergedtesting]
+  pull_request_target:
+    types: [labeled]
+    branches: [1.4, 1.4_mergedtesting]
+  # Allows you to run this workflow manually from the Actions tab
+  # workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+    # Make sure not to run this job on other labels
+    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Safe to Test')
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check out base branch
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Check out pull request code to separate folder
+        uses: actions/checkout@v2
+        if: github.event_name == 'pull_request_target'
+        with:
+          ref: ${{github.event.pull_request.head.ref}}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+          path: pullrequest
+          persist-credentials: false
+        # TODO: build doesn't have right branch I assume
+
+      - name: Copy over pull request patches folder and ExampleMod folder
+        if: github.event_name == 'pull_request_target'
+        shell: bash
+        run: |
+          ls -l
+          cd pullrequest
+          ls -l
+          cd ..
+          rm -r patches
+          cp -fR pullrequest/patches patches
+          rm -r ExampleMod
+          cp -fR pullrequest/ExampleMod ExampleMod
+
+      # A cache allows the build to skip the decompile step
+      - name: Retrieve encrypted decompiled zip cache
+        id: cache-decompiled
+        uses: actions/cache@v2
+        with:
+          path: decompiled.zip.gpg
+          # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
+          key: 1423-A
+
+      - name: Restore decompiled folder from cache
+        if: steps.cache-decompiled.outputs.cache-hit == 'true'
+        shell: bash
+        run: |
+          echo Restoring decompiled folder from cache
+          ls -l
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output decompiled.zip decompiled.zip.gpg
+          ls -l
+          unzip -o decompiled.zip -d src
+          cd src
+          ls -l
+          cd ..
+        env:
+          SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
+
+      # Runs a set of commands using the runners shell
+      - name: Build script
+        if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Safe to Test')
+        shell: bash
+        run: |
+          echo Downloading Terraraia Server zip
+          curl -s -L https://terraria.org/system/dedicated_servers/archives/000/000/046/original/terraria-server-1423.zip -o terrariaserver.zip
+          unzip -q terrariaserver.zip
+          echo Extracting Setup Secret Assets
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1423/Windows/Terraria.exe ./setup/SecretAssets/SetupAsset1.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1423/Windows/SteelSeriesEngineWrapper.dll ./setup/SecretAssets/SetupAsset2.gpg
+          echo ls -l is:
+          ls -l
+          echo Installing XNA
+          curl -s -L https://github.com/JavidPack/tModLoaderPublishIntegration/raw/master/xnafx40_redist.msi -O
+          msiexec //i xnafx40_redist.msi //quiet
+          echo XNA Installed
+          echo Running setup.bat
+          ./setup.bat auto
+          echo setupcommandline Done
+          echo pwd is: ${PWD}
+          echo ls -l is:
+          ls -l
+          cd solutions
+          echo pwd is: ${PWD}
+          echo ls -l is:
+          ls -l
+          echo Running CompleteLib.bat for Debug
+          ./CompleteLib.bat Debug skipzip
+          echo CompleteLib.bat Debug Done
+          cd ..
+          mkdir -p artifacts/Debug
+          cp -R ./solutions/Debug/Shared/. ./artifacts/Debug/
+          cd solutions
+          echo pwd is: ${PWD}
+          echo Running CompleteLib.bat for Release
+          ./CompleteLib.bat Release skipzip
+          echo CompleteLib.bat Release Done
+          cd ..
+          mkdir -p artifacts/Release
+          cp -R ./solutions/Release/Shared/. ./artifacts/Release/
+          echo Creating decompiled cache zip file
+          7z a decompiled.zip ./src/decompiled/
+          gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
+          ls -l
+        env:
+          SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Debug Build
+          path: |
+            ./artifacts/Debug/
+            
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Release Build
+          path: |
+            ./artifacts/Release/
+            
+      - name: Build ExampleMod
+        shell: bash
+        run: |
+          echo Adding build info to ExampleMod displayName
+          echo "displayName = Example Mod (${GITHUB_REF##*/}-${{ github.sha }})" >> ./ExampleMod/build.txt
+          cd artifacts/Debug
+          mkdir -p ModLoader/Mods
+          echo pwd is: ${PWD}
+          echo Building ExampleMod
+          dotnet tModLoader.dll -server -build ../../ExampleMod -tmlsavedirectory ./ModLoader
+          cd ../..
+          mkdir -p artifacts/Mods
+          mv ./artifacts/Debug/ModLoader/Mods/ExampleMod.tmod ./artifacts/Mods/ExampleMod.tmod
+          
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ExampleMod Build
+          path: |
+            ./artifacts/Mods/ExampleMod.tmod
+        
+      - name: Post push report to 1-4-beta-builds on Discord
+        uses: sarisia/actions-status-discord@v1
+        if: always() && github.event_name == 'push'
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
+          description: |
+            Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view.
+
+      - name: Post pull request report to 1-4-beta-builds on Discord
+        uses: sarisia/actions-status-discord@v1
+        if: always() && github.event_name == 'pull_request_target'
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
+          color: ${{ fromJSON('{"success":1600299, "failure":8394270, "cancelled":10254856}')[job.status] }}
+          description: |
+            Pull Request: ${{github.event.pull_request.head.ref}} from ${{github.event.pull_request.head.repo.full_name}}
+            Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
+            Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
