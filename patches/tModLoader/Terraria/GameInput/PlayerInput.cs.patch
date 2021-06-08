@@ -30,7 +30,7 @@
  			}
  		}
  
-+		// To allow mod hotkeys to load, need to reinitialize after load.
++		// To allow mod keybinds to load, need to reinitialize after load.
 +		internal static bool reinitialize;
 +		private static void ReInitialize() {
 +			Profiles.Clear();

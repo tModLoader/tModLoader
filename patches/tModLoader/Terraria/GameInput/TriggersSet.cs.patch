@@ -47,8 +47,8 @@
  				KeyStatus.Add(knownTrigger, value: false);
  			}
 +
-+			foreach (var hotkey in HotkeyLoader.Hotkeys) {
-+				KeyStatus.Add(hotkey.uniqueName, false);
++			foreach (var keybind in KeybindLoader.Keybinds) {
++				KeyStatus.Add(keybind.uniqueName, false);
 +			}
  		}
  
