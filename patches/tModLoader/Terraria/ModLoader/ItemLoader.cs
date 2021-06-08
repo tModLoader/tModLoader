@@ -907,7 +907,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void PreUpdateVanitySet(Player player) {
 			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
-			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
+			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.BodyLegacy, player.body);
 			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
 			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
 				headTexture.PreUpdateVanitySet(player);
@@ -932,7 +932,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void UpdateVanitySet(Player player) {
 			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
-			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
+			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.BodyLegacy, player.body);
 			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
 			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
 				headTexture.UpdateVanitySet(player);
@@ -958,7 +958,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void ArmorSetShadows(Player player) {
 			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
-			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
+			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.BodyLegacy, player.body);
 			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
 			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
 				headTexture.ArmorSetShadows(player);
@@ -1164,7 +1164,7 @@ namespace Terraria.ModLoader
 		/// "body" is the player's associated body equipment texture.
 		/// </summary>
 		public static void DrawHands(Player player, ref bool drawHands, ref bool drawArms) {
-			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
+			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.BodyLegacy, player.body);
 			texture?.DrawHands(ref drawHands, ref drawArms);
 
 			foreach (var g in HookDrawHands.Enumerate(globalItemsArray)) {
@@ -1218,7 +1218,7 @@ namespace Terraria.ModLoader
 		/// "body" is the player's associated body equipment texture.
 		/// </summary>
 		public static bool DrawBody(Player player) {
-			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
+			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.BodyLegacy, player.body);
 			if (texture != null && !texture.DrawBody())
 				return false;
 
@@ -1273,7 +1273,7 @@ namespace Terraria.ModLoader
 		/// Calls the item's body equipment texture's ArmorArmGlowMask hook, then all GlobalItem.ArmorArmGlowMask hooks.
 		/// </summary>
 		public static void ArmorArmGlowMask(int slot, Player drawPlayer, float shadow, ref int glowMask, ref Color color) {
-			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, slot);
+			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.BodyLegacy, slot);
 			texture?.ArmorArmGlowMask(drawPlayer, shadow, ref glowMask, ref color);
 
 			foreach (var g in HookArmorArmGlowMask.Enumerate(globalItemsArray)) {

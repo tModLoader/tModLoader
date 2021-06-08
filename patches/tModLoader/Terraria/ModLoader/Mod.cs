@@ -172,7 +172,7 @@ namespace Terraria.ModLoader
 				EquipLoader.idToSlot[item.Type] = slots = new Dictionary<EquipType, int>();
 
 			slots[type] = slot;
-			if (type == EquipType.Head || type == EquipType.Body || type == EquipType.BodyComposite || type == EquipType.Legs)
+			if (type == EquipType.Head || type == EquipType.BodyLegacy || type == EquipType.Body || type == EquipType.Legs)
 				EquipLoader.slotToId[type][slot] = item.Type;
 
 			return slot;

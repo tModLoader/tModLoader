@@ -21,7 +21,7 @@
  				}
  
 -				public static SetFactory Factory = new SetFactory(244);
-+				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Body]);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.BodyLegacy]);
  				public static bool[] NeedsToDrawArm = Factory.CreateBoolSet(false, 200, 202, 201, 203, 195, 205, 207, 206, 228, 242, 243);
  				public static int[] IncludedCapeBack = Factory.CreateIntSet(-1, 207, 13, 206, 12, 205, 11, 185, 17, 96, 18, 94, 19, 80, 21, 217, 22, 24, 29, 238, 32);
  				public static int[] IncludedCapeBackFemale = Factory.CreateIntSet(-1, 207, 13, 206, 12, 205, 11, 185, 17, 96, 18, 94, 19, 80, 21, 217, 23, 24, 29, 238, 32);
@@ -39,7 +39,7 @@
  			public class Sets
  			{
 -				public static SetFactory Factory = new SetFactory(23);
-+				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOn]);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOnLegacy]);
  				public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22);
  				public static bool[] UsesOldFramingTexturesForWalking = Factory.CreateBoolSet(false, 12, 8, 17);
  			}
@@ -48,7 +48,7 @@
  			public class Sets
  			{
 -				public static SetFactory Factory = new SetFactory(15);
-+				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOff]);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOffLegacy]);
  				public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
  			}
  

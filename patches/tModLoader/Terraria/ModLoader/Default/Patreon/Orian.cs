@@ -5,7 +5,7 @@ namespace Terraria.ModLoader.Default.Patreon
 	{
 		public override bool IsVanitySet(int head, int body, int legs) {
 			return head == Mod.GetEquipSlot(nameof(Orian_Head), EquipType.Head)
-				   && body == Mod.GetEquipSlot(nameof(Orian_Body), EquipType.Body)
+				   && body == Mod.GetEquipSlot(nameof(Orian_Body), EquipType.BodyLegacy)
 				   && legs == Mod.GetEquipSlot(nameof(Orian_Legs), EquipType.Legs);
 		}
 
@@ -20,7 +20,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		}
 	}
 
-	[AutoloadEquip(EquipType.Body)]
+	[AutoloadEquip(EquipType.BodyLegacy)]
 	internal class Orian_Body : PatreonItem
 	{
 		public override void SetDefaults() {

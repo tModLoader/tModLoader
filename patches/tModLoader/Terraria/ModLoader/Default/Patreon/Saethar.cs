@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		}
 	}
 
-	[AutoloadEquip(EquipType.Body)]
+	[AutoloadEquip(EquipType.BodyLegacy)]
 	internal class Saethar_Body : PatreonItem
 	{
 		public override void SetDefaults() {

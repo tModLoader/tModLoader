@@ -13,7 +13,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 
 		public override bool IsVanitySet(int head, int body, int legs)
 			=> head == Mod.GetEquipSlot(nameof(PowerRanger_Head), EquipType.Head)
-			&& body == Mod.GetEquipSlot(nameof(PowerRanger_Body), EquipType.Body)
+			&& body == Mod.GetEquipSlot(nameof(PowerRanger_Body), EquipType.BodyLegacy)
 			&& legs == Mod.GetEquipSlot(nameof(PowerRanger_Legs), EquipType.Legs);
 
 		public override void UpdateVanitySet(Player player)
