@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.width = 24;
 			Item.height = 24;
 			Item.rare = ItemRarityID.Purple;
-			Item.expert = true;
+			Item.expert = true; //This makes sure that "Expert" displays in the tooltip and the item name color changes
 		}
 
 		public override bool CanRightClick() {
@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void OpenBossBag(Player player) {
 			if (Main.tenthAnniversaryWorld) { //Because this is a pre-HM boss, we have to include this check
-				//Using a particular secret world grants doubled chance on dev sets (handled inside TryGettingDevArmor) even for pre-HM bosses
+				//Using a particular secret seed world grants doubled chance on dev sets (handled inside TryGettingDevArmor) even for pre-HM bosses
 				player.TryGettingDevArmor();
 			}
 
