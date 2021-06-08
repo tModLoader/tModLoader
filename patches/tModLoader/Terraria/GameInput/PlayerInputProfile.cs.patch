@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameInput/PlayerInputProfile.cs
 +++ src/tModLoader/Terraria/GameInput/PlayerInputProfile.cs
-@@ -3,6 +_,8 @@
+@@ -3,10 +_,12 @@
  using Newtonsoft.Json.Linq;
  using System;
  using System.Collections.Generic;
@@ -9,6 +9,11 @@
  
  namespace Terraria.GameInput
  {
+-	public class PlayerInputProfile
++	public partial class PlayerInputProfile
+ 	{
+ 		public Dictionary<InputMode, KeyConfiguration> InputModes = new Dictionary<InputMode, KeyConfiguration> {
+ 			{ InputMode.Keyboard, new KeyConfiguration() },
 @@ -185,9 +_,12 @@
  		}
  
@@ -23,25 +28,3 @@
  				"Up",
  				"Down",
  				"Left",
-@@ -240,6 +_,21 @@
- 			};
- 
- 			CopyKeysFrom(profile, mode, keysToCopy);
-+		}
-+
-+		public void CopyModHotkeySettingsFrom(PlayerInputProfile profile, InputMode mode) {
-+			foreach (var modHotkey in HotKeyLoader.HotKeys) {
-+				InputModes[mode].KeyStatus[modHotkey.uniqueName].Clear();
-+				if (!string.IsNullOrEmpty(modHotkey.defaultKey))
-+					InputModes[mode].KeyStatus[modHotkey.uniqueName].Add(modHotkey.defaultKey);
-+			}
-+		}
-+
-+		public void CopyIndividualModHotkeySettingsFrom(PlayerInputProfile profile, InputMode mode, string uniqueName) {
-+			var modHotKey = HotKeyLoader.modHotKeys[uniqueName];
-+			InputModes[mode].KeyStatus[uniqueName].Clear();
-+			if (!string.IsNullOrEmpty(modHotKey.defaultKey))
-+				InputModes[mode].KeyStatus[uniqueName].Add(modHotKey.defaultKey);
- 		}
- 
- 		public void CopyGamepadSettingsFrom(PlayerInputProfile profile, InputMode mode) {

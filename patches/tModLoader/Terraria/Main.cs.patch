@@ -69,6 +69,15 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		public static PingMapLayer Pings = new PingMapLayer();
+@@ -516,7 +_,7 @@
+ 		public static int maxScreenW = 1920;
+ 		public static int maxScreenH = 1200;
+ 		public static int minScreenW = 800;
+-		public static int minScreenH = 600;
++		public static int minScreenH = 720; // Used to be '600'
+ 		public static float iS = 1f;
+ 		public static bool render;
+ 		public static int qaStyle;
 @@ -543,7 +_,7 @@
  		public static int instantBGTransitionCounter = 2;
  		public static int bgDelay;
@@ -280,15 +289,6 @@
  			return result;
  		}
  
-@@ -2763,6 +_,8 @@
- 				itemAnimationsRegistered.Add(index);
- 
- 			itemAnimations[index] = animation;
-+			if (ItemLoader.IsModItem(index))
-+				ItemLoader.animations.Add(index);
- 		}
- 
- 		public static void InitializeItemAnimations() {
 @@ -2804,11 +_,13 @@
  			}
  		}
@@ -747,7 +747,7 @@
  					}
  					else if (text == Language.GetTextValue("CLI.Exit_Command")) {
  						WorldFile.SaveWorld();
-+						SystemHooks.OnWorldUnload();
++						SystemLoader.OnWorldUnload();
 +						TileIO.PostExitWorldCleanup();
  						Netplay.Disconnect = true;
  						SocialAPI.Shutdown();
@@ -790,7 +790,7 @@
  			}
 +
 +			endVanillaMethod:
-+			SystemHooks.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate);
++			SystemLoader.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate);
  		}
  
  		public Main() {
@@ -1137,7 +1137,7 @@
  
  			if (CanPauseGame()) {
  				DoUpdate_WhilePaused();
-+				PlayerHooks.UpdateAutopause(player[myPlayer]);
++				PlayerLoader.UpdateAutopause(player[myPlayer]);
 +
  				gamePaused = true;
  				return;
@@ -1146,7 +1146,7 @@
  				Sandstorm.EmitDust();
  			}
  
-+			SystemHooks.PreUpdateEntities();
++			SystemLoader.PreUpdateEntities();
  			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
  				Star.UpdateStars();
  				Cloud.UpdateClouds();
@@ -1154,7 +1154,7 @@
  				InGameUI.Update(gameTime);
  
  			CreativeMenu.Update(gameTime);
-+			SystemHooks.UpdateUI(gameTime);
++			SystemLoader.UpdateUI(gameTime);
 +			PlayerInput.ScrollWheelDeltaForUI = 0; //TODO: Should this be before PlayerInput.ResetInputsOnActiveStateChange()?
 +
 +			BossBarLoader.HandleStyle(); //Has to be outside of the !gameMenu check because it deals with switching and saving the boss style in menus, including the main menu
@@ -1188,7 +1188,7 @@
  			if (flag)
  				NetMessage.SendData(138);
  
-+			PlayerHooks.SendClientChanges(Main.player[myPlayer], clientPlayer);
++			PlayerLoader.SendClientChanges(Main.player[myPlayer], clientPlayer);
 +
  			clientPlayer = (Player)Main.player[myPlayer].clientClone();
  		}
@@ -1198,7 +1198,7 @@
  			UpdateParticleSystems();
  			tileSolid[379] = false;
 +
-+			SystemHooks.PreUpdatePlayers();
++			SystemLoader.PreUpdatePlayers();
 +
  			int num = 0;
  			int num2 = 0;
@@ -1207,11 +1207,11 @@
  				}
  			}
  
-+			SystemHooks.PostUpdatePlayers();
++			SystemLoader.PostUpdatePlayers();
 +
  			_gameUpdateCount++;
 +
-+			SystemHooks.PreUpdateNPCs();
++			SystemLoader.PreUpdateNPCs();
 +
  			NPC.RevengeManager.Update();
  			if (netMode != 1) {
@@ -1221,8 +1221,8 @@
  
  			CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
 +
-+			SystemHooks.PostUpdateNPCs();
-+			SystemHooks.PreUpdateGores();
++			SystemLoader.PostUpdateNPCs();
++			SystemLoader.PreUpdateGores();
 +
  			for (int l = 0; l < 600; l++) {
  				if (ignoreErrors) {
@@ -1231,8 +1231,8 @@
  				}
  			}
  
-+			SystemHooks.PostUpdateGores();
-+			SystemHooks.PreUpdateProjectiles();
++			SystemLoader.PostUpdateGores();
++			SystemLoader.PreUpdateProjectiles();
 +
  			LockOnHelper.SetUP();
  			CurrentFrameFlags.HadAnActiveInteractibleProjectile = false;
@@ -1242,8 +1242,8 @@
  			PostUpdateAllProjectiles();
  			LockOnHelper.SetDOWN();
 +
-+			SystemHooks.PostUpdateProjectiles();
-+			SystemHooks.PreUpdateItems();
++			SystemLoader.PostUpdateProjectiles();
++			SystemLoader.PreUpdateItems();
 +
  			Item.numberOfNewItems = 0;
  			for (int n = 0; n < 400; n++) {
@@ -1252,8 +1252,8 @@
  				}
  			}
  
-+			SystemHooks.PostUpdateItems();
-+			SystemHooks.PreUpdateDusts();
++			SystemLoader.PostUpdateItems();
++			SystemLoader.PreUpdateDusts();
 +
  			if (ignoreErrors) {
  				try {
@@ -1262,14 +1262,14 @@
  				Dust.UpdateDust();
  			}
  
-+			SystemHooks.PostUpdateDusts();
++			SystemLoader.PostUpdateDusts();
 +
  			if (netMode != 2) {
  				CombatText.UpdateCombatText();
  				PopupText.UpdateItemText();
  			}
  
-+			SystemHooks.PreUpdateTime();
++			SystemLoader.PreUpdateTime();
 +
  			if (ignoreErrors) {
  				try {
@@ -1278,7 +1278,7 @@
  				UpdateTime();
  			}
  
-+			SystemHooks.PostUpdateTime();
++			SystemLoader.PostUpdateTime();
 +
  			tileSolid[379] = true;
  			if (gameMenu && netMode != 2)
@@ -1287,7 +1287,7 @@
  					UpdateClient();
  			}
  
-+			SystemHooks.PostUpdateEverything();
++			SystemLoader.PostUpdateEverything();
  			chatMonitor.Update();
  			upTimer = (float)sw.Elapsed.TotalMilliseconds;
  			if (upTimerMaxDelay > 0f)
@@ -1305,7 +1305,7 @@
  
  		private void DoUpdate_HandleInput() {
  			PlayerInput.UpdateInput();
-+			SystemHooks.PostUpdateInput();
++			SystemLoader.PostUpdateInput();
  			UpdateViewZoomKeys();
  			PlayerInput.SetZoom_Unscaled();
  			UILinkPointNavigator.Update();
@@ -1632,7 +1632,7 @@
  						num6 += num6 * (1f - player[myPlayer].stealth);
  
 +					ItemLoader.GetWeaponKnockback(item, player[myPlayer], ref num6);
-+					PlayerHooks.GetWeaponKnockback(player[myPlayer], item, ref num6);
++					PlayerLoader.GetWeaponKnockback(player[myPlayer], item, ref num6);
 +					*/
  					if (num6 == 0f)
  						toolTipLine[numLines] = Lang.tip[14].Value;
@@ -2176,11 +2176,11 @@
  
 +			NPCLoader.DrawEffects(rCurrentNPC, ref npcColor); //TODO: Effects were previously done before drawing, here, but 1.4 moved them to updates in UpdateNPC_BuffApplyVFX(). Should this hook be moved and renamed? --Mirsario
 +			
-+			if (NPCLoader.PreDraw(rCurrentNPC, spriteBatch, npcColor)) {
++			if (NPCLoader.PreDraw(rCurrentNPC, spriteBatch, screenPos, npcColor)) {
 +				DrawNPCDirect_Inner(spriteBatch, rCurrentNPC, behindTiles, screenPos, ref npcColor);
 +			}
 +
-+			NPCLoader.PostDraw(rCurrentNPC, spriteBatch, npcColor);
++			NPCLoader.PostDraw(rCurrentNPC, spriteBatch, screenPos, npcColor);
 +		}
 +
 +		private void DrawNPCDirect_Inner(SpriteBatch mySpriteBatch, NPC rCurrentNPC, bool behindTiles, Vector2 screenPos, ref Color npcColor) {
@@ -2396,18 +2396,6 @@
  			int num2 = item.glowMask;
  			if (!gamePaused && base.IsActive && (item.IsACoin || item.type == 58 || item.type == 109) && color.R > 60 && (float)rand.Next(500) - (Math.Abs(item.velocity.X) + Math.Abs(item.velocity.Y)) * 10f < (float)((int)color.R / 50)) {
  				int type = 43;
-@@ -27903,6 +_,11 @@
- 			if (item.type == 3779)
- 				num2 = -1;
- 
-+			if (ItemLoader.animations.Contains(item.type)) {
-+				ItemLoader.DrawAnimatedItem(item, whoami, color, currentColor, num, scale);
-+				goto PostDraw;
-+			}
-+
- 			spriteBatch.Draw(texture, vector2, frame, currentColor, num, vector, scale, SpriteEffects.None, 0f);
- 			if (item.color != Microsoft.Xna.Framework.Color.Transparent)
- 				spriteBatch.Draw(texture, vector2, frame, item.GetColor(color), num, vector, scale, SpriteEffects.None, 0f);
 @@ -27910,11 +_,15 @@
  			if (num2 != -1)
  				spriteBatch.Draw(TextureAssets.GlowMask[num2].Value, vector2, frame, new Microsoft.Xna.Framework.Color(250, 250, 250, item.alpha), num, vector, scale, SpriteEffects.None, 0f);
@@ -2462,8 +2450,8 @@
  					num15 = 1;
  
 +				reason = Language.GetTextValue("tModLoader.DefaultNurseCantHealChat");
-+				canHeal = PlayerHooks.ModifyNurseHeal(player[myPlayer], npc[player[myPlayer].talkNPC], ref health, ref removeDebuffs, ref reason);
-+				PlayerHooks.ModifyNursePrice(player[myPlayer], npc[player[myPlayer].talkNPC], health, removeDebuffs, ref num15);
++				canHeal = PlayerLoader.ModifyNurseHeal(player[myPlayer], npc[player[myPlayer].talkNPC], ref health, ref removeDebuffs, ref reason);
++				PlayerLoader.ModifyNursePrice(player[myPlayer], npc[player[myPlayer].talkNPC], health, removeDebuffs, ref num15);
 +
  				if (num15 < 0)
  					num15 = 0;
@@ -2540,7 +2528,7 @@
  							}
 +							
 +							SkipDebuffRemoval:
-+							PlayerHooks.PostNurseHeal(LocalPlayer, npc[LocalPlayer.talkNPC], health, removeDebuffs, num4);
++							PlayerLoader.PostNurseHeal(LocalPlayer, npc[LocalPlayer.talkNPC], health, removeDebuffs, num4);
  						}
  						else {
  							int num25 = rand.Next(3);
@@ -2779,7 +2767,7 @@
  
  			PlayerInput.SetZoom_UI();
 +			List<GameInterfaceLayer> interfaceLayers = new List<GameInterfaceLayer>(_gameInterfaceLayers);
-+			SystemHooks.ModifyInterfaceLayers(interfaceLayers);
++			SystemLoader.ModifyInterfaceLayers(interfaceLayers);
 -			using (List<GameInterfaceLayer>.Enumerator enumerator = _gameInterfaceLayers.GetEnumerator()) {
 +			using (List<GameInterfaceLayer>.Enumerator enumerator = interfaceLayers.GetEnumerator()) {
  				while (enumerator.MoveNext() && enumerator.Current.Draw()) {
@@ -2790,7 +2778,7 @@
  
  		private void DrawInterface_33_MouseText() {
 +			// TODO - UI Sorting and selective disable support -  move this to new one between 32 and 33
-+			SystemHooks.PostDrawInterface(spriteBatch);
++			SystemLoader.PostDrawInterface(spriteBatch);
  			if (mouseItem.stack <= 0)
  				mouseItem.type = 0;
  
@@ -3234,26 +3222,17 @@
  					menuMode = 0;
  					netMode = 0;
  				}
-@@ -36592,14 +_,18 @@
- 					menuMode = 12;
+@@ -36601,7 +_,9 @@
  				}
  
-+				if (Steam.IsSteamApp)
-+					goto SkipAchievements;
+ 				num11++;
+-				if (SocialAPI.Workshop != null) {
 +
- 				num11++;
- 				array9[num11] = Lang.menu[131].Value;
-+				//Comment to join two patches.
- 				if (selectedMenu == num11) {
- 					SoundEngine.PlaySound(10);
- 					menuMode = 888;
- 					MenuUI.SetState(AchievementsMenu);
- 				}
--
-+	SkipAchievements:
- 				num11++;
- 				if (SocialAPI.Workshop != null) {
++				// The workshop hub itself will no longer be exclusive to Steam versions.
++				if (true) { //if (SocialAPI.Workshop != null) {
  					array9[num11] = Language.GetText("UI.Workshop").Value;
+ 					if (selectedMenu == num11) {
+ 						SoundEngine.PlaySound(10);
 @@ -36620,6 +_,7 @@
  				}
  
@@ -3519,7 +3498,7 @@
  				}
  
  				spriteBatch.Draw(TextureAssets.MapIcon[num138].Value, new Vector2(num136, num137), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.MapIcon[num138].Width(), TextureAssets.MapIcon[num138].Height()), new Microsoft.Xna.Framework.Color(num139, num139, num139, num139), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+				SystemHooks.PostDrawFullscreenMap(ref text);
++				SystemLoader.PostDrawFullscreenMap(ref text);
  				DrawCursor(DrawThickCursor());
  			}
  
@@ -3527,7 +3506,7 @@
  		}
  
  		private static void DrawMapFullscreenBackground(Vector2 screenPosition, int screenWidth, int screenHeight) {
-+			Texture2D modTexture = PlayerHooks.GetMapBackgroundImage(LocalPlayer);
++			Texture2D modTexture = PlayerLoader.GetMapBackgroundImage(LocalPlayer);
 +			if (modTexture != null) {
 +				spriteBatch.Draw(modTexture, new Microsoft.Xna.Framework.Rectangle(0, 0, screenWidth, screenHeight), Microsoft.Xna.Framework.Color.White);
 +				return;
@@ -3651,7 +3630,7 @@
  			else
  				Rasterizer = RasterizerState.CullClockwise;
  
-+			SystemHooks.ModifyTransformMatrix(ref GameViewMatrix);
++			SystemLoader.ModifyTransformMatrix(ref GameViewMatrix);
  			bool flag = !drawToScreen && netMode != 2 && !gameMenu && !mapFullscreen && Lighting.NotRetro && Terraria.Graphics.Effects.Filters.Scene.CanCapture();
  			if (flag)
  				Terraria.Graphics.Effects.Filters.Scene.BeginCapture(screenTarget, Microsoft.Xna.Framework.Color.Black);
@@ -3668,7 +3647,7 @@
  
  			TimeLogger.DetailedDrawReset();
  			spriteBatch.End();
-+			SystemHooks.PostDrawTiles();
++			SystemLoader.PostDrawTiles();
  			TimeLogger.DetailedDrawTime(35);
  			HasInteractibleObjectThatIsNotATile = false;
  			SortDrawCacheWorms();
@@ -3707,7 +3686,7 @@
  						else if (player.scope)
  							num5 = 0.5f;
  
-+						PlayerHooks.ModifyZoom(LocalPlayer, ref num5);
++						PlayerLoader.ModifyZoom(LocalPlayer, ref num5);
  						Vector2 vector3 = (MouseScreen - new Vector2(screenWidth, screenHeight) / 2f) / (new Vector2(screenWidth, screenHeight) / 2f);
  						num4 = 48f;
  						if (vector3 != Vector2.Zero && num5 != -1f) {
@@ -3718,7 +3697,7 @@
 -					vector2.X = (float)(num6 - screenWidth / 2) / 1.25f;
 -					vector2.Y = (float)(num7 - screenHeight / 2) / 1.25f;
 +					float zoom = 0.8f;
-+					PlayerHooks.ModifyZoom(LocalPlayer, ref zoom);
++					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
 +					vector2.X = (num6 - screenWidth / 2) * zoom;
 +					vector2.Y = (num7 - screenHeight / 2) * zoom;
  					flag = true;
@@ -3731,7 +3710,7 @@
 -					vector2.X = (float)(num8 - screenWidth / 2) / 1.5f;
 -					vector2.Y = (float)(num9 - screenHeight / 2) / 1.5f;
 +					float zoom = 3f/2f;
-+					PlayerHooks.ModifyZoom(LocalPlayer, ref zoom);
++					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
 +					vector2.X = (num8 - screenWidth / 2) * zoom;
 +					vector2.Y = (num9 - screenHeight / 2) * zoom;
  					flag = true;
@@ -3744,7 +3723,7 @@
 -					vector2.X = (float)(num10 - screenWidth / 2) / 1.5f;
 -					vector2.Y = (float)(num11 - screenHeight / 2) / 1.5f;
 +					float zoom = 3f/2f;
-+					PlayerHooks.ModifyZoom(LocalPlayer, ref zoom);
++					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
 +					vector2.X = (num10 - screenWidth / 2) * zoom;
 +					vector2.Y = (num11 - screenHeight / 2) * zoom;
  					flag = true;
@@ -3755,7 +3734,7 @@
  						num13 = 0;
  
 +					float zoom = 0.5f;
-+					PlayerHooks.ModifyZoom(player[myPlayer], ref zoom);
++					PlayerLoader.ModifyZoom(player[myPlayer], ref zoom);
 -					vector2.X = (float)(num12 - screenWidth / 2) / 2f;
 +					vector2.X = (num12 - screenWidth / 2) * zoom;
 -					vector2.Y = (float)(num13 - screenHeight / 2) / 2f;
@@ -3777,7 +3756,7 @@
 +						mouseYClamped = 0;
 +
 +					float zoom = -1f;
-+					PlayerHooks.ModifyZoom(LocalPlayer, ref zoom);
++					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
 +					if (zoom != -1f) {
 +						vector2.X = (mouseXClamped - screenWidth / 2) * zoom;
 +						vector2.Y = (mouseYClamped - screenHeight / 2) * zoom;
@@ -3789,8 +3768,8 @@
  
  			screenPosition.X = (int)screenPosition.X;
  			screenPosition.Y = (int)screenPosition.Y;
-+			PlayerHooks.ModifyScreenPosition(LocalPlayer);
-+			SystemHooks.ModifyScreenPosition();
++			PlayerLoader.ModifyScreenPosition(LocalPlayer);
++			SystemLoader.ModifyScreenPosition();
  			ClampScreenPositionToWorld();
  		}
  
@@ -3841,7 +3820,7 @@
  			tileColor.B = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.B * 7) / 10);
  			tileColor = SkyManager.Instance.ProcessTileColor(tileColor);
 +			// TODO: Add in white and white2 as sunColor and moonColor
-+			SystemHooks.ModifySunLightColor(ref tileColor, ref colorOfTheSkies);
++			SystemLoader.ModifySunLightColor(ref tileColor, ref colorOfTheSkies);
  		}
  
  		private static void UpdateAtmosphereTransparencyToSkyColor() {
@@ -3910,11 +3889,11 @@
  		}
  
  		private static void UpdateInvasion() {
-+			SystemHooks.PreUpdateInvasions();
++			SystemLoader.PreUpdateInvasions();
 +
 +			UpdateInvasion_Inner();
 +
-+			SystemHooks.PostUpdateInvasions();
++			SystemLoader.PostUpdateInvasions();
 +		}
 +		private static void UpdateInvasion_Inner() {
  			if (invasionType <= 0)

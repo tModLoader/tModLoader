@@ -212,7 +212,7 @@
 +						if (modCanBeHit==false)
 +							continue;
 +
-+						bool? modCanHit2 = PlayerHooks.CanHitNPCWithProj(this, Main.npc[i]);
++						bool? modCanHit2 = PlayerLoader.CanHitNPCWithProj(this, Main.npc[i]);
 +						if (modCanHit2==false)
 +							continue;
 +
@@ -299,7 +299,7 @@
 +
 +									ProjectileLoader.ModifyHitNPC(this, nPC, ref num18, ref num7, ref flag6, ref num31);
 +									NPCLoader.ModifyHitByProjectile(nPC, this, ref num18, ref num7, ref flag6, ref num31);
-+									PlayerHooks.ModifyHitNPCWithProj(this, nPC, ref num18, ref num7, ref flag6, ref num31);
++									PlayerLoader.ModifyHitNPCWithProj(this, nPC, ref num18, ref num7, ref flag6, ref num31);
 +									
 +									goto VanillaOnHitEffectsStart;
 +									
@@ -313,7 +313,7 @@
  
 +									ProjectileLoader.OnHitNPC(this, Main.npc[i], num32, num7, flag6);
 +									NPCLoader.OnHitByProjectile(Main.npc[i], this, num32, num7, flag6);
-+									PlayerHooks.OnHitNPCWithProj(this, Main.npc[i], num32, num7, flag6);
++									PlayerLoader.OnHitNPCWithProj(this, Main.npc[i], num32, num7, flag6);
  									if (penetrate > 0 && type != 317 && type != 866) {
  										if (type == 357)
  											damage = (int)((double)damage * 0.8);
@@ -322,7 +322,7 @@
  						if (!flag16 || !Colliding(myRect, player2.getRect()))
  							continue;
 +							
-+						if (!ProjectileLoader.CanHitPvp(this, player2) || !PlayerHooks.CanHitPvpWithProj(this, player2))
++						if (!ProjectileLoader.CanHitPvp(this, player2) || !PlayerLoader.CanHitPvpWithProj(this, player2))
 +							continue;
  
  						if (aiStyle == 3) {
@@ -338,7 +338,7 @@
 +						//Patch context: ^ flag17, to be used below multiple times.
  						int num46 = Main.DamageVar((int)((float)damage * num5), Main.player[owner].luck);
 +						ProjectileLoader.ModifyHitPvp(this, player2, ref num46, ref flag17);
-+						PlayerHooks.ModifyHitPvpWithProj(this, player2, ref num46, ref flag17);
++						PlayerLoader.ModifyHitPvpWithProj(this, player2, ref num46, ref flag17);
  						if (!player2.immune)
  							StatusPvP(num45);
  
@@ -352,7 +352,7 @@
  							NewProjectile(GetProjectileSource_FromThis(), player2.Center.X, player2.Center.Y, player2.velocity.X, player2.velocity.Y, 289, 0, 0f, owner);
  
 +						ProjectileLoader.OnHitPvp(this, player2, num47, flag17);
-+						PlayerHooks.OnHitPvpWithProj(this, player2, num47, flag17);
++						PlayerLoader.OnHitPvpWithProj(this, player2, num47, flag17);
  						if (Main.netMode != 0)
  							NetMessage.SendPlayerHurt(num45, playerDeathReason, num46, base.direction, flag17, pvp: true, -1);
  
@@ -367,7 +367,7 @@
  			if (!flag18 || !Colliding(myRect, Main.player[myPlayer2].getRect()))
  				return;
 +				
-+			if (!ProjectileLoader.CanHitPlayer(this, Main.player[myPlayer2]) || !PlayerHooks.CanBeHitByProjectile(Main.player[myPlayer2], this))
++			if (!ProjectileLoader.CanHitPlayer(this, Main.player[myPlayer2]) || !PlayerLoader.CanBeHitByProjectile(Main.player[myPlayer2], this))
 +				return;
  
  			int direction = base.direction;
@@ -379,7 +379,7 @@
 -				if (Main.player[myPlayer2].Hurt(PlayerDeathReason.ByProjectile(-1, whoAmI), num55, direction, pvp: false, quiet: false, Crit: false, num51) > 0.0 && !Main.player[myPlayer2].dead)
 +				bool crit = false;
 +				ProjectileLoader.ModifyHitPlayer(this, Main.player[myPlayer2], ref num55, ref crit);
-+				PlayerHooks.ModifyHitByProjectile(Main.player[myPlayer2], this, ref num55, ref crit);
++				PlayerLoader.ModifyHitByProjectile(Main.player[myPlayer2], this, ref num55, ref crit);
 +				int realDamage = (int)Main.player[myPlayer2].Hurt(PlayerDeathReason.ByProjectile(-1, whoAmI), num55, direction, pvp: false, quiet: false, Crit: crit, num51);
 +
 +				if (realDamage > 0 && !Main.player[myPlayer2].dead)
@@ -392,7 +392,7 @@
  				}
 +
 +				ProjectileLoader.OnHitPlayer(this, Main.player[myPlayer2], realDamage, crit);
-+				PlayerHooks.OnHitByProjectile(Main.player[myPlayer2], this, realDamage, crit);
++				PlayerLoader.OnHitByProjectile(Main.player[myPlayer2], this, realDamage, crit);
  			}
  
  			if (true) {
@@ -457,7 +457,7 @@
  			FishingCheck_RollEnemySpawns(ref fisher);
  			FishingCheck_RollItemDrop(ref fisher);
  			bool flag = false;
-+			PlayerHooks.CatchFish(Main.player[owner], Main.player[owner].inventory[Main.player[owner].selectedItem],
++			PlayerLoader.CatchFish(Main.player[owner], Main.player[owner].inventory[Main.player[owner].selectedItem],
 +				fisher.waterNeededToFish, fisher.inLava ? 1 : fisher.inHoney ? 2 : 0, fisher.fishingLevel, fisher.heightLevel, fisher.questFish, ref fisher.rolledItemDrop);
 +
  			if (fisher.rolledItemDrop > 0) {

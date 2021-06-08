@@ -904,7 +904,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to tell the game whether this item is a torch that cannot be placed in liquid, a torch that can be placed in liquid, or a glowstick. This information is used for when the player is holding down the auto-select hotkey.
+		/// Allows you to tell the game whether this item is a torch that cannot be placed in liquid, a torch that can be placed in liquid, or a glowstick. This information is used for when the player is holding down the auto-select keybind.
 		/// </summary>
 		/// <param name="dryTorch">if set to <c>true</c> [dry torch].</param>
 		/// <param name="wetTorch">if set to <c>true</c> [wet torch].</param>

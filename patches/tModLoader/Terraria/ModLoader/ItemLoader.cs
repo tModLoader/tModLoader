@@ -28,7 +28,6 @@ namespace Terraria.ModLoader
 		internal static readonly IList<ModItem> items = new List<ModItem>();
 		internal static readonly IList<GlobalItem> globalItems = new List<GlobalItem>();
 		internal static GlobalItem[] NetGlobals;
-		internal static readonly ISet<int> animations = new HashSet<int>();
 		internal static readonly int vanillaQuestFishCount = 41;
 		internal static readonly int[] vanillaWings = new int[Main.maxWings];
 
@@ -137,7 +136,6 @@ namespace Terraria.ModLoader
 			items.Clear();
 			nextItem = ItemID.Count;
 			globalItems.Clear();
-			animations.Clear();
 			modHooks.Clear();
 		}
 
@@ -177,44 +175,6 @@ namespace Terraria.ModLoader
 			}
 
 			item.ModItem?.OnCreate(context);
-		}
-		
-		//near end of Terraria.Main.DrawItem before default drawing call
-		//  if(ItemLoader.animations.Contains(item.type))
-		//  { ItemLoader.DrawAnimatedItem(item, whoAmI, color, alpha, rotation, scale); return; }
-		internal static void DrawAnimatedItem(Item item, int whoAmI, Color color, Color alpha, float rotation, float scale) {
-			int frameCount = Main.itemAnimations[item.type].FrameCount;
-			int frameDuration = Main.itemAnimations[item.type].TicksPerFrame;
-
-			Main.itemFrameCounter[whoAmI]++;
-
-			if (Main.itemFrameCounter[whoAmI] >= frameDuration) {
-				Main.itemFrameCounter[whoAmI] = 0;
-				Main.itemFrame[whoAmI]++;
-			}
-
-			if (Main.itemFrame[whoAmI] >= frameCount) {
-				Main.itemFrame[whoAmI] = 0;
-			}
-
-			var texture = TextureAssets.Item[item.type].Value;
-
-			Rectangle frame = texture.Frame(1, frameCount, 0, Main.itemFrame[whoAmI]);
-			float offX = item.width * 0.5f - frame.Width * 0.5f;
-			float offY = item.height - frame.Height;
-			
-			Main.spriteBatch.Draw(texture, new Vector2(item.position.X - Main.screenPosition.X + frame.Width / 2 + offX, item.position.Y - Main.screenPosition.Y + frame.Height / 2 + offY), new Rectangle?(frame), alpha, rotation, frame.Size() / 2f, scale, SpriteEffects.None, 0f);
-			
-			if (item.color != default) {
-				Main.spriteBatch.Draw(texture, new Vector2(item.position.X - Main.screenPosition.X + frame.Width / 2 + offX, item.position.Y - Main.screenPosition.Y + frame.Height / 2 + offY), new Rectangle?(frame), item.GetColor(color), rotation, frame.Size() / 2f, scale, SpriteEffects.None, 0f);
-			}
-		}
-
-		private static Rectangle AnimatedItemFrame(Item item) {
-			int frameCount = Main.itemAnimations[item.type].FrameCount;
-			int frameDuration = Main.itemAnimations[item.type].TicksPerFrame;
-
-			return Main.itemAnimations[item.type].GetFrame(TextureAssets.Item[item.type].Value);
 		}
 
 		private static HookList HookChoosePrefix = AddHook<Func<Item, UnifiedRandom, int>>(g => g.ChoosePrefix);

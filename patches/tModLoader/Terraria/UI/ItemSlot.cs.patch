@@ -30,7 +30,7 @@
  
  			Item item = inv[slot];
 +			// TODO: Make this more generalized.
-+			if (ShiftInUse && PlayerHooks.ShiftClickSlot(Main.player[Main.myPlayer], inv, context, slot)) {
++			if (ShiftInUse && PlayerLoader.ShiftClickSlot(Main.player[Main.myPlayer], inv, context, slot)) {
 +				return true;
 +			}
  			if (Main.cursorOverride == 2) {
@@ -43,7 +43,7 @@
 +						
  					break;
  				case 4: {
-+						if (!PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem))
++						if (!PlayerLoader.CanSellItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem))
 +							break;
 +							
  						Chest chest = Main.instance.shop[Main.npcShop];
@@ -52,14 +52,14 @@
 +							int soldItemIndex = chest.AddItemToShop(Main.mouseItem);
  							Main.mouseItem.SetDefaults();
  							SoundEngine.PlaySound(18);
-+							PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
++							PlayerLoader.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
  						}
  						else if (Main.mouseItem.value == 0) {
 -							chest.AddItemToShop(Main.mouseItem);
 +							int soldItemIndex = chest.AddItemToShop(Main.mouseItem);
  							Main.mouseItem.SetDefaults();
  							SoundEngine.PlaySound(7);
-+							PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
++							PlayerLoader.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
  						}
  
  						Recipe.FindRecipes();
@@ -68,14 +68,14 @@
  			if (Main.npcShop > 0 && !inv[slot].favorited) {
  				Chest chest = Main.instance.shop[Main.npcShop];
 -				if (inv[slot].type < 71 || inv[slot].type > 74) {
-+				if (inv[slot].type < 71 || inv[slot].type > 74 && PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot])) {					
++				if (inv[slot].type < 71 || inv[slot].type > 74 && PlayerLoader.CanSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot])) {					
  					if (player.SellItem(inv[slot])) {
 -						chest.AddItemToShop(inv[slot]);
 +						int soldItemIndex = chest.AddItemToShop(inv[slot]);
  						inv[slot].SetDefaults();
  						SoundEngine.PlaySound(18);
  						Recipe.FindRecipes();
-+						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
++						PlayerLoader.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
  					}
  					else if (inv[slot].value == 0) {
 -						chest.AddItemToShop(inv[slot]);
@@ -83,7 +83,7 @@
  						inv[slot].SetDefaults();
  						SoundEngine.PlaySound(7);
  						Recipe.FindRecipes();
-+						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
++						PlayerLoader.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
  					}
  				}
  			}
@@ -184,7 +184,7 @@
  			int num = Main.superFastStack + 1;
  			Player localPlayer = Main.LocalPlayer;
  			for (int i = 0; i < num; i++) {
-+				if (!PlayerHooks.CanBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, inv[slot]))
++				if (!PlayerLoader.CanBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, inv[slot]))
 +					continue;
  				if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  					continue;
@@ -193,7 +193,7 @@
  						SoundEngine.PlaySound(18);
  					else
  						SoundEngine.PlaySound(7);
-+					PlayerHooks.PostBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, Main.mouseItem);
++					PlayerLoader.PostBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, Main.mouseItem);
  				}
  
  				if (Main.mouseItem.type == 0) {
@@ -211,7 +211,7 @@
  				if (inv[slot].buyOnce && --inv[slot].stack <= 0)
  					inv[slot].SetDefaults();
 +
-+				PlayerHooks.PostBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, Main.mouseItem);
++				PlayerLoader.PostBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, Main.mouseItem);
  			}
  		}
  

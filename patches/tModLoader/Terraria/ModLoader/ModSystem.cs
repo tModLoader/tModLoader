@@ -17,7 +17,7 @@ namespace Terraria.ModLoader
 	public abstract partial class ModSystem : ModType
 	{
 		protected override void Register() {
-			SystemHooks.Add(this);
+			SystemLoader.Add(this);
 			ModTypeLookup<ModSystem>.Register(this);
 		}
 

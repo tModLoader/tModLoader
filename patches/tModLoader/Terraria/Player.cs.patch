@@ -21,12 +21,12 @@
  
  			public static void PlayerConnect(int playerIndex) {
  				PressurePlateHelper.ResetPlayer(playerIndex);
-+				PlayerHooks.PlayerConnect(playerIndex);
++				PlayerLoader.PlayerConnect(playerIndex);
  			}
  
  			public static void PlayerDisconnect(int playerIndex) {
  				PressurePlateHelper.ResetPlayer(playerIndex);
-+				PlayerHooks.PlayerDisconnect(playerIndex);
++				PlayerLoader.PlayerDisconnect(playerIndex);
  			}
  
  			public static void EnterWorld(int playerIndex) {
@@ -35,7 +35,7 @@
  				if (Hooks.OnEnterWorld != null)
  					Hooks.OnEnterWorld(Main.player[playerIndex]);
 +
-+				PlayerHooks.OnEnterWorld(playerIndex);
++				PlayerLoader.OnEnterWorld(playerIndex);
  			}
  		}
  
@@ -396,14 +396,14 @@
 +		public int GetHealLife(Item item, bool quickHeal = false) {
 +			int healValue = item.healLife;
 +			ItemLoader.GetHealLife(item, this, quickHeal, ref healValue);
-+			PlayerHooks.GetHealLife(this, item, quickHeal, ref healValue);
++			PlayerLoader.GetHealLife(this, item, quickHeal, ref healValue);
 +			return healValue > 0 ? healValue : 0;
 +		}
 +
 +		public int GetHealMana(Item item, bool quickHeal = false) {
 +			int healValue = item.healMana;
 +			ItemLoader.GetHealMana(item, this, quickHeal, ref healValue);
-+			PlayerHooks.GetHealMana(this, item, quickHeal, ref healValue);
++			PlayerLoader.GetHealMana(this, item, quickHeal, ref healValue);
 +			return healValue > 0 ? healValue : 0;
 +		}
 +
@@ -708,7 +708,7 @@
 +
 +			End:
 +
-+			PlayerHooks.OnHitAnything(this, x, y, victim);
++			PlayerLoader.OnHitAnything(this, x, y, victim);
  		}
  
  		public void openPresent() {
@@ -1558,7 +1558,7 @@
 +					ApplyEquipFunctional(armor[l], hideVisibleAccessory[l]);
  			}
  
-+			PlayerHooks.UpdateEquips(this);
++			PlayerLoader.UpdateEquips(this);
 +
 +			if (kbGlove)
 +				GetKnockback(DamageClass.Melee) *= 2f;
@@ -1602,7 +1602,7 @@
  					ApplyEquipVanity(n, armor[n]);
  			}
  
-+			PlayerHooks.UpdateVanityAccessories(this);
++			PlayerLoader.UpdateVanityAccessories(this);
 +
  			if (wet && ShouldFloatInWater)
  				accFlipper = true;
@@ -1901,7 +1901,7 @@
  			hasGingerBeard = false;
  			hasRainbowCursor = false;
  			leinforsHair = false;
-+			PlayerHooks.UpdateDead(this);
++			PlayerLoader.UpdateDead(this);
  			gravDir = 1f;
 -			for (int i = 0; i < 22; i++) {
 +			for (int i = 0; i < MaxBuffs; i++) {
@@ -2052,7 +2052,7 @@
  
 +			ResetDamageClassData();
  			mount.CheckMountBuff(this);
-+			PlayerHooks.ResetEffects(this);
++			PlayerLoader.ResetEffects(this);
  		}
  
  		private void UpdateLadyBugLuckTime() {
@@ -2060,7 +2060,7 @@
  				lifeRegen -= 100;
  			}
  
-+			PlayerHooks.UpdateBadLifeRegen(this);
++			PlayerLoader.UpdateBadLifeRegen(this);
  			if (honey && lifeRegen < 0) {
  				lifeRegen += 4;
  				if (lifeRegen > 0)
@@ -2068,7 +2068,7 @@
  			if (whoAmI == Main.myPlayer && Main.SceneMetrics.HasHeartLantern)
  				lifeRegen += 2;
  
-+			PlayerHooks.UpdateLifeRegen(this);
++			PlayerLoader.UpdateLifeRegen(this);
  			if (bleed)
  				lifeRegenTime = 0;
  
@@ -2076,7 +2076,7 @@
  			if (rabid)
  				num2 = ((!shinyStone) ? (num2 / 2f) : (num2 * 0.75f));
  
-+			PlayerHooks.NaturalLifeRegen(this, ref num2);
++			PlayerLoader.NaturalLifeRegen(this, ref num2);
  			float num4 = (float)statLifeMax2 / 400f * 0.85f + 0.15f;
  			num2 *= num4;
  			lifeRegen += (int)Math.Round(num2);
@@ -2329,7 +2329,7 @@
  
  			UpdateHairDyeDust();
  			UpdateMiscCounter();
-+			PlayerHooks.PreUpdate(this);
++			PlayerLoader.PreUpdate(this);
  			infernoCounter++;
  			if (infernoCounter >= 180)
  				infernoCounter = 0;
@@ -2337,7 +2337,7 @@
  						}
  					}
  
-+					PlayerHooks.SetControls(this);
++					PlayerLoader.SetControls(this);
  					if (controlInv) {
  						if (releaseInventory)
  							ToggleInv();
@@ -2399,7 +2399,7 @@
  					AddBuff(194, 2, quiet: false);
  			}
  
-+			PlayerHooks.PreUpdateBuffs(this);
++			PlayerLoader.PreUpdateBuffs(this);
 -			for (int num26 = 0; num26 < 327; num26++) {
 +			for (int num26 = 0; num26 < BuffLoader.BuffCount; num26++) {
  				buffImmune[num26] = false;
@@ -2407,7 +2407,7 @@
  
  			UpdateProjectileCaches(i);
  			UpdateBuffs(i);
-+			PlayerHooks.PostUpdateBuffs(this);
++			PlayerLoader.PostUpdateBuffs(this);
  			if (whoAmI == Main.myPlayer) {
  				if (!onFire && !poisoned)
  					trapDebuffSource = false;
@@ -2434,7 +2434,7 @@
  
  			UpdateArmorLights();
  			UpdateArmorSets(i);
-+			PlayerHooks.PostUpdateEquips(this); // TODO, move down?
++			PlayerLoader.PostUpdateEquips(this); // TODO, move down?
  			if (maxTurretsOld != maxTurrets) {
  				UpdateMaxTurrets();
  				maxTurretsOld = maxTurrets;
@@ -2471,7 +2471,7 @@
  			}
  
  			meleeSpeed = 1f / meleeSpeed;
-+			PlayerHooks.PostUpdateMiscEffects(this);
++			PlayerLoader.PostUpdateMiscEffects(this);
  			UpdateLifeRegen();
  			soulDrain = 0;
  			UpdateManaRegen();
@@ -2500,7 +2500,7 @@
  						mount.UpdateDrill(this, controlUp, controlDown);
  				}
  
-+				PlayerHooks.PostUpdateRunSpeeds(this);
++				PlayerLoader.PostUpdateRunSpeeds(this);
  				HorizontalMovement();
  				if (gravControl) {
  					if (controlUp && releaseUp) {
@@ -2579,7 +2579,7 @@
  			if (vortexDebuff)
  				base.velocity.Y = base.velocity.Y * 0.8f + (float)Math.Cos(base.Center.X % 120f / 120f * ((float)Math.PI * 2f)) * 5f * 0.2f;
  
-+			PlayerHooks.PreUpdateMovement(this);
++			PlayerLoader.PreUpdateMovement(this);
  			if (tongued) {
  				base.position += base.velocity;
  				flag28 = false;
@@ -2587,7 +2587,7 @@
  			grapCount = 0;
  			UpdateReleaseUseTile();
  			UpdateAdvancedShadows();
-+			PlayerHooks.PostUpdate(this);
++			PlayerLoader.PostUpdate(this);
  		}
  
  		private void UpdateControlHolds() {
@@ -2595,7 +2595,7 @@
  		}
  
  		public void RecalculateLuck() {
-+			if (!PlayerHooks.PreModifyLuck(this, ref luck))
++			if (!PlayerLoader.PreModifyLuck(this, ref luck))
 +				goto skipVanillaLuck;
 +
  			luck = GetLadyBugLuck() * 0.2f + torchLuck * 0.2f;
@@ -2607,7 +2607,7 @@
  				luck += 0.2f;
 +
 +			skipVanillaLuck:
-+			PlayerHooks.ModifyLuck(this, ref luck);
++			PlayerLoader.ModifyLuck(this, ref luck);
  		}
  
  		private static int GetMouseScrollDelta() => PlayerInput.ScrollWheelDelta / 120;
@@ -2642,7 +2642,7 @@
  						break;
  				}
  
-+				if (!NPCLoader.CanHitPlayer(Main.npc[i], this, ref specialHitSetter) || !PlayerHooks.CanBeHitByNPC(this, Main.npc[i], ref specialHitSetter))
++				if (!NPCLoader.CanHitPlayer(Main.npc[i], this, ref specialHitSetter) || !PlayerLoader.CanBeHitByNPC(this, Main.npc[i], ref specialHitSetter))
 +					continue;
 +
  				if ((specialHitSetter == -1 && immune) || (dash == 2 && i == eocHit && eocDash > 0) || npcTypeNoAggro[Main.npc[i].type])
@@ -2654,7 +2654,7 @@
  
 +					bool crit = false;
 +					NPCLoader.ModifyHitPlayer(Main.npc[i], this, ref num4, ref crit);
-+					PlayerHooks.ModifyHitByNPC(this, Main.npc[i], ref num4, ref crit);
++					PlayerLoader.ModifyHitByNPC(this, Main.npc[i], ref num4, ref crit);
 +					
  					if (whoAmI == Main.myPlayer && num2 > 0f && !immune && !Main.npc[i].dontTakeDamage) {
  						int num6 = (int)((float)num4 * num2);
@@ -2672,7 +2672,7 @@
 +							StatusFromNPC(Main.npc[i]);
 +							
 +						NPCLoader.OnHitPlayer(Main.npc[i], this, realDamage, crit);
-+						PlayerHooks.OnHitByNPC(this, Main.npc[i], realDamage, crit);
++						PlayerLoader.OnHitByNPC(this, Main.npc[i], realDamage, crit);
 +					}
  
  					if (num) {
@@ -2979,7 +2979,7 @@
  			}
  
 +			//TODO: Do these hooks go inside or outside the conditional?
-+			PlayerHooks.FrameEffects(this);
++			PlayerLoader.FrameEffects(this);
 +			EquipLoader.EquipFrameEffects(this);
  			if (!isDisplayDollOrInanimate) {
  				if (((body == 68 && legs == 57 && head == 106) || (body == 74 && legs == 63 && head == 106)) && Main.rand.Next(10) == 0) {
@@ -3065,7 +3065,7 @@
  
  				immune = true;
 +				if (dead)
-+					PlayerHooks.OnRespawn(this);
++					PlayerLoader.OnRespawn(this);
 +
  				dead = false;
  				immuneTime = 0;
@@ -3086,7 +3086,7 @@
 +				bool customDamage = false;
 +				bool playSound = true;
 +				bool genGore = true;
-+				if (!PlayerHooks.PreHurt(this, pvp, quiet, ref Damage, ref hitDirection, ref Crit, ref customDamage, ref playSound, ref genGore, ref damageSource))
++				if (!PlayerLoader.PreHurt(this, pvp, quiet, ref Damage, ref hitDirection, ref Crit, ref customDamage, ref playSound, ref genGore, ref damageSource))
 +					return 0.0;
 +
  				if (whoAmI == Main.myPlayer && panic)
@@ -3124,7 +3124,7 @@
  					}
  
 +					//TODO: Is 'num2' correct? Ensure and add patch context.
-+					PlayerHooks.Hurt(this, pvp, quiet, num2, hitDirection, Crit);
++					PlayerLoader.Hurt(this, pvp, quiet, num2, hitDirection, Crit);
  					if (Main.netMode == 1 && whoAmI == Main.myPlayer && !quiet) {
  						if (!noKnockback && hitDirection != 0 && (!mount.Active || !mount.Cart))
  							NetMessage.SendData(13, -1, -1, null, whoAmI);
@@ -3157,7 +3157,7 @@
  						}
 +
 +						postGore:
-+						PlayerHooks.PostHurt(this, pvp, quiet, num2, hitDirection, Crit);
++						PlayerLoader.PostHurt(this, pvp, quiet, num2, hitDirection, Crit);
  					}
  					else {
  						statLife = 0;
@@ -3167,7 +3167,7 @@
  			StopVanityActions();
 +			bool playSound = true;
 +			bool genGore = true;
-+			if (!PlayerHooks.PreKill(this, dmg, hitDirection, pvp, ref playSound, ref genGore, ref damageSource))
++			if (!PlayerLoader.PreKill(this, dmg, hitDirection, pvp, ref playSound, ref genGore, ref damageSource))
 +				return;
 +
  			if (pvp)
@@ -3212,7 +3212,7 @@
  			if (Main.expertMode)
  				respawnTimer = (int)((double)respawnTimer * 1.5);
  
-+			PlayerHooks.Kill(this, dmg, hitDirection, pvp, damageSource);
++			PlayerLoader.Kill(this, dmg, hitDirection, pvp, damageSource);
  			immuneAlpha = 0;
  			if (!ChildSafety.Disabled)
  				immuneAlpha = 255;
@@ -3368,7 +3368,7 @@
  			if (Main.bloodMoon)
  				num *= 1.1f;
  
-+			PlayerHooks.GetFishingLevel(this, pole, bait, ref num);
++			PlayerLoader.GetFishingLevel(this, pole, bait, ref num);
  			return num;
  		}
  
@@ -3442,10 +3442,10 @@
  		}
  
  		public void ItemCheck(int i) {
-+			if (PlayerHooks.PreItemCheck(this))
++			if (PlayerLoader.PreItemCheck(this))
 +				ItemCheck_Inner(i);
 +
-+			PlayerHooks.PostItemCheck(this);
++			PlayerLoader.PostItemCheck(this);
 +		}
 +		private void ItemCheck_Inner(int i) {
  			if (CCed) {
@@ -3682,7 +3682,7 @@
  				if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
  					continue;
  
-+				if (!ItemLoader.CanHitPvp(sItem, this, player) || !PlayerHooks.CanHitPvp(this, sItem, player))
++				if (!ItemLoader.CanHitPvp(sItem, this, player) || !PlayerLoader.CanHitPvp(this, sItem, player))
 +					continue; //TODO: PvP crit hook?
 +
  				bool flag = false;
@@ -3692,7 +3692,7 @@
  				int num = Main.DamageVar(damage, luck);
 +
 +				ItemLoader.ModifyHitPvp(sItem, this, player, ref num, ref flag);
-+				PlayerHooks.ModifyHitPvp(this, sItem, player, ref num, ref flag);
++				PlayerLoader.ModifyHitPvp(this, sItem, player, ref num, ref flag);
 +
  				StatusToPlayerPvP(sItem.type, i);
  				OnHit(player.Center.X, player.Center.Y, player);
@@ -3702,7 +3702,7 @@
  					pumpkinSword(i, (int)((double)damage * 1.5), knockBack);
  
 +				ItemLoader.OnHitPvp(sItem, this, Main.player[i], num2, flag);
-+				PlayerHooks.OnHitPvp(this, sItem, Main.player[i], num2, flag);
++				PlayerLoader.OnHitPvp(this, sItem, Main.player[i], num2, flag);
  				if (Main.netMode != 0)
  					NetMessage.SendPlayerHurt(i, playerDeathReason, num, direction, flag, pvp: true, -1);
  
@@ -3735,7 +3735,7 @@
 +
 +							ItemLoader.ModifyHitNPC(sItem, this, Main.npc[i], ref num4, ref knockBack, ref flag);
 +							NPCLoader.ModifyHitByItem(Main.npc[i], this, sItem, ref num4, ref knockBack, ref flag);
-+							PlayerHooks.ModifyHitNPC(this, sItem, Main.npc[i], ref num4, ref knockBack, ref flag);
++							PlayerLoader.ModifyHitNPC(this, sItem, Main.npc[i], ref num4, ref knockBack, ref flag);
 +
  							StatusToNPC(sItem.type, i);
  							if (Main.npc[i].life > 5)
@@ -3747,7 +3747,7 @@
 +
 +							ItemLoader.OnHitNPC(sItem, this, Main.npc[i], dmgDone, knockBack, flag);
 +							NPCLoader.OnHitByItem(Main.npc[i], this, sItem, dmgDone, knockBack, flag);
-+							PlayerHooks.OnHitNPC(this, sItem, Main.npc[i], dmgDone, knockBack, flag);
++							PlayerLoader.OnHitNPC(this, sItem, Main.npc[i], dmgDone, knockBack, flag);
 +
  							ApplyNPCOnHitEffects(sItem, itemRectangle, num, knockBack, i, num4, dmgDone);
  							int num5 = Item.NPCtoBanner(Main.npc[i].BannerID());
@@ -3757,7 +3757,7 @@
  			}
  
 +			ItemLoader.MeleeEffects(sItem, this, itemRectangle);
-+			PlayerHooks.MeleeEffects(this, sItem, itemRectangle);
++			PlayerLoader.MeleeEffects(this, sItem, itemRectangle);
 +
  			return itemRectangle;
  		}
@@ -4208,9 +4208,9 @@
  			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
  				flag2 = true;
  
-+			flag2 |= !PlayerHooks.ConsumeAmmo(this, sItem, item) | !ItemLoader.ConsumeAmmo(sItem, item, this);
++			flag2 |= !PlayerLoader.ConsumeAmmo(this, sItem, item) | !ItemLoader.ConsumeAmmo(sItem, item, this);
  			if (!flag2 && item.consumable) {
-+				PlayerHooks.OnConsumeAmmo(this, sItem, item);
++				PlayerLoader.OnConsumeAmmo(this, sItem, item);
 +				ItemLoader.OnConsumeAmmo(sItem, item, this);
  				item.stack--;
  				if (item.stack <= 0) {
@@ -4286,7 +4286,7 @@
  		}
  
  		public void DropItems() {
-+			List<Item> startInventory = PlayerHooks.GetStartingItems(this, DropItems_GetDefaults().Where(item => !item.IsAir), true);
++			List<Item> startInventory = PlayerLoader.GetStartingItems(this, DropItems_GetDefaults().Where(item => !item.IsAir), true);
 +			IDictionary<int, int> startCounts = new Dictionary<int, int>();
 +
 +			foreach (Item item in startInventory) {
@@ -4391,7 +4391,7 @@
 +			return inventory;
 +		}
 +		private void DropItems_End(IList<Item> startInventory) { //Split by tML.
-+			PlayerHooks.SetStartInventory(this, startInventory);
++			PlayerLoader.SetStartInventory(this, startInventory);
  			Main.mouseItem.TurnToAir();
  		}
  
@@ -4415,7 +4415,7 @@
  
  			DpadRadial.CopyTo(player.DpadRadial);
  			CircularRadial.CopyTo(player.CircularRadial);
-+			PlayerHooks.clientClone(this, player);
++			PlayerLoader.clientClone(this, player);
  			return player;
  		}
  
@@ -4440,7 +4440,7 @@
  			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write)) {
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream)) {
-+						PlayerHooks.PreSavePlayer(player);
++						PlayerLoader.PreSavePlayer(player);
  						binaryWriter.Write(238);
  						playerFile.Metadata.Write(binaryWriter);
  						binaryWriter.Write(player.name);
@@ -4541,7 +4541,7 @@
  						if (isCloudSave && SocialAPI.Cloud != null)
  							SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
 +
-+						PlayerHooks.PostSavePlayer(player);
++						PlayerLoader.PostSavePlayer(player);
  					}
  				}
  			}
@@ -4626,7 +4626,7 @@
 +			buffImmune = new bool[BuffLoader.BuffCount]; // TODO: Move all these patches to field initializers.
 +			ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount];
 +			npcTypeNoAggro = new bool[NPCLoader.NPCCount];
-+			PlayerHooks.SetupPlayer(this);
++			PlayerLoader.SetupPlayer(this);
 +			LoaderManager.Get<BiomeLoader>().SetupPlayer(this);
  			width = 20;
  			height = 42;
@@ -4736,7 +4736,7 @@
 +			rewardItems.Add(item8);
 +
 +			postAnglerQuestCountCheck:
-+			PlayerHooks.AnglerQuestReward(this, num2, rewardItems);
++			PlayerLoader.AnglerQuestReward(this, num2, rewardItems);
 +			foreach (Item rewardItem in rewardItems) {
 -			item8.position = base.Center;
 +				rewardItem.position = Center;
@@ -4758,7 +4758,7 @@
  					list.Add(3024);
  			}
  
-+			PlayerHooks.GetDyeTraderReward(this, list);
++			PlayerLoader.GetDyeTraderReward(this, list);
  			num = list[Main.rand.Next(list.Count)];
  			Item item = new Item();
  			item.SetDefaults(num);

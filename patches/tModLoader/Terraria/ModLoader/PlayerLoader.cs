@@ -18,7 +18,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This is where all ModPlayer hooks are gathered and called.
 	/// </summary>
-	public static class PlayerHooks
+	public static class PlayerLoader
 	{
 		private static readonly IList<ModPlayer> players = new List<ModPlayer>();
 
