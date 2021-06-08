@@ -2,9 +2,11 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using ExampleMod.Content.NPCs.MinionBoss;
+using ExampleMod.Content.Items.Armor.Vanity;
 
 namespace ExampleMod.Content.Items.Consumables
 {
+	//Basic code for a boss treasure bag
 	public class MinionBossBag : ModItem
 	{
 		//Sets the associated NPC this treasure bag is dropped from
@@ -29,9 +31,16 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void OpenBossBag(Player player) {
-			player.TryGettingDevArmor();
+			if (Main.tenthAnniversaryWorld) { //Because this is a pre-HM boss, we have to include this check
+				//Using a particular secret world grants doubled chance on dev sets (handled inside TryGettingDevArmor) even for pre-HM bosses
+				player.TryGettingDevArmor();
+			}
 
 			//We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
+			if (Main.rand.NextBool(7)) {
+				player.QuickSpawnItem(ModContent.ItemType<MinionBossMask>());
+			}
+
 			player.QuickSpawnItem(ModContent.ItemType<ExampleItem>(), Main.rand.Next(12, 16));
 		}
 	}

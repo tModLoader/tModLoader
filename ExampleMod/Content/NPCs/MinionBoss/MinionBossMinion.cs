@@ -53,6 +53,13 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				}
 			};
 			NPCID.Sets.DebuffImmunitySets.Add(Type, debuffData);
+
+			//Optional: If you don't want this NPC to show on the bestiary (if there is no reason to show a boss minion separately)
+			//Make sure to remove SetBestiary code aswell
+			//NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+			//	Hide = true //Hides this NPC from the bestiary
+			//};
+			//NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, bestiaryData);
 		}
 
 		public override void SetDefaults() {
@@ -74,7 +81,8 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			//Makes it so whenever you beat the boss associated with it, it will also get unlocked immediately
-			bestiaryEntry.UIInfoProvider = new CommonEnemyUICollectionInfoProvider(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[BodyType()], quickUnlock: true);
+			int associatedNPCType = BodyType();
+			bestiaryEntry.UIInfoProvider = new CommonEnemyUICollectionInfoProvider(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[associatedNPCType], quickUnlock: true);
 
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
 				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), //Plain black background
