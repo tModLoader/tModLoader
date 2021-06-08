@@ -5,8 +5,6 @@ namespace Terraria.ModLoader.Default.Developer
 {
 	internal abstract class DeveloperItem : ModLoaderModItem
 	{
-		public override string EquipTexture => Texture;
-
 		public virtual string TooltipBrief { get; }
 		public virtual string SetSuffix => "'s";
 

@@ -72,9 +72,9 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.ArmorArm, nextEquip[EquipType.BodyLegacy]);
 			Array.Resize(ref TextureAssets.ArmorLeg, nextEquip[EquipType.Legs]);
 			Array.Resize(ref TextureAssets.AccHandsOn, nextEquip[EquipType.HandsOnLegacy]);
-			Array.Resize(ref TextureAssets.AccHandsOnComposite, nextEquip[EquipType.HandsOnLegacy]);
+			Array.Resize(ref TextureAssets.AccHandsOnComposite, nextEquip[EquipType.HandsOn]);
 			Array.Resize(ref TextureAssets.AccHandsOff, nextEquip[EquipType.HandsOffLegacy]);
-			Array.Resize(ref TextureAssets.AccHandsOffComposite, nextEquip[EquipType.HandsOffLegacy]);
+			Array.Resize(ref TextureAssets.AccHandsOffComposite, nextEquip[EquipType.HandsOff]);
 			Array.Resize(ref TextureAssets.AccBack, nextEquip[EquipType.Back]);
 			Array.Resize(ref TextureAssets.AccFront, nextEquip[EquipType.Front]);
 			Array.Resize(ref TextureAssets.AccShoes, nextEquip[EquipType.Shoes]);
