@@ -23,15 +23,13 @@ namespace Terraria.Social.Steam
 		}
 
 		internal class ModManager {
-			public static bool steamUser = true;
+			private static bool steamUser = true;
 			public static AppId_t thisApp = ModLoader.Engine.Steam.TMLAppID_t;
 
 			public static void Initialize() {
 				if (!ModLoader.Engine.Steam.IsSteamApp) {
 					steamUser = false;
 					GameServer.Init(0x7f000001, 7776, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0");
-					string currDir = Directory.GetCurrentDirectory();
-					SteamGameServer.SetModDir(currDir);
 					SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 					SteamGameServer.SetProduct(thisApp.ToString());
 
@@ -72,40 +70,16 @@ namespace Terraria.Social.Steam
 					throw new ArgumentException("Downloading Workshop Item failed due to unknown reasons");
 				}
 
-				ulong dlBytes = 0, totalBytes = 1;
+				ulong dlBytes, totalBytes;
 				do {
 					SteamUGC.GetItemDownloadInfo(itemID, out dlBytes, out totalBytes);
-
 					// Do Pretty Stuff
-				} while (dlBytes != totalBytes);
 
-				do {
-					Thread.Sleep(10);
+					Thread.Sleep(5);
 					SteamAPI.RunCallbacks();
-					// Say installing stuff, there is a delay here it seems.
 				} while (downloadResult == EResult.k_EResultNone);
 				
 				SteamUGC.SubscribeItem(itemID);
-			}
-
-			private void GoGDownload() {
-				if (!SteamGameServerUGC.DownloadItem(itemID, true)) {
-					throw new ArgumentException("GoG: Downloading Workshop Item failed due to unknown reasons");
-				}
-
-				ulong dlBytes = 0, totalBytes = 1;
-				do {
-					// Handle the download not yet starting, there is a delay for GameServer
-					SteamGameServerUGC.GetItemDownloadInfo(itemID, out dlBytes, out totalBytes);
-				} while (totalBytes == 0);
-
-				while (dlBytes != totalBytes) { 
-					SteamGameServerUGC.GetItemDownloadInfo(itemID, out dlBytes, out totalBytes);
-					// Do Stuff
-				} 
-
-				// We don't receive a callback, so we have to manually set the success.
-				downloadResult = EResult.k_EResultOK;
 			}
 
 			private void OnItemDownloaded(DownloadItemResult_t pCallback) {
@@ -114,14 +88,19 @@ namespace Terraria.Social.Steam
 				}
 			}
 
-			public ItemInstallInfo GetInstallInfo() {
-				string installPath; uint lastUpdatedTime;
-				if (steamUser)
-					SteamUGC.GetItemInstallInfo(itemID, out var installSize, out installPath, 1000, out lastUpdatedTime);
-				else
-					SteamGameServerUGC.GetItemInstallInfo(itemID, out var installSize, out installPath, 1000, out lastUpdatedTime);
-				
-				return new ItemInstallInfo() { installPath = installPath, lastUpdatedTime = lastUpdatedTime };
+			private void GoGDownload() {
+				if (!SteamGameServerUGC.DownloadItem(itemID, true)) {
+					throw new ArgumentException("GoG: Downloading Workshop Item failed due to unknown reasons");
+				}
+
+				ulong dlBytes, totalBytes;
+				while (!IsInstalled()) { 
+					SteamGameServerUGC.GetItemDownloadInfo(itemID, out dlBytes, out totalBytes);
+					// Do Pretty Stuff
+				} 
+
+				// We don't receive a callback, so we have to manually set the success.
+				downloadResult = EResult.k_EResultOK;
 			}
 
 			public void Uninstall() {
@@ -133,7 +112,7 @@ namespace Terraria.Social.Steam
 				// Remove the files
 				Directory.Delete(installPath, true);
 
-				// Unsubsribe
+				// Unsubscribe
 				if (steamUser)
 					SteamUGC.UnsubscribeItem(itemID);
 				else
@@ -163,6 +142,17 @@ namespace Terraria.Social.Steam
 				}
 			}
 
+			public ItemInstallInfo GetInstallInfo() {
+				string installPath;
+				uint lastUpdatedTime;
+				if (steamUser)
+					SteamUGC.GetItemInstallInfo(itemID, out var installSize, out installPath, 1000, out lastUpdatedTime);
+				else
+					SteamGameServerUGC.GetItemInstallInfo(itemID, out var installSize, out installPath, 1000, out lastUpdatedTime);
+
+				return new ItemInstallInfo() { installPath = installPath, lastUpdatedTime = lastUpdatedTime };
+			}
+
 			private uint GetState() {
 				if (steamUser)
 					return SteamUGC.GetItemState(itemID);
@@ -177,6 +167,42 @@ namespace Terraria.Social.Steam
 				return (currState & (uint)EItemState.k_EItemStateNeedsUpdate) != 0 ||
 					(currState == (uint)EItemState.k_EItemStateNone) ||
 					(currState & (uint)EItemState.k_EItemStateDownloadPending) != 0;
+			}
+
+			public static bool BeginPlaytimeTracking(PublishedFileId_t[] modsById) {
+				uint count = (uint)modsById.Length;
+				if (count == 0)
+					return true;
+
+				// You can't begin tracking more than 100 items within one call.
+				//TODO: Improve.
+				else if (count >= 100)
+					return false;
+
+				// Call the appropriate variant
+				if (steamUser)
+					SteamUGC.StartPlaytimeTracking(modsById, (uint)modsById.Length);
+				else
+					SteamGameServerUGC.StartPlaytimeTracking(modsById, (uint)modsById.Length);
+				return true;
+			}
+
+			public static bool StopPlaytimeTracking(PublishedFileId_t[] modsById) {
+				uint count = (uint)modsById.Length;
+				if (count == 0)
+					return true;
+
+				// You can't begin tracking more than 100 items within one call.
+				//TODO: Improve.
+				else if (count >= 100)
+					return false;
+
+				// Call the appropriate variant
+				if (steamUser)
+					SteamUGC.StopPlaytimeTracking(modsById, (uint)modsById.Length);
+				else
+					SteamGameServerUGC.StopPlaytimeTracking(modsById, (uint)modsById.Length);
+				return true;
 			}
 		}
 	}

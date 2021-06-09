@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using Terraria.IO;
-using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.Social;
 using Terraria.Social.Base;
@@ -37,6 +35,6 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		protected override List<WorkshopTagOption> GetTagsToShow() => SocialAPI.Workshop.SupportedTags.ModTags;
-		protected override bool TryFindingTags(out FoundWorkshopEntryInfo info) => SocialAPI.Workshop.TryGetInfoForMod(_dataObject.Name, out info);
+		protected override bool TryFindingTags(out FoundWorkshopEntryInfo info) => SocialAPI.Workshop.TryGetInfoForMod(_dataObject, out info);
 	}
 }

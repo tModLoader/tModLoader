@@ -6,7 +6,7 @@
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
-@@ -20,16 +_,23 @@
+@@ -20,16 +_,21 @@
  		public static SocialMode Mode => _mode;
  
  		public static void Initialize(SocialMode? mode = null) {
@@ -25,22 +25,21 @@
  					mode = SocialMode.Steam;
  			}
  
-+			WorkshopHelper.ModManager.Initialize();
-+
  			_mode = mode.Value;
 -			_modules = new List<ISocialModule>();
  			JoinRequests = new ServerJoinRequestsManager();
  			Main.OnTickForInternalCodeOnly += JoinRequests.Update;
  			switch (Mode) {
-@@ -40,10 +_,7 @@
+@@ -40,10 +_,9 @@
  					LoadWeGame();
  					break;
  			}
--
++			//TODO: Allow both APIs to be used at once. Currently, it would reinitiallize some of them.
+ 
 -			foreach (ISocialModule module in _modules) {
 -				module.Initialize();
 -			}
-+			//TODO: Allow both APIs to be used at once. Currently, it would reinitiallize some of them.
++			WorkshopHelper.ModManager.Initialize();
  		}
  
  		public static void Shutdown() {

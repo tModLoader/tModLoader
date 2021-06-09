@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using Terraria.IO;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.Social.Base
 {
-	public abstract partial class WorkshopSocialModule : ISocialModule
+	public abstract partial class WorkshopSocialModule
 	{
-		public abstract void PublishMod(ModLoader.Core.TmodFile modFile, NameValueCollection data, WorkshopItemPublishSettings settings);
+		public abstract void PublishMod(TmodFile modFile, NameValueCollection data, WorkshopItemPublishSettings settings);
 
-		public abstract bool TryGetInfoForMod(string fullPath, out FoundWorkshopEntryInfo info);
+		public abstract bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info);
 
 		public abstract List<string> GetListOfMods();
 	}

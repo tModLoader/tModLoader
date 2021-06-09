@@ -1,7 +1,10 @@
 --- src/Terraria/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
-@@ -3,12 +_,13 @@
+@@ -1,14 +_,16 @@
+ using Steamworks;
+ using System;
  using System.Collections.Generic;
++using System.Collections.Specialized;
  using System.IO;
  using Terraria.IO;
 +using Terraria.ModLoader;
@@ -15,6 +18,14 @@
  	{
  		public class UGCBased
  		{
+@@ -20,6 +_,7 @@
+ 				public string[] Tags;
+ 				public string Title;
+ 				public ERemoteStoragePublishedFileVisibility? Visibility;
++				public NameValueCollection BuildData;
+ 			}
+ 
+ 			public class Downloader
 @@ -34,26 +_,49 @@
  					private set;
  				}
@@ -77,3 +88,57 @@
  							}
  							else {
  								WorldPaths.Add(listOfSubscribedItemsPath);
+@@ -159,7 +_,7 @@
+ 				private FinishedPublishingAction _endAction;
+ 				private WorkshopIssueReporter _issueReporter;
+ 
+-				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags) {
++				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null) {
+ 					_issueReporter = issueReporter;
+ 					_endAction = endAction;
+ 					_createItemHook = CallResult<CreateItemResult_t>.Create(CreateItemResult);
+@@ -171,7 +_,8 @@
+ 						ContentFolderPath = contentFolderPath,
+ 						Tags = tags,
+ 						PreviewImagePath = previewImagePath,
+-						Visibility = visibility
++						Visibility = visibility,
++						BuildData = buildData
+ 					};
+ 
+ 					ulong? num = null;
+@@ -253,8 +_,33 @@
+ 					if (_entryData.Visibility.HasValue)
+ 						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
+ 
++					string patchNotes = "";
++					if (_entryData.BuildData != null) {
++						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "author", _entryData.BuildData["author"]);
++						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "modside", _entryData.BuildData["modside"]);
++						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "homepage", _entryData.BuildData["homepage"]);
++						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "modloaderversion", _entryData.BuildData["modloaderversion"]);
++						
++						patchNotes = _entryData.BuildData["version"];
++						SteamUGC.SetItemMetadata(uGCUpdateHandle_t, _entryData.BuildData["name"]);
++
++						string refs = _entryData.BuildData["modreferences"];
++						if (!String.IsNullOrEmpty(refs)) {
++							string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
++							foreach (var dependency in dependencies) {
++								try {
++									var child = new PublishedFileId_t(uint.Parse(dependency));
++									SteamUGC.AddDependency(_publishedFileID, child);
++								}
++								catch (Exception) {
++									Logging.tML.Error("Failed to add dependency: " + dependency + " to " + _publishedFileID);
++								}
++							}
++						}
++					}
++
+ 					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
+-					SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, "");
++					SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, patchNotes);
+ 					_updateHandle = uGCUpdateHandle_t;
+ 					_updateItemHook.Set(hAPICall, UpdateItemResult);
+ 					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);

@@ -1,5 +1,6 @@
 using Terraria.Audio;
 using Terraria.ModLoader.UI;
+using Terraria.Social.Steam;
 using Terraria.UI;
 
 namespace Terraria.GameContent.UI.States
@@ -51,7 +52,7 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private UIElement MakeButton_TBD() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishWorlds", "To Be Determined");
+			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishWorlds", "DL Example Mod");
 			uIElement.OnClick += Click_OpenTBDMenu;
 			_buttonTBD = uIElement;
 			return uIElement;
@@ -59,6 +60,11 @@ namespace Terraria.GameContent.UI.States
 
 		private void Click_OpenTBDMenu(UIMouseEvent evt, UIElement listeningElement) {
 			//SoundEngine.PlaySound(10);
+			//TEMP testing code
+			var tst = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(2511506043));
+			tst.Download();
+			bool a = tst.IsInstalled();
+			tst.Uninstall();
 		}
 	}
 }

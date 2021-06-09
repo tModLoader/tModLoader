@@ -1,12 +1,6 @@
-using Steamworks;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
-using Terraria.DataStructures;
-using Terraria.GameContent.UI.States;
-using Terraria.IO;
-using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.Social.Base;
 
@@ -16,12 +10,14 @@ namespace Terraria.Social.Steam
 	{
 		public override List<string> GetListOfMods() => _downloader.ModPaths;
 
-		public override bool TryGetInfoForMod(string pathToSteamWorkshopFolder, out FoundWorkshopEntryInfo info) {
+		public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info) {
 			info = null;
-			if (!Directory.Exists(pathToSteamWorkshopFolder))
+			string contentFolderPath = GetTemporaryFolderPath() + modFile.Name;
+
+			if (!Directory.Exists(contentFolderPath))
 				return false;
 
-			if (AWorkshopEntry.TryReadingManifest(pathToSteamWorkshopFolder + Path.DirectorySeparatorChar + "workshop.json", out info))
+			if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out info))
 				return true;
 
 			return false;
@@ -35,13 +31,13 @@ namespace Terraria.Social.Steam
 
 			string name = buildData["displaynameclean"];
 			string description = buildData["description"];
-			string[] usedTagsInternalNames = { "" }; //settings.GetUsedTagsInternalNames();
+			string[] usedTagsInternalNames = settings.GetUsedTagsInternalNames();
 			string contentFolderPath = GetTemporaryFolderPath() + modFile.Name;
 			if (MakeTemporaryFolder(contentFolderPath)) {
-				File.Copy(modFile.path, Path.Combine(contentFolderPath, modFile.Name + ".tmod"));
+				File.Copy(modFile.path, Path.Combine(contentFolderPath, modFile.Name + ".tmod"), true);
 				WorkshopHelper.ModPublisherInstance modPublisherInstance = new WorkshopHelper.ModPublisherInstance();
 				_publisherInstances.Add(modPublisherInstance);
-				modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, contentFolderPath, settings.PreviewImagePath, settings.Publicity, usedTagsInternalNames);
+				modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, contentFolderPath, settings.PreviewImagePath, settings.Publicity, usedTagsInternalNames, buildData);
 			}
 		}
 	}
