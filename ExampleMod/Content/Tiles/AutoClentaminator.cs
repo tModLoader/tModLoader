@@ -1,6 +1,7 @@
 ﻿using ExampleMod.Content.TileEntities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -13,15 +14,10 @@ namespace ExampleMod.Content.Tiles
 {
 	public class AutoClentaminator : ModTile
 	{
-		private static Texture2D Mask;
+		private static Asset<Texture2D> mask;
 
-		static AutoClentaminator() {
-			Mask = ModContent.GetTexture(ExampleMod.AssetPath + "Textures/AutoClentaminator_Mask").Value;
-
-			Color[] buffer = new Color[Mask.Width * Mask.Height];
-			Mask.GetData(buffer);
-			for (int i = 0; i < buffer.Length; i++) buffer[i] = Color.FromNonPremultiplied(buffer[i].R, buffer[i].G, buffer[i].B, buffer[i].A);
-			Mask.SetData(buffer);
+		public override void Load() {
+			mask = ModContent.GetTexture($"{Texture}_Mask");
 		}
 
 		public override void SetDefaults() {
@@ -59,12 +55,16 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
-			if (!TileEntityUtils.TryGetTileEntity(i, j, out AutoClentaminatorTE te)) return;
+			if (mask.Value == null)
+				return;
+			
+			if (!TileEntityUtils.TryGetTileEntity(i, j, out AutoClentaminatorTE te))
+				return;
 
 			Vector2 position = new Vector2(i * 16 + 24, j * 16 + 24) - Main.screenPosition + (Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange));
 
 			// todo: change color based on solution
-			spriteBatch.Draw(Mask, position, null, Color.Purple, 0f, Mask.Size() * 0.5f, te.cleansingProgress * 1.5f, SpriteEffects.None, 0f);
+			spriteBatch.Draw(mask.Value, position, null, Color.Purple, 0f, mask.Value.Size() * 0.5f, te.cleansingProgress * 1.5f, SpriteEffects.None, 0f);
 		}
 
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
