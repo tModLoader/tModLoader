@@ -69,6 +69,8 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 		public override void AI() {
 			Player player = Main.player[Projectile.owner];
 
+			//For organization, the AI is split into several methods defined below
+			//They are NOT part of the ModProjectile class!
 			CheckActive(player);
 
 			bool movesFast = Movement(player);
@@ -115,7 +117,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 			bool movesFast = Projectile.velocity.LengthSquared() > 6f * 6f;
 
 			if (movesFast) {
-				//If moving very fast, rorate the projectile towards it smoothly
+				//If moving very fast, rotate the projectile towards it smoothly
 				float rotationVel = Projectile.velocity.X * 0.08f + Projectile.velocity.Y * Projectile.spriteDirection * 0.02f;
 				if (Math.Abs(Projectile.rotation - rotationVel) >= MathHelper.Pi) {
 					if (rotationVel < Projectile.rotation) {
@@ -130,7 +132,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 				Projectile.rotation = (Projectile.rotation * (rotationInertia - 1f) + rotationVel) / rotationInertia;
 			}
 			else {
-				//If moving at regular speeds, rorate the projectile towards its default rotation (0) smoothly if necessary
+				//If moving at regular speeds, rotate the projectile towards its default rotation (0) smoothly if necessary
 				if (Projectile.rotation > MathHelper.Pi) {
 					Projectile.rotation -= MathHelper.TwoPi;
 				}
