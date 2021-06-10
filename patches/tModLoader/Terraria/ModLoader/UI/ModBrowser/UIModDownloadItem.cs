@@ -442,6 +442,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		public DownloadModFile GetModDownload() {
+			//TODO something here to fix downloading calls
 			var modDownload = new DownloadModFile(DownloadUrl, $"{ModLoader.ModPath}{Path.DirectorySeparatorChar}{ModName}.tmod", DisplayName) {
 				ModBrowserItem = this
 			};
