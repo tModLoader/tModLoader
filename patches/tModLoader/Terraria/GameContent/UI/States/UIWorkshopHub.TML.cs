@@ -52,23 +52,14 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private UIElement MakeButton_TBD() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishWorlds", "DL Example Mod");
+			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishWorlds", "To be Determined");
 			uIElement.OnClick += Click_OpenTBDMenu;
 			_buttonTBD = uIElement;
 			return uIElement;
 		}
 
 		private void Click_OpenTBDMenu(UIMouseEvent evt, UIElement listeningElement) {
-			//SoundEngine.PlaySound(10);
-			//TEMP testing code
-			var tst = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(2511506043));
-			tst.Download();
-			bool a = tst.IsInstalled();
-			tst.Uninstall();
-			
-
-			//var query = new WorkshopHelper.QueryHelper();
-			//query.QueryWorkshop();
+			SoundEngine.PlaySound(10);
 		}
 	}
 }
