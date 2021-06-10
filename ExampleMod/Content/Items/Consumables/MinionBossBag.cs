@@ -31,7 +31,7 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void OpenBossBag(Player player) {
-			if (Main.tenthAnniversaryWorld) { //Because this is a pre-HM boss, we have to include this check
+			if (Main.tenthAnniversaryWorld) { //Because this bag belongs to a pre-HM boss, we have to include this check
 				//Using a particular secret seed world grants doubled chance on dev sets (handled inside TryGettingDevArmor) even for pre-HM bosses
 				player.TryGettingDevArmor();
 			}

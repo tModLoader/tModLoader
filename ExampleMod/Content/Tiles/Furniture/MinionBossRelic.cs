@@ -13,7 +13,7 @@ using Terraria.Localization;
 namespace ExampleMod.Content.Tiles.Furniture
 {
 	//Common code for a Master Mode boss relic
-	//Contains comments for optional Item.placeStyle handling if you wish to add more relics but use the same tile type
+	//Contains comments for optional Item.placeStyle handling if you wish to add more relics but use the same tile type (then it would be wise to name this class something more generic like BossRelic)
 	public class MinionBossRelic : ModTile
 	{
 		//Every relic has its own extra floating part, should be 50x50, stacked vertically. Optional: Expand this sheet if you want to add more
@@ -53,7 +53,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.Direction = TileObjectDirection.PlaceLeft; //Player faces to the left
 			TileObjectData.newTile.StyleHorizontal = false; //Based on how the alternate sprites are positioned on the sprite (by default, true)
 
-			//If you decide to make your tile utilize different styles through Item.placeStyle, you need these, aswell as the code in SetDrawPositions
+			//Optional: If you decide to make your tile utilize different styles through Item.placeStyle, you need these, aswell as the code in SetDrawPositions
 			//TileObjectData.newTile.StyleWrapLimitVisualOverride = 2;
 			//TileObjectData.newTile.StyleMultiplier = 2;
 			//TileObjectData.newTile.StyleWrapLimit = 2;
@@ -73,7 +73,22 @@ namespace ExampleMod.Content.Tiles.Furniture
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 32, 32, ModContent.ItemType<Items.Placeable.Furniture.MinionBossRelic>());
+			//This code here infers the placeStyle the tile was placed with. Only required if you go the Item.placeStyle approach. You just need Item.NewItem otherwise
+			//The placeStyle calculated here corresponds to whatever placeStyle you specified on your items that place this tile (Either through Item.placeTile or Item.DefaultToPlacableTile)
+			int placeStyle = frameX / FrameWidth;
+
+			int itemType = 0;
+			switch (placeStyle) {
+				case 0:
+					itemType = ModContent.ItemType<Items.Placeable.Furniture.MinionBossRelic>();
+					break;
+				//Optional: Add more cases here
+			}
+
+			if (itemType > 0) {
+				//Spawn the item
+				Item.NewItem(i * 16, j * 16, 32, 32, itemType);
+			}
 		}
 
 		public override bool CreateDust(int i, int j, ref int type) {
@@ -92,7 +107,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			//Since this tile does not have the hovering part on its sheet, we have to animate it ourselves
 			//Therefore we register the top-left of the tile as a "special point"
 			//This allows us to draw things in SpecialDraw
-			if (drawData.tileFrameX % (FrameWidth) == 0 && drawData.tileFrameY % FrameHeight == 0) {
+			if (drawData.tileFrameX % FrameWidth == 0 && drawData.tileFrameY % FrameHeight == 0) {
 				Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
 			}
 		}
