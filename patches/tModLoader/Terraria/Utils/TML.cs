@@ -30,6 +30,13 @@ namespace Terraria
 		public static Point16 ToPoint16(this Vector2 v)
 			=> new Point16((short)v.X, (short)v.Y);
 
+		public static DateTime UnixTimeStampToDateTime(long unixTimeStamp) {
+			// Unix timestamp is seconds past epoch
+			System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+			dtDateTime = dtDateTime.AddSeconds(unixTimeStamp);
+			return dtDateTime;
+		}
+
 		//Struct extensions
 
 		public static T NextEnum<T>(this T src) where T : struct

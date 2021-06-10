@@ -18,6 +18,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.UI.Chat;
 
@@ -30,7 +31,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		public readonly string ModName;
 		public readonly string DisplayName;
 		public readonly string DisplayNameClean; // No chat tags: for search and sort functionality.
-		public readonly string DownloadUrl;
+		public readonly string PublishId;
 		public readonly bool HasUpdate;
 		public readonly bool UpdateIsDowngrade;
 		public readonly LocalMod Installed;
@@ -43,6 +44,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private readonly ModSide _modSide;
 		private readonly int _downloads;
 		private readonly int _hot;
+		private readonly string _homepage;
+		private readonly uint _queryIndex;
 		private readonly Asset<Texture2D> _dividerTexture;
 		private readonly Asset<Texture2D> _innerPanelTexture;
 		private readonly UIText _modName;
@@ -73,20 +76,20 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				: Language.GetTextValue("tModLoader.MBUpdateWithDependencies")
 			: Language.GetTextValue("tModLoader.MBDownloadWithDependencies");
 
-		public UIModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string downloadUrl, int downloads, int hot, string timeStamp, bool hasUpdate, bool updateIsDowngrade, LocalMod installed, string modloaderversion) {
+		public UIModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, string timeStamp, bool hasUpdate, bool updateIsDowngrade, LocalMod installed, string modloaderversion, string homepage, uint queryIndex) {
 			ModName = name;
 			DisplayName = displayName;
 			DisplayNameClean = string.Join("", ChatManager.ParseMessage(displayName, Color.White).Where(x=> x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
-			DownloadUrl = downloadUrl;
+			PublishId = publishId;
 
 			_author = author;
 			_modReferences = modReferences;
 			_modSide = modSide;
 			_modIconUrl = modIconUrl;
-			if (UIModBrowser.AvoidImgur)
-				_modIconUrl = null;
 			_downloads = downloads;
 			_hot = hot;
+			_homepage = homepage;
+			_queryIndex = queryIndex;
 			_timeStamp = timeStamp;
 			HasUpdate = hasUpdate;
 			UpdateIsDowngrade = updateIsDowngrade;
@@ -116,14 +119,18 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			_moreInfoButton.OnClick += ViewModInfo;
 			Append(_moreInfoButton);
 
-			if (modloaderversion != null) {
+			if (!ModLoader.versionedName.Contains(modloaderversion)) {
 				tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", modloaderversion)).WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
 				tMLUpdateRequired.BackgroundColor = Color.Orange * 0.7f;
 				tMLUpdateRequired.CopyStyle(_moreInfoButton);
 				tMLUpdateRequired.Width.Pixels = 340;
 				tMLUpdateRequired.Left.Pixels += 36 + PADDING;
 				tMLUpdateRequired.OnClick += (a, b) => {
-					Process.Start("https://github.com/tModLoader/tModLoader/releases/latest");
+					var ps = new ProcessStartInfo("https://github.com/tModLoader/tModLoader/releases/latest") {
+						UseShellExecute = true,
+						Verb = "open"
+					};
+					Process.Start(ps);
 				};
 				Append(tMLUpdateRequired);
 			}
@@ -162,41 +169,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			Interface.modBrowser.FilterTextBox.Text = "";
 			Interface.modBrowser.UpdateNeeded = true;
 			SoundEngine.PlaySound(SoundID.MenuOpen);
-		}
-
-		internal static UIModDownloadItem FromJson(LocalMod[] installedMods, JObject mod) {
-			string displayname = (string)mod["displayname"];
-			//reloadButton.SetText("Adding " + displayname + "...");
-			string name = (string)mod["name"];
-			string version = (string)mod["version"];
-			string author = (string)mod["author"];
-			string download = (string)mod["download"] ?? $"http://javid.ddns.net/tModLoader/download.php?Down=mods/{name}.tmod{(ModBrowser.UIModBrowser.PlatformSupportsTls12 && !ModBrowser.UIModBrowser.AvoidGithub ? "&tls12=y" : "")}";
-			int downloads = (int)mod["downloads"];
-			int hot = (int)mod["hot"]; // for now, hotness is just downloadsYesterday
-			string timeStamp = (string)mod["updateTimeStamp"];
-			//string[] modreferences = ((string)mod["modreferences"]).Split(',');
-			string modreferences = ((string)mod["modreferences"])?.Replace(" ", string.Empty) ?? string.Empty;
-			ModSide modside = ModSide.Both; // TODO: add filter option for modside.
-			string modIconURL = (string)mod["iconurl"];
-			string modsideString = (string)mod["modside"];
-			if (modsideString == "Client") modside = ModSide.Client;
-			if (modsideString == "Server") modside = ModSide.Server;
-			if (modsideString == "NoSync") modside = ModSide.NoSync;
-			string modloaderversion = (string)mod["modloaderversion"];
-			//bool exists = false; // unused?
-			bool update = false;
-			bool updateIsDowngrade = false;
-			var installed = installedMods.FirstOrDefault(m => m.Name == name);
-			if (installed != null) {
-				//exists = true;
-				var cVersion = new Version(version.Substring(1));
-				if (cVersion > installed.modFile.Version)
-					update = true;
-				else if (cVersion < installed.modFile.Version)
-					update = updateIsDowngrade = true;
-			}
-
-			return new UIModDownloadItem(displayname, name, version, author, modreferences, modside, modIconURL, download, downloads, hot, timeStamp, update, updateIsDowngrade, installed, modloaderversion);
 		}
 
 		public override int CompareTo(object obj) {
@@ -406,47 +378,47 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		private void DownloadMod(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuTick);
-			var modDownload = GetModDownload();
-			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
-			Interface.downloadProgress.HandleDownloads(modDownload);
+			var modDownload = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(ulong.Parse(PublishId)));
+			modDownload.Download();
+
+			Interface.modBrowser.UpdateNeeded = true;
 		}
 
 		private void DownloadWithDeps(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuTick);
-			var downloads = new HashSet<DownloadModFile> { GetModDownload() };
+			var downloads = new HashSet<UIModDownloadItem>() { this };
+			downloads.Add(this);
 			GetDependenciesRecursive(this, ref downloads);
-			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
-			Interface.downloadProgress.HandleDownloads(downloads.ToArray());
+
+			foreach (var item in downloads) {
+				var modDownload = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(ulong.Parse(item.PublishId)));
+				modDownload.Download();
+			}
+
+			Interface.modBrowser.UpdateNeeded = true;
 		}
 
-		private IEnumerable<DownloadModFile> GetDependencies() {
+		private IEnumerable<UIModDownloadItem> GetDependencies() {
 			return _modReferences.Split(',')
 				.Select(Interface.modBrowser.FindModDownloadItem)
-				.Where(item => item != null && (!item.IsInstalled || (item.HasUpdate && !item.UpdateIsDowngrade)))
-				.Select(x => x.GetModDownload());
+				.Where(item => item != null && (!item.IsInstalled || (item.HasUpdate && !item.UpdateIsDowngrade)));
 		}
 
-		private void GetDependenciesRecursive(UIModDownloadItem item, ref HashSet<DownloadModFile> set) {
+		private void GetDependenciesRecursive(UIModDownloadItem item, ref HashSet<UIModDownloadItem> set) {
 			var deps = item.GetDependencies();
 			set.UnionWith(deps);
+
 			// Cyclic dependency should never happen, as it's not allowed
 			// TODO: What if the same mod is a dependency twice, but different versions?
+
 			foreach (var dep in deps) {
-				GetDependenciesRecursive(dep.ModBrowserItem, ref set);
+				GetDependenciesRecursive(dep, ref set);
 			}
 		}
 
 		private void ViewModInfo(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Interface.modInfo.Show(ModName, DisplayName, Interface.modBrowserID, Installed, loadFromWeb: true);
-		}
-
-		public DownloadModFile GetModDownload() {
-			//TODO something here to fix downloading calls
-			var modDownload = new DownloadModFile(DownloadUrl, $"{ModLoader.ModPath}{Path.DirectorySeparatorChar}{ModName}.tmod", DisplayName) {
-				ModBrowserItem = this
-			};
-			return modDownload;
+			Interface.modInfo.Show(ModName, DisplayName, Interface.modBrowserID, Installed, url: _homepage, queryIndex: _queryIndex, loadFromWeb: true);
 		}
 	}
 }

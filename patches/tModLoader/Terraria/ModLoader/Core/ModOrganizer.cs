@@ -9,6 +9,8 @@ using Terraria.Localization;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.Social.Base;
+using Terraria.Social.Steam;
 
 namespace Terraria.ModLoader.Core
 {
@@ -23,33 +25,51 @@ namespace Terraria.ModLoader.Core
 		private static Dictionary<string, LocalMod> modsDirCache = new Dictionary<string, LocalMod>();
 		private static List<string> readFailures = new List<string>(); // TODO: Reflect these skipped Mods in the UI somehow.
 
+		private static WorkshopHelper.UGCBased.Downloader WorkshopFileFinder = new WorkshopHelper.UGCBased.Downloader();
+
 		internal static LocalMod[] FindMods() {
 			Directory.CreateDirectory(ModLoader.ModPath);
 			var mods = new List<LocalMod>();
+			List<string> names = new List<string>();
+			List<string> modRepos = new List<string>();
 
 			DeleteTemporaryFiles();
 
-			foreach (string fileName in Directory.GetFiles(ModLoader.ModPath, "*.tmod", SearchOption.TopDirectoryOnly)) {
-				var lastModified = File.GetLastWriteTime(fileName);
-				if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
-					try {
-						var modFile = new TmodFile(fileName);
-						using (modFile.Open())
-							mod = new LocalMod(modFile) { lastModified = lastModified };
-					}
-					catch (Exception e) {
-						if (!readFailures.Contains(fileName)) {
-							Logging.tML.Warn("Failed to read " + fileName, e);
-						}
-						else {
-							readFailures.Add(fileName);
-						}
-						continue;
-					}
-					modsDirCache[fileName] = mod;
-				}
-				mods.Add(mod);
+			WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
+			if (ModCompile.DeveloperMode) {
+				modRepos.Add(ModLoader.ModPath);
 			}
+			modRepos.AddRange(WorkshopFileFinder.ModPaths);
+
+			foreach (var repo in modRepos) {
+				foreach (string fileName in Directory.GetFiles(repo, "*.tmod", SearchOption.TopDirectoryOnly)) {
+					var lastModified = File.GetLastWriteTime(fileName);
+					if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
+						try {
+							var modFile = new TmodFile(fileName);
+							using (modFile.Open())
+								mod = new LocalMod(modFile) { lastModified = lastModified };
+						}
+						catch (Exception e) {
+							if (!readFailures.Contains(fileName)) {
+								Logging.tML.Warn("Failed to read " + fileName, e);
+							}
+							else {
+								readFailures.Add(fileName);
+							}
+							continue;
+						}
+						modsDirCache[fileName] = mod;
+					}
+
+					// Prioritize Mods in Mods folder, than ignore it from Workshop if it appears again. 
+					if (!names.Contains(mod.Name)) {
+						names.Add(mod.Name);
+						mods.Add(mod);
+					}	
+				}
+			}
+				
 			return mods.OrderBy(x => x.Name, StringComparer.InvariantCulture).ToArray();
 		}
 

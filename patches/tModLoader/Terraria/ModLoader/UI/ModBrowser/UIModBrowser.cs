@@ -32,6 +32,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		public static bool EarlyAutoUpdate;
 		public static bool PlatformSupportsTls12 => true;
 
+		internal static WorkshopHelper.QueryHelper SteamWorkshop { get; set; }
+
 		public UIModDownloadItem SelectedItem;
 
 		// TODO maybe we can refactor this as a "BrowserState" enum
@@ -48,6 +50,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private List<string> _specialModPackFilter;
 		private readonly List<string> _missingMods = new List<string>();
 		private readonly List<UIModDownloadItem> _items = new List<UIModDownloadItem>();
+		
 
 		internal bool UpdateNeeded;
 		internal string Filter => FilterTextBox.Text;
@@ -157,8 +160,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		public void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			_cts?.Cancel(false);
-
 			bool reloadModsNeeded = aNewModDownloaded && ModLoader.autoReloadAndEnableModsLeavingModBrowser || anEnabledModUpdated;
 			bool enableModsReminder = aNewModDownloaded && !ModLoader.dontRemindModBrowserDownloadEnable;
 			bool reloadModsReminder = aDisabledModUpdated && !ModLoader.dontRemindModBrowserUpdateReload;
@@ -193,7 +194,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private void ReloadList(UIMouseEvent evt, UIElement listeningElement) {
 			if (Loading) return;
 			SoundEngine.PlaySound(SoundID.MenuOpen);
-			//PopulateModBrowserLegacy();
+			PopulateModBrowser();
 		}
 
 		// TODO if we store a browser 'state' we can probably refactor this
@@ -216,7 +217,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		public override void OnActivate() {
 			Main.clrInput();
 			if (!Loading && _items.Count <= 0) {
-				//PopulateModBrowserLegacy();
 				PopulateModBrowser();
 			}
 		}
@@ -226,130 +226,27 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		internal void ClearItems() => _items.Clear();
 
 		private void PopulateModBrowser() {
-			_items.Clear();
-
-			var query = new WorkshopHelper.QueryHelper();
-			_items.AddRange(query.QueryWorkshop());
-		}
-
-		private CancellationTokenSource _cts;
-		private void PopulateModBrowserLegacy() {
 			Loading = true;
 			SpecialModPackFilter = null;
 			SpecialModPackFilterTitle = null;
 			_reloadButton.SetText(Language.GetTextValue("tModLoader.MBGettingData"));
-			SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser"));
 			_backgroundElement.Append(_loaderElement);
+			SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser"));
+
+			if (SteamWorkshop != null) {
+				SteamWorkshop.ReleaseWorkshopQuery();
+				SteamWorkshop = null;
+			}
 			ModList.Clear();
 			_items.Clear();
 			ModList.Deactivate();
-			try {
-				_cts = new CancellationTokenSource();
 
-				Task.Factory.StartNew(() => {
-					ServicePointManager.Expect100Continue = false;
-					string url = "http://javid.ddns.net/tModLoader/listmods.php";
-					var values = new NameValueCollection {
-						{"modloaderversion", BuildInfo.versionedName},
-						{"platform", ModLoader.CompressedPlatformRepresentation},
-						{"netversion", FrameworkVersion.Version.ToString()},
-						{"EarlyAutoUpdate", EarlyAutoUpdate.ToString()}
-					};
-					using (var client = new WebClient()) {
-						ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => { return true; };
-						client.UploadValuesCompleted += UploadComplete;
-						client.UploadValuesAsync(new Uri(url), "POST", values);
-					}
-				}, _cts.Token);
-			}
-			catch (WebException e) {
-				ShowOfflineTroubleshootingMessage();
-				if (e.Status == WebExceptionStatus.Timeout) {
-					SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBBusy")));
-					return;
-				}
+			SteamWorkshop = new WorkshopHelper.QueryHelper();
+			_items.AddRange(SteamWorkshop.QueryWorkshop());
+			UpdateNeeded = true;
 
-				if (e.Status == WebExceptionStatus.ProtocolError) {
-					var resp = (HttpWebResponse)e.Response;
-					if (resp.StatusCode == HttpStatusCode.NotFound) {
-						SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", resp.StatusCode));
-						return;
-					}
-
-					SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", resp.StatusCode));
-				}
-			}
-			catch (Exception e) {
-				LogModBrowserException(e);
-			}
-		}
-
-		public void UploadComplete(object sender, UploadValuesCompletedEventArgs e) {
-			if (e.Error != null) {
-				ShowOfflineTroubleshootingMessage();
-				if (e.Cancelled) {
-				}
-				else {
-					var httpStatusCode = GetHttpStatusCode(e.Error);
-					if (httpStatusCode == HttpStatusCode.ServiceUnavailable)
-						SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBBusy")));
-					else
-						SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBUnknown")));
-				}
-
-				Loading = false;
-				_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
-			}
-			else if (!e.Cancelled) {
-				_reloadButton.SetText(Language.GetTextValue("tModLoader.MBPopulatingBrowser"));
-				var result = e.Result;
-				string response = Encoding.UTF8.GetString(result);
-				Task.Factory
-					.StartNew(ModOrganizer.FindMods)
-					.ContinueWith(task => {
-						PopulateFromJson(task.Result, response);
-						Loading = false;
-						_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
-					}, TaskScheduler.Current);
-			}
-		}
-
-		private void PopulateFromJson(LocalMod[] installedMods, string json) {
-			try {
-				JObject jsonObject;
-				try {
-					jsonObject = JObject.Parse(json);
-				}
-				catch (Exception e) {
-					throw new Exception($"Bad JSON: {json}", e);
-				}
-
-				var updateObject = (JObject)jsonObject["update"];
-				if (updateObject != null && !Engine.Steam.IsSteamApp) {
-					_updateAvailable = true;
-					_updateText = (string)updateObject["message"];
-					_updateUrl = (string)updateObject["url"];
-					_autoUpdateUrl = (string)updateObject["autoupdateurl"];
-				}
-
-				JArray modlist;
-				string modlist_compressed = (string)jsonObject["modlist_compressed"];
-				if (modlist_compressed != null) {
-					byte[] data = Convert.FromBase64String(modlist_compressed);
-					using (GZipStream zip = new GZipStream(new MemoryStream(data), CompressionMode.Decompress))
-					using (var reader = new StreamReader(zip))
-						modlist = JArray.Parse(reader.ReadToEnd());
-				}
-				else {
-					// Fallback if needed.
-					modlist = (JArray)jsonObject["modlist"];
-				}
-				foreach (var mod in modlist.Children<JObject>()) _items.Add(UIModDownloadItem.FromJson(installedMods, mod));
-				UpdateNeeded = true;
-			}
-			catch (Exception e) {
-				LogModBrowserException(e);
-			}
+			Loading = false;
+			_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
 		}
 
 		/// <summary>
@@ -364,8 +261,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 					_missingMods.Add(desiredMod);
 				}
 				else if (mod.Installed == null || mod.HasUpdate) { // Found, add to downloads
-					var modDownload = mod.GetModDownload();
-					downloads.Add(modDownload);
+					var modDownload = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(ulong.Parse(mod.PublishId)));
+					modDownload.Download();
 				}
 			}
 
@@ -384,18 +281,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			Interface.downloadProgress.HandleDownloads(downloads.ToArray());
 		}
 
-		internal UIModDownloadItem FindModDownloadItem(string modName)
-			=> _items.FirstOrDefault(x => x.ModName.Equals(modName));
-
-		//		private void OnModDownloadCompleted(HttpDownloadRequest req) {
-		//			if (req.Response.StatusCode != HttpStatusCode.OK) {
-		//				string errorKey = req.Response.StatusCode == HttpStatusCode.ServiceUnavailable ? "MBExceededBandwidth" : "MBUnknownMBError";
-		//				Interface.errorMessage.Show(Language.GetTextValue("tModLoader." + errorKey), 0);
-		//			}
-		//			else if (req.Success && req.CustomData is UIModDownloadItem currentDownload) {
-		//				ProcessDownloadedMod(req, currentDownload);
-		//			}
-		//		}
+		internal UIModDownloadItem FindModDownloadItem(string publishId)
+			=> _items.FirstOrDefault(x => x.PublishId.Equals(publishId));
 
 		private void SetHeading(string heading) {
 			HeaderTextPanel.SetText(heading, 0.8f, true);

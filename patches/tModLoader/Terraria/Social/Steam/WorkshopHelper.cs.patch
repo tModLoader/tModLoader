@@ -78,6 +78,14 @@
  					return list;
  				}
  
+@@ -62,6 +_,7 @@
+ 				public bool Refresh(WorkshopIssueReporter issueReporter) {
+ 					ResourcePackPaths.Clear();
+ 					WorldPaths.Clear();
++					ModPaths.Clear();
+ 					foreach (string listOfSubscribedItemsPath in GetListOfSubscribedItemsPaths()) {
+ 						if (listOfSubscribedItemsPath == null)
+ 							continue;
 @@ -75,6 +_,9 @@
  							if (!(a == "World")) {
  								if (a == "ResourcePack")
@@ -107,18 +115,20 @@
  					};
  
  					ulong? num = null;
-@@ -253,8 +_,40 @@
+@@ -253,8 +_,41 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
 +					string patchNotes = "";
 +					if (_entryData.BuildData != null) {
++						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "internalname");
 +						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "author");
 +						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "modside");
 +						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "homepage");
 +						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "modloaderversion");
 +						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "version");
 +
++						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "internalname", _entryData.BuildData["name"]);
 +						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "author", _entryData.BuildData["author"]);
 +						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "modside", _entryData.BuildData["modside"]);
 +						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "homepage", _entryData.BuildData["homepage"]);
@@ -126,7 +136,6 @@
 +						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "version", _entryData.BuildData["version"]);
 +						
 +						patchNotes = _entryData.BuildData["version"] + " learn more @" + _entryData.BuildData["homepage"];
-+						SteamUGC.SetItemMetadata(uGCUpdateHandle_t, _entryData.BuildData["name"]);
 +
 +						string refs = _entryData.BuildData["modreferences"];
 +						if (!String.IsNullOrEmpty(refs)) {

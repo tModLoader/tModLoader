@@ -469,7 +469,17 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
-			File.Delete(_mod.modFile.path);
+			string tmodPath = _mod.modFile.path;
+			if (tmodPath.Contains(Path.Combine("steamapps", "workshop"))) {
+				string parentDir = Directory.GetParent(tmodPath).ToString();
+				string manifest = parentDir + Path.DirectorySeparatorChar + "workshop.json";
+				Social.Base.AWorkshopEntry.TryReadingManifest(manifest, out var info);
+				var obj = new Social.Steam.WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
+				obj.Uninstall();
+			}
+			else {
+				File.Delete(tmodPath);
+			}
 			CloseDialog(evt, listeningElement);
 			Interface.modsMenu.Activate();
 		}
