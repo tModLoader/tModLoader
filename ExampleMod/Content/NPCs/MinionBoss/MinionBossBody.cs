@@ -3,6 +3,7 @@ using ExampleMod.Content.BossBars;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Armor.Vanity;
 using ExampleMod.Content.Items.Consumables;
+using ExampleMod.Content.Pets.MinionBossPet;
 using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using System;
@@ -176,9 +177,8 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			//ItemDropRule.MasterModeCommonDrop for the relic
 			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.Furniture.MinionBossRelic>()));
 
-			//TODO master mode boss pet
 			//ItemDropRule.MasterModeDropOnAllPlayers for the pet
-			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(master mode pet item type goes here, 4));
+			npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 
 			//All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
 			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
