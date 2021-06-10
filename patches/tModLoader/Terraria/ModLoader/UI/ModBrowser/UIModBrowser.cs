@@ -19,6 +19,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 
@@ -192,7 +193,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private void ReloadList(UIMouseEvent evt, UIElement listeningElement) {
 			if (Loading) return;
 			SoundEngine.PlaySound(SoundID.MenuOpen);
-			PopulateModBrowser();
+			//PopulateModBrowserLegacy();
 		}
 
 		// TODO if we store a browser 'state' we can probably refactor this
@@ -215,6 +216,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		public override void OnActivate() {
 			Main.clrInput();
 			if (!Loading && _items.Count <= 0) {
+				//PopulateModBrowserLegacy();
 				PopulateModBrowser();
 			}
 		}
@@ -223,8 +225,15 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		internal void ClearItems() => _items.Clear();
 
-		private CancellationTokenSource _cts;
 		private void PopulateModBrowser() {
+			_items.Clear();
+
+			var query = new WorkshopHelper.QueryHelper();
+			_items.AddRange(query.QueryWorkshop());
+		}
+
+		private CancellationTokenSource _cts;
+		private void PopulateModBrowserLegacy() {
 			Loading = true;
 			SpecialModPackFilter = null;
 			SpecialModPackFilterTitle = null;

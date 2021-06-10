@@ -1,7 +1,12 @@
 using Steamworks;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
+using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
 
 namespace Terraria.Social.Steam
@@ -22,8 +27,9 @@ namespace Terraria.Social.Steam
 			}
 		}
 
-		internal class ModManager {
-			private static bool steamUser = true;
+		internal class ModManager
+		{
+			internal static bool steamUser = true;
 			public static AppId_t thisApp = ModLoader.Engine.Steam.TMLAppID_t;
 
 			public static void Initialize() {
@@ -44,10 +50,11 @@ namespace Terraria.Social.Steam
 				this.itemID = itemID;
 				if (steamUser)
 					m_DownloadItemResult = Callback<DownloadItemResult_t>.Create(OnItemDownloaded);
-				else
-					m_DownloadItemResult = Callback<DownloadItemResult_t>.Create(OnItemDownloaded);
+				// GameServer callback isn't working for this?
+				//else
+				//m_DownloadItemResult = Callback<DownloadItemResult_t>.Create(OnItemDownloaded);
 			}
-						
+
 			public EResult downloadResult;
 
 			/// <summary>
@@ -58,7 +65,7 @@ namespace Terraria.Social.Steam
 				if (NeedsUpdate()) {
 					downloadResult = EResult.k_EResultNone;
 					if (steamUser)
-						SteamDownload(); 
+						SteamDownload();
 					else
 						GoGDownload();
 				}
@@ -78,7 +85,7 @@ namespace Terraria.Social.Steam
 					Thread.Sleep(5);
 					SteamAPI.RunCallbacks();
 				} while (downloadResult == EResult.k_EResultNone);
-				
+
 				SteamUGC.SubscribeItem(itemID);
 			}
 
@@ -94,10 +101,10 @@ namespace Terraria.Social.Steam
 				}
 
 				ulong dlBytes, totalBytes;
-				while (!IsInstalled()) { 
+				while (!IsInstalled()) {
 					SteamGameServerUGC.GetItemDownloadInfo(itemID, out dlBytes, out totalBytes);
 					// Do Pretty Stuff
-				} 
+				}
 
 				// We don't receive a callback, so we have to manually set the success.
 				downloadResult = EResult.k_EResultOK;
@@ -203,6 +210,130 @@ namespace Terraria.Social.Steam
 				else
 					SteamGameServerUGC.StopPlaytimeTracking(modsById, (uint)modsById.Length);
 				return true;
+			}
+		}
+
+		internal class QueryHelper
+		{
+			private CallResult<SteamUGCQueryCompleted_t> _queryHook;
+			protected UGCQueryHandle_t _primaryUGCHandle;
+			protected EResult _primaryQueryResult;
+			protected uint _queryReturnCount;
+
+			internal QueryHelper() {
+				_queryHook = CallResult<SteamUGCQueryCompleted_t>.Create(OnWorkshopQueryCompleted);
+			}
+
+			internal List<UIModDownloadItem> QueryWorkshop() {
+				uint queryPage = 0;
+				List<UIModDownloadItem> items = new List<UIModDownloadItem>();
+				LocalMod[] installedMods = ModOrganizer.FindMods();
+
+				do {
+					QueryForPage(++queryPage);
+
+					for (uint i = 0; i < _queryReturnCount; i++) {
+						// Item Result call data
+						SteamUGC.GetQueryUGCResult(_primaryUGCHandle, i, out var pDetails);
+						string displayname = pDetails.m_rgchTitle;
+						PublishedFileId_t id = pDetails.m_nPublishedFileId;
+						uint timeStamp = pDetails.m_rtimeUpdated; //TODO: this is unix time, probably doesn't match the old time system so need to update it
+
+						// Dependencies data
+						PublishedFileId_t[] depsArr = new PublishedFileId_t[pDetails.m_unNumChildren];
+						SteamUGC.GetQueryUGCChildren(_primaryUGCHandle, i, depsArr, (uint)depsArr.Length);
+						string modreferences = "";
+						foreach (var item in depsArr) {
+							modreferences += item.ToString() + ",";
+						}
+
+						// Mod internal name
+						SteamUGC.GetQueryUGCMetadata(_primaryUGCHandle, i, out string name, 100);
+
+						// Item Tagged data
+						uint keyCount = SteamUGC.GetQueryUGCNumKeyValueTags(_primaryUGCHandle, i);
+						string author = null, modloaderversion = null, modsideString = null, homepage = null, version = null;
+						for (uint j = 0; j < keyCount; j++) {
+							SteamUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out string key, 100, out string val, 100);
+							switch (key) {
+								case "author":
+									author = val;
+									continue;
+								case "modside":
+									modsideString = val;
+									continue;
+								case "homepage":
+									homepage = val;
+									continue;
+								case "modloaderversion":
+									modloaderversion = val;
+									continue;
+								case "version":
+									version = val;
+									continue;
+							}
+						}
+
+						ModSide modside = ModSide.Both;
+						if (modsideString == "Client")
+							modside = ModSide.Client;
+						if (modsideString == "Server")
+							modside = ModSide.Server;
+						if (modsideString == "NoSync")
+							modside = ModSide.NoSync;
+
+						// Preview Image url
+						SteamUGC.GetQueryUGCPreviewURL(_primaryUGCHandle, i, out string modIconURL, 1000);
+
+						// Item Statistics
+						SteamUGC.GetQueryUGCStatistic(_primaryUGCHandle, i, EItemStatistic.k_EItemStatistic_NumUniqueSubscriptions, out ulong downloads);
+						SteamUGC.GetQueryUGCStatistic(_primaryUGCHandle, i, EItemStatistic.k_EItemStatistic_NumPlaytimeSessionsDuringTimePeriod, out ulong hot); //Temp: based on how often being played lately?
+
+
+						bool update = false;
+						bool updateIsDowngrade = false;
+						var installed = installedMods.FirstOrDefault(m => m.Name == name);
+						if (installed != null) {
+							//exists = true;
+							var cVersion = new System.Version(version.Substring(1));
+							if (cVersion > installed.modFile.Version)
+								update = true;
+							else if (cVersion < installed.modFile.Version)
+								update = updateIsDowngrade = true;
+						}
+
+						items.Add(new UIModDownloadItem(displayname, name, version, author, modreferences, modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, timeStamp.ToString(), update, updateIsDowngrade, installed, modloaderversion));
+					}
+
+				} while (_queryReturnCount == 50); // 50 is based on kNumUGCResultsPerPage constant in ISteamUGC. Can't find constant itself?
+
+				// We ought to release the handle formally before exiting
+				SteamUGC.ReleaseQueryUGCRequest(_primaryUGCHandle);
+				return items;
+			}
+
+			private void QueryForPage(uint page) {
+				_primaryQueryResult = EResult.k_EResultNone;
+
+				UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, ModManager.thisApp, ModManager.thisApp, page);
+				SteamUGC.SetReturnKeyValueTags(qHandle, true);
+				SteamUGC.SetReturnChildren(qHandle, true);
+				
+				SteamAPICall_t call = SteamUGC.SendQueryUGCRequest(qHandle);
+				_queryHook.Set(call);
+
+				do {
+					// Do Pretty Stuff
+
+					Thread.Sleep(5);
+					SteamAPI.RunCallbacks();
+				} while (_primaryQueryResult == EResult.k_EResultNone);
+			}
+
+			private void OnWorkshopQueryCompleted(SteamUGCQueryCompleted_t pCallback, bool bIOFailure) {
+				_primaryUGCHandle = pCallback.m_handle;
+				_primaryQueryResult = pCallback.m_eResult;
+				_queryReturnCount = pCallback.m_unNumResultsReturned;
 			}
 		}
 	}

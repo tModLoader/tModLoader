@@ -107,18 +107,25 @@
  					};
  
  					ulong? num = null;
-@@ -253,8 +_,33 @@
+@@ -253,8 +_,40 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
 +					string patchNotes = "";
 +					if (_entryData.BuildData != null) {
++						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "author");
++						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "modside");
++						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "homepage");
++						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "modloaderversion");
++						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "version");
++
 +						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "author", _entryData.BuildData["author"]);
 +						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "modside", _entryData.BuildData["modside"]);
 +						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "homepage", _entryData.BuildData["homepage"]);
 +						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "modloaderversion", _entryData.BuildData["modloaderversion"]);
++						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "version", _entryData.BuildData["version"]);
 +						
-+						patchNotes = _entryData.BuildData["version"];
++						patchNotes = _entryData.BuildData["version"] + " learn more @" + _entryData.BuildData["homepage"];
 +						SteamUGC.SetItemMetadata(uGCUpdateHandle_t, _entryData.BuildData["name"]);
 +
 +						string refs = _entryData.BuildData["modreferences"];
