@@ -1,14 +1,13 @@
-{
-  Common:
-  {
-    PaperAirplane: 纸飞机
-  }
-  NPCName:
-  {
-    Octopus: 章鱼
-  }
-  RecipeConditions:
-  {
-    LowHealth: 身体欠佳
-  }
+Mods.ExampleMod: {
+	Common: {
+		PaperAirplane: 纸飞机
+	}
+	
+	NPCName: {
+		Octopus: 章鱼
+	}
+	
+	RecipeConditions: {
+		LowHealth: 身体欠佳
+	}
 }
