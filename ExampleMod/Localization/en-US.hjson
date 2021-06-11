@@ -1,4 +1,11 @@
 Mods.ExampleMod: {
+	Common: {
+		PaperAirplane: Paper Airplane
+		LocalizedLabel: This Label is from the localization files: {$Mods.ExampleMod.Common.PaperAirplane}
+		LocalizedTooltip: This tooltip is from the localization files.
+		LocalizedHeader: Headers can help organize
+	}
+	
 	NPCName: {
 		FlutterSlime: Flutter Slime
 		Example_Person: Example Person
@@ -16,13 +23,6 @@ Mods.ExampleMod: {
 			Summons a {$Mods.ExampleMod.Common.PaperAirplane} to follow aimlessly behind you
 			Second Line!
 			'''
-	}
-	
-	Common: {
-		PaperAirplane: Paper Airplane
-		LocalizedLabel: This Label is from the .lang files: {$Mods.ExampleMod.Common.PaperAirplane}
-		LocalizedTooltip: This tooltip is from the .lang files.
-		LocalizedHeader: Headers can help organize
 	}
 	
 	ItemName: {
