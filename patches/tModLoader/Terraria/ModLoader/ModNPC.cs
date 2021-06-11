@@ -70,7 +70,7 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModNPC>.Register(this);
 
 			NPC.type = NPCLoader.ReserveNPCID();
-			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.NPCName.{Name}");
+			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"NPCName.{Name}");
 
 			NPCLoader.npcs.Add(this);
 

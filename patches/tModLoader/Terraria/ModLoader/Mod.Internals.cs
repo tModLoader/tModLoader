@@ -1,7 +1,5 @@
-﻿using Hjson;
-using Microsoft.Xna.Framework.Audio;
+﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using ReLogic.Content.Readers;
 using ReLogic.Content.Sources;
@@ -29,7 +27,6 @@ namespace Terraria.ModLoader
 		//Entities
 		internal readonly IDictionary<string, Music> musics = new Dictionary<string, Music>();
 		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
-		internal readonly IDictionary<string, ModTranslation> translations = new Dictionary<string, ModTranslation>();
 		internal readonly IList<ILoadable> content = new List<ILoadable>();
 
 		private Music LoadMusic(string path, string extension) {
@@ -59,7 +56,6 @@ namespace Terraria.ModLoader
 			content.Clear();
 
 			equipTextures.Clear();
-			translations.Clear();
 
 			if (!Main.dedServ) {
 				// TODO: restore this
@@ -89,7 +85,8 @@ namespace Terraria.ModLoader
 			while (AsyncLoadQueue.Count > 0)
 				AsyncLoadQueue.Dequeue().Wait();
 
-			AutoloadLocalization();
+			LocalizationLoader.Autoload(this);
+
 			ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName, Assets);
 
 			IList<Type> modSounds = new List<Type>();
@@ -205,74 +202,6 @@ namespace Terraria.ModLoader
 				if (substring.StartsWith("Music/")) {
 					AddSound(SoundType.Music, Name + '/' + music);
 				}
-			}
-		}
-
-		/// <summary>
-		/// Loads .lang files
-		/// </summary>
-		private void AutoloadLocalization() {
-			if (File == null)
-				return;
-
-			// Process legacy ini-style .lang files
-			var modTranslationDictionary = new Dictionary<string, ModTranslation>();
-			foreach (var translationFile in File.Where(entry => Path.GetExtension(entry.Name) == ".lang")) {
-				// .lang files need to be UTF8 encoded.
-				string translationFileContents = System.Text.Encoding.UTF8.GetString(File.GetBytes(translationFile));
-				GameCulture culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Name));
-
-				using (StringReader reader = new StringReader(translationFileContents)) {
-					string line;
-					while ((line = reader.ReadLine()) != null) {
-						int split = line.IndexOf('=');
-						if (split < 0)
-							continue; // lines witout a = are ignored
-						string key = line.Substring(0, split).Trim().Replace(" ", "_");
-						string value = line.Substring(split + 1); // removed .Trim() since sometimes it is desired.
-						if (value.Length == 0) {
-							continue;
-						}
-						value = value.Replace("\\n", "\n");
-						// TODO: Maybe prepend key with filename: en.US.ItemName.lang would automatically assume "ItemName." for all entries.
-						//string key = key;
-						if (!modTranslationDictionary.TryGetValue(key, out ModTranslation mt))
-							modTranslationDictionary[key] = mt = CreateTranslation(key);
-						mt.AddTranslation(culture, value);
-					}
-				}
-			}
-			foreach (var value in modTranslationDictionary.Values) {
-				AddTranslation(value);
-			}
-
-			// Process .hjson files
-			modTranslationDictionary = new Dictionary<string, ModTranslation>();
-			foreach (var translationFile in File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
-				string translationFileContents = System.Text.Encoding.UTF8.GetString(File.GetBytes(translationFile));
-				GameCulture culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Name));
-
-				// Parse HJSON and convert to standard JSON
-				var jsonString = HjsonValue.Parse(translationFileContents).ToString();
-				// Parse JSON
-				var jsonObject = JObject.Parse(jsonString);
-				// Flatten JSON into dot seperated key and value
-				var flattened = jsonObject
-					.SelectTokens("$..*")
-					.Where(t => !t.HasValues)
-					.ToDictionary(t => t.Path, t => t.ToString());
-
-				foreach (var (key, value) in flattened) {
-					if (!modTranslationDictionary.TryGetValue(key, out ModTranslation mt)) {
-						// removing instances of .$parentVal is an easy way to make this special key assign its value
-						//  to the parent key instead (needed for some cases of .lang -> .hjson auto-conversion)
-						modTranslationDictionary[key.Replace(".$parentVal", "")] = mt = CreateTranslation(key);
-					}
-					mt.AddTranslation(culture, value);
-				}
-			}
-			foreach (var value in modTranslationDictionary.Values) {
-				AddTranslation(value);
 			}
 		}
 	}
