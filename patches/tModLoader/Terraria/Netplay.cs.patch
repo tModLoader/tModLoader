@@ -62,7 +62,7 @@
  				Main.netMode = 0;
  				Main.menuMode = 10;
  				WorldFile.SaveWorld();
-+				SystemHooks.OnWorldUnload();
++				SystemLoader.OnWorldUnload();
 +				TileIO.PostExitWorldCleanup();
  				Main.menuMode = 0;
  			}
@@ -92,7 +92,7 @@
  							Cloud.resetClouds();
  							Main.cloudAlpha = Main.maxRaining;
  							WorldGen.clearWorld();
-+							SystemHooks.OnWorldLoad();
++							SystemLoader.OnWorldLoad();
  							if (Main.mapEnabled)
  								Main.Map.Load();
  						}
@@ -118,7 +118,7 @@
  				if (!Main.gameMenu) {
 +					//This is only called in case of kicks and other sudden disconnects.
 +					//The more common (client) call to this is in Main.SaveAndQuitCallback
-+					SystemHooks.OnWorldUnload();
++					SystemLoader.OnWorldUnload();
 +					TileIO.PostExitWorldCleanup();
 +
  					Main.gameMenu = true;

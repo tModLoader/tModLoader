@@ -160,7 +160,7 @@ namespace Terraria.ModLoader.Core
 				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorModNameDoesntMatchAssemblyName", modName, asmName));
 
 			// at least one of the types must be in a namespace that starts with the mod name
-			if (!assembly.GetTypes().Any(t => t.Namespace.StartsWith(modName))) 
+			if (!assembly.GetTypes().Any(t => t.Namespace?.StartsWith(modName) == true)) 
 				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorNamespaceFolderDontMatch"));
 
 			var modTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Mod))).ToArray();

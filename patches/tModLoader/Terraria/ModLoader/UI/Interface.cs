@@ -10,6 +10,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.GameContent.UI.States;
 
 namespace Terraria.ModLoader.UI
 {
@@ -41,7 +42,7 @@ namespace Terraria.ModLoader.UI
 		internal const int exitID = 10026;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
-		private static UIModSources modSources = new UIModSources();
+		internal static UIModSources modSources = new UIModSources();
 		internal static UIBuildMod buildMod = new UIBuildMod();
 		internal static UIErrorMessage errorMessage = new UIErrorMessage();
 		internal static UIModBrowser modBrowser = new UIModBrowser();
@@ -59,38 +60,9 @@ namespace Terraria.ModLoader.UI
 		internal static UIProgress progress = new UIProgress();
 		internal static UIDownloadProgress downloadProgress = new UIDownloadProgress();
 
-		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
+		// adds to Terraria.Main.DrawMenu in Main.menuMode == 0, after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons) {
-			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuMods");
-			if (selectedMenu == buttonIndex) {
-				SoundEngine.PlaySound(10, -1, -1, 1);
-				Main.menuMode = modsMenuID;
-			}
-			buttonIndex++;
-			numButtons++;
-			if (ModCompile.DeveloperMode) {
-				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModSources");
-				if (selectedMenu == buttonIndex) {
-					SoundEngine.PlaySound(10, -1, -1, 1);
-					Main.menuMode = modSourcesID;
-				}
-				buttonIndex++;
-				numButtons++;
-			}
-			// Disable Mod Browser on 1.4 branch, until such time as it is safe to implement.
-			/*buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModBrowser");
-			if (selectedMenu == buttonIndex) {
-				SoundEngine.PlaySound(10, -1, -1, 1);
-				Main.menuMode = modBrowserID;
-			}
-			buttonIndex++;
-			numButtons++;*/
-			offY = 220;
-			for (int k = 0; k < numButtons; k++) {
-				buttonScales[k] = 0.82f;
-			}
-			spacing = 45;
 		}
 
 		internal static void ResetData() {

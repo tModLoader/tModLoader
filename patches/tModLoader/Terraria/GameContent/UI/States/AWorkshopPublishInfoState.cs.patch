@@ -1,0 +1,15 @@
+--- src/Terraria/Terraria/GameContent/UI/States/AWorkshopPublishInfoState.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/AWorkshopPublishInfoState.cs
+@@ -44,6 +_,12 @@
+ 		private UIText _disclaimerText;
+ 		private UIGamepadHelper _helper;
+ 
++		// Added by TML.
++		public UIState PreviousUIState {
++			get => _previousUIState;
++			set => _previousUIState = value;
++		}
++
+ 		public AWorkshopPublishInfoState(UIState stateToGoBackTo, TPublishedObjectType dataObject) {
+ 			_previousUIState = stateToGoBackTo;
+ 			_dataObject = dataObject;
