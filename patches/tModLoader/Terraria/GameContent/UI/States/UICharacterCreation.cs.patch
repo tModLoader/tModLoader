@@ -13,7 +13,7 @@
  			_player.savedPerPlayerFieldsThatArentInThePlayerClass = new Player.SavedPlayerDataWithAnnoyingRules();
  			CreativePowerManager.Instance.ResetDataForNewPlayer(_player);
 +
-+			PlayerHooks.SetStartInventory(_player, PlayerHooks.GetStartingItems(_player, _player.inventory.Where(item => !item.IsAir)));
++			PlayerLoader.SetStartInventory(_player, PlayerLoader.GetStartingItems(_player, _player.inventory.Where(item => !item.IsAir)));
  		}
  
  		private bool GetHexColor(string hexString, out Vector3 hsl) {

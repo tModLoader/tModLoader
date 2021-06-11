@@ -27,7 +27,6 @@ namespace Terraria.ModLoader
 		//Entities
 		internal readonly IDictionary<string, Music> musics = new Dictionary<string, Music>();
 		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
-		internal readonly IDictionary<string, ModTranslation> translations = new Dictionary<string, ModTranslation>();
 		internal readonly IList<ILoadable> content = new List<ILoadable>();
 
 		private Music LoadMusic(string path, string extension) {
@@ -57,7 +56,6 @@ namespace Terraria.ModLoader
 			content.Clear();
 
 			equipTextures.Clear();
-			translations.Clear();
 
 			if (!Main.dedServ) {
 				// TODO: restore this
@@ -87,7 +85,8 @@ namespace Terraria.ModLoader
 			while (AsyncLoadQueue.Count > 0)
 				AsyncLoadQueue.Dequeue().Wait();
 
-			AutoloadLocalization();
+			LocalizationLoader.Autoload(this);
+
 			ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName, Assets);
 
 			IList<Type> modSounds = new List<Type>();
@@ -167,45 +166,6 @@ namespace Terraria.ModLoader
 			var assetLoader = new AssetLoader(assetReaderCollection);
 
 			Assets = new ModAssetRepository(assetReaderCollection, assetLoader, asyncAssetLoader, sources.ToArray());
-		}
-
-		/// <summary>
-		/// Loads .lang files
-		/// </summary>
-		private void AutoloadLocalization() {
-			if (File == null)
-				return;
-
-			var modTranslationDictionary = new Dictionary<string, ModTranslation>();
-			foreach (var translationFile in File.Where(entry => Path.GetExtension(entry.Name) == ".lang")) {
-				// .lang files need to be UTF8 encoded.
-				string translationFileContents = System.Text.Encoding.UTF8.GetString(File.GetBytes(translationFile));
-				GameCulture culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Name));
-
-				using (StringReader reader = new StringReader(translationFileContents)) {
-					string line;
-					while ((line = reader.ReadLine()) != null) {
-						int split = line.IndexOf('=');
-						if (split < 0)
-							continue; // lines witout a = are ignored
-						string key = line.Substring(0, split).Trim().Replace(" ", "_");
-						string value = line.Substring(split + 1); // removed .Trim() since sometimes it is desired.
-						if (value.Length == 0) {
-							continue;
-						}
-						value = value.Replace("\\n", "\n");
-						// TODO: Maybe prepend key with filename: en.US.ItemName.lang would automatically assume "ItemName." for all entries.
-						//string key = key;
-						if (!modTranslationDictionary.TryGetValue(key, out ModTranslation mt))
-							modTranslationDictionary[key] = mt = CreateTranslation(key);
-						mt.AddTranslation(culture, value);
-					}
-				}
-			}
-
-			foreach (var value in modTranslationDictionary.Values) {
-				AddTranslation(value);
-			}
 		}
 	}
 }

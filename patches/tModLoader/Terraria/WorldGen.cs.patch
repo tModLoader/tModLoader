@@ -95,7 +95,7 @@
  
 +			//This is only called in case of a manual quit or disconnect.
 +			//There is a less common (client) call to this in Netplay.InnerClientLoop.
-+			SystemHooks.OnWorldUnload();
++			SystemLoader.OnWorldUnload();
 +			TileIO.PostExitWorldCleanup();
 +
  			Main.fastForwardTime = false;
@@ -190,7 +190,7 @@
  			int logY = -1;
  			int dungeonLocation = 0;
 +
-+			SystemHooks.PreWorldGen();
++			SystemLoader.PreWorldGen();
 +
  			AddGenerationPass("Reset", delegate (GenerationProgress progress, GameConfiguration passConfig) {
  				numOceanCaveTreasure = 0;
@@ -294,10 +294,10 @@
  				progress.Message = Lang.gen[87].Value;
  			});
  
-+			SystemHooks.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
++			SystemLoader.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
  			_generator.GenerateWorld(customProgressObject);
  			ConsumePostGenActions(structures);
-+			SystemHooks.PostWorldGen();
++			SystemLoader.PostWorldGen();
  			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
  			Main.NotifyOfEvent(GameNotificationType.WorldGen);
  			drunkWorldGenText = false;
@@ -444,7 +444,7 @@
  			AchievementsHelper.NotifyProgressionEvent(9);
 +			}));
 +
-+			SystemHooks.ModifyHardmodeTasks(hardmodeTasks);
++			SystemLoader.ModifyHardmodeTasks(hardmodeTasks);
 +
 +			foreach (GenPass task in hardmodeTasks) {
 +				task.Apply(null, null);
@@ -1540,11 +1540,11 @@
  			if (gen)
  				return;
  
-+			SystemHooks.PreUpdateWorld();
++			SystemLoader.PreUpdateWorld();
 +
 +			UpdateWorld_Inner();
 +
-+			SystemHooks.PostUpdateWorld();
++			SystemLoader.PostUpdateWorld();
 +		}
 +		private static void UpdateWorld_Inner() {
  			AllowedToSpreadInfections = true;
