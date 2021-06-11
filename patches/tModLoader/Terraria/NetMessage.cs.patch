@@ -273,7 +273,7 @@
 -				Console.WriteLine(Language.GetTextValue("Net.ServerAutoShutdown"));
 +				Logging.ServerConsoleLine(Language.GetTextValue("Net.ServerAutoShutdown"));
  				WorldFile.SaveWorld();
-+				SystemHooks.OnWorldUnload();
++				SystemLoader.OnWorldUnload();
 +				TileIO.PostExitWorldCleanup();
  				Netplay.Disconnect = true;
  			}
@@ -282,7 +282,7 @@
  					SendData(5, toWho, fromWho, null, plr, 94 + m, (int)Main.player[plr].miscDyes[m].prefix);
  				}
  
-+				PlayerHooks.SyncPlayer(Main.player[plr], toWho, fromWho, false);
++				PlayerLoader.SyncPlayer(Main.player[plr], toWho, fromWho, false);
  				if (!Netplay.Clients[plr].IsAnnouncementCompleted) {
  					Netplay.Clients[plr].IsAnnouncementCompleted = true;
  					ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[19].Key, Main.player[plr].name), new Color(255, 240, 20), plr);
