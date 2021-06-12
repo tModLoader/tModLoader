@@ -115,6 +115,30 @@
  					};
  
  					ulong? num = null;
+@@ -180,7 +_,9 @@
+ 
+ 					if (num.HasValue && finder.HasItemOfId(num.Value)) {
+ 						_publishedFileID = new PublishedFileId_t(num.Value);
++						if (buildData == null) {
+-						PreventUpdatingCertainThings();
++							PreventUpdatingCertainThings();
++						}
+ 						UpdateItem();
+ 					}
+ 					else {
+@@ -240,10 +_,10 @@
+ 					PrepareContentForUpdate();
+ 					UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
+ 					if (_entryData.Title != null)
+-						SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
++						SteamUGC.SetItemTitle(uGCUpdateHandle_t, "[1.4 Alpha] " + _entryData.Title);
+ 
+ 					if (_entryData.Description != null)
+-						SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
++						SteamUGC.SetItemDescription(uGCUpdateHandle_t, "Built for 1.4 Alpha version of tModLoader. \n" + _entryData.Description);
+ 
+ 					SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
+ 					SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
 @@ -253,8 +_,41 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);

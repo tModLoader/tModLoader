@@ -27,7 +27,7 @@ namespace Terraria.ModLoader.UI
 		internal const int modInfoID = 10008;
 		//internal const int downloadModID = 10009;
 		//internal const int modControlsID = 10010;
-		internal const int managePublishedID = 10011;
+		//internal const int managePublishedID = 10011;
 		internal const int updateMessageID = 10012;
 		internal const int infoMessageID = 10013;
 		internal const int enterPassphraseMenuID = 10015;
@@ -47,7 +47,7 @@ namespace Terraria.ModLoader.UI
 		internal static UIErrorMessage errorMessage = new UIErrorMessage();
 		internal static UIModBrowser modBrowser = new UIModBrowser();
 		internal static UIModInfo modInfo = new UIModInfo();
-		internal static UIManagePublished managePublished = new UIManagePublished();
+		//internal static UIManagePublished managePublished = new UIManagePublished();
 		internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
 		internal static UIInfoMessage infoMessage = new UIInfoMessage();
 		internal static UIEnterPassphraseMenu enterPassphraseMenu = new UIEnterPassphraseMenu();
@@ -147,10 +147,10 @@ namespace Terraria.ModLoader.UI
 				Main.MenuUI.SetState(modInfo);
 				Main.menuMode = 888;
 			}
-			else if (Main.menuMode == managePublishedID) {
-				Main.menuMode = 888;
-				Main.MenuUI.SetState(managePublished);
-			}
+			//else if (Main.menuMode == managePublishedID) {
+			//	Main.menuMode = 888;
+			//	Main.MenuUI.SetState(managePublished);
+			//}
 			//else if (Main.menuMode == modControlsID)
 			//{
 			//	UIModControls.ModLoaderMenus(main, selectedMenu, buttonNames, buttonScales, buttonVerticalSpacing, ref offY, ref spacing, ref numButtons);

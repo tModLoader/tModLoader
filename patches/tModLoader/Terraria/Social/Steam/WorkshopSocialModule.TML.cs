@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.IO;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI;
 using Terraria.Social.Base;
 
 namespace Terraria.Social.Steam
@@ -24,8 +26,22 @@ namespace Terraria.Social.Steam
 		}
 
 		public override void PublishMod(TmodFile modFile, NameValueCollection buildData, WorkshopItemPublishSettings settings) {
-			if (false) {
-				base.IssueReporter.ReportInstantUploadProblem("localizationString: CustomRejectCondition 1");
+			if (!WorkshopHelper.ModManager.SteamUser) {
+				base.IssueReporter.ReportInstantUploadProblem("localizationString: Error: Only Steam tModLoader owners can publish to Workshop in-game.");
+				return;
+			}
+
+			if (Interface.modBrowser.Items.Count == 0) {
+				Interface.modBrowser.PopulateModBrowser();
+
+				if (Interface.modBrowser.Items.Count == 0) {
+					base.IssueReporter.ReportInstantUploadProblem("localizationString: Error: Unable to access Steam Workshop");
+					return;
+				}
+			}
+
+			if (Interface.modBrowser.Items.FirstOrDefault(x => x.ModName.Equals(buildData["name"])) != null) {
+				base.IssueReporter.ReportInstantUploadProblem("localizationString: Error: Mod already exists on Workshop!");
 				return;
 			}
 

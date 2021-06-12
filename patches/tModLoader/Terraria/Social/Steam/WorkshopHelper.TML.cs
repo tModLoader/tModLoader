@@ -37,6 +37,7 @@ namespace Terraria.Social.Steam
 
 			public static void Initialize() {
 				if (!ModLoader.Engine.Steam.IsSteamApp) {
+					// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
 					SteamUser = false;
 					GameServer.Init(0x7f000001, 7776, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0");
 					SteamGameServer.SetGameDescription("tModLoader Mod Browser");
@@ -53,13 +54,13 @@ namespace Terraria.Social.Steam
 				this.itemID = itemID;
 				if (SteamUser)
 					m_DownloadItemResult = Callback<DownloadItemResult_t>.Create(OnItemDownloaded);
-				// GameServer callback isn't working for this?
-				//else
-				//m_DownloadItemResult = Callback<DownloadItemResult_t>.Create(OnItemDownloaded);
 			}
 
 			public static void Download(UIModDownloadItem item) => Download(new List<UIModDownloadItem>() { item });
 
+			/// <summary>
+			/// Downloads all UIModDownloadItems provided.
+			/// </summary>
 			public static void Download(List<UIModDownloadItem> items) {
 				//Set UIWorkshopDownload
 				var uiProgress = new UIWorkshopDownload(Interface.modBrowser);
@@ -95,6 +96,10 @@ namespace Terraria.Social.Steam
 						SteamDownload(uiProgress);
 					else
 						GoGDownload(uiProgress);
+				}
+				else {
+					// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
+					Logging.tML.Debug("Item was installed at start of session: " + itemID.ToString() + "\nIf attempting to re-install, close current instance and re-launch");
 				}
 
 				return downloadResult == EResult.k_EResultOK;
@@ -133,12 +138,11 @@ namespace Terraria.Social.Steam
 					uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 				}
 
-				// We don't receive a callback, so we have to manually set the success.
+				// We don't receive a callback, so we manually set the success.
 				downloadResult = EResult.k_EResultOK;
 			}
 
 			public void Uninstall() {
-				//TODO: Add a warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
 				var installPath = GetInstallInfo().installPath;
 				if (!Directory.Exists(installPath))
 					return;
@@ -259,6 +263,15 @@ namespace Terraria.Social.Steam
 
 				do {
 					QueryForPage(++queryPage);
+
+					if (_primaryQueryResult == EResult.k_EResultAccessDenied) {
+						throw new AccessViolationException("Error: Access to Steam Workshop was denied.");
+					}
+					else if (_primaryQueryResult != EResult.k_EResultOK) {
+						Logging.tML.Error("Unable to access Steam Workshop");
+						return items;
+					}
+
 
 					for (uint i = 0; i < _queryReturnCount; i++) {
 						// Item Result call data
