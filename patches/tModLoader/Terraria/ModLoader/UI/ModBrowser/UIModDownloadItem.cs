@@ -378,10 +378,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		private void DownloadMod(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuTick);
-			var modDownload = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(ulong.Parse(PublishId)));
-			modDownload.Download();
-
-			Interface.modBrowser.UpdateNeeded = true;
+			WorkshopHelper.ModManager.Download(this);
 		}
 
 		private void DownloadWithDeps(UIMouseEvent evt, UIElement listeningElement) {
@@ -389,13 +386,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			var downloads = new HashSet<UIModDownloadItem>() { this };
 			downloads.Add(this);
 			GetDependenciesRecursive(this, ref downloads);
-
-			foreach (var item in downloads) {
-				var modDownload = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(ulong.Parse(item.PublishId)));
-				modDownload.Download();
-			}
-
-			Interface.modBrowser.UpdateNeeded = true;
+			WorkshopHelper.ModManager.Download(downloads.ToList());
 		}
 
 		private IEnumerable<UIModDownloadItem> GetDependencies() {

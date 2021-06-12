@@ -253,7 +253,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		///     Enqueues a list of mods, if found on the browser (also used for ModPacks)
 		/// </summary>
 		internal void DownloadMods(IEnumerable<string> modNames) {
-			var downloads = new List<DownloadFile>();
+			var downloads = new List<UIModDownloadItem>();
 
 			foreach (string desiredMod in modNames) {
 				var mod = _items.FirstOrDefault(x => x.ModName == desiredMod);
@@ -261,24 +261,19 @@ namespace Terraria.ModLoader.UI.ModBrowser
 					_missingMods.Add(desiredMod);
 				}
 				else if (mod.Installed == null || mod.HasUpdate) { // Found, add to downloads
-					var modDownload = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(ulong.Parse(mod.PublishId)));
-					modDownload.Download();
+					downloads.Add(mod);
 				}
 			}
 
 			// If no download detected for some reason (e.g. empty modpack filter), prevent switching UI
 			if (downloads.Count <= 0) return;
 
-			SoundEngine.PlaySound(SoundID.MenuTick);
-			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
-			Interface.downloadProgress.OnDownloadsComplete += () => {
-				if (_missingMods.Count > 0) {
-					Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", _missingMods)), Interface.modBrowserID);
-				}
-				_missingMods.Clear();
-			};
+			WorkshopHelper.ModManager.Download(downloads);
 
-			Interface.downloadProgress.HandleDownloads(downloads.ToArray());
+			if (_missingMods.Count > 0) {
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", _missingMods)), Interface.modBrowserID);
+			}
+			_missingMods.Clear();
 		}
 
 		internal UIModDownloadItem FindModDownloadItem(string publishId)

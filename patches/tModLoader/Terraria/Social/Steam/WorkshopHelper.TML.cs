@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.Social.Base;
 
 namespace Terraria.Social.Steam
@@ -55,25 +58,49 @@ namespace Terraria.Social.Steam
 				//m_DownloadItemResult = Callback<DownloadItemResult_t>.Create(OnItemDownloaded);
 			}
 
+			public static void Download(UIModDownloadItem item) => Download(new List<UIModDownloadItem>() { item });
+
+			public static void Download(List<UIModDownloadItem> items) {
+				//Set UIWorkshopDownload
+				var uiProgress = new UIWorkshopDownload(Interface.modBrowser);
+				Main.MenuUI.SetState(uiProgress);
+				int counter = 0;
+
+				Task.Run(() => InnerDownload(counter, uiProgress, items));
+			}
+
+			private static void InnerDownload(int counter, UIWorkshopDownload uiProgress, List<UIModDownloadItem> items) {
+				var item = items[counter++];
+				var mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)));
+				
+				uiProgress.PrepUIForDownload(item.DisplayName);
+				mod.Download(uiProgress);
+
+				if (counter == items.Count)
+					uiProgress.Leave();
+				else
+					Task.Run(() => InnerDownload(counter, uiProgress, items));
+			}
+
 			public EResult downloadResult;
 
 			/// <summary>
 			/// Updates and/or Downloads the Item specified when generating the ModManager Instance.
 			/// </summary>
-			public bool Download() {
+			private bool Download(UIWorkshopDownload uiProgress) {
 				downloadResult = EResult.k_EResultOK;
 				if (NeedsUpdate()) {
 					downloadResult = EResult.k_EResultNone;
 					if (SteamUser)
-						SteamDownload();
+						SteamDownload(uiProgress);
 					else
-						GoGDownload();
+						GoGDownload(uiProgress);
 				}
 
 				return downloadResult == EResult.k_EResultOK;
 			}
 
-			private void SteamDownload() {
+			private void SteamDownload(UIWorkshopDownload uiProgress) {
 				if (!SteamUGC.DownloadItem(itemID, true)) {
 					throw new ArgumentException("Downloading Workshop Item failed due to unknown reasons");
 				}
@@ -81,9 +108,8 @@ namespace Terraria.Social.Steam
 				ulong dlBytes, totalBytes;
 				do {
 					SteamUGC.GetItemDownloadInfo(itemID, out dlBytes, out totalBytes);
-					// Do Pretty Stuff
+					uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 
-					Thread.Sleep(5);
 					SteamAPI.RunCallbacks();
 				} while (downloadResult == EResult.k_EResultNone);
 
@@ -96,7 +122,7 @@ namespace Terraria.Social.Steam
 				}
 			}
 
-			private void GoGDownload() {
+			private void GoGDownload(UIWorkshopDownload uiProgress) {
 				if (!SteamGameServerUGC.DownloadItem(itemID, true)) {
 					throw new ArgumentException("GoG: Downloading Workshop Item failed due to unknown reasons");
 				}
@@ -104,7 +130,7 @@ namespace Terraria.Social.Steam
 				ulong dlBytes, totalBytes;
 				while (!IsInstalled()) {
 					SteamGameServerUGC.GetItemDownloadInfo(itemID, out dlBytes, out totalBytes);
-					// Do Pretty Stuff
+					uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 				}
 
 				// We don't receive a callback, so we have to manually set the success.
@@ -123,11 +149,11 @@ namespace Terraria.Social.Steam
 				// Unsubscribe
 				if (SteamUser)
 					SteamUGC.UnsubscribeItem(itemID);
-				else
-					RemoveGoG();
+
+				UninstallACF();
 			}
 
-			private void RemoveGoG() {
+			private void UninstallACF() {
 				// Cleanup acf file by removing info on this itemID
 				string acfPath = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "appworkshop_" + thisApp.ToString() + ".acf");
 
@@ -172,6 +198,7 @@ namespace Terraria.Social.Steam
 
 			public bool NeedsUpdate() {
 				var currState = GetState();
+
 				return (currState & (uint)EItemState.k_EItemStateNeedsUpdate) != 0 ||
 					(currState == (uint)EItemState.k_EItemStateNone) ||
 					(currState & (uint)EItemState.k_EItemStateDownloadPending) != 0;
