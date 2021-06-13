@@ -28,7 +28,7 @@ namespace Terraria.Social.Steam
 
 		public override void PublishMod(TmodFile modFile, NameValueCollection buildData, WorkshopItemPublishSettings settings) {
 			if (!WorkshopHelper.ModManager.SteamUser) {
-				base.IssueReporter.ReportInstantUploadProblem("localizationString: Error: Only Steam tModLoader owners can publish to Workshop in-game.");
+				base.IssueReporter.ReportInstantUploadProblem("tModLoader.SteamPublishingLimt");
 				return;
 			}
 
@@ -36,7 +36,7 @@ namespace Terraria.Social.Steam
 				Interface.modBrowser.InnerPopulateModBrowser();
 
 				if (Interface.modBrowser.Items.Count == 0) {
-					base.IssueReporter.ReportInstantUploadProblem("localizationString: Error: Unable to access Steam Workshop");
+					base.IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 					return;
 				}
 			}
@@ -46,7 +46,7 @@ namespace Terraria.Social.Steam
 				var currID = Steamworks.SteamUser.GetSteamID();
 
 				if (existingID != currID.m_SteamID) {
-					base.IssueReporter.ReportInstantUploadProblem("localizationString: Error: Mod already exists on Workshop!");
+					base.IssueReporter.ReportInstantUploadProblem("tModLoader.ModAlreadyUploaded");
 					return;
 				}
 			}

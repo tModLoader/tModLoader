@@ -52,7 +52,7 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private UIElement MakeButton_TBD() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishWorlds", "To be Determined");
+			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishWorlds", "To Be Determined");
 			uIElement.OnClick += Click_OpenTBDMenu;
 			_buttonTBD = uIElement;
 			return uIElement;

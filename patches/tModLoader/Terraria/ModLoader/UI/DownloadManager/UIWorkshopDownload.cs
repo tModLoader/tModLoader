@@ -10,9 +10,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		private Stopwatch downloadTimer;
 
 		public UIWorkshopDownload(UIState stateToGoBackTo) {
-			//Initialize();
 			downloadTimer = new Stopwatch();
-
 			PreviousUIState = stateToGoBackTo;
 			Main.menuMode = 888;
 		}
