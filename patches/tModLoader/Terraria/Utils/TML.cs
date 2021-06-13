@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
@@ -114,6 +115,14 @@ namespace Terraria
 			byte[] receive = new byte[(BitArrLength - 1) / 8 + 1];
 			receive = reader.ReadBytes(receive.Length);
 			return new BitArray(receive);
+		}
+
+		public static void OpenToURL(string url) {
+			var ps = new ProcessStartInfo(url) {
+				UseShellExecute = true,
+				Verb = "open"
+			};
+			Process.Start(ps);
 		}
 	}
 }

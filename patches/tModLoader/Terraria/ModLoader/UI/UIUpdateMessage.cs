@@ -51,13 +51,13 @@ namespace Terraria.ModLoader.UI
 			button2.WithFadedMouseOver();
 			button2.OnClick += OpenURL;
 			_area.Append(button2);
-
+#if Windows
 			_autoUpdateButton = new UITextPanel<string>("Auto Update", 0.7f, true);
 			_autoUpdateButton.CopyStyle(button);
 			_autoUpdateButton.HAlign = 1f;
 			_autoUpdateButton.WithFadedMouseOver();
 			_autoUpdateButton.OnClick += AutoUpdate;
-
+#endif
 			Append(_area);
 		}
 
@@ -94,6 +94,7 @@ namespace Terraria.ModLoader.UI
 			Process.Start(_url);
 		}
 
+#if Windows
 		// Windows only. AutoUpdate will download the the latest zip, extract it, then launch a script that waits for this exe to finish
 		// The script then replaces this exe and then launches tModLoader again.
 		private void AutoUpdate(UIMouseEvent evt, UIElement listeningElement) {
@@ -150,5 +151,6 @@ namespace Terraria.ModLoader.UI
 				Logging.tML.Error("Problem during autoupdate", e);
 			}
 		}
+#endif
 	}
 }

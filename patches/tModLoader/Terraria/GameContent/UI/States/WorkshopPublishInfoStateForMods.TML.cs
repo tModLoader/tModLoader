@@ -101,12 +101,6 @@ namespace Terraria.GameContent.UI.States
 			ShowOptionDescription(evt, listeningElement);
 		}
 
-		private void tMLDisclaimerText_OnClick(UIMouseEvent evt, UIElement listeningElement) {
-			var ps = new ProcessStartInfo(tMLRules) {
-				UseShellExecute = true,
-				Verb = "open"
-			};
-			Process.Start(ps);
-		}
+		private void tMLDisclaimerText_OnClick(UIMouseEvent evt, UIElement listeningElement) =>	Utils.OpenToURL(tMLRules);
 	}
 }

@@ -198,11 +198,7 @@ namespace Terraria.ModLoader.UI
 
 			if (Main.mouseLeftRelease && Main.mouseLeft) {
 				SoundEngine.PlaySound(SoundID.MenuOpen);
-				var ps = new ProcessStartInfo("https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide") {
-					UseShellExecute = true,
-					Verb = "open"
-				};
-				Process.Start(ps);
+				Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
 			}
 		}
 

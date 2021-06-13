@@ -180,11 +180,7 @@ namespace Terraria.ModLoader.UI
 
 		private void VisitModHomePage(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
-			var ps = new ProcessStartInfo(_url) {
-				UseShellExecute = true,
-				Verb = "open"
-			};
-			Process.Start(ps);
+			Utils.OpenToURL(_url);
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {

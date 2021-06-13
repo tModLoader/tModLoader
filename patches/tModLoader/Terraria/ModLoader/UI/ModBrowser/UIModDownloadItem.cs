@@ -127,11 +127,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				tMLUpdateRequired.Width.Pixels = 340;
 				tMLUpdateRequired.Left.Pixels += 36 + PADDING;
 				tMLUpdateRequired.OnClick += (a, b) => {
-					var ps = new ProcessStartInfo("https://github.com/tModLoader/tModLoader/releases/latest") {
-						UseShellExecute = true,
-						Verb = "open"
-					};
-					Process.Start(ps);
+					Utils.OpenToURL("https://github.com/tModLoader/tModLoader/releases/latest");
 				};
 				Append(tMLUpdateRequired);
 			}

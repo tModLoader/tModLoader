@@ -49,16 +49,12 @@
  			uiList.Add(CreatePreviewImageSelectionPanel("image"));
  			uiList.Add(CreatePublicSettingsRow(0f, 44f, "public"));
  			uiList.Add(CreateTagOptionsPanel(0f, 44, "tags"));
-@@ -232,7 +_,11 @@
+@@ -232,7 +_,7 @@
  		}
  
  		private void steamDisclaimerText_OnClick(UIMouseEvent evt, UIElement listeningElement) {
 -			ProcessStart("https://steamcommunity.com/sharedfiles/workshoplegalagreement");
-+			var ps = new ProcessStartInfo("https://steamcommunity.com/sharedfiles/workshoplegalagreement") {
-+				UseShellExecute = true,
-+				Verb = "open"
-+			};
-+			Process.Start(ps);
++			Utils.OpenToURL("https://steamcommunity.com/sharedfiles/workshoplegalagreement");
  		}
  
  		public static void ProcessStart(string path) {
