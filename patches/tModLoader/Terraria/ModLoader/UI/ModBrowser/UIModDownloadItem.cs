@@ -35,6 +35,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		public readonly bool HasUpdate;
 		public readonly bool UpdateIsDowngrade;
 		public readonly LocalMod Installed;
+		public readonly uint QueryIndex;
 
 		private readonly string _author;
 		private readonly string _modIconUrl;
@@ -45,7 +46,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private readonly int _downloads;
 		private readonly int _hot;
 		private readonly string _homepage;
-		private readonly uint _queryIndex;
+		
 		private readonly Asset<Texture2D> _dividerTexture;
 		private readonly Asset<Texture2D> _innerPanelTexture;
 		private readonly UIText _modName;
@@ -89,7 +90,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			_downloads = downloads;
 			_hot = hot;
 			_homepage = homepage;
-			_queryIndex = queryIndex;
+			QueryIndex = queryIndex;
 			_timeStamp = timeStamp;
 			HasUpdate = hasUpdate;
 			UpdateIsDowngrade = updateIsDowngrade;
@@ -409,7 +410,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		private void ViewModInfo(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Interface.modInfo.Show(ModName, DisplayName, Interface.modBrowserID, Installed, url: _homepage, queryIndex: _queryIndex, loadFromWeb: true);
+			Interface.modInfo.Show(ModName, DisplayName, Interface.modBrowserID, Installed, url: _homepage, queryIndex: QueryIndex, loadFromWeb: true);
 		}
 	}
 }

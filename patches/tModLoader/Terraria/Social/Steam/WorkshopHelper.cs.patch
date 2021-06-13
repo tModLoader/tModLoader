@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
-@@ -1,14 +_,16 @@
+@@ -1,14 +_,17 @@
  using Steamworks;
  using System;
  using System.Collections.Generic;
@@ -8,6 +8,7 @@
  using System.IO;
  using Terraria.IO;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.UI;
  using Terraria.Social.Base;
  using Terraria.Utilities;
  
@@ -115,7 +116,7 @@
  					};
  
  					ulong? num = null;
-@@ -180,7 +_,9 @@
+@@ -180,10 +_,12 @@
  
  					if (num.HasValue && finder.HasItemOfId(num.Value)) {
  						_publishedFileID = new PublishedFileId_t(num.Value);
@@ -125,7 +126,11 @@
 +						}
  						UpdateItem();
  					}
- 					else {
+-					else {
++					else { 
+ 						CreateItem();
+ 					}
+ 				}
 @@ -240,10 +_,10 @@
  					PrepareContentForUpdate();
  					UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);

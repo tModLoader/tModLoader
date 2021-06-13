@@ -445,6 +445,11 @@ namespace Terraria.Social.Steam
 
 				return pDetails.m_rgchDescription;
 			}
+
+			internal ulong GetSteamOwner(uint queryIndex) {
+				SteamUGC.GetQueryUGCResult(_primaryUGCHandle, queryIndex, out var pDetails);
+				return pDetails.m_ulSteamIDOwner;
+			}
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.IO;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
 
 namespace Terraria.Social.Steam
@@ -32,17 +33,22 @@ namespace Terraria.Social.Steam
 			}
 
 			if (Interface.modBrowser.Items.Count == 0) {
-				Interface.modBrowser.PopulateModBrowser();
+				Interface.modBrowser.InnerPopulateModBrowser();
 
 				if (Interface.modBrowser.Items.Count == 0) {
 					base.IssueReporter.ReportInstantUploadProblem("localizationString: Error: Unable to access Steam Workshop");
 					return;
 				}
 			}
+			var existing = Interface.modBrowser.Items.FirstOrDefault(x => x.ModName.Equals(buildData["name"]));
+			if (existing != null) {
+				var existingID = UIModBrowser.SteamWorkshop.GetSteamOwner(existing.QueryIndex);
+				var currID = Steamworks.SteamUser.GetSteamID();
 
-			if (Interface.modBrowser.Items.FirstOrDefault(x => x.ModName.Equals(buildData["name"])) != null) {
-				base.IssueReporter.ReportInstantUploadProblem("localizationString: Error: Mod already exists on Workshop!");
-				return;
+				if (existingID != currID.m_SteamID) {
+					base.IssueReporter.ReportInstantUploadProblem("localizationString: Error: Mod already exists on Workshop!");
+					return;
+				}
 			}
 
 			string name = buildData["displaynameclean"];
