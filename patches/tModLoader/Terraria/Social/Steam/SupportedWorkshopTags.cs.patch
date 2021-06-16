@@ -6,7 +6,7 @@
  			AddResourcePackTag("WorkshopTags.OtherResourcePacks", "Other Packs");
 +
 +			// TML Added Mod Tags: [
-+			AddModTag("WorkshopTags.Content", "Content");
++			//AddModTag("WorkshopTags.Content", "Content");
 +			// ]
  		}
  	}

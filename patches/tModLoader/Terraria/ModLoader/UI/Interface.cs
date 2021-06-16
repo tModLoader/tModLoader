@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using Terraria.Audio;
 using Terraria.ID;
@@ -11,6 +12,7 @@ using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.GameContent.UI.States;
+using Terraria.Social.Steam;
 
 namespace Terraria.ModLoader.UI
 {
@@ -327,28 +329,16 @@ namespace Terraria.ModLoader.UI
 				else {
 					string modname = command;
 					try {
-						//TODO: Re-implement
-						/*
-						ServicePointManager.ServerCertificateValidationCallback = (o, certificate, chain, errors) => true;
-						using (WebClient client = new WebClient()) {
-							string downloadURL = client.DownloadString($"http://javid.ddns.net/tModLoader/tools/querymoddownloadurl.php?modname={modname}");
-							if (downloadURL.StartsWith("Failed")) {
-								Console.WriteLine(downloadURL);
+						if (modBrowser.Items.Count == 0) {
+							modBrowser.InnerPopulateModBrowser();
+							if (modBrowser.Items.Count == 0) {
+								Console.WriteLine(Language.GetTextValue("NoWorkshopAccess"));
+								break;
 							}
-							else {
-								string tempFile = ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload" + DownloadFile.TEMP_EXTENSION;
-								client.DownloadFile(downloadURL, tempFile);
-
-								if (ModLoader.TryGetMod(modname, out var mod))
-									mod.Close();
-
-								File.Copy(tempFile, ModLoader.ModPath + Path.DirectorySeparatorChar + downloadURL.Substring(downloadURL.LastIndexOf("/")), true);
-								File.Delete(tempFile);
-							}
-							while (Console.KeyAvailable)
-								Console.ReadKey(true);
 						}
-						*/
+						var info = modBrowser.Items.FirstOrDefault(x => x.ModName.Equals(modname));
+						var item = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(ulong.Parse(info.PublishId)));
+						item.InnerDownload(null);
 					}
 					catch (Exception e) {
 						Console.WriteLine(Language.GetTextValue("tModLoader.MBServerDownloadError", modname, e.ToString()));

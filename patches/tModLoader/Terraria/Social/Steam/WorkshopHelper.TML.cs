@@ -67,20 +67,20 @@ namespace Terraria.Social.Steam
 				Main.MenuUI.SetState(uiProgress);
 				int counter = 0;
 
-				Task.Run(() => InnerDownload(counter, uiProgress, items));
+				Task.Run(() => TaskDownload(counter, uiProgress, items));
 			}
 
-			private static void InnerDownload(int counter, UIWorkshopDownload uiProgress, List<UIModDownloadItem> items) {
+			private static void TaskDownload(int counter, UIWorkshopDownload uiProgress, List<UIModDownloadItem> items) {
 				var item = items[counter++];
 				var mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)));
 				
 				uiProgress.PrepUIForDownload(item.DisplayName);
-				mod.Download(uiProgress);
+				mod.InnerDownload(uiProgress);
 
 				if (counter == items.Count)
 					uiProgress.Leave();
 				else
-					Task.Run(() => InnerDownload(counter, uiProgress, items));
+					Task.Run(() => TaskDownload(counter, uiProgress, items));
 			}
 
 			public EResult downloadResult;
@@ -88,7 +88,7 @@ namespace Terraria.Social.Steam
 			/// <summary>
 			/// Updates and/or Downloads the Item specified when generating the ModManager Instance.
 			/// </summary>
-			private bool Download(UIWorkshopDownload uiProgress) {
+			internal bool InnerDownload(UIWorkshopDownload uiProgress) {
 				downloadResult = EResult.k_EResultOK;
 				if (NeedsUpdate()) {
 					downloadResult = EResult.k_EResultNone;
@@ -99,7 +99,7 @@ namespace Terraria.Social.Steam
 				}
 				else {
 					// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
-					Logging.tML.Debug("Item was installed at start of session: " + itemID.ToString() + "\nIf attempting to re-install, close current instance and re-launch");
+					Logging.tML.Debug("Item was installed at start of session: " + itemID.ToString() + ". If attempting to re-install, close current instance and re-launch");
 				}
 
 				return downloadResult == EResult.k_EResultOK;
@@ -113,7 +113,8 @@ namespace Terraria.Social.Steam
 				ulong dlBytes, totalBytes;
 				do {
 					SteamUGC.GetItemDownloadInfo(itemID, out dlBytes, out totalBytes);
-					uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
+					if (uiProgress != null)
+						uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 
 					SteamAPI.RunCallbacks();
 				} while (downloadResult == EResult.k_EResultNone);
@@ -135,7 +136,8 @@ namespace Terraria.Social.Steam
 				ulong dlBytes, totalBytes;
 				while (!IsInstalled()) {
 					SteamGameServerUGC.GetItemDownloadInfo(itemID, out dlBytes, out totalBytes);
-					uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
+					if (uiProgress != null)
+						uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 				}
 
 				// We don't receive a callback, so we manually set the success.
