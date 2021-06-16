@@ -239,7 +239,7 @@ namespace Terraria.ModLoader
 			NPCHeadLoader.heads[texture] = slot;
 			
 			if (!Main.dedServ) {
-				ModContent.GetTexture(texture);
+				ModContent.Request<Texture2D>(texture);
 			}
 			/*else if (Main.dedServ && !(ModLoader.FileExists(texture + ".png") || ModLoader.FileExists(texture + ".rawimg")))
 			{
@@ -263,7 +263,7 @@ namespace Terraria.ModLoader
 
 			int slot = NPCHeadLoader.ReserveBossHeadSlot(texture);
 			NPCHeadLoader.bossHeads[texture] = slot;
-			ModContent.GetTexture(texture);
+			ModContent.Request<Texture2D>(texture);
 			if (npcType >= 0) {
 				NPCHeadLoader.npcToBossHead[npcType] = slot;
 			}

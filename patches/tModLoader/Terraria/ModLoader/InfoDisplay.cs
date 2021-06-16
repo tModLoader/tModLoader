@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using System.Linq;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
@@ -48,7 +47,7 @@ namespace Terraria.ModLoader
 		public abstract string DisplayValue();
 
 		public sealed override void SetupContent() {
-			ModContent.GetTexture(Texture);
+			ModContent.Request<Texture2D>(Texture);
 			SetDefaults();
 		}
 

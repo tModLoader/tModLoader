@@ -70,7 +70,7 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (var pair in gores) {
-				TextureAssets.Gore[pair.Key] = ModContent.GetTexture(pair.Value.Texture);
+				TextureAssets.Gore[pair.Key] = ModContent.Request<Texture2D>(pair.Value.Texture);
 			}
 		}
 

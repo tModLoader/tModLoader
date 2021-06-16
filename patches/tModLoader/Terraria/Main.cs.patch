@@ -2965,7 +2965,7 @@
 -					if (num27 == 8)
 -						num27 = 7;
  
-+					Texture2D icon = ModContent.GetTexture(info.Texture).Value;
++					Texture2D icon = ModContent.Request<Texture2D>(info.Texture).Value;
  					Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.White;
  					bool flag14 = false;
  					if (playerInventory) {

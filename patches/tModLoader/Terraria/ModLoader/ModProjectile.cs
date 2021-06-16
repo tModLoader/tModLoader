@@ -119,7 +119,7 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			TextureAssets.Projectile[Projectile.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Projectile[Projectile.type] = ModContent.Request<Texture2D>(Texture);
 			Main.projFrames[Projectile.type] = 1;
 			if (Projectile.hostile) {
 				Main.projHostile[Projectile.type] = true;

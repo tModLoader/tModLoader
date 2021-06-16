@@ -50,8 +50,8 @@ namespace ExampleMod.Content.Tiles
 
 		public override bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
 			Tile tile = Main.tile[i, j];
-			Texture2D texture = ModContent.GetTexture("ExampleMod/Content/Tiles/ExampleAnimatedGlowmaskTile").Value;
-			Texture2D glowTexture = ModContent.GetTexture("ExampleMod/Content/Tiles/ExampleAnimatedGlowmaskTile_Glow").Value;
+			Texture2D texture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleAnimatedGlowmaskTile").Value;
+			Texture2D glowTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleAnimatedGlowmaskTile_Glow").Value;
 
 			// If you are using ModTile.SpecialDraw or PostDraw or PreDraw, use this snippet and add zero to all calls to spriteBatch.Draw
 			// The reason for this is to accommodate the shift in drawing coordinates that occurs when using the different Lighting mode
