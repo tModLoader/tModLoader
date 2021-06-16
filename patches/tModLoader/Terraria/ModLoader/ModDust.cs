@@ -29,7 +29,7 @@ namespace Terraria.ModLoader
 
 			Type = DustLoader.ReserveDustID();
 
-			Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.GetTexture(Texture).Value : TextureAssets.Dust.Value;
+			Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.Request<Texture2D>(Texture).Value : TextureAssets.Dust.Value;
 		}
 
 		internal void Draw(Dust dust, Color alpha, float scale) {

@@ -47,7 +47,7 @@ namespace Terraria.ModLoader
 			if (!mod.loading)
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
-			ModContent.GetTexture(texture);
+			ModContent.Request<Texture2D>(texture);
 
 			backgrounds[texture] = Instance.Reserve();
 		}
@@ -59,7 +59,7 @@ namespace Terraria.ModLoader
 
 			foreach (string texture in backgrounds.Keys) {
 				int slot = backgrounds[texture];
-				var tex = ModContent.GetTexture(texture);
+				var tex = ModContent.Request<Texture2D>(texture);
 
 				TextureAssets.Background[slot] = tex;
 				Main.backgroundWidth[slot] = tex.Width();

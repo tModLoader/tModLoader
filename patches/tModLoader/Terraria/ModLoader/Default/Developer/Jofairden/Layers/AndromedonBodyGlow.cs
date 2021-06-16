@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 		private static Asset<Texture2D> _glowTexture;
 
 		public override DrawDataInfo GetData(PlayerDrawSet info) {
-			_glowTexture ??= ModContent.GetTexture("ModLoader/Developer.Jofairden.PowerRanger_Body_Body_Glow");
+			_glowTexture ??= ModContent.Request<Texture2D>("ModLoader/Developer.Jofairden.PowerRanger_Body_Body_Glow");
 
 			return GetBodyDrawDataInfo(info, _glowTexture.Value);
 		}

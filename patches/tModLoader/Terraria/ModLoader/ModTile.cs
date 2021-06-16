@@ -142,7 +142,7 @@ namespace Terraria.ModLoader
 		}
 
 		public sealed override void SetupContent() {
-			TextureAssets.Tile[Type] = ModContent.GetTexture(Texture);
+			TextureAssets.Tile[Type] = ModContent.Request<Texture2D>(Texture);
 
 			SetDefaults();
 
@@ -161,7 +161,7 @@ namespace Terraria.ModLoader
 			PostSetDefaults();
 
 			if (TileID.Sets.HasOutlines[Type])
-				TextureAssets.HighlightMask[Type] = ModContent.GetTexture(HighlightTexture);
+				TextureAssets.HighlightMask[Type] = ModContent.Request<Texture2D>(HighlightTexture);
 
 			TileID.Search.Add(FullName, Type);
 		}
