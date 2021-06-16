@@ -30,13 +30,14 @@ namespace Terraria.ModLoader.Core
 		internal static LocalMod[] FindMods() {
 			Directory.CreateDirectory(ModLoader.ModPath);
 			var mods = new List<LocalMod>();
-			List<string> names = new List<string>();
+			var names = new HashSet<string>();
 			List<string> modRepos = new List<string>();
 
 			DeleteTemporaryFiles();
 
 			WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
 			if (ModCompile.DeveloperMode) {
+				// Prioritize loading Mods from Mods folder for Dev/Beta simplicitiy.
 				modRepos.Add(ModLoader.ModPath);
 			}
 			modRepos.AddRange(WorkshopFileFinder.ModPaths);
@@ -62,11 +63,13 @@ namespace Terraria.ModLoader.Core
 						modsDirCache[fileName] = mod;
 					}
 
-					// Prioritize Mods in Mods folder, than ignore it from Workshop if it appears again. 
-					if (!names.Contains(mod.Name)) {
-						names.Add(mod.Name);
+					// Ignore it from Workshop if it appeared in Mods folder/already exists. 
+					if (names.Add(mod.Name)) {
 						mods.Add(mod);
-					}	
+					}
+					else {
+						Logging.tML.Warn("Ignoring " + mod.Name + " found at: " + fileName + ". A mod with the same name already exists.");
+					}
 				}
 			}
 				
