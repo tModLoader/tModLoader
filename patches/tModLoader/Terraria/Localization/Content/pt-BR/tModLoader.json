@@ -208,7 +208,7 @@
 		"MBPublishPastePassphrase": "Colar Passphrase (ctrl-v)",
 		"MBMyPublishedMods": "Meus Mods Publicados",
 		"MBUnpublish": "Cancelar Publicação",
-		"MBMyPublishedModsStats": "{0} downloads ({1} na versão mais recente)",
+		"MBMyPublishedModsStats": "{0} {^0:download;downloads} ({1} - da versão mais recente)",
 		"EnterSteamID": "Porfavor Insira o Seu SteamID",
 		"PasteSteamID": "Colar SteamID (ctrl-v)",
 		"MBServerResponse": "A resposta do servidor do Navegador de Mods:\n\n{0}",
