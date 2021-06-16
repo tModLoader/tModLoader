@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -2,69 +_,142 @@
+@@ -2,69 +_,148 @@
    <Import Project="../Configuration.targets" />
    <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
@@ -55,15 +55,8 @@
 -      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
 -    </EmbeddedResource>
 +    <Reference Include="TerrariaHooks" />
-+      <ProjectReference Include="../ReLogic/ReLogic.csproj">
-+          <!--Version has to match deps.json and project version. Hardcode here as resolving from metadata is difficult without custom Task. Specifically, getting the pdb to output in the right directory-->
-+          <DestinationSubDirectory>Libraries/ReLogic/1.0.0/</DestinationSubDirectory>
-+      </ProjectReference>
-+      <ProjectReference Include="..\..\..\FNA\FNA.csproj">
-+          <!--Todo, extract version from FNA\src\Properties\AssemblyInfo.cs or some other way-->
-+		  <!--Currently for whatever reason, the deps.json generates with version 1.0.0 as the referenced version. Even though the assembly has version 21.06.0.0-->
-+          <DestinationSubDirectory>Libraries/FNA/1.0.0/</DestinationSubDirectory>
-+	  </ProjectReference>
++    <ProjectReference Include="../ReLogic/ReLogic.csproj" />
++    <ProjectReference Include="..\..\..\FNA\FNA.csproj" />
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
 -    <Reference Update="@(Reference)">
@@ -150,9 +143,22 @@
 +      <!--Note that associated files, like pdbs/xmls won't be resolved properly here. Prefer nuget packages for that-->
 +      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
 +        <DirectoryVersion>$([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').Remove($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(", C"))).Substring($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(","))).Substring(10))</DirectoryVersion>
-+        </ReferenceCopyLocalPaths>
++      </ReferenceCopyLocalPaths>
 +      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
 +        <DestinationSubDirectory>Libraries\%(ReferenceCopyLocalPaths.OriginalItemSpec)\%(ReferenceCopyLocalPaths.DirectoryVersion)\</DestinationSubDirectory>
++      </ReferenceCopyLocalPaths>
++    </ItemGroup>
++  </Target>
++  <Target Name="RedirectProjectReferencesToLib" AfterTargets="ResolveAssemblyReferences">
++    <ItemGroup>
++      <!--Version is bugged in deps.json for ProjectReferences, doesn't reflect AssemblyVersion for whatever reason. Uses 1.0.0-->
++      <!--As well, FusionName isn't available, so alternate string manipulation to get Name-->
++      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ProjectReference'">
++        <VersionHack>1.0.0</VersionHack>
++        <DllName>$([System.String]::Copy('%(ReferenceCopyLocalPaths.ResolvedFrom)').Remove($([System.String]::Copy('%(ReferenceCopyLocalPaths.ResolvedFrom)').IndexOf(".dll"))).SubString($([System.String]::Copy('%(ReferenceCopyLocalPaths.ResolvedFrom)').LastIndexOf("\"))).Substring(1))</DllName>
++      </ReferenceCopyLocalPaths>
++      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ProjectReference'">
++        <DestinationSubDirectory>Libraries\%(ReferenceCopyLocalPaths.DllName)\%(ReferenceCopyLocalPaths.VersionHack)\</DestinationSubDirectory>
 +      </ReferenceCopyLocalPaths>
 +    </ItemGroup>
 +  </Target>
