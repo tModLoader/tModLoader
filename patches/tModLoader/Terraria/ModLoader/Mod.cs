@@ -409,18 +409,6 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		[Obsolete("Use Mod.Assets.Request<Texture2D> instead")]
-		public Asset<Texture2D> GetTexture(string name) => Assets.Request<Texture2D>(name);
-
-		[Obsolete("Use Mod.HasAsset instead")]
-		public bool TextureExists(string name) => HasAsset(name);
-
-		[Obsolete("Use Mod.Assets.Request<SoundEffect> instead")]
-		public Asset<SoundEffect> GetSound(string name) => Assets.Request<SoundEffect>(name);
-
-		[Obsolete("Use Mod.HasAsset instead")]
-		public bool SoundExists(string name) => HasAsset(name);
-
 		/// <summary>
 		/// Shorthand for calling ModContent.GetMusic(this.FileName(name)).
 		/// </summary>
@@ -440,18 +428,6 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public bool MusicExists(string name) => musics.ContainsKey(name);
-
-		[Obsolete("Use Mod.Assets.Request<DynamicSpriteFont> instead")]
-		public Asset<DynamicSpriteFont> GetFont(string name) => Assets.Request<DynamicSpriteFont>(name);
-
-		[Obsolete("Use Mod.HasAsset instead")]
-		public bool FontExists(string name) => HasAsset(name);
-
-		[Obsolete("Use Mod.Assets.Request<Effect> instead")]
-		public Asset<Effect> GetEffect(string name) => Assets.Request<Effect>(name);
-
-		[Obsolete("Use Mod.HasAsset instead")]
-		public bool EffectExists(string name) => HasAsset(name);
 
 		/// <summary>
 		/// Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.
