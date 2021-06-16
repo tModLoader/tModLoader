@@ -59,7 +59,7 @@ namespace Terraria.ModLoader
 		}
 
 		protected override void Register() {
-			InfoName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.InfoDisplayName.{Name}");
+			InfoName = LocalizationLoader.GetOrCreateTranslation(Mod, $"InfoDisplayName.{Name}");
 
 			ModTypeLookup<InfoDisplay>.Register(this);
 

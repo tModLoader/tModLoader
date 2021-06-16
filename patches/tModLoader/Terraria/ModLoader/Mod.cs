@@ -382,25 +382,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Creates a ModTranslation object that you can use in AddTranslation.
-		/// </summary>
-		/// <param name="key">The key for the ModTranslation. The full key will be Mods.ModName.key</param>
-		public ModTranslation CreateTranslation(string key) =>
-			new ModTranslation(string.Format("Mods.{0}.{1}", Name, key));
-
-		/// <summary>
-		/// Adds a ModTranslation to the game so that you can use Language.GetText to get a LocalizedText.
-		/// </summary>
-		public void AddTranslation(ModTranslation translation) {
-			translations[translation.Key] = translation;
-		}
-
-		internal ModTranslation GetOrCreateTranslation(string key, bool defaultEmpty = false) {
-			key = key.Replace(" ", "_");
-			return translations.TryGetValue(key, out var translation) ? translation : new ModTranslation(key, defaultEmpty);
-		}
-
-		/// <summary>
 		/// Retrieve contents of files within the tmod file
 		/// </summary>
 		/// <param name="name">The name.</param>
