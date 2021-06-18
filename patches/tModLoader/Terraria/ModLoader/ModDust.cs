@@ -11,7 +11,7 @@ namespace Terraria.ModLoader
 	/// This class represents a type of dust that is added by a mod. Only one instance of this class will ever exist for each type of dust you add.
 	/// </summary>
 	[Autoload(Side = ModSide.Client)]
-	public abstract class ModDust : ModTexturedType
+	public abstract class ModDust : ModTexturedType, IModTypeWithId
 	{
 		/// <summary> Allows you to choose a type of dust for this type of dust to copy the behavior of. Defaults to -1, which means that no behavior is copied. </summary>
 		public int UpdateType { get; set; } = -1;

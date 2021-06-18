@@ -24,11 +24,13 @@ namespace Terraria.ModLoader
 		Custom
 	}
 
-	public abstract class ModPrefix : ModType
+	public abstract class ModPrefix : ModType, IModTypeWithId
 	{
 		public byte Type { get; internal set; }
 
 		public ModTranslation DisplayName { get; internal set; }
+
+		int IModTypeWithId.Type => Type;
 
 		/// <summary>
 		/// The category your prefix belongs to, PrefixCategory.Custom by default

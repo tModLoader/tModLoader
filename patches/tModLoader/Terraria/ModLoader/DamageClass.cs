@@ -3,7 +3,7 @@ using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
-	public abstract class DamageClass : ModType
+	public abstract class DamageClass : ModType, IModTypeWithId
 	{
 		public static DamageClass Generic { get; private set; } = new GenericDamageClass();
 		public static DamageClass NoScaling { get; private set; } = new NoScalingDamageClass();

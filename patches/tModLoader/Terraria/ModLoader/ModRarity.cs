@@ -3,7 +3,7 @@ using System;
 
 namespace Terraria.ModLoader
 {
-	public abstract class ModRarity : ModType
+	public abstract class ModRarity : ModType, IModTypeWithId
 	{
 		public int Type { get; internal set; }
 

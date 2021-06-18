@@ -5,7 +5,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to customize the behavior of a custom gore.
 	/// </summary>
-	public abstract class ModGore : ModTexturedType
+	public abstract class ModGore : ModTexturedType, IModTypeWithId
 	{
 		internal string nameOverride;
 		internal string textureOverride;

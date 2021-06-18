@@ -12,7 +12,7 @@ namespace Terraria.ModLoader
 	/// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntity.Update is called in SP and on Server, not on Clients.
 	/// </summary>
 	/// <seealso cref="Terraria.DataStructures.TileEntity" />
-	public abstract class ModTileEntity : TileEntity, IModType
+	public abstract class ModTileEntity : TileEntity, IModTypeWithId
 	{
 		public static readonly int NumVanilla = Assembly.GetExecutingAssembly()
 			.GetTypes()

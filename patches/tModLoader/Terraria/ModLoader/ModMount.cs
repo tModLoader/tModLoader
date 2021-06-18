@@ -12,7 +12,7 @@ namespace Terraria.ModLoader
 	/// Only one instance of ModMount will exist for each mount, so storing player specific data on the ModMount is not good. 
 	/// Modders can use player.mount._mountSpecificData or a ModPlayer class to store player specific data relating to a mount. Use SetMount to assign these fields.
 	/// </summary>
-	public abstract class ModMount : ModTexturedType
+	public abstract class ModMount : ModTexturedType, IModTypeWithId
 	{
 		/// <summary>
 		/// The vanilla MountData object that is controlled by this ModMount.
