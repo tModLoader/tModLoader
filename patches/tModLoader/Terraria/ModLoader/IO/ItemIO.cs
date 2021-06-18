@@ -32,7 +32,6 @@ namespace Terraria.ModLoader.IO
 		internal static void WriteByteVanillaPrefix(int prefix, BinaryWriter writer)
 			=> writer.Write((byte)(prefix >= PrefixID.Count ? 0 : prefix));
 
-
 		public static TagCompound Save(Item item) {
 			var tag = new TagCompound();
 			if (item.type <= 0)
@@ -49,7 +48,7 @@ namespace Terraria.ModLoader.IO
 			}
 
 			if (item.prefix != 0 && item.prefix < PrefixID.Count)
-				tag.Set("prefix", item.prefix);
+				tag.Set("prefix", (byte)item.prefix);
 
 			if (item.prefix >= PrefixID.Count) {
 				ModPrefix modPrefix = PrefixLoader.GetPrefix(item.prefix);
@@ -99,6 +98,7 @@ namespace Terraria.ModLoader.IO
 			else if (tag.ContainsKey("prefix")) {
 				item.Prefix(tag.GetByte("prefix"));
 			}
+
 			item.stack = tag.Get<int?>("stack") ?? 1;
 			item.favorited = tag.GetBool("fav");
 
