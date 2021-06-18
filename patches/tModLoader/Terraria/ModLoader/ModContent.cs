@@ -58,6 +58,7 @@ namespace Terraria.ModLoader
 		public static bool TryFind<T>(string modName, string name, out T value) where T : IModType
 			=> ModTypeLookup<T>.TryGetValue(modName, name, out value);
 
+		/// <summary> Short-hand for '<see cref="GetInstance{T}"/>.Type' </summary>
 		public static int GetId<T>() where T : class, IModTypeWithId
 			=> GetInstance<T>().Type;
 
