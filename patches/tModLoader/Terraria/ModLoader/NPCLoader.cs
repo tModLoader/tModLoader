@@ -694,26 +694,28 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookPreDraw = AddHook<Func<NPC, SpriteBatch, Color, bool>>(g => g.PreDraw);
+		private delegate bool DelegatePreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
+		private static HookList HookPreDraw = AddHook<DelegatePreDraw>(g => g.PreDraw);
 
-		public static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
+		public static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 			bool result = true;
 			foreach (GlobalNPC g in HookPreDraw.Enumerate(npc.globalNPCs)) {
-				result &= g.PreDraw(npc, spriteBatch, drawColor);
+				result &= g.PreDraw(npc, spriteBatch, screenPos, drawColor);
 			}
 			if (result && npc.ModNPC != null) {
-				return npc.ModNPC.PreDraw(spriteBatch, drawColor);
+				return npc.ModNPC.PreDraw(spriteBatch, screenPos, drawColor);
 			}
 			return result;
 		}
 
-		private static HookList HookPostDraw = AddHook<Action<NPC, SpriteBatch, Color>>(g => g.PostDraw);
+		private delegate void DelegatePostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
+		private static HookList HookPostDraw = AddHook<DelegatePostDraw>(g => g.PostDraw);
 
-		public static void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
-			npc.ModNPC?.PostDraw(spriteBatch, drawColor);
+		public static void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+			npc.ModNPC?.PostDraw(spriteBatch, screenPos, drawColor);
 
 			foreach (GlobalNPC g in HookPostDraw.Enumerate(npc.globalNPCs)) {
-				g.PostDraw(npc, spriteBatch, drawColor);
+				g.PostDraw(npc, spriteBatch, screenPos, drawColor);
 			}
 		}
 
