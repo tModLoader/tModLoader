@@ -11,11 +11,26 @@ namespace Terraria.ModLoader.IO
 	{
 		//replace netID writes in Terraria.Player.SavePlayer
 		//in Terraria.IO.WorldFile.SaveChests include IsModItem for no-item check
-		internal static void WriteVanillaID(Item item, BinaryWriter writer) => writer.Write(item.ModItem != null ? 0 : item.netID);
+		internal static void WriteVanillaID(Item item, BinaryWriter writer)
+			=> writer.Write(item.ModItem != null ? 0 : item.netID);
 
-		internal static void WriteShortVanillaID(Item item, BinaryWriter writer) => writer.Write((short)(item.ModItem != null ? 0 : item.netID));
+		internal static void WriteShortVanillaID(Item item, BinaryWriter writer)
+			=> WriteShortVanillaID(item.netID, writer);
 
-		internal static void WriteByteVanillaPrefix(Item item, BinaryWriter writer) => writer.Write((byte)(item.prefix >= PrefixID.Count ? 0 : item.prefix));
+		internal static void WriteShortVanillaID(int id, BinaryWriter writer)
+			=> writer.Write((short)(id >= ItemID.Count ? 0 : id));
+
+		internal static void WriteShortVanillaStack(Item item, BinaryWriter writer)
+			=> WriteShortVanillaStack(item.stack, writer);
+
+		internal static void WriteShortVanillaStack(int stack, BinaryWriter writer)
+			=> writer.Write((short)(stack > short.MaxValue ? short.MaxValue : stack));
+
+		internal static void WriteByteVanillaPrefix(Item item, BinaryWriter writer)
+			=> WriteByteVanillaPrefix(item.prefix, writer);
+
+		internal static void WriteByteVanillaPrefix(int prefix, BinaryWriter writer)
+			=> writer.Write((byte)(prefix >= PrefixID.Count ? 0 : prefix));
 
 		public static TagCompound Save(Item item) {
 			var tag = new TagCompound();
@@ -33,7 +48,7 @@ namespace Terraria.ModLoader.IO
 			}
 
 			if (item.prefix != 0 && item.prefix < PrefixID.Count)
-				tag.Set("prefix", item.prefix);
+				tag.Set("prefix", (byte)item.prefix);
 
 			if (item.prefix >= PrefixID.Count) {
 				ModPrefix modPrefix = PrefixLoader.GetPrefix(item.prefix);
@@ -83,6 +98,7 @@ namespace Terraria.ModLoader.IO
 			else if (tag.ContainsKey("prefix")) {
 				item.Prefix(tag.GetByte("prefix"));
 			}
+
 			item.stack = tag.Get<int?>("stack") ?? 1;
 			item.favorited = tag.GetBool("fav");
 
@@ -134,7 +150,7 @@ namespace Terraria.ModLoader.IO
 
 		public static void Send(Item item, BinaryWriter writer, bool writeStack = false, bool writeFavorite = false) {
 			writer.WriteVarInt(item.netID);
-			writer.Write(item.prefix); //TODO: Turn prefix into Int32.
+			writer.WriteVarInt(item.prefix);
 
 			if (writeStack)
 				writer.WriteVarInt(item.stack);
@@ -147,7 +163,7 @@ namespace Terraria.ModLoader.IO
 
 		public static void Receive(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false) {
 			item.netDefaults(reader.ReadVarInt());
-			item.Prefix(reader.ReadByte());
+			item.Prefix(ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadVarInt());
 
 			if (readStack)
 				item.stack = reader.ReadVarInt();

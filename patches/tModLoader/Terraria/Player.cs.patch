@@ -4358,59 +4358,68 @@
  						binaryWriter.Write(player.shoeColor.B);
  						for (int k = 0; k < player.armor.Length; k++) {
 -							binaryWriter.Write(player.armor[k].netID);
+-							binaryWriter.Write(player.armor[k].prefix);
 +							ItemIO.WriteVanillaID(player.armor[k], binaryWriter);
- 							binaryWriter.Write(player.armor[k].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.armor[k], binaryWriter);
  						}
  
  						for (int l = 0; l < player.dye.Length; l++) {
 -							binaryWriter.Write(player.dye[l].netID);
+-							binaryWriter.Write(player.dye[l].prefix);
 +							ItemIO.WriteVanillaID(player.dye[l], binaryWriter);
- 							binaryWriter.Write(player.dye[l].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.dye[l], binaryWriter);
  						}
  
  						for (int m = 0; m < 58; m++) {
 -							binaryWriter.Write(player.inventory[m].netID);
 +							ItemIO.WriteVanillaID(player.inventory[m], binaryWriter);
  							binaryWriter.Write(player.inventory[m].stack);
- 							binaryWriter.Write(player.inventory[m].prefix);
+-							binaryWriter.Write(player.inventory[m].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.inventory[m], binaryWriter);
  							binaryWriter.Write(player.inventory[m].favorited);
  						}
  
  						for (int n = 0; n < player.miscEquips.Length; n++) {
 -							binaryWriter.Write(player.miscEquips[n].netID);
-+							ItemIO.WriteVanillaID(player.miscEquips[n], binaryWriter);
- 							binaryWriter.Write(player.miscEquips[n].prefix);
+-							binaryWriter.Write(player.miscEquips[n].prefix);
 -							binaryWriter.Write(player.miscDyes[n].netID);
+-							binaryWriter.Write(player.miscDyes[n].prefix);
++							ItemIO.WriteVanillaID(player.miscEquips[n], binaryWriter);
++							ItemIO.WriteByteVanillaPrefix(player.miscEquips[n], binaryWriter);
 +							ItemIO.WriteVanillaID(player.miscDyes[n], binaryWriter);
- 							binaryWriter.Write(player.miscDyes[n].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.miscDyes[n], binaryWriter);
  						}
  
  						for (int num = 0; num < 40; num++) {
 -							binaryWriter.Write(player.bank.item[num].netID);
 +							ItemIO.WriteVanillaID(player.bank.item[num], binaryWriter);
  							binaryWriter.Write(player.bank.item[num].stack);
- 							binaryWriter.Write(player.bank.item[num].prefix);
+-							binaryWriter.Write(player.bank.item[num].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.bank.item[num], binaryWriter);
  						}
  
  						for (int num2 = 0; num2 < 40; num2++) {
 -							binaryWriter.Write(player.bank2.item[num2].netID);
 +							ItemIO.WriteVanillaID(player.bank2.item[num2], binaryWriter);
  							binaryWriter.Write(player.bank2.item[num2].stack);
- 							binaryWriter.Write(player.bank2.item[num2].prefix);
+-							binaryWriter.Write(player.bank2.item[num2].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.bank2.item[num2], binaryWriter);
  						}
  
  						for (int num3 = 0; num3 < 40; num3++) {
 -							binaryWriter.Write(player.bank3.item[num3].netID);
 +							ItemIO.WriteVanillaID(player.bank3.item[num3], binaryWriter);
  							binaryWriter.Write(player.bank3.item[num3].stack);
- 							binaryWriter.Write(player.bank3.item[num3].prefix);
+-							binaryWriter.Write(player.bank3.item[num3].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.bank3.item[num3], binaryWriter);
  						}
  
  						for (int num4 = 0; num4 < 40; num4++) {
 -							binaryWriter.Write(player.bank4.item[num4].netID);
 +							ItemIO.WriteVanillaID(player.bank4.item[num4], binaryWriter);
  							binaryWriter.Write(player.bank4.item[num4].stack);
- 							binaryWriter.Write(player.bank4.item[num4].prefix);
+-							binaryWriter.Write(player.bank4.item[num4].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.bank4.item[num4], binaryWriter);
  						}
  
  						binaryWriter.Write(player.voidVaultInfo);
