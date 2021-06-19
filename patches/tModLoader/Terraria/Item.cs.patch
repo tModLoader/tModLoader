@@ -22,15 +22,27 @@
  	{
  		private string _nameOverride;
  		public const int luckPotionDuration1 = 10800;
-@@ -60,6 +_,8 @@
+@@ -50,7 +_,7 @@
+ 		public int tileWand = -1;
+ 		public bool wornArmor;
+ 		public int tooltipContext = -1;
+-		public byte dye;
++		public int dye; //TML: Changed from byte to int.
+ 		public int fishingPole = 1;
+ 		public int bait;
+ 		public static int coinGrabRange = 350;
+@@ -60,8 +_,10 @@
  		public short makeNPC;
  		public bool expertOnly;
  		public bool expert;
 +		public bool masterOnly;
 +		public bool master;
  		public bool isAShopItem;
- 		public short hairDye = -1;
+-		public short hairDye = -1;
++		public int hairDye = -1; //TML: Changed from short to int.
  		public byte paint;
+ 		public bool instanced;
+ 		public int ownIgnore = -1;
 @@ -146,11 +_,44 @@
  		public bool DD2Summon;
  		public int netID;
@@ -566,7 +578,7 @@
  			if (type == 0) {
  				netID = 0;
  				stack = 0;
-@@ -44739,6 +_,20 @@
+@@ -44739,7 +_,21 @@
  				SetDefaults5(type);
  			}
  
@@ -584,9 +596,11 @@
 +				master = true;
 +			}
 +
- 			dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(type);
+-			dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(type);
++			dye = GameShaders.Armor.GetShaderIdFromItemId(type);
  			if (hairDye != 0)
  				hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
+ 
 @@ -44888,11 +_,12 @@
  				maxStack = 999;
  

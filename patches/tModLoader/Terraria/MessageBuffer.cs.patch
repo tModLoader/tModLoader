@@ -79,6 +79,15 @@
  						NetMessage.TrySendData(6);
  						if (Netplay.Connection.State == 2)
  							Netplay.Connection.State = 3;
+@@ -236,7 +_,7 @@
+ 							player4.hair = 0;
+ 
+ 						player4.name = reader.ReadString().Trim().Trim();
+-						player4.hairDye = reader.ReadByte();
++						player4.hairDye = ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadVarInt();
+ 						BitsByte bitsByte4 = reader.ReadByte();
+ 						for (int num41 = 0; num41 < 8; num41++) {
+ 							player4.hideVisibleAccessory[num41] = bitsByte4[num41];
 @@ -320,7 +_,7 @@
  						lock (player12) {
  							int num233 = reader.ReadInt16();
