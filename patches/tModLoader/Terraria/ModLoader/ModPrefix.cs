@@ -30,8 +30,6 @@ namespace Terraria.ModLoader
 
 		public ModTranslation DisplayName { get; internal set; }
 
-		int IModTypeWithId.Type => Type;
-
 		/// <summary>
 		/// The category your prefix belongs to, PrefixCategory.Custom by default
 		/// </summary>
