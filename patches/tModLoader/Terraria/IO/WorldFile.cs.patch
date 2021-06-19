@@ -45,6 +45,15 @@
  		}
  
  		private static void DoRollingBackups(string backupWorldWritePath) {
+@@ -717,7 +_,7 @@
+ 				}
+ 
+ 				if (TEWeaponsRack.Place(item2.X, item2.Y) != -1 && flag2)
+-					TEWeaponsRack.TryPlacing(item2.X, item2.Y, num2, prefix, 1);
++					TEWeaponsRack.TryPlacing(item2.X, item2.Y, new Item(num2, prefix: prefix), 1);
+ 			}
+ 		}
+ 
 @@ -884,7 +_,11 @@
  			}
  
