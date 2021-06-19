@@ -729,7 +729,7 @@
  
  		private static void GiveTownUniqueDataToNPCsThatNeedIt(int Type, int nextNPC) {
 -			if (TypeToDefaultHeadIndex(Type) != -1 || Type == 453) {
-+			if (TypeToDefaultHeadIndex(Type) != -1 || Type == 453 || NPCLoader.ActsLikeATownNPC(Type)) {
++			if (TypeToDefaultHeadIndex(Type) != -1 || Type == 453 || NPCLoader.SpawnsWithCustomName(Type)) {
  				Main.npc[nextNPC].GivenName = getNewNPCName(Type);
  				if (TownNPCProfiles.Instance.GetProfile(Type, out ITownNPCProfile profile)) {
  					Main.npc[nextNPC].townNpcVariationIndex = profile.RollVariation();

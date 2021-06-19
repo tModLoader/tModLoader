@@ -572,8 +572,18 @@ namespace Terraria.ModLoader
 			return Language.GetTextValue("tModLoader.DefaultTownNPCName");
 		}
 
+		
 		/// <summary>
-		/// Whether or not this NPC will act like a town NPC in terms of AI, animations, and attacks; but not in other regards, like the bone merchant in vanilla. Defaults to false.
+		/// Whether or not this NPC will spawn with a custom name like a town NPC regardless of if they are actually a town NPC or not.
+		/// Make sure to override <see cref="TownNPCName"/> in order to determine what name will be selected. Returns false by default.
+		/// </summary>
+		/// <returns></returns>
+		public virtual bool SpawnsWithCustomName() {
+			return false;
+		}
+
+		/// <summary>
+		/// Whether or not this NPC will act like a town NPC in terms of AI, animations, and attacks; but not in other regards, like the bone merchant in vanilla. Returns false by default.
 		/// </summary>
 		/// <returns> </returns>
 		public virtual bool ActsLikeATownNPC() {
