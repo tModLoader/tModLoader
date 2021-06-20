@@ -49,7 +49,21 @@
  						break;
  					case 3:
  						writer.Write((byte)remoteClient);
-@@ -157,12 +_,14 @@
+@@ -106,7 +_,12 @@
+ 							writer.Write((byte)player5.skinVariant);
+ 							writer.Write((byte)player5.hair);
+ 							writer.Write(player5.name);
++
++							if (ModNet.AllowVanillaClients)
++								PlayerIO.WriteByteVanillaHairDye(player5.hairDye, writer);
++							else
+-							writer.Write(player5.hairDye);
++								writer.WriteVarInt(player5.hairDye);
++
+ 							BitsByte bb6 = (byte)0;
+ 							for (int num13 = 0; num13 < 8; num13++) {
+ 								bb6[num13] = player5.hideVisibleAccessory[num13];
+@@ -157,12 +_,21 @@
  
  							num8 = item5.stack;
  							num9 = item5.netID;
@@ -58,7 +72,15 @@
  								num8 = 0;
  
  							writer.Write((short)num8);
- 							writer.Write((byte)number3);
++
++							if (ModNet.AllowVanillaClients) {
++								ItemIO.WriteByteVanillaPrefix((int)number3, writer);
++							}
++							else {
+-							writer.Write((byte)number3);
++								writer.Write((int)number3);
++							}
++
  							writer.Write((short)num9);
 +							ItemIO.SendModData(item5, writer);
  							break;
@@ -80,8 +102,22 @@
  							break;
  						}
  					case 8:
-@@ -510,10 +_,12 @@
- 							writer.Write(item7.prefix);
+@@ -506,14 +_,24 @@
+ 							writer.Write((short)number);
+ 							writer.WriteVector2(item7.position);
+ 							writer.WriteVector2(item7.velocity);
+-							writer.Write((short)item7.stack);
+-							writer.Write(item7.prefix);
++
++							if (ModNet.AllowVanillaClients) {
++								ItemIO.WriteShortVanillaStack(item7, writer);
++								ItemIO.WriteByteVanillaPrefix(item7, writer);
++							}
++							else {
++								writer.WriteVarInt(item7.stack);
++								writer.WriteVarInt(item7.prefix);
++							}
++
  							writer.Write((byte)number2);
  							short value5 = 0;
 +							//Patch context just in case.
@@ -141,11 +177,29 @@
  						writer.Write(number3);
  						writer.Write((byte)(number4 + 1f));
  						writer.Write((byte)number5);
-@@ -680,6 +_,7 @@
- 							writer.Write((short)item6.stack);
- 							writer.Write(item6.prefix);
- 							writer.Write(value2);
-+							ItemIO.SendModData(item6, writer);
+@@ -673,13 +_,21 @@
+ 							Item item6 = Main.chest[number].item[(byte)number2];
+ 							writer.Write((short)number);
+ 							writer.Write((byte)number2);
++							/*
+ 							short value2 = (short)item6.netID;
+ 							if (item6.Name == null)
+ 								value2 = 0;
+-
+-							writer.Write((short)item6.stack);
+-							writer.Write(item6.prefix);
+-							writer.Write(value2);
++							*/
++
++							if (ModNet.AllowVanillaClients) {
++								ItemIO.WriteShortVanillaStack(item6, writer);
++								ItemIO.WriteByteVanillaPrefix(item6, writer);
++								ItemIO.WriteShortVanillaID(item6, writer);
++							}
++							else {
++								ItemIO.Send(item6, writer, writeStack: true);
++							}
++
  							break;
  						}
  					case 33: {
@@ -186,6 +240,68 @@
  
  							break;
  						}
+@@ -1059,9 +_,16 @@
+ 							writer.Write((short)number);
+ 							writer.Write((short)number2);
+ 							Item item3 = Main.player[(int)number4].inventory[(int)number3];
+-							writer.Write((short)item3.netID);
+-							writer.Write(item3.prefix);
+-							writer.Write((short)number5);
++							if (ModNet.AllowVanillaClients) {
++								ItemIO.WriteShortVanillaID(item3, writer);
++								ItemIO.WriteByteVanillaPrefix(item3, writer);
++								ItemIO.WriteShortVanillaStack(number5, writer);
++							}
++							else {
++								ItemIO.Send(item3, writer);
++								writer.WriteVarInt(number5);
++							}
++
+ 							break;
+ 						}
+ 					case 91:
+@@ -1229,9 +_,17 @@
+ 							writer.Write((short)number);
+ 							writer.Write((short)number2);
+ 							Item item2 = Main.player[(int)number4].inventory[(int)number3];
+-							writer.Write((short)item2.netID);
+-							writer.Write(item2.prefix);
+-							writer.Write((short)number5);
++
++							if (ModNet.AllowVanillaClients) {
++								ItemIO.WriteShortVanillaID(item2, writer);
++								ItemIO.WriteByteVanillaPrefix(item2, writer);
++								ItemIO.WriteShortVanillaStack(number5, writer);
++							}
++							else {
++								ItemIO.Send(item2, writer);
++								writer.WriteVarInt(number5);
++							}
++
+ 							break;
+ 						}
+ 					case 124: {
+@@ -1292,9 +_,17 @@
+ 							writer.Write((short)number);
+ 							writer.Write((short)number2);
+ 							Item item = Main.player[(int)number4].inventory[(int)number3];
+-							writer.Write((short)item.netID);
+-							writer.Write(item.prefix);
+-							writer.Write((short)number5);
++
++							if (ModNet.AllowVanillaClients) {
++								ItemIO.WriteShortVanillaID(item, writer);
++								ItemIO.WriteByteVanillaPrefix(item, writer);
++								ItemIO.WriteShortVanillaStack(number5, writer);
++							}
++							else {
++								ItemIO.Send(item, writer);
++								writer.WriteVarInt(number5);
++							}
++
+ 							break;
+ 						}
+ 					case 134: {
 @@ -1336,7 +_,10 @@
  
  				int num26 = (int)writer.BaseStream.Position;

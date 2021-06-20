@@ -1,9 +1,10 @@
 --- src/Terraria/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
-@@ -4,11 +_,12 @@
+@@ -4,11 +_,13 @@
  using Terraria.Audio;
  using Terraria.DataStructures;
  using Terraria.GameInput;
++using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  using Terraria.UI;
  
@@ -36,3 +37,34 @@
  					writer.Write((short)item2.stack);
  				}
  			}
+@@ -434,18 +_,27 @@
+ 			if (dye)
+ 				item = _dyes[itemIndex];
+ 
++			if (!ModNet.AllowVanillaClients) {
++				ItemIO.Send(item, writer, writeStack: true);
++				return;
++			}
++
+ 			writer.Write((ushort)item.netID);
+ 			writer.Write((ushort)item.stack);
+ 			writer.Write(item.prefix);
+ 		}
+ 
+ 		public void ReadItem(int itemIndex, BinaryReader reader, bool dye) {
++			Item item = (dye ? _dyes : _items)[itemIndex];
++
++			if (!ModNet.AllowVanillaClients) {
++				ItemIO.Receive(item, reader, readStack: true);
++				return;
++			}
++
+ 			int defaults = reader.ReadUInt16();
+ 			int stack = reader.ReadUInt16();
+ 			int pre = reader.ReadByte();
+-			Item item = _items[itemIndex];
+-			if (dye)
+-				item = _dyes[itemIndex];
+ 
+ 			item.SetDefaults(defaults);
+ 			item.stack = stack;
