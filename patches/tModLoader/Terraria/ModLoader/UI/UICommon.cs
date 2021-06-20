@@ -92,7 +92,7 @@ namespace Terraria.ModLoader.UI
 				=> ModLoader.ManifestAssets.Request<Texture2D>($"Terraria.ModLoader.{name}");
 
 			ButtonErrorTexture = LoadEmbeddedTexture("UI.ButtonError");
-			ButtonConfigTexture = LoadEmbeddedTexture("Config.UI.ButtonConfig");
+			//ButtonConfigTexture = LoadEmbeddedTexture("Config.UI.ButtonConfig");
 			ButtonPlusTexture = LoadEmbeddedTexture("Config.UI.ButtonPlus");
 			ButtonUpDownTexture = LoadEmbeddedTexture("Config.UI.ButtonUpDown");
 			ButtonCollapsedTexture = LoadEmbeddedTexture("Config.UI.ButtonCollapsed");

@@ -1,4 +1,4 @@
-using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.ID;
 
@@ -35,7 +35,7 @@ namespace Terraria.ModLoader
 		}
 
 		public sealed override void SetupContent() {
-			TextureAssets.Buff[Type] = ModContent.GetTexture(Texture);
+			TextureAssets.Buff[Type] = ModContent.Request<Texture2D>(Texture);
 			SetDefaults();
 			BuffID.Search.Add(FullName, Type);
 		}

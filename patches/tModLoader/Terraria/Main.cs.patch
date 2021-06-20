@@ -799,7 +799,7 @@
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
-+			HiDefGraphicsIssues.Init();
++			GraphicsChangeTracker.Init();
 +		}
 +
 +		internal void PostSocialInitialize() {
@@ -877,6 +877,16 @@
  			}
  
  			for (int n = 0; n < 1001; n++) {
+@@ -8303,7 +_,8 @@
+ 		public static void LoadTestLog(string logname) {
+ 		}
+ 
+-		private void OnceFailedLoadingAnAsset(string assetPath, Exception e) {
++		internal static void OnceFailedLoadingAnAsset(string assetPath, Exception e) {
++			Logging.Terraria.Error($"Failed to load asset: \"{assetPath}\"", e);
+ 			FancyErrorPrinter.ShowFailedToLoadAssetError(e, assetPath);
+ 		}
+ 
 @@ -8331,7 +_,7 @@
  				audioSystem = new DisabledAudioSystem();
  
@@ -2315,7 +2325,7 @@
  
  					EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num363 - 1), alpha12, projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
 +					ModProjectile modProjectile = projectile.ModProjectile;
-+					if (modProjectile != null && ModContent.TryGetTexture(modProjectile.GlowTexture, out var glowTexture))
++					if (modProjectile != null && ModContent.RequestIfExists<Texture2D>(modProjectile.GlowTexture, out var glowTexture, AssetRequestMode.ImmediateLoad)) // todo: preload this!
 +						EntitySpriteDraw(glowTexture.Value, new Vector2(projectile.position.X - screenPosition.X + num138 + num137, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num363 - 1), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
  					if (projectile.type == 335)
  						EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num363 - 1), new Microsoft.Xna.Framework.Color(100, 100, 100, 0), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
@@ -2334,7 +2344,7 @@
  						EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height()), new Microsoft.Xna.Framework.Color(255, 255, 0, 0), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
  
 +					ModProjectile modProjectile = projectile.ModProjectile;
-+					if (modProjectile != null && ModContent.TryGetTexture(modProjectile.GlowTexture, out var glowTexture))
++					if (modProjectile != null && ModContent.RequestIfExists<Texture2D>(modProjectile.GlowTexture, out var glowTexture)) // todo: preload this!
 +						EntitySpriteDraw(glowTexture.Value, new Vector2(projectile.position.X - screenPosition.X + num138 + num137, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height()), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
 +
  					if (projectile.type == 312) {
@@ -2955,7 +2965,7 @@
 -					if (num27 == 8)
 -						num27 = 7;
  
-+					Texture2D icon = ModContent.GetTexture(info.Texture).Value;
++					Texture2D icon = ModContent.Request<Texture2D>(info.Texture).Value;
  					Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.White;
  					bool flag14 = false;
  					if (playerInventory) {
@@ -3603,18 +3613,20 @@
  			if (!_isDrawingOrUpdating && IsGraphicsDeviceAvailable) {
  				_isDrawingOrUpdating = true;
  				EnsureRenderTargetContent();
-@@ -46923,6 +_,11 @@
+@@ -46921,7 +_,13 @@
+ 					Main.OnPostDraw(gameTime);
+ 
  				Assets.TransferCompletedAssets();
++				ModContent.TransferCompletedAssets();
  				_isDrawingOrUpdating = false;
- 			}
++			}
 +			}
 +			catch (Exception e) {
 +				Logging.Terraria.Error(e);
 +				throw;
-+			}
+ 			}
  		}
  
- 		private void DoDraw(GameTime gameTime) {
 @@ -47227,8 +_,8 @@
  			UpdateAtmosphereTransparencyToSkyColor();
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);

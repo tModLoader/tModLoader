@@ -114,12 +114,10 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			TextureAssets.Item[Item.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Item[Item.type] = ModContent.Request<Texture2D>(Texture);
 
-			string flameTexture = Texture + "_Flame";
-
-			if (ModContent.TextureExists(flameTexture)) {
-				TextureAssets.ItemFlame[Item.type] = ModContent.GetTexture(flameTexture);
+			if (ModContent.RequestIfExists<Texture2D>(Texture + "_Flame", out var flameTexture)) {
+				TextureAssets.ItemFlame[Item.type] = flameTexture;
 			}
 
 			if (DisplayName.IsDefault())

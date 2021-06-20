@@ -1,26 +1,82 @@
 --- src/Terraria/ReLogic/Content/Readers/PngReader.cs
 +++ src/tModLoader/ReLogic/Content/Readers/PngReader.cs
-@@ -42,10 +_,23 @@
- #else
- 			var img = Image.Load(stream);
- 			Image<Rgba32> bmp = img.CloneAs<Rgba32>();
-+
- 			bmp.TryGetSinglePixelSpan(out Span<Rgba32> colors);
+@@ -1,17 +_,14 @@
+ using Color = Microsoft.Xna.Framework.Color;
+ using Microsoft.Xna.Framework.Graphics;
+-#if NETCORE
+-using SixLabors.ImageSharp;
+-using SixLabors.ImageSharp.PixelFormats;
+-#endif
+ using System;
+ using System.IO;
+ using System.Threading;
++using System.Threading.Tasks;
++using System.Diagnostics;
  
-+			//Pre-multiply colors.
-+			for (int i = 0; i < colors.Length; i++) {
-+				ref var color = ref colors[i];
-+				float alpha = color.A / (float)byte.MaxValue;
+ namespace ReLogic.Content.Readers
+ {
+-	public class PngReader : IAssetReader, IDisposable
++	public class PngReader : IAssetReader, IDisposable {
+-	{
+ 		private readonly GraphicsDevice _graphicsDevice;
+ 		private readonly ThreadLocal<Color[]> _colorProcessingCache;
+ 		private bool _disposedValue;
+@@ -20,12 +_,13 @@
+ 			_graphicsDevice = graphicsDevice;
+ 			_colorProcessingCache = new ThreadLocal<Color[]>();
+ 		}
+-
+-		public T FromStream<T>(Stream stream) where T : class {
++		public async ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class {
+ 			if (typeof(T) != typeof(Texture2D))
+ 				throw AssetLoadException.FromInvalidReader<PngReader, T>();
+ 
+ #if !NETCORE
++			await mainThreadCtx;
 +
-+				color.R = (byte)(color.R * alpha);
-+				color.G = (byte)(color.G * alpha);
-+				color.B = (byte)(color.B * alpha);
-+			}
+ 			Texture2D texture2D = Texture2D.FromStream(_graphicsDevice, stream);
+ 			int num = texture2D.Width * texture2D.Height;
+ 			if (!_colorProcessingCache.IsValueCreated || _colorProcessingCache.Value.Length < num)
+@@ -40,14 +_,28 @@
+ 			texture2D.SetData(value, 0, num);
+ 			return texture2D as T;
+ #else
+-			var img = Image.Load(stream);
+-			Image<Rgba32> bmp = img.CloneAs<Rgba32>();
+-			bmp.TryGetSinglePixelSpan(out Span<Rgba32> colors);
+-
+-			Texture2D texture2D = new Texture2D(_graphicsDevice, bmp.Width, bmp.Height);
+-			texture2D.SetData(colors.ToArray());
++			IntPtr img = FNA3D.ReadImageStream(stream, out int width, out int height, out int len);
++			PreMultiplyAlpha(img, len);
 +
- 			Texture2D texture2D = new Texture2D(_graphicsDevice, bmp.Width, bmp.Height);
++			await mainThreadCtx;
++			Debug.Assert(mainThreadCtx.IsCompleted);
 +
- 			texture2D.SetData(colors.ToArray());
-+
++			var texture2D = new Texture2D(_graphicsDevice, width, height);
++			texture2D.SetDataPointerEXT(0, null, img, len);
++			FNA3D.FNA3D_Image_Free(img);
  			return texture2D as T;
  #endif
++		}
++
++		private unsafe void PreMultiplyAlpha(IntPtr img, int len) {
++			byte* colors = (byte*)img.ToPointer();
++
++			for (int i = 0; i < len; i += 4) {
++				int a = colors[i+3];
++				colors[i] = (byte)(colors[i] * a / byte.MaxValue);
++				colors[i + 1] = (byte)(colors[i + 1] * a / byte.MaxValue);
++				colors[i + 2] = (byte)(colors[i + 2] * a / byte.MaxValue);
++			}
  		}
+ 
+ 		protected virtual void Dispose(bool disposing) {
+@@ -62,7 +_,5 @@
+ 		public void Dispose() {
+ 			Dispose(disposing: true);
+ 		}
+-
+-		public Type[] GetAssociatedTypes() => new[] { typeof(Texture2D) };
+ 	}
+ }

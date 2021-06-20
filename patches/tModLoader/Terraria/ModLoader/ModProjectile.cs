@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,8 +13,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of ModProjectile (preferably overriding this class) to pass as parameters to Mod.AddProjectile.
 	/// </summary>
-	public abstract class ModProjectile : ModTexturedType
-	{
+	public abstract class ModProjectile : ModTexturedType {
 		/// <summary> The projectile object that this ModProjectile controls. </summary>
 		public Projectile Projectile { get; internal set; }
 
@@ -39,7 +39,7 @@ namespace Terraria.ModLoader
 		public bool DrawHeldProjInFrontOfHeldItemAndArms { get; set; }
 
 		/// <summary> The file name of this projectile's glow texture file in the mod loader's file space. If it does not exist it is ignored. </summary>
-		public virtual string GlowTexture => Texture + "_Glow";
+		public virtual string GlowTexture => Texture + "_Glow"; //TODO: this is wasteful. We should consider AutoStaticDefaults or something... requesting assets regularly is bad perf
 
 		/// <summary>  Shorthand for projectile.type; </summary>
 		public int Type => Projectile.type;
@@ -119,7 +119,7 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			TextureAssets.Projectile[Projectile.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Projectile[Projectile.type] = ModContent.Request<Texture2D>(Texture);
 			Main.projFrames[Projectile.type] = 1;
 			if (Projectile.hostile) {
 				Main.projHostile[Projectile.type] = true;
