@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework.Audio;
 using ReLogic.Content;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria.Audio;
 
 namespace Terraria.ModLoader
@@ -12,7 +13,7 @@ namespace Terraria.ModLoader
 	{
 		private class SoundData
 		{
-			public Asset<SoundEffect> soundEffect;
+			public SoundEffect soundEffect;
 			public SoundEffectInstance soundEffectInstance;
 		}
 
@@ -25,39 +26,12 @@ namespace Terraria.ModLoader
 		internal static readonly IDictionary<int, int> itemToMusic = new Dictionary<int, int>();
 		internal static readonly IDictionary<int, IDictionary<int, int>> tileToMusic = new Dictionary<int, IDictionary<int, int>>();
 
-		private static readonly List<SoundData> Sounds = new List<SoundData>();
-		private static readonly Dictionary<string, SoundData> SoundsByFullPath = new Dictionary<string, SoundData>();
-		private static readonly Dictionary<string, Dictionary<string, SoundData>> SoundsByModAndPath = new Dictionary<string, Dictionary<string, SoundData>>();
-
-		public static int SoundCount => Sounds.Count;
-
-		/// <summary> Gets a SoundEffect Asset object. This throws exceptions on failure. </summary>
-		/// <exception cref="KeyNotFoundException"/>
-		public static Asset<SoundEffect> GetSound(string soundPath) => SoundsByFullPath[soundPath].soundEffect;
-
-		/// <summary> Gets a SoundEffect Asset object. This throws exceptions on failure. </summary>
-		/// <exception cref="KeyNotFoundException"/>
-		public static Asset<SoundEffect> GetSound(string modName, string soundPath) => SoundsByModAndPath[modName][soundPath].soundEffect;
+		private static readonly Dictionary<Asset<SoundEffect>, SoundData> soundEffectInstances = new();
 
 		internal static void AutoloadSounds(Mod mod) {
-			string modName = mod.Name;
-
-			foreach (string soundPathWithExtension in mod.Assets.EnumeratePaths<SoundEffect>()) {
-				string soundPath = Path.ChangeExtension(soundPathWithExtension, null);
-				var data = new SoundData {
-					soundEffect = mod.Assets.Request<SoundEffect>(soundPathWithExtension, AssetRequestMode.ImmediateLoad)
-				};
-
-				if (!SoundsByModAndPath.TryGetValue(modName, out var modSoundSlots)) {
-					SoundsByModAndPath[modName] = modSoundSlots = new Dictionary<string, SoundData>();
-				}
-
-				modSoundSlots[soundPath] = data;
-				modSoundSlots[soundPathWithExtension] = data;
-				SoundsByFullPath[modName + '/' + soundPath] = data;
-				SoundsByFullPath[modName + '/' + soundPathWithExtension] = data;
-
-				Sounds.Add(data);
+			// do some preloading here to avoid stuttering when playing a sound ingame
+			foreach (string path in mod.RootContentSource.EnumerateAssets().Where(s => s.Contains("Sounds"+Path.DirectorySeparatorChar))) {
+				mod.Assets.Request<SoundEffect>(path, AssetRequestMode.AsyncLoad);
 			}
 
 			/*foreach (string music in musics.Keys.Where(t => t.StartsWith("Sounds/"))) {
@@ -78,29 +52,32 @@ namespace Terraria.ModLoader
 				Main.music[i].Stop(AudioStopOptions.Immediate);
 			}*/
 
-			Sounds.Clear();
-			SoundsByFullPath.Clear();
+			foreach (var soundData in soundEffectInstances.Values)
+				soundData.soundEffectInstance?.Dispose();
+
+			soundEffectInstances.Clear();
 
 			musicToItem.Clear();
 			itemToMusic.Clear();
 			tileToMusic.Clear();
 		}
 
-		internal static bool PlayModSound(int type, int style, float volume, float pan, ref SoundEffectInstance soundEffectInstance) {
-			if (type != CustomSoundType || style < 0 || style >= SoundCount) {
-				return false;
+		internal static bool PlayModSound(Asset<SoundEffect> sound, float volume, float pan, ref SoundEffectInstance soundEffectInstance) {
+			if (!soundEffectInstances.TryGetValue(sound, out var soundData))
+				soundEffectInstances[sound] = soundData = new();
+
+			soundData.soundEffectInstance?.Stop();
+
+			var soundEffect = sound.Value;
+			if (soundData.soundEffect != soundEffect) { // if the asset's value has been changed, recreate the underlying instance
+				soundData.soundEffectInstance?.Dispose();
+				soundData.soundEffectInstance = soundEffect.CreateInstance();
 			}
 
-			var soundData = Sounds[style];
-
-			soundEffectInstance = soundData.soundEffectInstance ??= soundData.soundEffect.Value.CreateInstance();
-
-			soundEffectInstance.Stop();
-
+			soundEffectInstance = soundData.soundEffectInstance;
 			soundEffectInstance.Volume = volume;
 			soundEffectInstance.Pan = pan;
 			soundEffectInstance.Pitch = 0f;
-
 			return true;
 		}
 	}

@@ -1,45 +1,37 @@
 using Microsoft.Xna.Framework.Audio;
-using System.IO;
+using ReLogic.Content;
 using Terraria.Audio;
 
 namespace Terraria.ModLoader
 {
 	public class ModSoundStyle : SoundStyle
 	{
-		public readonly string ModName;
 		public readonly string SoundPath;
 		public readonly int Variations;
 
-		private string pathWithoutExtension;
-		private string extension;
+		private Asset<SoundEffect>[] variants;
+		private Asset<SoundEffect> effect;
 
 		public override bool IsTrackable => true;
 
 		public ModSoundStyle(string soundPath, int variations = 0, SoundType type = SoundType.Sound, float volume = 1.0f, float pitch = 0f, float pitchVariance = 0f) : base(volume, pitch, pitchVariance, type) {
-			ModContent.SplitName(soundPath, out ModName, out SoundPath);
-
-			Variations = variations;
-
-			Setup();
-		}
-
-		public ModSoundStyle(string modName, string soundPath, int variations = 0, SoundType type = SoundType.Sound, float volume = 1.0f, float pitch = 0f, float pitchVariance = 0f) : base(volume, pitch, pitchVariance, type) {
-			ModName = modName;
 			SoundPath = soundPath;
 			Variations = variations;
-
-			Setup();
+			if (variations > 0)
+				variants = new Asset<SoundEffect>[variations];
 		}
 
 		public override SoundEffect GetRandomSound() {
-			string path = Variations == 0 ? SoundPath : pathWithoutExtension + (Main.rand.Next(Variations) + 1) + extension;
+			Asset<SoundEffect> asset;
+			if (Variations == 0) {
+				asset = effect ??= ModContent.Request<SoundEffect>(SoundPath, AssetRequestMode.ImmediateLoad);
+			}
+			else {
+				int variant = Main.rand.Next(Variations);
+				asset = variants[variant] ??= ModContent.Request<SoundEffect>(SoundPath + (variant + 1), AssetRequestMode.ImmediateLoad);
+			}
 
-			return SoundLoader.GetSound(ModName, path).Value;
-		}
-
-		private void Setup() {
-			extension = Path.GetExtension(SoundPath);
-			pathWithoutExtension = Path.ChangeExtension(SoundPath, null);
+			return asset.Value;
 		}
 	}
 }
