@@ -134,7 +134,7 @@
 		"ModPackEnableOnlyThisList": "Activar solo esta lista",
 		"ModPackUpdateListWithEnabled": "Actualizar lista con mods activados",
 		"ModPackViewModsInModBrowser": "Ver mods en el Navegador de Mods",
-		"ModPackModsAvailableStatus": "{0} totales, {1} activo(s), {2} desactivado(s), {3} faltante(s)",
+		"ModPackModsAvailableStatus": "{0} totales, {1} activ., {2} desactiv., {3} faltante(s)",
 		"ModPackModsMissing": "No se han encontrado los siguientes mods:\n{0}",
 		"ModPackModsContained": "Esta lista contiene los siguientes mods:\n{0}",
 		"ModPackMissing": " - Faltante",
