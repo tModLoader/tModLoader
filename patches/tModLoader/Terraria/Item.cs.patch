@@ -8,11 +8,12 @@
  using Terraria.Audio;
  using Terraria.Enums;
  using Terraria.GameContent;
-@@ -10,10 +_,11 @@
+@@ -10,10 +_,12 @@
  using Terraria.ID;
  using Terraria.UI;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.IO;
  
  namespace Terraria
  {
@@ -21,23 +22,38 @@
  	{
  		private string _nameOverride;
  		public const int luckPotionDuration1 = 10800;
-@@ -60,6 +_,8 @@
+@@ -50,7 +_,7 @@
+ 		public int tileWand = -1;
+ 		public bool wornArmor;
+ 		public int tooltipContext = -1;
+-		public byte dye;
++		public int dye; //TML: Changed from byte to int.
+ 		public int fishingPole = 1;
+ 		public int bait;
+ 		public static int coinGrabRange = 350;
+@@ -60,8 +_,10 @@
  		public short makeNPC;
  		public bool expertOnly;
  		public bool expert;
 +		public bool masterOnly;
 +		public bool master;
  		public bool isAShopItem;
- 		public short hairDye = -1;
+-		public short hairDye = -1;
++		public int hairDye = -1; //TML: Changed from short to int.
  		public byte paint;
-@@ -147,10 +_,42 @@
+ 		public bool instanced;
+ 		public int ownIgnore = -1;
+@@ -146,11 +_,44 @@
+ 		public bool DD2Summon;
  		public int netID;
  		public int crit;
- 		public byte prefix;
+-		public byte prefix;
 -		public bool melee;
 -		public bool magic;
 -		public bool ranged;
 -		public bool summon;
++		public int prefix; //TML: Changed from byte to int.
++
 +		internal bool melee {
 +			get => CountsAsClass(DamageClass.Melee);
 +			set {
@@ -77,18 +93,20 @@
  		public bool sentry;
  		public int reuseDelay;
  		public bool newAndShiny;
-@@ -158,6 +_,16 @@
+@@ -158,6 +_,18 @@
  		public const int WALL_PLACEMENT_USETIME = 7;
  		public static int numberOfNewItems = 0;
  
 +		public Item() { } // EntryFilter complains if item doesn't have a parameterless constructor (even when the parameter is optional).
 +
-+		public Item(int setDefaultsToType, int stack = 1) {
++		public Item(int setDefaultsToType, int stack = 1, int prefix = 0) {
 +			SetDefaults(setDefaultsToType);
 +
-+			if (setDefaultsToType > 0) {
++			if (setDefaultsToType > 0)
 +				this.stack = stack;
-+			}
++
++			if (prefix != 0)
++				Prefix(prefix);
 +		}
 +
  		public string Name => _nameOverride ?? Lang.GetItemNameValue(type);
@@ -235,7 +253,7 @@
  						break;
  				}
 +				if (num >= PrefixID.Count)
-+					PrefixLoader.GetPrefix((byte)num)?.SetStats(ref num2, ref num3, ref num4, ref num5, ref num6, ref num7, ref num8);
++					PrefixLoader.GetPrefix(num)?.SetStats(ref num2, ref num3, ref num4, ref num5, ref num6, ref num7, ref num8);
  
  				if (num2 != 1f && Math.Round((float)damage * num2) == (double)damage) {
  					flag = true;
@@ -244,7 +262,7 @@
  				}
  
 +				if (num >= PrefixID.Count)
-+					PrefixLoader.GetPrefix((byte)num)?.ValidateItem(this, ref flag);
++					PrefixLoader.GetPrefix(num)?.ValidateItem(this, ref flag);
 +
  				if (pre == -2 && num == 0) {
  					num = -1;
@@ -261,7 +279,7 @@
  			shootSpeed *= num6;
  			crit += num8;
 +			if (num >= PrefixID.Count)
-+				PrefixLoader.GetPrefix((byte)num)?.Apply(this);
++				PrefixLoader.GetPrefix(num)?.Apply(this);
 +
  			float num14 = 1f * num2 * (2f - num4) * (2f - num7) * num5 * num3 * num6 * (1f + (float)num8 * 0.02f);
  			if (num == 62 || num == 69 || num == 73 || num == 77)
@@ -271,13 +289,13 @@
  				num14 *= 1.2f;
  
 +			if (num >= PrefixID.Count)
-+				PrefixLoader.GetPrefix((byte)num)?.ModifyValue(ref num14);
++				PrefixLoader.GetPrefix(num)?.ModifyValue(ref num14);
 +
 +			int baseRarity = rare;
  			if ((double)num14 >= 1.2)
  				rare += 2;
  			else if ((double)num14 >= 1.05)
-@@ -1075,12 +_,15 @@
+@@ -1075,17 +_,20 @@
  			else if ((double)num14 <= 0.95)
  				rare--;
  
@@ -295,6 +313,12 @@
  			}
  
  			num14 *= num14;
+ 			value = (int)((float)value * num14);
+-			prefix = (byte)num;
++			prefix = num;
+ 			return true;
+ 		}
+ 
 @@ -1118,6 +_,8 @@
  		public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
  
@@ -554,7 +578,7 @@
  			if (type == 0) {
  				netID = 0;
  				stack = 0;
-@@ -44739,6 +_,20 @@
+@@ -44739,7 +_,21 @@
  				SetDefaults5(type);
  			}
  
@@ -572,9 +596,11 @@
 +				master = true;
 +			}
 +
- 			dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(type);
+-			dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(type);
++			dye = GameShaders.Armor.GetShaderIdFromItemId(type);
  			if (hairDye != 0)
  				hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
+ 
 @@ -44888,11 +_,12 @@
  				maxStack = 999;
  
@@ -760,6 +786,15 @@
  		}
  
  		public void OnPurchase(Item item) {
+@@ -46205,7 +_,7 @@
+ 			if (context == ItemSerializationContext.SavingAndLoading) {
+ 				writer.Write(netID);
+ 				writer.Write(stack);
+-				writer.Write(prefix);
++				ItemIO.WriteByteVanillaPrefix(this, writer);
+ 			}
+ 		}
+ 
 @@ -46216,7 +_,7 @@
  				Prefix(reader.ReadByte());
  			}

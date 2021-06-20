@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
-@@ -1,41 +_,44 @@
+@@ -1,41 +_,45 @@
  using System;
  using System.Collections.Generic;
 +using System.Linq;
@@ -8,6 +8,7 @@
  using Terraria.ID;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Utilities;
  
  namespace Terraria
  {
