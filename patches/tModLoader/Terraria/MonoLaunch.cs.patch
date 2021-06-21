@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/MonoLaunch.cs
 +++ src/tModLoader/Terraria/MonoLaunch.cs
-@@ -5,11 +_,14 @@
+@@ -5,7 +_,9 @@
  using System.Linq;
  using System.Reflection;
  using System.Runtime.InteropServices;
@@ -10,12 +10,15 @@
  
  internal static class MonoLaunch
  {
+@@ -14,6 +_,7 @@
+ #endif
+ 	
  	private static void Main(string[] args) {
 +		/*
  		// FNA is requested by both Terraria and ReLogic.dll
  		var loaded = new Dictionary<string, Assembly>();
  
-@@ -32,24 +_,30 @@
+@@ -36,28 +_,34 @@
  				return assembly;
  			}
  		};
@@ -32,21 +35,25 @@
  #if NETCORE
 -	private static IntPtr ResolveNativeLibrary(string name, Assembly assembly, DllImportSearchPath? searchPath) {
 +	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name) {
- 		try {
- 			if (assemblies.TryGetValue(name, out var handle)) {
- 				return handle;
- 			}
--			Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
-+			Logging.tML.Debug($"Native Resolve: {assembly.FullName} -> {name}");
+ 		lock (resolverLock) {
+ 			try {
+ 				if (assemblies.TryGetValue(name, out var handle)) {
+ 					return handle;
+ 				}
+ 				
+-				Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
++				Logging.tML.Debug($"Native Resolve: {assembly.FullName} -> {name}");
  
- 			var dir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", getNativeDir(name));
- 			var files = Directory.GetFiles(dir, $"*{name}*", SearchOption.AllDirectories);
- 			var match = files.FirstOrDefault();
--			Console.WriteLine(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
-+			Logging.tML.Debug(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
- 			if (match != null && NativeLibrary.TryLoad(match, out handle)) {
--				Console.WriteLine("\tsuccess");
-+				Logging.tML.Debug("\tsuccess");
- 				return assemblies[name] = handle;
- 			}
- 			return assemblies[name] = IntPtr.Zero;
+ 				var dir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", getNativeDir(name));
+ 				var files = Directory.GetFiles(dir, $"*{name}*", SearchOption.AllDirectories);
+ 				var match = files.FirstOrDefault();
+ 				
+-				Console.WriteLine(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
++				Logging.tML.Debug(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
+ 				
+ 				if (match != null && NativeLibrary.TryLoad(match, out handle)) {
+-					Console.WriteLine("\tsuccess");
++					Logging.tML.Debug("\tsuccess");
+ 					return assemblies[name] = handle;
+ 				}
+ 				
