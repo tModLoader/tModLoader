@@ -9,6 +9,10 @@ using Terraria;
 
 internal static class MonoLaunch
 {
+#if NETCORE
+	public static readonly object resolverLock = new object();
+#endif
+	
 	private static void Main(string[] args) {
 		// FNA is requested by both Terraria and ReLogic.dll
 		var loaded = new Dictionary<string, Assembly>();
@@ -38,24 +42,30 @@ internal static class MonoLaunch
 
 #if NETCORE
 	private static IntPtr ResolveNativeLibrary(string name, Assembly assembly, DllImportSearchPath? searchPath) {
-		try {
-			if (assemblies.TryGetValue(name, out var handle)) {
-				return handle;
-			}
-			Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
+		lock (resolverLock) {
+			try {
+				if (assemblies.TryGetValue(name, out var handle)) {
+					return handle;
+				}
+				
+				Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
 
-			var dir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", getNativeDir(name));
-			var files = Directory.GetFiles(dir, $"*{name}*", SearchOption.AllDirectories);
-			var match = files.FirstOrDefault();
-			Console.WriteLine(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
-			if (match != null && NativeLibrary.TryLoad(match, out handle)) {
-				Console.WriteLine("\tsuccess");
-				return assemblies[name] = handle;
+				var dir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", getNativeDir(name));
+				var files = Directory.GetFiles(dir, $"*{name}*", SearchOption.AllDirectories);
+				var match = files.FirstOrDefault();
+				
+				Console.WriteLine(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
+				
+				if (match != null && NativeLibrary.TryLoad(match, out handle)) {
+					Console.WriteLine("\tsuccess");
+					return assemblies[name] = handle;
+				}
+				
+				return assemblies[name] = IntPtr.Zero;
 			}
-			return assemblies[name] = IntPtr.Zero;
-		}
-		catch (DirectoryNotFoundException e) {
-			throw new DirectoryNotFoundException("A needed library file was missing from the tModLoader directory. " + e.Message, e);
+			catch (DirectoryNotFoundException e) {
+				throw new DirectoryNotFoundException("A needed library file was missing from the tModLoader directory. " + e.Message, e);
+			}
 		}
 	}
 	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
