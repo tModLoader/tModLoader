@@ -1,6 +1,6 @@
 --- src/Terraria/ReLogic/Content/AssetRepository.cs
 +++ src/tModLoader/ReLogic/Content/AssetRepository.cs
-@@ -1,89 +_,180 @@
+@@ -1,89 +_,184 @@
 +using ReLogic.Content.Readers;
  using ReLogic.Content.Sources;
  using System;
@@ -165,8 +165,12 @@
  			}
  		}
  
++		// Exists to change the default parameter of 'mode' (from Immediate to Async) for modders, but not the base game.
++		internal Asset<T> Request<T>(string assetName) where T : class
++			=> Request<T>(assetName, AssetRequestMode.ImmediateLoad);
++
 -		public Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class {
-+		public virtual Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class {
++		public virtual Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class {
  			ThrowIfDisposed();
  			assetName = AssetPathHelper.CleanPath(assetName);
 -			lock (_requestLock) {
