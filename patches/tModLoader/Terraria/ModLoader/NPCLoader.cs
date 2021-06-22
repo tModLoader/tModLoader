@@ -857,8 +857,8 @@ namespace Terraria.ModLoader
 			return GetNPC(type)?.TownNPCName() ?? "";
 		}
 
-		public static bool SpawnsWithCustomName(int type) {
-			return GetNPC(type)?.SpawnsWithCustomName() ?? false;
+		public static bool? SpawnsWithCustomName(int type) {
+			return GetNPC(type)?.SpawnsWithCustomName();
 		}
 
 		public static bool ActsLikeATownNPC(NPC npc) {
