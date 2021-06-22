@@ -22,7 +22,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public class Multiple : Position, IEnumerable {
+		public class Multiple : Position, IEnumerable
+		{
 			public delegate bool Condition(PlayerDrawSet drawInfo);
 			public IList<(Between, Condition)> Positions { get; } = new List<(Between, Condition)>();
 
