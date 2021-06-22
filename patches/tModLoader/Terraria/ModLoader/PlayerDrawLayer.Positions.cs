@@ -4,10 +4,12 @@ using Terraria.DataStructures;
 
 namespace Terraria.ModLoader
 {
-	public abstract partial class PlayerDrawLayer {
+	public abstract partial class PlayerDrawLayer
+	{
 		public abstract class Position { }
 
-		public sealed class Between : Position {
+		public sealed class Between : Position
+		{
 			public PlayerDrawLayer Layer1 { get; }
 			public PlayerDrawLayer Layer2 { get; }
 
@@ -29,7 +31,8 @@ namespace Terraria.ModLoader
 			public IEnumerator GetEnumerator() => Positions.GetEnumerator();
 		}
 
-		public class BeforeParent : Position {
+		public class BeforeParent : Position
+		{
 			public PlayerDrawLayer Parent { get; }
 
 			public BeforeParent(PlayerDrawLayer parent) {
@@ -37,7 +40,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public class AfterParent : Position {
+		public class AfterParent : Position
+		{
 			public PlayerDrawLayer Parent { get; }
 
 			public AfterParent(PlayerDrawLayer parent) {
