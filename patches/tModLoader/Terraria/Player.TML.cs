@@ -118,14 +118,14 @@ namespace Terraria
 		public bool InModBiome(ModBiome baseInstance) => modBiomeFlags[baseInstance.ZeroIndexType];
 
 		/// <summary>
-		/// The zone property storing if the player is in the purity/forest biome. Updated in <see cref="UpdateBiomes"/>
+		/// The zone property storing if the player is in the forest/purity biome. Updated in <see cref="UpdateBiomes"/>
 		/// </summary>
-		public bool ZonePurity { get; set; } = false;
+		public bool ZoneForest { get; set; } = false;
 
 		/// <summary>
-		/// Calculates whether or not the player is in the purity/forest biome.
+		/// Calculates whether or not the player is in the forest/purity biome.
 		/// </summary>
-		public bool InZonePurity() {
+		public bool InZoneForest() {
 			bool one = ZoneBeach || ZoneCorrupt || ZoneCrimson || ZoneDesert || ZoneDungeon || ZoneGemCave;
 			bool two = ZoneGlowshroom || ZoneGranite || ZoneGraveyard || ZoneHallow || ZoneHive || ZoneJungle;
 			bool three = ZoneLihzhardTemple || ZoneMarble || ZoneMeteor || ZoneSnow || ZoneUnderworldHeight;
