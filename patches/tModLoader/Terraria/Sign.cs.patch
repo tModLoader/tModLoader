@@ -1,0 +1,29 @@
+--- src/Terraria/Terraria/Sign.cs
++++ src/tModLoader/Terraria/Sign.cs
+@@ -1,3 +_,6 @@
++using Terraria.ModLoader;
++
++
+ namespace Terraria
+ {
+ 	public class Sign
+@@ -54,6 +_,19 @@
+ 				Main.sign[i] = null;
+ 			else
+ 				Main.sign[i].text = text;
++		}
++
++		public static void TextDidChange(int i) {
++			if (Main.tile[Main.sign[i].x, Main.sign[i].y] == null || !Main.tile[Main.sign[i].x, Main.sign[i].y].active() || !Main.tileSign[Main.tile[Main.sign[i].x, Main.sign[i].y].type])
++				//Do nothing.
++			else 
++			{
++				int x = Main.sign[i].x;
++				int y = Main.sign[i].y;
++				ushort type = Main.tile[x, y].type;
++				ModTile tile = ModContent.GetModTile(type);
++				tile.SignDidChange(x, y);
++			}
+ 		}
+ 
+ 		public override string ToString() => "x" + x + "\ty" + y + "\t" + text;
