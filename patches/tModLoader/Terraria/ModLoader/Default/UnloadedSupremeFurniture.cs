@@ -6,7 +6,8 @@ using Terraria.ObjectData;
 
 namespace Terraria.ModLoader.Default
 {
-	public class UnloadedSupremeFurniture : UnloadedTile {
+	public class UnloadedSupremeFurniture : UnloadedTile
+	{
 		public override string Texture => "ModLoader/UnloadedSupremeFurniture";
 
 		public override void SetDefaults() {
