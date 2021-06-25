@@ -18,13 +18,14 @@ namespace ExampleMod.Content.Items
 					new ArmorShaderData(new Ref<Effect>(Mod.GetEffect("Assets/Effects/ExampleEffect").Value), "ExampleDyePass") //Be sure to update the effect path and pass name here.
 				);
 			}
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
 		}
 
 		public override void SetDefaults() {
 			// Item.dye will already be assigned to this item prior to SetDefaults because of the above GameShaders.Armor.BindShader code in Load(). 
 			// This code here remembers Item.dye so that information isn't lost during CloneDefaults.
-			byte dye = Item.dye;
+			int dye = Item.dye;
 
 			Item.CloneDefaults(ItemID.GelDye); // Makes the item copy the attributes of the item "Gel Dye" Change "GelDye" to whatever dye type you want.
 

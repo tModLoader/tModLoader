@@ -6,7 +6,8 @@ using Terraria.ObjectData;
 
 namespace Terraria.ModLoader.Default
 {
-	public class UnloadedSemiSolidTile : UnloadedTile {
+	public class UnloadedSemiSolidTile : UnloadedTile
+	{
 		public override string Texture => "ModLoader/UnloadedSemiSolidTile";
 
 		public override void SetDefaults() {

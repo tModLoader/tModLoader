@@ -21,6 +21,7 @@ using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.ModLoader.Utilities;
 
 namespace Terraria.ModLoader
 {

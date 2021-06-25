@@ -239,6 +239,7 @@ namespace Terraria.ModLoader
 			trees.Clear();
 			palmTrees.Clear();
 			cacti.Clear();
+			Main.instance.TilePaintSystem.Reset();
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsChair, vanillaChairCount);
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTable, vanillaTableCount);
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTorch, vanillaTorchCount);

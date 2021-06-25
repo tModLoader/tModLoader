@@ -109,7 +109,7 @@
  		public float moveSpeed = 1f;
  		public float pickSpeed = 1f;
  		public float wallSpeed = 1f;
-@@ -1105,8 +_,26 @@
+@@ -1105,12 +_,30 @@
  		public bool oldAdjWater;
  		public bool oldAdjHoney;
  		public bool oldAdjLava;
@@ -138,6 +138,11 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
+-		public byte hairDye;
++		public int hairDye; //TML: Changed from byte to int.
+ 		public Color hairDyeColor = Color.Transparent;
+ 		public float hairDyeVar;
+ 		public int skinDyePacked;
 @@ -2034,6 +_,7 @@
  		public void SetTalkNPC(int npcIndex, bool fromNet = false) {
  			talkNPC = npcIndex;
@@ -3517,7 +3522,7 @@
  
  							List<ushort> ignoreList2 = ItemCheck_GetTileCutIgnoreList(item);
  							ItemCheck_CutTiles(item, itemRectangle, ignoreList2);
-@@ -29976,6 +_,9 @@
+@@ -29976,27 +_,32 @@
  				}
  
  				if (ItemTimeIsZero && itemAnimation > 0) {
@@ -3527,7 +3532,10 @@
  					if (item.hairDye >= 0) {
  						ApplyItemTime(item);
  						if (whoAmI == Main.myPlayer) {
-@@ -29985,18 +_,20 @@
+-							hairDye = (byte)item.hairDye;
++							hairDye = item.hairDye;
+ 							NetMessage.SendData(4, -1, -1, null, whoAmI);
+ 						}
  					}
  
  					if (item.healLife > 0) {
@@ -4349,7 +4357,7 @@
  						binaryWriter.Write(playerFile.GetPlayTime().Ticks);
  						binaryWriter.Write(player.hair);
 -						binaryWriter.Write(player.hairDye);
-+						PlayerIO.WriteVanillaHairDye(player.hairDye, binaryWriter);
++						PlayerIO.WriteByteVanillaHairDye(player.hairDye, binaryWriter);
  						BitsByte bb = (byte)0;
  						for (int i = 0; i < 8; i++) {
  							bb[i] = player.hideVisibleAccessory[i];

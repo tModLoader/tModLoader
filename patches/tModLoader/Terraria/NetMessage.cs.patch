@@ -49,6 +49,20 @@
  						break;
  					case 3:
  						writer.Write((byte)remoteClient);
+@@ -106,7 +_,12 @@
+ 							writer.Write((byte)player5.skinVariant);
+ 							writer.Write((byte)player5.hair);
+ 							writer.Write(player5.name);
++
++							if (ModNet.AllowVanillaClients)
++								PlayerIO.WriteByteVanillaHairDye(player5.hairDye, writer);
++							else
+-							writer.Write(player5.hairDye);
++								writer.WriteVarInt(player5.hairDye);
++
+ 							BitsByte bb6 = (byte)0;
+ 							for (int num13 = 0; num13 < 8; num13++) {
+ 								bb6[num13] = player5.hideVisibleAccessory[num13];
 @@ -157,12 +_,21 @@
  
  							num8 = item5.stack;
