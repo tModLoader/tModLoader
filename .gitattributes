@@ -1,3 +1,1 @@
-solutions/ReleaseExtras/Terraria text eol=lf
-solutions/ReleaseExtras/tModLoader-mono text eol=lf
-solutions/ReleaseExtras/tModLoader-kick text eol=lf
+*.sh text eol=lf
