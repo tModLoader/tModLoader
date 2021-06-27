@@ -1,6 +1,6 @@
 {
 	"tModLoader": {
-		// Main Menu // Głowne Menu
+		// Main Menu // Menu Główne
 		"PatreonSupport": "Wesprzyj nas: ",
 		"MenuModBrowser": "Przeglądarka Modów",
 		"MenuMods": "Mody",
@@ -19,17 +19,17 @@
 		"ModsModPacks": "Paczki modów",
 		"ModsDisable": "Wyłącz",
 		"ModsEnable": "Włącz",
-		"ModsOpenConfig": "Kliknij, aby otworzyć konfiguracje",
+		"ModsOpenConfig": "Kliknij, aby otworzyć konfigurację",
 		"ModOldWarning": "Stary mod, aktywuj na własną odpowiedzialność",
 		"ModDependencyClickTooltip": "Ten mod wymaga moda: {0}\n (kliknij by włączyć)",
 		"ModDependencyModsNotFound": "Nie znaleziono następujących modów: {0}",
-		"ModDidNotFullyUnloadWarning": "Ten mod nie został w pełni rozładowany podczas ostatniego rozładunku.\n(This is a message for the mod creator)",
+		"ModDidNotFullyUnloadWarning": "Ten mod nie został w pełni rozładowany podczas ostatniego rozładunku.\n(To jest wiadomość dla twórcy moda)",
 		"BetaModCantPublish": "Ten mod został zbudowany w wersji beta - nie może zostać upubliczniony.",
 		"BetaModCantPublishError": "Nie możesz opublikować moda zbudowanego na wersji beta tModLoadera",
 		"OutdatedModCantPublishError": "Nie możesz opublikować moda zbudowanego na starszej wersji tModLoadera",
 		"ModReloadRequired": "Wymagane przeładowanie",
 		"ModReloadForced": "Przeładowanie wymuszone",
-		"ModIsServerSide": "Jest to mod serwerowy",
+		"ModIsServerSide": "To jest mod serwerowy",
 		"ModsByline": "Autor: {0}",
 		"ModsMoreInfo": "Więcej informacji",
 		"ModsOriginatedFromModBrowser": "Ten mod został pobrany z Przeglądarki Modów",
@@ -52,7 +52,7 @@
 		"ModsXBuffs": "{0} {^0:Wzmocnienie;Wzmocnienia;Wzmocnień}",
 		"ModsXMounts": "{0} {^0:Wierzchowiec;Wierzchowce;Wierzchowców}",
 		"ModsReloadAndReturn": "Przeładuj i wróć do menu światów",
-		"ModsNotFoundServer": "Modów nie znaleziono w: \"{0}\"\nJeśli korzystasz z serwera dedykowanego, możesz chcieć skorzystać z 'modpath' w wierszu polecenia lub ustawić konfiguracje serwera w celu określenia niestandardowego katalogu modów.\n",
+		"ModsNotFoundServer": "Nie znaleziono modów w: "{0}"\nJeśli korzystasz z serwera dedykowanego, możesz chcieć skorzystać z 'modpath' w wierszu polecenia lub z konfiguracji serwera w celu określenia niestandardowego katalogu modów.\n",",
 		"AskForModIndex": "Wpisz liczbę, aby przełączać między włączonymi/wyłączonymi modami",
 		"AskForCommand": "Wpisz komende: ",
 
@@ -228,8 +228,8 @@
 		"RemoveForcedMinimumZoomNo": "Usuń wymuszony minimalny zoomm: Wyłączone",
 		"AllowGreaterResolutionsYes": "Zezwalaj na większe rozdzielczości: Włączone",
 		"AllowGreaterResolutionsNo": "Zezwalaj na większe rozdzielczości: Wyłączone",
-		"ShowMemoryEstimatesYes": "Pokaż szacowane żużycie pamięci modów: Włączone",
-		"ShowMemoryEstimatesNo": "Pokaż szacowane żużycie pamięci modów: Wyłączone",
+		"ShowMemoryEstimatesYes": "Pokaż szacowane żużycie pamięci przez mody: Włączone",
+		"ShowMemoryEstimatesNo": "Pokaż szacowane żużycie pamięci przez mody: Wyłączone",
 		"ShowModMenuNotificationsYes": "Powiadom o odblokowaniu nowego motywu menu głównego: Włączone",
 		"ShowModMenuNotificationsNo": "Powiadom o odblokowaniu nowego motywu menu głównego: Wyłączone",
 		"ClearMBCredentials": "Wyczyść dane dostępowe Przeglądarki Modów",
@@ -269,7 +269,7 @@
 		"MSOpenSources": "Otwórz pliki źródłowe",
 		"MSManagePublished": "Zarządzaj opublikowanymi",
 		"MSPublish": "Opublikuj",
-		"MSModSourcesCantHaveSpaces": "(Foldery żródłowe modów nie mogą mieć spacji)",
+		"MSModSourcesCantHaveSpaces": "(Foldery źródłowe modów nie mogą mieć spacji)",
 		"MSCreateMod": "Stwórz Moda",
 
 		// Developer Mode UI
@@ -347,9 +347,9 @@
 		"Continue": "Kontynuuj",
 		"DeleteModConfirm": "Czy na pewno chcesz usunąć ten mod na stałe?",
 		"PatreonSetTooltip": "Dzięki za wsparcie!",
-		"WorldGenError": "Wystąpił problem podczas generacji świata",
+		"WorldGenError": "Wystąpił problem podczas generowania świata",
 		"WorldIODataException": "Gra napotkała problem z danymi moda dla świata.",
-		"ServerCrash": "Awaria serwera: {0}\n{1}\n\nProsze sprawdz server.log aby ustalić, czy mod jest odpowiedzialny za tą awarie, w przeciwnym razie napisz na #support na Discordzie tModLoadera",
+		"ServerCrash": "Awaria serwera: {0}\n{1}\n\nProszę sprawdź server.log aby ustalić, czy mod jest odpowiedzialny za tę awarię, w przeciwnym razie napisz na #support na Discordzie tModLoadera",
 
 		// MessageBox // Okno Dialogowe
 		// "ContentFolderNotFound": "Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.",
