@@ -92,21 +92,21 @@ namespace Terraria.ModLoader.IO
 				writer.Write((ushort)headSlots.Count);
 				foreach (int slot in headSlots) {
 					writer.Write((ushort)slot);
-					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Head][slot]);
+					ModItem item = ModContent.Get<ModItem>(EquipLoader.slotToId[EquipType.Head][slot]);
 					writer.Write(item.Mod.Name);
 					writer.Write(item.Name);
 				}
 				writer.Write((ushort)bodySlots.Count);
 				foreach (int slot in bodySlots) {
 					writer.Write((ushort)slot);
-					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Body][slot]);
+					ModItem item = ModContent.Get<ModItem>(EquipLoader.slotToId[EquipType.Body][slot]);
 					writer.Write(item.Mod.Name);
 					writer.Write(item.Name);
 				}
 				writer.Write((ushort)legSlots.Count);
 				foreach (int slot in legSlots) {
 					writer.Write((ushort)slot);
-					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Legs][slot]);
+					ModItem item = ModContent.Get<ModItem>(EquipLoader.slotToId[EquipType.Legs][slot]);
 					writer.Write(item.Mod.Name);
 					writer.Write(item.Name);
 				}

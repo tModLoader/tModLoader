@@ -133,7 +133,7 @@ namespace Terraria.ModLoader.IO
 				return "";
 
 			int itemId = GameShaders.Hair._reverseShaderLookupDictionary[hairDye];
-			var modItem = ItemLoader.GetItem(itemId);
+			var modItem = ModContent.Get<ModItem>(itemId);
 
 			return modItem.FullName;
 		}

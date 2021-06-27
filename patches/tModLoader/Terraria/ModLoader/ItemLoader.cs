@@ -67,18 +67,10 @@ namespace Terraria.ModLoader
 		}
 
 		internal static int ReserveItemID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding items breaks vanilla client compatibility");
+			if (ModNet.AllowVanillaClients)
+				throw new Exception("Adding items breaks vanilla client compatibility");
 
-			int reserveID = nextItem;
-			nextItem++;
-			return reserveID;
-		}
-
-		/// <summary>
-		/// Gets the ModItem instance corresponding to the specified type. Returns null if no modded item has the given type.
-		/// </summary>
-		public static ModItem GetItem(int type) {
-			return type >= ItemID.Count && type < ItemCount ? items[type - ItemID.Count] : null;
+			return nextItem++;
 		}
 
 		public static int ItemCount => nextItem;
@@ -153,7 +145,7 @@ namespace Terraria.ModLoader
 
 		internal static void SetDefaults(Item item, bool createModItem = true) {
 			if (IsModItem(item.type) && createModItem)
-				item.ModItem = GetItem(item.type).Clone(item);
+				item.ModItem = ModContent.Get<ModItem>(item.type).Clone(item);
 
 			GlobalItem Instantiate(GlobalItem g)
 				=> g.InstancePerEntity ? g.Clone(item, item) : g;
@@ -1057,8 +1049,7 @@ namespace Terraria.ModLoader
 		/// If the item is a modded item and ModItem.bossBagNPC is greater than 0, calls ModItem.OpenBossBag and sets npc to ModItem.bossBagNPC.
 		/// </summary>
 		public static void OpenBossBag(int type, Player player, ref int npc) {
-			ModItem modItem = GetItem(type);
-			if (modItem != null && modItem.BossBagNPC > 0) {
+			if (ModContent.TryGet<ModItem>(type, out var modItem) && modItem.BossBagNPC > 0) {
 				modItem.OpenBossBag(player);
 				npc = modItem.BossBagNPC;
 			}
@@ -1584,9 +1575,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookHoldoutOffset = AddHook<Func<int, Vector2?>>(g => g.HoldoutOffset);
 		public static void HoldoutOffset(float gravDir, int type, ref Vector2 offset) {
-			ModItem modItem = GetItem(type);
-
-			if (modItem != null) {
+			if (ModContent.TryGet<ModItem>(type, out var modItem)) {
 				Vector2? modOffset = modItem.HoldoutOffset();
 
 				if (modOffset.HasValue) {
@@ -1645,7 +1634,8 @@ namespace Terraria.ModLoader
 		private delegate void DelegateExtractinatorUse(int extractType, ref int resultType, ref int resultStack);
 		private static HookList HookExtractinatorUse = AddHook<DelegateExtractinatorUse>(g => g.ExtractinatorUse);
 		public static void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType) {
-			GetItem(extractType)?.ExtractinatorUse(ref resultType, ref resultStack);
+			if (ModContent.TryGet<ModItem>(extractType, out var modItem))
+				modItem.ExtractinatorUse(ref resultType, ref resultStack);
 
 			foreach (var g in HookExtractinatorUse.Enumerate(globalItemsArray)) {
 				g.ExtractinatorUse(extractType, ref resultType, ref resultStack);
@@ -1664,8 +1654,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookIsAnglerQuestAvailable = AddHook<Func<int, bool>>(g => g.IsAnglerQuestAvailable);
 		public static void IsAnglerQuestAvailable(int itemID, ref bool notAvailable) {
-			ModItem modItem = GetItem(itemID);
-			if (modItem != null)
+			if (ModContent.TryGet<ModItem>(itemID, out var modItem))
 				notAvailable |= !modItem.IsAnglerQuestAvailable();
 
 			foreach (var g in HookIsAnglerQuestAvailable.Enumerate(globalItemsArray)) {
@@ -1678,7 +1667,9 @@ namespace Terraria.ModLoader
 		public static string AnglerChat(int type) {
 			string chat = "";
 			string catchLocation = "";
-			GetItem(type)?.AnglerQuestChat(ref chat, ref catchLocation);
+
+			if (ModContent.TryGet<ModItem>(type, out var modItem))
+				modItem.AnglerQuestChat(ref chat, ref catchLocation);
 
 			foreach (var g in HookAnglerChat.Enumerate(globalItemsArray)) {
 				g.AnglerChat(type, ref chat, ref catchLocation);

@@ -207,7 +207,7 @@ namespace Terraria.ModLoader.IO
 				return null;
 
 			int type = Main.anglerQuestItemNetIDs[Main.anglerQuest];
-			var modItem = ItemLoader.GetItem(type);
+			var modItem = ModContent.Get<ModItem>(type);
 
 			return new TagCompound {
 				["mod"] = modItem.Mod.Name,

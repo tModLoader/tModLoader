@@ -351,9 +351,11 @@ namespace Terraria.ModLoader
 			if (itemType < ItemID.Count) {
 				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla item ID " + itemType);
 			}
-			if (ItemLoader.GetItem(itemType) == null) {
+
+			if (!ModContent.TryGet<ModItem>(itemType, out _)) {
 				throw new ArgumentOutOfRangeException("Item ID " + itemType + " does not exist");
 			}
+
 			if (tileType < TileID.Count) {
 				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla tile ID " + tileType);
 			}
