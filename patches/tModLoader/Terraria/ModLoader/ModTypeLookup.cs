@@ -75,7 +75,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static T Get(int id)
-			=> instancesById[id] ?? throw new Exception($"Couldn't find {typeof(T).Name} with id '{id}'.");
+			=> instancesById[id] ?? throw new KeyNotFoundException($"Couldn't find {typeof(T).Name} with id '{id}'.");
 
 		internal static bool TryGet(int id, out T result) {
 			if (id < 0 || id >= instancesById.Count) {

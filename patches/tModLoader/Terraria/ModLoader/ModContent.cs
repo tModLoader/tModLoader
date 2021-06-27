@@ -63,9 +63,14 @@ namespace Terraria.ModLoader
 		public static int GetId<T>() where T : class, IModTypeWithId
 			=> GetInstance<T>().Type;
 
+		/// <summary> Attempts to get the content instance associated with the provided integer id/type. <para/> This will throw exceptions on failure. </summary>
+		/// <exception cref="IndexOutOfRangeException"/>
+		/// <exception cref="KeyNotFoundException"/>
 		public static T Get<T>(int id) where T : class, IModTypeWithId
 			=> ModTypeLookup<T>.Get(id);
 
+		/// <summary> Safely attempts to get the content instance associated with the provided integer id/type. </summary>
+		/// <returns> Whether or not the requested instance has been found. </returns>
 		public static bool TryGet<T>(int id, out T result) where T : class, IModTypeWithId
 			=> ModTypeLookup<T>.TryGet(id, out result);
 
