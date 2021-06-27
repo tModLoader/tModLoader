@@ -64,19 +64,13 @@ namespace Terraria.ModLoader
 		}
 
 		internal static int ReserveBuffID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding buffs breaks vanilla client compatibility");
+			if (ModNet.AllowVanillaClients)
+				throw new Exception("Adding buffs breaks vanilla client compatibility");
 
-			int reserveID = nextBuff;
-			nextBuff++;
-			return reserveID;
+			return nextBuff++;
 		}
 
 		public static int BuffCount => nextBuff;
-
-		/// <summary>
-		/// Gets the ModBuff instance with the given type. If no ModBuff with the given type exists, returns null.
-		/// </summary>
-		public static ModBuff GetBuff(int type) => type >= BuffID.Count && type < BuffCount ? buffs[type - BuffID.Count] : null;
 
 		internal static void ResizeArrays() {
 			//Textures
@@ -126,9 +120,10 @@ namespace Terraria.ModLoader
 		//in Terraria.Player.UpdateBuffs at end of if else chain add BuffLoader.Update(this.buffType[k], this, ref k);
 		public static void Update(int buff, Player player, ref int buffIndex) {
 			int originalIndex = buffIndex;
-			if (IsModBuff(buff)) {
-				GetBuff(buff).Update(player, ref buffIndex);
-			}
+
+			if (IsModBuff(buff))
+				ModContent.Get<ModBuff>(buff).Update(player, ref buffIndex);
+
 			foreach (var hook in HookUpdatePlayer) {
 				if (buffIndex != originalIndex) {
 					break;
@@ -138,9 +133,9 @@ namespace Terraria.ModLoader
 		}
 
 		public static void Update(int buff, NPC npc, ref int buffIndex) {
-			if (IsModBuff(buff)) {
-				GetBuff(buff).Update(npc, ref buffIndex);
-			}
+			if (IsModBuff(buff))
+				ModContent.Get<ModBuff>(buff).Update(npc, ref buffIndex);
+
 			foreach (var hook in HookUpdateNPC) {
 				hook(buff, npc, ref buffIndex);
 			}
@@ -152,9 +147,10 @@ namespace Terraria.ModLoader
 					return true;
 				}
 			}
-			if (IsModBuff(buff)) {
-				return GetBuff(buff).ReApply(player, time, buffIndex);
-			}
+
+			if (IsModBuff(buff))
+				return ModContent.Get<ModBuff>(buff).ReApply(player, time, buffIndex);
+
 			return false;
 		}
 
@@ -164,20 +160,23 @@ namespace Terraria.ModLoader
 					return true;
 				}
 			}
-			if (IsModBuff(buff)) {
-				return GetBuff(buff).ReApply(npc, time, buffIndex);
-			}
+
+			if (IsModBuff(buff))
+				return ModContent.Get<ModBuff>(buff).ReApply(npc, time, buffIndex);
+
 			return false;
 		}
 
-		public static bool LongerExpertDebuff(int buff) => GetBuff(buff)?.LongerExpertDebuff ?? vanillaLongerExpertDebuff[buff];
+		public static bool LongerExpertDebuff(int buff)
+			=> ModContent.TryGet<ModBuff>(buff, out var modBuff) ? modBuff.LongerExpertDebuff : vanillaLongerExpertDebuff[buff];
 
-		public static bool CanBeCleared(int buff) => GetBuff(buff)?.CanBeCleared ?? vanillaCanBeCleared[buff];
+		public static bool CanBeCleared(int buff)
+			=> ModContent.TryGet<ModBuff>(buff, out var modBuff) ? modBuff.CanBeCleared : vanillaCanBeCleared[buff];
 
 		public static void ModifyBuffTip(int buff, ref string tip, ref int rare) {
-			if (IsModBuff(buff)) {
-				GetBuff(buff).ModifyBuffTip(ref tip, ref rare);
-			}
+			if (IsModBuff(buff))
+				ModContent.Get<ModBuff>(buff).ModifyBuffTip(ref tip, ref rare);
+
 			foreach (var hook in HookModifyBuffTip) {
 				hook(buff, ref tip, ref rare);
 			}

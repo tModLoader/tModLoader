@@ -1363,7 +1363,7 @@
  				baseColor = new Microsoft.Xna.Framework.Color((byte)(180f * num2), (byte)(40f * num2), (byte)(255f * num2), mouseTextColor);
  
 +			if (num > 11)
-+				baseColor = RarityLoader.GetRarity(num).RarityColor * num2;
++				baseColor = ModContent.Get<ModRarity>(num).RarityColor * num2;
 +
 -			if (HoverItem.expert || num == -12)
 +			if (HoverItem.expert || num == ItemRarityID.Expert)
@@ -1470,7 +1470,7 @@
  							black = new Microsoft.Xna.Framework.Color((byte)(180f * num4), (byte)(40f * num4), (byte)(255f * num4), a);
  
 +						if (rare > 11)
-+							black = RarityLoader.GetRarity(rare).RarityColor * num4;
++							black = ModContent.Get<ModRarity>(rare).RarityColor * num4;
 +
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
@@ -2412,13 +2412,11 @@
  		}
  
  		public void DrawItems() {
-@@ -28060,6 +_,13 @@
+@@ -28060,6 +_,11 @@
  					if (dust.type == 213)
  						scale = 1f;
  
-+					ModDust modDust = DustLoader.GetDust(dust.type);
-+					
-+					if (modDust != null) {
++					if (ModContent.TryGet<ModDust>(dust.type, out var modDust)) {
 +						modDust.Draw(dust, newColor, scale);
 +						continue;
 +					}

@@ -30,18 +30,24 @@ namespace Terraria.ModLoader.Config.UI
 
 		protected override List<DefinitionOptionElement<ProjectileDefinition>> GetPassedOptionElements() {
 			var passed = new List<DefinitionOptionElement<ProjectileDefinition>>();
+
 			foreach (var option in options) {
 				// Should this be the localized projectile name?
 				if (Lang.GetProjectileName(option.type).Value.IndexOf(chooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;
+
 				string modname = option.definition.mod;
+
 				if (option.type > ProjectileID.Count) {
-					modname = ProjectileLoader.GetProjectile(option.type).Mod.DisplayName; // or internal name?
+					modname = ModContent.Get<ModProjectile>(option.type).Mod.DisplayName; // or internal name?
 				}
+
 				if (modname.IndexOf(chooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;
+
 				passed.Add(option);
 			}
+
 			return passed;
 		}
 	}

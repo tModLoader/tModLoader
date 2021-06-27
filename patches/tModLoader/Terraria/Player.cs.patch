@@ -1974,7 +1974,7 @@
  			if (inventory[selectedItem].createTile == 4 && inventory[selectedItem].placeStyle < 22)
  				nearbyTorch[inventory[selectedItem].placeStyle] = true;
  
-+			if (TileLoader.GetTile(inventory[selectedItem].createTile) is ModTile modTile && TileID.Sets.Torch[modTile.Type])
++			if (ModContent.TryGet<ModTile>(inventory[selectedItem].createTile, out var modTile) && TileID.Sets.Torch[modTile.Type])
 +				NearbyModTorch.Add(modTile.Type);
 +
  			float num = 0f;

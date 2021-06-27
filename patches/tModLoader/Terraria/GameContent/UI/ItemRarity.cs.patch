@@ -16,7 +16,7 @@
 +			_rarities.Add(11, Colors.RarityDarkPurple);
 +
 +			for (int i = ItemRarityID.Count; i < RarityLoader.RarityCount; i++)
-+				_rarities.Add(i, RarityLoader.GetRarity(i).RarityColor);
++				_rarities.Add(i, ModContent.Get<ModRarity>(i).RarityColor);
  		}
  
  		public static Color GetColor(int rarity) {

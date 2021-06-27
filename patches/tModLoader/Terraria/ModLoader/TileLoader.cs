@@ -101,15 +101,6 @@ namespace Terraria.ModLoader
 
 		public static int TileCount => nextTile;
 
-		/// <summary>
-		/// Gets the ModTile instance with the given type. If no ModTile with the given type exists, returns null.
-		/// </summary>
-		/// <param name="type">The type of the ModTile</param>
-		/// <returns>The ModTile instance in the tiles array, null if not found.</returns>
-		public static ModTile GetTile(int type) {
-			return type >= TileID.Count && type < TileCount ? tiles[type - TileID.Count] : null;
-		}
-
 		private static void Resize2DArray<T>(ref T[,] array, int newSize) {
 			int dim1 = array.GetLength(0);
 			int dim2 = array.GetLength(1);
@@ -327,13 +318,14 @@ namespace Terraria.ModLoader
 		//in Terraria.WorldGen.OpenDoor replace 11 with (ushort)TileLoader.OpenDoorID
 		//replace all type checks before WorldGen.OpenDoor
 		public static int OpenDoorID(Tile tile) {
-			ModTile modTile = GetTile(tile.type);
-			if (modTile != null) {
+			if (ModContent.TryGet<ModTile>(tile.type, out var modTile)) {
 				return modTile.OpenDoorID;
 			}
+
 			if (tile.type == TileID.ClosedDoor && (tile.frameY < 594 || tile.frameY > 646 || tile.frameX >= 54)) {
 				return TileID.OpenDoor;
 			}
+
 			return -1;
 		}
 		//in Terraria.WorldGen.CloseDoor replace bad type check with TileLoader.CloseDoorID(Main.tile[i, j]) < 0
@@ -341,9 +333,7 @@ namespace Terraria.ModLoader
 		//replace all type checks before WorldGen.CloseDoor
 		//replace type check in WorldGen.CheckRoom
 		public static int CloseDoorID(Tile tile) {
-			ModTile modTile = GetTile(tile.type);
-
-			if (modTile != null) {
+			if (ModContent.TryGet<ModTile>(tile.type, out var modTile)) {
 				return modTile.CloseDoorID;
 			}
 
@@ -354,16 +344,20 @@ namespace Terraria.ModLoader
 			return -1;
 		}
 		public static bool IsClosedDoor(Tile tile) {
-			ModTile modTile = GetTile(tile.type);
-
-			if (modTile != null) {
+			if (ModContent.TryGet<ModTile>(tile.type, out var modTile)) {
 				return modTile.OpenDoorID > -1;
 			}
 
 			return tile.type == TileID.ClosedDoor;
 		}
 
-		public static string ContainerName(int type) => GetTile(type)?.ContainerName?.GetTranslation(Language.ActiveCulture) ?? string.Empty;
+		public static string ContainerName(int type) {
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				return modTile.ContainerName?.GetTranslation(Language.ActiveCulture) ?? string.Empty;
+			}
+
+			return string.Empty;
+		}
 
 		public static bool IsModMusicBox(Tile tile) {
 			return SoundLoader.tileToMusic.ContainsKey(tile.type)
@@ -371,12 +365,15 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool HasSmartInteract(int type) {
-			return GetTile(type)?.HasSmartInteract() ?? false;
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				return modTile.HasSmartInteract();
+			}
+
+			return false;
 		}
 
 		public static void FixSmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraX, ref int extraY) {
-			ModTile modTile = GetTile(type);
-			if (modTile != null) {
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
 				TileObjectData data = TileObjectData.GetTileData(type, 0);
 				width = data.Width;
 				height = data.Height;
@@ -393,20 +390,23 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-			ModTile modTile = GetTile(type);
-			if (modTile != null) {
+
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
 				if (!modTile.KillSound(i, j)) {
 					return false;
 				}
 				SoundEngine.PlaySound(modTile.SoundType, i * 16, j * 16, modTile.SoundStyle);
 				return false;
 			}
+
 			return true;
 		}
 		//in Terraria.WorldGen.KillTile before num14 (num dust iteration) is declared, add
 		//  TileLoader.NumDust(i, j, tile.type, ref num13);
 		public static void NumDust(int i, int j, int type, bool fail, ref int numDust) {
-			GetTile(type)?.NumDust(i, j, fail, ref numDust);
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.NumDust(i, j, fail, ref numDust);
+			}
 
 			foreach (var hook in HookNumDust) {
 				hook(i, j, type, fail, ref numDust);
@@ -420,12 +420,19 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-			return GetTile(type)?.CreateDust(i, j, ref dustType) ?? true;
+
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				return modTile.CreateDust(i, j, ref dustType);
+			}
+
+			return true;
 		}
 		//in Terraria.WorldGen.KillTile before if statement checking num43 call
 		//  TileLoader.DropCritterChance(i, j, tile.type, ref num43, ref num44, ref num45);
 		public static void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) {
-			GetTile(type)?.DropCritterChance(i, j, ref wormChance, ref grassHopperChance, ref jungleGrubChance);
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.DropCritterChance(i, j, ref wormChance, ref grassHopperChance, ref jungleGrubChance);
+			}
 
 			foreach (var hook in HookDropCritterChance) {
 				hook(i, j, type, ref wormChance, ref grassHopperChance, ref jungleGrubChance);
@@ -441,9 +448,7 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			ModTile modTile = GetTile(type);
-
-			if (modTile != null) {
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
 				if (!modTile.Drop(i, j)) {
 					return false;
 				}
@@ -465,12 +470,19 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-			return GetTile(type)?.CanKillTile(i, j, ref blockDamaged) ?? true;
+
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				return modTile.CanKillTile(i, j, ref blockDamaged);
+			}
+
+			return true;
 		}
 		//in Terraria.WorldGen.KillTile before if (!effectOnly && !WorldGen.stopDrops) add
 		//  TileLoader.KillTile(i, j, tile.type, ref fail, ref effectOnly, ref noItem);
 		public static void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem) {
-			GetTile(type)?.KillTile(i, j, ref fail, ref effectOnly, ref noItem);
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.KillTile(i, j, ref fail, ref effectOnly, ref noItem);
+			}
 
 			foreach (var hook in HookKillTile) {
 				hook(i, j, type, ref fail, ref effectOnly, ref noItem);
@@ -478,25 +490,31 @@ namespace Terraria.ModLoader
 		}
 
 		public static void KillMultiTile(int i, int j, int frameX, int frameY, int type) {
-			GetTile(type)?.KillMultiTile(i, j, frameX, frameY);
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.KillMultiTile(i, j, frameX, frameY);
+			}
 		}
 
 		public static bool CanExplode(int i, int j) {
 			int type = Main.tile[i, j].type;
-			ModTile modTile = GetTile(type);
-			if (modTile != null && !modTile.CanExplode(i, j)) {
+
+			if (ModContent.TryGet<ModTile>(type, out var modTile) && !modTile.CanExplode(i, j)) {
 				return false;
 			}
+
 			foreach (var hook in HookCanExplode) {
 				if (!hook(i, j, type)) {
 					return false;
 				}
 			}
+
 			return true;
 		}
 
 		public static void NearbyEffects(int i, int j, int type, bool closer) {
-			GetTile(type)?.NearbyEffects(i, j, closer);
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.NearbyEffects(i, j, closer);
+			}
 
 			foreach (var hook in HookNearbyEffects) {
 				hook(i, j, type, closer);
@@ -505,7 +523,7 @@ namespace Terraria.ModLoader
 
 		public static void ModifyTorchLuck(Player player, ref float positiveLuck, ref float negativeLuck) {
 			foreach (int type in player.NearbyModTorch) {
-				float f = GetTile(type).GetTorchLuck(player);
+				float f = ModContent.Get<ModTile>(type).GetTorchLuck(player);
 				if (f > 0)
 					positiveLuck += f;
 				else
@@ -517,7 +535,10 @@ namespace Terraria.ModLoader
 			if (!Main.tileLighted[type]) {
 				return;
 			}
-			GetTile(type)?.ModifyLight(i, j, ref r, ref g, ref b);
+
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.ModifyLight(i, j, ref r, ref g, ref b);
+			}
 
 			foreach (var hook in HookModifyLight) {
 				hook(i, j, type, ref r, ref g, ref b);
@@ -525,21 +546,24 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool Dangersense(int i, int j, int type, Player player) {
-			ModTile modTile = GetTile(type);
-			if (modTile != null && modTile.Dangersense(i, j, player)) {
+			if (ModContent.TryGet<ModTile>(type, out var modTile) && modTile.Dangersense(i, j, player)) {
 				return true;
 			}
+
 			foreach (var hook in HookDangersense) {
 				if (hook(i, j, type, player)) {
 					return true;
 				}
 			}
+
 			return false;
 		}
 		//in Terraria.Main.DrawTiles after if statement setting effects call
 		//  TileLoader.SetSpriteEffects(j, i, type, ref effects);
 		public static void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects) {
-			GetTile(type)?.SetSpriteEffects(i, j, ref spriteEffects);
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.SetSpriteEffects(i, j, ref spriteEffects);
+			}
 
 			foreach (var hook in HookSetSpriteEffects) {
 				hook(i, j, type, ref spriteEffects);
@@ -562,7 +586,8 @@ namespace Terraria.ModLoader
 					offsetY = tileData.DrawYOffset;
 					height = tileData.CoordinateHeights[partY];
 				}
-				GetTile(tile.type).SetDrawPositions(i, j, ref width, ref offsetY, ref height);
+
+				ModContent.Get<ModTile>(tile.type).SetDrawPositions(i, j, ref width, ref offsetY, ref height);
 			}
 		}
 		//in Terraria.Main.Update after vanilla tile animations call TileLoader.AnimateTiles();
@@ -589,8 +614,7 @@ namespace Terraria.ModLoader
 		/// <param name="frameXOffset">The offset to frameX.</param>
 		/// <param name="frameYOffset">The offset to frameY.</param>
 		public static void SetAnimationFrame(int type, int i, int j, ref int frameXOffset, ref int frameYOffset) {
-			ModTile modTile = GetTile(type);
-			if (modTile != null) {
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
 				frameYOffset = modTile.AnimationFrameHeight * Main.tileFrame[type];
 				modTile.AnimateIndividualTile(type, i, j, ref frameXOffset, ref frameYOffset);
 			}
@@ -605,14 +629,22 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-			return GetTile(type)?.PreDraw(i, j, spriteBatch) ?? true;
+
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				return modTile.PreDraw(i, j, spriteBatch);
+			}
+
+			return true;
 		}
 
 		//in Terraria.GameContent.Drawing.TileDrawing after ShroomCap draw call, before color < check
 		//  TileLoader.DrawEffects(tileX, tileY, drawData.typeCache, Main.spriteBatch, ref drawData);
 		//1.3: drawColor corresponds to drawData.tileLight
 		public static void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
-			GetTile(type)?.DrawEffects(i, j, spriteBatch, ref drawData);
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.DrawEffects(i, j, spriteBatch, ref drawData);
+			}
+
 			foreach (var hook in HookDrawEffects) {
 				hook(i, j, type, spriteBatch, ref drawData);
 			}
@@ -621,7 +653,9 @@ namespace Terraria.ModLoader
 		//in Terraria.GameContent.Drawing.TileDrawing.DrawSingleTile after if statement checking whether highlightTexture is null call
 		//  TileLoader.PostDraw(j, i, type, Main.spriteBatch);
 		public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch) {
-			GetTile(type)?.PostDraw(i, j, spriteBatch);
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.PostDraw(i, j, spriteBatch);
+			}
 
 			foreach (var hook in HookPostDraw) {
 				hook(i, j, type, spriteBatch);
@@ -634,7 +668,9 @@ namespace Terraria.ModLoader
 		/// Special Draw calls ModTile and GlobalTile SpecialDraw methods. Special Draw is called at the end of the DrawSpecialTilesLegacy loop, allowing for basically another layer above tiles. Use DrawEffects hook to queue for SpecialDraw. 
 		/// </summary>
 		public static void SpecialDraw(int type, int specialTileX, int specialTileY, SpriteBatch spriteBatch) {
-			GetTile(type)?.SpecialDraw(specialTileX, specialTileY, spriteBatch);
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.SpecialDraw(specialTileX, specialTileY, spriteBatch);
+			}
 
 			foreach (var hook in HookSpecialDraw) {
 				hook(specialTileX, specialTileY, type, spriteBatch);
@@ -648,7 +684,10 @@ namespace Terraria.ModLoader
 			if (!Main.tile[i, j].active()) {
 				return;
 			}
-			GetTile(type)?.RandomUpdate(i, j);
+
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.RandomUpdate(i, j);
+			}
 
 			foreach (var hook in HookRandomUpdate) {
 				hook(i, j, type);
@@ -657,10 +696,9 @@ namespace Terraria.ModLoader
 		//in Terraria.WorldGen.TileFrame at beginning of block of if(tile.active()) add
 		//  if(!TileLoader.TileFrame(i, j, tile.type, ref resetFrame, ref noBreak)) { return; }
 		public static bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak) {
-			ModTile modTile = GetTile(type);
 			bool flag = true;
 			
-			if (modTile != null) {
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
 				flag = modTile.TileFrame(i, j, ref resetFrame, ref noBreak);
 			}
 
@@ -676,14 +714,17 @@ namespace Terraria.ModLoader
 		//in Terraria.Player.PickTile replace num += pickPower; with TileLoader.MineDamage(pickPower, ref num);
 		public static void MineDamage(int minePower, ref int damage) {
 			Tile target = Main.tile[Player.tileTargetX, Player.tileTargetY];
-			ModTile modTile = GetTile(target.type);
-			damage += modTile != null ? (int)(1.2f * minePower / modTile.MineResist) : (int)(1.2f * minePower);
+
+			if (ModContent.TryGet<ModTile>(target.type, out var modTile)) {
+				damage += (int)(1.2f * minePower / modTile.MineResist);
+			} else {
+				damage += (int)(1.2f * minePower);
+			}
 		}
 		//in Terraria.Player.ItemCheck at end of else if chain setting num to 0 add
 		//  else { TileLoader.PickPowerCheck(tile, pickPower, ref num); }
 		public static void PickPowerCheck(Tile target, int pickPower, ref int damage) {
-			ModTile modTile = GetTile(target.type);
-			if (modTile != null && pickPower < modTile.MinPick) {
+			if (ModContent.TryGet<ModTile>(target.type, out var modTile) && pickPower < modTile.MinPick) {
 				damage = 0;
 			}
 		}
@@ -697,17 +738,22 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-			return GetTile(type)?.CanPlace(i, j) ?? true;
+
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				return modTile.CanPlace(i, j);
+			}
+
+			return true;
 		}
 		//in Terraria.Player.AdjTiles in end of if statement checking for tile's active
 		//  add TileLoader.AdjTiles(this, Main.tile[j, k].type);
 		public static void AdjTiles(Player player, int type) {
-			ModTile modTile = GetTile(type);
-			if (modTile != null) {
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
 				foreach (int k in modTile.AdjTiles) {
 					player.adjTile[k] = true;
 				}
 			}
+
 			foreach (var hook in HookAdjTiles) {
 				int[] adjTiles = hook(type);
 				foreach (int k in adjTiles) {
@@ -721,19 +767,23 @@ namespace Terraria.ModLoader
 			bool returnValue = false;
 			int type = Main.tile[i, j].type;
 			
-			if (GetTile(type)?.RightClick(i, j) ?? false)
+			if (ModContent.TryGet<ModTile>(type, out var modTile) && modTile.RightClick(i, j))
 				returnValue = true;
 
 			foreach (var hook in HookRightClick) {
 				hook(i, j, type);
 			}
+
 			return returnValue;
 		}
 		//in Terraria.Player.Update after if statements setting showItemIcon call
 		//  TileLoader.MouseOver(Player.tileTargetX, Player.tileTargetY);
 		public static void MouseOver(int i, int j) {
 			int type = Main.tile[i, j].type;
-			GetTile(type)?.MouseOver(i, j);
+
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.MouseOver(i, j);
+			}
 
 			foreach (var hook in HookMouseOver) {
 				hook(i, j, type);
@@ -742,7 +792,10 @@ namespace Terraria.ModLoader
 
 		public static void MouseOverFar(int i, int j) {
 			int type = Main.tile[i, j].type;
-			GetTile(type)?.MouseOverFar(i, j);
+
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.MouseOverFar(i, j);
+			}
 
 			foreach (var hook in HookMouseOverFar) {
 				hook(i, j, type);
@@ -753,22 +806,29 @@ namespace Terraria.ModLoader
 			if (!Main.tile[i, j].active()) {
 				return -1;
 			}
+
 			int type = Main.tile[i, j].type;
-			ModTile modTile = GetTile(type);
+
+			ModContent.TryGet<ModTile>(type, out var modTile);
+
 			for (int k = 0; k < 50; k++) {
 				Item item = player.inventory[k];
+				
 				if (item.type == 0 || item.stack == 0) {
 					continue;
 				}
+
 				if (modTile != null && modTile.AutoSelect(i, j, item)) {
 					return k;
 				}
+
 				foreach (var hook in HookAutoSelect) {
 					if (hook(i, j, type, item)) {
 						return k;
 					}
 				}
 			}
+
 			return -1;
 		}
 
@@ -785,7 +845,9 @@ namespace Terraria.ModLoader
 		//at end of Terraria.Wiring.HitWireSingle inside if statement checking for tile active add
 		//  TileLoader.HitWire(i, j, type);
 		public static void HitWire(int i, int j, int type) {
-			GetTile(type)?.HitWire(i, j);
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.HitWire(i, j);
+			}
 
 			foreach (var hook in HookHitWire) {
 				hook(i, j, type);
@@ -793,7 +855,9 @@ namespace Terraria.ModLoader
 		}
 
 		public static void FloorVisuals(int type, Player player) {
-			GetTile(type)?.FloorVisuals(player);
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.FloorVisuals(player);
+			}
 
 			foreach (var hook in HookFloorVisuals) {
 				hook(type, player);
@@ -807,19 +871,29 @@ namespace Terraria.ModLoader
 					return true;
 				}
 			}
-			return !GetTile(type)?.Slope(i, j) ?? false;
+
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				return !modTile.Slope(i, j);
+			}
+
+			return true;
 		}
 
 		public static bool HasWalkDust(int type) {
-			return GetTile(type)?.HasWalkDust() ?? false;
+			return ModContent.TryGet<ModTile>(type, out var modTile) && modTile.HasWalkDust();
 		}
 
 		public static void WalkDust(int type, ref int dustType, ref bool makeDust, ref Color color) {
-			GetTile(type)?.WalkDust(ref dustType, ref makeDust, ref color);
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.WalkDust(ref dustType, ref makeDust, ref color);
+			}
 		}
 
 		public static void ChangeWaterfallStyle(int type, ref int style) {
-			GetTile(type)?.ChangeWaterfallStyle(ref style);
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.ChangeWaterfallStyle(ref style);
+			}
+
 			foreach (var hook in HookChangeWaterfallStyle) {
 				hook(type, ref style);
 			}
@@ -829,9 +903,10 @@ namespace Terraria.ModLoader
 			int originalType = saplingType;
 			int originalStyle = style;
 			bool flag = false;
-			ModTile modTile = GetTile(type);
-			if (modTile != null) {
+
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
 				saplingType = modTile.SaplingGrowthType(ref style);
+
 				if (TileID.Sets.TreeSapling[saplingType]) {
 					originalType = saplingType;
 					originalStyle = style;
@@ -842,8 +917,10 @@ namespace Terraria.ModLoader
 					style = originalStyle;
 				}
 			}
+
 			foreach (var hook in HookSaplingGrowthType) {
 				saplingType = hook(type, ref style);
+
 				if (TileID.Sets.TreeSapling[saplingType]) {
 					originalType = saplingType;
 					originalStyle = style;
@@ -854,6 +931,7 @@ namespace Terraria.ModLoader
 					style = originalStyle;
 				}
 			}
+
 			return flag;
 		}
 
@@ -944,15 +1022,17 @@ namespace Terraria.ModLoader
 				hook(i, j, type, item);
 			}
 
-			GetTile(type)?.PlaceInWorld(i, j, item);
+			if (ModContent.TryGet<ModTile>(type, out var modTile)) {
+				modTile.PlaceInWorld(i, j, item);
+			}
 		}
 
 		public static bool IsLockedChest(int i, int j, int type) {
-			return GetTile(type)?.IsLockedChest(i, j) ?? false;
+			return ModContent.TryGet<ModTile>(type, out var modTile) && modTile.IsLockedChest(i, j);
 		}
 
 		public static bool UnlockChest(int i, int j, int type, ref short frameXAdjustment, ref int dustType, ref bool manual) {
-			return GetTile(type)?.UnlockChest(i, j, ref frameXAdjustment, ref dustType, ref manual) ?? false;
+			return ModContent.TryGet<ModTile>(type, out var modTile) && modTile.UnlockChest(i, j, ref frameXAdjustment, ref dustType, ref manual);
 		}
 	}
 }

@@ -82,7 +82,7 @@ namespace Terraria.ModLoader.Default
 				return;
 
 			TileInfo info = infos[frameID];
-			var entry = new TileEntry(TileLoader.GetTile(tile.type)) {
+			var entry = new TileEntry(ModContent.Get<ModTile>(tile.type)) {
 				name = info.name,
 				modName = info.modName,
 				frameImportant = info.frameX > -1,

@@ -17,18 +17,6 @@ namespace Terraria.ModLoader
 
 		public static int MountCount { get; private set; } = MountID.Count;
 
-		/// <summary>
-		/// Gets the ModMount instance corresponding to the given type. Returns null if no ModMount has the given type.
-		/// </summary>
-		/// <param name="type">The type of the mount.</param>
-		/// <returns>Null if not found, otherwise the ModMount associated with the mount.</returns>
-		public static ModMount GetMount(int type) {
-			if (mountDatas.ContainsKey(type)) {
-				return mountDatas[type];
-			}
-			return null;
-		}
-
 		internal static int ReserveMountID() {
 			if (ModNet.AllowVanillaClients)
 				throw new Exception("Adding mounts breaks vanilla client compatibility");
@@ -55,7 +43,7 @@ namespace Terraria.ModLoader
 
 		internal static void SetupMount(Mount.MountData mount) {
 			if (IsModMount(mount)) {
-				GetMount(mount.ModMount.Type).SetupMount(mount);
+				ModContent.Get<ModMount>(mount.ModMount.Type).SetupMount(mount);
 			}
 		}
 
@@ -73,14 +61,15 @@ namespace Terraria.ModLoader
 
 		internal static void UpdateEffects(Player mountedPlayer) {
 			if (IsModMount(Mount.mounts[mountedPlayer.mount.Type])) {
-				GetMount(mountedPlayer.mount.Type).UpdateEffects(mountedPlayer);
+				ModContent.Get<ModMount>(mountedPlayer.mount.Type).UpdateEffects(mountedPlayer);
 			}
 		}
 
 		internal static bool UpdateFrame(Player mountedPlayer, int state, Vector2 velocity) {
 			if (IsModMount(Mount.mounts[mountedPlayer.mount.Type])) {
-				return GetMount(mountedPlayer.mount.Type).UpdateFrame(mountedPlayer, state, velocity);
+				return ModContent.Get<ModMount>(mountedPlayer.mount.Type).UpdateFrame(mountedPlayer, state, velocity);
 			}
+
 			return true;
 		}
 
@@ -89,6 +78,7 @@ namespace Terraria.ModLoader
 			if (IsModMount(mount) && mount.ModMount.CustomBodyFrame()) {
 				return true;
 			}
+
 			return false;
 		}
 		/// <summary>

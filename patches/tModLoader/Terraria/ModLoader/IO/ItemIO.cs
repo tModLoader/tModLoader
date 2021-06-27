@@ -50,13 +50,9 @@ namespace Terraria.ModLoader.IO
 			if (item.prefix != 0 && item.prefix < PrefixID.Count)
 				tag.Set("prefix", (byte)item.prefix);
 
-			if (item.prefix >= PrefixID.Count) {
-				ModPrefix modPrefix = PrefixLoader.GetPrefix(item.prefix);
-
-				if (modPrefix != null) {
-					tag.Set("modPrefixMod", modPrefix.Mod.Name);
-					tag.Set("modPrefixName", modPrefix.Name);
-				}
+			if (item.prefix >= PrefixID.Count && ModContent.TryGet<ModPrefix>(item.prefix, out var modPrefix)) {
+				tag.Set("modPrefixMod", modPrefix.Mod.Name);
+				tag.Set("modPrefixName", modPrefix.Name);
 			}
 
 			if (item.stack > 1)

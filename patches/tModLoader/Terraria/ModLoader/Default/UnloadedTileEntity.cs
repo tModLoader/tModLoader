@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.Default
 
 		public override bool ValidTile(int i, int j) {
 			Tile tile = Main.tile[i, j];
-			return tile.active() && TileLoader.GetTile(type) is UnloadedTile;
+			return tile.active() && ModContent.Get<ModTile>(type) is UnloadedTile;
 		}
 
 		public override TagCompound Save() {

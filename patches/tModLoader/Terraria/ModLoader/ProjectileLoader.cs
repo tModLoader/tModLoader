@@ -53,14 +53,6 @@ namespace Terraria.ModLoader
 
 		public static int ProjectileCount => nextProjectile;
 
-		/// <summary>
-		/// Gets the ModProjectile instance corresponding to the specified type.
-		/// </summary>
-		/// <param name="type">The type of the projectile</param>
-		/// <returns>The ModProjectile instance in the projectiles array, null if not found.</returns>
-		public static ModProjectile GetProjectile(int type) {
-			return type >= ProjectileID.Count && type < ProjectileCount ? projectiles[type - ProjectileID.Count] : null;
-		}
 		//change initial size of Terraria.Player.ownedProjectileCounts to ProjectileLoader.ProjectileCount()
 		internal static void ResizeArrays() {
 			//Textures
@@ -111,7 +103,7 @@ namespace Terraria.ModLoader
 
 		internal static void SetDefaults(Projectile projectile, bool createModProjectile = true) {
 			if (IsModProjectile(projectile) && createModProjectile) {
-				projectile.ModProjectile = GetProjectile(projectile.type).NewInstance(projectile);
+				projectile.ModProjectile = ModContent.Get<ModProjectile>(projectile.type).NewInstance(projectile);
 			}
 
 			GlobalProjectile Instantiate(GlobalProjectile g)
@@ -592,7 +584,11 @@ namespace Terraria.ModLoader
 		private static HookList HookCanUseGrapple = AddHook<Func<int, Player, bool?>>(g => g.CanUseGrapple);
 
 		public static bool? CanUseGrapple(int type, Player player) {
-			bool? flag = GetProjectile(type)?.CanUseGrapple(player);
+			bool? flag = null;
+
+			if (ModContent.TryGet<ModProjectile>(type, out var modProjectile)) {
+				modProjectile.CanUseGrapple(player);
+			}
 
 			foreach (GlobalProjectile g in HookCanUseGrapple.Enumerate(globalProjectilesArray)) {
 				bool? canGrapple = g.CanUseGrapple(type, player);
@@ -608,7 +604,11 @@ namespace Terraria.ModLoader
 		private static HookList HookSingleGrappleHook = AddHook<Func<int, Player, bool?>>(g => g.SingleGrappleHook);
 
 		public static bool? SingleGrappleHook(int type, Player player) {
-			bool? flag = GetProjectile(type)?.SingleGrappleHook(player);
+			bool? flag = null;
+
+			if (ModContent.TryGet<ModProjectile>(type, out var modProjectile)) {
+				flag = modProjectile.SingleGrappleHook(player);
+			}
 
 			foreach (GlobalProjectile g in HookSingleGrappleHook.Enumerate(globalProjectilesArray)) {
 				bool? singleHook = g.SingleGrappleHook(type, player);
@@ -625,7 +625,9 @@ namespace Terraria.ModLoader
 		private static HookList HookUseGrapple = AddHook<DelegateUseGrapple>(g => g.UseGrapple);
 
 		public static void UseGrapple(Player player, ref int type) {
-			GetProjectile(type)?.UseGrapple(player, ref type);
+			if (ModContent.TryGet<ModProjectile>(type, out var modProjectile)) {
+				modProjectile.UseGrapple(player, ref type);
+			}
 
 			foreach (GlobalProjectile g in HookUseGrapple.Enumerate(globalProjectilesArray)) {
 				g.UseGrapple(player, ref type);

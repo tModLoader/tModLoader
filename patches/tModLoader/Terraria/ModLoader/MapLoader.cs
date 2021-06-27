@@ -95,7 +95,7 @@ namespace Terraria.ModLoader
 		//  MapLoader.ModMapOption(ref num16, i, j);
 		internal static void ModMapOption(ref ushort mapType, int i, int j) {
 			if (entryToTile.ContainsKey(mapType)) {
-				ModTile tile = TileLoader.GetTile(entryToTile[mapType]);
+				ModTile tile = ModContent.Get<ModTile>(entryToTile[mapType]);
 				ushort option = tile.GetMapOption(i, j);
 				if (option < 0 || option >= modTileOptions(tile.Type)) {
 					throw new ArgumentOutOfRangeException("Bad map option for tile " + tile.Name + " from mod " + tile.Mod.Name);
@@ -103,7 +103,7 @@ namespace Terraria.ModLoader
 				mapType += option;
 			}
 			else if (entryToWall.ContainsKey(mapType)) {
-				ModWall wall = WallLoader.GetWall(entryToWall[mapType]);
+				ModWall wall = ModContent.Get<ModWall>(entryToWall[mapType]);
 				ushort option = wall.GetMapOption(i, j);
 				if (option < 0 || option >= modWallOptions(wall.Type)) {
 					throw new ArgumentOutOfRangeException("Bad map option for wall " + wall.Name + " from mod " + wall.Mod.Name);

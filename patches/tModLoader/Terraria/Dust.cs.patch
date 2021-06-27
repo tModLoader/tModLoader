@@ -36,16 +36,14 @@
  			switch (Main.waterStyle) {
  				case 2:
  					return 98;
-@@ -285,6 +_,16 @@
+@@ -285,6 +_,14 @@
  						continue;
  
  					dCount += 1f;
 +
 +					DustLoader.SetupUpdateType(dust);
 +
-+					ModDust modDust = DustLoader.GetDust(dust.type);
-+
-+					if (modDust != null && !modDust.Update(dust)) {
++					if (ModContent.TryGet<ModDust>(dust.type, out var modDust) && !modDust.Update(dust)) {
 +						DustLoader.TakeDownUpdateType(dust);
 +						continue;
 +					}
@@ -71,13 +69,11 @@
  				}
  				else {
  					dust.active = false;
-@@ -1807,6 +_,14 @@
+@@ -1807,6 +_,12 @@
  		}
  
  		public Color GetAlpha(Color newColor) {
-+			ModDust modDust = DustLoader.GetDust(type);
-+
-+			if (modDust != null) {
++			if (ModContent.TryGet<ModDust>(type, out var modDust)) {
 +				Color? modColor = modDust.GetAlpha(this, newColor);
 +				if (modColor.HasValue)
 +					return modColor.Value;

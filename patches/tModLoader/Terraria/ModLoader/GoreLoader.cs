@@ -80,12 +80,6 @@ namespace Terraria.ModLoader
 			GoreCount = GoreID.Count;
 		}
 
-		internal static ModGore GetModGore(int type) {
-			gores.TryGetValue(type, out var modGore);
-			
-			return modGore;
-		}
-
 		internal static void SetupUpdateType(Gore gore) {
 			if (gore.ModGore != null && gore.ModGore.UpdateType > 0) {
 				gore.realType = gore.type;

@@ -12,12 +12,6 @@ namespace Terraria.ModLoader
 
 		internal static int DustCount { get; private set; } = DustID.Count;
 
-		/// <summary>
-		/// Gets the ModDust instance with the given type. Returns null if no ModDust with the given type exists.
-		/// </summary>
-		public static ModDust GetDust(int type)
-			=> type >= DustID.Count && type < DustCount ? dusts[type - DustID.Count] : null;
-
 		internal static int ReserveDustID() => DustCount++;
 
 		internal static void ResizeArrays() {
@@ -35,9 +29,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void SetupDust(Dust dust) {
-			ModDust modDust = GetDust(dust.type);
-
-			if (modDust != null) {
+			if (ModContent.TryGet<ModDust>(dust.type, out var modDust)) {
 				dust.frame.X = 0;
 				dust.frame.Y %= 30;
 				modDust.OnSpawn(dust);
@@ -45,9 +37,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void SetupUpdateType(Dust dust) {
-			ModDust modDust = GetDust(dust.type);
-
-			if (modDust != null && modDust.UpdateType >= 0) {
+			if (ModContent.TryGet<ModDust>(dust.type, out var modDust) && modDust.UpdateType >= 0) {
 				dust.realType = dust.type;
 				dust.type = modDust.UpdateType;
 			}

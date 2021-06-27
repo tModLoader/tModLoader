@@ -22,10 +22,6 @@ namespace Terraria.ModLoader
 			ItemRarity.Initialize();
 		}
 
-		internal static ModRarity GetRarity(int type) {
-			return type >= ItemRarityID.Count && type < RarityCount ? rarities[type - ItemRarityID.Count] : null;
-		}
-
 		internal static void Unload() {
 			rarities.Clear();
 			ItemRarity.Initialize();

@@ -46,20 +46,25 @@
  		private List<DoorOpenCloseTogglingInfo> _ongoingOpenDoors = new List<DoorOpenCloseTogglingInfo>();
  		private int _timeWeCanOpenDoorsUsingVelocityAlone;
  
-@@ -315,11 +_,14 @@
+@@ -309,17 +_,21 @@
+ 
+ 		private bool TryGetHandler(Point tileCoords, out DoorAutoHandler infoProvider) {
+ 			infoProvider = null;
++
+ 			if (!WorldGen.InWorld(tileCoords.X, tileCoords.Y, 3))
+ 				return false;
+ 
  			Tile tile = Main.tile[tileCoords.X, tileCoords.Y];
++
  			if (tile == null)
  				return false;
--
+ 
 -			if (!_handlerByTileType.TryGetValue(tile.type, out infoProvider))
 -				return false;
--
--			return true;
 +			int type = tile.type;
-+
-+			ModTile modTile = TileLoader.GetTile(type);
-+
-+			if (modTile != null && modTile.OpenDoorID > 0)
+ 
+-			return true;
++			if (ModContent.TryGet<ModTile>(type, out var modTile) && modTile.OpenDoorID > 0)
 +				type = TileID.ClosedDoor;
 +			
 +			return _handlerByTileType.TryGetValue(type, out infoProvider);

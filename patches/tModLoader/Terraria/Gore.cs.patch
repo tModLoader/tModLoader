@@ -40,7 +40,7 @@
 +			var gore = Main.gore[num];
 +			gore.ResetNewFields();
 +			
-+			gore.ModGore = GoreLoader.GetModGore(gore.type);
++			gore.ModGore = ModContent.Get<ModGore>(gore.type);
 +			gore.ModGore?.OnSpawn(gore);
 +			
  			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {

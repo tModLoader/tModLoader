@@ -79,23 +79,13 @@ namespace Terraria.ModLoader
 		}
 
 		internal static int ReserveNPCID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding npcs breaks vanilla client compatibility");
+			if (ModNet.AllowVanillaClients)
+				throw new Exception("Adding npcs breaks vanilla client compatibility");
 
-			int reserveID = nextNPC;
-			nextNPC++;
-			return reserveID;
+			return nextNPC++;
 		}
 
 		public static int NPCCount => nextNPC;
-
-		/// <summary>
-		/// Gets the ModNPC instance corresponding to the specified type.
-		/// </summary>
-		/// <param name="type">The type of the npc</param>
-		/// <returns>The ModNPC instance in the npcs array, null if not found.</returns>
-		public static ModNPC GetNPC(int type) {
-			return type >= NPCID.Count && type < NPCCount ? npcs[type - NPCID.Count] : null;
-		}
 
 		internal static void ResizeArrays(bool unloading) {
 			//Textures
@@ -156,7 +146,7 @@ namespace Terraria.ModLoader
 		internal static void SetDefaults(NPC npc, bool createModNPC = true) {
 			if (IsModNPC(npc)) {
 				if (createModNPC) {
-					npc.ModNPC = GetNPC(npc.type).NewInstance(npc);
+					npc.ModNPC = ModContent.Get<ModNPC>(npc.type).NewInstance(npc);
 				}
 				else //the default NPCs created and bound to ModNPCs are initialized before ResizeArrays. They come here during SetupContent.
 				{
@@ -826,9 +816,9 @@ namespace Terraria.ModLoader
 		private static HookList HookSpawnNPC = AddHook<Action<int, int, int>>(g => g.SpawnNPC);
 
 		public static int SpawnNPC(int type, int tileX, int tileY) {
-			var npc = type >= NPCID.Count ?
-				GetNPC(type).SpawnNPC(tileX, tileY) :
-				NPC.NewNPC(tileX * 16 + 8, tileY * 16, type);
+			int npc = type >= NPCID.Count
+				? ModContent.Get<ModNPC>(type).SpawnNPC(tileX, tileY)
+				: NPC.NewNPC(tileX * 16 + 8, tileY * 16, type);
 
 			foreach (GlobalNPC g in HookSpawnNPC.Enumerate(Main.npc[npc].globalNPCs)) {
 				g.SpawnNPC(npc, tileX, tileY);
@@ -854,11 +844,17 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool CheckConditions(int type) {
-			return GetNPC(type)?.CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2) ?? true;
+			if (ModContent.TryGet<ModNPC>(type, out var npc))
+				return npc.CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2);
+
+			return true;
 		}
 
 		public static string TownNPCName(int type) {
-			return GetNPC(type)?.TownNPCName() ?? "";
+			if (ModContent.TryGet<ModNPC>(type, out var npc))
+				return npc.TownNPCName() ?? string.Empty;
+
+			return string.Empty;
 		}
 
 		public static bool UsesPartyHat(NPC npc) {
@@ -954,9 +950,10 @@ namespace Terraria.ModLoader
 			if (type < shopToNPC.Length) {
 				type = shopToNPC[type];
 			}
-			else {
-				GetNPC(type)?.SetupShop(shop, ref nextSlot);
+			else if (ModContent.TryGet<ModNPC>(type, out var npc)) {
+				npc.SetupShop(shop, ref nextSlot);
 			}
+
 			foreach (GlobalNPC g in HookSetupShop.Enumerate(globalNPCsArray)) {
 				g.SetupShop(type, shop, ref nextSlot);
 			}

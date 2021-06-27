@@ -48,13 +48,6 @@ namespace Terraria.ModLoader
 
 		public static int WallCount => nextWall;
 
-		/// <summary>
-		/// Gets the ModWall instance with the given type. If no ModWall with the given type exists, returns null.
-		/// </summary>
-		public static ModWall GetWall(int type) {
-			return type >= WallID.Count && type < WallCount ? walls[type - WallID.Count] : null;
-		}
-
 		private static void Resize2DArray<T>(ref T[,] array, int newSize) {
 			int dim1 = array.GetLength(0);
 			int dim2 = array.GetLength(1);
@@ -140,20 +133,23 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-			ModWall modWall = GetWall(type);
-			if (modWall != null) {
+
+			if (ModContent.TryGet<ModWall>(type, out var modWall)) {
 				if (!modWall.KillSound(i, j)) {
 					return false;
 				}
 				SoundEngine.PlaySound(modWall.SoundType, i * 16, j * 16, modWall.SoundStyle);
 				return false;
 			}
+
 			return true;
 		}
 		//in Terraria.WorldGen.KillWall after if statement setting num to 3 add
 		//  WallLoader.NumDust(i, j, tile.wall, fail, ref num);
 		public static void NumDust(int i, int j, int type, bool fail, ref int numDust) {
-			GetWall(type)?.NumDust(i, j, fail, ref numDust);
+			if (ModContent.TryGet<ModWall>(type, out var modWall)) {
+				modWall.NumDust(i, j, fail, ref numDust);
+			}
 
 			foreach (var hook in HookNumDust) {
 				hook(i, j, type, fail, ref numDust);
@@ -167,7 +163,12 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-			return GetWall(type)?.CreateDust(i, j, ref dustType) ?? true;
+
+			if (ModContent.TryGet<ModWall>(type, out var modWall)) {
+				return modWall.CreateDust(i, j, ref dustType);
+			}
+
+			return true;
 		}
 		//in Terraria.WorldGen.KillWall replace if (num4 > 0) with
 		//  if (WallLoader.Drop(i, j, tile.wall, ref num4) && num4 > 0)
@@ -177,12 +178,19 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-			return GetWall(type)?.Drop(i, j, ref dropType) ?? true;
+
+			if (ModContent.TryGet<ModWall>(type, out var modWall)) {
+				return modWall.Drop(i, j, ref dropType);
+			}
+
+			return true;
 		}
 		//in Terraria.WorldGen.KillWall after if statements setting fail to true call
 		//  WallLoader.KillWall(i, j, tile.wall, ref fail);
 		public static void KillWall(int i, int j, int type, ref bool fail) {
-			GetWall(type)?.KillWall(i, j, ref fail);
+			if (ModContent.TryGet<ModWall>(type, out var modWall)) {
+				modWall.KillWall(i, j, ref fail);
+			}
 
 			foreach (var hook in HookKillWall) {
 				hook(i, j, type, ref fail);
@@ -197,7 +205,12 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-			return GetWall(type)?.CanPlace(i, j) ?? true;
+
+			if (ModContent.TryGet<ModWall>(type, out var modWall)) {
+				return modWall.CanPlace(i, j);
+			}
+
+			return true;
 		}
 
 		public static bool CanExplode(int i, int j, int type) {
@@ -206,12 +219,19 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-			return GetWall(type)?.CanExplode(i, j) ?? true;
+
+			if (ModContent.TryGet<ModWall>(type, out var modWall)) {
+				return modWall.CanExplode(i, j);
+			}
+
+			return true;
 		}
 		//in Terraria.Lighting.PreRenderPhase after wall modifies light call
 		//  WallLoader.ModifyLight(n, num17, wall, ref num18, ref num19, ref num20);
 		public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b) {
-			GetWall(type)?.ModifyLight(i, j, ref r, ref g, ref b);
+			if (ModContent.TryGet<ModWall>(type, out var modWall)) {
+				modWall.ModifyLight(i, j, ref r, ref g, ref b);
+			}
 
 			foreach (var hook in HookModifyLight) {
 				hook(i, j, type, ref r, ref g, ref b);
@@ -221,7 +241,9 @@ namespace Terraria.ModLoader
 		//  WallLoader.RandomUpdate(num7, num8, Main.tile[num7, num8].wall);
 		//  WallLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].wall);
 		public static void RandomUpdate(int i, int j, int type) {
-			GetWall(type)?.RandomUpdate(i, j);
+			if (ModContent.TryGet<ModWall>(type, out var modWall)) {
+				modWall.RandomUpdate(i, j);
+			}
 
 			foreach (var hook in HookRandomUpdate) {
 				hook(i, j, type);
@@ -245,12 +267,19 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-			return GetWall(type)?.PreDraw(i, j, spriteBatch) ?? true;
+
+			if (ModContent.TryGet<ModWall>(type, out var modWall)) {
+				return modWall.PreDraw(i, j, spriteBatch);
+			}
+
+			return true;
 		}
 		//in Terraria.Main.DrawWalls after wall outlines are drawn call
 		//  WallLoader.PostDraw(j, i, wall, Main.spriteBatch);
 		public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch) {
-			GetWall(type)?.PostDraw(i, j, spriteBatch);
+			if (ModContent.TryGet<ModWall>(type, out var modWall)) {
+				modWall.PostDraw(i, j, spriteBatch);
+			}
 
 			foreach (var hook in HookPostDraw) {
 				hook(i, j, type, spriteBatch);
@@ -266,7 +295,9 @@ namespace Terraria.ModLoader
 				hook(i, j, type, item);
 			}
 
-			GetWall(type)?.PlaceInWorld(i, j, item);
+			if (ModContent.TryGet<ModWall>(type, out var modWall)) {
+				modWall.PlaceInWorld(i, j, item);
+			}
 		}
 	}
 }

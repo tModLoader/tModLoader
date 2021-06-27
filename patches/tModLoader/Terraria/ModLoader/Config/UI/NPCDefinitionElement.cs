@@ -37,7 +37,7 @@ namespace Terraria.ModLoader.Config.UI
 					continue;
 				string modname = option.definition.mod;
 				if (option.type > NPCID.Count) {
-					modname = NPCLoader.GetNPC(option.type).Mod.DisplayName; // or internal name?
+					modname = ModContent.Get<ModNPC>(option.type).Mod.DisplayName; // or internal name?
 				}
 				if (modname.IndexOf(chooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;

@@ -195,7 +195,8 @@ namespace Terraria.ModLoader.IO
 					continue;
 
 				if (BuffLoader.IsModBuff(buff)) {
-					var modBuff = BuffLoader.GetBuff(buff);
+					var modBuff = ModContent.Get<ModBuff>(buff);
+
 					list.Add(new TagCompound {
 						["mod"] = modBuff.Mod.Name,
 						["name"] = modBuff.Name,

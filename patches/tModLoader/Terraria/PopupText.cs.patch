@@ -42,7 +42,7 @@
 +				else if (newItem.rare == 11)
  					Main.popupText[num2].color = new Color(180, 40, 255);
 +				else if (newItem.rare >= ItemRarityID.Count)
-+					Main.popupText[num2].color = RarityLoader.GetRarity(newItem.rare).RarityColor;
++					Main.popupText[num2].color = ModContent.Get<ModRarity>(newItem.rare).RarityColor;
  
 +				Main.popupText[num2].rarity = newItem.rare;
  				Main.popupText[num2].expert = newItem.expert;
@@ -56,7 +56,7 @@
  				color = new Color(255, (byte)(Main.masterColor * 200f), 0, Main.mouseTextColor);
 +
 +			if (rarity > ItemRarityID.Purple)
-+				color = RarityLoader.GetRarity(rarity).RarityColor;
++				color = ModContent.Get<ModRarity>(rarity).RarityColor;
  
  			bool flag = false;
  			string text = name;

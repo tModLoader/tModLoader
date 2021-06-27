@@ -35,13 +35,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns the ModPrefix associated with specified type
-		/// If not a ModPrefix, returns null.
-		/// </summary>
-		public static ModPrefix GetPrefix(int type)
-			=> type >= PrefixID.Count && type < PrefixCount ? prefixes[type - PrefixID.Count] : null;
-
-		/// <summary>
 		/// Returns a list of all modded prefixes of a certain category.
 		/// </summary>
 		public static List<ModPrefix> GetPrefixesInCategory(PrefixCategory category)
