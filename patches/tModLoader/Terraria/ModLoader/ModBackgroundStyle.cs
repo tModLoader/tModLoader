@@ -17,6 +17,7 @@ namespace Terraria.ModLoader
 	{
 		protected override sealed void Register() {
 			Slot = LoaderManager.Get<UndergroundBackgroundStylesLoader>().Register(this);
+			ModTypeLookup<ModUndergroundBackgroundStyle>.Register(this);
 		}
 
 		/// <summary>
@@ -32,6 +33,7 @@ namespace Terraria.ModLoader
 	{ 
 		protected override sealed void Register() {
 			Slot = LoaderManager.Get<SurfaceBackgroundStylesLoader>().Register(this);
+			ModTypeLookup<SurfaceBackgroundStylesLoader>.Register(this);
 		}
 
 		/// <summary>

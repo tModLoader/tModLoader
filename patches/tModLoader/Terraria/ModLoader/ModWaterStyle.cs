@@ -19,6 +19,7 @@ namespace Terraria.ModLoader
 
 		protected sealed override void Register() {
 			Slot = LoaderManager.Get<WaterStylesLoader>().Register(this);
+			ModTypeLookup<ModWaterStyle>.Register(this);
 		}
 
 		public sealed override void SetupContent() {
@@ -71,6 +72,7 @@ namespace Terraria.ModLoader
 
 		protected sealed override void Register() {
 			Slot = LoaderManager.Get<WaterFallStylesLoader>().Register(this);
+			ModTypeLookup<ModWaterfallStyle>.Register(this);
 		}
 
 		public sealed override void SetupContent() {

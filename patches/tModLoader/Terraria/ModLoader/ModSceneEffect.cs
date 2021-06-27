@@ -30,6 +30,7 @@ namespace Terraria.ModLoader
 		// Methods
 		protected override void Register() {
 			Type = LoaderManager.Get<SceneEffectLoader>().Register(this);
+			ModTypeLookup<ModSceneEffect>.Register(this);
 		}
 
 		/// <summary>
@@ -39,6 +40,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		internal void RegisterSceneEffect(ModSceneEffect modSceneEffect) {
 			LoaderManager.Get<SceneEffectLoader>().Register(this);
+			ModTypeLookup<ModSceneEffect>.Register(this);
 		}
 
 		/// <summary>

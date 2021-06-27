@@ -58,10 +58,9 @@ namespace Terraria.ModLoader
 
 		protected override void Register() {
 			ClassName = LocalizationLoader.GetOrCreateTranslation(Mod, $"DamageClassName.{Name}");
+			Type = DamageClassLoader.Add(this);
 
 			ModTypeLookup<DamageClass>.Register(this);
-
-			Type = DamageClassLoader.Add(this);
 		}
 	}
 }

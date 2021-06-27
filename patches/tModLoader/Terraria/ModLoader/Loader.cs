@@ -43,7 +43,6 @@ namespace Terraria.ModLoader
 		public int Register(T obj) {
 			int type = Reserve();
 
-			ModTypeLookup<T>.Register(obj);
 			list.Add(obj);
 
 			return type;

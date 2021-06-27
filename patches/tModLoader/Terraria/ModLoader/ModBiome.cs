@@ -39,6 +39,8 @@ namespace Terraria.ModLoader
 
 		protected sealed override void Register() {
 			Type = LoaderManager.Get<BiomeLoader>().Register(this);
+
+			ModTypeLookup<ModBiome>.Register(this);
 			RegisterSceneEffect(this);
 
 			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"BiomeName.{Name}");

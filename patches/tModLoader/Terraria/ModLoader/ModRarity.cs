@@ -8,8 +8,8 @@ namespace Terraria.ModLoader
 		public int Type { get; internal set; }
 
 		protected sealed override void Register() {
-			ModTypeLookup<ModRarity>.Register(this);
 			Type = RarityLoader.Add(this);
+			ModTypeLookup<ModRarity>.Register(this);
 		}
 
 		/// <summary>
