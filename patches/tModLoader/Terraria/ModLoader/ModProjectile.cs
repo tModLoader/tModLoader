@@ -49,9 +49,9 @@ namespace Terraria.ModLoader
 		}
 
 		protected sealed override void Register() {
+			Projectile.type = ProjectileLoader.ReserveProjectileID();
 			ModTypeLookup<ModProjectile>.Register(this);
 
-			Projectile.type = ProjectileLoader.ReserveProjectileID();
 			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ProjectileName.{Name}");
 
 			ProjectileLoader.projectiles.Add(this);

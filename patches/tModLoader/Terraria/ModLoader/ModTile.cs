@@ -133,10 +133,9 @@ namespace Terraria.ModLoader
 
 		protected sealed override void Register() {
 			ContainerName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Containers.{Name}", true);
+			Type = (ushort)TileLoader.ReserveTileID();
 
 			ModTypeLookup<ModTile>.Register(this);
-
-			Type = (ushort)TileLoader.ReserveTileID();
 
 			TileLoader.tiles.Add(this);
 		}

@@ -19,8 +19,8 @@ namespace Terraria.ModLoader
 		public override string Texture => textureOverride ?? base.Texture;
 
 		protected override void Register() {
-			ModTypeLookup<ModGore>.Register(this);
 			GoreLoader.RegisterModGore(this);
+			ModTypeLookup<ModGore>.Register(this);
 		}
 
 		/// <summary>

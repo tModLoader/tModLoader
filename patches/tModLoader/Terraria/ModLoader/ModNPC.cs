@@ -67,9 +67,9 @@ namespace Terraria.ModLoader
 		}
 
 		protected sealed override void Register() {
+			NPC.type = NPCLoader.ReserveNPCID();
 			ModTypeLookup<ModNPC>.Register(this);
 
-			NPC.type = NPCLoader.ReserveNPCID();
 			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"NPCName.{Name}");
 
 			NPCLoader.npcs.Add(this);

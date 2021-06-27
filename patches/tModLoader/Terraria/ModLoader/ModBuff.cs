@@ -25,9 +25,9 @@ namespace Terraria.ModLoader
 		public bool CanBeCleared { get; set; } = true;
 
 		protected override sealed void Register() {
+			Type = BuffLoader.ReserveBuffID();
 			ModTypeLookup<ModBuff>.Register(this);
 
-			Type = BuffLoader.ReserveBuffID();
 			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"BuffName.{Name}");
 			Description = LocalizationLoader.GetOrCreateTranslation(Mod, $"BuffDescription.{Name}");
 

@@ -41,27 +41,33 @@ namespace Terraria.ModLoader
 
 		/// <summary> Attempts to find the content instance with the specified full name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
-		public static T Find<T>(string fullname) where T : IModType
+		public static T Find<T>(string fullname) where T : class, IModType
 			=> ModTypeLookup<T>.Get(fullname);
 
 		/// <summary> Attempts to find the content instance with the specified name and mod name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
-		public static T Find<T>(string modName, string name) where T : IModType
+		public static T Find<T>(string modName, string name) where T : class, IModType
 			=> ModTypeLookup<T>.Get(modName, name);
 
 		/// <summary> Safely attempts to find the content instance with the specified full name. Caching the result is recommended. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
-		public static bool TryFind<T>(string fullname, out T value) where T : IModType
+		public static bool TryFind<T>(string fullname, out T value) where T : class, IModType
 			=> ModTypeLookup<T>.TryGetValue(fullname, out value);
 
 		/// <summary> Safely attempts to find the content instance with the specified name and mod name. Caching the result is recommended. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
-		public static bool TryFind<T>(string modName, string name, out T value) where T : IModType
+		public static bool TryFind<T>(string modName, string name, out T value) where T : class, IModType
 			=> ModTypeLookup<T>.TryGetValue(modName, name, out value);
 
 		/// <summary> Short-hand for '<see cref="GetInstance{T}"/>.Type' </summary>
 		public static int GetId<T>() where T : class, IModTypeWithId
 			=> GetInstance<T>().Type;
+
+		public static T Get<T>(int id) where T : class, IModTypeWithId
+			=> ModTypeLookup<T>.Get(id);
+
+		public static bool TryGet<T>(int id, out T result) where T : class, IModTypeWithId
+			=> ModTypeLookup<T>.TryGet(id, out result);
 
 		private static readonly char[] nameSplitters = new char[] { '/', ' ', ':' };
 		public static void SplitName(string name, out string domain, out string subName) {

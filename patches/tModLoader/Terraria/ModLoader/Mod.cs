@@ -215,11 +215,13 @@ namespace Terraria.ModLoader
 
 		/// <summary> Attempts to find the content instance from this mod with the specified name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
-		public T Find<T>(string name) where T : IModType => ModContent.Find<T>(Name, name);
+		public T Find<T>(string name) where T : class, IModType
+			=> ModContent.Find<T>(Name, name);
 
 		/// <summary> Safely attempts to find the content instance from this mod with the specified name. Caching the result is recommended. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
-		public bool TryFind<T>(string name, out T value) where T : IModType => ModContent.TryFind(Name, name, out value);
+		public bool TryFind<T>(string name, out T value) where T : class, IModType
+			=> ModContent.TryFind(Name, name, out value);
 
 		/// <summary>
 		/// Assigns a head texture to the given town NPC type.

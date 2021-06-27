@@ -23,11 +23,10 @@ namespace Terraria.ModLoader
 		public int Type { get; internal set; }
 
 		protected override sealed void Register() {
+			Type = DustLoader.ReserveDustID();
 			ModTypeLookup<ModDust>.Register(this);
 
 			DustLoader.dusts.Add(this);
-
-			Type = DustLoader.ReserveDustID();
 
 			Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.GetTexture(Texture).Value : TextureAssets.Dust.Value;
 		}

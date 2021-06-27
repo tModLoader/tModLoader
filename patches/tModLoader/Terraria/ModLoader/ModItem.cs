@@ -49,12 +49,13 @@ namespace Terraria.ModLoader
 		}
 
 		protected sealed override void Register() {
+			Item.type = ItemLoader.ReserveItemID();
 			ModTypeLookup<ModItem>.Register(this);
 
 			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemName.{Name}");
 			Tooltip = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemTooltip.{Name}", true);
 
-			Item.ResetStats(ItemLoader.ReserveItemID());
+			Item.ResetStats(Type);
 			Item.ModItem = this;
 
 			ItemLoader.items.Add(this);
