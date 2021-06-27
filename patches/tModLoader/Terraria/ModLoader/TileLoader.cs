@@ -233,17 +233,24 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			loaded = false;
-			tiles.Clear();
 			nextTile = TileID.Count;
+
+			tiles.Clear();
 			globalTiles.Clear();
 			trees.Clear();
 			palmTrees.Clear();
 			cacti.Clear();
-			Main.instance.TilePaintSystem.Reset();
+
+			// Has to be ran on the main thread, since this may dispose textures.
+			Main.QueueMainThreadAction(() => {
+				Main.instance.TilePaintSystem.Reset();
+			});
+
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsChair, vanillaChairCount);
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTable, vanillaTableCount);
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTorch, vanillaTorchCount);
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsDoor, vanillaDoorCount);
+			
 			while (TileObjectData._data.Count > TileID.Count) {
 				TileObjectData._data.RemoveAt(TileObjectData._data.Count - 1);
 			}
