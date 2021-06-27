@@ -837,9 +837,11 @@ namespace Terraria.ModLoader
 			int originalStyle = style;
 			bool flag = false;
 			ModTile modTile = GetTile(type);
+
 			if (modTile != null) {
 				saplingType = modTile.SaplingGrowthType(ref style);
-				if (TileID.Sets.TreeSapling[saplingType]) {
+
+				if (saplingType >= 0 && TileID.Sets.TreeSapling[saplingType]) {
 					originalType = saplingType;
 					originalStyle = style;
 					flag = true;
@@ -849,9 +851,11 @@ namespace Terraria.ModLoader
 					style = originalStyle;
 				}
 			}
+
 			foreach (var hook in HookSaplingGrowthType) {
 				saplingType = hook(type, ref style);
-				if (TileID.Sets.TreeSapling[saplingType]) {
+
+				if (saplingType >= 0 && TileID.Sets.TreeSapling[saplingType]) {
 					originalType = saplingType;
 					originalStyle = style;
 					flag = true;
@@ -861,6 +865,7 @@ namespace Terraria.ModLoader
 					style = originalStyle;
 				}
 			}
+
 			return flag;
 		}
 
