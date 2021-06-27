@@ -25,7 +25,7 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(152, 171, 198), name);
 
 			DustType = 84;
-			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleOre>();
+			ItemDrop = ModContent.GetId<Items.Placeable.ExampleOre>();
 			SoundType = SoundID.Tink;
 			SoundStyle = 1;
 			//mineResist = 4f;
@@ -72,7 +72,7 @@ namespace ExampleMod.Content.Tiles
 
 				// Then, we call WorldGen.TileRunner with random "strength" and random "steps", as well as the Tile we wish to place.
 				// Feel free to experiment with strength and step to see the shape they generate.
-				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), ModContent.TileType<ExampleOre>());
+				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), ModContent.GetId<ExampleOre>());
 
 				// Alternately, we could check the tile already present in the coordinate we are interested.
 				// Wrapping WorldGen.TileRunner in the following condition would make the ore only generate in Snow.

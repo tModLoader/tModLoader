@@ -22,7 +22,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.consumable = true;
 			Item.value = 2000;
-			Item.createTile = ModContent.TileType<Tiles.Furniture.ExampleBed>();
+			Item.createTile = ModContent.GetId<Tiles.Furniture.ExampleBed>();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

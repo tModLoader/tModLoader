@@ -130,9 +130,9 @@ namespace ExampleMod.NPCs
 		public override void Init() {
 			minLength = 6;
 			maxLength = 12;
-			tailType = ModContent.NPCType<ExampleWormTail>();
-			bodyType = ModContent.NPCType<ExampleWormBody>();
-			headType = ModContent.NPCType<ExampleWormHead>();
+			tailType = ModContent.GetId<ExampleWormTail>();
+			bodyType = ModContent.GetId<ExampleWormBody>();
+			headType = ModContent.GetId<ExampleWormHead>();
 			speed = 5.5f;
 			turnSpeed = 0.045f;
 		}

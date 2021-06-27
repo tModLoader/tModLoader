@@ -25,7 +25,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			Item.autoReuse = true;
 			Item.maxStack = 999;
 			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.ExampleSink>();
+			Item.createTile = ModContent.GetId<Tiles.ExampleSink>();
 			Item.width = 24;
 			Item.height = 30;
 			Item.value = 3000;

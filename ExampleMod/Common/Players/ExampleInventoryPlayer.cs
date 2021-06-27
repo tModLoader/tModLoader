@@ -24,14 +24,14 @@ namespace ExampleMod.Common.Players
 			}
 
 			return new[] {
-				new Item(ModContent.ItemType<ExampleItem>()),
+				new Item(ModContent.GetId<ExampleItem>()),
 				new Item(ItemID.GoldOre, 256),
-				new Item(ModContent.ItemType<ExampleBlock>(), 256),
-				new Item(ModContent.ItemType<ExampleWall>(), 256),
-				new Item(ModContent.ItemType<ExampleOre>(), 256),
-				new Item(ModContent.ItemType<ExampleChair>(), 256),
-				new Item(ModContent.ItemType<ExampleChest>(), 256),
-				new Item(ModContent.ItemType<ExamplePlatform>(), 256)
+				new Item(ModContent.GetId<ExampleBlock>(), 256),
+				new Item(ModContent.GetId<ExampleWall>(), 256),
+				new Item(ModContent.GetId<ExampleOre>(), 256),
+				new Item(ModContent.GetId<ExampleChair>(), 256),
+				new Item(ModContent.GetId<ExampleChest>(), 256),
+				new Item(ModContent.GetId<ExamplePlatform>(), 256)
 			};
 		}
 

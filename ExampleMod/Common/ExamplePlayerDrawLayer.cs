@@ -17,7 +17,7 @@ namespace ExampleMod.Common
 
 		public override bool GetDefaultVisiblity(PlayerDrawSet drawInfo) {
 			//The layer will be visible only if the player is holding an ExampleItem in their hands. Or if another modder forces this layer to be visible.
-			return drawInfo.drawPlayer.HeldItem?.type == ModContent.ItemType<ExampleItem>();
+			return drawInfo.drawPlayer.HeldItem?.type == ModContent.GetId<ExampleItem>();
 
 			// If you'd like to reference another PlayerDrawLayer's visibility,
 			// you can do so by getting its instance via ModContent.GetInstance<OtherDrawLayer>(), and calling GetDefaultVisiblity on it

@@ -29,14 +29,14 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.crit = 6; //The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
 			Item.value = Item.buyPrice(gold: 1); //The value of the weapon in copper coins.
-			Item.rare = ModContent.RarityType<ExampleModRarity>(); // Give this item our custom rarity.
+			Item.rare = ModContent.GetId<ExampleModRarity>(); // Give this item our custom rarity.
 			Item.UseSound = SoundID.Item1; //The sound when the weapon is being used.
 		}
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(3)) {
 				// Emit dusts when the sword is swung
-				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Dusts.Sparkle>());
+				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.GetId<Dusts.Sparkle>());
 			}
 		}
 

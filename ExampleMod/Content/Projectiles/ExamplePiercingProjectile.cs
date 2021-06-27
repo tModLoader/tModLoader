@@ -74,7 +74,7 @@ namespace ExampleMod.Content.Projectiles
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.FlintlockPistol);
 			Item.useAmmo = AmmoID.None;
-			Item.shoot = ModContent.ProjectileType<ExamplePiercingProjectile>();
+			Item.shoot = ModContent.GetId<ExamplePiercingProjectile>();
 		}
 		public override void AddRecipes() {
 			CreateRecipe()

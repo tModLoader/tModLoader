@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Buffs
 		}
 
 		public override void Update(Player player, ref int buffIndex) {
-			player.mount.SetMount(ModContent.MountType<Mounts.ExampleMount>(), player);
+			player.mount.SetMount(ModContent.GetId<Mounts.ExampleMount>(), player);
 			player.buffTime[buffIndex] = 10; // reset buff time
 		}
 	}

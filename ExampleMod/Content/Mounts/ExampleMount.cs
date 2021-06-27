@@ -42,10 +42,10 @@ namespace ExampleMod.Content.Mounts
 
 			// Misc
 			MountData.fatigueMax = 0;
-			MountData.buff = ModContent.BuffType<Buffs.ExampleMountBuff>(); // The ID number of the buff assigned to the mount.
+			MountData.buff = ModContent.GetId<Buffs.ExampleMountBuff>(); // The ID number of the buff assigned to the mount.
 
 			// Effects
-			MountData.spawnDust = ModContent.DustType<Dusts.Sparkle>(); // The ID of the dust spawned when mounted or dismounted.
+			MountData.spawnDust = ModContent.GetId<Dusts.Sparkle>(); // The ID of the dust spawned when mounted or dismounted.
 
 			// Frame data and player offsets
 			MountData.totalFrames = 4; // Amount of animation frames for the mount
@@ -105,7 +105,7 @@ namespace ExampleMod.Content.Mounts
 			if (Math.Abs(player.velocity.X) > 4f) {
 				Rectangle rect = player.getRect();
 
-				Dust.NewDust(new Vector2(rect.X, rect.Y), rect.Width, rect.Height, ModContent.DustType<Dusts.Sparkle>());
+				Dust.NewDust(new Vector2(rect.X, rect.Y), rect.Width, rect.Height, ModContent.GetId<Dusts.Sparkle>());
 			}
 		}
 

@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileLavaDeath[Type] = true;
 			TileID.Sets.Clock[Type] = true;
 
-			DustType = ModContent.DustType<Sparkle>();
+			DustType = ModContent.GetId<Sparkle>();
 			AdjTiles = new int[] { TileID.GrandfatherClocks };
 
 			// Placement
@@ -80,6 +80,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int i, int j, bool fail, ref int num) => num = fail ? 1 : 3;
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 48, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleClock>());
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 48, 32, ModContent.GetId<Items.Placeable.Furniture.ExampleClock>());
 	}
 }

@@ -32,7 +32,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 		//Helper method to determine the body type
 		public static int BodyType() {
-			return ModContent.NPCType<MinionBossBody>();
+			return ModContent.GetId<MinionBossBody>();
 		}
 
 		public override void SetStaticDefaults() {

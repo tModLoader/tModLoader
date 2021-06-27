@@ -66,7 +66,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 		//Helper method to determine the minion type
 		public static int MinionType() {
-			return ModContent.NPCType<MinionBossMinion>();
+			return ModContent.GetId<MinionBossMinion>();
 		}
 
 		//Helper method to determine the amount of minions summoned
@@ -151,7 +151,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			NPC.BossBar = ModContent.GetInstance<MinionBossBossBar>();
 
 			//Important if this boss has a treasure bag
-			BossBag = ModContent.ItemType<MinionBossBag>();
+			BossBag = ModContent.GetId<MinionBossBag>();
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
@@ -173,7 +173,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			//All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
 			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
 
-			int itemType = ModContent.ItemType<ExampleItem>();
+			int itemType = ModContent.GetId<ExampleItem>();
 
 			//We make 12-15 ExampleItems spawn randomly in all directions, like the lunar pillar fragments. Hereby we need the DropOneByOne rule,
 			//which requires these parameters to be defined
@@ -306,7 +306,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			int count = MinionCount();
 
 			for (int i = 0; i < count; i++) {
-				int index = NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
+				int index = NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, ModContent.GetId<MinionBossMinion>(), NPC.whoAmI);
 				NPC minionNPC = Main.npc[index];
 
 				//Now that the minion is spawned, we need to prepare it with data that is necessary for it to work.
@@ -479,7 +479,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				float kitingOffsetX = Utils.Clamp(player.velocity.X * 16, -100, 100);
 				Vector2 position = player.Bottom + new Vector2(kitingOffsetX + Main.rand.Next(-100, 100), Main.rand.Next(50, 100));
 
-				int type = ModContent.ProjectileType<MinionBossEye>();
+				int type = ModContent.GetId<MinionBossEye>();
 				int damage = NPC.damage / 2;
 				Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
 			}

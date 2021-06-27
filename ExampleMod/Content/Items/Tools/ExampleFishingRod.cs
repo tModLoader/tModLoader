@@ -28,7 +28,7 @@ namespace ExampleMod.Content.Items.Tools
 
 			Item.fishingPole = 30; // Sets the poles fishing power		
 			Item.shootSpeed = 12f; // Sets the speed in which the bobbers are launched. Wooden Fishing Pole is 9f and Golden Fishing Rod is 17f.
-			Item.shoot = ModContent.ProjectileType<Projectiles.ExampleBobber>(); // The Bobber projectile.
+			Item.shoot = ModContent.GetId<Projectiles.ExampleBobber>(); // The Bobber projectile.
 		}
 
 		// Grants the High Test Fishing Line bool if holding the item.

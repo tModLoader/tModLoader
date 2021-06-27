@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Items.Tools
 			// Copy values from the Amethyst Hook
 			Item.CloneDefaults(ItemID.AmethystHook);
 			Item.shootSpeed = 18f; // This defines how quickly the hook is shot.
-			Item.shoot = ModContent.ProjectileType<ExampleHookProjectile>(); // Makes the item shoot the hook's projectile when used.
+			Item.shoot = ModContent.GetId<ExampleHookProjectile>(); // Makes the item shoot the hook's projectile when used.
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

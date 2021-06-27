@@ -18,7 +18,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 		public override void SetDefaults() {
 			Item.damage = 0;
 			Item.useStyle = ItemUseStyleID.Swing;
-			Item.shoot = ModContent.ProjectileType<ExampleLightPetProjectile>();
+			Item.shoot = ModContent.GetId<ExampleLightPetProjectile>();
 			Item.width = 16;
 			Item.height = 30;
 			Item.UseSound = SoundID.Item2;
@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 			Item.rare = ItemRarityID.Yellow;
 			Item.noMelee = true;
 			Item.value = Item.sellPrice(0, 5, 50);
-			Item.buffType = ModContent.BuffType<ExampleLightPetBuff>();
+			Item.buffType = ModContent.GetId<ExampleLightPetBuff>();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

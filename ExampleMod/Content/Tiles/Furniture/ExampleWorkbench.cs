@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileFrameImportant[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 
-			DustType = ModContent.DustType<Dusts.Sparkle>();
+			DustType = ModContent.GetId<Dusts.Sparkle>();
 			AdjTiles = new int[] { TileID.WorkBenches };
 
 			// Placement
@@ -36,7 +36,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override void NumDust(int x, int y, bool fail, ref int num) => num = fail ? 1 : 3;
 
 		public override void KillMultiTile(int x, int y, int frameX, int frameY) {
-			Item.NewItem(x * 16, y * 16, 32, 16, ModContent.ItemType<Items.Placeable.Furniture.ExampleWorkbench>());
+			Item.NewItem(x * 16, y * 16, 32, 16, ModContent.GetId<Items.Placeable.Furniture.ExampleWorkbench>());
 		}
 	}
 }

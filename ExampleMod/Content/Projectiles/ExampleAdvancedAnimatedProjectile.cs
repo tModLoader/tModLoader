@@ -146,7 +146,7 @@ namespace ExampleMod.Content.Projectiles
 			Item.CloneDefaults(ItemID.NebulaBlaze);
 			Item.mana = 3;
 			Item.damage = 3;
-			Item.shoot = ModContent.ProjectileType<ExampleAdvancedAnimatedProjectile>();
+			Item.shoot = ModContent.GetId<ExampleAdvancedAnimatedProjectile>();
 		}
 		public override void AddRecipes() {
 			CreateRecipe()

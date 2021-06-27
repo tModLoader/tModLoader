@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items.Consumables
 	public class MinionBossBag : ModItem
 	{
 		//Sets the associated NPC this treasure bag is dropped from
-		public override int BossBagNPC => ModContent.NPCType<MinionBossBody>();
+		public override int BossBagNPC => ModContent.GetId<MinionBossBody>();
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Treasure Bag");
@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Items.Consumables
 			player.TryGettingDevArmor();
 
 			//We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
-			player.QuickSpawnItem(ModContent.ItemType<ExampleItem>(), Main.rand.Next(12, 16));
+			player.QuickSpawnItem(ModContent.GetId<ExampleItem>(), Main.rand.Next(12, 16));
 		}
 	}
 }

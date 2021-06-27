@@ -18,8 +18,8 @@ namespace ExampleMod.Content.Pets.ExamplePet
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.ZephyrFish); // Copy the Defaults of the Zephyr Fish Item.
 
-			Item.shoot = ModContent.ProjectileType<ExamplePetProjectile>(); // "Shoot" your pet projectile.
-			Item.buffType = ModContent.BuffType<ExamplePetBuff>(); // Apply buff upon usage of the Item.
+			Item.shoot = ModContent.GetId<ExamplePetProjectile>(); // "Shoot" your pet projectile.
+			Item.buffType = ModContent.GetId<ExamplePetBuff>(); // Apply buff upon usage of the Item.
 		}
 
 		public override void UseStyle(Player player, Rectangle heldItemFrame) {

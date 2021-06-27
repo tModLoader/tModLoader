@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Items.Placeable
 			Item.autoReuse = true;
 			Item.maxStack = 999;
 			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.ExampleOre>();
+			Item.createTile = ModContent.GetId<Tiles.ExampleOre>();
 			Item.width = 12;
 			Item.height = 12;
 			Item.value = 3000;

@@ -24,8 +24,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 			AddMapEntry(new Color(200, 200, 200));
 
-			DustType = ModContent.DustType<Sparkle>();
-			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.ExamplePlatform>();
+			DustType = ModContent.GetId<Sparkle>();
+			ItemDrop = ModContent.GetId<Items.Placeable.Furniture.ExamplePlatform>();
 			AdjTiles = new int[] { TileID.Platforms };
 
 			// Placement

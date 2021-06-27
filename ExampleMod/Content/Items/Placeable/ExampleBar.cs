@@ -22,7 +22,7 @@ namespace ExampleMod.Content.Items.Placeable
 			Item.useTime = 10;
 			Item.autoReuse = true;
 			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.ExampleBar>(); // The ID of the wall that this item should place when used. ModContent.TileType<T>() method returns an integer ID of the wall provided to it through its generic type argument (the type in angle brackets)..
+			Item.createTile = ModContent.GetId<Tiles.ExampleBar>(); // The ID of the wall that this item should place when used. ModContent.GetId<T>() method returns an integer ID of the wall provided to it through its generic type argument (the type in angle brackets)..
 			Item.placeStyle = 0;
 		}
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

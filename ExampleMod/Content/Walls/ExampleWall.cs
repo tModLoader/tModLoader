@@ -9,8 +9,8 @@ namespace ExampleMod.Content.Walls
 	{
 		public override void SetDefaults() {
 			Main.wallHouse[Type] = true;
-			DustType = ModContent.DustType<Sparkle>();
-			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleWall>();
+			DustType = ModContent.GetId<Sparkle>();
+			ItemDrop = ModContent.GetId<Items.Placeable.ExampleWall>();
 			AddMapEntry(new Color(150, 150, 150));
 		}
 

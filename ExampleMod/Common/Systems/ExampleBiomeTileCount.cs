@@ -9,7 +9,7 @@ namespace ExampleMod.Common.Systems
 		public int exampleBlockCount;
 
 		public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts) {
-			exampleBlockCount = tileCounts[ModContent.TileType<ExampleBlock>()];
+			exampleBlockCount = tileCounts[ModContent.GetId<ExampleBlock>()];
 		}
 	}
 }

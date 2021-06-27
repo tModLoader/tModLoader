@@ -21,7 +21,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.Furniture.ExamplePlatform>();
+			Item.createTile = ModContent.GetId<Tiles.Furniture.ExamplePlatform>();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

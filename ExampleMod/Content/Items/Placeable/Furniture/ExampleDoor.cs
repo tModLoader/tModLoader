@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.consumable = true;
 			Item.value = 150;
-			Item.createTile = ModContent.TileType<ExampleDoorClosed>();
+			Item.createTile = ModContent.GetId<ExampleDoorClosed>();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

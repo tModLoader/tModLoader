@@ -31,8 +31,8 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.value = Item.buyPrice(gold: 1); //The value of the weapon in copper coins
 
 			//Custom ammo and shooting homing projectiles
-			Item.shoot = ModContent.ProjectileType<Projectiles.ExampleHomingProjectile>();
-			Item.useAmmo = ModContent.ItemType<ExampleCustomAmmo>(); //Restrict the type of ammo the weapon can use, so that the weapon cannot use other ammos
+			Item.shoot = ModContent.GetId<Projectiles.ExampleHomingProjectile>();
+			Item.useAmmo = ModContent.GetId<ExampleCustomAmmo>(); //Restrict the type of ammo the weapon can use, so that the weapon cannot use other ammos
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

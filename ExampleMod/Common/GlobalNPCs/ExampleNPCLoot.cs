@@ -17,7 +17,7 @@ namespace ExampleMod.Common.GlobalNPCs
 
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 			if (!NPCID.Sets.CountsAsCritter[npc.type]) { //If npc is not a critter
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1)); //Make it drop ExampleItem.
+				npcLoot.Add(ItemDropRule.Common(ModContent.GetId<ExampleItem>(), 1)); //Make it drop ExampleItem.
 				// ItemDropRule.Common is what you would use in most cases, it simply drops the item with a chance specified.
 				// The dropsOutOfY int is used for the numerator of the fractional chance of dropping this item.
 				// Likewise, the dropsXOutOfY int is used for the denominator.
@@ -65,7 +65,7 @@ namespace ExampleMod.Common.GlobalNPCs
 		//Vanilla uses this for the biome keys, souls of night/light, as well as the holiday drops.
 		//Any drop rules in ModifyGlobalLoot should only run once. Everything else should go in ModifyNPCLoot.
 		public override void ModifyGlobalLoot(GlobalLoot globalLoot) {
-			globalLoot.Add(ItemDropRule.ByCondition(new Conditions.IsMasterMode(), ModContent.ItemType<ExampleSoul>(), 5, 1, 1)); //If the world is in master mode, drop ExampleSouls 20% of the time from every npc.
+			globalLoot.Add(ItemDropRule.ByCondition(new Conditions.IsMasterMode(), ModContent.GetId<ExampleSoul>(), 5, 1, 1)); //If the world is in master mode, drop ExampleSouls 20% of the time from every npc.
 			//TODO: Make it so it only drops from enemies in ExampleBiome when that gets made.
 		}
 	}

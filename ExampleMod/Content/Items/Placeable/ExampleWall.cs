@@ -22,7 +22,7 @@ namespace ExampleMod.Content.Items.Placeable
 			Item.useTime = 7;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.consumable = true;
-			Item.createWall = ModContent.WallType<Walls.ExampleWall>(); // The ID of the wall that this item should place when used. ModContent.WallType<T>() method returns an integer ID of the wall provided to it through its generic type argument (the type in angle brackets).
+			Item.createWall = ModContent.GetId<Walls.ExampleWall>(); // The ID of the wall that this item should place when used. ModContent.GetId<T>() method returns an integer ID of the wall provided to it through its generic type argument (the type in angle brackets).
 
 		}
 

@@ -24,7 +24,7 @@ namespace ExampleMod.Content.Items.Ammo
 			Item.knockBack = 2f; // Sets the item's knockback. Ammunition's knockback added together with weapon and projectiles.
 			Item.value = Item.sellPrice(0, 0, 1, 0); // Item price in copper coins (can be converted with Item.sellPrice/Item.buyPrice)
 			Item.rare = ItemRarityID.Yellow; // The color that the item's name will be in-game.
-			Item.shoot = ModContent.ProjectileType<Projectiles.ExampleHomingProjectile>(); // The projectile that weapons fire when using this item as ammunition.
+			Item.shoot = ModContent.GetId<Projectiles.ExampleHomingProjectile>(); // The projectile that weapons fire when using this item as ammunition.
 			
 			Item.ammo = Item.type; // Important. The first item in an ammo class sets the AmmoID to its type
 		}

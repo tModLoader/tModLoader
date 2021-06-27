@@ -133,7 +133,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 16, 32, ModContent.ItemType<ExampleAnimatedTileItem>());
+			Item.NewItem(i * 16, j * 16, 16, 32, ModContent.GetId<ExampleAnimatedTileItem>());
 		}
 	}
 
@@ -145,7 +145,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.FireflyinaBottle);
-			Item.createTile = ModContent.TileType<ExampleAnimatedTile>();
+			Item.createTile = ModContent.GetId<ExampleAnimatedTile>();
 		}
 
 		public override void AddRecipes() {

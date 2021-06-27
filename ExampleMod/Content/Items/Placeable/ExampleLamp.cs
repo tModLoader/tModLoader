@@ -18,7 +18,7 @@ namespace ExampleMod.Content.Items.Placeable
 			Item.autoReuse = true;
 			Item.maxStack = 99;
 			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.ExampleLamp>();
+			Item.createTile = ModContent.GetId<Tiles.ExampleLamp>();
 			Item.width = 10;
 			Item.height = 24;
 			Item.value = 500;

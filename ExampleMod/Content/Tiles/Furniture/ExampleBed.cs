@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.IsValidSpawnPoint[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 
-			DustType = ModContent.DustType<Sparkle>();
+			DustType = ModContent.GetId<Sparkle>();
 			AdjTiles = new int[] { TileID.Beds };
 
 			// Placement
@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int i, int j, bool fail, ref int num) => num = 1;
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 64, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleBed>());
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 64, 32, ModContent.GetId<Items.Placeable.Furniture.ExampleBed>());
 
 		public override bool RightClick(int i, int j) {
 			Player player = Main.LocalPlayer;
@@ -83,7 +83,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			else {
 				player.noThrow = 2;
 				player.cursorItemIconEnabled = true;
-				player.cursorItemIconID = ModContent.ItemType<Items.Placeable.Furniture.ExampleBed>();
+				player.cursorItemIconID = ModContent.GetId<Items.Placeable.Furniture.ExampleBed>();
 			}
 		}
 	}

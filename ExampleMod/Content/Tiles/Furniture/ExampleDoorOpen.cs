@@ -24,9 +24,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 
-			DustType = ModContent.DustType<Sparkle>();
+			DustType = ModContent.GetId<Sparkle>();
 			AdjTiles = new int[] { TileID.OpenDoor };
-			CloseDoorID = ModContent.TileType<ExampleDoorClosed>();
+			CloseDoorID = ModContent.GetId<ExampleDoorClosed>();
 
 			// Names
 			ModTranslation name = CreateMapEntryName();
@@ -79,13 +79,13 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int i, int j, bool fail, ref int num) => num = 1;
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 32, 48, ModContent.ItemType<ExampleDoor>());
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 32, 48, ModContent.GetId<ExampleDoor>());
 
 		public override void MouseOver(int i, int j) {
 			Player player = Main.LocalPlayer;
 			player.noThrow = 2;
 			player.cursorItemIconEnabled = true;
-			player.cursorItemIconID = ModContent.ItemType<ExampleDoor>();
+			player.cursorItemIconID = ModContent.GetId<ExampleDoor>();
 		}
 	}
 }

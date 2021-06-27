@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Items.Armor
 
 		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
 		public override bool IsArmorSet(Item head, Item body, Item legs) {
-			return body.type == ModContent.ItemType<ExampleBreastplate>() && legs.type == ModContent.ItemType<ExampleLeggings>();
+			return body.type == ModContent.GetId<ExampleBreastplate>() && legs.type == ModContent.GetId<ExampleLeggings>();
 		}
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.

@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Items
 		}
 		
 		public override void SetDefaults() {
-			Item.shoot = ModContent.ProjectileType<ExampleGolfBallProjectile>(); // Determines what projectile is placed on the golf tee.
+			Item.shoot = ModContent.GetId<ExampleGolfBallProjectile>(); // Determines what projectile is placed on the golf tee.
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.shootSpeed = 12f; // The velocity in pixels the projectile fired by the item will have. Actual velocity depends on the projectile being fired.
 			Item.width = 18; // The width of the item's hitbox in pixels.

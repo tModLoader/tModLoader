@@ -27,9 +27,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.BasicChest[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 
-			DustType = ModContent.DustType<Sparkle>();
+			DustType = ModContent.GetId<Sparkle>();
 			AdjTiles = new int[] { TileID.Containers };
-			ChestDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
+			ChestDrop = ModContent.GetId<Items.Placeable.Furniture.ExampleChest>();
 
 			// Names
 			ContainerName.SetDefault("Example Chest");
@@ -147,7 +147,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			}
 			else {
 				if (isLocked) {
-					int key = ModContent.ItemType<ExampleChestKey>();
+					int key = ModContent.GetId<ExampleChestKey>();
 					if (player.ConsumeItem(key) && Chest.Unlock(left, top)) {
 						if (Main.netMode == NetmodeID.MultiplayerClient) {
 							NetMessage.SendData(MessageID.Unlock, -1, -1, null, player.whoAmI, 1f, left, top);
@@ -199,9 +199,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 			else {
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : "Example Chest";
 				if (player.cursorItemIconText == "Example Chest") {
-					player.cursorItemIconID = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
+					player.cursorItemIconID = ModContent.GetId<Items.Placeable.Furniture.ExampleChest>();
 					if (Main.tile[left, top].frameX / 36 == 1) {
-						player.cursorItemIconID = ModContent.ItemType<ExampleChestKey>();
+						player.cursorItemIconID = ModContent.GetId<ExampleChestKey>();
 					}
 
 					player.cursorItemIconText = "";

@@ -12,7 +12,7 @@ namespace ExampleMod.Content
 
 		public static void AddRecipeGroups() {
 			//  Store this recipe group in a variable so we can use it later
-			ExampleRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ModContent.ItemType<Items.ExampleItem>())}", ModContent.ItemType<Items.ExampleItem>());
+			ExampleRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ModContent.GetId<Items.ExampleItem>())}", ModContent.GetId<Items.ExampleItem>());
 
 			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", ExampleRecipeGroup);
 		}

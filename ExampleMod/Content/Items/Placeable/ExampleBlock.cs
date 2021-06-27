@@ -44,7 +44,7 @@ namespace ExampleMod.Content.Items.Placeable
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.ExampleBlock>();
+			Item.createTile = ModContent.GetId<Tiles.ExampleBlock>();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -67,7 +67,7 @@ namespace ExampleMod.Content.Items.Placeable
 
 		public override void ExtractinatorUse(ref int resultType, ref int resultStack) { // Calls upon use of an extractinator. Below is the chance you will get ExampleOre from the extractinator.
 			if (Main.rand.NextBool(3)) {
-				resultType = ModContent.ItemType<ExampleOre>();  // Get this from the extractinator with a 1 in 3 chance.
+				resultType = ModContent.GetId<ExampleOre>();  // Get this from the extractinator with a 1 in 3 chance.
 				if (Main.rand.NextBool(5)) {
 					resultStack += Main.rand.Next(2); // Add a chance to get more than one of ExampleOre from the extractinator.
 				}

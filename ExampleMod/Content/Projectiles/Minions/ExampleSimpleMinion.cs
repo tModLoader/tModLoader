@@ -29,7 +29,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 
 		public override void Update(Player player, ref int buffIndex) {
 			// if the minions exist reset the buff time, otherwise remove the buff from the player.
-			if (player.ownedProjectileCounts[ModContent.ProjectileType<ExampleSimpleMinion>()] > 0) {
+			if (player.ownedProjectileCounts[ModContent.GetId<ExampleSimpleMinion>()] > 0) {
 				player.buffTime[buffIndex] = 18000;
 			}
 			else {
@@ -65,9 +65,9 @@ namespace ExampleMod.Content.Projectiles.Minions
 			// These below are needed for a minion weapon
 			Item.noMelee = true; // this item doesn't do any melee damage
 			Item.DamageType = DamageClass.Summon; // Makes the damage register as summon. If your item does not have any damage type, it becomes true damage (which means that damage scalars will not affect it). Be sure to have a damage type.
-			Item.buffType = ModContent.BuffType<ExampleSimpleMinionBuff>();
+			Item.buffType = ModContent.GetId<ExampleSimpleMinionBuff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
-			Item.shoot = ModContent.ProjectileType<ExampleSimpleMinion>(); // This item creates the minion projectile.
+			Item.shoot = ModContent.GetId<ExampleSimpleMinion>(); // This item creates the minion projectile.
 		}
 
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -81,8 +81,8 @@ namespace ExampleMod.Content.Projectiles.Minions
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ModContent.ItemType<ExampleItem>())
-				.AddTile(ModContent.TileType<ExampleWorkbench>())
+				.AddIngredient(ModContent.GetId<ExampleItem>())
+				.AddTile(ModContent.GetId<ExampleWorkbench>())
 				.Register();
 		}
 	}
@@ -148,12 +148,12 @@ namespace ExampleMod.Content.Projectiles.Minions
 		// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
 		private bool CheckActive(Player owner) {
 			if (owner.dead || !owner.active) {
-				owner.ClearBuff(ModContent.BuffType<ExampleSimpleMinionBuff>());
+				owner.ClearBuff(ModContent.GetId<ExampleSimpleMinionBuff>());
 
 				return false;
 			}
 
-			if (owner.HasBuff(ModContent.BuffType<ExampleSimpleMinionBuff>())) {
+			if (owner.HasBuff(ModContent.GetId<ExampleSimpleMinionBuff>())) {
 				Projectile.timeLeft = 2;
 			}
 

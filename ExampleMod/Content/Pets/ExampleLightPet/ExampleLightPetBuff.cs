@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 		public override void Update(Player player, ref int buffIndex) {
 			player.buffTime[buffIndex] = 18000;
 
-			int projType = ModContent.ProjectileType<ExampleLightPetProjectile>();
+			int projType = ModContent.GetId<ExampleLightPetProjectile>();
 
 			//If the player is local, and there hasn't been a pet projectile spawned yet - spawn it.
 			if (player.whoAmI == Main.myPlayer && player.ownedProjectileCounts[projType] <= 0) {
