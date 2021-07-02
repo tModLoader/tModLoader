@@ -2309,7 +2309,7 @@
  			infernoCounter++;
  			if (infernoCounter >= 180)
  				infernoCounter = 0;
-@@ -16969,7 +_,7 @@
+@@ -16994,7 +_,7 @@
  			if (_timeSinceLastImmuneGet >= 10000)
  				_timeSinceLastImmuneGet = 10000;
  
@@ -2318,7 +2318,7 @@
  			num4 *= num4;
  			float num5 = (float)((double)(base.position.Y / 16f - (60f + 10f * num4)) / (Main.worldSurface / 6.0));
  			if ((double)num5 < 0.25)
-@@ -17289,6 +_,7 @@
+@@ -17314,6 +_,7 @@
  						}
  					}
  

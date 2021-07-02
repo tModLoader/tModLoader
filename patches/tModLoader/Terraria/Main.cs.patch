@@ -953,7 +953,7 @@
  						switch (num2) {
  							case 1:
  								flag = true;
-@@ -9117,7 +_,7 @@
+@@ -9120,7 +_,7 @@
  				return;
  			}
  
@@ -962,7 +962,7 @@
  			num3 *= num3;
  			float num4 = (float)((double)((screenPosition.Y + (float)(screenHeight / 2)) / 16f - (65f + 10f * num3)) / (worldSurface / 5.0));
  			if (CreditsRollEvent.IsEventOngoing) {
-@@ -9308,6 +_,9 @@
+@@ -9311,6 +_,9 @@
  			if (lastMusicPlayed == 50)
  				musicNoCrossFade[51] = true;
  
@@ -1012,7 +1012,7 @@
  						newMusic = 51;
  						if (musicNoCrossFade[51])
  							musicFade[51] = 1f;
-@@ -9502,18 +_,24 @@
+@@ -9505,18 +_,24 @@
  				return;
  			}
  
@@ -2920,7 +2920,7 @@
  					num = 9;
  					text3 = Lang.inter[103].Value;
  					Vector2 vector = player[myPlayer].velocity + player[myPlayer].instantMovementAccumulatedThisFrame;
-@@ -34899,19 +_,21 @@
+@@ -34921,19 +_,21 @@
  					text2 = Language.GetTextValue("GameUI.Speed", Math.Round(num20));
  					flag9 = true;
  				}
@@ -2946,7 +2946,7 @@
  					num23 *= num23;
  					int num24 = 1200;
  					float num25 = (float)((double)(player[myPlayer].Center.Y / 16f - (65f + 10f * num23)) / (worldSurface / 5.0));
-@@ -34922,27 +_,33 @@
+@@ -34944,27 +_,33 @@
  					text2 = text7 + " " + text6;
  					flag2 = true;
  				}
@@ -3836,7 +3836,7 @@
  			Microsoft.Xna.Framework.Rectangle value3 = dayTime ? new Microsoft.Xna.Framework.Rectangle((int)((double)num3 - (double)TextureAssets.Sun.Width() * 0.5 * (double)num5), (int)((double)num4 - (double)TextureAssets.Sun.Height() * 0.5 * (double)num5 + (double)sunModY), (int)((float)TextureAssets.Sun.Width() * num5), (int)((float)TextureAssets.Sun.Width() * num5)) : new Microsoft.Xna.Framework.Rectangle((int)((double)num6 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8), (int)((double)num7 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8 + (double)moonModY), (int)((float)TextureAssets.Moon[num].Width() * num8), (int)((float)TextureAssets.Moon[num].Width() * num8));
  			value3.Offset((int)sceneArea.SceneLocalScreenPositionOffset.X, (int)sceneArea.SceneLocalScreenPositionOffset.Y);
  			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(mouseX, mouseY, 1, 1);
-@@ -48069,10 +_,12 @@
+@@ -48096,10 +_,12 @@
  			tileColor.G = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.G * 7) / 10);
  			tileColor.B = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.B * 7) / 10);
  			tileColor = SkyManager.Instance.ProcessTileColor(tileColor);
@@ -3850,7 +3850,7 @@
  			num *= num;
  			atmo = (float)((double)((screenPosition.Y + (float)(screenHeight / 2)) / 16f - (65f + 10f * num)) / (worldSurface / 5.0));
  			if (atmo < 0f)
-@@ -48811,6 +_,8 @@ 
+@@ -48839,5 +_,7 @@
  			UpdateBGVisibility_BackLayer(null, null);
  			UpdateBGVisibility_FrontLayer(null, null);
 +
