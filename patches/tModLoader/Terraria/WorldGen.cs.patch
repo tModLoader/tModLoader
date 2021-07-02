@@ -269,14 +269,14 @@
  					rightBeachStart -= beachSandJungleExtraWidth;
  
  				int num925 = 50;
--				if (dungeonSide == -1)
--					dungeonLocation = genRand.Next(leftBeachEnd + num925, (int)((double)Main.maxTilesX * 0.2));
--				else
--					dungeonLocation = genRand.Next((int)((double)Main.maxTilesX * 0.8), rightBeachStart - num925);
 +				try { //This is ugly.
+-				if (dungeonSide == -1)
 +					if (dungeonSide == -1)
+-					dungeonLocation = genRand.Next(leftBeachEnd + num925, (int)((double)Main.maxTilesX * 0.2));
 +						dungeonLocation = genRand.Next(leftBeachEnd + num925, (int)((double)Main.maxTilesX * 0.2));
+-				else
 +					else
+-					dungeonLocation = genRand.Next((int)((double)Main.maxTilesX * 0.8), rightBeachStart - num925);
 +						dungeonLocation = genRand.Next((int)((double)Main.maxTilesX * 0.8), rightBeachStart - num925);
 +				}
 +				catch {
@@ -396,7 +396,7 @@
  								int num550 = genRand.Next(num535 - num543, num535 + num543 - 2);
  								PlaceTile(num549, num550, 4, mute: true, forced: false, -1, 3);
 -								if (Main.tile[num549, num550].type == 4)
-+								if (TileID.Sets.Torch[Main.tile[num547, num548].type])
++								if (TileID.Sets.Torch[Main.tile[num549, num550].type])
  									flag36 = true;
  							}
  
