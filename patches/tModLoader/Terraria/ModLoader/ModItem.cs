@@ -51,8 +51,8 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<ModItem>.Register(this);
 
-			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemName.{Name}");
-			Tooltip = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemTooltip.{Name}", true);
+			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemName.{Name}");
+			Tooltip = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemTooltip.{Name}", true);
 
 			Item.ResetStats(ItemLoader.ReserveItemID());
 			Item.ModItem = this;
@@ -328,7 +328,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify this item's shooting mechanism. Return false to prevent the original shooting code from running. Returns true by default.
+		/// Allows you to modify this item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.
 		/// </summary>
 		/// <param name="player"> The player using the item. </param>
 		/// <param name="source"> The projectile source's information. </param>
@@ -893,7 +893,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to tell the game whether this item is a torch that cannot be placed in liquid, a torch that can be placed in liquid, or a glowstick. This information is used for when the player is holding down the auto-select hotkey.
+		/// Allows you to tell the game whether this item is a torch that cannot be placed in liquid, a torch that can be placed in liquid, or a glowstick. This information is used for when the player is holding down the auto-select keybind.
 		/// </summary>
 		/// <param name="dryTorch">if set to <c>true</c> [dry torch].</param>
 		/// <param name="wetTorch">if set to <c>true</c> [wet torch].</param>

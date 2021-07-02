@@ -21,6 +21,7 @@ using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.ModLoader.Utilities;
 
 namespace Terraria.ModLoader
 {
@@ -30,7 +31,13 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class ModContent
 	{
-		public static T GetInstance<T>() where T : class => ContentInstance<T>.Instance;
+		/// <summary> Returns the base instance of the provided content type. </summary>
+		public static T GetInstance<T>() where T : class
+			=> ContentInstance<T>.Instance;
+
+		/// <summary> Returns all base content instances that derive from the provided content type across all currently loaded mods. </summary>
+		public static IEnumerable<T> GetContent<T>() where T : ILoadable
+			=> ModLoader.Mods.SelectMany(m => m.GetContent<T>());
 
 		/// <summary> Attempts to find the content instance with the specified full name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
@@ -314,7 +321,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Get the id (type) of a ModPrefix by class. Assumes one instance per class.
 		/// </summary>
-		public static byte PrefixType<T>() where T : ModPrefix => GetInstance<T>()?.Type ?? 0;
+		public static int PrefixType<T>() where T : ModPrefix => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
 		/// Get the id (type) of a ModRarity by class. Assumes one instance per class.
@@ -361,16 +368,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static int MountType<T>() where T : ModMount => GetInstance<T>()?.Type ?? 0;
 
-		private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value) {
-			if (dict.ContainsKey(value.Key)) {
-				dict[value.Key].SetValue(value.Value);
-			}
-			else {
-				dict[value.Key] = value;
-			}
-			return dict[value.Key];
-		}
-
 		internal static void Load(CancellationToken token) {
 			CacheVanillaState();
 
@@ -382,7 +379,7 @@ namespace Terraria.ModLoader
 				mod.PrepareAssets();
 				mod.Autoload();
 				mod.Load();
-				SystemHooks.OnModLoad(mod);
+				SystemLoader.OnModLoad(mod);
 				mod.loading = false;
 			});
 
@@ -394,7 +391,7 @@ namespace Terraria.ModLoader
 			LoadModContent(token, mod => {
 				mod.SetupContent();
 				mod.PostSetupContent();
-				SystemHooks.PostSetupContent(mod);
+				SystemLoader.PostSetupContent(mod);
 			});
 
 			MemoryTracking.Finish();
@@ -402,9 +399,10 @@ namespace Terraria.ModLoader
 			if (Main.dedServ)
 				ModNet.AssignNetIDs();
 
-			Main.player[255] = new Player(false); // setup inventory is unnecessary 
+			Main.player[255] = new Player();
 
-			RefreshModLanguage(Language.ActiveCulture);
+			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
+
 			MapLoader.SetupModMap();
 			RarityLoader.Initialize();
 			
@@ -487,22 +485,24 @@ namespace Terraria.ModLoader
 
 		internal static void UnloadModContent() {
 			MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
+			
 			int i = 0;
+			
 			foreach (var mod in ModLoader.Mods.Reverse()) {
+				if (Main.dedServ)
+					Console.WriteLine($"Unloading {mod.DisplayName}...");
+				else
+					Interface.loadMods.SetCurrentMod(i++, mod.DisplayName);
+				
+				MonoModHooks.RemoveAll(mod);
+				
 				try {
-					if (Main.dedServ)
-						Console.WriteLine($"Unloading {mod.DisplayName}...");
-					else
-						Interface.loadMods.SetCurrentMod(i++, mod.DisplayName);
 					mod.Close();
 					mod.UnloadContent();
 				}
 				catch (Exception e) {
 					e.Data["mod"] = mod.Name;
 					throw;
-				}
-				finally {
-					MonoModHooks.RemoveAll(mod);
 				}
 			}
 		}
@@ -521,7 +521,7 @@ namespace Terraria.ModLoader
 			NPCLoader.Unload();
 			NPCHeadLoader.Unload();
 			BossBarLoader.Unload();
-			PlayerHooks.Unload();
+			PlayerLoader.Unload();
 			BuffLoader.Unload();
 			MountLoader.Unload();
 			RarityLoader.Unload();
@@ -530,13 +530,12 @@ namespace Terraria.ModLoader
 			GoreLoader.Unload();
 			SoundLoader.Unload();
 			DisposeMusic();
-			BackgroundTextureLoader.Unload();
 
 			LoaderManager.Unload();
 
 			GlobalBackgroundStyleLoader.Unload();
 			PlayerDrawLayerLoader.Unload();
-			SystemHooks.Unload();
+			SystemLoader.Unload();
 			TileEntity.manager.Reset();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
@@ -547,7 +546,6 @@ namespace Terraria.ModLoader
 			Recipe.SetupRecipes();
 			MapLoader.UnloadModMap();
 			ItemSorting.SetupWhiteLists();
-			HotKeyLoader.Unload();
 			RecipeLoader.Unload();
 			CommandLoader.Unload();
 			TagSerializer.Reload();
@@ -583,13 +581,12 @@ namespace Terraria.ModLoader
 			NPCHeadLoader.ResizeAndFillArrays();
 			MountLoader.ResizeArrays();
 			BuffLoader.ResizeArrays();
-			PlayerHooks.RebuildHooks();
+			PlayerLoader.RebuildHooks();
 			PlayerDrawLayerLoader.ResizeArrays();
-			SystemHooks.ResizeArrays();
+			SystemLoader.ResizeArrays();
 
 			if (!Main.dedServ) {
 				SoundLoader.ResizeAndFillArrays();
-				BackgroundTextureLoader.ResizeAndFillArrays();
 				GlobalBackgroundStyleLoader.ResizeAndFillArrays(unloading);
 				GoreLoader.ResizeAndFillArrays();
 			}
@@ -599,70 +596,6 @@ namespace Terraria.ModLoader
 			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values) {
 				text.Override = null;
 			}
-		}
-
-		//TODO: Unhardcode ALL of this.
-		public static void RefreshModLanguage(GameCulture culture) {
-			Dictionary<string, LocalizedText> dict = LanguageManager.Instance._localizedTexts;
-
-			foreach (ModItem item in ItemLoader.items) {
-				LocalizedText text = new LocalizedText(item.DisplayName.Key, item.DisplayName.GetTranslation(culture));
-				Lang._itemNameCache[item.Item.type] = SetLocalizedText(dict, text);
-				text = new LocalizedText(item.Tooltip.Key, item.Tooltip.GetTranslation(culture));
-				if (text.Value != null) {
-					text = SetLocalizedText(dict, text);
-					Lang._itemTooltipCache[item.Item.type] = ItemTooltip.FromLanguageKey(text.Key);
-				}
-			}
-
-			foreach (ModPrefix prefix in PrefixLoader.prefixes) {
-				LocalizedText text = new LocalizedText(prefix.DisplayName.Key, prefix.DisplayName.GetTranslation(culture));
-				Lang.prefix[prefix.Type] = SetLocalizedText(dict, text);
-			}
-
-			foreach (var keyValuePair in MapLoader.tileEntries) {
-				foreach (MapEntry entry in keyValuePair.Value) {
-					if (entry.translation != null) {
-						LocalizedText text = new LocalizedText(entry.translation.Key, entry.translation.GetTranslation(culture));
-						SetLocalizedText(dict, text);
-					}
-				}
-			}
-
-			foreach (var keyValuePair in MapLoader.wallEntries) {
-				foreach (MapEntry entry in keyValuePair.Value) {
-					if (entry.translation != null) {
-						LocalizedText text = new LocalizedText(entry.translation.Key, entry.translation.GetTranslation(culture));
-						SetLocalizedText(dict, text);
-					}
-				}
-			}
-
-			foreach (ModProjectile proj in ProjectileLoader.projectiles) {
-				LocalizedText text = new LocalizedText(proj.DisplayName.Key, proj.DisplayName.GetTranslation(culture));
-				Lang._projectileNameCache[proj.Projectile.type] = SetLocalizedText(dict, text);
-			}
-
-			foreach (ModNPC npc in NPCLoader.npcs) {
-				LocalizedText text = new LocalizedText(npc.DisplayName.Key, npc.DisplayName.GetTranslation(culture));
-				Lang._npcNameCache[npc.NPC.type] = SetLocalizedText(dict, text);
-			}
-
-			foreach (ModBuff buff in BuffLoader.buffs) {
-				LocalizedText text = new LocalizedText(buff.DisplayName.Key, buff.DisplayName.GetTranslation(culture));
-				Lang._buffNameCache[buff.Type] = SetLocalizedText(dict, text);
-				text = new LocalizedText(buff.Description.Key, buff.Description.GetTranslation(culture));
-				Lang._buffDescriptionCache[buff.Type] = SetLocalizedText(dict, text);
-			}
-
-			foreach (Mod mod in ModLoader.Mods) {
-				foreach (ModTranslation translation in mod.translations.Values) {
-					LocalizedText text = new LocalizedText(translation.Key, translation.GetTranslation(culture));
-					SetLocalizedText(dict, text);
-				}
-			}
-
-			LanguageManager.Instance.ProcessCopyCommandsInTexts();
 		}
 
 		private static void DisposeMusic() {
@@ -682,7 +615,7 @@ namespace Terraria.ModLoader
 				// player.whoAmI is only set for active players
 			}
 
-			Main.clientPlayer = new Player(false);
+			Main.clientPlayer = new Player();
 			Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
 			Main._characterSelectMenu._playerList?.Clear();
 			Main.PlayerList.Clear();

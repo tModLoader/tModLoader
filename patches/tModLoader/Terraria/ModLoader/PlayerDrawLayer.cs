@@ -9,7 +9,8 @@ namespace Terraria.ModLoader
 	[Autoload]
 	public abstract partial class PlayerDrawLayer : ModType 
 	{
-		public abstract class Transformation {
+		public abstract class Transformation
+		{
 			public virtual Transformation Parent { get; }
 
 			/// <summary>

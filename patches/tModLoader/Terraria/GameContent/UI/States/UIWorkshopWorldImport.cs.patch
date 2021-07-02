@@ -1,0 +1,15 @@
+--- src/Terraria/Terraria/GameContent/UI/States/UIWorkshopWorldImport.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UIWorkshopWorldImport.cs
+@@ -27,6 +_,12 @@
+ 		public static List<WorldFileData> WorkshopWorldList = new List<WorldFileData>();
+ 		private bool skipDraw;
+ 
++		// Added by TML.
++		public UIState PreviousUIState {
++			get => _uiStateToGoBackTo;
++			set => _uiStateToGoBackTo = value;
++		}
++
+ 		public UIWorkshopWorldImport(UIState uiStateToGoBackTo) {
+ 			_uiStateToGoBackTo = uiStateToGoBackTo;
+ 		}

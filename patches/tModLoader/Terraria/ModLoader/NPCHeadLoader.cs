@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.Graphics.Renderers;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
@@ -32,6 +33,8 @@ namespace Terraria.ModLoader
 		internal static IDictionary<int, int> npcToBossHead = new Dictionary<int, int>();
 
 		internal static int ReserveHeadSlot() => nextHead++;
+
+		public static int NPCHeadCount => nextHead;
 
 		internal static int ReserveBossHeadSlot(string texture) {
 			if (bossHeads.TryGetValue(texture, out int existing)) {
@@ -76,13 +79,13 @@ namespace Terraria.ModLoader
 			}
 
 			//Sets. The arrays modified here are resized in NPCLoader.
+			LoaderUtils.ResetStaticMembers(typeof(NPCHeadID), true);
 
 			foreach (int npc in npcToBossHead.Keys) {
 				NPCID.Sets.BossHeadTextures[npc] = npcToBossHead[npc];
 			}
 
 			//Etc
-
 			Array.Resize(ref Main.instance._npcIndexWhoHoldsHeadIndex, nextHead);
 		}
 
