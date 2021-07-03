@@ -17,35 +17,37 @@ namespace ExampleMod.Projectiles
 
 		}
 
-		// This is a reference property that allows us to write to Projectile.ai[0] without always needing to reference an array index
-		public float VelocityMultiplier => ref Projectile.ai[0];
+		// Define the range of the Spear Projectile
+		protected abstract float HoldoutRangeMin = 0;
+		protected abstract float HoldoutRangeMax = 6;
 
 		// It appears that for this AI, only the ai[0] field is used!
 		public override void AI() {
+			
 			// Since we access the owner player instance so much, it's useful to create a helper local variable for this
 			Player player = Main.player[projectile.owner];
-			// Here we set some of the projectile's owner properties, such as held item and itemtime, along with projectile direction and position based on the player
-			Vector2 ownerMountedCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-			projectile.direction = player.direction; // Match the projectile direction with the player direction
+			
 			player.heldProj = projectile.whoAmI; // Update the player's held projectile
 			player.itemTime = player.itemAnimation; // Match item's use time to the same number of frames as the animation
-			projectile.position.X = ownerMountedCenter.X - (float)(projectile.width / 2);
-			projectile.position.Y = ownerMountedCenter.Y - (float)(projectile.height / 2);
-			// As long as the player isn't frozen, the spear can move
-			if (!player.frozen) {
-				if (VelocityMultiplier == 0f) { // When initially thrown out, the velocity multiplier will be 0
-					VelocityMultiplier = 3f; // Make sure the spear accelerates when initially thrown out
-					projectile.netUpdate = true; // Make sure to netUpdate this spear
-				}
-				if (player.itemAnimation < player.itemAnimationMax / 3) { // Somewhere along the item animation, make sure the spear decelerates
-					VelocityMultiplier -= 2.4f;
-				}
-				else { // Otherwise, increase the velocity multiplier
-					VelocityMultiplier += 2.1f;
-				}
+
+			int duration = player.itemAnimationMax * player.meleeSpeed; // Define the duration the projectile will exist in frames
+
+			// Reset projectile time left if necessary
+			if(Projectile.timeLeft == int.MaxValue) {
+				Projectile.timeLeft = duration;
 			}
-			// Change the spear position based off of the velocity and the velocity multiplier
-			projectile.position += projectile.velocity * VelocityMultiplier;
+
+			Projectile.velocity = Vector2.Normalize(Projectile.velocity);
+
+			float halfDuration = duration * 0.5;
+			float progress = Projectile.timeLeft > halfDuration 
+			    ? (duration - Projectile.timeLeft) / halfDuration
+				: Projectile.timeLeft / halfDuration;
+
+			// Move the projectile from the HoldoutRangeMin to the HoldoutRangeMax and back
+			Projectile.Center = player.MountedCenter + Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin,
+																		  Projectile.velocity * HoldoutRangeMax, progress);
+
 			// When we reach the end of the animation, we can kill the spear projectile
 			if (player.itemAnimation == 0) {
 				projectile.Kill();
@@ -59,14 +61,17 @@ namespace ExampleMod.Projectiles
 				projectile.rotation += MathHelper.ToRadians(135f);
 			}
 
-			// These dusts are added later, for the 'ExampleMod' effect
-			if (Main.rand.NextBool(3)) {
-				Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustType<Sparkle>(),
-					projectile.velocity.X * 2f, projectile.velocity.Y * 2f, 200, Scale: 1.2f);
-			}
-			if (Main.rand.NextBool(4)) {
-				Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustType<Sparkle>(),
-					0, 0, 254, Scale: 0.3f);
+			// Avoid spawning dusts on dedicated servers
+			if(!Main.dedServ) {
+				// These dusts are added later, for the 'ExampleMod' effect
+				if (Main.rand.NextBool(3)) {
+					Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustType<Sparkle>(),
+						projectile.velocity.X * 2f, projectile.velocity.Y * 2f, 200, Scale: 1.2f);
+				}
+				if (Main.rand.NextBool(4)) {
+					Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustType<Sparkle>(),
+						0, 0, 254, Scale: 0.3f);
+				}
 			}
 		}
 	}
