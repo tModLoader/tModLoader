@@ -71,7 +71,7 @@
  		}
  
  		private static void DoRollingBackups(string backupWorldWritePath) {
-@@ -609,14 +_,14 @@
+@@ -609,18 +_,18 @@
  			_tempMoonPhase = Main.moonPhase;
  			_tempBloodMoon = Main.bloodMoon;
  			_tempEclipse = Main.eclipse;
@@ -88,6 +88,20 @@
  			_tempSandstormSeverity = Sandstorm.Severity;
  			_tempSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
  			_tempRaining = Main.raining;
+-			_tempRainTime = Main.rainTime;
++			_tempRainTime = (int)Main.rainTime;
+ 			_tempMaxRain = Main.maxRaining;
+ 			_tempLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
+ 			_tempLanternNightGenuine = LanternNight.GenuineLanterns;
+@@ -646,7 +_,7 @@
+ 			_tempSandstormSeverity = _cachedSandstormSeverity.Value;
+ 			_tempSandstormIntendedSeverity = _cachedSandstormIntendedSeverity.Value;
+ 			_tempRaining = Main.raining;
+-			_tempRainTime = Main.rainTime;
++			_tempRainTime = (int)Main.rainTime;
+ 			_tempMaxRain = Main.maxRaining;
+ 			_tempLanternNightCooldown = _cachedLanternNightCooldown.Value;
+ 			_tempLanternNightGenuine = _cachedLanternNightGenuine.Value;
 @@ -717,7 +_,7 @@
  				}
  
