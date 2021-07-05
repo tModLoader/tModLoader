@@ -3495,7 +3495,7 @@
  			if (!controlUseItem)
  				channel = false;
  
-+			goto HandleItemHolding;
++			goto ItemCheckPart2;
 +
 +			DecrementItemAnimation:
 +
@@ -3519,7 +3519,7 @@
  
  			releaseUseItem = !controlUseItem;
 +
-+			goto ItemCheckPart2;
++			return; // This is the end of our spaghetti trip!
 +
 +			// See the comment at DecrementItemAnimation for explanation
 +			DecrementItemTime:
@@ -3687,6 +3687,15 @@
  							if (item.stack > 0)
  								item.stack--;
  
+@@ -30342,6 +_,8 @@
+ 
+ 			if (itemAnimation == 0)
+ 				JustDroppedAnItem = false;
++
++			goto HandleItemHolding;
+ 		}
+ 
+ 		private void ItemCheck_EmitFoodParticles(Item sItem) {
 @@ -30594,11 +_,18 @@
  				if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
  					continue;
