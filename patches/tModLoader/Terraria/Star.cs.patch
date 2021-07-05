@@ -16,7 +16,7 @@
 -				fallTime += Main.dayRate;
 +				fallTime += Main.desiredWorldEventsUpdateRate;
 -				position += fallSpeed * (Main.dayRate + 99) / 100f;
-+				position += fallSpeed * (Main.desiredWorldEventsUpdateRate + 99) / 100f;
++				position += fallSpeed * (float)(Main.desiredWorldEventsUpdateRate + 99) / 100f;
  				if (position.Y > 1500f)
  					hidden = true;
  
