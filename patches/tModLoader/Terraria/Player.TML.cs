@@ -19,9 +19,6 @@ namespace Terraria
 
 		public HashSet<int> NearbyModTorch { get; private set; } = new HashSet<int>();
 
-		/// <summary> Returns true if the player's itemAnimation is more than 0, or if its been so in the previous tick. </summary>
-		public bool InItemAnimation => itemAnimation > 0 || ItemAnimationPrev > 0;
-
 		// Get
 
 		/// <summary> Gets the instance of the specified ModPlayer type. This will throw exceptions on failure. </summary>
