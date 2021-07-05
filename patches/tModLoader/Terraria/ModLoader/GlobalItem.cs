@@ -101,19 +101,24 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to change the effective useTime of an item.
+		/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
 		/// </summary>
-		/// <returns>The multiplier on the usage speed. 1f by default. Values greater than 1 increase the item speed.</returns>
-		public virtual float UseTimeMultiplier(Item item, Player player) {
-			return 1f;
-		}
+		/// <returns> The multiplier on the usage time. 1f by default. Values greater than 1 increase the item use's length. </returns>
+		public virtual float UseTimeMultiplier(Item item, Player player) => 1f;
 
 		/// <summary>
 		/// Allows you to change the effective useAnimation of an item.
+		/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
 		/// </summary>
-		/// <returns>The multiplier on the animation speed. 1f by default. Values greater than 1 increase the item speed.</returns>
-		public virtual float MeleeSpeedMultiplier(Item item, Player player) {
-			return 1f;
-		}
+		/// <returns>The multiplier on the animation time. 1f by default. Values greater than 1 increase the item animation's length. </returns>
+		public virtual float UseAnimationMultiplier(Item item, Player player) => 1f;
+
+		/// <summary>
+		/// Allows you to safely change both useTime and useAnimation while keeping the values relative to each other.
+		/// <br/> Useful for status effects.
+		/// </summary>
+		/// <returns> The multiplier on the use speed. 1f by default. Values greater than 1 increase the overall item speed. </returns>
+		public virtual float UseSpeedMultiplier(Item item, Player player) => 1f;
 
 		/// <summary>
 		/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
@@ -319,11 +324,17 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when an item is used. Return true if using the item actually does stuff. Returns false by default.
+		/// Allows you to make things happen when an item is used. The return value controls whether or not ApplyItemTime will be called for the player.
+		/// <br/> Return true if the item actually did something, to force itemTime.
+		/// <br/> Return false to keep itemTime at 0.
+		/// <br/> Return null for vanilla behavior.
 		/// </summary>
-		public virtual bool UseItem(Item item, Player player) {
-			return false;
-		}
+		public virtual bool? UseItem(Item item, Player player) => null;
+
+		/// <summary>
+		/// Allows you to make things happen when an item's use animation starts.
+		/// </summary>
+		public virtual void UseAnimation(Item item, Player player) { }
 
 		/// <summary>
 		/// If the item is consumable and this returns true, then the item will be consumed upon usage. Returns true by default.

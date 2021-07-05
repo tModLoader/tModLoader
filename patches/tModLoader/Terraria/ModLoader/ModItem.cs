@@ -182,22 +182,25 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to change the effective useTime of this item.
+		/// Allows you to change the effective useTime of an item.
+		/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
 		/// </summary>
-		/// <param name="player"></param>
-		/// <returns>The multiplier on the usage speed. 1f by default. Values greater than 1 increase the item speed.</returns>
-		public virtual float UseTimeMultiplier(Player player) {
-			return 1f;
-		}
+		/// <returns> The multiplier on the usage time. 1f by default. Values greater than 1 increase the item use's length. </returns>
+		public virtual float UseTimeMultiplier(Player player) => 1f;
 
 		/// <summary>
-		/// Allows you to change the effective useAnimation of this item.
+		/// Allows you to change the effective useAnimation of an item.
+		/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
 		/// </summary>
-		/// <param name="player"></param>
-		/// <returns>The multiplier on the animation speed. 1f by default. Values greater than 1 increase the item speed.</returns>
-		public virtual float MeleeSpeedMultiplier(Player player) {
-			return 1f;
-		}
+		/// <returns>The multiplier on the animation time. 1f by default. Values greater than 1 increase the item animation's length. </returns>
+		public virtual float UseAnimationMultiplier(Player player) => 1f;
+
+		/// <summary>
+		/// Allows you to safely change both useTime and useAnimation while keeping the values relative to each other.
+		/// <br/> Useful for status effects.
+		/// </summary>
+		/// <returns> The multiplier on the use speed. 1f by default. Values greater than 1 increase the overall item speed. </returns>
+		public virtual float UseSpeedMultiplier(Player player) => 1f;
 
 		/// <summary>
 		/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
@@ -424,14 +427,22 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this item is used. Return true if using this item actually does stuff. Returns false by default.
-		/// Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
+		/// Allows you to make things happen when this item is used. The return value controls whether or not ApplyItemTime will be called for the player.
+		/// <br/> Return true if the item actually did something, to force itemTime.
+		/// <br/> Return false to keep itemTime at 0.
+		/// <br/> Return null for vanilla behavior.
+		/// <para/> Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <returns></returns>
-		public virtual bool UseItem(Player player) {
-			return false;
-		}
+		public virtual bool? UseItem(Player player) => null;
+
+		/// <summary>
+		/// Allows you to make things happen when this item's use animation starts.
+		/// <para/> Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
+		/// </summary>
+		/// <param name="player"> The player. </param>
+		public virtual void UseAnimation(Player player) { }
 
 		/// <summary>
 		/// If this item is consumable and this returns true, then this item will be consumed upon usage. Returns true by default.
