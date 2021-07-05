@@ -3447,15 +3447,36 @@
  			if (CCed) {
  				channel = false;
  				itemAnimation = (itemAnimationMax = 0);
-@@ -29770,6 +_,14 @@
+@@ -29770,6 +_,35 @@
  			if (Main.myPlayer == i && PlayerInput.ShouldFastUseItem)
  				controlUseItem = true;
  
-+			goto DecrementItemAnimation;
 +			// Gotos are admittedly not the cleanest way of doing this but they're the most patch-friendly
 +			// TLDR: this moves the blocks responsible for decrementing itemTime and itemAnimation to the start of the method
 +			// This is done so that itemTime and itemAnimation cannot be decremented in the same tick as the one they're set in, which should fix a lot of use time issues
 +			// -- ThomasThePencil
++			//
++			// Here's a map of vanilla's execution order compared to TML's
++			//
++			// VANILLA:
++			// 1. Reuse delay is applied
++			// 2. Item animation is applied if button is pressed
++			// 3. Item animation is reduced
++			// 4. Hold / Use styles are invoked
++			// 5. Item time is reduced
++			// 6. Item logic applies item time
++			//
++			// TML:
++			// 1. Item animation is reduced
++			// 2. Item time is reduced
++			// 3. Reuse delay is applied
++			// 4. Item animation is applied if button is pressed
++			// 5. Item logic applies item time
++			// 6. Hold / Use styles are invoked
++			//
++			// Way more sane and way less confusing!
++
++			goto DecrementItemAnimation;
 +
 +			ItemCheckPart1:
 +
