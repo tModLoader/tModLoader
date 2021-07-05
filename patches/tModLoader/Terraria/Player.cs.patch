@@ -3432,11 +3432,14 @@
  			if (CCed) {
  				channel = false;
  				itemAnimation = (itemAnimationMax = 0);
-@@ -29769,7 +_,9 @@
+@@ -29769,7 +_,12 @@
  			Item item = inventory[selectedItem];
  			if (Main.myPlayer == i && PlayerInput.ShouldFastUseItem)
  				controlUseItem = true;
 +			goto DecrementItemAnimation;
++			// gotos are admittedly not the cleanest way of doing this but they're the most patch-friendly
++			// tl;dr this moves the blocks responsible for decrementing itemTime and itemAnimation to the start of the method
++			// this is done so that itemTime and itemAnimation cannot be decremented in the same tick as the one they're set in, which should fix a lot of use time issues
  
 +			ItemCheckPart1:
  			ItemCheck_HandleMount();
@@ -3492,12 +3495,13 @@
  
  			if (itemAnimation > 0)
  				ItemCheck_ApplyUseStyle(heightOffsetHitboxCenter, item2, drawHitbox);
-@@ -29849,6 +_,9 @@
+@@ -29849,6 +_,10 @@
  				ItemCheck_ApplyHoldStyle(heightOffsetHitboxCenter, item2, drawHitbox);
  
  			releaseUseItem = !controlUseItem;
 +			goto ItemCheckPart2;
 +
++			// see comment at DecrementItemAnimation for explanation
 +			DecrementItemTime:
  			if (itemTime > 0) {
  				itemTime--;
@@ -3948,11 +3952,13 @@
  			if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
  				if (statMana >= num) {
  					if (!flag2)
-@@ -36048,7 +_,7 @@
+@@ -36048,7 +_,9 @@
  		private void ItemCheck_HandleMPItemAnimation(Item sItem) {
  			if (sItem.autoReuse && !noItems) {
  				releaseUseItem = true;
 -				if (itemAnimation == 1 && sItem.stack > 0) {
++				// itemAnimation check changed to 0 and made it also check for itemTime
++				// realistically this method may be invalidated entirely by this use time fix but further investigation is needed
 +				if (itemAnimation == 0 && itemTime == 0 && sItem.stack > 0) {
  					if (sItem.shoot > 0 && whoAmI != Main.myPlayer && controlUseItem && sItem.useStyle == 5 && sItem.reuseDelay == 0) {
  						ApplyItemAnimation(sItem);
