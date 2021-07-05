@@ -88,8 +88,8 @@ namespace Terraria
 			currentUseAnimationCompensation = 0;
 
 			if (type < ItemID.Count && !noMelee) {
-				useAnimation++;
-				currentUseAnimationCompensation++;
+				useAnimation--;
+				currentUseAnimationCompensation--;
 			}
 		}
 
