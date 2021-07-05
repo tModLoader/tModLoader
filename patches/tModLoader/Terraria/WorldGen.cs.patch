@@ -305,6 +305,15 @@
  		}
  
  		private static Point GetAdjustedFloorPosition(int x, int y) {
+@@ -12312,7 +_,7 @@
+ 		}
+ 
+ 		private static void PrefixItemFromOptions(Item item, int[] options) {
+-			byte prefix = item.prefix;
++			int prefix = item.prefix;
+ 			if (!item.Prefix(-3))
+ 				return;
+ 
 @@ -12958,7 +_,7 @@
  			if (tile2.wall != 0 || tile2.liquid != 0)
  				return false;

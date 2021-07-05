@@ -17,3 +17,12 @@
  				Color color3 = player.hairDyeColor;
  				if (color3.A == 0)
  					color3 = color2;
+@@ -449,7 +_,7 @@
+ 
+ 		private static void FixRecipes() {
+ 			for (int i = 0; i < Recipe.maxRecipes; i++) {
+-				Main.recipe[i].createItem.dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(Main.recipe[i].createItem.type);
++				Main.recipe[i].createItem.dye = GameShaders.Armor.GetShaderIdFromItemId(Main.recipe[i].createItem.type);
+ 				Main.recipe[i].createItem.hairDye = GameShaders.Hair.GetShaderIdFromItemId(Main.recipe[i].createItem.type);
+ 			}
+ 		}

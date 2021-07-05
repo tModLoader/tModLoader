@@ -79,6 +79,24 @@
  						NetMessage.TrySendData(6);
  						if (Netplay.Connection.State == 2)
  							Netplay.Connection.State = 3;
+@@ -236,7 +_,7 @@
+ 							player4.hair = 0;
+ 
+ 						player4.name = reader.ReadString().Trim().Trim();
+-						player4.hairDye = reader.ReadByte();
++						player4.hairDye = ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadVarInt();
+ 						BitsByte bitsByte4 = reader.ReadByte();
+ 						for (int num41 = 0; num41 < 8; num41++) {
+ 							player4.hideVisibleAccessory[num41] = bitsByte4[num41];
+@@ -320,7 +_,7 @@
+ 						lock (player12) {
+ 							int num233 = reader.ReadInt16();
+ 							int stack6 = reader.ReadInt16();
+-							int num234 = reader.ReadByte();
++							int num234 = ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadInt32();
+ 							int type14 = reader.ReadInt16();
+ 							Item[] array3 = null;
+ 							Item[] array4 = null;
 @@ -382,6 +_,8 @@
  								player12.trashItem.Prefix(num234);
  								if (num232 == Main.myPlayer && !Main.ServerSideCharacter)
@@ -124,6 +142,17 @@
  						NetMessage.TrySendData(49, whoAmI);
  						NetMessage.TrySendData(57, whoAmI);
  						NetMessage.TrySendData(7, whoAmI);
+@@ -1137,8 +_,8 @@
+ 						int num177 = reader.ReadInt16();
+ 						Vector2 position3 = reader.ReadVector2();
+ 						Vector2 velocity5 = reader.ReadVector2();
+-						int stack4 = reader.ReadInt16();
+-						int pre2 = reader.ReadByte();
++						int stack4 = ModNet.AllowVanillaClients ? reader.ReadInt16() : reader.ReadVarInt();
++						int pre2 = ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadVarInt();
+ 						int num178 = reader.ReadByte();
+ 						int num179 = reader.ReadInt16();
+ 						if (Main.netMode == 1) {
 @@ -1151,7 +_,7 @@
  							Item item2 = Main.item[num180];
  							ItemSyncPersistentStats itemSyncPersistentStats = default(ItemSyncPersistentStats);
@@ -187,11 +216,35 @@
  						float num6 = reader.ReadSingle();
  						int num7 = reader.ReadByte() - 1;
  						byte b2 = reader.ReadByte();
-@@ -1551,6 +_,7 @@
+@@ -1538,9 +_,10 @@
+ 				case 32: {
+ 						int num259 = reader.ReadInt16();
+ 						int num260 = reader.ReadByte();
+-						int stack8 = reader.ReadInt16();
+-						int pre3 = reader.ReadByte();
+-						int type17 = reader.ReadInt16();
++						int stack8 = ModNet.AllowVanillaClients ? reader.ReadInt16() : -1;
++						int pre3 = ModNet.AllowVanillaClients ? reader.ReadByte() : -1;
++						int type17 = ModNet.AllowVanillaClients ? reader.ReadInt16() : -1;
++
+ 						if (num259 >= 0 && num259 < 8000) {
+ 							if (Main.chest[num259] == null)
+ 								Main.chest[num259] = new Chest();
+@@ -1548,9 +_,17 @@
+ 							if (Main.chest[num259].item[num260] == null)
+ 								Main.chest[num259].item[num260] = new Item();
+ 
++							if (!ModNet.AllowVanillaClients) {
++								ItemIO.Receive(Main.chest[num259].item[num260], reader, readStack: true);
++								goto SkipVanillaItemSetup;
++							}
++
  							Main.chest[num259].item[num260].netDefaults(type17);
  							Main.chest[num259].item[num260].Prefix(pre3);
  							Main.chest[num259].item[num260].stack = stack8;
-+							ItemIO.ReceiveModData(Main.chest[num259].item[num260], reader);
++
++							SkipVanillaItemSetup:
++
  							Recipe.FindRecipes(canDelayCheck: true);
  						}
  
@@ -382,6 +435,87 @@
  							tileEntity.ID = num54;
  							TileEntity.ByID[tileEntity.ID] = tileEntity;
  							TileEntity.ByPosition[tileEntity.Position] = tileEntity;
+@@ -2669,10 +_,22 @@
+ 					if (Main.netMode == 2) {
+ 						short x11 = reader.ReadInt16();
+ 						int y10 = reader.ReadInt16();
++
++						Item item;
++
++						if (ModNet.AllowVanillaClients) {
+-						int netid3 = reader.ReadInt16();
++							int netId = reader.ReadInt16();
+-						int prefix3 = reader.ReadByte();
++							int prefix = reader.ReadByte();
+-						int stack5 = reader.ReadInt16();
++							int stack = reader.ReadInt16();
+-						TEItemFrame.TryPlacing(x11, y10, netid3, prefix3, stack5);
++
++							item = new Item(netId, prefix, stack);
++						}
++						else {
++							item = ItemIO.Receive(reader);
++							item.stack = reader.ReadVarInt();
++						}
++
++						TEItemFrame.TryPlacing(x11, y10, item, item.stack);
+ 					}
+ 					break;
+ 				case 91: {
+@@ -3148,10 +_,22 @@
+ 					if (Main.netMode == 2) {
+ 						short x8 = reader.ReadInt16();
+ 						int y7 = reader.ReadInt16();
++
++						Item item;
++
++						if (ModNet.AllowVanillaClients) {
+-						int netid2 = reader.ReadInt16();
++							int netId = reader.ReadInt16();
+-						int prefix2 = reader.ReadByte();
++							int prefix = reader.ReadByte();
+-						int stack3 = reader.ReadInt16();
++							int stack = reader.ReadInt16();
+-						TEWeaponsRack.TryPlacing(x8, y7, netid2, prefix2, stack3);
++
++							item = new Item(netId, stack, prefix);
++						}
++						else {
++							item = ItemIO.Receive(reader);
++							item.stack = reader.ReadVarInt();
++						}
++
++						TEWeaponsRack.TryPlacing(x8, y7, item, item.stack);
+ 					}
+ 					break;
+ 				case 124: {
+@@ -3285,10 +_,22 @@
+ 					if (Main.netMode == 2) {
+ 						short x3 = reader.ReadInt16();
+ 						int y3 = reader.ReadInt16();
++
++						Item item;
++
++						if (ModNet.AllowVanillaClients) {
+-						int netid = reader.ReadInt16();
++							int netId = reader.ReadInt16();
+-						int prefix = reader.ReadByte();
++							int prefix = reader.ReadByte();
+-						int stack2 = reader.ReadInt16();
++							int stack = reader.ReadInt16();
+-						TEFoodPlatter.TryPlacing(x3, y3, netid, prefix, stack2);
++
++							item = new Item(netId, stack, prefix);
++						}
++						else {
++							item = ItemIO.Receive(reader);
++							item.stack = reader.ReadVarInt();
++						}
++
++						TEWeaponsRack.TryPlacing(x3, y3, item, item.stack);
+ 					}
+ 					break;
+ 				case 134: {
 @@ -3348,6 +_,27 @@
  						CreditsRollEvent.SetRemainingTimeDirect(reader.ReadInt32());
  					}

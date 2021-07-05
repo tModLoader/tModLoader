@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Terraria.GameContent.Events;
 using Terraria.ID;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Utilities
 {
 	//todo: further documentation
 	/// <summary>

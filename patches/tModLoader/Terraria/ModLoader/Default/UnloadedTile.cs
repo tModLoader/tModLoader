@@ -2,7 +2,8 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
-	public abstract class UnloadedTile : ModTile { 
+	public abstract class UnloadedTile : ModTile
+	{ 
 		public override void MouseOver(int i, int j) {
 			if (Main.netMode != 0) {
 				return;

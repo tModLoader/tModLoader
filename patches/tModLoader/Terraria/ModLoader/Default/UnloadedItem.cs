@@ -8,9 +8,10 @@ namespace Terraria.ModLoader.Default
 	[LegacyName("MysteryItem")]
 	public class UnloadedItem : ModLoaderModItem
 	{
-		private string modName;
-		private string itemName;
 		private TagCompound data;
+
+		public string ModName { get; private set; }
+		public string ItemName { get; private set; }
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("{$tModLoader.UnloadedItemItemName}");
@@ -24,18 +25,18 @@ namespace Terraria.ModLoader.Default
 		}
 
 		internal void Setup(TagCompound tag) {
-			modName = tag.GetString("mod");
-			itemName = tag.GetString("name");
+			ModName = tag.GetString("mod");
+			ItemName = tag.GetString("name");
 			data = tag;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			for (int k = 0; k < tooltips.Count; k++) {
 				if (tooltips[k].Name == "Tooltip0") {
-					tooltips[k].text = Language.GetTextValue("tModLoader.UnloadedItemModTooltip", modName);
+					tooltips[k].text = Language.GetTextValue("tModLoader.UnloadedItemModTooltip", ModName);
 				}
 				else if (tooltips[k].Name == "Tooltip1") {
-					tooltips[k].text = Language.GetTextValue("tModLoader.UnloadedItemItemNameTooltip", itemName);
+					tooltips[k].text = Language.GetTextValue("tModLoader.UnloadedItemItemNameTooltip", ItemName);
 				}
 			}
 		}
@@ -46,7 +47,7 @@ namespace Terraria.ModLoader.Default
 
 		public override void Load(TagCompound tag) {
 			Setup(tag);
-			if (ModContent.TryFind(modName, itemName, out ModItem modItem)) {
+			if (ModContent.TryFind(ModName, ItemName, out ModItem modItem)) {
 				Item.SetDefaults(modItem.Type);
 				Item.ModItem.Load(tag.GetCompound("data"));
 				ItemIO.LoadGlobals(Item, tag.GetList<TagCompound>("globalData"));

@@ -132,7 +132,7 @@ namespace Terraria.ModLoader
 		}
 
 		protected sealed override void Register() {
-			ContainerName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.Containers.{Name}", true);
+			ContainerName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Containers.{Name}", true);
 
 			ModTypeLookup<ModTile>.Register(this);
 

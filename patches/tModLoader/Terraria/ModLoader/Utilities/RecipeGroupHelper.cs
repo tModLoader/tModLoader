@@ -1,7 +1,7 @@
 ﻿using System;
 using Terraria.ID;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Utilities
 {
 	internal static class RecipeGroupHelper
 	{
