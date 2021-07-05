@@ -3432,6 +3432,16 @@
  			if (CCed) {
  				channel = false;
  				itemAnimation = (itemAnimationMax = 0);
+@@ -29769,7 +_,9 @@
+ 			Item item = inventory[selectedItem];
+ 			if (Main.myPlayer == i && PlayerInput.ShouldFastUseItem)
+ 				controlUseItem = true;
++			goto DecrementItemAnimation;
+ 
++			ItemCheckPart1:
+ 			ItemCheck_HandleMount();
+ 			int weaponDamage = GetWeaponDamage(item);
+ 			ItemCheck_HandleMPItemAnimation(item);
 @@ -29783,8 +_,17 @@
  			if (itemAnimation == 0 && reuseDelay > 0)
  				ApplyReuseDelay();
@@ -3461,22 +3471,47 @@
  					FreeUpPetsAndMinions(item);
  
  				if (flag3)
-@@ -29843,12 +_,15 @@
+@@ -29822,7 +_,9 @@
+ 
+ 			if (!controlUseItem)
+ 				channel = false;
++			goto HandleItemHolding;
+ 
++			DecrementItemAnimation:
+ 			Item item2 = (itemAnimation > 0) ? lastVisualizedSelectedItem : item;
+ 			Rectangle drawHitbox = Item.GetDrawHitbox(item2.type, this);
+ 			compositeFrontArm.enabled = false;
+@@ -29842,6 +_,10 @@
+ 
  				itemAnimation--;
  			}
- 
-+			ItemLoader.HoldItem(item, this);
++			goto DecrementItemTime;
 +
++			HandleItemHolding:
++			ItemLoader.HoldItem(item, this);
+ 
  			if (itemAnimation > 0)
  				ItemCheck_ApplyUseStyle(heightOffsetHitboxCenter, item2, drawHitbox);
- 			else
+@@ -29849,6 +_,9 @@
  				ItemCheck_ApplyHoldStyle(heightOffsetHitboxCenter, item2, drawHitbox);
  
  			releaseUseItem = !controlUseItem;
++			goto ItemCheckPart2;
 +
++			DecrementItemTime:
  			if (itemTime > 0) {
  				itemTime--;
  				if (ItemTimeIsZero && whoAmI == Main.myPlayer) {
+@@ -29861,7 +_,9 @@
+ 					PlayerInput.TryEndingFastUse();
+ 				}
+ 			}
++			goto ItemCheckPart1;
+ 
++			ItemCheckPart2:
+ 			if (!JustDroppedAnItem) {
+ 				ItemCheck_EmitHeldItemLight(item);
+ 				ItemCheck_EmitFoodParticles(item);
 @@ -29891,7 +_,7 @@
  
  					ItemCheck_TurretAltFeatureUse(item, flag4);
@@ -3913,6 +3948,15 @@
  			if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
  				if (statMana >= num) {
  					if (!flag2)
+@@ -36048,7 +_,7 @@
+ 		private void ItemCheck_HandleMPItemAnimation(Item sItem) {
+ 			if (sItem.autoReuse && !noItems) {
+ 				releaseUseItem = true;
+-				if (itemAnimation == 1 && sItem.stack > 0) {
++				if (itemAnimation == 0 && itemTime == 0 && sItem.stack > 0) {
+ 					if (sItem.shoot > 0 && whoAmI != Main.myPlayer && controlUseItem && sItem.useStyle == 5 && sItem.reuseDelay == 0) {
+ 						ApplyItemAnimation(sItem);
+ 						if (sItem.UseSound != null)
 @@ -36078,6 +_,7 @@
  			if (!mount.Active)
  				return;
