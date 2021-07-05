@@ -249,24 +249,6 @@
  				return;
  
  			Vector2 zero = Vector2.Zero;
-@@ -2195,7 +_,7 @@
- 				drawinfo.itemColor = drawinfo.itemColor.MultiplyRGBA(new Color(Vector4.Lerp(Vector4.One, new Vector4(0f, 0.12f, 0.16f, 0f), 1f - num4)));
- 			}
- 
--			bool flag = drawinfo.drawPlayer.itemAnimation > 0 && heldItem.useStyle != 0;
-+			bool flag = drawinfo.drawPlayer.InItemAnimation && heldItem.useStyle != 0;
- 			bool flag2 = heldItem.holdStyle != 0 && !drawinfo.drawPlayer.pulley;
- 			if (!drawinfo.drawPlayer.CanVisuallyHoldItem(heldItem))
- 				flag2 = false;
-@@ -2217,7 +_,7 @@
- 			}
- 
- 			Vector2 origin = new Vector2((float)sourceRect.Value.Width * 0.5f - (float)sourceRect.Value.Width * 0.5f * (float)drawinfo.drawPlayer.direction, sourceRect.Value.Height);
--			if (heldItem.useStyle == 9 && drawinfo.drawPlayer.itemAnimation > 0) {
-+			if (heldItem.useStyle == 9 && drawinfo.drawPlayer.InItemAnimation) {
- 				Vector2 value2 = new Vector2(0.5f, 0.4f);
- 				if (heldItem.type == 5009 || heldItem.type == 5042) {
- 					value2 = new Vector2(0.26f, 0.5f);
 @@ -2452,7 +_,7 @@
  			if (drawinfo.usesCompositeTorso) {
  				DrawPlayer_28_ArmOverItemComposite(ref drawinfo);
