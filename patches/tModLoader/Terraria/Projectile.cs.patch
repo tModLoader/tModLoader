@@ -571,6 +571,15 @@
  				if (num3 < 24f)
  					Kill();
  
+@@ -32655,7 +_,7 @@
+ 				return;
+ 			}
+ 
+-			ai[0] += Main.dayRate;
++			ai[0] += (float)Main.desiredWorldEventsUpdateRate;
+ 			if (localAI[0] == 0f && Main.netMode != 2) {
+ 				localAI[0] = 1f;
+ 				if ((double)Main.LocalPlayer.position.Y < Main.worldSurface * 16.0)
 @@ -32961,7 +_,7 @@
  						if (tileSafely2.active() && Main.tileSolid[tileSafely2.type] && !Main.tileSolidTop[tileSafely2.type])
  							continue;

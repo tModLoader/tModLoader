@@ -10,6 +10,32 @@
  
  namespace Terraria.IO
  {
+@@ -28,7 +_,7 @@
+ 		private static bool _tempBloodMoon = Main.bloodMoon;
+ 		private static bool _tempEclipse = Main.eclipse;
+ 		private static int _tempMoonPhase = Main.moonPhase;
+-		private static int _tempCultistDelay = CultistRitual.delay;
++		private static int _tempCultistDelay = (int)CultistRitual.delay;
+ 		private static int _versionNumber;
+ 		private static bool _isWorldOnCloud;
+ 		private static bool _tempPartyGenuine;
+@@ -73,14 +_,14 @@
+ 			_cachedMoonPhase = Main.moonPhase;
+ 			_cachedBloodMoon = Main.bloodMoon;
+ 			_cachedEclipse = Main.eclipse;
+-			_cachedCultistDelay = CultistRitual.delay;
++			_cachedCultistDelay = (int)CultistRitual.delay;
+ 			_cachedPartyGenuine = BirthdayParty.GenuineParty;
+ 			_cachedPartyManual = BirthdayParty.ManualParty;
+ 			_cachedPartyDaysOnCooldown = BirthdayParty.PartyDaysOnCooldown;
+ 			CachedCelebratingNPCs.Clear();
+ 			CachedCelebratingNPCs.AddRange(BirthdayParty.CelebratingNPCs);
+ 			_cachedSandstormHappening = Sandstorm.Happening;
+-			_cachedSandstormTimeLeft = Sandstorm.TimeLeft;
++			_cachedSandstormTimeLeft = (int)Sandstorm.TimeLeft;
+ 			_cachedSandstormSeverity = Sandstorm.Severity;
+ 			_cachedSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
+ 			_cachedLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
 @@ -306,6 +_,7 @@
  			Main.checkXMas();
  			Main.checkHalloween();
@@ -45,6 +71,23 @@
  		}
  
  		private static void DoRollingBackups(string backupWorldWritePath) {
+@@ -609,14 +_,14 @@
+ 			_tempMoonPhase = Main.moonPhase;
+ 			_tempBloodMoon = Main.bloodMoon;
+ 			_tempEclipse = Main.eclipse;
+-			_tempCultistDelay = CultistRitual.delay;
++			_tempCultistDelay = (int)CultistRitual.delay;
+ 			_tempPartyManual = BirthdayParty.ManualParty;
+ 			_tempPartyGenuine = BirthdayParty.GenuineParty;
+ 			_tempPartyCooldown = BirthdayParty.PartyDaysOnCooldown;
+ 			TempPartyCelebratingNPCs.Clear();
+ 			TempPartyCelebratingNPCs.AddRange(BirthdayParty.CelebratingNPCs);
+ 			_tempSandstormHappening = Sandstorm.Happening;
+-			_tempSandstormTimeLeft = Sandstorm.TimeLeft;
++			_tempSandstormTimeLeft = (int)Sandstorm.TimeLeft;
+ 			_tempSandstormSeverity = Sandstorm.Severity;
+ 			_tempSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
+ 			_tempRaining = Main.raining;
 @@ -717,7 +_,7 @@
  				}
  

@@ -1,0 +1,31 @@
+--- src/Terraria/Terraria/Star.cs
++++ src/tModLoader/Terraria/Star.cs
+@@ -16,7 +_,7 @@
+ 		public bool falling;
+ 		public bool hidden;
+ 		public Vector2 fallSpeed;
+-		public int fallTime;
++		public double fallTime;
+ 		public static bool dayCheck = false;
+ 		public static float starfallBoost = 1f;
+ 		public static int starFallCount = 0;
+@@ -128,8 +_,8 @@
+ 
+ 		public void Update() {
+ 			if (falling && !hidden) {
+-				fallTime += Main.dayRate;
++				fallTime += Main.desiredWorldEventsUpdateRate;
+-				position += fallSpeed * (Main.dayRate + 99) / 100f;
++				position += fallSpeed * (Main.desiredWorldEventsUpdateRate + 99) / 100f;
+ 				if (position.Y > 1500f)
+ 					hidden = true;
+ 
+@@ -154,7 +_,7 @@
+ 			}
+ 
+ 			if (fadeIn > 0f) {
+-				float num = 6.1728395E-05f * (float)Main.dayRate;
++				float num = 6.1728395E-05f * (float)Main.desiredWorldEventsUpdateRate;
+ 				fadeIn -= num;
+ 				if (fadeIn < 0f)
+ 					fadeIn = 0f;
