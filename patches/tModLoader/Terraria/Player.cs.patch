@@ -2997,15 +2997,6 @@
  			if (mount.Active) {
  				legFrameCounter = 0.0;
  				legFrame.Y = legFrame.Height * 6;
-@@ -25493,7 +_,7 @@
- 				_ = legFrame;
- 				reference5.Y = 0;
- 			}
--			else if (itemAnimation > 0 && inventory[selectedItem].useStyle != 10 && flag4) {
-+			else if (InItemAnimation && inventory[selectedItem].useStyle != 10 && flag4) {
- 				if (inventory[selectedItem].useStyle == 1 || inventory[selectedItem].type == 0) {
- 					if ((double)itemAnimation < (double)itemAnimationMax * 0.333)
- 						bodyFrame.Y = bodyFrame.Height * 3;
 @@ -25576,6 +_,8 @@
  						}
  					}
