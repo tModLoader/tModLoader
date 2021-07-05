@@ -3682,7 +3682,7 @@
  					}
  					else {
 -						float num10 = item.useTime;
-+						float num10 = CombinedHooks.TotalUseTime(item.useTime, this, item);
++						float num10 = itemTimeMax;
  						num10 = (num10 - (float)itemTime) / num10;
  						float num11 = 44f;
  						float num12 = (float)Math.PI * 3f;
