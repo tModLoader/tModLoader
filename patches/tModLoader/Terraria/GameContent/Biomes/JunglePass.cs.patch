@@ -1,0 +1,129 @@
+--- src/Terraria/Terraria/GameContent/Biomes/JunglePass.cs
++++ src/tModLoader/Terraria/GameContent/Biomes/JunglePass.cs
+@@ -7,7 +_,8 @@
+ {
+ 	public class JunglePass : GenPass
+ 	{
+-		private float _worldScale;
++		private float _worldScaleX;
++		private float _worldScaleY;
+ 
+ 		public int JungleOriginX {
+ 			get;
+@@ -45,8 +_,10 @@
+ 
+ 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) {
+ 			progress.Message = Lang.gen[11].Value;
++			_worldScaleX = (float)(Main.maxTilesX / 4200f) * 1.5f;
+-			_worldScale = (float)(Main.maxTilesX / 4200) * 1.5f;
++			_worldScaleY = (float)(Main.maxTilesY / 1200f) * 1.5f;
+-			float worldScale = _worldScale;
++			float worldScaleX = _worldScaleX;
++			float worldScaleY = _worldScaleY;
+ 			Point point = CreateStartPoint();
+ 			int x = point.X;
+ 			int y = point.Y;
+@@ -73,8 +_,8 @@
+ 			progress.Set(0.45f);
+ 			x = zero.X / 3;
+ 			y = zero.Y / 3;
+-			int num = GenBase._random.Next((int)(400f * worldScale), (int)(600f * worldScale));
++			int num = GenBase._random.Next((int)(400f * worldScaleX), (int)(600f * worldScaleX));
+-			int num2 = (int)(25f * worldScale);
++			int num2 = (int)(25f * worldScaleX);
+ 			x = Utils.Clamp(x, LeftBeachEnd + num / 2 + num2, RightBeachStart - num / 2 - num2);
+ 			WorldGen.mudWall = true;
+ 			WorldGen.TileRunner(x, y, num, 10000, 59, addTile: false, 0f, -20f, noYChange: true);
+@@ -86,22 +_,22 @@
+ 		}
+ 
+ 		private void PlaceGemsAt(int x, int y, ushort baseGem, int gemVariants) {
+-			for (int i = 0; (float)i < 6f * _worldScale; i++) {
++			for (int i = 0; (float)i < 6f * _worldScaleX; i++) {
+-				WorldGen.TileRunner(x + GenBase._random.Next(-(int)(125f * _worldScale), (int)(125f * _worldScale)), y + GenBase._random.Next(-(int)(125f * _worldScale), (int)(125f * _worldScale)), GenBase._random.Next(3, 7), GenBase._random.Next(3, 8), GenBase._random.Next(baseGem, baseGem + gemVariants));
++				WorldGen.TileRunner(x + GenBase._random.Next(-(int)(125f * _worldScaleX), (int)(125f * _worldScaleX)), y + GenBase._random.Next(-(int)(125f * _worldScaleY), (int)(125f * _worldScaleY)), GenBase._random.Next(3, 7), GenBase._random.Next(3, 8), GenBase._random.Next(baseGem, baseGem + gemVariants));
+ 			}
+ 		}
+ 
+ 		private void PlaceFirstPassMud(int x, int y, int xSpeedScale) {
+ 			WorldGen.mudWall = true;
+-			WorldGen.TileRunner(x, y, GenBase._random.Next((int)(250f * _worldScale), (int)(500f * _worldScale)), GenBase._random.Next(50, 150), 59, addTile: false, DungeonSide * xSpeedScale);
++			WorldGen.TileRunner(x, y, GenBase._random.Next((int)(250f * _worldScaleX), (int)(500f * _worldScaleX)), GenBase._random.Next(50, 150), 59, addTile: false, DungeonSide * xSpeedScale);
+ 			WorldGen.mudWall = false;
+ 		}
+ 
+ 		private Point CreateStartPoint() => new Point(JungleOriginX, (int)((double)Main.maxTilesY + Main.rockLayer) / 2);
+ 
+ 		private void ApplyRandomMovement(ref int x, ref int y, int xRange, int yRange) {
+-			x += GenBase._random.Next((int)((float)(-xRange) * _worldScale), 1 + (int)((float)xRange * _worldScale));
++			x += GenBase._random.Next((int)((float)(-xRange) * _worldScaleX), 1 + (int)((float)xRange * _worldScaleX));
+-			y += GenBase._random.Next((int)((float)(-yRange) * _worldScale), 1 + (int)((float)yRange * _worldScale));
++			y += GenBase._random.Next((int)((float)(-yRange) * _worldScaleY), 1 + (int)((float)yRange * _worldScaleY));
+ 			y = Utils.Clamp(y, (int)Main.rockLayer, Main.maxTilesY);
+ 		}
+ 
+@@ -188,7 +_,7 @@
+ 		}
+ 
+ 		private void GenerateHolesInMudWalls() {
+-			for (int i = 0; i < Main.maxTilesX / 4; i++) {
++			for (int i = 0; i < (((Main.maxTilesX / 4) + (Main.maxTilesY * 0.875)) / 2); i++) {
+ 				int num = GenBase._random.Next(20, Main.maxTilesX - 20);
+ 				int num2 = GenBase._random.Next((int)WorldSurface + 10, Main.UnderworldLayer);
+ 				while (Main.tile[num, num2].wall != 64 && Main.tile[num, num2].wall != 15) {
+@@ -203,24 +_,25 @@
+ 		private void GenerateFinishingTouches(GenerationProgress progress, int oldX, int oldY) {
+ 			int num = oldX;
+ 			int num2 = oldY;
++			float worldScaleX = _worldScaleX;
+-			float worldScale = _worldScale;
++			float worldScaleY = _worldScaleY;
+-			for (int i = 0; (float)i <= 20f * worldScale; i++) {
++			for (int i = 0; (float)i <= 20f * worldScaleX; i++) {
+-				progress.Set((60f + (float)i / worldScale) * 0.01f);
++				progress.Set((60f + (float)i / worldScaleX) * 0.01f);
+-				num += GenBase._random.Next((int)(-5f * worldScale), (int)(6f * worldScale));
++				num += GenBase._random.Next((int)(-5f * worldScaleX), (int)(6f * worldScaleX));
+-				num2 += GenBase._random.Next((int)(-5f * worldScale), (int)(6f * worldScale));
++				num2 += GenBase._random.Next((int)(-5f * worldScaleY), (int)(6f * worldScaleY));
+ 				WorldGen.TileRunner(num, num2, GenBase._random.Next(40, 100), GenBase._random.Next(300, 500), 59);
+ 			}
+ 
+-			for (int j = 0; (float)j <= 10f * worldScale; j++) {
++			for (int j = 0; (float)j <= 10f * worldScaleX; j++) {
+-				progress.Set((80f + (float)j / worldScale * 2f) * 0.01f);
++				progress.Set((80f + (float)j / worldScaleX * 2f) * 0.01f);
+-				num = oldX + GenBase._random.Next((int)(-600f * worldScale), (int)(600f * worldScale));
++				num = oldX + GenBase._random.Next((int)(-600f * worldScaleX), (int)(600f * worldScaleX));
+-				num2 = oldY + GenBase._random.Next((int)(-200f * worldScale), (int)(200f * worldScale));
++				num2 = oldY + GenBase._random.Next((int)(-200f * worldScaleY), (int)(200f * worldScaleY));
+ 				while (num < 1 || num >= Main.maxTilesX - 1 || num2 < 1 || num2 >= Main.maxTilesY - 1 || Main.tile[num, num2].type != 59) {
+-					num = oldX + GenBase._random.Next((int)(-600f * worldScale), (int)(600f * worldScale));
++					num = oldX + GenBase._random.Next((int)(-600f * worldScaleX), (int)(600f * worldScaleX));
+-					num2 = oldY + GenBase._random.Next((int)(-200f * worldScale), (int)(200f * worldScale));
++					num2 = oldY + GenBase._random.Next((int)(-200f * worldScaleY), (int)(200f * worldScaleY));
+ 				}
+ 
+-				for (int k = 0; (float)k < 8f * worldScale; k++) {
++				for (int k = 0; (float)k < 8f * worldScaleX; k++) {
+ 					num += GenBase._random.Next(-30, 31);
+ 					num2 += GenBase._random.Next(-30, 31);
+ 					int type = -1;
+@@ -231,12 +_,12 @@
+ 				}
+ 			}
+ 
+-			for (int l = 0; (float)l <= 300f * worldScale; l++) {
++			for (int l = 0; (float)l <= 300f * worldScaleX; l++) {
+-				num = oldX + GenBase._random.Next((int)(-600f * worldScale), (int)(600f * worldScale));
++				num = oldX + GenBase._random.Next((int)(-600f * worldScaleX), (int)(600f * worldScaleX));
+-				num2 = oldY + GenBase._random.Next((int)(-200f * worldScale), (int)(200f * worldScale));
++				num2 = oldY + GenBase._random.Next((int)(-200f * worldScaleY), (int)(200f * worldScaleY));
+ 				while (num < 1 || num >= Main.maxTilesX - 1 || num2 < 1 || num2 >= Main.maxTilesY - 1 || Main.tile[num, num2].type != 59) {
+-					num = oldX + GenBase._random.Next((int)(-600f * worldScale), (int)(600f * worldScale));
++					num = oldX + GenBase._random.Next((int)(-600f * worldScaleX), (int)(600f * worldScaleX));
+-					num2 = oldY + GenBase._random.Next((int)(-200f * worldScale), (int)(200f * worldScale));
++					num2 = oldY + GenBase._random.Next((int)(-200f * worldScaleY), (int)(200f * worldScaleY));
+ 				}
+ 
+ 				WorldGen.TileRunner(num, num2, GenBase._random.Next(4, 10), GenBase._random.Next(5, 30), 1);

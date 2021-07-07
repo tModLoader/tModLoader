@@ -592,7 +592,7 @@
  			while (true) {
  				if (num7 >= 255)
  					return;
-@@ -59383,11 +_,12 @@
+@@ -59383,14 +_,15 @@
  						flag11 = false;
  						flag12 = false;
  						flag13 = false;
@@ -605,7 +605,11 @@
 +							//patch file: flag5
  								flag6 = true;
  							}
- 							else if (Main.invasionX >= (double)(Main.maxTilesX / 2 - 5) && Main.invasionX <= (double)(Main.maxTilesX / 2 + 5)) {
+-							else if (Main.invasionX >= (double)(Main.maxTilesX / 2 - 5) && Main.invasionX <= (double)(Main.maxTilesX / 2 + 5)) {
++							else if (Main.invasionX >= (double)((Main.maxTilesX / 2) - 5) && Main.invasionX <= (double)((Main.maxTilesX / 2) + 5)) {
+ 								for (int k = 0; k < 200; k++) {
+ 									if (Main.npc[k].townNPC && Math.Abs(Main.player[num7].position.X - Main.npc[k].Center.X) < (float)num8) {
+ 										if (Main.rand.Next(3) != 0)
 @@ -59411,6 +_,7 @@
  							flag5 = true;
  
@@ -704,6 +708,33 @@
  			if (Main.player[num7].ZoneTowerNebula) {
  				bool flag18 = true;
  				int num50 = 0;
+@@ -60039,7 +_,7 @@
+ 			else if (flag3) {
+ 				int maxValue = 8;
+ 				int maxValue2 = 30;
+-				bool flag21 = (float)Math.Abs(num - Main.maxTilesX / 2) / (float)(Main.maxTilesX / 2) > 0.33f && (Main.wallLight[Main.tile[num9, num10].wall] || Main.tile[num9, num10].wall == 73);
++				bool flag21 = (float)Math.Abs(num - (Main.maxTilesX / 2)) / (float)(Main.maxTilesX / 2) > 0.33f && (Main.wallLight[Main.tile[num9, num10].wall] || Main.tile[num9, num10].wall == 73);
+ 				if (flag21 && AnyDanger())
+ 					flag21 = false;
+ 
+@@ -61484,7 +_,7 @@
+ 				}
+ 			}
+ 			else if ((double)num2 <= Main.worldSurface) {
+-				bool flag28 = (float)Math.Abs(num - Main.maxTilesX / 2) / (float)(Main.maxTilesX / 2) > 0.33f;
++				bool flag28 = (float)Math.Abs(num - (Main.maxTilesX / 2)) / (float)(Main.maxTilesX / 2) > 0.33f;
+ 				if (flag28 && AnyDanger())
+ 					flag28 = false;
+ 
+@@ -61505,7 +_,7 @@
+ 				}
+ 				else if (!Main.player[num7].ZoneGraveyard && Main.dayTime) {
+ 					int num97 = Math.Abs(num - Main.spawnTileX);
+-					if (!flag7 && num97 < Main.maxTilesX / 2 && Main.rand.Next(15) == 0 && (spawnTileType == 2 || spawnTileType == 477 || spawnTileType == 109 || spawnTileType == 492 || spawnTileType == 147 || spawnTileType == 161)) {
++					if (!flag7 && num97 < (Main.maxTilesX / 2) && Main.rand.Next(15) == 0 && (spawnTileType == 2 || spawnTileType == 477 || spawnTileType == 109 || spawnTileType == 492 || spawnTileType == 147 || spawnTileType == 161)) {
+ 						if (spawnTileType == 147 || spawnTileType == 161) {
+ 							if (Main.rand.Next(2) == 0)
+ 								NewNPC(num * 16 + 8, num2 * 16, 148);
 @@ -62097,6 +_,10 @@
  				}
  			}
@@ -799,6 +830,15 @@
  			UpdateNPC_BuffSetFlags();
  			UpdateNPC_SoulDrainDebuff();
  			UpdateNPC_BuffClearExpiredBuffs();
+@@ -70888,7 +_,7 @@
+ 				gravity = 0f;
+ 			}
+ 
+-			float num = Main.maxTilesX / 4200;
++			float num = Main.maxTilesY / 1200f;
+ 			num *= num;
+ 			float num2 = (float)((double)(position.Y / 16f - (60f + 10f * num)) / (Main.worldSurface / 6.0));
+ 			if ((double)num2 < 0.25)
 @@ -71487,6 +_,7 @@
  					num = 5;
  			}

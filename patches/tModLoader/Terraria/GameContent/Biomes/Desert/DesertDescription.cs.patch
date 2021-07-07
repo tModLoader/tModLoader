@@ -1,0 +1,13 @@
+--- src/Terraria/Terraria/GameContent/Biomes/Desert/DesertDescription.cs
++++ src/tModLoader/Terraria/GameContent/Biomes/Desert/DesertDescription.cs
+@@ -60,8 +_,9 @@
+ 		public static DesertDescription CreateFromPlacement(Point origin) {
+ 			Vector2 defaultBlockScale = DefaultBlockScale;
+ 			float num = (float)Main.maxTilesX / 4200f;
++			float numy = (float)Main.maxTilesY / 1200f; //Needed for esoteric world size support. Shouldn't affect vanilla gen at all.
+ 			int num2 = (int)(80f * num);
+-			int num3 = (int)((WorldGen.genRand.NextFloat() + 1f) * 170f * num);
++			int num3 = (int)((WorldGen.genRand.NextFloat() + 1f) * 170f * numy);
+ 			int num4 = (int)(defaultBlockScale.X * (float)num2);
+ 			int num5 = (int)(defaultBlockScale.Y * (float)num3);
+ 			origin.X -= num4 / 2;

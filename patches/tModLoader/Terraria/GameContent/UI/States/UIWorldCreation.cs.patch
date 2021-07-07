@@ -1,0 +1,23 @@
+--- src/Terraria/Terraria/GameContent/UI/States/UIWorldCreation.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UIWorldCreation.cs
+@@ -624,15 +_,15 @@
+ 			ProcessSeed(out string processedSeed);
+ 			switch (_optionSize) {
+ 				case WorldSizeId.Small:
+-					Main.maxTilesX = 4200;
+-					Main.maxTilesY = 1200;
++					Main.maxTilesX = 1750; //Main.maxTilesX = 4200;
++					Main.maxTilesY = 900; //Main.maxTilesY = 1200;
+ 					break;
+ 				case WorldSizeId.Medium:
+-					Main.maxTilesX = 6400;
+-					Main.maxTilesY = 1800;
++					Main.maxTilesX = 2400; //Main.maxTilesX = 6400
++					Main.maxTilesY = 8400; //Main.maxTilesY = 1800
+ 					break;
+ 				case WorldSizeId.Large:
+-					Main.maxTilesX = 8400;
++					Main.maxTilesX = 16800; //Main.maxTilesX = 8400;
+ 					Main.maxTilesY = 2400;
+ 					break;
+ 			}

@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/Skies/MartianSky.cs
++++ src/tModLoader/Terraria/GameContent/Skies/MartianSky.cs
+@@ -232,7 +_,7 @@
+ 		}
+ 
+ 		private void GenerateUfos() {
+-			float num = (float)Main.maxTilesX / 4200f;
++			float num = (float)(((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2);
+ 			_maxUfos = (int)(256f * num);
+ 			_ufos = new Ufo[_maxUfos];
+ 			int num2 = _maxUfos >> 4;

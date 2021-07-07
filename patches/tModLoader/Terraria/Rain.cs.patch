@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/Rain.cs
++++ src/tModLoader/Terraria/Rain.cs
+@@ -96,7 +_,7 @@
+ 			if (num2 > Main.maxRain)
+ 				num2 = Main.maxRain;
+ 
+-			float num3 = (float)Main.maxTilesX / 6400f;
++			float num3 = (float)Main.maxTilesY / 4200f;
+ 			Math.Max(0f, Math.Min(1f, (Main.player[Main.myPlayer].position.Y / 16f - 85f * num3) / (60f * num3)));
+ 			float num4 = (1f + Main.gfxQuality) / 2f;
+ 			if ((double)num4 < 0.9)

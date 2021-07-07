@@ -69,6 +69,15 @@
  					color5 = new Color((int)num38, (int)num39, (int)num40, (int)num41);
  					if (num12 == 1) {
  						float num42 = Math.Abs((float)(num13 * 16 + 8) - (Main.screenPosition.X + (float)(Main.screenWidth / 2)));
+@@ -790,7 +_,7 @@
+ 						num20 = num12;
+ 
+ 					if ((tile4.active() && (tile4.type == 189 || tile4.type == 196)) || (tile6.active() && (tile6.type == 189 || tile6.type == 196)) || (tile5.active() && (tile5.type == 189 || tile5.type == 196)))
+-						num22 = (int)((float)(40 * (Main.maxTilesX / 4200)) * Main.gfxQuality);
++						num22 = (int)((float)(40 * (((Main.maxTilesX / 4200f) + (Main.maxTilesY / 1200f)) / 2)) * Main.gfxQuality);
+ 				}
+ 			}
+ 
 @@ -841,6 +_,8 @@
  
  			if (Main.liquidAlpha[12] > 0f)
