@@ -84,14 +84,14 @@ namespace Terraria.ModLoader.Core
 				return asm;
 			}
 
-			public void LoadCustomResolver() => AppDomain.CurrentDomain.AssemblyResolve += modCustomResolver;
-			public void UnloadCustomResolver() => AppDomain.CurrentDomain.AssemblyResolve -= modCustomResolver;
+			public void LoadCustomResolver() => AppDomain.CurrentDomain.AssemblyResolve += ModCustomResolver;
+			public void UnloadCustomResolver() => AppDomain.CurrentDomain.AssemblyResolve -= ModCustomResolver;
 
 			// In Net5, in order for the embedded dll references to resolve, I implemented a custom resolver. 
 			// This fixes Issue #1560, and allows mods to include and load 3rd party dlls. Utilizes the existing... 
 			// 'assemblies' dictionairy to retrieve the byte array to load in to the domain. 
 			// Aside, returning doesn't work for reflected assembly, hence .Load() - Solxan
-			internal Assembly modCustomResolver(object sender, ResolveEventArgs args) {
+			internal Assembly ModCustomResolver(object sender, ResolveEventArgs args) {
 				AppDomain domain = (AppDomain)sender;
 				string name = new AssemblyName(args.Name).Name;
 
@@ -144,12 +144,11 @@ namespace Terraria.ModLoader.Core
 				return;
 			assemblyResolverAdded = true;
 
-			AppDomain.CurrentDomain.AssemblyResolve += tMLCustomResolver;
+			AppDomain.CurrentDomain.AssemblyResolve += TmlCustomResolver;
 		}
 
-		internal static Assembly tMLCustomResolver(object sender, ResolveEventArgs args) {
-			string name = new AssemblyName(args.Name).Name;
-			if (name == "Terraria" || name == "tModLoader" || name == "tModLoaderServer" || name == "tModLoaderDebug" || name == "tModLoaderServerDebug")
+		internal static Assembly TmlCustomResolver(object sender, ResolveEventArgs args) {
+			if (new AssemblyName(args.Name).Name == "tModLoader")
 				return Assembly.GetExecutingAssembly();
 
 			return null;
