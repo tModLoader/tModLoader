@@ -39,6 +39,7 @@ namespace Terraria.ModLoader.Core
 
 			public void LoadAssemblies() {
 				try {
+					LoadCustomResolver();
 					using (modFile.Open()) {
 						if (Debugger.IsAttached && File.Exists(properties.eacPath)) {//load the unmodified dll and EaC pdb
 							assembly = LoadAssembly(modFile.GetModAssembly(), File.ReadAllBytes(properties.eacPath));
@@ -83,6 +84,23 @@ namespace Terraria.ModLoader.Core
 				return asm;
 			}
 
+			public void LoadCustomResolver() => AppDomain.CurrentDomain.AssemblyResolve += modCustomResolver;
+			public void UnloadCustomResolver() => AppDomain.CurrentDomain.AssemblyResolve -= modCustomResolver;
+
+			// In Net5, in order for the embedded dll references to resolve, I implemented a custom resolver. 
+			// This fixes Issue #1560, and allows mods to include and load 3rd party dlls. Utilizes the existing... 
+			// 'assemblies' dictionairy to retrieve the byte array to load in to the domain. 
+			// Aside, returning doesn't work for reflected assembly, hence .Load() - Solxan
+			internal Assembly modCustomResolver(object sender, ResolveEventArgs args) {
+				AppDomain domain = (AppDomain)sender;
+				string name = new AssemblyName(args.Name).Name;
+
+				if (assemblies.TryGetValue(name, out var entry))
+					return domain.Load(entry.bytes);
+
+				return null;
+			}
+
 			protected override Assembly Load(AssemblyName assemblyName) {
 				if (assemblies.TryGetValue(assemblyName.Name, out var entry))
 					return entry.assembly;
@@ -95,8 +113,10 @@ namespace Terraria.ModLoader.Core
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		internal static void Unload() 
 		{
-			foreach (var kv in loadedModContexts)
+			foreach (var kv in loadedModContexts) {
 				kv.Value.Unload();
+				kv.Value.UnloadCustomResolver();
+			}
 
 			hostContextForAssembly.Clear();
 
@@ -124,13 +144,15 @@ namespace Terraria.ModLoader.Core
 				return;
 			assemblyResolverAdded = true;
 
-			AppDomain.CurrentDomain.AssemblyResolve += (_, args) => {
-				string name = new AssemblyName(args.Name).Name;
-				if (name == "Terraria" || name == "tModLoader" || name == "tModLoaderServer" || name == "tModLoaderDebug" || name == "tModLoaderServerDebug")
-					return Assembly.GetExecutingAssembly();
+			AppDomain.CurrentDomain.AssemblyResolve += tMLCustomResolver;
+		}
 
-				return null;
-			};
+		internal static Assembly tMLCustomResolver(object sender, ResolveEventArgs args) {
+			string name = new AssemblyName(args.Name).Name;
+			if (name == "Terraria" || name == "tModLoader" || name == "tModLoaderServer" || name == "tModLoaderDebug" || name == "tModLoaderServerDebug")
+				return Assembly.GetExecutingAssembly();
+
+			return null;
 		}
 
 		private static Mod Instantiate(ModLoadContext mod) {
