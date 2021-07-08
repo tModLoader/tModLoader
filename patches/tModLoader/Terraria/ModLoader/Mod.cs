@@ -394,6 +394,13 @@ namespace Terraria.ModLoader
 		public Stream GetFileStream(string name, bool newFileStream = false) => File?.GetStream(name, newFileStream);
 
 		/// <summary>
+		/// Retrieves the names of every file packaged into this mod.
+		/// Note that this includes extensions, and for images the extension will always be <c>.rawimg</c>.
+		/// </summary>
+		/// <returns></returns>
+		public List<string> GetFileNames() => File?.GetFileNames();
+
+		/// <summary>
 		/// Shorthand for calling ModLoader.FileExists(this.FileName(name)). Note that file extensions are required here.
 		/// </summary>
 		/// <param name="name">The name.</param>
