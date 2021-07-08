@@ -89,7 +89,7 @@ namespace Terraria.ModLoader.Core
 
 			// In Net5, in order for the embedded dll references to resolve, I implemented a custom resolver. 
 			// This fixes Issue #1560, and allows mods to include and load 3rd party dlls. Utilizes the existing... 
-			// 'assemblies' dictionairy to retrieve the byte array to load in to the domain. 
+			// 'assemblies' dictionary to retrieve the byte array to load in to the domain. 
 			// Aside, returning doesn't work for reflected assembly, hence .Load() - Solxan
 			internal Assembly ModCustomResolver(object sender, ResolveEventArgs args) {
 				AppDomain domain = (AppDomain)sender;
