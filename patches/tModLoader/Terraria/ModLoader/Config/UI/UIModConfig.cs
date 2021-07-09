@@ -283,6 +283,7 @@ namespace Terraria.ModLoader.Config.UI
 			//else
 			//{
 			DoMenuModeState();
+			OnActivate();
 			//}
 		}
 
@@ -290,6 +291,7 @@ namespace Terraria.ModLoader.Config.UI
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 			pendingRevertDefaults = true;
 			DoMenuModeState();
+			OnActivate();
 		}
 
 		private void RevertConfig(UIMouseEvent evt, UIElement listeningElement) {
@@ -299,6 +301,7 @@ namespace Terraria.ModLoader.Config.UI
 
 		private void DiscardChanges() {
 			DoMenuModeState();
+			OnActivate();
 		}
 
 		bool pendingChanges;
