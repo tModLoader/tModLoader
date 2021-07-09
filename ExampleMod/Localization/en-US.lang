@@ -20,6 +20,7 @@ ItemTooltip.SarcophagusBanner={$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.
 # Here we see that spaces in translation keys are not allowed. Any space will be replaced with an underscore.
 
 NPCName.Example_Person=Example Person
+NPCName.Example_Bone_Merchant=Example Bone Merchant
 
 # Since the item, buff, and projectile all share the word "Paper Airplane", here is a custom translation key that we define. 
 # By sharing a common tooltip, we can simplify other language files since English is the fallback language.
@@ -43,3 +44,6 @@ RecipeConditions.Night=At Low Health
 
 # Content/NPCs/ExamplePerson.cs
 Bestiary.ExamplePerson=Built of blocks with arms of steel. Pumps iron day and night.
+
+# Content/NPCs/ExampleBoneMerchant.cs
+Bestiary.ExampleBoneMerchant=Built with bone blocks and arms of steel. Throws bones day and night.

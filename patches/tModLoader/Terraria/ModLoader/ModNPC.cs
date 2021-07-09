@@ -574,6 +574,25 @@ namespace Terraria.ModLoader
 			return Language.GetTextValue("tModLoader.DefaultTownNPCName");
 		}
 
+		
+		/// <summary>
+		/// Whether or not this NPC will spawn with a custom name like a town NPC. Make sure to override <see cref="TownNPCName"/> in order to determine what name will be selected.
+		/// Returning true will force a name to be rolled regardless of vanilla behavior. Returning null will roll a name by normal vanilla specifications.
+		/// Returning false will prevent any name being rolled, regardless of vanilla behavior. Returns null by default.
+		/// </summary>
+		/// <returns></returns>
+		public virtual bool? SpawnsWithCustomName() {
+			return null;
+		}
+
+		/// <summary>
+		/// Whether or not this NPC will act like a town NPC in terms of AI, animations, and attacks; but not in other regards, like the bone merchant in vanilla. Returns false by default.
+		/// </summary>
+		/// <returns> </returns>
+		public virtual bool ActsLikeATownNPC() {
+			return false;
+		}
+
 		/// <summary>
 		/// Allows you to determine whether this town NPC wears a party hat during a party. Returns true by default.
 		/// </summary>
