@@ -191,37 +191,41 @@
  			if (friendly && owner == Main.myPlayer && !npcProj) {
  				if ((aiStyle == 16 && !ProjectileID.Sets.RocketsSkipDamageForPlayers[type] && (timeLeft <= 1 || type == 108 || type == 164)) || (type == 286 && localAI[1] == -1f)) {
  					int myPlayer = Main.myPlayer;
-@@ -8964,8 +_,27 @@
+@@ -8963,11 +_,26 @@
+ 							array = projectile.localNPCImmunity;
  					}
  
++					//Patch context
  					for (int i = 0; i < 200; i++) {
--						bool flag = (!usesLocalNPCImmunity && !usesIDStaticNPCImmunity) || (usesLocalNPCImmunity && array[i] == 0) || (usesIDStaticNPCImmunity && IsNPCIndexImmuneToProjectileType(type, i));
--						if (!(Main.npc[i].active && !Main.npc[i].dontTakeDamage && flag) || (Main.npc[i].aiStyle == 112 && Main.npc[i].ai[2] > 1f))
-+						if (!Main.npc[i].active || Main.npc[i].dontTakeDamage)
-+							continue;
-+
-+						bool immunityTimerInactive = !usesLocalNPCImmunity && !usesIDStaticNPCImmunity || usesLocalNPCImmunity && localNPCImmunity[i] == 0 || usesIDStaticNPCImmunity && IsNPCIndexImmuneToProjectileType(type, i);
-+						if (!immunityTimerInactive)
-+							continue;
-+
+ 						bool flag = (!usesLocalNPCImmunity && !usesIDStaticNPCImmunity) || (usesLocalNPCImmunity && array[i] == 0) || (usesIDStaticNPCImmunity && IsNPCIndexImmuneToProjectileType(type, i));
+ 						if (!(Main.npc[i].active && !Main.npc[i].dontTakeDamage && flag) || (Main.npc[i].aiStyle == 112 && Main.npc[i].ai[2] > 1f))
+ 							continue;
+ 
 +						bool? modCanHit = ProjectileLoader.CanHitNPC(this, Main.npc[i]);
-+						if (modCanHit==false)
++						if (modCanHit == false)
 +							continue;
 +
 +						bool? modCanBeHit = NPCLoader.CanBeHitByProjectile(Main.npc[i], this);
-+						if (modCanBeHit==false)
++						if (modCanBeHit == false)
 +							continue;
 +
 +						bool? modCanHit2 = PlayerLoader.CanHitNPCWithProj(this, Main.npc[i]);
-+						if (modCanHit2==false)
++						if (modCanHit2 == false)
 +							continue;
 +
-+						bool canHitFlag = modCanHit==true || modCanBeHit==true || modCanHit2==true;
-+						if (!canHitFlag && (!this.friendly || Main.npc[i].friendly && this.type != 318 && (Main.npc[i].type != 22 || this.owner >= 255 || !Main.player[this.owner].killGuide) && (Main.npc[i].type != 54 || this.owner >= 255 || !Main.player[this.owner].killClothier)) && (!this.hostile || !Main.npc[i].friendly || Main.npc[i].dontTakeDamageFromHostiles) || this.owner >= 0 && Main.npc[i].immune[this.owner] != 0 && this.maxPenetrate != 1)
- 							continue;
- 
++						bool canHitFlag = modCanBeHit == true || modCanHit == true || modCanHit2 == true; //If any hook forces damage: ignore vanilla conditions
++
  						Main.npc[i].position += Main.npc[i].netOffset;
-@@ -8983,6 +_,9 @@
+ 						bool flag2 = !Main.npc[i].friendly;
+ 						flag2 |= (type == 318);
+@@ -8977,12 +_,15 @@
+ 							flag2 = false;
+ 
+ 						bool flag3 = Main.npc[i].friendly && !Main.npc[i].dontTakeDamageFromHostiles;
+-						if (((friendly && flag2) || (hostile && flag3)) && (owner < 0 || Main.npc[i].immune[owner] == 0 || maxPenetrate == 1)) {
++						if ((canHitFlag || (friendly && flag2) || (hostile && flag3)) && (owner < 0 || Main.npc[i].immune[owner] == 0 || maxPenetrate == 1)) {
+ 							bool flag4 = false;
+ 							if (type == 11 && (Main.npc[i].type == 47 || Main.npc[i].type == 57))
  								flag4 = true;
  							else if (type == 31 && Main.npc[i].type == 69)
  								flag4 = true;

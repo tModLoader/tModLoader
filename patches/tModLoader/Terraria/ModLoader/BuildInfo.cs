@@ -3,7 +3,8 @@ using System.Reflection;
 
 namespace Terraria.ModLoader
 {
-	public static class BuildInfo {
+	public static class BuildInfo
+	{
 		public enum BuildPurpose
 		{
 			Unknown,

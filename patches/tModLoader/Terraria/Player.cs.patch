@@ -109,7 +109,7 @@
  		public float moveSpeed = 1f;
  		public float pickSpeed = 1f;
  		public float wallSpeed = 1f;
-@@ -1105,8 +_,26 @@
+@@ -1105,12 +_,30 @@
  		public bool oldAdjWater;
  		public bool oldAdjHoney;
  		public bool oldAdjLava;
@@ -138,6 +138,11 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
+-		public byte hairDye;
++		public int hairDye; //TML: Changed from byte to int.
+ 		public Color hairDyeColor = Color.Transparent;
+ 		public float hairDyeVar;
+ 		public int skinDyePacked;
 @@ -2034,6 +_,7 @@
  		public void SetTalkNPC(int npcIndex, bool fromNet = false) {
  			talkNPC = npcIndex;
@@ -3456,7 +3461,7 @@
  					FreeUpPetsAndMinions(item);
  
  				if (flag3)
-@@ -29843,12 +_,23 @@
+@@ -29843,12 +_,15 @@
  				itemAnimation--;
  			}
  
@@ -3469,27 +3474,9 @@
  
  			releaseUseItem = !controlUseItem;
 +
-+			//The following block has been moved to the end of the method with goto chains.
-+			//This is done to fix the half of the item use/anim desync issue.
-+			//In this exact case, this fixes itemTime not being lowered in the first tick after it's set, like itemAnim is.
-+			//That happens because this itemTime reduction happened before the code that calls SetItemTime
-+			//- Mirsario
-+			goto SkipReduceItemTime;
-+			ReduceItemTime:
-+
  			if (itemTime > 0) {
  				itemTime--;
  				if (ItemTimeIsZero && whoAmI == Main.myPlayer) {
-@@ -29862,6 +_,9 @@
- 				}
- 			}
- 
-+			goto PostReduceItemtime;
-+			SkipReduceItemTime:
-+
- 			if (!JustDroppedAnItem) {
- 				ItemCheck_EmitHeldItemLight(item);
- 				ItemCheck_EmitFoodParticles(item);
 @@ -29891,7 +_,7 @@
  
  					ItemCheck_TurretAltFeatureUse(item, flag4);
@@ -3517,7 +3504,7 @@
  
  							List<ushort> ignoreList2 = ItemCheck_GetTileCutIgnoreList(item);
  							ItemCheck_CutTiles(item, itemRectangle, ignoreList2);
-@@ -29976,6 +_,9 @@
+@@ -29976,27 +_,32 @@
  				}
  
  				if (ItemTimeIsZero && itemAnimation > 0) {
@@ -3527,7 +3514,10 @@
  					if (item.hairDye >= 0) {
  						ApplyItemTime(item);
  						if (whoAmI == Main.myPlayer) {
-@@ -29985,18 +_,20 @@
+-							hairDye = (byte)item.hairDye;
++							hairDye = item.hairDye;
+ 							NetMessage.SendData(4, -1, -1, null, whoAmI);
+ 						}
  					}
  
  					if (item.healLife > 0) {
@@ -3628,16 +3618,6 @@
  							if (item.stack > 0)
  								item.stack--;
  
-@@ -30340,6 +_,9 @@
- 				}
- 			}
- 
-+			goto ReduceItemTime;
-+			PostReduceItemtime:
-+
- 			if (itemAnimation == 0)
- 				JustDroppedAnItem = false;
- 		}
 @@ -30594,11 +_,18 @@
  				if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
  					continue;
@@ -3933,18 +3913,6 @@
  			if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
  				if (statMana >= num) {
  					if (!flag2)
-@@ -36048,7 +_,10 @@
- 		private void ItemCheck_HandleMPItemAnimation(Item sItem) {
- 			if (sItem.autoReuse && !noItems) {
- 				releaseUseItem = true;
--				if (itemAnimation == 1 && sItem.stack > 0) {
-+				//The following code line has been changed to fix a half of the vanilla item use/anim desync bug.
-+				//In this exact case, itemAnim, which resets at 1, would desync from itemTime at the end of every tick, which resets at 0.
-+				//- Mirsario
-+				if (itemAnimation == 0 && sItem.stack > 0) { //if (itemAnimation == 1 && sItem.stack > 0) {
- 					if (sItem.shoot > 0 && whoAmI != Main.myPlayer && controlUseItem && sItem.useStyle == 5 && sItem.reuseDelay == 0) {
- 						ApplyItemAnimation(sItem);
- 						if (sItem.UseSound != null)
 @@ -36078,6 +_,7 @@
  			if (!mount.Active)
  				return;
@@ -4348,7 +4316,7 @@
  						binaryWriter.Write(playerFile.GetPlayTime().Ticks);
  						binaryWriter.Write(player.hair);
 -						binaryWriter.Write(player.hairDye);
-+						PlayerIO.WriteVanillaHairDye(player.hairDye, binaryWriter);
++						PlayerIO.WriteByteVanillaHairDye(player.hairDye, binaryWriter);
  						BitsByte bb = (byte)0;
  						for (int i = 0; i < 8; i++) {
  							bb[i] = player.hideVisibleAccessory[i];
@@ -4357,59 +4325,68 @@
  						binaryWriter.Write(player.shoeColor.B);
  						for (int k = 0; k < player.armor.Length; k++) {
 -							binaryWriter.Write(player.armor[k].netID);
+-							binaryWriter.Write(player.armor[k].prefix);
 +							ItemIO.WriteVanillaID(player.armor[k], binaryWriter);
- 							binaryWriter.Write(player.armor[k].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.armor[k], binaryWriter);
  						}
  
  						for (int l = 0; l < player.dye.Length; l++) {
 -							binaryWriter.Write(player.dye[l].netID);
+-							binaryWriter.Write(player.dye[l].prefix);
 +							ItemIO.WriteVanillaID(player.dye[l], binaryWriter);
- 							binaryWriter.Write(player.dye[l].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.dye[l], binaryWriter);
  						}
  
  						for (int m = 0; m < 58; m++) {
 -							binaryWriter.Write(player.inventory[m].netID);
 +							ItemIO.WriteVanillaID(player.inventory[m], binaryWriter);
  							binaryWriter.Write(player.inventory[m].stack);
- 							binaryWriter.Write(player.inventory[m].prefix);
+-							binaryWriter.Write(player.inventory[m].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.inventory[m], binaryWriter);
  							binaryWriter.Write(player.inventory[m].favorited);
  						}
  
  						for (int n = 0; n < player.miscEquips.Length; n++) {
 -							binaryWriter.Write(player.miscEquips[n].netID);
-+							ItemIO.WriteVanillaID(player.miscEquips[n], binaryWriter);
- 							binaryWriter.Write(player.miscEquips[n].prefix);
+-							binaryWriter.Write(player.miscEquips[n].prefix);
 -							binaryWriter.Write(player.miscDyes[n].netID);
+-							binaryWriter.Write(player.miscDyes[n].prefix);
++							ItemIO.WriteVanillaID(player.miscEquips[n], binaryWriter);
++							ItemIO.WriteByteVanillaPrefix(player.miscEquips[n], binaryWriter);
 +							ItemIO.WriteVanillaID(player.miscDyes[n], binaryWriter);
- 							binaryWriter.Write(player.miscDyes[n].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.miscDyes[n], binaryWriter);
  						}
  
  						for (int num = 0; num < 40; num++) {
 -							binaryWriter.Write(player.bank.item[num].netID);
 +							ItemIO.WriteVanillaID(player.bank.item[num], binaryWriter);
  							binaryWriter.Write(player.bank.item[num].stack);
- 							binaryWriter.Write(player.bank.item[num].prefix);
+-							binaryWriter.Write(player.bank.item[num].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.bank.item[num], binaryWriter);
  						}
  
  						for (int num2 = 0; num2 < 40; num2++) {
 -							binaryWriter.Write(player.bank2.item[num2].netID);
 +							ItemIO.WriteVanillaID(player.bank2.item[num2], binaryWriter);
  							binaryWriter.Write(player.bank2.item[num2].stack);
- 							binaryWriter.Write(player.bank2.item[num2].prefix);
+-							binaryWriter.Write(player.bank2.item[num2].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.bank2.item[num2], binaryWriter);
  						}
  
  						for (int num3 = 0; num3 < 40; num3++) {
 -							binaryWriter.Write(player.bank3.item[num3].netID);
 +							ItemIO.WriteVanillaID(player.bank3.item[num3], binaryWriter);
  							binaryWriter.Write(player.bank3.item[num3].stack);
- 							binaryWriter.Write(player.bank3.item[num3].prefix);
+-							binaryWriter.Write(player.bank3.item[num3].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.bank3.item[num3], binaryWriter);
  						}
  
  						for (int num4 = 0; num4 < 40; num4++) {
 -							binaryWriter.Write(player.bank4.item[num4].netID);
 +							ItemIO.WriteVanillaID(player.bank4.item[num4], binaryWriter);
  							binaryWriter.Write(player.bank4.item[num4].stack);
- 							binaryWriter.Write(player.bank4.item[num4].prefix);
+-							binaryWriter.Write(player.bank4.item[num4].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.bank4.item[num4], binaryWriter);
  						}
  
  						binaryWriter.Write(player.voidVaultInfo);

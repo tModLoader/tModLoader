@@ -207,10 +207,10 @@ namespace Terraria.ModLoader.UI
 		}
 
 		// TODO: "Generate Language File Template" button in upcoming "Miscellaneous Tools" menu.
-		private void GenerateLangTemplate_OnClick(UIMouseEvent evt, UIElement listeningElement) {
+		/*private void GenerateLangTemplate_OnClick(UIMouseEvent evt, UIElement listeningElement) {
 			Mod loadedMod = ModLoader.GetMod(ModName);
 			var dictionary = (Dictionary<string, ModTranslation>)loadedMod.translations;
-			/*var result = loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "=")
+			var result = loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "=")
 				.Concat(loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.Tooltip)).Select(x => x.Value.Tooltip.Key + "="))
 				.Concat(loadedMod.npcs.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "="))
 				.Concat(loadedMod.buffs.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "="))
@@ -221,10 +221,10 @@ namespace Terraria.ModLoader.UI
 
 			result = result.Select(x => x.Remove(0, $"Mods.{ModName}.".Length));
 
-			Platform.Get<IClipboard>().Value = string.Join("\n", result);*/
+			Platform.Get<IClipboard>().Value = string.Join("\n", result);
 
 			// TODO: ITranslatable or something?
-		}
+		}*/
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			_tooltip = null;

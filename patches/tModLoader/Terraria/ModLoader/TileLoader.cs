@@ -233,16 +233,24 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			loaded = false;
-			tiles.Clear();
 			nextTile = TileID.Count;
+
+			tiles.Clear();
 			globalTiles.Clear();
 			trees.Clear();
 			palmTrees.Clear();
 			cacti.Clear();
+
+			// Has to be ran on the main thread, since this may dispose textures.
+			Main.QueueMainThreadAction(() => {
+				Main.instance.TilePaintSystem.Reset();
+			});
+
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsChair, vanillaChairCount);
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTable, vanillaTableCount);
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTorch, vanillaTorchCount);
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsDoor, vanillaDoorCount);
+			
 			while (TileObjectData._data.Count > TileID.Count) {
 				TileObjectData._data.RemoveAt(TileObjectData._data.Count - 1);
 			}
@@ -829,9 +837,11 @@ namespace Terraria.ModLoader
 			int originalStyle = style;
 			bool flag = false;
 			ModTile modTile = GetTile(type);
+
 			if (modTile != null) {
 				saplingType = modTile.SaplingGrowthType(ref style);
-				if (TileID.Sets.TreeSapling[saplingType]) {
+
+				if (saplingType >= 0 && TileID.Sets.TreeSapling[saplingType]) {
 					originalType = saplingType;
 					originalStyle = style;
 					flag = true;
@@ -841,9 +851,11 @@ namespace Terraria.ModLoader
 					style = originalStyle;
 				}
 			}
+
 			foreach (var hook in HookSaplingGrowthType) {
 				saplingType = hook(type, ref style);
-				if (TileID.Sets.TreeSapling[saplingType]) {
+
+				if (saplingType >= 0 && TileID.Sets.TreeSapling[saplingType]) {
 					originalType = saplingType;
 					originalStyle = style;
 					flag = true;
@@ -853,6 +865,7 @@ namespace Terraria.ModLoader
 					style = originalStyle;
 				}
 			}
+
 			return flag;
 		}
 
