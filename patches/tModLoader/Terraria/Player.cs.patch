@@ -3212,6 +3212,15 @@
  			int num = 50;
  			if (newItem.IsACoin)
  				num = 54;
+@@ -27653,6 +_,8 @@
+ 				return;
+ 
+ 			bool flag = true;
++			flag &= WallLoader.CanPlace(tileTargetX, tileTargetY, inventory[selectedItem].createWall);
++
+ 			if (TileReplacementEnabled)
+ 				flag = PlaceThing_TryReplacingWalls(flag);
+ 
 @@ -27661,6 +_,7 @@
  
  			WorldGen.PlaceWall(tileTargetX, tileTargetY, inventory[selectedItem].createWall);
@@ -3251,8 +3260,13 @@
  					PlaceThing_Tiles_BlockPlacementIfOverPlayers(ref canPlace, ref objectData);
  					PlaceThing_Tiles_BlockPlacementForRepeatedPigronatas(ref canPlace, ref objectData);
  					PlaceThing_Tiles_BlockPlacementForRepeatedPumpkins(ref canPlace, ref objectData);
-@@ -27807,7 +_,7 @@
+@@ -27805,9 +_,12 @@
+ 				if (!WorldGen.IsTileReplacable(tileTargetX, tileTargetY))
+ 					return false;
  
++				if (!TileLoader.CanPlace(tileTargetX, tileTargetY, HeldItem.createTile))
++					return false;
++
  				if (0 == 0) {
  					if (hitReplace.AddDamage(num, pickaxeDamage) < 100) {
 -						int num2 = WorldGen.KillTile_GetTileDustAmount(fail: true, tile);
