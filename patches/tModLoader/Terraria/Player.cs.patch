@@ -4255,15 +4255,19 @@
  			bool flag2 = dontConsume;
  			if (sItem.type == 3475 && Main.rand.Next(3) != 0)
  				flag2 = true;
-@@ -36627,10 +_,10 @@
+@@ -36627,10 +_,14 @@
  			if (sItem.type == 1553 && Main.rand.Next(3) != 0)
  				flag2 = true;
  
++			// The offset of '-2' doesn't quite matter. The goal is to only use ammo on the first shot.
 -			if (sItem.type == 434 && itemAnimation < sItem.useAnimation - 2)
++			//if (sItem.type == 434 && itemAnimation < sItem.useAnimation - 2)
 +			if (sItem.type == 434 && itemAnimation < itemAnimationMax)
  				flag2 = true;
  
++			// Same as above.
 -			if (sItem.type == 4953 && itemAnimation > sItem.useAnimation - 8)
++			//if (sItem.type == 4953 && itemAnimation > sItem.useAnimation - 8)
 +			if (sItem.type == 4953 && itemAnimation < itemAnimationMax)
  				flag2 = true;
  
