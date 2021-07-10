@@ -295,7 +295,7 @@ namespace Terraria.Social.Steam
 							SteamGameServerUGC.GetQueryUGCResult(_primaryUGCHandle, i, out pDetails);
 						
 						if (pDetails.m_eResult != EResult.k_EResultOK) {
-							Logging.tML.Debug("Unable to fetch mod query#" + (queryPage - 1) * 50 + i + " information. " + pDetails.m_eResult);
+							Logging.tML.Debug("Unable to fetch mod: " + (queryPage - 1) * 50 + i);
 							continue;
 						}	
 
