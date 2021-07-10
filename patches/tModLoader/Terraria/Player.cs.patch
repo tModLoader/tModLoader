@@ -2320,16 +2320,6 @@
  				if (!Falling) {
  					float num3 = Math.Abs(velocity.X) / 3f;
  					if ((float)Main.rand.Next(100) > num3 * 100f)
-@@ -16811,6 +_,9 @@
- 		}
- 
- 		public void Update(int i) {
-+			ItemTimePrev = itemTime;
-+			ItemAnimationPrev = itemAnimation;
-+
- 			if (i == Main.myPlayer && Main.netMode != 2)
- 				LockOnHelper.Update();
- 
 @@ -16961,6 +_,7 @@
  
  			UpdateHairDyeDust();
