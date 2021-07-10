@@ -1,6 +1,7 @@
 using Steamworks;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -16,6 +17,8 @@ namespace Terraria.Social.Steam
 {
 	public partial class WorkshopHelper
 	{
+		internal static string[] MetadataKeys = new string[7] { "name", "author", "modside", "homepage", "modloaderversion", "version", "modreferences" };
+
 		public struct ItemInstallInfo
 		{
 			public string installPath;
@@ -33,9 +36,9 @@ namespace Terraria.Social.Steam
 		internal class ModManager
 		{
 			internal static bool SteamUser { get; set; } = true;
-			public static AppId_t thisApp = ModLoader.Engine.Steam.TMLAppID_t;
+			internal static AppId_t thisApp = ModLoader.Engine.Steam.TMLAppID_t;
 
-			public static void Initialize() {
+			internal static void Initialize() {
 				if (!ModLoader.Engine.Steam.IsSteamApp) {
 					// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
 					SteamUser = false;
@@ -50,7 +53,7 @@ namespace Terraria.Social.Steam
 			PublishedFileId_t itemID;
 			protected Callback<DownloadItemResult_t> m_DownloadItemResult;
 
-			public ModManager(PublishedFileId_t itemID) {
+			internal ModManager(PublishedFileId_t itemID) {
 				this.itemID = itemID;
 				if (SteamUser)
 					m_DownloadItemResult = Callback<DownloadItemResult_t>.Create(OnItemDownloaded);
@@ -63,8 +66,11 @@ namespace Terraria.Social.Steam
 			/// </summary>
 			public static void Download(List<UIModDownloadItem> items) {
 				//Set UIWorkshopDownload
-				var uiProgress = new UIWorkshopDownload(Interface.modBrowser);
-				Main.MenuUI.SetState(uiProgress);
+				UIWorkshopDownload uiProgress = null;
+				if (!Main.dedServ) {
+					uiProgress = new UIWorkshopDownload(Interface.modBrowser);
+					Main.MenuUI.SetState(uiProgress);
+				}
 				int counter = 0;
 
 				Task.Run(() => TaskDownload(counter, uiProgress, items));
@@ -74,21 +80,21 @@ namespace Terraria.Social.Steam
 				var item = items[counter++];
 				var mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)));
 				
-				uiProgress.PrepUIForDownload(item.DisplayName);
+				uiProgress?.PrepUIForDownload(item.DisplayName);
 				mod.InnerDownload(uiProgress);
 
 				if (counter == items.Count)
-					uiProgress.Leave();
+					uiProgress?.Leave();
 				else
 					Task.Run(() => TaskDownload(counter, uiProgress, items));
 			}
 
-			public EResult downloadResult;
+			private EResult downloadResult;
 
 			/// <summary>
 			/// Updates and/or Downloads the Item specified when generating the ModManager Instance.
 			/// </summary>
-			internal bool InnerDownload(UIWorkshopDownload uiProgress) {
+			private bool InnerDownload(UIWorkshopDownload uiProgress) {
 				downloadResult = EResult.k_EResultOK;
 				if (NeedsUpdate()) {
 					downloadResult = EResult.k_EResultNone;
@@ -99,7 +105,7 @@ namespace Terraria.Social.Steam
 				}
 				else {
 					// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
-					Logging.tML.Debug("Item was installed at start of session: " + itemID.ToString() + ". If attempting to re-install, close current instance and re-launch");
+					Logging.tML.Info("Item was installed at start of session: " + itemID.ToString() + ". If attempting to re-install, close current instance and re-launch");
 				}
 
 				return downloadResult == EResult.k_EResultOK;
@@ -144,7 +150,7 @@ namespace Terraria.Social.Steam
 				downloadResult = EResult.k_EResultOK;
 			}
 
-			public void Uninstall() {
+			internal void Uninstall() {
 				var installPath = GetInstallInfo().installPath;
 				if (!Directory.Exists(installPath))
 					return;
@@ -161,7 +167,12 @@ namespace Terraria.Social.Steam
 
 			private void UninstallACF() {
 				// Cleanup acf file by removing info on this itemID
-				string acfPath = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "appworkshop_" + thisApp.ToString() + ".acf");
+				string acfPath;
+
+				if (!SteamUser)
+					acfPath = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "appworkshop_" + thisApp.ToString() + ".acf");
+				else
+					acfPath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(GetInstallInfo().installPath).ToString()).ToString()).ToString(), "appworkshop_" + thisApp.ToString() + ".acf");
 
 				var acf = File.ReadAllLines(acfPath);
 				using (StreamWriter w = new StreamWriter(acfPath)) {
@@ -292,18 +303,6 @@ namespace Terraria.Social.Steam
 						PublishedFileId_t id = pDetails.m_nPublishedFileId;
 						DateTime lastUpdate = Utils.UnixTimeStampToDateTime((long)pDetails.m_rtimeUpdated);
 
-						// Dependencies data
-						PublishedFileId_t[] depsArr = new PublishedFileId_t[pDetails.m_unNumChildren];
-						if (ModManager.SteamUser)
-							SteamUGC.GetQueryUGCChildren(_primaryUGCHandle, i, depsArr, (uint)depsArr.Length);
-						else
-							SteamGameServerUGC.GetQueryUGCChildren(_primaryUGCHandle, i, depsArr, (uint)depsArr.Length);
-
-						string modreferences = "";
-						foreach (var item in depsArr) {
-							modreferences += item.ToString() + ",";
-						}
-
 						// Item Tagged data
 						uint keyCount;
 						if (ModManager.SteamUser)
@@ -311,7 +310,12 @@ namespace Terraria.Social.Steam
 						else
 							keyCount = SteamGameServerUGC.GetQueryUGCNumKeyValueTags(_primaryUGCHandle, i);
 
-						string author = null, modloaderversion = null, modsideString = null, homepage = null, version = null, name = null;
+						if (keyCount != MetadataKeys.Length) {
+							Logging.tML.Debug("Mod is missing required metadata: " + displayname);
+							continue;
+						}
+
+						NameValueCollection metadata = new NameValueCollection();
 						for (uint j = 0; j < keyCount; j++) {
 							string key, val;
 							if (ModManager.SteamUser)
@@ -319,34 +323,15 @@ namespace Terraria.Social.Steam
 							else
 								SteamGameServerUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 100, out val, 100);
 
-							switch (key) {
-								case "internalname": // index 0
-									name = val;
-									continue;
-								case "author": // index 1
-									author = val;
-									continue;
-								case "modside": // index 2
-									modsideString = val;
-									continue;
-								case "homepage": // index 3
-									homepage = val;
-									continue;
-								case "modloaderversion": // index 4
-									modloaderversion = val;
-									continue;
-								case "version": // index 5
-									version = val;
-									continue;
-							}
+							metadata[MetadataKeys[j]] = val;
 						}
 
 						ModSide modside = ModSide.Both;
-						if (modsideString == "Client")
+						if (metadata["modside"] == "Client")
 							modside = ModSide.Client;
-						if (modsideString == "Server")
+						if (metadata["modside"] == "Server")
 							modside = ModSide.Server;
-						if (modsideString == "NoSync")
+						if (metadata["modside"] == "NoSync")
 							modside = ModSide.NoSync;
 
 						// Preview Image url
@@ -367,24 +352,23 @@ namespace Terraria.Social.Steam
 							SteamGameServerUGC.GetQueryUGCStatistic(_primaryUGCHandle, i, EItemStatistic.k_EItemStatistic_NumPlaytimeSessionsDuringTimePeriod, out hot); //Temp: based on how often being played lately?
 						}
 						
-
 						// Check against installed mods
 						bool update = false;
 						bool updateIsDowngrade = false;
-						var installed = installedMods.FirstOrDefault(m => m.Name == name);
+						var installed = installedMods.FirstOrDefault(m => m.Name == metadata["name"]);
 						if (installed != null) {
 							//exists = true;
-							var cVersion = new System.Version(version.Substring(1));
+							var cVersion = new System.Version(metadata["version"].Substring(1));
 							if (cVersion > installed.modFile.Version)
 								update = true;
 							else if (cVersion < installed.modFile.Version)
 								update = updateIsDowngrade = true;
 						}
 
-						items.Add(new UIModDownloadItem(displayname, name, version, author, modreferences, modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate.ToString(), update, updateIsDowngrade, installed, modloaderversion, homepage, i));
+						items.Add(new UIModDownloadItem(displayname, metadata["name"], metadata["version"], metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate.ToString(), update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"], i));
 					}
 
-				} while (_queryReturnCount == 50); // 50 is based on kNumUGCResultsPerPage constant in ISteamUGC. Can't find constant itself?
+				} while (_queryReturnCount == 50); // 50 is based on kNumUGCResultsPerPage constant in ISteamUGC. Can't find constant itself? - Solxan
 
 				
 				return items;
@@ -397,14 +381,14 @@ namespace Terraria.Social.Steam
 				if (ModManager.SteamUser) {
 					UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, ModManager.thisApp, ModManager.thisApp, page);
 					SteamUGC.SetReturnKeyValueTags(qHandle, true);
-					SteamUGC.SetReturnChildren(qHandle, true);
+					SteamUGC.SetReturnLongDescription(qHandle, true);
 
 					call = SteamUGC.SendQueryUGCRequest(qHandle);
 				}
 				else {
 					UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, ModManager.thisApp, ModManager.thisApp, page);
 					SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
-					SteamGameServerUGC.SetReturnChildren(qHandle, true);
+					SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
 
 					call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 				}
@@ -412,7 +396,7 @@ namespace Terraria.Social.Steam
 				_queryHook.Set(call);
 
 				do {
-					// Do Pretty Stuff
+					// Do Pretty Stuff if want here
 
 					Thread.Sleep(5);
 					if (ModManager.SteamUser) 
@@ -451,6 +435,17 @@ namespace Terraria.Social.Steam
 			internal ulong GetSteamOwner(uint queryIndex) {
 				SteamUGC.GetQueryUGCResult(_primaryUGCHandle, queryIndex, out var pDetails);
 				return pDetails.m_ulSteamIDOwner;
+			}
+
+			internal static bool CheckWorkshopConnection() {
+				if (Interface.modBrowser.Items.Count != 0)
+					return true;
+
+				Interface.modBrowser.InnerPopulateModBrowser();
+				if (Interface.modBrowser.Items.Count != 0)
+					return true;
+
+				return false;
 			}
 		}
 	}

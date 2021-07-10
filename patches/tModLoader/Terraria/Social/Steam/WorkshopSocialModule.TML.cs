@@ -32,15 +32,12 @@ namespace Terraria.Social.Steam
 				return;
 			}
 
-			if (Interface.modBrowser.Items.Count == 0) {
-				Interface.modBrowser.InnerPopulateModBrowser();
-
-				if (Interface.modBrowser.Items.Count == 0) {
-					base.IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
-					return;
-				}
+			if (!WorkshopHelper.QueryHelper.CheckWorkshopConnection()) {
+				base.IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
+				return;
 			}
-			var existing = Interface.modBrowser.Items.FirstOrDefault(x => x.ModName.Equals(buildData["name"]));
+
+			var existing = Interface.modBrowser.FindModDownloadItem(buildData["name"]);
 			if (existing != null) {
 				var existingID = UIModBrowser.SteamWorkshop.GetSteamOwner(existing.QueryIndex);
 				var currID = Steamworks.SteamUser.GetSteamID();
@@ -54,6 +51,17 @@ namespace Terraria.Social.Steam
 			string name = buildData["displaynameclean"];
 			string description = buildData["description"];
 			string[] usedTagsInternalNames = settings.GetUsedTagsInternalNames();
+
+			string workshopDeps = "";
+			if (buildData["modreferences"].Length > 0) {
+				foreach (var modRef in buildData["modreferences"].Split(",")) {
+					var temp = Interface.modBrowser.FindModDownloadItem(modRef);
+					if (temp != null)
+						workshopDeps += temp.PublishId + ",";
+				}
+			}
+			buildData["workshopdeps"] = workshopDeps;
+
 			string contentFolderPath = GetTemporaryFolderPath() + modFile.Name;
 			if (MakeTemporaryFolder(contentFolderPath)) {
 				File.Copy(modFile.path, Path.Combine(contentFolderPath, modFile.Name + ".tmod"), true);

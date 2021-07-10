@@ -1,23 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using ReLogic.Content.Readers;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
-using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -132,22 +127,14 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				Append(tMLUpdateRequired);
 			}
 			else if (hasUpdate || installed == null) {
-				_updateButton = new UIImage(UpdateIsDowngrade ? UICommon.ButtonDowngradeTexture : UICommon.ButtonDownloadTexture);
-				_updateButton.CopyStyle(_moreInfoButton);
-				_updateButton.Left.Pixels += 36 + PADDING;
-				_updateButton.OnClick += DownloadMod;
-				Append(_updateButton);
-
-				if (_modReferences.Length > 0) {
-					_updateWithDepsButton = new UIImage(UICommon.ButtonDownloadMultipleTexture);
-					_updateWithDepsButton.CopyStyle(_updateButton);
-					_updateWithDepsButton.Left.Pixels += 36 + PADDING;
-					_updateWithDepsButton.OnClick += DownloadWithDeps;
-					Append(_updateWithDepsButton);
-				}
+				_updateWithDepsButton = new UIImage(UICommon.ButtonDownloadMultipleTexture);
+				_updateWithDepsButton.CopyStyle(_moreInfoButton);
+				_updateWithDepsButton.Left.Pixels += 36 + PADDING;
+				_updateWithDepsButton.OnClick += DownloadWithDeps;
+				Append(_updateWithDepsButton);
 			}
 
-			if (modReferences.Length > 0) {
+			if (_modReferences?.Length > 0) {
 				var icon = UICommon.ButtonExclamationTexture;
 				var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", modReferences.Split(',').Select(x => x.Trim())))) {
 					Left = { Pixels = -icon.Width() - PADDING, Percent = 1f }
@@ -380,6 +367,10 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		private void DownloadWithDeps(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuTick);
+			InnerDownloadWithDeps();
+		}
+
+		internal void InnerDownloadWithDeps() {
 			var downloads = new HashSet<UIModDownloadItem>() { this };
 			downloads.Add(this);
 			GetDependenciesRecursive(this, ref downloads);
@@ -397,7 +388,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			set.UnionWith(deps);
 
 			// Cyclic dependency should never happen, as it's not allowed
-			// TODO: What if the same mod is a dependency twice, but different versions?
+			//TODO: What if the same mod is a dependency twice, but different versions?
 
 			foreach (var dep in deps) {
 				GetDependenciesRecursive(dep, ref set);

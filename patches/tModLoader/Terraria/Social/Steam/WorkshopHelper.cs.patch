@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
-@@ -1,14 +_,17 @@
+@@ -1,14 +_,16 @@
  using Steamworks;
  using System;
  using System.Collections.Generic;
@@ -8,7 +8,6 @@
  using System.IO;
  using Terraria.IO;
 +using Terraria.ModLoader;
-+using Terraria.ModLoader.UI;
  using Terraria.Social.Base;
  using Terraria.Utilities;
  
@@ -144,29 +143,20 @@
  
  					SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
  					SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
-@@ -253,8 +_,41 @@
+@@ -253,8 +_,32 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
 +					string patchNotes = "";
 +					if (_entryData.BuildData != null) {
-+						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "internalname");
-+						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "author");
-+						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "modside");
-+						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "homepage");
-+						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "modloaderversion");
-+						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, "version");
++						foreach (var key in MetadataKeys) {
++							SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
++							SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
++						}
 +
-+						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "internalname", _entryData.BuildData["name"]);
-+						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "author", _entryData.BuildData["author"]);
-+						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "modside", _entryData.BuildData["modside"]);
-+						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "homepage", _entryData.BuildData["homepage"]);
-+						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "modloaderversion", _entryData.BuildData["modloaderversion"]);
-+						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, "version", _entryData.BuildData["version"]);
-+						
 +						patchNotes = _entryData.BuildData["version"] + " learn more @" + _entryData.BuildData["homepage"];
 +
-+						string refs = _entryData.BuildData["modreferences"];
++						string refs = _entryData.BuildData["workshopdeps"];
 +						if (!String.IsNullOrEmpty(refs)) {
 +							string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
 +							foreach (var dependency in dependencies) {
@@ -175,7 +165,7 @@
 +									SteamUGC.AddDependency(_publishedFileID, child);
 +								}
 +								catch (Exception) {
-+									Logging.tML.Error("Failed to add dependency: " + dependency + " to " + _publishedFileID);
++									Logging.tML.Error("Failed to add Workshop dependency: " + dependency + " to " + _publishedFileID);
 +								}
 +							}
 +						}

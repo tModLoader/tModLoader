@@ -329,16 +329,13 @@ namespace Terraria.ModLoader.UI
 				else {
 					string modname = command;
 					try {
-						if (modBrowser.Items.Count == 0) {
-							modBrowser.InnerPopulateModBrowser();
-							if (modBrowser.Items.Count == 0) {
-								Console.WriteLine(Language.GetTextValue("NoWorkshopAccess"));
-								break;
-							}
+						if (!WorkshopHelper.QueryHelper.CheckWorkshopConnection()) {
+							Console.WriteLine(Language.GetTextValue("NoWorkshopAccess"));
+							break;
 						}
+
 						var info = modBrowser.Items.FirstOrDefault(x => x.ModName.Equals(modname));
-						var item = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(ulong.Parse(info.PublishId)));
-						item.InnerDownload(null);
+						info.InnerDownloadWithDeps();
 					}
 					catch (Exception e) {
 						Console.WriteLine(Language.GetTextValue("tModLoader.MBServerDownloadError", modname, e.ToString()));

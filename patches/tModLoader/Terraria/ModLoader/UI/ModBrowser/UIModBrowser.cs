@@ -271,8 +271,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			_missingMods.Clear();
 		}
 
-		internal UIModDownloadItem FindModDownloadItem(string publishId)
-			=> Items.FirstOrDefault(x => x.PublishId.Equals(publishId));
+		internal UIModDownloadItem FindModDownloadItem(string modName)
+			=> Items.FirstOrDefault(x => x.ModName.Equals(modName));
 
 		private void SetHeading(string heading) {
 			HeaderTextPanel.SetText(heading, 0.8f, true);
