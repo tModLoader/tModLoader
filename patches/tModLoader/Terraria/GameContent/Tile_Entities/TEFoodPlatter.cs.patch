@@ -1,7 +1,8 @@
 --- src/Terraria/Terraria/GameContent/Tile_Entities/TEFoodPlatter.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEFoodPlatter.cs
-@@ -1,10 +_,11 @@
+@@ -1,10 +_,12 @@
  using System.IO;
++using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
  using Terraria.ID;
 +using Terraria.ModLoader.IO;
@@ -24,3 +25,49 @@
  			writer.Write((short)item.stack);
  		}
  
+@@ -93,20 +_,16 @@
+ 
+ 		public void DropItem() {
+ 			if (Main.netMode != 1)
+-				Item.NewItem(Position.X * 16, Position.Y * 16, 16, 16, item.netID, 1, noBroadcast: false, item.prefix);
++				Item.DropItem(item, new Rectangle(Position.X * 16, Position.Y * 16, 16, 16));
+ 
+ 			item = new Item();
+ 		}
+ 
+-		public static void TryPlacing(int x, int y, int netid, int prefix, int stack) {
++		public static void TryPlacing(int x, int y, Item item, int stack) {
+ 			WorldGen.RangeFrame(x, y, x + 1, y + 1);
+ 			int num = Find(x, y);
+ 			if (num == -1) {
+-				int num2 = Item.NewItem(x * 16, y * 16, 16, 16, 1);
+-				Main.item[num2].netDefaults(netid);
+-				Main.item[num2].Prefix(prefix);
+-				Main.item[num2].stack = stack;
+-				NetMessage.SendData(21, -1, -1, null, num2);
++				Item.DropItem(item, new Rectangle(x * 16, y * 16, 16, 16));
+ 				return;
+ 			}
+ 
+@@ -114,10 +_,9 @@
+ 			if (tEFoodPlatter.item.stack > 0)
+ 				tEFoodPlatter.DropItem();
+ 
+-			tEFoodPlatter.item = new Item();
++			tEFoodPlatter.item = item.Clone();
+-			tEFoodPlatter.item.netDefaults(netid);
+-			tEFoodPlatter.item.Prefix(prefix);
+ 			tEFoodPlatter.item.stack = stack;
++
+ 			NetMessage.SendData(86, -1, -1, null, tEFoodPlatter.ID, x, y);
+ 		}
+ 
+@@ -162,7 +_,7 @@
+ 			if (Main.netMode == 1)
+ 				NetMessage.SendData(133, -1, -1, null, x, y, player.selectedItem, player.whoAmI, 1);
+ 			else
+-				TryPlacing(x, y, player.inventory[player.selectedItem].netID, player.inventory[player.selectedItem].prefix, 1);
++				TryPlacing(x, y, player.inventory[player.selectedItem], 1);
+ 
+ 			player.inventory[player.selectedItem].stack--;
+ 			if (player.inventory[player.selectedItem].stack <= 0) {

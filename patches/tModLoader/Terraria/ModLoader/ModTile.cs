@@ -132,7 +132,7 @@ namespace Terraria.ModLoader
 		}
 
 		protected sealed override void Register() {
-			ContainerName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.Containers.{Name}", true);
+			ContainerName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Containers.{Name}", true);
 
 			ModTypeLookup<ModTile>.Register(this);
 
@@ -345,7 +345,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine whether the given item can become selected when the cursor is hovering over this tile and the auto selection hotkey is pressed.
+		/// Allows you to determine whether the given item can become selected when the cursor is hovering over this tile and the auto selection keybind is pressed.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
