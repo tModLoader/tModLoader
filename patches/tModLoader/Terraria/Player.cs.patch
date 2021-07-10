@@ -4255,10 +4255,11 @@
  			bool flag2 = dontConsume;
  			if (sItem.type == 3475 && Main.rand.Next(3) != 0)
  				flag2 = true;
-@@ -36627,10 +_,14 @@
+@@ -36627,10 +_,15 @@
  			if (sItem.type == 1553 && Main.rand.Next(3) != 0)
  				flag2 = true;
  
++			// Clockwork Assault Rifle.
 +			// The offset of '-2' doesn't quite matter. The goal is to only use ammo on the first shot.
 -			if (sItem.type == 434 && itemAnimation < sItem.useAnimation - 2)
 +			//if (sItem.type == 434 && itemAnimation < sItem.useAnimation - 2)
@@ -4272,7 +4273,18 @@
  				flag2 = true;
  
  			if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
-@@ -36651,7 +_,10 @@
+@@ -36645,13 +_,20 @@
+ 			if (ammoCost75 && Main.rand.Next(4) == 0)
+ 				flag2 = true;
+ 
++			// Flamethrower.
++			// Unlike with Clockwork Assault Rifle, here we want to keep the feature-bug of Unreal modifier flamethrowers consuming 2 gel instead of 1 per click (less when holding.)
++			// So we just adjust the offset to be in-line with itemAnim changes.
++			//if (projToShoot == 85 && itemAnimation < itemAnimationMax - 6)
+-			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 6)
++			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 5)
+ 				flag2 = true;
+ 
  			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
  				flag2 = true;
  
