@@ -44,7 +44,7 @@ namespace Terraria.GameContent.UI.States
 
 		protected override bool TryFindingTags(out FoundWorkshopEntryInfo info) => SocialAPI.Workshop.TryGetInfoForMod(_dataObject, out info);
 
-		internal UIElement CreatetMLDisclaimer(string tagGroup) {
+		internal UIElement CreateTmlDisclaimer(string tagGroup) {
 			float num = 60f;
 			float num2 = 0f + num;
 

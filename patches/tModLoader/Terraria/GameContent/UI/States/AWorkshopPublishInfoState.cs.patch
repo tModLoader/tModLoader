@@ -44,7 +44,7 @@
 +
 +			// Added by tML
 +			if (_isMod)
-+				uiList.Add((this as WorkshopPublishInfoStateForMods).CreatetMLDisclaimer("disclaimer")); 
++				uiList.Add((this as WorkshopPublishInfoStateForMods).CreateTmlDisclaimer("disclaimer")); 
 +
  			uiList.Add(CreatePreviewImageSelectionPanel("image"));
  			uiList.Add(CreatePublicSettingsRow(0f, 44f, "public"));
