@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
-using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
 
 namespace Terraria.Social.Steam
@@ -22,15 +22,14 @@ namespace Terraria.Social.Steam
 		public struct ItemInstallInfo
 		{
 			public string installPath;
-			public UInt32 lastUpdatedTime;
+			public uint lastUpdatedTime;
 		}
 
 		public class ModPublisherInstance : UGCBased.APublisherInstance
 		{
 			protected override string GetHeaderText() => ModWorkshopEntry.GetHeaderTextFor(_publishedFileID.m_PublishedFileId, _entryData.Tags, _publicity, _entryData.PreviewImagePath);
 
-			protected override void PrepareContentForUpdate() {
-			}
+			protected override void PrepareContentForUpdate() { }
 		}
 
 		internal class ModManager
@@ -38,23 +37,26 @@ namespace Terraria.Social.Steam
 			internal static bool SteamUser { get; set; } = true;
 			internal static AppId_t thisApp = ModLoader.Engine.Steam.TMLAppID_t;
 
+			protected Callback<DownloadItemResult_t> m_DownloadItemResult;
+
+			private PublishedFileId_t itemID;
+
 			internal static void Initialize() {
 				if (!ModLoader.Engine.Steam.IsSteamApp) {
 					// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
 					SteamUser = false;
+
 					GameServer.Init(0x7f000001, 7776, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0");
+
 					SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 					SteamGameServer.SetProduct(thisApp.ToString());
-
 					SteamGameServer.LogOnAnonymous();
 				}
 			}
 
-			PublishedFileId_t itemID;
-			protected Callback<DownloadItemResult_t> m_DownloadItemResult;
-
 			internal ModManager(PublishedFileId_t itemID) {
 				this.itemID = itemID;
+
 				if (SteamUser)
 					m_DownloadItemResult = Callback<DownloadItemResult_t>.Create(OnItemDownloaded);
 			}
@@ -67,10 +69,12 @@ namespace Terraria.Social.Steam
 			public static void Download(List<UIModDownloadItem> items) {
 				//Set UIWorkshopDownload
 				UIWorkshopDownload uiProgress = null;
+				
 				if (!Main.dedServ) {
 					uiProgress = new UIWorkshopDownload(Interface.modBrowser);
 					Main.MenuUI.SetState(uiProgress);
 				}
+
 				int counter = 0;
 
 				Task.Run(() => TaskDownload(counter, uiProgress, items));
@@ -96,8 +100,10 @@ namespace Terraria.Social.Steam
 			/// </summary>
 			private bool InnerDownload(UIWorkshopDownload uiProgress) {
 				downloadResult = EResult.k_EResultOK;
+
 				if (NeedsUpdate()) {
 					downloadResult = EResult.k_EResultNone;
+
 					if (SteamUser)
 						SteamDownload(uiProgress);
 					else
@@ -116,14 +122,14 @@ namespace Terraria.Social.Steam
 					throw new ArgumentException("Downloading Workshop Item failed due to unknown reasons");
 				}
 
-				ulong dlBytes, totalBytes;
 				do {
-					SteamUGC.GetItemDownloadInfo(itemID, out dlBytes, out totalBytes);
+					SteamUGC.GetItemDownloadInfo(itemID, out ulong dlBytes, out ulong totalBytes);
 					if (uiProgress != null)
 						uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 
 					SteamAPI.RunCallbacks();
-				} while (downloadResult == EResult.k_EResultNone);
+				}
+				while (downloadResult == EResult.k_EResultNone);
 
 				SteamUGC.SubscribeItem(itemID);
 			}
@@ -139,9 +145,9 @@ namespace Terraria.Social.Steam
 					throw new ArgumentException("GoG: Downloading Workshop Item failed due to unknown reasons");
 				}
 
-				ulong dlBytes, totalBytes;
 				while (!IsInstalled()) {
-					SteamGameServerUGC.GetItemDownloadInfo(itemID, out dlBytes, out totalBytes);
+					SteamGameServerUGC.GetItemDownloadInfo(itemID, out ulong dlBytes, out ulong totalBytes);
+
 					if (uiProgress != null)
 						uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 				}
@@ -151,7 +157,8 @@ namespace Terraria.Social.Steam
 			}
 
 			internal void Uninstall() {
-				var installPath = GetInstallInfo().installPath;
+				string installPath = GetInstallInfo().installPath;
+
 				if (!Directory.Exists(installPath))
 					return;
 
@@ -174,28 +181,30 @@ namespace Terraria.Social.Steam
 				else
 					acfPath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(GetInstallInfo().installPath).ToString()).ToString()).ToString(), "appworkshop_" + thisApp.ToString() + ".acf");
 
-				var acf = File.ReadAllLines(acfPath);
-				using (StreamWriter w = new StreamWriter(acfPath)) {
-					int blockLines = 5;
-					int skip = 0;
-					for (int i = 0; i < acf.Length; i++) {
-						if (acf[i].Contains(itemID.ToString())) {
-							skip = blockLines;
-							continue;
-						}
-						else if (skip > 0) {
-							skip--;
-							continue;
-						}
+				string[] acf = File.ReadAllLines(acfPath);
+				using StreamWriter w = new StreamWriter(acfPath);
 
-						w.WriteLine(acf[i]);
+				int blockLines = 5;
+				int skip = 0;
+
+				for (int i = 0; i < acf.Length; i++) {
+					if (acf[i].Contains(itemID.ToString())) {
+						skip = blockLines;
+						continue;
 					}
+					else if (skip > 0) {
+						skip--;
+						continue;
+					}
+
+					w.WriteLine(acf[i]);
 				}
 			}
 
 			public ItemInstallInfo GetInstallInfo() {
 				string installPath;
 				uint lastUpdatedTime;
+
 				if (SteamUser)
 					SteamUGC.GetItemInstallInfo(itemID, out var installSize, out installPath, 1000, out lastUpdatedTime);
 				else
@@ -223,11 +232,10 @@ namespace Terraria.Social.Steam
 
 			public static bool BeginPlaytimeTracking(PublishedFileId_t[] modsById) {
 				uint count = (uint)modsById.Length;
+
 				if (count == 0)
 					return true;
-
-				// You can't begin tracking more than 100 items within one call.
-				//TODO: Improve.
+				//TODO: Improve. You can't begin tracking more than 100 items within one call.
 				else if (count >= 100)
 					return false;
 
@@ -236,16 +244,16 @@ namespace Terraria.Social.Steam
 					SteamUGC.StartPlaytimeTracking(modsById, (uint)modsById.Length);
 				else
 					SteamGameServerUGC.StartPlaytimeTracking(modsById, (uint)modsById.Length);
+
 				return true;
 			}
 
 			public static bool StopPlaytimeTracking(PublishedFileId_t[] modsById) {
 				uint count = (uint)modsById.Length;
+
 				if (count == 0)
 					return true;
-
-				// You can't begin tracking more than 100 items within one call.
-				//TODO: Improve.
+				//TODO: Improve. You can't begin tracking more than 100 items within one call.
 				else if (count >= 100)
 					return false;
 
@@ -254,6 +262,7 @@ namespace Terraria.Social.Steam
 					SteamUGC.StopPlaytimeTracking(modsById, (uint)modsById.Length);
 				else
 					SteamGameServerUGC.StopPlaytimeTracking(modsById, (uint)modsById.Length);
+
 				return true;
 			}
 		}
@@ -289,6 +298,7 @@ namespace Terraria.Social.Steam
 					for (uint i = 0; i < _queryReturnCount; i++) {
 						// Item Result call data
 						SteamUGCDetails_t pDetails;
+
 						if (ModManager.SteamUser)
 							SteamUGC.GetQueryUGCResult(_primaryUGCHandle, i, out pDetails);
 						else
@@ -305,6 +315,7 @@ namespace Terraria.Social.Steam
 
 						// Item Tagged data
 						uint keyCount;
+
 						if (ModManager.SteamUser)
 							keyCount = SteamUGC.GetQueryUGCNumKeyValueTags(_primaryUGCHandle, i);
 						else
@@ -315,9 +326,11 @@ namespace Terraria.Social.Steam
 							continue;
 						}
 
-						NameValueCollection metadata = new NameValueCollection();
+						var metadata = new NameValueCollection();
+
 						for (uint j = 0; j < keyCount; j++) {
 							string key, val;
+
 							if (ModManager.SteamUser)
 								SteamUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 100, out val, 100);
 							else
@@ -327,15 +340,19 @@ namespace Terraria.Social.Steam
 						}
 
 						ModSide modside = ModSide.Both;
+
 						if (metadata["modside"] == "Client")
 							modside = ModSide.Client;
+
 						if (metadata["modside"] == "Server")
 							modside = ModSide.Server;
+
 						if (metadata["modside"] == "NoSync")
 							modside = ModSide.NoSync;
 
 						// Preview Image url
 						string modIconURL;
+
 						if (ModManager.SteamUser)
 							SteamUGC.GetQueryUGCPreviewURL(_primaryUGCHandle, i, out modIconURL, 1000);
 						else
@@ -343,6 +360,7 @@ namespace Terraria.Social.Steam
 
 						// Item Statistics
 						ulong hot, downloads;
+
 						if (ModManager.SteamUser) {
 							SteamUGC.GetQueryUGCStatistic(_primaryUGCHandle, i, EItemStatistic.k_EItemStatistic_NumUniqueSubscriptions, out downloads);
 							SteamUGC.GetQueryUGCStatistic(_primaryUGCHandle, i, EItemStatistic.k_EItemStatistic_NumPlaytimeSessionsDuringTimePeriod, out hot); //Temp: based on how often being played lately?
@@ -356,9 +374,11 @@ namespace Terraria.Social.Steam
 						bool update = false;
 						bool updateIsDowngrade = false;
 						var installed = installedMods.FirstOrDefault(m => m.Name == metadata["name"]);
+
 						if (installed != null) {
 							//exists = true;
 							var cVersion = new System.Version(metadata["version"].Substring(1));
+
 							if (cVersion > installed.modFile.Version)
 								update = true;
 							else if (cVersion < installed.modFile.Version)
@@ -367,10 +387,8 @@ namespace Terraria.Social.Steam
 
 						items.Add(new UIModDownloadItem(displayname, metadata["name"], metadata["version"], metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate.ToString(), update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"], i));
 					}
-
 				} while (_queryReturnCount == 50); // 50 is based on kNumUGCResultsPerPage constant in ISteamUGC. Can't find constant itself? - Solxan
 
-				
 				return items;
 			}
 
@@ -378,8 +396,10 @@ namespace Terraria.Social.Steam
 				_primaryQueryResult = EResult.k_EResultNone;
 
 				SteamAPICall_t call;
+
 				if (ModManager.SteamUser) {
 					UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, ModManager.thisApp, ModManager.thisApp, page);
+
 					SteamUGC.SetReturnKeyValueTags(qHandle, true);
 					SteamUGC.SetReturnLongDescription(qHandle, true);
 
@@ -387,6 +407,7 @@ namespace Terraria.Social.Steam
 				}
 				else {
 					UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, ModManager.thisApp, ModManager.thisApp, page);
+
 					SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
 					SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
 
@@ -397,13 +418,14 @@ namespace Terraria.Social.Steam
 
 				do {
 					// Do Pretty Stuff if want here
-
 					Thread.Sleep(5);
+
 					if (ModManager.SteamUser) 
 						SteamAPI.RunCallbacks();
 					else
 						GameServer.RunCallbacks();
-				} while (_primaryQueryResult == EResult.k_EResultNone);
+				}
+				while (_primaryQueryResult == EResult.k_EResultNone);
 			}
 
 			private void OnWorkshopQueryCompleted(SteamUGCQueryCompleted_t pCallback, bool bIOFailure) {
@@ -424,6 +446,7 @@ namespace Terraria.Social.Steam
 
 			internal string GetDescription(uint queryIndex) {
 				SteamUGCDetails_t pDetails;
+
 				if (ModManager.SteamUser)
 					SteamUGC.GetQueryUGCResult(_primaryUGCHandle, queryIndex, out pDetails);
 				else
@@ -434,6 +457,7 @@ namespace Terraria.Social.Steam
 
 			internal ulong GetSteamOwner(uint queryIndex) {
 				SteamUGC.GetQueryUGCResult(_primaryUGCHandle, queryIndex, out var pDetails);
+
 				return pDetails.m_ulSteamIDOwner;
 			}
 
@@ -442,6 +466,7 @@ namespace Terraria.Social.Steam
 					return true;
 
 				Interface.modBrowser.InnerPopulateModBrowser();
+
 				if (Interface.modBrowser.Items.Count != 0)
 					return true;
 
