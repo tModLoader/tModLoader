@@ -33,11 +33,14 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		protected override void GoToPublishConfirmation() {
-			if ( /*SocialAPI.Workshop != null && */ _dataObject != null)
+			if ( /*SocialAPI.Workshop != null && */ _dataObject != null) {
 				SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
+			}
 
-			Main.menuMode = 888;
-			Main.MenuUI.SetState(_previousUIState);
+			if (Main.MenuUI.CurrentState?.GetType() != typeof(UIReportsPage)) {
+				Main.menuMode = 888;
+				Main.MenuUI.SetState(_previousUIState);
+			}
 		}
 
 		protected override List<WorkshopTagOption> GetTagsToShow() => SocialAPI.Workshop.SupportedTags.ModTags;

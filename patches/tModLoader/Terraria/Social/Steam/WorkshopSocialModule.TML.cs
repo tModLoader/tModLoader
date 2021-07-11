@@ -27,15 +27,15 @@ namespace Terraria.Social.Steam
 			return false;
 		}
 
-		public override void PublishMod(TmodFile modFile, NameValueCollection buildData, WorkshopItemPublishSettings settings) {
+		public override bool PublishMod(TmodFile modFile, NameValueCollection buildData, WorkshopItemPublishSettings settings) {
 			if (!WorkshopHelper.ModManager.SteamUser) {
-				base.IssueReporter.ReportInstantUploadProblem("tModLoader.SteamPublishingLimt");
-				return;
+				base.IssueReporter.ReportInstantUploadProblem("tModLoader.SteamPublishingLimit");
+				return false;
 			}
 
 			if (!WorkshopHelper.QueryHelper.CheckWorkshopConnection()) {
 				base.IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
-				return;
+				return false;
 			}
 
 			var existing = Interface.modBrowser.FindModDownloadItem(buildData["name"]);
@@ -46,7 +46,7 @@ namespace Terraria.Social.Steam
 
 				if (existingID != currID.m_SteamID) {
 					IssueReporter.ReportInstantUploadProblem("tModLoader.ModAlreadyUploaded");
-					return;
+					return false;
 				}
 			}
 
@@ -76,7 +76,11 @@ namespace Terraria.Social.Steam
 				_publisherInstances.Add(modPublisherInstance);
 
 				modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, contentFolderPath, settings.PreviewImagePath, settings.Publicity, usedTagsInternalNames, buildData);
+
+				return true;
 			}
+
+			return false;
 		}
 	}
 }
