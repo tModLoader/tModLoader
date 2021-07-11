@@ -207,7 +207,8 @@ namespace Terraria.ModLoader.UI
 				_ready = false;
 
 				_info = UIModBrowser.SteamWorkshop.GetDescription(_queryIndex);
-				if (_info.Equals("")) {
+
+				if (string.IsNullOrWhiteSpace(_info)) {
 					_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
 				}
 

@@ -6,8 +6,9 @@ namespace Terraria.ModLoader.UI.DownloadManager
 {
 	internal class UIWorkshopDownload : UIProgress, IHaveBackButtonCommand
 	{
-		public UIState PreviousUIState { get; set; }
 		private Stopwatch downloadTimer;
+
+		public UIState PreviousUIState { get; set; }
 
 		public UIWorkshopDownload(UIState stateToGoBackTo) {
 			downloadTimer = new Stopwatch();

@@ -1,24 +1,21 @@
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using Terraria.Audio;
+using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.Social;
 using Terraria.Social.Base;
 using Terraria.UI;
 
-using Microsoft.Xna.Framework;
-using System.Diagnostics;
-using Terraria.Audio;
-using Terraria.GameContent.UI.Elements;
-using Terraria.Localization;
-
-
 namespace Terraria.GameContent.UI.States
 {
 	public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFile>
 	{
-		public const string tMLRules = "https://forums.terraria.org/index.php?threads/player-created-game-enhancements-rules-guidelines.286/";
+		public const string TmlRules = "https://forums.terraria.org/index.php?threads/player-created-game-enhancements-rules-guidelines.286/";
 
-		private NameValueCollection _buildData;
+		private readonly NameValueCollection _buildData;
 
 		public WorkshopPublishInfoStateForMods(UIState stateToGoBackTo, TmodFile modFile, NameValueCollection buildData)
 			: base(stateToGoBackTo, modFile) {
@@ -44,21 +41,26 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		protected override List<WorkshopTagOption> GetTagsToShow() => SocialAPI.Workshop.SupportedTags.ModTags;
+
 		protected override bool TryFindingTags(out FoundWorkshopEntryInfo info) => SocialAPI.Workshop.TryGetInfoForMod(_dataObject, out info);
 
 		internal UIElement CreatetMLDisclaimer(string tagGroup) {
 			float num = 60f;
 			float num2 = 0f + num;
-			GroupOptionButton<bool> groupOptionButton = new GroupOptionButton<bool>(option: true, null, null, Color.White, null, 1f, 0.5f, 16f);
-			groupOptionButton.HAlign = 0.5f;
-			groupOptionButton.VAlign = 0f;
-			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(0f, 1f);
-			groupOptionButton.Left = StyleDimension.FromPixels(0f);
-			groupOptionButton.Height = StyleDimension.FromPixelsAndPercent(num2 + 4f, 0f);
-			groupOptionButton.Top = StyleDimension.FromPixels(0f);
-			groupOptionButton.ShowHighlightWhenSelected = false;
+
+			GroupOptionButton<bool> groupOptionButton = new GroupOptionButton<bool>(option: true, null, null, Color.White, null, 1f, 0.5f, 16f) {
+				HAlign = 0.5f,
+				VAlign = 0f,
+				Width = StyleDimension.FromPixelsAndPercent(0f, 1f),
+				Left = StyleDimension.FromPixels(0f),
+				Height = StyleDimension.FromPixelsAndPercent(num2 + 4f, 0f),
+				Top = StyleDimension.FromPixels(0f),
+				ShowHighlightWhenSelected = false
+			};
+
 			groupOptionButton.SetCurrentOption(option: false);
 			groupOptionButton.Width.Set(0f, 1f);
+
 			UIElement uIElement = new UIElement {
 				HAlign = 0.5f,
 				VAlign = 1f,
@@ -67,6 +69,7 @@ namespace Terraria.GameContent.UI.States
 			};
 
 			groupOptionButton.Append(uIElement);
+
 			UIText uIText = new UIText(Language.GetText("tModLoader.WorkshopDisclaimer")) {
 				HAlign = 0f,
 				VAlign = 0f,
@@ -80,27 +83,32 @@ namespace Terraria.GameContent.UI.States
 			uIText.PaddingRight = 20f;
 			uIText.PaddingTop = 4f;
 			uIText.IsWrapped = true;
+
 			_disclaimerText = uIText;
-			groupOptionButton.OnClick += tMLDisclaimerText_OnClick;
-			groupOptionButton.OnMouseOver += tMLDisclaimerText_OnMouseOver;
-			groupOptionButton.OnMouseOut += tMLDisclaimerText_OnMouseOut;
+
+			groupOptionButton.OnClick += TmlDisclaimerText_OnClick;
+			groupOptionButton.OnMouseOver += TmlDisclaimerText_OnMouseOver;
+			groupOptionButton.OnMouseOut += TmlDisclaimerText_OnMouseOut;
+
 			uIElement.Append(uIText);
 			uIText.SetSnapPoint(tagGroup, 0);
+
 			_tMLDisclaimerButton = uIText;
+
 			return groupOptionButton;
 		}
 
-		private void tMLDisclaimerText_OnMouseOut(UIMouseEvent evt, UIElement listeningElement) {
+		private void TmlDisclaimerText_OnMouseOut(UIMouseEvent evt, UIElement listeningElement) {
 			_disclaimerText.TextColor = Color.Cyan;
 			ClearOptionDescription(evt, listeningElement);
 		}
 
-		private void tMLDisclaimerText_OnMouseOver(UIMouseEvent evt, UIElement listeningElement) {
+		private void TmlDisclaimerText_OnMouseOver(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(12);
 			_disclaimerText.TextColor = Color.LightCyan;
 			ShowOptionDescription(evt, listeningElement);
 		}
 
-		private void tMLDisclaimerText_OnClick(UIMouseEvent evt, UIElement listeningElement) =>	Utils.OpenToURL(tMLRules);
+		private void TmlDisclaimerText_OnClick(UIMouseEvent evt, UIElement listeningElement) =>	Utils.OpenToURL(TmlRules);
 	}
 }

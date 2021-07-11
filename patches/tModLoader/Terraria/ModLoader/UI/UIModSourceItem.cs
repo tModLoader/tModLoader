@@ -2,21 +2,17 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.Engine;
-using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -215,18 +211,19 @@ namespace Terraria.ModLoader.UI
 			var values = new NameValueCollection
 			{
 				{ "displayname", bp.displayName },
-				{ "displaynameclean", string.Join("", ChatManager.ParseMessage(bp.displayName, Color.White).Where(x=> x.GetType() == typeof(TextSnippet)).Select(x => x.Text)) },
+				{ "displaynameclean", string.Join("", ChatManager.ParseMessage(bp.displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text)) },
 				{ "name", modFile.Name },
-				{ "version", "v"+bp.version },
+				{ "version", $"v{bp.version}" },
 				{ "author", bp.author },
 				{ "homepage", bp.homepage },
 				{ "description", bp.description },
 				{ "iconpath", iconPath },
-				{ "modloaderversion", "tModLoader v"+modFile.TModLoaderVersion },
-				{ "modreferences", String.Join(", ", bp.modReferences.Select(x => x.mod)) },
+				{ "modloaderversion", $"tModLoader v{modFile.TModLoaderVersion}" },
+				{ "modreferences", string.Join(", ", bp.modReferences.Select(x => x.mod)) },
 				{ "modside", bp.side.ToFriendlyString() },
 			};
-			if (string.IsNullOrEmpty(values["author"]))
+
+			if (string.IsNullOrWhiteSpace(values["author"]))
 				throw new WebException($"You need to specify an author in build.txt");
 
 			Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, modFile, values));

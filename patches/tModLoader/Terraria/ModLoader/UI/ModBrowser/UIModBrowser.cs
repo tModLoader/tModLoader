@@ -1,8 +1,8 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
@@ -227,6 +227,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				SteamWorkshop.ReleaseWorkshopQuery();
 				SteamWorkshop = null;
 			}
+
 			ModList.Clear();
 			Items.Clear();
 			ModList.Deactivate();
@@ -252,6 +253,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 			foreach (string desiredMod in modNames) {
 				var mod = Items.FirstOrDefault(x => x.ModName == desiredMod);
+
 				if (mod == null) { // Not found on the browser
 					_missingMods.Add(desiredMod);
 				}
@@ -261,14 +263,15 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			}
 
 			// If no download detected for some reason (e.g. empty modpack filter), prevent switching UI
-			if (downloads.Count <= 0) return;
+			if (downloads.Count <= 0)
+				return;
 
 			WorkshopHelper.ModManager.Download(downloads);
 
 			if (_missingMods.Count > 0) {
 				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", _missingMods)), Interface.modBrowserID);
+				_missingMods.Clear();
 			}
-			_missingMods.Clear();
 		}
 
 		internal UIModDownloadItem FindModDownloadItem(string modName)

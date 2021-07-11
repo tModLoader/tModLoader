@@ -36,20 +36,27 @@ namespace Terraria.ModLoader.Core
 			DeleteTemporaryFiles();
 
 			WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
+
 			if (ModCompile.DeveloperMode) {
 				// Prioritize loading Mods from Mods folder for Dev/Beta simplicitiy.
 				modRepos.Add(ModLoader.ModPath);
 			}
+
 			modRepos.AddRange(WorkshopFileFinder.ModPaths);
 
-			foreach (var repo in modRepos) {
+			foreach (string repo in modRepos) {
 				foreach (string fileName in Directory.GetFiles(repo, "*.tmod", SearchOption.TopDirectoryOnly)) {
 					var lastModified = File.GetLastWriteTime(fileName);
+
 					if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
 						try {
 							var modFile = new TmodFile(fileName);
-							using (modFile.Open())
-								mod = new LocalMod(modFile) { lastModified = lastModified };
+
+							using (modFile.Open()) {
+								mod = new LocalMod(modFile) {
+									lastModified = lastModified
+								};
+							}
 						}
 						catch (Exception e) {
 							if (!readFailures.Contains(fileName)) {
@@ -58,8 +65,10 @@ namespace Terraria.ModLoader.Core
 							else {
 								readFailures.Add(fileName);
 							}
+
 							continue;
 						}
+
 						modsDirCache[fileName] = mod;
 					}
 
@@ -68,7 +77,7 @@ namespace Terraria.ModLoader.Core
 						mods.Add(mod);
 					}
 					else {
-						Logging.tML.Warn("Ignoring " + mod.Name + " found at: " + fileName + ". A mod with the same name already exists.");
+						Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. A mod with the same name already exists.");
 					}
 				}
 			}

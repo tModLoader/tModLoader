@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
-@@ -1,14 +_,16 @@
+@@ -1,15 +_,20 @@
  using Steamworks;
  using System;
  using System.Collections.Generic;
@@ -16,20 +16,26 @@
 -	public class WorkshopHelper
 +	public partial class WorkshopHelper
  	{
++		private const string TmlModNamePrefix = "[1.4 Alpha] ";
++		private const string TmlModDescriptionPrefix = "Built for 1.4 Alpha version of tModLoader. \n";
++
  		public class UGCBased
  		{
-@@ -20,6 +_,7 @@
+ 			public struct SteamWorkshopItem
+@@ -20,6 +_,8 @@
  				public string[] Tags;
  				public string Title;
  				public ERemoteStoragePublishedFileVisibility? Visibility;
++				// Added by TML.
 +				public NameValueCollection BuildData;
  			}
  
  			public class Downloader
-@@ -34,26 +_,49 @@
+@@ -34,26 +_,50 @@
  					private set;
  				}
  
++				// Added by TML.
 +				public List<string> ModPaths {
 +					get;
 +					private set;
@@ -86,13 +92,12 @@
  					foreach (string listOfSubscribedItemsPath in GetListOfSubscribedItemsPaths()) {
  						if (listOfSubscribedItemsPath == null)
  							continue;
-@@ -75,6 +_,9 @@
+@@ -75,6 +_,8 @@
  							if (!(a == "World")) {
  								if (a == "ResourcePack")
  									ResourcePackPaths.Add(listOfSubscribedItemsPath);
-+								else if (a == "Mod") {
++								else if (a == "Mod")
 +									ModPaths.Add(listOfSubscribedItemsPath);
-+								}
  							}
  							else {
  								WorldPaths.Add(listOfSubscribedItemsPath);
@@ -135,33 +140,37 @@
  					UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
  					if (_entryData.Title != null)
 -						SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
-+						SteamUGC.SetItemTitle(uGCUpdateHandle_t, "[1.4 Alpha] " + _entryData.Title);
++						SteamUGC.SetItemTitle(uGCUpdateHandle_t, TmlModNamePrefix + _entryData.Title);
  
  					if (_entryData.Description != null)
 -						SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
-+						SteamUGC.SetItemDescription(uGCUpdateHandle_t, "Built for 1.4 Alpha version of tModLoader. \n" + _entryData.Description);
++						SteamUGC.SetItemDescription(uGCUpdateHandle_t, TmlModDescriptionPrefix + _entryData.Description);
  
  					SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
  					SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
-@@ -253,8 +_,32 @@
+@@ -253,8 +_,36 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
 +					string patchNotes = "";
++
 +					if (_entryData.BuildData != null) {
 +						foreach (var key in MetadataKeys) {
 +							SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
 +							SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
 +						}
 +
-+						patchNotes = _entryData.BuildData["version"] + " learn more @" + _entryData.BuildData["homepage"];
++						patchNotes = $"{_entryData.BuildData["version"]} learn more @{_entryData.BuildData["homepage"]}";
 +
 +						string refs = _entryData.BuildData["workshopdeps"];
-+						if (!String.IsNullOrEmpty(refs)) {
++
++						if (!string.IsNullOrWhiteSpace(refs)) {
 +							string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
-+							foreach (var dependency in dependencies) {
++
++							foreach (string dependency in dependencies) {
 +								try {
 +									var child = new PublishedFileId_t(uint.Parse(dependency));
++
 +									SteamUGC.AddDependency(_publishedFileID, child);
 +								}
 +								catch (Exception) {
