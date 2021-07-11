@@ -419,8 +419,8 @@ namespace Terraria.ModLoader.UI
 				Interface.modsMenu.Append(_blockInput);
 
 				_deleteModDialog = new UIPanel() {
-					Width = { Percent = .20f },
-					Height = { Percent = .20f },
+					Width = { Percent = .30f },
+					Height = { Percent = .30f },
 					HAlign = .5f,
 					VAlign = .5f,
 					BackgroundColor = new Color(63, 82, 151),
