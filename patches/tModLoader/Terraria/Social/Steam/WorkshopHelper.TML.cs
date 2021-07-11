@@ -32,6 +32,16 @@ namespace Terraria.Social.Steam
 			protected override void PrepareContentForUpdate() { }
 		}
 
+		internal static void OnGameExitCleanup() {
+			if (UIModBrowser.SteamWorkshop != null)
+				UIModBrowser.SteamWorkshop.ReleaseWorkshopQuery();
+
+			if (ModManager.SteamUser)
+				return;
+
+			GameServer.Shutdown();
+		}
+
 		internal class ModManager
 		{
 			internal static bool SteamUser { get; set; } = true;

@@ -25,7 +25,7 @@
  using Terraria.Achievements;
  using Terraria.Audio;
  using Terraria.Chat;
-@@ -69,6 +_,13 @@
+@@ -69,9 +_,17 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
@@ -39,6 +39,10 @@
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
++using Terraria.Social.Steam;
+ using Terraria.UI;
+ using Terraria.UI.Chat;
+ using Terraria.UI.Gamepad;
 @@ -84,9 +_,9 @@
  namespace Terraria
  {
@@ -846,6 +850,14 @@
  		}
  
  		private void Main_Exiting(object sender, EventArgs e) {
+@@ -4793,6 +_,7 @@
+ 
+ 		private static void TryDisposingEverything() {
+ 			ChromaInitializer.DisableAllDeviceGroups();
++			WorkshopHelper.OnGameExitCleanup();
+ 			if (Assets != null) {
+ 				Assets.TransferCompletedAssets();
+ 				Assets.Dispose();
 @@ -4820,6 +_,7 @@
  
  			_cachedTitle = Lang.GetRandomGameTitle();
