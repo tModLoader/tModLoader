@@ -7,6 +7,7 @@ using System.Reflection;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
+using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.UI;
 
@@ -51,20 +52,22 @@ namespace Terraria.ModLoader.UI
 			button2.WithFadedMouseOver();
 			button2.OnClick += OpenURL;
 			_area.Append(button2);
-#if WINDOWS
-			_autoUpdateButton = new UITextPanel<string>("Auto Update", 0.7f, true);
-			_autoUpdateButton.CopyStyle(button);
-			_autoUpdateButton.HAlign = 1f;
-			_autoUpdateButton.WithFadedMouseOver();
-			_autoUpdateButton.OnClick += AutoUpdate;
-#endif
+
+			if (Platform.IsWindows && !InstallVerifier.IsSteam) {
+				_autoUpdateButton = new UITextPanel<string>("Auto Update", 0.7f, true);
+				_autoUpdateButton.CopyStyle(button);
+				_autoUpdateButton.HAlign = 1f;
+				_autoUpdateButton.WithFadedMouseOver();
+				_autoUpdateButton.OnClick += AutoUpdate;
+			}
+
 			Append(_area);
 		}
 
 		public override void OnActivate() {
 			base.OnActivate();
 
-			if (ModBrowser.UIModBrowser.PlatformSupportsTls12)
+			if (Platform.IsWindows && !InstallVerifier.IsSteam && ModBrowser.UIModBrowser.PlatformSupportsTls12)
 				_area.AddOrRemoveChild(_autoUpdateButton, !string.IsNullOrEmpty(_autoUpdateUrl));
 		}
 
@@ -94,8 +97,7 @@ namespace Terraria.ModLoader.UI
 			Process.Start(_url);
 		}
 
-#if WINDOWS
-		// Windows only. AutoUpdate will download the the latest zip, extract it, then launch a script that waits for this exe to finish
+		// Windows GOG only. AutoUpdate will download the the latest zip, extract it, then launch a script that waits for this exe to finish
 		// The script then replaces this exe and then launches tModLoader again.
 		private void AutoUpdate(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
@@ -105,33 +107,43 @@ namespace Terraria.ModLoader.UI
 			string zipFilePath = Path.Combine(installDirectory, zipFileName);
 
 			Logging.tML.Info($"AutoUpdate: {_autoUpdateUrl} -> {zipFilePath}");
+
 			var downloadFile = new DownloadFile(_autoUpdateUrl, zipFilePath, $"Auto update: {zipFileName}");
+
 			downloadFile.OnComplete += () => OnAutoUpdateDownloadComplete(installDirectory, zipFilePath);
+
 			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
 			Interface.downloadProgress.HandleDownloads(downloadFile);
 		}
 
-		private void OnAutoUpdateDownloadComplete(string installDirectory, string zipFilePath) {
+		private static void OnAutoUpdateDownloadComplete(string installDirectory, string zipFilePath) {
 			try {
 				string updateScriptName = Platform.IsWindows ? "update.bat" : "update.sh";
 				string updateScript = Path.Combine(installDirectory, updateScriptName);
+
 				Logging.tML.Info($"Writing Script: {updateScriptName}");
+
 				using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"Terraria.ModLoader.Core.{updateScriptName}"))
 				using (var fs = File.OpenWrite(updateScript))
 					stream.CopyTo(fs);
 
 				if (Platform.IsWindows) {
 					string extractDir = Path.Combine(installDirectory, "tModLoader_Update");
+
 					if (Directory.Exists(extractDir))
 						Directory.Delete(extractDir, true);
+
 					Directory.CreateDirectory(extractDir);
 
 					Logging.tML.Info($"Extracting: {zipFilePath} -> {extractDir}");
+
 					using (var zip = ZipFile.Read(zipFilePath)) 
 						zip.ExtractAll(extractDir);
+
 					File.Delete(zipFilePath);
 
 					string executableName = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+
 					Logging.tML.Info($"Renaming Terraria.exe -> {executableName}");
 					File.Move(Path.Combine(extractDir, "Terraria.exe"), Path.Combine(extractDir, executableName));
 
@@ -143,6 +155,7 @@ namespace Terraria.ModLoader.UI
 				}
 
 				Logging.tML.Info("AutoUpdate script started. Exiting");
+
 				// Exit on main thread to avoid crash
 				Interface.downloadProgress.gotoMenu = Interface.exitID;
 				Main.menuMode = Interface.exitID;
@@ -151,6 +164,5 @@ namespace Terraria.ModLoader.UI
 				Logging.tML.Error("Problem during autoupdate", e);
 			}
 		}
-#endif
 	}
 }
