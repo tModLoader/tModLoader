@@ -53,7 +53,7 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegatePostDrawFullscreenMap(ref string mouseText);
 
-		private delegate void DelegateModifyTimeRate(ref int timeRate, ref int tileUpdateRate);
+		private delegate void DelegateModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate);
 
 		private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight);
 
