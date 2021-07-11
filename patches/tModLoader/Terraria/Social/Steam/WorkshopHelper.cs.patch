@@ -31,7 +31,7 @@
  			}
  
  			public class Downloader
-@@ -34,26 +_,50 @@
+@@ -34,26 +_,52 @@
  					private set;
  				}
  
@@ -52,12 +52,14 @@
  				public List<string> GetListOfSubscribedItemsPaths() {
 +					List<string> list = new List<string>();
 +
-+					var array = new AppId_t[] { ModLoader.Engine.Steam.TerrariaAppId_t, ModLoader.Engine.Steam.TMLAppID_t };
-+					foreach (var app in array) {
-+						SteamApps.GetAppInstallDir(app, out string installLoc, 1000);
-+						var workshopLoc = Path.Combine(Directory.GetParent(Directory.GetParent(installLoc).ToString()).ToString(),"workshop","content", app.m_AppId.ToString());
-+						if (Directory.Exists(workshopLoc)) {
-+							list.AddRange(Directory.EnumerateDirectories(workshopLoc));
++					if (ModManager.SteamUser) {
++						var array = new AppId_t[] { ModLoader.Engine.Steam.TerrariaAppId_t, ModLoader.Engine.Steam.TMLAppID_t };
++						foreach (var app in array) {
++							SteamApps.GetAppInstallDir(app, out string installLoc, 1000);
++							var workshopLoc = Path.Combine(Directory.GetParent(Directory.GetParent(installLoc).ToString()).ToString(), "workshop", "content", app.m_AppId.ToString());
++							if (Directory.Exists(workshopLoc)) {
++								list.AddRange(Directory.EnumerateDirectories(workshopLoc));
++							}
 +						}
 +					}
 +

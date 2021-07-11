@@ -14,6 +14,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.UI.Chat;
 
@@ -67,7 +68,7 @@ namespace Terraria.ModLoader.UI
 			Append(buildReloadButton);
 
 			_builtMod = builtMod;
-			if (builtMod != null) {
+			if (builtMod != null && builtMod.Enabled) {
 				var publishButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSPublish"));
 				publishButton.CopyStyle(buildReloadButton);
 				publishButton.Width.Pixels = 100;
@@ -165,6 +166,11 @@ namespace Terraria.ModLoader.UI
 		private void PublishMod(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
 			try {
+				if (!WorkshopHelper.ModManager.SteamUser) {
+					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamPublishingLimit"), Interface.modSourcesID);
+					return;
+				}
+
 				if (ModLoader.GetMod(_builtMod.Name) == null) {
 					if (!_builtMod.Enabled)
 						_builtMod.Enabled = true;

@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.IO;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
@@ -48,6 +48,11 @@ namespace Terraria.Social.Steam
 					IssueReporter.ReportInstantUploadProblem("tModLoader.ModAlreadyUploaded");
 					return false;
 				}
+
+				if (new Version(buildData["version"].Substring(1)) <= new Version(existing.Version.Substring(1))) {
+					IssueReporter.ReportInstantUploadProblem("tModLoader.ModVersionInfoUnchanged");
+					return false;
+				} 
 			}
 
 			string name = buildData["displaynameclean"];

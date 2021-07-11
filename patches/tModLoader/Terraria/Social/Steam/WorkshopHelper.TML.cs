@@ -111,7 +111,7 @@ namespace Terraria.Social.Steam
 				}
 				else {
 					// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
-					Logging.tML.Info("Item was installed at start of session: " + itemID.ToString() + ". If attempting to re-install, close current instance and re-launch");
+					Logging.tML.Warn("Item was installed at start of session: " + itemID.ToString() + ". If attempting to re-install, close current instance and re-launch");
 				}
 
 				return downloadResult == EResult.k_EResultOK;
@@ -287,10 +287,11 @@ namespace Terraria.Social.Steam
 					QueryForPage(++queryPage);
 
 					if (_primaryQueryResult == EResult.k_EResultAccessDenied) {
-						throw new AccessViolationException("Error: Access to Steam Workshop was denied.");
+						Utils.ShowFancyErrorMessage("Error: Access to Steam Workshop was denied.", 0);
+						return items;
 					}
 					else if (_primaryQueryResult != EResult.k_EResultOK) {
-						Logging.tML.Error("Unable to access Steam Workshop");
+						Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop. " + _primaryQueryResult, 0);
 						return items;
 					}
 
@@ -305,7 +306,7 @@ namespace Terraria.Social.Steam
 							SteamGameServerUGC.GetQueryUGCResult(_primaryUGCHandle, i, out pDetails);
 						
 						if (pDetails.m_eResult != EResult.k_EResultOK) {
-							Logging.tML.Debug("Unable to fetch mod query#" + (queryPage - 1) * 50 + i + " information. " + pDetails.m_eResult);
+							Logging.tML.Warn("Unable to fetch mod query#" + (queryPage - 1) * 50 + i + " information. " + pDetails.m_eResult);
 							continue;
 						}	
 
@@ -322,7 +323,7 @@ namespace Terraria.Social.Steam
 							keyCount = SteamGameServerUGC.GetQueryUGCNumKeyValueTags(_primaryUGCHandle, i);
 
 						if (keyCount != MetadataKeys.Length) {
-							Logging.tML.Debug("Mod is missing required metadata: " + displayname);
+							Logging.tML.Warn("Mod is missing required metadata: " + displayname);
 							continue;
 						}
 

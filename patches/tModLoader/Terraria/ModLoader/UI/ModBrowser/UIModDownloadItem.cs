@@ -31,6 +31,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		public readonly bool UpdateIsDowngrade;
 		public readonly LocalMod Installed;
 		public readonly uint QueryIndex;
+		public readonly string Version;
 
 		private readonly string _author;
 		private readonly string _modIconUrl;
@@ -90,6 +91,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			HasUpdate = hasUpdate;
 			UpdateIsDowngrade = updateIsDowngrade;
 			Installed = installed;
+			Version = version;
 
 			BorderColor = new Color(89, 116, 213) * 0.7f;
 			_dividerTexture = UICommon.DividerTexture;

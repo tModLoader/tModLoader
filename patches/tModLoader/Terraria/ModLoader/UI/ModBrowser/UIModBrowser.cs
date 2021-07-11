@@ -283,14 +283,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		internal static void LogModBrowserException(Exception e) {
-			string errorMessage = $"{Language.GetTextValue("tModLoader.MBBrowserError")}\n\n{e.Message}\n{e.StackTrace}";
-			Logging.tML.Error(errorMessage);
-			Interface.errorMessage.Show(errorMessage, 0);
-		}
-
-		internal static void LogModPublishInfo(string message) {
-			Logging.tML.Info(message);
-			Interface.errorMessage.Show(Language.GetTextValue("tModLoader.MBServerResponse", message), Interface.modSourcesID);
+			Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.MBBrowserError")}\n\n{e.Message}\n{e.StackTrace}", 0);
 		}
 	}
 }

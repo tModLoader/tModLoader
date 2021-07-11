@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Terraria.ModLoader;
+using Terraria.ModLoader.UI;
 using Terraria.Utilities;
 
 namespace Terraria
@@ -117,11 +119,18 @@ namespace Terraria
 			return new BitArray(receive);
 		}
 
+		// Common Blocks
+
 		public static void OpenToURL(string url) {
 			Process.Start(new ProcessStartInfo(url) {
 				UseShellExecute = true,
 				Verb = "open"
 			});
+		}
+
+		public static void ShowFancyErrorMessage(string message, int returnToMenu) {
+			Logging.tML.Error(message);
+			Interface.errorMessage.Show(message, returnToMenu);
 		}
 	}
 }
