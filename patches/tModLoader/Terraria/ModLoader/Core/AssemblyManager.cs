@@ -39,22 +39,17 @@ namespace Terraria.ModLoader.Core
 
 			public void LoadAssemblies() {
 				try {
-					LoadCustomResolver();
 					using (modFile.Open()) {
-						if (Debugger.IsAttached && File.Exists(properties.eacPath)) {//load the unmodified dll and EaC pdb
-							assembly = LoadAssembly(modFile.GetModAssembly(), File.ReadAllBytes(properties.eacPath));
-							// todo: add path for dll resolution?
-							return;
-						}
-
 						foreach (var dll in properties.dllReferences) {
 							byte[] dllBytes = modFile.GetBytes("lib/" + dll + ".FNA.dll") ??
-							                  modFile.GetBytes("lib/" + dll + ".dll");
+											  modFile.GetBytes("lib/" + dll + ".dll");
 
 							LoadAssembly(dllBytes);
 						}
 
-						assembly = LoadAssembly(modFile.GetModAssembly(), modFile.GetModPdb());
+						assembly = Debugger.IsAttached && File.Exists(properties.eacPath) ?
+							LoadAssembly(modFile.GetModAssembly(), File.ReadAllBytes(properties.eacPath)): //load the unmodified dll and EaC pdb
+							LoadAssembly(modFile.GetModAssembly(), modFile.GetModPdb());
 					}
 				}
 				catch (Exception e) {
@@ -84,23 +79,6 @@ namespace Terraria.ModLoader.Core
 				return asm;
 			}
 
-			public void LoadCustomResolver() => AppDomain.CurrentDomain.AssemblyResolve += ModCustomResolver;
-			public void UnloadCustomResolver() => AppDomain.CurrentDomain.AssemblyResolve -= ModCustomResolver;
-
-			// In Net5, in order for the embedded dll references to resolve, I implemented a custom resolver. 
-			// This fixes Issue #1560, and allows mods to include and load 3rd party dlls. Utilizes the existing... 
-			// 'assemblies' dictionary to retrieve the byte array to load in to the domain. 
-			// Aside, returning doesn't work for reflected assembly, hence .Load() - Solxan
-			internal Assembly ModCustomResolver(object sender, ResolveEventArgs args) {
-				AppDomain domain = (AppDomain)sender;
-				string name = new AssemblyName(args.Name).Name;
-
-				if (assemblies.TryGetValue(name, out var entry))
-					return domain.Load(entry.bytes);
-
-				return null;
-			}
-
 			protected override Assembly Load(AssemblyName assemblyName) {
 				if (assemblies.TryGetValue(assemblyName.Name, out var entry))
 					return entry.assembly;
@@ -115,7 +93,6 @@ namespace Terraria.ModLoader.Core
 		{
 			foreach (var kv in loadedModContexts) {
 				kv.Value.Unload();
-				kv.Value.UnloadCustomResolver();
 			}
 
 			hostContextForAssembly.Clear();
