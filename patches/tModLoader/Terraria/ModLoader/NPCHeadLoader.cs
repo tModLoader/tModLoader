@@ -71,11 +71,11 @@ namespace Terraria.ModLoader
 			ResetHeadRenderer(ref Main.BossNPCHeadRenderer, TextureAssets.NpcHeadBoss);
 
 			foreach (string texture in heads.Keys) {
-				TextureAssets.NpcHead[heads[texture]] = ModContent.GetTexture(texture);
+				TextureAssets.NpcHead[heads[texture]] = ModContent.Request<Texture2D>(texture);
 			}
 
 			foreach (string texture in bossHeads.Keys) {
-				TextureAssets.NpcHeadBoss[bossHeads[texture]] = ModContent.GetTexture(texture);
+				TextureAssets.NpcHeadBoss[bossHeads[texture]] = ModContent.Request<Texture2D>(texture);
 			}
 
 			//Sets. The arrays modified here are resized in NPCLoader.

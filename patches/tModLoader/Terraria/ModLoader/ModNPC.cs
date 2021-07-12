@@ -156,7 +156,7 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			TextureAssets.Npc[NPC.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Npc[NPC.type] = ModContent.Request<Texture2D>(Texture);
 
 			if (Banner != 0 && BannerItem != 0) {
 				NPCLoader.bannerToItem[Banner] = BannerItem;
