@@ -1,9 +1,13 @@
 --- src/decompiled/Terraria/Utilities/PlatformUtilities.cs
 +++ src/Terraria/Terraria/Utilities/PlatformUtilities.cs
-@@ -1,11 +_,86 @@
+@@ -1,11 +_,90 @@
 +#if !XNA
 +using SDL2;
 +using System;
++#if !NETCORE
++using System.IO;
++using System.Runtime.InteropServices;
++#endif
 +#endif
  namespace Terraria.Utilities
  {

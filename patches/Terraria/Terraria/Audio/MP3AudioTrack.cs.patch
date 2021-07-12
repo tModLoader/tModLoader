@@ -1,0 +1,14 @@
+--- src/decompiled/Terraria/Audio/MP3AudioTrack.cs
++++ src/Terraria/Terraria/Audio/MP3AudioTrack.cs
+@@ -1,6 +_,11 @@
+ using Microsoft.Xna.Framework.Audio;
+ using System.IO;
++#if NETCORE
+ using XPT.Core.Audio.MP3Sharp;
++#else
++using MP3Sharp;
++using MP3Sharp.Decoding;
++#endif
+ 
+ namespace Terraria.Audio
+ {

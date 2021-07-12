@@ -1,4 +1,5 @@
-﻿using System;
+#if NETCORE
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -90,3 +91,4 @@ namespace UwUPnP
 			.Where(a => a.AddressFamily == AddressFamily.InterNetwork || a.AddressFamily == AddressFamily.InterNetworkV6);
 	}
 }
+#endif
