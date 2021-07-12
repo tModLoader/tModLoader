@@ -14,7 +14,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This is where all <see cref="ModSystem"/> hooks are gathered and called.
 	/// </summary>
-	public static partial class SystemHooks
+	public static partial class SystemLoader
 	{
 		internal static readonly List<ModSystem> Systems = new List<ModSystem>();
 
@@ -313,7 +313,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void TileCountsAvailable(int[] tileCounts) {
+		public static void TileCountsAvailable(ReadOnlySpan<int> tileCounts) {
 			foreach (var system in HookTileCountsAvailable.arr) {
 				system.TileCountsAvailable(tileCounts);
 			}

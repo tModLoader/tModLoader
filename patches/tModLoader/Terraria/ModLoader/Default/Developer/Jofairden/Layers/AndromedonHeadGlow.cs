@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 		public override bool IsHeadLayer => true;
 
 		public override DrawDataInfo GetData(PlayerDrawSet info) {
-			_glowTexture ??= ModContent.GetTexture("ModLoader/Developer.Jofairden.PowerRanger_Head_Head_Glow");
+			_glowTexture ??= ModContent.Request<Texture2D>("ModLoader/Developer.Jofairden.PowerRanger_Head_Head_Glow");
 
 			return GetHeadDrawDataInfo(info, _glowTexture.Value);
 		}

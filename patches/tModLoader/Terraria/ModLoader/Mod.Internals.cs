@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using ReLogic.Content.Readers;
 using ReLogic.Content.Sources;
-using ReLogic.Graphics;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
@@ -11,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Terraria.Localization;
-using Terraria.ModLoader.Assets;
 using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
@@ -27,7 +23,6 @@ namespace Terraria.ModLoader
 		//Entities
 		internal readonly IDictionary<string, Music> musics = new Dictionary<string, Music>();
 		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
-		internal readonly IDictionary<string, ModTranslation> translations = new Dictionary<string, ModTranslation>();
 		internal readonly IList<ILoadable> content = new List<ILoadable>();
 
 		private Music LoadMusic(string path, string extension) {
@@ -57,22 +52,6 @@ namespace Terraria.ModLoader
 			content.Clear();
 
 			equipTextures.Clear();
-			translations.Clear();
-
-			if (!Main.dedServ) {
-				// TODO: restore this
-				// Manually Dispose IDisposables to free up unmanaged memory immediately
-				/* Skip this for now, too many mods don't unload properly and run into exceptions.
-				foreach (var sound in sounds)
-				{
-					sound.Value.Dispose();
-				}
-				foreach (var texture in textures)
-				{
-					texture.Value.Dispose();
-				}
-				*/
-			}
 
 			musics.Clear();
 
@@ -87,8 +66,9 @@ namespace Terraria.ModLoader
 			while (AsyncLoadQueue.Count > 0)
 				AsyncLoadQueue.Dequeue().Wait();
 
-			AutoloadLocalization();
-			ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName, Assets);
+			LocalizationLoader.Autoload(this);
+
+			ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName);
 
 			IList<Type> modSounds = new List<Type>();
 
@@ -122,53 +102,11 @@ namespace Terraria.ModLoader
 
 		internal void PrepareAssets()
 		{
-			//Open the file.
-
-			if (File != null)
-				fileHandle = File.Open();
-
-			//Create the asset repository
-
-			var sources = new List<IContentSource>();
-
-			if (File!=null) {
-				sources.Add(new TModContentSource(File));
-			}
-
-			var assetReaderCollection = new AssetReaderCollection();
-
-			if (!Main.dedServ) {
-				//TODO: Now, how do we unhardcode this?
-				
-				//Ambiguous
-				assetReaderCollection.RegisterReader(new XnbReader(Main.instance.Services), ".xnb");
-				//Textures
-				assetReaderCollection.RegisterReader(new PngReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
-				assetReaderCollection.RegisterReader(new RawImgReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".rawimg");
-				//Audio
-				assetReaderCollection.RegisterReader(new WavReader(), ".wav");
-				assetReaderCollection.RegisterReader(new MP3Reader(), ".mp3");
-				assetReaderCollection.RegisterReader(new OggReader(), ".ogg");
-			}
-
-			var delayedLoadTypes = new List<Type> {
-				typeof(Texture2D),
-				typeof(DynamicSpriteFont),
-				typeof(SpriteFont),
-				typeof(Effect)
+			fileHandle = File?.Open();
+			RootContentSource = CreateDefaultContentSource();
+			Assets = new AssetRepository(Main.instance.Services.Get<AssetReaderCollection>(), new[] { RootContentSource }) {
+				AssetLoadFailHandler = Main.OnceFailedLoadingAnAsset
 			};
-
-			SetupAssetRepository(sources, assetReaderCollection, delayedLoadTypes);
-
-			var asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
-
-			foreach (var type in delayedLoadTypes) {
-				asyncAssetLoader.RequireTypeCreationOnTransfer(type);
-			}
-
-			var assetLoader = new AssetLoader(assetReaderCollection);
-
-			Assets = new ModAssetRepository(assetReaderCollection, assetLoader, asyncAssetLoader, sources.ToArray());
 		}
 
 		private void AutoloadSounds(IList<Type> modSounds) {
@@ -176,7 +114,7 @@ namespace Terraria.ModLoader
 
 			const string SoundFolder = "Sounds/";
 
-			foreach (string soundPath in Assets.EnumeratePaths<SoundEffect>().Where(t => t.Contains(SoundFolder))) {
+			foreach (string soundPath in RootContentSource.EnumerateAssets().Where(t => t.Contains(SoundFolder))) {
 				string substring = soundPath.Substring(soundPath.IndexOf(SoundFolder) + SoundFolder.Length);
 				SoundType soundType = SoundType.Custom;
 
@@ -197,6 +135,7 @@ namespace Terraria.ModLoader
 				AddSound(soundType, $"{Name}/{soundPath}", modSound);
 			}
 
+			// todo: musics never set/added to
 			foreach (string music in musics.Keys.Where(t => t.StartsWith("Sounds/"))) {
 				string substring = music.Substring("Sounds/".Length);
 
@@ -206,43 +145,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		/// <summary>
-		/// Loads .lang files
-		/// </summary>
-		private void AutoloadLocalization() {
-			if (File == null)
-				return;
-
-			var modTranslationDictionary = new Dictionary<string, ModTranslation>();
-			foreach (var translationFile in File.Where(entry => Path.GetExtension(entry.Name) == ".lang")) {
-				// .lang files need to be UTF8 encoded.
-				string translationFileContents = System.Text.Encoding.UTF8.GetString(File.GetBytes(translationFile));
-				GameCulture culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Name));
-
-				using (StringReader reader = new StringReader(translationFileContents)) {
-					string line;
-					while ((line = reader.ReadLine()) != null) {
-						int split = line.IndexOf('=');
-						if (split < 0)
-							continue; // lines witout a = are ignored
-						string key = line.Substring(0, split).Trim().Replace(" ", "_");
-						string value = line.Substring(split + 1); // removed .Trim() since sometimes it is desired.
-						if (value.Length == 0) {
-							continue;
-						}
-						value = value.Replace("\\n", "\n");
-						// TODO: Maybe prepend key with filename: en.US.ItemName.lang would automatically assume "ItemName." for all entries.
-						//string key = key;
-						if (!modTranslationDictionary.TryGetValue(key, out ModTranslation mt))
-							modTranslationDictionary[key] = mt = CreateTranslation(key);
-						mt.AddTranslation(culture, value);
-					}
-				}
-			}
-
-			foreach (var value in modTranslationDictionary.Values) {
-				AddTranslation(value);
-			}
+		internal void TransferAllAssets() {
+			Assets.TransferAllAssets();
 		}
 	}
 }

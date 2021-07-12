@@ -388,23 +388,25 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind an NPC, or to modify the way the NPC is drawn. Return false to stop the game from drawing the NPC (useful if you're manually drawing the NPC). Returns true by default.
+		/// Allows you to draw things behind an NPC, or to modify the way the NPC is drawn. Substract screenPos from the draw position before drawing. Return false to stop the game from drawing the NPC (useful if you're manually drawing the NPC). Returns true by default.
 		/// </summary>
-		/// <param name="npc"></param>
-		/// <param name="spriteBatch"></param>
-		/// <param name="drawColor"></param>
+		/// <param name="npc">The NPC that is being drawn</param>
+		/// <param name="spriteBatch">The spritebatch to draw on</param>
+		/// <param name="screenPos">The screen position used to translate world position into screen position</param>
+		/// <param name="drawColor">The color the NPC is drawn in</param>
 		/// <returns></returns>
-		public virtual bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
+		public virtual bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw things in front of this NPC. This method is called even if PreDraw returns false.
+		/// Allows you to draw things in front of this NPC. Substract screenPos from the draw position before drawing. This method is called even if PreDraw returns false.
 		/// </summary>
-		/// <param name="npc"></param>
-		/// <param name="spriteBatch"></param>
-		/// <param name="drawColor"></param>
-		public virtual void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
+		/// <param name="npc">The NPC that is being drawn</param>
+		/// <param name="spriteBatch">The spritebatch to draw on</param>
+		/// <param name="screenPos">The screen position used to translate world position into screen position</param>
+		/// <param name="drawColor">The color the NPC is drawn in</param>
+		public virtual void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		}
 
 		/// <summary>

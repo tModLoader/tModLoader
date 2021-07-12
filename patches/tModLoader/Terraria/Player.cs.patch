@@ -22,12 +22,12 @@
  
  			public static void PlayerConnect(int playerIndex) {
  				PressurePlateHelper.ResetPlayer(playerIndex);
-+				PlayerHooks.PlayerConnect(playerIndex);
++				PlayerLoader.PlayerConnect(playerIndex);
  			}
  
  			public static void PlayerDisconnect(int playerIndex) {
  				PressurePlateHelper.ResetPlayer(playerIndex);
-+				PlayerHooks.PlayerDisconnect(playerIndex);
++				PlayerLoader.PlayerDisconnect(playerIndex);
  			}
  
  			public static void EnterWorld(int playerIndex) {
@@ -36,7 +36,7 @@
  				if (Hooks.OnEnterWorld != null)
  					Hooks.OnEnterWorld(Main.player[playerIndex]);
 +
-+				PlayerHooks.OnEnterWorld(playerIndex);
++				PlayerLoader.OnEnterWorld(playerIndex);
  			}
  		}
  
@@ -119,7 +119,7 @@
  		public float moveSpeed = 1f;
  		public float pickSpeed = 1f;
  		public float wallSpeed = 1f;
-@@ -1105,8 +_,26 @@
+@@ -1105,12 +_,30 @@
  		public bool oldAdjWater;
  		public bool oldAdjHoney;
  		public bool oldAdjLava;
@@ -148,6 +148,11 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
+-		public byte hairDye;
++		public int hairDye; //TML: Changed from byte to int.
+ 		public Color hairDyeColor = Color.Transparent;
+ 		public float hairDyeVar;
+ 		public int skinDyePacked;
 @@ -2034,6 +_,7 @@
  		public void SetTalkNPC(int npcIndex, bool fromNet = false) {
  			talkNPC = npcIndex;
@@ -156,60 +161,79 @@
  				Main.BestiaryTracker.Chats.RegisterChatStartWith(Main.npc[npcIndex]);
  
  			if (talkNPC == -1)
-@@ -2051,11 +_,13 @@
+@@ -2050,12 +_,18 @@
+ 			itemTimeMax = frames;
  		}
  
- 		public void ApplyItemTime(Item sItem) {
+-		public void ApplyItemTime(Item sItem) {
 -			SetItemTime(sItem.useTime);
-+			int totalUseTime = PlayerHooks.TotalUseTime(sItem.useTime, this, sItem);
-+			SetItemTime(totalUseTime);
++		public void ApplyItemTime(Item sItem, bool? callUseItem = null) {
++			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
++				return;
++			
++			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime, this, sItem));
  		}
  
- 		public void ApplyItemTime(Item sItem, float multiplier) {
+-		public void ApplyItemTime(Item sItem, float multiplier) {
 -			SetItemTime((int)((float)sItem.useTime * multiplier));
-+			int totalUseTime = PlayerHooks.TotalUseTime((int)(sItem.useTime * multiplier), this, sItem);
-+			SetItemTime(totalUseTime);
++		public void ApplyItemTime(Item sItem, float multiplier, bool? callUseItem = null) {
++			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
++				return;
++			
++			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime * multiplier, this, sItem));
  		}
  
  		public void SetDummyItemTime(int frames) {
-@@ -2070,33 +_,33 @@
+@@ -2064,39 +_,41 @@
+ 			itemTimeMax = frames + 1;
  		}
  
- 		private void ApplyItemAnimation(Item sItem, float multiplier, int itemReuseDelay = 0) {
+-		private void SetItemAnimation(int frames) {
++		public void SetItemAnimation(int frames) {
+ 			itemAnimation = frames;
+ 			itemAnimationMax = frames;
+ 		}
+ 
+-		private void ApplyItemAnimation(Item sItem, float multiplier, int itemReuseDelay = 0) {
 -			SetItemAnimation((int)((float)sItem.useAnimation * multiplier));
 -			reuseDelay = itemReuseDelay;
-+			SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * multiplier, this, sItem));
-+			reuseDelay = (int)(itemReuseDelay / PlayerHooks.TotalUseTimeMultiplier(this, sItem));
++		public void ApplyItemAnimation(Item sItem, float multiplier, int? itemReuseDelay = null) {
++			ItemLoader.UseAnimation(sItem, this);
++
++			SetItemAnimation(CombinedHooks.TotalAnimationTime(sItem.useAnimation * multiplier, this, sItem));
++
++			reuseDelay = (int)((itemReuseDelay ?? sItem.reuseDelay) / CombinedHooks.TotalUseSpeedMultiplier(this, sItem));
  		}
  
- 		private void ApplyItemAnimation(Item sItem) {
+-		private void ApplyItemAnimation(Item sItem) {
++		public void ApplyItemAnimation(Item sItem) {
  			if (sItem.melee) {
 -				SetItemAnimation((int)((float)sItem.useAnimation * meleeSpeed));
-+				SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * meleeSpeed, this, sItem));
++				ApplyItemAnimation(sItem, meleeSpeed);
  				return;
  			}
  
  			if (sItem.summon && ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type]) {
 -				SetItemAnimation((int)((float)sItem.useAnimation * meleeSpeed * whipUseTimeMultiplier));
-+				SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * meleeSpeed * whipUseTimeMultiplier, this, sItem));
++				ApplyItemAnimation(sItem, meleeSpeed * whipUseTimeMultiplier);
  				return;
  			}
  
  			if (sItem.createTile >= 0) {
 -				SetItemAnimation((int)((float)sItem.useAnimation * tileSpeed));
-+				SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * tileSpeed, this, sItem));
++				ApplyItemAnimation(sItem, tileSpeed);
  				return;
  			}
  
  			if (sItem.createWall >= 0) {
 -				SetItemAnimation((int)((float)sItem.useAnimation * wallSpeed));
-+				SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * wallSpeed, this, sItem));
++				ApplyItemAnimation(sItem, wallSpeed);
  				return;
  			}
  
- 			SetItemAnimation(sItem.useAnimation);
+-			SetItemAnimation(sItem.useAnimation);
 -			reuseDelay = sItem.reuseDelay;
-+			reuseDelay = (int)(sItem.reuseDelay / PlayerHooks.TotalUseTimeMultiplier(this, sItem));
++			ApplyItemAnimation(sItem, 1f);
  		}
  
  		public bool InOpposingTeam(Player otherPlayer) {
@@ -387,14 +411,14 @@
 +		public int GetHealLife(Item item, bool quickHeal = false) {
 +			int healValue = item.healLife;
 +			ItemLoader.GetHealLife(item, this, quickHeal, ref healValue);
-+			PlayerHooks.GetHealLife(this, item, quickHeal, ref healValue);
++			PlayerLoader.GetHealLife(this, item, quickHeal, ref healValue);
 +			return healValue > 0 ? healValue : 0;
 +		}
 +
 +		public int GetHealMana(Item item, bool quickHeal = false) {
 +			int healValue = item.healMana;
 +			ItemLoader.GetHealMana(item, this, quickHeal, ref healValue);
-+			PlayerHooks.GetHealMana(this, item, quickHeal, ref healValue);
++			PlayerLoader.GetHealMana(this, item, quickHeal, ref healValue);
 +			return healValue > 0 ? healValue : 0;
 +		}
 +
@@ -699,7 +723,7 @@
 +
 +			End:
 +
-+			PlayerHooks.OnHitAnything(this, x, y, victim);
++			PlayerLoader.OnHitAnything(this, x, y, victim);
  		}
  
  		public void openPresent() {
@@ -1549,7 +1573,7 @@
 +					ApplyEquipFunctional(armor[l], hideVisibleAccessory[l]);
  			}
  
-+			PlayerHooks.UpdateEquips(this);
++			PlayerLoader.UpdateEquips(this);
 +
 +			if (kbGlove)
 +				GetKnockback(DamageClass.Melee) *= 2f;
@@ -1593,7 +1617,7 @@
  					ApplyEquipVanity(n, armor[n]);
  			}
  
-+			PlayerHooks.UpdateVanityAccessories(this);
++			PlayerLoader.UpdateVanityAccessories(this);
 +
  			if (wet && ShouldFloatInWater)
  				accFlipper = true;
@@ -1892,7 +1916,7 @@
  			hasGingerBeard = false;
  			hasRainbowCursor = false;
  			leinforsHair = false;
-+			PlayerHooks.UpdateDead(this);
++			PlayerLoader.UpdateDead(this);
  			gravDir = 1f;
 -			for (int i = 0; i < 22; i++) {
 +			for (int i = 0; i < MaxBuffs; i++) {
@@ -2043,7 +2067,7 @@
  
 +			ResetDamageClassData();
  			mount.CheckMountBuff(this);
-+			PlayerHooks.ResetEffects(this);
++			PlayerLoader.ResetEffects(this);
  		}
  
  		private void UpdateLadyBugLuckTime() {
@@ -2051,7 +2075,7 @@
  				lifeRegen -= 100;
  			}
  
-+			PlayerHooks.UpdateBadLifeRegen(this);
++			PlayerLoader.UpdateBadLifeRegen(this);
  			if (honey && lifeRegen < 0) {
  				lifeRegen += 4;
  				if (lifeRegen > 0)
@@ -2059,7 +2083,7 @@
  			if (whoAmI == Main.myPlayer && Main.SceneMetrics.HasHeartLantern)
  				lifeRegen += 2;
  
-+			PlayerHooks.UpdateLifeRegen(this);
++			PlayerLoader.UpdateLifeRegen(this);
  			if (bleed)
  				lifeRegenTime = 0;
  
@@ -2067,7 +2091,7 @@
  			if (rabid)
  				num2 = ((!shinyStone) ? (num2 / 2f) : (num2 * 0.75f));
  
-+			PlayerHooks.NaturalLifeRegen(this, ref num2);
++			PlayerLoader.NaturalLifeRegen(this, ref num2);
  			float num4 = (float)statLifeMax2 / 400f * 0.85f + 0.15f;
  			num2 *= num4;
  			lifeRegen += (int)Math.Round(num2);
@@ -2310,7 +2334,7 @@
  
  			UpdateHairDyeDust();
  			UpdateMiscCounter();
-+			PlayerHooks.PreUpdate(this);
++			PlayerLoader.PreUpdate(this);
  			infernoCounter++;
  			if (infernoCounter >= 180)
  				infernoCounter = 0;
@@ -2318,7 +2342,7 @@
  						}
  					}
  
-+					PlayerHooks.SetControls(this);
++					PlayerLoader.SetControls(this);
  					if (controlInv) {
  						if (releaseInventory)
  							ToggleInv();
@@ -2380,7 +2404,7 @@
  					AddBuff(194, 2, quiet: false);
  			}
  
-+			PlayerHooks.PreUpdateBuffs(this);
++			PlayerLoader.PreUpdateBuffs(this);
 -			for (int num26 = 0; num26 < 327; num26++) {
 +			for (int num26 = 0; num26 < BuffLoader.BuffCount; num26++) {
  				buffImmune[num26] = false;
@@ -2388,7 +2412,7 @@
  
  			UpdateProjectileCaches(i);
  			UpdateBuffs(i);
-+			PlayerHooks.PostUpdateBuffs(this);
++			PlayerLoader.PostUpdateBuffs(this);
  			if (whoAmI == Main.myPlayer) {
  				if (!onFire && !poisoned)
  					trapDebuffSource = false;
@@ -2415,7 +2439,7 @@
  
  			UpdateArmorLights();
  			UpdateArmorSets(i);
-+			PlayerHooks.PostUpdateEquips(this); // TODO, move down?
++			PlayerLoader.PostUpdateEquips(this); // TODO, move down?
  			if (maxTurretsOld != maxTurrets) {
  				UpdateMaxTurrets();
  				maxTurretsOld = maxTurrets;
@@ -2452,7 +2476,7 @@
  			}
  
  			meleeSpeed = 1f / meleeSpeed;
-+			PlayerHooks.PostUpdateMiscEffects(this);
++			PlayerLoader.PostUpdateMiscEffects(this);
  			UpdateLifeRegen();
  			soulDrain = 0;
  			UpdateManaRegen();
@@ -2481,7 +2505,7 @@
  						mount.UpdateDrill(this, controlUp, controlDown);
  				}
  
-+				PlayerHooks.PostUpdateRunSpeeds(this);
++				PlayerLoader.PostUpdateRunSpeeds(this);
  				HorizontalMovement();
  				if (gravControl) {
  					if (controlUp && releaseUp) {
@@ -2560,7 +2584,7 @@
  			if (vortexDebuff)
  				base.velocity.Y = base.velocity.Y * 0.8f + (float)Math.Cos(base.Center.X % 120f / 120f * ((float)Math.PI * 2f)) * 5f * 0.2f;
  
-+			PlayerHooks.PreUpdateMovement(this);
++			PlayerLoader.PreUpdateMovement(this);
  			if (tongued) {
  				base.position += base.velocity;
  				flag28 = false;
@@ -2568,7 +2592,7 @@
  			grapCount = 0;
  			UpdateReleaseUseTile();
  			UpdateAdvancedShadows();
-+			PlayerHooks.PostUpdate(this);
++			PlayerLoader.PostUpdate(this);
  		}
  
  		private void UpdateControlHolds() {
@@ -2576,7 +2600,7 @@
  		}
  
  		public void RecalculateLuck() {
-+			if (!PlayerHooks.PreModifyLuck(this, ref luck))
++			if (!PlayerLoader.PreModifyLuck(this, ref luck))
 +				goto skipVanillaLuck;
 +
  			luck = GetLadyBugLuck() * 0.2f + torchLuck * 0.2f;
@@ -2588,7 +2612,7 @@
  				luck += 0.2f;
 +
 +			skipVanillaLuck:
-+			PlayerHooks.ModifyLuck(this, ref luck);
++			PlayerLoader.ModifyLuck(this, ref luck);
  		}
  
  		private static int GetMouseScrollDelta() => PlayerInput.ScrollWheelDelta / 120;
@@ -2623,7 +2647,7 @@
  						break;
  				}
  
-+				if (!NPCLoader.CanHitPlayer(Main.npc[i], this, ref specialHitSetter) || !PlayerHooks.CanBeHitByNPC(this, Main.npc[i], ref specialHitSetter))
++				if (!NPCLoader.CanHitPlayer(Main.npc[i], this, ref specialHitSetter) || !PlayerLoader.CanBeHitByNPC(this, Main.npc[i], ref specialHitSetter))
 +					continue;
 +
  				if ((specialHitSetter == -1 && immune) || (dash == 2 && i == eocHit && eocDash > 0) || npcTypeNoAggro[Main.npc[i].type])
@@ -2635,7 +2659,7 @@
  
 +					bool crit = false;
 +					NPCLoader.ModifyHitPlayer(Main.npc[i], this, ref num4, ref crit);
-+					PlayerHooks.ModifyHitByNPC(this, Main.npc[i], ref num4, ref crit);
++					PlayerLoader.ModifyHitByNPC(this, Main.npc[i], ref num4, ref crit);
 +					
  					if (whoAmI == Main.myPlayer && num2 > 0f && !immune && !Main.npc[i].dontTakeDamage) {
  						int num6 = (int)((float)num4 * num2);
@@ -2653,7 +2677,7 @@
 +							StatusFromNPC(Main.npc[i]);
 +							
 +						NPCLoader.OnHitPlayer(Main.npc[i], this, realDamage, crit);
-+						PlayerHooks.OnHitByNPC(this, Main.npc[i], realDamage, crit);
++						PlayerLoader.OnHitByNPC(this, Main.npc[i], realDamage, crit);
 +					}
  
  					if (num) {
@@ -2960,7 +2984,7 @@
  			}
  
 +			//TODO: Do these hooks go inside or outside the conditional?
-+			PlayerHooks.FrameEffects(this);
++			PlayerLoader.FrameEffects(this);
 +			EquipLoader.EquipFrameEffects(this);
  			if (!isDisplayDollOrInanimate) {
  				if (((body == 68 && legs == 57 && head == 106) || (body == 74 && legs == 63 && head == 106)) && Main.rand.Next(10) == 0) {
@@ -3037,7 +3061,7 @@
  
  				immune = true;
 +				if (dead)
-+					PlayerHooks.OnRespawn(this);
++					PlayerLoader.OnRespawn(this);
 +
  				dead = false;
  				immuneTime = 0;
@@ -3058,7 +3082,7 @@
 +				bool customDamage = false;
 +				bool playSound = true;
 +				bool genGore = true;
-+				if (!PlayerHooks.PreHurt(this, pvp, quiet, ref Damage, ref hitDirection, ref Crit, ref customDamage, ref playSound, ref genGore, ref damageSource))
++				if (!PlayerLoader.PreHurt(this, pvp, quiet, ref Damage, ref hitDirection, ref Crit, ref customDamage, ref playSound, ref genGore, ref damageSource))
 +					return 0.0;
 +
  				if (whoAmI == Main.myPlayer && panic)
@@ -3096,7 +3120,7 @@
  					}
  
 +					//TODO: Is 'num2' correct? Ensure and add patch context.
-+					PlayerHooks.Hurt(this, pvp, quiet, num2, hitDirection, Crit);
++					PlayerLoader.Hurt(this, pvp, quiet, num2, hitDirection, Crit);
  					if (Main.netMode == 1 && whoAmI == Main.myPlayer && !quiet) {
  						if (!noKnockback && hitDirection != 0 && (!mount.Active || !mount.Cart))
  							NetMessage.SendData(13, -1, -1, null, whoAmI);
@@ -3129,7 +3153,7 @@
  						}
 +
 +						postGore:
-+						PlayerHooks.PostHurt(this, pvp, quiet, num2, hitDirection, Crit);
++						PlayerLoader.PostHurt(this, pvp, quiet, num2, hitDirection, Crit);
  					}
  					else {
  						statLife = 0;
@@ -3139,7 +3163,7 @@
  			StopVanityActions();
 +			bool playSound = true;
 +			bool genGore = true;
-+			if (!PlayerHooks.PreKill(this, dmg, hitDirection, pvp, ref playSound, ref genGore, ref damageSource))
++			if (!PlayerLoader.PreKill(this, dmg, hitDirection, pvp, ref playSound, ref genGore, ref damageSource))
 +				return;
 +
  			if (pvp)
@@ -3184,7 +3208,7 @@
  			if (Main.expertMode)
  				respawnTimer = (int)((double)respawnTimer * 1.5);
  
-+			PlayerHooks.Kill(this, dmg, hitDirection, pvp, damageSource);
++			PlayerLoader.Kill(this, dmg, hitDirection, pvp, damageSource);
  			immuneAlpha = 0;
  			if (!ChildSafety.Disabled)
  				immuneAlpha = 255;
@@ -3354,7 +3378,7 @@
  			if (Main.bloodMoon)
  				num *= 1.1f;
  
-+			PlayerHooks.GetFishingLevel(this, pole, bait, ref num);
++			PlayerLoader.GetFishingLevel(this, pole, bait, ref num);
  			return num;
  		}
  
@@ -3428,15 +3452,53 @@
  		}
  
  		public void ItemCheck(int i) {
-+			if (PlayerHooks.PreItemCheck(this))
++			if (PlayerLoader.PreItemCheck(this))
 +				ItemCheck_Inner(i);
 +
-+			PlayerHooks.PostItemCheck(this);
++			PlayerLoader.PostItemCheck(this);
 +		}
 +		private void ItemCheck_Inner(int i) {
  			if (CCed) {
  				channel = false;
  				itemAnimation = (itemAnimationMax = 0);
+@@ -29770,6 +_,37 @@
+ 			if (Main.myPlayer == i && PlayerInput.ShouldFastUseItem)
+ 				controlUseItem = true;
+ 
++			// https://github.com/tModLoader/tModLoader/pull/1437
++			//
++			// Here's a map of vanilla's execution order compared to TML's
++			//
++			// VANILLA:
++			// 1. Reuse delay is applied
++			// 2. Item animation is applied if button is pressed
++			// 3. Item animation is reduced
++			// 4. Hold / Use styles are invoked
++			// 5. Item time is reduced
++			// 6. Item logic applies item time
++			//
++			// TML:
++			// 1. Item animation is reduced
++			// 2. Item time is reduced
++			// 3. Reuse delay is applied
++			// 4. Item animation is applied if button is pressed
++			// 5. Item logic applies item time
++			// 6. Hold / Use styles are invoked
++			//
++			// Way more sane and way less confusing!
++
++			// Gotos are admittedly not the cleanest way of doing this but they're the most patch-friendly
++			// TLDR: this moves the blocks responsible for decrementing itemTime and itemAnimation to the start of the method
++			// This is done so that itemTime and itemAnimation cannot be decremented in the same tick as the one they're set in, which should fix a lot of use time issues
++			// -- ThomasThePencil
++
++			goto DecrementItemAnimation;
++
++			ItemCheckPart1:
++
+ 			ItemCheck_HandleMount();
+ 			int weaponDamage = GetWeaponDamage(item);
+ 			ItemCheck_HandleMPItemAnimation(item);
 @@ -29783,8 +_,17 @@
  			if (itemAnimation == 0 && reuseDelay > 0)
  				ApplyReuseDelay();
@@ -3466,10 +3528,25 @@
  					FreeUpPetsAndMinions(item);
  
  				if (flag3)
-@@ -29843,12 +_,23 @@
+@@ -29823,6 +_,10 @@
+ 			if (!controlUseItem)
+ 				channel = false;
+ 
++			goto ItemCheckPart2;
++
++			DecrementItemAnimation:
++
+ 			Item item2 = (itemAnimation > 0) ? lastVisualizedSelectedItem : item;
+ 			Rectangle drawHitbox = Item.GetDrawHitbox(item2.type, this);
+ 			compositeFrontArm.enabled = false;
+@@ -29843,12 +_,24 @@
  				itemAnimation--;
  			}
  
++			goto DecrementItemTime;
++
++			HandleItemHolding:
++
 +			ItemLoader.HoldItem(item, this);
 +
  			if (itemAnimation > 0)
@@ -3479,27 +3556,33 @@
  
  			releaseUseItem = !controlUseItem;
 +
-+			//The following block has been moved to the end of the method with goto chains.
-+			//This is done to fix the half of the item use/anim desync issue.
-+			//In this exact case, this fixes itemTime not being lowered in the first tick after it's set, like itemAnim is.
-+			//That happens because this itemTime reduction happened before the code that calls SetItemTime
-+			//- Mirsario
-+			goto SkipReduceItemTime;
-+			ReduceItemTime:
++			return; // This is the end of our spaghetti trip!
++
++			// See the comment at DecrementItemAnimation for explanation
++			DecrementItemTime:
 +
  			if (itemTime > 0) {
  				itemTime--;
  				if (ItemTimeIsZero && whoAmI == Main.myPlayer) {
-@@ -29862,6 +_,9 @@
+@@ -29862,11 +_,17 @@
  				}
  			}
  
-+			goto PostReduceItemtime;
-+			SkipReduceItemTime:
++			goto ItemCheckPart1;
++
++			ItemCheckPart2:
 +
  			if (!JustDroppedAnItem) {
  				ItemCheck_EmitHeldItemLight(item);
  				ItemCheck_EmitFoodParticles(item);
+ 				ItemCheck_EmitDrinkParticles(item);
+-				if (whoAmI == Main.myPlayer) {
++
++				// TML attempts to make ApplyItemTime calls run on remote players, so this check is removed.
++				if (whoAmI == Main.myPlayer || true) {
+ 					bool flag4 = true;
+ 					int type2 = item.type;
+ 					if ((type2 == 65 || type2 == 676 || type2 == 723 || type2 == 724 || type2 == 757 || type2 == 674 || type2 == 675 || type2 == 989 || type2 == 1226 || type2 == 1227) && itemAnimation != itemAnimationMax - 1)
 @@ -29891,7 +_,7 @@
  
  					ItemCheck_TurretAltFeatureUse(item, flag4);
@@ -3527,17 +3610,20 @@
  
  							List<ushort> ignoreList2 = ItemCheck_GetTileCutIgnoreList(item);
  							ItemCheck_CutTiles(item, itemRectangle, ignoreList2);
-@@ -29976,6 +_,9 @@
+@@ -29976,27 +_,32 @@
  				}
  
  				if (ItemTimeIsZero && itemAnimation > 0) {
-+					if (ItemLoader.UseItem(item, this))
-+						ApplyItemTime(item);
++					if (ItemLoader.UseItem(item, this) == true)
++						ApplyItemTime(item, false);
 +
  					if (item.hairDye >= 0) {
  						ApplyItemTime(item);
  						if (whoAmI == Main.myPlayer) {
-@@ -29985,18 +_,20 @@
+-							hairDye = (byte)item.hairDye;
++							hairDye = item.hairDye;
+ 							NetMessage.SendData(4, -1, -1, null, whoAmI);
+ 						}
  					}
  
  					if (item.healLife > 0) {
@@ -3569,7 +3655,7 @@
  						ApplyItemTime(item);
  					}
 -					else if (itemTime == item.useTime / 2) {
-+					else if (itemTime == PlayerHooks.TotalUseTime(item.useTime, this, item) / 2) {
++					else if (itemTime == itemTimeMax / 2) {
  						for (int k = 0; k < 70; k++) {
  							Dust.NewDust(base.position, width, height, 15, velocity.X * 0.5f, velocity.Y * 0.5f, 150, default(Color), 1.5f);
  						}
@@ -3610,7 +3696,7 @@
  					}
  					else {
 -						float num10 = item.useTime;
-+						float num10 = PlayerHooks.TotalUseTime(item.useTime, this, item);
++						float num10 = itemTimeMax;
  						num10 = (num10 - (float)itemTime) / num10;
  						float num11 = 44f;
  						float num12 = (float)Math.PI * 3f;
@@ -3619,7 +3705,7 @@
  
  				if (i == Main.myPlayer) {
 -					if (!dontConsumeWand && itemTime == (int)((float)item.useTime * tileSpeed) && item.tileWand > 0) {
-+					if (item.tileWand > 0 && !dontConsumeWand && itemTime == PlayerHooks.TotalUseTime(item.useTime * tileSpeed, this, item)) {
++					if (item.tileWand > 0 && !dontConsumeWand && itemTime == itemTimeMax) {
  						int tileWand = item.tileWand;
  						for (int num15 = 0; num15 < 58; num15++) {
  							if (tileWand == inventory[num15].type && inventory[num15].stack > 0) {
@@ -3638,21 +3724,20 @@
  							if (item.stack > 0)
  								item.stack--;
  
-@@ -30340,6 +_,9 @@
- 				}
- 			}
+@@ -30342,6 +_,8 @@
  
-+			goto ReduceItemTime;
-+			PostReduceItemtime:
-+
  			if (itemAnimation == 0)
  				JustDroppedAnItem = false;
++
++			goto HandleItemHolding;
  		}
+ 
+ 		private void ItemCheck_EmitFoodParticles(Item sItem) {
 @@ -30594,11 +_,18 @@
  				if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
  					continue;
  
-+				if (!ItemLoader.CanHitPvp(sItem, this, player) || !PlayerHooks.CanHitPvp(this, sItem, player))
++				if (!ItemLoader.CanHitPvp(sItem, this, player) || !PlayerLoader.CanHitPvp(this, sItem, player))
 +					continue; //TODO: PvP crit hook?
 +
  				bool flag = false;
@@ -3662,7 +3747,7 @@
  				int num = Main.DamageVar(damage, luck);
 +
 +				ItemLoader.ModifyHitPvp(sItem, this, player, ref num, ref flag);
-+				PlayerHooks.ModifyHitPvp(this, sItem, player, ref num, ref flag);
++				PlayerLoader.ModifyHitPvp(this, sItem, player, ref num, ref flag);
 +
  				StatusToPlayerPvP(sItem.type, i);
  				OnHit(player.Center.X, player.Center.Y, player);
@@ -3672,7 +3757,7 @@
  					pumpkinSword(i, (int)((double)damage * 1.5), knockBack);
  
 +				ItemLoader.OnHitPvp(sItem, this, Main.player[i], num2, flag);
-+				PlayerHooks.OnHitPvp(this, sItem, Main.player[i], num2, flag);
++				PlayerLoader.OnHitPvp(this, sItem, Main.player[i], num2, flag);
  				if (Main.netMode != 0)
  					NetMessage.SendPlayerHurt(i, playerDeathReason, num, direction, flag, pvp: true, -1);
  
@@ -3705,7 +3790,7 @@
 +
 +							ItemLoader.ModifyHitNPC(sItem, this, Main.npc[i], ref num4, ref knockBack, ref flag);
 +							NPCLoader.ModifyHitByItem(Main.npc[i], this, sItem, ref num4, ref knockBack, ref flag);
-+							PlayerHooks.ModifyHitNPC(this, sItem, Main.npc[i], ref num4, ref knockBack, ref flag);
++							PlayerLoader.ModifyHitNPC(this, sItem, Main.npc[i], ref num4, ref knockBack, ref flag);
 +
  							StatusToNPC(sItem.type, i);
  							if (Main.npc[i].life > 5)
@@ -3717,7 +3802,7 @@
 +
 +							ItemLoader.OnHitNPC(sItem, this, Main.npc[i], dmgDone, knockBack, flag);
 +							NPCLoader.OnHitByItem(Main.npc[i], this, sItem, dmgDone, knockBack, flag);
-+							PlayerHooks.OnHitNPC(this, sItem, Main.npc[i], dmgDone, knockBack, flag);
++							PlayerLoader.OnHitNPC(this, sItem, Main.npc[i], dmgDone, knockBack, flag);
 +
  							ApplyNPCOnHitEffects(sItem, itemRectangle, num, knockBack, i, num4, dmgDone);
  							int num5 = Item.NPCtoBanner(Main.npc[i].BannerID());
@@ -3727,7 +3812,7 @@
  			}
  
 +			ItemLoader.MeleeEffects(sItem, this, itemRectangle);
-+			PlayerHooks.MeleeEffects(this, sItem, itemRectangle);
++			PlayerLoader.MeleeEffects(this, sItem, itemRectangle);
 +
  			return itemRectangle;
  		}
@@ -3841,6 +3926,30 @@
  			int projToShoot = sItem.shoot;
  			float speed = sItem.shootSpeed;
  			int damage = sItem.damage;
+@@ -32542,7 +_,9 @@
+ 			bool canShoot = false;
+ 			int Damage = weaponDamage;
+ 			float KnockBack = sItem.knockBack;
++
++			// WhoAmI check added by TML.
+-			if (projToShoot == 13 || projToShoot == 32 || projToShoot == 315 || (projToShoot >= 230 && projToShoot <= 235) || projToShoot == 331) {
++			if (whoAmI == Main.myPlayer && (projToShoot == 13 || projToShoot == 32 || projToShoot == 315 || (projToShoot >= 230 && projToShoot <= 235) || projToShoot == 331)) {
+ 				grappling[0] = -1;
+ 				grapCount = 0;
+ 				for (int j = 0; j < 1000; j++) {
+@@ -32612,6 +_,12 @@
+ 			}
+ 
+ 			if (canShoot) {
++				// Added by TML.
++				if (whoAmI != Main.myPlayer) {
++					ApplyItemTime(sItem);
++					return;
++				}
++
+ 				KnockBack = GetWeaponKnockback(sItem, KnockBack);
+ 				IProjectileSource projectileSource_Item_WithPotentialAmmo = GetProjectileSource_Item_WithPotentialAmmo(sItem, usedAmmoItemId);
+ 				if (projToShoot == 228)
 @@ -32744,6 +_,13 @@
  					num3 = vector4.Y;
  				}
@@ -3876,6 +3985,17 @@
  
  				if (projToShoot == 76) {
  					projToShoot += Main.rand.Next(3);
+@@ -33963,6 +_,10 @@
+ 				}
+ 			}
+ 			else if (sItem.useStyle == 5 || sItem.useStyle == 13) {
++				// Added by TML.
++				if (whoAmI != Main.myPlayer)
++					return;
++
+ 				itemRotation = 0f;
+ 				NetMessage.SendData(41, -1, -1, null, whoAmI);
+ 			}
 @@ -33994,7 +_,7 @@
  			return startPos;
  		}
@@ -3885,6 +4005,30 @@
  			Vector2 pointPoisition = Main.MouseWorld;
  			pointPoisition += offsetFromCursor;
  			LimitPointToPlayerReachableArea(ref pointPoisition);
+@@ -34164,6 +_,11 @@
+ 		private void ItemCheck_MinionAltFeatureUse(Item sItem, bool cShoot) {
+ 			if (sItem.shoot > 0 && ProjectileID.Sets.MinionTargettingFeature[sItem.shoot] && altFunctionUse == 2 && cShoot && ItemTimeIsZero) {
+ 				ApplyItemTime(sItem);
++
++				// Added by TML.
++				if (whoAmI != Main.myPlayer)
++					return;
++
+ 				MinionNPCTargetAim(doNotDisableIfTheTargetIsTheSame: false);
+ 			}
+ 		}
+@@ -34173,6 +_,11 @@
+ 				return;
+ 
+ 			ApplyItemTime(sItem);
++
++			// Added by TML.
++			if(whoAmI != Main.myPlayer)
++				return;
++
+ 			for (int i = 0; i < 1000; i++) {
+ 				Projectile projectile = Main.projectile[i];
+ 				if (projectile.active && projectile.owner == Main.myPlayer && ProjectileID.Sets.TurretFeature[projectile.type])
 @@ -34485,6 +_,10 @@
  		}
  
@@ -3943,18 +4087,34 @@
  			if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
  				if (statMana >= num) {
  					if (!flag2)
-@@ -36048,7 +_,10 @@
+@@ -36046,9 +_,19 @@
+ 		}
+ 
  		private void ItemCheck_HandleMPItemAnimation(Item sItem) {
++			//return;
++
  			if (sItem.autoReuse && !noItems) {
  				releaseUseItem = true;
--				if (itemAnimation == 1 && sItem.stack > 0) {
-+				//The following code line has been changed to fix a half of the vanilla item use/anim desync bug.
-+				//In this exact case, itemAnim, which resets at 1, would desync from itemTime at the end of every tick, which resets at 0.
-+				//- Mirsario
-+				if (itemAnimation == 0 && sItem.stack > 0) { //if (itemAnimation == 1 && sItem.stack > 0) {
++				
++				// The following lines of code have been removed because of the change in how remote players' items now work in multiplayer. 
++				// Remote players used to simulate using the items by just playing pretty much guessed animations.
++				// But now they instead run the logic the same way they would run locally, besides for authority-based exceptions.
++				// -- Mirsario
++
++				/*
+ 				if (itemAnimation == 1 && sItem.stack > 0) {
++					itemAnimation = 0;
  					if (sItem.shoot > 0 && whoAmI != Main.myPlayer && controlUseItem && sItem.useStyle == 5 && sItem.reuseDelay == 0) {
  						ApplyItemAnimation(sItem);
  						if (sItem.UseSound != null)
+@@ -36058,6 +_,7 @@
+ 						itemAnimation = 0;
+ 					}
+ 				}
++				*/
+ 			}
+ 
+ 			TryAllowingItemReuse(sItem);
 @@ -36078,6 +_,7 @@
  			if (!mount.Active)
  				return;
@@ -4105,22 +4265,42 @@
  			bool flag2 = dontConsume;
  			if (sItem.type == 3475 && Main.rand.Next(3) != 0)
  				flag2 = true;
-@@ -36627,7 +_,7 @@
+@@ -36627,10 +_,15 @@
  			if (sItem.type == 1553 && Main.rand.Next(3) != 0)
  				flag2 = true;
  
++			// Clockwork Assault Rifle.
++			// The offset of '-2' doesn't quite matter. The goal is to only use ammo on the first shot.
 -			if (sItem.type == 434 && itemAnimation < sItem.useAnimation - 2)
-+			if (sItem.type == 434 && itemAnimation < PlayerHooks.TotalMeleeTime(sItem.useAnimation, this, sItem) - 2)
++			//if (sItem.type == 434 && itemAnimation < sItem.useAnimation - 2)
++			if (sItem.type == 434 && itemAnimation < itemAnimationMax)
  				flag2 = true;
  
- 			if (sItem.type == 4953 && itemAnimation > sItem.useAnimation - 8)
-@@ -36651,7 +_,10 @@
++			// Same as above.
+-			if (sItem.type == 4953 && itemAnimation > sItem.useAnimation - 8)
++			//if (sItem.type == 4953 && itemAnimation > sItem.useAnimation - 8)
++			if (sItem.type == 4953 && itemAnimation < itemAnimationMax)
+ 				flag2 = true;
+ 
+ 			if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
+@@ -36645,13 +_,20 @@
+ 			if (ammoCost75 && Main.rand.Next(4) == 0)
+ 				flag2 = true;
+ 
++			// Flamethrower.
++			// Unlike with Clockwork Assault Rifle, here we want to keep the feature-bug of Unreal modifier flamethrowers consuming 2 gel instead of 1 per click (less when holding.)
++			// So we just adjust the offset to be in-line with itemAnim changes.
++			//if (projToShoot == 85 && itemAnimation < itemAnimationMax - 6)
+-			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 6)
++			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 5)
+ 				flag2 = true;
+ 
  			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
  				flag2 = true;
  
-+			flag2 |= !PlayerHooks.ConsumeAmmo(this, sItem, item) | !ItemLoader.ConsumeAmmo(sItem, item, this);
++			flag2 |= !PlayerLoader.ConsumeAmmo(this, sItem, item) | !ItemLoader.ConsumeAmmo(sItem, item, this);
  			if (!flag2 && item.consumable) {
-+				PlayerHooks.OnConsumeAmmo(this, sItem, item);
++				PlayerLoader.OnConsumeAmmo(this, sItem, item);
 +				ItemLoader.OnConsumeAmmo(sItem, item, this);
  				item.stack--;
  				if (item.stack <= 0) {
@@ -4196,7 +4376,7 @@
  		}
  
  		public void DropItems() {
-+			List<Item> startInventory = PlayerHooks.GetStartingItems(this, DropItems_GetDefaults().Where(item => !item.IsAir), true);
++			List<Item> startInventory = PlayerLoader.GetStartingItems(this, DropItems_GetDefaults().Where(item => !item.IsAir), true);
 +			IDictionary<int, int> startCounts = new Dictionary<int, int>();
 +
 +			foreach (Item item in startInventory) {
@@ -4301,7 +4481,7 @@
 +			return inventory;
 +		}
 +		private void DropItems_End(IList<Item> startInventory) { //Split by tML.
-+			PlayerHooks.SetStartInventory(this, startInventory);
++			PlayerLoader.SetStartInventory(this, startInventory);
  			Main.mouseItem.TurnToAir();
  		}
  
@@ -4325,7 +4505,7 @@
  
  			DpadRadial.CopyTo(player.DpadRadial);
  			CircularRadial.CopyTo(player.CircularRadial);
-+			PlayerHooks.clientClone(this, player);
++			PlayerLoader.clientClone(this, player);
  			return player;
  		}
  
@@ -4350,7 +4530,7 @@
  			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write)) {
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream)) {
-+						PlayerHooks.PreSavePlayer(player);
++						PlayerLoader.PreSavePlayer(player);
  						binaryWriter.Write(238);
  						playerFile.Metadata.Write(binaryWriter);
  						binaryWriter.Write(player.name);
@@ -4358,7 +4538,7 @@
  						binaryWriter.Write(playerFile.GetPlayTime().Ticks);
  						binaryWriter.Write(player.hair);
 -						binaryWriter.Write(player.hairDye);
-+						PlayerIO.WriteVanillaHairDye(player.hairDye, binaryWriter);
++						PlayerIO.WriteByteVanillaHairDye(player.hairDye, binaryWriter);
  						BitsByte bb = (byte)0;
  						for (int i = 0; i < 8; i++) {
  							bb[i] = player.hideVisibleAccessory[i];
@@ -4367,59 +4547,68 @@
  						binaryWriter.Write(player.shoeColor.B);
  						for (int k = 0; k < player.armor.Length; k++) {
 -							binaryWriter.Write(player.armor[k].netID);
+-							binaryWriter.Write(player.armor[k].prefix);
 +							ItemIO.WriteVanillaID(player.armor[k], binaryWriter);
- 							binaryWriter.Write(player.armor[k].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.armor[k], binaryWriter);
  						}
  
  						for (int l = 0; l < player.dye.Length; l++) {
 -							binaryWriter.Write(player.dye[l].netID);
+-							binaryWriter.Write(player.dye[l].prefix);
 +							ItemIO.WriteVanillaID(player.dye[l], binaryWriter);
- 							binaryWriter.Write(player.dye[l].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.dye[l], binaryWriter);
  						}
  
  						for (int m = 0; m < 58; m++) {
 -							binaryWriter.Write(player.inventory[m].netID);
 +							ItemIO.WriteVanillaID(player.inventory[m], binaryWriter);
  							binaryWriter.Write(player.inventory[m].stack);
- 							binaryWriter.Write(player.inventory[m].prefix);
+-							binaryWriter.Write(player.inventory[m].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.inventory[m], binaryWriter);
  							binaryWriter.Write(player.inventory[m].favorited);
  						}
  
  						for (int n = 0; n < player.miscEquips.Length; n++) {
 -							binaryWriter.Write(player.miscEquips[n].netID);
-+							ItemIO.WriteVanillaID(player.miscEquips[n], binaryWriter);
- 							binaryWriter.Write(player.miscEquips[n].prefix);
+-							binaryWriter.Write(player.miscEquips[n].prefix);
 -							binaryWriter.Write(player.miscDyes[n].netID);
+-							binaryWriter.Write(player.miscDyes[n].prefix);
++							ItemIO.WriteVanillaID(player.miscEquips[n], binaryWriter);
++							ItemIO.WriteByteVanillaPrefix(player.miscEquips[n], binaryWriter);
 +							ItemIO.WriteVanillaID(player.miscDyes[n], binaryWriter);
- 							binaryWriter.Write(player.miscDyes[n].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.miscDyes[n], binaryWriter);
  						}
  
  						for (int num = 0; num < 40; num++) {
 -							binaryWriter.Write(player.bank.item[num].netID);
 +							ItemIO.WriteVanillaID(player.bank.item[num], binaryWriter);
  							binaryWriter.Write(player.bank.item[num].stack);
- 							binaryWriter.Write(player.bank.item[num].prefix);
+-							binaryWriter.Write(player.bank.item[num].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.bank.item[num], binaryWriter);
  						}
  
  						for (int num2 = 0; num2 < 40; num2++) {
 -							binaryWriter.Write(player.bank2.item[num2].netID);
 +							ItemIO.WriteVanillaID(player.bank2.item[num2], binaryWriter);
  							binaryWriter.Write(player.bank2.item[num2].stack);
- 							binaryWriter.Write(player.bank2.item[num2].prefix);
+-							binaryWriter.Write(player.bank2.item[num2].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.bank2.item[num2], binaryWriter);
  						}
  
  						for (int num3 = 0; num3 < 40; num3++) {
 -							binaryWriter.Write(player.bank3.item[num3].netID);
 +							ItemIO.WriteVanillaID(player.bank3.item[num3], binaryWriter);
  							binaryWriter.Write(player.bank3.item[num3].stack);
- 							binaryWriter.Write(player.bank3.item[num3].prefix);
+-							binaryWriter.Write(player.bank3.item[num3].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.bank3.item[num3], binaryWriter);
  						}
  
  						for (int num4 = 0; num4 < 40; num4++) {
 -							binaryWriter.Write(player.bank4.item[num4].netID);
 +							ItemIO.WriteVanillaID(player.bank4.item[num4], binaryWriter);
  							binaryWriter.Write(player.bank4.item[num4].stack);
- 							binaryWriter.Write(player.bank4.item[num4].prefix);
+-							binaryWriter.Write(player.bank4.item[num4].prefix);
++							ItemIO.WriteByteVanillaPrefix(player.bank4.item[num4], binaryWriter);
  						}
  
  						binaryWriter.Write(player.voidVaultInfo);
@@ -4451,7 +4640,7 @@
  						if (isCloudSave && SocialAPI.Cloud != null)
  							SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
 +
-+						PlayerHooks.PostSavePlayer(player);
++						PlayerLoader.PostSavePlayer(player);
  					}
  				}
  			}
@@ -4536,7 +4725,7 @@
 +			buffImmune = new bool[BuffLoader.BuffCount]; // TODO: Move all these patches to field initializers.
 +			ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount];
 +			npcTypeNoAggro = new bool[NPCLoader.NPCCount];
-+			PlayerHooks.SetupPlayer(this);
++			PlayerLoader.SetupPlayer(this);
 +			LoaderManager.Get<BiomeLoader>().SetupPlayer(this);
  			width = 20;
  			height = 42;
@@ -4646,7 +4835,7 @@
 +			rewardItems.Add(item8);
 +
 +			postAnglerQuestCountCheck:
-+			PlayerHooks.AnglerQuestReward(this, num2, rewardItems);
++			PlayerLoader.AnglerQuestReward(this, num2, rewardItems);
 +			foreach (Item rewardItem in rewardItems) {
 -			item8.position = base.Center;
 +				rewardItem.position = Center;
@@ -4668,7 +4857,7 @@
  					list.Add(3024);
  			}
  
-+			PlayerHooks.GetDyeTraderReward(this, list);
++			PlayerLoader.GetDyeTraderReward(this, list);
  			num = list[Main.rand.Next(list.Count)];
  			Item item = new Item();
  			item.SetDefaults(num);

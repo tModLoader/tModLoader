@@ -19,7 +19,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This is where all ModPlayer hooks are gathered and called.
 	/// </summary>
-	public static class PlayerHooks
+	public static class PlayerLoader
 	{
 		private static readonly IList<ModPlayer> players = new List<ModPlayer>();
 
@@ -376,39 +376,45 @@ namespace Terraria.ModLoader
 
 		public static float UseTimeMultiplier(Player player, Item item) {
 			float multiplier = 1f;
-			if (item.IsAir) return multiplier;
+
+			if (item.IsAir)
+				return multiplier;
+
 			foreach (int index in HookUseTimeMultiplier.arr) {
 				multiplier *= player.modPlayers[index].UseTimeMultiplier(item);
 			}
+
 			return multiplier;
 		}
 
-		public static float TotalUseTimeMultiplier(Player player, Item item) {
-			return UseTimeMultiplier(player, item) * ItemLoader.UseTimeMultiplier(item, player);
-		}
+		private static HookList HookUseAnimationMultiplier = AddHook<Func<Item, float>>(p => p.UseAnimationMultiplier);
 
-		public static int TotalUseTime(float useTime, Player player, Item item) {
-			return Math.Max(2, (int)(useTime / TotalUseTimeMultiplier(player, item)));
-		}
-
-		private static HookList HookMeleeSpeedMultiplier = AddHook<Func<Item, float>>(p => p.MeleeSpeedMultiplier);
-
-		public static float MeleeSpeedMultiplier(Player player, Item item) {
+		public static float UseAnimationMultiplier(Player player, Item item) {
 			float multiplier = 1f;
-			if (item.IsAir) return multiplier;
-			foreach (int index in HookMeleeSpeedMultiplier.arr) {
-				multiplier *= player.modPlayers[index].MeleeSpeedMultiplier(item);
+
+			if (item.IsAir)
+				return multiplier;
+
+			foreach (int index in HookUseAnimationMultiplier.arr) {
+				multiplier *= player.modPlayers[index].UseAnimationMultiplier(item);
 			}
+
 			return multiplier;
 		}
 
-		public static float TotalMeleeSpeedMultiplier(Player player, Item item) {
-			return TotalUseTimeMultiplier(player, item) * MeleeSpeedMultiplier(player, item)
-				* ItemLoader.MeleeSpeedMultiplier(item, player);
-		}
+		private static HookList HookUseSpeedMultiplier = AddHook<Func<Item, float>>(p => p.UseSpeedMultiplier);
 
-		public static int TotalMeleeTime(float useAnimation, Player player, Item item) {
-			return Math.Max(2, (int)(useAnimation / TotalMeleeSpeedMultiplier(player, item)));
+		public static float UseSpeedMultiplier(Player player, Item item) {
+			float multiplier = 1f;
+
+			if (item.IsAir)
+				return multiplier;
+
+			foreach (int index in HookUseSpeedMultiplier.arr) {
+				multiplier *= player.modPlayers[index].UseSpeedMultiplier(item);
+			}
+
+			return multiplier;
 		}
 
 		private delegate void DelegateGetHealLife(Item item, bool quickHeal, ref int healValue);
