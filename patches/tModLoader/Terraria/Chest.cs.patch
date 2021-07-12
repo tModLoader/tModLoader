@@ -8,6 +8,24 @@
  
  namespace Terraria
  {
+@@ -24,7 +_,7 @@
+ 		public static int[] dresserItemSpawn = new int[40];
+ 		public const int maxItems = 40;
+ 		public const int MaxNameLength = 20;
+-		public Item[] item;
++		public Terraria.ModLoader.Container.TerrariaInventory item;
+ 		public int x;
+ 		public int y;
+ 		public bool bankChest;
+@@ -34,7 +_,7 @@
+ 		private static HashSet<int> _chestInUse = new HashSet<int>();
+ 
+ 		public Chest(bool bank = false) {
+-			item = new Item[40];
++			item = new ModLoader.Container.TerrariaInventory(40);
+ 			bankChest = bank;
+ 			name = string.Empty;
+ 		}
 @@ -192,11 +_,14 @@
  			return list;
  		}
