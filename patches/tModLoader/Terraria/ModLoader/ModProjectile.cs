@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,8 +13,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of ModProjectile (preferably overriding this class) to pass as parameters to Mod.AddProjectile.
 	/// </summary>
-	public abstract class ModProjectile : ModTexturedType
-	{
+	public abstract class ModProjectile : ModTexturedType {
 		/// <summary> The projectile object that this ModProjectile controls. </summary>
 		public Projectile Projectile { get; internal set; }
 

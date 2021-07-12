@@ -1,0 +1,22 @@
+--- src/Terraria/Terraria/Audio/CustomSoundStyle.cs
++++ src/tModLoader/Terraria/Audio/CustomSoundStyle.cs
+@@ -10,15 +_,15 @@
+ 
+ 		public override bool IsTrackable => true;
+ 
+-		public CustomSoundStyle(SoundEffect soundEffect, SoundType type = SoundType.Sound, float volume = 1f, float pitchVariance = 0f)
++		public CustomSoundStyle(SoundEffect soundEffect, SoundType type = SoundType.Sound, float volume = 1f, float pitch = 0f, float pitchVariance = 0f)
+-			: base(volume, pitchVariance, type) {
++			: base(volume, pitchVariance, pitch, type) {
+ 			_soundEffects = new SoundEffect[1] {
+ 				soundEffect
+ 			};
+ 		}
+ 
+-		public CustomSoundStyle(SoundEffect[] soundEffects, SoundType type = SoundType.Sound, float volume = 1f, float pitchVariance = 0f)
++		public CustomSoundStyle(SoundEffect[] soundEffects, SoundType type = SoundType.Sound, float volume = 1f, float pitch = 0f, float pitchVariance = 0f)
+-			: base(volume, pitchVariance, type) {
++			: base(volume, pitchVariance, pitch, type) {
+ 			_soundEffects = soundEffects;
+ 		}
+ 

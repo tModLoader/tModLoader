@@ -30,6 +30,17 @@
  		public bool midas;
  		public bool ichor;
  		public bool onFire;
+@@ -215,8 +_,8 @@
+ 		public int defDefense;
+ 		public bool coldDamage;
+ 		public bool trapImmune;
+-		public LegacySoundStyle HitSound;
++		public SoundStyle HitSound;
+-		public LegacySoundStyle DeathSound;
++		public SoundStyle DeathSound;
+ 		public int life;
+ 		public int lifeMax;
+ 		public Rectangle targetRect;
 @@ -646,7 +_,7 @@
  		public static void UpdateFoundActiveNPCs() {
  			for (int i = 0; i < 200; i++) {

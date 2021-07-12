@@ -271,43 +271,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Adds the given sound file to the game as the given type of sound and with the given custom sound playing. If no ModSound instance is provided, the custom sound will play in a similar manner as the default vanilla ones.
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="soundPath">The sound path.</param>
-		/// <param name="modSound">The mod sound.</param>
-		public void AddSound(SoundType type, string soundPath, ModSound modSound = null) {
-			if (!loading)
-				throw new Exception("AddSound can only be called from Mod.Load or Mod.Autoload");
-
-			int id = SoundLoader.ReserveSoundID(type);
-
-			soundPath = soundPath[..^Path.GetExtension(soundPath).Length];
-			SoundLoader.sounds[type][soundPath] = id;
-
-			if (modSound != null) {
-				SoundLoader.modSounds[type][id] = modSound;
-				modSound.Sound = ModContent.Request<SoundEffect>(soundPath);
-			}
-		}
-
-		/// <summary>
-		/// Shorthand for calling SoundLoader.GetSoundSlot(type, this.Name + '/' + name).
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int GetSoundSlot(SoundType type, string name) => SoundLoader.GetSoundSlot(type, Name + '/' + name);
-
-		/// <summary>
-		/// Shorthand for calling SoundLoader.GetLegacySoundSlot(type, this.Name + '/' + name).
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public LegacySoundStyle GetLegacySoundSlot(SoundType type, string name) => SoundLoader.GetLegacySoundSlot(type, Name + '/' + name);
-
-		/// <summary>
 		/// Allows you to tie a music ID, and item ID, and a tile ID together to form a music box. When music with the given ID is playing, equipped music boxes have a chance to change their ID to the given item type. When an item with the given item type is equipped, it will play the music that has musicSlot as its ID. When a tile with the given type and Y-frame is nearby, if its X-frame is >= 36, it will play the music that has musicSlot as its ID.
 		/// </summary>
 		/// <param name="musicSlot">The music slot.</param>
@@ -336,6 +299,8 @@ namespace Terraria.ModLoader
 		/// Y-frame must be divisible by 36
 		/// </exception>
 		public void AddMusicBox(int musicSlot, int itemType, int tileType, int tileFrameY = 0) {
+			throw new NotImplementedException();
+
 			if (!loading)
 				throw new Exception("AddMusicBox can only be called from Mod.Load or Mod.Autoload");
 
@@ -345,9 +310,9 @@ namespace Terraria.ModLoader
 			if (musicSlot < Main.maxMusic) {
 				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla music ID " + musicSlot);
 			}
-			if (musicSlot >= SoundLoader.SoundCount(SoundType.Music)) {
+			/*if (musicSlot >= SoundLoader.SoundCount(SoundType.Music)) {
 				throw new ArgumentOutOfRangeException("Music ID " + musicSlot + " does not exist");
-			}
+			}*/
 			if (itemType < ItemID.Count) {
 				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla item ID " + itemType);
 			}

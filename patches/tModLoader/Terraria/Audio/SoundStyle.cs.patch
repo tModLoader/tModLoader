@@ -1,0 +1,58 @@
+--- src/Terraria/Terraria/Audio/SoundStyle.cs
++++ src/tModLoader/Terraria/Audio/SoundStyle.cs
+@@ -1,18 +_,25 @@
++using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Audio;
+ using Terraria.Utilities;
+ 
+ namespace Terraria.Audio
+ {
+-	public abstract class SoundStyle
++	public abstract partial class SoundStyle
+ 	{
+ 		private static UnifiedRandom _random = new UnifiedRandom();
+ 		private float _volume;
+ 		private float _pitchVariance;
+ 		private SoundType _type;
+ 
+-		public float Volume => _volume;
++		public float Volume {
++			get => _volume;
++			set => _volume = value;
++		}
+ 
+-		public float PitchVariance => _pitchVariance;
++		public float PitchVariance {
++			get => _pitchVariance;
++			set => _pitchVariance = value;
++		}
+ 
+ 		public SoundType Type => _type;
+ 
+@@ -20,19 +_,23 @@
+ 			get;
+ 		}
+ 
+-		public SoundStyle(float volume, float pitchVariance, SoundType type = SoundType.Sound) {
++		public SoundStyle(float volume, float pitch, float pitchVariance, SoundType type = SoundType.Sound) {
++			Pitch = pitch;
++
+ 			_volume = volume;
+ 			_pitchVariance = pitchVariance;
+ 			_type = type;
+ 		}
+ 
++		//TML: Made internal.
+-		public SoundStyle(SoundType type = SoundType.Sound) {
++		internal SoundStyle(SoundType type = SoundType.Sound) {
+ 			_volume = 1f;
+ 			_pitchVariance = 0f;
+ 			_type = type;
+ 		}
+ 
+-		public float GetRandomPitch() => _random.NextFloat() * PitchVariance - PitchVariance * 0.5f;
++		//TML: Added Pitch property.
++		public float GetRandomPitch() => MathHelper.Clamp(Pitch + (_random.NextFloat() * PitchVariance - PitchVariance * 0.5f), -1f, 1f);
+ 		public abstract SoundEffect GetRandomSound();
+ 	}
+ }

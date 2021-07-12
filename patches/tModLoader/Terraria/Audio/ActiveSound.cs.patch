@@ -1,0 +1,20 @@
+--- src/Terraria/Terraria/Audio/ActiveSound.cs
++++ src/tModLoader/Terraria/Audio/ActiveSound.cs
+@@ -22,7 +_,7 @@
+ 			private set;
+ 		}
+ 
+-		public bool IsPlaying => Sound.State == SoundState.Playing;
++		public bool IsPlaying => !Sound.IsDisposed && Sound.State == SoundState.Playing;
+ 
+ 		public ActiveSound(SoundStyle style, Vector2 position) {
+ #if FNA
+@@ -71,7 +_,7 @@
+ 		}
+ 
+ 		public void Update() {
+-			if (Sound != null) {
++			if (Sound != null && !Sound.IsDisposed) {
+ 				Vector2 value = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
+ 				float num = 1f;
+ 				if (!IsGlobal) {
