@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Tiles
 		private static Asset<Texture2D> mask;
 
 		public override void Load() {
-			mask = ModContent.GetTexture($"{Texture}_Mask");
+			mask = ModContent.Request<Texture2D>($"{Texture}_Mask");
 		}
 
 		public override void SetDefaults() {
