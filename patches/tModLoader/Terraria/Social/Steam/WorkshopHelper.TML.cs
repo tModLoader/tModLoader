@@ -380,7 +380,19 @@ namespace Terraria.Social.Steam
 							SteamGameServerUGC.GetQueryUGCStatistic(_primaryUGCHandle, i, EItemStatistic.k_EItemStatistic_NumUniqueSubscriptions, out downloads);
 							SteamGameServerUGC.GetQueryUGCStatistic(_primaryUGCHandle, i, EItemStatistic.k_EItemStatistic_NumPlaytimeSessionsDuringTimePeriod, out hot); //Temp: based on how often being played lately?
 						}
-						
+
+						// Calculate the Mod Browser Version
+						System.Version cVersion = new System.Version(metadata["version"].Substring(1));
+
+						// Prioritize version information found in the display name, for automation purposes.
+						int findVersion = displayname.LastIndexOf("v") + 1;
+						if (findVersion > 0) {
+							string possibleVersion = displayname.Substring(findVersion);
+							if (possibleVersion.Contains(".")) {
+								cVersion = new System.Version(possibleVersion);
+							}
+						}
+
 						// Check against installed mods
 						bool update = false;
 						bool updateIsDowngrade = false;
@@ -388,15 +400,13 @@ namespace Terraria.Social.Steam
 
 						if (installed != null) {
 							//exists = true;
-							var cVersion = new System.Version(metadata["version"].Substring(1));
-
 							if (cVersion > installed.modFile.Version)
 								update = true;
 							else if (cVersion < installed.modFile.Version)
 								update = updateIsDowngrade = true;
 						}
 
-						items.Add(new UIModDownloadItem(displayname, metadata["name"], metadata["version"], metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate.ToString(), update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"], i));
+						items.Add(new UIModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate.ToString(), update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"], i));
 					}
 				} while (_queryReturnCount == 50); // 50 is based on kNumUGCResultsPerPage constant in ISteamUGC. Can't find constant itself? - Solxan
 
