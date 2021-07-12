@@ -877,7 +877,7 @@
  			}
  
  			for (int n = 0; n < 1001; n++) {
-@@ -8303,7 +_,8 @@
+@@ -8303,11 +_,17 @@
  		public static void LoadTestLog(string logname) {
  		}
  
@@ -887,6 +887,15 @@
  			FancyErrorPrinter.ShowFailedToLoadAssetError(e, assetPath);
  		}
  
+ 		protected override void LoadContent() {
++			//Added by TML.
++			Asset<Texture2D>.DefaultValue = new Texture2D(base.GraphicsDevice, 1, 1) {
++				Name = "Asynchronously-loaded Asset Dummy Texture (do not dispose or modify!)"
++			};
++
+ 			SoundEngine.Initialize();
+ 			if (base.Services.Get<IAssetRepository>() == null)
+ 				AssetInitializer.CreateAssetServices(base.Services);
 @@ -8331,7 +_,7 @@
  				audioSystem = new DisabledAudioSystem();
  
