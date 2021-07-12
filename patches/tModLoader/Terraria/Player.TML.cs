@@ -6,7 +6,8 @@ using Terraria.ModLoader;
 
 namespace Terraria
 {
-	public partial class Player {
+	public partial class Player
+	{
 		internal IList<string> usedMods;
 		internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();
 

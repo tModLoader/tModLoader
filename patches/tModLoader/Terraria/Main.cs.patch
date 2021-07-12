@@ -3446,12 +3446,18 @@
  			if (WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenHeight / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
  				num8 = (player[myPlayer].ZoneCorrupt ? 19 : (player[myPlayer].ZoneCrimson ? 21 : ((!player[myPlayer].ZoneHallow) ? 18 : 20)));
  			}
-@@ -39737,6 +_,10 @@
+@@ -39737,6 +_,16 @@
  			if (SceneMetrics.MushroomTileCount > SceneMetrics.MushroomTileMax)
  				num8 = 2;
  
 +			if (priority >= SceneEffectPriority.BiomeHigh) {
 +				num8 = modBG;
++			}
++
++			if (GlobalBackgroundStyleLoader.loaded) {
++				foreach (var hook in GlobalBackgroundStyleLoader.HookChooseUndergroundBackgroundStyle) {
++					hook(ref num8);
++				}
 +			}
 +
  			if (num8 != undergroundBackground) {
@@ -3898,13 +3904,18 @@
  			else {
  				num = 0;
  				if (num2 >= treeX[0]) {
-@@ -48966,7 +_,6 @@
+@@ -48964,6 +_,12 @@
+ 						num = 11;
+ 					else if (WorldGen.treeBG1 != WorldGen.treeBG4)
  						num = 12;
++				} // Patch context
++			}
++
++			if (GlobalBackgroundStyleLoader.loaded) {
++				foreach (var hook in GlobalBackgroundStyleLoader.HookChooseSurfaceBackgroundStyle) {
++					hook(ref num);
  				}
  			}
--
- 			return num;
- 		}
  
 @@ -49023,6 +_,13 @@
  		}

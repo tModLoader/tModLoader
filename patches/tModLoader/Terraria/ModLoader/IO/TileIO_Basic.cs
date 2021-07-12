@@ -5,7 +5,8 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader.IO
 {
-	internal static partial class TileIO {
+	internal static partial class TileIO
+	{
 		public abstract class IOImpl<TBlock, TEntry> where TBlock : ModBlockType where TEntry : ModEntry
 		{
 			public readonly string entriesKey;
