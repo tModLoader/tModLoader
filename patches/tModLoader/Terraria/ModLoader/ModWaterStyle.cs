@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
 
@@ -22,8 +23,8 @@ namespace Terraria.ModLoader
 		}
 
 		public sealed override void SetupContent() {
-			LiquidRenderer.Instance._liquidTextures[Slot] = ModContent.GetTexture(Texture);
-			TextureAssets.Liquid[Slot] = ModContent.GetTexture(BlockTexture);
+			LiquidRenderer.Instance._liquidTextures[Slot] = ModContent.Request<Texture2D>(Texture);
+			TextureAssets.Liquid[Slot] = ModContent.Request<Texture2D>(BlockTexture);
 		}
 
 		/// <summary>
@@ -74,7 +75,7 @@ namespace Terraria.ModLoader
 		}
 
 		public sealed override void SetupContent() {
-			Main.instance.waterfallManager.waterfallTexture[Slot] = ModContent.GetTexture(Texture);
+			Main.instance.waterfallManager.waterfallTexture[Slot] = ModContent.Request<Texture2D>(Texture);
 		}
 
 		/// <summary>

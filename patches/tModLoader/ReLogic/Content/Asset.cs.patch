@@ -1,0 +1,38 @@
+--- src/Terraria/ReLogic/Content/Asset.cs
++++ src/tModLoader/ReLogic/Content/Asset.cs
+@@ -1,5 +_,7 @@
+ using ReLogic.Content.Sources;
+ using System;
++using System.Threading;
++using System.Threading.Tasks;
+ 
+ namespace ReLogic.Content
+ {
+@@ -34,6 +_,11 @@
+ 			private set;
+ 		}
+ 
++		internal Action Continuation { get; set; }
++		Action IAsset.Continuation { set => Continuation = value; }
++
++		public Action Wait { get; internal set; }
++
+ 		internal Asset(string name) {
+ 			State = AssetState.NotLoaded;
+ 			Name = name;
+@@ -54,13 +_,11 @@
+ 			if (value == null)
+ 				throw new ArgumentNullException("value");
+ 
+-			if (source == null)
+-				throw new ArgumentNullException("source");
+-
+ 			(Value as IDisposable)?.Dispose();
+-			State = AssetState.Loaded;
+ 			Value = value;
+ 			Source = source;
++			Thread.MemoryBarrier();
++			State = AssetState.Loaded;
+ 		}
+ 
+ 		internal void SetToLoadingState() {

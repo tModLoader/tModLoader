@@ -77,6 +77,15 @@
  			if (DrawLeftSide(sb, Lang.menu[118].Value, num10, vector, vector2, leftScale)) {
  				leftHover = num10;
  				if (flag4)
+@@ -276,6 +_,8 @@
+ 			if (DrawLeftSide(sb, Lang.inter[35].Value, num10, vector, vector2, leftScale)) {
+ 				leftHover = num10;
+ 				if (flag4) {
++					SystemLoader.PreSaveAndQuit();
++					// Calls before anything else is
+ 					Close();
+ 					Main.menuMode = 10;
+ 					Main.gameMenu = true;
 @@ -301,6 +_,7 @@
  					break;
  				case 1:
