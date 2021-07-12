@@ -4,7 +4,8 @@ using Terraria.ObjectData;
 
 namespace Terraria.ModLoader.Default
 {
-	public class UnloadedDresser : UnloadedTile { 
+	public class UnloadedDresser : UnloadedTile
+	{ 
 		public override string Texture => "ModLoader/UnloadedDresser";
 
 		public override void SetDefaults() {

@@ -12,7 +12,7 @@ namespace Terraria.ModLoader
 		internal static readonly IList<ModPrefix> prefixes = new List<ModPrefix>();
 		internal static readonly IDictionary<PrefixCategory, IList<ModPrefix>> categoryPrefixes;
 
-		public static byte PrefixCount { get; private set; } = PrefixID.Count;
+		public static int PrefixCount { get; private set; } = PrefixID.Count;
 
 		static PrefixLoader() {
 			categoryPrefixes = new Dictionary<PrefixCategory, IList<ModPrefix>>();
@@ -22,12 +22,14 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static byte ReservePrefixID() {
+		internal static void RegisterPrefix(ModPrefix prefix) {
+			prefixes.Add(prefix);
+			categoryPrefixes[prefix.Category].Add(prefix);
+		}
+
+		internal static int ReservePrefixID() {
 			if (ModNet.AllowVanillaClients)
 				throw new Exception("Adding items breaks vanilla client compatibility");
-
-			if (PrefixCount == 0)
-				throw new Exception("Prefix ID limit has been broken");
 
 			return PrefixCount++;
 		}
@@ -36,7 +38,7 @@ namespace Terraria.ModLoader
 		/// Returns the ModPrefix associated with specified type
 		/// If not a ModPrefix, returns null.
 		/// </summary>
-		public static ModPrefix GetPrefix(byte type)
+		public static ModPrefix GetPrefix(int type)
 			=> type >= PrefixID.Count && type < PrefixCount ? prefixes[type - PrefixID.Count] : null;
 
 		/// <summary>
@@ -62,7 +64,7 @@ namespace Terraria.ModLoader
 		/// Performs a mod prefix roll. If the vanillaWeight wins the roll, then prefix is unchanged.
 		/// </summary>
 		public static void Roll(Item item, ref int prefix, int vanillaWeight, params PrefixCategory[] categories) {
-			var wr = new WeightedRandom<byte>();
+			var wr = new WeightedRandom<int>();
 
 			foreach (PrefixCategory category in categories) {
 				foreach (ModPrefix modPrefix in categoryPrefixes[category].Where(x => x.CanRoll(item))) {

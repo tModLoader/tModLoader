@@ -95,7 +95,7 @@ namespace ExampleMod.Content.Tiles
 
 
 			Tile tile = Main.tile[i, j];
-			Texture2D texture = ModContent.GetTexture("ExampleMod/Content/Tiles/ExampleAnimatedTileTile").Value;
+			Texture2D texture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleAnimatedTileTile").Value;
 
 			// If you are using ModTile.SpecialDraw or PostDraw or PreDraw, use this snippet and add zero to all calls to spriteBatch.Draw
 			// The reason for this is to accommodate the shift in drawing coordinates that occurs when using the different Lighting mode
