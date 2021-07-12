@@ -64,7 +64,7 @@
 +			byte* colors = (byte*)img.ToPointer();
 +
 +			for (int i = 0; i < len; i += 4) {
-+				int a = colors[i+3];
++				int a = colors[i + 3];
 +				colors[i] = (byte)(colors[i] * a / byte.MaxValue);
 +				colors[i + 1] = (byte)(colors[i + 1] * a / byte.MaxValue);
 +				colors[i + 2] = (byte)(colors[i + 2] * a / byte.MaxValue);
