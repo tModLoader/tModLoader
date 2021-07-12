@@ -319,10 +319,20 @@ namespace Terraria.ModLoader
 		internal static readonly IList<GlobalBackgroundStyle> globalBackgroundStyles = new List<GlobalBackgroundStyle>();
 
 		internal static bool loaded = false;
+
+		// Hooks
+
+		internal delegate void DelegateChooseUndergroundBackgroundStyle(ref int style);
+		internal delegate void DelegateChooseSurfaceBackgroundStyle(ref int style);
+
+		internal static DelegateChooseUndergroundBackgroundStyle[] HookChooseUndergroundBackgroundStyle;
+		internal static DelegateChooseSurfaceBackgroundStyle[] HookChooseSurfaceBackgroundStyle;
 		internal static Action<int, int[]>[] HookFillUndergroundTextureArray;
 		internal static Action<int, float[], float>[] HookModifyFarSurfaceFades;
 
 		internal static void ResizeAndFillArrays(bool unloading = false) {
+			ModLoader.BuildGlobalHook(ref HookChooseUndergroundBackgroundStyle, globalBackgroundStyles, g => g.ChooseUndergroundBackgroundStyle);
+			ModLoader.BuildGlobalHook(ref HookChooseSurfaceBackgroundStyle, globalBackgroundStyles, g => g.ChooseSurfaceBackgroundStyle);
 			ModLoader.BuildGlobalHook(ref HookFillUndergroundTextureArray, globalBackgroundStyles, g => g.FillUndergroundTextureArray);
 			ModLoader.BuildGlobalHook(ref HookModifyFarSurfaceFades, globalBackgroundStyles, g => g.ModifyFarSurfaceFades);
 
