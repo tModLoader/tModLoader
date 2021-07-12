@@ -41,7 +41,7 @@ namespace ExampleMod.Content.Items.Consumables
 			return !NPC.AnyNPCs(ModContent.NPCType<MinionBossBody>());
 		}
 
-		public override bool UseItem(Player player) {
+		public override bool? UseItem(Player player) {
 			if (player.whoAmI == Main.myPlayer) {
 				//If the player using the item is the client
 				//(explicitely excluded serverside here)

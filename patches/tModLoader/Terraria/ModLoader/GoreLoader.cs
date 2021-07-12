@@ -43,7 +43,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void AutoloadGores(Mod mod) {
-			foreach (string fullTexturePath in mod.Assets.EnumeratePaths<Texture2D>().Where(t => t.Contains("Gores/"))) {
+			foreach (string fullTexturePath in mod.RootContentSource.EnumerateAssets().Where(t => t.Contains("Gores/"))) {
 				string texturePath = Path.ChangeExtension(fullTexturePath, null);
 
 				// ModGore gores will already be loaded at this point.
@@ -70,7 +70,7 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (var pair in gores) {
-				TextureAssets.Gore[pair.Key] = ModContent.GetTexture(pair.Value.Texture);
+				TextureAssets.Gore[pair.Key] = ModContent.Request<Texture2D>(pair.Value.Texture);
 			}
 		}
 

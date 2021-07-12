@@ -1,3 +1,4 @@
+using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -58,7 +59,7 @@ namespace ExampleMod.Content.Tiles
 
 			// Assets
 			if (!Main.dedServ) {
-				flameTexture = ModContent.GetTexture("ExampleMod/Content/Tiles/ExampleTorch_Flame");
+				flameTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleTorch_Flame");
 			}
 		}
 
@@ -75,9 +76,8 @@ namespace ExampleMod.Content.Tiles
 
 			// The influence positive torch luck can have overall is 0.1 (if positive luck is any number less than 1) or 0.2 (if positive luck is greater than or equal to 1)
 
-			// TODO: when ExampleBiome is implemented, replace this with an actual biome check.
-			bool inExampleBiome = true;
-			return inExampleBiome ? 1f : -0.1f; // ExampleTorch gives maximum positive luck when in example biome, otherwise a small negative luck
+			bool inExampleUndergroundBiome = Main.LocalPlayer.InModBiome(ModContent.GetInstance<ExampleUndergroundBiome>());
+			return inExampleUndergroundBiome ? 1f : -0.1f; // ExampleTorch gives maximum positive luck when in example biome, otherwise a small negative luck
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num) => num = Main.rand.Next(1, 3);

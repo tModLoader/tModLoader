@@ -76,7 +76,7 @@ namespace Terraria.ModLoader
 
 		public static Mod[] Mods { get; private set; } = new Mod[0];
 
-		internal static ModAssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
+		internal static AssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
 		internal static AssemblyResourcesContentSource ManifestContentSource { get; set; }
 
 		// Get
@@ -106,17 +106,10 @@ namespace Terraria.ModLoader
 				return;
 			}
 
-			var assetReaderCollection = AssetInitializer.assetReaderCollection;
-
-			var asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
-			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(Texture2D));
-			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(DynamicSpriteFont));
-			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(SpriteFont));
-
-			var assetLoader = new AssetLoader(assetReaderCollection);
-
 			ManifestContentSource = new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly());
-			ManifestAssets = new ModAssetRepository(assetReaderCollection, assetLoader, asyncAssetLoader, new[] { ManifestContentSource });
+			ManifestAssets = new AssetRepository(AssetInitializer.assetReaderCollection, new[] { ManifestContentSource }) {
+				AssetLoadFailHandler = Main.OnceFailedLoadingAnAsset
+			};
 		}
 
 		internal static void BeginLoad(CancellationToken token) => Task.Run(() => Load(token));
