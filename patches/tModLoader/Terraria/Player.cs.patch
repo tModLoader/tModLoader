@@ -1958,6 +1958,16 @@
  							SmartSelect_SelectItem(i);
  							return;
  						}
+@@ -12218,6 +_,9 @@
+ 								}
+ 							}
+ 
++							if (!flag2 && !ItemLoader.NeedsAmmo(inventory[i], this))
++								flag2 = true;
++
+ 							if (flag2) {
+ 								SmartSelect_SelectItem(i);
+ 								return;
 @@ -12233,7 +_,7 @@
  							if (nonTorch == -1)
  								nonTorch = selectedItem;
@@ -1967,6 +1977,16 @@
  								selectedItem = i;
  
  							break;
+@@ -12248,6 +_,9 @@
+ 										}
+ 									}
+ 
++									if (!flag && !ItemLoader.NeedsAmmo(inventory[i], this))
++										flag = true;
++
+ 									if (flag) {
+ 										SmartSelect_SelectItem(i);
+ 										return;
 @@ -12260,6 +_,7 @@
  							case 3002:
  							case 3112:
@@ -4030,6 +4050,17 @@
  			if (isPettingAnimal) {
  				int num = miscCounter % 14 / 7;
  				CompositeArmStretchAmount stretch = CompositeArmStretchAmount.ThreeQuarters;
+@@ -34540,6 +_,10 @@
+ 						case 1614:
+ 							num3 = 187;
+ 							break;
++						case 0:
++							if (!ItemLoader.NeedsAmmo(sItem, this))
++								num3 = 127;
++							break;
+ 					}
+ 
+ 					if (num3 > 0) {
 @@ -34727,10 +_,12 @@
  				SetCompositeArmBack(enabled: true, stretch6, (float)Math.PI * -3f / 5f * (float)direction);
  				FlipItemLocationAndRotationForGravity();
@@ -4210,6 +4241,30 @@
  		}
  
  		public bool HasAmmo(Item sItem, bool canUse) {
+@@ -36461,6 +_,9 @@
+ 						break;
+ 					}
+ 				}
++
++				if (!canUse && !ItemLoader.NeedsAmmo(sItem, this))
++					canUse = true;
+ 			}
+ 
+ 			return canUse;
+@@ -36509,6 +_,13 @@
+ 				}
+ 			}
+ 
++			bool shootWithNoAmmo = false;
++			if (!canShoot && !ItemLoader.NeedsAmmo(sItem, this)) {
++				item = ContentSamples.ItemsByType[sItem.useAmmo];
++				if (item.ammo == sItem.useAmmo)
++					canShoot = shootWithNoAmmo = true;
++			}
++
+ 			if (!canShoot)
+ 				return;
+ 
 @@ -36516,8 +_,11 @@
  			int pickedProjectileId = -1;
  			if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
@@ -4240,7 +4295,7 @@
  			}
  			else {
  				Damage += item.damage;
-@@ -36585,11 +_,12 @@
+@@ -36585,11 +_,15 @@
  					if (speed > 20f)
  						speed = 20f;
  				}
@@ -4252,6 +4307,9 @@
  
  			KnockBack += item.knockBack;
 +			ItemLoader.PickAmmo(sItem, item, this, ref projToShoot, ref speed, ref Damage, ref KnockBack);
++			if (shootWithNoAmmo)
++				return;
++
  			bool flag2 = dontConsume;
  			if (sItem.type == 3475 && Main.rand.Next(3) != 0)
  				flag2 = true;

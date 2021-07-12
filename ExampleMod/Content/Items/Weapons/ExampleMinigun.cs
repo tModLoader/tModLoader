@@ -49,6 +49,12 @@ namespace ExampleMod.Content.Items.Weapons
 			return Main.rand.NextFloat() >= 0.38f;
 		}
 
+		// The following method allows this gun to shoot when having no ammo, as long as the player has at least 10 example items in their inventory.
+		// The gun will then shoot as if the default ammo for it, in this case the musket ball, is being used.
+		public override bool NeedsAmmo(Player player) {
+			return player.CountItem(ModContent.ItemType<ExampleItem>(), 10) < 10;
+		}
+
 		// The following method makes the gun slightly inaccurate
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			velocity = velocity.RotatedByRandom(MathHelper.ToRadians(10));
