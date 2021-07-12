@@ -1,9 +1,10 @@
 --- src/Terraria/ReLogic/Content/Asset.cs
 +++ src/tModLoader/ReLogic/Content/Asset.cs
-@@ -1,5 +_,6 @@
+@@ -1,5 +_,7 @@
  using ReLogic.Content.Sources;
  using System;
 +using System.Threading;
++using System.Threading.Tasks;
  
  namespace ReLogic.Content
  {
