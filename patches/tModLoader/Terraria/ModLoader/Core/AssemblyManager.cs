@@ -41,10 +41,7 @@ namespace Terraria.ModLoader.Core
 				try {
 					using (modFile.Open()) {
 						foreach (var dll in properties.dllReferences) {
-							byte[] dllBytes = modFile.GetBytes("lib/" + dll + ".FNA.dll") ??
-											  modFile.GetBytes("lib/" + dll + ".dll");
-
-							LoadAssembly(dllBytes);
+							LoadAssembly(modFile.GetBytes("lib/" + dll + ".dll"));
 						}
 
 						assembly = Debugger.IsAttached && File.Exists(properties.eacPath) ?
@@ -125,7 +122,10 @@ namespace Terraria.ModLoader.Core
 		}
 
 		internal static Assembly TmlCustomResolver(object sender, ResolveEventArgs args) {
-			if (new AssemblyName(args.Name).Name == "tModLoader")
+			//Legacy: With FNA and .Net5 changes, had aimed to eliminate the variants of tmodloader (tmodloaderdebug, tmodloaderserver) and Terraria as assembly names.
+			// However, due to uncertainty in that elimination, in particular for Terraria, have opted to retain the original check. - Solxan			
+			var name = new AssemblyName(args.Name).Name;
+			if (name.Contains("tModLoader") || name == "Terraria")
 				return Assembly.GetExecutingAssembly();
 
 			return null;
@@ -210,13 +210,7 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		private static string GetModAssemblyFileName(this TmodFile modFile) {
-			// legacy
-			if (modFile.HasFile($"{modFile.Name}.FNA.dll"))
-				return $"{modFile.Name}.FNA.dll";
-			
-			return $"{modFile.Name}.dll";
-		}
+		private static string GetModAssemblyFileName(this TmodFile modFile) => $"{modFile.Name}.dll";
 
 		internal static byte[] GetModAssembly(this TmodFile modFile) => modFile.GetBytes(modFile.GetModAssemblyFileName());
 
