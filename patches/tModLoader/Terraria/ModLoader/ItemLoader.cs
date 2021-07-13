@@ -436,7 +436,47 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat);
+
+		private delegate bool? DelegateCanResearch(Item item);
+		private static HookList HookCanResearch = AddHook<DelegateCanResearch>(g => g.CanResearch);
+		/// <summary>
+		/// Hook that determines if an item will be consumed by the research function. 
+		/// </summary>
+		/// <param name="item">The item to be consumed or not</param>
+		/// <returns>True takes precedence, and will consume the item, even if vanilla would not allow it
+		/// False will stop the item from being consumed and the rest of the research code to run.
+		/// Null is the default vanilla behaviour</returns>
+		public static bool? CanResearch(Item item) {
+			if (item.IsAir)
+				return null;
+
+			bool? canResearch = null;
+			foreach (var g in HookCanResearch.arr) {
+				bool? ans = g.Instance(item).CanResearch(item);
+
+				if (ans.HasValue) {
+					if (ans.Value)
+						return true;
+					else
+						canResearch = ans.Value;
+				}
+			}
+			return canResearch ?? item.modItem?.CanResearch();
+		}
+
+		private delegate void DelegateOnResearched(Item item, bool fullyResearched);
+		private static HookList HookOnResearched = AddHook<DelegateOnResearched>(g => g.OnResearched);
+		public static void OnResearched(Item item, bool fullyResearched) {
+			if (item.IsAir)
+				return;
+
+			item.modItem?.OnResearched(fullyResearched);
+
+			foreach (var g in HookOnResearched.arr)
+				g.Instance(item).OnResearched(item, fullyResearched);
+		}
+    
+    private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 		/// <summary>
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.

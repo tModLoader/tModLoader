@@ -190,6 +190,25 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Sets if an item can be researched, regardless of vanilla behaviour. If true, item will be researched no matter what, false will block it from being researched, null is vanilla behaviour.
+		/// </summary>
+		/// <param name="item">The item being researched</param>
+		/// <returns>True takes precedence, and will consume the item, even if vanilla would not allow it
+		/// False will stop the item from being consumed and the rest of the research code to run.
+		/// Null is the default vanilla behaviour</returns>
+		public virtual bool? CanResearch(Item item) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to create custom behaviour when an item is accepted by the Research function 
+		/// </summary>
+		/// <param name="item">The item being researched</param>
+		/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
+		public virtual void OnResearched(Item item, bool fullyResearched) {
+		}
+
+		/// <summary>
 		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
 		/// </summary>
 		/// <param name="item">The item being used</param>

@@ -1,0 +1,44 @@
+--- src/Terraria/Terraria/GameContent/Creative/CreativeUI.cs
++++ src/tModLoader/Terraria/GameContent/Creative/CreativeUI.cs
+@@ -8,6 +_,7 @@
+ using Terraria.GameContent.UI.Elements;
+ using Terraria.GameContent.UI.States;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Net;
+ using Terraria.UI;
+ using Terraria.UI.Gamepad;
+@@ -197,15 +_,20 @@
+ 			int amountNeeded = 0;
+ 			amountWeSacrificed = 0;
+ 			Item item = _itemSlotsForUI[0];
+-			if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(item.type, out amountNeeded))
++			bool? canSacrifice = ItemLoader.CanResearch(item);
++			if (canSacrifice != null && canSacrifice.Value == false)
+ 				return ItemSacrificeResult.CannotSacrifice;
+ 
++			int num = 0;
++			if (canSacrifice == null && !CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(item.type, out amountNeeded))
++				return ItemSacrificeResult.CannotSacrifice;
++		
+ 			int value = 0;
+ 			Main.LocalPlayerCreativeTracker.ItemSacrifices.SacrificesCountByItemIdCache.TryGetValue(item.type, out value);
+-			int num = Utils.Clamp(amountNeeded - value, 0, amountNeeded);
+-			if (num == 0)
+-				return ItemSacrificeResult.CannotSacrifice;
+-
++			num = Utils.Clamp(amountNeeded - value, 0, amountNeeded);
++			if (canSacrifice == null && num == 0)
++					return ItemSacrificeResult.CannotSacrifice;
++			
+ 			int num2 = Math.Min(num, item.stack);
+ 			if (!Main.ServerSideCharacter) {
+ 				Main.LocalPlayerCreativeTracker.ItemSacrifices.RegisterItemSacrifice(item.type, num2);
+@@ -216,6 +_,7 @@
+ 			}
+ 
+ 			bool num3 = num2 == num;
++			ItemLoader.OnResearched(item, num3);
+ 			item.stack -= num2;
+ 			if (item.stack <= 0)
+ 				item.TurnToAir();
