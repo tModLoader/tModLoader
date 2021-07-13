@@ -1,0 +1,53 @@
+Mods: {
+	ExampleMod: {
+		Common: {
+			PaperAirplane: Бумажный самолётик
+			LocalizedLabel: Эта строка из файлов локализации: {$Mods.ExampleMod.Common.PaperAirplane}
+			LocalizedTooltip: Эта подсказка из файлов локализации.
+			LocalizedHeader: Заголовки помогут организовывать.
+		}
+		
+		NPCName: {
+			FlutterSlime: Порхающий слизень
+			Example_Person: Пример человека
+		}
+		
+		MapObject: {
+			ExampleClock: Пример часов
+		}
+		
+		ItemTooltip: {
+			OctopusBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
+			SarcophagusBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Sarcophagus}"
+			ExamplePet:
+				'''
+				Призывает {$Mods.ExampleMod.Common.PaperAirplane}, бессмысленно следующий за вами
+				Вторая строка!
+				'''
+		}
+		
+		ItemName: {
+			ExamplePet: "{$Mods.ExampleMod.Common.PaperAirplane}"
+		}
+		
+		ProjectileName: {
+			ExamplePet: "{$Mods.ExampleMod.Common.PaperAirplane}"
+		}
+		
+		BuffName: {
+			ExamplePet: "{$Mods.ExampleMod.Common.PaperAirplane}"
+		}
+		
+		BuffDescription: {
+			ExamplePet: '''"Пускай этот питомец будет примером для вас!"'''
+		}
+		
+		RecipeConditions: {
+			Night: С низким здоровьем
+		}
+		
+		Bestiary: {
+			ExamplePerson: Построен из блоков, с руками из стали. Качает своё железо и днём и ночью.
+		}
+	}
+}
