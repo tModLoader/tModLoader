@@ -86,7 +86,7 @@
  			AddHorizontalSeparator(uIPanel, num6 + 6 + 6);
  			AddDescriptionPanel(uIPanel, num6 + 8 + 6 + 6, num5 - num6 - 12 - 12 - 8, "desc");
  			uIPanel.Append(uIElement2);
-@@ -166,6 +_,20 @@
+@@ -166,6 +_,19 @@
  
  		public void ShowOptionDescription(UIMouseEvent evt, UIElement listeningElement) {
  			LocalizedText localizedText = null;
@@ -98,8 +98,7 @@
 +				localizedText = Language.GetText("tModLoader.MenuDevelopModsDescription");
 +
 +			if (listeningElement == _buttonModBrowser)
-+				//localizedText = Language.GetText("tModLoader.MenuDownloadModsDescription");
-+				localizedText = Language.GetText("Not Implemented in tModLoader 1.4");
++				localizedText = Language.GetText("tModLoader.MenuDownloadModsDescription");
 +
 +			if (listeningElement == _buttonTBD)
 +				localizedText = Language.GetText("Not Implemented in tModLoader 1.4");

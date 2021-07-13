@@ -67,6 +67,13 @@
 		"BossBarStyle": "Boss Bar Style: {0}",
 		"BossBarStyleNoOptions": "No Options",
 
+		// Workshop
+		"WorkshopDisclaimer": "By submitting this item, you agree to the tModLoader Terms of Service",
+		"SteamPublishingLimit": "Error: Only Steam tModLoader owners can publish to Workshop in-game.",
+		"NoWorkshopAccess": "Error: Unable to access Steam Workshop",
+		"ModAlreadyUploaded": "Error: Mod already exists on Workshop!",
+		"ModVersionInfoUnchanged": "Error: Mod Version information must be incremented prior to updating.",
+
 		// Mod Errors
 		"LoadError": "An error occurred while loading {0}",
 		"LoadErrorDisabled": "The mod(s) have been automatically disabled.",

@@ -181,15 +181,15 @@
 +				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
 +
 +				if (e is FolderCreationFailedException)
-+					Process.Start(e.HelpLink);
++					Utils.OpenToURL(e.HelpLink);
 +
 +				if (e.Message.Contains("CSteamworks"))
-+					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
++					Utils.OpenToURL(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
 +
 +				if (e.StackTrace.Contains("LaunchLocalServer")) {
 +					ModLoader.UI.Interface.MessageBoxShow(Language.GetTextValue("tModLoader.MissingServerExecutable"));
 +
-+					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
++					Utils.OpenToURL(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
 +				}
 +
  			}

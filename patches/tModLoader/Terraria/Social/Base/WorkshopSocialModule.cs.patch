@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/Social/Base/WorkshopSocialModule.cs
++++ src/tModLoader/Terraria/Social/Base/WorkshopSocialModule.cs
+@@ -3,7 +_,7 @@
+ 
+ namespace Terraria.Social.Base
+ {
+-	public abstract class WorkshopSocialModule : ISocialModule
++	public abstract partial class WorkshopSocialModule : ISocialModule
+ 	{
+ 		public WorkshopBranding Branding {
+ 			get;

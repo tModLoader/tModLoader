@@ -118,6 +118,7 @@ namespace Terraria.ModLoader.UI
 			var buttonCreateMod = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSCreateMod"));
 			buttonCreateMod.CopyStyle(buttonBA);
 			buttonCreateMod.HAlign = 1f;
+			buttonCreateMod.Top.Pixels = -20;
 			buttonCreateMod.WithFadedMouseOver();
 			buttonCreateMod.OnClick += ButtonCreateMod_OnClick;
 			_uIElement.Append(buttonCreateMod);
@@ -137,27 +138,12 @@ namespace Terraria.ModLoader.UI
 			buttonOS.OnClick += OpenSources;
 			_uIElement.Append(buttonOS);
 
-			var buttonMP = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSManagePublished"));
-			buttonMP.CopyStyle(buttonB);
-			buttonMP.HAlign = 1f;
-			buttonMP.WithFadedMouseOver();
-			buttonMP.OnClick += ManagePublished;
-			_uIElement.Append(buttonMP);
 			Append(_uIElement);
 		}
 
 		private void ButtonCreateMod_OnClick(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(11);
 			Main.menuMode = Interface.createModID;
-		}
-
-		private void ManagePublished(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(11, -1, -1, 1);
-			Main.menuMode = Interface.managePublishedID;
-			if (ModLoader.modBrowserPassphrase == string.Empty) {
-				Main.menuMode = Interface.enterPassphraseMenuID;
-				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID, Interface.modSourcesID);
-			}
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -212,11 +198,7 @@ namespace Terraria.ModLoader.UI
 
 			if (Main.mouseLeftRelease && Main.mouseLeft) {
 				SoundEngine.PlaySound(SoundID.MenuOpen);
-				var ps = new ProcessStartInfo("https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide") {
-					UseShellExecute = true,
-					Verb = "open"
-				};
-				Process.Start(ps);
+				Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
 			}
 		}
 

@@ -1,5 +1,6 @@
 using Terraria.Audio;
 using Terraria.ModLoader.UI;
+using Terraria.Social.Steam;
 using Terraria.UI;
 
 namespace Terraria.GameContent.UI.States
@@ -45,9 +46,9 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private void Click_OpenModBrowserMenu(UIMouseEvent evt, UIElement listeningElement) {
-			//SoundEngine.PlaySound(10);
-			//Interface.modBrowser.PreviousUIState = this;
-			//Main.MenuUI.SetState(Interface.modBrowser);
+			SoundEngine.PlaySound(10);
+			Interface.modBrowser.PreviousUIState = this;
+			Main.MenuUI.SetState(Interface.modBrowser);
 		}
 
 		private UIElement MakeButton_TBD() {
@@ -58,7 +59,7 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private void Click_OpenTBDMenu(UIMouseEvent evt, UIElement listeningElement) {
-			//SoundEngine.PlaySound(10);
+			SoundEngine.PlaySound(10);
 		}
 	}
 }
