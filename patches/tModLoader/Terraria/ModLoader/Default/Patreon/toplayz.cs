@@ -10,7 +10,7 @@
 		}
 	}
 
-	[AutoloadEquip(EquipType.Body)]
+	[AutoloadEquip(EquipType.BodyLegacy)]
 	internal class toplayz_Body : PatreonItem
 	{
 		public override void SetDefaults() {

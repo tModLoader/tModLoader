@@ -99,7 +99,7 @@ namespace Terraria.ModLoader.IO
 				writer.Write((ushort)bodySlots.Count);
 				foreach (int slot in bodySlots) {
 					writer.Write((ushort)slot);
-					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Body][slot]);
+					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.BodyLegacy][slot]);
 					writer.Write(item.Mod.Name);
 					writer.Write(item.Name);
 				}
