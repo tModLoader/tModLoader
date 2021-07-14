@@ -1,6 +1,6 @@
 --- src/Terraria/ReLogic/Content/AssetRepository.cs
 +++ src/tModLoader/ReLogic/Content/AssetRepository.cs
-@@ -1,89 +_,184 @@
+@@ -1,89 +_,194 @@
 +using ReLogic.Content.Readers;
  using ReLogic.Content.Sources;
  using System;
@@ -79,6 +79,12 @@
 +		}
 +
 +		private void Invoke(Action action) {
++			// Skip loading assets if this is a dedicated server; this avoids deadlocks on waiting for queue to empty
++			if (_readers == null) {
++				_assetTransferQueue.Clear();
++				return;
++			}
++				
 +			var evt = new ManualResetEvent(false);
 +			_assetTransferQueue.Enqueue(() => { action(); evt.Set(); });
 +			evt.WaitOne();
@@ -171,6 +177,10 @@
 +
 -		public Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class {
 +		public virtual Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class {
++			// Skip loading assets if this is a dedicated server
++			if (_readers == null)
++				mode = AssetRequestMode.DoNotLoad;
++			
  			ThrowIfDisposed();
  			assetName = AssetPathHelper.CleanPath(assetName);
 -			lock (_requestLock) {

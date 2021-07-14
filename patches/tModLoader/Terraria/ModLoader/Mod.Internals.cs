@@ -89,7 +89,11 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
-			
+
+			// Skip loading client assets if this is a dedicated server;
+			if (Main.dedServ)
+				return;
+
 			if (Properties.AutoloadGores)
 				GoreLoader.AutoloadGores(this);
 			
