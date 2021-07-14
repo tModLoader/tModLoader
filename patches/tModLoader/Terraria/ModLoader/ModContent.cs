@@ -96,7 +96,11 @@ namespace Terraria.ModLoader
 		public static Asset<T> Request<T>(string name, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class {
 			SplitName(name, out string modName, out string subName);
 
-			if(modName == "Terraria")
+			// Initialize Main.Assets on server in case it hasn't been initialized. This prevents later crashes when checking Terraria assets
+			if (Main.dedServ && Main.Assets == null)
+				Main.Assets = new AssetRepository(null);
+
+			if (modName == "Terraria")
 				return Main.Assets.Request<T>(subName, mode);
 
 			if (!ModLoader.TryGetMod(modName, out var mod))
