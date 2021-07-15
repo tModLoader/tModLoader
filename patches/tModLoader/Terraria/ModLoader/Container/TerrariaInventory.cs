@@ -12,9 +12,10 @@ namespace Terraria.ModLoader.Container
 		public new Item this[int index] {
 			get => base[index];
 			set {
-				if (Items[index].Equals(value) || Items[index].IsAir && value.IsAir) {
+				if (Items[index] == value) {
 					return;
 				}
+
 				OnUpdateItem?.Invoke(index, Items[index], value);
 				Items[index] = value;
 			}
