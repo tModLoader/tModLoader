@@ -52,12 +52,14 @@ namespace Terraria.ModLoader.Core
 					.GetLoadedAssets()
 					.OfType<Asset<Texture2D>>()
 					.Select(asset => asset.Value)
+					.Where(val => val != null)
 					.Sum(tex => tex.Width * tex.Height * 4);
 
 				usage.sounds = mod.Assets
 					.GetLoadedAssets()
 					.OfType<Asset<SoundEffect>>()
 					.Select(asset => asset.Value)
+					.Where(val => val != null)
 					.Sum(sound => (long)sound.Duration.TotalSeconds * 44100 * 2 * 2);
 			}
 			Logging.tML.Info($"RAM usage: {UI.UIMemoryBar.SizeSuffix(System.Diagnostics.Process.GetCurrentProcess().WorkingSet64)}");
