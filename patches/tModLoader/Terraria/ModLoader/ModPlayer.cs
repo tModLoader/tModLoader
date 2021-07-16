@@ -43,7 +43,7 @@ namespace Terraria.ModLoader
 		
 		protected sealed override void Register() {
 			ModTypeLookup<ModPlayer>.Register(this);
-			PlayerHooks.Add(this);
+			PlayerLoader.Add(this);
 		}
 
 		public sealed override void SetupContent() => SetStaticDefaults();
@@ -163,7 +163,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Use this to check on hotkeys you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay.
+		/// Use this to check on keybinds you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay.
 		/// </summary>
 		/// <param name="triggersSet"></param>
 		public virtual void ProcessTriggers(TriggersSet triggersSet) {
@@ -330,22 +330,25 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to multiply an item's regular use time. Returns 1f by default. Values greater than 1 increase the item speed.
+		/// Allows you to change the effective useTime of an item.
+		/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
 		/// </summary>
-		/// <param name="item">The item.</param>
-		/// <returns>The amount you wish to multiply with.</returns>
-		public virtual float UseTimeMultiplier(Item item) {
-			return 1f;
-		}
+		/// <returns> The multiplier on the usage time. 1f by default. Values greater than 1 increase the item use's length. </returns>
+		public virtual float UseTimeMultiplier(Item item) => 1f;
 
 		/// <summary>
-		/// Allows you to multiply an item's regular melee speed. Returns 1f by default. Values greater than 1 increase the item speed.
+		/// Allows you to change the effective useAnimation of an item.
+		/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
 		/// </summary>
-		/// <param name="item">The item.</param>
-		/// <returns>The amount you wish to multiply with.</returns>
-		public virtual float MeleeSpeedMultiplier(Item item) {
-			return 1f;
-		}
+		/// <returns>The multiplier on the animation time. 1f by default. Values greater than 1 increase the item animation's length. </returns>
+		public virtual float UseAnimationMultiplier(Item item) => 1f;
+
+		/// <summary>
+		/// Allows you to safely change both useTime and useAnimation while keeping the values relative to each other.
+		/// <br/> Useful for status effects.
+		/// </summary>
+		/// <returns> The multiplier on the use speed. 1f by default. Values greater than 1 increase the overall item speed. </returns>
+		public virtual float UseSpeedMultiplier(Item item) => 1f;
 
 		/// <summary>
 		/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
@@ -710,7 +713,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to Main.playerDrawDust, and the indexes of any gore you create to Main.playerDrawGore.
+		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to drawInfo.DustCache, and the indexes of any gore you create to drawInfo.GoreCache.
 		/// </summary>
 		/// <param name="drawInfo"></param>
 		/// <param name="r"></param>

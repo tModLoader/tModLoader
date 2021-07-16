@@ -1,4 +1,4 @@
-using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.ID;
 
@@ -28,15 +28,17 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModBuff>.Register(this);
 
 			Type = BuffLoader.ReserveBuffID();
-			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BuffName.{Name}");
-			Description = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BuffDescription.{Name}");
+			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"BuffName.{Name}");
+			Description = LocalizationLoader.GetOrCreateTranslation(Mod, $"BuffDescription.{Name}");
 
 			BuffLoader.buffs.Add(this);
 		}
 
 		public sealed override void SetupContent() {
-			TextureAssets.Buff[Type] = ModContent.GetTexture(Texture);
+			TextureAssets.Buff[Type] = ModContent.Request<Texture2D>(Texture);
+			
 			SetStaticDefaults();
+			
 			BuffID.Search.Add(FullName, Type);
 		}
 

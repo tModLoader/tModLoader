@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/Graphics/TileBatch.cs
++++ src/tModLoader/Terraria/Graphics/TileBatch.cs
+@@ -606,7 +_,7 @@
+ 			for(int i = 0;i <= _lastBatchDrawGroupIndex;i++) {
+ 				BatchDrawGroup batchDrawGroup = _batchDrawGroups[i];
+ 				int vertexCount = batchDrawGroup.VertexCount;
+-				vertexBuffer.SetData(_batchDrawGroups[i].VertexArray,0,vertexCount);
++				vertexBuffer.SetData(_batchDrawGroups[i].VertexArray,0,vertexCount, SetDataOptions.Discard); // FNA spams a warning with SetDataOptions.None, I think Discard is correct here? - ChickenBones
+ 				for(int j = 0;j < batchDrawGroup.BatchDrawCount;j++) {
+ 					BatchDrawInfo batchDrawInfo = batchDrawGroup.BatchDraws[j];
+ 					_graphicsDevice.Textures[0] = batchDrawInfo.Texture;

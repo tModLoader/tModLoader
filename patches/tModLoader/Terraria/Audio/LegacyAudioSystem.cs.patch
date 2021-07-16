@@ -8,6 +8,29 @@
  
  namespace Terraria.Audio
  {
+@@ -68,17 +_,19 @@
+ 					continue;
+ 
+ 				string extension = contentSource.GetExtension(assetPath);
++				string assetPathWithExtension = assetPath + extension;
++
+ 				try {
+ 					IAudioTrack audioTrack2 = null;
+ 					switch (extension) {
+ 						case ".ogg":
+-							audioTrack2 = new OGGAudioTrack(contentSource.OpenStream(assetPath));
++							audioTrack2 = new OGGAudioTrack(contentSource.OpenStream(assetPathWithExtension));
+ 							break;
+ 						case ".wav":
+-							audioTrack2 = new WAVAudioTrack(contentSource.OpenStream(assetPath));
++							audioTrack2 = new WAVAudioTrack(contentSource.OpenStream(assetPathWithExtension));
+ 							break;
+ 						case ".mp3":
+-							audioTrack2 = new MP3AudioTrack(contentSource.OpenStream(assetPath));
++							audioTrack2 = new MP3AudioTrack(contentSource.OpenStream(assetPathWithExtension));
+ 							break;
+ 					}
+ 
 @@ -98,10 +_,12 @@
  		}
  

@@ -26,7 +26,7 @@ namespace Terraria.ModLoader
 
 	public abstract class ModPrefix : ModType
 	{
-		public byte Type { get; internal set; }
+		public int Type { get; internal set; }
 
 		public ModTranslation DisplayName { get; internal set; }
 
@@ -39,10 +39,9 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModPrefix>.Register(this);
 
 			Type = PrefixLoader.ReservePrefixID();
-			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.Prefix.{Name}");
+			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Prefix.{Name}");
 
-			PrefixLoader.prefixes.Add(this);
-			PrefixLoader.categoryPrefixes[Category].Add(this);
+			PrefixLoader.RegisterPrefix(this);
 		}
 
 		public sealed override void SetupContent() {

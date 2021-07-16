@@ -34,7 +34,7 @@ namespace Terraria.ModLoader
 			if (string.IsNullOrEmpty(key)) {
 				key = Name;
 			}
-			return Mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", Mod.Name, key));
+			return LocalizationLoader.GetOrCreateTranslation(Mod, $"MapObject.{key}");
 		}
 
 		/// <summary>

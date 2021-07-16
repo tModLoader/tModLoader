@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
@@ -37,7 +38,7 @@ namespace ExampleMod.Content.Tiles
 
 			// Assets
 			if (!Main.dedServ) {
-				flameTexture = ModContent.GetTexture("ExampleMod/Content/Tiles/ExampleLamp_Flame"); // We could also reuse Main.FlameTexture[] textures, but using our own texture is nice.
+				flameTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleLamp_Flame"); // We could also reuse Main.FlameTexture[] textures, but using our own texture is nice.
 			}
 		}
 
@@ -80,7 +81,7 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) {
+		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
 			if (Main.gamePaused || !Main.instance.IsActive || Lighting.UpdateEveryFrame && !Main.rand.NextBool(4)) {
 				return;
 			}

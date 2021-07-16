@@ -129,7 +129,7 @@ namespace ExampleMod.Content.Mounts
 				// We draw some extra balloons before _Back texture
 				var balloons = (CarSpecificData)drawPlayer.mount._mountSpecificData;
 				int timer = DateTime.Now.Millisecond % 800 / 200;
-				Texture2D balloonTexture = Mod.GetTexture("Content/Items/Armor/SimpleAccessory_Balloon").Value;
+				Texture2D balloonTexture = Mod.Assets.Request<Texture2D>("Content/Items/Armor/SimpleAccessory_Balloon").Value;
 
 				for (int i = 0; i < balloons.count; i++) {
 					var position = drawPosition + new Vector2((-36 + CarSpecificData.offsets[i]) * drawPlayer.direction, 14);

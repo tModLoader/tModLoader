@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
@@ -72,8 +73,10 @@ namespace Terraria.ModLoader
 		}
 
 		public sealed override void SetupContent() {
-			TextureAssets.Wall[Type] = ModContent.GetTexture(Texture);
+			TextureAssets.Wall[Type] = ModContent.Request<Texture2D>(Texture);
+			
 			SetStaticDefaults();
+			
 			WallID.Search.Add(FullName, Type);
 		}
 
