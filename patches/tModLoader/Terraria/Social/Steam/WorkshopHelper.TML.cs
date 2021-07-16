@@ -314,15 +314,16 @@ namespace Terraria.Social.Steam
 							SteamUGC.GetQueryUGCResult(_primaryUGCHandle, i, out pDetails);
 						else
 							SteamGameServerUGC.GetQueryUGCResult(_primaryUGCHandle, i, out pDetails);
-						
-						if (pDetails.m_eResult != EResult.k_EResultOK) {
-							Logging.tML.Warn("Unable to fetch mod query#" + (queryPage - 1) * 50 + i + " information. " + pDetails.m_eResult);
-							continue;
-						}	
 
-						string displayname = pDetails.m_rgchTitle;
 						PublishedFileId_t id = pDetails.m_nPublishedFileId;
+
+						if (pDetails.m_eResult != EResult.k_EResultOK) {
+							Logging.tML.Warn("Unable to fetch mod PublishId#" + id + " information. " + pDetails.m_eResult);
+							continue;
+						}
+
 						DateTime lastUpdate = Utils.UnixTimeStampToDateTime((long)pDetails.m_rtimeUpdated);
+						string displayname = pDetails.m_rgchTitle;
 
 						// Item Tagged data
 						uint keyCount;
@@ -423,6 +424,7 @@ namespace Terraria.Social.Steam
 
 					SteamUGC.SetReturnKeyValueTags(qHandle, true);
 					SteamUGC.SetReturnLongDescription(qHandle, true);
+					SteamUGC.SetAllowCachedResponse(qHandle, 30); // Prevents spamming refreshes from overloading Steam
 
 					call = SteamUGC.SendQueryUGCRequest(qHandle);
 				}
@@ -431,6 +433,7 @@ namespace Terraria.Social.Steam
 
 					SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
 					SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
+					SteamGameServerUGC.SetAllowCachedResponse(qHandle, 30); // Prevents spamming refreshes from overloading Steam
 
 					call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 				}
