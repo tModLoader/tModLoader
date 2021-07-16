@@ -1,0 +1,36 @@
+--- src/Terraria/ReLogic/Content/RejectedAssetCollection.cs
++++ src/tModLoader/ReLogic/Content/RejectedAssetCollection.cs
+@@ -7,18 +_,28 @@
+ 		private Dictionary<string, IRejectionReason> _rejectedAssetsAndReasons = new Dictionary<string, IRejectionReason>();
+ 
+ 		public void Reject(string assetPath, IRejectionReason reason) {
++			lock (_rejectedAssetsAndReasons) {
+-			_rejectedAssetsAndReasons.Add(assetPath, reason);
++				_rejectedAssetsAndReasons.Add(assetPath, reason);
++			}
+ 		}
+ 
+-		public bool IsRejected(string assetPath) => _rejectedAssetsAndReasons.ContainsKey(assetPath);
++		public bool IsRejected(string assetPath) {
++			lock (_rejectedAssetsAndReasons) {
++				return _rejectedAssetsAndReasons.ContainsKey(assetPath);
++			}
++		}
+ 
+ 		public void Clear() {
++			lock (_rejectedAssetsAndReasons) {
+-			_rejectedAssetsAndReasons.Clear();
++				_rejectedAssetsAndReasons.Clear();
++			}
+ 		}
+ 
+ 		public bool TryGetRejections(List<string> rejectionReasons) {
++			lock (_rejectedAssetsAndReasons) {
+-			foreach (KeyValuePair<string, IRejectionReason> rejectedAssetsAndReason in _rejectedAssetsAndReasons) {
++				foreach (KeyValuePair<string, IRejectionReason> rejectedAssetsAndReason in _rejectedAssetsAndReasons) {
+-				rejectionReasons.Add(rejectedAssetsAndReason.Value.GetReason());
++					rejectionReasons.Add(rejectedAssetsAndReason.Value.GetReason());
++				}
+ 			}
+ 
+ 			return _rejectedAssetsAndReasons.Count > 0;
