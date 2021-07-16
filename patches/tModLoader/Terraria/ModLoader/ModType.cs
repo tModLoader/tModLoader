@@ -30,7 +30,7 @@
 		/// Allows you to perform one-time loading tasks. Beware that mod content has not finished loading here, things like ModContent lookup tables or ID Sets are not fully populated.
 		/// <para>Use <see cref="SetStaticDefaults"/> when you need to access content.</para>
 		/// </summary>
-		public virtual void Load(){}
+		public virtual void Load() { }
 
 		/// <summary>
 		/// If you make a new ModType, seal this override.
@@ -40,16 +40,16 @@
 		/// <summary>
 		/// If you make a new ModType, seal this override, and call <see cref="SetStaticDefaults"/> in it.
 		/// </summary>
-		public virtual void SetupContent(){}
+		public virtual void SetupContent() { }
 
 		/// <summary>
 		/// Allows you to modify the properties after loading has completed.
 		/// </summary>
-		public virtual void SetStaticDefaults(){}
+		public virtual void SetStaticDefaults() { }
 
 		/// <summary>
 		/// Allows you to safely unload things you added in <see cref="Load"/>.
 		/// </summary>
-		public virtual void Unload(){}
+		public virtual void Unload() { }
 	}
 }
