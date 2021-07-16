@@ -43,7 +43,7 @@
 		public virtual void SetupContent() { }
 
 		/// <summary>
-		/// Allows you to modify the properties after loading has completed.
+		/// Allows you to modify the properties after initial loading has completed.
 		/// </summary>
 		public virtual void SetStaticDefaults() { }
 

@@ -45,6 +45,12 @@ namespace Terraria.ModLoader
 		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
+		/// Allows you to modify the properties after initial loading has completed.
+		/// This is where you would update ModDust's UpdateType property and modify the Terraria.GameContent.ChildSafety.SafeDust array.
+		/// </summary>
+		public override void SetStaticDefaults() { }
+
+		/// <summary>
 		/// Allows you to modify a dust's fields when it is created.
 		/// </summary>
 		public virtual void OnSpawn(Dust dust) { }

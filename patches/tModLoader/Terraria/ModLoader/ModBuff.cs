@@ -43,6 +43,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the properties after initial loading has completed.
+		/// <br/> This is where all buff related assignments go.
+		/// <br/> For example:
+		/// <list type="bullet">
+		/// <item> Main.debuff[Type] = true; </item>
+		/// <item> Main.buffNoTimeDisplay[Type] = true; </item>
+		/// <item> Main.pvpBuff[Type] = true; </item>
+		/// <item> Main.vanityPet[Type] = true; </item>
+		/// <item> Main.lightPet[Type] = true; </item>
+		/// </list>
+		/// </summary>
+		public override void SetStaticDefaults() { }
+
+		/// <summary>
 		/// Allows you to make this buff give certain effects to the given player. If you remove the buff from the player, make sure the decrement the buffIndex parameter by 1.
 		/// </summary>
 		public virtual void Update(Player player, ref int buffIndex) {
