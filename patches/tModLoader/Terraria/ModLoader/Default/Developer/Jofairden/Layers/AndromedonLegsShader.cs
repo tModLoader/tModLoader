@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 		private static Asset<Texture2D> _shaderTexture;
 
 		public override DrawDataInfo GetData(PlayerDrawSet info) {
-			_shaderTexture ??= ModContent.GetTexture("ModLoader/Developer.Jofairden.PowerRanger_Legs_Legs_Shader");
+			_shaderTexture ??= ModContent.Request<Texture2D>("ModLoader/Developer.Jofairden.PowerRanger_Legs_Legs_Shader");
 
 			return GetLegDrawDataInfo(info, _shaderTexture.Value);
 		}

@@ -1,0 +1,10 @@
+--- src/Terraria/ReLogic/Content/IAsset.cs
++++ src/tModLoader/ReLogic/Content/IAsset.cs
+@@ -24,5 +_,7 @@
+ 		bool IsDisposed {
+ 			get;
+ 		}
++
++		internal Action Continuation { set; }
+ 	}
+ }
