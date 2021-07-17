@@ -4,7 +4,7 @@
  		public static SkyManager Instance = new SkyManager();
  		private float _lastDepth;
  		private LinkedList<CustomSky> _activeSkies = new LinkedList<CustomSky>();
-+		private double _timePass;
++		private double _timePass; // Added by TML; used to account for more precise time rates.
  
  		public void Reset() {
  			foreach (CustomSky value in _effects.Values) {

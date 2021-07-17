@@ -27,7 +27,7 @@
  		private static bool fossilBreak = false;
  		public const bool BUBBLES_SOLID_STATE_FOR_HOUSING = true;
  		private static bool skipFramingDuringGen = false;
-+		private static double _timePass = 0.0; // tML
++		private static double _timePass = 0.0; // Added by TML; used to account for more precise time rates.
  
  		public static UnifiedRandom genRand {
  			get {

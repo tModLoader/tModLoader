@@ -9,7 +9,7 @@
  		public static float Severity;
  		public static float IntendedSeverity;
  		private static bool _effectsUp;
-+		private static double _timePass;
++		private static double _timePass; // Added by TML; used to account for more precise time rates.
  
  		private static bool HasSufficientWind() => Math.Abs(Main.windSpeedCurrent) >= 0.6f;
  

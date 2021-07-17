@@ -8,7 +8,7 @@
 +		private double _delayUntilNextAttempt;
  		private const int DELAY_BETWEEN_ATTEMPTS = 60;
  		private List<Point> _stumpCoords = new List<Point>();
-+		private double _timePass;
++		private double _timePass; // Added by TML; used to account for more precise time rates.
  
  		public void WorldClear() {
  			_canSpawnFairies = false;
