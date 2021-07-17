@@ -3757,6 +3757,21 @@
 +				throw;
  			}
  		}
+ 
+@@ -47157,10 +_,13 @@
+ 			if (gameMenu || netMode == 2)
+ 				bgTopY = -200;
+ 
++			/*
+ 			int num3 = dayRate;
+ 			if (num3 < 1)
+ 				num3 = 1;
++			*/
+ 
++			double num3 = desiredWorldEventsUpdateRate;
+ 			float num4 = 0.0005f * (float)num3;
+ 			if (gameMenu)
+ 				num4 *= 20f;
 @@ -47227,8 +_,8 @@
  			UpdateAtmosphereTransparencyToSkyColor();
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
