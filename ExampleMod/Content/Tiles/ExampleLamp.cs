@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Tiles
 	{
 		private Asset<Texture2D> flameTexture;
 
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// Properties
 			Main.tileLighted[Type] = true;
 			Main.tileFrameImportant[Type] = true;

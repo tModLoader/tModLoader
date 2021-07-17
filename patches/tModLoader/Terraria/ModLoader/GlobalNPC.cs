@@ -23,6 +23,8 @@ namespace Terraria.ModLoader
 			NPCLoader.globalNPCs.Add(this);
 		}
 
+		public sealed override void SetupContent() => SetStaticDefaults();
+
 		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
 
 		/// <summary>
