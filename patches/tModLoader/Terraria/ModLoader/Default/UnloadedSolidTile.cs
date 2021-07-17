@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.Default
 	{
 		public override string Texture => "ModLoader/UnloadedSolidTile";
 
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			TileIO.Tiles.unloadedTypes.Add(Type);
 
 			Main.tileFrameImportant[Type] = true;
