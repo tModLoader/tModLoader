@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria.GameContent;
 using Terraria.ID;
 
@@ -35,26 +35,24 @@ namespace Terraria.ModLoader
 		}
 
 		public sealed override void SetupContent() {
-			TextureAssets.Buff[Type] = ModContent.Request<Texture2D>(Texture);
-			
-			SetStaticDefaults();
-			
+			TextureAssets.Buff[Type] = ModContent.GetTexture(Texture);
+			SetDefaults();
 			BuffID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>
-		/// Allows you to modify the properties after initial loading has completed.
-		/// <br/> This is where all buff related assignments go.
-		/// <br/> For example:
+		/// This is where all buff related assignments go. For example:
 		/// <list type="bullet">
-		/// <item> Main.debuff[Type] = true; </item>
-		/// <item> Main.buffNoTimeDisplay[Type] = true; </item>
-		/// <item> Main.pvpBuff[Type] = true; </item>
-		/// <item> Main.vanityPet[Type] = true; </item>
-		/// <item> Main.lightPet[Type] = true; </item>
+		/// <item>Main.buffName[Type] = "Display Name";</item>
+		/// <item>Main.buffTip[Type] = "Buff Tooltip";</item>
+		/// <item>Main.debuff[Type] = true;</item>
+		/// <item>Main.buffNoTimeDisplay[Type] = true;</item>
+		/// <item>Main.vanityPet[Type] = true;</item>
+		/// <item>Main.lightPet[Type] = true;</item>
 		/// </list>
 		/// </summary>
-		public override void SetStaticDefaults() { }
+		public virtual void SetDefaults() {
+		}
 
 		/// <summary>
 		/// Allows you to make this buff give certain effects to the given player. If you remove the buff from the player, make sure the decrement the buffIndex parameter by 1.

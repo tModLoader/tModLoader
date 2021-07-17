@@ -4,7 +4,7 @@ namespace ExampleMod.Content.Dusts
 {
 	public class ExampleSolution : ModDust
 	{
-		public override void SetStaticDefaults() {
+		public override void SetDefaults() {
 			UpdateType = 110;
 		}
 	}

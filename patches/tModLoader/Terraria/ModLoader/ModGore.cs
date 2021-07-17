@@ -23,8 +23,6 @@ namespace Terraria.ModLoader
 			GoreLoader.RegisterModGore(this);
 		}
 
-		public sealed override void SetupContent() => SetStaticDefaults();
-
 		/// <summary>
 		/// Allows you to modify a gore's fields when it is created.
 		/// </summary>

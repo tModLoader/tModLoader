@@ -6,7 +6,7 @@ namespace ExampleMod.Content.Pets.ExamplePet
 {
 	public class ExamplePetBuff : ModBuff
 	{
-		public override void SetStaticDefaults() {
+		public override void SetDefaults() {
 			DisplayName.SetDefault("Paper Airplane");
 			Description.SetDefault(@"""Let this pet be an example to you!""");
 

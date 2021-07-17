@@ -8,15 +8,18 @@ namespace Terraria.GameContent.Bestiary
 {
 	public class ModSourceBestiaryInfoElement : ModBestiaryInfoElement
 	{
-		public ModSourceBestiaryInfoElement(ModLoader.Mod mod, string displayName) {
+		private ModLoader.Assets.ModAssetRepository _assets;
+
+		public ModSourceBestiaryInfoElement(ModLoader.Mod mod, string displayName, ModLoader.Assets.ModAssetRepository assets) {
 			_mod = mod;
 			_displayName = displayName;
+			_assets = assets;
 		}
 
 		public override UIElement GetFilterImage() {
 			Asset<Texture2D> asset;
-			if (_mod.HasAsset("icon_small")) {
-				asset = _mod.Assets.Request<Texture2D>("icon_small");
+			if (_assets.HasAsset<Texture2D>("icon_small")) {
+				asset = _assets.Request<Texture2D>("icon_small");
 				if (asset.Size() == new Vector2(30)) {
 					return new UIImage(asset) {
 						HAlign = 0.5f,

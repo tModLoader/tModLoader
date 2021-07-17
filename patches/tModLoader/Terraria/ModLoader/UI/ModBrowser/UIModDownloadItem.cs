@@ -4,14 +4,16 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
 using ReLogic.Content;
-using ReLogic.Utilities;
+using ReLogic.Content.Readers;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -328,15 +330,18 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			try {
 				if (!e.Cancelled && e.Error == null) {
 					byte[] data = e.Result;
-					using (var buffer = new MemoryStream(data)) {
-						var iconTexture = Main.Assets.CreateUntracked<Texture2D>(buffer, ".png");
 
-						_modIcon = new UIImage(iconTexture) {
-							Left = { Percent = 0f },
-							Top = { Percent = 0f }
-						};
-						_modIconStatus = ModIconStatus.READY;
-						success = true;
+					using (var reader = new PngReader(Main.instance.GraphicsDevice)) {
+						using (var buffer = new MemoryStream(data)) {
+							var iconTexture = ModLoader.ManifestAssets.CreateAsset($"{ModName}/icon.png", reader.FromStream<Texture2D>(buffer));
+
+							_modIcon = new UIImage(iconTexture) {
+								Left = { Percent = 0f },
+								Top = { Percent = 0f }
+							};
+							_modIconStatus = ModIconStatus.READY;
+							success = true;
+						}
 					}
 				}
 			}

@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 	// TODO: Smart Cursor Outlines and tModLoader support
 	public class ExampleDoorClosed : ModTile
 	{
-		public override void SetStaticDefaults() {
+		public override void SetDefaults() {
 			// Properties
 			Main.tileFrameImportant[Type] = true;
 			Main.tileBlockLight[Type] = true;

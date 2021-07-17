@@ -301,7 +301,6 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookUseTimeMultiplier = AddHook<Func<Item, Player, float>>(g => g.UseTimeMultiplier);
-
 		public static float UseTimeMultiplier(Item item, Player player) {
 			if (item.IsAir)
 				return 1f;
@@ -315,31 +314,15 @@ namespace Terraria.ModLoader
 			return multiplier;
 		}
 
-		private static HookList HookUseAnimationMultiplier = AddHook<Func<Item, Player, float>>(g => g.UseAnimationMultiplier);
-
-		public static float UseAnimationMultiplier(Item item, Player player) {
+		private static HookList HookMeleeSpeedMultiplier = AddHook<Func<Item, Player, float>>(g => g.MeleeSpeedMultiplier);
+		public static float MeleeSpeedMultiplier(Item item, Player player) {
 			if (item.IsAir)
 				return 1f;
 
-			float multiplier = item.ModItem?.UseAnimationMultiplier(player) ?? 1f;
+			float multiplier = item.ModItem?.MeleeSpeedMultiplier(player) ?? 1f;
 
-			foreach (var g in HookUseAnimationMultiplier.Enumerate(item.globalItems)) {
-				multiplier *= g.UseAnimationMultiplier(item, player);
-			}
-
-			return multiplier;
-		}
-
-		private static HookList HookUseSpeedMultiplier = AddHook<Func<Item, Player, float>>(g => g.UseSpeedMultiplier);
-
-		public static float UseSpeedMultiplier(Item item, Player player) {
-			if (item.IsAir)
-				return 1f;
-
-			float multiplier = item.ModItem?.UseSpeedMultiplier(player) ?? 1f;
-
-			foreach (var g in HookUseSpeedMultiplier.Enumerate(item.globalItems)) {
-				multiplier *= g.UseSpeedMultiplier(item, player);
+			foreach (var g in HookMeleeSpeedMultiplier.Enumerate(item.globalItems)) {
+				multiplier *= g.MeleeSpeedMultiplier(item, player);
 			}
 
 			return multiplier;
@@ -726,40 +709,23 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookUseItem = AddHook<Func<Item, Player, bool?>>(g => g.UseItem);
+		private static HookList HookUseItem = AddHook<Func<Item, Player, bool>>(g => g.UseItem);
 		/// <summary>
-		/// Returns false if any of ModItem.UseItem or GlobalItem.UseItem return false.
-		/// Returns true if anything returns true without returning false.
-		/// Returns null by default.
+		/// Returns true if any of ModItem.UseItem or GlobalItem.UseItem return true
 		/// Does not fail fast (calls every hook)
 		/// </summary>
-		public static bool? UseItem(Item item, Player player) {
+		public static bool UseItem(Item item, Player player) {
 			if (item.IsAir)
 				return false;
 
-			bool? result = null;
+			bool flag = false;
+			if (item.ModItem != null)
+				flag |= item.ModItem.UseItem(player);
 
-			foreach (var g in HookUseItem.Enumerate(item.globalItems)) {
-				bool? useItem = g.UseItem(item, player);
+			foreach (var g in HookUseItem.Enumerate(item.globalItems))
+				flag |= g.UseItem(item, player);
 
-				if (useItem.HasValue && result != false) {
-					result = useItem.Value;
-				}
-			}
-
-			bool? modItemResult = item.ModItem?.UseItem(player);
-
-			return result ?? modItemResult;
-		}
-
-		private static HookList HookUseAnimation = AddHook<Action<Item, Player>>(g => g.UseAnimation);
-		
-		public static void UseAnimation(Item item, Player player) {
-			foreach (var g in HookUseAnimation.Enumerate(item.globalItems)) {
-				g.Instance(item).UseAnimation(item, player);
-			}
-
-			item.ModItem?.UseAnimation(player);
+			return flag;
 		}
 
 		private static HookList HookConsumeItem = AddHook<Func<Item, Player, bool>>(g => g.ConsumeItem);

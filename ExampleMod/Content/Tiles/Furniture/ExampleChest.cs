@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 {
 	public class ExampleChest : ModTile
 	{
-		public override void SetStaticDefaults() {
+		public override void SetDefaults() {
 			// Properties
 			Main.tileSpelunker[Type] = true;
 			Main.tileContainer[Type] = true;

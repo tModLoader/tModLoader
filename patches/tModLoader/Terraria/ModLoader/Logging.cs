@@ -64,7 +64,7 @@ namespace Terraria.ModLoader
 			LoggingHooks.Init();
 			LogArchiver.ArchiveLogs();
 			if (!dedServ)
-				GraphicsChangeTracker.RedirectLogs();
+				GLCallLocker.RedirectLogs();
 		}
 
 		private static void ConfigureAppenders(bool dedServ) {

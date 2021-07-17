@@ -19,8 +19,6 @@ namespace Terraria.ModLoader
 			Slot = LoaderManager.Get<UndergroundBackgroundStylesLoader>().Register(this);
 		}
 
-		public sealed override void SetupContent() => SetStaticDefaults();
-
 		/// <summary>
 		/// Allows you to determine which textures make up the background by assigning their background slots/IDs to the given array. Mod.GetBackgroundSlot may be useful here. Index 0 is the texture on the border of the ground and sky layers. Index 1 is the texture drawn between rock and ground layers. Index 2 is the texture on the border of ground and rock layers. Index 3 is the texture drawn in the rock layer. The border images are 160x16 pixels, and the others are 160x96, but it seems like the right 32 pixels of each is a duplicate of the far left 32 pixels.
 		/// </summary>
@@ -35,8 +33,6 @@ namespace Terraria.ModLoader
 		protected override sealed void Register() {
 			Slot = LoaderManager.Get<SurfaceBackgroundStylesLoader>().Register(this);
 		}
-
-		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Allows you to modify the transparency of all background styles that exist. In general, you should move the index equal to this style's slot closer to 1, and all other indexes closer to 0. The transitionSpeed parameter is what you should add/subtract to each element of the fades parameter. See the ExampleMod for an example.
@@ -86,8 +82,6 @@ namespace Terraria.ModLoader
 			ModTypeLookup<GlobalBackgroundStyle>.Register(this);
 			GlobalBackgroundStyleLoader.globalBackgroundStyles.Add(this);
 		}
-
-		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Allows you to change which underground background style is being used.

@@ -103,7 +103,7 @@
  						int num = 6;
  						if (ItemSlot.IsABuildingItem(player.inventory[player.selectedItem]))
 -							num = player.inventory[player.selectedItem].useTime;
-+							num = CombinedHooks.TotalUseTime(player.inventory[player.selectedItem].useTime, player, player.inventory[player.selectedItem]);
++							num = PlayerLoader.TotalUseTime(player.inventory[player.selectedItem].useTime, player, player.inventory[player.selectedItem]);
  
  						DpadSnapCooldown[i] = num;
  						zero += vector;

@@ -1,4 +1,7 @@
-﻿namespace Terraria.ModLoader
+﻿using Microsoft.Xna.Framework.Graphics;
+using Terraria.DataStructures;
+
+namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// A class that is used to modify existing info displays (i.e. the things that the Cell Phone uses to communicate information).
@@ -7,8 +10,6 @@
 	public abstract class GlobalInfoDisplay : ModType
 	{
 		protected sealed override void Register() => InfoDisplayLoader.AddGlobalInfoDisplay(this);
-
-		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Allows you to modify whether or not a given InfoDisplay is active. Returns null (no change from default behavior) by default for all InfoDisplays.

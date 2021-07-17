@@ -52,7 +52,7 @@ namespace Terraria.ModLoader
 			TileLoader.globalTiles.Add(this);
 		}
 
-		public sealed override void SetupContent() => SetStaticDefaults();
+		public sealed override void SetupContent() => SetDefaults();
 
 		/// <summary>
 		/// Allows you to modify the chance the tile at the given coordinates has of spawning a certain critter when the tile is killed.

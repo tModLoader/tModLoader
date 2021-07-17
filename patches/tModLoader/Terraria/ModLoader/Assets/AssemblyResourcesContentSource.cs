@@ -8,26 +8,67 @@ using ReLogic.Content.Sources;
 
 namespace Terraria.ModLoader.Assets
 {
-	public sealed class AssemblyResourcesContentSource : ContentSource
+	public sealed class AssemblyResourcesContentSource : IContentSource, IDisposable
 	{
+		private static readonly StringComparer StringComparer = StringComparer.CurrentCultureIgnoreCase;
+
+		public IContentValidator ContentValidator { get; set; }
 
 		private readonly string RootPath;
-		private readonly Assembly assembly;
+		private readonly List<string> ResourceNames;
+		private readonly RejectedAssetCollection Rejections;
+		private readonly Dictionary<string, string> PathRedirects;
 
-		public AssemblyResourcesContentSource(Assembly assembly, string rootPath = null) {
-			this.assembly = assembly;
+		private Assembly assembly;
+
+		public AssemblyResourcesContentSource(Assembly assembly, string rootPath = null)
+		{
+			RootPath = rootPath ?? "";
+			Rejections = new RejectedAssetCollection();
 
 			IEnumerable<string> resourceNames = assembly.GetManifestResourceNames();
-			if (rootPath != null) {
+
+			if (RootPath != null) {
 				resourceNames = resourceNames
-					.Where(p => p.StartsWith(rootPath))
-					.Select(p => p.Substring(rootPath.Length));
+					.Where(p => p.StartsWith(RootPath))
+					.Select(p => p.Substring(RootPath.Length));
 			}
 
-			RootPath = rootPath ?? "";
-			SetAssetNames(resourceNames);
+			ResourceNames = resourceNames.ToList();
+
+			this.assembly = assembly;
 		}
 
-		public override Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(RootPath + assetName);
+		//Assets
+		public bool HasAsset(string assetName) => ResourceNames.Any(s => StringComparer.Equals(s, assetName));
+		public string GetExtension(string assetName) => Path.GetExtension(assetName);
+		public Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(RootPath + assetName);
+		public IEnumerable<string> EnumerateFiles() => ResourceNames;
+		//Etc
+		public void Dispose()
+		{
+			assembly = null;
+
+			ResourceNames.Clear();
+			PathRedirects.Clear();
+
+			ClearRejections();
+		}
+
+		//Rejections
+		public void ClearRejections() => Rejections.Clear();
+		public void RejectAsset(string assetName, IRejectionReason reason) => Rejections.Reject(assetName, reason);
+		public bool TryGetRejections(List<string> rejectionReasons) => Rejections.TryGetRejections(rejectionReasons);
+
+		public List<string> GetAllAssetsStartingWith(string assetNameStart) {
+			var list = new List<string>();
+
+			foreach (string path in EnumerateFiles()) {
+				if (path.StartsWith(assetNameStart, StringComparison.CurrentCultureIgnoreCase))
+					list.Add(path);
+			}
+
+			return list;
+		}
 	}
 }

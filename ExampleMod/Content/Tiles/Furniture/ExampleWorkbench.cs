@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 {
 	public class ExampleWorkbench : ModTile
 	{
-		public override void SetStaticDefaults() {
+		public override void SetDefaults() {
 			// Properties
 			Main.tileTable[Type] = true;
 			Main.tileSolidTop[Type] = true;

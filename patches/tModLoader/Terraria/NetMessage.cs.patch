@@ -63,7 +63,7 @@
  							BitsByte bb6 = (byte)0;
  							for (int num13 = 0; num13 < 8; num13++) {
  								bb6[num13] = player5.hideVisibleAccessory[num13];
-@@ -157,12 +_,19 @@
+@@ -157,12 +_,21 @@
  
  							num8 = item5.stack;
  							num9 = item5.netID;
@@ -71,18 +71,18 @@
  							if (num8 < 0)
  								num8 = 0;
  
--							writer.Write((short)num8);
--							writer.Write((byte)number3);
--							writer.Write((short)num9);
+ 							writer.Write((short)num8);
++
 +							if (ModNet.AllowVanillaClients) {
-+								ItemIO.WriteShortVanillaStack(num8, writer);
-+								ItemIO.WriteByteVanillaPrefix(item5, writer);
-+								ItemIO.WriteShortVanillaID(item5, writer);
++								ItemIO.WriteByteVanillaPrefix((int)number3, writer);
 +							}
 +							else {
-+								ItemIO.Send(item5, writer, writeStack: true);
+-							writer.Write((byte)number3);
++								writer.Write((int)number3);
 +							}
 +
+ 							writer.Write((short)num9);
++							ItemIO.SendModData(item5, writer);
  							break;
  						}
  					case 7: {

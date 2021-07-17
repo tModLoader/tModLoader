@@ -54,8 +54,6 @@ namespace Terraria.ModLoader
 			CommandLoader.Add(this);
 		}
 
-		public sealed override void SetupContent() => SetStaticDefaults();
-
 		/// <summary>The code that is executed when the command is triggered.</summary>
 		public abstract void Action(CommandCaller caller, string input, string[] args);
 	}

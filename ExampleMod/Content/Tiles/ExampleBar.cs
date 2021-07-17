@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Tiles
 {
 	public class ExampleBar : ModTile
 	{
-		public override void SetStaticDefaults() {
+		public override void SetDefaults() {
 			Main.tileShine[Type] = 1100;
 			Main.tileSolid[Type] = true;
 			Main.tileSolidTop[Type] = true;

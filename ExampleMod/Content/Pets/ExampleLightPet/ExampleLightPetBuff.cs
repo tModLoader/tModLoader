@@ -6,7 +6,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 {
 	public class ExampleLightPetBuff : ModBuff
 	{
-		public override void SetStaticDefaults() {
+		public override void SetDefaults() {
 			DisplayName.SetDefault("Annoying Light");
 			Description.SetDefault("Ugh, soooo annoying");
 

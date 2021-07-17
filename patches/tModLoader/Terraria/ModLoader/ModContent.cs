@@ -22,7 +22,6 @@ using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.ModLoader.Utilities;
-using Terraria.Initializers;
 
 namespace Terraria.ModLoader
 {
@@ -90,49 +89,100 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets the asset with the specified name. Throws an Exception if the asset does not exist. 
+		/// Gets the texture with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithoutExtension". Throws an ArgumentException if the texture does not exist. If a vanilla texture is desired, the format "Terraria/Images/FileNameWithoutExtension" will reference an image from the "terraria/Images/Content" folder. Note: Texture2D is in the Microsoft.Xna.Framework.Graphics namespace.
 		/// </summary>
-		/// <param name="name">The path to the asset without extension, including the mod name (or Terraria) for vanilla assets. Eg "ModName/Folder/FileNameWithoutExtension"</param>
-		public static Asset<T> Request<T>(string name, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class {
+		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
+		public static Asset<Texture2D> GetTexture(string name) {
+			if (Main.dedServ)
+				return null;
+
 			SplitName(name, out string modName, out string subName);
 
-			// Initialize Main.Assets on server in case it hasn't been initialized. This prevents later crashes when checking Terraria assets
-			if (Main.dedServ && Main.Assets == null)
-				Main.Assets = new AssetRepository(null);
-
-			if (modName == "Terraria")
-				return Main.Assets.Request<T>(subName, mode);
+			if(modName == "Terraria")
+				return Main.Assets.Request<Texture2D>(subName);
 
 			if (!ModLoader.TryGetMod(modName, out var mod))
 				throw new MissingResourceException($"Missing mod: {name}");
 
-			return mod.Assets.Request<T>(subName, mode);
+			return mod.GetTexture(subName);
 		}
 
 		/// <summary>
-		/// Returns whether or not a asset with the specified name exists.
-		/// Includes the mod name prefix like GetAsset
+		/// Returns whether or not a texture with the specified name exists.
 		/// </summary>
-		public static bool HasAsset(string name) {
+		public static bool TextureExists(string name) {
 			if (Main.dedServ || string.IsNullOrWhiteSpace(name) || !name.Contains('/'))
 				return false;
 
 			SplitName(name, out string modName, out string subName);
 
 			if (modName == "Terraria")
-				return Main.AssetSourceController.StaticSource.HasAsset(subName);
+				return (Main.instance.Content as TMLContentManager).ImageExists(subName);
 
-			return ModLoader.TryGetMod(modName, out var mod) && mod.RootContentSource.HasAsset(subName);
+			return ModLoader.TryGetMod(modName, out var mod) && mod.TextureExists(subName);
 		}
 
-		public static bool RequestIfExists<T>(string name, out Asset<T> asset, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class {
-			if (!HasAsset(name)) {
-				asset = default;
+		/// <summary>
+		/// Returns whether or not a texture with the specified name exists. texture will be populated with null if not found, and the texture if found.
+		/// </summary>
+		/// <param name="name">The texture name that is requested</param>
+		/// <param name="texture">The texture itself will be output to this</param>
+		/// <returns>True if the texture is found, false otherwise.</returns>
+		internal static bool TryGetTexture(string name, out Asset<Texture2D> texture)
+		{
+			texture = null;
+
+			if (Main.dedServ || string.IsNullOrWhiteSpace(name) || !name.Contains('/')) {
 				return false;
 			}
 
-			asset = Request<T>(name, mode);
-			return true;
+			SplitName(name, out string modName, out string subName);
+
+			if (modName == "Terraria") {
+				if ((Main.instance.Content as TMLContentManager).ImageExists(subName)) {
+					texture = Main.Assets.Request<Texture2D>(subName);
+
+					return true;
+				}
+
+				return false;
+			}
+
+			if (ModLoader.TryGetMod(modName, out var mod) && mod.TextureExists(subName)) {
+				texture = mod.GetTexture(subName);
+
+				return true;
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Gets the sound with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the sound does not exist. Note: SoundEffect is in the Microsoft.Xna.Framework.Audio namespace.
+		/// </summary>
+		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
+		public static Asset<SoundEffect> GetSound(string name) {
+			if (Main.dedServ)
+				return null;
+
+			SplitName(name, out string modName, out string subName);
+
+			if (!ModLoader.TryGetMod(modName, out var mod))
+				throw new MissingResourceException("Missing mod: " + name);
+
+			return mod.GetSound(subName);
+		}
+
+		/// <summary>
+		/// Returns whether or not a sound with the specified name exists.
+		/// </summary>
+		public static bool SoundExists(string name) {
+			if (!name.Contains('/'))
+				return false;
+
+			SplitName(name, out string modName, out string subName);
+
+			return ModLoader.TryGetMod(modName, out var mod) && mod.SoundExists(subName);
 		}
 
 		/// <summary>
@@ -342,7 +392,6 @@ namespace Terraria.ModLoader
 				mod.SetupContent();
 				mod.PostSetupContent();
 				SystemLoader.PostSetupContent(mod);
-				mod.TransferAllAssets();
 			});
 
 			MemoryTracking.Finish();
@@ -504,14 +553,14 @@ namespace Terraria.ModLoader
 			Config.ConfigManager.Unload();
 			CustomCurrencyManager.Initialize();
 			EffectsTracker.RemoveModEffects();
-
+			
 			// ItemID.Search = IdDictionary.Create<ItemID, short>();
 			// NPCID.Search = IdDictionary.Create<NPCID, short>();
 			// ProjectileID.Search = IdDictionary.Create<ProjectileID, short>();
 			// TileID.Search = IdDictionary.Create<TileID, ushort>();
 			// WallID.Search = IdDictionary.Create<WallID, ushort>();
 			// BuffID.Search = IdDictionary.Create<BuffID, int>();
-
+			
 			ContentSamples.Initialize();
 
 			CleanupModReferences();
@@ -603,12 +652,6 @@ namespace Terraria.ModLoader
 
 			SplitName(assetName.Substring(5).Replace('\\', '/'), out var modName, out var entryPath);
 			return ModLoader.GetMod(modName).GetFileStream(entryPath, newFileStream);
-		}
-
-		internal static void TransferCompletedAssets() {
-			foreach (var mod in ModLoader.Mods)
-				if (mod.Assets is AssetRepository assetRepo && !assetRepo.IsDisposed)
-					assetRepo.TransferCompletedAssets();
 		}
 	}
 }

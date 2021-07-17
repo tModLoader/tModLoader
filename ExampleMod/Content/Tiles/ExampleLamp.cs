@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Tiles
 	{
 		private Asset<Texture2D> flameTexture;
 
-		public override void SetStaticDefaults() {
+		public override void SetDefaults() {
 			// Properties
 			Main.tileLighted[Type] = true;
 			Main.tileFrameImportant[Type] = true;
@@ -38,7 +38,7 @@ namespace ExampleMod.Content.Tiles
 
 			// Assets
 			if (!Main.dedServ) {
-				flameTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleLamp_Flame"); // We could also reuse Main.FlameTexture[] textures, but using our own texture is nice.
+				flameTexture = ModContent.GetTexture("ExampleMod/Content/Tiles/ExampleLamp_Flame"); // We could also reuse Main.FlameTexture[] textures, but using our own texture is nice.
 			}
 		}
 

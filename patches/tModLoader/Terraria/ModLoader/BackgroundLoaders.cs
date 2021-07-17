@@ -47,7 +47,7 @@ namespace Terraria.ModLoader
 			if (!mod.loading)
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
-			ModContent.Request<Texture2D>(texture);
+			ModContent.GetTexture(texture);
 
 			backgrounds[texture] = Instance.Reserve();
 		}
@@ -59,7 +59,7 @@ namespace Terraria.ModLoader
 
 			foreach (string texture in backgrounds.Keys) {
 				int slot = backgrounds[texture];
-				var tex = ModContent.Request<Texture2D>(texture);
+				var tex = ModContent.GetTexture(texture);
 
 				TextureAssets.Background[slot] = tex;
 				Main.backgroundWidth[slot] = tex.Width();
@@ -74,7 +74,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void AutoloadBackgrounds(Mod mod) {
-			foreach (string fullTexturePath in mod.RootContentSource.EnumerateAssets().Where(t => t.Contains("Backgrounds/"))) {
+			foreach (string fullTexturePath in mod.Assets.EnumeratePaths<Texture2D>().Where(t => t.Contains("Backgrounds/"))) {
 				string texturePath = Path.ChangeExtension(fullTexturePath, null);
 				string textureKey = $"{mod.Name}/{texturePath}";
 
@@ -126,8 +126,6 @@ namespace Terraria.ModLoader
 	[Autoload(Side = ModSide.Client)]
 	public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgroundStyle>
 	{
-		internal static bool loaded = false;
-
 		public SurfaceBackgroundStylesLoader() {
 			Initialize(Main.BG_STYLES_COUNT);
 		}
@@ -135,17 +133,12 @@ namespace Terraria.ModLoader
 		internal override void ResizeArrays() {
 			Array.Resize(ref Main.bgAlphaFrontLayer, TotalCount);
 			Array.Resize(ref Main.bgAlphaFarBackLayer, TotalCount);
-			loaded = true;
-		}
-
-		internal override void Unload() {
-			loaded = false;
 		}
 
 		public override void ChooseStyle(out int style, out SceneEffectPriority priority) {
 			priority = SceneEffectPriority.None; style = -1;
 
-			if (!loaded || !GlobalBackgroundStyleLoader.loaded) {
+			if (!GlobalBackgroundStyleLoader.loaded) {
 				return;
 			}
 
@@ -319,20 +312,10 @@ namespace Terraria.ModLoader
 		internal static readonly IList<GlobalBackgroundStyle> globalBackgroundStyles = new List<GlobalBackgroundStyle>();
 
 		internal static bool loaded = false;
-
-		// Hooks
-
-		internal delegate void DelegateChooseUndergroundBackgroundStyle(ref int style);
-		internal delegate void DelegateChooseSurfaceBackgroundStyle(ref int style);
-
-		internal static DelegateChooseUndergroundBackgroundStyle[] HookChooseUndergroundBackgroundStyle;
-		internal static DelegateChooseSurfaceBackgroundStyle[] HookChooseSurfaceBackgroundStyle;
 		internal static Action<int, int[]>[] HookFillUndergroundTextureArray;
 		internal static Action<int, float[], float>[] HookModifyFarSurfaceFades;
 
 		internal static void ResizeAndFillArrays(bool unloading = false) {
-			ModLoader.BuildGlobalHook(ref HookChooseUndergroundBackgroundStyle, globalBackgroundStyles, g => g.ChooseUndergroundBackgroundStyle);
-			ModLoader.BuildGlobalHook(ref HookChooseSurfaceBackgroundStyle, globalBackgroundStyles, g => g.ChooseSurfaceBackgroundStyle);
 			ModLoader.BuildGlobalHook(ref HookFillUndergroundTextureArray, globalBackgroundStyles, g => g.FillUndergroundTextureArray);
 			ModLoader.BuildGlobalHook(ref HookModifyFarSurfaceFades, globalBackgroundStyles, g => g.ModifyFarSurfaceFades);
 

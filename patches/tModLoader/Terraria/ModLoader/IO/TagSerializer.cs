@@ -66,8 +66,6 @@ namespace Terraria.ModLoader.IO
 		protected sealed override void Register() {
 			AddSerializer(this);
 		}
-
-		public sealed override void SetupContent() => SetStaticDefaults();
 	}
 
 	public abstract class TagSerializer<T, S> : TagSerializer

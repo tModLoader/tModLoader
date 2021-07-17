@@ -21,8 +21,6 @@ namespace Terraria.ModLoader
 			MenuLoader.Add(this);
 		}
 
-		public sealed override void SetupContent() => SetStaticDefaults();
-
 		/// <summary>
 		/// The logo texture shown when this ModMenu is active. If not overridden, it will use the tModLoader logo.
 		/// </summary>

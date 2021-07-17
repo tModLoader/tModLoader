@@ -10,8 +10,6 @@
 			RecipeLoader.Add(this);
 		}
 
-		public sealed override void SetupContent() => SetStaticDefaults();
-
 		/// <summary>
 		/// Whether or not the conditions are met for the given recipe to be available for the player to use. This hook can be used for conditions unrelated to items or tiles (for example, biome or time).
 		/// </summary>

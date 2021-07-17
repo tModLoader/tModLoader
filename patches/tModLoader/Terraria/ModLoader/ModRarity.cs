@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace Terraria.ModLoader
 {
@@ -10,8 +11,6 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModRarity>.Register(this);
 			Type = RarityLoader.Add(this);
 		}
-
-		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Your ModRarity's color.

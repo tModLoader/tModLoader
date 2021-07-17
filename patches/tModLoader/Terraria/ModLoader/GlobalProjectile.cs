@@ -21,8 +21,6 @@ namespace Terraria.ModLoader
 			ProjectileLoader.globalProjectiles.Add(this);
 		}
 
-		public sealed override void SetupContent() => SetStaticDefaults();
-
 		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
 
 		/// <summary>

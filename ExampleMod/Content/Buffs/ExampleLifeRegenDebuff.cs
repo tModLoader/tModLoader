@@ -7,7 +7,7 @@ namespace ExampleMod.Content.Buffs
 	// See ExampleLifeRegenDebuffPlayer.UpdateBadLifeRegen at the end of the file for more information
 	public class ExampleLifeRegenDebuff : ModBuff
 	{
-		public override void SetStaticDefaults() {
+		public override void SetDefaults() {
 			DisplayName.SetDefault("Fire debuff"); // Buff display name
 			Description.SetDefault("Losing life"); // Buff description
 			Main.debuff[Type] = true;  // Is it a debuff?

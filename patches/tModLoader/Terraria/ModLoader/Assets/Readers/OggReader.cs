@@ -2,14 +2,15 @@
 using NVorbis;
 using ReLogic.Content;
 using ReLogic.Content.Readers;
+using System;
 using System.IO;
 using Terraria.ModLoader.Audio;
 
 namespace Terraria.ModLoader.Assets
 {
-	public class OggReader : IAssetReader
+	public class OggReader : IAssetReader, IDisposable
 	{
-		T IAssetReader.FromStream<T>(Stream stream) where T : class {
+		public T FromStream<T>(Stream stream) where T : class {
 			if (typeof(T) != typeof(SoundEffect))
 				throw AssetLoadException.FromInvalidReader<OggReader, T>();
 
@@ -23,5 +24,11 @@ namespace Terraria.ModLoader.Assets
 
 			return new SoundEffect(buffer, reader.SampleRate, (AudioChannels)reader.Channels) as T;
 		}
+
+		public void Dispose() {
+
+		}
+
+		public Type[] GetAssociatedTypes() => new[] { typeof(SoundEffect) };
 	}
 }

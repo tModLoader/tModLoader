@@ -56,14 +56,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void SetDefaultStats(Player player) {}
 
-		protected sealed override void Register() {
+		protected override void Register() {
 			ClassName = LocalizationLoader.GetOrCreateTranslation(Mod, $"DamageClassName.{Name}");
 
 			ModTypeLookup<DamageClass>.Register(this);
 
 			Type = DamageClassLoader.Add(this);
 		}
-
-		public sealed override void SetupContent() => SetStaticDefaults();
 	}
 }

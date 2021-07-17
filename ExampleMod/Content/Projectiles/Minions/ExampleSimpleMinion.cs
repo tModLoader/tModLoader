@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 
 	public class ExampleSimpleMinionBuff : ModBuff
 	{
-		public override void SetStaticDefaults() {
+		public override void SetDefaults() {
 			DisplayName.SetDefault("Example Minion");
 			Description.SetDefault("The example minion will fight for you");
 

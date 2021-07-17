@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+using System;
+using System.Collections.Generic;
 using Terraria.GameContent;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -15,7 +17,7 @@ namespace Terraria.ModLoader
 		public int UpdateType { get; set; } = -1;
 
 		/// <summary> The sprite sheet that this type of dust uses. Normally a sprite sheet will consist of a vertical alignment of three 10 x 10 pixel squares, each one containing a possible look for the dust. </summary>
-		public Asset<Texture2D> Texture2D { get; private set; }
+		public Texture2D Texture2D { get; private set; }
 
 		/// <summary> The ID of this type of dust. </summary>
 		public int Type { get; internal set; }
@@ -27,14 +29,14 @@ namespace Terraria.ModLoader
 
 			Type = DustLoader.ReserveDustID();
 
-			Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.Request<Texture2D>(Texture) : TextureAssets.Dust;
+			Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.GetTexture(Texture).Value : TextureAssets.Dust.Value;
 		}
 
 		internal void Draw(Dust dust, Color alpha, float scale) {
-			Main.spriteBatch.Draw(Texture2D.Value, dust.position - Main.screenPosition, dust.frame, alpha, dust.rotation, new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
+			Main.spriteBatch.Draw(Texture2D, dust.position - Main.screenPosition, dust.frame, alpha, dust.rotation, new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
 
 			if (dust.color != default) {
-				Main.spriteBatch.Draw(Texture2D.Value, dust.position - Main.screenPosition, dust.frame, dust.GetColor(alpha), dust.rotation, new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
+				Main.spriteBatch.Draw(Texture2D, dust.position - Main.screenPosition, dust.frame, dust.GetColor(alpha), dust.rotation, new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
 			}
 
 			if (alpha == Color.Black) {
@@ -42,13 +44,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public sealed override void SetupContent() => SetStaticDefaults();
+		public sealed override void SetupContent() => SetDefaults();
 
 		/// <summary>
-		/// Allows you to modify the properties after initial loading has completed.
-		/// This is where you would update ModDust's UpdateType property and modify the Terraria.GameContent.ChildSafety.SafeDust array.
+		/// Allows you to set this ModDust's updateType field and modify the Terraria.GameContent.ChildSafety.SafeDust array.
 		/// </summary>
-		public override void SetStaticDefaults() { }
+		public virtual void SetDefaults() { }
 
 		/// <summary>
 		/// Allows you to modify a dust's fields when it is created.

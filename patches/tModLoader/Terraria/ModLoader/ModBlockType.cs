@@ -38,25 +38,18 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the properties after initial loading has completed.
-		/// <br/> This is where you would set the properties of this tile/wall. Many properties are stored as arrays throughout Terraria's code.
-		/// <br/> For example:
-		/// <list type="bullet">
-		/// <item> Main.tileSolid[Type] = true; </item>
-		/// <item> Main.tileSolidTop[Type] = true; </item>
-		/// <item> Main.tileBrick[Type] = true; </item>
-		/// <item> Main.tileBlockLight[Type] = true; </item>
-		/// </list>
-		/// </summary>
-		public override void SetStaticDefaults() { }
-
-		/// <summary>
 		/// Allows you to choose which minimap entry the tile/wall at the given coordinates will use. 0 is the first entry added by AddMapEntry, 1 is the second entry, etc. Returns 0 by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
 		public virtual ushort GetMapOption(int i, int j) {
 			return 0;
+		}
+
+		/// <summary>
+		/// Allows you to set the properties of this tile/wall. Many properties are stored as arrays throughout Terraria's code.
+		/// </summary>
+		public virtual void SetDefaults() {
 		}
 
 		/// <summary>

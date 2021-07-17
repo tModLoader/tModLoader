@@ -74,8 +74,8 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModBossBar>.Register(bossBar);
 
 			//Texture is optional
-			if (ModContent.RequestIfExists<Texture2D>(bossBar.Texture, out var bossBarTexture))
-				bossBarTextures[bossBar.index] = bossBarTexture;
+			if (ModContent.TextureExists(bossBar.Texture))
+				bossBarTextures[bossBar.index] = ModContent.GetTexture(bossBar.Texture);
 		}
 
 		internal static void AddGlobalBossBar(GlobalBossBar globalBossBar) {

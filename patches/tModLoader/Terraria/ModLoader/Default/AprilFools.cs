@@ -33,14 +33,12 @@ namespace Terraria.ModLoader.Default
 			Item.rare = 10;
 		}
 
-		public override bool? UseItem(Player player) {
-			const int Time = 3600 * 60;
-
-			player.AddBuff(BuffID.Wet, Time);
-			player.AddBuff(BuffID.Lovestruck, Time);
-			player.AddBuff(BuffID.Stinky, Time);
-			player.AddBuff(BuffID.Slimed, Time);
-
+		public override bool UseItem(Player player) {
+			const int time = 3600 * 60;
+			player.AddBuff(BuffID.Wet, time);
+			player.AddBuff(BuffID.Lovestruck, time);
+			player.AddBuff(BuffID.Stinky, time);
+			player.AddBuff(BuffID.Slimed, time);
 			return true;
 		}
 
