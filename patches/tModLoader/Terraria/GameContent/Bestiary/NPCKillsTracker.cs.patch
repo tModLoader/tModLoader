@@ -9,7 +9,7 @@
  
  		public void Save(BinaryWriter writer) {
  			lock (_killCountsByNpcId) {
-+				var vanillaOnly = _killCountsByNpcId.Where(pair => ContentSamples.NpcNetIdsByPersistentIds[pair.Key] < NPCID.Count);
++				var vanillaOnly = _killCountsByNpcId.Where(pair => ContentSamples.NpcNetIdsByPersistentIds.TryGetValue(pair.Key, out int netId) && netId < NPCID.Count);
 -				writer.Write(_killCountsByNpcId.Count);
 +				writer.Write(vanillaOnly.Count());
 -				foreach (KeyValuePair<string, int> item in _killCountsByNpcId) {

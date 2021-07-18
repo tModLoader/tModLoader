@@ -9,7 +9,7 @@
  
  		public void Save(BinaryWriter writer) {
  			lock (_entryCreationLock) {
-+				var vanillaOnly = _wasNearPlayer.Where(persistentId => ContentSamples.NpcNetIdsByPersistentIds[persistentId] < NPCID.Count);
++				var vanillaOnly = _wasNearPlayer.Where(persistentId => ContentSamples.NpcNetIdsByPersistentIds.TryGetValue(persistentId, out int netId) && netId < NPCID.Count);
 -				writer.Write(_wasNearPlayer.Count);
 +				writer.Write(vanillaOnly.Count());
 -				foreach (string item in _wasNearPlayer) {
