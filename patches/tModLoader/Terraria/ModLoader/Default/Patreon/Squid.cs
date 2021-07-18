@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		}
 	}
 
-	[AutoloadEquip(EquipType.BodyLegacy)]
+	[AutoloadEquip(EquipType.Body)]
 	internal class Squid_Body : PatreonItem
 	{
 		public override void SetDefaults() {

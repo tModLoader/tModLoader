@@ -36,32 +36,11 @@ namespace Terraria.ModLoader
 
 			slotToId[EquipType.Head] = new Dictionary<int, int>();
 			slotToId[EquipType.Body] = new Dictionary<int, int>();
-			slotToId[EquipType.BodyLegacy] = new Dictionary<int, int>();
 			slotToId[EquipType.Legs] = new Dictionary<int, int>();
 		}
 
 		internal static int ReserveEquipID(EquipType type)
-		{
-			if (type == EquipType.Body || type == EquipType.BodyLegacy) {
-				nextEquip[EquipType.BodyLegacy]++;
-
-				return nextEquip[EquipType.Body]++;
-			}
-
-			if (type == EquipType.HandsOn || type == EquipType.HandsOnLegacy) {
-				nextEquip[EquipType.HandsOnLegacy]++;
-
-				return nextEquip[EquipType.HandsOn]++;
-			}
-
-			if (type == EquipType.HandsOff || type == EquipType.HandsOffLegacy) {
-				nextEquip[EquipType.HandsOffLegacy]++;
-
-				return nextEquip[EquipType.HandsOff]++;
-			}
-
-			return nextEquip[type]++;
-		}
+			=> nextEquip[type]++;
 
 		/// <summary>
 		/// Gets the equipment texture for the specified equipment type and ID.
@@ -76,14 +55,14 @@ namespace Terraria.ModLoader
 		internal static void ResizeAndFillArrays() {
 			//Textures
 			Array.Resize(ref TextureAssets.ArmorHead, nextEquip[EquipType.Head]);
-			Array.Resize(ref TextureAssets.ArmorBody, nextEquip[EquipType.BodyLegacy]);
+			Array.Resize(ref TextureAssets.ArmorBody, nextEquip[EquipType.Body]);
 			Array.Resize(ref TextureAssets.ArmorBodyComposite, nextEquip[EquipType.Body]);
-			Array.Resize(ref TextureAssets.FemaleBody, nextEquip[EquipType.BodyLegacy]);
-			Array.Resize(ref TextureAssets.ArmorArm, nextEquip[EquipType.BodyLegacy]);
+			Array.Resize(ref TextureAssets.FemaleBody, nextEquip[EquipType.Body]);
+			Array.Resize(ref TextureAssets.ArmorArm, nextEquip[EquipType.Body]);
 			Array.Resize(ref TextureAssets.ArmorLeg, nextEquip[EquipType.Legs]);
-			Array.Resize(ref TextureAssets.AccHandsOn, nextEquip[EquipType.HandsOnLegacy]);
+			Array.Resize(ref TextureAssets.AccHandsOn, nextEquip[EquipType.HandsOn]);
 			Array.Resize(ref TextureAssets.AccHandsOnComposite, nextEquip[EquipType.HandsOn]);
-			Array.Resize(ref TextureAssets.AccHandsOff, nextEquip[EquipType.HandsOffLegacy]);
+			Array.Resize(ref TextureAssets.AccHandsOff, nextEquip[EquipType.HandsOff]);
 			Array.Resize(ref TextureAssets.AccHandsOffComposite, nextEquip[EquipType.HandsOff]);
 			Array.Resize(ref TextureAssets.AccBack, nextEquip[EquipType.Back]);
 			Array.Resize(ref TextureAssets.AccFront, nextEquip[EquipType.Front]);
@@ -106,13 +85,6 @@ namespace Terraria.ModLoader
 					string texture = equipTexture.Texture;
 					
 					GetTextureArray(type)[slot] = ModContent.Request<Texture2D>(texture);
-
-					if (type == EquipType.BodyLegacy) {
-						string femaleTexturePath = texture + "_Female";
-
-						TextureAssets.FemaleBody[slot] = ModContent.HasAsset(femaleTexturePath) ? ModContent.Request<Texture2D>(femaleTexturePath) : ModContent.Request<Texture2D>(texture);
-						TextureAssets.ArmorArm[slot] = ModContent.Request<Texture2D>(texture + "_Arms");
-					}
 					
 					if (type == EquipType.Body) {
 						ArmorIDs.Body.Sets.UsesNewFramingCode[slot] = true;
@@ -126,27 +98,17 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			Array.Resize(ref Item.headType, nextEquip[EquipType.Head]);
-			
-			foreach (var entry in slotToId[EquipType.Head]) {
-				Item.headType[entry.Key] = entry.Value;
+			static void ResizeAndRegisterType(EquipType equipType, ref int[] typeArray) {
+				Array.Resize(ref typeArray, nextEquip[equipType]);
+
+				foreach (var entry in slotToId[equipType]) {
+					typeArray[entry.Key] = entry.Value;
+				}
 			}
 
-			Array.Resize(ref Item.bodyType, nextEquip[EquipType.Body]);
-
-			foreach (var entry in slotToId[EquipType.Body]) {
-				Item.bodyType[entry.Key] = entry.Value;
-			}
-			
-			foreach (var entry in slotToId[EquipType.BodyLegacy]) {
-				Item.bodyType[entry.Key] = entry.Value;
-			}
-
-			Array.Resize(ref Item.legType, nextEquip[EquipType.Legs]);
-			
-			foreach (var entry in slotToId[EquipType.Legs]) {
-				Item.legType[entry.Key] = entry.Value;
-			}
+			ResizeAndRegisterType(EquipType.Head, ref Item.headType);
+			ResizeAndRegisterType(EquipType.Body, ref Item.bodyType);
+			ResizeAndRegisterType(EquipType.Legs, ref Item.legType);
 		}
 
 		internal static void Unload() {
@@ -157,91 +119,49 @@ namespace Terraria.ModLoader
 
 			idToSlot.Clear();
 			slotToId[EquipType.Head].Clear();
-			slotToId[EquipType.BodyLegacy].Clear();
 			slotToId[EquipType.Body].Clear();
 			slotToId[EquipType.Legs].Clear();
 		}
 
-		internal static int GetNumVanilla(EquipType type) {
-			switch (type) {
-				case EquipType.Head:
-					return Main.numArmorHead;
-				case EquipType.Body:
-				case EquipType.BodyLegacy:
-					return Main.numArmorBody;
-				case EquipType.Legs:
-					return Main.numArmorLegs;
-				case EquipType.HandsOn:
-				case EquipType.HandsOnLegacy:
-					return Main.numAccHandsOn;
-				case EquipType.HandsOff:
-				case EquipType.HandsOffLegacy:
-					return Main.numAccHandsOff;
-				case EquipType.Back:
-					return Main.numAccBack;
-				case EquipType.Front:
-					return Main.numAccFront;
-				case EquipType.Shoes:
-					return Main.numAccShoes;
-				case EquipType.Waist:
-					return Main.numAccWaist;
-				case EquipType.Wings:
-					return Main.maxWings;
-				case EquipType.Shield:
-					return Main.numAccShield;
-				case EquipType.Neck:
-					return Main.numAccNeck;
-				case EquipType.Face:
-					return Main.numAccFace;
-				case EquipType.Balloon:
-					return Main.numAccBalloon;
-			}
-			return 0;
-		}
+		internal static int GetNumVanilla(EquipType type)
+			=> type switch {
+				EquipType.Head => Main.numArmorHead,
+				EquipType.Body => Main.numArmorBody,
+				EquipType.Legs => Main.numArmorLegs,
+				EquipType.HandsOn => Main.numAccHandsOn,
+				EquipType.HandsOff => Main.numAccHandsOff,
+				EquipType.Back => Main.numAccBack,
+				EquipType.Front => Main.numAccFront,
+				EquipType.Shoes => Main.numAccShoes,
+				EquipType.Waist => Main.numAccWaist,
+				EquipType.Wings => Main.maxWings,
+				EquipType.Shield => Main.numAccShield,
+				EquipType.Neck => Main.numAccNeck,
+				EquipType.Face => Main.numAccFace,
+				EquipType.Balloon => Main.numAccBalloon,
+				_ => 0,
+			};
 
-		internal static Asset<Texture2D>[] GetTextureArray(EquipType type) {
-			switch (type) {
-				case EquipType.Head:
-					return TextureAssets.ArmorHead;
-				case EquipType.BodyLegacy:
-					return TextureAssets.ArmorBody;
-				case EquipType.Body:
-					return TextureAssets.ArmorBodyComposite;
-				case EquipType.Legs:
-					return TextureAssets.ArmorLeg;
-				case EquipType.HandsOn:
-					return TextureAssets.AccHandsOnComposite;
-				case EquipType.HandsOnLegacy:
-					return TextureAssets.AccHandsOn;
-				case EquipType.HandsOff:
-					return TextureAssets.AccHandsOffComposite;
-				case EquipType.HandsOffLegacy:
-					return TextureAssets.AccHandsOff;
-				case EquipType.Back:
-					return TextureAssets.AccBack;
-				case EquipType.Front:
-					return TextureAssets.AccFront;
-				case EquipType.Shoes:
-					return TextureAssets.AccShoes;
-				case EquipType.Waist:
-					return TextureAssets.AccWaist;
-				case EquipType.Wings:
-					return TextureAssets.Wings;
-				case EquipType.Shield:
-					return TextureAssets.AccShield;
-				case EquipType.Neck:
-					return TextureAssets.AccNeck;
-				case EquipType.Face:
-					return TextureAssets.AccFace;
-				case EquipType.Balloon:
-					return TextureAssets.AccBalloon;
-			}
-
-			return null;
-		}
+		internal static Asset<Texture2D>[] GetTextureArray(EquipType type)
+			=> type switch {
+				EquipType.Head => TextureAssets.ArmorHead,
+				EquipType.Body => TextureAssets.ArmorBodyComposite,
+				EquipType.Legs => TextureAssets.ArmorLeg,
+				EquipType.HandsOn => TextureAssets.AccHandsOnComposite,
+				EquipType.HandsOff => TextureAssets.AccHandsOffComposite,
+				EquipType.Back => TextureAssets.AccBack,
+				EquipType.Front => TextureAssets.AccFront,
+				EquipType.Shoes => TextureAssets.AccShoes,
+				EquipType.Waist => TextureAssets.AccWaist,
+				EquipType.Wings => TextureAssets.Wings,
+				EquipType.Shield => TextureAssets.AccShield,
+				EquipType.Neck => TextureAssets.AccNeck,
+				EquipType.Face => TextureAssets.AccFace,
+				EquipType.Balloon => TextureAssets.AccBalloon,
+				_ => null,
+			};
 
 		internal static void SetSlot(Item item) {
-
 			if (!idToSlot.TryGetValue(item.type, out var slots))
 				return;
 
@@ -252,7 +172,6 @@ namespace Terraria.ModLoader
 					case EquipType.Head:
 						item.headSlot = slot;
 						break;
-					case EquipType.BodyLegacy:
 					case EquipType.Body:
 						item.bodySlot = slot;
 						break;
@@ -260,11 +179,9 @@ namespace Terraria.ModLoader
 						item.legSlot = slot;
 						break;
 					case EquipType.HandsOn:
-					case EquipType.HandsOnLegacy:
 						item.handOnSlot = (sbyte)slot;
 						break;
 					case EquipType.HandsOff:
-					case EquipType.HandsOffLegacy:
 						item.handOffSlot = (sbyte)slot;
 						break;
 					case EquipType.Back:
@@ -298,43 +215,24 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static int GetPlayerEquip(Player player, EquipType type) {
-			switch (type) {
-				case EquipType.Head:
-					return player.head;
-				case EquipType.Body:
-				case EquipType.BodyLegacy:
-					return player.body;
-				case EquipType.Legs:
-					return player.legs;
-				case EquipType.HandsOn:
-				case EquipType.HandsOnLegacy:
-					return player.handon;
-				case EquipType.HandsOff:
-				case EquipType.HandsOffLegacy:
-					return player.handoff;
-				case EquipType.Back:
-					return player.back;
-				case EquipType.Front:
-					return player.front;
-				case EquipType.Shoes:
-					return player.shoe;
-				case EquipType.Waist:
-					return player.waist;
-				case EquipType.Wings:
-					return player.wings;
-				case EquipType.Shield:
-					return player.shield;
-				case EquipType.Neck:
-					return player.neck;
-				case EquipType.Face:
-					return player.face;
-				case EquipType.Balloon:
-					return player.balloon;
-			}
-
-			return 0;
-		}
+		internal static int GetPlayerEquip(Player player, EquipType type)
+			=> type switch {
+				EquipType.Head => player.head,
+				EquipType.Body => player.body,
+				EquipType.Legs => player.legs,
+				EquipType.HandsOn => player.handon,
+				EquipType.HandsOff => player.handoff,
+				EquipType.Back => player.back,
+				EquipType.Front => player.front,
+				EquipType.Shoes => player.shoe,
+				EquipType.Waist => player.waist,
+				EquipType.Wings => player.wings,
+				EquipType.Shield => player.shield,
+				EquipType.Neck => player.neck,
+				EquipType.Face => player.face,
+				EquipType.Balloon => player.balloon,
+				_ => 0,
+			};
 
 		/// <summary>
 		/// Hook Player.PlayerFrame

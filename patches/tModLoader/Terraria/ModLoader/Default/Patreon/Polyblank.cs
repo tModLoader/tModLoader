@@ -10,7 +10,7 @@
 		}
 	}
 
-	[AutoloadEquip(EquipType.BodyLegacy)]
+	[AutoloadEquip(EquipType.Body)]
 	internal class Polyblank_Body : PatreonItem
 	{
 		public override void SetDefaults() {

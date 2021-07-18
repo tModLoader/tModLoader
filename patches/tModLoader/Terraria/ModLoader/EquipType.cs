@@ -7,12 +7,9 @@ namespace Terraria.ModLoader
 	{
 		Head,
 		Body,
-		BodyLegacy,
 		Legs,
 		HandsOn,
-		HandsOnLegacy,
 		HandsOff,
-		HandsOffLegacy,
 		Back,
 		Front,
 		Shoes,

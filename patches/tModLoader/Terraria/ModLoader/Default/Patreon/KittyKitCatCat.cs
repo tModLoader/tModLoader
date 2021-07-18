@@ -10,7 +10,7 @@
 		}
 	}
 
-	[AutoloadEquip(EquipType.BodyLegacy)]
+	[AutoloadEquip(EquipType.Body)]
 	internal class KittyKitCatCat_Body : PatreonItem
 	{
 		public override void SetDefaults() {
