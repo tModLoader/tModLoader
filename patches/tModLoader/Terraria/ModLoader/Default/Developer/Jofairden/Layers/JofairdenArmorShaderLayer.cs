@@ -6,7 +6,7 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader.Default.Developer.Jofairden
 {
-	internal abstract class AndromedonShader : AndromedonDrawLayer
+	internal abstract class JofairdenArmorShaderLayer : JofairdenArmorDrawLayer
 	{
 		public const int ShaderNumSegments = 8;
 		public const int ShaderDrawOffset = 2;
@@ -14,7 +14,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 		protected override void Draw(ref PlayerDrawSet drawInfo) {
 			DrawDataInfo drawDataInfo = GetData(drawInfo);
 			Player drawPlayer = drawInfo.drawPlayer;
-			var devPlayer = drawPlayer.GetModPlayer<DeveloperPlayer>();
+			var modPlayer = drawPlayer.GetModPlayer<JofairdenArmorEffectPlayer>();
 			SpriteEffects effects = SpriteEffects.None;
 
 			if (drawPlayer.direction == -1) {
@@ -29,7 +29,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 				drawDataInfo.Texture,
 				drawDataInfo.Position,
 				drawDataInfo.Frame,
-				Color.White * Main.essScale * devPlayer.AndromedonEffect.LayerStrength * devPlayer.AndromedonEffect.ShaderStrength,
+				Color.White * Main.essScale * modPlayer.LayerStrength * modPlayer.ShaderStrength,
 				drawDataInfo.Rotation,
 				drawDataInfo.Origin,
 				1f,

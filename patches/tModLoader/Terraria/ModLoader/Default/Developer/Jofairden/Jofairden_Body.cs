@@ -2,8 +2,9 @@
 
 namespace Terraria.ModLoader.Default.Developer.Jofairden
 {
+	[LegacyName("PowerRanger_Body")]
 	[AutoloadEquip(EquipType.Body)]
-	internal class PowerRanger_Body : AndromedonItem
+	internal class Jofairden_Body : JofairdenArmorItem
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
