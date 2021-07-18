@@ -19,8 +19,9 @@ using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIModSources : UIState
+	internal class UIModSources : UIState, IHaveBackButtonCommand
 	{
+		public UIState PreviousUIState { get; set; }
 		private readonly List<UIModSourceItem> _items = new List<UIModSourceItem>();
 		private UIList _modList;
 		private float modListViewPosition;
@@ -160,8 +161,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(11, -1, -1, 1);
-			Main.menuMode = 0;
+			(this as IHaveBackButtonCommand).HandleBackButtonUsage();
 		}
 
 		private void OpenSources(UIMouseEvent evt, UIElement listeningElement) {

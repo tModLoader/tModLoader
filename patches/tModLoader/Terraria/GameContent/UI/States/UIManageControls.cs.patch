@@ -8,14 +8,25 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
+@@ -18,6 +_,10 @@
+ {
+ 	public class UIManageControls : UIState
+ 	{
++		// Added by TML.
++		private const string ResetModKeybinds = "ResetModKeybinds";
++		private const string ClearModKeybinds = "ClearModKeybinds";
++
+ 		public static int ForceMoveTo = -1;
+ 		private const float PanelTextureHeight = 30f;
+ 		private static List<string> _BindingsFullLine = new List<string> {
 @@ -39,15 +_,20 @@
  			"sp10",
  			"sp11",
  			"sp12",
 -			"sp13"
 +			"sp13",
-+			"ResetModHotkeys",
-+			"ClearModHotkeys"
++			ResetModKeybinds,
++			ClearModKeybinds
  		};
  		private static List<string> _BindingsHalfSingleLine = new List<string> {
  			"sp9",
@@ -24,8 +35,8 @@
  			"sp12",
 -			"sp13"
 +			"sp13",
-+			"ResetModHotkeys",
-+			"ClearModHotkeys"
++			ResetModKeybinds,
++			ClearModKeybinds
  		};
 +		private static List<string> _ModBindings = new List<string>();
  		private bool OnKeyboard = true;
@@ -51,19 +62,21 @@
  				"Up",
  				"Down",
  				"Left",
-@@ -300,26 +_,39 @@
+@@ -300,26 +_,41 @@
  				"sp13"
  			};
  
 +			_BindingsFullLine.RemoveAll(x => x.Contains(":"));
 +			_ModBindings.Clear();
-+			foreach (var hotkey in HotKeyLoader.HotKeys) {
-+				_ModBindings.Add(hotkey.uniqueName);
-+				_BindingsFullLine.Add(hotkey.uniqueName);
++
++			foreach (var keybind in KeybindLoader.Keybinds) {
++				_ModBindings.Add(keybind.uniqueName);
++				_BindingsFullLine.Add(keybind.uniqueName);
 +			}
 +
-+			_ModBindings.Add("ResetModHotkeys");
-+			_ModBindings.Add("ClearModHotkeys");
++			_ModBindings.Add(ResetModKeybinds);
++			_ModBindings.Add(ClearModKeybinds);
++
  			InputMode currentInputMode = InputMode.Keyboard;
  			_bindsKeyboard.Add(CreateBindingGroup(0, bindings, currentInputMode));
  			_bindsKeyboard.Add(CreateBindingGroup(1, bindings4, currentInputMode));
@@ -115,20 +128,20 @@
  
  						return uIKeybindingSimpleListItem4;
  					}
-+				case "ResetModHotkeys": {
++				case ResetModKeybinds: {
 +						UIElement uIElement7 = new UIKeybindingSimpleListItem(() => Lang.menu[86].Value, color);
 +						uIElement7.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 +							string copyableProfileName = GetCopyableProfileName();
-+							PlayerInput.CurrentProfile.CopyModHotkeySettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode);
++							PlayerInput.CurrentProfile.CopyModKeybindSettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode);
 +						};
 +
 +						return uIElement7;
 +					}
-+				case "ClearModHotkeys": {
++				case ClearModKeybinds: {
 +						UIElement uIElement7 = new UIKeybindingSimpleListItem(() => "Clear", color);
 +						uIElement7.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-+							foreach (var modHotkey in HotKeyLoader.HotKeys) {
-+								PlayerInput.CurrentProfile.InputModes[currentInputMode].KeyStatus[modHotkey.uniqueName].Clear();
++							foreach (var modKeybind in KeybindLoader.Keybinds) {
++								PlayerInput.CurrentProfile.InputModes[currentInputMode].KeyStatus[modKeybind.uniqueName].Clear();
 +							}
 +						};
 +
@@ -142,7 +155,7 @@
  					}, 1008, color);
  				default:
 +					if (_ModBindings.Contains(bind)) {
-+						string defaultKey = HotKeyLoader.modHotKeys[bind].defaultKey;
++						string defaultKey = KeybindLoader.modKeybinds[bind].defaultBinding;
 +						UIElement container = new UIElement();
 +						var left = new UIKeybindingListItem(bind, currentInputMode, color);
 +						left.Width.Precent = 0.68f;
@@ -152,7 +165,7 @@
 +						var right = new UIKeybindingSimpleListItem(() => Lang.menu[86].Value + $" ({defaultKey})", color);
 +						right.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 +							string copyableProfileName = GetCopyableProfileName();
-+							PlayerInput.CurrentProfile.CopyIndividualModHotkeySettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode, bind);
++							PlayerInput.CurrentProfile.CopyIndividualModKeybindSettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode, bind);
 +						};
 +		
 +						right.Left.Precent = 0.7f;

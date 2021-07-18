@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Tiles
 	{
 		// If you want to know more about tiles, please follow this link
 		// https://github.com/tModLoader/tModLoader/wiki/Basic-Tile
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// This changes a Framed tile to a FrameImportant tile
 			// For modders, just remember to set this to true when you make a tile that uses a TileObjectData
 			// Or basically all tiles that aren't like dirt, ores, or other basic building tiles
@@ -50,8 +50,8 @@ namespace ExampleMod.Content.Tiles
 
 		public override bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
 			Tile tile = Main.tile[i, j];
-			Texture2D texture = ModContent.GetTexture("ExampleMod/Content/Tiles/ExampleAnimatedGlowmaskTile").Value;
-			Texture2D glowTexture = ModContent.GetTexture("ExampleMod/Content/Tiles/ExampleAnimatedGlowmaskTile_Glow").Value;
+			Texture2D texture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleAnimatedGlowmaskTile").Value;
+			Texture2D glowTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleAnimatedGlowmaskTile_Glow").Value;
 
 			// If you are using ModTile.SpecialDraw or PostDraw or PreDraw, use this snippet and add zero to all calls to spriteBatch.Draw
 			// The reason for this is to accommodate the shift in drawing coordinates that occurs when using the different Lighting mode
