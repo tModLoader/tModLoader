@@ -43,6 +43,21 @@
  					colorEyeWhites = drawPlayer.GetImmuneAlpha(Color.White, shadow);
  					colorEyes = drawPlayer.GetImmuneAlpha(drawPlayer.eyeColor, shadow);
  					colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting: false), shadow);
+@@ -1309,8 +_,14 @@
+ 				hairFrontFrame.Height = height;
+ 			}
+ 
++			/*
+ 			hidesTopSkin = (drawPlayer.body == 82 || drawPlayer.body == 83 || drawPlayer.body == 93 || drawPlayer.body == 21 || drawPlayer.body == 22);
+ 			hidesBottomSkin = (drawPlayer.body == 93 || drawPlayer.legs == 20 || drawPlayer.legs == 21);
++			*/
++			hidesTopSkin = (drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesTopSkin[drawPlayer.body]) || (drawPlayer.legs > 0 && ArmorIDs.Legs.Sets.HidesTopSkin[drawPlayer.legs]);
++			hidesBottomSkin = (drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesBottomSkin[drawPlayer.body]) || (drawPlayer.legs > 0 && ArmorIDs.Legs.Sets.HidesBottomSkin[drawPlayer.legs]);
++			isBottomOverriden = PlayerDrawLayers.IsBottomOverridden(ref this);
++
+ 			drawFloatingTube = drawPlayer.hasFloatingTube;
+ 			drawUnicornHorn = drawPlayer.hasUnicornHorn;
+ 			drawAngelHalo = drawPlayer.hasAngelHalo;
 @@ -1327,9 +_,9 @@
  		private void CreateCompositeData() {
  			frontShoulderOffset = Vector2.Zero;
