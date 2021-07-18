@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using System;
 using System.Linq;
 using Terraria.ID;
 
@@ -30,15 +31,15 @@ namespace Terraria.ModLoader.Default.Patreon
 					}
 
 					float distanceSquared = npc.DistanceSQ(playerCenter);
-					float intensity = 1f - System.MathF.Min(1f, distanceSquared / MaxDistanceSqr);
+					float intensity = 1f - MathF.Min(1f, distanceSquared / MaxDistanceSqr);
 
 					intensity *= intensity;
 
-					maxIntensity = System.MathF.Max(maxIntensity, intensity);
+					maxIntensity = MathF.Max(maxIntensity, intensity);
 				}
 
 				if (maxIntensity > 0f) {
-					float pulse = (System.MathF.Sin((float)Main.GameUpdateCount / 17f) * 0.25f) + 0.75f;
+					float pulse = (MathF.Sin((float)Main.GameUpdateCount / 17f) * 0.25f) + 0.75f;
 
 					Lighting.AddLight(playerCenter, Color.DeepSkyBlue.ToVector3() * maxIntensity * pulse * 1.5f);
 				}
