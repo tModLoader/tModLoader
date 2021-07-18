@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+using Terraria.Localization;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
@@ -48,16 +49,10 @@ namespace Terraria.ModLoader
 
 		public sealed override void SetupContent() {
 			ModContent.Request<Texture2D>(Texture);
-			SetDefaults();
+			SetStaticDefaults();
 		}
 
-		/// <summary>
-		/// You can assign values to InfoName here.
-		/// </summary>
-		public virtual void SetDefaults() {
-		}
-
-		protected override void Register() {
+		protected sealed override void Register() {
 			InfoName = LocalizationLoader.GetOrCreateTranslation(Mod, $"InfoDisplayName.{Name}");
 
 			ModTypeLookup<InfoDisplay>.Register(this);

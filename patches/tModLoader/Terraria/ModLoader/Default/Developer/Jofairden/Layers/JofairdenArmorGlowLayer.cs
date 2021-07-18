@@ -7,12 +7,12 @@ using Terraria.ID;
 namespace Terraria.ModLoader.Default.Developer.Jofairden
 {
 	//TODO: Glowmasks should be simplified for everyone.
-	internal abstract class AndromedonGlow : AndromedonDrawLayer
+	internal abstract class JofairdenArmorGlowLayer : JofairdenArmorDrawLayer
 	{
 		protected override void Draw(ref PlayerDrawSet drawInfo) {
 			var drawDataInfo = GetData(drawInfo);
 			var drawPlayer = drawInfo.drawPlayer;
-			var devPlayer = drawPlayer.GetModPlayer<DeveloperPlayer>();
+			var modPlayer = drawPlayer.GetModPlayer<JofairdenArmorEffectPlayer>();
 			var effects = SpriteEffects.None;
 
 			if (drawPlayer.direction == -1) {
@@ -27,7 +27,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 				drawDataInfo.Texture,
 				drawDataInfo.Position,
 				drawDataInfo.Frame,
-				Color.White * Main.essScale * devPlayer.AndromedonEffect.LayerStrength,
+				Color.White * Main.essScale * modPlayer.LayerStrength,
 				drawDataInfo.Rotation,
 				drawDataInfo.Origin,
 				1f,
@@ -35,7 +35,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 				0
 			);
 
-			if (devPlayer.AndromedonEffect.HasAura) {
+			if (modPlayer.HasAura) {
 				ShaderId ??= GameShaders.Armor.GetShaderIdFromItemId(ItemID.LivingRainbowDye);
 				data.shader = ShaderId.Value;
 			}

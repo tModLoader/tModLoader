@@ -102,10 +102,6 @@ namespace Terraria.ModLoader
 
 		internal static void PrepareAssets()
 		{
-			if (Main.dedServ) {
-				return;
-			}
-
 			ManifestContentSource = new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly());
 			ManifestAssets = new AssetRepository(AssetInitializer.assetReaderCollection, new[] { ManifestContentSource }) {
 				AssetLoadFailHandler = Main.OnceFailedLoadingAnAsset

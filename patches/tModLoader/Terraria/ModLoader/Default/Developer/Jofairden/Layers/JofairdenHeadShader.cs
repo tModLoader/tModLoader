@@ -4,14 +4,14 @@ using Terraria.DataStructures;
 
 namespace Terraria.ModLoader.Default.Developer.Jofairden
 {
-	internal class AndromedonHeadShader : AndromedonShader
+	internal class JofairdenHeadShader : JofairdenArmorShaderLayer
 	{
 		private static Asset<Texture2D> _shaderTexture;
 
 		public override bool IsHeadLayer => true;
 
 		public override DrawDataInfo GetData(PlayerDrawSet info) {
-			_shaderTexture ??= ModContent.Request<Texture2D>("ModLoader/Developer.Jofairden.PowerRanger_Head_Head_Shader");
+			_shaderTexture ??= ModContent.Request<Texture2D>("ModLoader/Developer.Jofairden.Jofairden_Head_Head_Shader");
 
 			return GetHeadDrawDataInfo(info, _shaderTexture.Value);
 		}
