@@ -87,7 +87,11 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
-			
+
+			// Skip loading client assets if this is a dedicated server;
+			if (Main.dedServ)
+				return;
+
 			if (Properties.AutoloadSounds)
 				SoundLoader.AutoloadSounds(this);
 			

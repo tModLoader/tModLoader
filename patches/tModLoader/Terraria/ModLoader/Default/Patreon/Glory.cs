@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Terraria.ID;
 
 namespace Terraria.ModLoader.Default.Patreon
 {
@@ -7,6 +8,7 @@ namespace Terraria.ModLoader.Default.Patreon
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
+
 			Item.Size = new Vector2(30, 32);
 		}
 	}
@@ -16,6 +18,7 @@ namespace Terraria.ModLoader.Default.Patreon
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
+
 			Item.Size = new Vector2(34, 24);
 		}
 	}
@@ -23,8 +26,15 @@ namespace Terraria.ModLoader.Default.Patreon
 	[AutoloadEquip(EquipType.Legs)]
 	internal class Glory_Legs : PatreonItem
 	{
+		public override void SetStaticDefaults() {
+			base.SetStaticDefaults();
+
+			ArmorIDs.Legs.Sets.OverridesLegs[Mod.GetEquipSlot(GetType().Name, EquipType.Legs)] = true;
+		}
+
 		public override void SetDefaults() {
 			base.SetDefaults();
+
 			Item.Size = new Vector2(22, 18);
 		}
 	}

@@ -4,7 +4,7 @@ using Terraria.DataStructures;
 
 namespace Terraria.ModLoader.Default.Developer.Jofairden
 {
-	internal abstract class AndromedonDrawLayer : PlayerDrawLayer
+	internal abstract class JofairdenArmorDrawLayer : PlayerDrawLayer
 	{
 		protected static int? ShaderId;
 
@@ -12,7 +12,8 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 
 		public override bool GetDefaultVisiblity(PlayerDrawSet drawInfo) {
 			var player = drawInfo.drawPlayer;
-			return drawInfo.shadow == 0f && !player.invis && player.GetModPlayer<DeveloperPlayer>().AndromedonEffect.LayerStrength > 0f;
+
+			return drawInfo.shadow == 0f && !player.invis && player.GetModPlayer<JofairdenArmorEffectPlayer>().LayerStrength > 0f;
 		}
 
 		public static DrawDataInfo GetHeadDrawDataInfo(PlayerDrawSet drawInfo, Texture2D texture) {

@@ -14,6 +14,8 @@ namespace Terraria.ModLoader
 			BuffLoader.globalBuffs.Add(this);
 		}
 
+		public sealed override void SetupContent() => SetStaticDefaults();
+
 		/// <summary>
 		/// Allows you to make the buff with the given ID give certain effects to a player. If you remove the buff from the player, make sure the decrement the buffIndex parameter by 1.
 		/// </summary>

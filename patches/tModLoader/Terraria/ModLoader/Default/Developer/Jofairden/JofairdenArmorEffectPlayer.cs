@@ -2,30 +2,29 @@
 
 namespace Terraria.ModLoader.Default.Developer.Jofairden
 {
-	internal sealed class AndromedonEffect : ICloneable
+	internal sealed class JofairdenArmorEffectPlayer : ModPlayer
 	{
 		public bool HasSetBonus;
-		public bool HasAura => _auraTime > 0;
 		public float LayerStrength;
 		public float ShaderStrength;
 
 		private int _lastLife = -1;
-		internal int _auraTime;
+		private int _auraTime;
 
-		private int? _headSlot;
-		private int? _bodySlot;
-		private int? _legSlot;
+		public bool HasAura => _auraTime > 0;
 
-		public void ResetEffects() {
+		public override bool CloneNewInstances => true;
+
+		public override void ResetEffects() {
 			HasSetBonus = false;
 		}
 
-		public void UpdateDead() {
+		public override void UpdateDead() {
 			HasSetBonus = false;
 			_auraTime = 0;
 		}
 
-		public void UpdateEffects(Player player) {
+		public override void PostUpdate() {
 			if (!HasAura) {
 				if (ShaderStrength > 0f) {
 					ShaderStrength -= 0.02f;
@@ -53,20 +52,24 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 
 			if (ShaderStrength > 0f) {
 				Lighting.AddLight(
-					player.Center,
-					Main.DiscoColor.ToVector3() * LayerStrength * ((float)Main.time % 2) * (float)Math.Abs(Math.Log10(Main.essScale * 0.75f)));
+					Player.Center,
+					Main.DiscoColor.ToVector3() * LayerStrength * ((float)Main.time % 2) * (float)Math.Abs(Math.Log10(Main.essScale * 0.75f))
+				);
 			}
 		}
 
-		public void UpdateAura(Player player) {
+		public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
 			if (_lastLife <= -1) {
-				_lastLife = player.statLife;
+				_lastLife = Player.statLife;
 			}
-			int diff = _lastLife - player.statLife;
-			if (diff >= 0.1f * player.statLifeMax2) {
+
+			int diff = _lastLife - Player.statLife;
+			
+			if (diff >= 0.1f * Player.statLifeMax2) {
 				_auraTime = 300 + diff;
 			}
-			_lastLife = player.statLife;
+			
+			_lastLife = Player.statLife;
 		}
 
 		public object Clone() {
