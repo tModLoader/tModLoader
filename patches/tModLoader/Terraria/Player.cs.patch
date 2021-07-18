@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Player.cs
 +++ src/tModLoader/Terraria/Player.cs
-@@ -34,10 +_,15 @@
+@@ -34,10 +_,16 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -9,6 +9,7 @@
 +using Terraria.ModLoader.IO;
 +using Terraria.ModLoader.UI;
 +using System.Linq;
++using Terraria.ModLoader.Container;
  
  namespace Terraria
  {
@@ -75,6 +76,15 @@
  		public int[] buffType = new int[22];
  		public int[] buffTime = new int[22];
  		public bool[] buffImmune = new bool[327];
+@@ -724,7 +_,7 @@
+ 		public bool isFirstFractalAfterImage;
+ 		public float firstFractalAfterImageOpacity;
+ 		public string setBonus = "";
+-		public Item[] inventory = new Item[59];
++		public TerrariaInventory inventory = new TerrariaInventory(59);
+ 		public bool[] inventoryChestStack = new bool[59];
+ 		public Item lastVisualizedSelectedItem;
+ 		public Chest bank = new Chest(bank: true);
 @@ -1059,18 +_,21 @@
  		public bool parryDamageBuff;
  		public bool ballistaPanic;
