@@ -273,6 +273,7 @@
 		"MSBuildAll": "Build All",
 		"MSBuildReloadAll": "Build + Reload All",
 		"MSUpgradeCSProj": "Upgrade .csproj file",
+		"MSUpgradeLangFiles": "Upgrade .lang files to .hjson (non-destructive)",
 		"MSOpenSources": "Open Sources",
 		"MSManagePublished": "Manage Published",
 		"MSPublish": "Publish",

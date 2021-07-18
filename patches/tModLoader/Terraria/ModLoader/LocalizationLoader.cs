@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Hjson;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -51,37 +53,7 @@ namespace Terraria.ModLoader
 
 			var modTranslationDictionary = new Dictionary<string, ModTranslation>();
 
-			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".lang")) {
-				// .lang files need to be UTF8 encoded.
-				string translationFileContents = Encoding.UTF8.GetString(mod.File.GetBytes(translationFile));
-				var culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Name));
-
-				using StringReader reader = new StringReader(translationFileContents);
-
-				string line;
-				
-				while ((line = reader.ReadLine()) != null) {
-					int split = line.IndexOf('=');
-					if (split < 0)
-						continue; // lines witout a = are ignored
-
-					string key = line.Substring(0, split).Trim().Replace(" ", "_");
-					string value = line.Substring(split + 1); // removed .Trim() since sometimes it is desired.
-					
-					if (value.Length == 0) {
-						continue;
-					}
-
-					value = value.Replace("\\n", "\n");
-
-					// TODO: Maybe prepend key with filename: en.US.ItemName.lang would automatically assume "ItemName." for all entries.
-					//string key = key;
-					if (!modTranslationDictionary.TryGetValue(key, out ModTranslation mt))
-						modTranslationDictionary[key] = mt = CreateTranslation(mod, key);
-
-					mt.AddTranslation(culture, value);
-				}
-			}
+			AutoloadTranslations(mod, modTranslationDictionary);
 
 			foreach (var value in modTranslationDictionary.Values) {
 				AddTranslation(value);
@@ -161,6 +133,34 @@ namespace Terraria.ModLoader
 			}
 
 			LanguageManager.Instance.ProcessCopyCommandsInTexts();
+		}
+
+		private static void AutoloadTranslations(Mod mod, Dictionary<string, ModTranslation> modTranslationDictionary) {
+			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
+				string translationFileContents = Encoding.UTF8.GetString(mod.File.GetBytes(translationFile));
+				var culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Name));
+
+				// Parse HJSON and convert to standard JSON
+				string jsonString = HjsonValue.Parse(translationFileContents).ToString();
+
+				// Parse JSON
+				var jsonObject = JObject.Parse(jsonString);
+				// Flatten JSON into dot seperated key and value
+				var flattened = jsonObject
+					.SelectTokens("$..*")
+					.Where(t => !t.HasValues)
+					.ToDictionary(t => t.Path, t => t.ToString());
+
+				foreach (var (key, value) in flattened) {
+					if (!modTranslationDictionary.TryGetValue(key, out ModTranslation mt)) {
+						// removing instances of .$parentVal is an easy way to make this special key assign its value
+						//  to the parent key instead (needed for some cases of .lang -> .hjson auto-conversion)
+						modTranslationDictionary[key.Replace(".$parentVal", "")] = mt = CreateTranslation(key);
+					}
+
+					mt.AddTranslation(culture, value);
+				}
+			}
 		}
 
 		private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value) {
