@@ -37,9 +37,9 @@ namespace Terraria.ModLoader.Default
 			WorldIO.LoadModData(tag.GetList<TagCompound>("list"));
 			WorldIO.LoadNPCs(tag.GetList<TagCompound>("unloadedNPCs"));
 			WorldIO.LoadNPCKillCounts(tag.GetList<TagCompound>("unloadedKillCounts"));
-			WorldIO.LoadBestiaryNPCKills(tag.GetList<TagCompound>("unloadedBestiaryKills"));
-			WorldIO.LoadBestiaryNPCSights(tag.GetList<TagCompound>("unloadedBestiarySights"));
-			WorldIO.LoadBestiaryNPCChats(tag.GetList<TagCompound>("unloadedBestiaryChats"));
+			WorldIO.LoadNPCBestiaryKills(tag.GetList<TagCompound>("unloadedBestiaryKills"));
+			WorldIO.LoadNPCBestiarySights(tag.GetList<TagCompound>("unloadedBestiarySights"));
+			WorldIO.LoadNPCBestiaryChats(tag.GetList<TagCompound>("unloadedBestiaryChats"));
 		}
 	}
 }

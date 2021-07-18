@@ -27,9 +27,9 @@ namespace Terraria.ModLoader.IO
 				["npcs"] = SaveNPCs(),
 				["tileEntities"] = TileIO.SaveTileEntities(),
 				["killCounts"] = SaveNPCKillCounts(),
-				["bestiaryKills"] = SaveBestiaryNPCKills(),
-				["bestiarySights"] = SaveBestiaryNPCSights(),
-				["bestiaryChats"] = SaveBestiaryNPCChats(),
+				["bestiaryKills"] = SaveNPCBestiaryKills(),
+				["bestiarySights"] = SaveNPCBestiarySights(),
+				["bestiaryChats"] = SaveNPCBestiaryChats(),
 				["anglerQuest"] = SaveAnglerQuest(),
 				["townManager"] = SaveTownManager(),
 				["modData"] = SaveModData()
@@ -68,9 +68,9 @@ namespace Terraria.ModLoader.IO
 			}
 			LoadChestInventory(tag.GetList<TagCompound>("chests")); // Must occur after tiles are loaded
 			LoadNPCKillCounts(tag.GetList<TagCompound>("killCounts"));
-			LoadBestiaryNPCKills(tag.GetList<TagCompound>("bestiaryKills"));
-			LoadBestiaryNPCSights(tag.GetList<TagCompound>("bestiarySights"));
-			LoadBestiaryNPCChats(tag.GetList<TagCompound>("bestiaryChats"));
+			LoadNPCBestiaryKills(tag.GetList<TagCompound>("bestiaryKills"));
+			LoadNPCBestiarySights(tag.GetList<TagCompound>("bestiarySights"));
+			LoadNPCBestiaryChats(tag.GetList<TagCompound>("bestiaryChats"));
 			LoadAnglerQuest(tag.GetCompound("anglerQuest"));
 			LoadTownManager(tag.GetList<TagCompound>("townManager"));
 			try {
@@ -210,7 +210,7 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static List<TagCompound> SaveBestiaryNPCKills() {
+		internal static List<TagCompound> SaveNPCBestiaryKills() {
 			var list = new List<TagCompound>();
 			for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++) {
 				int killCount = Main.BestiaryTracker.Kills.GetKillCount(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[type]);
@@ -227,7 +227,7 @@ namespace Terraria.ModLoader.IO
 			return list;
 		}
 
-		internal static void LoadBestiaryNPCKills(IList<TagCompound> list) {
+		internal static void LoadNPCBestiaryKills(IList<TagCompound> list) {
 			foreach (var tag in list) {
 				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
 					string persistentId = ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[modNpc.Type];
@@ -239,7 +239,7 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static List<TagCompound> SaveBestiaryNPCSights() {
+		internal static List<TagCompound> SaveNPCBestiarySights() {
 			var list = new List<TagCompound>();
 			for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++) {
 				bool seen = Main.BestiaryTracker.Sights.GetWasNearbyBefore(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[type]);
@@ -255,7 +255,7 @@ namespace Terraria.ModLoader.IO
 			return list;
 		}
 
-		internal static void LoadBestiaryNPCSights(IList<TagCompound> list) {
+		internal static void LoadNPCBestiarySights(IList<TagCompound> list) {
 			foreach (var tag in list) {
 				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
 					string persistentId = ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[modNpc.Type];
@@ -267,7 +267,7 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static List<TagCompound> SaveBestiaryNPCChats() {
+		internal static List<TagCompound> SaveNPCBestiaryChats() {
 			var list = new List<TagCompound>();
 			for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++) {
 				bool chatted = Main.BestiaryTracker.Chats.GetWasChatWith(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[type]);
@@ -283,7 +283,7 @@ namespace Terraria.ModLoader.IO
 			return list;
 		}
 
-		internal static void LoadBestiaryNPCChats(IList<TagCompound> list) {
+		internal static void LoadNPCBestiaryChats(IList<TagCompound> list) {
 			foreach (var tag in list) {
 				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
 					string persistentId = ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[modNpc.Type];
