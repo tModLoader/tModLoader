@@ -9,18 +9,27 @@ namespace Terraria.ModLoader.Default
 		internal IList<TagCompound> data;
 		internal IList<TagCompound> unloadedNPCs;
 		internal IList<TagCompound> unloadedKillCounts;
+		internal IList<TagCompound> unloadedBestiaryKills;
+		internal IList<TagCompound> unloadedBestiarySights;
+		internal IList<TagCompound> unloadedBestiaryChats;
 
 		public override void OnWorldLoad() {
 			data = new List<TagCompound>();
 			unloadedNPCs = new List<TagCompound>();
 			unloadedKillCounts = new List<TagCompound>();
+			unloadedBestiaryKills = new List<TagCompound>();
+			unloadedBestiarySights = new List<TagCompound>();
+			unloadedBestiaryChats = new List<TagCompound>();
 		}
 
 		public override TagCompound SaveWorldData() {
 			return new TagCompound {
 				["list"] = data,
 				["unloadedNPCs"] = unloadedNPCs,
-				["unloadedKillCounts"] = unloadedKillCounts
+				["unloadedKillCounts"] = unloadedKillCounts,
+				["unloadedBestiaryKills"] = unloadedBestiaryKills,
+				["unloadedBestiarySights"] = unloadedBestiarySights,
+				["unloadedBestiaryChats"] = unloadedBestiaryChats
 			};
 		}
 
@@ -28,6 +37,9 @@ namespace Terraria.ModLoader.Default
 			WorldIO.LoadModData(tag.GetList<TagCompound>("list"));
 			WorldIO.LoadNPCs(tag.GetList<TagCompound>("unloadedNPCs"));
 			WorldIO.LoadNPCKillCounts(tag.GetList<TagCompound>("unloadedKillCounts"));
+			WorldIO.LoadBestiaryNPCKills(tag.GetList<TagCompound>("unloadedBestiaryKills"));
+			WorldIO.LoadBestiaryNPCSights(tag.GetList<TagCompound>("unloadedBestiarySights"));
+			WorldIO.LoadBestiaryNPCChats(tag.GetList<TagCompound>("unloadedBestiaryChats"));
 		}
 	}
 }
