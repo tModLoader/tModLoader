@@ -27,13 +27,12 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 
 			//load/cache the additional texture
 			if (!Main.dedServ) {
-				EyeAsset = ModContent.GetTexture(Texture + "_Eye");
+				EyeAsset = ModContent.Request<Texture2D>(Texture + "_Eye");
 			}
 		}
 
 		public override void Unload() {
 			//Dispose and unload the texture
-			EyeAsset?.Dispose();
 			EyeAsset = null;
 		}
 
@@ -44,7 +43,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 		}
 
 		public override Color? GetAlpha(Color lightColor) {
-			return Color.White * AlphaForVisuals;
+			return Color.White * AlphaForVisuals * Projectile.Opacity;
 		}
 
 		public override void PostDraw(Color lightColor) {
@@ -59,7 +58,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 				Vector2 origin = Vector2.Zero; //Using origin as zero because the draw position is the center
 				Vector2 rotatedPos = (Vector2.UnitY * 24).RotatedBy(i / (float)eyeCount * MathHelper.TwoPi); //Create a vector of length 24 with a specific rotation based on loop index
 				Vector2 drawPos = orbitingCenter - Main.screenPosition + origin + rotatedPos; //Always important to substract Main.screenPosition to translate it into screen coordinates
-				Color color = Color.White * (1f - AlphaForVisuals); //Draw it in reversed alpha to the projectile
+				Color color = Color.White * (1f - AlphaForVisuals) * Projectile.Opacity; //Draw it in reversed alpha to the projectile
 
 				//Use this instead of Main.spriteBatch.Draw so that dyes apply to it
 				Main.EntitySpriteDraw(eyeTexture, drawPos, eyeTexture.Bounds, color, 0f, origin, 1f, SpriteEffects.None, 0);

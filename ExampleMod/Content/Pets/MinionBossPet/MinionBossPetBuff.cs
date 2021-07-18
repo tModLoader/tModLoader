@@ -7,7 +7,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 	//You can find a simple pet example in ExampleMod\Content\Pets\ExamplePet
 	public class MinionBossPetBuff : ModBuff
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Minion Boss Pet");
 			Description.SetDefault("a miniature Minion Boss is following you");
 
