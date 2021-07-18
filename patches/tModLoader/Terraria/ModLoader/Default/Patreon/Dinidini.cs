@@ -1,10 +1,13 @@
-﻿namespace Terraria.ModLoader.Default.Patreon
+﻿using Terraria.ID;
+
+namespace Terraria.ModLoader.Default.Patreon
 {
 	[AutoloadEquip(EquipType.Head)]
 	internal class dinidini_Head : PatreonItem
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
+
 			Item.width = 28;
 			Item.height = 20;
 		}
@@ -15,6 +18,7 @@
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
+
 			Item.width = 28;
 			Item.height = 24;
 		}
@@ -25,6 +29,7 @@
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
+
 			Item.width = 22;
 			Item.height = 18;
 		}
@@ -35,6 +40,7 @@
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
+
 			Item.vanity = false;
 			Item.width = 24;
 			Item.height = 8;
