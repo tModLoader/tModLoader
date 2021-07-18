@@ -1,0 +1,13 @@
+--- src/Terraria/Terraria/GameContent/Bestiary/NPCWasNearPlayerTracker.cs
++++ src/tModLoader/Terraria/GameContent/Bestiary/NPCWasNearPlayerTracker.cs
+@@ -103,7 +_,9 @@
+ 
+ 		public void OnPlayerJoining(int playerIndex) {
+ 			foreach (string item in _wasNearPlayer) {
+-				int npcNetId = ContentSamples.NpcNetIdsByPersistentIds[item];
++				if (!ContentSamples.NpcNetIdsByPersistentIds.TryGetValue(item, out int npcNetId))
++					continue;
++
+ 				NetManager.Instance.SendToClient(NetBestiaryModule.SerializeSight(npcNetId), playerIndex);
+ 			}
+ 		}
