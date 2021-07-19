@@ -171,12 +171,14 @@ namespace Terraria.ModLoader.UI
 					return;
 				}
 
-				if (ModLoader.GetMod(_builtMod.Name) == null) {
+				if (!ModLoader.TryGetMod(_builtMod.Name, out _)) {
 					if (!_builtMod.Enabled)
 						_builtMod.Enabled = true;
 					Main.menuMode = Interface.reloadModsID;
 					ModLoader.OnSuccessfulLoad += () => {
-						PublishMod(null, null);
+						Main.QueueMainThreadAction(() => {
+							PublishMod(null, null);
+						});
 					};
 					return;
 				}
