@@ -35,18 +35,13 @@ namespace Terraria.ModLoader.Core
 
 			DeleteTemporaryFiles();
 
-			if (!Main.dedServ) {
-				WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
-			}
+			WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
 
-			if (ModCompile.DeveloperMode) {
-				// Prioritize loading Mods from Mods folder for Dev/Beta simplicitiy.
-				modRepos.Add(ModLoader.ModPath);
-			}
-
-			if (!Main.dedServ) {
-				modRepos.AddRange(WorkshopFileFinder.ModPaths);
-			}
+			// Prioritize loading Mods from Mods folder for Dev/Beta simplicitiy.
+			modRepos.Add(ModLoader.ModPath);
+			
+			// Load Mods from Workshop downloads
+			modRepos.AddRange(WorkshopFileFinder.ModPaths);
 
 			foreach (string repo in modRepos) {
 				foreach (string fileName in Directory.GetFiles(repo, "*.tmod", SearchOption.TopDirectoryOnly)) {
