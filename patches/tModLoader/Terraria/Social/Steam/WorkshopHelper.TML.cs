@@ -33,9 +33,6 @@ namespace Terraria.Social.Steam
 		}
 
 		internal static void OnGameExitCleanup() {
-			if (UIModBrowser.SteamWorkshop != null)
-				UIModBrowser.SteamWorkshop.ReleaseWorkshopQuery();
-
 			if (ModManager.SteamUser)
 				return;
 
@@ -409,7 +406,8 @@ namespace Terraria.Social.Steam
 
 						items.Add(new UIModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate.ToString(), update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"], i));
 					}
-				} while (_queryReturnCount == 50); // 50 is based on kNumUGCResultsPerPage constant in ISteamUGC. Can't find constant itself? - Solxan
+					ReleaseWorkshopQuery();
+				} while (_queryReturnCount == Steamworks.Constants.kNumUGCResultsPerPage); // 50 is based on kNumUGCResultsPerPage constant in ISteamUGC. Can't find constant itself? - Solxan
 
 				return items;
 			}
@@ -459,7 +457,7 @@ namespace Terraria.Social.Steam
 			}
 
 			/// <summary>
-			/// Ought be called to release the existing query when we are done with it.
+			/// Ought be called to release the existing query when we are done with it. Frees memory associated with the handle.
 			/// </summary>
 			internal void ReleaseWorkshopQuery() {
 				if (ModManager.SteamUser)
@@ -471,17 +469,29 @@ namespace Terraria.Social.Steam
 			internal string GetDescription(uint queryIndex) {
 				SteamUGCDetails_t pDetails;
 
-				if (ModManager.SteamUser)
-					SteamUGC.GetQueryUGCResult(_primaryUGCHandle, queryIndex, out pDetails);
-				else
-					SteamGameServerUGC.GetQueryUGCResult(_primaryUGCHandle, queryIndex, out pDetails);
+				uint pg = queryIndex / 50 + 1;
+				uint index = queryIndex % 50;
 
+				QueryForPage(pg);
+
+				if (ModManager.SteamUser)
+					SteamUGC.GetQueryUGCResult(_primaryUGCHandle, index, out pDetails);
+				else
+					SteamGameServerUGC.GetQueryUGCResult(_primaryUGCHandle, index, out pDetails);
+
+				ReleaseWorkshopQuery();
 				return pDetails.m_rgchDescription;
 			}
 
 			internal ulong GetSteamOwner(uint queryIndex) {
-				SteamUGC.GetQueryUGCResult(_primaryUGCHandle, queryIndex, out var pDetails);
+				uint pg = queryIndex / 50 + 1;
+				uint index = queryIndex % 50;
 
+				QueryForPage(pg);
+
+				SteamUGC.GetQueryUGCResult(_primaryUGCHandle, index, out var pDetails);
+
+				ReleaseWorkshopQuery();
 				return pDetails.m_ulSteamIDOwner;
 			}
 

@@ -223,10 +223,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser"));
 
 			// Remove old resources
-			if (SteamWorkshop != null) {
-				SteamWorkshop.ReleaseWorkshopQuery();
+			if (SteamWorkshop != null)
 				SteamWorkshop = null;
-			}
 
 			ModList.Clear();
 			Items.Clear();
