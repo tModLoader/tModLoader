@@ -24,6 +24,9 @@ namespace Terraria.ModLoader
 
 		public sealed override void SetupContent() {
 			LiquidRenderer.Instance._liquidTextures[Slot] = ModContent.Request<Texture2D>(Texture);
+			
+			SetStaticDefaults();
+			
 			TextureAssets.Liquid[Slot] = ModContent.Request<Texture2D>(BlockTexture);
 		}
 
@@ -76,6 +79,8 @@ namespace Terraria.ModLoader
 
 		public sealed override void SetupContent() {
 			Main.instance.waterfallManager.waterfallTexture[Slot] = ModContent.Request<Texture2D>(Texture);
+			
+			SetStaticDefaults();
 		}
 
 		/// <summary>

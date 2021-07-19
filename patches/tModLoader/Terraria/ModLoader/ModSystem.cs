@@ -21,6 +21,12 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModSystem>.Register(this);
 		}
 
+		//ModSystem provides its own PostSetupContent hook which runs in a different context, closer to Mod
+		public sealed override void SetStaticDefaults() { }
+
+		//Per above comment, SetStaticDefaults is unused
+		public sealed override void SetupContent() { }
+
 		//Hooks
 
 		/// <summary>

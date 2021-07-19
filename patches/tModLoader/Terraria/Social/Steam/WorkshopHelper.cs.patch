@@ -1,26 +1,71 @@
 --- src/Terraria/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
-@@ -3,6 +_,7 @@
+@@ -1,15 +_,20 @@
+ using Steamworks;
+ using System;
  using System.Collections.Generic;
++using System.Collections.Specialized;
  using System.IO;
  using Terraria.IO;
 +using Terraria.ModLoader;
  using Terraria.Social.Base;
  using Terraria.Utilities;
  
-@@ -42,18 +_,30 @@
+ namespace Terraria.Social.Steam
+ {
+-	public class WorkshopHelper
++	public partial class WorkshopHelper
+ 	{
++		private const string TmlModNamePrefix = "[1.4 Alpha] ";
++		private const string TmlModDescriptionPrefix = "Built for 1.4 Alpha version of tModLoader. \n";
++
+ 		public class UGCBased
+ 		{
+ 			public struct SteamWorkshopItem
+@@ -20,6 +_,8 @@
+ 				public string[] Tags;
+ 				public string Title;
+ 				public ERemoteStoragePublishedFileVisibility? Visibility;
++				// Added by TML.
++				public NameValueCollection BuildData;
+ 			}
+ 
+ 			public class Downloader
+@@ -34,26 +_,52 @@
+ 					private set;
+ 				}
+ 
++				// Added by TML.
++				public List<string> ModPaths {
++					get;
++					private set;
++				}
++
+ 				public Downloader() {
+ 					ResourcePackPaths = new List<string>();
+ 					WorldPaths = new List<string>();
++					ModPaths = new List<string>();
+ 				}
+ 
  				public static Downloader Create() => new Downloader();
  
  				public List<string> GetListOfSubscribedItemsPaths() {
 +					List<string> list = new List<string>();
 +
-+					var array = new AppId_t[] { ModLoader.Engine.Steam.TerrariaAppId_t, ModLoader.Engine.Steam.TMLAppID_t };
-+					foreach (var app in array) {
-+						SteamApps.GetAppInstallDir(app, out string installLoc, 1000);
-+						var workshopLoc = Path.Combine(Directory.GetParent(Directory.GetParent(installLoc).ToString()).ToString(),"workshop","content", app.m_AppId.ToString());
-+						if (Directory.Exists(workshopLoc)) {
-+							list.AddRange(Directory.EnumerateDirectories(workshopLoc));
++					if (ModManager.SteamUser) {
++						var array = new AppId_t[] { ModLoader.Engine.Steam.TerrariaAppId_t, ModLoader.Engine.Steam.TMLAppID_t };
++						foreach (var app in array) {
++							SteamApps.GetAppInstallDir(app, out string installLoc, 1000);
++							var workshopLoc = Path.Combine(Directory.GetParent(Directory.GetParent(installLoc).ToString()).ToString(), "workshop", "content", app.m_AppId.ToString());
++							if (Directory.Exists(workshopLoc)) {
++								list.AddRange(Directory.EnumerateDirectories(workshopLoc));
++							}
 +						}
++					}
++
++					string gogDirectory = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "content", ModManager.thisApp.ToString());
++					if (Directory.Exists(gogDirectory)) {
++						list.AddRange(Directory.EnumerateDirectories(gogDirectory));
 +					}
 +
 +					/*
@@ -41,20 +86,105 @@
  					return list;
  				}
  
-@@ -178,6 +_,8 @@
- 					if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out FoundWorkshopEntryInfo info))
- 						num = info.workshopEntryId;
+@@ -62,6 +_,7 @@
+ 				public bool Refresh(WorkshopIssueReporter issueReporter) {
+ 					ResourcePackPaths.Clear();
+ 					WorldPaths.Clear();
++					ModPaths.Clear();
+ 					foreach (string listOfSubscribedItemsPath in GetListOfSubscribedItemsPaths()) {
+ 						if (listOfSubscribedItemsPath == null)
+ 							continue;
+@@ -75,6 +_,8 @@
+ 							if (!(a == "World")) {
+ 								if (a == "ResourcePack")
+ 									ResourcePackPaths.Add(listOfSubscribedItemsPath);
++								else if (a == "Mod")
++									ModPaths.Add(listOfSubscribedItemsPath);
+ 							}
+ 							else {
+ 								WorldPaths.Add(listOfSubscribedItemsPath);
+@@ -159,7 +_,7 @@
+ 				private FinishedPublishingAction _endAction;
+ 				private WorkshopIssueReporter _issueReporter;
  
-+					//TODO: Decide what to do with publishing. For now, this disables all in-game publishing.
-+					/*
+-				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags) {
++				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null) {
+ 					_issueReporter = issueReporter;
+ 					_endAction = endAction;
+ 					_createItemHook = CallResult<CreateItemResult_t>.Create(CreateItemResult);
+@@ -171,7 +_,8 @@
+ 						ContentFolderPath = contentFolderPath,
+ 						Tags = tags,
+ 						PreviewImagePath = previewImagePath,
+-						Visibility = visibility
++						Visibility = visibility,
++						BuildData = buildData
+ 					};
+ 
+ 					ulong? num = null;
+@@ -180,10 +_,12 @@
+ 
  					if (num.HasValue && finder.HasItemOfId(num.Value)) {
  						_publishedFileID = new PublishedFileId_t(num.Value);
- 						PreventUpdatingCertainThings();
-@@ -186,6 +_,7 @@
- 					else {
++						if (buildData == null) {
+-						PreventUpdatingCertainThings();
++							PreventUpdatingCertainThings();
++						}
+ 						UpdateItem();
+ 					}
+-					else {
++					else { 
  						CreateItem();
  					}
-+					*/
  				}
+@@ -240,10 +_,10 @@
+ 					PrepareContentForUpdate();
+ 					UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
+ 					if (_entryData.Title != null)
+-						SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
++						SteamUGC.SetItemTitle(uGCUpdateHandle_t, TmlModNamePrefix + _entryData.Title);
  
- 				private void PreventUpdatingCertainThings() {
+ 					if (_entryData.Description != null)
+-						SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
++						SteamUGC.SetItemDescription(uGCUpdateHandle_t, TmlModDescriptionPrefix + _entryData.Description);
+ 
+ 					SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
+ 					SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
+@@ -253,8 +_,36 @@
+ 					if (_entryData.Visibility.HasValue)
+ 						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
+ 
++					string patchNotes = "";
++
++					if (_entryData.BuildData != null) {
++						foreach (var key in MetadataKeys) {
++							SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
++							SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
++						}
++
++						patchNotes = $"{_entryData.BuildData["version"]} learn more @{_entryData.BuildData["homepage"]}";
++
++						string refs = _entryData.BuildData["workshopdeps"];
++
++						if (!string.IsNullOrWhiteSpace(refs)) {
++							string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
++
++							foreach (string dependency in dependencies) {
++								try {
++									var child = new PublishedFileId_t(uint.Parse(dependency));
++
++									SteamUGC.AddDependency(_publishedFileID, child);
++								}
++								catch (Exception) {
++									Logging.tML.Error("Failed to add Workshop dependency: " + dependency + " to " + _publishedFileID);
++								}
++							}
++						}
++					}
++
+ 					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
+-					SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, "");
++					SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, patchNotes);
+ 					_updateHandle = uGCUpdateHandle_t;
+ 					_updateItemHook.Set(hAPICall, UpdateItemResult);
+ 					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);

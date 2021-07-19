@@ -45,19 +45,14 @@ namespace Terraria.ModLoader
 		}
 
 		public sealed override void SetupContent() {
-			AutoDefaults();
-			SetDefaults();
+			AutoStaticDefaults();
+			SetStaticDefaults();
 		}
 
-		public virtual void AutoDefaults() {
+		public virtual void AutoStaticDefaults() {
 			if (DisplayName.IsDefault())
 				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
 		}
-
-		/// <summary>
-		/// Allows you to set the prefix's name/translations and to set its category.
-		/// </summary>
-		public virtual void SetDefaults() { }
 
 		/// <summary>
 		/// The roll chance of your prefix relative to a vanilla prefix, 1f by default. 

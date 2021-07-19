@@ -46,6 +46,8 @@ namespace Terraria.ModLoader
 			PlayerLoader.Add(this);
 		}
 
+		public sealed override void SetupContent() => SetStaticDefaults();
+
 		/// <summary>
 		/// Called whenever the player is loaded (on the player selection screen). This can be used to initialize data structures, etc.
 		/// </summary>
