@@ -163,8 +163,9 @@ namespace Terraria.Social.Steam
 				downloadResult = EResult.k_EResultOK;
 			}
 
-			internal void Uninstall() {
-				string installPath = GetInstallInfo().installPath;
+			internal void Uninstall(string installPath = null) {
+				if (String.IsNullOrEmpty(installPath))
+					installPath = GetInstallInfo().installPath;
 
 				if (!Directory.Exists(installPath))
 					return;

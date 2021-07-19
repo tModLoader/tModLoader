@@ -474,7 +474,7 @@ namespace Terraria.ModLoader.UI
 
 				var modManager = new Social.Steam.WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
 
-				modManager.Uninstall();
+				modManager.Uninstall(parentDir);
 			}
 			else {
 				File.Delete(tmodPath);
