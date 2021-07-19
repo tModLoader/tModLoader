@@ -20,7 +20,7 @@ namespace ExampleMod.Content.Tiles
 			mask = ModContent.Request<Texture2D>($"{Texture}_Mask");
 		}
 
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			DustType = 11;
 
 			Main.tileFrameImportant[Type] = true;
