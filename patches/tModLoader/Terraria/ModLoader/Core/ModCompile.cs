@@ -168,8 +168,6 @@ namespace Terraria.ModLoader.Core
 
 		internal static void BuildModCommandLine(string modFolder)
 		{
-			Main.dedServ = true; // Some boolean like this is required to skip attempts to access workshop data.
-
 			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
 			Lang.InitializeLegacyLocalization();
 
