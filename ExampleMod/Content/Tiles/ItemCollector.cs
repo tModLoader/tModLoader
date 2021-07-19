@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Tiles
 {
 	public class ItemCollector : ModTile
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			Main.tileFrameImportant[Type] = true;
 
 			TileObjectData newTile = TileObjectData.newTile;
