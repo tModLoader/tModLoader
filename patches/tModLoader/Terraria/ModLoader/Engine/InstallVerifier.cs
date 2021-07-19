@@ -174,10 +174,7 @@ namespace Terraria.ModLoader.Engine
 			}
 
 			if (!HashMatchesFile(steamAPIPath, steamAPIHash)) {
-				Process.Start(new ProcessStartInfo("https://terraria.org") {
-					UseShellExecute = true,
-					Verb = "open"
-				});
+				Utils.OpenToURL("https://terraria.org");
 				Exit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"), string.Empty);
 				return false;
 			}

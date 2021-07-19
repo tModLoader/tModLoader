@@ -25,7 +25,7 @@
  using Terraria.Achievements;
  using Terraria.Audio;
  using Terraria.Chat;
-@@ -69,6 +_,13 @@
+@@ -69,9 +_,17 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
@@ -39,6 +39,10 @@
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
++using Terraria.Social.Steam;
+ using Terraria.UI;
+ using Terraria.UI.Chat;
+ using Terraria.UI.Gamepad;
 @@ -84,9 +_,9 @@
  namespace Terraria
  {
@@ -846,6 +850,14 @@
  		}
  
  		private void Main_Exiting(object sender, EventArgs e) {
+@@ -4793,6 +_,7 @@
+ 
+ 		private static void TryDisposingEverything() {
+ 			ChromaInitializer.DisableAllDeviceGroups();
++			WorkshopHelper.OnGameExitCleanup();
+ 			if (Assets != null) {
+ 				Assets.TransferCompletedAssets();
+ 				Assets.Dispose();
 @@ -4820,6 +_,7 @@
  
  			_cachedTitle = Lang.GetRandomGameTitle();
@@ -3331,7 +3343,7 @@
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, origin, num104, SpriteEffects.None, 0f);
  					else
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, new Vector2(0f, origin.Y), num104, SpriteEffects.None, 0f);
-@@ -39094,10 +_,51 @@
+@@ -39094,10 +_,47 @@
  					if (num107 == 3)
  						num109 = 2;
  
@@ -3375,11 +3387,7 @@
 +						spriteBatch.DrawString(font, patreonShortURL, new Vector2(origin2.X + num108 + 10f, screenHeight - origin2.Y + num109 - 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 +						if (num107 == 4 && mouseLeftRelease && mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)origin2.X + 10, screenHeight - (int)urlSize.Y - 2, (int)urlSize.X, (int)origin2.Y).Contains(new Microsoft.Xna.Framework.Point(mouseX, mouseY)) && hasFocus) {
 +							SoundEngine.PlaySound(SoundID.MenuOpen);
-+							var ps = new ProcessStartInfo("https://www.patreon.com/tModLoader") {
-+								UseShellExecute = true,
-+								Verb = "open"
-+							};
-+							Process.Start(ps);
++							Utils.OpenToURL("https://www.patreon.com/tModLoader");
 +						}
 +					}
  				}

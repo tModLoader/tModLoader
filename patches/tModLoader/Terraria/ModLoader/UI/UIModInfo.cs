@@ -39,6 +39,7 @@ namespace Terraria.ModLoader.UI
 		private string _info = string.Empty;
 		private string _modName = string.Empty;
 		private string _modDisplayName = string.Empty;
+		private uint _queryIndex;
 		private bool _loadFromWeb;
 		private bool _loading;
 		private bool _ready;
@@ -129,12 +130,13 @@ namespace Terraria.ModLoader.UI
 			Append(_uIElement);
 		}
 
-		internal void Show(string modName, string displayName, int gotoMenu, LocalMod localMod, string description = "", string url = "", bool loadFromWeb = false) {
+		internal void Show(string modName, string displayName, int gotoMenu, LocalMod localMod, string description = "", string url = "", uint queryIndex = 0, bool loadFromWeb = false) {
 			_modName = modName;
 			_modDisplayName = displayName;
 			_gotoMenu = gotoMenu;
 			_localMod = localMod;
 			_info = description;
+			_queryIndex = queryIndex;
 			if (_info.Equals("") && !loadFromWeb) {
 				_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
 			}
@@ -148,7 +150,6 @@ namespace Terraria.ModLoader.UI
 		public override void OnDeactivate() {
 			base.OnDeactivate();
 
-			_cts?.Cancel(false);
 			_info = string.Empty;
 			_localMod = null;
 			_gotoMenu = 0;
@@ -179,7 +180,7 @@ namespace Terraria.ModLoader.UI
 
 		private void VisitModHomePage(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
-			Process.Start(_url);
+			Utils.OpenToURL(_url);
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
@@ -199,30 +200,20 @@ namespace Terraria.ModLoader.UI
 		public override void OnActivate() {
 			_modInfo.SetText(_info);
 			_uITextPanel.SetText(Language.GetTextValue("tModLoader.ModInfoHeader") + _modDisplayName, 0.8f, true);
+
 			if (_loadFromWeb) {
 				_modInfo.Append(_loaderElement);
 				_loading = true;
 				_ready = false;
-				
-				_cts = new CancellationTokenSource();
-				
-				Task.Factory.StartNew(() => {
-					try {
-						ServicePointManager.Expect100Continue = false;
-						const string url = "http://javid.ddns.net/tModLoader/moddescription.php";
-						var values = new NameValueCollection {
-							{"modname", _modName}
-						};
-						using (WebClient client = new WebClient()) {
-							ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => policyErrors == SslPolicyErrors.None;
-							client.UploadValuesCompleted += ReceiveModInfo;
-							client.UploadValuesAsync(new Uri(url), "POST", values);
-						}
-					}
-					catch (Exception e) {
-						UIModBrowser.LogModBrowserException(e);
-					}
-				}, _cts.Token);
+
+				_info = UIModBrowser.SteamWorkshop.GetDescription(_queryIndex);
+
+				if (string.IsNullOrWhiteSpace(_info)) {
+					_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
+				}
+
+				_loading = false;
+				_ready = true;
 			}
 			else {
 				_loading = false;
@@ -248,37 +239,6 @@ namespace Terraria.ModLoader.UI
 				_modInfo.RemoveChild(_loaderElement);
 				_ready = false;
 			}
-		}
-
-		private void ReceiveModInfo(object sender, UploadValuesCompletedEventArgs e) {
-			_loading = false;
-			string description = Language.GetTextValue("tModLoader.ModInfoProblemTryAgain");
-			string homepage = "";
-			if (!e.Cancelled) {
-				try {
-					string response = Encoding.UTF8.GetString(e.Result);
-					if (!string.IsNullOrEmpty(response)) {
-						try {
-							JObject joResponse = JObject.Parse(response);
-							description = (string)joResponse["description"];
-							homepage = (string)joResponse["homepage"];
-						}
-						catch (Exception err) {
-							Logging.tML.Error($"Problem during JSON parse of mod info for {_modDisplayName}", err);
-						}
-					}
-				}
-				catch (Exception err) {
-					Logging.tML.Error($"There was a problem trying to receive the result of a mod info request for {_modDisplayName}", err);
-				}
-			}
-
-			_info = description;
-			if (_info.Equals("")) {
-				_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
-			}
-			_url = homepage;
-			_ready = true;
 		}
 	}
 }
