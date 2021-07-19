@@ -31,7 +31,7 @@
  			}
  
  			public class Downloader
-@@ -34,26 +_,52 @@
+@@ -34,26 +_,60 @@
  					private set;
  				}
  
@@ -62,7 +62,15 @@
 +							}
 +						}
 +					}
++					else if (Main.dedServ) {
++						// Try to load mods that are installed by Steam users when server launches without Steam. No guarantees if Steam not installed in standard location.
++						var workshopLoc = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory().ToString()).ToString()).ToString(), "workshop", "content", ModManager.thisApp.m_AppId.ToString());
++						if (Directory.Exists(workshopLoc)) {
++							list.AddRange(Directory.EnumerateDirectories(workshopLoc));
++						}
++					}
 +
++					// Load mods installed by GoG / Manually copied steamapps\workshop directories.
 +					string gogDirectory = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "content", ModManager.thisApp.ToString());
 +					if (Directory.Exists(gogDirectory)) {
 +						list.AddRange(Directory.EnumerateDirectories(gogDirectory));

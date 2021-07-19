@@ -41,7 +41,7 @@ namespace Terraria.Social.Steam
 
 		internal class ModManager
 		{
-			internal static bool SteamUser { get; set; } = true;
+			internal static bool SteamUser { get; set; } = false;
 			internal static AppId_t thisApp = ModLoader.Engine.Steam.TMLAppID_t;
 
 			protected Callback<DownloadItemResult_t> m_DownloadItemResult;
@@ -51,14 +51,14 @@ namespace Terraria.Social.Steam
 			internal static void Initialize() {
 				if (!ModLoader.Engine.Steam.IsSteamApp) {
 					// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
-					SteamUser = false;
-
 					GameServer.Init(0x7f000001, 7776, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0");
 
 					SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 					SteamGameServer.SetProduct(thisApp.ToString());
 					SteamGameServer.LogOnAnonymous();
 				}
+				else
+					SteamUser = true;
 			}
 
 			internal ModManager(PublishedFileId_t itemID) {
