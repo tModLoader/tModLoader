@@ -87,7 +87,7 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,59 @@
+@@ -138,32 +_,58 @@
  			}
  		}
  
@@ -108,9 +108,9 @@
 +			if (File.Exists("savehere.txt"))
 +				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
 +
-+			bool dedServ = LaunchParameters.ContainsKey("-server");
++			Main.dedServ = LaunchParameters.ContainsKey("-server");
 +			try {
-+				Logging.Init(dedServ);
++				Logging.Init(Main.dedServ);
 +			}
 +			catch (Exception e) {
 +				DisplayException(e);
@@ -122,10 +122,10 @@
 +				// Anything beyond this point will not be executed
 +				ModCompile.BuildModCommandLine(build);
 +
-+			LaunchGame_(dedServ);
++			LaunchGame_();
 +		}
 +
-+		public static void LaunchGame_(bool dedServ) {
++		public static void LaunchGame_() {
  			if (Platform.IsOSX) {
  				Main.OnEngineLoad += delegate {
  					Main.instance.IsMouseVisible = false;
@@ -135,7 +135,6 @@
 -			LaunchParameters = Utils.ParseArguements(args);
 -#if SERVER
 -			Main.dedServ = true;
-+			Main.dedServ = dedServ;
 -#else
 -			Main.dedServ = LaunchParameters.ContainsKey("-server");
 -#endif
@@ -181,15 +180,15 @@
 +				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
 +
 +				if (e is FolderCreationFailedException)
-+					Process.Start(e.HelpLink);
++					Utils.OpenToURL(e.HelpLink);
 +
 +				if (e.Message.Contains("CSteamworks"))
-+					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
++					Utils.OpenToURL(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
 +
 +				if (e.StackTrace.Contains("LaunchLocalServer")) {
 +					ModLoader.UI.Interface.MessageBoxShow(Language.GetTextValue("tModLoader.MissingServerExecutable"));
 +
-+					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
++					Utils.OpenToURL(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
 +				}
 +
  			}
