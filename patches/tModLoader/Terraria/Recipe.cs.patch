@@ -333,7 +333,7 @@
  			if (ingridients.Length == 1) {
  				ingridients = new int[2] {
  					ingridients[0],
-@@ -14246,18 +_,56 @@
+@@ -14246,18 +_,57 @@
  			}
  		}
  
@@ -392,6 +392,7 @@
 +			for (int i = 0; i < maxVanillaRequirements; i++)
 +				currentRecipe.requiredItem.Add(new Item());
 +
++			RecipeIndex = numRecipes;
  			numRecipes++;
  		}
  
