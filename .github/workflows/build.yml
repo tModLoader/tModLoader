@@ -188,7 +188,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: Debug Build
-          path: /github/workspace/artifacts/Debug
+          path: artifacts/Debug
       - name: View build artifact files
         run: ls -R
         working-directory: /github/workspace/artifacts/Debug
@@ -200,7 +200,7 @@ jobs:
           mfaCode:  ${{ secrets.STEAM_MFA_CODE }}
           appId: 1281930
           buildDescription: GithubActionsAutoRelease
-          rootPath: artifacts
+          rootPath: /home/runner/work/tModLoader/tModLoader/artifacts
           # 1: Common, 2: Windows, 3: Linux, 4: Mac
           depot2Path: Debug
           depot3Path: Debug
