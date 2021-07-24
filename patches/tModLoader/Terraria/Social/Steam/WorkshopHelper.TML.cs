@@ -423,7 +423,7 @@ namespace Terraria.Social.Steam
 
 					SteamUGC.SetReturnKeyValueTags(qHandle, true);
 					SteamUGC.SetReturnLongDescription(qHandle, true);
-					SteamUGC.SetAllowCachedResponse(qHandle, 30); // Prevents spamming refreshes from overloading Steam
+					SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
 					call = SteamUGC.SendQueryUGCRequest(qHandle);
 				}
@@ -432,7 +432,7 @@ namespace Terraria.Social.Steam
 
 					SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
 					SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
-					SteamGameServerUGC.SetAllowCachedResponse(qHandle, 30); // Prevents spamming refreshes from overloading Steam
+					SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
 					call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 				}
@@ -497,7 +497,7 @@ namespace Terraria.Social.Steam
 			}
 
 			internal static bool CheckWorkshopConnection() {
-				if (Interface.modBrowser.Items.Count != 0)
+				/*if (Interface.modBrowser.Items.Count != 0)
 					return true;
 
 				Interface.modBrowser.InnerPopulateModBrowser();
@@ -505,7 +505,11 @@ namespace Terraria.Social.Steam
 				if (Interface.modBrowser.Items.Count != 0)
 					return true;
 
-				return false;
+				return false;*/
+
+				//TODO: Create a check that doesn't involve numbers of entries in the workshop.
+
+				return true;
 			}
 		}
 	}
