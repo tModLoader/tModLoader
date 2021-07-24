@@ -315,6 +315,9 @@ namespace Terraria.Social.Steam
 
 						PublishedFileId_t id = pDetails.m_nPublishedFileId;
 
+						if (pDetails.m_eVisibility != ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic)
+							continue;
+
 						if (pDetails.m_eResult != EResult.k_EResultOK) {
 							Logging.tML.Warn("Unable to fetch mod PublishId#" + id + " information. " + pDetails.m_eResult);
 							continue;
