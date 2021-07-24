@@ -199,7 +199,7 @@ jobs:
           password: ${{ secrets.STEAM_PASSWORD }}
           mfaCode:  ${{ secrets.STEAM_MFA_CODE }}
           appId: 1281930
-          buildDescription: Github Actions auto-release for ${{ github.sha }}
+          buildDescription: \"Github Actions auto-release for ${{ github.sha }}\"
           rootPath: artifacts
           # 1: Common, 2: Windows, 3: Linux, 4: Mac
           depot2Path: Release
