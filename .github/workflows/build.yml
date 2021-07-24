@@ -202,8 +202,8 @@ jobs:
           buildDescription: GithubActionsAutoRelease
           rootPath: artifacts
           # 1: Common, 2: Windows, 3: Linux, 4: Mac
-          depot2Path: Release
-          depot3Path: Release
-          depot4Path: Release
+          depot2Path: Debug
+          depot3Path: Debug
+          depot4Path: Debug
           releaseBranch: public-1.4-alpha
           localContentServer: LocalContentServer
