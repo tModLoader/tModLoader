@@ -136,24 +136,6 @@ jobs:
           path: |
             ./artifacts/Release/
             
-      - name: Deploy to Steam Alpha Branch
-        uses: webbertakken/steam-deploy@v0.1
-        # We push an alpha release only on push events to the 1.4 branch that build correctly
-        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/1.4'
-        with:
-          username: ${{ secrets.STEAM_USERNAME }}
-          password: ${{ secrets.STEAM_PASSWORD }}
-          mfaCode:  ${{ secrets.STEAM_MFA_CODE }}
-          appId: 1281930
-          buildDescription: Github Actions auto-release for ${{ github.sha }}
-          rootPath: artifacts
-          # 1: Common, 2: Windows, 3: Linux, 4: Mac
-          depot2Path: Release
-          depot3Path: Release
-          depot4Path: Release
-          releaseBranch: public-1.4-alpha
-          localContentServer: LocalContentServer
-
       - name: Build ExampleMod
         shell: bash
         run: |
@@ -192,3 +174,36 @@ jobs:
             Pull Request: ${{github.event.pull_request.head.ref}} from ${{github.event.pull_request.head.repo.full_name}}
             Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
+            
+  deploy:
+    needs: build
+    # We push an alpha release only on push events to the 1.4 branch that build correctly
+    if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
+    name: Deploy to Steam Alpha Branch
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Download build artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: Debug Build
+          path: artifacts/Debug
+      - name: View build artifact files
+        run: ls -R
+        working-directory: artifacts/Debug
+      - name: Deploy to Steam Alpha Branch
+        uses: webbertakken/steam-deploy@v0.1
+        with:
+          username: ${{ secrets.STEAM_USERNAME }}
+          password: ${{ secrets.STEAM_PASSWORD }}
+          mfaCode:  ${{ secrets.STEAM_MFA_CODE }}
+          appId: 1281930
+          buildDescription: Github Actions auto-release for ${{ github.sha }}
+          rootPath: artifacts
+          # 1: Common, 2: Windows, 3: Linux, 4: Mac
+          depot2Path: Release
+          depot3Path: Release
+          depot4Path: Release
+          releaseBranch: public-1.4-alpha
+          localContentServer: LocalContentServer
