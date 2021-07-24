@@ -188,10 +188,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: Debug Build
-          path: artifacts/Debug
+          path: /github/workspace/artifacts/Debug
       - name: View build artifact files
         run: ls -R
-        working-directory: artifacts/Debug
+        working-directory: /github/workspace/artifacts/Debug
       - name: Deploy to Steam Alpha Branch
         uses: webbertakken/steam-deploy@v0.1
         with:
