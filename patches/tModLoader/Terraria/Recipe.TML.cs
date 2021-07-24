@@ -102,7 +102,7 @@ namespace Terraria
 		public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
 		
 		internal OnCraftCallback OnCraftHooks { get; private set; }
-		public ConsumeItemCallback ConsumeItemHooks { get; private set; }
+		internal ConsumeItemCallback ConsumeItemHooks { get; private set; }
 
 		private void AddGroup(int id) {
 			acceptedGroups.Add(id);

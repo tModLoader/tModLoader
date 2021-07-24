@@ -151,7 +151,7 @@
  					}
  				}
  
-+				ConsumeItemHooks?.Invoke(this, item2.type, ref num);
++				RecipeLoader.ConsumeItem(this, item2.type, ref num);
 +
  				if (num <= 0)
  					continue;
@@ -392,7 +392,7 @@
 +			for (int i = 0; i < maxVanillaRequirements; i++)
 +				currentRecipe.requiredItem.Add(new Item());
 +
-+			RecipeIndex = numRecipes;
++			currentRecipe.RecipeIndex = numRecipes;
  			numRecipes++;
  		}
  
