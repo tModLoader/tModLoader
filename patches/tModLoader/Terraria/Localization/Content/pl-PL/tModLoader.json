@@ -54,7 +54,7 @@
 		"ModsReloadAndReturn": "Przeładuj i wróć do menu światów",
 		"ModsNotFoundServer": "Nie znaleziono modów w: "{0}"\nJeśli korzystasz z serwera dedykowanego, możesz chcieć skorzystać z 'modpath' w wierszu polecenia lub z konfiguracji serwera w celu określenia niestandardowego katalogu modów.\n",",
 		"AskForModIndex": "Wpisz liczbę, aby przełączać między włączonymi/wyłączonymi modami",
-		"AskForCommand": "Wpisz komende: ",
+		"AskForCommand": "Wpisz komendę: ",
 
 		// Interface // Interfejs
 		"BossBarStyle": "Styl Paska Bossa: {0}",
@@ -71,7 +71,7 @@
 		"LoadErrorHashMismatchCorrupted": "Niepoprawny hash, dane moda zostały zmodyfikowane lub uszkodzone",
 		"LoadErrorDependencyVersionTooLow": "{0} wymaga {2} w wersji {1}, ale zainstalowana jest {3}",
 		"LoadErrorMajorVersionMismatch": "{0} celuje w {2} wersje {1} ale masz nowszą wersję główną ({3}) które mogą być niezgodne. {0} muszą zostać zaktualizowane.",
-		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. Ustawiłeś ModNPC.banner lub ModNPC.bannerItem, ale nie inne. Upewnij się, że ustawiasz oba, sprawdź pisownię i że element istnieje, jeśli używasz mod.ItemType(). Zgłoś to deweloperom {0}.",
+		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. Ustawiłeś ModNPC.banner lub ModNPC.bannerItem, ale nie oba. Upewnij się, że ustawiasz oba, sprawdź pisownię i że element istnieje, jeśli używasz mod.ItemType(). Zgłoś to deweloperom {0}.",
 		"UnloadError": "Wystąpił jeden lub więcej błędów podczas rozładunku modów i tModLoader musi zostać ponownie uruchomiony, aby zapobiec dalszym problemom.",
 		"DefensiveUnload": "{0} nie był w stanie się prawidłowo rozładować. Moderzy muszą używać programowania defensywnego, aby zapewnić zakończenie rozładunku niezależnie od błędów podczas ładowania.",
 		"BuildError": "Wystąpił błąd podczas budowania {0}",
@@ -107,8 +107,8 @@
 		"OpenWebHelp": "Otwórz pomoc",
 		"SkipToMainMenu": "Pomiń Ładowanie Modów",
 		"Retry": "Ponów próbę",
-		"Exit": "Wyjdz",
-		"ExitAndDisableAll": "Wyjdz i wyłącz wszystkie",
+		"Exit": "Wyjdź",
+		"ExitAndDisableAll": "Wyjdź i wyłącz wszystkie",
 
 		// Mod Info // Informacje o modach
 		"ModInfoHeader": "Informacje o modzie: ",
@@ -138,7 +138,7 @@
 
 		// ModNet/Multiplayer // Tryb Wieloosobowy
 		"MPSyncingMods": "Synchronizowanie modów",
-		"MPServerModsCantDownload": "Następujące mody są zainstalowane na serwerze, ale nie można ich pobrać",
+		"MPServerModsCantDownload": "Następujące mody są zainstalowane na serwerze, ale nie mogą być pobrane",
 		"MPServerModsCantDownloadReasonSigned": "ponieważ akceptujesz tylko mody podpisane przez przeglądarkę modów",
 		"MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "ponieważ masz wyłączone automatyczne pobieranie modów",
 		"MPServerModsCantDownloadChangeSettingsHint": "Musisz zmienić swoje ustawienia lub nabyć mody od właściciela serwera.",
