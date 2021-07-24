@@ -51,7 +51,7 @@ namespace Terraria.Social.Steam
 			internal static void Initialize() {
 				if (!ModLoader.Engine.Steam.IsSteamApp) {
 					// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
-					GameServer.Init(0x7f000001, 7776, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0");
+					GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0");
 
 					SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 					SteamGameServer.SetProduct(thisApp.ToString());
