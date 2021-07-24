@@ -331,7 +331,7 @@ namespace Terraria.Social.Steam
 						else
 							keyCount = SteamGameServerUGC.GetQueryUGCNumKeyValueTags(_primaryUGCHandle, i);
 
-						if (keyCount != MetadataKeys.Length) {
+						if (keyCount < MetadataKeys.Length) {
 							Logging.tML.Warn("Mod is missing required metadata: " + displayname);
 							continue;
 						}
@@ -346,7 +346,14 @@ namespace Terraria.Social.Steam
 							else
 								SteamGameServerUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 100, out val, 100);
 
-							metadata[MetadataKeys[j]] = val;
+							metadata[key] = val;
+						}
+
+						string[] missingKeys = MetadataKeys.Where(k => metadata.Get(k) == null).ToArray();
+
+						if (missingKeys.Length != 0) {
+							Logging.tML.Warn($"Mod '{displayname}' is missing required metadata: {string.Join(',', missingKeys.Select(k => $"'{k}'"))}.");
+							continue;
 						}
 
 						ModSide modside = ModSide.Both;
