@@ -70,7 +70,7 @@
 		"LoadErrorErrorReadingModFile": "Błąd podczas ładowania pliku moda {0}",
 		"LoadErrorHashMismatchCorrupted": "Niepoprawny hash, dane moda zostały zmodyfikowane lub uszkodzone",
 		"LoadErrorDependencyVersionTooLow": "{0} wymaga {2} w wersji {1}, ale zainstalowana jest {3}",
-		"LoadErrorMajorVersionMismatch": "{0} celuje w {2} wersje {1} ale masz nowszą wersję główną ({3}) które mogą być niezgodne. {0} muszą zostać zaktualizowane.",
+		"LoadErrorMajorVersionMismatch": "{0} celuje w {2} wersje {1} ale masz nowszą wersję główną ({3}) która może być niezgodna. {0} musi zostać zaktualizowana.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. Ustawiłeś ModNPC.banner lub ModNPC.bannerItem, ale nie oba. Upewnij się, że ustawiasz oba, sprawdź pisownię i że element istnieje, jeśli używasz mod.ItemType(). Zgłoś to deweloperom {0}.",
 		"UnloadError": "Wystąpił jeden lub więcej błędów podczas rozładunku modów i tModLoader musi zostać ponownie uruchomiony, aby zapobiec dalszym problemom.",
 		"DefensiveUnload": "{0} nie był w stanie się prawidłowo rozładować. Moderzy muszą używać programowania defensywnego, aby zapewnić zakończenie rozładunku niezależnie od błędów podczas ładowania.",
@@ -209,7 +209,7 @@
 		"MBMyPublishedMods": "Moje opublikowane mody",
 		"MBUnpublish": "Cofnij publikacje",
 		"MBMyPublishedModsStats": "{0} {^0:pobranie;pobrań} ({1} - najnowszej wersji)",
-		"EnterSteamID": "Proszę Wpisać Twoje SteamID",
+		"EnterSteamID": "Proszę Wpisz Swój SteamID",
 		"PasteSteamID": "Wklej SteamID (ctrl-v)",
 		"MBServerResponse": "Odpowiedź serwera Przeglądarki modów:\n\n{0}",
 
@@ -349,7 +349,7 @@
 		"PatreonSetTooltip": "Dzięki za wsparcie!",
 		"WorldGenError": "Wystąpił problem podczas generowania świata",
 		"WorldIODataException": "Gra napotkała problem z danymi moda dla świata.",
-		"ServerCrash": "Awaria serwera: {0}\n{1}\n\nProszę sprawdź server.log aby ustalić, czy mod jest odpowiedzialny za tę awarię, w przeciwnym razie napisz na #support na Discordzie tModLoadera",
+		"ServerCrash": "Awaria serwera: {0}\n{1}\n\nProszę sprawdź server.log aby ustalić, czy mod jest odpowiedzialny za tę awarię, w przeciwnym wypadku odwiedź #support na Discordzie tModLoadera",
 
 		// MessageBox // Okno Dialogowe
 		// "ContentFolderNotFound": "Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.",
