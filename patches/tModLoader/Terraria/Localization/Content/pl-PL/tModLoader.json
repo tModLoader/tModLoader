@@ -269,7 +269,7 @@
 		"MSOpenSources": "Otwórz pliki źródłowe",
 		"MSManagePublished": "Zarządzaj opublikowanymi",
 		"MSPublish": "Opublikuj",
-		"MSModSourcesCantHaveSpaces": "(Foldery źródłowe modów nie mogą mieć spacji)",
+		"MSModSourcesCantHaveSpaces": "(Foldery źródłowe modów nie mogą zawierać znaków spacji)",
 		"MSCreateMod": "Stwórz Moda",
 
 		// Developer Mode UI
