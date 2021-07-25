@@ -184,12 +184,8 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-      - name: Check out base branch
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false
       - name: Download build artifact from build job
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@main
         with:
           name: Debug Build
           path: artifacts/Debug
