@@ -202,7 +202,7 @@ jobs:
           mfaCode:  ${{ secrets.STEAM_MFA_CODE }}
           appId: 1281930
           buildDescription: GithubActionsAutoRelease
-          rootPath: /home/runner/work/tModLoader/tModLoader/artifacts
+          contentRoot: /home/runner/work/tModLoader/tModLoader/artifacts
           # 1: Common, 2: Windows, 3: Linux, 4: Mac
           depot2Path: Debug
           depot3Path: Debug
