@@ -184,14 +184,16 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Mkdir
+        run: mkdir -p /github/workspace/artifacts/Debug
       - name: Download build artifact from build job
         uses: actions/download-artifact@v2
         with:
           name: Debug Build
-          path: artifacts/Debug
+          path: /github/workspace/artifacts/Debug
       - name: View build artifact files
         run: ls -R
-        working-directory: artifacts/Debug
+        working-directory: /github/workspace/artifacts/Debug
       - name: Deploy to Steam Alpha Branch
         uses: game-ci/steam-deploy@v0.1
         with:
@@ -200,7 +202,7 @@ jobs:
           mfaCode:  ${{ secrets.STEAM_MFA_CODE }}
           appId: 1281930
           buildDescription: GithubActionsAutoRelease
-          rootPath: artifacts
+          rootPath: /github/workspace/artifacts
           # 1: Common, 2: Windows, 3: Linux, 4: Mac
           depot2Path: Debug
           depot3Path: Debug
