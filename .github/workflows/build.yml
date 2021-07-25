@@ -204,7 +204,7 @@ jobs:
           buildDescription: GithubActionsAutoRelease
           contentRoot: /home/runner/work/tModLoader/tModLoader/artifacts
           # 1: Common, 2: Windows, 3: Linux, 4: Mac
-          depot2Path: Debug
-          depot3Path: Debug
-          depot4Path: Debug
+          depot2Path: /home/runner/work/tModLoader/tModLoader/artifacts/Debug
+          depot3Path: /home/runner/work/tModLoader/tModLoader/artifacts/Debug
+          depot4Path: /home/runner/work/tModLoader/tModLoader/artifacts/Debug
           releaseBranch: public-1.4-alpha
