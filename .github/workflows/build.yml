@@ -185,7 +185,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Download build artifact from build job
-        uses: actions/download-artifact@main
+        uses: actions/download-artifact@v2
         with:
           name: Debug Build
           path: artifacts/Debug
@@ -195,7 +195,7 @@ jobs:
           ls -R
         working-directory: artifacts/Debug
       - name: Deploy to Steam Alpha Branch
-        uses: tModLoader/steam-deploy@v0.2
+        uses: tModLoader/steam-deploy@main
         with:
           username: ${{ secrets.STEAM_USERNAME }}
           password: ${{ secrets.STEAM_PASSWORD }}
