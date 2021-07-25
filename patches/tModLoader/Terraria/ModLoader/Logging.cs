@@ -17,6 +17,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader.UI;
+using Terraria.ModLoader.Engine;
 
 namespace Terraria.ModLoader
 {
@@ -34,19 +35,17 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static ILog publicLogger { get; } = LogManager.GetLogger("publicLogger");
 
-		internal static string side => Main.dedServ ? "server" : "client";
-
 		private static List<string> initWarnings = new List<string>();
-		internal static void Init() {
+		internal static void Init(bool dedServ) {
 			if (Program.LaunchParameters.ContainsKey("-build"))
 				return;
 
 			// This is the first file we attempt to use.
 			Utils.TryCreatingDirectory(LogDir);
 
-			ConfigureAppenders();
+			ConfigureAppenders(dedServ);
 
-			tML.InfoFormat("Starting tModLoader {0} {1}", side, BuildInfo.BuildIdentifier);
+			tML.InfoFormat("Starting tModLoader {0} {1}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier);
 			tML.InfoFormat("Log date: {0}", DateTime.Now.ToString("d"));
 			tML.InfoFormat("Running on {0} {1} {2}", ReLogic.OS.Platform.Current.Type, FrameworkVersion.Framework, FrameworkVersion.Version);
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
@@ -64,16 +63,18 @@ namespace Terraria.ModLoader
 			AssemblyResolving.Init();
 			LoggingHooks.Init();
 			LogArchiver.ArchiveLogs();
+			if (!dedServ)
+				GraphicsChangeTracker.RedirectLogs();
 		}
 
-		private static void ConfigureAppenders() {
+		private static void ConfigureAppenders(bool dedServ) {
 			var layout = new PatternLayout {
 				ConversionPattern = "[%d{HH:mm:ss}] [%t/%level] [%logger]: %m%n"
 			};
 			layout.ActivateOptions();
 
 			var appenders = new List<IAppender>();
-			if (!Main.dedServ) { 
+			if (!dedServ) { 
 				appenders.Add(new ConsoleAppender {
 					Name = "ConsoleAppender",
 					Layout = layout
@@ -86,7 +87,7 @@ namespace Terraria.ModLoader
 
 			var fileAppender = new FileAppender {
 				Name = "FileAppender",
-				File = LogPath = Path.Combine(LogDir, GetNewLogFile(side)),
+				File = LogPath = Path.Combine(LogDir, GetNewLogFile(dedServ ? "server" : "client")),
 				AppendToFile = false,
 				Encoding = Encoding.UTF8,
 				Layout = layout

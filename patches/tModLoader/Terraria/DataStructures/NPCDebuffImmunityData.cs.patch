@@ -1,0 +1,17 @@
+--- src/Terraria/Terraria/DataStructures/NPCDebuffImmunityData.cs
++++ src/tModLoader/Terraria/DataStructures/NPCDebuffImmunityData.cs
+@@ -1,4 +_,5 @@
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.DataStructures
+ {
+@@ -10,7 +_,7 @@
+ 
+ 		public void ApplyToNPC(NPC npc) {
+ 			if (ImmuneToWhips || ImmuneToAllBuffsThatAreNotWhips) {
+-				for (int i = 1; i < 327; i++) {
++				for (int i = 1; i < BuffLoader.BuffCount; i++) {
+ 					bool flag = BuffID.Sets.IsAnNPCWhipDebuff[i];
+ 					bool flag2 = false;
+ 					flag2 |= (flag && ImmuneToWhips);

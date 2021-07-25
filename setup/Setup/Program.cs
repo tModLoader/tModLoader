@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.Setup
 		public static readonly string logsDir = Path.Combine("setup", "logs");
 
 		public static string SteamDir => Settings.Default.SteamDir;
-		public static string TMLSteamDir => Settings.Default.TMLSteamDir;
+		public static string TMLDevSteamDir => Settings.Default.TMLDevSteamDir;
 		public static string TerrariaPath => Path.Combine(SteamDir, "Terraria.exe");
 		public static string TerrariaServerPath => Path.Combine(SteamDir, "TerrariaServer.exe");
 
@@ -33,9 +33,9 @@ namespace Terraria.ModLoader.Setup
 				return;
 			}*/
 #if AUTO
-			Settings.Default.TMLSteamDir = Settings.Default.SteamDir = @".\1421\Windows";
+			Settings.Default.TMLDevSteamDir = Settings.Default.SteamDir = @".\1423\Windows";
 #else
-			UpdateTmlSteamDir();
+			CreateTMLSteamDirIfNecessary();
 #endif
 
 			UpdateTargetsFile();
@@ -129,9 +129,10 @@ namespace Terraria.ModLoader.Setup
 				}
 				else {
 					Settings.Default.SteamDir = Path.GetDirectoryName(dialog.FileName);
+					Settings.Default.TMLDevSteamDir = "";
 					Settings.Default.Save();
 
-					UpdateTmlSteamDir(true);
+					CreateTMLSteamDirIfNecessary();
 					UpdateTargetsFile();
 
 					return true;
@@ -152,7 +153,7 @@ namespace Terraria.ModLoader.Setup
 				if (dialog.ShowDialog() != DialogResult.OK)
 					return false;
 
-				Settings.Default.TMLSteamDir = Path.GetDirectoryName(dialog.FileName);
+				Settings.Default.TMLDevSteamDir = Path.GetDirectoryName(dialog.FileName);
 				Settings.Default.Save();
 
 				UpdateTargetsFile();
@@ -161,20 +162,18 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
-		private static void UpdateTmlSteamDir(bool manualSet = false) {
-			if (manualSet || !Directory.Exists(TMLSteamDir)) {
-				Settings.Default.TMLSteamDir = Path.GetFullPath(Path.Combine(Settings.Default.SteamDir, "..", "tModLoaderDev"));
-				Settings.Default.Save();
-			}
+		private static void CreateTMLSteamDirIfNecessary() {
+			if (Directory.Exists(TMLDevSteamDir))
+				return;
+			
+			Settings.Default.TMLDevSteamDir = Path.GetFullPath(Path.Combine(Settings.Default.SteamDir, "..", "tModLoaderDev"));
+			Settings.Default.Save();
 
-			//Lame.
-			if (manualSet && !Directory.Exists(TMLSteamDir)) {
-				try {
-					Directory.CreateDirectory(TMLSteamDir);
-				}
-				catch(Exception e) {
-					Console.WriteLine($"{e.GetType().Name}: {e.Message}");
-				}
+			try {
+				Directory.CreateDirectory(TMLDevSteamDir);
+			}
+			catch (Exception e) {
+				Console.WriteLine($"{e.GetType().Name}: {e.Message}");
 			}
 		}
 
@@ -208,7 +207,7 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 	<BranchName>{branch}</BranchName>
 	<CommitSHA>{gitsha}</CommitSHA>
 	<TerrariaSteamPath>{SteamDir}</TerrariaSteamPath>
-    <tModLoaderSteamPath>{TMLSteamDir}</tModLoaderSteamPath>
+    <tModLoaderSteamPath>{TMLDevSteamDir}</tModLoaderSteamPath>
   </PropertyGroup>
 </Project>";
 

@@ -39,7 +39,7 @@ namespace Terraria.ModLoader
 		public bool DrawHeldProjInFrontOfHeldItemAndArms { get; set; }
 
 		/// <summary> The file name of this projectile's glow texture file in the mod loader's file space. If it does not exist it is ignored. </summary>
-		public virtual string GlowTexture => Texture + "_Glow";
+		public virtual string GlowTexture => Texture + "_Glow"; //TODO: this is wasteful. We should consider AutoStaticDefaults or something... requesting assets regularly is bad perf
 
 		/// <summary>  Shorthand for projectile.type; </summary>
 		public int Type => Projectile.type;
@@ -52,7 +52,7 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModProjectile>.Register(this);
 
 			Projectile.type = ProjectileLoader.ReserveProjectileID();
-			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ProjectileName.{Name}");
+			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ProjectileName.{Name}");
 
 			ProjectileLoader.projectiles.Add(this);
 		}
@@ -110,16 +110,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to set all your projectile's static properties, such as names/translations and the arrays in ProjectileID.Sets.
-		/// </summary>
-		public virtual void SetStaticDefaults() {
-		}
-
-		/// <summary>
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			TextureAssets.Projectile[Projectile.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Projectile[Projectile.type] = ModContent.Request<Texture2D>(Texture);
 			Main.projFrames[Projectile.type] = 1;
 			if (Projectile.hostile) {
 				Main.projHostile[Projectile.type] = true;
@@ -330,6 +324,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// If this projectile is a bobber, allows you to modify the origin of the fisihing line that's connecting to the fishing pole, as well as the fishing line's color.
+		/// </summary>
+		/// <param name="lineOriginOffset"> The offset of the fishing line's origin from the player's center. </param>
+		/// <param name="lineColor"> The fishing line's color, before being overridden by string color accessories. </param>
+		public virtual void ModifyFishingLine(ref Vector2 lineOriginOffset, ref Color lineColor) {
+		}
+
+		/// <summary>
 		/// Allows you to determine the color and transparency in which this projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default.
 		/// </summary>
 		public virtual Color? GetAlpha(Color lightColor) {
@@ -337,23 +339,25 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind this projectile. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
+		/// Allows you to draw things behind this projectile. Use the Main.EntitySpriteDraw method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
 		/// </summary>
-		public virtual bool PreDrawExtras(SpriteBatch spriteBatch) {
+		public virtual bool PreDrawExtras() {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind this projectile, or to modify the way this projectile is drawn. Return false to stop the game from drawing the projectile (useful if you're manually drawing the projectile). Returns true by default.
+		/// Allows you to draw things behind this projectile, or to modify the way it is drawn. Use the Main.EntitySpriteDraw method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.
 		/// </summary>
-		public virtual bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
+		/// <param name="lightColor"> The color of the light at the projectile's center. </param>
+		public virtual bool PreDraw(ref Color lightColor) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw things in front of a projectile. This method is called even if PreDraw returns false.
+		/// Allows you to draw things in front of this projectile. Use the Main.EntitySpriteDraw method for drawing. This method is called even if PreDraw returns false.
 		/// </summary>
-		public virtual void PostDraw(SpriteBatch spriteBatch, Color lightColor) {
+		/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
+		public virtual void PostDraw(Color lightColor) {
 		}
 
 		/// <summary>
@@ -410,7 +414,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
 		/// </summary>
-		public virtual void DrawBehind(int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {
+		public virtual void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
 		}
 	}
 }

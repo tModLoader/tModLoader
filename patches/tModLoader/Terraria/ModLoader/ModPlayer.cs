@@ -43,8 +43,10 @@ namespace Terraria.ModLoader
 		
 		protected sealed override void Register() {
 			ModTypeLookup<ModPlayer>.Register(this);
-			PlayerHooks.Add(this);
+			PlayerLoader.Add(this);
 		}
+
+		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Called whenever the player is loaded (on the player selection screen). This can be used to initialize data structures, etc.
@@ -95,48 +97,6 @@ namespace Terraria.ModLoader
 		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.
 		/// </summary>
 		public virtual void PostSavePlayer() {
-		}
-
-		/// <summary>
-		/// Allows you to set biome variables in your ModPlayer class based on tile counts.
-		/// </summary>
-		public virtual void UpdateBiomes() {
-		}
-
-		/// <summary>
-		/// Whether or not this player and the other player parameter have the same custom biome variables. This hook is used to help with client/server syncing. Returns true by default.
-		/// </summary>
-		/// <param name="other"></param>
-		/// <returns></returns>
-		public virtual bool CustomBiomesMatch(Player other) {
-			return true;
-		}
-
-		/// <summary>
-		/// In this hook, you should copy the custom biome variables from this player to the other player parameter. This hook is used to help with client/server syncing.
-		/// </summary>
-		/// <param name="other"></param>
-		public virtual void CopyCustomBiomesTo(Player other) {
-		}
-
-		/// <summary>
-		/// Allows you to send custom biome information between client and server.
-		/// </summary>
-		/// <param name="writer"></param>
-		public virtual void SendCustomBiomes(BinaryWriter writer) {
-		}
-
-		/// <summary>
-		/// Allows you to do things with the custom biome information you send between client and server.
-		/// </summary>
-		/// <param name="reader"></param>
-		public virtual void ReceiveCustomBiomes(BinaryReader reader) {
-		}
-
-		/// <summary>
-		/// Allows you to create special visual effects in the area around the player. For example, the blood moon's red filter on the screen or the slime rain's falling slime in the background. You must create classes that override Terraria.Graphics.Shaders.ScreenShaderData or Terraria.Graphics.Effects.CustomSky, add them in your mod's Load hook, then call Player.ManageSpecialBiomeVisuals. See the ExampleMod if you do not have access to the source code.
-		/// </summary>
-		public virtual void UpdateBiomeVisuals() {
 		}
 
 		/// <summary>
@@ -203,7 +163,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Use this to check on hotkeys you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay.
+		/// Use this to check on keybinds you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay.
 		/// </summary>
 		/// <param name="triggersSet"></param>
 		public virtual void ProcessTriggers(TriggersSet triggersSet) {
@@ -370,22 +330,25 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to multiply an item's regular use time. Returns 1f by default. Values greater than 1 increase the item speed.
+		/// Allows you to change the effective useTime of an item.
+		/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
 		/// </summary>
-		/// <param name="item">The item.</param>
-		/// <returns>The amount you wish to multiply with.</returns>
-		public virtual float UseTimeMultiplier(Item item) {
-			return 1f;
-		}
+		/// <returns> The multiplier on the usage time. 1f by default. Values greater than 1 increase the item use's length. </returns>
+		public virtual float UseTimeMultiplier(Item item) => 1f;
 
 		/// <summary>
-		/// Allows you to multiply an item's regular melee speed. Returns 1f by default. Values greater than 1 increase the item speed.
+		/// Allows you to change the effective useAnimation of an item.
+		/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
 		/// </summary>
-		/// <param name="item">The item.</param>
-		/// <returns>The amount you wish to multiply with.</returns>
-		public virtual float MeleeSpeedMultiplier(Item item) {
-			return 1f;
-		}
+		/// <returns>The multiplier on the animation time. 1f by default. Values greater than 1 increase the item animation's length. </returns>
+		public virtual float UseAnimationMultiplier(Item item) => 1f;
+
+		/// <summary>
+		/// Allows you to safely change both useTime and useAnimation while keeping the values relative to each other.
+		/// <br/> Useful for status effects.
+		/// </summary>
+		/// <returns> The multiplier on the use speed. 1f by default. Values greater than 1 increase the overall item speed. </returns>
+		public virtual float UseSpeedMultiplier(Item item) => 1f;
 
 		/// <summary>
 		/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
@@ -501,7 +464,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to add additional projectiles to an item's shooting mechanism.
+		/// Allows you to modify an item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.
 		/// </summary>
 		/// <param name="item"> The item being used. </param>
 		/// <param name="source"> The projectile source's information. </param>
@@ -510,7 +473,8 @@ namespace Terraria.ModLoader
 		/// <param name="type"> The ID of the projectile. </param>
 		/// <param name="damage"> The damage of the projectile. </param>
 		/// <param name="knockback"> The knockback of the projectile. </param>
-		public virtual void Shoot(Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public virtual bool Shoot(Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			return true;
 		}
 
 		/// <summary>
@@ -749,7 +713,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to Main.playerDrawDust, and the indexes of any gore you create to Main.playerDrawGore.
+		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to drawInfo.DustCache, and the indexes of any gore you create to drawInfo.GoreCache.
 		/// </summary>
 		/// <param name="drawInfo"></param>
 		/// <param name="r"></param>

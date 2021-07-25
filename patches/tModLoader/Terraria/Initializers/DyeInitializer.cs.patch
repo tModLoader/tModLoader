@@ -12,8 +12,17 @@
  			GameShaders.Hair.BindShader(1983, new LegacyHairShaderData().UseLegacyMethod(delegate (Player player, Color newColor, ref bool lighting) {
  				Color color2 = default(Color);
  				color2 = ((Main.waterStyle == 2) ? new Color(124, 118, 242) : ((Main.waterStyle == 3) ? new Color(143, 215, 29) : ((Main.waterStyle == 4) ? new Color(78, 193, 227) : ((Main.waterStyle == 5) ? new Color(189, 231, 255) : ((Main.waterStyle == 6) ? new Color(230, 219, 100) : ((Main.waterStyle == 7) ? new Color(151, 107, 75) : ((Main.waterStyle == 8) ? new Color(128, 128, 128) : ((Main.waterStyle == 9) ? new Color(200, 0, 0) : ((Main.waterStyle == 10) ? new Color(208, 80, 80) : ((Main.waterStyle == 12) ? new Color(230, 219, 100) : new Color(28, 216, 94)))))))))));
-+				if (Main.waterStyle >= WaterStyleLoader.vanillaWaterCount)
-+					color2 = WaterStyleLoader.GetWaterStyle(Main.waterStyle).BiomeHairColor();			
++				if (Main.waterStyle >= Main.maxLiquidTypes)
++					color2 = LoaderManager.Get<WaterStylesLoader>().Get(Main.waterStyle).BiomeHairColor();			
  				Color color3 = player.hairDyeColor;
  				if (color3.A == 0)
  					color3 = color2;
+@@ -449,7 +_,7 @@
+ 
+ 		private static void FixRecipes() {
+ 			for (int i = 0; i < Recipe.maxRecipes; i++) {
+-				Main.recipe[i].createItem.dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(Main.recipe[i].createItem.type);
++				Main.recipe[i].createItem.dye = GameShaders.Armor.GetShaderIdFromItemId(Main.recipe[i].createItem.type);
+ 				Main.recipe[i].createItem.hairDye = GameShaders.Hair.GetShaderIdFromItemId(Main.recipe[i].createItem.type);
+ 			}
+ 		}

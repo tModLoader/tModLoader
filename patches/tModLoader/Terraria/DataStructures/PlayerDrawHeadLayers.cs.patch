@@ -1,10 +1,14 @@
 --- src/Terraria/Terraria/DataStructures/PlayerDrawHeadLayers.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDrawHeadLayers.cs
-@@ -8,13 +_,14 @@
+@@ -8,13 +_,18 @@
  
  namespace Terraria.DataStructures
  {
-+	//Made this internal for less confusion. 'Head-only' draw layers are no longer used, even internally. There are still some fix patches below, though, just in case some modder messes with this via reflection. --Mirsario.
++	// 'Head-only' draw layers are no longer used, even internally.
++	// At first this class was just marked internal, but now it's completely gone, due to the shenanigans that had to happen in PlayerDrawHeadSet.cs (basicaly the type is removed)
++	// --Mirsario.
++
++	/*
 -	public static class PlayerDrawHeadLayers
 +	internal static class PlayerDrawHeadLayers
  	{
@@ -84,3 +88,9 @@
  				QuickCDD(drawinfo.DrawData, drawinfo.cFace, TextureAssets.AccFace[drawinfo.drawPlayer.face].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.bodyFrameMemory.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.bodyFrameMemory.Height + 4f) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.bodyFrameMemory, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, drawinfo.scale, drawinfo.playerEffect, 0f);
  
  			if (drawinfo.drawUnicornHorn)
+@@ -324,4 +_,5 @@
+ 			drawData.Add(item);
+ 		}
+ 	}
++	*/
+ }

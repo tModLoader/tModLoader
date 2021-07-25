@@ -98,14 +98,14 @@ namespace ExampleMod.Content.Projectiles
 		// Some advanced drawing because the texture image isn't centered or symetrical
 		// If you dont want to manually drawing you can use vanilla projectile rendering offsets
 		// Here you can check it https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#horizontal-sprite-example
-		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
+		public override bool PreDraw(ref Color lightColor) {
 			// SpriteEffects helps to flip texture horizontally and vertically
 			SpriteEffects spriteEffects = SpriteEffects.None;
 			if (Projectile.spriteDirection == -1)
 				spriteEffects = SpriteEffects.FlipHorizontally;
 
 			// Getting texture of projectile
-			Texture2D texture = (Texture2D)ModContent.GetTexture(Texture);
+			Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
 
 			// Calculating frameHeight and current Y pos dependence of frame
 			// If texture without animation frameHeight = texture.Height is always and startY is always 0
@@ -128,9 +128,9 @@ namespace ExampleMod.Content.Projectiles
 
 			// Appling lighting and draw current frame
 			Color drawColor = Projectile.GetAlpha(lightColor);
-			Main.spriteBatch.Draw(texture,
+			Main.EntitySpriteDraw(texture,
 				Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
-				sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0f);
+				sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0);
 
 			// It's important to return false, otherwise we also draw the original texture.
 			return false;

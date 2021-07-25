@@ -12,17 +12,23 @@
  					_currentPriceAdjustment *= 0.95f;
  				}
  
--				bool[] array = new bool[667];
+-				bool[] array = new bool[668];
 +				bool[] array = new bool[NPCLoader.NPCCount];
  				foreach (NPC item in nearbyResidentNPCs) {
  					array[item.type] = true;
  				}
-@@ -186,7 +_,7 @@
+@@ -182,7 +_,13 @@
+ 					break;
+ 			}
+ 
+-			return Language.GetTextValue("TownNPCMoodBiomes." + text);
++			string result = Language.GetTextValue("TownNPCMoodBiomes." + text);
++			if (biomeID >= BiomeLoader.VanillaPrimaryBiomeCount) {
++				string key = LoaderManager.Get<BiomeLoader>().Get(biomeID).DisplayName.Key;
++				result = Language.GetTextValue(key);
++			}
++
++			return result;
  		}
  
  		private void AddHappinessReportText(string textKeyInCategory, object substitutes = null) {
--			string str = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
-+			string str = (_currentNPCBeingTalkedTo.type > 664 ? "Mods." + _currentNPCBeingTalkedTo.ModNPC.Mod.Name + "." : "") + "TownNPCMood_"  + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID); //Temporary until localization rework
- 			if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2)
- 				str += "Transformed";
- 
