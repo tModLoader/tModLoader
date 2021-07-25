@@ -206,14 +206,10 @@ jobs:
           mfaCode:  ${{ secrets.STEAM_MFA_CODE }}
           appId: 1281930
           buildDescription: GithubActionsAutoRelease
-          rootPath: artifacts
+          rootPath: builds
           # 1: Common, 2: Windows, 3: Linux, 4: Mac
-          depot2Path: Debug
-          depot3Path: Debug
-          depot4Path: Debug
+          depot2Path: /home/runner/work/tModLoader/tModLoader/artifacts/Debug
+          depot3Path: /home/runner/work/tModLoader/tModLoader/artifacts/Debug
+          depot4Path: /home/runner/work/tModLoader/tModLoader/artifacts/Debug
           releaseBranch: public-1.4-alpha
           localContentServer: LocalContentServer
-      - name: PWD
-        run: |
-          echo pwd is: ${PWD}
-          ls -R
