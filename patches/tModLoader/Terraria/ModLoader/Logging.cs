@@ -50,7 +50,7 @@ namespace Terraria.ModLoader
 			tML.InfoFormat("Running on {0} {1} {2}", ReLogic.OS.Platform.Current.Type, FrameworkVersion.Framework, FrameworkVersion.Version);
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
 			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
-			tML.InfoFormat("Launch Parameters: {0}", String.Join("  ", Environment.GetCommandLineArgs()));
+			tML.InfoFormat("Launch Parameters: {0}", String.Join(' ', Environment.GetCommandLineArgs().Skip(1)));
 
 			if (ModCompile.DeveloperMode)
 				tML.Info("Developer mode enabled");
