@@ -151,7 +151,7 @@
  					}
  				}
  
-+				ConsumeItemHooks?.Invoke(this, item2.type, ref num);
++				RecipeLoader.ConsumeItem(this, item2.type, ref num);
 +
  				if (num <= 0)
  					continue;
@@ -333,7 +333,7 @@
  			if (ingridients.Length == 1) {
  				ingridients = new int[2] {
  					ingridients[0],
-@@ -14246,18 +_,56 @@
+@@ -14246,18 +_,57 @@
  			}
  		}
  
@@ -392,6 +392,7 @@
 +			for (int i = 0; i < maxVanillaRequirements; i++)
 +				currentRecipe.requiredItem.Add(new Item());
 +
++			currentRecipe.RecipeIndex = numRecipes;
  			numRecipes++;
  		}
  
