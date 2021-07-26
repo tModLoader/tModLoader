@@ -236,11 +236,15 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
 		}
 
-		internal void InnerPopulateModBrowser() {
+		internal bool InnerPopulateModBrowser() {
 			// Populate
 			SteamWorkshop = new WorkshopHelper.QueryHelper();
-			Items.AddRange(SteamWorkshop.QueryWorkshop());
-			UpdateNeeded = true;
+
+			if (!SteamWorkshop.QueryWorkshop(out var items))
+				return false;
+
+			Items.AddRange(items);
+			return UpdateNeeded = true;
 		}
 
 		/// <summary>
