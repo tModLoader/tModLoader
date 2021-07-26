@@ -281,14 +281,16 @@ namespace Terraria.Social.Steam
 			protected UGCQueryHandle_t _primaryUGCHandle;
 			protected EResult _primaryQueryResult;
 			protected uint _queryReturnCount;
+			protected int incompleteModCount;
 
 			internal QueryHelper() {
 				_queryHook = CallResult<SteamUGCQueryCompleted_t>.Create(OnWorkshopQueryCompleted);
 			}
 
-			internal List<UIModDownloadItem> QueryWorkshop() {
+			internal bool QueryWorkshop(out List<UIModDownloadItem> items) {
 				uint queryPage = 0;
-				List<UIModDownloadItem> items = new List<UIModDownloadItem>();
+				incompleteModCount = 0;
+				items = new List<UIModDownloadItem>();
 				LocalMod[] installedMods = ModOrganizer.FindMods();
 
 				do {
@@ -296,11 +298,11 @@ namespace Terraria.Social.Steam
 
 					if (_primaryQueryResult == EResult.k_EResultAccessDenied) {
 						Utils.ShowFancyErrorMessage("Error: Access to Steam Workshop was denied.", 0);
-						return items;
+						return false;
 					}
 					else if (_primaryQueryResult != EResult.k_EResultOK) {
 						Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop. " + _primaryQueryResult, 0);
-						return items;
+						return false;
 					}
 
 
@@ -356,6 +358,7 @@ namespace Terraria.Social.Steam
 
 						if (missingKeys.Length != 0) {
 							Logging.tML.Warn($"Mod '{displayname}' is missing required metadata: {string.Join(',', missingKeys.Select(k => $"'{k}'"))}.");
+							incompleteModCount++;
 							continue;
 						}
 
@@ -420,7 +423,7 @@ namespace Terraria.Social.Steam
 					ReleaseWorkshopQuery();
 				} while (_queryReturnCount == Steamworks.Constants.kNumUGCResultsPerPage); // 50 is based on kNumUGCResultsPerPage constant in ISteamUGC. Can't find constant itself? - Solxan
 
-				return items;
+				return true;
 			}
 
 			private void QueryForPage(uint page) {
@@ -507,19 +510,16 @@ namespace Terraria.Social.Steam
 			}
 
 			internal static bool CheckWorkshopConnection() {
-				/*if (Interface.modBrowser.Items.Count != 0)
+				// If populating fails during query, than no connection. Attempt connection if not yet attempted.
+				if (UIModBrowser.SteamWorkshop == null && !Interface.modBrowser.InnerPopulateModBrowser())
+					return false;
+
+				// If there are zero items on workshop, than return true.
+				if (Interface.modBrowser.Items.Count + UIModBrowser.SteamWorkshop._queryReturnCount == 0)
 					return true;
 
-				Interface.modBrowser.InnerPopulateModBrowser();
-
-				if (Interface.modBrowser.Items.Count != 0)
-					return true;
-
-				return false;*/
-
-				//TODO: Create a check that doesn't involve numbers of entries in the workshop.
-
-				return true;
+				// Otherwise, return the original condition. 
+				return Interface.modBrowser.Items.Count + UIModBrowser.SteamWorkshop.incompleteModCount != 0;
 			}
 		}
 	}
