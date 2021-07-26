@@ -214,7 +214,7 @@ jobs:
         run: |
           echo pwd is: ${PWD}
           echo "Listing manifests directory"
-          ls -alhR ./manifests
+          ls -alhR ./solutions/Manifests
           steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build_http ${GITHUB_WORKSPACE}/solutions/Manifests/app.vdf +quit
           echo "Listing BuildOutput directory"
           ls -alhR ./BuildOutput
