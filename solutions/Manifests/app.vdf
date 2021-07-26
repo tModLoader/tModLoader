@@ -3,7 +3,7 @@
   "appid" "1281930"
   "desc" "Github Actions Auto-Release"
   "buildoutput" "../BuildOutput"
-  "contentroot" "../artifacts"
+  "contentroot" "../../artifacts"
   "setlive" "public-1.4-alpha"
   "preview" "1"
   "local" ""
