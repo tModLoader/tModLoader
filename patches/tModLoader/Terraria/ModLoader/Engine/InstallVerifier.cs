@@ -46,14 +46,14 @@ namespace Terraria.ModLoader.Engine
 				steamHash = ToByteArray("4fd8072ca82ded3d9da1be577a478788");
 			}
 			else if (Platform.IsOSX) {
-				steamAPIPath = "Libraries/Native/OSX/libsteam_api.dylib";
+				steamAPIPath = "Libraries/Native/OSX/libsteam_api64.dylib";
 				steamAPIHash = ToByteArray("69C98EC9C3179D52A7FE75BD8405D8FC");
 				vanillaSteamAPI = "libsteam_api.dylib";
 				gogHash = ToByteArray("181c586d0fe64156adb0ecd4b9fabf9d");
 				steamHash = ToByteArray("12c8d2ac5af6c8505bd1a9339dc75231");
 			}
 			else if (Platform.IsLinux) {
-				steamAPIPath = "Libraries/Native/Linux/libsteam_api.so";
+				steamAPIPath = "Libraries/Native/Linux/libsteam_api64.so";
 				steamAPIHash = ToByteArray("25BF523623B5EE8E82B047327F9C1341");
 				vanillaSteamAPI = "libsteam_api.so";
 				gogHash = ToByteArray("4a051352dd6ecc323c5a0a15e5b598fb");
