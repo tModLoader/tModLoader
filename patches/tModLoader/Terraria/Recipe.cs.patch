@@ -333,7 +333,7 @@
  			if (ingridients.Length == 1) {
  				ingridients = new int[2] {
  					ingridients[0],
-@@ -14246,18 +_,57 @@
+@@ -14246,18 +_,59 @@
  			}
  		}
  
@@ -383,6 +383,9 @@
 +			
  			Main.recipe[numRecipes] = currentRecipe;
 -			currentRecipe = new Recipe();
++			currentRecipe.RecipeIndex = numRecipes;
++			
++			// The following resets the currentRecipe field
 +			currentRecipe = new Recipe {
 +				requiredItem = new List<Item>(),
 +				requiredTile = Enumerable.Repeat(-1, maxVanillaRequirements).ToList(),
@@ -392,7 +395,6 @@
 +			for (int i = 0; i < maxVanillaRequirements; i++)
 +				currentRecipe.requiredItem.Add(new Item());
 +
-+			currentRecipe.RecipeIndex = numRecipes;
  			numRecipes++;
  		}
  
