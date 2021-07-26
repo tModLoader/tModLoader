@@ -3998,14 +3998,16 @@
  		}
  
  		public static int DamageVar(float dmg, float luck = 0f) {
-@@ -50438,7 +_,9 @@
+@@ -50438,7 +_,11 @@
  					width = (int)(num2 * (float)height);
  				}
  
++#if !NETCORE
 +				if (!Platform.IsWindows)
 -				PlayerInput.RawMouseScale = new Vector2((float)width / (float)instance.Window.ClientBounds.Width, (float)height / (float)instance.Window.ClientBounds.Height);
 +					PlayerInput.RawMouseScale = new Vector2((float)width / (float)instance.Window.ClientBounds.Width, (float)height / (float)instance.Window.ClientBounds.Height);
-+				
++#endif 
++
  				if (!graphics.IsFullScreen) {
  					num3 = Math.Max(graphics.PreferredBackBufferWidth, graphics.GraphicsDevice.Viewport.Width);
  					num4 = Math.Max(graphics.PreferredBackBufferHeight, graphics.GraphicsDevice.Viewport.Height);
