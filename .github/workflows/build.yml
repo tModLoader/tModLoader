@@ -212,6 +212,7 @@ jobs:
       - name: Attempt run_app_build_http 
         shell: bash
         run: |
+          mkdir artifacts/shared
           echo pwd is: ${PWD}
           echo "Listing manifests directory"
           ls -alhR ./solutions/Manifests
@@ -219,4 +220,4 @@ jobs:
           echo "Listing BuildOutput directory"
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
-          cat BuildOutput/*
+          cat BuildOutput/*.log

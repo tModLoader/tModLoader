@@ -10,6 +10,7 @@
 
   "depots"
   {
+    "1281931" "shared.vdf"
     "1281932" "windows.vdf"
     "1281933" "linux.vdf"
     "1281934" "mac.vdf"
