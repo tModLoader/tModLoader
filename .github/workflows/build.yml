@@ -184,6 +184,10 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Check out base branch
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - name: Download build artifact from build job
         uses: actions/download-artifact@v2
         with:
@@ -192,19 +196,27 @@ jobs:
       - name: View build artifact files
         run: |
           echo pwd is: ${PWD}
-          ls -R
+          ls -alhR
         working-directory: artifacts/Debug
-      - name: Deploy to Steam Alpha Branch
-        uses: tModLoader/steam-deploy@main
-        with:
-          username: ${{ secrets.STEAM_USERNAME }}
-          password: ${{ secrets.STEAM_PASSWORD }}
-          mfaCode:  ${{ secrets.STEAM_MFA_CODE }}
-          appId: 1281930
-          buildDescription: GithubActionsAutoRelease
-          contentRoot: /home/runner/work/tModLoader/tModLoader/artifacts
-          # 1: Common, 2: Windows, 3: Linux, 4: Mac
-          depot2Path: /home/runner/work/tModLoader/tModLoader/artifacts/Debug
-          depot3Path: /home/runner/work/tModLoader/tModLoader/artifacts/Debug
-          depot4Path: /home/runner/work/tModLoader/tModLoader/artifacts/Debug
-          releaseBranch: public-1.4-alpha
+      - name: Setup steamcmd
+        id: setupsteam
+        uses: CyberAndrii/setup-steamcmd@v1
+      - name: Setup Authentication Files
+        shell: bash
+        run: |
+          echo Decrypting Authentication Files
+          gpg --quiet --batch --yes --decrypt --passphrase="$STEAM_SENTRY_PASSPHRASE" --output ~/Steam/ssfn2592666017656020661 ./solutions/Manifests/secret.gpg
+        env:
+          STEAM_SENTRY_PASSPHRASE: ${{ secrets.STEAM_SENTRY_PASSPHRASE }}
+          STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
+      - name: Attempt run_app_build_http 
+        shell: bash
+        run: |
+          echo pwd is: ${PWD}
+          echo "Listing manifests directory"
+          ls -alhR ./manifests
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build_http ${GITHUB_WORKSPACE}/solutions/Manifests/app.vdf +quit
+          echo "Listing BuildOutput directory"
+          ls -alhR ./BuildOutput
+          echo "cat BuildOutput directory contents"
+          cat BuildOutput/*
