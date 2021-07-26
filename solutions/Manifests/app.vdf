@@ -5,7 +5,7 @@
   "buildoutput" "../../BuildOutput"
   "contentroot" "../../artifacts"
   "setlive" "public-1.4-alpha"
-  "preview" "1"
+  "preview" ""
   "local" ""
 
   "depots"
