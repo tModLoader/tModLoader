@@ -126,7 +126,7 @@
 +    </ItemGroup>
 +    <ItemGroup>
 +      <ReferenceCopyLocalPaths>
-+        <DestinationSubDirectory>Libraries\$([System.String]::Copy('%(NuGetPackageID)').ToLower())\%(NuGetPackageVersion)\%(DirectoryInPackage)\</DestinationSubDirectory>
++        <DestinationSubDirectory>Libraries\$([System.String]::Copy('%(NuGetPackageID)'))\%(NuGetPackageVersion)\%(DirectoryInPackage)\</DestinationSubDirectory>
 +      </ReferenceCopyLocalPaths>
 +    </ItemGroup>
 +  </Target>
