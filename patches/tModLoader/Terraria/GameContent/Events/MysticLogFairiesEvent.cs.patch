@@ -40,7 +40,7 @@
  			bool flag = false;
 +			_timePass += Main.desiredWorldEventsUpdateRate;
 -			for (int i = 0; i < Main.dayRate; i++) {
-+			for (int i = 1; i < (int)_timePass; i++) {
++			for (int i = 1; i <= (int)_timePass; i++) {
  				if (Main.rand.Next(oneOverSpawnChance) == 0) {
  					flag = true;
  					break;

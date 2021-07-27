@@ -1156,16 +1156,26 @@
  					cloudBGActive = 1f;
  
 -				if (cloudBGActive == 1f && rand.Next((int)((float)(num2 * 2 / Math.Max(dayRate, 1)) * num3)) == 0) {
-+				if (cloudBGActive == 1f && rand.Next((int)((float)(num2 * 2 / Math.Max(desiredWorldEventsUpdateRate, 1)) * num3)) == 0) {
++				if (cloudBGActive == 1f && rand.NextFloat((num2 * 2 / ((desiredWorldEventsUpdateRate == 0) ? 1 : desiredWorldEventsUpdateRate)) * num3) < 1f) {
  					cloudBGActive = -rand.Next(num2 * 4, num * 4);
  					if (netMode == 2)
  						NetMessage.SendData(7);
-@@ -9898,7 +_,7 @@
+@@ -9890,15 +_,15 @@
+ 			}
+ 
+ 			if (cloudBGActive < 0f) {
+-				cloudBGActive += (float)dayRate * num3;
++				cloudBGActive += (float)desiredWorldEventsUpdateRate * num3;
+ 				if (raining)
+-					cloudBGActive += (float)(2 * dayRate) * num3;
++					cloudBGActive += (float)(2 * desiredWorldEventsUpdateRate) * num3;
+ 			}
+ 
  			if (cloudBGActive > 0f)
  				cloudBGActive = 0f;
  
 -			if (cloudBGActive == 0f && rand.Next((int)((float)(num2 * 12 / ((dayRate == 0) ? 1 : dayRate)) / num3)) == 0) {
-+			if (cloudBGActive == 0f && rand.Next((int)((float)(num2 * 12 / ((desiredWorldEventsUpdateRate == 0) ? 1 : desiredWorldEventsUpdateRate)) / num3)) == 0) {
++			if (cloudBGActive == 0f && rand.Next(((num2 * 12 / ((desiredWorldEventsUpdateRate == 0) ? 1 : desiredWorldEventsUpdateRate)) / num3)) == 0) {
  				cloudBGActive = rand.Next(num2 * 3, num * 2);
  				if (netMode == 2)
  					NetMessage.SendData(7);
@@ -1238,7 +1248,7 @@
 +
 +			timePass += Main.desiredWorldEventsUpdateRate;
 -			for (int i = 0; i < dayRate; i++) {
-+			for (int i = 1; i < (int)timePass; i++) {
++			for (int i = 1; i <= (int)timePass; i++) {
  				UpdateWeather(gameTime);
  			}
 +			timePass %= 1.0;
@@ -4142,7 +4152,7 @@
  								if (rainTime <= 0)
  									StopRain();
 -								else if (rand.Next(num * 2) == 0)
-+								else if (rand.Next((int)(num * 2)) == 0)
++								else if (rand.NextFloat(num * 2) < 1f)
  									ChangeRain();
  							}
  						}

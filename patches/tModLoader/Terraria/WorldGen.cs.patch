@@ -1583,7 +1583,7 @@
 -			for (int l = 0; l < Main.dayRate; l++) {
 -				float num6 = Main.maxTilesX / 4200;
 +			_timePass += Main.desiredWorldEventsUpdateRate;
-+			for (int l = 1; l < (int)_timePass; l++) {
++			for (int l = 1; l <= (int)_timePass; l++) {
 +				float num6 = Main.maxTilesX / 4200f; // Selfish fix for falling stars on extra small worlds
  				num6 *= Star.starfallBoost;
  				if (!((float)Main.rand.Next(8000) < 10f * num6))
