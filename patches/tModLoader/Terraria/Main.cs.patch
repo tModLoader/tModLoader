@@ -1322,6 +1322,15 @@
  			chatMonitor.Update();
  			upTimer = (float)sw.Elapsed.TotalMilliseconds;
  			if (upTimerMaxDelay > 0f)
+@@ -13263,7 +_,7 @@
+ 				NPC.crimsonBoss = -1;
+ 		}
+ 
+-		private static bool IsNPCActiveAndOneOfTypes(int npcIndex, params int[] types) {
++		public static bool IsNPCActiveAndOneOfTypes(int npcIndex, params int[] types) {
+ 			if (npcIndex < 0)
+ 				return false;
+ 
 @@ -13404,7 +_,8 @@
  			if (!inputTextEnter || !chatRelease)
  				return;
