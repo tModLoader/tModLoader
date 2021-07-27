@@ -25,7 +25,7 @@
  using Terraria.Achievements;
  using Terraria.Audio;
  using Terraria.Chat;
-@@ -69,6 +_,13 @@
+@@ -69,9 +_,17 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
@@ -39,6 +39,10 @@
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
++using Terraria.Social.Steam;
+ using Terraria.UI;
+ using Terraria.UI.Chat;
+ using Terraria.UI.Gamepad;
 @@ -84,9 +_,9 @@
  namespace Terraria
  {
@@ -799,7 +803,7 @@
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
-+			HiDefGraphicsIssues.Init();
++			GraphicsChangeTracker.Init();
 +		}
 +
 +		internal void PostSocialInitialize() {
@@ -846,6 +850,14 @@
  		}
  
  		private void Main_Exiting(object sender, EventArgs e) {
+@@ -4793,6 +_,7 @@
+ 
+ 		private static void TryDisposingEverything() {
+ 			ChromaInitializer.DisableAllDeviceGroups();
++			WorkshopHelper.OnGameExitCleanup();
+ 			if (Assets != null) {
+ 				Assets.TransferCompletedAssets();
+ 				Assets.Dispose();
 @@ -4820,6 +_,7 @@
  
  			_cachedTitle = Lang.GetRandomGameTitle();
@@ -877,6 +889,25 @@
  			}
  
  			for (int n = 0; n < 1001; n++) {
+@@ -8303,11 +_,17 @@
+ 		public static void LoadTestLog(string logname) {
+ 		}
+ 
+-		private void OnceFailedLoadingAnAsset(string assetPath, Exception e) {
++		internal static void OnceFailedLoadingAnAsset(string assetPath, Exception e) {
++			Logging.Terraria.Error($"Failed to load asset: \"{assetPath}\"", e);
+ 			FancyErrorPrinter.ShowFailedToLoadAssetError(e, assetPath);
+ 		}
+ 
+ 		protected override void LoadContent() {
++			//Added by TML.
++			Asset<Texture2D>.DefaultValue = new Texture2D(base.GraphicsDevice, 1, 1) {
++				Name = "Asynchronously-loaded Asset Dummy Texture (do not dispose or modify!)"
++			};
++
+ 			SoundEngine.Initialize();
+ 			if (base.Services.Get<IAssetRepository>() == null)
+ 				AssetInitializer.CreateAssetServices(base.Services);
 @@ -8331,7 +_,7 @@
  				audioSystem = new DisabledAudioSystem();
  
@@ -2315,7 +2346,7 @@
  
  					EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num363 - 1), alpha12, projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
 +					ModProjectile modProjectile = projectile.ModProjectile;
-+					if (modProjectile != null && ModContent.TryGetTexture(modProjectile.GlowTexture, out var glowTexture))
++					if (modProjectile != null && ModContent.RequestIfExists<Texture2D>(modProjectile.GlowTexture, out var glowTexture, AssetRequestMode.ImmediateLoad)) // todo: preload this!
 +						EntitySpriteDraw(glowTexture.Value, new Vector2(projectile.position.X - screenPosition.X + num138 + num137, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num363 - 1), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
  					if (projectile.type == 335)
  						EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num363 - 1), new Microsoft.Xna.Framework.Color(100, 100, 100, 0), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
@@ -2334,7 +2365,7 @@
  						EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height()), new Microsoft.Xna.Framework.Color(255, 255, 0, 0), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
  
 +					ModProjectile modProjectile = projectile.ModProjectile;
-+					if (modProjectile != null && ModContent.TryGetTexture(modProjectile.GlowTexture, out var glowTexture))
++					if (modProjectile != null && ModContent.RequestIfExists<Texture2D>(modProjectile.GlowTexture, out var glowTexture)) // todo: preload this!
 +						EntitySpriteDraw(glowTexture.Value, new Vector2(projectile.position.X - screenPosition.X + num138 + num137, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height()), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
 +
  					if (projectile.type == 312) {
@@ -2955,7 +2986,7 @@
 -					if (num27 == 8)
 -						num27 = 7;
  
-+					Texture2D icon = ModContent.GetTexture(info.Texture).Value;
++					Texture2D icon = ModContent.Request<Texture2D>(info.Texture).Value;
  					Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.White;
  					bool flag14 = false;
  					if (playerInventory) {
@@ -3312,7 +3343,7 @@
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, origin, num104, SpriteEffects.None, 0f);
  					else
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, new Vector2(0f, origin.Y), num104, SpriteEffects.None, 0f);
-@@ -39094,10 +_,51 @@
+@@ -39094,10 +_,47 @@
  					if (num107 == 3)
  						num109 = 2;
  
@@ -3356,11 +3387,7 @@
 +						spriteBatch.DrawString(font, patreonShortURL, new Vector2(origin2.X + num108 + 10f, screenHeight - origin2.Y + num109 - 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 +						if (num107 == 4 && mouseLeftRelease && mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)origin2.X + 10, screenHeight - (int)urlSize.Y - 2, (int)urlSize.X, (int)origin2.Y).Contains(new Microsoft.Xna.Framework.Point(mouseX, mouseY)) && hasFocus) {
 +							SoundEngine.PlaySound(SoundID.MenuOpen);
-+							var ps = new ProcessStartInfo("https://www.patreon.com/tModLoader") {
-+								UseShellExecute = true,
-+								Verb = "open"
-+							};
-+							Process.Start(ps);
++							Utils.OpenToURL("https://www.patreon.com/tModLoader");
 +						}
 +					}
  				}
@@ -3427,12 +3454,18 @@
  			if (WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenHeight / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
  				num8 = (player[myPlayer].ZoneCorrupt ? 19 : (player[myPlayer].ZoneCrimson ? 21 : ((!player[myPlayer].ZoneHallow) ? 18 : 20)));
  			}
-@@ -39737,6 +_,10 @@
+@@ -39737,6 +_,16 @@
  			if (SceneMetrics.MushroomTileCount > SceneMetrics.MushroomTileMax)
  				num8 = 2;
  
 +			if (priority >= SceneEffectPriority.BiomeHigh) {
 +				num8 = modBG;
++			}
++
++			if (GlobalBackgroundStyleLoader.loaded) {
++				foreach (var hook in GlobalBackgroundStyleLoader.HookChooseUndergroundBackgroundStyle) {
++					hook(ref num8);
++				}
 +			}
 +
  			if (num8 != undergroundBackground) {
@@ -3603,18 +3636,20 @@
  			if (!_isDrawingOrUpdating && IsGraphicsDeviceAvailable) {
  				_isDrawingOrUpdating = true;
  				EnsureRenderTargetContent();
-@@ -46923,6 +_,11 @@
+@@ -46921,7 +_,13 @@
+ 					Main.OnPostDraw(gameTime);
+ 
  				Assets.TransferCompletedAssets();
++				ModContent.TransferCompletedAssets();
  				_isDrawingOrUpdating = false;
- 			}
++			}
 +			}
 +			catch (Exception e) {
 +				Logging.Terraria.Error(e);
 +				throw;
-+			}
+ 			}
  		}
  
- 		private void DoDraw(GameTime gameTime) {
 @@ -47227,8 +_,8 @@
  			UpdateAtmosphereTransparencyToSkyColor();
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
@@ -3877,13 +3912,18 @@
  			else {
  				num = 0;
  				if (num2 >= treeX[0]) {
-@@ -48966,7 +_,6 @@
+@@ -48964,6 +_,12 @@
+ 						num = 11;
+ 					else if (WorldGen.treeBG1 != WorldGen.treeBG4)
  						num = 12;
++				} // Patch context
++			}
++
++			if (GlobalBackgroundStyleLoader.loaded) {
++				foreach (var hook in GlobalBackgroundStyleLoader.HookChooseSurfaceBackgroundStyle) {
++					hook(ref num);
  				}
  			}
--
- 			return num;
- 		}
  
 @@ -49023,6 +_,13 @@
  		}
@@ -3958,14 +3998,16 @@
  		}
  
  		public static int DamageVar(float dmg, float luck = 0f) {
-@@ -50438,7 +_,9 @@
+@@ -50438,7 +_,11 @@
  					width = (int)(num2 * (float)height);
  				}
  
++#if !NETCORE
 +				if (!Platform.IsWindows)
 -				PlayerInput.RawMouseScale = new Vector2((float)width / (float)instance.Window.ClientBounds.Width, (float)height / (float)instance.Window.ClientBounds.Height);
 +					PlayerInput.RawMouseScale = new Vector2((float)width / (float)instance.Window.ClientBounds.Width, (float)height / (float)instance.Window.ClientBounds.Height);
-+				
++#endif 
++
  				if (!graphics.IsFullScreen) {
  					num3 = Math.Max(graphics.PreferredBackBufferWidth, graphics.GraphicsDevice.Viewport.Width);
  					num4 = Math.Max(graphics.PreferredBackBufferHeight, graphics.GraphicsDevice.Viewport.Height);

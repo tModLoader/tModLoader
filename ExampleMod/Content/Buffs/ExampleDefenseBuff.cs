@@ -5,7 +5,7 @@ namespace ExampleMod.Content.Buffs
 {
 	public class ExampleDefenseBuff : ModBuff
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Defensive Buff");
 			Description.SetDefault("Grants +4 defense.");
 			Main.buffNoTimeDisplay[Type] = false;

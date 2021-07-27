@@ -1,18 +1,17 @@
 --- src/Terraria/ReLogic/Content/Readers/IAssetReader.cs
 +++ src/tModLoader/ReLogic/Content/Readers/IAssetReader.cs
-@@ -1,3 +_,4 @@
+@@ -1,9 +_,13 @@
 +using System;
  using System.IO;
++using System.Threading.Tasks;
  
  namespace ReLogic.Content.Readers
-@@ -5,5 +_,10 @@
+ {
  	public interface IAssetReader
  	{
- 		T FromStream<T>(Stream stream) where T : class;
+-		T FromStream<T>(Stream stream) where T : class;
++		ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class => ValueTask.FromResult(FromStream<T>(stream));
 +
-+		//Added by tML:
-+
-+		/// <summary> Returns an array of types that should be associated with this reader's supported formats. It's okay to return null here, if the reader's possibilities are too ambiguous. </summary>
-+		Type[] GetAssociatedTypes();
++		protected T FromStream<T>(Stream stream) where T : class => throw new NotImplementedException();
  	}
  }

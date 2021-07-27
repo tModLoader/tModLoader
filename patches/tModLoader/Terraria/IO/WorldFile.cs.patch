@@ -45,6 +45,15 @@
  		}
  
  		private static void DoRollingBackups(string backupWorldWritePath) {
+@@ -717,7 +_,7 @@
+ 				}
+ 
+ 				if (TEWeaponsRack.Place(item2.X, item2.Y) != -1 && flag2)
+-					TEWeaponsRack.TryPlacing(item2.X, item2.Y, num2, prefix, 1);
++					TEWeaponsRack.TryPlacing(item2.X, item2.Y, new Item(num2, prefix: prefix), 1);
+ 			}
+ 		}
+ 
 @@ -884,7 +_,11 @@
  			}
  
@@ -99,6 +108,15 @@
  						writer.Write((short)0);
  						continue;
  					}
+@@ -1139,7 +_,7 @@
+ 					writer.Write((short)item.stack);
+ 					if (item.stack > 0) {
+ 						writer.Write(item.netID);
+-						writer.Write(item.prefix);
++						ItemIO.WriteByteVanillaPrefix(item, writer);
+ 					}
+ 				}
+ 			}
 @@ -1171,7 +_,7 @@
  		public static int SaveNPCs(BinaryWriter writer) {
  			for (int i = 0; i < Main.npc.Length; i++) {

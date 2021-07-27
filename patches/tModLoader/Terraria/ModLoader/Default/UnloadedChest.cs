@@ -6,11 +6,11 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
-	public class UnloadedChest : UnloadedTile {
-
+	public class UnloadedChest : UnloadedTile
+	{
 		public override string Texture => "ModLoader/UnloadedChest";
 
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			TileIO.Tiles.unloadedTypes.Add(Type);
 
 			//common

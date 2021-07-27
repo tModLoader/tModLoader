@@ -301,6 +301,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookUseTimeMultiplier = AddHook<Func<Item, Player, float>>(g => g.UseTimeMultiplier);
+
 		public static float UseTimeMultiplier(Item item, Player player) {
 			if (item.IsAir)
 				return 1f;
@@ -314,15 +315,31 @@ namespace Terraria.ModLoader
 			return multiplier;
 		}
 
-		private static HookList HookMeleeSpeedMultiplier = AddHook<Func<Item, Player, float>>(g => g.MeleeSpeedMultiplier);
-		public static float MeleeSpeedMultiplier(Item item, Player player) {
+		private static HookList HookUseAnimationMultiplier = AddHook<Func<Item, Player, float>>(g => g.UseAnimationMultiplier);
+
+		public static float UseAnimationMultiplier(Item item, Player player) {
 			if (item.IsAir)
 				return 1f;
 
-			float multiplier = item.ModItem?.MeleeSpeedMultiplier(player) ?? 1f;
+			float multiplier = item.ModItem?.UseAnimationMultiplier(player) ?? 1f;
 
-			foreach (var g in HookMeleeSpeedMultiplier.Enumerate(item.globalItems)) {
-				multiplier *= g.MeleeSpeedMultiplier(item, player);
+			foreach (var g in HookUseAnimationMultiplier.Enumerate(item.globalItems)) {
+				multiplier *= g.UseAnimationMultiplier(item, player);
+			}
+
+			return multiplier;
+		}
+
+		private static HookList HookUseSpeedMultiplier = AddHook<Func<Item, Player, float>>(g => g.UseSpeedMultiplier);
+
+		public static float UseSpeedMultiplier(Item item, Player player) {
+			if (item.IsAir)
+				return 1f;
+
+			float multiplier = item.ModItem?.UseSpeedMultiplier(player) ?? 1f;
+
+			foreach (var g in HookUseSpeedMultiplier.Enumerate(item.globalItems)) {
+				multiplier *= g.UseSpeedMultiplier(item, player);
 			}
 
 			return multiplier;
@@ -709,23 +726,40 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookUseItem = AddHook<Func<Item, Player, bool>>(g => g.UseItem);
+		private static HookList HookUseItem = AddHook<Func<Item, Player, bool?>>(g => g.UseItem);
 		/// <summary>
-		/// Returns true if any of ModItem.UseItem or GlobalItem.UseItem return true
+		/// Returns false if any of ModItem.UseItem or GlobalItem.UseItem return false.
+		/// Returns true if anything returns true without returning false.
+		/// Returns null by default.
 		/// Does not fail fast (calls every hook)
 		/// </summary>
-		public static bool UseItem(Item item, Player player) {
+		public static bool? UseItem(Item item, Player player) {
 			if (item.IsAir)
 				return false;
 
-			bool flag = false;
-			if (item.ModItem != null)
-				flag |= item.ModItem.UseItem(player);
+			bool? result = null;
 
-			foreach (var g in HookUseItem.Enumerate(item.globalItems))
-				flag |= g.UseItem(item, player);
+			foreach (var g in HookUseItem.Enumerate(item.globalItems)) {
+				bool? useItem = g.UseItem(item, player);
 
-			return flag;
+				if (useItem.HasValue && result != false) {
+					result = useItem.Value;
+				}
+			}
+
+			bool? modItemResult = item.ModItem?.UseItem(player);
+
+			return result ?? modItemResult;
+		}
+
+		private static HookList HookUseAnimation = AddHook<Action<Item, Player>>(g => g.UseAnimation);
+		
+		public static void UseAnimation(Item item, Player player) {
+			foreach (var g in HookUseAnimation.Enumerate(item.globalItems)) {
+				g.Instance(item).UseAnimation(item, player);
+			}
+
+			item.ModItem?.UseAnimation(player);
 		}
 
 		private static HookList HookConsumeItem = AddHook<Func<Item, Player, bool>>(g => g.ConsumeItem);
@@ -909,6 +943,7 @@ namespace Terraria.ModLoader
 			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
 			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
 			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
+
 			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
 				headTexture.PreUpdateVanitySet(player);
 
@@ -934,6 +969,7 @@ namespace Terraria.ModLoader
 			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
 			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
 			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
+
 			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
 				headTexture.UpdateVanitySet(player);
 
@@ -960,6 +996,7 @@ namespace Terraria.ModLoader
 			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
 			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
 			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
+
 			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
 				headTexture.ArmorSetShadows(player);
 
@@ -983,6 +1020,7 @@ namespace Terraria.ModLoader
 		/// </summary>   
 		public static void SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) {
 			EquipTexture texture = EquipLoader.GetEquipTexture((EquipType)armorSlot, type);
+
 			texture?.SetMatch(male, ref equipSlot, ref robes);
 
 			foreach (var g in HookSetMatch.Enumerate(globalItemsArray)) {
@@ -1165,6 +1203,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void DrawHands(Player player, ref bool drawHands, ref bool drawArms) {
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
+
 			texture?.DrawHands(ref drawHands, ref drawArms);
 
 			foreach (var g in HookDrawHands.Enumerate(globalItemsArray)) {
@@ -1219,6 +1258,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool DrawBody(Player player) {
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
+
 			if (texture != null && !texture.DrawBody())
 				return false;
 
@@ -1274,6 +1314,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void ArmorArmGlowMask(int slot, Player drawPlayer, float shadow, ref int glowMask, ref Color color) {
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, slot);
+
 			texture?.ArmorArmGlowMask(drawPlayer, shadow, ref glowMask, ref color);
 
 			foreach (var g in HookArmorArmGlowMask.Enumerate(globalItemsArray)) {

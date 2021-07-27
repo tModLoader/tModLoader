@@ -1,9 +1,10 @@
 --- src/Terraria/Terraria/Initializers/AssetInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/AssetInitializer.cs
-@@ -14,14 +_,17 @@
+@@ -14,21 +_,30 @@
  using Terraria.GameContent.UI;
  using Terraria.ID;
  using Terraria.IO;
++using Terraria.ModLoader.Assets;
 +using Terraria.ModLoader.UI;
  using Terraria.Utilities;
  
@@ -18,7 +19,24 @@
 +			assetReaderCollection = new AssetReaderCollection();
  			assetReaderCollection.RegisterReader(new PngReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
  			assetReaderCollection.RegisterReader(new XnbReader(services), ".xnb");
- 			AsyncAssetLoader asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
+-			AsyncAssetLoader asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
+-			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(Texture2D));
+-			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(DynamicSpriteFont));
+-			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(SpriteFont));
+-			IAssetRepository provider = new AssetRepository(new AssetLoader(assetReaderCollection), asyncAssetLoader);
++			assetReaderCollection.RegisterReader(new RawImgReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".rawimg");
++			assetReaderCollection.RegisterReader(new WavReader(), ".wav");
++			assetReaderCollection.RegisterReader(new MP3Reader(), ".mp3");
++			assetReaderCollection.RegisterReader(new OggReader(), ".ogg");
++			XnbReader.LoadOnMainThread<Texture2D>.Value = true;
++			XnbReader.LoadOnMainThread<DynamicSpriteFont>.Value = true;
++			XnbReader.LoadOnMainThread<SpriteFont>.Value = true;
++			XnbReader.LoadOnMainThread<Effect>.Value = true;
++			AssetRepository.SetMainThread();
++			var provider = new AssetRepository(assetReaderCollection);
+ 			services.AddService(typeof(AssetReaderCollection), assetReaderCollection);
+ 			services.AddService(typeof(IAssetRepository), provider);
+ 		}
 @@ -591,6 +_,8 @@
  			LoadMinimapFrames(mode);
  			LoadPlayerResourceSets(mode);
