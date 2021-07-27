@@ -4,7 +4,7 @@ script_dir=$(dirname "$script_path")
 launch_args="$*"
 cd "$script_dir"
 
-source ./InstallNetFramework.sh
+. ./InstallNetFramework.sh
 
 if [ -d "$install_dir" ]; then
   ./dotnet/$version/dotnet tModLoader.dll "$launch_args"

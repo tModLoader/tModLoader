@@ -4,7 +4,7 @@ script_dir=$(dirname "$script_path")
 launch_args="-server -config serverconfig.txt"
 cd "$script_dir"
 
-source ./InstallNetFramework.sh
+. ./InstallNetFramework.sh
 
 read -p "Use Steam Server (y)/(n) " steam
 
