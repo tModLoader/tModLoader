@@ -1175,7 +1175,7 @@
  				cloudBGActive = 0f;
  
 -			if (cloudBGActive == 0f && rand.Next((int)((float)(num2 * 12 / ((dayRate == 0) ? 1 : dayRate)) / num3)) == 0) {
-+			if (cloudBGActive == 0f && rand.NextDouble() <= 1 / ((num2 * 12 / desiredWorldEventsUpdateRate) / num3)) {
++			if (cloudBGActive == 0f && rand.NextDouble() <= num3 * desiredWorldEventsUpdateRate / (num2 * 12)) {
  				cloudBGActive = rand.Next(num2 * 3, num * 2);
  				if (netMode == 2)
  					NetMessage.SendData(7);
@@ -3671,7 +3671,7 @@
 -						num5 *= (float)dayRate;
 -						if (rand.Next((int)num5) == 0)
 +						num5 *= (float)desiredWorldEventsUpdateRate;
-+						if (rand.NextFloat() <= 1f / num5)
++						if (rand.NextFloat() <= 1f / Math.Max(num5, 2400))
  							NewLightning();
  					}
  					else if ((double)GraveyardVisualIntensity >= 0.9 && rand.Next(7200) == 0) {
