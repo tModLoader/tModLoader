@@ -1,78 +1,75 @@
-﻿using ExampleMod.Dusts;
+﻿using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Projectiles
+namespace ExampleMod.Content.Projectiles
 {
 	public class ExampleSpearProjectile : ModProjectile
 	{
+		// Define the range of the Spear Projectile. These are overrideable properties, in case you'll want to make a class inheriting from this one.
+		protected virtual float HoldoutRangeMin => 24f;
+		protected virtual float HoldoutRangeMax => 96f;
+
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Spear");
 		}
 
 		public override void SetDefaults() {
 			Projectile.CloneDefaults(ProjectileID.Spear); // Clone the default values for a vanilla spear. Spear specific values set for width, height, aiStyle, friendly, penetrate, tileCollide, scale, hide, ownerHitCheck, and melee.  
-
 		}
 
-		// Define the range of the Spear Projectile
-		protected abstract float HoldoutRangeMin = 0;
-		protected abstract float HoldoutRangeMax = 6;
+		public override bool PreAI() {
+			Player player = Main.player[Projectile.owner]; // Since we access the owner player instance so much, it's useful to create a helper local variable for this
+			int duration = player.itemAnimationMax; // Define the duration the projectile will exist in frames
 
-		// It appears that for this AI, only the ai[0] field is used!
-		public override void AI() {
-			
-			// Since we access the owner player instance so much, it's useful to create a helper local variable for this
-			Player player = Main.player[projectile.owner];
-			
-			player.heldProj = projectile.whoAmI; // Update the player's held projectile
-			player.itemTime = player.itemAnimation; // Match item's use time to the same number of frames as the animation
-
-			int duration = player.itemAnimationMax * player.meleeSpeed; // Define the duration the projectile will exist in frames
+			player.heldProj = Projectile.whoAmI; // Update the player's held projectile id
 
 			// Reset projectile time left if necessary
-			if(Projectile.timeLeft == int.MaxValue) {
+			if (Projectile.timeLeft > duration) {
 				Projectile.timeLeft = duration;
 			}
 
-			Projectile.velocity = Vector2.Normalize(Projectile.velocity);
+			Projectile.velocity = Vector2.Normalize(Projectile.velocity); // Velocity isn't used in this spear implementation, but we use the field to store the spear's attack direction.
 
-			float halfDuration = duration * 0.5;
-			float progress = Projectile.timeLeft > halfDuration 
-			    ? (duration - Projectile.timeLeft) / halfDuration
-				: Projectile.timeLeft / halfDuration;
+			float halfDuration = duration * 0.5f;
+			float progress;
 
-			// Move the projectile from the HoldoutRangeMin to the HoldoutRangeMax and back
-			Projectile.Center = player.MountedCenter + Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin,
-																		  Projectile.velocity * HoldoutRangeMax, progress);
-
-			// When we reach the end of the animation, we can kill the spear projectile
-			if (player.itemAnimation == 0) {
-				projectile.Kill();
+			// Here 'progress' is set to a value that goes from 0.0 to 1.0 and back during the item use animation. 
+			if (Projectile.timeLeft < halfDuration) {
+				progress = Projectile.timeLeft / halfDuration;
 			}
+			else {
+				progress = (duration - Projectile.timeLeft) / halfDuration;
+			}
+
+			// Move the projectile from the HoldoutRangeMin to the HoldoutRangeMax and back, using SmoothStep for easing the movement
+			Projectile.Center = player.MountedCenter + Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin, Projectile.velocity * HoldoutRangeMax, progress);
+
 			// Apply proper rotation to the sprite.
-			if (projectile.spriteDirection == -1) {
+			if (Projectile.spriteDirection == -1) {
 				// If sprite is facing left, rotate 45 degrees
-				projectile.rotation += MathHelper.ToRadians(45f);
-			} else {
+				Projectile.rotation += MathHelper.ToRadians(45f);
+			}
+			else {
 				// If sprite is facing right, rotate 135 degrees
-				projectile.rotation += MathHelper.ToRadians(135f);
+				Projectile.rotation += MathHelper.ToRadians(135f);
 			}
 
 			// Avoid spawning dusts on dedicated servers
-			if(!Main.dedServ) {
+			if (!Main.dedServ) {
 				// These dusts are added later, for the 'ExampleMod' effect
 				if (Main.rand.NextBool(3)) {
-					Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustType<Sparkle>(),
-						projectile.velocity.X * 2f, projectile.velocity.Y * 2f, 200, Scale: 1.2f);
+					Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<Sparkle>(), Projectile.velocity.X * 2f, Projectile.velocity.Y * 2f, Alpha: 128, Scale: 1.2f);
 				}
+
 				if (Main.rand.NextBool(4)) {
-					Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustType<Sparkle>(),
-						0, 0, 254, Scale: 0.3f);
+					Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<Sparkle>(), Alpha: 128, Scale: 0.3f);
 				}
 			}
+
+			return false; // Don't execute vanilla AI.
 		}
 	}
 }
