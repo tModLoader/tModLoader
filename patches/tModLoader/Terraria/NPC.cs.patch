@@ -715,6 +715,17 @@
  			if (Main.npc[newNPC].type == 1 && Main.player[num7].RollLuck(180) == 0)
  				Main.npc[newNPC].SetDefaults(-4);
  
+@@ -62651,7 +_,9 @@
+ 			}
+ 
+ 			int num = -1;
++
+-			if (Type == 222 || Type == 245) {
++			//if (Type == 222 || Type == 245) {
++			if (NPCID.Sets.SpawnFromLastEmptySlot[Type]) {
+ 				for (int num2 = 199; num2 >= 0; num2--) {
+ 					if (!Main.npc[num2].active) {
+ 						num = num2;
 @@ -62894,12 +_,14 @@
  			if (num2 < 0)
  				num2 = 0;
