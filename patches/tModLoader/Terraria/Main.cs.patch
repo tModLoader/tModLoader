@@ -1156,7 +1156,7 @@
  					cloudBGActive = 1f;
  
 -				if (cloudBGActive == 1f && rand.Next((int)((float)(num2 * 2 / Math.Max(dayRate, 1)) * num3)) == 0) {
-+				if (cloudBGActive == 1f && rand.NextFloat((num2 * 2 / ((desiredWorldEventsUpdateRate == 0) ? 1 : desiredWorldEventsUpdateRate)) * num3) < 1f) {
++				if (cloudBGActive == 1f && rand.NextDouble() <= desiredWorldEventsUpdateRate / (num2 * 2 * num3)) {
  					cloudBGActive = -rand.Next(num2 * 4, num * 4);
  					if (netMode == 2)
  						NetMessage.SendData(7);
@@ -1175,7 +1175,7 @@
  				cloudBGActive = 0f;
  
 -			if (cloudBGActive == 0f && rand.Next((int)((float)(num2 * 12 / ((dayRate == 0) ? 1 : dayRate)) / num3)) == 0) {
-+			if (cloudBGActive == 0f && rand.Next(((num2 * 12 / ((desiredWorldEventsUpdateRate == 0) ? 1 : desiredWorldEventsUpdateRate)) / num3)) == 0) {
++			if (cloudBGActive == 0f && rand.NextDouble() <= 1 / ((num2 * 12 / desiredWorldEventsUpdateRate) / num3)) {
  				cloudBGActive = rand.Next(num2 * 3, num * 2);
  				if (netMode == 2)
  					NetMessage.SendData(7);
@@ -1246,7 +1246,7 @@
 +			if (desiredWorldEventsUpdateRate <= 0)
 +				goto skipWeatherUpdates;
 +
-+			timePass += Main.desiredWorldEventsUpdateRate;
++			timePass += desiredWorldEventsUpdateRate;
 -			for (int i = 0; i < dayRate; i++) {
 +			for (int i = 1; i <= (int)timePass; i++) {
  				UpdateWeather(gameTime);
@@ -3664,15 +3664,17 @@
  			if (!Lighting.NotRetro) {
  				oldDrawWater(bg, Style, Alpha);
  				return;
-@@ -44801,7 +_,7 @@
+@@ -44801,8 +_,8 @@
  						float num5 = rand.Next((int)num3, (int)num4);
  						num5 *= (1f - maxRaining + 1f) / 2f;
  						num5 *= (1f - windSpeedTarget + 1f) / 2f;
 -						num5 *= (float)dayRate;
+-						if (rand.Next((int)num5) == 0)
 +						num5 *= (float)desiredWorldEventsUpdateRate;
- 						if (rand.Next((int)num5) == 0)
++						if (rand.NextFloat() <= 1f / num5)
  							NewLightning();
  					}
+ 					else if ((double)GraveyardVisualIntensity >= 0.9 && rand.Next(7200) == 0) {
 @@ -44954,7 +_,9 @@
  		}
  
@@ -4139,7 +4141,7 @@
  					if (slimeRainTime > 0.0)
  						slimeRainTime = 0.0;
  				}
-@@ -49418,31 +_,31 @@
+@@ -49418,31 +_,30 @@
  							StopRain();
  						}
  						else {
@@ -4152,7 +4154,7 @@
  								if (rainTime <= 0)
  									StopRain();
 -								else if (rand.Next(num * 2) == 0)
-+								else if (rand.NextFloat(num * 2) < 1f)
++								else if (rand.NextDouble() <= 1 / (num * 2))
  									ChangeRain();
  							}
  						}
@@ -4160,11 +4162,10 @@
  				}
  				else if (!slimeRain && !LanternNight.LanternsUp && !LanternNight.NextNightIsLanternNight) {
 -					int num2 = 86400;
-+					double num2 = 86400;
 -					num2 /= ((dayRate == 0) ? 1 : dayRate);
-+					num2 /= ((desiredWorldEventsUpdateRate == 0) ? 1 : desiredWorldEventsUpdateRate);
 -					if (!CreativePowerManager.Instance.GetPower<CreativePowers.FreezeRainPower>().Enabled && dayRate != 0) {
 +					if (!CreativePowerManager.Instance.GetPower<CreativePowers.FreezeRainPower>().Enabled && desiredWorldEventsUpdateRate != 0) {
++						double num2 = 86400 / desiredWorldEventsUpdateRate;
  						if (rand.Next((int)((double)num2 * 5.75)) == 0)
  							StartRain();
  						else if (cloudBGActive >= 1f && rand.Next((int)((double)num2 * 4.25)) == 0)
@@ -4177,7 +4178,7 @@
 -					if (!raining && !NPC.BusyWithAnyInvasionOfSorts() && dayRate > 0) {
 +					if (!raining && !NPC.BusyWithAnyInvasionOfSorts() && desiredWorldEventsUpdateRate > 0) {
 -						int num3 = (int)(1728000.0 / (double)dayRate);
-+						int num3 = (int)(1728000.0 / (double)((desiredWorldEventsUpdateRate == 0) ? 1 : desiredWorldEventsUpdateRate));
++						int num3 = (int)(1728000.0 / desiredWorldEventsUpdateRate);
  						if (!NPC.downedSlimeKing)
  							num3 /= 2;
  
