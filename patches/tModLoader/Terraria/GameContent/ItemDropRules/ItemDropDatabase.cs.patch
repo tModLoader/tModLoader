@@ -44,3 +44,13 @@
  		}
  
  		private void RegisterFoodDrops() {
+@@ -897,7 +_,8 @@
+ 			RegisterToNPC(476, ItemDropRule.Common(2676, 3, 2, 4));
+ 			RegisterToNPC(476, ItemDropRule.Common(2272, 3));
+ 			RegisterToNPC(476, ItemDropRule.Common(4731, 3));
++			//Removed to avoid an exception on load
+-			RegisterToNPC(476, ItemDropRule.Common(4986, 3, 69));
++			//RegisterToNPC(476, ItemDropRule.Common(4986, 3, 69));
+ 			int[] npcNetIds4 = new int[3] {
+ 				473,
+ 				474,
