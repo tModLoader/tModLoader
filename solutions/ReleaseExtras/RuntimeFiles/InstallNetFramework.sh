@@ -11,6 +11,14 @@ cd "$script_dir"
 echo "Verifying Net Framework...."
 echo "This may take a few moments."
 
+#Set Environment Variables here to workaround https://github.com/dotnet/runtime/issues/34711 for FNA3D -> SDL2 failing
+if [[ "$(uname)" == Darwin ]]; then
+  # Not known if applies to MacOS, kept here in case
+  #export DYLD_LIBRARY_PATH="$script_dir/Libraries/Native/OSX"
+else
+  export LD_LIBRARY_PATH="$script_dir/Libraries/Native/Linux"
+fi
+
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <tModLoader.runtimeconfig.json) #sed, go die plskthx
 version=${version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name

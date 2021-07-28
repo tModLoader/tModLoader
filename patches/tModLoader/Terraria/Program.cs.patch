@@ -87,7 +87,7 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,62 @@
+@@ -138,32 +_,64 @@
  			}
  		}
  
@@ -115,6 +115,8 @@
 +				DisplayException(e);
 +				return;
 +			}
++
++			SDLFixUnix();
 +
 +			LaunchGame_(isServer);
 +		}
