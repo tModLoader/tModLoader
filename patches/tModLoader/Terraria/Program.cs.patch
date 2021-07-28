@@ -116,7 +116,7 @@
 +				return;
 +			}
 +
-+			SDLFixUnix();
++			SDLFixUnix(isServer);
 +
 +			LaunchGame_(isServer);
 +		}

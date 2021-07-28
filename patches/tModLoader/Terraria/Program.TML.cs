@@ -37,14 +37,15 @@ namespace Terraria
 		/// Thus we initialize it ourselves prior to FNA usage - Solxan
 		/// The root issue comes from: https://github.com/dotnet/runtime/issues/34711
 		/// </summary>
-		private static void SDLFixUnix() {
+		private static void SDLFixUnix(bool isServer) {
 			if (Platform.IsWindows)
 				return; // Not applicable, windows uses the portable correctly.
 
 			if (Platform.IsOSX)
 				return; // Not observed as an issue.
 
-			if (SDL2.SDL.SDL_INIT_EVERYTHING != SDL2.SDL.SDL_WasInit(SDL2.SDL.SDL_INIT_EVERYTHING)) {
+			//TODO: Re-add IsServer condition once https://github.com/tModLoader/tModLoader/issues/1632 is fixed
+			if (/*!isServer && */ SDL2.SDL.SDL_INIT_EVERYTHING != SDL2.SDL.SDL_WasInit(SDL2.SDL.SDL_INIT_EVERYTHING)) {
 				Logging.tML.Info("Ensuring SDL2 is initialized prior to FNA usage.");
 				SDL2.SDL.SDL_Init(SDL2.SDL.SDL_INIT_EVERYTHING);
 			}
