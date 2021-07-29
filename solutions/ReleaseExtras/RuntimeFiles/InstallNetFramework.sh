@@ -22,6 +22,9 @@ else
   ln -sf "$library_dir/libSDL2-2.0.so.0" "$library_dir/libSDL2.so"
 fi
 
+# Ensure sufficient stack size on MacOS secondary threads, doesn't hurt for Linux
+export COMPlus_DefaultStackSize=4000000
+
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <tModLoader.runtimeconfig.json) #sed, go die plskthx
 version=${version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name

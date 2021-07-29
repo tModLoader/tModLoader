@@ -56,6 +56,7 @@ namespace Terraria.ModLoader
 			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
 			tML.InfoFormat("Launch Parameters: {0}", string.Join(' ', Environment.GetCommandLineArgs().Skip(1)));
 			tML.InfoFormat("Parsed Launch Parameters: {0}", string.Join(' ', Program.LaunchParameters.Select(p => ($"{p.Key} {p.Value}").Trim())));
+			tML.InfoFormat("Override Default Thread Stack Size Limit: {0}", Environment.GetEnvironmentVariable("COMPlus_DefaultStackSize"));
 
 			if (ModCompile.DeveloperMode)
 				tML.Info("Developer mode enabled");
