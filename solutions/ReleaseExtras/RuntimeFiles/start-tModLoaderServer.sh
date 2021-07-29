@@ -24,7 +24,7 @@ fi
 launch_args="$launch_args $*"
 
 if [ -d "$install_dir" ]; then
-  ./dotnet/$version/dotnet tModLoader.dll "$launch_args"
+  ./dotnet/$version/dotnet tModLoader.dll $launch_args
 fi
 if [ ! -d "$install_dir" ]; then
   runLogs="LaunchLogs/runtime.log"
@@ -35,5 +35,5 @@ if [ ! -d "$install_dir" ]; then
   fi
   exec 3>>$runLogs 2>&3
   echo "Attempting Launch.."
-  dotnet tModLoader.dll "$launch_args"
+  dotnet tModLoader.dll $launch_args
 fi

@@ -19,7 +19,7 @@ if [[ "$(uname)" == Darwin ]]; then
 else
   library_dir=$script_dir/Libraries/Native/Linux
   export LD_LIBRARY_PATH="$library_dir"
-  ln -s "$library_dir/libSDL2-2.0.so.0" "$library_dir/libSDL2.so"
+  ln -sf "$library_dir/libSDL2-2.0.so.0" "$library_dir/libSDL2.so"
 fi
 
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
