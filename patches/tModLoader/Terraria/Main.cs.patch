@@ -788,7 +788,7 @@
  			}
  
  			bool enabled = CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled;
-@@ -4773,6 +_,9 @@
+@@ -4773,9 +_,12 @@
  				dayRate = 1;
  				desiredWorldTilesUpdateRate = 1;
  			}
@@ -797,7 +797,11 @@
 +			SystemLoader.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate);
  		}
  
- 		public Main() {
+-		public Main() {
++		public Main() : base(dedServ) {
+ 			instance = this;
+ 			UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
+ 			base.Exiting += Main_Exiting;
 @@ -4784,7 +_,50 @@
  
  			Configuration.Load();
@@ -866,7 +870,7 @@
  		}
  
  		private static void SetTileValue() {
-@@ -4858,6 +_,13 @@
+@@ -4858,8 +_,15 @@
  		}
  
  		protected override void Initialize() {
@@ -878,8 +882,42 @@
 +			}
 +
  			if(dedServ)
- 			netMode = 2;
+-			netMode = 2;
++				netMode = 2;
  
+ 			musicFade[50] = 1f;
+ 			for (int i = 0; i < 10; i++) {
+@@ -4887,8 +_,9 @@
+ 			WorldGen.Hooks.OnWorldLoad += delegate {
+ 				AmbienceServer = new AmbienceServer();
+ 				LocalGolfState = new GolfState();
++
+ 				if(!dedServ)
+-				Lighting.Clear();
++					Lighting.Clear();
+ 			};
+ 
+ 			PlayerInput.OnActionableInput += delegate {
+@@ -4897,13 +_,16 @@
+ 			};
+ 
+ 			SceneMetrics = new SceneMetrics(ActiveWorld);
++
+-			if (!dedServ) {
++			if (dedServ) {
++				Initialize_AlmostEverything();
++				return;
++			}
++
+ 			TimeLogger.Initialize();
+ 			LoadContent_TryEnteringHiDef();
+ 			ClientInitialize();
+ 			base.Initialize();
+-			} else 
+-			Initialize_AlmostEverything();
+ 		}
+ 
+ 		private void Initialize_AlmostEverything() {
 @@ -5058,7 +_,7 @@
  			}
  
