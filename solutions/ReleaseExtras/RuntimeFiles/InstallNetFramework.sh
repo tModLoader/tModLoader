@@ -11,6 +11,17 @@ cd "$script_dir"
 echo "Verifying Net Framework...."
 echo "This may take a few moments."
 
+# The following is a workaround for the system's SDL2 library being preferred by the linkers for some reason.
+# Additionally, something in dotnet is requesting 'libSDL2.so' (instead of 'libSDL2-2.0.so.0' that is specified in dependencies)
+# without actually invoking managed NativeLibrary resolving events!
+if [[ "$(uname)" == Darwin ]]; then
+  export DYLD_LIBRARY_PATH="$script_dir/Libraries/Native/OSX"
+else
+  library_dir=$script_dir/Libraries/Native/Linux
+  export LD_LIBRARY_PATH="$library_dir"
+  ln -s "$library_dir/libSDL2-2.0.so.0" "$library_dir/libSDL2.so"
+fi
+
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <tModLoader.runtimeconfig.json) #sed, go die plskthx
 version=${version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name
