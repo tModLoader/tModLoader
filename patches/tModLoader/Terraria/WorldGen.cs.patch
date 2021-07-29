@@ -160,6 +160,17 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
+@@ -4470,6 +_,10 @@
+ 			if (numTileCount >= maxTileCount)
+ 				return;
+ 
++			// Testing 1.4 Alpha ~ July 28 2021 has indicated that Mac crashes on StackOverflow if this is allowed to recurse above 1900 times. This should prevent that - Solxan
++			if (ReLogic.OS.Platform.IsOSX && numTileCount >= 1800)
++				return;
++
+ 			if (x <= 1 || x >= Main.maxTilesX - 1 || y <= 1 || y >= Main.maxTilesY - 1) {
+ 				numTileCount = maxTileCount;
+ 			}
 @@ -5517,17 +_,18 @@
  			Main.lockMenuBGChange = true;
  			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
@@ -1203,7 +1214,11 @@
  			return num;
  		}
  
-@@ -37327,9 +_,6 @@
+@@ -37324,12 +_,10 @@
+ 
+ 		public static bool PlaceTile(int i, int j, int Type, bool mute = false, bool forced = false, int plr = -1, int style = 0) {
+ 			int num = Type;
++
  			if (gen && Main.tile[i, j].active() && Main.tile[i, j].type == 488)
  				return false;
  
@@ -1604,6 +1619,93 @@
  				result = true;
  				if (MapHelper.numUpdateTile < MapHelper.maxUpdateTile - 1) {
  					MapHelper.updateTileX[MapHelper.numUpdateTile] = (short)i;
+@@ -52073,27 +_,33 @@
+ 			return result;
+ 		}
+ 
++		// This function had the potential to runaway by getting looped between TileFrame and itself, hence the depth parameter - Solxan
+-		public static void TileMergeAttemptFrametest(int i, int j, int myType, int lookfor, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight) {
++		public static void TileMergeAttemptFrametest(int i, int j, int myType, int lookfor, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight, int recursionDepth) {
++			if (++recursionDepth >= 5) {
++				Logging.tML.Error("Tile Framing has runaway on recursion. Safely crashing ourselves before StackOverflow...");
++				Main.instance.Exit();
++			}
++
+ 			if (up == lookfor) {
+-				TileFrame(i, j - 1);
++				TileFrame(i, j - 1, recursionDepth: recursionDepth);
+ 				if (mergeDown)
+ 					up = myType;
+ 			}
+ 
+ 			if (down == lookfor) {
+-				TileFrame(i, j + 1);
++				TileFrame(i, j + 1, recursionDepth: recursionDepth);
+ 				if (mergeUp)
+ 					down = myType;
+ 			}
+ 
+ 			if (left == lookfor) {
+-				TileFrame(i - 1, j);
++				TileFrame(i - 1, j, recursionDepth: recursionDepth);
+ 				if (mergeRight)
+ 					left = myType;
+ 			}
+ 
+ 			if (right == lookfor) {
+-				TileFrame(i + 1, j);
++				TileFrame(i + 1, j, recursionDepth: recursionDepth);
+ 				if (mergeLeft)
+ 					right = myType;
+ 			}
+@@ -52111,27 +_,33 @@
+ 				downRight = myType;
+ 		}
+ 
++		// This function had the potential to runaway by getting looped between TileFrame and itself, hence the depth parameter - Solxan
+-		public static void TileMergeAttemptFrametest(int i, int j, int myType, bool[] lookfor, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight) {
++		public static void TileMergeAttemptFrametest(int i, int j, int myType, bool[] lookfor, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight, int recursionDepth) {
++			if (++recursionDepth >= 5) {
++				Logging.tML.Error("Tile Framing has runaway on recursion. Safely crashing ourselves before StackOverflow...");
++				Main.instance.Exit();
++			}
++
+ 			if (up > -1 && lookfor[up]) {
+-				TileFrame(i, j - 1);
++				TileFrame(i, j - 1, recursionDepth: recursionDepth);
+ 				if (mergeDown)
+ 					up = myType;
+ 			}
+ 
+ 			if (down > -1 && lookfor[down]) {
+-				TileFrame(i, j + 1);
++				TileFrame(i, j + 1, recursionDepth: recursionDepth);
+ 				if (mergeUp)
+ 					down = myType;
+ 			}
+ 
+ 			if (left > -1 && lookfor[left]) {
+-				TileFrame(i - 1, j);
++				TileFrame(i - 1, j, recursionDepth: recursionDepth);
+ 				if (mergeRight)
+ 					left = myType;
+ 			}
+ 
+ 			if (right > -1 && lookfor[right]) {
+-				TileFrame(i + 1, j);
++				TileFrame(i + 1, j, recursionDepth: recursionDepth);
+ 				if (mergeLeft)
+ 					right = myType;
+ 			}
+@@ -52324,7 +_,7 @@
+ 			destroyObject = false;
+ 		}
+ 
+-		public static void TileFrame(int i, int j, bool resetFrame = false, bool noBreak = false) {
++		public static void TileFrame(int i, int j, bool resetFrame = false, bool noBreak = false, int recursionDepth = 0) {
+ 			bool addToList = false;
+ 			try {
+ 				if (i > 5 && j > 5 && i < Main.maxTilesX - 5 && j < Main.maxTilesY - 5 && Main.tile[i, j] != null) {
 @@ -52343,7 +_,10 @@
  						Liquid.AddWater(i, j);
  
@@ -1729,7 +1831,45 @@
  														TileFrame(i - 1, j);
  														if (mergeRight)
  															left = num;
-@@ -53735,16 +_,14 @@
+@@ -53707,20 +_,20 @@
+ 												}
+ 												break;
+ 											case 53:
+-												TileMergeAttemptFrametest(i, j, num, 397, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++												TileMergeAttemptFrametest(i, j, num, 397, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+-												TileMergeAttemptFrametest(i, j, num, 396, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++												TileMergeAttemptFrametest(i, j, num, 396, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 												break;
+ 											case 234:
+-												TileMergeAttemptFrametest(i, j, num, 399, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++												TileMergeAttemptFrametest(i, j, num, 399, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+-												TileMergeAttemptFrametest(i, j, num, 401, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++												TileMergeAttemptFrametest(i, j, num, 401, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 												break;
+ 											case 112:
+-												TileMergeAttemptFrametest(i, j, num, 398, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++												TileMergeAttemptFrametest(i, j, num, 398, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+-												TileMergeAttemptFrametest(i, j, num, 400, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++												TileMergeAttemptFrametest(i, j, num, 400, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 												break;
+ 											case 116:
+-												TileMergeAttemptFrametest(i, j, num, 402, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++												TileMergeAttemptFrametest(i, j, num, 402, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+-												TileMergeAttemptFrametest(i, j, num, 403, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++												TileMergeAttemptFrametest(i, j, num, 403, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 												break;
+ 										}
+ 
+@@ -53728,29 +_,27 @@
+ 											TileMergeAttempt(-2, 0, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 											if (num == 1) {
+ 												if ((double)j > Main.rockLayer)
+-													TileMergeAttemptFrametest(i, j, num, 59, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++													TileMergeAttemptFrametest(i, j, num, 59, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 
+-												TileMergeAttemptFrametest(i, j, num, 57, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++												TileMergeAttemptFrametest(i, j, num, 57, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 											}
  										}
  										else {
  											switch (num) {
@@ -1741,20 +1881,39 @@
  													break;
  												case 57:
  													TileMergeAttempt(-2, 1, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
- 													TileMergeAttemptFrametest(i, j, num, TileID.Sets.HellSpecial, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+-													TileMergeAttemptFrametest(i, j, num, TileID.Sets.HellSpecial, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++													TileMergeAttemptFrametest(i, j, num, TileID.Sets.HellSpecial, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
  													break;
 -												case 59:
 +												case int _ when TileID.Sets.Mud[num]:
  													if ((double)j > Main.rockLayer)
  														TileMergeAttempt(-2, 1, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  													TileMergeAttempt(num, TileID.Sets.GrassSpecial, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+-													TileMergeAttemptFrametest(i, j, num, TileID.Sets.JungleSpecial, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++													TileMergeAttemptFrametest(i, j, num, TileID.Sets.JungleSpecial, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 													if ((double)j < Main.rockLayer)
+-														TileMergeAttemptFrametest(i, j, num, 0, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++														TileMergeAttemptFrametest(i, j, num, 0, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 													else
+ 														TileMergeAttempt(num, 0, ref up, ref down, ref left, ref right);
+ 													break;
+@@ -53766,7 +_,7 @@
+ 													TileMergeAttempt(59, 211, ref up, ref down, ref left, ref right);
+ 													break;
+ 												case 189:
+-													TileMergeAttemptFrametest(i, j, num, TileID.Sets.MergesWithClouds, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++													TileMergeAttemptFrametest(i, j, num, TileID.Sets.MergesWithClouds, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 													break;
+ 												case 196:
+ 													TileMergeAttempt(-2, 189, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
 @@ -53776,14 +_,10 @@
  													TileMergeAttempt(-2, 189, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  													TileMergeAttempt(num, 196, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  													break;
 -												case 147:
+-													TileMergeAttemptFrametest(i, j, num, TileID.Sets.IcesSlush, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
 +												case int _ when TileID.Sets.Snow[num]:
- 													TileMergeAttemptFrametest(i, j, num, TileID.Sets.IcesSlush, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++													TileMergeAttemptFrametest(i, j, num, TileID.Sets.IcesSlush, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
  													break;
 -												case 161:
 -												case 163:
@@ -1765,6 +1924,66 @@
  													TileMergeAttempt(-2, 147, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  													break;
  												case 162:
+@@ -53805,14 +_,14 @@
+ 													TileMergeAttempt(num, TileID.Sets.AllTiles, Main.tileNoAttach, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 													break;
+ 												case 192:
+-													TileMergeAttemptFrametest(i, j, num, 191, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++													TileMergeAttemptFrametest(i, j, num, 191, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 													break;
+ 												case 191:
+ 													TileMergeAttempt(-2, 192, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 													TileMergeAttempt(num, 0, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 													break;
+ 												case 384:
+-													TileMergeAttemptFrametest(i, j, num, 383, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++													TileMergeAttemptFrametest(i, j, num, 383, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 													break;
+ 												case 383:
+ 													TileMergeAttempt(-2, 384, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+@@ -53823,20 +_,20 @@
+ 													break;
+ 												case 404:
+ 													TileMergeAttempt(-2, 396, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+-													TileMergeAttemptFrametest(i, j, num, 407, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++													TileMergeAttemptFrametest(i, j, num, 407, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 													break;
+ 												case 397:
+ 													TileMergeAttempt(-2, 53, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+-													TileMergeAttemptFrametest(i, j, num, 396, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++													TileMergeAttemptFrametest(i, j, num, 396, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 													break;
+ 												case 396:
+ 													TileMergeAttempt(-2, 397, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 													TileMergeAttempt(-2, 53, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+-													TileMergeAttemptFrametest(i, j, num, 404, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++													TileMergeAttemptFrametest(i, j, num, 404, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 													break;
+ 												case 398:
+ 													TileMergeAttempt(-2, 112, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+-													TileMergeAttemptFrametest(i, j, num, 400, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++													TileMergeAttemptFrametest(i, j, num, 400, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 													break;
+ 												case 400:
+ 													TileMergeAttempt(-2, 398, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+@@ -53844,7 +_,7 @@
+ 													break;
+ 												case 399:
+ 													TileMergeAttempt(-2, 234, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+-													TileMergeAttemptFrametest(i, j, num, 401, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++													TileMergeAttemptFrametest(i, j, num, 401, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 													break;
+ 												case 401:
+ 													TileMergeAttempt(-2, 399, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+@@ -53852,7 +_,7 @@
+ 													break;
+ 												case 402:
+ 													TileMergeAttempt(-2, 116, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+-													TileMergeAttemptFrametest(i, j, num, 403, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++													TileMergeAttemptFrametest(i, j, num, 403, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight, recursionDepth);
+ 													break;
+ 												case 403:
+ 													TileMergeAttempt(-2, 402, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
 @@ -53886,11 +_,11 @@
  											TileMergeAttempt(num, 59, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  
