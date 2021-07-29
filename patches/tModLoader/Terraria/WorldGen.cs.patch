@@ -1623,13 +1623,13 @@
  			return result;
  		}
  
-+		private static int TileFrameRecursionLimit => ReLogic.OS.Platform.IsOSX ? 5 : 9;
++		private static int TileFrameRecursionLimit => ReLogic.OS.Platform.IsOSX ? 3 : 7;
 +
 +		// This function had the potential to runaway by getting looped between TileFrame and itself, hence the depth parameter - Solxan
 -		public static void TileMergeAttemptFrametest(int i, int j, int myType, int lookfor, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight) {
 +		public static void TileMergeAttemptFrametest(int i, int j, int myType, int lookfor, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight, int recursionDepth) {
 +			if (++recursionDepth >= TileFrameRecursionLimit) {
-+				Logging.tML.Warn("TileMergeAttemptFrameTest has runaway on recursion. Current Depth: " + recursionDepth + ". Switching to TileMergeAttempt");
++				//Logging.tML.Warn("TileMergeAttemptFrameTest has runaway on recursion. Current Depth: " + recursionDepth + ". Switching to TileMergeAttempt");
 +				TileMergeAttempt(myType, lookfor, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
 +				return;
 +			}
@@ -1669,7 +1669,7 @@
 -		public static void TileMergeAttemptFrametest(int i, int j, int myType, bool[] lookfor, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight) {
 +		public static void TileMergeAttemptFrametest(int i, int j, int myType, bool[] lookfor, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight, int recursionDepth) {
 +			if (++recursionDepth >= TileFrameRecursionLimit) {
-+				Logging.tML.Warn("Tile Framing has runaway on recursion. Current Depth: " + recursionDepth + ". Switching to TileMergeAttempt");
++				//Logging.tML.Warn("Tile Framing has runaway on recursion. Current Depth: " + recursionDepth + ". Switching to TileMergeAttempt");
 +				TileMergeAttempt(myType, lookfor, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
 +				return;
 +			}
