@@ -1619,16 +1619,15 @@
  				result = true;
  				if (MapHelper.numUpdateTile < MapHelper.maxUpdateTile - 1) {
  					MapHelper.updateTileX[MapHelper.numUpdateTile] = (short)i;
-@@ -52073,27 +_,33 @@
+@@ -52073,27 +_,32 @@
  			return result;
  		}
  
 +		// This function had the potential to runaway by getting looped between TileFrame and itself, hence the depth parameter - Solxan
 -		public static void TileMergeAttemptFrametest(int i, int j, int myType, int lookfor, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight) {
 +		public static void TileMergeAttemptFrametest(int i, int j, int myType, int lookfor, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight, int recursionDepth) {
-+			if (++recursionDepth >= 5) {
-+				Logging.tML.Error("Tile Framing has runaway on recursion. Safely crashing ourselves before StackOverflow...");
-+				Main.instance.Exit();
++			if (++recursionDepth >= 4) {
++				Logging.tML.Warn("Tile Framing has runaway on recursion. Current Depth: " + recursionDepth);
 +			}
 +
  			if (up == lookfor) {
@@ -1658,16 +1657,15 @@
  				if (mergeLeft)
  					right = myType;
  			}
-@@ -52111,27 +_,33 @@
+@@ -52111,27 +_,32 @@
  				downRight = myType;
  		}
  
 +		// This function had the potential to runaway by getting looped between TileFrame and itself, hence the depth parameter - Solxan
 -		public static void TileMergeAttemptFrametest(int i, int j, int myType, bool[] lookfor, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight) {
 +		public static void TileMergeAttemptFrametest(int i, int j, int myType, bool[] lookfor, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight, int recursionDepth) {
-+			if (++recursionDepth >= 5) {
-+				Logging.tML.Error("Tile Framing has runaway on recursion. Safely crashing ourselves before StackOverflow...");
-+				Main.instance.Exit();
++			if (++recursionDepth >= 4) {
++				Logging.tML.Warn("Tile Framing has runaway on recursion. Current Depth: " + recursionDepth);
 +			}
 +
  			if (up > -1 && lookfor[up]) {
