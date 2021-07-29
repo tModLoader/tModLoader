@@ -55,6 +55,7 @@ namespace Terraria.ModLoader
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
 			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
 			tML.InfoFormat("Launch Parameters: {0}", string.Join(' ', Environment.GetCommandLineArgs().Skip(1)));
+			tML.InfoFormat("Parsed Launch Parameters: {0}", string.Join(' ', Program.LaunchParameters.Select(p => ($"{p.Key} {p.Value}").Trim())));
 
 			if (ModCompile.DeveloperMode)
 				tML.Info("Developer mode enabled");
