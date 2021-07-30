@@ -16,7 +16,7 @@ echo "This may take a few moments."
 # without actually invoking managed NativeLibrary resolving events!
 if [[ "$(uname)" == Darwin ]]; then
   library_dir="$script_dir/Libraries/Native/OSX"
-  export DYLD_LIBRARY_PATH="$$library_dir"
+  export DYLD_LIBRARY_PATH="$library_dir"
   ln -sf "$library_dir/libSDL2-2.0.0.dylib" "$library_dir/libSDL2.dylib"
 else
   library_dir="$script_dir/Libraries/Native/Linux"
