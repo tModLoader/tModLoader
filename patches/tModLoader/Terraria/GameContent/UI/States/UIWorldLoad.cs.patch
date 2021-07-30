@@ -1,12 +1,11 @@
 --- src/Terraria/Terraria/GameContent/UI/States/UIWorldLoad.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorldLoad.cs
-@@ -59,6 +_,10 @@
+@@ -59,6 +_,9 @@
  				text = _progress.Message;
  			}
  
-+			if (_progressMessage.Text != text) {
++			if (text != _progressMessage.Text)
 +				ModLoader.Logging.tML.Info(text + "...");
-+			}
 +
  			_progressBar.SetProgress(overallProgress, currentProgress);
  			_progressMessage.Text = text;
