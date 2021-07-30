@@ -111,9 +111,12 @@
  							}
  							else {
  								WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -159,7 +_,8 @@
+@@ -158,8 +_,11 @@
+ 				private CallResult<SubmitItemUpdateResult_t> _updateItemHook;
  				private FinishedPublishingAction _endAction;
  				private WorkshopIssueReporter _issueReporter;
++				protected EResult _createCallback;
++				protected EResult _updateCallback;
  
 -				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags) {
 +				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null) {
@@ -121,7 +124,7 @@
  					_issueReporter = issueReporter;
  					_endAction = endAction;
  					_createItemHook = CallResult<CreateItemResult_t>.Create(CreateItemResult);
-@@ -171,20 +_,34 @@
+@@ -171,20 +_,33 @@
  						ContentFolderPath = contentFolderPath,
  						Tags = tags,
  						PreviewImagePath = previewImagePath,
@@ -151,14 +154,42 @@
 +						}
  						UpdateItem();
  					}
--					else {
-+					else { 
+ 					else {
  						CreateItem();
 +						Console.WriteLine("createditem " + itemTitle);
-+						// Callbacks aren't being called? Program exits immediately after this, too soon?
  					}
  				}
  
+@@ -205,18 +_,28 @@
+ 				}
+ 
+ 				private void CreateItem() {
++					_createCallback = EResult.k_EResultNone;
++
+ 					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
+ 					SteamAPICall_t hAPICall = SteamUGC.CreateItem(SteamUtils.GetAppID(), EWorkshopFileType.k_EWorkshopFileTypeFirst);
+ 					_createItemHook.Set(hAPICall, CreateItemResult);
+ 					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
++
++					if (!Main.dedServ)
++						return;
++
++					do {
++						ForceCallbacks();
++					} while (_createCallback == EResult.k_EResultNone);
+ 				}
+ 
+ 				private void CreateItemResult(CreateItemResult_t param, bool bIOFailure) {
++					_createCallback = param.m_eResult;
+ 					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
+ 						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
+ 						_endAction(this);
+ 					}
+-					else if (param.m_eResult == EResult.k_EResultOK) {
++					else if (_createCallback == EResult.k_EResultOK) {
+ 						_publishedFileID = param.m_nPublishedFileId;
+ 						UpdateItem();
+ 					}
 @@ -240,10 +_,10 @@
  					PrepareContentForUpdate();
  					UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
@@ -172,7 +203,7 @@
  
  					SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
  					SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
-@@ -253,8 +_,36 @@
+@@ -253,21 +_,61 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
@@ -204,9 +235,35 @@
 +						}
 +					}
 +
++					_updateCallback = EResult.k_EResultNone;
++
  					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
 -					SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, "");
 +					SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, patchNotes);
  					_updateHandle = uGCUpdateHandle_t;
  					_updateItemHook.Set(hAPICall, UpdateItemResult);
  					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
++
++
++					if (!Main.dedServ)
++						return;
++					
++					do {
++						// Tosses errors if invoked after CreateItem() has already run.
++						ForceCallbacks();
++					} while (_updateCallback == EResult.k_EResultNone);
+ 				}
+ 
+ 				private void UpdateItemResult(SubmitItemUpdateResult_t param, bool bIOFailure) {
++					_updateCallback = param.m_eResult;
+ 					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
+ 						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
+ 						_endAction(this);
+ 						return;
+ 					}
+ 
+-					switch (param.m_eResult) {
++					switch (_updateCallback) {
+ 						case EResult.k_EResultOK:
+ 							SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
+ 							break;

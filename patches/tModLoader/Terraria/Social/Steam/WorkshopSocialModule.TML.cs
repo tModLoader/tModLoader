@@ -33,6 +33,7 @@ namespace Terraria.Social.Steam
 				return false;
 			}
 
+			RefreshSubscriptionsAndPublishings();
 			if (!WorkshopHelper.QueryHelper.CheckWorkshopConnection()) {
 				base.IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 				return false;

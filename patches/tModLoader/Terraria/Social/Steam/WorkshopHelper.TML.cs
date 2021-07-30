@@ -39,6 +39,16 @@ namespace Terraria.Social.Steam
 			GameServer.Shutdown();
 		}
 
+		internal static void ForceCallbacks() {
+			// Do Pretty Stuff if want here
+			Thread.Sleep(5);
+
+			if (ModManager.SteamUser)
+				SteamAPI.RunCallbacks();
+			else
+				GameServer.RunCallbacks();
+		}
+
 		internal class ModManager
 		{
 			internal static bool SteamUser { get; set; } = false;
@@ -462,13 +472,7 @@ namespace Terraria.Social.Steam
 				_queryHook.Set(call);
 
 				do {
-					// Do Pretty Stuff if want here
-					Thread.Sleep(5);
-
-					if (ModManager.SteamUser) 
-						SteamAPI.RunCallbacks();
-					else
-						GameServer.RunCallbacks();
+					ForceCallbacks();
 				}
 				while (_primaryQueryResult == EResult.k_EResultNone);
 			}
