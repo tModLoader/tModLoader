@@ -15,15 +15,17 @@ echo "This may take a few moments."
 # Additionally, something in dotnet is requesting 'libSDL2.so' (instead of 'libSDL2-2.0.so.0' that is specified in dependencies)
 # without actually invoking managed NativeLibrary resolving events!
 if [[ "$(uname)" == Darwin ]]; then
-  export DYLD_LIBRARY_PATH="$script_dir/Libraries/Native/OSX"
+  library_dir="$script_dir/Libraries/Native/OSX"
+  export DYLD_LIBRARY_PATH="$$library_dir"
+  ln -sf "$library_dir/libSDL2-2.0.0.dylib" "$library_dir/libSDL2.dylib"
 else
   library_dir="$script_dir/Libraries/Native/Linux"
   export LD_LIBRARY_PATH="$library_dir"
   ln -sf "$library_dir/libSDL2-2.0.so.0" "$library_dir/libSDL2.so"
 fi
 
-# Ensure sufficient stack size on MacOS secondary threads, doesn't hurt for Linux
-export COMPlus_DefaultStackSize=4000000
+# Ensure sufficient stack size (4MB) on MacOS secondary threads, doesn't hurt for Linux. 16^5 = 1MB, value in hex 
+export COMPlus_DefaultStackSize=400000
 
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <tModLoader.runtimeconfig.json) #sed, go die plskthx
