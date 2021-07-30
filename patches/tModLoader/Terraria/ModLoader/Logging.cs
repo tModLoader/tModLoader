@@ -54,9 +54,16 @@ namespace Terraria.ModLoader
 			tML.InfoFormat("Running on {0} {1} {2}", ReLogic.OS.Platform.Current.Type, FrameworkVersion.Framework, FrameworkVersion.Version);
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
 			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
-			tML.InfoFormat("Launch Parameters: {0}", string.Join(' ', Environment.GetCommandLineArgs().Skip(1)));
-			tML.InfoFormat("Parsed Launch Parameters: {0}", string.Join(' ', Program.LaunchParameters.Select(p => ($"{p.Key} {p.Value}").Trim())));
-			tML.InfoFormat("Override Default Thread Stack Size Limit: {0}", Environment.GetEnvironmentVariable("COMPlus_DefaultStackSize"));
+
+			string args = string.Join(' ', Environment.GetCommandLineArgs().Skip(1));
+			if (!string.IsNullOrEmpty(args)) {
+				tML.InfoFormat("Launch Parameters: {0}", );
+				tML.InfoFormat("Parsed Launch Parameters: {0}", string.Join(' ', Program.LaunchParameters.Select(p => ($"{p.Key} {p.Value}").Trim())));
+			}
+
+			string stackLimit = Environment.GetEnvironmentVariable("COMPlus_DefaultStackSize");
+			if (!string.IsNullOrEmpty(stackLimit))
+				tML.InfoFormat("Override Default Thread Stack Size Limit: {0}", stackLimit);
 
 			if (ModCompile.DeveloperMode)
 				tML.Info("Developer mode enabled");
