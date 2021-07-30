@@ -168,6 +168,7 @@ namespace Terraria.ModLoader.Core
 
 		internal static void BuildModCommandLine(string modFolder)
 		{
+			// TODO: Build works even without build.txt or even a correct folder...
 			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
 			Lang.InitializeLegacyLocalization();
 

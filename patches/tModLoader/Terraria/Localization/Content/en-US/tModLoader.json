@@ -215,6 +215,8 @@
 		"XDaysAgo": "{0} {^0:day;days} ago",
 		"XMonthsAgo": "{0} {^0:month;months} ago",
 		"XYearsAgo": "{0} {^0:year;years} ago",
+		"MBServerReturnToMenu": "Return to world menu",
+		"MBServerAskForModName": "Type an exact ModName to download: ",
 
 		// Mod Publishing
 		"MBPublishEnterPassphrase": "Please Enter Your Passcode",

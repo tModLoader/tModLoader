@@ -14,6 +14,8 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.Social;
+using Terraria.Social.Base;
 using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -193,7 +195,6 @@ namespace Terraria.ModLoader.UI
 		}
 
 		internal static void PublishModCommandLine(string modName) {
-			/*TODO: Re-implement. Main missing issue is iconPath.
 			try {
 				LocalMod localMod;
 				var modPath = Path.Combine(ModLoader.ModPath, modName + ".tmod");
@@ -201,15 +202,18 @@ namespace Terraria.ModLoader.UI
 				using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
 					localMod = new LocalMod(modFile);
 
-				PublishModInner(modFile, localMod.properties, Path.Combine("ModSourcePath", "icon.png"), true);
+				var expectedIconPath = Path.Combine(ModCompile.ModSourcePath, modName, "icon.png");
+				if (!File.Exists(expectedIconPath))
+					throw new Exception($"{expectedIconPath} not found");
+				PublishModInner(modFile, localMod.properties, expectedIconPath, true);
 			}
 			catch (Exception e) {
 				Console.WriteLine("Something went wrong with command line mod publishing.");
 				Console.WriteLine(e.ToString());
 				Environment.Exit(1);
 			}
+			Console.WriteLine("exiting ");
 			Environment.Exit(0);
-			*/
 		}
 
 		private static void PublishModInner(TmodFile modFile, BuildProperties bp, string iconPath, bool commandLine = false) {
@@ -237,7 +241,21 @@ namespace Terraria.ModLoader.UI
 			if (string.IsNullOrWhiteSpace(values["version"]))
 				throw new WebException($"You need to specify a version in build.txt");
 
-			Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, modFile, values));
+			if (!Main.dedServ) {
+				Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, modFile, values));
+			}
+			else {
+				SocialAPI.LoadSteam();
+				if ( /*SocialAPI.Workshop != null && */ modFile != null) {
+					var publishSetttings = new WorkshopItemPublishSettings {
+						Publicity = WorkshopItemPublicSettingId.Public,
+						UsedTags = Array.Empty<WorkshopTagOption>(),
+						PreviewImagePath = iconPath
+					};
+					WorkshopHelper.ModManager.SteamUser = true;
+					SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
+				}
+			}
 		}
 	}
 }

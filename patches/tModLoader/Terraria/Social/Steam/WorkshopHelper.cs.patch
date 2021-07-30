@@ -111,12 +111,13 @@
  							}
  							else {
  								WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -159,7 +_,7 @@
+@@ -159,7 +_,8 @@
  				private FinishedPublishingAction _endAction;
  				private WorkshopIssueReporter _issueReporter;
  
 -				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags) {
 +				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null) {
++					Console.WriteLine("Publishing " + itemTitle);
  					_issueReporter = issueReporter;
  					_endAction = endAction;
  					_createItemHook = CallResult<CreateItemResult_t>.Create(CreateItemResult);
@@ -130,7 +131,7 @@
  					};
  
  					ulong? num = null;
-@@ -180,10 +_,12 @@
+@@ -180,11 +_,15 @@
  
  					if (num.HasValue && finder.HasItemOfId(num.Value)) {
  						_publishedFileID = new PublishedFileId_t(num.Value);
@@ -143,8 +144,11 @@
 -					else {
 +					else { 
  						CreateItem();
++						Console.WriteLine("createditem " + itemTitle);
++						// Callbacks aren't being called? Program exits immediately after this, too soon?
  					}
  				}
+ 
 @@ -240,10 +_,10 @@
  					PrepareContentForUpdate();
  					UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);

@@ -38,6 +38,7 @@ namespace Terraria.Social.Steam
 				return false;
 			}
 
+			// TODO: Test that this obeys the StringComparison limitations previously enforced. ExampleMod vs Examplemod need to not be allowed
 			var existing = Interface.modBrowser.FindModDownloadItem(buildData["name"]);
 
 			if (existing != null) {
