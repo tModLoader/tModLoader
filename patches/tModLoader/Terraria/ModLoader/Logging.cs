@@ -25,17 +25,21 @@ namespace Terraria.ModLoader
 	{
 		public static readonly string LogDir = Path.Combine(Program.SavePath, "Logs");
 		public static readonly string LogArchiveDir = Path.Combine(LogDir, "Old");
+
+		// BOM-less UTF8 encoding. Unfortunately, silly Discord, the application we send and get sent logs through 100 times a day,
+		// doesn't support previewing of UTF-8 text files if they have a byte-order-mark. Never going to be fixed, it seems.
+		// -- Mirsario.
+		private static readonly Encoding Encoding = new UTF8Encoding(false);
+		private static readonly List<string> InitWarnings = new List<string>();
+
 		public static string LogPath { get; private set; }
+
+		/// <summary> Available for logging when Mod.Logging is not available, such as field initialization </summary>
+		public static ILog PublicLogger { get; } = LogManager.GetLogger("PublicLogger");
 
 		internal static ILog Terraria { get; } = LogManager.GetLogger("Terraria");
 		internal static ILog tML { get; } = LogManager.GetLogger("tML");
 
-		/// <summary>
-		/// Available for logging when Mod.Logging is not available, such as field initialization
-		/// </summary>
-		public static ILog publicLogger { get; } = LogManager.GetLogger("publicLogger");
-
-		private static List<string> initWarnings = new List<string>();
 		internal static void Init(bool dedServ) {
 			if (Program.LaunchParameters.ContainsKey("-build"))
 				return;
@@ -50,12 +54,21 @@ namespace Terraria.ModLoader
 			tML.InfoFormat("Running on {0} {1} {2}", ReLogic.OS.Platform.Current.Type, FrameworkVersion.Framework, FrameworkVersion.Version);
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
 			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
-			tML.InfoFormat("Launch Parameters: {0}", string.Join(" ", Program.LaunchParameters.Select(p => (p.Key + " " + p.Value).Trim())));
+
+			string args = string.Join(' ', Environment.GetCommandLineArgs().Skip(1));
+			if (!string.IsNullOrEmpty(args)) {
+				tML.InfoFormat("Launch Parameters: {0}", args);
+				tML.InfoFormat("Parsed Launch Parameters: {0}", string.Join(' ', Program.LaunchParameters.Select(p => ($"{p.Key} {p.Value}").Trim())));
+			}
+
+			string stackLimit = Environment.GetEnvironmentVariable("COMPlus_DefaultStackSize");
+			if (!string.IsNullOrEmpty(stackLimit))
+				tML.InfoFormat("Override Default Thread Stack Size Limit: {0}", stackLimit);
 
 			if (ModCompile.DeveloperMode)
 				tML.Info("Developer mode enabled");
 
-			foreach (var line in initWarnings)
+			foreach (var line in InitWarnings)
 				tML.Warn(line);
 
 				AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
@@ -89,7 +102,7 @@ namespace Terraria.ModLoader
 				Name = "FileAppender",
 				File = LogPath = Path.Combine(LogDir, GetNewLogFile(dedServ ? "server" : "client")),
 				AppendToFile = false,
-				Encoding = Encoding.UTF8,
+				Encoding = Encoding,
 				Layout = layout
 			};
 			fileAppender.ActivateOptions();
@@ -120,7 +133,7 @@ namespace Terraria.ModLoader
 					File.Move(existingLog, existingLog + oldExt);
 				}
 				catch (IOException e) {
-					initWarnings.Add($"Move failed during log initialization: {existingLog} -> {Path.GetFileName(existingLog)}{oldExt}\n{e}");
+					InitWarnings.Add($"Move failed during log initialization: {existingLog} -> {Path.GetFileName(existingLog)}{oldExt}\n{e}");
 				}
 			}
 

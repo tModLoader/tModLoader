@@ -87,13 +87,12 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,58 @@
+@@ -138,32 +_,62 @@
  			}
  		}
  
-+		// some versions of the .NET runtime will run the Main static initilizer as soon as LaunchGame is invoked
-+		// causing Main.SavePath to be initialized before LaunchParameters is parsed.
-+		// moving arg parsing to a separate function avoids this
++		//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
++		// Moving all calls to Main to LaunchGame_() mitigates this risk
  		public static void LaunchGame(string[] args, bool monoArgs = false) {
  			Thread.CurrentThread.Name = "Main Thread";
  			if (monoArgs)
@@ -108,24 +107,29 @@
 +			if (File.Exists("savehere.txt"))
 +				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
 +
-+			Main.dedServ = LaunchParameters.ContainsKey("-server");
++			bool isServer = LaunchParameters.ContainsKey("-server");
 +			try {
-+				Logging.Init(Main.dedServ);
++				Logging.Init(isServer);
 +			}
 +			catch (Exception e) {
 +				DisplayException(e);
 +				return;
 +			}
 +
++			LaunchGame_(isServer);
++		}
++
++		//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
++		// Moving all calls to Main to LaunchGame_() mitigates this risk
++		public static void LaunchGame_(bool isServer) {
++			Main.dedServ = isServer;
++
++			//TODO: Can this be moved to LaunchInitializer.LoadServerParameters?
 +			if (LaunchInitializer.TryParameter("-build") is string build)
 +				// Inside the build from command line, the application exits
 +				// Anything beyond this point will not be executed
 +				ModCompile.BuildModCommandLine(build);
 +
-+			LaunchGame_();
-+		}
-+
-+		public static void LaunchGame_() {
  			if (Platform.IsOSX) {
  				Main.OnEngineLoad += delegate {
  					Main.instance.IsMouseVisible = false;

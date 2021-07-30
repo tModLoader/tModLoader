@@ -42,6 +42,7 @@ namespace Terraria.Social.Steam
 		internal class ModManager
 		{
 			internal static bool SteamUser { get; set; } = false;
+			internal static bool SteamAvailable { get; set; } = true;
 			internal static AppId_t thisApp = ModLoader.Engine.Steam.TMLAppID_t;
 
 			protected Callback<DownloadItemResult_t> m_DownloadItemResult;
@@ -49,16 +50,21 @@ namespace Terraria.Social.Steam
 			private PublishedFileId_t itemID;
 
 			internal static void Initialize() {
-				if (!ModLoader.Engine.Steam.IsSteamApp) {
-					// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
-					GameServer.Init(0x7f000001, 7776, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0");
+				// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
+				if (ModLoader.Engine.Steam.IsSteamApp) {
+					SteamUser = true;
+					return;
+				}
 
+				if (GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0")) {
 					SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 					SteamGameServer.SetProduct(thisApp.ToString());
 					SteamGameServer.LogOnAnonymous();
 				}
-				else
-					SteamUser = true;
+				else {
+					Logging.tML.Error("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed");
+					SteamAvailable = false;
+				}
 			}
 
 			internal ModManager(PublishedFileId_t itemID) {
@@ -281,26 +287,31 @@ namespace Terraria.Social.Steam
 			protected UGCQueryHandle_t _primaryUGCHandle;
 			protected EResult _primaryQueryResult;
 			protected uint _queryReturnCount;
+			protected int incompleteModCount;
 
 			internal QueryHelper() {
 				_queryHook = CallResult<SteamUGCQueryCompleted_t>.Create(OnWorkshopQueryCompleted);
 			}
 
-			internal List<UIModDownloadItem> QueryWorkshop() {
+			internal bool QueryWorkshop(out List<UIModDownloadItem> items) {
 				uint queryPage = 0;
-				List<UIModDownloadItem> items = new List<UIModDownloadItem>();
+				incompleteModCount = 0;
+				items = new List<UIModDownloadItem>();
 				LocalMod[] installedMods = ModOrganizer.FindMods();
+
+				if (!ModManager.SteamAvailable)
+					return false;
 
 				do {
 					QueryForPage(++queryPage);
 
 					if (_primaryQueryResult == EResult.k_EResultAccessDenied) {
 						Utils.ShowFancyErrorMessage("Error: Access to Steam Workshop was denied.", 0);
-						return items;
+						return false;
 					}
 					else if (_primaryQueryResult != EResult.k_EResultOK) {
 						Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop. " + _primaryQueryResult, 0);
-						return items;
+						return false;
 					}
 
 
@@ -314,6 +325,9 @@ namespace Terraria.Social.Steam
 							SteamGameServerUGC.GetQueryUGCResult(_primaryUGCHandle, i, out pDetails);
 
 						PublishedFileId_t id = pDetails.m_nPublishedFileId;
+
+						if (pDetails.m_eVisibility != ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic)
+							continue;
 
 						if (pDetails.m_eResult != EResult.k_EResultOK) {
 							Logging.tML.Warn("Unable to fetch mod PublishId#" + id + " information. " + pDetails.m_eResult);
@@ -331,7 +345,7 @@ namespace Terraria.Social.Steam
 						else
 							keyCount = SteamGameServerUGC.GetQueryUGCNumKeyValueTags(_primaryUGCHandle, i);
 
-						if (keyCount != MetadataKeys.Length) {
+						if (keyCount < MetadataKeys.Length) {
 							Logging.tML.Warn("Mod is missing required metadata: " + displayname);
 							continue;
 						}
@@ -346,7 +360,15 @@ namespace Terraria.Social.Steam
 							else
 								SteamGameServerUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 100, out val, 100);
 
-							metadata[MetadataKeys[j]] = val;
+							metadata[key] = val;
+						}
+
+						string[] missingKeys = MetadataKeys.Where(k => metadata.Get(k) == null).ToArray();
+
+						if (missingKeys.Length != 0) {
+							Logging.tML.Warn($"Mod '{displayname}' is missing required metadata: {string.Join(',', missingKeys.Select(k => $"'{k}'"))}.");
+							incompleteModCount++;
+							continue;
 						}
 
 						ModSide modside = ModSide.Both;
@@ -410,7 +432,7 @@ namespace Terraria.Social.Steam
 					ReleaseWorkshopQuery();
 				} while (_queryReturnCount == Steamworks.Constants.kNumUGCResultsPerPage); // 50 is based on kNumUGCResultsPerPage constant in ISteamUGC. Can't find constant itself? - Solxan
 
-				return items;
+				return true;
 			}
 
 			private void QueryForPage(uint page) {
@@ -423,7 +445,7 @@ namespace Terraria.Social.Steam
 
 					SteamUGC.SetReturnKeyValueTags(qHandle, true);
 					SteamUGC.SetReturnLongDescription(qHandle, true);
-					SteamUGC.SetAllowCachedResponse(qHandle, 30); // Prevents spamming refreshes from overloading Steam
+					SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
 					call = SteamUGC.SendQueryUGCRequest(qHandle);
 				}
@@ -432,7 +454,7 @@ namespace Terraria.Social.Steam
 
 					SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
 					SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
-					SteamGameServerUGC.SetAllowCachedResponse(qHandle, 30); // Prevents spamming refreshes from overloading Steam
+					SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
 					call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 				}
@@ -497,15 +519,16 @@ namespace Terraria.Social.Steam
 			}
 
 			internal static bool CheckWorkshopConnection() {
-				if (Interface.modBrowser.Items.Count != 0)
+				// If populating fails during query, than no connection. Attempt connection if not yet attempted.
+				if (UIModBrowser.SteamWorkshop == null && !Interface.modBrowser.InnerPopulateModBrowser())
+					return false;
+
+				// If there are zero items on workshop, than return true.
+				if (Interface.modBrowser.Items.Count + UIModBrowser.SteamWorkshop._queryReturnCount == 0)
 					return true;
 
-				Interface.modBrowser.InnerPopulateModBrowser();
-
-				if (Interface.modBrowser.Items.Count != 0)
-					return true;
-
-				return false;
+				// Otherwise, return the original condition. 
+				return Interface.modBrowser.Items.Count + UIModBrowser.SteamWorkshop.incompleteModCount != 0;
 			}
 		}
 	}
