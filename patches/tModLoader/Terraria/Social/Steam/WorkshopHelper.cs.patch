@@ -133,7 +133,7 @@
 +						_issueReporter.ReportInstantUploadProblem("Workshop.ReportIssue_FailedToPublish_CouldNotFindFolderToUpload" + " NoPreviewImage");
 +						return;
 +					}
-+					else if(!Directory.Exists(contentFolderPath)) {
++					else if (!Directory.Exists(contentFolderPath)) {
 +						_issueReporter.ReportInstantUploadProblem("Workshop.ReportIssue_FailedToPublish_CouldNotFindFolderToUpload" + " NoContentFolder");
 +						return;
 +					}

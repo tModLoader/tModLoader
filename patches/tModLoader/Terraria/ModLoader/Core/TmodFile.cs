@@ -190,6 +190,7 @@ namespace Terraria.ModLoader.Core
 			// signature
 			// data length
 			// signed data
+			Directory.CreateDirectory(Path.GetDirectoryName(path));
 			using (fileStream = File.Create(path))
 			using (var writer = new BinaryWriter(fileStream)) {
 				writer.Write(Encoding.ASCII.GetBytes("TMOD"));
