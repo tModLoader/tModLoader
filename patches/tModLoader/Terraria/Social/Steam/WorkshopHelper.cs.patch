@@ -121,7 +121,7 @@
  					_issueReporter = issueReporter;
  					_endAction = endAction;
  					_createItemHook = CallResult<CreateItemResult_t>.Create(CreateItemResult);
-@@ -171,19 +_,31 @@
+@@ -171,20 +_,34 @@
  						ContentFolderPath = contentFolderPath,
  						Tags = tags,
  						PreviewImagePath = previewImagePath,
