@@ -3,9 +3,16 @@
 		// Main Menu
 		"PatreonSupport": "Muéstranos tu apoyo: ",
 		"MenuModBrowser": "Navegador de Mods",
+		"MenuDownloadMods": "Descargar mods",
+		"MenuDownloadModsDescription": "El Navegador de Mods del juego permite encontrar, descargar y actualizar tus mods.",
 		"MenuMods": "Mods",
+		"MenuManageMods": "Administrar mods",
+		"MenuManageModsDescription": "Aquí puedes gestionar y eliminar los mods instalados, así como configurar tus paquetes de mods.",
 		"MenuModSources": "Fuentes de Mods",
+		"MenuDevelopMods": "Desarrollar mods",
+		"MenuDevelopModsDescription": "Desarrolla y publica mods para que otros los usen, usando tu propio código de Fuentes de Mods.",
 		"MenuEnableDeveloperMode": "Activar modo desarrollador",
+		"WelcomeMessageBeta": "Bienvenido a tModLoader 1.4 Alfa.\n\nHas instalado correctamente una versión inestable de tModLoader que puede contener errores que provoquen problemas en el juego.\n\nUtiliza el menú de Steam Workshop para acceder a las funciones relacionadas con tModLoader.\n\nÚnete al Discord de tModLoader para saber más sobre qué mods y/o herramientas de prueba están disponibles para tModLoader 1.4 como parte de la nueva versión.",
 		"FirstLaunchWelcomeMessage": "Bienvenido a tModLoader.\n\ntModLoader se ha instalado correctamente. Usa el menú del Navegador de Mods para buscar los mods que quieras descargar. Usa el menú de Mods para cambiar los mods que tengas activados. Después de cambiar de mods, asegúrate de pulsar el botón Recargar mods para poder usarlos.",
 		"tModLoaderSettings": "Configuración de tModLoader",
 		"ModMenuSwap": "Cambiar tema del menú",
@@ -127,7 +134,7 @@
 		"ModPackEnableOnlyThisList": "Activar solo esta lista",
 		"ModPackUpdateListWithEnabled": "Actualizar lista con mods activados",
 		"ModPackViewModsInModBrowser": "Ver mods en el Navegador de Mods",
-		"ModPackModsAvailableStatus": "{0} totales, {1} activo(s), {2} desactivado(s), {3} faltante(s)",
+		"ModPackModsAvailableStatus": "{0} totales, {1} activ., {2} desactiv., {3} faltante(s)",
 		"ModPackModsMissing": "No se han encontrado los siguientes mods:\n{0}",
 		"ModPackModsContained": "Esta lista contiene los siguientes mods:\n{0}",
 		"ModPackMissing": " - Faltante",
@@ -271,6 +278,7 @@
 		"MSPublish": "Publicar",
 		"MSModSourcesCantHaveSpaces": "(Las carpetas de fuentes de mods no pueden contener espacios)",
 		"MSCreateMod": "Crear mod",
+		"VersionUpgrade": "ENLACE: Aprende sobre la Migración de Mods con la última actualización",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Se requieren librerías adicionales para construir mods (falta la carpeta ModCompile)",
