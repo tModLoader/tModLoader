@@ -2,11 +2,9 @@
 #Author: covers1624
 # Provided for use in tModLoader deployment. 
 
-#Get path of the script
-script_path="$(readlink -f "$0")"
-script_dir="$(dirname "$script_path")"
-#CD to the script location.
-cd "$script_dir"
+#chdir to path of the script and save it
+cd "$(dirname "$0")"
+script_dir="$(pwd -P)"
 
 echo "Verifying Net Framework...."
 echo "This may take a few moments."
