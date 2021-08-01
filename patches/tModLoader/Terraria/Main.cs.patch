@@ -812,6 +812,8 @@
  			}
  
  			bool enabled = CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled;
+@@ -4769,10 +_,17 @@
+ 
  			dayRate = num;
  			desiredWorldTilesUpdateRate = num;
 +			desiredWorldEventsUpdateRate = num;
@@ -827,11 +829,7 @@
 +				dayRate = 86400;
  		}
  
--		public Main() {
-+		public Main() : base(dedServ) {
- 			instance = this;
- 			UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
- 			base.Exiting += Main_Exiting;
+ 		public Main() {
 @@ -4784,7 +_,50 @@
  
  			Configuration.Load();
@@ -3706,7 +3704,7 @@
  						num5 *= (1f - windSpeedTarget + 1f) / 2f;
 -						num5 *= (float)dayRate;
 -						if (rand.Next((int)num5) == 0)
-+						num5 *= (float)desiredWorldEventsUpdateRate;
++						num5 *= (float)Math.Max(desiredWorldEventsUpdateRate, 1);
 +						if (rand.NextFloat() <= 1f / Math.Max(num5, 2400))
  							NewLightning();
  					}
