@@ -1,0 +1,10 @@
+--- src/Terraria/Terraria/DataStructures/GameModeData.cs
++++ src/tModLoader/Terraria/DataStructures/GameModeData.cs
+@@ -1,6 +_,6 @@
+ namespace Terraria.DataStructures
+ {
+-	public class GameModeData
++	public partial class GameModeData
+ 	{
+ 		public static readonly GameModeData NormalMode = new GameModeData {
+ 			Id = 0,
