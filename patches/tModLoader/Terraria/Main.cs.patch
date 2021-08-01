@@ -3705,7 +3705,7 @@
 -						num5 *= (float)dayRate;
 -						if (rand.Next((int)num5) == 0)
 +						num5 *= (float)Math.Max(desiredWorldEventsUpdateRate, 1);
-+						if (rand.NextFloat() <= 1f / Math.Max(num5, 2400))
++						if (rand.NextFloat() <= 1f / num5)
  							NewLightning();
  					}
  					else if ((double)GraveyardVisualIntensity >= 0.9 && rand.Next(7200) == 0) {
