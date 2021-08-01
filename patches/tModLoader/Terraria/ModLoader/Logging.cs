@@ -15,9 +15,9 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Microsoft.Xna.Framework;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.Engine;
+using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader
 {
@@ -197,18 +197,15 @@ namespace Terraria.ModLoader
 
 		private static ThreadLocal<bool> handlerActive = new ThreadLocal<bool>(() => false);
 		private static Exception previousException;
+
 		private static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args) {
 			if (handlerActive.Value)
 				return;
 
 			bool oom = args.Exception is OutOfMemoryException;
 
-			//In case of OOM, unload the Main.tile array and do immediate garbage collection.
-			//If we don't do this, there will be a big chance that this method will fail to even quit the game, due to another OOM exception being thrown.
 			if (oom) {
-				Main.tile = null;
-
-				GC.Collect();
+				TryFreeingMemory();
 			}
 
 			try {
@@ -224,24 +221,28 @@ namespace Terraria.ModLoader
 				}
 
 				var stackTrace = new StackTrace(true);
+
 				PrettifyStackTraceSources(stackTrace.GetFrames());
-				var traceString = stackTrace.ToString();
+
+				string traceString = stackTrace.ToString();
 
 				if (!oom && ignoreContents.Any(traceString.Contains))
 					return;
 
 				traceString = traceString.Substring(traceString.IndexOf('\n'));
-				var exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
+
+				string exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
+
 				lock (pastExceptions) {
 					if (!pastExceptions.Add(exString))
 						return;
 				}
 
 				previousException = args.Exception;
-				var msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
+				string msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
 
-				if (!Main.dedServ && ModCompile.activelyModding)
-					AddChatMessage(msg, Color.OrangeRed);
+				if (!Main.dedServ && ModCompile.activelyModding && !Main.gameMenu)
+					AddChatMessage(msg);
 				else {
 					Console.ForegroundColor = ConsoleColor.DarkMagenta;
 					Console.WriteLine(msg);
@@ -265,7 +266,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		// Separate method to avoid triggering Main constructor
+		// Separated method to avoid triggering Main's static constructor
+
+		private static void AddChatMessage(string msg) {
+			AddChatMessage(msg, Color.OrangeRed);
+		}
+
 		private static void AddChatMessage(string msg, Color color) {
 			if (Main.gameMenu)
 				return;
@@ -274,6 +280,15 @@ namespace Terraria.ModLoader
 			Main.soundVolume = 0f;
 			Main.NewText(msg, color);
 			Main.soundVolume = soundVolume;
+		}
+
+		private static void TryFreeingMemory() {
+			// In case of OOM, unload the Main.tile array and do immediate garbage collection.
+			// If we don't do this, there will be a big chance that this method will fail to even quit the game, due to another OOM exception being thrown.
+
+			Main.tile = null;
+
+			GC.Collect();
 		}
 
 		private static Regex statusRegex = new Regex(@"(.+?)[: \d]*%$");
