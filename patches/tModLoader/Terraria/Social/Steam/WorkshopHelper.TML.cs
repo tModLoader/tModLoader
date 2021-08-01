@@ -135,15 +135,16 @@ namespace Terraria.Social.Steam
 					throw new ArgumentException("Downloading Workshop Item failed due to unknown reasons");
 				}
 
-				do {
+				while (!IsInstalled()) {
 					SteamUGC.GetItemDownloadInfo(itemID, out ulong dlBytes, out ulong totalBytes);
+
 					if (uiProgress != null)
 						uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
-
-					SteamAPI.RunCallbacks();
 				}
-				while (downloadResult == EResult.k_EResultNone);
 
+				// We don't use the callback do to unreliability, so we manually set the success.
+				downloadResult = EResult.k_EResultOK;
+				
 				SteamUGC.SubscribeItem(itemID);
 			}
 
