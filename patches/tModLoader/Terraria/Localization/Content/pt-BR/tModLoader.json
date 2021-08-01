@@ -127,16 +127,16 @@
 
 		// Mod Packs
 		"ModPacksHeader": "Pacotes de Mods",
-		"ModPacksSaveEnabledAsNewPack": "Salvar Habilitados como um Novo Pacote de Mods",
-		"ModPacksEnterModPackName": "Insira o nome do Pacote de Mods",
-		"ModPackViewList": "Ver Lista",
-		"ModPackEnableThisList": "Habilitar essa Lista",
-		"ModPackEnableOnlyThisList": "Habilitar apenas essa Lista",
-		"ModPackUpdateListWithEnabled": "Atualizar Lista com Habilitados",
-		"ModPackViewModsInModBrowser": "Ver Mods no Navegador de Mods",
-		"ModPackModsAvailableStatus": "{0} no Total, {1} Habilitados, {2} Desabilitados, {3} Não Encontrados",
+		"ModPacksSaveEnabledAsNewPack": "Salvar habilit. como um novo pacote",
+		"ModPacksEnterModPackName": "Insira o nome do pacote de mods",
+		"ModPackViewList": "Ver lista",
+		"ModPackEnableThisList": "Habilitar esta lista",
+		"ModPackEnableOnlyThisList": "Habilitar apenas esta lista",
+		"ModPackUpdateListWithEnabled": "Atualizar lista com habilitados",
+		"ModPackViewModsInModBrowser": "Ver mods no Navegador de Mods",
+		"ModPackModsAvailableStatus": "{0} no total, {1} habilit., {2} desabilit., {3} não encontrados",
 		"ModPackModsMissing": "Os seguintes mods não foram encontrados:\n{0}",
-		"ModPackModsContained": "Essa lista contém os seguintes mods:\n{0}",
+		"ModPackModsContained": "Esta lista contém os seguintes mods:\n{0}",
 		"ModPackMissing": " - Não Encontrado",
 		"ModPackDisabled": " - Desabilitado",
 		"ModPackLoadingSpecifiedModPack": "Carregando pacote de mods especificado: {0}",
@@ -279,6 +279,7 @@
 		"MSPublish": "Publicar",
 		"MSModSourcesCantHaveSpaces": "(Pastas de Fontes de Mod não podem ter espaços)",
 		"MSCreateMod": "Criar Mod",
+		"VersionUpgrade": "LINK: Aprenda sobre a Migração de Mods para a atualização mais recente",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Bibliotecas extras são necessárias para construir mods. (Pasta ModCompile não encontrada)",
