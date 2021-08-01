@@ -39,9 +39,20 @@ namespace Terraria.Social.Steam
 			GameServer.Shutdown();
 		}
 
+		internal static void ForceCallbacks() {
+			// Do Pretty Stuff if want here
+			Thread.Sleep(5);
+
+			if (ModManager.SteamUser)
+				SteamAPI.RunCallbacks();
+			else
+				GameServer.RunCallbacks();
+		}
+
 		internal class ModManager
 		{
 			internal static bool SteamUser { get; set; } = false;
+			internal static bool SteamAvailable { get; set; } = true;
 			internal static AppId_t thisApp = ModLoader.Engine.Steam.TMLAppID_t;
 
 			protected Callback<DownloadItemResult_t> m_DownloadItemResult;
@@ -49,16 +60,21 @@ namespace Terraria.Social.Steam
 			private PublishedFileId_t itemID;
 
 			internal static void Initialize() {
-				if (!ModLoader.Engine.Steam.IsSteamApp) {
-					// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
-					GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0");
+				// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
+				if (ModLoader.Engine.Steam.IsSteamApp) {
+					SteamUser = true;
+					return;
+				}
 
+				if (GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0")) {
 					SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 					SteamGameServer.SetProduct(thisApp.ToString());
 					SteamGameServer.LogOnAnonymous();
 				}
-				else
-					SteamUser = true;
+				else {
+					Logging.tML.Error("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed");
+					SteamAvailable = false;
+				}
 			}
 
 			internal ModManager(PublishedFileId_t itemID) {
@@ -293,6 +309,9 @@ namespace Terraria.Social.Steam
 				items = new List<UIModDownloadItem>();
 				LocalMod[] installedMods = ModOrganizer.FindMods();
 
+				if (!ModManager.SteamAvailable)
+					return false;
+
 				do {
 					QueryForPage(++queryPage);
 
@@ -453,13 +472,7 @@ namespace Terraria.Social.Steam
 				_queryHook.Set(call);
 
 				do {
-					// Do Pretty Stuff if want here
-					Thread.Sleep(5);
-
-					if (ModManager.SteamUser) 
-						SteamAPI.RunCallbacks();
-					else
-						GameServer.RunCallbacks();
+					ForceCallbacks();
 				}
 				while (_primaryQueryResult == EResult.k_EResultNone);
 			}
