@@ -22,35 +22,23 @@
 		public const short GoblinSorcerer = 27;
 		public const short Clay = 28;
 		public const short DungeonWater_Old = 29;
-		/// <summary>
-		/// Use Dust.dustWater() if you want to calculate water dust based on water style
-		/// </summary>
+		/// <summary>Use Dust.dustWater() if you want to calculate water dust based on water style</summary>
 		public const short Water = 33;
-		/// <summary>
-		/// Only survives while in liquid
-		/// </summary>
+		/// <summary>Only survives while in liquid</summary>
 		public const short BreatheBubble = 34;
-		/// <summary>
-		/// Lava particles, only survives while in liquid with gravity enabled; survives out of liquid with gravity disabled
-		/// </summary>
+		/// <summary> Lava particles, only survives while in liquid with gravity enabled; survives out of liquid with gravity disabled</summary>
 		public const short LavaBubbles = 35;
 		public const short Ash = 36;
 		public const short Obsidian = 37;
 		public const short Mud = 38;
 		public const short JungleGrass = 39;
 		public const short JungleGrass_Small = 40;
-		/// <summary>
-		/// Wanders and lingers with gravity enabled.
-		/// </summary>
+		/// <summary>Wanders and lingers with gravity enabled.</summary>
 		public const short GlowingMushroom = 41;
 		public const short Harpy = 42;
-		/// <summary>
-		/// A notable example of it's use is the sparkle on tiles caused by Main.tileShine
-		/// </summary>
+		/// <summary>A notable example of it's use is the sparkle on tiles caused by Main.tileShine</summary>
 		public const short Sparkle = 43;
-		/// <summary>
-		/// Wanders and lingers with gravity enabled.
-		/// </summary>
+		/// <summary>Wanders and lingers with gravity enabled.</summary>
 		public const short JungleSpore = 44;
 		public const short ManaRegeneration = 45;
 		public const short Poisoned = 46;
@@ -65,27 +53,19 @@
 		public const short Wraith = 54;
 		public const short Pixie = 55;
 		public const short BlueFairy = 56;
-		/// <summary>
-		/// Stuff like Enchanted Boomerang, Enchanted Sword, and Jester Arrows
-		/// </summary>
+		/// <summary>Stuff like Enchanted Boomerang, Enchanted Sword, and Jester Arrows</summary>
 		public const short Enchanted_Gold = 57;
 		public const short HallowedWeapons = 57;
-		/// <summary>
-		/// Stuff like Enchanted Boomerang, Enchanted Sword, and Jester Arrows
-		/// </summary>
+		/// <summary>Stuff like Enchanted Boomerang, Enchanted Sword, and Jester Arrows</summary>
 		public const short Enchanted_Pink = 58;
-		/// <summary>
-		/// Lingers and scales up with gravity enabled
-		/// </summary>
+		/// <summary>Lingers and scales up with gravity enabled</summary>
 		public const short RainbowRod = 66;
 		public const short IceRod = 67;
 		public const short UndergroundHallowedEnemies = 71;
 		public const short Gastropod = 72;
 		public const short PinkFairy = 73;
 		public const short GreenFairy = 74;
-		/// <summary>
-		/// Wanders and lingers with gravity enabled
-		/// </summary>
+		/// <summary>Wanders and lingers with gravity enabled</summary>
 		public const short Snow = 76;
 		public const short Ebonwood = 77;
 		public const short RichMahogany = 78;
@@ -104,41 +84,14 @@
 		public const short Moss_Red = 95;
 		public const short Moss_Blue = 96;
 		public const short Moss_Purple = 97;
-		/// <summary>
-		/// Use Dust.dustWater() if you want to calculate water dust based on water style
-		/// </summary>
 		public const short Water_Corruption = 98;
-		/// <summary>
-		/// Use Dust.dustWater() if you want to calculate water dust based on water style
-		/// </summary>
 		public const short Water_Jungle = 99;
-		/// <summary>
-		/// Use Dust.dustWater() if you want to calculate water dust based on water style
-		/// </summary>
 		public const short Water_Hallowed = 100;
-		/// <summary>
-		/// Use Dust.dustWater() if you want to calculate water dust based on water style
-		/// </summary>
 		public const short Water_Snow = 101;
-		/// <summary>
-		/// Use Dust.dustWater() if you want to calculate water dust based on water style
-		/// </summary>
 		public const short Water_Desert = 102;
-		/// <summary>
-		/// Use Dust.dustWater() if you want to calculate water dust based on water style
-		/// </summary>
 		public const short Water_Space = 103;
-		/// <summary>
-		/// Use Dust.dustWater() if you want to calculate water dust based on water style
-		/// </summary>
 		public const short Water_GlowingMushroom = 103;
-		/// <summary>
-		/// Use Dust.dustWater() if you want to calculate water dust based on water style
-		/// </summary>
 		public const short Water_Cavern = 104;
-		/// <summary>
-		/// Use Dust.dustWater() if you want to calculate water dust based on water style
-		/// </summary>
 		public const short Water_BloodMoon = 105;
 		public const short RuneWizard = 106;
 		public const short TerraBlade = 107;
@@ -157,9 +110,6 @@
 		public const short Ice_Red = 120;
 		public const short Shadewood_Tree = 121;
 		public const short BorealWood = 122;
-		/// <summary>
-		/// Use Dust.dustWater() if you want to calculate water dust based on water style
-		/// </summary>
 		public const short Water_Crimson = 123;
 		public const short SandstormInABottle = 124;
 		public const short CrimsonGrass = 125;
@@ -179,9 +129,7 @@
 		public const short Confetti_Green = 140;
 		public const short Confetti_Pink = 141;
 		public const short Confetti_Yellow = 142;
-		/// <summary>
-		/// When you paint a tile
-		/// </summary>
+		/// <summary>When you paint a tile</summary>
 		public const short Paint = 143;
 		public const short Palladium = 144;
 		public const short Orichalcum = 145;
@@ -192,9 +140,7 @@
 		public const short Bee = 150;
 		public const short SeaSnail = 151;
 		public const short Squid = 151;
-		/// <summary>
-		/// Only survives while in liquid with gravity enabled; survives out of liquid with gravity disabled
-		/// </summary>
+		/// <summary>Only survives while in liquid with gravity enabled; survives out of liquid with gravity disabled</summary>
 		public const short HoneyBubbles = 152;
 		public const short Rain = 154;
 		public const short Ambient_DarkBrown = 155; // Better name may be available
@@ -210,9 +156,7 @@
 		public const short FungiHit = 165;
 		public const short Plantera_Pink = 166;
 		public const short Plantera_Green = 167;
-		/// <summary>
-		/// Lingers and scales with gravity enabled
-		/// </summary>
+		/// <summary>Lingers and scales with gravity enabled</summary>
 		public const short PlanteraBulb = 168;
 		public const short Ichor = 170;
 		public const short Venom = 171;
@@ -276,13 +220,9 @@
 		public const short MartianSaucerSpark = 228;
 		public const short InfluxWaver = 229;
 		public const short Phantasmal = 229;
-		/// <summary>
-		/// Scales with gravity enabled
-		/// </summary>
+		/// <summary>Scales with gravity enabled</summary>
 		public const short DrillContainmentUnit = 230;
-		/// <summary>
-		/// Scales with gravity enabled
-		/// </summary>
+		/// <summary>Scales with gravity enabled</summary>
 		public const short CosmicCarKeys = 230;
 		public const short ViciousPowder = 231;
 		public const short GoldCritter = 232;
@@ -296,9 +236,7 @@
 		public const short Toxikarp = 256;
 		public const short MechanicalCart = 260;
 		public const short BloodWater = 266;
-		/// <summary>
-		/// Lingers and scales with gravity enabled
-		/// </summary>
+		/// <summary>Lingers and scales with gravity enabled</summary>
 		public const short LastPrism = 267;
 	}
 }
