@@ -1,0 +1,22 @@
+--- src/Terraria/Terraria/Audio/SoundEngine.cs
++++ src/tModLoader/Terraria/Audio/SoundEngine.cs
+@@ -60,13 +_,16 @@
+ 			PlaySound(type, (int)position.X, (int)position.Y, style);
+ 		}
+ 
+-		public static SoundEffectInstance PlaySound(LegacySoundStyle type, Vector2 position) => PlaySound(type, (int)position.X, (int)position.Y);
++		public static SoundEffectInstance PlaySound(SoundStyle type, Vector2 position) => PlaySound(type, (int)position.X, (int)position.Y);
+ 
+-		public static SoundEffectInstance PlaySound(LegacySoundStyle type, int x = -1, int y = -1) {
++		public static SoundEffectInstance PlaySound(SoundStyle type, int x = -1, int y = -1) {
+ 			if (type == null)
+ 				return null;
+ 
+-			return PlaySound(type.SoundId, x, y, type.Style, type.Volume, type.GetRandomPitch());
++			if (x != -1 || y != -1)
++				return type.Play(new Vector2(x, y));
++
++			return type.Play(null);
+ 		}
+ 
+ 		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
