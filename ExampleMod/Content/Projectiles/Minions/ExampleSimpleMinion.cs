@@ -3,6 +3,7 @@ using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -76,6 +77,15 @@ namespace ExampleMod.Content.Projectiles.Minions
 
 			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position.
 			position = Main.MouseWorld;
+		}
+
+		public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			//Minions have to be spawned manually, then have originalDamage assigned to the damage used to spawn them
+			int index = Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer);
+			Main.projectile[index].originalDamage = damage;
+
+			//Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
+			return false;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
