@@ -111,7 +111,7 @@
  							}
  							else {
  								WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -159,7 +_,7 @@
+@@ -159,11 +_,12 @@
  				private FinishedPublishingAction _endAction;
  				private WorkshopIssueReporter _issueReporter;
  
@@ -120,6 +120,11 @@
  					_issueReporter = issueReporter;
  					_endAction = endAction;
  					_createItemHook = CallResult<CreateItemResult_t>.Create(CreateItemResult);
+ 					_updateItemHook = CallResult<SubmitItemUpdateResult_t>.Create(UpdateItemResult);
++					_publicity = publicity;
+ 					ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
+ 					_entryData = new SteamWorkshopItem {
+ 						Title = itemTitle,
 @@ -171,19 +_,31 @@
  						ContentFolderPath = contentFolderPath,
  						Tags = tags,
