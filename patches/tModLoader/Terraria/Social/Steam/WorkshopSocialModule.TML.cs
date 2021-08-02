@@ -40,6 +40,11 @@ namespace Terraria.Social.Steam
 			}
 
 			// TODO: Test that this obeys the StringComparison limitations previously enforced. ExampleMod vs Examplemod need to not be allowed
+			// -> It doesn't. If workshop folder exists, it will overwrite existing mod, allowing lowering of version number.
+			// -> If the folder is deleted, it will make a new entry.
+			// -> Also, publishing immediately after publishing not prevented. It doesn't see the recently published. This can cause multiple mods to be published with the same name.
+			// Finally, attempting to publish an update from a new computer will create a new release, as workshop.json is local to the computer.
+			// Oh yeah, publish a private mod, modname collision with a public mod later created.
 			var existing = Interface.modBrowser.FindModDownloadItem(buildData["name"]);
 
 			if (existing != null) {
