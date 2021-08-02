@@ -98,6 +98,10 @@ jobs:
           echo pwd is: ${PWD}
           echo ls -l is:
           ls -l
+          echo Creating tModLoader cache zip file
+          7z a tModLoader.zip ./src/tModLoader/
+          gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" tModLoader.zip
+          ls -l
           cd solutions
           echo pwd is: ${PWD}
           echo ls -l is:
@@ -119,9 +123,6 @@ jobs:
           echo Creating decompiled cache zip file
           7z a decompiled.zip ./src/decompiled/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
-          echo Creating tModLoader cache zip file
-          7z a tModLoader.zip ./src/tModLoader/
-          gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" tModLoader.zip
           ls -l
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
@@ -196,6 +197,10 @@ jobs:
     name: Documentation
     runs-on: ubuntu-latest
     steps:
+      - name: Check out base branch
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - name: Download temporary encrypted src artifact from build job
         uses: actions/download-artifact@v2
         with:
