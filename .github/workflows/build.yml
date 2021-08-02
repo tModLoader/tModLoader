@@ -98,6 +98,10 @@ jobs:
           echo pwd is: ${PWD}
           echo ls -l is:
           ls -l
+          echo Creating tModLoader cache zip file
+          7z a tModLoader.zip ./src/tModLoader/
+          gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" tModLoader.zip
+          ls -l
           cd solutions
           echo pwd is: ${PWD}
           echo ls -l is:
@@ -123,18 +127,28 @@ jobs:
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BUILDPURPOSE:  ${{ fromJSON('["Github_Commit", "Alpha"]')[github.event_name == 'push' && github.ref == 'refs/heads/1.4'] }}
           
-      - uses: actions/upload-artifact@v2
+      - name: Upload Debug Build Artifact
+        uses: actions/upload-artifact@v2
         with:
           name: Debug Build
           path: |
             ./artifacts/Debug/
             
-      - uses: actions/upload-artifact@v2
+      - name: Upload Release Build Artifact
+        uses: actions/upload-artifact@v2
         with:
           name: Release Build
           path: |
             ./artifacts/Release/
+           
+      - name: Upload temporary encrypted src artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
+        uses: actions/upload-artifact@v2
+        with:
+          name: temporary-src
+          path: tModLoader.zip.gpg
             
       - name: Build ExampleMod
         shell: bash
@@ -150,13 +164,14 @@ jobs:
           mkdir -p artifacts/Mods
           mv ./artifacts/Debug/ModLoader/Mods/ExampleMod.tmod ./artifacts/Mods/ExampleMod.tmod
           
-      - uses: actions/upload-artifact@v2
+      - name: Upload ExampleMod Build Artifact
+        uses: actions/upload-artifact@v2
         with:
           name: ExampleMod Build
           path: |
             ./artifacts/Mods/ExampleMod.tmod
         
-      - name: Post push report to 1-4-beta-builds on Discord
+      - name: Post push report to 1-4-nightly-builds on Discord
         uses: sarisia/actions-status-discord@v1
         if: always() && github.event_name == 'push'
         with:
@@ -164,7 +179,7 @@ jobs:
           description: |
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view.
 
-      - name: Post pull request report to 1-4-beta-builds on Discord
+      - name: Post pull request report to 1-4-nightly-builds on Discord
         uses: sarisia/actions-status-discord@v1
         if: always() && github.event_name == 'pull_request_target'
         with:
@@ -174,3 +189,98 @@ jobs:
             Pull Request: ${{github.event.pull_request.head.ref}} from ${{github.event.pull_request.head.repo.full_name}}
             Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
+
+  documentation:
+    # Documentation generated on successful builds of pushes to 1.4 branch
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out base branch
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Download temporary encrypted src artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: temporary-src
+      - name: Restore tModLoader folder from artifact
+        shell: bash
+        run: |
+          echo Restoring tModLoader folder from cache
+          ls -l
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output tModLoader.zip tModLoader.zip.gpg
+          ls -l
+          unzip -o tModLoader.zip -d src
+          cd src
+          ls -l
+          cd ..
+        env:
+          SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
+      - name: Generate Documentation
+        uses: mattnotmitt/doxygen-action@v1.3.1
+        with:
+          working-directory: 'solutions/documentation/'
+          doxyfile-path: 'Doxyfile'
+      - name: View resulting files
+        run: |
+          echo pwd is: ${PWD}
+          ls -alhR
+        working-directory: solutions/documentation
+      - uses: geekyeggo/delete-artifact@v1
+        with:
+          name: temporary-src
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./solutions/documentation/html
+          destination_dir: html_alpha
+
+  deploy:
+    needs: build
+    # We push an alpha release only on push events to the 1.4 branch that build correctly
+    if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
+    name: Deploy to Steam Alpha Branch
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Check out base branch
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Download build artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: Debug Build
+          path: artifacts/Debug
+      - name: View build artifact files
+        run: |
+          echo pwd is: ${PWD}
+          ls -alhR
+        working-directory: artifacts/Debug
+      - name: Setup steamcmd
+        id: setupsteam
+        uses: CyberAndrii/setup-steamcmd@v1
+      - name: Setup Authentication Files
+        shell: bash
+        run: |
+          echo Decrypting Authentication Files
+          gpg --quiet --batch --yes --decrypt --passphrase="$STEAM_SENTRY_PASSPHRASE" --output ~/Steam/ssfn2592666017656020661 ./solutions/Manifests/secret.gpg
+        env:
+          STEAM_SENTRY_PASSPHRASE: ${{ secrets.STEAM_SENTRY_PASSPHRASE }}
+          STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
+      - name: Attempt run_app_build_http 
+        shell: bash
+        run: |
+          mkdir artifacts/shared
+          echo pwd is: ${PWD}
+          echo "Listing manifests directory"
+          ls -alhR ./solutions/Manifests
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build_http ${GITHUB_WORKSPACE}/solutions/Manifests/app.vdf +quit
+          echo "Listing BuildOutput directory"
+          ls -alhR ./BuildOutput
+          echo "cat BuildOutput directory contents"
+          cat BuildOutput/*.log

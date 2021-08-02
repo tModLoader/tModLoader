@@ -18,7 +18,7 @@
  		// FNA is requested by both Terraria and ReLogic.dll
  		var loaded = new Dictionary<string, Assembly>();
  
-@@ -36,28 +_,34 @@
+@@ -36,32 +_,41 @@
  				return assembly;
  			}
  		};
@@ -56,4 +56,13 @@
 +					Logging.tML.Debug("\tsuccess");
  					return assemblies[name] = handle;
  				}
- 				
+-				
+-				return assemblies[name] = IntPtr.Zero;
++				else {
++					// Toss an error when failed to load needed library file, instead of just waiting for later to toss - Solxan
++					assemblies[name] = IntPtr.Zero;
++					throw new FileLoadException("Failed to load Native Library at " + match);
++				}	
+ 			}
+ 			catch (DirectoryNotFoundException e) {
+ 				throw new DirectoryNotFoundException("A needed library file was missing from the tModLoader directory. " + e.Message, e);

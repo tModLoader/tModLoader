@@ -86,10 +86,12 @@ namespace Terraria.ModLoader.UI
 					Directory.CreateDirectory(Path.GetDirectoryName(path));
 
 					using (var dst = File.OpenWrite(path))
-					using (var src = mod.modFile.GetStream(entry)) if (converter != null)
+					using (var src = mod.modFile.GetStream(entry)) {
+						if (converter != null)
 							converter(src, dst);
 						else
 							src.CopyTo(dst);
+					}
 
 					// Copy the dll to ModLoader\references\mods for easy collaboration.
 					if (name == "All.dll" || PlatformUtilities.IsXNA ? name == "Windows.dll" || name == $"{mod.Name}.XNA.dll" : name == "Mono.dll" || name == $"{mod.Name}.FNA.dll") {
