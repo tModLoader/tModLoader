@@ -17,9 +17,6 @@ namespace Terraria.ModLoader
 		public static int MusicCount { get; private set; } = MusicID.Count;
 
 		internal static void AutoloadMusic(Mod mod) {
-			if (Main.dedServ)
-				return; // todo: maybe not this? idk
-
 			List<string> extensions = new() {".wav", ".mp3", ".ogg"};
 
 			foreach (TmodFile.FileEntry music in mod.File.Where(x => extensions.Contains(x.Name) && x.Name.StartsWith("Sounds/"))) {

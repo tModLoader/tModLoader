@@ -34,6 +34,7 @@ namespace Terraria.ModLoader
 				Autoload = true,
 				AutoloadGores = true,
 				AutoloadSounds = true,
+				AutoloadMusic = true,
 				AutoloadBackgrounds = true
 			};
 	}
