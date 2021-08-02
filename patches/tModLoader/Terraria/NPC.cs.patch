@@ -751,10 +751,11 @@
  			Tile tile = Main.tile[x, y];
  			if (!tile.nactive())
  				return false;
-@@ -62651,7 +_,8 @@
+@@ -62651,7 +_,9 @@
  			}
  
  			int num = -1;
++
 -			if (Type == 222 || Type == 245) {
 +			//if (Type == 222 || Type == 245) {
 +			if (NPCID.Sets.SpawnFromLastEmptySlot[Type]) {
