@@ -66,6 +66,13 @@
 		// Interface
 		"BossBarStyle": "Estilo de barra de jefes: {0}",
 		"BossBarStyleNoOptions": "Sin opciones",
+		
+		// Workshop
+		"WorkshopDisclaimer": "Al publicar este elemento, aceptas los Términos de Servicio de tModLoader",
+		"SteamPublishingLimit": "Error: Solo los usuarios de Steam pueden publicar a través del juego en Steam Workshop.",
+		"NoWorkshopAccess": "Error: Error al acceder a Steam Workshop",
+		"ModAlreadyUploaded": "Error: ¡Este mod ya existe en Steam Workshop!",
+		"ModVersionInfoUnchanged": "Error: La versión del mod debe incrementarse para actualizar el mod.",
 
 		// Mod Errors
 		"LoadError": "Se ha producido un error al cargar {0}",
@@ -278,7 +285,7 @@
 		"MSPublish": "Publicar",
 		"MSModSourcesCantHaveSpaces": "(Las carpetas de fuentes de mods no pueden contener espacios)",
 		"MSCreateMod": "Crear mod",
-		"VersionUpgrade": "ENLACE: Aprende sobre la Migración de Mods con la última actualización",
+		"VersionUpgrade": "Info. sobre la Migración de Mods tras actualizar",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Se requieren librerías adicionales para construir mods (falta la carpeta ModCompile)",
