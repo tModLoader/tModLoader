@@ -59,14 +59,6 @@ jobs:
           path: decompiled.zip.gpg
           # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
           key: 1423-A
-      # This cache should always fail, but will make the contents available to subsequent jobs, such as Documentation
-      - name: Retrieve encrypted tModLoader zip cache
-        if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
-        id: cache-tModLoader
-        uses: actions/cache@v2
-        with:
-          path: tModLoader.zip.gpg
-          key: ${{ github.run_id }}
 
       - name: Restore decompiled folder from cache
         if: steps.cache-decompiled.outputs.cache-hit == 'true'
@@ -149,6 +141,13 @@ jobs:
           name: Release Build
           path: |
             ./artifacts/Release/
+           
+      - name: Upload temporary encrypted src artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
+        uses: actions/upload-artifact@v2
+        with:
+          name: temporary-src
+          path: tModLoader.zip.gpg
             
       - name: Build ExampleMod
         shell: bash
@@ -197,14 +196,12 @@ jobs:
     name: Documentation
     runs-on: ubuntu-latest
     steps:
-      - name: Retrieve src zip cache
-        id: cache-tModLoader
-        uses: actions/cache@v2
+      - name: Download temporary encrypted src artifact from build job
+        uses: actions/download-artifact@v2
         with:
+          name: temporary-src
           path: tModLoader.zip.gpg
-          key: ${{ github.run_id }}
-      - name: Restore tModLoader folder from cache
-        if: steps.cache-tModLoader.outputs.cache-hit == 'true'
+      - name: Restore tModLoader folder from artifact
         shell: bash
         run: |
           echo Restoring tModLoader folder from cache
@@ -219,7 +216,6 @@ jobs:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
       - name: Generate Documentation
         uses: mattnotmitt/doxygen-action@v1.3.1
-        if: steps.cache-tModLoader.outputs.cache-hit == 'true'
         with:
           working-directory: 'solutions/documentation/'
           doxyfile-path: 'Doxyfile'
@@ -228,6 +224,9 @@ jobs:
           echo pwd is: ${PWD}
           ls -alhR
         working-directory: solutions/documentation
+      - uses: geekyeggo/delete-artifact@v1
+        with:
+          name: temporary-src
 
   deploy:
     needs: build
