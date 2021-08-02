@@ -1,0 +1,4 @@
+var interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_provide_item_condition_description =
+[
+    [ "GetConditionDescription", "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_provide_item_condition_description.html#ad14c6b1f4671fc1b09bc6790c89110cb", null ]
+];

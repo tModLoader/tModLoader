@@ -1,0 +1,7 @@
+var class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_lucky_coin_condition_setter =
+[
+    [ "LuckyCoinConditionSetter", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_lucky_coin_condition_setter.html#a3211f503b22578d6f6105ad2699d4eba", null ],
+    [ "GetTimesToRunMultiplier", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_lucky_coin_condition_setter.html#a0acccc601d2becb6f4300111ab7a66d3", null ],
+    [ "Setup", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_lucky_coin_condition_setter.html#a06cf8ec42d82dba4451af07b152d74eb", null ],
+    [ "TearDown", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_lucky_coin_condition_setter.html#abbe1410b16cdb51f2590c545cd912b99", null ]
+];

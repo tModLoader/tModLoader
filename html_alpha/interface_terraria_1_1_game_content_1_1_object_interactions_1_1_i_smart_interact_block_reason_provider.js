@@ -1,0 +1,4 @@
+var interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_block_reason_provider =
+[
+    [ "ShouldBlockSmartInteract", "interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_block_reason_provider.html#a6c30b567a8104550069e97844f8516f0", null ]
+];

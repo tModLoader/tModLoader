@@ -1,0 +1,4 @@
+var interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_u_i_collection_info_provider =
+[
+    [ "GetEntryUICollectionInfo", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_u_i_collection_info_provider.html#aa236eb9a5b3edcd35dec2a06f96b2ac3", null ]
+];

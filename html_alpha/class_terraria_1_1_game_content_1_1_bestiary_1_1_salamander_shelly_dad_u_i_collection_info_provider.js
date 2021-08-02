@@ -1,0 +1,6 @@
+var class_terraria_1_1_game_content_1_1_bestiary_1_1_salamander_shelly_dad_u_i_collection_info_provider =
+[
+    [ "SalamanderShellyDadUICollectionInfoProvider", "class_terraria_1_1_game_content_1_1_bestiary_1_1_salamander_shelly_dad_u_i_collection_info_provider.html#ad4b5e4536874b2f4a2674e68616d4018", null ],
+    [ "GetEntryUICollectionInfo", "class_terraria_1_1_game_content_1_1_bestiary_1_1_salamander_shelly_dad_u_i_collection_info_provider.html#ae325c12f7472bcd79265c17d67016947", null ],
+    [ "ProvideUIElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_salamander_shelly_dad_u_i_collection_info_provider.html#a6cd3bcbc91bd7390a333a9aede021b5a", null ]
+];

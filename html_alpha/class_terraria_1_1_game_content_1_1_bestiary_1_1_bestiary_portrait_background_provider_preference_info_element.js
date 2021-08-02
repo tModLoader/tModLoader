@@ -1,0 +1,7 @@
+var class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_portrait_background_provider_preference_info_element =
+[
+    [ "BestiaryPortraitBackgroundProviderPreferenceInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_portrait_background_provider_preference_info_element.html#a16669f92e06320d0e1fe2703cc7f52ed", null ],
+    [ "GetPreferredProvider", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_portrait_background_provider_preference_info_element.html#a4465b0412ddc89663f139207e96ab112", null ],
+    [ "Matches", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_portrait_background_provider_preference_info_element.html#a0c4dcfe2194811d5b011ddbdb5158f41", null ],
+    [ "ProvideUIElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_portrait_background_provider_preference_info_element.html#a78f1532df36b8e6a409c042efbfcf5de", null ]
+];

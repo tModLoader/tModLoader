@@ -1,0 +1,5 @@
+var interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_sprite_segment_1_1_i_shader_effect =
+[
+    [ "AfterDrawing", "interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_sprite_segment_1_1_i_shader_effect.html#aaa1903e689c2512867353042c55aa860", null ],
+    [ "BeforeDrawing", "interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_sprite_segment_1_1_i_shader_effect.html#a062e52e0f0ae006330d56a669a27fc61", null ]
+];

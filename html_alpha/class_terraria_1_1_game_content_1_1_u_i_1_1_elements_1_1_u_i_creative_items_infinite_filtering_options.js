@@ -1,0 +1,5 @@
+var class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_creative_items_infinite_filtering_options =
+[
+    [ "UICreativeItemsInfiniteFilteringOptions", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_creative_items_infinite_filtering_options.html#a26f47c40b463802b3c233355f6ff2046", null ],
+    [ "OnClickingOption", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_creative_items_infinite_filtering_options.html#ac33acab80c8d614f57065da366c679e6", null ]
+];

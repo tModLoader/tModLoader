@@ -1,0 +1,4 @@
+var struct_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_extra_bestiary_info_page_information =
+[
+    [ "BestiaryProgressReport", "struct_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_extra_bestiary_info_page_information.html#a03f5ba05a8b4a7eec2a882656d846ea4", null ]
+];

@@ -1,0 +1,5 @@
+var class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_player_segment_1_1_i80cf05f0478e3894be72e0a77d29c1ad =
+[
+    [ "AfterDrawing", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_player_segment_1_1_i80cf05f0478e3894be72e0a77d29c1ad.html#ab9c5e4b29bf45e309a8c66f51be01e8b", null ],
+    [ "BeforeDrawing", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_player_segment_1_1_i80cf05f0478e3894be72e0a77d29c1ad.html#aa902d5d11e13543f50d1ae2f94904dda", null ]
+];

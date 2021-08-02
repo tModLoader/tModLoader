@@ -1,0 +1,9 @@
+var class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_player_segment =
+[
+    [ "ImmediateSpritebatchForPlayerDyesEffect", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_player_segment_1_1_i80cf05f0478e3894be72e0a77d29c1ad.html", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_player_segment_1_1_i80cf05f0478e3894be72e0a77d29c1ad" ],
+    [ "IShaderEffect", "interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_player_segment_1_1_i_shader_effect.html", "interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_player_segment_1_1_i_shader_effect" ],
+    [ "PlayerSegment", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_player_segment.html#aed8e7784457543accfbe5c350d81061c", null ],
+    [ "Bind", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_player_segment.html#a96806d6766154616e268a0503b67b29b", null ],
+    [ "Draw", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_player_segment.html#a48643014bca4ec87c9f4f5be67b9b73b", null ],
+    [ "UseShaderEffect", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_player_segment.html#a704ee67e7ee631dcfa3e282c539b107a", null ]
+];

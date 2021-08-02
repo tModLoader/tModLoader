@@ -1,0 +1,6 @@
+var class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_legacy_hack___is_boss_and_not_expert =
+[
+    [ "CanDrop", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_legacy_hack___is_boss_and_not_expert.html#a63146f40e97a32648e28f3ad4699c110", null ],
+    [ "CanShowItemDropInUI", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_legacy_hack___is_boss_and_not_expert.html#aab1dc74961055bf05c39ea836e6d184b", null ],
+    [ "GetConditionDescription", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_legacy_hack___is_boss_and_not_expert.html#a8d4f794fbf6dacc9635dc6b0bd74d06b", null ]
+];

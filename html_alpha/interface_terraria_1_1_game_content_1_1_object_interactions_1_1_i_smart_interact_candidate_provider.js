@@ -1,0 +1,5 @@
+var interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_candidate_provider =
+[
+    [ "ClearSelfAndPrepareForCheck", "interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_candidate_provider.html#a146a74053a54922cf90598af1df4eaec", null ],
+    [ "ProvideCandidate", "interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_candidate_provider.html#a38508ae27905aaacbba1ff9ea64dea1e", null ]
+];

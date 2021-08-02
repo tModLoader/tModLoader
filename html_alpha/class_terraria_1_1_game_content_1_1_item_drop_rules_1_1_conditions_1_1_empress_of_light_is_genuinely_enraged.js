@@ -1,0 +1,6 @@
+var class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_empress_of_light_is_genuinely_enraged =
+[
+    [ "CanDrop", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_empress_of_light_is_genuinely_enraged.html#a4538bba9e93a37877e841f7cc492af54", null ],
+    [ "CanShowItemDropInUI", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_empress_of_light_is_genuinely_enraged.html#a3c5c4793f3347d141c589dc3ce7899f3", null ],
+    [ "GetConditionDescription", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_empress_of_light_is_genuinely_enraged.html#abc457255bc900bb5062c748e31380e11", null ]
+];

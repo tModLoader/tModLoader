@@ -1,0 +1,7 @@
+var class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter =
+[
+    [ "StackedConditionSetter", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#adb943542451ee0c57aaecdf0ef11e14c", null ],
+    [ "GetTimesToRunMultiplier", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#a781424d703d96d9fd059dbe07051a9bd", null ],
+    [ "Setup", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#a0fec900263fd4d6f167653fdd30f9fc1", null ],
+    [ "TearDown", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#aa676b37cfdb0460dc3f4ac737c8c106b", null ]
+];

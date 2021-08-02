@@ -1,0 +1,26 @@
+var class_terraria_1_1_audio_1_1_legacy_audio_system =
+[
+    [ "LegacyAudioSystem", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a736bc3a06b576df1e829b4eac84560b2", null ],
+    [ "IsTrackPlaying", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a3e04b94a454a6a1239ada70180d8f776", null ],
+    [ "LoadCue", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#afaf0f8b118c0a576a2c99bbf922bfa2f", null ],
+    [ "LoadFromSources", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a5dccf8db6a66231fd5325d6777850e2a", null ],
+    [ "PauseAll", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a31808d8bb7c1ccdf691b010a8761afc3", null ],
+    [ "PrepareWaveBank", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a8a548d228cf160439568d6dd1ee542d5", null ],
+    [ "ResumeAll", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#acad6803423053fc7d7aa4e9fb570ae5c", null ],
+    [ "Update", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a103ebb5fa945b7e7ca442fdc7e4d1070", null ],
+    [ "UpdateAmbientCueState", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a0300d9b54660dd5af1624034ed1000bd", null ],
+    [ "UpdateAmbientCueTowardStopping", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a94f46d56f6b2b2a9c16ad0b9aacbc47f", null ],
+    [ "UpdateAudioEngine", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a065a2c21eb8c37cbefac966ae4f512fe", null ],
+    [ "UpdateCommonTrack", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a966a66678996d0d5cc33a194dce0a0b8", null ],
+    [ "UpdateCommonTrackTowardStopping", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#aa22ba9a4139c54a5371ce131e46115f2", null ],
+    [ "UpdateMisc", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a40547d9ab888e5b67fe2ef6f3c76643a", null ],
+    [ "UseSources", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#af7a075408c57c3e1f3c1bb0c3fcdb075", null ],
+    [ "AudioTracks", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#af9301f2cd5fa8fdb8873be9785774485", null ],
+    [ "DefaultTrackByIndex", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a90b80c35df8815e4e6f7458470e0acc2", null ],
+    [ "Engine", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a3c387f2cff7c61c1911593759425c873", null ],
+    [ "FileSources", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#afbb05a07d39fa41bb50ce4b92d72375f", null ],
+    [ "MusicReplayDelay", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#adbbce4a03a9e271ad6314e9d1edb2e23", null ],
+    [ "SoundBank", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a299870f3a4c01a7898ee9d7eac7e5430", null ],
+    [ "TrackNamesByIndex", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#ab8976c8de9fc8c85e5876ef54c49976c", null ],
+    [ "WaveBank", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a3555aa869e08ce54419185fe82f9a378", null ]
+];

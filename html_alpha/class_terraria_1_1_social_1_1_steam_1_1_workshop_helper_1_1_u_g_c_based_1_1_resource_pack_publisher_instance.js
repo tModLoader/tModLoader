@@ -1,0 +1,6 @@
+var class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_resource_pack_publisher_instance =
+[
+    [ "ResourcePackPublisherInstance", "class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_resource_pack_publisher_instance.html#ae4f58543630ac690330800528c7d3ffd", null ],
+    [ "GetHeaderText", "class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_resource_pack_publisher_instance.html#ab4c235353fcdf11e2c35f29a431b5278", null ],
+    [ "PrepareContentForUpdate", "class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_resource_pack_publisher_instance.html#a34f2eef0918249ce8679367ad41d3c32", null ]
+];

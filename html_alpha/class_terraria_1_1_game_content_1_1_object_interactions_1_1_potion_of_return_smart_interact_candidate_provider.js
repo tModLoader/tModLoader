@@ -1,0 +1,5 @@
+var class_terraria_1_1_game_content_1_1_object_interactions_1_1_potion_of_return_smart_interact_candidate_provider =
+[
+    [ "ClearSelfAndPrepareForCheck", "class_terraria_1_1_game_content_1_1_object_interactions_1_1_potion_of_return_smart_interact_candidate_provider.html#a9f3be94968dd1f03272e98fd844f7b8f", null ],
+    [ "ProvideCandidate", "class_terraria_1_1_game_content_1_1_object_interactions_1_1_potion_of_return_smart_interact_candidate_provider.html#ac662106f152e5eedad44a1f6278ec228", null ]
+];

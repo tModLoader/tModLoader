@@ -1,0 +1,5 @@
+var interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_background_image_path_and_color_provider =
+[
+    [ "GetBackgroundColor", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_background_image_path_and_color_provider.html#a9cc91c3c07c1d21ed600a8630981dd83", null ],
+    [ "GetBackgroundImage", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_background_image_path_and_color_provider.html#ae730358c043fd499bf9024f245e3a595", null ]
+];

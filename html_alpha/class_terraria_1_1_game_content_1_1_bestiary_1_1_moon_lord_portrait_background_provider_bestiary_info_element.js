@@ -1,0 +1,6 @@
+var class_terraria_1_1_game_content_1_1_bestiary_1_1_moon_lord_portrait_background_provider_bestiary_info_element =
+[
+    [ "GetBackgroundColor", "class_terraria_1_1_game_content_1_1_bestiary_1_1_moon_lord_portrait_background_provider_bestiary_info_element.html#a13585d4d648cb9b634a71bb707abc26d", null ],
+    [ "GetBackgroundImage", "class_terraria_1_1_game_content_1_1_bestiary_1_1_moon_lord_portrait_background_provider_bestiary_info_element.html#a2de8d9d6dbc62a277438abeecf81a9fa", null ],
+    [ "ProvideUIElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_moon_lord_portrait_background_provider_bestiary_info_element.html#a3482956e555fb1532bc79634ba8878b9", null ]
+];
