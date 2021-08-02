@@ -21,8 +21,8 @@ body:
     description: If you feel confident that you can contribute this feature, feel free to work on it after getting some initial feedback. If you can't, don't worry, there are many people who can help and the suggestion is great by itself.
     multiple: false
     options:
-      - Yes
-      - No
+      - 'Yes'
+      - 'No'
   validations:
     required: true
 - type: textarea
