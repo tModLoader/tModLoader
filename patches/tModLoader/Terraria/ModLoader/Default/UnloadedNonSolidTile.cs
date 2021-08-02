@@ -6,10 +6,11 @@ using Terraria.ObjectData;
 
 namespace Terraria.ModLoader.Default
 {
-	public class UnloadedNonSolidTile : UnloadedTile {
+	public class UnloadedNonSolidTile : UnloadedTile
+	{
 		public override string Texture => "ModLoader/UnloadedNonSolidTile";
 
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			TileIO.Tiles.unloadedTypes.Add(Type);
 			//common
 			Main.tileFrameImportant[Type] = true;

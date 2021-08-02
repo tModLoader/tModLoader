@@ -10,6 +10,8 @@ namespace Terraria.ModLoader
 	{
 		protected sealed override void Register() => BossBarLoader.AddGlobalBossBar(this);
 
+		public sealed override void SetupContent() => SetStaticDefaults();
+
 		/// <summary>
 		/// Allows you to draw things before the default draw code is ran. Return false to prevent drawing the bar. Returns true by default.
 		/// </summary>

@@ -1,4 +1,4 @@
-using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.ID;
 
@@ -28,31 +28,33 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModBuff>.Register(this);
 
 			Type = BuffLoader.ReserveBuffID();
-			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BuffName.{Name}");
-			Description = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BuffDescription.{Name}");
+			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"BuffName.{Name}");
+			Description = LocalizationLoader.GetOrCreateTranslation(Mod, $"BuffDescription.{Name}");
 
 			BuffLoader.buffs.Add(this);
 		}
 
 		public sealed override void SetupContent() {
-			TextureAssets.Buff[Type] = ModContent.GetTexture(Texture);
-			SetDefaults();
+			TextureAssets.Buff[Type] = ModContent.Request<Texture2D>(Texture);
+			
+			SetStaticDefaults();
+			
 			BuffID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>
-		/// This is where all buff related assignments go. For example:
+		/// Allows you to modify the properties after initial loading has completed.
+		/// <br/> This is where all buff related assignments go.
+		/// <br/> For example:
 		/// <list type="bullet">
-		/// <item>Main.buffName[Type] = "Display Name";</item>
-		/// <item>Main.buffTip[Type] = "Buff Tooltip";</item>
-		/// <item>Main.debuff[Type] = true;</item>
-		/// <item>Main.buffNoTimeDisplay[Type] = true;</item>
-		/// <item>Main.vanityPet[Type] = true;</item>
-		/// <item>Main.lightPet[Type] = true;</item>
+		/// <item> Main.debuff[Type] = true; </item>
+		/// <item> Main.buffNoTimeDisplay[Type] = true; </item>
+		/// <item> Main.pvpBuff[Type] = true; </item>
+		/// <item> Main.vanityPet[Type] = true; </item>
+		/// <item> Main.lightPet[Type] = true; </item>
 		/// </list>
 		/// </summary>
-		public virtual void SetDefaults() {
-		}
+		public override void SetStaticDefaults() { }
 
 		/// <summary>
 		/// Allows you to make this buff give certain effects to the given player. If you remove the buff from the player, make sure the decrement the buffIndex parameter by 1.

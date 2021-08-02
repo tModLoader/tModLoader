@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.Default.Developer
 		public string InternalSetName => GetType().Name.Split('_')[0];
 
 		public override void SetStaticDefaults() {
-			var displayName = Name.Replace('_', ' ');
+			string displayName = Name.Replace('_', ' ');
 			displayName.Insert(displayName.IndexOf(' '), SetSuffix);
 			DisplayName.SetDefault(displayName);
 		}

@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
-@@ -1,41 +_,44 @@
+@@ -1,41 +_,45 @@
  using System;
  using System.Collections.Generic;
 +using System.Linq;
@@ -8,6 +8,7 @@
  using Terraria.ID;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Utilities;
  
  namespace Terraria
  {
@@ -150,7 +151,7 @@
  					}
  				}
  
-+				ConsumeItemHooks?.Invoke(this, item2.type, ref num);
++				RecipeLoader.ConsumeItem(this, item2.type, ref num);
 +
  				if (num <= 0)
  					continue;
@@ -332,7 +333,7 @@
  			if (ingridients.Length == 1) {
  				ingridients = new int[2] {
  					ingridients[0],
-@@ -14246,18 +_,56 @@
+@@ -14246,18 +_,59 @@
  			}
  		}
  
@@ -382,6 +383,9 @@
 +			
  			Main.recipe[numRecipes] = currentRecipe;
 -			currentRecipe = new Recipe();
++			currentRecipe.RecipeIndex = numRecipes;
++			
++			// The following resets the currentRecipe field
 +			currentRecipe = new Recipe {
 +				requiredItem = new List<Item>(),
 +				requiredTile = Enumerable.Repeat(-1, maxVanillaRequirements).ToList(),

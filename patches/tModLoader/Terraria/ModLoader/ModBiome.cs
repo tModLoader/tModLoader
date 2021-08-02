@@ -41,7 +41,7 @@ namespace Terraria.ModLoader
 			Type = LoaderManager.Get<BiomeLoader>().Register(this);
 			RegisterSceneEffect(this);
 
-			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BiomeName.{Name}");
+			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"BiomeName.{Name}");
 
 			ModBiomeBestiaryInfoElement = new GameContent.Bestiary.ModBiomeBestiaryInfoElement(Mod, DisplayName.Key, BestiaryIcon, BackgroundPath, BackgroundColor);
 		}
