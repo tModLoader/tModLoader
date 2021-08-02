@@ -150,8 +150,11 @@ namespace Terraria.ModLoader
 
 			int slot = MusicLoader.GetMusicSlot(name);
 
-			if (slot == 0 || Main.audioSystem is DisabledAudioSystem)
+			if (slot == 0 || Main.audioSystem is not LegacyAudioSystem audioSystem)
 				return null;
+
+			if (audioSystem.AudioTracks[slot] is null)
+				audioSystem.AudioTracks[slot] = MusicLoader.LoadMusic(name, MusicLoader.musicExtensions[name]);
 
 			return ((LegacyAudioSystem) Main.audioSystem).AudioTracks[slot];
 		}

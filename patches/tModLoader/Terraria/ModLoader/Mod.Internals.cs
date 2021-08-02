@@ -24,20 +24,6 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
 		internal readonly IList<ILoadable> content = new List<ILoadable>();
 
-		private IAudioTrack LoadMusic(string path, string extension) {
-			path = $"tmod:{Name}/{path}{extension}";
-
-			Stream stream = ModContent.OpenRead(path);
-
-			switch (extension) {
-				case ".wav": return new WAVAudioTrack(stream);
-				case ".mp3": return new MP3AudioTrack(stream);
-				case ".ogg": return new OGGAudioTrack(stream);
-			}
-
-			throw new ResourceLoadException($"Unknown music extension {extension}");
-		}
-
 		internal void SetupContent() {
 			foreach (var e in content.OfType<ModType>()) {
 				e.SetupContent();

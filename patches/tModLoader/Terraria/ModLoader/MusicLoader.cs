@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader
 {
@@ -13,13 +15,17 @@ namespace Terraria.ModLoader
 		internal static readonly Dictionary<int, int> itemToMusic = new();
 		internal static readonly Dictionary<int, Dictionary<int, int>> tileToMusic = new();
 		internal static readonly Dictionary<string, int> musicByPath = new();
+		internal static readonly Dictionary<string, string> musicExtensions = new();
 
 		public static int MusicCount { get; private set; } = MusicID.Count;
 
 		internal static void AutoloadMusic(Mod mod) {
-			List<string> extensions = new() {".wav", ".mp3", ".ogg"};
+			if (mod.File is null)
+				return;
 
-			foreach (TmodFile.FileEntry music in mod.File.Where(x => extensions.Contains(x.Name) && x.Name.StartsWith("Sounds/"))) {
+			List<string> extensions = new List<string> {".wav", ".mp3", ".ogg"};
+
+			foreach (TmodFile.FileEntry music in mod.File.Where(x => extensions.Contains(Path.GetExtension(x.Name)) && x.Name.StartsWith("Sounds/"))) {
 				string substring = music.Name["Sounds/".Length..];
 
 				if (substring.StartsWith("Music/")) {
@@ -29,6 +35,23 @@ namespace Terraria.ModLoader
 		}
 
 		internal static int ReserveMusicID() => MusicCount++;
+
+		internal static IAudioTrack LoadMusic(string path, string extension) {
+			path = $"tmod:{path}{extension}";
+
+			Stream stream = ModContent.OpenRead(path);
+
+			switch (extension) {
+				case ".wav":
+					return new WAVAudioTrack(stream);
+				case ".mp3":
+					return new MP3AudioTrack(stream);
+				case ".ogg":
+					return new OGGAudioTrack(stream);
+				default:
+					throw new ResourceLoadException($"Unknown music extension {extension}");
+			}
+		}
 
 		public static int GetMusicSlot(string sound) {
 			if (musicByPath.ContainsKey(sound)) {
@@ -58,6 +81,9 @@ namespace Terraria.ModLoader
 			musicToItem.Clear();
 			itemToMusic.Clear();
 			tileToMusic.Clear();
+			musicByPath.Clear();
+			musicExtensions.Clear();
+			MusicCount = MusicID.Count;
 		}
 	}
 }
