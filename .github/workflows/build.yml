@@ -200,7 +200,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: temporary-src
-          path: tModLoader.zip.gpg
       - name: Restore tModLoader folder from artifact
         shell: bash
         run: |
