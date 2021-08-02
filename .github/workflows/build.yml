@@ -59,6 +59,14 @@ jobs:
           path: decompiled.zip.gpg
           # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
           key: 1423-A
+      # This cache should always fail, but will make the contents available to subsequent jobs, such as Documentation
+      - name: Retrieve encrypted tModLoader zip cache
+        if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
+        id: cache-tModLoader
+        uses: actions/cache@v2
+        with:
+          path: tModLoader.zip.gpg
+          key: ${{ github.run_id }}
 
       - name: Restore decompiled folder from cache
         if: steps.cache-decompiled.outputs.cache-hit == 'true'
@@ -119,6 +127,9 @@ jobs:
           echo Creating decompiled cache zip file
           7z a decompiled.zip ./src/decompiled/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
+          echo Creating tModLoader cache zip file
+          7z a tModLoader.zip ./src/tModLoader/
+          gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" tModLoader.zip
           ls -l
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
@@ -179,13 +190,44 @@ jobs:
             Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
 
+  documentation:
+    # Documentation generated on successful builds of pushes to 1.4 branch
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Retrieve src zip cache
+        id: cache-tModLoader
+        uses: actions/cache@v2
+        with:
+          path: tModLoader.zip.gpg
+          key: ${{ github.run_id }}
+      - name: Restore tModLoader folder from cache
+        if: steps.cache-tModLoader.outputs.cache-hit == 'true'
+        shell: bash
+        run: |
+          echo Restoring tModLoader folder from cache
+          ls -l
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output tModLoader.zip tModLoader.zip.gpg
+          ls -l
+          unzip -o tModLoader.zip -d src
+          cd src
+          ls -l
+          cd ..
+        env:
+          SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
       - name: Generate Documentation
         uses: mattnotmitt/doxygen-action@v1.3.1
+        if: steps.cache-tModLoader.outputs.cache-hit == 'true'
         with:
           working-directory: 'solutions/documentation/'
           doxyfile-path: 'Doxyfile'
-
-  # TODO: Generate Documentation and push to gh-pages
+      - name: View resulting files
+        run: |
+          echo pwd is: ${PWD}
+          ls -alhR
+        working-directory: solutions/documentation
 
   deploy:
     needs: build
