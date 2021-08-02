@@ -62,10 +62,12 @@ namespace Terraria.ModLoader
 		}
 
 		void ILoader.ResizeArrays() {
-			if (Main.audioSystem is LegacyAudioSystem legacyAudioSystem) {
-				Array.Resize(ref legacyAudioSystem.AudioTracks, MusicCount);
-				Main.audioSystem = legacyAudioSystem;
-			}
+			if (Main.audioSystem is not LegacyAudioSystem legacyAudioSystem)
+				return;
+
+			Array.Resize(ref legacyAudioSystem.AudioTracks, MusicCount);
+			Array.Resize(ref Main.musicFade, MusicCount);
+			Array.Resize(ref Main.musicNoCrossFade, MusicCount);
 
 			foreach (string sound in musicByPath.Keys) {
 				int slot = GetMusicSlot(sound);
@@ -73,8 +75,10 @@ namespace Terraria.ModLoader
 				if (Main.audioSystem is DisabledAudioSystem)
 					return;
 
-				((LegacyAudioSystem) Main.audioSystem).AudioTracks[slot] = ModContent.GetMusic(sound);
+				legacyAudioSystem.AudioTracks[slot] = ModContent.GetMusic(sound);
 			}
+
+			Main.audioSystem = legacyAudioSystem;
 		}
 
 		void ILoader.Unload() {
