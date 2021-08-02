@@ -1140,5 +1140,13 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
+
+		public static bool SavesAndLoads(NPC npc) {
+			if (npc.townNPC)
+				return false;
+			return NPCID.Sets.SavesAndLoads[npc.type] 
+			       || (npc.ModNPC?.SavesAndLoads == true)
+			       || npc.globalNPCs.Any(instanced => instanced.instance.NeedCustomSaving(npc));
+		}
 	}
 }

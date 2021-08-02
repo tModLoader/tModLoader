@@ -188,7 +188,7 @@
  			for (int j = 0; j < Main.npc.Length; j++) {
  				NPC nPC2 = Main.npc[j];
 -				if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type]) {
-+				if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type] && !NPCLoader.IsModNPC(nPC2)) {
++				if (nPC2.active && NPCLoader.SavesAndLoads(nPC2) && !NPCLoader.IsModNPC(nPC2)) {
  					writer.Write(nPC2.active);
  					writer.Write(nPC2.netID);
  					writer.WriteVector2(nPC2.position);

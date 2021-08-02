@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
@@ -630,6 +631,32 @@ namespace Terraria.ModLoader
 		/// <param name="scale"></param>
 		/// <param name="offset"></param>
 		public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) {
+		}
+
+		/// <summary>
+		/// Allows you to make a npc be saved even if it's not a townNPC and NPCID.Sets.SavesAndLoads[npc.type] is false.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <returns></returns>
+		public virtual bool NeedCustomSaving(NPC npc) {
+			return false;
+		}
+		
+		/// <summary>
+		/// Allows you to save custom data for the given item. Returns null by default.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <returns></returns>
+		public virtual TagCompound Save(NPC npc) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to load custom data that you have saved for the given npc.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="tag"></param>
+		public void Load(NPC npc, TagCompound tag) {
 		}
 	}
 }

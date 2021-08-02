@@ -9,6 +9,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
@@ -113,6 +114,11 @@ namespace Terraria.ModLoader
 		/// Only called if CloneNewInstances is set to true.
 		/// </summary>
 		public virtual ModNPC Clone() => (ModNPC)MemberwiseClone();
+
+		/// <summary>
+		/// Makes this ModNPC saved along the world even if it's not a townNPC. Defaults to false.
+		/// </summary>
+		public virtual bool SavesAndLoads => false;
 
 		/// <summary>
 		/// Create a new instance of this ModNPC for an NPC instance. 
@@ -704,6 +710,21 @@ namespace Terraria.ModLoader
 		/// <param name="scale"></param>
 		/// <param name="offset"></param>
 		public virtual void DrawTownAttackSwing(ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) {
+		}
+
+		/// <summary>
+		/// Allows you to save custom data for this npc. Returns null by default.
+		/// </summary>
+		/// <returns></returns>
+		public virtual TagCompound Save() {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to load custom data that you have saved for this npc.
+		/// </summary>
+		/// <param name="tag">The tag.</param>
+		public virtual void Load(TagCompound tag) {
 		}
 	}
 }
