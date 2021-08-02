@@ -29,7 +29,7 @@ namespace Terraria.ModLoader
 				string substring = music.Name["Sounds/".Length..];
 
 				if (substring.StartsWith("Music/")) {
-					mod.AddMusic(mod.Name + '/' + music.Name);
+					AddMusic(mod, mod.Name + '/' + music.Name);
 				}
 			}
 		}
@@ -59,6 +59,18 @@ namespace Terraria.ModLoader
 			}
 			
 			return 0;
+		}
+
+		public static void AddMusic(Mod mod, string musicPath) {
+			if (!mod.loading)
+				throw new Exception("AddMusic can only be called from Mod.Load or Mod.Autoload");
+
+			int id = ReserveMusicID();
+
+			string extension = Path.GetExtension(musicPath);
+			musicPath = musicPath[..^Path.GetExtension(musicPath).Length];
+			musicByPath[musicPath] = id;
+			musicExtensions[musicPath] = extension;
 		}
 
 		void ILoader.ResizeArrays() {

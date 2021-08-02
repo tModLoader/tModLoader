@@ -279,18 +279,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public void AddMusic(string musicPath) {
-			if (!loading)
-				throw new Exception("AddMusic can only be called from Mod.Load or Mod.Autoload");
-
-			int id = MusicLoader.ReserveMusicID();
-
-			string extension = Path.GetExtension(musicPath);
-			musicPath = musicPath[..^Path.GetExtension(musicPath).Length];
-			MusicLoader.musicByPath[musicPath] = id;
-			MusicLoader.musicExtensions[musicPath] = extension;
-		}
-
 		/// <summary>
 		/// Shorthand for calling SoundLoader.GetSoundSlot(type, this.Name + '/' + name).
 		/// </summary>
@@ -298,13 +286,6 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public int GetSoundSlot(SoundType type, string name) => SoundLoader.GetSoundSlot(type, Name + '/' + name);
-
-		/// <summary>
-		/// Shorthand for calling <see cref="MusicLoader.GetMusicSlot"/>.
-		/// </summary>
-		/// <param name="name">The file name, including the path past the mod name.</param>
-		/// <returns>An integer corresponding to the index of the music in the music array.</returns>
-		public int GetMusicSlot(string name) => MusicLoader.GetMusicSlot($"{Name}/{name}");
 
 		/// <summary>
 		/// Shorthand for calling SoundLoader.GetLegacySoundSlot(type, this.Name + '/' + name).
