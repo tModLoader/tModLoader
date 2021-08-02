@@ -179,6 +179,12 @@ jobs:
             Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
 
+      - name: Generate Documentation
+        uses: mattnotmitt/doxygen-action@v1.3.1
+        with:
+          working-directory: 'solutions/documentation/'
+          doxyfile-path: 'Doxyfile'
+
   # TODO: Generate Documentation and push to gh-pages
 
   deploy:
