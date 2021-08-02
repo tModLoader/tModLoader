@@ -294,8 +294,9 @@ namespace Terraria.ModLoader.UI.ModBrowser
 						_modIcon = new UIImage(iconTexture) {
 							Left = { Percent = 0f },
 							Top = { Percent = 0f },
-							Width = { Pixels = 80f },
-							Height = { Pixels = 80f }
+							MaxWidth = { Pixels = 80f, Percent = 0f },
+							MaxHeight = { Pixels = 80f, Percent = 0f },
+							ScaleToFit = true
 						};
 						_modIconStatus = ModIconStatus.READY;
 						success = true;
