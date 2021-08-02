@@ -123,14 +123,17 @@ jobs:
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BUILDPURPOSE:  ${{ fromJSON('["Github_Commit", "Alpha"]')[github.event_name == 'push' && github.ref == 'refs/heads/1.4'] }}
           
-      - uses: actions/upload-artifact@v2
+      - name: Upload Debug Build Artifact
+        uses: actions/upload-artifact@v2
         with:
           name: Debug Build
           path: |
             ./artifacts/Debug/
             
-      - uses: actions/upload-artifact@v2
+      - name: Upload Release Build Artifact
+        uses: actions/upload-artifact@v2
         with:
           name: Release Build
           path: |
@@ -150,13 +153,14 @@ jobs:
           mkdir -p artifacts/Mods
           mv ./artifacts/Debug/ModLoader/Mods/ExampleMod.tmod ./artifacts/Mods/ExampleMod.tmod
           
-      - uses: actions/upload-artifact@v2
+      - name: Upload ExampleMod Build Artifact
+        uses: actions/upload-artifact@v2
         with:
           name: ExampleMod Build
           path: |
             ./artifacts/Mods/ExampleMod.tmod
         
-      - name: Post push report to 1-4-beta-builds on Discord
+      - name: Post push report to 1-4-nightly-builds on Discord
         uses: sarisia/actions-status-discord@v1
         if: always() && github.event_name == 'push'
         with:
@@ -164,7 +168,7 @@ jobs:
           description: |
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view.
 
-      - name: Post pull request report to 1-4-beta-builds on Discord
+      - name: Post pull request report to 1-4-nightly-builds on Discord
         uses: sarisia/actions-status-discord@v1
         if: always() && github.event_name == 'pull_request_target'
         with:
@@ -174,7 +178,9 @@ jobs:
             Pull Request: ${{github.event.pull_request.head.ref}} from ${{github.event.pull_request.head.repo.full_name}}
             Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
-            
+
+  # TODO: Generate Documentation and push to gh-pages
+
   deploy:
     needs: build
     # We push an alpha release only on push events to the 1.4 branch that build correctly
