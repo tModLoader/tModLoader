@@ -408,26 +408,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Shorthand for calling ModContent.GetMusic(this.FileName(name)).
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		/// <exception cref="MissingResourceException"></exception>
-		public IAudioTrack GetMusic(string name) {
-			if (!musics.TryGetValue(name, out var music))
-				throw new MissingResourceException(name);
-
-			return music;
-		}
-
-		/// <summary>
-		/// Shorthand for calling ModLoader.MusicExists(this.FileName(name)).
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public bool MusicExists(string name) => musics.ContainsKey(name);
-
-		/// <summary>
 		/// Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.
 		/// </summary>
 		public virtual object Call(params object[] args) {

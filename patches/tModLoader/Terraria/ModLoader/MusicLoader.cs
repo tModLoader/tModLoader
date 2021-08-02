@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria.Audio;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
@@ -16,11 +17,16 @@ namespace Terraria.ModLoader
 		public static int MusicCount { get; private set; } = MusicID.Count;
 
 		internal static void AutoloadMusic(Mod mod) {
-			foreach (string music in mod.musics.Keys.Where(t => t.StartsWith("Sounds/"))) {
-				string substring = music["Sounds/".Length..];
+			if (Main.dedServ)
+				return; // todo: maybe not this? idk
+
+			List<string> extensions = new() {".wav", ".mp3", ".ogg"};
+
+			foreach (TmodFile.FileEntry music in mod.File.Where(x => extensions.Contains(x.Name) && x.Name.StartsWith("Sounds/"))) {
+				string substring = music.Name["Sounds/".Length..];
 
 				if (substring.StartsWith("Music/")) {
-					mod.AddMusic(mod.Name + '/' + music);
+					mod.AddMusic(mod.Name + '/' + music.Name);
 				}
 			}
 		}

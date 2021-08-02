@@ -21,7 +21,6 @@ namespace Terraria.ModLoader
 		private readonly Queue<Task> AsyncLoadQueue = new Queue<Task>();
 
 		//Entities
-		internal readonly IDictionary<string, IAudioTrack> musics = new Dictionary<string, IAudioTrack>();
 		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
 		internal readonly IList<ILoadable> content = new List<ILoadable>();
 
@@ -54,8 +53,6 @@ namespace Terraria.ModLoader
 			content.Clear();
 
 			equipTextures.Clear();
-
-			musics.Clear();
 
 			Assets?.Dispose();
 		}

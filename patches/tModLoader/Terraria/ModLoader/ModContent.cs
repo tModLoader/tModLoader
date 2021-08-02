@@ -148,7 +148,12 @@ namespace Terraria.ModLoader
 			if (!ModLoader.TryGetMod(modName, out var mod))
 				throw new MissingResourceException("Missing mod: " + name);
 
-			return mod.GetMusic(subName);
+			int slot = MusicLoader.GetMusicSlot(name);
+
+			if (slot == 0 || Main.audioSystem is DisabledAudioSystem)
+				return null;
+
+			return ((LegacyAudioSystem) Main.audioSystem).AudioTracks[slot];
 		}
 
 		/// <summary>
@@ -158,9 +163,9 @@ namespace Terraria.ModLoader
 			if (!name.Contains('/'))
 				return false;
 
-			SplitName(name, out string modName, out string subName);
+			SplitName(name, out string modName, out string _);
 
-			return ModLoader.TryGetMod(modName, out var mod) && mod.MusicExists(subName);
+			return ModLoader.TryGetMod(modName, out _) && MusicLoader.GetMusicSlot(name) != 0;
 		}
 
 		/// <summary>
