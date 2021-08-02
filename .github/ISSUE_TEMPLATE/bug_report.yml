@@ -44,7 +44,7 @@ body:
     required: true
 - type: dropdown
   attributes:
-    label: OS
+    label: Platform
     description: What store did you purchase Terraria from
     multiple: false
     options:
