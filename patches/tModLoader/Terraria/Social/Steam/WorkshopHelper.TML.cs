@@ -406,6 +406,7 @@ namespace Terraria.Social.Steam
 						// Calculate the Mod Browser Version
 						System.Version cVersion = new System.Version(metadata["version"].Substring(1));
 
+						/* This doesn't work, or make sense.
 						// Prioritize version information found in the display name, for automation purposes.
 						int findVersion = displayname.LastIndexOf("v") + 1;
 						if (findVersion > 0) {
@@ -414,6 +415,7 @@ namespace Terraria.Social.Steam
 								cVersion = new System.Version(possibleVersion);
 							}
 						}
+						*/
 
 						// Check against installed mods
 						bool update = false;
