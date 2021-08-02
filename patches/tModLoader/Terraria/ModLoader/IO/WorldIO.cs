@@ -156,17 +156,18 @@ namespace Terraria.ModLoader.IO
 						}
 					}
 
-					foreach (GlobalNPC globalNPC in npc.globalNPCs.Select(instancedGlobalNPC => instancedGlobalNPC.instance)) {
-						TagCompound tagCompound = globalNPC.Save(npc);
-						if (tagCompound != null) {
-							list.Add(new TagCompound {
-								["mod"] = globalNPC.Mod.Name,
-								["name"] = globalNPC.Name,
-								["npc"] = NPCID.Search.GetName(npc.type),
-								["data"] = tagCompound
-							});
+					if((npc.townNPC && npc.type != NPCID.TravellingMerchant) || NPCLoader.SavesAndLoads(npc))
+						foreach (GlobalNPC globalNPC in npc.globalNPCs.Select(instancedGlobalNPC => instancedGlobalNPC.instance)) {
+							TagCompound tagCompound = globalNPC.Save(npc);
+							if (tagCompound != null) {
+								list.Add(new TagCompound {
+									["mod"] = globalNPC.Mod.Name,
+									["name"] = globalNPC.Name,
+									["npc"] = NPCID.Search.GetName(npc.type),
+									["data"] = tagCompound
+								});
+							}
 						}
-					}
 				}
 			}
 			
