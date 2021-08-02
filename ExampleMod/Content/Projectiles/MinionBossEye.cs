@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override Color? GetAlpha(Color lightColor) {
-			return Color.White * (1f - Projectile.alpha / 255f);
+			return Color.White * Projectile.Opacity;
 		}
 
 		private void FadeInAndOut() {
@@ -73,6 +73,7 @@ namespace ExampleMod.Content.Projectiles
 			//Accelerate
 			Projectile.velocity *= 1.01f;
 
+			//If the sprite points upwards, this will make it point towards the move direction (for other sprite orientations, change MathHelper.PiOver2)
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 		}
 	}

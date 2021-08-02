@@ -58,7 +58,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 			Item.useTime = 36;
 			Item.useAnimation = 36;
 			Item.useStyle = ItemUseStyleID.Swing; // how the player's arm moves when using the item
-			Item.sellPrice(gold: 30);
+			Item.value = Item.sellPrice(gold: 30);
 			Item.rare = ItemRarityID.Cyan;
 			Item.UseSound = SoundID.Item44; // What sound should play when using the item
 
@@ -116,7 +116,8 @@ namespace ExampleMod.Content.Projectiles.Minions
 
 			// These below are needed for a minion weapon
 			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
-			Projectile.minion = true; // Only determines the damage type								  
+			Projectile.minion = true; // Declares this as a minion (has many effects)
+			Projectile.DamageType = DamageClass.Summon; //Declares the damage type (needed for it to deal damage)
 			Projectile.minionSlots = 1f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
 			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
 		}
