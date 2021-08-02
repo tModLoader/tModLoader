@@ -91,7 +91,7 @@
 		"BuildError": "Se ha producido un error durante la construcción de {0}",
 		"CompileError": "La compilación de {0} falló con {1} error(es) y {2} advertencia(s)",
 		"BuildErrorModNameEmpty": "Los mods deben tener algo en sus nombres",
-		"BuildErrorModNamedTerraria": "Los mods n llamarse Terraria",
+		"BuildErrorModNamedTerraria": "Los mods no pueden llamarse Terraria",
 		"BuildErrorModNameHasPeriod": "El nombre interno de un mod no puede contener puntos",
 		"BuildErrorTwoModsSameName": "Dos mods comparten el nombre interno {0}",
 		"BuildErrorModReference": "Error de lectura de la referencia del mod {0}",
