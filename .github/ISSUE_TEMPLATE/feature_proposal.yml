@@ -1,0 +1,47 @@
+name: Feature Proposal
+description: Propose a new feature for tModLoader
+body:
+- type: markdown
+  attributes:
+    value: |
+      Please keep in mind that the tModLoader software is built by the community.
+      By submitting your proposal you agree that it may become part of tModLoader as a whole, or partially.
+      The development time it takes for your proposal may vary, the TML Team can give no expected time when your proposal will be addressed or implemented.
+      The TML Team reserves their right to take ideas from your proposal but are not required to necessarily accept your proposal. 
+- type: checkboxes
+  attributes:
+    label: Is there an existing suggestion for this?
+    description: Please search to see if an issue already exists for the feature you wish to propose.
+    options:
+    - label: I have searched the existing issues
+      required: true
+- type: dropdown
+  attributes:
+    label: Do you intend to personally contribute/program this feature?
+    description: If you feel confident that you can contribute this feature, feel free to work on it after getting some initial feedback. If you can't, don't worry, there are many people who can help and the suggestion is great by itself.
+    multiple: false
+    options:
+      - Yes
+      - No
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Description
+    description: |
+      Describe your proposal briefly. 
+    placeholder: |
+      A new hook called HookName could allow modders to...
+- type: textarea
+  attributes:
+    label: What does this proposal attempt to solve or improve?
+    description: |
+      Describe how your ideas are beneficial for the tModLoader software. Please list an example use case for the new feature, such as describing an example of how a mod would use the new feature. 
+    placeholder: |
+      It is currently impossible to program a mod to do...
+      This new feature would allow a mod to implement...
+- type: textarea
+  attributes:
+    label: Which (other) solutions should be considered?
+    description: |
+      Are there alternatives to your proposal? Please list them here.
