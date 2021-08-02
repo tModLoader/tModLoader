@@ -27,11 +27,7 @@ namespace Terraria.ModLoader.Default
 			Code = Assembly.GetExecutingAssembly();
 		}
 
-		public override void SetupAssetRepository(IList<IContentSource> sources, AssetReaderCollection assetReaderCollection, IList<Type> delayedLoadTypes)
-		{
-			sources.Clear();
-			sources.Add(new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly(), "Terraria.ModLoader.Default."));
-		}
+		public override IContentSource CreateDefaultContentSource() => new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly(), "Terraria.ModLoader.Default.");
 
 		public override void Load() {			
 			PatronSets = GetContent<PatreonItem>().GroupBy(t => t.InternalSetName).Select(set => set.ToArray()).ToArray();

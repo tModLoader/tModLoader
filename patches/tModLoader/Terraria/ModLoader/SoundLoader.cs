@@ -76,11 +76,13 @@ namespace Terraria.ModLoader
 			//Array.Resize(ref Main.musicFade, nextSound[SoundType.Music]);
 
 			foreach (SoundType type in Enum.GetValues(typeof(SoundType))) {
-				foreach (string sound in sounds[type].Keys) {
-					int slot = GetSoundSlot(type, sound);
+				foreach (string soundName in sounds[type].Keys) {
+					int slot = GetSoundSlot(type, soundName);
 
-					GetSoundArray(type)[slot] = ModContent.GetSound(sound);
-					GetSoundInstanceArray(type)[slot] = GetSoundArray(type)[slot]?.Value.CreateInstance() ?? null;
+					var sound = ModContent.Request<SoundEffect>(soundName, AssetRequestMode.ImmediateLoad);
+
+					GetSoundArray(type)[slot] = sound;
+					GetSoundInstanceArray(type)[slot] = sound.Value.CreateInstance();
 				}
 			}
 		}
