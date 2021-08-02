@@ -430,7 +430,7 @@ namespace Terraria.Social.Steam
 								update = updateIsDowngrade = true;
 						}
 
-						items.Add(new UIModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate.ToString(), update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"], i));
+						items.Add(new UIModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate.ToString(), update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"], (queryPage - 1) * 50 + i));
 					}
 					ReleaseWorkshopQuery();
 				} while (_queryReturnCount == Steamworks.Constants.kNumUGCResultsPerPage); // 50 is based on kNumUGCResultsPerPage constant in ISteamUGC. Can't find constant itself? - Solxan

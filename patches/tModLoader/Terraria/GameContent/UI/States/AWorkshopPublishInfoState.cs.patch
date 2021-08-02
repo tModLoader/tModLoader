@@ -37,6 +37,25 @@
  		}
  
  		public override void OnInitialize() {
+@@ -77,13 +_,12 @@
+ 		}
+ 
+ 		private void SetDefaultOptions() {
+-			_optionPublicity = WorkshopItemPublicSettingId.Public;
+-			GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
+-			for (int i = 0; i < publicityOptions.Length; i++) {
+-				publicityOptions[i].SetCurrentOption(_optionPublicity);
+-			}
+-
+ 			SetTagsFromFoundEntry();
++			GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
++			for (int i = 0; i < publicityOptions.Length; i++) {
++				publicityOptions[i].SetCurrentOption(_optionPublicity);
++			}
++
+ 			UpdateImagePreview();
+ 		}
+ 
 @@ -96,6 +_,11 @@
  			uIElement.SetPadding(0f);
  			uiList.Add(uIElement);
@@ -49,6 +68,18 @@
  			uiList.Add(CreatePreviewImageSelectionPanel("image"));
  			uiList.Add(CreatePublicSettingsRow(0f, 44f, "public"));
  			uiList.Add(CreateTagOptionsPanel(0f, 44, "tags"));
+@@ -163,10 +_,7 @@
+ 				}
+ 			}
+ 
+-			GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
+-			for (int i = 0; i < publicityOptions.Length; i++) {
+-				publicityOptions[i].SetCurrentOption(info.publicity);
+-			}
++			_optionPublicity = info.publicity;
+ 		}
+ 
+ 		protected abstract bool TryFindingTags(out FoundWorkshopEntryInfo info);
 @@ -232,7 +_,7 @@
  		}
  
