@@ -231,6 +231,12 @@ jobs:
       - uses: geekyeggo/delete-artifact@v1
         with:
           name: temporary-src
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./html
+          destination_dir: html_alpha
 
   deploy:
     needs: build
