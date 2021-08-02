@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Terraria.Audio;
 using Terraria.Localization;
-using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
 
@@ -21,17 +21,19 @@ namespace Terraria.ModLoader
 		private readonly Queue<Task> AsyncLoadQueue = new Queue<Task>();
 
 		//Entities
-		internal readonly IDictionary<string, Music> musics = new Dictionary<string, Music>();
+		internal readonly IDictionary<string, IAudioTrack> musics = new Dictionary<string, IAudioTrack>();
 		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
 		internal readonly IList<ILoadable> content = new List<ILoadable>();
 
-		private Music LoadMusic(string path, string extension) {
+		private IAudioTrack LoadMusic(string path, string extension) {
 			path = $"tmod:{Name}/{path}{extension}";
-			
+
+			Stream stream = ModContent.OpenRead(path);
+
 			switch (extension) {
-				case ".wav": return new MusicStreamingWAV(path);
-				case ".mp3": return new MusicStreamingMP3(path);
-				case ".ogg": return new MusicStreamingOGG(path);
+				case ".wav": return new WAVAudioTrack(stream);
+				case ".mp3": return new MP3AudioTrack(stream);
+				case ".ogg": return new OGGAudioTrack(stream);
 			}
 
 			throw new ResourceLoadException($"Unknown music extension {extension}");
@@ -99,6 +101,9 @@ namespace Terraria.ModLoader
 			
 			if (Properties.AutoloadSounds)
 				AutoloadSounds(modSounds);
+
+			if (Properties.AutoloadMusic)
+				MusicLoader.AutoloadMusic(this);
 
 			if (Properties.AutoloadBackgrounds)
 				BackgroundTextureLoader.AutoloadBackgrounds(this);

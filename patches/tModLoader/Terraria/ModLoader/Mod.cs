@@ -8,7 +8,6 @@ using System.Reflection;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using System.Linq;
@@ -280,6 +279,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public void AddMusic(string musicPath) {
+			if (!loading)
+				throw new Exception("AddMusic can only be called from Mod.Load or Mod.Autoload");
+
+			int id = MusicLoader.ReserveMusicID();
+
+			musicPath = musicPath[..^Path.GetExtension(musicPath).Length];
+			MusicLoader.musicByPath[musicPath] = id;
+		}
+
 		/// <summary>
 		/// Shorthand for calling SoundLoader.GetSoundSlot(type, this.Name + '/' + name).
 		/// </summary>
@@ -334,7 +343,7 @@ namespace Terraria.ModLoader
 			if (musicSlot < Main.maxMusic) {
 				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla music ID " + musicSlot);
 			}
-			if (musicSlot >= SoundLoader.SoundCount(SoundType.Music)) {
+			if (musicSlot >= MusicLoader.MusicCount) {
 				throw new ArgumentOutOfRangeException("Music ID " + musicSlot + " does not exist");
 			}
 			if (itemType < ItemID.Count) {
@@ -349,25 +358,25 @@ namespace Terraria.ModLoader
 			if (TileLoader.GetTile(tileType) == null) {
 				throw new ArgumentOutOfRangeException("Tile ID " + tileType + " does not exist");
 			}
-			if (SoundLoader.musicToItem.ContainsKey(musicSlot)) {
+			if (MusicLoader.musicToItem.ContainsKey(musicSlot)) {
 				throw new ArgumentException("Music ID " + musicSlot + " has already been assigned a music box");
 			}
-			if (SoundLoader.itemToMusic.ContainsKey(itemType)) {
+			if (MusicLoader.itemToMusic.ContainsKey(itemType)) {
 				throw new ArgumentException("Item ID " + itemType + " has already been assigned a music");
 			}
-			if (!SoundLoader.tileToMusic.ContainsKey(tileType)) {
-				SoundLoader.tileToMusic[tileType] = new Dictionary<int, int>();
+			if (!MusicLoader.tileToMusic.ContainsKey(tileType)) {
+				MusicLoader.tileToMusic[tileType] = new Dictionary<int, int>();
 			}
-			if (SoundLoader.tileToMusic[tileType].ContainsKey(tileFrameY)) {
+			if (MusicLoader.tileToMusic[tileType].ContainsKey(tileFrameY)) {
 				string message = "Y-frame " + tileFrameY + " of tile type " + tileType + " has already been assigned a music";
 				throw new ArgumentException(message);
 			}
 			if (tileFrameY % 36 != 0) {
 				throw new ArgumentException("Y-frame must be divisible by 36");
 			}
-			SoundLoader.musicToItem[musicSlot] = itemType;
-			SoundLoader.itemToMusic[itemType] = musicSlot;
-			SoundLoader.tileToMusic[tileType][tileFrameY] = musicSlot;
+			MusicLoader.musicToItem[musicSlot] = itemType;
+			MusicLoader.itemToMusic[itemType] = musicSlot;
+			MusicLoader.tileToMusic[tileType][tileFrameY] = musicSlot;
 		}
 
 		/// <summary>
@@ -404,7 +413,7 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		/// <exception cref="MissingResourceException"></exception>
-		public Music GetMusic(string name) {
+		public IAudioTrack GetMusic(string name) {
 			if (!musics.TryGetValue(name, out var music))
 				throw new MissingResourceException(name);
 
