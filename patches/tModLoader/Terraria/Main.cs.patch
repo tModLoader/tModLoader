@@ -73,7 +73,14 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		public static PingMapLayer Pings = new PingMapLayer();
-@@ -516,7 +_,7 @@
+@@ -511,12 +_,12 @@
+ 		public static bool showSplash = true;
+ 		public static bool ignoreErrors = true;
+ 		public static string defaultIP = "";
+-		public static int dayRate = 1;
++		public static double dayRate = 1;
+-		public static int desiredWorldTilesUpdateRate = 1;
++		public static double desiredWorldTilesUpdateRate = 1;
  		public static int maxScreenW = 1920;
  		public static int maxScreenH = 1200;
  		public static int minScreenW = 800;
@@ -165,6 +172,15 @@
  		public static string worldName = "";
  		public static int worldID;
  		public static int background;
+@@ -786,7 +_,7 @@
+ 		public static float cloudAlpha;
+ 		public static float maxRaining;
+ 		public static float oldMaxRaining;
+-		public static int rainTime;
++		public static double rainTime;
+ 		public static bool raining;
+ 		public static bool eclipse;
+ 		public static float eclipseLight;
 @@ -827,7 +_,11 @@
  		public static float invAlpha = 1f;
  		public static float invDir = 1f;
@@ -256,7 +272,7 @@
  		private static bool _settingsButtonIsPushedToSide;
  		private static bool _MouseOversCanClear;
  		private static Vector2 _itemIconCacheScreenPosition;
-@@ -2102,13 +_,13 @@
+@@ -2102,19 +_,19 @@
  		};
  		private static float backgroundLayerTransitionSpeed = 0.05f;
  		public static float atmo;
@@ -276,6 +292,13 @@
  		private float cTop;
  		private bool _isDrawingOrUpdating;
  		public static List<INeedRenderTargetContent> ContentThatNeedsRenderTargets = new List<INeedRenderTargetContent>();
+ 		private static string _oldNetplayStatusText;
+ 		private static TextSnippet[] _netplayStatusTextSnippets;
+-		public static int ladyBugRainBoost = 0;
++		public static double ladyBugRainBoost = 0;
+ 		private static bool _canShowMeteorFall;
+ 
+ 		public static Vector2 ViewPosition => screenPosition + GameViewMatrix.Translation;
 @@ -2266,7 +_,7 @@
  
  		public static int npcShop {
@@ -779,22 +802,31 @@
  		}
  
  		public static void Sundialing() {
-@@ -4754,7 +_,7 @@
+@@ -4754,7 +_,8 @@
  			if (fastForwardTime) {
  				dayRate = 60;
  				desiredWorldTilesUpdateRate = 1;
 -				return;
++				desiredWorldEventsUpdateRate = 60;
 +				goto endVanillaMethod;
  			}
  
  			bool enabled = CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled;
-@@ -4773,6 +_,9 @@
+@@ -4769,10 +_,17 @@
+ 
+ 			dayRate = num;
+ 			desiredWorldTilesUpdateRate = num;
++			desiredWorldEventsUpdateRate = num;
+ 			if (gameMenu) {
  				dayRate = 1;
  				desiredWorldTilesUpdateRate = 1;
++				desiredWorldEventsUpdateRate = 1;
  			}
 +
 +			endVanillaMethod:
-+			SystemLoader.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate);
++			SystemLoader.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate, ref desiredWorldEventsUpdateRate);
++			if (dayRate > 86400)
++				dayRate = 86400;
  		}
  
  		public Main() {
@@ -866,7 +898,7 @@
  		}
  
  		private static void SetTileValue() {
-@@ -4858,6 +_,13 @@
+@@ -4858,8 +_,15 @@
  		}
  
  		protected override void Initialize() {
@@ -878,8 +910,42 @@
 +			}
 +
  			if(dedServ)
- 			netMode = 2;
+-			netMode = 2;
++				netMode = 2;
  
+ 			musicFade[50] = 1f;
+ 			for (int i = 0; i < 10; i++) {
+@@ -4887,8 +_,9 @@
+ 			WorldGen.Hooks.OnWorldLoad += delegate {
+ 				AmbienceServer = new AmbienceServer();
+ 				LocalGolfState = new GolfState();
++
+ 				if(!dedServ)
+-				Lighting.Clear();
++					Lighting.Clear();
+ 			};
+ 
+ 			PlayerInput.OnActionableInput += delegate {
+@@ -4897,13 +_,16 @@
+ 			};
+ 
+ 			SceneMetrics = new SceneMetrics(ActiveWorld);
++
+-			if (!dedServ) {
++			if (dedServ) {
++				Initialize_AlmostEverything();
++				return;
++			}
++
+ 			TimeLogger.Initialize();
+ 			LoadContent_TryEnteringHiDef();
+ 			ClientInitialize();
+ 			base.Initialize();
+-			} else 
+-			Initialize_AlmostEverything();
+ 		}
+ 
+ 		private void Initialize_AlmostEverything() {
 @@ -5058,7 +_,7 @@
  			}
  
@@ -1113,6 +1179,40 @@
  			else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
  				if (player[myPlayer].ZoneHallow) {
  					newMusic = 11;
+@@ -9875,12 +_,12 @@
+ 			float num3 = Math.Max(1f, 1f + 4f * cloudAlpha);
+ 			if (cloudBGActive > 0f) {
+ 				if (cloudBGActive > 1f)
+-					cloudBGActive -= (float)dayRate / num3;
++					cloudBGActive -= (float)desiredWorldEventsUpdateRate / num3;
+ 
+ 				if (cloudBGActive < 1f)
+ 					cloudBGActive = 1f;
+ 
+-				if (cloudBGActive == 1f && rand.Next((int)((float)(num2 * 2 / Math.Max(dayRate, 1)) * num3)) == 0) {
++				if (cloudBGActive == 1f && rand.NextDouble() <= desiredWorldEventsUpdateRate / (num2 * 2 * num3)) {
+ 					cloudBGActive = -rand.Next(num2 * 4, num * 4);
+ 					if (netMode == 2)
+ 						NetMessage.SendData(7);
+@@ -9890,15 +_,15 @@
+ 			}
+ 
+ 			if (cloudBGActive < 0f) {
+-				cloudBGActive += (float)dayRate * num3;
++				cloudBGActive += (float)desiredWorldEventsUpdateRate * num3;
+ 				if (raining)
+-					cloudBGActive += (float)(2 * dayRate) * num3;
++					cloudBGActive += (float)(2 * desiredWorldEventsUpdateRate) * num3;
+ 			}
+ 
+ 			if (cloudBGActive > 0f)
+ 				cloudBGActive = 0f;
+ 
+-			if (cloudBGActive == 0f && rand.Next((int)((float)(num2 * 12 / ((dayRate == 0) ? 1 : dayRate)) / num3)) == 0) {
++			if (cloudBGActive == 0f && rand.NextDouble() <= num3 * desiredWorldEventsUpdateRate / (num2 * 12)) {
+ 				cloudBGActive = rand.Next(num2 * 3, num * 2);
+ 				if (netMode == 2)
+ 					NetMessage.SendData(7);
 @@ -12251,11 +_,16 @@
  		}
  
@@ -1173,6 +1273,24 @@
  				gamePaused = true;
  				return;
  			}
+@@ -12671,10 +_,16 @@
+ 			if (netMode != 1)
+ 				updateCloudLayer();
+ 
++			if (desiredWorldEventsUpdateRate <= 0)
++				goto skipWeatherUpdates;
++
++			timePass += desiredWorldEventsUpdateRate;
+-			for (int i = 0; i < dayRate; i++) {
++			for (int i = 1; i <= (int)timePass; i++) {
+ 				UpdateWeather(gameTime);
+ 			}
++			timePass %= 1.0;
+ 
++			skipWeatherUpdates:
+ 			if ((timeForVisualEffects += 1.0) >= 216000.0)
+ 				timeForVisualEffects = 0.0;
+ 
 @@ -12692,6 +_,7 @@
  				Sandstorm.EmitDust();
  			}
@@ -1322,6 +1440,15 @@
  			chatMonitor.Update();
  			upTimer = (float)sw.Elapsed.TotalMilliseconds;
  			if (upTimerMaxDelay > 0f)
+@@ -13263,7 +_,7 @@
+ 				NPC.crimsonBoss = -1;
+ 		}
+ 
+-		private static bool IsNPCActiveAndOneOfTypes(int npcIndex, params int[] types) {
++		public static bool IsNPCActiveAndOneOfTypes(int npcIndex, params int[] types) {
+ 			if (npcIndex < 0)
+ 				return false;
+ 
 @@ -13404,7 +_,8 @@
  			if (!inputTextEnter || !chatRelease)
  				return;
@@ -3580,6 +3707,17 @@
  			if (!Lighting.NotRetro) {
  				oldDrawWater(bg, Style, Alpha);
  				return;
+@@ -44801,8 +_,8 @@
+ 						float num5 = rand.Next((int)num3, (int)num4);
+ 						num5 *= (1f - maxRaining + 1f) / 2f;
+ 						num5 *= (1f - windSpeedTarget + 1f) / 2f;
+-						num5 *= (float)dayRate;
+-						if (rand.Next((int)num5) == 0)
++						num5 *= (float)Math.Max(desiredWorldEventsUpdateRate, 1);
++						if (rand.NextFloat() <= 1f / num5)
+ 							NewLightning();
+ 					}
+ 					else if ((double)GraveyardVisualIntensity >= 0.9 && rand.Next(7200) == 0) {
 @@ -44954,7 +_,9 @@
  		}
  
@@ -3591,6 +3729,39 @@
  				Assets.Request<Texture2D>(TextureAssets.Background[i].Name);
  				backgroundWidth[i] = TextureAssets.Background[i].Width();
  				backgroundHeight[i] = TextureAssets.Background[i].Height();
+@@ -45167,12 +_,12 @@
+ 			if (!WorldGen.drunkWorldGen && !mapFullscreen && (double)(screenPosition.Y / 16f) <= worldSurface + 10.0) {
+ 				if (BackgroundEnabled) {
+ 					if (cloudBGActive > 0f) {
+-						cloudBGAlpha += 0.0005f * (float)dayRate;
++						cloudBGAlpha += 0.0005f * (float)desiredWorldEventsUpdateRate;
+ 						if (cloudBGAlpha > 1f)
+ 							cloudBGAlpha = 1f;
+ 					}
+ 					else {
+-						cloudBGAlpha -= 0.0005f * (float)dayRate;
++						cloudBGAlpha -= 0.0005f * (float)desiredWorldEventsUpdateRate;
+ 						if (cloudBGAlpha < 0f)
+ 							cloudBGAlpha = 0f;
+ 					}
+@@ -45187,7 +_,7 @@
+ 						bgScale = 1.65f;
+ 						bgParallax = 0.09000000357627869;
+ 						if (base.IsActive && !gamePaused)
+-							cloudBGX[0] += windSpeedCurrent * (float)bgParallax * 9f * (float)dayRate;
++							cloudBGX[0] += windSpeedCurrent * (float)bgParallax * 9f * (float)desiredWorldEventsUpdateRate;
+ 
+ 						if (cloudBGX[0] > (float)backgroundWidth[cloudBG[0]] * bgScale)
+ 							cloudBGX[0] -= (float)backgroundWidth[cloudBG[0]] * bgScale;
+@@ -45217,7 +_,7 @@
+ 						bgScale = 1.85f;
+ 						bgParallax = 0.12;
+ 						if (base.IsActive && !gamePaused)
+-							cloudBGX[1] += windSpeedCurrent * (float)bgParallax * 9f * (float)dayRate;
++							cloudBGX[1] += windSpeedCurrent * (float)bgParallax * 9f * (float)desiredWorldEventsUpdateRate;
+ 
+ 						if (cloudBGX[1] > (float)backgroundWidth[cloudBG[1]] * bgScale)
+ 							cloudBGX[1] -= (float)backgroundWidth[cloudBG[1]] * bgScale;
 @@ -45424,6 +_,10 @@
  							DrawSurfaceBG_Mushroom(num4, num5, num6, bgTexIndexes7);
  							DrawSurfaceBG_DrawChangeOverlay(11);
@@ -3650,6 +3821,20 @@
  			}
  		}
  
+@@ -47157,10 +_,13 @@
+ 			if (gameMenu || netMode == 2)
+ 				bgTopY = -200;
+ 
++			/*
+ 			int num3 = dayRate;
+ 			if (num3 < 1)
+ 				num3 = 1;
++			*/
+ 
++			double num3 = desiredWorldEventsUpdateRate;
+ 			float num4 = 0.0005f * (float)num3;
+ 			if (gameMenu)
+ 				num4 *= 20f;
 @@ -47227,8 +_,8 @@
  			UpdateAtmosphereTransparencyToSkyColor();
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
@@ -3850,6 +4035,15 @@
  			Microsoft.Xna.Framework.Rectangle value3 = dayTime ? new Microsoft.Xna.Framework.Rectangle((int)((double)num3 - (double)TextureAssets.Sun.Width() * 0.5 * (double)num5), (int)((double)num4 - (double)TextureAssets.Sun.Height() * 0.5 * (double)num5 + (double)sunModY), (int)((float)TextureAssets.Sun.Width() * num5), (int)((float)TextureAssets.Sun.Width() * num5)) : new Microsoft.Xna.Framework.Rectangle((int)((double)num6 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8), (int)((double)num7 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8 + (double)moonModY), (int)((float)TextureAssets.Moon[num].Width() * num8), (int)((float)TextureAssets.Moon[num].Width() * num8));
  			value3.Offset((int)sceneArea.SceneLocalScreenPositionOffset.X, (int)sceneArea.SceneLocalScreenPositionOffset.Y);
  			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(mouseX, mouseY, 1, 1);
+@@ -48070,7 +_,7 @@
+ 				Vector2 origin = value.Size() / 2f;
+ 				if (star.falling) {
+ 					star.fadeIn = 0f;
+-					int num7 = star.fallTime;
++					double num7 = star.fallTime;
+ 					float num8 = 30f;
+ 					if ((float)num7 > num8)
+ 						num7 = (int)num8;
 @@ -48096,6 +_,8 @@
  			tileColor.G = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.G * 7) / 10);
  			tileColor.B = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.B * 7) / 10);
@@ -3939,6 +4133,21 @@
  			if (invasionType <= 0)
  				return;
  
+@@ -49055,9 +_,14 @@
+ 			if (invasionX == (double)spawnTileX)
+ 				return;
+ 
++			/*
+ 			float num = dayRate;
+ 			if (num < 1f)
+ 				num = 1f;
++			*/
++			double num = desiredWorldEventsUpdateRate;
++			if (num < 0)
++				num = 0;
+ 
+ 			if (invasionX > (double)spawnTileX) {
+ 				invasionX -= num;
 @@ -49263,6 +_,11 @@
  			}
  		}
@@ -3951,6 +4160,88 @@
  		public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue) {
  			chatMonitor.NewText(newText, R, G, B);
  			SoundEngine.PlaySound(12);
+@@ -49390,7 +_,7 @@
+ 			}
+ 
+ 			if (ladyBugRainBoost > 0)
+-				ladyBugRainBoost -= dayRate;
++				ladyBugRainBoost -= desiredWorldEventsUpdateRate;
+ 
+ 			if (pumpkinMoon) {
+ 				bloodMoon = false;
+@@ -49402,12 +_,12 @@
+ 
+ 			if ((netMode != 1 && !gameMenu) || netMode == 2) {
+ 				if (slimeRainTime > 0.0) {
+-					slimeRainTime -= dayRate;
++					slimeRainTime -= desiredWorldEventsUpdateRate;
+ 					if (slimeRainTime <= 0.0)
+ 						StopSlimeRain();
+ 				}
+ 				else if (slimeRainTime < 0.0) {
+-					slimeRainTime += dayRate;
++					slimeRainTime += desiredWorldEventsUpdateRate;
+ 					if (slimeRainTime > 0.0)
+ 						slimeRainTime = 0.0;
+ 				}
+@@ -49418,31 +_,30 @@
+ 							StopRain();
+ 						}
+ 						else {
+-							rainTime -= dayRate;
++							rainTime -= desiredWorldEventsUpdateRate;
+-							if (dayRate > 0) {
++							if (desiredWorldEventsUpdateRate > 0) {
+-								int num = 86400 / dayRate / 24;
++								double num = 86400 / desiredWorldEventsUpdateRate / 24;
+ 								if (rainTime <= 0)
+ 									StopRain();
+-								else if (rand.Next(num * 2) == 0)
++								else if (rand.NextDouble() <= 1 / (num * 2))
+ 									ChangeRain();
+ 							}
+ 						}
+ 					}
+ 				}
+ 				else if (!slimeRain && !LanternNight.LanternsUp && !LanternNight.NextNightIsLanternNight) {
+-					int num2 = 86400;
+-					num2 /= ((dayRate == 0) ? 1 : dayRate);
+-					if (!CreativePowerManager.Instance.GetPower<CreativePowers.FreezeRainPower>().Enabled && dayRate != 0) {
++					if (!CreativePowerManager.Instance.GetPower<CreativePowers.FreezeRainPower>().Enabled && desiredWorldEventsUpdateRate != 0) {
++						double num2 = 86400 / desiredWorldEventsUpdateRate;
+ 						if (rand.Next((int)((double)num2 * 5.75)) == 0)
+ 							StartRain();
+ 						else if (cloudBGActive >= 1f && rand.Next((int)((double)num2 * 4.25)) == 0)
+ 							StartRain();
+-						else if (ladyBugRainBoost > 0 && rand.Next(num2) == 0)
++						else if (ladyBugRainBoost > 0 && rand.Next((int)num2) == 0)
+ 							StartRain();
+ 					}
+ 
+-					if (!raining && !NPC.BusyWithAnyInvasionOfSorts() && dayRate > 0) {
++					if (!raining && !NPC.BusyWithAnyInvasionOfSorts() && desiredWorldEventsUpdateRate > 0) {
+-						int num3 = (int)(1728000.0 / (double)dayRate);
++						int num3 = (int)(1728000.0 / desiredWorldEventsUpdateRate);
+ 						if (!NPC.downedSlimeKing)
+ 							num3 /= 2;
+ 
+@@ -49522,10 +_,15 @@
+ 						WorldGen.UnspawnTravelNPC();
+ 				}
+ 				else if (!fastForwardTime && dayTime && time < 27000.0) {
++					/*
+ 					int num5 = dayRate;
+ 					if (num5 < 1)
+ 						num5 = 1;
+-
++					*/
++					double num5 = dayRate;
++					if (num5 < 0)
++						num5 = 0;
++					
+ 					int num6 = (int)(27000.0 / (double)num5);
+ 					num6 *= 4;
+ 					if (rand.Next(num6) == 0) {
 @@ -49871,6 +_,11 @@
  		}
  
@@ -3963,6 +4254,15 @@
  			float num = 0f;
  			int num2 = 0;
  			List<BestiaryEntry> entries = BestiaryDB.Entries;
+@@ -49887,7 +_,7 @@
+ 		}
+ 
+ 		private static void UpdateTime_SpawnTownNPCs() {
+-			int worldUpdateRate = WorldGen.GetWorldUpdateRate();
++			double worldUpdateRate = WorldGen.GetWorldUpdateRate();
+ 			if (netMode == 1 || worldUpdateRate <= 0)
+ 				return;
+ 
 @@ -49902,7 +_,7 @@
  					num++;
  			}

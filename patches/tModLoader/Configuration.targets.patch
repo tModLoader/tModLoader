@@ -5,7 +5,7 @@
    <PropertyGroup>
      <TargetFramework>net5.0</TargetFramework>
 +    <!-- Defines the Minimum patch version that is required to play. pre v5.0.5 has bugs in release for windows runtime-->
-+    <RuntimeFrameworkVersion>5.0.5</RuntimeFrameworkVersion>
++    <RuntimeFrameworkVersion>5.0.8</RuntimeFrameworkVersion>
      <Configurations>Debug;Release</Configurations>
      <PlatformTarget>AnyCPU</PlatformTarget>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

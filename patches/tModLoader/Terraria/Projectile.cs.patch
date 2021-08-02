@@ -400,6 +400,15 @@
  			}
  
  			if (true) {
+@@ -10260,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void EmitBlackLightningParticles(NPC targetNPC) {
++		public static void EmitBlackLightningParticles(NPC targetNPC) {
+ 			ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.BlackLightningHit, new ParticleOrchestraSettings {
+ 				PositionInWorld = targetNPC.Center
+ 			});
 @@ -10391,10 +_,15 @@
  				}
  			}
@@ -545,6 +554,24 @@
  			float num = maxRange;
  			int result = -1;
  			for (int i = 0; i < 200; i++) {
+@@ -30291,7 +_,7 @@
+ 			return (value2 + new Vector2(0f, master.gravDir * -21f) + vector).Floor();
+ 		}
+ 
+-		private void Minion_FindTargetInRange(int startAttackRange, ref int attackTarget, bool skipIfCannotHitWithOwnBody, Func<Entity, int, bool> customEliminationCheck = null) {
++		public void Minion_FindTargetInRange(int startAttackRange, ref int attackTarget, bool skipIfCannotHitWithOwnBody, Func<Entity, int, bool> customEliminationCheck = null) {
+ 			float num = startAttackRange;
+ 			float num2 = num;
+ 			float num3 = num;
+@@ -31430,7 +_,7 @@
+ 			Lighting.AddLight(base.Center, new Vector3(0.5f, 0.1f, 0.1f) * scale);
+ 		}
+ 
+-		private bool IsInRangeOfMeOrMyOwner(Entity entity, float maxDistance, out float myDistance, out float playerDistance, out bool closerIsMe) {
++		public bool IsInRangeOfMeOrMyOwner(Entity entity, float maxDistance, out float myDistance, out float playerDistance, out bool closerIsMe) {
+ 			myDistance = Vector2.Distance(entity.Center, base.Center);
+ 			if (myDistance < maxDistance && !CanHitWithOwnBody(entity))
+ 				myDistance = float.PositiveInfinity;
 @@ -32276,6 +_,9 @@
  					if (num3 > (float)num9)
  						ai[0] = 1f;
@@ -571,6 +598,15 @@
  				if (num3 < 24f)
  					Kill();
  
+@@ -32655,7 +_,7 @@
+ 				return;
+ 			}
+ 
+-			ai[0] += Main.dayRate;
++			ai[0] += (float)Main.desiredWorldEventsUpdateRate;
+ 			if (localAI[0] == 0f && Main.netMode != 2) {
+ 				localAI[0] = 1f;
+ 				if ((double)Main.LocalPlayer.position.Y < Main.worldSurface * 16.0)
 @@ -32961,7 +_,7 @@
  						if (tileSafely2.active() && Main.tileSolid[tileSafely2.type] && !Main.tileSolidTop[tileSafely2.type])
  							continue;

@@ -17,6 +17,15 @@
  	{
  		public static class BuilderAccToggleIDs
  		{
+@@ -169,7 +_,7 @@
+ 			public float spawnRatePowerSliderValue;
+ 		}
+ 
+-		private class RandomTeleportationAttemptSettings
++		public class RandomTeleportationAttemptSettings
+ 		{
+ 			public bool mostlySolidFloor;
+ 			public bool avoidLava;
 @@ -186,15 +_,21 @@
  
  			public static void PlayerConnect(int playerIndex) {
@@ -57,7 +66,17 @@
  		public int[] builderAccStatus = new int[12] {
  			1,
  			0,
-@@ -438,7 +_,7 @@
+@@ -430,15 +_,15 @@
+ 		private static SlotId _insideBlizzardSound = SlotId.Invalid;
+ 		public string name = "";
+ 		public int taxMoney;
+-		public int taxTimer;
++		public double taxTimer;
+-		public static int taxRate = 3600;
++		public static double taxRate = 3600;
+ 		public static int crystalLeafDamage = 100;
+ 		public static int crystalLeafKB = 10;
+ 		public float basiliskCharge;
  		public Vector2 lastDeathPostion;
  		public DateTime lastDeathTime;
  		public bool showLastDeath;
@@ -143,6 +162,15 @@
  		public Color hairDyeColor = Color.Transparent;
  		public float hairDyeVar;
  		public int skinDyePacked;
+@@ -1351,7 +_,7 @@
+ 		private int[] unlitTorchY = new int[maxTorchAttacks];
+ 		private static int[] _torchAttackPosX = new int[400];
+ 		private static int[] _torchAttackPosY = new int[400];
+-		public int ladyBugLuckTimeLeft;
++		public double ladyBugLuckTimeLeft;
+ 		public float luck;
+ 		public float luckMinimumCap = -0.7f;
+ 		public float luckMaximumCap = 1f;
 @@ -2034,6 +_,7 @@
  		public void SetTalkNPC(int npcIndex, bool fromNet = false) {
  			talkNPC = npcIndex;
@@ -1623,7 +1651,7 @@
  			int type = currentItem.type;
  			if (currentItem.wingSlot > 0)
  				wings = currentItem.wingSlot;
-@@ -9540,6 +_,8 @@
+@@ -9540,17 +_,23 @@
  				ApplyMusicBox(currentItem);
  
  			UpdateBootVisualEffects(currentItem);
@@ -1631,8 +1659,11 @@
 +			ItemLoader.UpdateVanity(currentItem, this);
  		}
  
- 		private WingStats GetWingStats(int wingID) {
-@@ -9549,8 +_,12 @@
+-		private WingStats GetWingStats(int wingID) {
++		public WingStats GetWingStats(int wingID) {
+ 			if (wingID <= 0 || wingID >= ArmorIDs.Wing.Sets.Stats.Length)
+ 				return default(WingStats);
+ 
  			return ArmorIDs.Wing.Sets.Stats[wingID];
  		}
  
@@ -2051,7 +2082,7 @@
  			coolWhipBuff = false;
  			yoraiz0rEye = 0;
  			yoraiz0rDarkness = false;
-@@ -13145,7 +_,9 @@
+@@ -13145,17 +_,19 @@
  				}
  			}
  
@@ -2061,6 +2092,18 @@
  		}
  
  		private void UpdateLadyBugLuckTime() {
+ 			if (ladyBugLuckTimeLeft > 0) {
+-				ladyBugLuckTimeLeft -= Main.dayRate;
++				ladyBugLuckTimeLeft -= Main.desiredWorldEventsUpdateRate;
+ 				if (ladyBugLuckTimeLeft < 0)
+ 					ladyBugLuckTimeLeft = 0;
+ 			}
+ 			else if (ladyBugLuckTimeLeft < 0) {
+-				ladyBugLuckTimeLeft += Main.dayRate;
++				ladyBugLuckTimeLeft += Main.desiredWorldEventsUpdateRate;
+ 				if (ladyBugLuckTimeLeft > 0)
+ 					ladyBugLuckTimeLeft = 0;
+ 			}
 @@ -13286,6 +_,7 @@
  				lifeRegen -= 100;
  			}
@@ -2159,6 +2202,15 @@
  				for (int i = 0; i < num2; i++) {
  					WorldGen.KillTile_MakeTileDust(point.X, point.Y, tile);
  				}
+@@ -14209,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private int CollideWithNPCs(Rectangle myRect, float Damage, float Knockback, int NPCImmuneTime, int PlayerImmuneTime) {
++		public int CollideWithNPCs(Rectangle myRect, float Damage, float Knockback, int NPCImmuneTime, int PlayerImmuneTime) {
+ 			int num = 0;
+ 			for (int i = 0; i < 200; i++) {
+ 				NPC nPC = Main.npc[i];
 @@ -14293,7 +_,7 @@
  
  					Rectangle rect2 = nPC.getRect();
@@ -2287,6 +2339,15 @@
  			if (Main.tile[num - 1, num2].slope() != 0 || Main.tile[num, num2].slope() != 0 || Main.tile[num + 1, num2].slope() != 0)
  				num3 = -1;
  
+@@ -16475,7 +_,7 @@
+ 			runningOnSand = false;
+ 		}
+ 
+-		private static int GetFloorTileType(int x, int y) {
++		public static int GetFloorTileType(int x, int y) {
+ 			int result = -1;
+ 			if (Main.tile[x - 1, y] == null)
+ 				Main.tile[x - 1, y] = new Tile();
 @@ -16497,7 +_,7 @@
  		}
  
@@ -2596,7 +2657,7 @@
  			luck = GetLadyBugLuck() * 0.2f + torchLuck * 0.2f;
  			luck += (float)(int)luckPotion * 0.1f;
  			if (LanternNight.LanternsUp)
-@@ -19826,6 +_,9 @@
+@@ -19826,9 +_,12 @@
  
  			if (HasGardenGnomeNearby)
  				luck += 0.2f;
@@ -2605,7 +2666,11 @@
 +			PlayerLoader.ModifyLuck(this, ref luck);
  		}
  
- 		private static int GetMouseScrollDelta() => PlayerInput.ScrollWheelDelta / 120;
+-		private static int GetMouseScrollDelta() => PlayerInput.ScrollWheelDelta / 120;
++		public static int GetMouseScrollDelta() => PlayerInput.ScrollWheelDelta / 120;
+ 
+ 		private void UpdatePortableStoolUsage() {
+ 			bool flag = portableStoolInfo.HasAStool && controlUp && !gravControl && !mount.Active && velocity.X == 0f && velocity.Y == 0f && !pulley && grappling[0] == -1;
 @@ -19924,6 +_,8 @@
  
  			if (wingsLogic == 45 && (float)timeSinceLastDashStarted >= 60f)
@@ -2850,6 +2915,15 @@
  		}
  
  		public Color ChatColor() {
+@@ -24337,7 +_,7 @@
+ 				fallStart = (int)position.Y / 16;
+ 		}
+ 
+-		private bool CanAcceptItemIntoInventory(Item item) {
++		public bool CanAcceptItemIntoInventory(Item item) {
+ 			if (preventAllItemPickups)
+ 				return ItemID.Sets.IgnoresEncumberingStone[item.type];
+ 
 @@ -24350,11 +_,22 @@
  				if (!item.active || item.noGrabDelay != 0 || item.playerIndexTheItemIsReservedFor != i || !CanAcceptItemIntoInventory(item))
  					continue;
@@ -3274,6 +3348,15 @@
  						for (int i = 0; i < num2; i++) {
  							WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
  						}
+@@ -27924,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		private Item GetBestPickaxe() {
++		public Item GetBestPickaxe() {
+ 			Item item = null;
+ 			for (int i = 0; i < 50; i++) {
+ 				if (inventory[i].stack > 0 && inventory[i].pick > 0 && (item == null || inventory[i].pick > item.pick))
 @@ -27977,6 +_,7 @@
  				PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches);
  				if (PlayerInput.UsingGamepad && ItemID.Sets.SingleUseInGamepad[inventory[selectedItem].type] && Main.myPlayer == whoAmI && !Main.SmartCursorEnabled)
@@ -3975,7 +4058,7 @@
  
  				if (projToShoot == 76) {
  					projToShoot += Main.rand.Next(3);
-@@ -33963,6 +_,10 @@
+@@ -33963,12 +_,16 @@
  				}
  			}
  			else if (sItem.useStyle == 5 || sItem.useStyle == 13) {
@@ -3986,6 +4069,13 @@
  				itemRotation = 0f;
  				NetMessage.SendData(41, -1, -1, null, whoAmI);
  			}
+ 		}
+ 
+-		private Vector2 GetFarthestSpawnPositionOnLine(Vector2 startPos, float speedX, float speedY) {
++		public Vector2 GetFarthestSpawnPositionOnLine(Vector2 startPos, float speedX, float speedY) {
+ 			Vector2 pointPoisition = Main.ReverseGravitySupport(Main.MouseScreen) + Main.screenPosition;
+ 			LimitPointToPlayerReachableArea(ref pointPoisition);
+ 			int num = 0;
 @@ -33994,7 +_,7 @@
  			return startPos;
  		}
@@ -4030,7 +4120,7 @@
  			if (isPettingAnimal) {
  				int num = miscCounter % 14 / 7;
  				CompositeArmStretchAmount stretch = CompositeArmStretchAmount.ThreeQuarters;
-@@ -34727,10 +_,12 @@
+@@ -34727,14 +_,16 @@
  				SetCompositeArmBack(enabled: true, stretch6, (float)Math.PI * -3f / 5f * (float)direction);
  				FlipItemLocationAndRotationForGravity();
  			}
@@ -4044,6 +4134,20 @@
  				manaRegenDelay = (int)maxRegenDelay;
  		}
  
+-		private Vector2 GetFrontHandPosition(CompositeArmStretchAmount stretch, float rotation) {
++		public Vector2 GetFrontHandPosition(CompositeArmStretchAmount stretch, float rotation) {
+ 			float num = rotation + (float)Math.PI / 2f;
+ 			Vector2 value = new Vector2((float)Math.Cos(num), (float)Math.Sin(num));
+ 			switch (stretch) {
+@@ -34764,7 +_,7 @@
+ 			return MountedCenter + value;
+ 		}
+ 
+-		private Vector2 GetBackHandPosition(CompositeArmStretchAmount stretch, float rotation) {
++		public Vector2 GetBackHandPosition(CompositeArmStretchAmount stretch, float rotation) {
+ 			float num = rotation + (float)Math.PI / 2f;
+ 			Vector2 value = new Vector2((float)Math.Cos(num), (float)Math.Sin(num));
+ 			switch (stretch) {
 @@ -34791,6 +_,10 @@
  		}
  
@@ -4729,6 +4833,15 @@
  				adjTile[n] = false;
  				oldAdjTile[n] = false;
  			}
+@@ -38479,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private Vector2 CheckForGoodTeleportationSpot(ref bool canSpawn, int teleportStartX, int teleportRangeX, int teleportStartY, int teleportRangeY, RandomTeleportationAttemptSettings settings) {
++		public Vector2 CheckForGoodTeleportationSpot(ref bool canSpawn, int teleportStartX, int teleportRangeX, int teleportStartY, int teleportRangeY, RandomTeleportationAttemptSettings settings) {
+ 			int num = 0;
+ 			int num2 = 0;
+ 			int num3 = 0;
 @@ -38564,6 +_,7 @@
  		}
  

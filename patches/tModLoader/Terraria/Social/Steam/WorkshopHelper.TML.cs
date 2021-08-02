@@ -42,6 +42,7 @@ namespace Terraria.Social.Steam
 		internal class ModManager
 		{
 			internal static bool SteamUser { get; set; } = false;
+			internal static bool SteamAvailable { get; set; } = true;
 			internal static AppId_t thisApp = ModLoader.Engine.Steam.TMLAppID_t;
 
 			protected Callback<DownloadItemResult_t> m_DownloadItemResult;
@@ -49,16 +50,21 @@ namespace Terraria.Social.Steam
 			private PublishedFileId_t itemID;
 
 			internal static void Initialize() {
-				if (!ModLoader.Engine.Steam.IsSteamApp) {
-					// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
-					GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0");
+				// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
+				if (ModLoader.Engine.Steam.IsSteamApp) {
+					SteamUser = true;
+					return;
+				}
 
+				if (GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0")) {
 					SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 					SteamGameServer.SetProduct(thisApp.ToString());
 					SteamGameServer.LogOnAnonymous();
 				}
-				else
-					SteamUser = true;
+				else {
+					Logging.tML.Error("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed");
+					SteamAvailable = false;
+				}
 			}
 
 			internal ModManager(PublishedFileId_t itemID) {
@@ -129,15 +135,16 @@ namespace Terraria.Social.Steam
 					throw new ArgumentException("Downloading Workshop Item failed due to unknown reasons");
 				}
 
-				do {
+				while (!IsInstalled()) {
 					SteamUGC.GetItemDownloadInfo(itemID, out ulong dlBytes, out ulong totalBytes);
+
 					if (uiProgress != null)
 						uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
-
-					SteamAPI.RunCallbacks();
 				}
-				while (downloadResult == EResult.k_EResultNone);
 
+				// We don't use the callback do to unreliability, so we manually set the success.
+				downloadResult = EResult.k_EResultOK;
+				
 				SteamUGC.SubscribeItem(itemID);
 			}
 
@@ -293,6 +300,9 @@ namespace Terraria.Social.Steam
 				items = new List<UIModDownloadItem>();
 				LocalMod[] installedMods = ModOrganizer.FindMods();
 
+				if (!ModManager.SteamAvailable)
+					return false;
+
 				do {
 					QueryForPage(++queryPage);
 
@@ -396,6 +406,7 @@ namespace Terraria.Social.Steam
 						// Calculate the Mod Browser Version
 						System.Version cVersion = new System.Version(metadata["version"].Substring(1));
 
+						/* This doesn't work, or make sense.
 						// Prioritize version information found in the display name, for automation purposes.
 						int findVersion = displayname.LastIndexOf("v") + 1;
 						if (findVersion > 0) {
@@ -404,6 +415,7 @@ namespace Terraria.Social.Steam
 								cVersion = new System.Version(possibleVersion);
 							}
 						}
+						*/
 
 						// Check against installed mods
 						bool update = false;

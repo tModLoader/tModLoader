@@ -50,6 +50,15 @@
  				Main.popupText[num2].name = newItem.AffixName();
  				Main.popupText[num2].stack = stack;
  				Main.popupText[num2].velocity.Y = -7f;
+@@ -291,7 +_,7 @@
+ 			return num;
+ 		}
+ 
+-		private static string ValueToName(int coinValue) {
++		public static string ValueToName(int coinValue) {
+ 			int num = 0;
+ 			int num2 = 0;
+ 			int num3 = 0;
 @@ -398,6 +_,9 @@
  				color = new Color((byte)Main.DiscoR, (byte)Main.DiscoG, (byte)Main.DiscoB, Main.mouseTextColor);
  			else if (master)

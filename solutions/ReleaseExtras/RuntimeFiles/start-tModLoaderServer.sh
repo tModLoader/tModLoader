@@ -1,10 +1,9 @@
 #!/bin/sh
-script_path=$(readlink -f "$0")
-script_dir=$(dirname "$script_path")
+cd "$(dirname "$0")"
+script_dir="$(pwd -P)"
 launch_args="-server -config serverconfig.txt"
-cd "$script_dir"
 
-source ./InstallNetFramework.sh
+. ./InstallNetFramework.sh
 
 read -p "Use Steam Server (y)/(n) " steam
 
@@ -24,7 +23,7 @@ fi
 launch_args="$launch_args $*"
 
 if [ -d "$install_dir" ]; then
-  ./dotnet/$version/dotnet tModLoader.dll "$launch_args"
+  ./dotnet/$version/dotnet tModLoader.dll $launch_args
 fi
 if [ ! -d "$install_dir" ]; then
   runLogs="LaunchLogs/runtime.log"
@@ -33,7 +32,7 @@ if [ ! -d "$install_dir" ]; then
   if [ -f "$runLogs" ]; then
     rm "$runLogs" 
   fi
-  exec 3>>$runLogs 2>&3
+  exec 3>>"$runLogs" 2>&3
   echo "Attempting Launch.."
-  dotnet tModLoader.dll "$launch_args"
+  dotnet tModLoader.dll $launch_args
 fi

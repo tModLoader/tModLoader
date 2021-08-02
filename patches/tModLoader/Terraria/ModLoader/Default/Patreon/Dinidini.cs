@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria.DataStructures;
+using Terraria.ID;
 
 namespace Terraria.ModLoader.Default.Patreon
 {
@@ -50,6 +51,12 @@ namespace Terraria.ModLoader.Default.Patreon
 	[AutoloadEquip(EquipType.Wings)]
 	internal class dinidini_Wings : PatreonItem
 	{
+		public override void SetStaticDefaults() {
+			base.SetStaticDefaults();
+
+			ArmorIDs.Wing.Sets.Stats[Mod.GetEquipSlot(GetType().Name, EquipType.Wings)] = new WingStats(150);
+		}
+
 		public override void SetDefaults() {
 			base.SetDefaults();
 
@@ -57,10 +64,6 @@ namespace Terraria.ModLoader.Default.Patreon
 			Item.width = 24;
 			Item.height = 8;
 			Item.accessory = true;
-		}
-
-		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.wingTimeMax = 150;
 		}
 	}
 }

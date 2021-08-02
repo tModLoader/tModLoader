@@ -87,7 +87,7 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,62 @@
+@@ -138,32 +_,63 @@
  			}
  		}
  
@@ -112,6 +112,7 @@
 +				Logging.Init(isServer);
 +			}
 +			catch (Exception e) {
++				Logging.Terraria.Fatal("Main engine crash", e);
 +				DisplayException(e);
 +				return;
 +			}
