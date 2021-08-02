@@ -1,0 +1,101 @@
+name: Bug Report
+description: Report a bug in the TML software
+body:
+- type: markdown
+  attributes:
+    value: |
+      The tModLoader software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the software developers be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
+
+      Please look at the FAQ before submitting an issue. Your issue might be well known with an easy fix. [Basic tModLoader Usage FAQ](https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ) 
+      Please fill out all the necessary details. 
+      Please only report an issue if you are certain there's a problem with the tModLoader software.
+
+      If you are having trouble installing tModLoader, that is not suitable for the bug tracker. That is a support question, not a bug. For support questions, you should go to [Discord](https://tmodloader.net/discord)
+      Please read the pinned messages in the #support channel beforehand.
+- type: checkboxes
+  attributes:
+    label: Is there an existing issue for this?
+    description: Please search to see if an issue already exists for the bug you encountered.
+    options:
+    - label: I have searched the existing issues
+      required: true
+- type: dropdown
+  attributes:
+    label: Version
+    description: What version are you running?
+    multiple: false
+    options:
+      - Latest Official
+      - Latest public-1.4-alpha
+      - Self-Compiled (please specify branch)
+      - Other (please specify elsewhere)
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: OS
+    description: What OS are you on?
+    multiple: false
+    options:
+      - Windows
+      - Mac
+      - Linux
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: OS
+    description: What store did you purchase Terraria from
+    multiple: false
+    options:
+      - Steam
+      - GOG
+  validations:
+    required: true    
+- type: textarea
+  attributes:
+    label: Description
+    description: |
+      Describe your issue(s) here. What is the issue?
+      Please keep this as concise as possible, preferably a single line describing the issue. 
+      For example: "When I press X button in menu Y, the component Z becomes unclickable"
+- type: textarea
+  attributes:
+    label: Log File
+    description: |
+      Please attach the `client.log` file here. You'll find the log files in the logs folder. Look for the `client.log` file.
+      Windows Logs: `C:\Documents\My Games\Terraria\ModLoader\Logs`
+      Linux Logs: `~/.local/share/Terraria/ModLoader/Logs/` or `$XDG_DATA_HOME/Terraria/ModLoader/Logs/`
+      Mac Logs: `~/Library/Application support/Terraria/ModLoader/Logs/`
+      
+      If you are on the public-1.4-alpha, the folder will be `ModLoader/Beta/` instead of `ModLoader/`.
+      
+       Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+- type: textarea
+  attributes:
+    label: Steps to reproduce
+    description: Please describe the steps to reproduce this issue
+    placeholder: |
+      1. [First Step]
+      2. [Second Step]
+      3. [And so on...]
+- type: textarea
+  attributes:
+    label: Expected Behavior
+    description: |
+      What should be happening? If you don't know, leave what you think should happen
+- type: textarea
+  attributes:
+    label: Actual Behavior
+    description: |
+      What is actually happening?
+- type: textarea
+  attributes:
+    label: Reproduction frequency
+    description: |
+      How often are you reliably able to reproduce this issue?
+- type: textarea
+  attributes:
+    label: Additional Information
+    description: |
+       Any additional information, configuration, or data that might be necessary to reproduce the issue.
