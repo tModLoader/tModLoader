@@ -81,8 +81,8 @@ namespace ExampleMod.Content.Projectiles.Minions
 
 		public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			//Minions have to be spawned manually, then have originalDamage assigned to the damage used to spawn them
-			int index = Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer);
-			Main.projectile[index].originalDamage = damage;
+			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
+			projectile.originalDamage = damage;
 
 			//Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
 			return false;
