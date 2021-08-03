@@ -73,6 +73,81 @@ namespace Terraria.ModLoader
 			musicExtensions[musicPath] = extension;
 		}
 
+		/// <summary>
+		/// Allows you to tie a music ID, and item ID, and a tile ID together to form a music box. When music with the given ID is playing, equipped music boxes have a chance to change their ID to the given item type. When an item with the given item type is equipped, it will play the music that has musicSlot as its ID. When a tile with the given type and Y-frame is nearby, if its X-frame is >= 36, it will play the music that has musicSlot as its ID.
+		/// </summary>
+		/// <param name="musicSlot">The music slot.</param>
+		/// <param name="itemType">Type of the item.</param>
+		/// <param name="tileType">Type of the tile.</param>
+		/// <param name="tileFrameY">The tile frame y.</param>
+		/// <exception cref="System.ArgumentOutOfRangeException">
+		/// Cannot assign music box to vanilla music ID " + musicSlot
+		/// or
+		/// Music ID " + musicSlot + " does not exist
+		/// or
+		/// Cannot assign music box to vanilla item ID " + itemType
+		/// or
+		/// Item ID " + itemType + " does not exist
+		/// or
+		/// Cannot assign music box to vanilla tile ID " + tileType
+		/// or
+		/// Tile ID " + tileType + " does not exist
+		/// </exception>
+		/// <exception cref="System.ArgumentException">
+		/// Music ID " + musicSlot + " has already been assigned a music box
+		/// or
+		/// Item ID " + itemType + " has already been assigned a music
+		/// or
+		/// or
+		/// Y-frame must be divisible by 36
+		/// </exception>
+		public void AddMusicBox(Mod mod, int musicSlot, int itemType, int tileType, int tileFrameY = 0) {
+			if (!mod.loading)
+				throw new Exception("AddMusicBox can only be called from Mod.Load or Mod.Autoload");
+
+			if (Main.audioSystem == null)
+				return;
+
+			if (musicSlot < Main.maxMusic)
+				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla music ID " + musicSlot);
+
+			if (musicSlot >= MusicCount)
+				throw new ArgumentOutOfRangeException("Music ID " + musicSlot + " does not exist");
+
+			if (itemType < ItemID.Count)
+				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla item ID " + itemType);
+
+			if (ItemLoader.GetItem(itemType) == null) {
+				throw new ArgumentOutOfRangeException("Item ID " + itemType + " does not exist");
+			}
+
+			if (tileType < TileID.Count)
+				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla tile ID " + tileType);
+
+			if (TileLoader.GetTile(tileType) == null)
+				throw new ArgumentOutOfRangeException("Tile ID " + tileType + " does not exist");
+
+			if (musicToItem.ContainsKey(musicSlot))
+				throw new ArgumentException("Music ID " + musicSlot + " has already been assigned a music box");
+
+			if (itemToMusic.ContainsKey(itemType))
+				throw new ArgumentException("Item ID " + itemType + " has already been assigned a music");
+
+			if (!tileToMusic.ContainsKey(tileType)) tileToMusic[tileType] = new Dictionary<int, int>();
+
+			if (tileToMusic[tileType].ContainsKey(tileFrameY)) {
+				string message = "Y-frame " + tileFrameY + " of tile type " + tileType + " has already been assigned a music";
+				throw new ArgumentException(message);
+			}
+
+			if (tileFrameY % 36 != 0)
+				throw new ArgumentException("Y-frame must be divisible by 36");
+
+			musicToItem[musicSlot] = itemType;
+			itemToMusic[itemType] = musicSlot;
+			tileToMusic[tileType][tileFrameY] = musicSlot;
+		}
+
 		void ILoader.ResizeArrays() {
 			if (Main.audioSystem is not LegacyAudioSystem legacyAudioSystem)
 				return;
