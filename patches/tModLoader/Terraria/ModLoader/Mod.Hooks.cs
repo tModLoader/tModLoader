@@ -1,5 +1,6 @@
 using ReLogic.Content.Sources;
 using System.IO;
+using System.Linq;
 using Terraria.ModLoader.Assets;
 
 namespace Terraria.ModLoader
@@ -58,6 +59,9 @@ namespace Terraria.ModLoader
 		/// May be called multiple times before Unload
 		/// </summary>
 		public virtual void Close() {
+			foreach (string musicPath in MusicLoader.musicByPath.Keys.Where(x => x.StartsWith(Name + "/")))
+				MusicLoader.CloseStream(musicPath);
+
 			fileHandle?.Dispose();
 
 			if (File != null && File.IsOpen)

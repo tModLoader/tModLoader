@@ -39,7 +39,7 @@ namespace Terraria.ModLoader
 		internal static IAudioTrack LoadMusic(string path, string extension) {
 			path = $"tmod:{path}{extension}";
 
-			using Stream stream = ModContent.OpenRead(path);
+			Stream stream = ModContent.OpenRead(path);
 
 			switch (extension) {
 				case ".wav":
@@ -59,6 +59,16 @@ namespace Terraria.ModLoader
 			}
 			
 			return 0;
+		}
+
+		internal static void CloseStream(string musicPath) {
+			if (Main.audioSystem is not LegacyAudioSystem legacyAudioSystem)
+				return;
+
+			int slot = musicByPath[musicPath];
+
+			if (legacyAudioSystem.AudioTracks[slot] is not null)
+				legacyAudioSystem.AudioTracks[slot]?.Dispose();
 		}
 
 		public static void AddMusic(Mod mod, string musicPath) {
