@@ -1,8 +1,6 @@
 ::Author: Solxanich
 :: Created for tModLoader deployment. 
 @echo off
-setlocal EnableDelayedExpansion
-
 cd /D "%~dp0"
 set LOGFILE=LaunchLogs\install.log
 

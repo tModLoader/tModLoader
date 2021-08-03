@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/MonoLaunch.cs
 +++ src/tModLoader/Terraria/MonoLaunch.cs
-@@ -5,15 +_,20 @@
+@@ -5,21 +_,27 @@
  using System.Linq;
  using System.Reflection;
  using System.Runtime.InteropServices;
@@ -20,6 +20,13 @@
 +		/*
  		// FNA is requested by both Terraria and ReLogic.dll
  		var loaded = new Dictionary<string, Assembly>();
+ 
+ 		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
+ 			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
+ 			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
++			
+ 			if (text == null)
+ 				return null;
  
 @@ -36,39 +_,47 @@
  				return assembly;
