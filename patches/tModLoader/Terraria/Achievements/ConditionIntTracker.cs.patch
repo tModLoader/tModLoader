@@ -1,0 +1,20 @@
+--- src/Terraria/Terraria/Achievements/ConditionIntTracker.cs
++++ src/tModLoader/Terraria/Achievements/ConditionIntTracker.cs
+@@ -2,14 +_,14 @@
+ 
+ namespace Terraria.Achievements
+ {
+-	public class ConditionIntTracker : AchievementTracker<int>
++	public partial class ConditionIntTracker : AchievementTracker<int>
+ 	{
+ 		public ConditionIntTracker()
+-			: base(TrackerType.Int) {
++			/*: base(TrackerType.Int)*/ {
+ 		}
+ 
+ 		public ConditionIntTracker(int maxValue)
+-			: base(TrackerType.Int) {
++			/*: base(TrackerType.Int)*/ {
+ 			_maxValue = maxValue;
+ 		}
+ 

@@ -10,5 +10,7 @@ namespace Terraria.Achievements
 		LocalizedText FriendlyName { get; }
 
 		LocalizedText Description { get; }
+
+		AchievementCategory Category { get; }
 	}
 }

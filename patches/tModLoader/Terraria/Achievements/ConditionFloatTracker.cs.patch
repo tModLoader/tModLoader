@@ -1,0 +1,21 @@
+--- src/Terraria/Terraria/Achievements/ConditionFloatTracker.cs
++++ src/tModLoader/Terraria/Achievements/ConditionFloatTracker.cs
+@@ -2,15 +_,15 @@
+ 
+ namespace Terraria.Achievements
+ {
+-	public class ConditionFloatTracker : AchievementTracker<float>
++	public partial class ConditionFloatTracker : AchievementTracker<float>
+ 	{
+ 		public ConditionFloatTracker(float maxValue)
+-			: base(TrackerType.Float) {
++			/*: base(TrackerType.Float)*/ {
+ 			_maxValue = maxValue;
+ 		}
+ 
+ 		public ConditionFloatTracker()
+-			: base(TrackerType.Float) {
++			/*: base(TrackerType.Float)*/ {
+ 		}
+ 
+ 		public override void ReportUpdate() {

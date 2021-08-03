@@ -1,0 +1,13 @@
+--- src/Terraria/Terraria/Achievements/TrackerType.cs
++++ src/tModLoader/Terraria/Achievements/TrackerType.cs
+@@ -1,4 +_,4 @@
+-namespace Terraria.Achievements
++/*namespace Terraria.Achievements
+ {
+ 	public enum TrackerType
+ 	{
+@@ -6,3 +_,4 @@
+ 		Int
+ 	}
+ }
++*/

@@ -1,5 +1,58 @@
 --- src/Terraria/Terraria/GameContent/UI/Elements/UIAchievementListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIAchievementListItem.cs
+@@ -72,9 +_,9 @@
+ 			CalculatedStyle dimensions = _achievementIconBorders.GetDimensions();
+ 			float num2 = dimensions.X + dimensions.Width;
+ 			Vector2 value2 = new Vector2(num2 + 7f, innerDimensions.Y);
+-			Tuple<decimal, decimal> trackerValues = GetTrackerValues();
++			IAchievementTracker trackerValues = GetTrackerValues();
+ 			bool flag = false;
+-			if ((!(trackerValues.Item1 == 0m) || !(trackerValues.Item2 == 0m)) && _locked)
++			if (trackerValues != null && _locked)
+ 				flag = true;
+ 
+ 			float num3 = innerDimensions.Width - dimensions.Width + 1f - (float)(num * 2);
+@@ -111,10 +_,10 @@
+ 			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, text, position, value4, 0f, Vector2.Zero, baseScale2);
+ 			if (flag) {
+ 				Vector2 vector2 = vector + Vector2.UnitX * num3 + Vector2.UnitY;
+-				string text2 = (int)trackerValues.Item1 + "/" + (int)trackerValues.Item2;
++				string text2 = trackerValues.GetProgressText(); // (int)trackerValues.Item1 + "/" + (int)trackerValues.Item2;
+ 				Vector2 baseScale3 = new Vector2(0.75f);
+ 				Vector2 stringSize2 = ChatManager.GetStringSize(FontAssets.ItemStack.Value, text2, baseScale3);
+-				float progress = (float)(trackerValues.Item1 / trackerValues.Item2);
++				float progress = trackerValues.GetProgress(); // (float)(trackerValues.Item1 / trackerValues.Item2);
+ 				float num5 = 80f;
+ 				Color color2 = new Color(100, 255, 100);
+ 				if (!base.IsMouseHovering)
+@@ -166,12 +_,12 @@
+ 
+ 		public Achievement GetAchievement() => _achievement;
+ 
+-		private Tuple<decimal, decimal> GetTrackerValues() {
++		private IAchievementTracker GetTrackerValues() {
+ 			if (!_achievement.HasTracker)
+-				return Tuple.Create(0m, 0m);
++				return null; // Tuple.Create(0m, 0m);
+ 
+ 			IAchievementTracker tracker = _achievement.GetTracker();
+-			if (tracker.GetTrackerType() == TrackerType.Int) {
++			/*if (tracker.GetTrackerType() == TrackerType.Int) {
+ 				AchievementTracker<int> achievementTracker = (AchievementTracker<int>)tracker;
+ 				return Tuple.Create((decimal)achievementTracker.Value, (decimal)achievementTracker.MaxValue);
+ 			}
+@@ -179,9 +_,9 @@
+ 			if (tracker.GetTrackerType() == TrackerType.Float) {
+ 				AchievementTracker<float> achievementTracker2 = (AchievementTracker<float>)tracker;
+ 				return Tuple.Create((decimal)achievementTracker2.Value, (decimal)achievementTracker2.MaxValue);
+-			}
++			}*/
+ 
+-			return Tuple.Create(0m, 0m);
++			return tracker; // Tuple.Create(0m, 0m);
+ 		}
+ 
+ 		private void DrawProgressBar(SpriteBatch spriteBatch, float progress, Vector2 spot, float Width = 169f, Color BackColor = default(Color), Color FillingColor = default(Color), Color BlipColor = default(Color)) {
 @@ -225,7 +_,7 @@
  			if (!_achievement.IsCompleted && uIAchievementListItem._achievement.IsCompleted)
  				return 1;
