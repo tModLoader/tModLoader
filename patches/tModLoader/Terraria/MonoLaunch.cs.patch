@@ -18,7 +18,7 @@
  		// FNA is requested by both Terraria and ReLogic.dll
  		var loaded = new Dictionary<string, Assembly>();
  
-@@ -36,32 +_,41 @@
+@@ -36,32 +_,43 @@
  				return assembly;
  			}
  		};
@@ -27,6 +27,8 @@
 +#if NETCORE
 +		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
 +#endif
++		if (File.Exists("steam_api64.dll"))
++			File.Delete("steam_api64.dll");
 +
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
  		Program.LaunchGame(args, monoArgs: true);
