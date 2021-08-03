@@ -124,7 +124,7 @@
  					_issueReporter = issueReporter;
  					_endAction = endAction;
  					_createItemHook = CallResult<CreateItemResult_t>.Create(CreateItemResult);
-@@ -171,20 +_,33 @@
+@@ -171,20 +_,35 @@
  						ContentFolderPath = contentFolderPath,
  						Tags = tags,
  						PreviewImagePath = previewImagePath,
@@ -155,8 +155,11 @@
  						UpdateItem();
  					}
  					else {
- 						CreateItem();
-+						Console.WriteLine("createditem " + itemTitle);
++						if(!Main.dedServ)
+-						CreateItem();
++							CreateItem();
++						else
++							Console.WriteLine("Publishing a new item is not implemented on the command line.");
  					}
  				}
  
