@@ -39,7 +39,7 @@ namespace Terraria.ModLoader
 		internal static IAudioTrack LoadMusic(string path, string extension) {
 			path = $"tmod:{path}{extension}";
 
-			Stream stream = ModContent.OpenRead(path);
+			using Stream stream = ModContent.OpenRead(path);
 
 			switch (extension) {
 				case ".wav":
@@ -79,6 +79,8 @@ namespace Terraria.ModLoader
 
 			if (string.IsNullOrEmpty(chosenExtension))
 				throw new ArgumentException("Given path did not contain an extension and no files matching the extensions .mp3, .ogg, or .wav were found.");
+
+			musicPath = mod.Name + "/" + musicPath;
 
 			musicPath = musicPath[..^Path.GetExtension(musicPath).Length];
 			musicByPath[musicPath] = id;
