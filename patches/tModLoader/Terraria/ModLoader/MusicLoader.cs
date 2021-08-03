@@ -113,7 +113,7 @@ namespace Terraria.ModLoader
 		/// or
 		/// Y-frame must be divisible by 36
 		/// </exception>
-		public void AddMusicBox(Mod mod, int musicSlot, int itemType, int tileType, int tileFrameY = 0) {
+		public static void AddMusicBox(Mod mod, int musicSlot, int itemType, int tileType, int tileFrameY = 0) {
 			if (!mod.loading)
 				throw new Exception("AddMusicBox can only be called from Mod.Load or Mod.Autoload");
 
