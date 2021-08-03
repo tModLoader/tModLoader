@@ -357,9 +357,9 @@ namespace Terraria.Social.Steam
 							string key, val;
 
 							if (ModManager.SteamUser)
-								SteamUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 100, out val, 100);
+								SteamUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 255, out val, 255);
 							else
-								SteamGameServerUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 100, out val, 100);
+								SteamGameServerUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 255, out val, 255);
 
 							metadata[key] = val;
 						}
