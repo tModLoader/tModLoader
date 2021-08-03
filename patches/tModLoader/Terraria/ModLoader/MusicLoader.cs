@@ -67,10 +67,22 @@ namespace Terraria.ModLoader
 
 			int id = ReserveMusicID();
 
-			string extension = Path.GetExtension(musicPath);
+			List<string> extensions = new List<string> {".mp3", ".ogg", ".wav"};
+			string chosenExtension = "";
+
+			if (Path.HasExtension(musicPath))
+				chosenExtension = Path.GetExtension(musicPath);
+
+			if (string.IsNullOrEmpty(chosenExtension))
+				foreach (string extension in extensions.Where(extension => mod.FileExists(musicPath + extension)))
+					chosenExtension = extension;
+
+			if (string.IsNullOrEmpty(chosenExtension))
+				throw new ArgumentException("Given path did not contain an extension and no files matching the extensions .mp3, .ogg, or .wav were found.");
+
 			musicPath = musicPath[..^Path.GetExtension(musicPath).Length];
 			musicByPath[musicPath] = id;
-			musicExtensions[musicPath] = extension;
+			musicExtensions[musicPath] = chosenExtension;
 		}
 
 		/// <summary>
