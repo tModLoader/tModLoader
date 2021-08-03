@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/UI/Elements/UIAchievementListItem.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/UIAchievementListItem.cs
+@@ -225,7 +_,7 @@
+ 			if (!_achievement.IsCompleted && uIAchievementListItem._achievement.IsCompleted)
+ 				return 1;
+ 
+-			return _achievement.Id.CompareTo(uIAchievementListItem._achievement.Id);
++			return string.Compare(_achievement.Name, uIAchievementListItem._achievement.Name, StringComparison.Ordinal);
+ 		}
+ 	}
+ }

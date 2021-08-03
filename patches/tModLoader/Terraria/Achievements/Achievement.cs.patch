@@ -1,0 +1,62 @@
+--- src/Terraria/Terraria/Achievements/Achievement.cs
++++ src/tModLoader/Terraria/Achievements/Achievement.cs
+@@ -2,27 +_,29 @@
+ using Newtonsoft.Json.Linq;
+ using System.Collections.Generic;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ 
+ namespace Terraria.Achievements
+ {
+ 	[JsonObject(MemberSerialization.OptIn)]
+-	public class Achievement
++	[Autoload(false)]
++	public sealed partial class Achievement : ModAchievement
+ 	{
+ 		public delegate void AchievementCompleted(Achievement achievement);
+ 
+-		private static int _totalAchievements;
+-		public readonly string Name;
+-		public readonly LocalizedText FriendlyName;
+-		public readonly LocalizedText Description;
+-		public readonly int Id = _totalAchievements++;
+-		private AchievementCategory _category;
++		// private static int _totalAchievements; // See Id field for explanation.
++		// public readonly string Name; // We use IModType.Name instead. (See: Achievement.TML.cs)
++		// public readonly LocalizedText FriendlyName; // These are properties in IAchievement.
++		// public readonly LocalizedText Description; // We override them in Achievement.TML.cs to use the proper localization.
++		// public readonly int Id = _totalAchievements++; // No need for IDs, we can compare by Name now!
++		// private AchievementCategory _category;
+ 		private IAchievementTracker _tracker;
+ 		[JsonProperty("Conditions")]
+ 		private Dictionary<string, AchievementCondition> _conditions = new Dictionary<string, AchievementCondition>();
+ 		private int _completedCount;
+ 
+-		public AchievementCategory Category => _category;
++		// public AchievementCategory Category => _category;
+ 
+ 		public bool HasTracker => _tracker != null;
+ 
+@@ -34,8 +_,8 @@
+ 
+ 		public Achievement(string name) {
+ 			Name = name;
+-			FriendlyName = Language.GetText("Achievements." + name + "_Name");
++			// FriendlyName = Language.GetText("Achievements." + name + "_Name");
+-			Description = Language.GetText("Achievements." + name + "_Description");
++			// Description = Language.GetText("Achievements." + name + "_Description");
+ 		}
+ 
+ 		public void ClearProgress() {
+@@ -123,8 +_,8 @@
+ 			return null;
+ 		}
+ 
+-		public void SetCategory(AchievementCategory category) {
+-			_category = category;
++		internal void SetCategory(AchievementCategory category) { // Keep for vanilla compatibility
++			Category = category;
+ 		}
+ 	}
+ }
