@@ -1,0 +1,26 @@
+--- src/Terraria/ReLogic/Content/IAssetRepository.cs
++++ src/tModLoader/ReLogic/Content/IAssetRepository.cs
+@@ -1,6 +_,7 @@
+ using ReLogic.Content.Sources;
+ using System;
+ using System.Collections.Generic;
++using System.IO;
+ 
+ namespace ReLogic.Content
+ {
+@@ -25,8 +_,14 @@
+ 
+ 		void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad);
+ 
+-		Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class;
++		Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class;
++
++		Asset<T> CreateUntracked<T>(Stream stream, string name, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class;
+ 
+ 		void TransferCompletedAssets();
++
++		// Exists to change the default parameter of 'mode' (from Immediate to Async) for modders, but not the base game.
++		internal Asset<T> Request<T>(string assetName) where T : class
++			=> Request<T>(assetName, AssetRequestMode.ImmediateLoad);
+ 	}
+ }

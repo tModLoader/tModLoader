@@ -34,7 +34,7 @@ namespace ExampleMod.Common
 			//The following code draws ExampleItem's texture behind the player's head.
 
 			if (exampleItemTexture == null) {
-				exampleItemTexture = ModContent.GetTexture("ExampleMod/Content/Items/ExampleItem");
+				exampleItemTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Items/ExampleItem");
 			}
 
 			var position = drawInfo.Center + new Vector2(0f, -20f) - Main.screenPosition;

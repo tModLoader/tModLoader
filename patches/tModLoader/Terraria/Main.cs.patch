@@ -25,7 +25,7 @@
  using Terraria.Achievements;
  using Terraria.Audio;
  using Terraria.Chat;
-@@ -69,6 +_,13 @@
+@@ -69,9 +_,17 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
@@ -39,6 +39,10 @@
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
++using Terraria.Social.Steam;
+ using Terraria.UI;
+ using Terraria.UI.Chat;
+ using Terraria.UI.Gamepad;
 @@ -84,9 +_,9 @@
  namespace Terraria
  {
@@ -69,7 +73,14 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		public static PingMapLayer Pings = new PingMapLayer();
-@@ -516,7 +_,7 @@
+@@ -511,12 +_,12 @@
+ 		public static bool showSplash = true;
+ 		public static bool ignoreErrors = true;
+ 		public static string defaultIP = "";
+-		public static int dayRate = 1;
++		public static double dayRate = 1;
+-		public static int desiredWorldTilesUpdateRate = 1;
++		public static double desiredWorldTilesUpdateRate = 1;
  		public static int maxScreenW = 1920;
  		public static int maxScreenH = 1200;
  		public static int minScreenW = 800;
@@ -161,6 +172,15 @@
  		public static string worldName = "";
  		public static int worldID;
  		public static int background;
+@@ -786,7 +_,7 @@
+ 		public static float cloudAlpha;
+ 		public static float maxRaining;
+ 		public static float oldMaxRaining;
+-		public static int rainTime;
++		public static double rainTime;
+ 		public static bool raining;
+ 		public static bool eclipse;
+ 		public static float eclipseLight;
 @@ -827,7 +_,11 @@
  		public static float invAlpha = 1f;
  		public static float invDir = 1f;
@@ -252,7 +272,7 @@
  		private static bool _settingsButtonIsPushedToSide;
  		private static bool _MouseOversCanClear;
  		private static Vector2 _itemIconCacheScreenPosition;
-@@ -2102,13 +_,13 @@
+@@ -2102,19 +_,19 @@
  		};
  		private static float backgroundLayerTransitionSpeed = 0.05f;
  		public static float atmo;
@@ -272,6 +292,13 @@
  		private float cTop;
  		private bool _isDrawingOrUpdating;
  		public static List<INeedRenderTargetContent> ContentThatNeedsRenderTargets = new List<INeedRenderTargetContent>();
+ 		private static string _oldNetplayStatusText;
+ 		private static TextSnippet[] _netplayStatusTextSnippets;
+-		public static int ladyBugRainBoost = 0;
++		public static double ladyBugRainBoost = 0;
+ 		private static bool _canShowMeteorFall;
+ 
+ 		public static Vector2 ViewPosition => screenPosition + GameViewMatrix.Translation;
 @@ -2266,7 +_,7 @@
  
  		public static int npcShop {
@@ -289,15 +316,6 @@
  			return result;
  		}
  
-@@ -2763,6 +_,8 @@
- 				itemAnimationsRegistered.Add(index);
- 
- 			itemAnimations[index] = animation;
-+			if (ItemLoader.IsModItem(index))
-+				ItemLoader.animations.Add(index);
- 		}
- 
- 		public static void InitializeItemAnimations() {
 @@ -2804,11 +_,13 @@
  			}
  		}
@@ -784,22 +802,31 @@
  		}
  
  		public static void Sundialing() {
-@@ -4754,7 +_,7 @@
+@@ -4754,7 +_,8 @@
  			if (fastForwardTime) {
  				dayRate = 60;
  				desiredWorldTilesUpdateRate = 1;
 -				return;
++				desiredWorldEventsUpdateRate = 60;
 +				goto endVanillaMethod;
  			}
  
  			bool enabled = CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled;
-@@ -4773,6 +_,9 @@
+@@ -4769,10 +_,17 @@
+ 
+ 			dayRate = num;
+ 			desiredWorldTilesUpdateRate = num;
++			desiredWorldEventsUpdateRate = num;
+ 			if (gameMenu) {
  				dayRate = 1;
  				desiredWorldTilesUpdateRate = 1;
++				desiredWorldEventsUpdateRate = 1;
  			}
 +
 +			endVanillaMethod:
-+			SystemLoader.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate);
++			SystemLoader.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate, ref desiredWorldEventsUpdateRate);
++			if (dayRate > 86400)
++				dayRate = 86400;
  		}
  
  		public Main() {
@@ -808,7 +835,7 @@
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
-+			HiDefGraphicsIssues.Init();
++			GraphicsChangeTracker.Init();
 +		}
 +
 +		internal void PostSocialInitialize() {
@@ -855,6 +882,14 @@
  		}
  
  		private void Main_Exiting(object sender, EventArgs e) {
+@@ -4793,6 +_,7 @@
+ 
+ 		private static void TryDisposingEverything() {
+ 			ChromaInitializer.DisableAllDeviceGroups();
++			WorkshopHelper.OnGameExitCleanup();
+ 			if (Assets != null) {
+ 				Assets.TransferCompletedAssets();
+ 				Assets.Dispose();
 @@ -4820,6 +_,7 @@
  
  			_cachedTitle = Lang.GetRandomGameTitle();
@@ -863,7 +898,7 @@
  		}
  
  		private static void SetTileValue() {
-@@ -4858,6 +_,13 @@
+@@ -4858,8 +_,15 @@
  		}
  
  		protected override void Initialize() {
@@ -875,8 +910,42 @@
 +			}
 +
  			if(dedServ)
- 			netMode = 2;
+-			netMode = 2;
++				netMode = 2;
  
+ 			musicFade[50] = 1f;
+ 			for (int i = 0; i < 10; i++) {
+@@ -4887,8 +_,9 @@
+ 			WorldGen.Hooks.OnWorldLoad += delegate {
+ 				AmbienceServer = new AmbienceServer();
+ 				LocalGolfState = new GolfState();
++
+ 				if(!dedServ)
+-				Lighting.Clear();
++					Lighting.Clear();
+ 			};
+ 
+ 			PlayerInput.OnActionableInput += delegate {
+@@ -4897,13 +_,16 @@
+ 			};
+ 
+ 			SceneMetrics = new SceneMetrics(ActiveWorld);
++
+-			if (!dedServ) {
++			if (dedServ) {
++				Initialize_AlmostEverything();
++				return;
++			}
++
+ 			TimeLogger.Initialize();
+ 			LoadContent_TryEnteringHiDef();
+ 			ClientInitialize();
+ 			base.Initialize();
+-			} else 
+-			Initialize_AlmostEverything();
+ 		}
+ 
+ 		private void Initialize_AlmostEverything() {
 @@ -5058,7 +_,7 @@
  			}
  
@@ -886,6 +955,25 @@
  			}
  
  			for (int n = 0; n < 1001; n++) {
+@@ -8303,11 +_,17 @@
+ 		public static void LoadTestLog(string logname) {
+ 		}
+ 
+-		private void OnceFailedLoadingAnAsset(string assetPath, Exception e) {
++		internal static void OnceFailedLoadingAnAsset(string assetPath, Exception e) {
++			Logging.Terraria.Error($"Failed to load asset: \"{assetPath}\"", e);
+ 			FancyErrorPrinter.ShowFailedToLoadAssetError(e, assetPath);
+ 		}
+ 
+ 		protected override void LoadContent() {
++			//Added by TML.
++			Asset<Texture2D>.DefaultValue = new Texture2D(base.GraphicsDevice, 1, 1) {
++				Name = "Asynchronously-loaded Asset Dummy Texture (do not dispose or modify!)"
++			};
++
+ 			SoundEngine.Initialize();
+ 			if (base.Services.Get<IAssetRepository>() == null)
+ 				AssetInitializer.CreateAssetServices(base.Services);
 @@ -8331,7 +_,7 @@
  				audioSystem = new DisabledAudioSystem();
  
@@ -1091,6 +1179,40 @@
  			else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
  				if (player[myPlayer].ZoneHallow) {
  					newMusic = 11;
+@@ -9875,12 +_,12 @@
+ 			float num3 = Math.Max(1f, 1f + 4f * cloudAlpha);
+ 			if (cloudBGActive > 0f) {
+ 				if (cloudBGActive > 1f)
+-					cloudBGActive -= (float)dayRate / num3;
++					cloudBGActive -= (float)desiredWorldEventsUpdateRate / num3;
+ 
+ 				if (cloudBGActive < 1f)
+ 					cloudBGActive = 1f;
+ 
+-				if (cloudBGActive == 1f && rand.Next((int)((float)(num2 * 2 / Math.Max(dayRate, 1)) * num3)) == 0) {
++				if (cloudBGActive == 1f && rand.NextDouble() <= desiredWorldEventsUpdateRate / (num2 * 2 * num3)) {
+ 					cloudBGActive = -rand.Next(num2 * 4, num * 4);
+ 					if (netMode == 2)
+ 						NetMessage.SendData(7);
+@@ -9890,15 +_,15 @@
+ 			}
+ 
+ 			if (cloudBGActive < 0f) {
+-				cloudBGActive += (float)dayRate * num3;
++				cloudBGActive += (float)desiredWorldEventsUpdateRate * num3;
+ 				if (raining)
+-					cloudBGActive += (float)(2 * dayRate) * num3;
++					cloudBGActive += (float)(2 * desiredWorldEventsUpdateRate) * num3;
+ 			}
+ 
+ 			if (cloudBGActive > 0f)
+ 				cloudBGActive = 0f;
+ 
+-			if (cloudBGActive == 0f && rand.Next((int)((float)(num2 * 12 / ((dayRate == 0) ? 1 : dayRate)) / num3)) == 0) {
++			if (cloudBGActive == 0f && rand.NextDouble() <= num3 * desiredWorldEventsUpdateRate / (num2 * 12)) {
+ 				cloudBGActive = rand.Next(num2 * 3, num * 2);
+ 				if (netMode == 2)
+ 					NetMessage.SendData(7);
 @@ -12251,11 +_,16 @@
  		}
  
@@ -1151,6 +1273,24 @@
  				gamePaused = true;
  				return;
  			}
+@@ -12671,10 +_,16 @@
+ 			if (netMode != 1)
+ 				updateCloudLayer();
+ 
++			if (desiredWorldEventsUpdateRate <= 0)
++				goto skipWeatherUpdates;
++
++			timePass += desiredWorldEventsUpdateRate;
+-			for (int i = 0; i < dayRate; i++) {
++			for (int i = 1; i <= (int)timePass; i++) {
+ 				UpdateWeather(gameTime);
+ 			}
++			timePass %= 1.0;
+ 
++			skipWeatherUpdates:
+ 			if ((timeForVisualEffects += 1.0) >= 216000.0)
+ 				timeForVisualEffects = 0.0;
+ 
 @@ -12692,6 +_,7 @@
  				Sandstorm.EmitDust();
  			}
@@ -1300,6 +1440,15 @@
  			chatMonitor.Update();
  			upTimer = (float)sw.Elapsed.TotalMilliseconds;
  			if (upTimerMaxDelay > 0f)
+@@ -13263,7 +_,7 @@
+ 				NPC.crimsonBoss = -1;
+ 		}
+ 
+-		private static bool IsNPCActiveAndOneOfTypes(int npcIndex, params int[] types) {
++		public static bool IsNPCActiveAndOneOfTypes(int npcIndex, params int[] types) {
+ 			if (npcIndex < 0)
+ 				return false;
+ 
 @@ -13404,7 +_,8 @@
  			if (!inputTextEnter || !chatRelease)
  				return;
@@ -2185,11 +2334,11 @@
  
 +			NPCLoader.DrawEffects(rCurrentNPC, ref npcColor); //TODO: Effects were previously done before drawing, here, but 1.4 moved them to updates in UpdateNPC_BuffApplyVFX(). Should this hook be moved and renamed? --Mirsario
 +			
-+			if (NPCLoader.PreDraw(rCurrentNPC, spriteBatch, npcColor)) {
++			if (NPCLoader.PreDraw(rCurrentNPC, spriteBatch, screenPos, npcColor)) {
 +				DrawNPCDirect_Inner(spriteBatch, rCurrentNPC, behindTiles, screenPos, ref npcColor);
 +			}
 +
-+			NPCLoader.PostDraw(rCurrentNPC, spriteBatch, npcColor);
++			NPCLoader.PostDraw(rCurrentNPC, spriteBatch, screenPos, npcColor);
 +		}
 +
 +		private void DrawNPCDirect_Inner(SpriteBatch mySpriteBatch, NPC rCurrentNPC, bool behindTiles, Vector2 screenPos, ref Color npcColor) {
@@ -2324,7 +2473,7 @@
  
  					EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num363 - 1), alpha12, projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
 +					ModProjectile modProjectile = projectile.ModProjectile;
-+					if (modProjectile != null && ModContent.TryGetTexture(modProjectile.GlowTexture, out var glowTexture))
++					if (modProjectile != null && ModContent.RequestIfExists<Texture2D>(modProjectile.GlowTexture, out var glowTexture, AssetRequestMode.ImmediateLoad)) // todo: preload this!
 +						EntitySpriteDraw(glowTexture.Value, new Vector2(projectile.position.X - screenPosition.X + num138 + num137, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num363 - 1), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
  					if (projectile.type == 335)
  						EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num363 - 1), new Microsoft.Xna.Framework.Color(100, 100, 100, 0), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
@@ -2343,7 +2492,7 @@
  						EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height()), new Microsoft.Xna.Framework.Color(255, 255, 0, 0), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
  
 +					ModProjectile modProjectile = projectile.ModProjectile;
-+					if (modProjectile != null && ModContent.TryGetTexture(modProjectile.GlowTexture, out var glowTexture))
++					if (modProjectile != null && ModContent.RequestIfExists<Texture2D>(modProjectile.GlowTexture, out var glowTexture)) // todo: preload this!
 +						EntitySpriteDraw(glowTexture.Value, new Vector2(projectile.position.X - screenPosition.X + num138 + num137, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height()), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
 +
  					if (projectile.type == 312) {
@@ -2405,18 +2554,6 @@
  			int num2 = item.glowMask;
  			if (!gamePaused && base.IsActive && (item.IsACoin || item.type == 58 || item.type == 109) && color.R > 60 && (float)rand.Next(500) - (Math.Abs(item.velocity.X) + Math.Abs(item.velocity.Y)) * 10f < (float)((int)color.R / 50)) {
  				int type = 43;
-@@ -27903,6 +_,11 @@
- 			if (item.type == 3779)
- 				num2 = -1;
- 
-+			if (ItemLoader.animations.Contains(item.type)) {
-+				ItemLoader.DrawAnimatedItem(item, whoami, color, currentColor, num, scale);
-+				goto PostDraw;
-+			}
-+
- 			spriteBatch.Draw(texture, vector2, frame, currentColor, num, vector, scale, SpriteEffects.None, 0f);
- 			if (item.color != Microsoft.Xna.Framework.Color.Transparent)
- 				spriteBatch.Draw(texture, vector2, frame, item.GetColor(color), num, vector, scale, SpriteEffects.None, 0f);
 @@ -27910,11 +_,15 @@
  			if (num2 != -1)
  				spriteBatch.Draw(TextureAssets.GlowMask[num2].Value, vector2, frame, new Microsoft.Xna.Framework.Color(250, 250, 250, item.alpha), num, vector, scale, SpriteEffects.None, 0f);
@@ -2976,7 +3113,7 @@
 -					if (num27 == 8)
 -						num27 = 7;
  
-+					Texture2D icon = ModContent.GetTexture(info.Texture).Value;
++					Texture2D icon = ModContent.Request<Texture2D>(info.Texture).Value;
  					Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.White;
  					bool flag14 = false;
  					if (playerInventory) {
@@ -3333,7 +3470,7 @@
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, origin, num104, SpriteEffects.None, 0f);
  					else
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, new Vector2(0f, origin.Y), num104, SpriteEffects.None, 0f);
-@@ -39094,10 +_,51 @@
+@@ -39094,10 +_,47 @@
  					if (num107 == 3)
  						num109 = 2;
  
@@ -3377,11 +3514,7 @@
 +						spriteBatch.DrawString(font, patreonShortURL, new Vector2(origin2.X + num108 + 10f, screenHeight - origin2.Y + num109 - 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 +						if (num107 == 4 && mouseLeftRelease && mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)origin2.X + 10, screenHeight - (int)urlSize.Y - 2, (int)urlSize.X, (int)origin2.Y).Contains(new Microsoft.Xna.Framework.Point(mouseX, mouseY)) && hasFocus) {
 +							SoundEngine.PlaySound(SoundID.MenuOpen);
-+							var ps = new ProcessStartInfo("https://www.patreon.com/tModLoader") {
-+								UseShellExecute = true,
-+								Verb = "open"
-+							};
-+							Process.Start(ps);
++							Utils.OpenToURL("https://www.patreon.com/tModLoader");
 +						}
 +					}
  				}
@@ -3448,12 +3581,18 @@
  			if (WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenHeight / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
  				num8 = (player[myPlayer].ZoneCorrupt ? 19 : (player[myPlayer].ZoneCrimson ? 21 : ((!player[myPlayer].ZoneHallow) ? 18 : 20)));
  			}
-@@ -39737,6 +_,10 @@
+@@ -39737,6 +_,16 @@
  			if (SceneMetrics.MushroomTileCount > SceneMetrics.MushroomTileMax)
  				num8 = 2;
  
 +			if (priority >= SceneEffectPriority.BiomeHigh) {
 +				num8 = modBG;
++			}
++
++			if (GlobalBackgroundStyleLoader.loaded) {
++				foreach (var hook in GlobalBackgroundStyleLoader.HookChooseUndergroundBackgroundStyle) {
++					hook(ref num8);
++				}
 +			}
 +
  			if (num8 != undergroundBackground) {
@@ -3568,6 +3707,17 @@
  			if (!Lighting.NotRetro) {
  				oldDrawWater(bg, Style, Alpha);
  				return;
+@@ -44801,8 +_,8 @@
+ 						float num5 = rand.Next((int)num3, (int)num4);
+ 						num5 *= (1f - maxRaining + 1f) / 2f;
+ 						num5 *= (1f - windSpeedTarget + 1f) / 2f;
+-						num5 *= (float)dayRate;
+-						if (rand.Next((int)num5) == 0)
++						num5 *= (float)Math.Max(desiredWorldEventsUpdateRate, 1);
++						if (rand.NextFloat() <= 1f / num5)
+ 							NewLightning();
+ 					}
+ 					else if ((double)GraveyardVisualIntensity >= 0.9 && rand.Next(7200) == 0) {
 @@ -44954,7 +_,9 @@
  		}
  
@@ -3579,6 +3729,39 @@
  				Assets.Request<Texture2D>(TextureAssets.Background[i].Name);
  				backgroundWidth[i] = TextureAssets.Background[i].Width();
  				backgroundHeight[i] = TextureAssets.Background[i].Height();
+@@ -45167,12 +_,12 @@
+ 			if (!WorldGen.drunkWorldGen && !mapFullscreen && (double)(screenPosition.Y / 16f) <= worldSurface + 10.0) {
+ 				if (BackgroundEnabled) {
+ 					if (cloudBGActive > 0f) {
+-						cloudBGAlpha += 0.0005f * (float)dayRate;
++						cloudBGAlpha += 0.0005f * (float)desiredWorldEventsUpdateRate;
+ 						if (cloudBGAlpha > 1f)
+ 							cloudBGAlpha = 1f;
+ 					}
+ 					else {
+-						cloudBGAlpha -= 0.0005f * (float)dayRate;
++						cloudBGAlpha -= 0.0005f * (float)desiredWorldEventsUpdateRate;
+ 						if (cloudBGAlpha < 0f)
+ 							cloudBGAlpha = 0f;
+ 					}
+@@ -45187,7 +_,7 @@
+ 						bgScale = 1.65f;
+ 						bgParallax = 0.09000000357627869;
+ 						if (base.IsActive && !gamePaused)
+-							cloudBGX[0] += windSpeedCurrent * (float)bgParallax * 9f * (float)dayRate;
++							cloudBGX[0] += windSpeedCurrent * (float)bgParallax * 9f * (float)desiredWorldEventsUpdateRate;
+ 
+ 						if (cloudBGX[0] > (float)backgroundWidth[cloudBG[0]] * bgScale)
+ 							cloudBGX[0] -= (float)backgroundWidth[cloudBG[0]] * bgScale;
+@@ -45217,7 +_,7 @@
+ 						bgScale = 1.85f;
+ 						bgParallax = 0.12;
+ 						if (base.IsActive && !gamePaused)
+-							cloudBGX[1] += windSpeedCurrent * (float)bgParallax * 9f * (float)dayRate;
++							cloudBGX[1] += windSpeedCurrent * (float)bgParallax * 9f * (float)desiredWorldEventsUpdateRate;
+ 
+ 						if (cloudBGX[1] > (float)backgroundWidth[cloudBG[1]] * bgScale)
+ 							cloudBGX[1] -= (float)backgroundWidth[cloudBG[1]] * bgScale;
 @@ -45424,6 +_,10 @@
  							DrawSurfaceBG_Mushroom(num4, num5, num6, bgTexIndexes7);
  							DrawSurfaceBG_DrawChangeOverlay(11);
@@ -3624,18 +3807,34 @@
  			if (!_isDrawingOrUpdating && IsGraphicsDeviceAvailable) {
  				_isDrawingOrUpdating = true;
  				EnsureRenderTargetContent();
-@@ -46923,6 +_,11 @@
+@@ -46921,7 +_,13 @@
+ 					Main.OnPostDraw(gameTime);
+ 
  				Assets.TransferCompletedAssets();
++				ModContent.TransferCompletedAssets();
  				_isDrawingOrUpdating = false;
- 			}
++			}
 +			}
 +			catch (Exception e) {
 +				Logging.Terraria.Error(e);
 +				throw;
-+			}
+ 			}
  		}
  
- 		private void DoDraw(GameTime gameTime) {
+@@ -47157,10 +_,13 @@
+ 			if (gameMenu || netMode == 2)
+ 				bgTopY = -200;
+ 
++			/*
+ 			int num3 = dayRate;
+ 			if (num3 < 1)
+ 				num3 = 1;
++			*/
+ 
++			double num3 = desiredWorldEventsUpdateRate;
+ 			float num4 = 0.0005f * (float)num3;
+ 			if (gameMenu)
+ 				num4 *= 20f;
 @@ -47227,8 +_,8 @@
  			UpdateAtmosphereTransparencyToSkyColor();
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
@@ -3836,6 +4035,15 @@
  			Microsoft.Xna.Framework.Rectangle value3 = dayTime ? new Microsoft.Xna.Framework.Rectangle((int)((double)num3 - (double)TextureAssets.Sun.Width() * 0.5 * (double)num5), (int)((double)num4 - (double)TextureAssets.Sun.Height() * 0.5 * (double)num5 + (double)sunModY), (int)((float)TextureAssets.Sun.Width() * num5), (int)((float)TextureAssets.Sun.Width() * num5)) : new Microsoft.Xna.Framework.Rectangle((int)((double)num6 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8), (int)((double)num7 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8 + (double)moonModY), (int)((float)TextureAssets.Moon[num].Width() * num8), (int)((float)TextureAssets.Moon[num].Width() * num8));
  			value3.Offset((int)sceneArea.SceneLocalScreenPositionOffset.X, (int)sceneArea.SceneLocalScreenPositionOffset.Y);
  			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(mouseX, mouseY, 1, 1);
+@@ -48070,7 +_,7 @@
+ 				Vector2 origin = value.Size() / 2f;
+ 				if (star.falling) {
+ 					star.fadeIn = 0f;
+-					int num7 = star.fallTime;
++					double num7 = star.fallTime;
+ 					float num8 = 30f;
+ 					if ((float)num7 > num8)
+ 						num7 = (int)num8;
 @@ -48096,6 +_,8 @@
  			tileColor.G = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.G * 7) / 10);
  			tileColor.B = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.B * 7) / 10);
@@ -3898,13 +4106,18 @@
  			else {
  				num = 0;
  				if (num2 >= treeX[0]) {
-@@ -48966,7 +_,6 @@
+@@ -48964,6 +_,12 @@
+ 						num = 11;
+ 					else if (WorldGen.treeBG1 != WorldGen.treeBG4)
  						num = 12;
++				} // Patch context
++			}
++
++			if (GlobalBackgroundStyleLoader.loaded) {
++				foreach (var hook in GlobalBackgroundStyleLoader.HookChooseSurfaceBackgroundStyle) {
++					hook(ref num);
  				}
  			}
--
- 			return num;
- 		}
  
 @@ -49023,6 +_,13 @@
  		}
@@ -3920,6 +4133,21 @@
  			if (invasionType <= 0)
  				return;
  
+@@ -49055,9 +_,14 @@
+ 			if (invasionX == (double)spawnTileX)
+ 				return;
+ 
++			/*
+ 			float num = dayRate;
+ 			if (num < 1f)
+ 				num = 1f;
++			*/
++			double num = desiredWorldEventsUpdateRate;
++			if (num < 0)
++				num = 0;
+ 
+ 			if (invasionX > (double)spawnTileX) {
+ 				invasionX -= num;
 @@ -49263,6 +_,11 @@
  			}
  		}
@@ -3932,6 +4160,88 @@
  		public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue) {
  			chatMonitor.NewText(newText, R, G, B);
  			SoundEngine.PlaySound(12);
+@@ -49390,7 +_,7 @@
+ 			}
+ 
+ 			if (ladyBugRainBoost > 0)
+-				ladyBugRainBoost -= dayRate;
++				ladyBugRainBoost -= desiredWorldEventsUpdateRate;
+ 
+ 			if (pumpkinMoon) {
+ 				bloodMoon = false;
+@@ -49402,12 +_,12 @@
+ 
+ 			if ((netMode != 1 && !gameMenu) || netMode == 2) {
+ 				if (slimeRainTime > 0.0) {
+-					slimeRainTime -= dayRate;
++					slimeRainTime -= desiredWorldEventsUpdateRate;
+ 					if (slimeRainTime <= 0.0)
+ 						StopSlimeRain();
+ 				}
+ 				else if (slimeRainTime < 0.0) {
+-					slimeRainTime += dayRate;
++					slimeRainTime += desiredWorldEventsUpdateRate;
+ 					if (slimeRainTime > 0.0)
+ 						slimeRainTime = 0.0;
+ 				}
+@@ -49418,31 +_,30 @@
+ 							StopRain();
+ 						}
+ 						else {
+-							rainTime -= dayRate;
++							rainTime -= desiredWorldEventsUpdateRate;
+-							if (dayRate > 0) {
++							if (desiredWorldEventsUpdateRate > 0) {
+-								int num = 86400 / dayRate / 24;
++								double num = 86400 / desiredWorldEventsUpdateRate / 24;
+ 								if (rainTime <= 0)
+ 									StopRain();
+-								else if (rand.Next(num * 2) == 0)
++								else if (rand.NextDouble() <= 1 / (num * 2))
+ 									ChangeRain();
+ 							}
+ 						}
+ 					}
+ 				}
+ 				else if (!slimeRain && !LanternNight.LanternsUp && !LanternNight.NextNightIsLanternNight) {
+-					int num2 = 86400;
+-					num2 /= ((dayRate == 0) ? 1 : dayRate);
+-					if (!CreativePowerManager.Instance.GetPower<CreativePowers.FreezeRainPower>().Enabled && dayRate != 0) {
++					if (!CreativePowerManager.Instance.GetPower<CreativePowers.FreezeRainPower>().Enabled && desiredWorldEventsUpdateRate != 0) {
++						double num2 = 86400 / desiredWorldEventsUpdateRate;
+ 						if (rand.Next((int)((double)num2 * 5.75)) == 0)
+ 							StartRain();
+ 						else if (cloudBGActive >= 1f && rand.Next((int)((double)num2 * 4.25)) == 0)
+ 							StartRain();
+-						else if (ladyBugRainBoost > 0 && rand.Next(num2) == 0)
++						else if (ladyBugRainBoost > 0 && rand.Next((int)num2) == 0)
+ 							StartRain();
+ 					}
+ 
+-					if (!raining && !NPC.BusyWithAnyInvasionOfSorts() && dayRate > 0) {
++					if (!raining && !NPC.BusyWithAnyInvasionOfSorts() && desiredWorldEventsUpdateRate > 0) {
+-						int num3 = (int)(1728000.0 / (double)dayRate);
++						int num3 = (int)(1728000.0 / desiredWorldEventsUpdateRate);
+ 						if (!NPC.downedSlimeKing)
+ 							num3 /= 2;
+ 
+@@ -49522,10 +_,15 @@
+ 						WorldGen.UnspawnTravelNPC();
+ 				}
+ 				else if (!fastForwardTime && dayTime && time < 27000.0) {
++					/*
+ 					int num5 = dayRate;
+ 					if (num5 < 1)
+ 						num5 = 1;
+-
++					*/
++					double num5 = dayRate;
++					if (num5 < 0)
++						num5 = 0;
++					
+ 					int num6 = (int)(27000.0 / (double)num5);
+ 					num6 *= 4;
+ 					if (rand.Next(num6) == 0) {
 @@ -49871,6 +_,11 @@
  		}
  
@@ -3944,6 +4254,15 @@
  			float num = 0f;
  			int num2 = 0;
  			List<BestiaryEntry> entries = BestiaryDB.Entries;
+@@ -49887,7 +_,7 @@
+ 		}
+ 
+ 		private static void UpdateTime_SpawnTownNPCs() {
+-			int worldUpdateRate = WorldGen.GetWorldUpdateRate();
++			double worldUpdateRate = WorldGen.GetWorldUpdateRate();
+ 			if (netMode == 1 || worldUpdateRate <= 0)
+ 				return;
+ 
 @@ -49902,7 +_,7 @@
  					num++;
  			}
@@ -3979,14 +4298,16 @@
  		}
  
  		public static int DamageVar(float dmg, float luck = 0f) {
-@@ -50438,7 +_,9 @@
+@@ -50438,7 +_,11 @@
  					width = (int)(num2 * (float)height);
  				}
  
++#if !NETCORE
 +				if (!Platform.IsWindows)
 -				PlayerInput.RawMouseScale = new Vector2((float)width / (float)instance.Window.ClientBounds.Width, (float)height / (float)instance.Window.ClientBounds.Height);
 +					PlayerInput.RawMouseScale = new Vector2((float)width / (float)instance.Window.ClientBounds.Width, (float)height / (float)instance.Window.ClientBounds.Height);
-+				
++#endif 
++
  				if (!graphics.IsFullScreen) {
  					num3 = Math.Max(graphics.PreferredBackBufferWidth, graphics.GraphicsDevice.Viewport.Width);
  					num4 = Math.Max(graphics.PreferredBackBufferHeight, graphics.GraphicsDevice.Viewport.Height);

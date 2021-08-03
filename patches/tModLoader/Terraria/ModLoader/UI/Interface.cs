@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using Terraria.Audio;
 using Terraria.ID;
@@ -11,6 +12,7 @@ using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.GameContent.UI.States;
+using Terraria.Social.Steam;
 
 namespace Terraria.ModLoader.UI
 {
@@ -27,13 +29,13 @@ namespace Terraria.ModLoader.UI
 		internal const int modInfoID = 10008;
 		//internal const int downloadModID = 10009;
 		//internal const int modControlsID = 10010;
-		internal const int managePublishedID = 10011;
+		//internal const int managePublishedID = 10011;
 		internal const int updateMessageID = 10012;
 		internal const int infoMessageID = 10013;
-		internal const int enterPassphraseMenuID = 10015;
+		//internal const int enterPassphraseMenuID = 10015;
 		internal const int modPacksMenuID = 10016;
 		internal const int tModLoaderSettingsID = 10017;
-		internal const int enterSteamIDMenuID = 10018;
+		//internal const int enterSteamIDMenuID = 10018;
 		internal const int extractModID = 10019;
 		internal const int downloadProgressID = 10020;
 		internal const int progressID = 10023;
@@ -47,12 +49,12 @@ namespace Terraria.ModLoader.UI
 		internal static UIErrorMessage errorMessage = new UIErrorMessage();
 		internal static UIModBrowser modBrowser = new UIModBrowser();
 		internal static UIModInfo modInfo = new UIModInfo();
-		internal static UIManagePublished managePublished = new UIManagePublished();
+		//internal static UIManagePublished managePublished = new UIManagePublished();
 		internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
 		internal static UIInfoMessage infoMessage = new UIInfoMessage();
-		internal static UIEnterPassphraseMenu enterPassphraseMenu = new UIEnterPassphraseMenu();
+		//internal static UIEnterPassphraseMenu enterPassphraseMenu = new UIEnterPassphraseMenu();
 		internal static UIModPacks modPacksMenu = new UIModPacks();
-		internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
+		//internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
 		internal static UIExtractMod extractMod = new UIExtractMod();
 		internal static UIModConfig modConfig = new UIModConfig();
 		internal static UIModConfigList modConfigList = new UIModConfigList();
@@ -147,10 +149,6 @@ namespace Terraria.ModLoader.UI
 				Main.MenuUI.SetState(modInfo);
 				Main.menuMode = 888;
 			}
-			else if (Main.menuMode == managePublishedID) {
-				Main.menuMode = 888;
-				Main.MenuUI.SetState(managePublished);
-			}
 			//else if (Main.menuMode == modControlsID)
 			//{
 			//	UIModControls.ModLoaderMenus(main, selectedMenu, buttonNames, buttonScales, buttonVerticalSpacing, ref offY, ref spacing, ref numButtons);
@@ -161,14 +159,6 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (Main.menuMode == infoMessageID) {
 				Main.MenuUI.SetState(infoMessage);
-				Main.menuMode = 888;
-			}
-			else if (Main.menuMode == enterPassphraseMenuID) {
-				Main.MenuUI.SetState(enterPassphraseMenu);
-				Main.menuMode = 888;
-			}
-			else if (Main.menuMode == enterSteamIDMenuID) {
-				Main.MenuUI.SetState(enterSteamIDMenu);
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == modPacksMenuID) {
@@ -339,25 +329,13 @@ namespace Terraria.ModLoader.UI
 				else {
 					string modname = command;
 					try {
-						ServicePointManager.ServerCertificateValidationCallback = (o, certificate, chain, errors) => true;
-						using (WebClient client = new WebClient()) {
-							string downloadURL = client.DownloadString($"http://javid.ddns.net/tModLoader/tools/querymoddownloadurl.php?modname={modname}");
-							if (downloadURL.StartsWith("Failed")) {
-								Console.WriteLine(downloadURL);
-							}
-							else {
-								string tempFile = ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload" + DownloadFile.TEMP_EXTENSION;
-								client.DownloadFile(downloadURL, tempFile);
-
-								if (ModLoader.TryGetMod(modname, out var mod))
-									mod.Close();
-
-								File.Copy(tempFile, ModLoader.ModPath + Path.DirectorySeparatorChar + downloadURL.Substring(downloadURL.LastIndexOf("/")), true);
-								File.Delete(tempFile);
-							}
-							while (Console.KeyAvailable)
-								Console.ReadKey(true);
+						if (!WorkshopHelper.QueryHelper.CheckWorkshopConnection()) {
+							Console.WriteLine(Language.GetTextValue("NoWorkshopAccess"));
+							break;
 						}
+
+						var info = modBrowser.Items.FirstOrDefault(x => x.ModName.Equals(modname));
+						info.InnerDownloadWithDeps();
 					}
 					catch (Exception e) {
 						Console.WriteLine(Language.GetTextValue("tModLoader.MBServerDownloadError", modname, e.ToString()));

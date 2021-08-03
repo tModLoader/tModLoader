@@ -52,7 +52,7 @@ namespace Terraria.ModLoader
 			TileLoader.globalTiles.Add(this);
 		}
 
-		public sealed override void SetupContent() => SetDefaults();
+		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Allows you to modify the chance the tile at the given coordinates has of spawning a certain critter when the tile is killed.
@@ -203,7 +203,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine whether the given item can become selected when the cursor is hovering over a tile and the auto selection hotkey is pressed.
+		/// Allows you to determine whether the given item can become selected when the cursor is hovering over a tile and the auto selection keybind is pressed.
 		/// </summary>
 		/// <param name="i"></param>
 		/// <param name="j"></param>

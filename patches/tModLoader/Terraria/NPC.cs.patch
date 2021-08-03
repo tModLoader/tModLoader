@@ -30,15 +30,6 @@
  		public bool midas;
  		public bool ichor;
  		public bool onFire;
-@@ -408,7 +_,7 @@
- 
- 		public bool isLikeATownNPC {
- 			get {
--				if (type == 453)
-+				if (type == 453 || NPCLoader.ActsLikeATownNPC(this))
- 					return true;
- 
- 				return townNPC;
 @@ -646,7 +_,7 @@
  		public static void UpdateFoundActiveNPCs() {
  			for (int i = 0; i < 200; i++) {
@@ -160,6 +151,24 @@
  
  			if (spawnparams.sizeScaleOverride.HasValue) {
  				int num2 = (int)((float)width * scale);
+@@ -10473,7 +_,7 @@
+ 			return balance;
+ 		}
+ 
+-		private float GetMyBalance() {
++		public float GetMyBalance() {
+ 			if (statsAreScaledForThisManyPlayers <= 1)
+ 				return 1f;
+ 
+@@ -10481,7 +_,7 @@
+ 			return balance;
+ 		}
+ 
+-		private static int GetActivePlayerCount() {
++		public static int GetActivePlayerCount() {
+ 			if (Main.netMode == 0)
+ 				return 1;
+ 
 @@ -10765,6 +_,7 @@
  					break;
  			}
@@ -563,6 +572,15 @@
  				if (Main.netMode == 2)
  					NetMessage.SendData(7);
  			}
+@@ -58748,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private bool GetWereThereAnyInteractions() {
++		public bool GetWereThereAnyInteractions() {
+ 			bool flag = false;
+ 			if (realLife >= 0)
+ 				return Main.npc[realLife].AnyInteractions();
 @@ -58940,8 +_,10 @@
  					NetMessage.SendData(106, -1, -1, null, (int)position.X, position.Y);
  				}
@@ -724,16 +742,15 @@
  			if (Main.npc[newNPC].type == 1 && Main.player[num7].RollLuck(180) == 0)
  				Main.npc[newNPC].SetDefaults(-4);
  
-@@ -62697,7 +_,8 @@
+@@ -62154,7 +_,7 @@
+ 			return spawnTileType;
  		}
  
- 		private static void GiveTownUniqueDataToNPCsThatNeedIt(int Type, int nextNPC) {
--			if (TypeToDefaultHeadIndex(Type) != -1 || Type == 453) {
-+			bool? spawnsWithCustomName = NPCLoader.SpawnsWithCustomName(Type);
-+			if ((TypeToDefaultHeadIndex(Type) != -1 || Type == 453 || spawnsWithCustomName.HasValue) && (!spawnsWithCustomName.HasValue || spawnsWithCustomName.Value)) {
- 				Main.npc[nextNPC].GivenName = getNewNPCName(Type);
- 				if (TownNPCProfiles.Instance.GetProfile(Type, out ITownNPCProfile profile)) {
- 					Main.npc[nextNPC].townNpcVariationIndex = profile.RollVariation();
+-		private static bool IsValidSpawningGroundTile(int x, int y) {
++		public static bool IsValidSpawningGroundTile(int x, int y) {
+ 			Tile tile = Main.tile[x, y];
+ 			if (!tile.nactive())
+ 				return false;
 @@ -62894,12 +_,14 @@
  			if (num2 < 0)
  				num2 = 0;

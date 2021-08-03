@@ -69,6 +69,65 @@
  				return;
  
  			DrawData item;
+@@ -866,7 +_,7 @@
+ 				drawinfo.Position.Y -= drawinfo.torsoOffset;
+ 			}
+ 
+-			if (!drawinfo.hidesBottomSkin && !IsBottomOverridden(ref drawinfo)) {
++			if (!drawinfo.hidesBottomSkin && !drawinfo.isBottomOverriden) {
+ 				if (drawinfo.isSitting) {
+ 					DrawSittingLegs(ref drawinfo, TextureAssets.Players[drawinfo.skinVar, 10].Value, drawinfo.colorLegs);
+ 					return;
+@@ -877,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		public static bool IsBottomOverridden(ref PlayerDrawSet drawinfo) {
++		internal static bool IsBottomOverridden(ref PlayerDrawSet drawinfo) {
+ 			if (ShouldOverrideLegs_CheckPants(ref drawinfo))
+ 				return true;
+ 
+@@ -887,7 +_,10 @@
+ 			return false;
+ 		}
+ 
+-		public static bool ShouldOverrideLegs_CheckPants(ref PlayerDrawSet drawinfo) {
++		private static bool ShouldOverrideLegs_CheckPants(ref PlayerDrawSet drawinfo) {
++			return drawinfo.drawPlayer.legs > 0 && ArmorIDs.Legs.Sets.OverridesLegs[drawinfo.drawPlayer.legs];
++
++			/*
+ 			switch (drawinfo.drawPlayer.legs) {
+ 				case 67:
+ 				case 106:
+@@ -902,13 +_,18 @@
+ 				default:
+ 					return false;
+ 			}
++			*/
+ 		}
+ 
+-		public static bool ShouldOverrideLegs_CheckShoes(ref PlayerDrawSet drawinfo) {
++		private static bool ShouldOverrideLegs_CheckShoes(ref PlayerDrawSet drawinfo) {
++			return drawinfo.drawPlayer.shoe > 0 && ArmorIDs.Shoe.Sets.OverridesLegs[drawinfo.drawPlayer.shoe];
++
++			/*
+ 			if (drawinfo.drawPlayer.shoe == 15)
+ 				return true;
+ 
+ 			return false;
++			*/
+ 		}
+ 
+ 		public static void DrawPlayer_12_Skin_Composite(ref PlayerDrawSet drawinfo) {
+@@ -947,7 +_,7 @@
+ 				drawDataCache2.Add(drawData);
+ 			}
+ 
+-			if (!drawinfo.hidesBottomSkin && !drawinfo.drawPlayer.invis && !IsBottomOverridden(ref drawinfo)) {
++			if (!drawinfo.hidesBottomSkin && !drawinfo.drawPlayer.invis && !drawinfo.isBottomOverriden) {
+ 				if (drawinfo.isSitting) {
+ 					DrawSittingLegs(ref drawinfo, TextureAssets.Players[drawinfo.skinVar, 10].Value, drawinfo.colorLegs, drawinfo.skinDyePacked);
+ 				}
 @@ -979,7 +_,7 @@
  			float rotation = bodyRotation + drawinfo.compositeBackArmRotation;
  			bool flag = !drawinfo.drawPlayer.invis;

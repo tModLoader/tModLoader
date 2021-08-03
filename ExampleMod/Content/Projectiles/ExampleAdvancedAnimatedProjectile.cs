@@ -105,7 +105,7 @@ namespace ExampleMod.Content.Projectiles
 				spriteEffects = SpriteEffects.FlipHorizontally;
 
 			// Getting texture of projectile
-			Texture2D texture = (Texture2D)ModContent.GetTexture(Texture);
+			Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
 
 			// Calculating frameHeight and current Y pos dependence of frame
 			// If texture without animation frameHeight = texture.Height is always and startY is always 0
