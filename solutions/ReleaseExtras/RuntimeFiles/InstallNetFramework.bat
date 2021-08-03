@@ -19,7 +19,7 @@ for %%f in (%IllegalFiles%) do (
 			echo.
 			echo %ColorRed%It has been detected that your installation directory contains third-party library files%ColorDefault%
 			echo %ColorRed%that could potentially break tModLoader. If you have previously installed other tModLoader editions%ColorDefault%
-			echo %ColorRed%- we recommend you redownload them and install them into a folder separate from tModLoader's.%ColorDefault%
+			echo %ColorRed%- we recommend you to redownload them and install them into a folder separate from tModLoader's.%ColorDefault%
 			echo %ColorRed%For example: 'steamapps/common/tModLoader64bit' ^(placed next to the 'Terraria' directory.^)%ColorDefault%
 			echo.
 			set /p DUMMY=Press 'ENTER' to proceed and automatically remove those files...
