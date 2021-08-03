@@ -1,13 +1,7 @@
 ﻿using ReLogic.OS;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Steamworks;
 using Terraria.Social;
-using Terraria.ModLoader;
 
 namespace Terraria.ModLoader.Engine
 {
@@ -18,7 +12,11 @@ namespace Terraria.ModLoader.Engine
 
 		public static AppId_t TMLAppID_t = new AppId_t(TMLAppID);
 		public static AppId_t TerrariaAppId_t = new AppId_t(TerrariaAppID);
-		public static bool IsSteamApp { get; } = SocialAPI.Mode == SocialMode.Steam && SteamAPI.Init() && SteamApps.BIsAppInstalled(new AppId_t(TMLAppID));
+
+		private static bool SteamAPIRegistered = SteamAPI.Init() && SteamApps.BIsAppInstalled(new AppId_t(TMLAppID));
+		public static bool IsSteamApp { 
+			get => SocialAPI.Mode == SocialMode.Steam && SteamAPIRegistered;
+		}
 
 		public static ulong lastAvailableSteamCloudStorage = ulong.MaxValue;
 

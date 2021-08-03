@@ -40,10 +40,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public ModTranslation Tooltip { get; internal set; }
 
-		public virtual string ArmTexture => Texture + "_Arms";
-
-		public virtual string FemaleTexture => Texture + "_FemaleBody";
-
 		public ModItem() {
 			Item = new Item { ModItem = this };
 		}
@@ -51,8 +47,8 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<ModItem>.Register(this);
 
-			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemName.{Name}");
-			Tooltip = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemTooltip.{Name}", true);
+			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemName.{Name}");
+			Tooltip = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemTooltip.{Name}", true);
 
 			Item.ResetStats(ItemLoader.ReserveItemID());
 			Item.ModItem = this;
@@ -62,7 +58,7 @@ namespace Terraria.ModLoader
 			var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
 			if (autoloadEquip != null) {
 				foreach (var equip in autoloadEquip.equipTypes) {
-					Mod.AddEquipTexture(this, equip, Texture + '_' + equip);
+					Mod.AddEquipTexture(this, equip, $"{Texture}_{equip}");
 				}
 			}
 			
@@ -104,22 +100,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// This is where you set all your item's static properties, such as names/translations and the arrays in ItemID.Sets.
-		/// This is called after SetDefaults on the initial ModItem
-		/// </summary>
-		public virtual void SetStaticDefaults() {
-		}
-
-		/// <summary>
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			TextureAssets.Item[Item.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Item[Item.type] = ModContent.Request<Texture2D>(Texture);
 
-			string flameTexture = Texture + "_Flame";
-
-			if (ModContent.TextureExists(flameTexture)) {
-				TextureAssets.ItemFlame[Item.type] = ModContent.GetTexture(flameTexture);
+			if (ModContent.RequestIfExists<Texture2D>(Texture + "_Flame", out var flameTexture)) {
+				TextureAssets.ItemFlame[Item.type] = flameTexture;
 			}
 
 			if (DisplayName.IsDefault())
@@ -182,22 +169,25 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to change the effective useTime of this item.
+		/// Allows you to change the effective useTime of an item.
+		/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
 		/// </summary>
-		/// <param name="player"></param>
-		/// <returns>The multiplier on the usage speed. 1f by default. Values greater than 1 increase the item speed.</returns>
-		public virtual float UseTimeMultiplier(Player player) {
-			return 1f;
-		}
+		/// <returns> The multiplier on the usage time. 1f by default. Values greater than 1 increase the item use's length. </returns>
+		public virtual float UseTimeMultiplier(Player player) => 1f;
 
 		/// <summary>
-		/// Allows you to change the effective useAnimation of this item.
+		/// Allows you to change the effective useAnimation of an item.
+		/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
 		/// </summary>
-		/// <param name="player"></param>
-		/// <returns>The multiplier on the animation speed. 1f by default. Values greater than 1 increase the item speed.</returns>
-		public virtual float MeleeSpeedMultiplier(Player player) {
-			return 1f;
-		}
+		/// <returns>The multiplier on the animation time. 1f by default. Values greater than 1 increase the item animation's length. </returns>
+		public virtual float UseAnimationMultiplier(Player player) => 1f;
+
+		/// <summary>
+		/// Allows you to safely change both useTime and useAnimation while keeping the values relative to each other.
+		/// <br/> Useful for status effects.
+		/// </summary>
+		/// <returns> The multiplier on the use speed. 1f by default. Values greater than 1 increase the overall item speed. </returns>
+		public virtual float UseSpeedMultiplier(Player player) => 1f;
 
 		/// <summary>
 		/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
@@ -328,7 +318,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify this item's shooting mechanism. Return false to prevent the original shooting code from running. Returns true by default.
+		/// Allows you to modify this item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.
 		/// </summary>
 		/// <param name="player"> The player using the item. </param>
 		/// <param name="source"> The projectile source's information. </param>
@@ -424,14 +414,22 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this item is used. Return true if using this item actually does stuff. Returns false by default.
-		/// Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
+		/// Allows you to make things happen when this item is used. The return value controls whether or not ApplyItemTime will be called for the player.
+		/// <br/> Return true if the item actually did something, to force itemTime.
+		/// <br/> Return false to keep itemTime at 0.
+		/// <br/> Return null for vanilla behavior.
+		/// <para/> Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <returns></returns>
-		public virtual bool UseItem(Player player) {
-			return false;
-		}
+		public virtual bool? UseItem(Player player) => null;
+
+		/// <summary>
+		/// Allows you to make things happen when this item's use animation starts.
+		/// <para/> Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
+		/// </summary>
+		/// <param name="player"> The player. </param>
+		public virtual void UseAnimation(Player player) { }
 
 		/// <summary>
 		/// If this item is consumable and this returns true, then this item will be consumed upon usage. Returns true by default.
@@ -893,7 +891,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to tell the game whether this item is a torch that cannot be placed in liquid, a torch that can be placed in liquid, or a glowstick. This information is used for when the player is holding down the auto-select hotkey.
+		/// Allows you to tell the game whether this item is a torch that cannot be placed in liquid, a torch that can be placed in liquid, or a glowstick. This information is used for when the player is holding down the auto-select keybind.
 		/// </summary>
 		/// <param name="dryTorch">if set to <c>true</c> [dry torch].</param>
 		/// <param name="wetTorch">if set to <c>true</c> [wet torch].</param>

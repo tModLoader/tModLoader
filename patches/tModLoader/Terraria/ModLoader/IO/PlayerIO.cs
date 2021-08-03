@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.IO
 {
 	internal static class PlayerIO
 	{
-		internal static void WriteVanillaHairDye(short hairDye, BinaryWriter writer) {
+		internal static void WriteByteVanillaHairDye(int hairDye, BinaryWriter writer) {
 			writer.Write((byte)(hairDye > EffectsTracker.vanillaHairShaderCount ? 0 : hairDye));
 		}
 
@@ -128,13 +128,14 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		public static string SaveHairDye(short hairDye) {
+		public static string SaveHairDye(int hairDye) {
 			if (hairDye <= EffectsTracker.vanillaHairShaderCount)
 				return "";
 
 			int itemId = GameShaders.Hair._reverseShaderLookupDictionary[hairDye];
 			var modItem = ItemLoader.GetItem(itemId);
-			return modItem.Mod.Name + '/' + modItem.Name;
+
+			return modItem.FullName;
 		}
 
 		public static void LoadHairDye(Player player, string hairDyeItemName) {

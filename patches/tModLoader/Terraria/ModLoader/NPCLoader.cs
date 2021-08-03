@@ -15,6 +15,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.GameContent.ItemDropRules;
 using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalNPC>;
+using Terraria.ModLoader.Utilities;
 
 namespace Terraria.ModLoader
 {
@@ -36,11 +37,20 @@ namespace Terraria.ModLoader
 		public static readonly IList<int> blockLoot = new List<int>();
 
 		private static Instanced<GlobalNPC>[] globalNPCsArray = new Instanced<GlobalNPC>[0];
-		private static List<HookList> hooks = new List<HookList>();
+		private static readonly List<HookList> hooks = new List<HookList>();
+		private static readonly List<HookList> modHooks = new List<HookList>();
 
 		private static HookList AddHook<F>(Expression<Func<GlobalNPC, F>> func) {
 			var hook = new HookList(ModLoader.Method(func));
+
 			hooks.Add(hook);
+
+			return hook;
+		}
+
+		public static T AddModHook<T>(T hook) where T : HookList {
+			modHooks.Add(hook);
+
 			return hook;
 		}
 
@@ -119,7 +129,7 @@ namespace Terraria.ModLoader
 				.Select(g => new Instanced<GlobalNPC>(g.index, g))
 				.ToArray();
 
-			foreach (var hook in hooks) {
+			foreach (var hook in hooks.Union(modHooks)) {
 				hook.Update(globalNPCs);
 			}
 
@@ -134,6 +144,7 @@ namespace Terraria.ModLoader
 			nextNPC = NPCID.Count;
 			globalNPCs.Clear();
 			bannerToItem.Clear();
+			modHooks.Clear();
 		}
 
 		internal static bool IsModNPC(NPC npc) {
@@ -178,9 +189,13 @@ namespace Terraria.ModLoader
 		private delegate void DelegateSetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry);
 		private static HookList HookSetBestiary = AddHook<DelegateSetBestiary>(g => g.SetBestiary);
 		public static void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
-			if(npc.ModNPC != null) {
+			if(IsModNPC(npc)) {
 				bestiaryEntry.Info.Add(npc.ModNPC.Mod.ModSourceBestiaryInfoElement);
+				foreach (var type in npc.ModNPC.SpawnModBiomes) {
+					bestiaryEntry.Info.Add(LoaderManager.Get<BiomeLoader>().Get(type).ModBiomeBestiaryInfoElement);
+				}
 			}
+
 			npc.ModNPC?.SetBestiary(database, bestiaryEntry);
 
 			foreach (GlobalNPC g in HookSetBestiary.Enumerate(npc.globalNPCs)) {
@@ -680,26 +695,28 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookPreDraw = AddHook<Func<NPC, SpriteBatch, Color, bool>>(g => g.PreDraw);
+		private delegate bool DelegatePreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
+		private static HookList HookPreDraw = AddHook<DelegatePreDraw>(g => g.PreDraw);
 
-		public static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
+		public static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 			bool result = true;
 			foreach (GlobalNPC g in HookPreDraw.Enumerate(npc.globalNPCs)) {
-				result &= g.PreDraw(npc, spriteBatch, drawColor);
+				result &= g.PreDraw(npc, spriteBatch, screenPos, drawColor);
 			}
 			if (result && npc.ModNPC != null) {
-				return npc.ModNPC.PreDraw(spriteBatch, drawColor);
+				return npc.ModNPC.PreDraw(spriteBatch, screenPos, drawColor);
 			}
 			return result;
 		}
 
-		private static HookList HookPostDraw = AddHook<Action<NPC, SpriteBatch, Color>>(g => g.PostDraw);
+		private delegate void DelegatePostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
+		private static HookList HookPostDraw = AddHook<DelegatePostDraw>(g => g.PostDraw);
 
-		public static void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
-			npc.ModNPC?.PostDraw(spriteBatch, drawColor);
+		public static void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+			npc.ModNPC?.PostDraw(spriteBatch, screenPos, drawColor);
 
 			foreach (GlobalNPC g in HookPostDraw.Enumerate(npc.globalNPCs)) {
-				g.PostDraw(npc, spriteBatch, drawColor);
+				g.PostDraw(npc, spriteBatch, screenPos, drawColor);
 			}
 		}
 
@@ -776,6 +793,7 @@ namespace Terraria.ModLoader
 		public static int? ChooseSpawn(NPCSpawnInfo spawnInfo) {
 			NPCSpawnHelper.Reset();
 			NPCSpawnHelper.DoChecks(spawnInfo);
+
 			IDictionary<int, float> pool = new Dictionary<int, float>();
 			pool[0] = 1f;
 			foreach (ModNPC npc in npcs) {

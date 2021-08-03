@@ -1,0 +1,11 @@
+--- src/decompiled/ReLogic/Peripherals/RGB/Logitech/NativeMethods.cs
++++ src/Terraria/ReLogic/Peripherals/RGB/Logitech/NativeMethods.cs
+@@ -16,6 +_,8 @@
+ 		public const int LOGI_LED_BITMAP_SIZE = 504;
+ 		public const int LOGI_LED_DURATION_INFINITE = 0;
+ 
++		public const string DLL_NAME = "LogitechLedEnginesWrapper "; //Added by TML.
++
+ 		[DllImport("LogitechLedEnginesWrapper ", CallingConvention = CallingConvention.Cdecl)]
+ 		public static extern bool LogiLedInit();
+ 

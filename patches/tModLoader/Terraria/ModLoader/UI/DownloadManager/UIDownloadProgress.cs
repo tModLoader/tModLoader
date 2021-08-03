@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		public void HandleDownloads(params DownloadFile[] downloads) {
-			foreach (DownloadFile download in downloads) {
+			foreach (var download in downloads) {
 				if (download.Verify()) {
 					_downloads.Add(download);
 				}

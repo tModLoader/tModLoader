@@ -24,16 +24,7 @@ namespace Terraria.ModLoader
 
 		protected sealed override void Register() => BossBarLoader.AddBossBar(this);
 
-		public sealed override void SetupContent() {
-			//This just exists to make SetupContent sealed, to prevent future additions to tml from breaking mods
-			SetStaticDefaults();
-		}
-
-		/// <summary>
-		/// This is where you can set things after the game has fully loaded all content. Called during SetupContent.
-		/// </summary>
-		public virtual void SetStaticDefaults() {
-		}
+		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Allows you to specify the icon texture, and optionally the frame it should be displayed on. The frame defaults to the entire texture otherwise.
