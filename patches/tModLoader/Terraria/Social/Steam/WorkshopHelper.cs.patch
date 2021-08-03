@@ -111,7 +111,7 @@
  							}
  							else {
  								WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -159,7 +_,7 @@
+@@ -159,11 +_,12 @@
  				private FinishedPublishingAction _endAction;
  				private WorkshopIssueReporter _issueReporter;
  
@@ -120,7 +120,12 @@
  					_issueReporter = issueReporter;
  					_endAction = endAction;
  					_createItemHook = CallResult<CreateItemResult_t>.Create(CreateItemResult);
-@@ -171,7 +_,8 @@
+ 					_updateItemHook = CallResult<SubmitItemUpdateResult_t>.Create(UpdateItemResult);
++					_publicity = publicity;
+ 					ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
+ 					_entryData = new SteamWorkshopItem {
+ 						Title = itemTitle,
+@@ -171,19 +_,31 @@
  						ContentFolderPath = contentFolderPath,
  						Tags = tags,
  						PreviewImagePath = previewImagePath,
@@ -129,8 +134,18 @@
 +						BuildData = buildData
  					};
  
++					if (!File.Exists(previewImagePath)) {
++						_issueReporter.ReportInstantUploadProblem("Workshop.ReportIssue_FailedToPublish_CouldNotFindFolderToUpload" + " NoPreviewImage");
++						return;
++					}
++					else if (!Directory.Exists(contentFolderPath)) {
++						_issueReporter.ReportInstantUploadProblem("Workshop.ReportIssue_FailedToPublish_CouldNotFindFolderToUpload" + " NoContentFolder");
++						return;
++					}
++
  					ulong? num = null;
-@@ -180,10 +_,12 @@
+ 					if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out FoundWorkshopEntryInfo info))
+ 						num = info.workshopEntryId;
  
  					if (num.HasValue && finder.HasItemOfId(num.Value)) {
  						_publishedFileID = new PublishedFileId_t(num.Value);

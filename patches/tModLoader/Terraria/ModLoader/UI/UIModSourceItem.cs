@@ -316,6 +316,9 @@ namespace Terraria.ModLoader.UI
 			if (string.IsNullOrWhiteSpace(values["author"]))
 				throw new WebException($"You need to specify an author in build.txt");
 
+			if (string.IsNullOrWhiteSpace(values["version"]))
+				throw new WebException($"You need to specify a version in build.txt");
+
 			Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, modFile, values));
 		}
 	}

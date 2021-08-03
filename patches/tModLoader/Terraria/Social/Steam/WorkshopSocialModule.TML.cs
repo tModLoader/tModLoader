@@ -49,7 +49,7 @@ namespace Terraria.Social.Steam
 					return false;
 				}
 
-				if (new Version(buildData["version"].Substring(1)) <= new Version(existing.Version.Substring(1))) {
+				if (new Version(buildData["version"].Replace("v", "")) <= new Version(existing.Version.Replace("v", ""))) {
 					IssueReporter.ReportInstantUploadProblem("tModLoader.ModVersionInfoUnchanged");
 					return false;
 				} 
