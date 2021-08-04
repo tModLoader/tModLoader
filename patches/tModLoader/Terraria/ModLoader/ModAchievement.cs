@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using Terraria.Achievements;
 using Terraria.DataStructures;
@@ -6,6 +7,7 @@ using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
+	[JsonObject(MemberSerialization.OptIn)]
 	public abstract class ModAchievement : ModTexturedType, IAchievement
 	{
 		/// <summary>
@@ -26,6 +28,9 @@ namespace Terraria.ModLoader
 		public virtual IAchievementTracker Tracker { get; set; }
 
 		public virtual bool IsCompleted { get; set; }
+
+		[JsonProperty("Conditions")]
+		public virtual Dictionary<string, AchievementCondition> Conditions { get; set; } = new();
 
 		public Achievement.AchievementCompleted OnCompleted { get; set; }
 

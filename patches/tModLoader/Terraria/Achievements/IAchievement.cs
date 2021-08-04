@@ -21,6 +21,8 @@ namespace Terraria.Achievements
 
 		bool IsCompleted { get; }
 
+		Dictionary<string, AchievementCondition> Conditions { get; set; }
+
 		Achievement.AchievementCompleted OnCompleted { get; set; }
 
 		void ClearProgress();
