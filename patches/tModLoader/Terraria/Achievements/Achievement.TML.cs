@@ -4,6 +4,8 @@ namespace Terraria.Achievements
 {
 	partial class Achievement
 	{
+		public const string VanillaTextureIndicator = "vanilla";
+
 		// Override this so we can set it manually.
 		public override string Name { get; }
 
@@ -14,5 +16,7 @@ namespace Terraria.Achievements
 		public override LocalizedText FriendlyName => Language.GetText("Achievements." + Name + "_Name");
 
 		public override LocalizedText Description => Language.GetText("Achievements." + Name + "_Description");
+
+		public override string Texture => VanillaTextureIndicator;
 	}
 }

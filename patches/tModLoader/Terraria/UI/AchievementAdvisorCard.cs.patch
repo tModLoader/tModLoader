@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/UI/AchievementAdvisorCard.cs
++++ src/tModLoader/Terraria/UI/AchievementAdvisorCard.cs
+@@ -17,7 +_,7 @@
+ 			this.achievement = achievement;
+ 			this.order = order;
+ 			achievementIndex = Main.Achievements.GetIconIndex(achievement.Name);
+-			frame = new Rectangle(achievementIndex % 8 * 66, achievementIndex / 8 * 66, 64, 64);
++			frame = achievement.Texture == Achievement.VanillaTextureIndicator ? new Rectangle(achievementIndex % 8 * 66, achievementIndex / 8 * 66, 64, 64) : new Rectangle(0, 0, 64, 64);
+ 		}
+ 
+ 		public bool IsAchievableInWorld() {

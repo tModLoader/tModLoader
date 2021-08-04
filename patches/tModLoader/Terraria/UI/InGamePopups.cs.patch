@@ -1,0 +1,21 @@
+--- src/Terraria/Terraria/UI/InGamePopups.cs
++++ src/tModLoader/Terraria/UI/InGamePopups.cs
+@@ -4,6 +_,7 @@
+ using Terraria.Achievements;
+ using Terraria.GameContent;
+ using Terraria.GameInput;
++using Terraria.ModLoader;
+ using Terraria.Social.Base;
+ 
+ namespace Terraria.UI
+@@ -61,8 +_,8 @@
+ 				_theAchievement = achievement;
+ 				_title = achievement.FriendlyName.Value;
+ 				int num = _iconIndex = Main.Achievements.GetIconIndex(achievement.Name);
+-				_achievementIconFrame = new Rectangle(num % 8 * 66, num / 8 * 66, 64, 64);
+-				_achievementTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievements", AssetRequestMode.AsyncLoad);
++				_achievementIconFrame = achievement.Texture == Achievement.VanillaTextureIndicator ? new Rectangle(num % 8 * 66, num / 8 * 66, 64, 64) : new Rectangle(0, 0, 64, 64);
++				_achievementTexture = achievement.Texture == Achievement.VanillaTextureIndicator ? Main.Assets.Request<Texture2D>("Images/UI/Achievements", AssetRequestMode.AsyncLoad) : ModContent.Request<Texture2D>(achievement.Texture, AssetRequestMode.ImmediateLoad);
+ 				_achievementBorderTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Borders", AssetRequestMode.AsyncLoad);
+ 			}
+ 

@@ -1,11 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using Terraria.Achievements;
+using Terraria.DataStructures;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
-	public abstract class ModAchievement : ModType, IAchievement
+	public abstract class ModAchievement : ModTexturedType, IAchievement
 	{
 		/// <summary>
 		///		Achievement saving method. Saved either globally or per-player.

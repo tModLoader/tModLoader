@@ -1,5 +1,38 @@
 --- src/Terraria/Terraria/GameContent/UI/Elements/UIAchievementListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIAchievementListItem.cs
+@@ -4,6 +_,7 @@
+ using System;
+ using Terraria.Achievements;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ using Terraria.UI.Chat;
+ 
+@@ -39,6 +_,7 @@
+ 			Width.Set(0f, 1f);
+ 			PaddingTop = 8f;
+ 			PaddingLeft = 9f;
++			if (achievement.Texture == Achievement.VanillaTextureIndicator) {
+ 			int num4 = _iconIndex = Main.Achievements.GetIconIndex(achievement.Name);
+ 			_iconFrameUnlocked = new Rectangle(num4 % 8 * 66, num4 / 8 * 66, 64, 64);
+ 			_iconFrameLocked = _iconFrameUnlocked;
+@@ -49,6 +_,16 @@
+ 			_achievementIcon.Left.Set(num2, 0f);
+ 			_achievementIcon.Top.Set(num3, 0f);
+ 			Append(_achievementIcon);
++			}
++			else {
++				_iconFrameUnlocked = new Rectangle(0, 0, 64, 64);
++				_iconFrameLocked = new Rectangle(66, 0, 64, 64);
++				_iconFrame = _iconFrameLocked;
++				UpdateIconFrame();
++				_achievementIcon = new UIImageFramed(ModContent.Request<Texture2D>(achievement.Texture, AssetRequestMode.ImmediateLoad), _iconFrame);
++				_achievementIcon.Left.Set(num2, 0f);
++				_achievementIcon.Top.Set(num3, 0f);
++			}
+ 			_achievementIconBorders = new UIImage(Main.Assets.Request<Texture2D>("Images/UI/Achievement_Borders"));
+ 			_achievementIconBorders.Left.Set(-4f + num2, 0f);
+ 			_achievementIconBorders.Top.Set(-4f + num3, 0f);
 @@ -72,9 +_,9 @@
  			CalculatedStyle dimensions = _achievementIconBorders.GetDimensions();
  			float num2 = dimensions.X + dimensions.Width;
