@@ -127,6 +127,8 @@ namespace Terraria
 		public bool RemoveCondition(Condition condition) => Conditions.Remove(condition);
 
 		public bool RemoveRecipe() {
+			if (!RecipeLoader.setupRecipes)
+				throw new RecipeException("A Recipe can only be deleted inside recipe related methods");
 			if (Main.recipe[RecipeIndex] != this)
 				return false;
 			for (int j = RecipeIndex; j < numRecipes - 1; j++) {
