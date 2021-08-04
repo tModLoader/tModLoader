@@ -16,8 +16,8 @@
  			Rectangle frame = card.frame;
 -			frame.X += 528;
 -			spriteBatch.Draw(_achievementsTexture.Value, position, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-+			frame.X += _hoveredCard.achievement.Texture == Achievement.VanillaTextureIndicator ? 528 : 0;
-+			spriteBatch.Draw(_hoveredCard.achievement.Texture == Achievement.VanillaTextureIndicator ? _achievementsTexture.Value : ModContent.Request<Texture2D>(_hoveredCard.achievement.Texture, AssetRequestMode.ImmediateLoad).Value, position, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
++			frame.X += card.achievement.Texture == Achievement.VanillaTextureIndicator ? 528 : 0;
++			spriteBatch.Draw(card.achievement.Texture == Achievement.VanillaTextureIndicator ? _achievementsTexture.Value : ModContent.Request<Texture2D>(card.achievement.Texture, AssetRequestMode.ImmediateLoad).Value, position, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
  			spriteBatch.Draw(_achievementsBorderTexture.Value, position + value, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
  			if (hovered)
  				spriteBatch.Draw(value3, position + value2, null, Main.OurFavoriteColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
