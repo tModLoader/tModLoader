@@ -1,10 +1,11 @@
 --- src/Terraria/Terraria/Achievements/AchievementManager.cs
 +++ src/tModLoader/Terraria/Achievements/AchievementManager.cs
-@@ -7,6 +_,8 @@
+@@ -7,6 +_,9 @@
  using System.Linq;
  using System.Security.Cryptography;
  using System.Text;
 +using Steamworks;
++using Terraria.ModLoader;
 +using Terraria.ModLoader.Engine;
  using Terraria.Social;
  using Terraria.UI;
@@ -14,35 +15,95 @@
  		private string _savePath;
  		private bool _isCloudSave;
 -		private Dictionary<string, Achievement> _achievements = new Dictionary<string, Achievement>();
-+		private Dictionary<string, IAchievement> _achievements = new Dictionary<string, IAchievement>();
++		private Dictionary<string, Dictionary<string, IAchievement>> _achievements = new Dictionary<string, Dictionary<string, IAchievement>>();
  		private readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings();
  		private byte[] _cryptoKey;
  		private Dictionary<string, int> _achievementIconIndexes = new Dictionary<string, int>();
+@@ -56,15 +_,15 @@
+ 					SocialAPI.Achievements.StoreStats();
+ 
+ 				try {
+-					using (MemoryStream memoryStream = new MemoryStream()) {
++					using (StreamWriter memoryStream = new StreamWriter(path)) {
+-						using (CryptoStream cryptoStream = new CryptoStream(memoryStream, new RijndaelManaged().CreateEncryptor(_cryptoKey, _cryptoKey), CryptoStreamMode.Write)) {
++						//using (CryptoStream cryptoStream = new CryptoStream(memoryStream, new RijndaelManaged().CreateEncryptor(_cryptoKey, _cryptoKey), CryptoStreamMode.Write)) {
+-							using (BsonWriter bsonWriter = new BsonWriter(cryptoStream)) {
++							using (JsonWriter bsonWriter = new JsonTextWriter(memoryStream)) {
+ 								JsonSerializer.Create(_serializerSettings).Serialize(bsonWriter, _achievements);
+-								bsonWriter.Flush();
++								// bsonWriter.Flush();
+-								cryptoStream.FlushFinalBlock();
++								// cryptoStream.FlushFinalBlock();
+-								FileUtilities.WriteAllBytes(path, memoryStream.ToArray(), cloud);
++								// FileUtilities.WriteAllBytes(path, memoryStream.ToArray(), cloud);
+ 							}
+-						}
++						//}
+ 					}
+ 				}
+ 				catch (Exception exception) {
 @@ -73,7 +_,7 @@
  			}
  		}
  
 -		public List<Achievement> CreateAchievementsList() => _achievements.Values.ToList();
-+		public List<IAchievement> CreateAchievementsList() => _achievements.Values.ToList();
++		public List<IAchievement> CreateAchievementsList() => _achievements.Values.SelectMany(modGroup => modGroup.Values).ToList();
  
  		public void Load() {
  			Load(_savePath, _isCloudSave);
-@@ -110,7 +_,7 @@
+@@ -86,12 +_,12 @@
+ 					return;
+ 
+ 				byte[] buffer = FileUtilities.ReadAllBytes(path, cloud);
+-				Dictionary<string, StoredAchievement> dictionary = null;
++				Dictionary<string, Dictionary<string, StoredAchievement>> dictionary = null;
+ 				try {
+ 					using (MemoryStream stream = new MemoryStream(buffer)) {
+ 						using (CryptoStream stream2 = new CryptoStream(stream, new RijndaelManaged().CreateDecryptor(_cryptoKey, _cryptoKey), CryptoStreamMode.Read)) {
+ 							using (BsonReader reader = new BsonReader(stream2)) {
+-								dictionary = JsonSerializer.Create(_serializerSettings).Deserialize<Dictionary<string, StoredAchievement>>(reader);
++								dictionary = JsonSerializer.Create(_serializerSettings).Deserialize<Dictionary<string, Dictionary<string, StoredAchievement>>>(reader);
+ 							}
+ 						}
+ 					}
+@@ -103,20 +_,23 @@
+ 
+ 				if (dictionary == null)
+ 					return;
++				foreach (string mod in dictionary.Keys) {
++				if (!_achievements.ContainsKey(mod))
+-
++					continue;
+-				foreach (KeyValuePair<string, StoredAchievement> item in dictionary) {
++				foreach (KeyValuePair<string, StoredAchievement> item in dictionary[mod]) {
+-					if (_achievements.ContainsKey(item.Key))
++					if (_achievements[mod].ContainsKey(item.Key))
+-						_achievements[item.Key].Load(item.Value.Conditions);
++						_achievements[mod][item.Key].Load(item.Value.Conditions);
  				}
  
  				if (SocialAPI.Achievements != null) {
 -					foreach (KeyValuePair<string, Achievement> achievement in _achievements) {
-+					foreach (KeyValuePair<string, IAchievement> achievement in _achievements) {
++					foreach (KeyValuePair<string, IAchievement> achievement in _achievements[mod]) {
  						if (achievement.Value.IsCompleted && !SocialAPI.Achievements.IsAchievementCompleted(achievement.Key)) {
  							flag = true;
  							achievement.Value.ClearProgress();
-@@ -127,20 +_,20 @@
+ 						}
+ 					}
+ 				}
++				}
+ 			}
+ 
+ 			if (flag)
+@@ -127,21 +_,34 @@
  			if (SocialAPI.Achievements != null)
  				return;
  
 -			foreach (KeyValuePair<string, Achievement> achievement in _achievements) {
-+			foreach (KeyValuePair<string, IAchievement> achievement in _achievements) {
- 				achievement.Value.ClearProgress();
+-				achievement.Value.ClearProgress();
++			foreach (Dictionary<string, IAchievement> achievements in _achievements.Values) {
++				foreach (IAchievement achievement in achievements.Values)
++					achievement.ClearProgress();
  			}
  
  			Save();
@@ -56,31 +117,61 @@
  		}
  
 -		public void Register(Achievement achievement) {
-+		public void Register(IAchievement achievement) {
- 			_achievements.Add(achievement.Name, achievement);
+-			_achievements.Add(achievement.Name, achievement);
++		internal void Register(IAchievement achievement) {
++			if (achievement.Mod is null) {
++				if (!_achievements.ContainsKey("Terraria"))
++					_achievements.Add("Terraria", new Dictionary<string, IAchievement>());
++
++				_achievements["Terraria"].Add(achievement.Name, achievement);
++			}
++			else {
++				if (!_achievements.ContainsKey(achievement.Name))
++					_achievements.Add(achievement.Mod.Name, new Dictionary<string, IAchievement>());
++
++				_achievements[achievement.Name].Add(achievement.Name, achievement);
++			}
++			// _achievements.Add(achievement.Name, achievement);
  			achievement.OnCompleted += AchievementCompleted;
  		}
-@@ -150,11 +_,11 @@
+ 
+@@ -149,22 +_,32 @@
+ 			_achievementIconIndexes.Add(achievementName, iconIndex);
  		}
  
- 		public void RegisterAchievementCategory(string achievementName, AchievementCategory category) {
+-		public void RegisterAchievementCategory(string achievementName, AchievementCategory category) {
 -			_achievements[achievementName].SetCategory(category);
-+			_achievements[achievementName].Category = category;
++		internal void RegisterAchievementCategory(string achievementName, AchievementCategory category) {
++			if (!_achievements.ContainsKey("Terraria")) 
++				return;
++			_achievements["Terraria"][achievementName].Category = category;
  		}
  
 -		public Achievement GetAchievement(string achievementName) {
-+		public IAchievement GetAchievement(string achievementName) {
 -			if (_achievements.TryGetValue(achievementName, out Achievement value))
-+			if (_achievements.TryGetValue(achievementName, out IAchievement value))
++		public IAchievement GetAchievement(string achievementName, Mod mod = null) {
++			if (mod is null && _achievements.ContainsKey("Terraria") && _achievements["Terraria"].TryGetValue(achievementName, out IAchievement value))
  				return value;
  
++			if (mod is not null && _achievements.ContainsKey(mod.Name) && _achievements[mod.Name].TryGetValue(achievementName, out IAchievement modValue))
++				return modValue;
++			/*if (_achievements.TryGetValue(achievementName, out IAchievement value))
++					return value;*/
++
  			return null;
-@@ -163,7 +_,7 @@
- 		public T GetCondition<T>(string achievementName, string conditionName) where T : AchievementCondition => GetCondition(achievementName, conditionName) as T;
+ 		}
  
- 		public AchievementCondition GetCondition(string achievementName, string conditionName) {
+-		public T GetCondition<T>(string achievementName, string conditionName) where T : AchievementCondition => GetCondition(achievementName, conditionName) as T;
++		public T GetCondition<T>(string achievementName, string conditionName, Mod mod = null) where T : AchievementCondition => GetCondition(achievementName, conditionName, mod) as T;
+ 
+-		public AchievementCondition GetCondition(string achievementName, string conditionName) {
 -			if (_achievements.TryGetValue(achievementName, out Achievement value))
-+			if (_achievements.TryGetValue(achievementName, out IAchievement value))
++		public AchievementCondition GetCondition(string achievementName, string conditionName, Mod mod = null) {
++			if (mod is null && _achievements.ContainsKey("Terraria") && _achievements["Terraria"].TryGetValue(achievementName, out IAchievement value))
  				return value.GetCondition(conditionName);
++
++			if (mod is not null && _achievements.ContainsKey(mod.Name) && _achievements[mod.Name].TryGetValue(achievementName, out IAchievement modValue))
++				return modValue.GetCondition(conditionName);
  
  			return null;
+ 		}
