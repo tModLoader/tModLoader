@@ -10,6 +10,17 @@
  
  namespace Terraria.UI
  {
+@@ -106,8 +_,8 @@
+ 				PlayerInput.SetZoom_UI();
+ 				Item item = new Item();
+ 				item.SetDefaults(0, noMatCheck: true);
+-				item.SetNameOverride(_hoveredCard.achievement.FriendlyName.Value);
++				item.SetNameOverride(_hoveredCard.achievement.FriendlyName);
+-				item.ToolTip = ItemTooltip.FromLanguageKey(_hoveredCard.achievement.Description.Key);
++				item.ToolTip = ItemTooltip.FromLanguageKey(_hoveredCard.achievement.Description);
+ 				item.type = 1;
+ 				item.scale = 0f;
+ 				item.rare = 10;
 @@ -138,8 +_,8 @@
  			}
  

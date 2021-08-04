@@ -51,7 +51,7 @@
  			_achievementIconBorders = new UIImage(Main.Assets.Request<Texture2D>("Images/UI/Achievement_Borders"));
  			_achievementIconBorders.Left.Set(-4f + num2, 0f);
  			_achievementIconBorders.Top.Set(-4f + num3, 0f);
-@@ -72,9 +_,9 @@
+@@ -72,18 +_,18 @@
  			CalculatedStyle dimensions = _achievementIconBorders.GetDimensions();
  			float num2 = dimensions.X + dimensions.Width;
  			Vector2 value2 = new Vector2(num2 + 7f, innerDimensions.Y);
@@ -63,6 +63,26 @@
  				flag = true;
  
  			float num3 = innerDimensions.Width - dimensions.Width + 1f - (float)(num * 2);
+ 			Vector2 baseScale = new Vector2(0.85f);
+ 			Vector2 baseScale2 = new Vector2(0.92f);
+-			string text = FontAssets.ItemStack.Value.CreateWrappedText(_achievement.Description.Value, (num3 - 20f) * (1f / baseScale2.X), Language.ActiveCulture.CultureInfo);
++			string text = FontAssets.ItemStack.Value.CreateWrappedText(_achievement.Description, (num3 - 20f) * (1f / baseScale2.X), Language.ActiveCulture.CultureInfo);
+ 			Vector2 stringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, text, baseScale2, num3);
+ 			if (!_large)
+-				stringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, _achievement.Description.Value, baseScale2, num3);
++				stringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, _achievement.Description, baseScale2, num3);
+ 
+ 			float num4 = 38f + (float)(_large ? 20 : 0);
+ 			if (stringSize.Y > num4)
+@@ -102,7 +_,7 @@
+ 			spriteBatch.Draw(_categoryTexture.Value, vector, _categoryTexture.Frame(4, 2, (int)category), base.IsMouseHovering ? Color.White : Color.Silver, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+ 			vector.X += 4f;
+ 			vector.X += 17f;
+-			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, _achievement.FriendlyName.Value, vector, value3, 0f, Vector2.Zero, baseScale, num3);
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, _achievement.FriendlyName, vector, value3, 0f, Vector2.Zero, baseScale, num3);
+ 			vector.X -= 17f;
+ 			Vector2 position = value2 + Vector2.UnitY * 27f + value;
+ 			DrawPanelBottom(spriteBatch, position, num3, color);
 @@ -111,10 +_,10 @@
  			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, text, position, value4, 0f, Vector2.Zero, baseScale2);
  			if (flag) {

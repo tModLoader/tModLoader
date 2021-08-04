@@ -26,7 +26,8 @@
  				CreationObject = achievement;
  				_ingameDisplayTimeLeft = 300;
  				_theAchievement = achievement;
- 				_title = achievement.FriendlyName.Value;
+-				_title = achievement.FriendlyName.Value;
++				_title = achievement.FriendlyName;
  				int num = _iconIndex = Main.Achievements.GetIconIndex(achievement.Name);
 -				_achievementIconFrame = new Rectangle(num % 8 * 66, num / 8 * 66, 64, 64);
 -				_achievementTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievements", AssetRequestMode.AsyncLoad);

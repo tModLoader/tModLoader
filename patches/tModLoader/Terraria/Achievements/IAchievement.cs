@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace Terraria.Achievements
@@ -11,9 +10,9 @@ namespace Terraria.Achievements
 
 		AchievementType SaveType { get; }
 
-		LocalizedText FriendlyName { get; }
+		string FriendlyName { get; }
 
-		LocalizedText Description { get; }
+		string Description { get; }
 
 		AchievementCategory Category { get; set; }
 

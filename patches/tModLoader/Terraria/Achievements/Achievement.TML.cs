@@ -13,9 +13,9 @@ namespace Terraria.Achievements
 		public override AchievementType SaveType => AchievementType.Global;
 
 		// Override these to replace them with the expected vanilla translations.
-		public override LocalizedText FriendlyName => Language.GetText("Achievements." + Name + "_Name");
+		public override string FriendlyName => Language.GetTextValue("Achievements." + Name + "_Name");
 
-		public override LocalizedText Description => Language.GetText("Achievements." + Name + "_Description");
+		public override string Description => Language.GetTextValue("Achievements." + Name + "_Description");
 
 		public override string Texture => VanillaTextureIndicator;
 	}

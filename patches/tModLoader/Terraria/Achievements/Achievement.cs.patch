@@ -93,9 +93,9 @@
  		}
  
 -		public void AddCondition(AchievementCondition condition) {
-+		public override void AddCondition(AchievementCondition condition) {
 -			_conditions[condition.Name] = condition;
-+			Conditions[condition.Name] = condition;
++		public override void AddCondition(AchievementCondition condition) {
++			base.AddCondition(condition); // Conditions[condition.Name] = condition;
  			condition.OnComplete += OnConditionComplete;
  		}
  
@@ -153,13 +153,14 @@
  		}
  
 -		public AchievementCondition GetCondition(string conditionName) {
-+		public override AchievementCondition GetCondition(string conditionName) {
++		/*public override AchievementCondition GetCondition(string conditionName) {
 -			if (_conditions.TryGetValue(conditionName, out AchievementCondition value))
 +			if (Conditions.TryGetValue(conditionName, out AchievementCondition value))
  				return value;
  
  			return null;
- 		}
+-		}
++		}*/
  
 -		public void SetCategory(AchievementCategory category) {
 -			_category = category;

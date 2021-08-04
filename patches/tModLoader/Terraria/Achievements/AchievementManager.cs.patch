@@ -19,23 +19,19 @@
  		private readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings();
  		private byte[] _cryptoKey;
  		private Dictionary<string, int> _achievementIconIndexes = new Dictionary<string, int>();
-@@ -56,15 +_,15 @@
- 					SocialAPI.Achievements.StoreStats();
+@@ -57,14 +_,14 @@
  
  				try {
--					using (MemoryStream memoryStream = new MemoryStream()) {
-+					using (StreamWriter memoryStream = new StreamWriter(path)) {
+ 					using (MemoryStream memoryStream = new MemoryStream()) {
 -						using (CryptoStream cryptoStream = new CryptoStream(memoryStream, new RijndaelManaged().CreateEncryptor(_cryptoKey, _cryptoKey), CryptoStreamMode.Write)) {
 +						//using (CryptoStream cryptoStream = new CryptoStream(memoryStream, new RijndaelManaged().CreateEncryptor(_cryptoKey, _cryptoKey), CryptoStreamMode.Write)) {
 -							using (BsonWriter bsonWriter = new BsonWriter(cryptoStream)) {
-+							using (JsonWriter bsonWriter = new JsonTextWriter(memoryStream)) {
++							using (BsonWriter bsonWriter = new BsonWriter(memoryStream)) {
  								JsonSerializer.Create(_serializerSettings).Serialize(bsonWriter, _achievements);
--								bsonWriter.Flush();
-+								// bsonWriter.Flush();
+ 								bsonWriter.Flush();
 -								cryptoStream.FlushFinalBlock();
 +								// cryptoStream.FlushFinalBlock();
--								FileUtilities.WriteAllBytes(path, memoryStream.ToArray(), cloud);
-+								// FileUtilities.WriteAllBytes(path, memoryStream.ToArray(), cloud);
+ 								FileUtilities.WriteAllBytes(path, memoryStream.ToArray(), cloud);
  							}
 -						}
 +						//}
@@ -51,7 +47,7 @@
  
  		public void Load() {
  			Load(_savePath, _isCloudSave);
-@@ -86,12 +_,12 @@
+@@ -86,14 +_,14 @@
  					return;
  
  				byte[] buffer = FileUtilities.ReadAllBytes(path, cloud);
@@ -59,13 +55,18 @@
 +				Dictionary<string, Dictionary<string, StoredAchievement>> dictionary = null;
  				try {
  					using (MemoryStream stream = new MemoryStream(buffer)) {
- 						using (CryptoStream stream2 = new CryptoStream(stream, new RijndaelManaged().CreateDecryptor(_cryptoKey, _cryptoKey), CryptoStreamMode.Read)) {
- 							using (BsonReader reader = new BsonReader(stream2)) {
+-						using (CryptoStream stream2 = new CryptoStream(stream, new RijndaelManaged().CreateDecryptor(_cryptoKey, _cryptoKey), CryptoStreamMode.Read)) {
++						//using (CryptoStream stream2 = new CryptoStream(stream, new RijndaelManaged().CreateDecryptor(_cryptoKey, _cryptoKey), CryptoStreamMode.Read)) {
+-							using (BsonReader reader = new BsonReader(stream2)) {
++							using (BsonReader reader = new BsonReader(stream)) {
 -								dictionary = JsonSerializer.Create(_serializerSettings).Deserialize<Dictionary<string, StoredAchievement>>(reader);
 +								dictionary = JsonSerializer.Create(_serializerSettings).Deserialize<Dictionary<string, Dictionary<string, StoredAchievement>>>(reader);
  							}
- 						}
+-						}
++						//}
  					}
+ 				}
+ 				catch (Exception) {
 @@ -103,20 +_,23 @@
  
  				if (dictionary == null)
@@ -110,7 +111,7 @@
  		}
  
 -		private void AchievementCompleted(Achievement achievement) {
-+		private void AchievementCompleted(IAchievement achievement) {
++		public void AchievementCompleted(IAchievement achievement) {
  			Save();
  			if (this.OnAchievementCompleted != null)
  				this.OnAchievementCompleted(achievement);
@@ -129,7 +130,7 @@
 +				if (!_achievements.ContainsKey(achievement.Name))
 +					_achievements.Add(achievement.Mod.Name, new Dictionary<string, IAchievement>());
 +
-+				_achievements[achievement.Name].Add(achievement.Name, achievement);
++				_achievements[achievement.Mod.Name].Add(achievement.Name, achievement);
 +			}
 +			// _achievements.Add(achievement.Name, achievement);
  			achievement.OnCompleted += AchievementCompleted;

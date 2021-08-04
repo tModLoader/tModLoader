@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using Terraria.Achievements;
-using Terraria.DataStructures;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
@@ -15,9 +14,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public abstract AchievementType SaveType { get; }
 
-		public virtual LocalizedText FriendlyName => Language.GetText($"Mods.{Mod.Name}.AchievementName.{Name}");
+		public virtual string FriendlyName => DisplayName.GetTranslation(Language.ActiveCulture);
 
-		public virtual LocalizedText Description => Language.GetText($"Mods.{Mod.Name}.AchievementDescription.{Name}");
+		public virtual string Description => DisplayDescription.GetTranslation(Language.ActiveCulture);
 
 		protected ModTranslation DisplayName { get; private set; }
 
@@ -37,6 +36,8 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"AchievementName.{Name}");
 			DisplayDescription = LocalizationLoader.GetOrCreateTranslation(Mod, $"AchievementDescription.{Name}");
+
+			AchievementLoader.AddAchievement(this);
 		}
 
 		public override void SetupContent() {
@@ -50,8 +51,14 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void AddCondition(AchievementCondition condition) {
+			Conditions[condition.Name] = condition;
 		}
 
-		public virtual AchievementCondition GetCondition(string conditionName) => null;
+		public virtual AchievementCondition GetCondition(string conditionName) {
+			if (Conditions.TryGetValue(conditionName, out AchievementCondition value))
+				return value;
+
+			return null;
+		}
 	}
 }

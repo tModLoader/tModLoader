@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameContent/UI/Chat/AchievementTagHandler.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Chat/AchievementTagHandler.cs
-@@ -9,9 +_,9 @@
+@@ -9,10 +_,10 @@
  	{
  		private class AchievementSnippet : TextSnippet
  		{
@@ -9,9 +9,11 @@
  
 -			public AchievementSnippet(Achievement achievement)
 +			public AchievementSnippet(IAchievement achievement)
- 				: base(achievement.FriendlyName.Value, Color.LightBlue) {
+-				: base(achievement.FriendlyName.Value, Color.LightBlue) {
++				: base(achievement.FriendlyName, Color.LightBlue) {
  				CheckForHover = true;
  				_achievement = achievement;
+ 			}
 @@ -24,13 +_,13 @@
  		}
  

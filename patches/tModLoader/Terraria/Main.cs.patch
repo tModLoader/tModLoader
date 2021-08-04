@@ -73,6 +73,17 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		public static PingMapLayer Pings = new PingMapLayer();
+@@ -267,8 +_,8 @@
+ 		public static CreativeUI CreativeMenu = new CreativeUI();
+ 		private static Vector2 _lastPingMousePosition = Vector2.Zero;
+ 		private static double _lastPingMouseDownTime = 0.0;
+-		private AchievementManager _achievements;
++		internal AchievementManager _achievements;
+-		private AchievementAdvisor _achievementAdvisor;
++		internal AchievementAdvisor _achievementAdvisor;
+ 		public static BigProgressBarSystem BigBossProgressBar = new BigProgressBarSystem();
+ 		public static UserInterface MenuUI = new UserInterface();
+ 		public static UserInterface InGameUI = new UserInterface();
 @@ -511,12 +_,12 @@
  		public static bool showSplash = true;
  		public static bool ignoreErrors = true;
