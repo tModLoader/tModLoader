@@ -127,7 +127,7 @@ namespace Terraria
 		public bool RemoveCondition(Condition condition) => Conditions.Remove(condition);
 
 		public bool RemoveRecipe() {
-			if (Main.recipe[RecipeIndex] == this)
+			if (Main.recipe[RecipeIndex] != this)
 				return false;
 			for (int j = RecipeIndex; j < numRecipes - 1; j++) {
 				Recipe recipe = Main.recipe[j + 1];
