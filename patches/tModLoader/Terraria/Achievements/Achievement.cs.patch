@@ -48,7 +48,8 @@
 -		public IAchievementTracker GetTracker() => _tracker;
 +		// public IAchievementTracker GetTracker() => _tracker;
  
- 		public Achievement(string name) {
+-		public Achievement(string name) {
++		internal Achievement(string name) {
  			Name = name;
 -			FriendlyName = Language.GetText("Achievements." + name + "_Name");
 +			// FriendlyName = Language.GetText("Achievements." + name + "_Name");
