@@ -14,7 +14,8 @@
 +	[Autoload(false)]
 +	public sealed partial class Achievement : ModAchievement
  	{
- 		public delegate void AchievementCompleted(Achievement achievement);
+-		public delegate void AchievementCompleted(Achievement achievement);
++		public delegate void AchievementCompleted(IAchievement achievement);
  
 -		private static int _totalAchievements;
 -		public readonly string Name;
@@ -43,7 +44,8 @@
 -		public bool IsCompleted => _completedCount == _conditions.Count;
 +		public override bool IsCompleted => _completedCount == _conditions.Count;
  
- 		public event AchievementCompleted OnCompleted;
+-		public event AchievementCompleted OnCompleted;
++		// public event AchievementCompleted OnCompleted;
  
 -		public IAchievementTracker GetTracker() => _tracker;
 +		// public IAchievementTracker GetTracker() => _tracker;
@@ -134,8 +136,9 @@
  
 -		public void SetCategory(AchievementCategory category) {
 -			_category = category;
-+		internal void SetCategory(AchievementCategory category) { // Keep for vanilla compatibility
+-		}
++		/*internal void SetCategory(AchievementCategory category) {
 +			Category = category;
- 		}
++		}*/
  	}
  }

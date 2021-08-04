@@ -8,6 +8,24 @@
  using Terraria.UI;
  using Terraria.UI.Chat;
  
+@@ -11,7 +_,7 @@
+ {
+ 	public class UIAchievementListItem : UIPanel
+ 	{
+-		private Achievement _achievement;
++		private IAchievement _achievement;
+ 		private UIImageFramed _achievementIcon;
+ 		private UIImage _achievementIconBorders;
+ 		private const int _iconSize = 64;
+@@ -27,7 +_,7 @@
+ 		private bool _locked;
+ 		private bool _large;
+ 
+-		public UIAchievementListItem(Achievement achievement, bool largeForOtherLanguages) {
++		public UIAchievementListItem(IAchievement achievement, bool largeForOtherLanguages) {
+ 			_large = largeForOtherLanguages;
+ 			BackgroundColor = new Color(26, 40, 89) * 0.8f;
+ 			BorderColor = new Color(13, 20, 44) * 0.8f;
 @@ -39,6 +_,7 @@
  			Width.Set(0f, 1f);
  			PaddingTop = 8f;
@@ -58,15 +76,18 @@
  				float num5 = 80f;
  				Color color2 = new Color(100, 255, 100);
  				if (!base.IsMouseHovering)
-@@ -166,11 +_,11 @@
+@@ -164,13 +_,13 @@
+ 			BorderColor = new Color(13, 20, 44) * 0.8f;
+ 		}
  
- 		public Achievement GetAchievement() => _achievement;
+-		public Achievement GetAchievement() => _achievement;
++		public IAchievement GetAchievement() => _achievement;
  
 -		private Tuple<decimal, decimal> GetTrackerValues() {
--			if (!_achievement.HasTracker)
--				return Tuple.Create(0m, 0m);
 +		private IAchievementTracker GetTrackerValues() {
+-			if (!_achievement.HasTracker)
 +			//if (!_achievement.HasTracker)
+-				return Tuple.Create(0m, 0m);
 +				return _achievement.Tracker; // Tuple.Create(0m, 0m);
  
 -			IAchievementTracker tracker = _achievement.GetTracker();

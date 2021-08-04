@@ -9,3 +9,78 @@
  using Terraria.Social;
  using Terraria.UI;
  using Terraria.Utilities;
+@@ -23,7 +_,7 @@
+ 
+ 		private string _savePath;
+ 		private bool _isCloudSave;
+-		private Dictionary<string, Achievement> _achievements = new Dictionary<string, Achievement>();
++		private Dictionary<string, IAchievement> _achievements = new Dictionary<string, IAchievement>();
+ 		private readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings();
+ 		private byte[] _cryptoKey;
+ 		private Dictionary<string, int> _achievementIconIndexes = new Dictionary<string, int>();
+@@ -73,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		public List<Achievement> CreateAchievementsList() => _achievements.Values.ToList();
++		public List<IAchievement> CreateAchievementsList() => _achievements.Values.ToList();
+ 
+ 		public void Load() {
+ 			Load(_savePath, _isCloudSave);
+@@ -110,7 +_,7 @@
+ 				}
+ 
+ 				if (SocialAPI.Achievements != null) {
+-					foreach (KeyValuePair<string, Achievement> achievement in _achievements) {
++					foreach (KeyValuePair<string, IAchievement> achievement in _achievements) {
+ 						if (achievement.Value.IsCompleted && !SocialAPI.Achievements.IsAchievementCompleted(achievement.Key)) {
+ 							flag = true;
+ 							achievement.Value.ClearProgress();
+@@ -127,20 +_,20 @@
+ 			if (SocialAPI.Achievements != null)
+ 				return;
+ 
+-			foreach (KeyValuePair<string, Achievement> achievement in _achievements) {
++			foreach (KeyValuePair<string, IAchievement> achievement in _achievements) {
+ 				achievement.Value.ClearProgress();
+ 			}
+ 
+ 			Save();
+ 		}
+ 
+-		private void AchievementCompleted(Achievement achievement) {
++		private void AchievementCompleted(IAchievement achievement) {
+ 			Save();
+ 			if (this.OnAchievementCompleted != null)
+ 				this.OnAchievementCompleted(achievement);
+ 		}
+ 
+-		public void Register(Achievement achievement) {
++		public void Register(IAchievement achievement) {
+ 			_achievements.Add(achievement.Name, achievement);
+ 			achievement.OnCompleted += AchievementCompleted;
+ 		}
+@@ -150,11 +_,11 @@
+ 		}
+ 
+ 		public void RegisterAchievementCategory(string achievementName, AchievementCategory category) {
+-			_achievements[achievementName].SetCategory(category);
++			_achievements[achievementName].Category = category;
+ 		}
+ 
+-		public Achievement GetAchievement(string achievementName) {
++		public IAchievement GetAchievement(string achievementName) {
+-			if (_achievements.TryGetValue(achievementName, out Achievement value))
++			if (_achievements.TryGetValue(achievementName, out IAchievement value))
+ 				return value;
+ 
+ 			return null;
+@@ -163,7 +_,7 @@
+ 		public T GetCondition<T>(string achievementName, string conditionName) where T : AchievementCondition => GetCondition(achievementName, conditionName) as T;
+ 
+ 		public AchievementCondition GetCondition(string achievementName, string conditionName) {
+-			if (_achievements.TryGetValue(achievementName, out Achievement value))
++			if (_achievements.TryGetValue(achievementName, out IAchievement value))
+ 				return value.GetCondition(conditionName);
+ 
+ 			return null;

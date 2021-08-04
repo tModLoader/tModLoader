@@ -27,6 +27,8 @@ namespace Terraria.ModLoader
 
 		public virtual bool IsCompleted { get; set; }
 
+		public Achievement.AchievementCompleted OnCompleted { get; set; }
+
 		protected sealed override void Register() {
 			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"AchievementName.{Name}");
 			DisplayDescription = LocalizationLoader.GetOrCreateTranslation(Mod, $"AchievementDescription.{Name}");

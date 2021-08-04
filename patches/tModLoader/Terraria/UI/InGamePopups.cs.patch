@@ -8,7 +8,23 @@
  using Terraria.Social.Base;
  
  namespace Terraria.UI
-@@ -61,8 +_,8 @@
+@@ -12,7 +_,7 @@
+ 	{
+ 		public class AchievementUnlockedPopup : IInGameNotification
+ 		{
+-			private Achievement _theAchievement;
++			private IAchievement _theAchievement;
+ 			private Asset<Texture2D> _achievementTexture;
+ 			private Asset<Texture2D> _achievementBorderTexture;
+ 			private const int _iconSize = 64;
+@@ -55,14 +_,14 @@
+ 				}
+ 			}
+ 
+-			public AchievementUnlockedPopup(Achievement achievement) {
++			public AchievementUnlockedPopup(IAchievement achievement) {
+ 				CreationObject = achievement;
+ 				_ingameDisplayTimeLeft = 300;
  				_theAchievement = achievement;
  				_title = achievement.FriendlyName.Value;
  				int num = _iconIndex = Main.Achievements.GetIconIndex(achievement.Name);

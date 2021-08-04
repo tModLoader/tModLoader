@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/Initializers/AchievementInitializer.cs
++++ src/tModLoader/Terraria/Initializers/AchievementInitializer.cs
+@@ -557,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void OnAchievementCompleted(Achievement achievement) {
++		private static void OnAchievementCompleted(IAchievement achievement) {
+ 			Main.NewText(Language.GetTextValue("Achievements.Completed", AchievementTagHandler.GenerateTag(achievement)));
+ 			if (SoundEngine.FindActiveSound(SoundID.AchievementComplete) == null)
+ 				SoundEngine.PlayTrackedSound(SoundID.AchievementComplete);
