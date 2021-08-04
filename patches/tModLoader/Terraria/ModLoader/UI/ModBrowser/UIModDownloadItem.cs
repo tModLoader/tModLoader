@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -171,7 +172,17 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				case ModBrowserSortMode.DownloadsDescending:
 					return -1 * _downloads.CompareTo(item?._downloads);
 				case ModBrowserSortMode.RecentlyUpdated:
-					return -1 * string.Compare(_timeStamp, item?._timeStamp, StringComparison.Ordinal);
+					// If the downloaded mod doesn't have a timestamp for whatever reason, it should be last.
+					if (item == null)
+						return -1;
+
+					// Mod timestamps are formatted via en-us standard (MM/DD/YYYY H/MM/SS TT).
+					CultureInfo cultureInfo = CultureInfo.GetCultureInfo("en-us");
+
+					DateTime timeStamp = DateTime.Parse(_timeStamp, cultureInfo);
+					DateTime comparedTimeStamp = DateTime.Parse(item?._timeStamp, cultureInfo);
+
+					return -1 * timeStamp.CompareTo(comparedTimeStamp);
 				case ModBrowserSortMode.Hot:
 					return -1 * _hot.CompareTo(item?._hot);
 			}
