@@ -25,31 +25,28 @@
  				float num5 = 80f;
  				Color color2 = new Color(100, 255, 100);
  				if (!base.IsMouseHovering)
-@@ -166,12 +_,12 @@
+@@ -166,11 +_,11 @@
  
  		public Achievement GetAchievement() => _achievement;
  
 -		private Tuple<decimal, decimal> GetTrackerValues() {
-+		private IAchievementTracker GetTrackerValues() {
- 			if (!_achievement.HasTracker)
+-			if (!_achievement.HasTracker)
 -				return Tuple.Create(0m, 0m);
-+				return null; // Tuple.Create(0m, 0m);
++		private IAchievementTracker GetTrackerValues() {
++			//if (!_achievement.HasTracker)
++				return _achievement.Tracker; // Tuple.Create(0m, 0m);
  
- 			IAchievementTracker tracker = _achievement.GetTracker();
--			if (tracker.GetTrackerType() == TrackerType.Int) {
-+			/*if (tracker.GetTrackerType() == TrackerType.Int) {
+-			IAchievementTracker tracker = _achievement.GetTracker();
++			/*IAchievementTracker tracker = _achievement.GetTracker();
+ 			if (tracker.GetTrackerType() == TrackerType.Int) {
  				AchievementTracker<int> achievementTracker = (AchievementTracker<int>)tracker;
  				return Tuple.Create((decimal)achievementTracker.Value, (decimal)achievementTracker.MaxValue);
- 			}
-@@ -179,9 +_,9 @@
- 			if (tracker.GetTrackerType() == TrackerType.Float) {
- 				AchievementTracker<float> achievementTracker2 = (AchievementTracker<float>)tracker;
+@@ -181,7 +_,7 @@
  				return Tuple.Create((decimal)achievementTracker2.Value, (decimal)achievementTracker2.MaxValue);
--			}
-+			}*/
+ 			}
  
 -			return Tuple.Create(0m, 0m);
-+			return tracker; // Tuple.Create(0m, 0m);
++			return tracker; // Tuple.Create(0m, 0m);*/
  		}
  
  		private void DrawProgressBar(SpriteBatch spriteBatch, float progress, Vector2 spot, float Width = 169f, Color BackColor = default(Color), Color FillingColor = default(Color), Color BlipColor = default(Color)) {

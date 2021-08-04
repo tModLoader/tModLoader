@@ -1,4 +1,6 @@
-﻿using Terraria.Achievements;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using Terraria.Achievements;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
@@ -20,6 +22,10 @@ namespace Terraria.ModLoader
 
 		public virtual AchievementCategory Category { get; set; } = AchievementCategory.None;
 
+		public virtual IAchievementTracker Tracker { get; set; }
+
+		public virtual bool IsCompleted { get; set; }
+
 		protected sealed override void Register() {
 			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"AchievementName.{Name}");
 			DisplayDescription = LocalizationLoader.GetOrCreateTranslation(Mod, $"AchievementDescription.{Name}");
@@ -28,5 +34,16 @@ namespace Terraria.ModLoader
 		public override void SetupContent() {
 			SetStaticDefaults();
 		}
+
+		public virtual void ClearProgress() {
+		}
+
+		public virtual void Load(Dictionary<string, JObject> conditions) {
+		}
+
+		public virtual void AddCondition(AchievementCondition condition) {
+		}
+
+		public virtual AchievementCondition GetCondition(string conditionName) => null;
 	}
 }

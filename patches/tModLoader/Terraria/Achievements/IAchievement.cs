@@ -1,5 +1,6 @@
-﻿using Terraria.Localization;
-using Terraria.ModLoader;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using Terraria.Localization;
 
 namespace Terraria.Achievements
 {
@@ -12,5 +13,17 @@ namespace Terraria.Achievements
 		LocalizedText Description { get; }
 
 		AchievementCategory Category { get; }
+
+		IAchievementTracker Tracker { get; }
+
+		bool IsCompleted { get; }
+
+		void ClearProgress();
+
+		void Load(Dictionary<string, JObject> conditions);
+
+		void AddCondition(AchievementCondition condition);
+
+		AchievementCondition GetCondition(string conditionName);
 	}
 }
