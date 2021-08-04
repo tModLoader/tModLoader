@@ -3612,7 +3612,7 @@
  			Item item2 = (itemAnimation > 0) ? lastVisualizedSelectedItem : item;
  			Rectangle drawHitbox = Item.GetDrawHitbox(item2.type, this);
  			compositeFrontArm.enabled = false;
-@@ -29843,12 +_,24 @@
+@@ -29843,12 +_,22 @@
  				itemAnimation--;
  			}
  
@@ -3627,8 +3627,7 @@
  			else
  				ItemCheck_ApplyHoldStyle(heightOffsetHitboxCenter, item2, drawHitbox);
  
- 			releaseUseItem = !controlUseItem;
-+
+-			releaseUseItem = !controlUseItem;
 +			return; // This is the end of our spaghetti trip!
 +
 +			// See the comment at DecrementItemAnimation for explanation
@@ -3637,13 +3636,15 @@
  			if (itemTime > 0) {
  				itemTime--;
  				if (ItemTimeIsZero && whoAmI == Main.myPlayer) {
-@@ -29862,11 +_,17 @@
+@@ -29862,11 +_,19 @@
  				}
  			}
  
 +			goto ItemCheckPart1;
 +
 +			ItemCheckPart2:
++
++			releaseUseItem = !controlUseItem;
 +
  			if (!JustDroppedAnItem) {
  				ItemCheck_EmitHeldItemLight(item);
