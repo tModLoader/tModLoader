@@ -6,6 +6,6 @@ var class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one =
     [ "ReportDroprates", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one.html#ae027291d3ef69162048b9f1094f33eec", null ],
     [ "TryDroppingItem", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one.html#a25fae68ea059e9f67c2df52fdfe689f0", null ],
     [ "itemId", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one.html#ad13c4213a9114e8e794daaff81cdff0c", null ],
-    [ "parameters", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one.html#aaafafc0dd962ec61d867955e0236a4c9", null ],
-    [ "ChainedRules", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one.html#aaeaed89cb96a6446d68708064c162a44", null ]
+    [ "ChainedRules", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one.html#aaeaed89cb96a6446d68708064c162a44", null ],
+    [ "parameters", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one.html#aaafafc0dd962ec61d867955e0236a4c9", null ]
 ];
