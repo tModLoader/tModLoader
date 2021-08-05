@@ -16,8 +16,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader.Exceptions;
-using Terraria.Social.Base;
-using Terraria.Social.Steam;
 
 namespace Terraria.ModLoader.Core
 {
@@ -294,22 +292,16 @@ namespace Terraria.ModLoader.Core
 
 		private List<LocalMod> FindReferencedMods(BuildProperties properties)
 		{
+			//Determine the existing mods here, then just keep passing around the collection
+			var existingMods = ModOrganizer.FindMods().ToDictionary(mod => mod.modFile.Name, mod => mod);
+
 			var mods = new Dictionary<string, LocalMod>();
-			FindReferencedMods(properties, mods, true);
+			FindReferencedMods(properties, existingMods, mods, true);
 			return mods.Values.ToList();
 		}
 
-		private static WorkshopHelper.UGCBased.Downloader WorkshopFileFinder = new WorkshopHelper.UGCBased.Downloader();
-
-		private void FindReferencedMods(BuildProperties properties, Dictionary<string, LocalMod> mods, bool requireWeak)
+		private void FindReferencedMods(BuildProperties properties, Dictionary<string, LocalMod> existingMods, Dictionary<string, LocalMod> mods, bool requireWeak)
 		{
-			WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
-
-			//ModPaths will contain folder paths to each mod, ending with the IDs for the workshop items.
-			//The actual .tmod for the workshop items will be located in those folders.
-			//Hence, the ModPaths paths need to be converted to the actual .tmod files present.
-			var workshopMods = WorkshopFileFinder.ModPaths.SelectMany(workshopItem => Directory.GetFiles(workshopItem, "*.tmod", SearchOption.TopDirectoryOnly)).ToList();
-
 			foreach (var refName in properties.RefNames(true)) {
 				if (mods.ContainsKey(refName))
 					continue;
@@ -317,28 +309,9 @@ namespace Terraria.ModLoader.Core
 				bool isWeak = properties.weakReferences.Any(r => r.mod == refName);
 				LocalMod mod;
 				try {
-					//Attempt to load files from local Mods folder first for dev convenience, then the workshop
-					//  (behaviour mimicked from ModOrganizer.FindMods)
-					TmodFile modFile;
-					try {
-						modFile = new TmodFile(Path.Combine(ModLoader.ModPath, refName + ".tmod"));
-						
-						using (modFile.Open())
-							mod = new LocalMod(modFile);
-					}
-					catch(Exception ex) {
-						//Any exceptions from the above try block need to be caught here since this is a fallback
-						var path = workshopMods.FirstOrDefault(item => Path.GetFileNameWithoutExtension(item) == refName);
-
-						//Path doesn't exist on the workshop or the local directory
-						if(path == default)
-							throw new FileNotFoundException($"Could not find \"{refName}.tmod\" in your subscribed Workshop mods nor the Mods folder");
-
-						modFile = new TmodFile(path);
-
-						using (modFile.Open())
-							mod = new LocalMod(modFile);
-					}
+					//If the file doesn't exist here, bail out immediately
+					if (!existingMods.TryGetValue(refName, out mod))
+						throw new FileNotFoundException($"Could not find \"{refName}.tmod\" in your subscribed Workshop mods nor the Mods folder");
 				}
 				catch (FileNotFoundException) when (isWeak && !requireWeak) {
 					// don't recursively require weak deps, if the mod author needs to compile against them, they'll have them installed
@@ -348,7 +321,7 @@ namespace Terraria.ModLoader.Core
 					throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorModReference", refName), ex);
 				}
 				mods[refName] = mod;
-				FindReferencedMods(mod.properties, mods, false);
+				FindReferencedMods(mod.properties, existingMods, mods, false);
 			}
 		}
 
