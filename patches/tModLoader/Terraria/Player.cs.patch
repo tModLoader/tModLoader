@@ -3556,9 +3556,9 @@
 +			// 2. Item time is reduced
 +			// 3. Reuse delay is applied
 +			// 4. Item animation is applied if button is pressed
-+			// 5. Item logic applies item time
-+			//    - ReleaseItem set at the beginning of this
-+			// 6. Hold / Use styles are invoked
++			// 5. 'releaseUseItem' is set
++			// 6. Item logic applies item time
++			// 7. Hold / Use styles are invoked
 +			//
 +			// Way more sane and way less confusing!
 +
