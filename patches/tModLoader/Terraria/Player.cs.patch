@@ -3547,9 +3547,9 @@
 +			// 2. Item animation is applied if button is pressed
 +			// 3. Item animation is reduced
 +			// 4. Hold / Use styles are invoked
-+			//    - ReleaseItem set at the end of this
-+			// 5. Item time is reduced
-+			// 6. Item logic applies item time
++			// 5. 'releaseUseItem' is set
++			// 6. Item time is reduced
++			// 7. Item logic applies item time
 +			//
 +			// TML:
 +			// 1. Item animation is reduced
