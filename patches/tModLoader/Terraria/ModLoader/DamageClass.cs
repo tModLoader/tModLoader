@@ -52,9 +52,14 @@ namespace Terraria.ModLoader
 		public virtual bool CountsAs(DamageClass damageClass) => false;
 
 		/// <summary> 
-		/// This lets you define default buffs for all items of this class (eg, base crit)
+		/// This lets you define default buffs for all items of this class (e.g. base critical strike chance).
 		/// </summary>
 		public virtual void SetDefaultStats(Player player) {}
+
+		/// <summary>
+		/// This lets you enable or disable standard crits from items and projectiles associated with this DamageClass.
+		/// </summary>
+		public virtual bool AllowStandardCrits() => true;
 
 		protected sealed override void Register() {
 			ClassName = LocalizationLoader.GetOrCreateTranslation(Mod, $"DamageClassName.{Name}");

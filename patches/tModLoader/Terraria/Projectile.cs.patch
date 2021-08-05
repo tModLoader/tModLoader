@@ -258,7 +258,7 @@
  											flag6 = true;
 +										*/
 +
-+										if (!(minion || ProjectileID.Sets.MinionShot[type]) && Main.rand.Next(100) < Main.player[owner].GetWeaponCrit(Main.player[owner].HeldItem))
++										if (DamageType.AllowStandardCrits() && Main.rand.Next(100) < Main.player[owner].GetWeaponCrit(Main.player[owner].HeldItem))
 +											flag6 = true;
  
  										int num12 = type;

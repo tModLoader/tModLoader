@@ -56,6 +56,8 @@ namespace Terraria.ModLoader
 		protected override string LangKey => "LegacyTooltip.53";
 
 		protected override float GetBenefitFrom(DamageClass damageClass) => damageClass == Generic ? 1f : 0f;
+
+		public override bool AllowStandardCrits() => false;
 	}
 
 	public class ThrowingDamageClass : VanillaDamageClass
