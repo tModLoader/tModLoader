@@ -58,12 +58,26 @@ set RUNTIMESELECT=dotnet
 REM install directories
 set INSTALLDIR=dotnet\%VERSIONSEL%
 
-REM Skip install check if runtime.log exists due to install having previously failed.
-if Not exist LaunchLogs\runtime.log (
-	REM Check if the install for our target NET already exists, and install if not
-	if Not exist %INSTALLDIR%\dotnet.exe  (
-		echo Logging to LaunchLogs\install.log
-		call :LOG 1> %LOGFILE% 2>&1
+REM Check if the install for our target NET already exists, and install if not
+if Not exist %INSTALLDIR%\dotnet.exe  (
+	echo Logging to LaunchLogs\install.log
+	call :LOG 1> %LOGFILE% 2>&1
+)
+
+REM If the install failed, provide a link to get the portable directly, and instructions on where to do with it.
+if Not exist %INSTALLDIR%\dotnet.exe  (
+	mkdir %InstallDir%
+	echo %ColorRed%It has been detected that your system failed to install the dotnet portables automatically. Will now proceed manually.%ColorDefault%
+	start "" https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-%version%-windows-x64-binaries
+	echo Now manually downloading the x64 .NET portable. Please find it in the opened browser.
+	set /p DUMMY=Press 'ENTER' to proceed to the next step...
+	echo Please extract the downloaded Zip file contents in to %~dp0\%InstallDir% 
+	set /p DUMMY=Please press Enter when this step is complete.
+	
+	:loop
+	if Not exist %INSTALLDIR%\dotnet.exe (
+		set /p DUMMY=%ColorRed%%INSTALLDIR%\dotnet.exe not detected. Please ensure step is complete before continuing with Enter.%ColorDefault%
+		goto :loop
 	)
 )
 

@@ -125,7 +125,7 @@
  					ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
  					_entryData = new SteamWorkshopItem {
  						Title = itemTitle,
-@@ -171,19 +_,31 @@
+@@ -171,19 +_,32 @@
  						ContentFolderPath = contentFolderPath,
  						Tags = tags,
  						PreviewImagePath = previewImagePath,
@@ -147,7 +147,9 @@
  					if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out FoundWorkshopEntryInfo info))
  						num = info.workshopEntryId;
  
- 					if (num.HasValue && finder.HasItemOfId(num.Value)) {
++					// If it has a publish ID, it has to be yours. Removing vanilla finder check to avoid dupes - Solxan
+-					if (num.HasValue && finder.HasItemOfId(num.Value)) {
++					if (num.HasValue /* finder.HasItemOfId(num.Value)*/) {
  						_publishedFileID = new PublishedFileId_t(num.Value);
 +						if (buildData == null) {
 -						PreventUpdatingCertainThings();
@@ -160,7 +162,43 @@
  						CreateItem();
  					}
  				}
-@@ -240,10 +_,10 @@
+@@ -205,6 +_,8 @@
+ 				}
+ 
+ 				private void CreateItem() {
++					Logging.tML.Info("Creating Item " + _entryData.Title);
++
+ 					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
+ 					SteamAPICall_t hAPICall = SteamUGC.CreateItem(SteamUtils.GetAppID(), EWorkshopFileType.k_EWorkshopFileTypeFirst);
+ 					_createItemHook.Set(hAPICall, CreateItemResult);
+@@ -212,11 +_,13 @@
+ 				}
+ 
+ 				private void CreateItemResult(CreateItemResult_t param, bool bIOFailure) {
++					// This call can lead to creating a bunch of empty items due to failing to write the Manifest.json contents. Removing it here minimizes duplicates on rapid/repeated errored publishing - Solxan
+-					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
++					/* if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
+ 						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
+ 						_endAction(this);
+ 					}
++					else */
+-					else if (param.m_eResult == EResult.k_EResultOK) {
++					if (param.m_eResult == EResult.k_EResultOK) {
+ 						_publishedFileID = param.m_nPublishedFileId;
+ 						UpdateItem();
+ 					}
+@@ -233,17 +_,19 @@
+ 				private void UpdateItem() {
+ 					string headerText = GetHeaderText();
+ 					if (!TryWritingManifestToFolder(_entryData.ContentFolderPath, headerText)) {
+-						_endAction(this);
+-						return;
++						// If this fails to write, any future attempts to publish the item will always create a new item. We don't want that, so give clear message that something is wrong. - Solxan
++						Logging.tML.Fatal("Failed to write critical publishing information to the item content folder. Ending user interactions with the Workshop immediately to preserve integrity.");
++						Main.instance.Exit();
+ 					}
+ 
++					Logging.tML.Info("Updating Item " + _entryData.Title);
  					PrepareContentForUpdate();
  					UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
  					if (_entryData.Title != null)
