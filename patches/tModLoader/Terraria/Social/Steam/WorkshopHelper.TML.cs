@@ -139,7 +139,7 @@ namespace Terraria.Social.Steam
 					SteamUGC.GetItemDownloadInfo(itemID, out ulong dlBytes, out ulong totalBytes);
 
 					if (uiProgress != null)
-						uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
+						uiProgress.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 				}
 
 				// We don't use the callback do to unreliability, so we manually set the success.
@@ -163,7 +163,7 @@ namespace Terraria.Social.Steam
 					SteamGameServerUGC.GetItemDownloadInfo(itemID, out ulong dlBytes, out ulong totalBytes);
 
 					if (uiProgress != null)
-						uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
+						uiProgress.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 				}
 
 				// We don't receive a callback, so we manually set the success.
@@ -357,9 +357,9 @@ namespace Terraria.Social.Steam
 							string key, val;
 
 							if (ModManager.SteamUser)
-								SteamUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 100, out val, 100);
+								SteamUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 255, out val, 255);
 							else
-								SteamGameServerUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 100, out val, 100);
+								SteamGameServerUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 255, out val, 255);
 
 							metadata[key] = val;
 						}
@@ -430,7 +430,7 @@ namespace Terraria.Social.Steam
 								update = updateIsDowngrade = true;
 						}
 
-						items.Add(new UIModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate.ToString(), update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"], (queryPage - 1) * 50 + i));
+						items.Add(new UIModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"], (queryPage - 1) * 50 + i));
 					}
 					ReleaseWorkshopQuery();
 				} while (_queryReturnCount == Steamworks.Constants.kNumUGCResultsPerPage); // 50 is based on kNumUGCResultsPerPage constant in ISteamUGC. Can't find constant itself? - Solxan

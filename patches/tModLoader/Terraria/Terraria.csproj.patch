@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -2,69 +_,148 @@
+@@ -2,69 +_,149 @@
    <Import Project="../Configuration.targets" />
    <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
@@ -35,6 +35,7 @@
      <OutputName>$(AssemblyName)</OutputName>
 -    <ApplicationIcon>Icon.ico</ApplicationIcon>
 +    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
++    <StartupObject>MonoLaunch</StartupObject>
    </PropertyGroup>
    <ItemGroup>
      <Reference Include="CsvHelper" />
