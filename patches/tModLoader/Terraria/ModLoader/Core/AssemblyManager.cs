@@ -31,6 +31,12 @@ namespace Terraria.ModLoader.Core
 			public ModLoadContext(LocalMod mod) : base(mod.Name, true) {
 				modFile = mod.modFile;
 				properties = mod.properties;
+
+				Resolving += ModLoadContext_Resolving;
+			}
+
+			private Assembly ModLoadContext_Resolving(AssemblyLoadContext arg1, AssemblyName arg2) {
+				return assemblies[arg2.Name].assembly;
 			}
 
 			public void AddDependency(ModLoadContext dep) {
@@ -42,6 +48,12 @@ namespace Terraria.ModLoader.Core
 					using (modFile.Open()) {
 						foreach (var dll in properties.dllReferences) {
 							LoadAssembly(modFile.GetBytes("lib/" + dll + ".dll"));
+						}
+
+						foreach (var mod in properties.modReferences) {
+							TmodFile file = ModOrganizer.FindMods().Where(lm => lm.Enabled).First(lm => lm.Name == mod.mod).modFile;
+							using IDisposable disposable = file.Open();
+							LoadAssembly(file.GetModAssembly());
 						}
 
 						assembly = Debugger.IsAttached && File.Exists(properties.eacPath) ?
