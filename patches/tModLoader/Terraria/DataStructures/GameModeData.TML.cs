@@ -7,10 +7,12 @@ namespace Terraria.DataStructures
 		public float GetPureEnemyDamageModifier() {
 			float enemyDamageModifier = EnemyDamageMultiplier;
 
-			CreativePowers.DifficultySliderPower difficultySliderPower =
-				CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
-			if (difficultySliderPower != null && difficultySliderPower.GetIsUnlocked())
+			if(IsJourneyMode) {
+				CreativePowers.DifficultySliderPower difficultySliderPower =
+					CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
 				enemyDamageModifier *= difficultySliderPower.StrengthMultiplierToGiveNPCs;
+			}
+			
 			return enemyDamageModifier;
 		}
 
@@ -30,10 +32,12 @@ namespace Terraria.DataStructures
 		public float GetPureEnemyMaxLifeMultiplier() {
 			float enemyMaxLifeMultiplier = EnemyMaxLifeMultiplier;
 
-			CreativePowers.DifficultySliderPower difficultySliderPower =
-				CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
-			if (difficultySliderPower != null && difficultySliderPower.GetIsUnlocked())
+			if(IsJourneyMode) {
+				CreativePowers.DifficultySliderPower difficultySliderPower =
+					CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
 				enemyMaxLifeMultiplier *= difficultySliderPower.StrengthMultiplierToGiveNPCs;
+			}
+
 			return enemyMaxLifeMultiplier;
 		}
 
