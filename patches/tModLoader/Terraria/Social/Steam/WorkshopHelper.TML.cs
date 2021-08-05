@@ -139,7 +139,7 @@ namespace Terraria.Social.Steam
 					SteamUGC.GetItemDownloadInfo(itemID, out ulong dlBytes, out ulong totalBytes);
 
 					if (uiProgress != null)
-						uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
+						uiProgress.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 				}
 
 				// We don't use the callback do to unreliability, so we manually set the success.
@@ -163,7 +163,7 @@ namespace Terraria.Social.Steam
 					SteamGameServerUGC.GetItemDownloadInfo(itemID, out ulong dlBytes, out ulong totalBytes);
 
 					if (uiProgress != null)
-						uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
+						uiProgress.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 				}
 
 				// We don't receive a callback, so we manually set the success.
