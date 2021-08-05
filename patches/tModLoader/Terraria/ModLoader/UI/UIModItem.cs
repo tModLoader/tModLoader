@@ -145,7 +145,7 @@ namespace Terraria.ModLoader.UI
 				Append(_keyImage);
 			}
 
-			if (ModCompile.DeveloperMode && ModLoader.badUnloaders.Contains(ModName)) {
+			if (ModCompile.DeveloperMode && ModLoader.IsUnloadedModStillAlive(ModName)) {
 				_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.ModDidNotFullyUnloadWarning")) {
 					Left = { Pixels = _modIconAdjust + PADDING },
 					Top = { Pixels = 3 }

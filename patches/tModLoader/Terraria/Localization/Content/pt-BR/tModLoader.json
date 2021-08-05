@@ -67,6 +67,13 @@
 		"BossBarStyle": "Estilo da Barra de Chefe: {0}",
 		"BossBarStyleNoOptions": "Nenhuma Opção",
 
+		// Workshop
+		// "WorkshopDisclaimer": "By submitting this item, you agree to the tModLoader Terms of Service",
+		// "SteamPublishingLimit": "Error: Only Steam tModLoader owners can publish to Workshop in-game.",
+		// "NoWorkshopAccess": "Error: Unable to access Steam Workshop",
+		// "ModAlreadyUploaded": "Error: Mod already exists on Workshop!",
+		// "ModVersionInfoUnchanged": "Error: Mod Version information must be incremented prior to updating.",
+
 		// Mod Errors
 		"LoadError": "Ocorreu um erro ao carregar {0}",
 		"LoadErrorDisabled": "O(s) mod(s) foi(ram) desabilitado(s) automaticamente.",
@@ -219,7 +226,6 @@
 		"EnterSteamID": "Por favor, Insira o Seu SteamID",
 		"PasteSteamID": "Colar SteamID (ctrl-v)",
 		"MBServerResponse": "A resposta do servidor do Navegador de Mods:\n\n{0}",
-
 
 		// TML Options
 		"DownloadFromServersYes": "Baixar Mods de Servidores: Ligado",
@@ -385,13 +391,13 @@
 		"PercentIncreasedDamage": "{0}% de aumento nos danos"
 	},
 	"RecipeConditions": {
-	"NearWater": "Precisa de água",
-		 "NearLava": "Precisa de lava",
-		 "NearHoney": "Precisa de mel",
-		 "TimeDay": "Precisa do dia",
-		 "TimeNight": "Precisa da noite",
-		 "InDungeon": "Precisa estar no bioma do Calabouço",
-		 "InCorrupt": "Precisa estar no bioma da Corrupção",
+		"NearWater": "Precisa de água",
+		"NearLava": "Precisa de lava",
+		"NearHoney": "Precisa de mel",
+		"TimeDay": "Precisa do dia",
+		"TimeNight": "Precisa da noite",
+		"InDungeon": "Precisa estar no bioma do Calabouço",
+		"InCorrupt": "Precisa estar no bioma da Corrupção",
 		"InHallow": "Precisa estar no bioma do Sagrado",
 		"InMeteor": "Precisa estar no bioma de Meteoro",
 		"InJungle": "Precisa estar no bioma da Selva",

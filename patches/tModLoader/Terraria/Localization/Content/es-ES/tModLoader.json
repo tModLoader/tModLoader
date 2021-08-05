@@ -66,7 +66,7 @@
 		// Interface
 		"BossBarStyle": "Estilo de barra de jefes: {0}",
 		"BossBarStyleNoOptions": "Sin opciones",
-		
+
 		// Workshop
 		"WorkshopDisclaimer": "Al publicar este elemento, aceptas los Términos de Servicio de tModLoader",
 		"SteamPublishingLimit": "Error: Solo los usuarios de Steam pueden publicar a través del juego en Steam Workshop.",
