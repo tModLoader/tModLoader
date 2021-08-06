@@ -130,7 +130,7 @@
  			ownerHitCheckDistance = 1000f;
  			counterweight = false;
  			sentry = false;
-@@ -7916,9 +_,8 @@
+@@ -7916,9 +_,11 @@
  				light = 1f;
  				ranged = true;
  			}
@@ -138,10 +138,21 @@
 -				active = false;
 -			}
 +
++			if (type < ProjectileID.Count && (minion || sentry || ProjectileID.Sets.MinionShot[type] || ProjectileID.Sets.SentryShot[type]))
++				DamageType = DamageClass.Summon;
++
 +			ProjectileLoader.SetDefaults(this);
  
  			width = (int)((float)width * scale);
  			height = (int)((float)height * scale);
+@@ -7937,6 +_,7 @@
+ 			extraUpdates = 1;
+ 			usesLocalNPCImmunity = true;
+ 			localNPCHitCooldown = -1;
++			DamageType = DamageClass.Summon;
+ 		}
+ 
+ 		public static int GetNextSlot() {
 @@ -7951,6 +_,10 @@
  			return result;
  		}
