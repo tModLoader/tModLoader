@@ -138,7 +138,7 @@
 -				active = false;
 -			}
 +
-+			// tML: Tell all summon class projectiles to actually use the corresponding DamageClass.
++			// tML: Tell all vanilla summon class projectiles to actually use the corresponding DamageClass.
 +			if (type < ProjectileID.Count && (minion || sentry || ProjectileID.Sets.MinionShot[type] || ProjectileID.Sets.SentryShot[type] || ProjectileID.Sets.IsAWhip[type]))
 +				DamageType = DamageClass.Summon;
 +
