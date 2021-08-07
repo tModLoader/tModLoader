@@ -95,16 +95,16 @@ namespace Terraria.ModLoader.UI
 
 					// Copy the dll to ModLoader\Mod Libraries for easy collaboration.
 					if (name == $"{mod.Name}.dll") {
-						string modReferencesPath = Path.Combine(Program.SavePath, "Mod Libraries");
+						string modReferencesPath = Path.Combine(ModCompile.ModSourcePath, "Mod Libraries");
 						Directory.CreateDirectory(modReferencesPath);
 						File.Copy(path, Path.Combine(modReferencesPath, $"{mod.Name}_v{mod.modFile.Version}.dll"), true);
-						log?.WriteLine("You can find this mod's .dll files under ModLoader\\Mod Libraries for easy mod collaboration!");
+						log?.WriteLine("You can find this mod's .dll files under ModLoader/Mod Sources/Mod Libraries for easy mod collaboration!");
 					}
 					if (name == $"{mod.Name}.xml" && !mod.properties.hideCode) {
-						string modReferencesPath = Path.Combine(Program.SavePath, "Mod Libraries");
+						string modReferencesPath = Path.Combine(ModCompile.ModSourcePath, "Mod Libraries");
 						Directory.CreateDirectory(modReferencesPath);
 						File.Copy(path, Path.Combine(modReferencesPath, $"{mod.Name}_v{mod.modFile.Version}.xml"), true);
-						log?.WriteLine("You can find this mod's documentation .xml file under ModLoader\\Mod Libraries for easy mod collaboration!");
+						log?.WriteLine("You can find this mod's documentation .xml file under ModLoader/Mod Sources/Mod Libraries for easy mod collaboration!");
 					}
 				};
 				Utils.OpenFolder(dir);
