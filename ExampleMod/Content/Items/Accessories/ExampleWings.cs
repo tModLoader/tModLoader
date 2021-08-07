@@ -11,7 +11,9 @@ namespace ExampleMod.Content.Items.Accessories
 	public class ExampleWings : ModItem
 	{
 		// To see how this config option was added, see ExampleModConfig.cs
-		public override bool IsLoadingEnabled(Mod mod) => ModContent.GetInstance<ExampleModConfig>().ExampleWingsToggle;
+		public override bool IsLoadingEnabled(Mod mod) {
+			return ModContent.GetInstance<ExampleModConfig>().ExampleWingsToggle;
+		}
 
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded wing.");
