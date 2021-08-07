@@ -118,6 +118,7 @@ namespace Terraria
 		public bool InModBiome(ModBiome baseInstance) => modBiomeFlags[baseInstance.ZeroIndexType];
 
 		/// <summary>
+<<<<<<< Updated upstream
 		/// The zone property storing if the player is in the purity/forest biome. Updated in <see cref="UpdateBiomes"/>
 		/// </summary>
 		public bool ZonePurity { get; set; } = false;
@@ -126,11 +127,65 @@ namespace Terraria
 		/// Calculates whether or not the player is in the purity/forest biome.
 		/// </summary>
 		public bool InZonePurity() {
+=======
+		/// The zone property storing if the player is in a "default" biome regardless of layer, such as the forest or caverns. Updated in <see cref="UpdateBiomes"/>
+		/// </summary>
+		public bool ZonePure { get; set; } = false;
+
+		/// <summary>
+		/// Calculates whether or not the player is in a "default" biome regardless of layer, such as the forest or caverns
+		/// </summary>
+		public bool InZonePure() {
+>>>>>>> Stashed changes
 			bool one = ZoneBeach || ZoneCorrupt || ZoneCrimson || ZoneDesert || ZoneDungeon || ZoneGemCave;
 			bool two = ZoneGlowshroom || ZoneGranite || ZoneGraveyard || ZoneHallow || ZoneHive || ZoneJungle;
 			bool three = ZoneLihzhardTemple || ZoneMarble || ZoneMeteor || ZoneSnow || ZoneUnderworldHeight;
 			bool four = modBiomeFlags.Cast<bool>().Contains(true);
 			return !(one || two || three || four);
 		}
+
+		/// <summary>
+		/// The zone property storing if the player is in the forest biome. Updated in <see cref="UpdateBiomes"/>
+		/// </summary>
+		public bool ZoneForest { get; set; } = false;
+
+		/// <summary>
+		/// Calculates whether or not the player is in the forest biome
+		/// </summary>
+		public bool InZoneForest() {
+
+
+			return ZonePure && !(ZoneSkyHeight || ZoneRockLayerHeight || ZoneDirtLayerHeight);
+		}
+
+		/// <summary>
+		/// The zone property storing if the player is in the default underground layer biome. Updated in <see cref="UpdateBiomes"/>
+		/// </summary>
+		public bool ZoneNormalUnderground { get; set; } = false;
+
+		/// <summary>
+		/// Calculates whether or not the player is in the default underground layer biome
+		/// </summary>
+		public bool InZoneNormalUnderground() {
+
+
+			return ZonePure && ZoneDirtLayerHeight;
+		}
+
+
+		/// <summary>
+		/// The zone property storing if the player is in the default cavern layer biome. Updated in <see cref="UpdateBiomes"/>
+		/// </summary>
+		public bool ZoneNormalCavern { get; set; } = false;
+
+		/// <summary>
+		/// Calculates whether or not the player is in the default cavern layer biome
+		/// </summary>
+		public bool InZoneNormalCavern() {
+
+
+			return ZonePure && ZoneRockLayerHeight;
+		}
+
 	}
 }
