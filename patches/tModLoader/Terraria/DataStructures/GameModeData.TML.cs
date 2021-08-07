@@ -5,7 +5,7 @@ namespace Terraria.DataStructures
 	public partial class GameModeData
 	{
 		/// <summary>
-		/// 
+		/// Returns the damage modifier with journey mode applied
 		/// </summary>
 		public float EnemyDamageModifierWithPowersApplied
 		{
@@ -24,6 +24,9 @@ namespace Terraria.DataStructures
 			}
 		}
 
+		/// <summary>
+		/// Returns the damage modifier with journey mode and for the worthy applied
+		/// </summary>
 		public float EffectiveEnemyDamageModifier
 		{
 			get
@@ -33,6 +36,8 @@ namespace Terraria.DataStructures
 				{
 					if (IsJourneyMode)
 					{
+						//The normal formula is (EnemyDamageMultiplier + 1) * 4/3 * difficultySliderPower.StrengthMultiplierToGiveNPCs
+						//As the difficultySliderPower is already applied, we need to multiply (EnemyDamageMultiplier + 1) to get the correct value
 						enemyDamageModifier *= 2;
 					}
 					else
@@ -46,6 +51,9 @@ namespace Terraria.DataStructures
 			}
 		}
 
+		/// <summary>
+		/// Returns the damage modifier with journey mode applied
+		/// </summary>
 		public float EnemyMaxLifeMultiplierWithPowersApplied
 		{
 			get
@@ -63,6 +71,9 @@ namespace Terraria.DataStructures
 			}
 		}
 
+		/// <summary>
+		/// Returns the damage modifier with journey mode and for the worthy applied
+		/// </summary>
 		public float EffectiveEnemyMaxLifeMultiplier
 		{
 			get
@@ -72,6 +83,8 @@ namespace Terraria.DataStructures
 				{
 					if (IsJourneyMode)
 					{
+						//The normal formula is (EnemyDamageMultiplier + 1) * difficultySliderPower.StrengthMultiplierToGiveNPCs
+						//As the difficultySliderPower is already applied, we need to multiply (EnemyDamageMultiplier + 1) to get the correct value
 						enemyMaxLifeMultiplier *= 2;
 					}
 					else
@@ -84,6 +97,9 @@ namespace Terraria.DataStructures
 			}
 		}
 
+		/// <summary>
+		/// Returns the damage modifier with for the worthy applied
+		/// </summary>
 		public float EffectiveEnemyMoneyDropMultiplier
 		{
 			get
@@ -91,14 +107,7 @@ namespace Terraria.DataStructures
 				float enemyMoneyDropMultiplier = EnemyMoneyDropMultiplier;
 				if (Main.getGoodWorld)
 				{
-					if (IsJourneyMode)
-					{
-						enemyMoneyDropMultiplier *= 2;
-					}
-					else
-					{
-						enemyMoneyDropMultiplier += 1;
-					}
+					enemyMoneyDropMultiplier += 1;
 				}
 
 				return enemyMoneyDropMultiplier;
