@@ -4,69 +4,105 @@ namespace Terraria.DataStructures
 {
 	public partial class GameModeData
 	{
-		public float GetPureEnemyDamageModifier() {
-			float enemyDamageModifier = EnemyDamageMultiplier;
+		/// <summary>
+		/// 
+		/// </summary>
+		public float EnemyDamageModifierWithPowersApplied
+		{
+			get
+			{
+				float enemyDamageModifier = EnemyDamageMultiplier;
 
-			if(IsJourneyMode) {
-				CreativePowers.DifficultySliderPower difficultySliderPower =
-					CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
-				enemyDamageModifier *= difficultySliderPower.StrengthMultiplierToGiveNPCs;
+				if (IsJourneyMode)
+				{
+					CreativePowers.DifficultySliderPower difficultySliderPower =
+						CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
+					enemyDamageModifier *= difficultySliderPower.StrengthMultiplierToGiveNPCs;
+				}
+
+				return enemyDamageModifier;
 			}
-			
-			return enemyDamageModifier;
 		}
 
-		public float GetEnemyDamageModifier() {
-			float enemyDamageModifier = GetPureEnemyDamageModifier();
-			if (Main.getGoodWorld) {
-				if (IsJourneyMode) {
-					enemyDamageModifier *= 2;
+		public float EffectiveEnemyDamageModifier
+		{
+			get
+			{
+				float enemyDamageModifier = EnemyDamageModifierWithPowersApplied;
+				if (Main.getGoodWorld)
+				{
+					if (IsJourneyMode)
+					{
+						enemyDamageModifier *= 2;
+					}
+					else
+					{
+						enemyDamageModifier += 1;
+					}
+					enemyDamageModifier *= 1.25f;
 				}
-				else {
-					enemyDamageModifier += 1;
-				}
+
+				return enemyDamageModifier;
 			}
-
-			return enemyDamageModifier;
-		}
-		public float GetPureEnemyMaxLifeMultiplier() {
-			float enemyMaxLifeMultiplier = EnemyMaxLifeMultiplier;
-
-			if(IsJourneyMode) {
-				CreativePowers.DifficultySliderPower difficultySliderPower =
-					CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
-				enemyMaxLifeMultiplier *= difficultySliderPower.StrengthMultiplierToGiveNPCs;
-			}
-
-			return enemyMaxLifeMultiplier;
 		}
 
-		public float GetEnemyMaxLifeMultiplier() {
-			float enemyMaxLifeMultiplier = GetPureEnemyMaxLifeMultiplier();
-			if (Main.getGoodWorld) {
-				if (IsJourneyMode) {
-					enemyMaxLifeMultiplier *= 2;
-				}
-				else {
-					enemyMaxLifeMultiplier += 1;
-				}
-			}
+		public float EnemyMaxLifeMultiplierWithPowersApplied
+		{
+			get
+			{
+				float enemyMaxLifeMultiplier = EnemyMaxLifeMultiplier;
 
-			return enemyMaxLifeMultiplier;
+				if (IsJourneyMode)
+				{
+					CreativePowers.DifficultySliderPower difficultySliderPower =
+						CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
+					enemyMaxLifeMultiplier *= difficultySliderPower.StrengthMultiplierToGiveNPCs;
+				}
+
+				return enemyMaxLifeMultiplier;
+			}
 		}
 
-		public float GetEnemyMoneyDropMultiplier() {
-			float enemyMoneyDropMultiplier = EnemyMoneyDropMultiplier;
-			if (Main.getGoodWorld) {
-				if (IsJourneyMode) {
-					enemyMoneyDropMultiplier *= 2;
+		public float EffectiveEnemyMaxLifeMultiplier
+		{
+			get
+			{
+				float enemyMaxLifeMultiplier = EnemyMaxLifeMultiplierWithPowersApplied;
+				if (Main.getGoodWorld)
+				{
+					if (IsJourneyMode)
+					{
+						enemyMaxLifeMultiplier *= 2;
+					}
+					else
+					{
+						enemyMaxLifeMultiplier += 1;
+					}
 				}
-				else {
-					enemyMoneyDropMultiplier += 1;
-				}
-			}
 
-			return enemyMoneyDropMultiplier;
+				return enemyMaxLifeMultiplier;
+			}
+		}
+
+		public float EffectiveEnemyMoneyDropMultiplier
+		{
+			get
+			{
+				float enemyMoneyDropMultiplier = EnemyMoneyDropMultiplier;
+				if (Main.getGoodWorld)
+				{
+					if (IsJourneyMode)
+					{
+						enemyMoneyDropMultiplier *= 2;
+					}
+					else
+					{
+						enemyMoneyDropMultiplier += 1;
+					}
+				}
+
+				return enemyMoneyDropMultiplier;
+			}
 		}
 	}
 }
