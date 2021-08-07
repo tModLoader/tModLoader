@@ -27,7 +27,7 @@ namespace Terraria.ModLoader.Config
 		public abstract ConfigScope Mode { get; }
 
 		// TODO: Does non-autoloaded ModConfigs have a use-case?
-		public virtual bool Autoload(ref string name) => Mod.Properties.AutoloadContent;
+		public virtual bool Autoload(ref string name) => Mod.ContentAutoloadingEnabled;
 
 		/// <summary>
 		/// This method is called when the ModConfig has been loaded for the first time. This happens before regular Autoloading and Mod.Load. You can use this hook to assign a static reference to this instance for easy access.
