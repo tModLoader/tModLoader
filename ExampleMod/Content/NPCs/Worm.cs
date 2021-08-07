@@ -70,7 +70,9 @@ namespace ExampleMod.NPCs
 					Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
-					int projectile = Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), NPC.Center, direction * 1, ProjectileID.ShadowBeamHostile, 5, 0, Main.myPlayer);
+					//This allows to have damage varying depending on the gamemode
+					int damage = (int) (5 * Main.GameModeInfo.EffectiveEnemyDamageModifier);
+					int projectile = Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), NPC.Center, direction * 1, ProjectileID.ShadowBeamHostile, damage, 0, Main.myPlayer);
 					Main.projectile[projectile].timeLeft = 300;
 					attackCounter = 500;
 					NPC.netUpdate = true;
