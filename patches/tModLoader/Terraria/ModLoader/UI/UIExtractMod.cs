@@ -93,7 +93,7 @@ namespace Terraria.ModLoader.UI
 							src.CopyTo(dst);
 					}
 
-					// Copy the dll to ModLoader\Mod Libraries for easy collaboration.
+					// Copy the dll/xml to ModLoader/Mod Sources/Mod Libraries for easy collaboration.
 					if (name == $"{mod.Name}.dll") {
 						string modReferencesPath = Path.Combine(ModCompile.ModSourcePath, "Mod Libraries");
 						Directory.CreateDirectory(modReferencesPath);
