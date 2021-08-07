@@ -98,6 +98,9 @@ namespace Terraria.DataStructures
 		/// <summary> Draws the player's head, including hair, armor, and etc. </summary>
 		public static readonly PlayerDrawLayer Head = new VanillaPlayerDrawLayer(nameof(Head), DrawPlayer_21_Head, TorsoGroup, isHeadLayer: true);
 
+		/// <summary> Draws a finch nest on the player's head, if the player has a finch summoned. </summary>
+		public static readonly PlayerDrawLayer FinchNest = new VanillaPlayerDrawLayer(nameof(FinchNest), DrawPlayer_21_2_FinchNest, TorsoGroup, isHeadLayer: true);
+
 		/// <summary> Draws the player's face accessory. </summary>
 		public static readonly PlayerDrawLayer FaceAcc = new VanillaPlayerDrawLayer(nameof(FaceAcc), DrawPlayer_22_FaceAcc, TorsoGroup);
 
@@ -190,6 +193,7 @@ namespace Terraria.DataStructures
 			WaistAcc,
 			NeckAcc,
 			Head,
+			FinchNest,
 			FaceAcc,
 			MountFront,
 			Pulley,
