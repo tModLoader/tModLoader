@@ -1,5 +1,6 @@
 var NAVTREEINDEX49 =
 {
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a2cc1323283a569c49700bfc9794111d3":[1,0,1,19,1,12,2,4,5],
 "struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a3e26fc6272fdc2a35c8422423a985050":[1,0,1,19,1,12,2,4,3],
 "struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a535fb375688bf638a8766a33397e6d9e":[1,0,1,19,1,12,2,4,2],
 "struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a7bf8846372f11a210cdf2d001f9de660":[1,0,1,19,1,12,2,4,4],

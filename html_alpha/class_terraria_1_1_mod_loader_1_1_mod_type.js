@@ -1,5 +1,6 @@
 var class_terraria_1_1_mod_loader_1_1_mod_type =
 [
+    [ "IsLoadingEnabled", "class_terraria_1_1_mod_loader_1_1_mod_type.html#a041087074eaff42734190d565f13ce1a", null ],
     [ "Load", "class_terraria_1_1_mod_loader_1_1_mod_type.html#ae3d4cf476fc2714a84b3b6c75aed702a", null ],
     [ "Register", "class_terraria_1_1_mod_loader_1_1_mod_type.html#a88a7f706233a3abc436089ec25a8b203", null ],
     [ "SetStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_type.html#aa2daf87c887ac0d98f00543a41e8e87f", null ],

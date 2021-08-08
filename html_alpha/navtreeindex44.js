@@ -1,5 +1,11 @@
 var NAVTREEINDEX44 =
 {
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aacefa8a9606819ed409dc761ca6080887":[0,0,2,5,7,6],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aad0888defea7cf0dea03c15fa2d396a9a":[0,0,2,5,7,235],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aad0b491d97457a83f64d0aef6b0111d1e":[0,0,2,5,7,102],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aad0d7e5a4bf75ad11d26140c94b0f62c0":[0,0,2,5,7,300],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aad1b644be498e69cd4344cb4694efbbab":[0,0,2,5,7,35],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aad21ae287d2b0f8933389b72f531bb6b5":[0,0,2,5,7,29],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aad4054e7994adef0bfc49fc607d071ee9":[0,0,2,5,7,79],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aad44b2e076424ef3bfa0554f01a86ef1e":[0,0,2,5,7,33],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aad57be3be506261a26cda8657275156c2":[0,0,2,5,7,247],
@@ -243,11 +249,5 @@ var NAVTREEINDEX44 =
 "namespace_terraria_1_1_graphics_1_1_light.html#a59dbf4ea77020c58b2fdd013ff2db860ae41480b6bbfbf7407974a88d3d34f4fa":[0,0,2,8,2,5,1],
 "namespace_terraria_1_1_graphics_1_1_renderers.html":[0,0,2,8,3],
 "namespace_terraria_1_1_graphics_1_1_shaders.html":[0,0,2,8,4],
-"namespace_terraria_1_1_i_d.html":[0,0,2,9],
-"namespace_terraria_1_1_i_d.html#a08d3ab3f001fb51f441ef1febe350437":[0,0,2,9,29],
-"namespace_terraria_1_1_i_d.html#a08d3ab3f001fb51f441ef1febe350437ab948e8a02a7f8dc9f098c89e8df9892c":[0,0,2,9,29,0],
-"namespace_terraria_1_1_i_d.html#a08d3ab3f001fb51f441ef1febe350437afef46e5063ce3dc78b8ae64fa474241d":[0,0,2,9,29,1],
-"namespace_terraria_1_1_i_d.html#a161f3a4ae5cc4d14c935329c54f12cdb":[0,0,2,9,30],
-"namespace_terraria_1_1_i_d.html#a161f3a4ae5cc4d14c935329c54f12cdba3556fab5924d14cbe4951bcb1b367f96":[0,0,2,9,30,3],
-"namespace_terraria_1_1_i_d.html#a161f3a4ae5cc4d14c935329c54f12cdba57a413fa91627bf3f8dc37376199c2c8":[0,0,2,9,30,2]
+"namespace_terraria_1_1_i_d.html":[0,0,2,9]
 };

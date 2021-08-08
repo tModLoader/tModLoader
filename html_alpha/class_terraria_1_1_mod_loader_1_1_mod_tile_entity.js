@@ -4,6 +4,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_tile_entity =
     [ "Find", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ac0d39d082f95d385270f7e9dac364ade", null ],
     [ "GenerateInstance", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0317945d3c9e4c1a6b994d3012b4b874", null ],
     [ "Hook_AfterPlacement", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a28ce0b12d8aea43a58a3f4ea1d75d5b0", null ],
+    [ "IsLoadingEnabled", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ad802a41427e54c3bcadc616d3bf23aa5", null ],
     [ "Kill", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#aec3cee3a57bbd5c80de025bc6cabda96", null ],
     [ "Load", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9184abc8c0292c6896928b8803cc7031", null ],
     [ "NetPlaceEntityAttempt", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#aa61fa501579545e95342e1291d73b586", null ],

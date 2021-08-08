@@ -1648,7 +1648,6 @@ var hierarchy =
     [ "Terraria.ModLoader.Config.ModConfig", "class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html", null ],
     [ "Terraria.ModLoader.ModKeybind", "class_terraria_1_1_mod_loader_1_1_mod_keybind.html", null ],
     [ "Terraria.ModLoader.ModPalmTree", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html", null ],
-    [ "Terraria.ModLoader.ModProperties", "struct_terraria_1_1_mod_loader_1_1_mod_properties.html", null ],
     [ "Terraria.ModLoader.ModSound", "class_terraria_1_1_mod_loader_1_1_mod_sound.html", null ],
     [ "Terraria.ModLoader.ModTranslation", "class_terraria_1_1_mod_loader_1_1_mod_translation.html", null ],
     [ "Terraria.ModLoader.ModTree", "class_terraria_1_1_mod_loader_1_1_mod_tree.html", null ],

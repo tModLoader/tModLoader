@@ -1,5 +1,11 @@
 var NAVTREEINDEX47 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#ad085849ad0ab661929b18dfc21bc8331":[1,0,1,4,36,0],
+"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#adb8f25953de77d73b9107f24c756a5f3":[1,0,1,4,36,7],
+"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#ae34349c65bee51c051ecef7f357cd957":[1,0,1,4,36,2],
+"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#aed410181aacbc37666cba54dd66b9145":[1,0,1,4,36,6],
+"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#aed923af41529fe1265f46ec23e36f19b":[1,0,1,4,36,3],
+"struct_terraria_1_1_data_structures_1_1_player_movement_accs_cache.html":[1,0,1,4,37],
 "struct_terraria_1_1_data_structures_1_1_player_movement_accs_cache.html#a451fc209aa708d64b3a1843f9c584a33":[1,0,1,4,37,0],
 "struct_terraria_1_1_data_structures_1_1_player_movement_accs_cache.html#afe8a67685a361f821f5a5aa6ea86618f":[1,0,1,4,37,1],
 "struct_terraria_1_1_data_structures_1_1_point16.html":[1,0,1,4,38],
@@ -243,11 +249,5 @@ var NAVTREEINDEX47 =
 "struct_terraria_1_1_game_content_1_1_well_fed_helper.html#a950e03b5cdee22e73d81b8d5775a8a19":[1,0,1,5,66,1],
 "struct_terraria_1_1_game_content_1_1_well_fed_helper.html#ab56c5f89fdbaac66be42a1e0b6bee0be":[1,0,1,5,66,3],
 "struct_terraria_1_1_game_content_1_1_well_fed_helper.html#af71fd16c6896415d8c4da375bc0d798b":[1,0,1,5,66,4],
-"struct_terraria_1_1_get_item_settings.html":[1,0,1,35],
-"struct_terraria_1_1_get_item_settings.html#a10d14e6cbdc8ed9f480d918cd36229f5":[1,0,1,35,4],
-"struct_terraria_1_1_get_item_settings.html#a336fbaf41e96b66aa323598019c47ffa":[1,0,1,35,2],
-"struct_terraria_1_1_get_item_settings.html#a75462a86a9c8ff964e89d992a0131c35":[1,0,1,35,0],
-"struct_terraria_1_1_get_item_settings.html#a928319f98b521f36623ce1753a1fc67a":[1,0,1,35,5],
-"struct_terraria_1_1_get_item_settings.html#a9d024cfb59ba4d7a4339b86a157a7765":[1,0,1,35,1],
-"struct_terraria_1_1_get_item_settings.html#aa4fce49bc8b594005ee4954e07113f62":[1,0,1,35,3]
+"struct_terraria_1_1_get_item_settings.html":[1,0,1,35]
 };

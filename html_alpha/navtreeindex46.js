@@ -1,5 +1,11 @@
 var NAVTREEINDEX46 =
 {
+"struct_terraria_1_1_cinematics_1_1_frame_event_data.html#a6850b31c5975c88abc6adff5253563ae":[1,0,1,3,3,6],
+"struct_terraria_1_1_cinematics_1_1_frame_event_data.html#a868ccf97b95482e14eb3bb1cc61b9dc3":[1,0,1,3,3,7],
+"struct_terraria_1_1_cinematics_1_1_frame_event_data.html#aa9d358f18df320b1d3dac90d4c4d6d12":[1,0,1,3,3,1],
+"struct_terraria_1_1_cinematics_1_1_frame_event_data.html#af1909af6d80257467a49bb9274ed3615":[1,0,1,3,3,0],
+"struct_terraria_1_1_data_structures_1_1_anchor_data.html":[1,0,1,4,0],
+"struct_terraria_1_1_data_structures_1_1_anchor_data.html#a07bf1d40ca29257ba9be30fb6f81682b":[1,0,1,4,0,1],
 "struct_terraria_1_1_data_structures_1_1_anchor_data.html#a135f022b1fee8dd1e690015d5fc82201":[1,0,1,4,0,5],
 "struct_terraria_1_1_data_structures_1_1_anchor_data.html#a66afb5bae40456bea229831151763709":[1,0,1,4,0,4],
 "struct_terraria_1_1_data_structures_1_1_anchor_data.html#a8f909314361a45defb2c48145b77b1fe":[1,0,1,4,0,3],
@@ -243,11 +249,5 @@ var NAVTREEINDEX46 =
 "struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#a191f36c8f104e4a383af23c454ee265f":[1,0,1,4,36,4],
 "struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#a67ff0cd70f983119965d93edd6eb4b6d":[1,0,1,4,36,5],
 "struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#a9f4bac4436567edf802a0c0f977b13cb":[1,0,1,4,36,8],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#aa6bb87a6d25a0cdd5e61e4f91b140e57":[1,0,1,4,36,1],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#ad085849ad0ab661929b18dfc21bc8331":[1,0,1,4,36,0],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#adb8f25953de77d73b9107f24c756a5f3":[1,0,1,4,36,7],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#ae34349c65bee51c051ecef7f357cd957":[1,0,1,4,36,2],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#aed410181aacbc37666cba54dd66b9145":[1,0,1,4,36,6],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#aed923af41529fe1265f46ec23e36f19b":[1,0,1,4,36,3],
-"struct_terraria_1_1_data_structures_1_1_player_movement_accs_cache.html":[1,0,1,4,37]
+"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#aa6bb87a6d25a0cdd5e61e4f91b140e57":[1,0,1,4,36,1]
 };

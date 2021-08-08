@@ -227,15 +227,24 @@ Properties</h2></td></tr>
 <tr class="memitem:a755b805f5b9202a521b30cfc7b4b1eb6"><td class="memItemLeft" align="right" valign="top"><a id="a755b805f5b9202a521b30cfc7b4b1eb6"></a>
 AssetRepository&#160;</td><td class="memItemRight" valign="bottom"><b>Assets</b><code> [get]</code></td></tr>
 <tr class="separator:a755b805f5b9202a521b30cfc7b4b1eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36d6e7daf2bdc3e210a55657521665fc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a36d6e7daf2bdc3e210a55657521665fc">BackgroundAutoloadingEnabled</a> = true<code> [get]</code></td></tr>
+<tr class="memdesc:a36d6e7daf2bdc3e210a55657521665fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add images in the Backgrounds folder as background textures to the game. This means you do not need to manually call Mod.AddBackgroundTexture.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a36d6e7daf2bdc3e210a55657521665fc">More...</a><br /></td></tr>
+<tr class="separator:a36d6e7daf2bdc3e210a55657521665fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9642d8745cca7c27cd3f3085e161e78"><td class="memItemLeft" align="right" valign="top">Assembly&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ae9642d8745cca7c27cd3f3085e161e78">Code</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:ae9642d8745cca7c27cd3f3085e161e78"><td class="mdescLeft">&#160;</td><td class="mdescRight">The assembly code this is loaded when tModLoader loads this mod.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#ae9642d8745cca7c27cd3f3085e161e78">More...</a><br /></td></tr>
 <tr class="separator:ae9642d8745cca7c27cd3f3085e161e78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9071819be09f0c3cf4d537369307a9d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#af9071819be09f0c3cf4d537369307a9d">ContentAutoloadingEnabled</a> = true<code> [get]</code></td></tr>
+<tr class="memdesc:af9071819be09f0c3cf4d537369307a9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will autoload content by default. Autoloading content means you do not need to manually add content through methods.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#af9071819be09f0c3cf4d537369307a9d">More...</a><br /></td></tr>
+<tr class="separator:af9071819be09f0c3cf4d537369307a9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38ac11ee561ed7c0b78c6618f886b9eb"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a38ac11ee561ed7c0b78c6618f886b9eb">DisplayName</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a38ac11ee561ed7c0b78c6618f886b9eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The display name of this mod in the Mods menu.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a38ac11ee561ed7c0b78c6618f886b9eb">More...</a><br /></td></tr>
 <tr class="separator:a38ac11ee561ed7c0b78c6618f886b9eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd5a9885918f6a99f5c39c3a213cf341"><td class="memItemLeft" align="right" valign="top">virtual uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#afd5a9885918f6a99f5c39c3a213cf341">ExtraPlayerBuffSlots</a><code> [get]</code></td></tr>
 <tr class="memdesc:afd5a9885918f6a99f5c39c3a213cf341"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of extra buff slots this mod desires for Players. This value is checked after <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#afbcbdc176a60f3da809842f683ff2e75" title="Override this method to add most of your content to your mod. Here you will call other methods such a...">Mod.Load</a> but before <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a026f70f45d29300a148e8257d324ba12" title="Allows you to load things in your mod after its content has been setup (arrays have been resized to f...">Mod.PostSetupContent</a>. The actual number of buffs the player can use will be 22 plus the max value of all enabled mods. In-game use Player.MaxBuffs to check the maximum number of buffs.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#afd5a9885918f6a99f5c39c3a213cf341">More...</a><br /></td></tr>
 <tr class="separator:afd5a9885918f6a99f5c39c3a213cf341"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97691b83bd17b16428f3aff63998a61b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a97691b83bd17b16428f3aff63998a61b">GoreAutoloadingEnabled</a> = true<code> [get]</code></td></tr>
+<tr class="memdesc:a97691b83bd17b16428f3aff63998a61b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add images in the Gores folder as gores to the game, along with any <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_gore.html" title="This class allows you to customize the behavior of a custom gore.">ModGore</a> classes that share names with the images. This means you do not need to manually call Mod.AddGore.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a97691b83bd17b16428f3aff63998a61b">More...</a><br /></td></tr>
+<tr class="separator:a97691b83bd17b16428f3aff63998a61b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85bbf627eb7bd116ac182667bc443770"><td class="memItemLeft" align="right" valign="top"><a id="a85bbf627eb7bd116ac182667bc443770"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsNetSynced</b><code> [get]</code></td></tr>
 <tr class="separator:a85bbf627eb7bd116ac182667bc443770"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -245,15 +254,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsNetSynced</b><code>
 <tr class="memitem:a8206e4bf920a7562a972dcb7c9e2ef09"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09">Name</a><code> [get]</code></td></tr>
 <tr class="memdesc:a8206e4bf920a7562a972dcb7c9e2ef09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the name of the mod. This name serves as the mod's identification, and also helps with saving everything your mod adds. By default this returns the name of the folder that contains all your code and stuff.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09">More...</a><br /></td></tr>
 <tr class="separator:a8206e4bf920a7562a972dcb7c9e2ef09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65df4d7e3265342db3455483d65545ea"><td class="memItemLeft" align="right" valign="top"><a id="a65df4d7e3265342db3455483d65545ea"></a>
-<a class="el" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html">ModProperties</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Properties</b> = <a class="el" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a87df6482dcabda96405e420c60ba3ffb">ModProperties.AutoLoadAll</a><code> [get, protected set]</code></td></tr>
-<tr class="separator:a65df4d7e3265342db3455483d65545ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f72ff1a6b7d389d20e3215b867e1f72"><td class="memItemLeft" align="right" valign="top"><a id="a1f72ff1a6b7d389d20e3215b867e1f72"></a>
 IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContentSource</b><code> [get]</code></td></tr>
 <tr class="separator:a1f72ff1a6b7d389d20e3215b867e1f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad921b4895d8db73a6139987c4c456777"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06">ModSide</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ad921b4895d8db73a6139987c4c456777">Side</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:ad921b4895d8db73a6139987c4c456777"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ModSide that controls how this mod is synced between client and server.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#ad921b4895d8db73a6139987c4c456777">More...</a><br /></td></tr>
 <tr class="separator:ad921b4895d8db73a6139987c4c456777"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc70a1662799e620716c519dfb824d73"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#adc70a1662799e620716c519dfb824d73">SoundAutoloadingEnabled</a> = true<code> [get]</code></td></tr>
+<tr class="memdesc:adc70a1662799e620716c519dfb824d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, Sounds/NPCKilled to add them as npcKilled sounds, and Sounds/Music to add them as music tracks. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html" title="This class allows you to customize how a sound you add is played. To use this, pass an instance to Mo...">ModSound</a> classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#adc70a1662799e620716c519dfb824d73">More...</a><br /></td></tr>
+<tr class="separator:adc70a1662799e620716c519dfb824d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0365dd6999086e682dd90ed65543edd0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a25e6f7b4866109d4137e7ace4e78ee64">Version</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a0365dd6999086e682dd90ed65543edd0">TModLoaderVersion</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a0365dd6999086e682dd90ed65543edd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The version of tModLoader that was being used when this mod was built.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a0365dd6999086e682dd90ed65543edd0">More...</a><br /></td></tr>
 <tr class="separator:a0365dd6999086e682dd90ed65543edd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1239,6 +1248,30 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="a36d6e7daf2bdc3e210a55657521665fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36d6e7daf2bdc3e210a55657521665fc">&#9670;&nbsp;</a></span>BackgroundAutoloadingEnabled</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.ModLoader.Mod.BackgroundAutoloadingEnabled = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not this mod will automatically add images in the Backgrounds folder as background textures to the game. This means you do not need to manually call Mod.AddBackgroundTexture. </p>
+
+</div>
+</div>
 <a id="ae9642d8745cca7c27cd3f3085e161e78"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae9642d8745cca7c27cd3f3085e161e78">&#9670;&nbsp;</a></span>Code</h2>
 
@@ -1260,6 +1293,30 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
 </div><div class="memdoc">
 
 <p>The assembly code this is loaded when tModLoader loads this mod. </p>
+
+</div>
+</div>
+<a id="af9071819be09f0c3cf4d537369307a9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9071819be09f0c3cf4d537369307a9d">&#9670;&nbsp;</a></span>ContentAutoloadingEnabled</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.ModLoader.Mod.ContentAutoloadingEnabled = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not this mod will autoload content by default. Autoloading content means you do not need to manually add content through methods. </p>
 
 </div>
 </div>
@@ -1308,6 +1365,30 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
 </div><div class="memdoc">
 
 <p>The amount of extra buff slots this mod desires for Players. This value is checked after <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#afbcbdc176a60f3da809842f683ff2e75" title="Override this method to add most of your content to your mod. Here you will call other methods such a...">Mod.Load</a> but before <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a026f70f45d29300a148e8257d324ba12" title="Allows you to load things in your mod after its content has been setup (arrays have been resized to f...">Mod.PostSetupContent</a>. The actual number of buffs the player can use will be 22 plus the max value of all enabled mods. In-game use Player.MaxBuffs to check the maximum number of buffs. </p>
+
+</div>
+</div>
+<a id="a97691b83bd17b16428f3aff63998a61b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97691b83bd17b16428f3aff63998a61b">&#9670;&nbsp;</a></span>GoreAutoloadingEnabled</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.ModLoader.Mod.GoreAutoloadingEnabled = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not this mod will automatically add images in the Gores folder as gores to the game, along with any <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_gore.html" title="This class allows you to customize the behavior of a custom gore.">ModGore</a> classes that share names with the images. This means you do not need to manually call Mod.AddGore. </p>
 
 </div>
 </div>
@@ -1380,6 +1461,30 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
 </div><div class="memdoc">
 
 <p>The ModSide that controls how this mod is synced between client and server. </p>
+
+</div>
+</div>
+<a id="adc70a1662799e620716c519dfb824d73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc70a1662799e620716c519dfb824d73">&#9670;&nbsp;</a></span>SoundAutoloadingEnabled</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.ModLoader.Mod.SoundAutoloadingEnabled = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, Sounds/NPCKilled to add them as npcKilled sounds, and Sounds/Music to add them as music tracks. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html" title="This class allows you to customize how a sound you add is played. To use this, pass an instance to Mo...">ModSound</a> classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound. </p>
 
 </div>
 </div>

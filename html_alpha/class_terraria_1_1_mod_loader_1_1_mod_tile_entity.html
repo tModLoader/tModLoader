@@ -113,6 +113,9 @@ sealed override <a class="el" href="class_terraria_1_1_data_structures_1_1_tile_
 <tr class="memitem:a28ce0b12d8aea43a58a3f4ea1d75d5b0"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a28ce0b12d8aea43a58a3f4ea1d75d5b0">Hook_AfterPlacement</a> (int i, int j, int type, int style, int direction, int alternate)</td></tr>
 <tr class="memdesc:a28ce0b12d8aea43a58a3f4ea1d75d5b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method does not get called by tModLoader, and is only included for you convenience so you do not have to cast the result of Mod.GetTileEntity.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a28ce0b12d8aea43a58a3f4ea1d75d5b0">More...</a><br /></td></tr>
 <tr class="separator:a28ce0b12d8aea43a58a3f4ea1d75d5b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad802a41427e54c3bcadc616d3bf23aa5"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ad802a41427e54c3bcadc616d3bf23aa5">IsLoadingEnabled</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod)</td></tr>
+<tr class="memdesc:ad802a41427e54c3bcadc616d3bf23aa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this type should be loaded when it's told to. Returning false disables Mod.AddContent from actually loading this type.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ad802a41427e54c3bcadc616d3bf23aa5">More...</a><br /></td></tr>
+<tr class="separator:ad802a41427e54c3bcadc616d3bf23aa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec3cee3a57bbd5c80de025bc6cabda96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#aec3cee3a57bbd5c80de025bc6cabda96">Kill</a> (int i, int j)</td></tr>
 <tr class="memdesc:aec3cee3a57bbd5c80de025bc6cabda96"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper method that removes this kind of tile entity from the given coordinates for you.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#aec3cee3a57bbd5c80de025bc6cabda96">More...</a><br /></td></tr>
 <tr class="separator:aec3cee3a57bbd5c80de025bc6cabda96"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -481,6 +484,42 @@ static Action&#160;</td><td class="memItemRight" valign="bottom"><b>_UpdateStart
 </div><div class="memdoc">
 
 <p>This method does not get called by tModLoader, and is only included for you convenience so you do not have to cast the result of Mod.GetTileEntity. </p>
+
+</div>
+</div>
+<a id="ad802a41427e54c3bcadc616d3bf23aa5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad802a41427e54c3bcadc616d3bf23aa5">&#9670;&nbsp;</a></span>IsLoadingEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ModTileEntity.IsLoadingEnabled </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td>
+          <td class="paramname"><em>mod</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not this type should be loaded when it's told to. Returning false disables Mod.AddContent from actually loading this type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mod</td><td>The mod instance trying to add this content</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_loadable.html#a99cb7624fdbd3514ea3af077a6d0e63e">Terraria.ModLoader.ILoadable</a>.</p>
 
 </div>
 </div>

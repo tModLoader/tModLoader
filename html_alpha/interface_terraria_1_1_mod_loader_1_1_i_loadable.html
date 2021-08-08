@@ -99,6 +99,9 @@ $(document).ready(function(){initNavTree('interface_terraria_1_1_mod_loader_1_1_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a99cb7624fdbd3514ea3af077a6d0e63e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_loadable.html#a99cb7624fdbd3514ea3af077a6d0e63e">IsLoadingEnabled</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod)</td></tr>
+<tr class="memdesc:a99cb7624fdbd3514ea3af077a6d0e63e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this type should be loaded when it's told to. Returning false disables Mod.AddContent from actually loading this type.  <a href="interface_terraria_1_1_mod_loader_1_1_i_loadable.html#a99cb7624fdbd3514ea3af077a6d0e63e">More...</a><br /></td></tr>
+<tr class="separator:a99cb7624fdbd3514ea3af077a6d0e63e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22c403e2d65fa1309a9883c84c221d7f"><td class="memItemLeft" align="right" valign="top">abstract void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_loadable.html#a22c403e2d65fa1309a9883c84c221d7f">Load</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod)</td></tr>
 <tr class="memdesc:a22c403e2d65fa1309a9883c84c221d7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when loading the type.  <a href="interface_terraria_1_1_mod_loader_1_1_i_loadable.html#a22c403e2d65fa1309a9883c84c221d7f">More...</a><br /></td></tr>
 <tr class="separator:a22c403e2d65fa1309a9883c84c221d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -109,6 +112,42 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Allows for implementing types to be loaded and unloaded. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a99cb7624fdbd3514ea3af077a6d0e63e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99cb7624fdbd3514ea3af077a6d0e63e">&#9670;&nbsp;</a></span>IsLoadingEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ILoadable.IsLoadingEnabled </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td>
+          <td class="paramname"><em>mod</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not this type should be loaded when it's told to. Returning false disables Mod.AddContent from actually loading this type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mod</td><td>The mod instance trying to add this content</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a041087074eaff42734190d565f13ce1a">Terraria.ModLoader.ModType</a>, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ad802a41427e54c3bcadc616d3bf23aa5">Terraria.ModLoader.ModTileEntity</a>.</p>
+
+</div>
+</div>
 <a id="a22c403e2d65fa1309a9883c84c221d7f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a22c403e2d65fa1309a9883c84c221d7f">&#9670;&nbsp;</a></span>Load()</h2>
 

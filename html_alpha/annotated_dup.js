@@ -1075,7 +1075,6 @@ var annotated_dup =
         [ "ModPlayer", "class_terraria_1_1_mod_loader_1_1_mod_player.html", "class_terraria_1_1_mod_loader_1_1_mod_player" ],
         [ "ModPrefix", "class_terraria_1_1_mod_loader_1_1_mod_prefix.html", "class_terraria_1_1_mod_loader_1_1_mod_prefix" ],
         [ "ModProjectile", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html", "class_terraria_1_1_mod_loader_1_1_mod_projectile" ],
-        [ "ModProperties", "struct_terraria_1_1_mod_loader_1_1_mod_properties.html", "struct_terraria_1_1_mod_loader_1_1_mod_properties" ],
         [ "ModRarity", "class_terraria_1_1_mod_loader_1_1_mod_rarity.html", "class_terraria_1_1_mod_loader_1_1_mod_rarity" ],
         [ "ModSceneEffect", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect" ],
         [ "ModSound", "class_terraria_1_1_mod_loader_1_1_mod_sound.html", "class_terraria_1_1_mod_loader_1_1_mod_sound" ],
