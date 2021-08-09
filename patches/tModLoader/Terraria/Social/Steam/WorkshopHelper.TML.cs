@@ -40,7 +40,6 @@ namespace Terraria.Social.Steam
 		}
 
 		internal static void ForceCallbacks() {
-			// Do Pretty Stuff if want here
 			Thread.Sleep(5);
 
 			if (ModManager.SteamUser)
@@ -108,7 +107,7 @@ namespace Terraria.Social.Steam
 				var mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)));
 				
 				uiProgress?.PrepUIForDownload(item.DisplayName);
-				mod.InnerDownload(uiProgress);
+				mod.InnerDownload(uiProgress, item.HasUpdate);
 
 				if (counter == items.Count)
 					uiProgress?.Leave();
@@ -121,10 +120,10 @@ namespace Terraria.Social.Steam
 			/// <summary>
 			/// Updates and/or Downloads the Item specified when generating the ModManager Instance.
 			/// </summary>
-			private bool InnerDownload(UIWorkshopDownload uiProgress) {
+			private bool InnerDownload(UIWorkshopDownload uiProgress, bool mbHasUpdate) {
 				downloadResult = EResult.k_EResultOK;
 
-				if (NeedsUpdate()) {
+				if (NeedsUpdate() || mbHasUpdate) {
 					downloadResult = EResult.k_EResultNone;
 
 					if (SteamUser)
@@ -145,15 +144,16 @@ namespace Terraria.Social.Steam
 					throw new ArgumentException("Downloading Workshop Item failed due to unknown reasons");
 				}
 
-				do {
+				while (!IsInstalled()) {
 					SteamUGC.GetItemDownloadInfo(itemID, out ulong dlBytes, out ulong totalBytes);
+
 					if (uiProgress != null)
-						uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
-
-					SteamAPI.RunCallbacks();
+						uiProgress.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 				}
-				while (downloadResult == EResult.k_EResultNone);
 
+				// We don't use the callback do to unreliability, so we manually set the success.
+				downloadResult = EResult.k_EResultOK;
+				
 				SteamUGC.SubscribeItem(itemID);
 			}
 
@@ -172,7 +172,7 @@ namespace Terraria.Social.Steam
 					SteamGameServerUGC.GetItemDownloadInfo(itemID, out ulong dlBytes, out ulong totalBytes);
 
 					if (uiProgress != null)
-						uiProgress.UpdateDownloadProgress(dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
+						uiProgress.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 				}
 
 				// We don't receive a callback, so we manually set the success.
@@ -244,7 +244,13 @@ namespace Terraria.Social.Steam
 					return SteamGameServerUGC.GetItemState(itemID);
 			}
 
-			public bool IsInstalled() => (GetState() & (uint)EItemState.k_EItemStateInstalled) != 0;
+			public bool IsInstalled() {
+				var currState = GetState();
+				
+				bool installed = (currState & (uint)(EItemState.k_EItemStateInstalled)) != 0;
+				bool downloading = (currState & ((uint)EItemState.k_EItemStateDownloading + (uint)EItemState.k_EItemStateDownloadPending)) != 0;
+				return installed && !downloading;
+			}
 
 			public bool NeedsUpdate() {
 				var currState = GetState();
@@ -366,9 +372,9 @@ namespace Terraria.Social.Steam
 							string key, val;
 
 							if (ModManager.SteamUser)
-								SteamUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 100, out val, 100);
+								SteamUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 255, out val, 255);
 							else
-								SteamGameServerUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 100, out val, 100);
+								SteamGameServerUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, 255, out val, 255);
 
 							metadata[key] = val;
 						}
@@ -413,16 +419,7 @@ namespace Terraria.Social.Steam
 						}
 
 						// Calculate the Mod Browser Version
-						System.Version cVersion = new System.Version(metadata["version"].Substring(1));
-
-						// Prioritize version information found in the display name, for automation purposes.
-						int findVersion = displayname.LastIndexOf("v") + 1;
-						if (findVersion > 0) {
-							string possibleVersion = displayname.Substring(findVersion);
-							if (possibleVersion.Contains(".")) {
-								cVersion = new System.Version(possibleVersion);
-							}
-						}
+						System.Version cVersion = new System.Version(metadata["version"].Replace("v", ""));
 
 						// Check against installed mods
 						bool update = false;
@@ -437,7 +434,7 @@ namespace Terraria.Social.Steam
 								update = updateIsDowngrade = true;
 						}
 
-						items.Add(new UIModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate.ToString(), update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"], i));
+						items.Add(new UIModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"], (queryPage - 1) * 50 + i));
 					}
 					ReleaseWorkshopQuery();
 				} while (_queryReturnCount == Steamworks.Constants.kNumUGCResultsPerPage); // 50 is based on kNumUGCResultsPerPage constant in ISteamUGC. Can't find constant itself? - Solxan
@@ -472,6 +469,7 @@ namespace Terraria.Social.Steam
 				_queryHook.Set(call);
 
 				do {
+					// Do Pretty Stuff if want here
 					ForceCallbacks();
 				}
 				while (_primaryQueryResult == EResult.k_EResultNone);

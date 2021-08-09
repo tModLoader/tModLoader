@@ -48,6 +48,7 @@ namespace Terraria.Social.Steam
 			var existing = Interface.modBrowser.FindModDownloadItem(buildData["name"]);
 
 			if (existing != null) {
+				
 				ulong existingID = UIModBrowser.SteamWorkshop.GetSteamOwner(existing.QueryIndex);
 				var currID = Steamworks.SteamUser.GetSteamID();
 
@@ -59,7 +60,7 @@ namespace Terraria.Social.Steam
 				if (new Version(buildData["version"].Replace("v", "")) <= new Version(existing.Version.Replace("v", ""))) {
 					IssueReporter.ReportInstantUploadProblem("tModLoader.ModVersionInfoUnchanged");
 					return false;
-				} 
+				}
 			}
 
 			string name = buildData["displaynameclean"];

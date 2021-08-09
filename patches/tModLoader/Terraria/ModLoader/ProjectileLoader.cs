@@ -340,17 +340,17 @@ namespace Terraria.ModLoader
 		private static HookList HookMinionContactDamage = AddHook<Func<Projectile, bool>>(g => g.MinionContactDamage);
 
 		public static bool MinionContactDamage(Projectile projectile) {
-			if (projectile.ModProjectile != null && !projectile.ModProjectile.MinionContactDamage()) {
-				return false;
+			if (projectile.ModProjectile != null && projectile.ModProjectile.MinionContactDamage()) {
+				return true;
 			}
 
 			foreach (GlobalProjectile g in HookMinionContactDamage.Enumerate(projectile.globalProjectiles)) {
-				if (!g.MinionContactDamage(projectile)) {
-					return false;
+				if (g.MinionContactDamage(projectile)) {
+					return true;
 				}
 			}
 
-			return true;
+			return false;
 		}
 
 		private delegate void DelegateModifyDamageHitbox(Projectile projectile, ref Rectangle hitbox);

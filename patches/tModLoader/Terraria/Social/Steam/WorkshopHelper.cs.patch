@@ -111,7 +111,7 @@
  							}
  							else {
  								WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -158,8 +_,11 @@
+@@ -158,8 +_,14 @@
  				private CallResult<SubmitItemUpdateResult_t> _updateItemHook;
  				private FinishedPublishingAction _endAction;
  				private WorkshopIssueReporter _issueReporter;
@@ -124,6 +124,11 @@
  					_issueReporter = issueReporter;
  					_endAction = endAction;
  					_createItemHook = CallResult<CreateItemResult_t>.Create(CreateItemResult);
+ 					_updateItemHook = CallResult<SubmitItemUpdateResult_t>.Create(UpdateItemResult);
++					_publicity = publicity;
+ 					ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
+ 					_entryData = new SteamWorkshopItem {
+ 						Title = itemTitle,
 @@ -171,20 +_,35 @@
  						ContentFolderPath = contentFolderPath,
  						Tags = tags,
@@ -133,6 +138,7 @@
 +						BuildData = buildData
  					};
  
+-					ulong? num = null;
 +					if (!File.Exists(previewImagePath)) {
 +						_issueReporter.ReportInstantUploadProblem("Workshop.ReportIssue_FailedToPublish_CouldNotFindFolderToUpload" + " NoPreviewImage");
 +						return;
@@ -142,14 +148,22 @@
 +						return;
 +					}
 +
- 					ulong? num = null;
++					_publishedFileID = new PublishedFileId_t(0);
  					if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out FoundWorkshopEntryInfo info))
- 						num = info.workshopEntryId;
- 
- 					if (num.HasValue && finder.HasItemOfId(num.Value)) {
- 						_publishedFileID = new PublishedFileId_t(num.Value);
-+						if (buildData == null) {
+-						num = info.workshopEntryId;
+-
+-					if (num.HasValue && finder.HasItemOfId(num.Value)) {
+-						_publishedFileID = new PublishedFileId_t(num.Value);
 -						PreventUpdatingCertainThings();
++						_publishedFileID = new PublishedFileId_t(info.workshopEntryId);
++
++					// Verify can write to the manifest before running creating any items.
++					if (!WrappedWriteManifest())
++						return;
++
++					// If it has a publish ID, it has to be yours. Removing vanilla finder check to avoid dupes - Solxan
++					if (_publishedFileID.m_PublishedFileId != 0 /* finder.HasItemOfId(num.Value)*/) {
++						if (buildData == null) {
 +							PreventUpdatingCertainThings();
 +						}
  						UpdateItem();
@@ -188,12 +202,64 @@
  						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
  						_endAction(this);
  					}
--					else if (param.m_eResult == EResult.k_EResultOK) {
-+					else if (_createCallback == EResult.k_EResultOK) {
- 						_publishedFileID = param.m_nPublishedFileId;
- 						UpdateItem();
- 					}
-@@ -240,10 +_,10 @@
+ 				}
+@@ -205,13 +_,34 @@
+ 				}
+ 
+ 				private void CreateItem() {
++					Logging.tML.Info("Creating Item " + _entryData.Title);
++
+ 					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
+ 					SteamAPICall_t hAPICall = SteamUGC.CreateItem(SteamUtils.GetAppID(), EWorkshopFileType.k_EWorkshopFileTypeFirst);
+ 					_createItemHook.Set(hAPICall, CreateItemResult);
+ 					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
+ 				}
+ 
++				// Rewrote to reduce duplicate publishing in the event that user needs to accept workshop agreement.
+ 				private void CreateItemResult(CreateItemResult_t param, bool bIOFailure) {
++					if (param.m_eResult != EResult.k_EResultOK) {
++						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
++						_endAction(this);
++						return;
++					}
++
++					_publishedFileID = param.m_nPublishedFileId;
++					WrappedWriteManifest();
++
++					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
++						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
++						_endAction(this);
++						return;
++					}
++
++					UpdateItem();
++
++					/*
+ 					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
+ 						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
+ 						_endAction(this);
+@@ -223,7 +_,8 @@
+ 					else {
+ 						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
+ 						_endAction(this);
+-					}
++					} 
++					*/
+ 				}
+ 
+ 				protected abstract string GetHeaderText();
+@@ -231,19 +_,16 @@
+ 				protected abstract void PrepareContentForUpdate();
+ 
+ 				private void UpdateItem() {
+-					string headerText = GetHeaderText();
+-					if (!TryWritingManifestToFolder(_entryData.ContentFolderPath, headerText)) {
+-						_endAction(this);
+-						return;
+-					}
++					WrappedWriteManifest();
++					Logging.tML.Info("Updating Item " + _entryData.Title);
+ 
  					PrepareContentForUpdate();
  					UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
  					if (_entryData.Title != null)
@@ -270,3 +336,18 @@
  						case EResult.k_EResultOK:
  							SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
  							break;
+@@ -305,6 +_,14 @@
+ 						_issueReporter.ReportManifestCreationProblem("Workshop.ReportIssue_CouldNotCreateResourcePackManifestFile", exception);
+ 						return false;
+ 					}
++				}
++
++				private bool WrappedWriteManifest() {
++					if (TryWritingManifestToFolder(_entryData.ContentFolderPath, GetHeaderText()))
++						return true;
++						
++					_endAction(this);
++					return false;
+ 				}
+ 
+ 				public bool TryGetProgress(out float progress) {

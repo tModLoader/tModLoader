@@ -177,6 +177,9 @@ namespace Terraria.ModLoader.UI
 					// TODO: verbatim line endings, localization.
 					File.WriteAllText(Path.Combine(sourceFolder, "build.txt"), GetModBuild());
 					File.WriteAllText(Path.Combine(sourceFolder, "description.txt"), GetModDescription());
+					using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream($"Terraria.ModLoader.Default.iconTemplate.png"))
+					using (var fs = File.OpenWrite(Path.Combine(sourceFolder, $"icon.png")))
+						stream.CopyTo(fs);
 					File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.cs"), GetModClass(modNameTrimmed));
 					File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.csproj"), GetModCsproj(modNameTrimmed));
 					string propertiesFolder = Path.Combine(sourceFolder, "Properties");
