@@ -111,7 +111,7 @@
  							}
  							else {
  								WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -158,8 +_,14 @@
+@@ -158,12 +_,16 @@
  				private CallResult<SubmitItemUpdateResult_t> _updateItemHook;
  				private FinishedPublishingAction _endAction;
  				private WorkshopIssueReporter _issueReporter;
@@ -129,7 +129,7 @@
  					ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
  					_entryData = new SteamWorkshopItem {
  						Title = itemTitle,
-@@ -171,20 +_,35 @@
+@@ -171,20 +_,39 @@
  						ContentFolderPath = contentFolderPath,
  						Tags = tags,
  						PreviewImagePath = previewImagePath,
@@ -177,10 +177,11 @@
  					}
  				}
  
-@@ -205,18 +_,28 @@
+@@ -205,13 +_,43 @@
  				}
  
  				private void CreateItem() {
++					Logging.tML.Info("Creating Item " + _entryData.Title);
 +					_createCallback = EResult.k_EResultNone;
 +
  					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
@@ -196,27 +197,9 @@
 +					} while (_createCallback == EResult.k_EResultNone);
  				}
  
- 				private void CreateItemResult(CreateItemResult_t param, bool bIOFailure) {
-+					_createCallback = param.m_eResult;
- 					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
- 						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
- 						_endAction(this);
- 					}
- 				}
-@@ -205,13 +_,34 @@
- 				}
- 
- 				private void CreateItem() {
-+					Logging.tML.Info("Creating Item " + _entryData.Title);
-+
- 					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
- 					SteamAPICall_t hAPICall = SteamUGC.CreateItem(SteamUtils.GetAppID(), EWorkshopFileType.k_EWorkshopFileTypeFirst);
- 					_createItemHook.Set(hAPICall, CreateItemResult);
- 					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
- 				}
- 
 +				// Rewrote to reduce duplicate publishing in the event that user needs to accept workshop agreement.
  				private void CreateItemResult(CreateItemResult_t param, bool bIOFailure) {
++					_createCallback = param.m_eResult;
 +					if (param.m_eResult != EResult.k_EResultOK) {
 +						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
 +						_endAction(this);
