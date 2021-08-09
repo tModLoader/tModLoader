@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
@@ -16,9 +17,15 @@ namespace Terraria.ModLoader
 	public abstract partial class ModSystem : ModType
 	{
 		protected override void Register() {
-			SystemHooks.Add(this);
+			SystemLoader.Add(this);
 			ModTypeLookup<ModSystem>.Register(this);
 		}
+
+		//ModSystem provides its own PostSetupContent hook which runs in a different context, closer to Mod
+		public sealed override void SetStaticDefaults() { }
+
+		//Per above comment, SetStaticDefaults is unused
+		public sealed override void SetupContent() { }
 
 		//Hooks
 
@@ -200,10 +207,14 @@ namespace Terraria.ModLoader
 		public virtual void PostDrawTiles() { }
 
 		/// <summary>
-		/// Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the world should update with it.
-		/// You may want to consider Main.fastForwardTime and CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled here.
+		/// Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the tiles in the world and the events in the world should update with it.
+		/// All fields are measured in in-game minutes per real-life second (min/sec).
+		/// You may want to consider <see cref="Main.fastForwardTime"/> and <see cref="CreativePowerManager.Instance.GetPower{CreativePowers.FreezeTime}().Enabled"/> here.
 		/// </summary>
-		public virtual void ModifyTimeRate(ref int timeRate, ref int tileUpdateRate) { }
+		/// <param name="timeRate">The speed at which time flows in min/sec.</param>
+		/// <param name="tileUpdateRate">The speed at which tiles in the world update in min/sec.</param>
+		/// <param name="eventUpdateRate">The speed at which various events in the world (weather changes, fallen star/fairy spawns, etc.) update in min/sec.</param>
+		public virtual void ModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate) { }
 
 		/// <summary>
 		/// Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. For example, if your mod adds a boss and you want certain NPC to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. Returns null by default.
@@ -280,8 +291,9 @@ namespace Terraria.ModLoader
 		public virtual void ModifyLightingBrightness(ref float scale) { }
 
 		/// <summary>
-		/// Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are. The tileCounts parameter stores the tile count indexed by tile type.
+		/// Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are.
+		/// <br/> The <paramref name="tileCounts"/> parameter is a read-only span (treat this as an array) that stores the tile count indexed by tile type.
 		/// </summary>
-		public virtual void TileCountsAvailable(int[] tileCounts) { }
+		public virtual void TileCountsAvailable(ReadOnlySpan<int> tileCounts) { }
 	}
 }

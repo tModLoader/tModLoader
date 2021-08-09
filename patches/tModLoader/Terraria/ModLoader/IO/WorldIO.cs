@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
@@ -27,9 +28,13 @@ namespace Terraria.ModLoader.IO
 				["npcs"] = SaveNPCs(),
 				["tileEntities"] = TileIO.SaveTileEntities(),
 				["killCounts"] = SaveNPCKillCounts(),
+				["bestiaryKills"] = SaveNPCBestiaryKills(),
+				["bestiarySights"] = SaveNPCBestiarySights(),
+				["bestiaryChats"] = SaveNPCBestiaryChats(),
 				["anglerQuest"] = SaveAnglerQuest(),
 				["townManager"] = SaveTownManager(),
-				["modData"] = SaveModData()
+				["modData"] = SaveModData(),
+				["alteredVanillaFields"] = SaveAlteredVanillaFields()
 			};
 
 			var stream = new MemoryStream();
@@ -65,6 +70,9 @@ namespace Terraria.ModLoader.IO
 			}
 			LoadChestInventory(tag.GetList<TagCompound>("chests")); // Must occur after tiles are loaded
 			LoadNPCKillCounts(tag.GetList<TagCompound>("killCounts"));
+			LoadNPCBestiaryKills(tag.GetList<TagCompound>("bestiaryKills"));
+			LoadNPCBestiarySights(tag.GetList<TagCompound>("bestiarySights"));
+			LoadNPCBestiaryChats(tag.GetList<TagCompound>("bestiaryChats"));
 			LoadAnglerQuest(tag.GetCompound("anglerQuest"));
 			LoadTownManager(tag.GetList<TagCompound>("townManager"));
 			try {
@@ -74,6 +82,7 @@ namespace Terraria.ModLoader.IO
 				customDataFail = e;
 				throw;
 			}
+			LoadAlteredVanillaFields(tag.GetCompound("alteredVanillaFields"));
 		}
 
 		internal static List<TagCompound> SaveChestInventory() {
@@ -179,13 +188,15 @@ namespace Terraria.ModLoader.IO
 		internal static List<TagCompound> SaveNPCKillCounts() {
 			var list = new List<TagCompound>();
 			for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++) {
-				if (NPC.killCount[type] <= 0)
+				int killCount = NPC.killCount[type];
+				if (killCount <= 0)
 					continue;
 
+				ModNPC modNPC = NPCLoader.GetNPC(type);
 				list.Add(new TagCompound {
-					["mod"] = NPCLoader.GetNPC(type).Mod.Name,
-					["name"] = NPCLoader.GetNPC(type).Name,
-					["count"] = NPC.killCount[type]
+					["mod"] = modNPC.Mod.Name,
+					["name"] = modNPC.Name,
+					["count"] = killCount
 				});
 			}
 			return list;
@@ -198,6 +209,91 @@ namespace Terraria.ModLoader.IO
 				}
 				else {
 					ModContent.GetInstance<UnloadedSystem>().unloadedKillCounts.Add(tag);
+				}
+			}
+		}
+
+		internal static List<TagCompound> SaveNPCBestiaryKills() {
+			var list = new List<TagCompound>();
+			for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++) {
+				int killCount = Main.BestiaryTracker.Kills.GetKillCount(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[type]);
+				if (killCount <= 0)
+					continue;
+
+				ModNPC modNPC = NPCLoader.GetNPC(type);
+				list.Add(new TagCompound {
+					["mod"] = modNPC.Mod.Name,
+					["name"] = modNPC.Name,
+					["count"] = killCount
+				});
+			}
+			return list;
+		}
+
+		internal static void LoadNPCBestiaryKills(IList<TagCompound> list) {
+			foreach (var tag in list) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
+					string persistentId = ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[modNpc.Type];
+					Main.BestiaryTracker.Kills.SetKillCountDirectly(persistentId, tag.GetInt("count"));
+				}
+				else {
+					ModContent.GetInstance<UnloadedSystem>().unloadedBestiaryKills.Add(tag);
+				}
+			}
+		}
+
+		internal static List<TagCompound> SaveNPCBestiarySights() {
+			var list = new List<TagCompound>();
+			for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++) {
+				bool seen = Main.BestiaryTracker.Sights.GetWasNearbyBefore(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[type]);
+				if (!seen)
+					continue;
+
+				ModNPC modNPC = NPCLoader.GetNPC(type);
+				list.Add(new TagCompound {
+					["mod"] = modNPC.Mod.Name,
+					["name"] = modNPC.Name
+				});
+			}
+			return list;
+		}
+
+		internal static void LoadNPCBestiarySights(IList<TagCompound> list) {
+			foreach (var tag in list) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
+					string persistentId = ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[modNpc.Type];
+					Main.BestiaryTracker.Sights.SetWasSeenDirectly(persistentId);
+				}
+				else {
+					ModContent.GetInstance<UnloadedSystem>().unloadedBestiarySights.Add(tag);
+				}
+			}
+		}
+
+		internal static List<TagCompound> SaveNPCBestiaryChats() {
+			var list = new List<TagCompound>();
+			for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++) {
+				bool chatted = Main.BestiaryTracker.Chats.GetWasChatWith(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[type]);
+				if (!chatted)
+					continue;
+
+				ModNPC modNPC = NPCLoader.GetNPC(type);
+				list.Add(new TagCompound {
+					["mod"] = modNPC.Mod.Name,
+					["name"] = modNPC.Name
+				});
+			}
+			return list;
+		}
+
+		internal static void LoadNPCBestiaryChats(IList<TagCompound> list) {
+			foreach (var tag in list) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
+					string persistentId = ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[modNpc.Type];
+					Main.BestiaryTracker.Chats.SetWasChatWithDirectly(persistentId);
+				}
+				else {
+					ModContent.GetInstance<UnloadedSystem>().unloadedBestiaryChats.Add(tag);
 				}
 			}
 		}
@@ -264,7 +360,7 @@ namespace Terraria.ModLoader.IO
 		internal static List<TagCompound> SaveModData() {
 			var list = new List<TagCompound>();
 
-			foreach (var system in SystemHooks.Systems) {
+			foreach (var system in SystemLoader.Systems) {
 				var data = system.SaveWorldData();
 
 				if (data == null)
@@ -297,13 +393,27 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
+		internal static TagCompound SaveAlteredVanillaFields() {
+			return new TagCompound {
+				["timeCultists"] = CultistRitual.delay,
+				["timeRain"] = Main.rainTime,
+				["timeSandstorm"] = Sandstorm.TimeLeft
+			};
+		}
+
+		internal static void LoadAlteredVanillaFields(TagCompound compound) {
+			CultistRitual.delay = compound.GetDouble("timeCultists");
+			Main.rainTime = compound.GetDouble("timeRain");
+			Sandstorm.TimeLeft = compound.GetDouble("timeSandstorm");
+		}
+
 		public static void SendModData(BinaryWriter writer) {
-			foreach (var system in SystemHooks.NetSystems)
+			foreach (var system in SystemLoader.NetSystems)
 				writer.SafeWrite(w => system.NetSend(w));
 		}
 
 		public static void ReceiveModData(BinaryReader reader) {
-			foreach (var system in SystemHooks.NetSystems) {
+			foreach (var system in SystemLoader.NetSystems) {
 				try {
 					reader.SafeRead(r => system.NetReceive(r));
 				}

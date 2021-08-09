@@ -1,16 +1,39 @@
 --- src/Terraria/ReLogic/Content/Readers/XnbReader.cs
 +++ src/tModLoader/ReLogic/Content/Readers/XnbReader.cs
-@@ -1,4 +_,5 @@
+@@ -1,12 +_,20 @@
  using Microsoft.Xna.Framework.Content;
 +using Microsoft.Xna.Framework.Graphics;
  using System;
++using System.Diagnostics;
  using System.IO;
  using System.Threading;
-@@ -48,5 +_,7 @@
- 		public void Dispose() {
- 			Dispose(disposing: true);
- 		}
++using System.Threading.Tasks;
+ 
+ namespace ReLogic.Content.Readers
+ {
+ 	public class XnbReader : IAssetReader, IDisposable
+ 	{
++		public static class LoadOnMainThread<T>
++		{
++			public static bool Value;
++		}
 +
-+		public Type[] GetAssociatedTypes() => new[] { typeof(Effect) };
- 	}
- }
+ 		private class InternalContentManager : ContentManager
+ 		{
+ 			private Stream _stream;
+@@ -30,8 +_,14 @@
+ 			_contentLoader = new ThreadLocal<InternalContentManager>(() => new InternalContentManager(services));
+ 		}
+ 
+-		public T FromStream<T>(Stream stream) where T : class {
++		public async ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class {
+ 			InternalContentManager value = _contentLoader.Value;
++
++			if (LoadOnMainThread<T>.Value) {
++				await mainThreadCtx;
++				Debug.Assert(mainThreadCtx.IsCompleted);
++			}
++
+ 			value.SetStream(stream);
+ 			return value.Load<T>();
+ 		}

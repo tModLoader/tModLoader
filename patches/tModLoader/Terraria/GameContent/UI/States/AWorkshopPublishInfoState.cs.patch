@@ -1,0 +1,99 @@
+--- src/Terraria/Terraria/GameContent/UI/States/AWorkshopPublishInfoState.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/AWorkshopPublishInfoState.cs
+@@ -10,6 +_,7 @@
+ using Terraria.GameContent.UI.Elements;
+ using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader.Core;
+ using Terraria.Social;
+ using Terraria.Social.Base;
+ using Terraria.UI;
+@@ -38,15 +_,26 @@
+ 		private UICharacterNameButton _previewImagePathPlate;
+ 		private Texture2D _previewImageTransientTexture;
+ 		private UIImage _previewImageUIElement;
+-		private string _previewImagePath;
++		protected string _previewImagePath;
+ 		private Asset<Texture2D> _defaultPreviewImageTexture;
+ 		private UIElement _steamDisclaimerButton;
++		protected UIElement _tMLDisclaimerButton; 
+-		private UIText _disclaimerText;
++		protected UIText _disclaimerText;
+ 		private UIGamepadHelper _helper;
+ 
++		// Added by TML.
++		public UIState PreviousUIState {
++			get => _previousUIState;
++			set => _previousUIState = value;
++		}
++		private bool _isMod = false;
++
+ 		public AWorkshopPublishInfoState(UIState stateToGoBackTo, TPublishedObjectType dataObject) {
+ 			_previousUIState = stateToGoBackTo;
+ 			_dataObject = dataObject;
++			if (dataObject is TmodFile) {
++				_isMod = true;
++			}
+ 		}
+ 
+ 		public override void OnInitialize() {
+@@ -77,13 +_,12 @@
+ 		}
+ 
+ 		private void SetDefaultOptions() {
+-			_optionPublicity = WorkshopItemPublicSettingId.Public;
+-			GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
+-			for (int i = 0; i < publicityOptions.Length; i++) {
+-				publicityOptions[i].SetCurrentOption(_optionPublicity);
+-			}
+-
+ 			SetTagsFromFoundEntry();
++			GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
++			for (int i = 0; i < publicityOptions.Length; i++) {
++				publicityOptions[i].SetCurrentOption(_optionPublicity);
++			}
++
+ 			UpdateImagePreview();
+ 		}
+ 
+@@ -96,6 +_,11 @@
+ 			uIElement.SetPadding(0f);
+ 			uiList.Add(uIElement);
+ 			uiList.Add(CreateSteamDisclaimer("disclaimer"));
++
++			// Added by tML
++			if (_isMod)
++				uiList.Add((this as WorkshopPublishInfoStateForMods).CreateTmlDisclaimer("disclaimer")); 
++
+ 			uiList.Add(CreatePreviewImageSelectionPanel("image"));
+ 			uiList.Add(CreatePublicSettingsRow(0f, 44f, "public"));
+ 			uiList.Add(CreateTagOptionsPanel(0f, 44, "tags"));
+@@ -163,10 +_,7 @@
+ 				}
+ 			}
+ 
+-			GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
+-			for (int i = 0; i < publicityOptions.Length; i++) {
+-				publicityOptions[i].SetCurrentOption(info.publicity);
+-			}
++			_optionPublicity = info.publicity;
+ 		}
+ 
+ 		protected abstract bool TryFindingTags(out FoundWorkshopEntryInfo info);
+@@ -232,7 +_,7 @@
+ 		}
+ 
+ 		private void steamDisclaimerText_OnClick(UIMouseEvent evt, UIElement listeningElement) {
+-			ProcessStart("https://steamcommunity.com/sharedfiles/workshoplegalagreement");
++			Utils.OpenToURL("https://steamcommunity.com/sharedfiles/workshoplegalagreement");
+ 		}
+ 
+ 		public static void ProcessStart(string path) {
+@@ -634,6 +_,7 @@
+ 				new ExtensionFilter("Image files", "png", "jpg", "jpeg")
+ 			};
+ 
++			// TODO: support default folder, set default folder to mod source folder for mods.
+ 			string text = FileBrowser.OpenFilePanel("Open icon", extensions);
+ 			if (text != null) {
+ 				_previewImagePath = text;

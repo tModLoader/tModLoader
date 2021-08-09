@@ -10,6 +10,32 @@
  
  namespace Terraria.IO
  {
+@@ -28,7 +_,7 @@
+ 		private static bool _tempBloodMoon = Main.bloodMoon;
+ 		private static bool _tempEclipse = Main.eclipse;
+ 		private static int _tempMoonPhase = Main.moonPhase;
+-		private static int _tempCultistDelay = CultistRitual.delay;
++		private static int _tempCultistDelay = (int)CultistRitual.delay;
+ 		private static int _versionNumber;
+ 		private static bool _isWorldOnCloud;
+ 		private static bool _tempPartyGenuine;
+@@ -73,14 +_,14 @@
+ 			_cachedMoonPhase = Main.moonPhase;
+ 			_cachedBloodMoon = Main.bloodMoon;
+ 			_cachedEclipse = Main.eclipse;
+-			_cachedCultistDelay = CultistRitual.delay;
++			_cachedCultistDelay = (int)CultistRitual.delay;
+ 			_cachedPartyGenuine = BirthdayParty.GenuineParty;
+ 			_cachedPartyManual = BirthdayParty.ManualParty;
+ 			_cachedPartyDaysOnCooldown = BirthdayParty.PartyDaysOnCooldown;
+ 			CachedCelebratingNPCs.Clear();
+ 			CachedCelebratingNPCs.AddRange(BirthdayParty.CelebratingNPCs);
+ 			_cachedSandstormHappening = Sandstorm.Happening;
+-			_cachedSandstormTimeLeft = Sandstorm.TimeLeft;
++			_cachedSandstormTimeLeft = (int)Sandstorm.TimeLeft;
+ 			_cachedSandstormSeverity = Sandstorm.Severity;
+ 			_cachedSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
+ 			_cachedLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
 @@ -306,6 +_,7 @@
  			Main.checkXMas();
  			Main.checkHalloween();
@@ -22,7 +48,7 @@
  							CheckSavedOreTiers();
  							binaryReader.Close();
  							memoryStream.Close();
-+							SystemHooks.OnWorldLoad();
++							SystemLoader.OnWorldLoad();
 +							WorldIO.Load(Main.worldPathName, flag);
  							if (num3 != 0)
  								WorldGen.loadFailed = true;
@@ -45,6 +71,46 @@
  		}
  
  		private static void DoRollingBackups(string backupWorldWritePath) {
+@@ -609,18 +_,18 @@
+ 			_tempMoonPhase = Main.moonPhase;
+ 			_tempBloodMoon = Main.bloodMoon;
+ 			_tempEclipse = Main.eclipse;
+-			_tempCultistDelay = CultistRitual.delay;
++			_tempCultistDelay = (int)CultistRitual.delay;
+ 			_tempPartyManual = BirthdayParty.ManualParty;
+ 			_tempPartyGenuine = BirthdayParty.GenuineParty;
+ 			_tempPartyCooldown = BirthdayParty.PartyDaysOnCooldown;
+ 			TempPartyCelebratingNPCs.Clear();
+ 			TempPartyCelebratingNPCs.AddRange(BirthdayParty.CelebratingNPCs);
+ 			_tempSandstormHappening = Sandstorm.Happening;
+-			_tempSandstormTimeLeft = Sandstorm.TimeLeft;
++			_tempSandstormTimeLeft = (int)Sandstorm.TimeLeft;
+ 			_tempSandstormSeverity = Sandstorm.Severity;
+ 			_tempSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
+ 			_tempRaining = Main.raining;
+-			_tempRainTime = Main.rainTime;
++			_tempRainTime = (int)Main.rainTime;
+ 			_tempMaxRain = Main.maxRaining;
+ 			_tempLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
+ 			_tempLanternNightGenuine = LanternNight.GenuineLanterns;
+@@ -646,7 +_,7 @@
+ 			_tempSandstormSeverity = _cachedSandstormSeverity.Value;
+ 			_tempSandstormIntendedSeverity = _cachedSandstormIntendedSeverity.Value;
+ 			_tempRaining = Main.raining;
+-			_tempRainTime = Main.rainTime;
++			_tempRainTime = (int)Main.rainTime;
+ 			_tempMaxRain = Main.maxRaining;
+ 			_tempLanternNightCooldown = _cachedLanternNightCooldown.Value;
+ 			_tempLanternNightGenuine = _cachedLanternNightGenuine.Value;
+@@ -717,7 +_,7 @@
+ 				}
+ 
+ 				if (TEWeaponsRack.Place(item2.X, item2.Y) != -1 && flag2)
+-					TEWeaponsRack.TryPlacing(item2.X, item2.Y, num2, prefix, 1);
++					TEWeaponsRack.TryPlacing(item2.X, item2.Y, new Item(num2, prefix: prefix), 1);
+ 			}
+ 		}
+ 
 @@ -884,7 +_,11 @@
  			}
  
@@ -99,6 +165,15 @@
  						writer.Write((short)0);
  						continue;
  					}
+@@ -1139,7 +_,7 @@
+ 					writer.Write((short)item.stack);
+ 					if (item.stack > 0) {
+ 						writer.Write(item.netID);
+-						writer.Write(item.prefix);
++						ItemIO.WriteByteVanillaPrefix(item, writer);
+ 					}
+ 				}
+ 			}
 @@ -1171,7 +_,7 @@
  		public static int SaveNPCs(BinaryWriter writer) {
  			for (int i = 0; i < Main.npc.Length; i++) {

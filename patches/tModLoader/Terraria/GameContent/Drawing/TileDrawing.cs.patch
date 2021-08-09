@@ -1,0 +1,115 @@
+--- src/Terraria/Terraria/GameContent/Drawing/TileDrawing.cs
++++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
+@@ -9,6 +_,7 @@
+ using Terraria.GameContent.Tile_Entities;
+ using Terraria.Graphics.Capture;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.ObjectData;
+ using Terraria.UI;
+ using Terraria.Utilities;
+@@ -356,6 +_,9 @@
+ 						if (!TextureAssets.Tile[type].IsLoaded)
+ 							Main.instance.LoadTiles(type);
+ 
++						if (!TileLoader.PreDraw(j, i, type, Main.spriteBatch))
++							goto PostDraw;
++
+ 						switch (type) {
+ 							case 541:
+ 								if (!_shouldShowInvisibleBlocks)
+@@ -482,6 +_,9 @@
+ 						}
+ 
+ 						DrawSingleTile(value, solidLayer, waterStyleOverride, unscaledPosition, vector, j, i);
++
++						PostDraw:
++						TileLoader.PostDraw(j, i, type, Main.spriteBatch);
+ 					}
+ 				}
+ 			}
+@@ -547,6 +_,7 @@
+ 				return;
+ 
+ 			GetTileDrawData(tileX, tileY, drawData.tileCache, drawData.typeCache, ref drawData.tileFrameX, ref drawData.tileFrameY, out drawData.tileWidth, out drawData.tileHeight, out drawData.tileTop, out drawData.halfBrickHeight, out drawData.addFrX, out drawData.addFrY, out drawData.tileSpriteEffect, out drawData.glowTexture, out drawData.glowSourceRect, out drawData.glowColor);
++			
+ 			drawData.drawTexture = GetTileDrawTexture(drawData.tileCache, tileX, tileY);
+ 			Texture2D highlightTexture = null;
+ 			Rectangle empty = Rectangle.Empty;
+@@ -608,6 +_,7 @@
+ 
+ 			Rectangle normalTileRect = new Rectangle(drawData.tileFrameX + drawData.addFrX, drawData.tileFrameY + drawData.addFrY, drawData.tileWidth, drawData.tileHeight - drawData.halfBrickHeight);
+ 			Vector2 vector = new Vector2((float)(tileX * 16 - (int)screenPosition.X) - ((float)drawData.tileWidth - 16f) / 2f, tileY * 16 - (int)screenPosition.Y + drawData.tileTop + drawData.halfBrickHeight) + screenOffset;
++			TileLoader.DrawEffects(tileX, tileY, drawData.typeCache, Main.spriteBatch, ref drawData);
+ 			if (drawData.tileLight.R < 1 && drawData.tileLight.G < 1 && drawData.tileLight.B < 1)
+ 				return;
+ 
+@@ -812,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY) {
++		public Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY) {
+ 			Texture2D result = TextureAssets.Tile[tile.type].Value;
+ 			int tileStyle = 0;
+ 			int num = tile.type;
+@@ -837,7 +_,7 @@
+ 			return result;
+ 		}
+ 
+-		private Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY, int paintOverride) {
++		public Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY, int paintOverride) {
+ 			Texture2D result = TextureAssets.Tile[tile.type].Value;
+ 			int tileStyle = 0;
+ 			int num = tile.type;
+@@ -2820,7 +_,7 @@
+ 			return _tileSolid[typeCache];
+ 		}
+ 
+-		private void GetTileOutlineInfo(int x, int y, ushort typeCache, ref Color tileLight, ref Texture2D highlightTexture, ref Color highlightColor) {
++		public void GetTileOutlineInfo(int x, int y, ushort typeCache, ref Color tileLight, ref Texture2D highlightTexture, ref Color highlightColor) {
+ 			if (Main.InSmartCursorHighlightArea(x, y, out bool actuallySelected)) {
+ 				int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
+ 				if (num > 10) {
+@@ -2850,7 +_,7 @@
+ 
+ 		private bool InAPlaceWithWind(int x, int y, int width, int height) => WorldGen.InAPlaceWithWind(x, y, width, height);
+ 
+-		private void GetTileDrawData(int x, int y, Tile tileCache, ushort typeCache, ref short tileFrameX, ref short tileFrameY, out int tileWidth, out int tileHeight, out int tileTop, out int halfBrickHeight, out int addFrX, out int addFrY, out SpriteEffects tileSpriteEffect, out Texture2D glowTexture, out Rectangle glowSourceRect, out Color glowColor) {
++		public void GetTileDrawData(int x, int y, Tile tileCache, ushort typeCache, ref short tileFrameX, ref short tileFrameY, out int tileWidth, out int tileHeight, out int tileTop, out int halfBrickHeight, out int addFrX, out int addFrY, out SpriteEffects tileSpriteEffect, out Texture2D glowTexture, out Rectangle glowSourceRect, out Color glowColor) {
+ 			tileTop = 0;
+ 			tileWidth = 16;
+ 			tileHeight = 16;
+@@ -4371,6 +_,9 @@
+ 						break;
+ 					}
+ 			}
++
++			TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight);
++			TileLoader.SetAnimationFrame(typeCache, x, y, ref addFrX, ref addFrY);
+ 		}
+ 
+ 		private bool IsWindBlocked(int x, int y) {
+@@ -4438,11 +_,11 @@
+ 			}
+ 		}
+ 
+-		private void AddSpecialLegacyPoint(Point p) {
++		public void AddSpecialLegacyPoint(Point p) {
+ 			AddSpecialLegacyPoint(p.X, p.Y);
+ 		}
+ 
+-		private void AddSpecialLegacyPoint(int x, int y) {
++		public void AddSpecialLegacyPoint(int x, int y) {
+ 			_specialTileX[_specialTilesCount] = x;
+ 			_specialTileY[_specialTilesCount] = y;
+ 			_specialTilesCount++;
+@@ -5416,6 +_,8 @@
+ 
+ 					Main.spriteBatch.Draw(value9, vector, value10, new Color(255, 255, 255, 0) * 0.1f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+ 				}
++
++				TileLoader.SpecialDraw(type, num, num2, Main.spriteBatch);
+ 			}
+ 		}
+ 

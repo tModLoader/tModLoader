@@ -17,12 +17,13 @@
  		private readonly Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
  		private GameCulture _fallbackCulture = GameCulture.DefaultCulture;
  
-@@ -71,6 +_,9 @@
+@@ -71,6 +_,10 @@
  				}
  
  				LoadLanguage(culture);
++
 +				if (ActiveCulture != null)
-+					ModContent.RefreshModLanguage(culture);
++					LocalizationLoader.RefreshModLanguage(culture);
 +
  				ActiveCulture = culture;
  				Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
