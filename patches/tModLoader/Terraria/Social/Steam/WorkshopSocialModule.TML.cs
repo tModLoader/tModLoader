@@ -33,7 +33,6 @@ namespace Terraria.Social.Steam
 				return false;
 			}
 
-			RefreshSubscriptionsAndPublishings();
 			if (!WorkshopHelper.QueryHelper.CheckWorkshopConnection()) {
 				base.IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 				return false;
@@ -48,7 +47,6 @@ namespace Terraria.Social.Steam
 			var existing = Interface.modBrowser.FindModDownloadItem(buildData["name"]);
 
 			if (existing != null) {
-				
 				ulong existingID = UIModBrowser.SteamWorkshop.GetSteamOwner(existing.QueryIndex);
 				var currID = Steamworks.SteamUser.GetSteamID();
 

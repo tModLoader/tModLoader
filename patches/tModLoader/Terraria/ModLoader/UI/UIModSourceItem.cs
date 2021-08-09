@@ -264,7 +264,6 @@ namespace Terraria.ModLoader.UI
 			}
 			else {
 				SocialAPI.LoadSteam();
-				Console.WriteLine("Warning: CLI Mod Publishing Can be Unstable. Avoid publishing net-new items to the Workshop");
 
 				if ( /*SocialAPI.Workshop != null && */ modFile != null) {
 					var publishSetttings = new WorkshopItemPublishSettings {

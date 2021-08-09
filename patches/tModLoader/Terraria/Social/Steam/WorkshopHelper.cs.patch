@@ -129,7 +129,7 @@
  					ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
  					_entryData = new SteamWorkshopItem {
  						Title = itemTitle,
-@@ -171,20 +_,39 @@
+@@ -171,16 +_,32 @@
  						ContentFolderPath = contentFolderPath,
  						Tags = tags,
  						PreviewImagePath = previewImagePath,
@@ -169,19 +169,12 @@
  						UpdateItem();
  					}
  					else {
-+						if(!Main.dedServ)
--						CreateItem();
-+							CreateItem();
-+						else
-+							Console.WriteLine("Publishing a new item is not implemented on the command line.");
- 					}
- 				}
- 
-@@ -205,13 +_,43 @@
+@@ -205,13 +_,55 @@
  				}
  
  				private void CreateItem() {
-+					Logging.tML.Info("Creating Item " + _entryData.Title);
++					Utils.LogAndConsoleInfoMessage("Creating Item " + _entryData.Title);
++
 +					_createCallback = EResult.k_EResultNone;
 +
  					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
@@ -189,9 +182,18 @@
  					_createItemHook.Set(hAPICall, CreateItemResult);
  					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
 +
++					// Everything below is for command line publishing to work.
 +					if (!Main.dedServ)
 +						return;
 +
++					do {
++						ForceCallbacks();
++					} while (_createCallback == EResult.k_EResultNone);
++
++					if (_createCallback != EResult.k_EResultOK)
++						return;
++
++					UpdateItem(creatingItem:true);
 +					do {
 +						ForceCallbacks();
 +					} while (_createCallback == EResult.k_EResultNone);
@@ -214,14 +216,16 @@
 +						_endAction(this);
 +						return;
 +					}
-+
-+					UpdateItem();
++					
++					// On servers we want to control this more tightly due to threading constraints.
++					if (!Main.dedServ)
++						UpdateItem();
 +
 +					/*
  					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
  						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
  						_endAction(this);
-@@ -223,7 +_,8 @@
+@@ -223,27 +_,25 @@
  					else {
  						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
  						_endAction(this);
@@ -231,17 +235,18 @@
  				}
  
  				protected abstract string GetHeaderText();
-@@ -231,19 +_,16 @@
+ 
  				protected abstract void PrepareContentForUpdate();
  
- 				private void UpdateItem() {
+-				private void UpdateItem() {
 -					string headerText = GetHeaderText();
 -					if (!TryWritingManifestToFolder(_entryData.ContentFolderPath, headerText)) {
 -						_endAction(this);
 -						return;
 -					}
++				private void UpdateItem(bool creatingItem = false) {
 +					WrappedWriteManifest();
-+					Logging.tML.Info("Updating Item " + _entryData.Title);
++					Utils.LogAndConsoleInfoMessage("Updating Item " + _entryData.Title);
  
  					PrepareContentForUpdate();
  					UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
@@ -255,7 +260,7 @@
  
  					SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
  					SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
-@@ -253,21 +_,61 @@
+@@ -253,21 +_,60 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
@@ -297,11 +302,10 @@
  					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
 +
 +
-+					if (!Main.dedServ)
++					if (!Main.dedServ || creatingItem)
 +						return;
 +					
 +					do {
-+						// Tosses errors if invoked after CreateItem() has already run.
 +						ForceCallbacks();
 +					} while (_updateCallback == EResult.k_EResultNone);
  				}

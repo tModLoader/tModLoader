@@ -130,5 +130,10 @@ namespace Terraria
 			Logging.tML.Error(message);
 			Interface.errorMessage.Show(message, returnToMenu);
 		}
+
+		public static void LogAndConsoleInfoMessage(string message) {
+			Logging.tML.Info(message);
+			Console.WriteLine(message);
+		}
 	}
 }

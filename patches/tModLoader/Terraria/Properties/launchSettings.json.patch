@@ -13,15 +13,15 @@
      "Terraria Server": {
        "commandName": "Executable",
        "executablePath": "dotnet",
--      "commandLineArgs": "$(OutputName).dll -server",
-+      "commandLineArgs": "$(OutputName).dll -server -steam -publish SummonersAssociation",
--      "workingDirectory": "$(TerrariaSteamPath)"
++      "commandLineArgs": "$(OutputName).dll -server -steam -publish ToBeDeleted",
 +      "workingDirectory": "$(tModLoaderSteamPath)"
 +    },
 +    "Terraria GoG": {
 +      "commandName": "Executable",
 +      "executablePath": "dotnet",
+-      "commandLineArgs": "$(OutputName).dll -server",
 +      "commandLineArgs": "$(OutputName).dll -nosteam",
+-      "workingDirectory": "$(TerrariaSteamPath)"
 +      "workingDirectory": "$(tModLoaderSteamPath)"
      }
    }
