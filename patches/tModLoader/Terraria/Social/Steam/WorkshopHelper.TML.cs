@@ -244,7 +244,13 @@ namespace Terraria.Social.Steam
 					return SteamGameServerUGC.GetItemState(itemID);
 			}
 
-			public bool IsInstalled() => (GetState() & (uint)EItemState.k_EItemStateInstalled) != 0;
+			public bool IsInstalled() {
+				var currState = GetState();
+				
+				bool installed = (currState & (uint)(EItemState.k_EItemStateInstalled)) != 0;
+				bool downloading = (currState & ((uint)EItemState.k_EItemStateDownloading + (uint)EItemState.k_EItemStateDownloadPending)) != 0;
+				return installed && !downloading;
+			}
 
 			public bool NeedsUpdate() {
 				var currState = GetState();
