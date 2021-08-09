@@ -135,6 +135,69 @@ namespace Terraria.ModLoader
 			LanguageManager.Instance.ProcessCopyCommandsInTexts();
 		}
 
+		internal static void UpgradeLangFile(string langFile) {
+			string[] contents = File.ReadAllLines(langFile, Encoding.UTF8);
+			var obj = new JObject();
+
+			foreach (string line in contents) {
+				if (line.Trim().StartsWith("#")) {
+					continue;
+				}
+
+				int split = line.IndexOf('=');
+
+				if (split < 0)
+					continue; // lines witout an '=' are ignored
+
+				string key = line.Substring(0, split).Trim().Replace(" ", "_");
+				string value = line.Substring(split + 1); // removed .Trim() since sometimes it is desired.
+
+				if (value.Length == 0) {
+					continue;
+				}
+
+				value = value.Replace("\\n", "\n");
+
+				string[] splitKey = key.Split(".");
+				var curObj = obj;
+
+				foreach (string k in splitKey.SkipLast(1)) {
+					if (!curObj.ContainsKey(k)) {
+						curObj.Add(k, new JObject());
+					}
+
+					var existingVal = curObj.GetValue(k);
+
+					if (existingVal.Type == JTokenType.Object) {
+						curObj = (JObject)existingVal;
+					}
+					else {
+						// Someone assigned a value to this key - move this value to special
+						//  "$parentVal" key in newly created object
+						curObj[k] = new JObject();
+						curObj = (JObject)curObj.GetValue(k);
+						curObj["$parentVal"] = existingVal;
+					}
+				}
+
+				string lastKey = splitKey.Last();
+				
+				if (curObj.ContainsKey(splitKey.Last()) && curObj[lastKey] is JObject) {
+					// this value has children - needs to go into object as a $parentValue entry
+					((JObject)curObj[lastKey]).Add("$parentValue", value);
+				}
+
+				curObj.Add(splitKey.Last(), value);
+			}
+
+			// Convert JSON to HJSON and dump to new file
+			// Don't delete old .lang file - let the user do this when they are happy
+			string newFile = Path.ChangeExtension(langFile, "hjson");
+			string hjsonContents = JsonValue.Parse(obj.ToString()).ToString(Stringify.Hjson);
+
+			File.WriteAllText(newFile, hjsonContents);
+		}
+
 		private static void AutoloadTranslations(Mod mod, Dictionary<string, ModTranslation> modTranslationDictionary) {
 			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
 				string translationFileContents = Encoding.UTF8.GetString(mod.File.GetBytes(translationFile));

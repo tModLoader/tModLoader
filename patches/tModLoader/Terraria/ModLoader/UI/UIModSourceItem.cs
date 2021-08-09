@@ -151,78 +151,25 @@ namespace Terraria.ModLoader.UI
 
 				// Display upgrade .lang files button if any .lang files present
 				string[] files = Directory.GetFiles(_mod, "*.lang", SearchOption.AllDirectories);
+
 				if (files.Length > 0) {
 					var icon = UICommon.ButtonExclamationTexture;
 					var upgradeLangFilesButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeLangFiles")) {
 						Left = { Pixels = leftPixels, Percent = 1f },
 						Top = { Pixels = 4 }
 					};
+
 					upgradeLangFilesButton.OnClick += (s, e) => {
-						foreach (var file in files) {
-							UpgradeLangFile(file);
+						foreach (string file in files) {
+							LocalizationLoader.UpgradeLangFile(file);
 						}
 
 						upgradeLangFilesButton.Remove();
 					};
+
 					Append(upgradeLangFilesButton);
 				}
 			}
-		}
-
-		private void UpgradeLangFile(String langFile) {
-			string[] contents = File.ReadAllLines(langFile, Encoding.UTF8);
-
-			JObject obj = new JObject();
-
-			foreach (string line in contents) {
-				if (line.Trim().StartsWith("#")) {
-					continue;
-				}
-
-				int split = line.IndexOf('=');
-				if (split < 0)
-					continue; // lines witout a = are ignored
-				string key = line.Substring(0, split).Trim().Replace(" ", "_");
-				string value = line.Substring(split + 1); // removed .Trim() since sometimes it is desired.
-				if (value.Length == 0) {
-					continue;
-				}
-				value = value.Replace("\\n", "\n");
-
-				string[] splitKey = key.Split(".");
-
-				var curObj = obj;
-				foreach (string k in splitKey.SkipLast(1)) {
-					if (!curObj.ContainsKey(k)) {
-						curObj.Add(k, new JObject());
-					}
-
-					var existingVal = curObj.GetValue(k);
-					if (existingVal.Type == JTokenType.Object) {
-						curObj = (JObject) existingVal;
-					}
-					else {
-						// someone assigned a value to this key - move this value to special
-						//  "$parentVal" key in newly created object
-						curObj[k] = new JObject();
-						curObj = (JObject) curObj.GetValue(k);
-						curObj["$parentVal"] = existingVal;
-					}
-				}
-
-				var lastKey = splitKey.Last();
-				if (curObj.ContainsKey(splitKey.Last()) && curObj[lastKey] is JObject) {
-					// this value has children - needs to go into object as a $parentValue entry
-					((JObject) curObj[lastKey]).Add("$parentValue", value);
-				}
-				curObj.Add(splitKey.Last(), value);
-			}
-			
-			// convert JSON to HJSON and dump to new file
-			// don't delete old .lang file - let the user do this when they are happy
-			string newFile = Path.ChangeExtension(langFile, "hjson");
-			string hjsonContents = JsonValue.Parse(obj.ToString()).ToString(Stringify.Hjson);
-			File.WriteAllText(newFile, hjsonContents);
 		}
 
 		public override void MouseOver(UIMouseEvent evt) {
