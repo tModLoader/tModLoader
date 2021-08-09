@@ -39,6 +39,15 @@ namespace Terraria.Social.Steam
 			GameServer.Shutdown();
 		}
 
+		internal static void ForceCallbacks() {
+			Thread.Sleep(5);
+
+			if (ModManager.SteamUser)
+				SteamAPI.RunCallbacks();
+			else
+				GameServer.RunCallbacks();
+		}
+
 		internal class ModManager
 		{
 			internal static bool SteamUser { get; set; } = false;
@@ -98,7 +107,7 @@ namespace Terraria.Social.Steam
 				var mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)));
 				
 				uiProgress?.PrepUIForDownload(item.DisplayName);
-				mod.InnerDownload(uiProgress);
+				mod.InnerDownload(uiProgress, item.HasUpdate);
 
 				if (counter == items.Count)
 					uiProgress?.Leave();
@@ -111,10 +120,10 @@ namespace Terraria.Social.Steam
 			/// <summary>
 			/// Updates and/or Downloads the Item specified when generating the ModManager Instance.
 			/// </summary>
-			private bool InnerDownload(UIWorkshopDownload uiProgress) {
+			private bool InnerDownload(UIWorkshopDownload uiProgress, bool mbHasUpdate) {
 				downloadResult = EResult.k_EResultOK;
 
-				if (NeedsUpdate()) {
+				if (NeedsUpdate() || mbHasUpdate) {
 					downloadResult = EResult.k_EResultNone;
 
 					if (SteamUser)
@@ -235,7 +244,13 @@ namespace Terraria.Social.Steam
 					return SteamGameServerUGC.GetItemState(itemID);
 			}
 
-			public bool IsInstalled() => (GetState() & (uint)EItemState.k_EItemStateInstalled) != 0;
+			public bool IsInstalled() {
+				var currState = GetState();
+				
+				bool installed = (currState & (uint)(EItemState.k_EItemStateInstalled)) != 0;
+				bool downloading = (currState & ((uint)EItemState.k_EItemStateDownloading + (uint)EItemState.k_EItemStateDownloadPending)) != 0;
+				return installed && !downloading;
+			}
 
 			public bool NeedsUpdate() {
 				var currState = GetState();
@@ -404,18 +419,7 @@ namespace Terraria.Social.Steam
 						}
 
 						// Calculate the Mod Browser Version
-						System.Version cVersion = new System.Version(metadata["version"].Substring(1));
-
-						/* This doesn't work, or make sense.
-						// Prioritize version information found in the display name, for automation purposes.
-						int findVersion = displayname.LastIndexOf("v") + 1;
-						if (findVersion > 0) {
-							string possibleVersion = displayname.Substring(findVersion);
-							if (possibleVersion.Contains(".")) {
-								cVersion = new System.Version(possibleVersion);
-							}
-						}
-						*/
+						System.Version cVersion = new System.Version(metadata["version"].Replace("v", ""));
 
 						// Check against installed mods
 						bool update = false;
@@ -466,12 +470,7 @@ namespace Terraria.Social.Steam
 
 				do {
 					// Do Pretty Stuff if want here
-					Thread.Sleep(5);
-
-					if (ModManager.SteamUser) 
-						SteamAPI.RunCallbacks();
-					else
-						GameServer.RunCallbacks();
+					ForceCallbacks();
 				}
 				while (_primaryQueryResult == EResult.k_EResultNone);
 			}
