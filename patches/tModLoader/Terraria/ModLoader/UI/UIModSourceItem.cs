@@ -78,6 +78,23 @@ namespace Terraria.ModLoader.UI
 				Append(publishButton);
 			}
 			OnDoubleClick += BuildAndReload;
+
+			string modFolderName = Path.GetFileName(_mod);
+			string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
+			if (File.Exists(csprojFile)) {
+				var openCSProjButton = new UIHoverImage(UICommon.CopyCodeButtonTexture, "Open .csproj") {
+					Left = { Pixels = -52, Percent = 1f },
+					Top = { Pixels = 4 }
+				};
+				openCSProjButton.OnClick += (a, b) => {
+					Process.Start(
+						new ProcessStartInfo(csprojFile) {
+							UseShellExecute = true
+						}
+					);
+				};
+				Append(openCSProjButton);
+			}
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
@@ -187,7 +204,8 @@ namespace Terraria.ModLoader.UI
 				var bp = _builtMod.properties;
 
 				PublishModInner(modFile, bp, Path.Combine(_mod, "icon.png"));
-			} catch (WebException e) {
+			}
+			catch (WebException e) {
 				UIModBrowser.LogModBrowserException(e);
 			}
 		}
@@ -233,6 +251,9 @@ namespace Terraria.ModLoader.UI
 
 			if (string.IsNullOrWhiteSpace(values["author"]))
 				throw new WebException($"You need to specify an author in build.txt");
+
+			if (string.IsNullOrWhiteSpace(values["version"]))
+				throw new WebException($"You need to specify a version in build.txt");
 
 			Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, modFile, values));
 		}

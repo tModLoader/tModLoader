@@ -74,5 +74,19 @@ namespace Terraria.ModLoader
 				globalRecipe.OnCraft(item, recipe);
 			}
 		}
+
+		/// <summary>
+		/// Allows to edit the amount of item the player uses in a recipe.
+		/// </summary>
+		/// <param name="recipe">The recipe used for the craft.</param>
+		/// <param name="type">Type of the ingredient.</param>
+		/// <param name="amount">Modifiable amount of the item consumed.</param>
+		public static void ConsumeItem(Recipe recipe, int type, ref int amount) {
+			recipe.ConsumeItemHooks?.Invoke(recipe, type, ref amount);
+
+			foreach (GlobalRecipe globalRecipe in globalRecipes) {
+				globalRecipe.ConsumeItem(recipe, type, ref amount);
+			}
+		}
 	}
 }
