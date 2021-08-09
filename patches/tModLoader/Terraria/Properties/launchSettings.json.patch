@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Properties/launchSettings.json
 +++ src/tModLoader/Terraria/Properties/launchSettings.json
-@@ -2,14 +_,15 @@
+@@ -2,14 +_,21 @@
    "profiles": {
      "Terraria": {
        "commandName": "Executable",
@@ -15,6 +15,12 @@
        "executablePath": "dotnet",
        "commandLineArgs": "$(OutputName).dll -server",
 -      "workingDirectory": "$(TerrariaSteamPath)"
++      "workingDirectory": "$(tModLoaderSteamPath)"
++    },
++    "Terraria GoG": {
++      "commandName": "Executable",
++      "executablePath": "dotnet",
++      "commandLineArgs": "$(OutputName).dll -nosteam",
 +      "workingDirectory": "$(tModLoaderSteamPath)"
      }
    }

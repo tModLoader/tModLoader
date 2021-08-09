@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Tiles
 	{
 		// If you want to know more about tiles, please follow this link
 		// https://github.com/tModLoader/tModLoader/wiki/Basic-Tile
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// This changes a Framed tile to a FrameImportant tile
 			// For modders, just remember to set this to true when you make a tile that uses a TileObjectData
 			// Or basically all tiles that aren't like dirt, ores, or other basic building tiles

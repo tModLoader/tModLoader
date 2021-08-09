@@ -40,20 +40,13 @@ namespace Terraria.ModLoader.Core
 			public void LoadAssemblies() {
 				try {
 					using (modFile.Open()) {
-						if (Debugger.IsAttached && File.Exists(properties.eacPath)) {//load the unmodified dll and EaC pdb
-							assembly = LoadAssembly(modFile.GetModAssembly(), File.ReadAllBytes(properties.eacPath));
-							// todo: add path for dll resolution?
-							return;
-						}
-
 						foreach (var dll in properties.dllReferences) {
-							byte[] dllBytes = modFile.GetBytes("lib/" + dll + ".FNA.dll") ??
-							                  modFile.GetBytes("lib/" + dll + ".dll");
-
-							LoadAssembly(dllBytes);
+							LoadAssembly(modFile.GetBytes("lib/" + dll + ".dll"));
 						}
 
-						assembly = LoadAssembly(modFile.GetModAssembly(), modFile.GetModPdb());
+						assembly = Debugger.IsAttached && File.Exists(properties.eacPath) ?
+							LoadAssembly(modFile.GetModAssembly(), File.ReadAllBytes(properties.eacPath)): //load the unmodified dll and EaC pdb
+							LoadAssembly(modFile.GetModAssembly(), modFile.GetModPdb());
 					}
 				}
 				catch (Exception e) {
@@ -93,28 +86,26 @@ namespace Terraria.ModLoader.Core
 
 
 		[MethodImpl(MethodImplOptions.NoInlining)]
-		internal static void Unload() 
-		{
-			foreach (var kv in loadedModContexts)
-				kv.Value.Unload();
-
-			hostContextForAssembly.Clear();
-
-			for (int i = 0; loadedModContexts.Any(); i++) {
-				if (i > 10) {
-					Logging.tML.Warn($"{string.Join(", ", loadedModContexts.Select(kv => kv.Key))} refused to finalize");
-					break;
-				}
-				// Beg the assemblies to finalize and cleanup
-				GC.Collect();
-				GC.WaitForPendingFinalizers();
+		internal static void Unload() {
+			var alcRefs = loadedModContexts.Values.Select(alc => new WeakReference<AssemblyLoadContext>(alc)).ToArray();
+			foreach (var alc in loadedModContexts.Values) {
+				alc.Unload();
 			}
 
+			hostContextForAssembly.Clear();
 			loadedModContexts.Clear();
+
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+
+			foreach (var alcRef in alcRefs) {
+				if (alcRef.TryGetTarget(out var alc))
+					Logging.tML.Warn($"{alc} refused to finalize");
+			}
 		}
 
-		private static readonly ConditionalWeakTable<string, ModLoadContext> loadedModContexts = new ConditionalWeakTable<string, ModLoadContext>();
-		private static readonly IDictionary<Assembly, ModLoadContext> hostContextForAssembly = new Dictionary<Assembly, ModLoadContext>();
+		private static readonly Dictionary<string, ModLoadContext> loadedModContexts = new();
+		private static readonly Dictionary<Assembly, ModLoadContext> hostContextForAssembly = new();
 
 		//private static CecilAssemblyResolver cecilAssemblyResolver = new CecilAssemblyResolver();
 
@@ -124,13 +115,17 @@ namespace Terraria.ModLoader.Core
 				return;
 			assemblyResolverAdded = true;
 
-			AppDomain.CurrentDomain.AssemblyResolve += (_, args) => {
-				string name = new AssemblyName(args.Name).Name;
-				if (name == "Terraria" || name == "tModLoader" || name == "tModLoaderServer" || name == "tModLoaderDebug" || name == "tModLoaderServerDebug")
-					return Assembly.GetExecutingAssembly();
+			AppDomain.CurrentDomain.AssemblyResolve += TmlCustomResolver;
+		}
 
-				return null;
-			};
+		internal static Assembly TmlCustomResolver(object sender, ResolveEventArgs args) {
+			//Legacy: With FNA and .Net5 changes, had aimed to eliminate the variants of tmodloader (tmodloaderdebug, tmodloaderserver) and Terraria as assembly names.
+			// However, due to uncertainty in that elimination, in particular for Terraria, have opted to retain the original check. - Solxan			
+			var name = new AssemblyName(args.Name).Name;
+			if (name.Contains("tModLoader") || name == "Terraria")
+				return Assembly.GetExecutingAssembly();
+
+			return null;
 		}
 
 		private static Mod Instantiate(ModLoadContext mod) {
@@ -212,13 +207,7 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		private static string GetModAssemblyFileName(this TmodFile modFile) {
-			// legacy
-			if (modFile.HasFile($"{modFile.Name}.FNA.dll"))
-				return $"{modFile.Name}.FNA.dll";
-			
-			return $"{modFile.Name}.dll";
-		}
+		private static string GetModAssemblyFileName(this TmodFile modFile) => $"{modFile.Name}.dll";
 
 		internal static byte[] GetModAssembly(this TmodFile modFile) => modFile.GetBytes(modFile.GetModAssemblyFileName());
 

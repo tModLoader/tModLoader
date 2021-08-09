@@ -121,7 +121,7 @@ namespace Terraria.ModLoader.UI
 		private void ContinueClick(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
 			if (gotoMenu < 0)
-				Environment.Exit(0);
+				Main.instance.Exit();
 
 			Main.menuMode = gotoMenu;
 		}
@@ -130,17 +130,17 @@ namespace Terraria.ModLoader.UI
 			foreach (var mod in ModLoader.EnabledMods)
 				ModLoader.DisableMod(mod);
 
-			Environment.Exit(0);
+			Main.instance.Exit();
 		}
 
 		private void OpenFile(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Process.Start(Logging.LogPath);
+			Utils.OpenFolder(Logging.LogDir);
 		}
 
 		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Process.Start(webHelpURL);
+			Utils.OpenToURL(webHelpURL);
 		}
 
 		private void SkipLoad(UIMouseEvent evt, UIElement listeningElement) {

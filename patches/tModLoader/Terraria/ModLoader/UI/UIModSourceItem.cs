@@ -4,21 +4,19 @@ using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.Engine;
-using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.UI.Chat;
 
@@ -72,7 +70,7 @@ namespace Terraria.ModLoader.UI
 			Append(buildReloadButton);
 
 			_builtMod = builtMod;
-			if (builtMod != null) {
+			if (builtMod != null && builtMod.Enabled) {
 				var publishButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSPublish"));
 				publishButton.CopyStyle(buildReloadButton);
 				publishButton.Width.Pixels = 100;
@@ -82,6 +80,23 @@ namespace Terraria.ModLoader.UI
 				Append(publishButton);
 			}
 			OnDoubleClick += BuildAndReload;
+
+			string modFolderName = Path.GetFileName(_mod);
+			string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
+			if (File.Exists(csprojFile)) {
+				var openCSProjButton = new UIHoverImage(UICommon.CopyCodeButtonTexture, "Open .csproj") {
+					Left = { Pixels = -52, Percent = 1f },
+					Top = { Pixels = 4 }
+				};
+				openCSProjButton.OnClick += (a, b) => {
+					Process.Start(
+						new ProcessStartInfo(csprojFile) {
+							UseShellExecute = true
+						}
+					);
+				};
+				Append(openCSProjButton);
+			}
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
@@ -247,19 +262,21 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void PublishMod(UIMouseEvent evt, UIElement listeningElement) {
-			if (ModLoader.modBrowserPassphrase == "") {
-				Main.menuMode = Interface.enterPassphraseMenuID;
-				Interface.enterPassphraseMenu.SetGotoMenu(Interface.modSourcesID, Interface.modSourcesID);
-				return;
-			}
 			SoundEngine.PlaySound(10);
 			try {
-				if (ModLoader.GetMod(_builtMod.Name) == null) {
+				if (!WorkshopHelper.ModManager.SteamUser) {
+					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamPublishingLimit"), Interface.modSourcesID);
+					return;
+				}
+
+				if (!ModLoader.TryGetMod(_builtMod.Name, out _)) {
 					if (!_builtMod.Enabled)
 						_builtMod.Enabled = true;
 					Main.menuMode = Interface.reloadModsID;
 					ModLoader.OnSuccessfulLoad += () => {
-						PublishMod(null, null);
+						Main.QueueMainThreadAction(() => {
+							PublishMod(null, null);
+						});
 					};
 					return;
 				}
@@ -267,29 +284,23 @@ namespace Terraria.ModLoader.UI
 				var modFile = _builtMod.modFile;
 				var bp = _builtMod.properties;
 
-				PublishModInner(modFile, bp);
-			} catch (WebException e) {
+				PublishModInner(modFile, bp, Path.Combine(_mod, "icon.png"));
+			}
+			catch (WebException e) {
 				UIModBrowser.LogModBrowserException(e);
 			}
 		}
 
-		internal static void PublishModCommandLine(string modName, string passphrase, string steamid64) {
+		internal static void PublishModCommandLine(string modName) {
+			/*TODO: Re-implement. Main missing issue is iconPath.
 			try {
-				InstallVerifier.IsGoG = true;
-				ModLoader.SteamID64 = steamid64;
-				ModLoader.modBrowserPassphrase = passphrase;
-
-				if (string.IsNullOrWhiteSpace(ModLoader.modBrowserPassphrase) || string.IsNullOrWhiteSpace(ModLoader.SteamID64)) {
-					throw new Exception("-passphrase and -steamid64 are required for publishing via command line");
-				}
-
 				LocalMod localMod;
 				var modPath = Path.Combine(ModLoader.ModPath, modName + ".tmod");
 				var modFile = new TmodFile(modPath);
 				using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
 					localMod = new LocalMod(modFile);
 
-				PublishModInner(modFile, localMod.properties, true);
+				PublishModInner(modFile, localMod.properties, Path.Combine("ModSourcePath", "icon.png"), true);
 			}
 			catch (Exception e) {
 				Console.WriteLine("Something went wrong with command line mod publishing.");
@@ -297,118 +308,35 @@ namespace Terraria.ModLoader.UI
 				Environment.Exit(1);
 			}
 			Environment.Exit(0);
+			*/
 		}
 
-		private static void PublishModInner(TmodFile modFile, BuildProperties bp, bool commandLine = false) {
-			var files = new List<UploadFile>();
-			files.Add(new UploadFile {
-				Name = "file",
-				Filename = Path.GetFileName(modFile.path),
-				//    ContentType = "text/plain",
-				Content = File.ReadAllBytes(modFile.path)
-			});
-			if (modFile.HasFile("icon.png")) { // Test this on server
-				using (modFile.Open())
-					files.Add(new UploadFile {
-						Name = "iconfile",
-						Filename = "icon.png",
-						Content = modFile.GetBytes("icon.png")
-					});
-			}
-			//if (bp.beta)
-			//	throw new WebException(Language.GetTextValue("tModLoader.BetaModCantPublishError"));
+		private static void PublishModInner(TmodFile modFile, BuildProperties bp, string iconPath, bool commandLine = false) {
 			if (bp.buildVersion != modFile.TModLoaderVersion)
 				throw new WebException(Language.GetTextValue("OutdatedModCantPublishError.BetaModCantPublishError"));
 
 			var values = new NameValueCollection
 			{
-					{ "displayname", bp.displayName },
-					{ "displaynameclean", string.Join("", ChatManager.ParseMessage(bp.displayName, Color.White).Where(x=> x.GetType() == typeof(TextSnippet)).Select(x => x.Text)) },
-					{ "name", modFile.Name },
-					{ "version", "v"+bp.version },
-					{ "author", bp.author },
-					{ "homepage", bp.homepage },
-					{ "description", bp.description },
-					{ "steamid64", ModLoader.SteamID64 },
-					{ "modloaderversion", "tModLoader v"+modFile.TModLoaderVersion },
-					{ "passphrase", ModLoader.modBrowserPassphrase },
-					{ "modreferences", String.Join(", ", bp.modReferences.Select(x => x.mod)) },
-					{ "modside", bp.side.ToFriendlyString() },
-				};
-			if (values["steamid64"].Length != 17)
-				throw new WebException($"The steamid64 '{values["steamid64"]}' is invalid, verify that you are logged into Steam and don't have a pirated copy of Terraria.");
-			if (string.IsNullOrEmpty(values["author"]))
+				{ "displayname", bp.displayName },
+				{ "displaynameclean", string.Join("", ChatManager.ParseMessage(bp.displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text)) },
+				{ "name", modFile.Name },
+				{ "version", $"v{bp.version}" },
+				{ "author", bp.author },
+				{ "homepage", bp.homepage },
+				{ "description", bp.description },
+				{ "iconpath", iconPath },
+				{ "modloaderversion", $"tModLoader v{modFile.TModLoaderVersion}" },
+				{ "modreferences", string.Join(", ", bp.modReferences.Select(x => x.mod)) },
+				{ "modside", bp.side.ToFriendlyString() },
+			};
+
+			if (string.IsNullOrWhiteSpace(values["author"]))
 				throw new WebException($"You need to specify an author in build.txt");
-			ServicePointManager.Expect100Continue = false;
-			string url = "http://javid.ddns.net/tModLoader/publishmod.php";
-			using (PatientWebClient client = new PatientWebClient()) {
-				ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => true;
-				Interface.progress.Show(displayText: $"Uploading: {modFile.Name}", gotoMenu: Interface.modSourcesID, cancel: client.CancelAsync);
 
-				var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", System.Globalization.NumberFormatInfo.InvariantInfo);
-				client.Headers["Content-Type"] = "multipart/form-data; boundary=" + boundary;
-				//boundary = "--" + boundary;
-				byte[] data = UploadFile.GetUploadFilesRequestData(files, values, boundary);
-				if (commandLine) {
-					var result = client.UploadData(new Uri(url), data); // could use async version for progress output maybe
-					string response = HandlePublishResponse(modFile, result);
-					Console.WriteLine(Language.GetTextValue("tModLoader.MBServerResponse", response));
-					if (result.Length <= 256 || result[result.Length - 256 - 1] != '~') {
-						throw new Exception("Publish failed due to invalid response from server");
-					}
-				}
-				else {
-					client.UploadDataCompleted += (s, e) => PublishUploadDataComplete(s, e, modFile);
-					client.UploadProgressChanged += (s, e) => Interface.progress.Progress = (float)e.BytesSent / e.TotalBytesToSend;
-					client.UploadDataAsync(new Uri(url), data);
-				}
-			}
-		}
+			if (string.IsNullOrWhiteSpace(values["version"]))
+				throw new WebException($"You need to specify a version in build.txt");
 
-		private static void PublishUploadDataComplete(object s, UploadDataCompletedEventArgs e, TmodFile theTModFile) {
-			if (e.Error != null) {
-				if (e.Cancelled) {
-					Main.menuMode = Interface.modSourcesID;
-					return;
-				}
-				UIModBrowser.LogModBrowserException(e.Error);
-				return;
-			}
-
-			if (ModLoader.TryGetMod(theTModFile.Name, out var mod))
-				mod.Close();
-
-			var result = e.Result;
-			string response = HandlePublishResponse(theTModFile, result);
-			UIModBrowser.LogModPublishInfo(response);
-		}
-
-		private static string HandlePublishResponse(TmodFile theTModFile, byte[] result) {
-			int responseLength = result.Length;
-			if (result.Length > 256 && result[result.Length - 256 - 1] == '~') {
-				using (var fileStream = File.Open(theTModFile.path, FileMode.Open, FileAccess.ReadWrite))
-				using (var fileReader = new BinaryReader(fileStream))
-				using (var fileWriter = new BinaryWriter(fileStream)) {
-					fileReader.ReadBytes(4); // "TMOD"
-					fileReader.ReadString(); // ModLoader.version.ToString()
-					fileReader.ReadBytes(20); // hash
-					if (fileStream.Length - fileStream.Position > 256) // Extrememly basic check in case ReadString errors?
-						fileWriter.Write(result, result.Length - 256, 256);
-				}
-				responseLength -= 257;
-			}
-			string response = Encoding.UTF8.GetString(result, 0, responseLength);
-			return response;
-		}
-
-		private class PatientWebClient : WebClient
-		{
-			protected override WebRequest GetWebRequest(Uri uri) {
-				HttpWebRequest w = (HttpWebRequest)base.GetWebRequest(uri);
-				w.Timeout = System.Threading.Timeout.Infinite;
-				w.AllowWriteStreamBuffering = false; // Should use less ram.
-				return w;
-			}
+			Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, modFile, values));
 		}
 	}
 }

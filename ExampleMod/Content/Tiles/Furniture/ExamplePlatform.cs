@@ -9,7 +9,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 {
 	public class ExamplePlatform : ModTile
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// Properties
 			Main.tileLighted[Type] = true;
 			Main.tileFrameImportant[Type] = true;

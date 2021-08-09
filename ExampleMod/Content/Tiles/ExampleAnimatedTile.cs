@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Tiles
 	{
 		// If you want to know more about tiles, please follow this link
 		// https://github.com/tModLoader/tModLoader/wiki/Basic-Tile
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// If a tile is a light source
 			Main.tileLighted[Type] = true;
 			// This changes a Framed tile to a FrameImportant tile

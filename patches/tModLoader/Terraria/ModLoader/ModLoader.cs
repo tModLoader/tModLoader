@@ -41,7 +41,7 @@ namespace Terraria.ModLoader
 		// public static bool ShowWhatsNew;
 		public static bool ShowFirstLaunchWelcomeMessage;
 
-		public static string versionedName => ModCompile.DeveloperMode ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
+		public static string versionedName => (ModCompile.DeveloperMode || !BuildInfo.IsRelease) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
 
 #if NETCORE
 		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (InstallVerifier.IsGoG ? "g" : "s") + "c";
@@ -52,7 +52,7 @@ namespace Terraria.ModLoader
 		public static string ModPath => ModOrganizer.modPath;
 
 		private static readonly IDictionary<string, Mod> modsByName = new Dictionary<string, Mod>(StringComparer.OrdinalIgnoreCase);
-		private static WeakReference[] weakModReferences = new WeakReference[0];
+		private static List<WeakReference<Mod>> weakModReferences = new();
 
 		internal static readonly string modBrowserPublicKey = "<RSAKeyValue><Modulus>oCZObovrqLjlgTXY/BKy72dRZhoaA6nWRSGuA+aAIzlvtcxkBK5uKev3DZzIj0X51dE/qgRS3OHkcrukqvrdKdsuluu0JmQXCv+m7sDYjPQ0E6rN4nYQhgfRn2kfSvKYWGefp+kqmMF9xoAq666YNGVoERPm3j99vA+6EIwKaeqLB24MrNMO/TIf9ysb0SSxoV8pC/5P/N6ViIOk3adSnrgGbXnFkNQwD0qsgOWDks8jbYyrxUFMc4rFmZ8lZKhikVR+AisQtPGUs3ruVh4EWbiZGM2NOkhOCOM4k1hsdBOyX2gUliD0yjK5tiU3LBqkxoi2t342hWAkNNb4ZxLotw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
 		internal static string modBrowserPassphrase = "";
@@ -102,10 +102,6 @@ namespace Terraria.ModLoader
 
 		internal static void PrepareAssets()
 		{
-			if (Main.dedServ) {
-				return;
-			}
-
 			ManifestContentSource = new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly());
 			ManifestAssets = new AssetRepository(AssetInitializer.assetReaderCollection, new[] { ManifestContentSource }) {
 				AssetLoadFailHandler = Main.OnceFailedLoadingAnAsset
@@ -127,7 +123,7 @@ namespace Terraria.ModLoader
 
 				var modInstances = ModOrganizer.LoadMods(token);
 
-				weakModReferences = modInstances.Select(x => new WeakReference(x)).ToArray();
+				weakModReferences.AddRange(modInstances.Select(x => new WeakReference<Mod>(x)));
 				modInstances.Insert(0, new ModLoaderMod());
 				Mods = modInstances.ToArray();
 				foreach (var mod in Mods)
@@ -203,7 +199,8 @@ namespace Terraria.ModLoader
 		{
 			try {
 				Mods_Unload();
-				WarnModsStillLoaded();
+				// TODO: figure out when the best place to do this is - CB
+				// WarnModsStillLoaded();
 				return true;
 			}
 			catch (Exception e) {
@@ -240,13 +237,16 @@ namespace Terraria.ModLoader
 			AssemblyManager.Unload();
 		}
 
-		internal static List<string> badUnloaders = new List<string>();
+		internal static bool IsUnloadedModStillAlive(string name) =>
+			weakModReferences.Any(modRef => modRef.TryGetTarget(out var mod) && mod.Name == name && !Mods.Contains(mod));
+
+		/*internal static List<string> badUnloaders = new List<string>();
 		private static void WarnModsStillLoaded()
 		{
 			badUnloaders = weakModReferences.Where(r => r.IsAlive).Select(r => ((Mod)r.Target).Name).ToList();
 			foreach (var modName in badUnloaders)
 				Logging.tML.WarnFormat("{0} not fully unloaded during unload.", modName);
-		}
+		}*/
 
 		private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false)
 		{

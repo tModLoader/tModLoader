@@ -1,5 +1,14 @@
 Mods: {
 	ExampleMod: {
+		Config: {
+			ItemHeader: Items
+			
+			ExampleWingsToggle: {
+				Label: ExampleWings Toggle
+				Tooltip: Enables or disables the ExampleWings item
+			}
+		}
+		
 		Common: {
 			PaperAirplane: Paper Airplane
 			LocalizedLabel: This Label is from the localization files: {$Mods.ExampleMod.Common.PaperAirplane}
