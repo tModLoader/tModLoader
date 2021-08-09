@@ -1,0 +1,37 @@
+--- src/Terraria/Terraria/GameContent/ItemDropRules/DropOneByOne.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/DropOneByOne.cs
+@@ -1,3 +_,4 @@
++using System;
+ using System.Collections.Generic;
+ 
+ namespace Terraria.GameContent.ItemDropRules
+@@ -19,7 +_,11 @@
+ 		}
+ 
+ 		public int itemId;
+-		public Parameters parameters;
++
++		public Parameters parameters {
++			get;
++			private init;
++		}
+ 
+ 		public List<IItemDropRuleChainAttempt> ChainedRules {
+ 			get;
+@@ -27,6 +_,16 @@
+ 		}
+ 
+ 		public DropOneByOne(int itemId, Parameters parameters) {
++			if (parameters.MinimumItemDropsCount > parameters.MaximumItemDropsCount) {
++				throw new ArgumentException($"{nameof(parameters.MinimumItemDropsCount)} must be lesser or equal to {nameof(parameters.MaximumItemDropsCount)}.", nameof(parameters));
++			}
++			if (parameters.MinimumStackPerChunkBase > parameters.MaximumStackPerChunkBase) {
++				throw new ArgumentException($"{nameof(parameters.MinimumStackPerChunkBase)} must be lesser or equal to {nameof(parameters.MaximumStackPerChunkBase)}.", nameof(parameters));
++			}
++			if (parameters.BonusMinDropsPerChunkPerPlayer > parameters.BonusMaxDropsPerChunkPerPlayer) {
++				throw new ArgumentException($"{nameof(parameters.BonusMinDropsPerChunkPerPlayer)} must be lesser or equal to {nameof(parameters.BonusMaxDropsPerChunkPerPlayer)}.", nameof(parameters));
++			}
++
+ 			ChainedRules = new List<IItemDropRuleChainAttempt>();
+ 			this.parameters = parameters;
+ 			this.itemId = itemId;

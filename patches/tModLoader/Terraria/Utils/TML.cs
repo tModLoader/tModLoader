@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Terraria.ModLoader;
+using Terraria.ModLoader.UI;
 using Terraria.Utilities;
 
 namespace Terraria
@@ -29,6 +32,11 @@ namespace Terraria
 
 		public static Point16 ToPoint16(this Vector2 v)
 			=> new Point16((short)v.X, (short)v.Y);
+
+		public static DateTime UnixTimeStampToDateTime(long unixTimeStamp) {
+			// Unix timestamp is seconds past epoch
+			return DateTimeOffset.FromUnixTimeSeconds(unixTimeStamp).UtcDateTime;
+		}
 
 		//Struct extensions
 
@@ -107,6 +115,20 @@ namespace Terraria
 			byte[] receive = new byte[(BitArrLength - 1) / 8 + 1];
 			receive = reader.ReadBytes(receive.Length);
 			return new BitArray(receive);
+		}
+
+		// Common Blocks
+
+		public static void OpenToURL(string url) {
+			Process.Start(new ProcessStartInfo(url) {
+				UseShellExecute = true,
+				Verb = "open"
+			});
+		}
+
+		public static void ShowFancyErrorMessage(string message, int returnToMenu) {
+			Logging.tML.Error(message);
+			Interface.errorMessage.Show(message, returnToMenu);
 		}
 	}
 }

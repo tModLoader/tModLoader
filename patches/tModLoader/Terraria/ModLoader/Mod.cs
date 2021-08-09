@@ -52,7 +52,24 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual Version Version => File.Version;
 
-		public ModProperties Properties { get; protected set; } = ModProperties.AutoLoadAll;
+		/// <summary>
+		/// Whether or not this mod will autoload content by default. Autoloading content means you do not need to manually add content through methods.
+		/// </summary>
+		public bool ContentAutoloadingEnabled { get; init; } = true;
+		/// <summary>
+		/// Whether or not this mod will automatically add images in the Gores folder as gores to the game, along with any ModGore classes that share names with the images. This means you do not need to manually call Mod.AddGore.
+		/// </summary>
+		public bool GoreAutoloadingEnabled { get; init; } = true;
+		/// <summary>
+		/// Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, Sounds/NPCKilled to add them as npcKilled sounds, and Sounds/Music to add them as music tracks. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any ModSound classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound.
+		/// </summary>
+		public bool SoundAutoloadingEnabled { get; init; } = true;
+		/// <summary>
+		/// Whether or not this mod will automatically add images in the Backgrounds folder as background textures to the game. This means you do not need to manually call Mod.AddBackgroundTexture.
+		/// </summary>
+		public bool BackgroundAutoloadingEnabled { get; init; } = true;
+
+
 		/// <summary>
 		/// The ModSide that controls how this mod is synced between client and server.
 		/// </summary>
@@ -115,9 +132,12 @@ namespace Terraria.ModLoader
 		public void AddContent(ILoadable instance){
 			if (!loading)
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
-			instance.Load(this);
-			content.Add(instance);
-			ContentInstance.Register(instance);
+
+			if (instance.IsLoadingEnabled(this)) {
+				instance.Load(this);
+				content.Add(instance);
+				ContentInstance.Register(instance);
+			}
 		}
 
 		public IEnumerable<ILoadable> GetContent() => content;

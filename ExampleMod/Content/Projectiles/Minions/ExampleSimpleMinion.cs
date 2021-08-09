@@ -3,6 +3,7 @@ using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -28,7 +29,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 		}
 
 		public override void Update(Player player, ref int buffIndex) {
-			// if the minions exist reset the buff time, otherwise remove the buff from the player.
+			// If the minions exist reset the buff time, otherwise remove the buff from the player
 			if (player.ownedProjectileCounts[ModContent.ProjectileType<ExampleSimpleMinion>()] > 0) {
 				player.buffTime[buffIndex] = 18000;
 			}
@@ -45,7 +46,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 			DisplayName.SetDefault("Example Minion Item");
 			Tooltip.SetDefault("Summons an example minion to fight for you");
 
-			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
+			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}
 
@@ -58,24 +59,33 @@ namespace ExampleMod.Content.Projectiles.Minions
 			Item.useTime = 36;
 			Item.useAnimation = 36;
 			Item.useStyle = ItemUseStyleID.Swing; // how the player's arm moves when using the item
-			Item.sellPrice(gold: 30);
+			Item.value = Item.sellPrice(gold: 30);
 			Item.rare = ItemRarityID.Cyan;
 			Item.UseSound = SoundID.Item44; // What sound should play when using the item
 
 			// These below are needed for a minion weapon
 			Item.noMelee = true; // this item doesn't do any melee damage
-			Item.DamageType = DamageClass.Summon; // Makes the damage register as summon. If your item does not have any damage type, it becomes true damage (which means that damage scalars will not affect it). Be sure to have a damage type.
+			Item.DamageType = DamageClass.Summon; // Makes the damage register as summon. If your item does not have any damage type, it becomes true damage (which means that damage scalars will not affect it). Be sure to have a damage type
 			Item.buffType = ModContent.BuffType<ExampleSimpleMinionBuff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
-			Item.shoot = ModContent.ProjectileType<ExampleSimpleMinion>(); // This item creates the minion projectile.
+			Item.shoot = ModContent.ProjectileType<ExampleSimpleMinion>(); // This item creates the minion projectile
 		}
 
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position
+			position = Main.MouseWorld;
+		}
+
+		public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
 			player.AddBuff(Item.buffType, 2);
 
-			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position.
-			position = Main.MouseWorld;
+			//Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
+			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
+			projectile.originalDamage = Item.damage;
+
+			//Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
+			return false;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -116,7 +126,8 @@ namespace ExampleMod.Content.Projectiles.Minions
 
 			// These below are needed for a minion weapon
 			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
-			Projectile.minion = true; // Only determines the damage type								  
+			Projectile.minion = true; // Declares this as a minion (has many effects)
+			Projectile.DamageType = DamageClass.Summon; //Declares the damage type (needed for it to deal damage)
 			Projectile.minionSlots = 1f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
 			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
 		}

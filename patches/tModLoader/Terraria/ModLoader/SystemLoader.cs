@@ -283,9 +283,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void ModifyTimeRate(ref int timeRate, ref int tileUpdateRate) {
+		public static void ModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate) {
 			foreach (var system in HookModifyTimeRate.arr) {
-				system.ModifyTimeRate(ref timeRate, ref tileUpdateRate);
+				system.ModifyTimeRate(ref timeRate, ref tileUpdateRate, ref eventUpdateRate);
 			}
 		}
 
