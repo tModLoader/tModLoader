@@ -119,8 +119,8 @@
 +				protected EResult _updateCallback;
  
 -				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags) {
-+				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null) {
-+					Console.WriteLine("Publishing " + itemTitle);
++				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0) {
++					Utils.LogAndConsoleInfoMessage("Attempting Publishing " + itemTitle);
  					_issueReporter = issueReporter;
  					_endAction = endAction;
  					_createItemHook = CallResult<CreateItemResult_t>.Create(CreateItemResult);
@@ -139,6 +139,12 @@
  					};
  
 -					ulong? num = null;
+-					if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out FoundWorkshopEntryInfo info))
+-						num = info.workshopEntryId;
+-
+-					if (num.HasValue && finder.HasItemOfId(num.Value)) {
+-						_publishedFileID = new PublishedFileId_t(num.Value);
+-						PreventUpdatingCertainThings();
 +					if (!File.Exists(previewImagePath)) {
 +						_issueReporter.ReportInstantUploadProblem("Workshop.ReportIssue_FailedToPublish_CouldNotFindFolderToUpload" + " NoPreviewImage");
 +						return;
@@ -148,13 +154,8 @@
 +						return;
 +					}
 +
-+					_publishedFileID = new PublishedFileId_t(0);
- 					if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out FoundWorkshopEntryInfo info))
--						num = info.workshopEntryId;
--
--					if (num.HasValue && finder.HasItemOfId(num.Value)) {
--						_publishedFileID = new PublishedFileId_t(num.Value);
--						PreventUpdatingCertainThings();
++					_publishedFileID = new PublishedFileId_t(existingID);
++					if (existingID == 0 && AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out FoundWorkshopEntryInfo info))
 +						_publishedFileID = new PublishedFileId_t(info.workshopEntryId);
 +
 +					// Verify can write to the manifest before running creating any items.
@@ -225,7 +226,7 @@
  					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
  						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
  						_endAction(this);
-@@ -223,27 +_,25 @@
+@@ -223,27 +_,26 @@
  					else {
  						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
  						_endAction(this);
@@ -246,6 +247,7 @@
 -					}
 +				private void UpdateItem(bool creatingItem = false) {
 +					WrappedWriteManifest();
++
 +					Utils.LogAndConsoleInfoMessage("Updating Item " + _entryData.Title);
  
  					PrepareContentForUpdate();
@@ -323,16 +325,18 @@
  						case EResult.k_EResultOK:
  							SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
  							break;
-@@ -305,6 +_,14 @@
+@@ -305,6 +_,16 @@
  						_issueReporter.ReportManifestCreationProblem("Workshop.ReportIssue_CouldNotCreateResourcePackManifestFile", exception);
  						return false;
  					}
 +				}
 +
 +				private bool WrappedWriteManifest() {
-+					if (TryWritingManifestToFolder(_entryData.ContentFolderPath, GetHeaderText()))
++					string headerText = GetHeaderText();
++					TryWritingManifestToFolder(_entryData.BuildData["manifestfolder"], headerText);
++					if (TryWritingManifestToFolder(_entryData.ContentFolderPath, headerText))
 +						return true;
-+						
++
 +					_endAction(this);
 +					return false;
  				}

@@ -220,10 +220,7 @@ namespace Terraria.ModLoader.UI
 				using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
 					localMod = new LocalMod(modFile);
 
-				var expectedIconPath = Path.Combine(ModCompile.ModSourcePath, modName, "icon.png");
-				if (!File.Exists(expectedIconPath))
-					throw new Exception($"{expectedIconPath} not found");
-				PublishModInner(modFile, localMod.properties, expectedIconPath, true);
+				PublishModInner(modFile, localMod.properties, Path.Combine(ModCompile.ModSourcePath, modName, "icon.png"), true);
 			}
 			catch (Exception e) {
 				Console.WriteLine("Something went wrong with command line mod publishing.");
@@ -248,6 +245,7 @@ namespace Terraria.ModLoader.UI
 				{ "homepage", bp.homepage },
 				{ "description", bp.description },
 				{ "iconpath", iconPath },
+				{ "manifestfolder", Path.Combine(ModCompile.ModSourcePath, modFile.Name) },
 				{ "modloaderversion", $"tModLoader v{modFile.TModLoaderVersion}" },
 				{ "modreferences", string.Join(", ", bp.modReferences.Select(x => x.mod)) },
 				{ "modside", bp.side.ToFriendlyString() },

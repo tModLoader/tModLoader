@@ -338,12 +338,10 @@ namespace Terraria.ModLoader.UI
 							break;
 						}
 
-						var info = modBrowser.Items.FirstOrDefault(x => x.ModName.Equals(modname, StringComparison.OrdinalIgnoreCase));
+						var info = modBrowser.FindModDownloadItem(modname);
 						if(info == null)
 							Console.WriteLine($"No mod with the name {modname} found on the workshop.");
 						else
-							// TODO: This is async and without any download progress or complete indications. That is bad
-							// It also doesn't warn if the mod is already downloaded, or say if the download initialization is a success.
 							info.InnerDownloadWithDeps(); 
 					}
 					catch (Exception e) {
