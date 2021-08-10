@@ -180,7 +180,7 @@ namespace Terraria.ModLoader.UI
 			else if (Main.menuMode == tModLoaderSettingsID) {
 				offY = 210;
 				spacing = 42;
-				numButtons = 11;
+				numButtons = 7;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++) {
 					buttonScales[i] = 0.75f;
@@ -206,12 +206,14 @@ namespace Terraria.ModLoader.UI
 					ModLoader.autoReloadAndEnableModsLeavingModBrowser = !ModLoader.autoReloadAndEnableModsLeavingModBrowser;
 				}
 
+				/*
 				buttonIndex++;
 				buttonNames[buttonIndex] = (Main.UseExperimentalFeatures ? Language.GetTextValue("tModLoader.ExperimentalFeaturesYes") : Language.GetTextValue("tModLoader.ExperimentalFeaturesNo"));
 				if (selectedMenu == buttonIndex) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
 					Main.UseExperimentalFeatures = !Main.UseExperimentalFeatures;
 				}
+				*/
 
 				buttonIndex++;
 				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.RemoveForcedMinimumZoom{(ModLoader.removeForcedMinimumZoom ? "Yes" : "No")}");
@@ -234,6 +236,7 @@ namespace Terraria.ModLoader.UI
 					ModLoader.notifyNewMainMenuThemes = !ModLoader.notifyNewMainMenuThemes;
 				}
 
+				/*
 				buttonIndex++;
 				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.ClearMBCredentials");
 				if (selectedMenu == buttonIndex) {
@@ -241,6 +244,7 @@ namespace Terraria.ModLoader.UI
 					ModLoader.modBrowserPassphrase = "";
 					ModLoader.SteamID64 = "";
 				}
+				*/
 
 				buttonIndex++;
 				buttonNames[buttonIndex] = Lang.menu[5].Value;
@@ -334,12 +338,10 @@ namespace Terraria.ModLoader.UI
 							break;
 						}
 
-						var info = modBrowser.Items.FirstOrDefault(x => x.ModName.Equals(modname, StringComparison.OrdinalIgnoreCase));
+						var info = modBrowser.FindModDownloadItem(modname);
 						if(info == null)
 							Console.WriteLine($"No mod with the name {modname} found on the workshop.");
 						else
-							// TODO: This is async and without any download progress or complete indications. That is bad
-							// It also doesn't warn if the mod is already downloaded, or say if the download initialization is a success.
 							info.InnerDownloadWithDeps(); 
 					}
 					catch (Exception e) {

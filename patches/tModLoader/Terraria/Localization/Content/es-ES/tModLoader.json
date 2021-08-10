@@ -30,12 +30,12 @@
 		"ModOldWarning": "Mod desactualizado, actívalo bajo tu propia responsabilidad",
 		"ModDependencyClickTooltip": "Este mod depende de {0}\n(Haz clic para activar)",
 		"ModDependencyModsNotFound": "Los siguientes mods no han sido encontrados: {0}",
-		"ModDidNotFullyUnloadWarning": "Este mod no se desactivó completamente durante el último reinicio.\n(Este es un mensaje para el creador del mod)",
-		"BetaModCantPublish": "Este mod se ha desarrollado en una versión beta y no puede publicarse",
+		"ModDidNotFullyUnloadWarning": "Este mod no se desactivó completamente durante la última recarga.\n(Este es un mensaje para el creador del mod)",
+		"BetaModCantPublish": "Este mod se ha creado en una versión beta y no puede publicarse",
 		"BetaModCantPublishError": "No puedes publicar un mod basado en una versión beta de tModLoader",
 		"OutdatedModCantPublishError": "No puedes publicar un mod creado para una versión antigua de tModLoader",
-		"ModReloadRequired": "Reinicio necesario",
-		"ModReloadForced": "Reinicio forzado",
+		"ModReloadRequired": "Recarga necesaria",
+		"ModReloadForced": "Recarga forzada",
 		"ModIsServerSide": "Este es un mod del lado del servidor",
 		"ModsByline": "De: {0}",
 		"ModsMoreInfo": "Información",
@@ -67,10 +67,17 @@
 		"BossBarStyle": "Estilo de barra de jefes: {0}",
 		"BossBarStyleNoOptions": "Sin opciones",
 
+		// Workshop
+		"WorkshopDisclaimer": "Al publicar este elemento, aceptas los Términos de Servicio de tModLoader",
+		"SteamPublishingLimit": "Error: Solo los usuarios de Steam pueden publicar a través del juego en Steam Workshop.",
+		"NoWorkshopAccess": "Error: Error al acceder a Steam Workshop",
+		"ModAlreadyUploaded": "Error: ¡Este mod ya existe en Steam Workshop!",
+		"ModVersionInfoUnchanged": "Error: La versión del mod debe incrementarse para actualizar el mod.",
+
 		// Mod Errors
 		"LoadError": "Se ha producido un error al cargar {0}",
 		"LoadErrorDisabled": "Los mods se han desactivado automáticamente.",
-		"LoadErrorCulpritUnknown": "Se desconoce el mod responsable y tModLoader debe ser reiniciado.",
+		"LoadErrorCulpritUnknown": "Se desconoce el mod responsable y tModLoader debe reiniciarse.",
 		"LoadErrorVersionMessage": "Se ha detectado que este mod fue creado para tModLoader v. {0}\nSin embargo, estás usando la versión {1}",
 		"LoadErrorDotNet45Required": "Se necesita .NET Framework 4.5 o posterior para usar los mods. Por favor, descarga la última versión de .NET Framework",
 		"LoadErrorDependencyMissing": "Falta el mod {0}, requerido por {1}",
@@ -278,7 +285,7 @@
 		"MSPublish": "Publicar",
 		"MSModSourcesCantHaveSpaces": "(Las carpetas de fuentes de mods no pueden contener espacios)",
 		"MSCreateMod": "Crear mod",
-		"VersionUpgrade": "ENLACE: Aprende sobre la Migración de Mods con la última actualización",
+		"VersionUpgrade": "Info. sobre la Migración de Mods tras actualizar",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Se requieren librerías adicionales para construir mods (falta la carpeta ModCompile)",

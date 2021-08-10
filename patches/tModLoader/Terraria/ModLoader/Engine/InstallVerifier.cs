@@ -42,21 +42,21 @@ namespace Terraria.ModLoader.Engine
 				}
 
 				vanillaSteamAPI = "steam_api.dll";
-				gogHash = ToByteArray("ff61b96a07894a9e65f880fb9608fb37"); // Don't forget to update CheckExe in CheckGoG
+				gogHash = ToByteArray("a198ff662df47b20ef1d1436c5d80f67"); // Don't forget to update CheckExe in CheckGoG
 				steamHash = ToByteArray("4fd8072ca82ded3d9da1be577a478788");
 			}
 			else if (Platform.IsOSX) {
 				steamAPIPath = "Libraries/Native/OSX/libsteam_api64.dylib";
 				steamAPIHash = ToByteArray("69C98EC9C3179D52A7FE75BD8405D8FC");
 				vanillaSteamAPI = "libsteam_api.dylib";
-				gogHash = ToByteArray("181c586d0fe64156adb0ecd4b9fabf9d");
+				gogHash = ToByteArray("2d877e9d74d0a382e45d75ff008969d3");
 				steamHash = ToByteArray("12c8d2ac5af6c8505bd1a9339dc75231");
 			}
 			else if (Platform.IsLinux) {
 				steamAPIPath = "Libraries/Native/Linux/libsteam_api64.so";
 				steamAPIHash = ToByteArray("25BF523623B5EE8E82B047327F9C1341");
 				vanillaSteamAPI = "libsteam_api.so";
-				gogHash = ToByteArray("4a051352dd6ecc323c5a0a15e5b598fb");
+				gogHash = ToByteArray("a37d05f005181bd1bacaa5b82d6fab0d");
 				steamHash = ToByteArray("debcc318ca4e14295e3ac22e380e289b");
 			}
 			else {

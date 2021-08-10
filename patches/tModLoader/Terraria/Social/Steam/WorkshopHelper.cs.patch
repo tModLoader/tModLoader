@@ -111,7 +111,7 @@
  							}
  							else {
  								WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -158,8 +_,11 @@
+@@ -158,12 +_,16 @@
  				private CallResult<SubmitItemUpdateResult_t> _updateItemHook;
  				private FinishedPublishingAction _endAction;
  				private WorkshopIssueReporter _issueReporter;
@@ -119,12 +119,17 @@
 +				protected EResult _updateCallback;
  
 -				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags) {
-+				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null) {
-+					Console.WriteLine("Publishing " + itemTitle);
++				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0) {
++					Utils.LogAndConsoleInfoMessage("Attempting Publishing " + itemTitle);
  					_issueReporter = issueReporter;
  					_endAction = endAction;
  					_createItemHook = CallResult<CreateItemResult_t>.Create(CreateItemResult);
-@@ -171,20 +_,35 @@
+ 					_updateItemHook = CallResult<SubmitItemUpdateResult_t>.Create(UpdateItemResult);
++					_publicity = publicity;
+ 					ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
+ 					_entryData = new SteamWorkshopItem {
+ 						Title = itemTitle,
+@@ -171,16 +_,32 @@
  						ContentFolderPath = contentFolderPath,
  						Tags = tags,
  						PreviewImagePath = previewImagePath,
@@ -133,6 +138,13 @@
 +						BuildData = buildData
  					};
  
+-					ulong? num = null;
+-					if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out FoundWorkshopEntryInfo info))
+-						num = info.workshopEntryId;
+-
+-					if (num.HasValue && finder.HasItemOfId(num.Value)) {
+-						_publishedFileID = new PublishedFileId_t(num.Value);
+-						PreventUpdatingCertainThings();
 +					if (!File.Exists(previewImagePath)) {
 +						_issueReporter.ReportInstantUploadProblem("Workshop.ReportIssue_FailedToPublish_CouldNotFindFolderToUpload" + " NoPreviewImage");
 +						return;
@@ -142,31 +154,28 @@
 +						return;
 +					}
 +
- 					ulong? num = null;
- 					if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out FoundWorkshopEntryInfo info))
- 						num = info.workshopEntryId;
- 
- 					if (num.HasValue && finder.HasItemOfId(num.Value)) {
- 						_publishedFileID = new PublishedFileId_t(num.Value);
++					_publishedFileID = new PublishedFileId_t(existingID);
++					if (existingID == 0 && AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out FoundWorkshopEntryInfo info))
++						_publishedFileID = new PublishedFileId_t(info.workshopEntryId);
++
++					// Verify can write to the manifest before running creating any items.
++					if (!WrappedWriteManifest())
++						return;
++
++					// If it has a publish ID, it has to be yours. Removing vanilla finder check to avoid dupes - Solxan
++					if (_publishedFileID.m_PublishedFileId != 0 /* finder.HasItemOfId(num.Value)*/) {
 +						if (buildData == null) {
--						PreventUpdatingCertainThings();
 +							PreventUpdatingCertainThings();
 +						}
  						UpdateItem();
  					}
  					else {
-+						if(!Main.dedServ)
--						CreateItem();
-+							CreateItem();
-+						else
-+							Console.WriteLine("Publishing a new item is not implemented on the command line.");
- 					}
- 				}
- 
-@@ -205,18 +_,28 @@
+@@ -205,13 +_,55 @@
  				}
  
  				private void CreateItem() {
++					Utils.LogAndConsoleInfoMessage("Creating Item " + _entryData.Title);
++
 +					_createCallback = EResult.k_EResultNone;
 +
  					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
@@ -174,26 +183,73 @@
  					_createItemHook.Set(hAPICall, CreateItemResult);
  					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
 +
++					// Everything below is for command line publishing to work.
 +					if (!Main.dedServ)
 +						return;
 +
 +					do {
 +						ForceCallbacks();
 +					} while (_createCallback == EResult.k_EResultNone);
++
++					if (_createCallback != EResult.k_EResultOK)
++						return;
++
++					UpdateItem(creatingItem:true);
++					do {
++						ForceCallbacks();
++					} while (_createCallback == EResult.k_EResultNone);
  				}
  
++				// Rewrote to reduce duplicate publishing in the event that user needs to accept workshop agreement.
  				private void CreateItemResult(CreateItemResult_t param, bool bIOFailure) {
 +					_createCallback = param.m_eResult;
++					if (param.m_eResult != EResult.k_EResultOK) {
++						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
++						_endAction(this);
++						return;
++					}
++
++					_publishedFileID = param.m_nPublishedFileId;
++					WrappedWriteManifest();
++
++					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
++						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
++						_endAction(this);
++						return;
++					}
++					
++					// On servers we want to control this more tightly due to threading constraints.
++					if (!Main.dedServ)
++						UpdateItem();
++
++					/*
  					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
  						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
  						_endAction(this);
- 					}
--					else if (param.m_eResult == EResult.k_EResultOK) {
-+					else if (_createCallback == EResult.k_EResultOK) {
- 						_publishedFileID = param.m_nPublishedFileId;
- 						UpdateItem();
- 					}
-@@ -240,10 +_,10 @@
+@@ -223,27 +_,26 @@
+ 					else {
+ 						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
+ 						_endAction(this);
+-					}
++					} 
++					*/
+ 				}
+ 
+ 				protected abstract string GetHeaderText();
+ 
+ 				protected abstract void PrepareContentForUpdate();
+ 
+-				private void UpdateItem() {
+-					string headerText = GetHeaderText();
+-					if (!TryWritingManifestToFolder(_entryData.ContentFolderPath, headerText)) {
+-						_endAction(this);
+-						return;
+-					}
++				private void UpdateItem(bool creatingItem = false) {
++					WrappedWriteManifest();
++
++					Utils.LogAndConsoleInfoMessage("Updating Item " + _entryData.Title);
+ 
  					PrepareContentForUpdate();
  					UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
  					if (_entryData.Title != null)
@@ -206,7 +262,7 @@
  
  					SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
  					SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
-@@ -253,21 +_,61 @@
+@@ -253,21 +_,60 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
@@ -248,11 +304,10 @@
  					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
 +
 +
-+					if (!Main.dedServ)
++					if (!Main.dedServ || creatingItem)
 +						return;
 +					
 +					do {
-+						// Tosses errors if invoked after CreateItem() has already run.
 +						ForceCallbacks();
 +					} while (_updateCallback == EResult.k_EResultNone);
  				}
@@ -270,3 +325,20 @@
  						case EResult.k_EResultOK:
  							SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
  							break;
+@@ -305,6 +_,16 @@
+ 						_issueReporter.ReportManifestCreationProblem("Workshop.ReportIssue_CouldNotCreateResourcePackManifestFile", exception);
+ 						return false;
+ 					}
++				}
++
++				private bool WrappedWriteManifest() {
++					string headerText = GetHeaderText();
++					TryWritingManifestToFolder(_entryData.BuildData["manifestfolder"], headerText);
++					if (TryWritingManifestToFolder(_entryData.ContentFolderPath, headerText))
++						return true;
++
++					_endAction(this);
++					return false;
+ 				}
+ 
+ 				public bool TryGetProgress(out float progress) {

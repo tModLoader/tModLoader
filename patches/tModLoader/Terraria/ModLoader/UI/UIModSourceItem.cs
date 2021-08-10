@@ -80,6 +80,23 @@ namespace Terraria.ModLoader.UI
 				Append(publishButton);
 			}
 			OnDoubleClick += BuildAndReload;
+
+			string modFolderName = Path.GetFileName(_mod);
+			string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
+			if (File.Exists(csprojFile)) {
+				var openCSProjButton = new UIHoverImage(UICommon.CopyCodeButtonTexture, "Open .csproj") {
+					Left = { Pixels = -52, Percent = 1f },
+					Top = { Pixels = 4 }
+				};
+				openCSProjButton.OnClick += (a, b) => {
+					Process.Start(
+						new ProcessStartInfo(csprojFile) {
+							UseShellExecute = true
+						}
+					);
+				};
+				Append(openCSProjButton);
+			}
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
@@ -189,7 +206,8 @@ namespace Terraria.ModLoader.UI
 				var bp = _builtMod.properties;
 
 				PublishModInner(modFile, bp, Path.Combine(_mod, "icon.png"));
-			} catch (WebException e) {
+			}
+			catch (WebException e) {
 				UIModBrowser.LogModBrowserException(e);
 			}
 		}
@@ -202,10 +220,7 @@ namespace Terraria.ModLoader.UI
 				using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
 					localMod = new LocalMod(modFile);
 
-				var expectedIconPath = Path.Combine(ModCompile.ModSourcePath, modName, "icon.png");
-				if (!File.Exists(expectedIconPath))
-					throw new Exception($"{expectedIconPath} not found");
-				PublishModInner(modFile, localMod.properties, expectedIconPath, true);
+				PublishModInner(modFile, localMod.properties, Path.Combine(ModCompile.ModSourcePath, modName, "icon.png"), true);
 			}
 			catch (Exception e) {
 				Console.WriteLine("Something went wrong with command line mod publishing.");
@@ -230,6 +245,7 @@ namespace Terraria.ModLoader.UI
 				{ "homepage", bp.homepage },
 				{ "description", bp.description },
 				{ "iconpath", iconPath },
+				{ "manifestfolder", Path.Combine(ModCompile.ModSourcePath, modFile.Name) },
 				{ "modloaderversion", $"tModLoader v{modFile.TModLoaderVersion}" },
 				{ "modreferences", string.Join(", ", bp.modReferences.Select(x => x.mod)) },
 				{ "modside", bp.side.ToFriendlyString() },
@@ -246,7 +262,6 @@ namespace Terraria.ModLoader.UI
 			}
 			else {
 				SocialAPI.LoadSteam();
-				Console.WriteLine("Warning: CLI Mod Publishing Can be Unstable. Avoid publishing net-new items to the Workshop");
 
 				if ( /*SocialAPI.Workshop != null && */ modFile != null) {
 					var publishSetttings = new WorkshopItemPublishSettings {

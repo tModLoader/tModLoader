@@ -1,8 +1,7 @@
 #!/bin/sh
-script_path=$(readlink -f "$0")
-script_dir=$(dirname "$script_path")
+cd "$(dirname "$0")"
+script_dir="$(pwd -P)"
 launch_args="-server -config serverconfig.txt"
-cd "$script_dir"
 
 . ./InstallNetFramework.sh
 
@@ -33,7 +32,7 @@ if [ ! -d "$install_dir" ]; then
   if [ -f "$runLogs" ]; then
     rm "$runLogs" 
   fi
-  exec 3>>$runLogs 2>&3
+  exec 3>>"$runLogs" 2>&3
   echo "Attempting Launch.."
   dotnet tModLoader.dll $launch_args
 fi

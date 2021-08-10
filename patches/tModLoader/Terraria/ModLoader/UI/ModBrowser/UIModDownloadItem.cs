@@ -36,7 +36,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private readonly string _author;
 		private readonly string _modIconUrl;
 		private ModIconStatus _modIconStatus = ModIconStatus.UNKNOWN;
-		private readonly string _timeStamp;
+		private readonly DateTime _timeStamp;
 		private readonly string _modReferences;
 		private readonly ModSide _modSide;
 		private readonly int _downloads;
@@ -73,7 +73,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				: Language.GetTextValue("tModLoader.MBUpdateWithDependencies")
 			: Language.GetTextValue("tModLoader.MBDownloadWithDependencies");
 
-		public UIModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, string timeStamp, bool hasUpdate, bool updateIsDowngrade, LocalMod installed, string modloaderversion, string homepage, uint queryIndex) {
+		public UIModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, bool hasUpdate, bool updateIsDowngrade, LocalMod installed, string modloaderversion, string homepage, uint queryIndex) {
 			ModName = name;
 			DisplayName = displayName;
 			DisplayNameClean = string.Join("", ChatManager.ParseMessage(displayName, Color.White).Where(x=> x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
@@ -171,7 +171,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				case ModBrowserSortMode.DownloadsDescending:
 					return -1 * _downloads.CompareTo(item?._downloads);
 				case ModBrowserSortMode.RecentlyUpdated:
-					return -1 * string.Compare(_timeStamp, item?._timeStamp, StringComparison.Ordinal);
+					return -1 * _timeStamp.CompareTo(item?._timeStamp);
 				case ModBrowserSortMode.Hot:
 					return -1 * _hot.CompareTo(item?._hot);
 			}
@@ -293,7 +293,10 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 						_modIcon = new UIImage(iconTexture) {
 							Left = { Percent = 0f },
-							Top = { Percent = 0f }
+							Top = { Percent = 0f },
+							MaxWidth = { Pixels = 80f, Percent = 0f },
+							MaxHeight = { Pixels = 80f, Percent = 0f },
+							ScaleToFit = true
 						};
 						_modIconStatus = ModIconStatus.READY;
 						success = true;
@@ -323,7 +326,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		private void DrawTimeText(SpriteBatch spriteBatch, Vector2 drawPos) {
-			if (_timeStamp == "0000-00-00 00:00:00") {
+			if (_timeStamp == DateTime.MinValue) {
 				return;
 			}
 
@@ -335,8 +338,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			drawPos += new Vector2(0f, 2f);
 
 			try {
-				var myDateTime = DateTime.Parse(_timeStamp); // parse date
-				string text = TimeHelper.HumanTimeSpanString(myDateTime); // get time text
+				string text = TimeHelper.HumanTimeSpanString(_timeStamp); // get time text
 				int textWidth = (int)FontAssets.MouseText.Value.MeasureString(text).X; // measure text width
 				int diffWidth = baseWidth - textWidth; // get difference
 				drawPos.X += diffWidth * 0.5f; // add difference as padding
@@ -359,11 +361,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			BorderColor = new Color(89, 116, 213) * 0.7f;
 		}
 
-		private void DownloadMod(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(SoundID.MenuTick);
-			WorkshopHelper.ModManager.Download(this);
-		}
-
 		private void DownloadWithDeps(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuTick);
 			InnerDownloadWithDeps();
@@ -373,7 +370,11 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			var downloads = new HashSet<UIModDownloadItem>() { this };
 			downloads.Add(this);
 			GetDependenciesRecursive(this, ref downloads);
-			WorkshopHelper.ModManager.Download(downloads.ToList());
+			WorkshopHelper.ModManager.Download(downloads.ToList(), out var enabledItems);
+
+			if (enabledItems.Count > 0) {
+				Interface.infoMessage.Show(Language.GetTextValue("Unable to update Enabled Mods. Please unload the following mods prior to updating: ", string.Join(",", enabledItems)), Interface.modBrowserID);
+			}
 		}
 
 		private IEnumerable<UIModDownloadItem> GetDependencies() {

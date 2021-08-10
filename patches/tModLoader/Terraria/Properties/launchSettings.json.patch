@@ -13,8 +13,7 @@
      "Terraria Server": {
        "commandName": "Executable",
        "executablePath": "dotnet",
--      "commandLineArgs": "$(OutputName).dll -server",
-+      "commandLineArgs": "$(OutputName).dll -server -steam -publish SummonersAssociation",
+       "commandLineArgs": "$(OutputName).dll -server",
 -      "workingDirectory": "$(TerrariaSteamPath)"
 +      "workingDirectory": "$(tModLoaderSteamPath)"
 +    },
