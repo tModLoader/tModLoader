@@ -89,3 +89,11 @@
  		}
  
  		public static void ProcessStart(string path) {
+@@ -634,6 +_,7 @@
+ 				new ExtensionFilter("Image files", "png", "jpg", "jpeg")
+ 			};
+ 
++			// TODO: support default folder, set default folder to mod source folder for mods.
+ 			string text = FileBrowser.OpenFilePanel("Open icon", extensions);
+ 			if (text != null) {
+ 				_previewImagePath = text;

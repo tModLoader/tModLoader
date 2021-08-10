@@ -874,7 +874,7 @@
 +				Environment.Exit(1);
 +			}
 +
-+			if (Directory.Exists(InstallVerifier.TmlContentDirectory))
++			if (Directory.Exists(Path.Combine(InstallVerifier.TmlContentDirectory, "Images")))
 +				AlternateContentManager = new TMLContentManager(Content.ServiceProvider, InstallVerifier.TmlContentDirectory, null);
 +
 +			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);

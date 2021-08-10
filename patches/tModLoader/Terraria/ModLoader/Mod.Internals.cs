@@ -67,7 +67,10 @@ namespace Terraria.ModLoader
 				if (type.IsSubclassOf(typeof(ModSound))) {
 					modSounds.Add(type);
 				}
-				else if (typeof(ILoadable).IsAssignableFrom(type)) {
+				// Having the check here instead of enclosing the foreach statement is required for modSound autoloading to function properly
+				// In the case of a ModSound loading rework where it doesn't piggyback off content AutoLoading, the entire foreach statement
+				// can be enclosed in a ContentAutoloadingEnabled check. - pbone
+				else if (ContentAutoloadingEnabled && typeof(ILoadable).IsAssignableFrom(type)) {
 					var autoload = AutoloadAttribute.GetValue(type);
 					if (autoload.NeedsAutoloading) {
 						AddContent((ILoadable)Activator.CreateInstance(type));
@@ -79,16 +82,16 @@ namespace Terraria.ModLoader
 			if (Main.dedServ)
 				return;
 
-			if (Properties.AutoloadGores)
+			if (GoreAutoloadingEnabled)
 				GoreLoader.AutoloadGores(this);
 			
-			if (Properties.AutoloadSounds)
+			if (SoundAutoloadingEnabled)
 				AutoloadSounds(modSounds);
 
-			if (Properties.AutoloadMusic)
+			if (MusicAutoloadingEnabled)
 				MusicLoader.AutoloadMusic(this);
 
-			if (Properties.AutoloadBackgrounds)
+			if (BackgroundAutoloadingEnabled)
 				BackgroundTextureLoader.AutoloadBackgrounds(this);
 		}
 
