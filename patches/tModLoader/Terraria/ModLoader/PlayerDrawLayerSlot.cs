@@ -23,6 +23,16 @@ namespace Terraria.ModLoader
 
 		protected override void Draw(ref PlayerDrawSet drawInfo) => Layer.DrawWithTransformationAndChildren(ref drawInfo);
 
+		protected internal override void ResetVisiblity(PlayerDrawSet drawInfo) {
+			foreach (var child in Layer.ChildrenBefore)
+				child.ResetVisiblity(drawInfo);
+
+			base.ResetVisiblity(drawInfo);
+
+			foreach (var child in Layer.ChildrenAfter)
+				child.ResetVisiblity(drawInfo);
+		}
+
 		public override bool GetDefaultVisiblity(PlayerDrawSet drawInfo) => Condition(drawInfo);
 	}
 }
