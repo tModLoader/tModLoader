@@ -17,21 +17,12 @@ namespace Terraria.ModLoader
 			Layer = layer;
 			Condition = cond;
 			_slot = slot;
+			AddChildAfter(Layer);
 		}
 
 		public override Position GetDefaultPosition() => throw new NotImplementedException();
 
-		protected override void Draw(ref PlayerDrawSet drawInfo) => Layer.DrawWithTransformationAndChildren(ref drawInfo);
-
-		protected internal override void ResetVisiblity(PlayerDrawSet drawInfo) {
-			foreach (var child in Layer.ChildrenBefore)
-				child.ResetVisiblity(drawInfo);
-
-			base.ResetVisiblity(drawInfo);
-
-			foreach (var child in Layer.ChildrenAfter)
-				child.ResetVisiblity(drawInfo);
-		}
+		protected override void Draw(ref PlayerDrawSet drawInfo) { }
 
 		public override bool GetDefaultVisiblity(PlayerDrawSet drawInfo) => Condition(drawInfo);
 	}

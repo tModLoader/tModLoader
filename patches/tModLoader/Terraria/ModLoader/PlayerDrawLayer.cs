@@ -65,7 +65,7 @@ namespace Terraria.ModLoader
 		/// <summary> Returns the layer's default position in regards to other layers. Make use of e.g <see cref="BeforeParent"/>/<see cref="AfterParent"/>, and provide a layer (usually a vanilla one from <see cref="PlayerDrawLayers"/>). </summary>
 		public abstract Position GetDefaultPosition();
 
-		protected internal virtual void ResetVisiblity(PlayerDrawSet drawInfo) {
+		internal void ResetVisiblity(PlayerDrawSet drawInfo) {
 			foreach (var child in ChildrenBefore)
 				child.ResetVisiblity(drawInfo);
 
