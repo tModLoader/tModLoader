@@ -1,5 +1,7 @@
 var NAVTREEINDEX46 =
 {
+"struct_terraria_1_1_cinematics_1_1_frame_event_data.html#a3e01ef5f082fe7e035b9a6299c20767e":[1,0,1,3,3,3],
+"struct_terraria_1_1_cinematics_1_1_frame_event_data.html#a5646f7a4bed8f9231dc68064629b2bd7":[1,0,1,3,3,5],
 "struct_terraria_1_1_cinematics_1_1_frame_event_data.html#a6850b31c5975c88abc6adff5253563ae":[1,0,1,3,3,6],
 "struct_terraria_1_1_cinematics_1_1_frame_event_data.html#a868ccf97b95482e14eb3bb1cc61b9dc3":[1,0,1,3,3,7],
 "struct_terraria_1_1_cinematics_1_1_frame_event_data.html#aa9d358f18df320b1d3dac90d4c4d6d12":[1,0,1,3,3,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX46 =
 "struct_terraria_1_1_data_structures_1_1_player_fishing_conditions.html#afb84107092b0aefc22ea7da32efc39f5":[1,0,1,4,35,7],
 "struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html":[1,0,1,4,36],
 "struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#a191f36c8f104e4a383af23c454ee265f":[1,0,1,4,36,4],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#a67ff0cd70f983119965d93edd6eb4b6d":[1,0,1,4,36,5],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#a9f4bac4436567edf802a0c0f977b13cb":[1,0,1,4,36,8],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#aa6bb87a6d25a0cdd5e61e4f91b140e57":[1,0,1,4,36,1]
+"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#a67ff0cd70f983119965d93edd6eb4b6d":[1,0,1,4,36,5]
 };
