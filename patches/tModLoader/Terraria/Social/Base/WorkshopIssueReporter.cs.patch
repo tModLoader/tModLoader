@@ -1,0 +1,72 @@
+--- src/Terraria/Terraria/Social/Base/WorkshopIssueReporter.cs
++++ src/tModLoader/Terraria/Social/Base/WorkshopIssueReporter.cs
+@@ -35,17 +_,30 @@
+ 
+ 		public void ReportInstantUploadProblem(string textKey) {
+ 			string textValue = Language.GetTextValue(textKey);
++
++			Utils.LogAndConsoleErrorMessage(textValue);
++			if (Main.dedServ)
++				return;
++			
+ 			AddReport(textValue);
+ 			OpenReportsScreen();
+ 		}
+ 
+ 		public void ReportInstantUploadProblemFromValue(string text) {
++			Utils.LogAndConsoleErrorMessage(text);
++			if (Main.dedServ)
++				return;
++
+ 			AddReport(text);
+ 			OpenReportsScreen();
+ 		}
+ 
+ 		public void ReportDelayedUploadProblem(string textKey) {
+ 			string textValue = Language.GetTextValue(textKey);
++			Utils.LogAndConsoleErrorMessage(textValue);
++			if (Main.dedServ)
++				return;
++
+ 			AddReport(textValue);
+ 			NotifyReportsScreen();
+ 		}
+@@ -56,6 +_,11 @@
+ 			};
+ 
+ 			string textValueWith = Language.GetTextValueWith(textKey, obj);
++
++			Utils.LogAndConsoleErrorMessage(textValueWith);
++			if (Main.dedServ)
++				return;
++
+ 			AddReport(textValueWith);
+ 			NotifyReportsScreen();
+ 		}
+@@ -65,8 +_,13 @@
+ 				FilePath = path,
+ 				Reason = exception.ToString()
+ 			};
+-
++			
+ 			string textValueWith = Language.GetTextValueWith(textKey, obj);
++
++			Utils.LogAndConsoleErrorMessage(textValueWith);
++			if (Main.dedServ)
++				return;
++
+ 			AddReport(textValueWith);
+ 			NotifyReportsScreen();
+ 		}
+@@ -77,6 +_,11 @@
+ 			};
+ 
+ 			string textValueWith = Language.GetTextValueWith(textKey, obj);
++
++			Utils.LogAndConsoleErrorMessage(textValueWith);
++			if (Main.dedServ)
++				return;
++
+ 			AddReport(textValueWith);
+ 			NotifyReportsScreen();
+ 		}

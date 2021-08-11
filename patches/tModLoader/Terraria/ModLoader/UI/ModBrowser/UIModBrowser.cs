@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
@@ -230,10 +231,12 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			Items.Clear();
 			ModList.Deactivate();
 
-			InnerPopulateModBrowser();
-
-			Loading = false;
-			_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
+			// Asynchronous load the Mod Browser
+			Task.Run(() => {
+				InnerPopulateModBrowser();
+				Loading = false;
+				_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
+			});
 		}
 
 		internal bool InnerPopulateModBrowser() {
@@ -268,16 +271,20 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			if (downloads.Count <= 0)
 				return;
 
-			WorkshopHelper.ModManager.Download(downloads);
+			WorkshopHelper.ModManager.Download(downloads, out var enabledItems);
 
 			if (_missingMods.Count > 0) {
 				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", _missingMods)), Interface.modBrowserID);
 				_missingMods.Clear();
 			}
+
+			if (enabledItems.Count > 0) {
+				Interface.infoMessage.Show(Language.GetTextValue("Unable to update Enabled Mods. Please unload the following mods prior to updating: ", string.Join(",", enabledItems)), Interface.modBrowserID);
+			}
 		}
 
 		internal UIModDownloadItem FindModDownloadItem(string modName)
-			=> Items.FirstOrDefault(x => x.ModName.Equals(modName));
+			=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
 
 		private void SetHeading(string heading) {
 			HeaderTextPanel.SetText(heading, 0.8f, true);
