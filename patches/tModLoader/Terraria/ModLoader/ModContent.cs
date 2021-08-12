@@ -432,6 +432,7 @@ namespace Terraria.ModLoader
 			RecipeLoader.setupRecipes = true;
 			Recipe.SetupRecipes();
 			RecipeLoader.setupRecipes = false;
+			RecipeLoader.DeleteRecipes();
 		}
 
 		internal static void UnloadModContent() {

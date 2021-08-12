@@ -131,14 +131,7 @@ namespace Terraria
 				throw new RecipeException("A Recipe can only be deleted inside recipe related methods");
 			if (Main.recipe[RecipeIndex] != this)
 				return false;
-			for (int j = RecipeIndex; j < numRecipes - 1; j++) {
-				Recipe recipe = Main.recipe[j + 1];
-				Main.recipe[j] = recipe;
-				recipe.RecipeIndex--;
-			}
-
-			Main.recipe[numRecipes - 1] = new Recipe();
-			numRecipes--;
+			FlagedForDeletion = true;
 			return true;
 		}
 		#endregion

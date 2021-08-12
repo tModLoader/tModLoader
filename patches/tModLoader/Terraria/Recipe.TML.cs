@@ -112,6 +112,11 @@ namespace Terraria
 		/// The index of the recipe in the Main.recipe array.
 		/// </summary>
 		public int RecipeIndex { get; private set; }
+		
+		/// <summary>
+		/// Any recipe with this flag will be deleted at the end of the recipe setup.
+		/// </summary>
+		public bool FlagedForDeletion { get; private set; }
 
 		/// <summary>
 		/// Adds an ingredient to this recipe with the given item type and stack size. Ex: <c>recipe.AddIngredient(ItemID.IronAxe)</c>

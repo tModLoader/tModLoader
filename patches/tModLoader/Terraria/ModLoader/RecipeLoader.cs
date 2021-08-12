@@ -54,6 +54,24 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Deletes the recipes flagged for deletion
+		/// </summary>
+		internal static void DeleteRecipes() {
+			int shift = 0;
+			for (int index = 0; index < Recipe.numRecipes; index++) {
+				Recipe recipe = Main.recipe[index];
+				if (recipe.FlagedForDeletion) {
+					shift++;
+				}
+				else {
+					Main.recipe[index - shift] = recipe;
+				}
+			}
+
+			Recipe.numRecipes -= shift;
+		}
+
+		/// <summary>
 		/// Returns whether or not the conditions are met for this recipe to be available for the player to use.
 		/// </summary>
 		/// <param name="recipe">The recipe to check.</param>
