@@ -127,8 +127,24 @@ namespace Terraria
 		}
 
 		public static void ShowFancyErrorMessage(string message, int returnToMenu) {
+			if (!Main.dedServ) {
+				Logging.tML.Error(message);
+				Interface.errorMessage.Show(message, returnToMenu);
+			}
+			else
+				LogAndConsoleErrorMessage(message);
+		}
+
+		public static void LogAndConsoleInfoMessage(string message) {
+			Logging.tML.Info(message);
+			Console.WriteLine(message);
+		}
+
+		public static void LogAndConsoleErrorMessage(string message) {
 			Logging.tML.Error(message);
-			Interface.errorMessage.Show(message, returnToMenu);
+			Console.ForegroundColor = ConsoleColor.DarkRed;
+			Console.WriteLine("ERROR: " + message);
+			Console.ResetColor();
 		}
 	}
 }

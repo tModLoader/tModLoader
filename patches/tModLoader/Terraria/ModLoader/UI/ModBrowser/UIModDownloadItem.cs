@@ -361,11 +361,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			BorderColor = new Color(89, 116, 213) * 0.7f;
 		}
 
-		private void DownloadMod(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(SoundID.MenuTick);
-			WorkshopHelper.ModManager.Download(this);
-		}
-
 		private void DownloadWithDeps(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuTick);
 			InnerDownloadWithDeps();
@@ -375,7 +370,11 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			var downloads = new HashSet<UIModDownloadItem>() { this };
 			downloads.Add(this);
 			GetDependenciesRecursive(this, ref downloads);
-			WorkshopHelper.ModManager.Download(downloads.ToList());
+			WorkshopHelper.ModManager.Download(downloads.ToList(), out var enabledItems);
+
+			if (enabledItems.Count > 0) {
+				Interface.infoMessage.Show(Language.GetTextValue("Unable to update Enabled Mods. Please unload the following mods prior to updating: ", string.Join(",", enabledItems)), Interface.modBrowserID);
+			}
 		}
 
 		private IEnumerable<UIModDownloadItem> GetDependencies() {

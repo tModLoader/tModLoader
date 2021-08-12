@@ -16,6 +16,10 @@ Mods: {
 			LocalizedHeader: Headers can help organize
 		}
 		
+		Currencies: {
+			ExampleCustomCurrency: example items
+		}
+		
 		NPCName: {
 			FlutterSlime: Flutter Slime
 			Example_Person: Example Person
