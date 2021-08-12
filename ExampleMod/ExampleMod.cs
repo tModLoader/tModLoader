@@ -3,6 +3,7 @@ using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.NPCs;
 using System.IO;
 using Terraria;
+using Terraria.GameContent.UI;
 using Terraria.ModLoader;
 
 namespace ExampleMod
@@ -11,11 +12,15 @@ namespace ExampleMod
 	{
 		public const string AssetPath = "ExampleMod/Assets/";
 		public static ModKeybind RandomBuffKeybind;
+		public static int ExampleCustomCurrencyId;
 
 		public override void AddRecipes() => ExampleRecipes.Load(this);
 
 		public override void Load() {
 			RandomBuffKeybind = KeybindLoader.RegisterKeybind(this, "Random Buff", "P");
+
+			// Registers a new custom currency
+			ExampleCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new Content.Currencies.ExampleCustomCurrency(ModContent.ItemType<Content.Items.ExampleItem>(), 999L, "Mods.ExampleMod.Currencies.ExampleCustomCurrency"));
 		}
 
 		public override void Unload() {

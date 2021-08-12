@@ -23,7 +23,6 @@ namespace ExampleMod
 {
 	public class ExampleMod : Mod
 	{
-		public static int FaceCustomCurrencyId;
 		// With the new fonts in 1.3.5, font files are pretty big now so you need to generate the font file before building the mod.
 		// You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
 		public static DynamicSpriteFont exampleFont;
@@ -57,9 +56,6 @@ namespace ExampleMod
 			Logger.InfoFormat("{0} example logging", Name);
 			// In older tModLoader versions we used: ErrorLogger.Log("blabla");
 			// Replace that with above
-
-			// Registers a new custom currency
-			FaceCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new ExampleCustomCurrency(ModContent.ItemType<Items.Face>(), 999L));
 
 			Mundane.AddHacks();
 
