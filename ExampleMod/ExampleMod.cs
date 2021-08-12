@@ -10,10 +10,18 @@ namespace ExampleMod
 	public class ExampleMod : Mod
 	{
 		public const string AssetPath = "ExampleMod/Assets/";
+		public static ModKeybind RandomBuffKeybind;
 
 		public override void AddRecipes() => ExampleRecipes.Load(this);
 
-		public override void Unload() => ExampleRecipes.Unload();
+		public override void Load() {
+			RandomBuffKeybind = KeybindLoader.RegisterKeybind(this, "Random Buff", "P");
+		}
+
+		public override void Unload() {
+			ExampleRecipes.Unload();
+			RandomBuffKeybind = null;
+		}
 
 		//TODO: Introduce OOP packets into tML, to avoid this god-class level hardcode.
 		public override void HandlePacket(BinaryReader reader, int whoAmI) {

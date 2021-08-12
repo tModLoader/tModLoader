@@ -238,13 +238,6 @@ namespace ExampleMod
 			}
 		}
 
-		public override void ProcessTriggers(TriggersSet triggersSet) {
-			if (ExampleMod.RandomBuffHotKey.JustPressed) {
-				int buff = Main.rand.Next(BuffID.Count);
-				player.AddBuff(buff, 600);
-			}
-		}
-
 		public override void PreUpdateBuffs() {
 			if (heroLives > 0) {
 				bool flag = false;
