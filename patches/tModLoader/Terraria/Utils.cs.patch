@@ -74,6 +74,26 @@
  #endif
  			}
  		}
+@@ -549,6 +_,9 @@
+ 		public static Vector2 NextVector2CircularEdge(this UnifiedRandom r, float circleHalfWidth, float circleHalfHeight) => r.NextVector2Unit() * new Vector2(circleHalfWidth, circleHalfHeight);
+ 
+ 		public static int Width(this Asset<Texture2D> asset) {
++			if (asset == null) //TODO: Remove when UIModDownloadItem decoupled from UI
++				return 0;
++
+ 			if (!asset.IsLoaded)
+ 				return 0;
+ 
+@@ -556,6 +_,9 @@
+ 		}
+ 
+ 		public static int Height(this Asset<Texture2D> asset) {
++			if (asset == null) //TODO: Remove when UIModDownloadItem decoupled from UI
++				return 0;
++
+ 			if (!asset.IsLoaded)
+ 				return 0;
+ 
 @@ -1125,14 +_,17 @@
  				text.Substring(0, maxCharactersDisplayed);
  

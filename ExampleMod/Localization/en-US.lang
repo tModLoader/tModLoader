@@ -48,3 +48,6 @@ RecipeConditions.Night=At Low Health
 
 # Content/NPCs/ExamplePerson.cs
 Bestiary.ExamplePerson=Built of blocks with arms of steel. Pumps iron day and night.
+
+# Content/Currencies/ExampleCustomCurrency
+Currencies.ExampleCustomCurrency=example items

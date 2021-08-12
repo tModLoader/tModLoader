@@ -62,6 +62,7 @@ namespace Terraria.ModLoader
 		/// <returns> Whether or not this layer will be visible by default. Modders can hide layers later, if needed.</returns>
 		public virtual bool GetDefaultVisiblity(PlayerDrawSet drawInfo) => true;
 
+		/// <summary> Returns the layer's default position in regards to other layers. Make use of e.g <see cref="BeforeParent"/>/<see cref="AfterParent"/>, and provide a layer (usually a vanilla one from <see cref="PlayerDrawLayers"/>). </summary>
 		public abstract Position GetDefaultPosition();
 
 		internal void ResetVisiblity(PlayerDrawSet drawInfo) {

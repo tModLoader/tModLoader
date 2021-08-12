@@ -338,15 +338,18 @@ namespace Terraria.ModLoader.UI
 							break;
 						}
 
-						var info = modBrowser.Items.FirstOrDefault(x => x.ModName.Equals(modname));
-						info.InnerDownloadWithDeps();
+						var info = modBrowser.FindModDownloadItem(modname);
+						if(info == null)
+							Console.WriteLine($"No mod with the name {modname} found on the workshop.");
+						else
+							info.InnerDownloadWithDeps(); 
 					}
 					catch (Exception e) {
 						Console.WriteLine(Language.GetTextValue("tModLoader.MBServerDownloadError", modname, e.ToString()));
 					}
 				}
 			}
-			Console.Clear();
+			//Console.Clear();
 		}
 
 		internal static void MessageBoxShow(string text, string caption = null) {
