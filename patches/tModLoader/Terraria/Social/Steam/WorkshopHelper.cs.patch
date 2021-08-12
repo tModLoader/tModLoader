@@ -64,7 +64,7 @@
 +					}
 +					else if (Main.dedServ) {
 +						// Try to load mods that are installed by Steam users when server launches without Steam. No guarantees if Steam not installed in standard location.
-+						var workshopLoc = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory().ToString()).ToString()).ToString(), "workshop", "content", ModManager.thisApp.m_AppId.ToString());
++						var workshopLoc = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory().ToString()).ToString()).ToString(), "workshop", "content", ModManager.thisApp.ToString());
 +						if (Directory.Exists(workshopLoc)) {
 +							list.AddRange(Directory.EnumerateDirectories(workshopLoc));
 +						}
@@ -170,7 +170,7 @@
  						UpdateItem();
  					}
  					else {
-@@ -205,13 +_,55 @@
+@@ -205,13 +_,56 @@
  				}
  
  				private void CreateItem() {
@@ -205,6 +205,7 @@
 +					_createCallback = param.m_eResult;
 +					if (param.m_eResult != EResult.k_EResultOK) {
 +						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
++						Utils.LogAndConsoleInfoMessage("Consult " + "C:\\Program Files(x86)\\Steam\\logs\\workshop.log" + " for more information.");
 +						_endAction(this);
 +						return;
 +					}

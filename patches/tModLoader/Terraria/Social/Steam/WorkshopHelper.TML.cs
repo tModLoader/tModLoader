@@ -48,11 +48,35 @@ namespace Terraria.Social.Steam
 				GameServer.RunCallbacks();
 		}
 
+		// Used to get the right token for fetching/setting localized descriptions from/to Steam Workshop
+		internal static string GetCurrentSteamLangKey() {
+			switch (Localization.LanguageManager.Instance.ActiveCulture.LegacyId) {
+				default:
+					return "english";
+				case 2:
+					return "german";
+				case 3:
+					return "italian";
+				case 4:
+					return "french";
+				case 5:
+					return "spanish";
+				case 6:
+					return "russian";
+				case 7:
+					return "schinese";
+				case 8:
+					return "portuguese";
+				case 9:
+					return "polish";
+			}
+		}
+
 		internal class ModManager
 		{
 			internal static bool SteamUser { get; set; } = false;
 			internal static bool SteamAvailable { get; set; } = true;
-			internal static AppId_t thisApp = ModLoader.Engine.Steam.TMLAppID_t;
+			internal const uint thisApp = 1281930;
 
 			protected Callback<DownloadItemResult_t> m_DownloadItemResult;
 
@@ -60,7 +84,7 @@ namespace Terraria.Social.Steam
 
 			internal static void Initialize() {
 				// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
-				if (ModLoader.Engine.Steam.IsSteamApp) {
+				if (ModLoader.Engine.InstallVerifier.IsSteam) {
 					SteamUser = true;
 					return;
 				}
@@ -345,7 +369,7 @@ namespace Terraria.Social.Steam
 						return false;
 					}
 					else if (_primaryQueryResult != EResult.k_EResultOK) {
-						Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop. " + _primaryQueryResult, 0);
+						Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop. " + _primaryQueryResult + "\n\nPlease consult the logs at: " + "C:\\Program Files (x86)\\Steam\\logs\\workshop.log", 0);
 						return false;
 					}
 
@@ -467,17 +491,20 @@ namespace Terraria.Social.Steam
 				SteamAPICall_t call;
 
 				if (ModManager.SteamUser) {
-					UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, ModManager.thisApp, ModManager.thisApp, page);
+					UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), page);
 
+					SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 					SteamUGC.SetReturnKeyValueTags(qHandle, true);
 					SteamUGC.SetReturnLongDescription(qHandle, true);
 					SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
+					
 
 					call = SteamUGC.SendQueryUGCRequest(qHandle);
 				}
 				else {
-					UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, ModManager.thisApp, ModManager.thisApp, page);
+					UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), page);
 
+					SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 					SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
 					SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
 					SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.

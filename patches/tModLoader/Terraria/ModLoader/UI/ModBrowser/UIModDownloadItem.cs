@@ -397,7 +397,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		private void ViewModInfo(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Interface.modInfo.Show(ModName, DisplayName, Interface.modBrowserID, Installed, url: _homepage, queryIndex: QueryIndex, loadFromWeb: true);
+			Interface.modInfo.Show(ModName, DisplayName, Interface.modBrowserID, Installed, url: _homepage, queryIndex: QueryIndex, loadFromWeb: true, publishedFileId: PublishId);
 		}
 	}
 }
