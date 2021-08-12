@@ -11,6 +11,7 @@ namespace ExampleMod.Common.Players
 			if (ExampleMod.RandomBuffKeybind.JustPressed) {
 				int buff = Main.rand.Next(BuffID.Count);
 				Player.AddBuff(buff, 600);
+				Main.NewText($"ExampleMod's ModKeybind was just pressed. The {Lang.GetBuffName(buff)} buff was given to the player.");
 			}
 		}
 	}
