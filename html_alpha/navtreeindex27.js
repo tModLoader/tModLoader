@@ -1,5 +1,6 @@
 var NAVTREEINDEX27 =
 {
+"class_terraria_1_1_mod_loader_1_1_tally_counter_info_display.html#acaa9cdc977da45c9c90b2225acd5c4aa":[1,0,1,13,107,2],
 "class_terraria_1_1_mod_loader_1_1_throwing_damage_class.html":[1,0,1,13,108],
 "class_terraria_1_1_mod_loader_1_1_throwing_damage_class.html#acf343cdb304a7967fffe387c31ca8431":[1,0,1,13,108,1],
 "class_terraria_1_1_mod_loader_1_1_throwing_damage_class.html#afc35c651ea70115b39ce31420c4962a4":[1,0,1,13,108,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX27 =
 "class_terraria_1_1_mount.html#aa7ed34ca2cb25409e2f7d399322b9ce0":[1,0,1,45,23],
 "class_terraria_1_1_mount.html#aa9f4a4ac0ab52ee1ac6f722346bbd1b5":[1,0,1,45,12],
 "class_terraria_1_1_mount.html#aad74cf7bb75b53d32e4b98814f91ed47":[1,0,1,45,65],
-"class_terraria_1_1_mount.html#aae5ddd67f10e1278fb5bdd1afbb3385b":[1,0,1,45,3],
-"class_terraria_1_1_mount.html#ab74381c79856db83919cc1040f0fa0f0":[1,0,1,45,19]
+"class_terraria_1_1_mount.html#aae5ddd67f10e1278fb5bdd1afbb3385b":[1,0,1,45,3]
 };

@@ -18,6 +18,7 @@ var class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_list =
     [ "SetScrollbar", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_list.html#aca7da1bc33b4d4e44a33cef5ee3e5f13", null ],
     [ "SortMethod", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_list.html#ab7c6d0b1a81e3f3f1f22c6685146a9dc", null ],
     [ "UpdateOrder", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_list.html#a18ed60e2018174ed4dbc48331b1b2e33", null ],
+    [ "_items", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_list.html#aa7137923f1946a8a505836124e5ccc01", null ],
     [ "_scrollbar", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_list.html#a39bd1d43d54470a872f20d509ede4b17", null ],
     [ "ListPadding", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_list.html#a2c68d6acea40287cdbacda24ed0f05d7", null ],
     [ "ManualSortMethod", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_list.html#a89dd18dffdf087fd278f550a03e4f571", null ],
