@@ -157,24 +157,6 @@
  				if (num <= 0)
  					continue;
  
-@@ -137,7 +_,7 @@
- 					if (num <= 0)
- 						break;
- 
--					if (item.IsTheSameAs(item2) || useWood(item.type, item2.type) || useSand(item.type, item2.type) || useFragment(item.type, item2.type) || useIronBar(item.type, item2.type) || usePressurePlate(item.type, item2.type) || AcceptedByItemGroups(item.type, item2.type)) {
-+					if (item.IsTheSameAs(item2) || AcceptedByItemGroups(item.type, item2.type)) {
- 						if (item.stack > num) {
- 							item.stack -= num;
- 							num = 0;
-@@ -168,7 +_,7 @@
- 					if (num <= 0)
- 						break;
- 
--					if (!item.IsTheSameAs(item2) && !useWood(item.type, item2.type) && !useSand(item.type, item2.type) && !useIronBar(item.type, item2.type) && !usePressurePlate(item.type, item2.type) && !useFragment(item.type, item2.type) && !AcceptedByItemGroups(item.type, item2.type))
-+					if (!item.IsTheSameAs(item2) && !AcceptedByItemGroups(item.type, item2.type))
- 						continue;
- 
- 					if (item.stack > num) {
 @@ -192,7 +_,7 @@
  			FindRecipes();
  		}
@@ -220,17 +202,15 @@
  			if (!anyPressurePlate)
  				return false;
  
-@@ -309,8 +_,8 @@
+@@ -309,7 +_,7 @@
  			Main.numAvailableRecipes = 0;
  			if (Main.guideItem.type > 0 && Main.guideItem.stack > 0 && Main.guideItem.Name != "") {
  				for (int j = 0; j < maxRecipes && Main.recipe[j].createItem.type != 0; j++) {
 -					for (int k = 0; k < maxRequirements && Main.recipe[j].requiredItem[k].type != 0; k++) {
--						if (Main.guideItem.IsTheSameAs(Main.recipe[j].requiredItem[k]) || Main.recipe[j].useWood(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useSand(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useIronBar(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useFragment(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].AcceptedByItemGroups(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].usePressurePlate(Main.guideItem.type, Main.recipe[j].requiredItem[k].type)) {
 +					for (int k = 0; k < Main.recipe[j].requiredItem.Count; k++) {
-+						if (Main.guideItem.IsTheSameAs(Main.recipe[j].requiredItem[k]) || Main.recipe[j].AcceptedByItemGroups(Main.guideItem.type, Main.recipe[j].requiredItem[k].type)) {
+ 						if (Main.guideItem.IsTheSameAs(Main.recipe[j].requiredItem[k]) || Main.recipe[j].useWood(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useSand(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useIronBar(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useFragment(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].AcceptedByItemGroups(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].usePressurePlate(Main.guideItem.type, Main.recipe[j].requiredItem[k].type)) {
  							Main.availableRecipe[Main.numAvailableRecipes] = j;
  							Main.numAvailableRecipes++;
- 							break;
 @@ -359,7 +_,7 @@
  				for (int n = 0; n < maxRecipes && Main.recipe[n].createItem.type != 0; n++) {
  					bool flag = true;
@@ -240,7 +220,7 @@
  							if (!Main.player[Main.myPlayer].adjTile[Main.recipe[n].requiredTile[num3]]) {
  								flag = false;
  								break;
-@@ -368,15 +_,13 @@
+@@ -368,10 +_,8 @@
  					}
  
  					if (flag) {
@@ -252,12 +232,6 @@
  
  							int num5 = item.stack;
  							bool flag2 = false;
- 							foreach (int key in dictionary.Keys) {
--								if (Main.recipe[n].useWood(key, item.type) || Main.recipe[n].useSand(key, item.type) || Main.recipe[n].useIronBar(key, item.type) || Main.recipe[n].useFragment(key, item.type) || Main.recipe[n].AcceptedByItemGroups(key, item.type) || Main.recipe[n].usePressurePlate(key, item.type)) {
-+								if (Main.recipe[n].AcceptedByItemGroups(key, item.type)) {
- 									num5 -= dictionary[key];
- 									flag2 = true;
- 								}
 @@ -393,7 +_,7 @@
  					}
  
