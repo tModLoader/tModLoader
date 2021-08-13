@@ -516,9 +516,13 @@ namespace Terraria.ModLoader
 					ammo.ModItem != null && !ammo.ModItem.ConsumeAmmo(player))
 				return false;
 
+			foreach (var g in HookConsumeAmmo.Enumerate(item.globalItems)) {
+				if (!g.ConsumeAmmo(item, player))
+					return false;
+			}
+
 			foreach (var g in HookConsumeAmmo.Enumerate(ammo.globalItems)) {
-				if (!g.ConsumeAmmo(item, player) ||
-					!g.ConsumeAmmo(ammo, player))
+				if (!g.ConsumeAmmo(ammo, player))
 					return false;
 			}
 
@@ -541,7 +545,7 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (var g in HookOnConsumeAmmo.Enumerate(ammo.globalItems)) {
-				g.OnConsumeAmmo(item, player);
+				g.OnConsumeAmmo(ammo, player);
 			}
 		}
 
