@@ -35,7 +35,9 @@ namespace ExampleMod.Content
 		public static void AddExampleRecipes(Mod mod) {
 			// ExampleItem crafts into the following items
 			// Check the method signature of MakeSimpleRecipes for the arguments, this is a method signature:
-			// private static void MakeSimpleRecipe<T>(Mod mod, short resultType, int ingredientStack = 1, int resultStack = 1, string reqTile = null) where T : ModItem
+			// private static void MakeSimpleRecipe<TModItem, TModTile>(Mod mod, short resultType, int ingredientStack = 1, int resultStack = 1)
+			//	 where TModItem : ModItem
+			//	 where TModTile : ModTile
 
 			MakeSimpleRecipe<Items.ExampleItem, ModTile>(mod, ItemID.Silk, 999);
 			MakeSimpleRecipe<Items.ExampleItem, ModTile>(mod, ItemID.IronOre, 999);
