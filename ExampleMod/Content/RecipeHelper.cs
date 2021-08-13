@@ -7,18 +7,25 @@ using Terraria.ModLoader;
 namespace ExampleMod.Content
 {
 	// In this class we separate recipe related code from our main class
-	public static class RecipeHelper
+	public class RecipeHelper : ModSystem
 	{
+		public override void OnModLoad() {
+			AddExampleRecipes(Mod);
+			ExampleRecipeEditing(Mod);
+		}
+
 		// Here we've made a helper method we can use to shorten our code.
 		// This is because many of our recipes follow the same terminology: one ingredient, one result, one possible required tile
-		private static void MakeSimpleRecipe(Mod mod, string modIngredient, short resultType, int ingredientStack = 1, int resultStack = 1, string reqTile = null)
-			// notice the last parameters can be made optional by specifying a default value
-		{
+		// notice the last parameters can be made optional by specifying a default value
+		private static void MakeSimpleRecipe<TModItem, TModTile>(Mod mod, short resultType, int ingredientStack = 1, int resultStack = 1)
+			where TModItem : ModItem
+			where TModTile : ModTile {
 			Recipe recipe = mod.CreateRecipe(resultType, resultStack); // make a new recipe for our mod with the specified type and with the specified stack.
-			recipe.AddIngredient(null, modIngredient, ingredientStack); // add the ingredient, passing null for the mod means it will use our mod, we could also pass mod from the arguments
-			if (reqTile != null) {
-				// when a required tile is specified
-				recipe.AddTile(null, reqTile); // we add it 
+			recipe.AddIngredient<TModItem>(ingredientStack); // add the ingredient
+
+			// ModContent.TileType returns 0 for an invalid ModTile
+			if (ModContent.TileType<TModTile>() != 0) {
+				recipe.AddTile<TModTile>(); // add the tile
 			}
 
 			recipe.Register(); // finally, add the recipe
@@ -28,13 +35,13 @@ namespace ExampleMod.Content
 		public static void AddExampleRecipes(Mod mod) {
 			// ExampleItem crafts into the following items
 			// Check the method signature of MakeSimpleRecipes for the arguments, this is a method signature:
-			// private static void MakeSimpleRecipe(Mod mod, string modIngredient, short resultType, int ingredientStack = 1, int resultStack = 1, string reqTile = null) 
+			// private static void MakeSimpleRecipe<T>(Mod mod, short resultType, int ingredientStack = 1, int resultStack = 1, string reqTile = null) where T : ModItem
 
-			MakeSimpleRecipe(mod, "ExampleItem", ItemID.Silk, 999);
-			MakeSimpleRecipe(mod, "ExampleItem", ItemID.IronOre, 999);
-			MakeSimpleRecipe(mod, "ExampleItem", ItemID.GravitationPotion, 20);
-			MakeSimpleRecipe(mod, "ExampleItem", ItemID.GoldChest); // notice how we can omit the stack, it has a default value
-			MakeSimpleRecipe(mod, "ExampleItem", ItemID.MusicBoxDungeon);
+			MakeSimpleRecipe<Items.ExampleItem, ModTile>(mod, ItemID.Silk, 999);
+			MakeSimpleRecipe<Items.ExampleItem, ModTile>(mod, ItemID.IronOre, 999);
+			MakeSimpleRecipe<Items.ExampleItem, ModTile>(mod, ItemID.GravitationPotion, 20);
+			MakeSimpleRecipe<Items.ExampleItem, ModTile>(mod, ItemID.GoldChest); // notice how we can omit the stack, it has a default value
+			MakeSimpleRecipe<Items.ExampleItem, ModTile>(mod, ItemID.MusicBoxDungeon);
 
 			// Instead of having to call AddBossRecipes from our main file, we can also call it here, as a result the method can remain private
 			AddBossRecipes(mod);
@@ -44,14 +51,14 @@ namespace ExampleMod.Content
 		private static void AddBossRecipes(Mod mod) {
 			// BossItem crafts into the following items
 			// We are using the same helper method here, and we are making use of the reqTile parameter
-			MakeSimpleRecipe(mod, "BossItem", ItemID.SuspiciousLookingEye, 10, 20, "ExampleWorkbench");
-			MakeSimpleRecipe(mod, "BossItem", ItemID.BloodySpine, 10, 20, "ExampleWorkbench");
-			MakeSimpleRecipe(mod, "BossItem", ItemID.Abeemination, 10, 20, "ExampleWorkbench");
-			// notice how we can skip optional parameters by specifying the target parameter with 'reqTile:', this means the resultStack will remain 1
-			MakeSimpleRecipe(mod, "BossItem", ItemID.GuideVoodooDoll, 10, reqTile: "ExampleWorkbench");
-			MakeSimpleRecipe(mod, "BossItem", ItemID.MechanicalEye, 10, 20, "ExampleWorkbench");
-			MakeSimpleRecipe(mod, "BossItem", ItemID.MechanicalWorm, 10, 20, "ExampleWorkbench");
-			MakeSimpleRecipe(mod, "BossItem", ItemID.MechanicalSkull, 10, 20, "ExampleWorkbench");
+			MakeSimpleRecipe<Items.BossItem, Tiles.Furniture.ExampleWorkbench>(mod, ItemID.SuspiciousLookingEye, 10, 20);
+			MakeSimpleRecipe<Items.BossItem, Tiles.Furniture.ExampleWorkbench>(mod, ItemID.BloodySpine, 10, 20);
+			MakeSimpleRecipe<Items.BossItem, Tiles.Furniture.ExampleWorkbench>(mod, ItemID.Abeemination, 10, 20);
+			// notice how we can omit optional parameters, this means the resultStack will remain 1
+			MakeSimpleRecipe<Items.BossItem, Tiles.Furniture.ExampleWorkbench>(mod, ItemID.GuideVoodooDoll, 10);
+			MakeSimpleRecipe<Items.BossItem, Tiles.Furniture.ExampleWorkbench>(mod, ItemID.MechanicalEye, 10, 20);
+			MakeSimpleRecipe<Items.BossItem, Tiles.Furniture.ExampleWorkbench>(mod, ItemID.MechanicalWorm, 10, 20);
+			MakeSimpleRecipe<Items.BossItem, Tiles.Furniture.ExampleWorkbench>(mod, ItemID.MechanicalSkull, 10, 20);
 			// Here we see another way to retrieve type ids from classnames, using generic calls
 			// This way you don't have to specify the mod, because you simply pass the ID of the item as you would for vanilla items.
 			// Useful for those who program in an IDE who wish to avoid spelling mistakes.
@@ -79,7 +86,8 @@ namespace ExampleMod.Content
 
 			// The following is a more precise example, finding an exact recipe and deleting it if possible.
 			List<int> groups = new() {
-				RecipeGroupID.IronBar // add a new recipe group, in this case the vanilla one for iron or lead bars.
+				RecipeGroupID.IronBar, // add a new recipe group, in this case the vanilla one for iron or lead bars.
+				//RecipeGroup.recipeGroupIDs["ExampleMod:ExampleItem"] // add a modded recipe group
 			};
 			List<int> tiles = new() {
 				TileID.Anvils // add a required tile, any anvil
