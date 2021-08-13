@@ -69,6 +69,10 @@ namespace Terraria.ModLoader
 			}
 
 			Recipe.numRecipes -= shift;
+
+			for (int index = Recipe.numRecipes; index < Recipe.numRecipes + shift; index++) {
+				Main.recipe[index] = new Recipe();
+			}
 		}
 
 		/// <summary>
