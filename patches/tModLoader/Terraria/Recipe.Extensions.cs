@@ -131,7 +131,7 @@ namespace Terraria
 				throw new RecipeException("A Recipe can only be deleted inside recipe related methods");
 			if (Main.recipe[RecipeIndex] != this)
 				return false;
-			FlagedForDeletion = true;
+			FlaggedForDeletion = true;
 			return true;
 		}
 		#endregion

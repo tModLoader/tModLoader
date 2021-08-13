@@ -60,7 +60,7 @@ namespace Terraria.ModLoader
 			int shift = 0;
 			for (int index = 0; index < Recipe.numRecipes; index++) {
 				Recipe recipe = Main.recipe[index];
-				if (recipe.FlagedForDeletion) {
+				if (recipe.FlaggedForDeletion) {
 					shift++;
 				}
 				else {

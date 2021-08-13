@@ -116,7 +116,7 @@ namespace Terraria
 		/// <summary>
 		/// Any recipe with this flag will be deleted at the end of the recipe setup.
 		/// </summary>
-		public bool FlagedForDeletion { get; private set; }
+		public bool FlaggedForDeletion { get; private set; }
 
 		/// <summary>
 		/// Adds an ingredient to this recipe with the given item type and stack size. Ex: <c>recipe.AddIngredient(ItemID.IronAxe)</c>
