@@ -290,6 +290,49 @@ namespace Terraria
 			return this;
 		}
 
+		#region Recipe movement
+
+		/// <summary>
+		/// Moves the recipe to a given index in the Main.recipe array.
+		/// </summary>
+		public Recipe MoveAt(int objective) {
+			if(Main[RecipeIndex] != this)
+				throw new RecipeException("This recipe is not registered.");
+			
+			int direction = objective > RecipeIndex ? 1 : -1;
+
+			for (int index = RecipeIndex; index * direction < objective * direction; index += direction) {
+				Recipe movedRecipe = Main.recipe[index + direction];
+				movedRecipe.RecipeIndex = index;
+				Main.recipe[index] = movedRecipe;
+			}
+
+			Main.recipe[objective] = this;
+			RecipeIndex = objective;
+			
+			return this;
+		}
+
+		public Recipe MoveBefore(Recipe recipe) {
+			if (Main[recipe.RecipeIndex] != recipe)
+				throw new RecipeException("The selected recipe is not registered.");
+			if(RecipeIndex < recipe.RecipeIndex)
+				return MoveAt(recipe.RecipeIndex - 1);
+			else 
+				return MoveAt(recipe.RecipeIndex);
+		}
+
+		public Recipe MoveAfter(Recipe recipe) {
+			if (Main[recipe.RecipeIndex] != recipe)
+				throw new RecipeException("The selected recipe is not registered.");
+			if(RecipeIndex < recipe.RecipeIndex)
+				return MoveAt(recipe.RecipeIndex);
+			else 
+				return MoveAt(recipe.RecipeIndex + 1);
+		}
+
+		#endregion
+
 		/// <summary>
 		/// Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.
 		/// </summary>
