@@ -17,33 +17,38 @@ namespace ExampleMod.Content
 		// Here we've made a helper method we can use to shorten our code.
 		// This is because many of our recipes follow the same terminology: one ingredient, one result, one possible required tile
 		// notice the last parameters can be made optional by specifying a default value
+		private static void MakeSimpleRecipe<TModItem>(Mod mod, short resultType, int ingredientStack = 1, int resultStack = 1)
+			where TModItem : ModItem {
+			mod.CreateRecipe(resultType, resultStack) // make a new recipe for our mod with the specified type and with the specified stack.
+				.AddIngredient<TModItem>(ingredientStack) // add the ingredient
+				.Register(); // finally, add the recipe
+		}
+
 		private static void MakeSimpleRecipe<TModItem, TModTile>(Mod mod, short resultType, int ingredientStack = 1, int resultStack = 1)
 			where TModItem : ModItem
 			where TModTile : ModTile {
-			Recipe recipe = mod.CreateRecipe(resultType, resultStack); // make a new recipe for our mod with the specified type and with the specified stack.
-			recipe.AddIngredient<TModItem>(ingredientStack); // add the ingredient
-
-			// ModContent.TileType returns 0 for an invalid ModTile
-			if (ModContent.TileType<TModTile>() != 0) {
-				recipe.AddTile<TModTile>(); // add the tile
-			}
-
-			recipe.Register(); // finally, add the recipe
+			mod.CreateRecipe(resultType, resultStack) // make a new recipe for our mod with the specified type and with the specified stack.
+				.AddIngredient<TModItem>(ingredientStack) // add the ingredient
+				.AddTile<TModTile>() // add the tile
+				.Register(); // finally, add the recipe
 		}
 
 		// Add recipes
 		public static void AddExampleRecipes(Mod mod) {
 			// ExampleItem crafts into the following items
 			// Check the method signature of MakeSimpleRecipes for the arguments, this is a method signature:
+			// private static void MakeSimpleRecipe<TModItem>(Mod mod, short resultType, int ingredientStack = 1, int resultStack = 1)
+			//	 where TModItem : ModItem
+			// and
 			// private static void MakeSimpleRecipe<TModItem, TModTile>(Mod mod, short resultType, int ingredientStack = 1, int resultStack = 1)
 			//	 where TModItem : ModItem
 			//	 where TModTile : ModTile
 
-			MakeSimpleRecipe<Items.ExampleItem, ModTile>(mod, ItemID.Silk, 999);
-			MakeSimpleRecipe<Items.ExampleItem, ModTile>(mod, ItemID.IronOre, 999);
-			MakeSimpleRecipe<Items.ExampleItem, ModTile>(mod, ItemID.GravitationPotion, 20);
-			MakeSimpleRecipe<Items.ExampleItem, ModTile>(mod, ItemID.GoldChest); // notice how we can omit the stack, it has a default value
-			MakeSimpleRecipe<Items.ExampleItem, ModTile>(mod, ItemID.MusicBoxDungeon);
+			MakeSimpleRecipe<Items.ExampleItem>(mod, ItemID.Silk, 999);
+			MakeSimpleRecipe<Items.ExampleItem>(mod, ItemID.IronOre, 999);
+			MakeSimpleRecipe<Items.ExampleItem>(mod, ItemID.GravitationPotion, 20);
+			MakeSimpleRecipe<Items.ExampleItem>(mod, ItemID.GoldChest); // notice how we can omit the stack, it has a default value
+			MakeSimpleRecipe<Items.ExampleItem>(mod, ItemID.MusicBoxDungeon);
 
 			// Instead of having to call AddBossRecipes from our main file, we can also call it here, as a result the method can remain private
 			AddBossRecipes(mod);
