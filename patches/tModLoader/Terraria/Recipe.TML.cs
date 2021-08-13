@@ -346,7 +346,7 @@ namespace Terraria
 		/// Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.
 		/// </summary>
 		/// <exception cref="RecipeException">A recipe without any result has been added.</exception>
-		public void Register() {
+		public Recipe Register() {
 			if (createItem == null || createItem.type == 0)
 				throw new RecipeException("A recipe without any result has been added.");
 
@@ -369,6 +369,8 @@ namespace Terraria
 			Main.recipe[numRecipes] = this;			
 			RecipeIndex = numRecipes;
 			numRecipes++;
+			
+			return this;
 		}
 
 		internal static Recipe Create(Mod mod, int result, int amount) {
