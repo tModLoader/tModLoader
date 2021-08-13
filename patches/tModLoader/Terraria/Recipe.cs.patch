@@ -259,12 +259,13 @@
  		}
  
  		public static void SetupRecipes() {
-@@ -13317,14 +_,17 @@
+@@ -13317,14 +_,18 @@
  			AddRecipe();
  			CreateReverseWallRecipes();
  			CreateReversePlatformRecipes();
 +			RecipeLoader.AddRecipes();
 +			RecipeLoader.PostAddRecipes();
++			RecipeLoader.DeleteRecipes();
  			UpdateWhichItemsAreMaterials();
 +			Item.PopulateMaterialCache();
  			UpdateMaterialFieldForAllRecipes();
