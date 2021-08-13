@@ -293,10 +293,10 @@ namespace Terraria
 		#region Recipe movement
 
 		/// <summary>
-		/// Moves the recipe to a given index in the Main.recipe array.
+		/// Moves the recipe to a given index in the Main.recipe array. This recipe must already be registered.
 		/// </summary>
 		public Recipe MoveAt(int objective) {
-			if(Main[RecipeIndex] != this)
+			if(Main.recipe[RecipeIndex] != this)
 				throw new RecipeException("This recipe is not registered.");
 			
 			int direction = objective > RecipeIndex ? 1 : -1;
@@ -313,18 +313,27 @@ namespace Terraria
 			return this;
 		}
 
+		/// <summary>
+		/// Moves the recipe behind the one given as parameter. Both recipes must already be registered.
+		/// </summary>
 		public Recipe MoveBefore(Recipe recipe) {
-			if (Main[recipe.RecipeIndex] != recipe)
+			if (Main.recipe[recipe.RecipeIndex] != recipe)
 				throw new RecipeException("The selected recipe is not registered.");
+			
 			if(RecipeIndex < recipe.RecipeIndex)
 				return MoveAt(recipe.RecipeIndex - 1);
 			else 
 				return MoveAt(recipe.RecipeIndex);
 		}
 
+
+		/// <summary>
+		/// Moves the recipe after the one given as parameter. Both recipes must already be registered.
+		/// </summary>
 		public Recipe MoveAfter(Recipe recipe) {
-			if (Main[recipe.RecipeIndex] != recipe)
+			if (Main.recipe[recipe.RecipeIndex] != recipe)
 				throw new RecipeException("The selected recipe is not registered.");
+			
 			if(RecipeIndex < recipe.RecipeIndex)
 				return MoveAt(recipe.RecipeIndex);
 			else 
