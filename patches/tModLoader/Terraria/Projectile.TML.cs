@@ -12,7 +12,7 @@ namespace Terraria
 
 		public RefReadOnlyArray<Instanced<GlobalProjectile>> Globals => new RefReadOnlyArray<Instanced<GlobalProjectile>>(globalProjectiles);
 
-		private DamageClass _damageClass = DamageClass.Generic;
+		private DamageClass _damageClass = DamageClass.Default;
 		/// <summary>
 		/// The damage type of this Projectile. Assign to DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
 		/// </summary>
@@ -42,6 +42,10 @@ namespace Terraria
 		public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
 			=> GlobalType.TryGetGlobal<GlobalProjectile, T>(globalProjectiles, baseInstance, out result);
 
-		public bool CountsAsClass(DamageClass damageClass) => DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
+		public bool CountsAsClass<T>() where T : DamageClass
+			=> CountsAsClass(ModContent.GetInstance<T>());
+
+		public bool CountsAsClass(DamageClass damageClass)
+			=> DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
 	}
 }

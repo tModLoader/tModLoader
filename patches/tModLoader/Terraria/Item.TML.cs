@@ -19,7 +19,7 @@ namespace Terraria
 
 		public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new RefReadOnlyArray<Instanced<GlobalItem>>(globalItems);
 
-		private DamageClass _damageClass = DamageClass.Generic;
+		private DamageClass _damageClass = DamageClass.Default;
 		/// <summary>
 		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or ModContent.GetInstance<T>() for custom damage types.
 		/// </summary>

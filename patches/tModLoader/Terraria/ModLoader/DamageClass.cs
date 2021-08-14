@@ -5,8 +5,8 @@ namespace Terraria.ModLoader
 {
 	public abstract class DamageClass : ModType
 	{
+		public static DamageClass Default { get; private set; } = new DefaultDamageClass();
 		public static DamageClass Generic { get; private set; } = new GenericDamageClass();
-		public static DamageClass NoScaling { get; private set; } = new NoScalingDamageClass();
 		public static DamageClass Melee { get; private set; } = new MeleeDamageClass();
 		public static DamageClass Ranged { get; private set; } = new RangedDamageClass();
 		public static DamageClass Magic { get; private set; } = new MagicDamageClass();

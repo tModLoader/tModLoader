@@ -1756,21 +1756,23 @@
  					if (item.melee) {
  						int num3 = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
  						toolTipLine[numLines] = num3 + Lang.tip[5].Value;
-@@ -15152,6 +_,14 @@
+@@ -15152,7 +_,16 @@
  						toolTipLine[numLines] = num5 + Lang.tip[5].Value;
  						numLines++;
  					}
 +					*/
-+					// TODO: make this not inherently exclude summons. minions should be allowed to crit in the right circumstances, too
-+					if (!item.summon) {
++					
++					if (!item.DamageType.AllowStandardCrits()) {
 +						int crit = player[myPlayer].GetWeaponCrit(item);
 +						toolTipLine[numLines] = crit + Lang.tip[5].Value;
 +						toolTipNames[numLines] = "CritChance";
 +						numLines++;
 +					}
  
++					// TODO: DamageClass and/or Item hook for this?
  					if (item.useStyle != 0 && !item.summon) {
  						if (item.useAnimation <= 8)
+ 							toolTipLine[numLines] = Lang.tip[6].Value;
 @@ -15171,10 +_,13 @@
  						else
  							toolTipLine[numLines] = Lang.tip[13].Value;

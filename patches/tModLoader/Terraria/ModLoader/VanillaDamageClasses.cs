@@ -12,6 +12,13 @@ namespace Terraria.ModLoader
 		public override bool CountsAs(DamageClass damageClass) => false;
 	}
 
+	public class DefaultDamageClass : VanillaDamageClass
+	{
+		protected override string LangKey => "LegacyTooltip.55";
+
+		protected override float GetBenefitFrom(DamageClass damageClass) => 0;
+	}
+
 	public class GenericDamageClass : VanillaDamageClass
 	{
 		protected override string LangKey => "LegacyTooltip.55";
@@ -21,13 +28,6 @@ namespace Terraria.ModLoader
 		public override void SetDefaultStats(Player player) {
 			player.GetCritChance(this) = 4;
 		}
-	}
-
-	public class NoScalingDamageClass : VanillaDamageClass
-	{
-		protected override string LangKey => "LegacyTooltip.55";
-
-		protected override float GetBenefitFrom(DamageClass damageClass) => 0;
 	}
 
 	public class MeleeDamageClass : VanillaDamageClass
