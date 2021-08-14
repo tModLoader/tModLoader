@@ -1,4 +1,5 @@
 using ExampleMod.Content;
+using ExampleMod.Content.Items.Armor;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.NPCs;
 using System.IO;
@@ -21,6 +22,15 @@ namespace ExampleMod
 
 			// Registers a new custom currency
 			ExampleCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new Content.Currencies.ExampleCustomCurrency(ModContent.ItemType<Content.Items.ExampleItem>(), 999L, "Mods.ExampleMod.Currencies.ExampleCustomCurrency"));
+			
+			// All code below runs only if we're not loading on a server
+			if (!Main.dedServ) {
+				// Add certain equip textures
+				ExampleCostume exampleCostume = ExampleCostume.Instance;
+				AddEquipTexture(new BlockyHead(), exampleCostume, EquipType.Head, "ExampleMod/Content/Items/Armor/ExampleCostume_Head");
+				AddEquipTexture(new BlockyBody(), exampleCostume, EquipType.Body, "ExampleMod/Content/Items/Armor/ExampleCostume_Body");
+				AddEquipTexture(new BlockyLegs(), exampleCostume, EquipType.Legs, "ExampleMod/Content/Items/Armor/ExampleCostume_Legs");
+			}
 		}
 
 		public override void Unload() {
