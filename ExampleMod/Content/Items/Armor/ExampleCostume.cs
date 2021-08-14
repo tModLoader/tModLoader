@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Items.Armor
 	// Buffs.Blocky is the Buff that is shown while in Blocky mode. The buff is responsible for the actual stat effects of the costume. It also needs to remove itself when not near town npcs.
 	// ExampleCostumePlayer has 5 bools. They manage the visibility and other things related to this effect.
 	// ExampleCostumePlayer.ResetEffects resets those bool, except blockyAccessoryPrevious which is special because of the order of hooks.
-	// ExampleCostumePlayer.UpdateVanityAccessories is responsible for forcing the visual effect of our costume if the item is in a vanity slot. Note that ModItem.UpdateVanity can't be used for this because it is called too late.
+	// ExampleCostumePlayer.UpdateVanityAccessories is responsible for forcing the visual effect of our costume if the item is in a vanity slot. Note that ModItem.UpdateVanitySet can't be used for this because it is called too late.
 	// ExampleCostumePlayer.UpdateEquips is responsible for applying the Blocky buff to the player if the conditions are met and the accessory is equipped.
 	// ExampleCostumePlayer.FrameEffects is most important. It overrides the drawn equipment slots and sets them to our Blocky EquipTextures. 
 	// ExampleCostumePlayer.ModifyDrawInfo is for some fun effects for our costume.
@@ -49,14 +49,14 @@ namespace ExampleMod.Content.Items.Armor
 				p.blockyHideVanity = true;
 			}
 		}
+
+		// Required so UpdateVanitySet gets called
+		public override bool IsVanitySet(int head, int body, int legs) => true;
 	}
 
 	public class BlockyHead : EquipTexture
 	{
 		public override bool DrawHead() => false;
-
-		// Required so UpdateVanitySet gets called
-		public override bool IsVanitySet(int head, int body, int legs) => true;
 
 		public override void UpdateVanitySet(Player player) {
 			if (Main.rand.NextBool(20)) {

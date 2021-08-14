@@ -22,7 +22,7 @@ namespace ExampleMod
 
 			// Registers a new custom currency
 			ExampleCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new Content.Currencies.ExampleCustomCurrency(ModContent.ItemType<Content.Items.ExampleItem>(), 999L, "Mods.ExampleMod.Currencies.ExampleCustomCurrency"));
-			
+
 			// All code below runs only if we're not loading on a server
 			if (!Main.dedServ) {
 				// Add certain equip textures
