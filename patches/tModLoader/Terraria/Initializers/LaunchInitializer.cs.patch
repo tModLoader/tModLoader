@@ -51,17 +51,15 @@
  		}
  
  		private static void LoadServerParameters(Main game) {
-@@ -99,6 +_,18 @@
+@@ -99,6 +_,16 @@
  			if ((s2 = TryParameter("-language")) != null)
  				LanguageManager.Instance.SetLanguage(s2);
  
-+			/*TODO: Re-implement with respect to Steam Workshop.
 +			string publish;
 +			if ((publish = LaunchInitializer.TryParameter("-publish")) != null) {
-+				ModLoader.UI.UIModSourceItem.PublishModCommandLine(publish, TryParameter("-passphrase"), TryParameter("-steamid64"));
++				ModLoader.UI.UIModSourceItem.PublishModCommandLine(publish);
 +				// Application Exits
 +			} 
-+			*/
 +
 +			string install;
 +			if ((install = TryParameter("-install")) != null)

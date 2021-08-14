@@ -38,8 +38,16 @@ Common.LocalizedLabel=This Label is from the .lang files: {$Mods.ExampleMod.Comm
 Common.LocalizedTooltip=This tooltip is from the .lang files.
 Common.LocalizedHeader=Headers can help organize
 
+# Prefixing these with "Config" isn't needed, though it can help with organizing things
+Config.ItemHeader=Items
+Config.ExampleWingsToggle.Label=ExampleWings Toggle
+Config.ExampleWingsToggle.Tooltip=Enables or disables the ExampleWings item
+
 # Content/Items/ExampleItem.cs
 RecipeConditions.Night=At Low Health
 
 # Content/NPCs/ExamplePerson.cs
 Bestiary.ExamplePerson=Built of blocks with arms of steel. Pumps iron day and night.
+
+# Content/Currencies/ExampleCustomCurrency
+Currencies.ExampleCustomCurrency=example items

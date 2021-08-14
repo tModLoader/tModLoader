@@ -14,7 +14,7 @@
  		}
  
 -		protected List<UIElement> _items = new List<UIElement>();
-+		internal List<UIElement> _items = new List<UIElement>();
++		public List<UIElement> _items = new List<UIElement>();
  		protected UIScrollbar _scrollbar;
 -		private UIElement _innerList = new UIInnerList();
 +		internal UIElement _innerList = new UIInnerList();

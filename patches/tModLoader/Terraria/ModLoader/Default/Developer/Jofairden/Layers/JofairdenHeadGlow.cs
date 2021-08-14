@@ -10,8 +10,8 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 
 		public override bool IsHeadLayer => true;
 
-		public override bool GetDefaultVisiblity(PlayerDrawSet drawInfo)
-			=> drawInfo.drawPlayer.head == ModContent.GetInstance<Jofairden_Head>().Item.headSlot && base.GetDefaultVisiblity(drawInfo);
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
+			=> drawInfo.drawPlayer.head == ModContent.GetInstance<Jofairden_Head>().Item.headSlot && base.GetDefaultVisibility(drawInfo);
 
 		public override DrawDataInfo GetData(PlayerDrawSet info) {
 			_glowTexture ??= ModContent.Request<Texture2D>("ModLoader/Developer.Jofairden.Jofairden_Head_Head_Glow");

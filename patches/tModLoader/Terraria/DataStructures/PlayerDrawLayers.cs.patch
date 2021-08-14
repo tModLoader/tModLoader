@@ -281,6 +281,18 @@
  					item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.faceFlower].Value, helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect, 0);
  					item.shader = drawinfo.cFaceFlower;
  					drawinfo.DrawDataCache.Add(item);
+@@ -1800,7 +_,11 @@
+ 					drawinfo.DrawDataCache.Add(item);
+ 				}
+ 			}
++		}
+ 
++		public static void DrawPlayer_21_2_FinchNest(ref PlayerDrawSet drawinfo) {
++			DrawData item;
++			
+ 			if (drawinfo.drawPlayer.babyBird) {
+ 				Rectangle bodyFrame5 = drawinfo.drawPlayer.bodyFrame;
+ 				bodyFrame5.Y = 0;
 @@ -1856,7 +_,7 @@
  		private static void DrawPlayer_21_Head_TheFace(ref PlayerDrawSet drawinfo) {
  			bool flag = drawinfo.drawPlayer.head == 38 || drawinfo.drawPlayer.head == 135 || drawinfo.drawPlayer.head == 269;

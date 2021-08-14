@@ -127,19 +127,19 @@ namespace Terraria
 		public bool RemoveCondition(Condition condition) => Conditions.Remove(condition);
 
 		public bool RemoveRecipe() {
-			for (int k = 0; k < numRecipes; k++) {
-				if (Main.recipe[k] == this) {
-					for (int j = k; j < numRecipes - 1; j++) {
-						Main.recipe[j] = Main.recipe[j + 1];
-					}
-
-					Main.recipe[numRecipes - 1] = new Recipe();
-					numRecipes--;
-					return true;
-				}
+			if (!RecipeLoader.setupRecipes)
+				throw new RecipeException("A Recipe can only be deleted inside recipe related methods");
+			if (Main.recipe[RecipeIndex] != this)
+				return false;
+			for (int j = RecipeIndex; j < numRecipes - 1; j++) {
+				Recipe recipe = Main.recipe[j + 1];
+				Main.recipe[j] = recipe;
+				recipe.RecipeIndex--;
 			}
 
-			return false;
+			Main.recipe[numRecipes - 1] = new Recipe();
+			numRecipes--;
+			return true;
 		}
 		#endregion
 
