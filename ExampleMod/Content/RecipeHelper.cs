@@ -9,6 +9,11 @@ namespace ExampleMod.Content
 	// In this class we separate recipe related code from our main class
 	public static class RecipeHelper
 	{
+		public static void Load(Mod mod) {
+			AddExampleRecipes(mod);
+			ExampleRecipeEditing(mod);
+		}
+
 		// Here we've made a helper method we can use to shorten our code.
 		// This is because many of our recipes follow the same terminology: one ingredient, one result, one possible required tile
 		// notice the last parameters can be made optional by specifying a default value

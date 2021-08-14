@@ -21,10 +21,6 @@ namespace ExampleMod.Content
 			Examples_AddRecipes(mod);
 
 			Examples_ModifyRecipes(mod);
-
-			// See RecipeHelper.cs
-			RecipeHelper.AddExampleRecipes(mod);
-			RecipeHelper.ExampleRecipeEditing(mod);
 		}
 
 		private static void Examples_AddRecipes(Mod mod) {
