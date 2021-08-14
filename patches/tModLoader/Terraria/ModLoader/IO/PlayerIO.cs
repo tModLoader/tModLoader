@@ -118,8 +118,8 @@ namespace Terraria.ModLoader.IO
 
 		public static void LoadResearch(Player player, IList<TagCompound> list) {
 			foreach (var tag in list) {
-				if (tag.ContainsKey("persistentID"))
-					continue; //Discard tags from previous insufficient implementation pre-alpha so they are not carried over to unloadedResearch
+				if (!tag.ContainsKey("mod") || !tag.ContainsKey("name"))
+					continue; // Discard tags from previous insufficient implementation pre-alpha so they are not carried over to unloadedResearch
 
 				string modName = tag.GetString("mod");
 				string modItemName = tag.GetString("name");
