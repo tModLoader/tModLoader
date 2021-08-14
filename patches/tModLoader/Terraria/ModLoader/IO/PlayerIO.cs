@@ -101,14 +101,14 @@ namespace Terraria.ModLoader.IO
 
 		public static List<TagCompound> SaveResearch(Player player) {
 			var list = new List<TagCompound>();
-			Dictionary<string, int> dictionary = new Dictionary<string, int>(player.creativeTracker.ItemSacrifices._sacrificeCountByItemPersistentId);
-			foreach (KeyValuePair<string, int> item in dictionary) {
-				ContentSamples.ItemNetIdsByPersistentIds.TryGetValue(item.Key, out int netID);
-				ContentSamples.ItemsByType.TryGetValue(netID, out Item realItem);
-				if (ItemLoader.NeedsModSaving(realItem)) {
+			var dictionary = new Dictionary<int, int>(player.creativeTracker.ItemSacrifices.SacrificesCountByItemIdCache);
+			foreach (var item in dictionary) {
+				ModItem modItem = ItemLoader.GetItem(item.Key);
+				if (modItem != null) {
 					TagCompound tag = new TagCompound {
-						["sacrificeCount"] = item.Value,
-						["persistentID"] = item.Key
+						["mod"] = modItem.Mod.Name,
+						["name"] = modItem.Name,
+						["sacrificeCount"] = item.Value
 					};
 					list.Add(tag);
 				}
@@ -118,12 +118,23 @@ namespace Terraria.ModLoader.IO
 
 		public static void LoadResearch(Player player, IList<TagCompound> list) {
 			foreach (var tag in list) {
-				ContentSamples.ItemNetIdsByPersistentIds.TryGetValue(tag.GetString("persistentID"), out int netID);
-				ContentSamples.ItemsByType.TryGetValue(netID, out Item realItem);
-				if (ItemLoader.NeedsModSaving(realItem)) {
-					player.creativeTracker.ItemSacrifices._sacrificeCountByItemPersistentId[tag.GetString("persistentID")] = tag.GetInt("sacrificeCount");
-					if (ContentSamples.ItemNetIdsByPersistentIds.TryGetValue(tag.GetString("persistentID"), out int value2))
-						player.creativeTracker.ItemSacrifices.SacrificesCountByItemIdCache[value2] = tag.GetInt("sacrificeCount");
+				if (tag.ContainsKey("persistentID"))
+					continue; //Discard tags from previous insufficient implementation pre-alpha so they are not carried over to unloadedResearch
+
+				string modName = tag.GetString("mod");
+				string modItemName = tag.GetString("name");
+
+				if (ModContent.TryFind(modName, modItemName, out ModItem modItem)) {
+					int netId = modItem.Type;
+					string persistentId = ContentSamples.ItemPersistentIdsByNetIds[netId];
+
+					int sacrificeCount = tag.GetInt("sacrificeCount");
+					var itemSacrifices = player.creativeTracker.ItemSacrifices;
+					itemSacrifices._sacrificeCountByItemPersistentId[persistentId] = sacrificeCount;
+					itemSacrifices.SacrificesCountByItemIdCache[netId] = sacrificeCount;
+				}
+				else {
+					player.GetModPlayer<UnloadedPlayer>().unloadedResearch.Add(tag);
 				}
 			}
 		}
