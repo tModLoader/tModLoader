@@ -101,9 +101,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abf5b54e97a6864364f4e6b8ab4ed9097"><td class="memItemLeft" align="right" valign="top">override <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer_1_1_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer_slot.html#abf5b54e97a6864364f4e6b8ab4ed9097">GetDefaultPosition</a> ()</td></tr>
 <tr class="memdesc:abf5b54e97a6864364f4e6b8ab4ed9097"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the layer's default position in regards to other layers. Make use of e.g BeforeParent/AfterParent, and provide a layer (usually a vanilla one from PlayerDrawLayers).  <a href="class_terraria_1_1_mod_loader_1_1_player_draw_layer_slot.html#abf5b54e97a6864364f4e6b8ab4ed9097">More...</a><br /></td></tr>
 <tr class="separator:abf5b54e97a6864364f4e6b8ab4ed9097"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8e38e7871f74846727d5da4dd4bce56"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer_slot.html#ab8e38e7871f74846727d5da4dd4bce56">GetDefaultVisiblity</a> (<a class="el" href="struct_terraria_1_1_data_structures_1_1_player_draw_set.html">PlayerDrawSet</a> drawInfo)</td></tr>
-<tr class="memdesc:ab8e38e7871f74846727d5da4dd4bce56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the layer's default visibility. This is usually called as a layer is queued for drawing, but modders can call it too for information.  <a href="class_terraria_1_1_mod_loader_1_1_player_draw_layer_slot.html#ab8e38e7871f74846727d5da4dd4bce56">More...</a><br /></td></tr>
-<tr class="separator:ab8e38e7871f74846727d5da4dd4bce56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38f926e323ffa42146349bbfe3671833"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer_slot.html#a38f926e323ffa42146349bbfe3671833">GetDefaultVisibility</a> (<a class="el" href="struct_terraria_1_1_data_structures_1_1_player_draw_set.html">PlayerDrawSet</a> drawInfo)</td></tr>
+<tr class="memdesc:a38f926e323ffa42146349bbfe3671833"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the layer's default visibility. This is usually called as a layer is queued for drawing, but modders can call it too for information.  <a href="class_terraria_1_1_mod_loader_1_1_player_draw_layer_slot.html#a38f926e323ffa42146349bbfe3671833">More...</a><br /></td></tr>
+<tr class="separator:a38f926e323ffa42146349bbfe3671833"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_terraria_1_1_mod_loader_1_1_player_draw_layer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_terraria_1_1_mod_loader_1_1_player_draw_layer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer.html">Terraria.ModLoader.PlayerDrawLayer</a></td></tr>
 <tr class="memitem:aaac201552ebee04c6212152c54947d2f inherit pub_methods_class_terraria_1_1_mod_loader_1_1_player_draw_layer"><td class="memItemLeft" align="right" valign="top"><a id="aaac201552ebee04c6212152c54947d2f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawWithTransformationAndChildren</b> (ref <a class="el" href="struct_terraria_1_1_data_structures_1_1_player_draw_set.html">PlayerDrawSet</a> drawInfo)</td></tr>
@@ -249,8 +249,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>Visible</b> = true<co
 
 </div>
 </div>
-<a id="ab8e38e7871f74846727d5da4dd4bce56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8e38e7871f74846727d5da4dd4bce56">&#9670;&nbsp;</a></span>GetDefaultVisiblity()</h2>
+<a id="a38f926e323ffa42146349bbfe3671833"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38f926e323ffa42146349bbfe3671833">&#9670;&nbsp;</a></span>GetDefaultVisibility()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -259,7 +259,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>Visible</b> = true<co
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">override bool Terraria.ModLoader.PlayerDrawLayerSlot.GetDefaultVisiblity </td>
+          <td class="memname">override bool Terraria.ModLoader.PlayerDrawLayerSlot.GetDefaultVisibility </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_terraria_1_1_data_structures_1_1_player_draw_set.html">PlayerDrawSet</a>&#160;</td>
           <td class="paramname"><em>drawInfo</em></td><td>)</td>
@@ -276,7 +276,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>Visible</b> = true<co
 <p>Returns the layer's default visibility. This is usually called as a layer is queued for drawing, but modders can call it too for information. </p>
 <dl class="section return"><dt>Returns</dt><dd>Whether or not this layer will be visible by default. Modders can hide layers later, if needed.</dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#a01ac05317920963db12582de7155ca25">Terraria.ModLoader.PlayerDrawLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#a4a123ea3962171c1371b388aee653322">Terraria.ModLoader.PlayerDrawLayer</a>.</p>
 
 </div>
 </div>

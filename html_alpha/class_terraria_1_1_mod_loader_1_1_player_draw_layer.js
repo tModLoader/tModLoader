@@ -9,7 +9,7 @@ var class_terraria_1_1_mod_loader_1_1_player_draw_layer =
     [ "Draw", "class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#ad923b861201f275850f0ea8563e7a45d", null ],
     [ "DrawWithTransformationAndChildren", "class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#aaac201552ebee04c6212152c54947d2f", null ],
     [ "GetDefaultPosition", "class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#ab1d38d417b9f94d1d1bddeb180abbf99", null ],
-    [ "GetDefaultVisiblity", "class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#a01ac05317920963db12582de7155ca25", null ],
+    [ "GetDefaultVisibility", "class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#a4a123ea3962171c1371b388aee653322", null ],
     [ "Hide", "class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#a025aa450ec553bb5a291c044d8c11313", null ],
     [ "Register", "class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#a7fdc161ad0da15b57a1c00dae4c8ca43", null ],
     [ "SetupContent", "class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#a936ed7db8f229a46f9bf13b974b432d3", null ],
