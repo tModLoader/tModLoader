@@ -15,7 +15,7 @@ namespace ExampleMod.Common
 		//Returning true in this property makes this layer appear on the minimap player head icon.
 		public override bool IsHeadLayer => true;
 
-		public override bool GetDefaultVisiblity(PlayerDrawSet drawInfo) {
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
 			//The layer will be visible only if the player is holding an ExampleItem in their hands. Or if another modder forces this layer to be visible.
 			return drawInfo.drawPlayer.HeldItem?.type == ModContent.ItemType<ExampleItem>();
 

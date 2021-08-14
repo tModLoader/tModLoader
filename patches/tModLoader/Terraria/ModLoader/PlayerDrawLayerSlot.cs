@@ -24,6 +24,6 @@ namespace Terraria.ModLoader
 
 		protected override void Draw(ref PlayerDrawSet drawInfo) { }
 
-		public override bool GetDefaultVisiblity(PlayerDrawSet drawInfo) => Condition(drawInfo);
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) => Condition(drawInfo);
 	}
 }
