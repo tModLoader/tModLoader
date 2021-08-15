@@ -40,7 +40,6 @@ namespace Terraria.ModLoader.UI
 		private string _info = string.Empty;
 		private string _modName = string.Empty;
 		private string _modDisplayName = string.Empty;
-		private uint _queryIndex;
 		private string _publishedFileId;
 		private bool _loadFromWeb;
 		private bool _loading;
@@ -142,13 +141,12 @@ namespace Terraria.ModLoader.UI
 			Append(_uIElement);
 		}
 
-		internal void Show(string modName, string displayName, int gotoMenu, LocalMod localMod, string description = "", string url = "", uint queryIndex = 0, bool loadFromWeb = false, string publishedFileId = "") {
+		internal void Show(string modName, string displayName, int gotoMenu, LocalMod localMod, string description = "", string url = "", bool loadFromWeb = false, string publishedFileId = "") {
 			_modName = modName;
 			_modDisplayName = displayName;
 			_gotoMenu = gotoMenu;
 			_localMod = localMod;
 			_info = description;
-			_queryIndex = queryIndex;
 			if (_info.Equals("") && !loadFromWeb) {
 				_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
 			}
@@ -248,7 +246,7 @@ namespace Terraria.ModLoader.UI
 				_loading = true;
 				_ready = false;
 
-				_info = UIModBrowser.SteamWorkshop.GetDescription(ulong.Parse(_publishedFileId));
+				_info = Social.Steam.WorkshopHelper.QueryHelper.Instance.GetDescription(ulong.Parse(_publishedFileId));
 
 				if (string.IsNullOrWhiteSpace(_info)) {
 					_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");

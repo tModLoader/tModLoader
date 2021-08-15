@@ -118,7 +118,7 @@ namespace Terraria.Social.Steam
 			/// <summary>
 			/// Downloads all UIModDownloadItems provided.
 			/// </summary>
-			public static void Download(List<UIModDownloadItem> items) {
+			public static void Download(List<ModDownloadItem> items) {
 				//Set UIWorkshopDownload
 				UIWorkshopDownload uiProgress = null;
 
@@ -145,7 +145,7 @@ namespace Terraria.Social.Steam
 				Task.Run(() => TaskDownload(counter, uiProgress, items));
 			}
 
-			private static void TaskDownload(int counter, UIWorkshopDownload uiProgress, List<UIModDownloadItem> items) {
+			private static void TaskDownload(int counter, UIWorkshopDownload uiProgress, List<ModDownloadItem> items) {
 				var item = items[counter++];
 				var mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)));
 				
@@ -381,10 +381,10 @@ namespace Terraria.Social.Steam
 				_queryHook = CallResult<SteamUGCQueryCompleted_t>.Create(OnWorkshopQueryCompleted);
 			}
 
-			internal bool QueryWorkshop(out List<UIModDownloadItem> items) {
+			internal bool QueryWorkshop(out List<ModDownloadItem> items) {
 				uint queryPage = 0;
 				incompleteModCount = 0;
-				items = new List<UIModDownloadItem>();
+				items = new List<ModDownloadItem>();
 				LocalMod[] installedMods = ModOrganizer.FindMods();
 
 				if (!ModManager.SteamAvailable)
@@ -507,7 +507,7 @@ namespace Terraria.Social.Steam
 								update = updateIsDowngrade = true;
 						}
 
-						items.Add(new UIModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"]));
+						items.Add(new ModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"]));
 					}
 					ReleaseWorkshopQuery();
 				} while (_queryReturnCount == QueryPagingConst);
@@ -624,16 +624,30 @@ namespace Terraria.Social.Steam
 
 			internal static bool CheckWorkshopConnection() {
 				// If populating fails during query, than no connection. Attempt connection if not yet attempted.
-				if (UIModBrowser.SteamWorkshop == null && !Interface.modBrowser.InnerPopulateModBrowser())
+				if (!FetchDownloadItems())
 					return false;
 
 				// If there are zero items on workshop, than return true.
-				if (Interface.modBrowser.Items.Count + UIModBrowser.SteamWorkshop._queryReturnCount == 0)
+				if (Items.Count + Instance._queryReturnCount == 0)
 					return true;
 
 				// Otherwise, return the original condition. 
-				return Interface.modBrowser.Items.Count + UIModBrowser.SteamWorkshop.incompleteModCount != 0;
+				return Items.Count + Instance.incompleteModCount != 0;
 			}
+
+			internal static List<ModDownloadItem> Items = new List<ModDownloadItem>();
+			internal static QueryHelper Instance = new QueryHelper();
+
+			internal static bool FetchDownloadItems() {
+				if (!Instance.QueryWorkshop(out var items))
+					return false;
+
+				Items.AddRange(items);
+				return true;
+			}
+
+			internal static ModDownloadItem FindModDownloadItem(string modName)
+			=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
 		}
 	}
 }

@@ -42,11 +42,11 @@ namespace Terraria.Social.Steam
 			// -> Haven't tested fix. Not sure if this same restriction applies from a ModOrganizer code perspective.
 			// -> If workshop folder exists, it will overwrite existing mod, allowing lowering of version number. <- I do not follow, this line doesn't make sense. Lowering the version is checked against the Mod Browser, not the local item.
 			// Oh yeah, publish a private mod, modname collision with a public mod later created. <- there is no solution to this. You take a risk in keeping it private.
-			var existing = Interface.modBrowser.FindModDownloadItem(buildData["name"]);
+			var existing = WorkshopHelper.QueryHelper.FindModDownloadItem(buildData["name"]);
 			ulong currPublishID = 0;
 
 			if (existing != null) {
-				ulong existingID = UIModBrowser.SteamWorkshop.GetSteamOwner(ulong.Parse(existing.PublishId));
+				ulong existingID = WorkshopHelper.QueryHelper.Instance.GetSteamOwner(ulong.Parse(existing.PublishId));
 				var currID = Steamworks.SteamUser.GetSteamID();
 
 				if (existingID != currID.m_SteamID) {
@@ -80,7 +80,7 @@ namespace Terraria.Social.Steam
 
 			if (buildData["modreferences"].Length > 0) {
 				foreach (string modRef in buildData["modreferences"].Split(",")) {
-					var temp = Interface.modBrowser.FindModDownloadItem(modRef);
+					var temp = WorkshopHelper.QueryHelper.FindModDownloadItem(modRef);
 
 					if (temp != null)
 						workshopDeps += temp.PublishId + ",";
