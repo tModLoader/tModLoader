@@ -46,7 +46,7 @@ namespace Terraria.Social.Steam
 			ulong currPublishID = 0;
 
 			if (existing != null) {
-				ulong existingID = WorkshopHelper.QueryHelper.Instance.GetSteamOwner(ulong.Parse(existing.PublishId));
+				ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(ulong.Parse(existing.PublishId));
 				var currID = Steamworks.SteamUser.GetSteamID();
 
 				if (existingID != currID.m_SteamID) {

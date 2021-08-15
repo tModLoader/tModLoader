@@ -246,7 +246,7 @@ namespace Terraria.ModLoader.UI
 				_loading = true;
 				_ready = false;
 
-				_info = Social.Steam.WorkshopHelper.QueryHelper.Instance.GetDescription(ulong.Parse(_publishedFileId));
+				_info = Social.Steam.WorkshopHelper.QueryHelper.GetDescription(ulong.Parse(_publishedFileId));
 
 				if (string.IsNullOrWhiteSpace(_info)) {
 					_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");

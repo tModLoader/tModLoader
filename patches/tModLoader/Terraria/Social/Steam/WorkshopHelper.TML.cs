@@ -367,43 +367,135 @@ namespace Terraria.Social.Steam
 			}
 		}
 
-		internal class QueryHelper
+		internal static class QueryHelper
 		{
 			internal const int QueryPagingConst = Steamworks.Constants.kNumUGCResultsPerPage;
+			internal static int IncompleteModCount;
+			internal static uint TotalItemsQueried;
+			internal static EResult ErrorState = EResult.k_EResultNone;
 
-			private CallResult<SteamUGCQueryCompleted_t> _queryHook;
-			protected UGCQueryHandle_t _primaryUGCHandle;
-			protected EResult _primaryQueryResult;
-			protected uint _queryReturnCount;
-			protected int incompleteModCount;
+			internal static List<ModDownloadItem> Items = new List<ModDownloadItem>();
 
-			internal QueryHelper() {
-				_queryHook = CallResult<SteamUGCQueryCompleted_t>.Create(OnWorkshopQueryCompleted);
+			internal static bool FetchDownloadItems() {
+				if (!QueryWorkshop())
+					return false;
+
+				return true;
 			}
 
-			internal bool QueryWorkshop(out List<ModDownloadItem> items) {
-				uint queryPage = 0;
-				incompleteModCount = 0;
-				items = new List<ModDownloadItem>();
-				LocalMod[] installedMods = ModOrganizer.FindMods();
+			internal static ModDownloadItem FindModDownloadItem(string modName)
+			=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
+
+			internal static bool QueryWorkshop() {
+				IncompleteModCount = 0;
+				TotalItemsQueried = 0;
+				Items.Clear();
+				ErrorState = EResult.k_EResultNone;
+
+				AQueryInstance.InstalledMods = ModOrganizer.FindMods();
 
 				if (!ModManager.SteamAvailable)
 					return false;
 
+				if (!new AQueryInstance().GetPageCountFast())
+					return false;
+
+				//TODO: Threaded query of multiple pages at a time appears un-supported within Steam.
+				// Concerned for future speed of querying the Steam Workshop (ie at 1000+ items).
+				// At 2-4 seconds for each 50 item set, it will add up (~ 1 minute per 1000 items to load).
+				// Some sort of long term solution will be needed; for now I've re-designed it to be able to fill pages independently from our end
+				int pageCount = (int)TotalItemsQueried / QueryPagingConst + 1;
+				for (uint i = 1; i < pageCount + 1; i++) {
+					/*Task.Run(() => */ new AQueryInstance().QueryForPage(i, pageCount == i);
+				}
+
 				do {
-					QueryForPage(++queryPage);
-
-					if (_primaryQueryResult == EResult.k_EResultAccessDenied) {
-						Utils.ShowFancyErrorMessage("Error: Access to Steam Workshop was denied.", 0);
+					if (!HandleError(ErrorState)) {
 						return false;
 					}
-					else if (_primaryQueryResult != EResult.k_EResultOK) {
-						Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop. " + _primaryQueryResult, 0);
-						Utils.LogAndConsoleInfoMessage("Consult " + "C:\\Program Files(x86)\\Steam\\logs\\workshop.log" + " for more information.");
-						return false;
+				} while (ErrorState != EResult.k_EResultOK);
+
+				AQueryInstance.InstalledMods = null;
+				return true;
+			}
+
+			internal static bool HandleError(EResult eResult) {
+				if (eResult == EResult.k_EResultOK)
+					return true;
+				if (eResult == EResult.k_EResultNone)
+					return true;
+
+				if (eResult == EResult.k_EResultAccessDenied) {
+					Utils.ShowFancyErrorMessage("Error: Access to Steam Workshop was denied.", 0);
+				}
+				else {
+					Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop. " + eResult, 0);
+					Utils.LogAndConsoleInfoMessage("Consult " + "C:\\Program Files(x86)\\Steam\\logs\\workshop.log" + " for more information.");
+				}
+				return false;
+			}
+
+			internal class AQueryInstance
+			{
+				private CallResult<SteamUGCQueryCompleted_t> _queryHook;
+				protected UGCQueryHandle_t _primaryUGCHandle;
+				protected EResult _primaryQueryResult;
+				protected uint _queryReturnCount;
+				protected uint _totalReturnCount;
+
+				internal static LocalMod[] InstalledMods;
+
+				internal AQueryInstance() {
+					_queryHook = CallResult<SteamUGCQueryCompleted_t>.Create(OnWorkshopQueryCompleted);
+				}
+
+				internal void QueryForPage(uint page, bool final) {
+					_primaryQueryResult = EResult.k_EResultNone;
+
+					SteamAPICall_t call;
+					if (ModManager.SteamUser) {
+						UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), page);
+
+						SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
+						SteamUGC.SetReturnKeyValueTags(qHandle, true);
+						SteamUGC.SetReturnLongDescription(qHandle, true);
+						SteamUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
+						SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
+
+						call = SteamUGC.SendQueryUGCRequest(qHandle);
+					}
+					else {
+						UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), page);
+
+						SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
+						SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
+						SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
+						SteamUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
+						SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
+
+						call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 					}
 
+					_queryHook.Set(call);
 
+					do {
+						// Do Pretty Stuff if want here
+						ForceCallbacks();
+					}
+					while (_primaryQueryResult == EResult.k_EResultNone);
+
+					if (_primaryQueryResult != EResult.k_EResultOK) {
+						ErrorState = _primaryQueryResult;
+						return;
+					}
+
+					QueryPageResult();
+
+					if (final && ErrorState == EResult.k_EResultNone)
+						ErrorState = EResult.k_EResultOK;
+				}
+
+				private void QueryPageResult() {
 					for (uint i = 0; i < _queryReturnCount; i++) {
 						// Item Result call data
 						SteamUGCDetails_t pDetails;
@@ -456,7 +548,7 @@ namespace Terraria.Social.Steam
 
 						if (missingKeys.Length != 0) {
 							Logging.tML.Warn($"Mod '{displayname}' is missing required metadata: {string.Join(',', missingKeys.Select(k => $"'{k}'"))}.");
-							incompleteModCount++;
+							IncompleteModCount++;
 							continue;
 						}
 
@@ -497,7 +589,7 @@ namespace Terraria.Social.Steam
 						// Check against installed mods
 						bool update = false;
 						bool updateIsDowngrade = false;
-						var installed = installedMods.FirstOrDefault(m => m.Name == metadata["name"]);
+						var installed = InstalledMods.FirstOrDefault(m => m.Name == metadata["name"]);
 
 						if (installed != null) {
 							//exists = true;
@@ -507,147 +599,125 @@ namespace Terraria.Social.Steam
 								update = updateIsDowngrade = true;
 						}
 
-						items.Add(new ModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"]));
+						Items.Add(new ModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"]));
 					}
 					ReleaseWorkshopQuery();
-				} while (_queryReturnCount == QueryPagingConst);
+				}
 
-				return true;
+				internal bool GetPageCountFast() {
+					_primaryQueryResult = EResult.k_EResultNone;
+
+					SteamAPICall_t call;
+					if (ModManager.SteamUser) {
+						UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), 1);
+						SteamUGC.SetReturnTotalOnly(qHandle, true);
+						SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
+						call = SteamUGC.SendQueryUGCRequest(qHandle);
+					}
+					else {
+						UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), 1);
+						SteamGameServerUGC.SetReturnTotalOnly(qHandle, true);
+						SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
+						call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
+					}
+
+					_queryHook.Set(call);
+
+					do {
+						// Do Pretty Stuff if want here
+						ForceCallbacks();
+					}
+					while (_primaryQueryResult == EResult.k_EResultNone);
+					ReleaseWorkshopQuery();
+
+					if (_primaryQueryResult != EResult.k_EResultOK)
+						return HandleError(_primaryQueryResult);
+
+					TotalItemsQueried = _totalReturnCount;
+					return true;
+				}
+
+				internal SteamUGCDetails_t FastQueryItem(ulong publishedId) {
+					_primaryQueryResult = EResult.k_EResultNone;
+
+					SteamAPICall_t call;
+					if (ModManager.SteamUser) {
+						UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[1] { new PublishedFileId_t(publishedId) }, 1);
+
+						SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
+						SteamUGC.SetReturnLongDescription(qHandle, true);
+						SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
+
+						call = SteamUGC.SendQueryUGCRequest(qHandle);
+					}
+					else {
+						UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[1] { new PublishedFileId_t(publishedId) }, 1);
+
+						SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
+						SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
+						SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
+
+						call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
+					}
+
+					_queryHook.Set(call);
+
+					do {
+						// Do Pretty Stuff if want here
+						ForceCallbacks();
+					}
+					while (_primaryQueryResult == EResult.k_EResultNone);
+
+					SteamUGCDetails_t pDetails;
+					if (ModManager.SteamUser)
+						SteamUGC.GetQueryUGCResult(_primaryUGCHandle, 0, out pDetails);
+					else
+						SteamGameServerUGC.GetQueryUGCResult(_primaryUGCHandle, 0, out pDetails);
+
+					ReleaseWorkshopQuery();
+					return pDetails;
+				}
+
+				private void OnWorkshopQueryCompleted(SteamUGCQueryCompleted_t pCallback, bool bIOFailure) {
+					_primaryUGCHandle = pCallback.m_handle;
+					_primaryQueryResult = pCallback.m_eResult;
+					_queryReturnCount = pCallback.m_unNumResultsReturned;
+					_totalReturnCount = pCallback.m_unTotalMatchingResults;
+				}
+
+				/// <summary>
+				/// Ought be called to release the existing query when we are done with it. Frees memory associated with the handle.
+				/// </summary>
+				private void ReleaseWorkshopQuery() {
+					if (ModManager.SteamUser)
+						SteamUGC.ReleaseQueryUGCRequest(_primaryUGCHandle);
+					else
+						SteamGameServerUGC.ReleaseQueryUGCRequest(_primaryUGCHandle);
+				}
 			}
 
-			private void QueryForPage(uint page) {
-				_primaryQueryResult = EResult.k_EResultNone;
-
-				SteamAPICall_t call;
-				if (ModManager.SteamUser) {
-					UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), page);
-
-					SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
-					SteamUGC.SetReturnKeyValueTags(qHandle, true);
-					SteamUGC.SetReturnLongDescription(qHandle, true);
-					SteamUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
-					SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
-					
-
-					call = SteamUGC.SendQueryUGCRequest(qHandle);
-				}
-				else {
-					UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), page);
-
-					SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
-					SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
-					SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
-					SteamUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
-					SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
-
-					call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
-				}
-				
-				_queryHook.Set(call);
-
-				do {
-					// Do Pretty Stuff if want here
-					ForceCallbacks();
-				}
-				while (_primaryQueryResult == EResult.k_EResultNone);
-			}
-
-			private void OnWorkshopQueryCompleted(SteamUGCQueryCompleted_t pCallback, bool bIOFailure) {
-				_primaryUGCHandle = pCallback.m_handle;
-				_primaryQueryResult = pCallback.m_eResult;
-				_queryReturnCount = pCallback.m_unNumResultsReturned;
-			}
-
-			/// <summary>
-			/// Ought be called to release the existing query when we are done with it. Frees memory associated with the handle.
-			/// </summary>
-			internal void ReleaseWorkshopQuery() {
-				if (ModManager.SteamUser)
-					SteamUGC.ReleaseQueryUGCRequest(_primaryUGCHandle);
-				else
-					SteamGameServerUGC.ReleaseQueryUGCRequest(_primaryUGCHandle);
-			}
-
-			internal void FastQueryItem(ulong publishedId) {
-				_primaryQueryResult = EResult.k_EResultNone;
-
-				SteamAPICall_t call;
-				if (ModManager.SteamUser) {
-					UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[1] { new PublishedFileId_t(publishedId) }, 1);
-
-					SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
-					SteamUGC.SetReturnLongDescription(qHandle, true);
-					SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
-
-					call = SteamUGC.SendQueryUGCRequest(qHandle);
-				}
-				else {
-					UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[1] { new PublishedFileId_t(publishedId) }, 1);
-
-					SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
-					SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
-					SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
-
-					call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
-				}
-
-				_queryHook.Set(call);
-
-				do {
-					// Do Pretty Stuff if want here
-					ForceCallbacks();
-				}
-				while (_primaryQueryResult == EResult.k_EResultNone);
-			}
-
-			internal string GetDescription(ulong publishedId) {
-				SteamUGCDetails_t pDetails;
-				FastQueryItem(publishedId);
-
-				if (ModManager.SteamUser)
-					SteamUGC.GetQueryUGCResult(_primaryUGCHandle, 0, out pDetails);
-				else
-					SteamGameServerUGC.GetQueryUGCResult(_primaryUGCHandle, 0, out pDetails);
-
-				ReleaseWorkshopQuery();
+			internal static string GetDescription(ulong publishedId) {
+				var pDetails = new AQueryInstance().FastQueryItem(publishedId);
 				return pDetails.m_rgchDescription;
 			}
 
-			internal ulong GetSteamOwner(ulong publishedId) {
-				FastQueryItem(publishedId);
-
-				SteamUGC.GetQueryUGCResult(_primaryUGCHandle, 0, out var pDetails);
-
-				ReleaseWorkshopQuery();
+			internal static ulong GetSteamOwner(ulong publishedId) {
+				var pDetails = new AQueryInstance().FastQueryItem(publishedId);
 				return pDetails.m_ulSteamIDOwner;
 			}
 
 			internal static bool CheckWorkshopConnection() {
 				// If populating fails during query, than no connection. Attempt connection if not yet attempted.
-				if (!FetchDownloadItems())
+				if (ErrorState != EResult.k_EResultOK && !FetchDownloadItems())
 					return false;
 
 				// If there are zero items on workshop, than return true.
-				if (Items.Count + Instance._queryReturnCount == 0)
+				if (Items.Count + TotalItemsQueried == 0)
 					return true;
 
 				// Otherwise, return the original condition. 
-				return Items.Count + Instance.incompleteModCount != 0;
+				return Items.Count + IncompleteModCount != 0;
 			}
-
-			internal static List<ModDownloadItem> Items = new List<ModDownloadItem>();
-			internal static QueryHelper Instance = new QueryHelper();
-
-			internal static bool FetchDownloadItems() {
-				if (!Instance.QueryWorkshop(out var items))
-					return false;
-
-				Items.AddRange(items);
-				return true;
-			}
-
-			internal static ModDownloadItem FindModDownloadItem(string modName)
-			=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
 		}
 	}
 }
