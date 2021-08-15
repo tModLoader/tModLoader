@@ -46,7 +46,7 @@ namespace Terraria.Social.Steam
 			ulong currPublishID = 0;
 
 			if (existing != null) {
-				ulong existingID = UIModBrowser.SteamWorkshop.GetSteamOwner(existing.QueryIndex);
+				ulong existingID = UIModBrowser.SteamWorkshop.GetSteamOwner(ulong.Parse(existing.PublishId));
 				var currID = Steamworks.SteamUser.GetSteamID();
 
 				if (existingID != currID.m_SteamID) {
@@ -63,7 +63,18 @@ namespace Terraria.Social.Steam
 			}
 
 			string name = buildData["displaynameclean"];
+			if (name.Length >= Steamworks.Constants.k_cchPublishedDocumentTitleMax) {
+				IssueReporter.ReportInstantUploadProblem("tModLoader.TitleLengthExceedLimit");
+				return false;
+			}
+
 			string description = buildData["description"];
+			if (description.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
+				IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
+				return false;
+			}
+
+
 			string[] usedTagsInternalNames = settings.GetUsedTagsInternalNames();
 			string workshopDeps = "";
 

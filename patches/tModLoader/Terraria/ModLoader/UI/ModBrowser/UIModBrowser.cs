@@ -271,15 +271,11 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			if (downloads.Count <= 0)
 				return;
 
-			WorkshopHelper.ModManager.Download(downloads, out var enabledItems);
+			WorkshopHelper.ModManager.Download(downloads);
 
 			if (_missingMods.Count > 0) {
 				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", _missingMods)), Interface.modBrowserID);
 				_missingMods.Clear();
-			}
-
-			if (enabledItems.Count > 0) {
-				Interface.infoMessage.Show(Language.GetTextValue("Unable to update Enabled Mods. Please unload the following mods prior to updating: ", string.Join(",", enabledItems)), Interface.modBrowserID);
 			}
 		}
 

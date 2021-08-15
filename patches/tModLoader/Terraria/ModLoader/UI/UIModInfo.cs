@@ -154,7 +154,10 @@ namespace Terraria.ModLoader.UI
 			}
 			_url = url;
 			_loadFromWeb = loadFromWeb;
-			_publishedFileId = publishedFileId;
+			if (localMod != null && string.IsNullOrEmpty(publishedFileId) && Social.Steam.WorkshopHelper.ModManager.GetPublishIdLocal(localMod, out ulong publishId))
+				_publishedFileId = publishId.ToString();
+			else
+				_publishedFileId = publishedFileId;
 
 			Main.gameMenu = true;
 			Main.menuMode = Interface.modInfoID;
@@ -215,7 +218,10 @@ namespace Terraria.ModLoader.UI
 
 		private void VisitModSteamPage(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
-			Utils.OpenToURL("http://steamcommunity.com/sharedfiles/filedetails/?id=" + _publishedFileId);
+			if (Social.Steam.WorkshopHelper.ModManager.SteamUser)
+				Steamworks.SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileId);
+			else
+				Utils.OpenToURL("http://steamcommunity.com/sharedfiles/filedetails/?id=" + _publishedFileId);
 		}
 
 
@@ -242,7 +248,7 @@ namespace Terraria.ModLoader.UI
 				_loading = true;
 				_ready = false;
 
-				_info = UIModBrowser.SteamWorkshop.GetDescription(_queryIndex);
+				_info = UIModBrowser.SteamWorkshop.GetDescription(ulong.Parse(_publishedFileId));
 
 				if (string.IsNullOrWhiteSpace(_info)) {
 					_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");

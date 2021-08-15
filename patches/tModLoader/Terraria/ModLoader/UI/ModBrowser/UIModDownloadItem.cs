@@ -73,7 +73,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				: Language.GetTextValue("tModLoader.MBUpdateWithDependencies")
 			: Language.GetTextValue("tModLoader.MBDownloadWithDependencies");
 
-		public UIModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, bool hasUpdate, bool updateIsDowngrade, LocalMod installed, string modloaderversion, string homepage, uint queryIndex) {
+		public UIModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, bool hasUpdate, bool updateIsDowngrade, LocalMod installed, string modloaderversion, string homepage) {
 			ModName = name;
 			DisplayName = displayName;
 			DisplayNameClean = string.Join("", ChatManager.ParseMessage(displayName, Color.White).Where(x=> x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
@@ -86,7 +86,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			_downloads = downloads;
 			_hot = hot;
 			_homepage = homepage;
-			QueryIndex = queryIndex;
 			_timeStamp = timeStamp;
 			HasUpdate = hasUpdate;
 			UpdateIsDowngrade = updateIsDowngrade;
@@ -370,11 +369,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			var downloads = new HashSet<UIModDownloadItem>() { this };
 			downloads.Add(this);
 			GetDependenciesRecursive(this, ref downloads);
-			WorkshopHelper.ModManager.Download(downloads.ToList(), out var enabledItems);
-
-			if (enabledItems.Count > 0) {
-				Interface.infoMessage.Show(Language.GetTextValue("Unable to update Enabled Mods. Please unload the following mods prior to updating: ", string.Join(",", enabledItems)), Interface.modBrowserID);
-			}
+			WorkshopHelper.ModManager.Download(downloads.ToList());
 		}
 
 		private IEnumerable<UIModDownloadItem> GetDependencies() {
