@@ -40,6 +40,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public ModTranslation Tooltip { get; internal set; }
 
+		/// <summary> The file name of this item's glow texture file in the mod loader's file space. If it does not exist it is ignored. </summary>
+		public virtual string GlowTexture => Texture + "_Glow";
+
+		public short GlowMask { get; internal set; } = -1;
+
 		public ModItem() {
 			Item = new Item { ModItem = this };
 		}
@@ -60,6 +65,9 @@ namespace Terraria.ModLoader
 				foreach (var equip in autoloadEquip.equipTypes) {
 					Mod.AddEquipTexture(this, equip, $"{Texture}_{equip}");
 				}
+			}
+			if (ModContent.HasAsset(GlowTexture)) {
+				Item.glowMask = GlowMask = GlowMaskLoader.ReserveGlowID();
 			}
 			
 			OnCreate(new InitializationContext());
@@ -97,6 +105,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void AutoDefaults() {
 			EquipLoader.SetSlot(Item);
+			Item.glowMask = GlowMask;
 		}
 
 		/// <summary>
@@ -107,6 +116,9 @@ namespace Terraria.ModLoader
 
 			if (ModContent.RequestIfExists<Texture2D>(Texture + "_Flame", out var flameTexture)) {
 				TextureAssets.ItemFlame[Item.type] = flameTexture;
+			}
+			if (Item.glowMask >= GlowMaskID.Count) {
+				TextureAssets.GlowMask[Item.glowMask] = ModContent.Request<Texture2D>(GlowTexture);
 			}
 
 			if (DisplayName.IsDefault())

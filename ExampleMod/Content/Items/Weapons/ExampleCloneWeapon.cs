@@ -24,6 +24,7 @@ namespace ExampleMod.Content.Items.Weapons
 			//going to copy the stats of an item, use CloneDefaults().
 			
 			Item.CloneDefaults(ItemID.Meowmere);
+			Item.glowMask = GlowMask;
 
 			//After CloneDefaults has been called, we can now modify the stats to our wishes, or keep them as they are.
 			//For the sake of example, let's swap the vanilla Meowmere projectile shot from our item for our own projectile by changing Item.shoot:

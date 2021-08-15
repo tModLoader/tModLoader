@@ -480,6 +480,7 @@ namespace Terraria.ModLoader
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
 			SoundLoader.Unload();
+			GlowMaskLoader.Unload();
 			DisposeMusic();
 
 			LoaderManager.Unload();
@@ -535,6 +536,7 @@ namespace Terraria.ModLoader
 			PlayerLoader.RebuildHooks();
 			PlayerDrawLayerLoader.ResizeArrays();
 			SystemLoader.ResizeArrays();
+			GlowMaskLoader.ResizeArrays();
 
 			if (!Main.dedServ) {
 				SoundLoader.ResizeAndFillArrays();
