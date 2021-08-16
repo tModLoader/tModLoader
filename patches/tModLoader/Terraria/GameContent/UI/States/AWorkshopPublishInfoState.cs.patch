@@ -8,7 +8,7 @@
  using Terraria.Social;
  using Terraria.Social.Base;
  using Terraria.UI;
-@@ -38,15 +_,26 @@
+@@ -38,15 +_,27 @@
  		private UICharacterNameButton _previewImagePathPlate;
  		private Texture2D _previewImageTransientTexture;
  		private UIImage _previewImageUIElement;
@@ -19,6 +19,7 @@
 +		protected UIElement _tMLDisclaimerButton; 
 -		private UIText _disclaimerText;
 +		protected UIText _disclaimerText;
++		protected UIText _tMLDisclaimerText;
  		private UIGamepadHelper _helper;
  
 +		// Added by TML.
@@ -89,6 +90,23 @@
  		}
  
  		public static void ProcessStart(string path) {
+@@ -529,14 +_,14 @@
+ 			container.Append(uISlicedImage);
+ 			UIText uIText = new UIText(Language.GetText("Workshop.InfoDescriptionDefault"), 0.85f) {
+ 				HAlign = 0f,
+-				VAlign = 1f,
++				VAlign = 0.5f, // 1f,
+ 				Width = new StyleDimension(0f, 1f),
+ 				Height = new StyleDimension(0f, 1f)
+ 			};
+ 
+ 			uIText.PaddingLeft = 4f;
+ 			uIText.PaddingRight = 4f;
+-			uIText.PaddingTop = 4f;
++			uIText.PaddingTop = 24f; // 4f;
+ 			uIText.IsWrapped = true;
+ 			uISlicedImage.Append(uIText);
+ 			_descriptionText = uIText;
 @@ -634,6 +_,7 @@
  				new ExtensionFilter("Image files", "png", "jpg", "jpeg")
  			};
