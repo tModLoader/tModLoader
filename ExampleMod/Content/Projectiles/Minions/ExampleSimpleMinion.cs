@@ -164,7 +164,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 				return false;
 			}
 
-			if (owner.HasBuff(ModContent.BuffType<ExampleSimpleMinionBuff>())) {
+			if (owner.HasBuff<ExampleSimpleMinionBuff>()) {
 				Projectile.timeLeft = 2;
 			}
 
