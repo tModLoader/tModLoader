@@ -20,6 +20,10 @@ namespace Terraria
 		/// </summary>
 		public IBigProgressBar BossBar { get; set; }
 
+		public bool HasBuff(int type) => FindBuffIndex(type) != -1;
+
+		public bool HasBuff<T>() where T : ModBuff => HasBuff(ModContent.BuffType<T>());
+
 		// Get
 
 		/// <summary> Gets the instance of the specified GlobalNPC type. This will throw exceptions on failure. </summary>
