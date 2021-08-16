@@ -279,13 +279,7 @@
  					Main.item[num3].newAndShiny = false;
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, num3, 1f);
-@@ -2550,11 +_,13 @@
- 			}
- 		}
- 
-+		public bool HasBuff(int type) => FindBuffIndex(type) != -1;
-+
- 		public int FindBuffIndex(int type) {
+@@ -2554,7 +_,7 @@
  			if (buffImmune[type])
  				return -1;
  
