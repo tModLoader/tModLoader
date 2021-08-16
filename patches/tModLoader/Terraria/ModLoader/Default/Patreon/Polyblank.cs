@@ -19,7 +19,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 
-			ArmorIDs.Body.Sets.HidesTopSkin[Mod.GetEquipSlot(GetType().Name, EquipType.Body)] = true;
+			ArmorIDs.Body.Sets.HidesTopSkin[Item.bodySlot] = true;
 		}
 
 		public override void SetDefaults() {
