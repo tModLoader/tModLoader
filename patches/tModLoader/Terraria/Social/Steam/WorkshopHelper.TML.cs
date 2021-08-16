@@ -404,7 +404,7 @@ namespace Terraria.Social.Steam
 				// Concerned for future speed of querying the Steam Workshop (ie at 1000+ items).
 				// At 2-4 seconds for each 50 item set, it will add up (~ 1 minute per 1000 items to load).
 				// Some sort of long term solution will be needed; for now I've re-designed it to be able to fill pages independently from our end
-				int pageCount = (int)TotalItemsQueried / QueryPagingConst + 1;
+				int pageCount = (int)TotalItemsQueried / QueryPagingConst + (TotalItemsQueried % 50 == 0 ? 0 : 1);
 				for (uint i = 1; i < pageCount + 1; i++) {
 					/*Task.Run(() => */ new AQueryInstance().QueryForPage(i, pageCount == i);
 				}
