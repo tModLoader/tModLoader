@@ -50,6 +50,8 @@ namespace Terraria
 		}
 		*/
 
+		public bool HasBuff<T>() where T : ModBuff => HasBuff(ModContent.BuffType<T>());
+
 		// Damage Classes
 
 		private DamageClassData[] damageData;
