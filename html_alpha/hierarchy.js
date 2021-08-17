@@ -546,6 +546,7 @@ var hierarchy =
     [ "Terraria.GameContent.Personalities.HelperInfo", "struct_terraria_1_1_game_content_1_1_personalities_1_1_helper_info.html", null ],
     [ "Terraria.HitTile", "class_terraria_1_1_hit_tile.html", null ],
     [ "Terraria.HitTile.HitTileObject", "class_terraria_1_1_hit_tile_1_1_hit_tile_object.html", null ],
+    [ "Terraria.ModLoader.Utilities.HjsonExtensions.HjsonStyle", "struct_terraria_1_1_mod_loader_1_1_utilities_1_1_hjson_extensions_1_1_hjson_style.html", null ],
     [ "Terraria.ModLoader.Core.HookList< TGlobal >", "class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html", [
       [ "Terraria.ModLoader.Core.HookList< TGlobal, TDelegate >", "class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html", null ]
     ] ],
