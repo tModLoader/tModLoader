@@ -164,7 +164,7 @@ namespace Terraria.ModLoader.UI
 
 					upgradeLangFilesButton.OnClick += (s, e) => {
 						foreach (string file in files) {
-							LocalizationLoader.UpgradeLangFile(file);
+							LocalizationLoader.UpgradeLangFile(file, modName);
 						}
 
 						upgradeLangFilesButton.Remove();

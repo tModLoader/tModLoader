@@ -135,19 +135,27 @@ namespace Terraria.ModLoader
 			LanguageManager.Instance.ProcessCopyCommandsInTexts();
 		}
 
-		internal static void UpgradeLangFile(string langFile) {
+		internal static void UpgradeLangFile(string langFile, string modName) {
 			string[] contents = File.ReadAllLines(langFile, Encoding.UTF8);
-			var obj = new JObject();
+
+			// Legacy .lang files had 'Mods.ModName.' prefixed to every key.
+			// Modern .hjson localization does not have that.
+			var modObject = new JObject();
+			var modsObject = new JObject{
+				{ modName, modObject }
+			};
+			var rootObject = new JObject {
+				{ "Mods", modsObject }
+			};
 
 			foreach (string line in contents) {
-				if (line.Trim().StartsWith("#")) {
+				if (line.Trim().StartsWith("#"))
 					continue;
-				}
 
 				int split = line.IndexOf('=');
 
 				if (split < 0)
-					continue; // lines witout an '=' are ignored
+					continue; // lines without an '=' are ignored
 
 				string key = line.Substring(0, split).Trim().Replace(" ", "_");
 				string value = line.Substring(split + 1); // removed .Trim() since sometimes it is desired.
@@ -159,7 +167,7 @@ namespace Terraria.ModLoader
 				value = value.Replace("\\n", "\n");
 
 				string[] splitKey = key.Split(".");
-				var curObj = obj;
+				var curObj = modObject;
 
 				foreach (string k in splitKey.SkipLast(1)) {
 					if (!curObj.ContainsKey(k)) {
@@ -193,10 +201,10 @@ namespace Terraria.ModLoader
 			// Convert JSON to HJSON and dump to new file
 			// Don't delete old .lang file - let the user do this when they are happy
 			string newFile = Path.ChangeExtension(langFile, "hjson");
-			string hjsonContents = JsonValue.Parse(obj.ToString()).ToString(Stringify.Hjson);
+			string hjsonContents = JsonValue.Parse(rootObject.ToString()).ToString(Stringify.Hjson);
 
 			File.WriteAllText(newFile, hjsonContents);
-			File.Move(langFile, $"{langFile}.legacy");
+			File.Move(langFile, $"{langFile}.legacy", true);
 		}
 
 		private static void AutoloadTranslations(Mod mod, Dictionary<string, ModTranslation> modTranslationDictionary) {
