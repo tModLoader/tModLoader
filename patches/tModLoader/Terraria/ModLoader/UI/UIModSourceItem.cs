@@ -1,5 +1,7 @@
+using Hjson;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using System;
 using System.Collections.Specialized;
@@ -110,10 +112,13 @@ namespace Terraria.ModLoader.UI
 				_upgradePotentialChecked = true;
 				string modFolderName = Path.GetFileName(_mod);
 				string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
+
+				int leftPixels = -26;
+
 				if (!File.Exists(csprojFile) || Interface.createMod.CsprojUpdateNeeded(File.ReadAllText(csprojFile))) {
 					var icon = UICommon.ButtonExclamationTexture;
 					var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
-						Left = { Pixels = -26, Percent = 1f },
+						Left = { Pixels = leftPixels, Percent = 1f },
 						Top = { Pixels = 4 }
 					};
 					upgradeCSProjButton.OnClick += (s, e) => {
@@ -142,6 +147,30 @@ namespace Terraria.ModLoader.UI
 						upgradeCSProjButton.Remove();
 					};
 					Append(upgradeCSProjButton);
+
+					leftPixels -= 26;
+				}
+
+				// Display upgrade .lang files button if any .lang files present
+				//TODO: Make this asynchronous, as this can be quite expensive
+				string[] files = Directory.GetFiles(_mod, "*.lang", SearchOption.AllDirectories);
+
+				if (files.Length > 0) {
+					var icon = UICommon.ButtonExclamationTexture;
+					var upgradeLangFilesButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeLangFiles")) {
+						Left = { Pixels = leftPixels, Percent = 1f },
+						Top = { Pixels = 4 }
+					};
+
+					upgradeLangFilesButton.OnClick += (s, e) => {
+						foreach (string file in files) {
+							LocalizationLoader.UpgradeLangFile(file, modName);
+						}
+
+						upgradeLangFilesButton.Remove();
+					};
+
+					Append(upgradeLangFilesButton);
 				}
 			}
 		}
