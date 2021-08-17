@@ -8,8 +8,8 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 	{
 		private static Asset<Texture2D> _glowTexture;
 
-		public override bool GetDefaultVisiblity(PlayerDrawSet drawInfo)
-			=> drawInfo.drawPlayer.legs == ModContent.GetInstance<Jofairden_Legs>().Item.legSlot && base.GetDefaultVisiblity(drawInfo);
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
+			=> drawInfo.drawPlayer.legs == ModContent.GetInstance<Jofairden_Legs>().Item.legSlot && base.GetDefaultVisibility(drawInfo);
 
 		public override DrawDataInfo GetData(PlayerDrawSet info) {
 			_glowTexture ??= ModContent.Request<Texture2D>("ModLoader/Developer.Jofairden.Jofairden_Legs_Legs_Glow");
