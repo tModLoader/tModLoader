@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Terraria.Localization;
+using Terraria.ModLoader.Utilities;
 using Terraria.UI;
 
 namespace Terraria.ModLoader
@@ -201,7 +202,7 @@ namespace Terraria.ModLoader
 			// Convert JSON to HJSON and dump to new file
 			// Don't delete old .lang file - let the user do this when they are happy
 			string newFile = Path.ChangeExtension(langFile, "hjson");
-			string hjsonContents = JsonValue.Parse(rootObject.ToString()).ToString(Stringify.Hjson);
+			string hjsonContents = JsonValue.Parse(rootObject.ToString()).ToFancyHjsonString();
 
 			File.WriteAllText(newFile, hjsonContents);
 			File.Move(langFile, $"{langFile}.legacy", true);
