@@ -196,6 +196,7 @@ namespace Terraria.ModLoader
 			string hjsonContents = JsonValue.Parse(obj.ToString()).ToString(Stringify.Hjson);
 
 			File.WriteAllText(newFile, hjsonContents);
+			File.Move(langFile, $"{langFile}.legacy");
 		}
 
 		private static void AutoloadTranslations(Mod mod, Dictionary<string, ModTranslation> modTranslationDictionary) {

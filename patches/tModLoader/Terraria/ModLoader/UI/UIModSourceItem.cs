@@ -152,6 +152,7 @@ namespace Terraria.ModLoader.UI
 				}
 
 				// Display upgrade .lang files button if any .lang files present
+				//TODO: Make this asynchronous, as this can be quite expensive
 				string[] files = Directory.GetFiles(_mod, "*.lang", SearchOption.AllDirectories);
 
 				if (files.Length > 0) {
