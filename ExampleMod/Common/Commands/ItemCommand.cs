@@ -2,7 +2,6 @@
 using Terraria;
 using Terraria.ModLoader;
 
-#nullable enable
 namespace ExampleMod.Common.Commands
 {
 	public class ItemCommand : ModCommand
