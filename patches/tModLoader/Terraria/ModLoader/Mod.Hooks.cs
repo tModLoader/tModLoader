@@ -59,8 +59,7 @@ namespace Terraria.ModLoader
 		/// May be called multiple times before Unload
 		/// </summary>
 		public virtual void Close() {
-			foreach (string musicPath in MusicLoader.musicByPath.Keys.Where(x => x.StartsWith(Name + "/")))
-				MusicLoader.CloseStream(musicPath);
+			MusicLoader.CloseModStreams(this);
 
 			fileHandle?.Dispose();
 

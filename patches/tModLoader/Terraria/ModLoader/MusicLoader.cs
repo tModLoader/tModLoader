@@ -61,6 +61,13 @@ namespace Terraria.ModLoader
 			return 0;
 		}
 
+		internal static void CloseModStreams(Mod mod) {
+			string prefix = $"{mod.Name}/";
+
+			foreach (string musicPath in musicByPath.Keys.Where(x => x.StartsWith(prefix)))
+				CloseStream(musicPath);
+		}
+
 		internal static void CloseStream(string musicPath) {
 			if (Main.audioSystem is not LegacyAudioSystem legacyAudioSystem)
 				return;
