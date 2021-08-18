@@ -11,5 +11,6 @@ var struct_terraria_1_1_bits_byte =
     [ "Retrieve", "struct_terraria_1_1_bits_byte.html#a058c6ce948ac8d3728486b51c19d5ee7", null ],
     [ "Retrieve", "struct_terraria_1_1_bits_byte.html#af8ad50ed88a7d77127167bc603a7fe19", null ],
     [ "SetAll", "struct_terraria_1_1_bits_byte.html#ad0ba93608bcefeef2874764fcb494297", null ],
+    [ "ToString", "struct_terraria_1_1_bits_byte.html#a1e0cc55d3a142c3cdf079be2db49aef9", null ],
     [ "this[int key]", "struct_terraria_1_1_bits_byte.html#a0d9dbc73f60f9865eaca8396c1812738", null ]
 ];

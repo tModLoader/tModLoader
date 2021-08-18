@@ -234,9 +234,10 @@ var NAVTREEINDEX45 =
 "pages.html":[],
 "struct_terraria_1_1_bits_byte.html":[1,0,1,25],
 "struct_terraria_1_1_bits_byte.html#a058c6ce948ac8d3728486b51c19d5ee7":[1,0,1,25,8],
-"struct_terraria_1_1_bits_byte.html#a0d9dbc73f60f9865eaca8396c1812738":[1,0,1,25,11],
+"struct_terraria_1_1_bits_byte.html#a0d9dbc73f60f9865eaca8396c1812738":[1,0,1,25,12],
 "struct_terraria_1_1_bits_byte.html#a0e11a9e0f7a3cdee89e63c1d8ee2f948":[1,0,1,25,3],
 "struct_terraria_1_1_bits_byte.html#a127653f210f9cf94342edebe879c1b06":[1,0,1,25,6],
+"struct_terraria_1_1_bits_byte.html#a1e0cc55d3a142c3cdf079be2db49aef9":[1,0,1,25,11],
 "struct_terraria_1_1_bits_byte.html#a24a24acae0b1383081788b39fdb6e5f8":[1,0,1,25,1],
 "struct_terraria_1_1_bits_byte.html#a529aa620dd8d8b9e8f39860e5fee4972":[1,0,1,25,2],
 "struct_terraria_1_1_bits_byte.html#a875c5b516b40346d2bb879de940e6536":[1,0,1,25,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX45 =
 "struct_terraria_1_1_chat_1_1_chat_command_id.html":[1,0,1,2,1],
 "struct_terraria_1_1_chat_1_1_chat_command_id.html#a0373a434141c613cde684f52d5759b92":[1,0,1,2,1,1],
 "struct_terraria_1_1_chat_1_1_chat_command_id.html#ab2cc569667f06ad119d69a043d0d279e":[1,0,1,2,1,0],
-"struct_terraria_1_1_cinematics_1_1_frame_event_data.html":[1,0,1,3,3],
-"struct_terraria_1_1_cinematics_1_1_frame_event_data.html#a1bd92ef6ac65284d52d74c61f5b5d446":[1,0,1,3,3,4]
+"struct_terraria_1_1_cinematics_1_1_frame_event_data.html":[1,0,1,3,3]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX48 =
 {
+"struct_terraria_1_1_game_content_1_1_well_fed_helper.html#a950e03b5cdee22e73d81b8d5775a8a19":[1,0,1,5,66,1],
 "struct_terraria_1_1_game_content_1_1_well_fed_helper.html#ab56c5f89fdbaac66be42a1e0b6bee0be":[1,0,1,5,66,3],
 "struct_terraria_1_1_game_content_1_1_well_fed_helper.html#af71fd16c6896415d8c4da375bc0d798b":[1,0,1,5,66,4],
 "struct_terraria_1_1_get_item_settings.html":[1,0,1,35],
@@ -248,6 +249,5 @@ var NAVTREEINDEX48 =
 "struct_terraria_1_1_scene_metrics_scan_settings.html#ad95c8ece7c8c782a8066c73e8b9936ee":[1,0,1,60,1],
 "struct_terraria_1_1_shopping_settings.html":[1,0,1,61],
 "struct_terraria_1_1_shopping_settings.html#a0fb03ac9727fcd3edd387ae68639ffa3":[1,0,1,61,1],
-"struct_terraria_1_1_shopping_settings.html#aebdcadd9fdc785344ea1334fc3916378":[1,0,1,61,0],
-"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_item_install_info.html":[1,0,1,19,1,12,0]
+"struct_terraria_1_1_shopping_settings.html#aebdcadd9fdc785344ea1334fc3916378":[1,0,1,61,0]
 };
