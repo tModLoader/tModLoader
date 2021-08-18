@@ -228,7 +228,8 @@ namespace Terraria.ModLoader
 					if (!modTranslationDictionary.TryGetValue(key, out ModTranslation mt)) {
 						// removing instances of .$parentVal is an easy way to make this special key assign its value
 						//  to the parent key instead (needed for some cases of .lang -> .hjson auto-conversion)
-						modTranslationDictionary[key.Replace(".$parentVal", "")] = mt = CreateTranslation(key.Replace(".$parentVal", ""));
+						string effectiveKey = key.Replace(".$parentVal", "");
+						modTranslationDictionary[effectiveKey] = mt = CreateTranslation(effectiveKey);
 					}
 
 					mt.AddTranslation(culture, value);
