@@ -42,7 +42,7 @@ namespace ReLogic.OS.Windows
 			SetClipboardData(13, ptr);
 			CloseClipboard();
 
-			Marshal.FreeHGlobal(ptr);
+			//Marshal.FreeHGlobal(ptr);
 		}
 		public static bool TryGetText(out string text) {
 			text = null;
