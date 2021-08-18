@@ -225,10 +225,10 @@ namespace Terraria.ModLoader
 					.ToDictionary(t => t.Path, t => t.ToString());
 
 				foreach (var (key, value) in flattened) {
-					if (!modTranslationDictionary.TryGetValue(key, out ModTranslation mt)) {
+					string effectiveKey = key.Replace(".$parentVal", "");
+					if (!modTranslationDictionary.TryGetValue(effectiveKey, out ModTranslation mt)) {
 						// removing instances of .$parentVal is an easy way to make this special key assign its value
 						//  to the parent key instead (needed for some cases of .lang -> .hjson auto-conversion)
-						string effectiveKey = key.Replace(".$parentVal", "");
 						modTranslationDictionary[effectiveKey] = mt = CreateTranslation(effectiveKey);
 					}
 
