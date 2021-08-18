@@ -136,41 +136,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets the music with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the music does not exist. Note: SoundMP3 is in the Terraria.ModLoader namespace.
-		/// </summary>
-		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static IAudioTrack GetMusic(string name) {
-			if (Main.dedServ)
-				return null;
-
-			SplitName(name, out string modName, out string subName);
-
-			if (!ModLoader.TryGetMod(modName, out var mod))
-				throw new MissingResourceException("Missing mod: " + name);
-
-			int slot = MusicLoader.GetMusicSlot(name);
-
-			if (slot == 0 || Main.audioSystem is not LegacyAudioSystem audioSystem)
-				return null;
-
-			audioSystem.AudioTracks[slot] ??= MusicLoader.LoadMusic(name, MusicLoader.musicExtensions[name]);
-
-			return ((LegacyAudioSystem) Main.audioSystem).AudioTracks[slot];
-		}
-
-		/// <summary>
-		/// Returns whether or not a sound with the specified name exists.
-		/// </summary>
-		public static bool MusicExists(string name) {
-			if (!name.Contains('/'))
-				return false;
-
-			SplitName(name, out string modName, out string _);
-
-			return ModLoader.TryGetMod(modName, out _) && MusicLoader.GetMusicSlot(name) != 0;
-		}
-
-		/// <summary>
 		/// Gets the ModNPC instance corresponding to the specified type.
 		/// </summary>
 		/// <param name="type">The type of the npc</param>
@@ -487,7 +452,6 @@ namespace Terraria.ModLoader
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
 			SoundLoader.Unload();
-			DisposeMusic();
 
 			LoaderManager.Unload();
 
@@ -554,11 +518,6 @@ namespace Terraria.ModLoader
 			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values) {
 				text.Override = null;
 			}
-		}
-
-		private static void DisposeMusic() {
-			//foreach (var music in Main.audioSystem.OfType<MusicStreaming>())
-			//	music.Dispose();
 		}
 
 		/// <summary>

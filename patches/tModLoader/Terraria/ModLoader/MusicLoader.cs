@@ -53,14 +53,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static int GetMusicSlot(string sound) {
-			if (musicByPath.ContainsKey(sound)) {
-				return musicByPath[sound];
-			}
-			
-			return 0;
-		}
-
 		internal static void CloseModStreams(Mod mod) {
 			string prefix = $"{mod.Name}/";
 
@@ -76,6 +68,49 @@ namespace Terraria.ModLoader
 
 			if (legacyAudioSystem.AudioTracks[slot] is not null)
 				legacyAudioSystem.AudioTracks[slot]?.Dispose();
+		}
+
+		public static int GetMusicSlot(string musicPath) {
+			if (musicByPath.ContainsKey(musicPath)) {
+				return musicByPath[musicPath];
+			}
+			
+			return 0;
+		}
+
+		/// <summary>
+		/// Returns whether or not a sound with the specified name exists.
+		/// </summary>
+		public static bool MusicExists(string musicPath) {
+			if (!musicPath.Contains('/'))
+				return false;
+
+			ModContent.SplitName(musicPath, out string modName, out string _);
+
+			return ModLoader.TryGetMod(modName, out _) && GetMusicSlot(musicPath) != 0;
+		}
+
+		/// <summary>
+		/// Gets the music with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the music does not exist. Note: SoundMP3 is in the Terraria.ModLoader namespace.
+		/// </summary>
+		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
+		public static IAudioTrack GetMusic(string musicPath) {
+			if (Main.dedServ)
+				return null;
+
+			ModContent.SplitName(musicPath, out string modName, out string subName);
+
+			if (!ModLoader.TryGetMod(modName, out var mod))
+				throw new MissingResourceException("Missing mod: " + musicPath);
+
+			int slot = GetMusicSlot(musicPath);
+
+			if (slot == 0 || Main.audioSystem is not LegacyAudioSystem audioSystem)
+				return null;
+
+			audioSystem.AudioTracks[slot] ??= LoadMusic(musicPath, MusicLoader.musicExtensions[musicPath]);
+
+			return ((LegacyAudioSystem)Main.audioSystem).AudioTracks[slot];
 		}
 
 		public static void AddMusic(Mod mod, string musicPath) {
