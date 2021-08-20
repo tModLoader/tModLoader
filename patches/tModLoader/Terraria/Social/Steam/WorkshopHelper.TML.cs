@@ -371,6 +371,7 @@ namespace Terraria.Social.Steam
 		{
 			internal const int QueryPagingConst = Steamworks.Constants.kNumUGCResultsPerPage;
 			internal static int IncompleteModCount;
+			internal static int HiddenModCount;
 			internal static uint TotalItemsQueried;
 			internal static EResult ErrorState = EResult.k_EResultNone;
 
@@ -387,7 +388,7 @@ namespace Terraria.Social.Steam
 			=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
 
 			internal static bool QueryWorkshop() {
-				IncompleteModCount = 0;
+				HiddenModCount = IncompleteModCount = 0;
 				TotalItemsQueried = 0;
 				Items.Clear();
 				ErrorState = EResult.k_EResultNone;
@@ -397,32 +398,15 @@ namespace Terraria.Social.Steam
 				if (!ModManager.SteamAvailable)
 					return false;
 
-				if (!new AQueryInstance().GetPageCountFast())
+				if (!new AQueryInstance().QueryAllPagesSerial())
 					return false;
-
-				//TODO: Threaded query of multiple pages at a time appears un-supported within Steam.
-				// Concerned for future speed of querying the Steam Workshop (ie at 1000+ items).
-				// At 2-4 seconds for each 50 item set, it will add up (~ 1 minute per 1000 items to load).
-				// Some sort of long term solution will be needed; for now I've re-designed it to be able to fill pages independently from our end
-				int pageCount = (int)TotalItemsQueried / QueryPagingConst + (TotalItemsQueried % 50 == 0 ? 0 : 1);
-				for (uint i = 1; i < pageCount + 1; i++) {
-					/*Task.Run(() => */ new AQueryInstance().QueryForPage(i, pageCount == i);
-				}
-
-				do {
-					if (!HandleError(ErrorState)) {
-						return false;
-					}
-				} while (ErrorState != EResult.k_EResultOK);
 
 				AQueryInstance.InstalledMods = null;
 				return true;
 			}
 
 			internal static bool HandleError(EResult eResult) {
-				if (eResult == EResult.k_EResultOK)
-					return true;
-				if (eResult == EResult.k_EResultNone)
+				if (eResult == EResult.k_EResultOK || eResult == EResult.k_EResultNone)
 					return true;
 
 				if (eResult == EResult.k_EResultAccessDenied) {
@@ -441,7 +425,7 @@ namespace Terraria.Social.Steam
 				protected UGCQueryHandle_t _primaryUGCHandle;
 				protected EResult _primaryQueryResult;
 				protected uint _queryReturnCount;
-				protected uint _totalReturnCount;
+				protected string _nextCursor;
 
 				internal static LocalMod[] InstalledMods;
 
@@ -449,12 +433,23 @@ namespace Terraria.Social.Steam
 					_queryHook = CallResult<SteamUGCQueryCompleted_t>.Create(OnWorkshopQueryCompleted);
 				}
 
-				internal void QueryForPage(uint page, bool final) {
+				internal bool QueryAllPagesSerial() {
+					do {
+						QueryForPage();
+						
+						if (!HandleError(ErrorState))
+							return false;
+					} while (TotalItemsQueried != Items.Count + IncompleteModCount + HiddenModCount);
+					return true;
+				}
+
+				internal void QueryForPage() {
 					_primaryQueryResult = EResult.k_EResultNone;
 
 					SteamAPICall_t call;
 					if (ModManager.SteamUser) {
-						UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), page);
+						UGCQueryHandle_t qHandle;
+						qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), _nextCursor);
 
 						SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 						SteamUGC.SetReturnKeyValueTags(qHandle, true);
@@ -465,7 +460,7 @@ namespace Terraria.Social.Steam
 						call = SteamUGC.SendQueryUGCRequest(qHandle);
 					}
 					else {
-						UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), page);
+						UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), _nextCursor);
 
 						SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 						SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
@@ -490,9 +485,6 @@ namespace Terraria.Social.Steam
 					}
 
 					QueryPageResult();
-
-					if (final && ErrorState == EResult.k_EResultNone)
-						ErrorState = EResult.k_EResultOK;
 				}
 
 				private void QueryPageResult() {
@@ -507,11 +499,14 @@ namespace Terraria.Social.Steam
 
 						PublishedFileId_t id = pDetails.m_nPublishedFileId;
 
-						if (pDetails.m_eVisibility != ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic)
+						if (pDetails.m_eVisibility != ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic) {
+							HiddenModCount++;
 							continue;
+						}
 
 						if (pDetails.m_eResult != EResult.k_EResultOK) {
 							Logging.tML.Warn("Unable to fetch mod PublishId#" + id + " information. " + pDetails.m_eResult);
+							HiddenModCount++;
 							continue;
 						}
 
@@ -528,6 +523,7 @@ namespace Terraria.Social.Steam
 
 						if (keyCount < MetadataKeys.Length) {
 							Logging.tML.Warn("Mod is missing required metadata: " + displayname);
+							IncompleteModCount++;
 							continue;
 						}
 
@@ -604,39 +600,6 @@ namespace Terraria.Social.Steam
 					ReleaseWorkshopQuery();
 				}
 
-				internal bool GetPageCountFast() {
-					_primaryQueryResult = EResult.k_EResultNone;
-
-					SteamAPICall_t call;
-					if (ModManager.SteamUser) {
-						UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), 1);
-						SteamUGC.SetReturnTotalOnly(qHandle, true);
-						SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
-						call = SteamUGC.SendQueryUGCRequest(qHandle);
-					}
-					else {
-						UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), 1);
-						SteamGameServerUGC.SetReturnTotalOnly(qHandle, true);
-						SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
-						call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
-					}
-
-					_queryHook.Set(call);
-
-					do {
-						// Do Pretty Stuff if want here
-						ForceCallbacks();
-					}
-					while (_primaryQueryResult == EResult.k_EResultNone);
-					ReleaseWorkshopQuery();
-
-					if (_primaryQueryResult != EResult.k_EResultOK)
-						return HandleError(_primaryQueryResult);
-
-					TotalItemsQueried = _totalReturnCount;
-					return true;
-				}
-
 				internal SteamUGCDetails_t FastQueryItem(ulong publishedId) {
 					_primaryQueryResult = EResult.k_EResultNone;
 
@@ -682,7 +645,10 @@ namespace Terraria.Social.Steam
 					_primaryUGCHandle = pCallback.m_handle;
 					_primaryQueryResult = pCallback.m_eResult;
 					_queryReturnCount = pCallback.m_unNumResultsReturned;
-					_totalReturnCount = pCallback.m_unTotalMatchingResults;
+					_nextCursor = pCallback.m_rgchNextCursor;
+
+					if (TotalItemsQueried == 0 && pCallback.m_unTotalMatchingResults > 0)
+						TotalItemsQueried = pCallback.m_unTotalMatchingResults;
 				}
 
 				/// <summary>
