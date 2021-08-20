@@ -435,6 +435,8 @@ namespace Terraria.Social.Steam
 
 				internal bool QueryAllPagesSerial() {
 					do {
+						// Appx. 0.4 seconds per page of 50 items during testing. No way to parallelize.
+						//TODO: Review an upgrade of ModBrowser to load only 1000 items at a time (ie paging Mod Browser).
 						QueryForPage();
 						
 						if (!HandleError(ErrorState))
