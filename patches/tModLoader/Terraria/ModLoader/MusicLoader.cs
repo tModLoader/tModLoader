@@ -42,16 +42,12 @@ namespace Terraria.ModLoader
 
 			Stream stream = ModContent.OpenRead(path);
 
-			switch (extension) {
-				case ".wav":
-					return new WAVAudioTrack(stream);
-				case ".mp3":
-					return new MP3AudioTrack(stream);
-				case ".ogg":
-					return new OGGAudioTrack(stream);
-				default:
-					throw new ResourceLoadException($"Unknown music extension {extension}");
-			}
+			return extension switch {
+				".wav" => new WAVAudioTrack(stream),
+				".mp3" => new MP3AudioTrack(stream),
+				".ogg" => new OGGAudioTrack(stream),
+				_ => throw new ResourceLoadException($"Unknown music extension {extension}"),
+			};
 		}
 
 		internal static void CloseModStreams(Mod mod) {
