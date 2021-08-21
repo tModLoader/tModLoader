@@ -63,6 +63,9 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResizeAndFillArrays() {
+			if (!SoundEngine.IsAudioSupported)
+				return;
+
 			customSounds = new Asset<SoundEffect>[nextSound[SoundType.Custom]];
 			customSoundInstances = new SoundEffectInstance[nextSound[SoundType.Custom]];
 			
@@ -100,6 +103,9 @@ namespace Terraria.ModLoader
 		//in Terraria.Main.PlaySound before checking type to play sound add
 		//  if (SoundLoader.PlayModSound(type, num, num2, num3)) { return; }
 		internal static bool PlayModSound(int type, int style, float volume, float pan, ref SoundEffectInstance soundEffectInstance) {
+			if (!SoundEngine.IsAudioSupported)
+				return false;
+
 			SoundType soundType;
 			switch (type) {
 				case 2:
@@ -140,6 +146,9 @@ namespace Terraria.ModLoader
 		}
 
 		internal static Asset<SoundEffect>[] GetSoundArray(SoundType type) {
+			if (!SoundEngine.IsAudioSupported)
+				return null;
+
 			switch (type) {
 				case SoundType.Custom:
 					return customSounds;
@@ -155,6 +164,9 @@ namespace Terraria.ModLoader
 		}
 
 		internal static SoundEffectInstance[] GetSoundInstanceArray(SoundType type) {
+			if (!SoundEngine.IsAudioSupported)
+				return null;
+
 			switch (type) {
 				case SoundType.Custom:
 					return customSoundInstances;
