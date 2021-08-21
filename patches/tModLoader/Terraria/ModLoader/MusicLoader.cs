@@ -67,6 +67,11 @@ namespace Terraria.ModLoader
 				legacyAudioSystem.AudioTracks[slot]?.Dispose();
 		}
 
+		/// <summary> Gets the music id of the track with the specified mod path. The path must not have a file extension. </summary>
+		public static int GetMusicSlot(Mod mod, string musicPath)
+			=> GetMusicSlot($"{mod.Name}/{musicPath}");
+
+		/// <summary> Gets the music id of the track with the specified full path. The path must be prefixed with a mod name and must not have a file extension. </summary>
 		public static int GetMusicSlot(string musicPath) {
 			if (musicByPath.ContainsKey(musicPath)) {
 				return musicByPath[musicPath];
@@ -75,30 +80,22 @@ namespace Terraria.ModLoader
 			return 0;
 		}
 
-		/// <summary>
-		/// Returns whether or not a sound with the specified name exists.
-		/// </summary>
-		public static bool MusicExists(string musicPath) {
-			if (!musicPath.Contains('/'))
-				return false;
+		/// <summary> Returns whether or not a music track with the specified mod path exists. The path must not have a file extension. </summary>
+		public static bool MusicExists(Mod mod, string musicPath)
+			=> MusicExists($"{mod.Name}/{musicPath}");
 
-			ModContent.SplitName(musicPath, out string modName, out string _);
+		/// <summary> Returns whether or not a music track with the specified path exists. The path must be prefixed with a mod name and must not have a file extension.</summary>
+		public static bool MusicExists(string musicPath)
+			=> GetMusicSlot(musicPath) > 0;
 
-			return ModLoader.TryGetMod(modName, out _) && GetMusicSlot(musicPath) != 0;
-		}
+		/// <summary> Gets the music track with the specified mod path. The path must not have a file extension. </summary>
+		public static IAudioTrack GetMusic(Mod mod, string musicPath)
+			=> GetMusic($"{mod.Name}/{musicPath}");
 
-		/// <summary>
-		/// Gets the music with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the music does not exist. Note: SoundMP3 is in the Terraria.ModLoader namespace.
-		/// </summary>
-		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
+		/// <summary> Gets the music track with the specified full path. The path must be prefixed with a mod name and must not have a file extension. </summary>
 		public static IAudioTrack GetMusic(string musicPath) {
 			if (Main.dedServ)
 				return null;
-
-			ModContent.SplitName(musicPath, out string modName, out string subName);
-
-			if (!ModLoader.TryGetMod(modName, out var mod))
-				throw new MissingResourceException("Missing mod: " + musicPath);
 
 			int slot = GetMusicSlot(musicPath);
 
