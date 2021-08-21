@@ -218,12 +218,12 @@
  						}
  
 +						// Reading and receiving has been separated for parity with ProjectileLoader code, and to avoid exceptions causing underreads.
-+						byte[] extraAI = NPCLoader.ReadExtraAI(reader);
++						byte[] extraAI = !ModNet.AllowVanillaClients ? NPCLoader.ReadExtraAI(reader) : null;
 +
  						int num117 = -1;
  						NPC nPC4 = Main.npc[num112];
  						if (nPC4.active && Main.multiplayerNPCSmoothingRange > 0 && Vector2.DistanceSquared(nPC4.position, vector4) < 640000f)
-@@ -1329,9 +_,10 @@
+@@ -1329,9 +_,13 @@
  						if (num115 == 245)
  							NPC.golemBoss = num112;
  
@@ -231,7 +231,10 @@
 +						if (nPC4.type >= 0 && nPC4.type < NPCLoader.NPCCount && Main.npcCatchable[nPC4.type])
  							nPC4.releaseOwner = reader.ReadByte();
  
-+						NPCLoader.ReceiveExtraAI(nPC4, extraAI);
++						if (extraAI != null) {
++							NPCLoader.ReceiveExtraAI(nPC4, extraAI);
++						}
++
  						break;
  					}
  				case 24: {
@@ -240,15 +243,18 @@
  						if (num133 >= 1000)
  							num133 = -1;
 -
-+						byte[] extraAI = ProjectileLoader.ReadExtraAI(reader);
++						byte[] extraAI = (!ModNet.AllowVanillaClients && bitsByte12[2]) ? ProjectileLoader.ReadExtraAI(reader) : null;
  						if (Main.netMode == 2) {
  							if (num131 == 949) {
  								num130 = 255;
-@@ -1428,6 +_,7 @@
+@@ -1428,6 +_,10 @@
  							Main.projectileIdentity[num130, num133] = num134;
  						}
  
-+						ProjectileLoader.ReceiveExtraAI(projectile, extraAI);
++						if (extraAI != null) {
++							ProjectileLoader.ReceiveExtraAI(projectile, extraAI);
++						}
++
  						projectile.ProjectileFixDesperation();
  						if (Main.netMode == 2)
  							NetMessage.TrySendData(27, -1, whoAmI, null, num134);

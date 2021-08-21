@@ -262,25 +262,26 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void SendExtraAI(NPC npc, BinaryWriter writer) {
-			if (npc.ModNPC == null) {
-				return;
-			}
+		public static void SendExtraAI(BinaryWriter writer, byte[] extraAI) {
+			writer.Write7BitEncodedInt(extraAI.Length);
 
-			byte[] data;
+			if (extraAI.Length > 0) {
+				writer.Write(extraAI);
+			}
+		}
+
+		public static byte[] WriteExtraAI(NPC npc) {
+			if (npc.ModNPC == null) {
+				return Array.Empty<byte>();
+			}
 
 			using var stream = new MemoryStream();
 			using var modWriter = new BinaryWriter(stream);
 
 			npc.ModNPC.SendExtraAI(modWriter);
 			modWriter.Flush();
-			data = stream.ToArray();
 
-			writer.Write((byte)data.Length);
-
-			if (data.Length > 0) {
-				writer.Write(data);
-			}
+			return stream.ToArray();
 		}
 
 		public static byte[] ReadExtraAI(BinaryReader reader) {
