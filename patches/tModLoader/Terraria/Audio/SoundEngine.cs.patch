@@ -14,7 +14,7 @@
  			}
  			catch (NoAudioHardwareException) {
 -				Console.WriteLine("No audio hardware found. Disabling all audio.");
-+				//Console.WriteLine("No audio hardware found. Disabling all audio.");
++				ModLoader.Logging.tML.Warn("No audio hardware found. Disabling all audio.");
  				return false;
  			}
  			catch {
