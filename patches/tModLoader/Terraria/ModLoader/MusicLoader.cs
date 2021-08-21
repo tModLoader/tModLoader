@@ -11,6 +11,7 @@ namespace Terraria.ModLoader
 {
 	public sealed class MusicLoader : ILoader
 	{
+		internal static readonly string[] supportedExtensions = { ".mp3", ".ogg", ".wav" };
 		internal static readonly Dictionary<int, int> musicToItem = new();
 		internal static readonly Dictionary<int, int> itemToMusic = new();
 		internal static readonly Dictionary<int, Dictionary<int, int>> tileToMusic = new();
@@ -108,99 +109,104 @@ namespace Terraria.ModLoader
 			if (slot == 0 || Main.audioSystem is not LegacyAudioSystem audioSystem)
 				return null;
 
-			audioSystem.AudioTracks[slot] ??= LoadMusic(musicPath, MusicLoader.musicExtensions[musicPath]);
+			audioSystem.AudioTracks[slot] ??= LoadMusic(musicPath, musicExtensions[musicPath]);
 
 			return ((LegacyAudioSystem)Main.audioSystem).AudioTracks[slot];
 		}
 
+		/// <summary>
+		/// Registers a new music track with the provided mod and its local path to the sound file.
+		/// </summary>
+		/// <param name="mod"> The mod that owns the music track. </param>
+		/// <param name="musicPath"> The provided mod's local path to the music track file, case-sensitive and without extensions. </param>
 		public static void AddMusic(Mod mod, string musicPath) {
 			if (!mod.loading)
-				throw new Exception("AddMusic can only be called from Mod.Load or Mod.Autoload");
+				throw new Exception($"{nameof(AddMusic)} can only be called during mod loading.");
 
 			int id = ReserveMusicID();
 
-			List<string> extensions = new List<string> {".mp3", ".ogg", ".wav"};
 			string chosenExtension = "";
 
 			// Manually check if a file exists according to the path appended with any of the three supported extensions.
-			foreach (string extension in extensions.Where(extension => mod.FileExists(musicPath + extension)))
+			foreach (string extension in supportedExtensions.Where(extension => mod.FileExists(musicPath + extension)))
 				chosenExtension = extension;
 
 			if (string.IsNullOrEmpty(chosenExtension))
-				throw new ArgumentException("Given path found no files matching the extensions .mp3, .ogg, or .wav.");
+				throw new ArgumentException($"Given path found no files matching the extensions [ {string.Join(", ", supportedExtensions)} ]");
 
-			musicPath = mod.Name + "/" + musicPath;
+			musicPath = $"{mod.Name}/{musicPath}";
 			
 			musicByPath[musicPath] = id;
 			musicExtensions[musicPath] = chosenExtension;
 		}
 
 		/// <summary>
-		/// Allows you to tie a music ID, and item ID, and a tile ID together to form a music box. When music with the given ID is playing, equipped music boxes have a chance to change their ID to the given item type. When an item with the given item type is equipped, it will play the music that has musicSlot as its ID. When a tile with the given type and Y-frame is nearby, if its X-frame is >= 36, it will play the music that has musicSlot as its ID.
+		/// Allows you to tie a music ID, and item ID, and a tile ID together to form a music box.
+		/// <br/> When music with the given ID is playing, equipped music boxes have a chance to change their ID to the given item type.
+		/// <br/> When an item with the given item type is equipped, it will play the music that has musicSlot as its ID.
+		/// <br/> When a tile with the given type and Y-frame is nearby, if its X-frame is >= 36, it will play the music that has musicSlot as its ID.
 		/// </summary>
-		/// <param name="musicSlot">The music slot.</param>
-		/// <param name="itemType">Type of the item.</param>
-		/// <param name="tileType">Type of the tile.</param>
-		/// <param name="tileFrameY">The tile frame y.</param>
-		/// <exception cref="System.ArgumentOutOfRangeException">
-		/// Cannot assign music box to vanilla music ID " + musicSlot
+		/// <param name="mod"> The music slot. </param>
+		/// <param name="musicSlot"> The music slot. </param>
+		/// <param name="itemType"> Type of the item. </param>
+		/// <param name="tileType"> Type of the tile. </param>
+		/// <param name="tileFrameY"> The tile frame y. </param>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Cannot assign music box to vanilla music id.
 		/// or
-		/// Music ID " + musicSlot + " does not exist
+		/// The provided music id does not exist.
 		/// or
-		/// Cannot assign music box to vanilla item ID " + itemType
+		/// Cannot assign music box to a vanilla item id.
 		/// or
-		/// Item ID " + itemType + " does not exist
+		/// The provided item id does not exist.
 		/// or
-		/// Cannot assign music box to vanilla tile ID " + tileType
+		/// Cannot assign music box to a vanilla tile id.
 		/// or
-		/// Tile ID " + tileType + " does not exist
+		/// The provided tile id does not exist
 		/// </exception>
-		/// <exception cref="System.ArgumentException">
-		/// Music ID " + musicSlot + " has already been assigned a music box
+		/// <exception cref="ArgumentException">
+		/// The provided music id has already been assigned a music box.
 		/// or
-		/// Item ID " + itemType + " has already been assigned a music
-		/// or
+		/// The provided item id has already been assigned a music.
 		/// or
 		/// Y-frame must be divisible by 36
 		/// </exception>
 		public static void AddMusicBox(Mod mod, int musicSlot, int itemType, int tileType, int tileFrameY = 0) {
 			if (!mod.loading)
-				throw new Exception("AddMusicBox can only be called from Mod.Load or Mod.Autoload");
+				throw new Exception($"{nameof(AddMusicBox)} can only be called during mod loading.");
 
 			if (Main.audioSystem == null)
 				return;
 
 			if (musicSlot < Main.maxMusic)
-				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla music ID " + musicSlot);
+				throw new ArgumentOutOfRangeException($"Cannot assign music box to vanilla music ID {musicSlot}");
 
 			if (musicSlot >= MusicCount)
-				throw new ArgumentOutOfRangeException("Music ID " + musicSlot + " does not exist");
+				throw new ArgumentOutOfRangeException($"Music ID {musicSlot} does not exist");
 
 			if (itemType < ItemID.Count)
 				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla item ID " + itemType);
 
-			if (ItemLoader.GetItem(itemType) == null) {
-				throw new ArgumentOutOfRangeException("Item ID " + itemType + " does not exist");
-			}
+			if (ItemLoader.GetItem(itemType) == null)
+				throw new ArgumentOutOfRangeException($"Item ID {itemType} does not exist");
 
 			if (tileType < TileID.Count)
-				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla tile ID " + tileType);
+				throw new ArgumentOutOfRangeException($"Cannot assign music box to vanilla tile ID {tileType}");
 
 			if (TileLoader.GetTile(tileType) == null)
-				throw new ArgumentOutOfRangeException("Tile ID " + tileType + " does not exist");
+				throw new ArgumentOutOfRangeException($"Tile ID {tileType} does not exist");
 
 			if (musicToItem.ContainsKey(musicSlot))
-				throw new ArgumentException("Music ID " + musicSlot + " has already been assigned a music box");
+				throw new ArgumentException($"Music ID {musicSlot} has already been assigned a music box");
 
 			if (itemToMusic.ContainsKey(itemType))
-				throw new ArgumentException("Item ID " + itemType + " has already been assigned a music");
+				throw new ArgumentException($"Item ID {itemType} has already been assigned a music");
 
-			if (!tileToMusic.ContainsKey(tileType)) tileToMusic[tileType] = new Dictionary<int, int>();
+			if (!tileToMusic.TryGetValue(tileType, out var tileToMusicDictionary))
+				tileToMusic[tileType] = tileToMusicDictionary = new Dictionary<int, int>();
 
-			if (tileToMusic[tileType].ContainsKey(tileFrameY)) {
-				string message = "Y-frame " + tileFrameY + " of tile type " + tileType + " has already been assigned a music";
-				throw new ArgumentException(message);
-			}
+			if (tileToMusicDictionary.ContainsKey(tileFrameY))
+				throw new ArgumentException($"Y-frame {tileFrameY} of tile type {tileType} has already been assigned a music");
 
 			if (tileFrameY % 36 != 0)
 				throw new ArgumentException("Y-frame must be divisible by 36");
