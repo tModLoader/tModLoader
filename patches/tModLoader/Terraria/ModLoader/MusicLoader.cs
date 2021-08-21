@@ -166,14 +166,8 @@ namespace Terraria.ModLoader
 			if (mod.File is null)
 				return;
 
-			List<string> extensions = new List<string> {".wav", ".mp3", ".ogg"};
-
-			foreach (TmodFile.FileEntry music in mod.File.Where(x => extensions.Contains(Path.GetExtension(x.Name)) && x.Name.StartsWith("Sounds/"))) {
-				string substring = music.Name["Sounds/".Length..];
-
-				if (substring.StartsWith("Music/")) {
-					AddMusic(mod, mod.Name + '/' + music.Name);
-				}
+			foreach (TmodFile.FileEntry music in mod.File.Where(x => supportedExtensions.Contains(Path.GetExtension(x.Name)) && x.Name.StartsWith("Music/") || x.Name.Contains("/Music/"))) {
+				AddMusic(mod, Path.ChangeExtension(music.Name, null));
 			}
 		}
 
