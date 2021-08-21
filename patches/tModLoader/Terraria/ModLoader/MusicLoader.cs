@@ -118,8 +118,8 @@ namespace Terraria.ModLoader
 		/// Y-frame must be divisible by 36
 		/// </exception>
 		public static void AddMusicBox(Mod mod, int musicSlot, int itemType, int tileType, int tileFrameY = 0) {
-			if (!mod.loading)
-				throw new Exception($"{nameof(AddMusicBox)} can only be called during mod loading.");
+			//if (!mod.loading)
+			//	throw new Exception($"{nameof(AddMusicBox)} can only be called during mod loading.");
 
 			if (Main.audioSystem == null)
 				return;
