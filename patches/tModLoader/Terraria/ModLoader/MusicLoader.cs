@@ -20,53 +20,6 @@ namespace Terraria.ModLoader
 
 		public static int MusicCount { get; private set; } = MusicID.Count;
 
-		internal static void AutoloadMusic(Mod mod) {
-			if (mod.File is null)
-				return;
-
-			List<string> extensions = new List<string> {".wav", ".mp3", ".ogg"};
-
-			foreach (TmodFile.FileEntry music in mod.File.Where(x => extensions.Contains(Path.GetExtension(x.Name)) && x.Name.StartsWith("Sounds/"))) {
-				string substring = music.Name["Sounds/".Length..];
-
-				if (substring.StartsWith("Music/")) {
-					AddMusic(mod, mod.Name + '/' + music.Name);
-				}
-			}
-		}
-
-		internal static int ReserveMusicID() => MusicCount++;
-
-		internal static IAudioTrack LoadMusic(string path, string extension) {
-			path = $"tmod:{path}{extension}";
-
-			Stream stream = ModContent.OpenRead(path);
-
-			return extension switch {
-				".wav" => new WAVAudioTrack(stream),
-				".mp3" => new MP3AudioTrack(stream),
-				".ogg" => new OGGAudioTrack(stream),
-				_ => throw new ResourceLoadException($"Unknown music extension {extension}"),
-			};
-		}
-
-		internal static void CloseModStreams(Mod mod) {
-			string prefix = $"{mod.Name}/";
-
-			foreach (string musicPath in musicByPath.Keys.Where(x => x.StartsWith(prefix)))
-				CloseStream(musicPath);
-		}
-
-		internal static void CloseStream(string musicPath) {
-			if (Main.audioSystem is not LegacyAudioSystem legacyAudioSystem)
-				return;
-
-			int slot = musicByPath[musicPath];
-
-			if (legacyAudioSystem.AudioTracks[slot] is not null)
-				legacyAudioSystem.AudioTracks[slot]?.Dispose();
-		}
-
 		/// <summary> Gets the music id of the track with the specified mod path. The path must not have a file extension. </summary>
 		public static int GetMusicSlot(Mod mod, string musicPath)
 			=> GetMusicSlot($"{mod.Name}/{musicPath}");
@@ -76,7 +29,7 @@ namespace Terraria.ModLoader
 			if (musicByPath.ContainsKey(musicPath)) {
 				return musicByPath[musicPath];
 			}
-			
+
 			return 0;
 		}
 
@@ -128,7 +81,7 @@ namespace Terraria.ModLoader
 				throw new ArgumentException($"Given path found no files matching the extensions [ {string.Join(", ", supportedExtensions)} ]");
 
 			musicPath = $"{mod.Name}/{musicPath}";
-			
+
 			musicByPath[musicPath] = id;
 			musicExtensions[musicPath] = chosenExtension;
 		}
@@ -207,6 +160,53 @@ namespace Terraria.ModLoader
 			musicToItem[musicSlot] = itemType;
 			itemToMusic[itemType] = musicSlot;
 			tileToMusic[tileType][tileFrameY] = musicSlot;
+		}
+
+		internal static void AutoloadMusic(Mod mod) {
+			if (mod.File is null)
+				return;
+
+			List<string> extensions = new List<string> {".wav", ".mp3", ".ogg"};
+
+			foreach (TmodFile.FileEntry music in mod.File.Where(x => extensions.Contains(Path.GetExtension(x.Name)) && x.Name.StartsWith("Sounds/"))) {
+				string substring = music.Name["Sounds/".Length..];
+
+				if (substring.StartsWith("Music/")) {
+					AddMusic(mod, mod.Name + '/' + music.Name);
+				}
+			}
+		}
+
+		internal static int ReserveMusicID() => MusicCount++;
+
+		internal static IAudioTrack LoadMusic(string path, string extension) {
+			path = $"tmod:{path}{extension}";
+
+			Stream stream = ModContent.OpenRead(path);
+
+			return extension switch {
+				".wav" => new WAVAudioTrack(stream),
+				".mp3" => new MP3AudioTrack(stream),
+				".ogg" => new OGGAudioTrack(stream),
+				_ => throw new ResourceLoadException($"Unknown music extension {extension}"),
+			};
+		}
+
+		internal static void CloseModStreams(Mod mod) {
+			string prefix = $"{mod.Name}/";
+
+			foreach (string musicPath in musicByPath.Keys.Where(x => x.StartsWith(prefix)))
+				CloseStream(musicPath);
+		}
+
+		internal static void CloseStream(string musicPath) {
+			if (Main.audioSystem is not LegacyAudioSystem legacyAudioSystem)
+				return;
+
+			int slot = musicByPath[musicPath];
+
+			if (legacyAudioSystem.AudioTracks[slot] is not null)
+				legacyAudioSystem.AudioTracks[slot]?.Dispose();
 		}
 
 		void ILoader.ResizeArrays() {
