@@ -404,18 +404,20 @@
  			if (Configuration.Save())
  				return PlayerInput.Save();
  
-@@ -3218,6 +_,11 @@
- 				TryPickingDefaultUIScale(currentValue3);
- 			}
+@@ -3215,7 +_,12 @@
+ 					screenBorderlessPendingResizes = 1;
  
+ 				SetDisplayMode(currentValue2, currentValue3, fullscreen: false);
+-				TryPickingDefaultUIScale(currentValue3);
++				TryPickingDefaultUIScale(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height);
++			}
++
 +			if (Main.dedServ) {
 +				ModLoader.ModLoader.LoadConfiguration();
 +				return;
-+			}
-+
+ 			}
+ 
  			Configuration.Get("SmartCursorToggle", ref cSmartCursorModeIsToggleAndNotHold);
- 			Configuration.Get("MapEnabled", ref mapEnabled);
- 			Configuration.Get("InvasionBarMode", ref invasionProgressMode);
 @@ -3502,6 +_,7 @@
  				};
  			}
