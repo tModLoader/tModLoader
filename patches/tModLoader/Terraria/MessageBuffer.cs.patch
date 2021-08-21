@@ -213,6 +213,16 @@
  							obj5.playerIndexTheItemIsReservedFor = Main.myPlayer;
  							if (flag8) {
  								NetMessage.TrySendData(21, -1, -1, null, num177);
+@@ -1279,6 +_,9 @@
+ 							}
+ 						}
+ 
++						// Reading and receiving has been separated for parity with ProjectileLoader code, and to avoid exceptions causing underreads.
++						byte[] extraAI = NPCLoader.ReadExtraAI(reader);
++
+ 						int num117 = -1;
+ 						NPC nPC4 = Main.npc[num112];
+ 						if (nPC4.active && Main.multiplayerNPCSmoothingRange > 0 && Vector2.DistanceSquared(nPC4.position, vector4) < 640000f)
 @@ -1329,9 +_,10 @@
  						if (num115 == 245)
  							NPC.golemBoss = num112;
@@ -221,7 +231,7 @@
 +						if (nPC4.type >= 0 && nPC4.type < NPCLoader.NPCCount && Main.npcCatchable[nPC4.type])
  							nPC4.releaseOwner = reader.ReadByte();
  
-+						NPCLoader.ReceiveExtraAI(nPC4, reader);
++						NPCLoader.ReceiveExtraAI(nPC4, extraAI);
  						break;
  					}
  				case 24: {
@@ -230,7 +240,7 @@
  						if (num133 >= 1000)
  							num133 = -1;
 -
-+						byte[] extraAI = ProjectileLoader.ReadExtraAI(reader, bitsByte12);
++						byte[] extraAI = ProjectileLoader.ReadExtraAI(reader);
  						if (Main.netMode == 2) {
  							if (num131 == 949) {
  								num130 = 255;

@@ -263,33 +263,39 @@ namespace Terraria.ModLoader
 		}
 
 		public static void SendExtraAI(NPC npc, BinaryWriter writer) {
-			if (npc.ModNPC != null) {
-				byte[] data;
-				using (MemoryStream stream = new MemoryStream()) {
-					using (BinaryWriter modWriter = new BinaryWriter(stream)) {
-						npc.ModNPC.SendExtraAI(modWriter);
-						modWriter.Flush();
-						data = stream.ToArray();
-					}
-				}
-				writer.Write((byte)data.Length);
-				if (data.Length > 0) {
-					writer.Write(data);
-				}
+			if (npc.ModNPC == null) {
+				return;
+			}
+
+			byte[] data;
+
+			using var stream = new MemoryStream();
+			using var modWriter = new BinaryWriter(stream);
+
+			npc.ModNPC.SendExtraAI(modWriter);
+			modWriter.Flush();
+			data = stream.ToArray();
+
+			writer.Write((byte)data.Length);
+
+			if (data.Length > 0) {
+				writer.Write(data);
 			}
 		}
 
-		public static void ReceiveExtraAI(NPC npc, BinaryReader reader) {
-			if (npc.ModNPC != null) {
-				byte[] extraAI = reader.ReadBytes(reader.ReadByte());
-				if (extraAI.Length > 0) {
-					using (MemoryStream stream = new MemoryStream(extraAI)) {
-						using (BinaryReader modReader = new BinaryReader(stream)) {
-							npc.ModNPC.ReceiveExtraAI(modReader);
-						}
-					}
-				}
+		public static byte[] ReadExtraAI(BinaryReader reader) {
+			return reader.ReadBytes(reader.Read7BitEncodedInt());
+		}
+
+		public static void ReceiveExtraAI(NPC npc, byte[] extraAI) {
+			if (npc.ModNPC == null) {
+				return;
 			}
+
+			using var stream = new MemoryStream(extraAI);
+			using var modReader = new BinaryReader(stream);
+
+			npc.ModNPC.ReceiveExtraAI(modReader);
 		}
 
 		private static HookList HookFindFrame = AddHook<Action<NPC, int>>(g => g.FindFrame);

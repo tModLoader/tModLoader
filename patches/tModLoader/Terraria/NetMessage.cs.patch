@@ -141,7 +141,7 @@
  							break;
  						}
  					case 24:
-@@ -621,12 +_,13 @@
+@@ -621,7 +_,7 @@
  							if (projectile.knockBack != 0f)
  								bb13[5] = true;
  
@@ -150,21 +150,11 @@
  								bb13[7] = true;
  
  							if (projectile.originalDamage != 0)
- 								bb13[6] = true;
- 
-+							byte[] extraAI = ProjectileLoader.SendExtraAI(projectile, ref bb13);
- 							writer.Write(bb13);
- 							for (int num17 = 0; num17 < Projectile.maxAI; num17++) {
- 								if (bb13[num17])
-@@ -648,11 +_,19 @@
+@@ -648,11 +_,15 @@
  							if (bb13[7])
  								writer.Write((short)projectile.projUUID);
  
-+							if (bb13[Projectile.maxAI + 1]) {
-+								writer.Write((byte)extraAI.Length);
-+								writer.Write(extraAI);
-+							}
-+
++							ProjectileLoader.SendExtraAI(projectile, writer);
  							break;
  						}
  					case 28:
