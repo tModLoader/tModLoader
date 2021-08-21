@@ -224,7 +224,7 @@ namespace Terraria.ModLoader
 				if (Main.audioSystem is DisabledAudioSystem)
 					return;
 
-				legacyAudioSystem.AudioTracks[slot] = ModContent.GetMusic(sound);
+				legacyAudioSystem.AudioTracks[slot] = GetMusic(sound);
 			}
 
 			Main.audioSystem = legacyAudioSystem;
