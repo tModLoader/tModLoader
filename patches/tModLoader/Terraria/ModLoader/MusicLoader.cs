@@ -176,7 +176,7 @@ namespace Terraria.ModLoader
 		internal static IAudioTrack LoadMusic(string path, string extension) {
 			path = $"tmod:{path}{extension}";
 
-			Stream stream = ModContent.OpenRead(path);
+			Stream stream = ModContent.OpenRead(path, true);
 
 			return extension switch {
 				".wav" => new WAVAudioTrack(stream),
