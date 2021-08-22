@@ -39,44 +39,46 @@ namespace UwUPnP
 		public static bool TryNew(IPAddress ip, out Gateway gateway)
 		{
 			IPEndPoint endPoint = IPEndPoint.Parse("239.255.255.250:1900");
-			Socket socket = new Socket(ip.AddressFamily, SocketType.Dgram, ProtocolType.Udp)
-			{
+			// Sockets are disposable so wrap them
+			using (var socket = new Socket(ip.AddressFamily, SocketType.Dgram, ProtocolType.Udp) {
 				ReceiveTimeout = 3000,
 				SendTimeout = 3000
-			};
+			}) {
+				socket.Bind(new IPEndPoint(ip, 0));
 
-			socket.Bind(new IPEndPoint(ip, 0));
+				byte[] buffer = new byte[0x600];
 
-			byte[] buffer = new byte[0x600];
+				foreach (string type in searchMessageTypes) {
+					string request = string.Join
+					(
+						"\n",
 
-			foreach(string type in searchMessageTypes)
-			{
-				string request = string.Join
-				(
-					"\n",
+						"M-SEARCH * HTTP/1.1",
+						$"HOST: {endPoint}",
+						$"ST: {type}",
+						"MAN: \"ssdp:discover\"",
+						"MX: 2",
+						"", ""//End with double newlines
+					);
+					byte[] req = Encoding.ASCII.GetBytes(request);
 
-					"M-SEARCH * HTTP/1.1",
-					$"HOST: {endPoint}",
-					$"ST: {type}",
-					"MAN: \"ssdp:discover\"",
-					"MX: 2",
-					"",""//End with double newlines
-				);
-				byte[] req = Encoding.ASCII.GetBytes(request);
+					try {
+						socket.SendTo(req, endPoint);
 
-				try
-				{
-					socket.SendTo(req, endPoint);
+						int recievedCount = socket.Receive(buffer);
 
-					int recievedCount = socket.Receive(buffer);
-					
-					gateway = new Gateway(ip, Encoding.ASCII.GetString(buffer, 0, recievedCount));
-					return true;
+						gateway = new Gateway(ip, Encoding.ASCII.GetString(buffer, 0, recievedCount));
+						return true;
+					}
+					catch(SocketException) {
+						// Expected error if no gateway is present
+						// (should be SocketException all the time if the error is expected)
+						// Errors on SendTo for bad address or Receive for timeout most of the time
+					}
 				}
-				catch{}
+				gateway = null;
+				return false;
 			}
-			gateway = null;
-			return false;
 		}
 
 		private static string GetLocation(string data)
