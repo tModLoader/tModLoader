@@ -155,10 +155,13 @@
  							HasClock = true;
  
  						switch (tile2.type) {
-@@ -324,6 +_,8 @@
+@@ -324,6 +_,11 @@
  									BloodMoonMonolith = true;
  								break;
  						}
++
++						if (MusicLoader.tileToMusic.ContainsKey(tile2.type) && MusicLoader.tileToMusic[tile2.type].ContainsKey(tile2.frameY) && tile2.frameX == 36)
++							ActiveMusicBox = MusicLoader.tileToMusic[tile2.type][tile2.frameY];
 +
 +						TileLoader.NearbyEffects(k, l, tile2.type, true);
  					}
