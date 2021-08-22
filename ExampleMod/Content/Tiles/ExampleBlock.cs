@@ -11,9 +11,10 @@ namespace ExampleMod.Content.Tiles
 			Main.tileSolid[Type] = true;
 			Main.tileMergeDirt[Type] = true;
 			Main.tileBlockLight[Type] = true;
-			Main.tileLighted[Type] = true;
+
 			DustType = ModContent.DustType<Sparkle>();
 			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleBlock>();
+
 			AddMapEntry(new Color(200, 200, 200));
 
 			// todo: implement
