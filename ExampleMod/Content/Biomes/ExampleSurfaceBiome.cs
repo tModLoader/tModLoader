@@ -18,7 +18,7 @@ namespace ExampleMod.Content.Biomes
 		public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Crimson;
 
 		// Select Music
-		public override int Music => MusicLoader.GetMusicSlot("ExampleMod/Assets/Sounds/Music/MarbleGallery");
+		public override int Music => MusicLoader.GetMusicSlot("ExampleMod/Assets/Music/MysteriousMystery");
 
 		// Populate the Bestiary Filter
 		public override string BestiaryIcon => base.BestiaryIcon;

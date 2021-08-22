@@ -12,7 +12,7 @@ namespace ExampleMod.Common
 			// Accepted music formats are: .mp3, .ogg, and .wav files.
 			// Do NOT add the file extension in your code when adding music!
 
-			//MusicLoader.AddMusic(Mod, "Assets/Sounds/Music/MarbleGallery");
+			//MusicLoader.AddMusic(Mod, "Assets/Music/MysteriousMystery");
 
 			// An example of registration of Music Boxes can be found in 'Content/Items/Placeable/ExampleMusicBox.cs'.
 		}
