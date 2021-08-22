@@ -1,7 +1,6 @@
 var namespace_terraria_1_1_mod_loader =
 [
     [ "Assets", "namespace_terraria_1_1_mod_loader_1_1_assets.html", "namespace_terraria_1_1_mod_loader_1_1_assets" ],
-    [ "Audio", "namespace_terraria_1_1_mod_loader_1_1_audio.html", "namespace_terraria_1_1_mod_loader_1_1_audio" ],
     [ "Config", "namespace_terraria_1_1_mod_loader_1_1_config.html", "namespace_terraria_1_1_mod_loader_1_1_config" ],
     [ "Core", "namespace_terraria_1_1_mod_loader_1_1_core.html", "namespace_terraria_1_1_mod_loader_1_1_core" ],
     [ "Default", "namespace_terraria_1_1_mod_loader_1_1_default.html", "namespace_terraria_1_1_mod_loader_1_1_default" ],
@@ -91,6 +90,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "ModWall", "class_terraria_1_1_mod_loader_1_1_mod_wall.html", "class_terraria_1_1_mod_loader_1_1_mod_wall" ],
     [ "ModWaterfallStyle", "class_terraria_1_1_mod_loader_1_1_mod_waterfall_style.html", "class_terraria_1_1_mod_loader_1_1_mod_waterfall_style" ],
     [ "ModWaterStyle", "class_terraria_1_1_mod_loader_1_1_mod_water_style.html", "class_terraria_1_1_mod_loader_1_1_mod_water_style" ],
+    [ "MusicLoader", "class_terraria_1_1_mod_loader_1_1_music_loader.html", null ],
     [ "NoScalingDamageClass", "class_terraria_1_1_mod_loader_1_1_no_scaling_damage_class.html", "class_terraria_1_1_mod_loader_1_1_no_scaling_damage_class" ],
     [ "NPCLoot", "struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html", "struct_terraria_1_1_mod_loader_1_1_n_p_c_loot" ],
     [ "NPCSpawnInfo", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info" ],
@@ -187,7 +187,6 @@ var namespace_terraria_1_1_mod_loader =
       [ "Item", "namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679", null ],
       [ "NPCHit", "namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a29d1a4424c9983a2f5a54d3c574f8794", null ],
       [ "NPCKilled", "namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06ad71465dddb92c3fa7565999b6e53f19c", null ],
-      [ "Custom", "namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a90589c47f06eb971d548591f23c285af", null ],
-      [ "Music", "namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a47dcbd834e669233d7eb8a51456ed217", null ]
+      [ "Custom", "namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a90589c47f06eb971d548591f23c285af", null ]
     ] ]
 ];

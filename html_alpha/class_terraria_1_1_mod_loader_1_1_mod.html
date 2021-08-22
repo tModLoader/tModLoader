@@ -119,9 +119,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddContent&lt; T &gt;
 <tr class="memitem:ac6b324c8bc9f7c767c9c1cda539ef44f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac6b324c8bc9f7c767c9c1cda539ef44f">AddEquipTexture</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html">ModItem</a> item, <a class="el" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282">EquipType</a> type, string texture)</td></tr>
 <tr class="memdesc:ac6b324c8bc9f7c767c9c1cda539ef44f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an equipment texture of the specified type, internal name, and associated item to your mod. (The item parameter may be null if you don't want to associate an item with the texture.) You can then get the <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> for your texture by calling EquipLoader.GetEquipTexture, and using the <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html" title="This serves as a place for you to program behaviors of equipment textures. This is useful for equipme...">EquipTexture</a>'s Slot property. If the EquipType is EquipType.Body, make sure that you also provide an armTexture and a femaleTexture. Returns the <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> / slot that is assigned to the equipment texture.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#ac6b324c8bc9f7c767c9c1cda539ef44f">More...</a><br /></td></tr>
 <tr class="separator:ac6b324c8bc9f7c767c9c1cda539ef44f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c1e83b143448233295027694ef6ef3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a2c1e83b143448233295027694ef6ef3a">AddMusicBox</a> (int musicSlot, int itemType, int tileType, int tileFrameY=0)</td></tr>
-<tr class="memdesc:a2c1e83b143448233295027694ef6ef3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to tie a music <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>, and item <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>, and a tile <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> together to form a music box. When music with the given <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> is playing, equipped music boxes have a chance to change their <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> to the given item type. When an item with the given item type is equipped, it will play the music that has musicSlot as its <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>. When a tile with the given type and Y-frame is nearby, if its X-frame is &gt;= 36, it will play the music that has musicSlot as its <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a2c1e83b143448233295027694ef6ef3a">More...</a><br /></td></tr>
-<tr class="separator:a2c1e83b143448233295027694ef6ef3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a211c20a65abdc07b7563b96105999e9a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a211c20a65abdc07b7563b96105999e9a">AddNPCHeadTexture</a> (int npcType, string texture)</td></tr>
 <tr class="memdesc:a211c20a65abdc07b7563b96105999e9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns a head texture to the given town <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> type.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a211c20a65abdc07b7563b96105999e9a">More...</a><br /></td></tr>
 <tr class="separator:a211c20a65abdc07b7563b96105999e9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,9 +176,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>FileExists</b> (strin
 <tr class="memitem:aefc33c0dc19555a7155940363631a201"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_audio_1_1_legacy_sound_style.html">LegacySoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#aefc33c0dc19555a7155940363631a201">GetLegacySoundSlot</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a> type, string name)</td></tr>
 <tr class="memdesc:aefc33c0dc19555a7155940363631a201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for calling SoundLoader.GetLegacySoundSlot(type, this.Name + '/' + name).  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#aefc33c0dc19555a7155940363631a201">More...</a><br /></td></tr>
 <tr class="separator:aefc33c0dc19555a7155940363631a201"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5456a56362277b999e3d5360616e7631"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_audio_1_1_music.html">Music</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a5456a56362277b999e3d5360616e7631">GetMusic</a> (string name)</td></tr>
-<tr class="memdesc:a5456a56362277b999e3d5360616e7631"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for calling ModContent.GetMusic(this.FileName(name)).  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a5456a56362277b999e3d5360616e7631">More...</a><br /></td></tr>
-<tr class="separator:a5456a56362277b999e3d5360616e7631"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc69c5da3fbaac0d3268f4266889c535"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_packet.html">ModPacket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#afc69c5da3fbaac0d3268f4266889c535">GetPacket</a> (int capacity=256)</td></tr>
 <tr class="memdesc:afc69c5da3fbaac0d3268f4266889c535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_packet.html" title="This class inherits from BinaryWriter. This means that you can use all of its writing functions to se...">ModPacket</a> object that you can write to and then send between servers and clients.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#afc69c5da3fbaac0d3268f4266889c535">More...</a><br /></td></tr>
 <tr class="separator:afc69c5da3fbaac0d3268f4266889c535"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -197,9 +191,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasAsset</b> (string 
 <tr class="memitem:afbcbdc176a60f3da809842f683ff2e75"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#afbcbdc176a60f3da809842f683ff2e75">Load</a> ()</td></tr>
 <tr class="memdesc:afbcbdc176a60f3da809842f683ff2e75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override this method to add most of your content to your mod. Here you will call other methods such as AddItem. This is guaranteed to be called after all content has been autoloaded.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#afbcbdc176a60f3da809842f683ff2e75">More...</a><br /></td></tr>
 <tr class="separator:afbcbdc176a60f3da809842f683ff2e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af995bbfa93c0a1fe4c6252fb9fc179e7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#af995bbfa93c0a1fe4c6252fb9fc179e7">MusicExists</a> (string name)</td></tr>
-<tr class="memdesc:af995bbfa93c0a1fe4c6252fb9fc179e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for calling ModLoader.MusicExists(this.FileName(name)).  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#af995bbfa93c0a1fe4c6252fb9fc179e7">More...</a><br /></td></tr>
-<tr class="separator:af995bbfa93c0a1fe4c6252fb9fc179e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4117ae9725d19222ce13de255ca3034"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#aa4117ae9725d19222ce13de255ca3034">PostAddRecipes</a> ()</td></tr>
 <tr class="memdesc:aa4117ae9725d19222ce13de255ca3034"><td class="mdescLeft">&#160;</td><td class="mdescRight">This provides a hook into the mod-loading process immediately after recipes have been added. You can use this to edit recipes added by other mods.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#aa4117ae9725d19222ce13de255ca3034">More...</a><br /></td></tr>
 <tr class="separator:aa4117ae9725d19222ce13de255ca3034"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -251,6 +242,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsNetSynced</b><code>
 <tr class="memitem:a11dcfe653c0cdc73bd692f80bb2b8916"><td class="memItemLeft" align="right" valign="top">ILog&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a11dcfe653c0cdc73bd692f80bb2b8916">Logger</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a11dcfe653c0cdc73bd692f80bb2b8916"><td class="mdescLeft">&#160;</td><td class="mdescRight">A logger with this mod's name for easy logging.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a11dcfe653c0cdc73bd692f80bb2b8916">More...</a><br /></td></tr>
 <tr class="separator:a11dcfe653c0cdc73bd692f80bb2b8916"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cbad6538cab18716820b4ba42749c8e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a2cbad6538cab18716820b4ba42749c8e">MusicAutoloadingEnabled</a> = true<code> [get]</code></td></tr>
+<tr class="memdesc:a2cbad6538cab18716820b4ba42749c8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add music in the Sounds folder to the game. Place music tracks in Sounds/Music to autoload them.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a2cbad6538cab18716820b4ba42749c8e">More...</a><br /></td></tr>
+<tr class="separator:a2cbad6538cab18716820b4ba42749c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8206e4bf920a7562a972dcb7c9e2ef09"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09">Name</a><code> [get]</code></td></tr>
 <tr class="memdesc:a8206e4bf920a7562a972dcb7c9e2ef09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the name of the mod. This name serves as the mod's identification, and also helps with saving everything your mod adds. By default this returns the name of the folder that contains all your code and stuff.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09">More...</a><br /></td></tr>
 <tr class="separator:a8206e4bf920a7562a972dcb7c9e2ef09"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -261,7 +255,7 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
 <tr class="memdesc:ad921b4895d8db73a6139987c4c456777"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ModSide that controls how this mod is synced between client and server.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#ad921b4895d8db73a6139987c4c456777">More...</a><br /></td></tr>
 <tr class="separator:ad921b4895d8db73a6139987c4c456777"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc70a1662799e620716c519dfb824d73"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#adc70a1662799e620716c519dfb824d73">SoundAutoloadingEnabled</a> = true<code> [get]</code></td></tr>
-<tr class="memdesc:adc70a1662799e620716c519dfb824d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, Sounds/NPCKilled to add them as npcKilled sounds, and Sounds/Music to add them as music tracks. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html" title="This class allows you to customize how a sound you add is played. To use this, pass an instance to Mo...">ModSound</a> classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#adc70a1662799e620716c519dfb824d73">More...</a><br /></td></tr>
+<tr class="memdesc:adc70a1662799e620716c519dfb824d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, and Sounds/NPCKilled to add them as npcKilled sounds. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html" title="This class allows you to customize how a sound you add is played. To use this, pass an instance to Mo...">ModSound</a> classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#adc70a1662799e620716c519dfb824d73">More...</a><br /></td></tr>
 <tr class="separator:adc70a1662799e620716c519dfb824d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0365dd6999086e682dd90ed65543edd0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a25e6f7b4866109d4137e7ace4e78ee64">Version</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a0365dd6999086e682dd90ed65543edd0">TModLoaderVersion</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a0365dd6999086e682dd90ed65543edd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The version of tModLoader that was being used when this mod was built.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a0365dd6999086e682dd90ed65543edd0">More...</a><br /></td></tr>
@@ -408,64 +402,6 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="a2c1e83b143448233295027694ef6ef3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c1e83b143448233295027694ef6ef3a">&#9670;&nbsp;</a></span>AddMusicBox()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Terraria.ModLoader.Mod.AddMusicBox </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>musicSlot</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>itemType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>tileType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>tileFrameY</em> = <code>0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Allows you to tie a music <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>, and item <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>, and a tile <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> together to form a music box. When music with the given <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> is playing, equipped music boxes have a chance to change their <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> to the given item type. When an item with the given item type is equipped, it will play the music that has musicSlot as its <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>. When a tile with the given type and Y-frame is nearby, if its X-frame is &gt;= 36, it will play the music that has musicSlot as its <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">musicSlot</td><td>The music slot.</td></tr>
-    <tr><td class="paramname">itemType</td><td>Type of the item.</td></tr>
-    <tr><td class="paramname">tileType</td><td>Type of the tile.</td></tr>
-    <tr><td class="paramname">tileFrameY</td><td>The tile frame y.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">System.ArgumentOutOfRangeException</td><td>Cannot assign music box to vanilla music <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> " + musicSlot or Music <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> " + musicSlot + " does not exist or Cannot assign music box to vanilla item <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> " + itemType or <a class="el" href="class_terraria_1_1_item.html">Item</a> <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> " + itemType + " does not exist or Cannot assign music box to vanilla tile <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> " + tileType or <a class="el" href="class_terraria_1_1_tile.html">Tile</a> <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> " + tileType + " does not exist </td></tr>
-    <tr><td class="paramname">System.ArgumentException</td><td>Music <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> " + musicSlot + " has already been assigned a music box or <a class="el" href="class_terraria_1_1_item.html">Item</a> <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> " + itemType + " has already been assigned a music or or Y-frame must be divisible by 36 </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -919,39 +855,6 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
 
 </div>
 </div>
-<a id="a5456a56362277b999e3d5360616e7631"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5456a56362277b999e3d5360616e7631">&#9670;&nbsp;</a></span>GetMusic()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_terraria_1_1_mod_loader_1_1_audio_1_1_music.html">Music</a> Terraria.ModLoader.Mod.GetMusic </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Shorthand for calling ModContent.GetMusic(this.FileName(name)). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td>The name.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">MissingResourceException</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="afc69c5da3fbaac0d3268f4266889c535"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afc69c5da3fbaac0d3268f4266889c535">&#9670;&nbsp;</a></span>GetPacket()</h2>
 
@@ -1092,33 +995,6 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
 </div><div class="memdoc">
 
 <p>Override this method to add most of your content to your mod. Here you will call other methods such as AddItem. This is guaranteed to be called after all content has been autoloaded. </p>
-
-</div>
-</div>
-<a id="af995bbfa93c0a1fe4c6252fb9fc179e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af995bbfa93c0a1fe4c6252fb9fc179e7">&#9670;&nbsp;</a></span>MusicExists()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Terraria.ModLoader.Mod.MusicExists </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Shorthand for calling ModLoader.MusicExists(this.FileName(name)). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td>The name.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -1416,6 +1292,30 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
 
 </div>
 </div>
+<a id="a2cbad6538cab18716820b4ba42749c8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cbad6538cab18716820b4ba42749c8e">&#9670;&nbsp;</a></span>MusicAutoloadingEnabled</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.ModLoader.Mod.MusicAutoloadingEnabled = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not this mod will automatically add music in the Sounds folder to the game. Place music tracks in Sounds/Music to autoload them. </p>
+
+</div>
+</div>
 <a id="a8206e4bf920a7562a972dcb7c9e2ef09"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8206e4bf920a7562a972dcb7c9e2ef09">&#9670;&nbsp;</a></span>Name</h2>
 
@@ -1484,7 +1384,7 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
 </table>
 </div><div class="memdoc">
 
-<p>Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, Sounds/NPCKilled to add them as npcKilled sounds, and Sounds/Music to add them as music tracks. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html" title="This class allows you to customize how a sound you add is played. To use this, pass an instance to Mo...">ModSound</a> classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound. </p>
+<p>Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, and Sounds/NPCKilled to add them as npcKilled sounds. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html" title="This class allows you to customize how a sound you add is played. To use this, pass an instance to Mo...">ModSound</a> classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound. </p>
 
 </div>
 </div>

@@ -883,14 +883,6 @@ var annotated_dup =
           [ "TModContentSource", "class_terraria_1_1_mod_loader_1_1_assets_1_1_t_mod_content_source.html", "class_terraria_1_1_mod_loader_1_1_assets_1_1_t_mod_content_source" ],
           [ "WavReader", "class_terraria_1_1_mod_loader_1_1_assets_1_1_wav_reader.html", null ]
         ] ],
-        [ "Audio", "namespace_terraria_1_1_mod_loader_1_1_audio.html", [
-          [ "Music", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music.html", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music" ],
-          [ "MusicCue", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_cue.html", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_cue" ],
-          [ "MusicStreaming", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming" ],
-          [ "MusicStreamingMP3", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_m_p3.html", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_m_p3" ],
-          [ "MusicStreamingOGG", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g" ],
-          [ "MusicStreamingWAV", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_w_a_v.html", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_w_a_v" ]
-        ] ],
         [ "Config", "namespace_terraria_1_1_mod_loader_1_1_config.html", [
           [ "UI", "namespace_terraria_1_1_mod_loader_1_1_config_1_1_u_i.html", [
             [ "CollectionElement", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_collection_element.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_collection_element" ],
@@ -1090,6 +1082,7 @@ var annotated_dup =
         [ "ModWall", "class_terraria_1_1_mod_loader_1_1_mod_wall.html", "class_terraria_1_1_mod_loader_1_1_mod_wall" ],
         [ "ModWaterfallStyle", "class_terraria_1_1_mod_loader_1_1_mod_waterfall_style.html", "class_terraria_1_1_mod_loader_1_1_mod_waterfall_style" ],
         [ "ModWaterStyle", "class_terraria_1_1_mod_loader_1_1_mod_water_style.html", "class_terraria_1_1_mod_loader_1_1_mod_water_style" ],
+        [ "MusicLoader", "class_terraria_1_1_mod_loader_1_1_music_loader.html", null ],
         [ "NoScalingDamageClass", "class_terraria_1_1_mod_loader_1_1_no_scaling_damage_class.html", "class_terraria_1_1_mod_loader_1_1_no_scaling_damage_class" ],
         [ "NPCLoot", "struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html", "struct_terraria_1_1_mod_loader_1_1_n_p_c_loot" ],
         [ "NPCSpawnInfo", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info" ],

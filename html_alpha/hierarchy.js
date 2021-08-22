@@ -1223,7 +1223,8 @@ var hierarchy =
         [ "Terraria.ModLoader.BackgroundTextureLoader", "class_terraria_1_1_mod_loader_1_1_background_texture_loader.html", null ],
         [ "Terraria.ModLoader.KeybindLoader", "class_terraria_1_1_mod_loader_1_1_keybind_loader.html", null ],
         [ "Terraria.ModLoader.SceneEffectLoader< T >", "class_terraria_1_1_mod_loader_1_1_scene_effect_loader.html", null ]
-      ] ]
+      ] ],
+      [ "Terraria.ModLoader.MusicLoader", "class_terraria_1_1_mod_loader_1_1_music_loader.html", null ]
     ] ],
     [ "Terraria.ModLoader.IO.ImageIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html", null ],
     [ "Terraria.GameContent.UI.Elements.IManuallyOrderedUIElement", "interface_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_i_manually_ordered_u_i_element.html", [
@@ -1658,14 +1659,6 @@ var hierarchy =
     [ "Terraria.Mount", "class_terraria_1_1_mount.html", null ],
     [ "Terraria.Mount.MountData", "class_terraria_1_1_mount_1_1_mount_data.html", null ],
     [ "Terraria.Mount.MountDelegatesData", "class_terraria_1_1_mount_1_1_mount_delegates_data.html", null ],
-    [ "Terraria.ModLoader.Audio.Music", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music.html", [
-      [ "Terraria.ModLoader.Audio.MusicCue", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_cue.html", null ],
-      [ "Terraria.ModLoader.Audio.MusicStreaming", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html", [
-        [ "Terraria.ModLoader.Audio.MusicStreamingMP3", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_m_p3.html", null ],
-        [ "Terraria.ModLoader.Audio.MusicStreamingOGG", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html", null ],
-        [ "Terraria.ModLoader.Audio.MusicStreamingWAV", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_w_a_v.html", null ]
-      ] ]
-    ] ],
     [ "Terraria.Audio.MusicCueHolder", "class_terraria_1_1_audio_1_1_music_cue_holder.html", null ],
     [ "Terraria.GameContent.Events.MysticLogFairiesEvent", "class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html", null ],
     [ "Terraria.ID.ArmorIDs.Neck", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_neck.html", null ],
@@ -2054,7 +2047,6 @@ var hierarchy =
         [ "Terraria.Audio.CueAudioTrack", "class_terraria_1_1_audio_1_1_cue_audio_track.html", null ]
       ] ],
       [ "Terraria.Graphics.TileBatch", "class_terraria_1_1_graphics_1_1_tile_batch.html", null ],
-      [ "Terraria.ModLoader.Audio.MusicStreaming", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html", null ],
       [ "Terraria.Server.Game", "class_terraria_1_1_server_1_1_game.html", null ]
     ] ]
 ];
