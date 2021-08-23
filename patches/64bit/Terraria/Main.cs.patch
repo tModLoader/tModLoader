@@ -137,6 +137,14 @@
  				IntPtr intPtr = FindWindow(null, lpWindowName);
  				if (intPtr != IntPtr.Zero)
  					ShowWindow(intPtr, 0);
+@@ -3528,6 +_,7 @@
+ 							Console.WriteLine("1\t" + Language.GetTextValue("UI.WorldSizeSmall"));
+ 							Console.WriteLine("2\t" + Language.GetTextValue("UI.WorldSizeMedium"));
+ 							Console.WriteLine("3\t" + Language.GetTextValue("UI.WorldSizeLarge"));
++							Console.WriteLine("4\t" + Language.GetTextValue("tModLoader.XL"));
+ 							Console.WriteLine("");
+ 							Console.Write(Language.GetTextValue("CLI.ChooseSize"));
+ 							string value = Console.ReadLine();
 @@ -3548,6 +_,11 @@
  										maxTilesY = 2400;
  										flag2 = false;
@@ -165,7 +173,7 @@
  			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
  			if (!Directory.Exists(vanillaContentFolder)) {
  				vanillaContentFolder = "../Content"; // Nested Manual Install
-@@ -6757,6 +_,7 @@
+@@ -6765,6 +_,7 @@
  			});
  
  			base.Initialize();
@@ -173,7 +181,7 @@
  			base.Window.AllowUserResizing = true;
  			OpenSettings();
  			if (screenWidth > GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width)
-@@ -7296,7 +_,7 @@
+@@ -7304,7 +_,7 @@
  			engine = new AudioEngine(Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "TerrariaMusic.xgs");
  			soundBank = new SoundBank(engine, Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "Sound Bank.xsb");
  			engine.Update();
@@ -182,7 +190,7 @@
  			engine.Update();
  			music = new Music[42];
  			while (!waveBank.IsPrepared) {
-@@ -7479,7 +_,7 @@
+@@ -7487,7 +_,7 @@
  			if (waveBank == null) //supress extra exceptions from audio engine failing to load
  				return;
  
@@ -191,7 +199,7 @@
  			if (Main.engine != null)
  				Main.engine.Update();
  
-@@ -10261,7 +_,7 @@
+@@ -10269,7 +_,7 @@
  				}
  
  				hasFocus = base.IsActive;
@@ -200,7 +208,7 @@
  				hasFocus = (Form.ActiveForm == Control.FromHandle(base.Window.Handle) as Form);
  #endif
  				if (!gameMenu || netMode == 2) {
-@@ -35792,9 +_,8 @@
+@@ -35800,9 +_,8 @@
  			SocialAPI.Shutdown();
  #endif
  			Exit();
@@ -212,7 +220,7 @@
  		}
  
  		protected Microsoft.Xna.Framework.Color randColor() {
-@@ -36426,19 +_,19 @@
+@@ -36434,19 +_,19 @@
  				}
  				else if (selectedMenu == 2 || inputTextEnter || autoPass) {
  					string str = "-autoshutdown -password \"" + Netplay.ServerPassword + "\" -lang " + Language.ActiveCulture.LegacyId;
@@ -240,7 +248,7 @@
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {
  						ProcessStartInfo startInfo = tServer.StartInfo;
-@@ -37718,7 +_,7 @@
+@@ -37726,7 +_,7 @@
  					}
  
  					bool flag7 = false;
@@ -249,7 +257,7 @@
  					flag7 = true;
  					System.Drawing.Rectangle bounds = Screen.FromPoint(((Form)Control.FromHandle(instance.Window.Handle)).Location).Bounds;
  					if (bounds.Width > maxScreenW || bounds.Height > maxScreenH)
-@@ -38373,36 +_,42 @@
+@@ -38381,36 +_,42 @@
  					array4[1] = 30;
  					array4[2] = 30;
  					array4[3] = 30;
@@ -302,7 +310,7 @@
  						WorldGen.setWorldSize();
  					}
  				}
-@@ -39186,26 +_,11 @@
+@@ -39194,26 +_,11 @@
  				if (num108 == 3)
  					num110 = 2;
  
@@ -333,7 +341,7 @@
  			}
  
  			DrawCursor(DrawThickCursor());
-@@ -41336,7 +_,7 @@
+@@ -41344,7 +_,7 @@
  			base.GraphicsDevice.SetRenderTarget(backWaterTarget);
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
  			spriteBatch.Begin();
@@ -342,7 +350,7 @@
  			tileBatch.Begin();
  #else
  			tileBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend);
-@@ -50877,8 +_,9 @@
+@@ -50885,8 +_,9 @@
  				graphics.ToggleFullScreen();
  
  			bool flag = false;
@@ -353,7 +361,7 @@
  			screenMaximized = (((Form)Control.FromHandle(instance.Window.Handle)).WindowState == FormWindowState.Maximized);
  			if (screenBorderless && screenMaximized && !graphics.IsFullScreen) {
  				screenMaximized = false;
-@@ -50890,14 +_,11 @@
+@@ -50898,14 +_,11 @@
  #else
  			Main.screenMaximized = false;
  #endif
@@ -369,7 +377,7 @@
  				form.MinimumSize = new Size(0, 0);
  				if (screenBorderless && !graphics.IsFullScreen && screenBorderlessPendingResizes > 0) {
  					screenBorderlessPendingResizes--;
-@@ -50928,10 +_,11 @@
+@@ -50936,10 +_,11 @@
  				else {
  					num3 = graphics.PreferredBackBufferWidth;
  					num4 = graphics.PreferredBackBufferHeight;
@@ -382,7 +390,7 @@
  				form.MinimumSize = new Size(minScreenW, minScreenH);
  				if (flag) {
  					width = displayWidth[0];
-@@ -50946,7 +_,7 @@
+@@ -50954,7 +_,7 @@
  				flag2 = (graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height);
  			}
  
@@ -391,7 +399,7 @@
  			// appears redundant. Just causes the window to fight the user when attempting to resize too small
  			// with this disabled, the window will just snap back to minimum size when released
  			/*if (!fullscreen && !flag2) {
-@@ -50976,8 +_,7 @@
+@@ -50984,8 +_,7 @@
  				screenHeight = height;
  				graphics.PreferredBackBufferWidth = screenWidth;
  				graphics.PreferredBackBufferHeight = screenHeight;
@@ -401,7 +409,7 @@
  
  				PlayerInput.CacheOriginalScreenDimensions();
  				FixUIScale();
-@@ -50987,7 +_,7 @@
+@@ -50995,7 +_,7 @@
  				PendingResolutionWidth = screenWidth;
  				PendingResolutionHeight = screenHeight;
  				PlayerInput.CacheOriginalScreenDimensions();
@@ -410,7 +418,7 @@
  				if (!fullscreen) {
  					form.SendToBack();
  					form.BringToFront();
-@@ -51026,7 +_,6 @@
+@@ -51034,7 +_,6 @@
  		}
  
  		public void UpdateDisplaySettings() {
