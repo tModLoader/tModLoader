@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/UI/Elements/UIImage.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/UIImage.cs
+@@ -7,7 +_,7 @@
+ {
+ 	public class UIImage : UIElement
+ 	{
+-		private Asset<Texture2D> _texture;
++		protected  Asset<Texture2D> _texture;
+ 		public float ImageScale = 1f;
+ 		public float Rotation;
+ 		public bool ScaleToFit;

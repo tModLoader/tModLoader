@@ -1,0 +1,34 @@
+--- src/Terraria/Terraria/UI/AchievementAdvisor.cs
++++ src/tModLoader/Terraria/UI/AchievementAdvisor.cs
+@@ -3,7 +_,9 @@
+ using ReLogic.Content;
+ using System.Collections.Generic;
+ using System.Linq;
++using Terraria.Achievements;
+ using Terraria.GameInput;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.UI
+ {
+@@ -106,8 +_,8 @@
+ 				PlayerInput.SetZoom_UI();
+ 				Item item = new Item();
+ 				item.SetDefaults(0, noMatCheck: true);
+-				item.SetNameOverride(_hoveredCard.achievement.FriendlyName.Value);
++				item.SetNameOverride(_hoveredCard.achievement.FriendlyName);
+-				item.ToolTip = ItemTooltip.FromLanguageKey(_hoveredCard.achievement.Description.Key);
++				item.ToolTip = ItemTooltip.FromLanguageKey(_hoveredCard.achievement.Description);
+ 				item.type = 1;
+ 				item.scale = 0f;
+ 				item.rare = 10;
+@@ -138,8 +_,8 @@
+ 			}
+ 
+ 			Rectangle frame = card.frame;
+-			frame.X += 528;
+-			spriteBatch.Draw(_achievementsTexture.Value, position, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
++			frame.X += card.achievement.Texture == Achievement.VanillaTextureIndicator ? 528 : 0;
++			spriteBatch.Draw(card.achievement.Texture == Achievement.VanillaTextureIndicator ? _achievementsTexture.Value : ModContent.Request<Texture2D>(card.achievement.Texture, AssetRequestMode.ImmediateLoad).Value, position, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+ 			spriteBatch.Draw(_achievementsBorderTexture.Value, position + value, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+ 			if (hovered)
+ 				spriteBatch.Draw(value3, position + value2, null, Main.OurFavoriteColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);

@@ -1,0 +1,34 @@
+--- src/Terraria/Terraria/Achievements/AchievementTracker.cs
++++ src/tModLoader/Terraria/Achievements/AchievementTracker.cs
+@@ -2,26 +_,26 @@
+ 
+ namespace Terraria.Achievements
+ {
+-	public abstract class AchievementTracker<T> : IAchievementTracker
++	public abstract partial class AchievementTracker<T> : IAchievementTracker
+ 	{
+ 		protected T _value;
+ 		protected T _maxValue;
+ 		protected string _name;
+-		private TrackerType _type;
++		// private TrackerType _type;
+ 
+ 		public T Value => _value;
+ 
+ 		public T MaxValue => _maxValue;
+ 
+-		protected AchievementTracker(TrackerType type) {
++		/*protected AchievementTracker(TrackerType type) {
+ 			_type = type;
+-		}
++		}*/
+ 
+ 		void IAchievementTracker.ReportAs(string name) {
+ 			_name = name;
+ 		}
+ 
+-		TrackerType IAchievementTracker.GetTrackerType() => _type;
++		// TrackerType IAchievementTracker.GetTrackerType() => _type;
+ 
+ 		void IAchievementTracker.Clear() {
+ 			SetValue(default(T));

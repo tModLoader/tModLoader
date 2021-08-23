@@ -10,6 +10,15 @@
  using Terraria.UI.Gamepad;
  
  namespace Terraria.UI
+@@ -36,7 +_,7 @@
+ 			Main.InGameUI.SetState(Main.AchievementsMenu);
+ 		}
+ 
+-		public static void OpenAchievementsAndGoto(Achievement achievement) {
++		public static void OpenAchievementsAndGoto(IAchievement achievement) {
+ 			OpenAchievements();
+ 			Main.AchievementsMenu.GotoAchievement(achievement);
+ 		}
 @@ -85,6 +_,9 @@
  							Main.defaultChestName = Lang.chestType2[tile.frameX / 36].Value;
  						else if (tile.type == 88)

@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/UI/InGameNotificationsTracker.cs
++++ src/tModLoader/Terraria/UI/InGameNotificationsTracker.cs
+@@ -57,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		public static void AddCompleted(Achievement achievement) {
++		public static void AddCompleted(IAchievement achievement) {
+ 			if (Main.netMode != 2)
+ 				_notifications.Add(new InGamePopups.AchievementUnlockedPopup(achievement));
+ 		}

@@ -1,0 +1,15 @@
+--- src/Terraria/Terraria/Achievements/IAchievementTracker.cs
++++ src/tModLoader/Terraria/Achievements/IAchievementTracker.cs
+@@ -1,10 +_,10 @@
+ namespace Terraria.Achievements
+ {
+-	public interface IAchievementTracker
++	public partial interface IAchievementTracker
+ 	{
+ 		void ReportAs(string name);
+ 
+-		TrackerType GetTrackerType();
++		// TrackerType GetTrackerType();
+ 
+ 		void Load();
+ 

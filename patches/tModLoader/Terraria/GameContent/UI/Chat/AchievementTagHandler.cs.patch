@@ -1,0 +1,32 @@
+--- src/Terraria/Terraria/GameContent/UI/Chat/AchievementTagHandler.cs
++++ src/tModLoader/Terraria/GameContent/UI/Chat/AchievementTagHandler.cs
+@@ -9,10 +_,10 @@
+ 	{
+ 		private class AchievementSnippet : TextSnippet
+ 		{
+-			private Achievement _achievement;
++			private IAchievement _achievement;
+ 
+-			public AchievementSnippet(Achievement achievement)
++			public AchievementSnippet(IAchievement achievement)
+-				: base(achievement.FriendlyName.Value, Color.LightBlue) {
++				: base(achievement.FriendlyName, Color.LightBlue) {
+ 				CheckForHover = true;
+ 				_achievement = achievement;
+ 			}
+@@ -24,13 +_,13 @@
+ 		}
+ 
+ 		TextSnippet ITagHandler.Parse(string text, Color baseColor, string options) {
+-			Achievement achievement = Main.Achievements.GetAchievement(text);
++			IAchievement achievement = Main.Achievements.GetAchievement(text);
+ 			if (achievement == null)
+ 				return new TextSnippet(text);
+ 
+ 			return new AchievementSnippet(achievement);
+ 		}
+ 
+-		public static string GenerateTag(Achievement achievement) => "[a:" + achievement.Name + "]";
++		public static string GenerateTag(IAchievement achievement) => "[a:" + achievement.Name + "]";
+ 	}
+ }

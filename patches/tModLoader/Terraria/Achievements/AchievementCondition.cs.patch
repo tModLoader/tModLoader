@@ -7,12 +7,3 @@
  
  namespace Terraria.Achievements
  {
-@@ -30,6 +_,8 @@
- 		}
- 
- 		public virtual void Complete() {
-+			if (Steam.IsSteamApp) return;
-+
- 			if (!_isCompleted) {
- 				_isCompleted = true;
- 				if (this.OnComplete != null)

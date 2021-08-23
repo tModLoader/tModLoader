@@ -1,0 +1,172 @@
+--- src/Terraria/Terraria/Achievements/Achievement.cs
++++ src/tModLoader/Terraria/Achievements/Achievement.cs
+@@ -2,74 +_,76 @@
+ using Newtonsoft.Json.Linq;
+ using System.Collections.Generic;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ 
+ namespace Terraria.Achievements
+ {
+ 	[JsonObject(MemberSerialization.OptIn)]
+-	public class Achievement
++	[Autoload(false)]
++	public sealed partial class Achievement : ModAchievement
+ 	{
+-		public delegate void AchievementCompleted(Achievement achievement);
++		public delegate void AchievementCompleted(IAchievement achievement);
+ 
+-		private static int _totalAchievements;
+-		public readonly string Name;
+-		public readonly LocalizedText FriendlyName;
+-		public readonly LocalizedText Description;
+-		public readonly int Id = _totalAchievements++;
+-		private AchievementCategory _category;
+-		private IAchievementTracker _tracker;
+-		[JsonProperty("Conditions")]
+-		private Dictionary<string, AchievementCondition> _conditions = new Dictionary<string, AchievementCondition>();
++		// private static int _totalAchievements; // See Id field for explanation.
++		// public readonly string Name; // We use IModType.Name instead. (See: Achievement.TML.cs)
++		// public readonly LocalizedText FriendlyName; // These are properties in IAchievement.
++		// public readonly LocalizedText Description; // We override them in Achievement.TML.cs to use the proper localization.
++		// public readonly int Id = _totalAchievements++; // No need for IDs, we can compare by Name now!
++		// private AchievementCategory _category;
++		// private IAchievementTracker _tracker;
++		//[JsonProperty("Conditions")]
++		//private Dictionary<string, AchievementCondition> _conditions = new Dictionary<string, AchievementCondition>();
+ 		private int _completedCount;
+ 
+-		public AchievementCategory Category => _category;
++		// public AchievementCategory Category => _category;
+ 
+-		public bool HasTracker => _tracker != null;
++		// public bool HasTracker => _tracker != null;
+ 
+-		public bool IsCompleted => _completedCount == _conditions.Count;
++		public override bool IsCompleted => _completedCount == Conditions.Count;
+ 
+-		public event AchievementCompleted OnCompleted;
++		// public event AchievementCompleted OnCompleted;
+ 
+-		public IAchievementTracker GetTracker() => _tracker;
++		// public IAchievementTracker GetTracker() => _tracker;
+ 
+-		public Achievement(string name) {
++		internal Achievement(string name) {
+ 			Name = name;
+-			FriendlyName = Language.GetText("Achievements." + name + "_Name");
++			// FriendlyName = Language.GetText("Achievements." + name + "_Name");
+-			Description = Language.GetText("Achievements." + name + "_Description");
++			// Description = Language.GetText("Achievements." + name + "_Description");
+ 		}
+ 
+-		public void ClearProgress() {
++		public override void ClearProgress() {
+ 			_completedCount = 0;
+-			foreach (KeyValuePair<string, AchievementCondition> condition in _conditions) {
++			foreach (KeyValuePair<string, AchievementCondition> condition in Conditions) {
+ 				condition.Value.Clear();
+ 			}
+ 
+-			if (_tracker != null)
++			if (Tracker != null)
+-				_tracker.Clear();
++				Tracker.Clear();
+ 		}
+ 
+-		public void Load(Dictionary<string, JObject> conditions) {
++		public override void Load(Dictionary<string, JObject> conditions) {
+ 			foreach (KeyValuePair<string, JObject> condition in conditions) {
+-				if (_conditions.TryGetValue(condition.Key, out AchievementCondition value)) {
++				if (Conditions.TryGetValue(condition.Key, out AchievementCondition value)) {
+ 					value.Load(condition.Value);
+ 					if (value.IsCompleted)
+ 						_completedCount++;
+ 				}
+ 			}
+ 
+-			if (_tracker != null)
++			if (Tracker != null)
+-				_tracker.Load();
++				Tracker.Load();
+ 		}
+ 
+-		public void AddCondition(AchievementCondition condition) {
+-			_conditions[condition.Name] = condition;
++		public override void AddCondition(AchievementCondition condition) {
++			base.AddCondition(condition); // Conditions[condition.Name] = condition;
+ 			condition.OnComplete += OnConditionComplete;
+ 		}
+ 
+ 		private void OnConditionComplete(AchievementCondition condition) {
+ 			_completedCount++;
+-			if (_completedCount == _conditions.Count) {
++			if (_completedCount == Conditions.Count) {
+-				if (_tracker == null && SocialAPI.Achievements != null)
++				if (Tracker == null && SocialAPI.Achievements != null)
+ 					SocialAPI.Achievements.CompleteAchievement(Name);
+ 
+ 				if (this.OnCompleted != null)
+@@ -79,7 +_,7 @@
+ 
+ 		private void UseTracker(IAchievementTracker tracker) {
+ 			tracker.ReportAs("STAT_" + Name);
+-			_tracker = tracker;
++			Tracker = tracker;
+ 		}
+ 
+ 		public void UseTrackerFromCondition(string conditionName) {
+@@ -88,7 +_,7 @@
+ 
+ 		public void UseConditionsCompletedTracker() {
+ 			ConditionsCompletedTracker conditionsCompletedTracker = new ConditionsCompletedTracker();
+-			foreach (KeyValuePair<string, AchievementCondition> condition in _conditions) {
++			foreach (KeyValuePair<string, AchievementCondition> condition in Conditions) {
+ 				conditionsCompletedTracker.AddCondition(condition.Value);
+ 			}
+ 
+@@ -98,17 +_,17 @@
+ 		public void UseConditionsCompletedTracker(params string[] conditions) {
+ 			ConditionsCompletedTracker conditionsCompletedTracker = new ConditionsCompletedTracker();
+ 			foreach (string key in conditions) {
+-				conditionsCompletedTracker.AddCondition(_conditions[key]);
++				conditionsCompletedTracker.AddCondition(Conditions[key]);
+ 			}
+ 
+ 			UseTracker(conditionsCompletedTracker);
+ 		}
+ 
+-		public void ClearTracker() {
++		/*public void ClearTracker() {
+ 			_tracker = null;
+-		}
++		}*/
+ 
+-		private IAchievementTracker GetConditionTracker(string name) => _conditions[name].GetAchievementTracker();
++		private IAchievementTracker GetConditionTracker(string name) => Conditions[name].GetAchievementTracker();
+ 
+ 		public void AddConditions(params AchievementCondition[] conditions) {
+ 			for (int i = 0; i < conditions.Length; i++) {
+@@ -116,15 +_,15 @@
+ 			}
+ 		}
+ 
+-		public AchievementCondition GetCondition(string conditionName) {
++		/*public override AchievementCondition GetCondition(string conditionName) {
+-			if (_conditions.TryGetValue(conditionName, out AchievementCondition value))
++			if (Conditions.TryGetValue(conditionName, out AchievementCondition value))
+ 				return value;
+ 
+ 			return null;
+-		}
++		}*/
+ 
+-		public void SetCategory(AchievementCategory category) {
+-			_category = category;
+-		}
++		/*internal void SetCategory(AchievementCategory category) {
++			Category = category;
++		}*/
+ 	}
+ }
