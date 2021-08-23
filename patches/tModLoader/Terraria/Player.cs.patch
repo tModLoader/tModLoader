@@ -1781,7 +1781,7 @@
 +					;//Silence
 +				else if (Main.curMusic < Main.maxMusic)
  					currentItem.SetDefaults(num3 + 562);
-+				else if (SoundLoader.musicToItem.TryGetValue(Main.curMusic, out int modMusicBoxType))
++				else if (MusicLoader.musicToItem.TryGetValue(Main.curMusic, out int modMusicBoxType))
 +					currentItem.SetDefaults(modMusicBoxType);
  			}
  
@@ -1802,7 +1802,7 @@
  			if (currentItem.type == 5044)
  				Main.musicBox2 = 85;
  
-+			if (SoundLoader.itemToMusic.TryGetValue(currentItem.type, out int modMusicBox))
++			if (MusicLoader.itemToMusic.TryGetValue(currentItem.type, out int modMusicBox))
 +				Main.musicBox2 = modMusicBox;
 +
  			Main.musicBoxNotModifiedByVolume = Main.musicBox2;

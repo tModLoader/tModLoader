@@ -37,7 +37,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 
-			ArmorIDs.Wing.Sets.Stats[Mod.GetEquipSlot(GetType().Name, EquipType.Wings)] = new WingStats(150);
+			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(150, 7f);
 		}
 
 		public override void SetDefaults() {
