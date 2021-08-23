@@ -92,5 +92,6 @@ namespace Terraria.ID
 		public const short OtherworldlyWoF = 87;
 		public const short OtherworldlyHallow = 88;
 		public const short Credits = 89;
+		public const short Count = 90;
 	}
 }
