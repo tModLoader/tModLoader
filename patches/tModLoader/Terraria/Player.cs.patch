@@ -4288,7 +4288,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -36450,6 +_,29 @@
+@@ -36450,6 +_,41 @@
  			}
  
  			return num;
@@ -4315,6 +4315,18 @@
 +			CombinedHooks.ModifyWeaponDamage(this, sItem, ref damage, ref flat);
 +			int damageNum = (int)((sItem.damage * (float)damage) + flat);
 +			return Math.Max(0, damageNum);
++		}
++
++		// TO-DO: potentially add ModifyWeaponXYZ hooks for the following?
++		public int GetWeaponArmorPenetration(Item sItem) {
++			int armorPen = sItem.ArmorPenetration;
++			var currentModifiers = damageData;
++			var scalings = sItem.DamageType.benefitsCache;
++			for (int i = 0; i < currentModifiers.Length; i++) {
++				armorPen += (int)(currentModifiers[i].armorPen * scalings[i]);
++			}
++
++			return armorPen;
  		}
  
  		public bool HasAmmo(Item sItem, bool canUse) {

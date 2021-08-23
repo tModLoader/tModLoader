@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace Terraria
@@ -19,6 +21,38 @@ namespace Terraria
 		public DamageClass DamageType {
 			get => _damageClass;
 			set => _damageClass = value ?? throw new ArgumentException("DamageType cannot be null");
+		}
+
+		private int _armorPenetration = 0;
+		/// <summary>
+		/// The number of defense points that this projectile can ignore on its own. Cannot be set to negative values. Defaults to 0.
+		/// </summary>
+		public int ArmorPenetration {
+			get => _armorPenetration;
+			set => _armorPenetration = Math.Max(value, 0);
+		}
+
+		private int _crit = 0;
+		public int CritChance {
+			get => _crit;
+			set => _crit = Math.Max(value, 0);
+		}
+
+		private static void HandlePlayerStatModifiers(IProjectileSource spawnSource, Projectile projectile) {
+			if (spawnSource is null || !(spawnSource is ProjectileSource_Item || spawnSource is ProjectileSource_Item_WithAmmo))
+				return;
+
+			if (spawnSource is ProjectileSource_Item) {
+				ProjectileSource_Item actualSpawnSource = spawnSource as ProjectileSource_Item;
+				projectile.CritChance += actualSpawnSource.Player.GetWeaponCrit(actualSpawnSource.Item);
+				projectile.ArmorPenetration += actualSpawnSource.Player.GetWeaponArmorPenetration(actualSpawnSource.Item);
+			}
+			else
+			{
+				ProjectileSource_Item_WithAmmo actualSpawnSource = spawnSource as ProjectileSource_Item_WithAmmo;
+				projectile.CritChance += actualSpawnSource.Player.GetWeaponCrit(actualSpawnSource.Item);
+				projectile.ArmorPenetration += actualSpawnSource.Player.GetWeaponArmorPenetration(actualSpawnSource.Item);
+			}
 		}
 
 		/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
@@ -41,6 +75,23 @@ namespace Terraria
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
 			=> GlobalType.TryGetGlobal<GlobalProjectile, T>(globalProjectiles, baseInstance, out result);
+
+		/// <summary>
+		/// Spawns a projectile based on the supplied parameters.
+		/// </summary>
+		/// <param name="spawnSource"></param>
+		/// <param name="position"></param>
+		/// <param name="velocity"></param>
+		/// <param name="Type"></param>
+		/// <param name="Damage"></param>
+		/// <param name="KnockBack"></param>
+		/// <param name="Owner"></param>
+		/// <param name="ai0"></param>
+		/// <param name="ai1"></param>
+		/// <returns>The projectile spawned as a result of the method.</returns>
+		// TO-DO: properly document what the hell spawnSource actually means both here and next to the actual methods so that the average modder can understand the parameter
+		public static Projectile NewProjectileDirect(IProjectileSource spawnSource, Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner = 255, float ai0 = 0f, float ai1 = 0f)
+			=> Main.projectile[Projectile.NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, Type, Damage, KnockBack, Owner, ai0, ai1)];
 
 		public bool CountsAsClass<T>() where T : DamageClass
 			=> CountsAsClass(ModContent.GetInstance<T>());

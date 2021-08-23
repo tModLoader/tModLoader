@@ -28,6 +28,15 @@ namespace Terraria
 			set => _damageClass = value ?? throw new ArgumentException("DamageType cannot be null");
 		}
 
+		private int _armorPenetration = 0;
+		/// <summary>
+		/// The number of defense points that this item can ignore on its own. Cannot be set to negative values. Defaults to 0.
+		/// </summary>
+		public int ArmorPenetration {
+			get => _armorPenetration;
+			set => _armorPenetration = Math.Max(value, 0);
+		}
+
 		/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		/// <exception cref="IndexOutOfRangeException"/>

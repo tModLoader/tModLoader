@@ -58,14 +58,14 @@ namespace Terraria
 			damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
 
 			for (int i = 0; i < damageData.Length; i++) {
-				damageData[i] = new DamageClassData(StatModifier.One, 0, StatModifier.One);
+				damageData[i] = new DamageClassData(StatModifier.One, 0, StatModifier.One, 0);
 				DamageClassLoader.DamageClasses[i].SetDefaultStats(this);
 			}
 		}
 
 
 		/// <summary>
-		/// Gets the crit modifier for this damage type on this player.
+		/// Gets the crit chance modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary> 
 		public ref int GetCritChance<T>() where T : DamageClass => ref GetCritChance(ModContent.GetInstance<T>());
@@ -81,6 +81,12 @@ namespace Terraria
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary>
 		public ref StatModifier GetKnockback<T>() where T : DamageClass => ref GetKnockback(ModContent.GetInstance<T>());
+
+		/// <summary>
+		/// Gets the armor penetration modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref int GetArmorPen<T>() where T : DamageClass => ref GetArmorPen(ModContent.GetInstance<T>());
 
 		/// <summary>
 		/// Gets the crit modifier for this damage type on this player.
@@ -99,6 +105,12 @@ namespace Terraria
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary>
 		public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
+
+		/// <summary>
+		/// Gets the knockback modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref int GetArmorPen(DamageClass damageClass) => ref damageData[damageClass.Type].armorPen;
 
 		/// <summary>
 		/// Container for current SceneEffect client properties such as: Backgrounds, music, and water styling
