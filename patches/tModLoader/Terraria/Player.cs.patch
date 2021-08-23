@@ -3521,7 +3521,7 @@
  			Main.instance.LoadItem(type);
  			if (type == 75)
  				return TextureAssets.Item[type].Frame(1, 8);
-@@ -29758,6 +_,12 @@
+@@ -29758,6 +_,13 @@
  		}
  
  		public void ItemCheck(int i) {
@@ -3530,11 +3530,12 @@
 +
 +			PlayerLoader.PostItemCheck(this);
 +		}
++		private bool willUseItemNextFrame = false;
 +		private void ItemCheck_Inner(int i) {
  			if (CCed) {
  				channel = false;
  				itemAnimation = (itemAnimationMax = 0);
-@@ -29770,6 +_,39 @@
+@@ -29770,6 +_,42 @@
  			if (Main.myPlayer == i && PlayerInput.ShouldFastUseItem)
  				controlUseItem = true;
  
@@ -3567,6 +3568,9 @@
 +			// This is done so that itemTime and itemAnimation cannot be decremented in the same tick as the one they're set in, which should fix a lot of use time issues
 +			// -- ThomasThePencil
 +
++			if (willUseItemNextFrame)
++				ItemCheck_StartActualUse(item);
++
 +			goto DecrementItemAnimation;
 +
 +			ItemCheckPart1:
@@ -3594,7 +3598,15 @@
  
  			if (itemAnimation == 0 && altFunctionUse == 2)
  				altFunctionUse = 0;
-@@ -29813,7 +_,7 @@
+@@ -29793,6 +_,7 @@
+ 			if (gravDir == -1f && GolfHelper.IsPlayerHoldingClub(this))
+ 				flag2 = false;
+ 
++			willUseItemNextFrame = false;
+ 			if (flag2 && controlUseItem && releaseUseItem && itemAnimation == 0 && item.useStyle != 0) {
+ 				if (altFunctionUse == 1)
+ 					altFunctionUse = 2;
+@@ -29813,16 +_,19 @@
  				if (whoAmI == Main.myPlayer && gravDir == 1f && item.mountType != -1 && mount.CanMount(item.mountType, this))
  					mount.SetMount(item.mountType, this);
  
@@ -3602,12 +3614,15 @@
 +				if ((item.shoot <= 0 || !ProjectileID.Sets.MinionTargettingFeature[item.shoot] || altFunctionUse != 2) && flag3 && whoAmI == Main.myPlayer && item.shoot >= 0 && (ProjectileID.Sets.LightPet[item.shoot] || Main.projPet[item.shoot]))
  					FreeUpPetsAndMinions(item);
  
- 				if (flag3)
-@@ -29823,6 +_,10 @@
+-				if (flag3)
+-					ItemCheck_StartActualUse(item);
++				willUseItemNextFrame = flag3;
+ 			}
+ 
  			if (!controlUseItem)
  				channel = false;
  
-+			goto ItemCheckPart2;
++			goto HandleItemHolding;
 +
 +			DecrementItemAnimation:
 +
@@ -3631,7 +3646,7 @@
  
 -			releaseUseItem = !controlUseItem;
 +			//releaseUseItem = !controlUseItem;
-+			return; // This is the end of our spaghetti trip!
++			goto ItemCheckPart2;
 +
 +			// See the comment at DecrementItemAnimation for explanation
 +			DecrementItemTime:
@@ -3806,7 +3821,7 @@
  			if (itemAnimation == 0)
  				JustDroppedAnItem = false;
 +
-+			goto HandleItemHolding;
++			return; // End of spaghetti
  		}
  
  		private void ItemCheck_EmitFoodParticles(Item sItem) {
