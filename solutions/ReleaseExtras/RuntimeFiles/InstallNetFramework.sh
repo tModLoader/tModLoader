@@ -12,7 +12,7 @@ echo "This may take a few moments."
 # The following is a workaround for the system's SDL2 library being preferred by the linkers for some reason.
 # Additionally, something in dotnet is requesting 'libSDL2.so' (instead of 'libSDL2-2.0.so.0' that is specified in dependencies)
 # without actually invoking managed NativeLibrary resolving events!
-if [[ "$(uname)" == Darwin ]]; then
+if [ "$(uname)" = Darwin ]; then
   library_dir="$script_dir/Libraries/Native/OSX"
   export DYLD_LIBRARY_PATH="$library_dir"
   ln -sf "$library_dir/libSDL2-2.0.0.dylib" "$library_dir/libSDL2.dylib"
