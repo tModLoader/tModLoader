@@ -16,6 +16,7 @@
 		"FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
 		"tModLoaderSettings": "tModLoader Settings",
 		"ModMenuSwap": "Switch Menu Theme",
+		"AudioNotSupported": "No audio hardware found. Disabling all audio.",
 
 		// Mods Menu
 		"ModsModsList": "Mods List",
@@ -215,6 +216,8 @@
 		"XDaysAgo": "{0} {^0:day;days} ago",
 		"XMonthsAgo": "{0} {^0:month;months} ago",
 		"XYearsAgo": "{0} {^0:year;years} ago",
+		"MBServerReturnToMenu": "Return to world menu",
+		"MBServerAskForModName": "Type an exact ModName to download: ",
 
 		// Mod Publishing
 		"MBPublishEnterPassphrase": "Please Enter Your Passcode",
@@ -280,6 +283,7 @@
 		"MSBuildAll": "Build All",
 		"MSBuildReloadAll": "Build + Reload All",
 		"MSUpgradeCSProj": "Upgrade .csproj file",
+		"MSUpgradeLangFiles": "Upgrade .lang files to .hjson (non-destructive)",
 		"MSOpenSources": "Open Sources",
 		"MSManagePublished": "Manage Published",
 		"MSPublish": "Publish",

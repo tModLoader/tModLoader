@@ -21,6 +21,10 @@ namespace Terraria.ModLoader
 		{
 			public struct PrioritizedPair
 			{
+				public static readonly PrioritizedPair Default = new() {
+					value = -1
+				};
+
 				public int value;
 				public SceneEffectPriority priority;
 			}
@@ -33,8 +37,7 @@ namespace Terraria.ModLoader
 			public CaptureBiome.TileColorStyle tileColorStyle;
 
 			public SceneEffectInstance() {
-				anyActive = false;
-				waterStyle = undergroundBackground = surfaceBackground = music = new PrioritizedPair();
+				waterStyle = undergroundBackground = surfaceBackground = music = PrioritizedPair.Default;
 				tileColorStyle = CaptureBiome.TileColorStyle.Normal;
 			}
 		}
@@ -115,10 +118,11 @@ namespace Terraria.ModLoader
 
 		// Ref or out? MusicLoader?
 		public void UpdateMusic(ref int music, ref SceneEffectPriority priority) {
-			int tst = Main.LocalPlayer.CurrentSceneEffect.music.value;
-			if (tst > -1) {
-				music = tst;
-				priority = Main.LocalPlayer.CurrentSceneEffect.music.priority;
+			var currentMusic = Main.LocalPlayer.CurrentSceneEffect.music;
+
+			if (currentMusic.value > -1 && currentMusic.priority > priority) {
+				music = currentMusic.value;
+				priority = currentMusic.priority;
 			}
 		}
 	}
