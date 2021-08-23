@@ -57,8 +57,8 @@ namespace Terraria.ModLoader.x64bit
 
 		internal static void DrawPatreon(SpriteBatch sb, int loopNum, int offsetX, int offsetY, bool hasFocus, Color color12) {
 			// TODO: Localization for vanilla, tml, and lite modes when they're actually used
-			string patreonShortURL = !vanillaMode ? Language.GetTextValue("tModLoader.VanillaMode") : Language.GetTextValue("tModLoader.tModMode");
-			string tmlModeString = liteMode ? Language.GetTextValue("tModLoader.DisableLite") : Language.GetTextValue("tModLoader.EnableLite");
+			string patreonShortURL = "";
+			string tmlModeString = "";
 			bool showPatreon = Main.menuMode == 0;
 			string architecture = Language.GetTextValue("tModLoader.RunningBitMode", Environment.Is64BitProcess ? 64.ToString() : 32.ToString());
 			string GoG = InstallVerifier.IsGoG ? Language.GetTextValue("tModLoader.GoG") : Language.GetTextValue("tModLoader.Steam");
