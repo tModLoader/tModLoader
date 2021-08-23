@@ -7,7 +7,7 @@ launch_args="-server -config serverconfig.txt"
 
 read -p "Use Steam Server (y)/(n) " steam
 
-if [ $steam == "y" ]; then
+if [ $steam = "y" ]; then
 	launch_args="$launch_args -steam"
 	
 	clear
