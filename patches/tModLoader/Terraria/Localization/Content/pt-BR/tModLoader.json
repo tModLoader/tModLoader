@@ -72,7 +72,7 @@
 		"SteamPublishingLimit": "Erro: Apenas proprietários do tModLoader na Steam podem publicar para a Oficina dentro do jogo.",
 		"NoWorkshopAccess": "Erro: Não foi possível acessar a Oficina Steam",
 		"ModAlreadyUploaded": "Erro: O Mod já existe na Oficina!",
-		"ModVersionInfoUnchanged": "Erro: Informações da versão do mod devem ser aumentadas antes de atualizar.",
+		"ModVersionInfoUnchanged": "Erro: Informações da versão do mod devem ser incrementadas antes de atualizar.",
 
 		// Mod Errors
 		"LoadError": "Ocorreu um erro ao carregar {0}",
