@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Terraria.Audio;
 using Terraria.Localization;
-using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
 
@@ -21,21 +21,8 @@ namespace Terraria.ModLoader
 		private readonly Queue<Task> AsyncLoadQueue = new Queue<Task>();
 
 		//Entities
-		internal readonly IDictionary<string, Music> musics = new Dictionary<string, Music>();
 		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
 		internal readonly IList<ILoadable> content = new List<ILoadable>();
-
-		private Music LoadMusic(string path, string extension) {
-			path = $"tmod:{Name}/{path}{extension}";
-			
-			switch (extension) {
-				case ".wav": return new MusicStreamingWAV(path);
-				case ".mp3": return new MusicStreamingMP3(path);
-				case ".ogg": return new MusicStreamingOGG(path);
-			}
-
-			throw new ResourceLoadException($"Unknown music extension {extension}");
-		}
 
 		internal void SetupContent() {
 			foreach (var e in content.OfType<ModType>()) {
@@ -52,8 +39,6 @@ namespace Terraria.ModLoader
 			content.Clear();
 
 			equipTextures.Clear();
-
-			musics.Clear();
 
 			Assets?.Dispose();
 		}
@@ -99,6 +84,9 @@ namespace Terraria.ModLoader
 			
 			if (GoreAutoloadingEnabled)
 				GoreLoader.AutoloadGores(this);
+
+			if (MusicAutoloadingEnabled)
+				MusicLoader.AutoloadMusic(this);
 
 			if (BackgroundAutoloadingEnabled)
 				BackgroundTextureLoader.AutoloadBackgrounds(this);

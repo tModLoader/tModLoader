@@ -57,7 +57,7 @@
  			colorEyeWhites = Main.quickAlpha(Color.White, Alpha);
  			colorEyes = Main.quickAlpha(drawPlayer.eyeColor, Alpha);
  			colorHair = Main.quickAlpha(drawPlayer.GetHairColor(useLighting: false), Alpha);
-@@ -95,14 +_,21 @@
+@@ -95,14 +_,23 @@
  				playerEffect = SpriteEffects.FlipHorizontally;
  
  			headVect = new Vector2((float)drawPlayer.legFrame.Width * 0.5f, (float)drawPlayer.legFrame.Height * 0.4f);
@@ -72,6 +72,8 @@
  			Position.X -= 6f;
  			Position.Y -= 4f;
  			Position.Y -= drawPlayer.HeightMapOffset;
++
++			SetupHairFrames(); // Important fix for baldness.
 +
 +			// Workaround for movement bobbing affecting head-only rendering.
 +			Position -= Main.OffsetsPlayerHeadgear[drawPlayer.bodyFrame.Y / drawPlayer.bodyFrame.Height];

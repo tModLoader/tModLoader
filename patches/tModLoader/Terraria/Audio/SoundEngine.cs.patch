@@ -1,5 +1,14 @@
 --- src/Terraria/Terraria/Audio/SoundEngine.cs
 +++ src/tModLoader/Terraria/Audio/SoundEngine.cs
+@@ -20,6 +_,8 @@
+ 
+ 		public static void Initialize() {
+ 			IsAudioSupported = TestAudioSupport();
++			if (!IsAudioSupported)
++				Utils.ShowFancyErrorMessage(Localization.Language.GetTextValue("tModLoader.AudioNotSupported"), ModLoader.UI.Interface.loadModsID);
+ 		}
+ 
+ 		public static void Load(IServiceProvider services) {
 @@ -60,13 +_,16 @@
  			PlaySound(type, (int)position.X, (int)position.Y, style);
  		}
@@ -20,3 +29,12 @@
  		}
  
  		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
+@@ -324,7 +_,7 @@
+ 				}
+ 			}
+ 			catch (NoAudioHardwareException) {
+-				Console.WriteLine("No audio hardware found. Disabling all audio.");
++				ModLoader.Logging.tML.Warn("No audio hardware found. Disabling all audio.");
+ 				return false;
+ 			}
+ 			catch {

@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Biomes
@@ -13,8 +12,7 @@ namespace ExampleMod.Content.Biomes
 		public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.Find<ModUndergroundBackgroundStyle>("ExampleMod/ExampleUndergroundBackgroundStyle");
 
 		// Select Music
-		//TODO:
-		public override int Music => MusicID.WindyDay; //Mod.GetSoundSlot(SoundType.Music, "Assets/Sounds/Music/MarbleGallery.ogg");
+		public override int Music => MusicLoader.GetMusicSlot("ExampleMod/Assets/Sounds/Music/MarbleGallery");
 
 		// Sets how the AVFX associated with this biome will be displayed with respect to vanilla AVFX. For more information see AVFXPriority & its values.
 		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow; // We have set the AVFXPriority to be BiomeLow for purpose of example, however default behavour is BiomeLow.

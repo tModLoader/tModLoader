@@ -178,43 +178,42 @@ namespace Terraria.ModLoader
 				g.PostAI(projectile);
 			}
 		}
-		//in Terraria.NetMessage.SendData at end of case 27 call
-		//  ProjectileLoader.SendExtraAI(projectile, writer, ref bb14);
-		public static byte[] SendExtraAI(Projectile projectile, ref BitsByte flags) {
-			if (projectile.ModProjectile != null) {
-				byte[] data;
-				using (MemoryStream stream = new MemoryStream()) {
-					using (BinaryWriter modWriter = new BinaryWriter(stream)) {
-						projectile.ModProjectile.SendExtraAI(modWriter);
-						modWriter.Flush();
-						data = stream.ToArray();
-					}
-				}
-				if (data.Length > 0) {
-					flags[Projectile.maxAI + 1] = true;
-				}
-				return data;
+
+		public static void SendExtraAI(BinaryWriter writer, byte[] extraAI) {
+			writer.Write7BitEncodedInt(extraAI.Length);
+
+			if (extraAI.Length > 0) {
+				writer.Write(extraAI);
 			}
-			return new byte[0];
 		}
-		//in Terraria.MessageBuffer.GetData for case 27 after reading all data add
-		//  byte[] extraAI = ProjectileLoader.ReadExtraAI(reader, bitsByte14);
-		public static byte[] ReadExtraAI(BinaryReader reader, BitsByte flags) {
-			if (flags[Projectile.maxAI + 1]) {
-				return reader.ReadBytes(reader.ReadByte());
+
+		public static byte[] WriteExtraAI(Projectile projectile) {
+			if (projectile.ModProjectile == null) {
+				return Array.Empty<byte>();
 			}
-			return new byte[0];
+
+			using var stream = new MemoryStream();
+			using var modWriter = new BinaryWriter(stream);
+
+			projectile.ModProjectile.SendExtraAI(modWriter);
+			modWriter.Flush();
+
+			return stream.ToArray();
 		}
-		//in Terraria.MessageBuffer.GetData for case 27 before calling ProjectileFixDesperation add
-		//  ProjectileLoader.ReceiveExtraAI(projectile, extraAI);
+
+		public static byte[] ReadExtraAI(BinaryReader reader) {
+			return reader.ReadBytes(reader.Read7BitEncodedInt());
+		}
+
 		public static void ReceiveExtraAI(Projectile projectile, byte[] extraAI) {
-			if (extraAI.Length > 0 && projectile.ModProjectile != null) {
-				using (MemoryStream stream = new MemoryStream(extraAI)) {
-					using (BinaryReader reader = new BinaryReader(stream)) {
-						projectile.ModProjectile.ReceiveExtraAI(reader);
-					}
-				}
+			if (projectile.ModProjectile == null) {
+				return;
 			}
+
+			using var stream = new MemoryStream(extraAI);
+			using var modReader = new BinaryReader(stream);
+
+			projectile.ModProjectile.ReceiveExtraAI(modReader);
 		}
 
 		private static HookList HookShouldUpdatePosition = AddHook<Func<Projectile, bool>>(g => g.ShouldUpdatePosition);

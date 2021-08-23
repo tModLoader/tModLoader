@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Graphics.Capture;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Biomes
@@ -19,8 +18,7 @@ namespace ExampleMod.Content.Biomes
 		public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Crimson;
 
 		// Select Music
-		//TODO:
-		public override int Music => MusicID.Monsoon; // Mod.GetSoundSlot(SoundType.Music, "Assets/Sounds/Music/MarbleGallery.ogg");
+		public override int Music => MusicLoader.GetMusicSlot("ExampleMod/Assets/Music/MysteriousMystery");
 
 		// Populate the Bestiary Filter
 		public override string BestiaryIcon => base.BestiaryIcon;
