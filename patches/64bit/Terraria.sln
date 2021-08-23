@@ -15,6 +15,8 @@ Global
 		XNARelease|Any CPU = XNARelease|Any CPU
 		XNAServerDebug|Any CPU = XNAServerDebug|Any CPU
 		XNAServerRelease|Any CPU = XNAServerRelease|Any CPU
+		FNAServerLinuxRelease|Any CPU = FNAServerLinuxRelease|Any CPU
+		FNAServerLinuxDebug|Any CPU = FNAServerLinuxDebug|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.FNADebug|Any CPU.ActiveCfg = FNADebug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.XNAServerDebug|Any CPU.Build.0 = XNAServerDebug|Any CPU
 		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.XNAServerRelease|Any CPU.ActiveCfg = XNAServerRelease|Any CPU
 		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.XNAServerRelease|Any CPU.Build.0 = XNAServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.FNAServerLinuxRelease|Any CPU.ActiveCfg = FNAServerLinuxRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.FNAServerLinuxRelease|Any CPU.Build.0 = FNAServerLinuxRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.FNAServerLinuxDebug|Any CPU.ActiveCfg = FNAServerLinuxDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.FNAServerLinuxDebug|Any CPU.Build.0 = FNAServerLinuxDebug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

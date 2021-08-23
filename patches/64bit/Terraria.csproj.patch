@@ -1,6 +1,6 @@
 --- src/tModLoader/Terraria.csproj
 +++ src/64bit/Terraria.csproj
-@@ -2,65 +_,121 @@
+@@ -2,65 +_,141 @@
    <Import Project="..\TerrariaSteamPath.targets" />
    <PropertyGroup>
      <TargetFramework>net45</TargetFramework>
@@ -10,7 +10,7 @@
      <Copyright>Copyright © Re-Logic 2017</Copyright>
      <RootNamespace />
 -    <Configurations>WindowsDebug;WindowsServerDebug;WindowsRelease;WindowsServerRelease;MacRelease;MacServerRelease;LinuxRelease;LinuxServerRelease</Configurations>
-+    <Configurations>XNADebug;XNAServerDebug;XNARelease;XNAServerRelease;FNARelease;FNADebug;FNAServerRelease;FNAServerDebug</Configurations>
++    <Configurations>XNADebug;XNAServerDebug;XNARelease;XNAServerRelease;FNARelease;FNADebug;FNAServerRelease;FNAServerDebug;FNAServerLinuxRelease;FNAServerLinuxDebug</Configurations>
      <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 -    <LangVersion>7.3</LangVersion>
@@ -46,6 +46,7 @@
 +    <PlatformTarget>AnyCPU</PlatformTarget>
 +    <Optimize>true</Optimize>
 +    <OutputName>tModLoader64Bit</OutputName>
++    <Platforms>AnyCPU</Platforms>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="$(Configuration.Contains('FNAServerRelease'))">
 +    <OutputType>Exe</OutputType>
@@ -117,6 +118,25 @@
 +  </PropertyGroup>
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='XNADebug|AnyCPU'">
 +    <Prefer32Bit>false</Prefer32Bit>
++  </PropertyGroup>
++  <PropertyGroup Condition=" '$(Configuration)' == 'FNARelease' ">
++    <DefineConstants>TRACE;CLIENT;FNA;FNAWINDOWS</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition=" '$(Configuration)' == 'FNADebug' ">
++    <DefineConstants>TRACE;DEBUG;CLIENT;FNA;FNAWINDOWS</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition=" '$(Configuration)' == 'FNAServerRelease' ">
++    <DefineConstants>TRACE;SERVER;FNA;FNAWINDOWS</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition=" '$(Configuration)' == 'FNAServerDebug' ">
++    <DefineConstants>TRACE;DEBUG;SERVER;FNA;FNAWINDOWS</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition=" '$(Configuration)' == 'FNAServerLinuxRelease' ">
++    <DefineConstants>TRACE;SERVER;FNA;LINUX</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition=" '$(Configuration)' == 'FNAServerLinuxDebug' ">
++    <DefineConstants>TRACE;DEBUG;SERVER;FNA;LINUX</DefineConstants>
++    <Optimize>false</Optimize>
    </PropertyGroup>
    <ItemGroup>
      <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))">
@@ -213,7 +233,7 @@
 +    <EmbeddedResource Include="..\..\references\ReLogic.64bit.dll">
 +      <LogicalName>ReLogic.dll</LogicalName>
 +    </EmbeddedResource>
-+    <EmbeddedResource Include="..\..\references\Steamworks.NET.64bit.dll" Condition="$(DefineConstants.Contains('FNA'))">
++    <EmbeddedResource Include="..\..\references\Steamworks.NET.64bit.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
        <LogicalName>Steamworks.NET.dll</LogicalName>
      </EmbeddedResource>
      <EmbeddedResource Include="..\..\references\Steamworks.NET.OSX.dll" Condition="$(DefineConstants.Contains('MAC'))">
