@@ -39,7 +39,7 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
-        [ "Variables", "functions_vars.html", null ],
+        [ "Variables", "functions_vars.html", "functions_vars" ],
         [ "Properties", "functions_prop.html", null ]
       ] ]
     ] ]
@@ -89,15 +89,15 @@ var NAVTREEINDEX =
 "class_terraria_1_1_social_1_1_we_game_1_1_i_p_c_base.html#a242b5540eadbf7846b19f9ebdf1c891c",
 "class_terraria_1_1_u_i_1_1_chat_1_1_chat_message_container.html#a882b6ab1fa0c8846a887d2138450e9f9",
 "class_terraria_1_1_u_i_1_1_u_i_element.html#afb84cbf07b70e4953ade34b6d01c4738",
-"interface_n_a_t_u_p_n_p_lib_1_1_i_static_port_mapping.html#a55dbc065ccfd29f8e063d81995a750b4",
-"interface_terraria_1_1_recipe_1_1_i_condition.html#ae1e4037604a4fafc049a2d99344a451e",
-"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa3e7705710a5722edf1fe89c075648442",
-"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaf42cfb5c1e0144649cf6377e26edc756",
-"namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f",
-"struct_terraria_1_1_data_structures_1_1_drill_debug_draw.html#aaef111db47a8ebef3180fce09a71f830",
-"struct_terraria_1_1_data_structures_1_1_wing_stats.html#a6669c7df93001f7db688988a17ea9a59",
-"struct_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a0b6fcd43aea825a77a83cb1178e34aec",
-"struct_terraria_1_1_utilities_1_1_int_range.html"
+"functions_vars_h.html",
+"interface_terraria_1_1_mod_loader_1_1_i_loadable.html#abd6052006a61256ffde9dfe9f44b0ad7",
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa2d9bc70cf3a1c45a985ee64bc974ca95",
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aae0c9e7fb4a910522db4b9f910fea87e5",
+"namespace_terraria_1_1_i_o.html#a42d0aebce01dbe74958da7a85b26acbfa636da1d35e805b00eae0fcd8333f9234",
+"struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#af686d1f0a0d1f9828e40246e21cf3a74",
+"struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html#a90471ada5cc587ab585d9b900be576c1",
+"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#ac4d3d362dc2f9dcdf633d2ea74a120aa",
+"struct_terraria_1_1_u_i_1_1_calculated_style.html#ae308b313a276c5961898e6a4595139ca"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

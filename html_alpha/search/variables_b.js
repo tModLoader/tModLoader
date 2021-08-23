@@ -1,6 +1,21 @@
 var searchData=
 [
-  ['nado_4533',['Nado',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a13a1b67f198d614fa0c97f56933151b0',1,'Terraria::ID::ProjAIStyleID']]],
-  ['name_4534',['Name',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#aa3cc4c9901181e7f30f9d44b33b16b3f',1,'Terraria::ModLoader::TooltipLine']]],
-  ['nebulasphere_4535',['NebulaSphere',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ab1489906f677ced9180a13701a8c6cbf',1,'Terraria::ID::ProjAIStyleID']]]
+  ['magiclantern_4756',['MagicLantern',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a1e6a82b230910ccc6435cffba331a4ef',1,'Terraria::ID::ProjAIStyleID']]],
+  ['magicmissile_4757',['MagicMissile',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ad78303c0eb4ff8c94820da45bb51e562',1,'Terraria::ID::ProjAIStyleID']]],
+  ['magnetsphere_4758',['MagnetSphere',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a0a9adbdf80bd0e02c9a0801cceb72982',1,'Terraria::ID::ProjAIStyleID']]],
+  ['marble_4759',['marble',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aeebca0ff9127c8bf8cc866d3ad6b27dc',1,'Terraria::ModLoader::NPCSpawnInfo']]],
+  ['martiandeathray_4760',['MartianDeathRay',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a2aafa1d0fa24966da5bb032b53ffc10e',1,'Terraria::ID::ProjAIStyleID']]],
+  ['martianrocket_4761',['MartianRocket',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ac1e7e42fd756ef0dc43688e7419705de',1,'Terraria::ID::ProjAIStyleID']]],
+  ['mechanicalpiranha_4762',['MechanicalPiranha',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a3a05790fe5c148e08ab863d1ac72476b',1,'Terraria::ID::ProjAIStyleID']]],
+  ['mechanicwrench_4763',['MechanicWrench',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a087de8c1ec8496105dd3412325115638',1,'Terraria::ID::ProjAIStyleID']]],
+  ['medusaray_4764',['MedusaRay',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ac2f81ae2f70b5d36ff70fc03f3a98189',1,'Terraria::ID::ProjAIStyleID']]],
+  ['minitwins_4765',['MiniTwins',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a97fc11621d92b1d01be59400924a6b8e',1,'Terraria::ID::ProjAIStyleID']]],
+  ['mod_4766',['mod',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ae81fb147caadce49c7e4eca48e3be684',1,'Terraria::ModLoader::TooltipLine']]],
+  ['molotovcocktail_4767',['MolotovCocktail',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ac330d4903c77280356e71cad73423e0f',1,'Terraria::ID::ProjAIStyleID']]],
+  ['moonleech_4768',['MoonLeech',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ac304ff25d33464645aba76c9ff6274fa',1,'Terraria::ID::ProjAIStyleID']]],
+  ['mourningwood_4769',['MourningWood',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a69c8f5a5d42ef5efc6044aa7d2cd624d',1,'Terraria::ID::NPCAIStyleID']]],
+  ['moveshort_4770',['MoveShort',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ae535e6d91a9d2d31374d9c5aa3e78f63',1,'Terraria::ID::ProjAIStyleID']]],
+  ['mushroom_4771',['Mushroom',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#af0e4688ca8de359e8a9b9485e7a9ab58',1,'Terraria::ID::ProjAIStyleID']]],
+  ['musicnote_4772',['MusicNote',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a991d3d7caf2e933f9b4af73c6bb07f22',1,'Terraria::ID::ProjAIStyleID']]],
+  ['mysterioustablet_4773',['MysteriousTablet',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a074180094c533a4162135e08206582df',1,'Terraria::ID::ProjAIStyleID']]]
 ];

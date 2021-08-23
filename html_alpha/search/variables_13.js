@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['water_4577',['water',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a0a875d4463252e0a7c96d77123ebcbad',1,'Terraria::ModLoader::NPCSpawnInfo']]]
+  ['vilethorn_4862',['Vilethorn',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a180914cd1e7734a8a231a74eb2a78815',1,'Terraria::ID::ProjAIStyleID']]],
+  ['voidbag_4863',['VoidBag',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ab558513eec338c9d98ec8afcad30ee98',1,'Terraria::ID::ProjAIStyleID']]],
+  ['vortex_4864',['Vortex',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ac0f0d1cfc3d12b832e10e18ca809f9a0',1,'Terraria::ID::ProjAIStyleID']]]
 ];
