@@ -1,6 +1,6 @@
 @echo off
 cd /D "%~dp0"
-set Args=-server -config serverconfig.txt
+set Args=%* -server -config serverconfig.txt
 setlocal EnableDelayedExpansion
 
 call InstallNetFramework.bat
