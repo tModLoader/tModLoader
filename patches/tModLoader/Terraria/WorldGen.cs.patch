@@ -31,6 +31,15 @@
  
  		public static UnifiedRandom genRand {
  			get {
+@@ -1215,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			for (int j = 0; j < 668; j++) {
++			for (int j = 0; j < NPCLoader.NPCCount; j++) {
+ 				if (!Main.townNPCCanSpawn[j] || !CheckSpecialTownNPCSpawningConditions(j))
+ 					continue;
+ 
 @@ -1255,7 +_,7 @@
  			}
  

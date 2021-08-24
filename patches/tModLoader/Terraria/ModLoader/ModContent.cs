@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.States;
@@ -14,7 +15,6 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
@@ -133,34 +133,6 @@ namespace Terraria.ModLoader
 
 			asset = Request<T>(name, mode);
 			return true;
-		}
-
-		/// <summary>
-		/// Gets the music with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the music does not exist. Note: SoundMP3 is in the Terraria.ModLoader namespace.
-		/// </summary>
-		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static Music GetMusic(string name) {
-			if (Main.dedServ)
-				return null;
-
-			SplitName(name, out string modName, out string subName);
-
-			if (!ModLoader.TryGetMod(modName, out var mod))
-				throw new MissingResourceException("Missing mod: " + name);
-
-			return mod.GetMusic(subName);
-		}
-
-		/// <summary>
-		/// Returns whether or not a sound with the specified name exists.
-		/// </summary>
-		public static bool MusicExists(string name) {
-			if (!name.Contains('/'))
-				return false;
-
-			SplitName(name, out string modName, out string subName);
-
-			return ModLoader.TryGetMod(modName, out var mod) && mod.MusicExists(subName);
 		}
 
 		/// <summary>
@@ -480,7 +452,6 @@ namespace Terraria.ModLoader
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
 			SoundLoader.Unload();
-			DisposeMusic();
 
 			LoaderManager.Unload();
 
@@ -547,11 +518,6 @@ namespace Terraria.ModLoader
 			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values) {
 				text.Override = null;
 			}
-		}
-
-		private static void DisposeMusic() {
-			//foreach (var music in Main.audioSystem.OfType<MusicStreaming>())
-			//	music.Dispose();
 		}
 
 		/// <summary>

@@ -1,6 +1,6 @@
 @echo off
 cd /D "%~dp0"
-set Args=""
+set Args=%*
 setlocal EnableDelayedExpansion
 
 call InstallNetFramework.bat

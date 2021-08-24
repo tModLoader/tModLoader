@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Steamworks;
 using Terraria.Localization;
-using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
@@ -69,10 +68,10 @@ namespace Terraria.ModLoader
 		internal static bool removeForcedMinimumZoom;
 		internal static bool showMemoryEstimates = true;
 		internal static bool notifyNewMainMenuThemes = true;
-
 		internal static bool skipLoad;
-
 		internal static Action OnSuccessfulLoad;
+		
+		private static bool isLoading;
 
 		public static Mod[] Mods { get; private set; } = new Mod[0];
 
@@ -110,7 +109,6 @@ namespace Terraria.ModLoader
 
 		internal static void BeginLoad(CancellationToken token) => Task.Run(() => Load(token));
 
-		private static bool isLoading = false;
 		private static void Load(CancellationToken token = default)
 		{
 			try {
