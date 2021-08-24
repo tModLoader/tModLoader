@@ -224,7 +224,7 @@ namespace Terraria.ModLoader.UI
 
 		private void DirectDownloadRefAssemblies() {
 			Main.PlaySound(SoundID.MenuOpen);
-			const string url = "https://tmodloader.net/dl/ext/v45ReferenceAssemblies.zip"; // This never changes, maybe put it on 0.11 release only and leave it out of other release uploads.
+			const string url = "https://github.com/tModLoader/tModLoader/releases/download/v0.11.8.5/v45ReferenceAssemblies.zip"; // This never changes, maybe put it on 0.11 release only and leave it out of other release uploads.
 			string folder = Path.Combine(ModCompile.modCompileDir, "v4.5 Reference Assemblies");
 			string file = Path.Combine(folder, "v4.5 Reference Assemblies.zip");
 			Directory.CreateDirectory(folder);
