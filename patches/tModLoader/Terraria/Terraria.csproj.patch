@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -2,69 +_,149 @@
+@@ -2,69 +_,150 @@
    <Import Project="../Configuration.targets" />
    <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
@@ -84,6 +84,7 @@
      <None Remove="Libraries/net40/**" />
 -    <None Update="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
 +      <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
++      <Content Include="Libraries/Common/UNIX.Steamworks.NET.dll" CopyToOutputDirectory="PreserveNewest" />
 +  </ItemGroup>
 +  <ItemGroup>
 +    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.4.21.3" />

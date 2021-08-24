@@ -22,6 +22,12 @@ else
   ln -sf "$library_dir/libSDL2-2.0.so.0" "$library_dir/libSDL2.so"
 fi
 
+# Ensure Unix builds have the right version of Steamworks.NET
+unixSteamworks="$script_dir/Libraries/Common/UNIX.Steamworks.NET.dll"
+if [ -f "$unixSteamworks" ]; then
+  mv "$unixSteamworks" "Steamworks.NET.dll"
+fi
+
 # Ensure sufficient stack size (4MB) on MacOS secondary threads, doesn't hurt for Linux. 16^5 = 1MB, value in hex 
 export COMPlus_DefaultStackSize=400000
 
