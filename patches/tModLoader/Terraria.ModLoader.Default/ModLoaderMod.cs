@@ -73,6 +73,7 @@ namespace Terraria.ModLoader.Default
 				new PatreonItem[] { new AetherBreaker_Head(), new AetherBreaker_Body(), new AetherBreaker_Legs(), new AetherBreaker_Wings() , new WitchDaggah_Head() },
 				new PatreonItem[] { new Sailing_Squid_Head(), new Sailing_Squid_Body(), new Sailing_Squid_Legs(), new Sailing_Squid_Wings() },
 				new PatreonItem[] { new Coolmike5000_Head(), new Coolmike5000_Body(), new Coolmike5000_Legs(), new Coolmike5000_Wings() },
+				new PatreonItem[] { new Zeph_Head(), new Zeph_Body(), new Zeph_Legs(), new Zeph_Wings() },
 			};
 
 			foreach (var patronItem in PatronSets.SelectMany(x => x)) {
