@@ -451,6 +451,8 @@ namespace Terraria.Social.Steam
 				internal bool QueryAllPagesSerial() {
 					do {
 						// Appx. 0.4 seconds per page of 50 items during testing. No way to parallelize.
+						// Note: Returning the Long Description makes up appx. 2/3 of the time spent fetching mods for above.
+						//	Disabling Long Description takes ~0.14 seconds per page of 50 items. Long Description not needed right now.
 						//TODO: Review an upgrade of ModBrowser to load only 1000 items at a time (ie paging Mod Browser).
 						QueryForPage();
 						
@@ -470,7 +472,7 @@ namespace Terraria.Social.Steam
 
 						SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 						SteamUGC.SetReturnKeyValueTags(qHandle, true);
-						SteamUGC.SetReturnLongDescription(qHandle, true);
+						//SteamUGC.SetReturnLongDescription(qHandle, true);
 						SteamUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
 						SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
@@ -481,7 +483,7 @@ namespace Terraria.Social.Steam
 
 						SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 						SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
-						SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
+						//SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
 						SteamUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
 						SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
