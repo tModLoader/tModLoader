@@ -1,12 +1,13 @@
 --- src/Terraria/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
-@@ -1,15 +_,20 @@
+@@ -1,15 +_,21 @@
  using Steamworks;
  using System;
  using System.Collections.Generic;
 +using System.Collections.Specialized;
  using System.IO;
  using Terraria.IO;
++using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.Social.Base;
  using Terraria.Utilities;
@@ -120,7 +121,7 @@
  
 -				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags) {
 +				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0) {
-+					Utils.LogAndConsoleInfoMessage("Attempting Publishing " + itemTitle);
++					Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.PublishItem", _entryData.Title));
  					_issueReporter = issueReporter;
  					_endAction = endAction;
  					_createItemHook = CallResult<CreateItemResult_t>.Create(CreateItemResult);
@@ -174,7 +175,7 @@
  				}
  
  				private void CreateItem() {
-+					Utils.LogAndConsoleInfoMessage("Creating Item " + _entryData.Title);
++					Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.CreateItem", _entryData.Title));
 +
 +					_createCallback = EResult.k_EResultNone;
 +
@@ -205,7 +206,7 @@
 +					_createCallback = param.m_eResult;
 +					if (param.m_eResult != EResult.k_EResultOK) {
 +						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
-+						Utils.LogAndConsoleInfoMessage("Consult " + "C:\\Program Files(x86)\\Steam\\logs\\workshop.log" + " for more information.");
++						ReportCheckSteamLogs();
 +						_endAction(this);
 +						return;
 +					}
@@ -249,7 +250,7 @@
 +				private void UpdateItem(bool creatingItem = false) {
 +					WrappedWriteManifest();
 +
-+					Utils.LogAndConsoleInfoMessage("Updating Item " + _entryData.Title);
++					Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.UpdateItem", _entryData.Title));
  
  					PrepareContentForUpdate();
  					UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
@@ -263,7 +264,7 @@
  
  					SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
  					SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
-@@ -253,26 +_,66 @@
+@@ -253,21 +_,63 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
@@ -322,16 +323,13 @@
  					}
  
 -					switch (param.m_eResult) {
++					if (_updateCallback != EResult.k_EResultOK)
++						ReportCheckSteamLogs();
++
 +					switch (_updateCallback) {
  						case EResult.k_EResultOK:
  							SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
  							break;
- 						default:
- 							_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
-+							Utils.LogAndConsoleInfoMessage("Consult " + "C:\\Program Files(x86)\\Steam\\logs\\workshop.log" + " for more information.");
- 							break;
- 						case EResult.k_EResultAccessDenied:
- 							_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_AccessDeniedBecauseUserDoesntOwnLicenseForApp");
 @@ -305,6 +_,16 @@
  						_issueReporter.ReportManifestCreationProblem("Workshop.ReportIssue_CouldNotCreateResourcePackManifestFile", exception);
  						return false;

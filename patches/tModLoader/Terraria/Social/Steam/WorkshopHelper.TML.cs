@@ -1,3 +1,4 @@
+using ReLogic.OS;
 using Steamworks;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
@@ -50,7 +52,7 @@ namespace Terraria.Social.Steam
 
 		// Used to get the right token for fetching/setting localized descriptions from/to Steam Workshop
 		internal static string GetCurrentSteamLangKey() {
-			switch (Localization.LanguageManager.Instance.ActiveCulture.LegacyId) {
+			switch (LanguageManager.Instance.ActiveCulture.LegacyId) {
 				default:
 					return "english";
 				case 2:
@@ -70,6 +72,18 @@ namespace Terraria.Social.Steam
 				case 9:
 					return "polish";
 			}
+		}
+
+		internal static void ReportCheckSteamLogs() {
+			string workshopLogLoc = "";
+			if (Platform.IsWindows)
+				workshopLogLoc = "C:/Program Files (x86)/Steam/logs/workshop_log.txt";
+			else if (Platform.IsOSX)
+				workshopLogLoc = "~/Library/Application Support/Steam/logs/workshop_log.txt";
+			else if (Platform.IsLinux)
+				workshopLogLoc = "/home/user/.local/share/Steam/logs/workshop_log.txt";
+
+			Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.ConsultSteamLogs", workshopLogLoc));
 		}
 
 		internal class ModManager
@@ -150,7 +164,7 @@ namespace Terraria.Social.Steam
 				var mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)));
 				
 				uiProgress?.PrepUIForDownload(item.DisplayName);
-				Utils.LogAndConsoleInfoMessage("Attempting Download Item: " + item.DisplayName);
+				Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.BeginDownload", item.DisplayName));
 				mod.InnerDownload(uiProgress, item.HasUpdate);
 
 				if (counter == items.Count) {
@@ -178,18 +192,18 @@ namespace Terraria.Social.Steam
 
 				if (NeedsUpdate() || mbHasUpdate) {
 					downloadResult = EResult.k_EResultNone;
-					Utils.LogAndConsoleInfoMessage("Queueing download with Steam download manager...");
+					Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.SteamDownloader"));
 
 					if (SteamUser)
 						SteamDownload(uiProgress);
 					else
 						GoGDownload(uiProgress);
 
-					Utils.LogAndConsoleInfoMessage("Item Download Completed");
+					Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.EndDownload"));
 				}
 				else {
 					// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
-					Utils.LogAndConsoleErrorMessage("Item is/was already installed: " + itemID.ToString() + ". If attempting to re-install, close current instance and re-launch");
+					Utils.LogAndConsoleErrorMessage(Language.GetTextValueWith("tModLoader.SteamRejectUpdate", itemID.ToString()));
 				}
 
 				return downloadResult == EResult.k_EResultOK;
@@ -197,7 +211,7 @@ namespace Terraria.Social.Steam
 
 			private void SteamDownload(UIWorkshopDownload uiProgress) {
 				if (!SteamUGC.DownloadItem(itemID, true)) {
-					Utils.LogAndConsoleInfoMessage("Consult " + "C:\\Program Files(x86)\\Steam\\logs\\workshop.log" + " for more information.");
+					ReportCheckSteamLogs();
 					throw new ArgumentException("Downloading Workshop Item failed due to unknown reasons");
 				}
 
@@ -207,7 +221,7 @@ namespace Terraria.Social.Steam
 
 			private void GoGDownload(UIWorkshopDownload uiProgress) {
 				if (!SteamGameServerUGC.DownloadItem(itemID, true)) {
-					Utils.LogAndConsoleInfoMessage("Consult " + "C:\\Program Files(x86)\\Steam\\logs\\workshop.log" + " for more information.");
+					ReportCheckSteamLogs();
 					throw new ArgumentException("GoG: Downloading Workshop Item failed due to unknown reasons");
 				}
 
@@ -227,18 +241,19 @@ namespace Terraria.Social.Steam
 					if (uiProgress != null)
 						uiProgress.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 
+					//TODO: This could be refactored
 					if (!percent25 && ((float)dlBytes/totalBytes) > 0.25) {
-						Utils.LogAndConsoleInfoMessage("Download 25% Complete");
+						Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.DownloadProgress", 25));
 						percent25 = true;
 					}
 
 					if (!percent50 && ((float)dlBytes / totalBytes) > 0.50) {
-						Utils.LogAndConsoleInfoMessage("Download 50% Complete");
+						Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.DownloadProgress", 50));
 						percent50 = true;
 					}
 
 					if (!percent75 && ((float)dlBytes / totalBytes) > 0.75) {
-						Utils.LogAndConsoleInfoMessage("Download 75% Complete");
+						Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.DownloadProgress", 75));
 						percent75 = true;
 					}
 				}
@@ -414,7 +429,7 @@ namespace Terraria.Social.Steam
 				}
 				else {
 					Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop. " + eResult, 0);
-					Utils.LogAndConsoleInfoMessage("Consult " + "C:\\Program Files(x86)\\Steam\\logs\\workshop.log" + " for more information.");
+					ReportCheckSteamLogs();
 				}
 				return false;
 			}
