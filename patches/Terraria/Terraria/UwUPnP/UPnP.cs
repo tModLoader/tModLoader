@@ -23,7 +23,7 @@ namespace UwUPnP
 	/// </summary>
 	public static class UPnP
 	{
-		private static bool gatewatNotYetRequested = true;
+		private static bool gatewayNotYetRequested = true;
 		private static bool searching = false;
 		private static Gateway defaultGateway = null;
 
@@ -31,8 +31,8 @@ namespace UwUPnP
 		{
 			get
 			{
-				if (gatewatNotYetRequested) {
-					gatewatNotYetRequested = false;
+				if (gatewayNotYetRequested) {
+					gatewayNotYetRequested = false;
 					FindGateway();
 				}
 
