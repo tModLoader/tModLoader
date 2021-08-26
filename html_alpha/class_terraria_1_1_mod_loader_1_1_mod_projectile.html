@@ -227,9 +227,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab89e438c3595962cbfa239ce9d596d5e"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ab89e438c3595962cbfa239ce9d596d5e">SingleGrappleHook</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:ab89e438c3595962cbfa239ce9d596d5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ab89e438c3595962cbfa239ce9d596d5e">More...</a><br /></td></tr>
 <tr class="separator:ab89e438c3595962cbfa239ce9d596d5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d00676978839be6a8b92f2d0b957b9a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a5d00676978839be6a8b92f2d0b957b9a">TileCollideStyle</a> (ref int width, ref int height, ref bool fallThrough)</td></tr>
-<tr class="memdesc:a5d00676978839be6a8b92f2d0b957b9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how this projectile interacts with tiles. Width and height determine the projectile's hitbox for tile collision, and default to -1. Leave them as -1 to use the projectile's real size. Fallthrough determines whether the projectile can fall through platforms, etc., and defaults to true.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a5d00676978839be6a8b92f2d0b957b9a">More...</a><br /></td></tr>
-<tr class="separator:a5d00676978839be6a8b92f2d0b957b9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af39b1741d8cea78ed88982db426c5887"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af39b1741d8cea78ed88982db426c5887">TileCollideStyle</a> (ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)</td></tr>
+<tr class="memdesc:af39b1741d8cea78ed88982db426c5887"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how this projectile interacts with tiles. Return false if you completely override or cancel this projectile's tile collision behavior. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af39b1741d8cea78ed88982db426c5887">More...</a><br /></td></tr>
+<tr class="separator:af39b1741d8cea78ed88982db426c5887"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4031a70a3e806b5f471b708fe0ff110e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a4031a70a3e806b5f471b708fe0ff110e">UseGrapple</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref int type)</td></tr>
 <tr class="memdesc:a4031a70a3e806b5f471b708fe0ff110e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a4031a70a3e806b5f471b708fe0ff110e">More...</a><br /></td></tr>
 <tr class="separator:a4031a70a3e806b5f471b708fe0ff110e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1832,8 +1832,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a5d00676978839be6a8b92f2d0b957b9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d00676978839be6a8b92f2d0b957b9a">&#9670;&nbsp;</a></span>TileCollideStyle()</h2>
+<a id="af39b1741d8cea78ed88982db426c5887"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af39b1741d8cea78ed88982db426c5887">&#9670;&nbsp;</a></span>TileCollideStyle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1857,7 +1857,13 @@ Properties</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">ref bool&#160;</td>
-          <td class="paramname"><em>fallThrough</em>&#160;</td>
+          <td class="paramname"><em>fallThrough</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Vector2&#160;</td>
+          <td class="paramname"><em>hitboxCenterFrac</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1872,15 +1878,17 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine how this projectile interacts with tiles. Width and height determine the projectile's hitbox for tile collision, and default to -1. Leave them as -1 to use the projectile's real size. Fallthrough determines whether the projectile can fall through platforms, etc., and defaults to true. </p>
+<p>Allows you to determine how this projectile interacts with tiles. Return false if you completely override or cancel this projectile's tile collision behavior. Returns true by default. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">width</td><td>Width of the hitbox.</td></tr>
-    <tr><td class="paramname">height</td><td>Height of the hitbox.</td></tr>
-    <tr><td class="paramname">fallThrough</td><td>If the projectile can fall through platforms etc.</td></tr>
+    <tr><td class="paramname">width</td><td>The width of the hitbox this projectile will use for tile collision. If vanilla doesn't modify it, defaults to projectile.width. </td></tr>
+    <tr><td class="paramname">height</td><td>The height of the hitbox this projectile will use for tile collision. If vanilla doesn't modify it, defaults to projectile.height. </td></tr>
+    <tr><td class="paramname">fallThrough</td><td>Whether or not this projectile falls through platforms and similar tiles. </td></tr>
+    <tr><td class="paramname">hitboxCenterFrac</td><td>Determines by how much the tile collision hitbox's position (top left corner) will be offset from this projectile's real center. If vanilla doesn't modify it, defaults to half the hitbox size (new Vector2(0.5f, 0.5f)). </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

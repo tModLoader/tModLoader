@@ -123,7 +123,7 @@ var searchData=
   ['tile_2122',['Tile',['../class_terraria_1_1_tile.html',1,'Terraria']]],
   ['tile_5fentities_2123',['Tile_Entities',['../namespace_terraria_1_1_game_content_1_1_tile___entities.html',1,'Terraria::GameContent']]],
   ['tilebatch_2124',['TileBatch',['../class_terraria_1_1_graphics_1_1_tile_batch.html',1,'Terraria::Graphics']]],
-  ['tilecollidestyle_2125',['TileCollideStyle',['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a5d00676978839be6a8b92f2d0b957b9a',1,'Terraria.ModLoader.ModProjectile.TileCollideStyle()'],['../class_terraria_1_1_mod_loader_1_1_global_projectile.html#aeb112ef058769cf219ea82ef62e49a73',1,'Terraria.ModLoader.GlobalProjectile.TileCollideStyle()']]],
+  ['tilecollidestyle_2125',['TileCollideStyle',['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af39b1741d8cea78ed88982db426c5887',1,'Terraria.ModLoader.ModProjectile.TileCollideStyle()'],['../class_terraria_1_1_mod_loader_1_1_global_projectile.html#aa1ea82f72edb07bdc91685e8b3920e40',1,'Terraria.ModLoader.GlobalProjectile.TileCollideStyle()']]],
   ['tilecolorstyle_2126',['TileColorStyle',['../class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html#a35792b412f5cb141e927b8a0131105ad',1,'Terraria::ModLoader::ModSceneEffect']]],
   ['tilecountsavailable_2127',['TileCountsAvailable',['../class_terraria_1_1_mod_loader_1_1_mod_system.html#a742ae1402c0449d5da76de883472d740',1,'Terraria::ModLoader::ModSystem']]],
   ['tiledestroyedcondition_2128',['TileDestroyedCondition',['../class_terraria_1_1_game_content_1_1_achievements_1_1_tile_destroyed_condition.html',1,'Terraria::GameContent::Achievements']]],
