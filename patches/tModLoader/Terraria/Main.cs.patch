@@ -3842,8 +3842,8 @@
  			base.Draw(gameTime);
 -			float val = (float)screenWidth / MinimumZoomComparerX;
 -			float val2 = (float)screenHeight / MinimumZoomComparerY;
-+			float val = screenWidth / (ModLoader.ModLoader.removeForcedMinimumZoom ? MinimumZoomComparerX : 8192f);
-+			float val2 = screenHeight / (ModLoader.ModLoader.removeForcedMinimumZoom ? MinimumZoomComparerY : 8192f);
++			float val = screenWidth / (ModLoader.ModLoader.removeForcedMinimumZoom ? 8192f : MinimumZoomComparerX);
++			float val2 = screenHeight / (ModLoader.ModLoader.removeForcedMinimumZoom ? 8192f : MinimumZoomComparerY);
  			ForcedMinimumZoom = Math.Max(Math.Max(1f, val), val2);
  			GameViewMatrix.Effects = ((!gameMenu && player[myPlayer].gravDir != 1f) ? SpriteEffects.FlipVertically : SpriteEffects.None);
  			BackgroundViewMatrix.Effects = GameViewMatrix.Effects;
