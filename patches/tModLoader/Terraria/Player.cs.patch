@@ -3530,12 +3530,12 @@
 +
 +			PlayerLoader.PostItemCheck(this);
 +		}
-+		private bool willUseItemNextFrame = false;
++
 +		private void ItemCheck_Inner(int i) {
  			if (CCed) {
  				channel = false;
  				itemAnimation = (itemAnimationMax = 0);
-@@ -29770,6 +_,42 @@
+@@ -29770,6 +_,39 @@
  			if (Main.myPlayer == i && PlayerInput.ShouldFastUseItem)
  				controlUseItem = true;
  
@@ -3568,10 +3568,7 @@
 +			// This is done so that itemTime and itemAnimation cannot be decremented in the same tick as the one they're set in, which should fix a lot of use time issues
 +			// -- ThomasThePencil
 +
-+			if (willUseItemNextFrame)
-+				ItemCheck_StartActualUse(item);
-+
-+			goto DecrementItemAnimation;
++			goto ItemCheckPart1; // Just for completeness
 +
 +			ItemCheckPart1:
 +
@@ -3598,15 +3595,7 @@
  
  			if (itemAnimation == 0 && altFunctionUse == 2)
  				altFunctionUse = 0;
-@@ -29793,6 +_,7 @@
- 			if (gravDir == -1f && GolfHelper.IsPlayerHoldingClub(this))
- 				flag2 = false;
- 
-+			willUseItemNextFrame = false;
- 			if (flag2 && controlUseItem && releaseUseItem && itemAnimation == 0 && item.useStyle != 0) {
- 				if (altFunctionUse == 1)
- 					altFunctionUse = 2;
-@@ -29813,16 +_,19 @@
+@@ -29813,7 +_,7 @@
  				if (whoAmI == Main.myPlayer && gravDir == 1f && item.mountType != -1 && mount.CanMount(item.mountType, this))
  					mount.SetMount(item.mountType, this);
  
@@ -3614,22 +3603,20 @@
 +				if ((item.shoot <= 0 || !ProjectileID.Sets.MinionTargettingFeature[item.shoot] || altFunctionUse != 2) && flag3 && whoAmI == Main.myPlayer && item.shoot >= 0 && (ProjectileID.Sets.LightPet[item.shoot] || Main.projPet[item.shoot]))
  					FreeUpPetsAndMinions(item);
  
--				if (flag3)
--					ItemCheck_StartActualUse(item);
-+				willUseItemNextFrame = flag3;
- 			}
+ 				if (flag3)
+@@ -29825,6 +_,11 @@
  
- 			if (!controlUseItem)
- 				channel = false;
- 
+ 			Item item2 = (itemAnimation > 0) ? lastVisualizedSelectedItem : item;
+ 			Rectangle drawHitbox = Item.GetDrawHitbox(item2.type, this);
++
 +			goto HandleItemHolding;
 +
 +			DecrementItemAnimation:
 +
- 			Item item2 = (itemAnimation > 0) ? lastVisualizedSelectedItem : item;
- 			Rectangle drawHitbox = Item.GetDrawHitbox(item2.type, this);
  			compositeFrontArm.enabled = false;
-@@ -29843,12 +_,23 @@
+ 			compositeBackArm.enabled = false;
+ 			if (itemAnimation > 0) {
+@@ -29843,12 +_,22 @@
  				itemAnimation--;
  			}
  
@@ -3645,7 +3632,6 @@
  				ItemCheck_ApplyHoldStyle(heightOffsetHitboxCenter, item2, drawHitbox);
  
 -			releaseUseItem = !controlUseItem;
-+			//releaseUseItem = !controlUseItem;
 +			goto ItemCheckPart2;
 +
 +			// See the comment at DecrementItemAnimation for explanation
@@ -3658,7 +3644,7 @@
  				}
  			}
  
-+			goto ItemCheckPart1;
++			return; // End of spaghetti
 +
 +			ItemCheckPart2:
 +
@@ -3821,7 +3807,7 @@
  			if (itemAnimation == 0)
  				JustDroppedAnItem = false;
 +
-+			return; // End of spaghetti
++			goto DecrementItemAnimation;
  		}
  
  		private void ItemCheck_EmitFoodParticles(Item sItem) {
