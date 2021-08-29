@@ -1,5 +1,6 @@
 var NAVTREEINDEX41 =
 {
+"functions_vars_g.html":[1,3,2,6],
 "functions_vars_h.html":[1,3,2,7],
 "functions_vars_i.html":[1,3,2,8],
 "functions_vars_k.html":[1,3,2,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX41 =
 "interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals.html":[1,0,1,13,37],
 "interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals.html#a9e76a1a323c86b12909096e407a0b8f9":[1,0,1,13,37,0],
 "interface_terraria_1_1_mod_loader_1_1_i_loadable.html":[1,0,1,13,38],
-"interface_terraria_1_1_mod_loader_1_1_i_loadable.html#a22c403e2d65fa1309a9883c84c221d7f":[1,0,1,13,38,1],
-"interface_terraria_1_1_mod_loader_1_1_i_loadable.html#a99cb7624fdbd3514ea3af077a6d0e63e":[1,0,1,13,38,0]
+"interface_terraria_1_1_mod_loader_1_1_i_loadable.html#a22c403e2d65fa1309a9883c84c221d7f":[1,0,1,13,38,1]
 };

@@ -19,5 +19,6 @@ var class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_in
     [ "_previousUIState", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_info_state.html#a3e43c897379aeb83faef4d37d23a07e3", null ],
     [ "_publishedObjectNameDescriptorTexKey", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_info_state.html#ab336e3b3e89199651d521a794e9e7987", null ],
     [ "_tMLDisclaimerButton", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_info_state.html#afb4116f302c9f086e7a25f4f02ee595a", null ],
+    [ "_tMLDisclaimerText", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_info_state.html#a6617dbbb14fc3aada16b269e4cd3c000", null ],
     [ "PreviousUIState", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_info_state.html#a45a074a4c009260060b4bb146f5bca76", null ]
 ];

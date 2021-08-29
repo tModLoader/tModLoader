@@ -1,5 +1,6 @@
 var NAVTREEINDEX47 =
 {
+"struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html#a512ad7343aed5788128904813ea1fcdf":[1,0,1,4,39,4],
 "struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html#a90471ada5cc587ab585d9b900be576c1":[1,0,1,4,39,6],
 "struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html#a956807cb78d75bb700a418b09afe5a8a":[1,0,1,4,39,0],
 "struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html#ab88b85965eef3d1ecc1e25bfb0dc9467":[1,0,1,4,39,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX47 =
 "struct_terraria_1_1_graphics_1_1_flame_lash_drawer.html":[1,0,1,7,8],
 "struct_terraria_1_1_graphics_1_1_flame_lash_drawer.html#ade2fe4607873b6bd3040c095c0f8d7a8":[1,0,1,7,8,0],
 "struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html":[1,0,1,7,2,1,0],
-"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#a17645c51337d8b86baacfc7450ddced0":[1,0,1,7,2,1,0,1],
-"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#aa4883b4580fad391a92ffdf11cf092b9":[1,0,1,7,2,1,0,4]
+"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#a17645c51337d8b86baacfc7450ddced0":[1,0,1,7,2,1,0,1]
 };
