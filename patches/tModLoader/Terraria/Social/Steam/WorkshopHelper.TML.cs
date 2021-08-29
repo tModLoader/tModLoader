@@ -80,9 +80,10 @@ namespace Terraria.Social.Steam
 
 		internal class ModManager
 		{
+			internal const uint thisApp = ModLoader.Engine.Steam.TMLAppID;
+
 			internal static bool SteamUser { get; set; } = false;
 			internal static bool SteamAvailable { get; set; } = true;
-			internal const uint thisApp = 1281930;
 
 			protected Callback<DownloadItemResult_t> m_DownloadItemResult;
 
