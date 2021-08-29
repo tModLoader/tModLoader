@@ -53,8 +53,7 @@ namespace Terraria.Social.Steam
 		// Used to get the right token for fetching/setting localized descriptions from/to Steam Workshop
 		internal static string GetCurrentSteamLangKey() {
 			//TODO: Unhardcode this whenever the language roster is unhardcoded for modding.
-			return LanguageManager.Instance.ActiveCulture.LegacyId switch {
-				_ => "english",
+			return (GameCulture.CultureName)LanguageManager.Instance.ActiveCulture.LegacyId switch {
 				GameCulture.CultureName.German => "german",
 				GameCulture.CultureName.Italian => "italian",
 				GameCulture.CultureName.French  => "french",
@@ -63,6 +62,7 @@ namespace Terraria.Social.Steam
 				GameCulture.CultureName.Chinese => "schinese",
 				GameCulture.CultureName.Portuguese => "portuguese",
 				GameCulture.CultureName.Polish => "polish",
+				_ => "english",
 			};
 		}
 
