@@ -8,7 +8,7 @@
  using Terraria.Social;
  using Terraria.Social.Base;
  using Terraria.UI;
-@@ -38,15 +_,27 @@
+@@ -38,15 +_,29 @@
  		private UICharacterNameButton _previewImagePathPlate;
  		private Texture2D _previewImageTransientTexture;
  		private UIImage _previewImageUIElement;
@@ -16,18 +16,20 @@
 +		protected string _previewImagePath;
  		private Asset<Texture2D> _defaultPreviewImageTexture;
  		private UIElement _steamDisclaimerButton;
-+		protected UIElement _tMLDisclaimerButton; 
 -		private UIText _disclaimerText;
 +		protected UIText _disclaimerText;
-+		protected UIText _tMLDisclaimerText;
  		private UIGamepadHelper _helper;
  
-+		// Added by TML.
++		// Added by TML [
++		protected UIText _tMLDisclaimerText;
++		protected UIElement _tMLDisclaimerButton;
++		private bool _isMod = false;
++
 +		public UIState PreviousUIState {
 +			get => _previousUIState;
 +			set => _previousUIState = value;
 +		}
-+		private bool _isMod = false;
++		// ]
 +
  		public AWorkshopPublishInfoState(UIState stateToGoBackTo, TPublishedObjectType dataObject) {
  			_previousUIState = stateToGoBackTo;
