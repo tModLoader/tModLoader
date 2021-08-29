@@ -216,10 +216,13 @@ namespace Terraria.ModLoader.UI
 
 		private void VisitModSteamPage(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
-			if (Social.Steam.WorkshopHelper.ModManager.SteamUser && Steamworks.SteamUtils.IsOverlayEnabled() && (Main.graphics.IsFullScreen || Main.graphics.PreferredBackBufferWidth >= 1920 || Main.graphics.PreferredBackBufferHeight >= 1080))
-				Steamworks.SteamFriends.ActivateGameOverlayToWebPage("http://steamcommunity.com/sharedfiles/filedetails/?id=" + _publishedFileId, Steamworks.EActivateGameOverlayToWebPageMode.k_EActivateGameOverlayToWebPageMode_Modal);
+
+			string url = $"http://steamcommunity.com/sharedfiles/filedetails/?id={_publishedFileId}";
+
+			if (Social.Steam.WorkshopHelper.ModManager.SteamUser && Steamworks.SteamUtils.IsOverlayEnabled())
+				Steamworks.SteamFriends.ActivateGameOverlayToWebPage(url, Steamworks.EActivateGameOverlayToWebPageMode.k_EActivateGameOverlayToWebPageMode_Modal);
 			else
-				Utils.OpenToURL("http://steamcommunity.com/sharedfiles/filedetails/?id=" + _publishedFileId);
+				Utils.OpenToURL(url);
 		}
 
 
