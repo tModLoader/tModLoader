@@ -75,7 +75,7 @@ namespace Terraria.Social.Steam
 			else if (Platform.IsLinux)
 				workshopLogLoc = "/home/user/.local/share/Steam/logs/workshop_log.txt";
 
-			Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.ConsultSteamLogs", workshopLogLoc));
+			Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.ConsultSteamLogs", workshopLogLoc));
 		}
 
 		internal class ModManager
@@ -157,7 +157,7 @@ namespace Terraria.Social.Steam
 				var mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)));
 				
 				uiProgress?.PrepUIForDownload(item.DisplayName);
-				Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.BeginDownload", item.DisplayName));
+				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
 				mod.InnerDownload(uiProgress, item.HasUpdate);
 
 				if (counter == items.Count) {
@@ -196,7 +196,7 @@ namespace Terraria.Social.Steam
 				}
 				else {
 					// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
-					Utils.LogAndConsoleErrorMessage(Language.GetTextValueWith("tModLoader.SteamRejectUpdate", itemID.ToString()));
+					Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", itemID.ToString()));
 				}
 
 				return downloadResult == EResult.k_EResultOK;
