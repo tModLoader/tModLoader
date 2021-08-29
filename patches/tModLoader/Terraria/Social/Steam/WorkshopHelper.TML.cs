@@ -478,7 +478,7 @@ namespace Terraria.Social.Steam
 						SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 						SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
 						//SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
-						SteamUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
+						SteamGameServerUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
 						SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
 						call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
