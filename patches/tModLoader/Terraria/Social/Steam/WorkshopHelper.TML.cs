@@ -222,8 +222,11 @@ namespace Terraria.Social.Steam
 			}
 
 			private void InnerDownloadQueue(UIWorkshopDownload uiProgress) {
-				bool percent25 = false, percent50 = false, percent75 = false;
 				ulong dlBytes, totalBytes;
+
+				const int LogEveryXPercent = 10;
+
+				int nextPercentageToLog = LogEveryXPercent;
 
 				while (!IsInstalled()) {
 					if (SteamUser)
@@ -234,20 +237,18 @@ namespace Terraria.Social.Steam
 					if (uiProgress != null)
 						uiProgress.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 
-					//TODO: This could be refactored
-					if (!percent25 && ((float)dlBytes/totalBytes) > 0.25) {
-						Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.DownloadProgress", 25));
-						percent25 = true;
-					}
+					int percentage = (int)MathF.Round(dlBytes / (float)totalBytes * 100f);
 
-					if (!percent50 && ((float)dlBytes / totalBytes) > 0.50) {
-						Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.DownloadProgress", 50));
-						percent50 = true;
-					}
+					if (percentage >= nextPercentageToLog) {
+						string str = Language.GetTextValue("tModLoader.DownloadProgress", percentage);
 
-					if (!percent75 && ((float)dlBytes / totalBytes) > 0.75) {
-						Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.DownloadProgress", 75));
-						percent75 = true;
+						Utils.LogAndConsoleInfoMessage(str);
+
+						nextPercentageToLog = percentage + LogEveryXPercent;
+
+						if (nextPercentageToLog > 100 && nextPercentageToLog != 100 + LogEveryXPercent) {
+							nextPercentageToLog = 100;
+						}
 					}
 				}
 
