@@ -112,7 +112,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			//Specify the debuffs it is immune to
 			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData {
 				SpecificallyImmuneTo = new int[] {
-					BuffID.Confused
+					BuffID.Poisoned,
+					BuffID.Venom, //If you make it immune to Poisoned, also make it immune to Venom
+
+					BuffID.Confused //Most NPCs have this
 				}
 			};
 			NPCID.Sets.DebuffImmunitySets.Add(Type, debuffData);
@@ -262,6 +265,11 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 		public override void HitEffect(int hitDirection, double damage) {
 			//If the NPC dies, spawn gore and play a sound
+			if (Main.netMode == NetmodeID.Server) {
+				//We don't want Mod.Find<ModGore> to run on servers as it will crash because gores are not loaded on servers
+				return;
+			}
+
 			if (NPC.life <= 0) {
 				//These gores work by simply existing as a texture inside any folder which path contains "Gores/"
 				int backGoreType = Mod.Find<ModGore>("MinionBossBody_Back").Type;
@@ -410,7 +418,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			//Move along the vector
 			Vector2 toDestination = FirstStageDestination - NPC.Center;
-			Vector2 toDestinationNormalized = Vector2.Normalize(toDestination);
+			Vector2 toDestinationNormalized = toDestination.SafeNormalize(Vector2.UnitY);
 			float speed = Math.Min(distance, toDestination.Length());
 			NPC.velocity = toDestinationNormalized * speed / 30;
 
@@ -449,7 +457,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			Vector2 abovePlayer = player.Top + new Vector2(NPC.direction * offsetX, -NPC.height);
 
 			Vector2 toAbovePlayer = abovePlayer - NPC.Center;
-			Vector2 toAbovePlayerNormalized = Vector2.Normalize(toAbovePlayer);
+			Vector2 toAbovePlayerNormalized = toAbovePlayer.SafeNormalize(Vector2.UnitY);
 
 			//The NPC tries to go towards the offsetX position, but most likely it will never get there exactly, or close to if the player is moving
 			//This checks if the npc is "70% there", and then changes direction
