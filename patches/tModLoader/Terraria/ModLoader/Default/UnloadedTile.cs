@@ -1,3 +1,4 @@
+using Terraria.ID;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
@@ -5,7 +6,7 @@ namespace Terraria.ModLoader.Default
 	public abstract class UnloadedTile : ModTile
 	{ 
 		public override void MouseOver(int i, int j) {
-			if (Main.netMode != 0) {
+			if (Main.netMode != NetmodeID.SinglePlayer) {
 				return;
 			}
 
@@ -24,7 +25,5 @@ namespace Terraria.ModLoader.Default
 			player.cursorItemIconID = -1;
 			player.cursorItemIconText = $"{info.modName}: {info.name}";
 		}
-
-		public override void MouseOverFar(int i, int j) => MouseOver(i, j);
 	}
 }
