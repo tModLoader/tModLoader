@@ -1,11 +1,13 @@
 ﻿using ExampleMod.Content.Items;
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
 {
 	// This file showcases the concept of piercing.
+	// The code of the item that spawns it is located at the bottom.
 
 	// NPC.immune determines if an npc can be hit by a item or projectile owned by a particular player (it is an array, each slot corresponds to different players (whoAmI))
 	// NPC.immune is decremented towards 0 every update
@@ -70,6 +72,10 @@ namespace ExampleMod.Content.Projectiles
 	internal class ExamplePiercingProjectileItem : ModItem
 	{
 		public override string Texture => $"Terraria/Images/Item_{ItemID.FlintlockPistol}";
+
+		public override void SetStaticDefaults() {
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		}
 
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.FlintlockPistol);
