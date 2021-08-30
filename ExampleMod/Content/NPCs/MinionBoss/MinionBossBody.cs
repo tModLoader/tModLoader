@@ -154,6 +154,11 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			//Important if this boss has a treasure bag
 			BossBag = ModContent.ItemType<MinionBossBag>();
+
+			// The following code assigns a music track to the boss in a simple way.
+			if (!Main.dedServ) {
+				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Ropocalypse2");
+			}
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {

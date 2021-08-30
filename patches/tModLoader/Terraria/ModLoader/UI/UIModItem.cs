@@ -145,7 +145,7 @@ namespace Terraria.ModLoader.UI
 				Append(_keyImage);
 			}
 
-			if (ModCompile.DeveloperMode && ModLoader.badUnloaders.Contains(ModName)) {
+			if (ModCompile.DeveloperMode && ModLoader.IsUnloadedModStillAlive(ModName)) {
 				_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.ModDidNotFullyUnloadWarning")) {
 					Left = { Pixels = _modIconAdjust + PADDING },
 					Top = { Pixels = 3 }
@@ -414,8 +414,8 @@ namespace Terraria.ModLoader.UI
 				Interface.modsMenu.Append(_blockInput);
 
 				_deleteModDialog = new UIPanel() {
-					Width = { Percent = .20f },
-					Height = { Percent = .20f },
+					Width = { Percent = .30f },
+					Height = { Percent = .30f },
 					HAlign = .5f,
 					VAlign = .5f,
 					BackgroundColor = new Color(63, 82, 151),
@@ -464,7 +464,22 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
-			File.Delete(_mod.modFile.path);
+			string tmodPath = _mod.modFile.path;
+
+			if (tmodPath.Contains(Path.Combine("steamapps", "workshop"))) {
+				string parentDir = Directory.GetParent(tmodPath).ToString();
+				string manifest = parentDir + Path.DirectorySeparatorChar + "workshop.json";
+
+				Social.Base.AWorkshopEntry.TryReadingManifest(manifest, out var info);
+
+				var modManager = new Social.Steam.WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
+
+				modManager.Uninstall(parentDir);
+			}
+			else {
+				File.Delete(tmodPath);
+			}
+
 			CloseDialog(evt, listeningElement);
 			Interface.modsMenu.Activate();
 		}

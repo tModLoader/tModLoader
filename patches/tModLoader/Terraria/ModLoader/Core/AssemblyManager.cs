@@ -86,29 +86,26 @@ namespace Terraria.ModLoader.Core
 
 
 		[MethodImpl(MethodImplOptions.NoInlining)]
-		internal static void Unload() 
-		{
-			foreach (var kv in loadedModContexts) {
-				kv.Value.Unload();
+		internal static void Unload() {
+			var alcRefs = loadedModContexts.Values.Select(alc => new WeakReference<AssemblyLoadContext>(alc)).ToArray();
+			foreach (var alc in loadedModContexts.Values) {
+				alc.Unload();
 			}
 
 			hostContextForAssembly.Clear();
-
-			for (int i = 0; loadedModContexts.Any(); i++) {
-				if (i > 10) {
-					Logging.tML.Warn($"{string.Join(", ", loadedModContexts.Select(kv => kv.Key))} refused to finalize");
-					break;
-				}
-				// Beg the assemblies to finalize and cleanup
-				GC.Collect();
-				GC.WaitForPendingFinalizers();
-			}
-
 			loadedModContexts.Clear();
+
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+
+			foreach (var alcRef in alcRefs) {
+				if (alcRef.TryGetTarget(out var alc))
+					Logging.tML.Warn($"{alc} refused to finalize");
+			}
 		}
 
-		private static readonly ConditionalWeakTable<string, ModLoadContext> loadedModContexts = new ConditionalWeakTable<string, ModLoadContext>();
-		private static readonly IDictionary<Assembly, ModLoadContext> hostContextForAssembly = new Dictionary<Assembly, ModLoadContext>();
+		private static readonly Dictionary<string, ModLoadContext> loadedModContexts = new();
+		private static readonly Dictionary<Assembly, ModLoadContext> hostContextForAssembly = new();
 
 		//private static CecilAssemblyResolver cecilAssemblyResolver = new CecilAssemblyResolver();
 

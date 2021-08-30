@@ -19,8 +19,16 @@ namespace Terraria.GameContent.Tile_Entities
 		}
 
 		public override void NetSend(BinaryWriter writer) {
-			writer.Write(BitsByte.ComposeBitsBytesChain(false, _items.Select(i => !i.IsAir).ToArray())[0]);
-			writer.Write(BitsByte.ComposeBitsBytesChain(false, _dyes.Select(i => !i.IsAir).ToArray())[0]);
+			BitsByte itemsBits = default;
+			BitsByte dyesBits = default;
+
+			for (int i = 0; i < 8; i++) {
+				itemsBits[i] = !_items[i].IsAir;
+				dyesBits[i] = !_dyes[i].IsAir;
+			}
+
+			writer.Write(itemsBits);
+			writer.Write(dyesBits);
 
 			for (int i = 0; i < 8; i++) {
 				var item = _items[i];

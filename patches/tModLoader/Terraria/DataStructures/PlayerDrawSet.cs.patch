@@ -43,3 +43,49 @@
  					colorEyeWhites = drawPlayer.GetImmuneAlpha(Color.White, shadow);
  					colorEyes = drawPlayer.GetImmuneAlpha(drawPlayer.eyeColor, shadow);
  					colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting: false), shadow);
+@@ -1292,8 +_,13 @@
+ 				drawPlayer.headRotation = 0f;
+ 			}
+ 
++			SetupHairFrames();
++			BoringSetup_End();
++		}
++
++		// A split to be used in HeadOnlySetup()
++		private void SetupHairFrames() {
+ 			Rectangle bodyFrame = drawPlayer.bodyFrame;
+-			bodyFrame = drawPlayer.bodyFrame;
+ 			bodyFrame.Y -= 336;
+ 			if (bodyFrame.Y < 0)
+ 				bodyFrame.Y = 0;
+@@ -1308,9 +_,17 @@
+ 				int height = 26;
+ 				hairFrontFrame.Height = height;
+ 			}
++		}
+ 
++		private void BoringSetup_End() {
++			/*
+ 			hidesTopSkin = (drawPlayer.body == 82 || drawPlayer.body == 83 || drawPlayer.body == 93 || drawPlayer.body == 21 || drawPlayer.body == 22);
+ 			hidesBottomSkin = (drawPlayer.body == 93 || drawPlayer.legs == 20 || drawPlayer.legs == 21);
++			*/
++			hidesTopSkin = (drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesTopSkin[drawPlayer.body]) || (drawPlayer.legs > 0 && ArmorIDs.Legs.Sets.HidesTopSkin[drawPlayer.legs]);
++			hidesBottomSkin = (drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesBottomSkin[drawPlayer.body]) || (drawPlayer.legs > 0 && ArmorIDs.Legs.Sets.HidesBottomSkin[drawPlayer.legs]);
++			isBottomOverriden = PlayerDrawLayers.IsBottomOverridden(ref this);
++
+ 			drawFloatingTube = drawPlayer.hasFloatingTube;
+ 			drawUnicornHorn = drawPlayer.hasUnicornHorn;
+ 			drawAngelHalo = drawPlayer.hasAngelHalo;
+@@ -1327,9 +_,9 @@
+ 		private void CreateCompositeData() {
+ 			frontShoulderOffset = Vector2.Zero;
+ 			backShoulderOffset = Vector2.Zero;
+-			usesCompositeTorso = (drawPlayer.body > 0 && drawPlayer.body < 244 && ArmorIDs.Body.Sets.UsesNewFramingCode[drawPlayer.body]);
+-			usesCompositeFrontHandAcc = (drawPlayer.handon > 0 && drawPlayer.handon < 23 && ArmorIDs.HandOn.Sets.UsesNewFramingCode[drawPlayer.handon]);
+-			usesCompositeBackHandAcc = (drawPlayer.handoff > 0 && drawPlayer.handoff < 15 && ArmorIDs.HandOff.Sets.UsesNewFramingCode[drawPlayer.handoff]);
++			usesCompositeTorso = (drawPlayer.body > 0 && ArmorIDs.Body.Sets.UsesNewFramingCode[drawPlayer.body]);
++			usesCompositeFrontHandAcc = (drawPlayer.handon > 0 && ArmorIDs.HandOn.Sets.UsesNewFramingCode[drawPlayer.handon]);
++			usesCompositeBackHandAcc = (drawPlayer.handoff > 0 && ArmorIDs.HandOff.Sets.UsesNewFramingCode[drawPlayer.handoff]);
+ 			if (drawPlayer.body < 1)
+ 				usesCompositeTorso = true;
+ 

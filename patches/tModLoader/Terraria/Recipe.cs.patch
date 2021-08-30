@@ -95,7 +95,7 @@
  					theText = RecipeGroup.recipeGroups[num].GetText();
  					return true;
  				}
-@@ -82,35 +_,34 @@
+@@ -82,35 +_,35 @@
  			return false;
  		}
  
@@ -133,6 +133,7 @@
 +
 +		internal Recipe(Mod mod = null) {
 +			Mod = mod;
++			RecipeIndex = -1;
  		}
  
  		public void Create() {
@@ -151,7 +152,7 @@
  					}
  				}
  
-+				ConsumeItemHooks?.Invoke(this, item2.type, ref num);
++				RecipeLoader.ConsumeItem(this, item2.type, ref num);
 +
  				if (num <= 0)
  					continue;
@@ -287,7 +288,7 @@
  				Item item = new Item();
  				item.SetDefaults(i, noMatCheck: true);
  				item.checkMat();
-@@ -14185,14 +_,12 @@
+@@ -14185,22 +_,23 @@
  		private static void CreateReversePlatformRecipes() {
  			int num = numRecipes;
  			for (int i = 0; i < num; i++) {
@@ -304,7 +305,19 @@
  
  					AddRecipe();
  					Recipe recipe = Main.recipe[numRecipes - 1];
-@@ -14208,14 +_,12 @@
+ 					for (int num2 = numRecipes - 2; num2 > i; num2--) {
+-						Main.recipe[num2 + 1] = Main.recipe[num2];
++						Recipe switchedRecipe = Main.recipe[num2];
++						Main.recipe[num2 + 1] = switchedRecipe;
++						switchedRecipe.RecipeIndex = num2 + 1;
+ 					}
+ 
+ 					Main.recipe[i + 1] = recipe;
++					recipe.RecipeIndex = i + 1;
+ 				}
+ 			}
+ 		}
+@@ -14208,27 +_,29 @@
  		private static void CreateReverseWallRecipes() {
  			int num = numRecipes;
  			for (int i = 0; i < num; i++) {
@@ -321,7 +334,15 @@
  
  					AddRecipe();
  					Recipe recipe = Main.recipe[numRecipes - 1];
-@@ -14227,8 +_,9 @@
+ 					for (int num2 = numRecipes - 2; num2 > i; num2--) {
+-						Main.recipe[num2 + 1] = Main.recipe[num2];
++						Recipe switchedRecipe = Main.recipe[num2];
++						Main.recipe[num2 + 1] = switchedRecipe;
++						switchedRecipe.RecipeIndex = num2 + 1;
+ 					}
+ 
+ 					Main.recipe[i + 1] = recipe;
++					recipe.RecipeIndex = i + 1;
  				}
  			}
  		}
@@ -333,7 +354,7 @@
  			if (ingridients.Length == 1) {
  				ingridients = new int[2] {
  					ingridients[0],
-@@ -14246,18 +_,56 @@
+@@ -14246,18 +_,59 @@
  			}
  		}
  
@@ -383,6 +404,9 @@
 +			
  			Main.recipe[numRecipes] = currentRecipe;
 -			currentRecipe = new Recipe();
++			currentRecipe.RecipeIndex = numRecipes;
++			
++			// The following resets the currentRecipe field
 +			currentRecipe = new Recipe {
 +				requiredItem = new List<Item>(),
 +				requiredTile = Enumerable.Repeat(-1, maxVanillaRequirements).ToList(),
