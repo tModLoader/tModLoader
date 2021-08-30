@@ -173,7 +173,7 @@
  		}
  
  		public static void serverLoadWorldCallBack() {
-+			Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave);
++			Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}, Size={2}x{3}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave, Main.ActiveWorldFileData.WorldSizeX, Main.ActiveWorldFileData.WorldSizeY);
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
