@@ -116,8 +116,8 @@ namespace ExampleMod.Content.Projectiles
 			// Get this frame on texture
 			Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
 
-			//Alternatively, you can skip defining frameHeight and startY and use this:
-			//Rectangle sourceRectangle = texture.Frame(1, Main.projFrames[Projectile.type], frameY: Projectile.frame);
+			// Alternatively, you can skip defining frameHeight and startY and use this:
+			// Rectangle sourceRectangle = texture.Frame(1, Main.projFrames[Projectile.type], frameY: Projectile.frame);
 
 			Vector2 origin = sourceRectangle.Size() / 2f;
 
