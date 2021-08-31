@@ -1,6 +1,5 @@
 var NAVTREEINDEX36 =
 {
-"class_terraria_1_1_recipe_group.html":[1,0,1,55],
 "class_terraria_1_1_recipe_group.html#a0ca560a8e9334087dddc1352748857c1":[1,0,1,55,4],
 "class_terraria_1_1_recipe_group.html#a63640ba5722a1699eb43057caae87d70":[1,0,1,55,1],
 "class_terraria_1_1_recipe_group.html#a70950ebcd319a9d84172b98cb03906ad":[1,0,1,55,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX36 =
 "class_terraria_1_1_social_1_1_base_1_1_workshop_issue_reporter.html#a1ee07e88af7119355dfb00f6a65a50eb":[1,0,1,19,0,15,6],
 "class_terraria_1_1_social_1_1_base_1_1_workshop_issue_reporter.html#a315d0c98afdb0cc640d184dfaa2e5eb5":[1,0,1,19,0,15,4],
 "class_terraria_1_1_social_1_1_base_1_1_workshop_issue_reporter.html#a4d838e81f458e80b95cb8ff05836e5f9":[1,0,1,19,0,15,0],
-"class_terraria_1_1_social_1_1_base_1_1_workshop_issue_reporter.html#a5a2f50bea80f81f3a60fc98e1a49392e":[1,0,1,19,0,15,3]
+"class_terraria_1_1_social_1_1_base_1_1_workshop_issue_reporter.html#a5a2f50bea80f81f3a60fc98e1a49392e":[1,0,1,19,0,15,3],
+"class_terraria_1_1_social_1_1_base_1_1_workshop_issue_reporter.html#a766e6e06c1dd352b104dbcad25e1c546":[1,0,1,19,0,15,2]
 };
