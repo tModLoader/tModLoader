@@ -2,6 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using ExampleMod.Content.NPCs.MinionBoss;
+using Terraria.GameContent.Creative;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -13,6 +14,8 @@ namespace ExampleMod.Content.Items.Consumables
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Treasure Bag");
 			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); //References a language key that says "Right Click To Open" in the language of the game
+			
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
 		}
 
 		public override void SetDefaults() {
