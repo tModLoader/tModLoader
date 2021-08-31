@@ -17,6 +17,16 @@
  	{
  		public delegate bool TileActionAttempt(int x, int y);
  
+@@ -190,7 +_,8 @@
+ 			ArrayList arrayList = new ArrayList();
+ 			string text = "";
+ 			for (int i = 0; i < brokenArgs.Length; i++) {
+-				if (brokenArgs[i].StartsWith("-")) {
++				//TML: Steam uses +connect_lobby as an argument, so had to add == "+" so this wouldn't break that argument.
++				if (brokenArgs[i].StartsWith("-") || brokenArgs[i].StartsWith("+")) {
+ 					if (text != "") {
+ 						arrayList.Add(text);
+ 						text = "";
 @@ -253,6 +_,12 @@
  								num2 -= 16;
  
