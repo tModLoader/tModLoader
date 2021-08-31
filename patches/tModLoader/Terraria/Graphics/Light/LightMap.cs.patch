@@ -1,0 +1,12 @@
+--- src/Terraria/Terraria/Graphics/Light/LightMap.cs
++++ src/tModLoader/Terraria/Graphics/Light/LightMap.cs
+@@ -195,7 +_,8 @@
+ 		private int IndexOf(int x, int y) => x * Height + y;
+ 
+ 		public void SetSize(int width, int height) {
++			//TML: The width and height parameters here are max Y and max X. We need to add one to each to get the correct Array Length on resize - Solxan
+-			if (width * height > _colors.Length) {
++			if (++width * ++height > _colors.Length) {
+ 				_colors = new Vector3[width * height];
+ 				_mask = new LightMaskMode[width * height];
+ 			}
