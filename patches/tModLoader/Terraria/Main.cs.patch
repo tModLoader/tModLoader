@@ -3835,6 +3835,32 @@
  			}
  		}
  
+@@ -47050,19 +_,22 @@
+ 					renderCount = 99;
+ 				}
+ 				else {
++					//TML: RenderTiles() is quite slow. ~30ms at peak; doesn't change with lighting modes
+-					if (renderCount == 3) {
++					if (renderCount == 3) { 
+ 						RenderTiles();
+ 						sceneTilePos.X = screenPosition.X - (float)offScreenRange;
+ 						sceneTilePos.Y = screenPosition.Y - (float)offScreenRange;
+ 					}
+ 
+-					if (renderCount == 3) {
++					//TML: Remapped from 3 to 2 to flatten per frame load for colour lighting ( ~5ms peak).
++					if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 2 : 3)) {
+ 						RenderTiles2();
+ 						sceneTile2Pos.X = screenPosition.X - (float)offScreenRange;
+ 						sceneTile2Pos.Y = screenPosition.Y - (float)offScreenRange;
+ 					}
+ 
+-					if (renderCount == 3) {
++					//TML: Remapped from 3 to 0 to flatten per frame load for colour lighting ( ~15ms peak).
++					if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 0 : 3)) {
+ 						RenderWalls();
+ 						sceneWallPos.X = screenPosition.X - (float)offScreenRange;
+ 						sceneWallPos.Y = screenPosition.Y - (float)offScreenRange;
 @@ -47157,10 +_,13 @@
  			if (gameMenu || netMode == 2)
  				bgTopY = -200;
