@@ -3840,8 +3840,7 @@
  				}
  				else {
 +					//TML: RenderTiles() is quite slow. ~30ms at peak; doesn't change with lighting modes
--					if (renderCount == 3) {
-+					if (renderCount == 3) { 
+ 					if (renderCount == 3) {
  						RenderTiles();
  						sceneTilePos.X = screenPosition.X - (float)offScreenRange;
  						sceneTilePos.Y = screenPosition.Y - (float)offScreenRange;
