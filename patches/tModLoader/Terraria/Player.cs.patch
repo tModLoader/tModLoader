@@ -2623,6 +2623,15 @@
  								crit = true;
  
  							float currentSpeed = Math.Abs(base.velocity.X) / maxRunSpeed;
+@@ -19361,7 +_,7 @@
+ 				else if (vector3.Y != 0f) {
+ 					int damage3 = Main.DamageVar(vector3.Y, 0f - luck);
+ 					Hurt(PlayerDeathReason.ByOther(3), damage3, 0, pvp: false, quiet: false, Crit: false, 0);
+-					if (vector3.Y == 60f || vector3.Y == 80f)
++					if (vector3.Y == 60f || vector3.Y == 80f) //These values have to match TileID.Sets.TouchDamageOther, which is unused in vanilla and was not up to date with 1.4 --direwolf420
+ 						AddBuff(30, Main.rand.Next(240, 600));
+ 				}
+ 				else {
 @@ -19447,7 +_,7 @@
  
  			if (num83) {
