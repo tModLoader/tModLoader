@@ -134,9 +134,8 @@ namespace Terraria.ModLoader.IO
 		internal static void LoadGlobals(Item item, IList<TagCompound> list) {
 			foreach (var tag in list) {
 				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out GlobalItem globalItemBase) && item.TryGetGlobalItem(globalItemBase, out var globalItem)) {
-					var globalItemInstance = globalItem.Instance(item);
 					try {
-						globalItemInstance.Load(item, tag.GetCompound("data"));
+						globalItem.Load(item, tag.GetCompound("data"));
 					}
 					catch (Exception e) {
 						throw new CustomModDataException(globalItem.Mod, $"Error in reading custom player data for {globalItem.FullName}", e);
@@ -184,16 +183,21 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static void SendModData(Item item, BinaryWriter writer) {
-			if (item.IsAir) return;
+			if (item.IsAir)
+				return;
+
 			writer.SafeWrite(w => item.ModItem?.NetSend(w));
+
 			foreach (var netGlobal in ItemLoader.NetGlobals) {
 				if (item.TryGetGlobalItem(netGlobal, out var globalItem))
-					writer.SafeWrite(w => globalItem.Instance(item).NetSend(item, w));
+					writer.SafeWrite(w => globalItem.NetSend(item, w));
 			}
 		}
 
 		public static void ReceiveModData(Item item, BinaryReader reader) {
-			if (item.IsAir) return;
+			if (item.IsAir)
+				return;
+
 			try {
 				reader.SafeRead(r => item.ModItem?.NetReceive(r));
 			}
@@ -203,9 +207,11 @@ namespace Terraria.ModLoader.IO
 			}
 
 			foreach (var netGlobal in ItemLoader.NetGlobals) {
+				if (!item.TryGetGlobalItem(netGlobal, out var globalItem))
+					continue;
+
 				try {
-					if (item.TryGetGlobalItem(netGlobal, out var globalItem))
-						reader.SafeRead(r => globalItem.Instance(item).NetReceive(item, r));
+					reader.SafeRead(r => globalItem.NetReceive(item, r));
 				}
 				catch (IOException e) {
 					Logging.tML.Error(e.ToString());
