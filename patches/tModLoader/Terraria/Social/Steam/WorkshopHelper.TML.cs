@@ -493,7 +493,7 @@ namespace Terraria.Social.Steam
 
 					int counter = 0;
 					do {
-						if (++counter > 2000) // 10 seconds maximum alotted time before assumed no connection
+						if (++counter > 2000) // 10 seconds maximum allotted time before assumed no connection
 							_primaryQueryResult = EResult.k_EResultTimeout;
 
 						ForceCallbacks();
