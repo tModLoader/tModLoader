@@ -150,6 +150,17 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
+@@ -1119,7 +_,9 @@
+ 					}
+ 					else if (Main.mouseRight && inv[slot].type == 4879) {
+ 						if (Main.mouseRightRelease && player.HasItem(329)) {
++							if (ItemLoader.ConsumeItem(inv[slot], player))
+-							inv[slot].stack--;
++								inv[slot].stack--;
++
+ 							if (inv[slot].stack == 0)
+ 								inv[slot].SetDefaults();
+ 
 @@ -1132,7 +_,9 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 1869) {
