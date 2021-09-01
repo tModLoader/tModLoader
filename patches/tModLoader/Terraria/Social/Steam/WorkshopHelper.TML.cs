@@ -3,6 +3,7 @@ using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -491,9 +492,10 @@ namespace Terraria.Social.Steam
 
 					_queryHook.Set(call);
 
-					int counter = 0;
+					var stopwatch = Stopwatch.StartNew();
+
 					do {
-						if (++counter > 2000) // 10 seconds maximum allotted time before assumed no connection
+						if (stopwatch.Elapsed.TotalSeconds >= 10) // 10 seconds maximum allotted time before no connection is assumed
 							_primaryQueryResult = EResult.k_EResultTimeout;
 
 						ForceCallbacks();
@@ -647,8 +649,12 @@ namespace Terraria.Social.Steam
 
 					_queryHook.Set(call);
 
+					var stopwatch = Stopwatch.StartNew();
+
 					do {
-						// Do Pretty Stuff if want here
+						if (stopwatch.Elapsed.TotalSeconds >= 10) // 10 seconds maximum allotted time before no connection is assumed
+							_primaryQueryResult = EResult.k_EResultTimeout;
+
 						ForceCallbacks();
 					}
 					while (_primaryQueryResult == EResult.k_EResultNone);
