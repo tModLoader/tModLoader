@@ -404,8 +404,10 @@ namespace Terraria.Social.Steam
 
 				AQueryInstance.InstalledMods = ModOrganizer.FindMods();
 
-				if (!ModManager.SteamAvailable)
+				if (!ModManager.SteamAvailable) {
+					Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop.\n\nCould not find steamclient.dll from a Steam install." , 0);
 					return false;
+				}
 
 				if (!new AQueryInstance().QueryAllPagesSerial())
 					return false;
@@ -420,6 +422,9 @@ namespace Terraria.Social.Steam
 
 				if (eResult == EResult.k_EResultAccessDenied) {
 					Utils.ShowFancyErrorMessage("Error: Access to Steam Workshop was denied.", 0);
+				}
+				else if (eResult == EResult.k_EResultTimeout) {
+					Utils.ShowFancyErrorMessage("Error: Operation Timed Out. No callback received from Steam Servers.", 0);
 				}
 				else {
 					Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop. " + eResult, 0);
@@ -486,14 +491,18 @@ namespace Terraria.Social.Steam
 
 					_queryHook.Set(call);
 
+					int counter = 0;
 					do {
-						// Do Pretty Stuff if want here
+						if (++counter > 2000) // 10 seconds maximum alotted time before assumed no connection
+							_primaryQueryResult = EResult.k_EResultTimeout;
+
 						ForceCallbacks();
 					}
 					while (_primaryQueryResult == EResult.k_EResultNone);
 
 					if (_primaryQueryResult != EResult.k_EResultOK) {
 						ErrorState = _primaryQueryResult;
+						ReleaseWorkshopQuery();
 						return;
 					}
 
