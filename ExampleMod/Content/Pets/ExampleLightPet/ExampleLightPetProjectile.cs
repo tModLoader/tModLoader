@@ -56,7 +56,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 			}
 
 			//Keep the projectile disappearing as long as the player isn't dead and has the pet buff.
-			if (!player.dead && player.HasBuff<ExampleLightPetBuff>()) {
+			if (!player.dead && player.HasBuff(ModContent.BuffType<ExampleLightPetBuff>())) {
 				Projectile.timeLeft = 2;
 			}
 
