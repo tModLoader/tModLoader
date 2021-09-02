@@ -1,5 +1,4 @@
-﻿using ExampleMod.Content.Items;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
@@ -14,6 +13,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Minion Boss Pet");
 			Tooltip.SetDefault("Summons a miniature Minion Boss to follow you");
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 

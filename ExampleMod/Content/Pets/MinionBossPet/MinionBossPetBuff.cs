@@ -9,7 +9,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Minion Boss Pet");
-			Description.SetDefault("a miniature Minion Boss is following you");
+			Description.SetDefault("A miniature Minion Boss is following you");
 
 			Main.buffNoTimeDisplay[Type] = true;
 			Main.vanityPet[Type] = true;
