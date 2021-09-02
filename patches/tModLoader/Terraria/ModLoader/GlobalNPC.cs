@@ -656,7 +656,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="tag"></param>
-		public void Load(NPC npc, TagCompound tag) {
+		public virtual void Load(NPC npc, TagCompound tag) {
 		}
 	}
 }
