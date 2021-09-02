@@ -14,7 +14,9 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		}
 
 		public override void SetDefaults() {
-			Item.DefaultToPlacableTile(ModContent.TileType<Tiles.Furniture.MinionBossTrophy>()); //Vanilla has many useful methods like these, use them! This substitutes setting Item.createTile and Item.placeStyle aswell as setting a few values that are common across all placeable items
+			//Vanilla has many useful methods like these, use them! This substitutes setting Item.createTile and Item.placeStyle aswell as setting a few values that are common across all placeable items
+			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Furniture.MinionBossTrophy>());
+			
 			Item.width = 32;
 			Item.height = 32;
 			Item.maxStack = 99;
