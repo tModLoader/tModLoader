@@ -19,7 +19,10 @@ namespace ExampleMod.Content.Items.Consumables
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Treasure Bag");
 			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); //References a language key that says "Right Click To Open" in the language of the game
-			
+
+			ItemID.Sets.BossBag[Type] = true; // This set is one that every boss bag should have, it, for example, lets our boss bag drop boss armor..
+			ItemID.Sets.PreHardmodeLikeBossBag[Type] = true; // ..But this set ensures that it's only dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
 		}
 
@@ -37,11 +40,6 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void OpenBossBag(Player player) {
-			if (Main.tenthAnniversaryWorld) { //Because this bag belongs to a pre-HM boss, we have to include this check
-				//Using a particular secret seed world grants doubled chance on dev sets (handled inside TryGettingDevArmor) even for pre-HM bosses
-				player.TryGettingDevArmor();
-			}
-
 			//We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
 			if (Main.rand.NextBool(7)) {
 				player.QuickSpawnItem(ModContent.ItemType<MinionBossMask>());
@@ -83,6 +81,7 @@ namespace ExampleMod.Content.Items.Consumables
 			Texture2D texture = TextureAssets.Item[Item.type].Value;
 
 			Rectangle frame;
+
 			if (Main.itemAnimations[Item.type] != null) {
 				//In case this item is animated, this picks the correct frame
 				frame = Main.itemAnimations[Item.type].GetFrame(texture, Main.itemFrameCounter[whoAmI]);
@@ -100,18 +99,22 @@ namespace ExampleMod.Content.Items.Consumables
 
 			time %= 4f;
 			time /= 2f;
+
 			if (time >= 1f) {
 				time = 2f - time;
 			}
+
 			time = time * 0.5f + 0.5f;
 
 			for (float i = 0f; i < 1f; i += 0.25f) {
 				float radians = (i + timer) * MathHelper.TwoPi;
+
 				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, frame, new Color(90, 70, 255, 50), rotation, frameOrigin, scale, SpriteEffects.None, 0);
 			}
 
 			for (float i = 0f; i < 1f; i += 0.34f) {
 				float radians = (i + timer) * MathHelper.TwoPi;
+				
 				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(140, 120, 255, 77), rotation, frameOrigin, scale, SpriteEffects.None, 0);
 			}
 
