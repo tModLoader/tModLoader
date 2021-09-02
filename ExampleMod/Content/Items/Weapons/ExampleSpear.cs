@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Items.Weapons
 
 			// Projectile Properties
 			Item.shootSpeed = 3.7f; // The speed of the projectile measured in pixels per frame.
-			Item.shoot = ModContent.ProjectileType<ExampleSpearProjectile>(); //The projectile that is fired from this weapon
+			Item.shoot = ModContent.ProjectileType<ExampleSpearProjectile>(); // The projectile that is fired from this weapon
 		}
 
 		public override bool CanUseItem(Player player) {

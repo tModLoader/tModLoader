@@ -82,8 +82,8 @@ namespace ExampleMod.Content.NPCs
 		// The PreDraw hook is useful for drawing things before our sprite is drawn or running code before the sprite is drawn
 		// Returning false will allow you to manually draw your NPC
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
-			//This code slowly rotates the NPC in the bestiary
-			//(simply checking NPC.IsABestiaryIconDummy and incrementing NPC.Rotation won't work here as it gets overridden by drawModifiers.Rotation each tick)
+			// This code slowly rotates the NPC in the bestiary
+			// (simply checking NPC.IsABestiaryIconDummy and incrementing NPC.Rotation won't work here as it gets overridden by drawModifiers.Rotation each tick)
 			if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(Type, out NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers)) {
                 drawModifiers.Rotation += 0.001f;
 
@@ -261,7 +261,7 @@ namespace ExampleMod.Content.NPCs
 		// 	// 		shop.item[nextSlot].shopCustomPrice = 0;
 		// 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
 		// 	// 		nextSlot++;
-		// 	// 		// TODO: Have tModLoader handle index issues.
+		// 	// 		//TODO: Have tModLoader handle index issues.
 		// 	// 	}
 		// 	// }
 		// }

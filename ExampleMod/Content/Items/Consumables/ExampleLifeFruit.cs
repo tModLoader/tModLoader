@@ -49,7 +49,7 @@ namespace ExampleMod.Content.Items.Consumables
 			// This handles the 2 achievements related to using any life increasing item or getting to exactly 500 hp and 200 mp.
 			// Ignored since our item is only useable after this achievement is reached
 			// AchievementsHelper.HandleSpecialEvent(player, 2);
-			// TODO re-add this when ModAchievement is merged?
+			//TODO re-add this when ModAchievement is merged?
 			return true;
 		}
 

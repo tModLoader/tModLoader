@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Pets.MinionBossPet
 {
-	//You can find a simple pet example in ExampleMod\Content\Pets\ExamplePet
+	// You can find a simple pet example in ExampleMod\Content\Pets\ExamplePet
 	public class MinionBossPetBuff : ModBuff
 	{
 		public override void SetStaticDefaults() {
@@ -20,7 +20,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 
 			int projType = ModContent.ProjectileType<MinionBossPetProjectile>();
 
-			//If the player is local, and there hasn't been a pet projectile spawned yet - spawn it.
+			// If the player is local, and there hasn't been a pet projectile spawned yet - spawn it.
 			if (player.whoAmI == Main.myPlayer && player.ownedProjectileCounts[projType] <= 0) {
 				Projectile.NewProjectile(player.GetProjectileSource_Buff(buffIndex), player.Center, Vector2.Zero, projType, 0, 0f, player.whoAmI);
 			}

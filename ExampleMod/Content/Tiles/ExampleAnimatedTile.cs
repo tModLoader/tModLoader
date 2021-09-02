@@ -35,7 +35,7 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(238, 145, 105), name);
 
 			// Can't use this since texture is vertical
-			//AnimationFrameHeight = 56;
+			// AnimationFrameHeight = 56;
 		}
 
 		// Our textures animation frames are arranged horizontally, which isn't typical, so here we specify animationFrameWidth which we use later in AnimateIndividualTile

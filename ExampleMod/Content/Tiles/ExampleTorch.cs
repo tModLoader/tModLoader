@@ -50,7 +50,7 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.addAlternate(0);
 			TileObjectData.addTile(Type);
 
-			//Etc
+			// Etc
 			ModTranslation name = CreateMapEntryName();
 			
 			name.SetDefault("Torch");
@@ -125,7 +125,7 @@ namespace ExampleMod.Content.Tiles
 				zero = Vector2.Zero;
 			}
 
-			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); //Don't remove any casts.
+			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); // Don't remove any casts.
 			Color color = new Color(100, 100, 100, 0);
 			int width = 20;
 			int height = 20;

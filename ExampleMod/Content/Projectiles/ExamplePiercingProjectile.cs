@@ -35,7 +35,7 @@ namespace ExampleMod.Content.Projectiles
 	public class ExamplePiercingProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Piercing Projectile"); //The name of the projectile(it can be appeared in chat)
+			DisplayName.SetDefault("Example Piercing Projectile"); // The name of the projectile(it can be appeared in chat)
 		}
 
 		public override void SetDefaults() {
@@ -53,18 +53,18 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.timeLeft = 60; // Each update timeLeft is decreased by 1. Once timeLeft hits 0, the Projectile will naturally despawn. (60 ticks = 1 second)
 
 			Projectile.penetrate = -1;
-			//1: Projectile.penetrate = 1; // Will hit even if npc is currently immune to player
-			//2a: Projectile.penetrate = -1; // Will hit and unless 3 is use, set 10 ticks of immunity
-			//2b: Projectile.penetrate = 3; // Same, but max 3 hits before dying
-			//5: Projectile.usesLocalNPCImmunity = true;
-			//5a: Projectile.localNPCHitCooldown = -1; // 1 hit per npc max
-			//5b: Projectile.localNPCHitCooldown = 20; // up to 20 hits
+			// 1: Projectile.penetrate = 1; // Will hit even if npc is currently immune to player
+			// 2a: Projectile.penetrate = -1; // Will hit and unless 3 is use, set 10 ticks of immunity
+			// 2b: Projectile.penetrate = 3; // Same, but max 3 hits before dying
+			// 5: Projectile.usesLocalNPCImmunity = true;
+			// 5a: Projectile.localNPCHitCooldown = -1; // 1 hit per npc max
+			// 5b: Projectile.localNPCHitCooldown = 20; // up to 20 hits
 		}
 
 		// See comments at the beginning of the class 
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
-			//3a: target.immune[Projectile.owner] = 20;
-			//3b: target.immune[Projectile.owner] = 5;
+			// 3a: target.immune[Projectile.owner] = 20;
+			// 3b: target.immune[Projectile.owner] = 5;
 		}
 	}
 

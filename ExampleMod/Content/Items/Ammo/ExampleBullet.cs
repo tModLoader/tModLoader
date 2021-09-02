@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Items.Ammo
 			Item.knockBack = 1.5f;
 			Item.value = 10;
 			Item.rare = ItemRarityID.Green;
-			Item.shoot = ModContent.ProjectileType<Projectiles.ExampleBullet>(); //The projectile that weapons fire when using this item as ammunition.
+			Item.shoot = ModContent.ProjectileType<Projectiles.ExampleBullet>(); // The projectile that weapons fire when using this item as ammunition.
 			Item.shootSpeed = 16f; // The speed of the projectile.
 			Item.ammo = AmmoID.Bullet; // The ammo class this ammo belongs to.
 		}

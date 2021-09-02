@@ -36,12 +36,12 @@ namespace ExampleMod.Content.Items.Tools
 	{
 		private static Asset<Texture2D> chainTexture; 
 
-		public override void Load() { //This is called once on mod (re)load when this piece of content is being loaded.
+		public override void Load() { // This is called once on mod (re)load when this piece of content is being loaded.
 			// This is the path to the texture that we'll use for the hook's chain. Make sure to update it.
 			chainTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Items/Tools/ExampleHookChain");
 		}
 
-		public override void Unload() { //This is called once on mod reload when this piece of content is being unloaded.
+		public override void Unload() { // This is called once on mod reload when this piece of content is being unloaded.
 			// It's currently pretty important to unload your static fields like this, to avoid having parts of your mod remain in memory when it's been unloaded.
 			chainTexture = null;
 		}
@@ -67,15 +67,15 @@ namespace ExampleMod.Content.Items.Tools
 		}
 
 		// Return true if it is like: Hook, CandyCaneHook, BatHook, GemHooks
-		//public override bool? SingleGrappleHook(Player player)
-		//{
+		// public override bool? SingleGrappleHook(Player player)
+		// {
 		//	return true;
-		//}
+		// }
 
 		// Use this to kill oldest hook. For hooks that kill the oldest when shot, not when the newest latches on: Like SkeletronHand
 		// You can also change the projectile like: Dual Hook, Lunar Hook
-		//public override void UseGrapple(Player player, ref int type)
-		//{
+		// public override void UseGrapple(Player player, ref int type)
+		// {
 		//	int hooksOut = 0;
 		//	int oldestHookIndex = -1;
 		//	int oldestHookTimeLeft = 100000;
@@ -95,7 +95,7 @@ namespace ExampleMod.Content.Items.Tools
 		//	{
 		//		Main.projectile[oldestHookIndex].Kill();
 		//	}
-		//}
+		// }
 
 		// Amethyst Hook is 300, Static Hook is 600.
 		public override float GrappleRange() {
@@ -132,16 +132,16 @@ namespace ExampleMod.Content.Items.Tools
 			float distanceToPlayer = directionToPlayer.Length();
 
 			while (distanceToPlayer > 20f && !float.IsNaN(distanceToPlayer)) {
-				directionToPlayer /= distanceToPlayer; //get unit vector
-				directionToPlayer *= chainTexture.Height(); //multiply by chain link length
+				directionToPlayer /= distanceToPlayer; // get unit vector
+				directionToPlayer *= chainTexture.Height(); // multiply by chain link length
 
-				center += directionToPlayer; //update draw position
-				directionToPlayer = playerCenter - center; //update distance
+				center += directionToPlayer; // update draw position
+				directionToPlayer = playerCenter - center; // update distance
 				distanceToPlayer = directionToPlayer.Length();
 
 				Color drawColor = Lighting.GetColor((int)center.X / 16, (int)(center.Y / 16));
 
-				//Draw chain
+				// Draw chain
 				Main.EntitySpriteDraw(chainTexture.Value, center - Main.screenPosition,
 					chainTexture.Value.Bounds, drawColor, chainRotation,
 					chainTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0);

@@ -56,10 +56,10 @@ namespace ExampleMod.Content.Items
 			tooltips.RemoveAll(l => l.Name.EndsWith(":RemoveMe"));
 
 			// Another method of removal can be done if you know the index of the tooltip:
-			//tooltips.RemoveAt(index);
+			// tooltips.RemoveAt(index);
 
 			// You can also remove a specific line, if you have access to that object:
-			//tooltips.Remove(tooltipLine);
+			// tooltips.Remove(tooltipLine);
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

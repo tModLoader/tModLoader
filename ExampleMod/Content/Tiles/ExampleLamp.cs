@@ -141,7 +141,7 @@ namespace ExampleMod.Content.Tiles
 
 			TileLoader.SetDrawPositions(i, j, ref width, ref offsetY, ref height, ref frameX, ref frameY);
 
-			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); //Don't remove any casts.
+			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); // Don't remove any casts.
 
 			// We can support different flames for different styles here: int style = Main.tile[j, i].frameY / 54;
 			for (int c = 0; c < 7; c++) {

@@ -9,7 +9,7 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleCustomDamageWeapon : ModItem
 	{
-		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleSword"; // TODO: remove when sprite is made for this
+		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleSword"; //TODO: remove when sprite is made for this
 
 		public override void SetStaticDefaults() {
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;

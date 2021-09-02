@@ -13,10 +13,10 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		}
 
 		public override void SetDefaults() {
-			Item.createTile = ModContent.TileType<Tiles.Furniture.ExampleWorkbench>(); //This sets the id of the tile that this item should place when used.
+			Item.createTile = ModContent.TileType<Tiles.Furniture.ExampleWorkbench>(); // This sets the id of the tile that this item should place when used.
 
-			Item.width = 28; //The item texture's width
-			Item.height = 14; //The item texture's height
+			Item.width = 28; // The item texture's width
+			Item.height = 14; // The item texture's height
 
 			Item.useTurn = true;
 			Item.autoReuse = true;

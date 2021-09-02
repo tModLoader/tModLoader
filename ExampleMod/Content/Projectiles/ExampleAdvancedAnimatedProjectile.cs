@@ -34,7 +34,7 @@ namespace ExampleMod.Content.Projectiles
 		// Return null to use the default color (normally light and buff color)
 		// Returns null by default.
 		public override Color? GetAlpha(Color lightColor) {
-			//return Color.White;
+			// return Color.White;
 			return new Color(255, 255, 255, 0) * Projectile.Opacity;
 		}
 

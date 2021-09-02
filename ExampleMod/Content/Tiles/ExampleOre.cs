@@ -28,8 +28,8 @@ namespace ExampleMod.Content.Tiles
 			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleOre>();
 			SoundType = SoundID.Tink;
 			SoundStyle = 1;
-			//mineResist = 4f;
-			//minPick = 200;
+			// mineResist = 4f;
+			// minPick = 200;
 		}
 	}
 

@@ -10,15 +10,15 @@ using Terraria.GameContent;
 
 namespace ExampleMod.Content.Items.Consumables
 {
-	//Basic code for a boss treasure bag
+	// Basic code for a boss treasure bag
 	public class MinionBossBag : ModItem
 	{
-		//Sets the associated NPC this treasure bag is dropped from
+		// Sets the associated NPC this treasure bag is dropped from
 		public override int BossBagNPC => ModContent.NPCType<MinionBossBody>();
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Treasure Bag");
-			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); //References a language key that says "Right Click To Open" in the language of the game
+			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
 
 			ItemID.Sets.BossBag[Type] = true; // This set is one that every boss bag should have, it, for example, lets our boss bag drop dev armor..
 			ItemID.Sets.PreHardmodeLikeBossBag[Type] = true; // ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.width = 24;
 			Item.height = 24;
 			Item.rare = ItemRarityID.Purple;
-			Item.expert = true; //This makes sure that "Expert" displays in the tooltip and the item name color changes
+			Item.expert = true; // This makes sure that "Expert" displays in the tooltip and the item name color changes
 		}
 
 		public override bool CanRightClick() {
@@ -40,7 +40,7 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void OpenBossBag(Player player) {
-			//We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
+			// We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
 			if (Main.rand.NextBool(7)) {
 				player.QuickSpawnItem(ModContent.ItemType<MinionBossMask>());
 			}
@@ -48,21 +48,21 @@ namespace ExampleMod.Content.Items.Consumables
 			player.QuickSpawnItem(ModContent.ItemType<ExampleItem>(), Main.rand.Next(12, 16));
 		}
 
-		//Below is code for the visuals
+		// Below is code for the visuals
 
 		public override Color? GetAlpha(Color lightColor) {
-			//Makes sure the dropped bag is always visible
+			// Makes sure the dropped bag is always visible
 			return Color.Lerp(lightColor, Color.White, 0.4f);
 		}
 
 		public override void PostUpdate() {
-			//Spawn some light and dust when dropped in the world
+			// Spawn some light and dust when dropped in the world
 			Lighting.AddLight(Item.Center, Color.White.ToVector3() * 0.4f);
 
 			if (Item.timeSinceItemSpawned % 12 == 0) {
 				Vector2 center = Item.Center + new Vector2(0f, Item.height * -0.1f);
 
-				//This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
+				// This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
 				Vector2 direction = Main.rand.NextVector2CircularEdge(Item.width * 0.6f, Item.height * 0.6f);
 				float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
 				Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
@@ -77,13 +77,13 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
-			//Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
+			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
 			Texture2D texture = TextureAssets.Item[Item.type].Value;
 
 			Rectangle frame;
 
 			if (Main.itemAnimations[Item.type] != null) {
-				//In case this item is animated, this picks the correct frame
+				// In case this item is animated, this picks the correct frame
 				frame = Main.itemAnimations[Item.type].GetFrame(texture, Main.itemFrameCounter[whoAmI]);
 			}
 			else {

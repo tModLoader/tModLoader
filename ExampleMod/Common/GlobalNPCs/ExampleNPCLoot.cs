@@ -11,13 +11,13 @@ namespace ExampleMod.Common.GlobalNPCs
 	// Despite this file being GlobalNPC, everything here can be used with a ModNPC as well! See examples of this in the Content/NPCs folder.
 	public class ExampleNPCLoot : GlobalNPC
 	{
-		//ModifyNPCLoot uses a unique system called the ItemDropDatabase, which has many different rules for many different drop use cases.
-		//Here we go through all of them, and how they can be used.
-		//There are tons of other examples in vanilla! In a decompiled vanilla build, GameContent/ItemDropRules/ItemDropDatabase adds item drops to every single vanilla NPC, which can be a good resource.
+		// ModifyNPCLoot uses a unique system called the ItemDropDatabase, which has many different rules for many different drop use cases.
+		// Here we go through all of them, and how they can be used.
+		// There are tons of other examples in vanilla! In a decompiled vanilla build, GameContent/ItemDropRules/ItemDropDatabase adds item drops to every single vanilla NPC, which can be a good resource.
 
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-			if (!NPCID.Sets.CountsAsCritter[npc.type]) { //If npc is not a critter
-				//Make it drop ExampleItem.
+			if (!NPCID.Sets.CountsAsCritter[npc.type]) { // If npc is not a critter
+				// Make it drop ExampleItem.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1));
 																						 
 				// ItemDropRule.Common is what you would use in most cases, it simply drops the item with a fractional chance specified.
@@ -40,11 +40,11 @@ namespace ExampleMod.Common.GlobalNPCs
 						&& npcNameCondition.neededName == "Andrew" // And the condition's string is "Andrew". 
 				);
 				
-				npcLoot.Add(ItemDropRule.Common(ItemID.GreenCap, 1)); //In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ItemID.GreenCap, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
 			if (npc.type == NPCID.Crimera || npc.type == NPCID.Corruptor) {
-				//Here we make use of our own special rule we created: drop during daytime
+				// Here we make use of our own special rule we created: drop during daytime
 				ExampleDropCondition exampleDropCondition = new ExampleDropCondition();
 				IItemDropRule conditionalRule = new LeadingConditionRule(exampleDropCondition);
 
@@ -52,24 +52,24 @@ namespace ExampleMod.Common.GlobalNPCs
 				if (npc.type == NPCID.Crimera) {
 					itemType = ItemID.RottenChunk;
 				}
-				//33% chance to drop other corresponding item in addition
+				// 33% chance to drop other corresponding item in addition
 				IItemDropRule rule = ItemDropRule.Common(itemType, chanceDenominator: 3);
 
-				//Apply our item drop rule to the conditional rule
+				// Apply our item drop rule to the conditional rule
 				conditionalRule.OnSuccess(rule);
-				//Add the rule
+				// Add the rule
 				npcLoot.Add(conditionalRule);
-				//It will result in the drop being shown in the bestiary, but only drop if the condition is true.
+				// It will result in the drop being shown in the bestiary, but only drop if the condition is true.
 			}
       
 			//TODO: Add the rest of the vanilla drop rules!!
 		}
 
-		//ModifyGlobalLoot allows you to modify loot that every NPC should be able to drop, preferably with a condition.
-		//Vanilla uses this for the biome keys, souls of night/light, as well as the holiday drops.
-		//Any drop rules in ModifyGlobalLoot should only run once. Everything else should go in ModifyNPCLoot.
+		// ModifyGlobalLoot allows you to modify loot that every NPC should be able to drop, preferably with a condition.
+		// Vanilla uses this for the biome keys, souls of night/light, as well as the holiday drops.
+		// Any drop rules in ModifyGlobalLoot should only run once. Everything else should go in ModifyNPCLoot.
 		public override void ModifyGlobalLoot(GlobalLoot globalLoot) {
-			globalLoot.Add(ItemDropRule.ByCondition(new Conditions.IsMasterMode(), ModContent.ItemType<ExampleSoul>(), 5, 1, 1)); //If the world is in master mode, drop ExampleSouls 20% of the time from every npc.
+			globalLoot.Add(ItemDropRule.ByCondition(new Conditions.IsMasterMode(), ModContent.ItemType<ExampleSoul>(), 5, 1, 1)); // If the world is in master mode, drop ExampleSouls 20% of the time from every npc.
 			//TODO: Make it so it only drops from enemies in ExampleBiome when that gets made.
 		}
 	}
