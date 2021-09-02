@@ -19,12 +19,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 		//This projectile uses an additional texture for drawing
 		public static Asset<Texture2D> EyeAsset;
 
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Minion Boss Pet");
-
-			Main.projFrames[Projectile.type] = 6;
-			Main.projPet[Projectile.type] = true;
-
+		public override void Load() {
 			//load/cache the additional texture
 			if (!Main.dedServ) {
 				EyeAsset = ModContent.Request<Texture2D>(Texture + "_Eye");
@@ -32,8 +27,15 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 		}
 
 		public override void Unload() {
-			//Dispose and unload the texture
+			//Unload the additional texture
 			EyeAsset = null;
+		}
+
+		public override void SetStaticDefaults() {
+			DisplayName.SetDefault("Minion Boss Pet");
+
+			Main.projFrames[Projectile.type] = 6;
+			Main.projPet[Projectile.type] = true;
 		}
 
 		public override void SetDefaults() {
