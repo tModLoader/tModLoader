@@ -50,10 +50,16 @@ namespace Terraria.ModLoader
 			};
 			HookEndpointManager.OnModify += (m, d) => {
 				Logging.tML.Debug($"Hook IL.{StringRep(m)} modified by {GetOwnerName(d)}");
+#if RELEASE
+				throw new NotSupportedException("Hook modification Not Currently Supported on Release Builds As Unloading Fails");
+#endif
 				return true;
 			};
 			HookEndpointManager.OnUnmodify += (m, d) => {
 				Logging.tML.Debug($"Hook IL.{StringRep(m)} unmodified by {GetOwnerName(d)}");
+#if RELEASE
+				throw new NotSupportedException("Hook modification Not Currently Supported on Release Builds As Unloading Fails");
+#endif
 				return true;
 			};
 

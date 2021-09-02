@@ -416,10 +416,9 @@ namespace Terraria.ModLoader
 					Console.WriteLine($"Unloading {mod.DisplayName}...");
 				else
 					Interface.loadMods.SetCurrentMod(i++, mod.DisplayName);
-				
-				MonoModHooks.RemoveAll(mod);
-				
+
 				try {
+					MonoModHooks.RemoveAll(mod);
 					mod.Close();
 					mod.UnloadContent();
 				}
