@@ -1141,12 +1141,21 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate bool DelegateNeedCustomSaving(NPC npc);
+		private static HookList HookNeedCustomSaving = AddHook<DelegateNeedCustomSaving>(g => g.NeedCustomSaving);
+
 		public static bool SavesAndLoads(NPC npc) {
-			if (npc.townNPC)
+			if (npc.townNPC && npc.type != NPCID.TravellingMerchant)
 				return false;
-			return NPCID.Sets.SavesAndLoads[npc.type] 
-			       || (npc.ModNPC?.SavesAndLoads == true)
-			       || npc.globalNPCs.Any(instanced => instanced.instance.NeedCustomSaving(npc));
+			if (NPCID.Sets.SavesAndLoads[npc.type] || (npc.ModNPC?.SavesAndLoads == true))
+				return true;
+			
+			foreach (GlobalNPC globalNPC in HookNeedCustomSaving.Enumerate(npc.globalNPCs)) {
+				if (globalNPC.NeedCustomSaving(npc))
+					return true;
+			}
+
+			return false;
 		}
 	}
 }
