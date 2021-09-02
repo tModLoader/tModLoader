@@ -196,8 +196,8 @@ namespace Terraria.ModLoader.IO
 						npc.ModNPC.Load(tag.GetCompound("data"));
 						continue;
 					}
-					remainingTags.Add(tag);
 				}
+				remainingTags.Add(tag);
 			}
 			var searchIndexes = new Dictionary<int, int>();
 			foreach (TagCompound tag in remainingTags) {
