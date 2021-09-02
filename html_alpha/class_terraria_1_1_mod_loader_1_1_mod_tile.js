@@ -29,7 +29,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_tile =
     [ "Register", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a449740fe84d55dee5f1f96f357b205cf", null ],
     [ "RightClick", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#ae9ab77e6249c1e08ab661ab4edeba1fc", null ],
     [ "SaplingGrowthType", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#ae02d585c05a868c401fda0924c0e10aa", null ],
-    [ "SetDrawPositions", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a7aca44c9ddb9a8b8fa0e952390949ee5", null ],
+    [ "SetDrawPositions", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#aede12cc1a86ac24c0a0e4ee457587f14", null ],
     [ "SetModCactus", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#ac95c5d3d5f2d4ff31c9694bde95d9161", null ],
     [ "SetModPalmTree", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a8a9dbf17647df43cb1af21d47a9363cc", null ],
     [ "SetModTree", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a31b61333ecefc242829a37575eba1869", null ],
