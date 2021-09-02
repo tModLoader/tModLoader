@@ -30,6 +30,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 		public bool HasPosition => PositionIndex > -1;
 
+		public const float RotationTimerMax = 360;
+		public ref float RotationTimer => ref NPC.ai[2];
+
 		//Helper method to determine the body type
 		public static int BodyType() {
 			return ModContent.NPCType<MinionBossBody>();
@@ -49,10 +52,20 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			//Specify the debuffs it is immune to
 			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData {
 				SpecificallyImmuneTo = new int[] {
-					BuffID.Confused
+					BuffID.Poisoned,
+					BuffID.Venom, //If you make it immune to Poisoned, also make it immune to Venom
+
+					BuffID.Confused //Most NPCs have this
 				}
 			};
 			NPCID.Sets.DebuffImmunitySets.Add(Type, debuffData);
+
+			//Optional: If you don't want this NPC to show on the bestiary (if there is no reason to show a boss minion separately)
+			//Make sure to remove SetBestiary code aswell
+			//NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+			//	Hide = true //Hides this NPC from the bestiary
+			//};
+			//NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, bestiaryData);
 		}
 
 		public override void SetDefaults() {
@@ -74,7 +87,8 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			//Makes it so whenever you beat the boss associated with it, it will also get unlocked immediately
-			bestiaryEntry.UIInfoProvider = new CommonEnemyUICollectionInfoProvider(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[BodyType()], quickUnlock: true);
+			int associatedNPCType = BodyType();
+			bestiaryEntry.UIInfoProvider = new CommonEnemyUICollectionInfoProvider(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[associatedNPCType], quickUnlock: true);
 
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
 				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), //Plain black background
@@ -87,7 +101,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				//This is required because we have NPC.alpha = 255, in the bestiary it would look transparent
 				return NPC.GetBestiaryEntryColor();
 			}
-			return Color.White * (1f - NPC.alpha / 255f);
+			return Color.White * NPC.Opacity;
 		}
 
 		public override void HitEffect(int hitDirection, double damage) {
@@ -147,6 +161,22 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			//the main body it is positioned at
 			float rad = (float)PositionIndex / MinionBossBody.MinionCount() * MathHelper.TwoPi;
 
+			//Add some slight uniform rotation to make the eyes move, giving a chance to touch the player and thus helping melee players
+			RotationTimer += 0.5f;
+			if (RotationTimer > RotationTimerMax) {
+				RotationTimer = 0;
+			}
+
+			//Since RotationTimer is in degrees (0..360) we can convert it to radians (0..TwoPi) easily
+			float continuousRotation = MathHelper.ToRadians(RotationTimer);
+			rad += continuousRotation;
+			if (rad > MathHelper.TwoPi) {
+				rad -= MathHelper.TwoPi;
+			}
+			else if (rad < 0) {
+				rad += MathHelper.TwoPi;
+			}
+
 			float distanceFromBody = parentNPC.width + NPC.width;
 
 			//offset is now a vector that will determine the position of the NPC based on its index
@@ -154,7 +184,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			Vector2 destination = parentNPC.Center + offset;
 			Vector2 toDestination = destination - NPC.Center;
-			Vector2 toDestinationNormalized = Vector2.Normalize(toDestination);
+			Vector2 toDestinationNormalized = toDestination.SafeNormalize(Vector2.Zero);
 
 			float speed = 8f;
 			float inertia = 20;

@@ -1,7 +1,9 @@
 ﻿using ExampleMod.Common.Systems;
 using ExampleMod.Content.BossBars;
 using ExampleMod.Content.Items;
+using ExampleMod.Content.Items.Armor.Vanity;
 using ExampleMod.Content.Items.Consumables;
+using ExampleMod.Content.Pets.MinionBossPet;
 using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using System;
@@ -110,7 +112,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			//Specify the debuffs it is immune to
 			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData {
 				SpecificallyImmuneTo = new int[] {
-					BuffID.Confused
+					BuffID.Poisoned,
+					BuffID.Venom, //If you make it immune to Poisoned, also make it immune to Venom
+
+					BuffID.Confused //Most NPCs have this
 				}
 			};
 			NPCID.Sets.DebuffImmunitySets.Add(Type, debuffData);
@@ -118,7 +123,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
 				CustomTexturePath = "ExampleMod/Assets/Textures/Bestiary/MinionBoss_Preview",
-				PortraitScale = 0.6f,
+				PortraitScale = 0.6f, //Portrait refers to the full picture when clicking on the icon in the bestiary
 				PortraitPositionYOverride = 0f,
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
@@ -138,13 +143,13 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			NPC.value = Item.buyPrice(gold: 5);
 			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
-			NPC.npcSlots = 10f;
+			NPC.npcSlots = 10f; //Take up open spawn slots, preventing random NPCs from spawning during the fight
 
 			//Don't set immunities like this as of 1.4:
 			//NPC.buffImmune[BuffID.Confused] = true;
 			//immunities are handled via dictionaries through NPCID.Sets.DebuffImmunitySets
 
-			//Custom AI, 0 has some very basic spriteDirection code we don't need
+			//Custom AI, 0 is "bound town NPC" AI which slows the NPC down and changes sprite orientation towards the target
 			NPC.aiStyle = -1;
 
 			//Custom boss bar
@@ -170,18 +175,30 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
 			//Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
 
-			//Add the treasure bag (automatically checks for expert mode)
-			npcLoot.Add(ItemDropRule.BossBag(BossBag)); //this requires you to set BossBag in SetDefaults accordingly
+			//Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
+			//This requires you to set BossBag in SetDefaults accordingly
+			npcLoot.Add(ItemDropRule.BossBag(BossBag));
 
-			//Master mode drops go here
+			//Trophies are spawned with 1/10 chance
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Placeable.Furniture.MinionBossTrophy>(), 10));
+
+			//ItemDropRule.MasterModeCommonDrop for the relic
+			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.Furniture.MinionBossRelic>()));
+
+			//ItemDropRule.MasterModeDropOnAllPlayers for the pet
+			npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 
 			//All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
 			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
 
-			int itemType = ModContent.ItemType<ExampleItem>();
+			//Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
+			//Boss masks are spawned with 1/7 chance
+			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MinionBossMask>(), 7));
 
+			//This part is not required for a boss and is just showcasing some advanced stuff you can do with drop rules to control how items spawn
 			//We make 12-15 ExampleItems spawn randomly in all directions, like the lunar pillar fragments. Hereby we need the DropOneByOne rule,
 			//which requires these parameters to be defined
+			int itemType = ModContent.ItemType<ExampleItem>();
 			var parameters = new DropOneByOne.Parameters() {
 				ChanceNumerator = 1,
 				ChanceDenominator = 1,
@@ -191,7 +208,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				MaximumItemDropsCount = 15,
 			};
 
-			//Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
 			notExpertRule.OnSuccess(new DropOneByOne(itemType, parameters));
 
 			//Finally add the leading rule
@@ -249,10 +265,15 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 		public override void HitEffect(int hitDirection, double damage) {
 			//If the NPC dies, spawn gore and play a sound
+			if (Main.netMode == NetmodeID.Server) {
+				//We don't want Mod.Find<ModGore> to run on servers as it will crash because gores are not loaded on servers
+				return;
+			}
+
 			if (NPC.life <= 0) {
-				//These gores work by simply existing as a texture inside the ExampleMod/Gores folder. They won't be recognized in any other folder
-				int backGoreType = ModContent.Find<ModGore>("ExampleMod/MinionBossBody_Back").Type;
-				int frontGoreType = ModContent.Find<ModGore>("ExampleMod/MinionBossBody_Front").Type;
+				//These gores work by simply existing as a texture inside any folder which path contains "Gores/"
+				int backGoreType = Mod.Find<ModGore>("MinionBossBody_Back").Type;
+				int frontGoreType = Mod.Find<ModGore>("MinionBossBody_Front").Type;
 
 				for (int i = 0; i < 2; i++) {
 					Gore.NewGore(NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), backGoreType);
@@ -264,7 +285,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		}
 
 		public override void AI() {
-			//This should almost always be the first code in AI() as it is responsible for finding the proper player target.
+			//This should almost always be the first code in AI() as it is responsible for finding the proper player target
 			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active) {
 				NPC.TargetClosest();
 			}
@@ -314,7 +335,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				int index = NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
 				NPC minionNPC = Main.npc[index];
 
-				//Now that the minion is spawned, we need to prepare it with data that is necessary for it to work.
+				//Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
 				//This is not required usually if you simply spawn NPCs, but because the minion is tied to the body, we need to pass this information to it
 
 				if (minionNPC.ModNPC is MinionBossMinion minion) {
@@ -397,7 +418,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			//Move along the vector
 			Vector2 toDestination = FirstStageDestination - NPC.Center;
-			Vector2 toDestinationNormalized = Vector2.Normalize(toDestination);
+			Vector2 toDestinationNormalized = toDestination.SafeNormalize(Vector2.UnitY);
 			float speed = Math.Min(distance, toDestination.Length());
 			NPC.velocity = toDestinationNormalized * speed / 30;
 
@@ -436,7 +457,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			Vector2 abovePlayer = player.Top + new Vector2(NPC.direction * offsetX, -NPC.height);
 
 			Vector2 toAbovePlayer = abovePlayer - NPC.Center;
-			Vector2 toAbovePlayerNormalized = Vector2.Normalize(toAbovePlayer);
+			Vector2 toAbovePlayerNormalized = toAbovePlayer.SafeNormalize(Vector2.UnitY);
 
 			//The NPC tries to go towards the offsetX position, but most likely it will never get there exactly, or close to if the player is moving
 			//This checks if the npc is "70% there", and then changes direction
