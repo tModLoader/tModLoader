@@ -209,7 +209,7 @@ namespace Terraria.ModLoader.IO
 						}
 						searchIndexes[npcId] = index + 1;
 						
-						if (nextFreeNPC < 200) {
+						if (index < 200) {
 							globalNPC.Load(Main.npc[index], tag.GetCompound("data"));
 							continue;
 						}
