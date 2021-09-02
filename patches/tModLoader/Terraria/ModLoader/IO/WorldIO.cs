@@ -134,6 +134,10 @@ namespace Terraria.ModLoader.IO
 
 					foreach (Instanced<GlobalNPC> instancedGlobalNPC in npc.globalNPCs) {
 						GlobalNPC globalNPC = instancedGlobalNPC.instance;
+						if (globalNPC is UnloadedGlobalNPC unloadedGlobalNPC) {
+							globalData.AddRange(unloadedGlobalNPC.data);
+							continue;
+						}
 						TagCompound tagCompound = globalNPC.Save(npc);
 						if (tagCompound != null) {
 							globalData.Add(new TagCompound {
@@ -250,7 +254,7 @@ namespace Terraria.ModLoader.IO
 						}
 					}
 					else {
-						//TODO: Add mystery NPC
+						npc.GetGlobalNPC<UnloadedGlobalNPC>().data.Add(tagCompound);
 					}
 				}
 			}
