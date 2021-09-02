@@ -1,3 +1,4 @@
+using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -13,8 +14,12 @@ namespace ExampleMod.Content.Items
 			// See here for help on using Tags: http://terraria.gamepedia.com/Chat#Tags
 			Tooltip.SetDefault("How are you feeling today?"
 				+ $"\n[c/FF0000:Colors ][c/00FF00:are ][c/0000FF:fun ]and so are items: [i:{Item.type}][i:{ModContent.ItemType<ExampleMountItem>()}][i/s123:{ItemID.Ectoplasm}]");
+			
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(30, 4));
+			ItemID.Sets.AnimatesAsSoul[Item.type] = true; // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
+
 			ItemID.Sets.ItemNoGravity[Item.type] = true;
 		}
 

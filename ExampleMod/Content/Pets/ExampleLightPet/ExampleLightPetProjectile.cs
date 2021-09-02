@@ -69,7 +69,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 
 			//Lights up area around it.
 			if (!Main.dedServ) {
-				Lighting.AddLight(Projectile.Center, (255 - Projectile.alpha) * 0.9f / 255f, (255 - Projectile.alpha) * 0.1f / 255f, (255 - Projectile.alpha) * 0.3f / 255f);
+				Lighting.AddLight(Projectile.Center, Projectile.Opacity * 0.9f, Projectile.Opacity * 0.1f, Projectile.Opacity * 0.3f);
 			}
 		}
 

@@ -39,7 +39,7 @@
  			}
  
  			public static void EnterWorld(int playerIndex) {
-+				Logging.Terraria.InfoFormat("Entering world with player: {0}, IsCloud={1}", Main.ActivePlayerFileData.Name, Main.ActivePlayerFileData.IsCloudSave);
++				Logging.Terraria.InfoFormat("Entering world with player: {0}, IsCloud={1}, Size={2}x{3}", Main.ActivePlayerFileData.Name, Main.ActivePlayerFileData.IsCloudSave, Main.maxTilesX, Main.maxTilesY);
 +				Interface.ResetData();
  				if (Hooks.OnEnterWorld != null)
  					Hooks.OnEnterWorld(Main.player[playerIndex]);
