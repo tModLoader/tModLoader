@@ -61,7 +61,7 @@ var searchData=
   ['body_192',['Body',['../class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html',1,'Terraria::ID::ArmorIDs']]],
   ['booltagserializer_193',['BoolTagSerializer',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_bool_tag_serializer.html',1,'Terraria::ModLoader::IO']]],
   ['boomerang_194',['Boomerang',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#aa24f33e6444e5f081126fbf679e2dc56',1,'Terraria::ID::ProjAIStyleID']]],
-  ['bossbag_195',['BossBag',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a9434d86f59b605aca93f6e40174a8fd5',1,'Terraria::ModLoader::ModNPC']]],
+  ['bossbag_195',['BossBag',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a9434d86f59b605aca93f6e40174a8fd5',1,'Terraria.ModLoader.ModNPC.BossBag()'],['../class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a3419d4d992c55e2ffc9e1db80f64e6ed',1,'Terraria.ID.ItemID.Sets.BossBag()']]],
   ['bossbagnpc_196',['BossBagNPC',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#abfdf070cf5034f34597c9c120e42144a',1,'Terraria::ModLoader::ModItem']]],
   ['bossbar_197',['BossBar',['../class_terraria_1_1_n_p_c.html#a67ed494a27c320392477a6f98fb76329',1,'Terraria::NPC']]],
   ['bossbardrawparams_198',['BossBarDrawParams',['../struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html',1,'Terraria::DataStructures']]],
