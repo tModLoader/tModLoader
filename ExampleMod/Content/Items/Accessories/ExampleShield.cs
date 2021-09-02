@@ -12,6 +12,7 @@ namespace ExampleMod.Content.Items.Accessories
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded shield.");
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 

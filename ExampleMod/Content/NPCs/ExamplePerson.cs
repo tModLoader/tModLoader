@@ -248,8 +248,8 @@ namespace ExampleMod.Content.NPCs
 		// 	}
 		//
 		// 	// todo: Here is an example of how your npc can sell items from other mods.
-		// 	// var modSummonersAssociation = ModLoader.GetMod("SummonersAssociation");
-		// 	// if (modSummonersAssociation != null) {
+		// 	// var modSummonersAssociation = ModLoader.TryGetMod("SummonersAssociation");
+		// 	// if (ModLoader.TryGetMod("SummonersAssociation", out Mod modSummonersAssociation)) {
 		// 	// 	shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
 		// 	// 	nextSlot++;
 		// 	// }

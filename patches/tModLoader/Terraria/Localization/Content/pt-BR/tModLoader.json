@@ -68,11 +68,11 @@
 		"BossBarStyleNoOptions": "Nenhuma Opção",
 
 		// Workshop
-		// "WorkshopDisclaimer": "By submitting this item, you agree to the tModLoader Terms of Service",
-		// "SteamPublishingLimit": "Error: Only Steam tModLoader owners can publish to Workshop in-game.",
-		// "NoWorkshopAccess": "Error: Unable to access Steam Workshop",
-		// "ModAlreadyUploaded": "Error: Mod already exists on Workshop!",
-		// "ModVersionInfoUnchanged": "Error: Mod Version information must be incremented prior to updating.",
+		"WorkshopDisclaimer": "Ao enviar este item, você concorda com os Termos de Serviço do tModLoader.",
+		"SteamPublishingLimit": "Erro: Apenas proprietários do tModLoader na Steam podem publicar para a Oficina dentro do jogo.",
+		"NoWorkshopAccess": "Erro: Não foi possível acessar a Oficina Steam",
+		"ModAlreadyUploaded": "Erro: O Mod já existe na Oficina!",
+		"ModVersionInfoUnchanged": "Erro: Informações da versão do mod devem ser incrementadas antes de atualizar.",
 
 		// Mod Errors
 		"LoadError": "Ocorreu um erro ao carregar {0}",
@@ -261,7 +261,7 @@
 		"MigratePlayersText": "Clique aqui para migrar jogadores...",
 		"MigratePlayersException": "Ocorreu um problema ao tentar migrar os arquivos de Jogador",
 		"MigrateWorldsMessage": "Você não tem mundos.\nSe você gostaria de migrar os seus mundos do vanilla para o tModLoader,\nvocê pode apertar o botão migrar para fazer isso automaticamente.\nAlternativamente, você pode copiar eles de \n /Terraria/Worlds\npara\n/Terraria/ModLoader/Worlds manualmente.\nCopie o arquivo .wld.\nClique neste texto para abrir essas pastas.\nDepois de copiar os mundos que você deseja, pressione voltar.",
-		"MigrateWorldsText": "CClique aqui para migrar mundos...",
+		"MigrateWorldsText": "Clique aqui para migrar mundos...",
 		"MigratingWorldsText": "Migrando...",
 		"ModsDifferentSinceLastPlay": "Os seguintes mods são diferentes desde a última vez que você jogou: ",
 		"Missing1Mod": "1 mod não foi encontrado.",

@@ -17,11 +17,15 @@ namespace ExampleMod.Common.GlobalNPCs
 
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 			if (!NPCID.Sets.CountsAsCritter[npc.type]) { //If npc is not a critter
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1)); //Make it drop ExampleItem.
-				// ItemDropRule.Common is what you would use in most cases, it simply drops the item with a chance specified.
-				// The dropsOutOfY int is used for the numerator of the fractional chance of dropping this item.
-				// Likewise, the dropsXOutOfY int is used for the denominator.
-				// For example, if you had a dropsOutOfY as 7 and a dropsXOutOfY as 2, then the chance the item would drop is 2/7 or about 28%.
+				//Make it drop ExampleItem.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1));
+																						 
+				// ItemDropRule.Common is what you would use in most cases, it simply drops the item with a fractional chance specified.
+				// The chanceDenominator int is used for the denominator part of the fractional chance of dropping this item.
+
+				// ItemDropRule.Common(...) does not let you specify the numerator, so you can use new CommonDrop(...) instead.
+				// (1 by default if using ItemDropRule.Common)
+				// For example, if you had a chanceDenominator as 7 and a chanceNumerator as 2, then the chance the item would drop is 2/7 or about 28%.
 			}
 
 			// We will now use the Guide to explain many of the other types of drop rules.

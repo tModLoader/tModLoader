@@ -3,7 +3,6 @@ using NVorbis;
 using ReLogic.Content;
 using ReLogic.Content.Readers;
 using System.IO;
-using Terraria.ModLoader.Audio;
 
 namespace Terraria.ModLoader.Assets
 {
@@ -19,9 +18,17 @@ namespace Terraria.ModLoader.Assets
 			float[] floatBuf = new float[buffer.Length / 2];
 
 			reader.ReadSamples(floatBuf, 0, floatBuf.Length);
-			MusicStreamingOGG.Convert(floatBuf, buffer);
+			Convert(floatBuf, buffer);
 
 			return new SoundEffect(buffer, reader.SampleRate, (AudioChannels)reader.Channels) as T;
+		}
+
+		public static void Convert(float[] floatBuf, byte[] buffer) {
+			for (int i = 0; i < floatBuf.Length; i++) {
+				short val = (short)(floatBuf[i] * short.MaxValue);
+				buffer[i * 2] = (byte)val;
+				buffer[i * 2 + 1] = (byte)(val >> 8);
+			}
 		}
 	}
 }

@@ -373,8 +373,8 @@ namespace Terraria.ModLoader
 		public static string ContainerName(int type) => GetTile(type)?.ContainerName?.GetTranslation(Language.ActiveCulture) ?? string.Empty;
 
 		public static bool IsModMusicBox(Tile tile) {
-			return SoundLoader.tileToMusic.ContainsKey(tile.type)
-			&& SoundLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
+			return MusicLoader.tileToMusic.ContainsKey(tile.type)
+			&& MusicLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
 		}
 
 		public static bool HasSmartInteract(int type) {

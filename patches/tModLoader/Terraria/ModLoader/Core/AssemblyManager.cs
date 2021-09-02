@@ -150,7 +150,8 @@ namespace Terraria.ModLoader.Core
 		}
 
 		private static void VerifyMod(string modName, Assembly assembly, out Type modType) {
-			var asmName = new AssemblyName(assembly.FullName).Name;
+			string asmName = new AssemblyName(assembly.FullName).Name;
+
 			if (asmName != modName)
 				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorModNameDoesntMatchAssemblyName", modName, asmName));
 
@@ -159,8 +160,9 @@ namespace Terraria.ModLoader.Core
 				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorNamespaceFolderDontMatch"));
 
 			var modTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Mod))).ToArray();
-			if (modTypes.Length > 2)
-				throw new Exception(modName + " has multiple classes extending Mod. Only one Mod per mod is supported at the moment");
+
+			if (modTypes.Length > 1)
+				throw new Exception($"{modName} has multiple classes extending Mod. Only one Mod per mod is supported at the moment");
 
 			modType = modTypes.SingleOrDefault() ?? typeof(Mod); // Mods don't really need a class extending Mod, we can always just make one for them
 		}

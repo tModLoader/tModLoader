@@ -18,6 +18,7 @@ namespace ExampleMod.Content.Items.Ammo
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Monochromatic Solution");
 			Tooltip.SetDefault("Used by the Clentaminator\nSpreads the example");
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 99;
 		}
 

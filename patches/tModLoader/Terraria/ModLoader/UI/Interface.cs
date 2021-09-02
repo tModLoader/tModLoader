@@ -338,7 +338,7 @@ namespace Terraria.ModLoader.UI
 							break;
 						}
 
-						var info = modBrowser.FindModDownloadItem(modname);
+						var info = WorkshopHelper.QueryHelper.FindModDownloadItem(modname);
 						if(info == null)
 							Console.WriteLine($"No mod with the name {modname} found on the workshop.");
 						else
