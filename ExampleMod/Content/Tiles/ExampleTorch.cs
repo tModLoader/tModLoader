@@ -50,7 +50,7 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.addAlternate(0);
 			TileObjectData.addTile(Type);
 
-			//Etc
+			// Etc
 			ModTranslation name = CreateMapEntryName();
 			
 			name.SetDefault("Torch");
@@ -94,7 +94,7 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) {
+		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
 			offsetY = 0;
 
 			if (WorldGen.SolidTile(i, j - 1)) {
@@ -125,7 +125,7 @@ namespace ExampleMod.Content.Tiles
 				zero = Vector2.Zero;
 			}
 
-			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); //Don't remove any casts.
+			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); // Don't remove any casts.
 			Color color = new Color(100, 100, 100, 0);
 			int width = 20;
 			int height = 20;

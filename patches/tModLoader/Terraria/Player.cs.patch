@@ -26,7 +26,7 @@
  		{
  			public bool mostlySolidFloor;
  			public bool avoidLava;
-@@ -186,15 +_,21 @@
+@@ -186,15 +_,22 @@
  
  			public static void PlayerConnect(int playerIndex) {
  				PressurePlateHelper.ResetPlayer(playerIndex);
@@ -39,11 +39,12 @@
  			}
  
  			public static void EnterWorld(int playerIndex) {
-+				Logging.Terraria.InfoFormat("Entering world with player: {0}, IsCloud={1}", Main.ActivePlayerFileData.Name, Main.ActivePlayerFileData.IsCloudSave);
++				Logging.Terraria.InfoFormat("Entering world with player: {0}, IsCloud={1}, Size={2}x{3}", Main.ActivePlayerFileData.Name, Main.ActivePlayerFileData.IsCloudSave, Main.maxTilesX, Main.maxTilesY);
 +				Interface.ResetData();
  				if (Hooks.OnEnterWorld != null)
  					Hooks.OnEnterWorld(Main.player[playerIndex]);
 +
++				Social.Steam.WorkshopHelper.ModManager.BeginPlaytimeTracking(ModLoader.Core.ModOrganizer.FindMods());
 +				PlayerLoader.OnEnterWorld(playerIndex);
  			}
  		}
@@ -784,7 +785,7 @@
  
  		public void QuickSpawnItem(int item, int stack = 1) {
  			int number = Item.NewItem((int)position.X, (int)position.Y, width, height, item, stack, noBroadcast: false, -1);
-@@ -3951,6 +_,10 @@
+@@ -3951,6 +_,21 @@
  		}
  
  		public void OpenBossBag(int type) {
@@ -792,6 +793,17 @@
 +				return;
 +
 +			ItemLoader.OpenVanillaBag("bossBag", this, type);
++
++			if (ItemID.Sets.BossBag[type] && (!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
++				this.TryGettingDevArmor();
++			}
++
++			// In the following switch, some TryGettingDevArmor lines have been made useless in favor of expanding the TML-added ItemID.BossBag & ItemID.PreHardmodeLikeBossBag sets.
++
++			static void TryGettingDevArmor() {
++				// A whole lot of nothing!
++			}
++
  			switch (type) {
  				case 3318: {
  						if (Main.tenthAnniversaryWorld)
@@ -1771,7 +1783,7 @@
 +					;//Silence
 +				else if (Main.curMusic < Main.maxMusic)
  					currentItem.SetDefaults(num3 + 562);
-+				else if (SoundLoader.musicToItem.TryGetValue(Main.curMusic, out int modMusicBoxType))
++				else if (MusicLoader.musicToItem.TryGetValue(Main.curMusic, out int modMusicBoxType))
 +					currentItem.SetDefaults(modMusicBoxType);
  			}
  
@@ -1792,7 +1804,7 @@
  			if (currentItem.type == 5044)
  				Main.musicBox2 = 85;
  
-+			if (SoundLoader.itemToMusic.TryGetValue(currentItem.type, out int modMusicBox))
++			if (MusicLoader.itemToMusic.TryGetValue(currentItem.type, out int modMusicBox))
 +				Main.musicBox2 = modMusicBox;
 +
  			Main.musicBoxNotModifiedByVolume = Main.musicBox2;

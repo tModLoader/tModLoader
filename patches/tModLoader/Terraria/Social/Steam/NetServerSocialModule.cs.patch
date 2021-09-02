@@ -1,0 +1,14 @@
+--- src/Terraria/Terraria/Social/Steam/NetServerSocialModule.cs
++++ src/tModLoader/Terraria/Social/Steam/NetServerSocialModule.cs
+@@ -107,8 +_,10 @@
+ 		}
+ 
+ 		private void OnLobbyCreated(LobbyCreated_t result, bool failure) {
+-			if (!failure)
++			if (!failure) {
+ 				SteamFriends.SetRichPresence("status", Language.GetTextValue("Social.StatusInGame"));
++				Utils.LogAndConsoleInfoMessage("Currently Hosting LobbyID: " + GetLobbyId());
++			}
+ 		}
+ 
+ 		private bool OnPacketRead(byte[] data, int length, CSteamID userId) {

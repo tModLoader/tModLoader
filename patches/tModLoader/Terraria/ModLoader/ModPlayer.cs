@@ -741,7 +741,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the visiblity of layers about to be drawn
+		/// Allows you to modify the visibility of layers about to be drawn
 		/// </summary>
 		/// <param name="layers"></param>
 		public virtual void HideDrawLayers(PlayerDrawSet drawInfo) {

@@ -33,7 +33,7 @@ namespace ExampleMod.Common.GlobalNPCs
 			else if (type == NPCID.Wizard) {
 				// You can use conditions to dynamically change items offered for sale in a shop
 				if (Main.expertMode) {
-					// TODO: 
+					//TODO: 
 					// shop.item[nextSlot].SetDefaults(ItemType<Infinity>());
 					// nextSlot++;
 				}

@@ -31,6 +31,15 @@
  
  		public static UnifiedRandom genRand {
  			get {
+@@ -1215,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			for (int j = 0; j < 668; j++) {
++			for (int j = 0; j < NPCLoader.NPCCount; j++) {
+ 				if (!Main.townNPCCanSpawn[j] || !CheckSpecialTownNPCSpawningConditions(j))
+ 					continue;
+ 
 @@ -1255,7 +_,7 @@
  			}
  
@@ -164,7 +173,7 @@
  		}
  
  		public static void serverLoadWorldCallBack() {
-+			Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave);
++			Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}, Size={2}x{3}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave, Main.ActiveWorldFileData.WorldSizeX, Main.ActiveWorldFileData.WorldSizeY);
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {

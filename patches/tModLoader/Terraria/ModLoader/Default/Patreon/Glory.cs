@@ -29,7 +29,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 
-			ArmorIDs.Legs.Sets.OverridesLegs[Mod.GetEquipSlot(GetType().Name, EquipType.Legs)] = true;
+			ArmorIDs.Legs.Sets.OverridesLegs[Item.legSlot] = true;
 		}
 
 		public override void SetDefaults() {

@@ -34,7 +34,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		internal void Reset() {
 			ModList?.Clear();
-			Items?.Clear();
+			_items?.Clear();
 			_missingMods?.Clear();
 			SearchFilterToggle?.SetCurrentState(SearchFilter.Name);
 			UpdateFilterToggle?.SetCurrentState(UpdateFilter.All);

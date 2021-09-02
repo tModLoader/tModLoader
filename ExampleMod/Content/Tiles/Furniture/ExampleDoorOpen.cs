@@ -18,7 +18,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileSolid[Type] = false;
 			Main.tileLavaDeath[Type] = true;
 			Main.tileNoSunLight[Type] = true;
-			TileID.Sets.HousingWalls[Type] = true; //needed for non-solid blocks to count as walls
+			TileID.Sets.HousingWalls[Type] = true; // needed for non-solid blocks to count as walls
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 

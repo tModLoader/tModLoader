@@ -25,12 +25,11 @@
  using Terraria.Achievements;
  using Terraria.Audio;
  using Terraria.Chat;
-@@ -69,9 +_,17 @@
+@@ -69,9 +_,16 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
-+using Terraria.ModLoader.Audio;
 +using Terraria.ModLoader.Core;
 +using Terraria.ModLoader.Default;
 +using Terraria.ModLoader.Engine;
@@ -316,6 +315,19 @@
  			return result;
  		}
  
+@@ -2758,6 +_,12 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// Registers an animation for an item type to draw inside UI (not world or held item on player).
++		/// To enable its animation in the world, use ItemID.Sets.AnimatesAsSoul in conjunction with this
++		/// </summary>
++		/// <param name="index">Item type</param>
++		/// <param name="animation">Draw animation</param>
+ 		public static void RegisterItemAnimation(int index, DrawAnimation animation) {
+ 			if (!itemAnimationsRegistered.Contains(index))
+ 				itemAnimationsRegistered.Add(index);
 @@ -2804,11 +_,13 @@
  			}
  		}
@@ -404,18 +416,20 @@
  			if (Configuration.Save())
  				return PlayerInput.Save();
  
-@@ -3218,6 +_,11 @@
- 				TryPickingDefaultUIScale(currentValue3);
- 			}
+@@ -3215,7 +_,12 @@
+ 					screenBorderlessPendingResizes = 1;
  
+ 				SetDisplayMode(currentValue2, currentValue3, fullscreen: false);
+-				TryPickingDefaultUIScale(currentValue3);
++				TryPickingDefaultUIScale(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height);
++			}
++
 +			if (Main.dedServ) {
 +				ModLoader.ModLoader.LoadConfiguration();
 +				return;
-+			}
-+
+ 			}
+ 
  			Configuration.Get("SmartCursorToggle", ref cSmartCursorModeIsToggleAndNotHold);
- 			Configuration.Get("MapEnabled", ref mapEnabled);
- 			Configuration.Get("InvasionBarMode", ref invasionProgressMode);
 @@ -3502,6 +_,7 @@
  				};
  			}
@@ -3841,8 +3855,8 @@
  			base.Draw(gameTime);
 -			float val = (float)screenWidth / MinimumZoomComparerX;
 -			float val2 = (float)screenHeight / MinimumZoomComparerY;
-+			float val = screenWidth / (ModLoader.ModLoader.removeForcedMinimumZoom ? MinimumZoomComparerX : 8192f);
-+			float val2 = screenHeight / (ModLoader.ModLoader.removeForcedMinimumZoom ? MinimumZoomComparerY : 8192f);
++			float val = screenWidth / (ModLoader.ModLoader.removeForcedMinimumZoom ? 8192f : MinimumZoomComparerX);
++			float val2 = screenHeight / (ModLoader.ModLoader.removeForcedMinimumZoom ? 8192f : MinimumZoomComparerY);
  			ForcedMinimumZoom = Math.Max(Math.Max(1f, val), val2);
  			GameViewMatrix.Effects = ((!gameMenu && player[myPlayer].gravDir != 1f) ? SpriteEffects.FlipVertically : SpriteEffects.None);
  			BackgroundViewMatrix.Effects = GameViewMatrix.Effects;
