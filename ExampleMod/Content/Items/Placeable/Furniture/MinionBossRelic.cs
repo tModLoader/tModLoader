@@ -9,6 +9,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Minion Boss Relic");
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 

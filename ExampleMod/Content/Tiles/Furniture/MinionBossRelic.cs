@@ -14,11 +14,12 @@ namespace ExampleMod.Content.Tiles.Furniture
 {
 	//Common code for a Master Mode boss relic
 	//Contains comments for optional Item.placeStyle handling if you wish to add more relics but use the same tile type (then it would be wise to name this class something more generic like BossRelic)
+	//And in case of wanting to add more relics but not wanting to go the optional way, scroll down to the bottom of the file
 	public class MinionBossRelic : ModTile
 	{
-		//Every relic has its own extra floating part, should be 50x50, stacked vertically. Optional: Expand this sheet if you want to add more
-		//This is simply a constant created for convenience, referenced to load ExtraAsset
-		public const string Extra = "ExampleMod/Content/Tiles/Furniture/MinionBossRelic";
+		//Every relic has its own extra floating part, should be 50x50. Optional: Expand this sheet if you want to add more, stacked vertically
+		//If you do not go the optional way, and you extend from this class, you can override this to point to a different texture
+		public virtual string RelicTextureName => "ExampleMod/Content/Tiles/Furniture/MinionBossRelic";
 
 		public const int FrameWidth = 18 * 3;
 		public const int FrameHeight = 18 * 4;
@@ -29,19 +30,21 @@ namespace ExampleMod.Content.Tiles.Furniture
 		//All relics use the same pedestal texture, this one is copied from vanilla
 		public override string Texture => "ExampleMod/Content/Tiles/Furniture/RelicPedestal";
 
-		public Asset<Texture2D> ExtraAsset;
+		public Asset<Texture2D> RelicTexture;
+
+		public override void Load() {
+			if (!Main.dedServ) {
+				//Cache the extra texture displayed on the pedestal
+				RelicTexture = ModContent.Request<Texture2D>(RelicTextureName);
+			}
+		}
 
 		public override void Unload() {
 			//Unload the extra texture displayed on the pedestal
-			ExtraAsset = null;
+			RelicTexture = null;
 		}
 
 		public override void SetStaticDefaults() {
-			if (!Main.dedServ) {
-				//Cache the extra texture displayed on the pedestal
-				ExtraAsset = ModContent.Request<Texture2D>(Extra);
-			}
-
 			Main.tileShine[Type] = 400; //Responsible for golden particles
 			Main.tileFrameImportant[Type] = true; //Any multitile requires this
 			TileID.Sets.InteractibleByNPCs[Type] = true; //Town NPCs will behave differently when this tile is nearby
@@ -126,7 +129,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			}
 
 			//Get the initial draw parameters
-			Texture2D texture = ExtraAsset.Value;
+			Texture2D texture = RelicTexture.Value;
 
 			int frameY = tile.frameX / FrameWidth; //Picks the frame on the sheet based on the placeStyle of the item
 			Rectangle frame = texture.Frame(HorizontalFrames, VerticalFrames, 0, frameY);
@@ -157,4 +160,20 @@ namespace ExampleMod.Content.Tiles.Furniture
 			}
 		}
 	}
+
+	//If you want to make more relics but do not go the optional way, you can use inheritance to avoid using duplicate code:
+	//Your tile code would then inherit from the MinionBossRelic class (which you should make abstract) and should look like this:
+	/*
+	public class MyBossRelic : MinionBossRelic
+	{
+		public override string RelicTextureName => "ExampleMod/Content/Tiles/Furniture/MyBossRelic";
+
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
+			Item.NewItem(i * 16, j * 16, 32, 32, ModContent.ItemType<Items.Placeable.Furniture.MyBossRelic>());
+		}
+	}
+	*/
+
+	//Your item code would then just use the MyBossRelic tile type, and keep placeStyle on 0
+	//The textures for MyBossRelic item/tile have to be supplied separately
 }
