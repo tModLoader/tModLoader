@@ -647,7 +647,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <returns></returns>
-		public virtual TagCompound SaveNPCData(NPC npc) {
+		public virtual TagCompound SaveData(NPC npc) {
 			return null;
 		}
 
@@ -656,7 +656,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="tag"></param>
-		public virtual void LoadNPCData(NPC npc, TagCompound tag) {
+		public virtual void LoadData(NPC npc, TagCompound tag) {
 		}
 	}
 }
