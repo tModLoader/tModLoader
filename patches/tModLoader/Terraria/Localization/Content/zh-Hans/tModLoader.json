@@ -133,17 +133,6 @@
 		"ModInfoProblemTryAgain": "出现问题,请重试",
 		"ModInfoDisableModToDelete": "禁用模组以删除",
 
-		// Mod Config
-		"FilterOptions": "TODO",
-		"Notification": "TODO",
-		"ModConfigHeader": "TODO",
-		"SaveConfig": "TODO",
-		"Back": "TODO",
-		"RevertChanges": "TODO",
-		"RestoreDefaults": "TODO",
-		"AskingAcceptChanges": "TODO",
-		"RefuseChangesByNeedReload": "TODO",
-
 		// Mod Packs
 		"ModPacksHeader": "模组整合包",
 		"ModPacksSaveEnabledAsNewPack": "将已启用的模组生成为新的整合包",
