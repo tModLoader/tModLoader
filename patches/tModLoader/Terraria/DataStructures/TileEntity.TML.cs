@@ -9,12 +9,12 @@ namespace Terraria.DataStructures
 		/// Allows you to save custom data for this tile entity.
 		/// </summary>
 		/// <returns></returns>
-		public virtual TagCompound Save() => null;
+		public virtual TagCompound SaveData() => null;
 
 		/// <summary>
 		/// Allows you to load the custom data you have saved for this tile entity.
 		/// </summary>
-		public virtual void Load(TagCompound tag) { }
+		public virtual void LoadData(TagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to send custom data for this tile entity between client and server. This is called on the server while sending tile data (!lightSend) and when a MessageID.TileEntitySharing message is sent (lightSend)

@@ -76,7 +76,7 @@ namespace Terraria.ModLoader
 		/// Allows you to save custom data for this player. Returns null by default.
 		/// </summary>
 		/// <returns></returns>
-		public virtual TagCompound Save() {
+		public virtual TagCompound SaveData() {
 			return null;
 		}
 
@@ -84,7 +84,7 @@ namespace Terraria.ModLoader
 		/// Allows you to load custom data you have saved for this player.
 		/// </summary>
 		/// <param name="tag"></param>
-		public virtual void Load(TagCompound tag) {
+		public virtual void LoadData(TagCompound tag) {
 		}
 
 		/// <summary>

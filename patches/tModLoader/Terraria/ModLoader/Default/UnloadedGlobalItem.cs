@@ -21,11 +21,11 @@ namespace Terraria.ModLoader.Default
 			return data.Count > 0;
 		}
 
-		public override TagCompound Save(Item item) {
+		public override TagCompound SaveData(Item item) {
 			return new TagCompound { ["modData"] = data };
 		}
 
-		public override void Load(Item item, TagCompound tag) {
+		public override void LoadData(Item item, TagCompound tag) {
 			ItemIO.LoadGlobals(item, tag.GetList<TagCompound>("modData"));
 		}
 	}

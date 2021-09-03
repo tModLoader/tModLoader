@@ -44,7 +44,7 @@ namespace Terraria.ModLoader.IO
 			else {
 				tag.Set("mod", item.ModItem.Mod.Name);
 				tag.Set("name", item.ModItem.Name);
-				tag.Set("data", item.ModItem.Save());
+				tag.Set("data", item.ModItem.SaveData());
 			}
 
 			if (item.prefix != 0 && item.prefix < PrefixID.Count)
@@ -84,7 +84,7 @@ namespace Terraria.ModLoader.IO
 			else {
 				if (ModContent.TryFind(modName, tag.GetString("name"), out ModItem modItem)) {
 					item.SetDefaults(modItem.Type);
-					item.ModItem.Load(tag.GetCompound("data"));
+					item.ModItem.LoadData(tag.GetCompound("data"));
 				}
 				else {
 					item.SetDefaults(ModContent.ItemType<UnloadedItem>());
@@ -125,7 +125,7 @@ namespace Terraria.ModLoader.IO
 				list.Add(new TagCompound {
 					["mod"] = globalItemInstance.Mod.Name,
 					["name"] = globalItemInstance.Name,
-					["data"] = globalItemInstance.Save(item)
+					["data"] = globalItemInstance.SaveData(item)
 				});
 			}
 			return list.Count > 0 ? list : null;
@@ -135,7 +135,7 @@ namespace Terraria.ModLoader.IO
 			foreach (var tag in list) {
 				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out GlobalItem globalItemBase) && item.TryGetGlobalItem(globalItemBase, out var globalItem)) {
 					try {
-						globalItem.Load(item, tag.GetCompound("data"));
+						globalItem.LoadData(item, tag.GetCompound("data"));
 					}
 					catch (Exception e) {
 						throw new CustomModDataException(globalItem.Mod, $"Error in reading custom player data for {globalItem.FullName}", e);

@@ -41,15 +41,15 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public override TagCompound Save() {
+		public override TagCompound SaveData() {
 			return data;
 		}
 
-		public override void Load(TagCompound tag) {
+		public override void LoadData(TagCompound tag) {
 			Setup(tag);
 			if (ModContent.TryFind(ModName, ItemName, out ModItem modItem)) {
 				Item.SetDefaults(modItem.Type);
-				Item.ModItem.Load(tag.GetCompound("data"));
+				Item.ModItem.LoadData(tag.GetCompound("data"));
 				ItemIO.LoadGlobals(Item, tag.GetList<TagCompound>("globalData"));
 			}
 		}

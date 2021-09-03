@@ -855,14 +855,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to save custom data for the given item. Only called when NeedsCustomSaving returns true. Returns false by default.
 		/// </summary>
-		public virtual TagCompound Save(Item item) {
+		public virtual TagCompound SaveData(Item item) {
 			return null;
 		}
 
 		/// <summary>
 		/// Allows you to load custom data that you have saved for the given item.
 		/// </summary>
-		public virtual void Load(Item item, TagCompound tag) {
+		public virtual void LoadData(Item item, TagCompound tag) {
 		}
 
 		/// <summary>

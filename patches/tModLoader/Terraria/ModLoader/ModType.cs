@@ -22,7 +22,7 @@
 
 		void ILoadable.Load(Mod mod) {
 			Mod = mod;
-			Load();
+			OnLoad();
 			Register();
 		}
 
@@ -30,7 +30,7 @@
 		/// Allows you to perform one-time loading tasks. Beware that mod content has not finished loading here, things like ModContent lookup tables or ID Sets are not fully populated.
 		/// <para>Use <see cref="SetStaticDefaults"/> when you need to access content.</para>
 		/// </summary>
-		public virtual void Load() { }
+		public virtual void OnLoad() { }
 
 		/// <summary>
 		/// Allows you to stop <see cref="Mod.AddContent"/> from actually adding this content. Useful for items that can be disabled by a config.
@@ -54,7 +54,7 @@
 		public virtual void SetStaticDefaults() { }
 
 		/// <summary>
-		/// Allows you to safely unload things you added in <see cref="Load"/>.
+		/// Allows you to safely unload things you added in <see cref="OnLoad"/>.
 		/// </summary>
 		public virtual void Unload() { }
 	}

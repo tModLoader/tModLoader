@@ -19,7 +19,7 @@ namespace Terraria.ModLoader.Default
 			return tile.active() && TileLoader.GetTile(type) is UnloadedTile;
 		}
 
-		public override TagCompound Save() {
+		public override TagCompound SaveData() {
 			return new TagCompound {
 				["mod"] = modName,
 				["name"] = tileEntityName,
@@ -27,7 +27,7 @@ namespace Terraria.ModLoader.Default
 			};
 		}
 
-		public override void Load(TagCompound tag) {
+		public override void LoadData(TagCompound tag) {
 			SetData(tag);
 		}
 
@@ -36,7 +36,7 @@ namespace Terraria.ModLoader.Default
 				newEntity = ModTileEntity.ConstructFromBase(tileEntity);
 				newEntity.type = (byte)tileEntity.Type;
 				newEntity.Position = Position;
-				newEntity.Load(data);
+				newEntity.LoadData(data);
 			}
 		}
 	}
