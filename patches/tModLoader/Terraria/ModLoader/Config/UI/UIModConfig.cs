@@ -144,21 +144,6 @@ namespace Terraria.ModLoader.Config.UI
 			saveConfigButton.OnClick += SaveConfig;
 			//uIElement.Append(saveConfigButton);
 
-			backButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.Back"), 1f, false);
-			backButton.CopyStyle(saveConfigButton);
-			backButton.HAlign = 0;
-			backButton.WithFadedMouseOver();
-			backButton.OnMouseOver += (a, b) => {
-				if (pendingChanges)
-					backButton.BackgroundColor = Color.Red;
-			};
-			backButton.OnMouseOut += (a, b) => {
-				if (pendingChanges)
-					backButton.BackgroundColor = Color.Red * 0.7f;
-			};
-			backButton.OnClick += BackClick;
-			uIElement.Append(backButton);
-
 			revertConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.RevertChanges"), 1f, false);
 			revertConfigButton.CopyStyle(saveConfigButton);
 			revertConfigButton.WithFadedMouseOver();
@@ -173,6 +158,21 @@ namespace Terraria.ModLoader.Config.UI
 			restoreDefaultsConfigButton.HAlign = 1f;
 			restoreDefaultsConfigButton.OnClick += RestoreDefaults;
 			uIElement.Append(restoreDefaultsConfigButton);
+			
+			backButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.Back"), 1f, false);
+			backButton.CopyStyle(saveConfigButton);
+			backButton.HAlign = 0;
+			backButton.WithFadedMouseOver();
+			backButton.OnMouseOver += (a, b) => {
+				if (pendingChanges)
+					backButton.BackgroundColor = Color.Red;
+			};
+			backButton.OnMouseOut += (a, b) => {
+				if (pendingChanges)
+					backButton.BackgroundColor = Color.Red * 0.7f;
+			};
+			backButton.OnClick += BackClick;
+			uIElement.Append(backButton);
 
 			uIPanel.BackgroundColor = UICommon.MainPanelBackground;
 
@@ -226,10 +226,14 @@ namespace Terraria.ModLoader.Config.UI
 
 		// Refreshes the UI to refresh recent changes such as Save/Discard/Restore Defaults/Cycle to next config
 		private void DoMenuModeState() {
-			if (Main.gameMenu)
+			if (Main.gameMenu) {
 				Main.menuMode = Interface.modConfigID;
-			else
+				Main.MenuUI.RefreshState();
+			}
+			else {
 				Main.InGameUI.SetState(Interface.modConfig);
+				Main.InGameUI.RefreshState();
+			}
 		}
 
 		private void SaveConfig(UIMouseEvent evt, UIElement listeningElement) {
@@ -246,7 +250,6 @@ namespace Terraria.ModLoader.Config.UI
 			else {
 				// If we are in game...
 				if (pendingConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient) {
-					
 					SetMessage(Language.GetTextValue("tModLoader.AskingAcceptChanges"), Color.Yellow);
 
 					var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
