@@ -138,7 +138,7 @@ namespace Terraria.ModLoader.IO
 							globalData.AddRange(unloadedGlobalNPC.data);
 							continue;
 						}
-						TagCompound tagCompound = globalNPC.Save(npc);
+						TagCompound tagCompound = globalNPC.SaveNPCData(npc);
 						if (tagCompound != null) {
 							globalData.Add(new TagCompound {
 								["mod"] = globalNPC.Mod.Name, ["name"] = globalNPC.Name, ["data"] = tagCompound
@@ -250,7 +250,7 @@ namespace Terraria.ModLoader.IO
 					if (ModContent.TryFind(modName, (string)tagCompound["name"], out GlobalNPC globalNPC)) {
 						GlobalNPC globalNPC2 = globalNPC.Instance(npc);
 						try {
-							globalNPC2.Load(npc, (TagCompound)tagCompound["data"]);
+							globalNPC2.LoadNPCData(npc, (TagCompound)tagCompound["data"]);
 						}
 						catch (Exception inner) {
 							throw new CustomModDataException(ModLoader.GetMod(modName),
