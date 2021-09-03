@@ -67,15 +67,25 @@
  				Main.menuMode = 0;
  			}
  			else {
-@@ -421,6 +_,7 @@
+@@ -421,6 +_,12 @@
  		}
  
  		private static void ClientLoopSetup(RemoteAddress address) {
-+			Logging.Terraria.InfoFormat("Connecting to {0}", address.GetFriendlyName());
++			string friendlyName = address.GetFriendlyName();
++			if (string.IsNullOrEmpty(friendlyName))
++				Utils.ShowFancyErrorMessage("Unable to find Steam Hosted Multiplayer server.", 0);
++
++			Logging.Terraria.InfoFormat("Connecting to {0}", friendlyName);
++			
  			Connection.ResetSpecialFlags();
  			ResetNetDiag();
  			Main.ServerSideCharacter = false;
-@@ -441,9 +_,11 @@
+@@ -437,13 +_,15 @@
+ 			Main.netMode = 1;
+ 			Main.menuMode = 14;
+ 			if (!Main.autoPass)
+-				Main.statusText = Language.GetTextValue("Net.ConnectingTo", address.GetFriendlyName());
++				Main.statusText = Language.GetTextValue("Net.ConnectingTo", friendlyName);
  
  			Disconnect = false;
  			Connection = new RemoteServer();

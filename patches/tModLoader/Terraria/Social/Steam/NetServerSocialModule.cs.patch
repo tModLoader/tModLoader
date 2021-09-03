@@ -12,3 +12,13 @@
  		}
  
  		private bool OnPacketRead(byte[] data, int length, CSteamID userId) {
+@@ -177,6 +_,9 @@
+ 
+ 				_connectionStateMap[steamIDRemote] = ConnectionState.Authenticating;
+ 				_connectionAcceptedCallback(new SocialSocket(new SteamAddress(steamIDRemote)));
++			}
++			else {
++				Utils.LogAndConsoleInfoMessage("User " + SteamFriends.GetFriendPersonaName(steamIDRemote) + "connection rejected. Not a friend of lobby Owner.\nSet allow Friends of Friends to accept non-Friends of Host.");
+ 			}
+ 		}
+ 	}
