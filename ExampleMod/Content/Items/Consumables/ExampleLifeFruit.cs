@@ -80,12 +80,12 @@ namespace ExampleMod.Content.Items.Consumables
 			packet.Send(toWho, fromWho);
 		}
 
-		public override TagCompound Save() {
+		public override TagCompound SaveData() {
 			// Read https://github.com/tModLoader/tModLoader/wiki/Saving-and-loading-using-TagCompound to better understand Saving and Loading data.
 			return new TagCompound { ["exampleLifeFruits"] = exampleLifeFruits };
 		}
 
-		public override void Load(TagCompound tag) {
+		public override void LoadData(TagCompound tag) {
 			exampleLifeFruits = tag.GetInt("exampleLifeFruits");
 		}
 	}

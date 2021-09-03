@@ -38,10 +38,10 @@ namespace ExampleMod.Content.Items
 			}
 		}
 
-		public override TagCompound Save() =>
+		public override TagCompound SaveData() =>
 			new TagCompound { ["Colors"] = colors.ToList() };
 
-		public override void Load(TagCompound tag) {
+		public override void LoadData(TagCompound tag) {
 			colors = tag.GetList<Color>("Colors").ToArray();
 		}
 
