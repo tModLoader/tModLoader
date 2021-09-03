@@ -134,6 +134,17 @@
 		"Exit": "Exit",
 		"ExitAndDisableAll": "Exit and Disable All",
 
+		// Mod Config
+		"FilterOptions": "Filter Options",
+		"Notification": "Notification",
+		"ModConfigHeader": "Mod Config",
+		"SaveConfig": "Save Config",
+		"Back": "Back",
+		"RevertChanges": "Revert Changes",
+		"RestoreDefaults": "Restore Defaults",
+		"AskingAcceptChanges": "Asking server to accept changes...",
+		"RefuseChangesByNeedReload": "Can't save because changes would require a reload.",
+		
 		// Mod Info
 		"ModInfoHeader": "Mod Info: ",
 		"ModInfoVisitHomepage": "Visit the Mod's Homepage for even more info",
@@ -398,7 +409,7 @@
 		"ModExceptionHint": "\n\nTip: This is likely a mod's fault. Disable mods one by one and check if the issue persists",
 		"OneDriveHint": "\n\nTip: Try installing/enabling OneDrive. Right click your Documents folder and enable \"Always save on this device\"",
 		"AntivirusHint": "\n\nTip: If you have an antivirus, try adding Terraria to its whitelist/exclusion list",
-		"TypeInitializationHint": "\n\nTip: Restart the game. If this issue persists, try uninstalling Terraria completely, then reinstalling through Steam, and then reinstalling tModLoader"
+		"TypeInitializationHint": "\n\nTip: Restart the game. If this issue persists, try uninstalling Terraria completely, then reinstalling through Steam, and then reinstalling tModLoader",
 	},
 	"CommonItemTooltip": {
 		"PercentIncreasedDamage": "{0}% increased damage"
