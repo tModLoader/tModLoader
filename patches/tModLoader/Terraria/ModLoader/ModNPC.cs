@@ -116,11 +116,6 @@ namespace Terraria.ModLoader
 		public virtual ModNPC Clone() => (ModNPC)MemberwiseClone();
 
 		/// <summary>
-		/// Makes this ModNPC saved along the world even if it's not a townNPC. Defaults to false.
-		/// </summary>
-		public virtual bool SavesAndLoads => false;
-
-		/// <summary>
 		/// Create a new instance of this ModNPC for an NPC instance. 
 		/// Called at the end of NPC.SetDefaults.
 		/// If CloneNewInstances is true, just calls Clone()
@@ -710,6 +705,13 @@ namespace Terraria.ModLoader
 		/// <param name="scale"></param>
 		/// <param name="offset"></param>
 		public virtual void DrawTownAttackSwing(ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) {
+		}
+
+		/// <summary>
+		/// Makes this ModNPC save along the world even if it's not a townNPC. Defaults to false.
+		/// </summary>
+		public virtual bool NeedSaving() {
+			return false;
 		}
 
 		/// <summary>

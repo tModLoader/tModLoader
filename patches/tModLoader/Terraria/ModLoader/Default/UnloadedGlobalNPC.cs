@@ -9,6 +9,6 @@ namespace Terraria.ModLoader.Default
 
 		public override bool InstancePerEntity => true;
 
-		public override bool NeedCustomSaving(NPC npc) => data.Count > 0;
+		public override bool NeedSaving(NPC npc) => data.Count > 0;
 	}
 }

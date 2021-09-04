@@ -638,7 +638,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <returns></returns>
-		public virtual bool NeedCustomSaving(NPC npc) {
+		public virtual bool NeedSaving(NPC npc) {
 			return false;
 		}
 		
