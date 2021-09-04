@@ -227,10 +227,14 @@ namespace Terraria.ModLoader.Config.UI
 
 		// Refreshes the UI to refresh recent changes such as Save/Discard/Restore Defaults/Cycle to next config
 		private void DoMenuModeState() {
-			if (Main.gameMenu)
+			if (Main.gameMenu) {
 				Main.menuMode = Interface.modConfigID;
-			else
+				Main.MenuUI.RefreshState();
+			}
+			else {
 				Main.InGameUI.SetState(Interface.modConfig);
+				Main.InGameUI.RefreshState();
+			}
 		}
 
 		private void SaveConfig(UIMouseEvent evt, UIElement listeningElement) {
@@ -333,7 +337,8 @@ namespace Terraria.ModLoader.Config.UI
 				DoMenuModeState();
 				netUpdate = false;
 			}
-			if (!updateNeeded) return;
+			if (!updateNeeded)
+				return;
 			updateNeeded = false;
 			mainConfigList.Clear();
 			mainConfigList.AddRange(mainConfigItems.Where(item => {
@@ -341,7 +346,7 @@ namespace Terraria.ModLoader.Config.UI
 					return configElement.TextDisplayFunction().IndexOf(filterTextField.CurrentString, StringComparison.OrdinalIgnoreCase) != -1;
 				}
 				return true;
-			}).Select(x=>x.Item1));
+			}).Select(x => x.Item1));
 			Recalculate();
 		}
 
@@ -574,7 +579,7 @@ namespace Terraria.ModLoader.Config.UI
 					parent.Height.Set(top, 0);
 				}
 				var tuple = new Tuple<UIElement, UIElement>(container, e);
-				if(parent == Interface.modConfig.mainConfigList) {
+				if (parent == Interface.modConfig.mainConfigList) {
 					Interface.modConfig.mainConfigItems.Add(tuple);
 				}
 
