@@ -179,21 +179,31 @@
  				Main.BestiaryTracker.Chats.RegisterChatStartWith(Main.npc[npcIndex]);
  
  			if (talkNPC == -1)
-@@ -2050,12 +_,18 @@
- 			itemTimeMax = frames;
+@@ -2046,16 +_,22 @@
  		}
  
+ 		public void SetItemTime(int frames) {
+-			itemTime = frames;
+-			itemTimeMax = frames;
+-		}
+-
 -		public void ApplyItemTime(Item sItem) {
 -			SetItemTime(sItem.useTime);
+-		}
+-
+-		public void ApplyItemTime(Item sItem, float multiplier) {
+-			SetItemTime((int)((float)sItem.useTime * multiplier));
++			itemTime = frames - 1;
++			itemTimeMax = frames - 1;
++		}
++
 +		public void ApplyItemTime(Item sItem, bool? callUseItem = null) {
 +			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
 +				return;
 +			
 +			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime, this, sItem));
- 		}
- 
--		public void ApplyItemTime(Item sItem, float multiplier) {
--			SetItemTime((int)((float)sItem.useTime * multiplier));
++		}
++
 +		public void ApplyItemTime(Item sItem, float multiplier, bool? callUseItem = null) {
 +			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
 +				return;
@@ -3534,7 +3544,7 @@
  			if (CCed) {
  				channel = false;
  				itemAnimation = (itemAnimationMax = 0);
-@@ -29770,6 +_,49 @@
+@@ -29770,30 +_,85 @@
  			if (Main.myPlayer == i && PlayerInput.ShouldFastUseItem)
  				controlUseItem = true;
  
@@ -3561,13 +3571,13 @@
 +			// 7. Item logic applies item time
 +			//
 +			// TML after pull/1774:
-+			// 1. Reuse delay is applied
-+			// 2. Item animation is applied if button is pressed
-+			// 3. Hold / Use styles are invoked
-+			// 4. 'releaseUseItem' is set
-+			// 5. Item logic applies item time
-+			// 6. Item animation is reduced
-+			// 7. Item time is reduced
++			// 1. Item animation is reduced
++			// 2. Item time is reduced
++			// 3. Reuse delay is applied
++			// 4. Item animation is applied if button is pressed
++			// 5. Hold / Use styles are invoked
++			// 6. 'releaseUseItem' is set
++			// 7. Item logic applies item time
 +			//
 +			// Way more sane and way less confusing!
 +			// Reduction is done at the end of the frame so AI and everything else has a chance to identify when an item has a usage cycle (as per ZERO INCLUSIVE above) without adding extra flags or reuseDelay that span across ItemCheck calls
@@ -3577,20 +3587,34 @@
 +			// This is done so that itemTime and itemAnimation cannot be decremented in the same tick as the one they're set in, which should fix a lot of use time issues
 +			// -- ThomasThePencil
 +
-+			goto ItemCheckPart1; // Just for completeness
++			goto DecrementItemAnimation;
 +
 +			ItemCheckPart1:
 +
  			ItemCheck_HandleMount();
  			int weaponDamage = GetWeaponDamage(item);
  			ItemCheck_HandleMPItemAnimation(item);
-@@ -29783,8 +_,17 @@
- 			if (itemAnimation == 0 && reuseDelay > 0)
+ 			ItemCheck_HackHoldStyles(item);
+-			if (itemAnimation < 0)
++
++			bool noItemAnimation = itemAnimation < 0;
++			if (noItemAnimation)
+ 				itemAnimation = 0;
+ 
+-			if (itemTime < 0)
++			bool noItemTime = itemTime < 0;
++			if (noItemTime)
+ 				itemTime = 0;
+ 
+-			if (itemAnimation == 0 && reuseDelay > 0)
++			if (noItemAnimation && reuseDelay > 0)
  				ApplyReuseDelay();
  
 -			if (Main.myPlayer == i && itemAnimation == 0 && TileObjectData.CustomPlace(item.createTile, item.placeStyle))
 -				TileObject.CanPlace(tileTargetX, tileTargetY, item.createTile, item.placeStyle, direction, out TileObject _, onlyCheck: true);
-+			if (Main.myPlayer == i && itemAnimation == 0 && TileObjectData.CustomPlace(item.createTile, item.placeStyle)) {
+-
+-			if (itemAnimation == 0 && altFunctionUse == 2)
++			if (Main.myPlayer == i && noItemAnimation && TileObjectData.CustomPlace(item.createTile, item.placeStyle)) {
 +				int hackCreateTile = item.createTile;
 +				int hackPlaceStyle = item.placeStyle;
 +				if (hackCreateTile == TileID.Saplings) {
@@ -3601,9 +3625,19 @@
 +
 +				TileObject.CanPlace(tileTargetX, tileTargetY, hackCreateTile, hackPlaceStyle, direction, out _, true);
 +			}
- 
- 			if (itemAnimation == 0 && altFunctionUse == 2)
++
++			if (noItemAnimation && altFunctionUse == 2)
  				altFunctionUse = 0;
+ 
+ 			bool flag2 = true;
+ 			if (gravDir == -1f && GolfHelper.IsPlayerHoldingClub(this))
+ 				flag2 = false;
+ 
+-			if (flag2 && controlUseItem && releaseUseItem && itemAnimation == 0 && item.useStyle != 0) {
++			if (flag2 && controlUseItem && releaseUseItem && noItemAnimation && item.useStyle != 0) {
+ 				if (altFunctionUse == 1)
+ 					altFunctionUse = 2;
+ 
 @@ -29813,7 +_,7 @@
  				if (whoAmI == Main.myPlayer && gravDir == 1f && item.mountType != -1 && mount.CanMount(item.mountType, this))
  					mount.SetMount(item.mountType, this);
@@ -3613,19 +3647,25 @@
  					FreeUpPetsAndMinions(item);
  
  				if (flag3)
-@@ -29825,6 +_,11 @@
+@@ -29823,11 +_,16 @@
+ 			if (!controlUseItem)
+ 				channel = false;
  
- 			Item item2 = (itemAnimation > 0) ? lastVisualizedSelectedItem : item;
- 			Rectangle drawHitbox = Item.GetDrawHitbox(item2.type, this);
-+
 +			goto HandleItemHolding;
 +
 +			DecrementItemAnimation:
 +
+ 			Item item2 = (itemAnimation > 0) ? lastVisualizedSelectedItem : item;
+ 			Rectangle drawHitbox = Item.GetDrawHitbox(item2.type, this);
++
  			compositeFrontArm.enabled = false;
  			compositeBackArm.enabled = false;
- 			if (itemAnimation > 0) {
-@@ -29843,12 +_,23 @@
+-			if (itemAnimation > 0) {
++			if (itemAnimation >= 0) {
+ 				if (item.mana > 0)
+ 					ItemCheck_ApplyManaRegenDelay(item);
+ 
+@@ -29843,13 +_,24 @@
  				itemAnimation--;
  			}
  
@@ -3646,14 +3686,16 @@
 +
 +			DecrementItemTime:
 +
- 			if (itemTime > 0) {
+-			if (itemTime > 0) {
++			if (itemTime >= 0) {
  				itemTime--;
  				if (ItemTimeIsZero && whoAmI == Main.myPlayer) {
+ 					if (!JustDroppedAnItem) {
 @@ -29862,11 +_,17 @@
  				}
  			}
  
-+			return; // End of spaghetti
++			goto ItemCheckPart1;
 +
 +			ItemCheckPart2:
 +
@@ -3814,7 +3856,7 @@
  			if (itemAnimation == 0)
  				JustDroppedAnItem = false;
 +
-+			goto DecrementItemAnimation;
++			return; // End of spaghetti
  		}
  
  		private void ItemCheck_EmitFoodParticles(Item sItem) {
