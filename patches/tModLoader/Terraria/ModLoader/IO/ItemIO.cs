@@ -119,13 +119,14 @@ namespace Terraria.ModLoader.IO
 			var list = new List<TagCompound>();
 			foreach (var globalItem in ItemLoader.globalItems) {
 				var globalItemInstance = globalItem.Instance(item);
-				if (globalItemInstance == null || !globalItemInstance.NeedsSaving(item))
+				TagCompound data = globalItemInstance?.Save(item);
+				if(data == null)
 					continue;
 
 				list.Add(new TagCompound {
 					["mod"] = globalItemInstance.Mod.Name,
 					["name"] = globalItemInstance.Name,
-					["data"] = globalItemInstance.Save(item)
+					["data"] = data
 				});
 			}
 			return list.Count > 0 ? list : null;

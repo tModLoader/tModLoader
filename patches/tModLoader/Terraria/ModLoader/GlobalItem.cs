@@ -846,14 +846,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not the given item needs to save custom data. Returning false will save on the memory used in saving an item, but returning true is necessary in order to save data across all items or vanilla items. Returns false by default. Note that the return value of this hook must be deterministic (randomness is not allowed).
-		/// </summary>
-		public virtual bool NeedsSaving(Item item) {
-			return false;
-		}
-
-		/// <summary>
-		/// Allows you to save custom data for the given item. Only called when NeedsCustomSaving returns true. Returns false by default.
+		/// Allows you to save custom data for the given item. Returns null by default.
 		/// </summary>
 		public virtual TagCompound Save(Item item) {
 			return null;

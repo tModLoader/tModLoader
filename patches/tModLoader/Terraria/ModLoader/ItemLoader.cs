@@ -1815,19 +1815,13 @@ namespace Terraria.ModLoader
 
 			return tooltips;
 		}
-
-		private static HookList HookNeedsSaving = AddHook<Func<Item, bool>>(g => g.NeedsSaving);
+		
 		public static bool NeedsModSaving(Item item) {
 			if (item.type <= ItemID.None)
 				return false;
 
 			if (item.ModItem != null || item.prefix >= PrefixID.Count)
 				return true;
-
-			foreach (var g in HookNeedsSaving.Enumerate(item.globalItems)) {
-				if (g.NeedsSaving(item))
-					return true;
-			}
 
 			return false;
 		}
