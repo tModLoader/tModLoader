@@ -1816,7 +1816,7 @@ namespace Terraria.ModLoader
 			return tooltips;
 		}
 		
-		public static bool NeedsModSaving(Item item) {
+		internal static bool NeedsModSaving(Item item) {
 			if (item.type <= ItemID.None)
 				return false;
 

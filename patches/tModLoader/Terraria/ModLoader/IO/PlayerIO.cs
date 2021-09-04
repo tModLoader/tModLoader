@@ -85,10 +85,13 @@ namespace Terraria.ModLoader.IO
 		public static List<TagCompound> SaveInventory(Item[] inv) {
 			var list = new List<TagCompound>();
 			for (int k = 0; k < inv.Length; k++) {
-				if (ItemLoader.NeedsModSaving(inv[k])) {
-					var tag = ItemIO.Save(inv[k]);
-					tag.Set("slot", (short)k);
-					list.Add(tag);
+				var globalData = ItemIO.SaveGlobals(inv[k]);
+				if (globalData != null && ItemLoader.NeedsModSaving(inv[k])) {
+					var tag = ItemIO.Save(inv[k], globalData);
+					if (tag.Count != 0) {
+						tag.Set("slot", (short)k);
+						list.Add(tag);
+					}
 				}
 			}
 			return list.Count > 0 ? list : null;

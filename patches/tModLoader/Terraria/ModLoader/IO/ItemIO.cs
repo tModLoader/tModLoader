@@ -32,7 +32,9 @@ namespace Terraria.ModLoader.IO
 		internal static void WriteByteVanillaPrefix(int prefix, BinaryWriter writer)
 			=> writer.Write((byte)(prefix >= PrefixID.Count ? 0 : prefix));
 
-		public static TagCompound Save(Item item) {
+		public static TagCompound Save(Item item) => Save(item, SaveGlobals(item));
+
+		public static TagCompound Save(Item item, List<TagCompound> globalData) {
 			var tag = new TagCompound();
 			if (item.type <= 0)
 				return tag;
@@ -65,7 +67,7 @@ namespace Terraria.ModLoader.IO
 			if (item.favorited)
 				tag.Set("fav", true);
 
-			tag.Set("globalData", SaveGlobals(item));
+			tag.Set("globalData", globalData);
 
 			return tag;
 		}
