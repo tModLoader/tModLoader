@@ -3607,14 +3607,14 @@
  			if (!controlUseItem)
  				channel = false;
  
-+			goto ItemCheckPart2;
++			goto HandleItemHolding;
 +
 +			DecrementItemAnimation:
 +
  			Item item2 = (itemAnimation > 0) ? lastVisualizedSelectedItem : item;
  			Rectangle drawHitbox = Item.GetDrawHitbox(item2.type, this);
  			compositeFrontArm.enabled = false;
-@@ -29843,12 +_,23 @@
+@@ -29843,12 +_,24 @@
  				itemAnimation--;
  			}
  
@@ -3629,9 +3629,9 @@
  			else
  				ItemCheck_ApplyHoldStyle(heightOffsetHitboxCenter, item2, drawHitbox);
  
--			releaseUseItem = !controlUseItem;
-+			//releaseUseItem = !controlUseItem;
-+			return; // This is the end of our spaghetti trip!
+ 			releaseUseItem = !controlUseItem;
++			
++			goto ItemCheckPart2;
 +
 +			// See the comment at DecrementItemAnimation for explanation
 +			DecrementItemTime:
@@ -3639,15 +3639,13 @@
  			if (itemTime > 0) {
  				itemTime--;
  				if (ItemTimeIsZero && whoAmI == Main.myPlayer) {
-@@ -29862,11 +_,19 @@
+@@ -29862,11 +_,17 @@
  				}
  			}
  
 +			goto ItemCheckPart1;
 +
 +			ItemCheckPart2:
-+
-+			releaseUseItem = !controlUseItem;
 +
  			if (!JustDroppedAnItem) {
  				ItemCheck_EmitHeldItemLight(item);
@@ -3806,7 +3804,7 @@
  			if (itemAnimation == 0)
  				JustDroppedAnItem = false;
 +
-+			goto HandleItemHolding;
++			return;
  		}
  
  		private void ItemCheck_EmitFoodParticles(Item sItem) {
