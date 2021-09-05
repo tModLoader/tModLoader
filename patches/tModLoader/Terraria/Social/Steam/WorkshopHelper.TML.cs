@@ -539,6 +539,7 @@ namespace Terraria.Social.Steam
 
 						// Item Tagged data
 						uint keyCount;
+						var metadata = new NameValueCollection();
 
 						if (ModManager.SteamUser)
 							keyCount = SteamUGC.GetQueryUGCNumKeyValueTags(_primaryUGCHandle, i);
@@ -550,8 +551,6 @@ namespace Terraria.Social.Steam
 							IncompleteModCount++;
 							continue;
 						}
-
-						var metadata = new NameValueCollection();
 
 						for (uint j = 0; j < keyCount; j++) {
 							string key, val;
@@ -572,6 +571,33 @@ namespace Terraria.Social.Steam
 							continue;
 						}
 
+						// Calculate the Mod Browser Version
+						System.Version cVersion = new System.Version(metadata["version"].Replace("v", ""));
+
+						// Handle Github Actions metadata from description
+						// Nominal string: [quote=GithubActions(Don't Modify)]Version #.#.#.# built for tModLoader v#.#.#.#[/quote]
+						const string descParseModVersion = "y)]Version ";
+						string description = pDetails.m_rgchDescription;
+						var chkLoc = description.IndexOf(descParseModVersion);
+						if (chkLoc >= 0) {
+							string s1 = description.Substring(chkLoc + descParseModVersion.Length);
+							var s2 = s1.Split("built", StringSplitOptions.TrimEntries);
+
+							// Mod Version
+							var gmVer = new System.Version(s2[0]);
+							if (gmVer > cVersion) {
+								cVersion = gmVer;
+
+								// tMod Version
+								var gtVer = s2[1].Split('v')[1].Split('[')[0];
+								while (gtVer.LastIndexOf('.') == gtVer.LastIndexOf(".0")) {
+									gtVer = gtVer.Remove(gtVer.LastIndexOf('.'));
+								}
+								metadata["modloaderversion"] = "tModLoader v" + gtVer;
+							}	
+						}
+
+						// Assign ModSide Enum
 						ModSide modside = ModSide.Both;
 
 						if (metadata["modside"] == "Client")
@@ -602,9 +628,6 @@ namespace Terraria.Social.Steam
 							SteamGameServerUGC.GetQueryUGCStatistic(_primaryUGCHandle, i, EItemStatistic.k_EItemStatistic_NumUniqueSubscriptions, out downloads);
 							SteamGameServerUGC.GetQueryUGCStatistic(_primaryUGCHandle, i, EItemStatistic.k_EItemStatistic_NumSecondsPlayedDuringTimePeriod, out hot); //Temp: based on how often being played lately?
 						}
-
-						// Calculate the Mod Browser Version
-						System.Version cVersion = new System.Version(metadata["version"].Replace("v", ""));
 
 						// Check against installed mods
 						bool update = false;
