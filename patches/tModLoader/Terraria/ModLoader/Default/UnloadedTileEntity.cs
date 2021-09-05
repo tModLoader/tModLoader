@@ -26,7 +26,7 @@ namespace Terraria.ModLoader.Default
 			tag["mod"] = modName;
 			tag["name"] = tileEntityName;
 
-			if (data != null && data.Count > 0) {
+			if (data?.Count > 0) {
 				tag["data"] = data;
 			}
 		}
