@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['water_4872',['water',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a0a875d4463252e0a7c96d77123ebcbad',1,'Terraria::ModLoader::NPCSpawnInfo']]],
-  ['waterjet_4873',['WaterJet',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#aa9e8ca97a3c1e606db0fdefe4c866924',1,'Terraria::ID::ProjAIStyleID']]],
-  ['whip_4874',['Whip',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#af0a646af96e0dd10924f4c79562696da',1,'Terraria::ID::ProjAIStyleID']]],
-  ['wirekite_4875',['WireKite',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#af270c3c0abba274909463893d31aa228',1,'Terraria::ID::ProjAIStyleID']]],
-  ['wisdomwhirlwind_4876',['WisdomWhirlwind',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a57f8c8c3f5ccbe354477f1adb6f7b077',1,'Terraria::ID::ProjAIStyleID']]],
-  ['wormpet_4877',['WormPet',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#aeb6aef83ea5fe1c2c21f0769ddc3492c',1,'Terraria::ID::ProjAIStyleID']]]
+  ['unicorn_5064',['Unicorn',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a9e4d325d358e61cdc551d4b02eb0ef10',1,'Terraria::ID::NPCAIStyleID']]],
+  ['unknown1_5065',['Unknown1',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a20fdba4ee5c693dce717b6653be05dae',1,'Terraria::ID::NPCAIStyleID']]],
+  ['unused0_5066',['Unused0',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a57177ee522135b9a05321346a9006fec',1,'Terraria::ID::NPCAIStyleID']]],
+  ['upwardexpand_5067',['UpwardExpand',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a921515af1e1505c5c0b0b3d6a973b1dc',1,'Terraria::ID::ProjAIStyleID']]]
 ];

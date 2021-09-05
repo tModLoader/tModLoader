@@ -1,6 +1,20 @@
 var searchData=
 [
-  ['vilethorn_4869',['Vilethorn',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a180914cd1e7734a8a231a74eb2a78815',1,'Terraria::ID::ProjAIStyleID']]],
-  ['voidbag_4870',['VoidBag',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ab558513eec338c9d98ec8afcad30ee98',1,'Terraria::ID::ProjAIStyleID']]],
-  ['vortex_4871',['Vortex',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ac0f0d1cfc3d12b832e10e18ca809f9a0',1,'Terraria::ID::ProjAIStyleID']]]
+  ['targetdummy_5047',['TargetDummy',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a220b6a97a4aea57d9892a7d43e075534',1,'Terraria::ID::NPCAIStyleID']]],
+  ['terraprisma_5048',['Terraprisma',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ad5225c9a8d746b03a031fb176d0b6197',1,'Terraria::ID::ProjAIStyleID']]],
+  ['terrarianbeam_5049',['TerrarianBeam',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ab97abab2261f7e9b7e3c10a5565768dd',1,'Terraria::ID::ProjAIStyleID']]],
+  ['teslaturret_5050',['TeslaTurret',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a4c8c02190b5011ca1fe7a1d369d1ce23',1,'Terraria::ID::NPCAIStyleID']]],
+  ['text_5051',['text',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a78362ca6b9bc8bae8378b651a65322b8',1,'Terraria.ModLoader.DrawableTooltipLine.text()'],['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ac0cc989c7b3960ac7af7dfa959e0d91c',1,'Terraria.ModLoader.TooltipLine.text()']]],
+  ['thedestroyer_5052',['TheDestroyer',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#abdec63881193695055439fdc77a64db2',1,'Terraria::ID::NPCAIStyleID']]],
+  ['thehungry_5053',['TheHungry',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a07e9ed98fc45cb670f3df01d4d36668a',1,'Terraria::ID::NPCAIStyleID']]],
+  ['thicklaser_5054',['ThickLaser',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a48dcdac78f68d54945dbbed393c53322',1,'Terraria::ID::ProjAIStyleID']]],
+  ['thrownprojectile_5055',['ThrownProjectile',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#aba197db46d7677c0428bd78bb2f6162b',1,'Terraria::ID::ProjAIStyleID']]],
+  ['titaniumshard_5056',['TitaniumShard',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a8c302dfa3836c8825fcbd784c05f05b5',1,'Terraria::ID::ProjAIStyleID']]],
+  ['toileteffect_5057',['ToiletEffect',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#aa36541073ba7f952e3d927b94c1c05a6',1,'Terraria::ID::ProjAIStyleID']]],
+  ['torchgod_5058',['TorchGod',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a199005fc9008606a93c4fc84d3ff413a',1,'Terraria::ID::ProjAIStyleID']]],
+  ['toxicbubble_5059',['ToxicBubble',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a76abbc27d3f08ebdea988d64dfe65042',1,'Terraria::ID::ProjAIStyleID']]],
+  ['toxiccloud_5060',['ToxicCloud',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a008b156f0a5691524bd84a6d6189fd8d',1,'Terraria::ID::ProjAIStyleID']]],
+  ['trueeyeofcthulhu_5061',['TrueEyeOfCthulhu',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a7ce0a32a41636524b157304ace8a81fe',1,'Terraria::ID::NPCAIStyleID']]],
+  ['twilightlance_5062',['TwilightLance',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a1789cb18e3742d97c7bfe774fad66da1',1,'Terraria::ID::ProjAIStyleID']]],
+  ['typhoon_5063',['Typhoon',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a83155778f57aee7bfa5bcfa90a859dea',1,'Terraria::ID::ProjAIStyleID']]]
 ];

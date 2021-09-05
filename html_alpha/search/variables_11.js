@@ -1,15 +1,14 @@
 var searchData=
 [
-  ['terraprisma_4854',['Terraprisma',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ad5225c9a8d746b03a031fb176d0b6197',1,'Terraria::ID::ProjAIStyleID']]],
-  ['terrarianbeam_4855',['TerrarianBeam',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ab97abab2261f7e9b7e3c10a5565768dd',1,'Terraria::ID::ProjAIStyleID']]],
-  ['text_4856',['text',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a78362ca6b9bc8bae8378b651a65322b8',1,'Terraria.ModLoader.DrawableTooltipLine.text()'],['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ac0cc989c7b3960ac7af7dfa959e0d91c',1,'Terraria.ModLoader.TooltipLine.text()']]],
-  ['thicklaser_4857',['ThickLaser',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a48dcdac78f68d54945dbbed393c53322',1,'Terraria::ID::ProjAIStyleID']]],
-  ['thrownprojectile_4858',['ThrownProjectile',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#aba197db46d7677c0428bd78bb2f6162b',1,'Terraria::ID::ProjAIStyleID']]],
-  ['titaniumshard_4859',['TitaniumShard',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a8c302dfa3836c8825fcbd784c05f05b5',1,'Terraria::ID::ProjAIStyleID']]],
-  ['toileteffect_4860',['ToiletEffect',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#aa36541073ba7f952e3d927b94c1c05a6',1,'Terraria::ID::ProjAIStyleID']]],
-  ['torchgod_4861',['TorchGod',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a199005fc9008606a93c4fc84d3ff413a',1,'Terraria::ID::ProjAIStyleID']]],
-  ['toxicbubble_4862',['ToxicBubble',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a76abbc27d3f08ebdea988d64dfe65042',1,'Terraria::ID::ProjAIStyleID']]],
-  ['toxiccloud_4863',['ToxicCloud',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a008b156f0a5691524bd84a6d6189fd8d',1,'Terraria::ID::ProjAIStyleID']]],
-  ['twilightlance_4864',['TwilightLance',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a1789cb18e3742d97c7bfe774fad66da1',1,'Terraria::ID::ProjAIStyleID']]],
-  ['typhoon_4865',['Typhoon',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a83155778f57aee7bfa5bcfa90a859dea',1,'Terraria::ID::ProjAIStyleID']]]
+  ['rainbow_4984',['Rainbow',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a63fa4149457627689cee0d6f944de447',1,'Terraria::ID::ProjAIStyleID']]],
+  ['raincloud_4985',['RainCloud',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a3e985b33b429f49b82d0eaf2c4372fc4',1,'Terraria::ID::ProjAIStyleID']]],
+  ['raven_4986',['Raven',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a2dd3233fb646316a698523d5def64c9e',1,'Terraria::ID::ProjAIStyleID']]],
+  ['ray_4987',['Ray',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a6f3639d86f8d8643ddb85f3fb79563e7',1,'Terraria::ID::ProjAIStyleID']]],
+  ['reaping_4988',['Reaping',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a4e5fdc06403d0484dcdaee674db20ebc',1,'Terraria::ID::ProjAIStyleID']]],
+  ['releasedenergy_4989',['ReleasedEnergy',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#af71f09f281db8cd17aed2a47392c9010',1,'Terraria::ID::ProjAIStyleID']]],
+  ['releasedprojectile_4990',['ReleasedProjectile',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ae70d69b12f81f2a21a9d80b6f344c9f1',1,'Terraria::ID::ProjAIStyleID']]],
+  ['retinazer_4991',['Retinazer',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a71a2d1ed1a3fe0d266c05e998f4e3040',1,'Terraria::ID::NPCAIStyleID']]],
+  ['rider_4992',['Rider',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a0984732af78d4d44a04a0ef0174fce3c',1,'Terraria::ID::NPCAIStyleID']]],
+  ['ropecoil_4993',['RopeCoil',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a5a0a9147209a240e1ce0fe524894935d',1,'Terraria::ID::ProjAIStyleID']]],
+  ['rotation_4994',['rotation',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#ac0bc2d7ee58f4ff4683d1422bc12aafc',1,'Terraria::ModLoader::DrawableTooltipLine']]]
 ];

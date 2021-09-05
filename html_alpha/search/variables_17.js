@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['zenith_4882',['Zenith',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#af9720f5d86af6dd1c75dfd2a8aeb04b9',1,'Terraria::ID::ProjAIStyleID']]],
-  ['zoologiststike_4883',['ZoologistStike',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a4a1c66c1172bc768d5ee6ee2e601151f',1,'Terraria::ID::ProjAIStyleID']]]
+  ['x_5082',['X',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a2f43a8fc27f90a42ae12020a60c3428f',1,'Terraria::ModLoader::DrawableTooltipLine']]],
+  ['xenopopper_5083',['Xenopopper',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ac1ee27b7f1c92743cea7fd02189fa7af',1,'Terraria::ID::ProjAIStyleID']]]
 ];
