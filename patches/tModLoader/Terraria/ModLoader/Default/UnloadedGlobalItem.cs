@@ -17,12 +17,8 @@ namespace Terraria.ModLoader.Default
 			return clone;
 		}
 
-		public override bool NeedsSaving(Item item) {
-			return data.Count > 0;
-		}
-
 		public override TagCompound SaveData(Item item) {
-			return new TagCompound { ["modData"] = data };
+			return data.Count == 0 ? null : new TagCompound { ["modData"] = data };
 		}
 
 		public override void LoadData(Item item, TagCompound tag) {
