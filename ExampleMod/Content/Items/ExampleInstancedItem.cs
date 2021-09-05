@@ -38,11 +38,12 @@ namespace ExampleMod.Content.Items
 			}
 		}
 
-		public override TagCompound SaveData() =>
-			new TagCompound { ["Colors"] = colors.ToList() };
+		public override void SaveData(TagCompound tag) {
+			tag["Colors"] = colors.ToList();
+		}
 
 		public override void LoadData(TagCompound tag) {
-			colors = tag.GetList<Color>("Colors").ToArray();
+			colors = ((List<Color>) tag["Colors"]).ToArray();
 		}
 
 		public override void AddRecipes() => CreateRecipe().AddIngredient<ExampleItem>(10).Register();
