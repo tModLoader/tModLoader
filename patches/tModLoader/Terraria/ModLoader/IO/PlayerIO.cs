@@ -86,7 +86,7 @@ namespace Terraria.ModLoader.IO
 			var list = new List<TagCompound>();
 			for (int k = 0; k < inv.Length; k++) {
 				var globalData = ItemIO.SaveGlobals(inv[k]);
-				if (globalData != null && ItemLoader.NeedsModSaving(inv[k])) {
+				if (globalData != null || ItemLoader.NeedsModSaving(inv[k])) {
 					var tag = ItemIO.Save(inv[k], globalData);
 					if (tag.Count != 0) {
 						tag.Set("slot", (short)k);
