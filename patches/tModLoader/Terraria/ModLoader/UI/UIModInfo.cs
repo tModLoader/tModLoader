@@ -171,6 +171,7 @@ namespace Terraria.ModLoader.UI
 			_modDisplayName = string.Empty;
 			_url = string.Empty;
 			_modHomepageButton.Remove();
+			_modSteamButton.Remove();
 			_deleteButton.Remove();
 			_fakeDeleteButton.Remove();
 			_extractButton.Remove();
