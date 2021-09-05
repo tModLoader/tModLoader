@@ -36,6 +36,7 @@ namespace Terraria.ModLoader.IO
 
 		public static TagCompound Save(Item item, List<TagCompound> globalData) {
 			var tag = new TagCompound();
+
 			if (item.type <= 0)
 				return tag;
 
@@ -46,7 +47,14 @@ namespace Terraria.ModLoader.IO
 			else {
 				tag.Set("mod", item.ModItem.Mod.Name);
 				tag.Set("name", item.ModItem.Name);
-				tag.Set("data", item.ModItem.SaveData());
+
+				var saveData = TagCompound.GetEmptyTag();
+
+				item.ModItem.SaveData(saveData);
+
+				if (saveData.Count > 0) {
+					tag.Set("data", saveData);
+				}
 			}
 
 			if (item.prefix != 0 && item.prefix < PrefixID.Count)
@@ -119,18 +127,24 @@ namespace Terraria.ModLoader.IO
 				return null; // UnloadedItems cannot have global data
 
 			var list = new List<TagCompound>();
+
 			foreach (var globalItem in ItemLoader.globalItems) {
 				var globalItemInstance = globalItem.Instance(item);
-				TagCompound data = globalItemInstance?.SaveData(item);
-				if(data == null)
+				
+				var saveData = TagCompound.GetEmptyTag();
+
+				globalItemInstance?.SaveData(item, saveData);
+
+				if (saveData.Count == 0)
 					continue;
 
 				list.Add(new TagCompound {
 					["mod"] = globalItemInstance.Mod.Name,
 					["name"] = globalItemInstance.Name,
-					["data"] = data
+					["data"] = saveData
 				});
 			}
+
 			return list.Count > 0 ? list : null;
 		}
 

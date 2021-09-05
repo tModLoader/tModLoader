@@ -939,19 +939,18 @@ namespace Terraria.ModLoader
 		public virtual int BossBagNPC => 0;
 
 		/// <summary>
-		/// Allows you to save custom data for this item. Returns null by default.
+		/// Allows you to save custom data for this item.
+		/// <br/><b>Try to only save data that isn't default values.</b>
 		/// </summary>
-		/// <returns></returns>
-		public virtual TagCompound SaveData() {
-			return null;
-		}
+		/// <param name="tag"> The TagCompound to save data into. </param>
+		public virtual void SaveData(TagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to load custom data that you have saved for this item.
+		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
-		/// <param name="tag">The tag.</param>
-		public virtual void LoadData(TagCompound tag) {
-		}
+		/// <param name="tag"> The TagCompound to load data from. </param>
+		public virtual void LoadData(TagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to send custom data for this item between client and server.

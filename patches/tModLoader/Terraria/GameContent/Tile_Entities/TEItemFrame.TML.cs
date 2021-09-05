@@ -5,9 +5,9 @@ namespace Terraria.GameContent.Tile_Entities
 {
 	public partial class TEItemFrame
 	{
-		public override TagCompound SaveData() => new TagCompound {
-			{ "item", ItemIO.Save(item) }
-		};
+		public override void SaveData(TagCompound tag) {
+			tag["item"] = ItemIO.Save(item);
+		}
 
 		public override void LoadData(TagCompound tag) => item = ItemIO.Load(tag.GetCompound("item"));
 

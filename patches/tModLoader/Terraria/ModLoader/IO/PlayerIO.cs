@@ -163,17 +163,22 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<TagCompound> SaveModData(Player player) {
 			var list = new List<TagCompound>();
+
 			foreach (var modPlayer in player.modPlayers) {
-				var data = modPlayer.SaveData();
-				if (data == null)
+				var saveData = TagCompound.GetEmptyTag();
+
+				modPlayer.SaveData(saveData);
+
+				if (saveData.Count == 0)
 					continue;
 
 				list.Add(new TagCompound {
 					["mod"] = modPlayer.Mod.Name,
 					["name"] = modPlayer.Name,
-					["data"] = data
+					["data"] = saveData
 				});
 			}
+
 			return list;
 		}
 

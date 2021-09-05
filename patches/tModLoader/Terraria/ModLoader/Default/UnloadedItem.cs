@@ -27,7 +27,10 @@ namespace Terraria.ModLoader.Default
 		internal void Setup(TagCompound tag) {
 			ModName = tag.GetString("mod");
 			ItemName = tag.GetString("name");
-			data = tag;
+
+			if (tag.ContainsKey("data")) {
+				data = tag.GetCompound("data");
+			}
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
@@ -41,16 +44,28 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public override TagCompound SaveData() {
-			return data;
+		public override void SaveData(TagCompound tag) {
+			tag["mod"] = ModName;
+			tag["name"] = ItemName;
+
+			if (data?.Count > 0) {
+				tag["data"] = data;
+			}
 		}
 
 		public override void LoadData(TagCompound tag) {
 			Setup(tag);
+
 			if (ModContent.TryFind(ModName, ItemName, out ModItem modItem)) {
 				Item.SetDefaults(modItem.Type);
-				Item.ModItem.LoadData(tag.GetCompound("data"));
-				ItemIO.LoadGlobals(Item, tag.GetList<TagCompound>("globalData"));
+
+				if (data?.Count > 0) {
+					Item.ModItem.LoadData(data);
+				}
+
+				if (tag.ContainsKey("globalData")) {
+					ItemIO.LoadGlobals(Item, tag.GetList<TagCompound>("globalData"));
+				}
 			}
 		}
 

@@ -6,11 +6,9 @@ namespace Terraria.GameContent.Tile_Entities
 {
 	public partial class TEHatRack
 	{
-		public override TagCompound SaveData() {
-			return new TagCompound {
-				{ "items", PlayerIO.SaveInventory(_items) },
-				{ "dyes", PlayerIO.SaveInventory(_dyes) },
-			};
+		public override void SaveData(TagCompound tag) {
+			tag["items"] = PlayerIO.SaveInventory(_items);
+			tag["dyes"] = PlayerIO.SaveInventory(_dyes);
 		}
 
 		public override void LoadData(TagCompound tag) {

@@ -846,17 +846,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to save custom data for the given item. Returns null by default.
+		/// Allows you to save custom data for this item.
+		/// <br/><b>Try to only save data that isn't default values.</b>
 		/// </summary>
-		public virtual TagCompound SaveData(Item item) {
-			return null;
-		}
+		/// <param name="item"> The item. </param>
+		/// <param name="tag"> The TagCompound to save data into. </param>
+		public virtual void SaveData(Item item, TagCompound tag) { }
 
 		/// <summary>
-		/// Allows you to load custom data that you have saved for the given item.
+		/// Allows you to load custom data that you have saved for this item.
+		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
-		public virtual void LoadData(Item item, TagCompound tag) {
-		}
+		/// <param name="item"> The item. </param>
+		/// <param name="tag"> The TagCompound to load data from. </param>
+		public virtual void LoadData(Item item, TagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to send custom data for the given item between client and server.
