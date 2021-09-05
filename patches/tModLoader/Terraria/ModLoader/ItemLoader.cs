@@ -1848,11 +1848,10 @@ namespace Terraria.ModLoader
 		internal static void VerifyGlobalItem(GlobalItem item) {
 			var type = item.GetType();
 			int saveMethods = 0;
-			if (HasMethod(type, "NeedsSaving", typeof(Item))) saveMethods++;
 			if (HasMethod(type, "Save", typeof(Item))) saveMethods++;
 			if (HasMethod(type, "Load", typeof(Item), typeof(TagCompound))) saveMethods++;
-			if (saveMethods > 0 && saveMethods < 3)
-				throw new Exception(type + " must override all of (NeedsSaving/Save/Load) or none");
+			if (saveMethods == 1)
+				throw new Exception(type + " must override all of (Save/Load) or none");
 
 			int netMethods = 0;
 			if (HasMethod(type, "NetSend", typeof(Item), typeof(BinaryWriter))) netMethods++;
