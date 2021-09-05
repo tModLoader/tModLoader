@@ -27,7 +27,7 @@ namespace ExampleMod.Common.Systems
 			// downedOtherBoss = false;
 		}
 
-		public override TagCompound SaveWorldData() {
+		public override void SaveWorldData(TagCompound tag) {
 			var downed = new List<string>();
 
 			if (downedMinionBoss) {
@@ -38,9 +38,7 @@ namespace ExampleMod.Common.Systems
 			//	downed.Add("downedOtherBoss");
 			// }
 
-			return new TagCompound {
-				["downed"] = downed,
-			};
+			tag["downed"] = downed;
 		}
 
 		public override void LoadWorldData(TagCompound tag) {

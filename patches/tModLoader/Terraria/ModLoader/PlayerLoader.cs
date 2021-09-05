@@ -938,8 +938,8 @@ namespace Terraria.ModLoader
 				throw new Exception(type + " must override all of (clientClone/SyncPlayer/SendClientChanges) or none");
 
 			int saveMethods = 0;
-			if (HasMethod(type, "Save")) saveMethods++;
-			if (HasMethod(type, "Load", typeof(TagCompound))) saveMethods++;
+			if (HasMethod(type, nameof(ModPlayer.SaveData), typeof(TagCompound))) saveMethods++;
+			if (HasMethod(type, nameof(ModPlayer.LoadData), typeof(TagCompound))) saveMethods++;
 			if (saveMethods == 1)
 				throw new Exception(type + " must override all of (Save/Load) or none");
 

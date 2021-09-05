@@ -35,21 +35,13 @@ namespace ExampleMod.Common.Systems
 		}
 
 		// We save our data sets using TagCompounds.
-		public override TagCompound SaveWorldData() {
-			TagCompound tag;
-			if (myMap.Length == 0) {
-				tag = null;
-			} 
-			else {
-				tag = new TagCompound {
-					["myMap"] = myMap.Select(info => new TagCompound {
-						["pos"] = info.pos,
-						["data"] = info.value
-					}).ToList(),
-				};
+		public override void SaveWorldData(TagCompound tag) {
+			if (myMap.Length != 0) {
+				tag["myMap"] = myMap.Select(info => new TagCompound {
+					["pos"] = info.pos,
+					["data"] = info.value
+				}).ToList();
 			}
-
-			return tag;
 		}
 
 		// We load our data sets using the provided TagCompound. Should mirror SaveWorldData()

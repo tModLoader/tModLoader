@@ -1849,7 +1849,7 @@ namespace Terraria.ModLoader
 			var type = item.GetType();
 			int saveMethods = 0;
 
-			if (HasMethod(type, nameof(GlobalItem.SaveData), typeof(Item)))
+			if (HasMethod(type, nameof(GlobalItem.SaveData), typeof(Item), typeof(TagCompound)))
 				saveMethods++;
 
 			if (HasMethod(type, nameof(GlobalItem.LoadData), typeof(Item), typeof(TagCompound)))

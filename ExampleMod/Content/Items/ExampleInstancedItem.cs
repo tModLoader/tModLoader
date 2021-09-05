@@ -43,7 +43,7 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void LoadData(TagCompound tag) {
-			colors = ((List<Color>) tag["Colors"]).ToArray();
+			colors = tag.Get<List<Color>>("Colors").ToArray();
 		}
 
 		public override void AddRecipes() => CreateRecipe().AddIngredient<ExampleItem>(10).Register();

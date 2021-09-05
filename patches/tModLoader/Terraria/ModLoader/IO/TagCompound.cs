@@ -126,8 +126,8 @@ namespace Terraria.ModLoader.IO
 		/// <br/> A big optimization for passing TagCompounds into Save functions.
 		/// </summary>
 		public static TagCompound GetEmptyTag() {
-			if (emptyTagCache.Count > 0) {
-				emptyTagCache = new();
+			if (emptyTagCache == null || emptyTagCache.Count > 0) {
+				emptyTagCache = new TagCompound();
 			}
 
 			return emptyTagCache;
