@@ -42,6 +42,8 @@ namespace Terraria.ModLoader
 		public virtual bool CloneNewInstances => true;
 		
 		protected sealed override void Register() {
+			PlayerLoader.VerifyModPlayer(this);
+
 			ModTypeLookup<ModPlayer>.Register(this);
 			PlayerLoader.Add(this);
 		}
