@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Localization;
@@ -21,6 +22,7 @@ namespace Terraria.Social.Steam
 	public partial class WorkshopHelper
 	{
 		internal static string[] MetadataKeys = new string[7] { "name", "author", "modside", "homepage", "modloaderversion", "version", "modreferences" };
+		private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\]Version (.*) built for (tModLoader v.*)\[/quote\]", RegexOptions.Compiled);
 
 		public struct ItemInstallInfo
 		{
@@ -574,27 +576,18 @@ namespace Terraria.Social.Steam
 						// Calculate the Mod Browser Version
 						System.Version cVersion = new System.Version(metadata["version"].Replace("v", ""));
 
+						string description = pDetails.m_rgchDescription;
+
 						// Handle Github Actions metadata from description
 						// Nominal string: [quote=GithubActions(Don't Modify)]Version #.#.#.# built for tModLoader v#.#.#.#[/quote]
-						const string descParseModVersion = "y)]Version ";
-						string description = pDetails.m_rgchDescription;
-						var chkLoc = description.IndexOf(descParseModVersion);
-						if (chkLoc >= 0) {
-							string s1 = description.Substring(chkLoc + descParseModVersion.Length);
-							var s2 = s1.Split("built", StringSplitOptions.TrimEntries);
-
-							// Mod Version
-							var gmVer = new System.Version(s2[0]);
-							if (gmVer > cVersion) {
-								cVersion = gmVer;
-
-								// tMod Version
-								var gtVer = s2[1].Split('v')[1].Split('[')[0];
-								while (gtVer.LastIndexOf('.') == gtVer.LastIndexOf(".0")) {
-									gtVer = gtVer.Remove(gtVer.LastIndexOf('.'));
-								}
-								metadata["modloaderversion"] = "tModLoader v" + gtVer;
-							}	
+						Match match = MetadataInDescriptionFallbackRegex.Match(description);
+						if (match.Success) {
+							System.Version descriptionVersion = new System.Version(match.Groups[1].Value);
+							if (descriptionVersion > cVersion) {
+								cVersion = descriptionVersion;
+								metadata["version"] = "v" + match.Groups[1].Value;
+								metadata["modloaderversion"] = match.Groups[2].Value;
+							}
 						}
 
 						// Assign ModSide Enum
