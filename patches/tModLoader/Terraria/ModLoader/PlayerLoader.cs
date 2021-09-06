@@ -942,7 +942,7 @@ namespace Terraria.ModLoader
 				netClientMethods++;
 
 			if (netClientMethods > 0 && netClientMethods < 3)
-				throw new Exception($"{type} must override all of ({nameof(ModPlayer.clientClone)}/{nameof(ModPlayer.clientClone)}/{nameof(ModPlayer.clientClone)}) or none");
+				throw new Exception($"{type} must override all of ({nameof(ModPlayer.clientClone)}/{nameof(ModPlayer.SyncPlayer)}/{nameof(ModPlayer.SendClientChanges)}) or none");
 
 			int saveMethods = 0;
 
