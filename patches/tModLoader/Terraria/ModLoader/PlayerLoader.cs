@@ -930,6 +930,7 @@ namespace Terraria.ModLoader
 		internal static void VerifyModPlayer(ModPlayer player) {
 			var type = player.GetType();
 
+			/*
 			int netClientMethods = 0;
 
 			if (HasMethod(type, nameof(ModPlayer.clientClone), typeof(ModPlayer)))
@@ -943,6 +944,7 @@ namespace Terraria.ModLoader
 
 			if (netClientMethods > 0 && netClientMethods < 3)
 				throw new Exception($"{type} must override all of ({nameof(ModPlayer.clientClone)}/{nameof(ModPlayer.SyncPlayer)}/{nameof(ModPlayer.SendClientChanges)}) or none");
+			*/
 
 			int saveMethods = 0;
 
