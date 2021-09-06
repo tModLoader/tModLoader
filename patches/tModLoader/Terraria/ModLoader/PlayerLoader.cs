@@ -927,27 +927,33 @@ namespace Terraria.ModLoader
 			return t.GetMethod(method, args).DeclaringType != typeof(ModPlayer);
 		}
 
-		internal static void VerifyGlobalItem(ModPlayer player) {
+		internal static void VerifyModPlayer(ModPlayer player) {
 			var type = player.GetType();
 
 			int netClientMethods = 0;
-			if (HasMethod(type, "clientClone", typeof(ModPlayer))) netClientMethods++;
-			if (HasMethod(type, "SyncPlayer", typeof(int), typeof(int), typeof(bool))) netClientMethods++;
-			if (HasMethod(type, "SendClientChanges", typeof(ModPlayer))) netClientMethods++;
+
+			if (HasMethod(type, nameof(ModPlayer.clientClone), typeof(ModPlayer)))
+				netClientMethods++;
+
+			if (HasMethod(type, nameof(ModPlayer.SyncPlayer), typeof(int), typeof(int), typeof(bool)))
+				netClientMethods++;
+
+			if (HasMethod(type, nameof(ModPlayer.SendClientChanges), typeof(ModPlayer)))
+				netClientMethods++;
+
 			if (netClientMethods > 0 && netClientMethods < 3)
-				throw new Exception(type + " must override all of (clientClone/SyncPlayer/SendClientChanges) or none");
+				throw new Exception($"{type} must override all of ({nameof(ModPlayer.clientClone)}/{nameof(ModPlayer.clientClone)}/{nameof(ModPlayer.clientClone)}) or none");
 
 			int saveMethods = 0;
-			if (HasMethod(type, "Save")) saveMethods++;
-			if (HasMethod(type, "Load", typeof(TagCompound))) saveMethods++;
-			if (saveMethods == 1)
-				throw new Exception(type + " must override all of (Save/Load) or none");
 
-			int netMethods = 0;
-			if (HasMethod(type, "NetSend", typeof(BinaryWriter))) netMethods++;
-			if (HasMethod(type, "NetReceive", typeof(BinaryReader))) netMethods++;
-			if (netMethods == 1)
-				throw new Exception(type + " must override both of (NetSend/NetReceive) or none");
+			if (HasMethod(type, nameof(ModPlayer.Save)))
+				saveMethods++;
+
+			if (HasMethod(type, nameof(ModPlayer.Load), typeof(TagCompound)))
+				saveMethods++;
+
+			if (saveMethods == 1)
+				throw new Exception($"{type} must override both of ({nameof(ModPlayer.Save)}/{nameof(ModPlayer.Load)}) or none");
 		}
 
 		private static HookList HookPostSellItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostSellItem);
