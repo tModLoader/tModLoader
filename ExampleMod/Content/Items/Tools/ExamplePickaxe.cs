@@ -11,6 +11,7 @@ namespace ExampleMod.Content.Items.Tools
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded pickaxe.");
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 

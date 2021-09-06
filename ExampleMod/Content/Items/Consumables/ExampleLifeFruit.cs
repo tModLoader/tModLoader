@@ -20,6 +20,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault($"Permanently increases maximum life by {LifePerFruit}\nUp to {MaxExampleLifeFruits} can be used");
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 10;
 		}
 
@@ -48,6 +49,7 @@ namespace ExampleMod.Content.Items.Consumables
 			// This handles the 2 achievements related to using any life increasing item or getting to exactly 500 hp and 200 mp.
 			// Ignored since our item is only useable after this achievement is reached
 			// AchievementsHelper.HandleSpecialEvent(player, 2);
+			//TODO re-add this when ModAchievement is merged?
 			return true;
 		}
 
@@ -65,6 +67,8 @@ namespace ExampleMod.Content.Items.Consumables
 		public int exampleLifeFruits;
 
 		public override void ResetEffects() {
+			// Increasing health in the ResetEffects hook in particular is important so it shows up properly in the player select menu
+			// and so that life regeneration properly scales with the bonus health
 			Player.statLifeMax2 += exampleLifeFruits * ExampleLifeFruit.LifePerFruit;
 		}
 

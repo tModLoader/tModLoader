@@ -193,7 +193,7 @@ namespace Terraria.ModLoader
 				Main.menuMode = Interface.loadModsID;
 		}
 
-		private static bool Unload()
+		internal static bool Unload()
 		{
 			try {
 				Mods_Unload();

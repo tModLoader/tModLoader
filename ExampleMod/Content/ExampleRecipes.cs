@@ -27,7 +27,7 @@ namespace ExampleMod.Content
 			AddRecipeGroups();
 
 			///////////////////////////////////////////////////////////////////////////
-			//The following basic recipe makes 999 ExampleItems out of 1 stone block.//
+			// The following basic recipe makes 999 ExampleItems out of 1 stone block.//
 			///////////////////////////////////////////////////////////////////////////
 
 			var recipe = mod.CreateRecipe(999);
@@ -37,12 +37,12 @@ namespace ExampleMod.Content
 			recipe.Register();
 
 			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//The following recipe showcases and explains all methods (functions) present on Recipe, and uses an 'advanced' style called 'chaining'.//
+			// The following recipe showcases and explains all methods (functions) present on Recipe, and uses an 'advanced' style called 'chaining'.//
 			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-			//The reason why the said chaining works is that all methods on Recipe, with the exception of Register(), return its own instance,
-			//which lets you call subsequent methods on that return value, without having to type a local variable's name.
-			//When using chaining, note that only the last line is supposed to have a semicolon (;).
+			// The reason why the said chaining works is that all methods on Recipe, with the exception of Register(), return its own instance,
+			// which lets you call subsequent methods on that return value, without having to type a local variable's name.
+			// When using chaining, note that only the last line is supposed to have a semicolon (;).
 
 			var resultItem = ModContent.GetInstance<Items.ExampleItem>();
 
