@@ -20,7 +20,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 
-			ArmorIDs.Body.Sets.HidesTopSkin[Mod.GetEquipSlot(GetType().Name, EquipType.Body)] = true;
+			ArmorIDs.Body.Sets.HidesTopSkin[Item.bodySlot] = true;
 		}
 
 		public override void SetDefaults() {
@@ -37,7 +37,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 
-			ArmorIDs.Legs.Sets.OverridesLegs[Mod.GetEquipSlot(GetType().Name, EquipType.Legs)] = true;
+			ArmorIDs.Legs.Sets.OverridesLegs[Item.legSlot] = true;
 		}
 
 		public override void SetDefaults() {
@@ -54,7 +54,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 
-			ArmorIDs.Wing.Sets.Stats[Mod.GetEquipSlot(GetType().Name, EquipType.Wings)] = new WingStats(150);
+			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(150, 7f);
 		}
 
 		public override void SetDefaults() {

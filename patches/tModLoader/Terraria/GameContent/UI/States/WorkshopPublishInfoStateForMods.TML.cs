@@ -87,7 +87,7 @@ namespace Terraria.GameContent.UI.States
 			uIText.PaddingTop = 4f;
 			uIText.IsWrapped = true;
 
-			_disclaimerText = uIText;
+			_tMLDisclaimerText = uIText;
 
 			groupOptionButton.OnClick += TmlDisclaimerText_OnClick;
 			groupOptionButton.OnMouseOver += TmlDisclaimerText_OnMouseOver;
@@ -102,13 +102,13 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private void TmlDisclaimerText_OnMouseOut(UIMouseEvent evt, UIElement listeningElement) {
-			_disclaimerText.TextColor = Color.Cyan;
+			_tMLDisclaimerText.TextColor = Color.Cyan;
 			ClearOptionDescription(evt, listeningElement);
 		}
 
 		private void TmlDisclaimerText_OnMouseOver(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(12);
-			_disclaimerText.TextColor = Color.LightCyan;
+			_tMLDisclaimerText.TextColor = Color.LightCyan;
 			ShowOptionDescription(evt, listeningElement);
 		}
 

@@ -8,7 +8,6 @@ using System.Reflection;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using System.Linq;
@@ -52,7 +51,28 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual Version Version => File.Version;
 
-		public ModProperties Properties { get; protected set; } = ModProperties.AutoLoadAll;
+		/// <summary>
+		/// Whether or not this mod will autoload content by default. Autoloading content means you do not need to manually add content through methods.
+		/// </summary>
+		public bool ContentAutoloadingEnabled { get; init; } = true;
+		/// <summary>
+		/// Whether or not this mod will automatically add images in the Gores folder as gores to the game, along with any ModGore classes that share names with the images. This means you do not need to manually call Mod.AddGore.
+		/// </summary>
+		public bool GoreAutoloadingEnabled { get; init; } = true;
+		/// <summary>
+		/// Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, and Sounds/NPCKilled to add them as npcKilled sounds. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any ModSound classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound.
+		/// </summary>
+		public bool SoundAutoloadingEnabled { get; init; } = true;
+		/// <summary>
+		/// Whether or not this mod will automatically add music in the Sounds folder to the game. Place music tracks in Sounds/Music to autoload them.
+		/// </summary>
+		public bool MusicAutoloadingEnabled { get; init; } = true;
+		/// <summary>
+		/// Whether or not this mod will automatically add images in the Backgrounds folder as background textures to the game. This means you do not need to manually call Mod.AddBackgroundTexture.
+		/// </summary>
+		public bool BackgroundAutoloadingEnabled { get; init; } = true;
+
+
 		/// <summary>
 		/// The ModSide that controls how this mod is synced between client and server.
 		/// </summary>
@@ -115,9 +135,12 @@ namespace Terraria.ModLoader
 		public void AddContent(ILoadable instance){
 			if (!loading)
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
-			instance.Load(this);
-			content.Add(instance);
-			ContentInstance.Register(instance);
+
+			if (instance.IsLoadingEnabled(this)) {
+				instance.Load(this);
+				content.Add(instance);
+				ContentInstance.Register(instance);
+			}
 		}
 
 		public IEnumerable<ILoadable> GetContent() => content;
@@ -297,80 +320,6 @@ namespace Terraria.ModLoader
 		public LegacySoundStyle GetLegacySoundSlot(SoundType type, string name) => SoundLoader.GetLegacySoundSlot(type, Name + '/' + name);
 
 		/// <summary>
-		/// Allows you to tie a music ID, and item ID, and a tile ID together to form a music box. When music with the given ID is playing, equipped music boxes have a chance to change their ID to the given item type. When an item with the given item type is equipped, it will play the music that has musicSlot as its ID. When a tile with the given type and Y-frame is nearby, if its X-frame is >= 36, it will play the music that has musicSlot as its ID.
-		/// </summary>
-		/// <param name="musicSlot">The music slot.</param>
-		/// <param name="itemType">Type of the item.</param>
-		/// <param name="tileType">Type of the tile.</param>
-		/// <param name="tileFrameY">The tile frame y.</param>
-		/// <exception cref="System.ArgumentOutOfRangeException">
-		/// Cannot assign music box to vanilla music ID " + musicSlot
-		/// or
-		/// Music ID " + musicSlot + " does not exist
-		/// or
-		/// Cannot assign music box to vanilla item ID " + itemType
-		/// or
-		/// Item ID " + itemType + " does not exist
-		/// or
-		/// Cannot assign music box to vanilla tile ID " + tileType
-		/// or
-		/// Tile ID " + tileType + " does not exist
-		/// </exception>
-		/// <exception cref="System.ArgumentException">
-		/// Music ID " + musicSlot + " has already been assigned a music box
-		/// or
-		/// Item ID " + itemType + " has already been assigned a music
-		/// or
-		/// or
-		/// Y-frame must be divisible by 36
-		/// </exception>
-		public void AddMusicBox(int musicSlot, int itemType, int tileType, int tileFrameY = 0) {
-			if (!loading)
-				throw new Exception("AddMusicBox can only be called from Mod.Load or Mod.Autoload");
-
-			if (Main.audioSystem == null)
-				return;
-
-			if (musicSlot < Main.maxMusic) {
-				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla music ID " + musicSlot);
-			}
-			if (musicSlot >= SoundLoader.SoundCount(SoundType.Music)) {
-				throw new ArgumentOutOfRangeException("Music ID " + musicSlot + " does not exist");
-			}
-			if (itemType < ItemID.Count) {
-				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla item ID " + itemType);
-			}
-			if (ItemLoader.GetItem(itemType) == null) {
-				throw new ArgumentOutOfRangeException("Item ID " + itemType + " does not exist");
-			}
-			if (tileType < TileID.Count) {
-				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla tile ID " + tileType);
-			}
-			if (TileLoader.GetTile(tileType) == null) {
-				throw new ArgumentOutOfRangeException("Tile ID " + tileType + " does not exist");
-			}
-			if (SoundLoader.musicToItem.ContainsKey(musicSlot)) {
-				throw new ArgumentException("Music ID " + musicSlot + " has already been assigned a music box");
-			}
-			if (SoundLoader.itemToMusic.ContainsKey(itemType)) {
-				throw new ArgumentException("Item ID " + itemType + " has already been assigned a music");
-			}
-			if (!SoundLoader.tileToMusic.ContainsKey(tileType)) {
-				SoundLoader.tileToMusic[tileType] = new Dictionary<int, int>();
-			}
-			if (SoundLoader.tileToMusic[tileType].ContainsKey(tileFrameY)) {
-				string message = "Y-frame " + tileFrameY + " of tile type " + tileType + " has already been assigned a music";
-				throw new ArgumentException(message);
-			}
-			if (tileFrameY % 36 != 0) {
-				throw new ArgumentException("Y-frame must be divisible by 36");
-			}
-			SoundLoader.musicToItem[musicSlot] = itemType;
-			SoundLoader.itemToMusic[itemType] = musicSlot;
-			SoundLoader.tileToMusic[tileType][tileFrameY] = musicSlot;
-		}
-
-		/// <summary>
 		/// Retrieve contents of files within the tmod file
 		/// </summary>
 		/// <param name="name">The name.</param>
@@ -397,26 +346,6 @@ namespace Terraria.ModLoader
 			asset = Assets.Request<T>(assetName);
 			return true;
 		}
-
-		/// <summary>
-		/// Shorthand for calling ModContent.GetMusic(this.FileName(name)).
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		/// <exception cref="MissingResourceException"></exception>
-		public Music GetMusic(string name) {
-			if (!musics.TryGetValue(name, out var music))
-				throw new MissingResourceException(name);
-
-			return music;
-		}
-
-		/// <summary>
-		/// Shorthand for calling ModLoader.MusicExists(this.FileName(name)).
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public bool MusicExists(string name) => musics.ContainsKey(name);
 
 		/// <summary>
 		/// Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.

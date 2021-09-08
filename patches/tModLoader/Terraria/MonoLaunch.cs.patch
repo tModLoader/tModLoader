@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/MonoLaunch.cs
 +++ src/tModLoader/Terraria/MonoLaunch.cs
-@@ -5,7 +_,9 @@
+@@ -5,21 +_,27 @@
  using System.Linq;
  using System.Reflection;
  using System.Runtime.InteropServices;
@@ -10,15 +10,25 @@
  
  internal static class MonoLaunch
  {
-@@ -14,6 +_,7 @@
+ #if NETCORE
+ 	public static readonly object resolverLock = new object();
  #endif
++
++	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
  	
  	private static void Main(string[] args) {
 +		/*
  		// FNA is requested by both Terraria and ReLogic.dll
  		var loaded = new Dictionary<string, Assembly>();
  
-@@ -36,32 +_,41 @@
+ 		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
+ 			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
+ 			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
++			
+ 			if (text == null)
+ 				return null;
+ 
+@@ -36,39 +_,47 @@
  				return assembly;
  			}
  		};
@@ -66,3 +76,10 @@
  			}
  			catch (DirectoryNotFoundException e) {
  				throw new DirectoryNotFoundException("A needed library file was missing from the tModLoader directory. " + e.Message, e);
+ 			}
+ 		}
+ 	}
+-	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
+ 
+ 	private static string getNativeDir(string name) {
+ 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))

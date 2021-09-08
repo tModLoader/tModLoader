@@ -99,7 +99,7 @@ namespace Terraria.ModLoader.Engine
 			}
 
 			// If its clearly a steam install/launch, use Steam API.
-			if (Directory.GetCurrentDirectory().Contains("steamapps") || Program.LaunchParameters.ContainsKey("-steam"))
+			if (Directory.GetCurrentDirectory().Contains("steamapps", StringComparison.OrdinalIgnoreCase) || Program.LaunchParameters.ContainsKey("-steam"))
 				return CheckSteam();
 
 			Logging.tML.Info("Checking if GoG or Steam...");

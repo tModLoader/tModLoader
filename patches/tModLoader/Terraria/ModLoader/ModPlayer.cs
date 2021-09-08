@@ -42,6 +42,8 @@ namespace Terraria.ModLoader
 		public virtual bool CloneNewInstances => true;
 		
 		protected sealed override void Register() {
+			PlayerLoader.VerifyModPlayer(this);
+
 			ModTypeLookup<ModPlayer>.Register(this);
 			PlayerLoader.Add(this);
 		}
@@ -741,7 +743,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the visiblity of layers about to be drawn
+		/// Allows you to modify the visibility of layers about to be drawn
 		/// </summary>
 		/// <param name="layers"></param>
 		public virtual void HideDrawLayers(PlayerDrawSet drawInfo) {

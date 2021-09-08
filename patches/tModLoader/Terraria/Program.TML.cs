@@ -9,7 +9,7 @@ namespace Terraria
 {
 	public static partial class Program
 	{
-		public static string SavePath { get; private set; } // moved from Main to avoid triggering the Main static constructor before logging initializes
+		public static string SavePath { get; private set; } // Moved from Main to avoid triggering the Main static constructor before logging initializes
 
 		private static IEnumerable<MethodInfo> GetAllMethods(Type type) {
 			return type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
