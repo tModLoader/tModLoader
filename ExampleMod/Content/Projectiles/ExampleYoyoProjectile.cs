@@ -9,25 +9,25 @@ namespace ExampleMod.Content.Projectiles
 	{
 		public override void SetStaticDefaults() {
 			// The following sets are only applicable to yoyos that use aiStyle 99.
-			ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = 18f; //The amount of time that the yoyo can be held out, in seconds.
-		    //Vanilla values range from 3f(Wood) to 16f(Chik), and defaults to -1f. Leaving it as -1 will make the time infinite.
+			ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = 18f; // The amount of time that the yoyo can be held out, in seconds.
+		    // Vanilla values range from 3f(Wood) to 16f(Chik), and defaults to -1f. Leaving it as -1 will make the time infinite.
 																			  
-			ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 300f; //The maximum distance the yoyo sleep away from the player.
+			ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 300f; // The maximum distance the yoyo sleep away from the player.
 			// Vanilla values range from 130f(Wood) to 400f(Terrarian), and defaults to 200f.
 																		
-			ProjectileID.Sets.YoyosTopSpeed[Projectile.type] = 17f; //The top speed of the yoyo.
+			ProjectileID.Sets.YoyosTopSpeed[Projectile.type] = 17f; // The top speed of the yoyo.
 			// Vanilla values range from 9f(Wood) to 17.5f(Terrarian), and defaults to 10f.
 		}
 
 		public override void SetDefaults() {
-			Projectile.width = 16; //The width of the projectile's hitbox.
-			Projectile.height = 16; //The height of the projectile's hitbox.
+			Projectile.width = 16; // The width of the projectile's hitbox.
+			Projectile.height = 16; // The height of the projectile's hitbox.
 
-			Projectile.aiStyle = 99; //The projectile's ai style. Yoyos use aiStyle 99.
+			Projectile.aiStyle = 99; // The projectile's ai style. Yoyos use aiStyle 99.
 
-			Projectile.friendly = true; //Makes the projectile deal damage to enemies.
-			Projectile.DamageType = DamageClass.Melee; //Sets the item's damage type to melee.
-			Projectile.penetrate = -1; //The amount of enemies the projectile can hit before disappearing. Setting it to -1 makes it infinite.
+			Projectile.friendly = true; // Makes the projectile deal damage to enemies.
+			Projectile.DamageType = DamageClass.Melee; // Sets the item's damage type to melee.
+			Projectile.penetrate = -1; // The amount of enemies the projectile can hit before disappearing. Setting it to -1 makes it infinite.
 		}
 
 		// notes for aiStyle 99: 
@@ -40,7 +40,7 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void PostAI() {
 			if (Main.rand.NextBool(5)) {
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<Sparkle>()); //Makes the projectile emit dust.
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<Sparkle>()); // Makes the projectile emit dust.
 			}
 		}
 	}
