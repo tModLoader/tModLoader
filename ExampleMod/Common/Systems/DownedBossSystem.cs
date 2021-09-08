@@ -28,24 +28,18 @@ namespace ExampleMod.Common.Systems
 		}
 
 		public override void SaveWorldData(TagCompound tag) {
-			var downed = new List<string>();
-
 			if (downedMinionBoss) {
-				downed.Add("downedMinionBoss");
+				tag["downedMinionBoss"] = true;
 			}
 
 			// if (downedOtherBoss) {
-			//	downed.Add("downedOtherBoss");
+			//	tag["downedOtherBoss"] = true;
 			// }
-
-			tag["downed"] = downed;
 		}
 
 		public override void LoadWorldData(TagCompound tag) {
-			var downed = tag.GetList<string>("downed");
-
-			downedMinionBoss = downed.Contains("downedMinionBoss");
-			// downedOtherBoss = downed.Contains("downedOtherBoss");
+			downedMinionBoss = tag.ContainsKey("downedMinionBoss");
+			// downedOtherBoss = tag.ContainsKey("downedOtherBoss");
 		}
 
 		public override void NetSend(BinaryWriter writer) {
