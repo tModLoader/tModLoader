@@ -669,16 +669,20 @@ namespace Terraria.ModLoader.Core
 			var refPaths = refs.Select(entry => entry.Value.Value).ToArray();
 			var results = RoslynCompile(mod.Name, outputPath, refPaths, files, preprocessorSymbols.ToArray(), mod.properties.includePDB, allowUnsafe);
 
-			int numWarnings = results.Cast<CompilerError>().Count(e => e.IsWarning);
+			int numWarnings = 0;
+			foreach (var e in results)
+				if (e.IsWarning)
+					numWarnings++;
+
 			int numErrors = results.Count - numWarnings;
+
 			status.LogCompilerLine(Language.GetTextValue("tModLoader.CompilationResult", numErrors, numWarnings), Level.Info);
-			foreach (CompilerError line in results)
+			foreach (var line in results)
 				status.LogCompilerLine(line.ToString(), line.IsWarning ? Level.Warn : Level.Error);
 
-			if (results.HasErrors) {
-				var firstError = results.Cast<CompilerError>().First(e => !e.IsWarning);
-				throw new BuildException(Language.GetTextValue("tModLoader.CompileError", Path.GetFileName(outputPath), numErrors, numWarnings) + $"\nError: {firstError}");
-			}
+			foreach (var e in results)
+				if (!e.IsWarning)
+					throw new BuildException(Language.GetTextValue("tModLoader.CompileError", Path.GetFileName(outputPath), numErrors, numWarnings) + $"\nError: {e}");
 		}
 
 		private string DllRefPath(BuildingMod mod, string dllName, bool? xna)
@@ -787,9 +791,9 @@ namespace Terraria.ModLoader.Core
 		/// <summary>
 		/// Invoke the Roslyn compiler via reflection to avoid a .NET 4.6 dependency
 		/// </summary>
-		private static CompilerErrorCollection RoslynCompile(string name, string outputPath, string[] references, string[] files, string[] preprocessorSymbols, bool includePdb, bool allowUnsafe)
+		private static dynamic RoslynCompile(string name, string outputPath, string[] references, string[] files, string[] preprocessorSymbols, bool includePdb, bool allowUnsafe)
 		{
-			return (CompilerErrorCollection)RoslynWrapper.GetMethod("Compile")
+			return RoslynWrapper.GetMethod("Compile")
 				.Invoke(null, new object[] { name, outputPath, references, files, preprocessorSymbols, includePdb, allowUnsafe });
 		}
 

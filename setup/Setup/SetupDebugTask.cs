@@ -29,12 +29,23 @@ namespace Terraria.ModLoader.Setup
 				null, null, null, taskInterface.CancellationToken
 			) != 0;
 
-			var roslynRefs = new[] {"RoslynWrapper.dll", "Microsoft.CodeAnalysis.dll", "Microsoft.CodeAnalysis.CSharp.dll",
-				"System.Collections.Immutable.dll", "System.Reflection.Metadata.dll", "System.IO.FileSystem.dll", "System.IO.FileSystem.Primitives.dll",
-				"System.Security.Cryptography.Algorithms.dll", "System.Security.Cryptography.Encoding.dll", "System.Security.Cryptography.Primitives.dll", "System.Security.Cryptography.X509Certificates.dll" };
+			string[] roslynRefs = {
+				"RoslynWrapper.dll",
+				"Microsoft.CodeAnalysis.dll",
+				"Microsoft.CodeAnalysis.CSharp.dll",
+				"System.Buffers.dll",
+				"System.CodeDom.dll",
+				"System.Collections.Immutable.dll",
+				"System.Memory.dll",
+				"System.Numerics.Vectors.dll",
+				"System.Reflection.Metadata.dll",
+				"System.Runtime.CompilerServices.Unsafe.dll",
+				"System.Text.Encoding.CodePages.dll",
+				"System.Threading.Tasks.Extensions.dll"
+			};
 
 			foreach (var dll in roslynRefs)
-				Copy(Path.Combine("RoslynWrapper/bin/Release/net46", dll), Path.Combine(modCompile, dll));
+				Copy(Path.Combine("RoslynWrapper/bin/Release/netstandard2.0", dll), Path.Combine(modCompile, dll));
 
 
 			taskInterface.SetStatus("Compiling tModLoader.FNA.exe");

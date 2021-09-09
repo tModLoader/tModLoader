@@ -21,7 +21,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -40,13 +_,15 @@
+@@ -40,13 +_,16 @@
    </PropertyGroup>
    <PropertyGroup>
      <PdbFile>bin\$(OutputName)</PdbFile>
@@ -36,6 +36,7 @@
 +    <Reference Include="Ionic.Zip.Reduced">
 +      <HintPath>..\..\references\Ionic.Zip.Reduced.dll</HintPath>
 +    </Reference>
++    <Reference Include="Microsoft.CSharp" />
      <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))">
        <Private>true</Private>
      </Reference>

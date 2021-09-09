@@ -234,7 +234,7 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
     <AssemblyName>{modNameTrimmed}</AssemblyName>
     <TargetFramework>net45</TargetFramework>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <Target Name=""BuildMod"" AfterTargets=""Build"">
     <Exec Command=""&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks)"" />
@@ -248,8 +248,6 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 		internal bool CsprojUpdateNeeded(string fileContents)
 		{
 			if (!fileContents.Contains("tModLoader.targets"))
-				return true;
-			if (fileContents.Contains("<LangVersion>latest</LangVersion>"))
 				return true;
 			if (!fileContents.Contains(@"<PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />"))
 				return true;
