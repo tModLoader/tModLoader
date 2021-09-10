@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Audio/SoundStyle.cs
 +++ src/tModLoader/Terraria/Audio/SoundStyle.cs
-@@ -1,18 +_,25 @@
+@@ -1,38 +_,45 @@
 +using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Audio;
  using Terraria.Utilities;
@@ -29,14 +29,13 @@
  
  		public SoundType Type => _type;
  
-@@ -20,19 +_,23 @@
- 			get;
- 		}
- 
--		public SoundStyle(float volume, float pitchVariance, SoundType type = SoundType.Sound) {
+-		public abstract bool IsTrackable {
+-			get;
+-		}
 +		public SoundStyle(float volume, float pitch, float pitchVariance, SoundType type = SoundType.Sound) {
 +			Pitch = pitch;
-+
+ 
+-		public SoundStyle(float volume, float pitchVariance, SoundType type = SoundType.Sound) {
  			_volume = volume;
  			_pitchVariance = pitchVariance;
  			_type = type;

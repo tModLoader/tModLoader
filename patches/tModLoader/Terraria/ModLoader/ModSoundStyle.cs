@@ -12,8 +12,6 @@ namespace Terraria.ModLoader
 		private Asset<SoundEffect>[] variants;
 		private Asset<SoundEffect> effect;
 
-		public override bool IsTrackable => true;
-
 		public ModSoundStyle(string soundPath, int variations = 0, SoundType type = SoundType.Sound, float volume = 1.0f, float pitch = 0f, float pitchVariance = 0f) : base(volume, pitch, pitchVariance, type) {
 			SoundPath = soundPath;
 			Variations = variations;

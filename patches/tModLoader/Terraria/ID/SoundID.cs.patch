@@ -9,16 +9,46 @@
  		{
  			public readonly float PitchVariance;
  			public readonly float Volume;
-@@ -209,6 +_,7 @@
+@@ -87,6 +_,7 @@
+ 		public const int Research = 63;
+ 		public const int ResearchComplete = 64;
+ 		public const int QueenSlime = 65;
++		public const int Count = 66; // Keep this updated if Terraria rises from the dead again.
+ 		public static readonly LegacySoundStyle NPCHit1 = new LegacySoundStyle(3, 1);
+ 		public static readonly LegacySoundStyle NPCHit2 = new LegacySoundStyle(3, 2);
+ 		public static readonly LegacySoundStyle NPCHit3 = new LegacySoundStyle(3, 3);
+@@ -144,6 +_,7 @@
+ 		public static readonly LegacySoundStyle NPCHit55 = new LegacySoundStyle(3, 55);
+ 		public static readonly LegacySoundStyle NPCHit56 = new LegacySoundStyle(3, 56);
+ 		public static readonly LegacySoundStyle NPCHit57 = new LegacySoundStyle(3, 57);
++		public static int NPCHitCount = 58; //Added by tML
+ 		public static readonly LegacySoundStyle NPCDeath1 = new LegacySoundStyle(4, 1);
+ 		public static readonly LegacySoundStyle NPCDeath2 = new LegacySoundStyle(4, 2);
+ 		public static readonly LegacySoundStyle NPCDeath3 = new LegacySoundStyle(4, 3);
+@@ -209,7 +_,7 @@
  		public static readonly LegacySoundStyle NPCDeath63 = new LegacySoundStyle(4, 63);
  		public static readonly LegacySoundStyle NPCDeath64 = new LegacySoundStyle(4, 64);
  		public static readonly LegacySoundStyle NPCDeath65 = new LegacySoundStyle(4, 65);
-+		public static short NPCHitCount = 58; //Added by tML
- 		public static short NPCDeathCount = 66;
+-		public static short NPCDeathCount = 66;
++		public static int NPCDeathCount = 66; //Added by tML
  		public static readonly LegacySoundStyle Item1 = new LegacySoundStyle(2, 1);
  		public static readonly LegacySoundStyle Item2 = new LegacySoundStyle(2, 2);
-@@ -483,11 +_,11 @@
- 		public static int TrackableLegacySoundCount => _trackableLegacySoundPathList.Count;
+ 		public static readonly LegacySoundStyle Item3 = new LegacySoundStyle(2, 3);
+@@ -382,7 +_,7 @@
+ 		public static readonly LegacySoundStyle Item170 = new LegacySoundStyle(2, 170);
+ 		public static readonly LegacySoundStyle Item171 = new LegacySoundStyle(2, 171);
+ 		public static readonly LegacySoundStyle Item172 = new LegacySoundStyle(2, 172);
+-		public static short ItemSoundCount = 173;
++		public static int ItemSoundCount = 173; // Added by TML.
+ 		public static readonly LegacySoundStyle DD2_GoblinBomb = new LegacySoundStyle(2, 14).WithVolume(0.5f);
+ 		public static readonly LegacySoundStyle AchievementComplete = CreateTrackable("achievement_complete");
+ 		public static readonly LegacySoundStyle BlizzardInsideBuildingLoop = CreateTrackable("blizzard_inside_building_loop", SoundType.Ambient);
+@@ -480,14 +_,14 @@
+ 		public static Dictionary<string, ushort> IndexByName = null;
+ 		public static Dictionary<ushort, LegacySoundStyle> SoundByIndex = null;
+ 
+-		public static int TrackableLegacySoundCount => _trackableLegacySoundPathList.Count;
++		//public static int TrackableLegacySoundCount => _trackableLegacySoundPathList.Count;
  
  		public static string GetTrackableLegacySoundPath(int id) => _trackableLegacySoundPathList[id];
 -		private static LegacySoundStyle CreateTrackable(string name, SoundStyleDefaults defaults) => CreateTrackable(name, 1, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);

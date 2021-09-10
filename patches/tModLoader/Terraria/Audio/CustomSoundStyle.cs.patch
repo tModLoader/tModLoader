@@ -1,9 +1,11 @@
 --- src/Terraria/Terraria/Audio/CustomSoundStyle.cs
 +++ src/tModLoader/Terraria/Audio/CustomSoundStyle.cs
-@@ -10,15 +_,15 @@
+@@ -8,17 +_,15 @@
+ 		private static readonly UnifiedRandom Random = new UnifiedRandom();
+ 		private readonly SoundEffect[] _soundEffects;
  
- 		public override bool IsTrackable => true;
- 
+-		public override bool IsTrackable => true;
+-
 -		public CustomSoundStyle(SoundEffect soundEffect, SoundType type = SoundType.Sound, float volume = 1f, float pitchVariance = 0f)
 +		public CustomSoundStyle(SoundEffect soundEffect, SoundType type = SoundType.Sound, float volume = 1f, float pitch = 0f, float pitchVariance = 0f)
 -			: base(volume, pitchVariance, type) {

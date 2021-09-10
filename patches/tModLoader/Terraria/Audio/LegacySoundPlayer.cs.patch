@@ -1,5 +1,13 @@
 --- src/Terraria/Terraria/Audio/LegacySoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/LegacySoundPlayer.cs
+@@ -5,6 +_,7 @@
+ using System;
+ using System.Collections.Generic;
+ using System.IO;
++using System.Linq;
+ using Terraria.ID;
+ 
+ namespace Terraria.Audio
 @@ -41,8 +_,8 @@
  		public SoundEffectInstance SoundInstancePixie;
  		public Asset<SoundEffect>[] SoundItem = new Asset<SoundEffect>[SoundID.ItemSoundCount];
@@ -11,3 +19,112 @@
  		public Asset<SoundEffect>[] SoundNpcKilled = new Asset<SoundEffect>[SoundID.NPCDeathCount];
  		public SoundEffectInstance[] SoundInstanceNpcKilled = new SoundEffectInstance[SoundID.NPCDeathCount];
  		public SoundEffectInstance SoundInstanceMoonlordCry;
+@@ -172,8 +_,9 @@
+ 				SoundNpcKilled[num2] = Load("Sounds/NPC_Killed_" + num2);
+ 			}
+ 
+-			TrackableSounds = new Asset<SoundEffect>[SoundID.TrackableLegacySoundCount];
++			TrackableSounds = new Asset<SoundEffect>[SoundID.Count];
+ 			TrackableSoundInstances = new SoundEffectInstance[TrackableSounds.Length];
++
+ 			for (int num3 = 0; num3 < TrackableSounds.Length; num3++) {
+ 				TrackableSounds[num3] = Load("Sounds/Custom" + Path.DirectorySeparatorChar + SoundID.GetTrackableLegacySoundPath(num3));
+ 			}
+@@ -185,6 +_,8 @@
+ 			}
+ 
+ 			_trackedInstances.Clear();
++
++			/*
+ 			SoundInstanceMech[0] = CreateInstance(SoundMech[0]);
+ 			SoundInstanceGrab = CreateInstance(SoundGrab);
+ 			SoundInstancePixie = CreateInstance(SoundGrab);
+@@ -262,6 +_,7 @@
+ 			for (int num5 = 0; num5 < TrackableSounds.Length; num5++) {
+ 				TrackableSoundInstances[num5] = CreateInstance(TrackableSounds[num5]);
+ 			}
++			*/
+ 		}
+ 
+ 		private SoundEffectInstance CreateInstance(Asset<SoundEffect> asset) {
+@@ -1058,7 +_,79 @@
+ 			return null;
+ 		}
+ 
+-		public SoundEffect GetTrackableSoundByStyleId(int id) => TrackableSounds[id].Value;
++		public SoundEffect GetTrackableSoundByStyleId(int soundId, int style) {
++			Asset<SoundEffect> asset = soundId switch {
++				SoundID.Dig => SoundDig[style],
++				SoundID.PlayerHit => SoundPlayerHit[style],
++				SoundID.Item => SoundItem[style],
++				SoundID.NPCHit => SoundNpcHit[style],
++				SoundID.NPCKilled => SoundNpcKilled[style],
++				SoundID.PlayerKilled => SoundPlayerKilled,
++				SoundID.Grass => SoundGrass,
++				SoundID.Grab => SoundGrab,
++				SoundID.DoorOpen => SoundDoorOpen,
++				SoundID.DoorClosed => SoundDoorClosed,
++				SoundID.MenuOpen => SoundMenuOpen,
++				SoundID.MenuClose => SoundMenuClose,
++				SoundID.MenuTick => SoundMenuTick,
++				SoundID.Shatter => SoundShatter,
++				SoundID.ZombieMoan => SoundZombie[style],
++				SoundID.Roar => SoundRoar[style],
++				SoundID.DoubleJump => SoundDoubleJump,
++				SoundID.Run => SoundRun,
++				SoundID.Coins => SoundCoins,
++				SoundID.Splash => SoundSplash[style],
++				SoundID.FemaleHit => SoundFemaleHit[style],
++				SoundID.Tink => SoundTink[style],
++				SoundID.Unlock => SoundUnlock,
++				SoundID.Drown => SoundDrown,
++				SoundID.Chat => SoundChat,
++				SoundID.MaxMana => SoundMaxMana,
++				SoundID.Mummy => SoundZombie[Main.rand.Next(3, 5)],
++				SoundID.Pixie => SoundPixie,
++				SoundID.Mech => SoundMech[style],
++				SoundID.Zombie => SoundZombie[style],
++				SoundID.Duck => SoundZombie[Main.rand.Next(10, 12)],
++				SoundID.Frog => SoundZombie[13],
++				SoundID.Bird => SoundZombie[style],
++				SoundID.Critter => SoundZombie[15],
++				SoundID.Waterfall => SoundLiquid[0],
++				SoundID.Lavafall => SoundLiquid[1],
++				SoundID.ForceRoar => SoundRoar[style],
++				SoundID.Meowmere => SoundItem[Main.rand.Next(57, 59)],
++				SoundID.CoinPickup => SoundCoin[Main.rand.Next(5)],
++				SoundID.Drip => SoundDrip[style],
++				SoundID.Camera => SoundCamera,
++				SoundID.MoonLord => SoundNpcKilled[10],
++				SoundID.Trackable => TrackableSounds[style],
++				SoundID.Thunder => SoundThunder[style],
++				SoundID.Seagull => SoundZombie[Main.rand.Next(106, 109)],
++				SoundID.Dolphin => SoundZombie[109],
++				SoundID.Owl => SoundZombie[Main.rand.Next(110, 112)],
++				SoundID.GuitarC => SoundItem[133],
++				SoundID.GuitarD => SoundItem[134],
++				SoundID.GuitarEm => SoundItem[135],
++				SoundID.GuitarG => SoundItem[136],
++				SoundID.GuitarAm => SoundItem[137],
++				SoundID.GuitarF => SoundItem[138],
++				SoundID.DrumHiHat => SoundItem[139],
++				SoundID.DrumTomHigh => SoundItem[140],
++				SoundID.DrumTomLow => SoundItem[141],
++				SoundID.DrumTomMid => SoundItem[142],
++				SoundID.DrumClosedHiHat => SoundItem[143],
++				SoundID.DrumCymbal1 => SoundItem[144],
++				SoundID.DrumCymbal2 => SoundItem[145],
++				SoundID.DrumKick => SoundItem[146],
++				SoundID.DrumTamaSnare => SoundItem[147],
++				SoundID.DrumFloorTom => SoundItem[148],
++				SoundID.Research => SoundResearch[Main.rand.Next(1, 4)],
++				SoundID.ResearchComplete => SoundResearch[0],
++				SoundID.QueenSlime => SoundZombie[Main.rand.Next(115, 118)],
++				_ => null
++			};
++
++			return asset.Value;
++		}
+ 
+ 		public void StopAmbientSounds() {
+ 			for (int i = 0; i < SoundInstanceLiquid.Length; i++) {

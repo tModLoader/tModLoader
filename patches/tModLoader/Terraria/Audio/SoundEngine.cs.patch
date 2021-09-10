@@ -1,5 +1,14 @@
 --- src/Terraria/Terraria/Audio/SoundEngine.cs
 +++ src/tModLoader/Terraria/Audio/SoundEngine.cs
+@@ -6,7 +_,7 @@
+ 
+ namespace Terraria.Audio
+ {
+-	public static class SoundEngine
++	public static partial class SoundEngine
+ 	{
+ 		public static readonly object AudioLock = new object();
+ 		public static LegacySoundPlayer LegacySoundPlayer;
 @@ -20,6 +_,8 @@
  
  		public static void Initialize() {
@@ -29,6 +38,24 @@
  		}
  
  		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
+@@ -123,14 +_,14 @@
+ 				SoundPlayer.StopAll();
+ 		}
+ 
+-		public static SoundEffect GetTrackableSoundByStyleId(int id) {
++		public static SoundEffect GetTrackableSoundByStyleId(int soundId, int style) {
+-			if(Main.dedServ)
++			if (Main.dedServ)
+ 				return null;
+ 
+ 			if (!IsAudioSupported)
+ 				return null;
+ 
+-			return LegacySoundPlayer.GetTrackableSoundByStyleId(id);
++			return LegacySoundPlayer.GetTrackableSoundByStyleId(soundId, style);
+ 		}
+ 
+ 		public static void StopAmbientSounds() {
 @@ -324,7 +_,7 @@
  				}
  			}

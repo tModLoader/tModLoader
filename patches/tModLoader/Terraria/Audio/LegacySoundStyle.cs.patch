@@ -9,6 +9,15 @@
  	{
  		private static readonly UnifiedRandom Random = new UnifiedRandom();
  		private readonly int _style;
+@@ -19,8 +_,6 @@
+ 			}
+ 		}
+ 
+-		public override bool IsTrackable => SoundId == 42;
+-
+ 		public LegacySoundStyle(int soundId, int style, SoundType type = SoundType.Sound)
+ 			: base(type) {
+ 			_style = style;
 @@ -35,18 +_,18 @@
  			SoundId = soundId;
  		}
@@ -35,3 +44,15 @@
  
  		public bool Includes(int soundId, int style) {
  			if (SoundId == soundId && style >= _style)
+@@ -56,10 +_,7 @@
+ 		}
+ 
+ 		public override SoundEffect GetRandomSound() {
+-			if (IsTrackable)
+-				return SoundEngine.GetTrackableSoundByStyleId(Style);
+-
+-			return null;
++			return SoundEngine.GetTrackableSoundByStyleId(SoundId, Style);
+ 		}
+ 	}
+ }
