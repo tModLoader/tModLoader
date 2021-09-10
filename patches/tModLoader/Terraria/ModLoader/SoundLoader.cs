@@ -16,7 +16,9 @@ namespace Terraria.ModLoader
 
 			// Do some preloading here to avoid stuttering when playing a sound ingame
 			foreach (string path in mod.RootContentSource.EnumerateAssets().Where(s => s.StartsWith($"{SoundsFolder}/") || s.Contains($"/{SoundsFolder}/"))) {
-				mod.Assets.Request<SoundEffect>(path, AssetRequestMode.AsyncLoad);
+				string soundPath = Path.ChangeExtension(path, null);
+
+				mod.Assets.Request<SoundEffect>(soundPath, AssetRequestMode.AsyncLoad);
 			}
 		}
 
