@@ -5,6 +5,10 @@
 :: Read param for target
 set target=%~1
 
+:: Cleanout Nuget install
+echo cleaning old NuGet cache.
+dotnet nuget locals all -c
+
 :: Compile/Build dll 
 echo "Building %target%"
 set tModLoaderVersion=v0.11.9.0
