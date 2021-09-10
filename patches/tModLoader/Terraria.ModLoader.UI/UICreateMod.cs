@@ -249,6 +249,8 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 		{
 			if (!fileContents.Contains("tModLoader.targets"))
 				return true;
+			if (!fileContents.Contains("<LangVersion>latest</LangVersion>"))
+				return true;
 			if (!fileContents.Contains(@"<PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />"))
 				return true;
 			if (!fileContents.Contains(@"-define &quot;$(DefineConstants)&quot;") && !ReLogic.OS.Platform.IsWindows)
