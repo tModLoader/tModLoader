@@ -3,6 +3,7 @@
 echo Cleaning up output folders...
 
 dotnet clean tModLoader.sln -c Release --nologo -v q
+dotnet nuget locals all -c
 
 echo.
 echo Building Release (1/1)
