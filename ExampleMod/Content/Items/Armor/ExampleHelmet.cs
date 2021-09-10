@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 
 namespace ExampleMod.Content.Items.Armor
 {
@@ -11,6 +12,8 @@ namespace ExampleMod.Content.Items.Armor
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded helmet.");
+
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
 		}
 
 		public override void SetDefaults() {

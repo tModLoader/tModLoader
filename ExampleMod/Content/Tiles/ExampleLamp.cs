@@ -136,17 +136,19 @@ namespace ExampleMod.Content.Tiles
 			int width = 16;
 			int offsetY = 0;
 			int height = 16;
+			short frameX = tile.frameX;
+			short frameY = tile.frameY;
 
-			TileLoader.SetDrawPositions(i, j, ref width, ref offsetY, ref height);
+			TileLoader.SetDrawPositions(i, j, ref width, ref offsetY, ref height, ref frameX, ref frameY);
 
-			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); //Don't remove any casts.
+			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); // Don't remove any casts.
 
 			// We can support different flames for different styles here: int style = Main.tile[j, i].frameY / 54;
 			for (int c = 0; c < 7; c++) {
 				float shakeX = Utils.RandomInt(ref randSeed, -10, 11) * 0.15f;
 				float shakeY = Utils.RandomInt(ref randSeed, -10, 1) * 0.35f;
 
-				spriteBatch.Draw(flameTexture.Value, new Vector2(i * 16 - (int)Main.screenPosition.X - (width - 16f) / 2f + shakeX, j * 16 - (int)Main.screenPosition.Y + offsetY + shakeY) + zero, new Rectangle(tile.frameX, tile.frameY, width, height), new Color(100, 100, 100, 0), 0f, default, 1f, effects, 0f);
+				spriteBatch.Draw(flameTexture.Value, new Vector2(i * 16 - (int)Main.screenPosition.X - (width - 16f) / 2f + shakeX, j * 16 - (int)Main.screenPosition.Y + offsetY + shakeY) + zero, new Rectangle(frameX, frameY, width, height), new Color(100, 100, 100, 0), 0f, default, 1f, effects, 0f);
 			}
 		}
 	}

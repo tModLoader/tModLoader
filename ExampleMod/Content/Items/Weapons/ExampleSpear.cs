@@ -1,6 +1,7 @@
 ﻿using ExampleMod.Content.Projectiles;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -12,6 +13,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Tooltip.SetDefault("This is a modded spear");
 
 			ItemID.Sets.SkipsInitialUseSound[Item.type] = true; // This skips use animation-tied sound playback, so that we're able to make it be tied to use time instead in the UseItem() hook.
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
@@ -35,7 +37,7 @@ namespace ExampleMod.Content.Items.Weapons
 
 			// Projectile Properties
 			Item.shootSpeed = 3.7f; // The speed of the projectile measured in pixels per frame.
-			Item.shoot = ModContent.ProjectileType<ExampleSpearProjectile>(); //The projectile that is fired from this weapon
+			Item.shoot = ModContent.ProjectileType<ExampleSpearProjectile>(); // The projectile that is fired from this weapon
 		}
 
 		public override bool CanUseItem(Player player) {

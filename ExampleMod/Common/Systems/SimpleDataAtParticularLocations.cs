@@ -19,10 +19,11 @@ using Terraria.ModLoader.IO;
 ///	Clustering data to achieve sparsity:
 ///		If your application has multiple repeat static data in a row, you should elect to use Clustered mode in the builder to compress it. Note that you should NOT use PosData.LookupExact in this case.
 
-//Future TODO: Improve documentation.
+
+// Future TODO: Improve documentation.
 namespace ExampleMod.Common.Systems
 {
-	//Saving and loading requires TagCompounds, a guide exists on the wiki: https://github.com/tModLoader/tModLoader/wiki/Saving-and-loading-using-TagCompound
+	// Saving and loading requires TagCompounds, a guide exists on the wiki: https://github.com/tModLoader/tModLoader/wiki/Saving-and-loading-using-TagCompound
 	public class SimpleDataAtParticularLocations : ModSystem
 	{
 		// Create our map. Uses generics for whatever type you want of the data to store.
