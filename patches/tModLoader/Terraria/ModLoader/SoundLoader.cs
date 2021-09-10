@@ -12,8 +12,10 @@ namespace Terraria.ModLoader
 	public static class SoundLoader
 	{
 		internal static void AutoloadSounds(Mod mod) {
-			// do some preloading here to avoid stuttering when playing a sound ingame
-			foreach (string path in mod.RootContentSource.EnumerateAssets().Where(s => s.Contains("Sounds" + Path.DirectorySeparatorChar))) {
+			const string SoundsFolder = "Sounds";
+
+			// Do some preloading here to avoid stuttering when playing a sound ingame
+			foreach (string path in mod.RootContentSource.EnumerateAssets().Where(s => s.StartsWith($"{SoundsFolder}/") || s.Contains($"/{SoundsFolder}/"))) {
 				mod.Assets.Request<SoundEffect>(path, AssetRequestMode.AsyncLoad);
 			}
 		}
