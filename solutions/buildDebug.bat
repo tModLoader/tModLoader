@@ -1,5 +1,7 @@
 @echo off
 
+echo Cleaning up output folders...
+
 dotnet clean tModLoader.sln -c Debug --nologo -v q
 
 echo Building Debug (1/1)

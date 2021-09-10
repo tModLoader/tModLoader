@@ -5,6 +5,10 @@
 :: Read param for target
 set target=%~1
 
+:: Cleanout Nuget install
+echo cleaning old NuGet cache.
+dotnet nuget locals all -c
+
 :: Compile/Build dll 
 echo "Building %target%"
 set tModLoaderVersion=v0.11.9.0
@@ -30,7 +34,6 @@ mkdir "%shared%"
 
 :: Generic release
 robocopy /S ..\src\tModLoader\Terraria\bin\%target%\net5.0 "%shared%"
-rmdir /S /Q "%shared%\ref"
 
 If "%2"=="skipzip" (
 	echo Skipping zipping.
