@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.value = Item.sellPrice(0, 0, 0, 10);
 
 			Item.shoot = ModContent.ProjectileType<ExampleShortswordProjectile>(); // The projectile is what makes a shortsword work
-			Item.shootSpeed = 2.1f; //This value bleeds into the behavior of the projectile as velocity, keep that in mind when tweaking values
+			Item.shootSpeed = 2.1f; // This value bleeds into the behavior of the projectile as velocity, keep that in mind when tweaking values
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
