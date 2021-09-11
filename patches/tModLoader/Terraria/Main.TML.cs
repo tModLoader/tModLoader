@@ -104,5 +104,19 @@ namespace Terraria
 					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition - Vector2.One * 2f, null, OurFavoriteColor, 0f, default, 1f, SpriteEffects.None, 0f);
 			}
 		}
+
+		//Mirrors code used in UpdateTime
+		/// <summary>
+		/// Syncs rain state if <see cref="StartRain"/> or <see cref="StopRain"/> were called in the same tick and caused a change to <seealso cref="maxRaining"/>.
+		/// <br>Can be called on any side, but only the server will actually sync it.</br>
+		/// </summary>
+		public static void SyncRain() {
+			if (maxRaining != oldMaxRaining) {
+				if (netMode == 2)
+					NetMessage.SendData(7);
+
+				oldMaxRaining = maxRaining;
+			}
+		}
 	}
 }
