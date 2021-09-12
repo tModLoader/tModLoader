@@ -106,20 +106,20 @@ jobs:
           echo pwd is: ${PWD}
           echo ls -l is:
           ls -l
-          echo Running CompleteLib.bat for Debug
-          ./CompleteLib.bat Debug skipzip
-          echo CompleteLib.bat Debug Done
-          cd ..
-          mkdir -p artifacts/Debug
-          cp -R ./solutions/Debug/Shared/. ./artifacts/Debug/
-          cd solutions
-          echo pwd is: ${PWD}
           echo Running CompleteLib.bat for Release
           ./CompleteLib.bat Release skipzip
           echo CompleteLib.bat Release Done
           cd ..
           mkdir -p artifacts/Release
           cp -R ./solutions/Release/Shared/. ./artifacts/Release/
+          cd solutions
+          echo pwd is: ${PWD}
+          echo Running CompleteLib.bat for Debug
+          ./CompleteLib.bat Debug skipzip
+          echo CompleteLib.bat Debug Done
+          cd ..
+          mkdir -p artifacts/Debug
+          cp -R ./solutions/Debug/Shared/. ./artifacts/Debug/
           echo Creating decompiled cache zip file
           7z a decompiled.zip ./src/decompiled/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
