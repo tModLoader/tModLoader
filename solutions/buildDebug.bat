@@ -16,14 +16,14 @@ echo Building Debug (1/1)
 
 dotnet build tModLoader.sln %BUILD_ARGS% -c Debug --nologo -v q /clp:ErrorsOnly
 
-@IF NOT "%UPLOAD_MSBUILD_LOGS%"=="" (
-	echo Uploading msbuild log...
-	curl --upload-file ./msbuild.binlog http://transfer.sh/msbuild.binlog
-	echo.
-	echo Uploaded!
-)
-
 @IF %ERRORLEVEL% NEQ 0 (
+	@IF NOT "%UPLOAD_MSBUILD_LOGS%"=="" (
+		echo Uploading msbuild log...
+		curl --upload-file ./msbuild.binlog http://transfer.sh/msbuild.binlog
+		echo.
+		echo Uploaded!
+	)
+
 	pause
 	EXIT /B %ERRORLEVEL%
 )
