@@ -114,6 +114,7 @@ jobs:
           cp -R ./solutions/Release/Shared/. ./artifacts/Release/
           cd solutions
           echo pwd is: ${PWD}
+          export UPLOAD_MSBUILD_LOGS=1
           echo Running CompleteLib.bat for Debug
           ./CompleteLib.bat Debug skipzip
           echo CompleteLib.bat Debug Done
