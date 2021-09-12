@@ -403,6 +403,7 @@ namespace Terraria.ModLoader
 			RecipeGroupHelper.ResetRecipeGroups();
 			RecipeLoader.setupRecipes = true;
 			Recipe.SetupRecipes();
+			ContentSamples.FixItemsAfterRecipesAreAdded();
 			RecipeLoader.setupRecipes = false;
 		}
 
