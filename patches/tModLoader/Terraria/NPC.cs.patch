@@ -35,9 +35,9 @@
  		public bool coldDamage;
  		public bool trapImmune;
 -		public LegacySoundStyle HitSound;
-+		public SoundStyle HitSound;
++		public ISoundStyle HitSound;
 -		public LegacySoundStyle DeathSound;
-+		public SoundStyle DeathSound;
++		public ISoundStyle DeathSound;
  		public int life;
  		public int lifeMax;
  		public Rectangle targetRect;
@@ -411,6 +411,15 @@
  									for (int k = 0; k < num38; k++) {
  										Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  										obj.velocity.Y -= 3f + (float)num37 * 1.5f;
+@@ -43416,7 +_,7 @@
+ 			bool flag21 = false;
+ 			bool flag22 = false;
+ 			bool flag23 = false;
+-			LegacySoundStyle style = null;
++			ISoundStyle style = null;
+ 			int num20 = 0;
+ 			bool flag24 = false;
+ 			float num21 = 1f;
 @@ -44447,7 +_,7 @@
  				Tile tileSafely4 = Framing.GetTileSafely(num64, num65 - 1);
  				Tile tileSafely5 = Framing.GetTileSafely(num64, num65 - 2);

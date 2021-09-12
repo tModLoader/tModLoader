@@ -18,26 +18,48 @@
  		}
  
  		public static void Load(IServiceProvider services) {
-@@ -60,13 +_,16 @@
+@@ -60,13 +_,20 @@
  			PlaySound(type, (int)position.X, (int)position.Y, style);
  		}
  
 -		public static SoundEffectInstance PlaySound(LegacySoundStyle type, Vector2 position) => PlaySound(type, (int)position.X, (int)position.Y);
-+		public static SoundEffectInstance PlaySound(SoundStyle type, Vector2 position) => PlaySound(type, (int)position.X, (int)position.Y);
++		public static SoundEffectInstance PlaySound(ISoundStyle type, Vector2 position) => PlaySound(type, (int)position.X, (int)position.Y);
  
 -		public static SoundEffectInstance PlaySound(LegacySoundStyle type, int x = -1, int y = -1) {
-+		public static SoundEffectInstance PlaySound(SoundStyle type, int x = -1, int y = -1) {
++		public static SoundEffectInstance PlaySound(ISoundStyle type, int x = -1, int y = -1) {
  			if (type == null)
  				return null;
  
 -			return PlaySound(type.SoundId, x, y, type.Style, type.Volume, type.GetRandomPitch());
-+			if (x != -1 || y != -1)
-+				return type.Play(new Vector2(x, y));
++			SlotId slot;
 +
-+			return type.Play(null);
++			if (x != -1 || y != -1)
++				slot = PlayTrackedSound(type, new Vector2(x, y));
++			else
++				slot = PlayTrackedSound(type);
++
++			return slot.IsValid ? GetActiveSound(slot)?.Sound : null;
  		}
  
  		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
+@@ -94,7 +_,7 @@
+ 
+ 		}
+ 
+-		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position)
++		public static SlotId PlayTrackedSound(ISoundStyle style, Vector2 position)
+ 		{
+ 			if(Main.dedServ)
+ 				return SlotId.Invalid;
+@@ -106,7 +_,7 @@
+ 
+ 		}
+ 
+-		public static SlotId PlayTrackedSound(SoundStyle style)
++		public static SlotId PlayTrackedSound(ISoundStyle style)
+ 		{
+ 			if(Main.dedServ)
+ 				return SlotId.Invalid;
 @@ -123,14 +_,14 @@
  				SoundPlayer.StopAll();
  		}
@@ -56,6 +78,15 @@
  		}
  
  		public static void StopAmbientSounds() {
+@@ -138,7 +_,7 @@
+ 				LegacySoundPlayer.StopAmbientSounds();
+ 		}
+ 
+-		public static ActiveSound FindActiveSound(SoundStyle style) {
++		public static ActiveSound FindActiveSound(ISoundStyle style) {
+ 			if(Main.dedServ)
+ 				return null;
+ 
 @@ -324,7 +_,7 @@
  				}
  			}

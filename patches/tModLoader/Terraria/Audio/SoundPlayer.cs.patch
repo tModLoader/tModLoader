@@ -1,20 +1,33 @@
 --- src/Terraria/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -12,7 +_,7 @@
+@@ -11,8 +_,8 @@
+ 	{
  		private readonly SlotVector<ActiveSound> _trackedSounds = new SlotVector<ActiveSound>(4096);
  
- 		public SlotId Play(SoundStyle style, Vector2 position) {
+-		public SlotId Play(SoundStyle style, Vector2 position) {
++		public SlotId Play(ISoundStyle style, Vector2 position) {
 -			if (Main.dedServ || style == null || !style.IsTrackable)
 +			if (Main.dedServ || style == null)
  				return SlotId.Invalid;
  
  			if (Vector2.DistanceSquared(Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), position) > 100000000f)
-@@ -27,7 +_,7 @@
+@@ -26,8 +_,8 @@
+ 			StopAll();
  		}
  
- 		public SlotId Play(SoundStyle style) {
+-		public SlotId Play(SoundStyle style) {
++		public SlotId Play(ISoundStyle style) {
 -			if (Main.dedServ || style == null || !style.IsTrackable)
 +			if (Main.dedServ || style == null)
  				return SlotId.Invalid;
  
  			ActiveSound value = new ActiveSound(style);
+@@ -80,7 +_,7 @@
+ #endif
+ 		}
+ 
+-		public ActiveSound FindActiveSound(SoundStyle style) {
++		public ActiveSound FindActiveSound(ISoundStyle style) {
+ 			foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
+ 				if (item.Value.Style == style)
+ 					return item.Value;

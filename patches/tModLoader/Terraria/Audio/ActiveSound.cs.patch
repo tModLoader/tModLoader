@@ -1,14 +1,32 @@
 --- src/Terraria/Terraria/Audio/ActiveSound.cs
 +++ src/tModLoader/Terraria/Audio/ActiveSound.cs
-@@ -22,7 +_,7 @@
+@@ -17,14 +_,14 @@
+ 			private set;
+ 		}
+ 
+-		public SoundStyle Style {
++		public ISoundStyle Style {
+ 			get;
  			private set;
  		}
  
 -		public bool IsPlaying => Sound.State == SoundState.Playing;
 +		public bool IsPlaying => !Sound.IsDisposed && Sound.State == SoundState.Playing;
  
- 		public ActiveSound(SoundStyle style, Vector2 position) {
+-		public ActiveSound(SoundStyle style, Vector2 position) {
++		public ActiveSound(ISoundStyle style, Vector2 position) {
  #if FNA
+ 			Monitor.Enter(SoundEngine.AudioLock);
+ #endif
+@@ -38,7 +_,7 @@
+ #endif
+ 		}
+ 
+-		public ActiveSound(SoundStyle style) {
++		public ActiveSound(ISoundStyle style) {
+ 			Position = Vector2.Zero;
+ 			Volume = 1f;
+ 			IsGlobal = true;
 @@ -71,7 +_,7 @@
  		}
  

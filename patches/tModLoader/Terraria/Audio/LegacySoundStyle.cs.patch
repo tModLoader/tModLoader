@@ -1,58 +1,107 @@
 --- src/Terraria/Terraria/Audio/LegacySoundStyle.cs
 +++ src/tModLoader/Terraria/Audio/LegacySoundStyle.cs
-@@ -3,7 +_,7 @@
+@@ -1,65 +_,55 @@
++using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Audio;
+ using Terraria.Utilities;
  
  namespace Terraria.Audio
  {
 -	public class LegacySoundStyle : SoundStyle
-+	public partial class LegacySoundStyle : SoundStyle
++	public struct LegacySoundStyle : ISoundStyle
  	{
  		private static readonly UnifiedRandom Random = new UnifiedRandom();
- 		private readonly int _style;
-@@ -19,8 +_,6 @@
- 			}
- 		}
- 
+-		private readonly int _style;
+-		public readonly int Variations;
+-		public readonly int SoundId;
+-
+-		public int Style {
+-			get {
+-				if (Variations != 1)
+-					return Random.Next(_style, _style + Variations);
+-
+-				return _style;
+-			}
+-		}
+-
 -		public override bool IsTrackable => SoundId == 42;
 -
- 		public LegacySoundStyle(int soundId, int style, SoundType type = SoundType.Sound)
- 			: base(type) {
- 			_style = style;
-@@ -35,18 +_,18 @@
- 			SoundId = soundId;
- 		}
- 
+-		public LegacySoundStyle(int soundId, int style, SoundType type = SoundType.Sound)
+-			: base(type) {
+-			_style = style;
+-			Variations = 1;
+-			SoundId = soundId;
+-		}
+-
+-		public LegacySoundStyle(int soundId, int style, int variations, SoundType type = SoundType.Sound)
+-			: base(type) {
+-			_style = style;
+-			Variations = variations;
+-			SoundId = soundId;
+-		}
+-
 -		private LegacySoundStyle(int soundId, int style, int variations, SoundType type, float volume, float pitchVariance)
-+		private LegacySoundStyle(int soundId, int style, int variations, SoundType type, float volume, float pitch, float pitchVariance)
 -			: base(volume, pitchVariance, type) {
-+			: base(volume, pitchVariance, pitch, type) {
- 			_style = style;
- 			Variations = variations;
- 			SoundId = soundId;
- 		}
- 
+-			_style = style;
+-			Variations = variations;
+-			SoundId = soundId;
+-		}
+-
 -		public LegacySoundStyle WithVolume(float volume) => new LegacySoundStyle(SoundId, _style, Variations, base.Type, volume, base.PitchVariance);
-+		public LegacySoundStyle WithVolume(float volume) => new LegacySoundStyle(SoundId, _style, Variations, base.Type, volume, Pitch, base.PitchVariance);
 -		public LegacySoundStyle WithPitchVariance(float pitchVariance) => new LegacySoundStyle(SoundId, _style, Variations, base.Type, base.Volume, pitchVariance);
-+		public LegacySoundStyle WithPitchVariance(float pitchVariance) => new LegacySoundStyle(SoundId, _style, Variations, base.Type, base.Volume, Pitch, pitchVariance);
 -		public LegacySoundStyle AsMusic() => new LegacySoundStyle(SoundId, _style, Variations, SoundType.Music, base.Volume, base.PitchVariance);
-+		public LegacySoundStyle AsMusic() => new LegacySoundStyle(SoundId, _style, Variations, SoundType.Music, base.Volume, Pitch, base.PitchVariance);
 -		public LegacySoundStyle AsAmbient() => new LegacySoundStyle(SoundId, _style, Variations, SoundType.Ambient, base.Volume, base.PitchVariance);
-+		public LegacySoundStyle AsAmbient() => new LegacySoundStyle(SoundId, _style, Variations, SoundType.Ambient, base.Volume, Pitch, base.PitchVariance);
 -		public LegacySoundStyle AsSound() => new LegacySoundStyle(SoundId, _style, Variations, SoundType.Sound, base.Volume, base.PitchVariance);
-+		public LegacySoundStyle AsSound() => new LegacySoundStyle(SoundId, _style, Variations, SoundType.Sound, base.Volume, Pitch, base.PitchVariance);
++
++		public int SoundId { get; set; }
++		public int Style { get; set; }
++		public int Variations { get; set; }
++		public SoundType Type { get; set; }
++		public float Volume { get; set; }
++		public float Pitch { get; set; }
++		public float PitchVariance { get; set; }
++
++		public LegacySoundStyle(int soundId, int style, SoundType type = SoundType.Sound) : this(soundId, style, 1, type) { }
++
++		public LegacySoundStyle(int soundId, int style, int variations, SoundType type = SoundType.Sound) {
++			Pitch = 0f;
++			PitchVariance = 0f;
++			Volume = 1f;
++
++			Style = style;
++			Variations = variations;
++			SoundId = soundId;
++			Type = type;
++		}
++
++		public LegacySoundStyle WithVolume(float volume) {
++			var result = this;
++			result.Volume = volume;
++			return result;
++		}
++
++		public LegacySoundStyle WithPitchVariance(float pitchVariance) {
++			var result = this;
++			result.PitchVariance = pitchVariance;
++			return result;
++		}
  
  		public bool Includes(int soundId, int style) {
- 			if (SoundId == soundId && style >= _style)
-@@ -56,10 +_,7 @@
+-			if (SoundId == soundId && style >= _style)
++			if (SoundId == soundId && style >= Style)
+-				return style < _style + Variations;
++				return style < Style + Variations;
+ 
+ 			return false;
  		}
  
- 		public override SoundEffect GetRandomSound() {
+-		public override SoundEffect GetRandomSound() {
 -			if (IsTrackable)
 -				return SoundEngine.GetTrackableSoundByStyleId(Style);
--
++		public SoundEffect GetRandomSound() => SoundEngine.GetTrackableSoundByStyleId(SoundId, Style + (Variations > 1 ? Random.Next(Variations) : 0));
+ 
 -			return null;
-+			return SoundEngine.GetTrackableSoundByStyleId(SoundId, Style);
- 		}
+-		}
++		public float GetRandomPitch() => MathHelper.Clamp(Pitch + ((Random.NextFloat() - 0.5f) * PitchVariance), -1f, 1f);
  	}
  }

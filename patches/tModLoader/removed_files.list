@@ -2,6 +2,7 @@ ReLogic\Content\AssetLoader.cs
 ReLogic\Content\AsyncAssetLoader.cs
 ReLogic\Content\ContentRejectionFromFailedLoad_ByAssetExtensionType.cs
 ReLogic\Content\IAsyncAssetLoader.cs
+Terraria\Audio\SoundStyle.cs
 ReLogic\Content\Sources\XnaContentSource.cs
 Terraria\Libraries\Common\Ionic.Zip.CF.dll
 Terraria\Libraries\FNA\FNA.dll

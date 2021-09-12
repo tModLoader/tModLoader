@@ -1,24 +1,48 @@
 --- src/Terraria/Terraria/Audio/CustomSoundStyle.cs
 +++ src/tModLoader/Terraria/Audio/CustomSoundStyle.cs
-@@ -8,17 +_,15 @@
+@@ -1,27 +_,32 @@
++using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Audio;
+ using Terraria.Utilities;
+ 
+ namespace Terraria.Audio
+ {
+-	public class CustomSoundStyle : SoundStyle
++	public struct CustomSoundStyle : ISoundStyle
+ 	{
  		private static readonly UnifiedRandom Random = new UnifiedRandom();
  		private readonly SoundEffect[] _soundEffects;
  
 -		public override bool IsTrackable => true;
 -
 -		public CustomSoundStyle(SoundEffect soundEffect, SoundType type = SoundType.Sound, float volume = 1f, float pitchVariance = 0f)
-+		public CustomSoundStyle(SoundEffect soundEffect, SoundType type = SoundType.Sound, float volume = 1f, float pitch = 0f, float pitchVariance = 0f)
 -			: base(volume, pitchVariance, type) {
-+			: base(volume, pitchVariance, pitch, type) {
- 			_soundEffects = new SoundEffect[1] {
- 				soundEffect
- 			};
- 		}
- 
+-			_soundEffects = new SoundEffect[1] {
+-				soundEffect
+-			};
+-		}
+-
 -		public CustomSoundStyle(SoundEffect[] soundEffects, SoundType type = SoundType.Sound, float volume = 1f, float pitchVariance = 0f)
-+		public CustomSoundStyle(SoundEffect[] soundEffects, SoundType type = SoundType.Sound, float volume = 1f, float pitch = 0f, float pitchVariance = 0f)
 -			: base(volume, pitchVariance, type) {
-+			: base(volume, pitchVariance, pitch, type) {
++		public SoundType Type { get; set; }
++		public float Volume { get; set; }
++		public float Pitch { get; set; }
++		public float PitchVariance { get; set; }
++
++		public CustomSoundStyle(SoundEffect soundEffect, SoundType type = SoundType.Sound, float volume = 1f, float pitch = 0f, float pitchVariance = 0f)
++			: this(new[] { soundEffect }, type, volume, pitch, pitchVariance) { }
++
++		public CustomSoundStyle(SoundEffect[] soundEffects, SoundType type = SoundType.Sound, float volume = 1f, float pitch = 0f, float pitchVariance = 0f) {
  			_soundEffects = soundEffects;
++			Type = type;
++			Volume = volume;
++			Pitch = pitch;
++			PitchVariance = pitchVariance;
  		}
  
+-		public override SoundEffect GetRandomSound() => _soundEffects[Random.Next(_soundEffects.Length)];
++		public SoundEffect GetRandomSound() => _soundEffects[Random.Next(_soundEffects.Length)];
++
++		public float GetRandomPitch() => MathHelper.Clamp(Pitch + ((Random.NextFloat() - 0.5f) * PitchVariance), -1f, 1f);
+ 	}
+ }
