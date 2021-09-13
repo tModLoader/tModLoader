@@ -77,8 +77,11 @@ namespace Terraria.ModLoader
 
 		public static void SetStartInventory(Player player, IList<Item> items) {
 			if (items.Count <= 50) {
-				for (int k = 0; k < items.Count && k < 49; k++)
-					player.inventory[k] = items[k];
+				for (int k = 0; k < 50; k++)
+					if (k < items.Count)
+						player.inventory[k] = items[k];
+					else
+						player.inventory[k].SetDefaults();
 			}
 			else {
 				for (int k = 0; k < 49; k++) {
