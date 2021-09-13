@@ -76,19 +76,12 @@ namespace Terraria.ModLoader
 		}
 
 		public static void SetStartInventory(Player player, IList<Item> items) {
-			// Be careful. The item in the items and the item in the inventory are the same object.
-			// If you empty the inventory in advance, the items will also be empty.
-			// So need to make a deep copy first, then empty the inventory.
-			for (int i = 0; i < items.Count; i++) {
-				items[i] = items[i].Clone();
-			}
-			
 			if (items.Count <= 50) {
-				int k;
-				for (k = 0; k < items.Count && k < 50; k++)
-					player.inventory[k] = items[k];
-				for (; k < 50; k++)
-					player.inventory[k].SetDefaults();
+				for (int k = 0; k < 50; k++)
+					if (k < items.Count)
+						player.inventory[k] = items[k];
+					else
+						player.inventory[k].SetDefaults();
 			}
 			else {
 				for (int k = 0; k < 49; k++) {
