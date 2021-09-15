@@ -1,4 +1,11 @@
 @echo off
 cd /D "%~dp0"
+set Args=%*
+setlocal EnableDelayedExpansion
+
 call InstallNetFramework.bat
-start NetFramework\dotnet\5.0.0\dotnet.exe tModLoader.dll
+if exist %INSTALLDIR%\dotnet.exe ( 
+	start dotnet\%VERSIONSEL%\dotnet.exe tModLoader.dll %Args% 
+) else (
+	dotnet tModLoader.dll %Args%
+)

@@ -1,47 +1,91 @@
 --- src/Terraria/Terraria/DataStructures/PlayerDrawSet.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDrawSet.cs
-@@ -10,6 +_,15 @@
+@@ -5,10 +_,11 @@
+ using Terraria.GameContent.Golf;
+ using Terraria.Graphics.Shaders;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.DataStructures
  {
- 	public struct PlayerDrawSet
+-	public struct PlayerDrawSet
++	public partial struct PlayerDrawSet
  	{
-+		//An absolutely utterly epic trick to avoid big patches for disabling lighting below.
-+		private class Lighting
-+		{
-+			public static bool enabled;
-+			public static Color GetColor(int x, int y) => enabled ? Terraria.Lighting.GetColor(x, y) : Color.White;
-+			public static Color GetColor(int x, int y, Color oldColor) => enabled ? Terraria.Lighting.GetColor(x, y, oldColor) : oldColor;
-+			public static Color GetColorClamped(int x, int y, Color oldColor) => enabled ? Terraria.Lighting.GetColorClamped(x, y, oldColor) : oldColor;
-+		}
-+
  		public List<DrawData> DrawDataCache;
  		public List<int> DustCache;
- 		public List<int> GoreCache;
-@@ -128,7 +_,9 @@
- 
+@@ -129,6 +_,8 @@
  		public Vector2 Center => new Vector2(Position.X + (float)(drawPlayer.width / 2), Position.Y + (float)(drawPlayer.height / 2));
  
--		public void BoringSetup(Player player, List<DrawData> drawData, List<int> dust, List<int> gore, Vector2 drawPosition, float shadowOpacity, float rotation, Vector2 rotationOrigin) {
-+		public void BoringSetup(Player player, List<DrawData> drawData, List<int> dust, List<int> gore, Vector2 drawPosition, float shadowOpacity, float rotation, Vector2 rotationOrigin, bool useLighting = true) {
-+			Lighting.enabled = useLighting;
+ 		public void BoringSetup(Player player, List<DrawData> drawData, List<int> dust, List<int> gore, Vector2 drawPosition, float shadowOpacity, float rotation, Vector2 rotationOrigin) {
++			headOnlyRender = false;
 +
  			DrawDataCache = drawData;
  			DustCache = dust;
  			GoreCache = gore;
-@@ -253,7 +_,7 @@
+@@ -226,6 +_,8 @@
+ 				type = Main.projectile[drawPlayer.heldProj].type;
+ 				if (type == 460 || type == 535 || type == 600)
+ 					heldProjOverHand = true;
++
++				ProjectileLoader.DrawHeldProjInFrontOfHeldItemAndArms(Main.projectile[drawPlayer.heldProj], ref heldProjOverHand);
+ 			}
  
- 			playerEffect = SpriteEffects.None;
- 			itemEffect = SpriteEffects.FlipHorizontally;
--			colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(), shadow);
-+			colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting), shadow);
- 			colorEyeWhites = drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)((double)Position.X + (double)drawPlayer.width * 0.5) / 16, (int)(((double)Position.Y + (double)drawPlayer.height * 0.25) / 16.0), Color.White), shadow);
- 			colorEyes = drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)((double)Position.X + (double)drawPlayer.width * 0.5) / 16, (int)(((double)Position.Y + (double)drawPlayer.height * 0.25) / 16.0), drawPlayer.eyeColor), shadow);
- 			colorHead = drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)((double)Position.X + (double)drawPlayer.width * 0.5) / 16, (int)(((double)Position.Y + (double)drawPlayer.height * 0.25) / 16.0), drawPlayer.skinColor), shadow);
-@@ -1053,7 +_,7 @@
- 				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2) {
+ 			drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
+@@ -1049,8 +_,10 @@
+ 				DustCache.Add(dust21.dustIndex);
+ 			}
+ 
++			bool fullBright = false;
++			PlayerLoader.DrawEffects(this, ref num12, ref num13, ref num14, ref num15, ref fullBright);
+ 			if (num12 != 1f || num13 != 1f || num14 != 1f || num15 != 1f) {
+-				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2) {
++				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2 || fullBright) {
  					colorEyeWhites = drawPlayer.GetImmuneAlpha(Color.White, shadow);
  					colorEyes = drawPlayer.GetImmuneAlpha(drawPlayer.eyeColor, shadow);
--					colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting: false), shadow);
-+					colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting), shadow);
- 					colorHead = drawPlayer.GetImmuneAlpha(drawPlayer.skinColor, shadow);
- 					colorBodySkin = drawPlayer.GetImmuneAlpha(drawPlayer.skinColor, shadow);
- 					colorShirt = drawPlayer.GetImmuneAlpha(drawPlayer.shirtColor, shadow);
+ 					colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting: false), shadow);
+@@ -1292,8 +_,13 @@
+ 				drawPlayer.headRotation = 0f;
+ 			}
+ 
++			SetupHairFrames();
++			BoringSetup_End();
++		}
++
++		// A split to be used in HeadOnlySetup()
++		private void SetupHairFrames() {
+ 			Rectangle bodyFrame = drawPlayer.bodyFrame;
+-			bodyFrame = drawPlayer.bodyFrame;
+ 			bodyFrame.Y -= 336;
+ 			if (bodyFrame.Y < 0)
+ 				bodyFrame.Y = 0;
+@@ -1308,9 +_,17 @@
+ 				int height = 26;
+ 				hairFrontFrame.Height = height;
+ 			}
++		}
+ 
++		private void BoringSetup_End() {
++			/*
+ 			hidesTopSkin = (drawPlayer.body == 82 || drawPlayer.body == 83 || drawPlayer.body == 93 || drawPlayer.body == 21 || drawPlayer.body == 22);
+ 			hidesBottomSkin = (drawPlayer.body == 93 || drawPlayer.legs == 20 || drawPlayer.legs == 21);
++			*/
++			hidesTopSkin = (drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesTopSkin[drawPlayer.body]) || (drawPlayer.legs > 0 && ArmorIDs.Legs.Sets.HidesTopSkin[drawPlayer.legs]);
++			hidesBottomSkin = (drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesBottomSkin[drawPlayer.body]) || (drawPlayer.legs > 0 && ArmorIDs.Legs.Sets.HidesBottomSkin[drawPlayer.legs]);
++			isBottomOverriden = PlayerDrawLayers.IsBottomOverridden(ref this);
++
+ 			drawFloatingTube = drawPlayer.hasFloatingTube;
+ 			drawUnicornHorn = drawPlayer.hasUnicornHorn;
+ 			drawAngelHalo = drawPlayer.hasAngelHalo;
+@@ -1327,9 +_,9 @@
+ 		private void CreateCompositeData() {
+ 			frontShoulderOffset = Vector2.Zero;
+ 			backShoulderOffset = Vector2.Zero;
+-			usesCompositeTorso = (drawPlayer.body > 0 && drawPlayer.body < 244 && ArmorIDs.Body.Sets.UsesNewFramingCode[drawPlayer.body]);
+-			usesCompositeFrontHandAcc = (drawPlayer.handon > 0 && drawPlayer.handon < 23 && ArmorIDs.HandOn.Sets.UsesNewFramingCode[drawPlayer.handon]);
+-			usesCompositeBackHandAcc = (drawPlayer.handoff > 0 && drawPlayer.handoff < 15 && ArmorIDs.HandOff.Sets.UsesNewFramingCode[drawPlayer.handoff]);
++			usesCompositeTorso = (drawPlayer.body > 0 && ArmorIDs.Body.Sets.UsesNewFramingCode[drawPlayer.body]);
++			usesCompositeFrontHandAcc = (drawPlayer.handon > 0 && ArmorIDs.HandOn.Sets.UsesNewFramingCode[drawPlayer.handon]);
++			usesCompositeBackHandAcc = (drawPlayer.handoff > 0 && ArmorIDs.HandOff.Sets.UsesNewFramingCode[drawPlayer.handoff]);
+ 			if (drawPlayer.body < 1)
+ 				usesCompositeTorso = true;
+ 

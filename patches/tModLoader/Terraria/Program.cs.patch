@@ -65,7 +65,7 @@
 -			if (initializeStaticMembers)
 -				ForceStaticInitializers(assembly);
 +			var types = assembly.GetTypes();
-+			ThingsToLoad = types.Select(type => GetMethodsCrossPlatform(type).Count()).Sum();
++			ThingsToLoad = types.Select(type => GetAllMethods(type).Count()).Sum();
 +
 +			ForceJITOnAssembly(types);
 +			if (initializeStaticMembers) {
@@ -74,23 +74,25 @@
  		}
  
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -127,6 +_,9 @@
- 			if (!Main.dedServ && Debugger.IsAttached)
- 				return;
+@@ -124,8 +_,11 @@
+ 		}
  
+ 		private static void InitializeConsoleOutput() {
+-			if (!Main.dedServ && Debugger.IsAttached)
++			if (!Main.dedServ && (Debugger.IsAttached || LaunchParameters.ContainsKey("-console")))
+ 				return;
++
 +			if (!Main.dedServ)
 +				Platform.Get<IWindowService>().HideConsole();
-+
+ 
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
- 				if (Platform.IsWindows)
-@@ -138,18 +_,46 @@
+@@ -138,32 +_,63 @@
  			}
  		}
  
-+		// some versions of the .NET runtime will run the Main static initilizer as soon as LaunchGame is invoked
-+		// causing Main.SavePath to be initialized before LaunchParameters is parsed.
-+		// moving arg parsing to a separate function avoids this
++		//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
++		// Moving all calls to Main to LaunchGame_() mitigates this risk
  		public static void LaunchGame(string[] args, bool monoArgs = false) {
  			Thread.CurrentThread.Name = "Main Thread";
  			if (monoArgs)
@@ -105,23 +107,30 @@
 +			if (File.Exists("savehere.txt"))
 +				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
 +
++			bool isServer = LaunchParameters.ContainsKey("-server");
 +			try {
-+				Logging.Init();
++				Logging.Init(isServer);
 +			}
 +			catch (Exception e) {
++				Logging.Terraria.Fatal("Main engine crash", e);
 +				DisplayException(e);
 +				return;
 +			}
 +
++			LaunchGame_(isServer);
++		}
++
++		//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
++		// Moving all calls to Main to LaunchGame_() mitigates this risk
++		public static void LaunchGame_(bool isServer) {
++			Main.dedServ = isServer;
++
++			//TODO: Can this be moved to LaunchInitializer.LoadServerParameters?
 +			if (LaunchInitializer.TryParameter("-build") is string build)
 +				// Inside the build from command line, the application exits
 +				// Anything beyond this point will not be executed
 +				ModCompile.BuildModCommandLine(build);
 +
-+			LaunchGame_();
-+		}
-+
-+		public static void LaunchGame_() {
  			if (Platform.IsOSX) {
  				Main.OnEngineLoad += delegate {
  					Main.instance.IsMouseVisible = false;
@@ -129,10 +138,11 @@
  			}
  
 -			LaunchParameters = Utils.ParseArguements(args);
- #if SERVER
- 			Main.dedServ = true;
- #else
-@@ -158,12 +_,14 @@
+-#if SERVER
+-			Main.dedServ = true;
+-#else
+-			Main.dedServ = LaunchParameters.ContainsKey("-server");
+-#endif
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
  			InitializeConsoleOutput();
@@ -149,10 +159,10 @@
 +					main.PostSocialInitialize();
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
- 					if(!Main.dedServ)
+ 					if (!Main.dedServ)
 @@ -171,9 +_,10 @@
  					else
- 					main.DedServ();
+ 						main.DedServ();
  				}
 -				catch (Exception e) {
 -					DisplayException(e);
@@ -167,23 +177,23 @@
 @@ -208,9 +_,22 @@
  				}
  
- 				if(Main.dedServ)
--				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
+ 				if (Main.dedServ)
+-					Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
 +				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
  
 -				MessageBox.Show(text, "Terraria: Error");
 +				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
 +
 +				if (e is FolderCreationFailedException)
-+					Process.Start(e.HelpLink);
++					Utils.OpenToURL(e.HelpLink);
 +
 +				if (e.Message.Contains("CSteamworks"))
-+					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
++					Utils.OpenToURL(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
 +
 +				if (e.StackTrace.Contains("LaunchLocalServer")) {
 +					ModLoader.UI.Interface.MessageBoxShow(Language.GetTextValue("tModLoader.MissingServerExecutable"));
 +
-+					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
++					Utils.OpenToURL(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
 +				}
 +
  			}

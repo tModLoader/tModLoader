@@ -6,7 +6,7 @@
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
-@@ -20,16 +_,20 @@
+@@ -20,16 +_,21 @@
  		public static SocialMode Mode => _mode;
  
  		public static void Initialize(SocialMode? mode = null) {
@@ -15,11 +15,12 @@
  				mode = SocialMode.None;
  				if(!Main.dedServ)
 +#if DEBUG
-+				if (!Program.LaunchParameters.ContainsKey("-nosteam"))
++					if (!Program.LaunchParameters.ContainsKey("-nosteam"))
 +#endif
-+				if (InstallVerifier.IsValid && InstallVerifier.IsSteam)
++						if (InstallVerifier.IsValid && InstallVerifier.IsSteam)
 -				mode = SocialMode.Steam;
-+					mode = SocialMode.Steam;
++							mode = SocialMode.Steam;
++
  				if (Main.dedServ && Program.LaunchParameters.ContainsKey("-steam"))
  					mode = SocialMode.Steam;
  			}
@@ -29,15 +30,16 @@
  			JoinRequests = new ServerJoinRequestsManager();
  			Main.OnTickForInternalCodeOnly += JoinRequests.Update;
  			switch (Mode) {
-@@ -40,10 +_,7 @@
+@@ -40,10 +_,9 @@
  					LoadWeGame();
  					break;
  			}
--
++			//TODO: Allow both APIs to be used at once. Currently, it would reinitiallize some of them.
+ 
 -			foreach (ISocialModule module in _modules) {
 -				module.Initialize();
 -			}
-+			//TODO: Allow both APIs to be used at once. Currently, it would reinitiallize some of them.
++			WorkshopHelper.ModManager.Initialize();
  		}
  
  		public static void Shutdown() {

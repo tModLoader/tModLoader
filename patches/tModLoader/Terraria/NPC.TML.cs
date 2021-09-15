@@ -5,11 +5,13 @@ using Terraria.ModLoader;
 
 namespace Terraria
 {
-	public partial class NPC
+	public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	{
 		public ModNPC ModNPC { get; internal set; }
 
-		internal Instanced<GlobalNPC>[] globalNPCs = new Instanced<GlobalNPC>[0];
+		internal Instanced<GlobalNPC>[] globalNPCs = Array.Empty<Instanced<GlobalNPC>>();
+
+		public RefReadOnlyArray<Instanced<GlobalNPC>> Globals => new RefReadOnlyArray<Instanced<GlobalNPC>>(globalNPCs);
 
 		/// <summary>
 		/// Assign a special boss bar, vanilla or modded. Not used by vanilla.

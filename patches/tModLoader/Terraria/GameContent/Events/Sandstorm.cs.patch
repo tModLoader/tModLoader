@@ -1,0 +1,69 @@
+--- src/Terraria/Terraria/GameContent/Events/Sandstorm.cs
++++ src/tModLoader/Terraria/GameContent/Events/Sandstorm.cs
+@@ -10,15 +_,17 @@
+ 		private const int SANDSTORM_DURATION_MINIMUM = 28800;
+ 		private const int SANDSTORM_DURATION_MAXIMUM = 86400;
+ 		public static bool Happening;
+-		public static int TimeLeft;
++		public static double TimeLeft;
+ 		public static float Severity;
+ 		public static float IntendedSeverity;
+ 		private static bool _effectsUp;
++		private static double _timePass; // Added by TML; used to account for more precise time rates.
+ 
+ 		private static bool HasSufficientWind() => Math.Abs(Main.windSpeedCurrent) >= 0.6f;
+ 
+ 		public static void WorldClear() {
+ 			Happening = false;
++			_timePass = 0;
+ 		}
+ 
+ 		public static void UpdateTime() {
+@@ -27,9 +_,9 @@
+ 					if (TimeLeft > 86400)
+ 						TimeLeft = 0;
+ 
+-					TimeLeft -= Main.dayRate;
++					TimeLeft -= Main.desiredWorldEventsUpdateRate;
+ 					if (!HasSufficientWind())
+-						TimeLeft -= 15 * Main.dayRate;
++						TimeLeft -= 15 * Main.desiredWorldEventsUpdateRate;
+ 
+ 					if (Main.windSpeedCurrent == 0f)
+ 						TimeLeft = 0;
+@@ -41,10 +_,12 @@
+ 					int num = 21600;
+ 					num = ((!Main.hardMode) ? (num * 3) : (num * 2));
+ 					if (HasSufficientWind()) {
++						_timePass += Main.desiredWorldEventsUpdateRate;
+-						for (int i = 0; i < Main.dayRate; i++) {
++						for (int i = 1; i <= (int)_timePass; i++) {
+ 							if (Main.rand.Next(num) == 0)
+ 								StartSandstorm();
+ 						}
++						_timePass %= 1.0;
+ 					}
+ 				}
+ 
+@@ -81,13 +_,19 @@
+ 				Severity = IntendedSeverity;
+ 		}
+ 
++		/// <summary>
++		/// Starts sandstorm for a random amount of time. Should be called on the server (netMode != client) - the method syncs it automatically.
++		/// </summary>
+-		private static void StartSandstorm() {
++		public static void StartSandstorm() {
+ 			Happening = true;
+ 			TimeLeft = Main.rand.Next(28800, 86401);
+ 			ChangeSeverityIntentions();
+ 		}
+ 
++		/// <summary>
++		/// Stops sandstorm. Should be called on the server (netMode != client) - the method syncs it automatically.
++		/// </summary>
+-		private static void StopSandstorm() {
++		public static void StopSandstorm() {
+ 			Happening = false;
+ 			TimeLeft = 0;
+ 			ChangeSeverityIntentions();

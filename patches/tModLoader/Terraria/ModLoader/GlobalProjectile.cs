@@ -21,6 +21,8 @@ namespace Terraria.ModLoader
 			ProjectileLoader.globalProjectiles.Add(this);
 		}
 
+		public sealed override void SetupContent() => SetStaticDefaults();
+
 		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
 
 		/// <summary>
@@ -94,14 +96,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine how a projectile interacts with tiles. Width and height determine the projectile's hitbox for tile collision, and default to -1. Leave them as -1 to use the projectile's real size. Fallthrough determines whether the projectile can fall through platforms, etc., and defaults to true.
+		/// Allows you to determine how a projectile interacts with tiles. Return false if you completely override or cancel a projectile's tile collision behavior. Returns true by default.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="width"></param>
-		/// <param name="height"></param>
-		/// <param name="fallThrough"></param>
+		/// <param name="projectile"> The projectile. </param>
+		/// <param name="width"> The width of the hitbox the projectile will use for tile collision. If vanilla or a mod don't modify it, defaults to projectile.width. </param>
+		/// <param name="height"> The height of the hitbox the projectile will use for tile collision. If vanilla or a mod don't modify it, defaults to projectile.height. </param>
+		/// <param name="fallThrough"> Whether or not the projectile falls through platforms and similar tiles. </param>
+		/// <param name="hitboxCenterFrac"> Determines by how much the tile collision hitbox's position (top left corner) will be offset from the projectile's real center. If vanilla or a mod don't modify it, defaults to half the hitbox size (new Vector2(0.5f, 0.5f)). </param>
 		/// <returns></returns>
-		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough) {
+		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
 			return true;
 		}
 
@@ -293,33 +296,28 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind a projectile. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
+		/// Allows you to draw things behind a projectile. Use the Main.EntitySpriteDraw method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="spriteBatch"></param>
-		/// <returns></returns>
-		public virtual bool PreDrawExtras(Projectile projectile, SpriteBatch spriteBatch) {
+		/// <param name="projectile"> The projectile. </param>
+		public virtual bool PreDrawExtras(Projectile projectile) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Return false to stop the game from drawing the projectile (useful if you're manually drawing the projectile). Returns true by default.
+		/// Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Use the Main.EntitySpriteDraw method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="spriteBatch"></param>
-		/// <param name="lightColor"></param>
-		/// <returns></returns>
-		public virtual bool PreDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
+		/// <param name="projectile"> The projectile. </param>
+		/// <param name="lightColor"> The color of the light at the projectile's center. </param>
+		public virtual bool PreDraw(Projectile projectile, ref Color lightColor) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw things in front of a projectile. This method is called even if PreDraw returns false.
+		/// Allows you to draw things in front of a projectile. Use the Main.EntitySpriteDraw method for drawing. This method is called even if PreDraw returns false.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="spriteBatch"></param>
-		/// <param name="lightColor"></param>
-		public virtual void PostDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
+		/// <param name="projectile"> The projectile. </param>
+		/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
+		public virtual void PostDraw(Projectile projectile, Color lightColor) {
 		}
 
 		/// <summary>
@@ -327,11 +325,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <param name="index"></param>
-		/// <param name="drawCacheProjsBehindNPCsAndTiles"></param>
-		/// <param name="drawCacheProjsBehindNPCs"></param>
-		/// <param name="drawCacheProjsBehindProjectiles"></param>
-		/// <param name="drawCacheProjsOverWiresUI"></param>
-		public virtual void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {
+		/// <param name="behindNPCsAndTiles"></param>
+		/// <param name="behindNPCs"></param>
+		/// <param name="behindProjectiles"></param>
+		/// <param name="overPlayers"></param>
+		/// <param name="overWiresUI"></param>
+		public virtual void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
 		}
 
 		/// <summary>

@@ -1,7 +1,6 @@
 using log4net;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,13 +8,15 @@ using System.Reflection;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using System.Linq;
 using Terraria.ModLoader.Config;
 using ReLogic.Content;
+using Terraria.GameContent;
 using Terraria.ModLoader.Assets;
+using ReLogic.Content.Sources;
+using ReLogic.Graphics;
 
 namespace Terraria.ModLoader
 {
@@ -50,7 +51,28 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual Version Version => File.Version;
 
-		public ModProperties Properties { get; protected set; } = ModProperties.AutoLoadAll;
+		/// <summary>
+		/// Whether or not this mod will autoload content by default. Autoloading content means you do not need to manually add content through methods.
+		/// </summary>
+		public bool ContentAutoloadingEnabled { get; init; } = true;
+		/// <summary>
+		/// Whether or not this mod will automatically add images in the Gores folder as gores to the game, along with any ModGore classes that share names with the images. This means you do not need to manually call Mod.AddGore.
+		/// </summary>
+		public bool GoreAutoloadingEnabled { get; init; } = true;
+		/// <summary>
+		/// Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, and Sounds/NPCKilled to add them as npcKilled sounds. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any ModSound classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound.
+		/// </summary>
+		public bool SoundAutoloadingEnabled { get; init; } = true;
+		/// <summary>
+		/// Whether or not this mod will automatically add music in the Sounds folder to the game. Place music tracks in Sounds/Music to autoload them.
+		/// </summary>
+		public bool MusicAutoloadingEnabled { get; init; } = true;
+		/// <summary>
+		/// Whether or not this mod will automatically add images in the Backgrounds folder as background textures to the game. This means you do not need to manually call Mod.AddBackgroundTexture.
+		/// </summary>
+		public bool BackgroundAutoloadingEnabled { get; init; } = true;
+
+
 		/// <summary>
 		/// The ModSide that controls how this mod is synced between client and server.
 		/// </summary>
@@ -60,7 +82,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public string DisplayName { get; internal set; }
 
-		public ModAssetRepository Assets { get; private set; }
+		public AssetRepository Assets { get; private set; }
+
+		public IContentSource RootContentSource { get; private set; }
 
 		internal short netID = -1;
 		public bool IsNetSynced => netID >= 0;
@@ -111,9 +135,12 @@ namespace Terraria.ModLoader
 		public void AddContent(ILoadable instance){
 			if (!loading)
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
-			instance.Load(this);
-			content.Add(instance);
-			ContentInstance.Register(instance);
+
+			if (instance.IsLoadingEnabled(this)) {
+				instance.Load(this);
+				content.Add(instance);
+				ContentInstance.Register(instance);
+			}
 		}
 
 		public IEnumerable<ILoadable> GetContent() => content;
@@ -146,16 +173,13 @@ namespace Terraria.ModLoader
 		/// <param name="equipTexture">The equip texture.</param>
 		/// <param name="item">The item.</param>
 		/// <param name="type">The type.</param>
-		/// <param name="name">The name.</param>
 		/// <param name="texture">The texture.</param>
-		/// <param name="armTexture">The arm texture (for body slots).</param>
-		/// <param name="femaleTexture">The female texture (for body slots), if missing the regular body texture is used.</param>
 		/// <returns></returns>
 		public int AddEquipTexture(EquipTexture equipTexture, ModItem item, EquipType type, string texture) {
 			if (!loading)
 				throw new Exception("AddEquipTexture can only be called from Mod.Load or Mod.Autoload");
 
-			ModContent.GetTexture(texture); //ensure texture exists
+			ModContent.Request<Texture2D>(texture); //ensure texture exists
 
 			equipTexture.Texture = texture;
 			equipTexture.Mod = this;
@@ -167,21 +191,11 @@ namespace Terraria.ModLoader
 			EquipLoader.equipTextures[type][slot] = equipTexture;
 			equipTextures[Tuple.Create(item.Name, type)] = equipTexture;
 
-			if (type == EquipType.Body) {
-				if (!ModContent.TextureExists(item.FemaleTexture)) {
-					EquipLoader.femaleTextures[slot] = texture;
-				}
-				else {
-					EquipLoader.femaleTextures[slot] = item.FemaleTexture;
-				}
-				ModContent.GetTexture(item.ArmTexture); //ensure texture exists
-				EquipLoader.armTextures[slot] = item.ArmTexture;
-			}
-
-			if (!EquipLoader.idToSlot.TryGetValue(item.Type, out IDictionary<EquipType, int> slots))
+			if (!EquipLoader.idToSlot.TryGetValue(item.Type, out var slots))
 				EquipLoader.idToSlot[item.Type] = slots = new Dictionary<EquipType, int>();
 
 			slots[type] = slot;
+
 			if (type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs)
 				EquipLoader.slotToId[type][slot] = item.Type;
 
@@ -237,7 +251,7 @@ namespace Terraria.ModLoader
 			NPCHeadLoader.heads[texture] = slot;
 			
 			if (!Main.dedServ) {
-				ModContent.GetTexture(texture);
+				ModContent.Request<Texture2D>(texture);
 			}
 			/*else if (Main.dedServ && !(ModLoader.FileExists(texture + ".png") || ModLoader.FileExists(texture + ".rawimg")))
 			{
@@ -261,7 +275,7 @@ namespace Terraria.ModLoader
 
 			int slot = NPCHeadLoader.ReserveBossHeadSlot(texture);
 			NPCHeadLoader.bossHeads[texture] = slot;
-			ModContent.GetTexture(texture);
+			ModContent.Request<Texture2D>(texture);
 			if (npcType >= 0) {
 				NPCHeadLoader.npcToBossHead[npcType] = slot;
 			}
@@ -279,13 +293,13 @@ namespace Terraria.ModLoader
 				throw new Exception("AddSound can only be called from Mod.Load or Mod.Autoload");
 
 			int id = SoundLoader.ReserveSoundID(type);
-			
+
+			soundPath = soundPath[..^Path.GetExtension(soundPath).Length];
 			SoundLoader.sounds[type][soundPath] = id;
 
 			if (modSound != null) {
 				SoundLoader.modSounds[type][id] = modSound;
-
-				modSound.Sound = ModContent.GetSound(soundPath);
+				modSound.Sound = ModContent.Request<SoundEffect>(soundPath);
 			}
 		}
 
@@ -306,131 +320,6 @@ namespace Terraria.ModLoader
 		public LegacySoundStyle GetLegacySoundSlot(SoundType type, string name) => SoundLoader.GetLegacySoundSlot(type, Name + '/' + name);
 
 		/// <summary>
-		/// Adds a texture to the list of background textures and assigns it a background texture slot.
-		/// </summary>
-		/// <param name="texture">The texture.</param>
-		public void AddBackgroundTexture(string texture) {
-			if (!loading)
-				throw new Exception("AddBackgroundTexture can only be called from Mod.Load or Mod.Autoload");
-
-			BackgroundTextureLoader.backgrounds[texture] = BackgroundTextureLoader.ReserveBackgroundSlot();
-			ModContent.GetTexture(texture);
-		}
-
-		/// <summary>
-		/// Gets the texture slot corresponding to the specified texture name. Shorthand for calling BackgroundTextureLoader.GetBackgroundSlot(this.Name + '/' + name).
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int GetBackgroundSlot(string name) => BackgroundTextureLoader.GetBackgroundSlot(Name + '/' + name);
-
-		/// <summary>
-		/// Allows you to tie a music ID, and item ID, and a tile ID together to form a music box. When music with the given ID is playing, equipped music boxes have a chance to change their ID to the given item type. When an item with the given item type is equipped, it will play the music that has musicSlot as its ID. When a tile with the given type and Y-frame is nearby, if its X-frame is >= 36, it will play the music that has musicSlot as its ID.
-		/// </summary>
-		/// <param name="musicSlot">The music slot.</param>
-		/// <param name="itemType">Type of the item.</param>
-		/// <param name="tileType">Type of the tile.</param>
-		/// <param name="tileFrameY">The tile frame y.</param>
-		/// <exception cref="System.ArgumentOutOfRangeException">
-		/// Cannot assign music box to vanilla music ID " + musicSlot
-		/// or
-		/// Music ID " + musicSlot + " does not exist
-		/// or
-		/// Cannot assign music box to vanilla item ID " + itemType
-		/// or
-		/// Item ID " + itemType + " does not exist
-		/// or
-		/// Cannot assign music box to vanilla tile ID " + tileType
-		/// or
-		/// Tile ID " + tileType + " does not exist
-		/// </exception>
-		/// <exception cref="System.ArgumentException">
-		/// Music ID " + musicSlot + " has already been assigned a music box
-		/// or
-		/// Item ID " + itemType + " has already been assigned a music
-		/// or
-		/// or
-		/// Y-frame must be divisible by 36
-		/// </exception>
-		public void AddMusicBox(int musicSlot, int itemType, int tileType, int tileFrameY = 0) {
-			if (!loading)
-				throw new Exception("AddMusicBox can only be called from Mod.Load or Mod.Autoload");
-
-			if (Main.audioSystem == null)
-				return;
-
-			if (musicSlot < Main.maxMusic) {
-				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla music ID " + musicSlot);
-			}
-			if (musicSlot >= SoundLoader.SoundCount(SoundType.Music)) {
-				throw new ArgumentOutOfRangeException("Music ID " + musicSlot + " does not exist");
-			}
-			if (itemType < ItemID.Count) {
-				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla item ID " + itemType);
-			}
-			if (ItemLoader.GetItem(itemType) == null) {
-				throw new ArgumentOutOfRangeException("Item ID " + itemType + " does not exist");
-			}
-			if (tileType < TileID.Count) {
-				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla tile ID " + tileType);
-			}
-			if (TileLoader.GetTile(tileType) == null) {
-				throw new ArgumentOutOfRangeException("Tile ID " + tileType + " does not exist");
-			}
-			if (SoundLoader.musicToItem.ContainsKey(musicSlot)) {
-				throw new ArgumentException("Music ID " + musicSlot + " has already been assigned a music box");
-			}
-			if (SoundLoader.itemToMusic.ContainsKey(itemType)) {
-				throw new ArgumentException("Item ID " + itemType + " has already been assigned a music");
-			}
-			if (!SoundLoader.tileToMusic.ContainsKey(tileType)) {
-				SoundLoader.tileToMusic[tileType] = new Dictionary<int, int>();
-			}
-			if (SoundLoader.tileToMusic[tileType].ContainsKey(tileFrameY)) {
-				string message = "Y-frame " + tileFrameY + " of tile type " + tileType + " has already been assigned a music";
-				throw new ArgumentException(message);
-			}
-			if (tileFrameY % 36 != 0) {
-				throw new ArgumentException("Y-frame must be divisible by 36");
-			}
-			SoundLoader.musicToItem[musicSlot] = itemType;
-			SoundLoader.itemToMusic[itemType] = musicSlot;
-			SoundLoader.tileToMusic[tileType][tileFrameY] = musicSlot;
-		}
-
-		/// <summary>
-		/// Registers a hotkey with a name and defaultKey. Use the returned ModHotKey to detect when buttons are pressed. Do this in a ModPlayer.ProcessTriggers.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="defaultKey">The default key.</param>
-		/// <returns></returns>
-		public ModHotKey RegisterHotKey(string name, string defaultKey) {
-			if (!loading)
-				throw new Exception("RegisterHotKey can only be called from Mod.Load or Mod.Autoload");
-
-			return HotKeyLoader.RegisterHotKey(new ModHotKey(this, name, defaultKey));
-		}
-
-		/// <summary>
-		/// Creates a ModTranslation object that you can use in AddTranslation.
-		/// </summary>
-		/// <param name="key">The key for the ModTranslation. The full key will be Mods.ModName.key</param>
-		public ModTranslation CreateTranslation(string key) =>
-			new ModTranslation(string.Format("Mods.{0}.{1}", Name, key));
-
-		/// <summary>
-		/// Adds a ModTranslation to the game so that you can use Language.GetText to get a LocalizedText.
-		/// </summary>
-		public void AddTranslation(ModTranslation translation) {
-			translations[translation.Key] = translation;
-		}
-
-		internal ModTranslation GetOrCreateTranslation(string key, bool defaultEmpty = false) {
-			key = key.Replace(" ", "_");
-			return translations.TryGetValue(key, out var translation) ? translation : new ModTranslation(key, defaultEmpty);
-		}
-
-		/// <summary>
 		/// Retrieve contents of files within the tmod file
 		/// </summary>
 		/// <param name="name">The name.</param>
@@ -444,81 +333,19 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public Stream GetFileStream(string name, bool newFileStream = false) => File?.GetStream(name, newFileStream);
 
-		/// <summary>
-		/// Shorthand for calling ModLoader.FileExists(this.FileName(name)). Note that file extensions are required here.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
 		public bool FileExists(string name) => File != null && File.HasFile(name);
 
-		/// <summary>
-		/// Shorthand for calling ModContent.GetTexture(this.FileName(name)).
-		/// </summary>
-		/// <exception cref="MissingResourceException"></exception>
-		public Asset<Texture2D> GetTexture(string name) => Assets.Request<Texture2D>(name);
+		public bool HasAsset(string assetName) => RootContentSource.HasAsset(assetName);
 
-		/// <summary>
-		/// Shorthand for calling ModLoader.TextureExists(this.FileName(name)).
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public bool TextureExists(string name) => Assets.HasAsset<Texture2D>(name);
+		public bool RequestAssetIfExists<T>(string assetName, out Asset<T> asset) where T : class {
+			if (!HasAsset(assetName)) {
+				asset = default;
+				return false;
+			}
 
-		/// <summary>
-		/// Shorthand for calling ModContent.GetSound(this.FileName(name)).
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		/// <exception cref="MissingResourceException"></exception>
-		public Asset<SoundEffect> GetSound(string name) => Assets.Request<SoundEffect>(name);
-		/// <summary>
-		/// Shorthand for calling ModLoader.SoundExists(this.FileName(name)).
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public bool SoundExists(string name) => Assets.HasAsset<SoundEffect>(name);
-
-		/// <summary>
-		/// Shorthand for calling ModContent.GetMusic(this.FileName(name)).
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		/// <exception cref="MissingResourceException"></exception>
-		public Music GetMusic(string name) {
-			if (!musics.TryGetValue(name, out var music))
-				throw new MissingResourceException(name);
-
-			return music;
+			asset = Assets.Request<T>(assetName);
+			return true;
 		}
-
-		/// <summary>
-		/// Shorthand for calling ModLoader.MusicExists(this.FileName(name)).
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public bool MusicExists(string name) => musics.ContainsKey(name);
-
-		/// <summary>
-		/// Gets a SpriteFont loaded from the specified path.
-		/// </summary>
-		/// <exception cref="MissingResourceException"></exception>
-		public Asset<DynamicSpriteFont> GetFont(string name) => Assets.Request<DynamicSpriteFont>(name);
-
-		/// <summary>
-		/// Used to check if a custom SpriteFont exists
-		/// </summary>
-		public bool FontExists(string name) => Assets.HasAsset<DynamicSpriteFont>(name);
-
-		/// <summary>
-		/// Gets an Effect loaded from the specified path.
-		/// </summary>
-		/// <exception cref="MissingResourceException"></exception>
-		public Asset<Effect> GetEffect(string name) => Assets.Request<Effect>(name);
-
-		/// <summary>
-		/// Used to check if a custom Effect exists
-		/// </summary>
-		public bool EffectExists(string name) => Assets.HasAsset<Effect>(name);
 
 		/// <summary>
 		/// Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.

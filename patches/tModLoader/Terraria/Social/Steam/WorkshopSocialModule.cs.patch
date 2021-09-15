@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/Social/Steam/WorkshopSocialModule.cs
++++ src/tModLoader/Terraria/Social/Steam/WorkshopSocialModule.cs
+@@ -9,7 +_,7 @@
+ 
+ namespace Terraria.Social.Steam
+ {
+-	public class WorkshopSocialModule : Terraria.Social.Base.WorkshopSocialModule
++	public partial class WorkshopSocialModule : Terraria.Social.Base.WorkshopSocialModule
+ 	{
+ 		private WorkshopHelper.UGCBased.Downloader _downloader;
+ 		private WorkshopHelper.UGCBased.PublishedItemsFinder _publishedItems;

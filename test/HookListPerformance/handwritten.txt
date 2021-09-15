@@ -1,0 +1,86 @@
+   134: 
+   135:         private static float HookDoEffect(float input, Instanced<GlobalItem>[] instances, int[] hookInds)
+   136:         {
+   137:             float result = 1;
+00007FFC8B4CA760 41 57                push        r15  
+00007FFC8B4CA762 41 56                push        r14  
+00007FFC8B4CA764 41 55                push        r13  
+00007FFC8B4CA766 41 54                push        r12  
+00007FFC8B4CA768 57                   push        rdi  
+00007FFC8B4CA769 56                   push        rsi  
+00007FFC8B4CA76A 55                   push        rbp  
+00007FFC8B4CA76B 53                   push        rbx  
+00007FFC8B4CA76C 48 83 EC 38          sub         rsp,38h  
+00007FFC8B4CA770 C5 F8 77             vzeroupper  
+00007FFC8B4CA773 C5 F8 29 74 24 20    vmovaps     xmmword ptr [rsp+20h],xmm6  
+00007FFC8B4CA779 48 8B F2             mov         rsi,rdx  
+00007FFC8B4CA77C C5 F8 28 F0          vmovaps     xmm6,xmm0  
+00007FFC8B4CA780 BF FF FF FF FF       mov         edi,0FFFFFFFFh  
+   140:             int i = 0;
+00007FFC8B4CA785 33 DB                xor         ebx,ebx  
+   141:             GlobalItem current = null;
+00007FFC8B4CA787 33 ED                xor         ebp,ebp  
+   142:             foreach (int globalIndex in hookInds)
+00007FFC8B4CA789 4D 8B F0             mov         r14,r8  
+00007FFC8B4CA78C 45 33 FF             xor         r15d,r15d  
+00007FFC8B4CA78F 45 8B 66 08          mov         r12d,dword ptr [r14+8]  
+00007FFC8B4CA793 45 85 E4             test        r12d,r12d  
+00007FFC8B4CA796 7E 57                jle         ConsoleApp2.Program.HookDoEffect(Single, Instanced`1<GlobalItem>[], Int32[])+08Fh (07FFC8B4CA7EFh)  
+00007FFC8B4CA798 49 63 C7             movsxd      rax,r15d  
+00007FFC8B4CA79B 45 8B 6C 86 10       mov         r13d,dword ptr [r14+rax*4+10h]  
+   143:             {
+   144:                 while (ii < globalIndex)
+00007FFC8B4CA7A0 41 3B FD             cmp         edi,r13d  
+00007FFC8B4CA7A3 7D 2F                jge         ConsoleApp2.Program.HookDoEffect(Single, Instanced`1<GlobalItem>[], Int32[])+074h (07FFC8B4CA7D4h)  
+00007FFC8B4CA7A5 8B 46 08             mov         eax,dword ptr [rsi+8]  
+   145:                 {
+   146:                     if (i == instances.Length)
+00007FFC8B4CA7A8 3B C3                cmp         eax,ebx  
+00007FFC8B4CA7AA 74 43                je          ConsoleApp2.Program.HookDoEffect(Single, Instanced`1<GlobalItem>[], Int32[])+08Fh (07FFC8B4CA7EFh)  
+   147:                         goto end;
+   148: 
+   149:                     var inst = instances[i++];
+00007FFC8B4CA7AC 8D 53 01             lea         edx,[rbx+1]  
+00007FFC8B4CA7AF 8B EA                mov         ebp,edx  
+00007FFC8B4CA7B1 3B D8                cmp         ebx,eax  
+00007FFC8B4CA7B3 73 5D                jae         ConsoleApp2.Program.HookDoEffect(Single, Instanced`1<GlobalItem>[], Int32[])+0B2h (07FFC8B4CA812h)  
+00007FFC8B4CA7B5 48 63 D3             movsxd      rdx,ebx  
+00007FFC8B4CA7B8 48 C1 E2 04          shl         rdx,4  
+00007FFC8B4CA7BC 48 8D 54 16 10       lea         rdx,[rsi+rdx+10h]  
+00007FFC8B4CA7C1 48 8B 0A             mov         rcx,qword ptr [rdx]  
+00007FFC8B4CA7C4 48 0F BF 7A 08       movsx       rdi,word ptr [rdx+8]  
+00007FFC8B4CA7C9 48 8B D9             mov         rbx,rcx  
+   143:             {
+   144:                 while (ii < globalIndex)
+00007FFC8B4CA7CC 41 3B FD             cmp         edi,r13d  
+00007FFC8B4CA7CF 7C 3D                jl          ConsoleApp2.Program.HookDoEffect(Single, Instanced`1<GlobalItem>[], Int32[])+0AEh (07FFC8B4CA80Eh)  
+00007FFC8B4CA7D1 48 87 DD             xchg        rbx,rbp  
+   152:                 }
+   153: 
+   154:                 if (ii == globalIndex)
+00007FFC8B4CA7D4 41 3B FD             cmp         edi,r13d  
+00007FFC8B4CA7D7 75 0E                jne         ConsoleApp2.Program.HookDoEffect(Single, Instanced`1<GlobalItem>[], Int32[])+087h (07FFC8B4CA7E7h)  
+   155:                     current.DoEffect(ref input);
+00007FFC8B4CA7D9 C5 CA 59 45 08       vmulss      xmm0,xmm6,dword ptr [rbp+8]  
+00007FFC8B4CA7DE E8 3D 69 DD 5F       call        00007FFCEB2A1120  
+00007FFC8B4CA7E3 C5 FA 59 F6          vmulss      xmm6,xmm0,xmm6  
+00007FFC8B4CA7E7 41 FF C7             inc         r15d  
+   142:             foreach (int globalIndex in hookInds)
+00007FFC8B4CA7EA 45 3B E7             cmp         r12d,r15d  
+00007FFC8B4CA7ED 7F A9                jg          ConsoleApp2.Program.HookDoEffect(Single, Instanced`1<GlobalItem>[], Int32[])+038h (07FFC8B4CA798h)  
+   156:             }
+   157: 
+   158:             end:
+   159:             return result;
+00007FFC8B4CA7EF C5 FA 10 05 29 00 00 00 vmovss      xmm0,dword ptr [ConsoleApp2.Program.HookDoEffect(Single, Instanced`1<GlobalItem>[], Int32[])+0C0h (07FFC8B4CA820h)]  
+00007FFC8B4CA7F7 C5 F8 28 74 24 20    vmovaps     xmm6,xmmword ptr [rsp+20h]  
+00007FFC8B4CA7FD 48 83 C4 38          add         rsp,38h  
+00007FFC8B4CA801 5B                   pop         rbx  
+00007FFC8B4CA802 5D                   pop         rbp  
+00007FFC8B4CA803 5E                   pop         rsi  
+00007FFC8B4CA804 5F                   pop         rdi  
+00007FFC8B4CA805 41 5C                pop         r12  
+00007FFC8B4CA807 41 5D                pop         r13  
+00007FFC8B4CA809 41 5E                pop         r14  
+00007FFC8B4CA80B 41 5F                pop         r15  
+00007FFC8B4CA80D C3                   ret  

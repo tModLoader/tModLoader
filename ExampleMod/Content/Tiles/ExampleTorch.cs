@@ -1,3 +1,4 @@
+using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,7 +16,7 @@ namespace ExampleMod.Content.Tiles
 	{
 		private Asset<Texture2D> flameTexture;
 
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// Properties
 			Main.tileLighted[Type] = true;
 			Main.tileFrameImportant[Type] = true;
@@ -49,7 +50,7 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.addAlternate(0);
 			TileObjectData.addTile(Type);
 
-			//Etc
+			// Etc
 			ModTranslation name = CreateMapEntryName();
 			
 			name.SetDefault("Torch");
@@ -58,7 +59,7 @@ namespace ExampleMod.Content.Tiles
 
 			// Assets
 			if (!Main.dedServ) {
-				flameTexture = ModContent.GetTexture("ExampleMod/Content/Tiles/ExampleTorch_Flame");
+				flameTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleTorch_Flame");
 			}
 		}
 
@@ -75,9 +76,8 @@ namespace ExampleMod.Content.Tiles
 
 			// The influence positive torch luck can have overall is 0.1 (if positive luck is any number less than 1) or 0.2 (if positive luck is greater than or equal to 1)
 
-			// TODO: when ExampleBiome is implemented, replace this with an actual biome check.
-			bool inExampleBiome = true;
-			return inExampleBiome ? 1f : -0.1f; // ExampleTorch gives maximum positive luck when in example biome, otherwise a small negative luck
+			bool inExampleUndergroundBiome = Main.LocalPlayer.InModBiome(ModContent.GetInstance<ExampleUndergroundBiome>());
+			return inExampleUndergroundBiome ? 1f : -0.1f; // ExampleTorch gives maximum positive luck when in example biome, otherwise a small negative luck
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num) => num = Main.rand.Next(1, 3);
@@ -94,7 +94,7 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) {
+		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
 			offsetY = 0;
 
 			if (WorldGen.SolidTile(i, j - 1)) {
@@ -125,7 +125,7 @@ namespace ExampleMod.Content.Tiles
 				zero = Vector2.Zero;
 			}
 
-			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); //Don't remove any casts.
+			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); // Don't remove any casts.
 			Color color = new Color(100, 100, 100, 0);
 			int width = 20;
 			int height = 20;
@@ -137,7 +137,7 @@ namespace ExampleMod.Content.Tiles
 				float xx = Utils.RandomInt(ref randSeed, -10, 11) * 0.15f;
 				float yy = Utils.RandomInt(ref randSeed, -10, 1) * 0.35f;
 
-				spriteBatch.Draw(flameTexture.Value, new Vector2(xx * 16 - (int)Main.screenPosition.X - (width - 16f) / 2f + xx, yy * 16 - (int)Main.screenPosition.Y + offsetY + yy) + zero, new Rectangle(frameX, frameY, width, height), color, 0f, default, 1f, SpriteEffects.None, 0f);
+				spriteBatch.Draw(flameTexture.Value, new Vector2(i * 16 - (int)Main.screenPosition.X - (width - 16f) / 2f + xx, j * 16 - (int)Main.screenPosition.Y + offsetY + yy) + zero, new Rectangle(frameX, frameY, width, height), color, 0f, default, 1f, SpriteEffects.None, 0f);
 			}
 		}
 	}

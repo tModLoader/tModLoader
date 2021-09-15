@@ -21,9 +21,6 @@ namespace Terraria.ModLoader
 		/// This value should be passed as the first parameter to Main.PlaySound whenever you want to play a custom sound that is not an item, npcHit, or npcKilled sound.
 		/// </summary>
 		public const int customSoundType = 50;
-		internal static readonly IDictionary<int, int> musicToItem = new Dictionary<int, int>();
-		internal static readonly IDictionary<int, int> itemToMusic = new Dictionary<int, int>();
-		internal static readonly IDictionary<int, IDictionary<int, int>> tileToMusic = new Dictionary<int, IDictionary<int, int>>();
 
 		static SoundLoader() {
 			foreach (SoundType type in Enum.GetValues(typeof(SoundType))) {
@@ -33,11 +30,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static int ReserveSoundID(SoundType type) {
-			int reserveID = nextSound[type];
-			nextSound[type]++;
-			return reserveID;
-		}
+		internal static int ReserveSoundID(SoundType type) => nextSound[type]++;
 
 		public static int SoundCount(SoundType type) {
 			return nextSound[type];
@@ -70,6 +63,9 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResizeAndFillArrays() {
+			if (!SoundEngine.IsAudioSupported)
+				return;
+
 			customSounds = new Asset<SoundEffect>[nextSound[SoundType.Custom]];
 			customSoundInstances = new SoundEffectInstance[nextSound[SoundType.Custom]];
 			
@@ -83,16 +79,12 @@ namespace Terraria.ModLoader
 			//Array.Resize(ref Main.musicFade, nextSound[SoundType.Music]);
 
 			foreach (SoundType type in Enum.GetValues(typeof(SoundType))) {
-				foreach (string sound in sounds[type].Keys) {
-					int slot = GetSoundSlot(type, sound);
+				foreach (string soundName in sounds[type].Keys) {
+					int slot = GetSoundSlot(type, soundName);
+					var sound = ModContent.Request<SoundEffect>(soundName, AssetRequestMode.ImmediateLoad);
 
-					if (type != SoundType.Music) {
-						GetSoundArray(type)[slot] = ModContent.GetSound(sound);
-						GetSoundInstanceArray(type)[slot] = GetSoundArray(type)[slot]?.Value.CreateInstance() ?? null;
-					}
-					else {
-						//Main.music[slot] = ModContent.GetMusic(sound) ?? null;
-					}
+					GetSoundArray(type)[slot] = sound;
+					GetSoundInstanceArray(type)[slot] = sound.Value.CreateInstance();
 				}
 			}
 		}
@@ -107,13 +99,13 @@ namespace Terraria.ModLoader
 				sounds[type].Clear();
 				modSounds[type].Clear();
 			}
-			musicToItem.Clear();
-			itemToMusic.Clear();
-			tileToMusic.Clear();
 		}
 		//in Terraria.Main.PlaySound before checking type to play sound add
 		//  if (SoundLoader.PlayModSound(type, num, num2, num3)) { return; }
 		internal static bool PlayModSound(int type, int style, float volume, float pan, ref SoundEffectInstance soundEffectInstance) {
+			if (!SoundEngine.IsAudioSupported)
+				return false;
+
 			SoundType soundType;
 			switch (type) {
 				case 2:
@@ -148,14 +140,15 @@ namespace Terraria.ModLoader
 					return SoundID.NPCHitCount;
 				case SoundType.NPCKilled:
 					return SoundID.NPCDeathCount;
-				case SoundType.Music:
-					return Main.maxMusic;
 			}
 
 			return 0;
 		}
 
 		internal static Asset<SoundEffect>[] GetSoundArray(SoundType type) {
+			if (!SoundEngine.IsAudioSupported)
+				return null;
+
 			switch (type) {
 				case SoundType.Custom:
 					return customSounds;
@@ -171,6 +164,9 @@ namespace Terraria.ModLoader
 		}
 
 		internal static SoundEffectInstance[] GetSoundInstanceArray(SoundType type) {
+			if (!SoundEngine.IsAudioSupported)
+				return null;
+
 			switch (type) {
 				case SoundType.Custom:
 					return customSoundInstances;

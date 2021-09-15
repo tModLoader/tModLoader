@@ -100,7 +100,10 @@ namespace Terraria.ModLoader.Core
 	</Target>
 </Project>";
 
-			var bytes = Encoding.UTF8.GetBytes(tModLoaderTargets);
+			byte[] bytes = Encoding.UTF8.GetBytes(tModLoaderTargets);
+
+			Directory.CreateDirectory(Path.GetDirectoryName(modTargetsPath));
+
 			if (!File.Exists(modTargetsPath) || !Enumerable.SequenceEqual(bytes, File.ReadAllBytes(modTargetsPath)))
 				File.WriteAllBytes(modTargetsPath, bytes);
 
@@ -165,6 +168,7 @@ namespace Terraria.ModLoader.Core
 
 		internal static void BuildModCommandLine(string modFolder)
 		{
+			// TODO: Build works even without build.txt or even a correct folder...
 			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
 			Lang.InitializeLegacyLocalization();
 
@@ -289,12 +293,15 @@ namespace Terraria.ModLoader.Core
 
 		private List<LocalMod> FindReferencedMods(BuildProperties properties)
 		{
+			//Determine the existing mods here, then just keep passing around the collection
+			var existingMods = ModOrganizer.FindMods().ToDictionary(mod => mod.modFile.Name, mod => mod);
+
 			var mods = new Dictionary<string, LocalMod>();
-			FindReferencedMods(properties, mods, true);
+			FindReferencedMods(properties, existingMods, mods, true);
 			return mods.Values.ToList();
 		}
 
-		private void FindReferencedMods(BuildProperties properties, Dictionary<string, LocalMod> mods, bool requireWeak)
+		private void FindReferencedMods(BuildProperties properties, Dictionary<string, LocalMod> existingMods, Dictionary<string, LocalMod> mods, bool requireWeak)
 		{
 			foreach (var refName in properties.RefNames(true)) {
 				if (mods.ContainsKey(refName))
@@ -303,9 +310,9 @@ namespace Terraria.ModLoader.Core
 				bool isWeak = properties.weakReferences.Any(r => r.mod == refName);
 				LocalMod mod;
 				try {
-					var modFile = new TmodFile(Path.Combine(ModLoader.ModPath, refName + ".tmod"));
-					using (modFile.Open())
-						mod = new LocalMod(modFile);
+					//If the file doesn't exist here, bail out immediately
+					if (!existingMods.TryGetValue(refName, out mod))
+						throw new FileNotFoundException($"Could not find \"{refName}.tmod\" in your subscribed Workshop mods nor the Mods folder");
 				}
 				catch (FileNotFoundException) when (isWeak && !requireWeak) {
 					// don't recursively require weak deps, if the mod author needs to compile against them, they'll have them installed
@@ -315,7 +322,7 @@ namespace Terraria.ModLoader.Core
 					throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorModReference", refName), ex);
 				}
 				mods[refName] = mod;
-				FindReferencedMods(mod.properties, mods, false);
+				FindReferencedMods(mod.properties, existingMods, mods, false);
 			}
 		}
 

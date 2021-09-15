@@ -1,0 +1,15 @@
+--- src/Terraria/Terraria/GameContent/UI/States/UIWorkshopSelectWorldToPublish.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UIWorkshopSelectWorldToPublish.cs
+@@ -23,6 +_,12 @@
+ 		private UIState _menuToGoBackTo;
+ 		private bool skipDraw;
+ 
++		// Added by TML.
++		public UIState PreviousUIState {
++			get => _menuToGoBackTo;
++			set => _menuToGoBackTo = value;
++		}
++
+ 		public UIWorkshopSelectWorldToPublish(UIState menuToGoBackTo) {
+ 			_menuToGoBackTo = menuToGoBackTo;
+ 		}

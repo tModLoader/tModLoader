@@ -14,13 +14,13 @@ namespace ExampleMod.Content
 
 		public override Asset<Texture2D> Logo => base.Logo;
 
-		public override Asset<Texture2D> SunTexture => ModContent.GetTexture($"{menuAssetPath}/ExampleSun");
+		public override Asset<Texture2D> SunTexture => ModContent.Request<Texture2D>($"{menuAssetPath}/ExampleSun");
 
-		public override Asset<Texture2D> MoonTexture => ModContent.GetTexture($"{menuAssetPath}/ExampliumMoon");
+		public override Asset<Texture2D> MoonTexture => ModContent.Request<Texture2D>($"{menuAssetPath}/ExampliumMoon");
 
 		/*public override int Music => Mod.GetSoundSlot(SoundType.Music, ""); TODO: Reimplement music loading */
 
-		/*public override ModSurfaceBgStyle MenuBackgroundStyle => Mod.GetSurfaceBgStyle(""); TODO: Reimplement backgrounds */
+		/*public override ModSurfaceBackgroundStyle MenuBackgroundStyle => Mod.GetSurfaceBackgroundStyle(""); TODO: Reimplement backgrounds */
 
 		public override string DisplayName => "Example ModMenu";
 

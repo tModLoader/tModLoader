@@ -33,13 +33,13 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
 		color.g = 1;
 	else if (choice == 2)
 		color.b = 1;
-		//color = float4(0, 0, 1, 1);
-	//else if (choice == 3)
+		// color = float4(0, 0, 1, 1);
+	// else if (choice == 3)
 	//   color = color;
 
 	return color;
 
-	//return color * tex2D(uImage0, coords).a;
+	// return color * tex2D(uImage0, coords).a;
 }
 
 technique Technique1
