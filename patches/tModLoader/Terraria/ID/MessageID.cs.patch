@@ -20,7 +20,7 @@
 +		//sent once the server has accepted the player and assigned an id
 +		//client connection state 1->2
 +		//client sends SyncPlayer, ClientUUID, PlayerHealth, PlayerMana, PlayerBuffs and SyncEquipment
-+		//tModLoader calls PlayerHooks.SyncPlayer
++		//tModLoader calls PlayerLoader.SyncPlayer
 +		//client sends RequestWorldInfo
 +		//client connection state 2->3
  		public const byte PlayerInfo = 3;

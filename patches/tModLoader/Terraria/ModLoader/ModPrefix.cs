@@ -26,7 +26,7 @@ namespace Terraria.ModLoader
 
 	public abstract class ModPrefix : ModType
 	{
-		public byte Type { get; internal set; }
+		public int Type { get; internal set; }
 
 		public ModTranslation DisplayName { get; internal set; }
 
@@ -39,26 +39,20 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModPrefix>.Register(this);
 
 			Type = PrefixLoader.ReservePrefixID();
-			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.Prefix.{Name}");
+			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Prefix.{Name}");
 
-			PrefixLoader.prefixes.Add(this);
-			PrefixLoader.categoryPrefixes[Category].Add(this);
+			PrefixLoader.RegisterPrefix(this);
 		}
 
 		public sealed override void SetupContent() {
-			AutoDefaults();
-			SetDefaults();
+			AutoStaticDefaults();
+			SetStaticDefaults();
 		}
 
-		public virtual void AutoDefaults() {
+		public virtual void AutoStaticDefaults() {
 			if (DisplayName.IsDefault())
 				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
 		}
-
-		/// <summary>
-		/// Allows you to set the prefix's name/translations and to set its category.
-		/// </summary>
-		public virtual void SetDefaults() { }
 
 		/// <summary>
 		/// The roll chance of your prefix relative to a vanilla prefix, 1f by default. 

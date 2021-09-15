@@ -3,11 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Biomes.CaveHouse;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
 
 namespace Terraria.ModLoader
@@ -66,7 +68,7 @@ namespace Terraria.ModLoader
 		private static DelegateSetSpriteEffects[] HookSetSpriteEffects;
 		private static Action[] HookAnimateTile;
 		private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
-		private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex);
+		private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData);
 		private static DelegateDrawEffects[] HookDrawEffects;
 		private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 		private static Action<int, int, int, SpriteBatch>[] HookSpecialDraw;
@@ -87,7 +89,7 @@ namespace Terraria.ModLoader
 		private static DelegateChangeWaterfallStyle[] HookChangeWaterfallStyle;
 		private delegate int DelegateSaplingGrowthType(int type, ref int style);
 		private static DelegateSaplingGrowthType[] HookSaplingGrowthType;
-		private static Action<int, int, Item>[] HookPlaceInWorld;
+		private static Action<int, int, int, Item>[] HookPlaceInWorld;
 
 		internal static int ReserveTileID() {
 			if (ModNet.AllowVanillaClients) throw new Exception("Adding tiles breaks vanilla client compatibility");
@@ -231,16 +233,24 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			loaded = false;
-			tiles.Clear();
 			nextTile = TileID.Count;
+
+			tiles.Clear();
 			globalTiles.Clear();
 			trees.Clear();
 			palmTrees.Clear();
 			cacti.Clear();
+
+			// Has to be ran on the main thread, since this may dispose textures.
+			Main.QueueMainThreadAction(() => {
+				Main.instance.TilePaintSystem.Reset();
+			});
+
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsChair, vanillaChairCount);
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTable, vanillaTableCount);
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTorch, vanillaTorchCount);
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsDoor, vanillaDoorCount);
+			
 			while (TileObjectData._data.Count > TileID.Count) {
 				TileObjectData._data.RemoveAt(TileObjectData._data.Count - 1);
 			}
@@ -363,8 +373,8 @@ namespace Terraria.ModLoader
 		public static string ContainerName(int type) => GetTile(type)?.ContainerName?.GetTranslation(Language.ActiveCulture) ?? string.Empty;
 
 		public static bool IsModMusicBox(Tile tile) {
-			return SoundLoader.tileToMusic.ContainsKey(tile.type)
-			&& SoundLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
+			return MusicLoader.tileToMusic.ContainsKey(tile.type)
+			&& MusicLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
 		}
 
 		public static bool HasSmartInteract(int type) {
@@ -501,7 +511,7 @@ namespace Terraria.ModLoader
 		}
 
 		public static void ModifyTorchLuck(Player player, ref float positiveLuck, ref float negativeLuck) {
-			foreach (int type in player.nearbyModTorch) {
+			foreach (int type in player.NearbyModTorch) {
 				float f = GetTile(type).GetTorchLuck(player);
 				if (f > 0)
 					positiveLuck += f;
@@ -542,9 +552,9 @@ namespace Terraria.ModLoader
 				hook(i, j, type, ref spriteEffects);
 			}
 		}
-		//in Terraria.Main.DrawTiles after if statements setting num11 and num12 call
-		//  TileLoader.SetDrawPositions(j, i, ref num9, ref num11, ref num12);
-		public static void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) {
+		//in Terraria.GameContent.Drawing.TileDrawing.GetTileDrawData before if statements checking tileCache.halfBrick()
+		//  TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight, ref tileFrameX, ref tileFrameY);
+		public static void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
 			Tile tile = Main.tile[i, j];
 			if (tile.type >= TileID.Count) {
 				TileObjectData tileData = TileObjectData.GetTileData(tile.type, 0, 0);
@@ -559,7 +569,7 @@ namespace Terraria.ModLoader
 					offsetY = tileData.DrawYOffset;
 					height = tileData.CoordinateHeights[partY];
 				}
-				GetTile(tile.type).SetDrawPositions(i, j, ref width, ref offsetY, ref height);
+				GetTile(tile.type).SetDrawPositions(i, j, ref width, ref offsetY, ref height, ref tileFrameX, ref tileFrameY);
 			}
 		}
 		//in Terraria.Main.Update after vanilla tile animations call TileLoader.AnimateTiles();
@@ -575,8 +585,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		//in Terraria.Main.Draw after small if statements setting num15 call
-		//  TileLoader.SetAnimationFrame(type, ref num15);
+		//in Terraria.GameContent.Drawing.TileDrawing.DrawSingleTile after GetTileDrawData() call
+		//  TileLoader.SetAnimationFrame(drawData.typeCache, tileX, tileY, ref drawData.addFrX, ref drawData.addFrY);
 		/// <summary>
 		/// Sets the animation frame. Sets frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type]; and then calls ModTile.AnimateIndividualTile
 		/// </summary>
@@ -593,9 +603,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		//in Terraria.Main.Draw after calling SetAnimationFrame call
-		//  if(!TileLoader.PreDraw(j, i, type, Main.spriteBatch))
-		//  { TileLoader.PostDraw(j, i, type, Main.spriteBatch); continue; }
+		//in Terraria.GameContent.Drawing.TileDrawing.DrawSingleTile after calling SetAnimationFrame call
+		//  if (!TileLoader.PreDraw(tileX, tileY, drawData.typeCache, Main.spriteBatch))
+		//  { TileLoader.PostDraw(tileX, tileY, drawData.typeCache, Main.spriteBatch); return; }
 		public static bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch) {
 			foreach (var hook in HookPreDraw) {
 				if (!hook(i, j, type, spriteBatch)) {
@@ -605,13 +615,17 @@ namespace Terraria.ModLoader
 			return GetTile(type)?.PreDraw(i, j, spriteBatch) ?? true;
 		}
 
-		public static void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) {
-			GetTile(type)?.DrawEffects(i, j, spriteBatch, ref drawColor, ref nextSpecialDrawIndex);
+		//in Terraria.GameContent.Drawing.TileDrawing after ShroomCap draw call, before color < check
+		//  TileLoader.DrawEffects(tileX, tileY, drawData.typeCache, Main.spriteBatch, ref drawData);
+		//1.3: drawColor corresponds to drawData.tileLight
+		public static void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
+			GetTile(type)?.DrawEffects(i, j, spriteBatch, ref drawData);
 			foreach (var hook in HookDrawEffects) {
-				hook(i, j, type, spriteBatch, ref drawColor, ref nextSpecialDrawIndex);
+				hook(i, j, type, spriteBatch, ref drawData);
 			}
 		}
-		//in Terraria.Main.Draw after if statement checking whether texture2D is null call
+
+		//in Terraria.GameContent.Drawing.TileDrawing.DrawSingleTile after if statement checking whether highlightTexture is null call
 		//  TileLoader.PostDraw(j, i, type, Main.spriteBatch);
 		public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch) {
 			GetTile(type)?.PostDraw(i, j, spriteBatch);
@@ -621,14 +635,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		//in Terraria.GameContent.Drawing.TileDrawing at the end of the loop in DrawSpecialTilesLegacy call
+		//  TileLoader.SpecialDraw(type, num, num2, Main.spriteBatch);
 		/// <summary>
-		/// Special Draw calls ModTile and GlobalTile SpecialDraw methods. Special Draw is called from DrawTiles after the draw loop, allowing for basically another layer above tiles.  Main.specX and Main.specY are used to specify tiles to call SpecialDraw on. Use DrawEffects hook to queue for SpecialDraw. 
+		/// Special Draw calls ModTile and GlobalTile SpecialDraw methods. Special Draw is called at the end of the DrawSpecialTilesLegacy loop, allowing for basically another layer above tiles. Use DrawEffects hook to queue for SpecialDraw. 
 		/// </summary>
-		public static void SpecialDraw(int type, int specX, int specY, SpriteBatch spriteBatch) {
-			GetTile(type)?.SpecialDraw(specX, specY, spriteBatch);
+		public static void SpecialDraw(int type, int specialTileX, int specialTileY, SpriteBatch spriteBatch) {
+			GetTile(type)?.SpecialDraw(specialTileX, specialTileY, spriteBatch);
 
 			foreach (var hook in HookSpecialDraw) {
-				hook(specX, specY, type, spriteBatch);
+				hook(specialTileX, specialTileY, type, spriteBatch);
 			}
 		}
 
@@ -678,8 +694,10 @@ namespace Terraria.ModLoader
 				damage = 0;
 			}
 		}
-		//in Terraria.Player.PlaceThing after tileObject is initalized add else to if statement and before add
+		//in Terraria.Player.PlaceThing_Tiles after tileObject is initalized add else to if statement and before add
 		//  if(!TileLoader.CanPlace(Player.tileTargetX, Player.tileTargetY)) { }
+		//and in Terraria.Player.PlaceThing_TryReplacingTiles after WorldGen.IsTileReplacable add
+		//  if (!TileLoader.CanPlace(tileTargetX, tileTargetY, HeldItem.createTile)) return false
 		public static bool CanPlace(int i, int j, int type) {
 			foreach (var hook in HookCanPlace) {
 				if (!hook(i, j, type)) {
@@ -819,9 +837,11 @@ namespace Terraria.ModLoader
 			int originalStyle = style;
 			bool flag = false;
 			ModTile modTile = GetTile(type);
+
 			if (modTile != null) {
 				saplingType = modTile.SaplingGrowthType(ref style);
-				if (TileID.Sets.TreeSapling[saplingType]) {
+
+				if (saplingType >= 0 && TileID.Sets.TreeSapling[saplingType]) {
 					originalType = saplingType;
 					originalStyle = style;
 					flag = true;
@@ -831,9 +851,11 @@ namespace Terraria.ModLoader
 					style = originalStyle;
 				}
 			}
+
 			foreach (var hook in HookSaplingGrowthType) {
 				saplingType = hook(type, ref style);
-				if (TileID.Sets.TreeSapling[saplingType]) {
+
+				if (saplingType >= 0 && TileID.Sets.TreeSapling[saplingType]) {
 					originalType = saplingType;
 					originalStyle = style;
 					flag = true;
@@ -843,6 +865,7 @@ namespace Terraria.ModLoader
 					style = originalStyle;
 				}
 			}
+
 			return flag;
 		}
 
@@ -917,7 +940,7 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool CanGrowModCactus(int type) {
-			return cacti.ContainsKey(type);
+			return cacti.ContainsKey(type) || TileIO.Tiles.unloadedTypes.Contains((ushort)type);
 		}
 
 		public static Texture2D GetCactusTexture(int type) {
@@ -930,7 +953,7 @@ namespace Terraria.ModLoader
 				return;
 
 			foreach (var hook in HookPlaceInWorld) {
-				hook(i, j, item);
+				hook(i, j, type, item);
 			}
 
 			GetTile(type)?.PlaceInWorld(i, j, item);

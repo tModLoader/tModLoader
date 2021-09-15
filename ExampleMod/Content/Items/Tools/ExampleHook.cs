@@ -12,6 +12,7 @@ namespace ExampleMod.Content.Items.Tools
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Hook"); // The item's name in-game.
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1; // Amount of this item needed to research and become available in Journey mode's duplication menu. Amount based on vanilla hooks' amount needed
 		}
 
@@ -35,19 +36,14 @@ namespace ExampleMod.Content.Items.Tools
 	{
 		private static Asset<Texture2D> chainTexture; 
 
-		public override void Load() { //This is called once on mod (re)load when this piece of content is being loaded.
+		public override void Load() { // This is called once on mod (re)load when this piece of content is being loaded.
 			// This is the path to the texture that we'll use for the hook's chain. Make sure to update it.
-			chainTexture = ModContent.GetTexture("ExampleMod/Content/Items/Tools/ExampleHookChain");
+			chainTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Items/Tools/ExampleHookChain");
 		}
 
-		public override void Unload() { //This is called once on mod reload when this piece of content is being unloaded.
-			// Disposes the texture, if it's not null.
+		public override void Unload() { // This is called once on mod reload when this piece of content is being unloaded.
 			// It's currently pretty important to unload your static fields like this, to avoid having parts of your mod remain in memory when it's been unloaded.
-			if (chainTexture != null) {
-				chainTexture.Dispose();
-
-				chainTexture = null;
-			}
+			chainTexture = null;
 		}
 
 		public override void SetStaticDefaults() {
@@ -71,15 +67,15 @@ namespace ExampleMod.Content.Items.Tools
 		}
 
 		// Return true if it is like: Hook, CandyCaneHook, BatHook, GemHooks
-		//public override bool? SingleGrappleHook(Player player)
-		//{
+		// public override bool? SingleGrappleHook(Player player)
+		// {
 		//	return true;
-		//}
+		// }
 
 		// Use this to kill oldest hook. For hooks that kill the oldest when shot, not when the newest latches on: Like SkeletronHand
 		// You can also change the projectile like: Dual Hook, Lunar Hook
-		//public override void UseGrapple(Player player, ref int type)
-		//{
+		// public override void UseGrapple(Player player, ref int type)
+		// {
 		//	int hooksOut = 0;
 		//	int oldestHookIndex = -1;
 		//	int oldestHookTimeLeft = 100000;
@@ -99,7 +95,7 @@ namespace ExampleMod.Content.Items.Tools
 		//	{
 		//		Main.projectile[oldestHookIndex].Kill();
 		//	}
-		//}
+		// }
 
 		// Amethyst Hook is 300, Static Hook is 600.
 		public override float GrappleRange() {
@@ -119,7 +115,7 @@ namespace ExampleMod.Content.Items.Tools
 			speed = 10; // How fast you get pulled to the grappling hook projectile's landing position
 		}
 		
-		// Comments needed for this one
+		// Adjusts the position that the player will be pulled towards. This will make them hang 50 pixels away from the tile being grappled.
 		public override void GrappleTargetPoint(Player player, ref float grappleX, ref float grappleY) {
 			Vector2 dirToPlayer = Projectile.DirectionTo(player.Center);
 			float hangDist = 50f;
@@ -127,29 +123,31 @@ namespace ExampleMod.Content.Items.Tools
 			grappleY += dirToPlayer.Y * hangDist;
 		}
 
-		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
+		// Draws the grappling hook's chain.
+		public override bool PreDrawExtras() {
 			Vector2 playerCenter = Main.player[Projectile.owner].MountedCenter;
 			Vector2 center = Projectile.Center;
-			Vector2 distToProj = playerCenter - Projectile.Center;
-			float projRotation = distToProj.ToRotation() - MathHelper.PiOver2;
-			float distance = distToProj.Length();
+			Vector2 directionToPlayer = playerCenter - Projectile.Center;
+			float chainRotation = directionToPlayer.ToRotation() - MathHelper.PiOver2;
+			float distanceToPlayer = directionToPlayer.Length();
 
-			while (distance > 30f && !float.IsNaN(distance)) {
-				distToProj.Normalize(); //get unit vector
-				distToProj *= 24f; //speed = 24
+			while (distanceToPlayer > 20f && !float.IsNaN(distanceToPlayer)) {
+				directionToPlayer /= distanceToPlayer; // get unit vector
+				directionToPlayer *= chainTexture.Height(); // multiply by chain link length
 
-				center += distToProj; //update draw position
-				distToProj = playerCenter - center; //update distance
-				distance = distToProj.Length();
+				center += directionToPlayer; // update draw position
+				directionToPlayer = playerCenter - center; // update distance
+				distanceToPlayer = directionToPlayer.Length();
 
-				Color drawColor = lightColor;
+				Color drawColor = Lighting.GetColor((int)center.X / 16, (int)(center.Y / 16));
 
-				//Draw chain
-				spriteBatch.Draw(chainTexture.Value, new Vector2(center.X - Main.screenPosition.X, center.Y - Main.screenPosition.Y),
-					new Rectangle(0, 0, chainTexture.Width(), chainTexture.Height()), drawColor, projRotation,
-					chainTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0f);
+				// Draw chain
+				Main.EntitySpriteDraw(chainTexture.Value, center - Main.screenPosition,
+					chainTexture.Value.Bounds, drawColor, chainRotation,
+					chainTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0);
 			}
-			return true;
+			// Stop vanilla from drawing the default chain.
+			return false;
 		}
 	}
 }

@@ -12,6 +12,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Annoying Light");
 			Tooltip.SetDefault("Summons an annoying light");
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 

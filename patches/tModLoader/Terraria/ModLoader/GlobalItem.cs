@@ -26,6 +26,8 @@ namespace Terraria.ModLoader
 			ItemLoader.globalItems.Add(this);
 		}
 
+		public sealed override void SetupContent() => SetStaticDefaults();
+
 		public GlobalItem Instance(Item item) => Instance(item.globalItems, index);
 
 		/// <summary>
@@ -101,19 +103,24 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to change the effective useTime of an item.
+		/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
 		/// </summary>
-		/// <returns>The multiplier on the usage speed. 1f by default. Values greater than 1 increase the item speed.</returns>
-		public virtual float UseTimeMultiplier(Item item, Player player) {
-			return 1f;
-		}
+		/// <returns> The multiplier on the usage time. 1f by default. Values greater than 1 increase the item use's length. </returns>
+		public virtual float UseTimeMultiplier(Item item, Player player) => 1f;
 
 		/// <summary>
 		/// Allows you to change the effective useAnimation of an item.
+		/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
 		/// </summary>
-		/// <returns>The multiplier on the animation speed. 1f by default. Values greater than 1 increase the item speed.</returns>
-		public virtual float MeleeSpeedMultiplier(Item item, Player player) {
-			return 1f;
-		}
+		/// <returns>The multiplier on the animation time. 1f by default. Values greater than 1 increase the item animation's length. </returns>
+		public virtual float UseAnimationMultiplier(Item item, Player player) => 1f;
+
+		/// <summary>
+		/// Allows you to safely change both useTime and useAnimation while keeping the values relative to each other.
+		/// <br/> Useful for status effects.
+		/// </summary>
+		/// <returns> The multiplier on the use speed. 1f by default. Values greater than 1 increase the overall item speed. </returns>
+		public virtual float UseSpeedMultiplier(Item item, Player player) => 1f;
 
 		/// <summary>
 		/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
@@ -254,7 +261,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to add additional projectiles to an item's shooting mechanism.
+		/// Allows you to modify an item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.
 		/// </summary>
 		/// <param name="item"> The item being used. </param>
 		/// <param name="player"> The player using the item. </param>
@@ -264,7 +271,8 @@ namespace Terraria.ModLoader
 		/// <param name="type"> The ID of the projectile. </param>
 		/// <param name="damage"> The damage of the projectile. </param>
 		/// <param name="knockback"> The knockback of the projectile. </param>
-		public virtual void Shoot(Item item, Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public virtual bool Shoot(Item item, Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			return true;
 		}
 
 		/// <summary>
@@ -318,11 +326,17 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when an item is used. Return true if using the item actually does stuff. Returns false by default.
+		/// Allows you to make things happen when an item is used. The return value controls whether or not ApplyItemTime will be called for the player.
+		/// <br/> Return true if the item actually did something, to force itemTime.
+		/// <br/> Return false to keep itemTime at 0.
+		/// <br/> Return null for vanilla behavior.
 		/// </summary>
-		public virtual bool UseItem(Item item, Player player) {
-			return false;
-		}
+		public virtual bool? UseItem(Item item, Player player) => null;
+
+		/// <summary>
+		/// Allows you to make things happen when an item's use animation starts.
+		/// </summary>
+		public virtual void UseAnimation(Item item, Player player) { }
 
 		/// <summary>
 		/// If the item is consumable and this returns true, then the item will be consumed upon usage. Returns true by default.
@@ -480,7 +494,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to make vanilla bags drop your own items and stop the default items from being dropped. 
 		/// Return false to stop the default items from being dropped; returns true by default. 
-		/// Context will either be "present", "bossBag", "crate", "lockBox", "herbBag", or "goodieBag". 
+		/// Context will either be "present", "bossBag", "crate", "lockBox", "obsidianLockBox", "herbBag", or "goodieBag". 
 		/// For boss bags and crates, arg will be set to the type of the item being opened.
 		/// This method is also called for modded bossBags that are properly implemented.
 		/// 
@@ -493,7 +507,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to make vanilla bags drop your own items in addition to the default items.
 		/// This method will not be called if any other GlobalItem returns false for PreOpenVanillaBag.
-		/// Context will either be "present", "bossBag", "crate", "lockBox", "herbBag", or "goodieBag".
+		/// Context will either be "present", "bossBag", "crate", "lockBox", "obsidianLockBox", "herbBag", or "goodieBag".
 		/// For boss bags and crates, arg will be set to the type of the item being opened.
 		/// This method is also called for modded bossBags that are properly implemented.
 		/// 

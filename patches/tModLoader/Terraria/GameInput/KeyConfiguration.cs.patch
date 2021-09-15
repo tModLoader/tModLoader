@@ -21,7 +21,7 @@
  				KeyStatus.Add(knownTrigger, new List<string>());
  			}
 +
-+			foreach (var current in HotKeyLoader.HotKeys) {
++			foreach (var current in KeybindLoader.Keybinds) {
 +				KeyStatus.Add(current.uniqueName, new List<string>());
 +			}
  		}
@@ -42,7 +42,7 @@
 -				}
 +				if (KeyStatus.ContainsKey(item.Key))
 +					KeyStatus[item.Key] = new List<string>(item.Value);
-+				else if (item.Key.Contains(":")) // This preserves unloaded mod hotkey values
++				else if (item.Key.Contains(":")) // This preserves unloaded mod keybind values
 +					UnloadedModKeyStatus[item.Key] = new List<string>(item.Value);
  			}
  		}

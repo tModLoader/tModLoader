@@ -29,6 +29,8 @@ namespace Terraria
 		public static bool hidePlayerCraftingMenu;
 		public static bool showServerConsole;
 		public static bool Support8K = true; // provides an option to disable 8k (but leave 4k)
+		public static double desiredWorldEventsUpdateRate; // dictates the speed at which world events (falling stars, fairy spawns, sandstorms, etc.) can change/happen
+		public static double timePass; // used to account for more precise time rates when deciding when to update weather
 
 		internal static TMLContentManager AlternateContentManager;
 
@@ -100,6 +102,20 @@ namespace Terraria
 				spriteBatch.Draw(buttonTexture, buttonPosition, new Rectangle(0, 0, buttonTexture.Width, buttonTexture.Height), Color.White, 0f, default, 1f, SpriteEffects.FlipHorizontally, 0f);
 				if (hovering)
 					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition - Vector2.One * 2f, null, OurFavoriteColor, 0f, default, 1f, SpriteEffects.None, 0f);
+			}
+		}
+
+		//Mirrors code used in UpdateTime
+		/// <summary>
+		/// Syncs rain state if <see cref="StartRain"/> or <see cref="StopRain"/> were called in the same tick and caused a change to <seealso cref="maxRaining"/>.
+		/// <br>Can be called on any side, but only the server will actually sync it.</br>
+		/// </summary>
+		public static void SyncRain() {
+			if (maxRaining != oldMaxRaining) {
+				if (netMode == 2)
+					NetMessage.SendData(7);
+
+				oldMaxRaining = maxRaining;
 			}
 		}
 	}

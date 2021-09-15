@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Tiles
 {
 	public class ExampleOre : ModTile
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			TileID.Sets.Ore[Type] = true;
 			Main.tileSpelunker[Type] = true; // The tile will be affected by spelunker highlighting
 			Main.tileOreFinderPriority[Type] = 410; // Metal Detector value, see https://terraria.gamepedia.com/Metal_Detector
@@ -28,8 +28,8 @@ namespace ExampleMod.Content.Tiles
 			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleOre>();
 			SoundType = SoundID.Tink;
 			SoundStyle = 1;
-			//mineResist = 4f;
-			//minPick = 200;
+			// mineResist = 4f;
+			// minPick = 200;
 		}
 	}
 

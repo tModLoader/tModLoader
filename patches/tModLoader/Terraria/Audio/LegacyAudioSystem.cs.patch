@@ -8,6 +8,29 @@
  
  namespace Terraria.Audio
  {
+@@ -68,17 +_,19 @@
+ 					continue;
+ 
+ 				string extension = contentSource.GetExtension(assetPath);
++				string assetPathWithExtension = assetPath + extension;
++
+ 				try {
+ 					IAudioTrack audioTrack2 = null;
+ 					switch (extension) {
+ 						case ".ogg":
+-							audioTrack2 = new OGGAudioTrack(contentSource.OpenStream(assetPath));
++							audioTrack2 = new OGGAudioTrack(contentSource.OpenStream(assetPathWithExtension));
+ 							break;
+ 						case ".wav":
+-							audioTrack2 = new WAVAudioTrack(contentSource.OpenStream(assetPath));
++							audioTrack2 = new WAVAudioTrack(contentSource.OpenStream(assetPathWithExtension));
+ 							break;
+ 						case ".mp3":
+-							audioTrack2 = new MP3AudioTrack(contentSource.OpenStream(assetPath));
++							audioTrack2 = new MP3AudioTrack(contentSource.OpenStream(assetPathWithExtension));
+ 							break;
+ 					}
+ 
 @@ -98,10 +_,12 @@
  		}
  
@@ -19,17 +42,26 @@
 +			Engine = new AudioEngine(contentManager.GetPath("TerrariaMusic.xgs"));
 +			SoundBank = new SoundBank(Engine, contentManager.GetPath("Sound Bank.xsb"));
  			Engine.Update();
--			WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb", 0, 512);
-+			WaveBank = new WaveBank(Engine, contentManager.GetPath("Wave Bank.xwb"), 0, 512);
+-			WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb"); //, 0, 512); // Removing those 2 parameters fixes music not looping on FNA.
++			WaveBank = new WaveBank(Engine, contentManager.GetPath("Wave Bank.xwb")); //, 0, 512); // Removing those 2 parameters fixes music not looping on FNA.
  			Engine.Update();
  			AudioTracks = new IAudioTrack[90];
  			TrackNamesByIndex = new Dictionary<int, string>();
-@@ -114,6 +_,8 @@
- 				yield return null;
+@@ -115,6 +_,8 @@
  			}
  		}
-+
-+		internal Cue GetCueInternal(string cueName) => SoundBank.GetCue(cueName);
  
++		internal Cue GetCueInternal(string cueName) => SoundBank.GetCue(cueName);
++
  		public void LoadCue(int cueIndex, string cueName) {
  			CueAudioTrack cueAudioTrack = new CueAudioTrack(SoundBank, cueName);
+ 			TrackNamesByIndex[cueIndex] = cueName;
+@@ -244,7 +_,7 @@
+ 		}
+ 
+ 		public void UpdateCommonTrackTowardStopping(int i, float totalVolume, ref float tempFade, bool isMainTrackAudible) {
+-			if (!WaveBank.IsPrepared)
++			if (!WaveBank.IsPrepared || AudioTracks[i] is null) // should never really be null, save for some in-between loading if music is forced to play before mod loading is complete
+ 				return;
+ 
+ 			if (AudioTracks[i].IsPlaying || !AudioTracks[i].IsStopped) {

@@ -1,12 +1,12 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -2,69 +_,139 @@
+@@ -2,69 +_,151 @@
    <Import Project="../Configuration.targets" />
    <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
 -    <OutputType>WinExe</OutputType>
 +    <OutputType>Exe</OutputType>
-     <Version>1.4.2.2</Version>
+     <Version>1.4.2.3</Version>
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2021 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
@@ -38,15 +38,14 @@
    </PropertyGroup>
    <ItemGroup>
      <Reference Include="CsvHelper" />
-     <Reference Include="FNA" />
+-    <Reference Include="FNA" />
 -    <Reference Include="Ionic.Zip.CF" />
--    <Reference Include="MP3Sharp" Condition="$(DefineConstants.Contains('CLIENT'))" />
-+    <Reference Include="MP3Sharp" />
+     <Reference Include="MP3Sharp" />
 +    <Reference Include="Ionic.Zip.Reduced" />
 +    <Reference Include="log4net" />
 +    <Reference Include="NVorbis" />    
      <Reference Include="Newtonsoft.Json" />
--    <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
+-    <Reference Include="NVorbis" />
      <Reference Include="RailSDK.Net" />
 -    <ProjectReference Include="../ReLogic/ReLogic.csproj">
 -      <Private>false</Private>
@@ -56,10 +55,8 @@
 -      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
 -    </EmbeddedResource>
 +    <Reference Include="TerrariaHooks" />
-+      <ProjectReference Include="../ReLogic/ReLogic.csproj">
-+          <!--Version has to match deps.json and project version. Hardcode here as resolving from metadata is difficult without custom Task. Specifically, getting the pdb to output in the right directory-->
-+          <DestinationSubDirectory>Libraries/ReLogic/1.0.0/</DestinationSubDirectory>
-+      </ProjectReference>
++    <ProjectReference Include="../ReLogic/ReLogic.csproj" />
++    <ProjectReference Include="..\..\..\FNA\FNA.csproj" />
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
 -    <Reference Update="@(Reference)">
@@ -86,16 +83,16 @@
      <None Remove="Libraries/XNA/**" />
      <None Remove="Libraries/net40/**" />
 -    <None Update="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
-+      <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest"/>
++    <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
 +  </ItemGroup>
 +  <ItemGroup>
-+    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.4.21.3" />
-+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" />
-+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.7.0" />
++    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.8.19.1" />
++    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.9.0" />
++    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.9.0" />
 +    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
 +    <PackageReference Include="System.CodeDom" Version="5.0.0" />
 +    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.1" />
++    <PackageReference Include="Hjson" Version="3.0.0" />
    </ItemGroup>
    <Target Name="CopyToSteamDir" AfterTargets="Build">
 +    <!-- Export the ReleaseExtras files to bin -->
@@ -103,20 +100,22 @@
 +      <RuntimeFiles Include="../../../solutions\ReleaseExtras\RuntimeFiles\**" />
 +      <SteamFiles Include="../../../solutions\ReleaseExtras\SteamFiles\**" />
 +    </ItemGroup>
-+    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True"/>
-+    <Copy SourceFiles="@(SteamFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True"/>
++    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True" />
++    <Copy SourceFiles="@(SteamFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True" />
 +    <!-- NOTE: below only works on the second time that debugging is run. Can delete directory in CompleteRelease.bat for now-->
 +    <!--RemoveDir Directories="$(TargetDir)\ref" /-->
++    <!-- Deal with Abnormal Managed Libaries that require deployment assembly replacements for varying architectures-->
++    <Copy SourceFiles="Libraries\Common\UNIX.Steamworks.NET.dll" DestinationFolder="$(TargetDir)\PlatformVariantLibs" SkipUnchangedFiles="True" />
 +    <!-- copy files systematically to output folder -->
      <ItemGroup>
        <BinFiles Include="$(TargetDir)**" />
      </ItemGroup>
      <Message Text="Copying $(AssemblyName) to Steam Dir..." Importance="high" />
 -    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)/%(RecursiveDir)" />
-+    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" SkipUnchangedFiles="True"/>
++    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" SkipUnchangedFiles="True" />
 +    <!-- todo, purge old libraries on other platforms -->
 +    <Exec Command="robocopy &quot;$(TargetDir)Libraries&quot; &quot;$(tModLoaderSteamPath)\Libraries&quot; /MIR" ContinueOnError="true" StandardOutputImportance="low" Condition="'$(OS)' == 'Windows_NT'">
-+      <Output TaskParameter="ExitCode" PropertyName="PurgeExitCode"/>
++      <Output TaskParameter="ExitCode" PropertyName="PurgeExitCode" />
 +    </Exec>
 +    <Warning Text="\Libraries file purge failed (robocopy /MIR Exit Code: $(PurgeExitCode)). Old files may not be removed." Condition="'$(PurgeExitCode)' != 2 AND '$(PurgeExitCode)' != 0" />
 +  </Target>
@@ -147,9 +146,22 @@
 +      <!--Note that associated files, like pdbs/xmls won't be resolved properly here. Prefer nuget packages for that-->
 +      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
 +        <DirectoryVersion>$([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').Remove($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(", C"))).Substring($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(","))).Substring(10))</DirectoryVersion>
-+        </ReferenceCopyLocalPaths>
++      </ReferenceCopyLocalPaths>
 +      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
 +        <DestinationSubDirectory>Libraries\%(ReferenceCopyLocalPaths.OriginalItemSpec)\%(ReferenceCopyLocalPaths.DirectoryVersion)\</DestinationSubDirectory>
++      </ReferenceCopyLocalPaths>
++    </ItemGroup>
++  </Target>
++  <Target Name="RedirectProjectReferencesToLib" AfterTargets="ResolveAssemblyReferences">
++    <ItemGroup>
++      <!--Version is bugged in deps.json for ProjectReferences, doesn't reflect AssemblyVersion for whatever reason. Uses 1.0.0-->
++      <!--As well, FusionName isn't available, so alternate string manipulation to get Name-->
++      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ProjectReference'">
++        <VersionHack>1.0.0</VersionHack>
++        <DllName>$([System.String]::Copy('%(ReferenceCopyLocalPaths.ResolvedFrom)').Remove($([System.String]::Copy('%(ReferenceCopyLocalPaths.ResolvedFrom)').IndexOf(".dll"))).SubString($([System.String]::Copy('%(ReferenceCopyLocalPaths.ResolvedFrom)').LastIndexOf("\"))).Substring(1))</DllName>
++      </ReferenceCopyLocalPaths>
++      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ProjectReference'">
++        <DestinationSubDirectory>Libraries\%(ReferenceCopyLocalPaths.DllName)\%(ReferenceCopyLocalPaths.VersionHack)\</DestinationSubDirectory>
 +      </ReferenceCopyLocalPaths>
 +    </ItemGroup>
 +  </Target>

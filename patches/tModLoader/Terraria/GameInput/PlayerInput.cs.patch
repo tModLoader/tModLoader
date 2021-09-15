@@ -30,7 +30,7 @@
  			}
  		}
  
-+		// To allow mod hotkeys to load, need to reinitialize after load.
++		// To allow mod keybinds to load, need to reinitialize after load.
 +		internal static bool reinitialize;
 +		private static void ReInitialize() {
 +			Profiles.Clear();
@@ -103,7 +103,7 @@
  						int num = 6;
  						if (ItemSlot.IsABuildingItem(player.inventory[player.selectedItem]))
 -							num = player.inventory[player.selectedItem].useTime;
-+							num = PlayerHooks.TotalUseTime(player.inventory[player.selectedItem].useTime, player, player.inventory[player.selectedItem]);
++							num = CombinedHooks.TotalUseTime(player.inventory[player.selectedItem].useTime, player, player.inventory[player.selectedItem]);
  
  						DpadSnapCooldown[i] = num;
  						zero += vector;
