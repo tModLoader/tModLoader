@@ -1958,7 +1958,7 @@
  		}
  
  		public void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = default(Vector2)) {
-@@ -11875,6 +_,7 @@
+@@ -11900,6 +_,7 @@
  			ResetFloorFlags();
  			wings = 0;
  			wingsLogic = 0;
@@ -2115,7 +2115,7 @@
  			coolWhipBuff = false;
  			yoraiz0rEye = 0;
  			yoraiz0rDarkness = false;
-@@ -13016,6 +_,7 @@
+@@ -13041,6 +_,7 @@
  			slowOgreSpit = false;
  			wings = 0;
  			wingsLogic = 0;
@@ -3181,7 +3181,7 @@
  				if (buffTime[i] > 0 && buffType[i] == 59)
  					DelBuff(i);
  			}
-@@ -26674,6 +_,7 @@
+@@ -26699,6 +_,7 @@
  				NetMessage.SendData(62, -1, -1, null, whoAmI, 1f);
  		}
  
@@ -4139,7 +4139,7 @@
  			Vector2 pointPoisition = Main.MouseWorld;
  			pointPoisition += offsetFromCursor;
  			LimitPointToPlayerReachableArea(ref pointPoisition);
-@@ -34107,6 +_,9 @@
+@@ -34132,6 +_,9 @@
  				return;
  			}
  

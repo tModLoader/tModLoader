@@ -1313,7 +1313,7 @@
  			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
  				Star.UpdateStars();
  				Cloud.UpdateClouds();
-@@ -12750,6 +_,10 @@
+@@ -12753,6 +_,10 @@
  
  			if (playerInventory) {
  				Recipe.GetThroughDelayedFindRecipes();
@@ -1324,7 +1324,7 @@
  				int num = PlayerInput.ScrollWheelDelta / 120;
  				bool flag = true;
  				if (recBigList) {
-@@ -12787,8 +_,11 @@
+@@ -12790,8 +_,11 @@
  						focusRecipe = numAvailableRecipes - 1;
  
  					if (focusRecipe < 0)
@@ -1337,7 +1337,7 @@
  
  				Main.player[myPlayer].dropItemCheck();
  			}
-@@ -12832,8 +_,14 @@
+@@ -12835,8 +_,14 @@
  			if (InGameUI != null)
  				InGameUI.Update(gameTime);
  
@@ -2765,7 +2765,7 @@
  					}
  				}
  			}
-@@ -30091,7 +_,7 @@
+@@ -30113,7 +_,7 @@
  				Microsoft.Xna.Framework.Color color = inventoryBack;
  				Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
  				int num39 = -1;
@@ -2774,7 +2774,7 @@
  					if ((num40 == 8 && !flag4) || (num40 == 9 && !flag5))
  						continue;
  
-@@ -30112,6 +_,7 @@
+@@ -30134,6 +_,7 @@
  						context2 = 10;
  					}
  
@@ -2782,7 +2782,7 @@
  					if (num39 == num38 && !_achievementAdvisor.CanDrawAboveCoins) {
  						_achievementAdvisor.DrawOneAchievement(spriteBatch, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8), large: false);
  						UILinkPointNavigator.SetPosition(1570, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8) + new Vector2(20f) * inventoryScale);
-@@ -30119,6 +_,7 @@
+@@ -30141,6 +_,7 @@
  
  					if (num39 == num37)
  						DrawDefenseCounter(num41, num42);
@@ -2790,7 +2790,7 @@
  
  					Texture2D value4 = TextureAssets.InventoryTickOn.Value;
  					if (player[myPlayer].hideVisibleAccessory[num40])
-@@ -30165,10 +_,10 @@
+@@ -30187,10 +_,10 @@
  					player[myPlayer].mouseInterface = true;
  
  				num39 = -1;
@@ -2803,7 +2803,7 @@
  					num39++;
  					bool num47 = LocalPlayer.IsAValidEquipmentSlotForIteration(num46);
  					flag3 = !num47;
-@@ -30206,7 +_,7 @@
+@@ -30228,7 +_,7 @@
  					player[myPlayer].mouseInterface = true;
  
  				num39 = -1;
@@ -2812,7 +2812,7 @@
  					if ((num50 == 8 && !flag4) || (num50 == 9 && !flag5))
  						continue;
  
-@@ -30241,6 +_,19 @@
+@@ -30263,6 +_,19 @@
  				}
  
  				inventoryBack = color;
