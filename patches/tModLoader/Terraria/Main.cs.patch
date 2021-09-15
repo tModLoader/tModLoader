@@ -4199,6 +4199,27 @@
  		public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue) {
  			chatMonitor.NewText(newText, R, G, B);
  			SoundEngine.PlaySound(12);
+@@ -49273,12 +_,20 @@
+ 			SoundEngine.PlaySound(12);
+ 		}
+ 
++		/// <summary>
++		/// Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
++		/// <br>You can also call this on the client to update visuals immediately, assuming it was called serverside aswell (Journey Mode rain slider does this).</br>
++		/// </summary>
+ 		public static void StopRain() {
+ 			rainTime = 0;
+ 			raining = false;
+ 			maxRaining = 0f;
+ 		}
+ 
++		/// <summary>
++		/// Starts rain for a random amount of time. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
++		/// <br>You can also call this on the client to update visuals immediately, assuming it was/will be called serverside aswell (Journey Mode rain slider does this).</br>
++		/// </summary>
+ 		public static void StartRain() {
+ 			int num = 86400;
+ 			int num2 = num / 24;
 @@ -49390,7 +_,7 @@
  			}
  
