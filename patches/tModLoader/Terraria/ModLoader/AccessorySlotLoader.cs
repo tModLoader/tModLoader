@@ -368,8 +368,8 @@ namespace Terraria.ModLoader
 					vItem = dPlayer.exAccessorySlot[k + moddedAccSlots.Count];
 					player.VanillaUpdateEquip(item);
 					player.ApplyEquipFunctional(item, dPlayer.exHideAccessory[k]);
-					if (SoundLoader.itemToMusic.ContainsKey(item.type))
-						Main.musicBox2 = SoundLoader.itemToMusic[item.type];
+					if (MusicLoader.itemToMusic.ContainsKey(item.type))
+						Main.musicBox2 = MusicLoader.itemToMusic[item.type];
 					VanillaVanityEquipMirror(item, vItem, player, k);
 				}
 			}

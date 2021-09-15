@@ -67,7 +67,7 @@
  		public int[] builderAccStatus = new int[12] {
  			1,
  			0,
-@@ -430,9 +_,9 @@
+@@ -430,8 +_,8 @@
  		private static SlotId _insideBlizzardSound = SlotId.Invalid;
  		public string name = "";
  		public int taxMoney;
@@ -78,7 +78,6 @@
  		public static int crystalLeafDamage = 100;
  		public static int crystalLeafKB = 10;
  		public float basiliskCharge;
- 		public Vector2 lastDeathPostion;
 @@ -694,7 +_,7 @@
  		public bool poundRelease;
  		public float ghostFade;
@@ -1581,7 +1580,7 @@
  				}
  
  				if (armor[k].prefix == 73)
-@@ -9301,6 +_,24 @@
+@@ -9301,7 +_,25 @@
  
  				if (armor[k].prefix == 80)
  					meleeSpeed += 0.04f;
@@ -1606,6 +1605,7 @@
 +			AccessorySlotLoader.VanillaUpdateEquipsMirror(this);
  
  			equippedAnyWallSpeedAcc = false;
+ 			equippedAnyTileSpeedAcc = false;
 @@ -9311,21 +_,33 @@
  
  			for (int l = 3; l < 10; l++) {
@@ -1613,8 +1613,8 @@
 -					ApplyEquipFunctional(l, armor[l]);
 +					ApplyEquipFunctional(armor[l], hideVisibleAccessory[l]);
 +				
-+				if (SoundLoader.itemToMusic.ContainsKey(armor[l].type))
-+					Main.musicBox2 = SoundLoader.itemToMusic[armor[l].type];
++				if (MusicLoader.itemToMusic.ContainsKey(armor[l].type))
++					Main.musicBox2 = MusicLoader.itemToMusic[armor[l].type];
  			}
  
 +			PlayerLoader.UpdateEquips(this);
@@ -1775,7 +1775,8 @@
  			}
  
  			if (currentItem.wingSlot != -1)
-@@ -10415,9 +_,19 @@
+@@ -10414,10 +_,20 @@
+ 				manaCost -= 0.08f;
  			}
  
 +			if (currentItem.wingSlot > 0) {
@@ -3131,7 +3132,7 @@
  			if (compositeBackArm.enabled && item.shieldSlot > 0)
  				return true;
  
-@@ -25860,6 +_,12 @@
+@@ -25860,7 +_,13 @@
  			return false;
  		}
  
@@ -3145,6 +3146,7 @@
 +		internal void UpdateVisibleAccessory(int itemSlot, Item item) {
  			if (item.stringColor > 0)
  				stringColor = item.stringColor;
+ 
 @@ -26082,6 +_,8 @@
  			if (drawPlayer.head == 267)
  				yoraiz0rDarkness = true;
