@@ -1776,34 +1776,343 @@
  			}
  
  			if (currentItem.wingSlot != -1)
-@@ -10415,9 +_,9 @@
+@@ -10414,178 +_,190 @@
+ 				manaCost -= 0.08f;
  			}
  
- 			if (Main.myPlayer != whoAmI)
+-			if (Main.myPlayer != whoAmI)
++			if (Main.myPlayer == whoAmI) {
 -				return;
-+				return; // TODO: double check wings logic, etc.
- 
+-
 -			if (currentItem.type == 576 && Main.rand.Next(540) == 0 && Main.curMusic > 0 && Main.curMusic <= 90) {
-+			if (currentItem.type == 576 && Main.rand.Next(540) == 0 && Main.curMusic > 0) {
- 				SoundEngine.PlaySound(SoundID.Item166, base.Center);
- 				int num3 = -1;
- 				if (Main.curMusic == 1)
-@@ -10579,13 +_,26 @@
- 					currentItem.SetDefaults(5040);
- 				else if (Main.curMusic == 89)
- 					currentItem.SetDefaults(5044);
--				else if (Main.curMusic > 13)
-+				else if (Main.curMusic > 13 && Main.curMusic < Main.maxMusic)
- 					currentItem.SetDefaults(1596 + Main.curMusic - 14);
- 				else if (num3 != -1)
-+					;//Silence
-+				else if (Main.curMusic < Main.maxMusic)
- 					currentItem.SetDefaults(num3 + 562);
-+				else if (MusicLoader.musicToItem.TryGetValue(Main.curMusic, out int modMusicBoxType))
-+					currentItem.SetDefaults(modMusicBoxType);
- 			}
++				if (currentItem.type == 576 && Main.rand.Next(540) == 0 && Main.curMusic > 0) {
+-				SoundEngine.PlaySound(SoundID.Item166, base.Center);
++					SoundEngine.PlaySound(SoundID.Item166, base.Center);
+-				int num3 = -1;
++					int num3 = -1;
+-				if (Main.curMusic == 1)
++					if (Main.curMusic == 1)
+-					num3 = 0;
++						num3 = 0;
  
- 			ApplyMusicBox(currentItem);
+-				if (Main.curMusic == 2)
++					if (Main.curMusic == 2)
+-					num3 = 1;
++						num3 = 1;
+ 
+-				if (Main.curMusic == 3)
++					if (Main.curMusic == 3)
+-					num3 = 2;
++						num3 = 2;
+ 
+-				if (Main.curMusic == 4)
++					if (Main.curMusic == 4)
+-					num3 = 4;
++						num3 = 4;
+ 
+-				if (Main.curMusic == 5)
++					if (Main.curMusic == 5)
+-					num3 = 5;
++						num3 = 5;
+ 
+-				if (Main.curMusic == 6)
++					if (Main.curMusic == 6)
+-					num3 = 3;
++						num3 = 3;
+ 
+-				if (Main.curMusic == 7)
++					if (Main.curMusic == 7)
+-					num3 = 6;
++						num3 = 6;
+ 
+-				if (Main.curMusic == 8)
++					if (Main.curMusic == 8)
+-					num3 = 7;
++						num3 = 7;
+ 
+-				if (Main.curMusic == 9)
++					if (Main.curMusic == 9)
+-					num3 = 9;
++						num3 = 9;
+ 
+-				if (Main.curMusic == 10)
++					if (Main.curMusic == 10)
+-					num3 = 8;
++						num3 = 8;
+ 
+-				if (Main.curMusic == 11)
++					if (Main.curMusic == 11)
+-					num3 = 11;
++						num3 = 11;
+ 
+-				if (Main.curMusic == 12)
++					if (Main.curMusic == 12)
+-					num3 = 10;
++						num3 = 10;
+ 
+-				if (Main.curMusic == 13)
++					if (Main.curMusic == 13)
+-					num3 = 12;
++						num3 = 12;
+ 
+-				if (Main.curMusic == 28)
++					if (Main.curMusic == 28)
+-					currentItem.SetDefaults(1963);
++						currentItem.SetDefaults(1963);
+-				else if (Main.curMusic == 29)
++					else if (Main.curMusic == 29)
+-					currentItem.SetDefaults(1610);
++						currentItem.SetDefaults(1610);
+-				else if (Main.curMusic == 30)
++					else if (Main.curMusic == 30)
+-					currentItem.SetDefaults(1963);
++						currentItem.SetDefaults(1963);
+-				else if (Main.curMusic == 31)
++					else if (Main.curMusic == 31)
+-					currentItem.SetDefaults(1964);
++						currentItem.SetDefaults(1964);
+-				else if (Main.curMusic == 32)
++					else if (Main.curMusic == 32)
+-					currentItem.SetDefaults(1965);
++						currentItem.SetDefaults(1965);
+-				else if (Main.curMusic == 33)
++					else if (Main.curMusic == 33)
+-					currentItem.SetDefaults(2742);
++						currentItem.SetDefaults(2742);
+-				else if (Main.curMusic == 34)
++					else if (Main.curMusic == 34)
+-					currentItem.SetDefaults(3370);
++						currentItem.SetDefaults(3370);
+-				else if (Main.curMusic == 35)
++					else if (Main.curMusic == 35)
+-					currentItem.SetDefaults(3236);
++						currentItem.SetDefaults(3236);
+-				else if (Main.curMusic == 36)
++					else if (Main.curMusic == 36)
+-					currentItem.SetDefaults(3237);
++						currentItem.SetDefaults(3237);
+-				else if (Main.curMusic == 37)
++					else if (Main.curMusic == 37)
+-					currentItem.SetDefaults(3235);
++						currentItem.SetDefaults(3235);
+-				else if (Main.curMusic == 38)
++					else if (Main.curMusic == 38)
+-					currentItem.SetDefaults(3044);
++						currentItem.SetDefaults(3044);
+-				else if (Main.curMusic == 39)
++					else if (Main.curMusic == 39)
+-					currentItem.SetDefaults(3371);
++						currentItem.SetDefaults(3371);
+-				else if (Main.curMusic == 40)
++					else if (Main.curMusic == 40)
+-					currentItem.SetDefaults(3796);
++						currentItem.SetDefaults(3796);
+-				else if (Main.curMusic == 41)
++					else if (Main.curMusic == 41)
+-					currentItem.SetDefaults(3869);
++						currentItem.SetDefaults(3869);
+-				else if (Main.curMusic == 42)
++					else if (Main.curMusic == 42)
+-					currentItem.SetDefaults(4079);
++						currentItem.SetDefaults(4079);
+-				else if (Main.curMusic == 43)
++					else if (Main.curMusic == 43)
+-					currentItem.SetDefaults(4077);
++						currentItem.SetDefaults(4077);
+-				else if (Main.curMusic == 44)
++					else if (Main.curMusic == 44)
+-					currentItem.SetDefaults(4082);
++						currentItem.SetDefaults(4082);
+-				else if (Main.curMusic == 46)
++					else if (Main.curMusic == 46)
+-					currentItem.SetDefaults(4080);
++						currentItem.SetDefaults(4080);
+-				else if (Main.curMusic == 47)
++					else if (Main.curMusic == 47)
+-					currentItem.SetDefaults(4081);
++						currentItem.SetDefaults(4081);
+-				else if (Main.curMusic == 48)
++					else if (Main.curMusic == 48)
+-					currentItem.SetDefaults(4078);
++						currentItem.SetDefaults(4078);
+-				else if (Main.curMusic == 49)
++					else if (Main.curMusic == 49)
+-					currentItem.SetDefaults(4237);
++						currentItem.SetDefaults(4237);
+-				else if (Main.curMusic == 51)
++					else if (Main.curMusic == 51)
+-					currentItem.SetDefaults(4356);
++						currentItem.SetDefaults(4356);
+-				else if (Main.curMusic == 52)
++					else if (Main.curMusic == 52)
+-					currentItem.SetDefaults(4357);
++						currentItem.SetDefaults(4357);
+-				else if (Main.curMusic == 53)
++					else if (Main.curMusic == 53)
+-					currentItem.SetDefaults(4358);
++						currentItem.SetDefaults(4358);
+-				else if (Main.curMusic == 54)
++					else if (Main.curMusic == 54)
+-					currentItem.SetDefaults(4421);
++						currentItem.SetDefaults(4421);
+-				else if (Main.curMusic == 55)
++					else if (Main.curMusic == 55)
+-					currentItem.SetDefaults(4606);
++						currentItem.SetDefaults(4606);
+-				else if (Main.curMusic == 56)
++					else if (Main.curMusic == 56)
+-					currentItem.SetDefaults(4979);
++						currentItem.SetDefaults(4979);
+-				else if (Main.curMusic == 57)
++					else if (Main.curMusic == 57)
+-					currentItem.SetDefaults(4985);
++						currentItem.SetDefaults(4985);
+-				else if (Main.curMusic == 58)
++					else if (Main.curMusic == 58)
+-					currentItem.SetDefaults(4990);
++						currentItem.SetDefaults(4990);
+-				else if (Main.curMusic == 59)
++					else if (Main.curMusic == 59)
+-					currentItem.SetDefaults(4991);
++						currentItem.SetDefaults(4991);
+-				else if (Main.curMusic == 60)
++					else if (Main.curMusic == 60)
+-					currentItem.SetDefaults(4992);
++						currentItem.SetDefaults(4992);
+-				else if (Main.curMusic == 61)
++					else if (Main.curMusic == 61)
+-					currentItem.SetDefaults(5006);
++						currentItem.SetDefaults(5006);
+-				else if (Main.curMusic == 62)
++					else if (Main.curMusic == 62)
+-					currentItem.SetDefaults(5014);
++						currentItem.SetDefaults(5014);
+-				else if (Main.curMusic == 63)
++					else if (Main.curMusic == 63)
+-					currentItem.SetDefaults(5015);
++						currentItem.SetDefaults(5015);
+-				else if (Main.curMusic == 64)
++					else if (Main.curMusic == 64)
+-					currentItem.SetDefaults(5016);
++						currentItem.SetDefaults(5016);
+-				else if (Main.curMusic == 65)
++					else if (Main.curMusic == 65)
+-					currentItem.SetDefaults(5017);
++						currentItem.SetDefaults(5017);
+-				else if (Main.curMusic == 66)
++					else if (Main.curMusic == 66)
+-					currentItem.SetDefaults(5018);
++						currentItem.SetDefaults(5018);
+-				else if (Main.curMusic == 67)
++					else if (Main.curMusic == 67)
+-					currentItem.SetDefaults(5019);
++						currentItem.SetDefaults(5019);
+-				else if (Main.curMusic == 68)
++					else if (Main.curMusic == 68)
+-					currentItem.SetDefaults(5020);
++						currentItem.SetDefaults(5020);
+-				else if (Main.curMusic == 69)
++					else if (Main.curMusic == 69)
+-					currentItem.SetDefaults(5021);
++						currentItem.SetDefaults(5021);
+-				else if (Main.curMusic == 70)
++					else if (Main.curMusic == 70)
+-					currentItem.SetDefaults(5022);
++						currentItem.SetDefaults(5022);
+-				else if (Main.curMusic == 71)
++					else if (Main.curMusic == 71)
+-					currentItem.SetDefaults(5023);
++						currentItem.SetDefaults(5023);
+-				else if (Main.curMusic == 72)
++					else if (Main.curMusic == 72)
+-					currentItem.SetDefaults(5024);
++						currentItem.SetDefaults(5024);
+-				else if (Main.curMusic == 73)
++					else if (Main.curMusic == 73)
+-					currentItem.SetDefaults(5025);
++						currentItem.SetDefaults(5025);
+-				else if (Main.curMusic == 74)
++					else if (Main.curMusic == 74)
+-					currentItem.SetDefaults(5026);
++						currentItem.SetDefaults(5026);
+-				else if (Main.curMusic == 75)
++					else if (Main.curMusic == 75)
+-					currentItem.SetDefaults(5027);
++						currentItem.SetDefaults(5027);
+-				else if (Main.curMusic == 76)
++					else if (Main.curMusic == 76)
+-					currentItem.SetDefaults(5028);
++						currentItem.SetDefaults(5028);
+-				else if (Main.curMusic == 77)
++					else if (Main.curMusic == 77)
+-					currentItem.SetDefaults(5029);
++						currentItem.SetDefaults(5029);
+-				else if (Main.curMusic == 78)
++					else if (Main.curMusic == 78)
+-					currentItem.SetDefaults(5030);
++						currentItem.SetDefaults(5030);
+-				else if (Main.curMusic == 79)
++					else if (Main.curMusic == 79)
+-					currentItem.SetDefaults(5031);
++						currentItem.SetDefaults(5031);
+-				else if (Main.curMusic == 80)
++					else if (Main.curMusic == 80)
+-					currentItem.SetDefaults(5032);
++						currentItem.SetDefaults(5032);
+-				else if (Main.curMusic == 81)
++					else if (Main.curMusic == 81)
+-					currentItem.SetDefaults(5033);
++						currentItem.SetDefaults(5033);
+-				else if (Main.curMusic == 82)
++					else if (Main.curMusic == 82)
+-					currentItem.SetDefaults(5034);
++						currentItem.SetDefaults(5034);
+-				else if (Main.curMusic == 83)
++					else if (Main.curMusic == 83)
+-					currentItem.SetDefaults(5035);
++						currentItem.SetDefaults(5035);
+-				else if (Main.curMusic == 84)
++					else if (Main.curMusic == 84)
+-					currentItem.SetDefaults(5036);
++						currentItem.SetDefaults(5036);
+-				else if (Main.curMusic == 85)
++					else if (Main.curMusic == 85)
+-					currentItem.SetDefaults(5037);
++						currentItem.SetDefaults(5037);
+-				else if (Main.curMusic == 86)
++					else if (Main.curMusic == 86)
+-					currentItem.SetDefaults(5038);
++						currentItem.SetDefaults(5038);
+-				else if (Main.curMusic == 87)
++					else if (Main.curMusic == 87)
+-					currentItem.SetDefaults(5039);
++						currentItem.SetDefaults(5039);
+-				else if (Main.curMusic == 88)
++					else if (Main.curMusic == 88)
+-					currentItem.SetDefaults(5040);
++						currentItem.SetDefaults(5040);
+-				else if (Main.curMusic == 89)
++					else if (Main.curMusic == 89)
+-					currentItem.SetDefaults(5044);
++						currentItem.SetDefaults(5044);
+-				else if (Main.curMusic > 13)
++					else if (Main.curMusic > 13 && Main.curMusic < Main.maxMusic)
+-					currentItem.SetDefaults(1596 + Main.curMusic - 14);
++						currentItem.SetDefaults(1596 + Main.curMusic - 14);
+-				else if (num3 != -1)
++					else if (num3 != -1)
++						; //Silence
++					else if (Main.curMusic < Main.maxMusic)
+-					currentItem.SetDefaults(num3 + 562);
++						currentItem.SetDefaults(num3 + 562);
+-			}
++					else if (MusicLoader.musicToItem.TryGetValue(Main.curMusic, out int modMusicBoxType))
++						currentItem.SetDefaults(modMusicBoxType);
++				}
+ 
+-			ApplyMusicBox(currentItem);
++				ApplyMusicBox(currentItem);
++			}
 +
 +			if (currentItem.wingSlot > 0) {
 +				if (!hideVisibleAccessory[itemSlot] || velocity.Y != 0f && !mount.Active)
