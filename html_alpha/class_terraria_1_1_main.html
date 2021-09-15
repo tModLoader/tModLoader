@@ -778,8 +778,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>StartInvasion<
 <tr class="memitem:ae09ed7c7e97e689b6bd35bc78a64db48"><td class="memItemLeft" align="right" valign="top"><a id="ae09ed7c7e97e689b6bd35bc78a64db48"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>startPumpkinMoon</b> ()</td></tr>
 <tr class="separator:ae09ed7c7e97e689b6bd35bc78a64db48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac34a460d1246197d8fdbf972d67cd5a9"><td class="memItemLeft" align="right" valign="top"><a id="ac34a460d1246197d8fdbf972d67cd5a9"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>StartRain</b> ()</td></tr>
+<tr class="memitem:ac34a460d1246197d8fdbf972d67cd5a9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#ac34a460d1246197d8fdbf972d67cd5a9">StartRain</a> ()</td></tr>
+<tr class="memdesc:ac34a460d1246197d8fdbf972d67cd5a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts rain for a random amount of time. Should be called on the server (netMode != client) - vanilla syncs it using <a class="el" href="class_terraria_1_1_main.html#a48a7979fe7b88f7e95070bdd26642d25" title="Syncs rain state if StartRain or StopRain were called in the same tick and caused a change to maxRain...">SyncRain</a>. <br  />
+You can also call this on the client to update visuals immediately, assuming it was/will be called serverside aswell (Journey Mode rain slider does this).  <a href="class_terraria_1_1_main.html#ac34a460d1246197d8fdbf972d67cd5a9">More...</a><br /></td></tr>
 <tr class="separator:ac34a460d1246197d8fdbf972d67cd5a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6eaace3816bea15119069334ae89942"><td class="memItemLeft" align="right" valign="top"><a id="af6eaace3816bea15119069334ae89942"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>StartSlimeRain</b> (bool announce=true)</td></tr>
@@ -790,8 +791,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>startSnowMoon<
 <tr class="memitem:a94e715c4a099b0660a6a2a610457776d"><td class="memItemLeft" align="right" valign="top"><a id="a94e715c4a099b0660a6a2a610457776d"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>stopMoonEvent</b> ()</td></tr>
 <tr class="separator:a94e715c4a099b0660a6a2a610457776d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afef51e2488f13c070388fb05c0c7a40d"><td class="memItemLeft" align="right" valign="top"><a id="afef51e2488f13c070388fb05c0c7a40d"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>StopRain</b> ()</td></tr>
+<tr class="memitem:afef51e2488f13c070388fb05c0c7a40d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#afef51e2488f13c070388fb05c0c7a40d">StopRain</a> ()</td></tr>
+<tr class="memdesc:afef51e2488f13c070388fb05c0c7a40d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using <a class="el" href="class_terraria_1_1_main.html#a48a7979fe7b88f7e95070bdd26642d25" title="Syncs rain state if StartRain or StopRain were called in the same tick and caused a change to maxRain...">SyncRain</a>. <br  />
+You can also call this on the client to update visuals immediately, assuming it was called serverside aswell (Journey Mode rain slider does this).  <a href="class_terraria_1_1_main.html#afef51e2488f13c070388fb05c0c7a40d">More...</a><br /></td></tr>
 <tr class="separator:afef51e2488f13c070388fb05c0c7a40d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a780620d118c3deb5237fcb42746549cc"><td class="memItemLeft" align="right" valign="top"><a id="a780620d118c3deb5237fcb42746549cc"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>StopSlimeRain</b> (bool announce=true)</td></tr>
@@ -808,6 +810,11 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>SwitchNetMode<
 <tr class="memitem:a3e36b943f1d6944dd091fc5c77875890"><td class="memItemLeft" align="right" valign="top"><a id="a3e36b943f1d6944dd091fc5c77875890"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SyncAnInvasion</b> (int toWho)</td></tr>
 <tr class="separator:a3e36b943f1d6944dd091fc5c77875890"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48a7979fe7b88f7e95070bdd26642d25"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#a48a7979fe7b88f7e95070bdd26642d25">SyncRain</a> ()</td></tr>
+<tr class="memdesc:a48a7979fe7b88f7e95070bdd26642d25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syncs rain state if <a class="el" href="class_terraria_1_1_main.html#ac34a460d1246197d8fdbf972d67cd5a9" title="Starts rain for a random amount of time. Should be called on the server (netMode !...">StartRain</a> or <a class="el" href="class_terraria_1_1_main.html#afef51e2488f13c070388fb05c0c7a40d" title="Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using SyncRain....">StopRain</a> were called in the same tick and caused a change to </p><dl class="section see"><dt>See also</dt><dd>maxRaining</dd></dl>
+<p>. <br  />
+Can be called on any side, but only the server will actually sync it.  <a href="class_terraria_1_1_main.html#a48a7979fe7b88f7e95070bdd26642d25">More...</a><br /></td></tr>
+<tr class="separator:a48a7979fe7b88f7e95070bdd26642d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affa606630dcb968a1b54e7bae61b4458"><td class="memItemLeft" align="right" valign="top"><a id="affa606630dcb968a1b54e7bae61b4458"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>TeleportEffect</b> (Microsoft.Xna.Framework.Rectangle effectRect, int Style, int extraInfo=0, float dustCountMult=1f, TeleportationSide side=TeleportationSide.Entry, Vector2 otherPosition=default(Vector2))</td></tr>
 <tr class="separator:affa606630dcb968a1b54e7bae61b4458"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4217,6 +4224,91 @@ static Action&#160;</td><td class="memItemRight" valign="bottom"><b>OnTickForThi
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ac34a460d1246197d8fdbf972d67cd5a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac34a460d1246197d8fdbf972d67cd5a9">&#9670;&nbsp;</a></span>StartRain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.Main.StartRain </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Starts rain for a random amount of time. Should be called on the server (netMode != client) - vanilla syncs it using <a class="el" href="class_terraria_1_1_main.html#a48a7979fe7b88f7e95070bdd26642d25" title="Syncs rain state if StartRain or StopRain were called in the same tick and caused a change to maxRain...">SyncRain</a>. <br  />
+You can also call this on the client to update visuals immediately, assuming it was/will be called serverside aswell (Journey Mode rain slider does this). </p>
+
+</div>
+</div>
+<a id="afef51e2488f13c070388fb05c0c7a40d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afef51e2488f13c070388fb05c0c7a40d">&#9670;&nbsp;</a></span>StopRain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.Main.StopRain </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using <a class="el" href="class_terraria_1_1_main.html#a48a7979fe7b88f7e95070bdd26642d25" title="Syncs rain state if StartRain or StopRain were called in the same tick and caused a change to maxRain...">SyncRain</a>. <br  />
+You can also call this on the client to update visuals immediately, assuming it was called serverside aswell (Journey Mode rain slider does this). </p>
+
+</div>
+</div>
+<a id="a48a7979fe7b88f7e95070bdd26642d25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48a7979fe7b88f7e95070bdd26642d25">&#9670;&nbsp;</a></span>SyncRain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.Main.SyncRain </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Syncs rain state if <a class="el" href="class_terraria_1_1_main.html#ac34a460d1246197d8fdbf972d67cd5a9" title="Starts rain for a random amount of time. Should be called on the server (netMode !...">StartRain</a> or <a class="el" href="class_terraria_1_1_main.html#afef51e2488f13c070388fb05c0c7a40d" title="Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using SyncRain....">StopRain</a> were called in the same tick and caused a change to </p><dl class="section see"><dt>See also</dt><dd>maxRaining</dd></dl>
+<p>. <br  />
+Can be called on any side, but only the server will actually sync it. </p>
 
 </div>
 </div>
