@@ -1,14 +1,13 @@
 namespace Terraria.ModLoader.Default
 {
+	[Autoload(false)]
 	public class UnloadedAccessorySlot : ModAccessorySlot
 	{
-		internal override bool suppressUnloadedSlot => true;
-
 		public override string Name { get; }
 
-		internal UnloadedAccessorySlot(int slot) {
-			this.slot = slot;
-			this.Name = "UnloadedAccessorySlot" + slot.ToString();
+		internal UnloadedAccessorySlot(int slot, string oldName) {
+			type = slot;
+			Name = oldName;
 		}
 
 		public override bool IsSlotValid() { 

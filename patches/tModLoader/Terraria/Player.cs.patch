@@ -1601,8 +1601,8 @@
 +				if (IsAValidEquipmentSlotForIteration(k))
 +					VanillaUpdateEquip(armor[k]);
 +			}
-+			
-+			AccessorySlotLoader.VanillaUpdateEquipsMirror(this);
++
++			LoaderManager.Get<AccessorySlotLoader>().VanillaUpdateEquipsMirror(this);
  
  			equippedAnyWallSpeedAcc = false;
  			equippedAnyTileSpeedAcc = false;
@@ -4145,7 +4145,7 @@
  				return;
  			}
  
-+			if (AccessorySlotLoader.VanillaPreferredGolfBallMirror(ref projType))
++			if (LoaderManager.Get<AccessorySlotLoader>().VanillaPreferredGolfBallMirror(ref projType))
 +				return;
 +
  			for (int num = 19; num >= 0; num--) {
@@ -4864,7 +4864,7 @@
  
  				newPlayer.lavaTime = newPlayer.lavaMax;
  			}
-+			AccessorySlotLoader.VanillaLastMinuteFixesMirror(newPlayer);
++			LoaderManager.Get<AccessorySlotLoader>().VanillaLastMinuteFixesMirror(newPlayer);
 +			newPlayer.ResetEffects();
  		}
  

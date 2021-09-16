@@ -3,6 +3,7 @@ using Terraria.ModLoader.Default;
 using Terraria.UI;
 
 //NOTE: Does not fully support: ItemLoader.GetGamepadInstructions and related gamepad stuff.
+//TODO: Documentation?
 
 namespace Terraria.ModLoader
 {
@@ -11,40 +12,26 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModAccessorySlot : ModType
 	{
-		// Suppresses adding it to AccessorySlotLoader.moddedAccSlots. Used internally for UnloadedSlots
-		internal virtual bool suppressUnloadedSlot => false;
-
-		internal int slot;
+		internal int type;
 		internal int index;
+		public AccessorySlotLoader Loader => LoaderManager.Get<AccessorySlotLoader>();
 
 		// Fields to preset a location for the accessory slot
 		public virtual int XLoc => 0;
 		public virtual int YLoc => 0;
 
 		protected sealed override void Register() {
-			ModTypeLookup<ModAccessorySlot>.Register(this);
-
-			if (suppressUnloadedSlot) {
-				return;
-			}
-
-			int pendingID = AccessorySlotLoader.moddedAccSlots.IndexOf(FullName);
-			if (pendingID < 0) {
-				pendingID = AccessorySlotLoader.moddedAccSlots.Count;
-				AccessorySlotLoader.moddedAccSlots.Add(FullName);
-			}
-
-			this.slot = pendingID;
+			type = Loader.Register(this);
 		}
 
-		public bool MySlotContainsAnItem() {
+		private bool MySlotContainsAnItem() {
 			ModAccessorySlotPlayer dPlayer = Main.LocalPlayer.GetModPlayer<ModAccessorySlotPlayer>();
-			return !(dPlayer.exAccessorySlot[slot].IsAir && dPlayer.exAccessorySlot[slot + AccessorySlotLoader.moddedAccSlots.Count].IsAir);
+			return !(dPlayer.exAccessorySlot[type].IsAir && dPlayer.exAccessorySlot[type + Loader.list.Count].IsAir);
 		}
 
 		/// <summary>
 		/// This function allows for custom textures and colours to be drawn for the accessory slot. Called for Dyes, Vanity, and Functionals.
-		/// Runs in place of ItemSlot.Draw() if this returns true.
+		/// By default runs ItemSlot.Draw()
 		/// Receives data:
 		/// <para><paramref name="inv"/> :: the array containing all accessory slots, yours is inv[slot] </para>
 		/// <para><paramref name="slot"/> :: which is the index for inventory that you were assigned </para>
@@ -56,7 +43,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Override to set conditions on when the slot is valid.
+		/// Override to set conditions on when the slot is valid for stat/vanity calculations and player usage.
 		/// Example: the demonHeart is consumed and in Expert mode in Vanilla.
 		/// </summary>
 		public virtual bool IsSlotValid() {
@@ -64,7 +51,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Override to set conditions on what can go in slot. Return false to prevent the item going in slot. Return true for dyes, if you want dyes. Example: only wings can go in slot.
+		/// Override to set conditions on what can be placed in the slot. Return false to prevent the item going in slot. Return true for dyes, if you want dyes. Example: only wings can go in slot.
 		/// Receives data:
 		/// <para><paramref name="checkItem"/> :: the item that is attempting to enter the slot </para>
 		/// </summary>
@@ -73,7 +60,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Override to change the condition on when the slot is visible but non-functional.
+		/// Override to change the condition on when the slot is visible, but otherwise non-functional for stat/vanity calculations.
 		/// Defaults to check 'property' MySlotContainsAnItem()
 		/// </summary>
 		/// <returns></returns>

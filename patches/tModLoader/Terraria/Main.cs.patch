@@ -1337,8 +1337,7 @@
  
  				Main.player[myPlayer].dropItemCheck();
  			}
-@@ -12835,8 +_,14 @@
- 			if (InGameUI != null)
+@@ -12836,7 +_,13 @@
  				InGameUI.Update(gameTime);
  
  			CreativeMenu.Update(gameTime);
@@ -2816,7 +2815,7 @@
  				}
  
  				inventoryBack = color;
-+				int chkMax = (int)((float)(num20) + (float)((AccessorySlotLoader.GetAccessorySlotPerColumn(num20) + 1) * 56) * Main.inventoryScale) + 4;
++				int chkMax = (int)((float)(num20) + (float)((5 + LocalPlayer.GetAmountOfExtraAccessorySlotsToShow() + 1) * 56) * Main.inventoryScale) + 4;
 +				int randomLocationX = screenWidth - 64 - 28;
 +
 +				if (num39 == num38 && !_achievementAdvisor.CanDrawAboveCoins) {
@@ -2826,7 +2825,7 @@
 +
 +				DrawDefenseCounter(randomLocationX, chkMax);
 +
-+				AccessorySlotLoader.DrawAccSlots(num20);
++				LoaderManager.Get<AccessorySlotLoader>().DrawAccSlots(num20);
 +
 +				inventoryBack = color;
  				inventoryScale = num36;

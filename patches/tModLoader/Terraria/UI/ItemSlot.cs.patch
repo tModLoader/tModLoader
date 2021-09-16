@@ -116,13 +116,13 @@
  						result = 1;
  					break;
  				case 10:
-+					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.dPlayer.exAccessorySlot).ToArray(), checkItem, slot)))
+-					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer.exAccessorySlot).ToArray(), checkItem, slot)))
 +						result = 1;
 +					break;
 +				case -10:
 +				case -11:
--					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
-+					if (checkItem.type == 0 || (checkItem.accessory && AccessorySlotLoader.ModSlotCheck(checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && LoaderManager.Get<AccessorySlotLoader>().ModSlotCheck(checkItem, slot)))
  						result = 1;
  					break;
  				case 24:
@@ -131,7 +131,7 @@
  					break;
  				case 11:
 -					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
-+					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.dPlayer.exAccessorySlot).ToArray(), checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer.exAccessorySlot).ToArray(), checkItem, slot)))
  						result = 1;
  					break;
  				case 12:
@@ -307,14 +307,14 @@
 +					case -10:
 +					case -11:
 +						int num3M = slot;
-+						if (!AccessorySlotLoader.ModdedIsAValidEquipmentSlotForIteration(slot))
++						if (!LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(slot))
 +							num3M--;
 +
 +						num = 100 + num3M;
 +						break;
 +					case -12:
 +						int num4M = slot;
-+						if (!AccessorySlotLoader.ModdedIsAValidEquipmentSlotForIteration(slot))
++						if (!LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(slot))
 +							num4M--;
 +
 +						num = 120 + num4M;
@@ -424,7 +424,7 @@
  
 -			if (dyeSlotCount >= 10)
 +			if (dyeSlotCount >= 10) {
-+				item2 = AccessorySlotLoader.VanillaDyeSwapMirror(item, out success);
++				item2 = LoaderManager.Get<AccessorySlotLoader>().VanillaDyeSwapMirror(item, out success);
 +				if (success)
 +					return item2;
 +
@@ -444,16 +444,16 @@
  				int num2 = 3;
  				for (int i = 3; i < 10; i++) {
  					if (player.IsAValidEquipmentSlotForIteration(i)) {
-@@ -1985,16 +_,84 @@
+@@ -1985,16 +_,85 @@
  					}
  				}
  
 +				int num2Mod = 0;
 +				if (accSlotToSwapTo == 0) {
-+					for (int i = 0; i < AccessorySlotLoader.moddedAccSlots.Count; i++) {
-+						if (AccessorySlotLoader.ModdedIsAValidEquipmentSlotForIteration(i)) {
++					for (int i = 0; i < LoaderManager.Get<AccessorySlotLoader>().list.Count; i++) {
++						if (LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(i)) {
 +							num2Mod = i;
-+							if (AccessorySlotLoader.dPlayer.exAccessorySlot[i].type == 0) {
++							if (AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[i].type == 0) {
 +								accSlotToSwapTo = i;
 +								isModded = true;
 +								break;
@@ -473,13 +473,14 @@
  				}
  
 -				if (accSlotToSwapTo > num2)
-+				for (int j = 0; j < AccessorySlotLoader.moddedAccSlots.Count * 2; j++) {
-+					if (item.IsTheSameAs(AccessorySlotLoader.dPlayer.exAccessorySlot[j])) {
++				for (int j = 0; j < LoaderManager.Get<AccessorySlotLoader>().list.Count * 2; j++) {
++					if (item.IsTheSameAs(AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[j])) {
 +						accSlotToSwapTo = j;
 +						isModded = true;
 +					}
 +
-+					if (j < AccessorySlotLoader.moddedAccSlots.Count && item.wingSlot > 0 && AccessorySlotLoader.dPlayer.exAccessorySlot[j].wingSlot > 0) {
++					if (j < LoaderManager.Get<AccessorySlotLoader>().list.Count && item.wingSlot > 0 
++						&& AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[j].wingSlot > 0) {
 +						accSlotToSwapTo = j;
 +						isModded = true;
 +					}
@@ -510,19 +511,19 @@
 +						accSlotToSwapTo = num2Mod;
 +
 +					int num3Mod = accSlotToSwapTo;
-+					if (isEquipLocked(AccessorySlotLoader.dPlayer.exAccessorySlot[num3Mod].type))
++					if (isEquipLocked(AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[num3Mod].type))
 +						return item;
 +
-+					for (int k = 0; k < AccessorySlotLoader.moddedAccSlots.Count * 2; k++) {
-+						if (item.IsTheSameAs(AccessorySlotLoader.dPlayer.exAccessorySlot[k]))
++					for (int k = 0; k < LoaderManager.Get<AccessorySlotLoader>().list.Count * 2; k++) {
++						if (item.IsTheSameAs(AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[k]))
 +							num3Mod = k;
 +					}
 +
 +					if (!ItemLoader.CanEquipAccessory(item, num3Mod))
 +						return item;
 +
-+					result = AccessorySlotLoader.dPlayer.exAccessorySlot[num3Mod].Clone();
-+					AccessorySlotLoader.dPlayer.exAccessorySlot[num3Mod] = item.Clone();
++					result = AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[num3Mod].Clone();
++					AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[num3Mod] = item.Clone();
 +					accSlotToSwapTo = 0;
 +					SoundEngine.PlaySound(7);
 +					Recipe.FindRecipes();

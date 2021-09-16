@@ -1,70 +1,89 @@
 using System.Linq;
 using Terraria.ModLoader.IO;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Terraria.ModLoader.Default
 {
+	// Test in Multiplayer, suspect there is some issue with synchronization of unloaded slots
 	public class ModAccessorySlotPlayer : ModPlayer
 	{
 		public override bool CloneNewInstances => false;
+		internal static AccessorySlotLoader Loader => LoaderManager.Get<AccessorySlotLoader>();
 
 		// Arrays for modded accessory slot save/load/usage. Used in DefaultPlayer.
 		internal Item[] exAccessorySlot = new Item[2];
 		internal Item[] exDyesAccessory = new Item[1];
 		internal bool[] exHideAccessory = new bool[1];
+		internal Dictionary<string, int> slots = new Dictionary<string, int>();
 
 		// Setting toggle for stack or scroll accessories/npcHousing
 		internal bool scrollSlots = true;
 		internal int scrollbarSlotPosition = 0;
 
 		public ModAccessorySlotPlayer() {
-			exAccessorySlot = new Item[2] { new Item(), new Item() };
-			exDyesAccessory = new Item[1] { new Item() };
-			exHideAccessory = new bool[1] { false };
-			this.ResizeAccesoryArrays(AccessorySlotLoader.moddedAccSlots.Count);
-		}
-		
-		public override TagCompound Save() {
-			return new TagCompound {
-				["size"] = AccessorySlotLoader.moddedAccSlots.Count,
-				["items"] = exAccessorySlot.Select(ItemIO.Save).ToList(),
-				["dyes"] = exDyesAccessory.Select(ItemIO.Save).ToList(),
-				["visible"] = exHideAccessory.ToList()
-			};
+			foreach (var slot in Loader.list) {
+				if (!slot.FullName.StartsWith("Terraria", StringComparison.OrdinalIgnoreCase))
+					slots.Add(slot.FullName, slot.type);
+				else
+					slots.Add(slot.Name, slot.type);
+			}
+
+			ResizeAccesoryArrays(slots.Count);
 		}
 
 		internal void ResizeAccesoryArrays(int newSize) {
-			int oldLen = exDyesAccessory.Length;
-			if (newSize <= oldLen)
+			if (newSize < slots.Count) {
 				return;
+			}
 
 			Array.Resize<Item>(ref exAccessorySlot, 2 * newSize);
 			Array.Resize<Item>(ref exDyesAccessory, newSize);
 			Array.Resize<bool>(ref exHideAccessory, newSize);
 
-			for (int i = oldLen; i < newSize; i++) {
+			for (int i = 0; i < newSize; i++) {
 				exDyesAccessory[i] = new Item();
 				exHideAccessory[i] = false;
 
 				exAccessorySlot[i * 2] = new Item();
 				exAccessorySlot[i * 2 + 1] = new Item();
 			}
+		}
 
-			if (newSize == AccessorySlotLoader.moddedAccSlots.Count) {
-				return;
-			}
-			for (int i = oldLen; i < newSize; i++) {
-				AccessorySlotLoader.moddedAccSlots.Add("unloaded");
-			}
+		public override TagCompound Save() {
+			return new TagCompound {
+				["order"] = slots.Keys.ToList(),
+				["items"] = exAccessorySlot.Select(ItemIO.Save).ToList(),
+				["dyes"] = exDyesAccessory.Select(ItemIO.Save).ToList(),
+				["visible"] = exHideAccessory.ToList()
+			};
 		}
 
 		public override void Load(TagCompound tag) {
-			ResizeAccesoryArrays(tag.Get<int>("size"));
+			var order = tag.GetList<string>("order").ToList();
+			var items = tag.GetList<TagCompound>("items").Select(ItemIO.Load).ToList();
+			var dyes = tag.GetList<TagCompound>("dyes").Select(ItemIO.Load).ToList();
+			var visible = tag.GetList<bool>("visible").ToList();
 
-			tag.GetList<TagCompound>("items").Select(ItemIO.Load).ToList().CopyTo(exAccessorySlot);
-			tag.GetList<TagCompound>("dyes").Select(ItemIO.Load).ToList().CopyTo(exDyesAccessory);
-			tag.GetList<bool>("visible").ToList().CopyTo(exHideAccessory);
+			ResizeAccesoryArrays(order.Count);
+
+			for (int i = 0; i < order.Count; i++) {
+				// Try finding the slot item goes in to
+				if (!slots.TryGetValue(order[i], out int type)) {
+					var unloaded = new UnloadedAccessorySlot(Loader.list.Count, order[i]);
+
+					slots.Add(unloaded.Name, unloaded.type);
+					Loader.list.Add(unloaded);
+					type = unloaded.type;
+				}
+
+				// Place loaded items in to the correct slot
+				exDyesAccessory[type] = dyes[i];
+				exHideAccessory[type] = visible[i];
+				exAccessorySlot[type] = items[i];
+				exAccessorySlot[type + order.Count] = items[i + order.Count];
+			}
 		}
 
 		// The following netcode is adapted from Chicken-Bone's UtilitySlots:
