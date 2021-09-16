@@ -143,9 +143,9 @@ namespace Terraria.ModLoader
 			else {
 				flag3 = !Player.IsAValidEquipmentSlotForIteration(slot);
 				if (slot == 8) {
-					flag4 = !Player.CanDemonHeartAccessoryBeShown();
+					flag4 = (slot == 8) && !Player.CanDemonHeartAccessoryBeShown();
 				}
-				if (slot == 9) {
+				else if (slot == 9) {
 					flag4 = !Player.CanMasterModeAccessoryBeShown();
 				}
 			}
@@ -170,16 +170,16 @@ namespace Terraria.ModLoader
 					return true;
 
 				DrawFunctional(ModSlotPlayer.exAccessorySlot, ModSlotPlayer.exHideAccessory, -10, slot, flag3, xLoc, yLoc);
-				DrawVanity(ModSlotPlayer.exAccessorySlot, -11, slot + list.Count, flag3, xLoc, yLoc);
-				DrawDye(ModSlotPlayer.exDyesAccessory, -12, slot, flag3, xLoc, yLoc);
+				DrawSlot(ModSlotPlayer.exAccessorySlot, -11, slot + list.Count, flag3, xLoc, yLoc);
+				DrawSlot(ModSlotPlayer.exDyesAccessory, -12, slot, flag3, xLoc, yLoc);
 			}
 			else {
 				if (!SetDrawLocation(num20, slot - 3, skip, ref xLoc, ref yLoc))
 					return true;
 
 				DrawFunctional(Player.armor, Player.hideVisibleAccessory, 10, slot, flag3, xLoc, yLoc);
-				DrawVanity(Player.armor, 11, slot + Player.dye.Length, flag3, xLoc, yLoc);
-				DrawDye(Player.dye, 12, slot, flag3, xLoc, yLoc);
+				DrawSlot(Player.armor, 11, slot + Player.dye.Length, flag3, xLoc, yLoc);
+				DrawSlot(Player.dye, 12, slot, flag3, xLoc, yLoc);
 			}
 
 			return !customLoc;
@@ -224,13 +224,12 @@ namespace Terraria.ModLoader
 					xLoc = Main.screenWidth - 64 - 28 - 47 * 3 * col;
 				}
 			}
-
 			
 			return true;
 		}
 
 		/// <summary>
-		/// Is run in this.Draw. 
+		/// Is run in AccessorySlotLoader.Draw. 
 		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
 		/// Also includes creating hidevisibilitybutton.
@@ -246,7 +245,9 @@ namespace Terraria.ModLoader
 
 			Rectangle rectangle = new Rectangle(xLoc2, yLoc2, value4.Width, value4.Height);
 			int num45 = 0;
+			bool skipCheck = false;
 			if (rectangle.Contains(new Point(Main.mouseX, Main.mouseY)) && !PlayerInput.IgnoreMouseInterface) {
+				skipCheck = true;
 				Player.mouseInterface = true;
 				
 				if (Main.mouseLeft && Main.mouseLeftRelease) {
@@ -260,22 +261,9 @@ namespace Terraria.ModLoader
 				num45 = ((!visbility[slot]) ? 1 : 2);
 			}
 
-			else if (Main.mouseX >= xLoc1 && (float)Main.mouseX <= (float)xLoc1 + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
-				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
+			DrawSlot(access, context, slot, flag3, xLoc, yLoc, skipCheck);
 
-				Main.armorHide = true;
-				Player.mouseInterface = true;
-				ItemSlot.OverrideHover(access, Math.Abs(context), slot);
-				
-				if (!flag3 || Main.mouseItem.IsAir)
-					ItemSlot.LeftClick(access, context, slot);
-
-				ItemSlot.MouseHover(access, Math.Abs(context), slot);
-			}
-
-			DrawRedirect(access, context, slot, new Vector2(xLoc1, yLoc));
-
-			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Microsoft.Xna.Framework.Color.White * 0.7f);
+			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
 
 			if (num45 > 0) {
 				Main.HoverItem = new Item();
@@ -284,58 +272,40 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Is run in this.Draw. 
+		/// Is run in AccessorySlotLoader.Draw. 
 		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
-		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
+		/// At the end, calls this.DrawRedirect to enable custom drawing
 		/// </summary>
-		internal void DrawVanity(Item[] vAccess, int context, int vSlot, bool flag3, int xLoc, int yLoc) {
-			bool flag7 = flag3 && !Main.mouseItem.IsAir;
-			int xLoc1 = xLoc - 47;
+		internal void DrawSlot(Item[] items, int context, int slot, bool flag3, int xLoc, int yLoc, bool skipCheck = false) {
+			bool flag = flag3 && !Main.mouseItem.IsAir;
+			int xLoc1 = xLoc - 47 * (Math.Abs(context) - 10);
 
-			if (Main.mouseX >= xLoc1 && (float)Main.mouseX <= (float)xLoc1 + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
+			if (!skipCheck && Main.mouseX >= xLoc1 && (float)Main.mouseX <= (float)xLoc1 + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
 				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-				
+
 				Player.mouseInterface = true;
 				Main.armorHide = true;
-				ItemSlot.OverrideHover(vAccess, Math.Abs(context), vSlot);
-				
-				if (!flag7) {
-					ItemSlot.LeftClick(vAccess, context, vSlot);
-					ItemSlot.RightClick(vAccess, Math.Abs(context), vSlot);
+				ItemSlot.OverrideHover(items, Math.Abs(context), slot);
+
+				if (!flag) {
+					if (Math.Abs(context) == 12) {
+						if (Main.mouseRightRelease && Main.mouseRight)
+							ItemSlot.RightClick(items, Math.Abs(context), slot);
+
+						ItemSlot.LeftClick(items, context, slot);
+					}
+					else if (Math.Abs(context) == 11) {
+						ItemSlot.LeftClick(items, context, slot);
+						ItemSlot.RightClick(items, Math.Abs(context), slot);
+					}
+					else if (Math.Abs(context) == 10) {
+						ItemSlot.LeftClick(items, context, slot);
+					}
 				}
 
-				ItemSlot.MouseHover(vAccess, Math.Abs(context), vSlot);
+				ItemSlot.MouseHover(items, Math.Abs(context), slot);
 			}
-
-			DrawRedirect(vAccess, context, vSlot, new Vector2(xLoc1, yLoc));
-		}
-
-		/// <summary>
-		/// Is run in ModAccessorySlot.Draw. 
-		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
-		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
-		/// </summary>
-		internal void DrawDye(Item[] dyes, int context, int slot, bool flag3, int xLoc, int yLoc) {
-			bool flag8 = flag3 && !Main.mouseItem.IsAir;
-			int xLoc1 = xLoc - 47 * 2;
-
-			if (Main.mouseX >= xLoc1 && (float)Main.mouseX <= (float)xLoc1 + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
-				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-				
-				Player.mouseInterface = true;
-				Main.armorHide = true;
-				ItemSlot.OverrideHover(dyes, Math.Abs(context), slot);
-
-				if (!flag8) {
-					if (Main.mouseRightRelease && Main.mouseRight)
-						ItemSlot.RightClick(dyes, Math.Abs(context), slot);
-
-					ItemSlot.LeftClick(dyes, context, slot);
-				}
-
-				ItemSlot.MouseHover(dyes, Math.Abs(context), slot);
-			}
-			DrawRedirect(dyes, context, slot, new Vector2(xLoc1, yLoc));
+			DrawRedirect(items, context, slot, new Vector2(xLoc1, yLoc));
 		}
 
 		internal void DrawRedirect(Item[] inv, int context, int slot, Vector2 location) {
@@ -347,7 +317,6 @@ namespace Terraria.ModLoader
 		}
 
 		// VANILLA FUNCTIONALITY CODE ////////////////////////////////////////////////////////////////////////////
-
 		public bool ModdedIsAValidEquipmentSlotForIteration(int index) => Get(index).IsSlotValid();
 
 		public bool ModdedCanSlotBeShown(int index) => Get(index).IsSlotVisibleButNotValid();

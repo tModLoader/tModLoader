@@ -4848,7 +4848,7 @@
  			for (int i = 3; i < 10; i++) {
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 4874 || type == 5000)
-@@ -38223,14 +_,19 @@
+@@ -38223,14 +_,18 @@
  				if (type == 906 || type == 4038)
  					newPlayer.lavaMax += 420;
  
@@ -4857,7 +4857,6 @@
  					newPlayer.wingsLogic = newPlayer.armor[i].wingSlot;
 +					newPlayer.equippedWings = newPlayer.armor[i];
 +				}
-+					
  
  				if (type == 158 || type == 396 || type == 1250 || type == 1251 || type == 1252)
  					newPlayer.noFallDmg = true;

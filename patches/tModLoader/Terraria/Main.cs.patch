@@ -1329,7 +1329,7 @@
  
  					if (focusRecipe < 0)
 -						focusRecipe = 0;
-+						focusRecipe = 0;		
++						focusRecipe = 0;	
  				}
 +
 +			noScrollOnLocked:
