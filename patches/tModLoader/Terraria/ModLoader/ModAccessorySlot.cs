@@ -20,6 +20,16 @@ namespace Terraria.ModLoader
 		public virtual int XLoc => 0;
 		public virtual int YLoc => 0;
 
+		// Fields to change the Default Texture
+		public virtual string DyeTexture => null;
+		public virtual string VanityTexture => null;
+		public virtual string FunctionalTexture => null;
+
+		// Fields to control which parts of accessory slot draw
+		public virtual bool DrawFunctionalSlot => true;
+		public virtual bool DrawVanitySlot => true;
+		public virtual bool DrawDyeSlot => true;
+
 		protected sealed override void Register() {
 			type = Loader.Register(this);
 		}

@@ -234,10 +234,11 @@
  					else {
  						result = false;
  					}
-@@ -1175,22 +_,24 @@
+@@ -1175,22 +_,25 @@
  						if (Main.npcShop > 0)
  							return true;
  
++						//TML: Going to swap an accessory from the vanity slot in to the functional slot
 +						int tSlot = slot - inv.Length / 2;
 +
 -						if ((inv[slot].type <= 0 || inv[slot].stack <= 0) && (inv[slot - 10].type <= 0 || inv[slot - 10].stack <= 0))
@@ -300,10 +301,12 @@
  			}
  		}
  
-@@ -1342,6 +_,21 @@
+@@ -1342,6 +_,23 @@
  						if (inv == player.miscDyes)
  							num = 185 + slot;
  						break;
++					//TML Context: GamePad number magic aligned to match DemonHeart Accessory. 
++					//TML Note: There is no Master Mode Accessory slot code here for Gamepads.
 +					case -10:
 +					case -11:
 +						int num3M = slot;
@@ -322,18 +325,14 @@
  					case 19:
  						num = 180;
  						break;
-@@ -1468,6 +_,15 @@
+@@ -1468,6 +_,11 @@
  					case 27:
  						value = TextureAssets.InventoryBack12.Value;
  						break;
 +					case -10:
-+						value = TextureAssets.InventoryBack3.Value;
-+						break;
 +					case -11:
-+						value = TextureAssets.InventoryBack8.Value;
-+						break;
 +					case -12:
-+						value = TextureAssets.InventoryBack12.Value;
++						value = LoaderManager.Get<AccessorySlotLoader>().GetTexture(slot, context);
 +						break;
  					case 3:
  						value = TextureAssets.InventoryBack5.Value;
@@ -388,7 +387,7 @@
  			if (isEquipLocked(item.type))
  				return true;
  
-@@ -1901,23 +_,20 @@
+@@ -1901,25 +_,23 @@
  					return false;
  
  				if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0)
@@ -417,7 +416,10 @@
 +			return !ItemLoader.CanEquipAccessory(item, slot);
  		}
  
++		//TML: I (Solxan), have not been able to get this to ever run in-game. I suspect this code path is deprecated.
  		private static Item DyeSwap(Item item, out bool success) {
+ 			success = false;
+ 			if (item.dye <= 0)
 @@ -1934,9 +_,14 @@
  				}
  			}
@@ -435,57 +437,10 @@
  			if (dyeSlotCount < 0)
  				dyeSlotCount = 9;
  
-@@ -1974,6 +_,8 @@
- 				player.armor[num + 2] = item.Clone();
- 			}
- 			else if (item.accessory) {
-+				bool isModded = false;
-+
- 				int num2 = 3;
- 				for (int i = 3; i < 10; i++) {
- 					if (player.IsAValidEquipmentSlotForIteration(i)) {
-@@ -1985,16 +_,85 @@
- 					}
+@@ -1993,6 +_,14 @@
+ 						accSlotToSwapTo = j - 3;
  				}
  
-+				int num2Mod = 0;
-+				if (accSlotToSwapTo == 0) {
-+					for (int i = 0; i < LoaderManager.Get<AccessorySlotLoader>().list.Count; i++) {
-+						if (LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(i)) {
-+							num2Mod = i;
-+							if (AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[i].type == 0) {
-+								accSlotToSwapTo = i;
-+								isModded = true;
-+								break;
-+							}
-+						}
-+					}
-+				}
-+
- 				for (int j = 0; j < player.armor.Length; j++) {
- 					if (item.IsTheSameAs(player.armor[j]))
--						accSlotToSwapTo = j - 3;
-+						accSlotToSwapTo = j - 3; isModded = false;
- 
- 					if (j < 10 && item.wingSlot > 0 && player.armor[j].wingSlot > 0)
--						accSlotToSwapTo = j - 3;
-+						accSlotToSwapTo = j - 3; isModded = false;
- 				}
- 
--				if (accSlotToSwapTo > num2)
-+				for (int j = 0; j < LoaderManager.Get<AccessorySlotLoader>().list.Count * 2; j++) {
-+					if (item.IsTheSameAs(AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[j])) {
-+						accSlotToSwapTo = j;
-+						isModded = true;
-+					}
-+
-+					if (j < LoaderManager.Get<AccessorySlotLoader>().list.Count && item.wingSlot > 0 
-+						&& AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[j].wingSlot > 0) {
-+						accSlotToSwapTo = j;
-+						isModded = true;
-+					}
-+				}
-+
 +				for (int k = 0; k < num2; k++) {
 +					int index = 3 + (accSlotToSwapTo + num2) % num2;
 +					if (ItemLoader.CanEquipAccessory(item, index)) {
@@ -494,45 +449,9 @@
 +					}
 +				}
 +
-+				for (int k = 0; k < num2Mod; k++) {
-+					int index = (accSlotToSwapTo + num2Mod) % num2Mod;
-+					if (ItemLoader.CanEquipAccessory(item, index)) {
-+						accSlotToSwapTo = index;
-+						break;
-+					}
-+				}
-+
-+				if ((!isModded && accSlotToSwapTo > num2) || (isModded && accSlotToSwapTo > num2Mod)) {
+ 				if (accSlotToSwapTo > num2)
  					return item;
-+				}
-+
-+				if (isModded) {
-+					if (accSlotToSwapTo < 0)
-+						accSlotToSwapTo = num2Mod;
-+
-+					int num3Mod = accSlotToSwapTo;
-+					if (isEquipLocked(AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[num3Mod].type))
-+						return item;
-+
-+					for (int k = 0; k < LoaderManager.Get<AccessorySlotLoader>().list.Count * 2; k++) {
-+						if (item.IsTheSameAs(AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[k]))
-+							num3Mod = k;
-+					}
-+
-+					if (!ItemLoader.CanEquipAccessory(item, num3Mod))
-+						return item;
-+
-+					result = AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[num3Mod].Clone();
-+					AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[num3Mod] = item.Clone();
-+					accSlotToSwapTo = 0;
-+					SoundEngine.PlaySound(7);
-+					Recipe.FindRecipes();
-+					success = true;
-+					return result;
-+				}
  
- 				if (accSlotToSwapTo < 0)
- 					accSlotToSwapTo = num2 - 3;
 @@ -2008,6 +_,9 @@
  						num3 = k;
  				}

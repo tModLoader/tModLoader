@@ -28,7 +28,6 @@ namespace Terraria.ModLoader
 		public const int MaxVanillaSlotCount = 2 + 5;
 
 		// DRAWING CODE ///////////////////////////////////////////////////////////////////
-
 		internal int GetAccessorySlotPerColumn(int num20) {
 			float minimumClearance = num20 + 2 * 56 * Main.inventoryScale + 4;
 			return (int)((Main.screenHeight - minimumClearance) / (56 * Main.inventoryScale) - 1.8f);
@@ -169,9 +168,14 @@ namespace Terraria.ModLoader
 				else if (!SetDrawLocation(num20, slot + Player.dye.Length - 3, skip, ref xLoc, ref yLoc))
 					return true;
 
-				DrawFunctional(ModSlotPlayer.exAccessorySlot, ModSlotPlayer.exHideAccessory, -10, slot, flag3, xLoc, yLoc);
-				DrawSlot(ModSlotPlayer.exAccessorySlot, -11, slot + list.Count, flag3, xLoc, yLoc);
-				DrawSlot(ModSlotPlayer.exDyesAccessory, -12, slot, flag3, xLoc, yLoc);
+				var thisSlot = Get(slot);
+
+				if (thisSlot.DrawFunctionalSlot) 
+					DrawFunctional(ModSlotPlayer.exAccessorySlot, ModSlotPlayer.exHideAccessory, -10, slot, flag3, xLoc, yLoc);
+				if (thisSlot.DrawVanitySlot)
+					DrawSlot(ModSlotPlayer.exAccessorySlot, -11, slot + list.Count, flag3, xLoc, yLoc);
+				if (thisSlot.DrawDyeSlot)
+					DrawSlot(ModSlotPlayer.exDyesAccessory, -12, slot, flag3, xLoc, yLoc);
 			}
 			else {
 				if (!SetDrawLocation(num20, slot - 3, skip, ref xLoc, ref yLoc))
@@ -272,6 +276,31 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Provides the Texture for a Modded Accessory Slot
+		/// This probably will need optimization down the road.
+		/// </summary>
+		internal Texture2D GetTexture(int slot, int context) {
+			var thisSlot = Get(slot);
+			switch (context) {
+				case -10:
+					if (ModContent.RequestIfExists<Texture2D>(thisSlot.FunctionalTexture, out var funcTexture))
+						return funcTexture.Value;
+					return TextureAssets.InventoryBack3.Value;
+				case -11:
+					if (ModContent.RequestIfExists<Texture2D>(thisSlot.VanityTexture, out var vanityTexture))
+						return vanityTexture.Value;
+					return TextureAssets.InventoryBack8.Value;
+				case -12:
+					if (ModContent.RequestIfExists<Texture2D>(thisSlot.DyeTexture, out var dyeTexture))
+						return dyeTexture.Value;
+					return TextureAssets.InventoryBack12.Value;
+			}
+			
+			// Default to a functional slot
+			return TextureAssets.InventoryBack3.Value;
+		}
+
+		/// <summary>
 		/// Is run in AccessorySlotLoader.Draw. 
 		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 		/// At the end, calls this.DrawRedirect to enable custom drawing
@@ -325,56 +354,60 @@ namespace Terraria.ModLoader
 		/// Runs a simplified version of Player.UpdateEquips for the Modded Accessory Slots
 		/// </summary>
 		public void VanillaUpdateEquipsMirror(Player player) {
-			Item item = null;
-			Item vItem = null;
 			for (int k = 0; k < list.Count; k++) {
 				if (ModdedIsAValidEquipmentSlotForIteration(k)) {
-					item = ModSlotPlayer.exAccessorySlot[k];
-					vItem = ModSlotPlayer.exAccessorySlot[k + list.Count];
+					Item item = ModSlotPlayer.exAccessorySlot[k];
 
 					player.VanillaUpdateEquip(item);
 					player.ApplyEquipFunctional(item, ModSlotPlayer.exHideAccessory[k]);
 
 					if (MusicLoader.itemToMusic.ContainsKey(item.type))
 						Main.musicBox2 = MusicLoader.itemToMusic[item.type];
-
-					VanillaUpdateVisibleAccessoriesMirror(item, vItem, player, k);
 				}
 			}
+			VanillaUpdateVisibleAccessoriesMirror(player);
 		}
 
 		/// <summary>
 		/// Updates all vanity information on the player, in a similar fashion to Player.UpdateVisibleAccessories
 		/// Updates EOC shield, some wing logic, and visual compatibility
 		/// </summary>
-		public void VanillaUpdateVisibleAccessoriesMirror(Item item, Item vItem, Player player, int k) {
-			if (player.eocDash > 0 && player.shield == -1 && item.shieldSlot != -1) {
-				player.shield = item.shieldSlot;
-				if (player.cShieldFallback != -1)
-					player.cShield = player.cShieldFallback;
+		public void VanillaUpdateVisibleAccessoriesMirror(Player player) {
+			var modSlotPlayer = player.GetModPlayer<ModAccessorySlotPlayer>();
+			for (int k = 0; k < list.Count; k++) {
+				if (ModdedIsAValidEquipmentSlotForIteration(k)) {
+					Item item = modSlotPlayer.exAccessorySlot[k];
+					Item vItem = modSlotPlayer.exAccessorySlot[k + list.Count];
+
+					if (player.eocDash > 0 && player.shield == -1 && item.shieldSlot != -1) {
+						player.shield = item.shieldSlot;
+						if (player.cShieldFallback != -1)
+							player.cShield = player.cShieldFallback;
+					}
+
+					if (player.shieldRaised && player.shield == -1 && item.shieldSlot != -1) {
+						player.shield = item.shieldSlot;
+						if (player.cShieldFallback != -1)
+							player.cShield = player.cShieldFallback;
+					}
+
+					if (player.ItemIsVisuallyIncompatible(item))
+						return;
+
+					if (item.wingSlot > 0) {
+						if (modSlotPlayer.exHideAccessory[k] && (player.velocity.Y == 0f || player.mount.Active))
+							return;
+
+						player.wings = item.wingSlot;
+					}
+
+					if (!modSlotPlayer.exHideAccessory[k])
+						player.UpdateVisibleAccessory(k, item);
+
+					if (!player.ItemIsVisuallyIncompatible(vItem))
+						player.UpdateVisibleAccessory(k, vItem);
+				}
 			}
-
-			if (player.shieldRaised && player.shield == -1 && item.shieldSlot != -1) {
-				player.shield = item.shieldSlot;
-				if (player.cShieldFallback != -1)
-					player.cShield = player.cShieldFallback;
-			}
-
-			if (player.ItemIsVisuallyIncompatible(item))
-				return;
-
-			if (item.wingSlot > 0) {
-				if (ModSlotPlayer.exHideAccessory[k] && (player.velocity.Y == 0f || player.mount.Active))
-					return;
-
-				player.wings = item.wingSlot;
-			}
-
-			if (!ModSlotPlayer.exHideAccessory[k])
-				player.UpdateVisibleAccessory(k, item);
-
-			if (!player.ItemIsVisuallyIncompatible(vItem))
-				player.UpdateVisibleAccessory(k, vItem);
 		}
 
 		/// <summary>

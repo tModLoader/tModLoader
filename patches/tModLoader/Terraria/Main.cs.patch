@@ -1324,19 +1324,16 @@
  				int num = PlayerInput.ScrollWheelDelta / 120;
  				bool flag = true;
  				if (recBigList) {
-@@ -12790,8 +_,11 @@
- 						focusRecipe = numAvailableRecipes - 1;
- 
- 					if (focusRecipe < 0)
--						focusRecipe = 0;
-+						focusRecipe = 0;	
+@@ -12793,6 +_,9 @@
+ 						focusRecipe = 0;
  				}
-+
+ 
 +			noScrollOnLocked:
 +				PlayerInput.MouseInModdedUI.Clear();
- 
++
  				Main.player[myPlayer].dropItemCheck();
  			}
+ 
 @@ -12836,7 +_,13 @@
  				InGameUI.Update(gameTime);
  

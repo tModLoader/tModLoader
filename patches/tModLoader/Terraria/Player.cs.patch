@@ -3077,6 +3077,18 @@
  				if (oldAdjTile[l] != adjTile[l]) {
  					flag = true;
  					break;
+@@ -25059,8 +_,10 @@
+ 			if (armor[12].legSlot >= 0)
+ 				legs = armor[12].legSlot;
+ 
+-			if (!dead)
++			if (!dead) {
+ 				UpdateVisibleAccessories();
++				LoaderManager.Get<AccessorySlotLoader>().VanillaUpdateVisibleAccessoriesMirror(this);
++			}
+ 
+ 			wearsRobe = false;
+ 			bool somethingSpecial = false;
 @@ -25201,6 +_,7 @@
  				faceHead = -1;
  			}
