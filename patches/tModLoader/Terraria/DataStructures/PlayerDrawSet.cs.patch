@@ -22,7 +22,13 @@
  			DrawDataCache = drawData;
  			DustCache = dust;
  			GoreCache = gore;
-@@ -226,6 +_,8 @@
+@@ -221,14 +_,19 @@
+ 			else
+ 				missingArm = true;
+ 
++			ItemLoader.DrawHands(drawPlayer, ref missingHand, ref missingArm);
+ 			int type;
+ 			if (drawPlayer.heldProj >= 0 && shadow == 0f) {
  				type = Main.projectile[drawPlayer.heldProj].type;
  				if (type == 460 || type == 535 || type == 600)
  					heldProjOverHand = true;
@@ -31,6 +37,32 @@
  			}
  
  			drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
++			//ItemLoader.DrawHair(drawPlayer, );
++
+ 			hairDyePacked = PlayerDrawHelper.PackShader(drawPlayer.hairDye, PlayerDrawHelper.ShaderConfiguration.HairShader);
+ 			if (drawPlayer.head == 0 && drawPlayer.hairDye == 0)
+ 				hairDyePacked = PlayerDrawHelper.PackShader(1, PlayerDrawHelper.ShaderConfiguration.HairShader);
+@@ -540,11 +_,15 @@
+ 				colorArmorLegs = drawPlayer.GetImmuneAlphaPure(new Color(b14, b14, b14, 255), shadow);
+ 			}
+ 
++			ItemLoader.DrawArmorColor(EquipType.Head, drawPlayer.head, drawPlayer, shadow, ref colorArmorHead, ref headGlowMask, ref headGlowColor);
++			ItemLoader.DrawArmorColor(EquipType.Body, drawPlayer.body, drawPlayer, shadow, ref colorArmorBody, ref bodyGlowMask, ref bodyGlowColor);
++			ItemLoader.ArmorArmGlowMask(drawPlayer.body, drawPlayer, shadow, ref armGlowMask, ref armGlowColor);
++			ItemLoader.DrawArmorColor(EquipType.Legs, drawPlayer.legs, drawPlayer, shadow, ref colorArmorLegs, ref legsGlowMask, ref legsGlowColor);
+-			float alphaReduction = shadow;
++
+-			headGlowColor = drawPlayer.GetImmuneAlphaPure(headGlowColor, alphaReduction);
++			headGlowColor = drawPlayer.GetImmuneAlphaPure(headGlowColor, shadow);
+-			bodyGlowColor = drawPlayer.GetImmuneAlphaPure(bodyGlowColor, alphaReduction);
++			bodyGlowColor = drawPlayer.GetImmuneAlphaPure(bodyGlowColor, shadow);
+-			armGlowColor = drawPlayer.GetImmuneAlphaPure(armGlowColor, alphaReduction);
++			armGlowColor = drawPlayer.GetImmuneAlphaPure(armGlowColor, shadow);
+-			legsGlowColor = drawPlayer.GetImmuneAlphaPure(legsGlowColor, alphaReduction);
++			legsGlowColor = drawPlayer.GetImmuneAlphaPure(legsGlowColor, shadow);
+ 			if (drawPlayer.head > 0 && drawPlayer.head < 273) {
+ 				Main.instance.LoadArmorHead(drawPlayer.head);
+ 				int num9 = ArmorIDs.Head.Sets.FrontToBackID[drawPlayer.head];
 @@ -1049,8 +_,10 @@
  				DustCache.Add(dust21.dustIndex);
  			}
