@@ -350,6 +350,8 @@ namespace Terraria.ModLoader
 
 		public bool ModdedCanSlotBeShown(int index) => Get(index).IsSlotVisibleButNotValid();
 
+		public bool CanAcceptItem(int index, Item checkItem) => Get(index).SlotCanAcceptItem(checkItem);
+
 		/// <summary>
 		/// Runs a simplified version of Player.UpdateEquips for the Modded Accessory Slots
 		/// </summary>
@@ -406,6 +408,19 @@ namespace Terraria.ModLoader
 
 					if (!player.ItemIsVisuallyIncompatible(vItem))
 						player.UpdateVisibleAccessory(k, vItem);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Mirrors Player.UpdateDyes() for modded slots
+		/// </summary>
+		public void VanillaUpdateDyesMirror(Player player) {
+			var modSlotPlayer = player.GetModPlayer<ModAccessorySlotPlayer>();
+			for (int i = 0; i < modSlotPlayer.exAccessorySlot.Length; i++) {
+				if (ModdedIsAValidEquipmentSlotForIteration(i)) {
+					int num = i % modSlotPlayer.exDyesAccessory.Length;
+					player.UpdateItemDye(i < modSlotPlayer.exDyesAccessory.Length, modSlotPlayer.exHideAccessory[num], modSlotPlayer.exAccessorySlot[i], modSlotPlayer.exDyesAccessory[num]);
 				}
 			}
 		}

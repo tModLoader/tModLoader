@@ -437,31 +437,104 @@
  			if (dyeSlotCount < 0)
  				dyeSlotCount = 9;
  
-@@ -1993,6 +_,14 @@
- 						accSlotToSwapTo = j - 3;
+@@ -1974,43 +_,70 @@
+ 				player.armor[num + 2] = item.Clone();
+ 			}
+ 			else if (item.accessory) {
++				//TML: Rewrote ArmorSwap for accessories under the PR #1299 so it was actually readable. No vanilla functionality lost in transition
++				accSlotToSwapTo = -1;
++				var accLoader = LoaderManager.Get<AccessorySlotLoader>();
++
++				//TML: Check if there is an empty slot available, and if not, track the last available slot
+ 				int num2 = 3;
+ 				for (int i = 3; i < 10; i++) {
+ 					if (player.IsAValidEquipmentSlotForIteration(i)) {
+-						num2 = i;
+-						if (player.armor[i].type == 0) {
++						if (player.armor[i].type == 0 && ItemLoader.CanEquipAccessory(item, i)) {
+ 							accSlotToSwapTo = i - 3;
+ 							break;
+ 						}
+ 					}
  				}
  
-+				for (int k = 0; k < num2; k++) {
-+					int index = 3 + (accSlotToSwapTo + num2) % num2;
-+					if (ItemLoader.CanEquipAccessory(item, index)) {
-+						accSlotToSwapTo = index - 3;
-+						break;
++				//TML: Check our modded slots
++				if (accSlotToSwapTo < 0) {
++					for (int i = 0; i < accLoader.list.Count; i++) {
++						if (accLoader.ModdedIsAValidEquipmentSlotForIteration(i)) {
++							if (AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[i].type == 0 && accLoader.CanAcceptItem(i, item)) {
++								accSlotToSwapTo = i + 20;
++								break;
++							}
++						}
 +					}
 +				}
 +
- 				if (accSlotToSwapTo > num2)
- 					return item;
- 
-@@ -2008,6 +_,9 @@
- 						num3 = k;
- 				}
- 
-+				if (!ItemLoader.CanEquipAccessory(item, num3))
-+					return item;
++				accSlotToSwapTo = Math.Max(accSlotToSwapTo, 0);
 +
- 				result = player.armor[num3].Clone();
- 				player.armor[num3] = item.Clone();
- 				accSlotToSwapTo = 0;
++				//TML: Check if there is an existing copy of the item in any slot (including vanity)
++				// Will also replace wings with wings
+ 				for (int j = 0; j < player.armor.Length; j++) {
+-					if (item.IsTheSameAs(player.armor[j]))
+-						accSlotToSwapTo = j - 3;
+-
+-					if (j < 10 && item.wingSlot > 0 && player.armor[j].wingSlot > 0)
+-						accSlotToSwapTo = j - 3;
+-				}
+-
+-				if (accSlotToSwapTo > num2)
+-					return item;
+-
+-				if (accSlotToSwapTo < 0)
+-					accSlotToSwapTo = num2 - 3;
+-
+-				int num3 = 3 + accSlotToSwapTo;
+-				if (isEquipLocked(player.armor[num3].type))
+-					return item;
+-
+-				for (int k = 0; k < player.armor.Length; k++) {
+-					if (item.IsTheSameAs(player.armor[k]))
+-						num3 = k;
+-				}
+-
+-				result = player.armor[num3].Clone();
+-				player.armor[num3] = item.Clone();
+-				accSlotToSwapTo = 0;
++					if (item.IsTheSameAs(player.armor[j]) && ItemLoader.CanEquipAccessory(item, j))
++						accSlotToSwapTo = j - 3;
++
++					if (j < 10 && item.wingSlot > 0 && player.armor[j].wingSlot > 0 && ItemLoader.CanEquipAccessory(item, j))
++						accSlotToSwapTo = j - 3;
++				}
++
++				//TML: Do the same check for our modded slots
++				for (int j = 0; j < AccessorySlotLoader.ModSlotPlayer.exAccessorySlot.Length; j++) {
++					if (item.IsTheSameAs(AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[j]) && accLoader.CanAcceptItem(j, item))
++						accSlotToSwapTo = j + 20;
++
++					if (j < accLoader.list.Count && item.wingSlot > 0 && AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[j].wingSlot > 0 && accLoader.CanAcceptItem(j, item))
++						accSlotToSwapTo = j + 20;
++				}
++
++				if (accSlotToSwapTo >= 20) {
++					int num3 = accSlotToSwapTo - 20;
++					if (isEquipLocked(AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[num3].type))
++						return item;
++
++					result = AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[num3].Clone();
++					AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[num3] = item.Clone();
++				}
++				else {
++					int num3 = 3 + accSlotToSwapTo;
++					if (isEquipLocked(player.armor[num3].type))
++						return item;
++
++					result = player.armor[num3].Clone();
++					player.armor[num3] = item.Clone();
++				}
+ 			}
+ 
+ 			SoundEngine.PlaySound(7);
 @@ -2105,7 +_,7 @@
  		}
  

@@ -927,6 +927,20 @@
  		}
  
  		public void UpdateDyes() {
+@@ -6382,11 +_,12 @@
+ 					UpdateItemDye(i < 10, hideVisibleAccessory[num], armor[i], dye[num]);
+ 				}
+ 			}
++			LoaderManager.Get<AccessorySlotLoader>().VanillaUpdateDyesMirror(this);
+ 
+ 			cYorai = cPet;
+ 		}
+ 
+-		private void UpdateItemDye(bool isNotInVanitySlot, bool isSetToHidden, Item armorItem, Item dyeItem) {
++		internal void UpdateItemDye(bool isNotInVanitySlot, bool isSetToHidden, Item armorItem, Item dyeItem) {
+ 			if (armorItem.IsAir)
+ 				return;
+ 
 @@ -6398,13 +_,13 @@
  			if (!num && flag)
  				return;
