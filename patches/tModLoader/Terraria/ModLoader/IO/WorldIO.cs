@@ -188,7 +188,6 @@ namespace Terraria.ModLoader.IO
 			}
 
 			int nextFreeNPC = 0;
-			HashSet<int> alreadyLoaded = new HashSet<int>();
 			foreach (TagCompound tag in list) {
 				NPC npc = null;
 				if ((string)tag["mod"] == "Terraria") {
@@ -198,8 +197,7 @@ namespace Terraria.ModLoader.IO
 					int index;
 					for (index = 0; index < Main.npc.Length; index++) {
 						npc = Main.npc[index];
-						if (npc.type == npcId && npc.position.X == x && npc.position.Y == y &&
-						    !alreadyLoaded.Contains(index))
+						if (npc.type == npcId && npc.position.X == x && npc.position.Y == y)
 							break;
 					}
 
@@ -207,8 +205,6 @@ namespace Terraria.ModLoader.IO
 						ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
 						continue;
 					}
-
-					alreadyLoaded.Add(index);
 				}
 				else {
 					if (!ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
@@ -224,8 +220,6 @@ namespace Terraria.ModLoader.IO
 						ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
 						continue;
 					}
-
-					alreadyLoaded.Add(nextFreeNPC);
 
 					npc = Main.npc[nextFreeNPC];
 					npc.SetDefaults(modNpc.Type);
