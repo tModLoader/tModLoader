@@ -124,19 +124,21 @@
  		}
  
  		public static void DrawPlayer_12_Skin_Composite(ref PlayerDrawSet drawinfo) {
-@@ -939,19 +_,21 @@
+@@ -939,6 +_,9 @@
  					drawDataCache.Add(drawData);
  				}
  
-+				if (ItemLoader.DrawBody(drawinfo.drawPlayer)){
++				if (ItemLoader.DrawBody(drawinfo.drawPlayer))
++					goto postDrawBody;
++
  				List<DrawData> drawDataCache2 = drawinfo.DrawDataCache;
  				drawData = new DrawData(TextureAssets.Players[drawinfo.skinVar, 3].Value, vector, drawinfo.compTorsoFrame, drawinfo.colorBodySkin, bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect, 0) {
  					shader = drawinfo.skinDyePacked
- 				};
+@@ -946,12 +_,13 @@
  
  				drawDataCache2.Add(drawData);
-+				}
  			}
++			postDrawBody:
  
 -			if (!drawinfo.hidesBottomSkin && !drawinfo.drawPlayer.invis && !IsBottomOverridden(ref drawinfo)) {
 +			if (!drawinfo.hidesBottomSkin && !drawinfo.drawPlayer.invis && !drawinfo.isBottomOverriden) {
