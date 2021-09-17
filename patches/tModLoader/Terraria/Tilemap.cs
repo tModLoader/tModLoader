@@ -35,7 +35,7 @@ namespace Terraria
 					Id = NextId++;
 				}
 
-				TileData.SetLength?.Invoke(Id, width * height);
+				TileData.SetLength(Id, width * height);
 			}
 		}
 
@@ -43,7 +43,7 @@ namespace Terraria
 			CheckSize(width, height);
 
 			lock (IdThreadLock) {
-				TileData.SetLength?.Invoke(Id, width * height);
+				TileData.SetLength(Id, width * height);
 			}
 		}
 
@@ -59,7 +59,7 @@ namespace Terraria
 				Width = 0;
 				Height = 0;
 
-				TileData.SetLength?.Invoke(Id, 0);
+				TileData.SetLength(Id, 0);
 			}
 		}
 
