@@ -120,11 +120,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to determine whether the player's hair or alt (hat) hair draws when this head equipment texture is worn. By default both flags will be false. If there is an associated ModItem, by default this will call that ModItem's DrawHair.
 		/// </summary>
-		/// <param name="drawHair"></param>
-		/// <param name="drawAltHair"></param>
-		public virtual void DrawHair(ref bool drawHair, ref bool drawAltHair) {
+		/// <param name="fullHair"></param>
+		/// <param name="hatHair"></param>
+		/// <param name="hideHair"></param>
+		/// <param name="backHairDraw"></param>
+		/// <param name="drawsBackHairWithoutHeadgear"></param>
+		public virtual void DrawHair(ref bool fullHair, ref bool hatHair, ref bool hideHair, ref bool backHairDraw, ref bool drawsBackHairWithoutHeadgear) {
 			if (Item != null) {
-				Item.DrawHair(ref drawHair, ref drawAltHair);
+				Item.DrawHair(ref fullHair, ref hatHair, ref hideHair, ref backHairDraw, ref drawsBackHairWithoutHeadgear);
 			}
 		}
 

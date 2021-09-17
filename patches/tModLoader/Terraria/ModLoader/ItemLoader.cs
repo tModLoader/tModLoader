@@ -1211,29 +1211,22 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateDrawHair(int body, ref bool drawHair, ref bool drawAltHair);
+		private delegate void DelegateDrawHair(int body, ref bool drawHair, ref bool drawAltHair, ref bool hideHair, ref bool backHairDraw, ref bool drawsBackHairWithoutHeadgear);
 		private static HookList HookDrawHair = AddHook<DelegateDrawHair>(g => g.DrawHair);
-		//in Terraria.Main.DrawPlayerHead after if statement that sets flag2 to true
-		//  call ItemLoader.DrawHair(drawPlayer, ref flag, ref flag2)
-		//in Terraria.Main.DrawPlayer after if statement that sets flag5 to true
-		//  call ItemLoader.DrawHair(drawPlayer, ref flag4, ref flag5)
 		/// <summary>
 		/// Calls the item's head equipment texture's DrawHair hook, then all GlobalItem.DrawHair hooks.
 		/// "head" is the player's associated head equipment texture.
 		/// </summary>
-		public static void DrawHair(Player player, ref bool drawHair, ref bool drawAltHair) {
+		public static void DrawHair(Player player, ref bool fullHair, ref bool hatHair, ref bool hideHair, ref bool backHairDraw, ref bool drawsBackHairWithoutHeadgear) {
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
-			texture?.DrawHair(ref drawHair, ref drawAltHair);
+			texture?.DrawHair(ref fullHair, ref hatHair, ref hideHair, ref backHairDraw, ref drawsBackHairWithoutHeadgear);
 
 			foreach (var g in HookDrawHair.Enumerate(globalItemsArray)) {
-				g.DrawHair(player.head, ref drawHair, ref drawAltHair);
+				g.DrawHair(player.head, ref fullHair, ref hatHair, ref hideHair, ref backHairDraw, ref drawsBackHairWithoutHeadgear);
 			}
 		}
 
 		private static HookList HookDrawHead = AddHook<Func<int, bool>>(g => g.DrawHead);
-		//in Terraria.Main.DrawPlayerHead in if statement after ItemLoader.DrawHair
-		//and in Terraria.Main.DrawPlayer in if (!drawPlayer.invis && drawPlayer.head != 38 && drawPlayer.head != 135)
-		//  use && with ItemLoader.DrawHead(drawPlayer)
 		/// <summary>
 		/// Calls the item's head equipment texture's DrawHead hook, then all GlobalItem.DrawHead hooks, until one of them returns false. Returns true if none of them return false.
 		/// "head" is the player's associated head equipment texture.

@@ -85,13 +85,12 @@
  			if (drawPlayer.head > 0 && drawPlayer.head < 273) {
  				Main.instance.LoadArmorHead(drawPlayer.head);
  				int num = ArmorIDs.Head.Sets.FrontToBackID[drawPlayer.head];
-@@ -120,9 +_,10 @@
+@@ -120,9 +_,9 @@
  				Main.instance.LoadAccFace(drawPlayer.faceFlower);
  
  			helmetOffset = drawPlayer.GetHelmetDrawOffset() * drawPlayer.Directions.Y;
 -			drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out bool _, out helmetIsOverFullHair);
 +			drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
-+			//ItemLoader.DrawHair(drawPlayer, );
 -			helmetIsTall = (drawPlayer.head == 14 || drawPlayer.head == 56 || drawPlayer.head == 158);
 +			//helmetIsTall = (drawPlayer.head == 14 || drawPlayer.head == 56 || drawPlayer.head == 158);
 -			helmetIsNormal = (!helmetIsTall && !helmetIsOverFullHair && drawPlayer.head > 0 && drawPlayer.head < 273 && drawPlayer.head != 28);

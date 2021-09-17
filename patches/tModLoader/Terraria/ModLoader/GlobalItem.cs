@@ -566,7 +566,7 @@ namespace Terraria.ModLoader
 		/// "head" is the player's associated head equipment texture.
 		/// This method is not instanced.
 		/// </summary>
-		public virtual void DrawHair(int head, ref bool drawHair, ref bool drawAltHair) {
+		public virtual void DrawHair(int head, ref bool fullHair, ref bool hatHair, ref bool hideHair, ref bool backHairDraw, ref bool drawsBackHairWithoutHeadgear) {
 		}
 
 		/// <summary>

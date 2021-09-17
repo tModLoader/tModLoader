@@ -648,7 +648,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="drawHair">if set to <c>true</c> [draw hair].</param>
 		/// <param name="drawAltHair">if set to <c>true</c> [draw alt hair].</param>
-		public virtual void DrawHair(ref bool drawHair, ref bool drawAltHair) {
+		public virtual void DrawHair(ref bool fullHair, ref bool hatHair, ref bool hideHair, ref bool backHairDraw, ref bool drawsBackHairWithoutHeadgear) {
 		}
 
 		/// <summary>

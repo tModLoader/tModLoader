@@ -22,7 +22,7 @@
  			DrawDataCache = drawData;
  			DustCache = dust;
  			GoreCache = gore;
-@@ -221,14 +_,19 @@
+@@ -221,14 +_,18 @@
  			else
  				missingArm = true;
  
@@ -37,7 +37,6 @@
  			}
  
  			drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
-+			//ItemLoader.DrawHair(drawPlayer, );
 +
  			hairDyePacked = PlayerDrawHelper.PackShader(drawPlayer.hairDye, PlayerDrawHelper.ShaderConfiguration.HairShader);
  			if (drawPlayer.head == 0 && drawPlayer.hairDye == 0)

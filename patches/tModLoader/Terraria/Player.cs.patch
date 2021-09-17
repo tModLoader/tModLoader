@@ -1961,6 +1961,15 @@
  		}
  
  		public void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = default(Vector2)) {
+@@ -11889,6 +_,8 @@
+ 			backHairDraw = (num > 50 && (num < 56 || num > 63) && (num < 74 || num > 77) && (num < 88 || num > 89) && num != 100 && num != 104 && num != 112 && num < 116);
+ 			if (num == 133 || num == 134 || num == 146 || num == 162 || num == 6)
+ 				backHairDraw = true;
++
++			ItemLoader.DrawHair(this, ref fullHair, ref hatHair, ref hideHair, ref backHairDraw, ref drawsBackHairWithoutHeadgear);
+ 		}
+ 
+ 		public void UpdateDead() {
 @@ -11941,8 +_,9 @@
  			hasGingerBeard = false;
  			hasRainbowCursor = false;
