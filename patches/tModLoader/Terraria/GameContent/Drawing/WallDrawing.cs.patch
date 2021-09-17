@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameContent/Drawing/WallDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/WallDrawing.cs
-@@ -3,6 +_,7 @@
+@@ -3,13 +_,14 @@
  using System.Diagnostics;
  using Terraria.Graphics;
  using Terraria.ID;
@@ -8,6 +8,14 @@
  
  namespace Terraria.GameContent.Drawing
  {
+ 	public class WallDrawing
+ 	{
+ 		private static VertexColors _glowPaintColors = new VertexColors(Color.White);
+-		private Tile[,] _tileArray;
++		private Tilemap _tileArray;
+ 		private TilePaintSystemV2 _paintSystem;
+ 
+ 		public WallDrawing(TilePaintSystemV2 paintSystem) {
 @@ -73,6 +_,10 @@
  					if (wall <= 0 || FullTile(j, i))
  						continue;

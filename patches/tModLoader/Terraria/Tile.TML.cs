@@ -3,26 +3,8 @@ using Terraria.ID;
 
 namespace Terraria
 {
-	public partial class Tile
+	public readonly partial struct Tile
 	{
-		private static void SetBit(ref byte header, int position, bool value) {
-			if (value)
-				header = (byte)(header | (1 << position));
-			else
-				header = (byte)(header & ~(1 << position));
-		}
-
-		private static void SetBit(ref ushort header, int position, bool value) {
-			if (value)
-				header = (ushort)(header | (1 << position));
-			else
-				header = (ushort)(header & ~(1 << position));
-		}
-
-		private static bool IsBitSet(ushort value, int pos) {
-			return (value & (1 << pos)) != 0;
-		}
-
 		public int LiquidType {
 			get => (bTileHeader & 0x60) >> 5;
 			set {
@@ -166,7 +148,22 @@ namespace Terraria
 				return -1;
 			}
 		}
-		
+
+		public override bool Equals(object obj) {
+			if (obj is Tile otherTile && otherTile.TileId == TileId && otherTile.TilemapId == TilemapId) {
+				return true;
+			}
+
+			if (obj is null && TileId < 0) {
+				return true;
+			}
+
+			return false;
+		}
+
+		public ref T Get<T>() where T : struct, ITileData
+			=> ref TileData<T>.DataByTilemapId[TilemapId][TileId];
+
 		public bool IsTheSameAs(Tile other) {
 			if (other == null)
 				return false;
@@ -197,6 +194,30 @@ namespace Terraria
 			}
 
 			return true;
+		}
+
+		public static bool operator ==(Tile tile, object obj)
+			=> tile.Equals(obj);
+		
+		public static bool operator !=(Tile tile, object obj)
+			=> !tile.Equals(obj);
+
+		private static void SetBit(ref byte header, int position, bool value) {
+			if (value)
+				header = (byte)(header | (1 << position));
+			else
+				header = (byte)(header & ~(1 << position));
+		}
+
+		private static void SetBit(ref ushort header, int position, bool value) {
+			if (value)
+				header = (ushort)(header | (1 << position));
+			else
+				header = (ushort)(header & ~(1 << position));
+		}
+
+		private static bool IsBitSet(ushort value, int pos) {
+			return (value & (1 << pos)) != 0;
 		}
 	}
 }

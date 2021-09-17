@@ -1,47 +1,102 @@
 --- src/Terraria/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -9,28 +_,28 @@
- #if !WINDOWS
- 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
- #endif
+@@ -1,36 +_,37 @@
+ using Microsoft.Xna.Framework;
+ using Terraria.DataStructures;
+-#if !WINDOWS
+-using System.Runtime.InteropServices;
+-#endif
++
++#pragma warning disable IDE1006 // Naming Styles
+ 
+ namespace Terraria
+ {
+-#if !WINDOWS
+-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+-#endif
 -	public class Tile
-+	public partial class Tile
++	// In TML 1.4, Tile has been changed from a class with data, to a structure that acts as an index to data located elsewhere. Alike Entities in the ECS game architecture design.
++	public readonly partial struct Tile
  	{
- 		public ushort type;
- 		public ushort wall;
+-		public ushort type;
+-		public ushort wall;
 -		public byte liquid;
 -		public short sTileHeader;
-+		internal byte liquid;
-+		public ushort sTileHeader; //For easier bitwise manipulations
- 		public byte bTileHeader;
- 		public byte bTileHeader2;
- 		public byte bTileHeader3;
- 		public short frameX;
- 		public short frameY;
+-		public byte bTileHeader;
+-		public byte bTileHeader2;
+-		public byte bTileHeader3;
+-		public short frameX;
+-		public short frameY;
 -		public const int Type_Solid = 0;
-+		internal const int Type_Solid = 0;
 -		public const int Type_Halfbrick = 1;
-+		internal const int Type_Halfbrick = 1;
 -		public const int Type_SlopeDownRight = 2;
-+		internal const int Type_SlopeDownRight = 2;
 -		public const int Type_SlopeDownLeft = 3;
-+		internal const int Type_SlopeDownLeft = 3;
 -		public const int Type_SlopeUpRight = 4;
-+		internal const int Type_SlopeUpRight = 4;
 -		public const int Type_SlopeUpLeft = 5;
-+		internal const int Type_SlopeUpLeft = 5;
 -		public const int Liquid_Water = 0;
-+		internal const int Liquid_Water = 0;
 -		public const int Liquid_Lava = 1;
-+		internal const int Liquid_Lava = 1;
 -		public const int Liquid_Honey = 2;
-+		internal const int Liquid_Honey = 2;
- 
+-
 -		public int collisionType {
++		internal readonly uint TileId;
++		internal readonly uint TilemapId;
++
++		internal ref ushort type => ref Get<TileTypeData>().Type;
++		internal ref ushort wall => ref Get<WallTypeData>().Type;
++		internal ref byte liquid => ref Get<TileLiquidData>().Amount;
++		internal ref ushort sTileHeader => ref Get<MiscellaneousTileData>().UShortHeader; // TML: Changed from 'short' for easier bitwise manipulations
++		internal ref byte bTileHeader => ref Get<MiscellaneousTileData>().ByteHeader1;
++		internal ref byte bTileHeader2 => ref Get<MiscellaneousTileData>().ByteHeader2;
++		internal ref byte bTileHeader3 => ref Get<MiscellaneousTileData>().ByteHeader3;
++		internal ref short frameX => ref Get<TileFramingData>().FrameX;
++		internal ref short frameY => ref Get<TileFramingData>().FrameY;
++		
++		internal const int Type_Solid = 0;
++		internal const int Type_Halfbrick = 1;
++		internal const int Type_SlopeDownRight = 2;
++		internal const int Type_SlopeDownLeft = 3;
++		internal const int Type_SlopeUpRight = 4;
++		internal const int Type_SlopeUpLeft = 5;
++		internal const int Liquid_Water = 0;
++		internal const int Liquid_Lava = 1;
++		internal const int Liquid_Honey = 2;
++
 +		internal int collisionType {
  			get {
  				if (!active())
  					return 0;
+@@ -48,7 +_,11 @@
+ 			}
+ 		}
+ 
+-		public Tile() {
++		internal Tile(uint tilemapId, uint tileId) {
++			TilemapId = tilemapId;
++			TileId = tileId;
++
++			/*
+ 			type = 0;
+ 			wall = 0;
+ 			liquid = 0;
+@@ -58,8 +_,10 @@
+ 			bTileHeader3 = 0;
+ 			frameX = 0;
+ 			frameY = 0;
++			*/
+ 		}
+ 
++		/*
+ 		public Tile(Tile copy) {
+ 			if (copy == null) {
+ 				type = 0;
+@@ -84,6 +_,7 @@
+ 				frameY = copy.frameY;
+ 			}
+ 		}
++		*/
+ 
+ 		public object Clone() => MemberwiseClone();
+ 
 @@ -118,7 +_,7 @@
  			frameY = from.frameY;
  		}

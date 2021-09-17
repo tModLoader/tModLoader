@@ -177,6 +177,15 @@
  						NetMessage.TrySendData(49, whoAmI);
  						NetMessage.TrySendData(57, whoAmI);
  						NetMessage.TrySendData(7, whoAmI);
+@@ -1062,7 +_,7 @@
+ 
+ 						BitsByte bitsByte7 = (byte)0;
+ 						BitsByte bitsByte8 = (byte)0;
+-						Tile tile4 = null;
++						Tile tile4 = default;
+ 						for (int num63 = num59; num63 < num59 + num61; num63++) {
+ 							for (int num64 = num60; num64 < num60 + num62; num64++) {
+ 								if (Main.tile[num63, num64] == null)
 @@ -1137,8 +_,8 @@
  						int num177 = reader.ReadInt16();
  						Vector2 position3 = reader.ReadVector2();
@@ -442,6 +451,15 @@
  						player9.channel = player9.inventory[player9.selectedItem].channel;
  						if (Main.netMode == 2)
  							NetMessage.TrySendData(41, -1, whoAmI, null, num104);
+@@ -1948,7 +_,7 @@
+ 						if (Main.tile[num90, num91] == null)
+ 							Main.tile[num90, num91] = new Tile();
+ 
+-						lock (Main.tile[num90, num91]) {
++						lock (Main.tile) {
+ 							Main.tile[num90, num91].liquid = liquid;
+ 							Main.tile[num90, num91].liquidType(liquidType);
+ 							if (Main.netMode == 2)
 @@ -1973,7 +_,7 @@
  							break;
  

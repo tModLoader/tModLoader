@@ -177,6 +177,15 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
+@@ -2752,7 +_,7 @@
+ 					float num = (float)j / (float)lastMaxTilesX;
+ 					Main.statusText = Lang.gen[46].Value + " " + (int)(num * 100f + 1f) + "%";
+ 					for (int k = 0; k < lastMaxTilesY; k++) {
+-						Main.tile[j, k] = null;
++						Main.tile[j, k] = default;
+ 					}
+ 				}
+ 			}
 @@ -5517,17 +_,18 @@
  			Main.lockMenuBGChange = true;
  			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
@@ -366,6 +375,15 @@
  						flag4 = true;
  
  					if (!flag3) {
+@@ -14972,7 +_,7 @@
+ 		public static void TreeGrowFXCheck(int x, int y) {
+ 			int treeHeight = 1;
+ 			int passStyle = -1;
+-			Tile topTile = null;
++			Tile topTile = default;
+ 			for (int num = -1; num > -100; num--) {
+ 				Tile tile = Main.tile[x, y + num];
+ 				if (!tile.active() || !TileID.Sets.GetsCheckedForLeaves[tile.type])
 @@ -14989,6 +_,14 @@
  					continue;
  				}
@@ -1348,16 +1366,22 @@
  			if (tileCache.wall == 44) {
  				int num2 = Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, 66, 0f, 0f, 100, new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB), 0.75f);
  				Main.dust[num2].noGravity = true;
-@@ -39313,6 +_,9 @@
- 			if (!tile.active())
+@@ -39306,11 +_,14 @@
  				return false;
  
-+			if (!TileLoader.CanKillTile(i, j, tile.type, ref blockDamaged))
+ 			Tile tile = Main.tile[i, j];
+-			Tile tile2 = null;
++			Tile tile2 = default;
+ 			if (tile == null)
+ 				return false;
+ 
+ 			if (!tile.active())
 +				return false;
 +
- 			if (j >= 1)
- 				tile2 = Main.tile[i, j - 1];
++			if (!TileLoader.CanKillTile(i, j, tile.type, ref blockDamaged))
+ 				return false;
  
+ 			if (j >= 1)
 @@ -39326,7 +_,9 @@
  						if (tile.type != type && (tile2.frameX == 66 || tile2.frameX == 220))
  							return false;

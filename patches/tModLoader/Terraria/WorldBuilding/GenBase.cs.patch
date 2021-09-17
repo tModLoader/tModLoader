@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/WorldBuilding/GenBase.cs
++++ src/tModLoader/Terraria/WorldBuilding/GenBase.cs
+@@ -8,7 +_,7 @@
+ 
+ 		protected static UnifiedRandom _random => WorldGen.genRand;
+ 
+-		protected static Tile[,] _tiles => Main.tile;
++		protected static Tilemap _tiles => Main.tile;
+ 
+ 		protected static int _worldWidth => Main.maxTilesX;
+ 
