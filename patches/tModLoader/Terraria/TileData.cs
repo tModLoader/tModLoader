@@ -47,7 +47,7 @@ namespace Terraria
 		}
 
 		public static void CopySingle(uint sourceTilemapId, uint sourceIndex, uint destinationTilemapId, uint destinationIndex) {
-			DataByTilemapId[sourceTilemapId][sourceIndex] = DataByTilemapId[destinationTilemapId][destinationIndex];
+			DataByTilemapId[destinationTilemapId][destinationIndex] = DataByTilemapId[sourceTilemapId][sourceIndex];
 		}
 
 		public static void CopyMultiple(uint sourceTilemapId, uint sourceIndex, uint destinationTilemapId, uint destinationIndex, int length) {
