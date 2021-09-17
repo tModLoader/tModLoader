@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Terraria.ID;
 
 namespace Terraria
@@ -161,6 +162,7 @@ namespace Terraria
 			return false;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public ref T Get<T>() where T : struct, ITileData
 			=> ref TileData<T>.DataByTilemapId[TilemapId][TileId];
 
