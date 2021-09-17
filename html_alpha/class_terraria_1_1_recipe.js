@@ -2,6 +2,7 @@ var class_terraria_1_1_recipe =
 [
     [ "Condition", "class_terraria_1_1_recipe_1_1_condition.html", "class_terraria_1_1_recipe_1_1_condition" ],
     [ "ICondition", "interface_terraria_1_1_recipe_1_1_i_condition.html", "interface_terraria_1_1_recipe_1_1_i_condition" ],
+    [ "AcceptedByItemGroups", "class_terraria_1_1_recipe.html#a19ee9388f4e74b037b276a3c130497b0", null ],
     [ "AddCondition", "class_terraria_1_1_recipe.html#a680852ed6ba1a493c57be253a90fe66f", null ],
     [ "AddCondition", "class_terraria_1_1_recipe.html#a4ce4b6fce4ed81801fe5ffa60d6f65b7", null ],
     [ "AddCondition", "class_terraria_1_1_recipe.html#a8a662bcaac40280998e962584b68b20e", null ],
@@ -37,6 +38,7 @@ var class_terraria_1_1_recipe =
     [ "HasTile", "class_terraria_1_1_recipe.html#a57c7b9cb1d82e7f9c923cb0c14fafdaf", null ],
     [ "HasTile< T >", "class_terraria_1_1_recipe.html#aaff848428cb3043605e7192f5c2942e2", null ],
     [ "OnCraftCallback", "class_terraria_1_1_recipe.html#a527c4b796145888c59981fff0cc82cb4", null ],
+    [ "ProcessGroupsForText", "class_terraria_1_1_recipe.html#adbb9fdfb5d588ec7d9a60ab4124dacaa", null ],
     [ "Register", "class_terraria_1_1_recipe.html#a82260971a47e82dd05fe06402efc0a4f", null ],
     [ "RemoveCondition", "class_terraria_1_1_recipe.html#abfefb19ea6645cbb8b574837d78e26f4", null ],
     [ "RemoveIngredient", "class_terraria_1_1_recipe.html#a8e91488a600dbfdf0aa520c32c91ce1a", null ],
