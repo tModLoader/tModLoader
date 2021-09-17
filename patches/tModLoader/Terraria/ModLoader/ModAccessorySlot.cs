@@ -16,16 +16,21 @@ namespace Terraria.ModLoader
 		internal int index;
 		public AccessorySlotLoader Loader => LoaderManager.Get<AccessorySlotLoader>();
 
-		// Fields to preset a location for the accessory slot
+		// Properties to preset a location for the accessory slot
 		public virtual int XLoc => 0;
 		public virtual int YLoc => 0;
 
-		// Fields to change the Default Texture
+		// Properties to change the Default Background Texture
+		public virtual string DyeBackgroundTexture => null;
+		public virtual string VanityBackgroundTexture => null;
+		public virtual string FunctionalBackgroundTexture => null;
+
+		// Properties to change the Default Style Image Texture
 		public virtual string DyeTexture => null;
 		public virtual string VanityTexture => null;
 		public virtual string FunctionalTexture => null;
 
-		// Fields to control which parts of accessory slot draw
+		// Properties to control which parts of accessory slot draw
 		public virtual bool DrawFunctionalSlot => true;
 		public virtual bool DrawVanitySlot => true;
 		public virtual bool DrawDyeSlot => true;

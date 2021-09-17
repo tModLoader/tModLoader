@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Players
@@ -9,15 +9,25 @@ namespace ExampleMod.Common.Players
 		// If the class is empty, everything will default to a basic vanilla slot.
 	}
 
+	/* // Enable if want to see how it works; disabled by default due to intrusiveness
 	public class ExampleCustomLocationAndTextureSlot : ModAccessorySlot
 	{
 		// We will place the slot to be at the center of the map, making the decision not to follow the internal UI handling
 		public override int XLoc => Main.screenWidth / 2;
 		public override int YLoc => 3 * Main.screenHeight / 4;
 
-		//TODO: Add an example of custom texture application in the following override.
-		//public override void DrawModded(Item[] inv, int context, int slot, Vector2 position) => base.DrawModded(inv, context, slot, position);
+		// We will disable drawing the dye slot
+		public override bool DrawDyeSlot => false;
+
+		//     We will use our 'custom' textures
+		// Background Textures -> In general, you can use most of the existing vanilla ones to get different colours
+		public override string VanityBackgroundTexture => "Terraria/Images/Inventory_Back14"; // yellow
+		public override string FunctionalBackgroundTexture => "Terraria/Images/Inventory_Back7"; // pale blue
+
+		// Icon textures. Expects 32x32 images if you want it to look proper. 
+		public override string VanityTexture => "Terraria/Images/Item_" + ItemID.PiggyBank; // The piggy bank is 16x24, so we expect it to look funny. Is a fun funny tho :)
 	}
+	*/
 
 	public class ExampleModWingSlot : ModAccessorySlot
 	{
@@ -39,5 +49,8 @@ namespace ExampleMod.Common.Players
 		public override bool IsSlotVisibleButNotValid() {
 			return false; // We set to false to just not display if not valid.
 		}
+
+		// Icon textures. Expects 32x32 images if you want it to look proper. 
+		public override string FunctionalTexture => "Terraria/Images/Item_" + ItemID.CreativeWings;
 	}
 }

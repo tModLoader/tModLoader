@@ -332,7 +332,7 @@
 +					case -10:
 +					case -11:
 +					case -12:
-+						value = LoaderManager.Get<AccessorySlotLoader>().GetTexture(slot, context);
++						value = LoaderManager.Get<AccessorySlotLoader>().GetBackgroundTexture(slot, context);
 +						break;
  					case 3:
  						value = TextureAssets.InventoryBack5.Value;
@@ -353,6 +353,22 @@
  				case 16:
  					num10 = 4;
  					break;
+@@ -1610,7 +_,14 @@
+ 				Rectangle rectangle = value6.Frame(3, 6, num10 % 3, num10 / 3);
+ 				rectangle.Width -= 2;
+ 				rectangle.Height -= 2;
++
++				// Modded Accessory Slots
++				if (context == -10 || context == -11 || context == -12) {
++					LoaderManager.Get<AccessorySlotLoader>().DrawSlotTexture(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f, slot, context);
++				}
++				else {
+-				spriteBatch.Draw(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f);
++					spriteBatch.Draw(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f);
++				}	
+ 			}
+ 
+ 			Vector2 vector = value.Size() * inventoryScale;
 @@ -1628,10 +_,15 @@
  				num11 *= inventoryScale;
  				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num11 / 2f;

@@ -279,25 +279,51 @@ namespace Terraria.ModLoader
 		/// Provides the Texture for a Modded Accessory Slot
 		/// This probably will need optimization down the road.
 		/// </summary>
-		internal Texture2D GetTexture(int slot, int context) {
+		internal Texture2D GetBackgroundTexture(int slot, int context) {
 			var thisSlot = Get(slot);
 			switch (context) {
 				case -10:
-					if (ModContent.RequestIfExists<Texture2D>(thisSlot.FunctionalTexture, out var funcTexture))
+					if (ModContent.RequestIfExists<Texture2D>(thisSlot.FunctionalBackgroundTexture, out var funcTexture))
 						return funcTexture.Value;
 					return TextureAssets.InventoryBack3.Value;
 				case -11:
-					if (ModContent.RequestIfExists<Texture2D>(thisSlot.VanityTexture, out var vanityTexture))
+					if (ModContent.RequestIfExists<Texture2D>(thisSlot.VanityBackgroundTexture, out var vanityTexture))
 						return vanityTexture.Value;
 					return TextureAssets.InventoryBack8.Value;
 				case -12:
-					if (ModContent.RequestIfExists<Texture2D>(thisSlot.DyeTexture, out var dyeTexture))
+					if (ModContent.RequestIfExists<Texture2D>(thisSlot.DyeBackgroundTexture, out var dyeTexture))
 						return dyeTexture.Value;
 					return TextureAssets.InventoryBack12.Value;
 			}
 			
 			// Default to a functional slot
 			return TextureAssets.InventoryBack3.Value;
+		}
+
+		internal void DrawSlotTexture(Texture2D value6, Vector2 position, Rectangle rectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth, int slot, int context) {
+			var thisSlot = Get(slot);
+			Texture2D texture = null;
+			switch (context) {
+				case -10:
+					if (ModContent.RequestIfExists<Texture2D>(thisSlot.FunctionalTexture, out var funcTexture))
+						texture = funcTexture.Value;
+					break;
+				case -11:
+					if (ModContent.RequestIfExists<Texture2D>(thisSlot.VanityTexture, out var vanityTexture))
+						texture = vanityTexture.Value;
+					break;
+				case -12:
+					if (ModContent.RequestIfExists<Texture2D>(thisSlot.DyeTexture, out var dyeTexture))
+						texture = dyeTexture.Value;
+					break;
+			}
+
+			if (texture == null)
+				texture = value6;
+			else
+				rectangle = new Rectangle(0, 0, 32, 32);
+
+			Main.spriteBatch.Draw(texture, position, rectangle, color, rotation, origin, scale, effects, layerDepth);
 		}
 
 		/// <summary>
