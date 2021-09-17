@@ -6,6 +6,14 @@ namespace Terraria
 {
 	public readonly partial struct Tile
 	{
+		public ref ushort TileType => ref Get<TileTypeData>().Type;
+
+		public ref ushort WallType => ref Get<WallTypeData>().Type;
+
+		public ref short FrameX => ref Get<TileFramingData>().FrameX;
+
+		public ref short FrameY => ref Get<TileFramingData>().FrameY;
+
 		public int LiquidType {
 			get => (bTileHeader & 0x60) >> 5;
 			set {
