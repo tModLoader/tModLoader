@@ -89,7 +89,7 @@
  		public Tile(Tile copy) {
  			if (copy == null) {
  				type = 0;
-@@ -84,6 +_,7 @@
+@@ -84,10 +_,14 @@
  				frameY = copy.frameY;
  			}
  		}
@@ -97,6 +97,21 @@
  
  		public object Clone() => MemberwiseClone();
  
+ 		public void ClearEverything() {
++			TileData.ClearSingle(TilemapId, TileId);
++
++			/*
+ 			type = 0;
+ 			wall = 0;
+ 			liquid = 0;
+@@ -97,6 +_,7 @@
+ 			bTileHeader3 = 0;
+ 			frameX = 0;
+ 			frameY = 0;
++			*/
+ 		}
+ 
+ 		public void ClearTile() {
 @@ -107,6 +_,9 @@
  		}
  
