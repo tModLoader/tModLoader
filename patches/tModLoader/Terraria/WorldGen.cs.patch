@@ -186,6 +186,15 @@
  					}
  				}
  			}
+@@ -5475,6 +_,8 @@
+ 		}
+ 
+ 		public static void GenerateWorld(int seed, GenerationProgress customProgressObject = null) {
++			var generationStopwatch = Stopwatch.StartNew();
++
+ 			drunkWorldGen = false;
+ 			drunkWorldGenText = false;
+ 			switch (seed) {
 @@ -5517,17 +_,18 @@
  			Main.lockMenuBGChange = true;
  			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
@@ -316,7 +325,7 @@
  				progress.Set(9f / num30);
  				if (!notTheBees) {
  					double num48 = (double)Main.maxTilesX * 0.02;
-@@ -12024,11 +_,14 @@
+@@ -12024,11 +_,18 @@
  				progress.Message = Lang.gen[87].Value;
  			});
  
@@ -328,6 +337,10 @@
  			Main.NotifyOfEvent(GameNotificationType.WorldGen);
  			drunkWorldGenText = false;
 +			BackupIO.archiveLock = true;
++
++			generationStopwatch.Stop();
++
++			Logging.tML.Info($"Generation of {Main.maxTilesX}x{Main.maxTilesY} {(crimson ? "Crimson" : "Corruption")} world with seed {seed} completed in {generationStopwatch.Elapsed:m'm 's's 'fff'ms'}");
  		}
  
  		private static Point GetAdjustedFloorPosition(int x, int y) {
