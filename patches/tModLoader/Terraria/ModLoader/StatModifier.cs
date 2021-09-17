@@ -55,7 +55,7 @@
 		public static implicit operator float(StatModifier m)
 			=> m.Additive * m.Multiplicative;
 
-		public static implicit operator int(StatModifier m)
+		public static explicit operator int(StatModifier m)
 			=> (int)(float)m;
 
 		public StatModifier CombineWith(StatModifier m)
