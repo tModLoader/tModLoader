@@ -97,8 +97,21 @@
  
  		public object Clone() => MemberwiseClone();
  
-@@ -118,7 +_,7 @@
+@@ -107,6 +_,9 @@
+ 		}
+ 
+ 		public void CopyFrom(Tile from) {
++			TileData.CopySingle(from.TilemapId, from.TileId, TilemapId, TileId);
++
++			/*
+ 			type = from.type;
+ 			wall = from.wall;
+ 			liquid = from.liquid;
+@@ -116,9 +_,10 @@
+ 			bTileHeader3 = from.bTileHeader3;
+ 			frameX = from.frameX;
  			frameY = from.frameY;
++			*/
  		}
  
 -		public bool isTheSameAs(Tile compTile) {

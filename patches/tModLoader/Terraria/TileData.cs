@@ -8,12 +8,16 @@ namespace Terraria
 
 	internal static class TileData
 	{
-		public delegate void SetLengthDelegate(uint tilemapId, int length);
+		internal delegate void SetLengthDelegate(uint tilemapId, int length);
+		internal delegate void CopySingleDelegate(uint sourceTilemapId, uint sourceIndex, uint destinationTilemapId, uint destinationIndex);
+		internal delegate void CopyMultipleDelegate(uint sourceTilemapId, uint sourceIndex, uint destinationTilemapId, uint destinationIndex, int length);
 
-		public static SetLengthDelegate SetLength;
+		internal static SetLengthDelegate SetLength;
+		internal static CopySingleDelegate CopySingle;
+		internal static CopyMultipleDelegate CopyMultiple;
 
 		static TileData() {
-			// Initialize vanilla types
+			// Initialize vanilla types. Probably temporary implementation.
 			foreach (var type in Assembly.GetExecutingAssembly().GetTypes()) {
 				if (type.IsAbstract || !type.IsValueType || !type.GetInterfaces().Contains(typeof(ITileData))) {
 					continue;
@@ -30,6 +34,8 @@ namespace Terraria
 
 		static TileData() {
 			TileData.SetLength += SetLength;
+			TileData.CopySingle += CopySingle;
+			TileData.CopyMultiple += CopyMultiple;
 		}
 
 		public static void SetLength(uint tilemapId, int length) {
@@ -38,6 +44,14 @@ namespace Terraria
 			}
 
 			Array.Resize(ref DataByTilemapId[tilemapId], length);
+		}
+
+		public static void CopySingle(uint sourceTilemapId, uint sourceIndex, uint destinationTilemapId, uint destinationIndex) {
+			DataByTilemapId[sourceTilemapId][sourceIndex] = DataByTilemapId[destinationTilemapId][destinationIndex];
+		}
+
+		public static void CopyMultiple(uint sourceTilemapId, uint sourceIndex, uint destinationTilemapId, uint destinationIndex, int length) {
+			Array.Copy(DataByTilemapId[sourceTilemapId], (int)sourceIndex, DataByTilemapId[destinationTilemapId], (int)destinationIndex, length);
 		}
 	}
 }
