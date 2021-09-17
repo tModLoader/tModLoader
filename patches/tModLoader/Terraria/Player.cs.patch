@@ -4286,7 +4286,7 @@
 +
 +			float flat = 0;
 +			CombinedHooks.ModifyWeaponKnockback(this, sItem, ref kbModifier, ref flat);
-+			return Math.Max(0, KnockBack * kbModifier + flat);
++			return Math.Max(0f, KnockBack * kbModifier + flat);
  		}
  
  		public int GetWeaponCrit(Item sItem) {
