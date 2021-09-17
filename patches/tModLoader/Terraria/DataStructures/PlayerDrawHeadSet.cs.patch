@@ -1,10 +1,6 @@
 --- src/Terraria/Terraria/DataStructures/PlayerDrawHeadSet.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDrawHeadSet.cs
-@@ -2,12 +_,16 @@
- using Microsoft.Xna.Framework.Graphics;
- using System.Collections.Generic;
- using Terraria.ID;
-+using Terraria.ModLoader;
+@@ -5,9 +_,12 @@
  
  namespace Terraria.DataStructures
  {
