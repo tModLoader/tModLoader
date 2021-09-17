@@ -170,6 +170,9 @@ namespace Terraria
 			return false;
 		}
 
+		public override int GetHashCode()
+			=> (int)(TileId ^ TilemapId);
+
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public ref T Get<T>() where T : struct, ITileData
 			=> ref TileData<T>.DataByTilemapId[TilemapId][TileId];
