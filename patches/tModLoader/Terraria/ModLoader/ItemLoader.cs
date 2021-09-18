@@ -1201,6 +1201,7 @@ namespace Terraria.ModLoader
 		/// Calls the item's body equipment texture's DrawHands hook, then all GlobalItem.DrawHands hooks.
 		/// "body" is the player's associated body equipment texture.
 		/// </summary>
+		// TODO: Remove DrawHands. Replaced by ArmodIDs.Body.Sets.
 		public static void DrawHands(Player player, ref bool drawHands, ref bool drawArms) {
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
 
@@ -1641,7 +1642,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookHoldoutOrigin = AddHook<Func<int, Vector2?>>(g => g.HoldoutOrigin);
 		public static void HoldoutOrigin(Player player, ref Vector2 origin) {
-			Item item = player.inventory[player.selectedItem];
+			Item item = player.HeldItem;
 			Vector2 modOrigin = Vector2.Zero;
 			if (item.ModItem != null) {
 				Vector2? modOrigin2 = item.ModItem.HoldoutOrigin();

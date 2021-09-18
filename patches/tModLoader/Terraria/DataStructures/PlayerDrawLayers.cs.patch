@@ -128,7 +128,7 @@
  					drawDataCache.Add(drawData);
  				}
  
-+				if (!ItemLoader.DrawBody(drawinfo.drawPlayer))
++				if (!ArmorIDs.Body.Sets.DrawBody[drawinfo.drawPlayer.body])
 +					goto postDrawBody;
 +
  				List<DrawData> drawDataCache2 = drawinfo.DrawDataCache;
@@ -146,7 +146,7 @@
  					DrawSittingLegs(ref drawinfo, TextureAssets.Players[drawinfo.skinVar, 10].Value, drawinfo.colorLegs, drawinfo.skinDyePacked);
  				}
 -				else {
-+				else if (ItemLoader.DrawLegs(drawinfo.drawPlayer)) {
++				else if (ArmorIDs.Legs.Sets.DrawLegs[drawinfo.drawPlayer.legs] && ArmorIDs.Shoe.Sets.DrawShoes[drawinfo.drawPlayer.shoe]) {
  					drawData = new DrawData(TextureAssets.Players[drawinfo.skinVar, 10].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), drawinfo.drawPlayer.legFrame, drawinfo.colorLegs, drawinfo.drawPlayer.legRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect, 0);
  					drawData.shader = drawinfo.skinDyePacked;
  					DrawData item = drawData;
@@ -315,12 +315,13 @@
  			if (drawinfo.drawPlayer.babyBird) {
  				Rectangle bodyFrame5 = drawinfo.drawPlayer.bodyFrame;
  				bodyFrame5.Y = 0;
-@@ -1854,9 +_,9 @@
+@@ -1854,9 +_,10 @@
  		}
  
  		private static void DrawPlayer_21_Head_TheFace(ref PlayerDrawSet drawinfo) {
 -			bool flag = drawinfo.drawPlayer.head == 38 || drawinfo.drawPlayer.head == 135 || drawinfo.drawPlayer.head == 269;
-+			bool flag = drawinfo.drawPlayer.head == 38 || drawinfo.drawPlayer.head == 135 || drawinfo.drawPlayer.head == 269 || !ItemLoader.DrawHead(drawinfo.drawPlayer);
++			//bool flag = drawinfo.drawPlayer.head == 38 || drawinfo.drawPlayer.head == 135 || drawinfo.drawPlayer.head == 269;
++			bool flag = ArmorIDs.Head.Sets.DrawHead[drawinfo.drawPlayer.head];
  			DrawData item;
 -			if (!flag && drawinfo.drawPlayer.faceHead > 0 && drawinfo.drawPlayer.faceHead < 19) {
 +			if (!flag && drawinfo.drawPlayer.faceHead > 0) {
