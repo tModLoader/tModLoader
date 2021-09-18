@@ -137,14 +137,20 @@ namespace Terraria
 
 		public static void LogAndConsoleInfoMessage(string message) {
 			Logging.tML.Info(message);
-			Console.WriteLine(message);
+
+			if (Main.dedServ) {
+				Console.WriteLine(message);
+			}
 		}
 
 		public static void LogAndConsoleErrorMessage(string message) {
 			Logging.tML.Error(message);
-			Console.ForegroundColor = ConsoleColor.DarkRed;
-			Console.WriteLine("ERROR: " + message);
-			Console.ResetColor();
+
+			if (Main.dedServ) {
+				Console.ForegroundColor = ConsoleColor.DarkRed;
+				Console.WriteLine("ERROR: " + message);
+				Console.ResetColor();
+			}
 		}
 	}
 }

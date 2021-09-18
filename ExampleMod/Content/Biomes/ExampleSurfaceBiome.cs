@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Biomes
 {
-	//Shows setting up two basic biomes. For a more complicated example, please request.
+	// Shows setting up two basic biomes. For a more complicated example, please request.
 	public class ExampleSurfaceBiome : ModBiome	
 	{
 		public override bool IsPrimaryBiome => true; // Allows this biome to impact NPC prices
@@ -18,7 +18,7 @@ namespace ExampleMod.Content.Biomes
 		public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Crimson;
 
 		// Select Music
-		public override int Music => Mod.GetSoundSlot(SoundType.Music, "Assets/Sounds/Music/MarbleGallery.ogg");
+		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/MysteriousMystery");
 
 		// Populate the Bestiary Filter
 		public override string BestiaryIcon => base.BestiaryIcon;

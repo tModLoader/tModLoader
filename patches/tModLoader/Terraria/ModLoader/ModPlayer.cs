@@ -42,6 +42,8 @@ namespace Terraria.ModLoader
 		public virtual bool CloneNewInstances => true;
 		
 		protected sealed override void Register() {
+			PlayerLoader.VerifyModPlayer(this);
+
 			ModTypeLookup<ModPlayer>.Register(this);
 			PlayerLoader.Add(this);
 		}
@@ -423,21 +425,21 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Whether or not ammo will be consumed upon usage. Return false to stop the ammo from being depleted. Returns true by default.
-		/// If false is returned, the OnConsumeAmmo hook is never called.
+		/// <br>If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.</br>
 		/// </summary>
-		/// <param name="weapon"></param>
-		/// <param name="ammo"></param>
+		/// <param name="weapon">The item that is using this ammo</param>
+		/// <param name="ammo">The ammo item</param>
 		/// <returns></returns>
-		public virtual bool ConsumeAmmo(Item weapon, Item ammo) {
+		public virtual bool CanConsumeAmmo(Item weapon, Item ammo) {
 			return true;
 		}
 
 		/// <summary>
 		/// Allows you to make things happen when ammo is consumed.
-		/// Called before the ammo stack is reduced.
+		/// <br>Called before the ammo stack is reduced.</br>
 		/// </summary>
-		/// <param name="weapon"></param>
-		/// <param name="ammo"></param>
+		/// <param name="weapon">The item that is using this ammo</param>
+		/// <param name="ammo">The ammo item</param>
 		/// <returns></returns>
 		public virtual void OnConsumeAmmo(Item weapon, Item ammo) {
 		}

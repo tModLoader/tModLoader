@@ -1,12 +1,13 @@
 --- src/Terraria/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
-@@ -1,15 +_,20 @@
+@@ -1,15 +_,21 @@
  using Steamworks;
  using System;
  using System.Collections.Generic;
 +using System.Collections.Specialized;
  using System.IO;
  using Terraria.IO;
++using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.Social.Base;
  using Terraria.Utilities;
@@ -64,7 +65,7 @@
 +					}
 +					else if (Main.dedServ) {
 +						// Try to load mods that are installed by Steam users when server launches without Steam. No guarantees if Steam not installed in standard location.
-+						var workshopLoc = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory().ToString()).ToString()).ToString(), "workshop", "content", ModManager.thisApp.m_AppId.ToString());
++						var workshopLoc = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory().ToString()).ToString()).ToString(), "workshop", "content", ModManager.thisApp.ToString());
 +						if (Directory.Exists(workshopLoc)) {
 +							list.AddRange(Directory.EnumerateDirectories(workshopLoc));
 +						}
@@ -120,7 +121,7 @@
  
 -				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags) {
 +				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0) {
-+					Utils.LogAndConsoleInfoMessage("Attempting Publishing " + itemTitle);
++					Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.PublishItem", _entryData.Title));
  					_issueReporter = issueReporter;
  					_endAction = endAction;
  					_createItemHook = CallResult<CreateItemResult_t>.Create(CreateItemResult);
@@ -146,11 +147,11 @@
 -						_publishedFileID = new PublishedFileId_t(num.Value);
 -						PreventUpdatingCertainThings();
 +					if (!File.Exists(previewImagePath)) {
-+						_issueReporter.ReportInstantUploadProblem("Workshop.ReportIssue_FailedToPublish_CouldNotFindFolderToUpload" + " NoPreviewImage");
++						_issueReporter.ReportInstantUploadProblem("Workshop.ReportIssue_FailedToPublish_CouldNotFindFolderToUpload");
 +						return;
 +					}
 +					else if (!Directory.Exists(contentFolderPath)) {
-+						_issueReporter.ReportInstantUploadProblem("Workshop.ReportIssue_FailedToPublish_CouldNotFindFolderToUpload" + " NoContentFolder");
++						_issueReporter.ReportInstantUploadProblem("Workshop.ReportIssue_FailedToPublish_CouldNotFindFolderToUpload");
 +						return;
 +					}
 +
@@ -170,11 +171,11 @@
  						UpdateItem();
  					}
  					else {
-@@ -205,13 +_,55 @@
+@@ -205,13 +_,56 @@
  				}
  
  				private void CreateItem() {
-+					Utils.LogAndConsoleInfoMessage("Creating Item " + _entryData.Title);
++					Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.CreateItem", _entryData.Title));
 +
 +					_createCallback = EResult.k_EResultNone;
 +
@@ -205,6 +206,7 @@
 +					_createCallback = param.m_eResult;
 +					if (param.m_eResult != EResult.k_EResultOK) {
 +						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
++						ReportCheckSteamLogs();
 +						_endAction(this);
 +						return;
 +					}
@@ -248,7 +250,7 @@
 +				private void UpdateItem(bool creatingItem = false) {
 +					WrappedWriteManifest();
 +
-+					Utils.LogAndConsoleInfoMessage("Updating Item " + _entryData.Title);
++					Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.UpdateItem", _entryData.Title));
  
  					PrepareContentForUpdate();
  					UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
@@ -262,7 +264,7 @@
  
  					SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
  					SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
-@@ -253,21 +_,60 @@
+@@ -253,21 +_,63 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
@@ -321,6 +323,9 @@
  					}
  
 -					switch (param.m_eResult) {
++					if (_updateCallback != EResult.k_EResultOK)
++						ReportCheckSteamLogs();
++
 +					switch (_updateCallback) {
  						case EResult.k_EResultOK:
  							SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);

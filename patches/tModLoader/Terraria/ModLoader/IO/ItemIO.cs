@@ -133,16 +133,16 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadGlobals(Item item, IList<TagCompound> list) {
 			foreach (var tag in list) {
-				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out GlobalItem globalItem)) {
-					var globalItemInstance = globalItem.Instance(item);
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out GlobalItem globalItemBase) && item.TryGetGlobalItem(globalItemBase, out var globalItem)) {
 					try {
-						globalItemInstance.Load(item, tag.GetCompound("data"));
+						globalItem.Load(item, tag.GetCompound("data"));
 					}
 					catch (Exception e) {
 						throw new CustomModDataException(globalItem.Mod, $"Error in reading custom player data for {globalItem.FullName}", e);
 					}
 				}
 				else {
+					//Unloaded GlobalItems and GlobalItems that are no longer valid on an item (e.g. through AppliesToEntity)
 					item.GetGlobalItem<UnloadedGlobalItem>().data.Add(tag);
 				}
 			}
@@ -183,14 +183,21 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static void SendModData(Item item, BinaryWriter writer) {
-			if (item.IsAir) return;
+			if (item.IsAir)
+				return;
+
 			writer.SafeWrite(w => item.ModItem?.NetSend(w));
-			foreach (var globalItem in ItemLoader.NetGlobals)
-				writer.SafeWrite(w => globalItem.Instance(item).NetSend(item, w));
+
+			foreach (var netGlobal in ItemLoader.NetGlobals) {
+				if (item.TryGetGlobalItem(netGlobal, out var globalItem))
+					writer.SafeWrite(w => globalItem.NetSend(item, w));
+			}
 		}
 
 		public static void ReceiveModData(Item item, BinaryReader reader) {
-			if (item.IsAir) return;
+			if (item.IsAir)
+				return;
+
 			try {
 				reader.SafeRead(r => item.ModItem?.NetReceive(r));
 			}
@@ -199,13 +206,16 @@ namespace Terraria.ModLoader.IO
 				Logging.tML.Error($"Above IOException error caused by {item.ModItem.Name} from the {item.ModItem.Mod.Name} mod.");
 			}
 
-			foreach (var globalItem in ItemLoader.NetGlobals) {
+			foreach (var netGlobal in ItemLoader.NetGlobals) {
+				if (!item.TryGetGlobalItem(netGlobal, out var globalItem))
+					continue;
+
 				try {
-					reader.SafeRead(r => globalItem.Instance(item).NetReceive(item, r));
+					reader.SafeRead(r => globalItem.NetReceive(item, r));
 				}
 				catch (IOException e) {
 					Logging.tML.Error(e.ToString());
-					Logging.tML.Error($"Above IOException error caused by {globalItem.Name} from the {globalItem.Mod.Name} mod while reading {item.Name}.");
+					Logging.tML.Error($"Above IOException error caused by {netGlobal.Name} from the {netGlobal.Mod.Name} mod while reading {item.Name}.");
 				}
 			}
 		}

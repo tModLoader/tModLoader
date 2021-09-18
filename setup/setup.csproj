@@ -19,7 +19,7 @@
     <PackageReference Include="Microsoft.Build.Locator" Version="1.2.6" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.4.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.4.0" />
-    <PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="21.4.2.3" />
+    <PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="21.8.19.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="PatchReviewer\PatchReviewer.csproj" />

@@ -505,20 +505,23 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookConsumeAmmo = AddHook<Func<Item, Player, bool>>(g => g.ConsumeAmmo);
-		//near end of Terraria.Player.PickAmmo before flag2 is checked add
-		//  if(!ItemLoader.ConsumeAmmo(sItem, item, this)) { flag2 = true; }
+		private static HookList HookCanConsumeAmmo = AddHook<Func<Item, Player, bool>>(g => g.CanConsumeAmmo);
+		private static HookList HookCanBeConsumedAsAmmo = AddHook<Func<Item, Player, bool>>(g => g.CanBeConsumedAsAmmo);
 		/// <summary>
-		/// Calls ModItem.ConsumeAmmo for the weapon, ModItem.ConsumeAmmo for the ammo, then each GlobalItem.ConsumeAmmo hook for the weapon and ammo, until one of them returns false. If all of them return true, returns true.
+		/// Calls <see cref="ModItem.CanConsumeAmmo"/> for the weapon, <see cref="ModItem.CanBeConsumedAsAmmo"/> for the ammo, then each corresponding hook for the weapon and ammo, until one of them returns false. If all of them return true, returns true.
 		/// </summary>
-		public static bool ConsumeAmmo(Item item, Item ammo, Player player) {
-			if (item.ModItem != null && !item.ModItem.ConsumeAmmo(player) ||
-					ammo.ModItem != null && !ammo.ModItem.ConsumeAmmo(player))
+		public static bool CanConsumeAmmo(Item weapon, Item ammo, Player player) {
+			if (weapon.ModItem != null && !weapon.ModItem.CanConsumeAmmo(player) ||
+					ammo.ModItem != null && !ammo.ModItem.CanBeConsumedAsAmmo(player))
 				return false;
 
-			foreach (var g in HookConsumeAmmo.Enumerate(ammo.globalItems)) {
-				if (!g.ConsumeAmmo(item, player) ||
-					!g.ConsumeAmmo(ammo, player))
+			foreach (var g in HookCanConsumeAmmo.Enumerate(weapon.globalItems)) {
+				if (!g.CanConsumeAmmo(weapon, player))
+					return false;
+			}
+
+			foreach (var g in HookCanBeConsumedAsAmmo.Enumerate(ammo.globalItems)) {
+				if (!g.CanBeConsumedAsAmmo(ammo, player))
 					return false;
 			}
 
@@ -526,22 +529,23 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookOnConsumeAmmo = AddHook<Action<Item, Player>>(g => g.OnConsumeAmmo);
+		private static HookList HookOnConsumedAsAmmo = AddHook<Action<Item, Player>>(g => g.OnConsumedAsAmmo);
 		/// <summary>
-		/// Calls ModItem.OnConsumeAmmo for the weapon, ModItem.OnConsumeAmmo for the ammo, then each GlobalItem.OnConsumeAmmo hook for the weapon and ammo.
+		/// Calls <see cref="ModItem.OnConsumeAmmo"/> for the weapon, <see cref="ModItem.OnConsumedAsAmmo"/> for the ammo, then each corresponding hook for the weapon and ammo.
 		/// </summary>
-		public static void OnConsumeAmmo(Item item, Item ammo, Player player) {
-			if (item.IsAir)
+		public static void OnConsumeAmmo(Item weapon, Item ammo, Player player) {
+			if (weapon.IsAir)
 				return;
 
-			item.ModItem?.OnConsumeAmmo(player);
-			ammo.ModItem?.OnConsumeAmmo(player);
+			weapon.ModItem?.OnConsumeAmmo(player);
+			ammo.ModItem?.OnConsumedAsAmmo(player);
 
-			foreach (var g in HookOnConsumeAmmo.Enumerate(item.globalItems)) {
-				g.OnConsumeAmmo(item, player);
+			foreach (var g in HookOnConsumeAmmo.Enumerate(weapon.globalItems)) {
+				g.OnConsumeAmmo(weapon, player);
 			}
 
-			foreach (var g in HookOnConsumeAmmo.Enumerate(ammo.globalItems)) {
-				g.OnConsumeAmmo(item, player);
+			foreach (var g in HookOnConsumedAsAmmo.Enumerate(ammo.globalItems)) {
+				g.OnConsumedAsAmmo(ammo, player);
 			}
 		}
 
@@ -1083,7 +1087,7 @@ namespace Terraria.ModLoader
 
 		//in Terraria.UI.ItemSlot add this to boss bag check
 		/// <summary>
-		/// Returns whether ModItem.bossBagNPC is greater than 0. Returns false if item is not a modded item.
+		/// Returns whether ModItem.BossBagNPC is greater than 0. Returns false if item is not a modded item.
 		/// </summary>
 		public static bool IsModBossBag(Item item) {
 			return item.ModItem != null && item.ModItem.BossBagNPC > 0;
@@ -1092,7 +1096,7 @@ namespace Terraria.ModLoader
 		//in Terraria.Player.OpenBossBag after setting num14 call
 		//  ItemLoader.OpenBossBag(type, this, ref num14);
 		/// <summary>
-		/// If the item is a modded item and ModItem.bossBagNPC is greater than 0, calls ModItem.OpenBossBag and sets npc to ModItem.bossBagNPC.
+		/// If the item is a modded item and ModItem.BossBagNPC is greater than 0, calls ModItem.OpenBossBag and sets npc to ModItem.BossBagNPC.
 		/// </summary>
 		public static void OpenBossBag(int type, Player player, ref int npc) {
 			ModItem modItem = GetItem(type);
@@ -1103,10 +1107,10 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookPreOpenVanillaBag = AddHook<Func<string, Player, int, bool>>(g => g.PreOpenVanillaBag);
-		//in beginning of Terraria.Player.openBag methods add
+		//in beginning of Terraria.Player.OpenBag methods add
 		//  if(!ItemLoader.PreOpenVanillaBag("bagName", this, arg)) { return; }
 		//at the end of the following methods in Player.cs, add: NPCLoader.blockLoot.Clear(); // clear blockloot
-		//methods: OpenBossBag, openCrate, openGoodieBag, openHerbBag, openLockbox, openPresent
+		//methods: OpenBossBag, OpenCrate, OpenGoodieBag, OpenHerbBag, OpenLockbox, OpenShadowLockbox, openPresent
 		/// <summary>
 		/// Calls each GlobalItem.PreOpenVanillaBag hook until one of them returns false. Returns true if all of them returned true.
 		/// </summary>
@@ -1125,7 +1129,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookOpenVanillaBag = AddHook<Action<string, Player, int>>(g => g.OpenVanillaBag);
-		//in Terraria.Player.openBag methods after PreOpenVanillaBag if statements
+		//in Terraria.Player.OpenBag methods after PreOpenVanillaBag if statements
 		//  add ItemLoader.OpenVanillaBag("bagname", this, arg);
 		/// <summary>
 		/// Calls all GlobalItem.OpenVanillaBag hooks.
