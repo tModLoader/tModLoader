@@ -1087,7 +1087,7 @@ namespace Terraria.ModLoader
 
 		//in Terraria.UI.ItemSlot add this to boss bag check
 		/// <summary>
-		/// Returns whether ModItem.bossBagNPC is greater than 0. Returns false if item is not a modded item.
+		/// Returns whether ModItem.BossBagNPC is greater than 0. Returns false if item is not a modded item.
 		/// </summary>
 		public static bool IsModBossBag(Item item) {
 			return item.ModItem != null && item.ModItem.BossBagNPC > 0;
@@ -1096,7 +1096,7 @@ namespace Terraria.ModLoader
 		//in Terraria.Player.OpenBossBag after setting num14 call
 		//  ItemLoader.OpenBossBag(type, this, ref num14);
 		/// <summary>
-		/// If the item is a modded item and ModItem.bossBagNPC is greater than 0, calls ModItem.OpenBossBag and sets npc to ModItem.bossBagNPC.
+		/// If the item is a modded item and ModItem.BossBagNPC is greater than 0, calls ModItem.OpenBossBag and sets npc to ModItem.BossBagNPC.
 		/// </summary>
 		public static void OpenBossBag(int type, Player player, ref int npc) {
 			ModItem modItem = GetItem(type);
@@ -1107,10 +1107,10 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookPreOpenVanillaBag = AddHook<Func<string, Player, int, bool>>(g => g.PreOpenVanillaBag);
-		//in beginning of Terraria.Player.openBag methods add
+		//in beginning of Terraria.Player.OpenBag methods add
 		//  if(!ItemLoader.PreOpenVanillaBag("bagName", this, arg)) { return; }
 		//at the end of the following methods in Player.cs, add: NPCLoader.blockLoot.Clear(); // clear blockloot
-		//methods: OpenBossBag, openCrate, openGoodieBag, openHerbBag, openLockbox, openPresent
+		//methods: OpenBossBag, OpenCrate, OpenGoodieBag, OpenHerbBag, OpenLockbox, OpenShadowLockbox, openPresent
 		/// <summary>
 		/// Calls each GlobalItem.PreOpenVanillaBag hook until one of them returns false. Returns true if all of them returned true.
 		/// </summary>
@@ -1129,7 +1129,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookOpenVanillaBag = AddHook<Action<string, Player, int>>(g => g.OpenVanillaBag);
-		//in Terraria.Player.openBag methods after PreOpenVanillaBag if statements
+		//in Terraria.Player.OpenBag methods after PreOpenVanillaBag if statements
 		//  add ItemLoader.OpenVanillaBag("bagname", this, arg);
 		/// <summary>
 		/// Calls all GlobalItem.OpenVanillaBag hooks.

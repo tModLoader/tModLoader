@@ -865,7 +865,23 @@
  					if (inventory[i].stack <= 0)
  						inventory[i].SetDefaults();
  
-@@ -5941,6 +_,10 @@
+@@ -5909,6 +_,10 @@
+ 		}
+ 
+ 		public void OpenShadowLockbox() {
++			if (!ItemLoader.PreOpenVanillaBag("obsidianLockBox", this, 0))
++				return;
++
++			ItemLoader.OpenVanillaBag("obsidianLockBox", this, 0);
+ 			bool flag = true;
+ 			while (flag) {
+ 				flag = false;
+@@ -5938,9 +_,15 @@
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 			}
++
++			NPCLoader.blockLoot.Clear(); // clear blockloot
  		}
  
  		public void OpenLockBox() {
@@ -4270,7 +4286,7 @@
 +
 +			float flat = 0;
 +			CombinedHooks.ModifyWeaponKnockback(this, sItem, ref kbModifier, ref flat);
-+			return Math.Max(0, KnockBack * kbModifier + flat);
++			return Math.Max(0f, KnockBack * kbModifier + flat);
  		}
  
  		public int GetWeaponCrit(Item sItem) {

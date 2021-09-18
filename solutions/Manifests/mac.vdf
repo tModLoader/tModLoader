@@ -8,5 +8,4 @@
     "DepotPath" "."
     "recursive" "1"
   }
-  "FileExclusion" "*.pdb"
 }

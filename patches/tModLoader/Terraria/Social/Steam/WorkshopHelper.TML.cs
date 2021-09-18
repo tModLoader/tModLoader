@@ -92,7 +92,7 @@ namespace Terraria.Social.Steam
 
 			internal static void Initialize() {
 				// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
-				if (ModLoader.Engine.InstallVerifier.IsSteam) {
+				if (SocialMode.Steam == SocialAPI.Mode) {
 					SteamUser = true;
 					return;
 				}
