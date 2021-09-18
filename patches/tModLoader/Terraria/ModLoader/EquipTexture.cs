@@ -107,55 +107,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine whether the skin/shirt on the player's arms and hands are drawn when this body equipment texture is worn. By default both flags will be false. Note that if drawHands is false, the arms will not be drawn either. If there is an associated ModItem, by default this will call that ModItem's DrawHands.
-		/// </summary>
-		/// <param name="drawHands"></param>
-		/// <param name="drawArms"></param>
-		public virtual void DrawHands(ref bool drawHands, ref bool drawArms) {
-			if (Item != null) {
-				Item.DrawHands(ref drawHands, ref drawArms);
-			}
-		}
-
-		/// <summary>
-		/// Allows you to determine whether the player's hair or alt (hat) hair draws when this head equipment texture is worn. By default both flags will be false. If there is an associated ModItem, by default this will call that ModItem's DrawHair.
-		/// </summary>
-		/// <param name="fullHair"></param>
-		/// <param name="hatHair"></param>
-		/// <param name="hideHair"></param>
-		/// <param name="backHairDraw"></param>
-		/// <param name="drawsBackHairWithoutHeadgear"></param>
-		public virtual void DrawHair(ref bool fullHair, ref bool hatHair, ref bool hideHair, ref bool backHairDraw, ref bool drawsBackHairWithoutHeadgear) {
-			if (Item != null) {
-				Item.DrawHair(ref fullHair, ref hatHair, ref hideHair, ref backHairDraw, ref drawsBackHairWithoutHeadgear);
-			}
-		}
-
-		/// <summary>
-		/// Return false to hide the player's head when this head equipment texture is worn. By default this will return the associated ModItem's DrawHead, or true if there is no associated ModItem.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawHead() {
-			return Item == null || Item.DrawHead();
-		}
-
-		/// <summary>
-		/// Return false to hide the player's body when this body equipment texture is worn. By default this will return the associated ModItem's DrawBody, or true if there is no associated ModItem.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawBody() {
-			return Item == null || Item.DrawBody();
-		}
-
-		/// <summary>
-		/// Return false to hide the player's legs when this leg or shoe equipment texture is worn. By default this will return the associated ModItem's DrawLegs, or true if there is no associated ModItem.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawLegs() {
-			return Item == null || Item.DrawLegs();
-		}
-
-		/// <summary>
 		/// Allows you to modify the colors in which this armor texture and surrounding accessories are drawn, in addition to which glow mask and in what color is drawn. By default this will call the associated ModItem's DrawArmorColor if there is an associated ModItem.
 		/// </summary>
 		/// <param name="drawPlayer"></param>

@@ -553,50 +553,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine whether the skin/shirt on the player's arms and hands are drawn when a body armor is worn.
-		/// Note that if drawHands is false, the arms will not be drawn either.
-		/// "body" is the player's associated body equipment texture.
-		/// This method is not instanced.
-		/// </summary>
-		public virtual void DrawHands(int body, ref bool drawHands, ref bool drawArms) {
-		}
-
-		/// <summary>
-		/// Allows you to determine whether the player's hair or alt (hat) hair will be drawn when a head armor is worn.
-		/// "head" is the player's associated head equipment texture.
-		/// This method is not instanced.
-		/// </summary>
-		public virtual void DrawHair(int head, ref bool fullHair, ref bool hatHair, ref bool hideHair, ref bool backHairDraw, ref bool drawsBackHairWithoutHeadgear) {
-		}
-
-		/// <summary>
-		/// Return false to hide the player's head when a head armor is worn. Returns true by default.
-		/// "head" is the player's associated head equipment texture.
-		/// This method is not instanced.
-		/// </summary>
-		public virtual bool DrawHead(int head) {
-			return true;
-		}
-
-		/// <summary>
-		/// Return false to hide the player's body when a body armor is worn. Returns true by default.
-		/// "body" is the player's associated body equipment texture.
-		/// This method is not instanced.
-		/// </summary>
-		public virtual bool DrawBody(int body) {
-			return true;
-		}
-
-		/// <summary>
-		/// Return false to hide the player's legs when a leg armor or shoe accessory is worn. Returns true by default.
-		/// "legs" and "shoes" are the player's associated legs and shoes equipment textures.
-		/// This method is not instanced.
-		/// </summary>
-		public virtual bool DrawLegs(int legs, int shoes) {
-			return true;
-		}
-
-		/// <summary>
 		/// Allows you to modify the colors in which the player's armor and their surrounding accessories are drawn, in addition to which glow mask and in what color is drawn.
 		/// 
 		/// This method is not instanced.
