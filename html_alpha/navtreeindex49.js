@@ -1,5 +1,9 @@
 var NAVTREEINDEX49 =
 {
+"struct_terraria_1_1_u_i_1_1_alignment.html#a25a770cdfe318742c173391a0b98ecf5":[1,0,1,21,4,0],
+"struct_terraria_1_1_u_i_1_1_alignment.html#a2ad83100b19f5176730a4e2f81aa3e3b":[1,0,1,21,4,2],
+"struct_terraria_1_1_u_i_1_1_alignment.html#a9501416356b9fecd542b715391e1c4d9":[1,0,1,21,4,1],
+"struct_terraria_1_1_u_i_1_1_calculated_style.html":[1,0,1,21,5],
 "struct_terraria_1_1_u_i_1_1_calculated_style.html#a027c6c2ec738dd02231e81abc2ac9275":[1,0,1,21,5,6],
 "struct_terraria_1_1_u_i_1_1_calculated_style.html#a24bb5d3a4f7c0820490f85397407eb4a":[1,0,1,21,5,2],
 "struct_terraria_1_1_u_i_1_1_calculated_style.html#a482b70108a77b8995a41df2b0a636e1d":[1,0,1,21,5,7],

@@ -120,9 +120,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa0157164b6840e3d0fdcb1fc2e297c20"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aa0157164b6840e3d0fdcb1fc2e297c20">ArmorSetShadows</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, string set)</td></tr>
 <tr class="memdesc:aa0157164b6840e3d0fdcb1fc2e297c20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine special visual effects a vanity has on the player without having to code them yourself.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#aa0157164b6840e3d0fdcb1fc2e297c20">More...</a><br /></td></tr>
 <tr class="separator:aa0157164b6840e3d0fdcb1fc2e297c20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e60823ec5e07c99a8256ad4cba92f16"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a5e60823ec5e07c99a8256ad4cba92f16">CanBeConsumedAsAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> ammo, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:a5e60823ec5e07c99a8256ad4cba92f16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not ammo will be consumed upon usage. Called by the ammo; if at least one of this and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aa294402e8b26df1aa6449e44735e7eb8" title="Whether or not ammo will be consumed upon usage. Called by the weapon; if at least one of this and Ca...">CanConsumeAmmo</a> returns false then the ammo will not be used. By default returns true. If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ae6e6ff31fe9fd449e3eb867567ff53e7" title="Allows you to make things happen when ammo is consumed. Called by the weapon.  Called before the ammo...">OnConsumeAmmo</a> hook is never called.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a5e60823ec5e07c99a8256ad4cba92f16">More...</a><br /></td></tr>
+<tr class="separator:a5e60823ec5e07c99a8256ad4cba92f16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37d14910322246da0c4bfcb19cb8f1ab"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a37d14910322246da0c4bfcb19cb8f1ab">CanBurnInLava</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:a37d14910322246da0c4bfcb19cb8f1ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not this item will burn in lava regardless of any conditions. Returns null by default (follow vanilla behaviour).  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a37d14910322246da0c4bfcb19cb8f1ab">More...</a><br /></td></tr>
 <tr class="separator:a37d14910322246da0c4bfcb19cb8f1ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa294402e8b26df1aa6449e44735e7eb8"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aa294402e8b26df1aa6449e44735e7eb8">CanConsumeAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:aa294402e8b26df1aa6449e44735e7eb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not ammo will be consumed upon usage. Called by the weapon; if at least one of this and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a5e60823ec5e07c99a8256ad4cba92f16" title="Whether or not ammo will be consumed upon usage. Called by the ammo; if at least one of this and CanC...">CanBeConsumedAsAmmo</a> returns false then the ammo will not be used. By default returns true. If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ae6e6ff31fe9fd449e3eb867567ff53e7" title="Allows you to make things happen when ammo is consumed. Called by the weapon.  Called before the ammo...">OnConsumeAmmo</a> hook is never called.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#aa294402e8b26df1aa6449e44735e7eb8">More...</a><br /></td></tr>
+<tr class="separator:aa294402e8b26df1aa6449e44735e7eb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8668939008987de1f97b8a8c7291651e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a8668939008987de1f97b8a8c7291651e">CanEquipAccessory</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, int slot)</td></tr>
 <tr class="memdesc:a8668939008987de1f97b8a8c7291651e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to disallow the player from equipping an accessory. Return false to disallow equipping the accessory. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a8668939008987de1f97b8a8c7291651e">More...</a><br /></td></tr>
 <tr class="separator:a8668939008987de1f97b8a8c7291651e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,9 +162,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad2aa8df2849ab073b48048315a418e13"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html">GlobalItem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ad2aa8df2849ab073b48048315a418e13">Clone</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_item.html">Item</a> itemClone)</td></tr>
 <tr class="memdesc:ad2aa8df2849ab073b48048315a418e13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this instanced <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html" title="This class allows you to modify and use hooks for all items, including vanilla items....">GlobalItem</a>. Called when an item is cloned.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#ad2aa8df2849ab073b48048315a418e13">More...</a><br /></td></tr>
 <tr class="separator:ad2aa8df2849ab073b48048315a418e13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53c2c8f4d4ea5d00509d76ee56c3094c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a53c2c8f4d4ea5d00509d76ee56c3094c">ConsumeAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
-<tr class="memdesc:a53c2c8f4d4ea5d00509d76ee56c3094c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not ammo will be consumed upon usage. Called both by the gun and by the ammo; if at least one returns false then the ammo will not be used. By default returns true. If false is returned, the OnConsumeAmmo hook is never called.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a53c2c8f4d4ea5d00509d76ee56c3094c">More...</a><br /></td></tr>
-<tr class="separator:a53c2c8f4d4ea5d00509d76ee56c3094c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0ea9cb6d1b7497dad277abbbfd51ff1"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ac0ea9cb6d1b7497dad277abbbfd51ff1">ConsumeItem</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:ac0ea9cb6d1b7497dad277abbbfd51ff1"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the item is consumable and this returns true, then the item will be consumed upon usage. Returns true by default. If false is returned, the OnConsumeItem hook is never called.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#ac0ea9cb6d1b7497dad277abbbfd51ff1">More...</a><br /></td></tr>
 <tr class="separator:ac0ea9cb6d1b7497dad277abbbfd51ff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -272,9 +275,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a01815bc3155c57b3c770ef6af76f6694"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a01815bc3155c57b3c770ef6af76f6694">NetSend</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, BinaryWriter writer)</td></tr>
 <tr class="memdesc:a01815bc3155c57b3c770ef6af76f6694"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom data for the given item between client and server.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a01815bc3155c57b3c770ef6af76f6694">More...</a><br /></td></tr>
 <tr class="separator:a01815bc3155c57b3c770ef6af76f6694"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b720a90b6531c84eb20c51751f090b2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a2b720a90b6531c84eb20c51751f090b2">OnConsumeAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
-<tr class="memdesc:a2b720a90b6531c84eb20c51751f090b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when ammo is consumed. Called both by the gun and by the ammo. Called before the ammo stack is reduced.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a2b720a90b6531c84eb20c51751f090b2">More...</a><br /></td></tr>
-<tr class="separator:a2b720a90b6531c84eb20c51751f090b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6e6ff31fe9fd449e3eb867567ff53e7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ae6e6ff31fe9fd449e3eb867567ff53e7">OnConsumeAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:ae6e6ff31fe9fd449e3eb867567ff53e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when ammo is consumed. Called by the weapon. <br  />
+Called before the ammo stack is reduced.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#ae6e6ff31fe9fd449e3eb867567ff53e7">More...</a><br /></td></tr>
+<tr class="separator:ae6e6ff31fe9fd449e3eb867567ff53e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abad23d89a74a50599df0576fbffd04b6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#abad23d89a74a50599df0576fbffd04b6">OnConsumedAsAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> ammo, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:abad23d89a74a50599df0576fbffd04b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when ammo is consumed. Called by the ammo. <br  />
+Called before the ammo stack is reduced.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#abad23d89a74a50599df0576fbffd04b6">More...</a><br /></td></tr>
+<tr class="separator:abad23d89a74a50599df0576fbffd04b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a527df2063745f6e28bd2f7eb1261e4a0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a527df2063745f6e28bd2f7eb1261e4a0">OnConsumeItem</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a527df2063745f6e28bd2f7eb1261e4a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this item is consumed. Called before the item stack is reduced.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a527df2063745f6e28bd2f7eb1261e4a0">More...</a><br /></td></tr>
 <tr class="separator:a527df2063745f6e28bd2f7eb1261e4a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -737,6 +745,51 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
 </div><!-- fragment -->
 </div>
 </div>
+<a id="a5e60823ec5e07c99a8256ad4cba92f16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e60823ec5e07c99a8256ad4cba92f16">&#9670;&nbsp;</a></span>CanBeConsumedAsAmmo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.GlobalItem.CanBeConsumedAsAmmo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>ammo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not ammo will be consumed upon usage. Called by the ammo; if at least one of this and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aa294402e8b26df1aa6449e44735e7eb8" title="Whether or not ammo will be consumed upon usage. Called by the weapon; if at least one of this and Ca...">CanConsumeAmmo</a> returns false then the ammo will not be used. By default returns true. If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ae6e6ff31fe9fd449e3eb867567ff53e7" title="Allows you to make things happen when ammo is consumed. Called by the weapon.  Called before the ammo...">OnConsumeAmmo</a> hook is never called. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ammo</td><td>The ammo item</td></tr>
+    <tr><td class="paramname">player</td><td>The player consuming the ammo</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a37d14910322246da0c4bfcb19cb8f1ab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a37d14910322246da0c4bfcb19cb8f1ab">&#9670;&nbsp;</a></span>CanBurnInLava()</h2>
 
@@ -762,6 +815,51 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
 </div><div class="memdoc">
 
 <p>Returns whether or not this item will burn in lava regardless of any conditions. Returns null by default (follow vanilla behaviour). </p>
+
+</div>
+</div>
+<a id="aa294402e8b26df1aa6449e44735e7eb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa294402e8b26df1aa6449e44735e7eb8">&#9670;&nbsp;</a></span>CanConsumeAmmo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.GlobalItem.CanConsumeAmmo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>weapon</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not ammo will be consumed upon usage. Called by the weapon; if at least one of this and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a5e60823ec5e07c99a8256ad4cba92f16" title="Whether or not ammo will be consumed upon usage. Called by the ammo; if at least one of this and CanC...">CanBeConsumedAsAmmo</a> returns false then the ammo will not be used. By default returns true. If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ae6e6ff31fe9fd449e3eb867567ff53e7" title="Allows you to make things happen when ammo is consumed. Called by the weapon.  Called before the ammo...">OnConsumeAmmo</a> hook is never called. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">weapon</td><td>The item that the player is using</td></tr>
+    <tr><td class="paramname">player</td><td>The player using the item</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1222,44 +1320,6 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
 </dl>
 
 <p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_item.html#aa1679f3254047dc2a02c0a9dd69aaf4e">Terraria.ModLoader.Default.UnloadedGlobalItem</a>.</p>
-
-</div>
-</div>
-<a id="a53c2c8f4d4ea5d00509d76ee56c3094c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53c2c8f4d4ea5d00509d76ee56c3094c">&#9670;&nbsp;</a></span>ConsumeAmmo()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool Terraria.ModLoader.GlobalItem.ConsumeAmmo </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>item</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
-          <td class="paramname"><em>player</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Whether or not ammo will be consumed upon usage. Called both by the gun and by the ammo; if at least one returns false then the ammo will not be used. By default returns true. If false is returned, the OnConsumeAmmo hook is never called. </p>
 
 </div>
 </div>
@@ -2929,8 +2989,8 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
 
 </div>
 </div>
-<a id="a2b720a90b6531c84eb20c51751f090b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b720a90b6531c84eb20c51751f090b2">&#9670;&nbsp;</a></span>OnConsumeAmmo()</h2>
+<a id="ae6e6ff31fe9fd449e3eb867567ff53e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6e6ff31fe9fd449e3eb867567ff53e7">&#9670;&nbsp;</a></span>OnConsumeAmmo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2942,7 +3002,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
           <td class="memname">virtual void Terraria.ModLoader.GlobalItem.OnConsumeAmmo </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>item</em>, </td>
+          <td class="paramname"><em>weapon</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -2963,7 +3023,61 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to make things happen when ammo is consumed. Called both by the gun and by the ammo. Called before the ammo stack is reduced. </p>
+<p>Allows you to make things happen when ammo is consumed. Called by the weapon. <br  />
+Called before the ammo stack is reduced. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">weapon</td><td>The item that the player is using</td></tr>
+    <tr><td class="paramname">player</td><td>The player consuming the ammo</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="abad23d89a74a50599df0576fbffd04b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abad23d89a74a50599df0576fbffd04b6">&#9670;&nbsp;</a></span>OnConsumedAsAmmo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalItem.OnConsumedAsAmmo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>ammo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to make things happen when ammo is consumed. Called by the ammo. <br  />
+Called before the ammo stack is reduced. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ammo</td><td>The ammo item</td></tr>
+    <tr><td class="paramname">player</td><td>The player consuming the ammo</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

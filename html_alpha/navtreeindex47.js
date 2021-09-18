@@ -1,5 +1,9 @@
 var NAVTREEINDEX47 =
 {
+"struct_terraria_1_1_data_structures_1_1_point16.html#a9c55d2a072e187f3606af3bd401d33c1":[1,0,1,4,38,4],
+"struct_terraria_1_1_data_structures_1_1_point16.html#a9e9f8ce96e1199b4c54131e70238c755":[1,0,1,4,38,11],
+"struct_terraria_1_1_data_structures_1_1_point16.html#abacd369ffabd309b19f9a147a513c0a6":[1,0,1,4,38,6],
+"struct_terraria_1_1_data_structures_1_1_point16.html#ad53be67331866a5761a5f34e31f62891":[1,0,1,4,38,1],
 "struct_terraria_1_1_data_structures_1_1_point16.html#ae018aa89f151554672a0436717ec5a39":[1,0,1,4,38,10],
 "struct_terraria_1_1_data_structures_1_1_point16.html#af9058f24179242b8ef4f3852dcf3d870":[1,0,1,4,38,7],
 "struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html":[1,0,1,4,39],
@@ -245,9 +249,5 @@ var NAVTREEINDEX47 =
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper.html#a34997be84259190742230e92dd81926c":[1,0,1,7,7,2],
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper.html#a9329d0e19a2df813c1beb67e54e93b55":[1,0,1,7,7,1],
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html":[1,0,1,7,7,0],
-"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#a3c6023aa287280104070c81fa158245f":[1,0,1,7,7,0,5],
-"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#a44f88e8fbc3951d7b7c3e727e3163b27":[1,0,1,7,7,0,2],
-"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#a776a3bc8cc9f97a5d5cac410d804a317":[1,0,1,7,7,0,0],
-"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#a82a72045086f3e71e2eb25496fbf5ddc":[1,0,1,7,7,0,3],
-"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#aaa43bf3ecc2ccc8f544e5d3d9602db8d":[1,0,1,7,7,0,4]
+"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#a3c6023aa287280104070c81fa158245f":[1,0,1,7,7,0,5]
 };
