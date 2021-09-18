@@ -1,5 +1,7 @@
 var NAVTREEINDEX40 =
 {
+"class_terraria_1_1_u_i_1_1_u_i_element.html#af0511f4ddf033fdbf547690740e19d34":[1,0,1,21,24,48],
+"class_terraria_1_1_u_i_1_1_u_i_element.html#af1ede4fd73d7fddfb54bd12cbc0a73fd":[1,0,1,21,24,94],
 "class_terraria_1_1_u_i_1_1_u_i_element.html#af6e5e9bf365e6e03c898cbbbaa6ddd5b":[1,0,1,21,24,59],
 "class_terraria_1_1_u_i_1_1_u_i_element.html#af73475456ff6ec463ea923ea95e4d3e7":[1,0,1,21,24,79],
 "class_terraria_1_1_u_i_1_1_u_i_element.html#afb84cbf07b70e4953ade34b6d01c4738":[1,0,1,21,24,15],
@@ -247,7 +249,5 @@ var NAVTREEINDEX40 =
 "functions_vars.html":[1,3,2],
 "functions_vars.html":[1,3,2,0],
 "functions_vars_b.html":[1,3,2,1],
-"functions_vars_c.html":[1,3,2,2],
-"functions_vars_d.html":[1,3,2,3],
-"functions_vars_e.html":[1,3,2,4]
+"functions_vars_c.html":[1,3,2,2]
 };

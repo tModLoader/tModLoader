@@ -23,6 +23,7 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "GetEquipSlot", "class_terraria_1_1_mod_loader_1_1_mod.html#aff742d70713325de16bd88004f876eb4", null ],
     [ "GetEquipTexture", "class_terraria_1_1_mod_loader_1_1_mod.html#a5c4e062079692bf2be5d8b85360e1ee8", null ],
     [ "GetFileBytes", "class_terraria_1_1_mod_loader_1_1_mod.html#a0f05c5b90a32de2166046f0bfb0a7a21", null ],
+    [ "GetFileNames", "class_terraria_1_1_mod_loader_1_1_mod.html#a163733b159232ac17950195315cf6fb3", null ],
     [ "GetFileStream", "class_terraria_1_1_mod_loader_1_1_mod.html#ae92eb7108688b169f112c00b66f4d43f", null ],
     [ "GetLegacySoundSlot", "class_terraria_1_1_mod_loader_1_1_mod.html#aefc33c0dc19555a7155940363631a201", null ],
     [ "GetPacket", "class_terraria_1_1_mod_loader_1_1_mod.html#afc69c5da3fbaac0d3268f4266889c535", null ],

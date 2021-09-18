@@ -5,6 +5,7 @@ var class_terraria_1_1_mod_loader_1_1_core_1_1_tmod_file =
     [ "GetBytes", "class_terraria_1_1_mod_loader_1_1_core_1_1_tmod_file.html#afdcf9ee7adf94cab6e98ed21808054ea", null ],
     [ "GetBytes", "class_terraria_1_1_mod_loader_1_1_core_1_1_tmod_file.html#aa68c366a4c89c41862eeafbc5cd85601", null ],
     [ "GetEnumerator", "class_terraria_1_1_mod_loader_1_1_core_1_1_tmod_file.html#a71b3a2aa65f2fae91b9cfe85cd6fc54b", null ],
+    [ "GetFileNames", "class_terraria_1_1_mod_loader_1_1_core_1_1_tmod_file.html#ab0b36624d0063064b3c564c6f2d99ae4", null ],
     [ "GetStream", "class_terraria_1_1_mod_loader_1_1_core_1_1_tmod_file.html#ac8c9b9819144f2389d9916cb2a2295a1", null ],
     [ "GetStream", "class_terraria_1_1_mod_loader_1_1_core_1_1_tmod_file.html#acee8ec07c479eaa2c39a4b13b37057f7", null ],
     [ "HasFile", "class_terraria_1_1_mod_loader_1_1_core_1_1_tmod_file.html#a5da5762724c69df1e6bd6234364f024d", null ],
