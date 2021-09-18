@@ -128,7 +128,7 @@
  					drawDataCache.Add(drawData);
  				}
  
-+				if (ItemLoader.DrawBody(drawinfo.drawPlayer))
++				if (!ItemLoader.DrawBody(drawinfo.drawPlayer))
 +					goto postDrawBody;
 +
  				List<DrawData> drawDataCache2 = drawinfo.DrawDataCache;
