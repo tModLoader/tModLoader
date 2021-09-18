@@ -1,5 +1,7 @@
 var NAVTREEINDEX48 =
 {
+"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html":[1,0,1,7,7,0],
+"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#a3c6023aa287280104070c81fa158245f":[1,0,1,7,7,0,5],
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#a44f88e8fbc3951d7b7c3e727e3163b27":[1,0,1,7,7,0,2],
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#a776a3bc8cc9f97a5d5cac410d804a317":[1,0,1,7,7,0,0],
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#a82a72045086f3e71e2eb25496fbf5ddc":[1,0,1,7,7,0,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX48 =
 "struct_terraria_1_1_tile_object.html#a732e3ee5ed80db35eb1fc89f1a470a7b":[1,0,1,67,5],
 "struct_terraria_1_1_tile_object.html#a77265083a90b07a944e00fac2b532a79":[1,0,1,67,4],
 "struct_terraria_1_1_tile_object.html#abf741ca5897eba98390a45479c12a517":[1,0,1,67,3],
-"struct_terraria_1_1_tile_object.html#af600a31e942491f0176f6452c5526ed9":[1,0,1,67,1],
-"struct_terraria_1_1_tile_object.html#afd2b51b889ca737dca3816d2b7fb9d90":[1,0,1,67,0],
-"struct_terraria_1_1_u_i_1_1_alignment.html":[1,0,1,21,4]
+"struct_terraria_1_1_tile_object.html#af600a31e942491f0176f6452c5526ed9":[1,0,1,67,1]
 };

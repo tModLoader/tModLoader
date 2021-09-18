@@ -1,5 +1,7 @@
 var NAVTREEINDEX38 =
 {
+"class_terraria_1_1_social_1_1_we_game_1_1_current_thread_runner.html#a72c7dc7807afa1d6266e687dd2d37df2":[1,0,1,19,2,4,0],
+"class_terraria_1_1_social_1_1_we_game_1_1_friends_social_module.html":[1,0,1,19,2,5],
 "class_terraria_1_1_social_1_1_we_game_1_1_friends_social_module.html#a6578687c22b01e3605b72f8d3769ea00":[1,0,1,19,2,5,3],
 "class_terraria_1_1_social_1_1_we_game_1_1_friends_social_module.html#ab5a89c9d1a88584bb00c7463174bee3e":[1,0,1,19,2,5,1],
 "class_terraria_1_1_social_1_1_we_game_1_1_friends_social_module.html#ab99c79b71b020e17fc91bb37125664a0":[1,0,1,19,2,5,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX38 =
 "class_terraria_1_1_u_i_1_1_achievement_advisor_card.html#aa3135964d1a8a3b7bc1740b0eac4a733":[1,0,1,21,3,0],
 "class_terraria_1_1_u_i_1_1_achievement_advisor_card.html#ad8c502da80180fd6f84f2634c0d0c081":[1,0,1,21,3,4],
 "class_terraria_1_1_u_i_1_1_chat_1_1_chat_line.html":[1,0,1,21,0,0],
-"class_terraria_1_1_u_i_1_1_chat_1_1_chat_line.html#a0410ac9f9be626c89bdb7d62a9bd179a":[1,0,1,21,0,0,1],
-"class_terraria_1_1_u_i_1_1_chat_1_1_chat_line.html#a1cfea1efb166d39bd48b812b571ba615":[1,0,1,21,0,0,6],
-"class_terraria_1_1_u_i_1_1_chat_1_1_chat_line.html#a6e09986cbabfdb3eecfe1df203f4054a":[1,0,1,21,0,0,4]
+"class_terraria_1_1_u_i_1_1_chat_1_1_chat_line.html#a0410ac9f9be626c89bdb7d62a9bd179a":[1,0,1,21,0,0,1]
 };

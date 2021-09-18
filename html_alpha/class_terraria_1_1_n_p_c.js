@@ -70,6 +70,7 @@ var class_terraria_1_1_n_p_c =
     [ "GetTypeNetName", "class_terraria_1_1_n_p_c.html#a154d46577b65ab65212e8e89c158f732", null ],
     [ "GetWereThereAnyInteractions", "class_terraria_1_1_n_p_c.html#a8417241af34252119738d3a1c5ab0ae3", null ],
     [ "HasBuff", "class_terraria_1_1_n_p_c.html#a7fa300056a88f49e26b0afabda8e0361", null ],
+    [ "HasBuff< T >", "class_terraria_1_1_n_p_c.html#acc3b5482e02cea472692f203127c436f", null ],
     [ "HasLuckTextForWizard", "class_terraria_1_1_n_p_c.html#a1f942981353b62c26c85973cfac650c7", null ],
     [ "HasSpecialEventText", "class_terraria_1_1_n_p_c.html#abab8dbd12d60e29460254fcb7ebfc0bf", null ],
     [ "HealEffect", "class_terraria_1_1_n_p_c.html#a0dc0700bb118b5d6514d3c835edfaab3", null ],

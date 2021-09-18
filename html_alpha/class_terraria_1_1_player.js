@@ -167,6 +167,7 @@ var class_terraria_1_1_player =
     [ "GrappleMovement", "class_terraria_1_1_player.html#a5256cac2783fdfafedbe40068813d04c", null ],
     [ "HasAmmo", "class_terraria_1_1_player.html#ad4843f7562eac5a79204b862c6035d41", null ],
     [ "HasBuff", "class_terraria_1_1_player.html#a137363d7f4e7a78621c30ded755d3480", null ],
+    [ "HasBuff< T >", "class_terraria_1_1_player.html#ae30a07a0b2620f72cee2acdb6ce46c4c", null ],
     [ "HasEnoughPickPowerToHurtTile", "class_terraria_1_1_player.html#a6319303ce1cbd6ee78f697dcff1d0b34", null ],
     [ "HasItem", "class_terraria_1_1_player.html#a6735800039fb139f23fab96e9c0c3d0d", null ],
     [ "HasLockedInventory", "class_terraria_1_1_player.html#a72e23306ca49412828f6d53088962f46", null ],
