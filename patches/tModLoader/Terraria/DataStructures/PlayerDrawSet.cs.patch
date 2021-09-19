@@ -36,8 +36,8 @@
  				missingArm = true;
 +			*/
  
-+			missingHand = ArmorIDs.Body.Sets.DrawHand[drawPlayer.body];
-+			missingArm = ArmorIDs.Body.Sets.DrawArm[drawPlayer.body];
++			missingHand = drawPlayer.body < 0 || ArmorIDs.Body.Sets.DrawHand[drawPlayer.body];
++			missingArm = drawPlayer.body < 0 || ArmorIDs.Body.Sets.DrawArm[drawPlayer.body];
 +			
  			int type;
  			if (drawPlayer.heldProj >= 0 && shadow == 0f) {

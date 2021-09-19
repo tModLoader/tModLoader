@@ -1959,11 +1959,11 @@
  		}
  
  		public void GetHairSettings(out bool fullHair, out bool hatHair, out bool hideHair, out bool backHairDraw, out bool drawsBackHairWithoutHeadgear) {
-+			fullHair = ArmorIDs.Head.Sets.DrawFullHair[head];
-+			hatHair = ArmorIDs.Head.Sets.DrawHatHair[head];
++			fullHair = head > -1 && ArmorIDs.Head.Sets.DrawFullHair[head];
++			hatHair = head > -1 && ArmorIDs.Head.Sets.DrawHatHair[head];
 +			hideHair = (face > -1 && ArmorIDs.Face.Sets.PreventHairDraw[face]) || (faceHead > -1 && head != 0);
-+			backHairDraw = ArmorIDs.Head.Sets.DrawBackHair[hair];
-+			drawsBackHairWithoutHeadgear = ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[head];
++			backHairDraw = hair > -1 && ArmorIDs.Head.Sets.DrawBackHair[hair];
++			drawsBackHairWithoutHeadgear = head > -1 && ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[head];
 +			/*
  			fullHair = (hatHair = (hideHair = (drawsBackHairWithoutHeadgear = false)));
  			switch (head) {
