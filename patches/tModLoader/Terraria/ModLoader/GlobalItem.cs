@@ -223,18 +223,41 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not ammo will be consumed upon usage. Called both by the gun and by the ammo; if at least one returns false then the ammo will not be used. By default returns true.
-		/// If false is returned, the OnConsumeAmmo hook is never called.
+		/// Whether or not ammo will be consumed upon usage. Called by the weapon; if at least one of this and <see cref="CanBeConsumedAsAmmo"/> returns false then the ammo will not be used. By default returns true.
+		/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
 		/// </summary>
-		public virtual bool ConsumeAmmo(Item item, Player player) {
+		/// <param name="weapon">The item that the player is using</param>
+		/// <param name="player">The player using the item</param>
+		public virtual bool CanConsumeAmmo(Item weapon, Player player) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when ammo is consumed. Called both by the gun and by the ammo.
-		/// Called before the ammo stack is reduced.
+		/// Whether or not ammo will be consumed upon usage. Called by the ammo; if at least one of this and <see cref="CanConsumeAmmo"/> returns false then the ammo will not be used. By default returns true.
+		/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
 		/// </summary>
-		public virtual void OnConsumeAmmo(Item item, Player player) {
+		/// <param name="ammo">The ammo item</param>
+		/// <param name="player">The player consuming the ammo</param>
+		public virtual bool CanBeConsumedAsAmmo(Item ammo, Player player) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when ammo is consumed. Called by the weapon.
+		/// <br>Called before the ammo stack is reduced.</br>
+		/// </summary>
+		/// <param name="weapon">The item that the player is using</param>
+		/// <param name="player">The player consuming the ammo</param>
+		public virtual void OnConsumeAmmo(Item weapon, Player player) {
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when ammo is consumed. Called by the ammo.
+		/// <br>Called before the ammo stack is reduced.</br>
+		/// </summary>
+		/// <param name="ammo">The ammo item</param>
+		/// <param name="player">The player consuming the ammo</param>
+		public virtual void OnConsumedAsAmmo(Item ammo, Player player) {
 		}
 
 		/// <summary>
