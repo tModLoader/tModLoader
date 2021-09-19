@@ -108,7 +108,7 @@ namespace Terraria.ModLoader.UI
 
 #if RELEASE
 				// Temporary display for the alpha/beta version.
-				if (!betaWelcomed && !ModLoader.ShowFirstLaunchWelcomeMessage) {
+				if (!betaWelcomed) {
 					betaWelcomed = true;
 					infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageBeta"), Main.menuMode);
 				}

@@ -1,10 +1,11 @@
 @echo off
 cd /D "%~dp0"
 set Args=%*
+setlocal EnableDelayedExpansion
 
-if "%~1"=="-sysdotnet"  ( 
-	dotnet tModLoader.dll %Args%
+call InstallNetFramework.bat
+if exist %INSTALLDIR%\dotnet.exe ( 
+	start dotnet\%VERSIONSEL%\dotnet.exe tModLoader.dll %Args% 
 ) else (
-	call InstallNetFramework.bat
-	start dotnet\%VERSIONSEL%\dotnet.exe tModLoader.dll %Args%
+	dotnet tModLoader.dll %Args%
 )
