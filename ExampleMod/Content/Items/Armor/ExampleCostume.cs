@@ -23,11 +23,28 @@ namespace ExampleMod.Content.Items.Armor
 	// Remember that the visuals and the effects of Costumes must be kept separate. Follow this example for best results.
 	public class ExampleCostume : ModItem
 	{
-		public static ExampleCostume Instance => ModContent.GetInstance<ExampleCostume>();
+		public int EquipHeadSlot;
+		public int EquipBodySlot;
+		public int EquipLegsSlot;
+
+		public override void Load() {
+			// The code below runs only if we're not loading on a server
+			if (Main.netMode != NetmodeID.Server) {
+				// Add equip textures
+				EquipHeadSlot = Mod.AddEquipTexture(new BlockyHead(), this, EquipType.Head, "ExampleMod/Content/Items/Armor/ExampleCostume_Head");
+				EquipBodySlot = Mod.AddEquipTexture(new EquipTexture(), this, EquipType.Body, "ExampleMod/Content/Items/Armor/ExampleCostume_Body");
+				EquipLegsSlot = Mod.AddEquipTexture(new EquipTexture(), this, EquipType.Legs, "ExampleMod/Content/Items/Armor/ExampleCostume_Legs");
+			}
+		}
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Charm of Example");
 			Tooltip.SetDefault("Turns the holder into Blocky near town NPC");
+
+			ArmorIDs.Head.Sets.DrawHead[EquipHeadSlot] = false;
+			ArmorIDs.Body.Sets.DrawBody[EquipBodySlot] = false;
+			ArmorIDs.Body.Sets.DrawArm[EquipBodySlot] = false;
+			ArmorIDs.Legs.Sets.DrawLegs[EquipLegsSlot] = false;
 		}
 
 		public override void SetDefaults() {
@@ -52,22 +69,10 @@ namespace ExampleMod.Content.Items.Armor
 
 	public class BlockyHead : EquipTexture
 	{
-		public override bool DrawHead() => false;
-
 		public override void UpdateVanitySet(Player player) {
 			if (Main.rand.NextBool(20)) {
 				Dust.NewDust(player.position, player.width, player.height, ModContent.DustType<Sparkle>());
 			}
 		}
-	}
-
-	public class BlockyBody : EquipTexture
-	{
-		public override bool DrawBody() => false;
-	}
-
-	public class BlockyLegs : EquipTexture
-	{
-		public override bool DrawLegs() => false;
 	}
 }

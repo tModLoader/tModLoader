@@ -42,10 +42,10 @@ namespace ExampleMod.Common.Players
 
 		public override void FrameEffects() {
 			if ((blockyPower || blockyForceVanity) && !blockyHideVanity) {
-				var exampleCostume = ExampleCostume.Instance;
-				Player.legs = Mod.GetEquipSlot(exampleCostume.Name, EquipType.Legs);
-				Player.body = Mod.GetEquipSlot(exampleCostume.Name, EquipType.Body);
-				Player.head = Mod.GetEquipSlot(exampleCostume.Name, EquipType.Head);
+				var exampleCostume = ModContent.GetInstance<ExampleCostume>();
+				Player.head = exampleCostume.EquipHeadSlot;
+				Player.body = exampleCostume.EquipBodySlot;
+				Player.legs = exampleCostume.EquipLegsSlot;
 			}
 		}
 
