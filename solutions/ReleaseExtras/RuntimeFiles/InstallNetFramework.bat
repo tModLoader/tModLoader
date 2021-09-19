@@ -3,7 +3,9 @@
 @echo off
 cd /D "%~dp0"
 set LOGFILE=LaunchLogs\install.log
-setlocal EnableDelayedExpansion
+if "%~1"=="" (
+	setlocal EnableDelayedExpansion
+)
 
 if Not exist LaunchLogs (mkdir LaunchLogs)
 
