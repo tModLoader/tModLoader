@@ -33,12 +33,5 @@ namespace Terraria
 					RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 			}
 		}
-
-		/// <summary>
-		/// Ensure sufficient stack size (4MB) on MacOS & Windows secondary threads, doesn't hurt for Linux. 16^5 = 1MB, value in hex 
-		/// </summary>
-		private static void EnsureMinimumStackSizeOnThreads() {
-			Environment.SetEnvironmentVariable("COMPlus_DefaultStackSize", "400000");
-		}
 	}
 }
