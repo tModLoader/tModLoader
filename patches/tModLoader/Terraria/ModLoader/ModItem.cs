@@ -636,46 +636,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine whether the skin/shirt on the player's arms and hands are drawn when this body armor is worn. By default both flags will be false. Note that if drawHands is false, the arms will not be drawn either. Also note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <param name="drawHands">if set to <c>true</c> [draw hands].</param>
-		/// <param name="drawArms">if set to <c>true</c> [draw arms].</param>
-		public virtual void DrawHands(ref bool drawHands, ref bool drawArms) {
-		}
-
-		/// <summary>
-		/// Allows you to determine whether the player's hair or alt (hat) hair draws when this head armor is worn. By default both flags will be false. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <param name="drawHair">if set to <c>true</c> [draw hair].</param>
-		/// <param name="drawAltHair">if set to <c>true</c> [draw alt hair].</param>
-		public virtual void DrawHair(ref bool fullHair, ref bool hatHair, ref bool hideHair, ref bool backHairDraw, ref bool drawsBackHairWithoutHeadgear) {
-		}
-
-		/// <summary>
-		/// Return false to hide the player's head when this head armor is worn. Returns true by default. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawHead() {
-			return true;
-		}
-
-		/// <summary>
-		/// Return false to hide the player's body when this body armor is worn. Returns true by default. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawBody() {
-			return true;
-		}
-
-		/// <summary>
-		/// Return false to hide the player's legs when this leg armor or shoe accessory is worn. Returns true by default. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawLegs() {
-			return true;
-		}
-
-		/// <summary>
 		/// Allows you to modify the colors in which this armor and surrounding accessories are drawn, in addition to which glow mask and in what color is drawn. Note that this hook is only ever called through this item's associated equipment texture.
 		/// </summary>
 		/// <param name="drawPlayer">The draw player.</param>
