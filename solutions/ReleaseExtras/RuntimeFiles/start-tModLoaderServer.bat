@@ -1,9 +1,9 @@
 @echo off
 cd /D "%~dp0"
 set Args=%* -server -config serverconfig.txt
+setlocal EnableDelayedExpansion
 
-setlocal EnableDelayedExpansion 
-call InstallNetFramework.bat skip
+call InstallNetFramework.bat
 
 set /P steam=Use Steam Server [y]/[n] steam:
 if NOT %steam%==y ( goto start )
@@ -14,10 +14,8 @@ if NOT %lobby%==p ( set Args=%Args% -lobby friends )
 if %lobby%==p ( set Args=%Args% -lobby private )
 
 :start
-if "%~1"=="-sysdotnet" (
-	echo Launching using System Installed .NET
-	pause
-	dotnet tModLoader.dll %Args%
-) else (
+if exist %INSTALLDIR%\dotnet.exe ( 
 	start dotnet\%VERSIONSEL%\dotnet.exe tModLoader.dll %Args% 
+) else (
+	dotnet tModLoader.dll %Args%
 )
