@@ -1,14 +1,11 @@
 @echo off
 cd /D "%~dp0"
 set Args=%*
+setlocal EnableDelayedExpansion
 
-setlocal EnableDelayedExpansion 
-call InstallNetFramework.bat skip
-
-if "%~1"=="-sysdotnet" (
-	echo Launching using System Installed .NET
-	pause
-	dotnet tModLoader.dll %Args%
-) else (
+call InstallNetFramework.bat
+if exist %INSTALLDIR%\dotnet.exe ( 
 	start dotnet\%VERSIONSEL%\dotnet.exe tModLoader.dll %Args% 
+) else (
+	dotnet tModLoader.dll %Args%
 )
