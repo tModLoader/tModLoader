@@ -21,18 +21,9 @@ namespace ExampleMod.Content.Items.Armor
 	// ExampleCostumePlayer.FrameEffects is most important. It overrides the drawn equipment slots and sets them to our Blocky EquipTextures. 
 	// ExampleCostumePlayer.ModifyDrawInfo is for some fun effects for our costume.
 	// Remember that the visuals and the effects of Costumes must be kept separate. Follow this example for best results.
+	[AutoloadEquip(false, EquipType.Head, EquipType.Body, EquipType.Legs)]
 	public class ExampleCostume : ModItem
 	{
-		public override void Load() {
-			// The code below runs only if we're not loading on a server
-			if (Main.netMode != NetmodeID.Server) {
-				// Add equip textures
-				Mod.AddEquipTexture(new BlockyHead(), this, EquipType.Head, "ExampleMod/Content/Items/Armor/ExampleCostume_Head");
-				Mod.AddEquipTexture(new EquipTexture(), this, EquipType.Body, "ExampleMod/Content/Items/Armor/ExampleCostume_Body");
-				Mod.AddEquipTexture(new EquipTexture(), this, EquipType.Legs, "ExampleMod/Content/Items/Armor/ExampleCostume_Legs");
-			}
-		}
-
 		// Called in SetStaticDefaults
 		private void SetupDrawing() {
 			int equipHeadSlot = Mod.GetEquipSlot(Name, EquipType.Head);
@@ -70,10 +61,7 @@ namespace ExampleMod.Content.Items.Armor
 
 		// Required so UpdateVanitySet gets called
 		public override bool IsVanitySet(int head, int body, int legs) => true;
-	}
 
-	public class BlockyHead : EquipTexture
-	{
 		public override void UpdateVanitySet(Player player) {
 			if (Main.rand.NextBool(20)) {
 				Dust.NewDust(player.position, player.width, player.height, ModContent.DustType<Sparkle>());
