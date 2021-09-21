@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Items.Armor
 	// NPCs.ExamplePerson drops this item when killed
 	// Content.Items.Armor.ExampleCostume (below) is the accessory item that sets ExampleCostumePlayer values. Note that this item does not have EquipTypes set. This is a vital difference and key to our approach.
 	// Content.Items.Armor.BlockyHead/Body/Legs (below) are EquipTexture classes. They simply disable the drawing of the player's head/body/legs respectively when they are set as the drawn EquipTexture. One spawns dust too.
-	// ExampleMod.Load() shows calling AddEquipTexture 3 times with appropriate parameters. This is how we register EquipTexture manually instead of the automatic pairing of ModItem and EquipTexture that other equipment uses.
+	// ExampleCostume.Load() shows calling AddEquipTexture 3 times with appropriate parameters. This is how we register EquipTexture manually instead of the automatic pairing of ModItem and EquipTexture that other equipment uses.
 	// Buffs.Blocky is the Buff that is shown while in Blocky mode. The buff is responsible for the actual stat effects of the costume. It also needs to remove itself when not near town npcs.
 	// ExampleCostumePlayer has 5 bools. They manage the visibility and other things related to this effect.
 	// ExampleCostumePlayer.ResetEffects resets those bool, except blockyAccessoryPrevious which is special because of the order of hooks.
@@ -23,28 +23,33 @@ namespace ExampleMod.Content.Items.Armor
 	// Remember that the visuals and the effects of Costumes must be kept separate. Follow this example for best results.
 	public class ExampleCostume : ModItem
 	{
-		public int EquipHeadSlot;
-		public int EquipBodySlot;
-		public int EquipLegsSlot;
-
 		public override void Load() {
 			// The code below runs only if we're not loading on a server
 			if (Main.netMode != NetmodeID.Server) {
 				// Add equip textures
-				EquipHeadSlot = Mod.AddEquipTexture(new BlockyHead(), this, EquipType.Head, "ExampleMod/Content/Items/Armor/ExampleCostume_Head");
-				EquipBodySlot = Mod.AddEquipTexture(new EquipTexture(), this, EquipType.Body, "ExampleMod/Content/Items/Armor/ExampleCostume_Body");
-				EquipLegsSlot = Mod.AddEquipTexture(new EquipTexture(), this, EquipType.Legs, "ExampleMod/Content/Items/Armor/ExampleCostume_Legs");
+				Mod.AddEquipTexture(new BlockyHead(), this, EquipType.Head, "ExampleMod/Content/Items/Armor/ExampleCostume_Head");
+				Mod.AddEquipTexture(new EquipTexture(), this, EquipType.Body, "ExampleMod/Content/Items/Armor/ExampleCostume_Body");
+				Mod.AddEquipTexture(new EquipTexture(), this, EquipType.Legs, "ExampleMod/Content/Items/Armor/ExampleCostume_Legs");
 			}
+		}
+
+		// Called in SetStaticDefaults
+		private void SetupDrawing() {
+			int equipHeadSlot = Mod.GetEquipSlot(Name, EquipType.Head);
+			int equipBodySlot = Mod.GetEquipSlot(Name, EquipType.Body);
+			int equipLegsSlot = Mod.GetEquipSlot(Name, EquipType.Legs);
+
+			ArmorIDs.Head.Sets.DrawHead[equipHeadSlot] = false;
+			ArmorIDs.Body.Sets.DrawBody[equipBodySlot] = false;
+			ArmorIDs.Body.Sets.DrawArm[equipBodySlot] = false;
+			ArmorIDs.Legs.Sets.DrawLegs[equipLegsSlot] = false;
 		}
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Charm of Example");
 			Tooltip.SetDefault("Turns the holder into Blocky near town NPC");
 
-			ArmorIDs.Head.Sets.DrawHead[EquipHeadSlot] = false;
-			ArmorIDs.Body.Sets.DrawBody[EquipBodySlot] = false;
-			ArmorIDs.Body.Sets.DrawArm[EquipBodySlot] = false;
-			ArmorIDs.Legs.Sets.DrawLegs[EquipLegsSlot] = false;
+			SetupDrawing();
 		}
 
 		public override void SetDefaults() {
