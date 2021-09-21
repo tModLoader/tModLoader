@@ -16,6 +16,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileLavaDeath[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+			TileID.Sets.IgnoredByStepUp[Type] = true;
 
 			DustType = ModContent.DustType<Dusts.Sparkle>();
 			AdjTiles = new int[] { TileID.WorkBenches };
@@ -29,7 +30,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			// Etc
 			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Example Workbench");
+			name.SetDefault("Work Bench");
 			AddMapEntry(new Color(200, 200, 200), name);
 		}
 
