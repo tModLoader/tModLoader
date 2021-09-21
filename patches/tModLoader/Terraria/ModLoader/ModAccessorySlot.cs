@@ -14,7 +14,7 @@ namespace Terraria.ModLoader
 	{
 		internal int type;
 		internal int index;
-		public AccessorySlotLoader Loader => LoaderManager.Get<AccessorySlotLoader>();
+		public ModAccessorySlotPlayer ModSlotPlayer => AccessorySlotLoader.GetModSlotPlayer(Main.LocalPlayer);
 
 		// Properties to preset a location for the accessory slot
 		public virtual int XLoc => 0;
@@ -35,14 +35,30 @@ namespace Terraria.ModLoader
 		public virtual bool DrawVanitySlot => true;
 		public virtual bool DrawDyeSlot => true;
 
-		protected sealed override void Register() {
-			type = Loader.Register(this);
+		// Get/Set Properties for fetching slot information
+		public Item FunctionalItem {
+			get => ModSlotPlayer.exAccessorySlot[type];
+			set => ModSlotPlayer.exAccessorySlot[type] = value;
 		}
 
-		private bool MySlotContainsAnItem() {
-			ModAccessorySlotPlayer dPlayer = Main.LocalPlayer.GetModPlayer<ModAccessorySlotPlayer>();
-			return !(dPlayer.exAccessorySlot[type].IsAir && dPlayer.exAccessorySlot[type + Loader.list.Count].IsAir);
+		public Item VanityItem {
+			get => ModSlotPlayer.exAccessorySlot[type + ModSlotPlayer.SlotCount()];
+			set => ModSlotPlayer.exAccessorySlot[type + ModSlotPlayer.SlotCount()] = value;
 		}
+		
+		public Item DyeItem {
+			get => ModSlotPlayer.exDyesAccessory[type];
+			set => ModSlotPlayer.exDyesAccessory[type] = value;
+		}
+
+		public bool ShowVisuals {
+			get => ModSlotPlayer.exHideAccessory[type];
+			set => ModSlotPlayer.exHideAccessory[type] = value;
+		}
+
+		protected sealed override void Register() => type = LoaderManager.Get<AccessorySlotLoader>().Register(this);
+
+		private bool IsEmpty() => FunctionalItem.IsAir && VanityItem.IsAir && DyeItem.IsAir;
 
 		/// <summary>
 		/// This function allows for custom textures and colours to be drawn for the accessory slot. Called for Dyes, Vanity, and Functionals.
@@ -53,34 +69,27 @@ namespace Terraria.ModLoader
 		/// <para><paramref name="position"/> :: is the position of where the ItemSlot will be drawn </para>
 		/// <para><paramref name="context"/> :: 12 => dye; 11 => vanity; 10 => functional </para>
 		/// </summary>
-		public virtual void DrawModded(Item[] inv, int context, int slot, Vector2 position) {
+		public virtual void DrawModded(Item[] inv, int context, int slot, Vector2 position) => 
 			ItemSlot.Draw(Main.spriteBatch, inv, context, slot, position);
-		}
 
 		/// <summary>
 		/// Override to set conditions on when the slot is valid for stat/vanity calculations and player usage.
 		/// Example: the demonHeart is consumed and in Expert mode in Vanilla.
 		/// </summary>
-		public virtual bool IsSlotValid() {
-			return true;
-		}
+		public virtual bool IsEnabled() => true;
 
 		/// <summary>
 		/// Override to set conditions on what can be placed in the slot. Return false to prevent the item going in slot. Return true for dyes, if you want dyes. Example: only wings can go in slot.
 		/// Receives data:
 		/// <para><paramref name="checkItem"/> :: the item that is attempting to enter the slot </para>
 		/// </summary>
-		public virtual bool SlotCanAcceptItem(Item checkItem) {
-			return true;
-		}
+		public virtual bool CanAcceptItem(Item checkItem) => true;
 
 		/// <summary>
 		/// Override to change the condition on when the slot is visible, but otherwise non-functional for stat/vanity calculations.
 		/// Defaults to check 'property' MySlotContainsAnItem()
 		/// </summary>
 		/// <returns></returns>
-		public virtual bool IsSlotVisibleButNotValid() {
-			return MySlotContainsAnItem();
-		}
+		public virtual bool IsVisibleWhenNotEnabled() => IsEmpty();
 	}
 }

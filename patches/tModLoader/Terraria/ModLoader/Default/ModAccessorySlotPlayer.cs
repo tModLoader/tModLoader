@@ -12,6 +12,8 @@ namespace Terraria.ModLoader.Default
 		public override bool CloneNewInstances => false;
 		internal static AccessorySlotLoader Loader => LoaderManager.Get<AccessorySlotLoader>();
 
+		public int SlotCount() => slots.Count;
+
 		// Arrays for modded accessory slot save/load/usage. Used in DefaultPlayer.
 		internal Item[] exAccessorySlot = new Item[2];
 		internal Item[] exDyesAccessory = new Item[1];

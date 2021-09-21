@@ -10,16 +10,14 @@ namespace Terraria.ModLoader.Default
 			Name = oldName;
 		}
 
-		public override bool IsSlotValid() { 
-			return false;
-		}
+		public override bool IsEnabled() => false;
 
 		// Only display unloaded slots if in singleplayer. Don't need people carrying items in to multiplayer they shouldn't have :(
-		public override bool IsSlotVisibleButNotValid() {
+		public override bool IsVisibleWhenNotEnabled() {
 			if (Main.netMode == 1)
 				return false;
 
-			return base.IsSlotVisibleButNotValid();
+			return base.IsVisibleWhenNotEnabled();
 		}
 	}
 }

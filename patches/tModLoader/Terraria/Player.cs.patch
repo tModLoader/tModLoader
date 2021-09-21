@@ -1656,12 +1656,11 @@
  				minionKB += 0.5f;
  			}
  
-@@ -9334,6 +_,8 @@
+@@ -9334,6 +_,7 @@
  				maxTurrets++;
  			}
  
-+			/*
-+			// wing loop is merged into ApplyEquipFunctional
++			/* wing loop is merged into ApplyEquipFunctional
  			for (int m = 3; m < 10; m++) {
  				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
  					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
@@ -1685,7 +1684,7 @@
  		}
  
  		private void ApplyEquipVanity(int itemSlot, Item currentItem) {
-+			ApplyEquipVanity(currentItem);
++			ApplyEquipVanity(currentItem); //remove itemSlot parameter and make public so mods can call from their own accessory slots
 +		}
 +
 +		public void ApplyEquipVanity(Item currentItem) {
@@ -2491,7 +2490,7 @@
  						}
  					}
 -					else if (((gravDir == 1f && num18 > num17) || (gravDir == -1f && num18 < -num17)) && !noFallDmg && !flag12) {
-+					else if (((gravDir == 1f && num18 > num17) || (gravDir == -1f && num18 < -num17)) && !noFallDmg && wingsLogic == 0) {
++					else if (((gravDir == 1f && num18 > num17) || (gravDir == -1f && num18 < -num17)) && !noFallDmg && equippedWings != null) {
  						immune = false;
  						int num25 = (int)((float)num18 * gravDir - (float)num17) * 10;
  						if (mount.Active)
