@@ -925,7 +925,7 @@
  					UpdateItemDye(i < 10, hideVisibleAccessory[num], armor[i], dye[num]);
  				}
  			}
-+			LoaderManager.Get<AccessorySlotLoader>().UpdateDyes(this);
++			PlayerLoader.UpdateDyes(this);
  
  			cYorai = cPet;
  		}
@@ -1588,13 +1588,13 @@
  				}
  
  				if (armor[k].prefix == 73)
-@@ -9301,7 +_,25 @@
+@@ -9301,6 +_,22 @@
  
  				if (armor[k].prefix == 80)
  					meleeSpeed += 0.04f;
 +
 +				ItemLoader.UpdateEquip(armor[k], this);
- 			}
++			}
 +		}
 +
 +		public void UpdateEquips(int i)
@@ -1608,12 +1608,9 @@
 +			for (int k = 0; k < 10; k++) {
 +				if (IsAValidEquipmentSlotForIteration(k))
 +					VanillaUpdateEquip(armor[k]);
-+			}
-+
-+			LoaderManager.Get<AccessorySlotLoader>().UpdateEquips(this);
+ 			}
  
  			equippedAnyWallSpeedAcc = false;
- 			equippedAnyTileSpeedAcc = false;
 @@ -9311,21 +_,33 @@
  
  			for (int l = 3; l < 10; l++) {
@@ -1658,7 +1655,7 @@
  			for (int m = 3; m < 10; m++) {
  				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
  					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
-@@ -9342,12 +_,15 @@
+@@ -9342,6 +_,7 @@
  					wingsLogic = armor[m].wingSlot;
  				}
  			}
@@ -1666,14 +1663,6 @@
  
  			for (int n = 13; n < 20; n++) {
  				if (IsAValidEquipmentSlotForIteration(n))
- 					ApplyEquipVanity(n, armor[n]);
- 			}
- 
-+			PlayerLoader.UpdateVanityAccessories(this);
-+
- 			if (wet && ShouldFloatInWater)
- 				accFlipper = true;
- 
 @@ -9519,6 +_,10 @@
  		}
  
@@ -3091,7 +3080,7 @@
 -			if (!dead)
 +			if (!dead) {
  				UpdateVisibleAccessories();
-+				LoaderManager.Get<AccessorySlotLoader>().UpdateVisibleAccessories(this);
++				PlayerLoader.UpdateVisibleAccessories(this);
 +			}
  
  			wearsRobe = false;

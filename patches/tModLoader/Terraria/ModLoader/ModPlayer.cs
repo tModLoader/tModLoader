@@ -201,6 +201,18 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Is called in Player.Frame(), including selection screen to prepare and denote visible accessories. Player Instance sensitive.
+		/// </summary>
+		public virtual void UpdateVisibleAccessories() {
+		}
+
+		/// <summary>
+		/// Is called in Player.UpdateDyes(), including selection screen. Player Instance sensitive.
+		/// </summary>
+		public virtual void UpdateDyes() {
+		}
+
+		/// <summary>
 		/// This is called after miscellaneous update code is called in Player.Update, which is sometime after PostUpdateEquips is called. This can be used for general update tasks.
 		/// </summary>
 		public virtual void PostUpdateMiscEffects() {
@@ -222,12 +234,6 @@ namespace Terraria.ModLoader
 		/// This is called at the very end of the Player.Update method. Final general update tasks can be placed here.
 		/// </summary>
 		public virtual void PostUpdate() {
-		}
-
-		/// <summary>
-		/// This is called after VanillaUpdateVanityAccessory() in player.UpdateEquips()
-		/// </summary>
-		public virtual void UpdateVanityAccessories() {
 		}
 
 		/// <summary>

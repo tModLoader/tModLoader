@@ -88,6 +88,66 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
+		// Updates Code:
+
+		/// <summary>
+		/// Updates all vanity information on the player for Mod Slots, in a similar fashion to Player.UpdateVisibleAccessories()
+		/// Runs On Player Select, so is Player instance sensitive!!!
+		/// </summary>
+		public override void UpdateVisibleAccessories() {
+			var loader = LoaderManager.Get<AccessorySlotLoader>();
+
+			// Handle Player Select Screen rendering for Iterations with the correct player
+			if (Player != ModAccessorySlot.Player)
+				ModAccessorySlot.Player = Player;
+
+			for (int k = 0; k < SlotCount(); k++) {
+				if (loader.ModdedIsAValidEquipmentSlotForIteration(k)) {
+					Player.UpdateVisibleAccessories(exAccessorySlot[k], exAccessorySlot[k + SlotCount()], exHideAccessory[k], k, true);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Mirrors Player.UpdateDyes() for modded slots
+		/// Runs On Player Select, so is Player instance sensitive!!!
+		/// </summary>
+		public override void UpdateDyes() {
+			var loader = LoaderManager.Get<AccessorySlotLoader>();
+
+			// Handle Player Select Screen rendering for Iterations with the correct player
+			if (Player != ModAccessorySlot.Player)
+				ModAccessorySlot.Player = Player;
+
+			for (int i = 0; i < SlotCount() * 2; i++) {
+				if (loader.ModdedIsAValidEquipmentSlotForIteration(i)) {
+					int num = i % exDyesAccessory.Length;
+					Player.UpdateItemDye(i < exDyesAccessory.Length, exHideAccessory[num], exAccessorySlot[i], exDyesAccessory[num]);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Runs a simplified version of Player.UpdateEquips for the Modded Accessory Slots
+		/// </summary>
+		public override void UpdateEquips() {
+			var loader = LoaderManager.Get<AccessorySlotLoader>();
+
+			for (int k = 0; k < SlotCount(); k++) {
+				if (loader.ModdedIsAValidEquipmentSlotForIteration(k)) {
+					Item item = exAccessorySlot[k];
+					Item vItem = exAccessorySlot[k + SlotCount()];
+
+					Player.VanillaUpdateEquip(item);
+					Player.ApplyEquipFunctional(item, exHideAccessory[k]);
+					Player.ApplyEquipVanity(vItem);
+
+					if (MusicLoader.itemToMusic.ContainsKey(item.type))
+						Main.musicBox2 = MusicLoader.itemToMusic[item.type];
+				}
+			}
+		}
+
 		// The following netcode is adapted from ChickenBone's UtilitySlots:
 		public override void clientClone(ModPlayer clientClone) {
 			var defaultInv = (ModAccessorySlotPlayer)clientClone;

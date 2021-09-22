@@ -371,7 +371,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		// VANILLA FUNCTIONALITY CODE ////////////////////////////////////////////////////////////////////////////
+		// Functionality Related Code /////////////////////////////////////////////////////////////////////
+
 		public bool ModdedIsAValidEquipmentSlotForIteration(int index) => Get(index).IsEnabled();
 
 		public bool ModdedCanSlotBeShown(int index) => Get(index).IsVisibleWhenNotEnabled();
@@ -386,26 +387,8 @@ namespace Terraria.ModLoader
 		public bool ModSlotCheck(Item checkItem, int slot) => CanAcceptItem(slot, checkItem) &&
 			!ItemSlot.AccCheck(Player.armor.Concat(ModSlotPlayer(Player).exAccessorySlot).ToArray(), checkItem, slot + Player.armor.Length);
 
-		/// <summary>
-		/// Runs a simplified version of Player.UpdateEquips for the Modded Accessory Slots
-		/// </summary>
-		public void UpdateEquips(Player player) {
-			var modSlotPlayer = ModSlotPlayer(player);
-			for (int k = 0; k < ModSlotPlayer(player).SlotCount(); k++) {
-				if (ModdedIsAValidEquipmentSlotForIteration(k)) {
-					Item item = modSlotPlayer.exAccessorySlot[k];
-					Item vItem = modSlotPlayer.exAccessorySlot[k + modSlotPlayer.SlotCount()];
 
-					player.VanillaUpdateEquip(item);
-					player.ApplyEquipFunctional(item, ModSlotPlayer(player).exHideAccessory[k]);
-					player.ApplyEquipVanity(vItem);
-
-					if (MusicLoader.itemToMusic.ContainsKey(item.type))
-						Main.musicBox2 = MusicLoader.itemToMusic[item.type];
-				}
-			}
-		}
-
+		//TODO: Look into if this should have an actual hook later, and which class to associate to (item or player). Not a priority to the Accessory Slot ModType PR
 		/// <summary>
 		/// Mirrors Player.GetPreferredGolfBallToUse.
 		/// Provides the golf ball projectile from an accessory slot. 
@@ -421,43 +404,6 @@ namespace Terraria.ModLoader
 				}
 			}
 			return false;
-		}
-
-		/// <summary>
-		/// Updates all vanity information on the player for Mod Slots, in a similar fashion to Player.UpdateVisibleAccessories()
-		/// Runs On Player Select, so is Player instance sensitive!!!
-		/// </summary>
-		public void UpdateVisibleAccessories(Player player) {
-			var modSlotPlayer = ModSlotPlayer(player);
-
-			// Handle Player Select Screen rendering for Iterations with the correct player
-			if (player != ModAccessorySlot.Player)
-				ModAccessorySlot.Player = player;
-
-			for (int k = 0; k < modSlotPlayer.SlotCount(); k++) {
-				if (ModdedIsAValidEquipmentSlotForIteration(k)) {
-					player.UpdateVisibleAccessories(modSlotPlayer.exAccessorySlot[k], modSlotPlayer.exAccessorySlot[k + modSlotPlayer.SlotCount()], modSlotPlayer.exHideAccessory[k], k, true);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Mirrors Player.UpdateDyes() for modded slots
-		/// Runs On Player Select, so is Player instance sensitive!!!
-		/// </summary>
-		public void UpdateDyes(Player player) {
-			var modSlotPlayer = ModSlotPlayer(player);
-
-			// Handle Player Select Screen rendering for Iterations with the correct player
-			if (player != ModAccessorySlot.Player)
-				ModAccessorySlot.Player = player;
-
-			for (int i = 0; i < modSlotPlayer.SlotCount() * 2; i++) {
-				if (ModdedIsAValidEquipmentSlotForIteration(i)) {
-					int num = i % modSlotPlayer.exDyesAccessory.Length;
-					player.UpdateItemDye(i < modSlotPlayer.exDyesAccessory.Length, modSlotPlayer.exHideAccessory[num], modSlotPlayer.exAccessorySlot[i], modSlotPlayer.exDyesAccessory[num]);
-				}
-			}
 		}
 	}
 }
