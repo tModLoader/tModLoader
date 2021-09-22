@@ -36,6 +36,7 @@ namespace Terraria
 
 		/// <summary>
 		/// Ensure sufficient stack size (4MB) on MacOS & Windows secondary threads, doesn't hurt for Linux. 16^5 = 1MB, value in hex 
+		/// Doesn't appear to work on .NET5, despite it being on the docs saying it should, so currently done in the Unix .sh script only
 		/// </summary>
 		private static void EnsureMinimumStackSizeOnThreads() {
 			Environment.SetEnvironmentVariable("COMPlus_DefaultStackSize", "400000");
