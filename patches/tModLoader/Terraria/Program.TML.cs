@@ -1,3 +1,6 @@
+using MonoMod.RuntimeDetour;
+using MonoMod.Cil;
+using Mono.Cecil.Cil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,10 +39,22 @@ namespace Terraria
 
 		/// <summary>
 		/// Ensure sufficient stack size (4MB) on MacOS & Windows secondary threads, doesn't hurt for Linux. 16^5 = 1MB, value in hex 
-		/// Doesn't appear to work on .NET5, despite it being on the docs saying it should, so currently done in the Unix .sh script only
 		/// </summary>
 		private static void EnsureMinimumStackSizeOnThreads() {
+			// Doesn't work on .NET5, as the COMPlus_DefaultStackSize env var is used during runtime initialization (ie prior to reaching tML code)
 			Environment.SetEnvironmentVariable("COMPlus_DefaultStackSize", "400000");
+		}
+
+		internal static void TestNewThreadSizeWindows() {
+			[System.Runtime.InteropServices.DllImport("kernel32.dll")]
+			static extern void GetCurrentThreadStackLimits(out uint lowLimit, out uint highLimit);
+
+			uint low;
+			uint high;
+
+			GetCurrentThreadStackLimits(out low, out high);
+			var size = (high - low) / 1024; // in kB
+			ModLoader.Logging.tML.Debug("Thread Size: " + size + " kB");
 		}
 	}
 }
