@@ -89,7 +89,6 @@ namespace Terraria.ModLoader.Default
 		}
 
 		// Updates Code:
-
 		/// <summary>
 		/// Updates all vanity information on the player for Mod Slots, in a similar fashion to Player.UpdateVisibleAccessories()
 		/// Runs On Player Select, so is Player instance sensitive!!!
@@ -106,6 +105,8 @@ namespace Terraria.ModLoader.Default
 					Player.UpdateVisibleAccessories(exAccessorySlot[k], exAccessorySlot[k + SlotCount()], exHideAccessory[k], k, true);
 				}
 			}
+
+			ModAccessorySlot.Player = Main.LocalPlayer;
 		}
 
 		/// <summary>
@@ -125,6 +126,8 @@ namespace Terraria.ModLoader.Default
 					Player.UpdateItemDye(i < exDyesAccessory.Length, exHideAccessory[num], exAccessorySlot[i], exDyesAccessory[num]);
 				}
 			}
+
+			ModAccessorySlot.Player = Main.LocalPlayer;
 		}
 
 		/// <summary>
@@ -133,19 +136,21 @@ namespace Terraria.ModLoader.Default
 		public override void UpdateEquips() {
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 
+			// Handle Player Select Screen rendering for Iterations with the correct player
+			if (Player != ModAccessorySlot.Player)
+				ModAccessorySlot.Player = Player;
+
 			for (int k = 0; k < SlotCount(); k++) {
 				if (loader.ModdedIsAValidEquipmentSlotForIteration(k)) {
+					loader.CustomUpdateEquips(k);
+					
 					Item item = exAccessorySlot[k];
-					Item vItem = exAccessorySlot[k + SlotCount()];
-
-					Player.VanillaUpdateEquip(item);
-					Player.ApplyEquipFunctional(item, exHideAccessory[k]);
-					Player.ApplyEquipVanity(vItem);
-
 					if (MusicLoader.itemToMusic.ContainsKey(item.type))
 						Main.musicBox2 = MusicLoader.itemToMusic[item.type];
 				}
 			}
+
+			ModAccessorySlot.Player = Main.LocalPlayer;
 		}
 
 		// The following netcode is adapted from ChickenBone's UtilitySlots:

@@ -381,6 +381,8 @@ namespace Terraria.ModLoader
 
 		public bool CanAcceptItem(int index, Item checkItem) => Get(index).CanAcceptItem(checkItem);
 
+		public void CustomUpdateEquips(int index) => Get(index).ApplyEquipEffects();
+
 		/// <summary>
 		/// Checks if the provided item can go in to the provided slot. 
 		/// Includes checking if the item already exists in either of Player.Armor or ModSlotPlayer.exAccessorySlot

@@ -15,7 +15,8 @@ namespace ExampleMod.Common.Players
 		public override int XLoc => Main.screenWidth / 2;
 		public override int YLoc => 3 * Main.screenHeight / 4;
 
-		public override bool SkipUIDrawWileTrue => true; // Set False if want to see how it works; skip by default due to intrusiveness for an example
+		// We will keep it hidden most of the time so that it isn't an intrusive example
+		public override bool SkipUIDrawWileTrue => IsEmpty(); // Only show when it contains an item, items can end up in functional slots via quick swap (right click accessory) 
 
 		// We will disable drawing the dye slot
 		public override bool DrawDyeSlot => false;

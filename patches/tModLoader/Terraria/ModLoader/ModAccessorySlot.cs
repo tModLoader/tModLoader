@@ -61,7 +61,7 @@ namespace Terraria.ModLoader
 
 		protected sealed override void Register() => Type = LoaderManager.Get<AccessorySlotLoader>().Register(this);
 
-		private bool IsEmpty() => FunctionalItem.IsAir && VanityItem.IsAir && DyeItem.IsAir;
+		public bool IsEmpty() => FunctionalItem.IsAir && VanityItem.IsAir && DyeItem.IsAir;
 
 		/// <summary>
 		/// This function allows for advanced custom drawing for the accessory slot. Called for Dyes, Vanity, and Functionals.
@@ -80,6 +80,17 @@ namespace Terraria.ModLoader
 		/// Example: the demonHeart is consumed and in Expert mode in Vanilla.
 		/// </summary>
 		public virtual bool IsEnabled() => true;
+
+		/// <summary>
+		/// Override to replace the vanilla effect behavior of the slot with your own.
+		/// By default calls:
+		/// Player.VanillaUpdateEquips(FunctionalItem), Player.ApplyEquipFunctional(FunctionalItem, ShowVisuals), Player.ApplyEquipVanity(VanityItem)
+		/// </summary>
+		public virtual void ApplyEquipEffects() {
+			Player.VanillaUpdateEquip(FunctionalItem);
+			Player.ApplyEquipFunctional(FunctionalItem, ShowVisuals);
+			Player.ApplyEquipVanity(VanityItem);
+		}
 
 		/// <summary>
 		/// Override to set conditions on what can be placed in the slot. Return false to prevent the item going in slot. Return true for dyes, if you want dyes. Example: only wings can go in slot.
