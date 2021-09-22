@@ -410,26 +410,35 @@
  			if (isEquipLocked(item.type))
  				return true;
  
-@@ -1901,25 +_,23 @@
+@@ -1901,25 +_,28 @@
  					return false;
  
  				if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0)
 -					return false;
-+					return !ItemLoader.CanEquipAccessory(item, slot);
- 			}
- 
- 			for (int i = 0; i < itemCollection.Length; i++) {
+-			}
+-
+-			for (int i = 0; i < itemCollection.Length; i++) {
 -				if (slot < 10 && i < 10) {
 -					if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0)
-+				if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0)
 -						return true;
-+					return true;			
-+			}
- 
+-
 -					if (slot >= 10 && i >= 10 && item.wingSlot > 0 && itemCollection[i].wingSlot > 0)
 -						return true;
 -				}
 -
++					return !ItemLoader.CanEquipAccessory(item, slot);
++			}
++			
++			var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
++			for (int i = 0; i < itemCollection.Length; i++) {
++				if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0) {
++					if (i >= 20 && slot >= 20 && slot % modSlotPlayer.SlotCount() != i % modSlotPlayer.SlotCount())
++						return true;
++					else if (slot < 20 && i % 10 != slot % 10)
++						return true;
++				}	
++			}
++
 +			for (int i = 0; i < itemCollection.Length; i++) {
  				if (item.IsTheSameAs(itemCollection[i]))
  					return true;
@@ -464,8 +473,8 @@
  				player.armor[num + 2] = item.Clone();
  			}
  			else if (item.accessory) {
-+				if (!AccessorySwap(player, item, out var failResult))
-+					return failResult;
++				if (!AccessorySwap(player, item, ref result))
++					return result;
 +				/*
  				int num2 = 3;
  				for (int i = 3; i < 10; i++) {

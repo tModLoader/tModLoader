@@ -160,7 +160,7 @@ namespace Terraria.ModLoader
 
 			if (modded) {
 				ModAccessorySlot mAccSlot = list[slot];
-				customLoc = mAccSlot.XLoc != 0 || mAccSlot.YLoc != 0;
+				customLoc = mAccSlot.XLoc != -1 || mAccSlot.YLoc != -1;
 				if (customLoc) {
 					xLoc = mAccSlot.XLoc;
 					yLoc = mAccSlot.YLoc;
@@ -390,43 +390,18 @@ namespace Terraria.ModLoader
 		/// Runs a simplified version of Player.UpdateEquips for the Modded Accessory Slots
 		/// </summary>
 		public void UpdateEquips(Player player) {
+			var modSlotPlayer = ModSlotPlayer(player);
 			for (int k = 0; k < ModSlotPlayer(player).SlotCount(); k++) {
 				if (ModdedIsAValidEquipmentSlotForIteration(k)) {
-					Item item = ModSlotPlayer(player).exAccessorySlot[k];
+					Item item = modSlotPlayer.exAccessorySlot[k];
+					Item vItem = modSlotPlayer.exAccessorySlot[k + modSlotPlayer.SlotCount()];
 
 					player.VanillaUpdateEquip(item);
 					player.ApplyEquipFunctional(item, ModSlotPlayer(player).exHideAccessory[k]);
+					player.ApplyEquipVanity(vItem);
 
 					if (MusicLoader.itemToMusic.ContainsKey(item.type))
 						Main.musicBox2 = MusicLoader.itemToMusic[item.type];
-				}
-			}
-
-			UpdateVisibleAccessories(player);
-		}
-
-		/// <summary>
-		/// Updates all vanity information on the player for Mod Slots, in a similar fashion to Player.UpdateVisibleAccessories
-		/// </summary>
-		public void UpdateVisibleAccessories(Player player) {
-			var modSlotPlayer = ModSlotPlayer(player);
-			for (int k = 0; k < modSlotPlayer.SlotCount(); k++) {
-				if (ModdedIsAValidEquipmentSlotForIteration(k)) {
-					player.ApplyEquipVanity(modSlotPlayer.exAccessorySlot[k + modSlotPlayer.SlotCount()]);
-					player.UpdateVisibleAccessories(modSlotPlayer.exAccessorySlot[k], modSlotPlayer.exAccessorySlot[k + modSlotPlayer.SlotCount()], modSlotPlayer.exHideAccessory[k], k, true);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Mirrors Player.UpdateDyes() for modded slots
-		/// </summary>
-		public void UpdateDyes(Player player) {
-			var modSlotPlayer = ModSlotPlayer(player);
-			for (int i = 0; i < modSlotPlayer.SlotCount() * 2; i++) {
-				if (ModdedIsAValidEquipmentSlotForIteration(i)) {
-					int num = i % modSlotPlayer.exDyesAccessory.Length;
-					player.UpdateItemDye(i < modSlotPlayer.exDyesAccessory.Length, modSlotPlayer.exHideAccessory[num], modSlotPlayer.exAccessorySlot[i], modSlotPlayer.exDyesAccessory[num]);
 				}
 			}
 		}
@@ -446,6 +421,43 @@ namespace Terraria.ModLoader
 				}
 			}
 			return false;
+		}
+
+		/// <summary>
+		/// Updates all vanity information on the player for Mod Slots, in a similar fashion to Player.UpdateVisibleAccessories()
+		/// Runs On Player Select, so is Player instance sensitive!!!
+		/// </summary>
+		public void UpdateVisibleAccessories(Player player) {
+			var modSlotPlayer = ModSlotPlayer(player);
+
+			// Handle Player Select Screen rendering for Iterations with the correct player
+			if (player != ModAccessorySlot.Player)
+				ModAccessorySlot.Player = player;
+
+			for (int k = 0; k < modSlotPlayer.SlotCount(); k++) {
+				if (ModdedIsAValidEquipmentSlotForIteration(k)) {
+					player.UpdateVisibleAccessories(modSlotPlayer.exAccessorySlot[k], modSlotPlayer.exAccessorySlot[k + modSlotPlayer.SlotCount()], modSlotPlayer.exHideAccessory[k], k, true);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Mirrors Player.UpdateDyes() for modded slots
+		/// Runs On Player Select, so is Player instance sensitive!!!
+		/// </summary>
+		public void UpdateDyes(Player player) {
+			var modSlotPlayer = ModSlotPlayer(player);
+
+			// Handle Player Select Screen rendering for Iterations with the correct player
+			if (player != ModAccessorySlot.Player)
+				ModAccessorySlot.Player = player;
+
+			for (int i = 0; i < modSlotPlayer.SlotCount() * 2; i++) {
+				if (ModdedIsAValidEquipmentSlotForIteration(i)) {
+					int num = i % modSlotPlayer.exDyesAccessory.Length;
+					player.UpdateItemDye(i < modSlotPlayer.exDyesAccessory.Length, modSlotPlayer.exHideAccessory[num], modSlotPlayer.exAccessorySlot[i], modSlotPlayer.exDyesAccessory[num]);
+				}
+			}
 		}
 	}
 }

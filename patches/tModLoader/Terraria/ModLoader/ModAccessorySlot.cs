@@ -14,11 +14,13 @@ namespace Terraria.ModLoader
 	{
 		internal int type;
 		internal int index;
-		public ModAccessorySlotPlayer ModSlotPlayer => AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
+
+		public static Player Player { get; internal set; } = Main.LocalPlayer;
+		public ModAccessorySlotPlayer ModSlotPlayer => AccessorySlotLoader.ModSlotPlayer(Player);
 
 		// Properties to preset a location for the accessory slot
-		public virtual int XLoc => 0;
-		public virtual int YLoc => 0;
+		public virtual int XLoc => -1;
+		public virtual int YLoc => -1;
 
 		// Properties to change the Default Background Texture
 		public virtual string DyeBackgroundTexture => null;
@@ -61,7 +63,7 @@ namespace Terraria.ModLoader
 		private bool IsEmpty() => FunctionalItem.IsAir && VanityItem.IsAir && DyeItem.IsAir;
 
 		/// <summary>
-		/// This function allows for custom textures and colours to be drawn for the accessory slot. Called for Dyes, Vanity, and Functionals.
+		/// This function allows for advanced custom drawing for the accessory slot. Called for Dyes, Vanity, and Functionals.
 		/// By default runs ItemSlot.Draw()
 		/// Receives data:
 		/// <para><paramref name="inv"/> :: the array containing all accessory slots, yours is inv[slot] </para>
@@ -90,6 +92,6 @@ namespace Terraria.ModLoader
 		/// Defaults to check 'property' MySlotContainsAnItem()
 		/// </summary>
 		/// <returns></returns>
-		public virtual bool IsVisibleWhenNotEnabled() => IsEmpty();
+		public virtual bool IsVisibleWhenNotEnabled() => !IsEmpty();
 	}
 }

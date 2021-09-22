@@ -31,23 +31,23 @@ namespace ExampleMod.Common.Players
 
 	public class ExampleModWingSlot : ModAccessorySlot
 	{
-		public override bool SlotCanAcceptItem(Item checkItem) {
+		public override bool CanAcceptItem(Item checkItem) {
 			if (checkItem.wingSlot > 0) // if is Wing, then can go in slot
 				return true;
 
 			return false; // Otherwise nothing in slot
 		}
 
-		public override bool IsSlotValid() {
-			if (Main.LocalPlayer.armor[0].headSlot >= 0) // if player is wearing a helmet, because flight safety
-				return true; // Then Display Slot
+		public override bool IsEnabled() {
+			if (Player.armor[0].headSlot >= 0) // if player is wearing a helmet, because flight safety
+				return true; // Then can use Slot
 
-			return false; // Don't display slot
+			return false; // Can't use slot
 		}
 
-		// Overrides the default behaviour to show an accessory slot when there is an item in it despite not meeting condition in IsSlotValid()
-		public override bool IsSlotVisibleButNotValid() {
-			return false; // We set to false to just not display if not valid.
+		// Overrides the default behaviour where a disabled accessory slot will allow retrieve items if it contains items
+		public override bool IsVisibleWhenNotEnabled() {
+			return false; // We set to false to just not display if not Enabled. NOTE: this does not affect behavour when mod is unloaded!
 		}
 
 		// Icon textures. Expects 32x32 images if you want it to look proper. 

@@ -2484,7 +2484,7 @@
  						}
  					}
 -					else if (((gravDir == 1f && num18 > num17) || (gravDir == -1f && num18 < -num17)) && !noFallDmg && !flag12) {
-+					else if (((gravDir == 1f && num18 > num17) || (gravDir == -1f && num18 < -num17)) && !noFallDmg && equippedWings != null) {
++					else if (((gravDir == 1f && num18 > num17) || (gravDir == -1f && num18 < -num17)) && !noFallDmg && equippedWings == null) {
  						immune = false;
  						int num25 = (int)((float)num18 * gravDir - (float)num17) * 10;
  						if (mount.Active)

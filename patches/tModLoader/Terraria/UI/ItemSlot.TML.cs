@@ -6,14 +6,13 @@ namespace Terraria.UI
 {
 	public partial class ItemSlot
 	{
-		private static bool AccessorySwap(Player player, Item item, out Item result) {
+		private static bool AccessorySwap(Player player, Item item, ref Item result) {
 			//TML: Rewrote ArmorSwap for accessories under the PR #1299 so it was actually readable. No vanilla functionality lost in transition
 			accSlotToSwapTo = -1;
 			var accLoader = LoaderManager.Get<AccessorySlotLoader>();
 			var accessories = AccessorySlotLoader.ModSlotPlayer(player).exAccessorySlot;
 
 			//TML: Check if there is an empty slot available, and if not, track the last available slot
-			int num2 = 3;
 			for (int i = 3; i < 10; i++) {
 				if (player.IsAValidEquipmentSlotForIteration(i)) {
 					if (player.armor[i].type == 0 && ItemLoader.CanEquipAccessory(item, i)) {
@@ -73,7 +72,6 @@ namespace Terraria.UI
 					result = item;
 					return false;
 				}
-					
 
 				result = player.armor[num3].Clone();
 				player.armor[num3] = item.Clone();

@@ -187,7 +187,7 @@ namespace Terraria
 				if (invisible && (velocity.Y == 0f || mount.Active))
 					return;
 
-				wings = item.wingSlot;
+				wings = vItem.wingSlot > 0 ? vItem.wingSlot : item.wingSlot;
 			}
 
 			if (!invisible)
