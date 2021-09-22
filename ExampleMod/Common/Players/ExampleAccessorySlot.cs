@@ -9,12 +9,13 @@ namespace ExampleMod.Common.Players
 		// If the class is empty, everything will default to a basic vanilla slot.
 	}
 
-	/* // Enable if want to see how it works; disabled by default due to intrusiveness
 	public class ExampleCustomLocationAndTextureSlot : ModAccessorySlot
 	{
 		// We will place the slot to be at the center of the map, making the decision not to follow the internal UI handling
 		public override int XLoc => Main.screenWidth / 2;
 		public override int YLoc => 3 * Main.screenHeight / 4;
+
+		public override bool SkipUIDrawWileTrue => true; // Set False if want to see how it works; skip by default due to intrusiveness for an example
 
 		// We will disable drawing the dye slot
 		public override bool DrawDyeSlot => false;
@@ -27,7 +28,6 @@ namespace ExampleMod.Common.Players
 		// Icon textures. Expects 32x32 images if you want it to look proper. 
 		public override string VanityTexture => "Terraria/Images/Item_" + ItemID.PiggyBank; // The piggy bank is 16x24, so we expect it to look funny. Is a fun funny tho :)
 	}
-	*/
 
 	public class ExampleModWingSlot : ModAccessorySlot
 	{
