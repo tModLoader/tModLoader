@@ -149,7 +149,7 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			if (flag4 && flag3) {
+			if (flag4 && flag3 || modded && ModdedSkipUIDraw(slot)) {
 				return false;
 			}
 
@@ -377,6 +377,8 @@ namespace Terraria.ModLoader
 
 		public bool ModdedCanSlotBeShown(int index) => Get(index).IsVisibleWhenNotEnabled();
 
+		public bool ModdedSkipUIDraw(int index) => Get(index).SkipUIDrawWileTrue;
+
 		public bool CanAcceptItem(int index, Item checkItem) => Get(index).CanAcceptItem(checkItem);
 
 		/// <summary>
@@ -387,6 +389,19 @@ namespace Terraria.ModLoader
 		public bool ModSlotCheck(Item checkItem, int slot) => CanAcceptItem(slot, checkItem) &&
 			!ItemSlot.AccCheck(Player.armor.Concat(ModSlotPlayer(Player).exAccessorySlot).ToArray(), checkItem, slot + Player.armor.Length);
 
+		/// <summary>
+		/// After checking for empty slots in ItemSlot.AccessorySwap, this allows for changing what the target slot will be if the accessory isn't already equipped.
+		/// DOES NOT affect vanilla behaviour of swapping items like for like where existing in a slot
+		/// </summary>
+		public void ModifyDefaultSwapSlot(Item item, ref int accSlotToSwapTo) {
+			for (int num = 0; num < ModSlotPlayer(Player).SlotCount(); num++) {
+				if (ModdedIsAValidEquipmentSlotForIteration(num)) {
+					if (Get(num).ModifyDefaultSwapSlot(item, accSlotToSwapTo)) {
+						accSlotToSwapTo = num + 20;
+					}
+				}
+			}
+		}
 
 		//TODO: Look into if this should have an actual hook later, and which class to associate to (item or player). Not a priority to the Accessory Slot ModType PR
 		/// <summary>

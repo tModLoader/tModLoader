@@ -265,7 +265,7 @@
  						}
  
 -						if (!flag2)
-+						if (!flag2 || !ItemLoader.CanEquipAccessory(inv[slot], tSlot))
++						if (!flag2 || !ItemLoader.CanEquipAccessory(inv[slot], tSlot, context < 0))
  							break;
  
 -						Utils.Swap(ref inv[slot], ref inv[slot - 10]);
@@ -426,7 +426,7 @@
 -						return true;
 -				}
 -
-+					return !ItemLoader.CanEquipAccessory(item, slot);
++					return !ItemLoader.CanEquipAccessory(item, slot, slot >= 20);
 +			}
 +			
 +			var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
@@ -445,7 +445,7 @@
  			}
  
 -			return false;
-+			return !ItemLoader.CanEquipAccessory(item, slot);
++			return !ItemLoader.CanEquipAccessory(item, slot, slot >= 20);
  		}
  
 +		//TML: I (Solxan), have not been able to get this to ever run in-game. I suspect this code path is deprecated.

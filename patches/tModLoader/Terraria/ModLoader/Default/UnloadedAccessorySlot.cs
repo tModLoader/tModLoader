@@ -6,7 +6,7 @@ namespace Terraria.ModLoader.Default
 		public override string Name { get; }
 
 		internal UnloadedAccessorySlot(int slot, string oldName) {
-			type = slot;
+			Type = slot;
 			Name = oldName;
 		}
 

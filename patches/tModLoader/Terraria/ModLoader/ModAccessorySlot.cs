@@ -12,7 +12,7 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModAccessorySlot : ModType
 	{
-		internal int type;
+		public int Type { get; internal set; }
 		internal int index;
 
 		public static Player Player { get; internal set; } = Main.LocalPlayer;
@@ -33,32 +33,33 @@ namespace Terraria.ModLoader
 		public virtual string FunctionalTexture => null;
 
 		// Properties to control which parts of accessory slot draw
+		public virtual bool SkipUIDrawWileTrue => false;
 		public virtual bool DrawFunctionalSlot => true;
 		public virtual bool DrawVanitySlot => true;
 		public virtual bool DrawDyeSlot => true;
 
 		// Get/Set Properties for fetching slot information
 		public Item FunctionalItem {
-			get => ModSlotPlayer.exAccessorySlot[type];
-			set => ModSlotPlayer.exAccessorySlot[type] = value;
+			get => ModSlotPlayer.exAccessorySlot[Type];
+			set => ModSlotPlayer.exAccessorySlot[Type] = value;
 		}
 
 		public Item VanityItem {
-			get => ModSlotPlayer.exAccessorySlot[type + ModSlotPlayer.SlotCount()];
-			set => ModSlotPlayer.exAccessorySlot[type + ModSlotPlayer.SlotCount()] = value;
+			get => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount()];
+			set => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount()] = value;
 		}
-		
+
 		public Item DyeItem {
-			get => ModSlotPlayer.exDyesAccessory[type];
-			set => ModSlotPlayer.exDyesAccessory[type] = value;
+			get => ModSlotPlayer.exDyesAccessory[Type];
+			set => ModSlotPlayer.exDyesAccessory[Type] = value;
 		}
 
 		public bool ShowVisuals {
-			get => ModSlotPlayer.exHideAccessory[type];
-			set => ModSlotPlayer.exHideAccessory[type] = value;
+			get => ModSlotPlayer.exHideAccessory[Type];
+			set => ModSlotPlayer.exHideAccessory[Type] = value;
 		}
 
-		protected sealed override void Register() => type = LoaderManager.Get<AccessorySlotLoader>().Register(this);
+		protected sealed override void Register() => Type = LoaderManager.Get<AccessorySlotLoader>().Register(this);
 
 		private bool IsEmpty() => FunctionalItem.IsAir && VanityItem.IsAir && DyeItem.IsAir;
 
@@ -71,7 +72,7 @@ namespace Terraria.ModLoader
 		/// <para><paramref name="position"/> :: is the position of where the ItemSlot will be drawn </para>
 		/// <para><paramref name="context"/> :: 12 => dye; 11 => vanity; 10 => functional </para>
 		/// </summary>
-		public virtual void DrawModded(Item[] inv, int context, int slot, Vector2 position) => 
+		public virtual void DrawModded(Item[] inv, int context, int slot, Vector2 position) =>
 			ItemSlot.Draw(Main.spriteBatch, inv, context, slot, position);
 
 		/// <summary>
@@ -93,5 +94,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <returns></returns>
 		public virtual bool IsVisibleWhenNotEnabled() => !IsEmpty();
+
+		/// <summary>
+		/// After checking for empty slots in ItemSlot.AccessorySwap, this allows for changing what the default target slot (accSlotToSwapTo) will be.
+		/// DOES NOT affect vanilla behaviour of swapping items like for like where existing in a slot
+		/// Return true to set this slot as the default targetted slot.
+		/// </summary>
+		public virtual bool ModifyDefaultSwapSlot(Item item, int accSlotToSwapTo) => false;
 	}
 }

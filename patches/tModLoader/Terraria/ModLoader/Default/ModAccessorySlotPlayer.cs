@@ -27,9 +27,9 @@ namespace Terraria.ModLoader.Default
 		public ModAccessorySlotPlayer() {
 			foreach (var slot in Loader.list) {
 				if (!slot.FullName.StartsWith("Terraria", StringComparison.OrdinalIgnoreCase))
-					slots.Add(slot.FullName, slot.type);
+					slots.Add(slot.FullName, slot.Type);
 				else
-					slots.Add(slot.Name, slot.type);
+					slots.Add(slot.Name, slot.Type);
 			}
 
 			ResizeAccesoryArrays(slots.Count);
@@ -75,9 +75,9 @@ namespace Terraria.ModLoader.Default
 				if (!slots.TryGetValue(order[i], out int type)) {
 					var unloaded = new UnloadedAccessorySlot(Loader.list.Count, order[i]);
 
-					slots.Add(unloaded.Name, unloaded.type);
+					slots.Add(unloaded.Name, unloaded.Type);
 					Loader.list.Add(unloaded);
-					type = unloaded.type;
+					type = unloaded.Type;
 				}
 
 				// Place loaded items in to the correct slot

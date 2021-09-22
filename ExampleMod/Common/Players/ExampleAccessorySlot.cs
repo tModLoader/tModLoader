@@ -38,6 +38,14 @@ namespace ExampleMod.Common.Players
 			return false; // Otherwise nothing in slot
 		}
 
+		// Designates our slot to be a priority for putting wings in to. NOTE: use ItemLoader.CanEquipAccessory if aiming for restricting other slots from having wings!
+		public override bool ModifyDefaultSwapSlot(Item item, int accSlotToSwapTo) {
+			if (item.wingSlot > 0) // If is Wing, then we want to prioritize it to go in to our slot. 
+				return true;
+
+			return false;
+		}
+
 		public override bool IsEnabled() {
 			if (Player.armor[0].headSlot >= 0) // if player is wearing a helmet, because flight safety
 				return true; // Then can use Slot

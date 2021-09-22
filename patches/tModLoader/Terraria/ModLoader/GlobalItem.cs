@@ -778,7 +778,8 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item that is attepting to equip.</param>
 		/// <param name="player">The player.</param>
 		/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
-		public virtual bool CanEquipAccessory(Item item, Player player, int slot) {
+		/// <param name="modded">If the inventory slot index is for modded slots.</param>
+		public virtual bool CanEquipAccessory(Item item, Player player, int slot, bool modded) {
 			return true;
 		}
 
