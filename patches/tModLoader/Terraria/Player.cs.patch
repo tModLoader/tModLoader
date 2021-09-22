@@ -931,7 +931,7 @@
  					UpdateItemDye(i < 10, hideVisibleAccessory[num], armor[i], dye[num]);
  				}
  			}
-+			LoaderManager.Get<AccessorySlotLoader>().VanillaUpdateDyesMirror(this);
++			LoaderManager.Get<AccessorySlotLoader>().UpdateDyes(this);
  
  			cYorai = cPet;
  		}
@@ -1616,7 +1616,7 @@
 +					VanillaUpdateEquip(armor[k]);
 +			}
 +
-+			LoaderManager.Get<AccessorySlotLoader>().VanillaUpdateEquipsMirror(this);
++			LoaderManager.Get<AccessorySlotLoader>().UpdateEquips(this);
  
  			equippedAnyWallSpeedAcc = false;
  			equippedAnyTileSpeedAcc = false;
@@ -3097,7 +3097,7 @@
 -			if (!dead)
 +			if (!dead) {
  				UpdateVisibleAccessories();
-+				LoaderManager.Get<AccessorySlotLoader>().VanillaUpdateVisibleAccessoriesMirror(this);
++				LoaderManager.Get<AccessorySlotLoader>().UpdateVisibleAccessories(this);
 +			}
  
  			wearsRobe = false;
@@ -3148,6 +3148,28 @@
  			if (legs == 140) {
  				legFrameCounter = 0.0;
  				legFrame.Y = legFrame.Height * (velocity.Y != 0f).ToInt();
+@@ -25789,6 +_,7 @@
+ 		}
+ 
+ 		private void UpdateVisibleAccessories() {
++			/*
+ 			for (int i = 3; i < 10; i++) {
+ 				if (!IsAValidEquipmentSlotForIteration(i))
+ 					continue;
+@@ -25827,6 +_,13 @@
+ 						UpdateVisibleAccessory(j, item2);
+ 				}
+ 			}
++			*/
++			for (int i = 3; i < 10; i++) {
++				if (!IsAValidEquipmentSlotForIteration(i))
++					continue;
++
++				UpdateVisibleAccessories(armor[i], armor[i + 10], hideVisibleAccessory[i], i);
++			}
+ 
+ 			if (HeldItem.type == 4760 && ownedProjectileCounts[866] < 1) {
+ 				shield = 9;
 @@ -25834,7 +_,7 @@
  			}
  		}
@@ -3157,21 +3179,33 @@
  			if (compositeBackArm.enabled && item.shieldSlot > 0)
  				return true;
  
-@@ -25860,7 +_,13 @@
+@@ -25860,7 +_,7 @@
  			return false;
  		}
  
-+		/// <summary>
-+		/// Won't work with yoraiz0rEye as effect needs target item slot.
-+		/// </summary>
-+		/// <param name="item"></param>
-+		public void UpdateVisibleAccessory(Item item) => UpdateVisibleAccessory(-1, item);
-+
 -		private void UpdateVisibleAccessory(int itemSlot, Item item) {
-+		internal void UpdateVisibleAccessory(int itemSlot, Item item) {
++		internal void UpdateVisibleAccessory(int itemSlot, Item item, bool modded = false) {
  			if (item.stringColor > 0)
  				stringColor = item.stringColor;
  
+@@ -25923,8 +_,15 @@
+ 			if (item.wingSlot > 0)
+ 				wings = item.wingSlot;
+ 
+-			if (item.type == 3580)
+-				yoraiz0rEye = itemSlot - 2;
++			if (item.type == 3580) {
++				if (modded) {
++					// Treat similar to expert/master mode slots
++					yoraiz0rEye = 5 + itemSlot - 2;
++				}
++				else {
++					yoraiz0rEye = itemSlot - 2;
++				}
++			}
+ 
+ 			if (item.type == 3581)
+ 				yoraiz0rDarkness = true;
 @@ -26082,6 +_,8 @@
  			if (drawPlayer.head == 267)
  				yoraiz0rDarkness = true;
@@ -4170,7 +4204,7 @@
  				return;
  			}
  
-+			if (LoaderManager.Get<AccessorySlotLoader>().VanillaPreferredGolfBallMirror(ref projType))
++			if (LoaderManager.Get<AccessorySlotLoader>().PreferredGolfBall(ref projType))
 +				return;
 +
  			for (int num = 19; num >= 0; num--) {
@@ -4862,7 +4896,7 @@
  			catch {
  			}
  
-@@ -38213,8 +_,9 @@
+@@ -38213,9 +_,12 @@
  			}
  		}
  
@@ -4871,9 +4905,12 @@
  			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
 +			PlayerIO.Load(newPlayer, playerFileData.Path, playerFileData.IsCloudSave);
  			for (int i = 3; i < 10; i++) {
++				LoadPlayerLastMinuteFixes(newPlayer.armor[i], newPlayer);
++				/*
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 4874 || type == 5000)
-@@ -38223,14 +_,18 @@
+ 					newPlayer.lavaMax += 420;
+@@ -38223,14 +_,24 @@
  				if (type == 906 || type == 4038)
  					newPlayer.lavaMax += 420;
  
@@ -4887,8 +4924,14 @@
  					newPlayer.noFallDmg = true;
  
  				newPlayer.lavaTime = newPlayer.lavaMax;
++				*/
  			}
-+			LoaderManager.Get<AccessorySlotLoader>().VanillaLastMinuteFixesMirror(newPlayer);
++
++			var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(newPlayer);
++			for (int i = 0; i < modSlotPlayer.SlotCount(); i++) {
++				LoadPlayerLastMinuteFixes(modSlotPlayer.exAccessorySlot[i], newPlayer);
++			}
++
 +			newPlayer.ResetEffects();
  		}
  

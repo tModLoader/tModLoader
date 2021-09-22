@@ -124,7 +124,7 @@
  					break;
  				case 10:
 -					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
-+					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer.exAccessorySlot).ToArray(), checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot)))
 +						result = 1;
 +					break;
 +				case -10:
@@ -138,7 +138,7 @@
  					break;
  				case 11:
 -					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
-+					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer.exAccessorySlot).ToArray(), checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot)))
  						result = 1;
  					break;
  				case 12:
@@ -449,7 +449,7 @@
  
 -			if (dyeSlotCount >= 10)
 +			if (dyeSlotCount >= 10) {
-+				item2 = LoaderManager.Get<AccessorySlotLoader>().VanillaDyeSwapMirror(item, out success);
++				item2 = ModSlotDyeSwap(item, out success);
 +				if (success)
 +					return item2;
 +

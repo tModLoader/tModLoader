@@ -379,10 +379,18 @@ namespace Terraria.ModLoader
 		public bool CanAcceptItem(int index, Item checkItem) => Get(index).CanAcceptItem(checkItem);
 
 		/// <summary>
+		/// Checks if the provided item can go in to the provided slot. 
+		/// Includes checking if the item already exists in either of Player.Armor or ModSlotPlayer.exAccessorySlot
+		/// Invokes directly ItemSlot.AccCheck & ModSlot.CanAcceptItem
+		/// </summary>
+		public bool ModSlotCheck(Item checkItem, int slot) => CanAcceptItem(slot, checkItem) &&
+			!ItemSlot.AccCheck(Player.armor.Concat(ModSlotPlayer(Player).exAccessorySlot).ToArray(), checkItem, slot + Player.armor.Length);
+
+		/// <summary>
 		/// Runs a simplified version of Player.UpdateEquips for the Modded Accessory Slots
 		/// </summary>
-		public void VanillaUpdateEquipsMirror(Player player) {
-			for (int k = 0; k < list.Count; k++) {
+		public void UpdateEquips(Player player) {
+			for (int k = 0; k < ModSlotPlayer(player).SlotCount(); k++) {
 				if (ModdedIsAValidEquipmentSlotForIteration(k)) {
 					Item item = ModSlotPlayer(player).exAccessorySlot[k];
 
@@ -393,47 +401,19 @@ namespace Terraria.ModLoader
 						Main.musicBox2 = MusicLoader.itemToMusic[item.type];
 				}
 			}
-			VanillaUpdateVisibleAccessoriesMirror(player);
+
+			UpdateVisibleAccessories(player);
 		}
 
 		/// <summary>
-		/// Updates all vanity information on the player, in a similar fashion to Player.UpdateVisibleAccessories
-		/// Updates EOC shield, some wing logic, and visual compatibility
+		/// Updates all vanity information on the player for Mod Slots, in a similar fashion to Player.UpdateVisibleAccessories
 		/// </summary>
-		public void VanillaUpdateVisibleAccessoriesMirror(Player player) {
+		public void UpdateVisibleAccessories(Player player) {
 			var modSlotPlayer = ModSlotPlayer(player);
-			for (int k = 0; k < list.Count; k++) {
+			for (int k = 0; k < modSlotPlayer.SlotCount(); k++) {
 				if (ModdedIsAValidEquipmentSlotForIteration(k)) {
-					Item item = modSlotPlayer.exAccessorySlot[k];
-					Item vItem = modSlotPlayer.exAccessorySlot[k + list.Count];
-
-					if (player.eocDash > 0 && player.shield == -1 && item.shieldSlot != -1) {
-						player.shield = item.shieldSlot;
-						if (player.cShieldFallback != -1)
-							player.cShield = player.cShieldFallback;
-					}
-
-					if (player.shieldRaised && player.shield == -1 && item.shieldSlot != -1) {
-						player.shield = item.shieldSlot;
-						if (player.cShieldFallback != -1)
-							player.cShield = player.cShieldFallback;
-					}
-
-					if (player.ItemIsVisuallyIncompatible(item))
-						return;
-
-					if (item.wingSlot > 0) {
-						if (modSlotPlayer.exHideAccessory[k] && (player.velocity.Y == 0f || player.mount.Active))
-							return;
-
-						player.wings = item.wingSlot;
-					}
-
-					if (!modSlotPlayer.exHideAccessory[k])
-						player.UpdateVisibleAccessory(k, item);
-
-					if (!player.ItemIsVisuallyIncompatible(vItem))
-						player.UpdateVisibleAccessory(k, vItem);
+					player.ApplyEquipVanity(modSlotPlayer.exAccessorySlot[k + modSlotPlayer.SlotCount()]);
+					player.UpdateVisibleAccessories(modSlotPlayer.exAccessorySlot[k], modSlotPlayer.exAccessorySlot[k + modSlotPlayer.SlotCount()], modSlotPlayer.exHideAccessory[k], k, true);
 				}
 			}
 		}
@@ -441,9 +421,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Mirrors Player.UpdateDyes() for modded slots
 		/// </summary>
-		public void VanillaUpdateDyesMirror(Player player) {
+		public void UpdateDyes(Player player) {
 			var modSlotPlayer = ModSlotPlayer(player);
-			for (int i = 0; i < modSlotPlayer.exAccessorySlot.Length; i++) {
+			for (int i = 0; i < modSlotPlayer.SlotCount() * 2; i++) {
 				if (ModdedIsAValidEquipmentSlotForIteration(i)) {
 					int num = i % modSlotPlayer.exDyesAccessory.Length;
 					player.UpdateItemDye(i < modSlotPlayer.exDyesAccessory.Length, modSlotPlayer.exHideAccessory[num], modSlotPlayer.exAccessorySlot[i], modSlotPlayer.exDyesAccessory[num]);
@@ -455,8 +435,8 @@ namespace Terraria.ModLoader
 		/// Mirrors Player.GetPreferredGolfBallToUse.
 		/// Provides the golf ball projectile from an accessory slot. 
 		/// </summary>
-		public bool VanillaPreferredGolfBallMirror(ref int projType) {
-			for (int num = list.Count * 2 - 1; num >= 0; num--) {
+		public bool PreferredGolfBall(ref int projType) {
+			for (int num = ModSlotPlayer(Player).SlotCount() * 2 - 1; num >= 0; num--) {
 				if (ModdedIsAValidEquipmentSlotForIteration(num)) {
 					Item item2 = ModSlotPlayer(Player).exAccessorySlot[num];
 					if (!item2.IsAir && item2.shoot > 0 && ProjectileID.Sets.IsAGolfBall[item2.shoot]) {
@@ -467,70 +447,5 @@ namespace Terraria.ModLoader
 			}
 			return false;
 		}
-
-		/// <summary>
-		/// Mirrors the ItemSlot.DyeSwap method; 
-		/// Unfortunately, I (Solxan) couldn't ever get ItemSlot.DyeSwap invoked so pretty sure this and its vanilla code is defunct.
-		/// Here in case someone proves my statement wrong later.
-		/// </summary>
-		public Item VanillaDyeSwapMirror(Item item, out bool success) {
-			Item item2 = item;
-			int dyeSlotCount = list.Count;
-
-			for (int i = 0; i < list.Count; i++) {
-				if (ModSlotPlayer(Player).exDyesAccessory[i].type == 0) {
-					dyeSlotCount = i;
-					break;
-				}
-			}
-
-			if (dyeSlotCount >= list.Count) {
-				success = false;
-				return item2;
-			}
-
-			item2 = ModSlotPlayer(Player).exDyesAccessory[dyeSlotCount].Clone();
-			ModSlotPlayer(Player).exDyesAccessory[dyeSlotCount] = item.Clone();
-
-			SoundEngine.PlaySound(7);
-			Recipe.FindRecipes();
-			success = true;
-			return item2;
-		}
-
-
-		/// <summary>
-		/// Mirrors Player.LoadPlayer_LastMinuteFixes. Really Vanilla?
-		/// Corrects the player.lavaMax time, wingsLogic, and no fall dmg to be accurate
-		/// </summary>
-		public void VanillaLastMinuteFixesMirror(Player newPlayer) {
-			ModAccessorySlotPlayer ModSlotPlayer = newPlayer.GetModPlayer<ModAccessorySlotPlayer>();
-			for (int i = 0; i < list.Count; i++) {
-				int type = ModSlotPlayer.exAccessorySlot[i].type;
-				if (type == 908 || type == 4874 || type == 5000)
-					newPlayer.lavaMax += 420;
-
-				if (type == 906 || type == 4038)
-					newPlayer.lavaMax += 420;
-
-				if (newPlayer.wingsLogic == 0 && ModSlotPlayer.exAccessorySlot[i].wingSlot >= 0) {
-					newPlayer.wingsLogic = ModSlotPlayer.exAccessorySlot[i].wingSlot;
-					newPlayer.equippedWings = ModSlotPlayer.exAccessorySlot[i];
-				}
-				
-				if (type == 158 || type == 396 || type == 1250 || type == 1251 || type == 1252)
-					newPlayer.noFallDmg = true;
-
-				newPlayer.lavaTime = newPlayer.lavaMax;
-			}
-		}
-
-		/// <summary>
-		/// Checks if the provided item can go in to the provided slot. 
-		/// Includes checking if the item already exists in either of Player.Armor or ModSlotPlayer.exAccessorySlot
-		/// Invokes directly ItemSlot.AccCheck & ModSlot.CanAcceptItem
-		/// </summary>
-		public bool ModSlotCheck(Item checkItem, int slot) => CanAcceptItem(slot, checkItem) && 
-			!ItemSlot.AccCheck(Player.armor.Concat(ModSlotPlayer(Player).exAccessorySlot).ToArray(), checkItem, slot + Player.armor.Length);
 	}
 }

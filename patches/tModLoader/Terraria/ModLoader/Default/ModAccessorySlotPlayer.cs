@@ -88,7 +88,7 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		// The following netcode is adapted from Chicken-Bone's UtilitySlots:
+		// The following netcode is adapted from ChickenBone's UtilitySlots:
 		public override void clientClone(ModPlayer clientClone) {
 			var defaultInv = (ModAccessorySlotPlayer)clientClone;
 			for (int i = 0; i < exAccessorySlot.Length; i++)

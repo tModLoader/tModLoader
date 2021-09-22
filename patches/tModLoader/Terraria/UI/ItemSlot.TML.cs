@@ -1,4 +1,5 @@
 using System;
+using Terraria.Audio;
 using Terraria.ModLoader;
 
 namespace Terraria.UI
@@ -9,6 +10,7 @@ namespace Terraria.UI
 			//TML: Rewrote ArmorSwap for accessories under the PR #1299 so it was actually readable. No vanilla functionality lost in transition
 			accSlotToSwapTo = -1;
 			var accLoader = LoaderManager.Get<AccessorySlotLoader>();
+			var accessories = AccessorySlotLoader.ModSlotPlayer(player).exAccessorySlot;
 
 			//TML: Check if there is an empty slot available, and if not, track the last available slot
 			int num2 = 3;
@@ -25,7 +27,7 @@ namespace Terraria.UI
 			if (accSlotToSwapTo < 0) {
 				for (int i = 0; i < accLoader.list.Count; i++) {
 					if (accLoader.ModdedIsAValidEquipmentSlotForIteration(i)) {
-						if (AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[i].type == 0 && accLoader.CanAcceptItem(i, item)) {
+						if (accessories[i].type == 0 && accLoader.CanAcceptItem(i, item)) {
 							accSlotToSwapTo = i + 20;
 							break;
 						}
@@ -46,24 +48,24 @@ namespace Terraria.UI
 			}
 
 			//TML: Do the same check for our modded slots
-			for (int j = 0; j < AccessorySlotLoader.ModSlotPlayer.exAccessorySlot.Length; j++) {
-				if (item.IsTheSameAs(AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[j]) && accLoader.CanAcceptItem(j, item))
+			for (int j = 0; j < accessories.Length; j++) {
+				if (item.IsTheSameAs(accessories[j]) && accLoader.CanAcceptItem(j, item))
 					accSlotToSwapTo = j + 20;
 
-				if (j < accLoader.list.Count && item.wingSlot > 0 && AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[j].wingSlot > 0 && accLoader.CanAcceptItem(j, item))
+				if (j < accLoader.list.Count && item.wingSlot > 0 && accessories[j].wingSlot > 0 && accLoader.CanAcceptItem(j, item))
 					accSlotToSwapTo = j + 20;
 			}
 
 			if (accSlotToSwapTo >= 20) {
 				int num3 = accSlotToSwapTo - 20;
-				if (isEquipLocked(AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[num3].type)) {
+				if (isEquipLocked(accessories[num3].type)) {
 					result =  item;
 					return false;
 				}
 					
 
-				result = AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[num3].Clone();
-				AccessorySlotLoader.ModSlotPlayer.exAccessorySlot[num3] = item.Clone();
+				result = accessories[num3].Clone();
+				accessories[num3] = item.Clone();
 			}
 			else {
 				int num3 = 3 + accSlotToSwapTo;
@@ -78,6 +80,38 @@ namespace Terraria.UI
 			}
 
 			return true;
+		}
+
+		/// <summary>
+		/// Alters the ItemSlot.DyeSwap method for modded slots; 
+		/// Unfortunately, I (Solxan) couldn't ever get ItemSlot.DyeSwap invoked so pretty sure this and its vanilla code is defunct.
+		/// Here in case someone proves my statement wrong later.
+		/// </summary>
+		private static Item ModSlotDyeSwap(Item item, out bool success) {
+			Item item2 = item;
+			var msPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
+			int dyeSlotCount = 0;
+			var dyes = msPlayer.exDyesAccessory;
+
+			for (int i = 0; i < dyeSlotCount; i++) {
+				if (dyes[i].type == 0) {
+					dyeSlotCount = i;
+					break;
+				}
+			}
+
+			if (dyeSlotCount >= msPlayer.SlotCount()) {
+				success = false;
+				return item2;
+			}
+
+			item2 = dyes[dyeSlotCount].Clone();
+			dyes[dyeSlotCount] = item.Clone();
+
+			SoundEngine.PlaySound(7);
+			Recipe.FindRecipes();
+			success = true;
+			return item2;
 		}
 	}
 }

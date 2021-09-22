@@ -869,7 +869,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookUpdateEquip = AddHook<Action<Item, Player>>(g => g.UpdateEquip);
 		/// <summary>
-		/// Hook at the end of Player.VanillaUpdateEquip can be called from modded slots for modded equipments
+		/// Hook at the end of Player.VanillaUpdateEquip can be called to apply additional code related to accessory slots for a particular item
 		/// </summary>
 		public static void UpdateEquip(Item item, Player player) {
 			if (item.IsAir)
@@ -884,7 +884,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookUpdateAccessory = AddHook<Action<Item, Player, bool>>(g => g.UpdateAccessory);
 		/// <summary>
-		/// Hook at the end of Player.ApplyEquipFunctional can be called from modded slots for modded equipments
+		/// Hook at the end of Player.ApplyEquipFunctional can be called to apply additional code related to accessory slots for a particular item.
 		/// </summary>
 		public static void UpdateAccessory(Item item, Player player, bool hideVisual) {
 			if (item.IsAir)
@@ -899,7 +899,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookUpdateVanity = AddHook<Action<Item, Player>>(g => g.UpdateVanity);
 		/// <summary>
-		/// Hook at the end of Player.ApplyEquipVanity can be called from modded slots for modded equipments
+		/// Hook at the end of Player.ApplyEquipVanity can be called to apply additional code related to accessory slots for a particular item
 		/// </summary>
 		public static void UpdateVanity(Item item, Player player) {
 			if (item.IsAir)

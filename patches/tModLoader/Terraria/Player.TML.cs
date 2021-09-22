@@ -133,5 +133,61 @@ namespace Terraria
 			bool four = modBiomeFlags.Cast<bool>().Contains(true);
 			return !(one || two || three || four);
 		}
+
+		/// <summary>
+		/// Invoked at the end of loading vanilla player data from files to fix stuff that isn't initialized coming out of load.
+		/// Corrects the player.lavaMax time, wingsLogic, and no fall dmg to be accurate for the provided items in accessory slots.
+		/// </summary>
+		internal static void LoadPlayerLastMinuteFixes(Item item, Player newPlayer) {
+			int type = item.type;
+			if (type == 908 || type == 4874 || type == 5000)
+				newPlayer.lavaMax += 420;
+
+			if (type == 906 || type == 4038)
+				newPlayer.lavaMax += 420;
+
+			if (newPlayer.wingsLogic == 0 && item.wingSlot >= 0) {
+				newPlayer.wingsLogic = item.wingSlot;
+				newPlayer.equippedWings = item;
+			}
+
+			if (type == 158 || type == 396 || type == 1250 || type == 1251 || type == 1252)
+				newPlayer.noFallDmg = true;
+
+			newPlayer.lavaTime = newPlayer.lavaMax;
+		}
+
+		/// <summary>
+		/// Invoked in UpdateVisibleAccessories. Runs common code for both modded slots and vanilla slots based on provided Items.
+		/// </summary>
+		internal void UpdateVisibleAccessories(Item item, Item vItem, bool invisible, int slot = -1, bool modded = false) {
+			if (eocDash > 0 && shield == -1 && item.shieldSlot != -1) {
+				shield = item.shieldSlot;
+				if (cShieldFallback != -1)
+					cShield = cShieldFallback;
+			}
+
+			if (shieldRaised && shield == -1 && item.shieldSlot != -1) {
+				shield = item.shieldSlot;
+				if (cShieldFallback != -1)
+					cShield = cShieldFallback;
+			}
+
+			if (ItemIsVisuallyIncompatible(item))
+				return;
+
+			if (item.wingSlot > 0) {
+				if (invisible && (velocity.Y == 0f || mount.Active))
+					return;
+
+				wings = item.wingSlot;
+			}
+
+			if (!invisible)
+				UpdateVisibleAccessory(slot, item);
+
+			if (!ItemIsVisuallyIncompatible(vItem))
+				UpdateVisibleAccessory(slot, vItem);
+		}
 	}
 }

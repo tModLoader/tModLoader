@@ -14,7 +14,7 @@ namespace Terraria.ModLoader
 	{
 		internal int type;
 		internal int index;
-		public ModAccessorySlotPlayer ModSlotPlayer => AccessorySlotLoader.GetModSlotPlayer(Main.LocalPlayer);
+		public ModAccessorySlotPlayer ModSlotPlayer => AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
 
 		// Properties to preset a location for the accessory slot
 		public virtual int XLoc => 0;
