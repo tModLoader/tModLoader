@@ -113,7 +113,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData {
 				SpecificallyImmuneTo = new int[] {
 					BuffID.Poisoned,
-					BuffID.Venom, // If you make it immune to Poisoned, also make it immune to Venom
 
 					BuffID.Confused // Most NPCs have this
 				}

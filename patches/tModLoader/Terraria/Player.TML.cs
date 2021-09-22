@@ -51,6 +51,13 @@ namespace Terraria
 		}
 		*/
 
+		/// <summary> Returns whether or not this Player currently has a (de)buff of the provided type. </summary>
+		public bool HasBuff(int type) => FindBuffIndex(type) != -1;
+
+		/// <inheritdoc cref="HasBuff(int)" />
+		public bool HasBuff<T>() where T : ModBuff
+			=> HasBuff(ModContent.BuffType<T>());
+
 		// Damage Classes
 
 		private DamageClassData[] damageData;
