@@ -126,33 +126,40 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<TagCompound> SaveNPCs() {
 			var list = new List<TagCompound>();
-			for (int k = 0; k < Main.npc.Length; k++) {
-				NPC npc = Main.npc[k];
+			foreach (NPC npc in Main.npc)
+			{
 				if (npc.active &&
 				    ((npc.townNPC && npc.type != NPCID.TravellingMerchant) || NPCLoader.SavesAndLoads(npc))) {
 					List<TagCompound> globalData = new List<TagCompound>();
 
-					foreach (Instanced<GlobalNPC> instancedGlobalNPC in npc.globalNPCs) {
-						GlobalNPC globalNPC = instancedGlobalNPC.instance;
+					foreach (GlobalNPC globalNPC in npc.globalNPCs.Select(instancedGlobalNPC => instancedGlobalNPC.instance))
+					{
 						if (globalNPC is UnloadedGlobalNPC unloadedGlobalNPC) {
 							globalData.AddRange(unloadedGlobalNPC.data);
 							continue;
 						}
-						TagCompound tagCompound = globalNPC.SaveData(npc);
-						if (tagCompound != null) {
+						var data = TagCompound.GetEmptyTag();
+
+						globalNPC.SaveData(npc, data);
+						if (data.Count != 0) {
 							globalData.Add(new TagCompound {
-								["mod"] = globalNPC.Mod.Name, ["name"] = globalNPC.Name, ["data"] = tagCompound
+								["mod"] = globalNPC.Mod.Name, ["name"] = globalNPC.Name, ["data"] = data
 							});
 						}
 					}
 
 					TagCompound tag;
 					if (NPCLoader.IsModNPC(npc)) {
+						var data = TagCompound.GetEmptyTag();
+						npc.ModNPC.SaveData(data);
+						
 						tag = new TagCompound {
 							["mod"] = npc.ModNPC.Mod.Name,
-							["name"] = npc.ModNPC.Name,
-							["data"] = npc.ModNPC.Save()
+							["name"] = npc.ModNPC.Name
 						};
+
+						if (data.Count != 0)
+							tag["data"] = data;
 
 						if (npc.townNPC) {
 							tag["displayName"] = npc.GivenName;
@@ -234,7 +241,7 @@ namespace Terraria.ModLoader.IO
 					}
 
 					if (tag.ContainsKey("data")) {
-						npc.ModNPC.Load((TagCompound)tag["data"]);
+						npc.ModNPC.LoadData((TagCompound)tag["data"]);
 					}
 				}
 
