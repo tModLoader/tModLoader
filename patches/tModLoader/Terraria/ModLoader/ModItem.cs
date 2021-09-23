@@ -10,6 +10,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
@@ -48,15 +49,9 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModItem>.Register(this);
 
 			// @TODO: Remove on release
-			static bool HasMethod(Type t, string method, params Type[] args) {
-				var methodInfo = t.GetMethod(method, args);
-				if (methodInfo == null)
-					return false;
-				return methodInfo.DeclaringType != typeof(ModItem);
-			}
+			var type = GetType();
 
-			var type = this.GetType();
-			if (!HasMethod(type, "SaveData", typeof(TagCompound)) && HasMethod(this.GetType(), "Save"))
+			if (!LoaderUtils.HasMethod(type, typeof(ModItem), nameof(SaveData), typeof(TagCompound)) && LoaderUtils.HasMethod(type, typeof(ModItem), "Save"))
 				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
 			// @TODO: END Remove on release
 

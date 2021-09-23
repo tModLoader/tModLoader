@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -18,15 +19,9 @@ namespace Terraria.ModLoader
 	{
 		protected override void Register() {
 			// @TODO: Remove on release
-			static bool HasMethod(Type t, string method, params Type[] args) {
-				var methodInfo = t.GetMethod(method, args);
-				if (methodInfo == null)
-					return false;
-				return methodInfo.DeclaringType != typeof(ModSystem);
-			}
+			var type = GetType();
 
-			var type = this.GetType();
-			if (!HasMethod(type, "SaveWorldData", typeof(TagCompound)) && HasMethod(this.GetType(), "SaveWorldData"))
+			if (!LoaderUtils.HasMethod(type, typeof(ModSystem), nameof(SaveWorldData), typeof(TagCompound)) && LoaderUtils.HasMethod(type, typeof(ModSystem), "SaveWorldData"))
 				throw new Exception($"{type} has old SaveData callback with no arguments but not new SaveData with TagCompound, not loading the mod to avoid wiping mod data");
 			// @TODO: END Remove on release
 

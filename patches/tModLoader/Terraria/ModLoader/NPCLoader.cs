@@ -1134,10 +1134,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static bool HasMethod(Type t, string method, params Type[] args) {
-			return t.GetMethod(method, args).DeclaringType != typeof(GlobalNPC);
-		}
-
 		internal static void VerifyGlobalNPC(GlobalNPC npc) {
 			var type = npc.GetType();
 
