@@ -126,18 +126,19 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<TagCompound> SaveNPCs() {
 			var list = new List<TagCompound>();
-			foreach (NPC npc in Main.npc)
-			{
+			for (int index = 0; index < Main.maxNPCs; index++) {
+				NPC npc = Main.npc[index];
 				if (npc.active &&
 				    ((npc.townNPC && npc.type != NPCID.TravellingMerchant) || NPCLoader.SavesAndLoads(npc))) {
 					List<TagCompound> globalData = new List<TagCompound>();
 
-					foreach (GlobalNPC globalNPC in npc.globalNPCs.Select(instancedGlobalNPC => instancedGlobalNPC.instance))
-					{
+					foreach (GlobalNPC globalNPC in npc.globalNPCs.Select(instancedGlobalNPC =>
+						instancedGlobalNPC.instance)) {
 						if (globalNPC is UnloadedGlobalNPC unloadedGlobalNPC) {
 							globalData.AddRange(unloadedGlobalNPC.data);
 							continue;
 						}
+
 						var data = TagCompound.GetEmptyTag();
 
 						globalNPC.SaveData(npc, data);
@@ -152,11 +153,8 @@ namespace Terraria.ModLoader.IO
 					if (NPCLoader.IsModNPC(npc)) {
 						var data = TagCompound.GetEmptyTag();
 						npc.ModNPC.SaveData(data);
-						
-						tag = new TagCompound {
-							["mod"] = npc.ModNPC.Mod.Name,
-							["name"] = npc.ModNPC.Name
-						};
+
+						tag = new TagCompound {["mod"] = npc.ModNPC.Mod.Name, ["name"] = npc.ModNPC.Name};
 
 						if (data.Count != 0)
 							tag["data"] = data;
@@ -169,10 +167,7 @@ namespace Terraria.ModLoader.IO
 						}
 					}
 					else if (globalData.Count != 0) {
-						tag = new TagCompound {
-							["mod"] = "Terraria",
-							["name"] = NPCID.Search.GetName(npc.type)
-						};
+						tag = new TagCompound {["mod"] = "Terraria", ["name"] = NPCID.Search.GetName(npc.type)};
 					}
 					else {
 						continue;
@@ -202,13 +197,13 @@ namespace Terraria.ModLoader.IO
 					float x = (float)tag["x"];
 					float y = (float)tag["y"];
 					int index;
-					for (index = 0; index < Main.npc.Length; index++) {
+					for (index = 0; index < Main.maxNPCs; index++) {
 						npc = Main.npc[index];
 						if (npc.type == npcId && npc.position.X == x && npc.position.Y == y)
 							break;
 					}
 
-					if (index == Main.npc.Length) {
+					if (index == Main.maxNPCs) {
 						ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
 						continue;
 					}
@@ -219,11 +214,11 @@ namespace Terraria.ModLoader.IO
 						continue;
 					}
 
-					while (nextFreeNPC < Main.npc.Length && Main.npc[nextFreeNPC].active) {
+					while (nextFreeNPC < Main.maxNPCs && Main.npc[nextFreeNPC].active) {
 						nextFreeNPC++;
 					}
 
-					if (nextFreeNPC == Main.npc.Length) {
+					if (nextFreeNPC == Main.maxNPCs) {
 						ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
 						continue;
 					}
