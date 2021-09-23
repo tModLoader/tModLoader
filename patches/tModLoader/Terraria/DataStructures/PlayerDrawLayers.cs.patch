@@ -330,15 +330,11 @@
  				return;
  
  			Vector2 zero = Vector2.Zero;
-@@ -2343,7 +_,14 @@
+@@ -2343,7 +_,10 @@
  						num10 -= value.Width;
  					}
  
-+					Vector2 modOriginOffset = Vector2.Zero;
-+
-+					ItemLoader.HoldoutOrigin(drawinfo.drawPlayer, ref modOriginOffset);
-+
-+					origin5 += modOriginOffset;
++					ItemLoader.HoldoutOrigin(drawinfo.drawPlayer, ref origin5);
 +
  					item = new DrawData(value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + origin5.X + (float)num10), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + (float)num11)), sourceRect, heldItem.GetAlpha(drawinfo.itemColor), num9, origin5, adjustedItemScale, drawinfo.itemEffect, 0);
 +					
