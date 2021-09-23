@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.IO
 				var tileEntity = pair.Value;
 				var modTileEntity = tileEntity as ModTileEntity;
 
-				var saveData = TagCompound.GetEmptyTag();
+				var saveData = new TagCompound();
 
 				tileEntity.SaveData(saveData);
 

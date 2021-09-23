@@ -48,7 +48,7 @@ namespace Terraria.ModLoader.IO
 				tag.Set("mod", item.ModItem.Mod.Name);
 				tag.Set("name", item.ModItem.Name);
 
-				var saveData = TagCompound.GetEmptyTag();
+				var saveData = new TagCompound();
 
 				item.ModItem.SaveData(saveData);
 
@@ -131,7 +131,7 @@ namespace Terraria.ModLoader.IO
 			foreach (var globalItem in ItemLoader.globalItems) {
 				var globalItemInstance = globalItem.Instance(item);
 				
-				var saveData = TagCompound.GetEmptyTag();
+				var saveData = new TagCompound();
 
 				globalItemInstance?.SaveData(item, saveData);
 

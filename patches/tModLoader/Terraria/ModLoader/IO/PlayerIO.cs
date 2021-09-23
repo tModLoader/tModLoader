@@ -165,7 +165,7 @@ namespace Terraria.ModLoader.IO
 			var list = new List<TagCompound>();
 
 			foreach (var modPlayer in player.modPlayers) {
-				var saveData = TagCompound.GetEmptyTag();
+				var saveData = new TagCompound();
 
 				modPlayer.SaveData(saveData);
 
