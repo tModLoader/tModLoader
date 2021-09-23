@@ -31,9 +31,6 @@ namespace Terraria.ModLoader.Default
 			if (tag.ContainsKey("data")) {
 				data = tag.GetCompound("data");
 			}
-			else { // 1.3 Compatibility
-				data = tag;
-			}
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
