@@ -8,7 +8,7 @@ namespace Terraria.DataStructures
 		/// <summary>
 		/// Allows you to save custom data for this tile entity.
 		/// <br/>
-		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided only for the sake of convenience and optimization.
+		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
 		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
 		/// </summary>
 		/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
