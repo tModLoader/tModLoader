@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Terraria.DataStructures;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -177,9 +178,9 @@ namespace Terraria.ModLoader
 				throw new Exception("AddTileEntity can only be called from Mod.Load or Mod.Autoload");
 
 			// @TODO: Remove on release
-			var type = this.GetType();
+			var type = GetType();
 
-			if (!LoaderUtils.HasMethod(type, typeof(ModTileEntity), nameof(ModTileEntity.SaveData), typeof(TagCompound)) && LoaderUtils.HasMethod(type, typeof(ModTileEntity), this.GetType(), "Save"))
+			if (!LoaderUtils.HasMethod(type, typeof(ModTileEntity), nameof(ModTileEntity.SaveData), typeof(TagCompound)) && LoaderUtils.HasMethod(type, typeof(ModTileEntity), "Save"))
 				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
 			// @TODO: END Remove on release
 
