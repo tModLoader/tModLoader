@@ -27,6 +27,8 @@ namespace ExampleMod.Common.Systems
 			// downedOtherBoss = false;
 		}
 
+		// We save our data sets using TagCompounds.
+		// NOTE: The tag instance provided here is always empty by default.
 		public override void SaveWorldData(TagCompound tag) {
 			if (downedMinionBoss) {
 				tag["downedMinionBoss"] = true;
