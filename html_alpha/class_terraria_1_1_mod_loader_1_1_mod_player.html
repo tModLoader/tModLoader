@@ -182,9 +182,10 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
 <tr class="memitem:a45e271dac4c1ebab80b8d0818c7a673c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a45e271dac4c1ebab80b8d0818c7a673c">Kill</a> (double damage, int hitDirection, bool pvp, <a class="el" href="class_terraria_1_1_data_structures_1_1_player_death_reason.html">PlayerDeathReason</a> damageSource)</td></tr>
 <tr class="memdesc:a45e271dac4c1ebab80b8d0818c7a673c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make anything happen when the player dies.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a45e271dac4c1ebab80b8d0818c7a673c">More...</a><br /></td></tr>
 <tr class="separator:a45e271dac4c1ebab80b8d0818c7a673c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32bb121a2e6ac38acb81c6d82e5cd1a8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a32bb121a2e6ac38acb81c6d82e5cd1a8">Load</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
-<tr class="memdesc:a32bb121a2e6ac38acb81c6d82e5cd1a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data you have saved for this player.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a32bb121a2e6ac38acb81c6d82e5cd1a8">More...</a><br /></td></tr>
-<tr class="separator:a32bb121a2e6ac38acb81c6d82e5cd1a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac46d15244d60ed44e31d851dd78aa494"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ac46d15244d60ed44e31d851dd78aa494">LoadData</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
+<tr class="memdesc:ac46d15244d60ed44e31d851dd78aa494"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for this player. <br  />
+<b>Try to write defensive loading code that won't crash if something's missing.</b>  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ac46d15244d60ed44e31d851dd78aa494">More...</a><br /></td></tr>
+<tr class="separator:ac46d15244d60ed44e31d851dd78aa494"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48027ba9e2e4188d3b73b49fa60071f2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a48027ba9e2e4188d3b73b49fa60071f2">MeleeEffects</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, Rectangle hitbox)</td></tr>
 <tr class="memdesc:a48027ba9e2e4188d3b73b49fa60071f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to give this player's melee weapon special effects, such as creating light or dust.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a48027ba9e2e4188d3b73b49fa60071f2">More...</a><br /></td></tr>
 <tr class="separator:a48027ba9e2e4188d3b73b49fa60071f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -304,7 +305,7 @@ Called before the ammo stack is reduced.  <a href="class_terraria_1_1_mod_loader
 <tr class="memdesc:a45132e5966e1f6c5761833bd34c238e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on the Client after the player heals themselves with the Nurse <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a45132e5966e1f6c5761833bd34c238e0">More...</a><br /></td></tr>
 <tr class="separator:a45132e5966e1f6c5761833bd34c238e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ea772956ff46506cbb6aea303a7d041"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a5ea772956ff46506cbb6aea303a7d041">PostSavePlayer</a> ()</td></tr>
-<tr class="memdesc:a5ea772956ff46506cbb6aea303a7d041"><td class="mdescLeft">&#160;</td><td class="mdescRight">PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aa96288c452742dba5491807fbf69feea" title="Allows you to save custom data for this player. Returns null by default.">ModPlayer.Save</a>). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a5ea772956ff46506cbb6aea303a7d041">More...</a><br /></td></tr>
+<tr class="memdesc:a5ea772956ff46506cbb6aea303a7d041"><td class="mdescLeft">&#160;</td><td class="mdescRight">PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a5ea772956ff46506cbb6aea303a7d041">More...</a><br /></td></tr>
 <tr class="separator:a5ea772956ff46506cbb6aea303a7d041"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a329c7efd1a2ef1b568a22aaf0f1de3ff"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a329c7efd1a2ef1b568a22aaf0f1de3ff">PostSellItem</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> vendor, <a class="el" href="class_terraria_1_1_item.html">Item</a>[] shopInventory, <a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:a329c7efd1a2ef1b568a22aaf0f1de3ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the player sells an item to an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a329c7efd1a2ef1b568a22aaf0f1de3ff">More...</a><br /></td></tr>
@@ -340,7 +341,7 @@ Called before the ammo stack is reduced.  <a href="class_terraria_1_1_mod_loader
 <tr class="memdesc:ab38fbee5966d671f00ee1bf2b29e188f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Currently never gets called, so this is useless.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ab38fbee5966d671f00ee1bf2b29e188f">More...</a><br /></td></tr>
 <tr class="separator:ab38fbee5966d671f00ee1bf2b29e188f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04773b76357cfb056f6cb91ddaf8808c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a04773b76357cfb056f6cb91ddaf8808c">PreSavePlayer</a> ()</td></tr>
-<tr class="memdesc:a04773b76357cfb056f6cb91ddaf8808c"><td class="mdescLeft">&#160;</td><td class="mdescRight">PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aa96288c452742dba5491807fbf69feea" title="Allows you to save custom data for this player. Returns null by default.">ModPlayer.Save</a>). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a04773b76357cfb056f6cb91ddaf8808c">More...</a><br /></td></tr>
+<tr class="memdesc:a04773b76357cfb056f6cb91ddaf8808c"><td class="mdescLeft">&#160;</td><td class="mdescRight">PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a04773b76357cfb056f6cb91ddaf8808c">More...</a><br /></td></tr>
 <tr class="separator:a04773b76357cfb056f6cb91ddaf8808c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe76af07e709041c38e1dd36e3fbb60b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#afe76af07e709041c38e1dd36e3fbb60b">PreUpdate</a> ()</td></tr>
 <tr class="memdesc:afe76af07e709041c38e1dd36e3fbb60b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is called at the beginning of every tick update for this player, after checking whether the player exists.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#afe76af07e709041c38e1dd36e3fbb60b">More...</a><br /></td></tr>
@@ -357,9 +358,12 @@ Called before the ammo stack is reduced.  <a href="class_terraria_1_1_mod_loader
 <tr class="memitem:a13394bb2282be6fa3926a18906be68b9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a13394bb2282be6fa3926a18906be68b9">ResetEffects</a> ()</td></tr>
 <tr class="memdesc:a13394bb2282be6fa3926a18906be68b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is where you reset any fields you add to your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a13394bb2282be6fa3926a18906be68b9">More...</a><br /></td></tr>
 <tr class="separator:a13394bb2282be6fa3926a18906be68b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa96288c452742dba5491807fbf69feea"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aa96288c452742dba5491807fbf69feea">Save</a> ()</td></tr>
-<tr class="memdesc:aa96288c452742dba5491807fbf69feea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this player. Returns null by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aa96288c452742dba5491807fbf69feea">More...</a><br /></td></tr>
-<tr class="separator:aa96288c452742dba5491807fbf69feea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94600ac0276aa5cf59948ec95a055158"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a94600ac0276aa5cf59948ec95a055158">SaveData</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
+<tr class="memdesc:a94600ac0276aa5cf59948ec95a055158"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this player. <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a94600ac0276aa5cf59948ec95a055158">More...</a><br /></td></tr>
+<tr class="separator:a94600ac0276aa5cf59948ec95a055158"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a114a497147154425130d27a65b7c916a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a114a497147154425130d27a65b7c916a">SendClientChanges</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html">ModPlayer</a> clientPlayer)</td></tr>
 <tr class="memdesc:a114a497147154425130d27a65b7c916a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to sync any information that has changed between the server and client. Here, you should check the information you have copied in the clientClone parameter; if they differ between this player and the clientPlayer parameter, then you should send that information using NetMessage.SendData or <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_packet.html#aaab37d44953c394019f0353398bebd9b" title="Sends all the information you&#39;ve written between client and server. If the toClient parameter is non-...">ModPacket.Send</a>.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a114a497147154425130d27a65b7c916a">More...</a><br /></td></tr>
 <tr class="separator:a114a497147154425130d27a65b7c916a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1659,8 +1663,8 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
 
 </div>
 </div>
-<a id="a32bb121a2e6ac38acb81c6d82e5cd1a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32bb121a2e6ac38acb81c6d82e5cd1a8">&#9670;&nbsp;</a></span>Load()</h2>
+<a id="ac46d15244d60ed44e31d851dd78aa494"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac46d15244d60ed44e31d851dd78aa494">&#9670;&nbsp;</a></span>LoadData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1669,7 +1673,7 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void Terraria.ModLoader.ModPlayer.Load </td>
+          <td class="memname">virtual void Terraria.ModLoader.ModPlayer.LoadData </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td>
           <td class="paramname"><em>tag</em></td><td>)</td>
@@ -1683,15 +1687,16 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to load custom data you have saved for this player. </p>
+<p>Allows you to load custom data that you have saved for this player. <br  />
+<b>Try to write defensive loading code that won't crash if something's missing.</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tag</td><td></td></tr>
+    <tr><td class="paramname">tag</td><td>The TagCompound to load data from. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_player.html#a50ca8db673fa0e6ffb509f55c799e26e">Terraria.ModLoader.Default.UnloadedPlayer</a>.</p>
+<p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_player.html#a7fecc4e6256d636525fa7a87d23a592a">Terraria.ModLoader.Default.UnloadedPlayer</a>.</p>
 
 </div>
 </div>
@@ -3647,7 +3652,7 @@ Called before the ammo stack is reduced. </p>
 </table>
 </div><div class="memdoc">
 
-<p>PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aa96288c452742dba5491807fbf69feea" title="Allows you to save custom data for this player. Returns null by default.">ModPlayer.Save</a>). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. </p>
+<p>PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. </p>
 
 </div>
 </div>
@@ -4119,7 +4124,7 @@ Called before the ammo stack is reduced. </p>
 </table>
 </div><div class="memdoc">
 
-<p>PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aa96288c452742dba5491807fbf69feea" title="Allows you to save custom data for this player. Returns null by default.">ModPlayer.Save</a>). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. </p>
+<p>PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. </p>
 
 </div>
 </div>
@@ -4294,8 +4299,8 @@ Called before the ammo stack is reduced. </p>
 
 </div>
 </div>
-<a id="aa96288c452742dba5491807fbf69feea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa96288c452742dba5491807fbf69feea">&#9670;&nbsp;</a></span>Save()</h2>
+<a id="a94600ac0276aa5cf59948ec95a055158"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94600ac0276aa5cf59948ec95a055158">&#9670;&nbsp;</a></span>SaveData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4304,9 +4309,10 @@ Called before the ammo stack is reduced. </p>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> Terraria.ModLoader.ModPlayer.Save </td>
+          <td class="memname">virtual void Terraria.ModLoader.ModPlayer.SaveData </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td>
+          <td class="paramname"><em>tag</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -4317,10 +4323,18 @@ Called before the ammo stack is reduced. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to save custom data for this player. Returns null by default. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Allows you to save custom data for this player. <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tag</td><td>The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_player.html#ae46b59f9ef8aee146f381103a91a8ff0">Terraria.ModLoader.Default.UnloadedPlayer</a>.</p>
+<p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_player.html#aee4723ec8130e0781c0fcd5df8051574">Terraria.ModLoader.Default.UnloadedPlayer</a>.</p>
 
 </div>
 </div>

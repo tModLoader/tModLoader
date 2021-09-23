@@ -1,7 +1,5 @@
 var NAVTREEINDEX47 =
 {
-"struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html#ad4ee1ad5b1fa61b95ca2a67ab81a3d5f":[1,0,1,4,39,2],
-"struct_terraria_1_1_data_structures_1_1_sprite_frame.html":[1,0,1,4,53],
 "struct_terraria_1_1_data_structures_1_1_sprite_frame.html#a0093136cd0e1eb2174b30cdfe8dd671b":[1,0,1,4,53,3],
 "struct_terraria_1_1_data_structures_1_1_sprite_frame.html#a0ce3cba987c4e0f7649452d01f618cc4":[1,0,1,4,53,9],
 "struct_terraria_1_1_data_structures_1_1_sprite_frame.html#a3e879a2b7c959cf50e8ee47401db1dad":[1,0,1,4,53,8],
@@ -249,5 +247,7 @@ var NAVTREEINDEX47 =
 "struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#aa4883b4580fad391a92ffdf11cf092b9":[1,0,1,7,2,1,0,4],
 "struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#ac4d3d362dc2f9dcdf633d2ea74a120aa":[1,0,1,7,2,1,0,3],
 "struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#ac70d106579e16454e9e0d66a346653e6":[1,0,1,7,2,1,0,0],
-"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#af5965cf3be36f63b793098547da2c3f3":[1,0,1,7,2,1,0,2]
+"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#af5965cf3be36f63b793098547da2c3f3":[1,0,1,7,2,1,0,2],
+"struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html":[1,0,1,7,9],
+"struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html#ad78d3c58251d7cfb17cb43040944587b":[1,0,1,7,9,0]
 };

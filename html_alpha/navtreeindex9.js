@@ -245,9 +245,9 @@ var NAVTREEINDEX9 =
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_display_doll.html#a076e2f6d376457028bd1ccb595441798":[1,0,1,5,20,0,13],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_display_doll.html#a0ea41e4e99c7c2bc0197cd70320ec00a":[1,0,1,5,20,0,18],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_display_doll.html#a10fc6d60906acf79aad37476c175817b":[1,0,1,5,20,0,2],
-"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_display_doll.html#a15157ccea46fbe7cc29063b6f19559b6":[1,0,1,5,20,0,6],
-"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_display_doll.html#a15296c55cbbffb0abb9cdaab66777a97":[1,0,1,5,20,0,17],
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_display_doll.html#a124bddbba67a717e385671088f1eb605":[1,0,1,5,20,0,17],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_display_doll.html#a37e80e037d73e93f6c595dfbc010cc35":[1,0,1,5,20,0,15],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_display_doll.html#a41298f81a673f7456c58b8a748e95806":[1,0,1,5,20,0,5],
-"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_display_doll.html#a42939ab74aff38169d95fe925c583aba":[1,0,1,5,20,0,12]
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_display_doll.html#a42939ab74aff38169d95fe925c583aba":[1,0,1,5,20,0,12],
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_display_doll.html#a6457b78a65833ba5f9ca9c45dbc21dca":[1,0,1,5,20,0,20]
 };

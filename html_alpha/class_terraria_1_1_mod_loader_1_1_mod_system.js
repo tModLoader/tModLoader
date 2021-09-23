@@ -46,7 +46,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_system =
     [ "PreWorldGen", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a45578967361997a96c7d4b2d4c0afd08", null ],
     [ "Register", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a31f85aa76ff14746c701f579d63ed6dd", null ],
     [ "ResetNearbyTileEffects", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a77f31668f1bc08038c83db958404ffe2", null ],
-    [ "SaveWorldData", "class_terraria_1_1_mod_loader_1_1_mod_system.html#af7b3349da59e03cc34dc12ea2ac11b3e", null ],
+    [ "SaveWorldData", "class_terraria_1_1_mod_loader_1_1_mod_system.html#ae2235964e908330e4a004aeec3a839f2", null ],
     [ "SetStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a8a8b974e0c1e765e72e0025a7a8aef78", null ],
     [ "SetupContent", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a9037968777fbe16075d29207779299fb", null ],
     [ "TileCountsAvailable", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a742ae1402c0449d5da76de883472d740", null ],

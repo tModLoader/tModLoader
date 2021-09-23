@@ -1,7 +1,5 @@
 var NAVTREEINDEX45 =
 {
-"namespace_terraria_1_1_initializers.html":[0,0,2,10],
-"namespace_terraria_1_1_localization.html":[0,0,2,12],
 "namespace_terraria_1_1_localization.html#a075cf54eda150a6349bfb2f508a3028f":[0,0,2,12,5],
 "namespace_terraria_1_1_localization.html#a2f6f2dd603a772a30d4dfc74a2d6224b":[0,0,2,12,4],
 "namespace_terraria_1_1_map.html":[0,0,2,13],
@@ -249,5 +247,7 @@ var NAVTREEINDEX45 =
 "struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#aca70319737ec2bcc3590b1f3e5846fc6":[1,0,1,4,4,8],
 "struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#af686d1f0a0d1f9828e40246e21cf3a74":[1,0,1,4,4,1],
 "struct_terraria_1_1_data_structures_1_1_draw_data.html":[1,0,1,4,10],
-"struct_terraria_1_1_data_structures_1_1_draw_data.html#a0b7dd07fe5686f1b816de0729fe9b1ec":[1,0,1,4,10,6]
+"struct_terraria_1_1_data_structures_1_1_draw_data.html#a0b7dd07fe5686f1b816de0729fe9b1ec":[1,0,1,4,10,6],
+"struct_terraria_1_1_data_structures_1_1_draw_data.html#a10a8d23c01eb01ca9813e3da35353e72":[1,0,1,4,10,12],
+"struct_terraria_1_1_data_structures_1_1_draw_data.html#a1a26cb2f96c225c40d08ef92da0010aa":[1,0,1,4,10,3]
 };

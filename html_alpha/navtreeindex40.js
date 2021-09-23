@@ -1,7 +1,5 @@
 var NAVTREEINDEX40 =
 {
-"class_terraria_1_1_u_i_1_1_u_i_mouse_event.html":[1,0,1,21,26],
-"class_terraria_1_1_u_i_1_1_u_i_mouse_event.html#a25e015028ea2f90fb080fc6227d6895a":[1,0,1,21,26,0],
 "class_terraria_1_1_u_i_1_1_u_i_mouse_event.html#a991aa087f17260da54da171f57018d43":[1,0,1,21,26,1],
 "class_terraria_1_1_u_i_1_1_u_i_scroll_wheel_event.html":[1,0,1,21,27],
 "class_terraria_1_1_u_i_1_1_u_i_scroll_wheel_event.html#ab3e23ab97764206229a3dfd62291c14d":[1,0,1,21,27,0],
@@ -189,8 +187,8 @@ var NAVTREEINDEX40 =
 "class_tile_entity.html":[1,0,35],
 "class_type_converter.html":[1,0,36],
 "classes.html":[1,1],
-"functions.html":[1,3,0],
 "functions.html":[1,3,0,0],
+"functions.html":[1,3,0],
 "functions_b.html":[1,3,0,1],
 "functions_c.html":[1,3,0,2],
 "functions_d.html":[1,3,0,3],
@@ -237,8 +235,8 @@ var NAVTREEINDEX40 =
 "functions_t.html":[1,3,0,19],
 "functions_u.html":[1,3,0,20],
 "functions_v.html":[1,3,0,21],
-"functions_vars.html":[1,3,2],
 "functions_vars.html":[1,3,2,0],
+"functions_vars.html":[1,3,2],
 "functions_vars_b.html":[1,3,2,1],
 "functions_vars_c.html":[1,3,2,2],
 "functions_vars_d.html":[1,3,2,3],
@@ -249,5 +247,7 @@ var NAVTREEINDEX40 =
 "functions_vars_i.html":[1,3,2,8],
 "functions_vars_j.html":[1,3,2,9],
 "functions_vars_k.html":[1,3,2,10],
-"functions_vars_l.html":[1,3,2,11]
+"functions_vars_l.html":[1,3,2,11],
+"functions_vars_m.html":[1,3,2,12],
+"functions_vars_n.html":[1,3,2,13]
 };

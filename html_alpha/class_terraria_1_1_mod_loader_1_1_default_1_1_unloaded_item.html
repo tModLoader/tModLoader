@@ -100,9 +100,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1864a5e87513762876d5761ef52e2cef"><td class="memItemLeft" align="right" valign="top">override <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html">ModItem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a1864a5e87513762876d5761ef52e2cef">Clone</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:a1864a5e87513762876d5761ef52e2cef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a>. Called when an item is cloned.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a1864a5e87513762876d5761ef52e2cef">More...</a><br /></td></tr>
 <tr class="separator:a1864a5e87513762876d5761ef52e2cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada269ed2a59932fa2787874385630de9"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#ada269ed2a59932fa2787874385630de9">Load</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
-<tr class="memdesc:ada269ed2a59932fa2787874385630de9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for this item.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#ada269ed2a59932fa2787874385630de9">More...</a><br /></td></tr>
-<tr class="separator:ada269ed2a59932fa2787874385630de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f8aa11567263e2daed91fa09f8f18ba"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a4f8aa11567263e2daed91fa09f8f18ba">LoadData</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
+<tr class="memdesc:a4f8aa11567263e2daed91fa09f8f18ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for this item. <br  />
+<b>Try to write defensive loading code that won't crash if something's missing.</b>  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a4f8aa11567263e2daed91fa09f8f18ba">More...</a><br /></td></tr>
+<tr class="separator:a4f8aa11567263e2daed91fa09f8f18ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42c0f6cbd39c892d75a9ddde56eabbb2"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a42c0f6cbd39c892d75a9ddde56eabbb2">ModifyTooltips</a> (<a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html">TooltipLine</a> &gt; tooltips)</td></tr>
 <tr class="memdesc:a42c0f6cbd39c892d75a9ddde56eabbb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify all the tooltips that display for this item. See here for information about <a class="el" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html" title="This class serves as a way to store information about a line of tooltip for an item....">TooltipLine</a>.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a42c0f6cbd39c892d75a9ddde56eabbb2">More...</a><br /></td></tr>
 <tr class="separator:a42c0f6cbd39c892d75a9ddde56eabbb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -112,9 +113,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8d0b4f9fea3d91c6e5fde32a826f9f1e"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a8d0b4f9fea3d91c6e5fde32a826f9f1e">NetSend</a> (BinaryWriter writer)</td></tr>
 <tr class="memdesc:a8d0b4f9fea3d91c6e5fde32a826f9f1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom data for this item between client and server.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a8d0b4f9fea3d91c6e5fde32a826f9f1e">More...</a><br /></td></tr>
 <tr class="separator:a8d0b4f9fea3d91c6e5fde32a826f9f1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e195956885f7bfeb8f46cb056d22c70"><td class="memItemLeft" align="right" valign="top">override <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a3e195956885f7bfeb8f46cb056d22c70">Save</a> ()</td></tr>
-<tr class="memdesc:a3e195956885f7bfeb8f46cb056d22c70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this item. Returns null by default.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a3e195956885f7bfeb8f46cb056d22c70">More...</a><br /></td></tr>
-<tr class="separator:a3e195956885f7bfeb8f46cb056d22c70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae10b3427d4d2e975974c143b081f0e91"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#ae10b3427d4d2e975974c143b081f0e91">SaveData</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
+<tr class="memdesc:ae10b3427d4d2e975974c143b081f0e91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this item. <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#ae10b3427d4d2e975974c143b081f0e91">More...</a><br /></td></tr>
+<tr class="separator:ae10b3427d4d2e975974c143b081f0e91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbcebdc3ad659e507dd9475610df7093"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#acbcebdc3ad659e507dd9475610df7093">SetDefaults</a> ()</td></tr>
 <tr class="memdesc:acbcebdc3ad659e507dd9475610df7093"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc. For those that are familiar with tAPI, this has the same function as .json files.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#acbcebdc3ad659e507dd9475610df7093">More...</a><br /></td></tr>
 <tr class="separator:acbcebdc3ad659e507dd9475610df7093"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -540,8 +544,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ada269ed2a59932fa2787874385630de9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada269ed2a59932fa2787874385630de9">&#9670;&nbsp;</a></span>Load()</h2>
+<a id="a4f8aa11567263e2daed91fa09f8f18ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f8aa11567263e2daed91fa09f8f18ba">&#9670;&nbsp;</a></span>LoadData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -550,7 +554,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">override void Terraria.ModLoader.Default.UnloadedItem.Load </td>
+          <td class="memname">override void Terraria.ModLoader.Default.UnloadedItem.LoadData </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td>
           <td class="paramname"><em>tag</em></td><td>)</td>
@@ -564,15 +568,16 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to load custom data that you have saved for this item. </p>
+<p>Allows you to load custom data that you have saved for this item. <br  />
+<b>Try to write defensive loading code that won't crash if something's missing.</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tag</td><td>The tag.</td></tr>
+    <tr><td class="paramname">tag</td><td>The TagCompound to load data from. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aabea527359d0dc86e0f339938fdec7a7">Terraria.ModLoader.ModItem</a>.</p>
+<p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a32370334797835244671f20d0d3850dc">Terraria.ModLoader.ModItem</a>.</p>
 
 </div>
 </div>
@@ -684,8 +689,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a3e195956885f7bfeb8f46cb056d22c70"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e195956885f7bfeb8f46cb056d22c70">&#9670;&nbsp;</a></span>Save()</h2>
+<a id="ae10b3427d4d2e975974c143b081f0e91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae10b3427d4d2e975974c143b081f0e91">&#9670;&nbsp;</a></span>SaveData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -694,9 +699,10 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">override <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> Terraria.ModLoader.Default.UnloadedItem.Save </td>
+          <td class="memname">override void Terraria.ModLoader.Default.UnloadedItem.SaveData </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td>
+          <td class="paramname"><em>tag</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -707,10 +713,18 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to save custom data for this item. Returns null by default. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Allows you to save custom data for this item. <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tag</td><td>The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aaaaa13c80516ca138787656a39221fd1">Terraria.ModLoader.ModItem</a>.</p>
+<p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a4345fed324a7eea75d5cc83311dcf89d">Terraria.ModLoader.ModItem</a>.</p>
 
 </div>
 </div>

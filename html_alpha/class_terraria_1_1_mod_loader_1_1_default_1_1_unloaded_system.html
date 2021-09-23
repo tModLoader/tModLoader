@@ -97,14 +97,19 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_defa
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a02f75b795b9b5c338340dcab9057fa63"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html#a02f75b795b9b5c338340dcab9057fa63">LoadWorldData</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
-<tr class="memdesc:a02f75b795b9b5c338340dcab9057fa63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data you have saved for this system in the currently loading world.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html#a02f75b795b9b5c338340dcab9057fa63">More...</a><br /></td></tr>
+<tr class="memdesc:a02f75b795b9b5c338340dcab9057fa63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data you have saved for this system in the currently loading world. <br  />
+<b>Try to write defensive loading code that won't crash if something's missing.</b>  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html#a02f75b795b9b5c338340dcab9057fa63">More...</a><br /></td></tr>
 <tr class="separator:a02f75b795b9b5c338340dcab9057fa63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a657099160a552cbf7ceb7d51860d932a"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html#a657099160a552cbf7ceb7d51860d932a">OnWorldLoad</a> ()</td></tr>
 <tr class="memdesc:a657099160a552cbf7ceb7d51860d932a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever a world is loaded. This can be used to initialize data structures, etc.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html#a657099160a552cbf7ceb7d51860d932a">More...</a><br /></td></tr>
 <tr class="separator:a657099160a552cbf7ceb7d51860d932a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf5d03d0f2f51791cd6d6394ecb66a50"><td class="memItemLeft" align="right" valign="top">override <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html#adf5d03d0f2f51791cd6d6394ecb66a50">SaveWorldData</a> ()</td></tr>
-<tr class="memdesc:adf5d03d0f2f51791cd6d6394ecb66a50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. For example, if your mod adds a boss and you want certain <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. Returns null by default.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html#adf5d03d0f2f51791cd6d6394ecb66a50">More...</a><br /></td></tr>
-<tr class="separator:adf5d03d0f2f51791cd6d6394ecb66a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43b9ff05acbecac17ae1c2a2f203c8ab"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html#a43b9ff05acbecac17ae1c2a2f203c8ab">SaveWorldData</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
+<tr class="memdesc:a43b9ff05acbecac17ae1c2a2f203c8ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. <br  />
+For example, if your mod adds a boss and you want certain <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html#a43b9ff05acbecac17ae1c2a2f203c8ab">More...</a><br /></td></tr>
+<tr class="separator:a43b9ff05acbecac17ae1c2a2f203c8ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_terraria_1_1_mod_loader_1_1_mod_system"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_terraria_1_1_mod_loader_1_1_mod_system')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html">Terraria.ModLoader.ModSystem</a></td></tr>
 <tr class="memitem:a0c4de40c23b314117eec54fb6ab5fd7a inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_system"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a0c4de40c23b314117eec54fb6ab5fd7a">HijackGetData</a> (ref byte messageType, ref BinaryReader reader, int playerNumber)</td></tr>
 <tr class="memdesc:a0c4de40c23b314117eec54fb6ab5fd7a inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_system"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify net message / packet information that is received before the game can act on it.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a0c4de40c23b314117eec54fb6ab5fd7a">More...</a><br /></td></tr>
@@ -312,7 +317,14 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to load custom data you have saved for this system in the currently loading world. </p>
+<p>Allows you to load custom data you have saved for this system in the currently loading world. <br  />
+<b>Try to write defensive loading code that won't crash if something's missing.</b> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tag</td><td>The TagCompound to load data from. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a64b444dc1fc406965b2d18683715888e">Terraria.ModLoader.ModSystem</a>.</p>
 
@@ -347,8 +359,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="adf5d03d0f2f51791cd6d6394ecb66a50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf5d03d0f2f51791cd6d6394ecb66a50">&#9670;&nbsp;</a></span>SaveWorldData()</h2>
+<a id="a43b9ff05acbecac17ae1c2a2f203c8ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43b9ff05acbecac17ae1c2a2f203c8ab">&#9670;&nbsp;</a></span>SaveWorldData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -357,9 +369,10 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">override <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> Terraria.ModLoader.Default.UnloadedSystem.SaveWorldData </td>
+          <td class="memname">override void Terraria.ModLoader.Default.UnloadedSystem.SaveWorldData </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td>
+          <td class="paramname"><em>tag</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -370,9 +383,19 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. For example, if your mod adds a boss and you want certain <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. Returns null by default. </p>
+<p>Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. <br  />
+For example, if your mod adds a boss and you want certain <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tag</td><td>The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#af7b3349da59e03cc34dc12ea2ac11b3e">Terraria.ModLoader.ModSystem</a>.</p>
+<p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ae2235964e908330e4a004aeec3a839f2">Terraria.ModLoader.ModSystem</a>.</p>
 
 </div>
 </div>

@@ -109,7 +109,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a2acba5d368c6a5c9c1396249daec7183"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hijacks the send data method. Only use if you absolutely know what you are doing. If any hooks return true, the message is not sent.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a2acba5d368c6a5c9c1396249daec7183">More...</a><br /></td></tr>
 <tr class="separator:a2acba5d368c6a5c9c1396249daec7183"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64b444dc1fc406965b2d18683715888e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a64b444dc1fc406965b2d18683715888e">LoadWorldData</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
-<tr class="memdesc:a64b444dc1fc406965b2d18683715888e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data you have saved for this system in the currently loading world.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a64b444dc1fc406965b2d18683715888e">More...</a><br /></td></tr>
+<tr class="memdesc:a64b444dc1fc406965b2d18683715888e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data you have saved for this system in the currently loading world. <br  />
+<b>Try to write defensive loading code that won't crash if something's missing.</b>  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a64b444dc1fc406965b2d18683715888e">More...</a><br /></td></tr>
 <tr class="separator:a64b444dc1fc406965b2d18683715888e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dcfb3bf657cd9697c0c7fd3b8316541"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a8dcfb3bf657cd9697c0c7fd3b8316541">ModifyHardmodeTasks</a> (<a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_terraria_1_1_world_building_1_1_gen_pass.html">GenPass</a> &gt; list)</td></tr>
 <tr class="memdesc:a8dcfb3bf657cd9697c0c7fd3b8316541"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to ModifyWorldGenTasks, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 4 items, the vanilla hardmode tasks called "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcment"  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a8dcfb3bf657cd9697c0c7fd3b8316541">More...</a><br /></td></tr>
@@ -238,9 +239,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a77f31668f1bc08038c83db958404ffe2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a77f31668f1bc08038c83db958404ffe2">ResetNearbyTileEffects</a> ()</td></tr>
 <tr class="memdesc:a77f31668f1bc08038c83db958404ffe2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to reset any fields you set in any of your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a10cca98611fc831d5d06c1f53644996a" title="Allows you to make things happen when this tile is within a certain range of the player (around the s...">ModTile.NearbyEffects</a> hooks back to their default values.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a77f31668f1bc08038c83db958404ffe2">More...</a><br /></td></tr>
 <tr class="separator:a77f31668f1bc08038c83db958404ffe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7b3349da59e03cc34dc12ea2ac11b3e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#af7b3349da59e03cc34dc12ea2ac11b3e">SaveWorldData</a> ()</td></tr>
-<tr class="memdesc:af7b3349da59e03cc34dc12ea2ac11b3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. For example, if your mod adds a boss and you want certain <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. Returns null by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#af7b3349da59e03cc34dc12ea2ac11b3e">More...</a><br /></td></tr>
-<tr class="separator:af7b3349da59e03cc34dc12ea2ac11b3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2235964e908330e4a004aeec3a839f2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ae2235964e908330e4a004aeec3a839f2">SaveWorldData</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
+<tr class="memdesc:ae2235964e908330e4a004aeec3a839f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. <br  />
+For example, if your mod adds a boss and you want certain <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ae2235964e908330e4a004aeec3a839f2">More...</a><br /></td></tr>
+<tr class="separator:ae2235964e908330e4a004aeec3a839f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a8b974e0c1e765e72e0025a7a8aef78"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a8a8b974e0c1e765e72e0025a7a8aef78">SetStaticDefaults</a> ()</td></tr>
 <tr class="memdesc:a8a8b974e0c1e765e72e0025a7a8aef78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the properties after initial loading has completed.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a8a8b974e0c1e765e72e0025a7a8aef78">More...</a><br /></td></tr>
 <tr class="separator:a8a8b974e0c1e765e72e0025a7a8aef78"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -471,7 +476,14 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to load custom data you have saved for this system in the currently loading world. </p>
+<p>Allows you to load custom data you have saved for this system in the currently loading world. <br  />
+<b>Try to write defensive loading code that won't crash if something's missing.</b> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tag</td><td>The TagCompound to load data from. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html#a02f75b795b9b5c338340dcab9057fa63">Terraria.ModLoader.Default.UnloadedSystem</a>.</p>
 
@@ -1731,8 +1743,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="af7b3349da59e03cc34dc12ea2ac11b3e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7b3349da59e03cc34dc12ea2ac11b3e">&#9670;&nbsp;</a></span>SaveWorldData()</h2>
+<a id="ae2235964e908330e4a004aeec3a839f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2235964e908330e4a004aeec3a839f2">&#9670;&nbsp;</a></span>SaveWorldData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1741,9 +1753,10 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> Terraria.ModLoader.ModSystem.SaveWorldData </td>
+          <td class="memname">virtual void Terraria.ModLoader.ModSystem.SaveWorldData </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td>
+          <td class="paramname"><em>tag</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1754,9 +1767,19 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. For example, if your mod adds a boss and you want certain <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. Returns null by default. </p>
+<p>Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. <br  />
+For example, if your mod adds a boss and you want certain <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tag</td><td>The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html#adf5d03d0f2f51791cd6d6394ecb66a50">Terraria.ModLoader.Default.UnloadedSystem</a>.</p>
+<p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html#a43b9ff05acbecac17ae1c2a2f203c8ab">Terraria.ModLoader.Default.UnloadedSystem</a>.</p>
 
 </div>
 </div>

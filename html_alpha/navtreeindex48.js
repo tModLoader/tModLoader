@@ -1,7 +1,5 @@
 var NAVTREEINDEX48 =
 {
-"struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html":[1,0,1,7,9],
-"struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html#ad78d3c58251d7cfb17cb43040944587b":[1,0,1,7,9,0],
 "struct_terraria_1_1_graphics_1_1_rainbow_rod_drawer.html":[1,0,1,7,10],
 "struct_terraria_1_1_graphics_1_1_rainbow_rod_drawer.html#a5ef515cd2a076fbb5eef1f6c4e64525b":[1,0,1,7,10,0],
 "struct_terraria_1_1_graphics_1_1_renderers_1_1_particle_renderer_settings.html":[1,0,1,7,3,12],
@@ -249,5 +247,7 @@ var NAVTREEINDEX48 =
 "struct_terraria_1_1_u_i_1_1_calculated_style.html#ac9bd833b78b33597511c5c66ac698bb5":[1,0,1,21,5,0],
 "struct_terraria_1_1_u_i_1_1_calculated_style.html#ae308b313a276c5961898e6a4595139ca":[1,0,1,21,5,3],
 "struct_terraria_1_1_u_i_1_1_calculated_style.html#af88d7cbcbc1ec1519f2c88737cbf5088":[1,0,1,21,5,5],
-"struct_terraria_1_1_u_i_1_1_style_dimension.html":[1,0,1,21,23]
+"struct_terraria_1_1_u_i_1_1_style_dimension.html":[1,0,1,21,23],
+"struct_terraria_1_1_u_i_1_1_style_dimension.html#a225f5b265ba5794ff59d093d3a0f2ba4":[1,0,1,21,23,4],
+"struct_terraria_1_1_u_i_1_1_style_dimension.html#a500deb327f97db01798556b8d9cc4a1a":[1,0,1,21,23,5]
 };

@@ -237,9 +237,10 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
 <tr class="memitem:ae360f7809f0151bf1bdbc78dc5dae8c1"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ae360f7809f0151bf1bdbc78dc5dae8c1">ItemSpace</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:ae360f7809f0151bf1bdbc78dc5dae8c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true to specify that the item can be picked up despite not having enough room in inventory. Useful for something like hearts or experience items. Use in conjunction with OnPickup to actually consume the item and handle it.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ae360f7809f0151bf1bdbc78dc5dae8c1">More...</a><br /></td></tr>
 <tr class="separator:ae360f7809f0151bf1bdbc78dc5dae8c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabea527359d0dc86e0f339938fdec7a7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aabea527359d0dc86e0f339938fdec7a7">Load</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
-<tr class="memdesc:aabea527359d0dc86e0f339938fdec7a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for this item.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aabea527359d0dc86e0f339938fdec7a7">More...</a><br /></td></tr>
-<tr class="separator:aabea527359d0dc86e0f339938fdec7a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32370334797835244671f20d0d3850dc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a32370334797835244671f20d0d3850dc">LoadData</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
+<tr class="memdesc:a32370334797835244671f20d0d3850dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for this item. <br  />
+<b>Try to write defensive loading code that won't crash if something's missing.</b>  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a32370334797835244671f20d0d3850dc">More...</a><br /></td></tr>
+<tr class="separator:a32370334797835244671f20d0d3850dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06d18d25a2aa2ec8f908cbb3f41cb645"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a06d18d25a2aa2ec8f908cbb3f41cb645">MeleeEffects</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, Rectangle hitbox)</td></tr>
 <tr class="memdesc:a06d18d25a2aa2ec8f908cbb3f41cb645"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to give this melee weapon special effects, such as creating light or dust.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a06d18d25a2aa2ec8f908cbb3f41cb645">More...</a><br /></td></tr>
 <tr class="separator:a06d18d25a2aa2ec8f908cbb3f41cb645"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -359,9 +360,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnCreate</b> 
 <tr class="memitem:a788f215aa9817b3ffced439263cc8187"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a788f215aa9817b3ffced439263cc8187">RightClick</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a788f215aa9817b3ffced439263cc8187"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this item is right-clicked in the inventory. Useful for goodie bags.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a788f215aa9817b3ffced439263cc8187">More...</a><br /></td></tr>
 <tr class="separator:a788f215aa9817b3ffced439263cc8187"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaaaa13c80516ca138787656a39221fd1"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aaaaa13c80516ca138787656a39221fd1">Save</a> ()</td></tr>
-<tr class="memdesc:aaaaa13c80516ca138787656a39221fd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this item. Returns null by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aaaaa13c80516ca138787656a39221fd1">More...</a><br /></td></tr>
-<tr class="separator:aaaaa13c80516ca138787656a39221fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4345fed324a7eea75d5cc83311dcf89d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a4345fed324a7eea75d5cc83311dcf89d">SaveData</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
+<tr class="memdesc:a4345fed324a7eea75d5cc83311dcf89d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this item. <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a4345fed324a7eea75d5cc83311dcf89d">More...</a><br /></td></tr>
+<tr class="separator:a4345fed324a7eea75d5cc83311dcf89d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d9fbbb1dec7e25959a345a9e4f78428"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a6d9fbbb1dec7e25959a345a9e4f78428">SetDefaults</a> ()</td></tr>
 <tr class="memdesc:a6d9fbbb1dec7e25959a345a9e4f78428"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc. For those that are familiar with tAPI, this has the same function as .json files.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a6d9fbbb1dec7e25959a345a9e4f78428">More...</a><br /></td></tr>
 <tr class="separator:a6d9fbbb1dec7e25959a345a9e4f78428"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2162,8 +2166,8 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
 
 </div>
 </div>
-<a id="aabea527359d0dc86e0f339938fdec7a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aabea527359d0dc86e0f339938fdec7a7">&#9670;&nbsp;</a></span>Load()</h2>
+<a id="a32370334797835244671f20d0d3850dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32370334797835244671f20d0d3850dc">&#9670;&nbsp;</a></span>LoadData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2172,7 +2176,7 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void Terraria.ModLoader.ModItem.Load </td>
+          <td class="memname">virtual void Terraria.ModLoader.ModItem.LoadData </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td>
           <td class="paramname"><em>tag</em></td><td>)</td>
@@ -2186,15 +2190,16 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to load custom data that you have saved for this item. </p>
+<p>Allows you to load custom data that you have saved for this item. <br  />
+<b>Try to write defensive loading code that won't crash if something's missing.</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tag</td><td>The tag.</td></tr>
+    <tr><td class="paramname">tag</td><td>The TagCompound to load data from. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#ada269ed2a59932fa2787874385630de9">Terraria.ModLoader.Default.UnloadedItem</a>, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_start_bag.html#aac5cc5c84236ef7a9322bba88485985e">Terraria.ModLoader.Default.StartBag</a>.</p>
+<p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a4f8aa11567263e2daed91fa09f8f18ba">Terraria.ModLoader.Default.UnloadedItem</a>, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_start_bag.html#a1959530e9ab319f69282526f827f0b4e">Terraria.ModLoader.Default.StartBag</a>.</p>
 
 </div>
 </div>
@@ -4018,8 +4023,8 @@ Called before the ammo stack is reduced. </p>
 
 </div>
 </div>
-<a id="aaaaa13c80516ca138787656a39221fd1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaaaa13c80516ca138787656a39221fd1">&#9670;&nbsp;</a></span>Save()</h2>
+<a id="a4345fed324a7eea75d5cc83311dcf89d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4345fed324a7eea75d5cc83311dcf89d">&#9670;&nbsp;</a></span>SaveData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4028,9 +4033,10 @@ Called before the ammo stack is reduced. </p>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> Terraria.ModLoader.ModItem.Save </td>
+          <td class="memname">virtual void Terraria.ModLoader.ModItem.SaveData </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td>
+          <td class="paramname"><em>tag</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -4041,10 +4047,18 @@ Called before the ammo stack is reduced. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to save custom data for this item. Returns null by default. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Allows you to save custom data for this item. <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tag</td><td>The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a3e195956885f7bfeb8f46cb056d22c70">Terraria.ModLoader.Default.UnloadedItem</a>, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_start_bag.html#a5a5c0ba3f203a2ac25464062df3b8746">Terraria.ModLoader.Default.StartBag</a>.</p>
+<p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#ae10b3427d4d2e975974c143b081f0e91">Terraria.ModLoader.Default.UnloadedItem</a>, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_start_bag.html#a74b71ccf130ce4b028216b1008faa63a">Terraria.ModLoader.Default.StartBag</a>.</p>
 
 </div>
 </div>
