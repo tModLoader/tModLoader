@@ -9,6 +9,7 @@ using System.Reflection;
 using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.IO;
 
@@ -77,8 +78,11 @@ namespace Terraria.ModLoader
 
 		public static void SetStartInventory(Player player, IList<Item> items) {
 			if (items.Count <= 50) {
-				for (int k = 0; k < items.Count && k < 49; k++)
-					player.inventory[k] = items[k];
+				for (int k = 0; k < 50; k++)
+					if (k < items.Count)
+						player.inventory[k] = items[k];
+					else
+						player.inventory[k].SetDefaults();
 			}
 			else {
 				for (int k = 0; k < 49; k++) {
@@ -518,11 +522,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookConsumeAmmo = AddHook<Func<Item, Item, bool>>(p => p.ConsumeAmmo);
+		private static HookList HookCanConsumeAmmo = AddHook<Func<Item, Item, bool>>(p => p.CanConsumeAmmo);
 
-		public static bool ConsumeAmmo(Player player, Item weapon, Item ammo) {
-			foreach (int index in HookConsumeAmmo.arr) {
-				if (!player.modPlayers[index].ConsumeAmmo(weapon, ammo)) {
+		public static bool CanConsumeAmmo(Player player, Item weapon, Item ammo) {
+			foreach (int index in HookCanConsumeAmmo.arr) {
+				if (!player.modPlayers[index].CanConsumeAmmo(weapon, ammo)) {
 					return false;
 				}
 			}
@@ -923,31 +927,43 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
-		private static bool HasMethod(Type t, string method, params Type[] args) {
-			return t.GetMethod(method, args).DeclaringType != typeof(ModPlayer);
-		}
-
-		internal static void VerifyGlobalItem(ModPlayer player) {
+		internal static void VerifyModPlayer(ModPlayer player) {
 			var type = player.GetType();
 
+			// Shortcut
+			static bool HasMethod(Type type, string method, params Type[] parameters) => LoaderUtils.HasMethod(type, typeof(ModPlayer), method, parameters);
+
+			/*
 			int netClientMethods = 0;
-			if (HasMethod(type, "clientClone", typeof(ModPlayer))) netClientMethods++;
-			if (HasMethod(type, "SyncPlayer", typeof(int), typeof(int), typeof(bool))) netClientMethods++;
-			if (HasMethod(type, "SendClientChanges", typeof(ModPlayer))) netClientMethods++;
+
+			if (HasMethod(type, nameof(ModPlayer.clientClone), typeof(ModPlayer)))
+				netClientMethods++;
+
+			if (HasMethod(type, nameof(ModPlayer.SyncPlayer), typeof(int), typeof(int), typeof(bool)))
+				netClientMethods++;
+
+			if (HasMethod(type, nameof(ModPlayer.SendClientChanges), typeof(ModPlayer)))
+				netClientMethods++;
+
 			if (netClientMethods > 0 && netClientMethods < 3)
-				throw new Exception(type + " must override all of (clientClone/SyncPlayer/SendClientChanges) or none");
+				throw new Exception($"{type} must override all of ({nameof(ModPlayer.clientClone)}/{nameof(ModPlayer.SyncPlayer)}/{nameof(ModPlayer.SendClientChanges)}) or none");
+			*/
 
 			int saveMethods = 0;
-			if (HasMethod(type, "Save")) saveMethods++;
-			if (HasMethod(type, "Load", typeof(TagCompound))) saveMethods++;
-			if (saveMethods == 1)
-				throw new Exception(type + " must override all of (Save/Load) or none");
 
-			int netMethods = 0;
-			if (HasMethod(type, "NetSend", typeof(BinaryWriter))) netMethods++;
-			if (HasMethod(type, "NetReceive", typeof(BinaryReader))) netMethods++;
-			if (netMethods == 1)
-				throw new Exception(type + " must override both of (NetSend/NetReceive) or none");
+			if (HasMethod(type, nameof(ModPlayer.SaveData), typeof(TagCompound)))
+				saveMethods++;
+
+			if (HasMethod(type, nameof(ModPlayer.LoadData), typeof(TagCompound)))
+				saveMethods++;
+
+			if (saveMethods == 1)
+				throw new Exception($"{type} must override both of ({nameof(ModPlayer.SaveData)}/{nameof(ModPlayer.LoadData)}) or none");
+
+			// @TODO: Remove on release
+			if ((saveMethods == 0) && HasMethod(type, "Save"))
+				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
+			// @TODO: END Remove on release
 		}
 
 		private static HookList HookPostSellItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostSellItem);

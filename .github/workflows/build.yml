@@ -58,7 +58,7 @@ jobs:
         with:
           path: decompiled.zip.gpg
           # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
-          key: 1423-A
+          key: 1423-B
 
       - name: Restore decompiled folder from cache
         if: steps.cache-decompiled.outputs.cache-hit == 'true'
@@ -98,24 +98,31 @@ jobs:
           echo pwd is: ${PWD}
           echo ls -l is:
           ls -l
+          echo Creating tModLoader cache zip file
+          7z a tModLoader.zip ./src/tModLoader/
+          gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" tModLoader.zip
+          ls -l
           cd solutions
           echo pwd is: ${PWD}
           echo ls -l is:
           ls -l
-          echo Running CompleteLib.bat for Debug
-          ./CompleteLib.bat Debug skipzip
-          echo CompleteLib.bat Debug Done
-          cd ..
-          mkdir -p artifacts/Debug
-          cp -R ./solutions/Debug/Shared/. ./artifacts/Debug/
-          cd solutions
-          echo pwd is: ${PWD}
           echo Running CompleteLib.bat for Release
           ./CompleteLib.bat Release skipzip
           echo CompleteLib.bat Release Done
           cd ..
           mkdir -p artifacts/Release
           cp -R ./solutions/Release/Shared/. ./artifacts/Release/
+          echo Cleaning up output directory in-between builds...
+          rm -r ./src/tModLoader/Terraria/1423/Windows
+          cd solutions
+          echo pwd is: ${PWD}
+          # export UPLOAD_MSBUILD_LOGS=1
+          echo Running CompleteLib.bat for Debug
+          ./CompleteLib.bat Debug skipzip
+          echo CompleteLib.bat Debug Done
+          cd ..
+          mkdir -p artifacts/Debug
+          cp -R ./solutions/Debug/Shared/. ./artifacts/Debug/
           echo Creating decompiled cache zip file
           7z a decompiled.zip ./src/decompiled/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
@@ -123,18 +130,28 @@ jobs:
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BUILDPURPOSE:  ${{ fromJSON('["Github_Commit", "Alpha"]')[github.event_name == 'push' && github.ref == 'refs/heads/1.4'] }}
           
-      - uses: actions/upload-artifact@v2
+      - name: Upload Debug Build Artifact
+        uses: actions/upload-artifact@v2
         with:
           name: Debug Build
           path: |
             ./artifacts/Debug/
             
-      - uses: actions/upload-artifact@v2
+      - name: Upload Release Build Artifact
+        uses: actions/upload-artifact@v2
         with:
           name: Release Build
           path: |
             ./artifacts/Release/
+           
+      - name: Upload temporary encrypted src artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
+        uses: actions/upload-artifact@v2
+        with:
+          name: temporary-src
+          path: tModLoader.zip.gpg
             
       - name: Build ExampleMod
         shell: bash
@@ -150,13 +167,14 @@ jobs:
           mkdir -p artifacts/Mods
           mv ./artifacts/Debug/ModLoader/Mods/ExampleMod.tmod ./artifacts/Mods/ExampleMod.tmod
           
-      - uses: actions/upload-artifact@v2
+      - name: Upload ExampleMod Build Artifact
+        uses: actions/upload-artifact@v2
         with:
           name: ExampleMod Build
           path: |
             ./artifacts/Mods/ExampleMod.tmod
         
-      - name: Post push report to 1-4-beta-builds on Discord
+      - name: Post push report to 1-4-nightly-builds on Discord
         uses: sarisia/actions-status-discord@v1
         if: always() && github.event_name == 'push'
         with:
@@ -164,7 +182,7 @@ jobs:
           description: |
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view.
 
-      - name: Post pull request report to 1-4-beta-builds on Discord
+      - name: Post pull request report to 1-4-nightly-builds on Discord
         uses: sarisia/actions-status-discord@v1
         if: always() && github.event_name == 'pull_request_target'
         with:
@@ -174,7 +192,55 @@ jobs:
             Pull Request: ${{github.event.pull_request.head.ref}} from ${{github.event.pull_request.head.repo.full_name}}
             Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
-            
+
+  documentation:
+    # Documentation generated on successful builds of pushes to 1.4 branch
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out base branch
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Download temporary encrypted src artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: temporary-src
+      - name: Restore tModLoader folder from artifact
+        shell: bash
+        run: |
+          echo Restoring tModLoader folder from cache
+          ls -l
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output tModLoader.zip tModLoader.zip.gpg
+          ls -l
+          unzip -o tModLoader.zip -d src
+          cd src
+          ls -l
+          cd ..
+        env:
+          SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
+      - name: Generate Documentation
+        uses: mattnotmitt/doxygen-action@v1.3.1
+        with:
+          working-directory: 'solutions/documentation/'
+          doxyfile-path: 'Doxyfile'
+      - name: View resulting files
+        run: |
+          echo pwd is: ${PWD}
+          ls -alhR
+        working-directory: solutions/documentation
+      - uses: geekyeggo/delete-artifact@v1
+        with:
+          name: temporary-src
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./solutions/documentation/html
+          destination_dir: html_alpha
+
   deploy:
     needs: build
     # We push an alpha release only on push events to the 1.4 branch that build correctly
@@ -187,7 +253,29 @@ jobs:
       - name: Check out base branch
         uses: actions/checkout@v2
         with:
-          persist-credentials: false
+          fetch-depth: 2
+      - name: Detect ExampleMod Changed Files
+        id: changed-files-examplemod
+        uses: tj-actions/changed-files@v9.1
+        with:
+          files: |
+            ExampleMod
+      - name: List all changed ExampleMod files
+        run: |
+          for file in "${{ steps.changed-files-examplemod.outputs.all_modified_files }}"; do
+            echo "$file was modified"
+          done
+      - name: Detect patches Changed Files
+        id: changed-files-patches
+        uses: tj-actions/changed-files@v9.1
+        with:
+          files: |
+            patches
+      - name: List all changed patches
+        run: |
+          for file in "${{ steps.changed-files-patches.outputs.all_modified_files }}"; do
+            echo "$file was modified"
+          done
       - name: Download build artifact from build job
         uses: actions/download-artifact@v2
         with:
@@ -210,6 +298,7 @@ jobs:
           STEAM_SENTRY_PASSPHRASE: ${{ secrets.STEAM_SENTRY_PASSPHRASE }}
           STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
       - name: Attempt run_app_build_http 
+        if: steps.changed-files-patches.outputs.any_changed == 'true'
         shell: bash
         run: |
           mkdir artifacts/shared
@@ -221,3 +310,8 @@ jobs:
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
           cat BuildOutput/*.log
+      - name: Attempt workshop_build_item 
+        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
+        shell: bash
+        run: |
+          echo If implemented, this would auto publish ExampleMod

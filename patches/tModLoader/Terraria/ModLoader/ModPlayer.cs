@@ -42,6 +42,8 @@ namespace Terraria.ModLoader
 		public virtual bool CloneNewInstances => true;
 		
 		protected sealed override void Register() {
+			PlayerLoader.VerifyModPlayer(this);
+
 			ModTypeLookup<ModPlayer>.Register(this);
 			PlayerLoader.Add(this);
 		}
@@ -73,19 +75,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to save custom data for this player. Returns null by default.
+		/// Allows you to save custom data for this player.
+		/// <br/>
+		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
 		/// </summary>
-		/// <returns></returns>
-		public virtual TagCompound Save() {
-			return null;
-		}
+		/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
+		public virtual void SaveData(TagCompound tag) { }
 
 		/// <summary>
-		/// Allows you to load custom data you have saved for this player.
+		/// Allows you to load custom data that you have saved for this player.
+		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
-		/// <param name="tag"></param>
-		public virtual void Load(TagCompound tag) {
-		}
+		/// <param name="tag"> The TagCompound to load data from. </param>
+		public virtual void LoadData(TagCompound tag) { }
 
 		/// <summary>
 		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.
@@ -423,21 +426,21 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Whether or not ammo will be consumed upon usage. Return false to stop the ammo from being depleted. Returns true by default.
-		/// If false is returned, the OnConsumeAmmo hook is never called.
+		/// <br>If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.</br>
 		/// </summary>
-		/// <param name="weapon"></param>
-		/// <param name="ammo"></param>
+		/// <param name="weapon">The item that is using this ammo</param>
+		/// <param name="ammo">The ammo item</param>
 		/// <returns></returns>
-		public virtual bool ConsumeAmmo(Item weapon, Item ammo) {
+		public virtual bool CanConsumeAmmo(Item weapon, Item ammo) {
 			return true;
 		}
 
 		/// <summary>
 		/// Allows you to make things happen when ammo is consumed.
-		/// Called before the ammo stack is reduced.
+		/// <br>Called before the ammo stack is reduced.</br>
 		/// </summary>
-		/// <param name="weapon"></param>
-		/// <param name="ammo"></param>
+		/// <param name="weapon">The item that is using this ammo</param>
+		/// <param name="ammo">The ammo item</param>
 		/// <returns></returns>
 		public virtual void OnConsumeAmmo(Item weapon, Item ammo) {
 		}
@@ -741,7 +744,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the visiblity of layers about to be drawn
+		/// Allows you to modify the visibility of layers about to be drawn
 		/// </summary>
 		/// <param name="layers"></param>
 		public virtual void HideDrawLayers(PlayerDrawSet drawInfo) {

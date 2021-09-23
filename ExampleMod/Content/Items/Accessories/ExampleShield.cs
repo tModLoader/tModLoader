@@ -12,6 +12,7 @@ namespace ExampleMod.Content.Items.Accessories
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded shield.");
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
@@ -32,7 +33,7 @@ namespace ExampleMod.Content.Items.Accessories
 			player.GetModPlayer<ExampleDashPlayer>().DashAccessoryEquipped = true;
 		}
 
-		//Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient<ExampleItem>()
@@ -95,19 +96,19 @@ namespace ExampleMod.Content.Items.Accessories
 				Vector2 newVelocity = Player.velocity;
 
 				switch (DashDir) {
-					//Only apply the dash velocity if our current speed in the wanted direction is less than DashVelocity
+					// Only apply the dash velocity if our current speed in the wanted direction is less than DashVelocity
 					case DashUp when Player.velocity.Y > -DashVelocity:
 					case DashDown when Player.velocity.Y < DashVelocity: {
-							//Y-velocity is set here
-							//If the direction requested was DashUp, then we adjust the velocity to make the dash appear "faster" due to gravity being immediately in effect
-							//This adjustment is roughly 1.3x the intended dash velocity
+							// Y-velocity is set here
+							// If the direction requested was DashUp, then we adjust the velocity to make the dash appear "faster" due to gravity being immediately in effect
+							// This adjustment is roughly 1.3x the intended dash velocity
 							float dashDirection = DashDir == DashDown ? 1 : -1.3f;
 							newVelocity.Y = dashDirection * DashVelocity;
 							break;
 						}
 					case DashLeft when Player.velocity.X > -DashVelocity:
 					case DashRight when Player.velocity.X < DashVelocity: {
-							//X-velocity is set here
+							// X-velocity is set here
 							float dashDirection = DashDir == DashRight ? 1 : -1;
 							newVelocity.X = dashDirection * DashVelocity;
 							break;
@@ -121,8 +122,8 @@ namespace ExampleMod.Content.Items.Accessories
 				DashTimer = DashDuration;
 				Player.velocity = newVelocity;
 
-				//Here you'd be able to set an effect that happens when the dash first activates
-				//Some examples include:  the larger smoke effect from the Master Ninja Gear and Tabi
+				// Here you'd be able to set an effect that happens when the dash first activates
+				// Some examples include:  the larger smoke effect from the Master Ninja Gear and Tabi
 			}
 
 			if (DashDelay > 0)

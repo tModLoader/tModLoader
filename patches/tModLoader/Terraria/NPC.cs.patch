@@ -151,6 +151,24 @@
  
  			if (spawnparams.sizeScaleOverride.HasValue) {
  				int num2 = (int)((float)width * scale);
+@@ -10473,7 +_,7 @@
+ 			return balance;
+ 		}
+ 
+-		private float GetMyBalance() {
++		public float GetMyBalance() {
+ 			if (statsAreScaledForThisManyPlayers <= 1)
+ 				return 1f;
+ 
+@@ -10481,7 +_,7 @@
+ 			return balance;
+ 		}
+ 
+-		private static int GetActivePlayerCount() {
++		public static int GetActivePlayerCount() {
+ 			if (Main.netMode == 0)
+ 				return 1;
+ 
 @@ -10765,6 +_,7 @@
  					break;
  			}
@@ -554,6 +572,15 @@
  				if (Main.netMode == 2)
  					NetMessage.SendData(7);
  			}
+@@ -58748,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private bool GetWereThereAnyInteractions() {
++		public bool GetWereThereAnyInteractions() {
+ 			bool flag = false;
+ 			if (realLife >= 0)
+ 				return Main.npc[realLife].AnyInteractions();
 @@ -58940,8 +_,10 @@
  					NetMessage.SendData(106, -1, -1, null, (int)position.X, position.Y);
  				}
@@ -715,6 +742,26 @@
  			if (Main.npc[newNPC].type == 1 && Main.player[num7].RollLuck(180) == 0)
  				Main.npc[newNPC].SetDefaults(-4);
  
+@@ -62154,7 +_,7 @@
+ 			return spawnTileType;
+ 		}
+ 
+-		private static bool IsValidSpawningGroundTile(int x, int y) {
++		public static bool IsValidSpawningGroundTile(int x, int y) {
+ 			Tile tile = Main.tile[x, y];
+ 			if (!tile.nactive())
+ 				return false;
+@@ -62651,7 +_,9 @@
+ 			}
+ 
+ 			int num = -1;
++
+-			if (Type == 222 || Type == 245) {
++			//if (Type == 222 || Type == 245) {
++			if (NPCID.Sets.SpawnFromLastEmptySlot[Type]) {
+ 				for (int num2 = 199; num2 >= 0; num2--) {
+ 					if (!Main.npc[num2].active) {
+ 						num = num2;
 @@ -62894,12 +_,14 @@
  			if (num2 < 0)
  				num2 = 0;
@@ -755,15 +802,6 @@
  				int num23 = 7;
  				float num24 = 1.1f;
  				int num25 = 10;
-@@ -70233,6 +_,8 @@
- 			return false;
- 		}
- 
-+		public bool HasBuff(int type) => FindBuffIndex(type) != -1; //TODO: Make this an extension instead?
-+
- 		public int FindBuffIndex(int type) {
- 			if (buffImmune[type])
- 				return -1;
 @@ -70259,6 +_,8 @@
  			int num = -1;
  			for (int i = 0; i < 5; i++) {

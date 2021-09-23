@@ -10,12 +10,12 @@ namespace ExampleMod.Content.Items
 	public class ExampleDye : ModItem
 	{
 		public override void SetStaticDefaults() {
-			//Avoid loading assets on dedicated servers. They don't use graphics cards.
+			// Avoid loading assets on dedicated servers. They don't use graphics cards.
 			if (!Main.dedServ) {
-				//The following code creates an effect (shader) reference and associates it with this item's type Id.
+				// The following code creates an effect (shader) reference and associates it with this item's type Id.
 				GameShaders.Armor.BindShader(
 					Item.type,
-					new ArmorShaderData(new Ref<Effect>(Mod.Assets.Request<Effect>("Assets/Effects/ExampleEffect").Value), "ExampleDyePass") //Be sure to update the effect path and pass name here.
+					new ArmorShaderData(new Ref<Effect>(Mod.Assets.Request<Effect>("Assets/Effects/ExampleEffect").Value), "ExampleDyePass") // Be sure to update the effect path and pass name here.
 				);
 			}
 

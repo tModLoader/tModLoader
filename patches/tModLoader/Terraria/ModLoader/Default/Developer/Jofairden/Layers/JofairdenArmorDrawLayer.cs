@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 
 		public abstract DrawDataInfo GetData(PlayerDrawSet info);
 
-		public override bool GetDefaultVisiblity(PlayerDrawSet drawInfo) {
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
 			var player = drawInfo.drawPlayer;
 
 			return drawInfo.shadow == 0f && !player.invis && player.GetModPlayer<JofairdenArmorEffectPlayer>().LayerStrength > 0f;

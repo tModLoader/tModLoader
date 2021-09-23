@@ -3,6 +3,7 @@ using Terraria.DataStructures;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent.Creative;
 
 namespace ExampleMod.Content.Items.Tools
 {
@@ -12,8 +13,10 @@ namespace ExampleMod.Content.Items.Tools
 			DisplayName.SetDefault("Example Fishing Rod");
 			Tooltip.SetDefault("Fires multiple lines at once. Can fish in lava.\n" +
 				"The fishing line never snaps.");
+
 			// Allows the pole to fish in lava
 			ItemID.Sets.CanFishInLava[Item.type] = true;
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {

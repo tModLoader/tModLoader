@@ -3,6 +3,7 @@ using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.NPCs;
 using System.IO;
 using Terraria;
+using Terraria.GameContent.UI;
 using Terraria.ModLoader;
 
 namespace ExampleMod
@@ -10,10 +11,22 @@ namespace ExampleMod
 	public class ExampleMod : Mod
 	{
 		public const string AssetPath = "ExampleMod/Assets/";
+		public static ModKeybind RandomBuffKeybind;
+		public static int ExampleCustomCurrencyId;
 
 		public override void AddRecipes() => ExampleRecipes.Load(this);
 
-		public override void Unload() => ExampleRecipes.Unload();
+		public override void Load() {
+			RandomBuffKeybind = KeybindLoader.RegisterKeybind(this, "Random Buff", "P");
+
+			// Registers a new custom currency
+			ExampleCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new Content.Currencies.ExampleCustomCurrency(ModContent.ItemType<Content.Items.ExampleItem>(), 999L, "Mods.ExampleMod.Currencies.ExampleCustomCurrency"));
+		}
+
+		public override void Unload() {
+			ExampleRecipes.Unload();
+			RandomBuffKeybind = null;
+		}
 
 		//TODO: Introduce OOP packets into tML, to avoid this god-class level hardcode.
 		public override void HandlePacket(BinaryReader reader, int whoAmI) {

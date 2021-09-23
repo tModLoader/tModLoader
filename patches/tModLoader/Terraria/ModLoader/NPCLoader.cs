@@ -76,6 +76,9 @@ namespace Terraria.ModLoader
 			shopToNPC[19] = NPCID.TravellingMerchant;
 			shopToNPC[20] = NPCID.SkeletonMerchant;
 			shopToNPC[21] = NPCID.DD2Bartender;
+			shopToNPC[22] = NPCID.Golfer;
+			shopToNPC[23] = NPCID.BestiaryGirl;
+			shopToNPC[24] = NPCID.Princess;
 		}
 
 		internal static int ReserveNPCID() {
@@ -262,34 +265,41 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void SendExtraAI(NPC npc, BinaryWriter writer) {
-			if (npc.ModNPC != null) {
-				byte[] data;
-				using (MemoryStream stream = new MemoryStream()) {
-					using (BinaryWriter modWriter = new BinaryWriter(stream)) {
-						npc.ModNPC.SendExtraAI(modWriter);
-						modWriter.Flush();
-						data = stream.ToArray();
-					}
-				}
-				writer.Write((byte)data.Length);
-				if (data.Length > 0) {
-					writer.Write(data);
-				}
+		public static void SendExtraAI(BinaryWriter writer, byte[] extraAI) {
+			writer.Write7BitEncodedInt(extraAI.Length);
+
+			if (extraAI.Length > 0) {
+				writer.Write(extraAI);
 			}
 		}
 
-		public static void ReceiveExtraAI(NPC npc, BinaryReader reader) {
-			if (npc.ModNPC != null) {
-				byte[] extraAI = reader.ReadBytes(reader.ReadByte());
-				if (extraAI.Length > 0) {
-					using (MemoryStream stream = new MemoryStream(extraAI)) {
-						using (BinaryReader modReader = new BinaryReader(stream)) {
-							npc.ModNPC.ReceiveExtraAI(modReader);
-						}
-					}
-				}
+		public static byte[] WriteExtraAI(NPC npc) {
+			if (npc.ModNPC == null) {
+				return Array.Empty<byte>();
 			}
+
+			using var stream = new MemoryStream();
+			using var modWriter = new BinaryWriter(stream);
+
+			npc.ModNPC.SendExtraAI(modWriter);
+			modWriter.Flush();
+
+			return stream.ToArray();
+		}
+
+		public static byte[] ReadExtraAI(BinaryReader reader) {
+			return reader.ReadBytes(reader.Read7BitEncodedInt());
+		}
+
+		public static void ReceiveExtraAI(NPC npc, byte[] extraAI) {
+			if (npc.ModNPC == null) {
+				return;
+			}
+
+			using var stream = new MemoryStream(extraAI);
+			using var modReader = new BinaryReader(stream);
+
+			npc.ModNPC.ReceiveExtraAI(modReader);
 		}
 
 		private static HookList HookFindFrame = AddHook<Action<NPC, int>>(g => g.FindFrame);
@@ -1122,10 +1132,6 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC g in HookDrawTownAttackSwing.Enumerate(npc.globalNPCs)) {
 				g.DrawTownAttackSwing(npc, ref item, ref itemSize, ref scale, ref offset);
 			}
-		}
-
-		private static bool HasMethod(Type t, string method, params Type[] args) {
-			return t.GetMethod(method, args).DeclaringType != typeof(GlobalNPC);
 		}
 
 		internal static void VerifyGlobalNPC(GlobalNPC npc) {

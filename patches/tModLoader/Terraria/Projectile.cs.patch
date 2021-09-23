@@ -258,7 +258,7 @@
  											flag6 = true;
 +										*/
 +
-+										if (!minion && Main.rand.Next(100) < Main.player[owner].GetWeaponCrit(Main.player[owner].HeldItem))
++										if (!(minion || ProjectileID.Sets.MinionShot[type]) && Main.rand.Next(100) < Main.player[owner].GetWeaponCrit(Main.player[owner].HeldItem))
 +											flag6 = true;
  
  										int num12 = type;
@@ -400,6 +400,15 @@
  			}
  
  			if (true) {
+@@ -10260,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void EmitBlackLightningParticles(NPC targetNPC) {
++		public static void EmitBlackLightningParticles(NPC targetNPC) {
+ 			ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.BlackLightningHit, new ParticleOrchestraSettings {
+ 				PositionInWorld = targetNPC.Center
+ 			});
 @@ -10391,10 +_,15 @@
  				}
  			}
@@ -436,6 +445,45 @@
  				}
  
  				if (minion && numUpdates == -1 && type != 625 && type != 628) {
+@@ -11831,8 +_,19 @@
+ 					overrideHeight = 4;
+ 				}
+ 
++				Vector2 hitboxCenterFrac = vector ?? new Vector2(0.5f);
++				int num = (overrideWidth != -1) ? overrideWidth : base.width;
++				int num2 = (overrideHeight != -1) ? overrideHeight : base.height;
++
++				if (!ProjectileLoader.TileCollideStyle(this, ref num, ref num2, ref flag6, ref hitboxCenterFrac)) {
++				}
+-				if (((type != 440 && type != 449 && type != 606) || ai[1] != 1f) && (type != 466 || localAI[1] != 1f) && (type != 580 || !(localAI[1] > 0f)) && (type != 640 || !(localAI[1] > 0f))) {
++				else if (((type != 440 && type != 449 && type != 606) || ai[1] != 1f) && (type != 466 || localAI[1] != 1f) && (type != 580 || !(localAI[1] > 0f)) && (type != 640 || !(localAI[1] > 0f))) {
++					Vector2 vector2 = base.Center - new Vector2(num, num2) * hitboxCenterFrac;
+ 					if (aiStyle == 10) {
++						base.velocity = Collision.TileCollision(vector2, base.velocity, num, num2, flag6, flag6);
++						if (type >= ProjectileID.CopperCoinsFalling && type <= ProjectileID.PlatinumCoinsFalling)
++							base.velocity = Collision.AnyCollisionWithSpecificTiles(vector2, base.velocity, num, num2, TileID.Sets.Falling, evenActuated: true);
++						/* This section was rewriten above so it is affected by ProjectileLoader.TileCollideStyle
+ 						if (type >= 736 && type <= 738) {
+ 							base.velocity = Collision.TileCollision(base.position, base.velocity, base.width, base.height, flag6, flag6);
+ 						}
+@@ -11846,13 +_,17 @@
+ 						else {
+ 							base.velocity = Collision.TileCollision(base.position, base.velocity, base.width, base.height, flag6, flag6);
+ 						}
++						*/
+ 					}
+ 					else {
++						/* This section was moved to before the ProjectileLoader.TileCollideStyle call
+ 						Vector2 vector2 = base.position;
+ 						int num = (overrideWidth != -1) ? overrideWidth : base.width;
+ 						int num2 = (overrideHeight != -1) ? overrideHeight : base.height;
++
+ 						if (overrideHeight != -1 || overrideWidth != -1)
+ 							vector2 = (vector.HasValue ? (base.Center - new Vector2(num, num2) * vector.Value) : new Vector2(base.position.X + (float)(base.width / 2) - (float)(num / 2), base.position.Y + (float)(base.height / 2) - (float)(num2 / 2)));
++						*/
+ 
+ 						if (wet) {
+ 							if (honeyWet) {
 @@ -12105,7 +_,9 @@
  						}
  					}
@@ -545,6 +593,24 @@
  			float num = maxRange;
  			int result = -1;
  			for (int i = 0; i < 200; i++) {
+@@ -30291,7 +_,7 @@
+ 			return (value2 + new Vector2(0f, master.gravDir * -21f) + vector).Floor();
+ 		}
+ 
+-		private void Minion_FindTargetInRange(int startAttackRange, ref int attackTarget, bool skipIfCannotHitWithOwnBody, Func<Entity, int, bool> customEliminationCheck = null) {
++		public void Minion_FindTargetInRange(int startAttackRange, ref int attackTarget, bool skipIfCannotHitWithOwnBody, Func<Entity, int, bool> customEliminationCheck = null) {
+ 			float num = startAttackRange;
+ 			float num2 = num;
+ 			float num3 = num;
+@@ -31430,7 +_,7 @@
+ 			Lighting.AddLight(base.Center, new Vector3(0.5f, 0.1f, 0.1f) * scale);
+ 		}
+ 
+-		private bool IsInRangeOfMeOrMyOwner(Entity entity, float maxDistance, out float myDistance, out float playerDistance, out bool closerIsMe) {
++		public bool IsInRangeOfMeOrMyOwner(Entity entity, float maxDistance, out float myDistance, out float playerDistance, out bool closerIsMe) {
+ 			myDistance = Vector2.Distance(entity.Center, base.Center);
+ 			if (myDistance < maxDistance && !CanHitWithOwnBody(entity))
+ 				myDistance = float.PositiveInfinity;
 @@ -32276,6 +_,9 @@
  					if (num3 > (float)num9)
  						ai[0] = 1f;

@@ -1,0 +1,10 @@
+--- src/Terraria/Terraria/ID/DustID.cs
++++ src/tModLoader/Terraria/ID/DustID.cs
+@@ -1,6 +_,6 @@
+ namespace Terraria.ID
+ {
+-	public static class DustID
++	public static partial class DustID
+ 	{
+ 		public const short Dirt = 0;
+ 		public const short Stone = 1;
