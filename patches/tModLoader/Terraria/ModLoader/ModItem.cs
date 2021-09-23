@@ -10,6 +10,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
@@ -46,6 +47,13 @@ namespace Terraria.ModLoader
 
 		protected sealed override void Register() {
 			ModTypeLookup<ModItem>.Register(this);
+
+			// @TODO: Remove on release
+			var type = GetType();
+
+			if (!LoaderUtils.HasMethod(type, typeof(ModItem), nameof(SaveData), typeof(TagCompound)) && LoaderUtils.HasMethod(type, typeof(ModItem), "Save"))
+				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
+			// @TODO: END Remove on release
 
 			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemName.{Name}");
 			Tooltip = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemTooltip.{Name}", true);
@@ -654,46 +662,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine whether the skin/shirt on the player's arms and hands are drawn when this body armor is worn. By default both flags will be false. Note that if drawHands is false, the arms will not be drawn either. Also note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <param name="drawHands">if set to <c>true</c> [draw hands].</param>
-		/// <param name="drawArms">if set to <c>true</c> [draw arms].</param>
-		public virtual void DrawHands(ref bool drawHands, ref bool drawArms) {
-		}
-
-		/// <summary>
-		/// Allows you to determine whether the player's hair or alt (hat) hair draws when this head armor is worn. By default both flags will be false. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <param name="drawHair">if set to <c>true</c> [draw hair].</param>
-		/// <param name="drawAltHair">if set to <c>true</c> [draw alt hair].</param>
-		public virtual void DrawHair(ref bool drawHair, ref bool drawAltHair) {
-		}
-
-		/// <summary>
-		/// Return false to hide the player's head when this head armor is worn. Returns true by default. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawHead() {
-			return true;
-		}
-
-		/// <summary>
-		/// Return false to hide the player's body when this body armor is worn. Returns true by default. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawBody() {
-			return true;
-		}
-
-		/// <summary>
-		/// Return false to hide the player's legs when this leg armor or shoe accessory is worn. Returns true by default. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawLegs() {
-			return true;
-		}
-
-		/// <summary>
 		/// Allows you to modify the colors in which this armor and surrounding accessories are drawn, in addition to which glow mask and in what color is drawn. Note that this hook is only ever called through this item's associated equipment texture.
 		/// </summary>
 		/// <param name="drawPlayer">The draw player.</param>
@@ -957,19 +925,20 @@ namespace Terraria.ModLoader
 		public virtual int BossBagNPC => 0;
 
 		/// <summary>
-		/// Allows you to save custom data for this item. Returns null by default.
+		/// Allows you to save custom data for this item.
+		/// <br/>
+		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
 		/// </summary>
-		/// <returns></returns>
-		public virtual TagCompound Save() {
-			return null;
-		}
+		/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
+		public virtual void SaveData(TagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to load custom data that you have saved for this item.
+		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
-		/// <param name="tag">The tag.</param>
-		public virtual void Load(TagCompound tag) {
-		}
+		/// <param name="tag"> The TagCompound to load data from. </param>
+		public virtual void LoadData(TagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to send custom data for this item between client and server.
