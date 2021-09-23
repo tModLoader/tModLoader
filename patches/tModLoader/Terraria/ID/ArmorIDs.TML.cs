@@ -61,7 +61,7 @@ namespace Terraria.ID
 			partial class Sets
 			{
 				// Created based on 'PlayerDrawLayers.ShouldOverrideLegs_CheckShoes'.
-				public static bool[] OverridesLegs = Factory.CreateBoolSet(13);
+				public static bool[] OverridesLegs = Factory.CreateBoolSet(15);
 			}
 		}
 	}
