@@ -128,11 +128,11 @@ namespace Terraria.ModLoader.IO
 
 			var list = new List<TagCompound>();
 
+			var saveData = new TagCompound();
+
 			foreach (var globalItem in ItemLoader.globalItems) {
 				var globalItemInstance = globalItem.Instance(item);
 				
-				var saveData = new TagCompound();
-
 				globalItemInstance?.SaveData(item, saveData);
 
 				if (saveData.Count == 0)
@@ -143,6 +143,7 @@ namespace Terraria.ModLoader.IO
 					["name"] = globalItemInstance.Name,
 					["data"] = saveData
 				});
+				saveData = new TagCompound();
 			}
 
 			return list.Count > 0 ? list : null;
