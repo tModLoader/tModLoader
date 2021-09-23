@@ -17,6 +17,19 @@ namespace Terraria.ModLoader
 	public abstract partial class ModSystem : ModType
 	{
 		protected override void Register() {
+			// @TODO: Remove on release
+			static bool HasMethod(Type t, string method, params Type[] args) {
+				var methodInfo = t.GetMethod(method, args);
+				if (methodInfo == null)
+					return false;
+				return methodInfo.DeclaringType != typeof(ModSystem);
+			}
+
+			var type = this.GetType();
+			if (!HasMethod(type, "SaveWorldData", typeof(TagCompound)) && HasMethod(this.GetType(), "SaveWorldData"))
+				throw new Exception($"{type} has old SaveData callback with no arguments but not new SaveData with TagCompound, not loading the mod to avoid wiping mod data");
+			// @TODO: END Remove on release
+
 			SystemLoader.Add(this);
 			ModTypeLookup<ModSystem>.Register(this);
 		}

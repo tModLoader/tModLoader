@@ -47,6 +47,19 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<ModItem>.Register(this);
 
+			// @TODO: Remove on release
+			static bool HasMethod(Type t, string method, params Type[] args) {
+				var methodInfo = t.GetMethod(method, args);
+				if (methodInfo == null)
+					return false;
+				return methodInfo.DeclaringType != typeof(ModItem);
+			}
+
+			var type = this.GetType();
+			if (!HasMethod(type, "SaveData", typeof(TagCompound)) && HasMethod(this.GetType(), "Save"))
+				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
+			// @TODO: END Remove on release
+
 			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemName.{Name}");
 			Tooltip = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemTooltip.{Name}", true);
 

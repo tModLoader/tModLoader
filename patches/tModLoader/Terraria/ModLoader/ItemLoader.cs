@@ -1749,7 +1749,10 @@ namespace Terraria.ModLoader
 		}
 
 		private static bool HasMethod(Type t, string method, params Type[] args) {
-			return t.GetMethod(method, args).DeclaringType != typeof(GlobalItem);
+			var methodInfo = t.GetMethod(method, args);
+			if (methodInfo == null)
+				return false;
+			return methodInfo.DeclaringType != typeof(GlobalItem);
 		}
 
 		internal static void VerifyGlobalItem(GlobalItem item) {
@@ -1764,6 +1767,11 @@ namespace Terraria.ModLoader
 
 			if (saveMethods == 1)
 				throw new Exception($"{type} must override both of ({nameof(GlobalItem.SaveData)}/{nameof(GlobalItem.LoadData)}) or none");
+
+			// @TODO: Remove on release
+			if ((saveMethods == 0) && HasMethod(type, "Save", typeof(Item)))
+				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
+			// @TODO: END Remove on release
 
 			int netMethods = 0;
 

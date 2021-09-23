@@ -176,6 +176,19 @@ namespace Terraria.ModLoader
 			if (!Mod.loading)
 				throw new Exception("AddTileEntity can only be called from Mod.Load or Mod.Autoload");
 
+			// @TODO: Remove on release
+			static bool HasMethod(Type t, string method, params Type[] args) {
+				var methodInfo = t.GetMethod(method, args);
+				if (methodInfo == null)
+					return false;
+				return methodInfo.DeclaringType != typeof(ModTileEntity);
+			}
+
+			var type = this.GetType();
+			if (!HasMethod(type, "SaveData", typeof(TagCompound)) && HasMethod(this.GetType(), "Save"))
+				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
+			// @TODO: END Remove on release
+
 			manager.Register(this);
 			ModTypeLookup<ModTileEntity>.Register(this);
 		}
