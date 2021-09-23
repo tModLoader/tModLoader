@@ -926,12 +926,11 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
-		private static bool HasMethod(Type t, string method, params Type[] args) {
-			return t.GetMethod(method, args).DeclaringType != typeof(ModPlayer);
-		}
-
 		internal static void VerifyModPlayer(ModPlayer player) {
 			var type = player.GetType();
+
+			// Shortcut
+			static bool HasMethod(Type type, string method, params Type[] parameters) => LoaderUtils.HasMethod(type, typeof(GlobalItem), method, parameters);
 
 			/*
 			int netClientMethods = 0;

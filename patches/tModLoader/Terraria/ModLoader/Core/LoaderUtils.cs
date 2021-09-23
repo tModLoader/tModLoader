@@ -56,5 +56,14 @@ namespace Terraria.ModLoader.Core
 				.OrderBy(i => i.index)
 				.ToArray();
 		}
+
+		public static bool HasMethod(Type type, Type declaringType, string method, params Type[] args) {
+			var methodInfo = type.GetMethod(method, args);
+
+			if (methodInfo == null)
+				return false;
+
+			return methodInfo.DeclaringType != declaringType;
+		}
 	}
 }
