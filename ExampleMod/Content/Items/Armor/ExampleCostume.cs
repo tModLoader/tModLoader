@@ -21,19 +21,30 @@ namespace ExampleMod.Content.Items.Armor
 	// ExampleCostumePlayer.FrameEffects is most important. It overrides the drawn equipment slots and sets them to our Blocky EquipTextures. 
 	// ExampleCostumePlayer.ModifyDrawInfo is for some fun effects for our costume.
 	// Remember that the visuals and the effects of Costumes must be kept separate. Follow this example for best results.
-	[AutoloadEquip(false, EquipType.Head, EquipType.Body, EquipType.Legs)]
 	public class ExampleCostume : ModItem
 	{
+		public override void Load() {
+			// The code below runs only if we're not loading on a server
+			if (Main.netMode != NetmodeID.Server) {
+				// Add equip textures
+				Mod.AddEquipTexture(new BlockyHead(), this, EquipType.Head, $"{Texture}_{EquipType.Head}");
+				Mod.AddEquipTexture(new EquipTexture(), this, EquipType.Body, $"{Texture}_{EquipType.Body}");
+				// The below 2 lines are equivalent
+				//Mod.AddEquipTexture(new EquipTexture(), EquipType.Legs, $"{Texture}_{EquipType.Legs}");
+				Mod.AddEquipTexture(this, EquipType.Legs, $"{Texture}_{EquipType.Legs}");
+			}
+		}
+
 		// Called in SetStaticDefaults
 		private void SetupDrawing() {
-			int equipHeadSlot = Mod.GetEquipSlot(Name, EquipType.Head);
-			int equipBodySlot = Mod.GetEquipSlot(Name, EquipType.Body);
-			int equipLegsSlot = Mod.GetEquipSlot(Name, EquipType.Legs);
+			int equipSlotHead = Mod.GetEquipSlot(Name, EquipType.Head);
+			int equipSlotBody = Mod.GetEquipSlot(Name, EquipType.Body);
+			int equipSlotLegs = Mod.GetEquipSlot(Name, EquipType.Legs);
 
-			ArmorIDs.Head.Sets.DrawHead[equipHeadSlot] = false;
-			ArmorIDs.Body.Sets.DrawBody[equipBodySlot] = false;
-			ArmorIDs.Body.Sets.DrawArm[equipBodySlot] = false;
-			ArmorIDs.Legs.Sets.DrawLegs[equipLegsSlot] = false;
+			ArmorIDs.Head.Sets.DrawHead[equipSlotHead] = false;
+			ArmorIDs.Body.Sets.HidesTopSkin[equipSlotBody] = true;
+			ArmorIDs.Body.Sets.HidesArms[equipSlotBody] = false;
+			ArmorIDs.Legs.Sets.HidesBottomSkin[equipSlotLegs] = true;
 		}
 
 		public override void SetStaticDefaults() {
@@ -59,9 +70,12 @@ namespace ExampleMod.Content.Items.Armor
 			}
 		}
 
-		// Required so UpdateVanitySet gets called
+		// Required so UpdateVanitySet gets called in EquipTextures
 		public override bool IsVanitySet(int head, int body, int legs) => true;
+	}
 
+	public class BlockyHead : EquipTexture
+	{
 		public override void UpdateVanitySet(Player player) {
 			if (Main.rand.NextBool(20)) {
 				Dust.NewDust(player.position, player.width, player.height, ModContent.DustType<Sparkle>());
