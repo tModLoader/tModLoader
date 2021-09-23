@@ -951,14 +951,14 @@ namespace Terraria.ModLoader
 
 			int saveMethods = 0;
 
-			if (HasMethod(type, nameof(ModPlayer.Save)))
+			if (HasMethod(type, nameof(ModPlayer.SaveData), typeof(TagCompound)))
 				saveMethods++;
 
-			if (HasMethod(type, nameof(ModPlayer.Load), typeof(TagCompound)))
+			if (HasMethod(type, nameof(ModPlayer.LoadData), typeof(TagCompound)))
 				saveMethods++;
 
 			if (saveMethods == 1)
-				throw new Exception($"{type} must override both of ({nameof(ModPlayer.Save)}/{nameof(ModPlayer.Load)}) or none");
+				throw new Exception($"{type} must override both of ({nameof(ModPlayer.SaveData)}/{nameof(ModPlayer.LoadData)}) or none");
 		}
 
 		private static HookList HookPostSellItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostSellItem);

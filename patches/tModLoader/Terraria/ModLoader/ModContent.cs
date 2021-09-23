@@ -411,16 +411,14 @@ namespace Terraria.ModLoader
 			MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
 			
 			int i = 0;
-			
 			foreach (var mod in ModLoader.Mods.Reverse()) {
 				if (Main.dedServ)
 					Console.WriteLine($"Unloading {mod.DisplayName}...");
 				else
 					Interface.loadMods.SetCurrentMod(i++, mod.DisplayName);
-				
-				MonoModHooks.RemoveAll(mod);
-				
+
 				try {
+					MonoModHooks.RemoveAll(mod);
 					mod.Close();
 					mod.UnloadContent();
 				}

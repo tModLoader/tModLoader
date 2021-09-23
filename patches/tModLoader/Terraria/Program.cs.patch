@@ -87,7 +87,7 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,63 @@
+@@ -138,32 +_,65 @@
  			}
  		}
  
@@ -106,6 +106,8 @@
 +
 +			if (File.Exists("savehere.txt"))
 +				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
++
++			EnsureMinimumStackSizeOnThreads();
 +
 +			bool isServer = LaunchParameters.ContainsKey("-server");
 +			try {
