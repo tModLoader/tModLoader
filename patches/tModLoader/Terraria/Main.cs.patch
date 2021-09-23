@@ -25,12 +25,11 @@
  using Terraria.Achievements;
  using Terraria.Audio;
  using Terraria.Chat;
-@@ -69,9 +_,17 @@
+@@ -69,9 +_,16 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
-+using Terraria.ModLoader.Audio;
 +using Terraria.ModLoader.Core;
 +using Terraria.ModLoader.Default;
 +using Terraria.ModLoader.Engine;
@@ -316,6 +315,19 @@
  			return result;
  		}
  
+@@ -2758,6 +_,12 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// Registers an animation for an item type to draw inside UI (not world or held item on player).
++		/// To enable its animation in the world, use ItemID.Sets.AnimatesAsSoul in conjunction with this
++		/// </summary>
++		/// <param name="index">Item type</param>
++		/// <param name="animation">Draw animation</param>
+ 		public static void RegisterItemAnimation(int index, DrawAnimation animation) {
+ 			if (!itemAnimationsRegistered.Contains(index))
+ 				itemAnimationsRegistered.Add(index);
 @@ -2804,11 +_,13 @@
  			}
  		}
@@ -404,18 +416,20 @@
  			if (Configuration.Save())
  				return PlayerInput.Save();
  
-@@ -3218,6 +_,11 @@
- 				TryPickingDefaultUIScale(currentValue3);
- 			}
+@@ -3215,7 +_,12 @@
+ 					screenBorderlessPendingResizes = 1;
  
+ 				SetDisplayMode(currentValue2, currentValue3, fullscreen: false);
+-				TryPickingDefaultUIScale(currentValue3);
++				TryPickingDefaultUIScale(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height);
++			}
++
 +			if (Main.dedServ) {
 +				ModLoader.ModLoader.LoadConfiguration();
 +				return;
-+			}
-+
+ 			}
+ 
  			Configuration.Get("SmartCursorToggle", ref cSmartCursorModeIsToggleAndNotHold);
- 			Configuration.Get("MapEnabled", ref mapEnabled);
- 			Configuration.Get("InvasionBarMode", ref invasionProgressMode);
 @@ -3502,6 +_,7 @@
  				};
  			}
@@ -875,7 +889,7 @@
 +				Environment.Exit(1);
 +			}
 +
-+			if (Directory.Exists(InstallVerifier.TmlContentDirectory))
++			if (Directory.Exists(Path.Combine(InstallVerifier.TmlContentDirectory, "Images")))
 +				AlternateContentManager = new TMLContentManager(Content.ServiceProvider, InstallVerifier.TmlContentDirectory, null);
 +
 +			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
@@ -1633,7 +1647,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15061,82 +_,82 @@
+@@ -15061,82 +_,84 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1673,6 +1687,8 @@
  
  				num16 += (int)(FontAssets.MouseText.Value.MeasureString(array[k]).Y + (float)num12);
  			}
++
++			ItemLoader.PostDrawTooltip(HoverItem, drawableLines.AsReadOnly());
  		}
  
 -		public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine) {
@@ -3821,6 +3837,31 @@
  			}
  		}
  
+@@ -47050,19 +_,22 @@
+ 					renderCount = 99;
+ 				}
+ 				else {
++					//TML: RenderTiles() is quite slow. ~30ms at peak; doesn't change with lighting modes
+ 					if (renderCount == 3) {
+ 						RenderTiles();
+ 						sceneTilePos.X = screenPosition.X - (float)offScreenRange;
+ 						sceneTilePos.Y = screenPosition.Y - (float)offScreenRange;
+ 					}
+ 
+-					if (renderCount == 3) {
++					//TML: Remapped from 3 to 2 to flatten per frame load for colour lighting ( ~5ms peak).
++					if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 2 : 3)) {
+ 						RenderTiles2();
+ 						sceneTile2Pos.X = screenPosition.X - (float)offScreenRange;
+ 						sceneTile2Pos.Y = screenPosition.Y - (float)offScreenRange;
+ 					}
+ 
+-					if (renderCount == 3) {
++					//TML: Remapped from 3 to 0 to flatten per frame load for colour lighting ( ~15ms peak).
++					if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 0 : 3)) {
+ 						RenderWalls();
+ 						sceneWallPos.X = screenPosition.X - (float)offScreenRange;
+ 						sceneWallPos.Y = screenPosition.Y - (float)offScreenRange;
 @@ -47157,10 +_,13 @@
  			if (gameMenu || netMode == 2)
  				bgTopY = -200;
@@ -3841,8 +3882,8 @@
  			base.Draw(gameTime);
 -			float val = (float)screenWidth / MinimumZoomComparerX;
 -			float val2 = (float)screenHeight / MinimumZoomComparerY;
-+			float val = screenWidth / (ModLoader.ModLoader.removeForcedMinimumZoom ? MinimumZoomComparerX : 8192f);
-+			float val2 = screenHeight / (ModLoader.ModLoader.removeForcedMinimumZoom ? MinimumZoomComparerY : 8192f);
++			float val = screenWidth / (ModLoader.ModLoader.removeForcedMinimumZoom ? 8192f : MinimumZoomComparerX);
++			float val2 = screenHeight / (ModLoader.ModLoader.removeForcedMinimumZoom ? 8192f : MinimumZoomComparerY);
  			ForcedMinimumZoom = Math.Max(Math.Max(1f, val), val2);
  			GameViewMatrix.Effects = ((!gameMenu && player[myPlayer].gravDir != 1f) ? SpriteEffects.FlipVertically : SpriteEffects.None);
  			BackgroundViewMatrix.Effects = GameViewMatrix.Effects;
@@ -4160,6 +4201,27 @@
  		public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue) {
  			chatMonitor.NewText(newText, R, G, B);
  			SoundEngine.PlaySound(12);
+@@ -49273,12 +_,20 @@
+ 			SoundEngine.PlaySound(12);
+ 		}
+ 
++		/// <summary>
++		/// Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
++		/// <br>You can also call this on the client to update visuals immediately, assuming it was called serverside aswell (Journey Mode rain slider does this).</br>
++		/// </summary>
+ 		public static void StopRain() {
+ 			rainTime = 0;
+ 			raining = false;
+ 			maxRaining = 0f;
+ 		}
+ 
++		/// <summary>
++		/// Starts rain for a random amount of time. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
++		/// <br>You can also call this on the client to update visuals immediately, assuming it was/will be called serverside aswell (Journey Mode rain slider does this).</br>
++		/// </summary>
+ 		public static void StartRain() {
+ 			int num = 86400;
+ 			int num2 = num / 24;
 @@ -49390,7 +_,7 @@
  			}
  

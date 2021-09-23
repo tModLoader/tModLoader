@@ -86,29 +86,26 @@ namespace Terraria.ModLoader.Core
 
 
 		[MethodImpl(MethodImplOptions.NoInlining)]
-		internal static void Unload() 
-		{
-			foreach (var kv in loadedModContexts) {
-				kv.Value.Unload();
+		internal static void Unload() {
+			var alcRefs = loadedModContexts.Values.Select(alc => new WeakReference<AssemblyLoadContext>(alc)).ToArray();
+			foreach (var alc in loadedModContexts.Values) {
+				alc.Unload();
 			}
 
 			hostContextForAssembly.Clear();
-
-			for (int i = 0; loadedModContexts.Any(); i++) {
-				if (i > 10) {
-					Logging.tML.Warn($"{string.Join(", ", loadedModContexts.Select(kv => kv.Key))} refused to finalize");
-					break;
-				}
-				// Beg the assemblies to finalize and cleanup
-				GC.Collect();
-				GC.WaitForPendingFinalizers();
-			}
-
 			loadedModContexts.Clear();
+
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+
+			foreach (var alcRef in alcRefs) {
+				if (alcRef.TryGetTarget(out var alc))
+					Logging.tML.Warn($"{alc} refused to finalize");
+			}
 		}
 
-		private static readonly ConditionalWeakTable<string, ModLoadContext> loadedModContexts = new ConditionalWeakTable<string, ModLoadContext>();
-		private static readonly IDictionary<Assembly, ModLoadContext> hostContextForAssembly = new Dictionary<Assembly, ModLoadContext>();
+		private static readonly Dictionary<string, ModLoadContext> loadedModContexts = new();
+		private static readonly Dictionary<Assembly, ModLoadContext> hostContextForAssembly = new();
 
 		//private static CecilAssemblyResolver cecilAssemblyResolver = new CecilAssemblyResolver();
 
@@ -153,7 +150,8 @@ namespace Terraria.ModLoader.Core
 		}
 
 		private static void VerifyMod(string modName, Assembly assembly, out Type modType) {
-			var asmName = new AssemblyName(assembly.FullName).Name;
+			string asmName = new AssemblyName(assembly.FullName).Name;
+
 			if (asmName != modName)
 				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorModNameDoesntMatchAssemblyName", modName, asmName));
 
@@ -162,8 +160,9 @@ namespace Terraria.ModLoader.Core
 				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorNamespaceFolderDontMatch"));
 
 			var modTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Mod))).ToArray();
-			if (modTypes.Length > 2)
-				throw new Exception(modName + " has multiple classes extending Mod. Only one Mod per mod is supported at the moment");
+
+			if (modTypes.Length > 1)
+				throw new Exception($"{modName} has multiple classes extending Mod. Only one Mod per mod is supported at the moment");
 
 			modType = modTypes.SingleOrDefault() ?? typeof(Mod); // Mods don't really need a class extending Mod, we can always just make one for them
 		}

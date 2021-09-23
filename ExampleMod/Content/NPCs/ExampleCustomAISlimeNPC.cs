@@ -44,7 +44,7 @@ namespace ExampleMod.Content.NPCs
 			// DisplayName.SetDefault("Flutter Slime"); // Automatic from .lang files
 			Main.npcFrameCount[NPC.type] = 6; // make sure to set this for your modnpcs.
 
-			//Specify the debuffs it is immune to
+			// Specify the debuffs it is immune to
 			NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData {
 				SpecificallyImmuneTo = new int[] {
 					BuffID.Poisoned // This NPC will be immune to the Poisoned debuff.
@@ -189,7 +189,7 @@ namespace ExampleMod.Content.NPCs
 				NPC.velocity = new Vector2(NPC.direction * 2, -10f);
 			}
 			else if (AI_Timer > 40) {
-				// after .66 seconds, we go to the hover state. // TODO, gravity?
+				// after .66 seconds, we go to the hover state. //TODO, gravity?
 				AI_State = (float)ActionState.Hover;
 				AI_Timer = 0;
 			}

@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -10,6 +11,10 @@ namespace ExampleMod.Content.Items
 	public class ExampleInstancedItem : ModItem
 	{
 		public override string Texture => "ExampleMod/Content/Items/ExampleItem";
+
+		public override void SetStaticDefaults() {
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 99;
+		}
 
 		public override ModItem Clone(Item item) {
 			ExampleInstancedItem clone = (ExampleInstancedItem)base.Clone(item);
@@ -33,11 +38,14 @@ namespace ExampleMod.Content.Items
 			}
 		}
 
-		public override TagCompound Save() =>
-			new TagCompound { ["Colors"] = colors.ToList() };
+		// NOTE: The tag instance provided here is always empty by default.
+		// Read https://github.com/tModLoader/tModLoader/wiki/Saving-and-loading-using-TagCompound to better understand Saving and Loading data.
+		public override void SaveData(TagCompound tag) {
+			tag["Colors"] = colors.ToList();
+		}
 
-		public override void Load(TagCompound tag) {
-			colors = tag.GetList<Color>("Colors").ToArray();
+		public override void LoadData(TagCompound tag) {
+			colors = tag.Get<List<Color>>("Colors").ToArray();
 		}
 
 		public override void AddRecipes() => CreateRecipe().AddIngredient<ExampleItem>(10).Register();
