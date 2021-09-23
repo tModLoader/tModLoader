@@ -164,9 +164,9 @@ namespace Terraria.ModLoader.IO
 		internal static List<TagCompound> SaveModData(Player player) {
 			var list = new List<TagCompound>();
 
-			foreach (var modPlayer in player.modPlayers) {
-				var saveData = new TagCompound();
+			var saveData = new TagCompound();
 
+			foreach (var modPlayer in player.modPlayers) {
 				modPlayer.SaveData(saveData);
 
 				if (saveData.Count == 0)
@@ -177,6 +177,7 @@ namespace Terraria.ModLoader.IO
 					["name"] = modPlayer.Name,
 					["data"] = saveData
 				});
+				saveData = new TagCompound();
 			}
 
 			return list;
