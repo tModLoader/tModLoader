@@ -825,24 +825,22 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not the given item needs to save custom data. Returning false will save on the memory used in saving an item, but returning true is necessary in order to save data across all items or vanilla items. Returns false by default. Note that the return value of this hook must be deterministic (randomness is not allowed).
+		/// Allows you to save custom data for this item.
+		/// <br/>
+		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
 		/// </summary>
-		public virtual bool NeedsSaving(Item item) {
-			return false;
-		}
+		/// <param name="item"> The item. </param>
+		/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
+		public virtual void SaveData(Item item, TagCompound tag) { }
 
 		/// <summary>
-		/// Allows you to save custom data for the given item. Only called when NeedsCustomSaving returns true. Returns false by default.
+		/// Allows you to load custom data that you have saved for this item.
+		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
-		public virtual TagCompound Save(Item item) {
-			return null;
-		}
-
-		/// <summary>
-		/// Allows you to load custom data that you have saved for the given item.
-		/// </summary>
-		public virtual void Load(Item item, TagCompound tag) {
-		}
+		/// <param name="item"> The item. </param>
+		/// <param name="tag"> The TagCompound to load data from. </param>
+		public virtual void LoadData(Item item, TagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to send custom data for the given item between client and server.

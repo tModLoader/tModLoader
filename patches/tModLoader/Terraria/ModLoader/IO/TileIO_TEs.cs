@@ -16,13 +16,22 @@ namespace Terraria.ModLoader.IO
 				var tileEntity = pair.Value;
 				var modTileEntity = tileEntity as ModTileEntity;
 
-				list.Add(new TagCompound {
+				var saveData = TagCompound.GetEmptyTag();
+
+				tileEntity.SaveData(saveData);
+
+				var tag = new TagCompound {
 					["mod"] = modTileEntity?.Mod.Name ?? "Terraria",
 					["name"] = modTileEntity?.Name ?? tileEntity.GetType().Name,
 					["X"] = tileEntity.Position.X,
-					["Y"] = tileEntity.Position.Y,
-					["data"] = tileEntity.Save()
-				});
+					["Y"] = tileEntity.Position.Y
+				};
+
+				if (saveData.Count != 0) {
+					tag["data"] = saveData;
+				}
+
+				list.Add(tag);
 			}
 
 			return list;
@@ -59,7 +68,7 @@ namespace Terraria.ModLoader.IO
 				//Load TE data.
 				if (tag.ContainsKey("data")) {
 					try {
-						tileEntity.Load(tag.GetCompound("data"));
+						tileEntity.LoadData(tag.GetCompound("data"));
 
 						if (tileEntity is ModTileEntity modTileEntity) {
 							(tileEntity as UnloadedTileEntity)?.TryRestore(ref modTileEntity);

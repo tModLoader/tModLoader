@@ -361,15 +361,17 @@ namespace Terraria.ModLoader.IO
 			var list = new List<TagCompound>();
 
 			foreach (var system in SystemLoader.Systems) {
-				var data = system.SaveWorldData();
+				var saveData = TagCompound.GetEmptyTag();
 
-				if (data == null)
+				system.SaveWorldData(saveData);
+
+				if (saveData.Count == 0)
 					continue;
 
 				list.Add(new TagCompound {
 					["mod"] = system.Mod.Name,
 					["name"] = system.Name,
-					["data"] = data
+					["data"] = saveData
 				});
 			}
 

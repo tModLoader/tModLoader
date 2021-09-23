@@ -13,7 +13,11 @@ namespace Terraria.ModLoader.IO
 	//Additional conversions can be added using TagConverter
 	public class TagCompound : IEnumerable<KeyValuePair<string, object>>, ICloneable
 	{
+		[ThreadStatic]
+		private static TagCompound emptyTagCache = new();
+
 		private Dictionary<string, object> dict = new Dictionary<string, object>();
+
 		public T Get<T>(string key) {
 			dict.TryGetValue(key, out object tag);
 			try {
@@ -116,5 +120,17 @@ namespace Terraria.ModLoader.IO
 		public int Count => dict.Count;
 		public IEnumerator<KeyValuePair<string, object>> GetEnumerator() => dict.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		/// <summary>
+		/// Returns the same TagCompound instance until a previously returned instance is filled with data, which is when it'll get a new one.
+		/// <br/> A big optimization for passing TagCompounds into Save functions.
+		/// </summary>
+		public static TagCompound GetEmptyTag() {
+			if (emptyTagCache == null || emptyTagCache.Count > 0) {
+				emptyTagCache = new TagCompound();
+			}
+
+			return emptyTagCache;
+		}
 	}
 }
