@@ -45,6 +45,7 @@ namespace Terraria
 			Environment.SetEnvironmentVariable("COMPlus_DefaultStackSize", "400000");
 		}
 
+		/*
 		internal static void TestNewThreadSizeWindows() {
 			[System.Runtime.InteropServices.DllImport("kernel32.dll")]
 			static extern void GetCurrentThreadStackLimits(out uint lowLimit, out uint highLimit);
@@ -56,5 +57,6 @@ namespace Terraria
 			var size = (high - low) / 1024; // in kB
 			ModLoader.Logging.tML.Debug("Thread Size: " + size + " kB");
 		}
+		*/
 	}
 }
