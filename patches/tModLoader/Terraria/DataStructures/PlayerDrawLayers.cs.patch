@@ -128,7 +128,7 @@
  					drawDataCache.Add(drawData);
  				}
  
-+				if (!(drawinfo.drawPlayer.body <= 0 || ArmorIDs.Body.Sets.DrawBody[drawinfo.drawPlayer.body]))
++				if (drawinfo.drawPlayer.body > 0 && !ArmorIDs.Body.Sets.DrawBody[drawinfo.drawPlayer.body])
 +					goto postDrawBody;
 +
  				List<DrawData> drawDataCache2 = drawinfo.DrawDataCache;
@@ -315,13 +315,14 @@
  			if (drawinfo.drawPlayer.babyBird) {
  				Rectangle bodyFrame5 = drawinfo.drawPlayer.bodyFrame;
  				bodyFrame5.Y = 0;
-@@ -1854,9 +_,10 @@
+@@ -1854,9 +_,11 @@
  		}
  
  		private static void DrawPlayer_21_Head_TheFace(ref PlayerDrawSet drawinfo) {
 -			bool flag = drawinfo.drawPlayer.head == 38 || drawinfo.drawPlayer.head == 135 || drawinfo.drawPlayer.head == 269;
 +			//bool flag = drawinfo.drawPlayer.head == 38 || drawinfo.drawPlayer.head == 135 || drawinfo.drawPlayer.head == 269;
-+			bool flag = !(drawinfo.drawPlayer.head < 0 || ArmorIDs.Head.Sets.DrawHead[drawinfo.drawPlayer.head]);
++			bool flag = drawinfo.drawPlayer.head > 0 && !ArmorIDs.Head.Sets.DrawHead[drawinfo.drawPlayer.head];
++
  			DrawData item;
 -			if (!flag && drawinfo.drawPlayer.faceHead > 0 && drawinfo.drawPlayer.faceHead < 19) {
 +			if (!flag && drawinfo.drawPlayer.faceHead > 0) {
@@ -346,16 +347,15 @@
  				return;
  
  			Vector2 zero = Vector2.Zero;
-@@ -2342,8 +_,10 @@
+@@ -2342,8 +_,11 @@
  						origin5 = new Vector2(value.Width, value.Height);
  						num10 -= value.Width;
  					}
--
--					item = new DrawData(value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + origin5.X + (float)num10), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + (float)num11)), sourceRect, heldItem.GetAlpha(drawinfo.itemColor), num9, origin5, adjustedItemScale, drawinfo.itemEffect, 0);
 +					
-+					Vector2 holdoutOrigin = Vector2.Zero;
-+					ItemLoader.HoldoutOrigin(drawinfo.drawPlayer, ref holdoutOrigin);
-+					item = new DrawData(value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + origin5.X + (float)num10), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + (float)num11)), sourceRect, heldItem.GetAlpha(drawinfo.itemColor), num9, origin5 + holdoutOrigin, adjustedItemScale, drawinfo.itemEffect, 0);
++					ItemLoader.HoldoutOrigin(drawinfo.drawPlayer, ref origin5);
+ 
+ 					item = new DrawData(value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + origin5.X + (float)num10), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + (float)num11)), sourceRect, heldItem.GetAlpha(drawinfo.itemColor), num9, origin5, adjustedItemScale, drawinfo.itemEffect, 0);
++					
  					drawinfo.DrawDataCache.Add(item);
  					if (num == 3870) {
  						item = new DrawData(TextureAssets.GlowMask[238].Value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + origin5.X + (float)num10), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + (float)num11)), sourceRect, new Color(255, 255, 255, 127), num9, origin5, adjustedItemScale, drawinfo.itemEffect, 0);
