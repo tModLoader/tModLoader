@@ -20,8 +20,8 @@ namespace ExampleMod.Content.Buffs
 			ExampleCostumePlayer p = player.GetModPlayer<ExampleCostumePlayer>();
 
 			// We use blockyAccessoryPrevious here instead of blockyAccessory because UpdateBuffs happens before UpdateEquips but after ResetEffects.
-			if (player.townNPCs >= 1 && p.blockyAccessoryPrevious) {
-				p.blockyPower = true;
+			if (player.townNPCs >= 1 && p.BlockyAccessoryPrevious) {
+				p.BlockyPower = true;
 				if (Main.myPlayer == player.whoAmI && Main.time % 1000 == 0) {
 					player.QuickSpawnItem(ModContent.ItemType<ExampleBlock>());
 				}

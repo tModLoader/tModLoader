@@ -12,36 +12,36 @@ namespace ExampleMod.Common.Players
 	public class ExampleCostumePlayer : ModPlayer
 	{
 		// These 5 relate to ExampleCostume.
-		public bool blockyAccessoryPrevious;
-		public bool blockyAccessory;
-		public bool blockyHideVanity;
-		public bool blockyForceVanity;
-		public bool blockyPower;
+		public bool BlockyAccessoryPrevious;
+		public bool BlockyAccessory;
+		public bool BlockyHideVanity;
+		public bool BlockyForceVanity;
+		public bool BlockyPower;
 
 		public override void ResetEffects() {
-			blockyAccessoryPrevious = blockyAccessory;
-			blockyAccessory = blockyHideVanity = blockyForceVanity = blockyPower = false;
+			BlockyAccessoryPrevious = BlockyAccessory;
+			BlockyAccessory = BlockyHideVanity = BlockyForceVanity = BlockyPower = false;
 		}
 
 		public override void UpdateVanityAccessories() {
 			for (int n = 13; n < 18 + Player.GetAmountOfExtraAccessorySlotsToShow(); n++) {
 				Item item = Player.armor[n];
 				if (item.type == ModContent.ItemType<ExampleCostume>()) {
-					blockyHideVanity = false;
-					blockyForceVanity = true;
+					BlockyHideVanity = false;
+					BlockyForceVanity = true;
 				}
 			}
 		}
 
 		public override void UpdateEquips() {
 			// Make sure this condition is the same as the condition in the Buff to remove itself. We do this here instead of in ModItem.UpdateAccessory in case we want future upgraded items to set blockyAccessory
-			if (Player.townNPCs >= 1 && blockyAccessory) {
+			if (Player.townNPCs >= 1 && BlockyAccessory) {
 				Player.AddBuff(ModContent.BuffType<Blocky>(), 60);
 			}
 		}
 
 		public override void FrameEffects() {
-			if ((blockyPower || blockyForceVanity) && !blockyHideVanity) {
+			if ((BlockyPower || BlockyForceVanity) && !BlockyHideVanity) {
 				var exampleCostume = ModContent.GetInstance<ExampleCostume>();
 				Player.head = Mod.GetEquipSlot(exampleCostume.Name, EquipType.Head);
 				Player.body = Mod.GetEquipSlot(exampleCostume.Name, EquipType.Body);
@@ -50,7 +50,7 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
-			if ((blockyPower || blockyForceVanity) && !blockyHideVanity) {
+			if ((BlockyPower || BlockyForceVanity) && !BlockyHideVanity) {
 				Player.headRotation = Player.velocity.Y * Player.direction * 0.1f;
 				Player.headRotation = Utils.Clamp(Player.headRotation, -0.3f, 0.3f);
 				if (ModContent.GetInstance<ExampleBiome>().IsBiomeActive(Player)) {
@@ -61,7 +61,7 @@ namespace ExampleMod.Common.Players
 
 		public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
 			ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
-			if (blockyAccessory) {
+			if (BlockyAccessory) {
 				playSound = false;
 			}
 
@@ -69,7 +69,7 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
-			if (blockyAccessory) {
+			if (BlockyAccessory) {
 				SoundEngine.PlaySound(SoundID.Zombie, Player.position, 13);
 			}
 		}

@@ -64,9 +64,9 @@ namespace ExampleMod.Content.Items.Armor
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
 			var p = player.GetModPlayer<ExampleCostumePlayer>();
-			p.blockyAccessory = true;
+			p.BlockyAccessory = true;
 			if (hideVisual) {
-				p.blockyHideVanity = true;
+				p.BlockyHideVanity = true;
 			}
 		}
 
