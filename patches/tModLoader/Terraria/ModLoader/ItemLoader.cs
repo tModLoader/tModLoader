@@ -1748,16 +1748,12 @@ namespace Terraria.ModLoader
 				NetGlobals[i] = ModContent.Find<GlobalItem>(ModNet.GetMod(r.ReadInt16()).Name, r.ReadString());
 		}
 
-		private static bool HasMethod(Type t, string method, params Type[] args) {
-			var methodInfo = t.GetMethod(method, args);
-			if (methodInfo == null)
-				return false;
-			return methodInfo.DeclaringType != typeof(GlobalItem);
-		}
-
 		internal static void VerifyGlobalItem(GlobalItem item) {
 			var type = item.GetType();
 			int saveMethods = 0;
+
+			// Shortcut
+			static bool HasMethod(Type type, string method, params Type[] parameters) => LoaderUtils.HasMethod(type, typeof(GlobalItem), method, parameters);
 
 			if (HasMethod(type, nameof(GlobalItem.SaveData), typeof(Item), typeof(TagCompound)))
 				saveMethods++;
