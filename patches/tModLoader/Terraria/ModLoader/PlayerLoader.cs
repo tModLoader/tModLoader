@@ -931,7 +931,7 @@ namespace Terraria.ModLoader
 			var type = player.GetType();
 
 			// Shortcut
-			static bool HasMethod(Type type, string method, params Type[] parameters) => LoaderUtils.HasMethod(type, typeof(GlobalItem), method, parameters);
+			static bool HasMethod(Type type, string method, params Type[] parameters) => LoaderUtils.HasMethod(type, typeof(ModPlayer), method, parameters);
 
 			/*
 			int netClientMethods = 0;
