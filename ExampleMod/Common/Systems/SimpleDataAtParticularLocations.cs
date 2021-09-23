@@ -35,6 +35,7 @@ namespace ExampleMod.Common.Systems
 		}
 
 		// We save our data sets using TagCompounds.
+		// NOTE: The tag instance provided here is always empty by default.
 		public override void SaveWorldData(TagCompound tag) {
 			if (myMap.Length != 0) {
 				tag["myMap"] = myMap.Select(info => new TagCompound {
