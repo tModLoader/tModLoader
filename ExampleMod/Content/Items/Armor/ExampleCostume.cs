@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Items.Armor
 	// There is code for this effect in many places, look in the following files for the full implementation:
 	// NPCs.ExamplePerson drops this item when killed
 	// Content.Items.Armor.ExampleCostume (below) is the accessory item that sets ExampleCostumePlayer values. Note that this item does not have EquipTypes set. This is a vital difference and key to our approach.
-	// Content.Items.Armor.BlockyHead/Body/Legs (below) are EquipTexture classes. They simply disable the drawing of the player's head/body/legs respectively when they are set as the drawn EquipTexture. One spawns dust too.
+	// Content.Items.Armor.BlockyHead (below) is an EquipTexture class. It spawns dust when active.
 	// ExampleCostume.Load() shows calling AddEquipTexture 3 times with appropriate parameters. This is how we register EquipTexture manually instead of the automatic pairing of ModItem and EquipTexture that other equipment uses.
 	// Buffs.Blocky is the Buff that is shown while in Blocky mode. The buff is responsible for the actual stat effects of the costume. It also needs to remove itself when not near town npcs.
 	// ExampleCostumePlayer has 5 bools. They manage the visibility and other things related to this effect.
@@ -65,9 +65,7 @@ namespace ExampleMod.Content.Items.Armor
 		public override void UpdateAccessory(Player player, bool hideVisual) {
 			var p = player.GetModPlayer<ExampleCostumePlayer>();
 			p.BlockyAccessory = true;
-			if (hideVisual) {
-				p.BlockyHideVanity = true;
-			}
+			p.BlockyHideVanity = hideVisual;
 		}
 
 		// Required so UpdateVanitySet gets called in EquipTextures
