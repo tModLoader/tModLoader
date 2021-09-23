@@ -10,6 +10,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
@@ -46,6 +47,13 @@ namespace Terraria.ModLoader
 
 		protected sealed override void Register() {
 			ModTypeLookup<ModItem>.Register(this);
+
+			// @TODO: Remove on release
+			var type = GetType();
+
+			if (!LoaderUtils.HasMethod(type, typeof(ModItem), nameof(SaveData), typeof(TagCompound)) && LoaderUtils.HasMethod(type, typeof(ModItem), "Save"))
+				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
+			// @TODO: END Remove on release
 
 			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemName.{Name}");
 			Tooltip = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemTooltip.{Name}", true);

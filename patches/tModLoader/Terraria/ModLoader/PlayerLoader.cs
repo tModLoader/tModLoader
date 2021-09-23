@@ -9,6 +9,7 @@ using System.Reflection;
 using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.IO;
 
@@ -958,6 +959,11 @@ namespace Terraria.ModLoader
 
 			if (saveMethods == 1)
 				throw new Exception($"{type} must override both of ({nameof(ModPlayer.SaveData)}/{nameof(ModPlayer.LoadData)}) or none");
+
+			// @TODO: Remove on release
+			if ((saveMethods == 0) && HasMethod(type, "Save"))
+				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
+			// @TODO: END Remove on release
 		}
 
 		private static HookList HookPostSellItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostSellItem);
