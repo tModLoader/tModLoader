@@ -114,21 +114,25 @@ if [ ! -d "$install_dir" ]; then
   exec 1>&3 2>&4
 fi
 
-# If the install failed, provide a link to get the portable directly, and instructions on where to do with it.
-recidive_install=0
-while [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; do
-  if [ $recidive_install = 1 ]; then
-		read -p "\"$install_dir/dotnet.exe\" not detected. Please ensure step is complete before continuing with Enter."
-		goto :loop
-	)
-	mkdir "$install_dir"
+# Technically can happen on any system, but Windows_NT is the one expected to fail if powershell is not 4+
+# so it's treated differently with step-by-step manual install
+if [ "$_uname" = Windows_NT ]; then
+  # If the install failed, provide a link to get the portable directly, and instructions on where to do with it.
+  recidive_install=0
+  while [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; do
+    if [ $recidive_install = 1 ]; then
+      read -p "\"$install_dir/dotnet.exe\" not detected. Please ensure step is complete before continuing with Enter."
+      goto :loop
+    )
+    mkdir "$install_dir"
 
-	echo "It has been detected that your system failed to install the dotnet portables automatically. Will now proceed manually."
-	start "" "https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-"$version"-windows-x64-binaries"
-	echo "Now manually downloading the x64 .NET portable. Please find it in the opened browser."
-	read -p "Press 'ENTER' to proceed to the next step..."
-	echo "Please extract the downloaded Zip file contents in to \"$install_dir\""
-	read -p "Please press Enter when this step is complete."
+    echo "It has been detected that your system failed to install the dotnet portables automatically. Will now proceed manually."
+    start "" "https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-"$version"-windows-x64-binaries"
+    echo "Now manually downloading the x64 .NET portable. Please find it in the opened browser."
+    read -p "Press 'ENTER' to proceed to the next step..."
+    echo "Please extract the downloaded Zip file contents in to \"$install_dir\""
+    read -p "Please press Enter when this step is complete."
 
-  recidive_install=1
-done
+    recidive_install=1
+  done
+fi
