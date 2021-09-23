@@ -1199,103 +1199,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateDrawHands(int body, ref bool drawHands, ref bool drawArms);
-		private static HookList HookDrawHands = AddHook<DelegateDrawHands>(g => g.DrawHands);
-		/// <summary>
-		/// Calls the item's body equipment texture's DrawHands hook, then all GlobalItem.DrawHands hooks.
-		/// "body" is the player's associated body equipment texture.
-		/// </summary>
-		public static void DrawHands(Player player, ref bool drawHands, ref bool drawArms) {
-			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
-
-			texture?.DrawHands(ref drawHands, ref drawArms);
-
-			foreach (var g in HookDrawHands.Enumerate(globalItemsArray)) {
-				g.DrawHands(player.body, ref drawHands, ref drawArms);
-			}
-		}
-
-		private delegate void DelegateDrawHair(int body, ref bool drawHair, ref bool drawAltHair);
-		private static HookList HookDrawHair = AddHook<DelegateDrawHair>(g => g.DrawHair);
-		//in Terraria.Main.DrawPlayerHead after if statement that sets flag2 to true
-		//  call ItemLoader.DrawHair(drawPlayer, ref flag, ref flag2)
-		//in Terraria.Main.DrawPlayer after if statement that sets flag5 to true
-		//  call ItemLoader.DrawHair(drawPlayer, ref flag4, ref flag5)
-		/// <summary>
-		/// Calls the item's head equipment texture's DrawHair hook, then all GlobalItem.DrawHair hooks.
-		/// "head" is the player's associated head equipment texture.
-		/// </summary>
-		public static void DrawHair(Player player, ref bool drawHair, ref bool drawAltHair) {
-			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
-			texture?.DrawHair(ref drawHair, ref drawAltHair);
-
-			foreach (var g in HookDrawHair.Enumerate(globalItemsArray)) {
-				g.DrawHair(player.head, ref drawHair, ref drawAltHair);
-			}
-		}
-
-		private static HookList HookDrawHead = AddHook<Func<int, bool>>(g => g.DrawHead);
-		//in Terraria.Main.DrawPlayerHead in if statement after ItemLoader.DrawHair
-		//and in Terraria.Main.DrawPlayer in if (!drawPlayer.invis && drawPlayer.head != 38 && drawPlayer.head != 135)
-		//  use && with ItemLoader.DrawHead(drawPlayer)
-		/// <summary>
-		/// Calls the item's head equipment texture's DrawHead hook, then all GlobalItem.DrawHead hooks, until one of them returns false. Returns true if none of them return false.
-		/// "head" is the player's associated head equipment texture.
-		/// </summary>
-		public static bool DrawHead(Player player) {
-			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
-			if (texture != null && !texture.DrawHead())
-				return false;
-
-			foreach (var g in HookDrawHead.Enumerate(globalItemsArray)) {
-				if (!g.DrawHead(player.head))
-					return false;
-			}
-
-			return true;
-		}
-
-		private static HookList HookDrawBody = AddHook<Func<int, bool>>(g => g.DrawBody);
-		/// <summary>
-		/// Calls the item's body equipment texture's DrawBody hook, then all GlobalItem.DrawBody hooks, until one of them returns false. Returns true if none of them return false.
-		/// "body" is the player's associated body equipment texture.
-		/// </summary>
-		public static bool DrawBody(Player player) {
-			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
-
-			if (texture != null && !texture.DrawBody())
-				return false;
-
-			foreach (var g in HookDrawBody.Enumerate(globalItemsArray)) {
-				if (!g.DrawBody(player.body))
-					return false;
-			}
-
-			return true;
-		}
-
-		private static HookList HookDrawLegs = AddHook<Func<int, int, bool>>(g => g.DrawLegs);
-		/// <summary>
-		/// Calls the item's leg equipment texture's DrawLegs hook, then the item's shoe equipment texture's DrawLegs hook, then all GlobalItem.DrawLegs hooks, until one of them returns false. Returns true if none of them return false.
-		/// "legs" and "shoes" are the player's associated legs and shoes equipment textures.
-		/// </summary>
-		public static bool DrawLegs(Player player) {
-			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
-			if (texture != null && !texture.DrawLegs())
-				return false;
-
-			texture = EquipLoader.GetEquipTexture(EquipType.Shoes, player.shoe);
-			if (texture != null && !texture.DrawLegs())
-				return false;
-
-			foreach (var g in HookDrawLegs.Enumerate(globalItemsArray)) {
-				if (!g.DrawLegs(player.legs, player.shoe))
-					return false;
-			}
-
-			return true;
-		}
-
 		private delegate void DelegateDrawArmorColor(EquipType type, int slot, Player drawPlayer, float shadow, ref Color color, ref int glowMask, ref Color glowMaskColor);
 		private static HookList HookDrawArmorColor = AddHook<DelegateDrawArmorColor>(g => g.DrawArmorColor);
 		/// <summary>
@@ -1652,7 +1555,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookHoldoutOrigin = AddHook<Func<int, Vector2?>>(g => g.HoldoutOrigin);
 		public static void HoldoutOrigin(Player player, ref Vector2 origin) {
-			Item item = player.inventory[player.selectedItem];
+			Item item = player.HeldItem;
 			Vector2 modOrigin = Vector2.Zero;
 			if (item.ModItem != null) {
 				Vector2? modOrigin2 = item.ModItem.HoldoutOrigin();
