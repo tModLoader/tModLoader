@@ -126,6 +126,8 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<TagCompound> SaveNPCs() {
 			var list = new List<TagCompound>();
+			var data = new TagCompound();
+			
 			for (int index = 0; index < Main.maxNPCs; index++) {
 				NPC npc = Main.npc[index];
 				if (npc.active &&
@@ -139,25 +141,25 @@ namespace Terraria.ModLoader.IO
 							continue;
 						}
 
-						var data = TagCompound.GetEmptyTag();
-
 						globalNPC.SaveData(npc, data);
 						if (data.Count != 0) {
 							globalData.Add(new TagCompound {
 								["mod"] = globalNPC.Mod.Name, ["name"] = globalNPC.Name, ["data"] = data
 							});
+							data = new TagCompound();
 						}
 					}
 
 					TagCompound tag;
 					if (NPCLoader.IsModNPC(npc)) {
-						var data = TagCompound.GetEmptyTag();
 						npc.ModNPC.SaveData(data);
 
 						tag = new TagCompound {["mod"] = npc.ModNPC.Mod.Name, ["name"] = npc.ModNPC.Name};
 
-						if (data.Count != 0)
+						if (data.Count != 0) {
 							tag["data"] = data;
+							data = new TagCompound();
+						}
 
 						if (npc.townNPC) {
 							tag["displayName"] = npc.GivenName;
