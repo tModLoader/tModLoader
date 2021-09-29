@@ -182,7 +182,7 @@ namespace Terraria.ModLoader.Default
 				NetHandler.SendSlot(toWho, Player.whoAmI, i, exAccessorySlot[i]);
 
 			for (int i = 0; i < exDyesAccessory.Length; i++) {
-				NetHandler.SendSlot(toWho, Player.whoAmI, i, exDyesAccessory[i]);
+				NetHandler.SendSlot(toWho, Player.whoAmI, -i - 1, exDyesAccessory[i]);
 				NetHandler.SendVisualState(toWho, Player.whoAmI, i, exHideAccessory[i]);
 			}
 		}
@@ -207,12 +207,16 @@ namespace Terraria.ModLoader.Default
 			public const byte InventorySlot = 1;
 			public const byte VisualState = 2;
 
+			public const byte Server = 2;
+			public const byte Client = 1;
+			public const byte SP = 0;
+
 			public static void SendSlot(int toWho, int plr, int slot, Item item) {
 				var p = ModContent.GetInstance<ModLoaderMod>().GetPacket();
 
 				p.Write(InventorySlot);
 
-				if (Main.netMode == 2)
+				if (Main.netMode == Server)
 					p.Write((sbyte)plr);
 
 				p.Write((sbyte)slot);
@@ -222,7 +226,7 @@ namespace Terraria.ModLoader.Default
 			}
 
 			private static void HandleSlot(BinaryReader r, int fromWho) {
-				if (Main.netMode == 1)
+				if (Main.netMode == Client)
 					fromWho = r.ReadByte();
 
 				var dPlayer = Main.player[fromWho].GetModPlayer<ModAccessorySlotPlayer>();
@@ -230,7 +234,7 @@ namespace Terraria.ModLoader.Default
 				sbyte slot = r.ReadSByte();
 				var item = ItemIO.Receive(r, true);
 
-				NetHandler.SetSlot(slot, item, dPlayer);
+				SetSlot(slot, item, dPlayer);
 
 				if (Main.netMode == 2)
 					SendSlot(-1, fromWho, slot, item);
@@ -241,7 +245,7 @@ namespace Terraria.ModLoader.Default
 
 				p.Write(VisualState);
 
-				if (Main.netMode == 2)
+				if (Main.netMode == Server)
 					p.Write((byte)plr);
 
 				p.Write((sbyte)slot);
@@ -251,7 +255,7 @@ namespace Terraria.ModLoader.Default
 			}
 
 			private static void HandleVisualState(BinaryReader r, int fromWho) {
-				if (Main.netMode == 1)
+				if (Main.netMode == Client)
 					fromWho = r.ReadByte();
 
 				var dPlayer = Main.player[fromWho].GetModPlayer<ModAccessorySlotPlayer>();
@@ -260,7 +264,7 @@ namespace Terraria.ModLoader.Default
 				
 				dPlayer.exHideAccessory[slot] = r.ReadBoolean();
 
-				if (Main.netMode == 2)
+				if (Main.netMode == Server)
 					SendVisualState(-1, fromWho, slot, dPlayer.exHideAccessory[slot]);
 			}
 
