@@ -55,7 +55,7 @@ namespace Terraria.ModLoader
 					skip++;
 			}
 
-			if (!(list.Count == 0)) {
+			if (list.Count != 0 && skip != MaxVanillaSlotCount + list.Count && skip != 0) {
 				DrawScrollSwitch();
 
 				if (ModSlotPlayer(Player).scrollSlots) {
@@ -156,7 +156,7 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			if (flag4 && flag3 || modded && ModdedSkipUIDraw(slot)) {
+			if (flag4 && flag3 || modded && IsHidden(slot)) {
 				return false;
 			}
 
@@ -168,6 +168,9 @@ namespace Terraria.ModLoader
 			if (modded) {
 				ModAccessorySlot mAccSlot = list[slot];
 				customLoc = mAccSlot.XLoc != -1 || mAccSlot.YLoc != -1;
+				if (!customLoc && Main.EquipPage != 0)
+					return false;
+
 				if (customLoc) {
 					xLoc = mAccSlot.XLoc;
 					yLoc = mAccSlot.YLoc;
@@ -188,6 +191,8 @@ namespace Terraria.ModLoader
 					DrawSlot(ModSlotPlayer(Player).exDyesAccessory, -12, slot, flag3, xLoc, yLoc);
 			}
 			else {
+				if (!customLoc && Main.EquipPage != 0)
+					return false;
 				if (!SetDrawLocation(slot - 3, skip, ref xLoc, ref yLoc))
 					return true;
 
@@ -385,7 +390,7 @@ namespace Terraria.ModLoader
 
 		public bool ModdedCanSlotBeShown(int index) => Get(index).IsVisibleWhenNotEnabled();
 
-		public bool ModdedSkipUIDraw(int index) => Get(index).IsHidden();
+		public bool IsHidden(int index) => Get(index).IsHidden();
 
 		public bool CanAcceptItem(int index, Item checkItem) => Get(index).CanAcceptItem(checkItem);
 

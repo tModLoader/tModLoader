@@ -2808,7 +2808,7 @@
  					if ((num50 == 8 && !flag4) || (num50 == 9 && !flag5))
  						continue;
  
-@@ -30263,6 +_,19 @@
+@@ -30263,9 +_,22 @@
  				}
  
  				inventoryBack = color;
@@ -2822,12 +2822,15 @@
 +
 +				DrawDefenseCounter(randomLocationX, chkMax);
 +
-+				LoaderManager.Get<AccessorySlotLoader>().DrawAccSlots(num20);
-+
 +				inventoryBack = color;
  				inventoryScale = num36;
  			}
  
++			LoaderManager.Get<AccessorySlotLoader>().DrawAccSlots(num20);
++
+ 			int num54 = (screenHeight - 600) / 2;
+ 			int num55 = (int)((float)screenHeight / 600f * 250f);
+ 			if (screenHeight < 700) {
 @@ -30309,11 +_,17 @@
  					string text = Lang.inter[46].Value + ": ";
  					if (reforgeItem.type > 0) {
