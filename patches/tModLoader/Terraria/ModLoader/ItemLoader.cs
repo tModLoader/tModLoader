@@ -1689,6 +1689,18 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		private static HookList HookCanAccessoryBeEquippedWith = AddHook<Func<Item, Item, Player, bool>>(g => g.CanAccessoryBeEquippedWith);
+		public static bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem) {
+			Player player = Main.player[Main.myPlayer];
+
+			foreach (var g in HookCanAccessoryBeEquippedWith.Enumerate(incomingItem.globalItems)) {
+				if (!g.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player))
+					return false;
+			}
+
+			return true;
+		}
+
 		private delegate void DelegateExtractinatorUse(int extractType, ref int resultType, ref int resultStack);
 		private static HookList HookExtractinatorUse = AddHook<DelegateExtractinatorUse>(g => g.ExtractinatorUse);
 		public static void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType) {

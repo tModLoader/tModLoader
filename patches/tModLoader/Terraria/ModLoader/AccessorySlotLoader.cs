@@ -301,13 +301,13 @@ namespace Terraria.ModLoader
 				if (!flag) {
 					if (Math.Abs(context) == 12) {
 						if (Main.mouseRightRelease && Main.mouseRight)
-							ItemSlot.RightClick(items, Math.Abs(context), slot);
+							ItemSlot.RightClick(items, context, slot);
 
 						ItemSlot.LeftClick(items, context, slot);
 					}
 					else if (Math.Abs(context) == 11) {
 						ItemSlot.LeftClick(items, context, slot);
-						ItemSlot.RightClick(items, Math.Abs(context), slot);
+						ItemSlot.RightClick(items, context, slot);
 					}
 					else if (Math.Abs(context) == 10) {
 						ItemSlot.LeftClick(items, context, slot);

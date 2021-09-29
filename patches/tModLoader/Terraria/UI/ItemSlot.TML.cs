@@ -44,7 +44,7 @@ namespace Terraria.UI
 				if (item.IsTheSameAs(player.armor[j]) && ItemLoader.CanEquipAccessory(item, j, false))
 					accSlotToSwapTo = j - 3;
 
-				if (j < 10 && item.wingSlot > 0 && player.armor[j].wingSlot > 0 && ItemLoader.CanEquipAccessory(item, j, false))
+				if (j < 10 && (item.wingSlot > 0 && player.armor[j].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(player.armor[j], item)) && ItemLoader.CanEquipAccessory(item, j, false))
 					accSlotToSwapTo = j - 3;
 			}
 
@@ -53,7 +53,7 @@ namespace Terraria.UI
 				if (item.IsTheSameAs(accessories[j]) && accLoader.CanAcceptItem(j, item) && ItemLoader.CanEquipAccessory(item, j, true))
 					accSlotToSwapTo = j + 20;
 
-				if (j < accLoader.list.Count && item.wingSlot > 0 && accessories[j].wingSlot > 0 && accLoader.CanAcceptItem(j, item) && ItemLoader.CanEquipAccessory(item, j, true))
+				if (j < accLoader.list.Count && (item.wingSlot > 0 && accessories[j].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(accessories[j], item)) && accLoader.CanAcceptItem(j, item) && ItemLoader.CanEquipAccessory(item, j, true))
 					accSlotToSwapTo = j + 20;
 			}
 

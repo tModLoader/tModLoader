@@ -32,7 +32,15 @@
  		private static bool[] canFavoriteAt;
  		private static bool[] canShareAt;
  		private static float[] inventoryGlowHue;
-@@ -352,6 +_,10 @@
+@@ -345,13 +_,17 @@
+ 		}
+ 
+ 		private static bool OverrideLeftClick(Item[] inv, int context = 0, int slot = 0) {
+-			if (context == 10 && isEquipLocked(inv[slot].type))
++			if ((context == 10 || context == -10) && isEquipLocked(inv[slot].type))
+ 				return true;
+ 
+ 			if (Main.LocalPlayer.tileEntityAnchor.IsInValidUseTileEntity() && Main.LocalPlayer.tileEntityAnchor.GetTileEntity().OverrideItemSlotLeftClick(inv, context, slot))
  				return true;
  
  			Item item = inv[slot];
@@ -43,31 +51,108 @@
  			if (Main.cursorOverride == 2) {
  				if (ChatManager.AddChatText(FontAssets.MouseText.Value, ItemTagHandler.GenerateTag(item), Vector2.One))
  					SoundEngine.PlaySound(12);
-@@ -425,11 +_,11 @@
- 			Player player = Main.player[Main.myPlayer];
- 			bool flag = Main.mouseLeftRelease && Main.mouseLeft;
- 			if (flag) {
--				if (OverrideLeftClick(inv, context, slot))
-+				if (OverrideLeftClick(inv, Math.Abs(context), slot))
- 					return;
- 
- 				inv[slot].newAndShiny = false;
--				if (LeftClick_SellOrTrash(inv, context, slot) || player.itemAnimation != 0 || player.itemTime != 0)
-+				if (LeftClick_SellOrTrash(inv, Math.Abs(context), slot) || player.itemAnimation != 0 || player.itemTime != 0)
- 					return;
+@@ -360,7 +_,7 @@
  			}
  
-@@ -437,6 +_,10 @@
- 			if (num != 3 && !flag)
- 				return;
+ 			if (Main.cursorOverride == 3) {
+-				if (!canFavoriteAt[context])
++				if (context < 0 || !canFavoriteAt[context])
+ 					return false;
  
-+			// context is received as signed integer; negative numbers are modded, positive are vanilla. Zero is mouse
-+			// As the code to follow is independant of modded or vanilla, we use absolute to minimize patch size.
-+			context = Math.Abs(context);
-+
- 			switch (num) {
+ 				item.favorited = !item.favorited;
+@@ -441,8 +_,13 @@
  				case 0:
  					if (context == 6 && Main.mouseItem.type != 0)
+ 						inv[slot].SetDefaults();
++					if (new int[6] { -10, -11, -12, 10, 11, 12 }.Contains(context) && !ItemLoader.CanEquipAccessory(inv[slot], slot, context < 0))
++						break;
+-					if (context == 11 && !inv[slot].FitsAccessoryVanitySlot)
++					if (Math.Abs(context) == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
+ 						break;
++					if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, inv[slot]))
++						break;
++
+ 					Utils.Swap(ref inv[slot], ref Main.mouseItem);
+ 					if (inv[slot].stack > 0) {
+ 						switch (context) {
+@@ -451,6 +_,9 @@
+ 								break;
+ 							case 8:
+ 							case 9:
++							case -10:
++							case -11:
++							case -12:
+ 							case 10:
+ 							case 11:
+ 							case 12:
+@@ -489,6 +_,13 @@
+ 					break;
+ 				case 1:
+ 					if (Main.mouseItem.stack == 1 && Main.mouseItem.type > 0 && inv[slot].type > 0 && inv[slot].IsNotTheSameAs(Main.mouseItem) && (context != 11 || Main.mouseItem.FitsAccessoryVanitySlot)) {
++						if (new int[6] { -10, -11, -12, 10, 11, 12 }.Contains(context) && !ItemLoader.CanEquipAccessory(Main.mouseItem, slot, context < 0))
++							break;
++						if (Math.Abs(context) == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
++							break;
++						if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem))
++							break;
++
+ 						Utils.Swap(ref inv[slot], ref Main.mouseItem);
+ 						SoundEngine.PlaySound(7);
+ 						if (inv[slot].stack > 0) {
+@@ -498,6 +_,9 @@
+ 									break;
+ 								case 8:
+ 								case 9:
++								case -10:
++								case -11:
++								case -12:
+ 								case 10:
+ 								case 11:
+ 								case 12:
+@@ -524,6 +_,13 @@
+ 						}
+ 					}
+ 					else if (Main.mouseItem.type > 0 && inv[slot].type == 0 && (context != 11 || Main.mouseItem.FitsAccessoryVanitySlot)) {
++						if (new int[6] { -10, -11, -12, 10, 11, 12 }.Contains(context) && !ItemLoader.CanEquipAccessory(Main.mouseItem, slot, context < 0))
++							break;
++						if (Math.Abs(context) == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
++							break;
++						if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem))
++							break;
++
+ 						if (Main.mouseItem.stack == 1) {
+ 							Utils.Swap(ref inv[slot], ref Main.mouseItem);
+ 							if (inv[slot].type == 0 || inv[slot].stack < 1)
+@@ -551,6 +_,9 @@
+ 									break;
+ 								case 8:
+ 								case 9:
++								case -10:
++								case -11:
++								case -12:
+ 								case 10:
+ 								case 11:
+ 								case 12:
+@@ -579,6 +_,9 @@
+ 									break;
+ 								case 8:
+ 								case 9:
++								case -10:
++								case -11:
++								case -12:
+ 								case 10:
+ 								case 11:
+ 								case 12:
+@@ -632,6 +_,9 @@
+ 									break;
+ 								case 8:
+ 								case 9:
++								case -10:
++								case -11:
++								case -12:
+ 								case 10:
+ 								case 11:
+ 								case 12:
 @@ -651,18 +_,24 @@
  					break;
  				case 3:
@@ -95,6 +180,24 @@
  						}
  
  						Recipe.FindRecipes();
+@@ -686,7 +_,7 @@
+ 			bool flag = false;
+ 			bool result = false;
+ 			if (NotUsingGamepad && Options.DisableLeftShiftTrashCan) {
+-				if ((uint)context <= 4u || context == 7)
++				if ((uint)context <= 4u && context >= 0 || context == 7)
+ 					flag = true;
+ 
+ 				if (ControlInUse && flag) {
+@@ -695,7 +_,7 @@
+ 				}
+ 			}
+ 			else {
+-				if ((uint)context <= 4u)
++				if ((uint)context <= 4u && context >= 0)
+ 					flag = (Main.player[Main.myPlayer].chest == -1);
+ 
+ 				if (ShiftInUse && flag) {
 @@ -714,18 +_,20 @@
  
  			if (Main.npcShop > 0 && !inv[slot].favorited) {
@@ -231,7 +334,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1162,6 +_,9 @@
+@@ -1162,11 +_,15 @@
  
  						Recipe.FindRecipes();
  					}
@@ -241,6 +344,12 @@
  					else {
  						result = false;
  					}
+ 					break;
+ 				case 9:
++				case -11:
+ 				case 11: {
+ 						result = true;
+ 						if (!Main.mouseRight || !Main.mouseRightRelease)
 @@ -1175,22 +_,25 @@
  						if (Main.npcShop > 0)
  							return true;
@@ -257,9 +366,9 @@
  						bool flag2 = context != 11 || item.FitsAccessoryVanitySlot || item.IsAir;
  						if (flag2 && context == 11 && inv[slot].wingSlot > 0) {
 -							for (int i = 3; i < 10; i++) {
-+							for (int i = 0; i < inv.Length / 2; i++) {
 -								if (inv[i].wingSlot > 0 && i != slot - 10)
-+								if (inv[i].wingSlot > 0 && i != tSlot)
++							for (int i = 0; i < inv.Length / 2; i++) {
++								if (inv[i].wingSlot > 0 && i != tSlot || !ItemLoader.CanAccessoryBeEquippedWith(inv[tSlot], inv[i]))
  									flag2 = false;
  							}
  						}
@@ -273,6 +382,14 @@
  						SoundEngine.PlaySound(7);
  						Recipe.FindRecipes();
  						if (inv[slot].stack > 0) {
+@@ -1214,6 +_,7 @@
+ 
+ 						break;
+ 					}
++				case -12:
+ 				case 12:
+ 				case 25:
+ 				case 27: {
 @@ -1264,6 +_,8 @@
  			int num = Main.superFastStack + 1;
  			Player localPlayer = Main.LocalPlayer;
@@ -401,6 +518,15 @@
  					Vector2 position4 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
  					Color white = Color.White;
  					spriteBatch.Draw(TextureAssets.Cd.Value, position4, null, white, 0f, default(Vector2), num11, SpriteEffects.None, 0f);
+@@ -1861,7 +_,7 @@
+ 				inv[slot] = ArmorSwap(inv[slot], out success);
+ 				if (success) {
+ 					Main.EquipPageSelected = 0;
+-					AchievementsHelper.HandleOnEquip(player, item, item.accessory ? 10 : 8);
++					AchievementsHelper.HandleOnEquip(player, item, (item.accessory ? 10 : 8) * (context < 0 ? -1 : 1));
+ 				}
+ 			}
+ 
 @@ -1892,7 +_,7 @@
  			return true;
  		}
@@ -431,7 +557,7 @@
 +			
 +			var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
 +			for (int i = 0; i < itemCollection.Length; i++) {
-+				if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0) {
++				if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item)) {
 +					if (i >= 20 && slot >= 20 && slot % modSlotPlayer.SlotCount() != i % modSlotPlayer.SlotCount())
 +						return true;
 +					else if (slot < 20 && i % 10 != slot % 10)

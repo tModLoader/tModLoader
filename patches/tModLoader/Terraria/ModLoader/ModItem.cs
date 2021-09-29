@@ -902,6 +902,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to prevent similar accessories from being equipped multiple times. For example, vanilla Wings.
+		/// Return false to have the currently equipped item swapped with the incoming item - ie both can't be equipped at same time.
+		/// </summary>
+		public virtual bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {
+			return true;
+		}
+
+		/// <summary>
 		/// Allows you to modify what item, and in what quantity, is obtained when this item is fed into the Extractinator. By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator.
 		/// </summary>
 		/// <param name="resultType">Type of the result.</param>
