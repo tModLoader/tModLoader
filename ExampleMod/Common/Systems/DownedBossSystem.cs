@@ -27,27 +27,21 @@ namespace ExampleMod.Common.Systems
 			// downedOtherBoss = false;
 		}
 
-		public override TagCompound SaveWorldData() {
-			var downed = new List<string>();
-
+		// We save our data sets using TagCompounds.
+		// NOTE: The tag instance provided here is always empty by default.
+		public override void SaveWorldData(TagCompound tag) {
 			if (downedMinionBoss) {
-				downed.Add("downedMinionBoss");
+				tag["downedMinionBoss"] = true;
 			}
 
 			// if (downedOtherBoss) {
-			//	downed.Add("downedOtherBoss");
+			//	tag["downedOtherBoss"] = true;
 			// }
-
-			return new TagCompound {
-				["downed"] = downed,
-			};
 		}
 
 		public override void LoadWorldData(TagCompound tag) {
-			var downed = tag.GetList<string>("downed");
-
-			downedMinionBoss = downed.Contains("downedMinionBoss");
-			// downedOtherBoss = downed.Contains("downedOtherBoss");
+			downedMinionBoss = tag.ContainsKey("downedMinionBoss");
+			// downedOtherBoss = tag.ContainsKey("downedOtherBoss");
 		}
 
 		public override void NetSend(BinaryWriter writer) {

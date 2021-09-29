@@ -11,7 +11,10 @@ namespace Terraria.ModLoader.Default
 		internal void SetData(TagCompound tag) {
 			modName = tag.GetString("mod");
 			tileEntityName = tag.GetString("name");
-			data = tag.GetCompound("data");
+
+			if (tag.ContainsKey("data")) {
+				data = tag.GetCompound("data");
+			}
 		}
 
 		public override bool ValidTile(int i, int j) {
@@ -19,15 +22,16 @@ namespace Terraria.ModLoader.Default
 			return tile.active() && TileLoader.GetTile(type) is UnloadedTile;
 		}
 
-		public override TagCompound Save() {
-			return new TagCompound {
-				["mod"] = modName,
-				["name"] = tileEntityName,
-				["data"] = data
-			};
+		public override void SaveData(TagCompound tag) {
+			tag["mod"] = modName;
+			tag["name"] = tileEntityName;
+
+			if (data?.Count > 0) {
+				tag["data"] = data;
+			}
 		}
 
-		public override void Load(TagCompound tag) {
+		public override void LoadData(TagCompound tag) {
 			SetData(tag);
 		}
 
@@ -36,7 +40,10 @@ namespace Terraria.ModLoader.Default
 				newEntity = ModTileEntity.ConstructFromBase(tileEntity);
 				newEntity.type = (byte)tileEntity.Type;
 				newEntity.Position = Position;
-				newEntity.Load(data);
+
+				if (data?.Count > 0) {
+					newEntity.LoadData(data);
+				}
 			}
 		}
 	}

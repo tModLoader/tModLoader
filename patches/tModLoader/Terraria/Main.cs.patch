@@ -1668,7 +1668,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15061,82 +_,82 @@
+@@ -15061,82 +_,84 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1708,6 +1708,8 @@
  
  				num16 += (int)(FontAssets.MouseText.Value.MeasureString(array[k]).Y + (float)num12);
  			}
++
++			ItemLoader.PostDrawTooltip(HoverItem, drawableLines.AsReadOnly());
  		}
  
 -		public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine) {
