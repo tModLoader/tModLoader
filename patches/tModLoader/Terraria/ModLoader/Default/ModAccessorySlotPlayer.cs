@@ -102,7 +102,15 @@ namespace Terraria.ModLoader.Default
 
 			for (int k = 0; k < SlotCount(); k++) {
 				if (loader.ModdedIsAValidEquipmentSlotForIteration(k)) {
-					Player.UpdateVisibleAccessories(exAccessorySlot[k], exAccessorySlot[k + SlotCount()], exHideAccessory[k], k, true);
+					Player.UpdateVisibleAccessories(exAccessorySlot[k], exHideAccessory[k], k, true);
+				}
+			}
+
+			for (int k = 0; k < SlotCount(); k++) {
+				if (loader.ModdedIsAValidEquipmentSlotForIteration(k)) {
+					var vanitySlot = k + SlotCount();
+					if (!Player.ItemIsVisuallyIncompatible(exAccessorySlot[vanitySlot]))
+						Player.UpdateVisibleAccessory(vanitySlot, exAccessorySlot[vanitySlot], true);
 				}
 			}
 

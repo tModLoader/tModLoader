@@ -170,7 +170,7 @@ namespace Terraria
 		/// <summary>
 		/// Invoked in UpdateVisibleAccessories. Runs common code for both modded slots and vanilla slots based on provided Items.
 		/// </summary>
-		public void UpdateVisibleAccessories(Item item, Item vItem, bool invisible, int slot = -1, bool modded = false) {
+		public void UpdateVisibleAccessories(Item item, bool invisible, int slot = -1, bool modded = false) {
 			if (eocDash > 0 && shield == -1 && item.shieldSlot != -1) {
 				shield = item.shieldSlot;
 				if (cShieldFallback != -1)
@@ -194,10 +194,7 @@ namespace Terraria
 			}
 
 			if (!invisible)
-				UpdateVisibleAccessory(slot, item);
-
-			if (!ItemIsVisuallyIncompatible(vItem))
-				UpdateVisibleAccessory(slot, vItem);
+				UpdateVisibleAccessory(slot, item, modded);
 		}
 
 		/// <summary>

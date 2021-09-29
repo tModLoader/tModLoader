@@ -3139,7 +3139,7 @@
  			for (int i = 3; i < 10; i++) {
  				if (!IsAValidEquipmentSlotForIteration(i))
  					continue;
-@@ -25827,6 +_,13 @@
+@@ -25827,6 +_,20 @@
  						UpdateVisibleAccessory(j, item2);
  				}
  			}
@@ -3148,7 +3148,14 @@
 +				if (!IsAValidEquipmentSlotForIteration(i))
 +					continue;
 +
-+				UpdateVisibleAccessories(armor[i], armor[i + 10], hideVisibleAccessory[i], i);
++				UpdateVisibleAccessories(armor[i], hideVisibleAccessory[i], i);
++			}
++
++			for (int i = 13; i < 20; i++) {
++				if (!IsAValidEquipmentSlotForIteration(i))
++					continue;
++
++				UpdateVisibleAccessory(i, armor[i]);
 +			}
  
  			if (HeldItem.type == 4760 && ownedProjectileCounts[866] < 1) {
