@@ -28,31 +28,38 @@ namespace Terraria.ModLoader
 		public const int MaxVanillaSlotCount = 2 + 5;
 
 		// DRAWING CODE ///////////////////////////////////////////////////////////////////
-		internal int GetAccessorySlotPerColumn(int num20) {
-			float minimumClearance = num20 + 2 * 56 * Main.inventoryScale + 4;
+		internal int GetAccessorySlotPerColumn() {
+			float minimumClearance = DrawVerticalAlignment + 2 * 56 * Main.inventoryScale + 4;
 			return (int)((Main.screenHeight - minimumClearance) / (56 * Main.inventoryScale) - 1.8f);
 		}
 
+		/// <summary>
+		/// The variable known as num20 used to align all equipment slot drawing in Main.
+		/// Represents the y position where equipment slots start to be drawn from.
+		/// </summary>
+		static public int DrawVerticalAlignment { get; private set; }
+
 		public void DrawAccSlots(int num20) {
 			int skip = 0;
+			DrawVerticalAlignment = num20;
 			Color color = Main.inventoryBack;
 
 			for (int vanillaSlot = 3; vanillaSlot < Player.dye.Length; vanillaSlot++) {
-				if (!Draw(num20, skip, false, vanillaSlot, color)) {
+				if (!Draw(skip, false, vanillaSlot, color)) {
 					skip++;
 				}
 			}
 
 			for (int modSlot = 0; modSlot < list.Count; modSlot++) {
-				if (!Draw(num20, skip, true, modSlot, color))
+				if (!Draw(skip, true, modSlot, color))
 					skip++;
 			}
 
 			if (!(list.Count == 0)) {
-				DrawScrollSwitch(num20);
+				DrawScrollSwitch();
 
 				if (ModSlotPlayer(Player).scrollSlots) {
-					DrawScrollbar(num20, skip);
+					DrawScrollbar(skip);
 				}
 			}
 			else
@@ -61,13 +68,13 @@ namespace Terraria.ModLoader
 
 		public static string[] scrollStackLang = { Language.GetTextValue("tModLoader.slotStack"), Language.GetTextValue("tModLoader.slotScroll") }; 
 
-		internal void DrawScrollSwitch(int num20) {
+		internal void DrawScrollSwitch() {
 			Texture2D value4 = TextureAssets.InventoryTickOn.Value;
 			if (ModSlotPlayer(Player).scrollSlots)
 				value4 = TextureAssets.InventoryTickOff.Value;
 
 			int xLoc2 = Main.screenWidth - 64 - 28 + 47 + 9;
-			int yLoc2 = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) - 10;
+			int yLoc2 = (int)((float)(DrawVerticalAlignment) + (float)((0 + 3) * 56) * Main.inventoryScale) - 10;
 
 			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
 
@@ -89,10 +96,10 @@ namespace Terraria.ModLoader
 		}
 
 		// This is a hacky solution to make it very vanilla-esque, at the cost of not actually using a UI proper. 
-		internal void DrawScrollbar(int num20, int skip) {
+		internal void DrawScrollbar(int skip) {
 			int xLoc = Main.screenWidth - 64 - 28;
 
-			int accessoryPerColumn = GetAccessorySlotPerColumn(num20);
+			int accessoryPerColumn = GetAccessorySlotPerColumn();
 			int slotsToRender = list.Count + MaxVanillaSlotCount - skip;
 			int scrollIncrement = slotsToRender - accessoryPerColumn;
 
@@ -101,8 +108,8 @@ namespace Terraria.ModLoader
 				scrollIncrement = 0;
 			}
 
-			int chkMax = (int)((float)(num20) + (float)(((accessoryPerColumn) + 3) * 56) * Main.inventoryScale) + 4;
-			int chkMin = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
+			int chkMax = (int)((float)(DrawVerticalAlignment) + (float)(((accessoryPerColumn) + 3) * 56) * Main.inventoryScale) + 4;
+			int chkMin = (int)((float)(DrawVerticalAlignment) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
 
 			UIScrollbar scrollbar = new UIScrollbar();
 
@@ -131,7 +138,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Draws Vanilla and Modded Accessory Slots
 		/// </summary>
-		public bool Draw(int num20, int skip, bool modded, int slot, Color color) {
+		public bool Draw(int skip, bool modded, int slot, Color color) {
 			bool flag3;
 			bool flag4 = false;
 
@@ -165,23 +172,28 @@ namespace Terraria.ModLoader
 					xLoc = mAccSlot.XLoc;
 					yLoc = mAccSlot.YLoc;
 				}
-				else if (!SetDrawLocation(num20, slot + Player.dye.Length - 3, skip, ref xLoc, ref yLoc))
+				else if (!SetDrawLocation(slot + Player.dye.Length - 3, skip, ref xLoc, ref yLoc))
 					return true;
 
 				var thisSlot = Get(slot);
 
-				if (thisSlot.DrawFunctionalSlot) 
-					DrawFunctional(ModSlotPlayer(Player).exAccessorySlot, ModSlotPlayer(Player).exHideAccessory, -10, slot, flag3, xLoc, yLoc);
+				if (thisSlot.DrawFunctionalSlot) {
+					bool skipMouse = DrawVisibility(ref ModSlotPlayer(Player).exHideAccessory[slot], -10, xLoc, yLoc, out var xLoc2, out var yLoc2, out var value4);
+					DrawSlot(ModSlotPlayer(Player).exAccessorySlot, -10, slot, flag3, xLoc, yLoc, skipMouse);
+					Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
+				}
 				if (thisSlot.DrawVanitySlot)
 					DrawSlot(ModSlotPlayer(Player).exAccessorySlot, -11, slot + list.Count, flag3, xLoc, yLoc);
 				if (thisSlot.DrawDyeSlot)
 					DrawSlot(ModSlotPlayer(Player).exDyesAccessory, -12, slot, flag3, xLoc, yLoc);
 			}
 			else {
-				if (!SetDrawLocation(num20, slot - 3, skip, ref xLoc, ref yLoc))
+				if (!SetDrawLocation(slot - 3, skip, ref xLoc, ref yLoc))
 					return true;
 
-				DrawFunctional(Player.armor, Player.hideVisibleAccessory, 10, slot, flag3, xLoc, yLoc);
+				bool skipMouse = DrawVisibility(ref Player.hideVisibleAccessory[slot], 10, xLoc, yLoc, out var xLoc2, out var yLoc2, out var value4);
+				DrawSlot(Player.armor, 10, slot, flag3, xLoc, yLoc, skipMouse);
+				Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
 				DrawSlot(Player.armor, 11, slot + Player.dye.Length, flag3, xLoc, yLoc);
 				DrawSlot(Player.dye, 12, slot, flag3, xLoc, yLoc);
 			}
@@ -192,8 +204,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Applies Xloc and Yloc data for the slot, based on ModAccessorySlotPlayer.scrollSlots
 		/// </summary>
-		internal bool SetDrawLocation(int num20, int trueSlot, int skip, ref int xLoc, ref int yLoc) {
-			int accessoryPerColumn = GetAccessorySlotPerColumn(num20);
+		internal bool SetDrawLocation(int trueSlot, int skip, ref int xLoc, ref int yLoc) {
+			int accessoryPerColumn = GetAccessorySlotPerColumn();
 			int xColumn = (int)(trueSlot / accessoryPerColumn);
 			int yRow = trueSlot % accessoryPerColumn;
 						
@@ -201,9 +213,9 @@ namespace Terraria.ModLoader
 
 				int row = yRow + (xColumn) * accessoryPerColumn - ModSlotPlayer(Player).scrollbarSlotPosition - skip;
 
-				yLoc = (int)((float)(num20) + (float)((row + 3) * 56) * Main.inventoryScale) + 4;
-				int chkMin = (int)((float)(num20) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
-				int chkMax = (int)((float)(num20) + (float)(((accessoryPerColumn - 1) + 3) * 56) * Main.inventoryScale) + 4;
+				yLoc = (int)((float)(DrawVerticalAlignment) + (float)((row + 3) * 56) * Main.inventoryScale) + 4;
+				int chkMin = (int)((float)(DrawVerticalAlignment) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
+				int chkMax = (int)((float)(DrawVerticalAlignment) + (float)(((accessoryPerColumn - 1) + 3) * 56) * Main.inventoryScale) + 4;
 
 				if (yLoc > chkMax || yLoc < chkMin) {
 					return false;
@@ -220,7 +232,7 @@ namespace Terraria.ModLoader
 					col = tempSlot / accessoryPerColumn;
 				}
 
-				yLoc = (int)((float)(num20) + (float)((row + 3) * 56) * Main.inventoryScale) + 4;
+				yLoc = (int)((float)(DrawVerticalAlignment) + (float)((row + 3) * 56) * Main.inventoryScale) + 4;
 				if (col > 0) {
 					xLoc = Main.screenWidth - 64 - 28 - 47 * 3 * col - 50;
 				}
@@ -234,17 +246,14 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Is run in AccessorySlotLoader.Draw. 
-		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
-		/// At the end, calls this.DrawModded() where you can override to have custom drawing code for visuals.
-		/// Also includes creating hidevisibilitybutton.
+		/// Creates & sets up Hide Visibility Button.
 		/// </summary>
-		internal void DrawFunctional(Item[] access, bool[] visbility, int context, int slot, bool flag3, int xLoc, int yLoc) {
-			int yLoc2 = yLoc - 2;
-			int xLoc1 = xLoc;
-			int xLoc2 = xLoc1 - 58 + 64 + 28;
+		internal bool DrawVisibility(ref bool visbility, int context, int xLoc, int yLoc, out int xLoc2, out int yLoc2, out Texture2D value4) {
+			yLoc2 = yLoc - 2;
+			xLoc2 = xLoc - 58 + 64 + 28;
 
-			Texture2D value4 = TextureAssets.InventoryTickOn.Value;
-			if (visbility[slot])
+			value4 = TextureAssets.InventoryTickOn.Value;
+			if (visbility)
 				value4 = TextureAssets.InventoryTickOff.Value;
 
 			Rectangle rectangle = new Rectangle(xLoc2, yLoc2, value4.Width, value4.Height);
@@ -255,23 +264,67 @@ namespace Terraria.ModLoader
 				Player.mouseInterface = true;
 				
 				if (Main.mouseLeft && Main.mouseLeftRelease) {
-					visbility[slot] = !visbility[slot];
+					visbility = !visbility;
 					SoundEngine.PlaySound(12);
 					
 					if (Main.netMode == 1 && context > 0)
 						NetMessage.SendData(4, -1, -1, null, Player.whoAmI);
 				}
 
-				num45 = ((!visbility[slot]) ? 1 : 2);
+				num45 = ((!visbility) ? 1 : 2);
 			}
-
-			DrawSlot(access, context, slot, flag3, xLoc, yLoc, skipCheck);
-
-			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
 
 			if (num45 > 0) {
 				Main.HoverItem = new Item();
 				Main.hoverItemName = Lang.inter[58 + num45].Value;
+			}
+
+			return skipCheck;
+		}
+
+		/// <summary>
+		/// Is run in AccessorySlotLoader.Draw. 
+		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
+		/// At the end, calls this.DrawRedirect to enable custom drawing
+		/// </summary>
+		internal void DrawSlot(Item[] items, int context, int slot, bool flag3, int xLoc, int yLoc, bool skipCheck = false) {
+			bool flag = flag3 && !Main.mouseItem.IsAir;
+			int xLoc1 = xLoc - 47 * (Math.Abs(context) - 10);
+
+			if (!skipCheck && Main.mouseX >= xLoc1 && (float)Main.mouseX <= (float)xLoc1 + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
+				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
+
+				Player.mouseInterface = true;
+				Main.armorHide = true;
+				ItemSlot.OverrideHover(items, Math.Abs(context), slot);
+
+				if (!flag) {
+					if (Math.Abs(context) == 12) {
+						if (Main.mouseRightRelease && Main.mouseRight)
+							ItemSlot.RightClick(items, Math.Abs(context), slot);
+
+						ItemSlot.LeftClick(items, context, slot);
+					}
+					else if (Math.Abs(context) == 11) {
+						ItemSlot.LeftClick(items, context, slot);
+						ItemSlot.RightClick(items, Math.Abs(context), slot);
+					}
+					else if (Math.Abs(context) == 10) {
+						ItemSlot.LeftClick(items, context, slot);
+					}
+				}
+
+				ItemSlot.MouseHover(items, Math.Abs(context), slot);
+			}
+			DrawRedirect(items, context, slot, new Vector2(xLoc1, yLoc));
+		}
+
+		internal void DrawRedirect(Item[] inv, int context, int slot, Vector2 location) {
+			if (context < 0) {
+				Get(slot).DrawModded(inv, context, slot, location);
+			}
+			else {
+				ItemSlot.Draw(Main.spriteBatch, inv, context, slot, location);
 			}
 		}
 
@@ -326,58 +379,13 @@ namespace Terraria.ModLoader
 			Main.spriteBatch.Draw(texture, position, rectangle, color, rotation, origin, scale, effects, layerDepth);
 		}
 
-		/// <summary>
-		/// Is run in AccessorySlotLoader.Draw. 
-		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
-		/// At the end, calls this.DrawRedirect to enable custom drawing
-		/// </summary>
-		internal void DrawSlot(Item[] items, int context, int slot, bool flag3, int xLoc, int yLoc, bool skipCheck = false) {
-			bool flag = flag3 && !Main.mouseItem.IsAir;
-			int xLoc1 = xLoc - 47 * (Math.Abs(context) - 10);
-
-			if (!skipCheck && Main.mouseX >= xLoc1 && (float)Main.mouseX <= (float)xLoc1 + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
-				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-
-				Player.mouseInterface = true;
-				Main.armorHide = true;
-				ItemSlot.OverrideHover(items, Math.Abs(context), slot);
-
-				if (!flag) {
-					if (Math.Abs(context) == 12) {
-						if (Main.mouseRightRelease && Main.mouseRight)
-							ItemSlot.RightClick(items, Math.Abs(context), slot);
-
-						ItemSlot.LeftClick(items, context, slot);
-					}
-					else if (Math.Abs(context) == 11) {
-						ItemSlot.LeftClick(items, context, slot);
-						ItemSlot.RightClick(items, Math.Abs(context), slot);
-					}
-					else if (Math.Abs(context) == 10) {
-						ItemSlot.LeftClick(items, context, slot);
-					}
-				}
-
-				ItemSlot.MouseHover(items, Math.Abs(context), slot);
-			}
-			DrawRedirect(items, context, slot, new Vector2(xLoc1, yLoc));
-		}
-
-		internal void DrawRedirect(Item[] inv, int context, int slot, Vector2 location) {
-			if (context < 0) {
-				Get(slot).DrawModded(inv, context, slot, location);
-			} else {
-				ItemSlot.Draw(Main.spriteBatch, inv, context, slot, location);
-			}
-		}
-
 		// Functionality Related Code /////////////////////////////////////////////////////////////////////
 
 		public bool ModdedIsAValidEquipmentSlotForIteration(int index) => Get(index).IsEnabled();
 
 		public bool ModdedCanSlotBeShown(int index) => Get(index).IsVisibleWhenNotEnabled();
 
-		public bool ModdedSkipUIDraw(int index) => Get(index).SkipUIDrawWileTrue;
+		public bool ModdedSkipUIDraw(int index) => Get(index).IsHidden();
 
 		public bool CanAcceptItem(int index, Item checkItem) => Get(index).CanAcceptItem(checkItem);
 
@@ -396,7 +404,7 @@ namespace Terraria.ModLoader
 		/// DOES NOT affect vanilla behaviour of swapping items like for like where existing in a slot
 		/// </summary>
 		public void ModifyDefaultSwapSlot(Item item, ref int accSlotToSwapTo) {
-			for (int num = 0; num < ModSlotPlayer(Player).SlotCount(); num++) {
+			for (int num = ModSlotPlayer(Player).SlotCount() - 1; num >= 0; num--) {
 				if (ModdedIsAValidEquipmentSlotForIteration(num)) {
 					if (Get(num).ModifyDefaultSwapSlot(item, accSlotToSwapTo)) {
 						accSlotToSwapTo = num + 20;

@@ -3167,7 +3167,7 @@
  		}
  
 -		private void UpdateVisibleAccessory(int itemSlot, Item item) {
-+		internal void UpdateVisibleAccessory(int itemSlot, Item item, bool modded = false) {
++		public void UpdateVisibleAccessory(int itemSlot, Item item, bool modded = false) {
  			if (item.stringColor > 0)
  				stringColor = item.stringColor;
  
@@ -4573,7 +4573,7 @@
  
  			if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  				num += pickPower;
-@@ -37121,24 +_,47 @@
+@@ -37121,24 +_,50 @@
  		}
  
  		public void DropItems() {
@@ -4586,6 +4586,9 @@
 +
 +				startCounts[item.netID] += item.stack;
 +			}
++
++			//TML: Drop code for modded accessory Slots, should run prior to dropping other items in case conditions are used based on player's current equips
++			AccessorySlotLoader.ModSlotPlayer(this).DropItems();
 +
 +			startCounts[ModContent.ItemType<ModLoader.Default.StartBag>()] = 1;
  			for (int i = 0; i < 59; i++) {
@@ -4883,11 +4886,11 @@
  		}
  
 -		private static void LoadPlayer_LastMinuteFixes(Player newPlayer) {
-+		private static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
++		public static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
  			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
 +			PlayerIO.Load(newPlayer, playerFileData.Path, playerFileData.IsCloudSave);
  			for (int i = 3; i < 10; i++) {
-+				LoadPlayerLastMinuteFixes(newPlayer.armor[i], newPlayer);
++				LoadPlayer_LastMinuteFixes(newPlayer.armor[i], newPlayer);
 +				/*
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 4874 || type == 5000)
@@ -4911,7 +4914,7 @@
 +
 +			var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(newPlayer);
 +			for (int i = 0; i < modSlotPlayer.SlotCount(); i++) {
-+				LoadPlayerLastMinuteFixes(modSlotPlayer.exAccessorySlot[i], newPlayer);
++				LoadPlayer_LastMinuteFixes(modSlotPlayer.exAccessorySlot[i], newPlayer);
 +			}
 +
 +			newPlayer.ResetEffects();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -143,9 +144,11 @@ namespace Terraria
 
 		/// <summary>
 		/// Invoked at the end of loading vanilla player data from files to fix stuff that isn't initialized coming out of load.
+		/// Only run on the Player select screen during loading of data. 
+		/// Primarily meant to prevent unwarranted first few frame fall damage/lava damage if load lagging
 		/// Corrects the player.lavaMax time, wingsLogic, and no fall dmg to be accurate for the provided items in accessory slots.
 		/// </summary>
-		internal static void LoadPlayerLastMinuteFixes(Item item, Player newPlayer) {
+		public static void LoadPlayer_LastMinuteFixes(Item item, Player newPlayer) {
 			int type = item.type;
 			if (type == 908 || type == 4874 || type == 5000)
 				newPlayer.lavaMax += 420;
@@ -167,7 +170,7 @@ namespace Terraria
 		/// <summary>
 		/// Invoked in UpdateVisibleAccessories. Runs common code for both modded slots and vanilla slots based on provided Items.
 		/// </summary>
-		internal void UpdateVisibleAccessories(Item item, Item vItem, bool invisible, int slot = -1, bool modded = false) {
+		public void UpdateVisibleAccessories(Item item, Item vItem, bool invisible, int slot = -1, bool modded = false) {
 			if (eocDash > 0 && shield == -1 && item.shieldSlot != -1) {
 				shield = item.shieldSlot;
 				if (cShieldFallback != -1)
@@ -187,7 +190,7 @@ namespace Terraria
 				if (invisible && (velocity.Y == 0f || mount.Active))
 					return;
 
-				wings = vItem.wingSlot > 0 ? vItem.wingSlot : item.wingSlot;
+				wings = item.wingSlot;
 			}
 
 			if (!invisible)
@@ -195,6 +198,28 @@ namespace Terraria
 
 			if (!ItemIsVisuallyIncompatible(vItem))
 				UpdateVisibleAccessory(slot, vItem);
+		}
+
+		/// <summary>
+		/// Drops the ref'd item from the player at the position, and than turns the ref'd Item to air.
+		/// </summary>
+		public void DropItem(Vector2 position, ref Item item) {
+			if (item.stack > 0) {
+				int num3 = Item.NewItem((int)position.X, (int)position.Y, width, height, item.type);
+				Main.item[num3].netDefaults(item.netID);
+				Main.item[num3].Prefix(item.prefix);
+				Main.item[num3].stack = item.stack;
+				Main.item[num3].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
+				Main.item[num3].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
+				Main.item[num3].noGrabDelay = 100;
+				Main.item[num3].newAndShiny = false;
+				Main.item[num3].ModItem = item.ModItem;
+				Main.item[num3].globalItems = item.globalItems;
+				if (Main.netMode == 1)
+					NetMessage.SendData(21, -1, -1, null, num3);
+			}
+
+			item.TurnToAir();
 		}
 	}
 }

@@ -1,8 +1,8 @@
-using System.Linq;
-using Terraria.ModLoader.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
@@ -12,7 +12,7 @@ namespace Terraria.ModLoader.Default
 		public override bool CloneNewInstances => false;
 		internal static AccessorySlotLoader Loader => LoaderManager.Get<AccessorySlotLoader>();
 
-		public int SlotCount() => slots.Count;
+		internal int SlotCount() => slots.Count;
 
 		// Arrays for modded accessory slot save/load/usage. Used in DefaultPlayer.
 		internal Item[] exAccessorySlot = new Item[2];
@@ -151,6 +151,19 @@ namespace Terraria.ModLoader.Default
 			}
 
 			ModAccessorySlot.Player = Main.LocalPlayer;
+		}
+
+		// Death drops code, should run prior to dropping other items in case conditions are used based on player's current equips
+		public void DropItems() {
+			var loader = LoaderManager.Get<AccessorySlotLoader>();
+			var pos = Player.position + Player.Size / 2;
+			for (int i = 0; i < SlotCount(); i++) {
+				if (loader.ModdedIsAValidEquipmentSlotForIteration(i)) {
+					Player.DropItem(pos, ref exAccessorySlot[i]);
+					Player.DropItem(pos, ref exAccessorySlot[i + SlotCount()]);
+					Player.DropItem(pos, ref exDyesAccessory[i]);
+				}
+			}
 		}
 
 		// The following netcode is adapted from ChickenBone's UtilitySlots:

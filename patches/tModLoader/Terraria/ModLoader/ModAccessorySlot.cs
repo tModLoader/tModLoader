@@ -33,7 +33,6 @@ namespace Terraria.ModLoader
 		public virtual string FunctionalTexture => null;
 
 		// Properties to control which parts of accessory slot draw
-		public virtual bool SkipUIDrawWileTrue => false;
 		public virtual bool DrawFunctionalSlot => true;
 		public virtual bool DrawVanitySlot => true;
 		public virtual bool DrawDyeSlot => true;
@@ -54,14 +53,15 @@ namespace Terraria.ModLoader
 			set => ModSlotPlayer.exDyesAccessory[Type] = value;
 		}
 
-		public bool ShowVisuals {
+		public bool HideVisuals {
 			get => ModSlotPlayer.exHideAccessory[Type];
 			set => ModSlotPlayer.exHideAccessory[Type] = value;
 		}
 
-		protected sealed override void Register() => Type = LoaderManager.Get<AccessorySlotLoader>().Register(this);
+		public bool IsEmpty => FunctionalItem.IsAir && VanityItem.IsAir && DyeItem.IsAir;
 
-		public bool IsEmpty() => FunctionalItem.IsAir && VanityItem.IsAir && DyeItem.IsAir;
+		// Functionality and Hooks
+		protected sealed override void Register() => Type = LoaderManager.Get<AccessorySlotLoader>().Register(this);
 
 		/// <summary>
 		/// This function allows for advanced custom drawing for the accessory slot. Called for Dyes, Vanity, and Functionals.
@@ -76,19 +76,13 @@ namespace Terraria.ModLoader
 			ItemSlot.Draw(Main.spriteBatch, inv, context, slot, position);
 
 		/// <summary>
-		/// Override to set conditions on when the slot is valid for stat/vanity calculations and player usage.
-		/// Example: the demonHeart is consumed and in Expert mode in Vanilla.
-		/// </summary>
-		public virtual bool IsEnabled() => true;
-
-		/// <summary>
 		/// Override to replace the vanilla effect behavior of the slot with your own.
 		/// By default calls:
 		/// Player.VanillaUpdateEquips(FunctionalItem), Player.ApplyEquipFunctional(FunctionalItem, ShowVisuals), Player.ApplyEquipVanity(VanityItem)
 		/// </summary>
 		public virtual void ApplyEquipEffects() {
 			Player.VanillaUpdateEquip(FunctionalItem);
-			Player.ApplyEquipFunctional(FunctionalItem, ShowVisuals);
+			Player.ApplyEquipFunctional(FunctionalItem, HideVisuals);
 			Player.ApplyEquipVanity(VanityItem);
 		}
 
@@ -100,17 +94,29 @@ namespace Terraria.ModLoader
 		public virtual bool CanAcceptItem(Item checkItem) => true;
 
 		/// <summary>
-		/// Override to change the condition on when the slot is visible, but otherwise non-functional for stat/vanity calculations.
-		/// Defaults to check 'property' MySlotContainsAnItem()
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool IsVisibleWhenNotEnabled() => !IsEmpty();
-
-		/// <summary>
 		/// After checking for empty slots in ItemSlot.AccessorySwap, this allows for changing what the default target slot (accSlotToSwapTo) will be.
 		/// DOES NOT affect vanilla behaviour of swapping items like for like where existing in a slot
 		/// Return true to set this slot as the default targetted slot.
 		/// </summary>
 		public virtual bool ModifyDefaultSwapSlot(Item item, int accSlotToSwapTo) => false;
+
+		/// <summary>
+		/// Override to control whether or not drawing will be skipped during the given frame.
+		/// NOTE: Nothing will be drawn, nor will subsequent drawing hooks be called on this slot for the frame while true
+		/// </summary>
+		public virtual bool IsHidden() => false;
+
+		/// <summary>
+		/// Override to set conditions on when the slot is valid for stat/vanity calculations and player usage.
+		/// Example: the demonHeart is consumed and in Expert mode in Vanilla.
+		/// </summary>
+		public virtual bool IsEnabled() => true;
+
+		/// <summary>
+		/// Override to change the condition on when the slot is visible, but otherwise non-functional for stat/vanity calculations.
+		/// Defaults to check 'property' IsEmpty
+		/// </summary>
+		/// <returns></returns>
+		public virtual bool IsVisibleWhenNotEnabled() => !IsEmpty;
 	}
 }

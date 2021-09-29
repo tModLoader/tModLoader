@@ -15,9 +15,6 @@ namespace ExampleMod.Common.Players
 		public override int XLoc => Main.screenWidth / 2;
 		public override int YLoc => 3 * Main.screenHeight / 4;
 
-		// We will keep it hidden most of the time so that it isn't an intrusive example
-		public override bool SkipUIDrawWileTrue => IsEmpty(); // Only show when it contains an item, items can end up in functional slots via quick swap (right click accessory) 
-
 		// We will disable drawing the dye slot
 		public override bool DrawDyeSlot => false;
 
@@ -28,6 +25,11 @@ namespace ExampleMod.Common.Players
 
 		// Icon textures. Expects 32x32 images if you want it to look proper. 
 		public override string VanityTexture => "Terraria/Images/Item_" + ItemID.PiggyBank; // The piggy bank is 16x24, so we expect it to look funny. Is a fun funny tho :)
+
+		// We will keep it hidden most of the time so that it isn't an intrusive example
+		public override bool IsHidden() {
+			return IsEmpty; // Only show when it contains an item, items can end up in functional slots via quick swap (right click accessory) 
+		}
 	}
 
 	public class ExampleModWingSlot : ModAccessorySlot
