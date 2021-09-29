@@ -1955,6 +1955,28 @@
  		}
  
  		public void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = default(Vector2)) {
+@@ -11775,6 +_,13 @@
+ 		}
+ 
+ 		public void GetHairSettings(out bool fullHair, out bool hatHair, out bool hideHair, out bool backHairDraw, out bool drawsBackHairWithoutHeadgear) {
++			fullHair = head > 0 && ArmorIDs.Head.Sets.DrawFullHair[head];
++			hatHair = head > 0 && ArmorIDs.Head.Sets.DrawHatHair[head];
++			hideHair = (face > 0 && ArmorIDs.Face.Sets.PreventHairDraw[face]) || (faceHead >= 0 && head != 0);
++			backHairDraw = hair > 0 && ArmorIDs.Head.Sets.DrawBackHair[hair];
++			drawsBackHairWithoutHeadgear = head > 0 && ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[head];
++
++			/*
+ 			fullHair = (hatHair = (hideHair = (drawsBackHairWithoutHeadgear = false)));
+ 			switch (head) {
+ 				case 0:
+@@ -11889,6 +_,7 @@
+ 			backHairDraw = (num > 50 && (num < 56 || num > 63) && (num < 74 || num > 77) && (num < 88 || num > 89) && num != 100 && num != 104 && num != 112 && num < 116);
+ 			if (num == 133 || num == 134 || num == 146 || num == 162 || num == 6)
+ 				backHairDraw = true;
++			*/
+ 		}
+ 
+ 		public void UpdateDead() {
 @@ -11900,6 +_,7 @@
  			ResetFloorFlags();
  			wings = 0;

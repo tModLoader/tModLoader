@@ -85,10 +85,13 @@ namespace Terraria.ModLoader.IO
 		public static List<TagCompound> SaveInventory(Item[] inv) {
 			var list = new List<TagCompound>();
 			for (int k = 0; k < inv.Length; k++) {
-				if (ItemLoader.NeedsModSaving(inv[k])) {
-					var tag = ItemIO.Save(inv[k]);
-					tag.Set("slot", (short)k);
-					list.Add(tag);
+				var globalData = ItemIO.SaveGlobals(inv[k]);
+				if (globalData != null || ItemLoader.NeedsModSaving(inv[k])) {
+					var tag = ItemIO.Save(inv[k], globalData);
+					if (tag.Count != 0) {
+						tag.Set("slot", (short)k);
+						list.Add(tag);
+					}
 				}
 			}
 			return list.Count > 0 ? list : null;
@@ -160,17 +163,23 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<TagCompound> SaveModData(Player player) {
 			var list = new List<TagCompound>();
+
+			var saveData = new TagCompound();
+
 			foreach (var modPlayer in player.modPlayers) {
-				var data = modPlayer.Save();
-				if (data == null)
+				modPlayer.SaveData(saveData);
+
+				if (saveData.Count == 0)
 					continue;
 
 				list.Add(new TagCompound {
 					["mod"] = modPlayer.Mod.Name,
 					["name"] = modPlayer.Name,
-					["data"] = data
+					["data"] = saveData
 				});
+				saveData = new TagCompound();
 			}
+
 			return list;
 		}
 
@@ -183,7 +192,7 @@ namespace Terraria.ModLoader.IO
 					var modPlayer = player.GetModPlayer(modPlayerBase);
 
 					try {
-						modPlayer.Load(tag.GetCompound("data"));
+						modPlayer.LoadData(tag.GetCompound("data"));
 					}
 					catch (Exception e) {
 						var mod = modPlayer.Mod;
