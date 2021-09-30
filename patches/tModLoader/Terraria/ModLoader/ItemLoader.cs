@@ -1607,7 +1607,7 @@ namespace Terraria.ModLoader
 				return false;
 
 			foreach (var g in HookCanAccessoryBeEquippedWith.Enumerate(incomingItem.globalItems)) {
-				if (!g.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) && !g.CanAccessoryBeEquippedWith(incomingItem, equippedItem, player))
+				if (!g.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) || !g.CanAccessoryBeEquippedWith(incomingItem, equippedItem, player))
 					return false;
 			}
 
