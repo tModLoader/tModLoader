@@ -1596,8 +1596,18 @@ namespace Terraria.ModLoader
 		public static bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem) {
 			Player player = Main.player[Main.myPlayer];
 
+			if (equippedItem.ModItem != null
+				&& !(equippedItem.ModItem.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player)
+				&& equippedItem.ModItem.CanAccessoryBeEquippedWith(incomingItem, equippedItem, player)))
+				return false;
+
+			if (incomingItem.ModItem != null
+				&& !(incomingItem.ModItem.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player)
+				&& incomingItem.ModItem.CanAccessoryBeEquippedWith(incomingItem, equippedItem, player)))
+				return false;
+
 			foreach (var g in HookCanAccessoryBeEquippedWith.Enumerate(incomingItem.globalItems)) {
-				if (!g.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player))
+				if (!g.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) && !g.CanAccessoryBeEquippedWith(incomingItem, equippedItem, player))
 					return false;
 			}
 
