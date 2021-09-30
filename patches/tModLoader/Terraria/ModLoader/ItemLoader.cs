@@ -1595,19 +1595,17 @@ namespace Terraria.ModLoader
 		private static HookList HookCanAccessoryBeEquippedWith = AddHook<Func<Item, Item, Player, bool>>(g => g.CanAccessoryBeEquippedWith);
 		public static bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem) {
 			Player player = Main.player[Main.myPlayer];
-
-			if (equippedItem.ModItem != null
-				&& !(equippedItem.ModItem.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player)
-				&& equippedItem.ModItem.CanAccessoryBeEquippedWith(incomingItem, equippedItem, player)))
+			return CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) && CanAccessoryBeEquippedWith(incomingItem, equippedItem, player);
+		}
+		private static bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {
+			if (equippedItem.ModItem != null && !equippedItem.ModItem.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player))
 				return false;
 
-			if (incomingItem.ModItem != null
-				&& !(incomingItem.ModItem.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player)
-				&& incomingItem.ModItem.CanAccessoryBeEquippedWith(incomingItem, equippedItem, player)))
+			if (incomingItem.ModItem != null && !incomingItem.ModItem.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player))
 				return false;
 
 			foreach (var g in HookCanAccessoryBeEquippedWith.Enumerate(incomingItem.globalItems)) {
-				if (!g.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) || !g.CanAccessoryBeEquippedWith(incomingItem, equippedItem, player))
+				if (!g.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player))
 					return false;
 			}
 
