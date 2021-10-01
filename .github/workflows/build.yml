@@ -310,8 +310,53 @@ jobs:
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
           cat BuildOutput/*.log
+      - name: Download ExampleMod build artifact from build job
+        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
+        # This should hopefully always work since this job shouldn't even run if the build job failed due to ExampleMod not compiling.
+        uses: actions/download-artifact@v2
+        with:
+          name: ExampleMod Build
+          path: ExampleMod
+      - name: View ExampleMod build artifact files
+        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
+        run: |
+          echo pwd is: ${PWD}
+          ls -alhR
+        working-directory: ExampleMod
       - name: Attempt workshop_build_item 
         if: steps.changed-files-examplemod.outputs.any_changed == 'true'
         shell: bash
         run: |
-          echo If implemented, this would auto publish ExampleMod
+          echo Changes detected in ExampleMod folder, attempting to publish ExampleMod to workshop
+          echo Warning: This manual publish approach bypasses version and other checks, so updating build.txt is not necessary currently and this approach shouldn't be used by modders
+          echo pwd is: ${PWD}
+          echo Making files
+          cat << EOF > ./workshop.vdf
+          "workshopitem"
+          {
+           "appid" "1281930"
+           "publishedfileid"  "2615761271"
+           "contentfolder" "${GITHUB_WORKSPACE}/ExampleMod/"
+           "title" "Example Mod Test Publish"
+           "description" "Learn how to mod with tModLoader by exploring the source code for this mod. You can find the source code at https://github.com/tModLoader/tModLoader/tree/1.4/ExampleMod"
+           "changenote" "Automatic update from GitHub"
+          }
+          EOF
+          cat << EOF > ./ExampleMod/workshop.json
+          {
+            "WorkshopPublishedVersion": 1,
+            "ContentType": "Mod",
+            "SteamEntryId": 2615761271,
+            "Publicity": 1
+          }
+          EOF
+          ls -alh
+          echo "Attempting to publish ExampleMod.tmod"
+          echo workshop.vdf contents:
+          cat workshop.vdf
+          echo workshop.json contents:
+          cat ExampleMod/workshop.json
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +workshop_build_item "${GITHUB_WORKSPACE}/workshop.vdf" +quit
+          echo workshop.vdf contents:
+          cat workshop.vdf
+          echo Done
