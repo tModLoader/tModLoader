@@ -341,7 +341,7 @@ jobs:
            "description" "Learn how to mod with tModLoader by exploring the source code for this mod.
            
            You can find the source code at https://github.com/tModLoader/tModLoader/tree/1.4/ExampleMod"
-           "changenote" "Automatic update from GitHub"
+           "changenote" "Automatic update from GitHub: ${{ github.event.commits[0].message}}"
           }
           EOF
           cat << EOF > ./artifacts/ExampleMod/workshop.json
