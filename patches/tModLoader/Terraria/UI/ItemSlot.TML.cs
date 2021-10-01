@@ -25,7 +25,7 @@ namespace Terraria.UI
 			//TML: Check our modded functional slots
 			if (accSlotToSwapTo < 0) {
 				for (int i = 0; i < accessories.Length / 2; i++) {
-					if (accLoader.ModdedIsAValidEquipmentSlotForIteration(i)) {
+					if (accLoader.ModdedIsAValidEquipmentSlotForIteration(i, player)) {
 						if (accessories[i].type == 0 && accLoader.CanAcceptItem(i, item) && ItemLoader.CanEquipAccessory(item, i, true)) {
 							accSlotToSwapTo = i + 20;
 							break;

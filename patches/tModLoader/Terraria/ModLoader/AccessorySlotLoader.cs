@@ -23,7 +23,8 @@ namespace Terraria.ModLoader
 
 		public AccessorySlotLoader() => Initialize(0);
 
-		public ModAccessorySlot Get(int id) => list[id % list.Count];
+		public ModAccessorySlot Get(int id, Player player) => list[id % ModSlotPlayer(player).SlotCount()];
+		public ModAccessorySlot Get(int id) => Get(id, Player);
 
 		public const int MaxVanillaSlotCount = 2 + 5;
 
@@ -143,7 +144,7 @@ namespace Terraria.ModLoader
 			bool flag4 = false;
 
 			if (modded) {
-				flag3 = !ModdedIsAValidEquipmentSlotForIteration(slot);
+				flag3 = !ModdedIsAValidEquipmentSlotForIteration(slot, Player);
 				flag4 = !ModdedCanSlotBeShown(slot);
 			}
 			else {
@@ -386,15 +387,15 @@ namespace Terraria.ModLoader
 
 		// Functionality Related Code /////////////////////////////////////////////////////////////////////
 
-		public bool ModdedIsAValidEquipmentSlotForIteration(int index) => Get(index).IsEnabled();
+		public bool ModdedIsAValidEquipmentSlotForIteration(int index, Player player) => Get(index, player).IsEnabled();
+
+		public void CustomUpdateEquips(int index, Player player) => Get(index, player).ApplyEquipEffects();
 
 		public bool ModdedCanSlotBeShown(int index) => Get(index).IsVisibleWhenNotEnabled();
 
 		public bool IsHidden(int index) => Get(index).IsHidden();
 
 		public bool CanAcceptItem(int index, Item checkItem) => Get(index).CanAcceptItem(checkItem);
-
-		public void CustomUpdateEquips(int index) => Get(index).ApplyEquipEffects();
 
 		/// <summary>
 		/// Checks if the provided item can go in to the provided slot. 
@@ -410,7 +411,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public void ModifyDefaultSwapSlot(Item item, ref int accSlotToSwapTo) {
 			for (int num = ModSlotPlayer(Player).SlotCount() - 1; num >= 0; num--) {
-				if (ModdedIsAValidEquipmentSlotForIteration(num)) {
+				if (ModdedIsAValidEquipmentSlotForIteration(num, Player)) {
 					if (Get(num).ModifyDefaultSwapSlot(item, accSlotToSwapTo)) {
 						accSlotToSwapTo = num + 20;
 					}
@@ -425,7 +426,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public bool PreferredGolfBall(ref int projType) {
 			for (int num = ModSlotPlayer(Player).SlotCount() * 2 - 1; num >= 0; num--) {
-				if (ModdedIsAValidEquipmentSlotForIteration(num)) {
+				if (ModdedIsAValidEquipmentSlotForIteration(num, Player)) {
 					Item item2 = ModSlotPlayer(Player).exAccessorySlot[num];
 					if (!item2.IsAir && item2.shoot > 0 && ProjectileID.Sets.IsAGolfBall[item2.shoot]) {
 						projType = item2.shoot;

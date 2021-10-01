@@ -4924,7 +4924,7 @@
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 4874 || type == 5000)
  					newPlayer.lavaMax += 420;
-@@ -38223,14 +_,24 @@
+@@ -38223,14 +_,29 @@
  				if (type == 906 || type == 4038)
  					newPlayer.lavaMax += 420;
  
@@ -4941,11 +4941,16 @@
 +				*/
  			}
 +
++			// Handle Player Select Screen rendering for Iterations with the correct player
++			if (newPlayer != ModAccessorySlot.Player)
++				ModAccessorySlot.Player = newPlayer;
++
 +			var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(newPlayer);
 +			for (int i = 0; i < modSlotPlayer.SlotCount(); i++) {
 +				LoadPlayer_LastMinuteFixes(modSlotPlayer.exAccessorySlot[i], newPlayer);
 +			}
 +
++			ModAccessorySlot.Player = Main.LocalPlayer;
 +			newPlayer.ResetEffects();
  		}
  

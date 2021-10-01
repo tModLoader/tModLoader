@@ -434,14 +434,14 @@
 +					case -10:
 +					case -11:
 +						int num3M = slot;
-+						if (!LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(slot))
++						if (!LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(slot, player))
 +							num3M--;
 +
 +						num = 100 + num3M;
 +						break;
 +					case -12:
 +						int num4M = slot;
-+						if (!LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(slot))
++						if (!LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(slot, player))
 +							num4M--;
 +
 +						num = 120 + num4M;
