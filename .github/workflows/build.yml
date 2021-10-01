@@ -316,7 +316,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ExampleMod Build
-          path: ExampleMod
+          path: artifacts/ExampleMod
       - name: View ExampleMod build artifact files
         if: steps.changed-files-examplemod.outputs.any_changed == 'true'
         run: |
@@ -336,13 +336,13 @@ jobs:
           {
            "appid" "1281930"
            "publishedfileid"  "2615761271"
-           "contentfolder" "${GITHUB_WORKSPACE}/ExampleMod/"
+           "contentfolder" "${GITHUB_WORKSPACE}/artifacts/ExampleMod/"
            "title" "Example Mod Test Publish"
-           "description" "Learn how to mod with tModLoader by exploring the source code for this mod. You can find the source code at https://github.com/tModLoader/tModLoader/tree/1.4/ExampleMod"
+           "description" "Learn how to mod with tModLoader by exploring the source code for this mod.\n\nYou can find the source code at https://github.com/tModLoader/tModLoader/tree/1.4/ExampleMod"
            "changenote" "Automatic update from GitHub"
           }
           EOF
-          cat << EOF > ./ExampleMod/workshop.json
+          cat << EOF > ./artifacts/ExampleMod/workshop.json
           {
             "WorkshopPublishedVersion": 1,
             "ContentType": "Mod",
@@ -355,7 +355,7 @@ jobs:
           echo workshop.vdf contents:
           cat workshop.vdf
           echo workshop.json contents:
-          cat ExampleMod/workshop.json
+          cat artifacts/ExampleMod/workshop.json
           steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +workshop_build_item "${GITHUB_WORKSPACE}/workshop.vdf" +quit
           echo workshop.vdf contents:
           cat workshop.vdf
