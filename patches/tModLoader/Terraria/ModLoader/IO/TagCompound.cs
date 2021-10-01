@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.IO
 	//Modification of lists stored in a TagCompound will only work if there were no type conversions involved and is not advised
 	//bool is supported using TagConverter, serialised as a byte. IList<bool> will serialise as IList<byte> (quite inefficient)
 	//Additional conversions can be added using TagConverter
-	public class TagCompound : ITagCompound, IReadOnlyTagCompound
+	public class TagCompound : ITagCompound
 	{
 		private readonly Dictionary<string, object> dict = new();
 
