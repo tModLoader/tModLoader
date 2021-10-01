@@ -322,7 +322,7 @@ jobs:
         run: |
           echo pwd is: ${PWD}
           ls -alhR
-        working-directory: ExampleMod
+        working-directory: artifacts/ExampleMod
       - name: Attempt workshop_build_item 
         if: steps.changed-files-examplemod.outputs.any_changed == 'true'
         shell: bash
@@ -337,8 +337,10 @@ jobs:
            "appid" "1281930"
            "publishedfileid"  "2615761271"
            "contentfolder" "${GITHUB_WORKSPACE}/artifacts/ExampleMod/"
-           "title" "Example Mod Test Publish"
-           "description" "Learn how to mod with tModLoader by exploring the source code for this mod.\n\nYou can find the source code at https://github.com/tModLoader/tModLoader/tree/1.4/ExampleMod"
+           "title" "Example Mod"
+           "description" "Learn how to mod with tModLoader by exploring the source code for this mod.
+           
+           You can find the source code at https://github.com/tModLoader/tModLoader/tree/1.4/ExampleMod"
            "changenote" "Automatic update from GitHub"
           }
           EOF
