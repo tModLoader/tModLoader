@@ -11,9 +11,9 @@ namespace Terraria.ModLoader.IO
 	//Modification of lists stored in a TagCompound will only work if there were no type conversions involved and is not advised
 	//bool is supported using TagConverter, serialised as a byte. IList<bool> will serialise as IList<byte> (quite inefficient)
 	//Additional conversions can be added using TagConverter
-	public class TagCompound : IReadOnlyTagCompound
+	public class TagCompound : ITagCompound, IReadOnlyTagCompound
 	{
-		private Dictionary<string, object> dict = new();
+		private readonly Dictionary<string, object> dict = new();
 
 		public T Get<T>(string key) {
 			dict.TryGetValue(key, out object tag);
@@ -27,9 +27,6 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		// adding default param to Set overload is a breaking changefor now.
-		public void Set(string key, object value) => Set(key, value, false);
-		
 		//if value is null, calls RemoveTag, also performs type checking
 		public void Set(string key, object value, bool replace = false) {
 			if (value == null) {
@@ -67,7 +64,9 @@ namespace Terraria.ModLoader.IO
 		public int[] GetIntArray(string key) => Get<int[]>(key);
 		public string GetString(string key) => Get<string>(key);
 		public IList<T> GetList<T>(string key) => Get<List<T>>(key);
-		public IReadOnlyTagCompound GetCompound(string key) => Get<TagCompound>(key);
+		public TagCompound GetCompound(string key) => Get<TagCompound>(key);
+		ITagCompound ITagCompound.GetCompound(string key) => GetCompound(key);
+		IReadOnlyTagCompound IReadOnlyTagCompound.GetCompound(string key) => GetCompound(key);
 		public bool GetBool(string key) => Get<bool>(key);
 
 		//type expansion helpers
@@ -99,13 +98,11 @@ namespace Terraria.ModLoader.IO
 			return copy;
 		}
 
-		public override string ToString() {
-			return TagPrinter.Print(this);
-		}
+		public override string ToString() => TagPrinter.Print(this);
 
 		public object this[string key] {
-			get { return Get<object>(key); }
-			set { Set(key, value, true); }
+			get => Get<object>(key);
+			set => Set(key, value, true);
 		}
 
 		//collection initialiser
@@ -113,7 +110,7 @@ namespace Terraria.ModLoader.IO
 		public void Add(KeyValuePair<string, object> entry) => Set(entry.Key, entry.Value);
 
 		//delegate some collection implementations
-		public void Clear() { dict.Clear(); }
+		public void Clear() => dict.Clear();
 		public int Count => dict.Count;
 		public IEnumerator<KeyValuePair<string, object>> GetEnumerator() => dict.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
