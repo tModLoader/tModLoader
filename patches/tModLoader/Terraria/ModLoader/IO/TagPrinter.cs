@@ -25,7 +25,7 @@ namespace Terraria.ModLoader.IO
 			if (type == typeof(string)) return "string";
 			if (type == typeof(byte[])) return "byte[]";
 			if (type == typeof(int[])) return "int[]";
-			if (type == typeof(TagCompound) || type == typeof(IReadOnlyTagCompound)) return "object";
+			if (type.IsAssignableTo(typeof(IReadOnlyTagCompound))) return "object";
 			if (type == typeof(IList)) return "list";
 			throw new ArgumentException("Unknown Type: " + type);
 		}
