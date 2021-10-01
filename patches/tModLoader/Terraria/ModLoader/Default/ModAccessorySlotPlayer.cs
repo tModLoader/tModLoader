@@ -53,16 +53,14 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public override TagCompound Save() {
-			return new TagCompound {
-				["order"] = slots.Keys.ToList(),
-				["items"] = exAccessorySlot.Select(ItemIO.Save).ToList(),
-				["dyes"] = exDyesAccessory.Select(ItemIO.Save).ToList(),
-				["visible"] = exHideAccessory.ToList()
-			};
+		public override void SaveData(TagCompound tag) {
+			tag["order"] = slots.Keys.ToList();
+			tag["items"] = exAccessorySlot.Select(ItemIO.Save).ToList();
+			tag["dyes"] = exDyesAccessory.Select(ItemIO.Save).ToList();
+			tag["visible"] = exHideAccessory.ToList();
 		}
 
-		public override void Load(TagCompound tag) {
+		public override void LoadData(TagCompound tag) {
 			var order = tag.GetList<string>("order").ToList();
 			var items = tag.GetList<TagCompound>("items").Select(ItemIO.Load).ToList();
 			var dyes = tag.GetList<TagCompound>("dyes").Select(ItemIO.Load).ToList();
