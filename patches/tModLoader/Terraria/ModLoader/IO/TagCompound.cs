@@ -20,14 +20,8 @@ namespace Terraria.ModLoader.IO
 
 		public T Get<T>(string key) {
 			if (!TryGet(key, out T value)) {
-				try {
-					value = TagIO.Deserialize<T>(default);
-				}
-				catch (Exception e) {
-					throw new IOException(
-						$"NBT Deserialization (type={typeof(T)}," +
-						$"entry={TagPrinter.Print(new KeyValuePair<string, object>(key, default))})", e);
-				}
+				throw new KeyNotFoundException("The tag doesn't contain the key \"" + key +
+				                               "\", use TryGet instead if you aren't sure the tag contains the value");
 			}
 
 			return value;
