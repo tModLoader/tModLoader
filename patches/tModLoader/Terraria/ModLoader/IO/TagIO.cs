@@ -89,7 +89,7 @@ namespace Terraria.ModLoader.IO
 					w.Write(v);
 				},
 				v => (byte[]) v.Clone(),
-				() => Array.Empty<byte>()),
+				Array.Empty<byte>),
 			new ClassPayloadHandler<string>(
 				r => Encoding.UTF8.GetString(r.ReadBytes(r.ReadInt16())),
 				(w, v) => {
@@ -131,9 +131,9 @@ namespace Terraria.ModLoader.IO
 					return compound;
 				},
 				(w, v) => {
-					foreach (var entry in v)
-						if (entry.Value != null)
-							WriteTag(entry.Key, entry.Value, w);
+					foreach ((string key, object value) in v)
+						if (value != null)
+							WriteTag(key, value, w);
 
 					w.Write((byte)0);
 				},
@@ -152,7 +152,7 @@ namespace Terraria.ModLoader.IO
 						w.Write(i);
 				},
 				v => (int[]) v.Clone(),
-				() => Array.Empty<int>())
+				Array.Empty<int>)
 		};
 
 		private static readonly Dictionary<Type, int> PayloadIDs =
@@ -168,9 +168,8 @@ namespace Terraria.ModLoader.IO
 		}
 
 		private static int GetPayloadId(Type t) {
-			foreach ((Type type, int id) in PayloadIDs)
-				if (type.IsAssignableTo(t))
-					return id;
+			if (PayloadIDs.TryGetValue(t, out int id))
+				return id;
 
 			if (typeof(IList).IsAssignableFrom(t))
 				return 9;

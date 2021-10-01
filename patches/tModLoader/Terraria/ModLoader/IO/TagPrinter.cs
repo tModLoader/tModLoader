@@ -25,7 +25,7 @@ namespace Terraria.ModLoader.IO
 			if (type == typeof(string)) return "string";
 			if (type == typeof(byte[])) return "byte[]";
 			if (type == typeof(int[])) return "int[]";
-			if (type.IsAssignableTo(typeof(IReadOnlyTagCompound))) return "object";
+			if (type == typeof(TagCompound)) return "object";
 			if (type == typeof(IList)) return "list";
 			throw new ArgumentException("Unknown Type: " + type);
 		}
@@ -66,50 +66,47 @@ namespace Terraria.ModLoader.IO
 		}
 
 		private void WriteValue(object elem) {
-			switch (elem)
-			{
-				case byte b:
-					sb.Append(b);
-					break;
-				case short s:
-					sb.Append(s);
-					break;
-				case int i:
-					sb.Append(i);
-					break;
-				case long l:
-					sb.Append(l);
-					break;
-				case float f:
-					sb.Append(f);
-					break;
-				case double d:
-					sb.Append(d);
-					break;
-				case string s:
-					sb.Append('"').Append(s).Append('"');
-					break;
-				case byte[] bytes:
-					sb.Append('[').Append(string.Join(", ", bytes)).Append(']');
-					break;
-				case int[] ints:
-					sb.Append('[').Append(string.Join(", ", ints)).Append(']');
-					break;
-				case IReadOnlyTagCompound compound:
-					WriteList('{', '}', true, compound, WriteEntry);
-					break;
-				case IList list:
-					var type = list.GetType().GetGenericArguments()[0];
-					WriteList('[', ']',
-						type == typeof(string) || type == typeof(TagCompound) || type == typeof(IReadOnlyTagCompound) || typeof(IList).IsAssignableFrom(type),
-						list.Cast<object>(),
-						o => {
-							if (type == typeof(IList)) //lists of lists need their subtype printed
-								sb.Append(TypeString(o.GetType().GetGenericArguments()[0])).Append(' ');
+			if (elem is byte b) {
+				sb.Append(b);
+			}
+			else if (elem is short s1) {
+				sb.Append(s1);
+			}
+			else if (elem is int i) {
+				sb.Append(i);
+			}
+			else if (elem is long l) {
+				sb.Append(l);
+			}
+			else if (elem is float f) {
+				sb.Append(f);
+			}
+			else if (elem is double d) {
+				sb.Append(d);
+			}
+			else if (elem is string str) {
+				sb.Append('"').Append(str).Append('"');
+			}
+			else if (elem is byte[] bytes) {
+				sb.Append('[').Append(string.Join(", ", bytes)).Append(']');
+			}
+			else if (elem is int[] ints) {
+				sb.Append('[').Append(string.Join(", ", ints)).Append(']');
+			}
+			else if (elem is IReadOnlyTagCompound tag) {
+				WriteList('{', '}', true, tag, WriteEntry);
+			}
+			else if (elem is IList list) {
+				var type = list.GetType().GetGenericArguments()[0];
+				WriteList('[', ']',
+					type == typeof(string) || type == typeof(TagCompound) || typeof(IList).IsAssignableFrom(type),
+					list.Cast<object>(),
+					o => {
+						if (type == typeof(IList)) //lists of lists need their subtype printed
+							sb.Append(TypeString(o.GetType().GetGenericArguments()[0])).Append(' ');
 
-							WriteValue(o);
-						});
-					break;
+						WriteValue(o);
+					});
 			}
 		}
 
