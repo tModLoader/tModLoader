@@ -328,7 +328,7 @@ jobs:
         shell: bash
         run: |
           echo Changes detected in ExampleMod folder, attempting to publish ExampleMod to workshop
-          echo Warning: This manual publish approach bypasses version and other checks, so updating build.txt is not necessary currently and this approach shouldn't be used by modders
+          echo "Warning: This manual publish approach bypasses version and other checks, so updating build.txt is not necessary currently and this approach shouldn't be used by modders"
           echo pwd is: ${PWD}
           echo Making files
           cat << EOF > ./workshop.vdf
