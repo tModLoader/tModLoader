@@ -19,7 +19,7 @@ namespace Terraria.DataStructures
 		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
 		/// <param name="tag"> The TagCompound to load data from. </param>
-		public virtual void LoadData(TagCompound tag) { }
+		public virtual void LoadData(IReadOnlyTagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to send custom data for this tile entity between client and server. This is called on the server while sending tile data (!lightSend) and when a MessageID.TileEntitySharing message is sent (lightSend)

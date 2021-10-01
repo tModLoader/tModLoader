@@ -19,7 +19,7 @@ namespace Terraria.ModLoader.Default
 			converted.Clear();
 		}
 
-		public override void LoadWorldData(TagCompound tag) {
+		public override void LoadWorldData(IReadOnlyTagCompound tag) {
 			foreach (var infoTag in tag.GetList<TagCompound>("list")) {
 				if (!infoTag.ContainsKey("mod")) {
 					infos.Add(TileInfo.Invalid);

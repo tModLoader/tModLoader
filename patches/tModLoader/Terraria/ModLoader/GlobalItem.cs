@@ -840,7 +840,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item"> The item. </param>
 		/// <param name="tag"> The TagCompound to load data from. </param>
-		public virtual void LoadData(Item item, TagCompound tag) { }
+		public virtual void LoadData(Item item, IReadOnlyTagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to send custom data for the given item between client and server.

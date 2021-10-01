@@ -89,7 +89,7 @@ namespace Terraria.ModLoader.IO
 					w.Write(v);
 				},
 				v => (byte[]) v.Clone(),
-				() => new byte[0]),
+				() => Array.Empty<byte>()),
 			new ClassPayloadHandler<string>(
 				r => Encoding.UTF8.GetString(r.ReadBytes(r.ReadInt16())),
 				(w, v) => {
@@ -152,7 +152,7 @@ namespace Terraria.ModLoader.IO
 						w.Write(i);
 				},
 				v => (int[]) v.Clone(),
-				() => new int[0])
+				() => Array.Empty<int>())
 		};
 
 		private static readonly Dictionary<Type, int> PayloadIDs =
@@ -168,8 +168,9 @@ namespace Terraria.ModLoader.IO
 		}
 
 		private static int GetPayloadId(Type t) {
-			if (PayloadIDs.TryGetValue(t, out int id))
-				return id;
+			foreach ((Type type, int id) in PayloadIDs)
+				if (type.IsAssignableTo(t))
+					return id;
 
 			if (typeof(IList).IsAssignableFrom(t))
 				return 9;
@@ -234,14 +235,14 @@ namespace Terraria.ModLoader.IO
 				var newListType = typeof(List<>).MakeGenericType(elemType);
 				if (type.IsAssignableFrom(newListType)) {//if the desired type is a superclass of List<elemType>
 					if (tag == null)
-						return newListType.GetConstructor(new Type[0]).Invoke(new object[0]);
+						return newListType.GetConstructor(Type.EmptyTypes)!.Invoke(Array.Empty<object>());
 
 					if (TagSerializer.TryGetSerializer(elemType, out serializer))
 						return serializer.DeserializeList((IList)tag);
 
 					//create a strongly typed nested list
 					var oldList = (IList)tag;
-					var newList = (IList)newListType.GetConstructor(new[] { typeof(int) }).Invoke(new object[] { oldList.Count });
+					var newList = (IList)newListType.GetConstructor(new[] { typeof(int) })!.Invoke(new object[] { oldList.Count });
 					foreach (var elem in oldList)
 						newList.Add(Deserialize(elemType, elem));
 
@@ -275,7 +276,7 @@ namespace Terraria.ModLoader.IO
 			PayloadHandlers[id].Write(w, tag);
 		}
 
-		public static TagCompound FromFile(string path, bool compressed = true) {
+		public static IReadOnlyTagCompound FromFile(string path, bool compressed = true) {
 			try {
 				using (Stream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
 					return FromStream(fs, compressed);
@@ -285,20 +286,20 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		public static TagCompound FromStream(Stream stream, bool compressed = true) {
+		public static IReadOnlyTagCompound FromStream(Stream stream, bool compressed = true) {
 			if (compressed) stream = new GZipStream(stream, CompressionMode.Decompress);
 			return Read(new BigEndianReader(stream));
 		}
 
-		public static TagCompound Read(BinaryReader reader) {
+		public static IReadOnlyTagCompound Read(BinaryReader reader) {
 			var tag = ReadTag(reader, out string name);
-			if (!(tag is TagCompound))
+			if (tag is not IReadOnlyTagCompound compound)
 				throw new IOException("Root tag not a TagCompound");
 
-			return (TagCompound)tag;
+			return compound;
 		}
 
-		public static void ToFile(TagCompound root, string path, bool compress = true) {
+		public static void ToFile(IReadOnlyTagCompound root, string path, bool compress = true) {
 			try {
 				using (Stream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write))
 					ToStream(root, fs, compress);
@@ -308,12 +309,12 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		public static void ToStream(TagCompound root, Stream stream, bool compress = true) {
+		public static void ToStream(IReadOnlyTagCompound root, Stream stream, bool compress = true) {
 			if (compress) stream = new GZipStream(stream, CompressionMode.Compress, true);
 			Write(root, new BigEndianWriter(stream));
 			if (compress) stream.Close();
 		}
 
-		public static void Write(TagCompound root, BinaryWriter writer) => WriteTag("", root, writer);
+		public static void Write(IReadOnlyTagCompound root, BinaryWriter writer) => WriteTag("", root, writer);
 	}
 }

@@ -128,7 +128,7 @@ namespace Terraria.ModLoader.IO
 			return tag;
 		}
 
-		internal static void LoadContainers(TagCompound tag) {
+		internal static void LoadContainers(IReadOnlyTagCompound tag) {
 			if (tag.ContainsKey("data"))
 				ReadContainers(new BinaryReader(new MemoryStream(tag.GetByteArray("data"))));
 

@@ -31,7 +31,7 @@ namespace Terraria.ModLoader.Default
 			tag["unloadedBestiaryChats"] = unloadedBestiaryChats;
 		}
 
-		public override void LoadWorldData(TagCompound tag) {
+		public override void LoadWorldData(IReadOnlyTagCompound tag) {
 			WorldIO.LoadModData(tag.GetList<TagCompound>("list"));
 			WorldIO.LoadNPCs(tag.GetList<TagCompound>("unloadedNPCs"));
 			WorldIO.LoadNPCKillCounts(tag.GetList<TagCompound>("unloadedKillCounts"));

@@ -311,7 +311,7 @@ namespace Terraria.ModLoader.IO
 			};
 		}
 
-		internal static void LoadAnglerQuest(TagCompound tag) {
+		internal static void LoadAnglerQuest(IReadOnlyTagCompound tag) {
 			// Don't try to load modded angler quest item if there isn't one
 			if (!tag.ContainsKey("mod")) {
 				return;
@@ -404,7 +404,7 @@ namespace Terraria.ModLoader.IO
 			};
 		}
 
-		internal static void LoadAlteredVanillaFields(TagCompound compound) {
+		internal static void LoadAlteredVanillaFields(IReadOnlyTagCompound compound) {
 			CultistRitual.delay = compound.GetDouble("timeCultists");
 			Main.rainTime = compound.GetDouble("timeRain");
 			Sandstorm.TimeLeft = compound.GetDouble("timeSandstorm");

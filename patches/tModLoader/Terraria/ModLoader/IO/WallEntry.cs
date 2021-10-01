@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.IO
 
 		public WallEntry(ModWall wall) : base(wall) { }
 
-		public WallEntry(TagCompound tag) : base(tag) {}
+		public WallEntry(IReadOnlyTagCompound tag) : base(tag) {}
 
 		public override string DefaultUnloadedType => ModContent.GetInstance<UnloadedWall>().FullName;
 

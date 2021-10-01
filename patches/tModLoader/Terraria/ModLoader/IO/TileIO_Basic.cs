@@ -40,7 +40,7 @@ namespace Terraria.ModLoader.IO
 				return entries;
 			}
 
-			public void LoadEntries(TagCompound tag, out TEntry[] savedEntryLookup) {
+			public void LoadEntries(IReadOnlyTagCompound tag, out TEntry[] savedEntryLookup) {
 				var savedEntryList = tag.GetList<TEntry>(entriesKey);
 				var entries = CreateEntries();
 
@@ -72,7 +72,7 @@ namespace Terraria.ModLoader.IO
 
 			protected abstract void ReadData(Tile tile, TEntry entry, BinaryReader reader);
 
-			public void LoadData(TagCompound tag, TEntry[] savedEntryLookup) {
+			public void LoadData(IReadOnlyTagCompound tag, TEntry[] savedEntryLookup) {
 				if (!tag.ContainsKey(dataKey)) {
 					return;
 				}
@@ -219,7 +219,7 @@ namespace Terraria.ModLoader.IO
 		internal static WallIOImpl Walls = new WallIOImpl();
 
 		//NOTE: LoadBasics can't be separated into LoadWalls() and LoadTiles() because of LoadLegacy.
-		internal static void LoadBasics(TagCompound tag) {
+		internal static void LoadBasics(IReadOnlyTagCompound tag) {
 			Tiles.LoadEntries(tag, out var tileEntriesLookup);
 			Walls.LoadEntries(tag, out var wallEntriesLookup);
 

@@ -6,9 +6,9 @@ namespace Terraria.ModLoader.Default
 	{
 		private string modName;
 		private string tileEntityName;
-		private TagCompound data;
+		private IReadOnlyTagCompound data;
 
-		internal void SetData(TagCompound tag) {
+		internal void SetData(IReadOnlyTagCompound tag) {
 			modName = tag.GetString("mod");
 			tileEntityName = tag.GetString("name");
 
@@ -31,7 +31,7 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public override void LoadData(TagCompound tag) {
+		public override void LoadData(IReadOnlyTagCompound tag) {
 			SetData(tag);
 		}
 

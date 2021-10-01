@@ -80,7 +80,7 @@ namespace Terraria.ModLoader.IO
 			return tag;
 		}
 
-		public static void Load(Item item, TagCompound tag)
+		public static void Load(Item item, IReadOnlyTagCompound tag)
 		{
 			string modName = tag.GetString("mod");
 			if (modName == "") {
@@ -116,7 +116,7 @@ namespace Terraria.ModLoader.IO
 				LoadGlobals(item, tag.GetList<TagCompound>("globalData"));
 		}
 
-		public static Item Load(TagCompound tag) {
+		public static Item Load(IReadOnlyTagCompound tag) {
 			var item = new Item();
 			Load(item, tag);
 			return item;

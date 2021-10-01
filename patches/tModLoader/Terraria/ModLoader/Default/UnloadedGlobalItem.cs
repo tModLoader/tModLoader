@@ -23,7 +23,7 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public override void LoadData(Item item, TagCompound tag) {
+		public override void LoadData(Item item, IReadOnlyTagCompound tag) {
 			if (tag.ContainsKey("modData")) {
 				ItemIO.LoadGlobals(item, tag.GetList<TagCompound>("modData"));
 			}

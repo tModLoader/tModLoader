@@ -88,7 +88,7 @@ namespace Terraria.ModLoader
 		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
 		/// <param name="tag"> The TagCompound to load data from. </param>
-		public virtual void LoadData(TagCompound tag) { }
+		public virtual void LoadData(IReadOnlyTagCompound tag) { }
 
 		/// <summary>
 		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.

@@ -8,7 +8,7 @@ namespace Terraria.ModLoader.Default
 	[LegacyName("MysteryItem")]
 	public class UnloadedItem : ModLoaderModItem
 	{
-		private TagCompound data;
+		private IReadOnlyTagCompound data;
 
 		public string ModName { get; private set; }
 		public string ItemName { get; private set; }
@@ -24,7 +24,7 @@ namespace Terraria.ModLoader.Default
 			Item.rare = 1;
 		}
 
-		internal void Setup(TagCompound tag) {
+		internal void Setup(IReadOnlyTagCompound tag) {
 			ModName = tag.GetString("mod");
 			ItemName = tag.GetString("name");
 			data = tag;
@@ -47,7 +47,7 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public override void LoadData(TagCompound tag) {
+		public override void LoadData(IReadOnlyTagCompound tag) {
 			Setup(tag);
 
 			if (ModContent.TryFind(ModName, ItemName, out ModItem modItem)) {

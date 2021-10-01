@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.IO
 			return sb.ToString();
 		}
 
-		private string TypeString(Type type) {
+		private static string TypeString(Type type) {
 			if (type == typeof(byte)) return "byte";
 			if (type == typeof(short)) return "short";
 			if (type == typeof(int)) return "int";
@@ -25,7 +25,7 @@ namespace Terraria.ModLoader.IO
 			if (type == typeof(string)) return "string";
 			if (type == typeof(byte[])) return "byte[]";
 			if (type == typeof(int[])) return "int[]";
-			if (type == typeof(TagCompound)) return "object";
+			if (type == typeof(TagCompound) || type == typeof(IReadOnlyTagCompound)) return "object";
 			if (type == typeof(IList)) return "list";
 			throw new ArgumentException("Unknown Type: " + type);
 		}
@@ -47,61 +47,73 @@ namespace Terraria.ModLoader.IO
 		}
 
 		private void WriteEntry(KeyValuePair<string, object> entry) {
-			if (entry.Value == null) {
-				sb.Append('"').Append(entry.Key).Append("\" = null");
+			(string key, object value) = entry;
+			if (value == null) {
+				sb.Append('"').Append(key).Append("\" = null");
 				return;
 			}
 
-			var type = entry.Value.GetType();
-			var isList = entry.Value is IList && !(entry.Value is Array);
+			var type = value.GetType();
+			var isList = value is IList and not Array;
 			sb.Append(TypeString(isList ? type.GetGenericArguments()[0] : type));
 
-			sb.Append(" \"").Append(entry.Key).Append("\" ");
+			sb.Append(" \"").Append(key).Append("\" ");
 
-			if (type != typeof(TagCompound) && !isList)
+			if (value is IReadOnlyTagCompound && !isList)
 				sb.Append("= ");
 
-			WriteValue(entry.Value);
+			WriteValue(value);
 		}
 
 		private void WriteValue(object elem) {
-			if (elem is byte)
-				sb.Append((byte)elem);
-			else if (elem is short)
-				sb.Append((short)elem);
-			else if (elem is int)
-				sb.Append((int)elem);
-			else if (elem is long)
-				sb.Append((long)elem);
-			else if (elem is float)
-				sb.Append((float)elem);
-			else if (elem is double)
-				sb.Append((double)elem);
-			else if (elem is string)
-				sb.Append('"').Append((string)elem).Append('"');
-			else if (elem is byte[])
-				sb.Append('[').Append(string.Join(", ", (byte[])elem)).Append(']');
-			else if (elem is int[])
-				sb.Append('[').Append(string.Join(", ", (int[])elem)).Append(']');
-			else if (elem is TagCompound) {
-				var tag = (TagCompound)elem;
-				WriteList('{', '}', true, tag, WriteEntry);
-			}
-			else if (elem is IList) {
-				var type = elem.GetType().GetGenericArguments()[0];
-				WriteList('[', ']',
-					type == typeof(string) || type == typeof(TagCompound) || typeof(IList).IsAssignableFrom(type),
-					((IList)elem).Cast<object>(),
-					o => {
-						if (type == typeof(IList)) //lists of lists need their subtype printed
-							sb.Append(TypeString(o.GetType().GetGenericArguments()[0])).Append(' ');
+			switch (elem)
+			{
+				case byte b:
+					sb.Append(b);
+					break;
+				case short s:
+					sb.Append(s);
+					break;
+				case int i:
+					sb.Append(i);
+					break;
+				case long l:
+					sb.Append(l);
+					break;
+				case float f:
+					sb.Append(f);
+					break;
+				case double d:
+					sb.Append(d);
+					break;
+				case string s:
+					sb.Append('"').Append(s).Append('"');
+					break;
+				case byte[] bytes:
+					sb.Append('[').Append(string.Join(", ", bytes)).Append(']');
+					break;
+				case int[] ints:
+					sb.Append('[').Append(string.Join(", ", ints)).Append(']');
+					break;
+				case IReadOnlyTagCompound compound:
+					WriteList('{', '}', true, compound, WriteEntry);
+					break;
+				case IList list:
+					var type = list.GetType().GetGenericArguments()[0];
+					WriteList('[', ']',
+						type == typeof(string) || type == typeof(TagCompound) || type == typeof(IReadOnlyTagCompound) || typeof(IList).IsAssignableFrom(type),
+						list.Cast<object>(),
+						o => {
+							if (type == typeof(IList)) //lists of lists need their subtype printed
+								sb.Append(TypeString(o.GetType().GetGenericArguments()[0])).Append(' ');
 
-						WriteValue(o);
-					});
+							WriteValue(o);
+						});
+					break;
 			}
 		}
 
-		public static string Print(TagCompound tag) {
+		public static string Print(IReadOnlyTagCompound tag) {
 			var printer = new TagPrinter();
 			printer.WriteValue(tag);
 			return printer.ToString();

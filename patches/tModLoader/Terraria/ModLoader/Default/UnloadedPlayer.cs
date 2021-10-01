@@ -19,7 +19,7 @@ namespace Terraria.ModLoader.Default
 			tag["unloadedResearch"] = unloadedResearch;
 		}
 
-		public override void LoadData(TagCompound tag) {
+		public override void LoadData(IReadOnlyTagCompound tag) {
 			PlayerIO.LoadModData(Player, tag.GetList<TagCompound>("list"));
 			PlayerIO.LoadResearch(Player, tag.GetList<TagCompound>("unloadedResearch"));
 		}
