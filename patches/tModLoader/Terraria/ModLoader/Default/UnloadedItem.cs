@@ -24,10 +24,10 @@ namespace Terraria.ModLoader.Default
 			Item.rare = 1;
 		}
 
-		internal void Setup(TagCompound tag) {
+		internal void Setup(ReadOnlyTagCompound tag) {
 			ModName = tag.GetString("mod");
 			ItemName = tag.GetString("name");
-			data = tag;
+			data = tag.Tag;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
@@ -47,7 +47,7 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public override void LoadData(TagCompound tag) {
+		public override void LoadData(ReadOnlyTagCompound tag) {
 			Setup(tag);
 
 			if (ModContent.TryFind(ModName, ItemName, out ModItem modItem)) {

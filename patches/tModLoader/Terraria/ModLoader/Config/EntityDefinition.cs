@@ -87,8 +87,8 @@ namespace Terraria.ModLoader.Config
 
 		public static ItemDefinition FromString(string s) => new ItemDefinition(s);
 
-		public static readonly Func<TagCompound, ItemDefinition> DESERIALIZER = Load;
-		public static ItemDefinition Load(TagCompound tag) => new ItemDefinition(tag.GetString("mod"), tag.GetString("name"));
+		public static readonly Func<TagCompound, ItemDefinition> DESERIALIZER = tag => Load(tag);
+		public static ItemDefinition Load(ReadOnlyTagCompound tag) => new ItemDefinition(tag.GetString("mod"), tag.GetString("name"));
 	}
 
 	[TypeConverter(typeof(ToFromStringConverter<ProjectileDefinition>))]
@@ -103,8 +103,8 @@ namespace Terraria.ModLoader.Config
 
 		public static ProjectileDefinition FromString(string s) => new ProjectileDefinition(s);
 
-		public static readonly Func<TagCompound, ProjectileDefinition> DESERIALIZER = Load;
-		public static ProjectileDefinition Load(TagCompound tag) => new ProjectileDefinition(tag.GetString("mod"), tag.GetString("name"));
+		public static readonly Func<TagCompound, ProjectileDefinition> DESERIALIZER = tag => Load(tag);
+		public static ProjectileDefinition Load(ReadOnlyTagCompound tag) => new ProjectileDefinition(tag.GetString("mod"), tag.GetString("name"));
 	}
 
 	[TypeConverter(typeof(ToFromStringConverter<NPCDefinition>))]
@@ -119,8 +119,8 @@ namespace Terraria.ModLoader.Config
 
 		public static NPCDefinition FromString(string s) => new NPCDefinition(s);
 
-		public static readonly Func<TagCompound, NPCDefinition> DESERIALIZER = Load;
-		public static NPCDefinition Load(TagCompound tag) => new NPCDefinition(tag.GetString("mod"), tag.GetString("name"));
+		public static readonly Func<TagCompound, NPCDefinition> DESERIALIZER = tag => Load(tag);
+		public static NPCDefinition Load(ReadOnlyTagCompound tag) => new NPCDefinition(tag.GetString("mod"), tag.GetString("name"));
 	}
 
 	[TypeConverter(typeof(ToFromStringConverter<PrefixDefinition>))]
@@ -135,8 +135,8 @@ namespace Terraria.ModLoader.Config
 
 		public static PrefixDefinition FromString(string s) => new PrefixDefinition(s);
 
-		public static readonly Func<TagCompound, PrefixDefinition> DESERIALIZER = Load;
-		public static PrefixDefinition Load(TagCompound tag) => new PrefixDefinition(tag.GetString("mod"), tag.GetString("name"));
+		public static readonly Func<TagCompound, PrefixDefinition> DESERIALIZER = tag => Load(tag);
+		public static PrefixDefinition Load(ReadOnlyTagCompound tag) => new PrefixDefinition(tag.GetString("mod"), tag.GetString("name"));
 	}
 
 	/// <summary>

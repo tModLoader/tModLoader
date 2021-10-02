@@ -21,7 +21,7 @@ namespace Terraria.ModLoader.IO
 			internal const byte NextModTile = 128;
 		}
 
-		internal static void LoadLegacy(TagCompound tag, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup) {
+		internal static void LoadLegacy(ReadOnlyTagCompound tag, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup) {
 			if (!tag.ContainsKey("data")) {
 				return;
 			}

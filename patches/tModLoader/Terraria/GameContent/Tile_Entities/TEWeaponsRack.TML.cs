@@ -9,7 +9,7 @@ namespace Terraria.GameContent.Tile_Entities
 			tag["item"] = ItemIO.Save(item);
 		}
 
-		public override void LoadData(TagCompound tag) => item = ItemIO.Load(tag.GetCompound("item"));
+		public override void LoadData(ReadOnlyTagCompound tag) => item = ItemIO.Load(tag.GetCompound("item"));
 
 		public override void NetSend(BinaryWriter writer) => ItemIO.Send(item, writer, true);
 

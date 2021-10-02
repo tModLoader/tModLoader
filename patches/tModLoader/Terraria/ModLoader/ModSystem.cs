@@ -239,7 +239,7 @@ namespace Terraria.ModLoader
 		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
 		/// <param name="tag"> The TagCompound to load data from. </param>
-		public virtual void LoadWorldData(TagCompound tag) { }
+		public virtual void LoadWorldData(ReadOnlyTagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to send custom data between clients and server. This is useful for syncing information such as bosses that have been defeated.

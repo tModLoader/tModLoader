@@ -39,7 +39,7 @@ namespace ExampleMod.Common.Systems
 			// }
 		}
 
-		public override void LoadWorldData(TagCompound tag) {
+		public override void LoadWorldData(ReadOnlyTagCompound tag) {
 			downedMinionBoss = tag.ContainsKey("downedMinionBoss");
 			// downedOtherBoss = tag.ContainsKey("downedOtherBoss");
 		}

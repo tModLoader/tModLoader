@@ -86,7 +86,7 @@ namespace ExampleMod.Content.Items.Consumables
 			tag["exampleLifeFruits"] = exampleLifeFruits;
 		}
 
-		public override void LoadData(TagCompound tag) {
+		public override void LoadData(ReadOnlyTagCompound tag) {
 			exampleLifeFruits = (int) tag["exampleLifeFruits"];
 		}
 	}

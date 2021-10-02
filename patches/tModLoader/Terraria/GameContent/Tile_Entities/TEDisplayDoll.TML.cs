@@ -11,7 +11,7 @@ namespace Terraria.GameContent.Tile_Entities
 			tag["dyes"] = PlayerIO.SaveInventory(_dyes);
 		}
 
-		public override void LoadData(TagCompound tag) {
+		public override void LoadData(ReadOnlyTagCompound tag) {
 			PlayerIO.LoadInventory(_items, tag.GetList<TagCompound>("items"));
 			PlayerIO.LoadInventory(_dyes, tag.GetList<TagCompound>("dyes"));
 		}

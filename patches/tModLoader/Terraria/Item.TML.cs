@@ -9,7 +9,7 @@ namespace Terraria
 {
 	public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	{
-		public static readonly Func<TagCompound, Item> DESERIALIZER = ItemIO.Load;
+		public static readonly Func<TagCompound, Item> DESERIALIZER = tag => ItemIO.Load(tag);
 
 		private int currentUseAnimationCompensation;
 

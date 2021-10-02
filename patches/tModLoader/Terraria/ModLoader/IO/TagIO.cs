@@ -292,10 +292,10 @@ namespace Terraria.ModLoader.IO
 
 		public static TagCompound Read(BinaryReader reader) {
 			var tag = ReadTag(reader, out string name);
-			if (!(tag is TagCompound))
+			if (tag is not TagCompound compound)
 				throw new IOException("Root tag not a TagCompound");
 
-			return (TagCompound)tag;
+			return compound;
 		}
 
 		public static void ToFile(TagCompound root, string path, bool compress = true) {

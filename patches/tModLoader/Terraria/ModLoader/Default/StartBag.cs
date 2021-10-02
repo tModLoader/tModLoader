@@ -41,7 +41,7 @@ namespace Terraria.ModLoader.Default
 			tag["items"] = items;
 		}
 
-		public override void LoadData(TagCompound tag) {
+		public override void LoadData(ReadOnlyTagCompound tag) {
 			items = tag.Get<List<Item>>("items");
 		}
 	}
