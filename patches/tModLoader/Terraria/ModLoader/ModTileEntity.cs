@@ -75,7 +75,7 @@ namespace Terraria.ModLoader
 		/// You should never use this. It is only included here for completion's sake.
 		/// </summary>
 		public override void NetPlaceEntityAttempt(int i, int j) {
-			if (!manager.TryGetTileEntity(type, out ModTileEntity modTileEntity) || !modTileEntity.ValidTile(i, j)) {
+			if (!manager.TryGetTileEntity(type, out ModTileEntity modTileEntity)) {
 				return;
 			}
 
@@ -193,11 +193,6 @@ namespace Terraria.ModLoader
 		public virtual void Unload(){}
 
 		/// <summary>
-		/// Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.
-		/// </summary>
-		public abstract bool ValidTile(int i, int j);
-
-		/// <summary>
 		/// This method does not get called by tModLoader, and is only included for you convenience so you do not have to cast the result of Mod.GetTileEntity.
 		/// </summary>
 		public virtual int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate) {
@@ -227,5 +222,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void OnKill() {
 		}
+
+		/// <summary>
+		/// Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.
+		/// Defaults to check tile.IsActive.
+		/// </summary>
+		public abstract override bool IsTileValidForEntity(int x, int y);
 	}
 }
