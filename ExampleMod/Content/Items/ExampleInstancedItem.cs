@@ -44,7 +44,7 @@ namespace ExampleMod.Content.Items
 			tag["Colors"] = colors.ToList();
 		}
 
-		public override void LoadData(TagCompound tag) {
+		public override void LoadData(IReadOnlyTagCompound tag) {
 			colors = tag.Get<List<Color>>("Colors").ToArray();
 		}
 

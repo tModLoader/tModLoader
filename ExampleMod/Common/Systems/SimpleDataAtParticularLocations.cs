@@ -46,7 +46,7 @@ namespace ExampleMod.Common.Systems
 		}
 
 		// We load our data sets using the provided TagCompound. Should mirror SaveWorldData()
-		public override void LoadWorldData(TagCompound tag) {
+		public override void LoadWorldData(IReadOnlyTagCompound tag) {
 
 			List<PosData<byte>> list = new List<PosData<byte>>();
 			foreach (var entry in tag.GetList<TagCompound>("myMap")) {
