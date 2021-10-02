@@ -225,7 +225,6 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.
-		/// Defaults to check tile.IsActive.
 		/// </summary>
 		public abstract override bool IsTileValidForEntity(int x, int y);
 	}
