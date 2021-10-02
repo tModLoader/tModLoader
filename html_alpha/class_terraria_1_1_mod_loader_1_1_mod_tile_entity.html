@@ -1013,8 +1013,7 @@ static Action&#160;</td><td class="memItemRight" valign="bottom"><b>_UpdateStart
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= Assembly.GetExecutingAssembly()</div>
 <div class="line">            .GetTypes()</div>
-<div class="line">            .Where(t =&gt; !t.IsAbstract &amp;&amp; t.IsSubclassOf(typeof(<a class="code" href="class_tile_entity.html">TileEntity</a>)) &amp;&amp; !typeof(ModTileEntity).IsAssignableFrom(t))</div>
-<div class="line">            .Count()</div>
+<div class="line">            .Count(t =&gt; !t.IsAbstract &amp;&amp; t.IsSubclassOf(typeof(<a class="code" href="class_tile_entity.html">TileEntity</a>)) &amp;&amp; !typeof(ModTileEntity).IsAssignableFrom(t))</div>
 <div class="ttc" id="aclass_tile_entity_html"><div class="ttname"><a href="class_tile_entity.html">TileEntity</a></div></div>
 </div><!-- fragment -->
 </div>
