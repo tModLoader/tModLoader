@@ -56,11 +56,21 @@ namespace Terraria.ModLoader
 					skip++;
 			}
 
-			if (list.Count != 0 && skip != MaxVanillaSlotCount + list.Count && skip != 0) {
+			// there are no slots to be drawn by us.
+			if (skip == MaxVanillaSlotCount + list.Count) {
+				ModSlotPlayer(Player).scrollbarSlotPosition = 0;
+				return;
+			}
+
+			int accessoryPerColumn = GetAccessorySlotPerColumn();
+			int slotsToRender = list.Count + MaxVanillaSlotCount - skip;
+			int scrollIncrement = slotsToRender - accessoryPerColumn;
+
+			if (scrollIncrement > 0) {
 				DrawScrollSwitch();
 
 				if (ModSlotPlayer(Player).scrollSlots) {
-					DrawScrollbar(skip);
+					DrawScrollbar(accessoryPerColumn, slotsToRender, scrollIncrement);
 				}
 			}
 			else
@@ -97,12 +107,8 @@ namespace Terraria.ModLoader
 		}
 
 		// This is a hacky solution to make it very vanilla-esque, at the cost of not actually using a UI proper. 
-		internal void DrawScrollbar(int skip) {
+		internal void DrawScrollbar(int accessoryPerColumn, int slotsToRender, int scrollIncrement) {
 			int xLoc = Main.screenWidth - 64 - 28;
-
-			int accessoryPerColumn = GetAccessorySlotPerColumn();
-			int slotsToRender = list.Count + MaxVanillaSlotCount - skip;
-			int scrollIncrement = slotsToRender - accessoryPerColumn;
 
 			if (scrollIncrement < 0) {
 				accessoryPerColumn = slotsToRender;
@@ -216,7 +222,6 @@ namespace Terraria.ModLoader
 			int yRow = trueSlot % accessoryPerColumn;
 						
 			if (ModSlotPlayer(Player).scrollSlots) {
-
 				int row = yRow + (xColumn) * accessoryPerColumn - ModSlotPlayer(Player).scrollbarSlotPosition - skip;
 
 				yLoc = (int)((float)(DrawVerticalAlignment) + (float)((row + 3) * 56) * Main.inventoryScale) + 4;
