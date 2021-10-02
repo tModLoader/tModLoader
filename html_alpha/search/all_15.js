@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['validateitem_2490',['ValidateItem',['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a24fc4d2c08a22c38dd7738adbbda9ca6',1,'Terraria::ModLoader::ModPrefix']]],
-  ['validtile_2491',['ValidTile',['../class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_tile_entity.html#af376e101676a1a9a1f2e7af193316ffd',1,'Terraria.ModLoader.Default.UnloadedTileEntity.ValidTile()'],['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a196c8616a4924fdf45458314fd0ec2b0',1,'Terraria.ModLoader.ModTileEntity.ValidTile()']]],
+  ['validateitem_2491',['ValidateItem',['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a24fc4d2c08a22c38dd7738adbbda9ca6',1,'Terraria::ModLoader::ModPrefix']]],
   ['valueproviderdecorator_2492',['ValueProviderDecorator',['../class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_value_provider_decorator.html',1,'Terraria::ModLoader::Config::ReferenceDefaultsPreservingResolver']]],
   ['vanillacontentvalidator_2493',['VanillaContentValidator',['../class_terraria_1_1_game_content_1_1_vanilla_content_validator.html',1,'Terraria::GameContent']]],
   ['vanilladamageclass_2494',['VanillaDamageClass',['../class_terraria_1_1_mod_loader_1_1_vanilla_damage_class.html',1,'Terraria::ModLoader']]],
@@ -16,7 +15,7 @@ var searchData=
   ['version_2503',['Version',['../class_terraria_1_1_mod_loader_1_1_mod.html#a25e6f7b4866109d4137e7ace4e78ee64',1,'Terraria::ModLoader::Mod']]],
   ['vertexcolors_2504',['VertexColors',['../struct_terraria_1_1_graphics_1_1_vertex_colors.html',1,'Terraria::Graphics']]],
   ['vertexstrip_2505',['VertexStrip',['../class_terraria_1_1_graphics_1_1_vertex_strip.html',1,'Terraria::Graphics']]],
-  ['verticalwingspeeds_2506',['VerticalWingSpeeds',['../class_terraria_1_1_mod_loader_1_1_global_item.html#ad87945dcae95e961425c381e61fad5b7',1,'Terraria.ModLoader.GlobalItem.VerticalWingSpeeds()'],['../class_terraria_1_1_mod_loader_1_1_equip_texture.html#ab06c1c47e2e163d59418964f40755ad9',1,'Terraria.ModLoader.EquipTexture.VerticalWingSpeeds()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a2aabeb881b1ae8564091ac382afefaca',1,'Terraria.ModLoader.ModItem.VerticalWingSpeeds()']]],
+  ['verticalwingspeeds_2506',['VerticalWingSpeeds',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a2aabeb881b1ae8564091ac382afefaca',1,'Terraria.ModLoader.ModItem.VerticalWingSpeeds()'],['../class_terraria_1_1_mod_loader_1_1_global_item.html#ad87945dcae95e961425c381e61fad5b7',1,'Terraria.ModLoader.GlobalItem.VerticalWingSpeeds()'],['../class_terraria_1_1_mod_loader_1_1_equip_texture.html#ab06c1c47e2e163d59418964f40755ad9',1,'Terraria.ModLoader.EquipTexture.VerticalWingSpeeds()']]],
   ['vilethorn_2507',['Vilethorn',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a180914cd1e7734a8a231a74eb2a78815',1,'Terraria::ID::ProjAIStyleID']]],
   ['vineshader_2508',['VineShader',['../class_terraria_1_1_game_content_1_1_r_g_b_1_1_vine_shader.html',1,'Terraria::GameContent::RGB']]],
   ['virtualcamera_2509',['VirtualCamera',['../struct_terraria_1_1_graphics_1_1_virtual_camera.html',1,'Terraria::Graphics']]],

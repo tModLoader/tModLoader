@@ -116,6 +116,9 @@ sealed override <a class="el" href="class_terraria_1_1_data_structures_1_1_tile_
 <tr class="memitem:ad802a41427e54c3bcadc616d3bf23aa5"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ad802a41427e54c3bcadc616d3bf23aa5">IsLoadingEnabled</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod)</td></tr>
 <tr class="memdesc:ad802a41427e54c3bcadc616d3bf23aa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this type should be loaded when it's told to. Returning false disables Mod.AddContent from actually loading this type.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ad802a41427e54c3bcadc616d3bf23aa5">More...</a><br /></td></tr>
 <tr class="separator:ad802a41427e54c3bcadc616d3bf23aa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d30f6c28f8c26ec461cb1cc1d020ee1"><td class="memItemLeft" align="right" valign="top">abstract override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a6d30f6c28f8c26ec461cb1cc1d020ee1">IsTileValidForEntity</a> (int x, int y)</td></tr>
+<tr class="memdesc:a6d30f6c28f8c26ec461cb1cc1d020ee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a6d30f6c28f8c26ec461cb1cc1d020ee1">More...</a><br /></td></tr>
+<tr class="separator:a6d30f6c28f8c26ec461cb1cc1d020ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec3cee3a57bbd5c80de025bc6cabda96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#aec3cee3a57bbd5c80de025bc6cabda96">Kill</a> (int i, int j)</td></tr>
 <tr class="memdesc:aec3cee3a57bbd5c80de025bc6cabda96"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper method that removes this kind of tile entity from the given coordinates for you.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#aec3cee3a57bbd5c80de025bc6cabda96">More...</a><br /></td></tr>
 <tr class="separator:aec3cee3a57bbd5c80de025bc6cabda96"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,9 +158,6 @@ sealed override void&#160;</td><td class="memItemRight" valign="bottom"><b>Regis
 <tr class="memitem:a23e8e105101c3cf5d326a96d620d1d99"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a23e8e105101c3cf5d326a96d620d1d99">Unload</a> ()</td></tr>
 <tr class="memdesc:a23e8e105101c3cf5d326a96d620d1d99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called during unloading when needed.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a23e8e105101c3cf5d326a96d620d1d99">More...</a><br /></td></tr>
 <tr class="separator:a23e8e105101c3cf5d326a96d620d1d99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a196c8616a4924fdf45458314fd0ec2b0"><td class="memItemLeft" align="right" valign="top">abstract bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a196c8616a4924fdf45458314fd0ec2b0">ValidTile</a> (int i, int j)</td></tr>
-<tr class="memdesc:a196c8616a4924fdf45458314fd0ec2b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a196c8616a4924fdf45458314fd0ec2b0">More...</a><br /></td></tr>
-<tr class="separator:a196c8616a4924fdf45458314fd0ec2b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46d214ed56f5b7d9437d08bd1e1087f9"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a46d214ed56f5b7d9437d08bd1e1087f9">WriteExtraData</a> (BinaryWriter writer, bool networkSend)</td></tr>
 <tr class="memdesc:a46d214ed56f5b7d9437d08bd1e1087f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should never be called on <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html" title="Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...">ModTileEntity</a>. Replaced by NetSend and Save. Would make the base method internal if not for patch size  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a46d214ed56f5b7d9437d08bd1e1087f9">More...</a><br /></td></tr>
 <tr class="separator:a46d214ed56f5b7d9437d08bd1e1087f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,9 +165,6 @@ sealed override void&#160;</td><td class="memItemRight" valign="bottom"><b>Regis
 <tr class="memitem:a03b3347fa60c145ae546aaa183548d82 inherit pub_methods_class_terraria_1_1_data_structures_1_1_tile_entity"><td class="memItemLeft" align="right" valign="top"><a id="a03b3347fa60c145ae546aaa183548d82"></a>
 virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>GetItemGamepadInstructions</b> (int slot=0)</td></tr>
 <tr class="separator:a03b3347fa60c145ae546aaa183548d82 inherit pub_methods_class_terraria_1_1_data_structures_1_1_tile_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae553481594bc73f7a48e929d068a3c37 inherit pub_methods_class_terraria_1_1_data_structures_1_1_tile_entity"><td class="memItemLeft" align="right" valign="top"><a id="ae553481594bc73f7a48e929d068a3c37"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTileValidForEntity</b> (int x, int y)</td></tr>
-<tr class="separator:ae553481594bc73f7a48e929d068a3c37 inherit pub_methods_class_terraria_1_1_data_structures_1_1_tile_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a853901f4f0667a2cc278bd1094d1caab inherit pub_methods_class_terraria_1_1_data_structures_1_1_tile_entity"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_data_structures_1_1_tile_entity.html#a853901f4f0667a2cc278bd1094d1caab">LoadData</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="memdesc:a853901f4f0667a2cc278bd1094d1caab inherit pub_methods_class_terraria_1_1_data_structures_1_1_tile_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for this tile entity. <br  />
 <b>Try to write defensive loading code that won't crash if something's missing.</b>  <a href="class_terraria_1_1_data_structures_1_1_tile_entity.html#a853901f4f0667a2cc278bd1094d1caab">More...</a><br /></td></tr>
@@ -524,6 +521,48 @@ static Action&#160;</td><td class="memItemRight" valign="bottom"><b>_UpdateStart
 </dl>
 
 <p>Implements <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_loadable.html#a99cb7624fdbd3514ea3af077a6d0e63e">Terraria.ModLoader.ILoadable</a>.</p>
+
+</div>
+</div>
+<a id="a6d30f6c28f8c26ec461cb1cc1d020ee1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d30f6c28f8c26ec461cb1cc1d020ee1">&#9670;&nbsp;</a></span>IsTileValidForEntity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">abstract override bool Terraria.ModLoader.ModTileEntity.IsTileValidForEntity </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame. </p>
+
+<p>Reimplemented from <a class="el" href="class_terraria_1_1_data_structures_1_1_tile_entity.html">Terraria.DataStructures.TileEntity</a>.</p>
+
+<p>Implemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_tile_entity.html#a56f6c46c70fd82b8249ede6f70defe19">Terraria.ModLoader.Default.UnloadedTileEntity</a>.</p>
 
 </div>
 </div>
@@ -909,46 +948,6 @@ static Action&#160;</td><td class="memItemRight" valign="bottom"><b>_UpdateStart
 <p>Called during unloading when needed. </p>
 
 <p>Implements <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_loadable.html#abd6052006a61256ffde9dfe9f44b0ad7">Terraria.ModLoader.ILoadable</a>.</p>
-
-</div>
-</div>
-<a id="a196c8616a4924fdf45458314fd0ec2b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a196c8616a4924fdf45458314fd0ec2b0">&#9670;&nbsp;</a></span>ValidTile()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">abstract bool Terraria.ModLoader.ModTileEntity.ValidTile </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>j</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame. </p>
-
-<p>Implemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_tile_entity.html#af376e101676a1a9a1f2e7af193316ffd">Terraria.ModLoader.Default.UnloadedTileEntity</a>.</p>
 
 </div>
 </div>

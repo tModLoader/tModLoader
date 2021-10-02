@@ -96,6 +96,9 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_defa
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a56f6c46c70fd82b8249ede6f70defe19"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_tile_entity.html#a56f6c46c70fd82b8249ede6f70defe19">IsTileValidForEntity</a> (int i, int j)</td></tr>
+<tr class="memdesc:a56f6c46c70fd82b8249ede6f70defe19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_tile_entity.html#a56f6c46c70fd82b8249ede6f70defe19">More...</a><br /></td></tr>
+<tr class="separator:a56f6c46c70fd82b8249ede6f70defe19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd5c9f6311d186c9e539b25a7f7a3dbe"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_tile_entity.html#afd5c9f6311d186c9e539b25a7f7a3dbe">LoadData</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="memdesc:afd5c9f6311d186c9e539b25a7f7a3dbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for this tile entity. <br  />
 <b>Try to write defensive loading code that won't crash if something's missing.</b>  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_tile_entity.html#afd5c9f6311d186c9e539b25a7f7a3dbe">More...</a><br /></td></tr>
@@ -106,9 +109,6 @@ Public Member Functions</h2></td></tr>
 <b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
 <b>NOTE:</b> Try to only save data that isn't default values.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_tile_entity.html#a3252c5de2cd72d7dd6b91cb703a57295">More...</a><br /></td></tr>
 <tr class="separator:a3252c5de2cd72d7dd6b91cb703a57295"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af376e101676a1a9a1f2e7af193316ffd"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_tile_entity.html#af376e101676a1a9a1f2e7af193316ffd">ValidTile</a> (int i, int j)</td></tr>
-<tr class="memdesc:af376e101676a1a9a1f2e7af193316ffd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_tile_entity.html#af376e101676a1a9a1f2e7af193316ffd">More...</a><br /></td></tr>
-<tr class="separator:af376e101676a1a9a1f2e7af193316ffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile_entity"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile_entity')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html">Terraria.ModLoader.ModTileEntity</a></td></tr>
 <tr class="memitem:ac0d39d082f95d385270f7e9dac364ade inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile_entity"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ac0d39d082f95d385270f7e9dac364ade">Find</a> (int i, int j)</td></tr>
 <tr class="memdesc:ac0d39d082f95d385270f7e9dac364ade inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the entity <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of this kind of tile entity at the given coordinates for you.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ac0d39d082f95d385270f7e9dac364ade">More...</a><br /></td></tr>
@@ -168,9 +168,6 @@ sealed override void&#160;</td><td class="memItemRight" valign="bottom"><b>Regis
 <tr class="memitem:a03b3347fa60c145ae546aaa183548d82 inherit pub_methods_class_terraria_1_1_data_structures_1_1_tile_entity"><td class="memItemLeft" align="right" valign="top"><a id="a03b3347fa60c145ae546aaa183548d82"></a>
 virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>GetItemGamepadInstructions</b> (int slot=0)</td></tr>
 <tr class="separator:a03b3347fa60c145ae546aaa183548d82 inherit pub_methods_class_terraria_1_1_data_structures_1_1_tile_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae553481594bc73f7a48e929d068a3c37 inherit pub_methods_class_terraria_1_1_data_structures_1_1_tile_entity"><td class="memItemLeft" align="right" valign="top"><a id="ae553481594bc73f7a48e929d068a3c37"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTileValidForEntity</b> (int x, int y)</td></tr>
-<tr class="separator:ae553481594bc73f7a48e929d068a3c37 inherit pub_methods_class_terraria_1_1_data_structures_1_1_tile_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6bab2b18d0bfb501c9843f508bd620f inherit pub_methods_class_terraria_1_1_data_structures_1_1_tile_entity"><td class="memItemLeft" align="right" valign="top"><a id="ab6bab2b18d0bfb501c9843f508bd620f"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnInventoryDraw</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, SpriteBatch spriteBatch)</td></tr>
 <tr class="separator:ab6bab2b18d0bfb501c9843f508bd620f inherit pub_methods_class_terraria_1_1_data_structures_1_1_tile_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -300,6 +297,46 @@ static Action&#160;</td><td class="memItemRight" valign="bottom"><b>_UpdateStart
 <tr class="separator:a8f040d287cc899854f3e068b0b23d84a inherit events_class_terraria_1_1_data_structures_1_1_tile_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a56f6c46c70fd82b8249ede6f70defe19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56f6c46c70fd82b8249ede6f70defe19">&#9670;&nbsp;</a></span>IsTileValidForEntity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override bool Terraria.ModLoader.Default.UnloadedTileEntity.IsTileValidForEntity </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame. </p>
+
+<p>Implements <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a6d30f6c28f8c26ec461cb1cc1d020ee1">Terraria.ModLoader.ModTileEntity</a>.</p>
+
+</div>
+</div>
 <a id="afd5c9f6311d186c9e539b25a7f7a3dbe"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afd5c9f6311d186c9e539b25a7f7a3dbe">&#9670;&nbsp;</a></span>LoadData()</h2>
 
@@ -373,46 +410,6 @@ static Action&#160;</td><td class="memItemRight" valign="bottom"><b>_UpdateStart
 </dl>
 
 <p>Reimplemented from <a class="el" href="class_terraria_1_1_data_structures_1_1_tile_entity.html#aea99080e74d726754fd65033cbfb6032">Terraria.DataStructures.TileEntity</a>.</p>
-
-</div>
-</div>
-<a id="af376e101676a1a9a1f2e7af193316ffd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af376e101676a1a9a1f2e7af193316ffd">&#9670;&nbsp;</a></span>ValidTile()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">override bool Terraria.ModLoader.Default.UnloadedTileEntity.ValidTile </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>j</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame. </p>
-
-<p>Implements <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a196c8616a4924fdf45458314fd0ec2b0">Terraria.ModLoader.ModTileEntity</a>.</p>
 
 </div>
 </div>
