@@ -2747,7 +2747,7 @@
  					if (player[myPlayer].buffType[n] != 0) {
  						int num32 = num28 / num29;
  						int num33 = num28 % num29;
-@@ -30086,10 +_,12 @@
+@@ -30086,17 +_,19 @@
  						if (num34 == 147)
  							bannerMouseOver = true;
  
@@ -2763,6 +2763,14 @@
  					}
  				}
  			}
+ 			else if (EquipPage == 1) {
+ 				DrawNPCHousesInUI();
+ 			}
+-			else {
++			else if (EquipPage == 0) {// allow mods to add custom equip pages
+ 				int num35 = 4;
+ 				if (mouseX > screenWidth - 64 - 28 && mouseX < (int)((float)(screenWidth - 64 - 28) + 56f * inventoryScale) && mouseY > num20 && mouseY < (int)((float)num20 + 448f * inventoryScale) && !PlayerInput.IgnoreMouseInterface)
+ 					player[myPlayer].mouseInterface = true;
 @@ -30113,7 +_,7 @@
  				Microsoft.Xna.Framework.Color color = inventoryBack;
  				Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
