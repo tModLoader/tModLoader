@@ -113,5 +113,36 @@ namespace Terraria.UI
 			success = true;
 			return item2;
 		}
+
+		internal static bool AccCheck_Inner(Item[] itemCollection, Item item, int slot) {
+			if (isEquipLocked(item.type))
+				return true;
+
+			if (slot != -1) {
+				if (itemCollection[slot].IsTheSameAs(item))
+					return false;
+
+				if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[slot], item))
+					return !ItemLoader.CanEquipAccessory(item, slot, slot >= 20);
+			}
+
+			var modSlotPlayerrrr = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
+			for (int i = 0; i < itemCollection.Length; i++) {
+				if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item)) {
+					if (i >= 20 && slot >= 20 && slot % modSlotPlayer.SlotCount() != i % modSlotPlayer.SlotCount())
+						return true;
+					else if (slot < 20 && i % 10 != slot % 10)
+						return true;
+				}
+			}
+
+			for (int i = 0; i < itemCollection.Length; i++) {
+				if (item.IsTheSameAs(itemCollection[i]))
+					return true;
+			}
+
+			return !ItemLoader.CanEquipAccessory(item, slot, slot >= 20);
+		}
+
 	}
 }

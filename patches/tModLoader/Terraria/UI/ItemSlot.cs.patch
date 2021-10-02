@@ -527,51 +527,22 @@
  				}
  			}
  
-@@ -1892,7 +_,7 @@
+@@ -1892,7 +_,9 @@
  			return true;
  		}
  
 -		private static bool AccCheck(Item[] itemCollection, Item item, int slot) {
 +		internal static bool AccCheck(Item[] itemCollection, Item item, int slot) {
++			return AccCheck_Inner(itemCollection, item, slot);
++			/*
  			if (isEquipLocked(item.type))
  				return true;
  
-@@ -1901,25 +_,28 @@
- 					return false;
- 
- 				if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0)
--					return false;
--			}
--
--			for (int i = 0; i < itemCollection.Length; i++) {
--				if (slot < 10 && i < 10) {
--					if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0)
--						return true;
--
--					if (slot >= 10 && i >= 10 && item.wingSlot > 0 && itemCollection[i].wingSlot > 0)
--						return true;
--				}
--
-+					return !ItemLoader.CanEquipAccessory(item, slot, slot >= 20);
-+			}
-+			
-+			var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
-+			for (int i = 0; i < itemCollection.Length; i++) {
-+				if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item)) {
-+					if (i >= 20 && slot >= 20 && slot % modSlotPlayer.SlotCount() != i % modSlotPlayer.SlotCount())
-+						return true;
-+					else if (slot < 20 && i % 10 != slot % 10)
-+						return true;
-+				}	
-+			}
-+
-+			for (int i = 0; i < itemCollection.Length; i++) {
- 				if (item.IsTheSameAs(itemCollection[i]))
- 					return true;
+@@ -1918,8 +_,10 @@
  			}
  
--			return false;
-+			return !ItemLoader.CanEquipAccessory(item, slot, slot >= 20);
+ 			return false;
++			*/
  		}
  
 +		//TML: I (Solxan), have not been able to get this to ever run in-game. I suspect this code path is deprecated.
