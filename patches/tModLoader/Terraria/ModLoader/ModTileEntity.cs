@@ -52,13 +52,13 @@ namespace Terraria.ModLoader
 		}
 
 		private static void UpdateStartInternal() {
-			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().Select(pair => pair.Value).OfType<ModTileEntity>()) {
+			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().Values.OfType<ModTileEntity>()) {
 				tileEntity.PreGlobalUpdate();
 			}
 		}
 
 		private static void UpdateEndInternal() {
-			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().Select(pair => pair.Value).OfType<ModTileEntity>()) {
+			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().Values.OfType<ModTileEntity>()) {
 				tileEntity.PostGlobalUpdate();
 			}
 		}
