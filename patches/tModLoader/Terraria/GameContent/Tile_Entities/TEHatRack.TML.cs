@@ -35,7 +35,7 @@ namespace Terraria.GameContent.Tile_Entities
 				}
 			}
 
-			for (int i = 0; i < _items.Length; i++) {
+			for (int i = 0; i < _dyes.Length; i++) {
 				var dye = _dyes[i];
 
 				if (!dye.IsAir) {
