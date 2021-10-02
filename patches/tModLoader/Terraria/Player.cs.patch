@@ -4910,12 +4910,15 @@
  			catch {
  			}
  
-@@ -38213,9 +_,12 @@
+@@ -38213,9 +_,15 @@
  			}
  		}
  
 -		private static void LoadPlayer_LastMinuteFixes(Player newPlayer) {
 +		public static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
++			// Handle Player Select Screen loading for Iterations with the correct player
++			ModAccessorySlot.Player = newPlayer;
++
  			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
 +			PlayerIO.Load(newPlayer, playerFileData.Path, playerFileData.IsCloudSave);
  			for (int i = 3; i < 10; i++) {
@@ -4924,7 +4927,7 @@
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 4874 || type == 5000)
  					newPlayer.lavaMax += 420;
-@@ -38223,14 +_,29 @@
+@@ -38223,14 +_,25 @@
  				if (type == 906 || type == 4038)
  					newPlayer.lavaMax += 420;
  
@@ -4940,10 +4943,6 @@
  				newPlayer.lavaTime = newPlayer.lavaMax;
 +				*/
  			}
-+
-+			// Handle Player Select Screen rendering for Iterations with the correct player
-+			if (newPlayer != ModAccessorySlot.Player)
-+				ModAccessorySlot.Player = newPlayer;
 +
 +			var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(newPlayer);
 +			for (int i = 0; i < modSlotPlayer.SlotCount(); i++) {
