@@ -51,7 +51,7 @@ namespace Terraria.GameContent.Tile_Entities
 				_items[i] = presentItems[i] ? ItemIO.Receive(reader, true) : new Item();
 			}
 
-			for (int i = 0; i < _items.Length; i++) {
+			for (int i = 0; i < _dyes.Length; i++) {
 				_dyes[i] = presentItems[i + _items.Length] ? ItemIO.Receive(reader, true) : new Item();
 			}
 		}
