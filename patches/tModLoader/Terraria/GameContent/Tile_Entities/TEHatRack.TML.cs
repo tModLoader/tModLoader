@@ -6,6 +6,8 @@ namespace Terraria.GameContent.Tile_Entities
 {
 	public partial class TEHatRack
 	{
+		const int ItemArraySize = 2; 
+
 		public override void SaveData(TagCompound tag) {
 			tag["items"] = PlayerIO.SaveInventory(_items);
 			tag["dyes"] = PlayerIO.SaveInventory(_dyes);
@@ -20,7 +22,7 @@ namespace Terraria.GameContent.Tile_Entities
 			BitsByte itemsBits = default;
 			BitsByte dyesBits = default;
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < ItemArraySize; i++) {
 				itemsBits[i] = !_items[i].IsAir;
 				dyesBits[i] = !_dyes[i].IsAir;
 			}
@@ -28,7 +30,7 @@ namespace Terraria.GameContent.Tile_Entities
 			writer.Write(itemsBits);
 			writer.Write(dyesBits);
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < ItemArraySize; i++) {
 				var item = _items[i];
 
 				if (!item.IsAir) {
@@ -36,7 +38,7 @@ namespace Terraria.GameContent.Tile_Entities
 				}
 			}
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < ItemArraySize; i++) {
 				var dye = _dyes[i];
 
 				if (!dye.IsAir) {
@@ -49,11 +51,11 @@ namespace Terraria.GameContent.Tile_Entities
 			BitsByte presentItems = reader.ReadByte();
 			BitsByte presentDyes = reader.ReadByte();
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < ItemArraySize; i++) {
 				_items[i] = presentItems[i] ? ItemIO.Receive(reader, true) : new Item();
 			}
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < ItemArraySize; i++) {
 				_dyes[i] = presentDyes[i] ? ItemIO.Receive(reader, true) : new Item();
 			}
 		}
