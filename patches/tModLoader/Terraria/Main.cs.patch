@@ -843,7 +843,7 @@
 +				dayRate = 86400;
  		}
  
- 		public Main() {
+ 		public Main() : base(dedServ) {
 @@ -4784,7 +_,50 @@
  
  			Configuration.Load();

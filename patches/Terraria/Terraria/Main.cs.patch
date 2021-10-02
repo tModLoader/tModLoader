@@ -193,7 +193,12 @@
  			}
  			else {
  				Console.Title = "Terraria Server " + versionNumber2;
-@@ -4731,6 +_,9 @@
+@@ -4727,10 +_,13 @@
+ 			}
+ 		}
+ 
+-		public Main() {
++		public Main() : base(dedServ) {
  			instance = this;
  			UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
  			base.Exiting += Main_Exiting;
