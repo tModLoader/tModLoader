@@ -5,7 +5,7 @@ using Terraria.ModLoader.IO;
 namespace Terraria.GameContent.Tile_Entities
 {
 	public partial class TEHatRack
-	{ 
+	{
 		public override void SaveData(TagCompound tag) {
 			tag["items"] = PlayerIO.SaveInventory(_items);
 			tag["dyes"] = PlayerIO.SaveInventory(_dyes);
