@@ -83,7 +83,7 @@ namespace Terraria.ModLoader.IO
 				}
 
 				//Check mods' TEs for being valid. If they are, register them to TE collections.
-				if (baseModTileEntity != null && baseModTileEntity.ValidTile(tileEntity.Position.X, tileEntity.Position.Y)) {
+				if (baseModTileEntity != null && baseModTileEntity.IsTileValidForEntity(tileEntity.Position.X, tileEntity.Position.Y)) {
 					tileEntity.ID = TileEntity.AssignNewID();
 					TileEntity.ByID[tileEntity.ID] = tileEntity;
 
