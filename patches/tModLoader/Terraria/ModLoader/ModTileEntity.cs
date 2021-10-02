@@ -17,8 +17,7 @@ namespace Terraria.ModLoader
 	{
 		public static readonly int NumVanilla = Assembly.GetExecutingAssembly()
 			.GetTypes()
-			.Where(t => !t.IsAbstract && t.IsSubclassOf(typeof(TileEntity)) && !typeof(ModTileEntity).IsAssignableFrom(t))
-			.Count();
+			.Count(t => !t.IsAbstract && t.IsSubclassOf(typeof(TileEntity)) && !typeof(ModTileEntity).IsAssignableFrom(t));
 
 		// TODO: public bool netUpdate;
 
@@ -45,13 +44,7 @@ namespace Terraria.ModLoader
 		/// Returns the number of modded tile entities that exist in the world currently being played.
 		/// </summary>
 		public static int CountInWorld() {
-			int count = 0;
-			foreach (KeyValuePair<int, TileEntity> pair in ByID) {
-				if (pair.Value.type >= NumVanilla) {
-					count++;
-				}
-			}
-			return count;
+			return ByID.Count(pair => pair.Value.type >= NumVanilla);
 		}
 
 		internal static void Initialize() {
@@ -60,13 +53,13 @@ namespace Terraria.ModLoader
 		}
 
 		private static void UpdateStartInternal() {
-			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().OfType<ModTileEntity>()) {
+			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().Values.OfType<ModTileEntity>()) {
 				tileEntity.PreGlobalUpdate();
 			}
 		}
 
 		private static void UpdateEndInternal() {
-			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().OfType<ModTileEntity>()) {
+			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().Values.OfType<ModTileEntity>()) {
 				tileEntity.PostGlobalUpdate();
 			}
 		}
@@ -124,8 +117,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public void Kill(int i, int j) {
 			Point16 pos = new Point16(i, j);
-			if (ByPosition.ContainsKey(pos)) {
-				TileEntity tileEntity = ByPosition[pos];
+			if (ByPosition.TryGetValue(pos, out var tileEntity)) {
 				if (tileEntity.type == Type) {
 					((ModTileEntity)tileEntity).OnKill();
 					ByID.Remove(tileEntity.ID);
@@ -139,8 +131,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Find(int i, int j) {
 			Point16 pos = new Point16(i, j);
-			if (ByPosition.ContainsKey(pos)) {
-				TileEntity tileEntity = ByPosition[pos];
+			if (ByPosition.TryGetValue(pos, out var tileEntity)) {
 				if (tileEntity.type == Type) {
 					return tileEntity.ID;
 				}
