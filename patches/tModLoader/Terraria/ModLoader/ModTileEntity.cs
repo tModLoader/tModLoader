@@ -107,8 +107,11 @@ namespace Terraria.ModLoader
 			newEntity.Position = new Point16(i, j);
 			newEntity.ID = AssignNewID();
 			newEntity.type = (byte)Type;
-			ByID[newEntity.ID] = newEntity;
-			ByPosition[newEntity.Position] = newEntity;
+			lock (EntityCreationLock) {
+				ByID[newEntity.ID] = newEntity;
+				ByPosition[newEntity.Position] = newEntity;
+			}
+
 			return newEntity.ID;
 		}
 
