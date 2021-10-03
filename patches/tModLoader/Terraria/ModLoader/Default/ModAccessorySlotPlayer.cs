@@ -93,17 +93,11 @@ namespace Terraria.ModLoader.Default
 		public override void UpdateVisibleAccessories() {
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 
-			// Handle Player Select Screen rendering for Iterations with the correct player
-			if (Player != ModAccessorySlot.Player)
-				ModAccessorySlot.Player = Player;
-
 			for (int k = 0; k < SlotCount(); k++) {
 				if (loader.ModdedIsAValidEquipmentSlotForIteration(k, Player)) {
 					Player.UpdateVisibleAccessories(exAccessorySlot[k], exHideAccessory[k], k, true);
 				}
 			}
-
-			ModAccessorySlot.Player = Main.LocalPlayer;
 		}
 
 		/// <summary>
@@ -112,10 +106,6 @@ namespace Terraria.ModLoader.Default
 		public override void UpdateVisibleVanityAccessories() {
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 
-			// Handle Player Select Screen rendering for Iterations with the correct player
-			if (Player != ModAccessorySlot.Player)
-				ModAccessorySlot.Player = Player;
-
 			for (int k = 0; k < SlotCount(); k++) {
 				if (loader.ModdedIsAValidEquipmentSlotForIteration(k, Player)) {
 					var vanitySlot = k + SlotCount();
@@ -123,8 +113,6 @@ namespace Terraria.ModLoader.Default
 						Player.UpdateVisibleAccessory(vanitySlot, exAccessorySlot[vanitySlot], true);
 				}
 			}
-
-			ModAccessorySlot.Player = Main.LocalPlayer;
 		}
 
 		/// <summary>
@@ -134,18 +122,12 @@ namespace Terraria.ModLoader.Default
 		public override void UpdateDyes() {
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 
-			// Handle Player Select Screen rendering for Iterations with the correct player
-			if (Player != ModAccessorySlot.Player)
-				ModAccessorySlot.Player = Player;
-
 			for (int i = 0; i < SlotCount() * 2; i++) {
 				if (loader.ModdedIsAValidEquipmentSlotForIteration(i, Player)) {
 					int num = i % exDyesAccessory.Length;
 					Player.UpdateItemDye(i < exDyesAccessory.Length, exHideAccessory[num], exAccessorySlot[i], exDyesAccessory[num]);
 				}
 			}
-
-			ModAccessorySlot.Player = Main.LocalPlayer;
 		}
 
 		/// <summary>
@@ -154,17 +136,11 @@ namespace Terraria.ModLoader.Default
 		public override void UpdateEquips() {
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 
-			// Handle Player Select Screen rendering for Iterations with the correct player
-			if (Player != ModAccessorySlot.Player)
-				ModAccessorySlot.Player = Player;
-
 			for (int k = 0; k < SlotCount(); k++) {
 				if (loader.ModdedIsAValidEquipmentSlotForIteration(k, Player)) {
 					loader.CustomUpdateEquips(k, Player);
 				}
 			}
-
-			ModAccessorySlot.Player = Main.LocalPlayer;
 		}
 
 		// Death drops code, should run prior to dropping other items in case conditions are used based on player's current equips

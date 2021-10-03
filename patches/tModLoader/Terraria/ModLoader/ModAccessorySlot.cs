@@ -14,7 +14,8 @@ namespace Terraria.ModLoader
 	{
 		public int Type { get; internal set; }
 
-		public static Player Player { get; internal set; } = Main.LocalPlayer;
+		public static Player Player => Main.CurrentPlayer;
+
 		public ModAccessorySlotPlayer ModSlotPlayer => AccessorySlotLoader.ModSlotPlayer(Player);
 
 		// Properties to preset a location for the accessory slot

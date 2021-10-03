@@ -2438,6 +2438,15 @@
  				if (!Falling) {
  					float num3 = Math.Abs(velocity.X) / 3f;
  					if ((float)Main.rand.Next(100) > num3 * 100f)
+@@ -16811,6 +_,8 @@
+ 		}
+ 
+ 		public void Update(int i) {
++			using var _currentPlr = new Main.CurrentPlayerOverride(this);
++
+ 			if (i == Main.myPlayer && Main.netMode != 2)
+ 				LockOnHelper.Update();
+ 
 @@ -16961,6 +_,7 @@
  
  			UpdateHairDyeDust();
@@ -4882,6 +4891,15 @@
  		}
  
  		private void SaveTemporaryItemSlotContents(BinaryWriter writer) {
+@@ -37745,6 +_,8 @@
+ 				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
+ 
+ 			Player player = new Player();
++			using var _currentPlr = new Main.CurrentPlayerOverride(player);
++
+ 			try {
+ 				RijndaelManaged rijndaelManaged = new RijndaelManaged();
+ 				rijndaelManaged.Padding = PaddingMode.None;
 @@ -38083,7 +_,7 @@
  							if (num >= 11) {
  								int num28 = 22;
@@ -4910,15 +4928,12 @@
  			catch {
  			}
  
-@@ -38213,9 +_,15 @@
+@@ -38213,9 +_,12 @@
  			}
  		}
  
 -		private static void LoadPlayer_LastMinuteFixes(Player newPlayer) {
 +		public static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
-+			// Handle Player Select Screen loading for Iterations with the correct player
-+			ModAccessorySlot.Player = newPlayer;
-+
  			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
 +			PlayerIO.Load(newPlayer, playerFileData.Path, playerFileData.IsCloudSave);
  			for (int i = 3; i < 10; i++) {
@@ -4927,7 +4942,7 @@
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 4874 || type == 5000)
  					newPlayer.lavaMax += 420;
-@@ -38223,14 +_,25 @@
+@@ -38223,14 +_,24 @@
  				if (type == 906 || type == 4038)
  					newPlayer.lavaMax += 420;
  
@@ -4949,7 +4964,6 @@
 +				LoadPlayer_LastMinuteFixes(modSlotPlayer.exAccessorySlot[i], newPlayer);
 +			}
 +
-+			ModAccessorySlot.Player = Main.LocalPlayer;
 +			newPlayer.ResetEffects();
  		}
  
