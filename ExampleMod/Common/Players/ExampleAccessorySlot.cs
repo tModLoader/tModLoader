@@ -63,5 +63,19 @@ namespace ExampleMod.Common.Players
 
 		// Icon textures. Expects 32x32 images if you want it to look proper. 
 		public override string FunctionalTexture => "Terraria/Images/Item_" + ItemID.CreativeWings;
+
+		// Can be used to modify stuff while the Mouse is hovering over the slot.
+		public override void OnMouseHover(int context) {
+			// We will modify the hover text while an item is not in the slot, so that it says "Wings".
+			switch (context) {
+				case -10:
+				case -11:
+					Main.hoverItemName = "Wings";
+					break;
+				case -12:
+					Main.hoverItemName = "Wings Dye";
+					break;
+			}
+		}
 	}
 }

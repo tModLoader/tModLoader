@@ -1018,13 +1018,6 @@ namespace Terraria.ModLoader
 		public virtual void ModifyTooltips(List<TooltipLine> tooltips) {
 		}
 
-		/// <summary>
-		/// Allows you to modify the hover text displayed for an ItemSlot (such as accessories). Runs in ItemSlot.MouseHover.
-		/// <para><paramref name="context"/> :: 12 => dye; 11 => vanity accessory; 10 => functional accessory; 8 => functional armor</para>
-		/// </summary>
-		public virtual void ModifyItemSlotHoverText(int context, Item item, int slot, ref string text) { 
-		}
-
 		public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Mod, Item.type, amount);
 	}
 }
