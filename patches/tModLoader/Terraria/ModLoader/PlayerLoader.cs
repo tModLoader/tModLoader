@@ -954,7 +954,7 @@ namespace Terraria.ModLoader
 			if (HasMethod(type, nameof(ModPlayer.SaveData), typeof(TagCompound)))
 				saveMethods++;
 
-			if (HasMethod(type, nameof(ModPlayer.LoadData), typeof(TagCompound)))
+			if (HasMethod(type, nameof(ModPlayer.LoadData), typeof(ReadOnlyTagCompound)))
 				saveMethods++;
 
 			if (saveMethods == 1)

@@ -80,7 +80,7 @@ namespace Terraria.ModLoader.IO
 			return tag;
 		}
 
-		public static void Load(Item item, TagCompound tag)
+		public static void Load(Item item, ReadOnlyTagCompound tag)
 		{
 			string modName = tag.GetString("mod");
 			if (modName == "") {
@@ -112,11 +112,11 @@ namespace Terraria.ModLoader.IO
 			item.stack = tag.Get<int?>("stack") ?? 1;
 			item.favorited = tag.GetBool("fav");
 
-			if (!(item.ModItem is UnloadedItem))
+			if (item.ModItem is not UnloadedItem)
 				LoadGlobals(item, tag.GetList<TagCompound>("globalData"));
 		}
 
-		public static Item Load(TagCompound tag) {
+		public static Item Load(ReadOnlyTagCompound tag) {
 			var item = new Item();
 			Load(item, tag);
 			return item;

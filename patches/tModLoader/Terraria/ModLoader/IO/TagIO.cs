@@ -275,7 +275,7 @@ namespace Terraria.ModLoader.IO
 			PayloadHandlers[id].Write(w, tag);
 		}
 
-		public static TagCompound FromFile(string path, bool compressed = true) {
+		public static ReadOnlyTagCompound FromFile(string path, bool compressed = true) {
 			try {
 				using (Stream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
 					return FromStream(fs, compressed);
@@ -285,12 +285,12 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		public static TagCompound FromStream(Stream stream, bool compressed = true) {
+		public static ReadOnlyTagCompound FromStream(Stream stream, bool compressed = true) {
 			if (compressed) stream = new GZipStream(stream, CompressionMode.Decompress);
 			return Read(new BigEndianReader(stream));
 		}
 
-		public static TagCompound Read(BinaryReader reader) {
+		public static ReadOnlyTagCompound Read(BinaryReader reader) {
 			var tag = ReadTag(reader, out string name);
 			if (tag is not TagCompound compound)
 				throw new IOException("Root tag not a TagCompound");

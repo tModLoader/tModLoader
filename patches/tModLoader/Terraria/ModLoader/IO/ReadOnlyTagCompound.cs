@@ -26,7 +26,7 @@ namespace Terraria.ModLoader.IO
 		public int[] GetIntArray(string key) => Tag.GetIntArray(key);
 		public string GetString(string key) => Tag.GetString(key);
 		public IList<T> GetList<T>(string key) => Tag.GetList<T>(key);
-		public TagCompound GetCompound(string key) => Tag.GetCompound(key);
+		public ReadOnlyTagCompound GetCompound(string key) => Tag.GetCompound(key);
 		public bool GetBool(string key) => Tag.GetBool(key);
 
 		//type expansion helpers

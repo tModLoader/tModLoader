@@ -19,7 +19,7 @@
 
 		protected abstract string GetUnloadedType(ushort type);
 
-		protected ModEntry(TagCompound tag) {
+		protected ModEntry(ReadOnlyTagCompound tag) {
 			type = tag.Get<ushort>("value");
 			modName = tag.Get<string>("mod");
 			name = tag.Get<string>("name");

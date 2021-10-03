@@ -13,10 +13,8 @@ namespace Terraria.ModLoader.IO
 	//Additional conversions can be added using TagConverter
 	public class TagCompound : IEnumerable<KeyValuePair<string, object>>, ICloneable
 	{
-		[ThreadStatic]
-		private static TagCompound emptyTagCache = new();
 
-		private Dictionary<string, object> dict = new Dictionary<string, object>();
+		private readonly Dictionary<string, object> dict = new();
 
 		public T Get<T>(string key) {
 			dict.TryGetValue(key, out object tag);
@@ -29,9 +27,6 @@ namespace Terraria.ModLoader.IO
 					$"entry={TagPrinter.Print(new KeyValuePair<string, object>(key, tag))})", e);
 			}
 		}
-
-		// adding default param to Set overload is a breaking changefor now.
-		public void Set(string key, object value) => Set(key, value, false);
 		
 		//if value is null, calls RemoveTag, also performs type checking
 		public void Set(string key, object value, bool replace = false) {
@@ -45,7 +40,7 @@ namespace Terraria.ModLoader.IO
 				serialized = TagIO.Serialize(value);
 			}
 			catch (IOException e) {
-				var valueInfo = "value=" + value;
+				string valueInfo = "value=" + value;
 				if (value.GetType().ToString() != value.ToString())
 					valueInfo = "type=" + value.GetType() + "," + valueInfo;
 				throw new IOException($"NBT Serialization (key={key},{valueInfo})", e);
@@ -107,8 +102,8 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public object this[string key] {
-			get { return Get<object>(key); }
-			set { Set(key, value, true); }
+			get => Get<object>(key);
+			set => Set(key, value, true);
 		}
 
 		//collection initialiser

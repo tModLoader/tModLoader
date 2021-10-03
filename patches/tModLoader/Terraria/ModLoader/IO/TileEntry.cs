@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.IO
 			frameImportant = Main.tileFrameImportant[tile.Type];
 		}
 
-		public TileEntry(TagCompound tag) : base(tag) {
+		public TileEntry(ReadOnlyTagCompound tag) : base(tag) {
 			frameImportant = tag.GetBool("framed");
 		}
 

@@ -13,7 +13,7 @@ namespace Terraria.ModLoader.Default
 			tileEntityName = tag.GetString("name");
 
 			if (tag.ContainsKey("data")) {
-				data = tag.GetCompound("data");
+				data = tag.GetCompound("data").Tag;
 			}
 		}
 

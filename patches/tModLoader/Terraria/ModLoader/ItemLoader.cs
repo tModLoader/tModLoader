@@ -1758,7 +1758,7 @@ namespace Terraria.ModLoader
 			if (HasMethod(type, nameof(GlobalItem.SaveData), typeof(Item), typeof(TagCompound)))
 				saveMethods++;
 
-			if (HasMethod(type, nameof(GlobalItem.LoadData), typeof(Item), typeof(TagCompound)))
+			if (HasMethod(type, nameof(GlobalItem.LoadData), typeof(Item), typeof(ReadOnlyTagCompound)))
 				saveMethods++;
 
 			if (saveMethods == 1)
