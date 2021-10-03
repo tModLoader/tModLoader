@@ -68,7 +68,7 @@ namespace Terraria.ModLoader
 		/// You should never use this. It is only included here for completion's sake.
 		/// </summary>
 		public override void NetPlaceEntityAttempt(int i, int j) {
-			if (!manager.TryGetTileEntity(type, out ModTileEntity modTileEntity)) {
+			if (!manager.TryGetTileEntity(Type, out ModTileEntity modTileEntity)) {
 				return;
 			}
 
@@ -107,8 +107,11 @@ namespace Terraria.ModLoader
 			newEntity.Position = new Point16(i, j);
 			newEntity.ID = AssignNewID();
 			newEntity.type = (byte)Type;
-			ByID[newEntity.ID] = newEntity;
-			ByPosition[newEntity.Position] = newEntity;
+			lock (EntityCreationLock) {
+				ByID[newEntity.ID] = newEntity;
+				ByPosition[newEntity.Position] = newEntity;
+			}
+
 			return newEntity.ID;
 		}
 
