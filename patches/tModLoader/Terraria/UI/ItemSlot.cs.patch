@@ -518,6 +518,24 @@
  					Vector2 position4 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
  					Color white = Color.White;
  					spriteBatch.Draw(TextureAssets.Cd.Value, position4, null, white, 0f, default(Vector2), num11, SpriteEffects.None, 0f);
+@@ -1752,6 +_,8 @@
+ 				if (inv[slot].stack > 1)
+ 					Main.hoverItemName = Main.hoverItemName + " (" + inv[slot].stack + ")";
+ 
++				ItemLoader.ModifyItemSlotHoverText(context, inv[slot], slot, ref Main.hoverItemName);
++
+ 				Main.HoverItem = inv[slot].Clone();
+ 				Main.HoverItem.tooltipContext = context;
+ 				if (context == 8 && slot <= 2) {
+@@ -1806,6 +_,8 @@
+ 
+ 			if (context == 20)
+ 				Main.hoverItemName = Lang.inter[94].Value;
++
++			ItemLoader.ModifyItemSlotHoverText(context, inv[slot], slot, ref Main.hoverItemName);
+ 		}
+ 
+ 		public static void SwapEquip(ref Item inv, int context = 0) {
 @@ -1861,7 +_,7 @@
  				inv[slot] = ArmorSwap(inv[slot], out success);
  				if (success) {

@@ -1744,7 +1744,17 @@ namespace Terraria.ModLoader
 
 			return tooltips;
 		}
-		
+
+		delegate void OverrideItemSlotHoverTextAction(int a1, Item a2, int a3, ref string a4);
+		private static HookList HookOverrideItemSlotHoverText = AddHook<OverrideItemSlotHoverTextAction>(g => g.ModifyItemSlotHoverText);
+		public static void ModifyItemSlotHoverText(int context, Item item, int slot, ref string text) {
+			item.ModItem?.ModifyItemSlotHoverText(context, item, slot, ref text);
+
+			foreach (var g in HookOverrideItemSlotHoverText.Enumerate(item.globalItems)) {
+				g.ModifyItemSlotHoverText(context, item, slot, ref text);
+			}
+		}
+
 		internal static bool NeedsModSaving(Item item) {
 			if (item.type <= ItemID.None)
 				return false;

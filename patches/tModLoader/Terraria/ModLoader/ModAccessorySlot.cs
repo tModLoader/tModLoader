@@ -13,14 +13,12 @@ namespace Terraria.ModLoader
 	public abstract class ModAccessorySlot : ModType
 	{
 		public int Type { get; internal set; }
-		internal int index;
 
 		public static Player Player { get; internal set; } = Main.LocalPlayer;
 		public ModAccessorySlotPlayer ModSlotPlayer => AccessorySlotLoader.ModSlotPlayer(Player);
 
 		// Properties to preset a location for the accessory slot
-		public virtual int XLoc => -1;
-		public virtual int YLoc => -1;
+		public virtual Vector2 CustomLocation => new Vector2(-1, -1);
 
 		// Properties to change the Default Background Texture
 		public virtual string DyeBackgroundTexture => null;
@@ -118,5 +116,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <returns></returns>
 		public virtual bool IsVisibleWhenNotEnabled() => !IsEmpty;
+
+		/// <summary>
+		/// Allows you to do stuff while the player is hovering over this slot.
+		/// <para><paramref name="context"/> :: 12 => dye; 11 => vanity; 10 => functional </para>
+		/// </summary>
+		public virtual void OnMouseHover(int context) { }
 	}
 }

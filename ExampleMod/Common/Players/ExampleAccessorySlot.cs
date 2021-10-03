@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -12,8 +13,7 @@ namespace ExampleMod.Common.Players
 	public class ExampleCustomLocationAndTextureSlot : ModAccessorySlot
 	{
 		// We will place the slot to be at the center of the map, making the decision not to follow the internal UI handling
-		public override int XLoc => Main.screenWidth / 2;
-		public override int YLoc => 3 * Main.screenHeight / 4;
+		public override Vector2 CustomLocation => new Vector2(Main.screenWidth / 2, 3 * Main.screenHeight / 4);
 
 		// We will disable drawing the dye slot
 		public override bool DrawDyeSlot => false;

@@ -174,13 +174,13 @@ namespace Terraria.ModLoader
 
 			if (modded) {
 				ModAccessorySlot mAccSlot = list[slot];
-				customLoc = mAccSlot.XLoc != -1 || mAccSlot.YLoc != -1;
+				customLoc = mAccSlot.CustomLocation.X != -1;
 				if (!customLoc && Main.EquipPage != 0)
 					return false;
 
 				if (customLoc) {
-					xLoc = mAccSlot.XLoc;
-					yLoc = mAccSlot.YLoc;
+					xLoc = (int)mAccSlot.CustomLocation.X;
+					yLoc = (int)mAccSlot.CustomLocation.Y;
 				}
 				else if (!SetDrawLocation(slot + Player.dye.Length - 3, skip, ref xLoc, ref yLoc))
 					return true;
@@ -326,6 +326,9 @@ namespace Terraria.ModLoader
 				}
 
 				ItemSlot.MouseHover(items, Math.Abs(context), slot);
+				
+				if (context < 0)
+					OnHover(slot, context);
 			}
 			DrawRedirect(items, context, slot, new Vector2(xLoc1, yLoc));
 		}
@@ -401,6 +404,8 @@ namespace Terraria.ModLoader
 		public bool IsHidden(int index) => Get(index).IsHidden();
 
 		public bool CanAcceptItem(int index, Item checkItem) => Get(index).CanAcceptItem(checkItem);
+
+		public void OnHover(int index, int context) => Get(index).OnMouseHover(context);
 
 		/// <summary>
 		/// Checks if the provided item can go in to the provided slot. 

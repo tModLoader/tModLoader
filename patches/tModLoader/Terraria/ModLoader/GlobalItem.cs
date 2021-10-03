@@ -834,6 +834,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the hover text displayed for an ItemSlot (such as accessories). Runs in ItemSlot.MouseHover.
+		/// <para><paramref name="context"/> :: 12 => dye; 11 => vanity accessory; 10 => functional accessory; 8 => functional armor</para>
+		/// </summary>
+		public virtual void ModifyItemSlotHoverText(int context, Item item, int slot, ref string text) {
+		}
+
+		/// <summary>
 		/// Allows you to save custom data for this item.
 		/// <br/>
 		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
