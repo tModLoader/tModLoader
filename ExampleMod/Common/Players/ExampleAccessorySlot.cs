@@ -15,8 +15,8 @@ namespace ExampleMod.Common.Players
 		// We will place the slot to be at the center of the map, making the decision not to follow the internal UI handling
 		public override Vector2? CustomLocation => new Vector2(Main.screenWidth / 2, 3 * Main.screenHeight / 4);
 
-		// We will disable drawing the dye slot
-		public override bool DrawDyeSlot => false;
+		// We will disable drawing the vanity slot
+		public override bool DrawVanitySlot => false;
 
 		//     We will use our 'custom' textures
 		// Background Textures -> In general, you can use most of the existing vanilla ones to get different colours
@@ -34,7 +34,7 @@ namespace ExampleMod.Common.Players
 
 	public class ExampleModWingSlot : ModAccessorySlot
 	{
-		public override bool CanAcceptItem(Item checkItem) {
+		public override bool CanAcceptItem(Item checkItem, AccessorySlotType context) {
 			if (checkItem.wingSlot > 0) // if is Wing, then can go in slot
 				return true;
 
@@ -65,14 +65,14 @@ namespace ExampleMod.Common.Players
 		public override string FunctionalTexture => "Terraria/Images/Item_" + ItemID.CreativeWings;
 
 		// Can be used to modify stuff while the Mouse is hovering over the slot.
-		public override void OnMouseHover(int context) {
+		public override void OnMouseHover(AccessorySlotType context) {
 			// We will modify the hover text while an item is not in the slot, so that it says "Wings".
 			switch (context) {
-				case -10:
-				case -11:
+				case AccessorySlotType.FunctionalSlot:
+				case AccessorySlotType.VanitySlot:
 					Main.hoverItemName = "Wings";
 					break;
-				case -12:
+				case AccessorySlotType.DyeSlot:
 					Main.hoverItemName = "Wings Dye";
 					break;
 			}

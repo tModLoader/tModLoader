@@ -69,7 +69,7 @@
 -					if (context == 11 && !inv[slot].FitsAccessoryVanitySlot)
 +					if (Math.Abs(context) == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
  						break;
-+					if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, inv[slot]))
++					if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, inv[slot], context))
 +						break;
 +
  					Utils.Swap(ref inv[slot], ref Main.mouseItem);
@@ -93,7 +93,7 @@
 +							break;
 +						if (Math.Abs(context) == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
 +							break;
-+						if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem))
++						if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem, context))
 +							break;
 +
  						Utils.Swap(ref inv[slot], ref Main.mouseItem);
@@ -117,7 +117,7 @@
 +							break;
 +						if (Math.Abs(context) == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
 +							break;
-+						if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem))
++						if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem, context))
 +							break;
 +
  						if (Main.mouseItem.stack == 1) {
@@ -232,7 +232,7 @@
 +					break;
 +				case -10:
 +				case -11:
-+					if (checkItem.type == 0 || (checkItem.accessory && LoaderManager.Get<AccessorySlotLoader>().ModSlotCheck(checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && LoaderManager.Get<AccessorySlotLoader>().ModSlotCheck(checkItem, slot, context)))
  						result = 1;
  					break;
  				case 24:

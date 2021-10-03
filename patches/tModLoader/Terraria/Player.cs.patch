@@ -1611,15 +1611,12 @@
  			}
  
  			equippedAnyWallSpeedAcc = false;
-@@ -9311,21 +_,33 @@
+@@ -9311,21 +_,30 @@
  
  			for (int l = 3; l < 10; l++) {
  				if (IsAValidEquipmentSlotForIteration(l))
 -					ApplyEquipFunctional(l, armor[l]);
 +					ApplyEquipFunctional(armor[l], hideVisibleAccessory[l]);
-+				
-+				if (MusicLoader.itemToMusic.ContainsKey(armor[l].type))
-+					Main.musicBox2 = MusicLoader.itemToMusic[armor[l].type];
  			}
  
 +			PlayerLoader.UpdateEquips(this);

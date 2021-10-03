@@ -26,7 +26,7 @@ namespace Terraria.UI
 			if (accSlotToSwapTo < 0) {
 				for (int i = 0; i < accessories.Length / 2; i++) {
 					if (accLoader.ModdedIsAValidEquipmentSlotForIteration(i, player)) {
-						if (accessories[i].type == 0 && accLoader.CanAcceptItem(i, item) && ItemLoader.CanEquipAccessory(item, i, true)) {
+						if (accessories[i].type == 0 && accLoader.CanAcceptItem(i, item, (int)ItemSlotContext.ModdedAccessorySlot) && ItemLoader.CanEquipAccessory(item, i, true)) {
 							accSlotToSwapTo = i + 20;
 							break;
 						}
@@ -50,10 +50,11 @@ namespace Terraria.UI
 
 			//TML: Do the same check for our modded slots
 			for (int j = 0; j < accessories.Length; j++) {
-				if (item.IsTheSameAs(accessories[j]) && accLoader.CanAcceptItem(j, item) && ItemLoader.CanEquipAccessory(item, j, true))
+				if (item.IsTheSameAs(accessories[j]) && accLoader.CanAcceptItem(j, item, j < accessories.Length / 2 ? (int)ItemSlotContext.ModdedAccessorySlot : (int)ItemSlotContext.ModdedVanityAccessorySlot) && ItemLoader.CanEquipAccessory(item, j, true))
 					accSlotToSwapTo = j + 20;
 
-				if (j < accLoader.list.Count && (item.wingSlot > 0 && accessories[j].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(accessories[j], item)) && accLoader.CanAcceptItem(j, item) && ItemLoader.CanEquipAccessory(item, j, true))
+				if (j < accLoader.list.Count && (item.wingSlot > 0 && accessories[j].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(accessories[j], item)) 
+					&& accLoader.CanAcceptItem(j, item, j < accessories.Length / 2 ? (int)ItemSlotContext.ModdedAccessorySlot : (int)ItemSlotContext.ModdedVanityAccessorySlot) && ItemLoader.CanEquipAccessory(item, j, true))
 					accSlotToSwapTo = j + 20;
 			}
 
@@ -150,6 +151,19 @@ namespace Terraria.UI
 
 			return !ItemLoader.CanEquipAccessory(item, slot, slot >= 20);
 		}
+	}
 
+	//TODO: This is a work in progress enumerable table for Item Slot context variable. Mostly for sanity for anyone wondering. Added to as figured out.
+	public enum ItemSlotContext
+	{
+		ModdedAccessorySlot = -10,
+		ModdedVanityAccessorySlot = -11,
+		ModdedDyeSlot = -12,
+		Mouse = 0,
+		ArmorSlot = 8,
+		VanitySlot = 9,
+		AccessorySlot = 10,
+		VanityAccessorySlot = 11,
+		DyeSlot = 12
 	}
 }

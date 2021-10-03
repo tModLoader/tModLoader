@@ -140,7 +140,9 @@ namespace Terraria.ModLoader
 
 			ModSlotPlayer(Player).scrollbarSlotPosition = scrollDelta;
 			PlayerInput.ScrollWheelDelta = 0;
-		}		
+		}
+
+		int slotDrawLoopCounter = 0;
 
 		/// <summary>
 		/// Draws Vanilla and Modded Accessory Slots
@@ -168,7 +170,7 @@ namespace Terraria.ModLoader
 			}
 
 			Main.inventoryBack = flag3 ? new Color(80, 80, 80, 80) : color;
-
+			slotDrawLoopCounter = 0;
 			int yLoc = 0, xLoc = 0;
 			bool customLoc = false;
 
@@ -300,10 +302,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		internal void DrawSlot(Item[] items, int context, int slot, bool flag3, int xLoc, int yLoc, bool skipCheck = false) {
 			bool flag = flag3 && !Main.mouseItem.IsAir;
-			int xLoc1 = xLoc - 47 * (Math.Abs(context) - 10);
+			int xLoc1 = xLoc - 47 * (slotDrawLoopCounter++);
+			bool isHovered = false;
 
 			if (!skipCheck && Main.mouseX >= xLoc1 && (float)Main.mouseX <= (float)xLoc1 + (float)TextureAssets.InventoryBack.Width() * Main.inventoryScale && Main.mouseY >= yLoc
 				&& (float)Main.mouseY <= (float)yLoc + (float)TextureAssets.InventoryBack.Height() * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface) {
+				isHovered = true;
 
 				Player.mouseInterface = true;
 				Main.armorHide = true;
@@ -330,12 +334,15 @@ namespace Terraria.ModLoader
 				if (context < 0)
 					OnHover(slot, context);
 			}
-			DrawRedirect(items, context, slot, new Vector2(xLoc1, yLoc));
+			DrawRedirect(items, context, slot, new Vector2(xLoc1, yLoc), isHovered);
 		}
 
-		internal void DrawRedirect(Item[] inv, int context, int slot, Vector2 location) {
+		internal void DrawRedirect(Item[] inv, int context, int slot, Vector2 location, bool isHovered) {
 			if (context < 0) {
-				Get(slot).DrawModded(inv, context, slot, location);
+				if (Get(slot).PreDraw(ContextToEnum(context), inv[slot], location, isHovered))
+					ItemSlot.Draw(Main.spriteBatch, inv, context, slot, location);
+
+				Get(slot).PostDraw(ContextToEnum(context), inv[slot], location, isHovered);
 			}
 			else {
 				ItemSlot.Draw(Main.spriteBatch, inv, context, slot, location);
@@ -395,6 +402,8 @@ namespace Terraria.ModLoader
 
 		// Functionality Related Code /////////////////////////////////////////////////////////////////////
 
+		public AccessorySlotType ContextToEnum(int context) => (AccessorySlotType)Math.Abs(context);
+
 		public bool ModdedIsAValidEquipmentSlotForIteration(int index, Player player) => Get(index, player).IsEnabled();
 
 		public void CustomUpdateEquips(int index, Player player) => Get(index, player).ApplyEquipEffects();
@@ -403,16 +412,16 @@ namespace Terraria.ModLoader
 
 		public bool IsHidden(int index) => Get(index).IsHidden();
 
-		public bool CanAcceptItem(int index, Item checkItem) => Get(index).CanAcceptItem(checkItem);
+		public bool CanAcceptItem(int index, Item checkItem, int context) => Get(index).CanAcceptItem(checkItem, ContextToEnum(context));
 
-		public void OnHover(int index, int context) => Get(index).OnMouseHover(context);
+		public void OnHover(int index, int context) => Get(index).OnMouseHover(ContextToEnum(context));
 
 		/// <summary>
 		/// Checks if the provided item can go in to the provided slot. 
 		/// Includes checking if the item already exists in either of Player.Armor or ModSlotPlayer.exAccessorySlot
 		/// Invokes directly ItemSlot.AccCheck & ModSlot.CanAcceptItem
 		/// </summary>
-		public bool ModSlotCheck(Item checkItem, int slot) => CanAcceptItem(slot, checkItem) &&
+		public bool ModSlotCheck(Item checkItem, int slot, int context) => CanAcceptItem(slot, checkItem, context) &&
 			!ItemSlot.AccCheck(Player.armor.Concat(ModSlotPlayer(Player).exAccessorySlot).ToArray(), checkItem, slot + Player.armor.Length);
 
 		/// <summary>
@@ -446,5 +455,12 @@ namespace Terraria.ModLoader
 			}
 			return false;
 		}
+	}
+
+	public enum AccessorySlotType
+	{
+		FunctionalSlot = 10,
+		VanitySlot = 11,
+		DyeSlot = 12
 	}
 }

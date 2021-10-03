@@ -161,10 +161,6 @@ namespace Terraria.ModLoader.Default
 			for (int k = 0; k < SlotCount(); k++) {
 				if (loader.ModdedIsAValidEquipmentSlotForIteration(k, Player)) {
 					loader.CustomUpdateEquips(k, Player);
-					
-					Item item = exAccessorySlot[k];
-					if (MusicLoader.itemToMusic.ContainsKey(item.type))
-						Main.musicBox2 = MusicLoader.itemToMusic[item.type];
 				}
 			}
 

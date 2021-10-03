@@ -62,16 +62,13 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() => Type = LoaderManager.Get<AccessorySlotLoader>().Register(this);
 
 		/// <summary>
-		/// This function allows for advanced custom drawing for the accessory slot. Called for Dyes, Vanity, and Functionals.
-		/// By default runs ItemSlot.Draw()
-		/// Receives data:
-		/// <para><paramref name="inv"/> :: the array containing all accessory slots, yours is inv[slot] </para>
-		/// <para><paramref name="slot"/> :: which is the index for inventory that you were assigned </para>
-		/// <para><paramref name="position"/> :: is the position of where the ItemSlot will be drawn </para>
-		/// <para><paramref name="context"/> :: 12 => dye; 11 => vanity; 10 => functional </para>
+		/// Allows drawing prior to vanilla ItemSlot.Draw code. Return false to NOT call ItemSlot.Draw
 		/// </summary>
-		public virtual void DrawModded(Item[] inv, int context, int slot, Vector2 position) =>
-			ItemSlot.Draw(Main.spriteBatch, inv, context, slot, position);
+		public virtual bool PreDraw(AccessorySlotType context, Item item, Vector2 position, bool isHovered) { 
+			return true; 
+		}
+
+		public virtual void PostDraw(AccessorySlotType context, Item item, Vector2 position, bool isHovered) { }
 
 		/// <summary>
 		/// Override to replace the vanilla effect behavior of the slot with your own.
@@ -89,7 +86,7 @@ namespace Terraria.ModLoader
 		/// Receives data:
 		/// <para><paramref name="checkItem"/> :: the item that is attempting to enter the slot </para>
 		/// </summary>
-		public virtual bool CanAcceptItem(Item checkItem) => true;
+		public virtual bool CanAcceptItem(Item checkItem, AccessorySlotType context) => true;
 
 		/// <summary>
 		/// After checking for empty slots in ItemSlot.AccessorySwap, this allows for changing what the default target slot (accSlotToSwapTo) will be.
@@ -119,8 +116,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to do stuff while the player is hovering over this slot.
-		/// <para><paramref name="context"/> :: 12 => dye; 11 => vanity; 10 => functional </para>
 		/// </summary>
-		public virtual void OnMouseHover(int context) { }
+		public virtual void OnMouseHover(AccessorySlotType context) { }
 	}
 }
