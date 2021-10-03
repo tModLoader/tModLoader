@@ -174,13 +174,13 @@ namespace Terraria.ModLoader
 
 			if (modded) {
 				ModAccessorySlot mAccSlot = list[slot];
-				customLoc = mAccSlot.CustomLocation.X != -1;
+				customLoc = mAccSlot.CustomLocation.HasValue;
 				if (!customLoc && Main.EquipPage != 0)
 					return false;
 
 				if (customLoc) {
-					xLoc = (int)mAccSlot.CustomLocation.X;
-					yLoc = (int)mAccSlot.CustomLocation.Y;
+					xLoc = (int)mAccSlot.CustomLocation?.X;
+					yLoc = (int)mAccSlot.CustomLocation?.Y;
 				}
 				else if (!SetDrawLocation(slot + Player.dye.Length - 3, skip, ref xLoc, ref yLoc))
 					return true;

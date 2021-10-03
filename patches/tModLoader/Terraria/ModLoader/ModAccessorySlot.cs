@@ -18,7 +18,7 @@ namespace Terraria.ModLoader
 		public ModAccessorySlotPlayer ModSlotPlayer => AccessorySlotLoader.ModSlotPlayer(Player);
 
 		// Properties to preset a location for the accessory slot
-		public virtual Vector2 CustomLocation => new Vector2(-1, -1);
+		public virtual Vector2? CustomLocation => null;
 
 		// Properties to change the Default Background Texture
 		public virtual string DyeBackgroundTexture => null;
