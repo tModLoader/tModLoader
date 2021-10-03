@@ -240,6 +240,14 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookUpdateVisibleVanityAccessories = AddHook<Action>(p => p.UpdateVisibleVanityAccessories);
+
+		public static void UpdateVisibleVanityAccessories(Player player) {
+			foreach (int index in HookUpdateVisibleVanityAccessories.arr) {
+				player.modPlayers[index].UpdateVisibleVanityAccessories();
+			}
+		}
+
 		private static HookList HookUpdateDyes = AddHook<Action>(p => p.UpdateDyes);
 
 		public static void UpdateDyes(Player player) {

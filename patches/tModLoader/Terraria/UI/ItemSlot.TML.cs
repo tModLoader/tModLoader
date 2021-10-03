@@ -114,6 +114,9 @@ namespace Terraria.UI
 			return item2;
 		}
 
+		/// <summary>
+		/// Returns true to disallow putting an item in to a given slot, typically invoked by mouse placement
+		/// </summary>
 		internal static bool AccCheck_Inner(Item[] itemCollection, Item item, int slot) {
 			if (isEquipLocked(item.type))
 				return true;
@@ -126,14 +129,18 @@ namespace Terraria.UI
 					return !ItemLoader.CanEquipAccessory(item, slot, slot >= 20);
 			}
 
-			var modSlotPlayerrrr = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
-			for (int i = 0; i < itemCollection.Length; i++) {
-				if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item)) {
-					if (i >= 20 && slot >= 20 && slot % modSlotPlayer.SlotCount() != i % modSlotPlayer.SlotCount())
-						return true;
-					else if (slot < 20 && i % 10 != slot % 10)
-						return true;
-				}
+			var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
+			var modCount = modSlotPlayer.SlotCount();
+			bool targetVanity = slot >= 20 && (slot >= modCount + 20) || slot < 20 && slot >= 10;
+
+			for (int i = targetVanity ? 13 : 3; i < (targetVanity ? 20 : 10); i++) {
+				if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item))
+					return true;
+			}
+
+			for (int i = (targetVanity ? modCount : 0) + 20; i < (targetVanity ? modCount * 2 : modCount) + 20; i++) {
+				if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item))
+					return true;
 			}
 
 			for (int i = 0; i < itemCollection.Length; i++) {

@@ -88,8 +88,7 @@ namespace Terraria.ModLoader.Default
 
 		// Updates Code:
 		/// <summary>
-		/// Updates all vanity information on the player for Mod Slots, in a similar fashion to Player.UpdateVisibleAccessories()
-		/// Runs On Player Select, so is Player instance sensitive!!!
+		/// Updates functional slot visibility information on the player for Mod Slots, in a similar fashion to Player.UpdateVisibleAccessories()
 		/// </summary>
 		public override void UpdateVisibleAccessories() {
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
@@ -103,6 +102,19 @@ namespace Terraria.ModLoader.Default
 					Player.UpdateVisibleAccessories(exAccessorySlot[k], exHideAccessory[k], k, true);
 				}
 			}
+
+			ModAccessorySlot.Player = Main.LocalPlayer;
+		}
+
+		/// <summary>
+		/// Updates vanity slot information on the player for Mod Slots, in a similar fashion to Player.UpdateVisibleAccessories()
+		/// </summary>
+		public override void UpdateVisibleVanityAccessories() {
+			var loader = LoaderManager.Get<AccessorySlotLoader>();
+
+			// Handle Player Select Screen rendering for Iterations with the correct player
+			if (Player != ModAccessorySlot.Player)
+				ModAccessorySlot.Player = Player;
 
 			for (int k = 0; k < SlotCount(); k++) {
 				if (loader.ModdedIsAValidEquipmentSlotForIteration(k, Player)) {

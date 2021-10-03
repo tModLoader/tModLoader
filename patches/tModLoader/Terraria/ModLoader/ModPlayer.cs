@@ -202,9 +202,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Is called in Player.Frame(), including selection screen to prepare and denote visible accessories. Player Instance sensitive.
+		/// Is called in Player.Frame() after vanilla functional slots are evaluated, including selection screen to prepare and denote visible accessories. Player Instance sensitive.
 		/// </summary>
 		public virtual void UpdateVisibleAccessories() {
+		}
+
+		/// <summary>
+		/// Is called in Player.Frame() after vanilla vanity slots are evaluated, including selection screen to prepare and denote visible accessories. Player Instance sensitive.
+		/// </summary>
+		public virtual void UpdateVisibleVanityAccessories() {
 		}
 
 		/// <summary>

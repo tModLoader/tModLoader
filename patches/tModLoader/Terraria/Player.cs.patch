@@ -3095,14 +3095,13 @@
  				if (oldAdjTile[l] != adjTile[l]) {
  					flag = true;
  					break;
-@@ -25059,8 +_,10 @@
+@@ -25059,8 +_,9 @@
  			if (armor[12].legSlot >= 0)
  				legs = armor[12].legSlot;
  
 -			if (!dead)
 +			if (!dead) {
  				UpdateVisibleAccessories();
-+				PlayerLoader.UpdateVisibleAccessories(this);
 +			}
  
  			wearsRobe = false;
@@ -3161,7 +3160,7 @@
  			for (int i = 3; i < 10; i++) {
  				if (!IsAValidEquipmentSlotForIteration(i))
  					continue;
-@@ -25827,6 +_,20 @@
+@@ -25827,6 +_,24 @@
  						UpdateVisibleAccessory(j, item2);
  				}
  			}
@@ -3173,12 +3172,16 @@
 +				UpdateVisibleAccessories(armor[i], hideVisibleAccessory[i], i);
 +			}
 +
++			PlayerLoader.UpdateVisibleAccessories(this);
++
 +			for (int i = 13; i < 20; i++) {
 +				if (!IsAValidEquipmentSlotForIteration(i))
 +					continue;
 +
 +				UpdateVisibleAccessory(i, armor[i]);
 +			}
++
++			PlayerLoader.UpdateVisibleVanityAccessories(this);
  
  			if (HeldItem.type == 4760 && ownedProjectileCounts[866] < 1) {
  				shield = 9;
