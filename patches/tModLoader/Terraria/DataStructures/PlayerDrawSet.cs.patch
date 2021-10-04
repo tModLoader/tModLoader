@@ -36,7 +36,7 @@
  				missingArm = true;
 +			*/
  
-+			missingHand = drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesHands[drawPlayer.body];
++			missingHand = drawPlayer.body > 0 && ArmorIDs.Body.Sets.DrawHands[drawPlayer.body];
 +			missingArm = drawPlayer.body > 0 && ArmorIDs.Body.Sets.DrawArms[drawPlayer.body];
 +			
  			int type;
