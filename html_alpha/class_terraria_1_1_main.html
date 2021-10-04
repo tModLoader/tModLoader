@@ -107,6 +107,8 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_main.html',''); ini
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>CurrentFrameFlags</b></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_main_1_1_current_player_override.html">CurrentPlayerOverride</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_main_1_1_info_to_set_back_color.html">InfoToSetBackColor</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_main_1_1_scene_area.html">SceneArea</a></td></tr>
@@ -4009,6 +4011,9 @@ static <a class="el" href="interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.
 <tr class="memitem:a5d5224766fbd3fc307edee84cd7ea202"><td class="memItemLeft" align="right" valign="top"><a id="a5d5224766fbd3fc307edee84cd7ea202"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanShowInfoAccs</b><code> [get]</code></td></tr>
 <tr class="separator:a5d5224766fbd3fc307edee84cd7ea202"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ba54c609043ceb412361cc110912db2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#a9ba54c609043ceb412361cc110912db2">CurrentPlayer</a><code> [get]</code></td></tr>
+<tr class="memdesc:a9ba54c609043ceb412361cc110912db2"><td class="mdescLeft">&#160;</td><td class="mdescRight">A replacement for <code>Main.LocalPlayer</code> which respects whichever player is currently running hooks on the main thread. This works in the player select screen, and in multiplayer (when other players are updating)  <a href="class_terraria_1_1_main.html#a9ba54c609043ceb412361cc110912db2">More...</a><br /></td></tr>
+<tr class="separator:a9ba54c609043ceb412361cc110912db2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92b06d16b087bb8b262795b8a362ff4c"><td class="memItemLeft" align="right" valign="top"><a id="a92b06d16b087bb8b262795b8a362ff4c"></a>
 static Matrix&#160;</td><td class="memItemRight" valign="bottom"><b>CurrentWantedZoomMatrix</b><code> [get]</code></td></tr>
 <tr class="separator:a92b06d16b087bb8b262795b8a362ff4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4559,6 +4564,31 @@ Can be called on any side, but only the server will actually sync it. </p>
 <div class="line">            { 2, GameModeData.MasterMode },</div>
 <div class="line">            { 3, GameModeData.CreativeMode }        }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a9ba54c609043ceb412361cc110912db2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ba54c609043ceb412361cc110912db2">&#9670;&nbsp;</a></span>CurrentPlayer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_terraria_1_1_player.html">Player</a> Terraria.Main.CurrentPlayer</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A replacement for <code>Main.LocalPlayer</code> which respects whichever player is currently running hooks on the main thread. This works in the player select screen, and in multiplayer (when other players are updating) </p>
+
 </div>
 </div>
 </div><!-- contents -->

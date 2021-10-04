@@ -9,6 +9,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "IO", "namespace_terraria_1_1_mod_loader_1_1_i_o.html", "namespace_terraria_1_1_mod_loader_1_1_i_o" ],
     [ "UI", "namespace_terraria_1_1_mod_loader_1_1_u_i.html", "namespace_terraria_1_1_mod_loader_1_1_u_i" ],
     [ "Utilities", "namespace_terraria_1_1_mod_loader_1_1_utilities.html", "namespace_terraria_1_1_mod_loader_1_1_utilities" ],
+    [ "AccessorySlotLoader", "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html", "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader" ],
     [ "AutoloadAttribute", "class_terraria_1_1_mod_loader_1_1_autoload_attribute.html", "class_terraria_1_1_mod_loader_1_1_autoload_attribute" ],
     [ "AutoloadBossHead", "class_terraria_1_1_mod_loader_1_1_autoload_boss_head.html", null ],
     [ "AutoloadEquip", "class_terraria_1_1_mod_loader_1_1_autoload_equip.html", "class_terraria_1_1_mod_loader_1_1_autoload_equip" ],
@@ -55,6 +56,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "MeleeDamageClass", "class_terraria_1_1_mod_loader_1_1_melee_damage_class.html", "class_terraria_1_1_mod_loader_1_1_melee_damage_class" ],
     [ "MetalDetectorInfoDisplay", "class_terraria_1_1_mod_loader_1_1_metal_detector_info_display.html", "class_terraria_1_1_mod_loader_1_1_metal_detector_info_display" ],
     [ "Mod", "class_terraria_1_1_mod_loader_1_1_mod.html", "class_terraria_1_1_mod_loader_1_1_mod" ],
+    [ "ModAccessorySlot", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot" ],
     [ "ModBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_mod_background_style.html", "class_terraria_1_1_mod_loader_1_1_mod_background_style" ],
     [ "ModBiome", "class_terraria_1_1_mod_loader_1_1_mod_biome.html", "class_terraria_1_1_mod_loader_1_1_mod_biome" ],
     [ "ModBlockType", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html", "class_terraria_1_1_mod_loader_1_1_mod_block_type" ],
@@ -120,6 +122,11 @@ var namespace_terraria_1_1_mod_loader =
     [ "WaterFallStylesLoader", "class_terraria_1_1_mod_loader_1_1_water_fall_styles_loader.html", "class_terraria_1_1_mod_loader_1_1_water_fall_styles_loader" ],
     [ "WaterStylesLoader", "class_terraria_1_1_mod_loader_1_1_water_styles_loader.html", "class_terraria_1_1_mod_loader_1_1_water_styles_loader" ],
     [ "WeatherRadioInfoDisplay", "class_terraria_1_1_mod_loader_1_1_weather_radio_info_display.html", "class_terraria_1_1_mod_loader_1_1_weather_radio_info_display" ],
+    [ "AccessorySlotType", "namespace_terraria_1_1_mod_loader.html#af8828125cece1dd205f08c010e019ace", [
+      [ "FunctionalSlot", "namespace_terraria_1_1_mod_loader.html#af8828125cece1dd205f08c010e019acea90870d2f317629901815c98ff2ced3df", null ],
+      [ "VanitySlot", "namespace_terraria_1_1_mod_loader.html#af8828125cece1dd205f08c010e019acea545f797effd894b6210f64560054a1e9", null ],
+      [ "DyeSlot", "namespace_terraria_1_1_mod_loader.html#af8828125cece1dd205f08c010e019acea65b7802f14514044a608e66a78211c9c", null ]
+    ] ],
     [ "CommandType", "namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26", [
       [ "Chat", "namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26a55dcdf017b51fc96f7b5f9d63013b95d", null ],
       [ "Server", "namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26a9aa1b03934893d7134a660af4204f2a9", null ],

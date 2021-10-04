@@ -261,6 +261,7 @@ var hierarchy =
     [ "Terraria.GameContent.Events.CreditsRollEvent", "class_terraria_1_1_game_content_1_1_events_1_1_credits_roll_event.html", null ],
     [ "Terraria.GameContent.Skies.CreditsRoll.CreditsRollInfo", "struct_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_credits_roll_info.html", null ],
     [ "Terraria.GameContent.Events.CultistRitual", "class_terraria_1_1_game_content_1_1_events_1_1_cultist_ritual.html", null ],
+    [ "Terraria.Main.CurrentPlayerOverride", "struct_terraria_1_1_main_1_1_current_player_override.html", null ],
     [ "Terraria.Social.WeGame.CurrentThreadRunner", "class_terraria_1_1_social_1_1_we_game_1_1_current_thread_runner.html", null ],
     [ "Terraria.ID.CustomCurrencyID", "class_terraria_1_1_i_d_1_1_custom_currency_i_d.html", null ],
     [ "Terraria.GameContent.UI.CustomCurrencyManager", "class_terraria_1_1_game_content_1_1_u_i_1_1_custom_currency_manager.html", null ],
@@ -1124,6 +1125,9 @@ var hierarchy =
           [ "Terraria.ModLoader.GlobalRecipe", "class_terraria_1_1_mod_loader_1_1_global_recipe.html", null ],
           [ "Terraria.ModLoader.GlobalType< TEntity >", "class_terraria_1_1_mod_loader_1_1_global_type.html", null ],
           [ "Terraria.ModLoader.IO.TagSerializer< T, S >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", null ],
+          [ "Terraria.ModLoader.ModAccessorySlot", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html", [
+            [ "Terraria.ModLoader.Default.UnloadedAccessorySlot", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_accessory_slot.html", null ]
+          ] ],
           [ "Terraria.ModLoader.ModBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_mod_background_style.html", [
             [ "Terraria.ModLoader.ModSurfaceBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_mod_surface_background_style.html", null ],
             [ "Terraria.ModLoader.ModUndergroundBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_mod_underground_background_style.html", null ]
@@ -1132,6 +1136,7 @@ var hierarchy =
           [ "Terraria.ModLoader.ModCommand", "class_terraria_1_1_mod_loader_1_1_mod_command.html", null ],
           [ "Terraria.ModLoader.ModMenu", "class_terraria_1_1_mod_loader_1_1_mod_menu.html", null ],
           [ "Terraria.ModLoader.ModPlayer", "class_terraria_1_1_mod_loader_1_1_mod_player.html", [
+            [ "Terraria.ModLoader.Default.ModAccessorySlotPlayer", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html", null ],
             [ "Terraria.ModLoader.Default.UnloadedPlayer", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_player.html", null ]
           ] ],
           [ "Terraria.ModLoader.ModPrefix", "class_terraria_1_1_mod_loader_1_1_mod_prefix.html", null ],
@@ -1218,6 +1223,9 @@ var hierarchy =
           [ "Terraria.ModLoader.SurfaceBackgroundStylesLoader", "class_terraria_1_1_mod_loader_1_1_surface_background_styles_loader.html", null ]
         ] ],
         [ "Terraria.ModLoader.SceneEffectLoader< T >", "class_terraria_1_1_mod_loader_1_1_scene_effect_loader.html", null ]
+      ] ],
+      [ "Terraria.ModLoader.Loader< ModAccessorySlot >", "class_terraria_1_1_mod_loader_1_1_loader.html", [
+        [ "Terraria.ModLoader.AccessorySlotLoader", "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html", null ]
       ] ],
       [ "Terraria.ModLoader.Loader< T >", "class_terraria_1_1_mod_loader_1_1_loader.html", [
         [ "Terraria.ModLoader.BackgroundTextureLoader", "class_terraria_1_1_mod_loader_1_1_background_texture_loader.html", null ],

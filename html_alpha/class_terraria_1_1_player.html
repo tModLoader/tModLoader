@@ -370,6 +370,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>DropAnglerAccByMissin
 <tr class="memitem:aad70ed70c40a41f6b29939b04b0bf076"><td class="memItemLeft" align="right" valign="top"><a id="aad70ed70c40a41f6b29939b04b0bf076"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>DropCoins</b> ()</td></tr>
 <tr class="separator:aad70ed70c40a41f6b29939b04b0bf076"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1067eb218df8538a610590b7b75fb68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#af1067eb218df8538a610590b7b75fb68">DropItem</a> (Vector2 position, ref <a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
+<tr class="memdesc:af1067eb218df8538a610590b7b75fb68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drops the ref'd item from the player at the position, and than turns the ref'd <a class="el" href="class_terraria_1_1_item.html">Item</a> to air.  <a href="class_terraria_1_1_player.html#af1067eb218df8538a610590b7b75fb68">More...</a><br /></td></tr>
+<tr class="separator:af1067eb218df8538a610590b7b75fb68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab30c53bfe9ce3fa492a047726c4bee4d"><td class="memItemLeft" align="right" valign="top"><a id="ab30c53bfe9ce3fa492a047726c4bee4d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>dropItemCheck</b> ()</td></tr>
 <tr class="separator:ab30c53bfe9ce3fa492a047726c4bee4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1102,9 +1105,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateTeleportVisuals
 <tr class="memitem:ab5c7c58f0a1b673531847232c4345332"><td class="memItemLeft" align="right" valign="top"><a id="ab5c7c58f0a1b673531847232c4345332"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateTouchingTiles</b> ()</td></tr>
 <tr class="separator:ab5c7c58f0a1b673531847232c4345332"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1169d299c805a3418c8027a63641e71"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#ac1169d299c805a3418c8027a63641e71">UpdateVisibleAccessory</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
-<tr class="memdesc:ac1169d299c805a3418c8027a63641e71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Won't work with yoraiz0rEye as effect needs target item slot.  <a href="class_terraria_1_1_player.html#ac1169d299c805a3418c8027a63641e71">More...</a><br /></td></tr>
-<tr class="separator:ac1169d299c805a3418c8027a63641e71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dc6d28a19e9c1005c2f35556548efa9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#a0dc6d28a19e9c1005c2f35556548efa9">UpdateVisibleAccessories</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, bool invisible, int slot=-1, bool modded=false)</td></tr>
+<tr class="memdesc:a0dc6d28a19e9c1005c2f35556548efa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked in UpdateVisibleAccessories. Runs common code for both modded slots and vanilla slots based on provided Items.  <a href="class_terraria_1_1_player.html#a0dc6d28a19e9c1005c2f35556548efa9">More...</a><br /></td></tr>
+<tr class="separator:a0dc6d28a19e9c1005c2f35556548efa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1df6f3b195b08248db5001bf8f7c68df"><td class="memItemLeft" align="right" valign="top"><a id="a1df6f3b195b08248db5001bf8f7c68df"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateVisibleAccessory</b> (int itemSlot, <a class="el" href="class_terraria_1_1_item.html">Item</a> item, bool modded=false)</td></tr>
+<tr class="separator:a1df6f3b195b08248db5001bf8f7c68df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abebf759319aff76d338acf8f6425c82b"><td class="memItemLeft" align="right" valign="top"><a id="abebf759319aff76d338acf8f6425c82b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaPostUpdateInventory</b> ()</td></tr>
 <tr class="separator:abebf759319aff76d338acf8f6425c82b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1205,6 +1211,12 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsHoveringOver
 <tr class="memitem:a0c034f5086e22d78a990d5bc19899fe0"><td class="memItemLeft" align="right" valign="top"><a id="a0c034f5086e22d78a990d5bc19899fe0"></a>
 static <a class="el" href="class_terraria_1_1_i_o_1_1_player_file_data.html">PlayerFileData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LoadPlayer</b> (string playerPath, bool cloudSave)</td></tr>
 <tr class="separator:a0c034f5086e22d78a990d5bc19899fe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e40f0d2ea85d1e9d5f90e2a95bc3836"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#a1e40f0d2ea85d1e9d5f90e2a95bc3836">LoadPlayer_LastMinuteFixes</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> newPlayer)</td></tr>
+<tr class="memdesc:a1e40f0d2ea85d1e9d5f90e2a95bc3836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked at the end of loading vanilla player data from files to fix stuff that isn't initialized coming out of load. Only run on the <a class="el" href="class_terraria_1_1_player.html">Player</a> select screen during loading of data. Primarily meant to prevent unwarranted first few frame fall damage/lava damage if load lagging Corrects the player.lavaMax time, wingsLogic, and no fall dmg to be accurate for the provided items in accessory slots.  <a href="class_terraria_1_1_player.html#a1e40f0d2ea85d1e9d5f90e2a95bc3836">More...</a><br /></td></tr>
+<tr class="separator:a1e40f0d2ea85d1e9d5f90e2a95bc3836"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14c2759bbb1806bf20bce98152d20200"><td class="memItemLeft" align="right" valign="top"><a id="a14c2759bbb1806bf20bce98152d20200"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadPlayer_LastMinuteFixes</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> newPlayer, <a class="el" href="class_terraria_1_1_i_o_1_1_player_file_data.html">PlayerFileData</a> playerFileData)</td></tr>
+<tr class="separator:a14c2759bbb1806bf20bce98152d20200"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed3c77c5908bf501a0cd27485d5e6fcc"><td class="memItemLeft" align="right" valign="top"><a id="aed3c77c5908bf501a0cd27485d5e6fcc"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SavePlayer</b> (<a class="el" href="class_terraria_1_1_i_o_1_1_player_file_data.html">PlayerFileData</a> playerFile, bool skipMapSave=false)</td></tr>
 <tr class="separator:aed3c77c5908bf501a0cd27485d5e6fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2011,9 +2023,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>equippedAnyTileSpeedA
 <tr class="memitem:a006ab8c96d166db43547af35b7252dff"><td class="memItemLeft" align="right" valign="top"><a id="a006ab8c96d166db43547af35b7252dff"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>equippedAnyWallSpeedAcc</b></td></tr>
 <tr class="separator:a006ab8c96d166db43547af35b7252dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90ac5cffb529cfd8514f4d1dc7a657c3"><td class="memItemLeft" align="right" valign="top"><a id="a90ac5cffb529cfd8514f4d1dc7a657c3"></a>
+<a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><b>equippedWings</b> = null</td></tr>
+<tr class="separator:a90ac5cffb529cfd8514f4d1dc7a657c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a962e42546f3a34542d4b6a345e2a5793"><td class="memItemLeft" align="right" valign="top"><a id="a962e42546f3a34542d4b6a345e2a5793"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>extraAccessory</b></td></tr>
 <tr class="separator:a962e42546f3a34542d4b6a345e2a5793"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6ef4da1d0f4a72bcf6dad60038614a6"><td class="memItemLeft" align="right" valign="top"><a id="af6ef4da1d0f4a72bcf6dad60038614a6"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>extraAccessorySlots</b> = 2</td></tr>
+<tr class="separator:af6ef4da1d0f4a72bcf6dad60038614a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68b1278a84932750371674b31475559d"><td class="memItemLeft" align="right" valign="top"><a id="a68b1278a84932750371674b31475559d"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>extraFall</b></td></tr>
 <tr class="separator:a68b1278a84932750371674b31475559d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4274,6 +4292,36 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 <tr class="separator:af3dfef58afad89d424164f1e9392e752 inherit properties_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="af1067eb218df8538a610590b7b75fb68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1067eb218df8538a610590b7b75fb68">&#9670;&nbsp;</a></span>DropItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Terraria.Player.DropItem </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref <a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Drops the ref'd item from the player at the position, and than turns the ref'd <a class="el" href="class_terraria_1_1_item.html">Item</a> to air. </p>
+
+</div>
+</div>
 <a id="a7231d4de6cf27906ba75776509c50c19"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7231d4de6cf27906ba75776509c50c19">&#9670;&nbsp;</a></span>GetCritChance()</h2>
 
@@ -4593,6 +4641,44 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 
 </div>
 </div>
+<a id="a1e40f0d2ea85d1e9d5f90e2a95bc3836"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e40f0d2ea85d1e9d5f90e2a95bc3836">&#9670;&nbsp;</a></span>LoadPlayer_LastMinuteFixes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.Player.LoadPlayer_LastMinuteFixes </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>newPlayer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Invoked at the end of loading vanilla player data from files to fix stuff that isn't initialized coming out of load. Only run on the <a class="el" href="class_terraria_1_1_player.html">Player</a> select screen during loading of data. Primarily meant to prevent unwarranted first few frame fall damage/lava damage if load lagging Corrects the player.lavaMax time, wingsLogic, and no fall dmg to be accurate for the provided items in accessory slots. </p>
+
+</div>
+</div>
 <a id="aa686cc6042d1df0b8a220b88eea516b7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa686cc6042d1df0b8a220b88eea516b7">&#9670;&nbsp;</a></span>QuickSpawnClonedItem()</h2>
 
@@ -4630,29 +4716,45 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 
 </div>
 </div>
-<a id="ac1169d299c805a3418c8027a63641e71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac1169d299c805a3418c8027a63641e71">&#9670;&nbsp;</a></span>UpdateVisibleAccessory()</h2>
+<a id="a0dc6d28a19e9c1005c2f35556548efa9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0dc6d28a19e9c1005c2f35556548efa9">&#9670;&nbsp;</a></span>UpdateVisibleAccessories()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Terraria.Player.UpdateVisibleAccessory </td>
+          <td class="memname">void Terraria.Player.UpdateVisibleAccessories </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>item</em></td><td>)</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>invisible</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slot</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>modded</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Won't work with yoraiz0rEye as effect needs target item slot. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">item</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Invoked in UpdateVisibleAccessories. Runs common code for both modded slots and vanilla slots based on provided Items. </p>
 
 </div>
 </div>

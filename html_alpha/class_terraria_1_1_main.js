@@ -1,5 +1,6 @@
 var class_terraria_1_1_main =
 [
+    [ "CurrentPlayerOverride", "struct_terraria_1_1_main_1_1_current_player_override.html", "struct_terraria_1_1_main_1_1_current_player_override" ],
     [ "InfoToSetBackColor", "struct_terraria_1_1_main_1_1_info_to_set_back_color.html", "struct_terraria_1_1_main_1_1_info_to_set_back_color" ],
     [ "SceneArea", "struct_terraria_1_1_main_1_1_scene_area.html", "struct_terraria_1_1_main_1_1_scene_area" ],
     [ "TextDisplayCache", "class_terraria_1_1_main_1_1_text_display_cache.html", "class_terraria_1_1_main_1_1_text_display_cache" ],

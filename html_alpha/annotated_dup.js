@@ -941,8 +941,10 @@ var annotated_dup =
         ] ],
         [ "Default", "namespace_terraria_1_1_mod_loader_1_1_default.html", [
           [ "AprilFools", "class_terraria_1_1_mod_loader_1_1_default_1_1_april_fools.html", "class_terraria_1_1_mod_loader_1_1_default_1_1_april_fools" ],
+          [ "ModAccessorySlotPlayer", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player" ],
           [ "ModLoaderModItem", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_loader_mod_item.html", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_loader_mod_item" ],
           [ "StartBag", "class_terraria_1_1_mod_loader_1_1_default_1_1_start_bag.html", "class_terraria_1_1_mod_loader_1_1_default_1_1_start_bag" ],
+          [ "UnloadedAccessorySlot", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_accessory_slot.html", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_accessory_slot" ],
           [ "UnloadedChest", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_chest.html", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_chest" ],
           [ "UnloadedDresser", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_dresser.html", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_dresser" ],
           [ "UnloadedGlobalItem", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_item.html", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_item" ],
@@ -1001,6 +1003,7 @@ var annotated_dup =
         [ "Utilities", "namespace_terraria_1_1_mod_loader_1_1_utilities.html", [
           [ "SpawnCondition", "class_terraria_1_1_mod_loader_1_1_utilities_1_1_spawn_condition.html", "class_terraria_1_1_mod_loader_1_1_utilities_1_1_spawn_condition" ]
         ] ],
+        [ "AccessorySlotLoader", "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html", "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader" ],
         [ "AutoloadAttribute", "class_terraria_1_1_mod_loader_1_1_autoload_attribute.html", "class_terraria_1_1_mod_loader_1_1_autoload_attribute" ],
         [ "AutoloadBossHead", "class_terraria_1_1_mod_loader_1_1_autoload_boss_head.html", null ],
         [ "AutoloadEquip", "class_terraria_1_1_mod_loader_1_1_autoload_equip.html", "class_terraria_1_1_mod_loader_1_1_autoload_equip" ],
@@ -1047,6 +1050,7 @@ var annotated_dup =
         [ "MeleeDamageClass", "class_terraria_1_1_mod_loader_1_1_melee_damage_class.html", "class_terraria_1_1_mod_loader_1_1_melee_damage_class" ],
         [ "MetalDetectorInfoDisplay", "class_terraria_1_1_mod_loader_1_1_metal_detector_info_display.html", "class_terraria_1_1_mod_loader_1_1_metal_detector_info_display" ],
         [ "Mod", "class_terraria_1_1_mod_loader_1_1_mod.html", "class_terraria_1_1_mod_loader_1_1_mod" ],
+        [ "ModAccessorySlot", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot" ],
         [ "ModBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_mod_background_style.html", "class_terraria_1_1_mod_loader_1_1_mod_background_style" ],
         [ "ModBiome", "class_terraria_1_1_mod_loader_1_1_mod_biome.html", "class_terraria_1_1_mod_loader_1_1_mod_biome" ],
         [ "ModBlockType", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html", "class_terraria_1_1_mod_loader_1_1_mod_block_type" ],

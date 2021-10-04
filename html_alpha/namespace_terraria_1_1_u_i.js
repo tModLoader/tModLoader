@@ -38,6 +38,17 @@ var namespace_terraria_1_1_u_i =
       [ "UI", "namespace_terraria_1_1_u_i.html#a238d476335b3fee00e6b28dc5a52bd1ea71ff71526d15db86eb50fcac245d183b", null ],
       [ "None", "namespace_terraria_1_1_u_i.html#a238d476335b3fee00e6b28dc5a52bd1ea6adf97f83acf6453d4a6a4b1070f3754", null ]
     ] ],
+    [ "ItemSlotContext", "namespace_terraria_1_1_u_i.html#a92ff3281fcea9d78d9c7299de7f7f815", [
+      [ "ModdedAccessorySlot", "namespace_terraria_1_1_u_i.html#a92ff3281fcea9d78d9c7299de7f7f815af54317d04ddcd826e727a727c4c08107", null ],
+      [ "ModdedVanityAccessorySlot", "namespace_terraria_1_1_u_i.html#a92ff3281fcea9d78d9c7299de7f7f815a301cf426f001d11b2321af14cf89cfae", null ],
+      [ "ModdedDyeSlot", "namespace_terraria_1_1_u_i.html#a92ff3281fcea9d78d9c7299de7f7f815ae728705de6ef2d846cee2e2fdbb121a9", null ],
+      [ "Mouse", "namespace_terraria_1_1_u_i.html#a92ff3281fcea9d78d9c7299de7f7f815af2a47c6809d88e175dade0ef7b16aa13", null ],
+      [ "ArmorSlot", "namespace_terraria_1_1_u_i.html#a92ff3281fcea9d78d9c7299de7f7f815af40e5ce64e8b00776527c48f7a472948", null ],
+      [ "VanitySlot", "namespace_terraria_1_1_u_i.html#a92ff3281fcea9d78d9c7299de7f7f815a545f797effd894b6210f64560054a1e9", null ],
+      [ "AccessorySlot", "namespace_terraria_1_1_u_i.html#a92ff3281fcea9d78d9c7299de7f7f815aa8c844e5d83aace44925aedd6f910aba", null ],
+      [ "VanityAccessorySlot", "namespace_terraria_1_1_u_i.html#a92ff3281fcea9d78d9c7299de7f7f815af12eb4f266ab16fcb0e67032909b5c24", null ],
+      [ "DyeSlot", "namespace_terraria_1_1_u_i.html#a92ff3281fcea9d78d9c7299de7f7f815a65b7802f14514044a608e66a78211c9c", null ]
+    ] ],
     [ "GameInterfaceDrawMethod", "namespace_terraria_1_1_u_i.html#aeff7d346f77da684997158f7bf6dc8f7", null ],
     [ "TooltipProcessor", "namespace_terraria_1_1_u_i.html#a112f5cbb42c3dd41eb9b79c4745f4666", null ]
 ];
