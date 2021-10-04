@@ -39,7 +39,7 @@ namespace Terraria.ID
 				// Created based on 'missingHand' definition in 'PlayerDrawSet.BoringSetup'.
 				public static bool[] HidesHands = Factory.CreateBoolSet(77, 103, 41, 100, 10, 11, 12, 13, 14, 43, 15, 16, 20, 39, 50, 38, 40, 57, 44, 52, 53, 68, 81, 85, 88, 98, 86, 87, 99, 165, 166, 167, 171, 45, 168, 169, 42, 180, 181, 183, 186, 187, 188, 64, 189, 191, 192, 198, 199, 202, 203, 58, 59, 60, 61, 62, 63, 36, 104, 184, 74, 78, 185, 196, 197, 182, 87, 76, 209, 168, 210, 211, 213);
 				// Created based on 'missingArm' definition in 'PlayerDrawSet.BoringSetup'.
-				public static bool[] HidesArms = Factory.CreateBoolSet(true, 83);
+				public static bool[] DrawArms = Factory.CreateBoolSet(true, 83);
 			}
 		}
 
