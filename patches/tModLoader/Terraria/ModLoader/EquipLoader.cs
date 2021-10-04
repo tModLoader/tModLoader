@@ -77,7 +77,7 @@ namespace Terraria.ModLoader
 			//Sets
 			LoaderUtils.ResetStaticMembers(typeof(ArmorIDs), true);
 			WingStatsInitializer.Load();
-			
+
 			foreach (EquipType type in EquipTypes) {
 				foreach (var entry in equipTextures[type]) {
 					int slot = entry.Key;

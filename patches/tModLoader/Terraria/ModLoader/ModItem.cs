@@ -864,7 +864,16 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
-		public virtual bool CanEquipAccessory(Player player, int slot) {
+		/// <param name="modded">If the inventory slot index is for modded slots.</param>
+		public virtual bool CanEquipAccessory(Player player, int slot, bool modded) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to prevent similar accessories from being equipped multiple times. For example, vanilla Wings.
+		/// Return false to have the currently equipped item swapped with the incoming item - ie both can't be equipped at same time.
+		/// </summary>
+		public virtual bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {
 			return true;
 		}
 

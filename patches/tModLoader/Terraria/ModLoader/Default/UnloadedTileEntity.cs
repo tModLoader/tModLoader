@@ -17,7 +17,7 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public override bool ValidTile(int i, int j) {
+		public override bool IsTileValidForEntity(int i, int j) {
 			Tile tile = Main.tile[i, j];
 			return tile.active() && TileLoader.GetTile(type) is UnloadedTile;
 		}
