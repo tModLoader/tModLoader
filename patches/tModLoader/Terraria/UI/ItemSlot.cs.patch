@@ -8,7 +8,7 @@
  using Terraria.Audio;
  using Terraria.DataStructures;
  using Terraria.GameContent;
-@@ -10,6 +_,7 @@
+@@ -10,12 +_,13 @@
  using Terraria.GameInput;
  using Terraria.ID;
  using Terraria.Localization;
@@ -16,6 +16,13 @@
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
  
+ namespace Terraria.UI
+ {
+-	public class ItemSlot
++	public partial class ItemSlot
+ 	{
+ 		public class Options
+ 		{
 @@ -61,7 +_,7 @@
  
  		public static bool DrawGoldBGForCraftingMaterial;
@@ -25,7 +32,15 @@
  		private static bool[] canFavoriteAt;
  		private static bool[] canShareAt;
  		private static float[] inventoryGlowHue;
-@@ -352,6 +_,10 @@
+@@ -345,13 +_,17 @@
+ 		}
+ 
+ 		private static bool OverrideLeftClick(Item[] inv, int context = 0, int slot = 0) {
+-			if (context == 10 && isEquipLocked(inv[slot].type))
++			if ((context == 10 || context == -10) && isEquipLocked(inv[slot].type))
+ 				return true;
+ 
+ 			if (Main.LocalPlayer.tileEntityAnchor.IsInValidUseTileEntity() && Main.LocalPlayer.tileEntityAnchor.GetTileEntity().OverrideItemSlotLeftClick(inv, context, slot))
  				return true;
  
  			Item item = inv[slot];
@@ -36,6 +51,108 @@
  			if (Main.cursorOverride == 2) {
  				if (ChatManager.AddChatText(FontAssets.MouseText.Value, ItemTagHandler.GenerateTag(item), Vector2.One))
  					SoundEngine.PlaySound(12);
+@@ -360,7 +_,7 @@
+ 			}
+ 
+ 			if (Main.cursorOverride == 3) {
+-				if (!canFavoriteAt[context])
++				if (context < 0 || !canFavoriteAt[context])
+ 					return false;
+ 
+ 				item.favorited = !item.favorited;
+@@ -441,8 +_,13 @@
+ 				case 0:
+ 					if (context == 6 && Main.mouseItem.type != 0)
+ 						inv[slot].SetDefaults();
++					if (new int[6] { -10, -11, -12, 10, 11, 12 }.Contains(context) && !ItemLoader.CanEquipAccessory(inv[slot], slot, context < 0))
++						break;
+-					if (context == 11 && !inv[slot].FitsAccessoryVanitySlot)
++					if (Math.Abs(context) == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
+ 						break;
++					if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, inv[slot], context))
++						break;
++
+ 					Utils.Swap(ref inv[slot], ref Main.mouseItem);
+ 					if (inv[slot].stack > 0) {
+ 						switch (context) {
+@@ -451,6 +_,9 @@
+ 								break;
+ 							case 8:
+ 							case 9:
++							case -10:
++							case -11:
++							case -12:
+ 							case 10:
+ 							case 11:
+ 							case 12:
+@@ -489,6 +_,13 @@
+ 					break;
+ 				case 1:
+ 					if (Main.mouseItem.stack == 1 && Main.mouseItem.type > 0 && inv[slot].type > 0 && inv[slot].IsNotTheSameAs(Main.mouseItem) && (context != 11 || Main.mouseItem.FitsAccessoryVanitySlot)) {
++						if (new int[6] { -10, -11, -12, 10, 11, 12 }.Contains(context) && !ItemLoader.CanEquipAccessory(Main.mouseItem, slot, context < 0))
++							break;
++						if (Math.Abs(context) == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
++							break;
++						if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem, context))
++							break;
++
+ 						Utils.Swap(ref inv[slot], ref Main.mouseItem);
+ 						SoundEngine.PlaySound(7);
+ 						if (inv[slot].stack > 0) {
+@@ -498,6 +_,9 @@
+ 									break;
+ 								case 8:
+ 								case 9:
++								case -10:
++								case -11:
++								case -12:
+ 								case 10:
+ 								case 11:
+ 								case 12:
+@@ -524,6 +_,13 @@
+ 						}
+ 					}
+ 					else if (Main.mouseItem.type > 0 && inv[slot].type == 0 && (context != 11 || Main.mouseItem.FitsAccessoryVanitySlot)) {
++						if (new int[6] { -10, -11, -12, 10, 11, 12 }.Contains(context) && !ItemLoader.CanEquipAccessory(Main.mouseItem, slot, context < 0))
++							break;
++						if (Math.Abs(context) == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
++							break;
++						if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem, context))
++							break;
++
+ 						if (Main.mouseItem.stack == 1) {
+ 							Utils.Swap(ref inv[slot], ref Main.mouseItem);
+ 							if (inv[slot].type == 0 || inv[slot].stack < 1)
+@@ -551,6 +_,9 @@
+ 									break;
+ 								case 8:
+ 								case 9:
++								case -10:
++								case -11:
++								case -12:
+ 								case 10:
+ 								case 11:
+ 								case 12:
+@@ -579,6 +_,9 @@
+ 									break;
+ 								case 8:
+ 								case 9:
++								case -10:
++								case -11:
++								case -12:
+ 								case 10:
+ 								case 11:
+ 								case 12:
+@@ -632,6 +_,9 @@
+ 									break;
+ 								case 8:
+ 								case 9:
++								case -10:
++								case -11:
++								case -12:
+ 								case 10:
+ 								case 11:
+ 								case 12:
 @@ -651,18 +_,24 @@
  					break;
  				case 3:
@@ -63,6 +180,24 @@
  						}
  
  						Recipe.FindRecipes();
+@@ -686,7 +_,7 @@
+ 			bool flag = false;
+ 			bool result = false;
+ 			if (NotUsingGamepad && Options.DisableLeftShiftTrashCan) {
+-				if ((uint)context <= 4u || context == 7)
++				if ((uint)context <= 4u && context >= 0 || context == 7)
+ 					flag = true;
+ 
+ 				if (ControlInUse && flag) {
+@@ -695,7 +_,7 @@
+ 				}
+ 			}
+ 			else {
+-				if ((uint)context <= 4u)
++				if ((uint)context <= 4u && context >= 0)
+ 					flag = (Main.player[Main.myPlayer].chest == -1);
+ 
+ 				if (ShiftInUse && flag) {
 @@ -714,18 +_,20 @@
  
  			if (Main.npcShop > 0 && !inv[slot].favorited) {
@@ -87,6 +222,33 @@
  					}
  				}
  			}
+@@ -861,7 +_,12 @@
+ 						result = 1;
+ 					break;
+ 				case 10:
+-					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot)))
++						result = 1;
++					break;
++				case -10:
++				case -11:
++					if (checkItem.type == 0 || (checkItem.accessory && LoaderManager.Get<AccessorySlotLoader>().ModSlotCheck(checkItem, slot, context)))
+ 						result = 1;
+ 					break;
+ 				case 24:
+@@ -869,10 +_,11 @@
+ 						result = 1;
+ 					break;
+ 				case 11:
+-					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot)))
+ 						result = 1;
+ 					break;
+ 				case 12:
++				case -12:
+ 				case 25:
+ 				case 27:
+ 					result = 2;
 @@ -1000,10 +_,12 @@
  			switch (context) {
  				case 0:
@@ -172,7 +334,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1162,6 +_,9 @@
+@@ -1162,11 +_,15 @@
  
  						Recipe.FindRecipes();
  					}
@@ -182,15 +344,52 @@
  					else {
  						result = false;
  					}
-@@ -1187,7 +_,7 @@
+ 					break;
+ 				case 9:
++				case -11:
+ 				case 11: {
+ 						result = true;
+ 						if (!Main.mouseRight || !Main.mouseRightRelease)
+@@ -1175,22 +_,25 @@
+ 						if (Main.npcShop > 0)
+ 							return true;
+ 
++						//TML: Going to swap an accessory from the vanity slot in to the functional slot
++						int tSlot = slot - inv.Length / 2;
++
+-						if ((inv[slot].type <= 0 || inv[slot].stack <= 0) && (inv[slot - 10].type <= 0 || inv[slot - 10].stack <= 0))
++						if ((inv[slot].type <= 0 || inv[slot].stack <= 0) && (inv[tSlot].type <= 0 || inv[tSlot].stack <= 0))
+ 							break;
+ 
+-						Item item = inv[slot - 10];
++						Item item = inv[tSlot];
+ 						bool flag2 = context != 11 || item.FitsAccessoryVanitySlot || item.IsAir;
+ 						if (flag2 && context == 11 && inv[slot].wingSlot > 0) {
+-							for (int i = 3; i < 10; i++) {
+-								if (inv[i].wingSlot > 0 && i != slot - 10)
++							for (int i = 0; i < inv.Length / 2; i++) {
++								if (inv[i].wingSlot > 0 && i != tSlot || !ItemLoader.CanAccessoryBeEquippedWith(inv[tSlot], inv[i]))
+ 									flag2 = false;
  							}
  						}
  
 -						if (!flag2)
-+						if (!flag2 || !ItemLoader.CanEquipAccessory(inv[slot], slot - 10))
++						if (!flag2 || !ItemLoader.CanEquipAccessory(inv[slot], tSlot, context < 0))
  							break;
  
- 						Utils.Swap(ref inv[slot], ref inv[slot - 10]);
+-						Utils.Swap(ref inv[slot], ref inv[slot - 10]);
++						Utils.Swap(ref inv[slot], ref inv[tSlot]);
+ 						SoundEngine.PlaySound(7);
+ 						Recipe.FindRecipes();
+ 						if (inv[slot].stack > 0) {
+@@ -1214,6 +_,7 @@
+ 
+ 						break;
+ 					}
++				case -12:
+ 				case 12:
+ 				case 25:
+ 				case 27: {
 @@ -1264,6 +_,8 @@
  			int num = Main.superFastStack + 1;
  			Player localPlayer = Main.LocalPlayer;
@@ -226,6 +425,74 @@
  			}
  		}
  
+@@ -1342,6 +_,23 @@
+ 						if (inv == player.miscDyes)
+ 							num = 185 + slot;
+ 						break;
++					//TML Context: GamePad number magic aligned to match DemonHeart Accessory. 
++					//TML Note: There is no Master Mode Accessory slot code here for Gamepads.
++					case -10:
++					case -11:
++						int num3M = slot;
++						if (!LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(slot, player))
++							num3M--;
++
++						num = 100 + num3M;
++						break;
++					case -12:
++						int num4M = slot;
++						if (!LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(slot, player))
++							num4M--;
++
++						num = 120 + num4M;
++						break;
+ 					case 19:
+ 						num = 180;
+ 						break;
+@@ -1468,6 +_,11 @@
+ 					case 27:
+ 						value = TextureAssets.InventoryBack12.Value;
+ 						break;
++					case -10:
++					case -11:
++					case -12:
++						value = LoaderManager.Get<AccessorySlotLoader>().GetBackgroundTexture(slot, context);
++						break;
+ 					case 3:
+ 						value = TextureAssets.InventoryBack5.Value;
+ 						break;
+@@ -1588,6 +_,15 @@
+ 				case 27:
+ 					num10 = 1;
+ 					break;
++				case -10:
++					num10 = 11;
++					break;
++				case -11:
++					num10 = 2;
++					break;
++				case -12:
++					num10 = 1;
++					break;
+ 				case 16:
+ 					num10 = 4;
+ 					break;
+@@ -1610,7 +_,14 @@
+ 				Rectangle rectangle = value6.Frame(3, 6, num10 % 3, num10 / 3);
+ 				rectangle.Width -= 2;
+ 				rectangle.Height -= 2;
++
++				// Modded Accessory Slots
++				if (context == -10 || context == -11 || context == -12) {
++					LoaderManager.Get<AccessorySlotLoader>().DrawSlotTexture(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f, slot, context);
++				}
++				else {
+-				spriteBatch.Draw(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f);
++					spriteBatch.Draw(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f);
++				}	
+ 			}
+ 
+ 			Vector2 vector = value.Size() * inventoryScale;
 @@ -1628,10 +_,15 @@
  				num11 *= inventoryScale;
  				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num11 / 2f;
@@ -251,49 +518,73 @@
  					Vector2 position4 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
  					Color white = Color.White;
  					spriteBatch.Draw(TextureAssets.Cd.Value, position4, null, white, 0f, default(Vector2), num11, SpriteEffects.None, 0f);
-@@ -1901,7 +_,7 @@
- 					return false;
- 
- 				if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0)
--					return false;
-+					return !ItemLoader.CanEquipAccessory(item, slot);
+@@ -1861,7 +_,7 @@
+ 				inv[slot] = ArmorSwap(inv[slot], out success);
+ 				if (success) {
+ 					Main.EquipPageSelected = 0;
+-					AchievementsHelper.HandleOnEquip(player, item, item.accessory ? 10 : 8);
++					AchievementsHelper.HandleOnEquip(player, item, (item.accessory ? 10 : 8) * (context < 0 ? -1 : 1));
+ 				}
  			}
  
- 			for (int i = 0; i < itemCollection.Length; i++) {
-@@ -1917,7 +_,7 @@
- 					return true;
- 			}
- 
--			return false;
-+			return !ItemLoader.CanEquipAccessory(item, slot);
+@@ -1892,7 +_,9 @@
+ 			return true;
  		}
  
+-		private static bool AccCheck(Item[] itemCollection, Item item, int slot) {
++		internal static bool AccCheck(Item[] itemCollection, Item item, int slot) {
++			return AccCheck_Inner(itemCollection, item, slot);
++			/*
+ 			if (isEquipLocked(item.type))
+ 				return true;
+ 
+@@ -1918,8 +_,10 @@
+ 			}
+ 
+ 			return false;
++			*/
+ 		}
+ 
++		//TML: I (Solxan), have not been able to get this to ever run in-game. I suspect this code path is deprecated.
  		private static Item DyeSwap(Item item, out bool success) {
-@@ -1993,6 +_,14 @@
- 						accSlotToSwapTo = j - 3;
+ 			success = false;
+ 			if (item.dye <= 0)
+@@ -1934,9 +_,14 @@
  				}
+ 			}
  
-+				for (int k = 0; k < num2; k++) {
-+					int index = 3 + (accSlotToSwapTo + num2) % num2;
-+					if (ItemLoader.CanEquipAccessory(item, index)) {
-+						accSlotToSwapTo = index - 3;
-+						break;
-+					}
-+				}
+-			if (dyeSlotCount >= 10)
++			if (dyeSlotCount >= 10) {
++				item2 = ModSlotDyeSwap(item, out success);
++				if (success)
++					return item2;
 +
- 				if (accSlotToSwapTo > num2)
- 					return item;
+ 				dyeSlotCount = 0;
+-
++			}
++			
+ 			if (dyeSlotCount < 0)
+ 				dyeSlotCount = 9;
  
-@@ -2008,6 +_,9 @@
- 						num3 = k;
- 				}
- 
-+				if (!ItemLoader.CanEquipAccessory(item, num3))
-+					return item;
-+
+@@ -1974,6 +_,9 @@
+ 				player.armor[num + 2] = item.Clone();
+ 			}
+ 			else if (item.accessory) {
++				if (!AccessorySwap(player, item, ref result))
++					return result;
++				/*
+ 				int num2 = 3;
+ 				for (int i = 3; i < 10; i++) {
+ 					if (player.IsAValidEquipmentSlotForIteration(i)) {
+@@ -2011,6 +_,8 @@
  				result = player.armor[num3].Clone();
  				player.armor[num3] = item.Clone();
  				accSlotToSwapTo = 0;
++				*/
++				
+ 			}
+ 
+ 			SoundEngine.PlaySound(7);
 @@ -2105,7 +_,7 @@
  		}
  

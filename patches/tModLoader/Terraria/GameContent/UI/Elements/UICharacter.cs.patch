@@ -1,0 +1,20 @@
+--- src/Terraria/Terraria/GameContent/UI/Elements/UICharacter.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/UICharacter.cs
+@@ -30,6 +_,8 @@
+ 		}
+ 
+ 		public override void Update(GameTime gameTime) {
++			using var _currentPlr = new Main.CurrentPlayerOverride(_player);
++
+ 			_player.ResetEffects();
+ 			_player.ResetVisibleAccessories();
+ 			_player.UpdateMiscCounter();
+@@ -53,6 +_,8 @@
+ 		}
+ 
+ 		protected override void DrawSelf(SpriteBatch spriteBatch) {
++			using var _currentPlr = new Main.CurrentPlayerOverride(_player);
++
+ 			CalculatedStyle dimensions = GetDimensions();
+ 			if (_drawsBackPanel)
+ 				spriteBatch.Draw(_texture.Value, dimensions.Position(), Color.White);
