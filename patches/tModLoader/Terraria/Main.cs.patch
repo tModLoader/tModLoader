@@ -843,7 +843,7 @@
 +				dayRate = 86400;
  		}
  
- 		public Main() {
+ 		public Main() : base(dedServ) {
 @@ -4784,7 +_,50 @@
  
  			Configuration.Load();
@@ -1647,7 +1647,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15061,82 +_,82 @@
+@@ -15061,82 +_,84 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1687,6 +1687,8 @@
  
  				num16 += (int)(FontAssets.MouseText.Value.MeasureString(array[k]).Y + (float)num12);
  			}
++
++			ItemLoader.PostDrawTooltip(HoverItem, drawableLines.AsReadOnly());
  		}
  
 -		public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine) {
@@ -3835,6 +3837,31 @@
  			}
  		}
  
+@@ -47050,19 +_,22 @@
+ 					renderCount = 99;
+ 				}
+ 				else {
++					//TML: RenderTiles() is quite slow. ~30ms at peak; doesn't change with lighting modes
+ 					if (renderCount == 3) {
+ 						RenderTiles();
+ 						sceneTilePos.X = screenPosition.X - (float)offScreenRange;
+ 						sceneTilePos.Y = screenPosition.Y - (float)offScreenRange;
+ 					}
+ 
+-					if (renderCount == 3) {
++					//TML: Remapped from 3 to 2 to flatten per frame load for colour lighting ( ~5ms peak).
++					if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 2 : 3)) {
+ 						RenderTiles2();
+ 						sceneTile2Pos.X = screenPosition.X - (float)offScreenRange;
+ 						sceneTile2Pos.Y = screenPosition.Y - (float)offScreenRange;
+ 					}
+ 
+-					if (renderCount == 3) {
++					//TML: Remapped from 3 to 0 to flatten per frame load for colour lighting ( ~15ms peak).
++					if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 0 : 3)) {
+ 						RenderWalls();
+ 						sceneWallPos.X = screenPosition.X - (float)offScreenRange;
+ 						sceneWallPos.Y = screenPosition.Y - (float)offScreenRange;
 @@ -47157,10 +_,13 @@
  			if (gameMenu || netMode == 2)
  				bgTopY = -200;
@@ -4174,6 +4201,27 @@
  		public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue) {
  			chatMonitor.NewText(newText, R, G, B);
  			SoundEngine.PlaySound(12);
+@@ -49273,12 +_,20 @@
+ 			SoundEngine.PlaySound(12);
+ 		}
+ 
++		/// <summary>
++		/// Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
++		/// <br>You can also call this on the client to update visuals immediately, assuming it was called serverside aswell (Journey Mode rain slider does this).</br>
++		/// </summary>
+ 		public static void StopRain() {
+ 			rainTime = 0;
+ 			raining = false;
+ 			maxRaining = 0f;
+ 		}
+ 
++		/// <summary>
++		/// Starts rain for a random amount of time. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
++		/// <br>You can also call this on the client to update visuals immediately, assuming it was/will be called serverside aswell (Journey Mode rain slider does this).</br>
++		/// </summary>
+ 		public static void StartRain() {
+ 			int num = 86400;
+ 			int num2 = num / 24;
 @@ -49390,7 +_,7 @@
  			}
  

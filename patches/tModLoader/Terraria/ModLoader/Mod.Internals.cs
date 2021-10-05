@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.Localization;
@@ -69,7 +70,7 @@ namespace Terraria.ModLoader
 					var autoload = AutoloadAttribute.GetValue(type);
 
 					if (autoload.NeedsAutoloading) {
-						AddContent((ILoadable)Activator.CreateInstance(type));
+						AddContent((ILoadable)Activator.CreateInstance(type, true));
 					}
 				}
 			}

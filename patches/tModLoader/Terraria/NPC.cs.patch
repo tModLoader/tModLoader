@@ -822,15 +822,6 @@
  				int num23 = 7;
  				float num24 = 1.1f;
  				int num25 = 10;
-@@ -70233,6 +_,8 @@
- 			return false;
- 		}
- 
-+		public bool HasBuff(int type) => FindBuffIndex(type) != -1; //TODO: Make this an extension instead?
-+
- 		public int FindBuffIndex(int type) {
- 			if (buffImmune[type])
- 				return -1;
 @@ -70259,6 +_,8 @@
  			int num = -1;
  			for (int i = 0; i < 5; i++) {

@@ -280,13 +280,7 @@
  					Main.item[num3].newAndShiny = false;
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, num3, 1f);
-@@ -2550,11 +_,13 @@
- 			}
- 		}
- 
-+		public bool HasBuff(int type) => FindBuffIndex(type) != -1;
-+
- 		public int FindBuffIndex(int type) {
+@@ -2554,7 +_,7 @@
  			if (buffImmune[type])
  				return -1;
  
@@ -1963,6 +1957,28 @@
  		}
  
  		public void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = default(Vector2)) {
+@@ -11775,6 +_,13 @@
+ 		}
+ 
+ 		public void GetHairSettings(out bool fullHair, out bool hatHair, out bool hideHair, out bool backHairDraw, out bool drawsBackHairWithoutHeadgear) {
++			fullHair = head > 0 && ArmorIDs.Head.Sets.DrawFullHair[head];
++			hatHair = head > 0 && ArmorIDs.Head.Sets.DrawHatHair[head];
++			hideHair = (face > 0 && ArmorIDs.Face.Sets.PreventHairDraw[face]) || (faceHead >= 0 && head != 0);
++			backHairDraw = hair > 0 && ArmorIDs.Head.Sets.DrawBackHair[hair];
++			drawsBackHairWithoutHeadgear = head > 0 && ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[head];
++
++			/*
+ 			fullHair = (hatHair = (hideHair = (drawsBackHairWithoutHeadgear = false)));
+ 			switch (head) {
+ 				case 0:
+@@ -11889,6 +_,7 @@
+ 			backHairDraw = (num > 50 && (num < 56 || num > 63) && (num < 74 || num > 77) && (num < 88 || num > 89) && num != 100 && num != 104 && num != 112 && num < 116);
+ 			if (num == 133 || num == 134 || num == 146 || num == 162 || num == 6)
+ 				backHairDraw = true;
++			*/
+ 		}
+ 
+ 		public void UpdateDead() {
 @@ -11941,8 +_,9 @@
  			hasGingerBeard = false;
  			hasRainbowCursor = false;
@@ -4288,7 +4304,7 @@
 +
 +			float flat = 0;
 +			CombinedHooks.ModifyWeaponKnockback(this, sItem, ref kbModifier, ref flat);
-+			return Math.Max(0, KnockBack * kbModifier + flat);
++			return Math.Max(0f, KnockBack * kbModifier + flat);
  		}
  
  		public int GetWeaponCrit(Item sItem) {
@@ -4411,7 +4427,7 @@
  				flag2 = true;
  
  			if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
-@@ -36645,13 +_,20 @@
+@@ -36645,13 +_,19 @@
  			if (ammoCost75 && Main.rand.Next(4) == 0)
  				flag2 = true;
  
@@ -4426,10 +4442,9 @@
  			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
  				flag2 = true;
  
-+			flag2 |= !PlayerLoader.ConsumeAmmo(this, sItem, item) | !ItemLoader.ConsumeAmmo(sItem, item, this);
++			flag2 |= !CombinedHooks.CanConsumeAmmo(this, sItem, item);
  			if (!flag2 && item.consumable) {
-+				PlayerLoader.OnConsumeAmmo(this, sItem, item);
-+				ItemLoader.OnConsumeAmmo(sItem, item, this);
++				CombinedHooks.OnConsumeAmmo(this, sItem, item);
  				item.stack--;
  				if (item.stack <= 0) {
  					item.active = false;

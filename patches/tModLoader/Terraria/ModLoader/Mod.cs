@@ -283,6 +283,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Retrieves the names of every file packaged into this mod.
+		/// Note that this includes extensions, and for images the extension will always be <c>.rawimg</c>.
+		/// </summary>
+		/// <returns></returns>
+		public List<string> GetFileNames() => File?.GetFileNames();
+
+		/// <summary>
 		/// Retrieve contents of files within the tmod file
 		/// </summary>
 		/// <param name="name">The name.</param>

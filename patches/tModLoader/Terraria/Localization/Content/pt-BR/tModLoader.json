@@ -117,7 +117,7 @@
 		"LoadErrorResourceNotFoundPathHint": "Recurso esperado não encontrado:\n    {0}\nEstimativa mais próxima: (Há um erro de ortografia ou de posicionamento da pasta?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "Exceção Detectada Silenciosamente: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(veja {0} para o rastreamento completo)",
-		"OpenLogs": "Abrir os Logs",
+		"OpenLogs": "Abrir Registros",
 		"OpenWebHelp": "Abrir Ajuda na Web",
 		"SkipToMainMenu": "Pular o Carregamento de Mods",
 		"Retry": "Tentar Novamente",

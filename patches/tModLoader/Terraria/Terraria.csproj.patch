@@ -86,7 +86,7 @@
 +    <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
 +  </ItemGroup>
 +  <ItemGroup>
-+    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.8.19.1" />
++    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.9.19.1" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.9.0" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.9.0" />
 +    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
