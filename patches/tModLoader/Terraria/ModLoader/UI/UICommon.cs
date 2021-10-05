@@ -86,6 +86,7 @@ namespace Terraria.ModLoader.UI
 		public static Asset<Texture2D> DividerTexture { get; internal set; }
 		public static Asset<Texture2D> InnerPanelTexture { get; internal set; }
 		public static Asset<Texture2D> InfoDisplayPageArrowTexture { get; internal set; }
+		public static Asset<Texture2D> CopyCodeButtonTexture { get; internal set; }
 
 		internal static void LoadTextures() {
 			Asset<Texture2D> LoadEmbeddedTexture(string name)
@@ -111,6 +112,7 @@ namespace Terraria.ModLoader.UI
 			InnerPanelTexture = Main.Assets.Request<Texture2D>("Images/UI/InnerPanelBackground");
 
 			InfoDisplayPageArrowTexture = LoadEmbeddedTexture("UI.InfoDisplayPageArrow");
+			CopyCodeButtonTexture = LoadEmbeddedTexture("UI.CopyCodeButton");
 		}
 	}
 }

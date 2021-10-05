@@ -6,17 +6,18 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Consumables
 {
-	//This is the Item used to summon a boss, in this case the vanilla Plantera boss.
+	// This is the Item used to summon a boss, in this case the vanilla Plantera boss.
 	public class PlanteraItem : ModItem
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Plantera");
 			Tooltip.SetDefault("The wrath of the jungle");
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
 			ItemID.Sets.SortingPriorityBossSpawns[Type] = 12; // This helps sort inventory know that this is a boss summoning Item.
 
-			//This is set to true for all NPCs that can be summoned via an Item (calling NPC.SpawnOnPlayer). If this is for a modded boss,
-			//write this in the bosses file instead
+			// This is set to true for all NPCs that can be summoned via an Item (calling NPC.SpawnOnPlayer). If this is for a modded boss,
+			// write this in the bosses file instead
 			NPCID.Sets.MPAllowedEnemies[NPCID.Plantera] = true;
 		}
 
@@ -33,25 +34,25 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override bool CanUseItem(Player player) {
-			//If you decide to use the below UseItem code, you have to include !NPC.AnyNPCs(id), as this is also the check the server does when receiving MessageID.SpawnBoss
+			// If you decide to use the below UseItem code, you have to include !NPC.AnyNPCs(id), as this is also the check the server does when receiving MessageID.SpawnBoss
 			return Main.hardMode && NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3 && !NPC.AnyNPCs(NPCID.Plantera);
 		}
 
 		public override bool? UseItem(Player player) {
 			if (player.whoAmI == Main.myPlayer) {
-				//If the player using the item is the client
-				//(explicitely excluded serverside here)
+				// If the player using the item is the client
+				// (explicitely excluded serverside here)
 				SoundEngine.PlaySound(SoundID.Roar, player.position, 0);
 
 				int type = NPCID.Plantera;
 
 				if (Main.netMode != NetmodeID.MultiplayerClient) {
-					//If the player is not in multiplayer, spawn directly
+					// If the player is not in multiplayer, spawn directly
 					NPC.SpawnOnPlayer(player.whoAmI, type);
 				}
 				else {
-					//If the player is in multiplayer, request a spawn
-					//This will only work if NPCID.Sets.MPAllowedEnemies[type] is true, which we set in this class above
+					// If the player is in multiplayer, request a spawn
+					// This will only work if NPCID.Sets.MPAllowedEnemies[type] is true, which we set in this class above
 					NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
 				}
 			}

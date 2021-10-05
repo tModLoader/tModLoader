@@ -90,6 +90,8 @@ namespace Terraria.ModLoader.Core
 				return stream.ReadBytes(entry.Length);
 		}
 
+		public List<string> GetFileNames() => files.Keys.ToList();
+
 		public byte[] GetBytes(string fileName) => files.TryGetValue(Sanitize(fileName), out var entry) ? GetBytes(entry) : null;
 
 		public Stream GetStream(FileEntry entry, bool newFileStream = false) {
@@ -190,6 +192,7 @@ namespace Terraria.ModLoader.Core
 			// signature
 			// data length
 			// signed data
+			Directory.CreateDirectory(Path.GetDirectoryName(path));
 			using (fileStream = File.Create(path))
 			using (var writer = new BinaryWriter(fileStream)) {
 				writer.Write(Encoding.ASCII.GetBytes("TMOD"));

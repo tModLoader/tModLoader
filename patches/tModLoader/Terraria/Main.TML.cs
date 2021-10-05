@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -29,12 +24,23 @@ namespace Terraria
 		public static bool hidePlayerCraftingMenu;
 		public static bool showServerConsole;
 		public static bool Support8K = true; // provides an option to disable 8k (but leave 4k)
+		public static double desiredWorldEventsUpdateRate; // dictates the speed at which world events (falling stars, fairy spawns, sandstorms, etc.) can change/happen
+		public static double timePass; // used to account for more precise time rates when deciding when to update weather
 
 		internal static TMLContentManager AlternateContentManager;
 
 		public static Color DiscoColor => new Color(DiscoR, DiscoG, DiscoB);
 		public static Color MouseTextColorReal => new Color(mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f);
 		public static bool PlayerLoaded => CurrentFrameFlags.ActivePlayersCount > 0;
+
+
+		private static Player _currentPlayerOverride;
+
+		/// <summary>
+		/// A replacement for `Main.LocalPlayer` which respects whichever player is currently running hooks on the main thread.
+		/// This works in the player select screen, and in multiplayer (when other players are updating)
+		/// </summary>
+		public static Player CurrentPlayer => _currentPlayerOverride ?? LocalPlayer;
 
 		public static void InfoDisplayPageHandler(int startX, ref string mouseText, out int startingDisplay, out int endingDisplay) {
 			startingDisplay = 0;
@@ -100,6 +106,34 @@ namespace Terraria
 				spriteBatch.Draw(buttonTexture, buttonPosition, new Rectangle(0, 0, buttonTexture.Width, buttonTexture.Height), Color.White, 0f, default, 1f, SpriteEffects.FlipHorizontally, 0f);
 				if (hovering)
 					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition - Vector2.One * 2f, null, OurFavoriteColor, 0f, default, 1f, SpriteEffects.None, 0f);
+			}
+		}
+
+		//Mirrors code used in UpdateTime
+		/// <summary>
+		/// Syncs rain state if <see cref="StartRain"/> or <see cref="StopRain"/> were called in the same tick and caused a change to <seealso cref="maxRaining"/>.
+		/// <br>Can be called on any side, but only the server will actually sync it.</br>
+		/// </summary>
+		public static void SyncRain() {
+			if (maxRaining != oldMaxRaining) {
+				if (netMode == 2)
+					NetMessage.SendData(7);
+
+				oldMaxRaining = maxRaining;
+			}
+		}
+
+		public ref struct CurrentPlayerOverride
+		{
+			private Player _prevPlayer;
+
+			public CurrentPlayerOverride(Player player) {
+				_prevPlayer = _currentPlayerOverride;
+				_currentPlayerOverride = player;
+			}
+
+			public void Dispose() {
+				_currentPlayerOverride = _prevPlayer;
 			}
 		}
 	}

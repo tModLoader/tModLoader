@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
@@ -32,7 +33,8 @@ namespace Terraria.ModLoader.IO
 				["bestiaryChats"] = SaveNPCBestiaryChats(),
 				["anglerQuest"] = SaveAnglerQuest(),
 				["townManager"] = SaveTownManager(),
-				["modData"] = SaveModData()
+				["modData"] = SaveModData(),
+				["alteredVanillaFields"] = SaveAlteredVanillaFields()
 			};
 
 			var stream = new MemoryStream();
@@ -80,6 +82,7 @@ namespace Terraria.ModLoader.IO
 				customDataFail = e;
 				throw;
 			}
+			LoadAlteredVanillaFields(tag.GetCompound("alteredVanillaFields"));
 		}
 
 		internal static List<TagCompound> SaveChestInventory() {
@@ -357,17 +360,20 @@ namespace Terraria.ModLoader.IO
 		internal static List<TagCompound> SaveModData() {
 			var list = new List<TagCompound>();
 
-			foreach (var system in SystemLoader.Systems) {
-				var data = system.SaveWorldData();
+			var saveData = new TagCompound();
 
-				if (data == null)
+			foreach (var system in SystemLoader.Systems) {
+				system.SaveWorldData(saveData);
+
+				if (saveData.Count == 0)
 					continue;
 
 				list.Add(new TagCompound {
 					["mod"] = system.Mod.Name,
 					["name"] = system.Name,
-					["data"] = data
+					["data"] = saveData
 				});
+				saveData = new TagCompound();
 			}
 
 			return list;
@@ -388,6 +394,20 @@ namespace Terraria.ModLoader.IO
 					ModContent.GetInstance<UnloadedSystem>().data.Add(tag);
 				}
 			}
+		}
+
+		internal static TagCompound SaveAlteredVanillaFields() {
+			return new TagCompound {
+				["timeCultists"] = CultistRitual.delay,
+				["timeRain"] = Main.rainTime,
+				["timeSandstorm"] = Sandstorm.TimeLeft
+			};
+		}
+
+		internal static void LoadAlteredVanillaFields(TagCompound compound) {
+			CultistRitual.delay = compound.GetDouble("timeCultists");
+			Main.rainTime = compound.GetDouble("timeRain");
+			Sandstorm.TimeLeft = compound.GetDouble("timeSandstorm");
 		}
 
 		public static void SendModData(BinaryWriter writer) {

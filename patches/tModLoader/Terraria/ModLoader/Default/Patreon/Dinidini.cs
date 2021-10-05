@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria.DataStructures;
+using Terraria.ID;
 
 namespace Terraria.ModLoader.Default.Patreon
 {
@@ -19,7 +20,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 
-			ArmorIDs.Body.Sets.HidesTopSkin[Mod.GetEquipSlot(GetType().Name, EquipType.Body)] = true;
+			ArmorIDs.Body.Sets.HidesTopSkin[Item.bodySlot] = true;
 		}
 
 		public override void SetDefaults() {
@@ -36,7 +37,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 
-			ArmorIDs.Legs.Sets.OverridesLegs[Mod.GetEquipSlot(GetType().Name, EquipType.Legs)] = true;
+			ArmorIDs.Legs.Sets.OverridesLegs[Item.legSlot] = true;
 		}
 
 		public override void SetDefaults() {
@@ -50,6 +51,12 @@ namespace Terraria.ModLoader.Default.Patreon
 	[AutoloadEquip(EquipType.Wings)]
 	internal class dinidini_Wings : PatreonItem
 	{
+		public override void SetStaticDefaults() {
+			base.SetStaticDefaults();
+
+			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(150, 7f);
+		}
+
 		public override void SetDefaults() {
 			base.SetDefaults();
 
@@ -57,10 +64,6 @@ namespace Terraria.ModLoader.Default.Patreon
 			Item.width = 24;
 			Item.height = 8;
 			Item.accessory = true;
-		}
-
-		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.wingTimeMax = 150;
 		}
 	}
 }

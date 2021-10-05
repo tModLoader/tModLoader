@@ -87,7 +87,7 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,62 @@
+@@ -138,32 +_,65 @@
  			}
  		}
  
@@ -107,11 +107,14 @@
 +			if (File.Exists("savehere.txt"))
 +				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
 +
++			//EnsureMinimumStackSizeOnThreads();
++
 +			bool isServer = LaunchParameters.ContainsKey("-server");
 +			try {
 +				Logging.Init(isServer);
 +			}
 +			catch (Exception e) {
++				Logging.Terraria.Fatal("Main engine crash", e);
 +				DisplayException(e);
 +				return;
 +			}

@@ -13,7 +13,7 @@ namespace ExampleMod.Common.GlobalNPCs
 		}
 
 		public override void AI(NPC npc) {
-			//Make the guide giant and green.
+			// Make the guide giant and green.
 			npc.scale = 1.5f;
 			npc.color = Color.ForestGreen;
 		}

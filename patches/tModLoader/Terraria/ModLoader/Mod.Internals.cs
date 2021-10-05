@@ -6,9 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Terraria.Audio;
 using Terraria.Localization;
-using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
 
@@ -21,21 +22,8 @@ namespace Terraria.ModLoader
 		private readonly Queue<Task> AsyncLoadQueue = new Queue<Task>();
 
 		//Entities
-		internal readonly IDictionary<string, Music> musics = new Dictionary<string, Music>();
 		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
 		internal readonly IList<ILoadable> content = new List<ILoadable>();
-
-		private Music LoadMusic(string path, string extension) {
-			path = $"tmod:{Name}/{path}{extension}";
-			
-			switch (extension) {
-				case ".wav": return new MusicStreamingWAV(path);
-				case ".mp3": return new MusicStreamingMP3(path);
-				case ".ogg": return new MusicStreamingOGG(path);
-			}
-
-			throw new ResourceLoadException($"Unknown music extension {extension}");
-		}
 
 		internal void SetupContent() {
 			foreach (var e in content.OfType<ModType>()) {
@@ -52,8 +40,6 @@ namespace Terraria.ModLoader
 			content.Clear();
 
 			equipTextures.Clear();
-
-			musics.Clear();
 
 			Assets?.Dispose();
 		}
@@ -77,15 +63,18 @@ namespace Terraria.ModLoader
 				if (type == modType) continue;
 				if (type.IsAbstract) continue;
 				if (type.ContainsGenericParameters) continue;
-				if (type.GetConstructor(new Type[0]) == null) continue;//don't autoload things with no default constructor
+				if (type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null) == null) continue;//don't autoload things with no default constructor
 
 				if (type.IsSubclassOf(typeof(ModSound))) {
 					modSounds.Add(type);
 				}
-				else if (typeof(ILoadable).IsAssignableFrom(type)) {
+				// Having the check here instead of enclosing the foreach statement is required for modSound autoloading to function properly
+				// In the case of a ModSound loading rework where it doesn't piggyback off content AutoLoading, the entire foreach statement
+				// can be enclosed in a ContentAutoloadingEnabled check. - pbone
+				else if (ContentAutoloadingEnabled && typeof(ILoadable).IsAssignableFrom(type)) {
 					var autoload = AutoloadAttribute.GetValue(type);
 					if (autoload.NeedsAutoloading) {
-						AddContent((ILoadable)Activator.CreateInstance(type));
+						AddContent((ILoadable)Activator.CreateInstance(type, true));
 					}
 				}
 			}
@@ -94,13 +83,16 @@ namespace Terraria.ModLoader
 			if (Main.dedServ)
 				return;
 
-			if (Properties.AutoloadGores)
+			if (GoreAutoloadingEnabled)
 				GoreLoader.AutoloadGores(this);
 			
-			if (Properties.AutoloadSounds)
+			if (SoundAutoloadingEnabled)
 				AutoloadSounds(modSounds);
 
-			if (Properties.AutoloadBackgrounds)
+			if (MusicAutoloadingEnabled)
+				MusicLoader.AutoloadMusic(this);
+
+			if (BackgroundAutoloadingEnabled)
 				BackgroundTextureLoader.AutoloadBackgrounds(this);
 		}
 
@@ -137,15 +129,6 @@ namespace Terraria.ModLoader
 					modSound = (ModSound)Activator.CreateInstance(t);
 
 				AddSound(soundType, $"{Name}/{soundPath}", modSound);
-			}
-
-			// todo: musics never set/added to
-			foreach (string music in musics.Keys.Where(t => t.StartsWith("Sounds/"))) {
-				string substring = music.Substring("Sounds/".Length);
-
-				if (substring.StartsWith("Music/")) {
-					AddSound(SoundType.Music, Name + '/' + music);
-				}
 			}
 		}
 

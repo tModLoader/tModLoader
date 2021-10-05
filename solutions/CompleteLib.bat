@@ -30,7 +30,6 @@ mkdir "%shared%"
 
 :: Generic release
 robocopy /S ..\src\tModLoader\Terraria\bin\%target%\net5.0 "%shared%"
-rmdir /S /Q "%shared%\ref"
 
 If "%2"=="skipzip" (
 	echo Skipping zipping.
