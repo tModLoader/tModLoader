@@ -1,3 +1,4 @@
+using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Accessories;
@@ -147,6 +148,10 @@ namespace ExampleMod.Content.NPCs
 			}
 			if (primaryPlayerBiome == 2) {
 				shopHelperInstance.DislikeBiome(2); //Example Person dislikes the snow.
+			}
+
+			if (primaryPlayerBiome == ModContent.GetInstance<ExampleSurfaceBiome>().Type) {
+				shopHelperInstance.LoveBiome(ModContent.GetInstance<ExampleSurfaceBiome>().Type); //Example Person likes the Example Surface Biome
 			}
 
 			if (nearbyNPCsByType[NPCID.Demolitionist]) {
