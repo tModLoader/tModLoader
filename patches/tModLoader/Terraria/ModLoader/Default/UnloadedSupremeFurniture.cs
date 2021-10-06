@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.Default
 			//common
 			Main.tileFrameImportant[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
-			TileID.Sets.IgnoredByStepUp[Type] = true;
+			TileID.Sets.IgnoredByNpcStepUp[Type] = true;
 
 			Main.tileSolidTop[Type] = true;
 			Main.tileSolid[Type] = true;

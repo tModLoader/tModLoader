@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileLavaDeath[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
-			TileID.Sets.IgnoredByStepUp[Type] = true;
+			TileID.Sets.IgnoredByNpcStepUp[Type] = true;
 
 			DustType = ModContent.DustType<Dusts.Sparkle>();
 			AdjTiles = new int[] { TileID.WorkBenches };

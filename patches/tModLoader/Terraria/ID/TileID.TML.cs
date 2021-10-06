@@ -13,7 +13,7 @@
 			/// Whether or not the tile will be ignored for automatic step up regarding town NPC collision.
 			/// <br>Only checked when <see cref="Collision.StepUp"/> with specialChecksMode set to 1 is called</br>
 			/// </summary>
-			public static bool[] IgnoredByStepUp = Factory.CreateBoolSet(14, 16, 18, 134, 469);
+			public static bool[] IgnoredByNpcStepUp = Factory.CreateBoolSet(14, 16, 18, 134, 469);
 
 			/// <summary> Whether or not the smart cursor function is disabled when the cursor hovers above this tile. </summary>
 			// Maybe this should be a hook instead?
