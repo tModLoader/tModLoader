@@ -13,6 +13,28 @@
  	{
  		public List<DrawData> DrawDataCache;
  		public List<int> DustCache;
+@@ -19,8 +_,19 @@
+ 		public int projectileDrawPosition;
+ 		public Vector2 ItemLocation;
+ 		public int armorAdjust;
++		// Renames for less confusion [
+-		public bool missingHand;
++		public bool armorHidesHands;
+-		public bool missingArm;
++		public bool armorHidesArms;
++
++		internal bool missingHand {
++			get => !armorHidesHands;
++			set => armorHidesHands = !value;
++		}
++		internal bool missingArm {
++			get => !armorHidesArms;
++			set => armorHidesArms = !value;
++		}
++		// ]
+ 		public bool heldProjOverHand;
+ 		public int skinVar;
+ 		public bool fullHair;
 @@ -129,6 +_,8 @@
  		public Vector2 Center => new Vector2(Position.X + (float)(drawPlayer.width / 2), Position.Y + (float)(drawPlayer.height / 2));
  
@@ -22,8 +44,14 @@
  			DrawDataCache = drawData;
  			DustCache = dust;
  			GoreCache = gore;
-@@ -213,6 +_,7 @@
+@@ -209,10 +_,13 @@
+ 			projectileDrawPosition = -1;
+ 			ItemLocation = Position + (drawPlayer.itemLocation - drawPlayer.position);
+ 			armorAdjust = 0;
++			/*
+ 			missingHand = false;
  			missingArm = false;
++			*/
  			heldProjOverHand = false;
  			skinVar = drawPlayer.skinVariant;
 +			/*
@@ -36,8 +64,8 @@
  				missingArm = true;
 +			*/
  
-+			missingHand = drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesHands[drawPlayer.body];
-+			missingArm = drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesArms[drawPlayer.body];
++			armorHidesHands = drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesHands[drawPlayer.body];
++			armorHidesArms = drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesArms[drawPlayer.body];
 +			
  			int type;
  			if (drawPlayer.heldProj >= 0 && shadow == 0f) {
