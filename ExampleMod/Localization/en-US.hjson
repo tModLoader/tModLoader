@@ -78,9 +78,9 @@ Mods: {
 			ExampleSurfaceBiome: Example Surface
 		}
 		
-		#This is what displays during all of an NPC's happiness levels. Note that the localization key for these should always be "*NPCName*.TownNPCMood.*Mood*" or else it won't display properly.
-		ExamplePerson: {
-			TownNPCMood: {
+		#This is what displays during all of an NPC's happiness levels. Note that the localization key for these should always be "TownNPCMood.*NPCName*.*Mood*" or else it won't display properly.
+		TownNPCMood: {
+			ExamplePerson: {
 				Content: I feel pretty fine right now.
 				NoHome: I would very much like a house, all the colorful monsters scare me.
 				LoveSpace: I love how there is so much space here to code tModLoader mods!

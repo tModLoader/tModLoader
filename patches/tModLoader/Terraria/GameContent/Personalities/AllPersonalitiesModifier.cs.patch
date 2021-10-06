@@ -12,7 +12,7 @@
  					break;
  			}
 +
-+			NPCLoader.NPCHappiness(info.npc, primaryPlayerBiome, ref shopHelperInstance, ref nearbyNPCsByType);
++			NPCLoader.NPCHappiness(info.npc, primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
  		}
  	}
  }

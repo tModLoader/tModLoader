@@ -17,13 +17,13 @@
  				foreach (NPC item in nearbyResidentNPCs) {
  					array[item.type] = true;
  				}
-@@ -182,11 +_,22 @@
+@@ -182,11 +_,24 @@
  					break;
  			}
  
 -			return Language.GetTextValue("TownNPCMoodBiomes." + text);
 +			string result = Language.GetTextValue("TownNPCMoodBiomes." + text);
-+			if (biomeID >= BiomeLoader.VanillaPrimaryBiomeCount) {
++			if (biomeID >= PrimaryBiomeID.Count) {
 +				string key = LoaderManager.Get<BiomeLoader>().Get(biomeID).DisplayName.Key;
 +				result = Language.GetTextValue(key);
 +			}
@@ -33,11 +33,13 @@
  
  		private void AddHappinessReportText(string textKeyInCategory, object substitutes = null) {
 +			string str;
-+			if (_currentNPCBeingTalkedTo.type <= NPCID.Count)
++			if (_currentNPCBeingTalkedTo.type < NPCID.Count)
 -			string str = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +				str = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
-+			else
-+				str = "Mods." + _currentNPCBeingTalkedTo.ModNPC.Mod.Name + "." + _currentNPCBeingTalkedTo.ModNPC.Name + "." + "TownNPCMood";
++			else {
++				var modNpc = _currentNPCBeingTalkedTo.ModNPC;
++				str = $"Mods.{modNpc.Mod.Name}.TownNPCMood.{modNpc.Name}";
++			}
 +
  			if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2)
  				str += "Transformed";

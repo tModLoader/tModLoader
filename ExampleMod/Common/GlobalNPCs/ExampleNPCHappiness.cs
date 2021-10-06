@@ -7,7 +7,7 @@ namespace ExampleMod.Common.GlobalNPCs
 {
 	public class ExampleNPCHappiness : GlobalNPC 
 	{
-		public override void NPCHappiness(NPC npc, int primaryPlayerBiome, ref ShopHelper shopHelperInstance, ref bool[] nearbyNPCsByType) 
+		public override void NPCHappiness(NPC npc, int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) 
 		{
 			int ExamplePersonType = ModContent.NPCType<Content.NPCs.ExamplePerson>(); //Get ExamplePerson's type
 			switch (npc.type) 

@@ -141,13 +141,12 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		//Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
-		public override void NPCHappiness(int primaryPlayerBiome, ref ShopHelper shopHelperInstance, ref bool[] nearbyNPCsByType) {
-			//TODO: Make it prefer ExampleBiome when that happens. And BiomeID.
-			if (primaryPlayerBiome == 1) {
-				shopHelperInstance.LikeBiome(1); //Example Person prefers the forest.
+		public override void NPCHappiness(int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
+			if (primaryPlayerBiome == PrimaryBiomeID.Forest) {
+				shopHelperInstance.LikeBiome(PrimaryBiomeID.Forest); //Example Person prefers the forest.
 			}
-			if (primaryPlayerBiome == 2) {
-				shopHelperInstance.DislikeBiome(2); //Example Person dislikes the snow.
+			if (primaryPlayerBiome == PrimaryBiomeID.Snow) {
+				shopHelperInstance.DislikeBiome(PrimaryBiomeID.Snow); //Example Person dislikes the snow.
 			}
 
 			if (primaryPlayerBiome == ModContent.GetInstance<ExampleSurfaceBiome>().Type) {

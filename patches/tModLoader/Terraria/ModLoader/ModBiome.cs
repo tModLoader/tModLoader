@@ -15,7 +15,7 @@ namespace Terraria.ModLoader
 		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow;
 		public override int Music => 0;
 
-		internal int ZeroIndexType => Type - BiomeLoader.VanillaPrimaryBiomeCount; 
+		internal int ZeroIndexType => Type - PrimaryBiomeID.Count; 
 
 		// Bestiary properties
 		/// <summary>

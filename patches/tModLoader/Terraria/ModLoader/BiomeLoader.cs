@@ -10,9 +10,7 @@ namespace Terraria.ModLoader
 {
 	public class BiomeLoader : Loader<ModBiome>
 	{
-		public const int VanillaPrimaryBiomeCount = 11;
-
-		public BiomeLoader() => Initialize(VanillaPrimaryBiomeCount);
+		public BiomeLoader() => Initialize(PrimaryBiomeID.Count);
 
 		private class HookList
 		{
@@ -105,5 +103,21 @@ namespace Terraria.ModLoader
 
 			return index;
 		}
+	}
+
+	public static class PrimaryBiomeID
+	{
+		public const int Forest = 0;
+		public const int NormalUnderground = 1;
+		public const int Snow = 2;
+		public const int Desert = 3;
+		public const int Jungle = 4;
+		public const int Ocean = 5;
+		public const int Hallow = 6;
+		public const int Mushroom = 7;
+		public const int Dungeon = 8;
+		public const int Corruption = 9;
+		public const int Crimson = 10;
+		public const int Count = 11;
 	}
 }

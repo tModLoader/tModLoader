@@ -551,10 +551,10 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to set an NPC's biome preferences and nearby npc preferences for the NPC happiness system. Recommended to only be used with NPCs that have shops.
 		/// </summary>
-		/// <param name="shopHelperInstance"></param>
-		/// <param name="primaryPlayerBiome"></param>
-		/// <param name="nearbyNPCsByType"></param>
-		public virtual void NPCHappiness(int primaryPlayerBiome, ref ShopHelper shopHelperInstance, ref bool[] nearbyNPCsByType) {
+		/// <param name="shopHelperInstance">The vanilla shop modifier instance to invoke methods such as LikeNPC and HateBiome on</param>
+		/// <param name="primaryPlayerBiome">The current biome the player is in for purposes of npc happiness, referred by PrimaryBiomeID </param>
+		/// <param name="nearbyNPCsByType">The boolean array of if each type of npc is nearby</param>
+		public virtual void NPCHappiness(int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
 		}
 
 		/// <summary>
