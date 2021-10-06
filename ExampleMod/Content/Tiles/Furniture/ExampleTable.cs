@@ -6,7 +6,7 @@ using Terraria.ObjectData;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
-	public class ExampleWorkbench : ModTile
+	public class ExampleTable : ModTile
 	{
 		public override void SetStaticDefaults() {
 			// Properties
@@ -19,18 +19,19 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.IgnoredByNpcStepUp[Type] = true; // This line makes NPCs not try to step up this tile during their movement. Only use this for furniture with solid tops.
 
 			DustType = ModContent.DustType<Dusts.Sparkle>();
-			AdjTiles = new int[] { TileID.WorkBenches };
+			AdjTiles = new int[] { TileID.Tables };
 
 			// Placement
-			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x1);
-			TileObjectData.newTile.CoordinateHeights = new[] { 18 };
+			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2);
+			TileObjectData.newTile.StyleHorizontal = true;
+			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
 			TileObjectData.addTile(Type);
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
 
 			// Etc
 			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Work Bench");
+			name.SetDefault("Table");
 			AddMapEntry(new Color(200, 200, 200), name);
 		}
 
@@ -39,7 +40,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		}
 
 		public override void KillMultiTile(int x, int y, int frameX, int frameY) {
-			Item.NewItem(x * 16, y * 16, 32, 16, ModContent.ItemType<Items.Placeable.Furniture.ExampleWorkbench>());
+			Item.NewItem(x * 16, y * 16, 48, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleTable>());
 		}
 	}
 }
