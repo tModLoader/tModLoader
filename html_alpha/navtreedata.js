@@ -96,8 +96,8 @@ var NAVTREEINDEX =
 "namespace_terraria_1_1_graphics.html",
 "namespace_terraria_1_1_u_i.html#a238d476335b3fee00e6b28dc5a52bd1ea63d72051e901c069f8aa1b32aa0c43bb",
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#ab839cfe4702ad80da8089aad905e72e3",
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_player_stats_snapshot.html#a6f3c200a46d7e4f58c45f37462b2e4a5",
-"struct_terraria_1_1_physics_1_1_ball_collision_event.html#a69806ed029e3f0ae4b8b733906c61b5d"
+"struct_terraria_1_1_game_content_1_1_u_i_1_1_player_stats_snapshot.html",
+"struct_terraria_1_1_physics_1_1_ball_collision_event.html#a1346bc5acd51b5f34abcc97ba2646643"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

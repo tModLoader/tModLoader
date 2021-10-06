@@ -1,5 +1,7 @@
 var NAVTREEINDEX48 =
 {
+"struct_terraria_1_1_game_content_1_1_u_i_1_1_player_stats_snapshot.html":[1,0,1,5,21,22],
+"struct_terraria_1_1_game_content_1_1_u_i_1_1_player_stats_snapshot.html#a4c131f27813fd0748d306ba399734c00":[1,0,1,5,21,22,5],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_player_stats_snapshot.html#a6f3c200a46d7e4f58c45f37462b2e4a5":[1,0,1,5,21,22,7],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_player_stats_snapshot.html#a76aff9571bfa8417172eb8c414cde279":[1,0,1,5,21,22,2],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_player_stats_snapshot.html#a7e837fae31c9c286607cf3cacb7a4234":[1,0,1,5,21,22,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX48 =
 "struct_terraria_1_1_net_message_1_1_net_sound_info.html#acc565e82a88f05bfef5a9e1f75c4bd45":[1,0,1,46,0,4],
 "struct_terraria_1_1_net_message_1_1_net_sound_info.html#af889fad520169e3b3b5c9196f2698060":[1,0,1,46,0,1],
 "struct_terraria_1_1_physics_1_1_ball_collision_event.html":[1,0,1,17,0],
-"struct_terraria_1_1_physics_1_1_ball_collision_event.html#a00f6210c628523d02300193278e09678":[1,0,1,17,0,2],
-"struct_terraria_1_1_physics_1_1_ball_collision_event.html#a1346bc5acd51b5f34abcc97ba2646643":[1,0,1,17,0,4],
-"struct_terraria_1_1_physics_1_1_ball_collision_event.html#a4d457fed41315c5cf4e2fcb7e58da23f":[1,0,1,17,0,1]
+"struct_terraria_1_1_physics_1_1_ball_collision_event.html#a00f6210c628523d02300193278e09678":[1,0,1,17,0,2]
 };

@@ -6,6 +6,8 @@ var struct_terraria_1_1_data_structures_1_1_player_draw_set =
     [ "armGlowColor", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#afe559a1a821af8a63ab42373f7669d68", null ],
     [ "armGlowMask", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a22c22f7319a50261890b38e0d7357519", null ],
     [ "armorAdjust", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a661562eab384a01d82cdc81bf67c6f75", null ],
+    [ "armorHidesArms", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#adf35b5e517d033e64185230f1782d1d9", null ],
+    [ "armorHidesHands", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#ad4fbef88d0269c8b7ccfc266e98833e5", null ],
     [ "backHairDraw", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a79f8719182030699e18242923e953c4c", null ],
     [ "backShoulderOffset", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a80fbee943c0b773da53121a53aea5b04", null ],
     [ "bodyGlowColor", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a36e4606f2006d92691cf19a13a5d1527", null ],
@@ -98,8 +100,6 @@ var struct_terraria_1_1_data_structures_1_1_player_draw_set =
     [ "legsGlowMask", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a8ad9b8a1a6dbd1f7bbf94b0ed658c498", null ],
     [ "legsOffset", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a400c2ae56967713ed4c6c88aa80e87d1", null ],
     [ "legVect", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a96c99ff8964698d16dc5d288c34d3b53", null ],
-    [ "missingArm", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a15b40dc101e35c3ccf7e14db67edffc3", null ],
-    [ "missingHand", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a7d4b469c4331d11cc68c64426b94591f", null ],
     [ "mountOffSet", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a260d47ee28fb694ee473d46287a8fd02", null ],
     [ "playerEffect", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a78fe57b725b9c661e892c13ea13cca98", null ],
     [ "Position", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a8419822b3c53e1b9925a6d2cc7bb18df", null ],
@@ -119,5 +119,7 @@ var struct_terraria_1_1_data_structures_1_1_player_draw_set =
     [ "usesCompositeTorso", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a23669779d908503f83d151342119b2ec", null ],
     [ "weaponDrawOrder", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#ae39d9de905fa2463ec75fb9ef53b38b8", null ],
     [ "weaponOverFrontArm", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a67f0718cf404840bfc07507843ad878d", null ],
-    [ "Center", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a6665aba214b19ad4243295a9116b0fd2", null ]
+    [ "Center", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a6665aba214b19ad4243295a9116b0fd2", null ],
+    [ "missingArm", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a15b40dc101e35c3ccf7e14db67edffc3", null ],
+    [ "missingHand", "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a7d4b469c4331d11cc68c64426b94591f", null ]
 ];
