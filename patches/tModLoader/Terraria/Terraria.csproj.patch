@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -2,69 +_,151 @@
+@@ -2,68 +_,151 @@
    <Import Project="../Configuration.targets" />
    <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
@@ -38,7 +38,7 @@
    </PropertyGroup>
    <ItemGroup>
      <Reference Include="CsvHelper" />
--    <Reference Include="FNA" />
+-    <ProjectReference Include="../../../FNA/FNA.csproj" />
 -    <Reference Include="Ionic.Zip.CF" />
      <Reference Include="MP3Sharp" />
 +    <Reference Include="Ionic.Zip.Reduced" />
@@ -56,7 +56,7 @@
 -    </EmbeddedResource>
 +    <Reference Include="TerrariaHooks" />
 +    <ProjectReference Include="../ReLogic/ReLogic.csproj" />
-+    <ProjectReference Include="..\..\..\FNA\FNA.csproj" />
++    <ProjectReference Include="../../../FNA/FNA.csproj" />
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
 -    <Reference Update="@(Reference)">
@@ -64,13 +64,12 @@
 -    </Reference>
    </ItemGroup>
    <ItemGroup>
-+    <EmbeddedResource Include="**\*.png" />
++    <EmbeddedResource Include="**/*.png" />
      <EmbeddedResource Include="GameContent/Creative/Content/*" />
      <EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
      <EmbeddedResource Include="GameContent/WorldBuilding/*" />
      <EmbeddedResource Include="IO/Data/*" />
 -    <EmbeddedResource Include="Libraries/Common/**" />
--    <EmbeddedResource Include="Libraries/FNA/**" />
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>

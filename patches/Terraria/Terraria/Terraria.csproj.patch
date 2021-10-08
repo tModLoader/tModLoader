@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Terraria.csproj
 +++ src/Terraria/Terraria/Terraria.csproj
-@@ -1,47 +_,70 @@
+@@ -1,47 +_,69 @@
  <Project Sdk="Microsoft.NET.Sdk">
    <Import Project="../Configuration.targets" />
 +  <Import Project="../../WorkspaceInfo.targets" />
@@ -26,7 +26,7 @@
    </PropertyGroup>
    <ItemGroup>
      <Reference Include="CsvHelper" />
-+    <Reference Include="FNA" />
++    <ProjectReference Include="../../../FNA/FNA.csproj" />
      <Reference Include="Ionic.Zip.CF" />
 -    <Reference Include="Microsoft.Xna.Framework" />
 -    <Reference Include="Microsoft.Xna.Framework.Game" />
@@ -63,7 +63,6 @@
      <EmbeddedResource Include="IO/Data/*" />
 -    <EmbeddedResource Include="Libraries/**" />
 +    <EmbeddedResource Include="Libraries/Common/**" />
-+    <EmbeddedResource Include="Libraries/FNA/**" />
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>

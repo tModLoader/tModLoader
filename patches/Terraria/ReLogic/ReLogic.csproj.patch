@@ -1,6 +1,6 @@
 --- src/decompiled/ReLogic/ReLogic.csproj
 +++ src/Terraria/ReLogic/ReLogic.csproj
-@@ -8,18 +_,18 @@
+@@ -8,18 +_,20 @@
      <RootNamespace>ReLogic</RootNamespace>
    </PropertyGroup>
    <ItemGroup>
@@ -15,7 +15,6 @@
 -    <Reference Include="System.Drawing" />
 -    <Reference Include="System.Windows.Forms" />
 +    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />
-+    <Reference Include="../Terraria/Libraries/FNA/FNA.dll" />
 +    <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
 +    <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
    </ItemGroup>
@@ -27,5 +26,8 @@
 +  </ItemGroup>
 +  <ItemGroup>
 +      <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
++  </ItemGroup>
++  <ItemGroup>
++    <ProjectReference Include="../../../FNA/FNA.csproj" />
    </ItemGroup>
  </Project>
