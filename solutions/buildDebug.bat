@@ -14,7 +14,7 @@ echo Building Debug (1/1)
 	echo Using additional build arguments: %BUILD_ARGS%
 )
 
-dotnet build "../src/tModLoader/Terraria/Terraria.csproj" %BUILD_ARGS% -c Debug --nologo -v q /clp:ErrorsOnly
+dotnet build "tmodloader.sln" %BUILD_ARGS% -c Debug --nologo -v q /clp:ErrorsOnly
 
 @IF %ERRORLEVEL% NEQ 0 (
 	@IF NOT "%UPLOAD_MSBUILD_LOGS%"=="" (
