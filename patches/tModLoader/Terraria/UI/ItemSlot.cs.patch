@@ -67,7 +67,7 @@
 +					if (new int[6] { -10, -11, -12, 10, 11, 12 }.Contains(context) && !ItemLoader.CanEquipAccessory(inv[slot], slot, context < 0))
 +						break;
 -					if (context == 11 && !inv[slot].FitsAccessoryVanitySlot)
-+					if (Math.Abs(context) == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
++					if (context == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
  						break;
 +					if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, inv[slot], context))
 +						break;
@@ -91,7 +91,7 @@
  					if (Main.mouseItem.stack == 1 && Main.mouseItem.type > 0 && inv[slot].type > 0 && inv[slot].IsNotTheSameAs(Main.mouseItem) && (context != 11 || Main.mouseItem.FitsAccessoryVanitySlot)) {
 +						if (new int[6] { -10, -11, -12, 10, 11, 12 }.Contains(context) && !ItemLoader.CanEquipAccessory(Main.mouseItem, slot, context < 0))
 +							break;
-+						if (Math.Abs(context) == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
++						if (context == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
 +							break;
 +						if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem, context))
 +							break;
@@ -115,7 +115,7 @@
  					else if (Main.mouseItem.type > 0 && inv[slot].type == 0 && (context != 11 || Main.mouseItem.FitsAccessoryVanitySlot)) {
 +						if (new int[6] { -10, -11, -12, 10, 11, 12 }.Contains(context) && !ItemLoader.CanEquipAccessory(Main.mouseItem, slot, context < 0))
 +							break;
-+						if (Math.Abs(context) == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
++						if (context == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
 +							break;
 +						if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem, context))
 +							break;
