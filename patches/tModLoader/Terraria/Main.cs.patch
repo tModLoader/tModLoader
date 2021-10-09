@@ -826,7 +826,7 @@
  			}
  
  			bool enabled = CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled;
-@@ -4769,10 +_,17 @@
+@@ -4769,13 +_,20 @@
  
  			dayRate = num;
  			desiredWorldTilesUpdateRate = num;
@@ -843,7 +843,11 @@
 +				dayRate = 86400;
  		}
  
- 		public Main() : base(dedServ) {
+-		public Main() {
++		public Main() : base(dedServ) {
+ 			instance = this;
+ 			UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
+ 			base.Exiting += Main_Exiting;
 @@ -4784,7 +_,50 @@
  
  			Configuration.Load();
