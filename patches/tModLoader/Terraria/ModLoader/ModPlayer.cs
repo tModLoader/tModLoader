@@ -413,7 +413,7 @@ namespace Terraria.ModLoader
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// </summary>
 		/// <param name="item">The item being used</param>
-		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05f`</param>
+		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: <c>add += 0.05f</c></param>
 		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
 		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
 		public virtual void ModifyWeaponDamage(Item item, ref StatModifier damage, ref float flat) {
@@ -898,7 +898,7 @@ namespace Terraria.ModLoader
 		/// You can use this method to add items to the player's starting inventory, as well as their inventory when they respawn in mediumcore.
 		/// </summary>
 		/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
-		/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty<Item>().</returns>
+		/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty&lt;Item&gt;().</returns>
 		public virtual IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			return Enumerable.Empty<Item>();
 		}

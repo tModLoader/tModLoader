@@ -1,14 +1,11 @@
 --- src/Terraria/Terraria/ID/BuffID.cs
 +++ src/tModLoader/Terraria/ID/BuffID.cs
-@@ -1,5 +_,8 @@
+@@ -1,4 +_,5 @@
  using ReLogic.Reflection;
- 
-+using ReLogic.Reflection;
 +using Terraria.ModLoader;
-+
+ 
  namespace Terraria.ID
  {
- 	public class BuffID
 @@ -12,7 +_,7 @@
  				public bool faceLeft;
  			}

@@ -1,6 +1,5 @@
 using Terraria.Localization;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {

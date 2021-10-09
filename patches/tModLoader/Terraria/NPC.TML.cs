@@ -15,7 +15,7 @@ namespace Terraria
 
 		/// <summary>
 		/// Assign a special boss bar, vanilla or modded. Not used by vanilla.
-		/// <para>To assign a modded boss bar, use NPC.BossBar = ModContent.GetInstance<ExampleBossBar>(); where ExampleBossBar is a ModBossBar</para>
+		/// <para>To assign a modded boss bar, use NPC.BossBar = ModContent.GetInstance&lt;ExampleBossBar&gt;(); where ExampleBossBar is a ModBossBar</para>
 		/// <para>To assign a vanilla boss bar for whatever reason, fetch it first through the NPC type using Main.BigBossProgressBar.TryGetSpecialVanillaBossBar</para>
 		/// </summary>
 		public IBigProgressBar BossBar { get; set; }

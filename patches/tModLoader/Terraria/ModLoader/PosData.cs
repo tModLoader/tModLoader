@@ -107,8 +107,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets a Position ID based on the x,y position. If using in an order sensitive case, see NextLocation.
 		/// </summary>
-		/// <param name="posX"></param>
-		/// <param name="posY"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <returns></returns>
 		public static int CoordsToPos(int x, int y) => x * Main.maxTilesY + y;
 
@@ -143,13 +143,13 @@ namespace Terraria.ModLoader
 		};
 
 		/// <summary>
-		/// General purpose lookup function. Always returns a value (even if that value is `default`).
+		/// General purpose lookup function. Always returns a value (even if that value is <c>default</c>).
 		/// See <see cref="PosData{T}.OrderedSparseLookupBuilder.OrderedSparseLookupBuilder(int, bool, bool)"/>for more info
 		/// </summary>
 		public static T Lookup<T>(this PosData<T>[] posMap, int x, int y) => posMap.Lookup(CoordsToPos(x, y));
 
 		/// <summary>
-		/// General purpose lookup function. Always returns a value (even if that value is `default`).
+		/// General purpose lookup function. Always returns a value (even if that value is <c>default</c>).
 		/// See <see cref="PosData{T}.OrderedSparseLookupBuilder.OrderedSparseLookupBuilder(int, bool, bool)"/>for more info
 		/// </summary>
 		public static T Lookup<T>(this PosData<T>[] posMap, int pos) => posMap.Find(pos).value;

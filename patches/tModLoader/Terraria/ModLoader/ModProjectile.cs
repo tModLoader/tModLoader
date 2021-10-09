@@ -205,7 +205,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Called on all clients and the server in multiplayer, so be sure to use `if (projectile.owner == Main.myPlayer)` if you are spawning retrievable ammo. (As seen in ExampleJavelinProjectile)
+		/// Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Called on all clients and the server in multiplayer, so be sure to use <c>if (projectile.owner == Main.myPlayer)</c> if you are spawning retrievable ammo. (As seen in ExampleJavelinProjectile)
 		/// </summary>
 		public virtual void Kill(int timeLeft) {
 		}
