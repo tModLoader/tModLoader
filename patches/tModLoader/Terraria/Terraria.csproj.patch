@@ -56,7 +56,7 @@
      <EmbeddedResource Include="GameContent/Creative/Content/*" />
      <EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
      <EmbeddedResource Include="GameContent/WorldBuilding/*" />
-@@ -43,17 +_,103 @@
+@@ -43,18 +_,65 @@
    <ItemGroup>
      <Compile Remove="Social/WeGame/AsyncTaskHelper.cs" />
      <Compile Remove="Social/WeGame/CurrentThreadRunner.cs" />
@@ -121,44 +121,6 @@
 +      <ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).pdb')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' and Exists('%(RootDir)%(Directory)%(Filename).pdb')" />
 +      <ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).xml')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' and Exists('%(RootDir)%(Directory)%(Filename).xml')" />
 +    </ItemGroup>
-+  </Target>
-+  <Target Name="RedirectAssemblyReferencesToLib" AfterTargets="ResolveAssemblyReferences">
-+    <ItemGroup>
-+      <!--To match deps.json for runtime resolving, paths must be of the form Libraries/<name>/<version>-->
-+      <!--Note that associated files, like pdbs/xmls won't be resolved properly here. Prefer nuget packages for that-->
-+      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
-+        <DirectoryVersion>$([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').Remove($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(", C"))).Substring($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(","))).Substring(10))</DirectoryVersion>
-+      </ReferenceCopyLocalPaths>
-+      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
-+        <DestinationSubDirectory>Libraries\%(ReferenceCopyLocalPaths.OriginalItemSpec)\%(ReferenceCopyLocalPaths.DirectoryVersion)\</DestinationSubDirectory>
-+      </ReferenceCopyLocalPaths>
-+    </ItemGroup>
-+  </Target>
-+  <Target Name="RedirectProjectReferencesToLib" AfterTargets="ResolveAssemblyReferences">
-+    <ItemGroup>
-+      <!--Version is bugged in deps.json for ProjectReferences, doesn't reflect AssemblyVersion for whatever reason. Uses 1.0.0-->
-+      <!--As well, FusionName isn't available, so alternate string manipulation to get Name-->
-+      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ProjectReference'">
-+        <VersionHack>1.0.0</VersionHack>
-+        <DllName>$([System.String]::Copy('%(ReferenceCopyLocalPaths.ResolvedFrom)').Remove($([System.String]::Copy('%(ReferenceCopyLocalPaths.ResolvedFrom)').IndexOf(".dll"))).SubString($([System.String]::Copy('%(ReferenceCopyLocalPaths.ResolvedFrom)').LastIndexOf("\"))).Substring(1))</DllName>
-+      </ReferenceCopyLocalPaths>
-+      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ProjectReference'">
-+        <DestinationSubDirectory>Libraries\%(ReferenceCopyLocalPaths.DllName)\%(ReferenceCopyLocalPaths.VersionHack)\</DestinationSubDirectory>
-+      </ReferenceCopyLocalPaths>
-+    </ItemGroup>
-+  </Target>
-+  <Target Name="OverwriteDevRuntimeTargets" AfterTargets="GenerateBuildRuntimeConfigurationFiles">
-+    <PropertyGroup>
-+      <DevRuntimeConfig>
-+{
-+  "runtimeOptions": {
-+    "additionalProbingPaths": [
-+        "Libraries"
-+    ]
-+  }
-+}
-+      </DevRuntimeConfig>
-+    </PropertyGroup>
-+    <WriteLinesToFile File="$(ProjectRuntimeConfigDevFilePath)" Lines="$(DevRuntimeConfig)" Overwrite="true" Encoding="UTF-8" />
    </Target>
- </Project>
+   <Target Name="RedirectAssemblyReferencesToLib" AfterTargets="ResolveAssemblyReferences">
+     <ItemGroup>

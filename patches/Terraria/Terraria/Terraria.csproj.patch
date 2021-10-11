@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Terraria.csproj
 +++ src/Terraria/Terraria/Terraria.csproj
-@@ -1,47 +_,59 @@
+@@ -1,47 +_,98 @@
  <Project Sdk="Microsoft.NET.Sdk">
    <Import Project="../Configuration.targets" />
 +  <Import Project="../../WorkspaceInfo.targets" />
@@ -73,5 +73,44 @@
 +    </ItemGroup>
 +    <Message Text="Copying $(AssemblyName) to Steam Dir..." Importance="high" />
 +    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)/%(RecursiveDir)" />
++  </Target>
++  <Target Name="RedirectAssemblyReferencesToLib" AfterTargets="ResolveAssemblyReferences">
++    <ItemGroup>
++      <!--To match deps.json for runtime resolving, paths must be of the form Libraries/<name>/<version>-->
++      <!--Note that associated files, like pdbs/xmls won't be resolved properly here. Prefer nuget packages for that-->
++      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
++        <DirectoryVersion>$([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').Remove($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(", C"))).Substring($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(","))).Substring(10))</DirectoryVersion>
++      </ReferenceCopyLocalPaths>
++      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
++        <DestinationSubDirectory>Libraries\%(ReferenceCopyLocalPaths.OriginalItemSpec)\%(ReferenceCopyLocalPaths.DirectoryVersion)\</DestinationSubDirectory>
++      </ReferenceCopyLocalPaths>
++    </ItemGroup>
++  </Target>
++  <Target Name="RedirectProjectReferencesToLib" AfterTargets="ResolveAssemblyReferences">
++    <ItemGroup>
++      <!--Version is bugged in deps.json for ProjectReferences, doesn't reflect AssemblyVersion for whatever reason. Uses 1.0.0-->
++      <!--As well, FusionName isn't available, so alternate string manipulation to get Name-->
++      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ProjectReference'">
++        <VersionHack>1.0.0</VersionHack>
++        <DllName>$([System.String]::Copy('%(ReferenceCopyLocalPaths.ResolvedFrom)').Remove($([System.String]::Copy('%(ReferenceCopyLocalPaths.ResolvedFrom)').IndexOf(".dll"))).SubString($([System.String]::Copy('%(ReferenceCopyLocalPaths.ResolvedFrom)').LastIndexOf("\"))).Substring(1))</DllName>
++      </ReferenceCopyLocalPaths>
++      <ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ProjectReference'">
++        <DestinationSubDirectory>Libraries\%(ReferenceCopyLocalPaths.DllName)\%(ReferenceCopyLocalPaths.VersionHack)\</DestinationSubDirectory>
++      </ReferenceCopyLocalPaths>
++    </ItemGroup>
++  </Target>
++  <Target Name="OverwriteDevRuntimeTargets" AfterTargets="GenerateBuildRuntimeConfigurationFiles">
++    <PropertyGroup>
++      <DevRuntimeConfig>
++{
++  "runtimeOptions": {
++    "additionalProbingPaths": [
++        "Libraries"
++    ]
++  }
++}
++      </DevRuntimeConfig>
++    </PropertyGroup>
++    <WriteLinesToFile File="$(ProjectRuntimeConfigDevFilePath)" Lines="$(DevRuntimeConfig)" Overwrite="true" Encoding="UTF-8" />
 +  </Target>
  </Project>
