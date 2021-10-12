@@ -5,5 +5,6 @@ var struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings
     [ "IndexOfPlayerWhoInvokedThis", "struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#a0d800484df581b23b27775854d37667a", null ],
     [ "MovementVector", "struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#ab5711265dbe11f32480c1ef4d6e8a098", null ],
     [ "PackedShaderIndex", "struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#a0955c465e00cd4a3edbf431a93b3495e", null ],
-    [ "PositionInWorld", "struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#a11c5abcab47bcfeb182756b5c3744ec9", null ]
+    [ "PositionInWorld", "struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#a11c5abcab47bcfeb182756b5c3744ec9", null ],
+    [ "SerializationSize", "struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#ab6ba162f4f053eedfcbcd56462c816e2", null ]
 ];

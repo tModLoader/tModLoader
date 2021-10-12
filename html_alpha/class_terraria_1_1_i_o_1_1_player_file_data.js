@@ -2,6 +2,7 @@ var class_terraria_1_1_i_o_1_1_player_file_data =
 [
     [ "PlayerFileData", "class_terraria_1_1_i_o_1_1_player_file_data.html#aa9126f2355e2769c639150f27af61c7b", null ],
     [ "PlayerFileData", "class_terraria_1_1_i_o_1_1_player_file_data.html#a3043553c58f5bfdc95ee239ac1e85e68", null ],
+    [ "CreateAndSave", "class_terraria_1_1_i_o_1_1_player_file_data.html#aa864a8ca92c9d8d609ba34c97659bbb9", null ],
     [ "GetPlayTime", "class_terraria_1_1_i_o_1_1_player_file_data.html#a18048945453259411cbd9ff7a7b80905", null ],
     [ "MoveToCloud", "class_terraria_1_1_i_o_1_1_player_file_data.html#a1d54ce8c930e560e2bca7cac363a4f42", null ],
     [ "MoveToLocal", "class_terraria_1_1_i_o_1_1_player_file_data.html#a189fb7d2d74a90668cec4a338f867746", null ],

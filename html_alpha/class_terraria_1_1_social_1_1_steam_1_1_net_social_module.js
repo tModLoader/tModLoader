@@ -17,8 +17,15 @@ var class_terraria_1_1_social_1_1_steam_1_1_net_social_module =
     [ "Send", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#ab2b5269a0e0342953b2617cda44f778e", null ],
     [ "Shutdown", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#a4963c7a3e9e58fc2bfef3757b4a1e4b3", null ],
     [ "_connectionStateMap", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#a192377616cd1fe98c7b142e1d5451009", null ],
+    [ "_handshake", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#ae8a6686456ad4293cef178d1c4114065", null ],
     [ "_lobby", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#afb6e07583f5291770431cd52d7a4cdb4", null ],
     [ "_reader", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#a632277824a1b65e13a38bce7c73e8691", null ],
     [ "_steamLock", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#a193585e917a5eedf15af6eaa471ad323", null ],
-    [ "_writer", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#ac0aff018761879bb65f3c45040948f22", null ]
+    [ "_writer", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#ac0aff018761879bb65f3c45040948f22", null ],
+    [ "ClientReadChannel", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#a0400c07311610ffe0435520c13705a8f", null ],
+    [ "GamePort", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#a620d61339b0e3740bc604f9eedd6e4f2", null ],
+    [ "LobbyMessageJoin", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#a49cadf42c47729336ba0370dcab6cbef", null ],
+    [ "QueryPort", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#a0219af478f857af07d1148dd7b786c94", null ],
+    [ "ServerReadChannel", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#a7e02154168ebca312ca9f5649c2c79aa", null ],
+    [ "SteamPort", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#a98dab934187167fcc2eddce291b18b13", null ]
 ];

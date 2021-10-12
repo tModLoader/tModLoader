@@ -1,7 +1,13 @@
 var class_terraria_1_1_popup_text =
 [
+    [ "ClearSonarText", "class_terraria_1_1_popup_text.html#afc2444d4618787e6beb44cdd11f48c64", null ],
+    [ "NewText", "class_terraria_1_1_popup_text.html#a9ae6ea9e6f96a81faa63d66bfb61e241", null ],
+    [ "NewText", "class_terraria_1_1_popup_text.html#a4ed0555f51735430404120cf4da36be6", null ],
     [ "Update", "class_terraria_1_1_popup_text.html#a917812f7bac6167d2dc91b8ba24e3d3b", null ],
+    [ "UpdateItemText", "class_terraria_1_1_popup_text.html#a8d3c48f0136ffda690a1f4fbe151082a", null ],
+    [ "ValueToName", "class_terraria_1_1_popup_text.html#aa55c78205f178d6e3a281128b13b6e4f", null ],
     [ "active", "class_terraria_1_1_popup_text.html#a8153bc82db686e51040c6c682a13446b", null ],
+    [ "activeTime", "class_terraria_1_1_popup_text.html#ade95f3de4af84098d20ba2b1b32b78a7", null ],
     [ "alpha", "class_terraria_1_1_popup_text.html#a01f3d04b0c54e5ea1a6edf157be20254", null ],
     [ "alphaDir", "class_terraria_1_1_popup_text.html#aabe8f6f1c743ea2bccee2c2e47c6a261", null ],
     [ "coinText", "class_terraria_1_1_popup_text.html#a48b8995de0d4b3d122fbe2b8d89065bb", null ],
@@ -14,12 +20,15 @@ var class_terraria_1_1_popup_text =
     [ "name", "class_terraria_1_1_popup_text.html#ae0e8000f62461c760e18289458c0c4d7", null ],
     [ "NoStack", "class_terraria_1_1_popup_text.html#a98848b7bfd176b3243a1a7a771cf39ed", null ],
     [ "npcNetID", "class_terraria_1_1_popup_text.html#a4c6ba1e327488493f23818bc9236ea1d", null ],
+    [ "numActive", "class_terraria_1_1_popup_text.html#a66c943a00e73734a50f9d47c4a0b23e3", null ],
     [ "position", "class_terraria_1_1_popup_text.html#ae8ee97b44488d1cdcb7cfee105009a77", null ],
     [ "rarity", "class_terraria_1_1_popup_text.html#a56e68503c707e0c446ae0aba1e25e025", null ],
     [ "rotation", "class_terraria_1_1_popup_text.html#ab5abe928e59d9075bdcd639c87a9b311", null ],
     [ "scale", "class_terraria_1_1_popup_text.html#a8281fe95be9e36f04e3eac97cb1c18d6", null ],
     [ "sonar", "class_terraria_1_1_popup_text.html#a09e897d29748f0681959137783b112b7", null ],
+    [ "sonarText", "class_terraria_1_1_popup_text.html#a1bf7f7b298d5caf35fe1b1bec764c358", null ],
     [ "stack", "class_terraria_1_1_popup_text.html#ac4e583e27a86488743d1e3ecc376512b", null ],
     [ "velocity", "class_terraria_1_1_popup_text.html#afa19975842d6e8b4dca39ddf04d8b02b", null ],
-    [ "notActuallyAnItem", "class_terraria_1_1_popup_text.html#a386974142b57520c91c41fc58bb17439", null ]
+    [ "notActuallyAnItem", "class_terraria_1_1_popup_text.html#a386974142b57520c91c41fc58bb17439", null ],
+    [ "TargetScale", "class_terraria_1_1_popup_text.html#a553f5a0b41e742abc3d16f56e7038388", null ]
 ];

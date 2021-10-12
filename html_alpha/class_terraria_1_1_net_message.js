@@ -1,4 +1,32 @@
 var class_terraria_1_1_net_message =
 [
-    [ "NetSoundInfo", "struct_terraria_1_1_net_message_1_1_net_sound_info.html", "struct_terraria_1_1_net_message_1_1_net_sound_info" ]
+    [ "NetSoundInfo", "struct_terraria_1_1_net_message_1_1_net_sound_info.html", "struct_terraria_1_1_net_message_1_1_net_sound_info" ],
+    [ "BootPlayer", "class_terraria_1_1_net_message.html#aa86bce77fbf3590f95be84d7ca5394e0", null ],
+    [ "CheckBytes", "class_terraria_1_1_net_message.html#a0e34d7a3b999304ba194c4163243ce55", null ],
+    [ "CompressTileBlock", "class_terraria_1_1_net_message.html#ae9dc692bf1ad0ad0f7a8e8c08e86cb4c", null ],
+    [ "CompressTileBlock_Inner", "class_terraria_1_1_net_message.html#ae9163ccde925a89a178879cda0866701", null ],
+    [ "DecompressTileBlock", "class_terraria_1_1_net_message.html#a4c0d2f2ed73e42dffeef458098dea22d", null ],
+    [ "DecompressTileBlock_Inner", "class_terraria_1_1_net_message.html#a14d2b5db8cb6c1721e729904894bcf8e", null ],
+    [ "DoesPlayerSlotCountAsAHost", "class_terraria_1_1_net_message.html#a37322bb499f6961290b81636b400b89c", null ],
+    [ "greetPlayer", "class_terraria_1_1_net_message.html#a111469f6f400c442be9eca035d865847", null ],
+    [ "PlayNetSound", "class_terraria_1_1_net_message.html#a56a91eaa8d314768a384f9d06ae38632", null ],
+    [ "ReceiveBytes", "class_terraria_1_1_net_message.html#a0a106e92bed14724f594673be80c618a", null ],
+    [ "SendAnglerQuest", "class_terraria_1_1_net_message.html#a1078cb194a7a73de022e79b536e169e8", null ],
+    [ "SendCoinLossRevengeMarker", "class_terraria_1_1_net_message.html#aeb07c3bbf2364d9c5fb07e5f027207da", null ],
+    [ "SendData", "class_terraria_1_1_net_message.html#a0099400efdc729b71368da55adc01263", null ],
+    [ "SendObjectPlacment", "class_terraria_1_1_net_message.html#a79279ec0db2b3c44cbb6eab029a1382b", null ],
+    [ "SendPlayerDeath", "class_terraria_1_1_net_message.html#ac0ed28a6378729468897e5ba5b4e97f6", null ],
+    [ "SendPlayerHurt", "class_terraria_1_1_net_message.html#a00c0d4ef73c14f81f6ca65144d784c76", null ],
+    [ "SendSection", "class_terraria_1_1_net_message.html#a5fa3d4db91f548b4b7f486b06d6cc7e0", null ],
+    [ "SendTemporaryAnimation", "class_terraria_1_1_net_message.html#aac72ed53e234f43694a2f6c05e570468", null ],
+    [ "SendTileSquare", "class_terraria_1_1_net_message.html#a9768dd9da5aa3c0786d72470986d17d4", null ],
+    [ "SendTileSquare", "class_terraria_1_1_net_message.html#a513706d218e38b1dd4765feb618a6b8a", null ],
+    [ "SendTileSquare", "class_terraria_1_1_net_message.html#add31ee2f4daefed0d85d003c9a8543db", null ],
+    [ "SendTravelShop", "class_terraria_1_1_net_message.html#aa2288a324711f828b5cd3b7995547aa7", null ],
+    [ "sendWater", "class_terraria_1_1_net_message.html#ae11bf2a8ffaedfadebaa364735a89929", null ],
+    [ "SyncConnectedPlayer", "class_terraria_1_1_net_message.html#af515690d04a1cd4b0d129d3273667157", null ],
+    [ "SyncDisconnectedPlayer", "class_terraria_1_1_net_message.html#ac077d5a82a2a1f986c4696eade82c03b", null ],
+    [ "TrySendData", "class_terraria_1_1_net_message.html#a17b9a27455fc9b7f98fd42a363803069", null ],
+    [ "_currentPlayerDeathReason", "class_terraria_1_1_net_message.html#a0f6602c7707c7516dd26a3fe3d0092f2", null ],
+    [ "buffer", "class_terraria_1_1_net_message.html#a943b11ae75732ed0413dcf3317e9d37b", null ]
 ];

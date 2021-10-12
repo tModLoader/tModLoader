@@ -4,10 +4,12 @@ var namespace_terraria_1_1_graphics_1_1_effects =
     [ "EffectManager", "class_terraria_1_1_graphics_1_1_effects_1_1_effect_manager.html", "class_terraria_1_1_graphics_1_1_effects_1_1_effect_manager" ],
     [ "Filter", "class_terraria_1_1_graphics_1_1_effects_1_1_filter.html", "class_terraria_1_1_graphics_1_1_effects_1_1_filter" ],
     [ "FilterManager", "class_terraria_1_1_graphics_1_1_effects_1_1_filter_manager.html", "class_terraria_1_1_graphics_1_1_effects_1_1_filter_manager" ],
+    [ "Filters", "class_terraria_1_1_graphics_1_1_effects_1_1_filters.html", "class_terraria_1_1_graphics_1_1_effects_1_1_filters" ],
     [ "GameEffect", "class_terraria_1_1_graphics_1_1_effects_1_1_game_effect.html", "class_terraria_1_1_graphics_1_1_effects_1_1_game_effect" ],
     [ "MissingEffectException", "class_terraria_1_1_graphics_1_1_effects_1_1_missing_effect_exception.html", "class_terraria_1_1_graphics_1_1_effects_1_1_missing_effect_exception" ],
     [ "Overlay", "class_terraria_1_1_graphics_1_1_effects_1_1_overlay.html", "class_terraria_1_1_graphics_1_1_effects_1_1_overlay" ],
     [ "OverlayManager", "class_terraria_1_1_graphics_1_1_effects_1_1_overlay_manager.html", "class_terraria_1_1_graphics_1_1_effects_1_1_overlay_manager" ],
+    [ "Overlays", "class_terraria_1_1_graphics_1_1_effects_1_1_overlays.html", "class_terraria_1_1_graphics_1_1_effects_1_1_overlays" ],
     [ "SimpleOverlay", "class_terraria_1_1_graphics_1_1_effects_1_1_simple_overlay.html", "class_terraria_1_1_graphics_1_1_effects_1_1_simple_overlay" ],
     [ "SkyManager", "class_terraria_1_1_graphics_1_1_effects_1_1_sky_manager.html", "class_terraria_1_1_graphics_1_1_effects_1_1_sky_manager" ],
     [ "EffectPriority", "namespace_terraria_1_1_graphics_1_1_effects.html#afb14b63992d9e9016acb91a2d14a9861", [

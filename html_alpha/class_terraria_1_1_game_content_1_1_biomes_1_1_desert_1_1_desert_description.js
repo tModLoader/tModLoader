@@ -1,6 +1,8 @@
 var class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description =
 [
+    [ "CreateFromPlacement", "class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#a4c740c25cee1c0d16dfd4c50b62022da", null ],
     [ "UpdateSurfaceMap", "class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#a5ef4160b1ff3713f2d9e335f04803a73", null ],
+    [ "Invalid", "class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#afe04825775deb43a08048ea871290f2e", null ],
     [ "BlockColumnCount", "class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#a62517df0ef08faf980b05dcc4c12502d", null ],
     [ "BlockRowCount", "class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#af8828ca29b4b3d749869d1c5860b96c7", null ],
     [ "BlockScale", "class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#aee50c39c3283e28217f4501adc9c6bbe", null ],

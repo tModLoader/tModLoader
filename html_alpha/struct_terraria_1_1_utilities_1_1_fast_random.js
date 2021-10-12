@@ -2,6 +2,7 @@ var struct_terraria_1_1_utilities_1_1_fast_random =
 [
     [ "FastRandom", "struct_terraria_1_1_utilities_1_1_fast_random.html#aee2307eda4c2550e43b07cad6ef90054", null ],
     [ "FastRandom", "struct_terraria_1_1_utilities_1_1_fast_random.html#a5ad72e94640139e91f4c00476108be6e", null ],
+    [ "CreateWithRandomSeed", "struct_terraria_1_1_utilities_1_1_fast_random.html#a3dcb52a43664bf2ac616ce9f951fe1e7", null ],
     [ "Next", "struct_terraria_1_1_utilities_1_1_fast_random.html#a3bad52189e5e2032203296384f34d710", null ],
     [ "Next", "struct_terraria_1_1_utilities_1_1_fast_random.html#aaa922176888ba4402383d1e83c238f3e", null ],
     [ "NextDouble", "struct_terraria_1_1_utilities_1_1_fast_random.html#a1ad06fa82bbc9ea16836a18fcb7908a1", null ],

@@ -21,7 +21,7 @@ var namespace_terraria_1_1_social_1_1_we_game =
     [ "OverlaySocialModule", "class_terraria_1_1_social_1_1_we_game_1_1_overlay_social_module.html", "class_terraria_1_1_social_1_1_we_game_1_1_overlay_social_module" ],
     [ "ReportServerID", "class_terraria_1_1_social_1_1_we_game_1_1_report_server_i_d.html", "class_terraria_1_1_social_1_1_we_game_1_1_report_server_i_d" ],
     [ "WeGameFriendListInfo", "class_terraria_1_1_social_1_1_we_game_1_1_we_game_friend_list_info.html", "class_terraria_1_1_social_1_1_we_game_1_1_we_game_friend_list_info" ],
-    [ "WeGameHelper", "class_terraria_1_1_social_1_1_we_game_1_1_we_game_helper.html", null ],
+    [ "WeGameHelper", "class_terraria_1_1_social_1_1_we_game_1_1_we_game_helper.html", "class_terraria_1_1_social_1_1_we_game_1_1_we_game_helper" ],
     [ "WeGameP2PReader", "class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_reader.html", "class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_reader" ],
     [ "WeGameP2PWriter", "class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer.html", "class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer" ],
     [ "IPCMessageType", "namespace_terraria_1_1_social_1_1_we_game.html#a5c31a973430a9bf002b0ad1aa2fdb76b", [

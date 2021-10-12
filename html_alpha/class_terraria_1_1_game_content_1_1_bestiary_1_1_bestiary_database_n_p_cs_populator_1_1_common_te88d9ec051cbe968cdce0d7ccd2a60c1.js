@@ -1,0 +1,10 @@
+var class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_te88d9ec051cbe968cdce0d7ccd2a60c1 =
+[
+    [ "FrostLegion", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_te88d9ec051cbe968cdce0d7ccd2a60c1.html#a183cb6eb38b62f76c0468ae6c5694cce", null ],
+    [ "FrostMoon", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_te88d9ec051cbe968cdce0d7ccd2a60c1.html#abbb65be5a6078ac5304b330d509dd1f4", null ],
+    [ "Goblins", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_te88d9ec051cbe968cdce0d7ccd2a60c1.html#ac4ee69f81fdf444051eb8982b366f5ea", null ],
+    [ "Martian", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_te88d9ec051cbe968cdce0d7ccd2a60c1.html#ad5ae8aff139939a00c5dbb6c99d387bc", null ],
+    [ "OldOnesArmy", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_te88d9ec051cbe968cdce0d7ccd2a60c1.html#a2d7a239465691ee644e46fcdfba53774", null ],
+    [ "Pirates", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_te88d9ec051cbe968cdce0d7ccd2a60c1.html#adc4ac12c163f772726c2a5671681576d", null ],
+    [ "PumpkinMoon", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_te88d9ec051cbe968cdce0d7ccd2a60c1.html#af6d5dd7e304570ec6ed6fbf415323af8", null ]
+];

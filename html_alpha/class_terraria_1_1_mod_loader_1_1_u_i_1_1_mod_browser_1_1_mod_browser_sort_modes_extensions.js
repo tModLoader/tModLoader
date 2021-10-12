@@ -1,0 +1,4 @@
+var class_terraria_1_1_mod_loader_1_1_u_i_1_1_mod_browser_1_1_mod_browser_sort_modes_extensions =
+[
+    [ "ToFriendlyString", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_mod_browser_1_1_mod_browser_sort_modes_extensions.html#a7b78ce7940336b5c4c8f5775be96bc2d", null ]
+];

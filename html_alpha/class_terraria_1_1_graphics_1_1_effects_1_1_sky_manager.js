@@ -10,5 +10,6 @@ var class_terraria_1_1_graphics_1_1_effects_1_1_sky_manager =
     [ "Reset", "class_terraria_1_1_graphics_1_1_effects_1_1_sky_manager.html#a8d266cc08b6f91eb91f402ce6a87a8e0", null ],
     [ "ResetDepthTracker", "class_terraria_1_1_graphics_1_1_effects_1_1_sky_manager.html#adda0a8451938cbd1c269efc3fcafb9a8", null ],
     [ "SetStartingDepth", "class_terraria_1_1_graphics_1_1_effects_1_1_sky_manager.html#a28e05bc1b8af7d95ded486ac346661e1", null ],
-    [ "Update", "class_terraria_1_1_graphics_1_1_effects_1_1_sky_manager.html#a74988a394acb2945b881fbf9631b0f5f", null ]
+    [ "Update", "class_terraria_1_1_graphics_1_1_effects_1_1_sky_manager.html#a74988a394acb2945b881fbf9631b0f5f", null ],
+    [ "Instance", "class_terraria_1_1_graphics_1_1_effects_1_1_sky_manager.html#ae974ca13d5ded377df9919e397d486b9", null ]
 ];

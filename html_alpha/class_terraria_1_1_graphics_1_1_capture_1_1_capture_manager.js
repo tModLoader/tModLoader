@@ -9,6 +9,7 @@ var class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager =
     [ "Scrolling", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html#a6dec63f31fba3bd5270fed2db27aa17f", null ],
     [ "Update", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html#ac4afee343be77909c7469ecef7092284", null ],
     [ "Active", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html#afee3f70b8c3865f24e7061b87cb9f630", null ],
+    [ "Instance", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html#a0ec71e3b669ff10ac3da8859c43431d6", null ],
     [ "IsCapturing", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html#afe7fe2467ee9bebdd4ca45bee0961ee9", null ],
     [ "UsingMap", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html#a45902b763c7764713b118ac745b8f89d", null ]
 ];

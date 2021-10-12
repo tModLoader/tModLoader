@@ -14,6 +14,13 @@ var namespace_terraria_1_1_game_content_1_1_bestiary =
     [ "CustomEntryIcon", "class_terraria_1_1_game_content_1_1_bestiary_1_1_custom_entry_icon.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_custom_entry_icon" ],
     [ "EntryIconDrawSettings", "struct_terraria_1_1_game_content_1_1_bestiary_1_1_entry_icon_draw_settings.html", "struct_terraria_1_1_game_content_1_1_bestiary_1_1_entry_icon_draw_settings" ],
     [ "FilterProviderInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_filter_provider_info_element.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_filter_provider_info_element" ],
+    [ "Filters", "class_terraria_1_1_game_content_1_1_bestiary_1_1_filters.html", [
+      [ "ByBoss", "class_terraria_1_1_game_content_1_1_bestiary_1_1_filters_1_1_by_boss.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_filters_1_1_by_boss" ],
+      [ "ByInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_filters_1_1_by_info_element.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_filters_1_1_by_info_element" ],
+      [ "ByRareCreature", "class_terraria_1_1_game_content_1_1_bestiary_1_1_filters_1_1_by_rare_creature.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_filters_1_1_by_rare_creature" ],
+      [ "BySearch", "class_terraria_1_1_game_content_1_1_bestiary_1_1_filters_1_1_by_search.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_filters_1_1_by_search" ],
+      [ "ByUnlockState", "class_terraria_1_1_game_content_1_1_bestiary_1_1_filters_1_1_by_unlock_state.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_filters_1_1_by_unlock_state" ]
+    ] ],
     [ "FlavorTextBestiaryInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_flavor_text_bestiary_info_element.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_flavor_text_bestiary_info_element" ],
     [ "GoldCritterUICollectionInfoProvider", "class_terraria_1_1_game_content_1_1_bestiary_1_1_gold_critter_u_i_collection_info_provider.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_gold_critter_u_i_collection_info_provider" ],
     [ "HighestOfMultipleUICollectionInfoProvider", "class_terraria_1_1_game_content_1_1_bestiary_1_1_highest_of_multiple_u_i_collection_info_provider.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_highest_of_multiple_u_i_collection_info_provider" ],
@@ -45,6 +52,18 @@ var namespace_terraria_1_1_game_content_1_1_bestiary =
     [ "RareSpawnBestiaryInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_rare_spawn_bestiary_info_element.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_rare_spawn_bestiary_info_element" ],
     [ "SalamanderShellyDadUICollectionInfoProvider", "class_terraria_1_1_game_content_1_1_bestiary_1_1_salamander_shelly_dad_u_i_collection_info_provider.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_salamander_shelly_dad_u_i_collection_info_provider" ],
     [ "SearchAliasInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_search_alias_info_element.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_search_alias_info_element" ],
+    [ "SortingSteps", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps.html", [
+      [ "Alphabetical", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_alphabetical.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_alphabetical" ],
+      [ "ByAttack", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_attack.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_attack" ],
+      [ "ByBestiaryRarity", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_bestiary_rarity.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_bestiary_rarity" ],
+      [ "ByBestiarySortingId", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_bestiary_sorting_id.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_bestiary_sorting_id" ],
+      [ "ByCoins", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_coins.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_coins" ],
+      [ "ByDefense", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_defense.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_defense" ],
+      [ "ByHP", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_h_p.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_h_p" ],
+      [ "ByNetId", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_net_id.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_net_id" ],
+      [ "ByStat", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_stat.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_stat" ],
+      [ "ByUnlockState", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_unlock_state.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_sorting_steps_1_1_by_unlock_state" ]
+    ] ],
     [ "SpawnConditionBestiaryInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_bestiary_info_element.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_bestiary_info_element" ],
     [ "SpawnConditionBestiaryOverlayInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_bestiary_overlay_info_element.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_bestiary_overlay_info_element" ],
     [ "SpawnConditionDecorativeOverlayInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_decorative_overlay_info_element.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_decorative_overlay_info_element" ],

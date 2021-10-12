@@ -56,7 +56,7 @@ var namespace_terraria_1_1_game_content_1_1_u_i_1_1_elements =
     [ "UISearchBar", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_search_bar.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_search_bar" ],
     [ "UISelectableTextPanel", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_selectable_text_panel.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_selectable_text_panel" ],
     [ "UISlicedImage", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_sliced_image.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_sliced_image" ],
-    [ "UISliderBase", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_slider_base.html", null ],
+    [ "UISliderBase", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_slider_base.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_slider_base" ],
     [ "UIText", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text" ],
     [ "UITextBox", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_box.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_box" ],
     [ "UITextPanel", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel" ],

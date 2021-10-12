@@ -13,6 +13,8 @@ var namespace_terraria_1_1_audio =
     [ "MP3AudioTrack", "class_terraria_1_1_audio_1_1_m_p3_audio_track.html", "class_terraria_1_1_audio_1_1_m_p3_audio_track" ],
     [ "MusicCueHolder", "class_terraria_1_1_audio_1_1_music_cue_holder.html", "class_terraria_1_1_audio_1_1_music_cue_holder" ],
     [ "OGGAudioTrack", "class_terraria_1_1_audio_1_1_o_g_g_audio_track.html", "class_terraria_1_1_audio_1_1_o_g_g_audio_track" ],
+    [ "SoundEngine", "class_terraria_1_1_audio_1_1_sound_engine.html", "class_terraria_1_1_audio_1_1_sound_engine" ],
+    [ "SoundInstanceGarbageCollector", "class_terraria_1_1_audio_1_1_sound_instance_garbage_collector.html", "class_terraria_1_1_audio_1_1_sound_instance_garbage_collector" ],
     [ "SoundPlayer", "class_terraria_1_1_audio_1_1_sound_player.html", "class_terraria_1_1_audio_1_1_sound_player" ],
     [ "SoundStyle", "class_terraria_1_1_audio_1_1_sound_style.html", "class_terraria_1_1_audio_1_1_sound_style" ],
     [ "WAVAudioTrack", "class_terraria_1_1_audio_1_1_w_a_v_audio_track.html", "class_terraria_1_1_audio_1_1_w_a_v_audio_track" ],

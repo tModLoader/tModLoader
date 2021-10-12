@@ -2,6 +2,7 @@ var class_terraria_1_1_chat_1_1_chat_message =
 [
     [ "ChatMessage", "class_terraria_1_1_chat_1_1_chat_message.html#abe672b60d3fcc83e90017ea71ec91538", null ],
     [ "Consume", "class_terraria_1_1_chat_1_1_chat_message.html#abd2ed20d62a8845eb4862b4a4c0e58da", null ],
+    [ "Deserialize", "class_terraria_1_1_chat_1_1_chat_message.html#a1b0c79f77a5e6e4213c47d54acf070bf", null ],
     [ "GetMaxSerializedSize", "class_terraria_1_1_chat_1_1_chat_message.html#a91c1d433d9a9177c3f5fc461c201e8d1", null ],
     [ "Serialize", "class_terraria_1_1_chat_1_1_chat_message.html#a547fce0f4eb6cfb4cde301b05a10fd77", null ],
     [ "SetCommand", "class_terraria_1_1_chat_1_1_chat_message.html#a6c330c0d5faf22e0804c29eba6cd9aa5", null ],

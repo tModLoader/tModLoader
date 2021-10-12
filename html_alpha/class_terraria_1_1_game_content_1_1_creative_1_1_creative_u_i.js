@@ -22,6 +22,8 @@ var class_terraria_1_1_game_content_1_1_creative_1_1_creative_u_i =
     [ "Update", "class_terraria_1_1_game_content_1_1_creative_1_1_creative_u_i.html#a4d9ec306e656b51fcb964776832b0779", null ],
     [ "GamepadMoveToSearchButtonHack", "class_terraria_1_1_game_content_1_1_creative_1_1_creative_u_i.html#aeafef2209b28a08eb91a661844442c13", null ],
     [ "GamepadPointIdForInfiniteItemSearchHack", "class_terraria_1_1_game_content_1_1_creative_1_1_creative_u_i.html#a899b6d00b4d51683c31f00df5ee25798", null ],
+    [ "ItemSlotIndexes_Count", "class_terraria_1_1_game_content_1_1_creative_1_1_creative_u_i.html#af58d81aa8618ba09a45913aa4167c001", null ],
+    [ "ItemSlotIndexes_SacrificeItem", "class_terraria_1_1_game_content_1_1_creative_1_1_creative_u_i.html#af275908dfde6033d0447d207cdfec4f9", null ],
     [ "Blocked", "class_terraria_1_1_game_content_1_1_creative_1_1_creative_u_i.html#ab9390add1ab50489ac8e1e30344b8810", null ],
     [ "Enabled", "class_terraria_1_1_game_content_1_1_creative_1_1_creative_u_i.html#aac49a267b6c4750cbf59ab8a1d66441c", null ]
 ];

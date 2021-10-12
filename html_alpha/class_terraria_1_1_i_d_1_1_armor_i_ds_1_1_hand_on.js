@@ -1,4 +1,29 @@
 var class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on =
 [
-    [ "Sets", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on_1_1_sets.html", null ]
+    [ "Sets", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on_1_1_sets.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on_1_1_sets" ],
+    [ "BandofRegeneration", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#a29f1f15467d7bea6cb0275aca1de59e1", null ],
+    [ "BandofStarpower", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#aa322c3539a22e2e939bb7e470bb410e9", null ],
+    [ "BersekerGlove", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#a07def45e98af519bbdd72d5796c5b414", null ],
+    [ "BoneGlove", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#aa91583ebf578399cb40f4dd192ba2b95", null ],
+    [ "CelestialCuffs", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#a62e3b9945a6f0526a700b2861823968f", null ],
+    [ "CharmofMyths", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#a149ef8e45d8bd400fa4d9b8b6e52f54b", null ],
+    [ "ClimbingClaws", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#a6a7ca861d914d85f32b5e76275768da3", null ],
+    [ "Count", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#a1b930f70b3ff7a752d90e29accbfeb50", null ],
+    [ "DiamondRing", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#ac836bda6524805f135bd583039e113d7", null ],
+    [ "FeralClaws", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#a4c87faf592b4bda07daae52cf0e3502e", null ],
+    [ "FireGauntlet", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#aacbe3d975bc113840d804a30ec703a27", null ],
+    [ "FrogWebbing", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#adcef1c24a3a58744c1fb357179c82a1f", null ],
+    [ "HandWarmer", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#a947dc162fc7edbcc59f742420113006b", null ],
+    [ "HuntressBuckler", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#aca46c023875f3b226153ec6e4e2f2e49", null ],
+    [ "MagicCuffs", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#afa34bcdc15db1a17d8256e26afdd0f95", null ],
+    [ "ManaRegenerationBand", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#a8045376fd5eee5e70d8814931aed5290", null ],
+    [ "MasterNinjaGear", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#a9b97f61e4fdfcc7955e1666b919ec33d", null ],
+    [ "MechanicalGlove", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#a5d26cd207de0a52c4fc63bba4850bc08", null ],
+    [ "MoonStone", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#a179b8942c29bd7cb115e0a500aa44866", null ],
+    [ "PowerGlove", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#afb7003097f55513d89299403ac341d71", null ],
+    [ "Shackle", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#ae9fd94543dab3c7f0d09fa228954bff8", null ],
+    [ "SunStone", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#aab71de252edbbe4c9531d7dd72dc5feb", null ],
+    [ "TigerClimbingGear", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#a57df2e878bb25914aa01db7a6c0c5418", null ],
+    [ "TitanGlove", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#a67e5b7a6f5fa3fb965833f0924bd89d8", null ],
+    [ "YoyoGlove", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_on.html#a3c6054de38466006cf64efc5c7f9628a", null ]
 ];

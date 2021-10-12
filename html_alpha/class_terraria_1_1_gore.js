@@ -1,6 +1,9 @@
 var class_terraria_1_1_gore =
 [
     [ "GetAlpha", "class_terraria_1_1_gore.html#aa6b20df61b7846d0c65d3f75962fe6b0", null ],
+    [ "NewGore", "class_terraria_1_1_gore.html#a99c43465db05b0c96da5f5d941e780d1", null ],
+    [ "NewGoreDirect", "class_terraria_1_1_gore.html#a6f50d9725660d35b1ff1d942ebb75ce3", null ],
+    [ "NewGorePerfect", "class_terraria_1_1_gore.html#a5c5f918e667ec582e81495cf507c30c6", null ],
     [ "Update", "class_terraria_1_1_gore.html#ab9078152d6eee8a04d22d83b7a49e88e", null ],
     [ "active", "class_terraria_1_1_gore.html#a68a31004af522ae7cbaccb56b65d15f7", null ],
     [ "alpha", "class_terraria_1_1_gore.html#a8df1fbbd2925484111bbbb90d7c29a7f", null ],
@@ -8,6 +11,7 @@ var class_terraria_1_1_gore =
     [ "drawOffset", "class_terraria_1_1_gore.html#a0ecb50c535a2a6814177f297776fefc3", null ],
     [ "Frame", "class_terraria_1_1_gore.html#a39cc72f5db63d3cdd540055145fce138", null ],
     [ "frameCounter", "class_terraria_1_1_gore.html#a4361b8e552c10893c2af6d40fd1b9d76", null ],
+    [ "goreTime", "class_terraria_1_1_gore.html#a1374dbdb126ab758ac39df10d89409ac", null ],
     [ "light", "class_terraria_1_1_gore.html#a75c1a483475913fcf332d188ffb99a9b", null ],
     [ "position", "class_terraria_1_1_gore.html#a2ff834bad62d0dcf0716ec06592b3020", null ],
     [ "rotation", "class_terraria_1_1_gore.html#a91719bbe043c738e389c7bc1c03ba05f", null ],

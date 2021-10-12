@@ -11,6 +11,7 @@ var class_terraria_1_1_game_content_1_1_coin_loss_revenge_system_1_1_revenge_mar
     [ "UseMouseOver", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system_1_1_revenge_marker.html#aa285ccc90b4b587ecd670dbca31a7027", null ],
     [ "WouldNPCBeDiscouraged", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system_1_1_revenge_marker.html#a10e38d96bca64ab03a207f94da7ce134", null ],
     [ "WriteSelfTo", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system_1_1_revenge_marker.html#a82aab04a6199d9ff27985fa787ad78f7", null ],
+    [ "EnemyBoxSize", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system_1_1_revenge_marker.html#a4c149d6f1c2abb14649240ec590d18d8", null ],
     [ "RespawnAttemptLocked", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system_1_1_revenge_marker.html#a0320c9e1964ca62e43d0c5fc69f1f678", null ],
     [ "UniqueID", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system_1_1_revenge_marker.html#a21d48ac2d990ccd6ca086a6fb4a1d08a", null ]
 ];

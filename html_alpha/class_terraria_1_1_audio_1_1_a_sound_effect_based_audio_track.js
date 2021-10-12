@@ -17,6 +17,9 @@ var class_terraria_1_1_audio_1_1_a_sound_effect_based_audio_track =
     [ "_bufferToSubmit", "class_terraria_1_1_audio_1_1_a_sound_effect_based_audio_track.html#ad478ebfe3d7bd00bdd2bd6e07bf25112", null ],
     [ "_soundEffectInstance", "class_terraria_1_1_audio_1_1_a_sound_effect_based_audio_track.html#a185fc83cec6bfeeba35c2dbf8ff49dd2", null ],
     [ "_temporaryBuffer", "class_terraria_1_1_audio_1_1_a_sound_effect_based_audio_track.html#aa7db1fb63b86d3c0348c5943d28aef18", null ],
+    [ "bufferCountPerSubmit", "class_terraria_1_1_audio_1_1_a_sound_effect_based_audio_track.html#adebd3e526da9124f7ea4a17a8f3a457c", null ],
+    [ "bufferLength", "class_terraria_1_1_audio_1_1_a_sound_effect_based_audio_track.html#a8285cab0f1bf7c1dc923f87bfafdcb16", null ],
+    [ "buffersToCoverFor", "class_terraria_1_1_audio_1_1_a_sound_effect_based_audio_track.html#a9c395c535bb5d39bda6100dd0a813f93", null ],
     [ "IsPaused", "class_terraria_1_1_audio_1_1_a_sound_effect_based_audio_track.html#a2b7e2fe9ca226d34078b6b660224b313", null ],
     [ "IsPlaying", "class_terraria_1_1_audio_1_1_a_sound_effect_based_audio_track.html#a415e8fd3d908c6b743c1c7e8ce50032b", null ],
     [ "IsStopped", "class_terraria_1_1_audio_1_1_a_sound_effect_based_audio_track.html#a51b51a7d3124f8a042498a0ee4739d51", null ]

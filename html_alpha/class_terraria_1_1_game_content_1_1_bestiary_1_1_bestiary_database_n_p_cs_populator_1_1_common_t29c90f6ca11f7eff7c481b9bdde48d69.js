@@ -1,0 +1,5 @@
+var class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t29c90f6ca11f7eff7c481b9bdde48d69 =
+[
+    [ "DayTime", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t29c90f6ca11f7eff7c481b9bdde48d69.html#a7024f31d9d9528fa94449e0291881e3f", null ],
+    [ "NightTime", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t29c90f6ca11f7eff7c481b9bdde48d69.html#a4124e072fbbe8d13e065c74f831a2d1a", null ]
+];

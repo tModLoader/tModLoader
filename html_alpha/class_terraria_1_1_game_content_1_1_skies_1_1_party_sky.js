@@ -7,5 +7,6 @@ var class_terraria_1_1_game_content_1_1_skies_1_1_party_sky =
     [ "OnLoad", "class_terraria_1_1_game_content_1_1_skies_1_1_party_sky.html#a4dd1506a4e449c7290366edb7d5b3673", null ],
     [ "Reset", "class_terraria_1_1_game_content_1_1_skies_1_1_party_sky.html#a17e9ade3422cf87cdbcef01881e74899", null ],
     [ "ResetBalloon", "class_terraria_1_1_game_content_1_1_skies_1_1_party_sky.html#a812513439f3f40b0951813b8919ca8b8", null ],
-    [ "Update", "class_terraria_1_1_game_content_1_1_skies_1_1_party_sky.html#a7758be406ccc5970b068549cb58e4a1e", null ]
+    [ "Update", "class_terraria_1_1_game_content_1_1_skies_1_1_party_sky.html#a7758be406ccc5970b068549cb58e4a1e", null ],
+    [ "MultipleSkyWorkaroundFix", "class_terraria_1_1_game_content_1_1_skies_1_1_party_sky.html#ad7c32bcee1823d387a6a90eea73c3850", null ]
 ];

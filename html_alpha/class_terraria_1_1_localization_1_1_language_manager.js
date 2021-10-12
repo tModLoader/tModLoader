@@ -19,6 +19,7 @@ var class_terraria_1_1_localization_1_1_language_manager =
     [ "SetLanguage", "class_terraria_1_1_localization_1_1_language_manager.html#ad561021177f450158835f6db33868975", null ],
     [ "SetLanguage", "class_terraria_1_1_localization_1_1_language_manager.html#a1b70d02100c7681cf1a99296f5307d98", null ],
     [ "UseSources", "class_terraria_1_1_localization_1_1_language_manager.html#ab2cd5f24b9d3e45d848b9ad02a1b989e", null ],
+    [ "Instance", "class_terraria_1_1_localization_1_1_language_manager.html#aed75b828ce37c6b9b0bae5bc847d5b69", null ],
     [ "ActiveCulture", "class_terraria_1_1_localization_1_1_language_manager.html#aac89440db46350028fcfead0836478ff", null ],
     [ "OnLanguageChanged", "class_terraria_1_1_localization_1_1_language_manager.html#a7bbe23567b29ee37d289fe14526989a8", null ],
     [ "OnLanguageChanging", "class_terraria_1_1_localization_1_1_language_manager.html#a4a3b0e67ab73410fec42ec818b13076e", null ]

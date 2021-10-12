@@ -10,6 +10,7 @@ var class_terraria_1_1_tile =
     [ "HasSameSlope", "class_terraria_1_1_tile.html#abff0ee2c1f2de057fdee519fb20db974", null ],
     [ "IsTheSameAs", "class_terraria_1_1_tile.html#a4d2ac2286ec8662c03d5bb5a3613dd28", null ],
     [ "ResetToType", "class_terraria_1_1_tile.html#a6af28eec581f25407736f7ae6ad16aa1", null ],
+    [ "SmoothSlope", "class_terraria_1_1_tile.html#a0efce55ac5b8cb781bde5e7acafc45b5", null ],
     [ "ToString", "class_terraria_1_1_tile.html#a29535a733eabd1d8ea058db178d43bb4", null ],
     [ "bTileHeader", "class_terraria_1_1_tile.html#a83b3f75a2b9519723eec3ed917b1c891", null ],
     [ "bTileHeader2", "class_terraria_1_1_tile.html#a7ffcc37b16f512233f946bb124c2fe24", null ],

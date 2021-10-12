@@ -1,6 +1,6 @@
 var namespace_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar =
 [
-    [ "BigProgressBarHelper", "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_helper.html", null ],
+    [ "BigProgressBarHelper", "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_helper.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_helper" ],
     [ "BigProgressBarInfo", "struct_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_info.html", "struct_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_info" ],
     [ "BigProgressBarSystem", "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_system.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_system" ],
     [ "BrainOfCthuluBigProgressBar", "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_brain_of_cthulu_big_progress_bar.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_brain_of_cthulu_big_progress_bar" ],

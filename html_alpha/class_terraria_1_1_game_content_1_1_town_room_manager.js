@@ -15,5 +15,6 @@ var class_terraria_1_1_game_content_1_1_town_room_manager =
     [ "Load", "class_terraria_1_1_game_content_1_1_town_room_manager.html#a68262118e6a51a18704e3140dc6933a7", null ],
     [ "Save", "class_terraria_1_1_game_content_1_1_town_room_manager.html#a00730dae0fc5f9d2b9bd28da85ca001f", null ],
     [ "SetRoom", "class_terraria_1_1_game_content_1_1_town_room_manager.html#ab65c678dbdb8c9826a614d31b84ff1c7", null ],
-    [ "SetRoom", "class_terraria_1_1_game_content_1_1_town_room_manager.html#a5fce3ff1ecd455e3be87e21346139157", null ]
+    [ "SetRoom", "class_terraria_1_1_game_content_1_1_town_room_manager.html#a5fce3ff1ecd455e3be87e21346139157", null ],
+    [ "EntityCreationLock", "class_terraria_1_1_game_content_1_1_town_room_manager.html#a1721c8223941c4b4f84d66502a4cba25", null ]
 ];

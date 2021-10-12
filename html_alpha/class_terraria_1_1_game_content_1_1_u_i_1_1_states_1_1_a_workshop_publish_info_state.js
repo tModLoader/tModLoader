@@ -9,6 +9,7 @@ var class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_in
     [ "GoToPublishConfirmation", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_info_state.html#a1646e451a9649a8eef9ff2b98de4040f", null ],
     [ "HandleBackButtonUsage", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_info_state.html#ad21718ed7aab35c7f99ad1a34462303a", null ],
     [ "OnInitialize", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_info_state.html#a11295db90f41a09cda6dd8457495dcd0", null ],
+    [ "ProcessStart", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_info_state.html#adc695115ac3a6fcdc6ae70f7fdd45d9e", null ],
     [ "Recalculate", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_info_state.html#ae10b03af866fd2aadbffa4e14134e249", null ],
     [ "ShowOptionDescription", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_info_state.html#a73d70efeebda4dfc8e5a35e0b5333523", null ],
     [ "TryFindingTags", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_info_state.html#a4707e657540f937e1ba6130a44fef936", null ],

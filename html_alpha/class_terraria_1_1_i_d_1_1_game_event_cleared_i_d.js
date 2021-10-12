@@ -1,0 +1,28 @@
+var class_terraria_1_1_i_d_1_1_game_event_cleared_i_d =
+[
+    [ "DefeatedAncientCultist", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#ac7e0bf9e9966d5424d87530c5ee9ab78", null ],
+    [ "DefeatedChristmassTree", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#a182efcb35058201789a9d8e50307e9be", null ],
+    [ "DefeatedDestroyer", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#adbd5845caded43db4c6aa3441f168c16", null ],
+    [ "DefeatedEaterOfWorldsOrBrainOfChtulu", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#a148d5d2913f17200e93a58d155ea7c2f", null ],
+    [ "DefeatedEmpressOfLight", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#ad10ff4bfca3ff2c7a727747354ae7609", null ],
+    [ "DefeatedEyeOfCthulu", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#aec68dc00fcb29d81d5a42eada12373c5", null ],
+    [ "DefeatedFishron", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#acf63e51adee8c1fa5149368c83467158", null ],
+    [ "DefeatedFrostArmy", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#ae55ea9274a15136fe8134291ed87740c", null ],
+    [ "DefeatedGoblinArmy", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#af2c031258d837d63797861630236fd79", null ],
+    [ "DefeatedGolem", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#a21317ddef2f66226b46ae01c7a9a7c55", null ],
+    [ "DefeatedHalloweenKing", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#ae0a97d0480b7ad608bc4253029987652", null ],
+    [ "DefeatedHalloweenTree", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#ac9f26616a84da203ae3967d7f0410437", null ],
+    [ "DefeatedIceQueen", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#a4003d322f358438753d86f4ca1fe59d9", null ],
+    [ "DefeatedMartians", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#ada6f84bd057be579b3fff8e196364468", null ],
+    [ "DefeatedMoonlord", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#a1cf1421070594a22cd9a224f5fe73d15", null ],
+    [ "DefeatedPirates", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#a85d6e69e2ecb0a218949601f46311104", null ],
+    [ "DefeatedPlantera", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#a22af293a93d65681d21c4d130e769890", null ],
+    [ "DefeatedQueenBee", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#aebd48e8885476c3412d33b5400f2ddd1", null ],
+    [ "DefeatedQueenSlime", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#a98c7b784e1ddfd9dd29fbd5cacdf874b", null ],
+    [ "DefeatedSantank", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#a4c185fc91e213bbf6a75aad331c8a843", null ],
+    [ "DefeatedSkeletron", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#aa13758d827ad6d3c84035e4439454a69", null ],
+    [ "DefeatedSkeletronPrime", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#ab49b29cd5e948bc2c5da1c115c7ccca6", null ],
+    [ "DefeatedSlimeKing", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#af9286bb2e210913b855fe9b351221433", null ],
+    [ "DefeatedTheTwins", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#a00e52952c53f57a306591889c98241af", null ],
+    [ "DefeatedWallOfFleshAndStartedHardmode", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#a1925341d4849dc495aa21d3e105a57cc", null ]
+];

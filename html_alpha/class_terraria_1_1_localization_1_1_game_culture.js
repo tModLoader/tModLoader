@@ -13,8 +13,12 @@ var class_terraria_1_1_localization_1_1_game_culture =
       [ "Unknown", "class_terraria_1_1_localization_1_1_game_culture.html#ae25ff31cea446f5a720f373e45068f6ea88183b946cc5f0e8c96b2e66e1c74a7e", null ]
     ] ],
     [ "GameCulture", "class_terraria_1_1_localization_1_1_game_culture.html#a99bf17bf204e36c936e0bd7cdc48650c", null ],
+    [ "FromCultureName", "class_terraria_1_1_localization_1_1_game_culture.html#a07b21ef546f874e228afdc3000635b50", null ],
+    [ "FromLegacyId", "class_terraria_1_1_localization_1_1_game_culture.html#a0ba983513e426aa33800a0ffbf156b17", null ],
+    [ "FromName", "class_terraria_1_1_localization_1_1_game_culture.html#a1c78c9b6c316cf87d5c18d704d60cb48", null ],
     [ "CultureInfo", "class_terraria_1_1_localization_1_1_game_culture.html#a4a491e05fe1cd88e2065d3277d981021", null ],
     [ "LegacyId", "class_terraria_1_1_localization_1_1_game_culture.html#a813e45b2e4cf195ba53f89d683841592", null ],
+    [ "DefaultCulture", "class_terraria_1_1_localization_1_1_game_culture.html#a91515e4226923fa1d6c7a2663da7e514", null ],
     [ "IsActive", "class_terraria_1_1_localization_1_1_game_culture.html#acd52cd828d8db6f07f906f939a89eb57", null ],
     [ "Name", "class_terraria_1_1_localization_1_1_game_culture.html#a2e42d2d8adb2d43883123f8fb7018308", null ]
 ];

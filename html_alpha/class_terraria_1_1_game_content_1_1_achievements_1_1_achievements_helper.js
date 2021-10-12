@@ -1,8 +1,29 @@
 var class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper =
 [
+    [ "CheckMechaMayhem", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a0285305be0ef91fcaab8ac4f25e9e869", null ],
+    [ "HandleAnglerService", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a383a563078fdf71d9416dc76c888a10c", null ],
+    [ "HandleMining", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a10bdc20baa8fee671eae6b0d913c37de", null ],
+    [ "HandleNurseService", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a02265ae2ec161ab2a9d952dd57e3f19c", null ],
+    [ "HandleOnEquip", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#ac540940e178110405059e118d974495b", null ],
+    [ "HandleRunning", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a943b30dd3481d406f282043a3f6d5781", null ],
+    [ "HandleSpecialEvent", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a4d5ca717fa7c2737f2beeccc4fb7a2e5", null ],
+    [ "Initialize", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a7b111eb4293631a1c6ffaaac893041dc", null ],
     [ "ItemCraftEvent", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#ade93191bde8e96b8b86c99d8310162fd", null ],
     [ "ItemPickupEvent", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a90980d9b3500ae595599890317cd40f9", null ],
+    [ "NotifyItemCraft", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a727ae7aeff7c79baff204aefec92f681", null ],
+    [ "NotifyItemPickup", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#ab9a20c518937f41d79e455e9f51b3345", null ],
+    [ "NotifyItemPickup", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#af87d30a2c22550ab8ce413ae21a59f72", null ],
+    [ "NotifyNPCKilled", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a29c6969ef52c82671211c784de691d39", null ],
+    [ "NotifyNPCKilledDirect", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#ae8f2cbd4d0d08d35b69443f243c63c1f", null ],
+    [ "NotifyProgressionEvent", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a3242dc0c3f60b3964513c8bb03454351", null ],
+    [ "NotifyTileDestroyed", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#aea0258bf47c216113989cb618814eb20", null ],
     [ "NPCKilledEvent", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a8da72d37314cb8ea40776841c589dc15", null ],
     [ "ProgressionEventEvent", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#ab7008be6cb6276bca31aae7da8efb9c2", null ],
-    [ "TileDestroyedEvent", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a8dd98b82c9e8ee094ebbdb00feacf660", null ]
+    [ "TileDestroyedEvent", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a8dd98b82c9e8ee094ebbdb00feacf660", null ],
+    [ "CurrentlyMining", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a338c0864ce5693e9b5ca53a91dcfea6e", null ],
+    [ "OnItemCraft", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a72d722a5ecab1f441f4af1410babd44c", null ],
+    [ "OnItemPickup", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#a3f4b6a0a4be92b7ca48ed563497b003b", null ],
+    [ "OnNPCKilled", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#af467bc8d11bcb99606d3c7619a653810", null ],
+    [ "OnProgressionEvent", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#aab988c6408b4b8d70969a0e32c9c8cc3", null ],
+    [ "OnTileDestroyed", "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#af4dcbe04ec9cd2b26e69504b567f704f", null ]
 ];

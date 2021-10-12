@@ -3,6 +3,7 @@ var class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder 
     [ "HouseBuilder", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a3605afe14cb121b0cdd2841a8e8876a1", null ],
     [ "AgeRoom", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a40624f1f5c3cfdbbef77cf862345420f", null ],
     [ "Place", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#ab5ac0020e75a124cfb8474b4b9bb050b", null ],
+    [ "Invalid", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a1ad9338b31cd6eb55917588b77d9b176", null ],
     [ "IsValid", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a6f45ea6d1f099c3ab9170d79afc7db1f", null ],
     [ "SkipTilesDuringWallAging", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a0f3893b126182050f7b897939762a230", null ],
     [ "Type", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a4aa414b20b49d653bb66966ea71db24c", null ],

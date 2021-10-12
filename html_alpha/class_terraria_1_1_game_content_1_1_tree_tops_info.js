@@ -1,6 +1,6 @@
 var class_terraria_1_1_game_content_1_1_tree_tops_info =
 [
-    [ "AreaId", "class_terraria_1_1_game_content_1_1_tree_tops_info_1_1_area_id.html", null ],
+    [ "AreaId", "class_terraria_1_1_game_content_1_1_tree_tops_info_1_1_area_id.html", "class_terraria_1_1_game_content_1_1_tree_tops_info_1_1_area_id" ],
     [ "CopyExistingWorldInfoForWorldGeneration", "class_terraria_1_1_game_content_1_1_tree_tops_info.html#ae39b2f81d4dedce39bd5033d31872767", null ],
     [ "GetTreeStyle", "class_terraria_1_1_game_content_1_1_tree_tops_info.html#abf1dff00f8e5fae3078101946f00408d", null ],
     [ "Load", "class_terraria_1_1_game_content_1_1_tree_tops_info.html#a764ae4174722775f314e8a15212bf8bf", null ],

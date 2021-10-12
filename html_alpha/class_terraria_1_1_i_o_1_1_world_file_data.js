@@ -3,6 +3,7 @@ var class_terraria_1_1_i_o_1_1_world_file_data =
     [ "WorldFileData", "class_terraria_1_1_i_o_1_1_world_file_data.html#acb534f34de8eb0a8a47ebdb0f808e4ba", null ],
     [ "WorldFileData", "class_terraria_1_1_i_o_1_1_world_file_data.html#ac8cadbf257bc58df0c1d6fa18c7ec3bf", null ],
     [ "CopyToLocal", "class_terraria_1_1_i_o_1_1_world_file_data.html#a4e951b85d278afe66f86cc49bf88d1ab", null ],
+    [ "FromInvalidWorld", "class_terraria_1_1_i_o_1_1_world_file_data.html#ac9e9c5f2b76bf877cc7ea44170df8daa", null ],
     [ "GetFullSeedText", "class_terraria_1_1_i_o_1_1_world_file_data.html#a06aa8a04789f6586ddf666615bee5ea2", null ],
     [ "MoveToCloud", "class_terraria_1_1_i_o_1_1_world_file_data.html#a77ad7458efbca2f90605db524118eb06", null ],
     [ "MoveToLocal", "class_terraria_1_1_i_o_1_1_world_file_data.html#af4a6f6551bb8e7fb809a234401e551dd", null ],

@@ -1,0 +1,13 @@
+var class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t85ff211eed9faad9b712777a727959d5 =
+[
+    [ "Blizzard", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t85ff211eed9faad9b712777a727959d5.html#a35b050b60fce1d5044f1da9dbb51e5e0", null ],
+    [ "BloodMoon", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t85ff211eed9faad9b712777a727959d5.html#abe3aaec2d2e333d56f6aabcce7549e64", null ],
+    [ "Christmas", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t85ff211eed9faad9b712777a727959d5.html#ada15cb369126fe5c5fdf58c95019dd17", null ],
+    [ "Eclipse", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t85ff211eed9faad9b712777a727959d5.html#a26350745325564259a87cbfd2f452809", null ],
+    [ "Halloween", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t85ff211eed9faad9b712777a727959d5.html#a2441829a29150609733828e2e72ee6ef", null ],
+    [ "Party", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t85ff211eed9faad9b712777a727959d5.html#ad30b8f16861eaec0ddb6660f8f8e0bda", null ],
+    [ "Rain", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t85ff211eed9faad9b712777a727959d5.html#a868da029e7fadb891875cd6700ca22e3", null ],
+    [ "Sandstorm", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t85ff211eed9faad9b712777a727959d5.html#ae60aece7161ebe5e24e2c8c3e6e3fe9d", null ],
+    [ "SlimeRain", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t85ff211eed9faad9b712777a727959d5.html#a26fee31c4324e071a622bc74c027c471", null ],
+    [ "WindyDay", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t85ff211eed9faad9b712777a727959d5.html#aabd71dfca3362321cae7a9f1499096dd", null ]
+];

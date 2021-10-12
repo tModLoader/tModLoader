@@ -10,6 +10,7 @@ var class_terraria_1_1_utilities_1_1_weighted_random =
     [ "CalculateTotalWeight", "class_terraria_1_1_utilities_1_1_weighted_random.html#a17d9a14ee97843c43d2f05b59e1d92df", null ],
     [ "Clear", "class_terraria_1_1_utilities_1_1_weighted_random.html#a09b3670de54f57f8e294b9c562ec92b4", null ],
     [ "Get", "class_terraria_1_1_utilities_1_1_weighted_random.html#a902c1afd4922bb06c86d4fb48675b46f", null ],
+    [ "operator T", "class_terraria_1_1_utilities_1_1_weighted_random.html#a8398a0784107652a76b71d887cab3c4c", null ],
     [ "elements", "class_terraria_1_1_utilities_1_1_weighted_random.html#ac1be4a32a7da3ef3b37f20ba33cf5f59", null ],
     [ "needsRefresh", "class_terraria_1_1_utilities_1_1_weighted_random.html#a055711b7de35814cb8c4cce2b077d676", null ],
     [ "random", "class_terraria_1_1_utilities_1_1_weighted_random.html#a87261876aa389a44c332acb1e13ac285", null ]

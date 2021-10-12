@@ -1,5 +1,6 @@
 var namespace_terraria_1_1_physics =
 [
+    [ "BallCollision", "class_terraria_1_1_physics_1_1_ball_collision.html", "class_terraria_1_1_physics_1_1_ball_collision" ],
     [ "BallCollisionEvent", "struct_terraria_1_1_physics_1_1_ball_collision_event.html", "struct_terraria_1_1_physics_1_1_ball_collision_event" ],
     [ "BallPassThroughEvent", "struct_terraria_1_1_physics_1_1_ball_pass_through_event.html", "struct_terraria_1_1_physics_1_1_ball_pass_through_event" ],
     [ "BallStepResult", "struct_terraria_1_1_physics_1_1_ball_step_result.html", "struct_terraria_1_1_physics_1_1_ball_step_result" ],

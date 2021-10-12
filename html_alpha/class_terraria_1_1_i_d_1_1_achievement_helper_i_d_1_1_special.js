@@ -1,0 +1,27 @@
+var class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special =
+[
+    [ "ConsumeFruit", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#a87670d62e37a7b418ec6a313ef50779c", null ],
+    [ "ConsumeHeart", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#adfc649be0ce5a61d5c458e3c3bdb687f", null ],
+    [ "ConsumeStar", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#a792791b4f691899d86c812a8f8708931", null ],
+    [ "DeathByDeadmansChest", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ae3cdb0a865f63f94c10c50e2b395c648", null ],
+    [ "FindAFairy", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#adef0338218c224943d364990a749ba4e", null ],
+    [ "FlyAKiteOnAWindyDay", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ac1edfe89266f79000edef935fa635ff0", null ],
+    [ "FoundBeeHive", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ae4c13f1ef03641838edfbe727c1b2c5c", null ],
+    [ "FoundGlowshroomOverworld", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#a97243989964ea38d1f6cd3e646785cbf", null ],
+    [ "FoundGraveyard", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#a7af1c0c7f8900f1416cdbc8492637665", null ],
+    [ "FoundHell", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#a5047997875f3d7df1f086ec42db92fe4", null ],
+    [ "FoundSpiderCave", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#a955eba2b1d073efbe455ff37a587d1fa", null ],
+    [ "GoLavaFishing", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#af1f207ca694b4d7c40c5823eee349628", null ],
+    [ "HitByTrap", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#afe010f46ddfdab076153784a0227b60a", null ],
+    [ "MinionArmy", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#a65be7f08548807c5620d1be6fc331730", null ],
+    [ "NotTheBees", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ae0f45aa1f8cb059d7ec44d7939775efc", null ],
+    [ "PeekInGoldenChest", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ac9fecd16cf57beeb388209f5b3a76b46", null ],
+    [ "PetThePet", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#a3a30902f855f44b4c8514ef996c05943", null ],
+    [ "RainbowShoot", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#aba19d86d73a7f314dffac6c90e25606b", null ],
+    [ "ReachWorldBottom", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#a1aa9a9e50fd6a683dedc322c25d7c252", null ],
+    [ "ReachWorldTop", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#a15738a84ff7c2651d92ec8178b5c7f59", null ],
+    [ "Roadkill", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#a90dfe1983d4e1e346782aaf51c076538", null ],
+    [ "SurviveHugeFall", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#a7a903d75aeebcdfff2fa074d8643ec04", null ],
+    [ "SwingYoyo", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#a4c3609b3a0e5830b9d0f3c4a6dd9801e", null ],
+    [ "TalkToNPCAtMaxHappiness", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#a963626e3095ed8eb602715fa9f029fcf", null ]
+];

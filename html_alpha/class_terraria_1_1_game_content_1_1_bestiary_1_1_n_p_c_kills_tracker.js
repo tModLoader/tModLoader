@@ -9,5 +9,6 @@ var class_terraria_1_1_game_content_1_1_bestiary_1_1_n_p_c_kills_tracker =
     [ "Reset", "class_terraria_1_1_game_content_1_1_bestiary_1_1_n_p_c_kills_tracker.html#ac25555346a353ccc3483e5f49bfe1c08", null ],
     [ "Save", "class_terraria_1_1_game_content_1_1_bestiary_1_1_n_p_c_kills_tracker.html#aa2d170d56f23a502a10bf6768fe1474c", null ],
     [ "SetKillCountDirectly", "class_terraria_1_1_game_content_1_1_bestiary_1_1_n_p_c_kills_tracker.html#aae1454964396380bcf11f08e228bce43", null ],
-    [ "ValidateWorld", "class_terraria_1_1_game_content_1_1_bestiary_1_1_n_p_c_kills_tracker.html#a29e8f3318194c5e26b87401438fe5c21", null ]
+    [ "ValidateWorld", "class_terraria_1_1_game_content_1_1_bestiary_1_1_n_p_c_kills_tracker.html#a29e8f3318194c5e26b87401438fe5c21", null ],
+    [ "POSITIVE_KILL_COUNT_CAP", "class_terraria_1_1_game_content_1_1_bestiary_1_1_n_p_c_kills_tracker.html#ab4ff29d9308ac6f6f91290814bb7aaea", null ]
 ];

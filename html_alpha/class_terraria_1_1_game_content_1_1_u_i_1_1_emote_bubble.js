@@ -1,13 +1,27 @@
 var class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble =
 [
     [ "EmoteBubble", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a3a7b7d891e3af241b146bc93c20783b8", null ],
+    [ "AssignNewID", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#ade9723fb51f991990adfe9cc80293a9c", null ],
+    [ "CheckForNPCsToReactToEmoteBubble", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a1a54a24883263fc72d72c5610f5a7451", null ],
+    [ "DeserializeNetAnchor", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a5837ecb31f0bf0d1b0c71762b5812ca3", null ],
+    [ "DrawAll", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#ab85f070d1edb9f8c5c9f21cc26640786", null ],
+    [ "NewBubble", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#ab03636f31b43bc0acea111154e1b5000", null ],
+    [ "NewBubbleNPC", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a1076e8e784c567f08a4c626c765aad38", null ],
+    [ "OnBubbleChange", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#ab9168a12857b24ff29d3f709675b267c", null ],
     [ "PickNPCEmote", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a26971c74fa10b114e660029e8e94f587", null ],
+    [ "SerializeNetAnchor", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a7a7252f065d0e41452e5befe6112505e", null ],
+    [ "UpdateAll", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#ab505c9f0506a759203783e4680ebe01d", null ],
     [ "anchor", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a0c14cfa517f264a085f9f4d819b91e8b", null ],
+    [ "byID", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a261cc5e65a1c7b4fa4ab4c5f66e0ec2a", null ],
     [ "emote", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#af830d3e1482fc69101ea348c2b340581", null ],
+    [ "EMOTE_SHEET_EMOTES_PER_ROW", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a2bc51172f43fc775f4cc239464c48f60", null ],
+    [ "EMOTE_SHEET_HORIZONTAL_FRAMES", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a603e52873d4fae497aa3fa585a242ed8", null ],
+    [ "EMOTE_SHEET_VERTICAL_FRAMES", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#aa2512bf81c55ceade235064e8dd3a50f", null ],
     [ "frame", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a392ff3c7b504bef6919383ca9a182659", null ],
     [ "frameCounter", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#acb6d34690a494055488d2ac3576ece66", null ],
     [ "ID", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a0d90eb0e65988d0e1a87c2f2abd43077", null ],
     [ "lifeTime", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a31812e707cc2a1d9c3998e2ae007e2f7", null ],
     [ "lifeTimeStart", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a6a6f292922a7788fc2998e3b98f4a0ad", null ],
-    [ "metadata", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#aff7e0dacaf229886d1a84a481459d562", null ]
+    [ "metadata", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#aff7e0dacaf229886d1a84a481459d562", null ],
+    [ "NextID", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a74a9ea1f80657ac3d31be5a5d0dda4a2", null ]
 ];

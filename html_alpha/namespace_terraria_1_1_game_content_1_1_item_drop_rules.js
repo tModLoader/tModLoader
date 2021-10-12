@@ -1,5 +1,7 @@
 var namespace_terraria_1_1_game_content_1_1_item_drop_rules =
 [
+    [ "Chains", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains" ],
+    [ "CommonCode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_code.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_code" ],
     [ "CommonDrop", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_drop.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_drop" ],
     [ "CommonDropNotScalingWithLuck", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_drop_not_scaling_with_luck.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_drop_not_scaling_with_luck" ],
     [ "CommonDropWithRerolls", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_drop_with_rerolls.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_drop_with_rerolls" ],
@@ -21,7 +23,7 @@ var namespace_terraria_1_1_game_content_1_1_item_drop_rules =
     [ "ItemDropAttemptResult", "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_attempt_result.html", "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_attempt_result" ],
     [ "ItemDropDatabase", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_database.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_database" ],
     [ "ItemDropResolver", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_resolver.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_resolver" ],
-    [ "ItemDropRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html", null ],
+    [ "ItemDropRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule" ],
     [ "ItemDropWithConditionRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_with_condition_rule.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_with_condition_rule" ],
     [ "LeadingConditionRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_leading_condition_rule.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_leading_condition_rule" ],
     [ "MechBossSpawnersDropRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_mech_boss_spawners_drop_rule.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_mech_boss_spawners_drop_rule" ],

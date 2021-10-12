@@ -1,5 +1,9 @@
 var class_terraria_1_1_data_structures_1_1_game_mode_data =
 [
+    [ "CreativeMode", "class_terraria_1_1_data_structures_1_1_game_mode_data.html#a288708086dfefdced74f6bca7b486050", null ],
+    [ "ExpertMode", "class_terraria_1_1_data_structures_1_1_game_mode_data.html#a7ad988579522755f7414c0c2b48d4aa0", null ],
+    [ "MasterMode", "class_terraria_1_1_data_structures_1_1_game_mode_data.html#a6dd247e498e438ce24400925ad4b8e35", null ],
+    [ "NormalMode", "class_terraria_1_1_data_structures_1_1_game_mode_data.html#a60d493fb4574caaf9a04158702a2b52c", null ],
     [ "DebuffTimeMultiplier", "class_terraria_1_1_data_structures_1_1_game_mode_data.html#ae908ae0a1cba4cfb14c59fdda401e215", null ],
     [ "EnemyDamageMultiplier", "class_terraria_1_1_data_structures_1_1_game_mode_data.html#a6b0e39f766c271334f73e29b059b180e", null ],
     [ "EnemyDefenseMultiplier", "class_terraria_1_1_data_structures_1_1_game_mode_data.html#a3e684289b3514fa5f4c0641c5d377275", null ],

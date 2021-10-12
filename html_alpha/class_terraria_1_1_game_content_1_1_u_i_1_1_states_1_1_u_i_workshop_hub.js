@@ -7,5 +7,6 @@ var class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_workshop_hub =
     [ "HandleBackButtonUsage", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_workshop_hub.html#a4f2ef4e34f0900f9bc3ffebed297ac60", null ],
     [ "OnInitialize", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_workshop_hub.html#a94cdae9f9d12fc36aab2fe48e25a38b5", null ],
     [ "ShowOptionDescription", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_workshop_hub.html#aa63c46fc604e580ade21dfbf72204c9d", null ],
-    [ "PreviousUIState", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_workshop_hub.html#a204361d64acfe0d6af0e67447e7ab3c8", null ]
+    [ "PreviousUIState", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_workshop_hub.html#a204361d64acfe0d6af0e67447e7ab3c8", null ],
+    [ "OnWorkshopHubMenuOpened", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_workshop_hub.html#a4763750bb90c13f7a17e92d1c14f4b6d", null ]
 ];

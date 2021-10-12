@@ -1,16 +1,31 @@
 var class_terraria_1_1_combat_text =
 [
+    [ "clearAll", "class_terraria_1_1_combat_text.html#a55205d49e38e3d40eba5b1ff16dc896e", null ],
+    [ "NewText", "class_terraria_1_1_combat_text.html#a8e71088902a18576a9f669d8e03fd7c6", null ],
+    [ "NewText", "class_terraria_1_1_combat_text.html#a8244eea7d5a8287fbe3da508183e608d", null ],
     [ "Update", "class_terraria_1_1_combat_text.html#a0933f746c37357951864c1694abc5797", null ],
+    [ "UpdateCombatText", "class_terraria_1_1_combat_text.html#a3be540c8f4a03a53948be0339057aa75", null ],
     [ "active", "class_terraria_1_1_combat_text.html#aa2a3e7d5b750bdd12e4d859e450e0212", null ],
     [ "alpha", "class_terraria_1_1_combat_text.html#af3cc311c0a1fb311028656920e92d89e", null ],
     [ "alphaDir", "class_terraria_1_1_combat_text.html#a57c73a3697c35d1601a16369d6d28ead", null ],
     [ "color", "class_terraria_1_1_combat_text.html#a7a25ca0470d8a37ddcd5430e50bed8f3", null ],
     [ "crit", "class_terraria_1_1_combat_text.html#a5235c18945d111c7c0c135cbafa543a9", null ],
+    [ "DamagedFriendly", "class_terraria_1_1_combat_text.html#a2ae56f9402d206254f73c2df7b770283", null ],
+    [ "DamagedFriendlyCrit", "class_terraria_1_1_combat_text.html#a7b823118bf10e5cc2770ea46cac3d125", null ],
+    [ "DamagedHostile", "class_terraria_1_1_combat_text.html#aebe2c7ff124e704e7816353c187db2ef", null ],
+    [ "DamagedHostileCrit", "class_terraria_1_1_combat_text.html#a4b8fb938a49de29afb7b34599c299fe9", null ],
     [ "dot", "class_terraria_1_1_combat_text.html#a8b0e28f0e654027fc54f6ba36f7e2c53", null ],
+    [ "HealLife", "class_terraria_1_1_combat_text.html#acb49b66681d074ae68d93102fcb8f26b", null ],
+    [ "HealMana", "class_terraria_1_1_combat_text.html#a30ce6ac19a6d5038899f4a0fd639fd8e", null ],
+    [ "LifeRegen", "class_terraria_1_1_combat_text.html#a3f523908c6af3854df1a77095a938e66", null ],
+    [ "LifeRegenNegative", "class_terraria_1_1_combat_text.html#a79f35c7c14ff6ed5476a400fcc40fd46", null ],
     [ "lifeTime", "class_terraria_1_1_combat_text.html#a9ddc54bc93dfda98e0e0b41142ae8fca", null ],
+    [ "OthersDamagedHostile", "class_terraria_1_1_combat_text.html#a7d4a3ebd315e4b5c1dde0a783e9dde69", null ],
+    [ "OthersDamagedHostileCrit", "class_terraria_1_1_combat_text.html#a1a5ef398cf5d3dffd68fb0fbf46da3ae", null ],
     [ "position", "class_terraria_1_1_combat_text.html#a191fc5100ca324041ea4c61983d86f91", null ],
     [ "rotation", "class_terraria_1_1_combat_text.html#afdd4fadb530edcc2943d0291d6a137cd", null ],
     [ "scale", "class_terraria_1_1_combat_text.html#a0e66a1e184a2564b785290bf95eec493", null ],
     [ "text", "class_terraria_1_1_combat_text.html#a5f166bdaf33d6dbb6bc993668928d239", null ],
-    [ "velocity", "class_terraria_1_1_combat_text.html#a9921b6e8a480a9c8f24f84b178e22079", null ]
+    [ "velocity", "class_terraria_1_1_combat_text.html#a9921b6e8a480a9c8f24f84b178e22079", null ],
+    [ "TargetScale", "class_terraria_1_1_combat_text.html#a9995d96db2759e89526b9e26ab4e61b3", null ]
 ];

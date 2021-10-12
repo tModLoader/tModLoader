@@ -12,6 +12,7 @@ var class_terraria_1_1_u_i_1_1_user_interface =
     [ "SetState", "class_terraria_1_1_u_i_1_1_user_interface.html#a3a6102198df79471f13a3a9993c152a4", null ],
     [ "Update", "class_terraria_1_1_u_i_1_1_user_interface.html#a0ff3753b7745951c8e5c176ab99d6c4f", null ],
     [ "Use", "class_terraria_1_1_u_i_1_1_user_interface.html#ac02d3eb3610b39ef6883bf10e4eee199", null ],
+    [ "ActiveInstance", "class_terraria_1_1_u_i_1_1_user_interface.html#aa6f6b67aff16ea7c8bddd7b4c2ebeb59", null ],
     [ "IsVisible", "class_terraria_1_1_u_i_1_1_user_interface.html#a97962c7a7acee8b4f789d230a568e4e9", null ],
     [ "MousePosition", "class_terraria_1_1_u_i_1_1_user_interface.html#a8887255d6bc05ee466a98bd2ce505d58", null ],
     [ "CurrentState", "class_terraria_1_1_u_i_1_1_user_interface.html#adc7646de007f419b41c79b1efe2a7ed7", null ]

@@ -8,5 +8,6 @@ var class_terraria_1_1_social_1_1_base_1_1_rich_presence_state =
       [ "PlayingMulti", "class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#aa30b4246539e900ebaad30292045d0a0a41f96452fc6f44ab50e2b03757f5767c", null ]
     ] ],
     [ "Equals", "class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#a3860bf8452f130bcd3c507866baa6574", null ],
+    [ "GetCurrentState", "class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#a14881cf7544fc918627d6287c0c3f35a", null ],
     [ "GameMode", "class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#a00f50bab0dfea61fb9bc96e06c482974", null ]
 ];

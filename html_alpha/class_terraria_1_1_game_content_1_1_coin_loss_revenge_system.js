@@ -9,5 +9,7 @@ var class_terraria_1_1_game_content_1_1_coin_loss_revenge_system =
     [ "DrawMapIcons", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system.html#a1d0e3f33f89353ce329cf5afe9fd0c8d", null ],
     [ "Reset", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system.html#a32e3f8b8b9bb22bf59eb1f107de782d6", null ],
     [ "SendAllMarkersToPlayer", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system.html#ae2561928764b21135d800b187d25e641", null ],
-    [ "Update", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system.html#aafb1f550d5e2ef708be4bfacd6e505ac", null ]
+    [ "Update", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system.html#aafb1f550d5e2ef708be4bfacd6e505ac", null ],
+    [ "DisplayCaching", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system.html#af02d19f8f7eeebd930dc3211bf9bd612", null ],
+    [ "MinimumCoinsForCaching", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system.html#a151d53c209cdf102481c697424272077", null ]
 ];

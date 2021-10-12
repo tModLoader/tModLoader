@@ -7,5 +7,6 @@ var class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_workshop_world_im
     [ "OnInitialize", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_workshop_world_import.html#a1b1eadfe582df439e0da18bbdb6b067f", null ],
     [ "Recalculate", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_workshop_world_import.html#a5fbcc0027cbad21e44bc71d9ca5ca4b1", null ],
     [ "UpdateWorkshopWorldList", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_workshop_world_import.html#af2925a3325b66998a15656164e2dcf86", null ],
+    [ "WorkshopWorldList", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_workshop_world_import.html#a281feda062821342fcb91b2bb13c4ac3", null ],
     [ "PreviousUIState", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_workshop_world_import.html#a40527b1c64eb0b2cba66c8db7f84f81c", null ]
 ];

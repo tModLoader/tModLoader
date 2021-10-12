@@ -52,5 +52,6 @@ var class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions =
     [ "YoyosAmarok", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_amarok.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_amarok" ],
     [ "YoyosHelFire", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_hel_fire.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_hel_fire" ],
     [ "YoyosKraken", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_kraken.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_kraken" ],
-    [ "YoyosYelets", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_yelets.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_yelets" ]
+    [ "YoyosYelets", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_yelets.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_yelets" ],
+    [ "SoulOfWhateverConditionCanDrop", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions.html#a0a9bd77a418b2000362ce15d24709850", null ]
 ];

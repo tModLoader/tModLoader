@@ -1,5 +1,6 @@
 var struct_terraria_1_1_world_gen_1_1_grow_tree_settings =
 [
+    [ "Profiles", "class_terraria_1_1_world_gen_1_1_grow_tree_settings_1_1_profiles.html", "class_terraria_1_1_world_gen_1_1_grow_tree_settings_1_1_profiles" ],
     [ "IsTileFitForTreeGroundTest", "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#a8e205d42b50fc6aa83e655194cd098a5", null ],
     [ "IsWallTypeFitForTreeBack", "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#a4549ad30c898e19e903faeb7c3d5a18c", null ],
     [ "GroundTest", "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#a5ea9ed98da4d99516fa204aab4b5b6f3", null ],

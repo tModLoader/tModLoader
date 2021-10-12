@@ -1,7 +1,7 @@
 var namespace_terraria_1_1_net =
 [
     [ "Sockets", "namespace_terraria_1_1_net_1_1_sockets.html", "namespace_terraria_1_1_net_1_1_sockets" ],
-    [ "LegacyNetBufferPool", "class_terraria_1_1_net_1_1_legacy_net_buffer_pool.html", null ],
+    [ "LegacyNetBufferPool", "class_terraria_1_1_net_1_1_legacy_net_buffer_pool.html", "class_terraria_1_1_net_1_1_legacy_net_buffer_pool" ],
     [ "NetGroupInfo", "class_terraria_1_1_net_1_1_net_group_info.html", "class_terraria_1_1_net_1_1_net_group_info" ],
     [ "NetManager", "class_terraria_1_1_net_1_1_net_manager.html", "class_terraria_1_1_net_1_1_net_manager" ],
     [ "NetModule", "class_terraria_1_1_net_1_1_net_module.html", "class_terraria_1_1_net_1_1_net_module" ],

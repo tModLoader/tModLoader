@@ -4,6 +4,7 @@ var namespace_terraria_1_1_game_content_1_1_biomes_1_1_cave_house =
     [ "GraniteHouseBuilder", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_granite_house_builder.html", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_granite_house_builder" ],
     [ "HouseBuilder", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder" ],
     [ "HouseBuilderContext", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder_context.html", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder_context" ],
+    [ "HouseUtils", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_utils.html", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_utils" ],
     [ "IceHouseBuilder", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_ice_house_builder.html", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_ice_house_builder" ],
     [ "JungleHouseBuilder", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_jungle_house_builder.html", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_jungle_house_builder" ],
     [ "MarbleHouseBuilder", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_marble_house_builder.html", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_marble_house_builder" ],

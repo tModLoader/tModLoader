@@ -11,7 +11,7 @@ var namespace_terraria_1_1_graphics =
     [ "FlameLashDrawer", "struct_terraria_1_1_graphics_1_1_flame_lash_drawer.html", "struct_terraria_1_1_graphics_1_1_flame_lash_drawer" ],
     [ "MagicMissileDrawer", "struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html", "struct_terraria_1_1_graphics_1_1_magic_missile_drawer" ],
     [ "RainbowRodDrawer", "struct_terraria_1_1_graphics_1_1_rainbow_rod_drawer.html", "struct_terraria_1_1_graphics_1_1_rainbow_rod_drawer" ],
-    [ "SpriteRenderTargetHelper", "struct_terraria_1_1_graphics_1_1_sprite_render_target_helper.html", null ],
+    [ "SpriteRenderTargetHelper", "struct_terraria_1_1_graphics_1_1_sprite_render_target_helper.html", "struct_terraria_1_1_graphics_1_1_sprite_render_target_helper" ],
     [ "SpriteViewMatrix", "class_terraria_1_1_graphics_1_1_sprite_view_matrix.html", "class_terraria_1_1_graphics_1_1_sprite_view_matrix" ],
     [ "TileBatch", "class_terraria_1_1_graphics_1_1_tile_batch.html", "class_terraria_1_1_graphics_1_1_tile_batch" ],
     [ "VertexColors", "struct_terraria_1_1_graphics_1_1_vertex_colors.html", "struct_terraria_1_1_graphics_1_1_vertex_colors" ],

@@ -23,6 +23,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_accessory_slot =
     [ "HideVisuals", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a906b8c78242cdad9cbdaaef9b7d4240f", null ],
     [ "IsEmpty", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#aa47becf5c7dc5086022f115a3e698bea", null ],
     [ "ModSlotPlayer", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a8b9c6b3b1ada9c690bfbc011958bb8a6", null ],
+    [ "Player", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#ade730f10c1cf5e527441a6eb40896770", null ],
     [ "Type", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a8b1890bf22dfd32f1d26779066c4fa53", null ],
     [ "VanityBackgroundTexture", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#af131465765eb77daedfa7b1784f9db08", null ],
     [ "VanityItem", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#aac2e98b69e0d6d2172b57f0274365f0b", null ],

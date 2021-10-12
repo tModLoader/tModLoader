@@ -10,5 +10,8 @@ var class_terraria_1_1_game_content_1_1_shop_helper =
     [ "LikePrincess", "class_terraria_1_1_game_content_1_1_shop_helper.html#ac07c72a16b0a753a5130cff257bcd717", null ],
     [ "LoveBiome", "class_terraria_1_1_game_content_1_1_shop_helper.html#a0cd28457df58eb04e2dfcd0d4c97608c", null ],
     [ "LoveNPC", "class_terraria_1_1_game_content_1_1_shop_helper.html#a387988fbf277ada2cf016a1ace068d63", null ],
-    [ "LoveNPCByTypeName", "class_terraria_1_1_game_content_1_1_shop_helper.html#a53614ec817806c300b364c9fe44962d2", null ]
+    [ "LoveNPCByTypeName", "class_terraria_1_1_game_content_1_1_shop_helper.html#a53614ec817806c300b364c9fe44962d2", null ],
+    [ "HighestPossiblePriceMultiplier", "class_terraria_1_1_game_content_1_1_shop_helper.html#a535c372ea6281e812b81ea2e8f7d9d24", null ],
+    [ "LowestPossiblePriceMultiplier", "class_terraria_1_1_game_content_1_1_shop_helper.html#afb233d889761db83399596b8232632f6", null ],
+    [ "MaxHappinessAchievementPriceMultiplier", "class_terraria_1_1_game_content_1_1_shop_helper.html#ae8f6c1c5e4d5fb6d7486b8f926c92ef2", null ]
 ];

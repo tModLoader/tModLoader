@@ -14,5 +14,9 @@ var class_terraria_1_1_mod_loader_1_1_accessory_slot_loader =
     [ "ModifyDefaultSwapSlot", "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a355fa3af75e4eca4cf6d5bc0f915e523", null ],
     [ "ModSlotCheck", "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#aa41c284136e72e011745076fb2790844", null ],
     [ "OnHover", "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#af70f6b611dfe624e149384e385c3c342", null ],
-    [ "PreferredGolfBall", "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a5658d8407c5d39b5557cf3907738b627", null ]
+    [ "PreferredGolfBall", "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a5658d8407c5d39b5557cf3907738b627", null ],
+    [ "MaxVanillaSlotCount", "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a73f749e5cdd9a170804cd930be504717", null ],
+    [ "scrollStackLang", "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a632a79772b593ef03362670b2f896e8e", null ],
+    [ "DrawVerticalAlignment", "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#afbec1aa8ff7e3433d400d52679518abe", null ],
+    [ "Player", "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a069ca14fcbe651387a9196e46079566b", null ]
 ];

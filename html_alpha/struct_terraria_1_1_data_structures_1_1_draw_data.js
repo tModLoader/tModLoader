@@ -12,6 +12,7 @@ var struct_terraria_1_1_data_structures_1_1_draw_data =
     [ "destinationRectangle", "struct_terraria_1_1_data_structures_1_1_draw_data.html#ab01f001dddf65b7e4743271d06a12cce", null ],
     [ "effect", "struct_terraria_1_1_data_structures_1_1_draw_data.html#ab4a973b56bd9e9d8232342af04623b47", null ],
     [ "ignorePlayerRotation", "struct_terraria_1_1_data_structures_1_1_draw_data.html#ab5856639c5098a44d8b77d548d23a451", null ],
+    [ "nullRectangle", "struct_terraria_1_1_data_structures_1_1_draw_data.html#a9fe1fdd8b6dd6ac05f2715f37526a745", null ],
     [ "origin", "struct_terraria_1_1_data_structures_1_1_draw_data.html#a10a8d23c01eb01ca9813e3da35353e72", null ],
     [ "position", "struct_terraria_1_1_data_structures_1_1_draw_data.html#a7ffc60b09a9ea231346138b62bdb6156", null ],
     [ "rotation", "struct_terraria_1_1_data_structures_1_1_draw_data.html#a384079c9424b849e324fa4cbd476c816", null ],

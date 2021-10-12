@@ -1,4 +1,32 @@
 var class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe =
 [
-    [ "Sets", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe_1_1_sets.html", null ]
+    [ "Sets", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe_1_1_sets.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe_1_1_sets" ],
+    [ "AmphibianBoots", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#af3226f1c677b5b47608c10eda4ce59e3", null ],
+    [ "Count", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#ae61fc761b15d03a6dee38ff4c92c9393", null ],
+    [ "FairyBoots", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#a935c5e525a5e3143271e4e4282b9be7d", null ],
+    [ "FlameWakerBoots", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#a2808612b8533e57b0b4b48f4d5131b63", null ],
+    [ "Flipper", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#a3f79d5762025a17f551df3f460eaeef3", null ],
+    [ "FlowerBoots", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#a2ab7d263cf28f1bbe1f877e38e8a91ea", null ],
+    [ "FlurryBoots", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#a2cdc1eac355c2fd79bf0f2aad93f0a63", null ],
+    [ "FrogFlipper", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#ada333fb9605e73a597492b335a2f67db", null ],
+    [ "FrogLeg", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#a71f9e5865834e160c30e9f7296b28b3a", null ],
+    [ "FrostsparkBoots", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#a2333bf419ce4ac8f13a0a84be4904f5d", null ],
+    [ "GlassSlipperFemale", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#a750f96ea8707e419a3877015690820cc", null ],
+    [ "GlassSlipperMale", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#ae6617054b0ad36bd0592e930eb6518ae", null ],
+    [ "HellfireTreads", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#ad87a665fa2e0a9e1d13d01caa643c89f", null ],
+    [ "HermesBoots", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#ab2a31ceb94106a897486d7acdd1575bb", null ],
+    [ "IceSkates", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#aab356afc8eca47f64322019bc96f7ffd", null ],
+    [ "LavaWaders", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#ac52e0454d08a124a692d334f91fe5a70", null ],
+    [ "LightningBoots", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#ae65a3bb556e83ecc43efefd7fbc0a877", null ],
+    [ "MasterNinjaGear", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#ad65b530dfc216d8df37fcfd8b9e05f25", null ],
+    [ "ObsidianWaterWalkingBoots", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#a47191973a94c0bb8f6a756834b05cb28", null ],
+    [ "RocketBoots", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#aae994511cef392f2ca88a9bc846b9337", null ],
+    [ "SailfishBoots", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#af74ee85e02f5089591bc171612388c1f", null ],
+    [ "SandBoots", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#ab807c276efb9ca20b61ea676921c1d5e", null ],
+    [ "ShoeSpikes", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#a9a5099aa90c0f485e9c04afe39d7ed8d", null ],
+    [ "SpectreBoots", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#aa7b9630ae4e1127e083699b89cce0d2a", null ],
+    [ "Tabi", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#a3a1a0a54e90d995dad0116223b20403b", null ],
+    [ "TerrasparkBoots", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#acf4c4a4cb94ad87b41e9817a872b757a", null ],
+    [ "TigerClimbingGear", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#a8e8ea70add1971857747fe0496997313", null ],
+    [ "WaterWalkingBoots", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_shoe.html#a7815b7d9ade9385ed9a3e7239f533b7a", null ]
 ];

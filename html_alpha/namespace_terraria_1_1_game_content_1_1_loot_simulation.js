@@ -4,6 +4,6 @@ var namespace_terraria_1_1_game_content_1_1_loot_simulation =
     [ "ISimulationConditionSetter", "interface_terraria_1_1_game_content_1_1_loot_simulation_1_1_i_simulation_condition_setter.html", "interface_terraria_1_1_game_content_1_1_loot_simulation_1_1_i_simulation_condition_setter" ],
     [ "LootSimulationItemCounter", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulation_item_counter.html", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulation_item_counter" ],
     [ "LootSimulator", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator.html", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator" ],
-    [ "SimulationConditionSetters", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_simulation_condition_setters.html", null ],
+    [ "SimulationConditionSetters", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_simulation_condition_setters.html", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_simulation_condition_setters" ],
     [ "SimulatorInfo", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_simulator_info.html", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_simulator_info" ]
 ];

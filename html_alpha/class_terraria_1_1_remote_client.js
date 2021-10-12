@@ -1,5 +1,6 @@
 var class_terraria_1_1_remote_client =
 [
+    [ "CheckSection", "class_terraria_1_1_remote_client.html#a5013543b098b20a6a297bbc635b6111d", null ],
     [ "IsConnected", "class_terraria_1_1_remote_client.html#ac81c152a58ad2349694c928f8ad4f8f4", null ],
     [ "Reset", "class_terraria_1_1_remote_client.html#a6cfe448de71ce37485a8a44c10f3a988", null ],
     [ "ResetSections", "class_terraria_1_1_remote_client.html#a3d78bd7a932e1c30d3d949bd99ed0e58", null ],

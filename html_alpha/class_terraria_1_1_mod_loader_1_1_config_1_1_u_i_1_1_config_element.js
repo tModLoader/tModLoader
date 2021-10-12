@@ -2,6 +2,7 @@ var class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_config_element =
 [
     [ "ConfigElement", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_config_element.html#ad773eaab7810ddf9b81b313b5ef7cf7c", null ],
     [ "Bind", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_config_element.html#ae482cd0f7ebf1c1efc28d908cd5cd10b", null ],
+    [ "DrawPanel2", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_config_element.html#aced54ad0a940bce87aab472cee12c796", null ],
     [ "DrawSelf", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_config_element.html#a21eb72d83258e46f101489d19d070e20", null ],
     [ "GetObject", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_config_element.html#aaf444a0dbaf60289b87832e2ad381045", null ],
     [ "OnBind", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_config_element.html#a2922ae102b8a26d4ca0390f22bc97f48", null ],

@@ -5,7 +5,7 @@ var namespace_terraria_1_1_game_input =
     [ "PlayerInput", "class_terraria_1_1_game_input_1_1_player_input.html", "class_terraria_1_1_game_input_1_1_player_input" ],
     [ "PlayerInputProfile", "class_terraria_1_1_game_input_1_1_player_input_profile.html", "class_terraria_1_1_game_input_1_1_player_input_profile" ],
     [ "SmartSelectGamepadPointer", "class_terraria_1_1_game_input_1_1_smart_select_gamepad_pointer.html", "class_terraria_1_1_game_input_1_1_smart_select_gamepad_pointer" ],
-    [ "TriggerNames", "class_terraria_1_1_game_input_1_1_trigger_names.html", null ],
+    [ "TriggerNames", "class_terraria_1_1_game_input_1_1_trigger_names.html", "class_terraria_1_1_game_input_1_1_trigger_names" ],
     [ "TriggersPack", "class_terraria_1_1_game_input_1_1_triggers_pack.html", "class_terraria_1_1_game_input_1_1_triggers_pack" ],
     [ "TriggersSet", "class_terraria_1_1_game_input_1_1_triggers_set.html", "class_terraria_1_1_game_input_1_1_triggers_set" ],
     [ "InputMode", "namespace_terraria_1_1_game_input.html#af1143be20d08c306f1145dafff9be582", [

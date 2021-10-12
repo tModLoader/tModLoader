@@ -12,6 +12,7 @@ var class_terraria_1_1_map_1_1_world_map =
     [ "Update", "class_terraria_1_1_map_1_1_world_map.html#ac1a8fc26470a93bface48e95a0714701", null ],
     [ "UpdateLighting", "class_terraria_1_1_map_1_1_world_map.html#a68bdc8514399e9455a025773de290d54", null ],
     [ "UpdateType", "class_terraria_1_1_map_1_1_world_map.html#a67a5ac3eae54bd2c7efa7121fa8686cf", null ],
+    [ "BlackEdgeWidth", "class_terraria_1_1_map_1_1_world_map.html#a5206518c40b75be1a5f640a8857f1f5d", null ],
     [ "MaxHeight", "class_terraria_1_1_map_1_1_world_map.html#a2776e03b023a23d33e09396be685a71a", null ],
     [ "MaxWidth", "class_terraria_1_1_map_1_1_world_map.html#a43bc02e46a565a20d399855920f4f58f", null ],
     [ "this[int x, int y]", "class_terraria_1_1_map_1_1_world_map.html#af540d89fa9aadb79242de6bf26d6c491", null ]

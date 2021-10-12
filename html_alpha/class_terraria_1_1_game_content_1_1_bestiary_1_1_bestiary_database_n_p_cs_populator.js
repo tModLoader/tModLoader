@@ -1,4 +1,8 @@
 var class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator =
 [
+    [ "CommonTags", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_tags.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_tags" ],
+    [ "Conditions", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_conditions.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_conditions" ],
+    [ "CrownosIconIndexes", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes" ],
+    [ "FindEntryByNPCID", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator.html#a7a1d3b250ed6eeeb75fbc67c61a9fbc0", null ],
     [ "Populate", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator.html#aa81b91cbba80ab07755d6b55e78c1be6", null ]
 ];

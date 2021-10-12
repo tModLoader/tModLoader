@@ -10,13 +10,16 @@ var class_terraria_1_1_message_buffer =
     [ "maxSpam", "class_terraria_1_1_message_buffer.html#ac239d222c957de4e55ce1bc0e0499719", null ],
     [ "messageLength", "class_terraria_1_1_message_buffer.html#a8eec4cd68d878ddf71bee46afd6cc7d7", null ],
     [ "readBuffer", "class_terraria_1_1_message_buffer.html#af325076632cfa0297297915a7f41299b", null ],
+    [ "readBufferMax", "class_terraria_1_1_message_buffer.html#ab62476078f9cc9b8945096fba5216e02", null ],
     [ "reader", "class_terraria_1_1_message_buffer.html#a8638cf5211af71bced07b30a770d253c", null ],
     [ "readerStream", "class_terraria_1_1_message_buffer.html#a86e6f948f57e78c129124521a929a703", null ],
     [ "spamCount", "class_terraria_1_1_message_buffer.html#a1a40b6ddd82d15251c233095e58f139f", null ],
     [ "totalData", "class_terraria_1_1_message_buffer.html#a74b387486877506537ad4bfe190c3687", null ],
     [ "whoAmI", "class_terraria_1_1_message_buffer.html#a3a7fcc1c81a3bca8546cacf5bc884746", null ],
     [ "writeBuffer", "class_terraria_1_1_message_buffer.html#a8f4e665442553465dbdc72a4efc1304f", null ],
+    [ "writeBufferMax", "class_terraria_1_1_message_buffer.html#ae74ce5163b7dc9f2711b5caab2423d6d", null ],
     [ "writeLocked", "class_terraria_1_1_message_buffer.html#ab20cd8a6b1b00f18e2d53eef6bb39096", null ],
     [ "writer", "class_terraria_1_1_message_buffer.html#a5e0a398993f0d34386b5bc9e2ad15256", null ],
-    [ "writerStream", "class_terraria_1_1_message_buffer.html#ac9c1437e65b214c29d6ca764eb187226", null ]
+    [ "writerStream", "class_terraria_1_1_message_buffer.html#ac9c1437e65b214c29d6ca764eb187226", null ],
+    [ "OnTileChangeReceived", "class_terraria_1_1_message_buffer.html#a35901dd15c5c07f43900c57ee029e713", null ]
 ];

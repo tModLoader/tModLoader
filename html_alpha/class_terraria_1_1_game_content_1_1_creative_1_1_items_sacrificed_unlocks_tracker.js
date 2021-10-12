@@ -10,6 +10,7 @@ var class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tr
     [ "Save", "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#a9a38a869ff1d77cfae3a6ac3893c8e37", null ],
     [ "SetSacrificeCountDirectly", "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#ac7044e1d690e7d155cbd9b730983a30d", null ],
     [ "ValidateWorld", "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#a01642e6b3fbaa3a683d65c255ba769d0", null ],
+    [ "POSITIVE_SACRIFICE_COUNT_CAP", "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#a983363be0c8c211cc17c57d8afb98abc", null ],
     [ "SacrificesCountByItemIdCache", "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#aa38fded3379b1bad005cbeec7724f622", null ],
     [ "LastEditId", "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#ac135577cde0a02e5ad9e27f1839b190a", null ]
 ];

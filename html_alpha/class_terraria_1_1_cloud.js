@@ -1,8 +1,11 @@
 var class_terraria_1_1_cloud =
 [
+    [ "addCloud", "class_terraria_1_1_cloud.html#a4fb20ae1f695f58ce78894a249c531ac", null ],
     [ "Clone", "class_terraria_1_1_cloud.html#a4d6dda2c439c37043539aade0c507558", null ],
     [ "cloudColor", "class_terraria_1_1_cloud.html#ad25825c46e8feb2ba4b68d57944ffdc4", null ],
+    [ "resetClouds", "class_terraria_1_1_cloud.html#a28c352cb45cbd314ac833db5a5ae3173", null ],
     [ "Update", "class_terraria_1_1_cloud.html#a6730254da6e63f184b724fcdf4f85d3c", null ],
+    [ "UpdateClouds", "class_terraria_1_1_cloud.html#a70dfbc3dbf3cece622c6c011cbaf74d1", null ],
     [ "active", "class_terraria_1_1_cloud.html#a17f37201aad2ebbfe5a8077265a035af", null ],
     [ "Alpha", "class_terraria_1_1_cloud.html#a6ba95b23c4cf8dc97d3085a9a0fc6841", null ],
     [ "height", "class_terraria_1_1_cloud.html#a8080b2017d7687533b48daed4e96324a", null ],
