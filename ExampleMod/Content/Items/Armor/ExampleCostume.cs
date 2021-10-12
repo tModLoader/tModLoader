@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Armor
 {
-	// This and several other classes show off using EquipTextures to do a Merfolk or Werewolf effect. 
+	// This and several other classes show off using EquipTextures to do a Merfolk or Werewolf effect.
 	// Typically Armor items are automatically paired with an EquipTexture, but we can manually use EquipTextures to achieve more unique effects.
 	// There is code for this effect in many places, look in the following files for the full implementation:
 	// NPCs.ExamplePerson drops this item when killed
@@ -18,7 +18,7 @@ namespace ExampleMod.Content.Items.Armor
 	// ExampleCostumePlayer.ResetEffects resets those bool, except blockyAccessoryPrevious which is special because of the order of hooks.
 	// ExampleCostumePlayer.UpdateVanityAccessories is responsible for forcing the visual effect of our costume if the item is in a vanity slot. Note that ModItem.UpdateVanitySet can't be used for this because it is called too late.
 	// ExampleCostumePlayer.UpdateEquips is responsible for applying the Blocky buff to the player if the conditions are met and the accessory is equipped.
-	// ExampleCostumePlayer.FrameEffects is most important. It overrides the drawn equipment slots and sets them to our Blocky EquipTextures. 
+	// ExampleCostumePlayer.FrameEffects is most important. It overrides the drawn equipment slots and sets them to our Blocky EquipTextures.
 	// ExampleCostumePlayer.ModifyDrawInfo is for some fun effects for our costume.
 	// Remember that the visuals and the effects of Costumes must be kept separate. Follow this example for best results.
 	public class ExampleCostume : ModItem
@@ -43,7 +43,7 @@ namespace ExampleMod.Content.Items.Armor
 
 			ArmorIDs.Head.Sets.DrawHead[equipSlotHead] = false;
 			ArmorIDs.Body.Sets.HidesTopSkin[equipSlotBody] = true;
-			ArmorIDs.Body.Sets.HidesArms[equipSlotBody] = false;
+			ArmorIDs.Body.Sets.HidesArms[equipSlotBody] = true;
 			ArmorIDs.Legs.Sets.HidesBottomSkin[equipSlotLegs] = true;
 		}
 

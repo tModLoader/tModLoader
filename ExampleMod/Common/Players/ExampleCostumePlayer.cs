@@ -23,7 +23,7 @@ namespace ExampleMod.Common.Players
 			BlockyAccessory = BlockyHideVanity = BlockyForceVanity = BlockyPower = false;
 		}
 
-		public override void UpdateVanityAccessories() {
+		public override void UpdateVisibleVanityAccessories() {
 			for (int n = 13; n < 18 + Player.GetAmountOfExtraAccessorySlotsToShow(); n++) {
 				Item item = Player.armor[n];
 				if (item.type == ModContent.ItemType<ExampleCostume>()) {
