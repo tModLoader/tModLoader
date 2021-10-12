@@ -61,11 +61,9 @@ namespace Terraria.ModLoader
 				tML.InfoFormat("Parsed Launch Parameters: {0}", string.Join(' ', Program.LaunchParameters.Select(p => ($"{p.Key} {p.Value}").Trim())));
 			}
 
-			/* We set this internally, was previously used when set in InstallNetFramework scripts
 			string stackLimit = Environment.GetEnvironmentVariable("COMPlus_DefaultStackSize");
 			if (!string.IsNullOrEmpty(stackLimit))
 				tML.InfoFormat("Override Default Thread Stack Size Limit: {0}", stackLimit);
-			*/
 
 			if (ModCompile.DeveloperMode)
 				tML.Info("Developer mode enabled");

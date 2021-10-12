@@ -474,7 +474,7 @@
  			}
 +			}));
  
-+			hardmodeTasks.Add(new PassLegacy("Hardmode Announcment", (progress, config) => {
++			hardmodeTasks.Add(new PassLegacy("Hardmode Announcement", (progress, config) => {
  			if (Main.netMode == 0)
  				Main.NewText(Lang.misc[15].Value, 50, byte.MaxValue, 130);
  			else if (Main.netMode == 2)
@@ -1303,7 +1303,7 @@
  				return;
  
  			fail = KillWall_CheckFailure(fail, tile);
-+			WallLoader.KillWall(i, j, tile.type, ref fail);
++			WallLoader.KillWall(i, j, tile.wall, ref fail);
  			KillWall_PlaySounds(i, j, tile);
  			int num = 10;
  			if (fail)

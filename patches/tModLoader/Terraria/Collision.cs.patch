@@ -70,6 +70,16 @@
  				}
  			}
  
+@@ -2480,7 +_,8 @@
+ 				tile = Main.tile[num2, num3];
+ 				tile2 = Main.tile[num2, num3 - 1];
+ 				if (specialChecksMode == 1)
+-					flag5 = (tile.type != 16 && tile.type != 18 && tile.type != 14 && tile.type != 469 && tile.type != 134);
++					//flag5 = (tile.type != 16 && tile.type != 18 && tile.type != 14 && tile.type != 469 && tile.type != 134);
++					flag5 = !TileID.Sets.IgnoredByNpcStepUp[tile.type];
+ 
+ 				flag4 = (flag4 && ((tile.nactive() && (!tile.topSlope() || (tile.slope() == 1 && position.X + (float)(width / 2) < (float)(num2 * 16)) || (tile.slope() == 2 && position.X + (float)(width / 2) > (float)(num2 * 16 + 16))) && (!tile.topSlope() || position.Y + (float)height > (float)(num3 * 16)) && ((Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]) || (holdsMatching && ((Main.tileSolidTop[tile.type] && tile.frameY == 0) || TileID.Sets.Platforms[tile.type]) && (!Main.tileSolid[tile2.type] || !tile2.nactive()) && flag5))) || (tile2.halfBrick() && tile2.nactive())));
+ 				flag4 &= (!Main.tileSolidTop[tile.type] || !Main.tileSolidTop[tile2.type]);
 @@ -2558,7 +_,7 @@
  				if (tile.active()) {
  					if (Main.tileSolid[tile.type]) {
