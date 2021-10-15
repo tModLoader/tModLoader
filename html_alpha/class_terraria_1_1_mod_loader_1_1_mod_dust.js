@@ -1,6 +1,7 @@
 var class_terraria_1_1_mod_loader_1_1_mod_dust =
 [
     [ "GetAlpha", "class_terraria_1_1_mod_loader_1_1_mod_dust.html#a57d8a50f5efde17c46aec30136b22a78", null ],
+    [ "IsLoadingEnabled", "class_terraria_1_1_mod_loader_1_1_mod_dust.html#a8931e31e8e3f091184dee35ae6af8b21", null ],
     [ "MidUpdate", "class_terraria_1_1_mod_loader_1_1_mod_dust.html#a432ce1ee01beee1b52f8814540c1f1a9", null ],
     [ "OnSpawn", "class_terraria_1_1_mod_loader_1_1_mod_dust.html#a4716ad247673f0cd67b5adbdbc6acf8f", null ],
     [ "Register", "class_terraria_1_1_mod_loader_1_1_mod_dust.html#a115068b393e5bb69cdcbb52df87007ce", null ],

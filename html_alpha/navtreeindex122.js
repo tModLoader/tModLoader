@@ -1,5 +1,10 @@
 var NAVTREEINDEX122 =
 {
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aacbc6735bdf96ba563f7580d9d2fbcaa5":[0,0,2,5,7,284],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aacc63c46eceffec53ae2c3c617b4a1fa6":[0,0,2,5,7,3],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaceb1dd7fab7fc834b4c415483d857b50":[0,0,2,5,7,22],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aacec7ca178e2f7b1ae3a4600868c57aca":[0,0,2,5,7,53],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aacefa8a9606819ed409dc761ca6080887":[0,0,2,5,7,6],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aad0888defea7cf0dea03c15fa2d396a9a":[0,0,2,5,7,235],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aad0b491d97457a83f64d0aef6b0111d1e":[0,0,2,5,7,102],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aad0d7e5a4bf75ad11d26140c94b0f62c0":[0,0,2,5,7,300],
@@ -244,10 +249,5 @@ var NAVTREEINDEX122 =
 "namespace_terraria_1_1_graphics_1_1_light.html#a59dbf4ea77020c58b2fdd013ff2db860":[0,0,2,8,2,5],
 "namespace_terraria_1_1_graphics_1_1_light.html#a59dbf4ea77020c58b2fdd013ff2db860a27634ff8002b12e75d98e07ccd005d18":[0,0,2,8,2,5,2],
 "namespace_terraria_1_1_graphics_1_1_light.html#a59dbf4ea77020c58b2fdd013ff2db860a6adf97f83acf6453d4a6a4b1070f3754":[0,0,2,8,2,5,0],
-"namespace_terraria_1_1_graphics_1_1_light.html#a59dbf4ea77020c58b2fdd013ff2db860a8dc0611245a871ac51bbeebb85f33a58":[0,0,2,8,2,5,3],
-"namespace_terraria_1_1_graphics_1_1_light.html#a59dbf4ea77020c58b2fdd013ff2db860ae41480b6bbfbf7407974a88d3d34f4fa":[0,0,2,8,2,5,1],
-"namespace_terraria_1_1_graphics_1_1_renderers.html":[0,0,2,8,3],
-"namespace_terraria_1_1_graphics_1_1_shaders.html":[0,0,2,8,4],
-"namespace_terraria_1_1_i_d.html":[0,0,2,9],
-"namespace_terraria_1_1_i_d.html#a08d3ab3f001fb51f441ef1febe350437":[0,0,2,9,54]
+"namespace_terraria_1_1_graphics_1_1_light.html#a59dbf4ea77020c58b2fdd013ff2db860a8dc0611245a871ac51bbeebb85f33a58":[0,0,2,8,2,5,3]
 };

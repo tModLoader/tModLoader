@@ -4,6 +4,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_water_style =
     [ "ChooseWaterfallStyle", "class_terraria_1_1_mod_loader_1_1_mod_water_style.html#ab32a21465ad930bd6d3ff7ff42d54efb", null ],
     [ "GetDropletGore", "class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a51592d920537ede237a9ea791255dda1", null ],
     [ "GetSplashDust", "class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a56033539d5b322f615f675a80527214a", null ],
+    [ "IsLoadingEnabled", "class_terraria_1_1_mod_loader_1_1_mod_water_style.html#aeba4aeb5f87b92a403627a974bf5393f", null ],
     [ "LightColorMultiplier", "class_terraria_1_1_mod_loader_1_1_mod_water_style.html#af29875155b7c2c0c754676f06912e526", null ],
     [ "Register", "class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a3fea4cbe63a75a41128ca1ccfd8785c2", null ],
     [ "SetupContent", "class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a9ec1556596ad403265b255024e2410e9", null ],

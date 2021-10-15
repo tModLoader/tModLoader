@@ -1,5 +1,10 @@
 var NAVTREEINDEX112 =
 {
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator.html#a9011169163b05d9c243722fea66a0a42":[1,0,2,21,1,5,1],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator.html#a90cc5c7d9e6629ba11c5f02286a202f5":[1,0,2,21,1,5,4],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator.html#a9353788bc478b6590d48fd38045c5a29":[1,0,2,21,1,5,16],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator.html#aa5fc03a873cbd3cc18fbc7438105e34c":[1,0,2,21,1,5,13],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator.html#abf9498f9c0e9e852fb08c2e6035014f4":[1,0,2,21,1,5,14],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator.html#ac28776d33a359203c79dd1d72f217981":[1,0,2,21,1,5,9],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator.html#ac9276af21be3abc50023300feb95eb28":[1,0,2,21,1,5,11],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator.html#acb64bb248570c7ec88cbd76a73b929d1":[1,0,2,21,1,5,17],
@@ -244,10 +249,5 @@ var NAVTREEINDEX112 =
 "class_terraria_1_1_u_i_1_1_u_i_element.html#a336d1ad28adbb657010e263b19095502":[1,0,2,21,25,39],
 "class_terraria_1_1_u_i_1_1_u_i_element.html#a34b5c60836b0a3e7a28b5161f20260a5":[1,0,2,21,25,100],
 "class_terraria_1_1_u_i_1_1_u_i_element.html#a35c31b28ab492467d483152f2c0f583f":[1,0,2,21,25,11],
-"class_terraria_1_1_u_i_1_1_u_i_element.html#a373463a3ad3e4791e9197d3a31b8bff8":[1,0,2,21,25,92],
-"class_terraria_1_1_u_i_1_1_u_i_element.html#a3c32ee6b1cb27038148d8ec71377dd1c":[1,0,2,21,25,68],
-"class_terraria_1_1_u_i_1_1_u_i_element.html#a3dc84dcc96c917cbaeafa95e1b443dc6":[1,0,2,21,25,52],
-"class_terraria_1_1_u_i_1_1_u_i_element.html#a3edebad46a9ba73a131b1886aaf5b363":[1,0,2,21,25,80],
-"class_terraria_1_1_u_i_1_1_u_i_element.html#a42131db53b9290a2774de4373e91645e":[1,0,2,21,25,57],
-"class_terraria_1_1_u_i_1_1_u_i_element.html#a45fa9b7f909b81c8caed7a0c68d391e7":[1,0,2,21,25,102]
+"class_terraria_1_1_u_i_1_1_u_i_element.html#a373463a3ad3e4791e9197d3a31b8bff8":[1,0,2,21,25,92]
 };
