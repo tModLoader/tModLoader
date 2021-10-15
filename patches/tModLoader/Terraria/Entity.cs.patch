@@ -1,0 +1,21 @@
+--- src/Terraria/Terraria/Entity.cs
++++ src/tModLoader/Terraria/Entity.cs
+@@ -1,12 +_,16 @@
+ using Microsoft.Xna.Framework;
+ using System;
++using Terraria.ModLoader;
+ 
+ namespace Terraria
+ {
+-	public abstract class Entity
++	public abstract partial class Entity : Component
+ 	{
+ 		public int whoAmI;
+-		public bool active;
++		internal bool active {
++			get => Active;
++			set => Active = value;
++		}
+ 		internal long entityId;
+ 		public Vector2 position;
+ 		public Vector2 velocity;
