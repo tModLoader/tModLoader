@@ -69,6 +69,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual Color? GetAlpha(Dust dust, Color lightColor) => null;
 
-		public override bool IsLoadingEnabled(Mod mod) => mod.Side == ModSide.Client;
+		public override bool IsLoadingEnabled(Mod mod) => !Main.dedServ;
 	}
 }
