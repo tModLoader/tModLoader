@@ -182,7 +182,7 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModTileEntity>.Register(this);
 		}
 
-		public virtual bool IsLoadingEnabled(Mod mod) => true;
+		public virtual bool IsLoadingEnabled(Mod mod) => mod.Side == ModSide.Both;
 
 		public virtual void Unload(){}
 
