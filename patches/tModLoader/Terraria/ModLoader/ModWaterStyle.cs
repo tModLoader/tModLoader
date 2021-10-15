@@ -8,7 +8,6 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Represents a style of water that gets drawn, based on factors such as the background. This is used to determine the color of the water, as well as other things as determined by the hooks below.
 	/// </summary>
-	[Autoload(Side = ModSide.Client)]
 	public abstract class ModWaterStyle : ModTexturedType
 	{
 		/// <summary>
@@ -60,12 +59,13 @@ namespace Terraria.ModLoader
 		public virtual Color BiomeHairColor() {
 			return new Color(28, 216, 94);
 		}
+
+		public override bool IsLoadingEnabled(Mod mod) => mod.Side == ModSide.Client;
 	}
 
 	/// <summary>
 	/// Represents a style of waterfalls that gets drawn. This is mostly used to determine the color of the waterfall.
 	/// </summary>
-	[Autoload(Side = ModSide.Client)]
 	public abstract class ModWaterfallStyle : ModTexturedType
 	{
 		/// <summary>
@@ -94,5 +94,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void ColorMultiplier(ref float r, ref float g, ref float b, float a) {
 		}
+
+		public override bool IsLoadingEnabled(Mod mod) => mod.Side == ModSide.Client;
 	}
 }
