@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -17,6 +18,13 @@ namespace Terraria.ModLoader
 	public abstract partial class ModSystem : ModType
 	{
 		protected override void Register() {
+			// @TODO: Remove on release
+			var type = GetType();
+
+			if (!LoaderUtils.HasMethod(type, typeof(ModSystem), nameof(SaveWorldData), typeof(TagCompound)) && LoaderUtils.HasMethod(type, typeof(ModSystem), "SaveWorldData"))
+				throw new Exception($"{type} has old SaveData callback with no arguments but not new SaveData with TagCompound, not loading the mod to avoid wiping mod data");
+			// @TODO: END Remove on release
+
 			SystemLoader.Add(this);
 			ModTypeLookup<ModSystem>.Register(this);
 		}
@@ -217,13 +225,20 @@ namespace Terraria.ModLoader
 		public virtual void ModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate) { }
 
 		/// <summary>
-		/// Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. For example, if your mod adds a boss and you want certain NPC to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. Returns null by default.
+		/// Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. 
+		/// <br/>For example, if your mod adds a boss and you want certain NPC to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world.
+		/// <br/>
+		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
 		/// </summary>
-		public virtual TagCompound SaveWorldData() => null;
+		/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
+		public virtual void SaveWorldData(TagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to load custom data you have saved for this system in the currently loading world.
+		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
+		/// <param name="tag"> The TagCompound to load data from. </param>
 		public virtual void LoadWorldData(TagCompound tag) { }
 
 		/// <summary>
@@ -295,5 +310,7 @@ namespace Terraria.ModLoader
 		/// <br/> The <paramref name="tileCounts"/> parameter is a read-only span (treat this as an array) that stores the tile count indexed by tile type.
 		/// </summary>
 		public virtual void TileCountsAvailable(ReadOnlySpan<int> tileCounts) { }
+
+		public override bool IsLoadingEnabled(Mod mod) => true;
 	}
 }

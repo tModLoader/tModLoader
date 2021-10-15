@@ -689,10 +689,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static bool HasMethod(Type t, string method, params Type[] args) {
-			return t.GetMethod(method, args).DeclaringType != typeof(GlobalProjectile);
-		}
-
 		internal static void VerifyGlobalProjectile(GlobalProjectile projectile) {
 			var type = projectile.GetType();
 

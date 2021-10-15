@@ -3,6 +3,7 @@ using ReLogic.Content;
 using ReLogic.Content.Sources;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Terraria.ModLoader.Assets;
@@ -22,7 +23,7 @@ namespace Terraria.ModLoader.Default
 		public override Version Version => BuildInfo.tMLVersion;
 
 		internal ModLoaderMod() {
-			Side = ModSide.NoSync;
+			Side = ModSide.Both;
 			DisplayName = "tModLoader";
 			Code = Assembly.GetExecutingAssembly();
 		}
@@ -61,5 +62,7 @@ namespace Terraria.ModLoader.Default
 			}
 			return false;
 		}
+
+		public override void HandlePacket(BinaryReader reader, int whoAmI) => ModAccessorySlotPlayer.NetHandler.HandlePacket(reader, whoAmI);
 	}
 }
