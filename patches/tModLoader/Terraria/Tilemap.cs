@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Terraria
 {
 	public class Tilemap : IDisposable
 	{
-		internal static Queue<uint> FreeTilemapIndices = new();
-		internal static uint NextId = 1; // Id 0 is invalid.
+		internal static Queue<int> FreeTilemapIndices = new();
+		internal static int NextId = 1; // Id 0 is invalid.
 		internal static object IdThreadLock = new();
 
-		internal uint Id;
+		internal int Id;
 
 		public int Width { get; private set; }
 		public int Height { get; private set; }
 
 		public Tile this[int x, int y] {
-			get => new(Id, (uint)((y * Width) + x));
+			[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+			get => new(Id, y + (x * Height));
 
 			// Should have some function...
 			internal set { }

@@ -1,7 +1,8 @@
 --- src/Terraria/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -1,36 +_,37 @@
+@@ -1,36 +_,38 @@
  using Microsoft.Xna.Framework;
++using System.Runtime.CompilerServices;
  using Terraria.DataStructures;
 -#if !WINDOWS
 -using System.Runtime.InteropServices;
@@ -38,8 +39,8 @@
 -		public const int Liquid_Honey = 2;
 -
 -		public int collisionType {
-+		internal readonly uint TileId;
-+		internal readonly uint TilemapId;
++		internal readonly int TileId;
++		internal readonly int TilemapId;
 +
 +		internal ref ushort type => ref Get<TileTypeData>().Type;
 +		internal ref ushort wall => ref Get<WallTypeData>().Type;
@@ -65,12 +66,13 @@
  			get {
  				if (!active())
  					return 0;
-@@ -48,7 +_,11 @@
+@@ -48,7 +_,12 @@
  			}
  		}
  
 -		public Tile() {
-+		internal Tile(uint tilemapId, uint tileId) {
++		[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
++		internal Tile(int tilemapId, int tileId) {
 +			TilemapId = tilemapId;
 +			TileId = tileId;
 +

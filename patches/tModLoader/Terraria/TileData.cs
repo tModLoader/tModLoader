@@ -8,11 +8,11 @@ namespace Terraria
 
 	internal static class TileData
 	{
-		internal static Action<uint, int> OnSetLength;
-		internal static Action<uint, uint> OnClearSingle;
-		internal static Action<uint, uint, int> OnClearMultiple;
-		internal static Action<uint, uint, uint, uint> OnCopySingle;
-		internal static Action<uint, uint, uint, uint, int> OnCopyMultiple;
+		internal static Action<int, int> OnSetLength;
+		internal static Action<int, int> OnClearSingle;
+		internal static Action<int, int, int> OnClearMultiple;
+		internal static Action<int, int, int, int> OnCopySingle;
+		internal static Action<int, int, int, int, int> OnCopyMultiple;
 
 		static TileData() {
 			// Initialize vanilla types. Probably temporary implementation.
@@ -25,19 +25,19 @@ namespace Terraria
 			}
 		}
 
-		public static void SetLength(uint tilemapId, int length)
+		public static void SetLength(int tilemapId, int length)
 			=> OnSetLength?.Invoke(tilemapId, length);
 
-		public static void ClearSingle(uint tilemapId, uint index)
+		public static void ClearSingle(int tilemapId, int index)
 			=> OnClearSingle?.Invoke(tilemapId, index);
 
-		public static void ClearMultiple(uint tilemapId, uint index, int length)
+		public static void ClearMultiple(int tilemapId, int index, int length)
 			=> OnClearMultiple?.Invoke(tilemapId, index, length);
 
-		public static void CopySingle(uint sourceTilemapId, uint sourceIndex, uint destinationTilemapId, uint destinationIndex)
+		public static void CopySingle(int sourceTilemapId, int sourceIndex, int destinationTilemapId, int destinationIndex)
 			=> OnCopySingle?.Invoke(sourceTilemapId, sourceIndex, destinationTilemapId, destinationIndex);
 
-		public static void CopyMultiple(uint sourceTilemapId, uint sourceIndex, uint destinationTilemapId, uint destinationIndex, int length)
+		public static void CopyMultiple(int sourceTilemapId, int sourceIndex, int destinationTilemapId, int destinationIndex, int length)
 			=> OnCopyMultiple?.Invoke(sourceTilemapId, sourceIndex, destinationTilemapId, destinationIndex, length);
 	}
 
@@ -53,28 +53,28 @@ namespace Terraria
 			TileData.OnClearMultiple += ClearMultiple;
 		}
 
-		public static void SetLength(uint tilemapId, int length) {
+		public static void SetLength(int tilemapId, int length) {
 			if (DataByTilemapId == null || DataByTilemapId.Length <= tilemapId) {
-				Array.Resize(ref DataByTilemapId, (int)tilemapId + 1);
+				Array.Resize(ref DataByTilemapId, tilemapId + 1);
 			}
 
 			Array.Resize(ref DataByTilemapId[tilemapId], length);
 		}
 
-		public static void ClearSingle(uint tilemapId, uint index) {
+		public static void ClearSingle(int tilemapId, int index) {
 			DataByTilemapId[tilemapId][index] = default;
 		}
 
-		public static void ClearMultiple(uint tilemapId, uint index, int length) {
-			Array.Clear(DataByTilemapId[tilemapId], (int)index, length);
+		public static void ClearMultiple(int tilemapId, int index, int length) {
+			Array.Clear(DataByTilemapId[tilemapId], index, length);
 		}
 
-		public static void CopySingle(uint sourceTilemapId, uint sourceIndex, uint destinationTilemapId, uint destinationIndex) {
+		public static void CopySingle(int sourceTilemapId, int sourceIndex, int destinationTilemapId, int destinationIndex) {
 			DataByTilemapId[destinationTilemapId][destinationIndex] = DataByTilemapId[sourceTilemapId][sourceIndex];
 		}
 
-		public static void CopyMultiple(uint sourceTilemapId, uint sourceIndex, uint destinationTilemapId, uint destinationIndex, int length) {
-			Array.Copy(DataByTilemapId[sourceTilemapId], (int)sourceIndex, DataByTilemapId[destinationTilemapId], (int)destinationIndex, length);
+		public static void CopyMultiple(int sourceTilemapId, int sourceIndex, int destinationTilemapId, int destinationIndex, int length) {
+			Array.Copy(DataByTilemapId[sourceTilemapId], sourceIndex, DataByTilemapId[destinationTilemapId], destinationIndex, length);
 		}
 	}
 }
