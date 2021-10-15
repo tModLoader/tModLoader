@@ -16,7 +16,7 @@ namespace Terraria
 				if (value) {
 					GameObject = GameObject.Instantiate();
 
-					GameObject.AddComponent(this);
+					GameObject.AddComponentInternal(this);
 				}
 				else {
 					GameObject.Destroy();

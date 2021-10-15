@@ -694,10 +694,17 @@
  				active = false;
  				type = 0;
  				stack = 0;
-@@ -45418,6 +_,7 @@
+@@ -45418,6 +_,14 @@
  		}
  
  		private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity) {
++			// Test
++			foreach (var component in GameObject.Components) {
++				if (component is IOnUpdateHook hook) {
++					hook.OnUpdate();
++				}
++			}
++
 +			ItemLoader.Update(this, ref gravity, ref maxFallSpeed);
  			if (ItemID.Sets.ItemNoGravity[type]) {
  				base.velocity.X *= 0.95f;

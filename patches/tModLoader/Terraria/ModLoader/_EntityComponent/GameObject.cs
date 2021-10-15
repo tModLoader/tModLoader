@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Terraria.ModLoader
 {
@@ -8,6 +7,12 @@ namespace Terraria.ModLoader
 		private static readonly List<GameObject> gameObjects = new();
 
 		private readonly List<Component> components = new();
+
+		public readonly IReadOnlyList<Component> Components;
+
+		internal GameObject() {
+			Components = (components = new()).AsReadOnly();
+		}
 
 		public void Destroy() {
 			foreach (var component in components) {
@@ -18,7 +23,7 @@ namespace Terraria.ModLoader
 		}
 
 		public T AddComponent<T>() where T : Component {
-			return AddComponent(Activator.CreateInstance<T>());
+			return AddComponentFromBase(ModContent.GetInstance<T>());
 		}
 
 		public bool HasComponent<T>() where T : Component {
@@ -55,7 +60,13 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
-		internal T AddComponent<T>(T component) where T : Component {
+		internal T AddComponentFromBase<T>(T componentBase) where T : Component {
+			var newComponent = (T)componentBase.Clone(this);
+
+			return AddComponentInternal(newComponent);
+		}
+
+		internal T AddComponentInternal<T>(T component) where T : Component {
 			components.Add(component);
 
 			component.GameObject = this;
@@ -69,6 +80,8 @@ namespace Terraria.ModLoader
 			var gameObject = new GameObject();
 
 			gameObjects.Add(gameObject);
+
+			ComponentLoader.AddGlobalComponents(gameObject);
 
 			return gameObject;
 		}

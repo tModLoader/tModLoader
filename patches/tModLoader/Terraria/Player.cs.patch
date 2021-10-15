@@ -2447,11 +2447,19 @@
  			if (i == Main.myPlayer && Main.netMode != 2)
  				LockOnHelper.Update();
  
-@@ -16961,6 +_,7 @@
+@@ -16961,6 +_,15 @@
  
  			UpdateHairDyeDust();
  			UpdateMiscCounter();
 +			PlayerLoader.PreUpdate(this);
++
++			// Test
++			foreach (var component in GameObject.Components) {
++				if (component is IOnUpdateHook hook) {
++					hook.OnUpdate();
++				}
++			}
++
  			infernoCounter++;
  			if (infernoCounter >= 180)
  				infernoCounter = 0;

@@ -128,6 +128,13 @@ namespace Terraria.ModLoader
 
 		//in Terraria.Projectile rename AI to VanillaAI then make AI call ProjectileLoader.ProjectileAI(this)
 		public static void ProjectileAI(Projectile projectile) {
+			// Test
+			foreach (var component in projectile.GameObject.Components) {
+				if (component is IOnUpdateHook hook) {
+					hook.OnUpdate();
+				}
+			}
+
 			if (PreAI(projectile)) {
 				int type = projectile.type;
 				bool useAiType = projectile.ModProjectile != null && projectile.ModProjectile.AIType > 0;
