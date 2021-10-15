@@ -60,7 +60,7 @@ namespace Terraria.ModLoader
 			return new Color(28, 216, 94);
 		}
 
-		public override bool IsLoadingEnabled(Mod mod) => mod.Side == ModSide.Client;
+		public override bool IsLoadingEnabled(Mod mod) => !Main.dedServ;
 	}
 
 	/// <summary>
@@ -95,6 +95,6 @@ namespace Terraria.ModLoader
 		public virtual void ColorMultiplier(ref float r, ref float g, ref float b, float a) {
 		}
 
-		public override bool IsLoadingEnabled(Mod mod) => mod.Side == ModSide.Client;
+		public override bool IsLoadingEnabled(Mod mod) => !Main.dedServ;
 	}
 }

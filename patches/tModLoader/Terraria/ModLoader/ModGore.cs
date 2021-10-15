@@ -51,6 +51,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool DrawBehind(Gore gore) => false;
 
-		public override bool IsLoadingEnabled(Mod mod) => mod.Side == ModSide.Client;
+		public override bool IsLoadingEnabled(Mod mod) => !Main.dedServ;
 	}
 }
