@@ -23,7 +23,7 @@ namespace Terraria.ModLoader.Default
 		public override Version Version => BuildInfo.tMLVersion;
 
 		internal ModLoaderMod() {
-			Side = ModSide.Both;
+			Side = ModSide.NoSync;
 			DisplayName = "tModLoader";
 			Code = Assembly.GetExecutingAssembly();
 		}
