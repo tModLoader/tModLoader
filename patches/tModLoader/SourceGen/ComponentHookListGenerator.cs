@@ -86,7 +86,7 @@ namespace {AttributeNamespace}
 					string memberSuffix = methods.Length > 1 ? method.Name : string.Empty;
 					string methodName = method.Name;
 					string delegateName = $"Delegate{memberSuffix}";
-					string parameterCode = string.Join(", ", method.Parameters.Select(p => $"{p.Type.ToDisplayString()} {p.Name}").Prepend($"Component component"));
+					string parameterCode = string.Join(", ", method.Parameters.Select(p => $"{p.ToDisplayString()} {p.Name}").Prepend($"Component component"));
 
 					source.AppendLine($"\t\tprivate delegate {method.ReturnType.ToDisplayString()} {delegateName}({parameterCode});");
 
