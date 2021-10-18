@@ -1,4 +1,4 @@
-﻿using ExampleMod.Common.Biomes;
+﻿using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Buffs;
 using ExampleMod.Content.Items.Armor;
 using Terraria;

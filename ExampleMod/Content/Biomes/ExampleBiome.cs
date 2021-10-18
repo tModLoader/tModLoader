@@ -2,7 +2,7 @@
 using Terraria;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Common.Biomes
+namespace ExampleMod.Content.Biomes
 {
 	public class ExampleBiome : ModBiome
 	{
