@@ -78,17 +78,17 @@ namespace Terraria.ModLoader
 		internal static AssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
 		internal static AssemblyResourcesContentSource ManifestContentSource { get; set; }
 
-		// Get
-
 		/// <summary> Gets the instance of the Mod with the specified name. This will throw an exception if the mod cannot be found. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		public static Mod GetMod(string name) => modsByName[name];
 
-		// TryGet
-
 		/// <summary> Safely attempts to get the instance of the Mod with the specified name. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public static bool TryGetMod(string name, out Mod result) => modsByName.TryGetValue(name, out result);
+
+		/// <summary> Safely checks whether or not a mod with the specified internal name is currently loaded. </summary>
+		/// <returns> Whether or not a mod with the provided internal name has been found. </returns>
+		public static bool HasMod(string name) => modsByName.ContainsKey(name);
 
 		internal static void EngineInit()
 		{
@@ -193,7 +193,7 @@ namespace Terraria.ModLoader
 				Main.menuMode = Interface.loadModsID;
 		}
 
-		private static bool Unload()
+		internal static bool Unload()
 		{
 			try {
 				Mods_Unload();

@@ -17,16 +17,16 @@ namespace Terraria.ModLoader.Default
 			return clone;
 		}
 
-		public override bool NeedsSaving(Item item) {
-			return data.Count > 0;
+		public override void SaveData(Item item, TagCompound tag) {
+			if (data.Count > 0) {
+				tag["modData"] = data;
+			}
 		}
 
-		public override TagCompound Save(Item item) {
-			return new TagCompound { ["modData"] = data };
-		}
-
-		public override void Load(Item item, TagCompound tag) {
-			ItemIO.LoadGlobals(item, tag.GetList<TagCompound>("modData"));
+		public override void LoadData(Item item, TagCompound tag) {
+			if (tag.ContainsKey("modData")) {
+				ItemIO.LoadGlobals(item, tag.GetList<TagCompound>("modData"));
+			}
 		}
 	}
 }

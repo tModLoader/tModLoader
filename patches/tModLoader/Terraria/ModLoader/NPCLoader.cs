@@ -76,6 +76,9 @@ namespace Terraria.ModLoader
 			shopToNPC[19] = NPCID.TravellingMerchant;
 			shopToNPC[20] = NPCID.SkeletonMerchant;
 			shopToNPC[21] = NPCID.DD2Bartender;
+			shopToNPC[22] = NPCID.Golfer;
+			shopToNPC[23] = NPCID.BestiaryGirl;
+			shopToNPC[24] = NPCID.Princess;
 		}
 
 		internal static int ReserveNPCID() {
@@ -1129,10 +1132,6 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC g in HookDrawTownAttackSwing.Enumerate(npc.globalNPCs)) {
 				g.DrawTownAttackSwing(npc, ref item, ref itemSize, ref scale, ref offset);
 			}
-		}
-
-		private static bool HasMethod(Type t, string method, params Type[] args) {
-			return t.GetMethod(method, args).DeclaringType != typeof(GlobalNPC);
 		}
 
 		internal static void VerifyGlobalNPC(GlobalNPC npc) {

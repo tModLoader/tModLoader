@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.Localization;
@@ -62,7 +63,7 @@ namespace Terraria.ModLoader
 				if (type == modType) continue;
 				if (type.IsAbstract) continue;
 				if (type.ContainsGenericParameters) continue;
-				if (type.GetConstructor(new Type[0]) == null) continue;//don't autoload things with no default constructor
+				if (type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null) == null) continue;//don't autoload things with no default constructor
 
 				if (type.IsSubclassOf(typeof(ModSound))) {
 					modSounds.Add(type);
@@ -73,7 +74,7 @@ namespace Terraria.ModLoader
 				else if (ContentAutoloadingEnabled && typeof(ILoadable).IsAssignableFrom(type)) {
 					var autoload = AutoloadAttribute.GetValue(type);
 					if (autoload.NeedsAutoloading) {
-						AddContent((ILoadable)Activator.CreateInstance(type));
+						AddContent((ILoadable)Activator.CreateInstance(type, true));
 					}
 				}
 			}

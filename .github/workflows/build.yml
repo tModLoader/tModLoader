@@ -58,7 +58,7 @@ jobs:
         with:
           path: decompiled.zip.gpg
           # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
-          key: 1423-A
+          key: 1423-B
 
       - name: Restore decompiled folder from cache
         if: steps.cache-decompiled.outputs.cache-hit == 'true'
@@ -106,20 +106,23 @@ jobs:
           echo pwd is: ${PWD}
           echo ls -l is:
           ls -l
-          echo Running CompleteLib.bat for Debug
-          ./CompleteLib.bat Debug skipzip
-          echo CompleteLib.bat Debug Done
-          cd ..
-          mkdir -p artifacts/Debug
-          cp -R ./solutions/Debug/Shared/. ./artifacts/Debug/
-          cd solutions
-          echo pwd is: ${PWD}
           echo Running CompleteLib.bat for Release
           ./CompleteLib.bat Release skipzip
           echo CompleteLib.bat Release Done
           cd ..
           mkdir -p artifacts/Release
           cp -R ./solutions/Release/Shared/. ./artifacts/Release/
+          echo Cleaning up output directory in-between builds...
+          rm -r ./src/tModLoader/Terraria/1423/Windows
+          cd solutions
+          echo pwd is: ${PWD}
+          # export UPLOAD_MSBUILD_LOGS=1
+          echo Running CompleteLib.bat for Debug
+          ./CompleteLib.bat Debug skipzip
+          echo CompleteLib.bat Debug Done
+          cd ..
+          mkdir -p artifacts/Debug
+          cp -R ./solutions/Debug/Shared/. ./artifacts/Debug/
           echo Creating decompiled cache zip file
           7z a decompiled.zip ./src/decompiled/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
@@ -307,8 +310,55 @@ jobs:
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
           cat BuildOutput/*.log
+      - name: Download ExampleMod build artifact from build job
+        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
+        # This should hopefully always work since this job shouldn't even run if the build job failed due to ExampleMod not compiling.
+        uses: actions/download-artifact@v2
+        with:
+          name: ExampleMod Build
+          path: artifacts/ExampleMod
+      - name: View ExampleMod build artifact files
+        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
+        run: |
+          echo pwd is: ${PWD}
+          ls -alhR
+        working-directory: artifacts/ExampleMod
       - name: Attempt workshop_build_item 
         if: steps.changed-files-examplemod.outputs.any_changed == 'true'
         shell: bash
         run: |
-          echo If implemented, this would auto publish ExampleMod
+          echo Changes detected in ExampleMod folder, attempting to publish ExampleMod to workshop
+          echo "Warning: This manual publish approach bypasses version and other checks, so updating build.txt is not necessary currently and this approach shouldn't be used by modders"
+          echo pwd is: ${PWD}
+          echo Making files
+          cat << EOF > ./workshop.vdf
+          "workshopitem"
+          {
+           "appid" "1281930"
+           "publishedfileid"  "2615761271"
+           "contentfolder" "${GITHUB_WORKSPACE}/artifacts/ExampleMod/"
+           "title" "Example Mod"
+           "description" "Learn how to mod with tModLoader by exploring the source code for this mod.
+           
+           You can find the source code at https://github.com/tModLoader/tModLoader/tree/1.4/ExampleMod"
+           "changenote" "Automatic update from GitHub: ${{ github.event.commits[0].message}}"
+          }
+          EOF
+          cat << EOF > ./artifacts/ExampleMod/workshop.json
+          {
+            "WorkshopPublishedVersion": 1,
+            "ContentType": "Mod",
+            "SteamEntryId": 2615761271,
+            "Publicity": 1
+          }
+          EOF
+          ls -alh
+          echo "Attempting to publish ExampleMod.tmod"
+          echo workshop.vdf contents:
+          cat workshop.vdf
+          echo workshop.json contents:
+          cat artifacts/ExampleMod/workshop.json
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +workshop_build_item "${GITHUB_WORKSPACE}/workshop.vdf" +quit
+          echo workshop.vdf contents:
+          cat workshop.vdf
+          echo Done

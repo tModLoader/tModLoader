@@ -22,15 +22,13 @@ namespace Terraria.ModLoader.Default
 			unloadedBestiaryChats = new List<TagCompound>();
 		}
 
-		public override TagCompound SaveWorldData() {
-			return new TagCompound {
-				["list"] = data,
-				["unloadedNPCs"] = unloadedNPCs,
-				["unloadedKillCounts"] = unloadedKillCounts,
-				["unloadedBestiaryKills"] = unloadedBestiaryKills,
-				["unloadedBestiarySights"] = unloadedBestiarySights,
-				["unloadedBestiaryChats"] = unloadedBestiaryChats
-			};
+		public override void SaveWorldData(TagCompound tag) {
+			tag["list"] = data;
+			tag["unloadedNPCs"] = unloadedNPCs;
+			tag["unloadedKillCounts"] = unloadedKillCounts;
+			tag["unloadedBestiaryKills"] = unloadedBestiaryKills;
+			tag["unloadedBestiarySights"] = unloadedBestiarySights;
+			tag["unloadedBestiaryChats"] = unloadedBestiaryChats;
 		}
 
 		public override void LoadWorldData(TagCompound tag) {

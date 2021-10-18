@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/ID/NPCID.cs
 +++ src/tModLoader/Terraria/ID/NPCID.cs
-@@ -3,6 +_,7 @@
+@@ -3,12 +_,13 @@
  using System;
  using System.Collections.Generic;
  using Terraria.DataStructures;
@@ -8,6 +8,14 @@
  
  namespace Terraria.ID
  {
+-	public class NPCID
++	public partial class NPCID
+ 	{
+-		public static class Sets
++		public static partial class Sets
+ 		{
+ 			public struct NPCBestiaryDrawModifiers
+ 			{
 @@ -61,7 +_,7 @@
  				public const int BoneJavelin = 169;
  			}

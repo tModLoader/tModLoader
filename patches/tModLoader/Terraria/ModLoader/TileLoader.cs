@@ -553,8 +553,8 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.GameContent.Drawing.TileDrawing.GetTileDrawData before if statements checking tileCache.halfBrick()
-		//  TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight);
-		public static void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) {
+		//  TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight, ref tileFrameX, ref tileFrameY);
+		public static void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
 			Tile tile = Main.tile[i, j];
 			if (tile.type >= TileID.Count) {
 				TileObjectData tileData = TileObjectData.GetTileData(tile.type, 0, 0);
@@ -569,7 +569,7 @@ namespace Terraria.ModLoader
 					offsetY = tileData.DrawYOffset;
 					height = tileData.CoordinateHeights[partY];
 				}
-				GetTile(tile.type).SetDrawPositions(i, j, ref width, ref offsetY, ref height);
+				GetTile(tile.type).SetDrawPositions(i, j, ref width, ref offsetY, ref height, ref tileFrameX, ref tileFrameY);
 			}
 		}
 		//in Terraria.Main.Update after vanilla tile animations call TileLoader.AnimateTiles();

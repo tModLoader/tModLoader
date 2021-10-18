@@ -41,6 +41,15 @@ namespace Terraria.ModLoader
 			PlayerLoader.OnMissingMana(player, item, neededMana);
 		}
 
+		public static bool CanConsumeAmmo(Player player, Item weapon, Item ammo) {
+			return PlayerLoader.CanConsumeAmmo(player, weapon, ammo) && ItemLoader.CanConsumeAmmo(weapon, ammo, player);
+		}
+
+		public static void OnConsumeAmmo(Player player, Item weapon, Item ammo) {
+			PlayerLoader.OnConsumeAmmo(player, weapon, ammo);
+			ItemLoader.OnConsumeAmmo(weapon, ammo, player);
+		}
+
 		//TODO: Fix various inconsistencies with calls of UseItem, and then make this and its inner methods use short-circuiting.
 		public static bool CanUseItem(Player player, Item item) {
 			return PlayerLoader.CanUseItem(player, item) & ItemLoader.CanUseItem(item, player);

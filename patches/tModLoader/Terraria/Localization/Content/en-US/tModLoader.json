@@ -74,6 +74,15 @@
 		"NoWorkshopAccess": "Error: Unable to access Steam Workshop",
 		"ModAlreadyUploaded": "Error: Mod already exists on Workshop!",
 		"ModVersionInfoUnchanged": "Error: Mod Version information must be incremented prior to updating.",
+		"ConsultSteamLogs": "Consult Steam workshop_log.txt (Default Location: {0}) for more information.",
+		"SteamRejectUpdate": "Item is/was already installed: {0}. If attempting to re-install, close current instance and re-launch.",
+		"BeginDownload": "Attempting Download Item: {0}",
+		"EndDownload": "Item Download Completed",
+		"CreateItem": "Creating Item {0}",
+		"UpdateItem": "Updating Item {0}",
+		"PublishItem": "Attempting Publishing Item {0}",
+		"SteamDownloader": "Queuing download with Steam download manager...",
+		"DownloadProgress": "Download {0}% Complete",
 
 		// Mod Errors
 		"LoadError": "An error occurred while loading {0}",
@@ -360,6 +369,10 @@
 		"MouseMiddle": "Middle Mouse",
 		"MouseXButton1": "Mouse 4",
 		"MouseXButton2": "Mouse 5",
+
+		// In Game UI additions
+		"slotStack": "Stack",
+		"slotScroll": "Scroll",
 
 		// Misc
 		"OK": "OK",
