@@ -36,7 +36,7 @@
 		/// Allows you to stop <see cref="Mod.AddContent"/> from actually adding this content. Useful for items that can be disabled by a config.
 		/// </summary>
 		/// <param name="mod">The mod adding this content</param>
-		public virtual bool IsLoadingEnabled(Mod mod) => mod.Side == ModSide.Both;
+		public virtual bool IsLoadingEnabled(Mod mod) => true;
 
 		/// <summary>
 		/// If you make a new ModType, seal this override.

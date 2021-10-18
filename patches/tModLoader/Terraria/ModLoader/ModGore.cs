@@ -50,7 +50,5 @@ namespace Terraria.ModLoader
 		/// Allows you to determine whether or not this gore will draw behind tiles, etc. Returns false by default.
 		/// </summary>
 		public virtual bool DrawBehind(Gore gore) => false;
-
-		public override bool IsLoadingEnabled(Mod mod) => !Main.dedServ;
 	}
 }
