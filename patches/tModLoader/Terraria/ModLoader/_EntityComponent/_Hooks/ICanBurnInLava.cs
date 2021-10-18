@@ -1,17 +1,18 @@
-﻿using System;
-
-namespace Terraria.ModLoader
+﻿namespace Terraria.ModLoader
 {
-	public interface ICanBurnInLava
+	/// <inheritdoc cref="CanBurnInLava"/>
+	[ComponentHook]
+	public partial interface ICanBurnInLavaHook
 	{
-		private static readonly ComponentHook<Func<Component, bool?>> Hook = new(typeof(ICanBurnInLava).GetMethod(nameof(CanBurnInLava)));
-
+		/// <summary>
+		/// Returns whether or not this item will burn in lava regardless of any conditions. Returns null by default (follow vanilla behaviour).
+		/// </summary>
 		bool? CanBurnInLava();
 
 		public static bool? Invoke(GameObject gameObject) {
 			bool? result = null;
 
-			foreach (var (obj, function) in Hook.Enumerate(gameObject)) {
+			foreach (var (obj, function) in HookCanBurnInLava.Enumerate(gameObject)) {
 				bool? currentResult = function(obj);
 
 				switch (currentResult) {

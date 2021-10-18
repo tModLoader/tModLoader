@@ -1,15 +1,12 @@
-﻿using System;
-
-namespace Terraria.ModLoader
+﻿namespace Terraria.ModLoader
 {
-	public interface IOnUpdateHook
+	[ComponentHook]
+	public partial interface IOnUpdateHook
 	{
-		private static readonly ComponentHook<Action<Component>> Hook = new(typeof(IOnUpdateHook).GetMethod(nameof(OnUpdate)));
-
 		void OnUpdate();
 
 		public static void Invoke(GameObject gameObject) {
-			foreach (var (obj, function) in Hook.Enumerate(gameObject)) {
+			foreach (var (obj, function) in HookOnUpdate.Enumerate(gameObject)) {
 				function(obj);
 			}
 		}

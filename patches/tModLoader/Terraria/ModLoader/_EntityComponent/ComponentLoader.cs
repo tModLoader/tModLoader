@@ -16,7 +16,7 @@ namespace Terraria.ModLoader
 		private static readonly List<Component> components = new();
 		private static readonly List<Component> globalComponents = new();
 		private static readonly List<Component> globalComponentsWithoutDependencies = new();
-		private static readonly List<ComponentHook> componentHooks = new();
+		private static readonly List<ComponentHookList> componentHooks = new();
 		private static readonly Dictionary<Type, int> componentIdsByType = new();
 
 		private static ComponentTypeData[] componentypeDataById = Array.Empty<ComponentTypeData>();
@@ -74,7 +74,7 @@ namespace Terraria.ModLoader
 			return id;
 		}
 
-		internal static void RegisterComponentHook(ComponentHook hook) {
+		internal static void RegisterComponentHookList(ComponentHookList hook) {
 			componentHooks.Add(hook);
 		}
 

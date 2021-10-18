@@ -680,7 +680,7 @@
  
  		private void CheckLavaDeath(int i) {
 +			// TEST
-+			bool? canBurnInLava = ICanBurnInLava.Invoke(GameObject); //ItemLoader.CanBurnInLava(this);
++			bool? canBurnInLava = ICanBurnInLavaHook.Invoke(GameObject); //ItemLoader.CanBurnInLava(this);
 +
  			if (type == 267) {
  				if (Main.netMode == 1)

@@ -8,12 +8,12 @@ using System.Runtime.InteropServices;
 
 namespace Terraria.ModLoader
 {
-	public abstract class ComponentHook
+	public abstract class ComponentHookList
 	{
 		internal abstract void Update(IReadOnlyList<Component> instances);
 	}
 
-	public unsafe class ComponentHook<TComponentDelegate> : ComponentHook
+	public unsafe class ComponentHookList<TComponentDelegate> : ComponentHookList
 		where TComponentDelegate : Delegate
 	{
 		// Don't change a single line without performance testing and checking the disassembly. As of NET 5.0.0, this implementation is on par with hand-coding
@@ -77,10 +77,10 @@ namespace Terraria.ModLoader
 
 		private (int index, TComponentDelegate componentDelegate)[] registeredComponentInfo = Array.Empty<(int, TComponentDelegate)>();
 
-		public ComponentHook(MethodInfo method) {
+		public ComponentHookList(MethodInfo method) {
 			this.method = method;
 
-			ComponentLoader.RegisterComponentHook(this);
+			ComponentLoader.RegisterComponentHookList(this);
 		}
 
 		public InstanceEnumerator Enumerate(GameObject gameObject)
