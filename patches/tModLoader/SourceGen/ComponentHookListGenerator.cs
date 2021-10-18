@@ -62,8 +62,6 @@ namespace {AttributeNamespace}
 
 			// Process methods
 			foreach (var interfaceType in receiver.Interfaces) {
-				///var containingType = interfaceTypeSymbol.ContainingType;
-
 				if (!interfaceType.ContainingSymbol.Equals(interfaceType.ContainingNamespace, SymbolEqualityComparer.Default)) {
 					continue; //TODO: Issue a diagnostic that it must be top level
 				}
@@ -79,24 +77,22 @@ namespace {AttributeNamespace}
 				source.AppendLine($"\tpartial {interfaceType.TypeKind.ToString().ToLower()} {interfaceName}");
 				source.AppendLine($"\t{{");
 
-				foreach (var member in interfaceType.GetMembers()) {
-					if (member is not IMethodSymbol method) {
-						continue;
-					}
+				var methods = interfaceType.GetMembers()
+					.Select(m => m as IMethodSymbol)
+					.Where(m => m != null && !m.IsStatic)
+					.ToArray();
 
-					if (member.IsStatic) {
-						continue;
-					}
-
+				foreach (var method in methods) {
+					string memberSuffix = methods.Length > 1 ? method.Name : string.Empty;
 					string methodName = method.Name;
-					string delegateName = $"Delegate{methodName}";
+					string delegateName = $"Delegate{memberSuffix}";
 					string parameterCode = string.Join(", ", method.Parameters.Select(p => $"{p.Type.ToDisplayString()} {p.Name}").Prepend($"Component component"));
 
 					source.AppendLine($"\t\tprivate delegate {method.ReturnType.ToDisplayString()} {delegateName}({parameterCode});");
 
 					source.AppendLine();
 
-					string fieldName = $"Hook{methodName}";
+					string fieldName = $"Hook{memberSuffix}";
 					string fieldType = $"ComponentHookList<{delegateName}>";
 					string getMethodInfoCode = $@"typeof({interfaceName}).GetMethod(""{methodName}"")";
 

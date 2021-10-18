@@ -12,7 +12,7 @@
 		public static bool? Invoke(GameObject gameObject) {
 			bool? result = null;
 
-			foreach (var (obj, function) in HookCanBurnInLava.Enumerate(gameObject)) {
+			foreach (var (obj, function) in Hook.Enumerate(gameObject)) {
 				bool? currentResult = function(obj);
 
 				switch (currentResult) {
