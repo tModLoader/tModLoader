@@ -6,9 +6,9 @@ namespace Terraria.ModLoader
 	{
 		private static readonly List<GameObject> gameObjects = new();
 
-		private readonly List<Component> components = new();
+		internal readonly List<Instanced<Component>> components = new();
 
-		public readonly IReadOnlyList<Component> Components;
+		public readonly IReadOnlyList<Instanced<Component>> Components;
 
 		internal GameObject() {
 			Components = (components = new()).AsReadOnly();
@@ -16,7 +16,7 @@ namespace Terraria.ModLoader
 
 		public void Destroy() {
 			foreach (var component in components) {
-				component.Dispose();
+				component.instance.Dispose();
 			}
 
 			components.Clear();
@@ -46,9 +46,17 @@ namespace Terraria.ModLoader
 			throw new KeyNotFoundException($"Component of type '{typeof(T).Name}' was not present.");
 		}
 
+		public IEnumerable<T> GetComponents<T>() {
+			for (int i = 0; i < components.Count; i++) {
+				if (components[i].instance is T tComponent) {
+					yield return tComponent;
+				}
+			}
+		}
+
 		public bool TryGetComponent<T>(out T result) where T : Component {
 			for (int i = 0; i < components.Count; i++) {
-				if (components[i] is T tComponent) {
+				if (components[i].instance is T tComponent) {
 					result = tComponent;
 
 					return true;
@@ -67,7 +75,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal T AddComponentInternal<T>(T component) where T : Component {
-			components.Add(component);
+			components.Add(new(component.Id, component));
 
 			component.GameObject = this;
 
@@ -85,5 +93,8 @@ namespace Terraria.ModLoader
 
 			return gameObject;
 		}
+
+		public static IEnumerable<GameObject> EnumerateGameObjects()
+			=> gameObjects;
 	}
 }

@@ -218,11 +218,7 @@ namespace Terraria.ModLoader
 
 		public static void NPCAI(NPC npc) {
 			// Test
-			foreach (var component in npc.GameObject.Components) {
-				if (component is IOnUpdateHook hook) {
-					hook.OnUpdate();
-				}
-			}
+			IOnUpdateHook.Invoke(npc.GameObject);
 
 			if (PreAI(npc)) {
 				int type = npc.type;

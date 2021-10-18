@@ -675,11 +675,13 @@
  			if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
  				timeSinceTheItemHasBeenReservedForSomeone++;
  				if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
-@@ -45389,6 +_,7 @@
+@@ -45389,6 +_,9 @@
  		}
  
  		private void CheckLavaDeath(int i) {
-+			bool? canBurnInLava = ItemLoader.CanBurnInLava(this);
++			// TEST
++			bool? canBurnInLava = ICanBurnInLava.Invoke(GameObject); //ItemLoader.CanBurnInLava(this);
++
  			if (type == 267) {
  				if (Main.netMode == 1)
  					return;
@@ -694,16 +696,12 @@
  				active = false;
  				type = 0;
  				stack = 0;
-@@ -45418,6 +_,14 @@
+@@ -45418,6 +_,10 @@
  		}
  
  		private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity) {
 +			// Test
-+			foreach (var component in GameObject.Components) {
-+				if (component is IOnUpdateHook hook) {
-+					hook.OnUpdate();
-+				}
-+			}
++			IOnUpdateHook.Invoke(GameObject);
 +
 +			ItemLoader.Update(this, ref gravity, ref maxFallSpeed);
  			if (ItemID.Sets.ItemNoGravity[type]) {

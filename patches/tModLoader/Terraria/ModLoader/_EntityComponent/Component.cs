@@ -5,7 +5,7 @@ namespace Terraria.ModLoader
 	public abstract class Component : ModType, IDisposable
 	{
 		public GameObject GameObject { get; internal set; }
-		public int Type { get; private set; }
+		public ushort Id { get; private set; }
 
 		protected internal Component() { }
 
@@ -24,7 +24,7 @@ namespace Terraria.ModLoader
 		protected internal virtual void Dispose() { }
 
 		protected sealed override void Register() {
-			Type = ComponentLoader.RegisterComponent(this);
+			Id = ComponentLoader.RegisterComponent(this);
 
 			ModTypeLookup<Component>.Register(this);
 		}

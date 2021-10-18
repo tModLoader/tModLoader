@@ -16,6 +16,7 @@ namespace Terraria.ModLoader
 		private static readonly List<Component> components = new();
 		private static readonly List<Component> globalComponents = new();
 		private static readonly List<Component> globalComponentsWithoutDependencies = new();
+		private static readonly List<ComponentHook> componentHooks = new();
 		private static readonly Dictionary<Type, int> componentIdsByType = new();
 
 		private static ComponentTypeData[] componentypeDataById = Array.Empty<ComponentTypeData>();
@@ -48,6 +49,10 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
+
+			foreach (var hook in componentHooks) {
+				hook.Update(components);
+			}
 		}
 
 		internal override void Unload() {
@@ -59,14 +64,18 @@ namespace Terraria.ModLoader
 			componentypeDataById = Array.Empty<ComponentTypeData>();
 		}
 
-		internal static int RegisterComponent(Component component) {
-			int id = components.Count;
+		internal static ushort RegisterComponent(Component component) {
+			ushort id = (ushort)components.Count;
 
 			componentIdsByType[component.GetType()] = id;
 
 			components.Add(component);
 
 			return id;
+		}
+
+		internal static void RegisterComponentHook(ComponentHook hook) {
+			componentHooks.Add(hook);
 		}
 
 		internal static void AddGlobalComponents(GameObject gameObject) {

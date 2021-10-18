@@ -4,7 +4,7 @@ namespace Terraria.ModLoader
 {
 	/// <summary> The purpose of this struct is to micro-optimize lookups of GlobalX indices by providing these associations without additional retrievals from the heap. </summary>
 	[StructLayout(LayoutKind.Sequential, Pack = 2)]
-	public readonly struct Instanced<T> where T : GlobalType
+	public readonly struct Instanced<T>
 	{
 		public readonly ushort index;
 		public readonly T instance;
