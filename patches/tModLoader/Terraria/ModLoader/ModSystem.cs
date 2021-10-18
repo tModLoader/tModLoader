@@ -310,7 +310,5 @@ namespace Terraria.ModLoader
 		/// <br/> The <paramref name="tileCounts"/> parameter is a read-only span (treat this as an array) that stores the tile count indexed by tile type.
 		/// </summary>
 		public virtual void TileCountsAvailable(ReadOnlySpan<int> tileCounts) { }
-
-		public override bool IsLoadingEnabled(Mod mod) => true;
 	}
 }
