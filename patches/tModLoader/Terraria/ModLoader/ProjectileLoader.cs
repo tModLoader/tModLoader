@@ -564,33 +564,6 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
-		private delegate bool DelegatePreDraw(Projectile projectile, ref Color lightColor);
-		private static HookList HookPreDraw = AddHook<DelegatePreDraw>(g => g.PreDraw);
-
-		public static bool PreDraw(Projectile projectile, ref Color lightColor) {
-			bool result = true;
-
-			foreach (GlobalProjectile g in HookPreDraw.Enumerate(projectile.globalProjectiles)) {
-				result &= g.PreDraw(projectile, ref lightColor);
-			}
-
-			if (result && projectile.ModProjectile != null) {
-				return projectile.ModProjectile.PreDraw(ref lightColor);
-			}
-
-			return result;
-		}
-
-		private static HookList HookPostDraw = AddHook<Action<Projectile, Color>>(g => g.PostDraw);
-
-		public static void PostDraw(Projectile projectile, Color lightColor) {
-			projectile.ModProjectile?.PostDraw(lightColor);
-
-			foreach (GlobalProjectile g in HookPostDraw.Enumerate(projectile.globalProjectiles)) {
-				g.PostDraw(projectile, lightColor);
-			}
-		}
-
 		private static HookList HookCanUseGrapple = AddHook<Func<int, Player, bool?>>(g => g.CanUseGrapple);
 
 		public static bool? CanUseGrapple(int type, Player player) {

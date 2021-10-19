@@ -480,26 +480,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind this NPC, or to modify the way this NPC is drawn. Substract screenPos from the draw position before drawing. Return false to stop the game from drawing the NPC (useful if you're manually drawing the NPC). Returns true by default.
-		/// </summary>
-		/// <param name="spriteBatch">The spritebatch to draw on</param>
-		/// <param name="screenPos">The screen position used to translate world position into screen position</param>
-		/// <param name="drawColor">The color the NPC is drawn in</param>
-		/// <returns></returns>
-		public virtual bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
-			return true;
-		}
-
-		/// <summary>
-		/// Allows you to draw things in front of this NPC. Substract screenPos from the draw position before drawing. This method is called even if PreDraw returns false.
-		/// </summary>
-		/// <param name="spriteBatch">The spritebatch to draw on</param>
-		/// <param name="screenPos">The screen position used to translate world position into screen position</param>
-		/// <param name="drawColor">The color the NPC is drawn in</param>
-		public virtual void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
-		}
-
-		/// <summary>
 		/// When used in conjunction with "npc.hide = true", allows you to specify that this npc should be drawn behind certain elements. Add the index to one of Main.DrawCacheNPCsMoonMoon, DrawCacheNPCsOverPlayers, DrawCacheNPCProjectiles, or DrawCacheNPCsBehindNonSolidTiles.
 		/// </summary>
 		/// <param name="npc"></param>

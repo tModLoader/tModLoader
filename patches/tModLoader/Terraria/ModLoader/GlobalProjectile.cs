@@ -304,23 +304,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Use the Main.EntitySpriteDraw method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.
-		/// </summary>
-		/// <param name="projectile"> The projectile. </param>
-		/// <param name="lightColor"> The color of the light at the projectile's center. </param>
-		public virtual bool PreDraw(Projectile projectile, ref Color lightColor) {
-			return true;
-		}
-
-		/// <summary>
-		/// Allows you to draw things in front of a projectile. Use the Main.EntitySpriteDraw method for drawing. This method is called even if PreDraw returns false.
-		/// </summary>
-		/// <param name="projectile"> The projectile. </param>
-		/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
-		public virtual void PostDraw(Projectile projectile, Color lightColor) {
-		}
-
-		/// <summary>
 		/// When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
 		/// </summary>
 		/// <param name="projectile"></param>

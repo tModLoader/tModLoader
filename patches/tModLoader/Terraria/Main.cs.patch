@@ -2371,11 +2371,11 @@
  
 +			NPCLoader.DrawEffects(rCurrentNPC, ref npcColor); //TODO: Effects were previously done before drawing, here, but 1.4 moved them to updates in UpdateNPC_BuffApplyVFX(). Should this hook be moved and renamed? --Mirsario
 +			
-+			if (NPCLoader.PreDraw(rCurrentNPC, spriteBatch, screenPos, npcColor)) {
++			if (!IPreDrawHook.Invoke(rCurrentNPC.GameObject, screenPos, ref npcColor)) {
 +				DrawNPCDirect_Inner(spriteBatch, rCurrentNPC, behindTiles, screenPos, ref npcColor);
 +			}
 +
-+			NPCLoader.PostDraw(rCurrentNPC, spriteBatch, screenPos, npcColor);
++			IPostDrawHook.Invoke(rCurrentNPC.GameObject, screenPos, npcColor);
 +		}
 +
 +		private void DrawNPCDirect_Inner(SpriteBatch mySpriteBatch, NPC rCurrentNPC, bool behindTiles, Vector2 screenPos, ref Color npcColor) {
@@ -2467,11 +2467,13 @@
  			Microsoft.Xna.Framework.Color color31 = Lighting.GetColor((int)((double)projectile.position.X + (double)projectile.width * 0.5) / 16, (int)(((double)projectile.position.Y + (double)projectile.height * 0.5) / 16.0));
  			if (projectile.hide && !ProjectileID.Sets.DontAttachHideToAlpha[projectile.type])
  				color31 = Lighting.GetColor((int)mountedCenter.X / 16, (int)(mountedCenter.Y / 16f));
-@@ -21678,6 +_,21 @@
+@@ -21678,6 +_,25 @@
  			if (projectile.type == 14)
  				color31 = Microsoft.Xna.Framework.Color.White;
  
-+			if (ProjectileLoader.PreDraw(projectile, ref color31)) {
++			var screenPos = Main.screenPosition;
++
++			if (!IPreDrawHook.Invoke(projectile.GameObject, screenPos, ref color31)) {
 +				bool earlyReturn = true;
 +				DrawProj_DrawVoidLens(projectile, ref earlyReturn);
 +				if (earlyReturn)
@@ -2482,8 +2484,10 @@
 +					goto PostDraw;
 +				DrawProj_DrawNormalProjs(i, projectile, polePosX, polePosY, mountedCenter, ref color31);
 +			}
++
 +			PostDraw:
-+			ProjectileLoader.PostDraw(projectile, color31);
++
++			IPostDrawHook.Invoke(projectile.GameObject, screenPos, color31);
 +		}
 +		private void DrawProj_DrawNormalProjs(int i, Projectile projectile, float polePosX, float polePosY, Vector2 mountedCenter, ref Color color31) {
  			int num136 = 0;

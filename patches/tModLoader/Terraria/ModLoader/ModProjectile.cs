@@ -348,21 +348,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind this projectile, or to modify the way it is drawn. Use the Main.EntitySpriteDraw method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.
-		/// </summary>
-		/// <param name="lightColor"> The color of the light at the projectile's center. </param>
-		public virtual bool PreDraw(ref Color lightColor) {
-			return true;
-		}
-
-		/// <summary>
-		/// Allows you to draw things in front of this projectile. Use the Main.EntitySpriteDraw method for drawing. This method is called even if PreDraw returns false.
-		/// </summary>
-		/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
-		public virtual void PostDraw(Color lightColor) {
-		}
-
-		/// <summary>
 		/// This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc.
 		/// </summary>
 		public virtual bool? CanUseGrapple(Player player) {

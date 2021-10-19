@@ -55,6 +55,9 @@ namespace Terraria.ModLoader
 		}
 
 		public static void ModifyShootStats(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			IModifyItemShootStatsHook.Invoke(player.GameObject, player, item, ref position, ref velocity, ref type, ref damage, ref knockback);
+			IModifyItemShootStatsHook.Invoke(item.GameObject, player, item, ref position, ref velocity, ref type, ref damage, ref knockback);
+
 			ItemLoader.ModifyShootStats(item, player, ref position, ref velocity, ref type, ref damage, ref knockback);
 			PlayerLoader.ModifyShootStats(player, item, ref position, ref velocity, ref type, ref damage, ref knockback);
 		}
