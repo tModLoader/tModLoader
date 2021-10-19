@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Terraria.ModLoader
 {
@@ -26,6 +27,19 @@ namespace Terraria.ModLoader
 		internal override void ResizeArrays() {
 			Array.Resize(ref componentypeDataById, components.Count);
 
+			// Run static constructors of hook interfaces
+			foreach (var mod in ModLoader.Mods) {
+				var assembly = mod.Code;
+
+				foreach (var type in assembly.GetTypes()) {
+					if (type.IsInterface && type.GetCustomAttribute<ComponentHookAttribute>() != null) {
+						// Won't run more than once in .NET Core+
+						RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+					}
+				}
+			}
+
+			// Setup static component information
 			for (int i = 0; i < components.Count; i++) {
 				var component = components[i];
 				var type = component.GetType();
@@ -50,6 +64,7 @@ namespace Terraria.ModLoader
 				}
 			}
 
+			// Prepare hooklists
 			foreach (var hook in componentHooks) {
 				hook.Update(components);
 			}
