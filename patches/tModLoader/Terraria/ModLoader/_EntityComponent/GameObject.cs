@@ -28,7 +28,7 @@ namespace Terraria.ModLoader
 
 		public bool HasComponent<T>() where T : Component {
 			for (int i = 0; i < components.Count; i++) {
-				if (components[i] is T) {
+				if (components[i].instance is T) {
 					return true;
 				}
 			}
@@ -38,7 +38,7 @@ namespace Terraria.ModLoader
 
 		public T GetComponent<T>() where T : Component {
 			for (int i = 0; i < components.Count; i++) {
-				if (components[i] is T tComponent) {
+				if (components[i].instance is T tComponent) {
 					return tComponent;
 				}
 			}
