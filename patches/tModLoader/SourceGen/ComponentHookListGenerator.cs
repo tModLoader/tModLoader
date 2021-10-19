@@ -86,17 +86,18 @@ namespace {AttributeNamespace}
 					string memberSuffix = methods.Length > 1 ? method.Name : string.Empty;
 					string methodName = method.Name;
 					string delegateName = $"Delegate{memberSuffix}";
-					string parameterCode = string.Join(", ", method.Parameters.Select(p => $"{p.ToDisplayString()} {p.Name}").Prepend($"Component component"));
+					string parameterCode = string.Join(", ", method.Parameters.Select(p => $"{p.ToDisplayString()} {p.Name}").Prepend($"TInstance component"));
 
-					source.AppendLine($"\t\tprivate delegate {method.ReturnType.ToDisplayString()} {delegateName}({parameterCode});");
+					source.AppendLine($"\t\tprivate delegate {method.ReturnType.ToDisplayString()} {delegateName}<TInstance>({parameterCode}) where TInstance : Component;");
 
 					source.AppendLine();
 
 					string fieldName = $"Hook{memberSuffix}";
-					string fieldType = $"ComponentHookList<{delegateName}>";
-					string getMethodInfoCode = $@"typeof({interfaceName}).GetMethod(""{methodName}"")";
+					string fieldType = $"ComponentHookList<{delegateName}<Component>>";
+					string getMethodInfoCode = $@"typeof({interfaceName}).GetMethod(nameof({methodName}))";
+					string getBaseGenericTypeCode = $"typeof({delegateName}<>)";
 
-					source.AppendLine($"\t\tprivate static readonly {fieldType} {fieldName} = new({getMethodInfoCode});");
+					source.AppendLine($"\t\tprivate static readonly {fieldType} {fieldName} = new({getMethodInfoCode}, {getBaseGenericTypeCode});");
 				}
 
 				source.AppendLine($"\t}}");

@@ -74,11 +74,13 @@ namespace Terraria.ModLoader
 		}
 
 		private readonly MethodInfo method;
+		private readonly Type delegateGenericTypeDefinition;
 
 		private (int index, TComponentDelegate componentDelegate)[] registeredComponentInfo = Array.Empty<(int, TComponentDelegate)>();
 
-		public ComponentHookList(MethodInfo method) {
+		public ComponentHookList(MethodInfo method, Type delegateGenericTypeDefinition) {
 			this.method = method;
+			this.delegateGenericTypeDefinition = delegateGenericTypeDefinition;
 
 			ComponentLoader.RegisterComponentHookList(this);
 		}
@@ -116,8 +118,18 @@ namespace Terraria.ModLoader
 				interfaceMethodId ??= Array.IndexOf(interfaceMap.InterfaceMethods, method);
 
 				var targetMethod = interfaceMap.TargetMethods[interfaceMethodId.Value];
-				var delegateParameters = targetMethod.GetParameters().Select(p => p.ParameterType).Prepend(targetMethod.DeclaringType).Append(targetMethod.ReturnType).ToArray();
-				var delegateType = Expression.GetDelegateType(delegateParameters);
+
+				// This doesn't work with ref types in parameters.
+				/*var delegateParameters = targetMethod.GetParameters()
+					.Select(p => p.ParameterType)
+					.Prepend(targetMethod.DeclaringType)
+					.Append(targetMethod.ReturnType)
+					.ToArray();
+
+				var delegateType = Expression.GetDelegateType(delegateParameters);*/
+
+				// Fool CLR by making a delegate with an exact type provided for the first parameter, but then unsafely cast that delegate into a type that has that be the base class.
+				var delegateType = delegateGenericTypeDefinition.MakeGenericType(targetMethod.DeclaringType);
 				var componentDelegate = Unsafe.As<TComponentDelegate>(Delegate.CreateDelegate(delegateType, targetMethod));
 
 				componentInfoList.Add((i, componentDelegate));
