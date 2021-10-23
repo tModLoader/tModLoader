@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -28,32 +27,22 @@ namespace Terraria.ModLoader.Setup
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			/*if (args.Length == 1 && args[0] == "--steamdir") {
-				Console.WriteLine(SteamDir);
-				return;
-			}*/
 #if AUTO
-			Settings.Default.TMLDevSteamDir = Settings.Default.SteamDir = @".\1423\Windows";
+			Settings.Default.SteamDir = Path.GetFullPath(args[0]);
+			Settings.Default.TMLDevSteamDir = Path.GetFullPath("steam_build");
+			if (!Directory.Exists(TMLDevSteamDir))
+				Directory.CreateDirectory(TMLDevSteamDir);
 #else
 			CreateTMLSteamDirIfNecessary();
 #endif
-
 			UpdateTargetsFile();
-
 #if AUTO
 			Console.WriteLine("Automatic setup start");
 			new AutoSetup().DoAuto();
 			Console.WriteLine("Automatic setup finished");
-			return;
-#endif
+#else
 			Application.Run(new MainForm());
-		}
-
-		private static Assembly ResolveAssemblyFrom(string libDir, string name)
-		{
-			var path = Path.Combine(libDir, name);
-			path = new[] {".exe", ".dll"}.Select(ext => path+ext).SingleOrDefault(File.Exists);
-			return path != null ? Assembly.LoadFrom(path) : null;
+#endif
 		}
 
 		public static int RunCmd(string dir, string cmd, string args, 

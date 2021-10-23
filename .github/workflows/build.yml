@@ -4,7 +4,7 @@ name: Build tModLoader
 on:
   # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4, 1.4_mergedtesting]
+    branches: [1.4, 1.4_mergedtesting, gh_actions_test]
   pull_request_target:
     types: [labeled]
     branches: [1.4, 1.4_mergedtesting]
@@ -86,47 +86,42 @@ jobs:
           echo Extracting Setup Secret Assets
           gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1423/Windows/Terraria.exe ./setup/SecretAssets/SetupAsset1.gpg
           gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1423/Windows/SteelSeriesEngineWrapper.dll ./setup/SecretAssets/SetupAsset2.gpg
-          echo ls -l is:
-          ls -l
+          
           echo Installing XNA
           curl -s -L https://github.com/JavidPack/tModLoaderPublishIntegration/raw/master/xnafx40_redist.msi -O
           msiexec //i xnafx40_redist.msi //quiet
           echo XNA Installed
+          
           echo Running setup.bat
-          ./setup.bat auto
-          echo setupcommandline Done
-          echo pwd is: ${PWD}
-          echo ls -l is:
-          ls -l
+          ./setup.bat auto ./1423/Windows
+          
+          echo WorkspaceInfo.targets is
+          cat src/WorkspaceInfo.targets
+          
           echo Creating tModLoader cache zip file
           7z a tModLoader.zip ./src/tModLoader/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" tModLoader.zip
-          ls -l
-          cd solutions
-          echo pwd is: ${PWD}
-          echo ls -l is:
-          ls -l
+          
           echo Running CompleteLib.bat for Release
+          cd solutions
           ./CompleteLib.bat Release skipzip
-          echo CompleteLib.bat Release Done
           cd ..
           mkdir -p artifacts/Release
           cp -R ./solutions/Release/Shared/. ./artifacts/Release/
+          
           echo Cleaning up output directory in-between builds...
-          rm -r ./src/tModLoader/Terraria/1423/Windows
-          cd solutions
-          echo pwd is: ${PWD}
           # export UPLOAD_MSBUILD_LOGS=1
           echo Running CompleteLib.bat for Debug
+          cd solutions
           ./CompleteLib.bat Debug skipzip
-          echo CompleteLib.bat Debug Done
           cd ..
           mkdir -p artifacts/Debug
           cp -R ./solutions/Debug/Shared/. ./artifacts/Debug/
+          
           echo Creating decompiled cache zip file
           7z a decompiled.zip ./src/decompiled/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
-          ls -l
+          
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
@@ -158,21 +153,36 @@ jobs:
         run: |
           echo Adding build info to ExampleMod displayName
           echo "displayName = Example Mod (${GITHUB_REF##*/}-${{ github.sha }})" >> ./ExampleMod/build.txt
-          cd artifacts/Debug
-          mkdir -p ModLoader/Mods
-          echo pwd is: ${PWD}
-          echo Building ExampleMod
-          dotnet tModLoader.dll -server -build ../../ExampleMod -tmlsavedirectory ./ModLoader
-          cd ../..
-          mkdir -p artifacts/Mods
-          mv ./artifacts/Debug/ModLoader/Mods/ExampleMod.tmod ./artifacts/Mods/ExampleMod.tmod
           
+          #pwd gives an absolute path, required for -tmlsavedirectory as the build command is executed from the steam/deployment dir          
+          ModloaderDir=$(pwd)/local/ModLoader
+          echo ModloaderDir is: $ModloaderDir
+          mkdir -p $ModloaderDir
+          
+          echo Building ExampleMod
+          export ExtraBuildModFlags="-tmlsavedirectory \"$(cygpath -w $ModloaderDir)\"" #convert unix path to windows
+          echo ExtraBuildModFlags is: $ExtraBuildModFlags
+          
+          echo dotnet build ExampleMod/ExampleMod.csproj
+          dotnet build ExampleMod/ExampleMod.csproj --nologo # -v q /clp:ErrorsOnly
+          
+          mkdir -p artifacts/Mods
+          mv $ModloaderDir/Mods/ExampleMod.tmod artifacts/Mods/ExampleMod.tmod
+          
+          echo Testing Example Mod build from "Mod Sources" dir  
+          cd $ModloaderDir/Mod Sources/ExampleMod
+          dotnet build ExampleMod.csproj --nologo -v q
       - name: Upload ExampleMod Build Artifact
         uses: actions/upload-artifact@v2
         with:
           name: ExampleMod Build
           path: |
             ./artifacts/Mods/ExampleMod.tmod
+            
+      - name: List final directory and file structure
+        if: always()
+        shell: pwsh
+        run: tree /f /a
         
       - name: Post push report to 1-4-nightly-builds on Discord
         uses: sarisia/actions-status-discord@v1
