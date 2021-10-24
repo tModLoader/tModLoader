@@ -12,5 +12,6 @@ var class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player =
     [ "UpdateVisibleAccessories", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html#aa3d38c287293eda0cbf660f9936299cb", null ],
     [ "UpdateVisibleVanityAccessories", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html#a8a838ec2cb63241419534abbb282a7e3", null ],
     [ "CloneNewInstances", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html#ae1236adc617db6e3e7bfee65c7a6a572", null ],
-    [ "Loader", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html#a0b60ac3b1e216b111ae5f31c2f1655fd", null ]
+    [ "Loader", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html#a0b60ac3b1e216b111ae5f31c2f1655fd", null ],
+    [ "SlotCount", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html#ab71506ca8514677083119fd719458937", null ]
 ];

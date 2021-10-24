@@ -1,5 +1,6 @@
 var NAVTREEINDEX125 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#ae5d1bbaf0c31276ffa55056739d08b0a":[1,0,2,4,36,26],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#ae6ff0360eb85094863ed2f00c98d58e5":[1,0,2,4,36,1],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#aeb483fb41a0da603ed75468e6e8464a0":[1,0,2,4,36,61],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#aec72a38d3e22bbc435e7656854f9b8cb":[1,0,2,4,36,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX125 =
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html#a61643aa0e3523adb32ea20e86399f184":[1,0,2,5,62,7,0],
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html#a8b272140f9b20ad57ac213f50bcb1971":[1,0,2,5,62,7,3],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_info.html":[1,0,2,5,21,0,1],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_info.html#a80de6f7c36f962bbadfbacd31ab0ac76":[1,0,2,5,21,0,1,1],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_info.html#ae6f1b032af53cbf0ad8a60b1cdaf21a9":[1,0,2,5,21,0,1,0]
+"struct_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_info.html#a80de6f7c36f962bbadfbacd31ab0ac76":[1,0,2,5,21,0,1,1]
 };
