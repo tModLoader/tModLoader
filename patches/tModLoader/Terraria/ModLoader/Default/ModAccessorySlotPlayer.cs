@@ -21,8 +21,8 @@ namespace Terraria.ModLoader.Default
 		internal Dictionary<string, int> slots = new Dictionary<string, int>();
 
 		// Setting toggle for stack or scroll accessories/npcHousing
-		internal bool scrollSlots = true;
-		internal int scrollbarSlotPosition = 0;
+		internal bool scrollSlots;
+		internal int scrollbarSlotPosition;
 
 		public ModAccessorySlotPlayer() {
 			foreach (var slot in Loader.list) {
