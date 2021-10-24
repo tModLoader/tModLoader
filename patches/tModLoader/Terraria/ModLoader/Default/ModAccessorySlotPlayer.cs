@@ -9,10 +9,7 @@ namespace Terraria.ModLoader.Default
 	// Test in Multiplayer, suspect there is some issue with synchronization of unloaded slots
 	public class ModAccessorySlotPlayer : ModPlayer
 	{
-		public override bool CloneNewInstances => false;
 		internal static AccessorySlotLoader Loader => LoaderManager.Get<AccessorySlotLoader>();
-
-		internal int SlotCount() => slots.Count;
 
 		// Arrays for modded accessory slot save/load/usage. Used in DefaultPlayer.
 		internal Item[] exAccessorySlot = new Item[2];
@@ -23,6 +20,10 @@ namespace Terraria.ModLoader.Default
 		// Setting toggle for stack or scroll accessories/npcHousing
 		internal bool scrollSlots;
 		internal int scrollbarSlotPosition;
+
+		public override bool CloneNewInstances => false;
+
+		public int SlotCount => slots.Count;
 
 		public ModAccessorySlotPlayer() {
 			foreach (var slot in Loader.list) {
@@ -93,7 +94,7 @@ namespace Terraria.ModLoader.Default
 		public override void UpdateVisibleAccessories() {
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 
-			for (int k = 0; k < SlotCount(); k++) {
+			for (int k = 0; k < SlotCount; k++) {
 				if (loader.ModdedIsAValidEquipmentSlotForIteration(k, Player)) {
 					Player.UpdateVisibleAccessories(exAccessorySlot[k], exHideAccessory[k], k, true);
 				}
@@ -106,9 +107,9 @@ namespace Terraria.ModLoader.Default
 		public override void UpdateVisibleVanityAccessories() {
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 
-			for (int k = 0; k < SlotCount(); k++) {
+			for (int k = 0; k < SlotCount; k++) {
 				if (loader.ModdedIsAValidEquipmentSlotForIteration(k, Player)) {
-					var vanitySlot = k + SlotCount();
+					var vanitySlot = k + SlotCount;
 					if (!Player.ItemIsVisuallyIncompatible(exAccessorySlot[vanitySlot]))
 						Player.UpdateVisibleAccessory(vanitySlot, exAccessorySlot[vanitySlot], true);
 				}
@@ -122,7 +123,7 @@ namespace Terraria.ModLoader.Default
 		public override void UpdateDyes() {
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 
-			for (int i = 0; i < SlotCount() * 2; i++) {
+			for (int i = 0; i < SlotCount * 2; i++) {
 				if (loader.ModdedIsAValidEquipmentSlotForIteration(i, Player)) {
 					int num = i % exDyesAccessory.Length;
 					Player.UpdateItemDye(i < exDyesAccessory.Length, exHideAccessory[num], exAccessorySlot[i], exDyesAccessory[num]);
@@ -136,7 +137,7 @@ namespace Terraria.ModLoader.Default
 		public override void UpdateEquips() {
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 
-			for (int k = 0; k < SlotCount(); k++) {
+			for (int k = 0; k < SlotCount; k++) {
 				if (loader.ModdedIsAValidEquipmentSlotForIteration(k, Player)) {
 					loader.CustomUpdateEquips(k, Player);
 				}
@@ -147,10 +148,10 @@ namespace Terraria.ModLoader.Default
 		public void DropItems() {
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 			var pos = Player.position + Player.Size / 2;
-			for (int i = 0; i < SlotCount(); i++) {
+			for (int i = 0; i < SlotCount; i++) {
 				if (loader.ModdedIsAValidEquipmentSlotForIteration(i, Player)) {
 					Player.DropItem(pos, ref exAccessorySlot[i]);
-					Player.DropItem(pos, ref exAccessorySlot[i + SlotCount()]);
+					Player.DropItem(pos, ref exAccessorySlot[i + SlotCount]);
 					Player.DropItem(pos, ref exDyesAccessory[i]);
 				}
 			}

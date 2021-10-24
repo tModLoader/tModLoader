@@ -43,8 +43,8 @@ namespace Terraria.ModLoader
 		}
 
 		public Item VanityItem {
-			get => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount()];
-			set => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount()] = value;
+			get => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount];
+			set => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount] = value;
 		}
 
 		public Item DyeItem {

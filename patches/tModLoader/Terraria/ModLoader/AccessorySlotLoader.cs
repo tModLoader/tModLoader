@@ -17,13 +17,15 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This serves as a central place to store equipment slots and their corresponding textures. You will use this to obtain the IDs for your equipment textures.
 	/// </summary>
-	public class AccessorySlotLoader : Loader<ModAccessorySlot> {
-		static Player Player => Main.LocalPlayer;
-		static internal ModAccessorySlotPlayer ModSlotPlayer(Player player) => player.GetModPlayer<ModAccessorySlotPlayer>();
+	public class AccessorySlotLoader : Loader<ModAccessorySlot>
+	{
+		private static Player Player => Main.LocalPlayer;
+
+		internal static ModAccessorySlotPlayer ModSlotPlayer(Player player) => player.GetModPlayer<ModAccessorySlotPlayer>();
 
 		public AccessorySlotLoader() => Initialize(0);
 
-		public ModAccessorySlot Get(int id, Player player) => list[id % ModSlotPlayer(player).SlotCount()];
+		public ModAccessorySlot Get(int id, Player player) => list[id % ModSlotPlayer(player).SlotCount];
 		public ModAccessorySlot Get(int id) => Get(id, Player);
 
 		public const int MaxVanillaSlotCount = 2 + 5;
@@ -429,7 +431,7 @@ namespace Terraria.ModLoader
 		/// DOES NOT affect vanilla behaviour of swapping items like for like where existing in a slot
 		/// </summary>
 		public void ModifyDefaultSwapSlot(Item item, ref int accSlotToSwapTo) {
-			for (int num = ModSlotPlayer(Player).SlotCount() - 1; num >= 0; num--) {
+			for (int num = ModSlotPlayer(Player).SlotCount - 1; num >= 0; num--) {
 				if (ModdedIsAValidEquipmentSlotForIteration(num, Player)) {
 					if (Get(num).ModifyDefaultSwapSlot(item, accSlotToSwapTo)) {
 						accSlotToSwapTo = num + 20;
@@ -444,7 +446,7 @@ namespace Terraria.ModLoader
 		/// Provides the golf ball projectile from an accessory slot. 
 		/// </summary>
 		public bool PreferredGolfBall(ref int projType) {
-			for (int num = ModSlotPlayer(Player).SlotCount() * 2 - 1; num >= 0; num--) {
+			for (int num = ModSlotPlayer(Player).SlotCount * 2 - 1; num >= 0; num--) {
 				if (ModdedIsAValidEquipmentSlotForIteration(num, Player)) {
 					Item item2 = ModSlotPlayer(Player).exAccessorySlot[num];
 					if (!item2.IsAir && item2.shoot > 0 && ProjectileID.Sets.IsAGolfBall[item2.shoot]) {
