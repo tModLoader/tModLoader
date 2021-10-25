@@ -97,7 +97,7 @@ jobs:
           echo ::endgroup::
           
           echo ::group::WorkspaceInfo.targets
-          cat src/WorkspaceInfo.targets
+          cat src/WorkspaceInfo.targets; echo
           echo ::endgroup::
           
           echo ::group::Creating tModLoader cache zip file
@@ -105,22 +105,22 @@ jobs:
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" tModLoader.zip
           echo ::endgroup::
           
-          echo ::group::Running CompleteLib.bat for Release
-          cd solutions
-          ./CompleteLib.bat Release skipzip
-          cd ..
+          echo ::group::Building Release
+          dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q
+          dotnet build src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q
           mkdir -p artifacts/Release
-          cp -R ./solutions/Release/Shared/. ./artifacts/Release/
+          cp -r steam_build/. artifacts/Release
           echo ::endgroup::
           
           echo Cleaning up output directory in-between builds...
-          # export UPLOAD_MSBUILD_LOGS=1
+          rm -rf steam_build
+          
           echo ::group::Running CompleteLib.bat for Debug
-          cd solutions
-          ./CompleteLib.bat Debug skipzip
-          cd ..
+          # export UPLOAD_MSBUILD_LOGS=1
+          dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Debug --nologo -v q
+          dotnet build src/tModLoader/Terraria/Terraria.csproj -c Debug --nologo -v q
           mkdir -p artifacts/Debug
-          cp -R ./solutions/Debug/Shared/. ./artifacts/Debug/
+          cp -r steam_build/. artifacts/Debug
           echo ::endgroup::
           
           echo ::group::Creating decompiled cache zip file
