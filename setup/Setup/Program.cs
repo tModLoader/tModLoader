@@ -35,7 +35,7 @@ namespace Terraria.ModLoader.Setup
 #else
 			CreateTMLSteamDirIfNecessary();
 #endif
-			UpdateTargetsFile();
+			UpdateTargetsFiles();
 #if AUTO
 			Console.WriteLine("Automatic setup start");
 			new AutoSetup().DoAuto();
@@ -122,7 +122,7 @@ namespace Terraria.ModLoader.Setup
 					Settings.Default.Save();
 
 					CreateTMLSteamDirIfNecessary();
-					UpdateTargetsFile();
+					UpdateTargetsFiles();
 
 					return true;
 				}
@@ -145,7 +145,7 @@ namespace Terraria.ModLoader.Setup
 				Settings.Default.TMLDevSteamDir = Path.GetDirectoryName(dialog.FileName);
 				Settings.Default.Save();
 
-				UpdateTargetsFile();
+				UpdateTargetsFiles();
 				
 				return true;
 			}
@@ -166,11 +166,19 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
-		private static readonly string targetsFilePath = Path.Combine("src", "WorkspaceInfo.targets");
+		internal static void UpdateTargetsFiles() {
+			UpdateFileText("src/WorkspaceInfo.targets", GetWorkspaceInfoTargetsText());
+			UpdateFileText(Path.Combine(TMLDevSteamDir, "tMLMod.targets"), File.ReadAllText("patches/tModLoader/Terraria/release_extras/tMLMod.targets"));
+		}
 
-		internal static void UpdateTargetsFile() {
-			SetupOperation.CreateParentDirectory(targetsFilePath);
+		private static void UpdateFileText(string path, string text) {
+			SetupOperation.CreateParentDirectory(path);
 
+			if (!File.Exists(path) || text != File.ReadAllText(path))
+				File.WriteAllText(path, text);
+		}
+
+		private static string GetWorkspaceInfoTargetsText() {
 			string gitsha = "";
 			RunCmd("", "git", "rev-parse HEAD", s => gitsha = s.Trim());
 
@@ -188,7 +196,7 @@ namespace Terraria.ModLoader.Setup
 				gitsha = HEAD_SHA;
 			}
 
-			string targetsText =
+			return
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <!-- This file will always be overwritten, do not edit it manually. -->
@@ -199,11 +207,6 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
     <tModLoaderSteamPath>{TMLDevSteamDir}</tModLoaderSteamPath>
   </PropertyGroup>
 </Project>";
-
-			if (File.Exists(targetsFilePath) && targetsText == File.ReadAllText(targetsFilePath))
-				return;
-
-			File.WriteAllText(targetsFilePath, targetsText);
 		}
 	}
 }
