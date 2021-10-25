@@ -293,8 +293,6 @@ namespace Terraria.ModLoader
 				throw new Exception("AddSound can only be called from Mod.Load or Mod.Autoload");
 
 			int id = SoundLoader.ReserveSoundID(type);
-
-			soundPath = soundPath[..^Path.GetExtension(soundPath).Length];
 			SoundLoader.sounds[type][soundPath] = id;
 
 			if (modSound != null) {

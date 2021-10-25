@@ -110,7 +110,8 @@ namespace Terraria.ModLoader
 
 			const string SoundFolder = "Sounds/";
 
-			foreach (string soundPath in RootContentSource.EnumerateAssets().Where(t => t.Contains(SoundFolder))) {
+			foreach (string fullSoundPath in RootContentSource.EnumerateAssets().Where(t => t.Contains(SoundFolder))) {
+				string soundPath = Path.ChangeExtension(fullSoundPath, null);
 				string substring = soundPath.Substring(soundPath.IndexOf(SoundFolder) + SoundFolder.Length);
 				SoundType soundType = SoundType.Custom;
 
