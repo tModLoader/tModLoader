@@ -14,6 +14,6 @@ namespace Terraria.ModLoader
 		Item = 2,
 		NPCHit = 3,
 		NPCKilled = 4,
-		Custom = 50
+		Custom = SoundLoader.customSoundType
 	}
 }

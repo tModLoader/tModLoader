@@ -20,7 +20,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// This value should be passed as the first parameter to Main.PlaySound whenever you want to play a custom sound that is not an item, npcHit, or npcKilled sound.
 		/// </summary>
-		public const int customSoundType = 50;
+		public const int customSoundType = 500;
 
 		static SoundLoader() {
 			foreach (SoundType type in Enum.GetValues(typeof(SoundType))) {
