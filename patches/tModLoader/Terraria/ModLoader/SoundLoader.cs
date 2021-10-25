@@ -40,8 +40,8 @@ namespace Terraria.ModLoader
 		/// Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given SoundType and the given sound file path. Returns 0 if there is no corresponding style.
 		/// </summary>
 		public static int GetSoundSlot(SoundType type, string sound) {
-			if (sounds[type].ContainsKey(sound)) {
-				return sounds[type][sound];
+			if (sounds[type].TryGetValue(sound, out int slot)) {
+				return slot;
 			}
 			else {
 				return 0;
@@ -54,8 +54,8 @@ namespace Terraria.ModLoader
 		/// Returns a LegacySoundStyle object which encapsulates both a sound type and a sound style (This is the new way to do sounds in 1.3.4) Returns null if there is no corresponding style.
 		/// </summary>
 		internal static LegacySoundStyle GetLegacySoundSlot(SoundType type, string sound) {
-			if (sounds[type].ContainsKey(sound)) {
-				return new LegacySoundStyle((int)type, sounds[type][sound]);
+			if (sounds[type].TryGetValue(sound, out int slot)) {
+				return new LegacySoundStyle((int)type, slot);
 			}
 			else {
 				return null;
@@ -123,10 +123,10 @@ namespace Terraria.ModLoader
 				default:
 					return false;
 			}
-			if (!modSounds[soundType].ContainsKey(style)) {
+			if (!modSounds[soundType].TryGetValue(style, out var modSound)) {
 				return false;
 			}
-			soundEffectInstance = modSounds[soundType][style].PlaySound(ref GetSoundInstanceArray(soundType)[style], volume, pan, soundType);
+			soundEffectInstance = modSound.PlaySound(ref GetSoundInstanceArray(soundType)[style], volume, pan, soundType);
 			return true;
 		}
 
