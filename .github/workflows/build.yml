@@ -164,14 +164,15 @@ jobs:
           echo ExtraBuildModFlags is: $ExtraBuildModFlags
           
           echo dotnet build ExampleMod/ExampleMod.csproj
-          dotnet build ExampleMod/ExampleMod.csproj --nologo # -v q /clp:ErrorsOnly
+          dotnet build ExampleMod/ExampleMod.csproj --nologo
           
           mkdir -p artifacts/Mods
           mv $ModloaderDir/Mods/ExampleMod.tmod artifacts/Mods/ExampleMod.tmod
           
           echo Testing Example Mod build from "Mod Sources" dir  
-          cd $ModloaderDir/Mod Sources/ExampleMod
-          dotnet build ExampleMod.csproj --nologo -v q
+          cp -r ExampleMod "$ModloaderDir/Mod Sources/ExampleMod"
+          cd "$ModloaderDir/Mod Sources/ExampleMod"
+          dotnet build ExampleMod.csproj --nologo
       - name: Upload ExampleMod Build Artifact
         uses: actions/upload-artifact@v2
         with:
