@@ -104,20 +104,10 @@ jobs:
           7z a tModLoader.zip ./src/tModLoader/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" tModLoader.zip
           echo ::endgroup::
-                    
-          echo Adding build info to ExampleMod displayName
-          echo "displayName = Example Mod (${GITHUB_REF##*/}-${{ github.sha }})" >> ./ExampleMod/build.txt
-          
-          #pwd gives an absolute path, required for -tmlsavedirectory as the build command is executed from the steam/deployment dir          
-          ModloaderDir=$(pwd)/local/ModLoader
-          echo ModloaderDir is: $ModloaderDir
-          mkdir -p $ModloaderDir
-          
-          export ExtraBuildModFlags="-tmlsavedirectory \"$(cygpath -w $ModloaderDir)\"" #convert unix path to windows
-          echo ExtraBuildModFlags is: $ExtraBuildModFlags
           
           echo ::group::Building Release
-          dotnet build ExampleMod/ExampleMod.csproj -c Release --nologo -v q
+          dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q
+          dotnet build src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q
           mkdir -p artifacts/Release
           cp -r steam_build/. artifacts/Release
           echo ::endgroup::
@@ -126,20 +116,11 @@ jobs:
           rm -rf steam_build
           
           echo ::group::Running CompleteLib.bat for Debug
-          dotnet build ExampleMod/ExampleMod.csproj.csproj -c Debug --nologo -v q
+          # export UPLOAD_MSBUILD_LOGS=1
+          dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Debug --nologo -v q
+          dotnet build src/tModLoader/Terraria/Terraria.csproj -c Debug --nologo -v q
           mkdir -p artifacts/Debug
           cp -r steam_build/. artifacts/Debug
-
-          # use the Debug build for ExampleMod
-          mkdir -p artifacts/Mods
-          mv $ModloaderDir/Mods/ExampleMod.tmod artifacts/Mods/ExampleMod.tmod
-          echo ::endgroup::          
-          
-          echo ::group::Testing Example Mod build from "Mod Sources" dir  
-          cp -r ExampleMod "$ModloaderDir/Mod Sources/ExampleMod"
-          cd "$ModloaderDir/Mod Sources/ExampleMod"
-          unset ExtraBuildModFlags
-          dotnet build ExampleMod.csproj --nologo
           echo ::endgroup::
           
           echo ::group::Creating decompiled cache zip file
@@ -172,6 +153,34 @@ jobs:
         with:
           name: temporary-src
           path: tModLoader.zip.gpg
+            
+      - name: Build ExampleMod
+        shell: bash
+        run: |
+          echo Adding build info to ExampleMod displayName
+          echo "displayName = Example Mod (${GITHUB_REF##*/}-${{ github.sha }})" >> ./ExampleMod/build.txt
+          
+          #pwd gives an absolute path, required for -tmlsavedirectory as the build command is executed from the steam/deployment dir          
+          ModloaderDir=$(pwd)/local/ModLoader
+          echo ModloaderDir is: $ModloaderDir
+          mkdir -p $ModloaderDir
+          
+          export ExtraBuildModFlags="-tmlsavedirectory \"$(cygpath -w $ModloaderDir)\"" #convert unix path to windows
+          echo ExtraBuildModFlags is: $ExtraBuildModFlags
+          
+          echo ::group::Building ExampleMod
+          dotnet build ExampleMod/ExampleMod.csproj --nologo
+          echo ::endgroup::
+          
+          mkdir -p artifacts/Mods
+          mv $ModloaderDir/Mods/ExampleMod.tmod artifacts/Mods/ExampleMod.tmod
+          
+          echo ::group::Testing Example Mod build from "Mod Sources" dir  
+          cp -r ExampleMod "$ModloaderDir/Mod Sources/ExampleMod"
+          cd "$ModloaderDir/Mod Sources/ExampleMod"
+          unset ExtraBuildModFlags
+          dotnet build ExampleMod.csproj --nologo
+          echo ::endgroup::
           
       - name: Upload ExampleMod Build Artifact
         uses: actions/upload-artifact@v2
