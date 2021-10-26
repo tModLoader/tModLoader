@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content
 {
-	// This class contains throughful examples of item recipe creation.
+	// This class contains thoughtful examples of item recipe creation.
 	public class Recipes : GlobalItem
 	{
 		public static RecipeGroup ExampleRecipeGroup;
