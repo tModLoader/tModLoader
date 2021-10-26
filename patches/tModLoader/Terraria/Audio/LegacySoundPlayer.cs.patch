@@ -26,7 +26,7 @@
 +										default: {
 +											// TODO, trackable sounds? verify working. return soundEffectInstance
 +											if (type == SoundLoader.CustomSoundType) {
-+													SoundLoader.customSoundInstances[num].Stop();
++												SoundLoader.customSoundInstances[num].Stop();
 +												SoundLoader.customSoundInstances[num] = SoundLoader.customSounds[num].Value.CreateInstance();
 +												SoundLoader.customSoundInstances[num].Volume = num2;
 +												SoundLoader.customSoundInstances[num].Pan = num3;
