@@ -64,7 +64,7 @@ namespace ExampleMod.Content
 				// Check here for other vanilla groups: https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#using-existing-recipegroups
 				.AddRecipeGroup("Wood")
 				// Just like with AddIngredient, there's a stack parameter with a default value of 1.
-				.AddRecipeGroup("IronBar", 2)
+				.AddRecipeGroup(RecipeGroupID.IronBar, 2)
 				// Here is using a mod recipe group. Check out ExampleMod.AddRecipeGroups() to see how to register a recipe group.
 				.AddRecipeGroup("ExampleMod:ExampleItem", 2)
 
