@@ -11,7 +11,9 @@ namespace ExampleMod.Content
 		public static RecipeGroup ExampleRecipeGroup;
 
 		// Minor optimization. Makes it so that item related methods of this class are not called by tml
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => false;
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+			return false;
+		}
 
 		// Called manually from Mod.AddRecipeGroups
 		public static void AddRecipeGroups() {
