@@ -16,6 +16,8 @@ namespace ExampleMod
 
 		public override void AddRecipes() => ExampleRecipes.Load(this);
 
+		public override void AddRecipeGroups() => ExampleRecipes.AddRecipeGroups();
+
 		public override void Load() {
 			RandomBuffKeybind = KeybindLoader.RegisterKeybind(this, "Random Buff", "P");
 
