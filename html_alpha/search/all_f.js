@@ -88,7 +88,7 @@ var searchData=
   ['playertitaniumstormbufftexturecontent_1892',['PlayerTitaniumStormBuffTextureContent',['../class_terraria_1_1_game_content_1_1_player_titanium_storm_buff_texture_content.html',1,'Terraria::GameContent']]],
   ['playervariantid_1893',['PlayerVariantID',['../class_terraria_1_1_i_d_1_1_player_variant_i_d.html',1,'Terraria::ID']]],
   ['playerwantstojoingamepopup_1894',['PlayerWantsToJoinGamePopup',['../class_terraria_1_1_u_i_1_1_in_game_popups_1_1_player_wants_to_join_game_popup.html',1,'Terraria::UI::InGamePopups']]],
-  ['playsound_1895',['PlaySound',['../class_terraria_1_1_mod_loader_1_1_mod_sound.html#ab79f314a7dab9c6e95eb1bc8390fa0e5',1,'Terraria::ModLoader::ModSound']]],
+  ['playsound_1895',['PlaySound',['../class_terraria_1_1_mod_loader_1_1_mod_sound.html#a5db759fafd6dfd402831101f0689248a',1,'Terraria::ModLoader::ModSound']]],
   ['point16_1896',['Point16',['../struct_terraria_1_1_data_structures_1_1_point16.html',1,'Terraria::DataStructures']]],
   ['point16serializer_1897',['Point16Serializer',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer.html',1,'Terraria::ModLoader::IO']]],
   ['polesmash_1898',['PoleSmash',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a25adde0cec4ad797170c8708a2786377',1,'Terraria::ID::ProjAIStyleID']]],

@@ -244,7 +244,7 @@ var searchData=
   ['custommoddataexception_522',['CustomModDataException',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_custom_mod_data_exception.html',1,'Terraria::ModLoader::Exceptions']]],
   ['customsky_523',['CustomSky',['../class_terraria_1_1_graphics_1_1_effects_1_1_custom_sky.html',1,'Terraria::Graphics::Effects']]],
   ['customsoundstyle_524',['CustomSoundStyle',['../class_terraria_1_1_audio_1_1_custom_sound_style.html',1,'Terraria::Audio']]],
-  ['customsoundtype_525',['customSoundType',['../class_terraria_1_1_mod_loader_1_1_sound_loader.html#a6aa5ef5849dec0efaaf48092ed596c75',1,'Terraria::ModLoader::SoundLoader']]],
+  ['customsoundtype_525',['CustomSoundType',['../class_terraria_1_1_mod_loader_1_1_sound_loader.html#accf60da85772c19b5f10847e59f2ed23',1,'Terraria::ModLoader::SoundLoader']]],
   ['cuttiles_526',['CutTiles',['../class_terraria_1_1_mod_loader_1_1_global_projectile.html#a71b11f64254f701d32aee669c732d3ae',1,'Terraria.ModLoader.GlobalProjectile.CutTiles()'],['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a4b548cb172688ca803e439ada0d966a8',1,'Terraria.ModLoader.ModProjectile.CutTiles()']]],
   ['cyan_527',['Cyan',['../class_terraria_1_1_i_d_1_1_item_rarity_i_d.html#acf76172c938b3c8ededab584d31fdb7f',1,'Terraria::ID::ItemRarityID']]]
 ];

@@ -24,6 +24,6 @@ var searchData=
   ['crystalshard_5417',['CrystalShard',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ae27f82a88b0a2026436c02eb1ad0a136',1,'Terraria::ID::ProjAIStyleID']]],
   ['cursedflamewall_5418',['CursedFlameWall',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a321abd20c74c35b7655edc02e22614b6',1,'Terraria::ID::ProjAIStyleID']]],
   ['cursedskull_5419',['CursedSkull',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a70d97ec8d9182ca6cf851804a816deb1',1,'Terraria::ID::NPCAIStyleID']]],
-  ['customsoundtype_5420',['customSoundType',['../class_terraria_1_1_mod_loader_1_1_sound_loader.html#a6aa5ef5849dec0efaaf48092ed596c75',1,'Terraria::ModLoader::SoundLoader']]],
+  ['customsoundtype_5420',['CustomSoundType',['../class_terraria_1_1_mod_loader_1_1_sound_loader.html#accf60da85772c19b5f10847e59f2ed23',1,'Terraria::ModLoader::SoundLoader']]],
   ['cyan_5421',['Cyan',['../class_terraria_1_1_i_d_1_1_item_rarity_i_d.html#acf76172c938b3c8ededab584d31fdb7f',1,'Terraria::ID::ItemRarityID']]]
 ];

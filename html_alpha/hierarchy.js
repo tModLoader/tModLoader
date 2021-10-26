@@ -1219,6 +1219,7 @@ var hierarchy =
           [ "Terraria.ModLoader.ModSceneEffect", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html", [
             [ "Terraria.ModLoader.ModBiome", "class_terraria_1_1_mod_loader_1_1_mod_biome.html", null ]
           ] ],
+          [ "Terraria.ModLoader.ModSound", "class_terraria_1_1_mod_loader_1_1_mod_sound.html", null ],
           [ "Terraria.ModLoader.ModSystem", "class_terraria_1_1_mod_loader_1_1_mod_system.html", [
             [ "Terraria.ModLoader.Default.UnloadedSystem", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html", null ]
           ] ],
@@ -1766,7 +1767,6 @@ var hierarchy =
     [ "Terraria.ModLoader.ModSideExtensions", "class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html", null ],
     [ "Terraria.ModLoader.UI.ModBrowser.ModSideFilterModesExtensions", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_mod_browser_1_1_mod_side_filter_modes_extensions.html", null ],
     [ "Terraria.ModLoader.UI.ModsMenuSortModesExtensions", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_mods_menu_sort_modes_extensions.html", null ],
-    [ "Terraria.ModLoader.ModSound", "class_terraria_1_1_mod_loader_1_1_mod_sound.html", null ],
     [ "Terraria.ModLoader.ModTranslation", "class_terraria_1_1_mod_loader_1_1_mod_translation.html", null ],
     [ "Terraria.ModLoader.ModTree", "class_terraria_1_1_mod_loader_1_1_mod_tree.html", null ],
     [ "Terraria.ModLoader.ModTypeLookup< T >", "class_terraria_1_1_mod_loader_1_1_mod_type_lookup.html", null ],

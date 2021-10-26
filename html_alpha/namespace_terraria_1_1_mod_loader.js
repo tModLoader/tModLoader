@@ -225,11 +225,5 @@ var namespace_terraria_1_1_mod_loader =
       [ "BossLow", "namespace_terraria_1_1_mod_loader.html#affc5ce60a82065004f36d2c31383f84ba613b6ab1d627d3551e09dd6a5227e139", null ],
       [ "BossMedium", "namespace_terraria_1_1_mod_loader.html#affc5ce60a82065004f36d2c31383f84baa451d85d6a8045c7d21e4ae1fcad6698", null ],
       [ "BossHigh", "namespace_terraria_1_1_mod_loader.html#affc5ce60a82065004f36d2c31383f84ba34eb92731ff9e5380ec2bbc8a620c445", null ]
-    ] ],
-    [ "SoundType", "namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06", [
-      [ "Item", "namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679", null ],
-      [ "NPCHit", "namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a29d1a4424c9983a2f5a54d3c574f8794", null ],
-      [ "NPCKilled", "namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06ad71465dddb92c3fa7565999b6e53f19c", null ],
-      [ "Custom", "namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a90589c47f06eb971d548591f23c285af", null ]
     ] ]
 ];

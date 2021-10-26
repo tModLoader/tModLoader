@@ -128,9 +128,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddContent&lt; T &gt;
 <tr class="memitem:adbfe825532c8fffbac263bf8732b93b6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#adbfe825532c8fffbac263bf8732b93b6">AddRecipes</a> ()</td></tr>
 <tr class="memdesc:adbfe825532c8fffbac263bf8732b93b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override this method to add recipes to the game. It is recommended that you do so through instances of <a class="el" href="class_terraria_1_1_recipe.html">Recipe</a>, since it provides methods that simplify recipe creation.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#adbfe825532c8fffbac263bf8732b93b6">More...</a><br /></td></tr>
 <tr class="separator:adbfe825532c8fffbac263bf8732b93b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69d7e56dcfcd228f47704d9a2fb5c9a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a69d7e56dcfcd228f47704d9a2fb5c9a1">AddSound</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a> type, string soundPath, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html">ModSound</a> modSound=null)</td></tr>
-<tr class="memdesc:a69d7e56dcfcd228f47704d9a2fb5c9a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the given sound file to the game as the given type of sound and with the given custom sound playing. If no <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html" title="This class allows you to customize how a sound you add is played. To use this, pass an instance to Mo...">ModSound</a> instance is provided, the custom sound will play in a similar manner as the default vanilla ones.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a69d7e56dcfcd228f47704d9a2fb5c9a1">More...</a><br /></td></tr>
-<tr class="separator:a69d7e56dcfcd228f47704d9a2fb5c9a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a199022a7eb27307c41db97847fb4cef8"><td class="memItemLeft" align="right" valign="top">virtual object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a199022a7eb27307c41db97847fb4cef8">Call</a> (params object[] args)</td></tr>
 <tr class="memdesc:a199022a7eb27307c41db97847fb4cef8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a199022a7eb27307c41db97847fb4cef8">More...</a><br /></td></tr>
 <tr class="separator:a199022a7eb27307c41db97847fb4cef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,15 +173,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>FileExists</b> (strin
 <tr class="memitem:ae92eb7108688b169f112c00b66f4d43f"><td class="memItemLeft" align="right" valign="top">Stream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ae92eb7108688b169f112c00b66f4d43f">GetFileStream</a> (string name, bool newFileStream=false)</td></tr>
 <tr class="memdesc:ae92eb7108688b169f112c00b66f4d43f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve contents of files within the tmod file  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#ae92eb7108688b169f112c00b66f4d43f">More...</a><br /></td></tr>
 <tr class="separator:ae92eb7108688b169f112c00b66f4d43f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefc33c0dc19555a7155940363631a201"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_audio_1_1_legacy_sound_style.html">LegacySoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#aefc33c0dc19555a7155940363631a201">GetLegacySoundSlot</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a> type, string name)</td></tr>
-<tr class="memdesc:aefc33c0dc19555a7155940363631a201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for calling SoundLoader.GetLegacySoundSlot(type, this.Name + '/' + name).  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#aefc33c0dc19555a7155940363631a201">More...</a><br /></td></tr>
-<tr class="separator:aefc33c0dc19555a7155940363631a201"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc69c5da3fbaac0d3268f4266889c535"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_packet.html">ModPacket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#afc69c5da3fbaac0d3268f4266889c535">GetPacket</a> (int capacity=256)</td></tr>
 <tr class="memdesc:afc69c5da3fbaac0d3268f4266889c535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_packet.html" title="This class inherits from BinaryWriter. This means that you can use all of its writing functions to se...">ModPacket</a> object that you can write to and then send between servers and clients.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#afc69c5da3fbaac0d3268f4266889c535">More...</a><br /></td></tr>
 <tr class="separator:afc69c5da3fbaac0d3268f4266889c535"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac909b7b0f4a36c41219d18af58e4fbf7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac909b7b0f4a36c41219d18af58e4fbf7">GetSoundSlot</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a> type, string name)</td></tr>
-<tr class="memdesc:ac909b7b0f4a36c41219d18af58e4fbf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for calling <a class="el" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ad1a432c30af8ee06ec095bd5fbd6a6eb" title="Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given S...">SoundLoader.GetSoundSlot</a>(type, this.Name + '/' + name).  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#ac909b7b0f4a36c41219d18af58e4fbf7">More...</a><br /></td></tr>
-<tr class="separator:ac909b7b0f4a36c41219d18af58e4fbf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a348865b876891d72bf9079768c414705"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a348865b876891d72bf9079768c414705">HandlePacket</a> (BinaryReader reader, int whoAmI)</td></tr>
 <tr class="memdesc:a348865b876891d72bf9079768c414705"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever a net message / packet is received from a client (if this is a server) or the server (if this is a client). whoAmI is the <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of whomever sent the packet (equivalent to the Main.myPlayer of the sender), and reader is used to read the binary data of the packet.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a348865b876891d72bf9079768c414705">More...</a><br /></td></tr>
 <tr class="separator:a348865b876891d72bf9079768c414705"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -506,50 +497,6 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
 
 </div>
 </div>
-<a id="a69d7e56dcfcd228f47704d9a2fb5c9a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69d7e56dcfcd228f47704d9a2fb5c9a1">&#9670;&nbsp;</a></span>AddSound()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Terraria.ModLoader.Mod.AddSound </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a>&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>soundPath</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html">ModSound</a>&#160;</td>
-          <td class="paramname"><em>modSound</em> = <code>null</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Adds the given sound file to the game as the given type of sound and with the given custom sound playing. If no <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html" title="This class allows you to customize how a sound you add is played. To use this, pass an instance to Mo...">ModSound</a> instance is provided, the custom sound will play in a similar manner as the default vanilla ones. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">type</td><td>The type.</td></tr>
-    <tr><td class="paramname">soundPath</td><td>The sound path.</td></tr>
-    <tr><td class="paramname">modSound</td><td>The mod sound.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a199022a7eb27307c41db97847fb4cef8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a199022a7eb27307c41db97847fb4cef8">&#9670;&nbsp;</a></span>Call()</h2>
 
@@ -840,44 +787,6 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
 
 </div>
 </div>
-<a id="aefc33c0dc19555a7155940363631a201"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aefc33c0dc19555a7155940363631a201">&#9670;&nbsp;</a></span>GetLegacySoundSlot()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_terraria_1_1_audio_1_1_legacy_sound_style.html">LegacySoundStyle</a> Terraria.ModLoader.Mod.GetLegacySoundSlot </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a>&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>name</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Shorthand for calling SoundLoader.GetLegacySoundSlot(type, this.Name + '/' + name). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">type</td><td>The type.</td></tr>
-    <tr><td class="paramname">name</td><td>The name.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
 <a id="afc69c5da3fbaac0d3268f4266889c535"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afc69c5da3fbaac0d3268f4266889c535">&#9670;&nbsp;</a></span>GetPacket()</h2>
 
@@ -908,44 +817,6 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="ac909b7b0f4a36c41219d18af58e4fbf7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac909b7b0f4a36c41219d18af58e4fbf7">&#9670;&nbsp;</a></span>GetSoundSlot()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Terraria.ModLoader.Mod.GetSoundSlot </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a>&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>name</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Shorthand for calling <a class="el" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ad1a432c30af8ee06ec095bd5fbd6a6eb" title="Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given S...">SoundLoader.GetSoundSlot</a>(type, this.Name + '/' + name). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">type</td><td>The type.</td></tr>
-    <tr><td class="paramname">name</td><td>The name.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

@@ -339,7 +339,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html">ModSideExtensions</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html">ModSound</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class allows you to customize how a sound you add is played. To use this, pass an instance to <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a69d7e56dcfcd228f47704d9a2fb5c9a1" title="Adds the given sound file to the game as the given type of sound and with the given custom sound play...">Mod.AddSound</a>, or if you are autoloading sounds, give an overriding class the same name as the file with the sound you are adding.  <a href="class_terraria_1_1_mod_loader_1_1_mod_sound.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class allows you to customize how a sound you add is played. To use this, pass an instance to Mod.AddSound, or if you are autoloading sounds, give an overriding class the same name as the file with the sound you are adding.  <a href="class_terraria_1_1_mod_loader_1_1_mod_sound.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_surface_background_style.html">ModSurfaceBackgroundStyle</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for above-ground backgrounds.  <a href="class_terraria_1_1_mod_loader_1_1_mod_surface_background_style.html#details">More...</a><br /></td></tr>
@@ -575,13 +575,6 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:affc5ce60a82065004f36d2c31383f84b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This enum dictates from low to high which SceneEffect selections take priority. Setting appropriate priority values is important so that your mod works well with other mods and vanilla selections.  <a href="namespace_terraria_1_1_mod_loader.html#affc5ce60a82065004f36d2c31383f84b">More...</a><br /></td></tr>
 <tr class="separator:affc5ce60a82065004f36d2c31383f84b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6da2ec2c957a412deb3c606b0f710f06"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a> { <b>Item</b> = 2
-, <b>NPCHit</b> = 3
-, <b>NPCKilled</b> = 4
-, <b>Custom</b> = 50
- }</td></tr>
-<tr class="memdesc:a6da2ec2c957a412deb3c606b0f710f06"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is an enum of the types of sound you can add to the game. This is used for determining whether a sound is a music or a sound effect. If it's a sound effect, it's also used for determining the "type" passed to Main.PlaySound (first parameter) that is required in order for a sound to play; 2 for item sounds, 3 for npcHit sounds, 4 for npcKilled sounds, and SoundLoader.customSoundType for anything else.  <a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">More...</a><br /></td></tr>
-<tr class="separator:a6da2ec2c957a412deb3c606b0f710f06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a51831af9dcf185fae859c62878081d26"></a>
@@ -773,30 +766,6 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="affc5ce60a82065004f36d2c31383f84ba34eb92731ff9e5380ec2bbc8a620c445"></a>BossHigh&#160;</td><td class="fielddoc"><p>Will override SceneEffect of Moon Lord </p>
 </td></tr>
 </table>
-
-</div>
-</div>
-<a id="a6da2ec2c957a412deb3c606b0f710f06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6da2ec2c957a412deb3c606b0f710f06">&#9670;&nbsp;</a></span>SoundType</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">Terraria.ModLoader.SoundType</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>This is an enum of the types of sound you can add to the game. This is used for determining whether a sound is a music or a sound effect. If it's a sound effect, it's also used for determining the "type" passed to Main.PlaySound (first parameter) that is required in order for a sound to play; 2 for item sounds, 3 for npcHit sounds, 4 for npcKilled sounds, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#a6aa5ef5849dec0efaaf48092ed596c75" title="This value should be passed as the first parameter to Main.PlaySound whenever you want to play a cust...">SoundLoader.customSoundType</a> for anything else. </p>
 
 </div>
 </div>

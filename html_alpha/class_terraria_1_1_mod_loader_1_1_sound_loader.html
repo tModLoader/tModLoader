@@ -87,6 +87,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_soun
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="class_terraria_1_1_mod_loader_1_1_sound_loader-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Terraria.ModLoader.SoundLoader Class Reference</div>  </div>
@@ -98,24 +99,39 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_soun
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ad1a432c30af8ee06ec095bd5fbd6a6eb"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ad1a432c30af8ee06ec095bd5fbd6a6eb">GetSoundSlot</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a> type, string sound)</td></tr>
-<tr class="memdesc:ad1a432c30af8ee06ec095bd5fbd6a6eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given SoundType and the given sound file path. Returns 0 if there is no corresponding style.  <a href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ad1a432c30af8ee06ec095bd5fbd6a6eb">More...</a><br /></td></tr>
-<tr class="separator:ad1a432c30af8ee06ec095bd5fbd6a6eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af58cb4ccfc19e4cb71a1b23b506aad81"><td class="memItemLeft" align="right" valign="top"><a id="af58cb4ccfc19e4cb71a1b23b506aad81"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>SoundCount</b> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a> type)</td></tr>
-<tr class="separator:af58cb4ccfc19e4cb71a1b23b506aad81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a019d6b4591c7a23051d1354eca2465e0"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#a019d6b4591c7a23051d1354eca2465e0">AddSound</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod, string soundPath, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html">ModSound</a> modSound=null)</td></tr>
+<tr class="memdesc:a019d6b4591c7a23051d1354eca2465e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the given sound file to the game as the given type of sound and with the given custom sound playing. If no <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html" title="This class allows you to customize how a sound you add is played. To use this, pass an instance to Mo...">ModSound</a> instance is provided, the custom sound will play in a similar manner as the default vanilla ones.  <a href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#a019d6b4591c7a23051d1354eca2465e0">More...</a><br /></td></tr>
+<tr class="separator:a019d6b4591c7a23051d1354eca2465e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae93ed11a7f71f7dd8c12b90fe910d4bf"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_audio_1_1_legacy_sound_style.html">LegacySoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ae93ed11a7f71f7dd8c12b90fe910d4bf">GetLegacySoundSlot</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod, string soundPath)</td></tr>
+<tr class="memdesc:ae93ed11a7f71f7dd8c12b90fe910d4bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a LegacySoundStyle object which encapsulates both a sound type and a sound style (This is the new way to do sounds in 1.3.4) Returns null if there is no corresponding style.  <a href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ae93ed11a7f71f7dd8c12b90fe910d4bf">More...</a><br /></td></tr>
+<tr class="separator:ae93ed11a7f71f7dd8c12b90fe910d4bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7a00ae401d3dae75ef76c0c416adcdf"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_audio_1_1_legacy_sound_style.html">LegacySoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#af7a00ae401d3dae75ef76c0c416adcdf">GetLegacySoundSlot</a> (string sound)</td></tr>
+<tr class="memdesc:af7a00ae401d3dae75ef76c0c416adcdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a LegacySoundStyle object which encapsulates both a sound type and a sound style (This is the new way to do sounds in 1.3.4) Returns null if there is no corresponding style.  <a href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#af7a00ae401d3dae75ef76c0c416adcdf">More...</a><br /></td></tr>
+<tr class="separator:af7a00ae401d3dae75ef76c0c416adcdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8448cb114d186f241367f8b73094375f"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#a8448cb114d186f241367f8b73094375f">GetSoundSlot</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod, string soundPath)</td></tr>
+<tr class="memdesc:a8448cb114d186f241367f8b73094375f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given sound file path. Returns 0 if there is no corresponding style.  <a href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#a8448cb114d186f241367f8b73094375f">More...</a><br /></td></tr>
+<tr class="separator:a8448cb114d186f241367f8b73094375f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae84ef7e9600f7e3629da6f26e3ae5f64"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ae84ef7e9600f7e3629da6f26e3ae5f64">GetSoundSlot</a> (string fullSoundPath)</td></tr>
+<tr class="memdesc:ae84ef7e9600f7e3629da6f26e3ae5f64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given full sound file path. Returns 0 if there is no corresponding style.  <a href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ae84ef7e9600f7e3629da6f26e3ae5f64">More...</a><br /></td></tr>
+<tr class="separator:ae84ef7e9600f7e3629da6f26e3ae5f64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a6aa5ef5849dec0efaaf48092ed596c75"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#a6aa5ef5849dec0efaaf48092ed596c75">customSoundType</a> = 50</td></tr>
-<tr class="memdesc:a6aa5ef5849dec0efaaf48092ed596c75"><td class="mdescLeft">&#160;</td><td class="mdescRight">This value should be passed as the first parameter to Main.PlaySound whenever you want to play a custom sound that is not an item, npcHit, or npcKilled sound.  <a href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#a6aa5ef5849dec0efaaf48092ed596c75">More...</a><br /></td></tr>
-<tr class="separator:a6aa5ef5849dec0efaaf48092ed596c75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accf60da85772c19b5f10847e59f2ed23"><td class="memItemLeft" align="right" valign="top">static readonly int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#accf60da85772c19b5f10847e59f2ed23">CustomSoundType</a> = 500</td></tr>
+<tr class="memdesc:accf60da85772c19b5f10847e59f2ed23"><td class="mdescLeft">&#160;</td><td class="mdescRight">This value should be passed as the first parameter to Main.PlaySound whenever you want to play a custom sound that is not an item, npcHit, or npcKilled sound.  <a href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#accf60da85772c19b5f10847e59f2ed23">More...</a><br /></td></tr>
+<tr class="separator:accf60da85772c19b5f10847e59f2ed23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a13da542c322bf51d60ba34cde9977e52"><td class="memItemLeft" align="right" valign="top"><a id="a13da542c322bf51d60ba34cde9977e52"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>SoundCount</b><code> [get, set]</code></td></tr>
+<tr class="separator:a13da542c322bf51d60ba34cde9977e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class is used to keep track of and support the existence of custom sounds that have been added to the game. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad1a432c30af8ee06ec095bd5fbd6a6eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1a432c30af8ee06ec095bd5fbd6a6eb">&#9670;&nbsp;</a></span>GetSoundSlot()</h2>
+<a id="a019d6b4591c7a23051d1354eca2465e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a019d6b4591c7a23051d1354eca2465e0">&#9670;&nbsp;</a></span>AddSound()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -124,16 +140,22 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static int Terraria.ModLoader.SoundLoader.GetSoundSlot </td>
+          <td class="memname">static void Terraria.ModLoader.SoundLoader.AddSound </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a>&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td>
+          <td class="paramname"><em>mod</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>sound</em>&#160;</td>
+          <td class="paramname"><em>soundPath</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html">ModSound</a>&#160;</td>
+          <td class="paramname"><em>modSound</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -148,13 +170,21 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given SoundType and the given sound file path. Returns 0 if there is no corresponding style. </p>
+<p>Adds the given sound file to the game as the given type of sound and with the given custom sound playing. If no <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html" title="This class allows you to customize how a sound you add is played. To use this, pass an instance to Mo...">ModSound</a> instance is provided, the custom sound will play in a similar manner as the default vanilla ones. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mod</td><td>The mod.</td></tr>
+    <tr><td class="paramname">type</td><td>The type.</td></tr>
+    <tr><td class="paramname">soundPath</td><td>The sound path.</td></tr>
+    <tr><td class="paramname">modSound</td><td>The mod sound.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a6aa5ef5849dec0efaaf48092ed596c75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6aa5ef5849dec0efaaf48092ed596c75">&#9670;&nbsp;</a></span>customSoundType</h2>
+<a id="ae93ed11a7f71f7dd8c12b90fe910d4bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae93ed11a7f71f7dd8c12b90fe910d4bf">&#9670;&nbsp;</a></span>GetLegacySoundSlot() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -163,7 +193,140 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const int Terraria.ModLoader.SoundLoader.customSoundType = 50</td>
+          <td class="memname">static <a class="el" href="class_terraria_1_1_audio_1_1_legacy_sound_style.html">LegacySoundStyle</a> Terraria.ModLoader.SoundLoader.GetLegacySoundSlot </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td>
+          <td class="paramname"><em>mod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>soundPath</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a LegacySoundStyle object which encapsulates both a sound type and a sound style (This is the new way to do sounds in 1.3.4) Returns null if there is no corresponding style. </p>
+
+</div>
+</div>
+<a id="af7a00ae401d3dae75ef76c0c416adcdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7a00ae401d3dae75ef76c0c416adcdf">&#9670;&nbsp;</a></span>GetLegacySoundSlot() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_terraria_1_1_audio_1_1_legacy_sound_style.html">LegacySoundStyle</a> Terraria.ModLoader.SoundLoader.GetLegacySoundSlot </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>sound</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a LegacySoundStyle object which encapsulates both a sound type and a sound style (This is the new way to do sounds in 1.3.4) Returns null if there is no corresponding style. </p>
+
+</div>
+</div>
+<a id="a8448cb114d186f241367f8b73094375f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8448cb114d186f241367f8b73094375f">&#9670;&nbsp;</a></span>GetSoundSlot() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.ModLoader.SoundLoader.GetSoundSlot </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td>
+          <td class="paramname"><em>mod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>soundPath</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given sound file path. Returns 0 if there is no corresponding style. </p>
+
+</div>
+</div>
+<a id="ae84ef7e9600f7e3629da6f26e3ae5f64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae84ef7e9600f7e3629da6f26e3ae5f64">&#9670;&nbsp;</a></span>GetSoundSlot() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.ModLoader.SoundLoader.GetSoundSlot </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>fullSoundPath</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given full sound file path. Returns 0 if there is no corresponding style. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="accf60da85772c19b5f10847e59f2ed23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accf60da85772c19b5f10847e59f2ed23">&#9670;&nbsp;</a></span>CustomSoundType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly int Terraria.ModLoader.SoundLoader.CustomSoundType = 500</td>
         </tr>
       </table>
   </td>
