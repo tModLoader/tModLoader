@@ -8,6 +8,7 @@ namespace ExampleMod.Content
 	// This class contains thoughtful examples of item recipe creation.
 	public class ExampleRecipes : GlobalItem
 	{
+		// A place to store the recipe group so we can easily use it later
 		public static RecipeGroup ExampleRecipeGroup;
 
 		// Minor optimization. Makes it so that item related methods of this class are not called by tml
@@ -17,8 +18,10 @@ namespace ExampleMod.Content
 
 		// Called manually from Mod.AddRecipeGroups
 		public static void AddRecipeGroups() {
-			//  Store this recipe group in a variable so we can use it later
-			ExampleRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ModContent.ItemType<Items.ExampleItem>())}", ModContent.ItemType<Items.ExampleItem>());
+			// Create a recipe group and store it
+			// Language.GetTextValue("LegacyMisc.37") is the word "Any" in english, and the corresponding word in other languages
+			ExampleRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ModContent.ItemType<Items.ExampleItem>())}",
+				ModContent.ItemType<Items.ExampleItem>(), ModContent.ItemType<Items.ExampleDataItem>());
 
 			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", ExampleRecipeGroup);
 		}
@@ -83,7 +86,7 @@ namespace ExampleMod.Content
 				.AddCondition(Recipe.Condition.NearWater)
 				.AddCondition(Recipe.Condition.TimeNight)
 				// Adds a custom condition, that the player must be at <1/2 health for the recipe to work.
-				// The first argument is a NetworkText instance, i.e. localized text. The key used here is defined in 'Localization/*.lang' files.
+				// The first argument is a NetworkText instance, i.e. localized text. The key used here is defined in 'Localization/*.hjson' files.
 				// The second argument uses a lambda expression to create a delegate, you can learn more about both in Google.
 				.AddCondition(NetworkText.FromKey("RecipeConditions.LowHealth"), r => Main.LocalPlayer.statLife < Main.LocalPlayer.statLifeMax / 2)
 
