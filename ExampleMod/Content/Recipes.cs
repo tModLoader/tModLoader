@@ -1,16 +1,19 @@
-﻿using ExampleMod.Content.Items;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content
 {
-	// Methods of this static class contain throughful examples of item recipe creation.
-	public static class ExampleRecipes
+	// This class contains throughful examples of item recipe creation.
+	public class Recipes : GlobalItem
 	{
 		public static RecipeGroup ExampleRecipeGroup;
 
+		// Minor optimization. Makes it so that item related methods of this class are not called by tml
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => false;
+
+		// Called manually from Mod.AddRecipeGroups
 		public static void AddRecipeGroups() {
 			//  Store this recipe group in a variable so we can use it later
 			ExampleRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ModContent.ItemType<Items.ExampleItem>())}", ModContent.ItemType<Items.ExampleItem>());
@@ -18,18 +21,12 @@ namespace ExampleMod.Content
 			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", ExampleRecipeGroup);
 		}
 
-		public static void Load(Mod mod) {
-			Examples_AddRecipes(mod);
-
-			Examples_ModifyRecipes(mod);
-		}
-
-		private static void Examples_AddRecipes(Mod mod) {
+		public override void AddRecipes() {
 			///////////////////////////////////////////////////////////////////////////
 			// The following basic recipe makes 999 ExampleItems out of 1 stone block.//
 			///////////////////////////////////////////////////////////////////////////
 
-			var recipe = mod.CreateRecipe(ModContent.ItemType<ExampleItem>(), 999);
+			Recipe recipe = Mod.CreateRecipe(ModContent.ItemType<Items.ExampleItem>(), 999);
 			// This adds a requirement of 1 dirt block to the recipe.
 			recipe.AddIngredient(ItemID.StoneBlock);
 			// When you're done, call this to register the recipe.
@@ -58,14 +55,17 @@ namespace ExampleMod.Content
 				// Adds a Mod Ingredient. Do not attempt ItemID.EquipMaterial, it's not how it works.
 				.AddIngredient<Items.Weapons.ExampleSword>()
 				// An alternate string-based approach to the above. Try to only use it for other mods' items, because it's slower. 
-				.AddIngredient(mod, "ExampleSword")
+				.AddIngredient(Mod, "ExampleSword")
 
 				// RecipeGroups allow you create a recipe that accepts items from a group of similar ingredients. For example, all varieties of Wood are in the vanilla "Wood" Group
 				// Check here for other vanilla groups: https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#using-existing-recipegroups
-				.AddRecipeGroup("Wood")
+				.AddRecipeGroup(RecipeGroupID.Wood)
 				// Just like with AddIngredient, there's a stack parameter with a default value of 1.
 				.AddRecipeGroup(RecipeGroupID.IronBar, 2)
-				// Here is using a mod recipe group. Check out ExampleMod.AddRecipeGroups() to see how to register a recipe group.
+				// Here is using a mod recipe group. Check out AddRecipeGroups() to see how to register a recipe group.
+				.AddRecipeGroup(ExampleRecipeGroup, 2)
+				// An alternate string-based approach to the above. Try to only use it for other mods' groups, because it's slower.
+				.AddRecipeGroup("Wood")
 				.AddRecipeGroup("ExampleMod:ExampleItem", 2)
 
 				// Adds a vanilla tile requirement.
@@ -74,7 +74,7 @@ namespace ExampleMod.Content
 				// Adds a mod tile requirement. To specify more than one crafting station, use multiple recipe.AddTile() calls.
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				// An alternate string-based approach to the above. Try to only use it for other mods' tiles, because it's slower.
-				.AddTile(mod, "ExampleWorkbench")
+				.AddTile(Mod, "ExampleWorkbench")
 
 				// Adds pre-defined conditions. These 3 lines combine to make so that the recipe must be crafted in desert waters at night.
 				.AddCondition(Recipe.Condition.InDesert)
@@ -89,7 +89,7 @@ namespace ExampleMod.Content
 				.Register();
 		}
 
-		private static void Examples_ModifyRecipes(Mod mod) {
+		public static void ModifyRecipes(Mod mod) {
 			for (int i = 0; i < Recipe.numRecipes; i++) {
 				Recipe recipe = Main.recipe[i];
 
@@ -100,6 +100,8 @@ namespace ExampleMod.Content
 			}
 		}
 
-		public static void Unload() => ExampleRecipeGroup = null;
+		public override void Unload() {
+			ExampleRecipeGroup = null;
+		}
 	}
 }
