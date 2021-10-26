@@ -8,15 +8,16 @@
  using Terraria.WorldBuilding;
  
  namespace Terraria
-@@ -28,7 +_,7 @@
+@@ -28,8 +_,7 @@
  		public bool CanPlayCreditsRoll;
  		public bool[] NPCBannerBuff = new bool[289];
  		public bool hasBanner;
 -		private readonly int[] _tileCounts = new int[624];
+-		private readonly World _world;
 +		internal int[] _tileCounts = new int[TileLoader.TileCount];
- 		private readonly World _world;
  		private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  		public int bestOre;
+ 
 @@ -60,47 +_,47 @@
  
  		public int SandTileCount {
@@ -128,7 +129,17 @@
  		}
  
  		public bool EnoughTilesForJungle => JungleTileCount >= JungleTileThreshold;
-@@ -198,6 +_,8 @@
+@@ -186,8 +_,7 @@
+ 
+ 		public bool EnoughTilesForGraveyard => GraveyardTileCount >= GraveyardTileThreshold;
+ 
+-		public SceneMetrics(World world) {
+-			_world = world;
++		public SceneMetrics() {
+ 			Reset();
+ 		}
+ 
+@@ -198,15 +_,17 @@
  			if (settings.ScanOreFinderData)
  				_oreFinderTileLocations.Clear();
  
@@ -136,8 +147,19 @@
 +
  			if (settings.BiomeScanCenterPositionInWorld.HasValue) {
  				Point point = settings.BiomeScanCenterPositionInWorld.Value.ToTileCoordinates();
- 				Rectangle rectangle = WorldUtils.ClampToWorld(tileRectangle: new Rectangle(point.X - Main.buffScanAreaWidth / 2, point.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight), world: _world);
-@@ -251,6 +_,8 @@
+-				Rectangle rectangle = WorldUtils.ClampToWorld(tileRectangle: new Rectangle(point.X - Main.buffScanAreaWidth / 2, point.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight), world: _world);
++				Rectangle rectangle = WorldUtils.ClampToWorld(new Rectangle(point.X - Main.buffScanAreaWidth / 2, point.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight));
+ 				for (int i = rectangle.Left; i < rectangle.Right; i++) {
+ 					for (int j = rectangle.Top; j < rectangle.Bottom; j++) {
+ 						if (!rectangle.Contains(i, j))
+ 							continue;
+ 
+-						Tile tile = _world.Tiles[i, j];
++						Tile tile = Main.tile[i, j];
+ 						if (tile == null || !tile.active())
+ 							continue;
+ 
+@@ -251,19 +_,21 @@
  
  						if (settings.ScanOreFinderData && Main.tileOreFinderPriority[tile.type] != 0)
  							_oreFinderTileLocations.Add(new Point(i, j));
@@ -146,7 +168,14 @@
  					}
  				}
  			}
-@@ -263,7 +_,7 @@
+ 
+ 			if (settings.VisualScanArea.HasValue) {
+-				Rectangle rectangle2 = WorldUtils.ClampToWorld(_world, settings.VisualScanArea.Value);
++				Rectangle rectangle2 = WorldUtils.ClampToWorld(settings.VisualScanArea.Value);
+ 				for (int k = rectangle2.Left; k < rectangle2.Right; k++) {
+ 					for (int l = rectangle2.Top; l < rectangle2.Bottom; l++) {
+-						Tile tile2 = _world.Tiles[k, l];
++						Tile tile2 = Main.tile[k, l];
  						if (tile2 == null || !tile2.active())
  							continue;
  
@@ -176,7 +205,7 @@
  		}
  
  		private void ExportTileCountsToMain() {
-@@ -420,6 +_,8 @@
+@@ -420,12 +_,14 @@
  			Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
  			hasBanner = false;
  			CanPlayCreditsRoll = false;
@@ -185,3 +214,10 @@
  		}
  
  		private void UpdateOreFinderData() {
+ 			int num = -1;
+ 			foreach (Point oreFinderTileLocation in _oreFinderTileLocations) {
+-				Tile tile = _world.Tiles[oreFinderTileLocation.X, oreFinderTileLocation.Y];
++				Tile tile = Main.tile[oreFinderTileLocation.X, oreFinderTileLocation.Y];
+ 				if (IsValidForOreFinder(tile) && (num < 0 || Main.tileOreFinderPriority[tile.type] > Main.tileOreFinderPriority[num])) {
+ 					num = tile.type;
+ 					ClosestOrePosition = oreFinderTileLocation;

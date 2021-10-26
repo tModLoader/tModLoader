@@ -26,6 +26,70 @@
  		private int _blueDir = 1;
  		private RectArea _minBoundArea;
  		private RectArea _requestedArea;
+@@ -122,7 +_,6 @@
+ 		private RectArea _offScreenTiles2ExpandedArea;
+ 		private TileLightScanner _tileScanner;
+ 		private readonly Camera _camera;
+-		private World _world;
+ 		private static FastRandom _swipeRandom = FastRandom.CreateWithRandomSeed();
+ 		private LightMap _lightMap = new LightMap();
+ 
+@@ -133,10 +_,9 @@
+ 
+ 		public bool IsColorOrWhiteMode => Mode < 2;
+ 
+-		public LegacyLighting(Camera camera, World world) {
++		public LegacyLighting(Camera camera) {
+ 			_camera = camera;
+-			_world = world;
+-			_tileScanner = new TileLightScanner(world);
++			_tileScanner = new TileLightScanner();
+ 		}
+ 
+ 		public Vector3 GetColor(int x, int y) {
+@@ -288,10 +_,10 @@
+ 			value2 = Utils.Clamp(value2, Lighting.OffScreenTiles, Main.maxTilesX - Lighting.OffScreenTiles);
+ 			value3 = Utils.Clamp(value3, Lighting.OffScreenTiles, Main.maxTilesY - Lighting.OffScreenTiles);
+ 			value4 = Utils.Clamp(value4, Lighting.OffScreenTiles, Main.maxTilesY - Lighting.OffScreenTiles);
+-			Main.mapMinX = Utils.Clamp(_requestedRectLeft, num, _world.TileColumns - num);
++			Main.mapMinX = Utils.Clamp(_requestedRectLeft, num, Main.maxTilesX - num);
+-			Main.mapMaxX = Utils.Clamp(_requestedRectRight, num, _world.TileColumns - num);
++			Main.mapMaxX = Utils.Clamp(_requestedRectRight, num, Main.maxTilesX - num);
+-			Main.mapMinY = Utils.Clamp(_requestedRectTop, num, _world.TileRows - num);
++			Main.mapMinY = Utils.Clamp(_requestedRectTop, num, Main.maxTilesY - num);
+-			Main.mapMaxY = Utils.Clamp(_requestedRectBottom, num, _world.TileRows - num);
++			Main.mapMaxY = Utils.Clamp(_requestedRectBottom, num, Main.maxTilesY - num);
+ 			Main.mapMinX = Utils.Clamp(Main.mapMinX, value, value2);
+ 			Main.mapMaxX = Utils.Clamp(Main.mapMaxX, value, value2);
+ 			Main.mapMinY = Utils.Clamp(Main.mapMinY, value3, value4);
+@@ -330,9 +_,9 @@
+ 		}
+ 
+ 		private void UpdateLightToSkyColor(float tileR, float tileG, float tileB) {
+-			int num = Utils.Clamp(_expandedRectLeft, 0, _world.TileColumns - 1);
++			int num = Utils.Clamp(_expandedRectLeft, 0, Main.maxTilesX - 1);
+-			int num2 = Utils.Clamp(_expandedRectRight, 0, _world.TileColumns - 1);
++			int num2 = Utils.Clamp(_expandedRectRight, 0, Main.maxTilesX - 1);
+-			int num3 = Utils.Clamp(_expandedRectTop, 0, _world.TileRows - 1);
++			int num3 = Utils.Clamp(_expandedRectTop, 0, Main.maxTilesY - 1);
+ 			int num4 = Utils.Clamp(_expandedRectBottom, 0, (int)Main.worldSurface - 1);
+ 			if (!((double)num3 < Main.worldSurface))
+ 				return;
+@@ -564,10 +_,10 @@
+ 				}
+ 			}
+ 
+-			num = Utils.Clamp(_expandedRectLeft, 5, _world.TileColumns - 1);
++			num = Utils.Clamp(_expandedRectLeft, 5, Main.maxTilesX - 1);
+-			num2 = Utils.Clamp(_expandedRectRight, 5, _world.TileColumns - 1);
++			num2 = Utils.Clamp(_expandedRectRight, 5, Main.maxTilesX - 1);
+-			num3 = Utils.Clamp(_expandedRectTop, 5, _world.TileRows - 1);
++			num3 = Utils.Clamp(_expandedRectTop, 5, Main.maxTilesY - 1);
+-			num4 = Utils.Clamp(_expandedRectBottom, 5, _world.TileRows - 1);
++			num4 = Utils.Clamp(_expandedRectBottom, 5, Main.maxTilesY - 1);
+ 			Main.SceneMetrics.ScanAndExportToMain(new SceneMetricsScanSettings {
+ 				VisualScanArea = new Rectangle(num, num3, num2 - num, num4 - num3),
+ 				BiomeScanCenterPositionInWorld = Main.LocalPlayer.Center,
 @@ -578,6 +_,7 @@
  			_tileScanner.ExportTo(new Rectangle(num, num3, num2 - num, num4 - num3), _lightMap);
  			for (int m = num; m < num2; m++) {

@@ -1,0 +1,24 @@
+--- src/Terraria/Terraria/Graphics/Light/LightingEngine.cs
++++ src/tModLoader/Terraria/Graphics/Light/LightingEngine.cs
+@@ -39,8 +_,8 @@
+ 		private readonly Stopwatch _timer = new Stopwatch();
+ 		private EngineState _state;
+ 
+-		public LightingEngine(World world) {
+-			SetWorld(world);
++		public LightingEngine() {
++			_tileScanner = new TileLightScanner();
+ 		}
+ 
+ 		public void AddLight(int x, int y, Vector3 color) {
+@@ -201,10 +_,6 @@
+ 			_state = EngineState.MinimapUpdate;
+ 			_activeLightMap = new LightMap();
+ 			_workingLightMap = new LightMap();
+-		}
+-
+-		private void SetWorld(World world) {
+-			_tileScanner = new TileLightScanner(world);
+ 		}
+ 
+ 		private void ExportToMiniMap() {

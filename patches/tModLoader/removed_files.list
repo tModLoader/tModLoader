@@ -1,3 +1,4 @@
+Terraria\World.cs
 ReLogic\Content\AssetLoader.cs
 ReLogic\Content\AsyncAssetLoader.cs
 ReLogic\Content\ContentRejectionFromFailedLoad_ByAssetExtensionType.cs

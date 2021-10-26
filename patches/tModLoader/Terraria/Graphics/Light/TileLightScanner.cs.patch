@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Graphics/Light/TileLightScanner.cs
 +++ src/tModLoader/Terraria/Graphics/Light/TileLightScanner.cs
-@@ -4,6 +_,7 @@
+@@ -4,18 +_,14 @@
  using Terraria.GameContent;
  using Terraria.ID;
  using Terraria.Utilities;
@@ -8,6 +8,56 @@
  
  namespace Terraria.Graphics.Light
  {
+ 	public class TileLightScanner
+ 	{
+-		private readonly World _world;
+ 		private FastRandom _random = FastRandom.CreateWithRandomSeed();
+ 
+-		public TileLightScanner(World world) {
+-			_world = world;
+-		}
+-
+ 		public void ExportTo(Rectangle area, LightMap outputMap) {
+ 			FastParallel.For(area.Left, area.Right, delegate (int start, int end, object context) {
+ 				for (int i = start; i < end; i++) {
+@@ -25,7 +_,7 @@
+ 							outputMap[i - area.X, j - area.Y] = Vector3.Zero;
+ 						}
+ 						else {
+-							LightMaskMode tileMask = GetTileMask(_world.Tiles[i, j]);
++							LightMaskMode tileMask = GetTileMask(Main.tile[i, j]);
+ 							outputMap.SetMaskAt(i - area.X, j - area.Y, tileMask);
+ 							GetTileLight(i, j, out Vector3 outputColor);
+ 							outputMap[i - area.X, j - area.Y] = outputColor;
+@@ -37,8 +_,8 @@
+ 
+ 		private bool IsTileNullOrTouchingNull(int x, int y) {
+ 			if (WorldGen.InWorld(x, y, 1)) {
+-				if (_world.Tiles[x, y] != null && _world.Tiles[x + 1, y] != null && _world.Tiles[x - 1, y] != null && _world.Tiles[x, y - 1] != null)
++				if (Main.tile[x, y] != null && Main.tile[x + 1, y] != null && Main.tile[x - 1, y] != null && Main.tile[x, y - 1] != null)
+-					return _world.Tiles[x, y + 1] == null;
++					return Main.tile[x, y + 1] == null;
+ 
+ 				return true;
+ 			}
+@@ -50,7 +_,7 @@
+ 			_random.NextSeed();
+ 		}
+ 
+-		public LightMaskMode GetMaskMode(int x, int y) => GetTileMask(_world.Tiles[x, y]);
++		public LightMaskMode GetMaskMode(int x, int y) => GetTileMask(Main.tile[x, y]);
+ 
+ 		private static LightMaskMode GetTileMask(Tile tile) {
+ 			if (tile.active() && Main.tileBlockLight[tile.type] && tile.type != 131 && !tile.inActive() && tile.slope() == 0)
+@@ -68,7 +_,7 @@
+ 
+ 		public void GetTileLight(int x, int y, out Vector3 outputColor) {
+ 			outputColor = Vector3.Zero;
+-			Tile tile = _world.Tiles[x, y];
++			Tile tile = Main.tile[x, y];
+ 			FastRandom localRandom = _random.WithModifier(x, y);
+ 			if (y < (int)Main.worldSurface)
+ 				ApplySurfaceLight(tile, x, y, ref outputColor);
 @@ -178,6 +_,7 @@
  					num2 = 0.3f;
  					break;
@@ -16,6 +66,15 @@
  
  			if (lightColor.X < num)
  				lightColor.X = num;
+@@ -1513,7 +_,7 @@
+ 							x -= tile.frameX;
+ 							y -= tile.frameY;
+ 						}
+-						switch ((_world.Tiles[x, y].frameY & 0x3C00) >> 10) {
++						switch ((Main.tile[x, y].frameY & 0x3C00) >> 10) {
+ 							case 1:
+ 								R = 0.1f;
+ 								G = 0.1f;
 @@ -1929,6 +_,7 @@
  						B = 0.15f;
  						break;
@@ -24,3 +83,21 @@
  			}
  
  			if (lightColor.X < R)
+@@ -1956,7 +_,7 @@
+ 					num3 = num6;
+ 				}
+ 			}
+-			else if ((!tile.active() || !Main.tileNoSunLight[tile.type] || ((tile.slope() != 0 || tile.halfBrick()) && _world.Tiles[x, y - 1].liquid == 0 && _world.Tiles[x, y + 1].liquid == 0 && _world.Tiles[x - 1, y].liquid == 0 && _world.Tiles[x + 1, y].liquid == 0)) && lightColor.X < num7 && (Main.wallLight[tile.wall] || tile.wall == 73 || tile.wall == 227) && tile.liquid < 200 && (!tile.halfBrick() || _world.Tiles[x, y - 1].liquid < 200)) {
++			else if ((!tile.active() || !Main.tileNoSunLight[tile.type] || ((tile.slope() != 0 || tile.halfBrick()) && Main.tile[x, y - 1].liquid == 0 && Main.tile[x, y + 1].liquid == 0 && Main.tile[x - 1, y].liquid == 0 && Main.tile[x + 1, y].liquid == 0)) && lightColor.X < num7 && (Main.wallLight[tile.wall] || tile.wall == 73 || tile.wall == 227) && tile.liquid < 200 && (!tile.halfBrick() || Main.tile[x, y - 1].liquid < 200)) {
+ 				num = num4;
+ 				num2 = num5;
+ 				num3 = num6;
+@@ -2027,7 +_,7 @@
+ 			float num2 = 0f;
+ 			float num3 = 0f;
+ 			float num4 = 0.55f + (float)Math.Sin(Main.GlobalTimeWrappedHourly * 2f) * 0.08f;
+-			if ((!tile.active() || !Main.tileNoSunLight[tile.type] || ((tile.slope() != 0 || tile.halfBrick()) && _world.Tiles[x, y - 1].liquid == 0 && _world.Tiles[x, y + 1].liquid == 0 && _world.Tiles[x - 1, y].liquid == 0 && _world.Tiles[x + 1, y].liquid == 0)) && lightColor.X < num4 && (Main.wallLight[tile.wall] || tile.wall == 73 || tile.wall == 227) && tile.liquid < 200 && (!tile.halfBrick() || _world.Tiles[x, y - 1].liquid < 200)) {
++			if ((!tile.active() || !Main.tileNoSunLight[tile.type] || ((tile.slope() != 0 || tile.halfBrick()) && Main.tile[x, y - 1].liquid == 0 && Main.tile[x, y + 1].liquid == 0 && Main.tile[x - 1, y].liquid == 0 && Main.tile[x + 1, y].liquid == 0)) && lightColor.X < num4 && (Main.wallLight[tile.wall] || tile.wall == 73 || tile.wall == 227) && tile.liquid < 200 && (!tile.halfBrick() || Main.tile[x, y - 1].liquid < 200)) {
+ 				num = num4;
+ 				num2 = num4 * 0.6f;
+ 				num3 = num4 * 0.2f;

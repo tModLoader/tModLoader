@@ -5,9 +5,9 @@
  		public static int OffScreenTiles = 45;
  		private static LightMode _mode = LightMode.Color;
 -		private static readonly LightingEngine NewEngine = new LightingEngine(Main.ActiveWorld);
-+		internal static readonly LightingEngine NewEngine = new LightingEngine(Main.ActiveWorld);
 -		private static readonly LegacyLighting LegacyEngine = new LegacyLighting(Main.Camera, Main.ActiveWorld);
-+		internal static readonly LegacyLighting LegacyEngine = new LegacyLighting(Main.Camera, Main.ActiveWorld);
++		internal static readonly LightingEngine NewEngine = new();
++		internal static readonly LegacyLighting LegacyEngine = new(Main.Camera);
  		private static ILightingEngine _activeEngine;
  
  		public static float GlobalBrightness {

@@ -1,0 +1,19 @@
+--- src/Terraria/Terraria/WorldBuilding/WorldUtils.cs
++++ src/tModLoader/Terraria/WorldBuilding/WorldUtils.cs
+@@ -5,11 +_,11 @@
+ {
+ 	public static class WorldUtils
+ 	{
+-		public static Rectangle ClampToWorld(World world, Rectangle tileRectangle) {
++		public static Rectangle ClampToWorld(Rectangle tileRectangle) {
+-			int num = Math.Max(0, Math.Min(tileRectangle.Left, world.TileColumns));
++			int num = Math.Max(0, Math.Min(tileRectangle.Left, Main.maxTilesX));
+-			int num2 = Math.Max(0, Math.Min(tileRectangle.Top, world.TileRows));
++			int num2 = Math.Max(0, Math.Min(tileRectangle.Top, Main.maxTilesY));
+-			int num3 = Math.Max(0, Math.Min(tileRectangle.Right, world.TileColumns));
++			int num3 = Math.Max(0, Math.Min(tileRectangle.Right, Main.maxTilesX));
+-			int num4 = Math.Max(0, Math.Min(tileRectangle.Bottom, world.TileRows));
++			int num4 = Math.Max(0, Math.Min(tileRectangle.Bottom, Main.maxTilesY));
+ 			return new Rectangle(num, num2, num3 - num, num4 - num2);
+ 		}
+ 

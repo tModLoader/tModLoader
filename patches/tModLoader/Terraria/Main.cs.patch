@@ -54,6 +54,14 @@
  #endif
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
+@@ -233,7 +_,6 @@
+ 		public static Main instance;
+ 		public static ChromaEngine Chroma;
+ 		public static ChromaHotkeyPainter ChromaPainter;
+-		public static World ActiveWorld = new World();
+ 		public static Camera Camera = new Camera();
+ 		public static IPlayerRenderer PlayerRenderer = new LegacyPlayerRenderer();
+ 		public static IPlayerRenderer PotionOfReturnRenderer = new ReturnGatePlayerRenderer();
 @@ -242,7 +_,7 @@
  		public static NPCHeadRenderer BossNPCHeadRenderer = null;
  		public static string versionNumber = "v1.4.2.3";
@@ -940,10 +948,12 @@
  			};
  
  			PlayerInput.OnActionableInput += delegate {
-@@ -4897,13 +_,16 @@
+@@ -4896,14 +_,17 @@
+ 					LocalGolfState.CancelBallTracking();
  			};
  
- 			SceneMetrics = new SceneMetrics(ActiveWorld);
+-			SceneMetrics = new SceneMetrics(ActiveWorld);
++			SceneMetrics = new SceneMetrics();
 +
 -			if (!dedServ) {
 +			if (dedServ) {
