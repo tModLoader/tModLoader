@@ -15,9 +15,13 @@ namespace ExampleMod
 		public static ModKeybind RandomBuffKeybind;
 		public static int ExampleCustomCurrencyId;
 
-		public override void AddRecipeGroups() => Recipes.AddRecipeGroups();
+		public override void AddRecipeGroups() {
+			Recipes.AddRecipeGroups();
+		}
 
-		public override void PostAddRecipes() => Recipes.ModifyRecipes(this);
+		public override void PostAddRecipes() {
+			Recipes.ModifyRecipes(this);
+		}
 
 		public override void Load() {
 			RandomBuffKeybind = KeybindLoader.RegisterKeybind(this, "Random Buff", "P");
