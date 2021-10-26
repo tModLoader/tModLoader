@@ -16,11 +16,11 @@ namespace ExampleMod
 		public static int ExampleCustomCurrencyId;
 
 		public override void AddRecipeGroups() {
-			Recipes.AddRecipeGroups();
+			ExampleRecipes.AddRecipeGroups();
 		}
 
 		public override void PostAddRecipes() {
-			Recipes.ModifyRecipes(this);
+			ExampleRecipes.ModifyRecipes(this);
 		}
 
 		public override void Load() {
