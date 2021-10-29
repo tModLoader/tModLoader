@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Terraria
@@ -51,6 +52,34 @@ namespace Terraria
 			return result != null;
 		}
 		*/
+
+		/// <summary>
+		/// Will spawn an item like QuickSpawnItem, but clones it (handy when you need to retain item infos)
+		/// </summary>
+		/// <param name="item">The item you want to be cloned</param>
+		/// <param name="stack">The stack to give the item. Note that this will override maxStack if it's higher.</param>
+		public int QuickSpawnClonedItem(Item item, int stack = 1) {
+			int index = Item.NewItem((int)position.X, (int)position.Y, width, height, item.type, stack, false, -1, false, false);
+			Item clone = Main.item[index] = item.Clone();
+			clone.whoAmI = index;
+			clone.position = position;
+			clone.stack = stack;
+
+			// Sync the item for mp
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, index, 1f, 0f, 0f, 0, 0, 0);
+
+			return index;
+		}
+
+		public int QuickSpawnItem(Item item, int stack = 1) => QuickSpawnItem(item.type, stack);
+
+		public int QuickSpawnItem(int type, int stack = 1) {
+			int number = Item.NewItem((int)position.X, (int)position.Y, width, height, type, stack, noBroadcast: false, -1);
+			if (Main.netMode == 1)
+				NetMessage.SendData(21, -1, -1, null, number, 1f);
+			return number;
+		}
 
 		/// <summary> Returns whether or not this Player currently has a (de)buff of the provided type. </summary>
 		public bool HasBuff(int type) => FindBuffIndex(type) != -1;
