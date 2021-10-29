@@ -81,6 +81,13 @@ namespace Terraria
 			return number;
 		}
 
+		/// <inheritdoc cref="QuickSpawnClonedItem"/>
+		public Item QuickSpawnClonedItemDirect(Item item, int stack = 1) => Main.item[QuickSpawnClonedItem(item, stack)];
+
+		public Item QuickSpawnItemDirect(Item item, int stack = 1) => Main.item[QuickSpawnItem(item.type, stack)];
+
+		public Item QuickSpawnItemDirect(int type, int stack = 1) => Main.item[QuickSpawnItem(type, stack)];
+
 		/// <summary> Returns whether or not this Player currently has a (de)buff of the provided type. </summary>
 		public bool HasBuff(int type) => FindBuffIndex(type) != -1;
 
