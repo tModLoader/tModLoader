@@ -106,7 +106,6 @@ jobs:
           echo ::endgroup::
           
           echo ::group::Building Release
-          rm src/tModLoader/Terraria/Item.cs #break the build on purpose
           dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q
           (
             dotnet build src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q -bl || err=$?;
