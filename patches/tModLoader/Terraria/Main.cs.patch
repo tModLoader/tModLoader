@@ -844,55 +844,12 @@
  		}
  
  		public Main() : base(dedServ) {
-@@ -4784,7 +_,50 @@
+@@ -4784,7 +_,7 @@
  
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
 +			GraphicsChangeTracker.Init();
-+		}
-+
-+		internal void PostSocialInitialize() {
-+			if (dedServ) {
-+				return;
-+			}
-+			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
-+
-+			if (!Directory.Exists(vanillaContentFolder)) {
-+				vanillaContentFolder = "../Content"; // Nested Manual Install
-+			}
-+
-+#if MAC
-+			vanillaContentFolder = "../../../../Terraria/Terraria.app/Contents/Resources/Content";
-+#endif
-+
-+			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
-+				var appID = ModLoader.Engine.Steam.TerrariaAppId_t;
-+				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
-+
-+				if (appInstalled) {
-+					Steamworks.SteamApps.GetAppInstallDir(appID, out var steamInstallFolder, 1000);
-+					Logging.Terraria.Info("Found Terraria steamapp install at: " + steamInstallFolder);
-+
-+					vanillaContentFolder = Path.Combine(steamInstallFolder, "Content");
-+
-+					if (!Directory.Exists(vanillaContentFolder))
-+						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/Resources/Content");
-+				}
-+
-+				ModLoader.Engine.Steam.RecalculateAvailableSteamCloudStorage();
-+				Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)ModLoader.Engine.Steam.lastAvailableSteamCloudStorage)} available");
-+			}
-+
-+			if (!Directory.Exists(vanillaContentFolder)) {
-+				Interface.MessageBoxShow(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
-+				Environment.Exit(1);
-+			}
-+
-+			if (Directory.Exists(Path.Combine(InstallVerifier.TmlContentDirectory, "Images")))
-+				AlternateContentManager = new TMLContentManager(Content.ServiceProvider, InstallVerifier.TmlContentDirectory, null);
-+
-+			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
  		}
  
  		private void Main_Exiting(object sender, EventArgs e) {
@@ -1668,7 +1625,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15061,82 +_,84 @@
+@@ -15061,47 +_,80 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1752,39 +1709,15 @@
 +					}
 +					int damage = player[myPlayer].GetWeaponDamage(item);
  					damage = (int)((float)damage * ItemID.Sets.ToolTipDamageMultiplier[item.type]);
--					if (item.melee) {
--						toolTipLine[numLines] = (((int)(player[myPlayer].meleeDamage * (float)damage + num)).ToString() ?? "");
--						toolTipLine[numLines] += Lang.tip[2].Value;
--					}
--					else if (item.ranged) {
--						float num2 = (float)damage * player[myPlayer].rangedDamage;
--						if (item.useAmmo == AmmoID.Arrow || item.useAmmo == AmmoID.Stake) {
--							num2 *= player[myPlayer].arrowDamage;
--							if (player[myPlayer].archery)
--								num2 *= 1.2f;
--						}
--
--						if (item.useAmmo == AmmoID.Bullet || item.useAmmo == AmmoID.CandyCorn)
--							num2 *= player[myPlayer].bulletDamage;
--
--						if (item.useAmmo == AmmoID.Rocket || item.useAmmo == AmmoID.StyngerBolt || item.useAmmo == AmmoID.JackOLantern || item.useAmmo == AmmoID.NailFriendly)
--							num2 *= player[myPlayer].rocketDamage;
--
--						toolTipLine[numLines] = (((int)(num2 + num)).ToString() ?? "");
--						toolTipLine[numLines] += Lang.tip[3].Value;
--					}
--					else if (item.magic) {
--						toolTipLine[numLines] = (((int)(player[myPlayer].magicDamage * (float)damage + num)).ToString() ?? "");
--						toolTipLine[numLines] += Lang.tip[4].Value;
--					}
--					else if (item.summon) {
--						toolTipLine[numLines] = (((int)(player[myPlayer].minionDamage * (float)damage + num)).ToString() ?? "");
--						toolTipLine[numLines] += Lang.tip[53].Value;
--					}
--					else {
--						toolTipLine[numLines] = (damage.ToString() ?? "");
--						toolTipLine[numLines] += Lang.tip[55].Value;
--					}
++					/*
+ 					if (item.melee) {
+ 						toolTipLine[numLines] = (((int)(player[myPlayer].meleeDamage * (float)damage + num)).ToString() ?? "");
+ 						toolTipLine[numLines] += Lang.tip[2].Value;
+@@ -15135,8 +_,12 @@
+ 						toolTipLine[numLines] = (damage.ToString() ?? "");
+ 						toolTipLine[numLines] += Lang.tip[55].Value;
+ 					}
++					*/
 +					toolTipLine[numLines] = damage + tip.Value;
 +					toolTipNames[numLines] = "Damage";
  
