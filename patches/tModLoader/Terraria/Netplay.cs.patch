@@ -59,7 +59,7 @@
  			Connection.ResetSpecialFlags();
  			ResetNetDiag();
  			Main.ServerSideCharacter = false;
-@@ -437,13 +_,15 @@
+@@ -437,11 +_,11 @@
  			Main.netMode = 1;
  			Main.menuMode = 14;
  			if (!Main.autoPass)
@@ -72,11 +72,7 @@
 +			Connection.ReadBuffer = new byte[ushort.MaxValue];
  		}
  
-+
-+		internal static bool syncingWorld = false;
  		private static void InnerClientLoop() {
- 			try {
- 				NetMessage.buffer[256].Reset();
 @@ -478,6 +_,7 @@
  							Cloud.resetClouds();
  							Main.cloudAlpha = Main.maxRaining;
@@ -85,22 +81,6 @@
  							if (Main.mapEnabled)
  								Main.Map.Load();
  						}
-@@ -489,6 +_,7 @@
- 						else if (Connection.State == 5 && WorldGen.worldCleared) {
- 							Connection.State = 6;
- 							Main.player[Main.myPlayer].FindSpawn();
-+							syncingWorld = true;
- 							NetMessage.SendData(8, -1, -1, null, Main.player[Main.myPlayer].SpawnX, Main.player[Main.myPlayer].SpawnY);
- 						}
- 
-@@ -522,6 +_,7 @@
- 					num = Connection.State;
- 				}
- 
-+				syncingWorld = false;
- 				try {
- 					Connection.Socket.Close();
- 				}
 @@ -529,6 +_,11 @@
  				}
  
