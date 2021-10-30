@@ -108,8 +108,10 @@ jobs:
           echo ::group::Building Release
           dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q
           (
-            dotnet build src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q -bl || err=$?;
-            [ $err -ne 0 ] && echo Uploading msbuild.binlog && curl --upload-file ./msbuild.binlog http://transfer.sh/msbuild.binlog;
+            set +e;
+            dotnet build src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q -bl;
+            err=$?;
+            [[ $err -ne 0 ]] && echo Uploading msbuild.binlog && curl --upload-file ./msbuild.binlog http://transfer.sh/msbuild.binlog;
             exit $err
           )
           
