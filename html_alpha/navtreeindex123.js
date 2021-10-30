@@ -1,5 +1,8 @@
 var NAVTREEINDEX123 =
 {
+"namespace_terraria_1_1_graphics_1_1_light.html#a59dbf4ea77020c58b2fdd013ff2db860a8dc0611245a871ac51bbeebb85f33a58":[0,0,2,8,2,5,3],
+"namespace_terraria_1_1_graphics_1_1_light.html#a59dbf4ea77020c58b2fdd013ff2db860ae41480b6bbfbf7407974a88d3d34f4fa":[0,0,2,8,2,5,1],
+"namespace_terraria_1_1_graphics_1_1_renderers.html":[0,0,2,8,3],
 "namespace_terraria_1_1_graphics_1_1_shaders.html":[0,0,2,8,4],
 "namespace_terraria_1_1_i_d.html":[0,0,2,9],
 "namespace_terraria_1_1_i_d.html#a08d3ab3f001fb51f441ef1febe350437":[0,0,2,9,54],
@@ -246,8 +249,5 @@ var NAVTREEINDEX123 =
 "struct_terraria_1_1_bits_byte.html#a1e0cc55d3a142c3cdf079be2db49aef9":[1,0,2,25,15],
 "struct_terraria_1_1_bits_byte.html#a245644a9484745e69d39bb8e15a68384":[1,0,2,25,4],
 "struct_terraria_1_1_bits_byte.html#a24a24acae0b1383081788b39fdb6e5f8":[1,0,2,25,1],
-"struct_terraria_1_1_bits_byte.html#a43416f9a7b9db5ed5bdb8f04e2e1f24a":[1,0,2,25,3],
-"struct_terraria_1_1_bits_byte.html#a529aa620dd8d8b9e8f39860e5fee4972":[1,0,2,25,6],
-"struct_terraria_1_1_bits_byte.html#a875c5b516b40346d2bb879de940e6536":[1,0,2,25,9],
-"struct_terraria_1_1_bits_byte.html#a92bb42cea473f0fe64abc790abc62e9b":[1,0,2,25,0]
+"struct_terraria_1_1_bits_byte.html#a43416f9a7b9db5ed5bdb8f04e2e1f24a":[1,0,2,25,3]
 };

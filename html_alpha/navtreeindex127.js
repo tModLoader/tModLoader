@@ -1,5 +1,8 @@
 var NAVTREEINDEX127 =
 {
+"struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aed52fe7f29e8f48655d7b7865b17efb7":[1,0,2,13,120,14],
+"struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aedf609963b14f1e49cbd78745b9b09d1":[1,0,2,13,120,10],
+"struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aeebca0ff9127c8bf8cc866d3ad6b27dc":[1,0,2,13,120,4],
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#afb34f12bdfa209993adda54c3b1d09d4":[1,0,2,13,120,8],
 "struct_terraria_1_1_mod_loader_1_1_pos_data.html":[1,0,2,13,125],
 "struct_terraria_1_1_mod_loader_1_1_pos_data.html#a060d787941cb734cc86e0b31f6775b8a":[1,0,2,13,125,7],
@@ -246,8 +249,5 @@ var NAVTREEINDEX127 =
 "struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#aebbffc4fe26f1653e7b5effe581adcff":[1,0,2,23,10,2],
 "struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html":[1,0,2,23,21,0],
 "struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a1da714dc024676b4585afbca7befbb94":[1,0,2,23,21,0,2],
-"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a35bf379104318f6fdb58620195287f07":[1,0,2,23,21,0,4],
-"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a922e4d491ac0f7c5f62d5c9f6bc0b3b7":[1,0,2,23,21,0,3],
-"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#aec06f0daf512b69bab704c010957de1d":[1,0,2,23,21,0,0],
-"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#af26f829f761cd60ebc3684f43c4ecc9e":[1,0,2,23,21,0,1]
+"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a35bf379104318f6fdb58620195287f07":[1,0,2,23,21,0,4]
 };

@@ -58,7 +58,7 @@ var class_terraria_1_1_projectile =
     [ "Minion_FindTargetInRange", "class_terraria_1_1_projectile.html#a51ca88e9597419435f13017f0a3af446", null ],
     [ "NewProjectile", "class_terraria_1_1_projectile.html#abfbe42f51e710ae9801b739605040248", null ],
     [ "NewProjectile", "class_terraria_1_1_projectile.html#ad48b6d6896c41fe682318382cc3fa36e", null ],
-    [ "NewProjectileDirect", "class_terraria_1_1_projectile.html#ac700f33f62d83a91a7caaf2ee99fc5d6", null ],
+    [ "NewProjectileDirect", "class_terraria_1_1_projectile.html#a4e62ba426c37193f98b537b3eed9a076", null ],
     [ "ProjectileFixDesperation", "class_terraria_1_1_projectile.html#a01551e43d3c18a5518765a163cb15132", null ],
     [ "ProjLight", "class_terraria_1_1_projectile.html#ab5b68eb8d3b7e1ab2f18fc58cf551da6", null ],
     [ "ResetImmunity", "class_terraria_1_1_projectile.html#af918a96e1c42f6446b390089cff4758e", null ],

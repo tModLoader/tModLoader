@@ -1,5 +1,8 @@
 var NAVTREEINDEX107 =
 {
+"class_terraria_1_1_remote_client.html#a5fac2cb96d358fe7479d5ffd455900f8":[1,0,2,61,8],
+"class_terraria_1_1_remote_client.html#a637b34ca20cc481ecc9d0fb885d6fd8c":[1,0,2,61,10],
+"class_terraria_1_1_remote_client.html#a6cfe448de71ce37485a8a44c10f3a988":[1,0,2,61,2],
 "class_terraria_1_1_remote_client.html#a72f2c88e5479b044a408d5041f7c73ed":[1,0,2,61,24],
 "class_terraria_1_1_remote_client.html#a82ff0c34daf70718a6d548483b376e9e":[1,0,2,61,19],
 "class_terraria_1_1_remote_client.html#a87d11241de765b979c456efb9a0920f1":[1,0,2,61,20],
@@ -246,8 +249,5 @@ var NAVTREEINDEX107 =
 "class_terraria_1_1_social_1_1_base_1_1_server_join_requests_manager.html#a259cb1fab707706324187b58b333844c":[1,0,2,19,0,11,4],
 "class_terraria_1_1_social_1_1_base_1_1_server_join_requests_manager.html#a49759eea5cbd264bb09f46cea49b94da":[1,0,2,19,0,11,3],
 "class_terraria_1_1_social_1_1_base_1_1_server_join_requests_manager.html#a8c7c75266c64461aae6de5c14c223196":[1,0,2,19,0,11,5],
-"class_terraria_1_1_social_1_1_base_1_1_texture_pack_workshop_entry.html":[1,0,2,19,0,12],
-"class_terraria_1_1_social_1_1_base_1_1_texture_pack_workshop_entry.html#aba13c9042c585e81365b0a2f72a10724":[1,0,2,19,0,12,0],
-"class_terraria_1_1_social_1_1_base_1_1_user_join_to_server_request.html":[1,0,2,19,0,13],
-"class_terraria_1_1_social_1_1_base_1_1_user_join_to_server_request.html#a05f3a18a2c4c656ca9500af80763f492":[1,0,2,19,0,13,7]
+"class_terraria_1_1_social_1_1_base_1_1_texture_pack_workshop_entry.html":[1,0,2,19,0,12]
 };

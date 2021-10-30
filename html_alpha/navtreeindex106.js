@@ -1,5 +1,9 @@
 var NAVTREEINDEX106 =
 {
+"class_terraria_1_1_projectile.html#a655d8afbb45d7b6a650b9e43cf12cd0b":[1,0,2,56,9],
+"class_terraria_1_1_projectile.html#a65d9bb7ca4094240f56df26974874105":[1,0,2,56,99],
+"class_terraria_1_1_projectile.html#a6a45903751a9a00130b7547c1f3c2276":[1,0,2,56,137],
+"class_terraria_1_1_projectile.html#a6b242d3c4d76be5a2ab9434c0fbe85cb":[1,0,2,56,91],
 "class_terraria_1_1_projectile.html#a6dbb95dcf182706e27196eff4cc58d82":[1,0,2,56,112],
 "class_terraria_1_1_projectile.html#a6def195b77c7cd68ffabe1e353f10151":[1,0,2,56,69],
 "class_terraria_1_1_projectile.html#a711c3aa51e239d45d9f0ba7a37ef3ae1":[1,0,2,56,5],
@@ -60,7 +64,6 @@ var NAVTREEINDEX106 =
 "class_terraria_1_1_projectile.html#ac63deb10409cdf3ba73606e12c915d52":[1,0,2,56,115],
 "class_terraria_1_1_projectile.html#ac64c41cba32252ed681dca7ccf4679ff":[1,0,2,56,102],
 "class_terraria_1_1_projectile.html#ac69964cd301302df3979b272da4e0d6a":[1,0,2,56,76],
-"class_terraria_1_1_projectile.html#ac700f33f62d83a91a7caaf2ee99fc5d6":[1,0,2,56,58],
 "class_terraria_1_1_projectile.html#ac8ac3192778c2f27105c2f05a25b27e9":[1,0,2,56,17],
 "class_terraria_1_1_projectile.html#acaf07edc501045127ac886245e6065e5":[1,0,2,56,120],
 "class_terraria_1_1_projectile.html#ace94d598bc5d998879fd518ca907e2c0":[1,0,2,56,23],
@@ -246,8 +249,5 @@ var NAVTREEINDEX106 =
 "class_terraria_1_1_remote_client.html#a3df17f383ec4e5533da1ff23b72d17ec":[1,0,2,61,18],
 "class_terraria_1_1_remote_client.html#a409bcd2ac811bdd648573f9b4a30fc16":[1,0,2,61,25],
 "class_terraria_1_1_remote_client.html#a5013543b098b20a6a297bbc635b6111d":[1,0,2,61,0],
-"class_terraria_1_1_remote_client.html#a5f17fb30e8a5d4d6566695431b563a5a":[1,0,2,61,31],
-"class_terraria_1_1_remote_client.html#a5fac2cb96d358fe7479d5ffd455900f8":[1,0,2,61,8],
-"class_terraria_1_1_remote_client.html#a637b34ca20cc481ecc9d0fb885d6fd8c":[1,0,2,61,10],
-"class_terraria_1_1_remote_client.html#a6cfe448de71ce37485a8a44c10f3a988":[1,0,2,61,2]
+"class_terraria_1_1_remote_client.html#a5f17fb30e8a5d4d6566695431b563a5a":[1,0,2,61,31]
 };

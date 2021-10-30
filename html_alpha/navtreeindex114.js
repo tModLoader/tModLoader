@@ -1,5 +1,8 @@
 var NAVTREEINDEX114 =
 {
+"class_terraria_1_1_utils.html#a33798e8567bd1032500bed77090a75d5":[1,0,2,73,62],
+"class_terraria_1_1_utils.html#a3464bc873903bccc47b26be9f0e05221":[1,0,2,73,68],
+"class_terraria_1_1_utils.html#a372f6b5953108fbefa822b7e927344b9":[1,0,2,73,32],
 "class_terraria_1_1_utils.html#a39df4760ac543401c411689076a165cf":[1,0,2,73,43],
 "class_terraria_1_1_utils.html#a3af2aa30cfb621adffbe5e0f22d2f528":[1,0,2,73,105],
 "class_terraria_1_1_utils.html#a3b9eeb509e7c78623ee3c5538d35c5af":[1,0,2,73,79],
@@ -246,8 +249,5 @@ var NAVTREEINDEX114 =
 "class_terraria_1_1_world_building_1_1_actions_1_1_set_liquid.html":[1,0,2,23,0,16],
 "class_terraria_1_1_world_building_1_1_actions_1_1_set_liquid.html#a5b52e3396c64ffb81a2094aaf77577c3":[1,0,2,23,0,16,1],
 "class_terraria_1_1_world_building_1_1_actions_1_1_set_liquid.html#ab78ba64fdbfc7a3d35a7c71419627e8d":[1,0,2,23,0,16,0],
-"class_terraria_1_1_world_building_1_1_actions_1_1_set_slope.html":[1,0,2,23,0,17],
-"class_terraria_1_1_world_building_1_1_actions_1_1_set_slope.html#a24507e0509e780eca39e5368d4b1688c":[1,0,2,23,0,17,0],
-"class_terraria_1_1_world_building_1_1_actions_1_1_set_slope.html#a61ecd4283835dd6ac0f757778833f609":[1,0,2,23,0,17,1],
-"class_terraria_1_1_world_building_1_1_actions_1_1_set_tile.html":[1,0,2,23,0,18]
+"class_terraria_1_1_world_building_1_1_actions_1_1_set_slope.html":[1,0,2,23,0,17]
 };

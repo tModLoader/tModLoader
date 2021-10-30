@@ -1,5 +1,8 @@
 var NAVTREEINDEX126 =
 {
+"struct_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_info.html#ae6f1b032af53cbf0ad8a60b1cdaf21a9":[1,0,2,5,21,0,1,0],
+"struct_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_extra_bestiary_info_page_information.html":[1,0,2,5,21,2,2],
+"struct_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_extra_bestiary_info_page_information.html#a03f5ba05a8b4a7eec2a882656d846ea4":[1,0,2,5,21,2,2,0],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_player_stats_snapshot.html":[1,0,2,5,21,22],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_player_stats_snapshot.html#a4c131f27813fd0748d306ba399734c00":[1,0,2,5,21,22,5],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_player_stats_snapshot.html#a6f3c200a46d7e4f58c45f37462b2e4a5":[1,0,2,5,21,22,7],
@@ -246,8 +249,5 @@ var NAVTREEINDEX126 =
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a8eb193778914243d9a2a00f08b1bcf67":[1,0,2,13,120,2],
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a8eec678c546a950cc906e36ec64f362c":[1,0,2,13,120,7],
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a9b19eb26b1ac89612fa9c7a9be9649da":[1,0,2,13,120,5],
-"struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aaf1db6c1c5c57bc85b858ce0505c164e":[1,0,2,13,120,12],
-"struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aed52fe7f29e8f48655d7b7865b17efb7":[1,0,2,13,120,14],
-"struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aedf609963b14f1e49cbd78745b9b09d1":[1,0,2,13,120,10],
-"struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aeebca0ff9127c8bf8cc866d3ad6b27dc":[1,0,2,13,120,4]
+"struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aaf1db6c1c5c57bc85b858ce0505c164e":[1,0,2,13,120,12]
 };
