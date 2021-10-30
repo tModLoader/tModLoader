@@ -74,13 +74,6 @@ namespace Terraria
 
 		public int QuickSpawnItem(Item item, int stack = 1) => QuickSpawnItem(item.type, stack);
 
-		public int QuickSpawnItem(int type, int stack = 1) {
-			int number = Item.NewItem((int)position.X, (int)position.Y, width, height, type, stack, noBroadcast: false, -1);
-			if (Main.netMode == 1)
-				NetMessage.SendData(21, -1, -1, null, number, 1f);
-			return number;
-		}
-
 		/// <inheritdoc cref="QuickSpawnClonedItem"/>
 		public Item QuickSpawnClonedItemDirect(Item item, int stack = 1) => Main.item[QuickSpawnClonedItem(item, stack)];
 

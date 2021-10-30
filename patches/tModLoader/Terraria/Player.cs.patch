@@ -739,7 +739,7 @@
  			if (Main.rand.Next(15) == 0 && Main.hardMode) {
  				int number = Item.NewItem((int)position.X, (int)position.Y, width, height, 602);
  				if (Main.netMode == 1)
-@@ -3942,15 +_,34 @@
+@@ -3942,15 +_,33 @@
  						break;
  					}
  			}
@@ -747,13 +747,13 @@
 +			// TODO: return statements above probably break this.
  		}
  
-+		/*
- 		public void QuickSpawnItem(int item, int stack = 1) {
+-		public void QuickSpawnItem(int item, int stack = 1) {
++		public int QuickSpawnItem(int item, int stack = 1) {
  			int number = Item.NewItem((int)position.X, (int)position.Y, width, height, item, stack, noBroadcast: false, -1);
  			if (Main.netMode == 1)
  				NetMessage.SendData(21, -1, -1, null, number, 1f);
++			return number;
  		}
-+		*/
  
  		public void OpenBossBag(int type) {
 +			if (!ItemLoader.PreOpenVanillaBag("bossBag", this, type))
