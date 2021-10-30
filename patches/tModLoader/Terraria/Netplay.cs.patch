@@ -37,27 +37,6 @@
  		}
  
  		public static void ResetSections() {
-@@ -117,6 +_,20 @@
- 			return false;
- 		}
- 
-+		private static readonly ConcurrentQueue<Task> mainThreadTasks = new ConcurrentQueue<Task>();
-+
-+		internal static void OnUpdate() {
-+			while (mainThreadTasks.TryDequeue(out Task t))
-+				t.RunSynchronously();
-+		}
-+
-+		//tML: Made internal.
-+		internal static void InvokeOnMainThread(Action action) {
-+			var t = new Task(action);
-+			mainThreadTasks.Enqueue(t);
-+			t.Wait();
-+		}
-+
- 		private static void OpenPort(int port) {
- 			if (!Main.dedServ)
- 				return;
 @@ -283,6 +_,8 @@
  				Main.netMode = 0;
  				Main.menuMode = 10;

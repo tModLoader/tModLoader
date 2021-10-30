@@ -712,13 +712,7 @@
  					if (oldStatusText != statusText) {
  						oldStatusText = statusText;
  						Console.WriteLine(statusText);
-@@ -4439,24 +_,20 @@
- 						Update(new GameTime());
- 					else if (saveTime.IsRunning)
- 						saveTime.Stop();
-+					else
-+						Netplay.OnUpdate();
- 
+@@ -4443,20 +_,14 @@
  					if (Main.OnTickForThirdPartySoftwareOnly != null)
  						Main.OnTickForThirdPartySoftwareOnly();
  
@@ -1217,14 +1211,6 @@
  				CinematicManager.Instance.Update(gameTime);
  				if (netMode == 2) {
  					for (int i = 0; i < 256; i++) {
-@@ -12378,6 +_,7 @@
- 				_hasPendingNetmodeChange = false;
- 			}
- 
-+			Netplay.OnUpdate(); // TODO, why do we add this?
- 			if (CaptureManager.Instance.IsCapturing)
- 				return;
- 
 @@ -12595,6 +_,9 @@
  
  					mouseLeftRelease = false;
