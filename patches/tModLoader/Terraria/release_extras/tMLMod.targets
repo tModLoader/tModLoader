@@ -16,6 +16,6 @@
 		<Reference Remove="$(tMLLibraryPath)/**/*.resources.dll" />
 	</ItemGroup>
 	<Target Name="BuildMod" AfterTargets="Build">
-		<Exec Command="dotnet $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)" WorkingDirectory="$(tMLSteamPath)"/>
+		<Exec Command="dotnet $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks) $(ExtraBuildModFlags)" WorkingDirectory="$(tMLSteamPath)"/>
 	</Target>
 </Project>
