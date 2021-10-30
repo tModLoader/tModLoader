@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -246,6 +247,82 @@ namespace Terraria
 			}
 
 			item.TurnToAir();
+		}
+
+		public int GetHealLife(Item item, bool quickHeal = false) {
+			int healValue = item.healLife;
+			ItemLoader.GetHealLife(item, this, quickHeal, ref healValue);
+			PlayerLoader.GetHealLife(this, item, quickHeal, ref healValue);
+			return healValue > 0 ? healValue : 0;
+		}
+
+		public int GetHealMana(Item item, bool quickHeal = false) {
+			int healValue = item.healMana;
+			ItemLoader.GetHealMana(item, this, quickHeal, ref healValue);
+			PlayerLoader.GetHealMana(this, item, quickHeal, ref healValue);
+			return healValue > 0 ? healValue : 0;
+		}
+
+		public bool CanBuyItem(int price, int customCurrency = -1) {
+			if (customCurrency != -1)
+				return CustomCurrencyManager.BuyItem(this, price, customCurrency);
+			
+			long num = Utils.CoinsCount(out _, inventory, new[] { 58, 57, 56, 55, 54 });
+			long num2 = Utils.CoinsCount(out _, bank.item, Array.Empty<int>());
+			long num3 = Utils.CoinsCount(out _, bank2.item, Array.Empty<int>());
+			long num4 = Utils.CoinsCount(out _, bank3.item, Array.Empty<int>());
+
+			long num5 = Utils.CoinsCombineStacks(out _, new[] { num, num2, num3, num4 });
+
+			return num5 >= price;
+		}
+
+		public int GetManaCost(Item item) {
+			float reduce = manaCost;
+			float mult = 1;
+			// TODO: Make a space gun set
+			if (spaceGun && (item.type == ItemID.SpaceGun || item.type == ItemID.ZapinatorGray || item.type == ItemID.ZapinatorOrange))
+				mult = 0;
+
+			if(item.type == ItemID.BookStaff && altFunctionUse == 2)
+				mult = 2;
+
+			CombinedHooks.ModifyManaCost(this, item, ref reduce, ref mult);
+			int mana = (int)(item.mana * reduce * mult);
+			return mana >= 0 ? mana : 0;
+		}
+
+		public bool CheckMana(Item item, int amount = -1, bool pay = false, bool blockQuickMana = false) {
+			if (amount <= -1)
+				amount = GetManaCost(item);
+
+			if (statMana >= amount) {
+				if (pay) {
+					CombinedHooks.OnConsumeMana(this, item, amount);
+					statMana -= amount;
+				}
+
+				return true;
+			}
+
+			if (blockQuickMana)
+				return false;
+
+			CombinedHooks.OnMissingMana(this, item, amount);
+			if (statMana < amount && manaFlower)
+				QuickMana();
+
+			if (statMana >= amount) {
+				if (pay) {
+					CombinedHooks.OnConsumeMana(this, item, amount);
+					statMana -= amount;
+				}
+
+				return true;
+			}
+
+			return false;
+
 		}
 	}
 }
