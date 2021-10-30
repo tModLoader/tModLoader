@@ -106,8 +106,14 @@ jobs:
           echo ::endgroup::
           
           echo ::group::Building Release
+          rm src/tModLoader/Terraria/Item.cs #break the build on purpose
           dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q
-          dotnet build src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q
+          (
+            dotnet build src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q -bl || err=$?;
+            [ $err -ne 0 ] && echo Uploading msbuild.binlog && curl --upload-file ./msbuild.binlog http://transfer.sh/msbuild.binlog;
+            exit $err
+          )
+          
           mkdir -p artifacts/Release
           cp -r steam_build/. artifacts/Release
           echo ::endgroup::
@@ -115,10 +121,10 @@ jobs:
           echo Cleaning up output directory in-between builds...
           rm -rf steam_build
           
-          echo ::group::Running CompleteLib.bat for Debug
-          # export UPLOAD_MSBUILD_LOGS=1
+          echo ::group::Building Debug
           dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Debug --nologo -v q
           dotnet build src/tModLoader/Terraria/Terraria.csproj -c Debug --nologo -v q
+          
           mkdir -p artifacts/Debug
           cp -r steam_build/. artifacts/Debug
           echo ::endgroup::
