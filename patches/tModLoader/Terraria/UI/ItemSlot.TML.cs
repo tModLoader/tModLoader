@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Terraria.Audio;
 using Terraria.ModLoader;
 
@@ -131,23 +132,27 @@ namespace Terraria.UI
 			}
 
 			var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
-			var modCount = modSlotPlayer.SlotCount;
+			int modCount = modSlotPlayer.SlotCount;
 			bool targetVanity = slot >= 20 && (slot >= modCount + 20) || slot < 20 && slot >= 10;
 
-			for (int i = targetVanity ? 13 : 3; i < (targetVanity ? 20 : 10); i++) {
+			int start = targetVanity ? 13 : 3;
+			int end = targetVanity ? 20 : 10;
+			end = Math.Min(end, itemCollection.Length);
+			for (int i = start; i < end; i++) {
 				if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item))
 					return true;
 			}
 
-			for (int i = (targetVanity ? modCount : 0) + 20; i < (targetVanity ? modCount * 2 : modCount) + 20; i++) {
+			start = (targetVanity ? modCount : 0) + 20;
+			end = (targetVanity ? modCount * 2 : modCount) + 20;
+			end = Math.Min(end, itemCollection.Length);
+			for (int i = start; i < end; i++) {
 				if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item))
 					return true;
 			}
 
-			for (int i = 0; i < itemCollection.Length; i++) {
-				if (item.IsTheSameAs(itemCollection[i]))
-					return true;
-			}
+			if (itemCollection.Any(item.IsTheSameAs))
+				return true;
 
 			return !ItemLoader.CanEquipAccessory(item, slot, slot >= 20);
 		}
