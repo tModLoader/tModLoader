@@ -1,5 +1,7 @@
 var class_terraria_1_1_mod_loader_1_1_mod_system =
 [
+    [ "AddRecipeGroups", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a17cc5105f561fb769a5e763552c84fab", null ],
+    [ "AddRecipes", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a937da902849c421799c125419edd2486", null ],
     [ "HijackGetData", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a0c4de40c23b314117eec54fb6ab5fd7a", null ],
     [ "HijackSendData", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a2acba5d368c6a5c9c1396249daec7183", null ],
     [ "LoadWorldData", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a64b444dc1fc406965b2d18683715888e", null ],
@@ -16,6 +18,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_system =
     [ "OnModLoad", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a0e9e57aef788c661c3b14caf3f4e92c1", null ],
     [ "OnWorldLoad", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a1bb26eb162376d984f2226e69011af27", null ],
     [ "OnWorldUnload", "class_terraria_1_1_mod_loader_1_1_mod_system.html#abcccf837881eb1644ccc50b0a40f15ef", null ],
+    [ "PostAddRecipes", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a38999fb5241c70847ddd9bd42d73472d", null ],
     [ "PostDrawFullscreenMap", "class_terraria_1_1_mod_loader_1_1_mod_system.html#ac1627659c6be4e7b219158af0b4a47f0", null ],
     [ "PostDrawInterface", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a53384495c48e8628e1c60e95304542d6", null ],
     [ "PostDrawTiles", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a57c58e88b2f22627d757cc11c5f1175c", null ],

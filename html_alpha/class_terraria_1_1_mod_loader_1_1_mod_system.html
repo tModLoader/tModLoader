@@ -102,6 +102,15 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a17cc5105f561fb769a5e763552c84fab"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a17cc5105f561fb769a5e763552c84fab">AddRecipeGroups</a> ()</td></tr>
+<tr class="memdesc:a17cc5105f561fb769a5e763552c84fab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override this method to add recipe groups to the game. <br  />
+ You must add recipe groups by calling the RecipeGroup.RegisterGroup method here. <br  />
+ A recipe group is a set of items that can be used interchangeably in the same recipe.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a17cc5105f561fb769a5e763552c84fab">More...</a><br /></td></tr>
+<tr class="separator:a17cc5105f561fb769a5e763552c84fab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a937da902849c421799c125419edd2486"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a937da902849c421799c125419edd2486">AddRecipes</a> ()</td></tr>
+<tr class="memdesc:a937da902849c421799c125419edd2486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override this method to add recipes to the game. <br  />
+ It is recommended that you do so through instances of <a class="el" href="class_terraria_1_1_recipe.html">Recipe</a>, since it provides methods that simplify recipe creation.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a937da902849c421799c125419edd2486">More...</a><br /></td></tr>
+<tr class="separator:a937da902849c421799c125419edd2486"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c4de40c23b314117eec54fb6ab5fd7a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a0c4de40c23b314117eec54fb6ab5fd7a">HijackGetData</a> (ref byte messageType, ref BinaryReader reader, int playerNumber)</td></tr>
 <tr class="memdesc:a0c4de40c23b314117eec54fb6ab5fd7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify net message / packet information that is received before the game can act on it.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a0c4de40c23b314117eec54fb6ab5fd7a">More...</a><br /></td></tr>
 <tr class="separator:a0c4de40c23b314117eec54fb6ab5fd7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -151,6 +160,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abcccf837881eb1644ccc50b0a40f15ef"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#abcccf837881eb1644ccc50b0a40f15ef">OnWorldUnload</a> ()</td></tr>
 <tr class="memdesc:abcccf837881eb1644ccc50b0a40f15ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever a world is unloaded. Use this to deinitialize world-related data structures, etc.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#abcccf837881eb1644ccc50b0a40f15ef">More...</a><br /></td></tr>
 <tr class="separator:abcccf837881eb1644ccc50b0a40f15ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38999fb5241c70847ddd9bd42d73472d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a38999fb5241c70847ddd9bd42d73472d">PostAddRecipes</a> ()</td></tr>
+<tr class="memdesc:a38999fb5241c70847ddd9bd42d73472d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This provides a hook into the mod-loading process immediately after recipes have been added. <br  />
+ You can use this to edit recipes added by other mods.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a38999fb5241c70847ddd9bd42d73472d">More...</a><br /></td></tr>
+<tr class="separator:a38999fb5241c70847ddd9bd42d73472d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1627659c6be4e7b219158af0b4a47f0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ac1627659c6be4e7b219158af0b4a47f0">PostDrawFullscreenMap</a> (ref string mouseText)</td></tr>
 <tr class="memdesc:ac1627659c6be4e7b219158af0b4a47f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called while the fullscreen map is active. Allows custom drawing to the map.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ac1627659c6be4e7b219158af0b4a47f0">More...</a><br /></td></tr>
 <tr class="separator:ac1627659c6be4e7b219158af0b4a47f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -302,6 +315,63 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html" title="ModSystem is an abstract class that your classes can derive from. It contains general-use hooks,...">ModSystem</a> is an abstract class that your classes can derive from. It contains general-use hooks, and, unlike <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a>, can have unlimited amounts of types deriving from it. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a17cc5105f561fb769a5e763552c84fab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17cc5105f561fb769a5e763552c84fab">&#9670;&nbsp;</a></span>AddRecipeGroups()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModSystem.AddRecipeGroups </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Override this method to add recipe groups to the game. <br  />
+ You must add recipe groups by calling the RecipeGroup.RegisterGroup method here. <br  />
+ A recipe group is a set of items that can be used interchangeably in the same recipe. </p>
+
+</div>
+</div>
+<a id="a937da902849c421799c125419edd2486"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a937da902849c421799c125419edd2486">&#9670;&nbsp;</a></span>AddRecipes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModSystem.AddRecipes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Override this method to add recipes to the game. <br  />
+ It is recommended that you do so through instances of <a class="el" href="class_terraria_1_1_recipe.html">Recipe</a>, since it provides methods that simplify recipe creation. </p>
+
+</div>
+</div>
 <a id="a0c4de40c23b314117eec54fb6ab5fd7a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0c4de40c23b314117eec54fb6ab5fd7a">&#9670;&nbsp;</a></span>HijackGetData()</h2>
 
@@ -911,6 +981,34 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Called whenever a world is unloaded. Use this to deinitialize world-related data structures, etc. </p>
+
+</div>
+</div>
+<a id="a38999fb5241c70847ddd9bd42d73472d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38999fb5241c70847ddd9bd42d73472d">&#9670;&nbsp;</a></span>PostAddRecipes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModSystem.PostAddRecipes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This provides a hook into the mod-loading process immediately after recipes have been added. <br  />
+ You can use this to edit recipes added by other mods. </p>
 
 </div>
 </div>
