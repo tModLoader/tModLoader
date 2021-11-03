@@ -6,18 +6,17 @@ using Terraria.ModLoader;
 namespace ExampleMod.Content
 {
 	// This class contains thoughtful examples of item recipe creation.
-	public class ExampleRecipes : GlobalItem
+	public class ExampleRecipes : ModSystem
 	{
 		// A place to store the recipe group so we can easily use it later
 		public static RecipeGroup ExampleRecipeGroup;
 
-		// Minor optimization. Makes it so that item related methods of this class are not called by tml
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
-			return false;
+		public override void Unload() {
+			ExampleRecipeGroup = null;
 		}
 
 		// Called manually from Mod.AddRecipeGroups
-		public static void AddRecipeGroups() {
+		public override void AddRecipeGroups() {
 			// Create a recipe group and store it
 			// Language.GetTextValue("LegacyMisc.37") is the word "Any" in english, and the corresponding word in other languages
 			ExampleRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ModContent.ItemType<Items.ExampleItem>())}",
@@ -27,9 +26,9 @@ namespace ExampleMod.Content
 		}
 
 		public override void AddRecipes() {
-			///////////////////////////////////////////////////////////////////////////
-			// The following basic recipe makes 999 ExampleItems out of 1 stone block.//
-			///////////////////////////////////////////////////////////////////////////
+			/////////////////////////////////////////////////////////////////////////////
+			// The following basic recipe makes 999 ExampleItems out of 1 stone block. //
+			/////////////////////////////////////////////////////////////////////////////
 
 			Recipe recipe = Mod.CreateRecipe(ModContent.ItemType<Items.ExampleItem>(), 999);
 			// This adds a requirement of 1 dirt block to the recipe.
@@ -37,9 +36,9 @@ namespace ExampleMod.Content
 			// When you're done, call this to register the recipe.
 			recipe.Register();
 
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			// The following recipe showcases and explains all methods (functions) present on Recipe, and uses an 'advanced' style called 'chaining'.//
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			// The following recipe showcases and explains all methods (functions) present on Recipe, and uses an 'advanced' style called 'chaining'. //
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			// The reason why the said chaining works is that all methods on Recipe, with the exception of Register(), return its own instance,
 			// which lets you call subsequent methods on that return value, without having to type a local variable's name.
@@ -94,7 +93,7 @@ namespace ExampleMod.Content
 				.Register();
 		}
 
-		public static void ModifyRecipes(Mod mod) {
+		public override void PostAddRecipes() {
 			for (int i = 0; i < Recipe.numRecipes; i++) {
 				Recipe recipe = Main.recipe[i];
 
@@ -103,10 +102,6 @@ namespace ExampleMod.Content
 					ingredient.stack *= 2;
 				}
 			}
-		}
-
-		public override void Unload() {
-			ExampleRecipeGroup = null;
 		}
 	}
 }
