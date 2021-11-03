@@ -409,27 +409,6 @@
  				if (buffType[num] > 0)
  					num++;
  			}
-@@ -2718,6 +_,20 @@
- 			return num;
- 		}
- 
-+		public int GetHealLife(Item item, bool quickHeal = false) {
-+			int healValue = item.healLife;
-+			ItemLoader.GetHealLife(item, this, quickHeal, ref healValue);
-+			PlayerLoader.GetHealLife(this, item, quickHeal, ref healValue);
-+			return healValue > 0 ? healValue : 0;
-+		}
-+
-+		public int GetHealMana(Item item, bool quickHeal = false) {
-+			int healValue = item.healMana;
-+			ItemLoader.GetHealMana(item, this, quickHeal, ref healValue);
-+			PlayerLoader.GetHealMana(this, item, quickHeal, ref healValue);
-+			return healValue > 0 ? healValue : 0;
-+		}
-+
- 		public void QuickHeal() {
- 			if (cursed || CCed || dead || statLife == statLifeMax2 || potionDelay > 0)
- 				return;
 @@ -2742,24 +_,29 @@
  				}
  			}
@@ -739,39 +718,20 @@
  			if (Main.rand.Next(15) == 0 && Main.hardMode) {
  				int number = Item.NewItem((int)position.X, (int)position.Y, width, height, 602);
  				if (Main.netMode == 1)
-@@ -3942,7 +_,31 @@
+@@ -3942,15 +_,33 @@
  						break;
  					}
  			}
 +			NPCLoader.blockLoot.Clear(); // clear blockloot
 +			// TODO: return statements above probably break this.
  		}
-+
-+		/// <summary>
-+		/// Will spawn an item like QuickSpawnItem, but clones it (handy when you need to retain item infos)
-+		/// </summary>
-+		/// <param name="item">The item you want to be cloned</param>
-+		/// <param name="stack">The stack to give the item. Note that this will override maxStack if it's higher.</param>
-+		public void QuickSpawnClonedItem(Item item, int stack = 1) {
-+			int index = Item.NewItem((int)position.X, (int)position.Y, width, height, item.type, stack, false, -1, false, false);
-+			Main.item[index] = item.Clone();
-+			Main.item[index].whoAmI = index;
-+			Main.item[index].position = position;
-+			if (stack != Main.item[index].stack)
-+				Main.item[index].stack = stack;
-+
-+			// Sync the item for mp
-+			if (Main.netMode == NetmodeID.MultiplayerClient)
-+				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, index, 1f, 0f, 0f, 0, 0, 0);
-+		}
-+
-+		public void QuickSpawnItem(Item item, int stack = 1) {
-+			QuickSpawnItem(item.type, stack);
-+ 		}
  
- 		public void QuickSpawnItem(int item, int stack = 1) {
+-		public void QuickSpawnItem(int item, int stack = 1) {
++		public int QuickSpawnItem(int item, int stack = 1) {
  			int number = Item.NewItem((int)position.X, (int)position.Y, width, height, item, stack, noBroadcast: false, -1);
-@@ -3951,6 +_,21 @@
+ 			if (Main.netMode == 1)
+ 				NetMessage.SendData(21, -1, -1, null, number, 1f);
++			return number;
  		}
  
  		public void OpenBossBag(int type) {
@@ -3034,43 +2994,6 @@
  							PullItem_Pickup(item, 12f, 5);
  						else if (lifeMagnet && (item.type == 58 || item.type == 1734 || item.type == 1867))
  							PullItem_Pickup(item, 15f, 5);
-@@ -24699,6 +_,36 @@
- 			}
- 		}
- 
-+		//TODO: Move to Player.TML.cs
-+		public bool CanBuyItem(int price, int customCurrency = -1) {
-+			if (customCurrency != -1)
-+				return CustomCurrencyManager.BuyItem(this, price, customCurrency);
-+
-+			bool flag;
-+			long num = Utils.CoinsCount(out flag, inventory, new int[] {
-+				58,
-+				57,
-+				56,
-+				55,
-+				54
-+			});
-+
-+			long num2 = Utils.CoinsCount(out flag, bank.item, new int[0]);
-+			long num3 = Utils.CoinsCount(out flag, bank2.item, new int[0]);
-+			long num4 = Utils.CoinsCount(out flag, bank3.item, new int[0]);
-+			long num5 = Utils.CoinsCombineStacks(out flag, new long[] {
-+				num,
-+				num2,
-+				num3,
-+				num4
-+			});
-+
-+			if (num5 < price)
-+				return false;
-+
-+			return true;
-+		}
-+
- 		public bool BuyItem(int price, int customCurrency = -1) {
- 			if (customCurrency != -1)
- 				return CustomCurrencyManager.BuyItem(this, price, customCurrency);
 @@ -24916,7 +_,7 @@
  		public void AdjTiles() {
  			int num = 4;
@@ -5151,59 +5074,6 @@
  			num = list[Main.rand.Next(list.Count)];
  			Item item = new Item();
  			item.SetDefaults(num);
-@@ -39013,6 +_,52 @@
- 			}
- 		}
- 
-+		public int GetManaCost(Item item) {
-+			float reduce = manaCost;
-+			float mult = 1;
-+			if (spaceGun && (item.type == ItemID.SpaceGun || item.type == ItemID.ZapinatorGray && item.type == ItemID.ZapinatorOrange))
-+				mult = 0;
-+
-+			if(item.type == ItemID.BookStaff && altFunctionUse == 2)
-+				mult = 2;
-+
-+			CombinedHooks.ModifyManaCost(this, item, ref reduce, ref mult);
-+			int mana = (int)(item.mana * reduce * mult);
-+			return mana >= 0 ? mana : 0;
-+		}
-+
-+		public bool CheckMana(Item item, int amount = -1, bool pay = false, bool blockQuickMana = false) {
-+			if (amount <= -1)
-+				amount = GetManaCost(item);
-+
-+			if (statMana >= amount) {
-+				if (pay) {
-+					CombinedHooks.OnConsumeMana(this, item, amount);
-+					statMana -= amount;
-+				}
-+
-+				return true;
-+			}
-+
-+			if (blockQuickMana)
-+				return false;
-+
-+			CombinedHooks.OnMissingMana(this, item, amount);
-+			if (statMana < amount && manaFlower)
-+				QuickMana();
-+
-+			if (statMana >= amount) {
-+				if (pay) {
-+					CombinedHooks.OnConsumeMana(this, item, amount);
-+					statMana -= amount;
-+				}
-+
-+				return true;
-+			}
-+
-+			return false;
-+		}
-+
- 		public bool CheckMana(int amount, bool pay = false, bool blockQuickMana = false) {
- 			int num = (int)((float)amount * manaCost);
- 			if (statMana >= num) {
 @@ -39045,7 +_,7 @@
  		public bool ConsumeSolarFlare() {
  			if (setSolar && solarShields > 0) {

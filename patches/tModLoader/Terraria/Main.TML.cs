@@ -1,12 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.IO;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameInput;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
+using Terraria.Social;
 
 namespace Terraria
 {
@@ -135,6 +139,49 @@ namespace Terraria
 			public void Dispose() {
 				_currentPlayerOverride = _prevPlayer;
 			}
+		}
+
+		internal void PostSocialInitialize() {
+			if (dedServ) {
+				return;
+			}
+			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
+
+			if (!Directory.Exists(vanillaContentFolder)) {
+				vanillaContentFolder = "../Content"; // Nested Manual Install
+			}
+
+#if MAC
+			vanillaContentFolder = "../../../../Terraria/Terraria.app/Contents/Resources/Content";
+#endif
+
+			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
+				var appID = ModLoader.Engine.Steam.TerrariaAppId_t;
+				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
+
+				if (appInstalled) {
+					Steamworks.SteamApps.GetAppInstallDir(appID, out var steamInstallFolder, 1000);
+					Logging.Terraria.Info("Found Terraria steamapp install at: " + steamInstallFolder);
+
+					vanillaContentFolder = Path.Combine(steamInstallFolder, "Content");
+
+					if (!Directory.Exists(vanillaContentFolder))
+						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/Resources/Content");
+				}
+
+				ModLoader.Engine.Steam.RecalculateAvailableSteamCloudStorage();
+				Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)ModLoader.Engine.Steam.lastAvailableSteamCloudStorage)} available");
+			}
+
+			if (!Directory.Exists(vanillaContentFolder)) {
+				Interface.MessageBoxShow(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
+				Environment.Exit(1);
+			}
+
+			if (Directory.Exists(Path.Combine(InstallVerifier.TmlContentDirectory, "Images")))
+				AlternateContentManager = new TMLContentManager(Content.ServiceProvider, InstallVerifier.TmlContentDirectory, null);
+
+			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
 		}
 	}
 }

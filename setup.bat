@@ -30,7 +30,7 @@ If "%1"=="auto" (
 		exit /b %errorlevel%
 	)
 
-	"setup/bin/Debug/netcoreapp3.1/setupAuto.exe"
+	"setup/bin/Debug/netcoreapp3.1/setupAuto.exe" %2
 ) Else (
 	echo building setup.csproj
 	dotnet build setup/setup.csproj --output "setup/bin/Debug/netcoreapp3.1"
@@ -40,5 +40,5 @@ If "%1"=="auto" (
 		exit /b %errorlevel%
 	)
 
-	start "" "setup/bin/Debug/netcoreapp3.1/setup.exe"
+	start "" "setup/bin/Debug/netcoreapp3.1/setup.exe" %*
 )

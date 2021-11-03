@@ -26,9 +26,6 @@
     <Reference Include="ICSharpCode.Decompiler">
       <HintPath>lib\ICSharpCode.Decompiler.dll</HintPath>
     </Reference>
-    <Reference Include="XnaToFna">
-      <HintPath>lib\XnaToFna.exe</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Settings.Designer.cs">
