@@ -3,6 +3,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_scene_effect =
     [ "GetWeight", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html#afd024a9a44fa2c39649400610cce2641", null ],
     [ "IsSceneEffectActive", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html#a1a0bf8ddc06fcb1d8fe2ab272c1234a2", null ],
     [ "Register", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html#a1e9f5f04b410ac75b7c4530801c98314", null ],
+    [ "SpecialVisuals", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html#a7b4df4adfdab472267423c48e1e455c6", null ],
     [ "Music", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html#a705942d570318d22186c2920d5ae0c64", null ],
     [ "Priority", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html#a25a4a26982b37dc1d04cb2367cf6f29e", null ],
     [ "SurfaceBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html#aef7fe9e8a7cc8b561fa44edef5d0a415", null ],

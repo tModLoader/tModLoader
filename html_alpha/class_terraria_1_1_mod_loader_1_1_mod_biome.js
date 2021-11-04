@@ -1,6 +1,5 @@
 var class_terraria_1_1_mod_loader_1_1_mod_biome =
 [
-    [ "BiomeVisuals", "class_terraria_1_1_mod_loader_1_1_mod_biome.html#a3a9f96a2cf907117659466e4ea28b3d2", null ],
     [ "IsBiomeActive", "class_terraria_1_1_mod_loader_1_1_mod_biome.html#a23bf4682286024ffbc1c1c072b2196bb", null ],
     [ "IsSceneEffectActive", "class_terraria_1_1_mod_loader_1_1_mod_biome.html#a3453119cc8f1f3fa6b31672c215cd6b6", null ],
     [ "OnEnter", "class_terraria_1_1_mod_loader_1_1_mod_biome.html#a783571108734e00c2a5302ae78b4bb9f", null ],

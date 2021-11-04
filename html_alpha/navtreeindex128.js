@@ -1,6 +1,5 @@
 var NAVTREEINDEX128 =
 {
-"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html":[1,0,2,23,21,0],
 "struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a1da714dc024676b4585afbca7befbb94":[1,0,2,23,21,0,2],
 "struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a35bf379104318f6fdb58620195287f07":[1,0,2,23,21,0,4],
 "struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a922e4d491ac0f7c5f62d5c9f6bc0b3b7":[1,0,2,23,21,0,3],
