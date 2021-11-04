@@ -15,7 +15,6 @@ namespace ExampleMod.Content
 			ExampleRecipeGroup = null;
 		}
 
-		// Called manually from Mod.AddRecipeGroups
 		public override void AddRecipeGroups() {
 			// Create a recipe group and store it
 			// Language.GetTextValue("LegacyMisc.37") is the word "Any" in english, and the corresponding word in other languages
