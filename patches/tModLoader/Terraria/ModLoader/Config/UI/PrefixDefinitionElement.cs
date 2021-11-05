@@ -54,7 +54,7 @@ namespace Terraria.ModLoader.Config.UI
 
 				string modname = option.definition.mod;
 
-				if (option.type > PrefixID.Count)
+				if (option.type >= PrefixID.Count)
 					modname = PrefixLoader.GetPrefix((byte)option.type).Mod.DisplayName; // or internal name?
 
 				if (modname.IndexOf(chooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
