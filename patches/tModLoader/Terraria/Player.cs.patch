@@ -87,6 +87,15 @@
  		public int[] buffType = new int[22];
  		public int[] buffTime = new int[22];
  		public bool[] buffImmune = new bool[327];
+@@ -861,7 +_,7 @@
+ 		public int golferScoreAccumulated;
+ 		public int bartenderQuestLog;
+ 		public bool downedDD2EventAnyDifficulty;
+-		public int armorPenetration;
++		internal ref int armorPenetration => ref GetArmorPen(DamageClass.Generic);
+ 		public int statDefense;
+ 		public int statLifeMax = 100;
+ 		public int statLifeMax2 = 100;
 @@ -1059,18 +_,21 @@
  		public bool parryDamageBuff;
  		public bool ballistaPanic;
@@ -976,7 +985,21 @@
  				if (buffType[j] == 1) {
  					lavaImmune = true;
  					fireWalk = true;
-@@ -6530,9 +_,12 @@
+@@ -6521,18 +_,26 @@
+ 				else if (buffType[j] == 158) {
+ 					manaRegenBonus += 2;
+ 				}
++				/*
+ 				else if (buffType[j] == 159 && inventory[selectedItem].melee) {
+ 					armorPenetration = 12;
+ 				}
++				*/
++				else if (buffType[j] == 159) {
++					GetArmorPen(DamageClass.Melee) += 12;
++				}
+ 				else if (buffType[j] == 192) {
+ 					pickSpeed -= 0.2f;
+ 					moveSpeed += 0.2f;
  				}
  				else if (buffType[j] == 321) {
  					int num = 10;
@@ -3951,7 +3974,7 @@
  							int num = originalDamage;
  							bool flag = false;
  							int weaponCrit = GetWeaponCrit(sItem);
-@@ -30694,6 +_,11 @@
+@@ -30694,14 +_,27 @@
  							}
  
  							int num4 = Main.DamageVar(num, luck);
@@ -3963,8 +3986,12 @@
  							StatusToNPC(sItem.type, i);
  							if (Main.npc[i].life > 5)
  								OnHit(Main.npc[i].Center.X, Main.npc[i].Center.Y, Main.npc[i]);
-@@ -30702,6 +_,11 @@
+ 
++							/*
+ 							if (armorPenetration > 0)
  								num4 += Main.npc[i].checkArmorPenetration(armorPenetration);
++							*/
++							num4 += Main.npc[i].checkArmorPenetration(GetWeaponArmorPenetration(sItem));
  
  							int dmgDone = (int)Main.npc[i].StrikeNPC(num4, knockBack, direction, flag);
 +
