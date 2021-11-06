@@ -52,7 +52,7 @@ namespace Terraria.ModLoader
 		public virtual bool CountsAs(DamageClass damageClass) => false;
 
 		/// <summary> 
-		/// This lets you define default buffs for all items of this class (e.g. base critical strike chance).
+		/// This lets you define default stat modifiers for all items of this class (e.g. base critical strike chance).
 		/// </summary>
 		public virtual void SetDefaultStats(Player player) {}
 
@@ -60,6 +60,17 @@ namespace Terraria.ModLoader
 		/// This lets you enable or disable standard crits from items and projectiles associated with this DamageClass.
 		/// </summary>
 		public virtual bool AllowStandardCrits() => true;
+
+		// to-do:
+		// this is a horrible approach to doin' this and I know full well that it is; this is just a stopgap to simplify the process for now
+		// once the tooltip rework happens, proper examples for things like this NEED to be made available
+		// that way, we can strike this in favor of actually havin' good learnin' resources
+		// - thomas
+		/// <summary>
+		/// This lets you enable or disable standard statistical tooltip lines displaying on items associated with this DamageClass.
+		/// The lines usable are "Damage", "CritChance", "Speed", and "Knockback".
+		/// </summary>
+		public virtual bool ShowStatTooltipLine(Player player, string lineName) => true;
 
 		protected sealed override void Register() {
 			ClassName = LocalizationLoader.GetOrCreateTranslation(Mod, $"DamageClassName.{Name}");
