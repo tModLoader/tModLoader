@@ -1,0 +1,22 @@
+This is a Basic Setup Guide for any CI tool for Mod Building & Publishing. You will need to consult your tool of choice for how to create a workflow, 
+	and for setting up the appropriate version of .NET and related build dependencies.
+
+NOTE: The following is based on a windows CI environment. For a Unix environment, you will need to use the appropriate version of SteamCMD, 
+	and an appropriate port of PublishWorkshopItem.bat. Some may feel more comfortable directly porting the batch script in to the CI workflow.
+
+Copy the following files from ExampleMod/CIBuildTool to YourModName/CIBuildTool
+1) Instructions.txt
+2) SteamdCMD.exe
+3) PublishWorkshopItem.bat
+
+Run SteamCMD, use the following commands, in order:
+1) login <username>
+2) set_steam_guard_code <code>
+This will generate two important files that you will than need to add to your CIBuildTool folder: 
+1) <steam>\ssfn<HashOfNumbers> is the sentry file
+2) <steam>\config\config.vdf is the config
+
+Finally, now that you have all the needed files, you can Invoke PublishWorkshopItem.bat in your CI to do Mod Building & Publishing, w/ parameters
+1)  Mandatory - Steam Account USERNAME 
+2)  Mandatory - Steam Account PASSWORD
+3)  Optional - Change Notes
