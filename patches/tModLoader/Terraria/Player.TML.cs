@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Terraria
@@ -67,7 +68,7 @@ namespace Terraria
 			damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
 
 			for (int i = 0; i < damageData.Length; i++) {
-				damageData[i] = new DamageClassData(StatModifier.One, 0, StatModifier.One, 0);
+				damageData[i] = new DamageClassData(StatModifier.One, StatModifier.One, 0, StatModifier.One, 0);
 				DamageClassLoader.DamageClasses[i].SetDefaultStats(this);
 			}
 		}
@@ -98,6 +99,12 @@ namespace Terraria
 		public ref int GetArmorPen<T>() where T : DamageClass => ref GetArmorPen(ModContent.GetInstance<T>());
 
 		/// <summary>
+		/// Gets the attack speed modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref StatModifier GetAttackSpeed<T>() where T : DamageClass => ref GetAttackSpeed(ModContent.GetInstance<T>());
+
+		/// <summary>
 		/// Gets the crit modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary>
@@ -116,10 +123,51 @@ namespace Terraria
 		public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
 
 		/// <summary>
-		/// Gets the knockback modifier for this damage type on this player.
+		/// Gets the armor penetration modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary>
 		public ref int GetArmorPen(DamageClass damageClass) => ref damageData[damageClass.Type].armorPen;
+
+		/// <summary>
+		/// Gets the attack speed modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref StatModifier GetAttackSpeed(DamageClass damageClass) => ref damageData[damageClass.Type].attackSpeed;
+
+		// TO-DO: potentially add ModifyWeaponXYZ hooks for the following?
+
+		/// <summary>
+		/// Calculates the armor penetration value of the item in question for this player.
+		/// </summary>
+		public int GetWeaponArmorPenetration(Item sItem) {
+			int armorPen = sItem.ArmorPenetration;
+			var currentModifiers = damageData;
+			var scalings = sItem.DamageType.benefitsCache;
+			for (int i = 0; i < currentModifiers.Length; i++) {
+				armorPen += (int)(currentModifiers[i].armorPen * scalings[i]);
+			}
+
+			return armorPen;
+		}
+
+		/// <summary>
+		/// Calculates the armor penetration value of the item in question for this player.
+		/// </summary>
+		public float GetWeaponAttackSpeed(Item sItem) {
+			StatModifier attackSpeed = StatModifier.One;
+			var currentModifiers = damageData;
+			var scalings = sItem.DamageType.benefitsCache;
+			for (int i = 0; i < currentModifiers.Length; i++) {
+				attackSpeed = attackSpeed.CombineWith(currentModifiers[i].attackSpeed.Scale(scalings[i]));
+			}
+
+			// TODO: use an ItemID.Sets for arrow/bullet/rocket
+			if (ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type])
+				attackSpeed = attackSpeed.CombineWith(arrowDamage);
+
+			int damageNum = (int)(sItem.damage * (float)attackSpeed);
+			return attackSpeed;
+		}
 
 		/// <summary>
 		/// Container for current SceneEffect client properties such as: Backgrounds, music, and water styling

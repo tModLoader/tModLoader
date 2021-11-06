@@ -117,7 +117,7 @@
 +		internal ref StatModifier minionDamage => ref GetDamage(DamageClass.Summon);
 +		internal ref StatModifier allKB => ref GetKnockback(DamageClass.Generic);
 +		public float minionKB = 0f;
-+		public float meleeSpeed;
++		internal ref StatModifier meleeSpeed => ref GetAttackSpeed(DamageClass.Melee);
  		public float moveSpeed = 1f;
  		public float pickSpeed = 1f;
  		public float wallSpeed = 1f;
@@ -195,7 +195,7 @@
  		}
  
  		public void SetDummyItemTime(int frames) {
-@@ -2064,39 +_,41 @@
+@@ -2064,39 +_,43 @@
  			itemTimeMax = frames + 1;
  		}
  
@@ -218,6 +218,7 @@
  
 -		private void ApplyItemAnimation(Item sItem) {
 +		public void ApplyItemAnimation(Item sItem) {
++			/*
  			if (sItem.melee) {
 -				SetItemAnimation((int)((float)sItem.useAnimation * meleeSpeed));
 +				ApplyItemAnimation(sItem, meleeSpeed);
@@ -229,6 +230,7 @@
 +				ApplyItemAnimation(sItem, meleeSpeed * whipUseTimeMultiplier);
  				return;
  			}
++			*/
  
  			if (sItem.createTile >= 0) {
 -				SetItemAnimation((int)((float)sItem.useAnimation * tileSpeed));
@@ -244,7 +246,7 @@
  
 -			SetItemAnimation(sItem.useAnimation);
 -			reuseDelay = sItem.reuseDelay;
-+			ApplyItemAnimation(sItem, 1f);
++			ApplyItemAnimation(sItem, 1f / GetWeaponAttackSpeed(sItem));
  		}
  
  		public bool InOpposingTeam(Player otherPlayer) {
@@ -2095,10 +2097,12 @@
  
  			if (torchLuck < 0f)
  				torchLuck = 0f;
-@@ -12763,6 +_,9 @@
+@@ -12762,7 +_,10 @@
+ 			canFloatInWater = false;
  			lifeRegen = 0;
  			manaCost = 1f;
- 			meleeSpeed = 1f;
+-			meleeSpeed = 1f;
++			meleeSpeed = StatModifier.One;
 +			allDamage = StatModifier.One;
 +			allCrit = 4;
 +			/* individual class damage handled by ResetDamageClassData
@@ -2589,10 +2593,34 @@
  					aggro -= (int)((1f - stealth) * 1200f);
  					accRunSpeed *= 0.3f;
  					maxRunSpeed *= 0.3f;
-@@ -18147,6 +_,7 @@
+@@ -18094,14 +_,20 @@
+ 			if (manaSick)
+ 				magicDamage *= 1f - manaSickReduction;
+ 
++			/*
+ 			float num32 = meleeSpeed - 1f;
+ 			num32 *= ItemID.Sets.BonusMeleeSpeedMultiplier[inventory[selectedItem].type];
+ 			meleeSpeed = 1f + num32;
++			*/
++			meleeSpeed = new StatModifier(1 + ((meleeSpeed.Additive - 1) * ItemID.Sets.BonusMeleeSpeedMultiplier[inventory[selectedItem].type]), meleeSpeed.Multiplicative);
+ 			if ((double)pickSpeed < 0.3)
+ 				pickSpeed = 0.3f;
+ 
++			// TO-DO: potentially add a setting in Mod that can make this not a thing
+-			if (meleeSpeed > 3f)
++//			if (meleeSpeed > 3f)
+-				meleeSpeed = 3f;
++//				meleeSpeed = 3f;
++			if (meleeSpeed.Additive > 3f)
++				meleeSpeed = new StatModifier(3f, meleeSpeed.Multiplicative);
+ 
+ 			if (tileSpeed > 3f)
+ 				tileSpeed = 3f;
+@@ -18146,7 +_,7 @@
+ 				}
  			}
  
- 			meleeSpeed = 1f / meleeSpeed;
+-			meleeSpeed = 1f / meleeSpeed;
 +			PlayerLoader.PostUpdateMiscEffects(this);
  			UpdateLifeRegen();
  			soulDrain = 0;
@@ -4134,7 +4162,7 @@
  				if (sItem.stack <= 0)
  					sItem.SetDefaults();
  			}
-@@ -32533,6 +_,9 @@
+@@ -32533,16 +_,21 @@
  		}
  
  		private void ItemCheck_Shoot(int i, Item sItem, int weaponDamage) {
@@ -4144,7 +4172,10 @@
  			int projToShoot = sItem.shoot;
  			float speed = sItem.shootSpeed;
  			int damage = sItem.damage;
-@@ -32542,7 +_,9 @@
+ 			if (sItem.melee && projToShoot != 699 && projToShoot != 707 && (uint)(projToShoot - 877) > 2u)
+-				speed /= meleeSpeed;
++				speed *= meleeSpeed;
+ 
  			bool canShoot = false;
  			int Damage = weaponDamage;
  			float KnockBack = sItem.knockBack;
@@ -4439,7 +4470,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -36450,6 +_,41 @@
+@@ -36450,6 +_,29 @@
  			}
  
  			return num;
@@ -4466,18 +4497,6 @@
 +			CombinedHooks.ModifyWeaponDamage(this, sItem, ref damage, ref flat);
 +			int damageNum = (int)((sItem.damage * (float)damage) + flat);
 +			return Math.Max(0, damageNum);
-+		}
-+
-+		// TO-DO: potentially add ModifyWeaponXYZ hooks for the following?
-+		public int GetWeaponArmorPenetration(Item sItem) {
-+			int armorPen = sItem.ArmorPenetration;
-+			var currentModifiers = damageData;
-+			var scalings = sItem.DamageType.benefitsCache;
-+			for (int i = 0; i < currentModifiers.Length; i++) {
-+				armorPen += (int)(currentModifiers[i].armorPen * scalings[i]);
-+			}
-+
-+			return armorPen;
  		}
  
  		public bool HasAmmo(Item sItem, bool canUse) {

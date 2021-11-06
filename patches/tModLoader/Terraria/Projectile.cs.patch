@@ -331,10 +331,15 @@
  										case 864:
  											num8 += 25;
  											break;
-@@ -9124,6 +_,7 @@
+@@ -9124,6 +_,12 @@
  										case 532:
  											num8 += 25;
  											break;
++
++										tML:
++										All (or, well, almost all) of this nonsense is commented out to make way for the new and improved armor penetration modification system.
++										Please refer to SetDefaults to see how these values are set up for their respective vanilla cases.
++										-ThomasThePencil
 +										*/
  										case 877:
  										case 878:
@@ -362,7 +367,7 @@
  											flag6 = true;
 +										*/
 +
-+										if (DamageType.AllowStandardCrits() && Main.rand.Next(100) < Main.player[owner].GetWeaponCrit(Main.player[owner].HeldItem))
++										if (DamageType.AllowStandardCrits() && Main.rand.Next(100) < CritChance)
 +											flag6 = true;
  
  										int num12 = type;
@@ -670,6 +675,24 @@
  				localAI[0] = 1f;
  			}
  		}
+@@ -26715,7 +_,7 @@
+ 					break;
+ 			}
+ 
+-			float meleeSpeed = player.meleeSpeed;
++			float meleeSpeed = 1f / player.meleeSpeed;
+ 			float num15 = 1f / meleeSpeed;
+ 			num2 *= num15;
+ 			num8 *= num15;
+@@ -27029,7 +_,7 @@
+ 				}
+ 			}
+ 			else if (ai[0] == 1f) {
+-				float meleeSpeed = Main.player[owner].meleeSpeed;
++				float meleeSpeed = 1f / Main.player[owner].meleeSpeed;
+ 				float num5 = 14f / meleeSpeed;
+ 				float num6 = 0.9f / meleeSpeed;
+ 				float num7 = 300f / meleeSpeed;
 @@ -27273,7 +_,7 @@
  
  						if (flag3) {
@@ -794,7 +817,24 @@
  					if (player.channel && flag10 && !player.noItems && !player.CCed) {
  						if (ai[0] == 1f) {
  							Vector2 center2 = base.Center;
-@@ -43146,6 +_,11 @@
+@@ -43052,7 +_,7 @@
+ 					localAI[0] += (float)Main.rand.Next(10, 31) * 0.1f;
+ 
+ 				float num = localAI[0] / 60f;
+-				num /= (1f + Main.player[owner].meleeSpeed) / 2f;
++				num /= (1f + (1f / Main.player[owner].meleeSpeed)) / 2f;
+ 				float num2 = ProjectileID.Sets.YoyosLifeTimeMultiplier[type];
+ 				if (num2 != -1f && num > num2)
+ 					ai[0] = -1f;
+@@ -43140,12 +_,17 @@
+ 			if (Main.player[owner].yoyoString)
+ 				num10 = num10 * 1.25f + 30f;
+ 
+-			num10 /= (1f + Main.player[owner].meleeSpeed * 3f) / 4f;
++			num10 /= (1f + (1f / Main.player[owner].meleeSpeed) * 3f) / 4f;
+-			num8 /= (1f + Main.player[owner].meleeSpeed * 3f) / 4f;
++			num8 /= (1f + (1f / Main.player[owner].meleeSpeed) * 3f) / 4f;
+ 			num7 = 14f - num8 / 2f;
  			if (num7 < 1f)
  				num7 = 1f;
  

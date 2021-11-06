@@ -16,7 +16,10 @@ namespace Terraria
 
 		private DamageClass _damageClass = DamageClass.Default;
 		/// <summary>
-		/// The damage type of this Projectile. Assign to DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
+		/// The damage type assigned to this projectile, represented as a DamageClass.
+		/// Leave blank or use DamageClass.Default to prevent damage type scaling of any kind for this projectile.
+		/// Use DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing for vanilla damage types.
+		/// Refer to ExampleMod for more information on how to create and use your own damage types.
 		/// </summary>
 		public DamageClass DamageType {
 			get => _damageClass;
@@ -26,6 +29,7 @@ namespace Terraria
 		private int _armorPenetration = 0;
 		/// <summary>
 		/// The number of defense points that this projectile can ignore on its own. Cannot be set to negative values. Defaults to 0.
+		/// On spawn, if this projectile was fired frrom a weapon, this value has the total armor penetration of the weapon that made the projectile added to itself.
 		/// </summary>
 		public int ArmorPenetration {
 			get => _armorPenetration;
@@ -33,6 +37,10 @@ namespace Terraria
 		}
 
 		private int _crit = 0;
+		/// <summary>
+		/// The critical strike chance modifier of this projectile. Cannot be set to negative values. Defaults to 0.
+		/// On spawn, if this projectile was fired frrom a weapon, this value has the total critical strike chance of the weapon that made the projectile added to itself.
+		/// </summary>
 		public int CritChance {
 			get => _crit;
 			set => _crit = Math.Max(value, 0);
