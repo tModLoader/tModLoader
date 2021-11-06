@@ -21,11 +21,6 @@ namespace Terraria.ModLoader
 			PlayerLoader.ModifyWeaponKnockback(player, item, ref knockback, ref flat);
 		}
 
-		public static void ModifyWeaponArmorPen(Player player, Item item, ref int armorPen) {
-			ItemLoader.ModifyWeaponArmorPen(item, player, ref crit);
-			PlayerLoader.ModifyWeaponArmorPen(player, item, ref crit);
-		}
-
 		public static void ModifyManaCost(Player player, Item item, ref float reduce, ref float mult) {
 			ItemLoader.ModifyManaCost(item, player, ref reduce, ref mult);
 			PlayerLoader.ModifyManaCost(player, item, ref reduce, ref mult);
