@@ -101,7 +101,7 @@ namespace Terraria.UI
 				}
 			}
 
-			if (dyeSlotCount >= msPlayer.SlotCount()) {
+			if (dyeSlotCount >= msPlayer.SlotCount) {
 				success = false;
 				return item2;
 			}
@@ -131,7 +131,7 @@ namespace Terraria.UI
 			}
 
 			var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
-			var modCount = modSlotPlayer.SlotCount();
+			var modCount = modSlotPlayer.SlotCount;
 			bool targetVanity = slot >= 20 && (slot >= modCount + 20) || slot < 20 && slot >= 10;
 
 			for (int i = targetVanity ? 13 : 3; i < (targetVanity ? 20 : 10); i++) {

@@ -93,7 +93,7 @@
  					theText = RecipeGroup.recipeGroups[num].GetText();
  					return true;
  				}
-@@ -83,34 +_,34 @@
+@@ -83,35 +_,32 @@
  		}
  
  		public bool AcceptedByItemGroups(int invType, int reqType) {
@@ -135,15 +135,16 @@
  		public void Create() {
  			Item[] array = null;
  			Item item = null;
- 			Item item2 = null;
+-			Item item2 = null;
 -			for (int i = 0; i < maxRequirements; i++) {
-+			for (int i = 0; i < requiredItem.Count; i++) {
- 				item2 = requiredItem[i];
+-				item2 = requiredItem[i];
 -				if (item2.type == 0)
 -					break;
- 
+-
++			foreach (Item item2 in requiredItem) {
  				int num = item2.stack;
  				if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
+ 					if (num > 1) {
 @@ -128,6 +_,8 @@
  					}
  				}

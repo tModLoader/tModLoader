@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -28,32 +27,22 @@ namespace Terraria.ModLoader.Setup
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			/*if (args.Length == 1 && args[0] == "--steamdir") {
-				Console.WriteLine(SteamDir);
-				return;
-			}*/
 #if AUTO
-			Settings.Default.TMLDevSteamDir = Settings.Default.SteamDir = @".\1423\Windows";
+			Settings.Default.SteamDir = Path.GetFullPath(args[0]);
+			Settings.Default.TMLDevSteamDir = Path.GetFullPath("steam_build");
+			if (!Directory.Exists(TMLDevSteamDir))
+				Directory.CreateDirectory(TMLDevSteamDir);
 #else
 			CreateTMLSteamDirIfNecessary();
 #endif
-
-			UpdateTargetsFile();
-
+			UpdateTargetsFiles();
 #if AUTO
 			Console.WriteLine("Automatic setup start");
 			new AutoSetup().DoAuto();
 			Console.WriteLine("Automatic setup finished");
-			return;
-#endif
+#else
 			Application.Run(new MainForm());
-		}
-
-		private static Assembly ResolveAssemblyFrom(string libDir, string name)
-		{
-			var path = Path.Combine(libDir, name);
-			path = new[] {".exe", ".dll"}.Select(ext => path+ext).SingleOrDefault(File.Exists);
-			return path != null ? Assembly.LoadFrom(path) : null;
+#endif
 		}
 
 		public static int RunCmd(string dir, string cmd, string args, 
@@ -133,7 +122,7 @@ namespace Terraria.ModLoader.Setup
 					Settings.Default.Save();
 
 					CreateTMLSteamDirIfNecessary();
-					UpdateTargetsFile();
+					UpdateTargetsFiles();
 
 					return true;
 				}
@@ -156,7 +145,7 @@ namespace Terraria.ModLoader.Setup
 				Settings.Default.TMLDevSteamDir = Path.GetDirectoryName(dialog.FileName);
 				Settings.Default.Save();
 
-				UpdateTargetsFile();
+				UpdateTargetsFiles();
 				
 				return true;
 			}
@@ -177,11 +166,19 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
-		private static readonly string targetsFilePath = Path.Combine("src", "WorkspaceInfo.targets");
+		internal static void UpdateTargetsFiles() {
+			UpdateFileText("src/WorkspaceInfo.targets", GetWorkspaceInfoTargetsText());
+			UpdateFileText(Path.Combine(TMLDevSteamDir, "tMLMod.targets"), File.ReadAllText("patches/tModLoader/Terraria/release_extras/tMLMod.targets"));
+		}
 
-		internal static void UpdateTargetsFile() {
-			SetupOperation.CreateParentDirectory(targetsFilePath);
+		private static void UpdateFileText(string path, string text) {
+			SetupOperation.CreateParentDirectory(path);
 
+			if (!File.Exists(path) || text != File.ReadAllText(path))
+				File.WriteAllText(path, text);
+		}
+
+		private static string GetWorkspaceInfoTargetsText() {
 			string gitsha = "";
 			RunCmd("", "git", "rev-parse HEAD", s => gitsha = s.Trim());
 
@@ -199,7 +196,7 @@ namespace Terraria.ModLoader.Setup
 				gitsha = HEAD_SHA;
 			}
 
-			string targetsText =
+			return
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <!-- This file will always be overwritten, do not edit it manually. -->
@@ -210,11 +207,6 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
     <tModLoaderSteamPath>{TMLDevSteamDir}</tModLoaderSteamPath>
   </PropertyGroup>
 </Project>";
-
-			if (File.Exists(targetsFilePath) && targetsText == File.ReadAllText(targetsFilePath))
-				return;
-
-			File.WriteAllText(targetsFilePath, targetsText);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
@@ -15,6 +16,10 @@ namespace Terraria
 		public RefReadOnlyArray<Instanced<GlobalProjectile>> Globals => new RefReadOnlyArray<Instanced<GlobalProjectile>>(globalProjectiles);
 
 		private DamageClass _damageClass = DamageClass.Default;
+		public static Projectile NewProjectileDirect(IProjectileSource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner = 255, float ai0 = 0f, float ai1 = 0f)
+			=> Main.projectile[NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, owner, ai0, ai1)];
+
+		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
 		/// The damage type assigned to this projectile, represented as a DamageClass.
 		/// Leave blank or use DamageClass.Default to prevent damage type scaling of any kind for this projectile.
