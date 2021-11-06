@@ -57,7 +57,7 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaultStats(Player player) {}
 
 		/// <summary>
-		/// This lets you enable or disable standard crits from items and projectiles associated with this DamageClass.
+		/// This lets you decide whether or not your damage class can use standard critical strike calculations.
 		/// </summary>
 		public virtual bool AllowStandardCrits() => true;
 

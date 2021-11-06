@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.DamageClasses
@@ -6,60 +7,62 @@ namespace ExampleMod.Content.DamageClasses
 	public class ExampleDamageClass : DamageClass
 	{
 		public override void SetStaticDefaults() {
-			// Make weapons with this damage type have a tooltip of 'X example damage'.
+			// This makes weapons with this damage type have a tooltip of 'X example damage'.
+			// TO-DO: Move to .hjson file and actually teach people how they work.
 			ClassName.SetDefault("example damage");
 		}
 
 		protected override float GetBenefitFrom(DamageClass damageClass) {
-			// Make this damage class not benefit from any otherclass stat bonuses by default, but still benefit from universal/all-class bonuses.
+			// This method lets you make your damage class benefit from other classes' stat bonuses by default, as well as universal stat bonuses.
+			// To briefly summarize the two nonstandard damage class names used by DamageClass:
+			// Default is, you guessed it, the default damage class. It doesn't scale off of any class-specific stat bonuses or universal stat bonuses.
+			// There are a number of items and projectiles that use this, such as thrown waters and the Bone Glove's bones.
+			// Generic, on the other hand, scales off of all universal stat bonuses and nothing else; it's the base damage class upon which all others that aren't Default are built.
 			if (damageClass == DamageClass.Generic)
 				return 1f;
 
-			// Now, I know you're just dyin' to get into the fun side of things, so let's have ourselves some demonstrations.
-			// Feel free to uncomment one of the below! Experiment, play with the variables a bit. See what works best for you!
+			return 0f;
+			// To explain how the return value works, it behaves like a percentage, with 0f being 0%, 1f being 100%, and so on.
+			// The return value indicates how much your class will scale off of any given damage class.
+			// For example, if I were to return 0.5f (50%) for DamageClass.Ranged, this custom class would receive all ranged stat bonuses at 50% effectiveness.
+			// There is no hardcap on what you can set this to.You can make it scale very heavily or barely at all...
+			// ...and you can even invert the scaling effect if you choose by returning a negative value.
 
-			// PROMPT: You want your damage class to benefit at a standard rate from a vanilla class' stat boosts.
-			// The below makes your class benefit at a standard rate (100%) from all melee stat bonuses.
-			/*
-			if (damageClass == DamageClass.Melee)
-				return 1f;
-			*/
-
-			// PROMPT: You want your damage class to benefit at a much higher rate from a vanilla class' stat boosts.
-			// The below makes your class benefit at 500% effectiveness from all magic stat bonuses.
-			/*
-			if (damageClass == DamageClass.Magic)
-				return 5f;
-			*/
-
-			// PROMPT: You want your damage class to benefit at a equal rate from two vanilla classes' stat boosts.
-			// The below makes your class benefit at a standard rate from all melee and ranged stat bonuses equally.
-			// This functionality can be useful for hybrid weapons, such as Calamity's Prismatic Breaker.
-			/*
-			if (damageClass == DamageClass.Melee)
-				return 1f;
-			if (damageClass == DamageClass.Ranged)
-				return 1f;
-			*/
-
-			// PROMPT: You want your damage class to benefit at a equal rate from a vanilla class' stat boosts and another modded class' stat boosts.
-			// The below makes your class benefit at a standard rate from melee stat bonuses and at a 200% rate from another modded class' stat bonuses.
-			// This functionality can be useful for hybrid weapons, particularly those involving cross-mod content (see the guide on that for more detail!).
-			/*
-			if (damageClass == DamageClass.Melee)
-				return 1f;
-			if (damageClass == ModContent.GetInstance<CoolDamageClass>())
-				return 2f;
-			*/
-			// Note that the other modded damage class isn't provided here --- that'd ruin the point, now wouldn't it?
-
-			return 0;
+			// BONUS INFO:
+			// To refer to a non-vanilla damage class for these sorts of things, use "ModContent.GetInstance<YourDamageClassHere>()" instead of "DamageClass.XYZ".
 		}
 
 		public override bool CountsAs(DamageClass damageClass) {
-			// Make this damage class not benefit from any otherclass effects (e.g. Spectre bolts, Magma Stone) by default.
+			// This method allows you to make your damage class benefit from otherclass effects (e.g. Spectre bolts, Magma Stone) based on what returns true.
 			// Note that unlike GetBenefitFrom, you do not need to account for universal bonuses in this method.
+			// For this example, we'll make our class count as melee and magic for the purpose of class-specific effects.
+			if (damageClass == DamageClass.Melee)
+				return true;
+			if (damageClass == DamageClass.Magic)
+				return true;
+
 			return false;
+		}
+
+		public override void SetDefaultStats(Player player) {
+			// This method lets you set default statistical modifiers for your example damage class.
+			// Here, we'll make our example damage class have more critical strike chance and armor penetration than normal.
+			player.GetCritChance<ExampleDamageClass>() += 4;
+			player.GetArmorPen<ExampleDamageClass>() += 10;
+			// These sorts of modifiers also exist for damage (GetDamage), knockback (GetKnockback), and attack speed (GetAttackSpeed).
+			// You'll see these used all around in referencce to vanilla classes and our example class here.
+		}
+
+		public override bool AllowStandardCrits() {
+			// This method lets you decide whether or not your damage class can use standard critical strike calculations.
+			return true;
+		}
+
+		public override bool ShowStatTooltipLine(Player player, string lineName) {
+			// This method lets you prevent certain common statistical tooltip lines from appearing on items associated with this DamageClass.
+			// PLEASE BE AWARE that this hook will NOT be here forever; only until an upcoming revamp to tooltips as a whole comes around.
+			// Once this happens, a better, more versatile explanation of how to pull this off will be showcased, and this hook will be removed.
+			return true;
 		}
 	}
 }
