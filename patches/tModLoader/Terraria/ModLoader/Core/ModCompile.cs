@@ -50,6 +50,8 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
+		private const string installedNetRefs = @"\dotnet\packs\Microsoft.NETCore.App.Ref\5.0.0\ref\net5.0";
+
 		public static readonly string ModSourcePath = Path.Combine(Program.SavePath, "Mod Sources");
 
 		internal static string[] FindModSources()
@@ -152,8 +154,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			}
 		}
 
-		internal static void BuildModCommandLine(string modFolder)
-		{
+		internal static void BuildModCommandLine(string modFolder) {
 			UpdateReferencesFolder();
 
 			// TODO: Build works even without build.txt or even a correct folder...
@@ -174,6 +175,41 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				Console.Error.WriteLine(e);
 				Environment.Exit(1);
 			}
+
+			if (Program.LaunchParameters.ContainsKey("-ciprep")) {
+				Console.WriteLine("Preparing Files for CI...");
+				Program.LaunchParameters.TryGetValue("-ciprep", out string changeNotes);
+				var properties = BuildProperties.ReadBuildFile(modFolder);
+				string publishFolder = Path.Combine(modFolder, "CIBuildTool", "Mods");
+				string vdf = Path.Combine(modFolder, "CIBuildTool", "publish.vdf");
+				string manifest = Path.Combine(modFolder, "workshop.json");
+
+				string descriptionFinal = "[quote=CI Autobuild (Don't Modify)]Version " + properties.version + " built for " + properties.buildVersion + "[/quote]" + properties.description;
+
+				File.Delete(Path.Combine(publishFolder, "enabled.json"));
+
+				Social.Base.AWorkshopEntry.TryReadingManifest(manifest, out var steamInfo);
+				File.Copy(manifest, Path.Combine(publishFolder, "workshop.json"), true);
+
+				string[] lines =
+				{
+					"\"workshopitem\"",
+					"{",
+					"\"appid\" \"" + "1281930"  + "\"",
+					"\"publishedfileid\" \"" + steamInfo.workshopEntryId + "\"",
+					"\"contentfolder\" \"" + publishFolder + "\"",
+					"\"changenote\" \"" + changeNotes + "\"",
+					"\"description\" \"" + descriptionFinal + "\"",
+					"}"
+				};
+
+				if (File.Exists(vdf))
+					File.Delete(vdf);
+				File.WriteAllLines(vdf, lines);
+
+				Console.WriteLine("CI Files Prepared");
+			}
+
 			// Mod was built with success, exit code 0 indicates success.
 			Environment.Exit(0);
 		}
@@ -471,7 +507,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		}
 
 		private static IEnumerable<string> GetFrameworkReferences() {
-			var frameworkAssembliesPath = Path.GetDirectoryName(typeof(File).Assembly.Location);
+			var frameworkAssembliesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + installedNetRefs;
 			return FilterUnmanagedFrameworkDllsViaBlacklist(Directory.GetFiles(frameworkAssembliesPath, "*.dll", SearchOption.AllDirectories));
 		}
 
