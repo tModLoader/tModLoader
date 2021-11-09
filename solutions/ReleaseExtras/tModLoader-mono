@@ -18,7 +18,7 @@ if [ "$UNAME" == "Darwin" ]; then
 		export DYLD_INSERT_LIBRARIES="$STEAM_DYLD_INSERT_LIBRARIES"
 	fi
 else
-	export LD_LIBRARY_PATH=lib:lib64
+	export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:lib:lib64"
 fi
 
 # move all kickstart mono libraries to a sys/ folder to remove conflicts
