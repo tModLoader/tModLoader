@@ -233,10 +233,10 @@ namespace {modNameTrimmed}
 			return
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project Sdk=""Microsoft.NET.Sdk"">
-  <Import Project=""../tModLoader.targets"" />
+  <Import Project=""..\tModLoader.targets"" />
   <PropertyGroup>
     <AssemblyName>{modNameTrimmed}</AssemblyName>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
