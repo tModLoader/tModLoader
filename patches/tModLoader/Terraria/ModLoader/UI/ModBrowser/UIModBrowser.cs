@@ -241,9 +241,9 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		internal void ModifyUIModDownloadItemInstalled(string modName, Core.LocalMod installed) {
-			var modbrowsermod = _items.IndexOf(_items.FirstOrDefault(x => x.ModDownload.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase)));
-			if (modbrowsermod >= 0)
-				_items[modbrowsermod].ModDownload.Installed = installed;
+			var modDownload = _items.Select(x => x.ModDownload).FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
+			if (modDownload != null)
+				modDownload.Installed = installed;
 		}
 
 		/// <summary>
