@@ -12,13 +12,11 @@ body:
 
       If you are having trouble installing tModLoader, that is not suitable for the bug tracker. That is a support question, not a bug. For support questions, you should go to [Discord](https://tmodloader.net/discord)
       Please read the pinned messages in the #support channel beforehand.
-- type: checkboxes
+- type: markdown
   attributes:
-    label: Is there an existing issue for this?
-    description: Please search to see if an issue already exists for the bug you encountered.
-    options:
-    - label: I have searched the existing issues
-      required: true
+    value: |
+    # Is there an existing issue for this?
+    Please search to see if an issue already exists for the bug you encountered. If there is, please add to that issue instead of making a new issue.
 - type: dropdown
   attributes:
     label: Version
