@@ -25,16 +25,10 @@ If "%1"=="auto" (
 	echo building setupAuto.csproj
 	dotnet build setup/setupAuto.csproj --output "setup/bin/Debug/netcoreapp3.1"
 
-	echo Building complete..
-
 	if NOT ["%errorlevel%"]==["0"] (
-		echo With an error.
 		pause
 		exit /b %errorlevel%
 	)
-
-	echo Successfully.
-	echo Running setupAuto.exe...
 
 	"setup/bin/Debug/netcoreapp3.1/setupAuto.exe" %2
 ) Else (
