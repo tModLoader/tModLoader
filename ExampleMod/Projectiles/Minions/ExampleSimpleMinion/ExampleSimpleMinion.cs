@@ -191,7 +191,6 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 
 			#region Find target
 			// Starting search distance
-			float distanceFromTarget = 700f;
 			Vector2 targetCenter = projectile.position;
 			bool foundTarget = false;
 
@@ -201,7 +200,6 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 				float between = Vector2.Distance(npc.Center, projectile.Center);
 				// Reasonable distance away so it doesn't target across multiple screens
 				if (between < 2000f) {
-					distanceFromTarget = between;
 					targetCenter = npc.Center;
 					foundTarget = true;
 				}
@@ -211,17 +209,19 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 				for (int i = 0; i < Main.maxNPCs; i++) {
 					NPC npc = Main.npc[i];
 					if (npc.CanBeChasedBy()) {
-						float between = Vector2.Distance(npc.Center, projectile.Center);
-						bool closest = Vector2.Distance(projectile.Center, targetCenter) > between;
-						bool inRange = between < distanceFromTarget;
-						bool lineOfSight = Collision.CanHitLine(projectile.position, projectile.width, projectile.height, npc.position, npc.width, npc.height);
-						// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
-						// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
-						bool closeThroughWall = between < 100f;
-						if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall)) {
-							distanceFromTarget = between;
-							targetCenter = npc.Center;
-							foundTarget = true;
+						float npcDistance = Vector2.Distance(npc.Center, projectile.Center);
+						bool closest = Vector2.Distance(projectile.Center, targetCenter) > npcDistance;
+
+						if (closest || !foundTarget) {
+							// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
+							// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
+							bool closeThroughWall = npcDistance < 100f;
+							bool lineOfSight = Collision.CanHitLine(projectile.position, projectile.width, projectile.height, npc.position, npc.width, npc.height);
+							
+							if (lineOfSight || closeThroughWall) {
+								targetCenter = npc.Center;
+								foundTarget = true;
+							}
 						}
 					}
 				}
@@ -242,7 +242,7 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 
 			if (foundTarget) {
 				// Minion has a target: attack (here, fly towards the enemy)
-				if (distanceFromTarget > 40f) {
+				if (Vector2.Distance(projectile.Center, targetCenter) > 40f) {
 					// The immediate range around the target (so it doesn't latch onto it when close)
 					Vector2 direction = targetCenter - projectile.Center;
 					direction.Normalize();
