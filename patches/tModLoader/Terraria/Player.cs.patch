@@ -67,7 +67,7 @@
  		public int[] builderAccStatus = new int[12] {
  			1,
  			0,
-@@ -430,15 +_,15 @@
+@@ -430,8 +_,8 @@
  		private static SlotId _insideBlizzardSound = SlotId.Invalid;
  		public string name = "";
  		public int taxMoney;
@@ -78,14 +78,6 @@
  		public static int crystalLeafDamage = 100;
  		public static int crystalLeafKB = 10;
  		public float basiliskCharge;
- 		public Vector2 lastDeathPostion;
- 		public DateTime lastDeathTime;
- 		public bool showLastDeath;
--		public int extraAccessorySlots = 2;
-+		private int extraAccessorySlots; //unused vanilla field, noob trap
- 		public bool extraAccessory;
- 		private bool dontConsumeWand;
- 		public int tankPet = -1;
 @@ -694,7 +_,7 @@
  		public bool poundRelease;
  		public float ghostFade;
@@ -417,27 +409,6 @@
  				if (buffType[num] > 0)
  					num++;
  			}
-@@ -2718,6 +_,20 @@
- 			return num;
- 		}
- 
-+		public int GetHealLife(Item item, bool quickHeal = false) {
-+			int healValue = item.healLife;
-+			ItemLoader.GetHealLife(item, this, quickHeal, ref healValue);
-+			PlayerLoader.GetHealLife(this, item, quickHeal, ref healValue);
-+			return healValue > 0 ? healValue : 0;
-+		}
-+
-+		public int GetHealMana(Item item, bool quickHeal = false) {
-+			int healValue = item.healMana;
-+			ItemLoader.GetHealMana(item, this, quickHeal, ref healValue);
-+			PlayerLoader.GetHealMana(this, item, quickHeal, ref healValue);
-+			return healValue > 0 ? healValue : 0;
-+		}
-+
- 		public void QuickHeal() {
- 			if (cursed || CCed || dead || statLife == statLifeMax2 || potionDelay > 0)
- 				return;
 @@ -2742,24 +_,29 @@
  				}
  			}
@@ -749,39 +720,20 @@
  			if (Main.rand.Next(15) == 0 && Main.hardMode) {
  				int number = Item.NewItem((int)position.X, (int)position.Y, width, height, 602);
  				if (Main.netMode == 1)
-@@ -3942,7 +_,31 @@
+@@ -3942,15 +_,33 @@
  						break;
  					}
  			}
 +			NPCLoader.blockLoot.Clear(); // clear blockloot
 +			// TODO: return statements above probably break this.
  		}
-+
-+		/// <summary>
-+		/// Will spawn an item like QuickSpawnItem, but clones it (handy when you need to retain item infos)
-+		/// </summary>
-+		/// <param name="item">The item you want to be cloned</param>
-+		/// <param name="stack">The stack to give the item. Note that this will override maxStack if it's higher.</param>
-+		public void QuickSpawnClonedItem(Item item, int stack = 1) {
-+			int index = Item.NewItem((int)position.X, (int)position.Y, width, height, item.type, stack, false, -1, false, false);
-+			Main.item[index] = item.Clone();
-+			Main.item[index].whoAmI = index;
-+			Main.item[index].position = position;
-+			if (stack != Main.item[index].stack)
-+				Main.item[index].stack = stack;
-+
-+			// Sync the item for mp
-+			if (Main.netMode == NetmodeID.MultiplayerClient)
-+				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, index, 1f, 0f, 0f, 0, 0, 0);
-+		}
-+
-+		public void QuickSpawnItem(Item item, int stack = 1) {
-+			QuickSpawnItem(item.type, stack);
-+ 		}
  
- 		public void QuickSpawnItem(int item, int stack = 1) {
+-		public void QuickSpawnItem(int item, int stack = 1) {
++		public int QuickSpawnItem(int item, int stack = 1) {
  			int number = Item.NewItem((int)position.X, (int)position.Y, width, height, item, stack, noBroadcast: false, -1);
-@@ -3951,6 +_,21 @@
+ 			if (Main.netMode == 1)
+ 				NetMessage.SendData(21, -1, -1, null, number, 1f);
++			return number;
  		}
  
  		public void OpenBossBag(int type) {
@@ -931,6 +883,20 @@
  		}
  
  		public void UpdateDyes() {
+@@ -6382,11 +_,12 @@
+ 					UpdateItemDye(i < 10, hideVisibleAccessory[num], armor[i], dye[num]);
+ 				}
+ 			}
++			PlayerLoader.UpdateDyes(this);
+ 
+ 			cYorai = cPet;
+ 		}
+ 
+-		private void UpdateItemDye(bool isNotInVanitySlot, bool isSetToHidden, Item armorItem, Item dyeItem) {
++		internal void UpdateItemDye(bool isNotInVanitySlot, bool isSetToHidden, Item armorItem, Item dyeItem) {
+ 			if (armorItem.IsAir)
+ 				return;
+ 
 @@ -6398,13 +_,13 @@
  			if (!num && flag)
  				return;
@@ -1648,7 +1614,7 @@
  			for (int m = 3; m < 10; m++) {
  				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
  					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
-@@ -9342,12 +_,15 @@
+@@ -9342,6 +_,7 @@
  					wingsLogic = armor[m].wingSlot;
  				}
  			}
@@ -1656,14 +1622,6 @@
  
  			for (int n = 13; n < 20; n++) {
  				if (IsAValidEquipmentSlotForIteration(n))
- 					ApplyEquipVanity(n, armor[n]);
- 			}
- 
-+			PlayerLoader.UpdateVanityAccessories(this);
-+
- 			if (wet && ShouldFloatInWater)
- 				accFlipper = true;
- 
 @@ -9519,6 +_,10 @@
  		}
  
@@ -1772,19 +1730,30 @@
  			}
  
  			if (currentItem.wingSlot != -1)
-@@ -10415,9 +_,9 @@
+@@ -10414,10 +_,20 @@
+ 				manaCost -= 0.08f;
  			}
  
++			if (currentItem.wingSlot > 0) {
++				if (!hideVisibleAccessory[itemSlot] || velocity.Y != 0f && !mount.Active)
++					wings = currentItem.wingSlot;
++
++				wingsLogic = currentItem.wingSlot;
++				equippedWings = currentItem;
++			}
++
++			ItemLoader.UpdateAccessory(currentItem, this, hideVisual);
++
  			if (Main.myPlayer != whoAmI)
 -				return;
-+				return; // TODO: double check wings logic, etc.
++				return; // return early if sounds are not relevant
  
 -			if (currentItem.type == 576 && Main.rand.Next(540) == 0 && Main.curMusic > 0 && Main.curMusic <= 90) {
 +			if (currentItem.type == 576 && Main.rand.Next(540) == 0 && Main.curMusic > 0) {
  				SoundEngine.PlaySound(SoundID.Item166, base.Center);
  				int num3 = -1;
  				if (Main.curMusic == 1)
-@@ -10579,13 +_,26 @@
+@@ -10579,10 +_,14 @@
  					currentItem.SetDefaults(5040);
  				else if (Main.curMusic == 89)
  					currentItem.SetDefaults(5044);
@@ -1800,18 +1769,6 @@
  			}
  
  			ApplyMusicBox(currentItem);
-+
-+			if (currentItem.wingSlot > 0) {
-+				if (!hideVisibleAccessory[itemSlot] || velocity.Y != 0f && !mount.Active)
-+					wings = currentItem.wingSlot;
-+
-+				wingsLogic = currentItem.wingSlot;
-+			}
-+
-+			ItemLoader.UpdateAccessory(currentItem, this, hideVisual);
- 		}
- 
- 		private void ApplyMusicBox(Item currentItem) {
 @@ -10772,6 +_,9 @@
  			if (currentItem.type == 5044)
  				Main.musicBox2 = 85;
@@ -1940,12 +1897,11 @@
  			ManageSpecialBiomeVisuals("Stardust", ZoneTowerStardust, value4 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Nebula", ZoneTowerNebula, value3 - new Vector2(0f, 10f));
  			ManageSpecialBiomeVisuals("Vortex", ZoneTowerVortex, value2 - new Vector2(0f, 10f));
-@@ -11716,6 +_,8 @@
+@@ -11716,6 +_,7 @@
  				}
  			}
  
 +			ZonePurity = InZonePurity();
-+			LoaderManager.Get<BiomeLoader>().PostUpdateBiome(this);
  			if (!dead) {
  				Point point2 = base.Center.ToTileCoordinates();
  				if (WorldGen.InWorld(point2.X, point2.Y, 1)) {
@@ -1979,6 +1935,14 @@
  		}
  
  		public void UpdateDead() {
+@@ -11900,6 +_,7 @@
+ 			ResetFloorFlags();
+ 			wings = 0;
+ 			wingsLogic = 0;
++			equippedWings = null;
+ 			ResetVisibleAccessories();
+ 			poisoned = false;
+ 			venom = false;
 @@ -11941,8 +_,9 @@
  			hasGingerBeard = false;
  			hasRainbowCursor = false;
@@ -2128,6 +2092,14 @@
  			coolWhipBuff = false;
  			yoraiz0rEye = 0;
  			yoraiz0rDarkness = false;
+@@ -13041,6 +_,7 @@
+ 			slowOgreSpit = false;
+ 			wings = 0;
+ 			wingsLogic = 0;
++			equippedWings = null;
+ 			wingTimeMax = 0;
+ 			brokenArmor = false;
+ 			silence = false;
 @@ -13145,17 +_,19 @@
  				}
  			}
@@ -2427,6 +2399,15 @@
  				if (!Falling) {
  					float num3 = Math.Abs(velocity.X) / 3f;
  					if ((float)Main.rand.Next(100) > num3 * 100f)
+@@ -16811,6 +_,8 @@
+ 		}
+ 
+ 		public void Update(int i) {
++			using var _currentPlr = new Main.CurrentPlayerOverride(this);
++
+ 			if (i == Main.myPlayer && Main.netMode != 2)
+ 				LockOnHelper.Update();
+ 
 @@ -16961,6 +_,7 @@
  
  			UpdateHairDyeDust();
@@ -2481,7 +2462,7 @@
  						}
  					}
 -					else if (((gravDir == 1f && num18 > num17) || (gravDir == -1f && num18 < -num17)) && !noFallDmg && !flag12) {
-+					else if (((gravDir == 1f && num18 > num17) || (gravDir == -1f && num18 < -num17)) && !noFallDmg && wingsLogic == 0) {
++					else if (((gravDir == 1f && num18 > num17) || (gravDir == -1f && num18 < -num17)) && !noFallDmg && equippedWings == null) {
  						immune = false;
  						int num25 = (int)((float)num18 * gravDir - (float)num17) * 10;
  						if (mount.Active)
@@ -2668,6 +2649,15 @@
  								crit = true;
  
  							float currentSpeed = Math.Abs(base.velocity.X) / maxRunSpeed;
+@@ -19361,7 +_,7 @@
+ 				else if (vector3.Y != 0f) {
+ 					int damage3 = Main.DamageVar(vector3.Y, 0f - luck);
+ 					Hurt(PlayerDeathReason.ByOther(3), damage3, 0, pvp: false, quiet: false, Crit: false, 0);
+-					if (vector3.Y == 60f || vector3.Y == 80f)
++					if (vector3.Y == 60f || vector3.Y == 80f) //These values have to match TileID.Sets.TouchDamageOther, which is unused in vanilla and was not up to date with 1.4 --direwolf420
+ 						AddBuff(30, Main.rand.Next(240, 600));
+ 				}
+ 				else {
 @@ -19447,7 +_,7 @@
  
  			if (num83) {
@@ -3005,43 +2995,6 @@
  							PullItem_Pickup(item, 12f, 5);
  						else if (lifeMagnet && (item.type == 58 || item.type == 1734 || item.type == 1867))
  							PullItem_Pickup(item, 15f, 5);
-@@ -24699,6 +_,36 @@
- 			}
- 		}
- 
-+		//TODO: Move to Player.TML.cs
-+		public bool CanBuyItem(int price, int customCurrency = -1) {
-+			if (customCurrency != -1)
-+				return CustomCurrencyManager.BuyItem(this, price, customCurrency);
-+
-+			bool flag;
-+			long num = Utils.CoinsCount(out flag, inventory, new int[] {
-+				58,
-+				57,
-+				56,
-+				55,
-+				54
-+			});
-+
-+			long num2 = Utils.CoinsCount(out flag, bank.item, new int[0]);
-+			long num3 = Utils.CoinsCount(out flag, bank2.item, new int[0]);
-+			long num4 = Utils.CoinsCount(out flag, bank3.item, new int[0]);
-+			long num5 = Utils.CoinsCombineStacks(out flag, new long[] {
-+				num,
-+				num2,
-+				num3,
-+				num4
-+			});
-+
-+			if (num5 < price)
-+				return false;
-+
-+			return true;
-+		}
-+
- 		public bool BuyItem(int price, int customCurrency = -1) {
- 			if (customCurrency != -1)
- 				return CustomCurrencyManager.BuyItem(this, price, customCurrency);
 @@ -24916,7 +_,7 @@
  		public void AdjTiles() {
  			int num = 4;
@@ -3081,6 +3034,17 @@
  				if (oldAdjTile[l] != adjTile[l]) {
  					flag = true;
  					break;
+@@ -25059,8 +_,9 @@
+ 			if (armor[12].legSlot >= 0)
+ 				legs = armor[12].legSlot;
+ 
+-			if (!dead)
++			if (!dead) {
+ 				UpdateVisibleAccessories();
++			}
+ 
+ 			wearsRobe = false;
+ 			bool somethingSpecial = false;
 @@ -25201,6 +_,7 @@
  				faceHead = -1;
  			}
@@ -3127,6 +3091,39 @@
  			if (legs == 140) {
  				legFrameCounter = 0.0;
  				legFrame.Y = legFrame.Height * (velocity.Y != 0f).ToInt();
+@@ -25789,6 +_,7 @@
+ 		}
+ 
+ 		private void UpdateVisibleAccessories() {
++			/*
+ 			for (int i = 3; i < 10; i++) {
+ 				if (!IsAValidEquipmentSlotForIteration(i))
+ 					continue;
+@@ -25827,6 +_,24 @@
+ 						UpdateVisibleAccessory(j, item2);
+ 				}
+ 			}
++			*/
++			for (int i = 3; i < 10; i++) {
++				if (!IsAValidEquipmentSlotForIteration(i))
++					continue;
++
++				UpdateVisibleAccessories(armor[i], hideVisibleAccessory[i], i);
++			}
++
++			PlayerLoader.UpdateVisibleAccessories(this);
++
++			for (int i = 13; i < 20; i++) {
++				if (!IsAValidEquipmentSlotForIteration(i))
++					continue;
++
++				UpdateVisibleAccessory(i, armor[i]);
++			}
++
++			PlayerLoader.UpdateVisibleVanityAccessories(this);
+ 
+ 			if (HeldItem.type == 4760 && ownedProjectileCounts[866] < 1) {
+ 				shield = 9;
 @@ -25834,7 +_,7 @@
  			}
  		}
@@ -3136,19 +3133,33 @@
  			if (compositeBackArm.enabled && item.shieldSlot > 0)
  				return true;
  
-@@ -25860,6 +_,12 @@
+@@ -25860,7 +_,7 @@
  			return false;
  		}
  
-+		/// <summary>
-+		/// Won't work with yoraiz0rEye as effect needs target item slot.
-+		/// </summary>
-+		/// <param name="item"></param>
-+		public void UpdateVisibleAccessory(Item item) => UpdateVisibleAccessory(-1, item);
-+
- 		private void UpdateVisibleAccessory(int itemSlot, Item item) {
+-		private void UpdateVisibleAccessory(int itemSlot, Item item) {
++		public void UpdateVisibleAccessory(int itemSlot, Item item, bool modded = false) {
  			if (item.stringColor > 0)
  				stringColor = item.stringColor;
+ 
+@@ -25923,8 +_,15 @@
+ 			if (item.wingSlot > 0)
+ 				wings = item.wingSlot;
+ 
+-			if (item.type == 3580)
+-				yoraiz0rEye = itemSlot - 2;
++			if (item.type == 3580) {
++				if (modded) {
++					// Treat similar to expert/master mode slots
++					yoraiz0rEye = 5 + itemSlot - 2;
++				}
++				else {
++					yoraiz0rEye = itemSlot - 2;
++				}
++			}
+ 
+ 			if (item.type == 3581)
+ 				yoraiz0rDarkness = true;
 @@ -26082,6 +_,8 @@
  			if (drawPlayer.head == 267)
  				yoraiz0rDarkness = true;
@@ -3185,6 +3196,14 @@
  				if (buffTime[i] > 0 && buffType[i] == 59)
  					DelBuff(i);
  			}
+@@ -26699,6 +_,7 @@
+ 				NetMessage.SendData(62, -1, -1, null, whoAmI, 1f);
+ 		}
+ 
++		//TODO: what does this method accomplish? Just determining frost and bone armor?
+ 		public void ApplyArmorSoundAndDustChanges() {
+ 			int num = armor[0].headSlot;
+ 			int num2 = armor[1].bodySlot;
 @@ -26761,6 +_,12 @@
  					return 0.0;
  				}
@@ -4135,6 +4154,16 @@
  			Vector2 pointPoisition = Main.MouseWorld;
  			pointPoisition += offsetFromCursor;
  			LimitPointToPlayerReachableArea(ref pointPoisition);
+@@ -34132,6 +_,9 @@
+ 				return;
+ 			}
+ 
++			if (LoaderManager.Get<AccessorySlotLoader>().PreferredGolfBall(ref projType))
++				return;
++
+ 			for (int num = 19; num >= 0; num--) {
+ 				if (IsAValidEquipmentSlotForIteration(num)) {
+ 					_ = num % 10;
 @@ -34164,6 +_,11 @@
  		private void ItemCheck_MinionAltFeatureUse(Item sItem, bool cShoot) {
  			if (sItem.shoot > 0 && ProjectileID.Sets.MinionTargettingFeature[sItem.shoot] && altFunctionUse == 2 && cShoot && ItemTimeIsZero) {
@@ -4515,7 +4544,7 @@
  
  			if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  				num += pickPower;
-@@ -37121,24 +_,47 @@
+@@ -37121,24 +_,50 @@
  		}
  
  		public void DropItems() {
@@ -4528,6 +4557,9 @@
 +
 +				startCounts[item.netID] += item.stack;
 +			}
++
++			//TML: Drop code for modded accessory Slots, should run prior to dropping other items in case conditions are used based on player's current equips
++			AccessorySlotLoader.ModSlotPlayer(this).DropItems();
 +
 +			startCounts[ModContent.ItemType<ModLoader.Default.StartBag>()] = 1;
  			for (int i = 0; i < 59; i++) {
@@ -4792,6 +4824,15 @@
  		}
  
  		private void SaveTemporaryItemSlotContents(BinaryWriter writer) {
+@@ -37745,6 +_,8 @@
+ 				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
+ 
+ 			Player player = new Player();
++			using var _currentPlr = new Main.CurrentPlayerOverride(player);
++
+ 			try {
+ 				RijndaelManaged rijndaelManaged = new RijndaelManaged();
+ 				rijndaelManaged.Padding = PaddingMode.None;
 @@ -38083,7 +_,7 @@
  							if (num >= 11) {
  								int num28 = 22;
@@ -4820,21 +4861,42 @@
  			catch {
  			}
  
-@@ -38213,8 +_,9 @@
+@@ -38213,9 +_,12 @@
  			}
  		}
  
 -		private static void LoadPlayer_LastMinuteFixes(Player newPlayer) {
-+		private static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
++		public static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
  			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
 +			PlayerIO.Load(newPlayer, playerFileData.Path, playerFileData.IsCloudSave);
  			for (int i = 3; i < 10; i++) {
++				LoadPlayer_LastMinuteFixes(newPlayer.armor[i], newPlayer);
++				/*
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 4874 || type == 5000)
-@@ -38231,6 +_,7 @@
+ 					newPlayer.lavaMax += 420;
+@@ -38223,14 +_,24 @@
+ 				if (type == 906 || type == 4038)
+ 					newPlayer.lavaMax += 420;
+ 
+-				if (newPlayer.wingsLogic == 0 && newPlayer.armor[i].wingSlot >= 0)
++				if (newPlayer.wingsLogic == 0 && newPlayer.armor[i].wingSlot >= 0) {
+ 					newPlayer.wingsLogic = newPlayer.armor[i].wingSlot;
++					newPlayer.equippedWings = newPlayer.armor[i];
++				}
+ 
+ 				if (type == 158 || type == 396 || type == 1250 || type == 1251 || type == 1252)
+ 					newPlayer.noFallDmg = true;
  
  				newPlayer.lavaTime = newPlayer.lavaMax;
++				*/
  			}
++
++			var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(newPlayer);
++			for (int i = 0; i < modSlotPlayer.SlotCount; i++) {
++				LoadPlayer_LastMinuteFixes(modSlotPlayer.exAccessorySlot[i], newPlayer);
++			}
++
 +			newPlayer.ResetEffects();
  		}
  
@@ -5013,59 +5075,6 @@
  			num = list[Main.rand.Next(list.Count)];
  			Item item = new Item();
  			item.SetDefaults(num);
-@@ -39013,6 +_,52 @@
- 			}
- 		}
- 
-+		public int GetManaCost(Item item) {
-+			float reduce = manaCost;
-+			float mult = 1;
-+			if (spaceGun && (item.type == ItemID.SpaceGun || item.type == ItemID.ZapinatorGray && item.type == ItemID.ZapinatorOrange))
-+				mult = 0;
-+
-+			if(item.type == ItemID.BookStaff && altFunctionUse == 2)
-+				mult = 2;
-+
-+			CombinedHooks.ModifyManaCost(this, item, ref reduce, ref mult);
-+			int mana = (int)(item.mana * reduce * mult);
-+			return mana >= 0 ? mana : 0;
-+		}
-+
-+		public bool CheckMana(Item item, int amount = -1, bool pay = false, bool blockQuickMana = false) {
-+			if (amount <= -1)
-+				amount = GetManaCost(item);
-+
-+			if (statMana >= amount) {
-+				if (pay) {
-+					CombinedHooks.OnConsumeMana(this, item, amount);
-+					statMana -= amount;
-+				}
-+
-+				return true;
-+			}
-+
-+			if (blockQuickMana)
-+				return false;
-+
-+			CombinedHooks.OnMissingMana(this, item, amount);
-+			if (statMana < amount && manaFlower)
-+				QuickMana();
-+
-+			if (statMana >= amount) {
-+				if (pay) {
-+					CombinedHooks.OnConsumeMana(this, item, amount);
-+					statMana -= amount;
-+				}
-+
-+				return true;
-+			}
-+
-+			return false;
-+		}
-+
- 		public bool CheckMana(int amount, bool pay = false, bool blockQuickMana = false) {
- 			int num = (int)((float)amount * manaCost);
- 			if (statMana >= num) {
 @@ -39045,7 +_,7 @@
  		public bool ConsumeSolarFlare() {
  			if (setSolar && solarShields > 0) {

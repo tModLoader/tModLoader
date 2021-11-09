@@ -63,6 +63,12 @@ namespace Terraria.ModLoader
 
 		//HookLists
 
+		private static HookList HookAddRecipes = AddHook<Action>(s => s.AddRecipes);
+
+		private static HookList HookPostAddRecipes = AddHook<Action>(s => s.PostAddRecipes);
+
+		private static HookList HookAddRecipeGroups = AddHook<Action>(s => s.AddRecipeGroups);
+
 		private static HookList HookOnWorldLoad = AddHook<Action>(s => s.OnWorldLoad);
 
 		private static HookList HookOnWorldUnload = AddHook<Action>(s => s.OnWorldUnload);

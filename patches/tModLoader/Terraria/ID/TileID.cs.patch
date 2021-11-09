@@ -23,3 +23,12 @@
  			public static bool[] AllowsSaveCompressionBatching = Factory.CreateBoolSet(true, 520, 423);
  			public static bool[] IsATreeTrunk = Factory.CreateBoolSet(false, 5, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616);
  			public static bool[] IsShakeable = Factory.CreateBoolSet(false, 5, 72, 323, 583, 584, 585, 586, 587, 588, 589, 596, 616);
+@@ -185,7 +_,7 @@
+ 			public static int[] TouchDamageVines = Factory.CreateIntSet(0, 32, 10, 69, 17, 80, 6, 352, 10);
+ 			public static int[] TouchDamageSands = Factory.CreateIntSet(0, 53, 15, 112, 15, 116, 15, 123, 15, 224, 15, 234, 15, 57, 15, 69, 15);
+ 			public static int[] TouchDamageHot = Factory.CreateIntSet(0, 37, 20, 58, 20, 76, 20);
+-			public static int[] TouchDamageOther = Factory.CreateIntSet(0, 48, 40, 232, 60);
++			public static int[] TouchDamageOther = Factory.CreateIntSet(0, 48, 60, 232, 80);
+ 			public static bool[] Falling = Factory.CreateBoolSet(53, 234, 112, 116, 224, 123, 330, 331, 332, 333, 495);
+ 			public static bool[] BlockMergesWithMergeAllBlock = Factory.CreateBoolSet();
+ 			public static bool[] OreMergesWithMud = Factory.CreateBoolSet(7, 166, 6, 167, 9, 168, 8, 169, 22, 204, 37, 58, 107, 221, 108, 222, 111, 223);

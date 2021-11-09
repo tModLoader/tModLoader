@@ -36,3 +36,4 @@ solutions/**/*.tar.gz
 solutions/tModLoader v*
 solutions/Release/
 **/msbuild.binlog
+/steam_build

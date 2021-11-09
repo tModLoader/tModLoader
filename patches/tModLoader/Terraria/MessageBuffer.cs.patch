@@ -460,14 +460,6 @@
  							if (!NPC.AnyNPCs(num191))
  								NPC.SpawnOnPlayer(plr, num191);
  						}
-@@ -2469,6 +_,7 @@
- 					break;
- 				case 74:
- 					if (Main.netMode == 1) {
-+						Netplay.syncingWorld = false;
- 						Main.anglerQuest = reader.ReadByte();
- 						Main.anglerQuestFinished = reader.ReadBoolean();
- 					}
 @@ -2558,7 +_,7 @@
  					if (Main.netMode == 1) {
  						int num83 = reader.ReadInt16();

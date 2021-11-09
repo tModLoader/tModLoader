@@ -57,11 +57,15 @@ namespace Terraria.ModLoader
 			ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName);
 
 			Type modType = GetType();
+
 			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName, StringComparer.InvariantCulture)) {
-				// Don't autoload things with no default constructor
-				if (type == modType || type.IsAbstract || type.ContainsGenericParameters || type.GetConstructor(Array.Empty<Type>()) == null) {
+				// Skip Mod, abstract, and generic classes.
+				if (type == modType || type.IsAbstract || type.ContainsGenericParameters)
 					continue;
-				}
+
+				// Don't autoload things with no default constructor
+				if (type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null) == null)
+					continue;
 
 				// Having the check here instead of enclosing the foreach statement is required for modSound autoloading to function properly
 				// In the case of a ModSound loading rework where it doesn't piggyback off content AutoLoading, the entire foreach statement

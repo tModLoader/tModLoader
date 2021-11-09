@@ -482,28 +482,6 @@
  			flame = true;
  			noWet = !allowWaterPlacement;
  			holdStyle = 1;
-@@ -44574,11 +_,19 @@
- 			useTime = 10;
- 		}
- 
-+		// TML: These methods exist to fix the eye-jarring typo in the vanilla methods' name [
-+		public void DefaultToPlaceableTile(int tileIDToPlace, int tileStyleToPlace = 0)
-+			=> DefaultToPlacableTile(tileIDToPlace, tileStyleToPlace);
-+
-+		public void DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace = 0)
-+			=> DefaultToPlacableTile(tileIDToPlace, tileStyleToPlace);
-+		//]
-+
--		private void DefaultToPlacableTile(int tileIDToPlace, int tileStyleToPlace = 0) {
-+		internal void DefaultToPlacableTile(int tileIDToPlace, int tileStyleToPlace = 0) {
- 			DefaultToPlacableTile((ushort)tileIDToPlace, tileStyleToPlace);
- 		}
- 
--		private void DefaultToPlacableTile(ushort tileIDToPlace, int tileStyleToPlace = 0) {
-+		internal void DefaultToPlacableTile(ushort tileIDToPlace, int tileStyleToPlace = 0) {
- 			createTile = tileIDToPlace;
- 			placeStyle = tileStyleToPlace;
- 			width = 14;
 @@ -44592,7 +_,7 @@
  			consumable = true;
  		}

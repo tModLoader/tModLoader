@@ -137,9 +137,9 @@ namespace Terraria.ModLoader.Setup
 
 #if AUTO
 			ExecuteParallel(items, true, 1);
-			return;
-#endif
+#else
 			ExecuteParallel(items);
+#endif
 		}
 
 		private void AddEmbeddedLibrary(Resource res, IAssemblyResolver resolver, List<WorkItem> items)

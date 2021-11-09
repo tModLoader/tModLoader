@@ -778,7 +778,7 @@
 +
 -			if (Type == 222 || Type == 245) {
 +			//if (Type == 222 || Type == 245) {
-+			if (NPCID.Sets.SpawnFromLastEmptySlot[Type]) {
++			if (Type >= 0 && NPCID.Sets.SpawnFromLastEmptySlot[Type]) {
  				for (int num2 = 199; num2 >= 0; num2--) {
  					if (!Main.npc[num2].active) {
  						num = num2;

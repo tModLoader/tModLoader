@@ -1,22 +1,14 @@
-using System;
-using System.Collections.Specialized;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Security;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json.Linq;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 
@@ -198,7 +190,7 @@ namespace Terraria.ModLoader.UI
 
 				Social.Base.AWorkshopEntry.TryReadingManifest(manifest, out var info);
 
-				var modManager = new Social.Steam.WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
+				var modManager = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
 
 				modManager.Uninstall(parentDir);
 			}
@@ -206,6 +198,7 @@ namespace Terraria.ModLoader.UI
 				File.Delete(tmodPath);
 			}
 
+			Interface.modBrowser.ModifyUIModDownloadItemInstalled(_localMod.Name, null);
 
 			Main.menuMode = _gotoMenu;
 		}

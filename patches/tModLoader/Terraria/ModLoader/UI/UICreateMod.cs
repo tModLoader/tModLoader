@@ -265,13 +265,13 @@ $@"{{
       ""commandName"": ""Executable"",
       ""executablePath"": ""dotnet"",
       ""commandLineArgs"": ""$(tMLPath)"",
-      ""workingDirectory"": ""$(TerrariaSteamPath)""
+      ""workingDirectory"": ""$(tMLSteamPath)""
     }},
     ""TerrariaServer"": {{
       ""commandName"": ""Executable"",
       ""executablePath"": ""dotnet"",
       ""commandLineArgs"": ""$(tMLServerPath)"",
-      ""workingDirectory"": ""$(TerrariaSteamPath)""
+      ""workingDirectory"": ""$(tMLSteamPath)""
     }}
   }}
 }}";
