@@ -87,12 +87,12 @@
 +    <Content Include="release_extras/**" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)%(Filename)%(Extension)" />
 +  </ItemGroup>
 +  <ItemGroup>
-+    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.9.19.1" />
-+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.9.0" />
-+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.9.0" />
-+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-+    <PackageReference Include="System.CodeDom" Version="5.0.0" />
-+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.1" />
++    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.11.1.1" />
++    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.0-6.final" />
++    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.0.0-6.final" />
++    <PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />
++    <PackageReference Include="System.CodeDom" Version="6.0.0" />
++    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="6.0.0" />
 +    <PackageReference Include="Hjson" Version="3.0.0" />
    </ItemGroup>
    <Target Name="CopyToSteamDir" AfterTargets="Build">
@@ -157,7 +157,7 @@
 +      </ReferenceCopyLocalPaths>
 +    </ItemGroup>
 +  </Target>
-+  <Target Name="OverwriteDevRuntimeTargets" AfterTargets="GenerateBuildRuntimeConfigurationFiles">
++  <Target Name="OverwriteDevRuntimeTargets" AfterTargets="GenerateBuildRuntimeConfigurationFiles" Condition="$(GenerateRuntimeConfigDevFile) == 'true'">
 +    <PropertyGroup>
 +      <DevRuntimeConfig>
 +{
