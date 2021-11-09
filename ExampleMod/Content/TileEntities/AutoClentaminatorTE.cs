@@ -91,7 +91,7 @@ namespace ExampleMod.Content.TileEntities
 			}
 		}
 
-		public override bool ValidTile(int i, int j) {
+		public override bool IsTileValidForEntity(int i, int j) {
 			Tile tile = Main.tile[i, j];
 			return tile.IsActive && tile.type == ModContent.TileType<AutoClentaminator>() && tile.frameX == 0 && tile.frameY == 0;
 		}
@@ -110,12 +110,12 @@ namespace ExampleMod.Content.TileEntities
 			itemStorage.DropItems(this, new Rectangle(Position.X * 16, Position.Y * 16, 48, 48));
 		}
 
-		public override TagCompound Save() {
-			return itemStorage.Save();
+		public override void SaveData(TagCompound tag) {
+			itemStorage.SaveData(tag);
 		}
 
-		public override void Load(TagCompound tag) {
-			itemStorage.Load(tag);
+		public override void LoadData(TagCompound tag) {
+			itemStorage.LoadData(tag);
 		}
 
 		public ItemStorage GetItemStorage() => itemStorage;

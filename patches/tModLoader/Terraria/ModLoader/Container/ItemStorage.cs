@@ -265,11 +265,11 @@ namespace Terraria.ModLoader.Container
 		}
 
 		#region IO
-		public virtual TagCompound Save() {
-			return new TagCompound { ["Items"] = Items.ToList() };
+		public virtual void SaveData(TagCompound tag) {
+			tag["Items"] = Items.ToList();
 		}
 
-		public virtual void Load(TagCompound tag) {
+		public virtual void LoadData(TagCompound tag) {
 			Items = tag.GetList<Item>("Items").ToArray();
 		}
 
