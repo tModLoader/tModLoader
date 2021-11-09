@@ -20,6 +20,13 @@ namespace Terraria
 		/// </summary>
 		public IBigProgressBar BossBar { get; set; }
 
+		/// <summary> Returns whether or not this NPC currently has a (de)buff of the provided type. </summary>
+		public bool HasBuff(int type) => FindBuffIndex(type) != -1;
+
+		/// <inheritdoc cref="HasBuff(int)" />
+		public bool HasBuff<T>() where T : ModBuff
+			=> HasBuff(ModContent.BuffType<T>());
+
 		// Get
 
 		/// <summary> Gets the instance of the specified GlobalNPC type. This will throw exceptions on failure. </summary>

@@ -85,12 +85,12 @@
  					}
  			}
 +
-+			TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight);
++			TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight, ref tileFrameX, ref tileFrameY);
 +			TileLoader.SetAnimationFrame(typeCache, x, y, ref addFrX, ref addFrY);
  		}
  
  		private bool IsWindBlocked(int x, int y) {
-@@ -4438,11 +_,11 @@
+@@ -4438,11 +_,14 @@
  			}
  		}
  
@@ -101,6 +101,9 @@
  
 -		private void AddSpecialLegacyPoint(int x, int y) {
 +		public void AddSpecialLegacyPoint(int x, int y) {
++			if (_specialTilesCount >= _specialTileX.Length)
++				return; //Protection against too many special tiles
++
  			_specialTileX[_specialTilesCount] = x;
  			_specialTileY[_specialTilesCount] = y;
  			_specialTilesCount++;

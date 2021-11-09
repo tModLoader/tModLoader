@@ -14,15 +14,12 @@ namespace Terraria.ModLoader.Default
 			unloadedResearch = new List<TagCompound>();
 		}
 
-		public override TagCompound Save() {
-			return new TagCompound
-			{
-				["list"] = data,
-				["unloadedResearch"] = unloadedResearch
-			};
+		public override void SaveData(TagCompound tag) {
+			tag["list"] = data;
+			tag["unloadedResearch"] = unloadedResearch;
 		}
 
-		public override void Load(TagCompound tag) {
+		public override void LoadData(TagCompound tag) {
 			PlayerIO.LoadModData(Player, tag.GetList<TagCompound>("list"));
 			PlayerIO.LoadResearch(Player, tag.GetList<TagCompound>("unloadedResearch"));
 		}

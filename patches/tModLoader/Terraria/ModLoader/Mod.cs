@@ -283,41 +283,11 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Adds the given sound file to the game as the given type of sound and with the given custom sound playing. If no ModSound instance is provided, the custom sound will play in a similar manner as the default vanilla ones.
+		/// Retrieves the names of every file packaged into this mod.
+		/// Note that this includes extensions, and for images the extension will always be <c>.rawimg</c>.
 		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="soundPath">The sound path.</param>
-		/// <param name="modSound">The mod sound.</param>
-		public void AddSound(SoundType type, string soundPath, ModSound modSound = null) {
-			if (!loading)
-				throw new Exception("AddSound can only be called from Mod.Load or Mod.Autoload");
-
-			int id = SoundLoader.ReserveSoundID(type);
-
-			soundPath = soundPath[..^Path.GetExtension(soundPath).Length];
-			SoundLoader.sounds[type][soundPath] = id;
-
-			if (modSound != null) {
-				SoundLoader.modSounds[type][id] = modSound;
-				modSound.Sound = ModContent.Request<SoundEffect>(soundPath);
-			}
-		}
-
-		/// <summary>
-		/// Shorthand for calling SoundLoader.GetSoundSlot(type, this.Name + '/' + name).
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public int GetSoundSlot(SoundType type, string name) => SoundLoader.GetSoundSlot(type, Name + '/' + name);
-
-		/// <summary>
-		/// Shorthand for calling SoundLoader.GetLegacySoundSlot(type, this.Name + '/' + name).
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public LegacySoundStyle GetLegacySoundSlot(SoundType type, string name) => SoundLoader.GetLegacySoundSlot(type, Name + '/' + name);
+		public List<string> GetFileNames() => File?.GetFileNames();
 
 		/// <summary>
 		/// Retrieve contents of files within the tmod file

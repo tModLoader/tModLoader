@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,6 +10,8 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded gun.");
+
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
@@ -23,7 +26,8 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.useAnimation = 8; // The length of the item's use animation in ticks (60 ticks == 1 second.)
 			Item.useStyle = ItemUseStyleID.Shoot; // How you use the item (swinging, holding out, etc.)
 			Item.autoReuse = true; // Whether or not you can hold click to automatically use it again.
-			Item.UseSound = SoundID.Item11; // The sound that this item plays when used.
+			//Item.UseSound = SoundID.Item11;
+			Item.UseSound = SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/PlasmaFire"); // The sound that this item plays when used.
 
 			// Weapon Properties
 			Item.DamageType = DamageClass.Ranged; // Sets the damage type to ranged.

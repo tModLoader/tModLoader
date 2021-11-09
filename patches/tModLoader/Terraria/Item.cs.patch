@@ -473,20 +473,6 @@
  			flame = true;
  			noWet = !allowWaterPlacement;
  			holdStyle = 1;
-@@ -44574,11 +_,11 @@
- 			useTime = 10;
- 		}
- 
--		private void DefaultToPlacableTile(int tileIDToPlace, int tileStyleToPlace = 0) {
-+		public void DefaultToPlacableTile(int tileIDToPlace, int tileStyleToPlace = 0) {
- 			DefaultToPlacableTile((ushort)tileIDToPlace, tileStyleToPlace);
- 		}
- 
--		private void DefaultToPlacableTile(ushort tileIDToPlace, int tileStyleToPlace = 0) {
-+		public void DefaultToPlacableTile(ushort tileIDToPlace, int tileStyleToPlace = 0) {
- 			createTile = tileIDToPlace;
- 			placeStyle = tileStyleToPlace;
- 			width = 14;
 @@ -44592,7 +_,7 @@
  			consumable = true;
  		}

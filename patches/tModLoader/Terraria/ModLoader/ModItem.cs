@@ -10,6 +10,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
@@ -46,6 +47,13 @@ namespace Terraria.ModLoader
 
 		protected sealed override void Register() {
 			ModTypeLookup<ModItem>.Register(this);
+
+			// @TODO: Remove on release
+			var type = GetType();
+
+			if (!LoaderUtils.HasMethod(type, typeof(ModItem), nameof(SaveData), typeof(TagCompound)) && LoaderUtils.HasMethod(type, typeof(ModItem), "Save"))
+				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
+			// @TODO: END Remove on release
 
 			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemName.{Name}");
 			Tooltip = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemTooltip.{Name}", true);
@@ -277,23 +285,41 @@ namespace Terraria.ModLoader
 		/// <param name="knockback">The speed of the projectile shot</param>
 		public virtual void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 		}
-		
+
 		/// <summary>
-		/// Whether or not ammo will be consumed upon usage. Called both by the gun and by the ammo; if at least one returns false then the ammo will not be used. By default returns true.
-		/// If false is returned, the OnConsumeAmmo hook is never called.
+		/// Whether or not ammo will be consumed upon usage. Called both by the weapon; if at least one of this and <see cref="CanBeConsumedAsAmmo"/> returns false then the ammo will not be used. By default returns true.
+		/// <br>If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.</br>
 		/// </summary>
-		/// <param name="player">The player.</param>
+		/// <param name="player">The player using the weapon</param>
 		/// <returns></returns>
-		public virtual bool ConsumeAmmo(Player player) {
+		public virtual bool CanConsumeAmmo(Player player) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to makes things happen when ammo is consumed. Called both by the gun and by the ammo.
-		/// Called before the ammo stack is reduced.
+		/// Whether or not ammo will be consumed upon usage. Called by the ammo; if at least one of this and <see cref="CanConsumeAmmo"/> returns false then the ammo will not be used. By default returns true.
+		/// <br>If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.</br>
 		/// </summary>
-		/// <param name="player">The player.</param>
+		/// <param name="player">The player consuming the ammo</param>
+		/// <returns></returns>
+		public virtual bool CanBeConsumedAsAmmo(Player player) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when ammo is consumed. Called by the weapon.
+		/// <br>Called before the ammo stack is reduced.</br>
+		/// </summary>
+		/// <param name="player">The player using the weapon</param>
 		public virtual void OnConsumeAmmo(Player player) {
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when ammo is consumed. Called by the ammo.
+		/// <br>Called before the ammo stack is reduced.</br>
+		/// </summary>
+		/// <param name="player">The player consuming the ammo</param>
+		public virtual void OnConsumedAsAmmo(Player player) {
 		}
 
 		/// <summary>
@@ -525,24 +551,30 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadow hooks. By default, this will return the same value as the IsArmorSet hook (passing the equipment textures' associated items as parameters), so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets. Note that this hook is only ever called through this item's associated equipment texture.
+		/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadows hooks. By default, this will return the same value as the IsArmorSet hook (passing the equipment textures' associated items as parameters), so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets. Note that this hook is only ever called through this item's associated equipment texture.
 		/// </summary>
 		/// <param name="head">The head.</param>
 		/// <param name="body">The body.</param>
 		/// <param name="legs">The legs.</param>
 		public virtual bool IsVanitySet(int head, int body, int legs) {
-			Item headItem = new Item();
-			if (head >= 0) {
-				headItem.SetDefaults(Item.headType[head], true);
-			}
-			Item bodyItem = new Item();
-			if (body >= 0) {
-				bodyItem.SetDefaults(Item.bodyType[body], true);
-			}
-			Item legItem = new Item();
-			if (legs >= 0) {
-				legItem.SetDefaults(Item.legType[legs], true);
-			}
+			int headItemType = 0;
+			if (head >= 0)
+				headItemType = Item.headType[head];
+
+			Item headItem = ContentSamples.ItemsByType[headItemType];
+
+			int bodyItemType = 0;
+			if (body >= 0)
+				bodyItemType = Item.bodyType[body];
+
+			Item bodyItem = ContentSamples.ItemsByType[bodyItemType];
+
+			int legsItemType = 0;
+			if (legs >= 0)
+				legsItemType = Item.legType[legs];
+
+			Item legItem = ContentSamples.ItemsByType[legsItemType];
+
 			return IsArmorSet(headItem, bodyItem, legItem);
 		}
 
@@ -633,46 +665,6 @@ namespace Terraria.ModLoader
 		/// Useful for modifying modded data based on the reforge result.
 		/// </summary>
 		public virtual void PostReforge() {
-		}
-
-		/// <summary>
-		/// Allows you to determine whether the skin/shirt on the player's arms and hands are drawn when this body armor is worn. By default both flags will be false. Note that if drawHands is false, the arms will not be drawn either. Also note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <param name="drawHands">if set to <c>true</c> [draw hands].</param>
-		/// <param name="drawArms">if set to <c>true</c> [draw arms].</param>
-		public virtual void DrawHands(ref bool drawHands, ref bool drawArms) {
-		}
-
-		/// <summary>
-		/// Allows you to determine whether the player's hair or alt (hat) hair draws when this head armor is worn. By default both flags will be false. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <param name="drawHair">if set to <c>true</c> [draw hair].</param>
-		/// <param name="drawAltHair">if set to <c>true</c> [draw alt hair].</param>
-		public virtual void DrawHair(ref bool drawHair, ref bool drawAltHair) {
-		}
-
-		/// <summary>
-		/// Return false to hide the player's head when this head armor is worn. Returns true by default. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawHead() {
-			return true;
-		}
-
-		/// <summary>
-		/// Return false to hide the player's body when this body armor is worn. Returns true by default. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawBody() {
-			return true;
-		}
-
-		/// <summary>
-		/// Return false to hide the player's legs when this leg armor or shoe accessory is worn. Returns true by default. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawLegs() {
-			return true;
 		}
 
 		/// <summary>
@@ -878,7 +870,16 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
-		public virtual bool CanEquipAccessory(Player player, int slot) {
+		/// <param name="modded">If the inventory slot index is for modded slots.</param>
+		public virtual bool CanEquipAccessory(Player player, int slot, bool modded) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to prevent similar accessories from being equipped multiple times. For example, vanilla Wings.
+		/// Return false to have the currently equipped item swapped with the incoming item - ie both can't be equipped at same time.
+		/// </summary>
+		public virtual bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {
 			return true;
 		}
 
@@ -939,19 +940,20 @@ namespace Terraria.ModLoader
 		public virtual int BossBagNPC => 0;
 
 		/// <summary>
-		/// Allows you to save custom data for this item. Returns null by default.
+		/// Allows you to save custom data for this item.
+		/// <br/>
+		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
 		/// </summary>
-		/// <returns></returns>
-		public virtual TagCompound Save() {
-			return null;
-		}
+		/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
+		public virtual void SaveData(TagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to load custom data that you have saved for this item.
+		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
-		/// <param name="tag">The tag.</param>
-		public virtual void Load(TagCompound tag) {
-		}
+		/// <param name="tag"> The TagCompound to load data from. </param>
+		public virtual void LoadData(TagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to send custom data for this item between client and server.

@@ -315,6 +315,19 @@
  			return result;
  		}
  
+@@ -2758,6 +_,12 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// Registers an animation for an item type to draw inside UI (not world or held item on player).
++		/// To enable its animation in the world, use ItemID.Sets.AnimatesAsSoul in conjunction with this
++		/// </summary>
++		/// <param name="index">Item type</param>
++		/// <param name="animation">Draw animation</param>
+ 		public static void RegisterItemAnimation(int index, DrawAnimation animation) {
+ 			if (!itemAnimationsRegistered.Contains(index))
+ 				itemAnimationsRegistered.Add(index);
 @@ -2804,11 +_,13 @@
  			}
  		}
@@ -699,13 +712,7 @@
  					if (oldStatusText != statusText) {
  						oldStatusText = statusText;
  						Console.WriteLine(statusText);
-@@ -4439,24 +_,20 @@
- 						Update(new GameTime());
- 					else if (saveTime.IsRunning)
- 						saveTime.Stop();
-+					else
-+						Netplay.OnUpdate();
- 
+@@ -4443,20 +_,14 @@
  					if (Main.OnTickForThirdPartySoftwareOnly != null)
  						Main.OnTickForThirdPartySoftwareOnly();
  
@@ -830,56 +837,13 @@
 +				dayRate = 86400;
  		}
  
- 		public Main() {
-@@ -4784,7 +_,50 @@
+ 		public Main() : base(dedServ) {
+@@ -4784,7 +_,7 @@
  
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
 +			GraphicsChangeTracker.Init();
-+		}
-+
-+		internal void PostSocialInitialize() {
-+			if (dedServ) {
-+				return;
-+			}
-+			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
-+
-+			if (!Directory.Exists(vanillaContentFolder)) {
-+				vanillaContentFolder = "../Content"; // Nested Manual Install
-+			}
-+
-+#if MAC
-+			vanillaContentFolder = "../../../../Terraria/Terraria.app/Contents/Resources/Content";
-+#endif
-+
-+			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
-+				var appID = ModLoader.Engine.Steam.TerrariaAppId_t;
-+				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
-+
-+				if (appInstalled) {
-+					Steamworks.SteamApps.GetAppInstallDir(appID, out var steamInstallFolder, 1000);
-+					Logging.Terraria.Info("Found Terraria steamapp install at: " + steamInstallFolder);
-+
-+					vanillaContentFolder = Path.Combine(steamInstallFolder, "Content");
-+
-+					if (!Directory.Exists(vanillaContentFolder))
-+						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/Resources/Content");
-+				}
-+
-+				ModLoader.Engine.Steam.RecalculateAvailableSteamCloudStorage();
-+				Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)ModLoader.Engine.Steam.lastAvailableSteamCloudStorage)} available");
-+			}
-+
-+			if (!Directory.Exists(vanillaContentFolder)) {
-+				Interface.MessageBoxShow(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
-+				Environment.Exit(1);
-+			}
-+
-+			if (Directory.Exists(Path.Combine(InstallVerifier.TmlContentDirectory, "Images")))
-+				AlternateContentManager = new TMLContentManager(Content.ServiceProvider, InstallVerifier.TmlContentDirectory, null);
-+
-+			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
  		}
  
  		private void Main_Exiting(object sender, EventArgs e) {
@@ -1247,14 +1211,6 @@
  				CinematicManager.Instance.Update(gameTime);
  				if (netMode == 2) {
  					for (int i = 0; i < 256; i++) {
-@@ -12378,6 +_,7 @@
- 				_hasPendingNetmodeChange = false;
- 			}
- 
-+			Netplay.OnUpdate(); // TODO, why do we add this?
- 			if (CaptureManager.Instance.IsCapturing)
- 				return;
- 
 @@ -12595,6 +_,9 @@
  
  					mouseLeftRelease = false;
@@ -1300,6 +1256,27 @@
  			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
  				Star.UpdateStars();
  				Cloud.UpdateClouds();
+@@ -12753,6 +_,10 @@
+ 
+ 			if (playerInventory) {
+ 				Recipe.GetThroughDelayedFindRecipes();
++
++				if (PlayerInput.MouseInModdedUI.Count != 0)
++					goto noScrollOnLocked;
++
+ 				int num = PlayerInput.ScrollWheelDelta / 120;
+ 				bool flag = true;
+ 				if (recBigList) {
+@@ -12793,6 +_,9 @@
+ 						focusRecipe = 0;
+ 				}
+ 
++			noScrollOnLocked:
++				PlayerInput.MouseInModdedUI.Clear();
++
+ 				Main.player[myPlayer].dropItemCheck();
+ 			}
+ 
 @@ -12836,7 +_,13 @@
  				InGameUI.Update(gameTime);
  
@@ -1476,15 +1453,15 @@
  			AnimateTiles_CritterCages();
  		}
  
-@@ -14252,6 +_,8 @@
- 			wallFrame[144] = 0;
- 			if (wallFrameCounter[144] > num3 * (16 + num4 * 2))
- 				wallFrameCounter[144] = 0;
-+
-+			WallLoader.AnimateWalls();
- 		}
+@@ -14166,6 +_,8 @@
+ 			if (++wallFrameCounter[243] >= num2 * 8)
+ 				wallFrameCounter[243] = 0;
  
- 		private void DoUpdate_AnimateWaterfalls() {
++			WallLoader.AnimateWalls();
++
+ 			wallFrameCounter[144]++;
+ 			int num3 = 5;
+ 			int num4 = 10;
 @@ -14740,15 +_,15 @@
  				X += 34;
  
@@ -1634,7 +1611,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15061,82 +_,82 @@
+@@ -15061,47 +_,80 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1674,6 +1651,8 @@
  
  				num16 += (int)(FontAssets.MouseText.Value.MeasureString(array[k]).Y + (float)num12);
  			}
++
++			ItemLoader.PostDrawTooltip(HoverItem, drawableLines.AsReadOnly());
  		}
  
 -		public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine) {
@@ -1716,39 +1695,15 @@
 +					}
 +					int damage = player[myPlayer].GetWeaponDamage(item);
  					damage = (int)((float)damage * ItemID.Sets.ToolTipDamageMultiplier[item.type]);
--					if (item.melee) {
--						toolTipLine[numLines] = (((int)(player[myPlayer].meleeDamage * (float)damage + num)).ToString() ?? "");
--						toolTipLine[numLines] += Lang.tip[2].Value;
--					}
--					else if (item.ranged) {
--						float num2 = (float)damage * player[myPlayer].rangedDamage;
--						if (item.useAmmo == AmmoID.Arrow || item.useAmmo == AmmoID.Stake) {
--							num2 *= player[myPlayer].arrowDamage;
--							if (player[myPlayer].archery)
--								num2 *= 1.2f;
--						}
--
--						if (item.useAmmo == AmmoID.Bullet || item.useAmmo == AmmoID.CandyCorn)
--							num2 *= player[myPlayer].bulletDamage;
--
--						if (item.useAmmo == AmmoID.Rocket || item.useAmmo == AmmoID.StyngerBolt || item.useAmmo == AmmoID.JackOLantern || item.useAmmo == AmmoID.NailFriendly)
--							num2 *= player[myPlayer].rocketDamage;
--
--						toolTipLine[numLines] = (((int)(num2 + num)).ToString() ?? "");
--						toolTipLine[numLines] += Lang.tip[3].Value;
--					}
--					else if (item.magic) {
--						toolTipLine[numLines] = (((int)(player[myPlayer].magicDamage * (float)damage + num)).ToString() ?? "");
--						toolTipLine[numLines] += Lang.tip[4].Value;
--					}
--					else if (item.summon) {
--						toolTipLine[numLines] = (((int)(player[myPlayer].minionDamage * (float)damage + num)).ToString() ?? "");
--						toolTipLine[numLines] += Lang.tip[53].Value;
--					}
--					else {
--						toolTipLine[numLines] = (damage.ToString() ?? "");
--						toolTipLine[numLines] += Lang.tip[55].Value;
--					}
++					/*
+ 					if (item.melee) {
+ 						toolTipLine[numLines] = (((int)(player[myPlayer].meleeDamage * (float)damage + num)).ToString() ?? "");
+ 						toolTipLine[numLines] += Lang.tip[2].Value;
+@@ -15135,8 +_,12 @@
+ 						toolTipLine[numLines] = (damage.ToString() ?? "");
+ 						toolTipLine[numLines] += Lang.tip[55].Value;
+ 					}
++					*/
 +					toolTipLine[numLines] = damage + tip.Value;
 +					toolTipNames[numLines] = "Damage";
  
@@ -2711,7 +2666,7 @@
  					if (player[myPlayer].buffType[n] != 0) {
  						int num32 = num28 / num29;
  						int num33 = num28 % num29;
-@@ -30086,10 +_,12 @@
+@@ -30086,17 +_,19 @@
  						if (num34 == 147)
  							bannerMouseOver = true;
  
@@ -2727,6 +2682,84 @@
  					}
  				}
  			}
+ 			else if (EquipPage == 1) {
+ 				DrawNPCHousesInUI();
+ 			}
+-			else {
++			else if (EquipPage == 0) {// allow mods to add custom equip pages
+ 				int num35 = 4;
+ 				if (mouseX > screenWidth - 64 - 28 && mouseX < (int)((float)(screenWidth - 64 - 28) + 56f * inventoryScale) && mouseY > num20 && mouseY < (int)((float)num20 + 448f * inventoryScale) && !PlayerInput.IgnoreMouseInterface)
+ 					player[myPlayer].mouseInterface = true;
+@@ -30113,7 +_,7 @@
+ 				Microsoft.Xna.Framework.Color color = inventoryBack;
+ 				Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
+ 				int num39 = -1;
+-				for (int num40 = 0; num40 < 10; num40++) {
++				for (int num40 = 0; num40 < 3; num40++) {
+ 					if ((num40 == 8 && !flag4) || (num40 == 9 && !flag5))
+ 						continue;
+ 
+@@ -30134,6 +_,7 @@
+ 						context2 = 10;
+ 					}
+ 
++					/*
+ 					if (num39 == num38 && !_achievementAdvisor.CanDrawAboveCoins) {
+ 						_achievementAdvisor.DrawOneAchievement(spriteBatch, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8), large: false);
+ 						UILinkPointNavigator.SetPosition(1570, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8) + new Vector2(20f) * inventoryScale);
+@@ -30141,6 +_,7 @@
+ 
+ 					if (num39 == num37)
+ 						DrawDefenseCounter(num41, num42);
++					*/ 
+ 
+ 					Texture2D value4 = TextureAssets.InventoryTickOn.Value;
+ 					if (player[myPlayer].hideVisibleAccessory[num40])
+@@ -30187,10 +_,10 @@
+ 					player[myPlayer].mouseInterface = true;
+ 
+ 				num39 = -1;
+-				for (int num46 = 10; num46 < 20; num46++) {
++				for (int num46 = 10; num46 < 13; num46++) {
+ 					if ((num46 == 18 && !flag4) || (num46 == 19 && !flag5))
+ 						continue;
+-
++					
+ 					num39++;
+ 					bool num47 = LocalPlayer.IsAValidEquipmentSlotForIteration(num46);
+ 					flag3 = !num47;
+@@ -30228,7 +_,7 @@
+ 					player[myPlayer].mouseInterface = true;
+ 
+ 				num39 = -1;
+-				for (int num50 = 0; num50 < 10; num50++) {
++				for (int num50 = 0; num50 < 3; num50++) {
+ 					if ((num50 == 8 && !flag4) || (num50 == 9 && !flag5))
+ 						continue;
+ 
+@@ -30263,9 +_,22 @@
+ 				}
+ 
+ 				inventoryBack = color;
++				int chkMax = (int)((float)(num20) + (float)((7 + LocalPlayer.GetAmountOfExtraAccessorySlotsToShow()) * 56) * Main.inventoryScale) + 4;
++				int randomLocationX = screenWidth - 64 - 28;
++
++				if (num39 == num38 && !_achievementAdvisor.CanDrawAboveCoins) {
++					_achievementAdvisor.DrawOneAchievement(spriteBatch, new Vector2(randomLocationX - 10 - 47 - 47 - 14 - 14, chkMax + 8), large: false);
++					UILinkPointNavigator.SetPosition(1570, new Vector2(randomLocationX - 10 - 47 - 47 - 14 - 14, chkMax + 8) + new Vector2(20f) * inventoryScale);
++				}
++
++				DrawDefenseCounter(randomLocationX, chkMax);
++
++				inventoryBack = color;
+ 				inventoryScale = num36;
+ 			}
+ 
++			LoaderManager.Get<AccessorySlotLoader>().DrawAccSlots(num20);
++
+ 			int num54 = (screenHeight - 600) / 2;
+ 			int num55 = (int)((float)screenHeight / 600f * 250f);
+ 			if (screenHeight < 700) {
 @@ -30309,11 +_,17 @@
  					string text = Lang.inter[46].Value + ": ";
  					if (reforgeItem.type > 0) {
@@ -3822,6 +3855,31 @@
  			}
  		}
  
+@@ -47050,19 +_,22 @@
+ 					renderCount = 99;
+ 				}
+ 				else {
++					//TML: RenderTiles() is quite slow. ~30ms at peak; doesn't change with lighting modes
+ 					if (renderCount == 3) {
+ 						RenderTiles();
+ 						sceneTilePos.X = screenPosition.X - (float)offScreenRange;
+ 						sceneTilePos.Y = screenPosition.Y - (float)offScreenRange;
+ 					}
+ 
+-					if (renderCount == 3) {
++					//TML: Remapped from 3 to 2 to flatten per frame load for colour lighting ( ~5ms peak).
++					if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 2 : 3)) {
+ 						RenderTiles2();
+ 						sceneTile2Pos.X = screenPosition.X - (float)offScreenRange;
+ 						sceneTile2Pos.Y = screenPosition.Y - (float)offScreenRange;
+ 					}
+ 
+-					if (renderCount == 3) {
++					//TML: Remapped from 3 to 0 to flatten per frame load for colour lighting ( ~15ms peak).
++					if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 0 : 3)) {
+ 						RenderWalls();
+ 						sceneWallPos.X = screenPosition.X - (float)offScreenRange;
+ 						sceneWallPos.Y = screenPosition.Y - (float)offScreenRange;
 @@ -47157,10 +_,13 @@
  			if (gameMenu || netMode == 2)
  				bgTopY = -200;
@@ -3842,8 +3900,8 @@
  			base.Draw(gameTime);
 -			float val = (float)screenWidth / MinimumZoomComparerX;
 -			float val2 = (float)screenHeight / MinimumZoomComparerY;
-+			float val = screenWidth / (ModLoader.ModLoader.removeForcedMinimumZoom ? MinimumZoomComparerX : 8192f);
-+			float val2 = screenHeight / (ModLoader.ModLoader.removeForcedMinimumZoom ? MinimumZoomComparerY : 8192f);
++			float val = screenWidth / (ModLoader.ModLoader.removeForcedMinimumZoom ? 8192f : MinimumZoomComparerX);
++			float val2 = screenHeight / (ModLoader.ModLoader.removeForcedMinimumZoom ? 8192f : MinimumZoomComparerY);
  			ForcedMinimumZoom = Math.Max(Math.Max(1f, val), val2);
  			GameViewMatrix.Effects = ((!gameMenu && player[myPlayer].gravDir != 1f) ? SpriteEffects.FlipVertically : SpriteEffects.None);
  			BackgroundViewMatrix.Effects = GameViewMatrix.Effects;
@@ -4161,6 +4219,27 @@
  		public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue) {
  			chatMonitor.NewText(newText, R, G, B);
  			SoundEngine.PlaySound(12);
+@@ -49273,12 +_,20 @@
+ 			SoundEngine.PlaySound(12);
+ 		}
+ 
++		/// <summary>
++		/// Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
++		/// <br>You can also call this on the client to update visuals immediately, assuming it was called serverside aswell (Journey Mode rain slider does this).</br>
++		/// </summary>
+ 		public static void StopRain() {
+ 			rainTime = 0;
+ 			raining = false;
+ 			maxRaining = 0f;
+ 		}
+ 
++		/// <summary>
++		/// Starts rain for a random amount of time. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
++		/// <br>You can also call this on the client to update visuals immediately, assuming it was/will be called serverside aswell (Journey Mode rain slider does this).</br>
++		/// </summary>
+ 		public static void StartRain() {
+ 			int num = 86400;
+ 			int num2 = num / 24;
 @@ -49390,7 +_,7 @@
  			}
  

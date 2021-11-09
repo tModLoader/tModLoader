@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Biomes
 {
-	//Shows setting up two basic biomes. For a more complicated example, please request.
+	// Shows setting up two basic biomes. For a more complicated example, please request.
 	public class ExampleSurfaceBiome : ModBiome	
 	{
 		public override bool IsPrimaryBiome => true; // Allows this biome to impact NPC prices
