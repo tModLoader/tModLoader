@@ -1453,15 +1453,15 @@
  			AnimateTiles_CritterCages();
  		}
  
-@@ -14252,6 +_,8 @@
- 			wallFrame[144] = 0;
- 			if (wallFrameCounter[144] > num3 * (16 + num4 * 2))
- 				wallFrameCounter[144] = 0;
-+
-+			WallLoader.AnimateWalls();
- 		}
+@@ -14166,6 +_,8 @@
+ 			if (++wallFrameCounter[243] >= num2 * 8)
+ 				wallFrameCounter[243] = 0;
  
- 		private void DoUpdate_AnimateWaterfalls() {
++			WallLoader.AnimateWalls();
++
+ 			wallFrameCounter[144]++;
+ 			int num3 = 5;
+ 			int num4 = 10;
 @@ -14740,15 +_,15 @@
  				X += 34;
  
