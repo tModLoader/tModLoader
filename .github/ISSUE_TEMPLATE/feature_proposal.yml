@@ -8,13 +8,11 @@ body:
       By submitting your proposal you agree that it may become part of tModLoader as a whole, or partially.
       The development time it takes for your proposal may vary, the TML Team can give no expected time when your proposal will be addressed or implemented.
       The TML Team reserves their right to take ideas from your proposal but are not required to necessarily accept your proposal. 
-- type: checkboxes
+- type: markdown
   attributes:
-    label: Is there an existing suggestion for this?
-    description: Please search to see if an issue already exists for the feature you wish to propose.
-    options:
-    - label: I have searched the existing issues
-      required: true
+    value: |
+      ## Is there an existing suggestion for this?
+      Please search to see if an issue already exists for the feature you wish to propose. If there is, please add to that issue instead of making a new issue.
 - type: dropdown
   attributes:
     label: Do you intend to personally contribute/program this feature?
