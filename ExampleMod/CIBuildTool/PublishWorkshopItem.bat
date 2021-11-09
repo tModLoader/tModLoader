@@ -15,10 +15,11 @@ set parentdir="%cd%"
 
 cd /D %currdir%
 
-@echo on
+
 :: Fetch tModLoader 1.4 from Steam
 steamcmd +login %username% %password% +force_install_dir tMod "+app_update 1281930 -validate -beta public-1.4-alpha" +quit 
 
+@echo on
 cd /D %currdir%/tMod
 dotnet tmodloader.dll -server -build %parentdir% -tmlsavedirectory %currdir% -ciprep %changenote%
 cd ..
