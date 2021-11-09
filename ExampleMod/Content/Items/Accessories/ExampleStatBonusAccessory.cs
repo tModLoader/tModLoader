@@ -1,5 +1,6 @@
 ﻿using ExampleMod.Content.DamageClasses;
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Accessories
@@ -10,6 +11,8 @@ namespace ExampleMod.Content.Items.Accessories
 			Tooltip.SetDefault("20% increased damage\n"
 							 + "10% increased melee crit chance\n"
 							 + "100% increased example knockback");
+
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {

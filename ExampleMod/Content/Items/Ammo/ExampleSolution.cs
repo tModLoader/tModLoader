@@ -18,6 +18,7 @@ namespace ExampleMod.Content.Items.Ammo
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Monochromatic Solution");
 			Tooltip.SetDefault("Used by the Clentaminator\nSpreads the example");
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 99;
 		}
 
@@ -63,7 +64,7 @@ namespace ExampleMod.Content.Items.Ammo
 		}
 
 		public override void AI() {
-			//Set the dust type to ExampleSolution
+			// Set the dust type to ExampleSolution
 			int dustType = ModContent.DustType<Dusts.ExampleSolution>();
 
 			if (Projectile.owner == Main.myPlayer) {
@@ -114,33 +115,33 @@ namespace ExampleMod.Content.Items.Ammo
 						int type = Main.tile[k, l].type;
 						int wall = Main.tile[k, l].wall;
 
-						//Convert all walls to ExampleWall
+						// Convert all walls to ExampleWall
 						if (wall != 0) {
 							Main.tile[k, l].wall = (ushort)ModContent.WallType<ExampleWall>();
 							WorldGen.SquareWallFrame(k, l);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}
 
-						//If the tile is stone, convert to ExampleBlock
+						// If the tile is stone, convert to ExampleBlock
 						if (TileID.Sets.Conversion.Stone[type]) {
 							Main.tile[k, l].type = (ushort)ModContent.TileType<ExampleBlock>();
 							WorldGen.SquareTileFrame(k, l);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}
-						//If the tile is sand, convert to ExampleSand
+						// If the tile is sand, convert to ExampleSand
 						// else if (TileID.Sets.Conversion.Sand[type]) {
 						// 	Main.tile[k, l].type = (ushort)TileType<ExampleSand>();
 						// 	WorldGen.SquareTileFrame(k, l);
 						// 	NetMessage.SendTileSquare(-1, k, l, 1);
 						// }
-						//If the tile is a chair, convert to ExampleChair
+						// If the tile is a chair, convert to ExampleChair
 						else if (type == TileID.Chairs && Main.tile[k, l - 1].type == TileID.Chairs) {
 							Main.tile[k, l].type = (ushort)ModContent.TileType<ExampleChair>();
 							Main.tile[k, l - 1].type = (ushort)ModContent.TileType<ExampleChair>();
 							WorldGen.SquareTileFrame(k, l);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}
-						//If the tile is a workbench, convert to ExampleWorkBench
+						// If the tile is a workbench, convert to ExampleWorkBench
 						else if (type == TileID.WorkBenches && Main.tile[k - 1, l].type == TileID.WorkBenches) {
 							Main.tile[k, l].type = (ushort)ModContent.TileType<ExampleWorkbench>();
 							Main.tile[k - 1, l].type = (ushort)ModContent.TileType<ExampleWorkbench>();

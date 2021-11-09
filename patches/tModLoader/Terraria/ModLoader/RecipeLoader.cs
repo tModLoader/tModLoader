@@ -29,8 +29,11 @@ namespace Terraria.ModLoader
 			foreach (Mod mod in ModLoader.Mods) {
 				try {
 					mod.AddRecipes();
+					SystemLoader.AddRecipes(mod);
+
 					foreach (ModItem item in mod.GetContent<ModItem>())
 						item.AddRecipes();
+					
 					foreach (GlobalItem globalItem in mod.GetContent<GlobalItem>())
 						globalItem.AddRecipes();
 				}
@@ -45,6 +48,7 @@ namespace Terraria.ModLoader
 			foreach (Mod mod in ModLoader.Mods) {
 				try {
 					mod.PostAddRecipes();
+					SystemLoader.PostAddRecipes(mod);
 				}
 				catch (Exception e) {
 					e.Data["mod"] = mod.Name;

@@ -45,3 +45,25 @@
  					}
  				}
  
+@@ -81,13 +_,19 @@
+ 				Severity = IntendedSeverity;
+ 		}
+ 
++		/// <summary>
++		/// Starts sandstorm for a random amount of time. Should be called on the server (netMode != client) - the method syncs it automatically.
++		/// </summary>
+-		private static void StartSandstorm() {
++		public static void StartSandstorm() {
+ 			Happening = true;
+ 			TimeLeft = Main.rand.Next(28800, 86401);
+ 			ChangeSeverityIntentions();
+ 		}
+ 
++		/// <summary>
++		/// Stops sandstorm. Should be called on the server (netMode != client) - the method syncs it automatically.
++		/// </summary>
+-		private static void StopSandstorm() {
++		public static void StopSandstorm() {
+ 			Happening = false;
+ 			TimeLeft = 0;
+ 			ChangeSeverityIntentions();

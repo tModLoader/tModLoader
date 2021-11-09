@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -2,69 +_,149 @@
+@@ -2,69 +_,143 @@
    <Import Project="../Configuration.targets" />
    <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
@@ -83,10 +83,11 @@
      <None Remove="Libraries/XNA/**" />
      <None Remove="Libraries/net40/**" />
 -    <None Update="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
-+      <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
++    <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
++    <Content Include="release_extras/**" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)%(Filename)%(Extension)" />
 +  </ItemGroup>
 +  <ItemGroup>
-+    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.4.21.3" />
++    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.9.19.1" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.9.0" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.9.0" />
 +    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
@@ -95,15 +96,8 @@
 +    <PackageReference Include="Hjson" Version="3.0.0" />
    </ItemGroup>
    <Target Name="CopyToSteamDir" AfterTargets="Build">
-+    <!-- Export the ReleaseExtras files to bin -->
-+    <ItemGroup>
-+      <RuntimeFiles Include="../../../solutions\ReleaseExtras\RuntimeFiles\**" />
-+      <SteamFiles Include="../../../solutions\ReleaseExtras\SteamFiles\**" />
-+    </ItemGroup>
-+    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True" />
-+    <Copy SourceFiles="@(SteamFiles)" DestinationFolder="$(TargetDir)\%(RecursiveDir)" SkipUnchangedFiles="True" />
-+    <!-- NOTE: below only works on the second time that debugging is run. Can delete directory in CompleteRelease.bat for now-->
-+    <!--RemoveDir Directories="$(TargetDir)\ref" /-->
++    <!-- Deal with Abnormal Managed Libaries that require deployment assembly replacements for varying architectures-->
++    <Copy SourceFiles="Libraries\Common\UNIX.Steamworks.NET.dll" DestinationFolder="$(TargetDir)\PlatformVariantLibs" SkipUnchangedFiles="True" />
 +    <!-- copy files systematically to output folder -->
      <ItemGroup>
        <BinFiles Include="$(TargetDir)**" />

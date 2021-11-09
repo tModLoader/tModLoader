@@ -223,18 +223,41 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not ammo will be consumed upon usage. Called both by the gun and by the ammo; if at least one returns false then the ammo will not be used. By default returns true.
-		/// If false is returned, the OnConsumeAmmo hook is never called.
+		/// Whether or not ammo will be consumed upon usage. Called by the weapon; if at least one of this and <see cref="CanBeConsumedAsAmmo"/> returns false then the ammo will not be used. By default returns true.
+		/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
 		/// </summary>
-		public virtual bool ConsumeAmmo(Item item, Player player) {
+		/// <param name="weapon">The item that the player is using</param>
+		/// <param name="player">The player using the item</param>
+		public virtual bool CanConsumeAmmo(Item weapon, Player player) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when ammo is consumed. Called both by the gun and by the ammo.
-		/// Called before the ammo stack is reduced.
+		/// Whether or not ammo will be consumed upon usage. Called by the ammo; if at least one of this and <see cref="CanConsumeAmmo"/> returns false then the ammo will not be used. By default returns true.
+		/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
 		/// </summary>
-		public virtual void OnConsumeAmmo(Item item, Player player) {
+		/// <param name="ammo">The ammo item</param>
+		/// <param name="player">The player consuming the ammo</param>
+		public virtual bool CanBeConsumedAsAmmo(Item ammo, Player player) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when ammo is consumed. Called by the weapon.
+		/// <br>Called before the ammo stack is reduced.</br>
+		/// </summary>
+		/// <param name="weapon">The item that the player is using</param>
+		/// <param name="player">The player consuming the ammo</param>
+		public virtual void OnConsumeAmmo(Item weapon, Player player) {
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when ammo is consumed. Called by the ammo.
+		/// <br>Called before the ammo stack is reduced.</br>
+		/// </summary>
+		/// <param name="ammo">The ammo item</param>
+		/// <param name="player">The player consuming the ammo</param>
+		public virtual void OnConsumedAsAmmo(Item ammo, Player player) {
 		}
 
 		/// <summary>
@@ -416,24 +439,30 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Returns whether or not the head armor, body armor, and leg armor textures make up a set.
-		/// This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadow hooks, and will use items in the social slots if they exist.
+		/// This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadows hooks, and will use items in the social slots if they exist.
 		/// By default this will return the same value as the IsArmorSet hook, so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets.
 		/// 
 		/// This method is not instanced.
 		/// </summary>
 		public virtual string IsVanitySet(int head, int body, int legs) {
-			Item headItem = new Item();
-			if (head >= 0) {
-				headItem.SetDefaults(Item.headType[head], true);
-			}
-			Item bodyItem = new Item();
-			if (body >= 0) {
-				bodyItem.SetDefaults(Item.bodyType[body], true);
-			}
-			Item legItem = new Item();
-			if (legs >= 0) {
-				legItem.SetDefaults(Item.legType[legs], true);
-			}
+			int headItemType = 0;
+			if (head >= 0)
+				headItemType = Item.headType[head];
+
+			Item headItem = ContentSamples.ItemsByType[headItemType];
+
+			int bodyItemType = 0;
+			if (body >= 0)
+				bodyItemType = Item.bodyType[body];
+
+			Item bodyItem = ContentSamples.ItemsByType[bodyItemType];
+
+			int legsItemType = 0;
+			if (legs >= 0)
+				legsItemType = Item.legType[legs];
+
+			Item legItem = ContentSamples.ItemsByType[legsItemType];
+
 			return IsArmorSet(headItem, bodyItem, legItem);
 		}
 
@@ -494,7 +523,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to make vanilla bags drop your own items and stop the default items from being dropped. 
 		/// Return false to stop the default items from being dropped; returns true by default. 
-		/// Context will either be "present", "bossBag", "crate", "lockBox", "herbBag", or "goodieBag". 
+		/// Context will either be "present", "bossBag", "crate", "lockBox", "obsidianLockBox", "herbBag", or "goodieBag". 
 		/// For boss bags and crates, arg will be set to the type of the item being opened.
 		/// This method is also called for modded bossBags that are properly implemented.
 		/// 
@@ -507,7 +536,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to make vanilla bags drop your own items in addition to the default items.
 		/// This method will not be called if any other GlobalItem returns false for PreOpenVanillaBag.
-		/// Context will either be "present", "bossBag", "crate", "lockBox", "herbBag", or "goodieBag".
+		/// Context will either be "present", "bossBag", "crate", "lockBox", "obsidianLockBox", "herbBag", or "goodieBag".
 		/// For boss bags and crates, arg will be set to the type of the item being opened.
 		/// This method is also called for modded bossBags that are properly implemented.
 		/// 
@@ -550,50 +579,6 @@ namespace Terraria.ModLoader
 		/// Useful for modifying modded data based on the reforge result.
 		/// </summary>
 		public virtual void PostReforge(Item item) {
-		}
-
-		/// <summary>
-		/// Allows you to determine whether the skin/shirt on the player's arms and hands are drawn when a body armor is worn.
-		/// Note that if drawHands is false, the arms will not be drawn either.
-		/// "body" is the player's associated body equipment texture.
-		/// This method is not instanced.
-		/// </summary>
-		public virtual void DrawHands(int body, ref bool drawHands, ref bool drawArms) {
-		}
-
-		/// <summary>
-		/// Allows you to determine whether the player's hair or alt (hat) hair will be drawn when a head armor is worn.
-		/// "head" is the player's associated head equipment texture.
-		/// This method is not instanced.
-		/// </summary>
-		public virtual void DrawHair(int head, ref bool drawHair, ref bool drawAltHair) {
-		}
-
-		/// <summary>
-		/// Return false to hide the player's head when a head armor is worn. Returns true by default.
-		/// "head" is the player's associated head equipment texture.
-		/// This method is not instanced.
-		/// </summary>
-		public virtual bool DrawHead(int head) {
-			return true;
-		}
-
-		/// <summary>
-		/// Return false to hide the player's body when a body armor is worn. Returns true by default.
-		/// "body" is the player's associated body equipment texture.
-		/// This method is not instanced.
-		/// </summary>
-		public virtual bool DrawBody(int body) {
-			return true;
-		}
-
-		/// <summary>
-		/// Return false to hide the player's legs when a leg armor or shoe accessory is worn. Returns true by default.
-		/// "legs" and "shoes" are the player's associated legs and shoes equipment textures.
-		/// This method is not instanced.
-		/// </summary>
-		public virtual bool DrawLegs(int legs, int shoes) {
-			return true;
 		}
 
 		/// <summary>
@@ -755,7 +740,16 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item that is attepting to equip.</param>
 		/// <param name="player">The player.</param>
 		/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
-		public virtual bool CanEquipAccessory(Item item, Player player, int slot) {
+		/// <param name="modded">If the inventory slot index is for modded slots.</param>
+		public virtual bool CanEquipAccessory(Item item, Player player, int slot, bool modded) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to prevent similar accessories from being equipped multiple times. For example, vanilla Wings.
+		/// Return false to have the currently equipped item swapped with the incoming item - ie both can't be equipped at same time.
+		/// </summary>
+		public virtual bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {
 			return true;
 		}
 
@@ -846,24 +840,22 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not the given item needs to save custom data. Returning false will save on the memory used in saving an item, but returning true is necessary in order to save data across all items or vanilla items. Returns false by default. Note that the return value of this hook must be deterministic (randomness is not allowed).
+		/// Allows you to save custom data for this item.
+		/// <br/>
+		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
 		/// </summary>
-		public virtual bool NeedsSaving(Item item) {
-			return false;
-		}
+		/// <param name="item"> The item. </param>
+		/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
+		public virtual void SaveData(Item item, TagCompound tag) { }
 
 		/// <summary>
-		/// Allows you to save custom data for the given item. Only called when NeedsCustomSaving returns true. Returns false by default.
+		/// Allows you to load custom data that you have saved for this item.
+		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
-		public virtual TagCompound Save(Item item) {
-			return null;
-		}
-
-		/// <summary>
-		/// Allows you to load custom data that you have saved for the given item.
-		/// </summary>
-		public virtual void Load(Item item, TagCompound tag) {
-		}
+		/// <param name="item"> The item. </param>
+		/// <param name="tag"> The TagCompound to load data from. </param>
+		public virtual void LoadData(Item item, TagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to send custom data for the given item between client and server.
