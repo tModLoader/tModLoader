@@ -15,7 +15,7 @@ body:
 - type: markdown
   attributes:
     value: |
-      # Is there an existing issue for this?
+      ## Is there an existing issue for this?
       Please search to see if an issue already exists for the bug you encountered. If there is, please add to that issue instead of making a new issue.
 - type: dropdown
   attributes:
