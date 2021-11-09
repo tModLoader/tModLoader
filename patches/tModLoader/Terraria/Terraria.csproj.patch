@@ -157,7 +157,7 @@
 +      </ReferenceCopyLocalPaths>
 +    </ItemGroup>
 +  </Target>
-+  <Target Name="OverwriteDevRuntimeTargets" AfterTargets="GenerateBuildRuntimeConfigurationFiles">
++  <Target Name="OverwriteDevRuntimeTargets" AfterTargets="GenerateBuildRuntimeConfigurationFiles" Condition="$(GenerateRuntimeConfigDevFile) == 'true'">
 +    <PropertyGroup>
 +      <DevRuntimeConfig>
 +{
