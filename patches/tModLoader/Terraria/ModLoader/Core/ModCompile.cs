@@ -180,6 +180,16 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				Console.WriteLine("Preparing Files for CI...");
 				Program.LaunchParameters.TryGetValue("-ciprep", out string changeNotes);
 				var properties = BuildProperties.ReadBuildFile(modFolder);
+
+				// Check for if the mod version is increasing
+				Terraria.Social.Steam.WorkshopHelper.ModManager.Initialize();
+				if (!Terraria.Social.Steam.WorkshopHelper.QueryHelper.FetchDownloadItems())
+					throw new Exception("Failed to create Steam Workshop Query Instance for checking version info");
+
+				if (properties.version <= new System.Version(Terraria.Social.Steam.WorkshopHelper.QueryHelper.FindModDownloadItem(modFolder).Version.Replace("v", "")))
+					throw new Exception("Mod version not incremented. Publishing item blocked until mod version is incremented");
+
+				// Prep some common file paths
 				string publishFolder = Path.Combine(modFolder, "CIBuildTool", "Mods");
 				string vdf = Path.Combine(modFolder, "CIBuildTool", "publish.vdf");
 				string manifest = Path.Combine(modFolder, "workshop.json");
@@ -188,9 +198,11 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 				File.Delete(Path.Combine(publishFolder, "enabled.json"));
 
+				// Migrate a copy of the workshop.json
 				Social.Base.AWorkshopEntry.TryReadingManifest(manifest, out var steamInfo);
 				File.Copy(manifest, Path.Combine(publishFolder, "workshop.json"), true);
 
+				// Make the publish.vdf file
 				string[] lines =
 				{
 					"\"workshopitem\"",
