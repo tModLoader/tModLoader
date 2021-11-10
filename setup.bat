@@ -21,13 +21,6 @@ if NOT ["%errorlevel%"]==["0"] (
     exit /b %errorlevel%
 )
 
-dotnet --list-sdks | find /i "6.0.100"
-if NOT ["%errorlevel%"]==["0"] (
-	echo dotnet 6.0.100 not found. Install .NET Core 6!
-    pause
-    exit /b %errorlevel%
-)
-
 If "%1"=="auto" (
 	echo building setupAuto.csproj
 	dotnet build setup/setupAuto.csproj --output "setup/bin/Debug/net6.0-windows"
