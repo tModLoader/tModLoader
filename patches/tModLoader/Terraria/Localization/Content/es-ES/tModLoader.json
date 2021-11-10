@@ -14,6 +14,8 @@
 		"MenuEnableDeveloperMode": "Activar modo desarrollador",
 		"WelcomeMessageBeta": "Bienvenido a tModLoader 1.4 Alfa.\n\nHas instalado correctamente una versión inestable de tModLoader que puede contener errores que provoquen problemas en el juego.\n\nUtiliza el menú de Steam Workshop para acceder a las funciones relacionadas con tModLoader.\n\nÚnete al Discord de tModLoader para saber más sobre qué mods y/o herramientas de prueba están disponibles para tModLoader 1.4 como parte de la nueva versión.",
 		"FirstLaunchWelcomeMessage": "Bienvenido a tModLoader.\n\ntModLoader se ha instalado correctamente. Usa el menú del Navegador de Mods para buscar los mods que quieras descargar. Usa el menú de Mods para cambiar los mods que tengas activados. Después de cambiar de mods, asegúrate de pulsar el botón Recargar mods para poder usarlos.",
+		// "WhatsNewMessage": "The following are basic change notes from the last time you launched the Alpha. You may find that mods that relate to these changes need to be rebuilt by the author. Visit GitHub to see more details:\n",
+		// "ViewOnGitHub": "View on GitHub",
 		"tModLoaderSettings": "Configuración de tModLoader",
 		"ModMenuSwap": "Cambiar tema del menú",
 		"AudioNotSupported": "No se han detectado dispositivos de audio. Se desactivará el sonido.",
@@ -369,7 +371,7 @@
 		"MouseMiddle": "Clic medio",
 		"MouseXButton1": "Botón 4",
 		"MouseXButton2": "Botón 5",
-		
+
 		// In Game UI additions
 		"slotStack": "Apilar",
 		"slotScroll": "Deslizar",

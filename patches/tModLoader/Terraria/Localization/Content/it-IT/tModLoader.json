@@ -16,8 +16,11 @@
 		// "MenuEnableDeveloperMode": "Enable Developer Mode",
 		// "WelcomeMessageBeta": "Welcome to tModLoader 1.4 Alpha.\n\nYou have successfully installed an unstable tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for 1.4 tModLoader as part of its 1.4 overhaul.",
 		// "FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
+		// "WhatsNewMessage": "The following are basic change notes from the last time you launched the Alpha. You may find that mods that relate to these changes need to be rebuilt by the author. Visit GitHub to see more details:\n",
+		// "ViewOnGitHub": "View on GitHub",
 		// "tModLoaderSettings": "tModLoader Settings",
 		// "ModMenuSwap": "Switch Menu Theme",
+		// "AudioNotSupported": "No audio hardware found. Disabling all audio.",
 
 		// Mods Menu
 		// "ModsModsList": "Mods List",
@@ -75,6 +78,15 @@
 		// "NoWorkshopAccess": "Error: Unable to access Steam Workshop",
 		// "ModAlreadyUploaded": "Error: Mod already exists on Workshop!",
 		// "ModVersionInfoUnchanged": "Error: Mod Version information must be incremented prior to updating.",
+		// "ConsultSteamLogs": "Consult Steam workshop_log.txt (Default Location: {0}) for more information.",
+		// "SteamRejectUpdate": "Item is/was already installed: {0}. If attempting to re-install, close current instance and re-launch.",
+		// "BeginDownload": "Attempting Download Item: {0}",
+		// "EndDownload": "Item Download Completed",
+		// "CreateItem": "Creating Item {0}",
+		// "UpdateItem": "Updating Item {0}",
+		// "PublishItem": "Attempting Publishing Item {0}",
+		// "SteamDownloader": "Queuing download with Steam download manager...",
+		// "DownloadProgress": "Download {0}% Complete",
 
 		// Mod Errors
 		// "LoadError": "An error occurred while loading {0}",
@@ -217,6 +229,8 @@
 		// "XDaysAgo": "{0} {^0:day;days} ago",
 		// "XMonthsAgo": "{0} {^0:month;months} ago",
 		// "XYearsAgo": "{0} {^0:year;years} ago",
+		// "MBServerReturnToMenu": "Return to world menu",
+		// "MBServerAskForModName": "Type an exact ModName to download: ",
 
 		// Mod Publishing
 		// "MBPublishEnterPassphrase": "Please Enter Your Passcode",
@@ -282,6 +296,7 @@
 		// "MSBuildAll": "Build All",
 		// "MSBuildReloadAll": "Build + Reload All",
 		// "MSUpgradeCSProj": "Upgrade .csproj file",
+		// "MSUpgradeLangFiles": "Upgrade .lang files to .hjson (non-destructive)",
 		// "MSOpenSources": "Open Sources",
 		// "MSManagePublished": "Manage Published",
 		// "MSPublish": "Publish",
@@ -358,6 +373,10 @@
 		// "MouseMiddle": "Middle Mouse",
 		// "MouseXButton1": "Mouse 4",
 		// "MouseXButton2": "Mouse 5",
+
+		// In Game UI additions
+		// "slotStack": "Stack",
+		// "slotScroll": "Scroll",
 
 		// Misc
 		// "OK": "OK",

@@ -15,8 +15,11 @@
 		"MenuEnableDeveloperMode": "启用开发者模式",
 		"WelcomeMessageBeta": "欢迎使用tModLoader 1.4 Alpha测试版.\n\n你已经成功安装了最新不稳定版本的tModLoader（它随时都可能会更新、遇到Bug或崩溃！）\n\n进入创意工坊界面以访问tModLoader的模组相关功能。\n\n加入tModLoader的Discord群交流和tModLoader 1.4相关的模组、测试、工具和更新等内容。",
 		"FirstLaunchWelcomeMessage": "欢迎使用tModLoader.\n\n你已成功安装tModLoader.使用模组浏览器可以找到你想要下载的模组.在模组管理中可以更改已安装的模组.更改模组后,请确保你点击了“重新加载模组”以使它们生效.",
+		// "WhatsNewMessage": "The following are basic change notes from the last time you launched the Alpha. You may find that mods that relate to these changes need to be rebuilt by the author. Visit GitHub to see more details:\n",
+		// "ViewOnGitHub": "View on GitHub",
 		"tModLoaderSettings": "tModLoader设置",
 		"ModMenuSwap": "切换背景主题",
+		// "AudioNotSupported": "No audio hardware found. Disabling all audio.",
 
 		// Mods Menu
 		"ModsModsList": "模组列表",
@@ -74,6 +77,15 @@
 		"NoWorkshopAccess": "无法访问Steam创意工坊。",
 		"ModAlreadyUploaded": "这个模组已经存在于创意工坊中。",
 		"ModVersionInfoUnchanged": "模组的版本号在更新时应当增加。",
+		// "ConsultSteamLogs": "Consult Steam workshop_log.txt (Default Location: {0}) for more information.",
+		// "SteamRejectUpdate": "Item is/was already installed: {0}. If attempting to re-install, close current instance and re-launch.",
+		// "BeginDownload": "Attempting Download Item: {0}",
+		// "EndDownload": "Item Download Completed",
+		// "CreateItem": "Creating Item {0}",
+		// "UpdateItem": "Updating Item {0}",
+		// "PublishItem": "Attempting Publishing Item {0}",
+		// "SteamDownloader": "Queuing download with Steam download manager...",
+		// "DownloadProgress": "Download {0}% Complete",
 
 		// Mod Errors
 		"LoadError": "该模组加载时发生错误 {0}",
@@ -216,6 +228,8 @@
 		"XDaysAgo": "{0} {^0:天}前",
 		"XMonthsAgo": "{0} {^0:月}前",
 		"XYearsAgo": "{0} {^0:年}前",
+		// "MBServerReturnToMenu": "Return to world menu",
+		// "MBServerAskForModName": "Type an exact ModName to download: ",
 
 		// Mod Publishing
 		"MBPublishEnterPassphrase": "请输入你的密码",
@@ -281,6 +295,7 @@
 		"MSBuildAll": "生成全部",
 		"MSBuildReloadAll": "生成并重新加载全部模组",
 		"MSUpgradeCSProj": "更新[.csproj]文件",
+		// "MSUpgradeLangFiles": "Upgrade .lang files to .hjson (non-destructive)",
 		"MSOpenSources": "打开源码文件夹",
 		"MSManagePublished": "管理已发布模组",
 		"MSPublish": "发布",
