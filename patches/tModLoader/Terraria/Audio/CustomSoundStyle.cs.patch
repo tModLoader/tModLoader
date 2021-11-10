@@ -10,7 +10,8 @@
 -	public class CustomSoundStyle : SoundStyle
 +	public record struct CustomSoundStyle : ISoundStyle
  	{
- 		private static readonly UnifiedRandom Random = new UnifiedRandom();
+-		private static readonly UnifiedRandom Random = new UnifiedRandom();
++		private static readonly UnifiedRandom Random = new();
  		private readonly SoundEffect[] _soundEffects;
  
 -		public override bool IsTrackable => true;
@@ -25,7 +26,7 @@
 -		public CustomSoundStyle(SoundEffect[] soundEffects, SoundType type = SoundType.Sound, float volume = 1f, float pitchVariance = 0f)
 -			: base(volume, pitchVariance, type) {
 +		public SoundType Type { get; set; }
-+		public float Volume { get; set; }
++		public float Volume { get; set; } = 1f;
 +		public float Pitch { get; set; }
 +		public float PitchVariance { get; set; }
 +

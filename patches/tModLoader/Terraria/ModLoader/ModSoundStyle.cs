@@ -7,13 +7,14 @@ namespace Terraria.ModLoader
 {
 	public record struct ModSoundStyle : ISoundStyle
 	{
-		private Asset<SoundEffect> effect;
-		private Asset<SoundEffect>[] variants;
+		private readonly Asset<SoundEffect>[] variants = null;
+
+		private Asset<SoundEffect> effect = null;
 
 		public string SoundPath { get; set; }
 		public SoundType Type { get; set; }
 		public int Variations { get; set; }
-		public float Volume { get; set; }
+		public float Volume { get; set; } = 1f;
 		public float Pitch { get; set; }
 		public float PitchVariance { get; set; }
 
@@ -24,9 +25,6 @@ namespace Terraria.ModLoader
 			Volume = volume;
 			Pitch = pitch;
 			PitchVariance = pitchVariance;
-
-			effect = null;
-			variants = null;
 
 			if (variations > 0)
 				variants = new Asset<SoundEffect>[variations];
@@ -40,6 +38,7 @@ namespace Terraria.ModLoader
 			}
 			else {
 				int variant = Main.rand.Next(Variations);
+
 				asset = variants[variant] ??= ModContent.Request<SoundEffect>(SoundPath + (variant + 1), AssetRequestMode.ImmediateLoad);
 			}
 

@@ -58,7 +58,7 @@
 +		public int Style { get; set; }
 +		public int Variations { get; set; }
 +		public SoundType Type { get; set; }
-+		public float Volume { get; set; }
++		public float Volume { get; set; } = 1f;
 +		public float Pitch { get; set; }
 +		public float PitchVariance { get; set; }
 +
