@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -2,69 +_,143 @@
+@@ -2,69 +_,144 @@
    <Import Project="../Configuration.targets" />
    <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
@@ -21,6 +21,7 @@
 +    <AssemblyName>tModLoader</AssemblyName>
 +    <GenerateDocumentationFile>true</GenerateDocumentationFile>
 +    <UseAppHost>false</UseAppHost>
++    <GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
 +  </PropertyGroup>
 +  <PropertyGroup>
 +    <tMLVersion>0.12</tMLVersion>
