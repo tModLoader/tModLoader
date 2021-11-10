@@ -14,8 +14,11 @@
 		"MenuEnableDeveloperMode": "Entwickler-Modus aktivieren",
 		"WelcomeMessageBeta": "Willkommen zur tModLoader 1.4 Alpha.\n\nDu hast erfolgreich eine instabile Version von tModLoader installiert die schwere, spielstörende Bugs beinhalten könnte. \n\nNutze das Workshop-Menü, um auf die tModLoader Mod-bezogenen Funktionen zuzugreifen.\n\nTrete dem tModLoader Discord-Server bei, um mehr darüber zu lernen, welche Testmods und/oder Werkzeuge für 1.4 tModLoader als Teil der 1.4-Überarbeitung zur Verfügung stehen",
 		"FirstLaunchWelcomeMessage": "Willkommen zu tModLoader.\n\nDu hast erfolgreich tModLoader installiert. Nutze das Mod-Browser-Menü um Mods die du herunterladen willst zu finden. Nutze das Mods-Menü, um zu ändern welche Mods derzeit aktiv sind. Nachdem du Mods geändert hast, stelle sicher auf Mods neu laden zu klicken, um sie neuzuladen.",
+		// "WhatsNewMessage": "The following are basic change notes from the last time you launched the Alpha. You may find that mods that relate to these changes need to be rebuilt by the author. Visit GitHub to see more details:\n",
+		// "ViewOnGitHub": "View on GitHub",
 		"tModLoaderSettings": "tModLoader-Einstellungen",
 		"ModMenuSwap": "Hauptmenü-Theme wechseln",
+		// "AudioNotSupported": "No audio hardware found. Disabling all audio.",
 
 		// Mods Menu
 		"ModsModsList": "Mod-Liste",
@@ -73,6 +76,15 @@
 		"NoWorkshopAccess": "Fehler: Steam Workshop kann nicht erreicht werden",
 		"ModAlreadyUploaded": "Fehler: Mod existiert bereits im Workshop!",
 		"ModVersionInfoUnchanged": "Fehler: Mod-Versionsinformation muss vor einem Update erhöht werden.",
+		// "ConsultSteamLogs": "Consult Steam workshop_log.txt (Default Location: {0}) for more information.",
+		// "SteamRejectUpdate": "Item is/was already installed: {0}. If attempting to re-install, close current instance and re-launch.",
+		// "BeginDownload": "Attempting Download Item: {0}",
+		// "EndDownload": "Item Download Completed",
+		// "CreateItem": "Creating Item {0}",
+		// "UpdateItem": "Updating Item {0}",
+		// "PublishItem": "Attempting Publishing Item {0}",
+		// "SteamDownloader": "Queuing download with Steam download manager...",
+		// "DownloadProgress": "Download {0}% Complete",
 
 		// Mod Errors
 		"LoadError": "Beim Laden von {0} ist etwas schiefgelaufen",
@@ -215,6 +227,8 @@
 		"XDaysAgo": "Vor {0} {^0:tag;tagen}",
 		"XMonthsAgo": "Vor {0} {^0:monat;monaten}",
 		"XYearsAgo": "Vor {0} {^0:jahr;jahren}",
+		// "MBServerReturnToMenu": "Return to world menu",
+		// "MBServerAskForModName": "Type an exact ModName to download: ",
 
 		// Mod Publishing
 		"MBPublishEnterPassphrase": "Bitte gib deinen Passcode ein",
@@ -280,6 +294,7 @@
 		"MSBuildAll": "Alle Erstellen",
 		"MSBuildReloadAll": "Alle Erstellen + Neu laden",
 		"MSUpgradeCSProj": ".csproj-Datei aktualisieren",
+		// "MSUpgradeLangFiles": "Upgrade .lang files to .hjson (non-destructive)",
 		"MSOpenSources": "Quellen öffnen",
 		"MSManagePublished": "Veröffentlichte verwalten",
 		"MSPublish": "Veröffentlichen",
@@ -335,7 +350,7 @@
 		"MSSandboxing": "Sandboxing: {0}",
 		"MSIntializing": "Initialisiere: {0}",
 		"MSLoading": "Lade Mod: {0}",
-		"MSLoading": "Entlade Mod: {0}",
+		"MSUnloading": "Entlade Mod: {0}",
 		"MSFinishingResourceLoading": "Stelle Ressourcen-Ladevorgang fertig",
 		"MSSettingUp": "Erstelle...",
 		"MSAddingRecipes": "Füge Rezepte hinzu...",
@@ -356,6 +371,10 @@
 		"MouseMiddle": "Mittlere Maus",
 		"MouseXButton1": "Maus 4",
 		"MouseXButton2": "Maus 5",
+
+		// In Game UI additions
+		// "slotStack": "Stack",
+		// "slotScroll": "Scroll",
 
 		// Misc
 		"OK": "OK",

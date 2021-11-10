@@ -143,8 +143,9 @@ jobs:
           echo ::endgroup::
           
           echo ::group::Creating RecentGitHubCommits.txt
+          git log -10 --format=oneline
           git log -10 --format=oneline > artifacts/Debug/RecentGitHubCommits.txt
-          git log -10 --format=oneline > artifacts/Debug/RecentGitHubCommits.txt
+          git log -10 --format=oneline > artifacts/Release/RecentGitHubCommits.txt
           echo ::endgroup::
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}

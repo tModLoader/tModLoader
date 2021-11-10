@@ -103,11 +103,33 @@ namespace Terraria.ModLoader.UI
 					infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageBeta"), Main.menuMode);
 					Main.SaveSettings();
 				}
-				//else if (ModLoader.ShowWhatsNew) {
-				//	ModLoader.ShowWhatsNew = false;
-				//	string response = "Test Text";
-				//	infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + response, Main.menuMode);
-				//}
+				else if (ModLoader.ShowWhatsNew) {
+					ModLoader.ShowWhatsNew = false;
+					if (File.Exists("RecentGitHubCommits.txt")) {
+						bool LastLaunchedShaInRecentGitHubCommits = false;
+						var messages = new System.Text.StringBuilder();
+						var recentcommitsfilecontents = File.ReadLines("RecentGitHubCommits.txt");
+						foreach (var commitEntry in recentcommitsfilecontents) {
+							string[] parts = commitEntry.Split(' ', 2);
+							if (parts.Length == 2) {
+								string sha = parts[0];
+								string message = parts[1];
+								if(sha != ModLoader.LastLaunchedTModLoaderAlphaSha)
+								messages.Append("\n  " + message);
+								if (sha == ModLoader.LastLaunchedTModLoaderAlphaSha) {
+									LastLaunchedShaInRecentGitHubCommits = true;
+									break;
+								}
+							}
+						}
+						if(LastLaunchedShaInRecentGitHubCommits)
+							infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"), 
+								() => {
+									SoundEngine.PlaySound(SoundID.MenuOpen);
+									Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{ModLoader.LastLaunchedTModLoaderAlphaSha}...1.4");
+								});
+					}
+				}
 			}
 			if (Main.menuMode == modsMenuID) {
 				Main.MenuUI.SetState(modsMenu);

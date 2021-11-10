@@ -14,8 +14,11 @@
 		"MenuEnableDeveloperMode": "Включить режим разработчика",
 		// "WelcomeMessageBeta": "Welcome to tModLoader 1.4 Alpha.\n\nYou have successfully installed an unstable tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for 1.4 tModLoader as part of its 1.4 overhaul.",
 		"FirstLaunchWelcomeMessage": "Добро пожаловать в tModLoader.\n\nУстановка была произведена успешно. Используйте меню 'Браузер Модов' для того чтобы находить и устанавливать понравившиеся вам моды. Используйте меню 'Моды' для выбора активных модов. После переключения модов не забывайте кликнуть на 'Перезагрузить моды', чтобы изменения вступили в силу.",
+		// "WhatsNewMessage": "The following are basic change notes from the last time you launched the Alpha. You may find that mods that relate to these changes need to be rebuilt by the author. Visit GitHub to see more details:\n",
+		// "ViewOnGitHub": "View on GitHub",
 		"tModLoaderSettings": "Настройки tModLoader",
 		// "ModMenuSwap": "Switch Menu Theme",
+		// "AudioNotSupported": "No audio hardware found. Disabling all audio.",
 
 		// Mods Menu
 		"ModsModsList": "Список модов",
@@ -73,6 +76,15 @@
 		// "NoWorkshopAccess": "Error: Unable to access Steam Workshop",
 		// "ModAlreadyUploaded": "Error: Mod already exists on Workshop!",
 		// "ModVersionInfoUnchanged": "Error: Mod Version information must be incremented prior to updating.",
+		// "ConsultSteamLogs": "Consult Steam workshop_log.txt (Default Location: {0}) for more information.",
+		// "SteamRejectUpdate": "Item is/was already installed: {0}. If attempting to re-install, close current instance and re-launch.",
+		// "BeginDownload": "Attempting Download Item: {0}",
+		// "EndDownload": "Item Download Completed",
+		// "CreateItem": "Creating Item {0}",
+		// "UpdateItem": "Updating Item {0}",
+		// "PublishItem": "Attempting Publishing Item {0}",
+		// "SteamDownloader": "Queuing download with Steam download manager...",
+		// "DownloadProgress": "Download {0}% Complete",
 
 		// Mod Errors
 		"LoadError": "Произошла ошибка при загрузке мода {0}.",
@@ -215,6 +227,8 @@
 		"XDaysAgo": "{0} {^0:день;дня;дней} назад",
 		"XMonthsAgo": "{0} {^0:месяц;месяца;месяцев} назад",
 		"XYearsAgo": "{0} {^0:год;года;лет} назад",
+		// "MBServerReturnToMenu": "Return to world menu",
+		// "MBServerAskForModName": "Type an exact ModName to download: ",
 
 		// Mod Publishing
 		"MBPublishEnterPassphrase": "Пожалуйста, введите свой код доступа",
@@ -280,6 +294,7 @@
 		"MSBuildAll": "Скомпилировать всё",
 		"MSBuildReloadAll": "Скомпилировать и перезагрузить всё",
 		"MSUpgradeCSProj": "Обновить .csproj файл",
+		// "MSUpgradeLangFiles": "Upgrade .lang files to .hjson (non-destructive)",
 		"MSOpenSources": "Открыть исходники",
 		"MSManagePublished": "Опубликованное",
 		"MSPublish": "Опубликовать",
@@ -356,6 +371,10 @@
 		"MouseMiddle": "Средняя кнопка мыши",
 		"MouseXButton1": "Кнопка мыши 4",
 		"MouseXButton2": "Кнопка мыши 5",
+
+		// In Game UI additions
+		// "slotStack": "Stack",
+		// "slotScroll": "Scroll",
 
 		// Misc
 		"OK": "ОК",
