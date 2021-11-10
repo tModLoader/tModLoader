@@ -27,6 +27,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
+          fetch-depth: 10
 
       - name: Check out pull request code to separate folder
         uses: actions/checkout@v2
@@ -141,6 +142,10 @@ jobs:
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
           echo ::endgroup::
           
+          echo ::group::Creating RecentGitHubCommits.txt
+          git log -10 --format=oneline > artifacts/Debug/RecentGitHubCommits.txt
+          git log -10 --format=oneline > artifacts/Debug/RecentGitHubCommits.txt
+          echo ::endgroup::
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
