@@ -5,7 +5,7 @@ using Terraria.Audio;
 
 namespace Terraria.ModLoader
 {
-	public struct ModSoundStyle : ISoundStyle
+	public record struct ModSoundStyle : ISoundStyle
 	{
 		private Asset<SoundEffect> effect;
 		private Asset<SoundEffect>[] variants;

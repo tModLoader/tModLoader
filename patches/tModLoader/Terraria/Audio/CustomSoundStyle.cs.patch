@@ -8,7 +8,7 @@
  namespace Terraria.Audio
  {
 -	public class CustomSoundStyle : SoundStyle
-+	public struct CustomSoundStyle : ISoundStyle
++	public record struct CustomSoundStyle : ISoundStyle
  	{
  		private static readonly UnifiedRandom Random = new UnifiedRandom();
  		private readonly SoundEffect[] _soundEffects;

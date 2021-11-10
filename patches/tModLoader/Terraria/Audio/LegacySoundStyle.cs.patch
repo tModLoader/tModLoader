@@ -8,9 +8,9 @@
  namespace Terraria.Audio
  {
 -	public class LegacySoundStyle : SoundStyle
-+	public struct LegacySoundStyle : ISoundStyle
++	public record struct LegacySoundStyle : ISoundStyle
  	{
- 		private static readonly UnifiedRandom Random = new UnifiedRandom();
+-		private static readonly UnifiedRandom Random = new UnifiedRandom();
 -		private readonly int _style;
 -		public readonly int Variations;
 -		public readonly int SoundId;
@@ -52,6 +52,7 @@
 -		public LegacySoundStyle AsMusic() => new LegacySoundStyle(SoundId, _style, Variations, SoundType.Music, base.Volume, base.PitchVariance);
 -		public LegacySoundStyle AsAmbient() => new LegacySoundStyle(SoundId, _style, Variations, SoundType.Ambient, base.Volume, base.PitchVariance);
 -		public LegacySoundStyle AsSound() => new LegacySoundStyle(SoundId, _style, Variations, SoundType.Sound, base.Volume, base.PitchVariance);
++		private static readonly UnifiedRandom Random = new();
 +
 +		public int SoundId { get; set; }
 +		public int Style { get; set; }
