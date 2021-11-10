@@ -2741,7 +2741,7 @@
  				}
  
  				inventoryBack = color;
-+				int chkMax = (int)((float)(num20) + (float)((7 + LocalPlayer.GetAmountOfExtraAccessorySlotsToShow()) * 56) * Main.inventoryScale) + 4;
++				int chkMax = (int)(num20 + 7 * 56 * inventoryScale + 4);
 +				int randomLocationX = screenWidth - 64 - 28;
 +
 +				if (num39 == num38 && !_achievementAdvisor.CanDrawAboveCoins) {
@@ -2974,6 +2974,15 @@
  			if (mouseItem.stack <= 0)
  				mouseItem.type = 0;
  
+@@ -33523,7 +_,7 @@
+ 					num4 += num5;
+ 				}
+ 
+-				if (amountOfExtraAccessorySlotsToShow >= 1 && (screenHeight < num3 || (screenHeight < num4 && mapStyle == 1))) {
++				if (false && amountOfExtraAccessorySlotsToShow >= 1 && (screenHeight < num3 || (screenHeight < num4 && mapStyle == 1))) {
+ 					num -= 140;
+ 					num2 -= PlayerInput.UsingGamepad.ToInt() * 30;
+ 					_settingsButtonIsPushedToSide = true;
 @@ -33958,6 +_,11 @@
  						if (type == 439 || type == 370)
  							scale = 1.5f;
