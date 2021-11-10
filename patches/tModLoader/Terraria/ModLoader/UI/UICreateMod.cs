@@ -250,7 +250,7 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 		{
 			if (!fileContents.Contains("../tModLoader.targets"))
 				return true;
-			if (!fileContents.Contains("<TargetFramework>net5.0</TargetFramework>"))
+			if (!fileContents.Contains("<TargetFramework>net6.0</TargetFramework>"))
 				return true;
 
 			return false;
