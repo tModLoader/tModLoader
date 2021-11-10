@@ -14,31 +14,23 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		InitializeOutputs|Any CPU = InitializeOutputs|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.InitializeOutputs|Any CPU.ActiveCfg = Debug|Any CPU
-		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.InitializeOutputs|Any CPU.Build.0 = Debug|Any CPU
 		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.InitializeOutputs|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.InitializeOutputs|Any CPU.Build.0 = Debug|Any CPU
 		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.Release|Any CPU.Build.0 = Release|Any CPU
 		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.InitializeOutputs|Any CPU.ActiveCfg = Debug|Any CPU
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.InitializeOutputs|Any CPU.Build.0 = Debug|Any CPU
 		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F646F0CE-2C51-4610-B097-F16FB58CECC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F646F0CE-2C51-4610-B097-F16FB58CECC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F646F0CE-2C51-4610-B097-F16FB58CECC5}.InitializeOutputs|Any CPU.ActiveCfg = Debug|Any CPU
 		{F646F0CE-2C51-4610-B097-F16FB58CECC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F646F0CE-2C51-4610-B097-F16FB58CECC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
