@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Audio/CustomSoundStyle.cs
 +++ src/tModLoader/Terraria/Audio/CustomSoundStyle.cs
-@@ -1,27 +_,32 @@
+@@ -1,27 +_,35 @@
 +using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Audio;
  using Terraria.Utilities;
@@ -45,5 +45,8 @@
 +		public SoundEffect GetRandomSound() => _soundEffects[Random.Next(_soundEffects.Length)];
 +
 +		public float GetRandomPitch() => MathHelper.Clamp(Pitch + ((Random.NextFloat() - 0.5f) * PitchVariance), -1f, 1f);
++
++		public static bool operator ==(ISoundStyle soundStyleA, CustomSoundStyle soundStyleB) => Equals(soundStyleA, soundStyleB);
++		public static bool operator !=(ISoundStyle soundStyleA, CustomSoundStyle soundStyleB) => !Equals(soundStyleA, soundStyleB);
  	}
  }

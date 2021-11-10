@@ -46,5 +46,8 @@ namespace Terraria.ModLoader
 		}
 
 		public float GetRandomPitch() => MathHelper.Clamp(Pitch + ((Main.rand.NextFloat() - 0.5f) * PitchVariance), -1f, 1f);
+
+		public static bool operator ==(ISoundStyle soundStyleA, ModSoundStyle soundStyleB) => Equals(soundStyleA, soundStyleB);
+		public static bool operator !=(ISoundStyle soundStyleA, ModSoundStyle soundStyleB) => !Equals(soundStyleA, soundStyleB);
 	}
 }

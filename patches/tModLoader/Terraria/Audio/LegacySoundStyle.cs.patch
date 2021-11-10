@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Audio/LegacySoundStyle.cs
 +++ src/tModLoader/Terraria/Audio/LegacySoundStyle.cs
-@@ -1,65 +_,55 @@
+@@ -1,65 +_,58 @@
 +using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Audio;
  using Terraria.Utilities;
@@ -99,10 +99,14 @@
 -		public override SoundEffect GetRandomSound() {
 -			if (IsTrackable)
 -				return SoundEngine.GetTrackableSoundByStyleId(Style);
-+		public SoundEffect GetRandomSound() => SoundEngine.GetTrackableSoundByStyleId(SoundId, Style + (Variations > 1 ? Random.Next(Variations) : 0));
- 
+-
 -			return null;
 -		}
++		public SoundEffect GetRandomSound() => SoundEngine.GetTrackableSoundByStyleId(SoundId, Style + (Variations > 1 ? Random.Next(Variations) : 0));
++
 +		public float GetRandomPitch() => MathHelper.Clamp(Pitch + ((Random.NextFloat() - 0.5f) * PitchVariance), -1f, 1f);
++
++		public static bool operator ==(ISoundStyle soundStyleA, LegacySoundStyle soundStyleB) => Equals(soundStyleA, soundStyleB);
++		public static bool operator !=(ISoundStyle soundStyleA, LegacySoundStyle soundStyleB) => !Equals(soundStyleA, soundStyleB);
  	}
  }
