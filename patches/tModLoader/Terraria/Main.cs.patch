@@ -2974,10 +2974,11 @@
  			if (mouseItem.stack <= 0)
  				mouseItem.type = 0;
  
-@@ -33523,7 +_,7 @@
+@@ -33523,7 +_,8 @@
  					num4 += num5;
  				}
  
++				//TML: Remove the Setting button being moved when player has too many slots. The ModAccessorySlot rework fixed this in a better fashion.
 -				if (amountOfExtraAccessorySlotsToShow >= 1 && (screenHeight < num3 || (screenHeight < num4 && mapStyle == 1))) {
 +				if (false && amountOfExtraAccessorySlotsToShow >= 1 && (screenHeight < num3 || (screenHeight < num4 && mapStyle == 1))) {
  					num -= 140;
