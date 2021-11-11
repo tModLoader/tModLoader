@@ -180,7 +180,7 @@ namespace Terraria
 		}
 
 		/// <summary>
-		/// Calculates the armor penetration value of the item in question for this player.
+		/// Calculates the attack speed value of the item in question for this player.
 		/// </summary>
 		public float GetWeaponAttackSpeed(Item sItem) {
 			StatModifier attackSpeed = StatModifier.One;
@@ -190,11 +190,6 @@ namespace Terraria
 				attackSpeed = attackSpeed.CombineWith(currentModifiers[i].attackSpeed.Scale(scalings[i]));
 			}
 
-			// TODO: use an ItemID.Sets for arrow/bullet/rocket
-			if (ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type])
-				attackSpeed = attackSpeed.CombineWith(arrowDamage);
-
-			int damageNum = (int)(sItem.damage * (float)attackSpeed);
 			return attackSpeed;
 		}
 
