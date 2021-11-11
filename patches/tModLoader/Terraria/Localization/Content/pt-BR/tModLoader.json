@@ -14,8 +14,11 @@
 		"MenuEnableDeveloperMode": "Habilitar Modo Desenvolvedor",
 		"WelcomeMessageBeta": "Bem-vindo à Alpha do tModLoader 1.4.\n\nVocê instalou com sucesso um tModLoader instável que pode conter bugs que quebram o jogo. \n\nUse o menu Oficina para acessar as funções do tModLoader relacionadas aos Mods.\n\nJunte-se ao Discord do tModLoader para saber mais sobre quais mods e/ou ferramentas de teste estão disponíveis para o tModLoader 1.4 como parte de sua revisão da 1.4.",
 		"FirstLaunchWelcomeMessage": "Bem-vindo ao tModLoader.\n\nVocê instalou com sucesso o tModLoader. Use o menu Navegador de Mods para encontrar mods que você deseja baixar. Use o menu Mods para alterar quais mods estão ativos no momento. Depois de alterar os mods, certifique-se de clicar no botão Recarregar Mods para recarregá-los.",
+		// "WhatsNewMessage": "The following are basic change notes from the last time you launched the Alpha. You may find that mods that relate to these changes need to be rebuilt by the author. Visit GitHub to see more details:\n",
+		// "ViewOnGitHub": "View on GitHub",
 		"tModLoaderSettings": "Configurações do tModLoader",
 		"ModMenuSwap": "Alterar o Tema do Menu",
+		// "AudioNotSupported": "No audio hardware found. Disabling all audio.",
 
 		// Mods Menu
 		"ModsModsList": "Lista de Mods",
@@ -73,6 +76,15 @@
 		"NoWorkshopAccess": "Erro: Não foi possível acessar a Oficina Steam",
 		"ModAlreadyUploaded": "Erro: O Mod já existe na Oficina!",
 		"ModVersionInfoUnchanged": "Erro: Informações da versão do mod devem ser incrementadas antes de atualizar.",
+		// "ConsultSteamLogs": "Consult Steam workshop_log.txt (Default Location: {0}) for more information.",
+		// "SteamRejectUpdate": "Item is/was already installed: {0}. If attempting to re-install, close current instance and re-launch.",
+		// "BeginDownload": "Attempting Download Item: {0}",
+		// "EndDownload": "Item Download Completed",
+		// "CreateItem": "Creating Item {0}",
+		// "UpdateItem": "Updating Item {0}",
+		// "PublishItem": "Attempting Publishing Item {0}",
+		// "SteamDownloader": "Queuing download with Steam download manager...",
+		// "DownloadProgress": "Download {0}% Complete",
 
 		// Mod Errors
 		"LoadError": "Ocorreu um erro ao carregar {0}",
@@ -215,6 +227,8 @@
 		"XDaysAgo": "{0} {^0:dia;dia} atrás",
 		"XMonthsAgo": "{0} {^0:mês;meses} atrás",
 		"XYearsAgo": "{0} {^0:ano;anos} atrás",
+		// "MBServerReturnToMenu": "Return to world menu",
+		// "MBServerAskForModName": "Type an exact ModName to download: ",
 
 		// Mod Publishing
 		"MBPublishEnterPassphrase": "Por favor, insira o seu Passcode",
@@ -280,6 +294,7 @@
 		"MSBuildAll": "Construir Todos",
 		"MSBuildReloadAll": "Construir + Recarregar Todos",
 		"MSUpgradeCSProj": "Atualizar o arquivo .csproj",
+		// "MSUpgradeLangFiles": "Upgrade .lang files to .hjson (non-destructive)",
 		"MSOpenSources": "Abrir fontes",
 		"MSManagePublished": "Gerenciar Publicados",
 		"MSPublish": "Publicar",
@@ -356,6 +371,10 @@
 		"MouseMiddle": "Meio do Mouse",
 		"MouseXButton1": "Mouse 4",
 		"MouseXButton2": "Mouse 5",
+
+		// In Game UI additions
+		// "slotStack": "Stack",
+		// "slotScroll": "Scroll",
 
 		// Misc
 		"OK": "OK",

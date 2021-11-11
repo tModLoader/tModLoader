@@ -498,7 +498,24 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 		private static IEnumerable<string> FilterUnmanagedFrameworkDllsViaBlacklist(IEnumerable<string> refs) {
 			// Separate out known forward-only assemblies via string blacklisting.
-			string[] unmanagedDLLs = new string[] { "api-ms", "clrcompression", "clretwrc", "clrjit", "coreclr", "dbgshim", "Microsoft.DiaSymReader.Native.amd64", "mscordaccore", "mscordaccore_amd64_amd64", "mscordbi", "mscorrc", "ucrtbase", "hostpolicy" };
+			string[] unmanagedDLLs = new string[] {
+				".Native",
+				"api-ms",
+				"clrcompression",
+				"clretwrc",
+				"clrjit",
+				"coreclr",
+				"dbgshim",
+				"Microsoft.DiaSymReader.Native.amd64",
+				"mscordaccore",
+				"mscordaccore_amd64_amd64",
+				"mscordbi",
+				"mscorrc",
+				"ucrtbase",
+				"hostpolicy",
+				"msquic"
+			};
+			
 			return refs.Where(r => !unmanagedDLLs.Any(r.Contains));
 		}
 	}
