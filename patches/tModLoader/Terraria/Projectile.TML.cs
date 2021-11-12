@@ -33,7 +33,12 @@ namespace Terraria
 		/// </summary>
 		public int ArmorPenetration {
 			get => _armorPenetration;
-			set => _armorPenetration = Math.Max(value, 0);
+			set {
+				if (value < 0)
+					throw new Exception("A projectile's armor penetration value cannot be set below 0.");
+				else
+					_armorPenetration = value;
+			}
 		}
 
 		private int _crit = 0;
@@ -43,7 +48,12 @@ namespace Terraria
 		/// </summary>
 		public int CritChance {
 			get => _crit;
-			set => _crit = Math.Max(value, 0);
+			set {
+				if (value < 0)
+					throw new Exception("A projectile's critical strike chance cannot be set below 0.");
+				else
+					_crit = value;
+			}
 		}
 
 		private static void HandlePlayerStatModifiers(IProjectileSource spawnSource, Projectile projectile) {

@@ -25,7 +25,7 @@ namespace Terraria
 		/// </summary>
 		public DamageClass DamageType {
 			get => _damageClass;
-			set => _damageClass = value ?? throw new ArgumentException("DamageType cannot be null");
+			set => _damageClass = value ?? throw new ArgumentException("An item's DamageType cannot be null.");
 		}
 
 		private int _armorPenetration = 0;
@@ -34,7 +34,12 @@ namespace Terraria
 		/// </summary>
 		public int ArmorPenetration {
 			get => _armorPenetration;
-			set => _armorPenetration = Math.Max(value, 0);
+			set {
+				if (value < 0)
+					throw new Exception("An item's armor penetration value cannot be set below 0.");
+				else
+					_armorPenetration = value;
+			}
 		}
 
 		/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
