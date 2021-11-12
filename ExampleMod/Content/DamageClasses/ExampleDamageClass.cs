@@ -58,6 +58,7 @@ namespace ExampleMod.Content.DamageClasses
 
 		public override bool ShowStatTooltipLine(Player player, string lineName) {
 			// This method lets you prevent certain common statistical tooltip lines from appearing on items associated with this DamageClass.
+			// The four line names you can use are "Damage", "CritChance", "Speed", and "Knockback". All four cases default to true.
 			// PLEASE BE AWARE that this hook will NOT be here forever; only until an upcoming revamp to tooltips as a whole comes around.
 			// Once this happens, a better, more versatile explanation of how to pull this off will be showcased, and this hook will be removed.
 			return true;
