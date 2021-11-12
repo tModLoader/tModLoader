@@ -25,7 +25,10 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public ModTranslation ClassName { get; internal set; }
 
-		/// <summary> This is the name that will show up when an item tooltip displays 'X [ClassName]'. This should include the 'damage' part. </summary>
+		/// <summary>
+		/// This is the name that will show up when an item tooltip displays 'X [ClassName]'.
+		/// This should include the 'damage' part.
+		/// </summary>
 		public string DisplayName => DisplayNameInternal;
 
 		internal protected virtual string DisplayNameInternal => ClassName.GetTranslation(Language.ActiveCulture);
@@ -58,8 +61,9 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// This lets you decide whether or not your damage class can use standard critical strike calculations.
+		/// Setting this to false will also hide the critical strike chance line in the tooltip of any item that uses this DamageClass.
 		/// </summary>
-		public virtual bool AllowStandardCrits() => true;
+		public virtual bool AllowStandardCrits => true;
 
 		// to-do:
 		// this is a horrible approach to doin' this and I know full well that it is; this is just a stopgap to simplify the process for now

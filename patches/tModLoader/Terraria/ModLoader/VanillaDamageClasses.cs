@@ -57,7 +57,7 @@ namespace Terraria.ModLoader
 
 		protected override float GetBenefitFrom(DamageClass damageClass) => damageClass == Generic ? 1f : 0f;
 
-		public override bool AllowStandardCrits() => false;
+		public override bool AllowStandardCrits => false;
 
 		public override bool ShowStatTooltipLine(Player player, string lineName) => lineName != "CritChance" && lineName != "Speed";
 	}

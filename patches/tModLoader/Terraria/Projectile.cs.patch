@@ -367,7 +367,7 @@
  											flag6 = true;
 +										*/
 +
-+										if (DamageType.AllowStandardCrits() && Main.rand.Next(100) < CritChance)
++										if (DamageType.AllowStandardCrits && Main.rand.Next(100) < CritChance)
 +											flag6 = true;
  
  										int num12 = type;

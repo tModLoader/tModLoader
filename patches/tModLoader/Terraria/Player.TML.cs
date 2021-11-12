@@ -130,6 +130,7 @@ namespace Terraria
 		/// <summary>
 		/// Gets the attack speed modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// SETTING THIS TO ZERO WILL BRICK THE GAME, AND NEGATIVE VALUES, WHILE VALID, MAY INVOKE UNINTENDED BEHAVIOR.
 		/// </summary>
 		public ref StatModifier GetAttackSpeed<T>() where T : DamageClass => ref GetAttackSpeed(ModContent.GetInstance<T>());
 

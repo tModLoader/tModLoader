@@ -1,6 +1,6 @@
 ﻿namespace Terraria.ModLoader
 {
-	internal struct DamageClassData
+	public struct DamageClassData
 	{
 		public StatModifier damage;
 		public StatModifier attackSpeed;

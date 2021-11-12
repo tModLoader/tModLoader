@@ -25,7 +25,7 @@ namespace ExampleMod.Content.Items.Accessories
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
 			// GetDamage returns a reference to the specified damage class' damage StatModifier.
-			// Since it doesn't return a value, but a reference to it, you can freely modify it with +-*/ operators.
+			// Since it doesn't return a value, but a reference to it, you can freely modify it with mathematics operators (+, -, *, /, etc.).
 			// StatModifier is a structure that separately holds float additive and multiplicative modifiers.
 			// When StatModifier is applied to a value, its additive modifiers are applied before multiplicative ones.
 
@@ -47,6 +47,7 @@ namespace ExampleMod.Content.Items.Accessories
 
 			// GetAttackSpeed works similarly to GetCritChance and GetArmorPen, but uses a float instead of an int.
 			// In this case, we'll make ranged weapons 15% faster to use.
+			// NOTE: DO NOT SET TO ZERO OR NEGATIVE VALUES. DOING SO WILL CAUSE PROBLEMS.
 			player.GetAttackSpeed(DamageClass.Ranged) += 0.15f;
 		}
 	}

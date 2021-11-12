@@ -22,7 +22,7 @@ namespace ExampleMod.Content.DamageClasses
 				return 1f;
 
 			return 0f;
-			// To explain how the return value works, it behaves like a percentage, with 0f being 0%, 1f being 100%, and so on.
+			// To explain how these return values work, each one behaves like a percentage, with 0f being 0%, 1f being 100%, and so on.
 			// The return value indicates how much your class will scale off of any given damage class.
 			// For example, if I were to return 0.5f (50%) for DamageClass.Ranged, this custom class would receive all ranged stat bonuses at 50% effectiveness.
 			// There is no hardcap on what you can set this to.You can make it scale very heavily or barely at all...
@@ -53,10 +53,8 @@ namespace ExampleMod.Content.DamageClasses
 			// You'll see these used all around in referencce to vanilla classes and our example class here.
 		}
 
-		public override bool AllowStandardCrits() {
-			// This method lets you decide whether or not your damage class can use standard critical strike calculations.
-			return true;
-		}
+		// This method lets you decide whether or not your damage class can use standard critical strike calculations.
+		public override bool AllowStandardCrits => true;
 
 		public override bool ShowStatTooltipLine(Player player, string lineName) {
 			// This method lets you prevent certain common statistical tooltip lines from appearing on items associated with this DamageClass.

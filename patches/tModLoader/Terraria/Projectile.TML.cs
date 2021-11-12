@@ -48,7 +48,7 @@ namespace Terraria
 		}
 
 		private static void HandlePlayerStatModifiers(IProjectileSource spawnSource, Projectile projectile) {
-			if (spawnSource is null || !(spawnSource is ProjectileSource_Item || spawnSource is ProjectileSource_Item_WithAmmo))
+			if (spawnSource is null || (!(spawnSource is ProjectileSource_Item) && !(spawnSource is ProjectileSource_Item_WithAmmo)))
 				return;
 
 			if (spawnSource is ProjectileSource_Item) {
