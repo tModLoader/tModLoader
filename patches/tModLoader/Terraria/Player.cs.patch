@@ -2575,7 +2575,7 @@
  					aggro -= (int)((1f - stealth) * 1200f);
  					accRunSpeed *= 0.3f;
  					maxRunSpeed *= 0.3f;
-@@ -18094,14 +_,20 @@
+@@ -18094,15 +_,23 @@
  			if (manaSick)
  				magicDamage *= 1f - manaSickReduction;
  
@@ -2588,16 +2588,19 @@
  			if ((double)pickSpeed < 0.3)
  				pickSpeed = 0.3f;
  
-+			// TO-DO: potentially add a setting in Mod that can make this not a thing
 -			if (meleeSpeed > 3f)
-+//			if (meleeSpeed > 3f)
 -				meleeSpeed = 3f;
-+//				meleeSpeed = 3f;
++			// TO-DO: potentially add a setting in Mod that can make this not a thing
++			//if (meleeSpeed > 3f)
++			//	meleeSpeed = 3f;
 +			if (meleeSpeed.Additive > 3f)
 +				meleeSpeed = new StatModifier(3f, meleeSpeed.Multiplicative);
  
++			// tML: no longer set to reciprocal for consistency with other attack speed modifiers
++			//meleeSpeed = 1f / meleeSpeed;
  			if (tileSpeed > 3f)
  				tileSpeed = 3f;
+ 
 @@ -18146,7 +_,7 @@
  				}
  			}
@@ -4123,7 +4126,7 @@
  			int damage = sItem.damage;
  			if (sItem.melee && projToShoot != 699 && projToShoot != 707 && (uint)(projToShoot - 877) > 2u)
 -				speed /= meleeSpeed;
-+				speed *= meleeSpeed;
++				speed *= meleeSpeed; // tML: changed from division to multiplication since meleeSpeed is no longer set to reciprocal
  
  			bool canShoot = false;
  			int Damage = weaponDamage;

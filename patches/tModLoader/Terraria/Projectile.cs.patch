@@ -680,7 +680,7 @@
  			}
  
 -			float meleeSpeed = player.meleeSpeed;
-+			float meleeSpeed = 1f / player.meleeSpeed;
++			float meleeSpeed = 1f / player.meleeSpeed; // tML: changed due to meleeSpeed no longer being set to reciprocal
  			float num15 = 1f / meleeSpeed;
  			num2 *= num15;
  			num8 *= num15;
