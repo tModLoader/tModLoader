@@ -318,8 +318,8 @@ jobs:
       - name: Download build artifact from build job
         uses: actions/download-artifact@v2
         with:
-          name: Debug Build
-          path: artifacts/Debug
+          name: Release Build
+          path: artifacts/Release
       - name: View build artifact files
         run: |
           echo pwd is: ${PWD}
