@@ -233,10 +233,10 @@ namespace {modNameTrimmed}
 			return
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project Sdk=""Microsoft.NET.Sdk"">
-  <Import Project=""../tModLoader.targets"" />
+  <Import Project=""..\tModLoader.targets"" />
   <PropertyGroup>
     <AssemblyName>{modNameTrimmed}</AssemblyName>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -250,7 +250,7 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 		{
 			if (!fileContents.Contains("../tModLoader.targets"))
 				return true;
-			if (!fileContents.Contains("<TargetFramework>net5.0</TargetFramework>"))
+			if (!fileContents.Contains("<TargetFramework>net6.0</TargetFramework>"))
 				return true;
 
 			return false;

@@ -480,6 +480,8 @@ namespace Terraria.ModLoader.UI
 				File.Delete(tmodPath);
 			}
 
+			Interface.modBrowser.ModifyUIModDownloadItemInstalled(_mod.Name, null);
+
 			CloseDialog(evt, listeningElement);
 			Interface.modsMenu.Activate();
 		}
