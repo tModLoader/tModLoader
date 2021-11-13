@@ -2741,15 +2741,15 @@
  				}
  
  				inventoryBack = color;
-+				int chkMax = (int)(num20 + 7 * 56 * inventoryScale + 4);
-+				int randomLocationX = screenWidth - 64 - 28;
 +
-+				if (num39 == num38 && !_achievementAdvisor.CanDrawAboveCoins) {
-+					_achievementAdvisor.DrawOneAchievement(spriteBatch, new Vector2(randomLocationX - 10 - 47 - 47 - 14 - 14, chkMax + 8), large: false);
-+					UILinkPointNavigator.SetPosition(1570, new Vector2(randomLocationX - 10 - 47 - 47 - 14 - 14, chkMax + 8) + new Vector2(20f) * inventoryScale);
++				var defPos = AccessorySlotLoader.DefenseIconPosition;
++				DrawDefenseCounter((int)defPos.X, (int)defPos.Y);
++
++				if (!_achievementAdvisor.CanDrawAboveCoins) {
++					var achievePos = new Vector2(defPos.X - 10 - 47 - 47 - 14 - 14, defPos.Y - 56 * inventoryScale * 0.5f);
++					_achievementAdvisor.DrawOneAchievement(spriteBatch, achievePos , large: false);
++					UILinkPointNavigator.SetPosition(1570, achievePos + new Vector2(20f) * inventoryScale);
 +				}
-+
-+				DrawDefenseCounter(randomLocationX, chkMax);
 +
 +				inventoryBack = color;
  				inventoryScale = num36;

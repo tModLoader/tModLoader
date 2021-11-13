@@ -42,6 +42,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		static public int DrawVerticalAlignment { get; private set; }
 
+		/// <summary>
+		/// The variable that determines where the DefenseIcon will be drawn, after considering all slot information.
+		/// </summary>
+		static public Vector2 DefenseIconPosition { get; private set; }
+
 		public void DrawAccSlots(int num20) {
 			int skip = 0;
 			DrawVerticalAlignment = num20;
@@ -67,6 +72,13 @@ namespace Terraria.ModLoader
 			int accessoryPerColumn = GetAccessorySlotPerColumn();
 			int slotsToRender = list.Count + MaxVanillaSlotCount - skip;
 			int scrollIncrement = slotsToRender - accessoryPerColumn;
+
+			if (scrollIncrement < 0) {
+				accessoryPerColumn = slotsToRender;
+				scrollIncrement = 0;
+			}
+
+			DefenseIconPosition = new Vector2(Main.screenWidth - 64 - 28, DrawVerticalAlignment + (accessoryPerColumn + 2) * 56 * Main.inventoryScale + 4);
 
 			if (scrollIncrement > 0) {
 				DrawScrollSwitch();
@@ -111,11 +123,6 @@ namespace Terraria.ModLoader
 		// This is a hacky solution to make it very vanilla-esque, at the cost of not actually using a UI proper. 
 		internal void DrawScrollbar(int accessoryPerColumn, int slotsToRender, int scrollIncrement) {
 			int xLoc = Main.screenWidth - 64 - 28;
-
-			if (scrollIncrement < 0) {
-				accessoryPerColumn = slotsToRender;
-				scrollIncrement = 0;
-			}
 
 			int chkMax = (int)((float)(DrawVerticalAlignment) + (float)(((accessoryPerColumn) + 3) * 56) * Main.inventoryScale) + 4;
 			int chkMin = (int)((float)(DrawVerticalAlignment) + (float)((0 + 3) * 56) * Main.inventoryScale) + 4;
