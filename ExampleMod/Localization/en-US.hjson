@@ -19,6 +19,10 @@ Mods: {
 		Currencies: {
 			ExampleCustomCurrency: example items
 		}
+
+		DamageClass: {
+			ExampleDamageClass: example damage
+		}
 		
 		NPCName: {
 			FlutterSlime: Flutter Slime

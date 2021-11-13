@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Terraria;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.DamageClasses
@@ -8,8 +9,8 @@ namespace ExampleMod.Content.DamageClasses
 	{
 		public override void SetStaticDefaults() {
 			// This makes weapons with this damage type have a tooltip of 'X example damage'.
-			// TO-DO: Move to .hjson file and actually teach people how they work.
-			ClassName.SetDefault("example damage");
+			// For examples of how localization works in this fashion, look in the Localization folder.
+			ClassName.SetDefault(Language.GetTextValue("Mods.ExampleMod.Currencies.ExampleCustomCurrency"));
 		}
 
 		protected override float GetBenefitFrom(DamageClass damageClass) {
